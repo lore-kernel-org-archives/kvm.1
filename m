@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5ADC381B03
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717CE3B2FF4
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274319; cv=none; b=FZhm8GynwaSJ/9Ge5tvHdzeFKBC/yyhDWVOL9pkRklIRl2aSmB1pPCc92CuM9LEJYB1WI+w9x0e8LHMxpwtWS+oct6HBGrzCt+TPzNz3FYKSZXYp+nfupGxafoDlw3hJV/1XA3Gjozmz27LKPBS1/+xuMsPy9mJfijwHSagnfHI=
+	t=1774274322; cv=none; b=Zc4qb+AHVUMZCv6v98BurJVL7CpYFi3k3lyvOop7JyePtAXLvzzInDwV3A5akrVxJYwZESzgBln2ipNA7Z9qRAIc9Jwx+vABtVMi84IxReBknhOmURj8G8o6iFFjzfutOAkW3jEf4157kne6osiS4ohNuaxeYPAVdkHMGdVf0AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274319; c=relaxed/simple;
-	bh=Rh//DqOy/cQMvHcWs2YijzXzWxb7b3bdf1+RBdrl568=;
+	s=arc-20240116; t=1774274322; c=relaxed/simple;
+	bh=hIDWKLt7x6YTzw/8KMtcBb3BYscwl7jYlemQacmaG5w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ztdq8CVqZADYgyOOJNtbj4SmU7nX1L21nY3wPbTD85h2AxH7m2EAVSfeEjw9k1bbG98wWkr5UcupMa2sW5hkbSWFIoWsaSEvY60BOcPJU/vJ8krUTcBVuDB7OFY8swKkU0cCbqDeLLle90MlEPd2ybdAExL9ofWdPOkDvgosHaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=G66Phg8Z; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=TMtYOdKB6Kh0QBkvo0F1hnRz4ewyh5nGaVpQLbnYPoMwBAgbnGKbc/QNdVJaGlHuSzM05Asp7dqns7a6w+ud5/a1UkFO218QA8CJ7H8TJj7r9Eks8De6iqqLfCVZxDuC9aDNq9jpAOw1VOS2cjMpXoxsGnc2AQuMVfTt0IVv2VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=nDlUuqEn; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="G66Phg8Z"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nDlUuqEn"
 Received: from DESKTOP-TUU1E5L.localdomain (unknown [167.220.208.76])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AA6F320B7135;
-	Mon, 23 Mar 2026 06:58:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AA6F320B7135
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5719F20B7136;
+	Mon, 23 Mar 2026 06:58:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5719F20B7136
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774274317;
-	bh=ZUck8KRzAIHOJZRjiz7XUC9sA5Upd2lSR/QGThC5/Zk=;
+	s=default; t=1774274321;
+	bh=5f5lBzYNJXSQHl9L3phyPddlzD4DT+ukgAveanWx3Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G66Phg8ZIRSknyuAf6SxTBhuI7Pa5PEEyhu4NG/DulcV27GFe6HTGv6wcij1P98mk
-	 vA5QBuFi2l6cojr9xpbtuo6jIBPhFiYk6A2H6Ciu+/LZjrsJsVXlfbyhla9BEkzzMP
-	 SqsxJcmqAq2f7SVl87GjNXfYTHwHOs07dSnros5U=
+	b=nDlUuqEn44ECZzdbgOTVV2eqEPp/xykd4mfUDlDV/yjrXhWX3yYgXkpvBQ3IviHMK
+	 T6Iffl179PzLwnbtL3ewwffHUrLKt8rKTrgAmTrbztCUfWOfXbo1SSVrlujNQI0aTz
+	 pXYZ///WQnWppFBugbcCKUqZMcp5wyv0OedoeusQ=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: kvm@vger.kernel.org,
 	Magnus Kulke <magnuskulke@microsoft.com>,
 	Magnus Kulke <magnuskulke@linux.microsoft.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC 05/32] accel/accel-irq: add generic begin_route_changes
-Date: Mon, 23 Mar 2026 14:57:45 +0100
-Message-Id: <20260323135812.383509-6-magnuskulke@linux.microsoft.com>
+Subject: [RFC 06/32] accel/accel-irq: add generic commit_route_changes
+Date: Mon, 23 Mar 2026 14:57:46 +0100
+Message-Id: <20260323135812.383509-7-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
 References: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
@@ -55,173 +55,107 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A generic accel_irqchip_begin_route_change() fn has been introduced for
-usage in the MSHV accelerator. It replaces the respective kvm_ fn.
+A generic accel_irqchip_commit_route_changes() fn has been introduced for
+usage in the MSHV accelerator. The respective kvm_ fn can be removed
+since we handle the commit op in a generic way.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/accel-irq.c          | 21 +++++++++++++++++++++
- hw/misc/ivshmem-pci.c      |  4 ++--
- hw/vfio/pci.c              |  5 +++--
- hw/virtio/virtio-pci.c     |  2 +-
- include/system/accel-irq.h |  1 +
- include/system/kvm.h       |  8 --------
- target/i386/kvm/kvm.c      |  3 ++-
- 7 files changed, 30 insertions(+), 14 deletions(-)
+ accel/accel-irq.c     | 10 +++-------
+ hw/misc/ivshmem-pci.c |  2 +-
+ hw/vfio/pci.c         |  4 ++--
+ include/system/kvm.h  |  8 --------
+ target/i386/kvm/kvm.c |  2 +-
+ 5 files changed, 7 insertions(+), 19 deletions(-)
 
 diff --git a/accel/accel-irq.c b/accel/accel-irq.c
-index 0aa04c033d..3815f6727c 100644
+index 3815f6727c..7e71b52555 100644
 --- a/accel/accel-irq.c
 +++ b/accel/accel-irq.c
-@@ -10,6 +10,7 @@
-  */
+@@ -45,13 +45,9 @@ int accel_irqchip_update_msi_route(int vector, MSIMessage msg, PCIDevice *dev)
  
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "hw/pci/msi.h"
- 
- #include "system/kvm.h"
-@@ -104,3 +105,23 @@ int accel_irqchip_remove_irqfd_notifier_gsi(EventNotifier *n, int virq)
+ void accel_irqchip_commit_route_changes(AccelRouteChange *c)
+ {
+-#ifdef CONFIG_MSHV_IS_POSSIBLE
+-    if (mshv_msi_via_irqfd_enabled()) {
+-        mshv_irqchip_commit_routes();
+-    }
+-#endif
+-    if (kvm_enabled()) {
+-        kvm_irqchip_commit_route_changes(c);
++    if (c->changes) {
++        accel_irqchip_commit_routes();
++        c->changes = 0;
      }
-     return -ENOSYS;
  }
-+
-+inline AccelRouteChange accel_irqchip_begin_route_changes(void)
-+{
-+#ifdef CONFIG_MSHV_IS_POSSIBLE
-+    if (mshv_msi_via_irqfd_enabled()) {
-+        return (AccelRouteChange) {
-+            .accel = ACCEL(mshv_state),
-+            .changes = 0,
-+        };
-+    }
-+#endif
-+    if (kvm_enabled()) {
-+        return (AccelRouteChange) {
-+            .accel = ACCEL(kvm_state),
-+            .changes = 0,
-+        };
-+    }
-+    error_report("can't initiate route change, no accel irqchip available");
-+    abort();
-+}
+ 
 diff --git a/hw/misc/ivshmem-pci.c b/hw/misc/ivshmem-pci.c
-index aa8f271755..fa23562886 100644
+index fa23562886..536475e9de 100644
 --- a/hw/misc/ivshmem-pci.c
 +++ b/hw/misc/ivshmem-pci.c
-@@ -26,7 +26,7 @@
- #include "hw/core/qdev-properties-system.h"
- #include "hw/pci/msi.h"
- #include "hw/pci/msix.h"
--#include "system/kvm.h"
-+#include "system/accel-irq.h"
- #include "migration/blocker.h"
- #include "migration/vmstate.h"
- #include "qemu/error-report.h"
-@@ -430,7 +430,7 @@ static void ivshmem_add_kvm_msi_virq(IVShmemState *s, int vector,
-     IVSHMEM_DPRINTF("ivshmem_add_kvm_msi_virq vector:%d\n", vector);
-     assert(!s->msi_vectors[vector].pdev);
- 
--    c = kvm_irqchip_begin_route_changes(kvm_state);
-+    c = accel_irqchip_begin_route_changes();
-     ret = kvm_irqchip_add_msi_route(&c, vector, pdev);
-     if (ret < 0) {
+@@ -436,7 +436,7 @@ static void ivshmem_add_kvm_msi_virq(IVShmemState *s, int vector,
          error_setg(errp, "kvm_irqchip_add_msi_route failed");
+         return;
+     }
+-    kvm_irqchip_commit_route_changes(&c);
++    accel_irqchip_commit_route_changes(&c);
+ 
+     s->msi_vectors[vector].virq = ret;
+     s->msi_vectors[vector].pdev = pdev;
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index e48f4add4e..6768523147 100644
+index 6768523147..d1807888d5 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -39,6 +39,7 @@
- #include "qemu/module.h"
- #include "qemu/range.h"
- #include "qemu/units.h"
-+#include "system/accel-irq.h"
- #include "system/kvm.h"
- #include "system/runstate.h"
- #include "pci.h"
-@@ -692,7 +693,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-             if (vdev->defer_kvm_irq_routing) {
-                 vfio_pci_add_kvm_msi_virq(vdev, vector, nr, true);
+@@ -695,7 +695,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
              } else {
--                vfio_route_change = kvm_irqchip_begin_route_changes(kvm_state);
-+                vfio_route_change = accel_irqchip_begin_route_changes();
+                 vfio_route_change = accel_irqchip_begin_route_changes();
                  vfio_pci_add_kvm_msi_virq(vdev, vector, nr, true);
-                 kvm_irqchip_commit_route_changes(&vfio_route_change);
+-                kvm_irqchip_commit_route_changes(&vfio_route_change);
++                accel_irqchip_commit_route_changes(&vfio_route_change);
                  vfio_connect_kvm_msi_virq(vector, nr);
-@@ -793,7 +794,7 @@ void vfio_pci_prepare_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
- {
-     assert(!vdev->defer_kvm_irq_routing);
-     vdev->defer_kvm_irq_routing = true;
--    vfio_route_change = kvm_irqchip_begin_route_changes(kvm_state);
-+    vfio_route_change = accel_irqchip_begin_route_changes();
- }
+             }
+         }
+@@ -804,7 +804,7 @@ void vfio_pci_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
+     assert(vdev->defer_kvm_irq_routing);
+     vdev->defer_kvm_irq_routing = false;
  
- void vfio_pci_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 5010572784..faa4a41cca 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -869,7 +869,7 @@ static int kvm_virtio_pci_vq_vector_use(VirtIOPCIProxy *proxy,
-     int ret;
+-    kvm_irqchip_commit_route_changes(&vfio_route_change);
++    accel_irqchip_commit_route_changes(&vfio_route_change);
  
-     if (irqfd->users == 0) {
--        AccelRouteChange c = kvm_irqchip_begin_route_changes(kvm_state);
-+        AccelRouteChange c = accel_irqchip_begin_route_changes();
-         ret = accel_irqchip_add_msi_route(&c, vector, &proxy->pci_dev);
-         if (ret < 0) {
-             return ret;
-diff --git a/include/system/accel-irq.h b/include/system/accel-irq.h
-index a148920711..fc94c54264 100644
---- a/include/system/accel-irq.h
-+++ b/include/system/accel-irq.h
-@@ -25,6 +25,7 @@ static inline bool accel_irqchip_is_split(void)
-     return mshv_msi_via_irqfd_enabled() || kvm_irqchip_is_split();
- }
- 
-+AccelRouteChange accel_irqchip_begin_route_changes(void);
- int accel_irqchip_add_msi_route(AccelRouteChange *c, int vector,
-                                 PCIDevice *dev);
- int accel_irqchip_update_msi_route(int vector, MSIMessage msg, PCIDevice *dev);
+     for (i = 0; i < vdev->nr_vectors; i++) {
+         vfio_connect_kvm_msi_virq(&vdev->msi_vectors[i], i);
 diff --git a/include/system/kvm.h b/include/system/kvm.h
-index ccf90b8341..fec24d2135 100644
+index fec24d2135..cdd1856ac5 100644
 --- a/include/system/kvm.h
 +++ b/include/system/kvm.h
 @@ -476,14 +476,6 @@ int kvm_irqchip_update_msi_route(KVMState *s, int virq, MSIMessage msg,
                                   PCIDevice *dev);
  void kvm_irqchip_commit_routes(KVMState *s);
  
--static inline AccelRouteChange kvm_irqchip_begin_route_changes(KVMState *s)
+-static inline void kvm_irqchip_commit_route_changes(AccelRouteChange *c)
 -{
--    return (AccelRouteChange) {
--        .accel = ACCEL(s),
--        .changes = 0,
--    };
+-    if (c->changes) {
+-        kvm_irqchip_commit_routes(KVM_STATE(c->accel));
+-        c->changes = 0;
+-    }
 -}
 -
- static inline void kvm_irqchip_commit_route_changes(AccelRouteChange *c)
- {
-     if (c->changes) {
+ int kvm_irqchip_get_virq(KVMState *s);
+ void kvm_irqchip_release_virq(KVMState *s, int virq);
+ 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 9cc41758d7..dc7c495f9c 100644
+index dc7c495f9c..b132e986f9 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -32,6 +32,7 @@
- #include "vmsr_energy.h"
- #include "system/system.h"
- #include "system/hw_accel.h"
-+#include "system/accel-irq.h"
- #include "system/kvm_int.h"
- #include "system/runstate.h"
- #include "system/ramblock.h"
-@@ -6680,7 +6681,7 @@ void kvm_arch_init_irq_routing(KVMState *s)
-     kvm_gsi_routing_allowed = true;
+@@ -6692,7 +6692,7 @@ void kvm_arch_init_irq_routing(KVMState *s)
+                 exit(1);
+             }
+         }
+-        kvm_irqchip_commit_route_changes(&c);
++        accel_irqchip_commit_route_changes(&c);
+     }
+ }
  
-     if (kvm_irqchip_is_split()) {
--        AccelRouteChange c = kvm_irqchip_begin_route_changes(s);
-+        AccelRouteChange c = accel_irqchip_begin_route_changes();
-         int i;
- 
-         /* If the ioapic is in QEMU and the lapics are in KVM, reserve
 -- 
 2.34.1
 
