@@ -1,163 +1,254 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FB431F9A0
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 18:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774291700; cv=pass; b=U2YHvdOzz85d2nuY7mMQGmnJ+i1T8zeHb6ET7f1Anu/taZGY4uRI2w1Y0Am1WeqvyUjolG2DCmWLVmh7U+3TWbk5ov0q7HGIiMWH/rGrVbKuxJvvo1mp9l2jTLgtCJhVYh+yNZ2E9G7Nbff38nXglE2B1lq7CMVysSVfS2573ug=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774291700; c=relaxed/simple;
-	bh=wtd4dR/oVa1duupPZRE6M4yMtMAB5U3Lxud0Yc5yhbQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EHVE0x2yt5aoPgZI5CZ813gBDtjMdY2G+hmDXSFCbML0U9/xEx5oqPtCCnMPwsB0+ijtvXVVq3MkM8HqRxoeaAwMksVrVvME8znGGj7ShNqug/s75UNg8lpLZxHaRwFA2LwIsW1jtd4lnLgQn7bep5ZJSALBJvf+VKSTKyNSHrw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uvZ+PVxj; arc=pass smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BCE2DA75A
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 18:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774291923; cv=none; b=XWytQWlpJRw8iWB757K/ZTFpei4CpH8t2xyTc51yccZns+gLQv21MzfNkAU1ZyNsKX5hsWDXaexGCglw/exp7Sxt/8d/KnY52phue57gbgzLO8C/yiiUeZoiHkgh3NPGiQDJR+RyeVMJx6IhuY4oYVw6Z07oJJprU+zuLVee6fA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774291923; c=relaxed/simple;
+	bh=6QaR2oqSKNEPRho9RH+KkOaiYFeaDuoiPM8PClvNLCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kilHLLUjnAOyzPE0XdzW6VCsBTfpiWt9QaSJU9WJ8yODlJGhWhIr08mfMBE3lAPg2aFLttPlN0E/fg+vyYt78xYiQ84nLHIOA2weMfMWwie5HU0HqdyM3WHMJAOZh3fIKKq3Glg3pPL/zzyYxKd8HBAFyl9aX45f+isgCicP64s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MVzWSQF/; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uvZ+PVxj"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50b6c45781aso145131cf.0
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 11:48:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774291698; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Hn+ry0INq12WLfgk20jOd4WmyZ1TqZhhOEldGW0PFzDYq4oiWMXcEb35xG8Sa6rR2T
-         Omd/F4V7oGoe6ey7pKJqYKPaFg1nTkYovd+coh53SrUSzPAN/c/qydnKOHhtsRfS9Jrv
-         MYfJzzmnbcI/iijUGB1ogiMQWCfGfsrzpRTLz7lQOsQGmET3AzuCAqOFf81ZFjGnVnOh
-         hZdCePMKKMgU+7QV+/d2d3g+azpEKzRuLsDF7j8jMoUHJ8RyDgToRyJBbQSnYash2R24
-         5jn2Ok51rhv7MzdKdloxGXEw0YZ4XGv0ldUlBFNHWIv4QKEXyvEQ07Fw6luZvyexntn+
-         a/8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
-        fh=YM8CVzd0y7/ddgRy7nY6FZo+A/FGMtJiwCECwEefsoo=;
-        b=B8urcylgdENXK3IuHQmchtFSHeLz9e7RA3VtMpKPIyHgSo8y9roUSqqQ1gjFXwZxn4
-         kaBFBE9W+cq1yJ1fH/IOufxBRKH4KVen0+QLqPxCidolhINGCAg22AFgfTOApOnUF6M+
-         KlYv0KljRW9o0ijdpJ1pPqXlAN7vOrUPH0e2/5kP8tgH+oQDDWnu9R0W42Cr7Ojn30O6
-         Qo0VWk4s5GUMgETjaP/juBIf3QlNSVLKB0jQDJHcuh+ryJZYwPEs/68bpRfci6ytqL7/
-         8NJt4AE4ARShhYX/O9PQrDgCLvO2PZMKt0n14BOGMlsfqf50Gli/CtIfK3aQAzP18Wn2
-         mcmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MVzWSQF/"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b052ec7176so14135ad.1
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 11:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774291698; x=1774896498; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
-        b=uvZ+PVxj96HK+k4Ve4xvJGHxvyizwbjetJuPp1Dc5KTENfgbnAy1/ClCeaM8jZcndO
-         4cJzXh/nb8ayOv5YnjXV7SOGTbbCCfkodig3g4JtI2T0X5tlshvoQemfdt/bfTKLYvOl
-         haipNw7BOfRLtOTf7f9Fp7+vyvZM1n68ubNJgj2w7AKMIP+K5VOlo0182eGJhnWzuJph
-         e0R8VdslH85Zpf9XueAMVrGE7lEPQB/ag6byVMkzrW4vlisx7LVcaHY6f2gAhDo+D0yC
-         NMKQkEBL3awkqe0VZV/Y0ouEo8D7n1TPpjJJhMv9gVwrqIW7ylW9/tvv0BckT7fOts1E
-         OEHQ==
+        d=google.com; s=20251104; t=1774291920; x=1774896720; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g99lbUMVIyYkGv//TAIg6GhZ5xFInnNUBZAXzDDYysU=;
+        b=MVzWSQF//EYTZzwu2/ftz07BmbsEX4k7uadWjJS7Y71KMSmAM+0Aujr5pFw6CDEzm/
+         jic1sWe4ieULdPH52EZLo7tCw85VS67GBrh+75dna/VqEenbVSG1OxfoffQml1dgvwn9
+         ZRx1lcEb/glSINOML8EtCmUvxuuYfxZe4id/1Zus0R52XsO/62ICFUNri01MMQArWIT8
+         QYhUmetdpePNePg4K+ymPduWdKFM/mFmWBFvJU8Vyd/Lw6/s/Q0m82q4BckOWGZuapNI
+         G8NhH7ffIKaN7y/LSzHFT/2sqXf/7znjdDAqIMxoBDthImYfdACLUi0LpmbY7ogZzFvx
+         jlcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774291698; x=1774896498;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
-        b=IcmBLgiEEyBXMRubfyOIwF1n6t56fFScF9lZN03Ov2Cg5Uknwsu4TueOSIuBNtO9Di
-         1laG3GQ3+C61YMm5JJAWZzIWiMViXWntFJBAgWAbcRhKiHrtbpRrsppvLWHb8LdRbecx
-         RMkD7lvlM0V2tkiISEyit0tSsoENJ2D8PB2zbYKbtZMZoydgPGJ/kKpastSyv0R9EEAf
-         67zVX5PgropIhGns/5NBfrK+1SVBWcyP5msFfIfHQ1q2/3TnBK9mb4sc0osjvDX6dGHc
-         c6YjQu06yR10OgZSKjb/XMpHwn0m8VUtDFg4vdCCyDF8lT+3r/u6Tqdmk39Cme9ALe7A
-         Imnw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/LnYYI/wR44qW/S8fve7ApoznCXB1FKkEOrzvR8FzB7qiBExJYPZuRGaeO/QcKsM0Epc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGRn8atNCy6ctevrILCDFg0OlksG0Id93r2/rbn7h155TAZkvy
-	0YuUkuwbMIEqTjxtywEIPkqvfPS66sxmYW6S2aPLREqjffnibneHcgiWSoAQ8VTQXzfTxATHpYC
-	CtQO2OEX0pCrrme7UYyh0qBbmFSAP/RnXMUod8/Qa
-X-Gm-Gg: ATEYQzxAiVqN164Yy0oHkcg2RQNtbNUs7HanwrNyCi3v4pHlsX1pLWcV5dYdYTec1yl
-	v/2Cm/sgDzpInhP/JgPSdnSFXWo/yJUkNDG+8QDxjB8iqrYaxC+dWS7zKvTBfW8qAyAc+9dgsTM
-	80wcmENVtkMr/oRKzFJ/HyasYfpuMEVn3Sxk/Rk7UMU6UifZTAOONXulaRiFtrrukZFy7/OrtbC
-	y361FVswpdOqxQ/fPyryVt4auoV33Xpw3eH3l43UpN+OEHgKRCgkuhUmYRsQ/RWmJbmPmxlB+AE
-	S2E0mHmRhy1LHiaj
-X-Received: by 2002:a05:622a:1f85:b0:506:a3c8:d44d with SMTP id
- d75a77b69052e-50b6fd357cbmr1787911cf.9.1774291697776; Mon, 23 Mar 2026
- 11:48:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774291920; x=1774896720;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g99lbUMVIyYkGv//TAIg6GhZ5xFInnNUBZAXzDDYysU=;
+        b=IetkucB+6BbdFXDS/0KOKZYqJs3TuUO/ARlhimoF7ZlIJp7FdwLYhH5QdFtw9VVhMG
+         uCxu2Sj/Vz1qHNh9FFa/h22cTvW0tcYgEV90pKxaF1kuA1MA25xvXPWQVXJPHJjDmYpB
+         O5DkpKFOSJWJ1BHPkvX5pXj7ACe6WPVtf6HoPURyB/5Hmkvf4q4r9BXfd7L2YdU3UyLv
+         afzS7TrUa261S6H8zKr4ssIn3iJCCW7zqtmjqBipVzUr6KNILu4nvlMSA7BF8BBp6gRa
+         K5u5ckprr9bcBeFiMxYD2ZHyJicuy7vcNN0pi3u1oFJVJgeXT4BJNaZs3BI6uGQYMR/g
+         mP2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXgNtA3BvdmUO8emQbMF4mwJ8bY3Wpnk/RdmOrr8bFy5rIzqVGDZJtsL82ffYavnAShW9s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzyJdjZL37HN6C/L5KFXxqo4vNX5uh1ZXbky1BVgbxggvU3Igk
+	h/dUcF/xlJWBLPLsL2GmcvC98kc0Fse5+9WdMAOA7Gx/Qrh4ul8zE0Tb/P4xVseDMA==
+X-Gm-Gg: ATEYQzxLKN21eWKcGRIdcL66QAAca7NiESUe+yX7UnhmIoi3oKKcGU4gaR91grQYJKY
+	ynl4jzqmwnbQDXTmG4RAwjFYNvJe1ws30Scku27qGMiIJ7fMwZ9ODEVrYKdm2oMg04pIr4HFGkY
+	zVNV/nlPm5m39wQyaECeSh1VtizInHxrXXthutJ0E64WpYn7gt6D0M5MjH/dpRC/fj/ZKoU3KM+
+	GcJXAHbhmGk/2nrBfvuUxzxgIVNA9ifZUbT1x4xuiPX6Mtd7drOXa3Vs6AGx0rRJqMYB/Rp26g7
+	uKBepgvjAsd929tYEGIZCfRNwi5MxqcNI33EgzqNA89VVLCpHGJfKRskYRxgbauO73LLhtCYyUr
+	Ei6zCvEFlRhz7tqYH6ehRCVLoOkHum4EXgGi/5YHxbp3usMClq6Ra5S/4XmUJAuYDwbppSMvSV9
+	oHoAmxkxU1HKWhFIfXo6cdouVzcRlkOEJR4iAlCrBQgRfoa68Xjs4VU4OnBojIdA==
+X-Received: by 2002:a17:902:f94d:b0:2b0:9a61:9d9 with SMTP id d9443c01a7336-2b0a5573ecfmr326635ad.9.1774291919398;
+        Mon, 23 Mar 2026 11:51:59 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836b15fbsm153483935ad.81.2026.03.23.11.51.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 11:51:58 -0700 (PDT)
+Date: Mon, 23 Mar 2026 18:51:55 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 09/14] iommu/vt-d: preserve PASID table of preserved
+ device
+Message-ID: <acGLfrpMz4JbxaqS@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-10-skhawaja@google.com>
+ <acGEJhAQKKknC3n8@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322054309.898214-1-surenb@google.com> <20260322054309.898214-4-surenb@google.com>
- <fb38ecc9-36f8-49a1-bf20-a2c03244e574@lucifer.local>
-In-Reply-To: <fb38ecc9-36f8-49a1-bf20-a2c03244e574@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 23 Mar 2026 11:48:05 -0700
-X-Gm-Features: AQROBzAcISvCKuZDTq5gxGva_UwU6WnzRjvi5ru0PTUHh42qSaWhag7QAbSow20
-Message-ID: <CAJuCfpFDv1JC-wXR2d_KyrisnJTXxZbPSCY6Bpo4vLxj+FNw5Q@mail.gmail.com>
-Subject: Re: [PATCH v4 3/4] KVM: s390: avoid kvm_s390_handle_pv() error overwrite
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <acGEJhAQKKknC3n8@google.com>
 
-On Mon, Mar 23, 2026 at 10:53=E2=80=AFAM Lorenzo Stoakes (Oracle)
-<ljs@kernel.org> wrote:
+On Mon, Mar 23, 2026 at 06:19:18PM +0000, Pranjal Shrivastava wrote:
+>On Tue, Feb 03, 2026 at 10:09:43PM +0000, Samiullah Khawaja wrote:
+>> In scalable mode the PASID table is used to fetch the io page tables.
+>> Preserve and restore the PASID table of the preserved devices.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/intel/iommu.c      |   4 +-
+>>  drivers/iommu/intel/iommu.h      |   5 ++
+>>  drivers/iommu/intel/liveupdate.c | 130 +++++++++++++++++++++++++++++++
+>>  drivers/iommu/intel/pasid.c      |   7 +-
+>>  drivers/iommu/intel/pasid.h      |   9 +++
+>>  include/linux/kho/abi/iommu.h    |   8 ++
+>>  6 files changed, 160 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>> index 83faad53f247..2d0dae57f5a2 100644
+>> --- a/drivers/iommu/intel/iommu.c
+>> +++ b/drivers/iommu/intel/iommu.c
+>> @@ -2944,8 +2944,10 @@ static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu)
+>>  		if (info->iommu != iommu)
+>>  			continue;
+>>
+>> -		if (dev_iommu_preserved_state(&pdev->dev))
+>> +		if (dev_iommu_preserved_state(&pdev->dev)) {
+>> +			pasid_cleanup_preserved_table(&pdev->dev);
+>>  			continue;
+>> +		}
+>>
+>>  		domain_context_clear(info);
+>>  	}
+>> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+>> index 057bd6035d85..d24d6aeaacc0 100644
+>> --- a/drivers/iommu/intel/iommu.h
+>> +++ b/drivers/iommu/intel/iommu.h
+>> @@ -1286,6 +1286,7 @@ int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser
+>>  void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
+>>  void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>>  					       struct iommu_ser *iommu_ser);
+>> +void pasid_cleanup_preserved_table(struct device *dev);
+>>  #else
+>>  static inline int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
+>>  {
+>> @@ -1309,6 +1310,10 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
+>>  							     struct iommu_ser *iommu_ser)
+>>  {
+>>  }
+>> +
+>> +static inline void pasid_cleanup_preserved_table(struct device *dev)
+>> +{
+>> +}
+>>  #endif
+>>
+>>  #ifdef CONFIG_INTEL_IOMMU_SVM
+>> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+>> index 6dcb5783d1db..53bb5fe3a764 100644
+>> --- a/drivers/iommu/intel/liveupdate.c
+>> +++ b/drivers/iommu/intel/liveupdate.c
+>> @@ -14,6 +14,7 @@
+>>  #include <linux/pci.h>
+>>
+>>  #include "iommu.h"
+>> +#include "pasid.h"
+>>  #include "../iommu-pages.h"
+>>
+>>  static void unpreserve_iommu_context(struct intel_iommu *iommu, int end)
+>> @@ -113,9 +114,89 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>>  		iommu->reg_phys, iommu_ser->intel.root_table);
+>>  }
+>>
+>> +enum pasid_lu_op {
+>> +	PASID_LU_OP_PRESERVE = 1,
+>> +	PASID_LU_OP_UNPRESERVE,
+>> +	PASID_LU_OP_RESTORE,
+>> +	PASID_LU_OP_FREE,
+>> +};
+>> +
+>> +static int pasid_lu_do_op(void *table, enum pasid_lu_op op)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	switch (op) {
+>> +	case PASID_LU_OP_PRESERVE:
+>> +		ret = iommu_preserve_page(table);
+>> +		break;
+>> +	case PASID_LU_OP_UNPRESERVE:
+>> +		iommu_unpreserve_page(table);
+>> +		break;
+>> +	case PASID_LU_OP_RESTORE:
+>> +		iommu_restore_page(virt_to_phys(table));
+>> +		break;
+>> +	case PASID_LU_OP_FREE:
+>> +		iommu_free_pages(table);
+>> +		break;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int pasid_lu_handle_pd(struct pasid_dir_entry *dir, enum pasid_lu_op op)
+>> +{
+>> +	struct pasid_entry *table;
+>> +	int ret;
+>> +
+>> +	/* Only preserve first table for NO_PASID. */
+>> +	table = get_pasid_table_from_pde(&dir[0]);
+>> +	if (!table)
+>> +		return -EINVAL;
+>> +
+>> +	ret = pasid_lu_do_op(table, op);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = pasid_lu_do_op(dir, op);
+>> +	if (ret)
+>> +		goto err;
+>> +
+>> +	return 0;
+>> +err:
+>> +	if (op == PASID_LU_OP_PRESERVE)
+>> +		pasid_lu_do_op(table, PASID_LU_OP_UNPRESERVE);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +void pasid_cleanup_preserved_table(struct device *dev)
+>> +{
+>> +	struct pasid_table *pasid_table;
+>> +	struct pasid_dir_entry *dir;
+>> +	struct pasid_entry *table;
+>> +
+>> +	pasid_table = intel_pasid_get_table(dev);
+>> +	if (!pasid_table)
+>> +		return;
+>> +
+>> +	dir = pasid_table->table;
+>> +	table = get_pasid_table_from_pde(&dir[0]);
+>> +	if (!table)
+>> +		return;
+>> +
+>> +	/* Cleanup everything except the first entry. */
+>> +	memset(&table[1], 0, SZ_4K - sizeof(*table));
+>> +	memset(&dir[1], 0, SZ_4K - sizeof(struct pasid_dir_entry));
 >
-> On Sat, Mar 21, 2026 at 10:43:07PM -0700, Suren Baghdasaryan wrote:
-> > If kvm_s390_handle_pv() call fails its error code gets recorded but
-> > execution proceeds as if the call was successful. If the next call to
-> > copy_to_user() fails then the original error is overwritten.
+>(Not too familiar with Intel IOMMU / VT-d)
+>We seem to hardcode SZ_4K when clearing the directory entries. But in
+>intel_pasid_alloc_table(), the allocation size seems to depend on
+>max_pasid which could be larger than one page (order > 0)?
 >
-> Is that really a big deal though, as you're returning an error in either =
-case?
->
-> > The follow-up patch adds fatal signal checks during VMA walk, which
-> > makes it possible for kvm_s390_handle_pv() to return EINTR error.
-> > Without this fix any error including EINTR can be overwritten and
-> > original error will be lost.
-> >
-> > Change error handling for kvm_s390_handle_pv() to alter normal flow
-> > once failure happens. This is consistent with how kvm_arch_vm_ioctl
-> > handles errors for other ioctl commands.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  arch/s390/kvm/kvm-s390.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> > index 3eb60aa932ec..ddad08c0926f 100644
-> > --- a/arch/s390/kvm/kvm-s390.c
-> > +++ b/arch/s390/kvm/kvm-s390.c
-> > @@ -2947,6 +2947,8 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned=
- int ioctl, unsigned long arg)
-> >               }
-> >               /* must be called without kvm->lock */
-> >               r =3D kvm_s390_handle_pv(kvm, &args);
-> > +             if (r)
-> > +                     break;
-> >               if (copy_to_user(argp, &args, sizeof(args))) {
->
-> Yeah as per Sashiko we probably need to copy_to_user() still.
->
-> But in that case, do we even need a change at all? I'm not sure it really
-> matters which error code terminates things does it?
+>If the directory is multi-page, won't we leave the trailing pages
+>and full of stale PDE pointers that the HW could still walk?
 
-I agree. I plan to drop this patch from the series (see my former
-reply) unless someone tells me otherwise.
-
+Agreed. It should cleanup based on max_pasid. Will update.
 >
-> >                       r =3D -EFAULT;
-> >                       break;
-> > --
-> > 2.53.0.1018.g2bb0e51243-goog
-> >
+>> +
+>> +	clflush_cache_range(&table[0], SZ_4K);
+>> +	clflush_cache_range(&dir[0], SZ_4K);
+>> +}
+>> +
 >
-> Thanks, Lorenzo
+>[ ------ >8 ------ ]
+>
+>Thanks,
+>Praan
