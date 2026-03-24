@@ -1,602 +1,206 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864F6405AB2
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 15:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F0B3F7876;
+	Tue, 24 Mar 2026 15:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774365162; cv=none; b=tTQ5ndqOAuQutiAZ/W7vEmivo80cW9f0K1jcp/KreZNbXLTAO8myyDSfrBCLi9dOi0eozwPhX7ALrvREMgbQm0ZX7fMMipZ967HPBD2z1Rj+x9Y4DKUNxtujGp2hNo7i2H+Q7ZGjsMOHw+7g9m+1VzBeHrg5Kvio6SWfK4vquLs=
+	t=1774365655; cv=none; b=evCfWLrfX0iqQW6sX0vZFAC2pB4ZV2tfRbQm0Jd7BKgaeJACyBgVMah9YO8C7VBJFgjOWFCTfXk4YhabtiAK2PHRAF4GTcm+fqjr8YXfGAvKICTX+AJV14/5AOVe/f3HT5Fx/wtAuoIs7EBT+sXHsFRW32daJsDjRy+xJMkbbhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774365162; c=relaxed/simple;
-	bh=BA8LlE4ZukA7++ziN/uUMJVhZri4kGfmmvThOpLZOhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PwPIzEd2XLqkQyzRFmhYydb07nbHtTEE6eQiMLqusTTLKN1Qc6zkEvDHrlCXaA1YaesDx3GA+JUKdpOvd/DzGEpmNnuxezSD3BCvwEmjZ4IzesM/Gu7TAHI+Vp02Z3AlHu9yJfTObx89d10EFR8knLSnDGAP/Hym7D9zbLGkMf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HrTx0zWF; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774365655; c=relaxed/simple;
+	bh=ZhkOgLkUusfu1ZskkPpy2V4LihHDdxWCkIvH0+VDkzk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iUsjbJYvi1omHiBMP7xP9ybxy7xvV2nJivKijN3ygzJRhF8/krYwGLNc2wF2mbMh5pX0uZmvIRjjV629hHFn8mDx6fMaDjQfUA3wC4C0LwOLhTvivZc+GxuYatPsfRNHmpFgOlO2ORCPmiXLsuUPtfIhbLTmf0Z23kjqsWTy4MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UkCXnowf; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="HrTx0zWF"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D253914BF;
-	Tue, 24 Mar 2026 08:12:32 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F10F13F836;
-	Tue, 24 Mar 2026 08:12:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774365158; bh=BA8LlE4ZukA7++ziN/uUMJVhZri4kGfmmvThOpLZOhw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HrTx0zWFN3hZV8Z+0QMtOrLEzEVJ5BgX3ZG2ofn3qgg2jSB/XBzEidSN/MZQC+jJG
-	 g8j3xSj4r9CQYlXDULuazAhsvHckQNQp9ZeuROLgyGnspxLq95WH2JKWSHbbmEz2gN
-	 ZzV4Tkf1UvWww1BLY4kSeSNQp8tP7lnhbnC9AgK0=
-Date: Tue, 24 Mar 2026 15:12:27 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Jing Zhang <jingzhangos@google.com>, KVM <kvm@vger.kernel.org>, 
-	KVMARM <kvmarm@lists.linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Andrew Jones <andrew.jones@linux.dev>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [kvm-unit-tests PATCH v1 1/3] lib: arm64: Add stage2 page table
- management library
-Message-ID: <ddnv43zjv2hqmlqhkh6p3z5dqx75h4ylhww4hz3s5cq7y7nhjy@z3q7rca4vvui>
-References: <20260316224349.2360482-1-jingzhangos@google.com>
- <20260316224349.2360482-2-jingzhangos@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UkCXnowf"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62O8l17f538370;
+	Tue, 24 Mar 2026 15:20:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=/RNRv7
+	mT2RzDLoY8lMCUuVC40SvOz7526j0uyw5/mbQ=; b=UkCXnowfHLc3wIiNdprmzQ
+	L+YZwAVfdho0KWLuoVdmEOOeAlcGTaP+3OEZhplp90qKa4xWRpIlXo3NsYWya8wj
+	d8ELg/1DDDEYYNF7hXAd6RcrgzCWz1LIS6bXcqG4stvdz2PT4zu/4+r2mDF0hnie
+	x8y6PHyNF5e54FUix/X4jc+i44hFJ+YF2z2/YZdMlii5dyGeIt6ZZ5PT0bh5tYbH
+	phc8JlcdvSUk0TWvLdSQP2AkukT0yN021ynpC0pYo2WQ9XY0KL2vkc2f+WYdSzvJ
+	kTsiYpBFmSjrIFs9OhD3v81qiq9rxIqJZIBcrRCSUMyIlvSmGDPYbDz0yp2AnmNA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktxv6r2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 15:20:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62OD5fJV012185;
+	Tue, 24 Mar 2026 15:20:50 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d27vk29cd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 15:20:50 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62OFKkNV45941082
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 15:20:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D6CE02004E;
+	Tue, 24 Mar 2026 15:20:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 649932004D;
+	Tue, 24 Mar 2026 15:20:46 +0000 (GMT)
+Received: from [9.111.77.246] (unknown [9.111.77.246])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 24 Mar 2026 15:20:46 +0000 (GMT)
+Message-ID: <b9d39789-be93-4133-bad9-09db4f90c169@linux.ibm.com>
+Date: Tue, 24 Mar 2026 16:20:46 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260316224349.2360482-2-jingzhangos@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/8] KVM: s390: vsie: Fix guest page tables protection
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, nrb@linux.ibm.com, seiden@linux.ibm.com,
+        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
+        david@kernel.org
+References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
+ <20260320161542.202913-8-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260320161542.202913-8-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c2abd3 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=OUtIGFiODa46FlTH9UIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDExOSBTYWx0ZWRfX/ouiAQENjTlO
+ MALMG5Rrar5T3SIIMp928JfDCn50IezfJHLZQuO8h3k+i/OFWMSsrA4Rnt75O/7kV4vTs/9dvNq
+ ttvkKxaVHWAJHO7oQRI/tI7SLGAlzzAmUSHqwopxdxwe6rs4bxGOrf3izJ/qsfEnyE/vVfd4Wbf
+ sUe7QqFN8l79nHLssiRQN80OhMuzhK8UGsnB9Ce1+CEjaORrQH36qgP1BEVVtZKgmwDCdR45kn/
+ +XiUNJLiEcWUwKY2e2bFMSk3GIZYpOLkPlZS6bOdgB+UGqOoUIV3ZIzXq5EBa9O9UGDHwfjKjQM
+ 54ZHgfDSBkiPiGmSqa810iFSXUB75oH3GPoe83ec2MTLoUs0oz2Ot7c/FWtwuj1A+wrwl5LC9zS
+ /wiBXMv+0bEipVCZr4wmAt4HfvFGKTkb1tWH01+meMeddXVV59pnbJwcFs+oTtp3qFtOfD0BuIP
+ /6YYTf6zD9EY5Hb1QUw==
+X-Proofpoint-GUID: 0nbGgXVek369JXZ7VnEhvtZ6h4dNL1P7
+X-Proofpoint-ORIG-GUID: 0nbGgXVek369JXZ7VnEhvtZ6h4dNL1P7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240119
 
-Hi,
-
-On Mon, Mar 16, 2026 at 03:43:47PM -0700, Jing Zhang wrote:
-> Tests running at EL2 (hypervisor level) often require the ability to
-> manage Stage 2 translation tables to control Guest Physical Address (IPA)
-> to Host Physical Address (PA) translation.
+On 3/20/26 17:15, Claudio Imbrenda wrote:
+> When shadowing, the guest page tables are write-protected, in order to
+> trap changes and properly unshadow the shadow mapping for the nested
+> guest. Already shadowed levels are skipped, so that only the needed
+> levels are write protected.
 > 
-> Add a generic Stage 2 MMU library that provides software management of
-> ARM64 Stage 2 translation tables.
+> Currently the levels that get write protected are exactly one level too
+> deep: the last level (nested guest memory) gets protected in the wrong
+> way, and will be protected again correctly a few lines afterwards; most
+> importantly, the highest non-shadowed level does *not* get write
+> protected.
 > 
-> The library features include:
-> - Support for 4K, 16K, and 64K translation granules.
-> - Dynamic page table allocation using the allocator.
-> - Support for 2M block mappings where applicable.
-> - APIs for mapping, unmapping, enabling, and disabling the Stage 2 MMU.
-> - Basic fault info reporting (ESR, FAR, HPFAR).
+> Moreover, if the nested guest is running in a real address space, there
+> are no DAT tables to shadow.
 > 
-> This infrastructure is necessary for upcoming virtualization and
-> hypervisor-mode tests.
+> Write protect the correct levels, so that all the levels that need to
+> be protected are protected, and avoid double protecting the last level;
+> skip attempting to shadow the DAT tables when the nested guest is
+> running in a real address space.
 > 
-> Signed-off-by: Jing Zhang <jingzhangos@google.com>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
 > ---
->  arm/Makefile.arm64         |   1 +
->  lib/arm64/asm/stage2_mmu.h |  74 +++++++
->  lib/arm64/stage2_mmu.c     | 402 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 477 insertions(+)
->  create mode 100644 lib/arm64/asm/stage2_mmu.h
->  create mode 100644 lib/arm64/stage2_mmu.c
+>   arch/s390/kvm/gaccess.c | 16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
 > 
-> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
-> index a40c830d..5e50f5ba 100644
-> --- a/arm/Makefile.arm64
-> +++ b/arm/Makefile.arm64
-> @@ -40,6 +40,7 @@ cflatobjs += lib/arm64/stack.o
->  cflatobjs += lib/arm64/processor.o
->  cflatobjs += lib/arm64/spinlock.o
->  cflatobjs += lib/arm64/gic-v3-its.o lib/arm64/gic-v3-its-cmd.o
-> +cflatobjs += lib/arm64/stage2_mmu.o
->  
->  ifeq ($(CONFIG_EFI),y)
->  cflatobjs += lib/acpi.o
-> diff --git a/lib/arm64/asm/stage2_mmu.h b/lib/arm64/asm/stage2_mmu.h
-> new file mode 100644
-> index 00000000..c9e931a8
-> --- /dev/null
-> +++ b/lib/arm64/asm/stage2_mmu.h
-> @@ -0,0 +1,74 @@
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + * Author: Jing Zhang <jingzhangos@google.com>
-> + *
-> + * SPDX-License-Identifier: LGPL-2.0-or-later
-> + */
-> +#ifndef _ASMARM64_STAGE2_MMU_H_
-> +#define _ASMARM64_STAGE2_MMU_H_
-> +
-> +#include <libcflat.h>
-> +#include <asm/page.h>
-> +#include <asm/pgtable.h>
-> +
-> +#define pte_is_table(pte)	(pte_val(pte) & PTE_TABLE_BIT)
-> +
-> +/* Stage-2 Memory Attributes (MemAttr[3:0]) */
-> +#define S2_MEMATTR_NORMAL	(0xFUL << 2) /* Normal Memory, Outer/Inner Write-Back */
-> +#define S2_MEMATTR_DEVICE	(0x0UL << 2) /* Device-nGnRnE */
-> +
-> +#define ESR_ELx_EC_SHIFT	(26)
-> +#define ESR_ELx_EC_HVC64	UL(0x16)
-> +#define ESR_ELx_EC_DABT_LOW	UL(0x24)
+> diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+> index 1054f9bd107f..17563f889c6b 100644
+> --- a/arch/s390/kvm/gaccess.c
+> +++ b/arch/s390/kvm/gaccess.c
+> @@ -1517,13 +1517,15 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_cache *mc, struct gmap *sg,
+>   	 * Skip levels that are already protected. For each level, protect
+>   	 * only the page containing the entry, not the whole table.
+>   	 */
+> -	for (i = gl ; i >= w->level; i--) {
+> -		rc = gmap_protect_rmap(mc, sg, entries[i - 1].gfn, gpa_to_gfn(saddr),
+> -				       entries[i - 1].pfn, i, entries[i - 1].writable);
 
-nit:
-This looks out of place to me, could this be better if moved to guest.h?
+Yeah, tt for page tables is -1 and adding -1 ends up being LEVEL_MEM...
 
-> +
-> +/* Stage-2 Access Permissions (S2AP[1:0]) */
-> +#define S2AP_NONE	(0UL << 6)
-> +#define S2AP_RO		(1UL << 6) /* Read-only */
-> +#define S2AP_WO		(2UL << 6) /* Write-only */
-> +#define S2AP_RW		(3UL << 6) /* Read-Write */
-> +
-> +/* Flags for mapping */
-> +#define S2_MAP_RW	(S2AP_RW | S2_MEMATTR_NORMAL | PTE_AF | PTE_SHARED)
-> +#define S2_MAP_DEVICE	(S2AP_RW | S2_MEMATTR_DEVICE | PTE_AF)
-> +
-> +enum s2_granule {
-> +	S2_PAGE_4K,
-> +	S2_PAGE_16K,
-> +	S2_PAGE_64K,
-> +};
-> +
-> +/* Main Stage-2 MMU Structure */
-> +struct s2_mmu {
-> +	pgd_t *pgd;
-> +	int vmid;
-> +
-> +	/* Configuration */
-> +	enum s2_granule granule;
-> +	bool allow_block_mappings;
-> +
-> +	/* Internal helpers calculated from granule & VA_BITS */
-> +	unsigned int page_shift;
-> +	unsigned int level_shift;
-> +	int root_level; /* 0, 1, or 2 */
-> +	unsigned long page_size;
-> +	unsigned long block_size;
-> +};
-> +
-> +/* API */
-> +/* Initialize an s2_mmu struct with specific settings */
-> +struct s2_mmu *s2mmu_init(int vmid, enum s2_granule granule, bool allow_block_mappings);
-> +
-> +/* Management */
-> +void s2mmu_destroy(struct s2_mmu *mmu);
-> +void s2mmu_map(struct s2_mmu *mmu, unsigned long ipa, unsigned long pa,
-> +	       unsigned long size, unsigned long flags);
-> +void s2mmu_unmap(struct s2_mmu *mmu, unsigned long ipa, unsigned long size);
-> +
-> +/* Activation */
-> +void s2mmu_enable(struct s2_mmu *mmu);
-> +void s2mmu_disable(struct s2_mmu *mmu);
-> +
-> +/* Debug */
-> +void s2mmu_print_fault_info(void);
-> +
-> +#endif /* _ASMARM64_STAGE2_MMU_H_ */
-> diff --git a/lib/arm64/stage2_mmu.c b/lib/arm64/stage2_mmu.c
-> new file mode 100644
-> index 00000000..bfe87eac
-> --- /dev/null
-> +++ b/lib/arm64/stage2_mmu.c
-> @@ -0,0 +1,402 @@
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + * Author: Jing Zhang <jingzhangos@google.com>
-> + *
-> + * SPDX-License-Identifier: LGPL-2.0-or-later
-> + */
-> +#include <libcflat.h>
-> +#include <alloc.h>
-> +#include <asm/stage2_mmu.h>
-> +#include <asm/sysreg.h>
-> +#include <asm/io.h>
-> +#include <asm/barrier.h>
-> +#include <alloc_page.h>
-> +
-> +/* VTCR_EL2 Definitions */
-> +#define VTCR_SH0_INNER		(3UL << 12)
-> +#define VTCR_ORGN0_WBWA		(1UL << 10)
-> +#define VTCR_IRGN0_WBWA		(1UL << 8)
-> +
-> +/* TG0 Encodings */
-> +#define VTCR_TG0_4K		(0UL << 14)
-> +#define VTCR_TG0_64K		(1UL << 14)
-> +#define VTCR_TG0_16K		(2UL << 14)
-> +
-> +/* Physical Address Size (PS) - Derive from VA_BITS for simplicity or max */
-> +#if VA_BITS > 40
-> +#define VTCR_PS_VAL		(5UL << 16) /* 48-bit PA */
-> +#else
-> +#define VTCR_PS_VAL		(2UL << 16) /* 40-bit PA */
-> +#endif
-> +
-> +struct s2_mmu *s2mmu_init(int vmid, enum s2_granule granule, bool allow_block_mappings)
-> +{
-> +	struct s2_mmu *mmu = calloc(1, sizeof(struct s2_mmu));
-> +	int order = 0;
-> +
-> +	mmu->vmid = vmid;
-> +	mmu->granule = granule;
-> +	mmu->allow_block_mappings = allow_block_mappings;
-> +
-> +	/* Configure shifts based on granule */
-> +	switch (granule) {
-> +	case S2_PAGE_4K:
-> +		mmu->page_shift = 12;
-> +		mmu->level_shift = 9;
-> +		/*
-> +		 * Determine Root Level for 4K:
-> +		 * VA_BITS > 39 (e.g. 48) -> Start L0
-> +		 * VA_BITS <= 39 (e.g. 32, 36) -> Start L1 
-> +		 */
-> +		mmu->root_level = (VA_BITS > 39) ? 0 : 1;
-> +		break;
-> +	case S2_PAGE_16K:
-> +		mmu->page_shift = 14;
-> +		mmu->level_shift = 11;
-> +		/*
-> +		 * 16K: L1 covers 47 bits. L0 not valid for 16K 
-> +		 * Start L1 for 47 bits. Start L2 for 36 bits.
-> +		 */
-> +		mmu->root_level = (VA_BITS > 36) ? 1 : 2;
-> +		break;
-> +	case S2_PAGE_64K:
-> +		mmu->page_shift = 16;
-> +		mmu->level_shift = 13;
-> +		/* 64K: L1 covers 52 bits. L2 covers 42 bits. */
-> +		mmu->root_level = (VA_BITS > 42) ? 1 : 2;
-> +		break;
-> +	}
-> +
-> +	mmu->page_size = 1UL << mmu->page_shift;
-> +	mmu->block_size = 1UL << (mmu->page_shift + mmu->level_shift);
-> +
-> +	/* Alloc PGD. Use order for allocation size */
-> +	if (mmu->page_size > PAGE_SIZE) {
-> +		order = __builtin_ctz(mmu->page_size / PAGE_SIZE);
-> +	}
-> +	mmu->pgd = (pgd_t *)alloc_pages(order);
-> +	if (mmu->pgd) {
-> +		memset(mmu->pgd, 0, mmu->page_size);
-> +	} else {
-> +		free(mmu);
-> +		return NULL;
-> +	}
-> +
-> +	return mmu;
-> +}
-> +
-> +static unsigned long s2mmu_get_addr_mask(struct s2_mmu *mmu)
-> +{
-> +	switch (mmu->granule) {
-> +	case S2_PAGE_16K:
-> +		return GENMASK_ULL(47, 14);
-> +	case S2_PAGE_64K:
-> +		return GENMASK_ULL(47, 16);
-> +	default:
-> +		return GENMASK_ULL(47, 12); /* 4K */
-> +	}
-> +}
-> +
-> +static void s2mmu_free_tables(struct s2_mmu *mmu, pte_t *table, int level)
-> +{
-> +	unsigned long entries = 1UL << mmu->level_shift;
-> +	unsigned long mask = s2mmu_get_addr_mask(mmu);
-> +	unsigned long i;
-> +
-> +	/*
-> +	 * Recurse if not leaf level
-> +	 * Level 3 is always leaf page. Levels 0-2 can be Table or Block.
-> +	 */
-> +	if (level < 3) {
-> +		for (i = 0; i < entries; i++) {
-> +			pte_t entry = table[i];
-> +			if ((pte_valid(entry) && pte_is_table(entry))) {
-> +				pte_t *next = (pte_t *)phys_to_virt(pte_val(entry) & mask);
-> +				s2mmu_free_tables(mmu, next, level + 1);
-> +			}
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+
+> -		if (rc)
+> -			return rc;
+> -		if (!sg->parent)
+> -			return -EAGAIN;
+> +	if (w->level > LEVEL_MEM) {
+> +		for (i = gl ; i >= w->level; i--) {
+
+You could have fixed the rogue white space after "gl"
+
+> +			rc = gmap_protect_rmap(mc, sg, entries[i].gfn, gpa_to_gfn(saddr),
+> +					       entries[i].pfn, i + 1, entries[i].writable);
+> +			if (rc)
+> +				return rc;
+> +			if (!sg->parent)
+> +				return -EAGAIN;
 > +		}
-> +	}
-> +
-> +	free_pages(table);
-> +}
-> +
-> +void s2mmu_destroy(struct s2_mmu *mmu)
-> +{
-> +	if (mmu->pgd)
-> +		s2mmu_free_tables(mmu, (pte_t *)mmu->pgd, mmu->root_level);
-> +	free(mmu);
-> +}
-> +
-> +void s2mmu_enable(struct s2_mmu *mmu)
-> +{
-> +	unsigned long vtcr = VTCR_PS_VAL | VTCR_SH0_INNER |
-> +			     VTCR_ORGN0_WBWA | VTCR_IRGN0_WBWA;
-> +	unsigned long t0sz = 64 - VA_BITS;
-> +	unsigned long vttbr;
-> +
-> +	switch (mmu->granule) {
-> +	case S2_PAGE_4K:
-> +		vtcr |= VTCR_TG0_4K;
-> +		/* SL0 Encodings for 4K: 0=L2, 1=L1, 2=L0 */
-> +		if (mmu->root_level == 0)
-> +			vtcr |= (2UL << 6); /* Start L0 */
-> +		else if (mmu->root_level == 1)
-> +			vtcr |= (1UL << 6); /* Start L1 */
-> +		else
-> +			vtcr |= (0UL << 6); /* Start L2 */
-> +		break;
-> +	case S2_PAGE_16K:
-> +		vtcr |= VTCR_TG0_16K;
-> +		/* SL0 Encodings for 16K: 0=L3(Res), 1=L2, 2=L1, 3=L0(Res) */
-> +		if (mmu->root_level == 1)
-> +			vtcr |= (2UL << 6); /* Start L1 */
-> +		else
-> +			vtcr |= (1UL << 6); /* Start L2 */
-> +		break;
-> +	case S2_PAGE_64K:
-> +		vtcr |= VTCR_TG0_64K;
-> +		/* SL0 Encodings for 64K: 0=L3(Res), 1=L2, 2=L1, 3=L0(Res) */
-> +		if (mmu->root_level == 1)
-> +			vtcr |= (2UL << 6); /* Start L1 */
-> +		else
-> +			vtcr |= (1UL << 6); /* Start L2 */
-> +		break;
-> +	}
+>   	}
+>   
+>   	rc = dat_entry_walk(NULL, entries[LEVEL_MEM].gfn, sg->parent->asce, DAT_WALK_LEAF,
 
-The pattern (xUL << 6) is repeated many times, perhaps turn it into a
-macro, then the comments behind it can be omitted as well.
-
-> +
-> +	vtcr |= t0sz;
-> +
-> +	write_sysreg(vtcr, vtcr_el2);
-> +	isb();
-> +
-> +	/* Setup VTTBR */
-> +	vttbr = virt_to_phys(mmu->pgd);
-> +	vttbr |= ((unsigned long)mmu->vmid << 48);
-> +	write_sysreg(vttbr, vttbr_el2);
-> +	isb();
-> +
-> +	asm volatile("tlbi vmalls12e1is");
-> +	dsb(ish);
-> +	isb();
-
-I don't think you need the previous isb's other that this last one, the
-effects of change vtcr_el2 and vttbr_el2 need not to be observed
-immediately.
-
-> +}
-> +
-> +void s2mmu_disable(struct s2_mmu *mmu)
-> +{
-> +	write_sysreg(0, vttbr_el2);
-> +	isb();
-> +}
-
-I see you have HCR_DC further down, but writing 0s to vttbr_el2 does not mean
-s2 translation gets disabled.
-
-Thanks,
-Wei-Lin Chang
-
-> +
-> +static pte_t *get_pte(struct s2_mmu *mmu, pte_t *table, unsigned long idx, bool alloc)
-> +{
-> +	unsigned long mask = s2mmu_get_addr_mask(mmu);
-> +	pte_t entry = table[idx];
-> +	pte_t *next_table;
-> +	int order = 0;
-> +
-> +	if (pte_valid(entry)) {
-> +		if (pte_is_table(entry))
-> +			return (pte_t *)phys_to_virt(pte_val(entry) & mask);
-> +		/* Block Entry */
-> +		return NULL;
-> +	}
-> +
-> +	if (!alloc)
-> +		return NULL;
-> +
-> +	/* Allocate table memory covering the Stage-2 Granule size */
-> +	if (mmu->page_size > PAGE_SIZE)
-> +		order = __builtin_ctz(mmu->page_size / PAGE_SIZE);
-> +
-> +	next_table = (pte_t *)alloc_pages(order);
-> +	if (next_table)
-> +		memset(next_table, 0, mmu->page_size);
-> +
-> +	pte_val(entry) = virt_to_phys(next_table) | PTE_TABLE_BIT | PTE_VALID;
-> +	WRITE_ONCE(table[idx], entry);
-> +
-> +	return next_table;
-> +}
-> +
-> +void s2mmu_map(struct s2_mmu *mmu, unsigned long ipa, unsigned long pa,
-> +	       unsigned long size, unsigned long flags)
-> +{
-> +	unsigned long level_mask, level_shift, level_size, level;
-> +	unsigned long start_ipa, end_ipa, idx;
-> +	pte_t entry, *table, *next_table;
-> +	bool is_block_level;
-> +
-> +	start_ipa = ipa;
-> +	end_ipa = ipa + size;
-> +	level_mask = (1UL << mmu->level_shift) - 1;
-> +
-> +	while (start_ipa < end_ipa) {
-> +		table = (pte_t *)mmu->pgd;
-> +
-> +		/* Walk from Root to Leaf */
-> +		for (level = mmu->root_level; level < 3; level++) {
-> +			level_shift = mmu->page_shift + (3 - level) * mmu->level_shift;
-> +			idx = (start_ipa >> level_shift) & level_mask;
-> +			level_size = 1UL << level_shift;
-> +
-> +			/*
-> +			 * Check for Block Mapping
-> +			 * Valid Block Levels:
-> +			 * 4K:  L1 (1G), L2 (2MB)
-> +			 * 16K: L2 (32MB)
-> +			 * 64K: L2 (512MB) 
-> +			 */
-> +			is_block_level = (level == 2) ||
-> +				(mmu->granule == S2_PAGE_4K && level == 1);
-> +
-> +			if (mmu->allow_block_mappings && is_block_level) {
-> +				if ((start_ipa & (level_size - 1)) == 0 &&
-> +				    (pa & (level_size - 1)) == 0 &&
-> +				    (start_ipa + level_size) <= end_ipa) {
-> +					/* Map Block */
-> +					pte_val(entry) = (pa & ~(level_size - 1)) |
-> +							 flags | PTE_VALID;
-> +					WRITE_ONCE(table[idx], entry);
-> +					start_ipa += level_size;
-> +					pa += level_size;
-> +					goto next_chunk; /* Continue outer loop */
-> +				}
-> +			}
-> +
-> +			/* Move to next level */
-> +			next_table = get_pte(mmu, table, idx, true);
-> +			if (!next_table) {
-> +				printf("Error allocating or existing block conflict.\n");
-> +				return;
-> +			}
-> +			table = next_table;
-> +		}
-> +
-> +		/* Leaf Level (Level 3 PTE) */
-> +		if (level == 3) {
-> +			idx = (start_ipa >> mmu->page_shift) & level_mask;
-> +			pte_val(entry) = (pa & ~(mmu->page_size - 1)) | flags | PTE_TYPE_PAGE;
-> +			WRITE_ONCE(table[idx], entry);
-> +			start_ipa += mmu->page_size;
-> +			pa += mmu->page_size;
-> +		}
-> +
-> +next_chunk:
-> +		continue;
-> +	}
-> +
-> +	asm volatile("tlbi vmalls12e1is");
-> +	dsb(ish);
-> +	isb();
-> +}
-> +
-> +/*
-> + * Recursive helper to unmap a range within a specific table.
-> + * Returns true if the table at this level is now completely empty
-> + * and should be freed by the caller.
-> + */
-> +static bool s2mmu_unmap_level(struct s2_mmu *mmu, pte_t *table,
-> +			      unsigned long current_ipa, int level,
-> +			      unsigned long start_ipa, unsigned long end_ipa,
-> +			      unsigned long mask)
-> +{
-> +	unsigned long level_size, entry_ipa, entry_end;
-> +	bool child_empty, table_empty = true;
-> +	pte_t entry, *next_table;
-> +	unsigned int level_shift;
-> +	unsigned long i;
-> +
-> +	/* Calculate shift and size for this level */
-> +	if (level == 3) {
-> +		level_shift = mmu->page_shift;
-> +	} else {
-> +		level_shift = mmu->page_shift + (3 - level) * mmu->level_shift;
-> +	}
-> +	level_size = 1UL << level_shift;
-> +
-> +	/* Iterate over all entries in this table */
-> +	for (i = 0; i < (1UL << mmu->level_shift); i++) {
-> +		entry = table[i];
-> +		entry_ipa = current_ipa + (i * level_size);
-> +		entry_end = entry_ipa + level_size;
-> +
-> +		/* Skip entries completely outside our target range */
-> +		if (entry_end <= start_ipa || entry_ipa >= end_ipa) {
-> +			if (pte_valid(entry))
-> +				table_empty = false;
-> +			continue;
-> +		}
-> +
-> +		/*
-> +		 * If the entry is fully covered by the unmap range,
-> +		 * we can clear it (leaf) or recurse and free (table).
-> +		 */
-> +		if (entry_ipa >= start_ipa && entry_end <= end_ipa) {
-> +			if (pte_valid(entry)) {
-> +				if (pte_is_table(entry) && level < 3) {
-> +					/* Recurse to free children first */
-> +					next_table = (pte_t *)phys_to_virt(pte_val(entry) & mask);
-> +					s2mmu_free_tables(mmu, next_table, level + 1);
-> +				}
-> +				/* Invalidate the entry */
-> +				WRITE_ONCE(table[i], __pte(0));
-> +			}
-> +			continue;
-> +		}
-> +
-> +		/*
-> +		 * Partial overlap: This must be a table (split required).
-> +		 * If it's a Block, we can't split easily in this context
-> +		 * without complex logic, so we generally skip or fail.
-> +		 * Assuming standard breakdown: recurse into the table.
-> +		 */
-> +		if (pte_valid(entry) && pte_is_table(entry) && level < 3) {
-> +			next_table = (pte_t *)phys_to_virt(pte_val(entry) & mask);
-> +			child_empty = s2mmu_unmap_level(mmu, next_table, entry_ipa, level + 1,
-> +							start_ipa, end_ipa, mask);
-> +
-> +			if (child_empty) {
-> +				free_pages(next_table);
-> +				WRITE_ONCE(table[i], __pte(0));
-> +			} else {
-> +				table_empty = false;
-> +			}
-> +		} else if (pte_valid(entry)) {
-> +			/*
-> +			 * Overlap on a leaf/block entry that extends
-> +			 * beyond the unmap range. We cannot simply clear it.
-> +			 */
-> +			table_empty = false;
-> +		}
-> +	}
-> +
-> +	return table_empty;
-> +}
-> +
-> +void s2mmu_unmap(struct s2_mmu *mmu, unsigned long ipa, unsigned long size)
-> +{
-> +	unsigned long end_ipa = ipa + size;
-> +	unsigned long mask = s2mmu_get_addr_mask(mmu);
-> +
-> +	if (!mmu->pgd)
-> +		return;
-> +
-> +	/*
-> +	 * Start recursion from the root level.
-> +	 * We rarely free the PGD itself unless destroying the MMU, 
-> +	 * so we ignore the return value here.
-> +	 */
-> +	s2mmu_unmap_level(mmu, (pte_t *)mmu->pgd, 0, mmu->root_level,
-> +			  ipa, end_ipa, mask);
-> +
-> +	/* Ensure TLB invalidation occurs after page table updates */
-> +	asm volatile("tlbi vmalls12e1is");
-> +	dsb(ish);
-> +	isb();
-> +}
-> +
-> +void s2mmu_print_fault_info(void)
-> +{
-> +	unsigned long esr = read_sysreg(esr_el2);
-> +	unsigned long far = read_sysreg(far_el2);
-> +	unsigned long hpfar = read_sysreg(hpfar_el2);
-> +	printf("Stage-2 Fault Info: ESR=0x%lx FAR=0x%lx HPFAR=0x%lx\n", esr, far, hpfar);
-> +}
-> -- 
-> 2.53.0.851.ga537e3e6e9-goog
-> 
