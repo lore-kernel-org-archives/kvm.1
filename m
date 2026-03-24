@@ -1,271 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1AE37B03F
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 01:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774316883; cv=pass; b=icHbK3YmRadSqMOMNirmkrUbfFCxQ+dIKKFfZSnomHXRVHyJ951IdIngjdlb9E+WFDlqQkBVoYgGWxGIFjJztGdrdyXdWTA/LRUxsdUIkotpCa/TwI9oirDXFfCv4oLhqOtcOQE5ghQzt3L0HOy168bjKXJKoibbEMNzwFA6xDE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774316883; c=relaxed/simple;
-	bh=7QxO8eHrVmNb4hinylW2JuP41va0K5ItDexCfV6jw5E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Iaf5gAB7xbWngziXNQF8N0PuxkYkdsSOjfV8HJEUyLUgDRXIteUFZEhf5bXys4S0ukpFrPXTKPL13UnZ87r17hS8V9y4ow4x1asLzlLiDl1Jr8aX+Z2Q3P8uOQVlbFqxP/575jxKzqfREMPXiPegLYvFub12D76gYD1bgsEFl1k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NPsSJDai; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=n9UiJwaw; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF9C2571D7
+	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 02:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774318171; cv=none; b=YZ9XUoqaGFEwLlaHx5fFbdWMGKyubxwHgfgJbxhIEXlAWxxdHhs20yfZzFmbeytak7AS+2pvq0qlFjySGv66dUoUorYccIxBJii89RjNSJW8f4PVxpHoV+rFAR1QRL4iDnT2TV2eBTa//NSZEQqR/O4ms0Vk3Rd8LJo4MVTI5N4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774318171; c=relaxed/simple;
+	bh=7VXCIwC2WWUfEqw69jVC3pzRqurBPdrZhwh/T5OjC7A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EkXoxj8XO8y3e8Ie1C8ZIiOrXuIOoKJzf5lAwokXJ+6C7hnOszVUA4SzRNSM5YQkVo2DaozCPwaGPvSm5cipqh52/ML/V6y01SiqTApW+vBMgvIzbb1KFbxg9DasoHugx1++8Pg4hWtOUAPPb2kz5YVVHtQV+d0gt9CqStx5WFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BwoGYC2Y; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NPsSJDai";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="n9UiJwaw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774316881;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yCRJDsZtO6H+FDHmSMe8GvNuh3MZqp6KwaA8GF6tbWo=;
-	b=NPsSJDaiKvrufBZ/PnB2KXpvmWixzCsg9eyOtofLyDiJRuU8rvOopTm2E61gwrSTnvxtwt
-	hLL8ri7A0LnRSDED5nKf+Fi7zzwMWCwQvlpLryrF1KbaVhgyMs/ZypGgLzorpp/0tLk+6k
-	uIYuStnVZsVAKR7DYiD1G+0CtzkVSEM=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-Jg-0u4rDMUeaqCIuqKqAVg-1; Mon, 23 Mar 2026 21:47:57 -0400
-X-MC-Unique: Jg-0u4rDMUeaqCIuqKqAVg-1
-X-Mimecast-MFC-AGG-ID: Jg-0u4rDMUeaqCIuqKqAVg_1774316876
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3595485abbbso1012674a91.2
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 18:47:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774316876; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K/wC6FQ3+G67ZYYklKKfwwgP7TSq4oSHg9wPq7YnpZCTWDs5DljdWX8zeM+3pBQBj2
-         khka9OxuYorCuXLAc2e+ff8wvnsUL8ks9Nx6so32YlqX76BwBlKjmHI0JKcMtdxqxrme
-         AiiarM2dUpiaOZy1648+y6NwgB4mLylwY8QH47iwQ15YA8Y+wfAmJPq8Vss0RiCEtSEm
-         5Au5s6hcgeIuiJrwhV65lvYpune7xdlA9+6oUlEtXXkXK8JqC9hjVsiGot//iM+jPj2W
-         OEKLn6UeCbdmyRdSe8kSHuZOQTS7QnlkmkJcXWET4i5oGsg1OCab2ZXTbIf66W7ubtmX
-         FszQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yCRJDsZtO6H+FDHmSMe8GvNuh3MZqp6KwaA8GF6tbWo=;
-        fh=PG11bnjsNTvKdDjmUjpQi6YYPgjMhrEuWj9su1yPf40=;
-        b=lSmnPicHcxtHjsMESrgxOC8EV0IiNxGY7H03FYX38BvKPluZqeBVLmvaecDC3SERMB
-         lh1O9sSxUSQn4obfWXpjinjeADMQkjDHQgR4+1d/0J/HbcgtdIbwV5pY7QSiA3roGHI9
-         yw/RB8jcmy/jQxNC8EYvOyTPsLXlykYzikaMzhCavV6BGZtUsbhSq2r86RVCq5R214WJ
-         I/y7dIX5tDOP4fFwPs19fOFJT51L2+mutPzdFmtRFltzoI4DxeQRle4Fow3W3YJYRCgH
-         WVs5I0qepcuFgA6qNFRO/tXcoBVO0ev8IJVveoaKE2aLvun/Bi2OFMJTmA2Gb2nfm9G7
-         Rk+g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774316876; x=1774921676; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yCRJDsZtO6H+FDHmSMe8GvNuh3MZqp6KwaA8GF6tbWo=;
-        b=n9UiJwawp9alEMNphphRPEDTFP0LmLg6HUUnPm9+1+rfVCak7EnydsEeb3St01c4ZY
-         DLgVn49d22yqbpn1fFNl+k6DDzy1ULdlnZSslfRonn9XTBfUZyc5oXpBSZHKhTHWoUFu
-         pNFuK5c+/F7tnHVU/+BsCA/uaL1+vnIAPdk73GouoNJdkgSgbgB5mRErU2rNXJxar+jD
-         QPw4Gu5U/Odf8xOkQwid8/H7mEQsdCZYKDtiFsiAayzYO3zOe5H0UReA+vjhjMZwE6vW
-         KPllukNMkbkMf9Hzx3ymN8Npd5pVVsbsLvY6/fW0jpiXOxxHblNQFbYdnbYdupsHSqtf
-         H2eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774316876; x=1774921676;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yCRJDsZtO6H+FDHmSMe8GvNuh3MZqp6KwaA8GF6tbWo=;
-        b=CpXFy8iptDh6aM924yVfSE/fodnOJ+NtVTHVPObgRCLX9X5W2Yn8PZ1dWTRe7ZdCKV
-         r/e7iksu6hz8L6Xc6qC71gpiisWaqqnVE0DiJHIQ2By+e+fZ3mSoH51udqvkYQaze9GE
-         fiHAKRnvEjKJQwe+X0fnZtOJCA5tXGTPqSIJv7WKFL9h9gV4cakGQdfLKMMADXnpxvPi
-         0e2F2poN6UjZAtqW5m1FeznJrfXAnKdZf/4A52IqLrmokLluaZSvQzz96Xua8Jx69jmb
-         jFDFXjdOISPjX+8etB+RQn35mXwkg0WTBAZhei4sMn9FYFwST0GQhq3pEwP5Kr7Ftd8J
-         oECg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/FonrX8mMOL9AkYnCOMJlwNhX6+/gGK4Pdu8lnIbexGTkveXgict3tKDJvrDykJvsCXc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt1RNmxgj0OdONpY94bdqv3ClNHwrh0MwilBODTMcGO1R6nqf6
-	PGWyTeGmbJeF8SlNkv4ba3R6vdCDUQfmbEJ2OZB/nc1Dhz+7CbCGczZ7obO7Ug+R0Qtb33CJv82
-	Sl6aF4xktdOHsLivl43R3BGicHIFVsIIylPWVmBnsBtQyfV40ZtjhPFc4Kl3Y83vJtHBytepDh5
-	ITDb2qHRp7uosYBQnlEoVDt6oFA9YZ
-X-Gm-Gg: ATEYQzxLJBCCRnczqiOqW+jz1Im9Ddgww/tB9ZhsSuxrC69wUjeIPgHL7F5Ru4LK58R
-	XVbk8+XFQiWNR5/ElPP6qP7u9C6UxoI74fKCaHlTbx84eDYun/1oA+9KNv7e5cLBMU3w0lFUmdQ
-	tVxG7b8Lzgs3fVQequbnPr3Dkw0wcOKXBKqpCKW+XNFPAROf+/n2hO/5o90aMH8d4Xt+4EbJH3M
-	w/IuOc=
-X-Received: by 2002:a17:90b:4c52:b0:35b:e529:2d60 with SMTP id 98e67ed59e1d1-35be5292d67mr7009888a91.8.1774316876471;
-        Mon, 23 Mar 2026 18:47:56 -0700 (PDT)
-X-Received: by 2002:a17:90b:4c52:b0:35b:e529:2d60 with SMTP id
- 98e67ed59e1d1-35be5292d67mr7009867a91.8.1774316875980; Mon, 23 Mar 2026
- 18:47:55 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BwoGYC2Y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=KL
+	SGc0GvhmbsivmRghIIGbHrdgspzaAG1AOSXQ7eJck=; b=BwoGYC2YlEhOEZfSnD
+	tKe6T5kSoOXmc8WF3SvLK6xiKjvqtOeIDRNnWzMZSvkfEt31mWv424521oDPeen1
+	kCS4OW87kmCs7dutAT82kxCBhqcbH69bCbkTUB4aRTuYAsFBhbt6/VQJhlquTjIb
+	Zi5x+kI2sx6gqtPfhfNgb3MBQ=
+Received: from thinkpadx13gen2i.. (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3IXW28MFp8kcxBA--.14867S2;
+	Tue, 24 Mar 2026 10:02:31 +0800 (CST)
+From: Zongmin Zhou <min_halo@163.com>
+To: kvm@vger.kernel.org,
+	will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH kvmtool] riscv: Add Zicbop extension support
+Date: Tue, 24 Mar 2026 10:02:27 +0800
+Message-Id: <20260324020227.214445-1-min_halo@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de> <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
-In-Reply-To: <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 24 Mar 2026 09:47:43 +0800
-X-Gm-Features: AaiRm53PVQkrGcklsZUJS-7XPhfayXnRAumXm5C_-oefvGMMXn3FtKJ6Q_kdnQ0
-Message-ID: <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mst@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
-	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3IXW28MFp8kcxBA--.14867S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZrW8XF17uF1kJFyxtr45Awb_yoW5CrWDpF
+	sIy3y3KrWrJws0k392gryDuw15Xw4Uu39xK34j9r4fJF9xAry7Jr1DJa43uFsrJay0qry3
+	ZFWvgFy7Zr4UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3Oz-UUUUU=
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbC8xk14GnB8Lly9AAA3Y
 
-On Thu, Mar 12, 2026 at 9:07=E2=80=AFPM Simon Schippers
-<simon.schippers@tu-dortmund.de> wrote:
->
-> This commit prevents tail-drop when a qdisc is present and the ptr_ring
-> becomes full. Once an entry is successfully produced and the ptr_ring
-> reaches capacity, the netdev queue is stopped instead of dropping
-> subsequent packets.
->
-> If producing an entry fails anyways due to a race, tun_net_xmit returns
-> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
-> LLTX is enabled and the transmit path operates without the usual locking.
->
-> The existing __tun_wake_queue() function wakes the netdev queue. Races
-> between this wakeup and the queue-stop logic could leave the queue
-> stopped indefinitely. To prevent this, a memory barrier is enforced
-> (as discussed in a similar implementation in [1]), followed by a recheck
-> that wakes the queue if space is already available.
->
-> If no qdisc is present, the previous tail-drop behavior is preserved.
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-I wonder if we need a dedicated TUN flag to enable this. With this new
-flag, we can even prevent TUN from using noqueue (not sure if it's
-possible or not).
+When the Zicbop extension is available expose it to the guest.
+Also provide the guest the size of the cache block through DT.
 
->
-> Benchmarks:
-> The benchmarks show a slight regression in raw transmission performance,
-> though no packets are lost anymore.
->
-> The previously introduced threshold to only wake after the queue stopped
-> and half of the ring was consumed showed to be a descent choice:
-> Waking the queue whenever a consume made space in the ring strongly
-> degrades performance for tap, while waking only when the ring is empty
-> is too late and also hurts throughput for tap & tap+vhost-net.
-> Other ratios (3/4, 7/8) showed similar results (not shown here), so
-> 1/2 was chosen for the sake of simplicity for both tun/tap and
-> tun/tap+vhost-net.
->
-> Test setup:
-> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
-> Average over 20 runs @ 100,000,000 packets. SRSO and spectre v2
-> mitigations disabled.
->
-> Note for tap+vhost-net:
-> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
-> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
->
-> +--------------------------+--------------+----------------+----------+
-> | 1 thread                 | Stock        | Patched with   | diff     |
-> | sending                  |              | fq_codel qdisc |          |
-> +------------+-------------+--------------+----------------+----------+
-> | TAP        | Transmitted | 1.151 Mpps   | 1.139 Mpps     | -1.1%    |
-> |            +-------------+--------------+----------------+----------+
-> |            | Lost/s      | 3.606 Mpps   | 0 pps          |          |
-> +------------+-------------+--------------+----------------+----------+
-> | TAP        | Transmitted | 3.948 Mpps   | 3.738 Mpps     | -5.3%    |
-> |            +-------------+--------------+----------------+----------+
-> | +vhost-net | Lost/s      | 496.5 Kpps   | 0 pps          |          |
-> +------------+-------------+--------------+----------------+----------+
->
-> +--------------------------+--------------+----------------+----------+
-> | 2 threads                | Stock        | Patched with   | diff     |
-> | sending                  |              | fq_codel qdisc |          |
-> +------------+-------------+--------------+----------------+----------+
-> | TAP        | Transmitted | 1.133 Mpps   | 1.109 Mpps     | -2.1%    |
-> |            +-------------+--------------+----------------+----------+
-> |            | Lost/s      | 8.269 Mpps   | 0 pps          |          |
-> +------------+-------------+--------------+----------------+----------+
-> | TAP        | Transmitted | 3.820 Mpps   | 3.513 Mpps     | -8.0%    |
-> |            +-------------+--------------+----------------+----------+
-> | +vhost-net | Lost/s      | 4.961 Mpps   | 0 pps          |          |
-> +------------+-------------+--------------+----------------+----------+
->
-> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.org/
->
-> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> ---
->  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
->  1 file changed, 28 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index b86582cc6cb6..9b7daec69acd 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb=
-, struct net_device *dev)
->         struct netdev_queue *queue;
->         struct tun_file *tfile;
->         int len =3D skb->len;
-> +       bool qdisc_present;
-> +       int ret;
->
->         rcu_read_lock();
->         tfile =3D rcu_dereference(tun->tfiles[txq]);
-> @@ -1063,13 +1065,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *s=
-kb, struct net_device *dev)
->
->         nf_reset_ct(skb);
->
-> -       if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-> +       queue =3D netdev_get_tx_queue(dev, txq);
-> +       qdisc_present =3D !qdisc_txq_has_no_queue(queue);
-> +
-> +       spin_lock(&tfile->tx_ring.producer_lock);
-> +       ret =3D __ptr_ring_produce(&tfile->tx_ring, skb);
-> +       if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+---
+ riscv/fdt.c                         | 12 +++++++++++-
+ riscv/include/kvm/kvm-config-arch.h |  3 +++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-So, it's possible that the administrator is switching between noqueue
-and another qdisc. So ptr_ring_produce() can fail here, do we need to
-check that or not?
-
-> +               netif_tx_stop_queue(queue);
-> +               /* Avoid races with queue wake-ups in __tun_wake_queue by
-> +                * waking if space is available in a re-check.
-> +                * The barrier makes sure that the stop is visible before
-> +                * we re-check.
-> +                */
-> +               smp_mb__after_atomic();
-
-Let's document which barrier is paired with this.
-
-> +               if (!__ptr_ring_produce_peek(&tfile->tx_ring))
-> +                       netif_tx_wake_queue(queue);
-> +       }
-> +       spin_unlock(&tfile->tx_ring.producer_lock);
-> +
-> +       if (ret) {
-> +               /* If a qdisc is attached to our virtual device,
-> +                * returning NETDEV_TX_BUSY is allowed.
-> +                */
-> +               if (qdisc_present) {
-> +                       rcu_read_unlock();
-> +                       return NETDEV_TX_BUSY;
-> +               }
->                 drop_reason =3D SKB_DROP_REASON_FULL_RING;
->                 goto drop;
->         }
->
->         /* dev->lltx requires to do our own update of trans_start */
-> -       queue =3D netdev_get_tx_queue(dev, txq);
->         txq_trans_cond_update(queue);
->
->         /* Notify and wake up reader process */
-> --
-> 2.43.0
->
-
-Thanks
+diff --git a/riscv/fdt.c b/riscv/fdt.c
+index eba9387..510641e 100644
+--- a/riscv/fdt.c
++++ b/riscv/fdt.c
+@@ -58,6 +58,7 @@ struct isa_ext_info isa_info_arr[] = {
+ 	{"zfh",		KVM_RISCV_ISA_EXT_ZFH},
+ 	{"zfhmin",	KVM_RISCV_ISA_EXT_ZFHMIN},
+ 	{"zicbom",	KVM_RISCV_ISA_EXT_ZICBOM},
++	{"zicbop",	KVM_RISCV_ISA_EXT_ZICBOP},
+ 	{"zicboz",	KVM_RISCV_ISA_EXT_ZICBOZ},
+ 	{"ziccrse",	KVM_RISCV_ISA_EXT_ZICCRSE},
+ 	{"zicntr",	KVM_RISCV_ISA_EXT_ZICNTR},
+@@ -195,7 +196,7 @@ static void dump_fdt(const char *dtb_file, void *fdt)
+ #define CPU_NAME_MAX_LEN 15
+ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
+ {
+-	unsigned long cbom_blksz = 0, cboz_blksz = 0, satp_mode = 0;
++	unsigned long cbom_blksz = 0, cboz_blksz = 0, cbop_blksz = 0, satp_mode = 0;
+ 	int i, cpu, pos, arr_sz = ARRAY_SIZE(isa_info_arr);
+ 
+ 	_FDT(fdt_begin_node(fdt, "cpus"));
+@@ -249,6 +250,13 @@ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
+ 					die("KVM_GET_ONE_REG failed (config.zicboz_block_size)");
+ 			}
+ 
++			if (isa_info_arr[i].ext_id == KVM_RISCV_ISA_EXT_ZICBOP && !cbop_blksz) {
++				reg.id = RISCV_CONFIG_REG(zicbop_block_size);
++				reg.addr = (unsigned long)&cbop_blksz;
++				if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0)
++					die("KVM_GET_ONE_REG failed (config.zicbop_block_size)");
++			}
++
+ 			if ((strlen(isa_info_arr[i].name) + pos + 1) >= CPU_ISA_MAX_LEN) {
+ 				pr_warning("Insufficient space to append ISA exension %s\n",
+ 					   isa_info_arr[i].name);
+@@ -305,6 +313,8 @@ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
+ 			_FDT(fdt_property_cell(fdt, "riscv,cbom-block-size", cbom_blksz));
+ 		if (cboz_blksz)
+ 			_FDT(fdt_property_cell(fdt, "riscv,cboz-block-size", cboz_blksz));
++		if (cbop_blksz)
++			_FDT(fdt_property_cell(fdt, "riscv,cbop-block-size", cbop_blksz));
+ 		_FDT(fdt_property_cell(fdt, "reg", cpu));
+ 		_FDT(fdt_property_string(fdt, "status", "okay"));
+ 
+diff --git a/riscv/include/kvm/kvm-config-arch.h b/riscv/include/kvm/kvm-config-arch.h
+index 6d9a29a..d3e1f56 100644
+--- a/riscv/include/kvm/kvm-config-arch.h
++++ b/riscv/include/kvm/kvm-config-arch.h
+@@ -135,6 +135,9 @@ int riscv__cpu_type_parser(const struct option *opt, const char *arg, int unset)
+ 	OPT_BOOLEAN('\0', "disable-zicboz",				\
+ 		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZICBOZ],	\
+ 		    "Disable Zicboz Extension"),			\
++	OPT_BOOLEAN('\0', "disable-zicbop",				\
++		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZICBOP],	\
++		    "Disable Zicbop Extension"),			\
+ 	OPT_BOOLEAN('\0', "disable-ziccrse",				\
+ 		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZICCRSE],	\
+ 		    "Disable Ziccrse Extension"),			\
+-- 
+2.47.3
 
