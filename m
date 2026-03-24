@@ -1,140 +1,134 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0542389DF0
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 15:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730FC370D7D
+	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 16:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774368001; cv=pass; b=A6AnsBvqturGw7xBr73qUVJTQPfYnKrazxuHg8mP+XlvCzuCIOTGehJnijlsIQPat3u2j3xKOceyu7erASA3btyeKCQbaTr806nJg1E730XMfF1bq65xjM50PEhlpG0tC9vJsDovRgwzeqijOBNPhM+F6mpXE+gJA0mG7+EiMbA=
+	t=1774369981; cv=pass; b=lAGZGrCurjyL38Xe/tx/ORzlHwPf29YC10/nTdAguhFqBvWoHEXGSTUy++HeE+SIebBF1u4R8YzPWsmiTaGeeXrtqesvsUv2ohaHT+ZtcG4nlwgwrXjDt9Ph69efqDceXg7gXC7LNIohU20kq9pLLfSZaE0U4USmY28tmPjbxJs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774368001; c=relaxed/simple;
-	bh=rpMp3hiozZmCIXMf9wbrKA0CspmZNmRPkIjUDgHwedg=;
+	s=arc-20240116; t=1774369981; c=relaxed/simple;
+	bh=HaaqCyZJuHFyqaA3jF9mPx4YKb7kG9SBT0R3VHSi6qg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ew+MuxB5krUVCCgJlwaYft/iH0g9V/hHjmYLYPrQz5jsw4oeTxnb7egV8wYboZB646ts/qM60yUD9urjLbBc6YOGlNu89rCHHgH2cBgHFYNP0ibXpak3rZC8py5Omtm0pIkKQN2C+9HR56T+0oW1gLWk44FB3p7kzeBu2/Syk6Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ek/38mM+; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=cfjgGqPAaH5yXvMzt0asOcJZ9euX2BxlsvGSe0xczLvDybnGtAI/lm+XwibaVSA9JVUjeVR9OMa0JavNJAqffA3Vchy7iIHVyf3pxHZm5y7+sU99R4H/+AnytxkGxuy+xaHdWqv1JOBkcZZCv0dcWAzBWYTEMm0lwB+MxKSHaPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TDwXD2iS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q2+goXGn; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ek/38mM+"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50b6c45781aso832631cf.0
-        for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 08:59:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774367999; cv=none;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TDwXD2iS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q2+goXGn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774369979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HaaqCyZJuHFyqaA3jF9mPx4YKb7kG9SBT0R3VHSi6qg=;
+	b=TDwXD2iSShiHC3ZtxujZoy1USTRy3vSpjr+GshFuEL+b0Qc/1msK/a2styumghE+u3Buva
+	akCEL+rOmvJW/fv3hNamApmXvdFQHS6p4/KPpOPFawLNI5cLGI8U8kxncb0Q68KXdAjDCd
+	qJuCu4PQbpgcodWcD4XwKqcN5Xks88w=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-82-Osv15mduMqiN8LrKm8SHUg-1; Tue, 24 Mar 2026 12:32:58 -0400
+X-MC-Unique: Osv15mduMqiN8LrKm8SHUg-1
+X-Mimecast-MFC-AGG-ID: Osv15mduMqiN8LrKm8SHUg_1774369977
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43b40c22eaeso5368119f8f.2
+        for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 09:32:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774369977; cv=none;
         d=google.com; s=arc-20240605;
-        b=Fkk72eFPSTY0uQT7cZu5n1d0kgrhH0YySB6Le63ziGqw+7fJkxanwVvon6wl20WxpE
-         4prXcQFkbNk8Afo3JSR3MkGzB/3FL+NJ2K+DojheggN7DdBHRL40O3ENgmpYOsSQScWX
-         pqEf1OQY/1MxEHndJHmO8jQs/eb/EaE2HxwY1DGBfuozopbihZIR13SA8foJs/OLWDDn
-         wKNLuqDYwPsilW2VQdx9SiMpvWNalXvIyH0/t3fscTORHMykuzRz2DsyK1KcqzWRqQlX
-         T89ahcUgZSteGEFy9xqgMZ8w9GP3gRvWwHSStR3awCkTZJrg7/Rem2A4r2KOaS6Tqn75
-         5ohA==
+        b=DYG282JjQoRc/4fFJspa/J+hYI+uSYZwNyZEK5QtsU88ZKox6TxgCEatjbRUbm/P0Q
+         8TK+bZPxCrSD2bnGgAljdZEfZrU7VG8Y1e6JPfzwyh+MXyML7+/dbiuG9udcy4hHGJLg
+         vziJDmRn96RYYFPnu+bMXrFz3pK4S3+P/UzAw9tK1JSE+uTsVBU9tdrbD5P4nsbbfgdr
+         Qat5WcG61NDkgCxQlbFx7ngGWnbxKYYRSn/M+Uj/CVgF0lNf9mB8srbSrahnTFk6cIr4
+         Xle67PIpmaP6Z3ERG5uRFUnUF7lN4meWhUxbDNDcWBg0DS+omBax/pXYiU46J3jBB3n5
+         b/Lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-        fh=bxsefr91ei6tKWAKQAtq9+KoDuwlXZAoB2gTCumnYjg=;
-        b=TJ6bMCSGAy7Ra5L1zv/WtfsWzowKTsDOKJrFxxiUEhQNo9KNf4oMI83FqgtBeYTad+
-         8a5zbP44k5IcHpkamTbC+tiW8v+SX6APJfwCSopaku6g8LEPnImD9onuFeJTgDBfxewP
-         asM1K9UHySU/Zjz+ZY4bHpXvaIwfug/JehKMGDUwhbkNkPMvJhdrtSdXkYUITtaxZe3U
-         30pUKvk4lQMyyefDxDDEYufkVQe4btNC+Hd12pTkV1ENnpTOyATXYDUZjyllA1kxEzzQ
-         FGkqYLvfzXCbB3f+DNB6mscEBmbeOtV45JcCZ5m0Na3kgggAc/ogrdyxsPC0ScJRCTlJ
-         u89w==;
+        bh=HaaqCyZJuHFyqaA3jF9mPx4YKb7kG9SBT0R3VHSi6qg=;
+        fh=6fw3GPun81C7IzVhJWZkIi8w4n3SG3/a7XtGt8Aq8hQ=;
+        b=ZJ+YqV7C8dpY/npMvN4UGXIxphx9Ryzm2eQvLjvro8DaJzo+tGz0/3gZt7W9DJlEAy
+         BHDo8VxZHME1cOzdKjtzuc7qeWOplXmCQSe5gRTB7fOsTZODeKJe1p/eUhESGd334sNP
+         eDDqKltrVdHuBATKcKdHodUyqMWoKFAKP0tRUBgvATxOmEJ7jZhotEXk4RmrhEKO7lCu
+         fSy4zKtN6EXGgxCWId3bVUSWiTtJKA6pNGgKyybfuO2JPNzl8M8TiJ1CID2kwYRzZyVS
+         d0oUyfOXsWMgTMId9u/iWuAVrj4+m2RUZlaYTW3dsuQZLcb84hW4WoOr43XgJ5fKB+gz
+         Gt2w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774367999; x=1774972799; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774369977; x=1774974777; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-        b=Ek/38mM+cJ0KdU/nk2xFYU80ACjSZSamxiefjc/vE+0kySoYd3/CuA1lY+3hR4dXMc
-         kTCMLSo4CwMDc9UchmC/vB+Ii08w68Vcu16LIsle3qfMArrLE+N1LBrFSkiZjRBjSSZ9
-         IzJXc46UMc+Vu/rtknxxQHzbFgxbZ6PCgEoypXf+u/yYGMJJs48Ux/UcENlopKI6D84v
-         bm7qmRKbwUCM3drLlifA967WhfU/uHGfu91kuoEubTjVS8Vk5eXBuVwvNrwGu1tSxR9l
-         veXNHcsBRJhA5Z43mfuUU2CTQj1asP1nERjNR/gY1igzoyqv4VRKmKKFSTDw+DANsK6k
-         ACKg==
+        bh=HaaqCyZJuHFyqaA3jF9mPx4YKb7kG9SBT0R3VHSi6qg=;
+        b=Q2+goXGnRaDZut08y3Ec0XZmN4JMNujw4YH3izMj0W5833hqRxwd//WJbGPj9irWPo
+         lioCP+ubsTFYnUXoS5LBGHFclR5sl5zJ0L8AO7CtJCibY2+8KBplFMtY/88KrV5bJfPh
+         Uglqp3pFB1FXOSNnwWGZaVys9YBAFMs2q4TeeFbKT9LrUSIufRz1DiYrFJqmvS5sa9yG
+         /FPH2+OCcOJm83sef7ge0i5ukaLxTUOgWThromL2gN8wrsLIx/htjqBPob6BDmWVtv3i
+         5l9sGldS4Ye8cDL4SoYd4VQDHyIvYawuVV0gMj0WbGbvbUAruwHSoPlhMIsxeaQ9KYPp
+         5utA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774367999; x=1774972799;
+        d=1e100.net; s=20251104; t=1774369977; x=1774974777;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-        b=o0y4PbgUHyTme61YtCV1VHvgb/W88k+Us2HM8KRam3Co8xfEONTFJ4k5EsC3ErQ4nI
-         gRbLFbLRFS6D33DQ+hEwX3jAIusNrP7/7y59PS+4iPmQxsGqqM7tzhaq+OIlOqWgQoQW
-         nqK+KFsiwz1uU+T0HTK9w87gQtg8GVAXCN2+vrhvr/kByap7zMugBXkO6un/fe5SF3VU
-         6p/njgEtRdfH/MBUHR4QXlEjXmVqByUbI2Z7BJa3XFn2YitgpB2oMG7e+gpscOaqgDaS
-         rvoyIt/95SNRq26M4qlDlGdioVASft/0+0pE34hruGqsBnWNqGy0bgLTZEDybve39kjk
-         uplA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/J6Spn1u/lxT0uTPYdd1NdiJg6WMZJ+qMhsFKbaECNqu176txack1Gh/nRvudD0w3A5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYHGU36M2dfTYmCKX4zKvHNF6hIgnTIPoUQ5tjWuIlje8OPkSe
-	DhcTvdSVciI6gpT5/gFzAOH/9h3EvG4Jc2hwxdiRmLEvvlbbFUax0kjFrWeR2kOB3obrj8Na96z
-	DL5gHQr35TBymHHjWVDnbNoKKWwoi6Ff0ux69TFxu
-X-Gm-Gg: ATEYQzymH1A/3/f5HmDHi9OqCvRAvvq6dSDs1uiothazeDwoB2HKutL6D74EdkmdEVj
-	0bDJ8R8gh4rPuc87NDjIN5nc93aIbusWNb3IO2FbtAPn+3JgR2cWpdG2lbrOexhGkkGcnQNpHzv
-	BtQLKIFz+R6YW6ZGEgYU+uaIZTez+pRgl0pIt5EohUqLjSnjB9G0ikZ2zOiNe8K4VRQmCM2cbwY
-	2dBKGnbeM/76L1jaQ78V/ZoocENvUYMumTWPOvRmBibtToZ85pkp3ubpqFwQiHd7DTfffgOnYiG
-	T8uHTcapoAsExEOA/4+6OpMEGaF0CmV77Zy7Og==
-X-Received: by 2002:a05:622a:8d15:b0:509:1eca:6d24 with SMTP id
- d75a77b69052e-50b6fab570emr14738871cf.2.1774367998125; Tue, 24 Mar 2026
- 08:59:58 -0700 (PDT)
+        bh=HaaqCyZJuHFyqaA3jF9mPx4YKb7kG9SBT0R3VHSi6qg=;
+        b=VXrD2ojXcD0EUFFDCGQrG2eh8oqISnCDTBQ1dJedyyJsMPGVWnjzJyQt+ef2z24xrl
+         RiqZAatqLbM207JcKrVAq5qnnimiymnCFMDXmIHcfRgTj9PhZH4RTOVkBLy6lRSsa8Zu
+         dNsN1PYPG2x2oQzxqxNzpynZIzEC30B6w8iQcdEhb85Z4JuQQGS0+GjvmZSHB4UvCdJU
+         mydT2RUlgu8xQl3mxmhIzMpLp2Ke+MLpPU6qQU6DExR0LueKbR81YGmKPHeMNd13/rg2
+         IyzxPsZ4VknEdz6v4CdgQMGcgJQANTSumxO7cZEkiDWwDOSpc+CunKun/uMhuQhqXDM2
+         dyzw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgK5gfe0S+qdOOa1DSbeY7HxYAoViHma7278xrtHDcFue566EPrB8/+D+Y1wILt1xgSp4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxjK/ggNh4bWxC08tCo/1/Z9wthKrbXfvGotQunShMDtOlEHGu
+	lYmqO3t6597swwnKxe0aEI7+lx45fK8HcTPKGlYHZ0WmRjimJOiSzHN21nwx/VesKaYkOraNri2
+	5TAKtcCZTOYVI75Mu+h4J/5xFbWYmUdawrBn1S0vCU/MBpJf1YbdCcV2k5kaVHK242QiKZYWSzM
+	xDuK3iD3I9pX5O8gMnK/n/89i9TDv8
+X-Gm-Gg: ATEYQzxrny3AXBHpt5+57Ye+3QSXHyyg0cwEjl9PS6CsXc6kGT+kvogvCSSrd3VqnsZ
+	W9hBmM2PYajr6RzNglOqQ8DUBXkJGwRO9CUUnlUiQ7WkDDx4SE6nb2gxb5HznEcuTN5ItuifOYb
+	V3kBPSardCZ33pys0VbqPHzFj8mQq9cIWcocmFr9bkHHhEdYGzACAMBAB2No36dUwssLovMCvXs
+	WVB14Zcshc5KlMTWg6pWbvG9rII8jYwpFCiKjJBBLg7SGYCpHsliw2zAfjE9OO4IWJmsXAxycFa
+	qRbT
+X-Received: by 2002:a05:6000:2003:b0:439:c040:cc8a with SMTP id ffacd0b85a97d-43b88a0fb2amr191783f8f.32.1774369976871;
+        Tue, 24 Mar 2026 09:32:56 -0700 (PDT)
+X-Received: by 2002:a05:6000:2003:b0:439:c040:cc8a with SMTP id
+ ffacd0b85a97d-43b88a0fb2amr191746f8f.32.1774369976441; Tue, 24 Mar 2026
+ 09:32:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322054309.898214-1-surenb@google.com> <20260322091723.dbc1a8e45f4412fca43ba510@linux-foundation.org>
- <CAJuCfpGEA17hB4BMdr5a7=NxfeF1RUt0q=_w2WieVv0XoN24Gg@mail.gmail.com>
-In-Reply-To: <CAJuCfpGEA17hB4BMdr5a7=NxfeF1RUt0q=_w2WieVv0XoN24Gg@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 24 Mar 2026 08:59:47 -0700
-X-Gm-Features: AQROBzAMqgNkN_nl_EndICe5F5XJG6Br11eHuUlOIjfDgcmYOvJ6ZgT0J1pHfxM
-Message-ID: <CAJuCfpHQ6ru79hjnRnz6vpb2-Rjff8QsM9d_4g9jd+_jb9-qvw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Use killable vma write locking in most places
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	Roman Gushchin <kfree@google.com>
+References: <20260320094151.2541661-1-maz@kernel.org>
+In-Reply-To: <20260320094151.2541661-1-maz@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 24 Mar 2026 17:32:43 +0100
+X-Gm-Features: AQROBzBSOb2DrC9P9JRJKnQIuo8-0o7xFzXZcGC7UdoeyqQYcpLh-BRplqsjmsU
+Message-ID: <CABgObfb=e4eeD7Dx7o_3rSNvs+dGmoE-n3Zp9N6A_QTzGtjVBg@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/arm64 fixes for 7.0, take #4
+To: Marc Zyngier <maz@kernel.org>
+Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <zenghui.yu@linux.dev>, Oliver Upton <oupton@kernel.org>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 22, 2026 at 9:29=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
+On Fri, Mar 20, 2026 at 10:42=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrot=
+e:
 >
-> On Sun, Mar 22, 2026 at 9:17=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
-ion.org> wrote:
-> >
-> > On Sat, 21 Mar 2026 22:43:04 -0700 Suren Baghdasaryan <surenb@google.co=
-m> wrote:
-> >
-> > > Now that we have vma_start_write_killable() we can replace most of th=
-e
-> > > vma_start_write() calls with it, improving reaction time to the kill
-> > > signal.
-> >
-> > Thanks.  Sashiko review raised a few possible issues:
-> >         https://sashiko.dev/#/patchset/20260322054309.898214-1-surenb@g=
-oogle.com
+> Paolo,
 >
-> Thanks! This Sashiko dude is good :)
+> Another week, another set of fixes. This time, another two fixes,
+> mostly observable with nested virt. The first one results in a vcpu
+> coming out of reset potentially skipping the first instruction at its
+> initial PC. The second one is a classic example of pointer arithmetic
+> going wrong in our address translation emulation, setting the access
+> bit in semi-random places. Both are stable candidates.
 
-Interestingly Sashiko had one false flag: "Does this code leave
-mm->locked_vm permanently corrupted if vma_start_write_killable()
-fails?"
+Pulled, thanks.
 
-In mlock_fixup() the path that we call vma_start_write_killable()
-happens only if both new_vma_flags and old_vma_flags have their
-VMA_LOCKED_BIT set. In such case nr_pages is 0, so "mm->locked_vm +=3D
-nr_pages;" does not change the value of mm->locked_vm and we are fine.
-Perhaps this can be used to improve the model?
+Paolo
 
-CC'ing Roman.
