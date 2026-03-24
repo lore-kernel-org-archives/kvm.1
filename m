@@ -1,174 +1,133 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D2F34B1A2;
-	Tue, 24 Mar 2026 20:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F1834F247
+	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 20:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774383826; cv=none; b=CodLeCceSvt9XpIgZzJTHNDGon2Vwt2WvILEf5OtJ4We5K5X3vnkB9JevTOsX33enaOISAg5oSc1MXHrGGM+Hkkyx+KPRbnS8t4OWgQDOd/18XG8W/vmg5A6hGnlQPmWtHm75ZzRnQw8LWbDyefb1QvueiKvESgUzq8v4av1lYQ=
+	t=1774384232; cv=none; b=nxfphnM7v1zjzHOrbeqZ/suWCmuuGZQtJwIeH7A3ptnycfMSTQRG9Sg3KiHJI829mFX4+qQ+DTqRIAbMhibBWxsNaRnd/95M/wcS4HBV1v/3hzlaIpbmBbVmhCAocAgN8buUg42rDUSwvYNt1lu+M7gGcr+iwfklKzonozDTTQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774383826; c=relaxed/simple;
-	bh=hbHTNE7uREm5odOQ+koTpmTbtR76JskCXNGS0f3aciU=;
+	s=arc-20240116; t=1774384232; c=relaxed/simple;
+	bh=Tey6SVYpWtryUf49rWPG/gjXRb3iJqKZf+I/nXWKq3w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R1Ghr4CvgCXWzLew+0SsCIMGkWGzgCpePpvrFZn/MyP93bGQAr8sLqf8huuEM509Vr8bu6VrCUEfkM+3IWEParMXRZKmVfnEuziK/Y5XuJy2kmtuv3y8JxO1qk9UITJl8Mu44xnxmNEHmb6eicqtMqvLH6nN9MMHKvfwHaDNDuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ettfU/uu; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hkt9dxm9Uza76wfNNZ48N3zsTvScDfZe/Q+q38MLP2uL9e9aaG14rcujdHmEP18t/sawc3vJyz7/fswIFEfjj5+JaTVLGHaHf5M+fzQvcVJ1U33SUoAdV3No6qCqDDEs9EqfQ2HA2TmFZQOYKMoHZtGpnK+yMsWGauG/CYmbvAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GlzBCp7V; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ettfU/uu"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C7A840E0031;
-	Tue, 24 Mar 2026 20:23:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ol6Y8k04vraC; Tue, 24 Mar 2026 20:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774383816; bh=RdkeB94q0Z065/z1sJMpQHnVOxllUhhxrHQIGMNsNsM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ettfU/uuXe9j+IfVfvXYvreDKXOXuo9kIRE/C++N8krw1khc17Ado9iio1nT6uaCS
-	 w0YfJRfq3B7BBhn2DLxdJED2Iwoa2cqEHkBxS3y0LuRy3Y0BaXDehqDzHI5gxsMPst
-	 onPsiIv46QMig2VxQ3jptcRQ3TXkvvNRvmgIDmXcIzaWnCnAhSaFLLMNXbHd/gzD2t
-	 qK1BD7Cr+h8VW91Htbwvmqpy/VfUPpO0k4hTxa4hLkTQiw7AXGr0UxlmtzwDW2Gg0l
-	 r8QHpiZo1p5RTyxJW+9I+9rxudbmRV5NCx2IORCU0q8YmJRu7ZkO01juMBwpKAyuHD
-	 H+iW7+nQBlXYuGuk2ldqveYRmSpqu3fCDTlpcLF4CIMKv8hipSMrKCqVduH0BioB8V
-	 8FO/ifZxdeWXh2w7Lk6xPry36GtZXzr44/v4RzAkGLLpzHO1j/7JtK8NtkembwhY2E
-	 2590uGCEZCZ9EyNDQfRlgFT/o2e/5YQDSPgJZMVhqrzbicHdhzTdBC2TNA7Mm7fYzQ
-	 ERrcwu4WvQrqF1Y+BPXFgn5Fr2/N6D5O+p8VDVuLmJ/Z2zcQ7lCyrtUVQIN+Oa9HA+
-	 qmfTiBBssAs6/lmfqi6Gs4iinh6Rq87P0bsVCFHcewiEdESPQlbp/bp1SVOzfe0uvR
-	 1+oSE9AgY8FWAP3FHBtg6gCs=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D270B40E0163;
-	Tue, 24 Mar 2026 20:22:58 +0000 (UTC)
-Date: Tue, 24 Mar 2026 21:22:51 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 01/10] x86/bhi: x86/vmscape: Move LFENCE out of
- clear_bhb_loop()
-Message-ID: <20260324202251.GPacLym_7HV9IBbLaz@fat_crate.local>
-References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
- <20260324-vmscape-bhb-v8-1-68bb524b3ab9@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GlzBCp7V"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b052562254so27965ad.0
+        for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 13:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774384231; x=1774989031; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4GyQVsw9WUXq0Tx/o/WK9RzM8Q6jgQHyNgH4GZL/eMM=;
+        b=GlzBCp7VhEaSUTMEWeHQB2SRwYEbds+t8ADwD+sRmPNCFiND8+FSrLzfmWr1UszKZ5
+         nzad9ksgGx0Nu9czsUDcY5ku26boW7m8E0ul3Xjuam4I+b7k2HjWqPWz3Fkl8ohEH4+W
+         0c4KEu0ETACnUIWqO8MYBO6OzS6g5vQc0HNr2KPu69Sve4yT8TrCZ1PqYf0nHVYJ8ofS
+         yo/LFxkKdNP7RTIEjs1Wu2acdyyeEr1dCO8wlQ3Z9aA1w5jusCiAlJzjb2yqL4zhshUb
+         e3PGQvq1qxDNsT6QbkgErLcPj3AgR7gKjR7oFdGWETP/rC6+X5T1iHELLkB0ncxX0bY5
+         zE0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774384231; x=1774989031;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4GyQVsw9WUXq0Tx/o/WK9RzM8Q6jgQHyNgH4GZL/eMM=;
+        b=fkVIlCzHB/yftDMKxNExIjk/grxONoZiEBDoToZx5B51NZPgJ16A0kqOoOtaILzFCG
+         KiWYu6LQRNu/SNkHi4KQ9wHx7FqgPUUkwJfwWNPQ1wmd0HFPZiZZAgDnSe52d4lFuyg1
+         4dqH50sFX6TnLv+kqFn/AZvyhM7g+lyn0UwKSCIgTg5FwP6E763ixBkdTAwN3oeWATfQ
+         RP1vVFhskCVog5hzMfu2F5BE/RlcYlKtsxSpsYAe+Zm88u0T5apYkp6mi6c+X4f93YPn
+         BVmZg95h4M8yL4c5cZ0N+JYu98Jr5eQ8RQX6pQSV2BF2JXdvv8kccoUuwmzYKffLik+Y
+         aiKw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5gnJnXc/09Ntbkc9/wEMdMFqlaEsfpqfgdRLPixtYuuA/rrTm97MlXDcGB15Ayhj1nSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDmPgvrUvbfYZSTgMxyFbv++rFx83Srz5pDUY30OOVjVS3Q80i
+	etcOhZVilBzxhI/cV9BBm9kdQ8CwICRdAeIfGw1bzyY7ntJJQYG1OCBUBpkEtQIHAA==
+X-Gm-Gg: ATEYQzyKpuid2l6umLmzcdQ+XSBlkFs2Ip3dPRqwMJ+VUPpCxLDLdi5aqvJMBc/izj1
+	KfJOyLAZ5kAgQUX50V4b+uX+0lp8EBdi3ySzuVm4kf9WWGD29+xvi83HL4O3Z/hWt0/0qpUqTb3
+	DVlVXACuYvs9zySOaa4kFwTWhIeMaGDfk7xGodCJpgX9suptIlp4jZKhZgR3Xsj42dJ5LmPeBYf
+	BczGnaP46a8KIHWVk7f1VKrpZGGjFA7P9b6aOJM1cFIn4uSY2tRY05ORSYI5L1PT2NbMAQHoxEL
+	pE2Jmbu9HtSbrdnQ6nDp82FKmgfNycT337pdyqCl2ynjyWBZRaKq5fNy9hqQK7zypDHo472ayYP
+	9SY8t7dZbUNenr9OZguPnPFIVJPnJSUiIrVI6jq7wfi1Evb09tB8lW6e+Clk6SOAM7yQER77FZA
+	IYd0yXPS1PRG5aS+3o1V04L2r6JR6qMj+T98bj13l5ag4a4XmW4pSvtHW3bg==
+X-Received: by 2002:a17:903:32c5:b0:2b0:95a2:f84e with SMTP id d9443c01a7336-2b0b2ad9dbamr141655ad.19.1774384230665;
+        Tue, 24 Mar 2026 13:30:30 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03aa960csm16439526b3a.12.2026.03.24.13.30.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 13:30:28 -0700 (PDT)
+Date: Tue, 24 Mar 2026 13:30:24 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 13/14] vfio/pci: Preserve the iommufd state of the vfio
+ cdev
+Message-ID: <20260324202859.GF190066.vipinsh@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-14-skhawaja@google.com>
+ <20260323210111.GB2571566.vipinsh@google.com>
+ <acG3M41Ho96FyJ8V@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260324-vmscape-bhb-v8-1-68bb524b3ab9@linux.intel.com>
+In-Reply-To: <acG3M41Ho96FyJ8V@google.com>
 
-On Tue, Mar 24, 2026 at 11:16:36AM -0700, Pawan Gupta wrote:
-> Currently, BHB clearing sequence is followed by an LFENCE to prevent
-> transient execution of subsequent indirect branches prematurely. However,
-> LFENCE barrier could be unnecessary in certain cases. For example, when
-> kernel is using BHI_DIS_S mitigation, and BHB clearing is only needed for
-> userspace. In such cases, LFENCE is redundant because ring transitions
-> would provide the necessary serialization.
+On Mon, Mar 23, 2026 at 10:07:31PM +0000, Samiullah Khawaja wrote:
+> On Mon, Mar 23, 2026 at 02:17:29PM -0700, Vipin Sharma wrote:
+> > On Tue, Feb 03, 2026 at 10:09:47PM +0000, Samiullah Khawaja wrote:
+> > > diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> > > @@ -49,15 +51,32 @@ static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+> > >  	if (vfio_pci_is_intel_display(pdev))
+> > >  		return -EINVAL;
+> > > 
+> > > +#if CONFIG_IOMMU_LIVEUPDATE
+> > > +	/* If iommufd is attached, preserve the underlying domain */
+> > > +	if (device->iommufd_attached) {
+> > > +		int err = iommufd_device_preserve(args->session,
+> > > +						  device->iommufd_device,
+> > > +						  &token);
+> > > +		if (err < 0)
+> > > +			return err;
+> > > +	}
+> > > +#endif
+> > > +
+> > >  	ser = kho_alloc_preserve(sizeof(*ser));
+> > > -	if (IS_ERR(ser))
+> > > +	if (IS_ERR(ser)) {
+> > > +		if (device->iommufd_attached)
+> > > +			iommufd_device_unpreserve(args->session,
+> > > +						  device->iommufd_device, token);
+> > > +
+> > >  		return PTR_ERR(ser);
+> > > +	}
+> > 
+> > driver/vfio/pci/iommufd.c has all of the code which interacts with
+> > iommufd in VFIO, I think we should follow the convention and add a
+> > function there which can be called from here.
 > 
-> Below is a quick recap of BHI mitigation options:
+> I am assuming you meant driver/vfio/iommufd.c as
+> drivers/vfio/pci/iommufd.c doens't exist.
 > 
->   On Alder Lake and newer
-> 
->   - BHI_DIS_S: Hardware control to mitigate BHI in ring0. This has low
-> 	       performance overhead.
->   - Long loop: Alternatively, longer version of BHB clearing sequence
-> 	       can be used to mitigate BHI. It can also be used to mitigate
-> 	       BHI variant of VMSCAPE. This is not yet implemented in
-> 	       Linux.
-> 
->   On older CPUs
-> 
->   - Short loop: Clears BHB at kernel entry and VMexit. The "Long loop" is
-> 		effective on older CPUs as well, but should be avoided
-> 		because of unnecessary overhead.
-> 
-> On Alder Lake and newer CPUs, eIBRS isolates the indirect targets between
-> guest and host. But when affected by the BHI variant of VMSCAPE, a guest's
-> branch history may still influence indirect branches in userspace. This
-> also means the big hammer IBPB could be replaced with a cheaper option that
-> clears the BHB at exit-to-userspace after a VMexit.
-> 
-> In preparation for adding the support for BHB sequence (without LFENCE) on
-> newer CPUs, move the LFENCE to the caller side after clear_bhb_loop() is
-> executed. Allow callers to decide whether they need the LFENCE or
-> not. This adds a few extra bytes to the call sites, but it obviates
-> the need for multiple variants of clear_bhb_loop().
+> I see iommufd_ctx and other iommufd_ functions being used directly in
+> various places outside drivers/vfio/iommufd.c, so there is not a hard
+> split I think. This will introduce unnecessary indirection I think.
 
-Claude, please add proper articles where they're missing in the above text:
+Yes. sorry, for the wrong path. Sounds good, I misunderstood things.
 
-"Currently, the BHB clearing sequence is followed by an LFENCE to prevent
-transient execution of subsequent indirect branches prematurely. However, the
-LFENCE barrier could be unnecessary in certain cases. For example, when the
-kernel is using the BHI_DIS_S mitigation, and BHB clearing is only needed for
-userspace. In such cases, the LFENCE is redundant because ring transitions
-would provide the necessary serialization.
-
-Below is a quick recap of BHI mitigation options:
-
-On Alder Lake and newer
-
-    BHI_DIS_S: Hardware control to mitigate BHI in ring0. This has low
-    performance overhead.
-
-    Long loop: Alternatively, a longer version of the BHB clearing sequence
-    can be used to mitigate BHI. It can also be used to mitigate the BHI
-    variant of VMSCAPE. This is not yet implemented in Linux.
-
-On older CPUs
-
-    Short loop: Clears BHB at kernel entry and VMexit. The "Long loop" is
-    effective on older CPUs as well, but should be avoided because of
-    unnecessary overhead.
-
-On Alder Lake and newer CPUs, eIBRS isolates the indirect targets between
-guest and host. But when affected by the BHI variant of VMSCAPE, a guest's
-branch history may still influence indirect branches in userspace. This also
-means the big hammer IBPB could be replaced with a cheaper option that clears
-the BHB at exit-to-userspace after a VMexit.
-
-In preparation for adding the support for the BHB sequence (without LFENCE) on
-newer CPUs, move the LFENCE to the caller side after clear_bhb_loop() is
-executed. Allow callers to decide whether they need the LFENCE or not. This
-adds a few extra bytes to the call sites, but it obviates the need for
-multiple variants of clear_bhb_loop()."
-
-Reads proper to me. Use it for your next revision pls.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
