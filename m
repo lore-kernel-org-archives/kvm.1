@@ -1,75 +1,78 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFEE3AA4F7
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 06:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590A83E8C57
+	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 06:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332942; cv=none; b=EGjXMN8YSX8zUZd35nxyohj0reqSbk9AkhAJfnT+R9PnRh96mPTuECN2+T7O7qKtNcYcXIQGQzp89CYBzHFWrEBrJv95EdSk6t3RGvEZPcsDiBonjdQpdnC356upHzIfuyixB8rkm0bM+5IdmQSSqtsOth4PH9Pem1ee3L8x0ik=
+	t=1774334585; cv=none; b=qaQWSFd3R8hR+mkDUoZuEzTfBVHtXK/3JRvQzDfF/y+g4takWBLWBiuB1/AIsSRlxwxsUN5+8ipslN/9saCHPj63kj2mgb6axpwAmdnPbfYU88Bwojy+NYhAbsgLIEgksNZ2dJNhxaCall/s1g5WHhdYaYoyAiAxgw9b1VupGIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332942; c=relaxed/simple;
+	s=arc-20240116; t=1774334585; c=relaxed/simple;
 	bh=yu3nC6vhpzZez3hZu5WSDBz9l+V7URi8BT2ABBFXuP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGO34SKRTkZRam7/qXqJV/mfBWCfG7lY7EmPKlZDUpHm5VmgyucZr8O193WMBxX/u4MUhZINyBdQerVwA9vl8G4UvFTNXqPTA+4jsAOJiI4ktGZRP5t6nEnME4kwJe+LuNDG79cpSqMU5tG5AvKriBr9OwdyfZVKYkwh+zJG7NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DKYgr/Mz; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version; b=tcaphvWjIrrg+yRaV1KNqsE9aDtjtQA6U8nDXwZoahixqyMidTtCfUyEdVSyqQaEqVU8XdVMDI7xol7Y9z35lCVCocOYZTiExBCyFol1DvF85O4JFFJPa377Tq4TCek4ZTxsT6vyPYc4az3trRj8fylZv3aoBiEbwvtX4vZ51+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BgBSwq0X; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DKYgr/Mz"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-487035181a7so18794285e9.2
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 23:15:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BgBSwq0X"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-486fd27754bso7211895e9.3
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 23:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774332939; x=1774937739; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774334572; x=1774939372; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=Mifv6lV/1vhl2tnAgC+pUhj48DLTv7wevR0+F6OEtI0=;
-        b=DKYgr/MzsqhaJNVAVJS4cG1jw/uMJhzMwOUA9Ww7W+9y/lplLAW+v3xVYiPpi2iw1n
-         wFycdoOVjTYGZo4+7pRrFIdkUNfvMgi98HbqOoNk96n4MKsdtZW/leHJWxbWRb0yA6P/
-         QgA2jS00cSJip6Lv6AlKdRjlSPKttK8ogy7r13O3pAblU5gfu0+AMCvbLeFB9rSkDdCI
-         Ujjj6RMxsUnORpIqgzt52DK4NIOqJYOFyvdRRfGe9FIX+dHM7IEs3w6I0xXP/zf+Jysj
-         EJZGqti/6LEUZ4tHeb2YkmovL/sypU4LK4ZVMPkN6vnAMPxntIMOAkvHHIAq+vnmsBXg
-         p5Kg==
+        b=BgBSwq0XGX55XxIPHkyReappFqNPHlYbS9wRox59BhY2ggelsZwG3qm3tAES+H8Wo6
+         xUxtExLkAphLnNdwGId6ojdg6SNgtgBBoWu25lX0PL7BglUtngFLRhI/95DV+Dp8nYav
+         Z1USzY0G8VLWMwimeg+bCFqrnrjOfYk99G9fxAxj9BqAF+lEuR/MRzxu6NXgpynfFwNm
+         6X7KzIHSkh//xhBxNDrv1kroTDXtZUaMw3uhbGltsaCATeqsKT7VglrUHHUWpsi/vBAt
+         QisqXy8QtY+5GTVDlCgt1n4pipKTAmbiCOXtOPi0V+8X3CDeK8CpNOVTc5Nsw5JmDM4S
+         ZPdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774332939; x=1774937739;
+        d=1e100.net; s=20251104; t=1774334572; x=1774939372;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
         bh=Mifv6lV/1vhl2tnAgC+pUhj48DLTv7wevR0+F6OEtI0=;
-        b=tEH7Uq4+bYfJ7wiJgq2eQawj9kff7lpSxz+Dz3YXsoe3pD3VbXKAFCvxW4GNbjjRi0
-         uMXvdMk8ig6ZGcdvvNOkSB2YJSWTE2l1gGrNnAYs5W2mfdIgo8oyJ/k0h/2K1fnJkrM6
-         DA43+2DFVUcosvQ8oPe5MdG9BQq8F3TXjb4OigRPDVocoEndGRuM3rgb6KjWCT0/T596
-         LXavvQ61ecPckmAN0D1lHmXX4ssaCPCEufcExgbcR6fv+4FOS10a7v+5PfzZ3+yGI6X8
-         i0LYeVzEuevPkwdIMf0Vk4rBVu0qJePvLbnaEUf+wn6+Xr3826y5pzLjAZw5pQMzxpKB
-         m0hQ==
-X-Gm-Message-State: AOJu0YyBqFPuNDUPCoHQMr1FgtbwycLFfy8TBT2eHVHQ8jGT7GcMvhvH
-	/tLtbt+vVfsJxDYqUBjzdZLQneWBW8IW8GvjuV/rciXz5ch1QGtMxVRj
-X-Gm-Gg: ATEYQzyjrq/v6nSFotgB2DpZiz8yvMSeM3Mhxp37kXRfKStnv2BWZujFeteTnUz5Ln9
-	RG37y4bcSm3PlXjWIB7vH4L37+D0A/w+/NrA6DvrgE6grpZA/6A01YbhAO5ulcsVlRgdCk8pxU3
-	jUuJN8bikw5lbCDmWgXnqG+MJzu5b8Q6xnpaaNNx6OezHc+aI2qgV5BRcBbXVBATRypigRte9VF
-	cYyQTvqSJvW6ud5RttQsXRJJKVc1KwkfNmUGxRUVZ/U0QkQxjQ99Wm13D7a960yASeDay2uuH82
-	UzBqk8WPSznV2NnRejuWU+Qn+MOsWrRKTshC/ATqz3VxPFnh8ZAw0GQZCS5PwgVp3xWm8na7OkK
-	lw7q0xwFJH496GidZezLpKrcdpHujgx2RvfLdqJNJ4qtbdpxxMXrwta4aJGX+cWL1kg2rxGvC0/
-	gZQZaT3QdP6E7/tHSxoyo=
-X-Received: by 2002:a05:600c:8b25:b0:480:6bef:63a0 with SMTP id 5b1f17b1804b1-486fee0d8cdmr212926635e9.21.1774332938609;
-        Mon, 23 Mar 2026 23:15:38 -0700 (PDT)
+        b=muehbXaw+9Kbu4gdOpUZMjPQsWSNnS4F3uJowfMbSOK7QPAsFK6p6TAJ6KYAkADzSx
+         epfAVOc8j9YvnsOhIS1WbXIQjczSWOO9OgsA6yLnDRXaD5xoiq6hc0zqY5Rpm5zB+uq6
+         9jhmsk4LUnussdhzoUaitTehpkw7BPISHiUE6mcyG54wIM/ByBWbA4dlUR1KJrJUWC1y
+         zderiLiJEcsLNPIjKr8OXgUz18E6qkTaUfjwguzU96qRimzH89hI1GvAhk56jEPPdkuq
+         hM8W7IfIatXLvYjON7k71AeE6md4NyPtFTOntOOvQkKBOCxvvkpvQSLZbnDy4xaoAZ4b
+         n0DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkh5vqHIdKWhCGtuH1BF2A+Ym/VvUzinLay78nTP2s/jv+MYsbxz/rhmSO2En11QvuU0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy200OQOV3U69mpAnOT6uFbAtnF8CNy03+KVML5+DNfwjifHYBY
+	qWPtam9FMIzeU34+iyYwGLSIIt9F4vJXzOOfaPKyf2P+2umn4TXoBTew
+X-Gm-Gg: ATEYQzxmW44U8m1UonKjM5h6qmSFbVNRoxrWxr/UFnBZqzkVRatjiPiHx9QGJrR4Go8
+	bYzvdyPfVf0KIXIIT0rBWHt7P5Rt41FmlRWdfQba63rdRnGviYAMI+x7M2MsWb2zBtu71b+9VM1
+	qXWjqc0Y9V3F6OID0gKgvZlMxRg3qwIlUwVS56n+eUb2hWXFVWI4S2z1t8lB3UnT60JWuA+dfQP
+	t1c0mpGQ8T6yw3JzCsw6VHDrQsAdi48Fq8ED9xnURxW1eQSzhN66fSghZdyjqcsdr8ocYynn4uu
+	T2KmAiP8fTDQN1k++HvNyxvhi9sPKQfI3JIvV2C4hhmAP063TOHSt7Wwz1dVGvt5Nn258hrWBk3
+	vVOEgKboLTkg+UUoPFX/bmOZyQc2AKfr2FoWHdmIRSLKQlqNSL1lANC8cbE0ZfsdQXDi2xqOP0H
+	ciQ6KuGg3nrW3DXfKgOWo=
+X-Received: by 2002:a05:600c:8b31:b0:485:9a50:3369 with SMTP id 5b1f17b1804b1-486fee304c4mr210200845e9.29.1774334572299;
+        Mon, 23 Mar 2026 23:42:52 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48710fe6f86sm13091615e9.6.2026.03.23.23.15.35
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48711116cbfsm10881105e9.35.2026.03.23.23.42.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 23:15:36 -0700 (PDT)
+        Mon, 23 Mar 2026 23:42:50 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
-To: babu.moger@amd.com
-Cc: kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
+To: dmatlack@google.com
+Cc: kexec@lists.infradead.org,
+	kvm@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v2 00/16] fs,x86/resctrl: Add kernel-mode (e.g., PLZA) support to the resctrl subsystem
-Date: Tue, 24 Mar 2026 09:15:31 +0300
-Message-ID: <20260324061531.3221932-1-safinaskar@gmail.com>
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 00/24] vfio/pci: Base Live Update support for VFIO device files
+Date: Tue, 24 Mar 2026 09:42:47 +0300
+Message-ID: <20260324064247.3271583-1-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1773347820.git.babu.moger@amd.com>
-References: <cover.1773347820.git.babu.moger@amd.com>
+In-Reply-To: <20260323235817.1960573-1-dmatlack@google.com>
+References: <20260323235817.1960573-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
