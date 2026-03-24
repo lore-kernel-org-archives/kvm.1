@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F713B2FF0;
-	Tue, 24 Mar 2026 06:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0073AF660;
+	Tue, 24 Mar 2026 06:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332461; cv=none; b=gHEP55UnV3oORaYZDJLhG/5d+UoihlrQVGaaOPsyUACdty9SMEP2yTh+IO5ubyrUOpYUh453MQTUS5E+HTRXER5Z1Rr0OVeC5sx9mc/WwPXuL02VDRUVVaU0nFVWm73CoRRmzNsFV95sGDNLtACx1uQs2gLOYGH2Iv0500XVUzg=
+	t=1774332462; cv=none; b=pnUwnyUnI4V7og8AeC9ISNeD2xUfQR0Bi2Yck0Ra1NWImoQyibvxlPScQunhz/5qUFkHkAdsVYRwJwZyG8PwAIhHl762L4ws9ekHtiEFWAeKBiBP1HvLDDk4UAwNEY51z6BfVHXVvQBD8I2lQRNivNBPjcyF3rt4503WzTsHCwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332461; c=relaxed/simple;
-	bh=JP9ahby6Ly1VVw7RxM4srHWXaEIozlGHAWmdpUP2jJ8=;
+	s=arc-20240116; t=1774332462; c=relaxed/simple;
+	bh=5zNUfjCbe4xMMri1P2HaByUJAkjQzA8Nb9ip9FvYKes=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=m+4gFOrew4vBmSjtAcjnjx9sI6nQMgNZDx9zLxXWjYcHaPGyqkkX4Dq43X7dqAAoDdJj4vg/5pB4RlApiwCAkxdy9IFHVo9erlCfojnGRb9Po6AeiEteL5ZRn/zodCQv8dP2F9BQk0EtPObjuhLVJzKF2JXiMT1sbBtjhV5SwOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbNGnKO/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=BqmolUe4VuvACBaLF4j8iLEt2+yN8tnCOY5gajzlchvjfOeDGlZur58dd9CXdxOc9td0PiEAnSKvH9DUHQQ26xijKsbHl7PMg8Z8vYtJfVnq2CnD61mPiWizgOGre59RVoGk6oSQxVEgtRzycPKZiW7xgEDIzqQCjfk/RRk8VXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byrCHLeF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbNGnKO/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10D0C2BCB2;
-	Tue, 24 Mar 2026 06:07:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byrCHLeF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F02C2BCB2;
+	Tue, 24 Mar 2026 06:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774332460;
-	bh=JP9ahby6Ly1VVw7RxM4srHWXaEIozlGHAWmdpUP2jJ8=;
+	s=k20201202; t=1774332462;
+	bh=5zNUfjCbe4xMMri1P2HaByUJAkjQzA8Nb9ip9FvYKes=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UbNGnKO/tp6ai6834ydA1lQ5PukSdo9guTKRu0aT7uQ94/PBq34Vo08i3GzwU1a7R
-	 Cjj86a0rKtbPKnF+oVKFGyOV87WahqlGOu4eDV+h+S5j7x4aPhqGuz+E/DJGQoXOGA
-	 wBe47f8pbr/WXEHhTZzzJBCJP9XHj+6UqfGOLICI3RcjHw+35Cz5SRZZcw7k7C/zYj
-	 XUieDNECgaPKML2nc7pDk7PgesQln2TdJXIciFo+QXEQm2NonZFnC2+3B6gKw1+DHm
-	 Z40BPILv5vYzesqn1zNeeb326JjYakJK+jDAuKVLcvEKgQfH7daPPDxWve9mnoaYbH
-	 fSR6hO6kwysDw==
+	b=byrCHLeFhkP2m2kqESbzXZCxNMNC//4fVSFc9OeISJD1jNXl+AxwmfLgRdod4s1oA
+	 Oa72XoY5nRRjIvgFlTXq0Vi64GALRTxTUZvjB4l2/2o2eiMUv86OyfTtFQRnnnc84Z
+	 cnPBrH5NSBZbBdFMhHQurVK8qLDbgjZpM8kEkZ2nwz5lvqfVGa6IwLDxNPmI/lKtMl
+	 C4x4ei+7qwP2MIzEAzo6VgyvQZPsB+JHpK8TvHvAiyqZEer5QShnK/Fl59vZADpGme
+	 QiIA0Kz4We8WXDmOFR0/fH8YvVu9A9ABD5T6VdX+IzjWeY3aB/j7liGA4P+8xPNWE/
+	 eB1ZlnfTnv+Qg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE5D3808200;
-	Tue, 24 Mar 2026 06:07:30 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B72183808200;
+	Tue, 24 Mar 2026 06:07:31 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -37,42 +37,47 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
+Subject: Re: [PATCH v2 0/4] KVM: riscv: Fix Spectre-v1 vulnerabilities in
+ register access
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177433244873.469836.2501898935183219197.git-patchwork-notify@kernel.org>
-Date: Tue, 24 Mar 2026 06:07:28 +0000
-References: <20251205232655.445294-1-seanjc@google.com>
-In-Reply-To: <20251205232655.445294-1-seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-riscv@lists.infradead.org, maz@kernel.org, oupton@kernel.org,
- zhaotianrui@loongson.cn, maobibo@loongson.cn, chenhuacai@kernel.org,
- maddy@linux.ibm.com, anup@brainfault.org, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- imbrenda@linux.ibm.com, pbonzini@redhat.com,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, gustavoars@kernel.org
+ <177433245028.469836.11061694721898939145.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Mar 2026 06:07:30 +0000
+References: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
+In-Reply-To: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
+To: Lukas Gerlach <lukas.gerlach@cispa.de>
+Cc: linux-riscv@lists.infradead.org, anup@brainfault.org,
+ atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, ajones@ventanamicro.com,
+ radim.krcmar@oss.qualcomm.com, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ daniel.weber@cispa.de, michael.schwarz@cispa.de, marton.bognar@kuleuven.be,
+ jo.vanbulck@kuleuven.be
 
 Hello:
 
-This patch was applied to riscv/linux.git (for-next)
-by Sean Christopherson <seanjc@google.com>:
+This series was applied to riscv/linux.git (for-next)
+by Anup Patel <anup@brainfault.org>:
 
-On Fri,  5 Dec 2025 15:26:55 -0800 you wrote:
-> Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
-> aliases the flexible name[] in the uAPI definition with a fixed-size array
-> of the same name.  The unusual embedded structure results in compiler
-> warnings due to -Wflex-array-member-not-at-end, and also necessitates an
-> extra level of dereferencing in KVM.  To avoid the "overlay", define the
-> uAPI structure to have a fixed-size name when building for the kernel.
+On Tue, 3 Mar 2026 15:19:40 +0100 you wrote:
+> This series adds array_index_nospec() to RISC-V KVM to prevent
+> speculative out-of-bounds access to kernel memory.
+> 
+> Similar fixes exist for x86 (ioapic, lapic, PMU) and arm64 (vgic).
+> 
+> Signed-off-by: Lukas Gerlach <lukas.gerlach@cispa.de>
 > 
 > [...]
 
 Here is the summary with links:
-  - KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
-    https://git.kernel.org/riscv/c/da142f3d373a
+  - [v2,1/4] KVM: riscv: Fix Spectre-v1 in ONE_REG register access
+    https://git.kernel.org/riscv/c/f9e26fc32541
+  - [v2,2/4] KVM: riscv: Fix Spectre-v1 in AIA CSR access
+    https://git.kernel.org/riscv/c/ec87a82ca874
+  - [v2,3/4] KVM: riscv: Fix Spectre-v1 in floating-point register access
+    https://git.kernel.org/riscv/c/8f0c15c4b14f
+  - [v2,4/4] KVM: riscv: Fix Spectre-v1 in PMU counter access
+    https://git.kernel.org/riscv/c/2dda6a9e09ee
 
 You are awesome, thank you!
 -- 
