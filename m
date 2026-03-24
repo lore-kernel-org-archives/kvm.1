@@ -1,216 +1,121 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E063126DA
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 19:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899302F531F;
+	Tue, 24 Mar 2026 19:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774381520; cv=none; b=SzxRq+BoDPNQQg/ArDqtHMdtaIeYgohBlRBSeYe7xnJDRkIeclbcPomoXnegRTYTuBm7+fITjzUzY4m76X7sh4XYgL1tkwf8iPPLNUFunbvFcwhuMEELRxFUgCb5UIwhqmY8vzbBlXxD+eeTxNURBwsJfzS2MbyCMXwKQgRK4EQ=
+	t=1774381586; cv=none; b=K612guoUgtem7WQRW+wgpe5Ou4mLHd3+CTI/ZGsqfNCqr1ButqkgLEVwdq1in4+1g1EgACfDBqjg9b2SADgt3m3F4AJTXtlUb07eCi2ngSRPILh5kRkwZlILTRyDem5UzbQVCM112k6bOqdmZDGvKwU2wnz5zv878HpNlmzK5Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774381520; c=relaxed/simple;
-	bh=cElslhTE6m9W0YImaAUJVkSxCsiQPpNOSWv/SF1fcSE=;
+	s=arc-20240116; t=1774381586; c=relaxed/simple;
+	bh=2IjbiGOydgTISwKREhFDXr7AUF1Ww7b9HlNRKg+3qSE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XmwsE6smDPHHuzZk4WVKqN6e7+ONOT6fMgjaENLWD4Kf31YgONqDypnkSld/gAFQEBE9AVgnoKFUbxsYx7HjTJAxOAhPEd1VJ5zy3OcCxfCPaGNs7NXtMXxvgMzGk0Lci2BVdQyrFg6YI2J+hqcyS0XeyIFpXSR8QoBRJiWJDug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aHaP9fVl; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWsewpF6KDPphltnzqc5U8VsClxcJigYCSzRF76IGDu5EHtMEeIU/7AYO/h3h/mCUKYWPtbSHxo3qAR9O+Suzb283XHQVCoRUNS3KZDJ3/YDGE8jWfkb9J9TsSqZd1jj+zMRa2B9PHdQyx77yEIPeV3EOLaSj+7DH3hev4moSiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bo94spsm; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aHaP9fVl"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b0b260d309so2475ad.1
-        for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 12:45:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774381518; x=1774986318; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lk/w0o7W4j7sim/BVALDWnCOxHkFQz3/Bh51qF9Rkjg=;
-        b=aHaP9fVlze1m8JrFGgfYGWJQ5c4QkDWo6NQKUSM+H4HXzymIHwTVJwF2pBuQq5+GKA
-         26AHws3sOSHnJrK+2rVPfupjOFEM3n+MBwc44tO3SwhmuqQz/0IC4AZNBEVNVIhD7Gux
-         ArNdpgR5cqikh18c2a8/g8Xfxk5cXY35uH33GYJEisjByLKN8xUEAILICAToXec4pJKN
-         zu/wTH/2l17C74YNhMVJPze7+NsFB3EW7fwlL8uFIcPtrxgRrYhuf8mXyFQS+lGi3fJT
-         7bMSW1hm7mAvSLhJtIVevM5AbTmQweMBylgAM3O9X3WIbTMVwDtV2VoGGE78VMRMpT3d
-         Uhcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774381518; x=1774986318;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lk/w0o7W4j7sim/BVALDWnCOxHkFQz3/Bh51qF9Rkjg=;
-        b=gQEBsLyju+LGuIsmwC+5HnS7t3QTUFL8MJFPVyADpheFou5iYFez9KaqN2PrO+EbCc
-         3iq5FDQ6NPCjdIG04ZoWLTGpAFXKIVS4L9tBumnLDhBBJwAgujLwQ4//cJs0Q/fHz0pc
-         avx6ugFy3YV60+EJt/Y/J6Lj5seslRzfEGfXJ25oD9IqdgAdFkcGx7MTR5ZbFpkit6hH
-         SMDRvYNTOnXfgkmozixCA+SiwRu7S9VVC4neJsnSLn0nYEQM/KGawOGock6NDo2OuYj5
-         /SuCVrDFAq5ILd0PvduMAB1j4HYsRenxKpdIvvhsa2nGFbivpARh2cEHsGOwWJcLFIuN
-         4WZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkYIh2qoUmRC1mgibWa8z9KsPc2ZHzwoL4Idf5bdCza0e0yhJMnQ7AhF/PZj7kCdoVJ60=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpkJE4cjz3tDX4R6MRMf3gPmN/+VIMmLFYxNsDjVXsNBy9yNGD
-	qhSQc6CgPeJMBSaNbuGS3wvbbJ7xJ57EnVZ/CHENPSmOQB8y18I1JXaxT0E+h3SF9Q==
-X-Gm-Gg: ATEYQzw9aEoAvg5zB+qRoJ+C0TrW4uKwk1JgW2/Yjut5st81tYPiRJ31Tw90Q06Lcsk
-	b2bLHhl6EbSJI7hufMcqIdr84xrakWf4OfuaBDM5QsfsxxpFlDHs27Bj2NT+rOtz5xBzw2EQhA8
-	i6whnAqWGxTT4TZB1yPA7zEJtlJvT5F+kBfCdBv7Q+9whW0vQSGftDVj5e8huLmVJFsaZ6arE9a
-	9qWn9OTvYpInUDlxQE8Thqu3iWUY78mFxzgSzu7E86/qj9YCiaphIRQT8KmHGUdrkaPbk4vh75E
-	lmuCtoWcNgit7A+68XETB2f0/e3WWBPyNE0+Yq8crgviLyNGwV7zl3wiUY+EkW1Q5xWCLxiFrGD
-	QgrUOscnRCvXgpZvMs46YnJc5H+6cU0OHzKsi6NesC7b2GY2Y+bZV8HdEX5/AVr87/2JOFgM5uk
-	aZsAmy0n2+0vRXHGptqG5nF3nw6IotxFnezCInPBRDborRBqx16Skps0N4SUMC+g==
-X-Received: by 2002:a17:903:b47:b0:2b0:aee4:afe7 with SMTP id d9443c01a7336-2b0b1568b56mr739105ad.10.1774381515550;
-        Tue, 24 Mar 2026 12:45:15 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03aa5aa7sm13255806b3a.1.2026.03.24.12.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 12:45:14 -0700 (PDT)
-Date: Tue, 24 Mar 2026 19:45:11 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 02/14] iommu: Implement IOMMU core liveupdate skeleton
-Message-ID: <acLiWVezdOKY4qO0@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-3-skhawaja@google.com>
- <20260316221854.GC1768676.vipinsh@google.com>
- <abm2C-8xRstbuzIe@google.com>
- <20260324184809.GA190066.vipinsh@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bo94spsm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774381585; x=1805917585;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2IjbiGOydgTISwKREhFDXr7AUF1Ww7b9HlNRKg+3qSE=;
+  b=bo94spsmrfDgFInPU1zdXMnsm0T/DVFM/GCXxOiilspiU0MS/hl2EirK
+   3l0+xKgjq1gpn4Dn6CWv8vP+/xtAyflp3NTP9YAuM4csC4saY+UfE3tyw
+   oDTXdz+EriGY4M9eFMIWQE1FmAiYPOWAWKwO5aWdOI0SYtstySCjuTaA5
+   oOBk5MFRr6U4JO+/iT0iNeTxpipNkrG75wAN75C4smqXA53mYUsoU+9jP
+   HQEPEkIAyVhBgUu5sYBoEtQTK19Z1nRnbrpmOeQmj9lC2sbzu5Y0M7grz
+   8rd4f7qMnhTPHCRyGjrQNZgs3brh6JKm27gznMv+wGbMPPG7Fkeb8BB2J
+   g==;
+X-CSE-ConnectionGUID: yzUxuVv3S2eGVn2dX5fiWg==
+X-CSE-MsgGUID: YyizQrKrRAW20QwKG/3Mdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75380910"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="75380910"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 12:46:19 -0700
+X-CSE-ConnectionGUID: axslOJxhRbeFA+nuy+i/BA==
+X-CSE-MsgGUID: p0QH1MlYQBGmYM6fF3GyOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="248026177"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 12:46:18 -0700
+Date: Tue, 24 Mar 2026 12:46:13 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: bot+bpf-ci@kernel.org
+Cc: x86@kernel.org, jon@nutanix.com, nik.borisov@suse.com, hpa@zytor.com,
+	jpoimboe@kernel.org, david.kaplan@amd.com, seanjc@google.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+	kpsingh@kernel.org, jolsa@kernel.org, davem@davemloft.net,
+	david.laight.linux@gmail.com, luto@kernel.org, tglx@kernel.org,
+	mingo@redhat.com, dsahern@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, sdf@fomichev.me, haoluo@google.com,
+	pbonzini@redhat.com, corbet@lwn.net, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, asit.k.mallick@intel.com, tao1.zhang@intel.com,
+	bpf@vger.kernel.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, martin.lau@kernel.org, clm@meta.com,
+	ihor.solodrai@linux.dev
+Subject: Re: [PATCH v8 08/10] x86/vmscape: Deploy BHB clearing mitigation
+Message-ID: <20260324194613.otkxlu6x4xehgnt7@desk>
+References: <20260324-vmscape-bhb-v8-8-68bb524b3ab9@linux.intel.com>
+ <ed36be8ab3fd8dc38efe3fe4c5846d1f315fbeef0782ab56550e279960e57ce8@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260324184809.GA190066.vipinsh@google.com>
+In-Reply-To: <ed36be8ab3fd8dc38efe3fe4c5846d1f315fbeef0782ab56550e279960e57ce8@mail.kernel.org>
 
-On Tue, Mar 24, 2026 at 12:06:10PM -0700, Vipin Sharma wrote:
->On Tue, Mar 17, 2026 at 08:33:39PM +0000, Samiullah Khawaja wrote:
->> On Tue, Mar 17, 2026 at 12:58:27PM -0700, Vipin Sharma wrote:
->> > On Tue, Feb 03, 2026 at 10:09:36PM +0000, Samiullah Khawaja wrote:
->> > > diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
->> > > +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
->> > > +				    void *arg)
->> > > +{
->> > > +	struct iommu_lu_flb_obj *obj;
->> > > +	struct devices_ser *devices;
->> > > +	int ret, i, idx;
->> > > +
->> > > +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&obj);
->> > > +	if (ret)
->> > > +		return -ENOENT;
->> > > +
->> > > +	devices = __va(obj->ser->devices_phys);
->> > > +	for (i = 0, idx = 0; i < obj->ser->nr_devices; ++i, ++idx) {
->> > > +		if (idx >= MAX_DEVICE_SERS) {
->> > > +			devices = __va(devices->objs.next_objs);
->> > > +			idx = 0;
->> > > +		}
->> > > +
->> > > +		if (devices->devices[idx].obj.deleted)
->> > > +			continue;
->> > > +
->> > > +		ret = fn(&devices->devices[idx], arg);
->> > > +		if (ret)
->> > > +			return ret;
->> > > +	}
->> > > +
->> > > +	return 0;
->> > > +}
->> > > +EXPORT_SYMBOL(iommu_for_each_preserved_device);
->> > Also, should this function be introduced in the patch where it is
->> > getting used? Other changes in this patch are already big and complex.
->> > Same for iommu_get_device_preserved_data() and
->> > iommu_get_preserved_data().
->>
->> These are used by the drivers, but part of core. So need to be in
->> this patch :(.
->
->Sorry, I am not understanding why it has to be in this patch? Can it be
->its own patch?
+On Tue, Mar 24, 2026 at 07:09:33PM +0000, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> > index a7dee7ec6ea39..8cacd9474fdf0 100644
+> > --- a/arch/x86/kernel/cpu/bugs.c
+> > +++ b/arch/x86/kernel/cpu/bugs.c
+> 
+> [ ... ]
+> 
+> > @@ -3136,6 +3149,8 @@ static void __init vmscape_apply_mitigation(void)
+> >  {
+> >  	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
+> >  		static_call_update(vmscape_predictor_flush, write_ibpb);
+> > +	else if (vmscape_mitigation == VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER)
+> > +		static_call_update(vmscape_predictor_flush, clear_bhb_loop_nofence);
+> >  }
+> 
+> When vmscape_predictor_flush is set to clear_bhb_loop_nofence, the
+> call site in arch_exit_to_user_mode_prepare() becomes:
+> 
+>     static_call_cond(vmscape_predictor_flush)();
+>     this_cpu_write(x86_predictor_flush_exit_to_user, false);
+> 
+> The comment above clear_bhb_loop_nofence() in entry_64.S says:
+> 
+>     Note, callers should use a speculation barrier like LFENCE
+>     immediately after a call to this function to ensure BHB is
+>     cleared before indirect branches.
+> 
+> Every other callsite follows this requirement, e.g. in
+> CLEAR_BRANCH_HISTORY and CLEAR_BRANCH_HISTORY_VMEXIT:
+> 
+>     call clear_bhb_loop_nofence; lfence
+> 
+> The previous static_call target, write_ibpb(), uses wrmsr which is
+> serializing and inherently acts as a speculation barrier. But
+> clear_bhb_loop_nofence() is just a loop that fills the BHB -- it is
+> not serializing.
+> 
+> Without an lfence after the static_call, is there a speculative
+> window where indirect branches could execute using stale
+> (guest-controlled) branch history before the BHB clear takes
+> architectural effect?
 
-I will move it to a separate patch as per discussion in other thread.
-
-See:
-https://lore.kernel.org/all/abrk39_M8k45myXJ@google.com/
->>
->> Note that this patch is adding core skeleton only, focusing on helpers
->> for the serialized state. This patch is not preserving any real state of
->> iommu, domain or devices. For example, the domains are saved through
->> generic page table in a separate patch, and the drivers preserve the
->> state of devices and associated iommu in separate patches.
->>
->> I will add this text in the commit message to clarify the purpose of
->> this patch.
->> >
->> > I think this patch can be split in three.
->> > Patch 1: Preserve iommu_domain
->> > Patch 2: Preserve pci device and iommu device
->> > Patch 3: The helper functions I mentioned above.
->
->I understand that this patch is adding some helper functions and not
->doing any actual preservation. I am suggesting to split this helper
->function patch into three for easier review based on the above suggestion.
->If I am not wrong this is biggest patch in series of approx 500 line
->changes.
-
-After moving the getter helpers out to the separate patch as mentioned
-above, the size of this patch should significantly reduce. I will split
-the remaining into domain and device + iommu preservation helper patches
-as you suggested.
->
->> > > +static void iommu_unpreserve_locked(struct iommu_device *iommu)
->> > > +{
->> > > +	struct iommu_ser *iommu_ser = iommu->outgoing_preserved_state;
->> > > +
->> > > +	iommu_ser->obj.ref_count--;
->> >
->> > Should there be a null check?
->>
->> Hmm.. There is a dependency of unpreservation of iommus with devices, so
->> this should never be NULL unless used independently.
->>
->> But I think I will add it here to protect against that.
->
->Okay. Since, it is a static function, I am fine either way.
->
->> > > +void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
->> > > +{
->> > > +	struct iommu_lu_flb_obj *flb_obj;
->> > > +	struct device_ser *device_ser;
->> > > +	struct dev_iommu *iommu;
->> > > +	struct pci_dev *pdev;
->> > > +	int ret;
->> > > +
->> > > +	if (!dev_is_pci(dev))
->> > > +		return;
->> > > +
->> > > +	pdev = to_pci_dev(dev);
->> > > +	iommu = dev->iommu;
->> > > +	if (!iommu->iommu_dev->ops->unpreserve_device ||
->> > > +	    !iommu->iommu_dev->ops->unpreserve)
->> > > +		return;
->> > > +
->> > > +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
->> > > +	if (WARN_ON(ret))
->> >
->> > Why WARN_ON here and not other places? Do we need it?
->>
->> Basically this means that the upper layer (iommufd/vfio) is asking to
->> unpreserve a device, but there is no FLB found. This should not happen
->> and should generate a warning.
->
->Yeah, but other places iommu_domain_[preserve|unpreserve](),
->iommu_presreve_locked(), and iommu_preserve_device() are also using this
->function. I am having a confusion on why it is important in his
->function and not others. Those functions are also called by upper layer.
-
-Ah yes.. That makes sense. I will add it to the unpreserve variants of
-functions you listed, as during preservation the FLB obj should have
-been created.
->
+VMSCAPE mitigation is for userspace, LFENCE is not required at exit-to-user
+because ring transitions are serializing. Will add a comment.
