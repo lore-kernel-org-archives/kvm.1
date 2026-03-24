@@ -1,109 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183F1391E55;
-	Tue, 24 Mar 2026 17:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1B040757D;
+	Tue, 24 Mar 2026 17:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774373977; cv=none; b=GocLAR4s4m1YMMj/FLQpgtq1G9Gysora5lGpq3WIU0e8NFOjKfIP3R+Dr0t/IQdBN65bRnrp+AwdHz6a8bI9SUyt/wrhRXUyyiRM6iYqKuU+gpKDAhLFdF2U90Y/8y2ivP7ScmKGGIKlOXpGeJB8nfxDJNTUK/mrThPfKgoBHnQ=
+	t=1774374193; cv=none; b=kCKMBb2xjpL2fNOgv3ZSS8bXrzNribRECuOjnr9JmME60gyyrTCK9s1ZuH0rpsh57F4OmoN3mBZPDaPPeXLnEIxBjB/ytwOWk+bwqa6l1LgPvd8YpiReI/7JOH6i2xAY7qEi4GoEZ8SgRe75PD0r6EmKU/e9SQK41w714qsp0QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774373977; c=relaxed/simple;
-	bh=ZaI9P4HdmB3KMrbR4xZJNOkfWyry+qYtmIIIXLbqdhI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YVAN+c8iFjNvTX5PplC0NVGGTklWVBQqtLce2wMwD5wPBG6fZhwe5x8r2jhg7vsB+sjH+tuJFqLXdNbUXn8Ymd3iZSglxXOv51KHlqy7Yb/bqyOHffQWjSaG0Gb5B2DIW28ii51Nf7rflzhr4ZvuYIdfBXT5KRgUnHD1ZL5unVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vdxmtj4F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774374193; c=relaxed/simple;
+	bh=OJ0YppEpXxWljpnDo2C4R25lit9Ina1zpzH2IgqgCAY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cghi4PqdiIuQRy9gt3DyO1EV2wuY8pTSo0C8ptad/eVHej+Pq9L0XJ/9wk1cbV+I4BdALBOqZ2JXpBonGUbRmwRGKx3j/Rdh2Y15mO89FTTGg0SE9NhK/XFKyY/POMV8CKV72IJ+vEkrXXwrB2hUU1TAYmGKG8e2BpG56iM5tdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BnTh1ujn; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vdxmtj4F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DD3C2BC87;
-	Tue, 24 Mar 2026 17:39:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774373976;
-	bh=ZaI9P4HdmB3KMrbR4xZJNOkfWyry+qYtmIIIXLbqdhI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vdxmtj4Fccv1fMIcMIq7MCmAm1ig+TX/gx3la5VFAMBYZLsELxlJqtDnhi8s0B4fZ
-	 FLtzNrkiYwLvR/VlBNRdm2g4ZrtmG0X0TZr2TyVuxc8x6k76h5ZsOIUyEILG7t+znD
-	 HsssQ29vRLe6cli6lWTOv6jdQ1HJqAj1DZnBHNcQkAKIKL+LKRwHPk0VvTdxe3r1dy
-	 LEVtjW6e7jllH/rriv3XSz9sPLVUaGTznEFwLuTrrX2lRLBtxHH9g9PTDJ/Yi9h+jS
-	 q0bGnG85JuFtt7z9RHDVdsl+TNuDQqI503+4QYEqi63536yH4BA3zYFqgfTGF5gQ57
-	 BJwrDkjNYBm8w==
-Date: Tue, 24 Mar 2026 17:39:31 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] KVM: selftests: arm64: Skip all 32 bit IDs when
- set_id_regs is aarch64 only
-Message-ID: <d5759443-ffc2-43b3-93f5-99ec55492a81@sirena.org.uk>
-References: <20260317-kvm-arm64-set-id-regs-aarch64-v5-0-a60f2b956e22@kernel.org>
- <20260317-kvm-arm64-set-id-regs-aarch64-v5-4-a60f2b956e22@kernel.org>
- <86pl4t41kc.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BnTh1ujn"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62O69eRr018998;
+	Tue, 24 Mar 2026 17:43:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=oDSu/bQDxMYWLBwio
+	nStkeQoi6NLCfGdNBrHSiGUtoI=; b=BnTh1ujnDHuc5HiFug11tMO7Cb8JFBbzk
+	K89I23eamCDJ6hEe0Iny4ime0NsXiw6lAx4u2krsSACZWQ8mfu2jieE9sWEIteGn
+	54S0s7ALVHA2C7CI7c3Crh3/VOAgEg6+X0778UGBGYZ4v6lFLEm1vOhQtjENXdMs
+	RP8ahhyzaHHGkSWbiRwU7CyvuTM6/Rv7NRj9K4B6BtaYkfoOQeENSGbGP3sZm0DF
+	3F2P0+g8y14TbhvXResyZn/S6bXAhboC4H7oW/G/xnsflltMVGebvJekKReS00az
+	UTzNgxcLqzRhHqQC14+j9FEYKyX7xwAZ2MDYc1Dm4jMsl7VrGuzKg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktxvwcd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 17:43:09 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62OGPlvR026698;
+	Tue, 24 Mar 2026 17:43:08 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275ku11c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 17:43:08 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62OHh4gn47251880
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 17:43:04 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 728C320040;
+	Tue, 24 Mar 2026 17:43:04 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4CFF72004B;
+	Tue, 24 Mar 2026 17:43:03 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.26.26])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 24 Mar 2026 17:43:03 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, frankja@linux.ibm.com, nrb@linux.ibm.com,
+        seiden@linux.ibm.com, gra@linux.ibm.com, schlameuss@linux.ibm.com,
+        hca@linux.ibm.com, david@kernel.org
+Subject: [PATCH v3 1/9] KVM: s390: vsie: Fix dat_split_ste()
+Date: Tue, 24 Mar 2026 18:42:53 +0100
+Message-ID: <20260324174301.232921-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260324174301.232921-1-imbrenda@linux.ibm.com>
+References: <20260324174301.232921-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="H1nc6A8dHTsws8fc"
-Content-Disposition: inline
-In-Reply-To: <86pl4t41kc.wl-maz@kernel.org>
-X-Cookie: Forest fires cause Smokey Bears.
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c2cd2d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=LsQdvuOhCgcXfIND9tsA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDEzNCBTYWx0ZWRfX0rLEKvHtKFrS
+ GMuhW8WLhSo+uZtLw9TMMgkvBXtlK4Z4Ad9YijoR8fnHTsX9+N1F8H3UgZZVqh0hs2Kk72/qdGg
+ Fr4UGR1VM37dEnPVwxD2H8HphbhsF4QC+kvpRrzGG/9Jhd2tVIl5hjBrsbCZ3qFiMrnhi8q8IHu
+ mT6VXVkqMByKlxBBvdSqBDPHSmnvPJ+5+N0fy6QpM6ZIPfXNxNpfT6ku5mTejwedBhsSWkTNc2Q
+ 5K2aTod/fvSo+nS0uX3LRQ3Ejh4ZgrmeILY/RDTqPKmrJi7MU9o/5+KLGBUoHKmPjWBuHtZD1h1
+ qlZgM2EJ/JV9fU08Ynugf5xUsK8YJgPpqRO260qbwLJH9ZTAyKwDnG9y5iEMJzFj5dpcKUPYQrx
+ EWWIaFqU2Y91Cez0G7jsTdCgs9zP9cw4fqXVaxJc2BjyShZlKeJhO6b5TYFFVRcTHGR5Ip3Htd2
+ uvDjFfxQh7Nk/lZW5AA==
+X-Proofpoint-GUID: jLXuIi1cypaD4PU5w38QWKOU-gQVcrmK
+X-Proofpoint-ORIG-GUID: jLXuIi1cypaD4PU5w38QWKOU-gQVcrmK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240134
 
+If the guest misbehaves and puts the page tables for its nested guest
+inside the memory of the nested guest itself, and the guest and nested
+guest are being mapped with large pages, the shadow mapping will
+lose synchronization with the actual mapping, since this will cause the
+large page with the vsie notification bit to be split, but the
+vsie notification bit will not be propagated to the resulting small
+pages.
 
---H1nc6A8dHTsws8fc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fix this by propagating the vsie_notif bit from large pages to normal
+pages when splitting a large page.
 
-On Tue, Mar 24, 2026 at 04:47:15PM +0000, Marc Zyngier wrote:
-> Mark Brown <broonie@kernel.org> wrote:
+Fixes: 2db149a0a6c5 ("KVM: s390: KVM page table management functions: walks")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+---
+ arch/s390/kvm/dat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> > On an aarch64 only system the 32 bit ID registers have UNDEFINED values.
-> > As a result set_id_regs skips tests for setting fields in these registers
-> > when testing an aarch64 only guest. This has the side effect of meaning
-> > that we don't record an expected value for these registers, meaning that
-> > when the subsequent tests for values being visible in guests and preserved
-> > over reset check the value they can spuriously fail. This can be seen by
-> > running on an emulated system with both NV and 32 bit enabled, NV will
-> > result in the guests created by the test program being 64 bit only but
-> > the 32 bit ID registers will have values.
+diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
+index 670404d4fa44..48b5f2bcf172 100644
+--- a/arch/s390/kvm/dat.c
++++ b/arch/s390/kvm/dat.c
+@@ -292,6 +292,7 @@ static int dat_split_ste(struct kvm_s390_mmu_cache *mc, union pmd *pmdp, gfn_t g
+ 				pt->ptes[i].val = init.val | i * PAGE_SIZE;
+ 			/* No need to take locks as the page table is not installed yet. */
+ 			pgste_init.prefix_notif = old.s.fc1.prefix_notif;
++			pgste_init.vsie_notif = old.s.fc1.vsie_notif;
+ 			pgste_init.pcl = uses_skeys && init.h.i;
+ 			dat_init_pgstes(pt, pgste_init.val);
+ 		} else {
+-- 
+2.53.0
 
-> I don't think papering over this problem is the right thing to do.
-
-> If the issue is that you have HW that has both NV and AArch32, then
-> KVM needs to be fixed to make the 32bit IDregs RAZ when NV is present
-> because that's not a configuration we support.
-
-Yes, I'm seeing this in practice - it hits by default with qemu which is
-rather more readily accessible than actual hardware with NV at this
-point and I was concerned that since these registers are explicitly
-UNKNOWN (sorry, a mistake in the commit log above there) rather than RAZ
-if FEAT_AA32 is not implemented there might be gotchas.  I do see that
-there's some forcing for the case where the host doesn't support
-FEAT_AA32, I figured there must be some reason why it wasn't done based
-on the guest configuration.
-
-I'll add something to kvm_finalize_sys_regs(), it'll still need updates
-in set_id_regs since that'd make the 32 bit ID registers change value
-when the guest is run.
-
---H1nc6A8dHTsws8fc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCzFIACgkQJNaLcl1U
-h9DDYwf9Em0WcSM2aylb1zHYADTr7YnIzBQqP/o86zuktEp0HrunQTiCzDnl3NMQ
-14RDXaHemX5VrVrYw29JutWLjEl1YI96rmMC8p6qBGSbo3V4DuV6pgoNwDta713e
-EJot0soFFT+bQk/N89VCWySOmyeWQKOBG93JVNiVBQ95+dcEFst5EmnfCGrpIan4
-yolB+GbbZ3SO3T6e3qg/ySgwrREbwCHLb+WAdKfV7NsT3AhXVrbaomdmlxIN056L
-foTiPS0xYSRj34dNUUnAamoZkgH/W+8+1J+sfufT4xjezwviTr4WlkHTxIsL0UPx
-2UJZqwfH8yGafVp75qoAFoGBj/kXZQ==
-=krAn
------END PGP SIGNATURE-----
-
---H1nc6A8dHTsws8fc--
