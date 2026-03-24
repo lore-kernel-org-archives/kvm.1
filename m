@@ -1,101 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383E33876A3;
-	Tue, 24 Mar 2026 14:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1873FFAC6;
+	Tue, 24 Mar 2026 14:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774363687; cv=none; b=B454t6pLWGjxHGhB1qL6IJNqK89hPj+W+I2siUGk0Lk+ifWAE38lCxfwGf+vy81qtvT56CWQMYhDT5D89ZpPIC+pKph8GPIiQDEnIYhqWVnhG86aNhGMCJ0AZ/Heb1n2S25LGqkQqdTJBA+sBpKVVbBWvxC49z3Ybu2CCKS9uCE=
+	t=1774363936; cv=none; b=R65X+LVOTMv61xs9B+Ba59TTIT2U/KP0MmuVoPG0nz4UWLNiv3SFCzzmlNlbdnahuDQ+OUriQXsH7YNg86Vfg3iu7DzOoq3OXQgqFWzqshHL2ofHmLhYMIgYo+CyLrgl2L0HpWIXY05YBlT88FXpf8Q1Razm1o66gRje5XXzvHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774363687; c=relaxed/simple;
-	bh=LLkl0SEenQDONMwzC9Hwo+1SXPja8lNluf74zP/HNRI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pc/raFN9oqVFn3nIwVyg+F7OmLnPs+4EOCc/Z8oIqkLbxelvu8QGOOsWjVFNyOOq6OhPIi9V0Uv1GG2E8uoNBOPwqdBx8sZurYtBQP1r77UcgfiH9vhiHcKwcPt3wAWtf1noBxFfHnL+oIeWCNpzu9RT3dRVQyhkr+5vh0kBfWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XV0yrAPi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774363936; c=relaxed/simple;
+	bh=/fpTOOkrngpXVeqeP/VJno5l/BQSG+nY/EpLAmd2sBM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ECJ01RG/rPN2ImQZfNzTHAzn6LbQTxPLukn5ny3yr8J1xhVEpRfxaw/BoQrB9fZF4YVxhAPS8snrwjuWMnpHZExqDgro3MTtPv2tkwj4E8O4YKZ/n7m6AEVP/53MgHL7BKXzeKSebD0ogAtry41xVz4RbYznmltuGtrV6q349ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PgUYIOvt; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XV0yrAPi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7720C2BC87;
-	Tue, 24 Mar 2026 14:48:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774363686;
-	bh=LLkl0SEenQDONMwzC9Hwo+1SXPja8lNluf74zP/HNRI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XV0yrAPiKeR2IFREU0+MhZd6ZQdm2ue2C0d9ATUwbZ3RUJUibOOZpnOFzFAk9VmX2
-	 wxGNPm63UzqBva9OVlOVz8hKekh6GMfn+0IO9d28vvxjGuCvPQ1q8yItV5ASf2r4HJ
-	 poj+HtN+/LP6duzU5LKFCotEu/4uhU1Q4dCVXdWIeV1NJIaaLb9BucHDNgTYVwT5xT
-	 vcmVYXKEfEEnEmGlD0NzTJwWWTzJXBkRYdXqO5+cLgbZWprLvmf0FSowRyfCU8pQ0L
-	 krRq+O6GXwkf5ncolYArUpU9oyxhtvHrs9T5WuPG1r1eGPJDGve7jWw0vtMxfAJjQv
-	 d55A3grAPgVnQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w5336-00000005CvI-3n1B;
-	Tue, 24 Mar 2026 14:48:04 +0000
-Date: Tue, 24 Mar 2026 14:48:04 +0000
-Message-ID: <86se9p472z.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly <Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v7 12/41] KVM: arm64: gic-v5: Sanitize ID_AA64PFR2_EL1.GCIE
-In-Reply-To: <638a3453-91c9-4a76-8241-25d5c27ca518@sirena.org.uk>
-References: <20260319154937.3619520-1-sascha.bischoff@arm.com>
-	<20260319154937.3619520-13-sascha.bischoff@arm.com>
-	<638a3453-91c9-4a76-8241-25d5c27ca518@sirena.org.uk>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PgUYIOvt"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62O2jLtA3835878;
+	Tue, 24 Mar 2026 14:52:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=F0pePj
+	Ajup2lsiB5Q61KclVdmiYrft/NMeZgDpn35u4=; b=PgUYIOvtmotM6BYOrkvqKP
+	XndtRC/yuJlzQIh4pfNTU6Adk0O4nOH0JTE1z4It2vkael6L92Qy+RMG9PjzkVsL
+	fZy0FH2pxD37+UzacnWmp76iGRJWX8UKYDW/q5N/JPE8fbz0uxA3kl+aDvv4/xn7
+	zTv4HHhiC6aVuMq6EWSF+fDtiR7EVxkPNUtSuyHTYOyPOQT6Dd33uZwA8qj9xpFz
+	YxgmIQidANEkYjgRV3yxjzgkPugBkUFnPZxQ/ylEsbozE//K9sOXV/fBrpwYUA1O
+	F4xc/ZVlifTbuCsFS7DJbXltc9s8uULP3HvCpqHEIy4HwWvQiGvK9za1jIpMMFKA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ky03e23-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 14:52:08 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62OCwRQi026771;
+	Tue, 24 Mar 2026 14:52:07 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275kt9bg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 14:52:07 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62OEq3Ze14156230
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 14:52:03 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E8CC2004B;
+	Tue, 24 Mar 2026 14:52:03 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1C3320040;
+	Tue, 24 Mar 2026 14:52:02 +0000 (GMT)
+Received: from [9.111.77.246] (unknown [9.111.77.246])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 24 Mar 2026 14:52:02 +0000 (GMT)
+Message-ID: <67810b81-a3d0-4517-96d2-e99b90a216cd@linux.ibm.com>
+Date: Tue, 24 Mar 2026 15:52:02 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: broonie@kernel.org, Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, jonathan.cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/8] KVM: s390: vsie: Fix unshadowing while shadowing
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, nrb@linux.ibm.com, seiden@linux.ibm.com,
+        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
+        david@kernel.org
+References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
+ <20260320161542.202913-7-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260320161542.202913-7-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDExNyBTYWx0ZWRfX0R2Ehsi0A3VR
+ 3FK5VC5zQAGDoRqbjbfcx7HsR3yiVtP/id02JaKwQNf7iYxI4Cbuz0cANOtYAchWUJYQMifImoT
+ nRUEM4ZjxTHyl5Nz20i1jS6qySjP7ctiNTGOH4/Ndz2EIQASymFxZLrAkH7N2ZZUbXIL33fRGSN
+ i8Tw32u0UPwnxBCsuBvCHqzdXRxEg2GqJL7UKNNucDzuy3tqjfo1pBe7ASqAaBVlgQvSXe1xQrz
+ V1LJDqt/8wrblIUc0yIV8Z/GlGYNiSmFCaZV+4pvbyyuLyEnTZuVE4ECkHU1pG7CJDycthgfPz4
+ KaPT1XYV8zPl1WsyvRzu8KH3qg/p5GIhlU50Ht/yKE7srJkKk+bR/1I/Cct5iuGR+ivJpb5qlS7
+ APd8jcswYVKVkCKK9f2iaS4LwXe5Ae4EZJXWadnVuNOtP05FY9XPXiEXlJIrZGrzWeXSCU9Rud0
+ PTceo1ofpeNPN+diEiA==
+X-Authority-Analysis: v=2.4 cv=JK42csKb c=1 sm=1 tr=0 ts=69c2a518 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=7xXb2gtW9L4Y6A714kYA:9
+ a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: 2EyVh3yoxkdExJwbKe53ojFvaN7X1of0
+X-Proofpoint-GUID: 2EyVh3yoxkdExJwbKe53ojFvaN7X1of0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 adultscore=0
+ spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240117
 
-On Tue, 24 Mar 2026 12:47:24 +0000,
-Mark Brown <broonie@kernel.org> wrote:
-> 
-> [1  <text/plain; us-ascii (7bit)>]
-> On Thu, Mar 19, 2026 at 03:52:50PM +0000, Sascha Bischoff wrote:
-> > Add in a sanitization function for ID_AA64PFR2_EL1, preserving the
-> > already-present behaviour for the FPMR, MTEFAR, and MTESTOREONLY
-> > fields. Add sanitisation for the GCIE field, which is set to IMP if
-> > the host supports a GICv5 guest and NI, otherwise.
-> 
-> We're also seeing an issue with this in the aarch32_id_regs test:
-> 
-> # selftests: kvm: aarch32_id_regs
-> # Random seed: 0x6b8b4567
-> # ==== Test Assertion Failure ====
-> #   arm64/aarch32_id_regs.c:25: read_sysreg_s((((3) << 19) | ((0) << 16) | ((0) << 12) | ((1) << 8) | ((1) << 5))) == 0
-> #   pid=3111 tid=3111 errno=4 - Interrupted system call
-> # sh: 1: addr2line: not found
-> #   0x10000000 != 0x0 (read_sysreg_s((((3) << 19) | ((0) << 16) | ((0) << 12) | ((1) << 8) | ((1) << 5))) != 0)
-> not ok 9 selftests: kvm: aarch32_id_regs # exit=254
-> 
-> which for some reason only manifests on TX2 of the platforms I've
-> seen.
+On 3/20/26 17:15, Claudio Imbrenda wrote:
+> If shadowing causes the shadow gmap to get unshadowed, exit early to
 
-Is your TX2 the only machine you have that is AArch64 only at all ELs?
+How can this happen?
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+> prevent an attempt to dereference the parent pointer, which at this
+> point is NULL.
+> 
+> Opportunistically add some more checks to prevent NULL parents.
