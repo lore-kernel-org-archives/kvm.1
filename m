@@ -1,439 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0424337B3F1;
-	Tue, 24 Mar 2026 13:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774357298; cv=fail; b=iOKLVldR3nh5urTCpTmE5g9RQvNLPAJKONpZvLrhR10q8BcWrtOk6TOr1r2eIFoZUrtibY2UEIJ9QK6kuBpxd+Td8kkBE9qVRT/UobBXDIcuQk/+y9WQ0r/QYqn9hZtFN9IIb/xqxjxKGEFmVNHFiQnRIdGKdXk5/DC4r05ZboY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774357298; c=relaxed/simple;
-	bh=fXIKOmeKv6N/bxNCc82YDScZ2GOPAD80Mk+DqB0HhFo=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=JTU+7pClvZFEaztbkNL/fwIkn0n6GDnyHrv5pxWh2avyggWZ4yOAN2FhhyhkfjATTIYu8viej3GZULTiPJPxgC9GVk9VtF0fCvIdGau93yY4GjZ/Zi0XE/hFFUFMbmTMAfZjfo3KQ03AMcP1DrzaL226m9RAz5b5hxdsnANn+z0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VYP9g/0g; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A003F7865;
+	Tue, 24 Mar 2026 13:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774358090; cv=none; b=UPuNDbG5Da7sgPWfnUS9mptzWgYXfFDNv98uwfnTESRgX2pIwqgBXKETtwh+IlnFvPn3T4agSen+MBItuxaSjEg79VHhk2nTZOgf1e5napGJzlTFT0KK9nIGwROTcmgRKyAAOHWlpKH5Na5lFPw7sRUrWWxc8s+8d/XftSPkf4g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774358090; c=relaxed/simple;
+	bh=zZudGvi4U2gZg38tJ6lhNeQyVvrbAscrWB/kkq3RcFY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cR84Scv+cDNckaDhKDp5ueUCncynQIZmE3GsEm1QkmWewXKPUrWeP6k5Kd9GUXxF/S8WorXNYybul1WI0mE64EBQXzLYJyvsBEP0tdGJZXGr9JLxcJ67wjbFM1c9Z9y3MyOkjUrkhNRiQO7+jLEJK3RUQnYIGWD/BEq7XMldHEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ju2KO/b0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VYP9g/0g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774357297; x=1805893297;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=fXIKOmeKv6N/bxNCc82YDScZ2GOPAD80Mk+DqB0HhFo=;
-  b=VYP9g/0g/dlBauyOUHDah+hXF2DDvrO9lRFpAABuIYiHTwi103k5nhm1
-   bhTSYF4uaD9pljOUWbeVs9IwO8unMUcByqvGVwr9hfcP36NfwXFGvYLtb
-   w6zNHzjyBnNgL/nF0TcWOq7m8OovOWhRAFYoM0M+aLm9ON86pXhpMZF7r
-   y5vW/fKuFf4fKBDsRId2cBVbq3eY5GktngVFT4L+lLd9pm6jsyzjtLSmq
-   169H2kVrxOSXJme1ZpDlRx/h3DjSx46uUqLVSqziCggAOrjnC1LGakwjc
-   za9IvADgg4dqRk59BctamEUn4VKEudmWpDAy69fuIg0A8QQY68N+6Jvpg
-   w==;
-X-CSE-ConnectionGUID: /cV6JudBQSK9iPHVVT8IyQ==
-X-CSE-MsgGUID: Cucsc8TFQe6Ey2bze/RUlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="74554100"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="74554100"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 06:01:34 -0700
-X-CSE-ConnectionGUID: aTQFjj02SZebdFozMbwCwA==
-X-CSE-MsgGUID: IgMJlkEGTFKK2EXc5qxo9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="223412780"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 06:01:32 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 06:01:31 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 24 Mar 2026 06:01:31 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.4) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 06:01:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RlhKUFKf3B5nXJD5lqX+JB+0hv8dUjC3Y8Bk2VEhQWZCe2wvtMdc5vnj9wZS+wPoTtI9Ee8Er3zeqx8Xtwoy5PNxweD/OdlhzxG4IooTlmlJIc7OJaxbSIx01Oi9hSCauP///1t1m54SYqdsh5dLsjbtz9zP5LLG3jyODKZdhu9/mGHs3ynCCtIwWmOitZuBUIUOJ+fZy31gVEOmiVAJYxSYIrVGTy43oh8FKiGr+RMdkbUSMFyPYWOU7eZh413/n07gXrUZKGMOU8ZZvLbHx9qRXfwX90abz17T3035o39r/J4PAsPutfur1JfMcpMVQW/5jg0BgkfaGXnsQzL3Nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hhqR5ePLqS+MWfEc/MKVDek1P4l3gttgLXGr48lPW2M=;
- b=JW51pQ8ebcY99F1VxTZnupTCnd5mSf92ZKvoE5vj9mtgBfBMQBiwsj6zo6r1WN8MqDHz7mQJKlLuVRijLwOcTQqtMUIzyOdt8CRPd5lNIqIOzHkSCqbjKIzfJZteUhSMTECnsNnr0BuG7jfnHwKAH8SDFUcnToQyyQJuq3FiX6askV6Cd7v5E6aWNXdAWNbAHBHK0Rc61i/0ReTz0FieaGpeT3k6g39+++3Oyeqc6GljIroLAo1dNxxB4HVGt347OPPDYrqlzUEoybaJhvYzhJc8VklgV8Gcfwfb4XIhHB3DFZ+CEbBrniGnsZxDGklipLj7p4orKTfRjrp7kpn1Rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV8PR11MB8509.namprd11.prod.outlook.com (2603:10b6:408:1e6::15)
- by DS4PPF0084F97E3.namprd11.prod.outlook.com (2603:10b6:f:fc02::4) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.12; Tue, 24 Mar
- 2026 13:01:23 +0000
-Received: from LV8PR11MB8509.namprd11.prod.outlook.com
- ([fe80::f5bd:4dde:4f2f:20b7]) by LV8PR11MB8509.namprd11.prod.outlook.com
- ([fe80::f5bd:4dde:4f2f:20b7%5]) with mapi id 15.20.9745.019; Tue, 24 Mar 2026
- 13:01:23 +0000
-Message-ID: <df5dac48-8a54-49e2-acb8-9370b7078033@intel.com>
-Date: Tue, 24 Mar 2026 21:08:16 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
- Live Update
-To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-CC: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf
-	<graf@amazon.com>, Alex Mastro <amastro@fb.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann
-	<arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)"
-	<bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi
-	<dapeng1.mi@linux.intel.com>, David Rientjes <rientjes@google.com>, Feng Tang
-	<feng.tang@linux.alibaba.com>, Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Jonathan
- Corbet" <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kees Cook
-	<kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	<kexec@lists.infradead.org>, <kvm@vger.kernel.org>, Leon Romanovsky
-	<leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-pci@vger.kernel.org>, Li RongQing <lirongqing@baidu.com>, Lukas Wunner
-	<lukas@wunner.de>, Marco Elver <elver@google.com>,
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, Mike Rapoport
-	<rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Pawan
- Gupta" <pawan.kumar.gupta@linux.intel.com>, "Peter Zijlstra (Intel)"
-	<peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-8-dmatlack@google.com>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <20260323235817.1960573-8-dmatlack@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR02CA0109.apcprd02.prod.outlook.com
- (2603:1096:4:92::25) To LV8PR11MB8509.namprd11.prod.outlook.com
- (2603:10b6:408:1e6::15)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ju2KO/b0"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OBRjjN1479684;
+	Tue, 24 Mar 2026 13:14:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=g7U39Q
+	LwaZWr3C9xaWuGKqKlVLEpyZJkWBuGk7tl6xM=; b=Ju2KO/b00lKFgeWC+rnSeq
+	59aRmUhfvmGZ/dXuBz5jxyMzqmoCjBUwJad18UOK1Q0Ee+Y0dib/6nxTXDdbqgNq
+	h3iYqjXWcch8AYzBV+HUZNmFsQeFNxiKfhSmdS9z5XZ8m58Tkhx5dhdl+Wi2f1ri
+	B2ktRWt/nL0Fx+JT/k3n59e87C3h8nktJco7LAxIpBlyQTCUAT1/KL3k8cToC11G
+	smoiAfwGcoT4PwcanLatbyctM0eO3aXPIa94mVTFD//exTZhbQYsy8rg5cDhn9hJ
+	1IM5SpeDaU9EOeTOtGmLEXWQEUT4LpRGzU+DYxqcbbtIZ0EsComNgwGihAieCHYQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqbkqw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 13:14:46 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62O9HHb5004407;
+	Tue, 24 Mar 2026 13:14:45 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d28c21qhd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 13:14:45 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62ODEfVb46989692
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 13:14:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D3DFA2004D;
+	Tue, 24 Mar 2026 13:14:41 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D09F20040;
+	Tue, 24 Mar 2026 13:14:41 +0000 (GMT)
+Received: from [9.111.77.246] (unknown [9.111.77.246])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 24 Mar 2026 13:14:41 +0000 (GMT)
+Message-ID: <a5d9cd02-0b73-42ed-be19-e9309ff98c28@linux.ibm.com>
+Date: Tue, 24 Mar 2026 14:14:41 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR11MB8509:EE_|DS4PPF0084F97E3:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0eacb3ee-59b0-4b30-afd3-08de89a57355
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|42112799006|366016|7053199007|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: Aju1Vt78ZA9HSjETxafkLeW+nh5wGznDISbV1h8MIfn7frtXN1Zi8zLrHuAxCQtI8WUhRZttItiMjLXT8nRPYqW0uzH7RCJaeuJHx73YZMWlxwb0oNjLBN8LY/7Zhtl2yWzM30iy/qmqsx4D590Y1KhrVegcPc4+sRIqnuMoXCZgsELO0Zta8HyGkbUP4iBpwPLu6ucmjR4glhoBtPxVTiJwU1vzIXaSCw0Ick4DpxZ3tP+fixOSz/9LkfMWnquys3b58kU2uu1GgB5y5QcPiXhWtlYuSu5gVvtNZtUaL+QeI76UMKP3v5XjC7V6rQNOTmpe4RhKP1+xl25+KPGo96xf+VUVxXjJ4rVyiMRnHMyFeTSQsIsM/LRmy5nsFeyT6iEobVZAMBIvicQmg3dfUgPJWwDmXgnWQZXxMatE7IO4xwiT3SI+Ubd/kS6k5syRjTt0pZ81lMEnCoqaEQ2LlAZIE+VenQMiUY/70Ue0iWgylTyg5gMFb/cFeLDjG3kFciUbcVD+PDpxwfY3An90U9NoWO0R0OJEVrdJH51Rl4Hqsllwg8k/joH+ZA+WMEm+NvdyJXETfN5Z7plFGAxbxMqqcas30FrzV1glH+9e4H3RVK4lC0S/RshW0nfUzO3qL/y6vGwxQ2HEsq9vhdQqnH8EkjmYeDdTmYTD0jQGgj6pRo6NpAlv2iXZPM9EJlUojA2EREah+Bw++znTmg2kp+EJ9zAtzjYWpyOBM1VD2LA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR11MB8509.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(42112799006)(366016)(7053199007)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TU5mY3p3V05Xd0ZzRlhENlNuaFdMZ08rUTBrQzNBWjBXWnppM05vSXdLYi9G?=
- =?utf-8?B?WUdhR2JhUEFVeU1WZmVpckpBd0V3T1g0cm9VWjJ0U0V3NWlvL2V3Y3lUelFJ?=
- =?utf-8?B?ajYrallYN3FrV2pDQnhZaDc3K3BLd0ZZVkhIZjF0WGdEcEZMZy9icCtjbVYy?=
- =?utf-8?B?OVdWUWhSajBzbG1XUUtPMnRhSjUrSE1RTXFqV3hVc2swMFQrZGxacWJjNTN4?=
- =?utf-8?B?WXlKaVJ0aFZqUFFxMkNaV1ZrcjB0KzN4NlNiRkkyUDBVbFFoRkV3ajZQekdI?=
- =?utf-8?B?VHVONUh1ZGYzZFZrcGl0MVlWeWIzcExneTUxaWt5WkdTcXF4bGV4M3VxelEw?=
- =?utf-8?B?VUR3RG5sMlpRRXJFZ3JRNlY5bXNnZVBrdTJpSHh5b0cySmJpUjZNQ2tsZkxV?=
- =?utf-8?B?aGR2a09zVUdHYzYwNi9NbktCSWJMTDNxMTZIanQyTWMxY09RdkJkNjIzQWJa?=
- =?utf-8?B?eU9mWEZIYldvWmFiQlBuWlozS3c1TG8rSmtzT0VsUHhnZHZTZnpnV0xBMk9I?=
- =?utf-8?B?cnlsN3Qzd1E3ajlSMG9LcVNZVFk1SzBoS243NFBOTlg1eEZ3WG1HYmd3WnA1?=
- =?utf-8?B?SDdvYnVzTlhwbFBsNXRLR01EYXRlNzJ5MjVLMzd0ZmU5T1l5bXFPclRrRnpx?=
- =?utf-8?B?WVNDNEFWMHRSK3dieXdYS1huZ3lrczcrWmViN3BVQjhhVjB3VmJiVERudDVP?=
- =?utf-8?B?MUdqYkZYd0xEQjloTUtyRmlKY3ZyYm9YbXd5TW5MSkI0MStRSU9GejZIbHVN?=
- =?utf-8?B?QzBxbDM3dW1BK0NGV1BZRHYzOTRDWk9rSXk4VzJJT3FLR3NLYmxEMWVUbXFr?=
- =?utf-8?B?U1NDYVpDMmxONjM2cElqd3lKQzJ4N1kvRHgvWEJsNkdaMGFqbzJTNCs0Q2Nz?=
- =?utf-8?B?TVhELzVyWlJmRmNpMXlwaDBmdkNjeFVGYWhuSUtlVlJHL1lsRGU1bDY2ZThR?=
- =?utf-8?B?bHZsNDhiQXBEcWQyc3o2ZWVXa082OGM0cWdMODU2WDBQWHkreXpxR3p5UXMz?=
- =?utf-8?B?Qllra3FVM2xhTEc0L0hldWF2aEFoM1V5K2JOQStUcG9aczNvemtTVEFObmFP?=
- =?utf-8?B?bW5uMXpmMzBHSjlzM0xDcys1djZhcXBkYXdheWdwNU93ems5dnczSkNkcDll?=
- =?utf-8?B?V1lZLzFheVBtZ0JtYjRxNlRxR0hoU2F4NnNYcWdPeUlVbTBENW15Kzk5N0lw?=
- =?utf-8?B?dzg2amJaeVk1R0pCZGJub3BwUjVoZzN2MzAzOExoSVVrU3pFTWw2TTRIRWhx?=
- =?utf-8?B?NzJLZzcxUnMwZ1RxM3lKSWtXc3R3VmNiMWVNeWNwWTJpYlpMcjc0Vy8yN0pY?=
- =?utf-8?B?TjYxQjl2TEt1dEJDZmJyN0xoWWRGLzhMT0l1UDh1em44QW8wa2NpbzVrTEhE?=
- =?utf-8?B?bjZlUWRKQ0Z5emp5cUEvbUQvcmpLdm1QTElpVEcvM3ViTDJzVXV3Q2l5U0sy?=
- =?utf-8?B?MWdlQ05MQ2F4emxqdTQ2djJkeFU3OEwzQ2ROTHZ1c1BSa0lsK1VwNW80aitq?=
- =?utf-8?B?VnpjazNMVENuRHlkWFFLTVpQVnBuOUZtV21jSURjcU1zMi9xSE9NWnJiakhM?=
- =?utf-8?B?aHRONkVlck0rR0ZuNFNBWGdyYnhWWU42RExJS2JLUTVQckR4eC9SczZRRzAv?=
- =?utf-8?B?YzEyUWYvZ1NzUHlzcVdmeGtDVDRzRDh6c3BvVmRFV0RYZXRlRGQwcmFZK1VW?=
- =?utf-8?B?Q25SUEF5LzI3N0R6YWRwaElqRzVrNkpwdjhzcnRsV1RvM1ZENWc5MXdyL0dI?=
- =?utf-8?B?dVk5bHhxc0dVYUxUOXZFVzJINlc3NzlLT1pjSkMvY1psbS9vZGs1NlVmMm1H?=
- =?utf-8?B?ZHVja1c5UTVHUnFZNjJGa1dSNS9RcVNreEJNTHRVM0JTeEdmUTNReW9adEFl?=
- =?utf-8?B?N3VSU1o0S3M5d0djZ2JrYVE0RUVzNkVTTFZCWjRzbEMzS2hVNzY1UWRSS2VF?=
- =?utf-8?B?QVd6aFFIbUtveWx5eUJ0aW9seTVYYTBTOVB0NkF0bDNaaE9ZRnIwNXpaVzZE?=
- =?utf-8?B?SjlqQkRyRTNmblFPTDdlU1FTZzhjZXBldHJsRVhualNidm11Q2JLanRXUXA0?=
- =?utf-8?B?VFdPa3VxdUF1dTc4SWVSdmtxYnF2YmlPelRuRlNMNWQvV1pCcGt5M29oZ2di?=
- =?utf-8?B?TXIvaktWV0NxN25DeGJOVm52TDNSRUpWS3ExL1pSSE84bURwYUsrOXdkNWNJ?=
- =?utf-8?B?dWtvQWRjdmUxVnZkU1dQcGoycklsajlITlZUSDQrQTh1T1FrOFBjOVFlbFM4?=
- =?utf-8?B?NGhZczFkYXBnbm5lSjE2V0FoOHFSQ1U5R3ZJd1dhUG1kOFpxQUs2bmdBUnlL?=
- =?utf-8?B?amZsK3BjcVMrWGhCd3pTRVhRZVJCYWdJai9MV0QybWd2WUJBOXNXZz09?=
-X-Exchange-RoutingPolicyChecked: hV+eP8xggYS8aAcsncTN8Miqz5Pinhmc126GE2yJeCaetzj8XR9WT7dbqGuWzipcaH2h7bPQxEPBp4HON64G9FKxEeCF2gxM8/9MKw1/yMAA+u1NxjIQNvJPLSgw60TqQvPsq1jj6VATlJobQmz1yHI3zsNQjAg4VdtYudBZzwAjc7G+PvvedL1jyv9wTAq7OsB/nxns8frZQPmHdgZNP9yTvXJIOlHKxeDznekYglKnHN9UIzMOvOeJDufk79SlE7Zvp4ySTpZHLBMSDD/AaEo+4Xh/moVOJ3rL7L7haBINVHFKF/dW2dmjkYKe30E5LsNfPQ0XOTTFDK1AYWqjGg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0eacb3ee-59b0-4b30-afd3-08de89a57355
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8509.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 13:01:23.4407
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EfmMWq7CefUjffSUZ87MObx8tNHn4NhG9928ARBsFZEh+t6WqoQf36xMFpZcLcR4usWFWRI+f/6RBWl00FnMvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF0084F97E3
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/8] KVM: s390: vsie: Fix check for pre-existing shadow
+ mapping
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, nrb@linux.ibm.com, seiden@linux.ibm.com,
+        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
+        david@kernel.org
+References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
+ <20260320161542.202913-4-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
+ qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
+ 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
+ zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
+ lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
+ Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
+ 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
+ cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
+ Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
+ HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
+ YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
+ CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
+ AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
+ bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
+ eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
+ CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
+ EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
+ rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
+ UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
+ RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
+ dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
+ jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
+ cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
+ JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
+ iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
+ tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
+ 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
+ v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
+ HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
+ 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
+ gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
+ BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
+ 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
+ jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
+ IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
+ katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
+ dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
+ FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
+ DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
+ Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
+ phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
+In-Reply-To: <20260320161542.202913-4-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I09G5WXitJAM5CvZBpEBWIBJ2AIvvdBU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDEwMSBTYWx0ZWRfX1yA5Q0a5eaMP
+ dvAu7VfBLNHHM71h7+mWmahk/TCoDWWRR7SrtvdggMOsY1HSaP2JmMBpiFfBq8Khhpf60hys3wg
+ FbBHh8kQDkYq6VAPqdQ2aAawMskUFvUJ56vYVyQ2C1l+0FeXG21CKx7os1TS/yWpFmgrcZhDk+r
+ rZIemdUD98uF6iHj+HgdypbfMOybOlB64vHcdcwZr1wxIj8fqzY/d7dMPhOvm2DxWJZuCT0Aibf
+ Ex7Ch1bCbnY3+ajadS/vF9pIUJCGEJQyVOv6PuK2xK9lHCmsSxLNLfHp2IDEPB/fv1Jd9S5psMW
+ uaaLAkGSpK7Q9xDHM+T518geb4tOR7Su5Cw1v0fxTod8By4eYBULq14TS1gjvTHCNYXkmlEMUT7
+ M/D6q0ajJNMM+R04Lw8cmgT97o5UvKczURrbz9L3bs2kgxSkm0OiI7pvISN72B8yyvi5Om9mCEi
+ edbienU/S7KqHLpWY1Q==
+X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c28e46 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=7v0XIPrfOeoFb9f8sA0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: I09G5WXitJAM5CvZBpEBWIBJ2AIvvdBU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603240101
 
-On 3/24/26 07:57, David Matlack wrote:
-> From: Vipin Sharma <vipinsh@google.com>
+On 3/20/26 17:15, Claudio Imbrenda wrote:
+> When shadowing a nested guest, a check is performed and no shadowing is
+> attempted if the nested guest is already shadowed.
 > 
-> Implement the live update file handler callbacks to preserve a vfio-pci
-> device across a Live Update. Subsequent commits will enable userspace to
-> then retrieve this file after the Live Update.
+> The existing check was incomplete; fix it by also checking whether the
+> leaf DAT table entry in the existing shadow gmap has the same protection
+> as the one specified in the guest DAT entry.
 > 
-> Live Update support is scoped only to cdev files (i.e. not
-> VFIO_GROUP_GET_DEVICE_FD files).
-> 
-> State about each device is serialized into a new ABI struct
-> vfio_pci_core_device_ser. The contents of this struct are preserved
-> across the Live Update to the next kernel using a combination of
-> Kexec-Handover (KHO) to preserve the page(s) holding the struct and the
-> Live Update Orchestrator (LUO) to preserve the physical address of the
-> struct.
-> 
-> For now the only contents of struct vfio_pci_core_device_ser the
-> device's PCI segment number and BDF, so that the device can be uniquely
-> identified after the Live Update.
-> 
-> Require that userspace disables interrupts on the device prior to
-> freeze() so that the device does not send any interrupts until new
-> interrupt handlers have been set up by the next kernel.
-> 
-> Reset the device and restore its state in the freeze() callback. This
-> ensures the device can be received by the next kernel in a consistent
-> state. Eventually this will be dropped and the device can be preserved
-> across in a running state, but that requires further work in VFIO and
-> the core PCI layer.
-> 
-> Note that LUO holds a reference to this file when it is preserved. So
-> VFIO is guaranteed that vfio_df_device_last_close() will not be called
-> on this device no matter what userspace does.
-> 
-> Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> Co-developed-by: David Matlack <dmatlack@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
 > ---
->   drivers/vfio/pci/vfio_pci.c            |   2 +-
->   drivers/vfio/pci/vfio_pci_core.c       |  57 +++++----
->   drivers/vfio/pci/vfio_pci_liveupdate.c | 156 ++++++++++++++++++++++++-
->   drivers/vfio/pci/vfio_pci_priv.h       |   4 +
->   drivers/vfio/vfio_main.c               |   3 +-
->   include/linux/kho/abi/vfio_pci.h       |  15 +++
->   include/linux/vfio.h                   |   2 +
->   7 files changed, 213 insertions(+), 26 deletions(-)
+>   arch/s390/kvm/gaccess.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-> index 41dcbe4ace67..351480d13f6e 100644
-> --- a/drivers/vfio/pci/vfio_pci.c
-> +++ b/drivers/vfio/pci/vfio_pci.c
-> @@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
->   	return 0;
->   }
+> diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+> index 4ee862424ca0..dad02f7f90f1 100644
+> --- a/arch/s390/kvm/gaccess.c
+> +++ b/arch/s390/kvm/gaccess.c
+> @@ -1507,7 +1507,8 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_cache *mc, struct gmap *sg,
+>   		return rc;
 >   
-> -static const struct vfio_device_ops vfio_pci_ops = {
-> +const struct vfio_device_ops vfio_pci_ops = {
->   	.name		= "vfio-pci",
->   	.init		= vfio_pci_core_init_dev,
->   	.release	= vfio_pci_core_release_dev,
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index d43745fe4c84..81f941323641 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -585,9 +585,42 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->   }
->   EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
->   
-> +void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
-> +{
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	struct pci_dev *bridge = pci_upstream_bridge(pdev);
-> +
-> +	lockdep_assert_held(&vdev->vdev.dev_set->lock);
-> +
-> +	if (!vdev->reset_works)
-> +		return;
-> +
-> +	/*
-> +	 * Try to get the locks ourselves to prevent a deadlock. The
-> +	 * success of this is dependent on being able to lock the device,
-> +	 * which is not always possible.
-> +	 *
-> +	 * We cannot use the "try" reset interface here, since that will
-> +	 * overwrite the previously restored configuration information.
-> +	 */
-> +	if (bridge && !pci_dev_trylock(bridge))
-> +		return;
-> +
-> +	if (!pci_dev_trylock(pdev))
-> +		goto out;
-> +
-> +	if (!__pci_reset_function_locked(pdev))
-> +		vdev->needs_reset = false;
-> +
-> +	pci_dev_unlock(pdev);
-> +out:
-> +	if (bridge)
-> +		pci_dev_unlock(bridge);
-> +}
-> +EXPORT_SYMBOL_GPL(vfio_pci_core_try_reset);
-> +
->   void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
->   {
-> -	struct pci_dev *bridge;
->   	struct pci_dev *pdev = vdev->pdev;
->   	struct vfio_pci_dummy_resource *dummy_res, *tmp;
->   	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
-> @@ -687,27 +720,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
->   	 */
->   	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
->   
-> -	/*
-> -	 * Try to get the locks ourselves to prevent a deadlock. The
-> -	 * success of this is dependent on being able to lock the device,
-> -	 * which is not always possible.
-> -	 * We can not use the "try" reset interface here, which will
-> -	 * overwrite the previously restored configuration information.
-> -	 */
-> -	if (vdev->reset_works) {
-> -		bridge = pci_upstream_bridge(pdev);
-> -		if (bridge && !pci_dev_trylock(bridge))
-> -			goto out_restore_state;
-> -		if (pci_dev_trylock(pdev)) {
-> -			if (!__pci_reset_function_locked(pdev))
-> -				vdev->needs_reset = false;
-> -			pci_dev_unlock(pdev);
-> -		}
-> -		if (bridge)
-> -			pci_dev_unlock(bridge);
-> -	}
-> -
-> -out_restore_state:
-> +	vfio_pci_core_try_reset(vdev);
->   	pci_restore_state(pdev);
->   out:
->   	pci_disable_device(pdev);
-> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> index 5ea5af46b159..c4ebc7c486e5 100644
-> --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
-> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> @@ -6,27 +6,178 @@
->    * David Matlack <dmatlack@google.com>
->    */
->   
-> +/**
-> + * DOC: VFIO PCI Preservation via LUO
-> + *
-> + * VFIO PCI devices can be preserved over a kexec using the Live Update
-> + * Orchestrator (LUO) file preservation. This allows userspace (such as a VMM)
-> + * to transfer an in-use device to the next kernel.
-> + *
-> + * .. note::
-> + *    The support for preserving VFIO PCI devices is currently *partial* and
-> + *    should be considered *experimental*. It should only be used by developers
-> + *    working on expanding the support for the time being.
-> + *
-> + *    To avoid accidental usage while the support is still experimental, this
-> + *    support is hidden behind a default-disable config option
-> + *    ``CONFIG_VFIO_PCI_LIVEUPDATE``. Once the kernel support has stabilized and
-> + *    become complete, this option will be enabled by default when
-> + *    ``CONFIG_VFIO_PCI`` and ``CONFIG_LIVEUPDATE`` are enabled.
-> + *
-> + * Usage Example
-> + * =============
-> + *
-> + * VFIO PCI devices can be preserved across a kexec by preserving the file
-> + * associated with the device in a LUO session::
-> + *
-> + *   device_fd = open("/dev/vfio/devices/X");
+>   	/* A race occourred. The shadow mapping is already valid, nothing to do */
 
-/dev/vfio/devices/vfioX
+s/occourred/occurred/
 
-> + *   ...
-> + *   ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, { ..., device_fd, ...});
-> + *
-> + * .. note::
-> + *    LUO will hold an extra reference to the device file for as long as it is
-> + *    preserved, so there is no way for the file to be destroyed or the device
-> + *    to be unbound from the vfio-pci driver while it is preserved.
-> + *
-> + * Retrieving the file after kexec is not yet supported.
-> + *
-> + * Restrictions
-> + * ============
-> + *
-> + * The kernel imposes the following restrictions when preserving VFIO devices:
-> + *
-> + *  * The device must be bound to the ``vfio-pci`` driver.
-> + *
-> + *  * ``CONFIG_VFIO_PCI_ZDEV_KVM`` must not be enabled. This may be relaxed in
-> + *    the future.
-> + *
-> + *  * The device not be an Intel display device. This may be relaxed in the
-> + *    future.
-> + *
-> + *  * The device file must have been acquired from the VFIO character device,
-> + *    not ``VFIO_GROUP_GET_DEVICE_FD``.
+> -	if ((ptep && !ptep->h.i) || (!ptep && crste_leaf(*table)))
+> +	if ((ptep && !ptep->h.i && ptep->h.p == w->p) ||
+> +	    (!ptep && crste_leaf(*table) && !table->h.i && table->h.p == w->p))
+>   		return 0;
 
-how about "The device file descriptor must be obtained by opening the 
-VFIO device
-character device (``/dev/vfio/devices/vfioX``), not via 
-``VFIO_GROUP_GET_DEVICE_FD``."?
+In this case "table" is not a table but a parent dat entry.
+It would make me happy if you'd fix that up at some point, not 
+necessarily in this patch.
 
-just be aligned with the below words in vfio.rst.
-
-"Traditionally user acquires a device fd via VFIO_GROUP_GET_DEVICE_FD
-user can now acquire a device fd by directly opening a character device 
-/dev/vfio/devices/vfioX"
-
-> + *
-> + *  * The device must have interrupt disable prior to kexec. Failure to disable
-> + *    interrupts on the device will cause the ``reboot(LINUX_REBOOT_CMD_KEXEC)``
-> + *    syscall (to initiate the kexec) to fail.
-> + *
-> + * Preservation Behavior
-> + * =====================
-> + *
-> + * The eventual goal of this support is to avoid disrupting the workload, state,
-> + * or configuration of each preserved device during a Live Update. This would
-> + * include allowing the device to perform DMA to preserved memory buffers and
-> + * perform P2P DMA to other preserved devices. However, there are many pieces
-> + * that still need to land in the kernel.
-> + *
-> + * For now, VFIO only preserves the following state for for devices:
-> + *
-> + *  * The PCI Segment, Bus, Device, and Function numbers of the device. The
-> + *    kernel guarantees the these will not change across a kexec when a device
-> + *    is preserved.
-> + *
-> + * Since the kernel is not yet prepared to preserve all parts of the device and
-> + * its dependencies (such as DMA mappings), VFIO currently resets and restores
-> + * preserved devices back into an idle state during kexec, before handing off
-> + * control to the next kernel. This will be relaxed in future versions of the
-> + * kernel once it is safe to allow the device to keep running across kexec.
-> + */
-> +
->   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->   
-> +#include <linux/kexec_handover.h>
->   #include <linux/kho/abi/vfio_pci.h>
->   #include <linux/liveupdate.h>
->   #include <linux/errno.h>
-> +#include <linux/vfio.h>
-
-maybe follow alphabet order. errno.h would be moved to the top first.
-
-Regards,Yi Liu
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
