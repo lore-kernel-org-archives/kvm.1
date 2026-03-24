@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0073AF660;
-	Tue, 24 Mar 2026 06:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A7D3B47C2;
+	Tue, 24 Mar 2026 06:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332462; cv=none; b=pnUwnyUnI4V7og8AeC9ISNeD2xUfQR0Bi2Yck0Ra1NWImoQyibvxlPScQunhz/5qUFkHkAdsVYRwJwZyG8PwAIhHl762L4ws9ekHtiEFWAeKBiBP1HvLDDk4UAwNEY51z6BfVHXVvQBD8I2lQRNivNBPjcyF3rt4503WzTsHCwA=
+	t=1774332466; cv=none; b=sP+yAS1nn2GOdgGFkYGXi7WPaGjzVcztIrQQI/VeimcBdZFDYho5+0MEjt97R5bECI9xHePNa3LbwIYOx4CxbkWp9tkBMtLJPSMXga2YfZ2u+kwU8VcMiopJRFvCUoQCjl1q7sdzMsVDheFaAA0hOyNGz35iWhhKXkwcfjGjxnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332462; c=relaxed/simple;
-	bh=5zNUfjCbe4xMMri1P2HaByUJAkjQzA8Nb9ip9FvYKes=;
+	s=arc-20240116; t=1774332466; c=relaxed/simple;
+	bh=z4J3ormmSXU+X7jeV6FkQUS7GtywJzymGFhiKVjbDaU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BqmolUe4VuvACBaLF4j8iLEt2+yN8tnCOY5gajzlchvjfOeDGlZur58dd9CXdxOc9td0PiEAnSKvH9DUHQQ26xijKsbHl7PMg8Z8vYtJfVnq2CnD61mPiWizgOGre59RVoGk6oSQxVEgtRzycPKZiW7xgEDIzqQCjfk/RRk8VXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byrCHLeF; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UMe4Yz/cTW3i9hcc9M8xmOrtOLjy7MmCIDO8/WrRRiy2cIp4ecNjEAQmFTCR9M+rKJFwYfNW6BlxPH8/IfH3alJSud1b4YM6k0AqcqckDJi+xmqqWBMru6+MDlaZPer0GxcyGaOg6TD24BvpM8P/QQOmY83jHqpYUPUiaGBJIZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hwoz5Ysj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byrCHLeF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F02C2BCB2;
-	Tue, 24 Mar 2026 06:07:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hwoz5Ysj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F883C2BCB4;
+	Tue, 24 Mar 2026 06:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774332462;
-	bh=5zNUfjCbe4xMMri1P2HaByUJAkjQzA8Nb9ip9FvYKes=;
+	s=k20201202; t=1774332466;
+	bh=z4J3ormmSXU+X7jeV6FkQUS7GtywJzymGFhiKVjbDaU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=byrCHLeFhkP2m2kqESbzXZCxNMNC//4fVSFc9OeISJD1jNXl+AxwmfLgRdod4s1oA
-	 Oa72XoY5nRRjIvgFlTXq0Vi64GALRTxTUZvjB4l2/2o2eiMUv86OyfTtFQRnnnc84Z
-	 cnPBrH5NSBZbBdFMhHQurVK8qLDbgjZpM8kEkZ2nwz5lvqfVGa6IwLDxNPmI/lKtMl
-	 C4x4ei+7qwP2MIzEAzo6VgyvQZPsB+JHpK8TvHvAiyqZEer5QShnK/Fl59vZADpGme
-	 QiIA0Kz4We8WXDmOFR0/fH8YvVu9A9ABD5T6VdX+IzjWeY3aB/j7liGA4P+8xPNWE/
-	 eB1ZlnfTnv+Qg==
+	b=Hwoz5YsjR1PACl+UQNn+HH+FllIaPq/7dXZ7ML29dJvWcP3Sy7qtE65yX0PVwt496
+	 C50KSpIsgEURb5xPAiG3GJPawXBZBTkfae3QvOjntb5DRvqWxRXTXnPYnoimUQSUbQ
+	 gvDMLUTf1JPzXzHl6NetEwiAtjXr6rCbJzlBDFRHcZJ21Vtrep7uhj0ZNP1NrHQJWI
+	 bmqjM+5n4g0s2XeL7NL7xnHxTLmRpAL8gqYjG9CAC1LwILx+yARKcV7UQ9MrF6TnTq
+	 kuM1HGFpLCFQjB4oq+KUm61KUg+q0SW6jfcLA/yq5JAbXkZ7Ti0FY08zRUFUGMMUAY
+	 xEi/TQdsPaMbw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B72183808200;
-	Tue, 24 Mar 2026 06:07:31 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E9E3808200;
+	Tue, 24 Mar 2026 06:07:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -37,47 +37,40 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/4] KVM: riscv: Fix Spectre-v1 vulnerabilities in
- register access
+Subject: Re: [PATCH v2] RISC-V: KVM: Fix null pointer dereference in
+ kvm_riscv_vcpu_aia_rmw_topei()
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177433245028.469836.11061694721898939145.git-patchwork-notify@kernel.org>
-Date: Tue, 24 Mar 2026 06:07:30 +0000
-References: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
-In-Reply-To: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
-To: Lukas Gerlach <lukas.gerlach@cispa.de>
-Cc: linux-riscv@lists.infradead.org, anup@brainfault.org,
- atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, ajones@ventanamicro.com,
- radim.krcmar@oss.qualcomm.com, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- daniel.weber@cispa.de, michael.schwarz@cispa.de, marton.bognar@kuleuven.be,
- jo.vanbulck@kuleuven.be
+ <177433245454.469836.16737695875391376252.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Mar 2026 06:07:34 +0000
+References: <20260226085119.643295-1-xujiakai2025@iscas.ac.cn>
+In-Reply-To: <20260226085119.643295-1-xujiakai2025@iscas.ac.cn>
+To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, alex@ghiti.fr,
+ aou@eecs.berkeley.edu, palmer@dabbelt.com, paul.walmsley@sifive.com,
+ atish.patra@linux.dev, anup@brainfault.org, jiakaiPeanut@gmail.com
 
 Hello:
 
-This series was applied to riscv/linux.git (for-next)
+This patch was applied to riscv/linux.git (for-next)
 by Anup Patel <anup@brainfault.org>:
 
-On Tue, 3 Mar 2026 15:19:40 +0100 you wrote:
-> This series adds array_index_nospec() to RISC-V KVM to prevent
-> speculative out-of-bounds access to kernel memory.
+On Thu, 26 Feb 2026 08:51:19 +0000 you wrote:
+> kvm_riscv_vcpu_aia_rmw_topei() assumes that the per-vCPU IMSIC state has
+> been initialized once AIA is reported as available and initialized at
+> the VM level. This assumption does not always hold.
 > 
-> Similar fixes exist for x86 (ioapic, lapic, PMU) and arm64 (vgic).
-> 
-> Signed-off-by: Lukas Gerlach <lukas.gerlach@cispa.de>
+> Under fuzzed ioctl sequences, a guest may access the IMSIC TOPEI CSR
+> before the vCPU IMSIC state is set up. In this case,
+> vcpu->arch.aia_context.imsic_state is still NULL, and the TOPEI RMW path
+> dereferences it unconditionally, leading to a host kernel crash.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,1/4] KVM: riscv: Fix Spectre-v1 in ONE_REG register access
-    https://git.kernel.org/riscv/c/f9e26fc32541
-  - [v2,2/4] KVM: riscv: Fix Spectre-v1 in AIA CSR access
-    https://git.kernel.org/riscv/c/ec87a82ca874
-  - [v2,3/4] KVM: riscv: Fix Spectre-v1 in floating-point register access
-    https://git.kernel.org/riscv/c/8f0c15c4b14f
-  - [v2,4/4] KVM: riscv: Fix Spectre-v1 in PMU counter access
-    https://git.kernel.org/riscv/c/2dda6a9e09ee
+  - [v2] RISC-V: KVM: Fix null pointer dereference in kvm_riscv_vcpu_aia_rmw_topei()
+    https://git.kernel.org/riscv/c/c28eb189e481
 
 You are awesome, thank you!
 -- 
