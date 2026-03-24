@@ -1,195 +1,245 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEE1346E6D
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 18:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F10335959;
+	Tue, 24 Mar 2026 18:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774375535; cv=none; b=OqjyujbrkRktG31pnPTaipsuqRq9VrLeEBdQtC7/eZA2lJwfDN9meX+xFgEuunTyortKpMb77KP/PtQEbn5ReYLEfq3u4DzDFa+SjnbttI5ZxWaGkvrsd4MqA772zVOuIuB96toz7059N8GxxlFuOJRTF0R5PHHXfu6/NBuqesE=
+	t=1774376184; cv=none; b=FcM5BHpS/jnnw8vvQPv2J1OkZNdrU/1zxPM3Y1mkdAXPceHWTNPZXlsbACLXb627rfrgSFrTlwx5YZnBiytQV7ZBcAjlOUawmTsro2mflOtMvVAx+k19es3AcOmImJSD/jbnzlEEHpavWSCDtpdZjuN2hKz5a8xl1Lap6q77iWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774375535; c=relaxed/simple;
-	bh=ICfADf8EA93Py0iNdanu6h6AqUh78uNvjjd1+my2EaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HgOv2zl5zfhRoBWgEv3JAwmhFfKCBlxHW1fiX7uFRiu9sENCPEkF2EHsx3M1j8dTgjwN8khgED1WeR5PbPtM8aQ306cVENKe5wAgetos1IurwQIFcSKBFIrPPPjdcpysC1WXz+hESPs/i0HbGpdp9uTI1JDr+sWP2xK5tBA3ETY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PDXf08SK reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1774376184; c=relaxed/simple;
+	bh=YSwyPPq79cAEvrJLfHzNNBZ3q2KGHHXXEPrPyKjt0ZU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QssfRVk0sfc5Wj8xNL+Tt9NslQ67gA529pmyjxTYWRml+ZQJAxUgBnjRnfqrJnJqn3AV/reHzHsC6iFvcZY3RW1twO8XyYsC6s2NApNpuzd+FTS3VO1khgs13Qn6UmRmiSwH6nDFriX1WDOaL5+ir2Tai+IVkSDANUuFBGATmsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T759cUhU; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PDXf08SK"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6F16F40E01B5;
-	Tue, 24 Mar 2026 18:05:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id A7y9luZ2IOGG; Tue, 24 Mar 2026 18:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774375518; bh=Ay64Ya23KAIdcQpOOr0ZVcAUYB4ws3UL6quLCrgGG+E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PDXf08SKvj6haP2QG3feJJH/+phRCwLbigY5XmYA1srpsxiSIg6DmDDELbR6f0Zx9
-	 RnCyn67FNjH2w+gDAKZ28FMhT+ZO2JfbuWimyaPv5SFx4+Nq7SUK6+3hAVivM/6mic
-	 8XeLc7NPqYhF8F9I+e8iuvlzU0//kh16vg9/2nxaEmAX+rda2WlfKlCifSSRnvUCVY
-	 pOy7D3AFJB8nT8Ztm8MLDAwvFufW/KxY28lqaJmXC9e9icQVfSTNo85kRWO9T9jvfq
-	 Qj3WtPLn2binKI2QcKVbH4CZFQlqLkTT18cRgf5lHuT2U5NK6FnOKVh0VcsN3od0dB
-	 Ego9zRTKW3OePFDLqd2lAu9ptg0u5W1RnZ2h8zmGosSFrSxBbfNEs8ncvFrc1jdgbi
-	 btaPgrY3fphluSayqzsCqZ9jsEkU2tz3y0XRU7vosEO6nCxnm0qko6BmN4DQa+WIrM
-	 CMujNu+XcaN2cyaLvdrk9iNaYKa7S3U5EmfOoJ5J9BombnrjuTExYrehgCWbAenDwx
-	 4sV8lea0S4uhC0bfqJ6inozAmddW0gWXsxsKUwJQ1oLI3PBUIz/Y40MmgY627QUsw9
-	 Sk2aQBMZKPWHD0SVWCtWRCfcqTizfkbvgeg8BvK/5mpByTqBNnRS2Wyrb/ENUH0d45
-	 jwAZUgF2h3E7Uc6uCVnjbTBU=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B188D40E0163;
-	Tue, 24 Mar 2026 18:05:06 +0000 (UTC)
-Date: Tue, 24 Mar 2026 19:04:59 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Manali Shukla <manali.shukla@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, mingo@redhat.com,
-	kvm@vger.kernel.org, x86@kernel.org, nikunj.dadhania@amd.com,
-	Naveen.Rao@amd.com, ravi.bangoria@amd.com, peterz@infradead.org,
-	dave.hansen@linux.intel.com, tglx@kernel.org
-Subject: Re: [RFC PATCH v1] x86/split_lock: Provide KVM helper to log guest
- bus lock exits
-Message-ID: <20260324180449.GMacLSQUJepcHGCjTX@fat_crate.local>
-References: <20260324124002.7670-1-manali.shukla@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T759cUhU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774376183; x=1805912183;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=YSwyPPq79cAEvrJLfHzNNBZ3q2KGHHXXEPrPyKjt0ZU=;
+  b=T759cUhURt2tXzzzvra+9sqTOWuZ7AIXFX+FOA3Gak0xKU1KxRbNMjmV
+   z5i7eDYIGIaPGwRQ9Irqxx/5lMxt8tpYxtHTQTsgk7fhIKsmu+3AHhfi2
+   W7j/5t1ZPsERsVGYzDOJzSJtEJ5x/pA2Lhq5KX9hRz+At6gOoXoIQm/+3
+   f45xKkv+x7l8WV2GEuCUNf+Nnh3SYatlr15+VJkJwNKcvJxbMgE6MX8z7
+   uvow+bzoxXJ2BzcsN5yhIjoc1cT3fSZ11xdR67BCs+zktK6K09KrL8eOb
+   7GcASehNYgJFaPtA0YY2bKXf63YJEvWu6maUqZMHxDo/px1xAu2WcDFel
+   Q==;
+X-CSE-ConnectionGUID: UUlz+JFARP6EVm2R9c+bGw==
+X-CSE-MsgGUID: 0llXFwUKSVeOssAMLi8Xsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86879341"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="86879341"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 11:16:22 -0700
+X-CSE-ConnectionGUID: JmAcwus9QjyvwxJlVreAwg==
+X-CSE-MsgGUID: qsSCmtJnS3i+D6YfLIgbcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="262362728"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 11:16:21 -0700
+Date: Tue, 24 Mar 2026 11:16:21 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v8 00/10] VMSCAPE optimization for BHI variant
+Message-ID: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAJbUwmkC/23QTU7DMBAF4KtUXuPKM/6ZmhX3QCwcj0MttUmVF
+ Kuoyt1xKqANZPlGmk967yrGNOQ0iufNVQyp5DH3XQ27p42I+9C9J5m5ZoEKrfLgZDmOMZySbPa
+ NZGLjvCdqsRX14zSkNl9u2utbzfs8nvvh84YXmK/fDpqFU0AqycFCqxJ4bfjlkLuPyzZ353TYx
+ v4oZq3grwAK7FLAKniIDbOPOni3LugHAWkp6CpY8jqi1SZ5vS6YuwDgl4KpAgQObJLzzHFdsA8
+ CLvcsVtYeyM4lg7pRal1wdwEVLAU3L+lAMVuwBGZdoB/BKf23BVWhIReIKPhdaP8L0zR9AZECC
+ fQ4AgAA
+X-Change-ID: 20250916-vmscape-bhb-d7d469977f2f
+X-Mailer: b4 0.15-dev
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260324124002.7670-1-manali.shukla@amd.com>
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 12:40:02PM +0000, Manali Shukla wrote:
-> Bus locks monopolize the memory bus for thousands of cycles, stalling
-> all CPUs and degrading system performance for every workload on the
-> system. Cloud providers running multiple VMs need a way to identify
-> which guest is responsible, so the offending VM can be flagged.
->=20
-> Bus lock VMEXITs on AMD are fault-style, i.e. the vCPU's RIP points to
-> the offending instruction at the time of the exit. Log guest's linear
-> RIP and vCPU info to give operators the data needed to attribute the bu=
-s
-> lock to a specific VM and instruction. Keep policy enforcement to
-> userspace via KVM_EXIT_X86_BUS_LOCK and let userspace implement
-> throttling or other mitigations.
->=20
-> Reuse current->reported_split_lock to limit the warning to the once per
+v8:
+- Use helper in KVM to convey the mitigation status. (PeterZ/Borisov)
+- Fix the documentation for default vmscape mitigation. (BPF bot)
+- Remove the stray lines in bug.c (BPF bot).
+- Updated commit messages and comments.
+- Rebased to v7.0-rc5.
 
-s/ to the once/ to once/
+v7: https://lore.kernel.org/r/20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com
+- s/This allows/Allow/ and s/This does adds/This adds/ in patch 1/10 commit
+  message (Borislav).
+- Minimize register usage in BHB clearing seq. (David Laight)
+  - Instead of separate ecx/eax counters, use al/ah.
+  - Adjust the alignment of RET due to register size change.
+  - save/restore rax in the seq itself.
+  - Remove the save/restore of rax/rcx for BPF callers.
+- Rename clear_bhb_loop() to clear_bhb_loop_nofence() to make it
+  obvious that the LFENCE is not part of the sequence (Borislav).
+- Fix Kconfig: s/select/depends on/ HAVE_STATIC_CALL (PeterZ).
+- Rebased to v7.0-rc4.
 
-> vCPU thread. Note that, current->reported_split_lock tracks the vCPU
-> thread, not the individual guest process, i.e. the warning fires once
-> per vCPU for the lifetime of thread regardless of how many distinct
+v6: https://lore.kernel.org/r/20251201-vmscape-bhb-v6-0-d610dd515714@linux.intel.com
+- Remove semicolon at the end of asm in ALTERNATIVE (Uros).
+- Fix build warning in vmscape_select_mitigation() (LKP).
+- Rebased to v6.18.
 
-"... for the lifetime of the thread... "
+v5: https://lore.kernel.org/r/20251126-vmscape-bhb-v5-2-02d66e423b00@linux.intel.com
+- For BHI seq, limit runtime-patching to loop counts only (Dave).
+  Dropped 2 patches that moved the BHB seq to a macro.
+- Remove redundant switch cases in vmscape_select_mitigation() (Nikolay).
+- Improve commit message (Nikolay).
+- Collected tags.
 
-> guest processes trigger bus locks on that vCPU.
+v4: https://lore.kernel.org/r/20251119-vmscape-bhb-v4-0-1adad4e69ddc@linux.intel.com
+- Move LFENCE to the callsite, out of clear_bhb_loop(). (Dave)
+- Make clear_bhb_loop() work for larger BHB. (Dave)
+  This now uses hardware enumeration to determine the BHB size to clear.
+- Use write_ibpb() instead of indirect_branch_prediction_barrier() when
+  IBPB is known to be available. (Dave)
+- Use static_call() to simplify mitigation at exit-to-userspace. (Dave)
+- Refactor vmscape_select_mitigation(). (Dave)
+- Fix vmscape=on which was wrongly behaving as AUTO. (Dave)
+- Split the patches. (Dave)
+  - Patch 1-4 prepares for making the sequence flexible for VMSCAPE use.
+  - Patch 5 trivial rename of variable.
+  - Patch 6-8 prepares for deploying BHB mitigation for VMSCAPE.
+  - Patch 9 deploys the mitigation.
+  - Patch 10-11 fixes ON Vs AUTO mode.
 
-I guess that's fine since you're ratelimited.
+v3: https://lore.kernel.org/r/20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com
+- s/x86_pred_flush_pending/x86_predictor_flush_exit_to_user/ (Sean).
+- Removed IBPB & BHB-clear mutual exclusion at exit-to-userspace.
+- Collected tags.
 
->=20
-> ----
+v2: https://lore.kernel.org/r/20251015-vmscape-bhb-v2-0-91cbdd9c3a96@linux.intel.com
+- Added check for IBPB feature in vmscape_select_mitigation(). (David)
+- s/vmscape=auto/vmscape=on/ (David)
+- Added patch to remove LFENCE from VMSCAPE BHB-clear sequence.
+- Rebased to v6.18-rc1.
 
-What's that "----" supposed to denote here?
+v1: https://lore.kernel.org/r/20250924-vmscape-bhb-v1-0-da51f0e1934d@linux.intel.com
 
-> The intent is purely observational =E2=80=94 give hypervisor owners
-> visibility into which guest is generating bus locks so they can act
-> accordingly. No policy enforcement is done in the kernel. Suggestions
-> on the approach are welcome.
+Hi All,
 
-Oh, sounds like you want this paragraph to be...
+These patches aim to improve the performance of a recent mitigation for
+VMSCAPE[1] vulnerability. This improvement is relevant for BHI variant of
+VMSCAPE that affect Alder Lake and newer processors.
 
->=20
-> Suggested-by: Nikunj A Dadhania <nikunj@amd.com>
-> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
-> ---
+The current mitigation approach uses IBPB on kvm-exit-to-userspace for all
+affected range of CPUs. This is an overkill for CPUs that are only affected
+by the BHI variant. On such CPUs clearing the branch history is sufficient
+for VMSCAPE, and also more apt as the underlying issue is due to poisoned
+branch history.
 
-<--- ... here, after the SOB block and above the diffstat.
+Below is the iPerf data for transfer between guest and host, comparing IBPB
+and BHB-clear mitigation. BHB-clear shows performance improvement over IBPB
+in most cases.
 
->  arch/x86/include/asm/cpu.h     |  2 ++
->  arch/x86/kernel/cpu/bus_lock.c | 19 +++++++++++++++++++
->  arch/x86/kvm/svm/svm.c         |  1 +
->  3 files changed, 22 insertions(+)
->=20
-> diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
-> index ad235dda1ded..4ac5011e10b2 100644
-> --- a/arch/x86/include/asm/cpu.h
-> +++ b/arch/x86/include/asm/cpu.h
-> @@ -29,6 +29,7 @@ unsigned int x86_stepping(unsigned int sig);
->  extern void __init sld_setup(struct cpuinfo_x86 *c);
->  extern bool handle_user_split_lock(struct pt_regs *regs, long error_co=
-de);
->  extern bool handle_guest_split_lock(unsigned long ip);
-> +extern void handle_guest_bus_lock(unsigned long ip);
->  extern void handle_bus_lock(struct pt_regs *regs);
->  void split_lock_init(void);
->  void bus_lock_init(void);
-> @@ -44,6 +45,7 @@ static inline bool handle_guest_split_lock(unsigned l=
-ong ip)
->  	return false;
->  }
-> =20
-> +static inline void handle_guest_bus_lock(unsigned long ip) {}
->  static inline void handle_bus_lock(struct pt_regs *regs) {}
->  static inline void split_lock_init(void) {}
->  static inline void bus_lock_init(void) {}
-> diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_l=
-ock.c
-> index fb166662bc0d..a6d231410535 100644
-> --- a/arch/x86/kernel/cpu/bus_lock.c
-> +++ b/arch/x86/kernel/cpu/bus_lock.c
-> @@ -292,6 +292,25 @@ bool handle_guest_split_lock(unsigned long ip)
->  }
->  EXPORT_SYMBOL_FOR_KVM(handle_guest_split_lock);
-> =20
-> +void handle_guest_bus_lock(unsigned long ip)
+Platform: Emerald Rapids
+Baseline: vmscape=off
+Target: IBPB at VMexit-to-userspace Vs the new BHB-clear at
+	VMexit-to-userspace mitigation (both compared against baseline).
 
-Exported function better have a prefix:
+(pN = N parallel connections)
 
-bus_lock_guest_handle() or so.
+| iPerf user-net | IBPB    | BHB Clear |
+|----------------|---------|-----------|
+| UDP 1-vCPU_p1  | -12.5%  |   1.3%    |
+| TCP 1-vCPU_p1  | -10.4%  |  -1.5%    |
+| TCP 1-vCPU_p1  | -7.5%   |  -3.0%    |
+| UDP 4-vCPU_p16 | -3.7%   |  -3.7%    |
+| TCP 4-vCPU_p4  | -2.9%   |  -1.4%    |
+| UDP 4-vCPU_p4  | -0.6%   |   0.0%    |
+| TCP 4-vCPU_p4  |  3.5%   |   0.0%    |
 
-But, the only reason this function is here is because you need sld_state.
+| iPerf bridge-net | IBPB    | BHB Clear |
+|------------------|---------|-----------|
+| UDP 1-vCPU_p1    | -9.4%   |  -0.4%    |
+| TCP 1-vCPU_p1    | -3.9%   |  -0.5%    |
+| UDP 4-vCPU_p16   | -2.2%   |  -3.8%    |
+| TCP 4-vCPU_p4    | -1.0%   |  -1.0%    |
+| TCP 4-vCPU_p4    |  0.5%   |   0.5%    |
+| UDP 4-vCPU_p4    |  0.0%   |   0.9%    |
+| TCP 1-vCPU_p1    |  0.0%   |   0.9%    |
 
-So, instead of doing that, you can add a helper called
+| iPerf vhost-net | IBPB    | BHB Clear |
+|-----------------|---------|-----------|
+| UDP 1-vCPU_p1   | -4.3%   |   1.0%    |
+| TCP 1-vCPU_p1   | -3.8%   |  -0.5%    |
+| TCP 1-vCPU_p1   | -2.7%   |  -0.7%    |
+| UDP 4-vCPU_p16  | -0.7%   |  -2.2%    |
+| TCP 4-vCPU_p4   | -0.4%   |   0.8%    |
+| UDP 4-vCPU_p4   |  0.4%   |  -0.7%    |
+| TCP 4-vCPU_p4   |  0.0%   |   0.6%    |
 
-sld_enabled()
+[1] https://comsec.ethz.ch/research/microarch/vmscape-exposing-and-exploiting-incomplete-branch-predictor-isolation-in-cloud-environments/
 
-or so, which is exported and then you can put the guest-specific handling=
- in
-svm.c in case you want to expand it in the future and there you use
-sld_enabled(), etc...
+---
+Pawan Gupta (10):
+      x86/bhi: x86/vmscape: Move LFENCE out of clear_bhb_loop()
+      x86/bhi: Make clear_bhb_loop() effective on newer CPUs
+      x86/bhi: Rename clear_bhb_loop() to clear_bhb_loop_nofence()
+      x86/vmscape: Rename x86_ibpb_exit_to_user to x86_predictor_flush_exit_to_user
+      x86/vmscape: Move mitigation selection to a switch()
+      x86/vmscape: Use write_ibpb() instead of indirect_branch_prediction_barrier()
+      x86/vmscape: Use static_call() for predictor flush
+      x86/vmscape: Deploy BHB clearing mitigation
+      x86/vmscape: Resolve conflict between attack-vectors and vmscape=force
+      x86/vmscape: Add cmdline vmscape=on to override attack vector controls
 
-> +{
-> +	/*
-> +	 * Log bus lock exit when called from KVM exit handlers. Policy
-> +	 * enforcement is delegated to userspace via KVM_EXIT_X86_BUS_LOCK.
-> +	 * Let userspace implement throttling or other mitigations.
-> +	 *
-> +	 * Only log when split lock detection is active to respect system-wid=
-e
-> +	 * bus lock detection policy. Use the reported_split_lock flag to
-> +	 * prevent log spam from the same vCPU.
-> +	 */
-> +	if (sld_state !=3D sld_off && !current->reported_split_lock) {
-> +		pr_warn_ratelimited("%s/%d buslock at rip: 0x%lx\n",
-> +				    current->comm, current->pid, ip);
-> +		current->reported_split_lock =3D 1;
-> +	}
-> +}
-> +EXPORT_SYMBOL_FOR_KVM(handle_guest_bus_lock);
+ Documentation/admin-guide/hw-vuln/vmscape.rst   | 15 ++++-
+ Documentation/admin-guide/kernel-parameters.txt |  6 +-
+ arch/x86/Kconfig                                |  1 +
+ arch/x86/entry/entry_64.S                       | 34 +++++++----
+ arch/x86/include/asm/cpufeatures.h              |  2 +-
+ arch/x86/include/asm/entry-common.h             |  9 ++-
+ arch/x86/include/asm/nospec-branch.h            | 13 +++--
+ arch/x86/include/asm/processor.h                |  1 +
+ arch/x86/kernel/cpu/bugs.c                      | 76 ++++++++++++++++++++-----
+ arch/x86/kvm/x86.c                              |  4 +-
+ arch/x86/net/bpf_jit_comp.c                     | 11 +---
+ 11 files changed, 127 insertions(+), 45 deletions(-)
+---
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+change-id: 20250916-vmscape-bhb-d7d469977f2f
 
-Thx.
+Best regards,
+--  
+Thanks,
+Pawan
 
---=20
-Regards/Gruss,
-    Boris.
 
-https://people.kernel.org/tglx/notes-about-netiquette
