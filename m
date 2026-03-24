@@ -1,162 +1,84 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23313ACA5C
-	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 06:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFEE3AA4F7
+	for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 06:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332882; cv=none; b=uIjO91edwP3qKq1MQKwmxEU/pAmEueHuNqCSJUNOvgr+AOgKRqONx6dtocaPWm5wf8qiA7ROt6rLJzK4o4AOH+r04FTnu6y5VngMgLHRkymCuYK3YVNIyU5g8GRGsqOF1H792W2v2GGtEpabKa6GyfIfLMjy+bPqddrJI2hBI8A=
+	t=1774332942; cv=none; b=EGjXMN8YSX8zUZd35nxyohj0reqSbk9AkhAJfnT+R9PnRh96mPTuECN2+T7O7qKtNcYcXIQGQzp89CYBzHFWrEBrJv95EdSk6t3RGvEZPcsDiBonjdQpdnC356upHzIfuyixB8rkm0bM+5IdmQSSqtsOth4PH9Pem1ee3L8x0ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332882; c=relaxed/simple;
-	bh=skR628SMCx9KTemD4Cg3GA18jPV5b9gBdn2QAV+ZaTY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lcAWgtplrf1X/aK+1WOlTYNDOnRPdnNv7sqGIMjYsMJDzf1uWv5QQKL7qdT2FfkvUU9ANH6cC/b/lP2aIg362PBM+FchcFF1u2NRUVmHewdftA6a3hEp3ShwAAAVByrlnhgUAXvA83dYNoWcsEqtgO1qmqtJ+VVO7aqXjmpwck4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hnT6R2oX; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1774332942; c=relaxed/simple;
+	bh=yu3nC6vhpzZez3hZu5WSDBz9l+V7URi8BT2ABBFXuP8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WGO34SKRTkZRam7/qXqJV/mfBWCfG7lY7EmPKlZDUpHm5VmgyucZr8O193WMBxX/u4MUhZINyBdQerVwA9vl8G4UvFTNXqPTA+4jsAOJiI4ktGZRP5t6nEnME4kwJe+LuNDG79cpSqMU5tG5AvKriBr9OwdyfZVKYkwh+zJG7NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DKYgr/Mz; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hnT6R2oX"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774332868;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ICRwvZNxMVB+eDUAUeHAtU147HuuApF1zRxwwY2qVB4=;
-	b=hnT6R2oXEZmInaXSy3cUMJ/hU2EBTkHqrDBMOTe86YmiKmkBh4ZMxGwIf3PT6Bbodw5rsH
-	zp6vfO4HhkUvXVnkryl6PMVzOGOSTIkhVAQ45c8jFi4YMTXWmFXvOOAep/e0TNDHsvvvoc
-	0XvhJ3OfAPbCQDqd1ZxdNUPU56+eQf8=
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: lance.yang@linux.dev,
-	peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DKYgr/Mz"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-487035181a7so18794285e9.2
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 23:15:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774332939; x=1774937739; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mifv6lV/1vhl2tnAgC+pUhj48DLTv7wevR0+F6OEtI0=;
+        b=DKYgr/MzsqhaJNVAVJS4cG1jw/uMJhzMwOUA9Ww7W+9y/lplLAW+v3xVYiPpi2iw1n
+         wFycdoOVjTYGZo4+7pRrFIdkUNfvMgi98HbqOoNk96n4MKsdtZW/leHJWxbWRb0yA6P/
+         QgA2jS00cSJip6Lv6AlKdRjlSPKttK8ogy7r13O3pAblU5gfu0+AMCvbLeFB9rSkDdCI
+         Ujjj6RMxsUnORpIqgzt52DK4NIOqJYOFyvdRRfGe9FIX+dHM7IEs3w6I0xXP/zf+Jysj
+         EJZGqti/6LEUZ4tHeb2YkmovL/sypU4LK4ZVMPkN6vnAMPxntIMOAkvHHIAq+vnmsBXg
+         p5Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774332939; x=1774937739;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Mifv6lV/1vhl2tnAgC+pUhj48DLTv7wevR0+F6OEtI0=;
+        b=tEH7Uq4+bYfJ7wiJgq2eQawj9kff7lpSxz+Dz3YXsoe3pD3VbXKAFCvxW4GNbjjRi0
+         uMXvdMk8ig6ZGcdvvNOkSB2YJSWTE2l1gGrNnAYs5W2mfdIgo8oyJ/k0h/2K1fnJkrM6
+         DA43+2DFVUcosvQ8oPe5MdG9BQq8F3TXjb4OigRPDVocoEndGRuM3rgb6KjWCT0/T596
+         LXavvQ61ecPckmAN0D1lHmXX4ssaCPCEufcExgbcR6fv+4FOS10a7v+5PfzZ3+yGI6X8
+         i0LYeVzEuevPkwdIMf0Vk4rBVu0qJePvLbnaEUf+wn6+Xr3826y5pzLjAZw5pQMzxpKB
+         m0hQ==
+X-Gm-Message-State: AOJu0YyBqFPuNDUPCoHQMr1FgtbwycLFfy8TBT2eHVHQ8jGT7GcMvhvH
+	/tLtbt+vVfsJxDYqUBjzdZLQneWBW8IW8GvjuV/rciXz5ch1QGtMxVRj
+X-Gm-Gg: ATEYQzyjrq/v6nSFotgB2DpZiz8yvMSeM3Mhxp37kXRfKStnv2BWZujFeteTnUz5Ln9
+	RG37y4bcSm3PlXjWIB7vH4L37+D0A/w+/NrA6DvrgE6grpZA/6A01YbhAO5ulcsVlRgdCk8pxU3
+	jUuJN8bikw5lbCDmWgXnqG+MJzu5b8Q6xnpaaNNx6OezHc+aI2qgV5BRcBbXVBATRypigRte9VF
+	cYyQTvqSJvW6ud5RttQsXRJJKVc1KwkfNmUGxRUVZ/U0QkQxjQ99Wm13D7a960yASeDay2uuH82
+	UzBqk8WPSznV2NnRejuWU+Qn+MOsWrRKTshC/ATqz3VxPFnh8ZAw0GQZCS5PwgVp3xWm8na7OkK
+	lw7q0xwFJH496GidZezLpKrcdpHujgx2RvfLdqJNJ4qtbdpxxMXrwta4aJGX+cWL1kg2rxGvC0/
+	gZQZaT3QdP6E7/tHSxoyo=
+X-Received: by 2002:a05:600c:8b25:b0:480:6bef:63a0 with SMTP id 5b1f17b1804b1-486fee0d8cdmr212926635e9.21.1774332938609;
+        Mon, 23 Mar 2026 23:15:38 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48710fe6f86sm13091615e9.6.2026.03.23.23.15.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 23:15:36 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: babu.moger@amd.com
+Cc: kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com
-Subject: Re: [PATCH v7 0/2] skip redundant sync IPIs when TLB flush sent them
-Date: Tue, 24 Mar 2026 14:14:19 +0800
-Message-Id: <20260324061419.48613-1-lance.yang@linux.dev>
-In-Reply-To: <20260323135317.0b702a575eeef93332ba2519@linux-foundation.org>
-References: <20260323135317.0b702a575eeef93332ba2519@linux-foundation.org>
+	x86@kernel.org
+Subject: Re: [PATCH v2 00/16] fs,x86/resctrl: Add kernel-mode (e.g., PLZA) support to the resctrl subsystem
+Date: Tue, 24 Mar 2026 09:15:31 +0300
+Message-ID: <20260324061531.3221932-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1773347820.git.babu.moger@amd.com>
+References: <cover.1773347820.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
+Please, remove me from CC list in future versions of this patchset
 
-On Mon, Mar 23, 2026 at 01:53:17PM -0700, Andrew Morton wrote:
->On Mon,  9 Mar 2026 10:07:09 +0800 Lance Yang <lance.yang@linux.dev> wrote:
->
->> Hi all,
->> 
->> When page table operations require synchronization with software/lockless
->> walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
->> TLB (tlb->freed_tables or tlb->unshared_tables).
->> 
->> On architectures where the TLB flush already sends IPIs to all target CPUs,
->> the subsequent sync IPI broadcast is redundant. This is not only costly on
->> large systems where it disrupts all CPUs even for single-process page table
->> operations, but has also been reported to hurt RT workloads[1].
->> 
->> This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
->> the prior TLB flush already provided the necessary synchronization. When
->> true, the sync calls can early-return.
->> 
->> A few cases rely on this synchronization:
->> 
->> 1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
->>    of the PMD table for other purposes in the last remaining user after
->>    unsharing.
->> 
->> 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
->>    and (possibly) freeing the page table / re-depositing it.
->> 
->> Two-step plan as David suggested[4]:
->> 
->> Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
->> flush sent IPIs. INVLPGB is excluded because when supported, we cannot
->> guarantee IPIs were sent, keeping it clean and simple.
->> 
->> Step 2 (future work): Send targeted IPIs only to CPUs actually doing
->> software/lockless page table walks, benefiting all architectures.
->> 
->> Regarding Step 2, it obviously only applies to setups where Step 1 does not
->> apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
->> attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
->> work and tuning; it will be submitted separately once ready.
->> 
->> ...
->> 
->>  arch/x86/include/asm/tlb.h      | 17 ++++++++++++++++-
->>  arch/x86/include/asm/tlbflush.h |  2 ++
->>  arch/x86/kernel/smpboot.c       |  1 +
->>  arch/x86/mm/tlb.c               | 15 +++++++++++++++
->>  include/asm-generic/tlb.h       | 17 +++++++++++++++++
->>  mm/mmu_gather.c                 | 15 +++++++++++++++
->>  6 files changed, 66 insertions(+), 1 deletion(-)
->
->Kinda straddles both MM and x86.
->
->I expect a v8 based on David's comments.
-
-Yes, a v8 is on the way.
-
->One merge path is for the x86 people to take this, noting David's acks.
->
->The other merge path is via mm.git, if the x86 people can please
->perform review.
->
->And...  mm.git is basically full (overflowing) for this cycle and
->review/test has some catching up to do.  So I'd prefer to only take the
->important things.  This patchset is a performance improvement but
->contains no measurements to demonstrate the benefit, so I'm not able to
->determine its importance!
-
-That's a fair point. I should have included numbers from the start.
-
-On a 64-core Intel x86 server, the CAL interrupt count in
-/proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
-range with this series applied.
-
-The larger the system, the more costly redundant broadcast IPIs become.
-
-Thanks,
-Lance
+-- 
+Askar Safin
