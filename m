@@ -1,190 +1,200 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A5133A007;
-	Tue, 24 Mar 2026 08:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E380A39184E;
+	Tue, 24 Mar 2026 08:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774342053; cv=none; b=rvv4oN4YbPxYVtjUQ8aIUmgUiIj5ZhWLE3uB1Bc4+FcM3hQUDfXUAyWwPfvpnKuqUv346F7YjtwDFWhbawKatjNSR2zUi6lqd3oGdkOGJPlZJasufYIGeMe1az2SMDUjMG8DsB+vSRJfH4Rx0z+aAdZ4GgPHAsDTEDM+SESWFrk=
+	t=1774342409; cv=none; b=DOi40VYRR3LIIP8noFCs/wU/e/ojxSH5LN0lTUQ5N9VidUn8xipt+R03BHRBJZDZO0zWnznOHGN0sUvNylk+3vhlUw/BjqCfRogNbzTHwr67ilA60fFK9ucpOxIeWmAy+i9HJoBvqwolJATbrvNnRQIqubBGlWfwQ9OJJpMr4FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774342053; c=relaxed/simple;
-	bh=xMRanwrZ2VEs7MfYFhir5vMm3K5PvmKZopWUnCBvIiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=myJy4F64d/eFx8rJRqW1G0LNFmD4kKOSaWQk0Yawz3NCD972HoG+N184d8RS1s1j99wE2Je3viE268u/5EsoXk/8BXL9TrD8IlpLQMU05Ng3WGdkFa4+Y+EVwq7w6l8F6+Qk3N4l0U/yEAKrmmy0q7AV6n4fZ08Kiug/spee6us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=g6euDUhS; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774342409; c=relaxed/simple;
+	bh=x3AbBSH/6zc/3JdVH91tTFUja889KAbu62u1Vjccw0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KeyoTKPCPcAd0V4EsuzptMwwzk7AjnvyJG28vZIym3ZkyjU5z+P5OrBB60HTTP5wjUVbhv+2lFotQw1z4sit1+ib8U7w2RwcxCkBsFdk0CszXsGW+/nx9bqfkyNlMdrJmUeFXqJjmxJ4tIxm11zZhywaHqbAJG0v1QlX6Uqp1s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ehx+GvCQ; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="g6euDUhS"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62O50VlK4118816;
-	Tue, 24 Mar 2026 08:47:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7vVTEf
-	E/84oixLqrJMRwJZM6KWLAn1AgxRL021oiE2M=; b=g6euDUhSaPYVZhm2pE+O6Z
-	SljtoEzuV93SMe4I+eTIwcDC/aUu5OZEVdYuGuX2Btr2sDvEZY6EXXfgQPyiAkDm
-	kLEBvAmAhlkbrRQMWBrdoufMUFiA2Gv8eNJoDBUukTyrVITvXfICGBEzICBB7dhz
-	glKZOOomZSz1nmEBi8Gk2kz9TC5zvOtu0SzFY9fXs96877MlIPS5ZLFV374H3ytu
-	yBHIIZIdXsYCpgzSsol+j2gomBDfFGQupX6gQ7Ehb4dDHfD/OT8Co9s5q618sSZW
-	0Aj8FaX+QcEY+shL4QZmaciz550VKFCmZzGGa99lOsIwN1oIPm3B7tT6cCxHBVTw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktut1nt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Mar 2026 08:47:23 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62O890xG005976;
-	Tue, 24 Mar 2026 08:47:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d261yh3r0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Mar 2026 08:47:22 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62O8lItX59179410
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Mar 2026 08:47:18 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7279E20043;
-	Tue, 24 Mar 2026 08:47:18 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 030D620040;
-	Tue, 24 Mar 2026 08:47:18 +0000 (GMT)
-Received: from [9.111.77.246] (unknown [9.111.77.246])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Mar 2026 08:47:17 +0000 (GMT)
-Message-ID: <19217e27-d015-460d-8460-7989b5e49c3c@linux.ibm.com>
-Date: Tue, 24 Mar 2026 09:47:17 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ehx+GvCQ"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774342395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cooa/41xI7d+DZUvbghWmkV6GAOYjQWfhrGJsw3E+Hc=;
+	b=Ehx+GvCQR7JSE3G0Gcv67EFfJuYOYPtcS6CVJgMxW9nvVX1uHVU+O9ZtrvqPr1sZO9Vos8
+	RZ8pygTVO30fZj+U9PODUBVQ4GmxXMmPvam/Z9FB2sPnjVwxAHx9+mYbDoG3O+ES6AekQF
+	Rz7lQiIdgJAhpWLNyo2xOXvidlRKOE0=
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: peterz@infradead.org,
+	david@kernel.org,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com
+Subject: [PATCH v8 0/2] skip redundant sync IPIs when TLB flush sent them
+Date: Tue, 24 Mar 2026 16:52:36 +0800
+Message-ID: <20260324085238.44477-1-lance.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] KVM: s390: Fix KVM_S390_VCPU_FAULT ioctl
-To: Steffen Eiden <seiden@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com, nrb@linux.ibm.com,
-        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
-        david@kernel.org
-References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
- <20260320161542.202913-9-imbrenda@linux.ibm.com>
- <20260323111033.66303-F-seiden@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
- qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
- 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
- zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
- lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
- Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
- 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
- cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
- Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
- HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
- YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
- CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
- AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
- bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
- eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
- CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
- EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
- rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
- UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
- RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
- dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
- jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
- cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
- JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
- iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
- tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
- 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
- v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
- HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
- 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
- gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
- BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
- 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
- jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
- IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
- katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
- dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
- FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
- DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
- Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
- phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
-In-Reply-To: <20260323111033.66303-F-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7dZeIKQ5QTjPRHwBCR01GT2ZgUeKgXLO
-X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c24f9b cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=kyh9p90lTI3WpJxoWuUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDA2NiBTYWx0ZWRfX15y+5ZJJ60Q4
- ZCoIfO/4oomVValJlg5p4OyfizoRviResZQ6VK0KH3zrEtgq3GxZqetNJ5G1NG6Yw8ApMvXx7ET
- BUeiFbI99v0W2Zo79xD6RngrWBFEISphsRUGPW+kagXo19/neomUoVbLZBKask8ylvQQDdQR7QV
- QyBzYn8WFhVas9O4xhjcbZftwGF1pIGivoVgizo5W81utfZa1PqefAqwIkwI3uozU1kOCGCYC33
- Qr3OLO7cFfEUJLXUq9ETRo9MBExpA3rFBgzLpoqu1VPbjZ9DTg+c34rXL1SsYgWjT6S9rMdZc37
- ezoh4kAcaEwXwMuvmoI4pvYlmmfFMLrzM6x7ju1wWhLyFhMDDjoRhmGWFjiGC88FdQQGbRuAJpK
- UW7txYDnfNHQ0yJLE0eBdj4yNzuHTK7C2BxkPeqduarxZeQC27ewtEBT2xZbyMPntZWzt6BVRzj
- R9RovVeVsYQNCBKeoZw==
-X-Proofpoint-GUID: 7dZeIKQ5QTjPRHwBCR01GT2ZgUeKgXLO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-24_02,2026-03-23_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240066
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 3/23/26 12:10, Steffen Eiden wrote:
-> On Fri, Mar 20, 2026 at 05:15:42PM +0100, Claudio Imbrenda wrote:
->> A previous commit changed the behaviour of the KVM_S390_VCPU_FAULT
->> ioctl. The current (wrong) implementation will trigger a guest
->> addressing exception if the requested address lies outside of a
->> memslot, unless the VM is UCONTROL.
->>
->> Restore the previous behaviour by open coding the fault-in logic.
->>
->> Fixes: 3762e905ec2e ("KVM: s390: use __kvm_faultin_pfn()")
->> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> 
-> Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
-> 
-> But I have a comment on a changed logic. And a nit
-> 
->> ---
->>   arch/s390/kvm/kvm-s390.c | 18 +++++++++++++++---
->>   1 file changed, 15 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
->> index ebcb0ef8835e..62f04931b54d 100644
->> --- a/arch/s390/kvm/kvm-s390.c
->> +++ b/arch/s390/kvm/kvm-s390.c
->> @@ -5520,9 +5520,21 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->>   	}
->>   #endif
->>   	case KVM_S390_VCPU_FAULT: {
->> -		idx = srcu_read_lock(&vcpu->kvm->srcu);
->> -		r = vcpu_dat_fault_handler(vcpu, arg, 0);
-> 	in here every vcpu_ucontrol_translate error (incl ENONEMs from
-> 	kvm_s390_mmu_cache_topup) is converted into EREMOTE ...
->> -		srcu_read_unlock(&vcpu->kvm->srcu, idx);
->> +		gpa_t gaddr = arg;
->> +
->> +		scoped_guard(srcu, &vcpu->kvm->srcu) {
->> +			r = vcpu_ucontrol_translate(vcpu, &gaddr);
->> +			if (r)
->> +				break;
-> 	... which is not longer the case here. As you explicitly convert
-> 	ENOMENS in gmap_ucas_translate before the topup call tnot converting
-> 	might be an overlook (in the topup function?).
+Hi all,
 
-Yeah, I second that.
+When page table operations require synchronization with software/lockless
+walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+TLB (tlb->freed_tables or tlb->unshared_tables).
+
+On architectures where the TLB flush already sends IPIs to all target CPUs,
+the subsequent sync IPI broadcast is redundant. This is not only costly on
+large systems where it disrupts all CPUs even for single-process page table
+operations, but has also been reported to hurt RT workloads[1].
+
+This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
+the prior TLB flush already provided the necessary synchronization. When
+true, the sync calls can early-return.
+
+A few cases rely on this synchronization:
+
+1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+   of the PMD table for other purposes in the last remaining user after
+   unsharing.
+
+2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+   and (possibly) freeing the page table / re-depositing it.
+
+Two-step plan as David suggested[4]:
+
+Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
+flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+guarantee IPIs were sent, keeping it clean and simple.
+
+Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+software/lockless page table walks, benefiting all architectures.
+
+Regarding Step 2, it obviously only applies to setups where Step 1 does not
+apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
+attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
+work and tuning; it will be submitted separately once ready.
+
+On a 64-core Intel x86 server, the CAL interrupt count in
+/proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
+range with this series applied.
+
+David Hildenbrand did the initial implementation. I built on his work and
+relied on off-list discussions to push it further - thanks a lot David!
+
+[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
+[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+[4] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+
+v7 -> v8:
+- Pick up Acked-by tags from David, thanks!
+- Add CAL interrupt numbers to the cover letter (per Andrew, thanks!)
+- Rewrite the [2/2] changelog and reword the comment (per David, thanks!)
+- https://lore.kernel.org/linux-mm/20260309020711.20831-1-lance.yang@linux.dev/
+
+v6 -> v7:
+- Simplify init logic and eliminate duplicated X86_FEATURE_INVLPGB checks
+  (per Dave, thanks!)
+- Remove flush_tlb_multi_implies_ipi_broadcast property because no PV
+  backend sets it today.
+- https://lore.kernel.org/linux-mm/20260304021046.18550-1-lance.yang@linux.dev/
+
+v5 -> v6:
+- Use static_branch to eliminate the branch overhead (per Peter, thanks!)
+- https://lore.kernel.org/linux-mm/20260302063048.9479-1-lance.yang@linux.dev/
+
+v4 -> v5:
+- Drop per-CPU tracking (active_lockless_pt_walk_mm) from this series;
+  defer to Step 2 as it adds ~3% GUP-fast overhead
+- Keep pv_ops property false for PV backends like KVM: preempted vCPUs
+  cannot be assumed safe (per Sean, thanks!)
+  https://lore.kernel.org/linux-mm/aaCP95l-m8ISXF78@google.com/
+- https://lore.kernel.org/linux-mm/20260202074557.16544-1-lance.yang@linux.dev/ 
+
+v3 -> v4:
+- Rework based on David's two-step direction and per-CPU idea:
+  1) Targeted IPIs: per-CPU variable when entering/leaving lockless page
+     table walk; tlb_remove_table_sync_mm() IPIs only those CPUs.
+  2) On x86, pv_mmu_ops property set at init to skip the extra sync when
+     flush_tlb_multi() already sends IPIs.
+  https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+- https://lore.kernel.org/linux-mm/20260106120303.38124-1-lance.yang@linux.dev/
+
+v2 -> v3:
+- Complete rewrite: use dynamic IPI tracking instead of static checks
+  (per Dave Hansen, thanks!)
+- Track IPIs via mmu_gather: native_flush_tlb_multi() sets flag when
+  actually sending IPIs
+- Motivation for skipping redundant IPIs explained by David:
+  https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+- https://lore.kernel.org/linux-mm/20251229145245.85452-1-lance.yang@linux.dev/
+
+v1 -> v2:
+- Fix cover letter encoding to resolve send-email issues. Apologies for
+  any email flood caused by the failed send attempts :(
+
+RFC -> v1:
+- Use a callback function in pv_mmu_ops instead of comparing function
+  pointers (per David)
+- Embed the check directly in tlb_remove_table_sync_one() instead of
+  requiring every caller to check explicitly (per David)
+- Move tlb_table_flush_implies_ipi_broadcast() outside of
+  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
+  that don't enable this config.
+  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+
+Lance Yang (2):
+  mm/mmu_gather: prepare to skip redundant sync IPIs
+  x86/tlb: skip redundant sync IPIs for native TLB flush
+
+ arch/x86/include/asm/tlb.h      | 18 +++++++++++++++++-
+ arch/x86/include/asm/tlbflush.h |  2 ++
+ arch/x86/kernel/smpboot.c       |  1 +
+ arch/x86/mm/tlb.c               | 15 +++++++++++++++
+ include/asm-generic/tlb.h       | 17 +++++++++++++++++
+ mm/mmu_gather.c                 | 15 +++++++++++++++
+ 6 files changed, 67 insertions(+), 1 deletion(-)
+
+-- 
+2.49.0
+
