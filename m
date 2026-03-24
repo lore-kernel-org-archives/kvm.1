@@ -1,98 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96163A3810;
-	Tue, 24 Mar 2026 19:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01D223B63E;
+	Tue, 24 Mar 2026 19:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774379375; cv=none; b=rk7tJij4kPeXWR1HFM381AukPVJal/txEUJbL8uewz+ydS6YOoTIUpromyRrlQDkcB5YffEqulyelWnKf36cp6BG9s1BvwI28lUG1G27ZoWiRNTCdMs/r/LtxXnEjYFvnlQHptdaKUZ46yvbNb3APhMN3//5cgIAeP/D8rOA+no=
+	t=1774381317; cv=none; b=IZBGucr9XLfyqCdYUDWzPCWVwwmcy8X+evDgoefAmesSiVjhbi7uknANqAuZJsSXvs6OyKqw7p/4cjvxlRGvWZSYRUC2VVP1VO+OVrdpJKhfJQH2FJ9a8+EymvOfwl2tN8XxLEO7KtsUmDykdvIU6N9tNuVRfA+q9FYQA3ax+4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774379375; c=relaxed/simple;
-	bh=HvDIKDZOlydf2prVH96BDaY5a3aikgF0T0HQ0Bo2uMY=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=RqHX+UHUuqeCoQwI0N3fHsU4mtmN7fU8P++ytaRF3IqXYzR6+njdy15OEDw2LmLLGT3bLVU0XXkpnPDfNRVQLV800OVIfG8blQxmrZMXXPZN90m/k96FRJnCnmBV+VgA3WYBWiwzzajFM+cbssZmfmPCdrDNK7Z5CnRj3jJ7euM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NzByaaAZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774381317; c=relaxed/simple;
+	bh=DHBGJzCD66m+H9Pwc7hWbSb/WS68n3w8A7k5i2r9CEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OJdFe4gV3iiNeBeSWbEOAfi6m3J/sYSP/RfYrxZIWYFITUNfvNJqWFrLXkxr/OWepKuamZlCLOuBC+w0UotdI5sKCEAzBFBN2cHGsvke1EGxP8o6CflzOJ5K78xlKrBQ0O4KqdbQMTP1+j+wdlo3cvWO1mugKWg1i/HRFcOtAsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvKaLsL4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NzByaaAZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50EDC19424;
-	Tue, 24 Mar 2026 19:09:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvKaLsL4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABC0C19424;
+	Tue, 24 Mar 2026 19:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774379374;
-	bh=HvDIKDZOlydf2prVH96BDaY5a3aikgF0T0HQ0Bo2uMY=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=NzByaaAZkngMGpcw6UZTzZ+zLVHWO74+K6pKWy+HoxZvvF7q94+4XtLo7xPb4y7I4
-	 xulj7eZ0o3Yjhx7oxsHaK90nj/nxqkzcpM7YsNRKTqfOab93/UrxUVHRnJqBh9sLht
-	 YG4qlK/9A0/swVMBu3vd+zn7jMN3QTepVamyblvVNyb1oflQeb1I5iy6RyMAlPLz1/
-	 1OI8IgREXA55oxhw87AFMSFH4u/uC171lxZ9sqnXogIKLAD3sYziAXuPYBl+1oSZWt
-	 F/ZXeUYtBECVSgMsTZ3d40TnEVxQ/KTJ8HH2dbAOk8V6gQf4ZA7le08BuMlOoqLMNE
-	 laXf5+AqUHKIA==
-Content-Type: multipart/mixed; boundary="===============5868570892331209961=="
+	s=k20201202; t=1774381317;
+	bh=DHBGJzCD66m+H9Pwc7hWbSb/WS68n3w8A7k5i2r9CEc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lvKaLsL4U2iYmc3fv+SdcKs34G7rFl3RFL1fmHc9kNkKwRZDLNFvLaZyMVjBWVj3G
+	 ylXAJpVhf5d6C11Kk9nG2nhYgBGlz+cEVAl0R4TVGkVhJ/jw+YiR9Sr4tQLGiqc/X8
+	 3ra+k6XZqgbkhpqqsRaJzPnmOkHCHj400Hfuy+UV4neX+oqVMGMR0RNsw5jTf6KgrF
+	 wz4kA6TpBT4IHWZarm7FJeUFfeS79Qxz/4LzePvG2+NYPR7nQ6NU80Tti6wcyqH+Ry
+	 dTFqXaN383cKBybM4rbnCwekB/gqj2/bBcDXU46aXEGF3haUk9UXBRjxU3JNq1llt5
+	 mmLAsU7vUPvVg==
+From: Tycho Andersen <tycho@kernel.org>
+To: Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kim Phillips <kim.phillips@amd.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Tycho Andersen (AMD)" <tycho@kernel.org>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2 0/5] Revoke supported SEV VM types
+Date: Tue, 24 Mar 2026 13:40:29 -0600
+Message-ID: <20260324194034.1442133-1-tycho@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <ed36be8ab3fd8dc38efe3fe4c5846d1f315fbeef0782ab56550e279960e57ce8@mail.kernel.org>
-In-Reply-To: <20260324-vmscape-bhb-v8-8-68bb524b3ab9@linux.intel.com>
-References: <20260324-vmscape-bhb-v8-8-68bb524b3ab9@linux.intel.com>
-Subject: Re: [PATCH v8 08/10] x86/vmscape: Deploy BHB clearing mitigation
-From: bot+bpf-ci@kernel.org
-To: pawan.kumar.gupta@linux.intel.com,x86@kernel.org,jon@nutanix.com,nik.borisov@suse.com,hpa@zytor.com,jpoimboe@kernel.org,david.kaplan@amd.com,seanjc@google.com,bp@alien8.de,dave.hansen@linux.intel.com,peterz@infradead.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,kpsingh@kernel.org,jolsa@kernel.org,davem@davemloft.net,david.laight.linux@gmail.com,luto@kernel.org,tglx@kernel.org,mingo@redhat.com,dsahern@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,haoluo@google.com,pbonzini@redhat.com,corbet@lwn.net
-Cc: linux-kernel@vger.kernel.org,kvm@vger.kernel.org,asit.k.mallick@intel.com,tao1.zhang@intel.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-doc@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 24 Mar 2026 19:09:33 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============5868570892331209961==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: "Tycho Andersen (AMD)" <tycho@kernel.org>
 
-> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> index a7dee7ec6ea39..8cacd9474fdf0 100644
-> --- a/arch/x86/kernel/cpu/bugs.c
-> +++ b/arch/x86/kernel/cpu/bugs.c
+Recent SEV firmware [1] does not support SEV-ES VMs when SNP is enabled.
+Expose this by revoking VM-types that are not supported by the current
+configurations either from firmware restrictions or ASID configuration.
 
-[ ... ]
+My previous version of this patch series [2] used SNP_VERIFY_MITIGATION
+to test for a mitigation bit. While AMD-SB-3023 says that there is a
+mitigation bit (3) for CVE-2025-48514, bit 3 corresponds to an unrelated
+issue. The correct way to check for this is to use the SVN/SPL from the
+TCB. We are in the process of updating the SB to reflect this.
 
-> @@ -3136,6 +3149,8 @@ static void __init vmscape_apply_mitigation(void)
->  {
->  	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
->  		static_call_update(vmscape_predictor_flush, write_ibpb);
-> +	else if (vmscape_mitigation == VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER)
-> +		static_call_update(vmscape_predictor_flush, clear_bhb_loop_nofence);
->  }
+changelog from v1:
+* compare SVN as above
+* fix commit message prefixes
+* supported_vm_types local is a u32
+* move crypto stuff before KVM stuff in the event of patch tetris
 
-When vmscape_predictor_flush is set to clear_bhb_loop_nofence, the
-call site in arch_exit_to_user_mode_prepare() becomes:
+[1]: https://www.amd.com/en/resources/product-security/bulletin/amd-sb-3023.html
+[2]: https://lore.kernel.org/all/20260303191509.1565629-1-tycho@kernel.org/
 
-    static_call_cond(vmscape_predictor_flush)();
-    this_cpu_write(x86_predictor_flush_exit_to_user, false);
+Tycho Andersen (AMD) (5):
+  crypto/ccp: hoist kernel part of SNP_PLATFORM_STATUS
+  crypto/ccp: export firmware supported vm types
+  KVM: SEV: don't expose unusable VM types
+  KVM: SEV: mask off firmware unsupported vm types
+  KVM: selftests: teach sev_*_test about revoking VM types
 
-The comment above clear_bhb_loop_nofence() in entry_64.S says:
-
-    Note, callers should use a speculation barrier like LFENCE
-    immediately after a call to this function to ensure BHB is
-    cleared before indirect branches.
-
-Every other callsite follows this requirement, e.g. in
-CLEAR_BRANCH_HISTORY and CLEAR_BRANCH_HISTORY_VMEXIT:
-
-    call clear_bhb_loop_nofence; lfence
-
-The previous static_call target, write_ibpb(), uses wrmsr which is
-serializing and inherently acts as a speculation barrier. But
-clear_bhb_loop_nofence() is just a loop that fills the BHB -- it is
-not serializing.
-
-Without an lfence after the static_call, is there a speculative
-window where indirect branches could execute using stale
-(guest-controlled) branch history before the BHB clear takes
-architectural effect?
+ arch/x86/kvm/svm/sev.c                        |  15 ++-
+ drivers/crypto/ccp/sev-dev.c                  | 101 ++++++++++++++++--
+ include/linux/psp-sev.h                       |  37 +++++++
+ .../selftests/kvm/x86/sev_init2_tests.c       |  14 ++-
+ .../selftests/kvm/x86/sev_migrate_tests.c     |   2 +-
+ .../selftests/kvm/x86/sev_smoke_test.c        |   4 +-
+ 6 files changed, 151 insertions(+), 22 deletions(-)
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+-- 
+2.53.0
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/23506000396
---===============5868570892331209961==--
