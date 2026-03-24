@@ -1,204 +1,252 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF2536BCC4;
-	Tue, 24 Mar 2026 10:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774347110; cv=fail; b=nPqxNDOK+35kMlJ/NFvV21lcDGZn6F5Jd8Oy3aRLfSN7gFSMcI/DegMsdCrG4WT1vlYxaOBY2CekXYC+9n3yGATyJw8d9F5sB5mip3ZxAEvQR6ujUegEWorqve9NdcKMsPYm2e0/0IWoO7K06XamL4+3ed3/lQpMRQbaVEU0YRQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774347110; c=relaxed/simple;
-	bh=cmpgeaUylXSHmsJZyEJWuHqqi5qHMiLtCEhviOMK3VQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OX7c4ctJQUNbupCq7ztjQ7j9f1noWgWIGNOuubE93tqCUCo5S+5kY1xysWVtwvsMD2ljj0WlPjmqJ0ncxxmL/qiW9GhqttK7fv3GcvNr0Y39Hcs+rqHjdsBnB71FNfz2sDGOFDyIlT/3hUhifVLjt/3mwe6Ng2QFzrJ0tUQHhKQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OMPATJ1V; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2D359A66;
+	Tue, 24 Mar 2026 10:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774347314; cv=none; b=VJoUAJzJVJb5/4p1PU85wdWnRdDMNdCXNtxbE+/QdANzNxfFLys/6Stca6mlPceP6O6hcoDWqXuyN5T+V1wZh+2oIA1h5juSmGtEd6ga58j8LHeu/v5+63ljbj4xQ3aZyS9SKiXniRUHw28NohoRBC1O7VipDRDUmnRzXbD7cTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774347314; c=relaxed/simple;
+	bh=EeWxqb0HgRENSXG2d8Fk2RYIq4kncRyI4/Iu6SENreg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HUYyLcDG0CrLvFJYF0AGd4Oq3esyRgisFIIlZ25AFNvgtyY5ctTchUpLK+clNatKZv2g352G8BO7Sb/KkO5JnOrhX2PkS6fAt0czqTQOG8cK7FE72NeWF0EXW3AA0yGLz2kXC3fvJMs2n7S+Tb1vPf/hM7h9WnVS6mf1pmOWsCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=RM7R4tQr; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OMPATJ1V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774347109; x=1805883109;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=cmpgeaUylXSHmsJZyEJWuHqqi5qHMiLtCEhviOMK3VQ=;
-  b=OMPATJ1VE6ZCgTM9zrXcM+GD5cuW6H2j1MwzFf6PEtO3pzPo91IuuR1W
-   C6nuQQhHNrspBHJSKlzB7GI+sEogT3IA++cFZ4hb2+4tqp/TPJ2F7gDYE
-   gaCKKC+5b+t0FWQHAl8SojMwedw6vo5SKGDJGkC56BD/wg5ALMBMOCUpo
-   XYnyjSr7HPgolkPf2bas2cm8M3lrAwcyT8KYMVk73wLlPTbftspl0eiUH
-   6dy1tqNu8bUYCq7QubBj16iME6HCwRZ5caD+zOpA4DT9+VOdcIcmqU2Fb
-   8APimmgD06LuwPkMpRcU7/McOdJk1nkI8sWUfPOusIOcZzldxWvRuixJV
-   g==;
-X-CSE-ConnectionGUID: zJQnxgnFS6qNkLTJCIAnQQ==
-X-CSE-MsgGUID: 8SIgi+zzTDS5OUhtK7wNRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="86828963"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="86828963"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 03:11:48 -0700
-X-CSE-ConnectionGUID: yP3UkuWUREGCgqub0BtwuA==
-X-CSE-MsgGUID: hkktKTAERPyJIQn/+pxfFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="228370127"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 03:11:48 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 03:11:47 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 24 Mar 2026 03:11:47 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.56) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 03:11:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U9Xu1QdLkdcGwJOQMA0yDshLVIzOLFeGZA1jihzbekLFZ/KsPQKkNwvfNgbQAetb6XivAFGvnWwjB9zEhOPR9+c5OIj6zn8QU+WHO4TIw9Ad8K6ed4aCGQVwtowgIypmHtb9cQVzVJYtvTuEw1Mv++FBHaPlanL3wR/bGW8vZUd8/ZKKRpJwvTLnW2tqok98IW7Qooz9zPLF4f4eO2mvtshqKOX7TI37kqkIDAGfOzgOdLTI4tWlr5QJmTEru9TtVlUJAwF6bmFo2a3nKjg7DBBYmmrmGd7obVeDaFXzv0P+9dYsPMRChdYbuZ9w1On4eikk6jSbMF7rQ7EUD2iU8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cmpgeaUylXSHmsJZyEJWuHqqi5qHMiLtCEhviOMK3VQ=;
- b=KXdiGN408Nec9z0xTWZfdyYMlIBD+edG/zjeEBvrz8gVjA1nLLHQqkhiqXSpvhhpXCjxwE6yULmQuy7T20t3ycn6+pp6FMb6GDgeTLGYrdSwD+q0Ixm7SH9b6BB2w5Uz1PtFFsJ3cBYmpz3nDsyyo6mV8SQz/W2ZeBmkx881Dl7oSHTYcmgjjyGhkSzAZB5p4KAn6MSJYIfTC0U4VfaEi3ysuzsHZSxqLBD28ozAuPHUls8VxTH3DO3V2CnA4YTO5BlwNCgh8nQb9klrbTqUoE+DP5fZ0447jJku6E5MjfO7SK7Nme+oQXVEkoP0Q6pYEYIYQKyoQ48oq/NUGZKQJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
- PH8PR11MB7094.namprd11.prod.outlook.com (2603:10b6:510:216::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Tue, 24 Mar
- 2026 10:11:44 +0000
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86%6]) with mapi id 15.20.9745.019; Tue, 24 Mar 2026
- 10:11:44 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com"
-	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "tglx@kernel.org"
-	<tglx@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"18341265598@163.com" <18341265598@163.com>
-CC: "hanht2@chinatelecom.cn" <hanht2@chinatelecom.cn>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "weixq1@chinatelecom.cn"
-	<weixq1@chinatelecom.cn>, "zhangzg12@chinatelecom.cn"
-	<zhangzg12@chinatelecom.cn>
-Subject: Re: [PATCH] vmx/nested: Set the SGX feature flag only when hardware
- supported.
-Thread-Topic: [PATCH] vmx/nested: Set the SGX feature flag only when hardware
- supported.
-Thread-Index: AQHcuz6j0NEGTKXnYUS0AWJdG9RzpLW9drkA
-Date: Tue, 24 Mar 2026 10:11:43 +0000
-Message-ID: <95c13b532d2958977d176e965efc433f1f4793c4.camel@intel.com>
-References: <1774322860-25106-1-git-send-email-18341265598@163.com>
-In-Reply-To: <1774322860-25106-1-git-send-email-18341265598@163.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|PH8PR11MB7094:EE_
-x-ms-office365-filtering-correlation-id: 9ff95e4a-8898-46b2-8cc3-08de898dc02a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: xkFygsTfx7GD3PO/dDb9RwoPFH7NxVY1gT+Tg1JP3V7kBeMYIxZKBH++44+NM/rqDcUvx12ceOz1TwxDB57sftQ8Yv6L+8os8Fsp3Y0vJTe2uKaPO7t79SjSwssvN6v3uHYls4Ij25/Y9GwaW4H+Fbb/YrtOsPkp2x7ZmQ6fmNWE/KAD39NmiyeT0An6f7ZdAFFn2o5ourEN+Ct1uUWZSwq/cTDqUR25sYsFE8o1AY5aRcL6ZwOT7q4ILmvOKbDbNiMAM8hc/Sf0Ht88m/q14tMmsyhiHkHbHzTTo6wQ3TMWwzIQQ0xiOjAbKKyaMurLxBJ6+9FZrN+KodEiDNNhOAgwzG2yTGqBKv/7CHxYw/q/qDd2OhYsmOWz4PgRYKjSFxrWVoGFxzNCFCmp9Od9tuP4O45HSSRvGUkRRazvr5fyGYpSJDeyLdclx1bIz6Fi/2+X8RMyvLwDtlvUEBrrUTCmRphyht+2Bz0/czej3wyonNR1W86ULMPqIIUC8ko+J07xOLFOEy4l/oU1AJKYUUvkymDpmt/DjhBpnSkY0CgA59fD4I9NuFeqpMTqAy7JqJx3T7n5jQaaQD8AzX3zVpTvRjGlE9ishsjw6+fy1IMTLh+UDZby325iWB5IX6+jl+jwVEXDXfr/slKcIRIpUZJM2UYE4442FGGyfGL+Q8ulq3HqJyTByUFh+d7e2P39oyd0gExOeSo7EW4nN+dt5rJ46OvoZjkDMMNFPcFh6IIKCD4JJ5vZKPMG1w/MKkkv4ejSE13EhOG1l7ZrQCS5A3y6RIhenClO12mQgiQWn8Y=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R2l4eHRDcTl3dGVGT3lVaUcxNkVCM2ZJVy9jN1hYajdxU0piNHA2dzFBWWFs?=
- =?utf-8?B?cStDT21JWnVXYUtrdDY2VjMrRHUwdmRPbCtZbGhyUFIyMzNRWVA2aWFIblRX?=
- =?utf-8?B?RkxEcGZUQWlEQ01LMytUd0duV1k0RkdGZ0JqcVNTTHoyTDQxZ1VKcTlCS2FL?=
- =?utf-8?B?SE9Obm1WYStMNjhPUnMyWGRHNndpSEoxdGp1cnV2WTVEYjl6RTZtN0s4M0lO?=
- =?utf-8?B?TnFsaVdERGdtKy94dkVvNGFPMlFtcjRYSGFuRzh1Wm1xeFZvQnBhOWNZQXBB?=
- =?utf-8?B?VEV4YVUyV2VDMGhBaTQ2SkdJQnZXNUtPNFRnU1FmenlDeTFBZjV4NHFGMjgw?=
- =?utf-8?B?L1BvdWc3cWI2VUVyRHE1U0l2dFJTempXSEd5VUtGanM1bllFTnViNXJYZldz?=
- =?utf-8?B?MUMzSlVSckwxT2R4Z0NsUm5DZXZjNERjV3hCOEJqTFAxZGhtMVhxNnhjdFE0?=
- =?utf-8?B?TU4yWUVyQzBTOUwxVSsvZ2I3VUd5cXBKdm1TYlhsM09mNmVmOUZSMFoxK2tp?=
- =?utf-8?B?ellCYlBwZnlMbWY0U0UxQmRWTFBHbjBNUjg2YXpTc2tCMDBLSTRkdFhqN0Ju?=
- =?utf-8?B?M0FOVlMzTEtzenRIK1J3eE1BcElMMGNKRjFweCt0NTRzOGs0UGhXMnEwS0NV?=
- =?utf-8?B?RXpPWDNiT3BNdXBuN2p2aW1XZTROY1ZqdFM4WHFpR2xadS9JclY1UldyMnJr?=
- =?utf-8?B?UzJNSHdJZzNjb2h3ZWxzK3krcisyVXhnZ0pmc2gxU0ozS3Y2QmJRV2RPRURq?=
- =?utf-8?B?U1UyOVhSd1lzeHVPVFBhN1FGWm9sWmF5cFM4OUtVV29EcjlHa3czRVc1N2RH?=
- =?utf-8?B?dS81TVdxUk50eWcza3BuNlI4YWttOXcrWE0rMEt3c1pldFVKY2FOaFQ1TDRP?=
- =?utf-8?B?d0pQQ1hDekdhRURGd1pwTUQ4eXJpcDI5S1ZSU3RpOHRDdmxHQ2E2TXcvYllQ?=
- =?utf-8?B?V2FJRG03YnFPUWt4eUJKdHFFZFRGclI3dzVWQ3RYKzJPZlhDSkk5TWVBcGV5?=
- =?utf-8?B?MlZ4aEJJRjRyMVZjbkt5WFpXYjFGMFBiOXNTaDhnWWlqa3F1VVNMNmdtdjBi?=
- =?utf-8?B?bUJCSm9tTVIwTG5qUEZseVM2cUpBbjJMLzA5V0JYSnowcWlESEhyYjBGUWtE?=
- =?utf-8?B?Ym9nMUprdTdJdFFMQldTak9BT1hNOU15Wk9mMElaUDdRbHJzYnVYNGZlNVRI?=
- =?utf-8?B?ZldtaWw3c3cyb2R4eC9RTGNpV3pVK3ZVZnQxL3JncHpDZVVBQUVaOXFJS2JO?=
- =?utf-8?B?bEJWMHJiMHZPeDJRWklzWVlQZlcvdDdENzJkcVo2bjFMb1BoUk4zWnYrQkly?=
- =?utf-8?B?MkZlVU5Zb3lLWTIvemNrS2d0Mzl1bnpKQ1NjKysvWEJFTXdiYXdoUlEydk1y?=
- =?utf-8?B?Y3BUV2p3b1BLZ0dBTU1FM0ZPazAxUWZBcytjaCszM016TkhPN2hLbWdlZUFF?=
- =?utf-8?B?UkVkOVdIR2lVVlBMbHovak1GRytPS05peVlvSnQvV0xUWTFMUG1idkFvY2lX?=
- =?utf-8?B?UHVuQjNuOE43YTJzdDI5NnJLKzFTTW1URmZ0VGVaM1g5ZnkwekJJd2RjcStO?=
- =?utf-8?B?elBjcmFjZTE5VVJheGpQazdDWDdzNUNrWkJNNXNYOTdOYXhRS0pFY3hROXBY?=
- =?utf-8?B?SjZWd0wyMVUxdi9UdUpIM2hTNFN3cVFWS3dzN2RmVTRKdTVDeHJNdTBHcXBZ?=
- =?utf-8?B?cVo2c3lEM0NFQ3F6WWYrelVZVU15UWFZSFVOdWp2WVlCTis2bC82RzJ3MTlo?=
- =?utf-8?B?MlJ2UmNPSlhlOE9QZWxlMzVpWXJQUnpNN1Vtcy82YkV1UGVzOFZrTjJ4VDlr?=
- =?utf-8?B?dkZCMlVZamNnSnhLVHB4ZTN6L3M1WDhGbEhSajhLbmd5Unh1MXJaTDgxQ1B4?=
- =?utf-8?B?bjJkMHpjNEVSWWRFQUZQZzJsK1FmeTJMSGxQNjZ5Y2ZyRExRQlpIRitNeGF3?=
- =?utf-8?B?UFFWL21BMnFPTTM4djhTUVN2ZkhOMmN3cTBHeWFEelNETTc4bkxYS2Naakpo?=
- =?utf-8?B?cjIzbFZLRGVVcG1mb1FmazNNMFhXUHA0b1FUVEFlQ3Q5cEEvb0JmVGMraGVQ?=
- =?utf-8?B?NnY2VlltR3g5SjNjZ3BpZzNyM0d2d2pvV05FZm1hcEJTaVY5WDE4c25yOWh2?=
- =?utf-8?B?dWFnNUptaTJNYVJheHBzcktGWEJUOFh6R2xLT0RtU1BQQ2lBOTQ3NTduOWRM?=
- =?utf-8?B?WkpweUc5TlZGSGFNSTZUWG8zdm5sSURXV21QSXc4MS9YVzlXaTZhN243Zzhv?=
- =?utf-8?B?VG1KbnZyekVHalpUV0lJbE1iMXZGWWtiRElPUjFhU2pIc2haL2YwaU82cldi?=
- =?utf-8?B?UVdIYno5Q1BDeUJHN0xMQ0M5aStOR05TNHBMclhFMk5hMFhvN0J6Zz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F9BCBF9DD39187428BE22FCAEC972D15@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="RM7R4tQr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1774347297;
+	bh=EeWxqb0HgRENSXG2d8Fk2RYIq4kncRyI4/Iu6SENreg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RM7R4tQri46kneVGg7+K2sNbwiOtJh+Yany9dmcKhLoJf52nTRyXCZUWuKx1wEwBU
+	 aD3P0rpfqGS2eriGMQys7f/VbAkAArMFE6Wk6g5Nssf9y7T1y8b7UVWK4BGk/+KlQW
+	 wi+9RO07qPOuv7I/xxaeR/83bB5qH35m6DHLUcPc=
+Received: from [192.168.178.143] (p5dc880d2.dip0.t-ipconnect.de [93.200.128.210])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 62OAEtkX003138
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 11:14:56 +0100 (CET)
+Message-ID: <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de>
+Date: Tue, 24 Mar 2026 11:14:55 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: RtZLScl2wcQtJAFuXa4yKIWz1dKsHSpjqofgnMIT/cVZzWTNAoLWKF4om1GczdCafI0YF01FW23lrV4cp+jniFy8+4Pbf9tBbcENARsQEUlMTNX9ga/umJQ0DtOSFqYJx1j1KpeF2nMwLULj18yJJZnEdEeJ88fkfkVjupr/oSs9NxArakMO1+BKkTejYUgRmzA9aujhsDjVwNBSKlqSOr6FmqRiAPy2wc4jT0nVItB3R6y5JP0IQGzERxUYdUAjeB1hFAVnBXg+UxhIGu4OdoiCBjpIpsCTOgHKe2e5HbUlnns3tV+STyyOH9gTTPVFyUQ7/AtL2u8sBVGbQARC8g==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ff95e4a-8898-46b2-8cc3-08de898dc02a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Mar 2026 10:11:44.0265
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rsmYVt3fBccrBNxPCdlGOw7XAPJVCKcVV7acBf0Ovalk16n/LWN9tlaEGuUYC5MmEZliixvka8e8tP69u07C9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7094
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+To: Jason Wang <jasowang@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
+ <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-T24gVHVlLCAyMDI2LTAzLTI0IGF0IDExOjI3ICswODAwLCAxODM0MTI2NTU5OEAxNjMuY29tIHdy
-b3RlOg0KPiBGcm9tOiAiemhhb2dlLnpoYW5nIiA8emhhbmd6ZzEyQGNoaW5hdGVsZWNvbS5jbj4N
-Cj4gDQo+IElmIHRoZSBoYXJkd2FyZSBkb2VzIG5vdCBzdXBwb3J0IHRoZSBTR1ggZmVhdHVyZSBh
-bmQgd2Ugc2V0IHRoZQ0KPiBjb3JyZXNwb25kaW5nIGZsYWcsIHdoZW4gdGhlIEwxIGh5cGVydmlz
-b3IgZW5hYmxlcyB0aGUgY29ycmVzcG9uZGluZw0KPiBmZWF0dXJlIGluIFZNQ1MxMiwgdGhlIFZN
-IGVudHJ5IHdpbGwgZmFpbC4NCj4gDQo+IFJlcG9ydGVkLWJ5OiB3ZWkgeGlhb3Fpb25nIDx3ZWl4
-cTFAY2hpbmF0ZWxlY29tLmNuPg0KPiBTaWduZWQtb2ZmLWJ5OiB6aGFvZ2UuemhhbmcgPHpoYW5n
-emcxMkBjaGluYXRlbGVjb20uY24+DQo+IFJldmlld2VkLWJ5OiBIdWFpdG9uZyBIYW4gPGhhbmh0
-MkBjaGluYXRlbGVjb20uY24+DQo+IC0tLQ0KPiAgYXJjaC94ODYva3ZtL3ZteC9uZXN0ZWQuYyB8
-ICAyICstDQo+ICBhcmNoL3g4Ni9rdm0vdm14L3ZteC5jICAgIHwgMTEgLS0tLS0tLS0tLS0NCj4g
-IGFyY2gveDg2L2t2bS92bXgvdm14LmggICAgfCAxMSArKysrKysrKysrKw0KPiAgMyBmaWxlcyBj
-aGFuZ2VkLCAxMiBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1n
-aXQgYS9hcmNoL3g4Ni9rdm0vdm14L25lc3RlZC5jIGIvYXJjaC94ODYva3ZtL3ZteC9uZXN0ZWQu
-Yw0KPiBpbmRleCA5MzdhZWI0Li4zOTZhYzA3IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3g4Ni9rdm0v
-dm14L25lc3RlZC5jDQo+ICsrKyBiL2FyY2gveDg2L2t2bS92bXgvbmVzdGVkLmMNCj4gQEAgLTcy
-NzgsNyArNzI3OCw3IEBAIHN0YXRpYyB2b2lkIG5lc3RlZF92bXhfc2V0dXBfc2Vjb25kYXJ5X2N0
-bHModTMyIGVwdF9jYXBzLA0KPiAgCQltc3JzLT5zZWNvbmRhcnlfY3Rsc19oaWdoIHw9DQo+ICAJ
-CQlTRUNPTkRBUllfRVhFQ19WSVJUVUFMSVpFX0FQSUNfQUNDRVNTRVM7DQo+ICANCj4gLQlpZiAo
-ZW5hYmxlX3NneCkNCj4gKwlpZiAoZW5hYmxlX3NneCAmJiBjcHVfaGFzX3NneCgpKQ0KPiAgCQlt
-c3JzLT5zZWNvbmRhcnlfY3Rsc19oaWdoIHw9IFNFQ09OREFSWV9FWEVDX0VOQ0xTX0VYSVRJTkc7
-DQo+ICB9DQoNCkFyZSB5b3Ugc2VlaW5nIHRoZSBjYXNlIHdoZXJlIGVuYWJsZV9zZ3ggaXMgdHJ1
-ZSBidXQgY3B1X2hhc19zZ3goKSByZXBvcnRzDQpmYWxzZT8NCg0KSXQncyBxdWl0ZSBzdHJhbmdl
-IGJlY2F1c2UgZHVyaW5nIEtWTSBsb2FkLCBpZiBjcHVfaGFzX3NneCgpIGlzIGZhbHNlLA0KZW5h
-YmxlX3NneCBpcyBndWFyYW50ZWVkIHRvIGJlIGZhbHNlLg0KDQpUaGUgb25seSBjYXNlIHRoYXQg
-SSBjYW4gdGhpbmsgb2YgaXMgYWZ0ZXIgS1ZNIGxvYWRzIHNvbWVob3cgbWFjaGluZSBjaGVjaw0K
-aGFwcGVucywgd2hpY2ggInNvZnQgZGlzYWJsZXMiIFNHWCAoQ1BVSUQgcmVwb3J0cyBTR1gxIGFz
-IDApLg0KDQpJcyB0aGlzIHRoZSBjYXNlIHlvdSBhcmUgbWVldGluZz8NCg0KDQpbLi4uXQ0KDQo+
-ICsvKg0KPiArICogVGhlcmUgaXMgbm8gWDg2X0ZFQVRVUkUgZm9yIFNHWCB5ZXQsIGJ1dCBhbnl3
-YXkgd2UgbmVlZCB0byBxdWVyeSBDUFVJRA0KDQpCdHcsIHRoZSAiVGhlcmUgaXMgbm8gWDg2X0ZF
-QVRVUkUgZm9yIFNHWCB5ZXQiIHBhcnQgaXMgb2J2aW91c2x5IG9ic29sZXRlDQpub3cuDQo=
+On 3/24/26 02:47, Jason Wang wrote:
+> On Thu, Mar 12, 2026 at 9:07 PM Simon Schippers
+> <simon.schippers@tu-dortmund.de> wrote:
+>>
+>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
+>> becomes full. Once an entry is successfully produced and the ptr_ring
+>> reaches capacity, the netdev queue is stopped instead of dropping
+>> subsequent packets.
+>>
+>> If producing an entry fails anyways due to a race, tun_net_xmit returns
+>> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
+>> LLTX is enabled and the transmit path operates without the usual locking.
+>>
+>> The existing __tun_wake_queue() function wakes the netdev queue. Races
+>> between this wakeup and the queue-stop logic could leave the queue
+>> stopped indefinitely. To prevent this, a memory barrier is enforced
+>> (as discussed in a similar implementation in [1]), followed by a recheck
+>> that wakes the queue if space is already available.
+>>
+>> If no qdisc is present, the previous tail-drop behavior is preserved.
+> 
+> I wonder if we need a dedicated TUN flag to enable this. With this new
+> flag, we can even prevent TUN from using noqueue (not sure if it's
+> possible or not).
+> 
+
+Except of the slight regressions because of this patchset I do not see
+a reason for such a flag.
+
+I have never seen that the driver prevents noqueue. For example you can
+set noqueue to your ethernet interface and under load you soon get 
+
+net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
+					     dev->name);
+
+followed by a -ENETDOWN. And this is not prevented even though it is
+clearly not something a user wants.
+
+>>
+>> Benchmarks:
+>> The benchmarks show a slight regression in raw transmission performance,
+>> though no packets are lost anymore.
+>>
+>> The previously introduced threshold to only wake after the queue stopped
+>> and half of the ring was consumed showed to be a descent choice:
+>> Waking the queue whenever a consume made space in the ring strongly
+>> degrades performance for tap, while waking only when the ring is empty
+>> is too late and also hurts throughput for tap & tap+vhost-net.
+>> Other ratios (3/4, 7/8) showed similar results (not shown here), so
+>> 1/2 was chosen for the sake of simplicity for both tun/tap and
+>> tun/tap+vhost-net.
+>>
+>> Test setup:
+>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+>> Average over 20 runs @ 100,000,000 packets. SRSO and spectre v2
+>> mitigations disabled.
+>>
+>> Note for tap+vhost-net:
+>> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
+>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+>>
+>> +--------------------------+--------------+----------------+----------+
+>> | 1 thread                 | Stock        | Patched with   | diff     |
+>> | sending                  |              | fq_codel qdisc |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 1.151 Mpps   | 1.139 Mpps     | -1.1%    |
+>> |            +-------------+--------------+----------------+----------+
+>> |            | Lost/s      | 3.606 Mpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 3.948 Mpps   | 3.738 Mpps     | -5.3%    |
+>> |            +-------------+--------------+----------------+----------+
+>> | +vhost-net | Lost/s      | 496.5 Kpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>>
+>> +--------------------------+--------------+----------------+----------+
+>> | 2 threads                | Stock        | Patched with   | diff     |
+>> | sending                  |              | fq_codel qdisc |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 1.133 Mpps   | 1.109 Mpps     | -2.1%    |
+>> |            +-------------+--------------+----------------+----------+
+>> |            | Lost/s      | 8.269 Mpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 3.820 Mpps   | 3.513 Mpps     | -8.0%    |
+>> |            +-------------+--------------+----------------+----------+
+>> | +vhost-net | Lost/s      | 4.961 Mpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>>
+>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.org/
+>>
+>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>> ---
+>>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
+>>  1 file changed, 28 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index b86582cc6cb6..9b7daec69acd 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+>> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>         struct netdev_queue *queue;
+>>         struct tun_file *tfile;
+>>         int len = skb->len;
+>> +       bool qdisc_present;
+>> +       int ret;
+>>
+>>         rcu_read_lock();
+>>         tfile = rcu_dereference(tun->tfiles[txq]);
+>> @@ -1063,13 +1065,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>
+>>         nf_reset_ct(skb);
+>>
+>> -       if (ptr_ring_produce(&tfile->tx_ring, skb)) {
+>> +       queue = netdev_get_tx_queue(dev, txq);
+>> +       qdisc_present = !qdisc_txq_has_no_queue(queue);
+>> +
+>> +       spin_lock(&tfile->tx_ring.producer_lock);
+>> +       ret = __ptr_ring_produce(&tfile->tx_ring, skb);
+>> +       if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
+> 
+> So, it's possible that the administrator is switching between noqueue
+> and another qdisc. So ptr_ring_produce() can fail here, do we need to
+> check that or not?
+> 
+
+Do you mean that? My thoughts:
+
+Switching from noqueue to some qdisc can cause a 
+
+net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
+					     dev->name);
+
+followed by a return of -ENETDOWN in __dev_queue_xmit().
+This is because tun_net_xmit detects some qdisc with 
+
+qdisc_present = !qdisc_txq_has_no_queue(queue);
+
+and returns NETDEV_TX_BUSY even though __dev_queue_xmit() did still
+detect noqueue.
+
+I am not sure how to solve this/if this has to be solved.
+I do not see a proper way to avoid parallel execution of ndo_start_xmit
+and a qdisc change (dev_graft_qdisc only takes qdisc_skb_head lock).
+
+And from my understanding the veth implementation faces the same issue.
+
+
+Switching from some qdisc to noqueue is no problem I think.
+
+>> +               netif_tx_stop_queue(queue);
+>> +               /* Avoid races with queue wake-ups in __tun_wake_queue by
+>> +                * waking if space is available in a re-check.
+>> +                * The barrier makes sure that the stop is visible before
+>> +                * we re-check.
+>> +                */
+>> +               smp_mb__after_atomic();
+> 
+> Let's document which barrier is paired with this.
+> 
+
+I am basically copying the (old) logic of veth [1] proposed by
+Jakub Kicinski. I must admit I am not 100% sure what it pairs with.
+
+[1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.org/
+
+>> +               if (!__ptr_ring_produce_peek(&tfile->tx_ring))
+>> +                       netif_tx_wake_queue(queue);
+>> +       }
+>> +       spin_unlock(&tfile->tx_ring.producer_lock);
+>> +
+>> +       if (ret) {
+>> +               /* If a qdisc is attached to our virtual device,
+>> +                * returning NETDEV_TX_BUSY is allowed.
+>> +                */
+>> +               if (qdisc_present) {
+>> +                       rcu_read_unlock();
+>> +                       return NETDEV_TX_BUSY;
+>> +               }
+>>                 drop_reason = SKB_DROP_REASON_FULL_RING;
+>>                 goto drop;
+>>         }
+>>
+>>         /* dev->lltx requires to do our own update of trans_start */
+>> -       queue = netdev_get_tx_queue(dev, txq);
+>>         txq_trans_cond_update(queue);
+>>
+>>         /* Notify and wake up reader process */
+>> --
+>> 2.43.0
+>>
+> 
+> Thanks
+> 
