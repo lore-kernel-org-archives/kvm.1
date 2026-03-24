@@ -1,53 +1,51 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642E92D0635;
-	Tue, 24 Mar 2026 20:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A892E3397;
+	Tue, 24 Mar 2026 20:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774382478; cv=none; b=rVggVaqFMxaGpL9Vm/GRhZ5QbqulXtYeEG9OfbPpnsGYcUWwMj5c1r/T6OkTV/cReDSZo2IRGOkJ/NGCVqtfP0Q2pCypcAWMP3KOwCiK9cStbNcph3wGnkJ5RLxeLR9qNK0E7lVhv5jKS63ROXDTOljLRcpHOl1donPuWRMVdqA=
+	t=1774383253; cv=none; b=gbTbhOA+DwM1BSBsHitlzoCQWRDVfW6w0OErSQkqiDcYY2ox0y2ZRB4VJSpP5MJVBz0Jfdl3lJXApV1d1uO5ZRvq/q3+LCi120ezzrQzyQ7BRIHJWbel3+MIlRTJsDXLgsICgkkzwW5FLTKkdhHsICuXlA4ww+/EVpsbdQu5GlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774382478; c=relaxed/simple;
-	bh=MPwNHSpoYjyM16ewI+BxbAdvmJMpRdZDXK7CwZ6QIDw=;
+	s=arc-20240116; t=1774383253; c=relaxed/simple;
+	bh=cFuFU8YE7cEVhEQVQCkzUpXv5UGSTwcmnJReRP9FaAU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JszMo7icXkoI528blbv37+KOdUPAFRqyG7/9IkaQuVv5x96MSOZMa3gSOnh5qN7mD+2H29wOwcKu/CLBJn3Cl7Czl95kHz5cQGH2wqnmj3AOv0AcLSQ5V0uJvZNjwWVlHxS+/KDpoZbRfWOfO8UU3S5FQwz76E7as0nng1au57g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AmcOTFso; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=YFNB10pCo97b3qY/SdufDwEqbxLJ/AxjdcNxO1ZqWljmfTinqxu+XubNA8z/47Obv5r4sif+ofGQAz7ANx9THnh2FXQeXATYKXIR+v38aqNBFoTSKEBZlmWr8dcVvH5v59Vn1UnRoXEPZDAqdwjgcDAokgcRYciyY2H+WzZsu+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EHAiURWq; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AmcOTFso"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8045540E0222;
-	Tue, 24 Mar 2026 20:01:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id vXkONk_xMsOw; Tue, 24 Mar 2026 20:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774382463; bh=rrltVfsKaUOz3jKzbq8S1z1BNCaZvfoi0wgXPux+LGo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AmcOTFsokQCadYhgaodHohkOM+Z+rHYntVaJXympYseSn0bmHzpYLQwX3qjT7BO6V
-	 Z6n/zj11uUN3AJXlC8IC9gNJoR2Ukj6qmiI+ysggCuy4t+MrUfJytvpXCwzJSb5PtW
-	 ov8I1VmsRIj/fKyefGm7/GkvSzS/mRAPFAoo0VQJK68LX1SO+otT0BX8MQMCCVO3Of
-	 7IlSJtnEtuG9RAOWrviSHwm5ciQsS4o8S5CFGpZrQmqcav3px84M7InZF3+mph25nG
-	 HPnPlbwaBfj3RNcPuPzBQo/SSzB6C47ArYDzCckZsrU4lY83D3G7bNv8W1RKuMOZsq
-	 Hpfhsv+RV+9+jc90O22I+5ltALhblGl4gEfBNUxBzBVtzh6Dei40gfEBxOgkTcyJix
-	 NyVAb1KE50NWOBJdXfEiMghOacFkk4/fOrQfHaXTCwHHl5zSuh9mDFU+m50dLyvxjt
-	 jngde1ZkfG6vChR3De2mnBZgrFz/3LUgc3HR0i9LLo2dOtrjSkA+/lX4xQRaZ/a7eq
-	 XTcPYn8vIK/HvYwYGfYjzmPk8iTNjc39InYjK7AJ/luScpkVfEy4XsAFaKIbn6MNRv
-	 1quh2qbNUCh+aawylKNXtU6eqxyluGDqHcdRgnjnyCGWD8TbH38IIbOyo1bwWtgAw+
-	 asPjanKnk6HRhk9DezGoMurk=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5730B40E0031;
-	Tue, 24 Mar 2026 20:00:27 +0000 (UTC)
-Date: Tue, 24 Mar 2026 21:00:26 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EHAiURWq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774383252; x=1805919252;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cFuFU8YE7cEVhEQVQCkzUpXv5UGSTwcmnJReRP9FaAU=;
+  b=EHAiURWqB+3ybVog7RIm7LsHnIT9RZmtDIydQ3m72JoYvxm4TBPZzO+o
+   yn04ZkEyv9+HiG/lxVyuNWcYsolERO33k5BdKvF73MA0+jP1snYNpp1Kq
+   OxDtxicFP4hurIU/WT1EV3ZB/Rr6b0hg79VZz/jh9eiOKLlAGJ8qXF2u2
+   663HwUnbbO6g+n3ZFvLfk5ZXWFQaKqIGDnIp6ecQBuHrDY/et/I9VA0Vc
+   DZFcpeFzPsoVs8TjDwmOUagww+h8gb4DlFf2nRxqDzmp+hoXIZUp/6Tcz
+   //S/ovEClJSBDP2ETzZ2BJYPynwoqnaKbu5OLnpBhdMNwrnR7lkNbiPPY
+   Q==;
+X-CSE-ConnectionGUID: usTPGGUcTseB1Tq79WRRtg==
+X-CSE-MsgGUID: CmLNsXrkR3CjoxA5UeYDQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86109686"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="86109686"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 13:14:11 -0700
+X-CSE-ConnectionGUID: AXhwVh04RBOwotUDZEP6Kw==
+X-CSE-MsgGUID: WEL3bLXtQZKCcEqSV3OuxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="219588789"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 13:14:10 -0700
+Date: Tue, 24 Mar 2026 13:14:04 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
 Cc: Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
 	Nikolay Borisov <nik.borisov@suse.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
@@ -76,7 +74,7 @@ Cc: Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
 	netdev@vger.kernel.org, linux-doc@vger.kernel.org
 Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
  flush
-Message-ID: <20260324200026.GCacLtWmhGVOmz832E@fat_crate.local>
+Message-ID: <20260324201404.pi45c5anflqdrkgm@desk>
 References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
  <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
  <20260319205802.GJ3738786@noisy.programming.kicks-ass.net>
@@ -86,25 +84,23 @@ References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
  <20260320090340.GN3738786@noisy.programming.kicks-ass.net>
  <20260320113134.GAab0wFqe-hewZc175@fat_crate.local>
  <20260320182308.ahynqzuswlv34wf6@desk>
+ <20260324200026.GCacLtWmhGVOmz832E@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320182308.ahynqzuswlv34wf6@desk>
+In-Reply-To: <20260324200026.GCacLtWmhGVOmz832E@fat_crate.local>
 
-On Fri, Mar 20, 2026 at 11:23:08AM -0700, Pawan Gupta wrote:
-> I am curious, what problems do you anticipate? There are nearly 50
+On Tue, Mar 24, 2026 at 09:00:26PM +0100, Borislav Petkov wrote:
+> On Fri, Mar 20, 2026 at 11:23:08AM -0700, Pawan Gupta wrote:
+> > I am curious, what problems do you anticipate? There are nearly 50
+> 
+> What's easier when you need to change the underlying implementation: unexport
+> the static key and touch a bunch of places in the process or simply change the
+> accessor's body and all the callers don't notice a thing?
 
-What's easier when you need to change the underlying implementation: unexport
-the static key and touch a bunch of places in the process or simply change the
-accessor's body and all the callers don't notice a thing?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+I see. I switched to accessor in v8 I sent today.
