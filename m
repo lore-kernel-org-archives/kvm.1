@@ -1,151 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003E537DEA0;
-	Tue, 24 Mar 2026 18:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8632C3E559F;
+	Tue, 24 Mar 2026 18:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774376345; cv=none; b=BxoklGB/0pV9NKD1iCof3Bm1cdVesO+NOgsvImrqAT/bCQougYloeOEBwPhsRNhRXKB3VMC2b4lIjmI6c420rxRf2cr00oC1BwCEpIC0fsxhsGFk9VRtbXVTuJXRBC3tJY8LxVwibwFf2sHibR8TE7r8ul22b6y3z9mkvyC9dVc=
+	t=1774377821; cv=none; b=Cz3Os8QrKgIlZcc2qNMcHh8urjzesDotLpbxUr4gHlrke9b2lcYTh2sx2WvpwoSULYOV/a23OK4QqTjD7ZDuYCDGx+zfT7ZPV9RvSI+7dh+A9dW3iOQGgBAC5ZHcl4/yq4nfpmLHRmMcme04SSF0HbWlMGkOxc+8CvxBAjk7F/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774376345; c=relaxed/simple;
-	bh=tJKPFoTE04b29dqHeQZIy36ufkX7uRuyKW9NSMZZOE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sLGetAlkm+f63DHG1s57GqXXr4P2Nqe3se8YG5km7QF5r9aStbsU0VcffzJxJoTErLS3+A+bBmfXxsjt+D/Qu47K88wmbs68+1DFrkLHTmMDY4ft30ZdDdBiic1LS9lkLJ2FCXiQHNRfYvBqH0fItLTSHSZCjxx0IvJIim1GhdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XMXvE67a; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1774377821; c=relaxed/simple;
+	bh=S0aEBB6Hs3Vms/fOltqD3iMe7jfXUYvj08ux34yihS4=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=WpaSzRZx9K2e8GXzvEiLtHDbuF/kDz8875/BmYkxGheZcMZZljNI24dDLoRUDuhE0zuxT/fGu92zFv08ZJ75UgvaWufLzrGo2JBU0lXhxMPHuMyV9B53boGj4cpkuuPeLznpm+8cj/Ndr37+FhyUzYekb6T5X1uoNBbQlOnDQ8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Qp9yLI2s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XMXvE67a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774376343; x=1805912343;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tJKPFoTE04b29dqHeQZIy36ufkX7uRuyKW9NSMZZOE4=;
-  b=XMXvE67alTmY0b8weYjGVyOiX0QFxGpYvaAvAvEh/yqBUUnPBvkIxCdI
-   nPQeMv8atEneuQDPfCUsGs83XK5bGrsvIOEBJymwGHS+Urgxch5aI+8o1
-   j24yC4DLJCMQHjsp9+gnhVT2TfK2ICQuDboVh5ah+7ACR8+3hzF6uoqmT
-   LCsjwpOh6pHVbl5A2yz620MRSQP467ypiCsyroV0uq0Kcmz1/kD7smAlm
-   g41B0W+c2V3b9LvshMmWAHb31TvaJJPRCmD3HXLXSNj5VA3CVePDfPSQ4
-   FXs1N41J+jE5W94Mi7ffVW0tXQfxY5oovEb2dMrcLKEB0hLOoQdGfzzUk
-   Q==;
-X-CSE-ConnectionGUID: fB6pw53HTue8cRQjJGqEwA==
-X-CSE-MsgGUID: 0eBc547jRxOPDmOPTBXAUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="79001149"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="79001149"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 11:19:02 -0700
-X-CSE-ConnectionGUID: whTIKQ1dTJenyzHLYJZAdg==
-X-CSE-MsgGUID: 7EdO1p2ZR36PRWrpLZAIIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="226066052"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 11:19:01 -0700
-Date: Tue, 24 Mar 2026 11:19:01 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v8 10/10] x86/vmscape: Add cmdline vmscape=on to override
- attack vector controls
-Message-ID: <20260324-vmscape-bhb-v8-10-68bb524b3ab9@linux.intel.com>
-X-Mailer: b4 0.15-dev
-References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Qp9yLI2s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F1DC19424;
+	Tue, 24 Mar 2026 18:43:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774377821;
+	bh=S0aEBB6Hs3Vms/fOltqD3iMe7jfXUYvj08ux34yihS4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Qp9yLI2ss3h+ai6f5OaGy67x+J1yw4C6X8kNtrj8ChIAW3GFIuh4oHiazxaH/uVur
+	 yJ9fhv/K/ztsKhc6ijGjpJ9KA6vwyYau0Csg17eOA76SSxNLe3kU/O7HdupLv8J7s7
+	 CRAcsYSiMUGkwcoPHzEElyf73w16pjlh5DXe9Cb4=
+Date: Tue, 24 Mar 2026 11:43:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: peterz@infradead.org, david@kernel.org, dave.hansen@intel.com,
+ dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
+ will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
+ seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+Subject: Re: [PATCH v8 0/2] skip redundant sync IPIs when TLB flush sent
+ them
+Message-Id: <20260324114339.2c0777f7b2c5483281a15667@linux-foundation.org>
+In-Reply-To: <20260324085238.44477-1-lance.yang@linux.dev>
+References: <20260324085238.44477-1-lance.yang@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In general, individual mitigation knobs override the attack vector
-controls. For VMSCAPE, =ibpb exists but nothing to select BHB clearing
-mitigation. The =force option would select BHB clearing when supported, but
-with a side-effect of also forcing the bug, hence deploying the mitigation
-on unaffected parts too.
+On Tue, 24 Mar 2026 16:52:36 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
-Add a new cmdline option vmscape=on to enable the mitigation based on the
-VMSCAPE variant the CPU is affected by.
+> Hi all,
+> 
+> When page table operations require synchronization with software/lockless
+> walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+> TLB (tlb->freed_tables or tlb->unshared_tables).
+> 
+> On architectures where the TLB flush already sends IPIs to all target CPUs,
+> the subsequent sync IPI broadcast is redundant. This is not only costly on
+> large systems where it disrupts all CPUs even for single-process page table
+> operations, but has also been reported to hurt RT workloads[1].
+> 
+> This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
+> the prior TLB flush already provided the necessary synchronization. When
+> true, the sync calls can early-return.
+> 
+> A few cases rely on this synchronization:
+> 
+> 1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+>    of the PMD table for other purposes in the last remaining user after
+>    unsharing.
+> 
+> 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+>    and (possibly) freeing the page table / re-depositing it.
+> 
+> Two-step plan as David suggested[4]:
+> 
+> Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
+> flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+> guarantee IPIs were sent, keeping it clean and simple.
+> 
+> Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+> software/lockless page table walks, benefiting all architectures.
+> 
+> Regarding Step 2, it obviously only applies to setups where Step 1 does not
+> apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
+> attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
+> work and tuning; it will be submitted separately once ready.
+> 
+> On a 64-core Intel x86 server, the CAL interrupt count in
+> /proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
+> range with this series applied.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- Documentation/admin-guide/hw-vuln/vmscape.rst   | 4 ++++
- Documentation/admin-guide/kernel-parameters.txt | 2 ++
- arch/x86/kernel/cpu/bugs.c                      | 2 ++
- 3 files changed, 8 insertions(+)
+Well that's nice.
 
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-index 7c40cf70ad7a..a15d1bc91cce 100644
---- a/Documentation/admin-guide/hw-vuln/vmscape.rst
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -117,3 +117,7 @@ The mitigation can be controlled via the ``vmscape=`` command line parameter:
- 
-    Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
-    (default when CONFIG_MITIGATION_VMSCAPE=y)
-+
-+ * ``vmscape=on``:
-+
-+   Same as `auto`, except that it overrides attack vector controls.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3853c7109419..98204d464477 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -8383,6 +8383,8 @@ Kernel parameters
- 					  unaffected processors
- 			auto		- (default) use IBPB or BHB clear
- 					  mitigation based on CPU
-+			on		- same as "auto", but override attack
-+					  vector control
- 
- 	vsyscall=	[X86-64,EARLY]
- 			Controls the behavior of vsyscalls (i.e. calls to
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index ba714f600249..84bf89ca278b 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -3083,6 +3083,8 @@ static int __init vmscape_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		setup_force_cpu_bug(X86_BUG_VMSCAPE);
- 		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
-+	} else if (!strcmp(str, "on")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
- 	} else if (!strcmp(str, "auto")) {
- 		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
- 	} else {
+Which other architectures could utilize this?
 
--- 
-2.34.1
+> David Hildenbrand did the initial implementation. I built on his work and
+> relied on off-list discussions to push it further - thanks a lot David!
+>
+> ...
+>
+>  arch/x86/include/asm/tlb.h      | 18 +++++++++++++++++-
+>  arch/x86/include/asm/tlbflush.h |  2 ++
+>  arch/x86/kernel/smpboot.c       |  1 +
+>  arch/x86/mm/tlb.c               | 15 +++++++++++++++
+>  include/asm-generic/tlb.h       | 17 +++++++++++++++++
+>  mm/mmu_gather.c                 | 15 +++++++++++++++
+>  6 files changed, 67 insertions(+), 1 deletion(-)
+
+Can the x86 maintainers please review these changes?
 
 
