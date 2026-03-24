@@ -1,183 +1,230 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C7D19343E;
-	Tue, 24 Mar 2026 22:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774389843; cv=fail; b=Qwv0HioOBv+57O9ykwIenC/Ci3TSD3VYf7GdIQBhkkfg3JEk3HDeiwq4bSXYxQH+Acty3FGOx9n3FGQsRPl42v8Py1C7+77euJjaltfvGB0X5GejMtfCHD+PpYHLbKMOY+1zhmmTp1PHVXe3QyD7SGSIjF+Rj+F2IMxPkJ4trNg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774389843; c=relaxed/simple;
-	bh=FU2f3wxLpCN0w3nxyKQ3SsDwyN78Cw8dP+fGCgGrXIA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bsaA/EqhP6lz+gLjIkiNurgprGRcrCA7CpxTjMDpIR6DMf0bBCJjwmQZQEhF8HhY7ZPJmIA/lYcSfsm9p8DuhNNCnDpUn0EEqIHTAY05NUjMCc+/c46jWsfLYXkyIM3qeT8OLDIdl9a3V8ag8Kxc57vSNfEaBecurjCQScwGG8g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ph1luLNF; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B8231F99E;
+	Tue, 24 Mar 2026 22:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774390397; cv=none; b=b/eT9dzE5+I86oghNLDrojdpwBTIZRZl9GqmYlGlTsDxtVdo1I83cScPocxB5b6iU8PVf96glfwVvqOYQCBHyg74elOq8+tCqkFPw8wVmHZmRWseZvUuMWijhmCo6M00qLEjgpg20CL+y60OTlDkA/qCW/iEsnIYDZyVmhd/uNs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774390397; c=relaxed/simple;
+	bh=eJI0u7GU1D+LGzKAevVQeNkH32HP3Ejo+OuGGgudv7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qjGUmj08rD5e9syer/rTyY5HDsDtJH3hWSzs1FOAl6McQp/t1OQhuF0ffpbvIo4MlEdnJ+SpYaBvzyk/bPl42hch+RsaVv3t8oGrcHyqweDzmWpck1Ts3yegIjGaaSjtRDsOZjxxcBoYVNG+V6XmDJaowt5eF70/OizXtaYPxTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OLYPZkjo; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ph1luLNF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OLYPZkjo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774389842; x=1805925842;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=FU2f3wxLpCN0w3nxyKQ3SsDwyN78Cw8dP+fGCgGrXIA=;
-  b=Ph1luLNFzv34CpmS/j0j70UiH9ktgATj4gjTQl4Z5knUdwORTGI+rrn9
-   7jQDoP/wQ4OkZqWQ/G/vslx2YI6FQ5LJov2QuqrLghQNCDrS9oaIGXwz6
-   xY06bOMQeBWoNVXWuvsMiMyml0lx5aCUlVLoX/2jwc/+Mnmpvyj0aLl+w
-   N/cY+gcGcnvw8eOupZq++EGHT0pRIgmx8p1BOAI227i04myKaTKL7fuAM
-   eMcvurYaSw59QHdkBmRxNbB9MV7ueadgGVPpUfPELlc0WfOzjTQR+flK9
-   V6jmjmrKv/Xb1tV7ZLspPVH2VCcd8uNGSukU+Fv7dfRwhElgNORp7dEZQ
-   w==;
-X-CSE-ConnectionGUID: xxiGe6wqRTKO8NXauee29A==
-X-CSE-MsgGUID: xE2mhS/zRiO8TYhXOKfjJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="78020641"
+  t=1774390395; x=1805926395;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eJI0u7GU1D+LGzKAevVQeNkH32HP3Ejo+OuGGgudv7I=;
+  b=OLYPZkjoWPJjqSQafbJUCOK1M5al2vy6Cq4wOKBb8y75ifm59/HNX3Zy
+   lUGnWmvocl4UmYw/rNIpfxQpVw3QgoFtlpRq7okee9RAQ+YNpba/UA3Bp
+   3MuSaKzbI9vnOvkl1xFMaA8B+GZAJFTA8CyE2FR/AlHohP7NWZoxs8gqd
+   NEM2RHI9oYvcgrlUqeB+gGjzREa+X3r5GqkHITNxxMaiWov5pu7zbf6iu
+   jVKY69A0qt6KHF3JgW4QCsMtCzDIer6I5bsC9npCiRUiZTE9C6J88uyjt
+   sPcNtu8R+inyqz9BiNk6RIibKOefv0AI7d0PNZ8k7Ic4vnrrldZXRSVdk
+   Q==;
+X-CSE-ConnectionGUID: fTeMfZfaRNqfXHvhJJnxlA==
+X-CSE-MsgGUID: IJxJ2JAaQXKAQErzAydegg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75492575"
 X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="78020641"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 15:04:02 -0700
-X-CSE-ConnectionGUID: 6NIUADOVTaKN3qXGBb8cSA==
-X-CSE-MsgGUID: dlD4PhllSL6xXYmZIjTsJw==
+   d="scan'208";a="75492575"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 15:13:14 -0700
+X-CSE-ConnectionGUID: 0fTXYyzEStyq9ED4/4r2bQ==
+X-CSE-MsgGUID: zut23cVNTROVq5Rz2nxfPw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="223692500"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 15:04:01 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 15:04:00 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 24 Mar 2026 15:04:00 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.37) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 15:04:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DAb5YZY+eVIpH/avjqZtPH6P3hTf+mATf5uigUYKRQSutaz8JrKO8kpSGM3D3/CP1VIVgUwPXtG+xnIwowqrgoLox998Dvc4Uv3AYGTbbO5t1TOsqJ9Jl3aN9hxzWzAa17ZV5u93hBCKr0kLLMxMWzfiaxTGzQIedYrhN+VhWnYF45vFy3ClX+xYpoC+2m1syCWuakdTkU37XAbI384LnlvewkJdlr20PgKru228zLMSkv0IhYhrL/15kjyw8oxe7GtyfTgG16M6A9T+RqRc2d2SOz7vYI1d1Ko0Z9BlC2gv4f/JpcOta6+kjjaAL31dM++8b0r3JIssdDhIwK30nA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FU2f3wxLpCN0w3nxyKQ3SsDwyN78Cw8dP+fGCgGrXIA=;
- b=cB8vk0JpOawxsM1jV4Plm4NO1FLXSLHdDtf7yBmW+6TJlDcU+com0k93yMtvOjuP36ClXipJYilNJNkMKCoVl6LwC5DbilP/H/Yvkr6fIx+rMEDjEebYdhIJHwZ09O01uPphpEZ2zINE3C0byBoAzMAY+gguBeesAapqROsUa/ujoTiP7gDHN4xOyH+JPwx0CocgkxN/hABl2jbhW1rGLfYhfCFZvBagctC1dFaEOTH1NUm9nqFgts8B7j+GnbQp2JZFoKpThFMemU/HFYR+OHeBG6rNRPagQjBdNAp5m5RGmteX3zBASFAFiejmdtJAKQaWBAUEGKmNrGHV/sUHTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by PH8PR11MB9880.namprd11.prod.outlook.com (2603:10b6:510:3c5::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Tue, 24 Mar
- 2026 22:03:57 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9745.019; Tue, 24 Mar 2026
- 22:03:57 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "bp@alien8.de" <bp@alien8.de>, "marcandre.lureau@redhat.com"
-	<marcandre.lureau@redhat.com>, "kas@kernel.org" <kas@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Qiang, Chenyi"
-	<chenyi.qiang@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
-Thread-Topic: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
-Thread-Index: AQHcu6ISxXKhFiWKBUuIm+vE1xtYKrW+PPMA
-Date: Tue, 24 Mar 2026 22:03:57 +0000
-Message-ID: <56190adc345148396ba6b3e52672e662145f7dc7.camel@intel.com>
-References: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
-	 <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com>
-In-Reply-To: <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|PH8PR11MB9880:EE_
-x-ms-office365-filtering-correlation-id: f81b652b-9ad6-4642-0ded-08de89f13f18
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700021|921020|22082099003|18002099003|56012099003;
-x-microsoft-antispam-message-info: krZD/M0vpJDQkYrpkm0DkA7kjAFc3BhKLIHdsp8IBtAIMmSxC8FhwBTH6s8N55HXyoGLC6ZIBvBG36IEMFgUH67cL7HcnTvHfPEtJ+PNH7bvhOnoYm3qaE47fbD+BxogHYxwF61dbks3TO1uTVd87qmnbO5kfQ6EOjzEqCvCLItzrAW7luyvRenqN40kRQ+zw7ZB2B7z+jd5ZEaaWbBiDSbLEq6K7fEI0mUrlM0h7JiqhQCwttoP4tfZCjDdCEO1bJ7AF3xnXuAWP9U4p1gTqj2A5fIzI0X0BXZs+qQ1N2AZd0pnxVYsWYFpCyK45N4ao/leDfxSSwrREsKWOeWanhaAgPOn5XtkC5XdKM+GYVviqk9ODIC5FJTHck+jDtouexUS9o7E9vgn0H4NKMGkZVbV1TMaPi+RhF/D3/zodSpdQiEI1V/vpWyny8hAekZASEbwQBmL2YLb+hIfOyCXMd29py4yshEuw3b8XtU6v0YoJQ516NNjprK4Oq95Wu6e79b8rbG1KsqPhLShYdNgVzpv9x8Xebu7fs2WVqcPDyx+ksN7MpEVGkic7+tdqz+CCQ7d2hBZ/rQSENOznQognH+7DOcrWweFM8yaIQThO+mPs9B/ZXiMcOYxuawrxquDL48KfOcsBKUe2V1NIXdqDU0ei5yHWahFtK1v7Qnqdeu5zK1h+Vy7ghwc2PstwwuoUaYa6GFIun1LSDIRTITnAMz1mPNd9HbRXZoPu67bVqB/kcrlNL8H4t9lulR7HB10jAEV6EMMrXpQ3a9W+9+cz/e6rWbZsbRjJDxj+XvEUi+ip0sX57YrP6e4P5KF6Npp
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700021)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?L0Ywd1N2QUdHYTFvbGw5UXJObFIrdUgrZXFIQzlqZlZMTFczMlhJQzJ6Lzl3?=
- =?utf-8?B?OUdWV1Z6SGdFc2VYbU9oZkM1UCtzU2Y4M29FL2lVbjB4RVhUTUh4b0ZQTXFI?=
- =?utf-8?B?VGRKcGpRM3pmTXc5NlFVSVE0WER5d2ZXWm92NGowV3JkVWFjSmlTZjBkVWxh?=
- =?utf-8?B?NWVWc1dFWXVxZFkyRGxuOURxanhydXVVazBrQXQyKy9YSTMwUmtGdUg3ZHd6?=
- =?utf-8?B?YjVheTBha3NGYUlqbW95dnBKVDRTRjFJNis0MWlmUERsOUdWYkVneUZ6RmNR?=
- =?utf-8?B?SEl0ZVVLY0RaNTRtMGFyVHRnRU9Kd3IxVEJlZkhYUitueVJVTXU0Ukl0L0xQ?=
- =?utf-8?B?R0xzZXQvYUJNdjNCbWJOdnlwQU5EWDBsRGs4bXVSc3l1TkRYd29DTUwyUnFP?=
- =?utf-8?B?b1VXV01iU25vZm00M1RIT2VYNFl4anF2Z2cyNUdPblpORnU1MzFkL3JMb0Fq?=
- =?utf-8?B?ckY1ODF5OEhneGtqYUJHa3ozY1ZuZXFNZEVpUklOaDhtUTFjcmJOUHZ0blZn?=
- =?utf-8?B?bUNOV0E0THN0K2x0TmpxeGdIWjJFTzFTaHlodi9xcmdQYSs4OUx5OHc5dDNn?=
- =?utf-8?B?RzBsYjVlSEdBUXd2dnRHSlBWZkRtWE1neXN1UFluTzdXRTAyV1B2cWxqN2No?=
- =?utf-8?B?SDdLdDdNK21CYmxRMHJ2Sk13M1NXU1VsdngydzV0QUwvVWtWcWpwaDJUUEF1?=
- =?utf-8?B?WVJUd0kwbHhXTXpyQXdkbEZvQkZEWm8rRDVNdG9ZNEQ1Y1U2TXlOTXU2S3J6?=
- =?utf-8?B?L01reFBDaDYvRHVwNGZsUGc0c0JnWHVEUGNRNDVGY0FvSnhpNkZ1bEUwUXhP?=
- =?utf-8?B?Z0NrMEdXRmxsU1JRWHFqU2xLV0ZSVzRZeUg5YkdXOGhpcFFudWYvN1dsTEZX?=
- =?utf-8?B?Z2cvZHJiVUxyQUZEdTl6YnEwZ1doMGwwMGlBMWpRMXZyd1FJR2xWWVhkc1hN?=
- =?utf-8?B?VGlraFVzbEdIYUV0SXZuYlluMmcwUlRRbmJNSTBmRDdHeXg5ZFpqUVZsd2lM?=
- =?utf-8?B?eGJ2eGR1VVRmWmx3aEhiVzRUbGhFa3Z2TDgzWEhaLzMzZnd1TEJZLzhFeDda?=
- =?utf-8?B?NXIrdGwrZ21TdEZOakplVEM0V2U0bDVrUEVLL2tuRU90S2t1SytmRzlQUW5Z?=
- =?utf-8?B?RmMzNm9QT0Zpamtxa2NoS0YrYUt3RCt0eWNvVW45ZGZZUXNNU2lnbm9zdDNt?=
- =?utf-8?B?UWlJcTJTVThkLzRJc3FacSsveFJhQ09Cc1BLby9GZmxxUGtWaTVHZGdCUjYy?=
- =?utf-8?B?NXZuOVFSMER5NDhxNWxSREE3SWREb21TaU1DNXhvd1RDVWl4R0Q3QmpDTXNZ?=
- =?utf-8?B?YlI4WW00S3JxV1kyQVZGLzRmZElqODdJRnJhK0lPLzNmNmhDL0RyVjhhQ2JE?=
- =?utf-8?B?dWpkZTBlR3hKQjJGek1aa0hYZkdQNnQ1T2w3SGIxd2xySjBiVVZYUzVqVGhw?=
- =?utf-8?B?d2tHWk0zcmRncnkvNHZRWVpOK2k1eTRvMnpTb1Z4TUpBLzlWL1o4RlcvSllk?=
- =?utf-8?B?M283d0hkZzBwRWhmaVJ4cUpUZXJSY1YyL3NzcGkyKzVBQklCb1ZRaU51MnhD?=
- =?utf-8?B?NjVuTFBRaXN6MzRyYVFha3NuTGVOdjE0ZlZOd2IzTzQxMG96V0lPSXZXbWdm?=
- =?utf-8?B?bzM4SnliRS9pQnY0dkVlU3RKVzlqUTJmYUdhTVZPYVRZbWFyNFgyRkYxZTZP?=
- =?utf-8?B?dXRvQmJKQUVHa1RBaW0xT0xrY3I1SjdIbi9EUnM5aVY3ZWdjZ3YyaDFPa3Fs?=
- =?utf-8?B?ODJpem1YTFNPL2NLaUNkS1N1NWZBRGVEQWMzMXY5NVdmeEJYS3pRQ29Nc3Az?=
- =?utf-8?B?YVBIOVR4bWRFeWFPdGU2eFQzakRvWm9wU2E5UWx4cEVSZXE3cnFMbWJjQkM0?=
- =?utf-8?B?REhsak5kK3dwWE15SzFjeWhJUkoxcTdxVE9KN0xDNG95VkpDb2FRNlc1bm5E?=
- =?utf-8?B?NlRoNUxvMXM4UEhLZzdRR21DdWtSZm5FMjBWdkNFMHhrVlU3T2FpRnFRTmNX?=
- =?utf-8?B?Y1h5b1FXeW1NczRVZXkvSjVzMmpLbnBlbUxpcFJ2TklMamdIcFJMdFRYclo1?=
- =?utf-8?B?Tmhud1FLWlN0REtxZ1BXOCt2cExweGgvL25zOUlOWXJSSmNnWHhyeW9zekxm?=
- =?utf-8?B?c09SUUlNYUpmd0pua1YxdnRiSHNQUkVpNDBSOGpXTUNvczI3SnNkZGcyVS9a?=
- =?utf-8?B?S0hmeEJWR1g3c1NBZTQyRzVqRTYvZVlMYlgyc002ekpUWVR5NjQ5ajRCWU9E?=
- =?utf-8?B?V1k2QmlmN09aeU1taGNuQ2tQMUxZNzdBTkpkQ25sdVlSYmZEVUhHakR0RVdn?=
- =?utf-8?B?RnhvTFdNeGNVSUZmWVE5UTRHUzErYWhxQ1FMcFh6bExOMFJMR2MvZytEcms1?=
- =?utf-8?Q?TnCiD3nJDcI2bP/M=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <10671101B9B4DC4A9187725F5AD94A55@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+   d="scan'208";a="224444423"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 15:13:14 -0700
+Date: Tue, 24 Mar 2026 15:13:08 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260324221308.7sh6afdy6r6tsf4w@desk>
+References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+ <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+ <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: qmblaGmK/uRLBbvNZlcasmoJl9V0qfJG3aNvgMOq9SwtjxVqfr0c/rJ69Q3sQtFnkNbFYw/sPbL3BaVxDNsx0pT59mwOsLrFmW/maeuIrM/BznIeeZ3KHvfqbje19cnajlaJLFk3c0aZ/pWiLahpeE2/ST1dHuNDbfPXLKBMx6O6l6ReiWPQqxSbVhKD3GGsN0a4XvkblcRegNPk4GkkGVLOlL3QFkMkiwNDeuI80qjfirjiyLGxOFPSJ2eV19UeTBYLmpDigXTP6FfmCpJKTP2wuxO4CJ9ie/4Z2bGa+tfO3Kw3ywOp3IB/fAKr2VGvcgpgZ487X068roVcnJpCgg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f81b652b-9ad6-4642-0ded-08de89f13f18
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Mar 2026 22:03:57.1260
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8y/aybdkgSskW1Be+6vDD48tCvXYq3xrbmG8awqTio/zL3UWWEb3U2NofiU3l/tXrNoL/p2cHyA7KJrpld9sZye2eQoSD6Enf0gN/HzuyCM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB9880
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
 
-T24gVHVlLCAyMDI2LTAzLTI0IGF0IDE5OjIxICswNDAwLCBNYXJjLUFuZHLDqSBMdXJlYXUgd3Jv
-dGU6DQo+IEluIFREWCBndWVzdHMsIGhvdHBsdWdnZWQgbWVtb3J5IChlLmcuLCB2aWEgdmlydGlv
-LW1lbSkgaXMgbmV2ZXINCj4gYWNjZXB0ZWQgYmVmb3JlIHVzZS4gVGhlIGZpcnN0IGFjY2VzcyB0
-cmlnZ2VycyBhIGZhdGFsICJTRVBUIGVudHJ5IGluDQo+IFBFTkRJTkcgc3RhdGUiIEVQVCB2aW9s
-YXRpb24gYW5kIEtWTSB0ZXJtaW5hdGVzIHRoZSBndWVzdC4NCj4gDQo+IEZpeCB0aGlzIGJ5IHJl
-Z2lzdGVyaW5nIGEgTUVNX0dPSU5HX09OTElORSBtZW1vcnkgaG90cGx1ZyBub3RpZmllciB0aGF0
-DQo+IGNhbGxzIHRkeF9hY2NlcHRfbWVtb3J5KCkgZm9yIHRoZSByYW5nZSBiZWluZyBvbmxpbmVk
-Lg0KPiANCj4gVGhlIG5vdGlmaWVyIHJldHVybnMgTk9USUZZX0JBRCBvbiBhY2NlcHRhbmNlIGZh
-aWx1cmUsIHByZXZlbnRpbmcgdGhlDQo+IG1lbW9yeSBmcm9tIGdvaW5nIG9ubGluZS4NCg0KRG9l
-cyB0aGlzIGRlcGVuZCBvbiBwYXRjaCAxIHNvbWVob3c/DQo=
+On Tue, Mar 24, 2026 at 09:59:30PM +0100, Borislav Petkov wrote:
+> On Tue, Mar 24, 2026 at 11:16:51AM -0700, Pawan Gupta wrote:
+> > As a mitigation for BHI, clear_bhb_loop() executes branches that overwrites
+> > the Branch History Buffer (BHB). On Alder Lake and newer parts this
+> > sequence is not sufficient because it doesn't clear enough entries. This
+> > was not an issue because these CPUs have a hardware control (BHI_DIS_S)
+> > that mitigates BHI in kernel.
+> > 
+> > BHI variant of VMSCAPE requires isolating branch history between guests and
+> > userspace. Note that there is no equivalent hardware control for userspace.
+> > To effectively isolate branch history on newer CPUs, clear_bhb_loop()
+> > should execute sufficient number of branches to clear a larger BHB.
+> > 
+> > Dynamically set the loop count of clear_bhb_loop() such that it is
+> > effective on newer CPUs too. Use the hardware control enumeration
+> > X86_FEATURE_BHI_CTRL to select the appropriate loop count.
+> > 
+> > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > ---
+> >  arch/x86/entry/entry_64.S   | 21 ++++++++++++++++-----
+> >  arch/x86/net/bpf_jit_comp.c |  7 -------
+> >  2 files changed, 16 insertions(+), 12 deletions(-)
+> 
+> Ok, pls tell me why this below doesn't work?
+> 
+> The additional indirection makes even the BHB loop code simpler.
+> 
+> (I didn't pay too much attention to the labels, 2: is probably weird there).
+> 
+> ---
+> 
+> diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+> index 3a180a36ca0e..95c7ed9afbbe 100644
+> --- a/arch/x86/entry/entry_64.S
+> +++ b/arch/x86/entry/entry_64.S
+> @@ -1532,11 +1532,13 @@ SYM_CODE_END(rewind_stack_and_make_dead)
+>   * Note, callers should use a speculation barrier like LFENCE immediately after
+>   * a call to this function to ensure BHB is cleared before indirect branches.
+>   */
+> -SYM_FUNC_START(clear_bhb_loop)
+> +SYM_FUNC_START(__clear_bhb_loop)
+>  	ANNOTATE_NOENDBR
+>  	push	%rbp
+> +	/* BPF caller may require %rax to be preserved */
+> +	push	%rax
+>  	mov	%rsp, %rbp
+> -	movl	$5, %ecx
+> +
+>  	ANNOTATE_INTRA_FUNCTION_CALL
+>  	call	1f
+>  	jmp	5f
+> @@ -1557,17 +1559,17 @@ SYM_FUNC_START(clear_bhb_loop)
+>  	 * but some Clang versions (e.g. 18) don't like this.
+>  	 */
+>  	.skip 32 - 18, 0xcc
+> -2:	movl	$5, %eax
+> +2:
+>  3:	jmp	4f
+>  	nop
+> -4:	sub	$1, %eax
+> +4:	sub	$1, %rsi
+
+%rsi needs to be loaded again with $inner_loop_count once per every
+outer loop iteration. We probably need another register to hold that.
+
+>  	jnz	3b
+> -	sub	$1, %ecx
+> +	sub	$1, %rdi
+>  	jnz	1b
+>  .Lret2:	RET
+>  5:
+> +	pop	%rax
+>  	pop	%rbp
+>  	RET
+> -SYM_FUNC_END(clear_bhb_loop)
+> -EXPORT_SYMBOL_FOR_KVM(clear_bhb_loop)
+> -STACK_FRAME_NON_STANDARD(clear_bhb_loop)
+> +SYM_FUNC_END(__clear_bhb_loop)
+> +STACK_FRAME_NON_STANDARD(__clear_bhb_loop)
+> diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+> index 70b377fcbc1c..a9f406941e11 100644
+> --- a/arch/x86/include/asm/nospec-branch.h
+> +++ b/arch/x86/include/asm/nospec-branch.h
+> @@ -390,6 +390,7 @@ extern void write_ibpb(void);
+>  
+>  #ifdef CONFIG_X86_64
+>  extern void clear_bhb_loop(void);
+> +extern void __clear_bhb_loop(unsigned int a, unsigned int b);
+>  #endif
+>  
+>  extern void (*x86_return_thunk)(void);
+> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> index 83f51cab0b1e..c41b0548cf2a 100644
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+> @@ -3735,3 +3735,11 @@ void __warn_thunk(void)
+>  {
+>  	WARN_ONCE(1, "Unpatched return thunk in use. This should not happen!\n");
+>  }
+> +
+> +void clear_bhb_loop(void)
+> +{
+> +	if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL))
+> +		__clear_bhb_loop(12, 7);
+> +	else
+> +		__clear_bhb_loop(5, 5);
+> +}
+
+This is cleaner. A few things to consider are, CLEAR_BRANCH_HISTORY that
+calls clear_bhb_loop() would be calling into C code very early during the
+kernel entry. The code generated here may vary based on the compiler. Any
+indirect branch here would be security risk. This needs to be noinstr so
+that it can't be hijacked by probes and ftraces.
+
+At kernel entry, calling into C before mitigations are applied is risky.
+
+> diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+> index 63d6c9fa5e80..e2cceabb23e8 100644
+> --- a/arch/x86/net/bpf_jit_comp.c
+> +++ b/arch/x86/net/bpf_jit_comp.c
+> @@ -1614,11 +1614,6 @@ static int emit_spectre_bhb_barrier(u8 **pprog, u8 *ip,
+>  	u8 *func;
+>  
+>  	if (cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_LOOP)) {
+> -		/* The clearing sequence clobbers eax and ecx. */
+> -		EMIT1(0x50); /* push rax */
+> -		EMIT1(0x51); /* push rcx */
+
+> -		ip += 2;
+> -
+>  		func = (u8 *)clear_bhb_loop;
+
+Although call to clear_bhb_loop() will be inserted at the end of the BPF
+program before it returns, I am not sure if it is safe to assume that
+trashing registers in the path clear_bhb_loop() -> __clear_bhb_loop() is
+okay? Especially, when we don't know what code compiler generated for
+clear_bhb_loop(). BPF experts would know better?
