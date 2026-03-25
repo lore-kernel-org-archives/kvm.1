@@ -1,160 +1,205 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011009.outbound.protection.outlook.com [52.101.70.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E803D16E2;
-	Wed, 25 Mar 2026 12:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774440102; cv=fail; b=VNkXKaqM/bs+XVFtmeMMBvgQc/CvTgH5566DHwa/0sFsIt/JFpQs4CDqkRV66M3o1f4iGRvrgdiUgLWeZX2gnyOZ2Tkq4vXcuYz5f44PPdKTAC1eAshRCEMRwxnZPjXSX8Kf+TNamHDpPS78NgiXZkPOFIvUTeqi4LqH11detY0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774440102; c=relaxed/simple;
-	bh=bD7/HF24zKgnTWfvev0x/cUoxzSw93efU3aTxhBBUVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XeRuj5iU9RPmx1jBpNNtJm5Xs7YOAH6KQjgWonTiycCKE+x6hlDiAd2Vf2QguBD6Y/xQrzJ9RSPn6yA+wNAT4mFv8pdO2VkHLmcMuqBhU68xRcGrBKZw+2uY9v+mGeV2M+3m7MU/NU1ODBnhPrvu5b0KvsLXWO3/4BhRvo5QR7U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=J7wS3kOI; arc=fail smtp.client-ip=52.101.70.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F8A3CC9F8;
+	Wed, 25 Mar 2026 12:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774441898; cv=none; b=YO/6tHY4VmjfZzPdzuXBN2U/fwZTszxLP0R+VZcpfYsR0sF7ED2wh3IpFWtgMlrz38pO2yno1aFdh0zBRpbw7/838rfH2oTSY1VPPw4UOxPLwcHoFfYcLHpCqpbcEEpVuAF9iWBlqplIwHYqe0wWYAHu0/od6uPKFj81hAnS5UQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774441898; c=relaxed/simple;
+	bh=KJ5Xqvb2OG1R7yYsNeFHe2+aJkViXBJd9c9qkEO48B4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gzQXT321synhhJaHDV92GLZPvZR6+8GPLTxRWqUZuhC5dQqM+xykAGr4A5LdizDuiG9kcWG7ir2cRTyk86NnWhL7CAThLnnpXVs3fTZPQSKkJTnqkAPqMGFUPr91lMveMtsYtbat6/Zo0kH01gKIDX7t/78bf2R87gRdoBS0TL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l0aOVehQ; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="J7wS3kOI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kttRFgI2/iylIRsj5YKB10FAyWAymytV5Lq2Au/ItdO/sXFz8Ow659hb8KKMq+gHsxYaakF/46S7IaN/3KDvO/5kyPTzlAx+JQRVhCIFRO+EFWxmXy9RjS3wr05ooQvgLdEBR4lyG9MItZZPiomX4sp+Da4DZigG6GfO9hBwczfJTuxw+hT/eW8FoNSc04UPMN2RL5jtEX1n1CkghV/zxGYua9ZHEN+wDhHz5jnQ2rSv06nT/DFcrzpeBzLagtSSqX5CO76TgT/myxzMgWrLYmxGpYppKg1WMhY+OxFuUoXZ9bRSenrtN9qBMyx3Gm8K63RDCZAAmQn+rTlDfNo1jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YXXBntpqyuvabK9QKfgQGbDJFMmQc0BuxpCyE+N0g9M=;
- b=LrQ3k0K7bQbLI7Ga/VdoS9zgSx0tF/y38T2czp4oQfSdl50dc1Bbj35Id8ErsxEFGUAZ3aUtRKGy9L/Nxq/IsFesr4kUloiYWhJXZYsDgHOKMM2QInNDDdK+6p9jWSbDIQkkyWgttVkLBz4Su06qJn45bnVYwqsss+NMRS2YRlijnuUpfw0AlXxrVnvqXuIw88tsNLBhvvKIDkjoT86Sv/CeS8mcfHZzA+C7tmoBHPPjiQE7do2lwMtrvDlPScc6taJeAgXUXVEjBF88cSgelNRuW276dFNy9exbssWFnhiV35VBQwVHomgtWnKX+lSIvBr09/gpjSSmQMYyMaiLYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YXXBntpqyuvabK9QKfgQGbDJFMmQc0BuxpCyE+N0g9M=;
- b=J7wS3kOIzOp/PM1Yoou83qDqv3RnBDES7+thUv0J/24R3LLR10nSMH9la88tBzqfn8aMvhoh/Fth2vqnZUhdNydapTA9hesLUSFZjoncUjWs+LE+FjJMnVVxBe/JkmMvL5F3lhA0Ak/TxLUmBgyeIP4gdk0Qvd4xkvBz5ZGktJwAIGEHKiVf169FqLaIHUUUk/A9EDg4vbRDMSWQCos9KeHmaaGo3qyNZr0cwK4vKIvQFTSPpC+EKroRKgLqr2bT8xNcbmAZs20jB2tNF4CP8lkGOjUHTfaAaMC/PGbNjAq1A7WayuEduk5jVOkpEpNgdWzWoNsOxmW9VzvUPlOZug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8253.eurprd04.prod.outlook.com (2603:10a6:102:1bf::7)
- by PAXPR04MB8989.eurprd04.prod.outlook.com (2603:10a6:102:20c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Wed, 25 Mar
- 2026 12:01:36 +0000
-Received: from PAXPR04MB8253.eurprd04.prod.outlook.com
- ([fe80::2b4e:8130:4419:d633]) by PAXPR04MB8253.eurprd04.prod.outlook.com
- ([fe80::2b4e:8130:4419:d633%3]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 12:01:36 +0000
-Date: Wed, 25 Mar 2026 14:01:29 +0200
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Armin Wolf <W_Armin@gmx.de>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Vineeth Vijayan <vneethv@linux.ibm.com>, Peter Oberparleiter <oberpar@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>, 
-	Holger Dengler <dengler@linux.ibm.com>, Mark Brown <broonie@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMSCwqlyZXo=?= <eperezma@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-spi@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-arm-kernel@lists.infradead.org, Gui-Dong Han <hanguidong02@gmail.com>
-Subject: Re: [PATCH 02/12] bus: fsl-mc: use generic driver_override
- infrastructure
-Message-ID: <cvcetxkxjq2tz6n2vsofhyzove3qdi2e4r6rq6yxou3joejk2h@rmt5ygav7ssu>
-References: <20260324005919.2408620-1-dakr@kernel.org>
- <20260324005919.2408620-3-dakr@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324005919.2408620-3-dakr@kernel.org>
-X-ClientProxiedBy: AM8P189CA0012.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:218::17) To PAXPR04MB8253.eurprd04.prod.outlook.com
- (2603:10a6:102:1bf::7)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l0aOVehQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774441897; x=1805977897;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KJ5Xqvb2OG1R7yYsNeFHe2+aJkViXBJd9c9qkEO48B4=;
+  b=l0aOVehQncRKY8PBmY39rPVCEelMmx7LmCnRlpyJNTN5ywryL7SHaX93
+   9gSPMmheMe2XKmmfeL6cj1iDM101bZpDNryWBGIVxigWCM0O+wAnYChii
+   5MHpBThCCDrOBNuzCpbBU01tbFhRfTjFeu2IW5oRAgRPOOjelHRXkgkfo
+   QpUVnU9qv2ORAHLMBMlXG1ldEhM7sFP4l8EtQq/+QXhjMBdrdeq3LBCgJ
+   Y7n3NGXydBobbogpooNLi5zifdnTLnrgKHigUNQDpF8PAlprMlkxhaMnr
+   GjNkVMbiuHaJQd0J1owWbrN2hBFz00HWClfilB7YDB2th1rz6S5iF5BjX
+   w==;
+X-CSE-ConnectionGUID: jve4HZ/2R8Oc2Va6h6rjKA==
+X-CSE-MsgGUID: /r4Aq5IDSqGztvhvcnFP5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75364095"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="75364095"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 05:31:37 -0700
+X-CSE-ConnectionGUID: H+EfNkIHT0GjZldPbtfawQ==
+X-CSE-MsgGUID: Y6+AxHyvTA+3Fz5C8oA0JA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="248184779"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 25 Mar 2026 05:31:33 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w5NOU-000000006oL-31qE;
+	Wed, 25 Mar 2026 12:31:30 +0000
+Date: Wed, 25 Mar 2026 20:30:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	borntraeger@de.ibm.com, frankja@linux.ibm.com, nrb@linux.ibm.com,
+	seiden@linux.ibm.com, gra@linux.ibm.com, schlameuss@linux.ibm.com,
+	hca@linux.ibm.com, david@kernel.org
+Subject: Re: [PATCH v3 8/9] KVM: s390: vsie: Fix guest page tables protection
+Message-ID: <202603252045.f3Juk9sU-lkp@intel.com>
+References: <20260324174301.232921-9-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8253:EE_|PAXPR04MB8989:EE_
-X-MS-Office365-Filtering-Correlation-Id: 444f69f3-3f50-4dac-40a4-08de8a664393
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|19092799006|366016|56012099003|7053199007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	YauE1OL9qVz6Ghkd3J4iiweYC+KTDcwgtVBRc6SzyGeDcIvAqr9GqhVgU2IK4k2+zD1XxZPGsKYLsEqiaS8RfvJO+yGdO9WoswEWIvqsqEFASVmWheIaYF6Je+a++RK8CPtKoUmtGv0bPuHQKh69kpeVWHxQA8bfzVd9gd2G4mJHqF2R/yvxG+kaFflL98lVbOhBJZVh46//CdTR5tE+vo9FZKLdM/PRl0QIa3bNJbT1IaRCJM+wNaaqNBIzvTqtbT98uIsOogkVCldOOrVdOIf3BEt28eAOqFMZ+TV6ETNq7EP8+961S1GpXqtc3J70y71lXxATEDMw4M7LruoJUvQCiEtLcFoE1s1XQG91q/Nj6FXkloupIpOwpO473+cAm5hHdWM8Lk7DN4mhymvIm8xrXzQomkVk0NxAwKEqKbG1hLhuQNb9GFMLvFeZE7wHopHrdCggnTb1OInKne9bPE5qCv6pjzjBvuCNuCasTBGwOUxQunyzQ3hhubR4Y5OBTIbDBTi+2fWt6pSW58kN8BCEXnWy5UvBhChefiek3+SDDzHh8IC6jKp5Z97r8VmNAfpxZw2XP05S5Ns/ZXQeLnXH57l5nV+ceXhGsEnYLBhJBHqGuDr3dTgOpwloRdJVUaA27Kw+UJgstnRgDw4BljSRQ1rbyIFnP2TZ5QuxCAsf0Q+eVAioW0X7cYqdNsEmIbHoBc2xrdOVB3nvcWTPoD2bk6N4r430UGOrsCSf/nI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8253.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(19092799006)(366016)(56012099003)(7053199007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wCOZvBxNyCZSbHbedjI2V2n4mKP/k/5gUrgXOwWGXKwOn843BAEy0H3Lu4Jf?=
- =?us-ascii?Q?t44F1A4mUDlyXUpBILTQsalQEZqPTb+cgccdo7yvS+9mDAmiACTuVKmRxjl7?=
- =?us-ascii?Q?M9InKZa5Am5jYZR+Y6nl4ZdHDTt+hCMDHFlOxI8riOBJRZnOAJTz6yzIxFaW?=
- =?us-ascii?Q?NuMDAuy0o8Seeb2//8zVOsrPkVe3gADXMwB6++DuHMeIgAiNc+QyX8DkXR5q?=
- =?us-ascii?Q?aXO5ih1Tyr4trPF30eexsGtUxbZX/V34UnBKtUiXaYtMXX9HbRMMTpbk92Gt?=
- =?us-ascii?Q?W3VVjo6p1M/5FsoqIX6FIBBE04QhKDSZIjs2/bYt7tHIfc+gW/pXT3ErP3Pg?=
- =?us-ascii?Q?Qt23L/3abciooF+nRzpRJO+oiAGqlsGlj8DFB3f4iExSOluU3feBUrelvZWZ?=
- =?us-ascii?Q?FxSnZY09HaUgZUBPbbvoMIt3wbRpiW5bmvMMr940BU+Q3A16vVDypKtcz3NV?=
- =?us-ascii?Q?BU0Ai/kGVJmc8saIbewJrV7vIIOx9ablRosiAQQpIPpLGSNdnB/PM5htvMOd?=
- =?us-ascii?Q?tY3Cqz+BLDwhYnCGEBFjg52OnkE8ZrA8OpAQPUXis7s9E/fs7Es7xl2IyPKX?=
- =?us-ascii?Q?V7kOH3wgDFGeIdk7u4bQcFKCuIWl7nqfG/FWiXnb8NouOGV5DjHiFcog3DG9?=
- =?us-ascii?Q?D3NwL0JdIPZlmBs+gt4O4kPQNcuuailEOeHJZWjQjdbP3DajBo3zTqnqaA4O?=
- =?us-ascii?Q?gcbrXQjGO/JlVf7IAR7Xj9as5QqU/RiCVFD2Kf4P9AqJrbGbb7paHfrs+ghk?=
- =?us-ascii?Q?B5dSKXfEUK9B9FDjyJ93sA3zJphdWq8KRjLbs0MF24LtTWFyB/a1sPoQfaY7?=
- =?us-ascii?Q?1zjFk06ZXuV00pBCIc7/0lmVkFqzmc81hUg6Ezs4fYmUMbzjyImSJkNC/Sqs?=
- =?us-ascii?Q?WohdgnB6eAaLAyYHxSO9ChXnD2BFaDtkPBzhNiyCIoT78MxbQPbT2auRlzDC?=
- =?us-ascii?Q?v+jj3XxnIFr/JFs1Qcq8L6SZ4dYzvAQrfNQbx8aCfUpQhn/Hm0OoXMY1eXdQ?=
- =?us-ascii?Q?2YtNVHLe5xsnkRrmnSasZ/8Vhs0RclkimVYpMzvWd+2VhUKS1HNh+0PGXCLe?=
- =?us-ascii?Q?aW2prGUn9xxanWMbaMLFsxrRFF0jdUZNStlj455tQaK/4JyvBzmTFz+GYGv0?=
- =?us-ascii?Q?SKKHB5GUNuTYcMNxcbmcbn4DNkC2IyYPpM2R/Z6FTxYHx1MTZnpWN/WrIrst?=
- =?us-ascii?Q?hpTDu1KHxUK3hzNP1zioROI0d1O3u2bHMyK6Oe0dISAyEbs+/swDAEQuQSJM?=
- =?us-ascii?Q?oMJZ6UFrgjS3+94++VT/pbI7PFmWnZiEIOnCkYqGC9Ip6y6KIcMc6Na6G5+p?=
- =?us-ascii?Q?oK2MFDEYv0QtNh92FmTJn/Q3Laz5Qm7zQahprTiJbJYTHxmHwhwGruDzKrLx?=
- =?us-ascii?Q?Dtwe5YakcFHXbUyqLxoipZvV6ysWEsbAM2nO1VYpddukv9PWHPrxRQm8l5A7?=
- =?us-ascii?Q?0tyBj3eFzm9quJ+hx/7kBMUz87EFfDU0j82a8ylOOTuRtMqApXfhMjI7kEzB?=
- =?us-ascii?Q?u+H9bPwh+nLvLbW9uXZj5JjZaAy23me2qngR1rLKYU8CiT8GwTcSYRwWw54W?=
- =?us-ascii?Q?p+dVtKlYG+ALObSrmAromuRz7Yxo9Dhfv2pIVyJ46WHdX6+8yYfBZQijauNP?=
- =?us-ascii?Q?E+YNOs80TCBLXN3dW0tPjl711h0vaRrW5uqL5qfhEkGoQyn/iuS4IB//Jo1u?=
- =?us-ascii?Q?k6YfWxq4S/jk9UJRRJ2uNOSdmAu29mvcMsK+yqML/1LIa1SBVvmCnZM3ZcZp?=
- =?us-ascii?Q?GB9hLE4kFg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 444f69f3-3f50-4dac-40a4-08de8a664393
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8253.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 12:01:36.0520
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Chgczccg4htJAVG6e4L1PTVeI+yR3WIw7pB21S+3KjxkMI90qw6f2G+r96bnAJFWq8f6hC+FMUaXR7ipTyy5SA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8989
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324174301.232921-9-imbrenda@linux.ibm.com>
 
-On Tue, Mar 24, 2026 at 01:59:06AM +0100, Danilo Krummrich wrote:
-> When a driver is probed through __driver_attach(), the bus' match()
-> callback is called without the device lock held, thus accessing the
-> driver_override field without a lock, which can cause a UAF.
-> 
-> Fix this by using the driver-core driver_override infrastructure taking
-> care of proper locking internally.
-> 
-> Note that calling match() from __driver_attach() without the device lock
-> held is intentional. [1]
-> 
-> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-> Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Hi Claudio,
 
-Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+kernel test robot noticed the following build warnings:
 
+[auto build test WARNING on kvm/queue]
+[also build test WARNING on kvm/next linus/master v7.0-rc5 next-20260324]
+[cannot apply to kvms390/next kvm/linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Claudio-Imbrenda/KVM-s390-vsie-Fix-dat_split_ste/20260325-092851
+base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+patch link:    https://lore.kernel.org/r/20260324174301.232921-9-imbrenda%40linux.ibm.com
+patch subject: [PATCH v3 8/9] KVM: s390: vsie: Fix guest page tables protection
+config: s390-defconfig (https://download.01.org/0day-ci/archive/20260325/202603252045.f3Juk9sU-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 054e11d1a17e5ba88bb1a8ef32fad3346e80b186)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260325/202603252045.f3Juk9sU-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603252045.f3Juk9sU-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> arch/s390/kvm/gaccess.c:1522:6: warning: variable 'gl' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    1522 |         if (w->level <= LEVEL_MEM) {
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   arch/s390/kvm/gaccess.c:1555:10: note: uninitialized use occurs here
+    1555 |         if (l < gl) {
+         |                 ^~
+   arch/s390/kvm/gaccess.c:1522:2: note: remove the 'if' if its condition is always false
+    1522 |         if (w->level <= LEVEL_MEM) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1523 |                 l = TABLE_TYPE_PAGE_TABLE;
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1524 |                 hl = TABLE_TYPE_REGION1;
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~
+    1525 |                 goto real_address_space;
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~
+    1526 |         }
+         |         ~
+   arch/s390/kvm/gaccess.c:1500:22: note: initialize the variable 'gl' to silence this warning
+    1500 |         int flags, i, hl, gl, l, rc;
+         |                             ^
+         |                              = 0
+   1 warning generated.
+
+
+vim +1522 arch/s390/kvm/gaccess.c
+
+  1495	
+  1496	static int _gaccess_do_shadow(struct kvm_s390_mmu_cache *mc, struct gmap *sg,
+  1497				      unsigned long saddr, struct pgtwalk *w)
+  1498	{
+  1499		struct guest_fault *entries;
+  1500		int flags, i, hl, gl, l, rc;
+  1501		union crste *table, *host;
+  1502		union pte *ptep, *ptep_h;
+  1503	
+  1504		lockdep_assert_held(&sg->kvm->mmu_lock);
+  1505		lockdep_assert_held(&sg->parent->children_lock);
+  1506	
+  1507		entries = get_entries(w);
+  1508		ptep_h = NULL;
+  1509		ptep = NULL;
+  1510	
+  1511		rc = dat_entry_walk(NULL, gpa_to_gfn(saddr), sg->asce, DAT_WALK_ANY, TABLE_TYPE_PAGE_TABLE,
+  1512				    &table, &ptep);
+  1513		if (rc)
+  1514			return rc;
+  1515	
+  1516		/* A race occurred. The shadow mapping is already valid, nothing to do */
+  1517		if ((ptep && !ptep->h.i && ptep->h.p == w->p) ||
+  1518		    (!ptep && crste_leaf(*table) && !table->h.i && table->h.p == w->p))
+  1519			return 0;
+  1520	
+  1521		/* In case of a real address space */
+> 1522		if (w->level <= LEVEL_MEM) {
+  1523			l = TABLE_TYPE_PAGE_TABLE;
+  1524			hl = TABLE_TYPE_REGION1;
+  1525			goto real_address_space;
+  1526		}
+  1527	
+  1528		gl = get_level(table, ptep);
+  1529	
+  1530		/*
+  1531		 * Skip levels that are already protected. For each level, protect
+  1532		 * only the page containing the entry, not the whole table.
+  1533		 */
+  1534		for (i = gl ; i >= w->level; i--) {
+  1535			rc = gmap_protect_rmap(mc, sg, entries[i].gfn, gpa_to_gfn(saddr),
+  1536					       entries[i].pfn, i + 1, entries[i].writable);
+  1537			if (rc)
+  1538				return rc;
+  1539			if (!sg->parent)
+  1540				return -EAGAIN;
+  1541		}
+  1542	
+  1543		rc = dat_entry_walk(NULL, entries[LEVEL_MEM].gfn, sg->parent->asce, DAT_WALK_LEAF,
+  1544				    TABLE_TYPE_PAGE_TABLE, &host, &ptep_h);
+  1545		if (rc)
+  1546			return rc;
+  1547	
+  1548		hl = get_level(host, ptep_h);
+  1549		/* Get the smallest granularity */
+  1550		l = min3(gl, hl, w->level);
+  1551	
+  1552	real_address_space:
+  1553		flags = DAT_WALK_SPLIT_ALLOC | (uses_skeys(sg->parent) ? DAT_WALK_USES_SKEYS : 0);
+  1554		/* If necessary, create the shadow mapping */
+  1555		if (l < gl) {
+  1556			rc = dat_entry_walk(mc, gpa_to_gfn(saddr), sg->asce, flags, l, &table, &ptep);
+  1557			if (rc)
+  1558				return rc;
+  1559		}
+  1560		if (l < hl) {
+  1561			rc = dat_entry_walk(mc, entries[LEVEL_MEM].gfn, sg->parent->asce,
+  1562					    flags, l, &host, &ptep_h);
+  1563			if (rc)
+  1564				return rc;
+  1565		}
+  1566	
+  1567		if (KVM_BUG_ON(l > TABLE_TYPE_REGION3, sg->kvm))
+  1568			return -EFAULT;
+  1569		if (l == TABLE_TYPE_PAGE_TABLE)
+  1570			return _do_shadow_pte(sg, saddr, ptep_h, ptep, entries + LEVEL_MEM, w->p);
+  1571		return _do_shadow_crste(sg, saddr, host, table, entries + LEVEL_MEM, w->p);
+  1572	}
+  1573	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
