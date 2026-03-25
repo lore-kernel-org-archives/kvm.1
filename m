@@ -1,475 +1,300 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568A838F638;
-	Wed, 25 Mar 2026 21:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE673358AD
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 21:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774472550; cv=none; b=M7Ienhubd5eg/2hWUN0pz0F0QKhHpyGJ4XcXSvJ0O58mj2X2xZbsHjk9PbOtrGHQ3cLSHlspNSeKj6/TC9io8Ls7aKHj17ThBMgXH+srEvep1VkBQ9e9D1qmO/7Hq2FaRRDkOQySJ8BB3iTt4kdzdZhELn7m22NgcjL7nEiBgjM=
+	t=1774472744; cv=none; b=U7Ar72HxwTmeHRYLW2lPESrOsmnua62iHU0t5TomHNGoJVmizMqCvVV6DfboqZSVkRkKThM1+LHpyErjx2BZQ8M+ANnSzDfRGiR+3LJ9TSuQYYMAGjzWtVRTR6o7bKc9UdQjAoHIQkTuz7Bx7oCgy+zvSW1aC6lJDR4Rz9tA7KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774472550; c=relaxed/simple;
-	bh=I/wWZ9C0shTDrsq8fuNsIdndXcbIv7ccuWuwLKjWqr0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHF8cn2O07ADpbHVncJEHNvZfObQwJ9JJLpIw35qnfZq2v19WlszmAyKTelRocYlxmrPphtpEaOlj0tWnH3s0IPGT64ovBJvlw98Xy6OlQgFqqFmFpprFth6TlmLFFdEPJK6eb64Qwad8G3jSlfT0rCOYiC2UBbIkrbYlCcViAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ADD8botm; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774472744; c=relaxed/simple;
+	bh=mc3wyFkLdTJ6vlC+vxFo8HArEjVsFIe6IYt/TgRs0ng=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m/gd2BWTJROoufylu8UCRXLy/3gF61KMuh4E7Zi1DFYMLp1QsprXrZrCcAWffw6c1Wc8rHzoLoMRP3YqDyMHwK6jS8MhaJPIDO5SWvJ3Jwy7RbgnvxScLPWYuqIW757AnFhkTgtzqOmN7o/Wa5/RvNFi+pRTDF1h5rTBQ4cTNQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rl7oAMvm; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ADD8botm"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PIUhas3819926;
-	Wed, 25 Mar 2026 21:02:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=gXuvojxTJHljWArPR
-	minBWWRAB18H+vkJf9CV9BRxZc=; b=ADD8botmOwfZEWTvfCoOiVtRieDBrzKFV
-	Jar1OobtqyfNc40F5MYSYAY5fgy3iQtzNgAsv929fxnpCbkDRPvVr7DeM1ti14KI
-	wjyU+ksB0CuW5Ah1XRRSOeZUCjsD+5amE/5tVigW/Z1EzdZcKqPQC87aJwBZaBqt
-	7IzEL89d2bZie9K6rrPZTh/cNTAMCWyg5gdVNQQFbxISBQM/9EeAlAzFpP+K0a5U
-	z8MldHiTXcRn3L6hE01odPZtPucfAdltb0mbcdyQA1k7a8v7Jt2HZg2/QIgvH+WK
-	H3zU/44TatwsejU/eMudVtGLk/SQSYtUfcs80OD9l6hl9FlYKLNZQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kty2cbq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 21:02:21 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62PKTq4x012203;
-	Wed, 25 Mar 2026 21:02:20 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d27vk818e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 21:02:20 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62PL2IUv5112696
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Mar 2026 21:02:18 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C2D95805D;
-	Wed, 25 Mar 2026 21:02:18 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2281658052;
-	Wed, 25 Mar 2026 21:02:17 +0000 (GMT)
-Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.136.69])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Mar 2026 21:02:17 +0000 (GMT)
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
-        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com
-Subject: [PATCH v1 24/24] s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
-Date: Wed, 25 Mar 2026 17:01:11 -0400
-Message-ID: <20260325210149.888028-25-akrowiak@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260325210149.888028-1-akrowiak@linux.ibm.com>
-References: <20260325210149.888028-1-akrowiak@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rl7oAMvm"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so28775ad.0
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 14:05:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774472743; x=1775077543; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2ONKcbBIVZipE0oxJX2YmrslP0dc4AILtZ8R0cwg82s=;
+        b=rl7oAMvmW+b8HUKqjmiilQLyjRDt0micOx30m3WuRKV9Ik2h4/WT8kZb6kLAcndo+p
+         T9tMSOSlGiqPl2CQe3E1zWwiq8ZIS4Pv8SoqNseqCT5lxC9PeKe+LbQ/H37/BE54M03S
+         bk4awc673zPdOmPQz1RhpstNwO+h1lB8H+T50y1ZWV0Y0iniRyhFY/tKVzvgutBzC0ZI
+         rVIZdleAYgl1Llg6Zn9Dm0az9+rrYBf76bhHquxSWVb9hBAQiNOGqbSfKxLTyJRZNHfS
+         VP6DrNqVl9LvELp0h9bWGikZXoUduZqNaRU1zZwvKYlTZvAOCr4QwBrGLcMwnxnzVvjn
+         +qYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774472743; x=1775077543;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2ONKcbBIVZipE0oxJX2YmrslP0dc4AILtZ8R0cwg82s=;
+        b=lfKQ8lzsUgRbbh92IP+tSSLR2V2GxnYsl45mNPMe4s+7MI6SEYwArTJslSEgfHDgsy
+         h4i/4J2oB5KfXwr8zkEhdN4baT4NUj4UhvdjsO18x/hhwZ6T1VO8UOJHKbOr4M9BHuCW
+         9EcF6Pnhr+oAUPuPsLg8PXtNq5UoXXaZPAM7uBO/4o/j1t8W8Hute4StWyN889ovXZy/
+         mVx7C5NhvV0kxv7dkScgMamuekinLN+KaXw+Bons8harb/VtkfGPsOf4zQv1OLT5WCp7
+         Hhrszi3szuf+2cgtzepaDoJ0jfAwJzzivMNk8fuXQDRRRNPf52pou0sTYBXKzH0yVWXB
+         jEsw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkAYXkJtzD4NN7yFAVHyV5GC7nvxc9bvR6aUan1w/pcpCboXv+FA3jHUvv7U18hC3W200=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWv1SNNl20N5oW8xUTKlYxEnD/4UDVRg1e2ZQVvHzmYnQ6fhRa
+	b1rqyH4gsmwVc8oxss6QtztmDBpT1DPQqcang0KNGbLVhOGuEjCGGN745ImoR4M8wA==
+X-Gm-Gg: ATEYQzyFADyevLf440ZYzQq15fvAPUvFCwxCVLeXH6EeL/D9H0bQlbkFFUxdbEyD5jH
+	590t1QuYVVPBZnLJPL5D3ZlfhC6eEckYUz+668qMLr+G0+k/JdS195x0zxY4HDzA1H7EuoYCZOP
+	t/j+n1NsxvkOItnNy8nqbEhFmNT/MxkyfAgQr/IuaA2t59JkyIN3EyHPpLrUhavJ0Vjb/57cL7k
+	RkhHno88Ryp9T/YHWR9mz994fJHMSDzWxt/cMrNFUzonyLqObr/w4RTp/+qE/h3dl51ljXH+qXb
+	XPb/WJSxUSRaVtf33Pb02U4RXu8h/0tusW3ytzTRiW38ALY96vNXqEXvt/cwUf9ilxa7Z3vV+JK
+	UMxMe2ATkg1bcz1gVKFlE+jHe7Wxe6Ln9aPw9B92ZJGjvB6MFPrepi+t1LqwvaYyB+YCEbbU6qi
+	+viySSDXyDMUDNbB75V+IHJnWXBwvsobYQBWB408AYcZrLnnfVvP6/x9QZOI2M+k48o83W
+X-Received: by 2002:a17:902:d48d:b0:2b0:7a9b:82f3 with SMTP id d9443c01a7336-2b0bf525ef0mr164585ad.8.1774472741940;
+        Wed, 25 Mar 2026 14:05:41 -0700 (PDT)
+Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc783099sm9870465ad.18.2026.03.25.14.05.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 14:05:41 -0700 (PDT)
+Date: Wed, 25 Mar 2026 21:05:32 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 14/14] iommufd/selftest: Add test to verify iommufd
+ preservation
+Message-ID: <acROHN5KhJIef0Yd@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-15-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c44d5d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=ymCyIV2yq4vNEUg3yzkA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDE0OSBTYWx0ZWRfX0Zu+UG2o7g9J
- ohe7nid3mY1yfDBsocEnPeLC5C/MYDtaYJB4CTBr5EhFBAgErHoeVu6pM+3RyYr4Bv43DxHGotj
- hpKeaIoxui0BXlAYtX0ivqephVvWNOinlYLRPF0mn21w7tt3+GJnqZ2gvHICZNtnGB+kUn86vjl
- MMDsQEgYeINrEjblHIRrsv0ije33dXCTKCaTBid9Vt/C3U5R2AJBOriUL3XR+RSgwecGvljPXsd
- UcqDIHPwRkD8Q2kslmD9mn2OKVxRNvrVf3j3qHmU0YUPTmaDZNEFmQri2Q/K2nq5yt+FkNUkFX0
- 0f9IxsyLlJ3s0e29wjw6RMynh49G8WTkm0G/FBZSr7mZwOnszDJ97ujiCdSkqB5DpdN+gfJRuAx
- UIdl+IHk6qgL8ZHHqIDBHKbkJ1k1g3znZQ+AQtcsa4mW4wg76oRZKDolXyIcP6HKnIdxwpid/iE
- ZyMFKjQYNYaPP6WkfxQ==
-X-Proofpoint-GUID: GUHQsRgNDdQ4_Y-hCNgXFVMTbK_taun5
-X-Proofpoint-ORIG-GUID: GUHQsRgNDdQ4_Y-hCNgXFVMTbK_taun5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_05,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
- phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250149
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203220948.2176157-15-skhawaja@google.com>
 
-Add a 'Live Guest Migration' chapter to the
-Documentation/arch/s390/vfio-ap.rst document to describe the details for
-initiating live guest migration for a guest to which AP adapters, domains
-and control domains have been passed through.
+On Tue, Feb 03, 2026 at 10:09:48PM +0000, Samiullah Khawaja wrote:
+> Test iommufd preservation by setting up an iommufd and vfio cdev and
+> preserve it across live update. Test takes VFIO cdev path of a device
+> bound to vfio-pci driver and binds it to an iommufd being preserved. It
+> also preserves the vfio cdev so the iommufd state associated with it is
+> also preserved.
+> 
+> The restore path is tested by restoring the preserved vfio cdev only.
+> Test tries to finish the session without restoring iommufd and confirms
+> that it fails.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+> ---
+>  tools/testing/selftests/iommu/Makefile        |  12 +
+>  .../selftests/iommu/iommufd_liveupdate.c      | 209 ++++++++++++++++++
+>  2 files changed, 221 insertions(+)
+>  create mode 100644 tools/testing/selftests/iommu/iommufd_liveupdate.c
+> 
+> diff --git a/tools/testing/selftests/iommu/Makefile b/tools/testing/selftests/iommu/Makefile
+> index 84abeb2f0949..263195af4d6a 100644
+> --- a/tools/testing/selftests/iommu/Makefile
+> +++ b/tools/testing/selftests/iommu/Makefile
+> @@ -7,4 +7,16 @@ TEST_GEN_PROGS :=
+>  TEST_GEN_PROGS += iommufd
+>  TEST_GEN_PROGS += iommufd_fail_nth
+>  
+> +TEST_GEN_PROGS_EXTENDED += iommufd_liveupdate
+> +
+>  include ../lib.mk
+> +include ../liveupdate/lib/libliveupdate.mk
+> +
+> +CFLAGS += -I$(top_srcdir)/tools/include
+> +CFLAGS += -MD
+> +CFLAGS += $(EXTRA_CFLAGS)
+> +
+> +$(TEST_GEN_PROGS_EXTENDED): %: %.o $(LIBLIVEUPDATE_O)
+> +	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $< $(LIBLIVEUPDATE_O) $(LDLIBS) -static -o $@
+> +
+> +EXTRA_CLEAN += $(LIBLIVEUPDATE_O)
+> diff --git a/tools/testing/selftests/iommu/iommufd_liveupdate.c b/tools/testing/selftests/iommu/iommufd_liveupdate.c
+> new file mode 100644
+> index 000000000000..8b4ea9f2b7e9
+> --- /dev/null
+> +++ b/tools/testing/selftests/iommu/iommufd_liveupdate.c
+> @@ -0,0 +1,209 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+> + * Samiullah Khawaja <skhawaja@google.com>
+> + */
+> +
+> +#include <fcntl.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/mman.h>
+> +#include <stdbool.h>
+> +#include <unistd.h>
+> +
+> +#define __EXPORTED_HEADERS__
+> +#include <linux/iommufd.h>
+> +#include <linux/types.h>
+> +#include <linux/vfio.h>
+> +#include <linux/sizes.h>
+> +#include <libliveupdate.h>
+> +
+> +#include "../kselftest.h"
+> +
+> +#define ksft_assert(condition) \
+> +	do { if (!(condition)) \
+> +	ksft_exit_fail_msg("Failed: %s at %s %d: %s\n", \
+> +	#condition, __FILE__, __LINE__, strerror(errno)); } while (0)
+> +
+> +int setup_cdev(const char *vfio_cdev_path)
+> +{
+> +	int cdev_fd;
+> +
+> +	cdev_fd = open(vfio_cdev_path, O_RDWR);
+> +	if (cdev_fd < 0)
+> +		ksft_exit_skip("Failed to open VFIO cdev: %s\n", vfio_cdev_path);
+> +
+> +	return cdev_fd;
+> +}
+> +
+> +int open_iommufd(void)
+> +{
+> +	int iommufd;
+> +
+> +	iommufd = open("/dev/iommu", O_RDWR);
+> +	if (iommufd < 0)
+> +		ksft_exit_skip("Failed to open /dev/iommu. IOMMUFD support not enabled.\n");
+> +
+> +	return iommufd;
+> +}
+> +
+> +int setup_iommufd(int iommufd, int memfd, int cdev_fd, int hwpt_token)
+> +{
+> +	int ret;
+> +
+> +	struct vfio_device_bind_iommufd bind = {
+> +		.argsz = sizeof(bind),
+> +		.flags = 0,
+> +	};
+> +	struct iommu_ioas_alloc alloc_data = {
+> +		.size = sizeof(alloc_data),
+> +		.flags = 0,
+> +	};
+> +	struct iommu_hwpt_alloc hwpt_alloc = {
+> +		.size = sizeof(hwpt_alloc),
+> +		.flags = 0,
+> +	};
+> +	struct vfio_device_attach_iommufd_pt attach_data = {
+> +		.argsz = sizeof(attach_data),
+> +		.flags = 0,
+> +	};
+> +	struct iommu_hwpt_lu_set_preserve set_preserve = {
+> +		.size = sizeof(set_preserve),
+> +		.hwpt_token = hwpt_token,
+> +	};
+> +	struct iommu_ioas_map_file map_file = {
+> +		.size = sizeof(map_file),
+> +		.length = SZ_1M,
+> +		.flags = IOMMU_IOAS_MAP_WRITEABLE | IOMMU_IOAS_MAP_READABLE,
+> +		.iova = SZ_4G,
+> +		.fd = memfd,
+> +		.start = 0,
+> +	};
+> +
+> +	bind.iommufd = iommufd;
+> +	ret = ioctl(cdev_fd, VFIO_DEVICE_BIND_IOMMUFD, &bind);
+> +	ksft_assert(!ret);
+> +
+> +	ret = ioctl(iommufd, IOMMU_IOAS_ALLOC, &alloc_data);
+> +	ksft_assert(!ret);
+> +
+> +	hwpt_alloc.dev_id = bind.out_devid;
+> +	hwpt_alloc.pt_id = alloc_data.out_ioas_id;
+> +	ret = ioctl(iommufd, IOMMU_HWPT_ALLOC, &hwpt_alloc);
+> +	ksft_assert(!ret);
+> +
+> +	attach_data.pt_id = hwpt_alloc.out_hwpt_id;
+> +	ret = ioctl(cdev_fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, &attach_data);
+> +	ksft_assert(!ret);
+> +
+> +	map_file.ioas_id = alloc_data.out_ioas_id;
+> +	ret = ioctl(iommufd, IOMMU_IOAS_MAP_FILE, &map_file);
+> +	ksft_assert(!ret);
+> +
+> +	set_preserve.hwpt_id = attach_data.pt_id;
+> +	ret = ioctl(iommufd, IOMMU_HWPT_LU_SET_PRESERVE, &set_preserve);
+> +	ksft_assert(!ret);
+> +
+> +	return ret;
+> +}
+> +
+> +static int create_sealed_memfd(size_t size)
+> +{
+> +	int fd, ret;
+> +
+> +	fd = memfd_create("buffer", MFD_ALLOW_SEALING);
+> +	ksft_assert(fd > 0);
+> +
+> +	ret = ftruncate(fd, size);
+> +	ksft_assert(!ret);
+> +
+> +	ret = fcntl(fd, F_ADD_SEALS,
+> +		    F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL);
+> +	ksft_assert(!ret);
+> +
+> +	return fd;
+> +}
+> +
+> +int main(int argc, char *argv[])
 
-Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
----
- Documentation/arch/s390/vfio-ap.rst | 339 ++++++++++++++++++++--------
- 1 file changed, 246 insertions(+), 93 deletions(-)
+The iommufd selftest directory heavily utilizes the standard kselftest
+harness (TEST_F, EXPECT_EQ, ASSERT_EQ), by writing a raw main(), this 
+patch circumvents the standard test reporting structure (like returning 1
+on argc < 2 instead of ksft_exit_skip(), and returning 0 at the end
+instead of ksft_exit_pass() etc.). We should rewrite this cleanly 
+following the existing iommufd test infrastructure using TEST_F blocks.
 
-diff --git a/Documentation/arch/s390/vfio-ap.rst b/Documentation/arch/s390/vfio-ap.rst
-index eba1991fbdba..9df7614fd62b 100644
---- a/Documentation/arch/s390/vfio-ap.rst
-+++ b/Documentation/arch/s390/vfio-ap.rst
-@@ -1016,7 +1016,7 @@ guest_matrix dyn ap_config
- 
- the following features are advertised:
- 
-----------------+---------------------------------------------------------------+
-++--------------+---------------------------------------------------------------+
- | Flag         | Description                                                   |
- +==============+===============================================================+
- | guest_matrix | guest_matrix attribute exists. It reports the matrix of       |
-@@ -1025,105 +1025,258 @@ the following features are advertised:
- +--------------+---------------------------------------------------------------+
- | dyn          | Indicates hot plug/unplug of AP adapters, domains and control |
- |              | domains for a guest to which the mdev is attached.            |
--+------------+-----------------------------------------------------------------+
-++--------------+---------------------------------------------------------------+
- | ap_config    | ap_config interface for one-shot modifications to mdev config |
- +--------------+---------------------------------------------------------------+
-+| migratable   | Indicates that live guest migration is supported for guests   |
-+|              | to which crypto devices are passed through                    |
-++--------------+---------------------------------------------------------------+
- 
--Limitations
--===========
--Live guest migration is not supported for guests using AP devices without
--intervention by a system administrator. Before a KVM guest can be migrated,
--the vfio_ap mediated device must be removed. Unfortunately, it can not be
--removed manually (i.e., echo 1 > /sys/devices/vfio_ap/matrix/$UUID/remove) while
--the mdev is in use by a KVM guest. If the guest is being emulated by QEMU,
--its mdev can be hot unplugged from the guest in one of two ways:
--
--1. If the KVM guest was started with libvirt, you can hot unplug the mdev via
--   the following commands:
--
--      virsh detach-device <guestname> <path-to-device-xml>
--
--      For example, to hot unplug mdev 62177883-f1bb-47f0-914d-32a22e3a8804 from
--      the guest named 'my-guest':
--
--         virsh detach-device my-guest ~/config/my-guest-hostdev.xml
--
--            The contents of my-guest-hostdev.xml:
--
--.. code-block:: xml
--
--            <hostdev mode='subsystem' type='mdev' managed='no' model='vfio-ap'>
--              <source>
--                <address uuid='62177883-f1bb-47f0-914d-32a22e3a8804'/>
--              </source>
--            </hostdev>
--
--
--      virsh qemu-monitor-command <guest-name> --hmp "device-del <device-id>"
--
--      For example, to hot unplug the vfio_ap mediated device identified on the
--      qemu command line with 'id=hostdev0' from the guest named 'my-guest':
--
--.. code-block:: sh
--
--         virsh qemu-monitor-command my-guest --hmp "device_del hostdev0"
--
--2. A vfio_ap mediated device can be hot unplugged by attaching the qemu monitor
--   to the guest and using the following qemu monitor command:
--
--      (QEMU) device-del id=<device-id>
--
--      For example, to hot unplug the vfio_ap mediated device that was specified
--      on the qemu command line with 'id=hostdev0' when the guest was started:
--
--         (QEMU) device-del id=hostdev0
--
--After live migration of the KVM guest completes, an AP configuration can be
--restored to the KVM guest by hot plugging a vfio_ap mediated device on the target
--system into the guest in one of two ways:
--
--1. If the KVM guest was started with libvirt, you can hot plug a matrix mediated
--   device into the guest via the following virsh commands:
--
--   virsh attach-device <guestname> <path-to-device-xml>
--
--      For example, to hot plug mdev 62177883-f1bb-47f0-914d-32a22e3a8804 into
--      the guest named 'my-guest':
--
--         virsh attach-device my-guest ~/config/my-guest-hostdev.xml
--
--            The contents of my-guest-hostdev.xml:
--
--.. code-block:: xml
--
--            <hostdev mode='subsystem' type='mdev' managed='no' model='vfio-ap'>
--              <source>
--                <address uuid='62177883-f1bb-47f0-914d-32a22e3a8804'/>
--              </source>
--            </hostdev>
--
-+Live Guest Migration
-+====================
-+A guest to which crypto devices (i.e., AP adapters, domains and control domains)
-+have been passed through can be migrated to another system if both the source
-+and destination guests meet the following requirements:
- 
--   virsh qemu-monitor-command <guest-name> --hmp \
--   "device_add vfio-ap,sysfsdev=<path-to-mdev>,id=<device-id>"
-+* The destination guest will be started with the same QEMU command line as the
-+  source guest, so the mediated device supplying the AP configuration on both
-+  the source and destination guests must have the same name (UUID).
- 
--      For example, to hot plug the vfio_ap mediated device
--      62177883-f1bb-47f0-914d-32a22e3a8804 into the guest named 'my-guest' with
--      device-id hostdev0:
-+* The AP configuration passed through to both the source and destination guests
-+  must be compatible. As such, each AP configuration:
- 
--      virsh qemu-monitor-command my-guest --hmp \
--      "device_add vfio-ap,\
--      sysfsdev=/sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804,\
--      id=hostdev0"
-+  * Must have the same number of APQNs
- 
--2. A vfio_ap mediated device can be hot plugged by attaching the qemu monitor
--   to the guest and using the following qemu monitor command:
-+  * Each APQN assigned to the source guest must also be assigned to the
-+    destination guest
- 
--      (qemu) device_add "vfio-ap,sysfsdev=<path-to-mdev>,id=<device-id>"
-+  * Each APQN assigned to the source guest and destination guest must reference
-+    a queue with compatible hardware capabilities:
- 
--      For example, to plug the vfio_ap mediated device
--      62177883-f1bb-47f0-914d-32a22e3a8804 into the guest with the device-id
--      hostdev0:
-++--------------+---------------------------------------------------------------+
-+| Hardware     | Description                                                   |
-+| Capabilities |                                                               |
-++==============+===============================================================+
-+| facilities   | * AP special command facility (APSC)                          |
-+|              | * AP 4096-bit ME PKU commands facility (AP4KM)                |
-+|              | * AP 4096-bit CRT PKU commands (AP4KC)                        |
-++--------------+---------------------------------------------------------------+
-+| mode         | * CCA-mode                                                    |
-+|              | * Accelerator-mode                                            |
-+|              | * XCP-mode (EP11)                                             |
-++--------------+---------------------------------------------------------------+
-+| AP extended  | APXA installed                                                |
-+| addressing   |                                                               |
-++--------------+---------------------------------------------------------------+
-+| command      | Command filtering available                                   |
-+| filtering    |                                                               |
-++--------------+---------------------------------------------------------------+
-+| functional   | * Full native card function                                   |
-+| capabilities | * Only stateless functions                                    |
-++--------------+---------------------------------------------------------------+
-+| secure       | The guest running on the source host can not have any queues  |
-+| execution    | bound or associated with it                                   |
-++--------------+---------------------------------------------------------------+
-+| AP type      | * No AP type                                                  |
-+|              | * PCICC (Leeds-2)                                             |
-+|              | * PCICA (Leeds-2 Lite)                                        |
-+|              | * PCIXCC                                                      |
-+|              | * CEX2A                                                       |
-+|              | * CEX2C                                                       |
-+|              | * CEX3A                                                       |
-+|              | * CEX3C                                                       |
-+|              | * CEX4S                                                       |
-+|              | * CEX5S                                                       |
-+|              | * CEX6S                                                       |
-+|              | * CEX7S                                                       |
-+|              | * CEX8S                                                       |
-+|              |                                                               |
-+|              | Note: The AP type on the source and destination guests can    |
-+|              |       differ if the queue passed through to the target guest  |
-+|              |       is a newer model (backwards compatible)                 |
-++--------------+---------------------------------------------------------------+
- 
--         (QEMU) device-add "vfio-ap,\
--         sysfsdev=/sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804,\
--         id=hostdev0"
-+Enabling and disabling live guest migration
-+-------------------------------------------
-+By default, live guest migration will be disabled for guests that use crypto
-+devices. A r/w sysfs 'migratable' attribute for each mediated device is provided
-+to enable/disable live guest migration for the guest to which the mediated
-+device is attached. The valid values for this attribute are 1 (enable) and
-+0 (disable).
-+
-+To enable live migration:
-+
-+	echo 1 /sys/bus/mdev/devices/$UUID/migratable
-+
-+To disable live migration:
-+
-+	echo 0 /sys/bus/mdev/devices/$UUID/migratable
-+
-+The 'migratable' attribute allows migration to be dynamically enabled or
-+disabled for the guest to which the mediated device is attached; however,
-+if migration of the vfio-ap device is already in progress, the operation will
-+be rejected with a 'Device or resource busy' message.
-+
-+Live guest migration failures due to AP configuration errors
-+------------------------------------------------------------
-+The VFIO AP mediated device is not used to provide userspace with direct access
-+to a device as is the case with other devices that use the VFIO framework to
-+pass them through to a guest. The sole purpose of the VFIO AP mediated device
-+is to manage an AP configuration for a guest. An AP configuration is comprised
-+of the AP adapter IDs (APID), AP queue indexes (APQI) and domain numbers of the
-+control domains to which a guest will be granted access. Once the VFIO AP
-+mediated device is attached to the guest, its AP configuration is set by the
-+vfio_ap device driver. Once set, all access to the AP devices is handled
-+by the s390 Interpretive Execution facility; in other words, the vfio_ap device
-+driver plays no role in providing direct access to these AP devices.
-+
-+The only role that the vfio_ap device driver plays in the migration process is
-+to verify that the AP configuration for the source guest is compatible with the
-+AP configuration of the destination guest. Incompatibility will result in a live
-+guest migration failure. This section describes how to debug this type of
-+failure.
-+
-+The destination host is missing the mediated device with the same name as the
-+mdev attached to the source guest
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+**Source host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | *error: device not found: mediated device '$UUID' not found*       |
-++--------------+--------------------------------------------------------------------+
-+
-+The source guest is not enabled for migration
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+**Source host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | *error: Requested operation is not valid:                          |
-+|              | cannot migrate domain: $UUID: Migration is disabled for VFIO       |
-+|              | device*                                                            |
-++--------------+--------------------------------------------------------------------+
-+
-+
-+The AP configuration of the source and destination guests are not compatible
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+**Source host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | *error: operation failed: job 'migration in' failed: load of       |
-+|              | migration failed: Bad address*                                     |
-++--------------+--------------------------------------------------------------------+
-+| Kernel log:  | N/A                                                                |
-++--------------+--------------------------------------------------------------------+
-+| QEMU log:    | *initiating migration*                                             |
-+|              |                                                                    |
-+|              | *qemu-system-s390x: Sibling indicated error 1*                     |
-++--------------+--------------------------------------------------------------------+
-+
-+**Destination host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | N/A                                                                |
-++--------------+--------------------------------------------------------------------+
-+| Kernel log:  | *vfio_ap_mdev $UUID: Migration failed: Source and target queues    |
-+|              | ($APQN) are not compatible*                                        |
-+|              |                                                                    |
-+|              | The message above will be followed by one or more messages         |
-+|              | enumerating the incompatible features; for example:                |
-+|              |                                                                    |
-+|              | *vfio_ap_mdev $UUID: APSC facility installed in source queue $APQN*|
-+|              |                                                                    |
-+|              | *vfio_ap_mdev $UUID: APSC facility not installed in target queue   |
-+|              | $APQN*                                                             |
-+|              |                                                                    |
-+|              | *AP type of source ($APTYPE) not compatible with target ($APTYPE)* |
-++--------------+--------------------------------------------------------------------+
-+| QEMU log:    | *initiating migration*                                             |
-+|              |                                                                    |
-+|              | *qemu-system-s390x: error while loading state section id ...*      |
-+|              |                                                                    |
-+|              | *shutting down, reason=failed*                                     |
-+|              |                                                                    |
-+|              | *terminating on signal 15 from pid 1196 (/usr/sbin/virtqemud)*     |
-++--------------+--------------------------------------------------------------------+
-+
-+The AP configuration of the source guest has more APQNS than the destination guest
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+**Source host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | *error: operation f1e166ee77e6failed: job 'migration in' failed: load of       |
-+|              | migration failed: Input/output error*                              |
-++--------------+--------------------------------------------------------------------+
-+| Kernel log:  | N/A                                                                |
-++--------------+--------------------------------------------------------------------+
-+| QEMU log:    | *initiating migration*                                             |
-+|              |                                                                    |
-+|              | *qemu-system-s390x: Sibling indicated error 1*                     |
-++--------------+--------------------------------------------------------------------+
-+
-+**Destination host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | N/A                                                                |
-++--------------+--------------------------------------------------------------------+
-+| Kernel log:  | *vfio_ap_mdev $UUID:                                               |
-+|              | migration failed: source guest's AP config size (xx) larger than   |
-+|              | target's (yy)*                                                     |
-++--------------+--------------------------------------------------------------------+
-+| QEMU log:    | *initiating migration*                                             |
-+|              |                                                                    |
-+|              | *qemu-system-s390x: error while loading state section id ...*      |
-+|              |                                                                    |
-+|              | *shutting down, reason=failed*                                     |
-+|              |                                                                    |
-+|              | *terminating on signal 15 from pid 1196 (/usr/sbin/virtqemud)*     |
-++--------------+--------------------------------------------------------------------+
-+
-+The AP configuration of the source guest has fewer APQNS than the destination guest
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+**Source host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | *error: operation failed: job 'migration in' failed: load of       |
-+|              | migration failed: No such device*                                  |
-++--------------+--------------------------------------------------------------------+
-+| Kernel log:  | N/A                                                                |
-++--------------+--------------------------------------------------------------------+
-+| QEMU log:    | *initiating migration*                                             |
-+|              |                                                                    |
-+|              | *qemu-system-s390x: Sibling indicated error 1*                     |
-++--------------+--------------------------------------------------------------------+
-+
-+**Destination host**
-+
-++--------------+--------------------------------------------------------------------+
-+| Log          | Message                                                            |
-++==============+====================================================================+
-+| Console log: | N/A                                                                |
-++--------------+--------------------------------------------------------------------+
-+| Kernel log:  | *vfio_ap_mdev $UUID:                                               |
-+|              | migration failed: number of queues on source (x) and target (y)    |
-+|              | guests differ*                                                     |
-++--------------+--------------------------------------------------------------------+
-+| QEMU log:    | *initiating migration*                                             |
-+|              |                                                                    |
-+|              | *qemu-system-s390x: error while loading state section id ...*      |
-+|              |                                                                    |
-+|              | *shutting down, reason=failed*                                     |
-+|              |                                                                    |
-+|              | *terminating on signal 15 from pid 1196 (/usr/sbin/virtqemud)*     |
-++--------------+--------------------------------------------------------------------+
--- 
-2.52.0
+> +{
+> +	int iommufd, cdev_fd, memfd, luo, session, ret;
+> +	const int token = 0x123456;
+> +	const int cdev_token = 0x654321;
+> +	const int hwpt_token = 0x789012;
+> +	const int memfd_token = 0x890123;
 
+Shouldn't these be u64? Defining them as signed int-s undermines that
+contract?
+
+> +
+> +	if (argc < 2) {
+> +		printf("Usage: ./iommufd_liveupdate <vfio_cdev_path>\n");
+> +		return 1;
+> +	}
+> +
+> +	luo = luo_open_device();
+> +	ksft_assert(luo > 0);
+> +
+> +	session = luo_retrieve_session(luo, "iommufd-test");
+
+[ ---- >8 ---- ]
+
+Thanks,
+Praan
