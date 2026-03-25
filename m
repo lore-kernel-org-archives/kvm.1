@@ -1,262 +1,293 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB543EC2C4
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 15:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774451899; cv=none; b=atW+/c9t8A6wUCh0plNncO7RVX616tMxPPn+/b8NDquYQ1nTtuMDQsv1qCjQ6q+8YNQfyqMgK2FJ/m+5g8f913q2Rt9fzB+/g+0AuG1TWgTu1VeMUe9/h34Qn3lwZ5bf6IRiBghjH0hMFZK6xbZzy46N4e71+V4+NGpnXVlhvi8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774451899; c=relaxed/simple;
-	bh=MpdemPxq2gWh/o5rpmvTuOdiS0iQ60avu+K2dQvuaGQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WijrEdKqWNknEtnyPpFurNrwKs+P6TQAd2+l0LC1kVWBQvZcER7MriMz87PNjdQkzKhIFDLB/hVdKJoATuBr5Yff0vpr++nqE1o3q23uPnwfs4gdfAhY+4NFFSxHrwq3uY5szyA9KIOELgRlEalxuIfzxopc6KTrgB8KaYWIpx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kiz/M5pr; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F1A3E63A0
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 15:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774453787; cv=pass; b=iY3QgdHn3PKpSOeuupCrniqmYIQ1WFZLA7ZtFjnJ56SlRUYZndZ7wtMXK+0xUQ0iVHK7BrhSz/jyuKEHat+dT/eOyzZvmBJFzlHI+kcp3XsI9J9nZ0/TnlUChIS6IM2eKm7FX2+lSE+wGDwCyG5nBOC+6+vx1Fh2eIYXcAayQwE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774453787; c=relaxed/simple;
+	bh=SMw1jlxrpubfTnHEDlbO4rziVId8vc4wQCntfT4i+lU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sn20HiILHtoqPqzN54f9d9mYKsYWqop1ZTRSvs34x6JjRUbWt1NovL32W5u+4N7srteM1s2wArXLiDzt4WZ1SpdyQxCln+/YHD++/Lk0cnqk9dkuA0Se1CTb3ZVnzU5OM9gPbKUUMJ1dEeObrDsHt8evDS8E+buRvGeq1bEvGzY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NboHdeJy; arc=pass smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kiz/M5pr"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48541edecf9so23341105e9.1
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 08:18:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NboHdeJy"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66a33f61d80so4392965a12.0
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 08:49:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774453782; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TfwEUmrlFGNFyhsHGX1C0eHoOiE+NrEsEz1Ney0VZH5+BBSQPf+bFP/NenkiSasXmy
+         1GfJoDF2gL9wK9d6DD+XbiCqhTDCF0dQhsXlg78Ub45BJewazHE8kIVSxBa97dxjQH5l
+         c5v0EYAmwkbHGJy2HeOSW31CAFTH28VaP/Skm4XzyCOuOl+eYDaXWq2rwKo9fDrzbPip
+         UK752NtXcwhy4HBgILQzEjLCpb1vAlgYAUodxdOcF50nRzt0rGWwWpF05fptSm0fYTXZ
+         70J30GkDdQuYz7H2KRDENfdCzmiG9uFMquyNpfKrmzH+iEUcPa++IyQrPp8YaeI74YCV
+         6YkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=PetZC3qxgw91I7G4PL1kgiG97oaIIgIA0g2FQ1jwb8M=;
+        fh=9EKgHE4K3/GOa6svzgVqMYwSueaDXxijtRGabUeczGs=;
+        b=SByldn5C2sqCSGQAP8AwtRcaiV82b8uRHZpTT5TnKLZeHYqJQRi0b6ILNptVSk++TQ
+         XFDd0Z0mP92oSP51i6qpU5LfvBHukDGskDq1m4LWPPkRpdOwP5oHpN0MbVf7XAgcTDto
+         OqVJp41VPb7+onfXO2Pxt0PMNDpNfLEqlCipwwvcJbtPHx6Ute5uU2KDnhYmnu6BfgdH
+         hseHmPgRW4X9a09Vny0tCOKHHyl/DAIcNpyLvcLrA+xrMhaqjyCqR9ptyYUJxk3QuckA
+         Dax3KmToO2puyoqbe4aKPfPfWkHBczUq0FyH/UarzUp0MhceRJlS2wAmsLoUoF8TP2eC
+         iTFw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774451896; x=1775056696; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cHp+isFeJ+Vwq620YK3TTBZ1M5KgDnZyZo3PdDfV4Bw=;
-        b=kiz/M5prlcinIEsCJp8uLxu2Yntk8t7GUxjHXCgQ3r8oA8IENGRpGW8c79iEcyTNyi
-         dOGOhPiSZ3ZSV94wCyywJJRMIOScvKXhhgdt/dHaKq+C7SxyHUBGaxltGfvvtjZ/uXvb
-         d/+b8rX+89E09R2s7yrwz02Baba2Ip7+cA36nxBAcoJO3GbAp2ELzzF1HwsEELhz4qRx
-         ppf8XLq7UwBqWH/06sr9NuU0olvJUegm5YDBlgmS7wOzkifxTut8c20MgvpTZR6Ac9xP
-         jyXC8vqD8w8n7ooSgWAMURIr1foWl0F6rJj8d0PIjYuSxWwIyYLe13b5uISwfV9T3vM/
-         0S/Q==
+        d=linaro.org; s=google; t=1774453782; x=1775058582; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PetZC3qxgw91I7G4PL1kgiG97oaIIgIA0g2FQ1jwb8M=;
+        b=NboHdeJy5rqGSnXILD9hwlr7QiyRU1LH/ue16iQyMsxCAyhZj1NvxCbm2HAeBhkudu
+         FAC6KYzF734ktdTxcB05tjcgxJty3pUoyU98ok+Ks13UjLw2J/gcW0KyOTnXcKQ8J8Pj
+         z7NS7clU2pMGlFojeHqUVytaEmqQv1dJrZPFe9yftZPIKqRgNksGlvqfhNgT5ECOdDRh
+         BE6iuCGcvAbY68M752e+aCt2jMXMusBcxQa4WX3MHDvHjAXMRlM61xlzilZ6y0L6oFH1
+         WbnrQej0rE3qZXSxCJgQsEOyjVsjFXAAMsviK8eGZMwQKl2Ly3HsBCplL72PGSQRPwT6
+         tf+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774451896; x=1775056696;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cHp+isFeJ+Vwq620YK3TTBZ1M5KgDnZyZo3PdDfV4Bw=;
-        b=ptNbTlarbMbiQDXWICQcaOQk2h8gQOEbKuOCNdtLsJ6q3DQ3n7XVnqhRGTgNtmorb7
-         nFfy4WT/lun7bCppnkVXxLUq0rXmyXpfDW6UlDbjKwJiUYjKRpS3DMrxg6FyirAfflwp
-         8+xjN7bFNa3HZjFF7FZR2fHlBjnJyCgNQzMd7BPjXtzPUr+vVU4Fa4or9emvR7dcc2Vy
-         Xkmij8kvzezV+RYayecYUzNtDaF0ggHE84cQT2Wnvoxxihq4njR1sAzKILA4q0p3X35D
-         xVSzbWr4PrzMuxLtSgIyjcZAF0YGrxPmlsZLRZkQRIysaX4h2GUacFeNV5eV60+QKHb+
-         fohg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/yPW7X/ZFI/wUNzouTHqB81iGQ7L8chP01V/QN9dRXEjUUfpOjvw3p+OZ6/IWCEC5qoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxvrad0LXTp9f94Do8SLwv2RMzo7FJ9yaeWKhxuV2CFdQ1WZnKw
-	t2MyYrRGghgABE08aYT6xl73XPQp4X4uogfZQZSS0OGs2qBzODpjn4mVN6qH7KKWjoI=
-X-Gm-Gg: ATEYQzzl0Mnqgm223D4l6Bw4clY1CdP3P/kNrohHQkLisT9gDzA/gDWoPdiZdFb0loq
-	eJZAxSNRuwo3DE70yG973ucEXxxDZ7eAUkkNhdOy3BRBkNhFVIRIZVbfwvIu+EKclH8yi6fPZCD
-	JhUsCgdHlOoZTbwx8aQmSUNkfFWscs6CFNSYlHoDxo2gPJkGqVNwBztOAwXrfJz2pBvDmyDKm9K
-	KwjVeoFCy/Z+91V0YaX/e0wDijaTBho95DO9kUqOu5O6DNOb6FLbg0plgUpLz/8RGH+b/j2Kboi
-	cR8qrlS0BedpWXWYW0v1jNb3IqV9mFOzpuch7T3rDrFEKt93MJWKEGdFz0Rr1Cyd5TOsYmYxYE2
-	6JSs0Mf67EZQG3ghBWh4LPPcqsGRHLqEou9tnzmHh3Lg4JBAgSITzk21WpKUz+ZHvr8S59OhUho
-	5NxvlQfus/MmDM6ZusVBdQWYD/n3vx8336OPHET+Ybjj+dtyDr0qpWhmi5auQHIhN3711XKn74j
-	sPHTrl2Q6U=
-X-Received: by 2002:a05:600c:a408:b0:485:3f58:d9f with SMTP id 5b1f17b1804b1-487160a24e2mr43858395e9.30.1774451895998;
-        Wed, 25 Mar 2026 08:18:15 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871e60322asm1408455e9.7.2026.03.25.08.18.14
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 25 Mar 2026 08:18:15 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	kvm@vger.kernel.org
-Subject: [NOTFORMERGE PATCH 6/6] buildsys: Allow building guest-agent on 32-bit hosts
-Date: Wed, 25 Mar 2026 16:17:28 +0100
-Message-ID: <20260325151728.45378-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325151728.45378-1-philmd@linaro.org>
-References: <20260325151728.45378-1-philmd@linaro.org>
+        d=1e100.net; s=20251104; t=1774453782; x=1775058582;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PetZC3qxgw91I7G4PL1kgiG97oaIIgIA0g2FQ1jwb8M=;
+        b=SqLd0EulKItSTTDG14wLPH98dgiYEcdNSVyJVvlYeL/2upvKclXHFVCEKaZ65naM4d
+         Eh8uKGi/29awJzm9x03ehtS7ttX/dsZYuytPzNG8Q4sHFLi/nPcKcrYJYHqAjXKk4NPE
+         bSy/1acHzeaX1JTLTcz7vtnNthLyXc1N5rtR3yygSjyRyEMT8Ig9y8chrZ/GAA0OVFmQ
+         9eIh1+gzn+XZS1sOwN7B0/VsDuE0xz0B3wTTTzKzsDrHVe9ZBamNQayU2DJcZET9leho
+         30FXf52WPC8tQ31yHW6IsooEXMlRXJuKWf8F3Qi/Fp2/zy3kswykvHqTERsTqXvMAZwz
+         LQ9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUE+8mcwAMfd2ehOlG0wr6wxjAKpdKlRDh+g4KYd+KGTBT3B/idOh1/XziWH4T3aI+6rF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/+Vah/XNiDtEEmjfmAqFzsDyDNj0Vzet9ZUeLrsPgZ4ejfJeV
+	slKmC/vUFgvKXaDZJyJeanW5/9dlkPHuBGFaOhrG/i7n1DV/OMGcOHz4B9OXsRTi3al+C/vvy4k
+	j4iz1wtlTQXnIwsqEDXnyE5WTuTkF4POCon4Qrsc2sQ==
+X-Gm-Gg: ATEYQzwdH8OrcI+zEcrxRzTAQj3BeH+EZ+YBWIeIb6a9P04LUZij76LTITucNvwzuVw
+	I8erQvriXJIQAUpGRIcGV6CVqL4K1APV1WL3R9qg7Rymwmr7sU4+AnFOZ02vxj+V24/tuyYMbS7
+	sh1CeeGTnXmO1JsYx/2UZM8roISh3tHWHiiUF3Vk5YGKmw7EfzVZl1nI7t77i0PMpQSgfcOWrV+
+	tKsb5auMm/Kj0266knYw9eSTKzbxkNqKu5s/V8hglTJjlxFwHcGwQGSWFu5VRaEwFrc460d0a9H
+	Od080uriZgViQFlPxqo3jwnJWeIX/Ap6GjC4N/jGOA==
+X-Received: by 2002:a05:6402:3251:b0:668:368b:38d3 with SMTP id
+ 4fb4d7f45d1cf-66a82634560mr2196905a12.12.1774453782373; Wed, 25 Mar 2026
+ 08:49:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260324005919.2408620-1-dakr@kernel.org> <20260324005919.2408620-8-dakr@kernel.org>
+In-Reply-To: <20260324005919.2408620-8-dakr@kernel.org>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Wed, 25 Mar 2026 09:49:31 -0600
+X-Gm-Features: AQROBzDaUkN0ZNcFR8HLoPUZ0UwwRolGugOyW2ifJVz-O5YTothUc8ZwonnT9P8
+Message-ID: <CANLsYkyNx+e=QrSc=ZOqgMcOpwqdpCWsuhrvByJYcXLHPSHMUw@mail.gmail.com>
+Subject: Re: [PATCH 07/12] rpmsg: use generic driver_override infrastructure
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Armin Wolf <W_Armin@gmx.de>, 
+	Bjorn Andersson <andersson@kernel.org>, Vineeth Vijayan <vneethv@linux.ibm.com>, 
+	Peter Oberparleiter <oberpar@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Harald Freudenberger <freude@linux.ibm.com>, Holger Dengler <dengler@linux.ibm.com>, 
+	Mark Brown <broonie@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Alex Williamson <alex@shazbot.org>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org, 
+	linux-spi@vger.kernel.org, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-arm-kernel@lists.infradead.org, Gui-Dong Han <hanguidong02@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Partially revert commit range 5053e0a65db...90e2e8ada7c.
+On Mon, 23 Mar 2026 at 19:00, Danilo Krummrich <dakr@kernel.org> wrote:
+>
+> When a driver is probed through __driver_attach(), the bus' match()
+> callback is called without the device lock held, thus accessing the
+> driver_override field without a lock, which can cause a UAF.
+>
+> Fix this by using the driver-core driver_override infrastructure taking
+> care of proper locking internally.
+>
+> Note that calling match() from __driver_attach() without the device lock
+> held is intentional. [1]
+>
+> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+> Fixes: e95060478244 ("rpmsg: Introduce a driver override mechanism")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  drivers/rpmsg/qcom_glink_native.c |  2 --
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- configure   | 64 +++++++++++++++++++++++++++++++++++++++++++----------
- meson.build |  2 +-
- 2 files changed, 53 insertions(+), 13 deletions(-)
+For the below files:
 
-diff --git a/configure b/configure
-index eea90306728..e984ec2bd3c 100755
---- a/configure
-+++ b/configure
-@@ -381,6 +381,8 @@ fi
- if test ! -z "$cpu" ; then
-   # command line argument
-   :
-+elif check_define __i386__ ; then
-+  cpu="i386"
- elif check_define __x86_64__ ; then
-   if check_define __ILP32__ ; then
-     cpu="x32"
-@@ -399,22 +401,30 @@ elif check_define _ARCH_PPC64 ; then
-   else
-     cpu="ppc64"
-   fi
--elif check_define __mips64 ; then
--  cpu="mips64"
-+elif check_define __mips__ ; then
-+  if check_define __mips64 ; then
-+    cpu="mips64"
-+  fi
- elif check_define __s390__ ; then
-   if check_define __s390x__ ; then
-     cpu="s390x"
-   else
-     cpu="s390"
-   fi
--elif check_define __riscv && check_define _LP64 ; then
--  cpu="riscv64"
-+elif check_define __riscv ; then
-+  if check_define _LP64 ; then
-+    cpu="riscv64"
-+  else
-+    cpu="riscv32"
-+  fi
-+elif check_define __arm__ ; then
-+  cpu="arm"
- elif check_define __aarch64__ ; then
-   cpu="aarch64"
- elif check_define __loongarch64 ; then
-   cpu="loongarch64"
- elif check_define EMSCRIPTEN ; then
--  error_exit "wasm64 must be specified to the cpu flag"
-+  error_exit "wasm32 or wasm64 must be specified to the cpu flag"
- else
-   # Using uname is really broken, but it is just a fallback for architectures
-   # that are going to use TCI anyway
-@@ -440,6 +450,18 @@ case "$cpu" in
-     linux_arch=arm64
-     ;;
- 
-+  armv*b|armv*l|arm)
-+    cpu=arm
-+    host_arch=arm
-+    ;;
-+
-+  i386|i486|i586|i686)
-+    cpu="i386"
-+    host_arch=i386
-+    linux_arch=x86
-+    CPU_CFLAGS="-m32"
-+    ;;
-+
-   loongarch*)
-     cpu=loongarch64
-     host_arch=loongarch64
-@@ -448,7 +470,7 @@ case "$cpu" in
- 
-   mips64*|mipsisa64*)
-     cpu=mips64
--    host_arch=mips64
-+    host_arch=mips
-     linux_arch=mips
-     ;;
- 
-@@ -464,8 +486,8 @@ case "$cpu" in
-     CPU_CFLAGS="-m64 -mlittle-endian"
-     ;;
- 
--  riscv64)
--    host_arch=riscv64
-+  riscv32 | riscv64)
-+    host_arch=riscv
-     linux_arch=riscv
-     ;;
- 
-@@ -500,6 +522,9 @@ case "$cpu" in
-     linux_arch=x86
-     CPU_CFLAGS="-m64"
-     ;;
-+  wasm32)
-+    CPU_CFLAGS="-m32"
-+    ;;
-   wasm64)
-     CPU_CFLAGS="-m64 -sMEMORY64=$wasm64_memory64"
-     ;;
-@@ -1287,7 +1312,7 @@ EOF
-     test "$bigendian" = no && rust_arch=${rust_arch}el
-     ;;
- 
--  riscv64)
-+  riscv32|riscv64)
-     # e.g. riscv64gc-unknown-linux-gnu, but riscv64-linux-android
-     test "$android" = no && rust_arch=${rust_arch}gc
-     ;;
-@@ -1449,18 +1474,26 @@ probe_target_compiler() {
-         container_image=debian-all-test-cross
-         container_cross_prefix=aarch64-linux-gnu-
-         ;;
--      alpha|hppa|m68k|mips|riscv64|sh4|sparc64)
-+      hppa|m68k|mips|riscv64|sparc64)
-         container_image=debian-all-test-cross
-         ;;
-       mips64)
-         container_image=debian-all-test-cross
-         container_cross_prefix=mips64-linux-gnuabi64-
-         ;;
--      ppc|ppc64|ppc64le)
-+      ppc64|ppc64le)
-         container_image=debian-all-test-cross
-         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
-         ;;
- 
-+      # debian-legacy-test-cross architectures (need Debian 11)
-+      # - libc6.1-dev-alpha-cross: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054412
-+      # - sh4-linux-user: binaries don't run with bookworm compiler
-+
-+      alpha|sh4)
-+        container_image=debian-legacy-test-cross
-+        ;;
-+
-       # architectures with individual containers
- 
-       aarch64)
-@@ -1930,7 +1963,14 @@ if test "$skip_meson" = no; then
-   if test "$cross_compile" = "yes"; then
-     echo "[host_machine]" >> $cross
-     echo "system = '$host_os'" >> $cross
--    echo "cpu_family = '$cpu'" >> $cross
-+    case "$cpu" in
-+        i386)
-+            echo "cpu_family = 'x86'" >> $cross
-+            ;;
-+        *)
-+            echo "cpu_family = '$cpu'" >> $cross
-+            ;;
-+    esac
-     echo "cpu = '$cpu'" >> $cross
-     if test "$bigendian" = "yes" ; then
-         echo "endian = 'big'" >> $cross
-diff --git a/meson.build b/meson.build
-index d7c4095b395..ae412263ec7 100644
---- a/meson.build
-+++ b/meson.build
-@@ -323,7 +323,7 @@ endif
- # Compiler flags #
- ##################
- 
--if cc.sizeof('void *') < 8
-+if not have_ga and cc.sizeof('void *') < 8
-   error('QEMU requires a 64-bit CPU host architecture')
- endif
- 
--- 
-2.53.0
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 
+>  drivers/rpmsg/rpmsg_core.c        | 43 +++++--------------------------
+>  drivers/rpmsg/virtio_rpmsg_bus.c  |  1 -
+>  include/linux/rpmsg.h             |  4 ---
+>  4 files changed, 7 insertions(+), 43 deletions(-)
+>
+> diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+> index 9ef17c2e45b0..e9d1b2082477 100644
+> --- a/drivers/rpmsg/qcom_glink_native.c
+> +++ b/drivers/rpmsg/qcom_glink_native.c
+> @@ -1623,7 +1623,6 @@ static void qcom_glink_rpdev_release(struct device *dev)
+>  {
+>         struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+>
+> -       kfree(rpdev->driver_override);
+>         kfree(rpdev);
+>  }
+>
+> @@ -1859,7 +1858,6 @@ static void qcom_glink_device_release(struct device *dev)
+>
+>         /* Release qcom_glink_alloc_channel() reference */
+>         kref_put(&channel->refcount, qcom_glink_channel_release);
+> -       kfree(rpdev->driver_override);
+>         kfree(rpdev);
+>  }
+>
+> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> index 96964745065b..2b9f6d5a9a4f 100644
+> --- a/drivers/rpmsg/rpmsg_core.c
+> +++ b/drivers/rpmsg/rpmsg_core.c
+> @@ -358,33 +358,6 @@ rpmsg_show_attr(src, src, "0x%x\n");
+>  rpmsg_show_attr(dst, dst, "0x%x\n");
+>  rpmsg_show_attr(announce, announce ? "true" : "false", "%s\n");
+>
+> -static ssize_t driver_override_store(struct device *dev,
+> -                                    struct device_attribute *attr,
+> -                                    const char *buf, size_t count)
+> -{
+> -       struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+> -       int ret;
+> -
+> -       ret = driver_set_override(dev, &rpdev->driver_override, buf, count);
+> -       if (ret)
+> -               return ret;
+> -
+> -       return count;
+> -}
+> -
+> -static ssize_t driver_override_show(struct device *dev,
+> -                                   struct device_attribute *attr, char *buf)
+> -{
+> -       struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+> -       ssize_t len;
+> -
+> -       device_lock(dev);
+> -       len = sysfs_emit(buf, "%s\n", rpdev->driver_override);
+> -       device_unlock(dev);
+> -       return len;
+> -}
+> -static DEVICE_ATTR_RW(driver_override);
+> -
+>  static ssize_t modalias_show(struct device *dev,
+>                              struct device_attribute *attr, char *buf)
+>  {
+> @@ -405,7 +378,6 @@ static struct attribute *rpmsg_dev_attrs[] = {
+>         &dev_attr_dst.attr,
+>         &dev_attr_src.attr,
+>         &dev_attr_announce.attr,
+> -       &dev_attr_driver_override.attr,
+>         NULL,
+>  };
+>  ATTRIBUTE_GROUPS(rpmsg_dev);
+> @@ -424,9 +396,11 @@ static int rpmsg_dev_match(struct device *dev, const struct device_driver *drv)
+>         const struct rpmsg_driver *rpdrv = to_rpmsg_driver(drv);
+>         const struct rpmsg_device_id *ids = rpdrv->id_table;
+>         unsigned int i;
+> +       int ret;
+>
+> -       if (rpdev->driver_override)
+> -               return !strcmp(rpdev->driver_override, drv->name);
+> +       ret = device_match_driver_override(dev, drv);
+> +       if (ret >= 0)
+> +               return ret;
+>
+>         if (ids)
+>                 for (i = 0; ids[i].name[0]; i++)
+> @@ -535,6 +509,7 @@ static const struct bus_type rpmsg_bus = {
+>         .name           = "rpmsg",
+>         .match          = rpmsg_dev_match,
+>         .dev_groups     = rpmsg_dev_groups,
+> +       .driver_override = true,
+>         .uevent         = rpmsg_uevent,
+>         .probe          = rpmsg_dev_probe,
+>         .remove         = rpmsg_dev_remove,
+> @@ -560,11 +535,9 @@ int rpmsg_register_device_override(struct rpmsg_device *rpdev,
+>
+>         device_initialize(dev);
+>         if (driver_override) {
+> -               ret = driver_set_override(dev, &rpdev->driver_override,
+> -                                         driver_override,
+> -                                         strlen(driver_override));
+> +               ret = device_set_driver_override(dev, driver_override);
+>                 if (ret) {
+> -                       dev_err(dev, "device_set_override failed: %d\n", ret);
+> +                       dev_err(dev, "device_set_driver_override() failed: %d\n", ret);
+>                         put_device(dev);
+>                         return ret;
+>                 }
+> @@ -573,8 +546,6 @@ int rpmsg_register_device_override(struct rpmsg_device *rpdev,
+>         ret = device_add(dev);
+>         if (ret) {
+>                 dev_err(dev, "device_add failed: %d\n", ret);
+> -               kfree(rpdev->driver_override);
+> -               rpdev->driver_override = NULL;
+>                 put_device(dev);
+>         }
+>
+> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
+> index 8d9e2b4dc7c1..e0dacb736ef9 100644
+> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
+> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
+> @@ -373,7 +373,6 @@ static void virtio_rpmsg_release_device(struct device *dev)
+>         struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+>         struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
+>
+> -       kfree(rpdev->driver_override);
+>         kfree(vch);
+>  }
+>
+> diff --git a/include/linux/rpmsg.h b/include/linux/rpmsg.h
+> index fb7ab9165645..c2e3ef8480d5 100644
+> --- a/include/linux/rpmsg.h
+> +++ b/include/linux/rpmsg.h
+> @@ -41,9 +41,6 @@ struct rpmsg_channel_info {
+>   * rpmsg_device - device that belong to the rpmsg bus
+>   * @dev: the device struct
+>   * @id: device id (used to match between rpmsg drivers and devices)
+> - * @driver_override: driver name to force a match; do not set directly,
+> - *                   because core frees it; use driver_set_override() to
+> - *                   set or clear it.
+>   * @src: local address
+>   * @dst: destination address
+>   * @ept: the rpmsg endpoint of this channel
+> @@ -53,7 +50,6 @@ struct rpmsg_channel_info {
+>  struct rpmsg_device {
+>         struct device dev;
+>         struct rpmsg_device_id id;
+> -       const char *driver_override;
+>         u32 src;
+>         u32 dst;
+>         struct rpmsg_endpoint *ept;
+> --
+> 2.53.0
+>
