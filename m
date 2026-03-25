@@ -1,337 +1,228 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670884035B0
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 17:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF03EAC9C
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 17:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774459915; cv=none; b=XfbG9Le8FA8y8g5FeCPv5OVxmHampp6AIf8EFLz0hLq7ymAXZklog2PsbPNqkFfgYCmL9dIdecAIABf86iHiWodLvohkvLKGQaM8qnBSd69Pw9GHwXmowWwYXFE31lqR3KdI3PkrFcxl9FmbIiwXc/y+FclY6C7j8kM7D3YaXTU=
+	t=1774460169; cv=none; b=bvjxJYJIvk3EmnZQ0UsXYJ79AS2jTMYorvhArakFLHBa4pCZtesEFadCnDV1MytNY/A0DVm6eYRllV1xgpkdox/Y/WzfTKnu/z+vAkcvCBkG/hJdRKYxFf9kYKHD5Sx+iHqztAT7vxisiGS4vMZldPVo/WM6uKCjXkFzY4ZJDtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774459915; c=relaxed/simple;
-	bh=jaAOLuGSPqy0S9v15tLyy5ELjxoGGIZlFa3IUDr3jCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HOE5vMjXn0UaKrpjPwFfCB37+vKbVGwR9axVEtrVvNNg0ZXSe1gMjoUVri/TXaEoQoGDv1v+amkZOormWYRNvGCBBv0kUTeTpn7/cC7yVzWlZK+J7vG6T1ryodJBqgKuk6+L6G9Ji0Oy85+aW/WY/s+AV6P+kBPv0yODCbobfQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nYXjznIG; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1774460169; c=relaxed/simple;
+	bh=+l0jUlugqhIlozPsvvUqrOGD8ObMwPDCrB1hnJ/l/TM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ZQYJteWHNxu1RpRqTmbX5C5jzNtC0DbRRZHWGQMnoKEifu27URAl4Q8+JfbSJNLnAm007Of9a/9y+/DX26a8d8WSduSB2uvPl8KN2KCAkd6GCFCQUiR9awpg1QcKecy5CO6dLp/Ems4mA9KzJ7sl8cL5URQqgJYNN8gR0iSkfdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YVDVadCE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aNA9twOx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nYXjznIG"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so5885ad.1
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 10:31:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YVDVadCE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aNA9twOx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774460167;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=aknMUZi4Ykd1vZCSThVfLFs375oMsxp6htHuyPpwggE=;
+	b=YVDVadCEPgRJF1aYI+39LphZ+QY+QI7uRefEdl2l41JH2r/TMP5Zf2/QLpqvjJtHngLB5R
+	Hj1R1klI9lNZgeWu6lDjuTzfdexvmer4rT1aBQwX+EPZlruTP47LO3drakGxHMMoHJfIkY
+	gN8zg+9XwCs1sLQY+lxYcGWt1doXiYw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-0i5roUccNsW8rUdwftuENg-1; Wed, 25 Mar 2026 13:36:05 -0400
+X-MC-Unique: 0i5roUccNsW8rUdwftuENg-1
+X-Mimecast-MFC-AGG-ID: 0i5roUccNsW8rUdwftuENg_1774460164
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4852cf0318dso1153075e9.3
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 10:36:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774459912; x=1775064712; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vjja8caMlVbzaaBDEmhOOIgntWTqovjLLF5bSwJnWKk=;
-        b=nYXjznIGQw7JtCZv2xuIpIB5DBjOzBI5Vi19YM9MvXZIWTEDVMu4KHG3lOX+067YC6
-         KgMQ+sB/OKJ7izQTMfv7Hr++I8BCi4v0ZYGGOiT3eFwiyR0g6NsyrO6q/B3PdnS/oNvd
-         +8niWQVHBdOqcXuZMBN+NzTNGEC4pW3iNwSZyG6vKOXqMinWmsGJELiWA/48U7il2Ts7
-         BCvEM7iqhpY9WyjpEGkXXtjHxs42XNTWfXpUUkR0mjm2Kdxh10LGgX3kignRfAfCdBjD
-         UJ8FWaxCqTAM+Qm30aJsBq6vDc5IAnD42Qod5AejgOIlTeC7TbyLZtl0koE6PhSeaC3k
-         P2MA==
+        d=redhat.com; s=google; t=1774460164; x=1775064964; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aknMUZi4Ykd1vZCSThVfLFs375oMsxp6htHuyPpwggE=;
+        b=aNA9twOxrf/aUhL5JPMpdhUiqc32srNyG2XeadwlezAG0chai0b+kewoiW/AhbMdi8
+         HdMRf1w63GO9sohMannMUvObix0Z5oylvllvnD29j0Wry+M3re+Rk+IDcWkO39oFR4o6
+         1H/WC5wdG65sSOoRYspcWGvfihet+90vLhSPjp4kSVGnQ43mFuIgrQtyLjinFSMafU3w
+         rFFPd3TEReZmo/hO6XngxWrjSw2cC/lRAeljw5XBAa2gMJgHkeL6nBFWP4EXTHQjAzop
+         j7rln8c9Hdb0WN2Aj0pXMUvwkQcSm+sDaNzpFoxnWW/pUsZw8dZzKD7Wn06IOb90oSe3
+         tu9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774459912; x=1775064712;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vjja8caMlVbzaaBDEmhOOIgntWTqovjLLF5bSwJnWKk=;
-        b=oGcrHYOX9m1+g96XsZ6UZmTDwJqp3yXw6A0jA51QBw5cvlZkFtkG9WBdFEymCp18i0
-         l/leFvfsvMPnEg5L9YMCYtp9R8yVMAI0hH/hXjd7wFILpWMkbHTB+U/+cv/bNpOO/Zpc
-         S1I3mjBF0Gs+wsKUvx29vzT8fDiSrRwidu8lIFYO5HIAPTtOlY6+NRtg02SkZXahwi4o
-         Hl/e0pnJdmVsYydjLkv6fMXmG2R6+Y5pVxTxkK57GPudDJT+4sAdvydz6KbkS3JrOjZv
-         t4poFu6C5lj6z8EAN82rlieX1lIfzh9LunPxq+G41FvmgPfN18pKSnfQlVRtc8iFekvM
-         dQEA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8q04SjA0G06lMsBj+evZoZRgBYZY2663e3nSCcIQCvgvCFwdqICzBX4RYLb78ZwjrXIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyILhIj7BFEUV3HVUw5nzICXuXZq/1TbwDkJGUBq6VkK7/Ri5x0
-	Zh8B8/s/cRp+rPJ4wjlD6KKlxNdiXZ8vqvXL9NLxV7IxHbg7x0pVvRCJsHF5sCpcMQ==
-X-Gm-Gg: ATEYQzxkSsaNyAk2i6Cmgm5va/7KeuS4/oYRVDBLy1UGnCZKco4AGpd6rGI3VEKIFMN
-	W/6OOrSr3WxsCuegSDtcD1i2pXyMjHqBqn7xeQmDkbWIcCMx5DmpxCke13vBe7d5xibE0APm19Q
-	wNshCVvL1wUTaE48D8blDNnpKdu5BaIBUsdkFeZL7QSl0rTfJIpYYbXwK4Bcl5SVqLAsFUweOAR
-	+yvgnDhiWJ+dg7ccW25H9jp6MpAY+XJ6VmtHzyGwyWsVG6U2dMhmiHgfAxXtRTrOFdqiLAs8cJx
-	4beJalq9352iBrp7J86SSkgGJ+CMTUfBGz0rw12Upg9AFa79tAZdpwDjQ7ln6b+dvGNh8mq9StY
-	i3s4kyRl3q55TxmpJszGgZkp2KAMwKpxqKrkEmWiOHqAONPleX89lEnCN1AFfzWANwl1oHsZDAh
-	P5M+sCO8TOvNOGEA3bMbBI/SOeXxgYzrEEjczedw8Hg1lavLTPLcI15/cD+Gbqgw==
-X-Received: by 2002:a17:902:ec8b:b0:2a7:d266:d84a with SMTP id d9443c01a7336-2b0beddf35emr66535ad.17.1774459911111;
-        Wed, 25 Mar 2026 10:31:51 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc7847acsm4872975ad.19.2026.03.25.10.31.50
+        d=1e100.net; s=20251104; t=1774460164; x=1775064964;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aknMUZi4Ykd1vZCSThVfLFs375oMsxp6htHuyPpwggE=;
+        b=Gv+I/YFaf8xnUR2XzrmJZ5TAFb1eK5cVo4KPW6B5cgLiwigd6EgJonvLtEaGkMWGAB
+         0mbNo1WD21JjWH83Nux1JY70xNpzA4RYh7sR1wTwjsClyQTeTL1kIvVcyhZBcOvMhP8e
+         9hMIkhILUK4hcC9EnRPjnq6ki38zUbs1y09StV+c291Zcmo8KcOTyv74/giMUQxnm/+G
+         7ORxQa+CtLxG+acSwY4YKFkHSJUDf3nSWTaUP8ZbJOrF1k/7VINbSnXbnEh+9f/VckOO
+         TKq4SV28gdQ31zJQb+5YlxXVdIOUfZt6/hiy5X90uigtMISe/3mPPPSNOW3TnpXmZYuY
+         V5fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtASKIXF4fNQfuTAJiz3e9rSeqUVpT8n5iETpO/JLOuq2gjMqEpVoex14j/Q0wDvXG5Jo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwR33GWj26RFJNBuUmzxXhHoW+JYLF/2KniNGFyi6KieatZ2eKv
+	xTKArTT3Gk7vkKeWkRlMCcvQZxoL3y6ZGDPF6/UBMAH/y9DyrtOU+78nX0765gQ4hiy6+YZlhUH
+	2bpjI3uVQKUsFyykASTHY8+8yIwZftkc3rr2DRGwTJSOoIXau+XKpXA==
+X-Gm-Gg: ATEYQzyFPqWnDbW7Zrw5rqdvAZ83WDvHGhboTJzSZ43q2Hcte14iblGLzXQix6NmB1o
+	8p4FQmKaDXcvlbx9ueyt7NM8UOqiFDdNlR+esOdgE/kMXwh44kmjAcH4MqP3rMfW4724yHFBQ+V
+	YCih0zjUwwhml+lQ2P4DCusvlBtYH8PSuqfOVsn/Yug532NHOZKa6VVvsuNGboRprU+fEW4FfvX
+	U6drcMxPxs1WgstrE3njgdAR681lxgbOHDcIEfFyNgQJLIKGEOLyNWLCe0im3DNOsVLOcKqtzFj
+	lDsukoZJyrcjPGWaPGcAe4+y4cyIUa8FmQTZJC/W/7M3MJRHAZ+kxkUhiNi9HmKY8LZBxq+QT9P
+	YtP+2HC6fKGmfF/s1
+X-Received: by 2002:a05:600c:3b12:b0:485:3f1c:d887 with SMTP id 5b1f17b1804b1-4871606dc4fmr68223405e9.26.1774460164111;
+        Wed, 25 Mar 2026 10:36:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b12:b0:485:3f1c:d887 with SMTP id 5b1f17b1804b1-4871606dc4fmr68222725e9.26.1774460163566;
+        Wed, 25 Mar 2026 10:36:03 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487166064fasm27148915e9.7.2026.03.25.10.36.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 10:31:50 -0700 (PDT)
-Date: Wed, 25 Mar 2026 17:31:46 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
- an HWPT to be preserved
-Message-ID: <acQSuuvxiVtGhY7A@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-11-skhawaja@google.com>
- <acPzMRNMy6kDUglF@google.com>
+        Wed, 25 Mar 2026 10:36:03 -0700 (PDT)
+Date: Wed, 25 Mar 2026 13:36:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: bpf@vger.kernel.org, Simon Schippers <simon.schippers@tu-dortmund.de>,
+	willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, eperezma@redhat.com, leiyang@redhat.com,
+	stephen@networkplumber.org, jon@nutanix.com,
+	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Eric Dumazet <edumazet@google.com>
+Subject: [PATCH v2 net] ptr_ring: disable KCSAN warnings
+Message-ID: <dd3984b3bce9df3591927f927668cb31cc7ecf34.1774460059.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acPzMRNMy6kDUglF@google.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
 
-On Wed, Mar 25, 2026 at 02:37:37PM +0000, Pranjal Shrivastava wrote:
->On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
->> From: YiFei Zhu <zhuyifei@google.com>
->>
->> Userspace provides a token, which will then be used at restore to
->> identify this HWPT. The restoration logic is not implemented and will be
->> added later.
->>
->> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  drivers/iommu/iommufd/Makefile          |  1 +
->>  drivers/iommu/iommufd/iommufd_private.h | 13 +++++++
->>  drivers/iommu/iommufd/liveupdate.c      | 49 +++++++++++++++++++++++++
->>  drivers/iommu/iommufd/main.c            |  2 +
->>  include/uapi/linux/iommufd.h            | 19 ++++++++++
->>  5 files changed, 84 insertions(+)
->>  create mode 100644 drivers/iommu/iommufd/liveupdate.c
->>
->> diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
->> index 71d692c9a8f4..c3bf0b6452d3 100644
->> --- a/drivers/iommu/iommufd/Makefile
->> +++ b/drivers/iommu/iommufd/Makefile
->> @@ -17,3 +17,4 @@ obj-$(CONFIG_IOMMUFD_DRIVER) += iova_bitmap.o
->>
->>  iommufd_driver-y := driver.o
->>  obj-$(CONFIG_IOMMUFD_DRIVER_CORE) += iommufd_driver.o
->> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
->> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
->> index eb6d1a70f673..6424e7cea5b2 100644
->> --- a/drivers/iommu/iommufd/iommufd_private.h
->> +++ b/drivers/iommu/iommufd/iommufd_private.h
->> @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
->>  	bool auto_domain : 1;
->>  	bool enforce_cache_coherency : 1;
->>  	bool nest_parent : 1;
->> +#ifdef CONFIG_IOMMU_LIVEUPDATE
->> +	bool lu_preserve : 1;
->> +	u32 lu_token;
->
->Did we downsize the token? Shouldn't this be u64 as everywhere else?
+Eric Dumazet reported KCSAN warnings:
 
-Note that this is different from the token that is used to preserve the
-FD into LUO. This token is used to mark the HWPT for preservation, that
-is it will be preserved when the FD is preserved.
+BUG: KCSAN: data-race in pfifo_fast_dequeue / pfifo_fast_enqueue
 
-I will add more text in the commit message to make it clear.
+write to 0xffff88811d5ccc00 of 8 bytes by interrupt on cpu 0:
+__ptr_ring_zero_tail include/linux/ptr_ring.h:259 [inline]
+__ptr_ring_discard_one include/linux/ptr_ring.h:291 [inline]
+__ptr_ring_consume include/linux/ptr_ring.h:311 [inline]
+__skb_array_consume include/linux/skb_array.h:98 [inline]
+pfifo_fast_dequeue+0x770/0x8f0 net/sched/sch_generic.c:770
+dequeue_skb net/sched/sch_generic.c:297 [inline]
+qdisc_restart net/sched/sch_generic.c:402 [inline]
+__qdisc_run+0x189/0xc80 net/sched/sch_generic.c:420
+qdisc_run include/net/pkt_sched.h:120 [inline]
+net_tx_action+0x379/0x590 net/core/dev.c:5793
+handle_softirqs+0xb9/0x280 kernel/softirq.c:622
+do_softirq+0x45/0x60 kernel/softirq.c:523
+__local_bh_enable_ip+0x70/0x80 kernel/softirq.c:450
+local_bh_enable include/linux/bottom_half.h:33 [inline]
+bpf_test_run+0x2db/0x620 net/bpf/test_run.c:426
+bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+__sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+__do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+__x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-For consistency I will make it u64.
->
->> +#endif
->>  	/* Head at iommufd_ioas::hwpt_list */
->>  	struct list_head hwpt_item;
->>  	struct iommufd_sw_msi_maps present_sw_msi;
->> @@ -707,6 +711,15 @@ iommufd_get_vdevice(struct iommufd_ctx *ictx, u32 id)
->>  			    struct iommufd_vdevice, obj);
->>  }
->>
->> +#ifdef CONFIG_IOMMU_LIVEUPDATE
->> +int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd);
->> +#else
->> +static inline int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd)
->> +{
->> +	return -ENOTTY;
->> +}
->> +#endif
->> +
->>  #ifdef CONFIG_IOMMUFD_TEST
->>  int iommufd_test(struct iommufd_ucmd *ucmd);
->>  void iommufd_selftest_destroy(struct iommufd_object *obj);
->> diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
->> new file mode 100644
->> index 000000000000..ae74f5b54735
->> --- /dev/null
->> +++ b/drivers/iommu/iommufd/liveupdate.c
->> @@ -0,0 +1,49 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +
->> +#define pr_fmt(fmt) "iommufd: " fmt
->> +
->> +#include <linux/file.h>
->> +#include <linux/iommufd.h>
->> +#include <linux/liveupdate.h>
->> +
->> +#include "iommufd_private.h"
->> +
->> +int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd)
->> +{
->> +	struct iommu_hwpt_lu_set_preserve *cmd = ucmd->cmd;
->> +	struct iommufd_hwpt_paging *hwpt_target, *hwpt;
->> +	struct iommufd_ctx *ictx = ucmd->ictx;
->> +	struct iommufd_object *obj;
->> +	unsigned long index;
->> +	int rc = 0;
->> +
->> +	hwpt_target = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
->> +	if (IS_ERR(hwpt_target))
->> +		return PTR_ERR(hwpt_target);
->> +
->> +	xa_lock(&ictx->objects);
->> +	xa_for_each(&ictx->objects, index, obj) {
->> +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
->> +			continue;
->
->Couldn't these be HWPT_NESTED? Are we explicitly skipping HWPT_NESTED
->here? ARM SMMUv3 heavily relies on IOMMU_DOMAIN_NESTED to back vIOMMUs
->and hold critical guest translation state. We'd need to support
->HWPT_NESTED for arm-smmu-v3.
+read to 0xffff88811d5ccc00 of 8 bytes by task 22632 on cpu 1:
+__ptr_ring_produce include/linux/ptr_ring.h:106 [inline]
+ptr_ring_produce include/linux/ptr_ring.h:129 [inline]
+skb_array_produce include/linux/skb_array.h:44 [inline]
+pfifo_fast_enqueue+0xd5/0x2c0 net/sched/sch_generic.c:741
+dev_qdisc_enqueue net/core/dev.c:4144 [inline]
+__dev_xmit_skb net/core/dev.c:4188 [inline]
+__dev_queue_xmit+0x6a4/0x1f20 net/core/dev.c:4795
+dev_queue_xmit include/linux/netdevice.h:3384 [inline]
+__bpf_tx_skb net/core/filter.c:2153 [inline]
+__bpf_redirect_common net/core/filter.c:2197 [inline]
+__bpf_redirect+0x862/0x990 net/core/filter.c:2204
+____bpf_clone_redirect net/core/filter.c:2487 [inline]
+bpf_clone_redirect+0x20c/0x290 net/core/filter.c:2450
+bpf_prog_53f18857bc887b09+0x22/0x2a
+bpf_dispatcher_nop_func include/linux/bpf.h:1402 [inline]
+__bpf_prog_run include/linux/filter.h:723 [inline]
+bpf_prog_run include/linux/filter.h:730 [inline]
+bpf_test_run+0x29d/0x620 net/bpf/test_run.c:423
+bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+__sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+__do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+__x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-For this series, I am not handling the NESTED and vIOMMU usecases. I
-will be sending a separate series to handle those, this is mentioned in
-cover letter also in the Future work.
+value changed: 0xffff888104a93a00 -> 0x0000000000000000
 
-Will add a note in commit message also.
->
->> +
->> +		hwpt = container_of(obj, struct iommufd_hwpt_paging, common.obj);
->> +
->> +		if (hwpt == hwpt_target)
->> +			continue;
->> +		if (!hwpt->lu_preserve)
->> +			continue;
->> +		if (hwpt->lu_token == cmd->hwpt_token) {
->> +			rc = -EADDRINUSE;
->> +			goto out;
->> +		}
->
->I see that this entire loop is to avoid collisions but could we improve
->this? We are doing an O(N) linear search over the entire ictx->objects
->xarray while holding xa_lock on every setup call.
->
->If the kernel requires a strict 1:1 mapping of lu_token to hwpt,
->wouldn't it be much better to track these in a dedicated xarray?
->
->Just thinking out loud, if we added a dedicated lu_tokens xarray to
->iommufd_ctx, we could drop the linear search and the lock entirely,
->letting the xarray handle the collision natively like this:
->
->	rc = xa_insert(&ictx->lu_tokens, cmd->hwpt_token, hwpt_target, GFP_KERNEL);
->	if (rc == -EBUSY) {
->		rc = -EADDRINUSE;
->		goto out;
->	} else if (rc) {
->		goto out;
->	}
->
->This ensures instant collision detection without iterating the global
->object pool. When the HWPT is eventually destroyed (or un-preserved), we
->simply call xa_erase(&ictx->lu_tokens, hwpt->lu_token).
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 22632 Comm: syz.0.4135 Tainted: G W syzkaller #0
+PREEMPT(full)
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 01/24/2026
 
-Agreed. We can call xa_erase when it is destroyed. This can also be used
-during actual preservation without taking the objects lock.
->
->> +	}
->> +
->> +	hwpt_target->lu_preserve = true;
->
->I don't see a way to unset hwpt->lu_preserve once it's been set. What if
->a VMM marks a HWPT for preservation, but then the guest decides to rmmod
->the device before the actual kexec? The VMM would need a way to
->unpreserve it so we don't carry stale state across the live update?
->
->Are we relying on the VMM to always call IOMMU_DESTROY on that HWPT when
->it's no longer needed for preservation? A clever VMM optimizing for perf
->might just pool or cache detached HWPTs for future reuse. If that HWPT
->goes back into a free pool and gets re-attached to a new device later,
->the sticky lu_preserve state will inadvertently leak across the kexec..
+There is no race on ring accesses: reading/writing a partial pointer
+would be fine, because the reading is done by the producer
+which merely cares about NULL/non NULL.
+Document and disable the warnings using data_race().
 
-As mentioned earlier, the HWPT is not being preserved in this call. So
-when VMM dies or rmmod happens, this HWPT will be destroyed following
-the normal flow.
+Tested-by: Opus Sonnet 4.6 1M window.
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
 
-I will add this in commit message.
->
->> +	hwpt_target->lu_token = cmd->hwpt_token;
->> +
->> +out:
->> +	xa_unlock(&ictx->objects);
->> +	iommufd_put_object(ictx, &hwpt_target->common.obj);
->> +	return rc;
->> +}
->> +
->> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
->> index 5cc4b08c25f5..e1a9b3051f65 100644
->> --- a/drivers/iommu/iommufd/main.c
->> +++ b/drivers/iommu/iommufd/main.c
->> @@ -493,6 +493,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
->>  		 __reserved),
->>  	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
->>  		 struct iommu_viommu_alloc, out_viommu_id),
->> +	IOCTL_OP(IOMMU_HWPT_LU_SET_PRESERVE, iommufd_hwpt_lu_set_preserve,
->> +		 struct iommu_hwpt_lu_set_preserve, hwpt_token),
->>  #ifdef CONFIG_IOMMUFD_TEST
->>  	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
->>  #endif
->> diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
->> index 2c41920b641d..25d8cff987eb 100644
->> --- a/include/uapi/linux/iommufd.h
->> +++ b/include/uapi/linux/iommufd.h
->> @@ -57,6 +57,7 @@ enum {
->>  	IOMMUFD_CMD_IOAS_CHANGE_PROCESS = 0x92,
->>  	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
->>  	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
->> +	IOMMUFD_CMD_HWPT_LU_SET_PRESERVE = 0x95,
->>  };
->>
->>  /**
->> @@ -1299,4 +1300,22 @@ struct iommu_hw_queue_alloc {
->>  	__aligned_u64 length;
->>  };
->>  #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
->> +
->> +/**
->> + * struct iommu_hwpt_lu_set_preserve - ioctl(IOMMU_HWPT_LU_SET_PRESERVE)
->
->Nit: The IOCTL is called "IOMMU_HWPT_LU_SET_PRESERVE" which subtly
->implies the existence of a "GET_PRESERVE". Should we perhaps just call
->it IOMMU_HWPT_LU_PRESERVE?
+changes from v1:
+	two more places, commit log tweak
 
-LU_PRESERVE would imply that it is being preserved. Maybe
-"IOMMU_HWPT_LU_MARK_PRESERVE"?
->
->> + * @size: sizeof(struct iommu_hwpt_lu_set_preserve)
->> + * @hwpt_id: Iommufd object ID of the target HWPT
->> + * @hwpt_token: Token to identify this hwpt upon restore
->> + *
->> + * The target HWPT will be preserved during iommufd preservation.
->> + *
->> + * The hwpt_token is provided by userspace. If userspace enters a token
->> + * already in use within this iommufd, -EADDRINUSE is returned from this ioctl.
->> + */
->> +struct iommu_hwpt_lu_set_preserve {
->> +	__u32 size;
->> +	__u32 hwpt_id;
->> +	__u32 hwpt_token;
->> +};
->
->Nit: Let's make sure we follow the 64-bit alignment as enforced in the
->rest of this file, note the __u32 __reserved fields in existing IOCTL
->structs.
+ include/linux/ptr_ring.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Agreed. Will update
->
->> +#define IOMMU_HWPT_LU_SET_PRESERVE _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HWPT_LU_SET_PRESERVE)
->>  #endif
->
->Thanks,
->Praan
+diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
+index 534531807d95..d2c3629bbe45 100644
+--- a/include/linux/ptr_ring.h
++++ b/include/linux/ptr_ring.h
+@@ -48,7 +48,7 @@ struct ptr_ring {
+  */
+ static inline bool __ptr_ring_full(struct ptr_ring *r)
+ {
+-	return r->queue[r->producer];
++	return data_race(r->queue[r->producer]);
+ }
+ 
+ static inline bool ptr_ring_full(struct ptr_ring *r)
+@@ -103,7 +103,7 @@ static inline bool ptr_ring_full_bh(struct ptr_ring *r)
+  */
+ static inline int __ptr_ring_produce(struct ptr_ring *r, void *ptr)
+ {
+-	if (unlikely(!r->size) || r->queue[r->producer])
++	if (unlikely(!r->size) || data_race(r->queue[r->producer]))
+ 		return -ENOSPC;
+ 
+ 	/* Make sure the pointer we are storing points to a valid data. */
+@@ -194,7 +194,7 @@ static inline void *__ptr_ring_peek(struct ptr_ring *r)
+ static inline bool __ptr_ring_empty(struct ptr_ring *r)
+ {
+ 	if (likely(r->size))
+-		return !r->queue[READ_ONCE(r->consumer_head)];
++		return !data_race(r->queue[READ_ONCE(r->consumer_head)]);
+ 	return true;
+ }
+ 
+@@ -256,7 +256,7 @@ static inline void __ptr_ring_zero_tail(struct ptr_ring *r, int consumer_head)
+ 	 * besides the first one until we write out all entries.
+ 	 */
+ 	while (likely(head > r->consumer_tail))
+-		r->queue[--head] = NULL;
++		data_race(r->queue[--head] = NULL);
+ 
+ 	r->consumer_tail = consumer_head;
+ }
+-- 
+MST
+
