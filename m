@@ -1,238 +1,185 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012062.outbound.protection.outlook.com [52.101.48.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B31B2E401
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 05:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774415975; cv=none; b=pkPDE4UWQExDfpBaIINNtljL/svfVyzvUN98rkluygOZ1kXOcd8M43OIAXBqaG4Z0nW/36KTlS/H/QNKrS0fIdnf9igJmizOEYxuGIdIBz+G7/l4VgPw72N/Nd9PH0qck6HDiqEXfDZUCp5PnMYl2CfiBzMZKRdTsuEPyqW6jXw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774415975; c=relaxed/simple;
-	bh=bEt1AYgfM9UBslLunNjznIM4Ki6cn7g2O1ogCW1PRoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BGHx78F7SgvVM+aVWMrxqwfCUZKhhgUtn9YOWFnl7bSoKLbsBTXaAi5ec3smo0vv6vcMLC/wolG3kqPwhxgZWuMEdbLosoQ/cjsUNYwYuGBN2+OOa1AdgTNu3/aL44q5Jrgea8IpC62PBmvmlgYKIAUqBNEn3SGoA2pnw7rxLVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GojlcczV; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C1F2E401;
+	Wed, 25 Mar 2026 05:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774416183; cv=fail; b=HZ0pbMS+cTdZByyiBWeAka0ZZgMn5cE/FUwWvJT2sNBYI0wD9Dnqi9MjH9pRwryNPa2Ju2ptb8v5DAf8UkNmxnq702opLkwO2Pkn57V+6CMte5WCuP+xzeolsncVbtiYf9JmVDhc5VZ2caP59LXtP9kHYLA2e1MqZhXB1Utsq34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774416183; c=relaxed/simple;
+	bh=FHWlnez6iyf5+YCESRXOgQ4TorwZCGL7u6knB1iYTo4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pgnpHtyWjKk3CeU7rOIP2aoiCnKg8tNlg817T+DnTeYLc5Bv8LBTAketqUXRZwG0mWkVlERkGwNZy6qnlQ6pajuqRR3xPiHP2gfNw+yWy3jKwiUip3H0C0AqOCctKl+5y6qZGCbjaTUYThjk21oFDgZx0wElX3IvzqImwlhIfRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=A7yCy5GR; arc=fail smtp.client-ip=52.101.48.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GojlcczV"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35c124d2613so49595a91.2
-        for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 22:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774415973; x=1775020773; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iqy+w6sTastVCRcE15RxXg8vVmEuKZ1PwWM3V+SQr/k=;
-        b=GojlcczVTl5iAXSYtKfr0fo64KILiIFUuCXHl+yKpWHvQLUc1cputn6f1oWSW8xFt+
-         eMBCUEG0JtniTs2nZXqG1TyKkwH6/53WIC2Q98B7vAVJdUNz2dViB3y69c3Nnw5weEln
-         k9F2GSkpW1mMmAy7g+YKMnB86MF6lSRTd1UUt3lJD2NfkyrF7+v+o+SYUNB+UFgzDg4r
-         u0BIBdlAACZCrpDwOo94GUXtFwtO5L+Uxm3YskdGGpxg3TVuD2Z3SRPQKeNAdfvQQSK7
-         8bXt1uPYRa+ZHp+oS5eqgekiLy8f29Zhx070BpzEsTk0qA+tQxJ+yClOb2nIbQI1TWPc
-         LaOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774415973; x=1775020773;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iqy+w6sTastVCRcE15RxXg8vVmEuKZ1PwWM3V+SQr/k=;
-        b=LO0DEVQ5hYHyWzBSeeG+U+sonr6GCdMQXFEtG3mr+ljkTo61OjW6/7Ckyl6SzFKllg
-         68pMkAmAuESG18Cz+3WSaQ0ugxvgItYvlyvp/jlCq4IVyUma5aem+j91Z3AGFlRZFH8N
-         blzgHf8XRovWkreFAlIF7vWOZmEeIO1AiQw0Xcf/ctUQZjB517ahOo6y8D4qyvESwXZU
-         kt2gs26tCaF8Zis/0FbFy+cPD5vbjtnr1sEtieWEkS6LtnsrckePNV+Sxh//XhA3uGaX
-         BGk3hLYuGXN+IfF0NpFe7loIx4k85Hww6bTz8Aka/NHau65o0i9zPNUQigOb79eruIK7
-         +ySA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLJOwf9V/nIPeITuqvfDqHe0DX8w+FdWDD6+UfGuxBlGso6lsgxOmA/G6ps6RU5k0HCK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZpSQXumB5dWHCRnvZzwcuPXd7g+d6BYjDSIF2QkWmdyzsoWQ/
-	fImdfacP29rT3IreX/8Z6FBUnnGThkyCqRNWGzKZgG5PFT/EUfDWhuXpP3wiN+Db
-X-Gm-Gg: ATEYQzyEI7AXCsNU70aNfHIQk2B07uOVIg+bvo5YUxxqLWaIj2PpO1onpCkhCT5wnGo
-	5G1wEQ5elc1GoQsf7XsntC2YT8e+SULUM/w/0QiSbIPmMak8TAiBFlvYOhRvyQQHvClH8KPEgbg
-	8f1njH5dHQ9td4enGW/l1BCy/9NUMvcSeSLg4Ddj52xiKSsqfltwc3Gm/k4mOaWTw1HciDtecJS
-	GcYGk4nYEM2+KhkCRGwmOdmDs4n1qwQ7LMK5/KFD5upq5UflaH/GI/g0BT4z/CgQlmjNMkwEmiw
-	eqa0SyEPoVcy/ReFeybn+LunugXaA87hoccR4lqDd3qIG587KaoCW42Iq+xGiKO5jdJ2ATVugxR
-	wSshmnbNoSNS6Sp8iMWR6kQXuc+6NYTt0zfaJYQv781G0FpSoRgfgPSrG+piHCm4/Kz/VTmaRr9
-	7U4rWwhCYz0eQcbDJb05adHOe9
-X-Received: by 2002:a17:903:8c6:b0:2b0:af2f:b25d with SMTP id d9443c01a7336-2b0b0a47a18mr26044955ad.22.1774415973199;
-        Tue, 24 Mar 2026 22:19:33 -0700 (PDT)
-Received: from localhost ([115.96.19.77])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08351675esm213975185ad.14.2026.03.24.22.19.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 22:19:32 -0700 (PDT)
-Date: Wed, 25 Mar 2026 10:49:30 +0530
-From: shaikh kamaluddin <shaikhkamal2012@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, skhan@linuxfoundation.org,
-	me@brighamcampbell.com
-Subject: Re: [PATCH] KVM: mmu_notifier: make mn_invalidate_lock non-sleeping
- for non-blocking invalidations
-Message-ID: <acNwYsm4GfViqiJS@acer-nitro-anv15-41>
-References: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
- <20260211120944.-eZhmdo7@linutronix.de>
- <aYyhfvC_2s000P7H@google.com>
- <aactOOfirdVRYfNS@acer-nitro-anv15-41>
- <ae2143b3-ce28-4c87-afcf-1505694246d8@redhat.com>
- <abMS7MALNrmluvh5@acer-nitro-anv15-41>
- <b51de5cb-8198-4664-afcc-7386ecda81a8@redhat.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="A7yCy5GR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WWtnMjJ30lGVXw7qRudszH/gNyPU+AWmJEb6mPo2NdS70OC5ORlWM+tm6oLpE5NdLOjhSN9RS8kg4fZk2qoqUqD9SVhNl2zPUrGUmJTGA2YXESpgOOm2E1wAsSixIqgbcdE3lwo/GbUxofWxLsNVEgYNMFkdVerOf3nrJpK6TtS/bVJO/Velf60N2GJTJ7VUsrsmDi9Kzz6GSQGrJQoMJX95ParUl2sylcRbNMZRYVGgzfXlIFA9NsxFfhB4I3leJaCbTcCcns0Lan4fGz9cqwqn5Snu59zwTJ1g0Dc66ybKZ+Wo1kG+uRrXX5mGlhRiKgAsQQy9QEJ7Pwr+U1t9cA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j0g4CXs3qOOnGwCxdRdsN5M8/LrT7ynXzSAe1hpKqpw=;
+ b=kkcJCvMnTTfrxDKELp9IXsz94H5+WOaBYJHjvI6oa+Sx+toadaARegneRSfZEM2As8CJ0O/vr2fa1C+8YEBvXflz9oD+qeX+wuaDgMfRM8SiRSAbaT9pKh6O9rmyxUnOP4dkRARI/N6ChrKh9NBp0pGaDVkOwoNBkwf6Lq2eb0joBDXcrM0JCkOD0YAY571EJXIFX7uM3Y+Ngg6oTpnRDaMBsbJTOldGgzrmUouoD+Cgl0djhXXZGUMakNJws9Q24q2jqFzuYgU+oACc7kWSUrkRyfXpn0qzidSahbLfxAdk+I0oztIrJ5R343UPAb7uBWRANC8TFuimE9Ikb/rQwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nutanix.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j0g4CXs3qOOnGwCxdRdsN5M8/LrT7ynXzSAe1hpKqpw=;
+ b=A7yCy5GRF7Pfn651/FjECaYlC3Tuv4g9b30ug8qICigINHkCXnu4en7cgjOjD14fFnAHuU2WIDEPZgq+l78GeP/Ge3sFgXictHn3LtRZkWSzBqi23UVKlys4rPPPs25a1bx1Wx/TJ9GY9la2MxrAXxTNWMUb+xNExZIgIpJKKhY=
+Received: from BY1P220CA0018.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5c3::8)
+ by DS7PR12MB5813.namprd12.prod.outlook.com (2603:10b6:8:75::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 05:22:58 +0000
+Received: from SJ5PEPF000001D0.namprd05.prod.outlook.com
+ (2603:10b6:a03:5c3:cafe::10) by BY1P220CA0018.outlook.office365.com
+ (2603:10b6:a03:5c3::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Wed,
+ 25 Mar 2026 05:23:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001D0.mail.protection.outlook.com (10.167.242.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9723.19 via Frontend Transport; Wed, 25 Mar 2026 05:22:57 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 25 Mar
+ 2026 00:22:56 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 25 Mar
+ 2026 00:22:56 -0500
+Received: from [10.143.206.35] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 25 Mar 2026 00:22:54 -0500
+Message-ID: <c8304536-3274-4f6c-b844-04d6e30bc32d@amd.com>
+Date: Wed, 25 Mar 2026 10:52:53 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b51de5cb-8198-4664-afcc-7386ecda81a8@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 22/22] KVM: nSVM: enable GMET for guests
+To: Jon Kohler <jon@nutanix.com>, Paolo Bonzini <pbonzini@redhat.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Marcelo Tosatti
+	<mtosatti@redhat.com>, Amit Shah <amit.shah@amd.com>, Sean Christopherson
+	<seanjc@google.com>
+References: <20260321000931.1947084-1-pbonzini@redhat.com>
+ <20260321000931.1947084-23-pbonzini@redhat.com>
+ <721959CA-F869-457E-A410-694D205E8F0D@nutanix.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <721959CA-F869-457E-A410-694D205E8F0D@nutanix.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB03.amd.com: nikunj@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D0:EE_|DS7PR12MB5813:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59563b7e-17d0-475a-fedf-08de8a2e933e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	INe33133dHVhgld4hB9GuxpFkzaYa8Vf58w/AJWk/PRwQOZjceIDCTg88z/0kDikWFLYaDFYA8Ra5i0cTcHiVMB1LrAbyjXp/m6HTWEZ63Q5GFcyrlCNkaX9vVWDPfIESHvQxQa9v8jMxHjfqD7bzARwhXx1BnepXpHqFFqw+NCCLnlzltG3Vion3ZlmIneNw/05QsRFoZPrzqeNWAyLA/4LQT3Voto2tULuAIbL8c9luq46E6jpXIZ+UXVofTv1ty180sejd6loEZPC6NMWd2GGXa/fCCBgOGWxZfSJicZsmT/e0z0D3kBqlLjuz9gCsmxgFalK/Z3Z33Yo5xwbYmnzaMBtNspGCFe/xbv5sURzVaNE62kegj7WfyISnUkyalEN0QHknGIoo4Vi7KoP/xfQn32Bu9GHVBQPUizHjLpi5xX0ViDTr0ElDD53ud9XOjYfhzQudvLOgRWXTVIR3ia3RhshSca7wn1E52cHhobmCE88BBA+lTdF3/prn7551J5+y1vhsfUSQjmyYbjOqrc+mw19wcOVQwlnPb5BkHomsB1epiLSU3dwj6jLh6AofGe017qry9Me1EHV3fb5baNTlP7Oroe7/1rZrALtDGrtunrDoLQyyDlMwv02QbAOHx4wKVXDl7CeQ/tg0Jch5Re8CWk9ILvEBoYTlmUOsPSIbsqH+DE+lfZUlR4PSqNEU/AYXB21VI6pq9BEuAwIlaAk2lwzzDYELpju8X5s4uxrTMMPspkodxx3SNlkpPPuUmcL/Vzkz8JqR2+BbaD5Rg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	FRuP8nGFveVD9PPmKlVslaZGNpeW7vbptBKjoJ2vROY5Dd7v65XrPYjLEkFWjvpRTtTEog2uIDRVf6FDJfeV6TWlFZxNT1MwcXz0ZLlCM68bxnjnt3i9C7QEvF/+znYit8z5LI/nEIEFafBB6yBFF2MeBCOfkMuxGXL1DDvbVXavDhijLqWchhKSdGru4OT8EXXINP3aUwcTcfAeFuDnlZTTa2cgcA2rHPyvFNCkH8H/Re+GVbbogM/EBXZ2xt0gFqRetKVm3EebXZCHKFnOmGfNfckH7kp3NjG0C/wOu50ZHr545Q2T9ESr/OwDaX0tKYoXw364Z846zWGojxCvKFPFuns4qhiKUbHFloltSjV925AIZthQ+nk08AbGrF2WX+eGLfaCHMngSYmY3rSQSszPvZN99+o+jgY65MZxTl/JSVao69Ft9OWU6n1JgLPF
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 05:22:57.5347
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59563b7e-17d0-475a-fedf-08de8a2e933e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D0.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5813
 
-On Sat, Mar 14, 2026 at 08:47:40AM +0100, Paolo Bonzini wrote:
-> On 3/12/26 20:24, shaikh kamaluddin wrote:
-> > > > Alternatively, if you think this needs to be addressed in
-> > > > mmu_notifiers(eg. how non_block_start() is applied), I'm happy to
-> > > > redirect my efforts there-Please advise.
-> > > 
-> > > Have you considered a "OOM entered" callback for MMU notifiers?  KVM's MMU
-> > > notifier can just remove itself for example, in fact there is code in
-> > > kvm_destroy_vm() to do that even if invalidations are unbalanced.
-> > > 
-> > > Paolo
-> > > 
-> > Thanks for the suggestion! That's a much cleaner approach than what I was considering.
-> > 
-> > If I understand correctly, the idea would be:
-> > 1. Add a new MMU notifier callback (e.g., .oom_entered or .release_on_oom)
-> > 2. Have KVM implement it to unregister the notifier when OOM reaper starts
-> > 3. Leverage the existing kvm_destroy_vm() logic that already handles unbalanced invalidations
+
+
+On 3/25/2026 1:27 AM, Jon Kohler wrote:
 > 
-> Yes pretty much.  Essentially, move the existing logic to the new callback
-> and invoke it from kvm_destroy_vm().
->
-
-Hi Paolo,
-Thank you for the suggestion to use an oom_enter callback approach. I've implemented v2 based on your guidance and have successfully validated it.
-
-Implementation Summary:
--------------------------------------
-Following your recommendation, I've added a new oom_enter callback to the mmu_notifier_ops structure. The implementation:
-
-1. Added oom_enter callback to struct mmu_notifier_ops in include/linux/mmu_notifier.h
-2. Implemented __mmu_notifier_oom_enter() in mm/mmu_notifier.c to invoke registered callbacks
-3. Called mmu_notifier_oom_enter(mm) from __oom_kill_process in mm/oom_kill.c before any invalidations
-4. As per your suggestion, move existing kvm_destroy_vm() logic that already handles unbalanced invalidation to the new helper function kvm_mmu_notifier_detach() and invoke it from the kvm_destroy_vm()
-
-Key Design Decision:
-------------------------------
-Implementation point no 4, while testing, Issue I was encountering is a recursive locking problem with the srcu lock, which is being acquired twice in the same context. This happens during the __mmu_notifier_oom_enter() and __synchronize_srcu() calls, leading to a potential deadlock.
-Please find below log snippet while launching the Guest VM
-------------------------------------------------------------------------------------------------
-OOM_REAPER: START reaping:func:__mmu_notifier_oom_enter
-[  399.841599][T10882] OOM_REAPER: START reaping:func:__mmu_notifier_oom_enter
-[  399.841608][T10882] KVM: oom_enter callback invoked for VM:kvm_mmu_notifier_oom_enter
-[  399.841608][T10882] KVM: oom_enter callback invoked for VM:kvm_mmu_notifier_oom_enter
-[  399.841961][T10882]
-[  399.841961][T10882]
-[  399.841962][T10882] ============================================
-[  399.841962][T10882] ============================================
-[  399.841964][T10882] WARNING: possible recursive locking detected
-[  399.841964][T10882] WARNING: possible recursive locking detected
-[  399.841966][T10882] 7.0.0-rc2-00467-g4ae12d8bd9a8-dirty #12 Not tainted
-[  399.841966][T10882] 7.0.0-rc2-00467-g4ae12d8bd9a8-dirty #12 Not tainted
-[  399.841969][T10882] --------------------------------------------
-[  399.841969][T10882] --------------------------------------------
-[  399.841971][T10882] qemu-system-x86/10882 is trying to acquire lock:
-[  399.841971][T10882] qemu-system-x86/10882 is trying to acquire lock:
-[  399.841974][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __synchronize_srcu+0x83/0x380
-[  399.841974][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __synchronize_srcu+0x83/0x380
-[  399.841991][T10882]
-[  399.841991][T10882] but task is already holding lock:
-[  399.841991][T10882]
-[  399.841991][T10882] but task is already holding lock:
-[  399.841992][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __mmu_notifier_oom_enter+0x93/0x1f0
-[  399.841992][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __mmu_notifier_oom_enter+0x93/0x1f0
-[  399.842005][T10882]
-[  399.842005][T10882] other info that might help us debug this:
-[  399.842005][T10882]
-[  399.842005][T10882] other info that might help us debug this:
-[  399.842006][T10882]  Possible unsafe locking scenario:
-[  399.842006][T10882]
-[  399.842006][T10882]  Possible unsafe locking scenario:
-[  399.842006][T10882]
-[  399.842008][T10882]        CPU0
-[  399.842008][T10882]        CPU0
-[  399.842009][T10882]        ----
-[  399.842009][T10882]        ----
-[  399.842010][T10882]   lock(srcu);
-[  399.842010][T10882]   lock(srcu);
-[  399.842014][T10882]   lock(srcu);
-[  399.842014][T10882]   lock(srcu);
-[  399.842017][T10882]
-[  399.842017][T10882]  *** DEADLOCK ***
-[  399.842017][T10882]
-[  399.842017][T10882]
-[  399.842017][T10882]  *** DEADLOCK ***
-[  399.842017][T10882]
-[  399.842018][T10882]  May be due to missing lock nesting notation
-[  399.842018][T10882]
-[  399.842018][T10882]  May be due to missing lock nesting notation
-
--------------------------------------------------------------------------------------------------------------------
-Then defered the kvm_mmu_notifier_detach() using workqueue, then above issue got fixed.
-
-
-Testing:
--------------
-I've validated the v2 approach with:
-
-Kernel: v7.0-rc2 with PREEMPT_RT and DEBUG_ATOMIC_SLEEP enabled
-Test: Triggered OOM conditions that killed a QEMU process with active KVM VM
-Use these commands for generating scenario:
-1. vng -v -r ./arch/x86/boot/bzImage --qemu-opts='-m 2G -cpu EPYC,+svm,+npt,+tsc,+invtsc -s '
-After successfully booting the virtme-ng(QEMU) ------> Act Host VM
-2. chmod 666 /dev/kvm
-3. dmesg -c > /dev/null
-4. launching Guest VM using this command $qemu-system-x86_64 -enable-kvm -m 1000M -mem-prealloc \
-        -monitor none -serial none -display none -nographic & sleep 10
-
-Results:
--------------------
-1. oom_enter callback was successfully invoked
-2 No SRCU deadlock warnings
-3 No "sleeping function called from invalid context" warnings
-4.OOM reaper completed successfully
-5. Process was reaped without errors
-
-
-
-Question:
-Before I send the v2 patch series, I want to confirm this approach aligns with your expectations. Specifically:
-Defered this coommon helper kvm_mmu_notifier_detach() for mmu_nottifier_unregister() and unbalanced invalidation using workque is good design?
-Are there any specific test cases or scenarios you'd like me to validate?
-
-I can send the complete v2 patch series once you confirm this approach is on the right track.
-
-Thanks again for the guidance!
-
-Shaikh Kamal
-
-> > This avoids the whole "convert locks to raw" problem and the complexity of deferring work.
-> > 
-> > I have questions on Testing part:
-> > ------------------------------------
-> > I tried to reproduce the bug scenario using the virtme-ng then running
-> > the stress-ng putting memory pressure on VM, but not able to reproduce
-> > the scenario.
-> > I tried this way ..
-> > vng -v -r ./arch/x86/boot/bzImage
-> > VM is up, then running the stress-ng as below
-> > stress-ng --vm 2 --vm-bytes 95% --timeout 20s & sleep 5 & dmesg | tail -30 | grep "sleeping function"
-> > OOM Killer is triggered, but exact bug not able to reproduce, Please
-> > suggest how to reproduce this bug, even we need to verify after code
-> > changes which you have suggested.
 > 
-> I don't know, sorry.  But with this new approach there will always be a call
-> to the new callback from the OOM killer, so it's easier to test.
+>> On Mar 20, 2026, at 8:09 PM, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>>
+>> All that needs to be done is moving the GMET bit from vmcs12 to
+>> vmcs02.
+>>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>> arch/x86/kvm/svm/nested.c | 3 +++
+>> arch/x86/kvm/svm/svm.c    | 3 +++
+>> 2 files changed, 6 insertions(+)
+>>
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index d69bcf52f948..397e9afecb78 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+>> @@ -774,6 +774,9 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+>> vmcb02->control.bus_lock_counter = 0;
+>>
+>> vmcb02->control.nested_ctl &= ~SVM_NESTED_CTL_GMET_ENABLE;
+>> + if (guest_cpu_cap_has(vcpu, X86_FEATURE_GMET))
+>> + vmcb02->control.nested_ctl |=
+>> + (svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_GMET_ENABLE);
+>>
+>> /* Done at vmrun: asid.  */
+>>
+>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>> index d3b69eb3242b..4a0d97e70dc2 100644
+>> --- a/arch/x86/kvm/svm/svm.c
+>> +++ b/arch/x86/kvm/svm/svm.c
+>> @@ -5294,6 +5294,9 @@ static __init void svm_set_cpu_caps(void)
+>> if (boot_cpu_has(X86_FEATURE_PFTHRESHOLD))
+>> kvm_cpu_cap_set(X86_FEATURE_PFTHRESHOLD);
+>>
+>> + if (boot_cpu_has(X86_FEATURE_GMET))
+>> + kvm_cpu_cap_set(X86_FEATURE_GMET);
+>> +
+>> if (vgif)
+>> kvm_cpu_cap_set(X86_FEATURE_VGIF);
+>>
+>> -- 
+>> 2.52.0
+>>
 > 
-> Thanks,
-> 
-> Paolo
-> 
+> When I enable gmet on the guest, and try to boot with memory integrity
+> enabled in Windows 11 25H2 guest, the machine does not boot, but rather
+> gets stuck in an NPF loop and does not make any progress.
+
+Same here as well, trying to debug
+
+  kvm_nested_vmenter: rip: 0xfffff8148793c2ea vmcb: 0x00000001087fd000 nested_rip: 0xfffff81487993d90 int_ctl: 0x00000000 event_inj: 0x00000000 nested_npt=n guest_cr3: 0x00000001087ce000
+  kvm_nested_vmexit: vcpu 0 reason npf rip 0xfffff81487993d90 info1 0x0000000200000006 info2 0x00000001087cef80 intr_info 0x00000000 error_code 0x00000000 requests 0x0000000000000000
+
+This seems to be the first entry into the nested guest and nested page fault is on guest_cr3 page
+
+  kvm_mmu_set_spte: gfn 108600 spte 39ac00ee3 (rwx-) level 2 at 3012b1218
+
+A 2M page is provisioned in the NPT
+
+  kvm_nested_vmexit: vcpu 0 reason npf rip 0xfffff81487993d90 info1 0x0000000200000007 info2 0x00000001087cef80 intr_info 0x00000000 error_code 0x00000000 requests 0x0000000000000000
+
+But the fault keeps hitting.
+
+
+
