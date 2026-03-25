@@ -1,293 +1,207 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F1A3E63A0
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 15:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774453787; cv=pass; b=iY3QgdHn3PKpSOeuupCrniqmYIQ1WFZLA7ZtFjnJ56SlRUYZndZ7wtMXK+0xUQ0iVHK7BrhSz/jyuKEHat+dT/eOyzZvmBJFzlHI+kcp3XsI9J9nZ0/TnlUChIS6IM2eKm7FX2+lSE+wGDwCyG5nBOC+6+vx1Fh2eIYXcAayQwE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774453787; c=relaxed/simple;
-	bh=SMw1jlxrpubfTnHEDlbO4rziVId8vc4wQCntfT4i+lU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sn20HiILHtoqPqzN54f9d9mYKsYWqop1ZTRSvs34x6JjRUbWt1NovL32W5u+4N7srteM1s2wArXLiDzt4WZ1SpdyQxCln+/YHD++/Lk0cnqk9dkuA0Se1CTb3ZVnzU5OM9gPbKUUMJ1dEeObrDsHt8evDS8E+buRvGeq1bEvGzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NboHdeJy; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEDE3F9F59
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 16:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774457758; cv=none; b=rh+JWE7XeEiAuMhAk9osn+FxXHZbMehMqQz0cAjbd76cSLVr+ehvZpMFidSORL9TlI8dz/ipw7UltT3c0F4ifmX+9Ao23A7S9v3Gjsz/07kG0nr8ajD+bO7oatoZVG8u5kbcU8xS9ABaaxU0MM8LueqkWAJjBXrm30kHwimIssQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774457758; c=relaxed/simple;
+	bh=+OjMb5092maQp2iEGHKWjP63NT/l3FVLEKtpncsAeD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=NJjAIOo3Kltpi35lX5QCuJKA48Sq1dmR+ZaofPCCJZNVsg4po14BfX34agEU0jlex/2HTfxC+oBcj86snC62D3Ho80a9C2SSk1grMV+7ckQBt6fAuUWRGihp6i4dkEI6m62h9mDAl/4wqq+dRZrAnQh3rIEtWRRMVfCzX4hwjUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ewzOSV46; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eyHX7MSI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NboHdeJy"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66a33f61d80so4392965a12.0
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 08:49:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774453782; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TfwEUmrlFGNFyhsHGX1C0eHoOiE+NrEsEz1Ney0VZH5+BBSQPf+bFP/NenkiSasXmy
-         1GfJoDF2gL9wK9d6DD+XbiCqhTDCF0dQhsXlg78Ub45BJewazHE8kIVSxBa97dxjQH5l
-         c5v0EYAmwkbHGJy2HeOSW31CAFTH28VaP/Skm4XzyCOuOl+eYDaXWq2rwKo9fDrzbPip
-         UK752NtXcwhy4HBgILQzEjLCpb1vAlgYAUodxdOcF50nRzt0rGWwWpF05fptSm0fYTXZ
-         70J30GkDdQuYz7H2KRDENfdCzmiG9uFMquyNpfKrmzH+iEUcPa++IyQrPp8YaeI74YCV
-         6YkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=PetZC3qxgw91I7G4PL1kgiG97oaIIgIA0g2FQ1jwb8M=;
-        fh=9EKgHE4K3/GOa6svzgVqMYwSueaDXxijtRGabUeczGs=;
-        b=SByldn5C2sqCSGQAP8AwtRcaiV82b8uRHZpTT5TnKLZeHYqJQRi0b6ILNptVSk++TQ
-         XFDd0Z0mP92oSP51i6qpU5LfvBHukDGskDq1m4LWPPkRpdOwP5oHpN0MbVf7XAgcTDto
-         OqVJp41VPb7+onfXO2Pxt0PMNDpNfLEqlCipwwvcJbtPHx6Ute5uU2KDnhYmnu6BfgdH
-         hseHmPgRW4X9a09Vny0tCOKHHyl/DAIcNpyLvcLrA+xrMhaqjyCqR9ptyYUJxk3QuckA
-         Dax3KmToO2puyoqbe4aKPfPfWkHBczUq0FyH/UarzUp0MhceRJlS2wAmsLoUoF8TP2eC
-         iTFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ewzOSV46";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eyHX7MSI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774457752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=5gZ/S9pbjjkoQ+gcMJJTXTQUJ/FjVdC55bH/vaTcEqo=;
+	b=ewzOSV46u1ANS/Rf7aHfXMgM9RPRU+yErI82+z7BjptmN6dQj8pqInI2Z/Ffg1KQBWW0ya
+	b6ohzlc2QYLqwPJ9pb4n7A/BrEltJWoc72bk7WEdmBGZMLykpwo4Cs3qmI0LbWj0XlEWGr
+	ZPLcw4Iecd9zeo3FClUGfjZMek7TOKI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-227-sKWLX7G8OtuZ90RieP_XQw-1; Wed, 25 Mar 2026 12:55:50 -0400
+X-MC-Unique: sKWLX7G8OtuZ90RieP_XQw-1
+X-Mimecast-MFC-AGG-ID: sKWLX7G8OtuZ90RieP_XQw_1774457750
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b7ec737c1so4183f8f.1
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 09:55:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774453782; x=1775058582; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PetZC3qxgw91I7G4PL1kgiG97oaIIgIA0g2FQ1jwb8M=;
-        b=NboHdeJy5rqGSnXILD9hwlr7QiyRU1LH/ue16iQyMsxCAyhZj1NvxCbm2HAeBhkudu
-         FAC6KYzF734ktdTxcB05tjcgxJty3pUoyU98ok+Ks13UjLw2J/gcW0KyOTnXcKQ8J8Pj
-         z7NS7clU2pMGlFojeHqUVytaEmqQv1dJrZPFe9yftZPIKqRgNksGlvqfhNgT5ECOdDRh
-         BE6iuCGcvAbY68M752e+aCt2jMXMusBcxQa4WX3MHDvHjAXMRlM61xlzilZ6y0L6oFH1
-         WbnrQej0rE3qZXSxCJgQsEOyjVsjFXAAMsviK8eGZMwQKl2Ly3HsBCplL72PGSQRPwT6
-         tf+Q==
+        d=redhat.com; s=google; t=1774457749; x=1775062549; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5gZ/S9pbjjkoQ+gcMJJTXTQUJ/FjVdC55bH/vaTcEqo=;
+        b=eyHX7MSI6oZdAa22UyAPTlJ8LHOsi0Ion/mlPzlSv3lFbYvrqMw73uIqMIKJbSWnKb
+         bqrXm4B07UejB7h7leQCGCWyu3l8ZQdeCCG9/sNPrrTLSdkWak7REOf99Bajoj0gPtwO
+         7518ZZVdeaLxgmVd7ByA4plKt3bNsl5epnL7N4VDgl4Debxd6qVqmPLj3awyZO87U5+N
+         1TvX2mQew2TXiiA4fLfMVbuy4GwoNhjtZ9FA/Tmccp/eAIYschOCwuaZKUR+puhYaU7/
+         O45Le7ZGq5b0J1sQC09R4mWeIwGWQMleKGljLaTrM4u1FGVC5gRlU7jMVZpIjEsV7RXa
+         8Wfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774453782; x=1775058582;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PetZC3qxgw91I7G4PL1kgiG97oaIIgIA0g2FQ1jwb8M=;
-        b=SqLd0EulKItSTTDG14wLPH98dgiYEcdNSVyJVvlYeL/2upvKclXHFVCEKaZ65naM4d
-         Eh8uKGi/29awJzm9x03ehtS7ttX/dsZYuytPzNG8Q4sHFLi/nPcKcrYJYHqAjXKk4NPE
-         bSy/1acHzeaX1JTLTcz7vtnNthLyXc1N5rtR3yygSjyRyEMT8Ig9y8chrZ/GAA0OVFmQ
-         9eIh1+gzn+XZS1sOwN7B0/VsDuE0xz0B3wTTTzKzsDrHVe9ZBamNQayU2DJcZET9leho
-         30FXf52WPC8tQ31yHW6IsooEXMlRXJuKWf8F3Qi/Fp2/zy3kswykvHqTERsTqXvMAZwz
-         LQ9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUE+8mcwAMfd2ehOlG0wr6wxjAKpdKlRDh+g4KYd+KGTBT3B/idOh1/XziWH4T3aI+6rF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/+Vah/XNiDtEEmjfmAqFzsDyDNj0Vzet9ZUeLrsPgZ4ejfJeV
-	slKmC/vUFgvKXaDZJyJeanW5/9dlkPHuBGFaOhrG/i7n1DV/OMGcOHz4B9OXsRTi3al+C/vvy4k
-	j4iz1wtlTQXnIwsqEDXnyE5WTuTkF4POCon4Qrsc2sQ==
-X-Gm-Gg: ATEYQzwdH8OrcI+zEcrxRzTAQj3BeH+EZ+YBWIeIb6a9P04LUZij76LTITucNvwzuVw
-	I8erQvriXJIQAUpGRIcGV6CVqL4K1APV1WL3R9qg7Rymwmr7sU4+AnFOZ02vxj+V24/tuyYMbS7
-	sh1CeeGTnXmO1JsYx/2UZM8roISh3tHWHiiUF3Vk5YGKmw7EfzVZl1nI7t77i0PMpQSgfcOWrV+
-	tKsb5auMm/Kj0266knYw9eSTKzbxkNqKu5s/V8hglTJjlxFwHcGwQGSWFu5VRaEwFrc460d0a9H
-	Od080uriZgViQFlPxqo3jwnJWeIX/Ap6GjC4N/jGOA==
-X-Received: by 2002:a05:6402:3251:b0:668:368b:38d3 with SMTP id
- 4fb4d7f45d1cf-66a82634560mr2196905a12.12.1774453782373; Wed, 25 Mar 2026
- 08:49:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774457749; x=1775062549;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5gZ/S9pbjjkoQ+gcMJJTXTQUJ/FjVdC55bH/vaTcEqo=;
+        b=EL0vrczDKKfR3y7eEqvHJ404gJhqL2PlPthrTzGGH+EtPAayqNDjKF/gUHiWxNJYYp
+         VmJPEZzDPZlnAq6r2IhaYi5vTkyySre/P6hMglECD7fNFhrwzCC8iZ+Ss+N91oTBpQjE
+         ytLnX1uopEH0tokI9kAC7sN09rc6zSD+XN2fZCbHaDoVhfxmJ3b5M+UF9Kg6YqtPKQ0w
+         7O2kRjGfYj9cvQZOPa4nB/w8v93cbL0idH0RlgdZj3NBwDVEGEqe2q9J0147dShLChU8
+         u7AlYRP6Xo/jElmvrpGoK8zm4FXMTyZrAfMQg49fM+eq93oH3X6ZwQXaCBeg8ZvfBz97
+         xWbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXA2X7ps1Of9DiFJkW3nggDpnhJ9UcC5rvM8oOe0PXovKuX7lYKPhklwI93fadJBAVdtSU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyohg9CaBCjNXY1kySe2KxRIWy2anh5ENkSB6FbeFbkjX3pYPla
+	xdCA7RhE4cEndss+ktu4S6zX6QeZgAezVGTMvruQ9no4IbiSRlslqdErs/qdf61LvXB8XJr5KyW
+	GnPQsEHd/jkqT1DOpLbMfC8o356hMFfVGvOlQOsr79FQHYJSt4HXYfQ==
+X-Gm-Gg: ATEYQzzyLeoDbh4Fk9xnXGpb8J3m/mBIO9aYcJUcMu/WX1CZFiqLC5Dm3dJgoGiAqri
+	lpCw/2qnRPbH2tXew9EHp6JEUZ7QtRJ9LUiTqoEkO9yTXaCtqye8Cmxcaflftu1vSDTPp3vN4S1
+	hXJhOtHXz7odCPLAJgfre3MmoIP+XjNMqIEmqtImj0o6wJbl3Y7y0HW3lgSCw/Qx5taV1w0jQm3
+	W8VH9Qli0FEWYWPKT73re4BHVzQFPoYv44VNe1jJcU3oPvDGRJUmkXs7adiRgbj5cOeh6OIBJq2
+	zAVeC/NpHNB39j0zCCQ8XSs7JHNgpp/DSxjholTO/+cUCcDI1ESsMY3VSoWv4NlnChQqjWLENEc
+	p9Sagg6D8XRDykGxl
+X-Received: by 2002:a5d:64e7:0:b0:43b:4960:60f2 with SMTP id ffacd0b85a97d-43b88a399aemr5997836f8f.47.1774457749419;
+        Wed, 25 Mar 2026 09:55:49 -0700 (PDT)
+X-Received: by 2002:a5d:64e7:0:b0:43b:4960:60f2 with SMTP id ffacd0b85a97d-43b88a399aemr5997793f8f.47.1774457748903;
+        Wed, 25 Mar 2026 09:55:48 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b91943184sm1001694f8f.14.2026.03.25.09.55.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 09:55:48 -0700 (PDT)
+Date: Wed, 25 Mar 2026 12:55:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: bpf@vger.kernel.org, Simon Schippers <simon.schippers@tu-dortmund.de>,
+	willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, eperezma@redhat.com, leiyang@redhat.com,
+	stephen@networkplumber.org, jon@nutanix.com,
+	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net] ptr_ring: disable KCSAN warnings
+Message-ID: <97d39458d8dd7a00341f0be391b580650896ce42.1774457524.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324005919.2408620-1-dakr@kernel.org> <20260324005919.2408620-8-dakr@kernel.org>
-In-Reply-To: <20260324005919.2408620-8-dakr@kernel.org>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Wed, 25 Mar 2026 09:49:31 -0600
-X-Gm-Features: AQROBzDaUkN0ZNcFR8HLoPUZ0UwwRolGugOyW2ifJVz-O5YTothUc8ZwonnT9P8
-Message-ID: <CANLsYkyNx+e=QrSc=ZOqgMcOpwqdpCWsuhrvByJYcXLHPSHMUw@mail.gmail.com>
-Subject: Re: [PATCH 07/12] rpmsg: use generic driver_override infrastructure
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
-	Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Armin Wolf <W_Armin@gmx.de>, 
-	Bjorn Andersson <andersson@kernel.org>, Vineeth Vijayan <vneethv@linux.ibm.com>, 
-	Peter Oberparleiter <oberpar@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Harald Freudenberger <freude@linux.ibm.com>, Holger Dengler <dengler@linux.ibm.com>, 
-	Mark Brown <broonie@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-spi@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-arm-kernel@lists.infradead.org, Gui-Dong Han <hanguidong02@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
 
-On Mon, 23 Mar 2026 at 19:00, Danilo Krummrich <dakr@kernel.org> wrote:
->
-> When a driver is probed through __driver_attach(), the bus' match()
-> callback is called without the device lock held, thus accessing the
-> driver_override field without a lock, which can cause a UAF.
->
-> Fix this by using the driver-core driver_override infrastructure taking
-> care of proper locking internally.
->
-> Note that calling match() from __driver_attach() without the device lock
-> held is intentional. [1]
->
-> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-> Fixes: e95060478244 ("rpmsg: Introduce a driver override mechanism")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  drivers/rpmsg/qcom_glink_native.c |  2 --
+Eric Dumazet reported KCSAN warnings:
 
-For the below files:
+BUG: KCSAN: data-race in pfifo_fast_dequeue / pfifo_fast_enqueue
 
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+write to 0xffff88811d5ccc00 of 8 bytes by interrupt on cpu 0:
+__ptr_ring_zero_tail include/linux/ptr_ring.h:259 [inline]
+__ptr_ring_discard_one include/linux/ptr_ring.h:291 [inline]
+__ptr_ring_consume include/linux/ptr_ring.h:311 [inline]
+__skb_array_consume include/linux/skb_array.h:98 [inline]
+pfifo_fast_dequeue+0x770/0x8f0 net/sched/sch_generic.c:770
+dequeue_skb net/sched/sch_generic.c:297 [inline]
+qdisc_restart net/sched/sch_generic.c:402 [inline]
+__qdisc_run+0x189/0xc80 net/sched/sch_generic.c:420
+qdisc_run include/net/pkt_sched.h:120 [inline]
+net_tx_action+0x379/0x590 net/core/dev.c:5793
+handle_softirqs+0xb9/0x280 kernel/softirq.c:622
+do_softirq+0x45/0x60 kernel/softirq.c:523
+__local_bh_enable_ip+0x70/0x80 kernel/softirq.c:450
+local_bh_enable include/linux/bottom_half.h:33 [inline]
+bpf_test_run+0x2db/0x620 net/bpf/test_run.c:426
+bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+__sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+__do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+__x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
->  drivers/rpmsg/rpmsg_core.c        | 43 +++++--------------------------
->  drivers/rpmsg/virtio_rpmsg_bus.c  |  1 -
->  include/linux/rpmsg.h             |  4 ---
->  4 files changed, 7 insertions(+), 43 deletions(-)
->
-> diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-> index 9ef17c2e45b0..e9d1b2082477 100644
-> --- a/drivers/rpmsg/qcom_glink_native.c
-> +++ b/drivers/rpmsg/qcom_glink_native.c
-> @@ -1623,7 +1623,6 @@ static void qcom_glink_rpdev_release(struct device *dev)
->  {
->         struct rpmsg_device *rpdev = to_rpmsg_device(dev);
->
-> -       kfree(rpdev->driver_override);
->         kfree(rpdev);
->  }
->
-> @@ -1859,7 +1858,6 @@ static void qcom_glink_device_release(struct device *dev)
->
->         /* Release qcom_glink_alloc_channel() reference */
->         kref_put(&channel->refcount, qcom_glink_channel_release);
-> -       kfree(rpdev->driver_override);
->         kfree(rpdev);
->  }
->
-> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-> index 96964745065b..2b9f6d5a9a4f 100644
-> --- a/drivers/rpmsg/rpmsg_core.c
-> +++ b/drivers/rpmsg/rpmsg_core.c
-> @@ -358,33 +358,6 @@ rpmsg_show_attr(src, src, "0x%x\n");
->  rpmsg_show_attr(dst, dst, "0x%x\n");
->  rpmsg_show_attr(announce, announce ? "true" : "false", "%s\n");
->
-> -static ssize_t driver_override_store(struct device *dev,
-> -                                    struct device_attribute *attr,
-> -                                    const char *buf, size_t count)
-> -{
-> -       struct rpmsg_device *rpdev = to_rpmsg_device(dev);
-> -       int ret;
-> -
-> -       ret = driver_set_override(dev, &rpdev->driver_override, buf, count);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return count;
-> -}
-> -
-> -static ssize_t driver_override_show(struct device *dev,
-> -                                   struct device_attribute *attr, char *buf)
-> -{
-> -       struct rpmsg_device *rpdev = to_rpmsg_device(dev);
-> -       ssize_t len;
-> -
-> -       device_lock(dev);
-> -       len = sysfs_emit(buf, "%s\n", rpdev->driver_override);
-> -       device_unlock(dev);
-> -       return len;
-> -}
-> -static DEVICE_ATTR_RW(driver_override);
-> -
->  static ssize_t modalias_show(struct device *dev,
->                              struct device_attribute *attr, char *buf)
->  {
-> @@ -405,7 +378,6 @@ static struct attribute *rpmsg_dev_attrs[] = {
->         &dev_attr_dst.attr,
->         &dev_attr_src.attr,
->         &dev_attr_announce.attr,
-> -       &dev_attr_driver_override.attr,
->         NULL,
->  };
->  ATTRIBUTE_GROUPS(rpmsg_dev);
-> @@ -424,9 +396,11 @@ static int rpmsg_dev_match(struct device *dev, const struct device_driver *drv)
->         const struct rpmsg_driver *rpdrv = to_rpmsg_driver(drv);
->         const struct rpmsg_device_id *ids = rpdrv->id_table;
->         unsigned int i;
-> +       int ret;
->
-> -       if (rpdev->driver_override)
-> -               return !strcmp(rpdev->driver_override, drv->name);
-> +       ret = device_match_driver_override(dev, drv);
-> +       if (ret >= 0)
-> +               return ret;
->
->         if (ids)
->                 for (i = 0; ids[i].name[0]; i++)
-> @@ -535,6 +509,7 @@ static const struct bus_type rpmsg_bus = {
->         .name           = "rpmsg",
->         .match          = rpmsg_dev_match,
->         .dev_groups     = rpmsg_dev_groups,
-> +       .driver_override = true,
->         .uevent         = rpmsg_uevent,
->         .probe          = rpmsg_dev_probe,
->         .remove         = rpmsg_dev_remove,
-> @@ -560,11 +535,9 @@ int rpmsg_register_device_override(struct rpmsg_device *rpdev,
->
->         device_initialize(dev);
->         if (driver_override) {
-> -               ret = driver_set_override(dev, &rpdev->driver_override,
-> -                                         driver_override,
-> -                                         strlen(driver_override));
-> +               ret = device_set_driver_override(dev, driver_override);
->                 if (ret) {
-> -                       dev_err(dev, "device_set_override failed: %d\n", ret);
-> +                       dev_err(dev, "device_set_driver_override() failed: %d\n", ret);
->                         put_device(dev);
->                         return ret;
->                 }
-> @@ -573,8 +546,6 @@ int rpmsg_register_device_override(struct rpmsg_device *rpdev,
->         ret = device_add(dev);
->         if (ret) {
->                 dev_err(dev, "device_add failed: %d\n", ret);
-> -               kfree(rpdev->driver_override);
-> -               rpdev->driver_override = NULL;
->                 put_device(dev);
->         }
->
-> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
-> index 8d9e2b4dc7c1..e0dacb736ef9 100644
-> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
-> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
-> @@ -373,7 +373,6 @@ static void virtio_rpmsg_release_device(struct device *dev)
->         struct rpmsg_device *rpdev = to_rpmsg_device(dev);
->         struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
->
-> -       kfree(rpdev->driver_override);
->         kfree(vch);
->  }
->
-> diff --git a/include/linux/rpmsg.h b/include/linux/rpmsg.h
-> index fb7ab9165645..c2e3ef8480d5 100644
-> --- a/include/linux/rpmsg.h
-> +++ b/include/linux/rpmsg.h
-> @@ -41,9 +41,6 @@ struct rpmsg_channel_info {
->   * rpmsg_device - device that belong to the rpmsg bus
->   * @dev: the device struct
->   * @id: device id (used to match between rpmsg drivers and devices)
-> - * @driver_override: driver name to force a match; do not set directly,
-> - *                   because core frees it; use driver_set_override() to
-> - *                   set or clear it.
->   * @src: local address
->   * @dst: destination address
->   * @ept: the rpmsg endpoint of this channel
-> @@ -53,7 +50,6 @@ struct rpmsg_channel_info {
->  struct rpmsg_device {
->         struct device dev;
->         struct rpmsg_device_id id;
-> -       const char *driver_override;
->         u32 src;
->         u32 dst;
->         struct rpmsg_endpoint *ept;
-> --
-> 2.53.0
->
+read to 0xffff88811d5ccc00 of 8 bytes by task 22632 on cpu 1:
+__ptr_ring_produce include/linux/ptr_ring.h:106 [inline]
+ptr_ring_produce include/linux/ptr_ring.h:129 [inline]
+skb_array_produce include/linux/skb_array.h:44 [inline]
+pfifo_fast_enqueue+0xd5/0x2c0 net/sched/sch_generic.c:741
+dev_qdisc_enqueue net/core/dev.c:4144 [inline]
+__dev_xmit_skb net/core/dev.c:4188 [inline]
+__dev_queue_xmit+0x6a4/0x1f20 net/core/dev.c:4795
+dev_queue_xmit include/linux/netdevice.h:3384 [inline]
+__bpf_tx_skb net/core/filter.c:2153 [inline]
+__bpf_redirect_common net/core/filter.c:2197 [inline]
+__bpf_redirect+0x862/0x990 net/core/filter.c:2204
+____bpf_clone_redirect net/core/filter.c:2487 [inline]
+bpf_clone_redirect+0x20c/0x290 net/core/filter.c:2450
+bpf_prog_53f18857bc887b09+0x22/0x2a
+bpf_dispatcher_nop_func include/linux/bpf.h:1402 [inline]
+__bpf_prog_run include/linux/filter.h:723 [inline]
+bpf_prog_run include/linux/filter.h:730 [inline]
+bpf_test_run+0x29d/0x620 net/bpf/test_run.c:423
+bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+__sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+__do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+__x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0xffff888104a93a00 -> 0x0000000000000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 22632 Comm: syz.0.4135 Tainted: G W syzkaller #0
+PREEMPT(full)
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 01/24/2026
+
+There is no race here: reading/writing a partial pointer
+would be fine, because the reading is always done by the producer
+which merely cares about NULL/non NULL.
+Document this / disable the warnings using data_race().
+
+Link: https://lore.kernel.org/all/CANn89iLHwZ4foPEL2TdQhYx3Ps3zXiwygb%3DQr7OTKW2R7Ldixg@mail.gmail.com/
+Tested-by: Opus Sonnet 4.6 1M window.
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ include/linux/ptr_ring.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
+index 534531807d95..87ff669b0c57 100644
+--- a/include/linux/ptr_ring.h
++++ b/include/linux/ptr_ring.h
+@@ -103,7 +103,7 @@ static inline bool ptr_ring_full_bh(struct ptr_ring *r)
+  */
+ static inline int __ptr_ring_produce(struct ptr_ring *r, void *ptr)
+ {
+-	if (unlikely(!r->size) || r->queue[r->producer])
++	if (unlikely(!r->size) || data_race(r->queue[r->producer]))
+ 		return -ENOSPC;
+ 
+ 	/* Make sure the pointer we are storing points to a valid data. */
+@@ -256,7 +256,7 @@ static inline void __ptr_ring_zero_tail(struct ptr_ring *r, int consumer_head)
+ 	 * besides the first one until we write out all entries.
+ 	 */
+ 	while (likely(head > r->consumer_tail))
+-		r->queue[--head] = NULL;
++		data_race(r->queue[--head] = NULL);
+ 
+ 	r->consumer_tail = consumer_head;
+ }
+-- 
+MST
+
