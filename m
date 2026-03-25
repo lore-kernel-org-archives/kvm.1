@@ -1,223 +1,337 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E442A405ACE
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 17:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670884035B0
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 17:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774459799; cv=none; b=XoIcy4qucToxi5HmVz5AoMM0guqA2zKxa0ySoUhZ+LZ8PRuf7zkjyP2ezUBHJlIW7S97wE8W+EXlWV5VZgA5B9RvJgpwXMn5x9YzvTjaDycKATBNYHCBvYV7GY5BTKn0OGfmUS2RkSiEMtLReGonRtUSNMNMj7Z1TnT0CKx7o5Q=
+	t=1774459915; cv=none; b=XfbG9Le8FA8y8g5FeCPv5OVxmHampp6AIf8EFLz0hLq7ymAXZklog2PsbPNqkFfgYCmL9dIdecAIABf86iHiWodLvohkvLKGQaM8qnBSd69Pw9GHwXmowWwYXFE31lqR3KdI3PkrFcxl9FmbIiwXc/y+FclY6C7j8kM7D3YaXTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774459799; c=relaxed/simple;
-	bh=Ge78tCqMrPenY4229b2DeTQfzrN0V80ePxURbyViTOg=;
+	s=arc-20240116; t=1774459915; c=relaxed/simple;
+	bh=jaAOLuGSPqy0S9v15tLyy5ELjxoGGIZlFa3IUDr3jCw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y49eAxM8x/WR0VDVXGmABEdsWe0E+cXLcZbMex0Y+ESHaX87/5doF/SVjTjao8yQBVOKlSVSydXEq7IAhjntibK1gIrp4lP5XHv+uPZTLEU60MRsfWgZzvxWZ25a9U3amnhM62ob9R1d2/qKfCbtxTu4dtkmUc8Ieon1UbLvlHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZcfVtINd; arc=none smtp.client-ip=209.85.210.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=HOE5vMjXn0UaKrpjPwFfCB37+vKbVGwR9axVEtrVvNNg0ZXSe1gMjoUVri/TXaEoQoGDv1v+amkZOormWYRNvGCBBv0kUTeTpn7/cC7yVzWlZK+J7vG6T1ryodJBqgKuk6+L6G9Ji0Oy85+aW/WY/s+AV6P+kBPv0yODCbobfQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nYXjznIG; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZcfVtINd"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82748257f5fso643453b3a.1
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 10:29:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nYXjznIG"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so5885ad.1
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 10:31:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774459795; x=1775064595; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774459912; x=1775064712; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tqtdz49F1thS+8gpmqv2HF5sNOiFchZq7BXU6+8jf4U=;
-        b=ZcfVtINdY7rke7WeAEXjMFboeUlX11JyZVmeRInnH7z+UJ8w6B3ZPtQumB5LJc6ypQ
-         eTF74EFhlsXEhyyIt7ko5kvNShCpkSCArfnrA4pqHxi6u/bb0m2g5DngPv/t3zMEjsji
-         YvlxKFFijIaRXHaAM3P7NkkfbtD7SxjEcGfoZiH23j5Q9HvGJqnRRgmsPwsNMF1tbTtr
-         vh3TaKUKfv1+8fku9mK0VXEQ2/GjXtnITCBWRGG9/EfD0iNJu9pCoAfz3GU977Yik9q3
-         e/ZT86NIiP4rJW+QQNs52DI8aPfrSqTm5gvyOWXTMO3XR2m8KvA2nBmdsOvXLru6Db3X
-         UrTA==
+        bh=Vjja8caMlVbzaaBDEmhOOIgntWTqovjLLF5bSwJnWKk=;
+        b=nYXjznIGQw7JtCZv2xuIpIB5DBjOzBI5Vi19YM9MvXZIWTEDVMu4KHG3lOX+067YC6
+         KgMQ+sB/OKJ7izQTMfv7Hr++I8BCi4v0ZYGGOiT3eFwiyR0g6NsyrO6q/B3PdnS/oNvd
+         +8niWQVHBdOqcXuZMBN+NzTNGEC4pW3iNwSZyG6vKOXqMinWmsGJELiWA/48U7il2Ts7
+         BCvEM7iqhpY9WyjpEGkXXtjHxs42XNTWfXpUUkR0mjm2Kdxh10LGgX3kignRfAfCdBjD
+         UJ8FWaxCqTAM+Qm30aJsBq6vDc5IAnD42Qod5AejgOIlTeC7TbyLZtl0koE6PhSeaC3k
+         P2MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774459795; x=1775064595;
+        d=1e100.net; s=20251104; t=1774459912; x=1775064712;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Tqtdz49F1thS+8gpmqv2HF5sNOiFchZq7BXU6+8jf4U=;
-        b=WVz6Lr0TZ7NtCt2GCMgfBWzKW1UuO207E4TjZPP5vtDAvQ+vRSkk56V7KdYi5ZIGjk
-         +dSHIxDiOvUdMtqvDEuFtrt16FGLHVpxCWhVKe6mSyabjeqQ6FnbZcajl3EMx8HSmoyA
-         LSpwwpcOh4aP4eeeNia5zHCsHZtXa18YFqO+ChixxrVcH8yihETyOsaNd8uH78e5Y58Y
-         GM/6xq7lXaNjdI6VeFcwcZ99FmvBFeQ2gEIWwpebSh5ISnNnWvIMuMzwDm53DQOeVyk8
-         M4pIRI5ytFjgYNoFGeCdvlCLo00h7uZKJALS2sSODLwCZ3m/A8lTSM3R5naLMYyPr8X6
-         dWxg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5cmMPyTarPYfuVYiIbC2TpmbpPc1l+Eq/XxhXZ1Ec/C8EEDj+Ssi6n3CMZ/EzbQdoDTc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxS2X5GIauMpvH9M/zw5adtihoAsz7tRqDGDg1KFcwVdmD/cqQY
-	e17GDts4qPJIpqoty562igA1Da/UrgQ+jvfGgRrycNaaUPwrthtX3hhG1a48+mcpYw==
-X-Gm-Gg: ATEYQzzt/K2qwFNNyPBh+K+FKaXPRZuGKT/FXKOcK5ucs+o7unyc9PHoydBvfdx73eI
-	QyIus0tTjQngtyJX/4hrilsoVbwBRxH/IAN4pr8kLWCXtqmsiYQQW1Y/7ZRu9C1jxQq1U1QpywS
-	P6ilzhvmv3FuJx4MLGzupxiMScgGq+Nn0Da5zoROE+vIJZn2UhNXTjmz1ycjld3HNqujZeG+6mV
-	8Q9z1qt/HUJ5FdTVbUhVXelK61DhIJA5AGXEffBqWPgPcXzMLjiFge2cF0ijsX/KwGmXJVqtIar
-	D6HvMVne76QB8STsOKZj+EMKLJ0wmYVNn3wvy5iF7O5CYLDfrKi5BUIBCAgFJM5k8pguygk36sn
-	RuN3EJ7UL8lbU4opRvJQJQ6dnbgjCdUVuFFu+Jd07aje6MIj8zBlkab/Pq4avw73X2YSZCN+hgy
-	gkyyWiTQDYRM6wsx7aUpImK8qdeUQWkX5+9T7A+UAn7Iv4/tc9ddEE6U3J6w1qhQ==
-X-Received: by 2002:a05:6a00:1826:b0:827:2dff:7116 with SMTP id d2e1a72fcca58-82c6d99ac23mr4021492b3a.13.1774459794263;
-        Wed, 25 Mar 2026 10:29:54 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d216a0esm312308b3a.17.2026.03.25.10.29.52
+        bh=Vjja8caMlVbzaaBDEmhOOIgntWTqovjLLF5bSwJnWKk=;
+        b=oGcrHYOX9m1+g96XsZ6UZmTDwJqp3yXw6A0jA51QBw5cvlZkFtkG9WBdFEymCp18i0
+         l/leFvfsvMPnEg5L9YMCYtp9R8yVMAI0hH/hXjd7wFILpWMkbHTB+U/+cv/bNpOO/Zpc
+         S1I3mjBF0Gs+wsKUvx29vzT8fDiSrRwidu8lIFYO5HIAPTtOlY6+NRtg02SkZXahwi4o
+         Hl/e0pnJdmVsYydjLkv6fMXmG2R6+Y5pVxTxkK57GPudDJT+4sAdvydz6KbkS3JrOjZv
+         t4poFu6C5lj6z8EAN82rlieX1lIfzh9LunPxq+G41FvmgPfN18pKSnfQlVRtc8iFekvM
+         dQEA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8q04SjA0G06lMsBj+evZoZRgBYZY2663e3nSCcIQCvgvCFwdqICzBX4RYLb78ZwjrXIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyILhIj7BFEUV3HVUw5nzICXuXZq/1TbwDkJGUBq6VkK7/Ri5x0
+	Zh8B8/s/cRp+rPJ4wjlD6KKlxNdiXZ8vqvXL9NLxV7IxHbg7x0pVvRCJsHF5sCpcMQ==
+X-Gm-Gg: ATEYQzxkSsaNyAk2i6Cmgm5va/7KeuS4/oYRVDBLy1UGnCZKco4AGpd6rGI3VEKIFMN
+	W/6OOrSr3WxsCuegSDtcD1i2pXyMjHqBqn7xeQmDkbWIcCMx5DmpxCke13vBe7d5xibE0APm19Q
+	wNshCVvL1wUTaE48D8blDNnpKdu5BaIBUsdkFeZL7QSl0rTfJIpYYbXwK4Bcl5SVqLAsFUweOAR
+	+yvgnDhiWJ+dg7ccW25H9jp6MpAY+XJ6VmtHzyGwyWsVG6U2dMhmiHgfAxXtRTrOFdqiLAs8cJx
+	4beJalq9352iBrp7J86SSkgGJ+CMTUfBGz0rw12Upg9AFa79tAZdpwDjQ7ln6b+dvGNh8mq9StY
+	i3s4kyRl3q55TxmpJszGgZkp2KAMwKpxqKrkEmWiOHqAONPleX89lEnCN1AFfzWANwl1oHsZDAh
+	P5M+sCO8TOvNOGEA3bMbBI/SOeXxgYzrEEjczedw8Hg1lavLTPLcI15/cD+Gbqgw==
+X-Received: by 2002:a17:902:ec8b:b0:2a7:d266:d84a with SMTP id d9443c01a7336-2b0beddf35emr66535ad.17.1774459911111;
+        Wed, 25 Mar 2026 10:31:51 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc7847acsm4872975ad.19.2026.03.25.10.31.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 10:29:52 -0700 (PDT)
-Date: Wed, 25 Mar 2026 17:29:48 +0000
-From: David Matlack <dmatlack@google.com>
-To: Yi Liu <yi.l.liu@intel.com>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	Askar Safin <safinaskar@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Chris Li <chrisl@kernel.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
-	Marco Elver <elver@google.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 03/24] PCI: Require Live Update preserved devices are
- in singleton iommu_groups
-Message-ID: <acQbjF53aIzv7Ieq@google.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-4-dmatlack@google.com>
- <376910fa-4232-4e58-bf87-0504202866a5@intel.com>
- <acLRICLAP5Ccqt9I@google.com>
- <b16f93af-1ec6-43f5-b4d0-b1d390e3c23c@intel.com>
+        Wed, 25 Mar 2026 10:31:50 -0700 (PDT)
+Date: Wed, 25 Mar 2026 17:31:46 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
+ an HWPT to be preserved
+Message-ID: <acQSuuvxiVtGhY7A@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-11-skhawaja@google.com>
+ <acPzMRNMy6kDUglF@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <b16f93af-1ec6-43f5-b4d0-b1d390e3c23c@intel.com>
+In-Reply-To: <acPzMRNMy6kDUglF@google.com>
 
-On 2026-03-25 07:12 PM, Yi Liu wrote:
-> 
-> 
-> On 3/25/26 02:00, David Matlack wrote:
-> > On 2026-03-24 09:07 PM, Yi Liu wrote:
-> > > On 3/24/26 07:57, David Matlack wrote:
-> > > > Require that Live Update preserved devices are in singleton iommu_groups
-> > > > during preservation (outgoing kernel) and retrieval (incoming kernel).
-> > > > 
-> > > > PCI devices preserved across Live Update will be allowed to perform
-> > > > memory transactions throughout the Live Update. Thus IOMMU groups for
-> > > > preserved devices must remain fixed. Since all current use cases for
-> > > > Live Update are for PCI devices in singleton iommu_groups, require that
-> > > > as a starting point. This avoids the complexity of needing to enforce
-> > > > arbitrary iommu_group topologies while still allowing all current use
-> > > > cases.
-> > > > 
-> > > > Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> > > > Signed-off-by: David Matlack <dmatlack@google.com>
-> > > > ---
-> > > >    drivers/pci/liveupdate.c | 34 +++++++++++++++++++++++++++++++++-
-> > > >    1 file changed, 33 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> > > > index bec7b3500057..a3dbe06650ff 100644
-> > > > --- a/drivers/pci/liveupdate.c
-> > > > +++ b/drivers/pci/liveupdate.c
-> > > > @@ -75,6 +75,8 @@
-> > > >     *
-> > > >     *  * The device must not be a Physical Function (PF).
-> > > >     *
-> > > > + *  * The device must be the only device in its IOMMU group.
-> > > > + *
-> > > >     * Preservation Behavior
-> > > >     * =====================
-> > > >     *
-> > > > @@ -105,6 +107,7 @@
-> > > >    #include <linux/bsearch.h>
-> > > >    #include <linux/io.h>
-> > > > +#include <linux/iommu.h>
-> > > >    #include <linux/kexec_handover.h>
-> > > >    #include <linux/kho/abi/pci.h>
-> > > >    #include <linux/liveupdate.h>
-> > > > @@ -222,6 +225,31 @@ static void pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
-> > > >    	ser->nr_devices--;
-> > > >    }
-> > > > +static int count_devices(struct device *dev, void *__nr_devices)
-> > > > +{
-> > > > +	(*(int *)__nr_devices)++;
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > 
-> > > there was a related discussion on the singleton group check. have you
-> > > considered the device_group_immutable_singleton() in below link?
-> > > 
-> > > https://lore.kernel.org/linux-iommu/20220421052121.3464100-4-baolu.lu@linux.intel.com/
-> > 
-> > Thanks for the link.
-> > 
-> > Based on the discussion in the follow-up threads, I think the only check
-> > in that function that is needed on top of what is in this patch to
-> > ensure group immutability is this one:
-> > 
-> > 	/*
-> > 	 * The device could be considered to be fully isolated if
-> > 	 * all devices on the path from the device to the host-PCI
-> > 	 * bridge are protected from peer-to-peer DMA by ACS.
-> > 	 */
-> > 	if (!pci_acs_path_enabled(pdev, NULL, REQ_ACS_FLAGS))
-> > 		return false;
-> > 
-> > However, this would restrict Live Update support to only device
-> > topologies that have these flags enabled. I am not yet sure if this
-> > would be overly restrictive for the scenarios we care about supporting.
-> 
-> yes. It's a bit different from that thread in which not only require
-> singleton group but also need to be immutable.
-> 
-> > An alternative way to ensure immutability would be to block adding
-> > devices at probe time. i.e. Fail pci_device_group() if the device being
-> > added has liveupdate_incoming=True, or if the group already contains a
-> > device with liveupdate_{incoming,outgoing}=True. We would still need the
-> > check in pci_liveupdate_preserve() to pretect against setting
-> > liveupdate_outgoing=True on a device in a multi-device group.
-> 
-> this looks good to me. But you'll disallow hotplug-in during liveupdate.
-> not sure about if any decision w.r.t. hotplug. is it acceptable?
+On Wed, Mar 25, 2026 at 02:37:37PM +0000, Pranjal Shrivastava wrote:
+>On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
+>> From: YiFei Zhu <zhuyifei@google.com>
+>>
+>> Userspace provides a token, which will then be used at restore to
+>> identify this HWPT. The restoration logic is not implemented and will be
+>> added later.
+>>
+>> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/iommufd/Makefile          |  1 +
+>>  drivers/iommu/iommufd/iommufd_private.h | 13 +++++++
+>>  drivers/iommu/iommufd/liveupdate.c      | 49 +++++++++++++++++++++++++
+>>  drivers/iommu/iommufd/main.c            |  2 +
+>>  include/uapi/linux/iommufd.h            | 19 ++++++++++
+>>  5 files changed, 84 insertions(+)
+>>  create mode 100644 drivers/iommu/iommufd/liveupdate.c
+>>
+>> diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
+>> index 71d692c9a8f4..c3bf0b6452d3 100644
+>> --- a/drivers/iommu/iommufd/Makefile
+>> +++ b/drivers/iommu/iommufd/Makefile
+>> @@ -17,3 +17,4 @@ obj-$(CONFIG_IOMMUFD_DRIVER) += iova_bitmap.o
+>>
+>>  iommufd_driver-y := driver.o
+>>  obj-$(CONFIG_IOMMUFD_DRIVER_CORE) += iommufd_driver.o
+>> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
+>> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+>> index eb6d1a70f673..6424e7cea5b2 100644
+>> --- a/drivers/iommu/iommufd/iommufd_private.h
+>> +++ b/drivers/iommu/iommufd/iommufd_private.h
+>> @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
+>>  	bool auto_domain : 1;
+>>  	bool enforce_cache_coherency : 1;
+>>  	bool nest_parent : 1;
+>> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+>> +	bool lu_preserve : 1;
+>> +	u32 lu_token;
+>
+>Did we downsize the token? Shouldn't this be u64 as everywhere else?
 
-Anyone doing hotplug during the middle of a Live Update is asking for
-trouble IMO. And it would only prevent a hot-plugged device from coming
-up if it were to be added to the iommu_group as an existing preserved
-device. I think that is reasonable.
+Note that this is different from the token that is used to preserve the
+FD into LUO. This token is used to mark the HWPT for preservation, that
+is it will be preserved when the FD is preserved.
 
-> BTW. A question not specific to this patch. If failure happens after
-> executing kexec, is there any chance to fallback to the prior kernel?
+I will add more text in the commit message to make it clear.
 
-There are many failure paths during the reboot() syscall that can return
-back to userspace, and then userspace can figure out how to bring the
-system (e.g. VMs) back online on the current kernel.
+For consistency I will make it u64.
+>
+>> +#endif
+>>  	/* Head at iommufd_ioas::hwpt_list */
+>>  	struct list_head hwpt_item;
+>>  	struct iommufd_sw_msi_maps present_sw_msi;
+>> @@ -707,6 +711,15 @@ iommufd_get_vdevice(struct iommufd_ctx *ictx, u32 id)
+>>  			    struct iommufd_vdevice, obj);
+>>  }
+>>
+>> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+>> +int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd);
+>> +#else
+>> +static inline int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd)
+>> +{
+>> +	return -ENOTTY;
+>> +}
+>> +#endif
+>> +
+>>  #ifdef CONFIG_IOMMUFD_TEST
+>>  int iommufd_test(struct iommufd_ucmd *ucmd);
+>>  void iommufd_selftest_destroy(struct iommufd_object *obj);
+>> diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
+>> new file mode 100644
+>> index 000000000000..ae74f5b54735
+>> --- /dev/null
+>> +++ b/drivers/iommu/iommufd/liveupdate.c
+>> @@ -0,0 +1,49 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +
+>> +#define pr_fmt(fmt) "iommufd: " fmt
+>> +
+>> +#include <linux/file.h>
+>> +#include <linux/iommufd.h>
+>> +#include <linux/liveupdate.h>
+>> +
+>> +#include "iommufd_private.h"
+>> +
+>> +int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd)
+>> +{
+>> +	struct iommu_hwpt_lu_set_preserve *cmd = ucmd->cmd;
+>> +	struct iommufd_hwpt_paging *hwpt_target, *hwpt;
+>> +	struct iommufd_ctx *ictx = ucmd->ictx;
+>> +	struct iommufd_object *obj;
+>> +	unsigned long index;
+>> +	int rc = 0;
+>> +
+>> +	hwpt_target = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+>> +	if (IS_ERR(hwpt_target))
+>> +		return PTR_ERR(hwpt_target);
+>> +
+>> +	xa_lock(&ictx->objects);
+>> +	xa_for_each(&ictx->objects, index, obj) {
+>> +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
+>> +			continue;
+>
+>Couldn't these be HWPT_NESTED? Are we explicitly skipping HWPT_NESTED
+>here? ARM SMMUv3 heavily relies on IOMMU_DOMAIN_NESTED to back vIOMMUs
+>and hold critical guest translation state. We'd need to support
+>HWPT_NESTED for arm-smmu-v3.
 
-But otherwise, kexec is currently a one way door. Once you kexec, into
-the new kernel, you would have to do another Live Update to get back
-into the previous kernel.
+For this series, I am not handling the NESTED and vIOMMU usecases. I
+will be sending a separate series to handle those, this is mentioned in
+cover letter also in the Future work.
+
+Will add a note in commit message also.
+>
+>> +
+>> +		hwpt = container_of(obj, struct iommufd_hwpt_paging, common.obj);
+>> +
+>> +		if (hwpt == hwpt_target)
+>> +			continue;
+>> +		if (!hwpt->lu_preserve)
+>> +			continue;
+>> +		if (hwpt->lu_token == cmd->hwpt_token) {
+>> +			rc = -EADDRINUSE;
+>> +			goto out;
+>> +		}
+>
+>I see that this entire loop is to avoid collisions but could we improve
+>this? We are doing an O(N) linear search over the entire ictx->objects
+>xarray while holding xa_lock on every setup call.
+>
+>If the kernel requires a strict 1:1 mapping of lu_token to hwpt,
+>wouldn't it be much better to track these in a dedicated xarray?
+>
+>Just thinking out loud, if we added a dedicated lu_tokens xarray to
+>iommufd_ctx, we could drop the linear search and the lock entirely,
+>letting the xarray handle the collision natively like this:
+>
+>	rc = xa_insert(&ictx->lu_tokens, cmd->hwpt_token, hwpt_target, GFP_KERNEL);
+>	if (rc == -EBUSY) {
+>		rc = -EADDRINUSE;
+>		goto out;
+>	} else if (rc) {
+>		goto out;
+>	}
+>
+>This ensures instant collision detection without iterating the global
+>object pool. When the HWPT is eventually destroyed (or un-preserved), we
+>simply call xa_erase(&ictx->lu_tokens, hwpt->lu_token).
+
+Agreed. We can call xa_erase when it is destroyed. This can also be used
+during actual preservation without taking the objects lock.
+>
+>> +	}
+>> +
+>> +	hwpt_target->lu_preserve = true;
+>
+>I don't see a way to unset hwpt->lu_preserve once it's been set. What if
+>a VMM marks a HWPT for preservation, but then the guest decides to rmmod
+>the device before the actual kexec? The VMM would need a way to
+>unpreserve it so we don't carry stale state across the live update?
+>
+>Are we relying on the VMM to always call IOMMU_DESTROY on that HWPT when
+>it's no longer needed for preservation? A clever VMM optimizing for perf
+>might just pool or cache detached HWPTs for future reuse. If that HWPT
+>goes back into a free pool and gets re-attached to a new device later,
+>the sticky lu_preserve state will inadvertently leak across the kexec..
+
+As mentioned earlier, the HWPT is not being preserved in this call. So
+when VMM dies or rmmod happens, this HWPT will be destroyed following
+the normal flow.
+
+I will add this in commit message.
+>
+>> +	hwpt_target->lu_token = cmd->hwpt_token;
+>> +
+>> +out:
+>> +	xa_unlock(&ictx->objects);
+>> +	iommufd_put_object(ictx, &hwpt_target->common.obj);
+>> +	return rc;
+>> +}
+>> +
+>> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+>> index 5cc4b08c25f5..e1a9b3051f65 100644
+>> --- a/drivers/iommu/iommufd/main.c
+>> +++ b/drivers/iommu/iommufd/main.c
+>> @@ -493,6 +493,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
+>>  		 __reserved),
+>>  	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
+>>  		 struct iommu_viommu_alloc, out_viommu_id),
+>> +	IOCTL_OP(IOMMU_HWPT_LU_SET_PRESERVE, iommufd_hwpt_lu_set_preserve,
+>> +		 struct iommu_hwpt_lu_set_preserve, hwpt_token),
+>>  #ifdef CONFIG_IOMMUFD_TEST
+>>  	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
+>>  #endif
+>> diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+>> index 2c41920b641d..25d8cff987eb 100644
+>> --- a/include/uapi/linux/iommufd.h
+>> +++ b/include/uapi/linux/iommufd.h
+>> @@ -57,6 +57,7 @@ enum {
+>>  	IOMMUFD_CMD_IOAS_CHANGE_PROCESS = 0x92,
+>>  	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
+>>  	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
+>> +	IOMMUFD_CMD_HWPT_LU_SET_PRESERVE = 0x95,
+>>  };
+>>
+>>  /**
+>> @@ -1299,4 +1300,22 @@ struct iommu_hw_queue_alloc {
+>>  	__aligned_u64 length;
+>>  };
+>>  #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
+>> +
+>> +/**
+>> + * struct iommu_hwpt_lu_set_preserve - ioctl(IOMMU_HWPT_LU_SET_PRESERVE)
+>
+>Nit: The IOCTL is called "IOMMU_HWPT_LU_SET_PRESERVE" which subtly
+>implies the existence of a "GET_PRESERVE". Should we perhaps just call
+>it IOMMU_HWPT_LU_PRESERVE?
+
+LU_PRESERVE would imply that it is being preserved. Maybe
+"IOMMU_HWPT_LU_MARK_PRESERVE"?
+>
+>> + * @size: sizeof(struct iommu_hwpt_lu_set_preserve)
+>> + * @hwpt_id: Iommufd object ID of the target HWPT
+>> + * @hwpt_token: Token to identify this hwpt upon restore
+>> + *
+>> + * The target HWPT will be preserved during iommufd preservation.
+>> + *
+>> + * The hwpt_token is provided by userspace. If userspace enters a token
+>> + * already in use within this iommufd, -EADDRINUSE is returned from this ioctl.
+>> + */
+>> +struct iommu_hwpt_lu_set_preserve {
+>> +	__u32 size;
+>> +	__u32 hwpt_id;
+>> +	__u32 hwpt_token;
+>> +};
+>
+>Nit: Let's make sure we follow the 64-bit alignment as enforced in the
+>rest of this file, note the __u32 __reserved fields in existing IOCTL
+>structs.
+
+Agreed. Will update
+>
+>> +#define IOMMU_HWPT_LU_SET_PRESERVE _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HWPT_LU_SET_PRESERVE)
+>>  #endif
+>
+>Thanks,
+>Praan
