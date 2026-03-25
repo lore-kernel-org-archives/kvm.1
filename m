@@ -1,365 +1,123 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C215372B2C
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 20:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2471C3537C9;
+	Wed, 25 Mar 2026 20:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774470993; cv=none; b=bP0r/7fHqsbJ+dnY6HR8QDU+VM70FDS6ZjnVtmq+HL4mZjWZ9l8CA+D+bNla+p54La6kxgHYPUM7HZFh+It/G88OFqKfD3n5Rt/uwDB6093/B/sQBmgSvgLFbWcKPl36u/niKxEQe/u8LMdf1brKUwb6gNW1zCcM8G7acPzOKK4=
+	t=1774471137; cv=none; b=uPBrPGsZcdW0bFTcQ0bPgMF1Sk4rqDgJx7UnIg5XtEpSQSRkN9HyoFyyx7UleTCeTg+mcA8K0Bt2qHithU/wLzLAL+j6trfYwc9pLlJu/M1JI21V+k4gWq7AvebHNu8mYmAnVbWcsiojKXYttOQ15wb7TX8ZhSZwCJIE0kH5wUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774470993; c=relaxed/simple;
-	bh=G/OguKM1W5dJNW728tTqXOUOlZSoqGBwLWmB26r449U=;
+	s=arc-20240116; t=1774471137; c=relaxed/simple;
+	bh=3qQOfI80TwhWA6qJISPfKRiQ49oBnJvL0Uq6Ke3mv2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=legjsS4ejIqH/0CXLTvJJRUgqBHTutirPbhCBchpbIAhqv3EdPh7Y/csu1CY/Pq35c6ElA8gu2rc8rlLK2nNEq379k2iVWjvKvzQ00YuupOq2Ek2HEhPrRDbP6XgGzC1evtg/PNIjwUkIduQFQLo1SLnXXbK1SBvTQTMXr1HHMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vJ1Xn3qy; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tms7MfR1Z/vnoDKbiia/XWHXA13ZSKgQjYc2EmJEt/UZ85HYDc6zuAW0BAahEUxLUMo7fg7+stxTEn1Vx0WHlIgOU/qBr5BJLM3n5Grmu0+VlhQDp4QdmOG35MswGCxLrDPFA/eoM4+OuvC+s08/Q1liRxpjjU4bGX8/8sTHmBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BgBBResu; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vJ1Xn3qy"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b052562254so31025ad.0
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 13:36:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774470990; x=1775075790; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uw6+McBLDP99Qh3Sga6Ioxeix7rEPJ8bFUmo6HAgT7E=;
-        b=vJ1Xn3qyeQNy9pbJVZYHg3FLraA6Cz59xLpS264Is8wq9ozLOC0UBvfE9e+7NDc6Hr
-         dg4ha5H+NqG77eNu5zreBiTcKuBHDn3lBa3ccZLCGrWe2IvQE0UBXxqlYZlm41T6YYKp
-         U0TXZ88VQs9zTLK4QeD/Ys8gHLyIz/9IPJ4cmILkqBdbajhKuQbBYjv+BnnE3AHFw8Lm
-         nwzb/rO7tJq7qX7lG3MV9Uuu2JWlVamUoWdH3xUMiGstLC44u4CCc/R66apDyPsCL5fo
-         ky7OcSldYNf2E6hF39QNarm5CE5YkPJG33dHsaLpcET/vkFMLdXuVhANFQFPeOWuqbyc
-         MZYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774470990; x=1775075790;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uw6+McBLDP99Qh3Sga6Ioxeix7rEPJ8bFUmo6HAgT7E=;
-        b=J2e+ftD9tizimfYLeOpDPsleDAZ8hD+8msJJRzhSca55XE3hq6piiXutZd5p+VSG4r
-         UestZZe8HAd2Y9Y7EUK2u1bcn2U23n9qzr0EoaKgypXvOCkqMnmbxuX/cgu2X3tqsX4d
-         rjYlOiv7UC1SXKR9dICeQlSjOZ/OlamgfuUIFAmChQ4e2cQprx1aRx+p3EH8tIG6X+VS
-         wRhOcMfch1BR6UvDG7JPQ35i4Rys+y9UDTzCd8swfg3B+2/TnZX96BwKU8DTG9QhlQ/s
-         Sr5kSm0SX/q0XN2SyaliU4jvzLKjKXGINQRwz/k39qGNmiNbA7rvXn9V3ttejLdh0ExT
-         ElWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKhrPujxgi2CdQAMna4TMTv8LMPhEYtq3jLW337czw3KZylU1w3MF1e4erZxLRW4r1Hac=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXp2awFEd9vrlB2iOfpb7LNaIk2gKTc3xv3OHiLmvcR1WM2HVd
-	Tso3pL7r863PeB/bjy+pZj+3HawANWlTPdt81khEG07NSHCirPTo2pQXH4uJzstYHA==
-X-Gm-Gg: ATEYQzyDRd9GJyUgK+BVpJWqRjgmwjapa2hYKY7EtzflXPDQlv2X76VfVt1m/CqncYc
-	6aeKRSXOaJM4MXQrhi2N9saWLPE0iMKyfY4jAhTMmKQ7DUnEOEY4FkCkAEuKYVZk41YQ/0F7MdZ
-	I5L/8whoOAx8UK5SXTHkm/l+a58CXqgUHlAzCukvLcScHsBXWLzwXDppY+oZCycO3qzOIy4f/YL
-	RI2z98udv+rBO8gZNDW1Xw1HQYA6kCW/lHCkY7NTfBHNy68LFnSp+ohMxGJlUjVEk/D0e0SthBG
-	ikCNWIBj83fbhhPxn85NQtbzUVvEvCOrfwQvFBDk/JiCN7ZzSA6C6RJ2GQ/CMJ9yOzuOQktLB7l
-	u42cgyKTUPWw7LGIF7i/3zwEhbaa78IeEwpk7Lc/5VWDQZRToGT6PonqQWPkhW9Wyd3fyIJOefk
-	QCtFiFTq82MaFnxAJDlF0ieFvo13NNwR5eXGLrJEpxVTsSg1cUzgyVqS0Sew==
-X-Received: by 2002:a17:902:c947:b0:2b0:5193:1212 with SMTP id d9443c01a7336-2b0bf755ef9mr56715ad.4.1774470989952;
-        Wed, 25 Mar 2026 13:36:29 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc7a17c5sm8899885ad.26.2026.03.25.13.36.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 13:36:29 -0700 (PDT)
-Date: Wed, 25 Mar 2026 20:36:20 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	YiFei Zhu <zhuyifei@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
- an HWPT to be preserved
-Message-ID: <acRHRA-T28Kur5VT@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-11-skhawaja@google.com>
- <acPzMRNMy6kDUglF@google.com>
- <acQSuuvxiVtGhY7A@google.com>
- <acQvqAC4iawBIZJb@google.com>
- <acQ0_LfXd_-2cv1I@google.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BgBBResu"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A553F40E0174;
+	Wed, 25 Mar 2026 20:38:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ys0G2Hjfo8ez; Wed, 25 Mar 2026 20:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1774471122; bh=Kfl+/u8o55KrunJlXJFoR6X6kWZP2WOLZYeH9eXsClU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BgBBResu9KUlmSMB0AlDnOVskhxO1vQosnIJ0o+a1HseLE9jTycdz62N/5wuHykqZ
+	 r4vyZAjxIxb1ytUHeFWqbHNMJYUfLgLplzJ1KugiC1Emys6FYKlm/nUPOgUO4pfM9a
+	 tUxAhJthc7YAR9CIliL2mgVVqRsDkWjwBi/4jKEVVhiORDNXmUw7ZdvVBytqWYjb7v
+	 glspvfPjFJo1oQb7cXPojfG1qZUO0Ufk4g+RXGjPC0te3TI3qoEdv9gLisuRL7vD0I
+	 psEWsk016ZBd2LWaD05kWo0PBPXgrdPI4jVyKp0lwLcPygt8oNHLEPBLO1qKgKyY7x
+	 zahRc6MYvgv0Yc1aBUPJ0KrKEappyZ63ZigC3LRW2BZMa/jiVnMwC12ozh+I4WeE3i
+	 x9eR/gBVHkN+Jtwm5nCY2jT1SIt/IqoE2i7E6L3nxzle21THCT+NVo+6xVKRmgE5Kk
+	 O32BlK31p6qCxEybh9gs5ik8C7PiM3CTi/lilqNKuwV2mYOwsb2qq1/NFi7iuYtTq0
+	 BLsLUnEnw++SCenos0qik95nxuehLpYB5olExeB9i2chG9j9a5+xAGnVrd3LAInyiM
+	 eYD31FXqpqEiofiu7R+J7BxV4YMFOAti/ouIFm4DY2MN8poNCycA4fc3wZTNvg5y1w
+	 4edxwwWMF2fcaEHXZtMMOzcI=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 872D740E0031;
+	Wed, 25 Mar 2026 20:38:04 +0000 (UTC)
+Date: Wed, 25 Mar 2026 21:37:59 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+ <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+ <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
+ <20260324221308.7sh6afdy6r6tsf4w@desk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <acQ0_LfXd_-2cv1I@google.com>
+In-Reply-To: <20260324221308.7sh6afdy6r6tsf4w@desk>
 
-On Wed, Mar 25, 2026 at 08:19:05PM +0000, Samiullah Khawaja wrote:
-> On Wed, Mar 25, 2026 at 06:55:36PM +0000, Pranjal Shrivastava wrote:
-> > On Wed, Mar 25, 2026 at 05:31:46PM +0000, Samiullah Khawaja wrote:
-> > > On Wed, Mar 25, 2026 at 02:37:37PM +0000, Pranjal Shrivastava wrote:
-> > > > On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
-> > > > > From: YiFei Zhu <zhuyifei@google.com>
-> > > > >
-> > > > > Userspace provides a token, which will then be used at restore to
-> > > > > identify this HWPT. The restoration logic is not implemented and will be
-> > > > > added later.
-> > > > >
-> > > > > Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-> > > > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> > > > > ---
-> > > > >  drivers/iommu/iommufd/Makefile          |  1 +
-> > > > >  drivers/iommu/iommufd/iommufd_private.h | 13 +++++++
-> > > > >  drivers/iommu/iommufd/liveupdate.c      | 49 +++++++++++++++++++++++++
-> > > > >  drivers/iommu/iommufd/main.c            |  2 +
-> > > > >  include/uapi/linux/iommufd.h            | 19 ++++++++++
-> > > > >  5 files changed, 84 insertions(+)
-> > > > >  create mode 100644 drivers/iommu/iommufd/liveupdate.c
-> > > > >
-> > > > > diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
-> > > > > index 71d692c9a8f4..c3bf0b6452d3 100644
-> > > > > --- a/drivers/iommu/iommufd/Makefile
-> > > > > +++ b/drivers/iommu/iommufd/Makefile
-> > > > > @@ -17,3 +17,4 @@ obj-$(CONFIG_IOMMUFD_DRIVER) += iova_bitmap.o
-> > > > >
-> > > > >  iommufd_driver-y := driver.o
-> > > > >  obj-$(CONFIG_IOMMUFD_DRIVER_CORE) += iommufd_driver.o
-> > > > > +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
-> > > > > diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-> > > > > index eb6d1a70f673..6424e7cea5b2 100644
-> > > > > --- a/drivers/iommu/iommufd/iommufd_private.h
-> > > > > +++ b/drivers/iommu/iommufd/iommufd_private.h
-> > > > > @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
-> > > > >  	bool auto_domain : 1;
-> > > > >  	bool enforce_cache_coherency : 1;
-> > > > >  	bool nest_parent : 1;
-> > > > > +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> > > > > +	bool lu_preserve : 1;
-> > > > > +	u32 lu_token;
-> > > >
-> > > > Did we downsize the token? Shouldn't this be u64 as everywhere else?
-> > > 
-> > > Note that this is different from the token that is used to preserve the
-> > > FD into LUO. This token is used to mark the HWPT for preservation, that
-> > > is it will be preserved when the FD is preserved.
-> > > 
-> > > I will add more text in the commit message to make it clear.
-> > > 
-> > > For consistency I will make it u64.
-> > 
-> > I understand that it's logically distinct from the FD preservation token
-> > However, the userspace likely won't implement a separate 32-bit token
-> > generator just for IOMMUFD Live Update. I assume, it'll just use the a
-> > same 64-bit restore-token allocator. Keeping this as u64 prevents them
-> > from having to downcast or manage a separate ID space just for this IOCTL
+On Tue, Mar 24, 2026 at 03:13:08PM -0700, Pawan Gupta wrote:
+> This is cleaner. A few things to consider are, CLEAR_BRANCH_HISTORY that
+> calls clear_bhb_loop() would be calling into C code very early during the
+> kernel entry. The code generated here may vary based on the compiler. Any
+> indirect branch here would be security risk. This needs to be noinstr so
+> that it can't be hijacked by probes and ftraces.
 > 
-> Agreed.
-> > 
-> > > >
-> > > > > +#endif
-> > > > >  	/* Head at iommufd_ioas::hwpt_list */
-> > > > >  	struct list_head hwpt_item;
-> > > > >  	struct iommufd_sw_msi_maps present_sw_msi;
-> > > > > @@ -707,6 +711,15 @@ iommufd_get_vdevice(struct iommufd_ctx *ictx, u32 id)
-> > > > >  			    struct iommufd_vdevice, obj);
-> > > > >  }
-> > > > >
-> > > > > +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> > > > > +int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd);
-> > > > > +#else
-> > > > > +static inline int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd)
-> > > > > +{
-> > > > > +	return -ENOTTY;
-> > > > > +}
-> > > > > +#endif
-> > > > > +
-> > > > >  #ifdef CONFIG_IOMMUFD_TEST
-> > > > >  int iommufd_test(struct iommufd_ucmd *ucmd);
-> > > > >  void iommufd_selftest_destroy(struct iommufd_object *obj);
-> > > > > diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
-> > > > > new file mode 100644
-> > > > > index 000000000000..ae74f5b54735
-> > > > > --- /dev/null
-> > > > > +++ b/drivers/iommu/iommufd/liveupdate.c
-> > > > > @@ -0,0 +1,49 @@
-> > > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > > +
-> > > > > +#define pr_fmt(fmt) "iommufd: " fmt
-> > > > > +
-> > > > > +#include <linux/file.h>
-> > > > > +#include <linux/iommufd.h>
-> > > > > +#include <linux/liveupdate.h>
-> > > > > +
-> > > > > +#include "iommufd_private.h"
-> > > > > +
-> > > > > +int iommufd_hwpt_lu_set_preserve(struct iommufd_ucmd *ucmd)
-> > > > > +{
-> > > > > +	struct iommu_hwpt_lu_set_preserve *cmd = ucmd->cmd;
-> > > > > +	struct iommufd_hwpt_paging *hwpt_target, *hwpt;
-> > > > > +	struct iommufd_ctx *ictx = ucmd->ictx;
-> > > > > +	struct iommufd_object *obj;
-> > > > > +	unsigned long index;
-> > > > > +	int rc = 0;
-> > > > > +
-> > > > > +	hwpt_target = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
-> > > > > +	if (IS_ERR(hwpt_target))
-> > > > > +		return PTR_ERR(hwpt_target);
-> > > > > +
-> > > > > +	xa_lock(&ictx->objects);
-> > > > > +	xa_for_each(&ictx->objects, index, obj) {
-> > > > > +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
-> > > > > +			continue;
-> > > >
-> > > > Couldn't these be HWPT_NESTED? Are we explicitly skipping HWPT_NESTED
-> > > > here? ARM SMMUv3 heavily relies on IOMMU_DOMAIN_NESTED to back vIOMMUs
-> > > > and hold critical guest translation state. We'd need to support
-> > > > HWPT_NESTED for arm-smmu-v3.
-> > > 
-> > > For this series, I am not handling the NESTED and vIOMMU usecases. I
-> > > will be sending a separate series to handle those, this is mentioned in
-> > > cover letter also in the Future work.
-> > > 
-> > > Will add a note in commit message also.
-> > 
-> > I see, I missed it in the cover letter. Shall we add a TODO mentioning
-> > that we'll support to NESTED too? (No strong feelings about this or
-> > adding stuff to the commit message too.. the cover letter mentions it)
-> > 
-> > > >
-> > > > > +
-> > > > > +		hwpt = container_of(obj, struct iommufd_hwpt_paging, common.obj);
-> > > > > +
-> > > > > +		if (hwpt == hwpt_target)
-> > > > > +			continue;
-> > > > > +		if (!hwpt->lu_preserve)
-> > > > > +			continue;
-> > > > > +		if (hwpt->lu_token == cmd->hwpt_token) {
-> > > > > +			rc = -EADDRINUSE;
-> > > > > +			goto out;
-> > > > > +		}
-> > > >
-> > > > I see that this entire loop is to avoid collisions but could we improve
-> > > > this? We are doing an O(N) linear search over the entire ictx->objects
-> > > > xarray while holding xa_lock on every setup call.
-> > > >
-> > > > If the kernel requires a strict 1:1 mapping of lu_token to hwpt,
-> > > > wouldn't it be much better to track these in a dedicated xarray?
-> > > >
-> > > > Just thinking out loud, if we added a dedicated lu_tokens xarray to
-> > > > iommufd_ctx, we could drop the linear search and the lock entirely,
-> > > > letting the xarray handle the collision natively like this:
-> > > >
-> > > > 	rc = xa_insert(&ictx->lu_tokens, cmd->hwpt_token, hwpt_target, GFP_KERNEL);
-> > > > 	if (rc == -EBUSY) {
-> > > > 		rc = -EADDRINUSE;
-> > > > 		goto out;
-> > > > 	} else if (rc) {
-> > > > 		goto out;
-> > > > 	}
-> > > >
-> > > > This ensures instant collision detection without iterating the global
-> > > > object pool. When the HWPT is eventually destroyed (or un-preserved), we
-> > > > simply call xa_erase(&ictx->lu_tokens, hwpt->lu_token).
-> > > 
-> > > Agreed. We can call xa_erase when it is destroyed. This can also be used
-> > > during actual preservation without taking the objects lock.
-> > 
-> > Awesome!
-> > 
-> > > >
-> > > > > +	}
-> > > > > +
-> > > > > +	hwpt_target->lu_preserve = true;
-> > > >
-> > > > I don't see a way to unset hwpt->lu_preserve once it's been set. What if
-> > > > a VMM marks a HWPT for preservation, but then the guest decides to rmmod
-> > > > the device before the actual kexec? The VMM would need a way to
-> > > > unpreserve it so we don't carry stale state across the live update?
-> > > >
-> > > > Are we relying on the VMM to always call IOMMU_DESTROY on that HWPT when
-> > > > it's no longer needed for preservation? A clever VMM optimizing for perf
-> > > > might just pool or cache detached HWPTs for future reuse. If that HWPT
-> > > > goes back into a free pool and gets re-attached to a new device later,
-> > > > the sticky lu_preserve state will inadvertently leak across the kexec..
-> > > 
-> > > As mentioned earlier, the HWPT is not being preserved in this call. So
-> > > when VMM dies or rmmod happens, this HWPT will be destroyed following
-> > > the normal flow.
-> > > 
-> > 
-> > I think there might be a slight disconnect regarding the "normal flow"
-> > of HWPT destruction. My concern isn't about the VMM dying or a simple 1:1
-> > teardown. My concern is about a VMM that deliberately avoids calling
-> > IOMMU_DESTROY to optimize allocations.
-> > 
-> > The iommufd UAPI already explicitly supports the HWPT pooling model.
-> > The IOMMU_DEVICE_ATTACH ioctl takes a pt_id, allowing a VMM to
-> > pre-allocate an HWPT and then 'point' various devices at it over time.
-> > (Note that detaching a device from a HWPT attaches it to a blocked
-> > domain.)
-> > 
-> > If a VMM uses a free-list/cache for its HWPTs, a guest hot-unplug will
-> > cause the VMM to detach the device, but the VMM will keep the HWPT alive
-> > in userspace for future reuse.
-> > 
-> > If that happens, the HWPT is now sitting in the VMM's free pool, but the
-> > kernel still has it permanently flagged with lu_preserve = true. When
-> > the VMM later pulls that HWPT from the pool to attach to a new device
-> > (which might not need preservation), there is no way for the VMM to
-> > UNMARK it for preservation.
-> 
-> Interesting.. My thinking is that a VMM that is aware of the live update
-> use case should be responsible for its own object lifecycle. It should
-> simply discard such HWPT rather than returning it to a free-list.
-> 
-> My concern with adding unpreserve ioctl is that it forces a lot of
-> complex lifecycle tracking into the kernel, especially around the new
-> locking that would be needed to handle races between parallel iommufd
-> preserve/unpreserve calls.
-> 
-> Given that complexity, I think the cleaner approach is to avoid the new
-> ioctl and keep the kernel-side implementation simpler.
+> At kernel entry, calling into C before mitigations are applied is risky.
 
-Fair point, in that case let's just make sure this contract is explicit.
-We should clearly document in the UAPI that there is no way to "UNMARK"
-an HWPT for preservation and that VMMs implementing HWPT pooling or
-dynamic attachment must destroy preserved HWPTs rather than returning 
-them to a free-list if they want liveupdate support.
+You can write the above function in asm if you prefer - should still be
+easier.
 
-Once that's documented so userspace authors know exactly what the UAPI
-expects of them, I'm on board with this approach.
+> Although call to clear_bhb_loop() will be inserted at the end of the BPF
+> program before it returns, I am not sure if it is safe to assume that
+> trashing registers in the path clear_bhb_loop() -> __clear_bhb_loop() is
+> okay? Especially, when we don't know what code compiler generated for
+> clear_bhb_loop(). BPF experts would know better?
 
-[ ------ >8 ------ ]
+The compiler would preserve the regs. If you write it in asm and you adhere to
+the C ABI, you could preserve them too. Shouldn't be too many.
 
-> > > 
-> > > LU_PRESERVE would imply that it is being preserved. Maybe
-> > > "IOMMU_HWPT_LU_MARK_PRESERVE"?
-> > 
-> > Yup, sounds good! Thanks
-> > 
-> > > >
-> > > > > + * @size: sizeof(struct iommu_hwpt_lu_set_preserve)
-> > > > > + * @hwpt_id: Iommufd object ID of the target HWPT
-> > > > > + * @hwpt_token: Token to identify this hwpt upon restore
-> > > > > + *
-> > > > > + * The target HWPT will be preserved during iommufd preservation.
-> > > > > + *
-> > > > > + * The hwpt_token is provided by userspace. If userspace enters a token
-> > > > > + * already in use within this iommufd, -EADDRINUSE is returned from this ioctl.
-> > > > > + */
-> > > > > +struct iommu_hwpt_lu_set_preserve {
-> > > > > +	__u32 size;
-> > > > > +	__u32 hwpt_id;
-> > > > > +	__u32 hwpt_token;
-> > > > > +};
-> > > >
-> > > > Nit: Let's make sure we follow the 64-bit alignment as enforced in the
-> > > > rest of this file, note the __u32 __reserved fields in existing IOCTL
-> > > > structs.
-> > > 
-> > > Agreed. Will update
- 
-Thanks,
-Praan
+Thx.
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
