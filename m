@@ -1,63 +1,63 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590DF3E1D09
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 15:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94A835AC01
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 15:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774451884; cv=none; b=aTIAEEWd2FGE2S6LN5LEmeKyqS2im0MKBq+dxpdhFtlWKmoELlGexWx60wlzXHyDboVPNy+L6mIDW+88aRmNDjGYKRYqMTO0XxApguDSWTOH1OYpp4GeSYleOoIFq6qnVoxaW/yjmDQuSAnpj9gH/3FtDH0v+sIRSQEtXqxoL9k=
+	t=1774451892; cv=none; b=u9f+AaS/OD+mi8ARWzRD/d0P4beprODBnW1w9QMq6YbMVSKBo19jkKTfDPN1ZAvFS99WOaIWGzrvMvkobP2aJp07Mz37a9FjpjN3chKngG8OHQIGEk9Gs9pQ5UBWWUneaoVJvFmbYF7EqQRl4eBMHnlLRZai7clp9prWTYnzXY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774451884; c=relaxed/simple;
-	bh=WEGLuv/WEPhxSI17BpeI8p2k+ukgfWldqRPbyNzQU4c=;
+	s=arc-20240116; t=1774451892; c=relaxed/simple;
+	bh=VLYDeJlanSrUt5ozd5q4p7m0Cgj8D10/ig6NbNGIZ+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EcAmLrL9bTwMsbqM+iwNH9A0aO9m6r29rcpGn3W1/JPfIsF/u7bEeLWBMQlUsnww6FxL+6/Dp+hOaNq0qiBs7ULz/PwtaW/zDdbhlkk/nq26nGlhfDHnc4QusE9gV2ExDPqfDUddS6XZCkW5x5Hi4VHL93dvlvY1w9bFfXCOFmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VmZW8gY0; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version:Content-Type; b=n8fbab89MMMauWzggHNhPcpVDST3QTbFXSdc7k5jC9fW+6g6Vme88/SCTSPmUUg3H0VexELawKKPsfFvu8L5+zBodUJ1ST/+bCGuu5CEDMhcUdHNHDtvEFFFUTgWTCYmeUKMO70Gm3xetuSkaouINf5bedPhnsgV57/EI1xR3Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fcmyysMO; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VmZW8gY0"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-486fd5360d4so30229325e9.1
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 08:18:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fcmyysMO"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-482f454be5bso10063605e9.0
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 08:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774451882; x=1775056682; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1774451889; x=1775056689; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QxrAV8rmf30CF98liKz5B3rdomtAez5skkM9aGRME4I=;
-        b=VmZW8gY0cyQMdQHEBuYQMi/8FwMe/1MbV1sSjeSkTwJp50dFt3/Ego4HGru/w/eoLv
-         uwlpO0KH/IjyJjp0wwsBm8BE8hdFUeub/GNHxoM3vT9IIhIPcDdZrKozWYRiCguNoVyn
-         sYdk61dEQbE7vS/ShAcuD+gOs/Ap4gEGXpO8Tny29cuij8yM1AFIygXFTxKGJfvN3/5d
-         fffU49AQSA9Y2is/horgsf+kBq1jkeMHWoenF5uJ0xwSRfJi50JTZNOazSBItHec3MWk
-         1/pC49Vlmotggxm3h3lkXKZ7g9MwMAS6iTOlO1+Bo95oFeIUKvKeGfWqzvkA4Wq3DhLy
-         U4CA==
+        bh=jek66EmZwh90Q0GbeJB2FKCf8mZ1pqgxf9FHcRMVDAM=;
+        b=fcmyysMOQyQK6Y2jU06qioG2NeNPGr+7S5BK2EZ4Gp7n2RF4RB/aiEzOAKlHbEuUnw
+         EU+Pm+BESzb0R0Tm4A1Vs7T+hZVaPc+IbnXR3sorsbXviuedzAiVBLlkzH5SRb24/BCb
+         l1lLG899qQgdTLpskkutsGRJaccxUDNroCtoVvN09Wpa1bclg+jOPXvNU3zffho8Th2A
+         NVg9Z7m8gNvU/8EThnxMy3yZSmTup8HBQnoHn12P7sj0c3lcqa2yzjXanZHqA6/ijpsJ
+         ebKbd3G4JRHuw7+iArIwpGtY6UIbhPkLDhGTBmnb8SnyYLNEZ7zT5x2S7Aw3vad++dYO
+         xVvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774451882; x=1775056682;
+        d=1e100.net; s=20251104; t=1774451889; x=1775056689;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QxrAV8rmf30CF98liKz5B3rdomtAez5skkM9aGRME4I=;
-        b=hJPoxGPSHL5pP457DkwcogZIqNFt/oM9XNplYiAZk/ug4XFAG9T6m/S5/KbQJUTuR0
-         KV212HtAMiOSl6FNSGsBP/YN+NQfClidZNZiH3wEewzdekulzGOeAWOLQ89Aw6V3NxDs
-         FXM9F4uIPI3yp+wIxsXxc1QBHia735aEMfnnhx9ZYSwcRdXRB96rggpAbSlsIMClgyb8
-         i3SD3wHf+vVbeOBpVqPx4tjtn+F+LFu99G2T90RdAM1Wp7OX6sANlkAL/2iZ8+1LmYIx
-         a+nnq4n9EQb1BJILaVW9id+4dE1FBzRYPqRXghvLk/CL6RWY+Qtch/uGqaUXbK6OJOyf
-         Lk9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXJjzwuErgx2Zm+YnwxyaM0jgDP9hRLxlx8KImHKnDIwLlBvLZtgee1RJ9METi8015YGmw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywzi3kFEKOgG+jNi9hJJmQ8Y7mfO3dSdKsx4xn2/u9LCUaHvAz4
-	fSrPbxWE1OFa76ScGmHPA+q8Kz1W2+OjKQfOT5T1iymY8KCftBlik8SBVeA/rhzEZ0k=
-X-Gm-Gg: ATEYQzyTbtoxbN3dA/U1E+p2zyjRxWOf2dLK2nNES+HEVl7Z7aiURFYWPhpcxeWzOic
-	Y8HBu8RZs5A2Y5CfUZinHnrzciIVLU6L5wwrde+rLTRbnNkUO4g5GFc/mw8jW1cCtTpNsNa1VAy
-	vPlfLzwwA10qXW2IasAkSG6yiTydkiwvXLA6gS4+Wjbk8FioJL08bd89I57/TpjCcb36d6m28yj
-	T+fuyHR4OoOQzId2JyV17CRFcS9OyUMWsM+bVfEPUnQ01JQEeylqvZGCg32YEUmHknbG4zKvnCU
-	NnQxdBcAl2MmldEpWpaRHFZmON+F+BLJW0M4nbtfm0E6i+psjotUyl0KpMU7yDgsykjAbTYYWqO
-	FdIyxNLvheQvav0dtmp2XJX0S9eaFxFTVmIP6DcwpKYfsQuu044VjoF/LYlL1/nNWSuxNtXdJgl
-	zeVYid2t2WfGhAm2cWzfzQfaZQ2EQaCNJUT9qjEw/sY9KDW9dAi4/VzR1PZzTl3ACj61zRv/HW
-X-Received: by 2002:a05:600c:1e2a:b0:487:18c:7acf with SMTP id 5b1f17b1804b1-4871606d963mr61278415e9.25.1774451881686;
-        Wed, 25 Mar 2026 08:18:01 -0700 (PDT)
+        bh=jek66EmZwh90Q0GbeJB2FKCf8mZ1pqgxf9FHcRMVDAM=;
+        b=nFBiNKkEV2fKfaucAeYyf16YnyQavrweUlnj+SLiPDXKegsG/1ZT+/T0m6/CoDAUS+
+         qx3JuXZGcaUg7PWhmwj8NoN/aABaABFJPNejvDTLnorYrdUpavx3j/yde+XXYaPMXHlu
+         fpJohgfOqwNrTC/82nD0pwX2BtTU+aFRGl60ZFSc3Qojukg/u+bOyad7gPd6Pej5n8vg
+         Ydlhjnr85oXNN64ntV8mG2sW4TRt+lSf+EH9MI3ZaQXPMEOcCBcbVT5YHlOGIoF+hwlW
+         7C0Ui+kWNgkqTj5yHtwaz+fXQa4Un/68JQggUcjwINwmFS8J64KY2gsbXpWoPZ6oR2cu
+         G/OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDRI6zyYRFMNHxcylX1uNnxwJKhzTZDkHpdC2Voxsr31kGNGRsW8vyPszP8X18xpfP8DM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSxHnQIsFQnjR61bK4EpZwcvK1a0JPZpmRvI6gqeFZw4/b4A43
+	5E2mPSjWATgrjRHLExkrPeCKO5E15jX2Fq3OIAEUEgfRl6nN6go0KXYPPb8hbTZ9xsI=
+X-Gm-Gg: ATEYQzzcLYKsUzukzQ+UmC3wwqmvzkm4fvpLeJc4SD9F8IXo/5l5ic4FRiIABwwytAp
+	m7GyRmD8QJskOd8yj+muxFbVJE2VkwzkXNLh676oTMzu1r0r/ewXgHvnzolWvJrrdOkfRCVm74M
+	P93rrg/hwcIWOisMNe8PBeE7/R1yv+zhJ3NF5bL77/tH3AyQysZ2aH62dbMBb0UFm4Z/eu4+eSx
+	QmNwd7JMda/6FAfdTuuB0jiyK7H9id+E7hWqJs+59X+VVueTJpobRoCxmmbxi5Fayc1nsTw5z8M
+	1IAxVi7yZpLe5wt4W1KyD2TYOofZ+AMIbR2MtrdgilNgv9YLYZs458qdXxjJ1t3EmxFsKcxrqhQ
+	eMqO+Ppf6H3CyYEPQoTYigR0jKoj/3dCL8WFX93wPjd6n+a7QrA0WluVmP8aHp1sKI1J4XRedus
+	JUJC55E3THY1A2XX0FzLGWWFug1LrdM6N7Rv/1JSUM2YYOABwSfL0Q/FxhuIS0xkneeizAdeMB
+X-Received: by 2002:a05:600c:6814:b0:485:3c11:de84 with SMTP id 5b1f17b1804b1-487160a2589mr53284815e9.14.1774451888875;
+        Wed, 25 Mar 2026 08:18:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e265csm466393f8f.32.2026.03.25.08.17.59
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871174f2cesm139339185e9.10.2026.03.25.08.18.07
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 25 Mar 2026 08:18:00 -0700 (PDT)
+        Wed, 25 Mar 2026 08:18:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Michael Tokarev <mjt@tls.msk.ru>,
 	qemu-devel@nongnu.org
@@ -67,17 +67,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	kvm@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH-for-11.0? 4/6] qom: Declare compat properties API in 'qom/compat-properties.h'
-Date: Wed, 25 Mar 2026 16:17:26 +0100
-Message-ID: <20260325151728.45378-5-philmd@linaro.org>
+	kvm@vger.kernel.org
+Subject: [PATCH-for-11.0? 5/6] qom: Restrict compat properties API to system emulation
+Date: Wed, 25 Mar 2026 16:17:27 +0100
+Message-ID: <20260325151728.45378-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260325151728.45378-1-philmd@linaro.org>
 References: <20260325151728.45378-1-philmd@linaro.org>
@@ -90,183 +83,264 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-While most of QEMU files use the QOM concept, few of them
-use the compatibility properties API (mostly use in system
-emulation). Move its prototype to a new "qom/compat-properties.h"
-header, keeping "qom/object.h" for generic QOM.
+Move compat properties API definitions to their own file
+unit, compile it only when system emulation is configured.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qom/compat-properties.h | 8 ++++++++
- include/qom/object.h            | 8 --------
- accel/accel-system.c            | 1 +
- backends/hostmem.c              | 1 +
- hw/core/machine.c               | 1 +
- hw/core/qdev-properties.c       | 1 +
- hw/core/qdev.c                  | 1 +
- hw/i386/pc_q35.c                | 1 +
- system/rtc.c                    | 1 +
- system/vl.c                     | 1 +
- target/i386/sev.c               | 1 +
- ui/vdagent.c                    | 1 +
- 12 files changed, 18 insertions(+), 8 deletions(-)
+ qom/compat-properties.c | 116 ++++++++++++++++++++++++++++++++++++++++
+ qom/object.c            | 100 ----------------------------------
+ qom/meson.build         |   3 ++
+ 3 files changed, 119 insertions(+), 100 deletions(-)
+ create mode 100644 qom/compat-properties.c
 
-diff --git a/include/qom/compat-properties.h b/include/qom/compat-properties.h
-index 6e44aabc26b..90f8320adfd 100644
---- a/include/qom/compat-properties.h
-+++ b/include/qom/compat-properties.h
-@@ -29,4 +29,12 @@ typedef struct GlobalProperty {
-     bool optional;
- } GlobalProperty;
- 
-+void object_set_machine_compat_props(GPtrArray *compat_props);
-+void object_set_accelerator_compat_props(GPtrArray *compat_props);
-+void object_register_sugar_prop(const char *driver, const char *prop,
-+                                const char *value, bool optional);
-+void object_apply_compat_props(Object *obj);
-+bool object_apply_global_props(Object *obj, const GPtrArray *props,
-+                               Error **errp);
+diff --git a/qom/compat-properties.c b/qom/compat-properties.c
+new file mode 100644
+index 00000000000..f8d9b0036ae
+--- /dev/null
++++ b/qom/compat-properties.c
+@@ -0,0 +1,116 @@
++/*
++ * QEMU Object Model
++ *
++ * Copyright IBM, Corp. 2011
++ *
++ * Authors:
++ *  Anthony Liguori   <aliguori@us.ibm.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
- #endif
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 26df6137b91..510885218ba 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -700,14 +700,6 @@ Object *object_new_with_propv(const char *typename,
-                               Error **errp,
-                               va_list vargs);
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qom/compat-properties.h"
++#include "qom/qom-qobject.h"
++#include "hw/core/qdev.h"
++
++bool object_apply_global_props(Object *obj, const GPtrArray *props,
++                               Error **errp)
++{
++    int i;
++
++    if (!props) {
++        return true;
++    }
++
++    for (i = 0; i < props->len; i++) {
++        GlobalProperty *p = g_ptr_array_index(props, i);
++        Error *err = NULL;
++
++        if (object_dynamic_cast(obj, p->driver) == NULL) {
++            continue;
++        }
++        if (p->optional && !object_property_find(obj, p->property)) {
++            continue;
++        }
++        p->used = true;
++        if (!object_property_parse(obj, p->property, p->value, &err)) {
++            error_prepend(&err, "can't apply global %s.%s=%s: ",
++                          p->driver, p->property, p->value);
++            /*
++             * If errp != NULL, propagate error and return.
++             * If errp == NULL, report a warning, but keep going
++             * with the remaining globals.
++             */
++            if (errp) {
++                error_propagate(errp, err);
++                return false;
++            } else {
++                warn_report_err(err);
++            }
++        }
++    }
++
++    return true;
++}
++
++/*
++ * Global property defaults
++ * Slot 0: accelerator's global property defaults
++ * Slot 1: machine's global property defaults
++ * Slot 2: global properties from legacy command line option
++ * Each is a GPtrArray of GlobalProperty.
++ * Applied in order, later entries override earlier ones.
++ */
++static GPtrArray *object_compat_props[3];
++
++/*
++ * Retrieve @GPtrArray for global property defined with options
++ * other than "-global".  These are generally used for syntactic
++ * sugar and legacy command line options.
++ */
++void object_register_sugar_prop(const char *driver, const char *prop,
++                                const char *value, bool optional)
++{
++    GlobalProperty *g;
++    if (!object_compat_props[2]) {
++        object_compat_props[2] = g_ptr_array_new();
++    }
++    g = g_new0(GlobalProperty, 1);
++    g->driver = g_strdup(driver);
++    g->property = g_strdup(prop);
++    g->value = g_strdup(value);
++    g->optional = optional;
++    g_ptr_array_add(object_compat_props[2], g);
++}
++
++/*
++ * Set machine's global property defaults to @compat_props.
++ * May be called at most once.
++ */
++void object_set_machine_compat_props(GPtrArray *compat_props)
++{
++    assert(!object_compat_props[1]);
++    object_compat_props[1] = compat_props;
++}
++
++/*
++ * Set accelerator's global property defaults to @compat_props.
++ * May be called at most once.
++ */
++void object_set_accelerator_compat_props(GPtrArray *compat_props)
++{
++    assert(!object_compat_props[0]);
++    object_compat_props[0] = compat_props;
++}
++
++void object_apply_compat_props(Object *obj)
++{
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(object_compat_props); i++) {
++        object_apply_global_props(obj, object_compat_props[i],
++                                  i == 2 ? &error_fatal : &error_abort);
++    }
++}
+diff --git a/qom/object.c b/qom/object.c
+index 838b1d2b225..f00d659ef0f 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -440,106 +440,6 @@ static void object_post_init_with_type(Object *obj, TypeImpl *ti)
+     }
+ }
  
 -bool object_apply_global_props(Object *obj, const GPtrArray *props,
--                               Error **errp);
--void object_set_machine_compat_props(GPtrArray *compat_props);
--void object_set_accelerator_compat_props(GPtrArray *compat_props);
--void object_register_sugar_prop(const char *driver, const char *prop,
--                                const char *value, bool optional);
--void object_apply_compat_props(Object *obj);
+-                               Error **errp)
+-{
+-    int i;
 -
- /**
-  * object_set_props:
-  * @obj: the object instance to set properties on
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index 150af05bf5b..9176665202d 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -25,6 +25,7 @@
+-    if (!props) {
+-        return true;
+-    }
+-
+-    for (i = 0; i < props->len; i++) {
+-        GlobalProperty *p = g_ptr_array_index(props, i);
+-        Error *err = NULL;
+-
+-        if (object_dynamic_cast(obj, p->driver) == NULL) {
+-            continue;
+-        }
+-        if (p->optional && !object_property_find(obj, p->property)) {
+-            continue;
+-        }
+-        p->used = true;
+-        if (!object_property_parse(obj, p->property, p->value, &err)) {
+-            error_prepend(&err, "can't apply global %s.%s=%s: ",
+-                          p->driver, p->property, p->value);
+-            /*
+-             * If errp != NULL, propagate error and return.
+-             * If errp == NULL, report a warning, but keep going
+-             * with the remaining globals.
+-             */
+-            if (errp) {
+-                error_propagate(errp, err);
+-                return false;
+-            } else {
+-                warn_report_err(err);
+-            }
+-        }
+-    }
+-
+-    return true;
+-}
+-
+-/*
+- * Global property defaults
+- * Slot 0: accelerator's global property defaults
+- * Slot 1: machine's global property defaults
+- * Slot 2: global properties from legacy command line option
+- * Each is a GPtrArray of GlobalProperty.
+- * Applied in order, later entries override earlier ones.
+- */
+-static GPtrArray *object_compat_props[3];
+-
+-/*
+- * Retrieve @GPtrArray for global property defined with options
+- * other than "-global".  These are generally used for syntactic
+- * sugar and legacy command line options.
+- */
+-void object_register_sugar_prop(const char *driver, const char *prop,
+-                                const char *value, bool optional)
+-{
+-    GlobalProperty *g;
+-    if (!object_compat_props[2]) {
+-        object_compat_props[2] = g_ptr_array_new();
+-    }
+-    g = g_new0(GlobalProperty, 1);
+-    g->driver = g_strdup(driver);
+-    g->property = g_strdup(prop);
+-    g->value = g_strdup(value);
+-    g->optional = optional;
+-    g_ptr_array_add(object_compat_props[2], g);
+-}
+-
+-/*
+- * Set machine's global property defaults to @compat_props.
+- * May be called at most once.
+- */
+-void object_set_machine_compat_props(GPtrArray *compat_props)
+-{
+-    assert(!object_compat_props[1]);
+-    object_compat_props[1] = compat_props;
+-}
+-
+-/*
+- * Set accelerator's global property defaults to @compat_props.
+- * May be called at most once.
+- */
+-void object_set_accelerator_compat_props(GPtrArray *compat_props)
+-{
+-    assert(!object_compat_props[0]);
+-    object_compat_props[0] = compat_props;
+-}
+-
+-void object_apply_compat_props(Object *obj)
+-{
+-    int i;
+-
+-    for (i = 0; i < ARRAY_SIZE(object_compat_props); i++) {
+-        object_apply_global_props(obj, object_compat_props[i],
+-                                  i == 2 ? &error_fatal : &error_abort);
+-    }
+-}
+-
+ static void object_class_property_init_all(Object *obj)
+ {
+     ObjectPropertyIterator iter;
+diff --git a/qom/meson.build b/qom/meson.build
+index 81922434309..bd6f4aadd78 100644
+--- a/qom/meson.build
++++ b/qom/meson.build
+@@ -5,6 +5,9 @@ qom_ss.add(files(
+   'object_interfaces.c',
+   'qom-qobject.c',
+ ))
++if have_system
++  qom_ss.add(files('compat-properties.c'))
++endif
  
- #include "qemu/osdep.h"
- #include "qemu/accel.h"
-+#include "qom/compat-properties.h"
- #include "qapi/qapi-commands-accelerator.h"
- #include "monitor/monitor.h"
- #include "hw/core/boards.h"
-diff --git a/backends/hostmem.c b/backends/hostmem.c
-index 15d4365b697..cd2085fb3cd 100644
---- a/backends/hostmem.c
-+++ b/backends/hostmem.c
-@@ -18,6 +18,7 @@
- #include "qapi/qapi-builtin-visit.h"
- #include "qapi/visitor.h"
- #include "qemu/config-file.h"
-+#include "qom/compat-properties.h"
- #include "qom/object_interfaces.h"
- #include "qemu/mmap-alloc.h"
- #include "qemu/madvise.h"
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 6cf0e2f404e..6290b3556ee 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -21,6 +21,7 @@
- #include "qapi/qapi-visit-machine.h"
- #include "qapi/qapi-commands-machine.h"
- #include "qemu/madvise.h"
-+#include "qom/compat-properties.h"
- #include "qom/object_interfaces.h"
- #include "system/cpus.h"
- #include "system/system.h"
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index ba8461e9a42..73539c727b3 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -10,6 +10,7 @@
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qdev-prop-internal.h"
-+#include "qom/compat-properties.h"
- #include "qom/qom-qobject.h"
- 
- void qdev_prop_set_after_realize(DeviceState *dev, const char *name,
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index e48616b2c6f..b36101f3a75 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -32,6 +32,7 @@
- #include "qapi/visitor.h"
- #include "qemu/error-report.h"
- #include "qemu/option.h"
-+#include "qom/compat-properties.h"
- #include "hw/core/irq.h"
- #include "hw/core/qdev-properties.h"
- #include "hw/core/boards.h"
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index cb23322f5a4..6a0967ecd18 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -56,6 +56,7 @@
- #include "hw/usb/hcd-uhci.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "qom/compat-properties.h"
- #include "system/numa.h"
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/mem/nvdimm.h"
-diff --git a/system/rtc.c b/system/rtc.c
-index 56951288c40..f13dd392a76 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -28,6 +28,7 @@
- #include "qemu/error-report.h"
- #include "qemu/option.h"
- #include "qemu/timer.h"
-+#include "qom/compat-properties.h"
- #include "qom/object.h"
- #include "system/replay.h"
- #include "system/system.h"
-diff --git a/system/vl.c b/system/vl.c
-index 38d7b849e0a..ec31fd76c0d 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -119,6 +119,7 @@
- #include "qapi/string-input-visitor.h"
- #include "qapi/opts-visitor.h"
- #include "qapi/clone-visitor.h"
-+#include "qom/compat-properties.h"
- #include "qom/object_interfaces.h"
- #include "semihosting/semihost.h"
- #include "crypto/init.h"
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 9dde972c118..261b6aaa37b 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -36,6 +36,7 @@
- #include "system/reset.h"
- #include "trace.h"
- #include "migration/blocker.h"
-+#include "qom/compat-properties.h"
- #include "qom/object.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
-diff --git a/ui/vdagent.c b/ui/vdagent.c
-index bb0c4aa14ca..bb55cbefc9c 100644
---- a/ui/vdagent.c
-+++ b/ui/vdagent.c
-@@ -5,6 +5,7 @@
- #include "qemu/error-report.h"
- #include "qemu/option.h"
- #include "qemu/units.h"
-+#include "qom/compat-properties.h"
- #include "hw/core/qdev.h"
- #include "hw/core/qdev-properties.h"
- #include "migration/blocker.h"
+ qmp_ss.add(files('qom-qmp-cmds.c'))
+ system_ss.add(files('qom-hmp-cmds.c'))
 -- 
 2.53.0
 
