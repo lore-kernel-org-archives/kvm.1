@@ -1,113 +1,254 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2BF39A049;
-	Wed, 25 Mar 2026 08:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8E63009EE;
+	Wed, 25 Mar 2026 09:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774428602; cv=none; b=KZK7aKsV3dpht7RieSf2V+RnmkW4BiGDWQkRtEfgwwoPTMNNm1NVD6BOsoqJtRz1zoKg/XezhfgFY45oLfvjwo1D29HXjkNxhpSycRG9JSwlBX+uesn/Ldd4K+hUNUGxtJMIRhitvkTMUs5dAxCL5QmwbHKpqXwmQGCX//0vxrI=
+	t=1774429430; cv=none; b=F3O5MD4B05+3UWs6Fky2xbC5XdkySeLqz8CyddLJF+xdk+Q0D7+/sFu4zfLvkzGlg6pP6qIpCtGyVC3l0oxqzGrBJHRa7m+WjMEUvz1UXCTGsP4ZSbK+lKBzdSzGMiKBbZ61Y1RCwTx/bcV6BCjhmSesafKdDPm0zxzNGDnVTYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774428602; c=relaxed/simple;
-	bh=MhPf69GU83kHXH6p8NcEGQWKz8h88iglzINS0wnJxZ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HekSB8vh6T7WJ+Dc1MJnfC9beEN00/AUN5FUeh7dQ0z6aETL1pFwGdsVBynEtVjvww3EHW0aVo5biHf95JvD7Uls2lWxn9bgarb1dA/+9Y/wJ+641N1nfwSabUUWkKqOhyBSb7PKBTvwKY+cQ9suZEeQKqgfLrcoOeib328f8qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mThQoHcZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774429430; c=relaxed/simple;
+	bh=w/GTjS8YC8uH+Sy4A1EDV8UGyt/H8PZtAnk1cljNo8w=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V8m2+w1/2n/gLPP7U78UyRjRHp1p7mkDRl3UkWewqrJs9bc5DtbFXbA23Dttat/lXZByS+Rxl9AX8hP2fku8ezIaNlhJAaAVv/8L6Eu8QJqd77vfefMjNpECMAmQevVoy2PVmoWwtrwsHOb6ais2oLLocpwLB12w1Rka8x2iZTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLn3NICR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mThQoHcZ"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P81GSc3317009;
-	Wed, 25 Mar 2026 08:50:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=B63LRN
-	G1rTU+g2jzug/yvzEys9jr+igSEa1eIpCLpuo=; b=mThQoHcZAp2lyWBDdvc42F
-	KXS8RxYNDyi4+ZgDuRFbddRJFnNP4XY860x+I4ULZxK+pLnbpO+4lpTosPSLEcz3
-	L17DeYbBbO44Bc78gaQTXhf7jKeZIz+RgglzVWSAAApGgOvmtsCpYG2DEseHaXL6
-	SFrChvJkffuuda7CPj2v9t0jsliVSM+sGFUyj/QOKPOAjfchVpt8FuMiAI/C5Cab
-	I4aWlfHwscz2BOvq4cjZzX7Hg9deH48l6oZ3Og0ISYCxkZ8qFaSPDvNc0fQpE11q
-	nhGDbicdROAiDerbQH1luLWPCR3A1e9aVVT2dMulVKF+foUVpNg/WRIOJK2nMiyg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ky06qb7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 08:49:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62P5nQNf031631;
-	Wed, 25 Mar 2026 08:49:59 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d25nswvec-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 08:49:59 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62P8ntqK45416840
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Mar 2026 08:49:55 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D1332004B;
-	Wed, 25 Mar 2026 08:49:55 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD6EB20043;
-	Wed, 25 Mar 2026 08:49:54 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Mar 2026 08:49:54 +0000 (GMT)
-Message-ID: <446104ba-f8a4-4f4b-9b00-72cf5209d7e7@linux.ibm.com>
-Date: Wed, 25 Mar 2026 09:49:54 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLn3NICR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50B2C4CEF7;
+	Wed, 25 Mar 2026 09:03:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774429430;
+	bh=w/GTjS8YC8uH+Sy4A1EDV8UGyt/H8PZtAnk1cljNo8w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fLn3NICRRfLAwA8fdLwt9a3S1jWOlTsyhgvm9TKxtZQRkOTPn8eHM0Xie9VDcCkZ/
+	 8GJrVhP3m4gxmWaHeYlqNHI+OKhIvY/oJIVcpXXModAzVFaBKxCcb5IdkMSHsXYcg8
+	 XO313s7oi20EAwUjxewUYW3Wta5AzC082RHyrjwFrm+YIr98GK8PK9KLX9+mDX3XC4
+	 vGyt6W2oHGh8pDpJDbHCyrvtvQTgvJx8WHlZqYIYMiRGk3+fPTmKI2yMJ3yNGO6Oj+
+	 NzaBbOgn605Hf2tAPp7Y+JBWc7/JLkhdGfhSc8tn0x/LKgFlIWJt4A7uE6w4llufPk
+	 RTldLE+GWj4pg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w5K9T-00000005Trk-21XU;
+	Wed, 25 Mar 2026 09:03:47 +0000
+Date: Wed, 25 Mar 2026 09:03:47 +0000
+Message-ID: <86o6kc46x8.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 1/3] KVM: arm64: selftests: Add library functions for NV
+In-Reply-To: <20260325003620.2214766-2-weilin.chang@arm.com>
+References: <20260325003620.2214766-1-weilin.chang@arm.com>
+	<20260325003620.2214766-2-weilin.chang@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] KVM: s390: selftests: Add load psw bear test
-To: Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com
-References: <20260323153637.3683-1-frankja@linux.ibm.com>
- <20260323153637.3683-3-frankja@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260323153637.3683-3-frankja@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA2MiBTYWx0ZWRfX0S3NH9Wd1sd5
- AevQpyU/cv7vwG/Q2fBa2qjtURvevb+Dps4BCTHAawmckPlzI84TBLHhdkQH/QpFglXsSzYmb+5
- 4yam7A+wUZbH/skMrWGp2zMGSfAofNbMLep/z8JitCS0hQDKikCOq6VR8ttK4I8Z/DzUFVQS/1h
- jbE15ojQCMeSpCbjDsy/gb4JUdnpD1aptvk+/5lRI4h3LBRjg0u2Z5lf+/26xIi/Hc4p0uEE8L6
- Eg/XHXl4p850QjK1MAJcKQgqIC0rT0p5Qxyp1thUnoRubzo96xl2+OTg8poH99PMjRjIY0WtAY4
- 5sK1DL8F6cU17HrGJnZ0tm+Pz5mkW/mwnwViPFns1PPN8wmZFR0aVEqLrXyxScdTgtusMfuo1iP
- fxlPCb/WjK3ytaQV+D3faXrLFiZLuxTIDWzE9rNsdYkvcYjHimCB4Q8JvtzMkY1f4r8dbG+qppA
- 31cIlGJHajzMDBAiCRA==
-X-Authority-Analysis: v=2.4 cv=JK42csKb c=1 sm=1 tr=0 ts=69c3a1b7 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=L6jm01SqShaukWVU-_cA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: In0JNE5WGvSbQCI7HR19ZrOuwl3K3l92
-X-Proofpoint-GUID: In0JNE5WGvSbQCI7HR19ZrOuwl3K3l92
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_03,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 adultscore=0
- spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250062
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: weilin.chang@arm.com, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-
-
-Am 23.03.26 um 16:35 schrieb Janosch Frank:
-> The bear is set for lpsw and lpswe but not for lpswey.
+On Wed, 25 Mar 2026 00:36:18 +0000,
+Wei-Lin Chang <weilin.chang@arm.com> wrote:
 > 
-> Load PSW and all of its variants are only emulated by KVM if there's a
-> pending machine check. Therefore the tests inject those but never open
-> the masks to receive them.
+> The API is designed for userspace to first call prepare_{l2_stack,
+> hyp_state, eret_destination, nested_sync_handler}, with a function
+> supplied to prepare_eret_destination() to be run in L2. Then run_l2()
+> can be called in L1 to run the given function in L2.
 > 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm      |  2 +
+>  .../selftests/kvm/include/arm64/nested.h      | 18 ++++++
+>  .../testing/selftests/kvm/lib/arm64/nested.c  | 61 +++++++++++++++++++
+>  .../selftests/kvm/lib/arm64/nested_asm.S      | 35 +++++++++++
+>  4 files changed, 116 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested_asm.S
+> 
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 98da9fa4b8b7..5e681e8e0cd7 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -34,6 +34,8 @@ LIBKVM_arm64 += lib/arm64/gic.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3_its.c
+>  LIBKVM_arm64 += lib/arm64/handlers.S
+> +LIBKVM_arm64 += lib/arm64/nested.c
+> +LIBKVM_arm64 += lib/arm64/nested_asm.S
+>  LIBKVM_arm64 += lib/arm64/processor.c
+>  LIBKVM_arm64 += lib/arm64/spinlock.c
+>  LIBKVM_arm64 += lib/arm64/ucall.c
+> diff --git a/tools/testing/selftests/kvm/include/arm64/nested.h b/tools/testing/selftests/kvm/include/arm64/nested.h
+> new file mode 100644
+> index 000000000000..739ff2ee0161
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/arm64/nested.h
+> @@ -0,0 +1,18 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * ARM64 Nested virtualization defines
+> + */
+> +
+> +#ifndef SELFTEST_KVM_NESTED_H
+> +#define SELFTEST_KVM_NESTED_H
+> +
+> +void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
+> +void prepare_hyp_state(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
+> +void prepare_eret_destination(struct kvm_vm *vm, struct kvm_vcpu *vcpu, void *l2_pc);
+> +void prepare_nested_sync_handler(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
+> +
+> +void run_l2(void);
+> +void after_hvc(void);
+> +void do_hvc(void);
+> +
+> +#endif /* SELFTEST_KVM_NESTED_H */
+> diff --git a/tools/testing/selftests/kvm/lib/arm64/nested.c b/tools/testing/selftests/kvm/lib/arm64/nested.c
+> new file mode 100644
+> index 000000000000..111d02f44cfe
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/arm64/nested.c
+> @@ -0,0 +1,61 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * ARM64 Nested virtualization helpers
+> + */
+> +
+> +#include "kvm_util.h"
+> +#include "nested.h"
+> +#include "processor.h"
+> +#include "test_util.h"
+> +
+> +#include <asm/sysreg.h>
+> +
+> +static void hvc_handler(struct ex_regs *regs)
+> +{
+> +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> +	GUEST_PRINTF("hvc handler\n");
+> +	regs->pstate = PSR_MODE_EL2h | PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT;
+> +	regs->pc = (u64)after_hvc;
+> +}
+> +
+> +void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> +{
+> +	size_t l2_stack_size;
+> +	uint64_t l2_stack_paddr;
+> +
+> +	l2_stack_size = vm->page_size == 4096 ? DEFAULT_STACK_PGS * vm->page_size :
+> +					 vm->page_size;
 
+Please use symbolic constants. Also, this looks wrong if the default
+stack size is 32k and the page size is 16k. You probably want to
+express a stack size directly, rather than a number of pages.
 
+> +	l2_stack_paddr = __vm_phy_pages_alloc(vm, l2_stack_size / vm->page_size,
+> +					      0, 0, false);
+> +	vcpu_set_reg(vcpu, ARM64_CORE_REG(sp_el1), l2_stack_paddr + l2_stack_size);
+> +}
+> +
+> +void prepare_hyp_state(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> +{
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), HCR_EL2_RW);
 
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Surely the E2H value matters. Or are you planning to only run this on
+configuration that hardcode E2H==0? That'd be pretty limiting.
+
+> +}
+> +
+> +void prepare_eret_destination(struct kvm_vm *vm, struct kvm_vcpu *vcpu, void *l2_pc)
+> +{
+> +	vm_paddr_t do_hvc_paddr = addr_gva2gpa(vm, (vm_vaddr_t)do_hvc);
+> +	vm_paddr_t l2_pc_paddr = addr_gva2gpa(vm, (vm_vaddr_t)l2_pc);
+> +
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SPSR_EL2), PSR_MODE_EL1h |
+> +							    PSR_D_BIT     |
+> +							    PSR_A_BIT     |
+> +							    PSR_I_BIT     |
+> +							    PSR_F_BIT);
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ELR_EL2), l2_pc_paddr);
+> +	/* HACK: use TPIDR_EL2 to pass address, see run_l2() in nested_asm.S */
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), do_hvc_paddr);
+> +}
+> +
+> +void prepare_nested_sync_handler(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> +{
+> +	if (!vm->handlers) {
+> +		vm_init_descriptor_tables(vm);
+> +		vcpu_init_descriptor_tables(vcpu);
+> +	}
+> +	vm_install_sync_handler(vm, VECTOR_SYNC_LOWER_64,
+> +				ESR_ELx_EC_HVC64, hvc_handler);
+> +}
+> diff --git a/tools/testing/selftests/kvm/lib/arm64/nested_asm.S b/tools/testing/selftests/kvm/lib/arm64/nested_asm.S
+> new file mode 100644
+> index 000000000000..4ecf2d510a6f
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/arm64/nested_asm.S
+> @@ -0,0 +1,35 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * ARM64 Nested virtualization assembly helpers
+> + */
+> +
+> +.globl run_l2
+> +.globl after_hvc
+> +.globl do_hvc
+> +run_l2:
+> +	/*
+> +	 * At this point TPIDR_EL2 will contain the gpa of do_hvc from
+> +	 * prepare_eret_destination(). gpa of do_hvc have to be passed in
+> +	 * because we want L2 to issue an hvc after it returns from the user
+> +	 * passed function. In order for that to happen the lr must be
+> +	 * controlled, which at this point holds the value of the address of
+> +	 * the next instruction after this run_l2() call, which is not useful
+> +	 * for L2. Additionally, L1 can't translate gva into gpa, so we can't
+> +	 * calculate it here.
+> +	 *
+> +	 * So first save lr, then move TPIDR_EL2 to lr so when the user supplied
+> +	 * L2 function returns, L2 jumps to do_hvc and let the L1 hvc handler
+> +	 * take control. This implies we expect the L2 code to preserve lr and
+> +	 * calls a regular ret in the end, which is true for normal C functions.
+> +	 * The hvc handler will jump back to after_hvc when finished, and lr
+> +	 * will be restored and we can return run_l2().
+> +	 */
+> +	stp	x29, lr, [sp, #-16]!
+> +	mrs	x0, tpidr_el2
+> +	mov	lr, x0
+> +	eret
+> +after_hvc:
+> +	ldp	x29, lr, [sp], #16
+> +	ret
+> +do_hvc:
+> +	hvc #0
+
+This probably works for a single instruction L2 guest, but not having
+any save/restore of the L2 context makes it hard to build anything on
+top of this.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
