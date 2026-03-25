@@ -1,186 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5FB3A6B86;
-	Wed, 25 Mar 2026 10:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774433202; cv=none; b=ucLeNv4LtEZ71k0tcDR7yJHBq4uXgw14ZblvzrG6Ls6aKcILuVIap31UuGrEwu7TPpfthBArxYsbWP9YdUOia2synjt8OusUjse05qXhbfPilAJA/BLaN5LUnyI5/xGuDPxh8DlesyZC8KEeNUCFZDf9hFCKRYmMGmOXNDPhLjw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774433202; c=relaxed/simple;
-	bh=ofRSssNfGjcWhDdmgm7+gB8lJuIxK+IsZC5l1CagaMU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dvb0eBT6+CpeXpwxjDeKTVx9Mi7thaL0T0yp7qu8TSNjVEtlqWFq1OnBR2Lo71VCXwtN648AyLa9xX0VomYIUYJiNDnSjliwrgdzFoxJ2gsUml79sPKiKxh7QJW665f62z4WKVizs2A8BrklNOIwmM2p6gd/ZwpDXO/RXYRVmfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=As5b8i9P; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91F319E7F7
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 10:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774433350; cv=pass; b=jNv7HDLlqbChWF4ZP25mmNTXiaX1yeAboe4jv8CKIfCj6aOhTkncMiHL7VHE19MYBeqE6p+HG7OEgd+7SzD9YUpht3S8Q+FoPynnGcGwkpiGi6uL1Pi56iSaQqw+Patf4EZg7m25IwSyNb6XbOYgqlVRvmjHFHUqvU0A9YbceG0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774433350; c=relaxed/simple;
+	bh=axcvgsILTODf+S/WAUYZkJY3M4i4uVn6By4rKm4EhqY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mQgvWGVxJpJfK8QTSrP28dVIeki3PDDWZhZYVjAuD4N9fYj92Eo4wbNkFdLl1HsiJujpt3PAzMeB0zD036bKm6JOnsp+IV36ErPeECQ6SXgGsHJFlBbVGAmlkIP2WcGfpAPh8H2NjLXxYS+s322If3AHSXOCylx3c3NznUBvLGU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bTZ0O0ao; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AvDMBoU1; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="As5b8i9P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C86AC4CEF7;
-	Wed, 25 Mar 2026 10:06:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774433201;
-	bh=ofRSssNfGjcWhDdmgm7+gB8lJuIxK+IsZC5l1CagaMU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=As5b8i9PROhRZ1Il4p9PRTa2+s2sYqEKLeTZX4XHpmmxLD5aEFdCAODS7TMBiuzsS
-	 6iaoQaWLZejkqVjpagZXKpsbLgunx67HObtuDpYDJP7RuRSUw5XkNiaxdyfIOpET29
-	 6tvR13/+G81QkSbIpPEuZ/C+kM2QoPLk7Sx1VzTb18D76lYhawL/drn4ypxrzUfO+2
-	 F1iOhqgn1nILQpBU+mBndWfRTB51tA66tsodtEBlRYpMgZD1RvxTcb0kfgabWmfc2b
-	 SBwBK8E8q/FxuG5uq3pgbrVjvG0FYWE8IaKahnlAeo9MuEti30oo5SZKF9Zq5svcr6
-	 sVtSMBVx5stsA==
-Message-ID: <31bce4fe-262f-4a0e-8f4c-eef47cd13de6@kernel.org>
-Date: Wed, 25 Mar 2026 11:06:34 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bTZ0O0ao";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AvDMBoU1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774433347;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5pDFhyXF7rlG1aJ4yZ9frjqXe9ZDZwlGtcN452nmEaI=;
+	b=bTZ0O0aoeErMUTisX6uF8q+5M8FNKKRmDglXRWX6ClVTVCq/k6FA69gDj0v/DXdF5wAa2z
+	v8Zi9twXSsVcpvo1EKgB+saDfrGDCelEyeYftRPlojv+lbommLJtKPrJFo87ZhrR8w8jw+
+	9t5YcWlif94KNbwGcKTCHP/QQBoxGhI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-577-UgkXBMZZPsSUewvKmPXVEg-1; Wed, 25 Mar 2026 06:09:05 -0400
+X-MC-Unique: UgkXBMZZPsSUewvKmPXVEg-1
+X-Mimecast-MFC-AGG-ID: UgkXBMZZPsSUewvKmPXVEg_1774433345
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-439a85832c0so2042590f8f.2
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 03:09:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774433345; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gTq1MQksBe25XHfvuY2px7onwQ4uNMeiIZgFEBdlbXmqKc5G7G7g7jI0yARo5EiA0P
+         1FL4Y2SXzTjHh7mLViG5Y0gZs4NfDUbkIErOKK49tM3DcFz8vJ/o5/J5apkgC8DbW5PV
+         CNFLUCnjj132gMQvsQnSspqcBonh+GKYccw0QDe23KvSFxbww0gvxi71wfXxZmilX8xf
+         heDPPReD+FQv63NoR/cFzxDmXpv1RE36kCwMMKlKNz9BBA9BnUtTf6+/vW68OWuQhMed
+         i2hCaRyoLPmPO1+YCjoyvwT72mo7g3CABh02Rbx4w4BGqGKIu7ZGxzby7GdRDaodhFWx
+         aHnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5pDFhyXF7rlG1aJ4yZ9frjqXe9ZDZwlGtcN452nmEaI=;
+        fh=hNxILyYl2lMKKI372gy77Mz9Ze4y5igiahysOnFwtqw=;
+        b=ZoymEkCveMhdpLGqRDsvgoPbfryBTUwp3fflVhLf2hWpA5TpdqgMXXEiNcCuMR7zjZ
+         BzdkGnz1z+gzLBOFxsMrICN88pmwgIaGrE22qXbXkxmCoYaVDCXLCaQehQzTtQnj/9MU
+         ZiysxORrwL2BZspdWbLEtGSWvC3tUT1thD/2N24j5wSIHvUY53WLfhvhjWFy8M8SZhUx
+         Br8a2BRwovX4QUnHzzb+inQR0aGfd65cCTJsC6YW3nt+tFKNyPw0XmPdfNdQSxv02mJS
+         ix+ZpEDoLFwEwOS2vvSnfQD7JUmZpi32kHFmXSRCFbpldfrC98Um2ncbmfsfQQs1RnAv
+         RDfw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774433345; x=1775038145; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5pDFhyXF7rlG1aJ4yZ9frjqXe9ZDZwlGtcN452nmEaI=;
+        b=AvDMBoU1gjZQGP/LOAP80IMsCLc1dMxUlmqjBuAh8wHRg1bsDLexb3vN+wxK5a3hqi
+         CfmIAZTh+i0jWYBhXYkRWVo70NtU/pppnP8KCBeXERXPuXC3gvCxnGdqxdnUJoT4tXvo
+         R/LpZAkIT/M3WCcdQc1WtrFAbqo153Dyybxz4upO+CuHIevJx8NrfbAi26dxrlscluv8
+         GvOx4H/ccbABoYmSG/R9mF8WP1V1m7ca2ye/8eEddIjfiqDW1LxgSx8+81G/Aw9pu7xX
+         Jp0rQJCcIFgoHLZDJcDTFK9LPi/la/ZZJY6xQ2M8LEp9rJ5bq2pYoTyPtNOJJBp+JrJ5
+         +Vvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774433345; x=1775038145;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5pDFhyXF7rlG1aJ4yZ9frjqXe9ZDZwlGtcN452nmEaI=;
+        b=oxUi99INz3GBS9TzGjz6Ci4LXQPNsHqoySizOVcTybvrNWKDg1q8RMOxFI5Fo/m5RV
+         Y4iSpLRdDr9F0rPaMMwn1HuE+Ivr3xGyijhz/616F3L4nexR1qBLpot2giBvVIc6r+Us
+         ahciwIgnTuXLgpcjkftKsAgvtLvTZbou1Crhy7UJz964lR5aWesFQShhsdpneHj//2Wz
+         d+I8Tp45kF620w9GygcWPFUEyuHzOE51/sA8WlgU73B7GT/Cgjo9Z7tqOKs5WMglTPRf
+         u2jEOdIYaJhGld2wq45UL7nC+pLWJVLM5qopoKCjaata9Fe55HOyct6yZj1ZvA+xBp16
+         Px0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXBWNJPUD1UfcaSJGJV01Mo6asAHGFe3HHcqsL7QkVC2imlvJ0zZX3HDU5/jnZRQD/VzMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzztFEYgw//lBt3OdMhYy8n01nx9uAL4exuw/jtg5F/4Tdg/poY
+	GW4lss3GZwYDvaJKa3OX19FrJtIm1J8kIsW+kdnFwuYUdKEx3XrvH2a+pZxH299oxT1bfiVsC7V
+	ZoJSrN3/OLjUOeQ2Pslnt4SlhCjHQOqlTD0KFDkjsfqKsDdmgfQcUqOqOIpI26XP3LVXCT+n7vF
+	/52mOFNYt5LDIyx7sh6WivYiFOjyDw
+X-Gm-Gg: ATEYQzxS5Otg0Y1J4jWRqwYqgRucSFM+Ukz5u7d8LqOxF3xB6HehBvdU6ob2E1PKlm3
+	N5z2MJOQnBmKxB0U58sFCMN+qzYqI/EgWlopo7deySthP0syW0mRVvl7+X2wf+cJlCz58iv23ma
+	E38jQNkIe2LkbxqV6KOlvarRIsYf3fnaDma72RWuqv0oJi7GR3NTYqcKCmw/r37nA5PGZ1bCE0A
+	wSZNBWTncKlv6zSCcsHSbK2uCxFOJv3Suhio+ahqGH+0JGdaW2hfHdbcA8/Wt3si3BHpOD9Bemu
+	NDDE
+X-Received: by 2002:a05:6000:26c6:b0:439:beee:43aa with SMTP id ffacd0b85a97d-43b889b2667mr4066817f8f.16.1774433344633;
+        Wed, 25 Mar 2026 03:09:04 -0700 (PDT)
+X-Received: by 2002:a05:6000:26c6:b0:439:beee:43aa with SMTP id
+ ffacd0b85a97d-43b889b2667mr4066692f8f.16.1774433344232; Wed, 25 Mar 2026
+ 03:09:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/pagewalk: fix race between concurrent split and
- refault
-To: mboone@akamai.com, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260321000931.1947084-1-pbonzini@redhat.com> <20260321000931.1947084-21-pbonzini@redhat.com>
+ <ca466041-18e6-4935-aa0e-8c1501e120df@amd.com> <CABgObfYL5T1K6VUQPjor+G-GjOoKGaGS6rcX0wriOa27ipG51w@mail.gmail.com>
+ <e9c64748-7d72-46a9-be95-6003160ec06a@amd.com>
+In-Reply-To: <e9c64748-7d72-46a9-be95-6003160ec06a@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 25 Mar 2026 11:08:52 +0100
+X-Gm-Features: AQROBzBJhPmaA2X3BNJEjCc7zZ1sL154CopkrTla9-NJkEeHBRUPU_Q3QIBm5b8
+Message-ID: <CABgObfYYTCy_gFzQdYsZPB4uL2bpHBrO8U0UDa9J_3Z0moMP4w@mail.gmail.com>
+Subject: Re: [PATCH 20/22] KVM: SVM: enable GMET and set it in MMU role
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Jon Kohler <jon@nutanix.com>, Marcelo Tosatti <mtosatti@redhat.com>, Amit Shah <amit.shah@amd.com>, 
+	Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/25/26 10:59, Max Boone via B4 Relay wrote:
-> From: Max Boone <mboone@akamai.com>
-> 
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
-> 
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
-> 
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> ...
-> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
->    9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-> knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  __walk_page_range+0x195/0x1b0
->  walk_page_vma+0x62/0xc0
->  show_numa_map+0x12b/0x3b0
->  seq_read_iter+0x297/0x440
->  seq_read+0x11d/0x140
->  vfs_read+0xc2/0x340
->  ksys_read+0x5f/0xe0
->  do_syscall_64+0x68/0x130
->  ? get_page_from_freelist+0x5c2/0x17e0
->  ? mas_store_prealloc+0x17e/0x360
->  ? vma_set_page_prot+0x4c/0xa0
->  ? __alloc_pages_noprof+0x14e/0x2d0
->  ? __mod_memcg_lruvec_state+0x8d/0x140
->  ? __lruvec_stat_mod_folio+0x76/0xb0
->  ? __folio_mod_stat+0x26/0x80
->  ? do_anonymous_page+0x705/0x900
->  ? __handle_mm_fault+0xa8d/0x1000
->  ? __count_memcg_events+0x53/0xf0
->  ? handle_mm_fault+0xa5/0x360
->  ? do_user_addr_fault+0x342/0x640
->  ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
->  ? irqentry_exit_to_user_mode+0x24/0x100
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fe88464f47e
-> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
->    f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
->  </TASK>
-> 
-> Fix this by validating the PUD entry in walk_pmd_range() using a stable
-> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
-> walk via ACTION_AGAIN instead of descending further. This mirrors the
-> retry logic in walk_pte_range(), which lets walk_pmd_range() retry if
-> the PTE is not being got by pte_offset_map_lock().
-> 
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Max Boone <mboone@akamai.com>
+On Wed, Mar 25, 2026 at 10:40=E2=80=AFAM Nikunj A. Dadhania <nikunj@amd.com=
+> wrote:
+>
+>
+>
+> On 3/25/2026 2:59 PM, Paolo Bonzini wrote:
+> > On Wed, Mar 25, 2026 at 10:26=E2=80=AFAM Nikunj A. Dadhania <nikunj@amd=
+.com> wrote:
+> >>
+> >>
+> >>
+> >> On 3/21/2026 5:39 AM, Paolo Bonzini wrote:
+> >>> @@ -1184,6 +1187,10 @@ static void init_vmcb(struct kvm_vcpu *vcpu)
+> >>>               save->g_pat =3D vcpu->arch.pat;
+> >>>               save->cr3 =3D 0;
+> >>>       }
+> >>> +
+> >>> + if (gmet_enabled)
+> >>
+> >> if (gmet_enabled && guest_cpu_cap_has(vcpu, X86_FEATURE_GMET))
+> >
+> > No, this is the non-nested case (vmcb01) and I'm enabling GMET on
+> > purpose for easier testing.
+>
+> Win11 guest with memory isolation stops booting after this patch. Boots i=
+f I pass gmet=3D0.
 
-Thanks!
+That would also disable GMET in the Hyper-V nested guest. I'm looking at it=
+.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Paolo
 
--- 
-Cheers,
-
-David
