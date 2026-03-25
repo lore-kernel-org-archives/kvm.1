@@ -1,229 +1,245 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011020.outbound.protection.outlook.com [52.101.57.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BB7331A41
-	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 09:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774430998; cv=none; b=l8Mbq5QW4gCCnrau3SwnDoIFWxJz1Q7njeoBWYr7Ktn4MlwDEbUvOwzkFshoxN+oXNf0kKsi2R6QztyO5op8EJ/4QQmPYqmGqPlAptgYSqHXuGcd36tUrQsDWPtKhrKL7OSYhbBXuV84NaATLR1FVSEsvp3bF+1WbmnIYgB2cxE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774430998; c=relaxed/simple;
-	bh=hzAY3ZoPFk3ktxoVDsUh6drVK7glBEle7ZgqK1lKcjk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cb9VW17x3uu9wKf7biP2npOSm7O81HANd9hQgdLNUxzpVVyl5XcyQUCGuFwPwYYKr09zUlt85cekN9xlNo9G6QlPhLB+ijv9m4q3PiR0nFhelvZNt7Cm+k8MyMkARsXlkT0lIEy0C32ZMu9YInsGRQhGdhLPyLGTXJE7+c+YUmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UIIwNU+n; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JhpeRjpQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1622C359705
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 09:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774431163; cv=fail; b=HdbEXzy7cSzlVw81dhDXUbjhDfusx3JTQe/fZqjDdSjRKizokigDLrzhOAafzM1XzwS68MmbX4fHMf+x5pqb1ZkDErWcdRRF7ClQkon2if918PHWmpKIdB/1M/bwM7InU7L8bXdcR8AvRwib6j8tZnwRBmEk7JBjmNh7L3wew3A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774431163; c=relaxed/simple;
+	bh=NbGLhVfQyM3i0FGkO6Wwnc5NzBqleuwwER13Z6qJ8So=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qTqzw6aI7OHvxz99m+kuR56hY7WWMVH8Qs4GmR6DPcRsZVX9QBIfzN3L1XwHNxFlEVDu5w+F5sOk+Fn6qjU/OaO1McELi9NAILEQAoYPjsRfAqdqod3+eieQMpqSeLs+2NqoJra6OM36o5BJsUbp3duGpyGn6dlloRmUxXU19CY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=l9JEQBds; arc=fail smtp.client-ip=52.101.57.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UIIwNU+n";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JhpeRjpQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774430996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/X6OQFIMMVlzQpHVcxvz5zk00vazKEddYu1a8TXBALA=;
-	b=UIIwNU+nPUJJvHBBie22wcCjzDVg3JpRuHuXBHiy0rjpN6rDxNAzNlOeQY2QG9m8DWuxEm
-	iaNmUUXhpXPFoYwUfpFYc/GchGtfpCQlnmZs/FYSLP7O1jEI3zV30Rr3AOr8Y9H0wsXSVL
-	jcPPi+BUVu4IYinrziQaqTXzZ8OPLkY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-hBhGWAnGN4yBYh-qObZ7rQ-1; Wed, 25 Mar 2026 05:29:55 -0400
-X-MC-Unique: hBhGWAnGN4yBYh-qObZ7rQ-1
-X-Mimecast-MFC-AGG-ID: hBhGWAnGN4yBYh-qObZ7rQ_1774430994
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b47c19ed8so2443159f8f.1
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 02:29:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774430994; x=1775035794; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/X6OQFIMMVlzQpHVcxvz5zk00vazKEddYu1a8TXBALA=;
-        b=JhpeRjpQEerF7GJ3cEBXJfXL4JOri2U0d5RqtfvHTpgkh71sO3rKFhA//EvtsgVwti
-         rfnOwsNQ4rTslJ40Fzk9I0TbeYYUZ5Xv+zq7TaUjVgRwEsyfKg8s9Pq15BcpYJETUtzy
-         GjGQegUGrxeQbyDwEtvCmuJ/etjn2Bc4A2bLwFUIE5xQiMyNNgnAbKrvUtZPa+3AgtlT
-         YSrq90f+jFYACy0hlMqgRYq76+qOcsEKLNZTY0NUghWrYxq5yY9PNJVoNX0sjXNzPxo2
-         M/ehcd6FIcjjB2W43nFQqKbujTW9hL8QGwdrnKMudE6yCBqYGN/Cv3ygswIH8iM7CfKC
-         7oDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774430994; x=1775035794;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/X6OQFIMMVlzQpHVcxvz5zk00vazKEddYu1a8TXBALA=;
-        b=erQs0r/GATCxJsWMrdQaTbYCMHE3p0QdR54mmDgPt3Q+OOg+nqSW+zhJ63x++MarGm
-         3VeRJnsKmf+dEJEESDFilVcR8M2KZhMSa1mYXRPEHhoehOI/7j3jwPSa/JcKeeapnBW2
-         5uxXBN15BSyTbZI7LMZGibLUjB118YgZZsIcr+NZBzMOfUrs0GpZFixznjZqw2IoK9/z
-         IsrJx6n2yhsB96He1yhym/QgEEt2d4RbfkCY6AcreUenVhR9U8sB9QwtSHU7qzNhaQVs
-         IUjl40d+PU2Wwd1PxhdHOo9F1mKrfWhfYHaYfESikqjlZbkn9wsKCssp1cW6LVHwQutO
-         YPJA==
-X-Forwarded-Encrypted: i=1; AJvYcCWbxzmFwvVZqiz9NYFqEPEoQ1j97AuuBGfYNHdxxHbsAN4v/D4iXxrmB13fx14CfeUtdc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSbNndEf34Wgu0dNWzq/dNV5cSva1r2yf2IsFTNUeKw4cq5Ckf
-	EA87esnwS7sLLkhCLXIWr0K8MCMlD17Q9E+q0VRG8iCadgJRe+4u7aWiLiOGXwszvDvd9WaSGVU
-	DODrRSjR8AK/IqZAM5ZGMH0qYC4EQriYerhnAM8GfduEYezB0xTr/0Q==
-X-Gm-Gg: ATEYQzxt6y/atMjurgAGx/NLTvVJCK4+wQ17Be2Yd2s+tXeijCQGGSSYKYzDMFMa3xL
-	2jCq9mVL0FhBw4JmQo7qoeE8ku5XZ/tF56RZhPoxxRK7XLkDVujI3NTbnBdjgYPnZXmbk+RFbDS
-	Fw2M/A0NHjoyOLjDd5BCHVC+pKQ9MxSG4HHQYNmyIM9B1dk/6zIh7E+VGNW2qfhDwJxViX/WYCQ
-	QkE60IV69q9rUVhJAHH4/5L/biG/i0zK3jVTZKKUBmhWTK61Ve0yMEwYbl9UMtHZYAOfx8K0lyn
-	IF5G2wUcdt/V95N35Jc0T7SkDd953ryMvmlSKZpciVnMjOtk0rKVMNFXw6FqnBqw+XuNpj3WeW6
-	eY45j8FlwrpATRIRo
-X-Received: by 2002:a05:6000:400c:b0:439:be78:e1e9 with SMTP id ffacd0b85a97d-43b88a3d3cdmr3692824f8f.14.1774430993612;
-        Wed, 25 Mar 2026 02:29:53 -0700 (PDT)
-X-Received: by 2002:a05:6000:400c:b0:439:be78:e1e9 with SMTP id ffacd0b85a97d-43b88a3d3cdmr3692727f8f.14.1774430992928;
-        Wed, 25 Mar 2026 02:29:52 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6470380asm44280922f8f.24.2026.03.25.02.29.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 02:29:52 -0700 (PDT)
-Date: Wed, 25 Mar 2026 05:29:45 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	Armin Wolf <W_Armin@gmx.de>, Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Mark Brown <broonie@kernel.org>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
-	linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-spi@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/12] treewide: Convert buses to use generic
- driver_override
-Message-ID: <20260325052919-mutt-send-email-mst@kernel.org>
-References: <20260324005919.2408620-1-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="l9JEQBds"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uK0PucL9NAvlPWXjTxCEgYjfsFE7GgU9wwJ4iQFaXf89+5bBeK7XTwu0ob+bKidGRW347o7AnlyA40OQT3mFPtNpzXAve4sjmRLMW2rN4rvwAijrIFM5zwM/vw83MCLsOyXmEs4tIPQUvJkNPtWI3meVjet5ntFPA/u0+fhSbGIzcHBIf3LTBapXEik40VdWz8P0qm0GuEI0eRfmb0/6XzG2cmiqRy4y3zpuGDqLs482WQUJ/nue+BqnWnke9GepWgqd86VnKnK2oRApNBcVveL8J2tKqLdlssc8uigIujPCAOZzfnKcHOkqZ0likwDF7mzMLLCCXfUvzaz/kUPJ4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5w1iq+6hL9FW2W7+92oivACde+nNgNqZIR2nxZKjdnY=;
+ b=hquWwyzqVXSOPAL9IOrl6HrA9u15cOWW6kY3LsNcVByNh5XC3a85UJF04ezrK8e75mzMJzI0Qpa5ogxYf0IKUpW5r2T7a+8OlJzYZ3NtPxnlUTGXTf7TAvbnwgIKjdAmSVAboB5RinC74267J2LBHtpUg/lmHDzhfcHar4tts6lCJHjAd7x6sDKn3UjaQiCntHWntrXJWLP3I6gU6uk2cn3kuEiEjZoSIzIpgfVtFEjD5WgxIypN9ui7IP2IEvanmUZrn3+lWS50gJNmmkB1v8GS2ANjq/iMlO6Jt86mdi30AIUDg5VX2kMtm40F+uigZMv1WyChJnsviSK84ZGswg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5w1iq+6hL9FW2W7+92oivACde+nNgNqZIR2nxZKjdnY=;
+ b=l9JEQBdsUxDGD716+6IwdjUIvOt0iNxBc5ErhQCrYycjlnqwjvKKlv/Yd5q0mlNiXmIQOkBXDD6B2Ek6N4p5OcszFeLpETBlRz69KZTQpi88E9bnfdelJDzfcEFjAMtIbo2mW9acj7QT9Mk0bt49E6KtqxG6lfDGlAVscjkgpDo=
+Received: from BY3PR05CA0010.namprd05.prod.outlook.com (2603:10b6:a03:254::15)
+ by DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 09:32:36 +0000
+Received: from SJ5PEPF000001D3.namprd05.prod.outlook.com
+ (2603:10b6:a03:254:cafe::c) by BY3PR05CA0010.outlook.office365.com
+ (2603:10b6:a03:254::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Wed,
+ 25 Mar 2026 09:32:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001D3.mail.protection.outlook.com (10.167.242.55) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9723.19 via Frontend Transport; Wed, 25 Mar 2026 09:32:35 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 25 Mar
+ 2026 04:32:34 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 25 Mar
+ 2026 02:32:34 -0700
+Received: from [10.252.198.192] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 25 Mar 2026 04:32:31 -0500
+Message-ID: <b3f3058d-c0eb-46e0-a443-5ff0f756df6b@amd.com>
+Date: Wed, 25 Mar 2026 15:02:30 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324005919.2408620-1-dakr@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1] x86/split_lock: Provide KVM helper to log guest
+ bus lock exits
+To: Borislav Petkov <bp@alien8.de>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <mingo@redhat.com>,
+	<kvm@vger.kernel.org>, <x86@kernel.org>, <nikunj.dadhania@amd.com>,
+	<Naveen.Rao@amd.com>, <ravi.bangoria@amd.com>, <peterz@infradead.org>,
+	<dave.hansen@linux.intel.com>, <tglx@kernel.org>
+References: <20260324124002.7670-1-manali.shukla@amd.com>
+ <20260324180449.GMacLSQUJepcHGCjTX@fat_crate.local>
+Content-Language: en-US
+From: Manali Shukla <manali.shukla@amd.com>
+In-Reply-To: <20260324180449.GMacLSQUJepcHGCjTX@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D3:EE_|DS0PR12MB7771:EE_
+X-MS-Office365-Filtering-Correlation-Id: c19baf93-353a-4a01-3306-08de8a5172be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	35nfsW30kcZyUKz8ibh8E0nGONrD89p/9AMAUH/BJYk0etoNS1ZFYJfEyOmEK5domOgK3bhSwhbBxTyxxHB1Oesi+8UheE4j0vD2xU3wi4Lt1tfZhBle5Ft76IVR2h7P6oNJu8yzLTq7VxGR+JQhOR5vVvi4lF3+8L3Wbgn3HmZLzhUds5DugSTIKhZrOF6iYCBGYz7ytj+XUMNna3OYWImidozJzbBUyTghRYTj9DvU8gMkSDwdZmJhgnsMMH80FDOZkAcUASmNuLTnwOH2ucJzCg8dP6yE/jBLkZL+Rv3KL7ZX9LZ49ZsrV5uFqLPpwgeYXdwhMZk6Bd3O96BxIJuzN/J4Uy3fEMh7MogVJLqdg7AdNSJzQiqLYvY3YK19psGiD9xnELExkMBUEACkBUKZXc6Ud2GDYSWAqr3qMN0vL6HXeZcWKTXzeW2OOMuknYWuJrelNlMo9j9H1rRN/bDkbMEWVYmtTqIhwYCfql0lJx7JDGuEUW8PR12EWQg7T3hdT3moEfdyIj2PvlDruYInGwjbcuosa8CWNbIqI7Nn2YvNgau4PmvzqxrycMlwcva2nDUUDngkvlUGbwi+3KFSLjTJimzNYyXYrpvo2AuGU2U19fg1jTD5RFKmhsdm6Ry1P5ubdpjkW+36U400U4jpdgwlfhhr3rvU/KtnJy0VUcNYOsPeupjTCJ4G20Y+XTdH+K98/4728ScXnJMwLkc9MeEo2nJmXNpoZ9Aypcff0kh+SRMHm4K/MVt/IVlcXveY4fhuvuRvs+xPeQmeUA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	RtILIA0Td4YFMtJz9w4oNOgNJSq/JaQ9egTaVDbDz+ERcN4YLdi6a2QB5hEjzBwcYGZQNKSFqxgzy/is6/DTJDTPrs4PAxt61b6SXBPLZcV2R26yvvv9nGWv4J7QeuHFgbTRLQ41IZeB8IElwiJXaqNNXciAxcMh8JtW+LBcr3XAUG+VuA0wI7+MFVqqAVGsEhfAIWwXNs265zwv9jZRerifvZL3eGQyMjQH7XAzoWbMGDqiFCVRJ7i/qBKVULxlnm6V0hE7YfKVs/RXvgqg/12FflUk41O81Ba36c09K8jEn+pSmx8fhg5RQI1tzzAvjFSBBq8IIxU7LG+9+4LBhJB9FjXGSPbNfKii3DJhEaatkVZcS5rlwmeQU1BPCUivaNXeL/FmBfADAEm2F4RURfg3uYP7ExJH43voycznhzeOcWFa7Kuf16DwIQ7Qlh7w
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 09:32:35.3840
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c19baf93-353a-4a01-3306-08de8a5172be
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D3.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7771
 
-On Tue, Mar 24, 2026 at 01:59:04AM +0100, Danilo Krummrich wrote:
-> This is the follow-up of the driver_override generalization in [1], converting
-> the remaining 11 busses and removing the now-unused driver_set_override()
-> helper.
+On 3/24/2026 11:34 PM, Borislav Petkov wrote:
+> On Tue, Mar 24, 2026 at 12:40:02PM +0000, Manali Shukla wrote:
+>> Bus locks monopolize the memory bus for thousands of cycles, stalling
+>> all CPUs and degrading system performance for every workload on the
+>> system. Cloud providers running multiple VMs need a way to identify
+>> which guest is responsible, so the offending VM can be flagged.
+>>
+>> Bus lock VMEXITs on AMD are fault-style, i.e. the vCPU's RIP points to
+>> the offending instruction at the time of the exit. Log guest's linear
+>> RIP and vCPU info to give operators the data needed to attribute the bus
+>> lock to a specific VM and instruction. Keep policy enforcement to
+>> userspace via KVM_EXIT_X86_BUS_LOCK and let userspace implement
+>> throttling or other mitigations.
+>>
+>> Reuse current->reported_split_lock to limit the warning to the once per
 > 
-> All of them (except AP, which has a different race condition) are prone to the
-> potential UAF described in [2], caused by accessing the driver_override field
-> from their corresponding match() callback.
+> s/ to the once/ to once/
 > 
-> In order to address this, the generalized driver_override field in struct device
-> is protected with a spinlock. The driver-core provides accessors, such as
-> device_match_driver_override(), device_has_driver_override() and
-> device_set_driver_override(), which all ensure proper locking internally.
+>> vCPU thread. Note that, current->reported_split_lock tracks the vCPU
+>> thread, not the individual guest process, i.e. the warning fires once
+>> per vCPU for the lifetime of thread regardless of how many distinct
 > 
-> Additionally, the driver-core provides a driver_override flag in struct
-> bus_type, which, once enabled, automatically registers generic sysfs callbacks,
-> allowing userspace to modify the driver_override field.
+> "... for the lifetime of the thread... "
 > 
-> SPI and AP are a bit special; both print "\n" when driver_override is not set,
-> whereas all other buses (and thus the driver-core) produce "(null)\n" in this
-> case.
+>> guest processes trigger bus locks on that vCPU.
 > 
-> Hence, SPI and AP do not take advantage of the driver_override flag in struct
-> bus_type; AP additionally maintains a counter in its custom sysfs store().
+> I guess that's fine since you're ratelimited.
 > 
-> Technically, we could support a custom fallback string when driver_override is
-> unset in struct bus_type, but only SPI would benefit from this, since AP has
-> additional custom logic in store() anyways.
+>>
+>> ----
 > 
-> (I'm not sure if there are userspace programs that strictly rely on this;
-> driverctl seems to check for both, but I rather not break some userspace tool
-> I'm not aware of. :)
+> What's that "----" supposed to denote here?
 > 
-> This series is based on v7.0-rc5 with no additional dependencies, hence those
-> patches can be picked up by subsystems individually.
+>> The intent is purely observational — give hypervisor owners
+>> visibility into which guest is generating bus locks so they can act
+>> accordingly. No policy enforcement is done in the kernel. Suggestions
+>> on the approach are welcome.
 > 
-> [1] https://lore.kernel.org/driver-core/20260303115720.48783-1-dakr@kernel.org/
-> [2] https://bugzilla.kernel.org/show_bug.cgi?id=220789
-> [3] https://gitlab.com/driverctl/driverctl/-/blob/0.121/driverctl?ref_type=tags#L99
+> Oh, sounds like you want this paragraph to be...
+> 
+>>
+>> Suggested-by: Nikunj A Dadhania <nikunj@amd.com>
+>> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+>> ---
+> 
+> <--- ... here, after the SOB block and above the diffstat.
 
-vdpa bits:
+Oh, my bad. will correct in v2.
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-I assume it'll all be merged together?
-
-> Danilo Krummrich (12):
->   amba: use generic driver_override infrastructure
->   bus: fsl-mc: use generic driver_override infrastructure
->   cdx: use generic driver_override infrastructure
->   hv: vmbus: use generic driver_override infrastructure
->   PCI: use generic driver_override infrastructure
->   platform/wmi: use generic driver_override infrastructure
->   rpmsg: use generic driver_override infrastructure
->   vdpa: use generic driver_override infrastructure
->   s390/cio: use generic driver_override infrastructure
->   s390/ap: use generic driver_override infrastructure
->   spi: use generic driver_override infrastructure
->   driver core: remove driver_set_override()
 > 
->  drivers/amba/bus.c                 | 37 +++------------
->  drivers/base/driver.c              | 75 ------------------------------
->  drivers/bus/fsl-mc/fsl-mc-bus.c    | 43 +++--------------
->  drivers/cdx/cdx.c                  | 40 ++--------------
->  drivers/hv/vmbus_drv.c             | 36 ++------------
->  drivers/pci/pci-driver.c           | 11 +++--
->  drivers/pci/pci-sysfs.c            | 28 -----------
->  drivers/pci/probe.c                |  1 -
->  drivers/platform/wmi/core.c        | 36 ++------------
->  drivers/rpmsg/qcom_glink_native.c  |  2 -
->  drivers/rpmsg/rpmsg_core.c         | 43 +++--------------
->  drivers/rpmsg/virtio_rpmsg_bus.c   |  1 -
->  drivers/s390/cio/cio.h             |  5 --
->  drivers/s390/cio/css.c             | 34 ++------------
->  drivers/s390/crypto/ap_bus.c       | 34 +++++++-------
->  drivers/s390/crypto/ap_bus.h       |  1 -
->  drivers/s390/crypto/ap_queue.c     | 24 +++-------
->  drivers/spi/spi.c                  | 19 +++-----
->  drivers/vdpa/vdpa.c                | 48 ++-----------------
->  drivers/vfio/fsl-mc/vfio_fsl_mc.c  |  4 +-
->  drivers/vfio/pci/vfio_pci_core.c   |  5 +-
->  drivers/xen/xen-pciback/pci_stub.c |  6 ++-
->  include/linux/amba/bus.h           |  5 --
->  include/linux/cdx/cdx_bus.h        |  4 --
->  include/linux/device/driver.h      |  2 -
->  include/linux/fsl/mc.h             |  4 --
->  include/linux/hyperv.h             |  5 --
->  include/linux/pci.h                |  6 ---
->  include/linux/rpmsg.h              |  4 --
->  include/linux/spi/spi.h            |  5 --
->  include/linux/vdpa.h               |  4 --
->  include/linux/wmi.h                |  4 --
->  32 files changed, 88 insertions(+), 488 deletions(-)
+>>  arch/x86/include/asm/cpu.h     |  2 ++
+>>  arch/x86/kernel/cpu/bus_lock.c | 19 +++++++++++++++++++
+>>  arch/x86/kvm/svm/svm.c         |  1 +
+>>  3 files changed, 22 insertions(+)
+>>
+>> diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
+>> index ad235dda1ded..4ac5011e10b2 100644
+>> --- a/arch/x86/include/asm/cpu.h
+>> +++ b/arch/x86/include/asm/cpu.h
+>> @@ -29,6 +29,7 @@ unsigned int x86_stepping(unsigned int sig);
+>>  extern void __init sld_setup(struct cpuinfo_x86 *c);
+>>  extern bool handle_user_split_lock(struct pt_regs *regs, long error_code);
+>>  extern bool handle_guest_split_lock(unsigned long ip);
+>> +extern void handle_guest_bus_lock(unsigned long ip);
+>>  extern void handle_bus_lock(struct pt_regs *regs);
+>>  void split_lock_init(void);
+>>  void bus_lock_init(void);
+>> @@ -44,6 +45,7 @@ static inline bool handle_guest_split_lock(unsigned long ip)
+>>  	return false;
+>>  }
+>>  
+>> +static inline void handle_guest_bus_lock(unsigned long ip) {}
+>>  static inline void handle_bus_lock(struct pt_regs *regs) {}
+>>  static inline void split_lock_init(void) {}
+>>  static inline void bus_lock_init(void) {}
+>> diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_lock.c
+>> index fb166662bc0d..a6d231410535 100644
+>> --- a/arch/x86/kernel/cpu/bus_lock.c
+>> +++ b/arch/x86/kernel/cpu/bus_lock.c
+>> @@ -292,6 +292,25 @@ bool handle_guest_split_lock(unsigned long ip)
+>>  }
+>>  EXPORT_SYMBOL_FOR_KVM(handle_guest_split_lock);
+>>  
+>> +void handle_guest_bus_lock(unsigned long ip)
 > 
+> Exported function better have a prefix:
 > 
-> base-commit: c369299895a591d96745d6492d4888259b004a9e
-> -- 
-> 2.53.0
+> bus_lock_guest_handle() or so.
+> 
+> But, the only reason this function is here is because you need sld_state.
+> 
+> So, instead of doing that, you can add a helper called
+> 
+> sld_enabled()
+> 
+> or so, which is exported and then you can put the guest-specific handling in
+> svm.c in case you want to expand it in the future and there you use
+> sld_enabled(), etc...
+> 
 
+Thank you for your suggestion, will fix the naming in v2.
+sld_enabled() could be added in bus_lock.c and called from
+bus_lock_exit() in svm.c. However, the other reason for keeping the
+function in bus_lock.c is the current->reported_split_lock usage - it is
+already used in split_lock_warn() and handle_guest_split_lock() in the
+same file, so keeping all reported_split_lock accesses in bus_lock.c
+seemed more maintainable. But happy to move it to svm.c, if you prefer
+that approach.
+
+>> +{
+>> +	/*
+>> +	 * Log bus lock exit when called from KVM exit handlers. Policy
+>> +	 * enforcement is delegated to userspace via KVM_EXIT_X86_BUS_LOCK.
+>> +	 * Let userspace implement throttling or other mitigations.
+>> +	 *
+>> +	 * Only log when split lock detection is active to respect system-wide
+>> +	 * bus lock detection policy. Use the reported_split_lock flag to
+>> +	 * prevent log spam from the same vCPU.
+>> +	 */
+>> +	if (sld_state != sld_off && !current->reported_split_lock) {
+>> +		pr_warn_ratelimited("%s/%d buslock at rip: 0x%lx\n",
+>> +				    current->comm, current->pid, ip);
+>> +		current->reported_split_lock = 1;
+>> +	}
+>> +}
+>> +EXPORT_SYMBOL_FOR_KVM(handle_guest_bus_lock);
+> 
+> Thx.
+> 
+
+-Manali
