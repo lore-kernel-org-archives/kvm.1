@@ -1,285 +1,315 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C895F3C5542;
-	Wed, 25 Mar 2026 11:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774436710; cv=fail; b=rNvaDGXs8ioB4jXJoGee78qFeGsaEpoplFOZo/Xin2gDo9zVMb7vLejVCNkxvcJmbpLio/VuqPG02DXBFMU0c1HmKIKiDORAI75asxaM9edeu55VYzBz3J/iMk0cxCpFN0Khmj1Kz0wtY362YzWZH90VEtk/swEJQR8zcI+k80I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774436710; c=relaxed/simple;
-	bh=imt1cext6K6DQzJd2pEeH3Aud1tLo+yB5vwLDlmv91c=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YlvDPvLc03anNFJqaPJ2I1AEtZX66d0ECh7018og/4Zxiq6+jpB+eGcHwMJPLGHO1FbRES94CKVKL4pECLKwpFQv394aY9ZEU+DNv7AXc8fpG/FbPM30VgGOkxzgysoUJeLmEh33jEVbQ8KdDJoxmAdsSsxnTEXfcmov9Zfm3L4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OEQie3IM; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830B3C943B
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 11:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774436858; cv=none; b=UMKY1CP3nOdsyHzHbgsrxlqTwgYIG+gdtppDu53fvO9VEAfb/rnHaMGyk63l4bwthriIwer3GQA4U2otjU0txEA+GqBbIh46Y5iev7rcOK38AEkYjWz8OT71sfVZFUNRNAKABMwHP0YcDs7rSdtdJ0QjfW5Ny8S0KDW5y92+jGA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774436858; c=relaxed/simple;
+	bh=wdjOyegWGwbGEnR5Sj1riJ99f84aSZ/D6IWzRhYLFug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eyViPIhno/5ZpUWxcXrslqWltv/Og6pjI0rsGgceQNPFbg/rMh7iidumFPeMnQQp7yYWyvHjSpt4+JtplkHGES1SpWJxSK6TUHExgzwwxW0d1l4aZL2hwN96u5QZY5oGp+HoxQhvCEUqRiWR2mck1aHy413x5yv9ZHKD7JKYThk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WV9V5H7u; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=S4bhP4dR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OEQie3IM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774436708; x=1805972708;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=imt1cext6K6DQzJd2pEeH3Aud1tLo+yB5vwLDlmv91c=;
-  b=OEQie3IMCOtz/hD9m9qPzM9ZUvDWV+Hd86iTCEDx73GmXrB01571YWNC
-   EN13gRFjIqsfnH/o8KJy+l6/Q/7LOKX1V1khkPgwFBMJ2WBhcv3tsdRGp
-   u+zy3XbQ1fR/9huiZ/AkZ/9hnvPLNbj8Fyp/qyOoZWosWRiNw4NwAjx0c
-   llUq+Fs3yAuWnxguOiRit3thjios86kkqCt8trqih6GL6+OGTvisnRcCe
-   FmTJUzsnGIltOUlGZsEhqsxp19VNcxEiHRJEbeiyRh9yRsHI8wUsBhFx/
-   Ywq9rboTb3QFDJexPnYJqFh68CO6C8nWPXZah4qOObfvQEWpeWM4mocNU
-   Q==;
-X-CSE-ConnectionGUID: lRfnlFxwSuCyshZ5Yvhoew==
-X-CSE-MsgGUID: bPPw1m6CRpWTNEfdZeqrXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="78068178"
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="78068178"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 04:05:06 -0700
-X-CSE-ConnectionGUID: L0GF283BQCqqoe4wXVvy7A==
-X-CSE-MsgGUID: 2dDmLeX0QXWiKYO4Jm4zng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="226290739"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 04:05:05 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 25 Mar 2026 04:05:05 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 25 Mar 2026 04:05:05 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.41) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 25 Mar 2026 04:05:04 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U/eblCu7j517SS751y0ndM4ICUnOC2mfEwodF/GP1X2+ttZ/mDyaTUr4AgT+XizzPY9KMwzUnb667CL3tvCGihFtJeSQ09nZdlk5hOcY8SRiFf2kPAYluNl77fFhfXiaGdQ8xOxFot+rQStSy8bhDa7cZ2G6Rt4uNKPbK8VH1tcCEQFFxklqLvSmiwKsWIrsjKMjSBm3NfU3CejCXPN2Dch8ev150+6NW54VUV1huXDzJBRx2TGXoLcMqXfJCtyvtIiP75PKl5OO1z+Qz3ytOt3eY/kBxIUL/CniY25bzXiAvwtpm6yXcT+2DegX8eMbLf+wF87elsLBV90ve+LUHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hl9itglNZ+nwpXlM/1VmBFLcC/GeV+/1K+p6m/gQmsc=;
- b=NYa1qzog2TyUpmhF3Sn0sLd+CKoPP7i0M1X3LljJZni+frf4XQof0A8Izf9FQmxP3KnT4FNsxFDsyMwksmzuih0Gp7R/Hp9iC0yA6uXCvykYJFUyazTlCwNZYLL9g+IQH/z3xsyV/eyyw/PAGBOqozlB9+ltadiNifuNwMI5dmkxVQpX/J8C9goNP4chPGOj6JFjGc4SBT64f2cwLCCpaKov6OB/imOO5/Vlq2UlhKM95sI/o7oMwBvjvf3MzDjySMeeRVIwXBHoOqupHB6phSWykgVFy82IVxJIjrHIX4opc6EAiraNAaR3IXNbhhTm3D0rWUdkVCwN04kLvzZPMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV8PR11MB8509.namprd11.prod.outlook.com (2603:10b6:408:1e6::15)
- by CYXPR11MB8692.namprd11.prod.outlook.com (2603:10b6:930:e4::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 11:05:00 +0000
-Received: from LV8PR11MB8509.namprd11.prod.outlook.com
- ([fe80::f5bd:4dde:4f2f:20b7]) by LV8PR11MB8509.namprd11.prod.outlook.com
- ([fe80::f5bd:4dde:4f2f:20b7%5]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 11:04:59 +0000
-Message-ID: <b16f93af-1ec6-43f5-b4d0-b1d390e3c23c@intel.com>
-Date: Wed, 25 Mar 2026 19:12:33 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/24] PCI: Require Live Update preserved devices are
- in singleton iommu_groups
-To: David Matlack <dmatlack@google.com>
-CC: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf
-	<graf@amazon.com>, Alex Mastro <amastro@fb.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann
-	<arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)"
-	<bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi
-	<dapeng1.mi@linux.intel.com>, David Rientjes <rientjes@google.com>, Feng Tang
-	<feng.tang@linux.alibaba.com>, Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Jonathan
- Corbet" <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kees Cook
-	<kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	<kexec@lists.infradead.org>, <kvm@vger.kernel.org>, Leon Romanovsky
-	<leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-pci@vger.kernel.org>, Li RongQing <lirongqing@baidu.com>, Lukas Wunner
-	<lukas@wunner.de>, Marco Elver <elver@google.com>,
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, Mike Rapoport
-	<rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Pawan
- Gupta" <pawan.kumar.gupta@linux.intel.com>, "Peter Zijlstra (Intel)"
-	<peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-4-dmatlack@google.com>
- <376910fa-4232-4e58-bf87-0504202866a5@intel.com>
- <acLRICLAP5Ccqt9I@google.com>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <acLRICLAP5Ccqt9I@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TPYP295CA0039.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:7::10) To LV8PR11MB8509.namprd11.prod.outlook.com
- (2603:10b6:408:1e6::15)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WV9V5H7u";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="S4bhP4dR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774436855;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MN/ADuhxnh28suR2DDM7wX4SwbXqk6YE4yAWFV8iKMo=;
+	b=WV9V5H7urcg33wRq3dyU2UwHSz5cMFpaHjLdccfWUcFE998npy/AbNrJcwVNaNUAsKDjHC
+	W18UGmwTyKvNNEz1ipVf4UuzpoFGcOXAXhg9Z8kdWqSMquKeHhXyPjyQmyjD2zgIoGnGkM
+	/pRpDDLacyh9QwTan2FtC0XTU5KMirs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-352-oR3_VoilPEOo0o6dGhJu0A-1; Wed, 25 Mar 2026 07:07:34 -0400
+X-MC-Unique: oR3_VoilPEOo0o6dGhJu0A-1
+X-Mimecast-MFC-AGG-ID: oR3_VoilPEOo0o6dGhJu0A_1774436853
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4853466655dso25752505e9.3
+        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 04:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774436853; x=1775041653; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MN/ADuhxnh28suR2DDM7wX4SwbXqk6YE4yAWFV8iKMo=;
+        b=S4bhP4dRJS79h+nL2IGG4O7pjLB77FJyDGbCQaMfaWx0MdmyS2VhNmuvBHjN4vg3Xj
+         vg94jDXfrll2fVtKm8zNz+CA6rMgvda+34Mj0D8z4Q/XMEAAdD9kPdkapZ2a94Tp02Av
+         e43jXNqJY8BgNimFeJ/qvFVpl4pnutHUPYBNpgcoAIq58+rZeulWaByz9CKbBL4Z00GN
+         hKGbQR65q4rZxMww6yHYmjC1djYMcq2l0Xbzv2fPaNvHxroUxqlskLO2MQdQ21Ks8hg3
+         npjd2SKe/m2nmu7EgVJoGhRQEDRJdGDYRdAiw3hhDR3nkL9UPcmCpDl4GIM0PANBpJO1
+         blmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774436853; x=1775041653;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MN/ADuhxnh28suR2DDM7wX4SwbXqk6YE4yAWFV8iKMo=;
+        b=KNNR1UpSDR5DFYivaFotSABp/2JgFdXqYXVBD+MSYaw1u4AGeaI7rqfkaeM+GLYVZe
+         suBYtr1IyeLJoj4EelZpHyA50zkzlYiJbE8ohrGXSHbWD9foMdbX9Soy/XauylzLfCGK
+         8WkWfmOsAebm/HevupvMGlcxVS825+2qxE+pk4ymlk0kPO7yKrL+uy4OusnQbYrx3iq2
+         ey/pneG6RzAOYKS4TvHAfK+H89/Ux0WxC6Dhf/gFDGLym7rOjAg+StbHfOTJwoFninaK
+         bZgEwN6bmNbZ/EYudRhW5U2eGtjjDMnEAjHcT37rED/Zg/JKdo7XGhlxOg2KYKEmvdw6
+         k/BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJqnSevyKSwEWAqaw/FI9Js0UeoKlPK53rpA02NXBNCwuHkVAIa4zbrmDv/LTG0omv4TM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw763krLacS4h4MOL9Fj68UHiy2hsxGWD13In3shiYe+Oph5DnN
+	lV9+T1EVDttNXSewgRctYzJvFE3/HttM9oU/bxtIWsmKelnouSKvTjZ7Lx2niW/drdIyQCdoIDC
+	ctMKYT97A2kdGY5RTzHURVN1SC76WEWWehWGlpGHZgmdk1SDt5y4Pww==
+X-Gm-Gg: ATEYQzzeFucpHLSm//+bUC31bvt15unQg2DmFtwqC+EwB77et2Jw80lwuRnI8gtKOUU
+	GD7EFNzx/UEOG34WQ0laRh6ONOpUk0IxX1CQMNYb1uem8QthcIHKert2Tj3w88k1WoO5CHy8ONC
+	o4tgfvP0wEtgvhfXq4Q8eOyNMLeg10LSndDsVzmpHREBYAUJrzWGZTZaUzobV4gaKOekCRHzGgr
+	jZ3jqoN9ZVFnLxzWVIuOf0VwWS0o6QAlNVv1sx2bCXqCOsANHV4O/354GQUPt01fCDxHdeUkA5S
+	iiJD1QJWs8H5vsmGqdm+Yvi3A6vmbK4h1WE6z+ofY9uNB6icjUmQLgUScktilq71/U5+XcDyXkJ
+	fkI7Yb5KpDm0r681V
+X-Received: by 2002:a05:600c:8489:b0:485:4453:401d with SMTP id 5b1f17b1804b1-48715fc38b4mr44292135e9.2.1774436852792;
+        Wed, 25 Mar 2026 04:07:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:8489:b0:485:4453:401d with SMTP id 5b1f17b1804b1-48715fc38b4mr44291515e9.2.1774436852202;
+        Wed, 25 Mar 2026 04:07:32 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871a937bdfsm72635965e9.9.2026.03.25.04.07.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 04:07:31 -0700 (PDT)
+Date: Wed, 25 Mar 2026 07:07:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Simon Schippers <simon.schippers@tu-dortmund.de>,
+	willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, eperezma@redhat.com, leiyang@redhat.com,
+	stephen@networkplumber.org, jon@nutanix.com,
+	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net-next v8 3/4] ptr_ring: move free-space check into
+ separate helper
+Message-ID: <20260325070252-mutt-send-email-mst@kernel.org>
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-4-simon.schippers@tu-dortmund.de>
+ <CANn89i+tWCtSAAH5i=FDDqRe0jm3XZS-_Ce3kHvZQpkedRqoFQ@mail.gmail.com>
+ <20260312094447-mutt-send-email-mst@kernel.org>
+ <CANn89iLHwZ4foPEL2TdQhYx3Ps3zXiwygb=Qr7OTKW2R7Ldixg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR11MB8509:EE_|CYXPR11MB8692:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1eea5afa-622a-41f7-4db4-08de8a5e5af2
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|42112799006|56012099003|18002099003|22082099003|7053199007;
-X-Microsoft-Antispam-Message-Info: /d0iJsSksAYxtFQoMvHtlNfaJNRB+ZOtc5m2BoiySyTzmk/Use6dcCeOzVym+xX9TBJS9O1wv1IQK57M55tRyQrmvwJAI599cw2IoISEZUPnaam1Xi3ff1JcIq9dTElFw+H9ylce8/kmAua8xRPmb9S7QMSjp2OZ6f5PxFzZQI4Ou9IcB4kcgYwKBELV+/iM7ahpmyHO7T1QiPPGpTaY+sfgh+hz3OTeEvMpCnDMtQx4ChSpgGLvIVSE3FdOolTWB1e+B4S5qTMSVEo/0zI26bJ3rFn5di57dOyNbeOllPHJye67CY1oBWAAjfBHZpT/7H0Leeqix4GNWOB1DjhN9efnKHDPCYqbdPPtfEMqVgjxSLakHkRhbw8Rq5CTnE1kO/ROT3AbCZVfPtGFNp2h84ha+NzjdryESVKeXWueHJGQsiiIt7IVOn21sGO/3zrMR2CfT9WqEjyogA0Ny44lrSPDrAEzqXBh4sPM23AdYuZEJEqbH3wuJGv45WxRNlA3L5inFkn1AeoHNANk7NyCKThfqPL8PfDSOU9ZwhAYjfdgM/YXGtLIHFjbaemwuVufdWZj+gU9dPgL6gUIkOCq4slpt7G6+3dItWwm0apBn8K13eJUKcf7xTkMb3pnxo8KVtIH3vbZX/4+M1HGKp2QRrQJWkGUuiL6SOJPQ6Cn4FkKCHzipvKZo6bE7KcdUuZYktm6o9GUlwXhwr6Kr/Sflw6YQ6987dfZ6mo2JeAOn20=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR11MB8509.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(42112799006)(56012099003)(18002099003)(22082099003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dkExK0FyNVd0UUpiSDhqcFFleG5LVXNOSHBHWHhMbGxFTXJVNTJlSThMVHdy?=
- =?utf-8?B?Y0RuN2JXUTQvcnp1KzdqWHRHeTlrdjJxNDdKcUVVL2xLNnRaMVZaWXk2M0pH?=
- =?utf-8?B?UXpocE9WbVhzYlY3ZGtPRkFSZ3ZJWGVJNXV6VnBYY1RRdWFIRksvWFViTExR?=
- =?utf-8?B?ODBmSlZoNHdCVVorcW5MRmlScURQbHd0bWQ0K0lCeTNOcUhSTElKdlZUWGNo?=
- =?utf-8?B?RWRYeFJ4aG0wQ1RTNERrVEdONEVHNTRvcUlUaEhxTlQ1b1VkWmtabnZXaGY0?=
- =?utf-8?B?WUtRZkdDUzNXVTVSOTZPZWIxaE15Z3BmeWhvQUFyb09VUEhmaC90K3NDZEZs?=
- =?utf-8?B?Y2tCRWJXam1nZGczTDE5TERJZCtEdW9vWUloRWE5UGY5c000WWpVallVQ1Z2?=
- =?utf-8?B?WW1kVFJJZ1krVThqV2ROVTVWVzB6MjVzOGxUeWRrU04vOFdjQWoySExialph?=
- =?utf-8?B?ME1qNC9IU3RSMVFMK291QWQweVA1emZoWlRPVFV6K2grNzREaGRmMWh0bExO?=
- =?utf-8?B?Vm9NendoWlAwVW4yc0h0VzQrQ1VPNmZEeURUcUplWmtCb1NJRWNrdFNhSUJv?=
- =?utf-8?B?aGh6Um5xK3dSanJGQzExT0drbVF1YkVuR0FjeDE3MHl4QXRSZkN2Sk90eXcr?=
- =?utf-8?B?Wld3bDBESHY0SGVxTUU0Z1prbFl0OC9mK1dwUlFMMEkxd1Jhb1RvYTFKVVJ0?=
- =?utf-8?B?WGh1QUw1dEtoSXJ2NGMzQnBzU3krdENhWWl0VUJQd2tMa3l0a2lvaWw3LzVG?=
- =?utf-8?B?YlU5b2hBNVlRNGZSRjcxcFd0MjVwMSsrYlZBRHpJUFVObmtnOVRsN091Z1hC?=
- =?utf-8?B?VzZ4d001QnVvcC9NTXBicDU3OTBWWlBtZXVRQkpUaEZZV204Z3BRZFl5Z2tD?=
- =?utf-8?B?d29qYjBDL1hWcDZINUFjZkFPSDlIR1NMUmVDaWhaMEJNK3I0TUJ5VkY2UlAy?=
- =?utf-8?B?YmhKbzlwSWE0RWY1Nm05Q2YvdmRVRk91SzFhOFFyMXFPZVNxek5yZmpPOWZR?=
- =?utf-8?B?eVdXSEJ3K3Z2NDlISVR4QXBsbTNRdmdjRTR4c0tjNlVqVzVEQ1RKdG1jbHFO?=
- =?utf-8?B?NWk3b2FIZlN4ekhScmxuN2tiSnQrWFFzcGs5MkFoaXh2WUxRNFdZN1ZKYytD?=
- =?utf-8?B?NXM5VE95T2FJSWY4S0hRM0F3Qjk3cHgrNjdXTmo2ZDlhY1ZkdThrb2lWWVNu?=
- =?utf-8?B?TFhvSTNDUjFxNi9YOWFpaU1LTm53eThmOCt2ZllZQ21pdnhuVkFaYlRma2h1?=
- =?utf-8?B?QWRFbEFkQmE4ZDYzWkpsWmVDTGN0VS9vMDlPei9FNW5xc2hpYnY1bzRHRGRO?=
- =?utf-8?B?MldzN1ZDNHo2UER1ZTNLZE5NWms3RUcyNEd0OEFqcEh5a0FIMU9zK1g4ZEsz?=
- =?utf-8?B?OW9yalhxWWNHT0xxZUx4K3BXaGoxSURsTWxxc1ZucGhlVXRkM29uWlNwU2Nl?=
- =?utf-8?B?K041ZS9BRlFzZ2tVV3R1eFFMUEh6RW42ZFZRZkVTMWpCTGZtay9uWlNRYTU0?=
- =?utf-8?B?L2NTZFoxenpMVXhLaXFLd3l1TExuUythUWZsWVlna205bDlLT0Q5ZlhacGhU?=
- =?utf-8?B?SXkrWDJIV253Q1VTblM3aUQzMDZldzR3TjNOYXRaN3NYNWdBS1lUbkRxd05C?=
- =?utf-8?B?LzZ0WFAxYmYxclBER0F4SDVXQ0VSaHhxd21INTlEa3hXVWZiaXh1cGlWanJl?=
- =?utf-8?B?d3I3dUhGTlJXOEwzaW1uSU05cnRZTlZDQmZBRVd4VXFvenJQRWI5eThvOU11?=
- =?utf-8?B?MVFtY0ZkZXNOWWc5NWRSSmh4ZlpLN2pwZ2pxNVVCeXltVUVZUFZwU2tjcFBB?=
- =?utf-8?B?NXdRNml3Mi80UG9BL1Y4a21MM2trWXliclppUXVMbm1ITDlEQk5oMjdOemN3?=
- =?utf-8?B?MEQzTjFVeUNLa0dJTG5FenlVM3lxWHV1RXh1NVE0RVNjVWE4cnB1MGVqM21y?=
- =?utf-8?B?cHZGaXpTcHh4UzRVZ2J2Wm5QR1ZkVTNUTnFIOXFFRUUvUWJJd3RaN1R4OXp3?=
- =?utf-8?B?OXpvN2NQLzBpWjhPT3BhK0Q5eHpEaXpab3JManFvMWErWjBYWjFyNTdoVkto?=
- =?utf-8?B?aWJYV0F2NW9qeDJPZ1pXNHRRcEovQzVvZTZFQlZ2eWc3UUFTYW5HMktHMlpy?=
- =?utf-8?B?M3lwa01PWU1HZW50Z3VsUTdxdENTcjNMYWVIT3E3M1hWSnh1WkN6NU1Ienlz?=
- =?utf-8?B?blhNWWowSXhvenNERXVDQnlFTm40Snp5ckJLSFlMS0NNdU9zcHFxbmRTM05x?=
- =?utf-8?B?ZXZGdTVDV1M1RHRHdWtocmtJUUZqcy8vN25SR0JNa2dnSUpBWUFsQzYxZE1z?=
- =?utf-8?B?SWJGbjFyQkR6UkdMeWNCVThOa09IRTJEbzY5UERISk9VclJSdjg4UT09?=
-X-Exchange-RoutingPolicyChecked: sNKlx6rhcHKpg7sjOD4CpGtXFqoK/vwD2M3CXk65NCqyZ+5J+pXP6yBuvxFMM6rD6DCbisGZIZNxoKvD8RT7ECS1qgMsJTVoHtKJrRpGf4On/7WhcwyAUBM3YFpJNR2A/FEpNZbhZxJtKj1x8E6zlDiXPzxXOh/SgM+FiAFi81vfyjoZUSsSFmmBvwCMVfedl8zFuzaYWC54rw6IEjKgsp5cFfjJa9GLHaK3iOM/jSRqm5JuA2rDqFFtSwn+Yzsji2F8rUwVKrvG4HpWCis86Mw5Mi99mIZhl8gbpmDLFj7r8N2+XJindo2ih9t9PIOG58Xw5j8YjEGklKPKYwDxTw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1eea5afa-622a-41f7-4db4-08de8a5e5af2
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8509.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 11:04:59.3841
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x0vLyzZ1FzeWOshkikZFV5Ob1X7FcB4EmxN+PU/0Wn1vHHDISeSxKPhvKcE6IXS7fNJE1aPJmdkzkPAz+HjXHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR11MB8692
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89iLHwZ4foPEL2TdQhYx3Ps3zXiwygb=Qr7OTKW2R7Ldixg@mail.gmail.com>
 
-
-
-On 3/25/26 02:00, David Matlack wrote:
-> On 2026-03-24 09:07 PM, Yi Liu wrote:
->> On 3/24/26 07:57, David Matlack wrote:
->>> Require that Live Update preserved devices are in singleton iommu_groups
->>> during preservation (outgoing kernel) and retrieval (incoming kernel).
->>>
->>> PCI devices preserved across Live Update will be allowed to perform
->>> memory transactions throughout the Live Update. Thus IOMMU groups for
->>> preserved devices must remain fixed. Since all current use cases for
->>> Live Update are for PCI devices in singleton iommu_groups, require that
->>> as a starting point. This avoids the complexity of needing to enforce
->>> arbitrary iommu_group topologies while still allowing all current use
->>> cases.
->>>
->>> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
->>> Signed-off-by: David Matlack <dmatlack@google.com>
->>> ---
->>>    drivers/pci/liveupdate.c | 34 +++++++++++++++++++++++++++++++++-
->>>    1 file changed, 33 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
->>> index bec7b3500057..a3dbe06650ff 100644
->>> --- a/drivers/pci/liveupdate.c
->>> +++ b/drivers/pci/liveupdate.c
->>> @@ -75,6 +75,8 @@
->>>     *
->>>     *  * The device must not be a Physical Function (PF).
->>>     *
->>> + *  * The device must be the only device in its IOMMU group.
->>> + *
->>>     * Preservation Behavior
->>>     * =====================
->>>     *
->>> @@ -105,6 +107,7 @@
->>>    #include <linux/bsearch.h>
->>>    #include <linux/io.h>
->>> +#include <linux/iommu.h>
->>>    #include <linux/kexec_handover.h>
->>>    #include <linux/kho/abi/pci.h>
->>>    #include <linux/liveupdate.h>
->>> @@ -222,6 +225,31 @@ static void pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
->>>    	ser->nr_devices--;
->>>    }
->>> +static int count_devices(struct device *dev, void *__nr_devices)
->>> +{
->>> +	(*(int *)__nr_devices)++;
->>> +	return 0;
->>> +}
->>> +
->>
->> there was a related discussion on the singleton group check. have you
->> considered the device_group_immutable_singleton() in below link?
->>
->> https://lore.kernel.org/linux-iommu/20220421052121.3464100-4-baolu.lu@linux.intel.com/
+On Thu, Mar 12, 2026 at 03:21:25PM +0100, Eric Dumazet wrote:
+> On Thu, Mar 12, 2026 at 2:48 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > On Thu, Mar 12, 2026 at 02:17:16PM +0100, Eric Dumazet wrote:
+> > > On Thu, Mar 12, 2026 at 2:06 PM Simon Schippers
+> > > <simon.schippers@tu-dortmund.de> wrote:
+> > > >
+> > > > This patch moves the check for available free space for a new entry into
+> > > > a separate function. As a result, __ptr_ring_produce() remains logically
+> > > > unchanged, while the new helper allows callers to determine in advance
+> > > > whether subsequent __ptr_ring_produce() calls will succeed. This
+> > > > information can, for example, be used to temporarily stop producing until
+> > > > __ptr_ring_peek() indicates that space is available again.
+> > > >
+> > > > Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> > > > Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> > > > Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+> > > > ---
+> > > >  include/linux/ptr_ring.h | 14 ++++++++++++--
+> > > >  1 file changed, 12 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
+> > > > index 534531807d95..a5a3fa4916d3 100644
+> > > > --- a/include/linux/ptr_ring.h
+> > > > +++ b/include/linux/ptr_ring.h
+> > > > @@ -96,6 +96,14 @@ static inline bool ptr_ring_full_bh(struct ptr_ring *r)
+> > > >         return ret;
+> > > >  }
+> > > >
+> > > > +static inline int __ptr_ring_produce_peek(struct ptr_ring *r)
+> > > > +{
+> > > > +       if (unlikely(!r->size) || r->queue[r->producer])
+> > >
+> > > I think this should be
+> > >
+> > >        if (unlikely(!r->size) || READ_ONCE(r->queue[r->producer]))
+> > >
+> > > And of course:
+> > >
+> > > @@ -194,7 +194,7 @@ static inline void *__ptr_ring_peek(struct ptr_ring *r)
+> > >  static inline bool __ptr_ring_empty(struct ptr_ring *r)
+> > >  {
+> > >         if (likely(r->size))
+> > > -               return !r->queue[READ_ONCE(r->consumer_head)];
+> > > +               return !READ_ONCE(r->queue[READ_ONCE(r->consumer_head)]);
+> > >         return true;
+> > >  }
+> >
+> >
+> > I don't understand why it's necessary. consumer_head etc are
+> > all lock protected.
+> >
+> > queue itself is not but we are only checking it for NULL -
+> > it is fine if compiler reads it in many chunks and not all
+> > at once.
+> >
+> > > @@ -256,7 +256,7 @@ static inline void __ptr_ring_zero_tail(struct
+> > > ptr_ring *r, int consumer_head)
+> > >          * besides the first one until we write out all entries.
+> > >          */
+> > >         while (likely(head > r->consumer_tail))
+> > > -               r->queue[--head] = NULL;
+> > > +               WRITE_ONCE(r->queue[--head], NULL);
+> > >
+> > >         r->consumer_tail = consumer_head;
+> > >  }
+> > >
+> > >
+> > > Presumably we should fix this in net tree first.
+> >
+> >
+> > Maybe this one yes but I am not sure at all - KCSAN is happy.
+> >
 > 
-> Thanks for the link.
+> Hmmm.. what about this trace ?
 > 
-> Based on the discussion in the follow-up threads, I think the only check
-> in that function that is needed on top of what is in this patch to
-> ensure group immutability is this one:
+> BUG: KCSAN: data-race in pfifo_fast_dequeue / pfifo_fast_enqueue
 > 
-> 	/*
-> 	 * The device could be considered to be fully isolated if
-> 	 * all devices on the path from the device to the host-PCI
-> 	 * bridge are protected from peer-to-peer DMA by ACS.
-> 	 */
-> 	if (!pci_acs_path_enabled(pdev, NULL, REQ_ACS_FLAGS))
-> 		return false;
+> write to 0xffff88811d5ccc00 of 8 bytes by interrupt on cpu 0:
+> __ptr_ring_zero_tail include/linux/ptr_ring.h:259 [inline]
+> __ptr_ring_discard_one include/linux/ptr_ring.h:291 [inline]
+> __ptr_ring_consume include/linux/ptr_ring.h:311 [inline]
+> __skb_array_consume include/linux/skb_array.h:98 [inline]
+> pfifo_fast_dequeue+0x770/0x8f0 net/sched/sch_generic.c:770
+> dequeue_skb net/sched/sch_generic.c:297 [inline]
+> qdisc_restart net/sched/sch_generic.c:402 [inline]
+> __qdisc_run+0x189/0xc80 net/sched/sch_generic.c:420
+> qdisc_run include/net/pkt_sched.h:120 [inline]
+> net_tx_action+0x379/0x590 net/core/dev.c:5793
+> handle_softirqs+0xb9/0x280 kernel/softirq.c:622
+> do_softirq+0x45/0x60 kernel/softirq.c:523
+> __local_bh_enable_ip+0x70/0x80 kernel/softirq.c:450
+> local_bh_enable include/linux/bottom_half.h:33 [inline]
+> bpf_test_run+0x2db/0x620 net/bpf/test_run.c:426
+> bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+> bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+> __sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+> __do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+> __se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+> __x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+> x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+> do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
 > 
-> However, this would restrict Live Update support to only device
-> topologies that have these flags enabled. I am not yet sure if this
-> would be overly restrictive for the scenarios we care about supporting.
+> read to 0xffff88811d5ccc00 of 8 bytes by task 22632 on cpu 1:
+> __ptr_ring_produce include/linux/ptr_ring.h:106 [inline]
+> ptr_ring_produce include/linux/ptr_ring.h:129 [inline]
+> skb_array_produce include/linux/skb_array.h:44 [inline]
+> pfifo_fast_enqueue+0xd5/0x2c0 net/sched/sch_generic.c:741
+> dev_qdisc_enqueue net/core/dev.c:4144 [inline]
+> __dev_xmit_skb net/core/dev.c:4188 [inline]
+> __dev_queue_xmit+0x6a4/0x1f20 net/core/dev.c:4795
+> dev_queue_xmit include/linux/netdevice.h:3384 [inline]
+> __bpf_tx_skb net/core/filter.c:2153 [inline]
+> __bpf_redirect_common net/core/filter.c:2197 [inline]
+> __bpf_redirect+0x862/0x990 net/core/filter.c:2204
+> ____bpf_clone_redirect net/core/filter.c:2487 [inline]
+> bpf_clone_redirect+0x20c/0x290 net/core/filter.c:2450
+> bpf_prog_53f18857bc887b09+0x22/0x2a
+> bpf_dispatcher_nop_func include/linux/bpf.h:1402 [inline]
+> __bpf_prog_run include/linux/filter.h:723 [inline]
+> bpf_prog_run include/linux/filter.h:730 [inline]
+> bpf_test_run+0x29d/0x620 net/bpf/test_run.c:423
+> bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+> bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+> __sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+> __do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+> __se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+> __x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+> x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+> do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> value changed: 0xffff888104a93a00 -> 0x0000000000000000
+> 
+> Reported by Kernel Concurrency Sanitizer on:
+> CPU: 1 UID: 0 PID: 22632 Comm: syz.0.4135 Tainted: G W syzkaller #0
+> PREEMPT(full)
+> Tainted: [W]=WARN
+> Hardware name: Google Google Compute Engine/Google Compute Engine,
+> BIOS Google 01/24/2026
 
-yes. It's a bit different from that thread in which not only require
-singleton group but also need to be immutable.
 
-> An alternative way to ensure immutability would be to block adding
-> devices at probe time. i.e. Fail pci_device_group() if the device being
-> added has liveupdate_incoming=True, or if the group already contains a
-> device with liveupdate_{incoming,outgoing}=True. We would still need the
-> check in pci_liveupdate_preserve() to pretect against setting
-> liveupdate_outgoing=True on a device in a multi-device group.
+I'm a bit unhappy to demand "ONCE" when it's actually OK if it is
+written in any order (e.g. I had some optimizations doing a memcpy
+here in mind).
 
-this looks good to me. But you'll disallow hotplug-in during liveupdate.
-not sure about if any decision w.r.t. hotplug. is it acceptable?
+So I wanted to reproduce this, but couldn't. And I got this so
+I know KCSAN was enabled:
 
-BTW. A question not specific to this patch. If failure happens after
-executing kexec, is there any chance to fallback to the prior kernel?
 
-Regards,
-Yi Liu
+
+[  333.381268] kworker/u8:2 (40) used greatest stack depth: 12600 bytes left
+Thread 0 done
+[  390.104354] ==================================================================
+[  390.106378] BUG: KCSAN: data-race in enqueue_hrtimer / hrtimer_interrupt
+[  390.108170] 
+[  390.108656] write to 0xffff88807dd1c7cc of 1 bytes by interrupt on cpu 1:
+[  390.110562]  hrtimer_interrupt+0x3d7/0x400
+[  390.111697]  __sysvec_apic_timer_interrupt+0xaf/0x2c0
+[  390.113130]  sysvec_apic_timer_interrupt+0x6b/0x80
+[  390.114469]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+[  390.116319]  qdisc_pkt_len_segs_init+0x81/0x370
+[  390.117840]  __dev_queue_xmit+0x13e/0x1fe0
+[  390.119229]  __bpf_redirect+0x31b/0x5d0
+[  390.120572]  bpf_clone_redirect+0x193/0x200
+[  390.122127]  bpf_prog_5c0c01093e7cbf07+0x27/0x30
+[  390.123762]  bpf_test_run+0x24a/0x520
+[  390.125082]  bpf_prog_test_run_skb+0x7f0/0x14d0
+[  390.126720]  __sys_bpf+0x1f34/0x3e60
+[  390.128077]  __x64_sys_bpf+0x4c/0x70
+[  390.129475]  x64_sys_call+0x12eb/0x2520
+[  390.130900]  do_syscall_64+0x133/0x530
+[  390.132270]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  390.134143] 
+[  390.134744] read to 0xffff88807dd1c7cc of 1 bytes by interrupt on cpu 0:
+[  390.137213]  enqueue_hrtimer+0x69/0x1c0
+[  390.138630]  hrtimer_start_range_ns+0x54b/0x640
+[  390.140363]  start_dl_timer+0xb2/0x1a0
+[  390.141777]  update_curr_dl_se+0x29c/0x360
+[  390.143410]  sched_tick+0xe3/0x2d0
+[  390.144773]  update_process_times+0xa2/0x120
+[  390.146440]  tick_nohz_handler+0x11a/0x350
+[  390.148068]  __hrtimer_run_queues+0x11a/0x680
+[  390.149710]  hrtimer_interrupt+0x1f7/0x400
+[  390.151244]  __sysvec_apic_timer_interrupt+0xaf/0x2c0
+[  390.153143]  sysvec_apic_timer_interrupt+0x6b/0x80
+[  390.154604]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+[  390.156003]  pv_native_safe_halt+0xf/0x20
+[  390.157216]  default_idle+0x9/0x10
+[  390.158189]  default_idle_call+0x88/0x230
+[  390.159369]  do_idle+0x1f9/0x280
+[  390.160383]  cpu_startup_entry+0x24/0x30
+[  390.161528]  rest_init+0x1be/0x1c0
+[  390.162556]  start_kernel+0xa1b/0xa20
+[  390.163658]  x86_64_start_reservations+0x24/0x30
+[  390.164950]  x86_64_start_kernel+0xd1/0xe0
+[  390.166094]  common_startup_64+0x13e/0x148
+[  390.167242] 
+[  390.167721] Reported by Kernel Concurrency Sanitizer on:
+[  390.169462] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.0.0-rc2-dirty #352 PREEMPT(full) 
+[  390.171946] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
+[  390.174471] ==================================================================
+
