@@ -1,174 +1,238 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1E265606;
-	Wed, 25 Mar 2026 04:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774413374; cv=fail; b=NEm95vxbZYQQI4NKDtWZ2iPQ9xIUq+XOyuhQSBtJ493KH+01wrTU7XOEeLbq19nAySL6S+XP6AznkikukcqCYqszeQywliJRkjGQPyxMLjgkGqeBfaLCGqzDnAv6lTQ6kArgmoDXvk9MKRb9iJ3nw4oYx4e1xhKwsGRdgtB9pjg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774413374; c=relaxed/simple;
-	bh=YI6V3DH0z0qbSbyvZqUmOR1Cg1q8VI3HNeClVraf7Ds=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q1Yq1efXphQGC6IjARksyzh50AhFwQMToI+BP0PU3pqNzV/pdNwYqrvTkp3eTrqwVs4XfsmKR5hkAXYtHTWffCBuQpEeiI3BkYd8gqdPTIzxEUXhOaAmMWY5bKFdPeVXohtkw3GJyCi4JusaAscRy4U4rADAiP8quv3dxSEEFCQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DUIgv4cb; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B31B2E401
+	for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 05:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774415975; cv=none; b=pkPDE4UWQExDfpBaIINNtljL/svfVyzvUN98rkluygOZ1kXOcd8M43OIAXBqaG4Z0nW/36KTlS/H/QNKrS0fIdnf9igJmizOEYxuGIdIBz+G7/l4VgPw72N/Nd9PH0qck6HDiqEXfDZUCp5PnMYl2CfiBzMZKRdTsuEPyqW6jXw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774415975; c=relaxed/simple;
+	bh=bEt1AYgfM9UBslLunNjznIM4Ki6cn7g2O1ogCW1PRoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BGHx78F7SgvVM+aVWMrxqwfCUZKhhgUtn9YOWFnl7bSoKLbsBTXaAi5ec3smo0vv6vcMLC/wolG3kqPwhxgZWuMEdbLosoQ/cjsUNYwYuGBN2+OOa1AdgTNu3/aL44q5Jrgea8IpC62PBmvmlgYKIAUqBNEn3SGoA2pnw7rxLVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GojlcczV; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DUIgv4cb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774413373; x=1805949373;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=YI6V3DH0z0qbSbyvZqUmOR1Cg1q8VI3HNeClVraf7Ds=;
-  b=DUIgv4cbMTj9efqb/II5RAK7vO20iVhQxdmsdMVAFvmfJGDF/hGWbNqk
-   r01Lc9f4Jm9tTg4WDpLHGmyrUEleCVm6mNk7zEQTqx/aJybV+PGmukkaC
-   kdO4fI1CFncfTfWgHYPj0AzCUa/AnbN55Ckg8DafhgHh8Z5dfWOqc6UlH
-   fok2d39M96EG4nTqqRIlyVga/1fLIFpCrUpSsrwJF0OSNknwgdN51qG/y
-   MLxgJFq+bnsJBEEdOpu48hvGIjDlw7cmLf/8YfBSZ1mmy3wHM24HKIsTK
-   vqyjHcET4J4PRifBTanI7+Gd9zE5Z4rjop2rEoMccxGPGnfjtrOmDHxgL
-   w==;
-X-CSE-ConnectionGUID: H8LE8ahHT6mFvsP+hJ2QyA==
-X-CSE-MsgGUID: cNuBbmFuTrqvIUpP2XlBpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="78043213"
-X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="78043213"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 21:36:12 -0700
-X-CSE-ConnectionGUID: WUBIc8GkQfi6mRUnh7f58g==
-X-CSE-MsgGUID: TsFEdPu7RUWALqO1OFmVaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="223625920"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 21:36:12 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 21:36:11 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 24 Mar 2026 21:36:11 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.21) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 24 Mar 2026 21:36:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hkPqt8hBky5u/GHb/Q+kVPTX9oP0TLO4zCRhyVtR3j0guVBSRVmrGFl7sc+kSb29DC0hTFRCeyTvud9HXCoOr0ZCwuz5UfxaiQb9xFx/uRZ2u7KdST3+DPU+TUti0KAZqoLPANDjnZPgsgeKW0VG/L2pEkmPFa1IOejEpZ0j7o46HAaeii3871Rc5TQsQtefk0r5pT2waOOGu8y2PXCW5s4Kv9o0xDP3mr8ujZe29ML+tGdsXhtS8b66QQKb1QhVZy2pwXKPoyFY+h32UaYVKcvE4f1FK8WdT9nRWzQk0HsG0WkPs8ehUSXWzsIw2EbekqgVm8avf0cRjy8GrlBNbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YI6V3DH0z0qbSbyvZqUmOR1Cg1q8VI3HNeClVraf7Ds=;
- b=mTYJDLK8mIQ0MRIIL4y7Manp1vsAkJmpH+lJGvoctUvdsUhavQahWNn/1CGxaVc2+trJgJe1ecb4e3sxRkBUt/Prx2RDHaL0G8GO77nU4/Iui6gxhHdnyC9N6+j7R1Y/AIGJeYUAFTASB35UjeDKgBJvEYUZzQwvOonakhRcqXcg9ebc5xk92hOk/ajkZ6omefopNsw+eKrTXxiC/qbV/g16e7mUpcjCKXuLIww0+5qp3mtjroRvor914CLzpRLk8F8Pz6/lU2uVEB+4bZ75MvDBg7clbgSZ5O5tMgBqy64hIhWB1cfXLxDjd1/4vPhv0avK4IH//eoeNPdiYYe0Mw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
- DS0PR11MB8208.namprd11.prod.outlook.com (2603:10b6:8:165::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.20; Wed, 25 Mar 2026 04:36:07 +0000
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86%6]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 04:36:07 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: "amit.shah@amd.com" <amit.shah@amd.com>, "Kohler, Jon" <jon@nutanix.com>,
-	"seanjc@google.com" <seanjc@google.com>, "mtosatti@redhat.com"
-	<mtosatti@redhat.com>, "nikunj@amd.com" <nikunj@amd.com>
-Subject: Re: [PATCH 05/22] KVM: x86/mmu: remove SPTE_EPT_*
-Thread-Topic: [PATCH 05/22] KVM: x86/mmu: remove SPTE_EPT_*
-Thread-Index: AQHcuMcmNiR6qmwCKkKrJ/byTJl4prW+sDqA
-Date: Wed, 25 Mar 2026 04:36:07 +0000
-Message-ID: <ccb7ad19d5a3264d0e13b496a7fa56799c392d73.camel@intel.com>
-References: <20260321000931.1947084-1-pbonzini@redhat.com>
-	 <20260321000931.1947084-6-pbonzini@redhat.com>
-In-Reply-To: <20260321000931.1947084-6-pbonzini@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|DS0PR11MB8208:EE_
-x-ms-office365-filtering-correlation-id: 4c94d5c4-9031-4c38-6efd-08de8a28081a
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info: 79zVf/J9H4vF+Ddwa42OrZBZ8SpVL9Alwm5Wr3PQwpjN0NPC5gsVCE0aUzp7xqNZxeY7EPraedRrVYqNzqrFc+or79W1iF7mf956rKSO5sTN8xLFxV1W9uTmZWqK6K07SSNBWZaj0ewspJ4IUCQDeCe5PRRAPfHkZz7ZjrlTWIBP1kyqYT4wAeQoMVJFqCDdviREkwNfc2d4nJWrXKA3oMiTrqGl2FgQibS29Olscs8wu7JW1EOU7377xj9jhEDpQ1DNI/IQi2Xbmo//G+hX05pJeQBJhneWo0FZbHdj9Loxh0idI06NLbREIVhvgwCUkJ3HWzFiLRX1mtkIzQzd7xW9yNhM4uteXP8ibePra7Lts54zEw2gXsebJC++51nhJjvS6Sz8WbHI3LA9XMhkItGiZj02jBiYapKK4n8Gor8EQtN9ZhOPcjh/KNFt6IqFphFiAjZKuDTXEK3N9i+abRaYutog7wV1py6+xXqOHjQcjYK+MWzRVDtvc0s3YyD3nHCq++rlHAEWPa+7BMkdjbk6EA400YrOaK6NLU+VLL2P65kRrvESWC8f/7xdzh5g5Wuk5mAkb3UXDWt0ZNNvZrL50kUWjgIDYQj9uQbM8jRtUKWeLHNI9QsOlH4G/x6hBNV0FOIVJ2aWzugrQS3zrkhyzF+U4e0RtJpeHXjJdy6RtuFi52QR7tmLoCMowixchytCjfyKCioS+5lyF2GVBedR9rUEE20vtP5KdNLHxBcl4eOBRz0A7+yT3dQRmmmxxxGsW/cLtuN6oCbm9iOdBxh2iaLj+jIvRDBTnt1z7Dc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OGZpMC9TNVpFNmFBRFlaOWxMVUI1R3YzSk5xZDdsMmpISXpVVUNwcUxPZjN6?=
- =?utf-8?B?MW1CbitSSkhTcHlCUElGVmxSSEE5SXd0MElpaDF3YXgxNlc0TmdkajFiVUZC?=
- =?utf-8?B?YzEwOGI4MHc0emxZdnlsU1hYN05tSVdxN05OU0xORTlTWUkzdHN1djdKZG9E?=
- =?utf-8?B?Q2RJTFdjZ1NSUkJ5eWsyOWcvRnB0RHhYUFIrajVtZU40bTUzamQrQnR4RTAw?=
- =?utf-8?B?WG1ndGQyYjhJOXdpbGpSNFpXSEk4M3NRbXBXT2xiL2ppUlkvQmZ5WHp1TVcx?=
- =?utf-8?B?Z0xKYSs2cjNuQzNVWE5IRmx3NXd4dHFNcW1sNlJ5WHg1eUc5K1NXUU50SGs1?=
- =?utf-8?B?QnBaeUovVmxCQVZINi9IMDl2b2I0S0J5TkV0cHAwRzRIV1BtQmIrWXNDR09V?=
- =?utf-8?B?anJmV3NZbGZxM0dPVTdFS0Y5NG5DdTRVaE5QSVdhb0h5cDNQVGt2clY2Y0RE?=
- =?utf-8?B?RGVwR2VTd25WcVlOb1B4b2dNc3U1cG5HSjc2Wk9TQ1hFb0VjM1oxUXFmOHNI?=
- =?utf-8?B?bUZPQXFNTVcxUk9ydUFXcFl5cGtOdkdkbGVHOHVjS1dEWXZhUktEWWZjd0pP?=
- =?utf-8?B?QVdQUGs1bmwxWlloS2VyNlJjM2J0bXoxRkZMV0NldlJpajBSWnFnWTRjYUw3?=
- =?utf-8?B?eit1M29TRDFDcWlEcFg4RmQyKy9lY1JKa0hmOW5wQmorR1RDMHRsR0FqbEtX?=
- =?utf-8?B?YXJpTm82bzlkUHNuM3BrMTdqMS93L3AwSy84SXdCWVJ4dlpjd0JMcVpFeFpk?=
- =?utf-8?B?azV1UlI3L0VWdFNpMytjOGdxRVJNd09semtuMHFrZ0Fxa1BQTURmNzU1S0J3?=
- =?utf-8?B?MXRJVEpidHBDZmxFeTV0OXBySmFHbkhwQUlnQXRlMmZDeTAzK244R0hiVXV2?=
- =?utf-8?B?RjZpY2ppaVJvQStlaWFtQjc0em5XbTI5UlV2azIwQkpzM2ovZk5YcHNQNmZN?=
- =?utf-8?B?VGNPZTF1eVB2Z0t6RkhtVHA4Si9ia0w3WkRSbHUvcGVZNUJOODl6dzVCZHFE?=
- =?utf-8?B?QU1sK1d3aDhNdHNITmQrYmdPeWZHcDVyaFNkQ2lEaktpWUJNbnNSRmhaWFRS?=
- =?utf-8?B?amRlSGZRc2VCSVA4L2I4VE9hb1BKQ2UxRmlKS2VkczNkQWFXSzhBOExrc2x1?=
- =?utf-8?B?YUFDWlFIWmxjdHVVN1kxRTczazJEcGlueWNGek03UVJWQUxXSDBsRE5XVzNN?=
- =?utf-8?B?ME82STVPSExuQm8wLzh6QW5meWUyc1lCUnZYZEQ5MGVkT2RIbmRVSTZybWF0?=
- =?utf-8?B?Mncwb2ltRjVzZ3JXU09KMnQzR2VNSHRLWVRJTjhsVEJoTnk2YW5pcHhtN0ZM?=
- =?utf-8?B?M3llZDNYN0JLSDdPYWtMSU5vQm5RekFBdEs0d3A3TUJMMVRROVZrQm5RVnMy?=
- =?utf-8?B?c3hnV01RVGxoRGdCeWlTeWtJWnQvdDVlSHZrK3BPQ1BENEtwbzZibWYwTEEv?=
- =?utf-8?B?VHkrTFJRY1BSZjEwQk8wNS9qblg3Q0pudVUrWUJpeldWL0pJc2J2TUtJMFpU?=
- =?utf-8?B?RnlNOFdidlEzOWUxRHBBNGp3YUp4YkhiOGIyQStwR1RRVElKSnZIZlJXZVBo?=
- =?utf-8?B?Q0dHUUhjVkMxcm16d25GT1g3Z2lyQWZBb0RqcDhaeDM2VXp0UC9VdU5wQUdH?=
- =?utf-8?B?c1U4RzA2T005L25aVkU1d0ZkMHQrWDF2WjVETGR6aXlaaFBER2V2VHRIQVB0?=
- =?utf-8?B?QWRYNGVPczB6dGlqNDh5OUhsTDA4dW4yUDRkRGx6RFFqOWlpTGVMRFNXcklZ?=
- =?utf-8?B?cUZETHM5SEV1VWpna3BlZFRXbHl1Y3RNNkd0V2lHeUh1WmhlSE90M1l0U2dC?=
- =?utf-8?B?b052RHpDSzU4NnlpbGdNUUdmN0krcCtVcGp3OXlscFUyUm4yTGN1T2VQVEpG?=
- =?utf-8?B?TUpyeG5uSFYvcG1rUCttRGdRc29KWWVOVUtkakowZnhRWC9uYlM0cWN3cU1B?=
- =?utf-8?B?OVYvMkZPSlVEMjVrVjlPZW5WaDFtZWU2OEU4NmpsRXJqc1VoWDN1ODFCY1ZV?=
- =?utf-8?B?UURoZDBjTkltN0hNbnFON3ZGWkpWMDA3LzBCQzZXU2tXV05NT2FERUZaekhW?=
- =?utf-8?B?aGVLcGR3eVliTVRlZTFwYWtPQllNRjNYMHhUYVYwck8vQjBEOGJKdnFrRnV5?=
- =?utf-8?B?VXZ2M0lBVkdRd0ZCZDRseE1zK3FpNlIyWUx4bWFnT1JhUGRiYnlFem9ySEVh?=
- =?utf-8?B?RWNiTGIyUnZTUVN6U2VGWUhZWmlqQUxFTTBjSEtXRVZlUTdlc3M2RGR0aCtq?=
- =?utf-8?B?bkoybllKUzVCS082WGdWckJLM2F2MnRLYnRHUXhIUTZDbGQyc2xWcXlNNU1v?=
- =?utf-8?B?azhJTXVaYUlEZjVuTkZoS21KdDhoK2xuV2JTYWRWQ2sxbmlIYytsUT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <65D3C6B537C5FA44889E4F1D761F30A1@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GojlcczV"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35c124d2613so49595a91.2
+        for <kvm@vger.kernel.org>; Tue, 24 Mar 2026 22:19:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774415973; x=1775020773; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iqy+w6sTastVCRcE15RxXg8vVmEuKZ1PwWM3V+SQr/k=;
+        b=GojlcczVTl5iAXSYtKfr0fo64KILiIFUuCXHl+yKpWHvQLUc1cputn6f1oWSW8xFt+
+         eMBCUEG0JtniTs2nZXqG1TyKkwH6/53WIC2Q98B7vAVJdUNz2dViB3y69c3Nnw5weEln
+         k9F2GSkpW1mMmAy7g+YKMnB86MF6lSRTd1UUt3lJD2NfkyrF7+v+o+SYUNB+UFgzDg4r
+         u0BIBdlAACZCrpDwOo94GUXtFwtO5L+Uxm3YskdGGpxg3TVuD2Z3SRPQKeNAdfvQQSK7
+         8bXt1uPYRa+ZHp+oS5eqgekiLy8f29Zhx070BpzEsTk0qA+tQxJ+yClOb2nIbQI1TWPc
+         LaOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774415973; x=1775020773;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iqy+w6sTastVCRcE15RxXg8vVmEuKZ1PwWM3V+SQr/k=;
+        b=LO0DEVQ5hYHyWzBSeeG+U+sonr6GCdMQXFEtG3mr+ljkTo61OjW6/7Ckyl6SzFKllg
+         68pMkAmAuESG18Cz+3WSaQ0ugxvgItYvlyvp/jlCq4IVyUma5aem+j91Z3AGFlRZFH8N
+         blzgHf8XRovWkreFAlIF7vWOZmEeIO1AiQw0Xcf/ctUQZjB517ahOo6y8D4qyvESwXZU
+         kt2gs26tCaF8Zis/0FbFy+cPD5vbjtnr1sEtieWEkS6LtnsrckePNV+Sxh//XhA3uGaX
+         BGk3hLYuGXN+IfF0NpFe7loIx4k85Hww6bTz8Aka/NHau65o0i9zPNUQigOb79eruIK7
+         +ySA==
+X-Forwarded-Encrypted: i=1; AJvYcCVLJOwf9V/nIPeITuqvfDqHe0DX8w+FdWDD6+UfGuxBlGso6lsgxOmA/G6ps6RU5k0HCK8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZpSQXumB5dWHCRnvZzwcuPXd7g+d6BYjDSIF2QkWmdyzsoWQ/
+	fImdfacP29rT3IreX/8Z6FBUnnGThkyCqRNWGzKZgG5PFT/EUfDWhuXpP3wiN+Db
+X-Gm-Gg: ATEYQzyEI7AXCsNU70aNfHIQk2B07uOVIg+bvo5YUxxqLWaIj2PpO1onpCkhCT5wnGo
+	5G1wEQ5elc1GoQsf7XsntC2YT8e+SULUM/w/0QiSbIPmMak8TAiBFlvYOhRvyQQHvClH8KPEgbg
+	8f1njH5dHQ9td4enGW/l1BCy/9NUMvcSeSLg4Ddj52xiKSsqfltwc3Gm/k4mOaWTw1HciDtecJS
+	GcYGk4nYEM2+KhkCRGwmOdmDs4n1qwQ7LMK5/KFD5upq5UflaH/GI/g0BT4z/CgQlmjNMkwEmiw
+	eqa0SyEPoVcy/ReFeybn+LunugXaA87hoccR4lqDd3qIG587KaoCW42Iq+xGiKO5jdJ2ATVugxR
+	wSshmnbNoSNS6Sp8iMWR6kQXuc+6NYTt0zfaJYQv781G0FpSoRgfgPSrG+piHCm4/Kz/VTmaRr9
+	7U4rWwhCYz0eQcbDJb05adHOe9
+X-Received: by 2002:a17:903:8c6:b0:2b0:af2f:b25d with SMTP id d9443c01a7336-2b0b0a47a18mr26044955ad.22.1774415973199;
+        Tue, 24 Mar 2026 22:19:33 -0700 (PDT)
+Received: from localhost ([115.96.19.77])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08351675esm213975185ad.14.2026.03.24.22.19.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 22:19:32 -0700 (PDT)
+Date: Wed, 25 Mar 2026 10:49:30 +0530
+From: shaikh kamaluddin <shaikhkamal2012@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, skhan@linuxfoundation.org,
+	me@brighamcampbell.com
+Subject: Re: [PATCH] KVM: mmu_notifier: make mn_invalidate_lock non-sleeping
+ for non-blocking invalidations
+Message-ID: <acNwYsm4GfViqiJS@acer-nitro-anv15-41>
+References: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
+ <20260211120944.-eZhmdo7@linutronix.de>
+ <aYyhfvC_2s000P7H@google.com>
+ <aactOOfirdVRYfNS@acer-nitro-anv15-41>
+ <ae2143b3-ce28-4c87-afcf-1505694246d8@redhat.com>
+ <abMS7MALNrmluvh5@acer-nitro-anv15-41>
+ <b51de5cb-8198-4664-afcc-7386ecda81a8@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Z9Ai4SlD7VXEMNuGT4zA7T5gCgUinxmvzIZPdrQwwPp53hAqGLxuIt0rOEi2SATTh+8Jev1MwPwA0SmZqtbBQZUQ2PlYkyO1VOH54QA/uMM9gwJ3iFWiyMuidJT6NeHUUMsqHoapZdhowQaJXKKaTyhFIDdHXAh/iKvVraf1xC/xHITplnRYGzGqSNbjl8XrAAwF7TU36lsRSOmFIM3pyXdnNzOaCWwnNrjC4gCnK5pbfnHc1++eWM5CFqAgiJlQ3c5Ql3aIiYOqLmPmcXaWl4zaELYaasss3nABeLP37G+HzquPorUGMlB9B/g0xDaSRaJUNP6EiKB7KPNv2AL/0A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c94d5c4-9031-4c38-6efd-08de8a28081a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2026 04:36:07.2103
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +hd+Sgx/ceMIJkgZXe7t7x/xBPohuWlqjnNeCon5gQhiYNEPhjzEKLXv+WFL3/WI7tFhGZG62j8PKFsEwyriEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8208
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b51de5cb-8198-4664-afcc-7386ecda81a8@redhat.com>
 
-T24gU2F0LCAyMDI2LTAzLTIxIGF0IDAxOjA5ICswMTAwLCBQYW9sbyBCb256aW5pIHdyb3RlOg0K
-PiBzcHRlLmggaXMgYWxyZWFkeSBpbmNsdWRpbmcgdm14LmgsIHVzZSB0aGUgY29uc3RhbnRzIGl0
-IGRlZmluZXMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBQYW9sbyBCb256aW5pIDxwYm9uemluaUBy
-ZWRoYXQuY29tPg0KDQpSZXZpZXdlZC1ieTogS2FpIEh1YW5nIDxrYWkuaHVhbmdAaW50ZWwuY29t
-Pg0K
+On Sat, Mar 14, 2026 at 08:47:40AM +0100, Paolo Bonzini wrote:
+> On 3/12/26 20:24, shaikh kamaluddin wrote:
+> > > > Alternatively, if you think this needs to be addressed in
+> > > > mmu_notifiers(eg. how non_block_start() is applied), I'm happy to
+> > > > redirect my efforts there-Please advise.
+> > > 
+> > > Have you considered a "OOM entered" callback for MMU notifiers?  KVM's MMU
+> > > notifier can just remove itself for example, in fact there is code in
+> > > kvm_destroy_vm() to do that even if invalidations are unbalanced.
+> > > 
+> > > Paolo
+> > > 
+> > Thanks for the suggestion! That's a much cleaner approach than what I was considering.
+> > 
+> > If I understand correctly, the idea would be:
+> > 1. Add a new MMU notifier callback (e.g., .oom_entered or .release_on_oom)
+> > 2. Have KVM implement it to unregister the notifier when OOM reaper starts
+> > 3. Leverage the existing kvm_destroy_vm() logic that already handles unbalanced invalidations
+> 
+> Yes pretty much.  Essentially, move the existing logic to the new callback
+> and invoke it from kvm_destroy_vm().
+>
+
+Hi Paolo,
+Thank you for the suggestion to use an oom_enter callback approach. I've implemented v2 based on your guidance and have successfully validated it.
+
+Implementation Summary:
+-------------------------------------
+Following your recommendation, I've added a new oom_enter callback to the mmu_notifier_ops structure. The implementation:
+
+1. Added oom_enter callback to struct mmu_notifier_ops in include/linux/mmu_notifier.h
+2. Implemented __mmu_notifier_oom_enter() in mm/mmu_notifier.c to invoke registered callbacks
+3. Called mmu_notifier_oom_enter(mm) from __oom_kill_process in mm/oom_kill.c before any invalidations
+4. As per your suggestion, move existing kvm_destroy_vm() logic that already handles unbalanced invalidation to the new helper function kvm_mmu_notifier_detach() and invoke it from the kvm_destroy_vm()
+
+Key Design Decision:
+------------------------------
+Implementation point no 4, while testing, Issue I was encountering is a recursive locking problem with the srcu lock, which is being acquired twice in the same context. This happens during the __mmu_notifier_oom_enter() and __synchronize_srcu() calls, leading to a potential deadlock.
+Please find below log snippet while launching the Guest VM
+------------------------------------------------------------------------------------------------
+OOM_REAPER: START reaping:func:__mmu_notifier_oom_enter
+[  399.841599][T10882] OOM_REAPER: START reaping:func:__mmu_notifier_oom_enter
+[  399.841608][T10882] KVM: oom_enter callback invoked for VM:kvm_mmu_notifier_oom_enter
+[  399.841608][T10882] KVM: oom_enter callback invoked for VM:kvm_mmu_notifier_oom_enter
+[  399.841961][T10882]
+[  399.841961][T10882]
+[  399.841962][T10882] ============================================
+[  399.841962][T10882] ============================================
+[  399.841964][T10882] WARNING: possible recursive locking detected
+[  399.841964][T10882] WARNING: possible recursive locking detected
+[  399.841966][T10882] 7.0.0-rc2-00467-g4ae12d8bd9a8-dirty #12 Not tainted
+[  399.841966][T10882] 7.0.0-rc2-00467-g4ae12d8bd9a8-dirty #12 Not tainted
+[  399.841969][T10882] --------------------------------------------
+[  399.841969][T10882] --------------------------------------------
+[  399.841971][T10882] qemu-system-x86/10882 is trying to acquire lock:
+[  399.841971][T10882] qemu-system-x86/10882 is trying to acquire lock:
+[  399.841974][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __synchronize_srcu+0x83/0x380
+[  399.841974][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __synchronize_srcu+0x83/0x380
+[  399.841991][T10882]
+[  399.841991][T10882] but task is already holding lock:
+[  399.841991][T10882]
+[  399.841991][T10882] but task is already holding lock:
+[  399.841992][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __mmu_notifier_oom_enter+0x93/0x1f0
+[  399.841992][T10882] ffffffff8db05598 (srcu){.+.+}-{0:0}, at: __mmu_notifier_oom_enter+0x93/0x1f0
+[  399.842005][T10882]
+[  399.842005][T10882] other info that might help us debug this:
+[  399.842005][T10882]
+[  399.842005][T10882] other info that might help us debug this:
+[  399.842006][T10882]  Possible unsafe locking scenario:
+[  399.842006][T10882]
+[  399.842006][T10882]  Possible unsafe locking scenario:
+[  399.842006][T10882]
+[  399.842008][T10882]        CPU0
+[  399.842008][T10882]        CPU0
+[  399.842009][T10882]        ----
+[  399.842009][T10882]        ----
+[  399.842010][T10882]   lock(srcu);
+[  399.842010][T10882]   lock(srcu);
+[  399.842014][T10882]   lock(srcu);
+[  399.842014][T10882]   lock(srcu);
+[  399.842017][T10882]
+[  399.842017][T10882]  *** DEADLOCK ***
+[  399.842017][T10882]
+[  399.842017][T10882]
+[  399.842017][T10882]  *** DEADLOCK ***
+[  399.842017][T10882]
+[  399.842018][T10882]  May be due to missing lock nesting notation
+[  399.842018][T10882]
+[  399.842018][T10882]  May be due to missing lock nesting notation
+
+-------------------------------------------------------------------------------------------------------------------
+Then defered the kvm_mmu_notifier_detach() using workqueue, then above issue got fixed.
+
+
+Testing:
+-------------
+I've validated the v2 approach with:
+
+Kernel: v7.0-rc2 with PREEMPT_RT and DEBUG_ATOMIC_SLEEP enabled
+Test: Triggered OOM conditions that killed a QEMU process with active KVM VM
+Use these commands for generating scenario:
+1. vng -v -r ./arch/x86/boot/bzImage --qemu-opts='-m 2G -cpu EPYC,+svm,+npt,+tsc,+invtsc -s '
+After successfully booting the virtme-ng(QEMU) ------> Act Host VM
+2. chmod 666 /dev/kvm
+3. dmesg -c > /dev/null
+4. launching Guest VM using this command $qemu-system-x86_64 -enable-kvm -m 1000M -mem-prealloc \
+        -monitor none -serial none -display none -nographic & sleep 10
+
+Results:
+-------------------
+1. oom_enter callback was successfully invoked
+2 No SRCU deadlock warnings
+3 No "sleeping function called from invalid context" warnings
+4.OOM reaper completed successfully
+5. Process was reaped without errors
+
+
+
+Question:
+Before I send the v2 patch series, I want to confirm this approach aligns with your expectations. Specifically:
+Defered this coommon helper kvm_mmu_notifier_detach() for mmu_nottifier_unregister() and unbalanced invalidation using workque is good design?
+Are there any specific test cases or scenarios you'd like me to validate?
+
+I can send the complete v2 patch series once you confirm this approach is on the right track.
+
+Thanks again for the guidance!
+
+Shaikh Kamal
+
+> > This avoids the whole "convert locks to raw" problem and the complexity of deferring work.
+> > 
+> > I have questions on Testing part:
+> > ------------------------------------
+> > I tried to reproduce the bug scenario using the virtme-ng then running
+> > the stress-ng putting memory pressure on VM, but not able to reproduce
+> > the scenario.
+> > I tried this way ..
+> > vng -v -r ./arch/x86/boot/bzImage
+> > VM is up, then running the stress-ng as below
+> > stress-ng --vm 2 --vm-bytes 95% --timeout 20s & sleep 5 & dmesg | tail -30 | grep "sleeping function"
+> > OOM Killer is triggered, but exact bug not able to reproduce, Please
+> > suggest how to reproduce this bug, even we need to verify after code
+> > changes which you have suggested.
+> 
+> I don't know, sorry.  But with this new approach there will always be a call
+> to the new callback from the OOM killer, so it's easier to test.
+> 
+> Thanks,
+> 
+> Paolo
+> 
