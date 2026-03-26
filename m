@@ -1,81 +1,83 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B5C35DA40
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA8C3A1A5B
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549052; cv=none; b=tt8we0d9QimEw0TRYv27Oh0fc+Gx8LQygiCyIxURGkjZjlwLKCyC1fQ2Cw6klsjCW3GCx4AHjrWdzYX+p5bvCc6KUnbRAXMxDISWz0UQhTYZ3OYjduzfvk5VXVfeOO9knFCgPg+yyNveP8GhRUUnOhG+KTuDOqaETbIm/AL34kc=
+	t=1774549055; cv=none; b=MPE/Q3YpVSnURsIplvlXDScgXNywcpDcki7jqZh603vg0jOAo10ZDbhJYOjlNcFTrSTOMJk6rVQl9JLwGGLNXzW/wTXdsxM3j/0l7QSh4vLaRGY0I4b35hdwLCpl7JH1T9MUZAMCheWEagn5Mj8cOjt6s6DzFDNqkBY96GuLeDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549052; c=relaxed/simple;
-	bh=niZG6VkAN51JLK1t6c7HcEhniMJlR8fYX5mWvzEBmCk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Type; b=CduIcu6wGFOkwTYBEgxmZLDsg88A2eHc+YC5j4fG1QY4cuSML8xQcjaK8F/32/4AIFIlRhho6uTKNHv+Tko/wh6yZFjjtKR6lprSjkE3CmisTG6Hkk0EyK8LABVKVkwgx2Q/Yb64PXcMTikItQdhr5Wmlzvccp4GoipceWeo6os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GC7ELX2O; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oCsZgRu4; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1774549055; c=relaxed/simple;
+	bh=/hgPA8ofUfgPut6kjk1EiKMkvUvqj4HcFOe/kxoKD5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RmimshJ85Oidv/OP788jRCSwvIr2yn/x0Idb2SBlcgZ43+qAxOGnJNEuRuJ4NbowVEJiP0F44n2rBKFFtbhyn8kbzyzz8ns9RdbwW0x8Sm9SGLMG8U6NEEC9W6DfifIpml7MfEzMllshah7BP+mQE++JsHdJU0eqcc4hKStixJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fnEfgenV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=i9RoY2bM; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GC7ELX2O";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oCsZgRu4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fnEfgenV";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="i9RoY2bM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549049;
+	s=mimecast20190719; t=1774549052;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:  content-type:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FCQZKgTIkSlxtemeyvfWASWksZ4VRjPQyyE17m0mqP8=;
-	b=GC7ELX2OImmPJ/drHVvK8HwBUkuKNVjM/Jk9ODIQJS7Vo1lA6qriwbkUO618Pd0FTzldLU
-	99eIWz9lCZj2JMJZ37oAI/CSi3lPnRFUCZzS+ZsKOcTl68JexFutRfPcDrE5ldnwVetvrQ
-	bpNOzPgfQt/6vmGHGFiYab6sMMMFPEQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WDapCol8DB+8Onsizv1MMEQf+Ju0eOGDbqoSTr6KUVY=;
+	b=fnEfgenV3Zbm+30x+QylL2KciQzotj5fsmOPXHsDC5brcxKIp7XfIuxfzM6axnV9isbWCm
+	FVnUSQriRvQizDAk8rL1yVkEZ5IzYGPoU2pnJ5iFNs9N/IVoajNDFG3G0FWx9q/I+JVtW/
+	urkzZut3Ln3PalG3mxVHyQ7uYbSwoxc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-HubIez_ZOS6aNF9jPFR6BA-1; Thu, 26 Mar 2026 14:17:28 -0400
-X-MC-Unique: HubIez_ZOS6aNF9jPFR6BA-1
-X-Mimecast-MFC-AGG-ID: HubIez_ZOS6aNF9jPFR6BA_1774549047
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so27003995e9.0
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:28 -0700 (PDT)
+ us-mta-530-dooUKcF-ONOL23zNPdYn6w-1; Thu, 26 Mar 2026 14:17:30 -0400
+X-MC-Unique: dooUKcF-ONOL23zNPdYn6w-1
+X-Mimecast-MFC-AGG-ID: dooUKcF-ONOL23zNPdYn6w_1774549049
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4362197d1easo842410f8f.2
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549047; x=1775153847; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FCQZKgTIkSlxtemeyvfWASWksZ4VRjPQyyE17m0mqP8=;
-        b=oCsZgRu4YiKVEZu2FfJXfosFFa2lt4p6WafNXOPotEeI/IWsQ4I2tGInS5wRKI/7rb
-         wKZLGpxbecEkSTbmkn+WLlS8Lk3pyr/j1NK1kwgkGbE0727Q3dUZrsSu13o77nhX2cWJ
-         8cpyYfk2PRohnQSLVdjCQsV3Z06Px0JOZlg6Iiud3/wv77k7fb+D+QtGFvLZh9WcPngf
-         pdYTnkO8jCGuHH9VMFCBLlXNqy4k3oS4vxBtLGt70ALo46YllEiBP3NPEXTrZc+LFtHH
-         vKVu+pcr52KpCtfQZ59jFratU7FKhBah0T7qj1wwwmVgoEEbUA6EiJ89QxY/oxfXZ20A
-         dCjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549047; x=1775153847;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1774549049; x=1775153849; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FCQZKgTIkSlxtemeyvfWASWksZ4VRjPQyyE17m0mqP8=;
-        b=pFbbAbGJg4jpvNubw8+MwLALxk0KCDDHsg0yHdhcX3BNrbzLgp/IhTpSpZr6ZD3Udx
-         MZPlmJPABwtKx6mKEkKQn+Ly4pivhF7C9kGCPPoTlTRyqCcCdk63qYLGQBa2cLKT1PCa
-         Zc1OS6K90hP3G0E4QiE6CSjxveB1nmeHRIjnLpZOx+I1nhCSM0l50cXMrIY7FDG9LxoN
-         0fnQ6ORTpw3maDpaTmX4qx3Sb5TEuMGZq5dv8kPJJkioWOs/iPLxaKtQ3zH1hkssYtNj
-         VX2LDTPoXJ+rdTm8NrPhBz9MTlrp7ycJHTSALDxZyBaE0Im7sKgRBEW4GqqMIzd/tjka
-         rgFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVrZcqN5Vkzl+IpJNMUj2ktH4B5pzb9N05bfeqDD3XlYHT6hmoJ8kH+wzpfwxoK1biTlDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztrfMPBbt8DwPVmU4BzgT8VkkfqWaPu9weW2FSMUdW3kMB8/oU
-	BGdmCuIjMASWC+gAb6iVOoJ18ZsGjmO7FE5C9S0QNp+on2mYaVTBSg/ytkwUP0+3aebGQ9tSlvv
-	ZXXxRJpE1opakNwh7Cqfwn6ffTG2X6/BGcu9uBZO3tETFhw/+j+E5ng==
-X-Gm-Gg: ATEYQzxNQA/NuZviKsae/O++Z85d01Or9J0/JiMTAMlRpfiexS7G/QQrRXIGUixVtd7
-	x9RdLf9NmrvYS1LEwT7xNGZwS2KYQohgS68fjN0qZ7s176jGW//rs80dA0ceaS2T9G5sz07h9ij
-	+8+FV60tX1Kiyi2RvixIVLeXj4SRaGar141fJVVnrmCB3wctcEhuSiRoNSvORdppdBxp6gbGIIp
-	fg6AAnRp6vPZgJw0enEDIIQpesfWynC6y/2Wgw6m/HoffO+8/lS3i7/yPEJrbBO6lJWVaHyiVv5
-	6W/c6V2xpuruLeJo5KgwNVpnTTU3FiKCIcurofbl4aL7bKzTnneWiZB/sFJx5mMNomNxTVS40M+
-	VaRKkyYHjgvdjDTZhMsN1bUH3C2rzO0JifJG+d4brrDmPYm/px3mljPB0Lej5W933HxmaPjZyUc
-	6mWgJOvjZ2TYJ1I/diBMyxjwLu
-X-Received: by 2002:a05:600c:3e8e:b0:485:3989:b3e4 with SMTP id 5b1f17b1804b1-48722ba925amr41934765e9.6.1774549046723;
-        Thu, 26 Mar 2026 11:17:26 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e8e:b0:485:3989:b3e4 with SMTP id 5b1f17b1804b1-48722ba925amr41934105e9.6.1774549046154;
-        Thu, 26 Mar 2026 11:17:26 -0700 (PDT)
+        bh=WDapCol8DB+8Onsizv1MMEQf+Ju0eOGDbqoSTr6KUVY=;
+        b=i9RoY2bMJWiDNAhtB064Er8wZviqeEtFxYXU57iHddcxP7SAecRiyOTMD+xphFtUGM
+         gFw4wRAsfmYFF5VKDCNyon/gm8EJT2gF6muWuO+wlRB7Cv5LX342xuz7zXKVfdJb5oTB
+         cqkV7UU/fQUF1gbY5AzTp5MYUPzPgsm4j42SVGwEOpe7NbNn/m9SgV47rRd4gtWSOrb2
+         lrcVaXtaJ4QGPYALnpo9F/t2UnVj6U0xywAl3+++Kqm3Xsm1Q+2KdCs5tm5b7DYeg47x
+         r0UD+zum/ZJa4s1TXnfzeplAAHPHlz8mjZRtO50bnTrWaEEE6w5SuroJCNMDwx7buzLT
+         KVXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774549049; x=1775153849;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WDapCol8DB+8Onsizv1MMEQf+Ju0eOGDbqoSTr6KUVY=;
+        b=M1uPBjoexOOqZ9hnI1zSW/F6x9k5C/K7EWOdEBpLIF7c0ucKUMGAdE2P+qg2RHjxMf
+         l/3/W/GO3uoxHM6GyMJFYjCfHWwVlQbbNPupvotUcyqhXa+tfsXytYBfpM/HnNvJrorx
+         Gfr+DqB9JXrCwFwOXYktdJ92LryeTEcjT6Gj7k3LkpPoF+kj3vOh/d5zFDz1i6VxhO4R
+         K1kotY+vwCPIZxS4CEMEBQQB1j3BGPRzSBqtQrwzuzNG09nIO6JpDFvg3FuItsjPgjPx
+         YFsQsFHO3EgtS8ah35I7gESGGRY9uSQr9EPwhpfuTEn5ZRMSFz7tcsTQ2MPDHXUlbMGy
+         nCJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSFpT8VBtjbmgImY6y2Hekwaa9B8UI8qyWMQugpC1ilS3dGXTemCSekAzzQj0bxzYJswY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynsxhBc8AeQMgOejljGPlcvC1SGGJaYtREX0y5TOu6F/UjAWhk
+	dvUFV+coYYFiSyFY1Gt76FIrapymC4GZ5X4+O6VaPuWA0jmm7qTLPo79x92I8MyV8ZamFj1Uf+s
+	Coqc9BrpVWlKrkJpTxl4V4N7G41TS6uTuvd3VCTaChtoG6mevaNFfww==
+X-Gm-Gg: ATEYQzwH3wllIQd0iQAP4yGEmGGT4nMj3VJAMsTEO0grP89rtr2RGPw5in9qn62GXl1
+	AJ3j6Ly0PEV4wU6O3kqWABBMRFXGY0jq7eMFDV28VLRRrNJ8tYIuLL8wlMTQXE/oqWfT/bzZeaj
+	+5y+3eDLVTARi6fvn9A1yBq7NdkU5QYtZLXEfeKOZbgVk3Joc1A8kW9+IGNmjBgJaxlBsDGrosj
+	jzn73YHrqshDJ/fB1BtOw6ZvELF2LhXX7XA7+bMS5mOPdM67WQ3H5nKLSojiySLsgfH7+ny4L+j
+	sDCF6NcD6D7qyZ+l8m3g3XkKmXdKWJo6UucpptAJdgubrPGM2J6GFufeWIT8q4NayUaFQ9kzmQJ
+	cI94RF30oUoesT59yHfPNJ6IfHpRwFs2BSLvyoHiB2GsDFXcPc2VtYIbvXCmJMhrm1TLjzf2zg3
+	Z8pOlU8vZv9Qa7gbnY2F0FLvzA
+X-Received: by 2002:a05:6000:2c06:b0:43b:5762:2999 with SMTP id ffacd0b85a97d-43b88a8e8ffmr12921631f8f.37.1774549049151;
+        Thu, 26 Mar 2026 11:17:29 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c06:b0:43b:5762:2999 with SMTP id ffacd0b85a97d-43b88a8e8ffmr12921578f8f.37.1774549048681;
+        Thu, 26 Mar 2026 11:17:28 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48725d9acb9sm1679495e9.1.2026.03.26.11.17.24
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e7111sm9492066f8f.37.2026.03.26.11.17.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:17:24 -0700 (PDT)
+        Thu, 26 Mar 2026 11:17:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -84,189 +86,103 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [RFC PATCH v2 00/24] KVM: combined patchset for MBEC/GMET support
-Date: Thu, 26 Mar 2026 19:16:58 +0100
-Message-ID: <20260326181723.218115-1-pbonzini@redhat.com>
+Subject: [PATCH 01/24] KVM: TDX/VMX: rework EPT_VIOLATION_EXEC_FOR_RING3_LIN into PROT_MASK
+Date: Thu, 26 Mar 2026 19:16:59 +0100
+Message-ID: <20260326181723.218115-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260326181723.218115-1-pbonzini@redhat.com>
+References: <20260326181723.218115-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 
-This series introduces support for two related features that Hyper-V uses
-in its implementation of Virtual Secure Mode; these are Intel Mode-Based
-Execute Control and AMD Guest Mode Execution Trap.
+From: Jon Kohler <jon@nutanix.com>
 
-It's still RFC because it can definitely use more testing and review,
-but I'm pretty confident with the overall shape and design.
+EPT exit qualification bit 6 is used when mode-based execute control
+is enabled, and reflects user executable addresses. Rework name to
+reflect the intention and add to EPT_VIOLATION_PROT_MASK, which allows
+simplifying the return evaluation in
+tdx_is_sept_violation_unexpected_pending a pinch.
 
-Both MBEC and GMET allow more granular control over execute permissions,
-with different levels of separation between supervisor and user mode.
-MBEC provides support for separate supervisor and user-mode bits in the
-PTEs; GMET instead lacks supervisor-mode only execution (with NX=0,
-"both" is represented by U=0 and user-mode only by U=1).  GMET was
-clearly inspired by SMEP though with some differences and annoyances.
+Rework handling in __vmx_handle_ept_violation to unconditionally clear
+EPT_VIOLATION_PROT_USER_EXEC until MBEC is implemented, as suggested by
+Sean [1].
 
-The series was developed starting from Jon Kohler's earlier version at
-https://lore.kernel.org/kvm/20251223054806.1611168-1-jon@nutanix.com/.
-The difference is that I am starting this implementation from two
-changes to core MMU code, even before looking at nested MBEC/GMET;
-these are seemingly unnecessary for that goal but they make the actual
-feature almost trivial to implement:
+Note: Intel SDM Table 29-7 defines bit 6 as:
+  If the "mode-based execute control" VM-execution control is 0, the
+  value of this bit is undefined. If that control is 1, this bit is the
+  logical-AND of bit 10 in the EPT paging-structure entries used to
+  translate the guest-physical address of the access causing the EPT
+  violation. In this case, it indicates whether the guest-physical
+  address was executable for user-mode linear addresses.
 
-- first, I'm cleaning up the implementation of nVMX exec-only, by
-  properly adding read permissions to the ACC_* constant and to the
-  permission bitmask machinery.  Jon also had to add a fourth ACC_*
-  bit, but used it only in the special case of nested MBEC; here
-  instead ACC_READ_MASK is the normality, which simplifies testing
-  a lot and removes gratuitous complexity.
+[1] https://lore.kernel.org/all/aCJDzU1p_SFNRIJd@google.com/
 
-- second, I'm enforcing that KVM runs with MBEC/GMET enabled even in
-  non-nested mode, if it wants to provide the feature to nested
-  hypervisors.  Initially I thought this would mostly simplify the
-  testing; but it actually has a big effect on the code as well, because
-  the creation of SPTEs now looks *exactly the same* for L1 and L2 guests;
-  the difference lies only in the input access permissions.
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Message-ID: <20251223054806.1611168-2-jon@nutanix.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/include/asm/vmx.h | 5 +++--
+ arch/x86/kvm/vmx/common.h  | 9 +++++++--
+ arch/x86/kvm/vmx/tdx.c     | 2 +-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-Later patches have to use slightly different meanings for ACC_* in Intel
-and AMD, but the differences are driven by whether the underlying SPTEs
-have U/NX or XS/XU bits, and propagate from there.  In other words,
-unlike the older ACC_USER_MASK hack these differences are backed by
-concrete concepts of the page table format, and there is always a 1:1
-mapping from ACC_* bits to PT_*_MASK or shadow_*_mask:
-
-                            Intel                 AMD
-     --------------------   -------------------   -------------------
-     ACC_READ_MASK          PT_PRESENT_MASK       PT_PRESENT_MASK
-     ACC_WRITE_MASK         PT_WRITABLE_MASK      PT_WRITABLE_MASK
-     ACC_EXEC_MASK          shadow_xs_mask        shadow_nx_mask
-     ACC_USER_MASK          ---                   shadow_user_mask
-     ACC_USER_EXEC_MASK     shadow_xu_mask        ---
-
-As can be seen above, the Intel side needs a little work to split
-shadow_x_mask and ACC_EXEC_MASK in two; now that there is an actual
-ACC_READ_MASK to be used for exec-only pages, ACC_USER_MASK is unused
-and can be reused as ACC_USER_EXEC_MASK.  ACC_EXEC_MASK is used for
-kernel-mode execution and is tied to shadow_xs_mask (when MBEC is disabled
-shadow_xs_mask == shadow_xu_mask, and ACC_USER_EXEC_MASK is computed but
-ineffective).  update_permission_bitmask() precomputes all the necessary
-conditions.  Note that with MBEC the user/supervisor distinction
-depends on the U bit of the page tables rather than the CPL; processors
-provide this information to the hypervisor through the "advanced EPT
-violation vmexit info" feature, which is a requirement for KVM to use
-MBEC, and kvm-intel.ko passes it to the MMU in PFERR_USER_MASK.
-
-On the AMD side, the U bit maps to ACC_USER_MASK but nNPT adjusts the
-permission bitmask to ignore it for reads and writes when GMET is active.
-Despite the smaller scale of the changes compared to MBEC, there are some
-changes to make to use GMET for L1 guests, because the page tables have
-to be created with U=0.  This means that the root page has role.access !=
-ACC_ALL and its permissions have to be propagated down.
-
-In both cases, the complexity added to the core is limited in comparison
-to the benefits of a pretty seamless nested support.
-
-The former "smep_andnot_wp" bit of cpu_role.base, now named "cr4_smep",
-is repurposed for nested TDP to indicate that MBEC/GMET is on.  The minor
-pessimization for shadow page tables (toggling CR4.SMEP now always forces
-building a separate version of the shadow page tables, even though that's
-technically unnecessary if CR4.WP=1) is not really worth fretting about;
-in practice, guests are not going to flip CR4.SMEP in a way that would
-prevent efficient reuse of shadow page tables.
-
-Patches 1-9 are general cleanups, mostly for MMU code.
-
-Patches 10-17 are for Intel MBEC, with the first three covering
-non-nested use.
-
-Patches 18-24 are for AMD GMET, with 18/19/20/22 covering non-nested
-use and the others covering nested virtualization.
-
-(Patch 25 is a nice little hack that can be useful for testing).
-
-Paolo
-
-
-v1->v2:
-- fix EXPORT_SYMBOL_FOR_KVM_INTERNAL goof
-- drop bit 10 from FROZEN_SPTE, add static_assert to catch it [Kai]
-- fix exit qualification for page table EPT violations [kvm-unit-tests]
-- add XU to shadow_acc_track_mask
-- propagate root_role->access also in shadow MMU direct_map()
-- add requested access to kvm_mmu_spte_requested tracepoint
-- include support for passing advanced EPT violation vmexit info to guest
-- advanced EPT violation vmexit info is now required for nested MBEC
-- fix nested MBEC to gate XS vs XU based on the U bit of paging structures
-- drop SECONDARY_EXEC_MODE_BASED_EPT_EXEC if L1 does not set it
-- add commit message to "KVM: nVMX: advertise MBEC to nested guests" [Jon]
-- fix checkpatch.pl issues [Jon]
-- drop gmet from /proc/cpuinfo [Borislav]
-- fix running L1 without GMET
-
-
-
-Jon Kohler (5):
-  KVM: TDX/VMX: rework EPT_VIOLATION_EXEC_FOR_RING3_LIN into PROT_MASK
-  KVM: x86/mmu: remove SPTE_PERM_MASK
-  KVM: x86/mmu: free up bit 10 of PTEs in preparation for MBEC
-  KVM: nVMX: advertise MBEC to nested guests
-  KVM: nVMX: allow MBEC with EVMCS
-
-Paolo Bonzini (20):
-  KVM: x86/mmu: shuffle high bits of SPTEs in preparation for MBEC
-  KVM: x86/mmu: remove SPTE_EPT_*
-  KVM: x86/mmu: merge make_spte_{non,}executable
-  KVM: x86/mmu: rename and clarify BYTE_MASK
-  KVM: x86/mmu: introduce ACC_READ_MASK
-  KVM: x86/mmu: separate more EPT/non-EPT permission_fault()
-  KVM: x86/mmu: split XS/XU bits for EPT
-  KVM: x86/mmu: move cr4_smep to base role
-  KVM: VMX: enable use of MBEC
-  KVM: nVMX: pass advanced EPT violation vmexit info to guest
-  KVM: nVMX: pass PFERR_USER_MASK to MMU on EPT violations
-  KVM: x86/mmu: add support for MBEC to EPT page table walks
-  KVM: x86/mmu: propagate access mask from root pages down
-  KVM: x86/mmu: introduce cpu_role bit for availability of PFEC.I/D
-  KVM: SVM: add GMET bit definitions
-  KVM: x86/mmu: add support for GMET to NPT page table walks
-  KVM: SVM: enable GMET and set it in MMU role
-  KVM: SVM: work around errata 1218
-  KVM: nSVM: enable GMET for guests
-  stats hack
-
- Documentation/virt/kvm/x86/mmu.rst |  10 +-
- arch/x86/include/asm/cpufeatures.h |   1 +
- arch/x86/include/asm/kvm-x86-ops.h |   1 +
- arch/x86/include/asm/kvm_host.h    |  45 +++++---
- arch/x86/include/asm/svm.h         |   1 +
- arch/x86/include/asm/vmx.h         |  14 ++-
- arch/x86/kvm/mmu.h                 |  12 ++-
- arch/x86/kvm/mmu/mmu.c             | 162 ++++++++++++++++++++---------
- arch/x86/kvm/mmu/mmutrace.h        |  19 ++--
- arch/x86/kvm/mmu/paging_tmpl.h     |  66 ++++++++----
- arch/x86/kvm/mmu/spte.c            |  77 ++++++++------
- arch/x86/kvm/mmu/spte.h            |  65 +++++++-----
- arch/x86/kvm/mmu/tdp_mmu.c         |   6 +-
- arch/x86/kvm/svm/nested.c          |  16 ++-
- arch/x86/kvm/svm/svm.c             |  32 +++++-
- arch/x86/kvm/svm/svm.h             |   1 +
- arch/x86/kvm/vmx/capabilities.h    |  11 +-
- arch/x86/kvm/vmx/common.h          |  20 ++--
- arch/x86/kvm/vmx/hyperv_evmcs.h    |   1 +
- arch/x86/kvm/vmx/main.c            |   9 ++
- arch/x86/kvm/vmx/nested.c          |  25 ++++-
- arch/x86/kvm/vmx/tdx.c             |   2 +-
- arch/x86/kvm/vmx/vmx.c             |  29 +++++-
- arch/x86/kvm/vmx/vmx.h             |   1 +
- arch/x86/kvm/vmx/x86_ops.h         |   1 +
- arch/x86/kvm/x86.c                 |   1 +
- 26 files changed, 437 insertions(+), 191 deletions(-)
-
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index b92ff87e3560..7fdc6b787d70 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -597,10 +597,11 @@ enum vm_entry_failure_code {
+ #define EPT_VIOLATION_PROT_READ		BIT(3)
+ #define EPT_VIOLATION_PROT_WRITE	BIT(4)
+ #define EPT_VIOLATION_PROT_EXEC		BIT(5)
+-#define EPT_VIOLATION_EXEC_FOR_RING3_LIN BIT(6)
++#define EPT_VIOLATION_PROT_USER_EXEC	BIT(6)
+ #define EPT_VIOLATION_PROT_MASK		(EPT_VIOLATION_PROT_READ  | \
+ 					 EPT_VIOLATION_PROT_WRITE | \
+-					 EPT_VIOLATION_PROT_EXEC)
++					 EPT_VIOLATION_PROT_EXEC  | \
++					 EPT_VIOLATION_PROT_USER_EXEC)
+ #define EPT_VIOLATION_GVA_IS_VALID	BIT(7)
+ #define EPT_VIOLATION_GVA_TRANSLATED	BIT(8)
+ 
+diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+index 412d0829d7a2..adf925500b9e 100644
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -94,8 +94,13 @@ static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	/* Is it a fetch fault? */
+ 	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
+ 		      ? PFERR_FETCH_MASK : 0;
+-	/* ept page table entry is present? */
+-	error_code |= (exit_qualification & EPT_VIOLATION_PROT_MASK)
++	/*
++	 * ept page table entry is present?
++	 * note: unconditionally clear USER_EXEC until mode-based
++	 * execute control is implemented
++	 */
++	error_code |= (exit_qualification &
++		       (EPT_VIOLATION_PROT_MASK & ~EPT_VIOLATION_PROT_USER_EXEC))
+ 		      ? PFERR_PRESENT_MASK : 0;
+ 
+ 	if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index c5065f84b78b..fa740f70ee75 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1855,7 +1855,7 @@ static inline bool tdx_is_sept_violation_unexpected_pending(struct kvm_vcpu *vcp
+ 	if (eeq_type != TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION)
+ 		return false;
+ 
+-	return !(eq & EPT_VIOLATION_PROT_MASK) && !(eq & EPT_VIOLATION_EXEC_FOR_RING3_LIN);
++	return !(eq & EPT_VIOLATION_PROT_MASK);
+ }
+ 
+ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
 -- 
 2.53.0
 
