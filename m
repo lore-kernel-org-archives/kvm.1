@@ -1,156 +1,207 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB2F3EF669
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504A9410D06
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549458; cv=pass; b=NeOmNmPlvdRLADVJshhGbO01hjXdAKui5Tr25rTIjNJ4/VSENgJw/1/KwTqDrrrSHJDCKRTK5yy9WRnOLC5eDcb/b4ZEzKJPFi5zJwDYjSK8LPH0uYuXBpzec7FIfhOms/nGhMby8uDjY1lj0yMs4My6SCVWtZnuQ88mRAXn8MI=
+	t=1774549489; cv=pass; b=sjMXTc28FaoE6AjJfF+rcIsVP76PHHVPeawfZJFMm3vAO90eYOnrPvDUEH+E0v/X7QntLOG7R7nFxZuEIzewkmOc9gMxkPtsX+Ygiqqn8Kj8taxcjEzp2CpTmovqKEI9DlUKZetXiF6LSPXhhuHI7qWNvfpHlv6K1Efiz5jvLtw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549458; c=relaxed/simple;
-	bh=OQMGWO3Jb9ZRlKPSLzy+ZfSrt4QpEsmLSFST3EKzYAk=;
+	s=arc-20240116; t=1774549489; c=relaxed/simple;
+	bh=vV0FfkMOXsfsipj7YfWLpHAGdujKQ79g0MHFT4jDWso=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PiQrZNhIMwTVZ5PYrVAmkxA7SPosqlBFjYhccXinukbcjCvK/e2PHUoEWoLfflGc+KphNHM613rG/5JQSViZO9jOpZ25GO3pRWQ6YOeM2rbiOBOeGjqFBmtB1j/Zuz4U4HufOY7YKVvbffCTi2kInF7sFVHBjj5IXCfGKipZIQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ctP+FRKu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FifowGsw; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=c2iKNiwMwMFFjb6/u5zE6TvrU/1c0q2qHLDtSl5rSKnbwetnRMbmSbhpDwVRum5R245NCTJ5BlTQ0P5UznHrYTQvpo5oIfIgX70IQr6todH5CP8dhxqJhY/r48xJooiEWXUngYGKjrk0JA8Na34Bj0FpudxwEHe5pMMFk/bshuQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivx61MaE; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ctP+FRKu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FifowGsw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OQMGWO3Jb9ZRlKPSLzy+ZfSrt4QpEsmLSFST3EKzYAk=;
-	b=ctP+FRKuOLwaplD21MC4GJ2JOiXlXAyhZ6II3hftsLKcoyttqABWJ1KfVerrwOm0t8+ymo
-	MhgwxwEWodbrmYoee/JFE/4Lc93MIoovY1OUoCRT7L/gMqLUs0DQEU9pXXbi8raS8foy/W
-	YeuKliBQCO/X5i5s+kke7yCclXhS2V0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-dLz3Kve6PM2i938lKoMRAA-1; Thu, 26 Mar 2026 14:24:12 -0400
-X-MC-Unique: dLz3Kve6PM2i938lKoMRAA-1
-X-Mimecast-MFC-AGG-ID: dLz3Kve6PM2i938lKoMRAA_1774549451
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-439ca4b3d0bso687841f8f.3
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:24:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774549451; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivx61MaE"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50b6c45781aso88251cf.0
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:24:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774549487; cv=none;
         d=google.com; s=arc-20240605;
-        b=jAJsN/JCOrPbjevoMRuKqXbYvMaBIstMn1eR7QlSbZKbj+A9LXhhY946YpeBbx5PMg
-         pCf+Y5XkDVigcvfGq1Q+MAmYyHDRZe9oLqtlAsLVDoZAVUVyskdkSGJDNQ3XiRMbILwO
-         77Vv5ZZNYf+10KIcqamMork+T9V/d2K+PtccXSZVXNGUmMMG0IXELjZDSeL9OXWrTXc5
-         G0PMKfC6g0wb/pGB47qCGpaOYEc2yYVqconcc1vX4phudIBQ3WYX8rwj2+EJw5ey9VNZ
-         u9jTqKwKZvC8HWWdFCfP2mFhw52sfTbM9+FUCb2tUI6SrHLliPR0PQkDygqFrbVzZd1z
-         DZuA==
+        b=RRSSGAjs1sG9E0OjKxESW15PqJOXRnA8IylNBZWYqdXt7VAvXLRw9s1aAleGsnA0rt
+         49h8CqQnoXWdw5Ipad6JiTJN7km7LXELTH/CXoRtxL97VS153EwWM/hXEvRkRtr/ee/I
+         XGPhtIS/bwpm1zQncv55zpSRMlNf3vXU3C5ceoGhTk2BZKsQQDKNHvdD+f25BrQXd+XT
+         iIkoF3LBaaZ1ooqN+L8EMpvWJnZeERdZeQv1JpiARuuW0VKmi4ZjBF5mESjyuTcwS002
+         m6jFaTdBwM4a6zu7eiCYYODk35uQVVLnCaWgVY6U7m0bQb2zWYsE4r/oouvmhLi6BXxa
+         UhQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=OQMGWO3Jb9ZRlKPSLzy+ZfSrt4QpEsmLSFST3EKzYAk=;
-        fh=44ihW6hREQ4K5S0P9k5dwclAauqQfpaIkhr4vdzaEy4=;
-        b=e8z3gfc9yXYn7NOrNC0p/ToAhef6LRsfTxQly8fyf1rZfCbQSP0W6fXnloBYw2QwWj
-         Tf0mLFjrBt6jUeVHuuCT9wMJIWxI+y8NpQa97lIDfBq819/tQooDhhFEmv6oP8tjDTC2
-         T39J+fnEYNOM/FVEgh7TjRUXTuuVPIkc483CGHpdpEXFn7XhOF5JhbJzXvkX8GhadcOA
-         lSwxZyLenUtbifdf6ZaRNv5VB+qWwQUL0MSQ2o3Y8IW6cBC0vveafU+DJ8gUR/XE5Lbg
-         2PiRo4ESH3DEv6ez5tno0BZjki1kxFJxVsYWQEYQxNRr4WgtxuFDDRpKnSHDd+s4V7BM
-         XMPQ==;
+        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+        fh=mhpMAOhJbcQEHYL6dRWBjT9PBc1IJ3wDYScwXfI0K3c=;
+        b=e5m3YRnRjDzZsy21g72bF+hmug7u3G4yTWym9AgtHl7NfbhzOGvAxDTkJ5BSKnZgAQ
+         UKOAU2ZZncWggx0lEGMBnQNnP6ny74mBesW18lSmDWNq0j0fp6rOZEmo967c1gB4uZHu
+         w/YjC0WmvC30RB2k5JzoLxYNSswHLc4v+XDfno7pV4+1yM1VJf8DgP/I+wblyx4DdOVV
+         E17XtAqivY5nEOXBGrV5Tsz/Jx7+YcKDhWGCFHzkK5NmHBlIEf86lG1lIIFY227j1Kxh
+         IBzs5+GnSKam5nhTYfBScjYRHgl3KpCYJhY+2Q2J8KeC1eJKBQOJegDd1OcVlLeAOBOb
+         VuUg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549451; x=1775154251; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774549487; x=1775154287; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OQMGWO3Jb9ZRlKPSLzy+ZfSrt4QpEsmLSFST3EKzYAk=;
-        b=FifowGswcCEjILMgYN3v/HLj1uTkmRbou0nX/xLOpPS62/1ApilS5ckAUB4JPAS7Yf
-         1v9Zy+mqS/RxqN3dKaxYEhrX+R/rGW2LAWioyDojxq8lfumq1whgj8pLkt4MuQfaJZCH
-         wJlCoU+sPG1BHZPEtXKlGHeiKYudne8vtA2URQlXm5Opx4+OSJXKJs3OtnJ300Uzm9JQ
-         PoJlGXaozbMjZLNYQze7C5Cf5wyb8j8y2kqoTYATTdW6bpjt2qqKIm5b2MSf+5/aqrXJ
-         N6NVsvOMK7CdVYnrhh/HU0NO4C7I46sh4oSfaA2kyxFGM5cQV1cjO1OxsJ8MnAjr+/Pw
-         4lXQ==
+        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+        b=ivx61MaEp/zQSux3x9+QX1b20Umy0hUiUf9oBIKs6blgAjjNfS9Za2ym9fx8hoS5Ae
+         KeSdZEESFQBlIt8r1Rr8gy/L0qE2HX85PT0stEf5aU3wHylzbZxmERJoozV3u8uAXo6X
+         +zGsup3KrpP90Q0Ml2ooSVmTpxx+ZlpwNOHSZAy9dzHWMiFzPceOg3xPvL3TsnxTYXGn
+         GN7S/SIrKq428BIafT62c5HPqPIcHiOq8jCEbonkmgBtkpSs9yLBKCHMWO3Elq6UBOyy
+         1GQFEvnUeVBDyWWTFc2MoseBFMEd8NSklddYv29BWZy59sJNLa0FGsATNEeeCAuQ7BBO
+         1CvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549451; x=1775154251;
+        d=1e100.net; s=20251104; t=1774549487; x=1775154287;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=OQMGWO3Jb9ZRlKPSLzy+ZfSrt4QpEsmLSFST3EKzYAk=;
-        b=SZdqFNuhJ8bwTFYVeJ0CPdismfq015M6Y5QKraeNSgZNRZfx6iWvyuAbD7KoOCRA+Y
-         FZgSwypYGIV8bKURoAWiOLsXgfHNeRQ5kbKGOO1dR56SboECHp56mVl6tNlgwOfxwZKc
-         6hbJRvS0GDpPc/E7akgoQk2RNxGORzZlwufXht+gXME9gwXAOm5U7ypDv2IHYybt9gtc
-         D3CzMiTOIF25jqD6SXZ0XB1tHfjhPTwxTjRpxo7PFvyfchp3x+BjQi4GKh9KIlnGyoyp
-         MU11p+DCWaxUlD077DF6VlASpY43txfEgT8PeVDuCRsSGZXfV1Si2ba6XXPM6TvWjcvW
-         /7Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmUMu2IlT3TdTtKdhgaGfRDyLolZvQ+qmJHKHT0UJZVaWUTQDwsf1N1WQU92lKm4sMknA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoAv3uDbbVUOEtInwKFAbBHlcBcBI4rjY9n+yxIjmLHG9T5vCr
-	IJATWdaA/RfattNMT6I9R7YdYobBVt5s0bDYPws8h6Xu8G/LfZZ1DT2wq8KOt9LPN7kQ0vYkFlS
-	G/CbeTZbttcumnqyXpTICn377j78wJepCwdtACIqzsTp6bygC70AqOFw+WzepT+Ji943eKcPBsz
-	JVgp+/vcWcf0WP9RRGAq1Y/DdbP43c
-X-Gm-Gg: ATEYQzxr6cx+h6sWXoTdoYDyUC5203akQiVoc1bQeEROcjorPjyNKQJq1ec5v8lvy2h
-	I+m90SQiVQSdH6aCA5wPPNHb8Qun6Ep7jNhnMRsrzsnrYoYeiE4iH8wYaaXfR1D5RhOnsvQTK8H
-	t3ptoiTRae0yZrRby3Kg/b/bheWOS4I4EnHdIGNwgRg5BxrL6HvsuCvpgYxxSRbr7L722Vu0z3i
-	tRV68FHeI+ktqwoGq9tVVlAt1m2FyWbj8v7jDDIvDMBTaMP+ixLmCZmoMay4yh4Wv6rQ2icnVht
-	RNQR
-X-Received: by 2002:a05:6000:4285:b0:43b:45a0:9df8 with SMTP id ffacd0b85a97d-43b88a0fc0bmr14534067f8f.35.1774549451019;
-        Thu, 26 Mar 2026 11:24:11 -0700 (PDT)
-X-Received: by 2002:a05:6000:4285:b0:43b:45a0:9df8 with SMTP id
- ffacd0b85a97d-43b88a0fc0bmr14534017f8f.35.1774549450552; Thu, 26 Mar 2026
- 11:24:10 -0700 (PDT)
+        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+        b=fPkaxkGPmuiC4rJMcQh+33EViqxukHFXuz/L8eKbhKOVK3WXLJ99cw0jmRF+rG+RL/
+         /HjE66mLEaS1fL45uK/6/LIBai69X3XRgHxEsWeUOP2zb9OsnfHZypdcr6Dzn1YY4e10
+         xdaP2x8yT82cAU9Fm0n7LBgjdqtxAkG6kUnT9+JjF8ltTrV8W3TQbh8/G5P/oqtnUdv0
+         Zo9zfy2CUIC+RU+r3N9EUy76chKrUgeMX84AyTpPOs+m10TngmCpHUHeQexYU36kxW5t
+         5/SQAlwdygRxE1Mc62DkJsK1d76+Ly4wTgDAlwKADgGHSbPiQSnKknd221rfNAQhPE7J
+         0iZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIDUpw4OHLFWySfRXuwGWIYdkev+RBBQL3u0p3MxqKLGDcrD7pL3vSPERIoipOrtZbCR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi5F3293gGFDdswxmfLtBVzTbxRHzvtZ8OOE7YYa+k4KkrXqge
+	ER92OFdGgPU+/zxsxrz02ke/cJUmjk6P9+hLS7n7wBb+XGJ2cq5XTTu3gkCFmbkvGDkl5M5Tnn2
+	zt8rshiXNfJSH2qULr/MkwHOTMZPlrRt/H8KakNKn
+X-Gm-Gg: ATEYQzxG4dJalrMIO4iq8J9H0fkFVU14LorllgkcvcB9cY1Bw8OMSnLIQsmnCkhBqQ1
+	JjYsGi44k7KlOBdFP0b8tXgdAvJi07YKFCMZZdn+sOa0GUk3sFclRDoR751IfXCduN3Ymu3I5l6
+	HvM3vFjb7O1kkTtteoSjDiAOu/UW/lH5IX2LL8RtZN5yD8GdPIHHvUY6cCOP5xbDUoGCeM9q3Wi
+	mW+UK7KchH5N+t+jC0ljytnTtReZMc2CRWeMBP3uU4nsc0ayEdXZtl0EM/n46sbuVFH6NDMfVv3
+	TayT40za3OXufAYMQcfRvdyONXm1kyI60Q==
+X-Received: by 2002:a05:622a:93:b0:50b:71e4:878c with SMTP id
+ d75a77b69052e-50ba1e41c39mr1037271cf.15.1774549486349; Thu, 26 Mar 2026
+ 11:24:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
- <20260211120944.-eZhmdo7@linutronix.de> <aYyhfvC_2s000P7H@google.com>
- <aactOOfirdVRYfNS@acer-nitro-anv15-41> <ae2143b3-ce28-4c87-afcf-1505694246d8@redhat.com>
- <abMS7MALNrmluvh5@acer-nitro-anv15-41> <b51de5cb-8198-4664-afcc-7386ecda81a8@redhat.com>
- <acNwYsm4GfViqiJS@acer-nitro-anv15-41>
-In-Reply-To: <acNwYsm4GfViqiJS@acer-nitro-anv15-41>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 26 Mar 2026 19:23:58 +0100
-X-Gm-Features: AQROBzAmyn1P9pR-79R4cWceEXwBMD15hAO83tLul9jg4y2-Qgpzo_wGmuGmSBM
-Message-ID: <CABgObfb8POHRUmhu2yoH7B=m5eg_VQpmDcPoj=PttaRkN=dQTg@mail.gmail.com>
-Subject: Re: [PATCH] KVM: mmu_notifier: make mn_invalidate_lock non-sleeping
- for non-blocking invalidations
-To: shaikh kamaluddin <shaikhkamal2012@gmail.com>
-Cc: Sean Christopherson <seanjc@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, kvm <kvm@vger.kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev, 
-	Shuah Khan <skhan@linuxfoundation.org>, me@brighamcampbell.com
+References: <20260326080836.695207-1-surenb@google.com> <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
+In-Reply-To: <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 26 Mar 2026 11:24:35 -0700
+X-Gm-Features: AQROBzDeN__PRe-Y7mIO9LZxPL3s1KNrdWWWOsbo7He0DKFlde5Dab9lnrvUpiU
+Message-ID: <CAJuCfpG_xa5nxSRrvu4TnwhCrmocPkHpWEQbE_yeyN3L69Y6tQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Il mer 25 mar 2026, 06:19 shaikh kamaluddin
-<shaikhkamal2012@gmail.com> ha scritto:
+On Thu, Mar 26, 2026 at 2:18=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
+l.org> wrote:
 >
-> 1. Added oom_enter callback to struct mmu_notifier_ops in include/linux/m=
-mu_notifier.h
-> 2. Implemented __mmu_notifier_oom_enter() in mm/mmu_notifier.c to invoke =
-registered callbacks
-> 3. Called mmu_notifier_oom_enter(mm) from __oom_kill_process in mm/oom_ki=
-ll.c before any invalidations
-> 4. As per your suggestion, move existing kvm_destroy_vm() logic that alre=
-ady handles unbalanced invalidation to the new helper function kvm_mmu_noti=
-fier_detach() and invoke it from the kvm_destroy_vm()
+> -cc old email
+>
+> (Gentle reminder to please send all new stuff to ljs@kernel.org - at some
+> point I'm going to set a rule to ignore kernel mail sent to the old addre=
+ss
+> so, if you need a response you should send to the new :)
 
-This is not fully clear to me... It could be caused by a recursive
-locking, or also a false positive. It's hard to say without seeing the
-full backtrace, but seeing "lock(srcu)" is suspicious.
+Ack, sorry about that and thanks for all the reviews, Lorenzo!
 
-I wouldn't have expected deferral to be necessary; and it seems to me
-that, if you defer removal to some time after the OOM reaper starts,
-you'd have the same problem as before with sleeping spinlocks.
+I noticed Sashiko's concerns at [1] and a number of them are false
+positives but I see at least one new claim which might be legit. I'll
+check if it holds water.
 
-Can you post the original patch without deferral?
-
-Paolo
+[1] https://sashiko.dev/#/patchset/20260326080836.695207-1-surenb%40google.=
+com
 
 >
-> Key Design Decision:
-> ------------------------------
-> Implementation point no 4, while testing, Issue I was encountering is a r=
-ecursive locking problem with the srcu lock, which is being acquired twice =
-in the same context. This happens during the __mmu_notifier_oom_enter() and=
- __synchronize_srcu() calls, leading to a potential deadlock.
-> Please find below log snippet while launching the Guest VM
-
+>
+> On Thu, Mar 26, 2026 at 01:08:30AM -0700, Suren Baghdasaryan wrote:
+> > Now that we have vma_start_write_killable() we can replace most of the
+> > vma_start_write() calls with it, improving reaction time to the kill
+> > signal.
+> >
+> > There are several places which are left untouched by this patchset:
+> >
+> > 1. free_pgtables() because function should free page tables even if a
+> > fatal signal is pending.
+> >
+> > 2. userfaultd code, where some paths calling vma_start_write() can
+> > handle EINTR and some can't without a deeper code refactoring.
+> >
+> > 3. mpol_rebind_mm() which is used by cpusset controller for migrations
+> > and operates on a remote mm. Incomplete operations here would result
+> > in an inconsistent cgroup state.
+> >
+> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
+> > vma_start_write() out of these functions and replacing it with
+> > vma_assert_write_locked(), then callers of these functions should
+> > lock the vma themselves using vma_start_write_killable() whenever
+> > possible.
+> >
+> > Changes since v4 [1]:
+> > - added Reviewed-by, per Barry Song and Lorenzo Stoakes (wherever the c=
+ode
+> > stayed the same)
+> > - split patch 2 into 3 parts, per Lorenzo Stoakes
+> > - converted vma_start_write() in mseal_apply(), per Sashiko
+> > - changed vma_start_write_killable() error handling in
+> > set_mempolicy_home_node(), per Lorenzo Stoakes
+> > - added comment why mm->locked_vm is fine even when we exit early,
+> > per Sashiko
+> > - moved vma locking before vrm_calc_charge() in move_vma(), per Sashiko
+> > and Lorenzo Stoakes
+> > - set give_up_on_oom on error in vma_merge_existing_range() to propagat=
+e
+> > the error, per Lorenzo Stoakes
+> > - moved validate_mm() out of the error path in expand_upwards(),
+> > per Lorenzo Stoakes
+> > - dropped the patch changing S390 error handling, per Sashiko and
+> > Lorenzo Stoakes
+> > - reworked error handling in clear_refs_write(), per Lorenzo Stoakes
+> > - uninlined process_vma_walk_lock() while changing its return type,
+> > per Lorenzo Stoakes
+> >
+> > [1] https://lore.kernel.org/all/20260322054309.898214-1-surenb@google.c=
+om/
+> >
+> > Suren Baghdasaryan (6):
+> >   mm/vma: cleanup error handling path in vma_expand()
+> >   mm: use vma_start_write_killable() in mm syscalls
+> >   mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
+> >   mm/vma: use vma_start_write_killable() in vma operations
+> >   mm: use vma_start_write_killable() in process_vma_walk_lock()
+> >   KVM: PPC: use vma_start_write_killable() in
+> >     kvmppc_memslot_page_merge()
+> >
+> >  arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+> >  fs/proc/task_mmu.c                 |  12 +--
+> >  mm/khugepaged.c                    |   5 +-
+> >  mm/madvise.c                       |   4 +-
+> >  mm/memory.c                        |   2 +
+> >  mm/mempolicy.c                     |  12 ++-
+> >  mm/mlock.c                         |  28 ++++--
+> >  mm/mprotect.c                      |   5 +-
+> >  mm/mremap.c                        |   8 +-
+> >  mm/mseal.c                         |   5 +-
+> >  mm/pagewalk.c                      |  22 +++--
+> >  mm/vma.c                           | 146 +++++++++++++++++++++--------
+> >  mm/vma_exec.c                      |   6 +-
+> >  13 files changed, 190 insertions(+), 70 deletions(-)
+> >
+> >
+> > base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
+> >
