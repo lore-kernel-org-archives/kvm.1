@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09ED3B9616;
-	Thu, 26 Mar 2026 08:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4C43B7749;
+	Thu, 26 Mar 2026 08:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514738; cv=none; b=h045XrRjdS4ROiBO233ynikdSTJrXN1vTq7iqGQyZOGSmiFJhncmghYP4Dsta+nc8cEQC9muA2+PXk52akuFNfJYezXClWN71W35tbWY2ZrHmKce/wvBp4XJS1OdxSV667vfJBU3XDZqroexKXkgc59ZvIZAwVXYt+Vh6zC85M0=
+	t=1774514740; cv=none; b=LTdoYqMaCoJgY1+xIgrDf7B1U/ucCvFZdmVLOKOLASr4B84HMqDUmm4SQo5yRqwDin1V/MbQqPfG6+MnZoCQLU/R8CAzhJWdDSmtjV8fPjMrvEH7LF2w4F/+39B7mkQ9ecGWR+1lI98lXzaNNl5OD72Ac+iEisUv6nwnY2SP7sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774514738; c=relaxed/simple;
-	bh=v08YHQX4kzOLMv6pRpWhFtPGcbD/UKX3UMegutjdypE=;
+	s=arc-20240116; t=1774514740; c=relaxed/simple;
+	bh=663YVeX0kyucwfVjuR4oO6yvlRcROgM77m2krnSsF9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tyh+BKkU93lSBPtmO6oXapbAb4nmn/8oalbCjHY6j2g7hq41XJzgaaMI41iO54F69xpQ9RN0AIMimnKV66NuZduTlu/8NowKX2Vfi58FWg+c/iyA7L474qFWf8RBArAwby1cqCqAPXh/MWOCKl2ucawwXVhHcT1Aqi/xLPF5JLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JEbdQbzA; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=OzN7SyXBkKIhtDUjq7yQvXJ66lprLvaLtKAtV/Czzh3OTFVUSHvfrqlElTNoX8Sm9a9YAPrUVH1tKVkSEzAJ1WwT4Wi7iZszem9oIjDtxWccS7Uwde3WZ+yPPpfPy5vNn0kKVoQplZcFeC+0mB9FTUGnwA+Vm1vdSY+R/1ZV8es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y2kOsk4k; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JEbdQbzA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y2kOsk4k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774514736; x=1806050736;
+  t=1774514738; x=1806050738;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=v08YHQX4kzOLMv6pRpWhFtPGcbD/UKX3UMegutjdypE=;
-  b=JEbdQbzASl8NKgzflSV1hVvAXK2iIA+Se3eFthNZEKdhMmR+BAR176ry
-   kvTq3J9gfCnonkLRVVEwuuTOxcAw/IRuW9/y3Y/L1DjuNSeJfogMjGn9o
-   YB2EIjP0iF+vuKYpw4QdGP9CCftjcKJi33TGzCHXBfYOFeFjmXQHnotgb
-   gOCUXdDPF6ppMswTBAoZn7C+UN6u5Zv1Qh55I39O4IS4RHKavSL+Nt7of
-   Lme8Zu4kUoi7bDg93ZpXnR/iI+5aPpYHyK5IVvu06QM5sMzbFI81DzpTv
-   6kBacT0I545cVy40Hy6rShP3PqfMQnkFNFJdCXiVVl5Czn+ZLIvHLWVu/
-   Q==;
-X-CSE-ConnectionGUID: p6E+qiLoRQyf2QeLOuWlVA==
-X-CSE-MsgGUID: m7cYDgOdR3uMkE5qbsGzhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644659"
+  bh=663YVeX0kyucwfVjuR4oO6yvlRcROgM77m2krnSsF9M=;
+  b=Y2kOsk4kBUd0c1MXkFNQEyy1sMrEasoaQvpSel9Xr8OK5Pj9uiEI0uUh
+   wOSzHE/QZFyYED3BqFrXlg+jeoWBueedNvh5T7crBuSNKfA5DqI+sxjH4
+   tTXYEEZJK1agznLTfXrNCHw1ODT76OKdU+gQfeCvS21iFyGzdKWq4A1hE
+   NU4rMMDWsi/eDZrb+ZTUE5x+KPBbx5hKq9BqClgfHto/U0w5n8ZECJU+f
+   Kd8BVY+ic1ouWSyLENoV865cvOnB2MYazZJ2mLJ9zT694PwWhGEwRKzBO
+   kzDQxuc/SRby2vfGGQf8BVHArg9NOjtCXv3dyHqFmqowXXkDVPFY4x76T
+   w==;
+X-CSE-ConnectionGUID: wlycBYTnQCyuwI+MsQCdJw==
+X-CSE-MsgGUID: qdfHyLX5Qhen8MTS8pgzEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644668"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="86644659"
+   d="scan'208";a="86644668"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:20 -0700
-X-CSE-ConnectionGUID: vuvpjVBjQ1Wjg4BbpYN+Fg==
-X-CSE-MsgGUID: hdoo35fHQYCm4t+KrYTEOQ==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:21 -0700
+X-CSE-ConnectionGUID: +TYYb0C5SwGrylMUpl0xyA==
+X-CSE-MsgGUID: wRNNYkUuS/24hsifG0UENg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="224967171"
+   d="scan'208";a="224967188"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
   by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:20 -0700
 From: Chao Gao <chao.gao@intel.com>
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v6 07/22] coco/tdx-host: Implement firmware upload sysfs ABI for TDX module updates
-Date: Thu, 26 Mar 2026 01:43:58 -0700
-Message-ID: <20260326084448.29947-8-chao.gao@intel.com>
+Subject: [PATCH v6 08/22] x86/virt/seamldr: Allocate and populate a module update request
+Date: Thu, 26 Mar 2026 01:43:59 -0700
+Message-ID: <20260326084448.29947-9-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
 References: <20260326084448.29947-1-chao.gao@intel.com>
@@ -84,289 +84,237 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Linux kernel supports two primary firmware update mechanisms:
-  - request_firmware()
-  - firmware upload (or fw_upload)
+P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX module
+update requests. This structure contains physical addresses pointing to
+the module binary and its signature file (or sigstruct), along with an
+update scenario field.
 
-The former is used by microcode updates, SEV firmware updates, etc. The
-latter is used by CXL and FPGA firmware updates.
+TDX modules are distributed in the tdx_blob format defined in
+blob_structure.txt from the "Intel TDX module Binaries Repository". A
+tdx_blob contains a header, sigstruct, and module binary. This is also the
+format supplied by the userspace to the kernel.
 
-One key difference between them is: request_firmware() loads a named
-file from the filesystem where the filename is kernel-controlled, while
-fw_upload accepts firmware data directly from userspace.
+Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure
+accordingly. This structure will be passed to P-SEAMLDR to initiate the
+update.
 
-Use fw_upload for TDX module updates as loading a named file isn't
-suitable for TDX (see below for more reasons). Specifically, register
-TDX faux device with fw_upload framework to expose sysfs interfaces
-and implement operations to process data blobs supplied by userspace.
-
-Implementation notes:
-1. P-SEAMLDR processes the entire update at once rather than
-   chunk-by-chunk, so .write() is called only once per update; so the
-   offset should be always 0.
-2. An update completes synchronously within .write(), meaning
-   .poll_complete() is only called after the update succeeds and so always
-   returns success
-
-Why fw_upload instead of request_firmware()?
-============================================
-The explicit file selection capabilities of fw_upload is preferred over
-the implicit file selection of request_firmware() for the following
-reasons:
-
-a. Intel distributes all versions of the TDX module, allowing admins to
-load any version rather than always defaulting to the latest. This
-flexibility is necessary because future extensions may require reverting to
-a previous version to clear fatal errors.
-
-b. Some module version series are platform-specific. For example, the 1.5.x
-series is for certain platform generations, while the 2.0.x series is
-intended for others.
-
-c. The update policy for TDX module updates is non-linear at times. The
-latest TDX module may not be compatible. For example, TDX module 1.5.x
-may be updated to 1.5.y but not to 1.5.y+1. This policy is documented
-separately in a file released along with each TDX module release.
-
-So, the default policy of "request_firmware()" of "always load latest", is
-not suitable for TDX. Userspace needs to deploy a more sophisticated policy
-check (e.g., latest may not be compatible), and there is potential
-operator choice to consider.
-
-Just have userspace pick rather than add kernel mechanism to change the
-default policy of request_firmware().
+Note that the sigstruct_pa field in SEAMLDR_PARAMS has been extended to
+a 4-element array. The updated "SEAM Loader (SEAMLDR) Interface
+Specification" will be published separately. P-SEAMLDR compatibility
+validation (such as 4KB vs 16KB sigstruct support) is left to userspace,
+which must verify the P-SEAMLDR version meets the TDX module's minimum
+requirements.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
 v6:
- - Remove unused "-ENOSPC" error mapping—this series never returns it
-
+ - clarify tdx_blob's @offset_of_module and @len fields [Kiryl]
+ - clarify comment to explicitly call out the PAGE_SIZE != SZ_4K case
+   [Kiryl]
 v5:
- - remove a tail comment [Yan]
- - remove is_vmalloc_addr() check [Dave]
- - use devm_add_action_or_reset() for deinit [Yilun]
- - remove global tdx_fwl [Yilun]
- - clarify request_firmware() doesn't take filename from userspace
-   [Rick]
+ - use a macro for tdx_blob version (0x100) [Yan]
+ - don't do alignment checking for the binary/sigstruct [Rick]
+ - drop blob's sigstruct and validation checking
+ - set seamldr_params.version to 1 when necessary
+ - drop the link to blob_structure.txt which might be unstable [Kai]
 
 v4:
- - make tdx_fwl static [Kai]
- - don't support update canceling [Yilun]
- - explain why seamldr_init() doesn't return an error [Kai]
- - bail out if TDX module updates are not supported [Kai]
- - name the firmware "tdx_module" instead of "seamldr_upload" [Cedric]
+ - Remove checksum verification as it is optional
+ - Convert comments to is_vmalloc_addr() checks [Kai]
+ - Explain size/alignment checks in alloc_seamldr_params() [Kai]
 
 v3:
- - clear "cancel_request" in the "prepare" phase [Binbin]
- - Don't fail the whole tdx-host device if seamldr_init() met an error
- [Yilun]
- - Add kdoc for seamldr_install_module() and verify that the input
-   buffer is vmalloc'd. [Yilun]
+ - Print tdx_blob version in hex [Binbin]
+ - Drop redundant sigstruct alignment check [Yilun]
+ - Note buffers passed from firmware upload infrastructure are
+   vmalloc()'d above alloc_seamldr_params()
 ---
- arch/x86/include/asm/seamldr.h        |  1 +
- arch/x86/virt/vmx/tdx/seamldr.c       | 15 ++++
- drivers/virt/coco/tdx-host/Kconfig    |  2 +
- drivers/virt/coco/tdx-host/tdx-host.c | 99 ++++++++++++++++++++++++++-
- 4 files changed, 115 insertions(+), 2 deletions(-)
+ arch/x86/virt/vmx/tdx/seamldr.c | 146 ++++++++++++++++++++++++++++++++
+ 1 file changed, 146 insertions(+)
 
-diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
-index c67e5bc910a9..ac6f80f7208b 100644
---- a/arch/x86/include/asm/seamldr.h
-+++ b/arch/x86/include/asm/seamldr.h
-@@ -32,5 +32,6 @@ struct seamldr_info {
- static_assert(sizeof(struct seamldr_info) == 256);
- 
- int seamldr_get_info(struct seamldr_info *seamldr_info);
-+int seamldr_install_module(const u8 *data, u32 size);
- 
- #endif /* _ASM_X86_SEAMLDR_H */
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 8410df3a0bf4..e93a5d90a3ee 100644
+index e93a5d90a3ee..a0bd02a59086 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -6,6 +6,7 @@
-  */
+@@ -7,6 +7,7 @@
  #define pr_fmt(fmt)	"seamldr: " fmt
  
-+#include <linux/mm.h>
+ #include <linux/mm.h>
++#include <linux/slab.h>
  #include <linux/spinlock.h>
  
  #include <asm/seamldr.h>
-@@ -40,3 +41,17 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
- 	return seamldr_call(P_SEAMLDR_INFO, &args);
+@@ -16,6 +17,33 @@
+ /* P-SEAMLDR SEAMCALL leaf function */
+ #define P_SEAMLDR_INFO			0x8000000000000000
+ 
++#define SEAMLDR_MAX_NR_MODULE_4KB_PAGES	496
++#define SEAMLDR_MAX_NR_SIG_4KB_PAGES	4
++
++/*
++ * The seamldr_params "scenario" field specifies the operation mode:
++ * 0: Install TDX module from scratch (not used by kernel)
++ * 1: Update existing TDX module to a compatible version
++ */
++#define SEAMLDR_SCENARIO_UPDATE		1
++
++/*
++ * This is called the "SEAMLDR_PARAMS" data structure and is defined
++ * in "SEAM Loader (SEAMLDR) Interface Specification".
++ *
++ * It describes the TDX module that will be installed.
++ */
++struct seamldr_params {
++	u32	version;
++	u32	scenario;
++	u64	sigstruct_pa[SEAMLDR_MAX_NR_SIG_4KB_PAGES];
++	u8	reserved[80];
++	u64	num_module_pages;
++	u64	mod_pages_pa_list[SEAMLDR_MAX_NR_MODULE_4KB_PAGES];
++} __packed;
++
++static_assert(sizeof(struct seamldr_params) == 4096);
++
+ /*
+  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+  * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+@@ -42,6 +70,119 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
  }
  EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
-+
-+/**
-+ * seamldr_install_module - Install a new TDX module.
-+ * @data: Pointer to the TDX module update blob.
-+ * @size: Size of the TDX module update blob.
-+ *
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+int seamldr_install_module(const u8 *data, u32 size)
+ 
++static void free_seamldr_params(struct seamldr_params *params)
 +{
-+	/* TODO: Update TDX module here */
-+	return 0;
-+}
-+EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
-diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-index d35d85ef91c0..ca600a39d97b 100644
---- a/drivers/virt/coco/tdx-host/Kconfig
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -1,6 +1,8 @@
- config TDX_HOST_SERVICES
- 	tristate "TDX Host Services Driver"
- 	depends on INTEL_TDX_HOST
-+	select FW_LOADER
-+	select FW_UPLOAD
- 	default m
- 	help
- 	  Enable access to TDX host services like module update and
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 01f68c390a49..d4a552853021 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/device/faux.h>
-+#include <linux/firmware.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
- #include <linux/sysfs.h>
-@@ -98,7 +99,7 @@ static struct attribute *seamldr_attrs[] = {
- 	NULL,
- };
- 
--static bool seamldr_group_visible(struct kobject *kobj)
-+static bool can_expose_seamldr(void)
- {
- 	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
- 
-@@ -108,6 +109,11 @@ static bool seamldr_group_visible(struct kobject *kobj)
- 	return tdx_supports_runtime_update(sysinfo);
- }
- 
-+static bool seamldr_group_visible(struct kobject *kobj)
-+{
-+	return can_expose_seamldr();
++	free_page((unsigned long)params);
 +}
 +
- DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(seamldr);
- 
- static const struct attribute_group seamldr_group = {
-@@ -122,6 +128,95 @@ static const struct attribute_group *tdx_host_groups[] = {
- 	NULL,
- };
- 
-+static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
-+					 const u8 *data, u32 size)
++static struct seamldr_params *alloc_seamldr_params(const void *module, unsigned int module_size,
++						   const void *sig, unsigned int sig_size)
 +{
-+	return FW_UPLOAD_ERR_NONE;
-+}
++	struct seamldr_params *params;
++	const u8 *ptr;
++	int i;
 +
-+static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
-+				       u32 offset, u32 size, u32 *written)
-+{
-+	int ret;
++	if (module_size > SEAMLDR_MAX_NR_MODULE_4KB_PAGES * SZ_4K)
++		return ERR_PTR(-EINVAL);
++
++	if (sig_size > SEAMLDR_MAX_NR_SIG_4KB_PAGES * SZ_4K)
++		return ERR_PTR(-EINVAL);
++
++	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
++	if (!params)
++		return ERR_PTR(-ENOMEM);
 +
 +	/*
-+	 * tdx_fw_write() always processes all data on the first call with
-+	 * offset == 0. Since it never returns partial success (it either
-+	 * succeeds completely or fails), there is no subsequent call with
-+	 * non-zero offsets.
++	 * Only use version 1 when required (sigstruct > 4KB) for backward
++	 * compatibility with P-SEAMLDR that lacks version 1 support.
 +	 */
-+	WARN_ON_ONCE(offset);
-+	ret = seamldr_install_module(data, size);
-+	switch (ret) {
-+	case 0:
-+		*written = size;
-+		return FW_UPLOAD_ERR_NONE;
-+	case -EBUSY:
-+		return FW_UPLOAD_ERR_BUSY;
-+	case -EIO:
-+		return FW_UPLOAD_ERR_HW_ERROR;
-+	case -ENOMEM:
-+		return FW_UPLOAD_ERR_RW_ERROR;
-+	default:
-+		return FW_UPLOAD_ERR_FW_INVALID;
++	if (sig_size > SZ_4K)
++		params->version = 1;
++	else
++		params->version = 0;
++
++	params->scenario = SEAMLDR_SCENARIO_UPDATE;
++
++	ptr = sig;
++	for (i = 0; i < sig_size / SZ_4K; i++) {
++		/*
++		 * @sig is 4KB-aligned, but that does not imply PAGE_SIZE
++		 * alignment when PAGE_SIZE != SZ_4K. Always include the
++		 * in-page offset.
++		 */
++		params->sigstruct_pa[i] = (vmalloc_to_pfn(ptr) << PAGE_SHIFT) +
++					  ((unsigned long)ptr & ~PAGE_MASK);
++		ptr += SZ_4K;
 +	}
-+}
 +
-+static enum fw_upload_err tdx_fw_poll_complete(struct fw_upload *fwl)
-+{
-+	/*
-+	 * TDX module updates are completed in the previous phase
-+	 * (tdx_fw_write()). If any error occurred, the previous phase
-+	 * would return an error code to abort the update process. In
-+	 * other words, reaching this point means the update succeeded.
-+	 */
-+	return FW_UPLOAD_ERR_NONE;
++	params->num_module_pages = module_size / SZ_4K;
++
++	ptr = module;
++	for (i = 0; i < params->num_module_pages; i++) {
++		params->mod_pages_pa_list[i] = (vmalloc_to_pfn(ptr) << PAGE_SHIFT) +
++					       ((unsigned long)ptr & ~PAGE_MASK);
++		ptr += SZ_4K;
++	}
++
++	return params;
 +}
 +
 +/*
-+ * TDX module updates cannot be cancelled. Provide a stub function since
-+ * the firmware upload framework requires a .cancel operation.
++ * Intel TDX module blob. Its format is defined at:
++ * https://github.com/intel/tdx-module-binaries/blob/main/blob_structure.txt
++ *
++ * Note this structure differs from the reference above: the two variable-length
++ * fields "@sigstruct" and "@module" are represented as a single "@data" field
++ * here and split programmatically using the offset_of_module value.
++ *
++ * Note @offset_of_module is relative to the start of struct tdx_blob, not
++ * @data, and @length is the total length of the blob, not the length of
++ * @data.
 + */
-+static void tdx_fw_cancel(struct fw_upload *fwl)
++struct tdx_blob {
++	u16	version;
++	u16	checksum;
++	u32	offset_of_module;
++	u8	signature[8];
++	u32	length;
++	u32	reserved0;
++	u64	reserved1[509];
++	u8	data[];
++} __packed;
++
++/* Supported versions of the tdx_blob */
++#define TDX_BLOB_VERSION_1	0x100
++
++static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
 +{
++	const struct tdx_blob *blob = (const void *)data;
++	int module_size, sig_size;
++	const void *sig, *module;
++
++	/* Ensure the size is valid otherwise reading any field from the blob may overflow. */
++	if (size <= sizeof(struct tdx_blob) || size <= blob->offset_of_module)
++		return ERR_PTR(-EINVAL);
++
++	if (blob->version != TDX_BLOB_VERSION_1) {
++		pr_err("unsupported blob version: %x\n", blob->version);
++		return ERR_PTR(-EINVAL);
++	}
++
++	/* Split the blob into a sigstruct and a module. */
++	sig		= blob->data;
++	sig_size	= blob->offset_of_module - sizeof(struct tdx_blob);
++	module		= data + blob->offset_of_module;
++	module_size	= size - blob->offset_of_module;
++
++	if (sig_size <= 0 || module_size <= 0 || blob->length != size)
++		return ERR_PTR(-EINVAL);
++
++	return alloc_seamldr_params(module, module_size, sig, sig_size);
 +}
 +
-+static const struct fw_upload_ops tdx_fw_ops = {
-+	.prepare	= tdx_fw_prepare,
-+	.write		= tdx_fw_write,
-+	.poll_complete	= tdx_fw_poll_complete,
-+	.cancel		= tdx_fw_cancel,
-+};
++DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
++	    if (!IS_ERR_OR_NULL(_T)) free_seamldr_params(_T))
 +
-+static void seamldr_deinit(void *tdx_fwl)
-+{
-+	firmware_upload_unregister(tdx_fwl);
-+}
+ /**
+  * seamldr_install_module - Install a new TDX module.
+  * @data: Pointer to the TDX module update blob.
+@@ -51,6 +192,11 @@ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+  */
+ int seamldr_install_module(const u8 *data, u32 size)
+ {
++	struct seamldr_params *params __free(free_seamldr_params) =
++						init_seamldr_params(data, size);
++	if (IS_ERR(params))
++		return PTR_ERR(params);
 +
-+static int seamldr_init(struct device *dev)
-+{
-+	struct fw_upload *tdx_fwl;
-+
-+	if (!can_expose_seamldr())
-+		return 0;
-+
-+	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
-+					   &tdx_fw_ops, NULL);
-+	if (IS_ERR(tdx_fwl))
-+		return PTR_ERR(tdx_fwl);
-+
-+	return devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
-+}
-+
-+static int tdx_host_probe(struct faux_device *fdev)
-+{
-+	return seamldr_init(&fdev->dev);
-+}
-+
-+static const struct faux_device_ops tdx_host_ops = {
-+	.probe		= tdx_host_probe,
-+};
-+
- static struct faux_device *fdev;
- 
- static int __init tdx_host_init(void)
-@@ -129,7 +224,7 @@ static int __init tdx_host_init(void)
- 	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
- 		return -ENODEV;
- 
--	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, NULL, tdx_host_groups);
-+	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, &tdx_host_ops, tdx_host_groups);
- 	if (!fdev)
- 		return -ENODEV;
- 
+ 	/* TODO: Update TDX module here */
+ 	return 0;
+ }
 -- 
 2.47.3
 
