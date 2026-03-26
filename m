@@ -1,46 +1,110 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C7430DEB0;
-	Thu, 26 Mar 2026 21:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA83AA195
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 21:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774560898; cv=none; b=BjHz5gnVXuJHkFreJw8WxU8fKBn9NlQWb0cYceD/e6k3VYXCjjMIsHGbV5NrzgITfL9sFtRNv7F3u+37VeEe7oISLFflx5mOa/Qr0Gdlynlz3k5KZoSvtWChnB/ebYAZKJ2DabQGf5WlFbM+q6i2ojaVh1Q0483maWEmjVmaK/Y=
+	t=1774561165; cv=none; b=A1Jr2gZOz9d6ATTH7AKwiM1EqYo+J1CjFsQheU6XUuAubLzW3uttB0PuOslJ3lXf3jRJxM3fyg+v9JeJqH/9d82WTEjh5TVq7idMRXRyEpDGV6SA2qLZ50bFCax1wWp4DIhblVJ+eVFJHe4fW7NLvKv/+7CjGoCRv8dZriYeGWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774560898; c=relaxed/simple;
-	bh=vFMzB5FzE/YeUOfPlYcV8dkuzyJituD5v8MIp3FFntA=;
+	s=arc-20240116; t=1774561165; c=relaxed/simple;
+	bh=1Ccy9hJ24+odiZq4gSl3CHdrrsnnH82L3nOkOdBf6lg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nILsNE8fkbvR0ms0xX4Jy2e0YyTNBmicyWhe22B95zRvWw1HIAMq42eZGLOPgE1AHuZhVDQ+uIcOOX8v72PrVksuoZwacLPsL1ySpx13+rUimv0Po76Tewhsyj/Vdw6YiKw7Tnr4o0vggPvFMz1r3qOxVqCkba4M7yQ2S4AR9k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SzyCptW2; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=gkIyHtdF7qDRoA6cqlU94pa6hVnBTskNivj4IJXxWeCp+ivu/NSf37XMzCqtmqN9oBHLiUkcyJZgj+nIhmla9r6MDPXMJ4C/2Dz10lTsHgkaAW9B+NIaOKNklXfeJjGpCUtVdrDLHKsSuef45ovxTiyGV7pF5fFELZA29hylq6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RznE9mJ4; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SzyCptW2"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 943172BCB;
-	Thu, 26 Mar 2026 14:34:49 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 209D73F905;
-	Thu, 26 Mar 2026 14:34:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774560895; bh=vFMzB5FzE/YeUOfPlYcV8dkuzyJituD5v8MIp3FFntA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SzyCptW2sHfGNRvQ0ORLOh4uwj+j/9C1mNnqIwJpNMyt/huaihkYQls/skdE0xGD4
-	 z+hV+4TIZZAWTi2/adw3cBCdhf5cTfzInUg8nnVMWmoqV4kKQT+4Ah2qX0lNhh29zI
-	 V9OnoG+FzAekd4m/rEzJ/xOG1fG04EX1hBzE/a5U=
-Date: Thu, 26 Mar 2026 21:34:45 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 3/3] KVM: arm64: selftests: Enable stage-2 in NV
- preparation functions
-Message-ID: <tiwr5dxrkk5ghn7r7j4wksp7237ttft3mdsrvuc7cck7ljomwg@tvytbqrjttf7>
-References: <20260325003620.2214766-1-weilin.chang@arm.com>
- <20260325003620.2214766-4-weilin.chang@arm.com>
- <acN_YIzr6JZmYhZ8@sm-arm-grace07>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RznE9mJ4"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35b95a7444bso865601a91.1
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 14:39:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774561157; x=1775165957; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CCYpXjeLBBDyCBHQMCqV7APFrQnNkgT9+u/rvK+zGmE=;
+        b=RznE9mJ4a2aR7uDZE4lb+l/yIbQhXvLW9I7qKmbwbMUXWMDqztWDMGb65hVVVyxun2
+         ru715aB4gjsY4+25guQuGW/07OpwivyHZe8c9n7bWzqYUIJ44tfg7kpzNavGFxCyUgUm
+         W6kncBgeR5ZKDLyC2kZbQm8FOt0+EVelHDRUvlRDB6QRiDY9w/Xkh1k/mjziHwMDy4Q0
+         4bkd9JqCQsIcCKqdpyoqLIqfZ839QYwnhq7qIU/d9QOufHKxq57P8WSXc7M2OzDMkqzQ
+         5wpQUCnzKzzJjx0H3DYeMh++evH4aoFms73CsUUUuVmZlAcwQg1alp527UODQH5gYIF1
+         R9OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774561157; x=1775165957;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CCYpXjeLBBDyCBHQMCqV7APFrQnNkgT9+u/rvK+zGmE=;
+        b=fvN+o/6qZavLMx69icPe5IJuhLq0BoUxe0JygIHddX27XoeB9SXrUcMyAbXf4ho00H
+         8u263HoMYUL1qhwyma8doRmCbL7H+O238WbBo1Ydky66MueQvniKMavLakyCg34wgK8i
+         +tib49pVPZFh0bX6Bec3+NKvhtVn5S/fP9bKlWKscDjUiqlgVpjztogrmJiEwW0DQZ0i
+         SBDC9PZTsqfXH/m4Y3yUuv/jkEdoGLc4u78nQ2dorDPs2liDAirfyoXyS5OIf/9FeQ3d
+         PrmTa87OvA/tLW2qAJng/jAdV+TfGwPnt5kymt0tEHnTJLWM5laDGz5UlxOTJBXSa0U4
+         zFsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVo3u9PktmVhm/0sJfpL/uvsRpRxltcz0olHeLyx9E2tKV1zk2QPRjCBjIvFnw1yfXJhD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7G49ffYWPPgu0NIRUxYMnrkKIcoLE+8cZr3Vruxt26IzQN1MB
+	ue0bv7eAsp/ZjVqjWmzlDVDLnXBuAESN4MxgrEejkWlG/NxEp7SqpOL+mPohVSRjEA==
+X-Gm-Gg: ATEYQzzK/dEPYyDag4GuVJoBP1wXCT8mGgpbZjGUb896hlM7mJkEmw2pbyyYoPXd/n+
+	5LvcRwOCRafY+JNDxm31ZWoj49vCOhuDMGsSuy3F4U/bAxr897hTPaxWrk1bdnqybs8RxLFsEaq
+	Icu3fUpjirC4FuAAR1vhlmDL09XXtRSfCXZT2l7t3pIPKXe4ZqSsd+8LXeFFt4oL9l0fL0U0diJ
+	gTZaZjE/oplODpYcpdoy+pkxgk7uTwqJj8Kka5IYci/OgYr7TUoJRkUwOyDhlqtwoIj4E2Smk0T
+	0EziUsRVljbMZwJdrshRLbW+Rbwi6UuPX2a8FXiR0me7yiTIIjGiwv6wk0+lwJC/oE9fpu/nni7
+	2aoHvn05UITnZv+rvBEyt4g9VWxTPA4vtAgB+KbMHiBnPlgxmxq0G+UpcfsAiSbSmn9mGb1oxnU
+	XKMOiWh5E6cG+t2dRjMufvdiK+9mWawZaMvXZMs6RkpLdysoH0FrP7z58djJNa0AKa3KF5kmMV
+X-Received: by 2002:a17:90b:164a:b0:359:f2e1:5906 with SMTP id 98e67ed59e1d1-35c2ffb6610mr150758a91.4.1774561156125;
+        Thu, 26 Mar 2026 14:39:16 -0700 (PDT)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c22a81744sm2682845a91.5.2026.03.26.14.39.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 14:39:11 -0700 (PDT)
+Date: Thu, 26 Mar 2026 21:39:07 +0000
+From: David Matlack <dmatlack@google.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+	Askar Safin <safinaskar@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Chris Li <chrisl@kernel.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
+	kexec@lists.infradead.org, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
+	Marco Elver <elver@google.com>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
+ across Live Update
+Message-ID: <acWne_ZCcF4YQN25@google.com>
+References: <20260323235817.1960573-3-dmatlack@google.com>
+ <20260325231207.GA1292813@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,217 +113,404 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acN_YIzr6JZmYhZ8@sm-arm-grace07>
+In-Reply-To: <20260325231207.GA1292813@bhelgaas>
 
-On Wed, Mar 25, 2026 at 03:23:28PM +0900, Itaru Kitayama wrote:
-> Hi Wei Lin,
+On 2026-03-25 06:12 PM, Bjorn Helgaas wrote:
 
-Hi,
+Thank you for the thorough review Bjorn!
 
-> On Wed, Mar 25, 2026 at 12:36:20AM +0000, Wei-Lin Chang wrote:
-> > Introduce library functions for setting up guest stage-2 page tables,
-> > then use that to give L2 an identity mapped stage-2 and enable it.
-> > 
-> > The translation and stage-2 page table built is simple, start level 0,
-> > 4 levels, 4KB granules, normal cachable, 48-bit IA, 40-bit OA.
-> > 
-> > The nested page table code is adapted from lib/x86/vmx.c.
-> > 
-> > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
-> > ---
-> >  .../selftests/kvm/include/arm64/nested.h      |  7 ++
-> >  .../selftests/kvm/include/arm64/processor.h   |  9 ++
-> >  .../testing/selftests/kvm/lib/arm64/nested.c  | 97 ++++++++++++++++++-
-> >  3 files changed, 111 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/kvm/include/arm64/nested.h b/tools/testing/selftests/kvm/include/arm64/nested.h
-> > index 739ff2ee0161..0be10a775e48 100644
-> > --- a/tools/testing/selftests/kvm/include/arm64/nested.h
-> > +++ b/tools/testing/selftests/kvm/include/arm64/nested.h
-> > @@ -6,6 +6,13 @@
-> >  #ifndef SELFTEST_KVM_NESTED_H
-> >  #define SELFTEST_KVM_NESTED_H
-> >  
-> > +uint64_t get_l1_vtcr(void);
+> On Mon, Mar 23, 2026 at 11:57:54PM +0000, David Matlack wrote:
+> > Add an API to enable the PCI subsystem to participate in a Live Update
+> > and track all devices that are being preserved by drivers. Since this
+> > support is still under development, hide it behind a new Kconfig
+> > PCI_LIVEUPDATE that is marked experimental.
 > 
-> Using a type u64 is simpler? And I think you configure guest
-> hypervisor's stage 2 translation table, I felt this gives us
-> an impression somewhere the configuration IA and OA sizes etc 
-> are stored.
+> Can you list the interfaces being added here
 
-Sure, u64 is okay.
-In this version I basically just used hard-coded values whenever I not
-needed IA, OA and other related values e.g. page shift, which is not
-good and as Marc said would not even work on some platforms. I'll make
-it more modular in the next iteration.
+Yes will do.
+
+> > +config PCI_LIVEUPDATE
+> > +	bool "PCI Live Update Support (EXPERIMENTAL)"
+> > +	depends on PCI && LIVEUPDATE
+> > +	help
+> > +	  Support for preserving PCI devices across a Live Update. This option
+> > +	  should only be enabled by developers working on implementing this
+> > +	  support. Once enough support as landed in the kernel, this option
+> > +	  will no longer be marked EXPERIMENTAL.
+> 
+> This would be a good place for a one-sentence explanation of what
+> "preserving PCI devices" means.  Obviously the physical devices stay
+> there; what's interesting is that the hardware continues operating
+> without interruption across the update.
+> 
+> s/support as landed/support has landed/ (maybe no need for this
+> sentence at all)
+
+Will do.
+
+> > + * Driver API
+> > + * ==========
+> > + *
+> > + * Drivers that support file-based device preservation must register their
+> > + * ``liveupdate_file_handler`` with the PCI subsystem by calling
+> > + * ``pci_liveupdate_register_flb()``. This ensures the PCI subsystem will be
+> > + * notified whenever a device file is preserved so that ``struct pci_ser``
+> > + * can be allocated to track all preserved devices. This struct is an ABI
+> > + * and is eventually handed off to the next kernel via Kexec-Handover (KHO).
+> > + *
+> > + * In the "outgoing" kernel (before kexec), drivers should then notify the PCI
+> > + * subsystem directly whenever the preservation status for a device changes:
+> > + *
+> > + *  * ``pci_liveupdate_preserve(pci_dev)``: The device is being preserved.
+> > + *
+> > + *  * ``pci_liveupdate_unpreserve(pci_dev)``: The device is no longer being
+> > + *    preserved (preservation is cancelled).
+> > + *
+> > + * In the "incoming" kernel (after kexec), drivers should notify the PCI
+> > + * subsystem with the following calls:
+> > + *
+> > + *  * ``pci_liveupdate_retrieve(pci_dev)``: The device file is being retrieved
+> > + *    by userspace.
+> 
+> I'm not clear on what this means.  Is this telling the PCI core that
+> somebody else (userspace?) is doing something?  Why does the PCI core
+> care?  The name suggests that this interface would retrieve some data
+> from the PCI core, but that doesn't seem to be what's happening.
+
+I think this function can go away in the next version.
+
+I added this so that the PCI core could prevent userspace from
+retrieving the preserved file associated with the device from LUO if
+the device is not in a singleton IOMMU group (see next patch). But per
+the discussion with Yi I am going to move that check to probe time.
+
+> > + *
+> > + *  * ``pci_liveupdate_finish(pci_dev)``: The device is done participating in
+> > + *    Live Update. After this point the device may no longer be even associated
+> > + *    with the same driver.
+> 
+> This sets "dev->liveupdate_incoming = false", and the only place we
+> check that is in pci_liveupdate_retrieve().  In particular, there's
+> nothing in the driver bind/unbind paths that seems related.  I guess
+> pci_liveupdate_finish() just means the driver can't call
+> pci_liveupdate_retrieve() any more?
+
+liveupdate_incoming is used by VFIO in patch 10:
+
+  https://lore.kernel.org/kvm/20260323235817.1960573-11-dmatlack@google.com/
+
+Fundamentally, I think drivers will need to know that the device they
+are dealing with was preserved across the Live Update so they can react
+accordingly and this is how they know. This feels like an appropriate
+responsibility to delegate to the PCI core since it can be common across
+all PCI devices, rather than requiring drivers to store their own state
+about which devices were preserved. I suspect PCI core will also use
+liveupdate_incoming in the future (e.g. to avoid assigning new BARs) as
+we implement more of the device preservation.
+
+And in case you are also wondering about liveupdate_outgoing, I forsee
+that being used for things like skipping disabling bus mastering in
+pci_device_shutdown().
+
+I think it would be a good idea to try to split this patch up, so there
+is more breathing room to explain this context in the commit messages.
+> 
+> > + * device file for as long as it is preserved.
+> > + *
+> > + * However, there is a window of time in the incoming kernel when a device is
+> > + * first probed and when userspace retrieves the device file with
+> > + * ``LIVEUPDATE_SESSION_RETRIEVE_FD`` when the device could be bound to any
+> > + * driver.
+> 
+>   ... window of time in the incoming kernel between a device being
+>   probed and userspace retrieving the device file ... when the device
+>   could be bound ...
+> 
+> I'm not sure what it means to retrieve a device file.  It doesn't
+> sound like the usual Unix "device file" or "special file" in /dev/,
+> since those aren't "retrieved".
+
+For the forseeable future, device preservation will be triggered by
+userspace preserving a VFIO device file in a LUO session using the ioctl
+LIVEUPDATE_SESSION_PRESERVE_FD.  After kexec, userspace retrieves the
+preserved file with the ioctl LIVEUPDATE_SESSION_RETRIEVE_FD.
+
+This section would probably make more sense if it talked about VFIO
+specifically instead of abstract "files" since that is the currently the
+only use-case.
+
+I expect non-VFIO drivers (i.e. "in-kernel") drivers could be supported
+eventually but they will likely need a different API.
+
+> > +static DEFINE_MUTEX(pci_flb_outgoing_lock);
+> 
+> It'd be handy if there were some excuse to mention "FLB" and expand it
+> once in the doc above, since I have no idea what it means or where to
+> look for it.  Maybe unfortunate that it will be pronounced "flub" ;)
+
+I will add a section explaining FLB to the kerneldoc above.
+
+> > +static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
+> > +{
+> > +	struct pci_dev *dev = NULL;
+> > +	int max_nr_devices = 0;
+> > +	struct pci_ser *ser;
+> > +	unsigned long size;
+> > +
+> > +	/*
+> > +	 * Don't both accounting for VFs that could be created after this
+> > +	 * since preserving VFs is not supported yet. Also don't account
+> > +	 * for devices that could be hot-plugged after this since preserving
+> > +	 * hot-plugged devices across Live Update is not yet an expected
+> > +	 * use-case.
+> 
+> s/Don't both accounting/Don't bother accounting/ ? not sure of intent
+
+"Don't bother" was the intent.
+
+> I suspect the important thing here is that this allocates space for
+> preserving X devices, and each subsequent pci_liveupdate_preserve()
+> call from a driver uses up one of those slots.
+> 
+> My guess is this is just an allocation issue and from that point of
+> view there's no actual problem with enabling VFs or hot-adding devices
+> after this point; it's just that pci_liveupdate_preserve() will fail
+> after X calls.
+
+Yes that is correct.
+
+> > +static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
+> > +{
+> > +	struct pci_ser *ser = args->obj;
+> > +
+> > +	WARN_ON_ONCE(ser->nr_devices);
+> 
+> I guess this means somebody (userspace?) called .unpreserve() before
+> all the drivers that had called pci_liveupdate_preserve() have also
+> called pci_liveupdate_unpreserve()?
+> 
+> If this is userspace-triggerable, maybe it's worth a meaningful
+> message including one or more of the device IDs from ser->devices[]?
+
+This is not userspace triggerable unless there is a bug in LUO and/or
+the driver (VFIO). By the way, that is the case for all of the WARN_ONs
+in this commit. They are no userspace-triggerable, they are just there
+to catch "this should never happen, there must be a kernel bug" type
+issues.
+
+I see that a lot of your comments are about these WARN_ONs so do you
+have any general guidance on how I should be handling them?
+
+> > +static void pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
+> > +{
+> > +	struct pci_dev_ser *dev_ser;
+> > +	int i;
+> > +
+> > +	dev_ser = pci_ser_find(ser, dev);
+> > +
+> > +	/*
+> > +	 * This should never happen unless there is a kernel bug or
+> > +	 * corruption that causes the state in struct pci_ser to get
+> > +	 * out of sync with struct pci_dev.
+> 
+> Corruption can be a bug anywhere and isn't really worth mentioning,
+> but the "out of sync" part sounds like it glosses over something
+> important.
+> 
+> I guess this happens if there was no successful
+> pci_liveupdate_preserve(X) before calling
+> pci_liveupdate_unpreserve(X)?  That does sound like a kernel bug (I
+> suppose a VFIO or other driver bug?), and I would just say what
+> happened directly instead of calling it "out of sync".
+
+No not even that would cause this warning to fire because
+pci_liveupdate_unpreserve() bails immediately if liveupdate_outgoing
+isn't true. This truly should never happen, hence the WARN.
 
 > 
-> > +
-> > +void nested_map(struct kvm_vm *vm, vm_paddr_t guest_pgd,
-> > +		uint64_t nested_paddr, uint64_t paddr, uint64_t size);
-> > +void nested_map_memslot(struct kvm_vm *vm, vm_paddr_t guest_pgd,
-> > +			uint32_t memslot);
-> > +
-> >  void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
-> >  void prepare_hyp_state(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
-> >  void prepare_eret_destination(struct kvm_vm *vm, struct kvm_vcpu *vcpu, void *l2_pc);
-> > diff --git a/tools/testing/selftests/kvm/include/arm64/processor.h b/tools/testing/selftests/kvm/include/arm64/processor.h
-> > index ac97a1c436fc..5de2e932d95a 100644
-> > --- a/tools/testing/selftests/kvm/include/arm64/processor.h
-> > +++ b/tools/testing/selftests/kvm/include/arm64/processor.h
-> > @@ -104,6 +104,15 @@
-> >  #define TCR_HA			(UL(1) << 39)
-> >  #define TCR_DS			(UL(1) << 59)
-> >  
-> > +/* VTCR_EL2 specific flags */
-> > +#define VTCR_EL2_T0SZ_BITS(x)	((UL(64) - (x)) << VTCR_EL2_T0SZ_SHIFT)
-> > +
-> > +#define VTCR_EL2_SL0_LV0_4K	(UL(2) << VTCR_EL2_SL0_SHIFT)
-> > +#define VTCR_EL2_SL0_LV1_4K	(UL(1) << VTCR_EL2_SL0_SHIFT)
-> > +#define VTCR_EL2_SL0_LV2_4K	(UL(0) << VTCR_EL2_SL0_SHIFT)
-> > +
-> > +#define VTCR_EL2_PS_40_BITS	(UL(2) << VTCR_EL2_PS_SHIFT)
-> > +
-> >  /*
-> >   * AttrIndx[2:0] encoding (mapping attributes defined in the MAIR* registers).
-> >   */
-> > diff --git a/tools/testing/selftests/kvm/lib/arm64/nested.c b/tools/testing/selftests/kvm/lib/arm64/nested.c
-> > index 111d02f44cfe..910f8cd30f96 100644
-> > --- a/tools/testing/selftests/kvm/lib/arm64/nested.c
-> > +++ b/tools/testing/selftests/kvm/lib/arm64/nested.c
-> > @@ -1,8 +1,11 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >  /*
-> > - * ARM64 Nested virtualization helpers
-> > + * ARM64 Nested virtualization helpers, nested page table code adapted from
-> > + * ../x86/vmx.c.
-> >   */
-> >  
-> > +#include <linux/sizes.h>
-> > +
-> >  #include "kvm_util.h"
-> >  #include "nested.h"
-> >  #include "processor.h"
-> > @@ -18,6 +21,87 @@ static void hvc_handler(struct ex_regs *regs)
-> >  	regs->pc = (u64)after_hvc;
-> >  }
-> >  
-> > +uint64_t get_l1_vtcr(void)
-> > +{
-> > +	return VTCR_EL2_PS_40_BITS | VTCR_EL2_TG0_4K | VTCR_EL2_ORGN0_WBWA |
-> > +	       VTCR_EL2_IRGN0_WBWA | VTCR_EL2_SL0_LV0_4K | VTCR_EL2_T0SZ_BITS(48);
-> > +}
-> > +
-> > +static void __nested_pg_map(struct kvm_vm *vm, uint64_t guest_pgd,
-> > +		     uint64_t nested_paddr, uint64_t paddr, uint64_t flags)
-> > +{
-> > +	uint8_t attr_idx = flags & (PTE_ATTRINDX_MASK >> PTE_ATTRINDX_SHIFT);
-> > +	uint64_t pg_attr;
-> > +	uint64_t *ptep;
-> > +
-> > +	TEST_ASSERT((nested_paddr % vm->page_size) == 0,
-> > +		"L2 IPA not on page boundary,\n"
-> > +		"  nested_paddr: 0x%lx vm->page_size: 0x%x", nested_paddr, vm->page_size);
-> > +	TEST_ASSERT((paddr % vm->page_size) == 0,
-> > +		"Guest physical address not on page boundary,\n"
-> > +		"  paddr: 0x%lx vm->page_size: 0x%x", paddr, vm->page_size);
-> > +	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
-> > +		"Physical address beyond maximum supported,\n"
-> > +		"  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
-> > +		paddr, vm->max_gfn, vm->page_size);
-> > +
-> > +	ptep = addr_gpa2hva(vm, guest_pgd) + ((nested_paddr >> 39) & 0x1ffu) * 8;
-> > +	if (!*ptep)
-> > +		*ptep = (vm_alloc_page_table(vm) & GENMASK(47, 12)) | PGD_TYPE_TABLE | PTE_VALID;
+> > +	 */
+> > +	if (pci_WARN_ONCE(dev, !dev_ser, "Cannot find preserved device!"))
 > 
-> Same but given this is stage 2 translation tables, KVM_PTE_VALID?
-
-I see your point, but KVM_PTE_VALID is only defined for KVM, not here in
-kselftest userspace. However since I will redo the page table generator,
-I can add this, let's see.
-Thanks for the suggestions!
-
-Thanks,
-Wei-Lin Chang
-
+> Seems like an every-time sort of message if this indicates a driver bug?
 > 
-> Thanks,
-> Itaru.
-> > +	ptep = addr_gpa2hva(vm, *ptep & GENMASK(47, 12)) + ((nested_paddr >> 30) & 0x1ffu) * 8;
-> > +	if (!*ptep)
-> > +		*ptep = (vm_alloc_page_table(vm) & GENMASK(47, 12)) | PUD_TYPE_TABLE | PTE_VALID;
-> > +	ptep = addr_gpa2hva(vm, *ptep & GENMASK(47, 12)) + ((nested_paddr >> 21) & 0x1ffu) * 8;
-> > +	if (!*ptep)
-> > +		*ptep = (vm_alloc_page_table(vm) & GENMASK(47, 12)) | PMD_TYPE_TABLE | PTE_VALID;
-> > +	ptep = addr_gpa2hva(vm, *ptep & GENMASK(47, 12)) + ((nested_paddr >> 12) & 0x1ffu) * 8;
+> It's enough of a hassle to convince myself that pci_WARN_ONCE()
+> returns the value that caused the warning that I would prefer:
+> 
+>   if (!dev_ser) {
+>     pci_warn(...) or pci_WARN_ONCE(...)
+>     return;
+>   }
+
+For "this should really never happen" warnings, which is the case here,
+my preference is to use WARN_ON_ONCE() since you only need to see it
+happen once to know there is a bug somewhere, and logging every time can
+lead to overwhelmingly interleaved logs if it happens too many times.
+
+> > +	for (i = ser->nr_devices; i > 0; i--) {
+> > +		struct pci_dev_ser *prev = &ser->devices[i - 1];
+> > +		int cmp = pci_dev_ser_cmp(&new, prev);
 > > +
-> > +	pg_attr = PTE_AF | PTE_ATTRINDX(attr_idx) | PTE_TYPE_PAGE | PTE_VALID;
-> > +	pg_attr |= PTE_SHARED;
-> > +
-> > +	*ptep = (paddr & GENMASK(47, 12)) | pg_attr;
-> > +}
-> > +
-> > +void nested_map(struct kvm_vm *vm, vm_paddr_t guest_pgd,
-> > +		uint64_t nested_paddr, uint64_t paddr, uint64_t size)
+> > +		/*
+> > +		 * This should never happen unless there is a kernel bug or
+> > +		 * corruption that causes the state in struct pci_ser to get out
+> > +		 * of sync with struct pci_dev.
+> 
+> Huh.  Same comment as above.  I don't think this is telling me
+> anything useful.  I guess what happened is we're trying to preserve X
+> and X is already in "ser", but we should have returned -EBUSY above
+> for that case.  If we're just saying memory corruption could cause
+> bugs, I think that's pointless.
+> 
+> Actually I'm not even sure we should check for this.
+> 
+> > +		 */
+> > +		if (WARN_ON_ONCE(!cmp))
+> > +			return -EBUSY;
+
+This is another "this should really never happen" check. I could just
+return without warning but this is a sign that something is very wrong
+somewhere in the kernel and it is trivial to just add WARN_ON_ONCE() so
+that it gets flagged in dmesg. In my experience that can be very helpful
+to track down logic bugs during developemt and rare race conditions at
+scale in production environments.
+
+> > +void pci_liveupdate_unpreserve(struct pci_dev *dev)
 > > +{
-> > +	size_t npages = size / SZ_4K;
+> > +	struct pci_ser *ser;
+> > +	int ret;
 > > +
-> > +	TEST_ASSERT(nested_paddr + size > nested_paddr, "Vaddr overflow");
-> > +	TEST_ASSERT(paddr + size > paddr, "Paddr overflow");
+> > +	/* This should never happen unless the caller (driver) is buggy */
+> > +	if (WARN_ON_ONCE(!dev->liveupdate_outgoing))
+> 
+> Why once?  Is there some situation where we could get a flood?  Since
+> we have a pci_dev, maybe a pci_warn() that would indicate the driver
+> and device would be more useful?
+
+ONCE because this is a sign of a kernel bug and one instance is enough
+to warrant debugging and fixing. Allowing multiple could lead to logs
+interleaving, log rotation, and other issues if there is an excessive
+amount.
+
+I also chose full WARN_ON_ONCE() over just a warning log line so that
+the user gets a backtrace and can see the caller.
+
+I agree that showing the PCI device and driver would be helpful so
+pci_WARN_ONCE() would be better.
+
+> > +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
 > > +
-> > +	while (npages--) {
-> > +		__nested_pg_map(vm, guest_pgd, nested_paddr, paddr, MT_NORMAL);
-> > +		nested_paddr += SZ_4K;
-> > +		paddr += SZ_4K;
-> > +	}
-> > +}
-> > +
-> > +/*
-> > + * Prepare an identity shadow page table that maps all the
-> > + * physical pages in VM.
-> > + */
-> > +void nested_map_memslot(struct kvm_vm *vm, vm_paddr_t guest_pgd,
-> > +			uint32_t memslot)
+> > +	/* This should never happen unless there is a bug in LUO */
+> > +	if (WARN_ON_ONCE(ret))
+> 
+> Is LUO completely in-kernel? 
+
+Yes
+
+> I think this warning message would be
+> kind of obscure if this is something that could be triggered by a
+> userspace bug.
+
+This can only be triggered by a kernel bug.
+
+> Also, we do have the pci_dev, which a WARN_ON_ONCE()
+> doesn't take advantage of at all.
+
+I'll switch to pci_WARN_ONCE().
+
+> > +	/*
+> > +	 * Live Update is enabled and there is incoming FLB data, but none of it
+> > +	 * matches pci_liveupdate_flb.compatible.
+> > +	 *
+> > +	 * This could mean that no PCI FLB data was passed by the previous
+> > +	 * kernel, but it could also mean the previous kernel used a different
+> > +	 * compatibility string (i.e.a different ABI). The latter deserves at
+> > +	 * least a WARN_ON_ONCE() but it cannot be distinguished from the
+> > +	 * former.
+> 
+> This says both "there is incoming FLB data" and "no PCI FLB data".  I
+> guess maybe it's possible to have FLB data but no *PCI* FLB data?
+
+Yes, PCI is just the users of File-Lifecycle Bound (FLB) data to
+preserve state across Live Update.
+
+> s/i.e.a/i.e., /
+
+Will do.
+
+
+> > +	 */
+> > +	if (ret == -ENOENT) {
+> > +		pr_info_once("PCI: No incoming FLB data detected during Live Update");
+> 
+> Not sure "FLB" will be meaningful to users here.  Maybe we could say
+> something like ("no FLB data compatible with %s\n", pci_liveupdate_flb.compatible)?
+
+Good idea, will do!
+
+> > +u32 pci_liveupdate_incoming_nr_devices(void)
 > > +{
-> > +	sparsebit_idx_t i, last;
-> > +	struct userspace_mem_region *region =
-> > +		memslot2region(vm, memslot);
+> > +	struct pci_ser *ser;
 > > +
-> > +	i = (region->region.guest_phys_addr >> vm->page_shift) - 1;
-> > +	last = i + (region->region.memory_size >> vm->page_shift);
-> > +	for (;;) {
-> > +		i = sparsebit_next_clear(region->unused_phy_pages, i);
-> > +		if (i > last)
-> > +			break;
+> > +	if (pci_liveupdate_flb_get_incoming(&ser))
+> > +		return 0;
+> 
+> Seems slightly overcomplicated to return various error codes from
+> pci_liveupdate_flb_get_incoming(), only to throw them away here and
+> special-case the "return 0".  I think you *could* set
+> "ser->nr_devices" to zero at entry to
+> pci_liveupdate_flb_get_incoming() and make this just:
+> 
+>   pci_liveupdate_flb_get_incoming(&ser);
+>   return ser->nr_devices;
+
+pci_liveupdate_flb_get_incoming() fetches the preserved pci_ser struct
+from LUO (the struct that the previous kernel allocated and populated).
+If pci_liveupdate_flb_get_incoming() returns an error, it means there
+was no struct pci_ser preserved by the previous kernel (or at least not
+that the current kernel is compatible with), so we return 0 here to
+indicate that 0 devices were preserved.
+
+> > +void pci_liveupdate_setup_device(struct pci_dev *dev)
+> > +{
+> > +	struct pci_ser *ser;
 > > +
-> > +		nested_map(vm, guest_pgd,
-> > +			   (uint64_t)i << vm->page_shift,
-> > +			   (uint64_t)i << vm->page_shift,
-> > +			   1 << vm->page_shift);
-> > +	}
-> > +}
+> > +	if (pci_liveupdate_flb_get_incoming(&ser))
+> > +		return;
 > > +
-> >  void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-> >  {
-> >  	size_t l2_stack_size;
-> > @@ -32,7 +116,16 @@ void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-> >  
-> >  void prepare_hyp_state(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-> >  {
-> > -	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), HCR_EL2_RW);
-> > +	vm_paddr_t guest_pgd;
-> > +
-> > +	guest_pgd = vm_phy_pages_alloc(vm, 1,
-> > +				       KVM_GUEST_PAGE_TABLE_MIN_PADDR,
-> > +				       vm->memslots[MEM_REGION_PT]);
-> > +	nested_map_memslot(vm, guest_pgd, 0);
-> > +
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), HCR_EL2_RW | HCR_EL2_VM);
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2), guest_pgd);
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTCR_EL2), get_l1_vtcr());
-> >  }
-> >  
-> >  void prepare_eret_destination(struct kvm_vm *vm, struct kvm_vcpu *vcpu, void *l2_pc)
-> > -- 
-> > 2.43.0
-> > 
+> > +	if (!pci_ser_find(ser, dev))
+> > +		return;
+> 
+> If pci_liveupdate_flb_get_incoming() set ser->nr_devices to zero at
+> entry, the bsearch() in pci_ser_find() would return NULL if there were
+> no devices to search:
+> 
+>   pci_liveupdate_flb_get_incoming(&ser);
+>   if (!pci_ser_find(ser, dev))
+>     return;
+
+I think this is explained by my reply to the previous comment.  If
+pci_liveupdate_flb_get_incoming() returns an error then there was no
+pci_ser struct passed to use by the previous kernel. Thus we return.
+
+> > diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
+> > new file mode 100644
+> > index 000000000000..7764795f6818
+> > --- /dev/null
+> > +++ b/include/linux/kho/abi/pci.h
+> 
+> It seems like most of include/linux/ is ABI, so does kho/abi/ need to
+> be separated out in its own directory?
+
+include/linux/kho/abi/ contains all of the structs, enums, etc. that are
+handed off between kernels during a Live Update. If almost anything
+changes in this directory, it breaks our ability to upgrade/downgrade
+via Live Update. That's why it's split off into its own directory.
+
+include/linux/ is not part of the Live Update ABI. Changes to those
+headers to not affect our ability to upgrade/downgrade via Live Update.
+
+> It's kind of unusual for the hierarchy to be this deep, especially
+> since abi/ is the only thing in include/linux/kho/.
+
+Yes I agree, but that is outside the scope of this patchset I think.
+This directory already exists.
