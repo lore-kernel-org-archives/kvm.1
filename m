@@ -1,143 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69993976B4
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 23:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D9E3A2560;
+	Thu, 26 Mar 2026 23:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774567117; cv=none; b=W0EjaMTqb64JDufE7EIeadkgZed/iUDeUKrOheShjNchijS61kWtAZI/8nukr0JskCTMLuTYop3M8pzzakeNlzHVs9Uy0AjNaawRL+qHU3utbOmk7B22MDxMdwFIPRyey4iO7QhN5IfZr7fUJnXhx+aSH+9xz0Obe19Mkcq7j9M=
+	t=1774567424; cv=none; b=Oal84bHtVMncgCDxZsTxxUe7jRlwRdBItg6jstacQsxAkP261PKuccsqu61YE+RBZ/tYOIGbEhgH/svbhms+Mx5QCD/M/Z+hpkfEPcaYKeGdhZ8nM3bgObDKfa3IR4MYC64Rikwb53VdRsPNNxJSuS+U73KPJYhZSPFCDdNXgr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774567117; c=relaxed/simple;
-	bh=8W0748SGA3a4asDg7zCZJmROZ8aIYjkamf7rs7VPh30=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rrCJZBOyrI50KcB+Q4OnVWDId+oA4Dzaacl+2vGFTuf4TwlwqN3XBvoRBavEJm1biAVnkt8NcdAMk2rNr4wrALlHvyl0CscxsueFoe92Ynj3bfLw+Oa8blv+jOJr0ci8gWMHSFSm8R8itTVLdvHnoUhYtgJe07zetoOP0tTW/VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=doLmvjkx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774567424; c=relaxed/simple;
+	bh=ywefAlrhCimBtUrBIPGiIi039tfFwchTq617Tcwm5Zg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=okVHp/5FzVRAA8Ji4FbJYBg45DLtyRfKggn6BnZWqDxQpHIaDCO19p5mJFnsODiFj4cvy7bOFA8zw8MXlYwKAK6bKUW9PpCWxHWzBDHqDTpS3T670G/aF+PUy/4mFYkqZX5J6+wIA3DcGitc2rcELDsgX3a3Iw3dAewYaCDA8M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bXZehikS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="doLmvjkx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95143C2BCB2
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 23:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774567117;
-	bh=8W0748SGA3a4asDg7zCZJmROZ8aIYjkamf7rs7VPh30=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=doLmvjkx9xDrvQDTMn+M08liJvQJ89rIWFJQN9zy9aE8FQBxLYgGvO1JdvOy/2chk
-	 H1v+5B9RNq0b1p/EqGKO1waqxiZHAo4ZxKul3CHHjLwjrGQRv/p1ajDC/GNpfFm+u4
-	 XExrgP3v9UQso7Sphl32++2bQctwFKGefocjUT7W56Chhk2eV9cJC6S8ixjzsGixs5
-	 DdrdaPqP05ewklAjISerOYar/96rL4NZHMmKkwJgU7tMpH+gM1JM+BT1ivxe5ePBB7
-	 2wLV05NXZlzUJAvFPa40EivMoDPYBQIAkHEusE6vNQHoMwXOmPwwPVGk56nxeS48ZN
-	 OY8wYM69O+qAQ==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8f97c626aaso250805066b.2
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 16:18:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUu6H/I83+eB7/gP+MS3U696fo0n5hm6xEqHIp23Vh0rW9On4bPe97B3Bc9x3idC+LmrcM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywoe+Dy2XzW/F1y+whj06ru1UsnwNq8+j0g2zqHdRtGdDVr+qwF
-	7Jsxm3wCDm66Zsu8vGTUj1qng0duhnIswES4K04i6JlkX8Ogmedi4+HL3RvA5OS4nhZPluzD8wS
-	nNEUhzzd8E4lYScbSPgtaGX2bMZaX7io=
-X-Received: by 2002:a17:907:3e07:b0:b98:2888:6ee9 with SMTP id
- a640c23a62f3a-b9b507968c5mr16784866b.40.1774567116405; Thu, 26 Mar 2026
- 16:18:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bXZehikS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57D4C19424;
+	Thu, 26 Mar 2026 23:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774567423;
+	bh=ywefAlrhCimBtUrBIPGiIi039tfFwchTq617Tcwm5Zg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bXZehikSOnzJCjqTWi0vMkzNfGuZk/eIT/VwIhjH+YfQJA7FfwufOkVdraXZLMtit
+	 UFempOXqyIbWdgsdvIhVsdje87SqXt0LakogZA+AVEscO5nxcNvZivw0Js6Ko2SmCv
+	 WXz3MnsabMlyPLfXxSQ4Yi2IA2HAJPnOJ22/LWqk=
+Date: Thu, 26 Mar 2026 16:23:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
+ James Houghton <jthoughton@google.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
+ <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/15]  mm, kvm: allow uffd support in guest_memfd
+Message-Id: <20260326162342.b8178cb8940123324c1c9211@linux-foundation.org>
+In-Reply-To: <20260306171815.3160826-1-rppt@kernel.org>
+References: <20260306171815.3160826-1-rppt@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260326031150.3774017-3-yosry@kernel.org> <202603270611.WB2i1rjQ-lkp@intel.com>
-In-Reply-To: <202603270611.WB2i1rjQ-lkp@intel.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 26 Mar 2026 16:18:25 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPuDcHMObfzTQVY-P0Z3kXZbw6y5KJizxvpFWXdW7uKbQ@mail.gmail.com>
-X-Gm-Features: AQROBzCJlt8Vy2TBMr8SwNB2MknkvCsicM7UuYcuxTf2vwCM_WDEcuVWpIrY6Ps
-Message-ID: <CAO9r8zPuDcHMObfzTQVY-P0Z3kXZbw6y5KJizxvpFWXdW7uKbQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] KVM: x86: Move guest_mode helpers to x86.h
-To: kernel test robot <lkp@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 26, 2026 at 3:49=E2=80=AFPM kernel test robot <lkp@intel.com> w=
-rote:
->
-> Hi Yosry,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on 3d6cdcc8883b5726513d245eef0e91cabfc397f7]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Yosry-Ahmed/KVM-x8=
-6-Move-enable_pmu-enable_mediated_pmu-to-pmu-h-and-pmu-c/20260326-191518
-> base:   3d6cdcc8883b5726513d245eef0e91cabfc397f7
-> patch link:    https://lore.kernel.org/r/20260326031150.3774017-3-yosry%4=
-0kernel.org
-> patch subject: [PATCH v4 2/6] KVM: x86: Move guest_mode helpers to x86.h
-> config: x86_64-buildonly-randconfig-004-20260327 (https://download.01.org=
-/0day-ci/archive/20260327/202603270611.WB2i1rjQ-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
-227cb60147a26a1eeb4fb06e3b505e9c7261)
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20260327/202603270611.WB2i1rjQ-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603270611.WB2i1rjQ-lkp=
-@intel.com/
->
-> All errors (new ones prefixed by >>):
->
->    In file included from arch/x86/kvm/svm/svm_onhyperv.c:11:
-> >> arch/x86/kvm/svm/svm.h:520:6: error: call to undeclared function 'is_g=
-uest_mode'; ISO C99 and later do not support implicit function declarations=
- [-Wimplicit-function-declaration]
->      520 |         if (is_guest_mode(&svm->vcpu))
->          |             ^
->    arch/x86/kvm/svm/svm.h:578:6: error: call to undeclared function 'is_g=
-uest_mode'; ISO C99 and later do not support implicit function declarations=
- [-Wimplicit-function-declaration]
->      578 |         if (is_guest_mode(&svm->vcpu) && !nested_vgif_enabled(=
-svm))
->          |             ^
->    arch/x86/kvm/svm/svm.h:639:6: error: call to undeclared function 'is_g=
-uest_mode'; ISO C99 and later do not support implicit function declarations=
- [-Wimplicit-function-declaration]
->      639 |         if (is_guest_mode(&svm->vcpu))
->          |             ^
->    arch/x86/kvm/svm/svm.h:802:9: error: call to undeclared function 'is_g=
-uest_mode'; ISO C99 and later do not support implicit function declarations=
- [-Wimplicit-function-declaration]
->      802 |         return is_guest_mode(vcpu) && (svm->nested.ctl.int_ctl=
- & V_INTR_MASKING_MASK);
->          |                ^
->    In file included from arch/x86/kvm/svm/svm_onhyperv.c:12:
->    In file included from arch/x86/kvm/svm/svm_ops.h:7:
-> >> arch/x86/kvm/x86.h:169:20: error: conflicting types for 'is_guest_mode=
-'
->      169 | static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
->          |                    ^
->    arch/x86/kvm/svm/svm.h:520:6: note: previous implicit declaration is h=
-ere
->      520 |         if (is_guest_mode(&svm->vcpu))
->          |             ^
->    5 errors generated.
+On Fri,  6 Mar 2026 19:18:00 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-Sashiko caught this first :)
-https://sashiko.dev/#/patchset/20260326031150.3774017-1-yosry%40kernel.org
+> These patches enable support for userfaultfd in guest_memfd.
 
-I think we just need to fold in including x86.h in svm.h, this fixes it for=
- me:
+Review of this series is very thin at this time so can I please ask
+potential reviewers to spend some time with it?
 
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ff1e4b4dc9986..2d55c6bf15b32 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -24,6 +24,7 @@
+To create additional time for review I have relocated this series to
+the tail of the mm-unstable queue.  That probably means that movement
+into the mm-stable branch and upstreaming will occur in the second week
+of the upcoming (7.1-rc1) merge window.
 
- #include "cpuid.h"
- #include "kvm_cache_regs.h"
-+#include "x86.h"
-
- /*
-  * Helpers to convert to/from physical addresses for pages whose address i=
-s
+Thanks.
