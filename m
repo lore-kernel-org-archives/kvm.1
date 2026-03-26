@@ -1,141 +1,131 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65923976B8;
-	Thu, 26 Mar 2026 10:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBD33264CF
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 10:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774520362; cv=none; b=FWJmgFkoeM5TZPFQURcw+12NK1PZcNa8E/RPs+uwQugNt3XfN3VQzB7T4PzYD9k7zbCblmVBMJOybu9r4bNwQSPfPecmYXrI6EF33+xbC1G3q0V8Mro6hacitEUcA0R9+lAHDwhSf07jjvBqqnzUV54ZdeqrpDsFs4J6mg0XfW8=
+	t=1774521963; cv=none; b=OhRnoeVJBSLvx6BxBn1qDUnUkBgYkOuCQ01H7gYebavKeTOzyMvqdk/4nAg5IkQz+Vl1Cn1A2duX8UBRczX5IPVZkc6tMYFiUNwccj1yDeqQL9jpyEOjdMlKVGc39dE2b39GGDanFQVX4BiQcfihLtFY8V5t51xU9+fVoW05pvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774520362; c=relaxed/simple;
-	bh=8nlXIgLB2+L/cMlY8OxEeYbvYtIVZJMvx9VEbZoRDLY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nTgpeJUHCs4zPTJPX/mVf/33xX7NW5IE8H8uX9tVbmybNDrW3S4bgBXXCwwn47EY/zs0w2UaNoGLN25sPLAua2QhZX0KH30hU65olGRrAGEu33h5O3O8R4Z8XDPAtgRd5Zs0bSxQCIEvqvjOiqUd48kBRl2WTXSd9zvIHiKTm+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o2+d3pCo; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774521963; c=relaxed/simple;
+	bh=64Fas5hYKuMJHCmYPOt+8bmUOjahEq8MaPoJMlkt2pw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N+qiNCuGptscincuvLoM5jTcxD/zjr/cJ79tUgMB7tCiYJ0tI436UR9fJDMZPi5I9KAQVkKX6EzRCN4kpDo95kpLIsBFTsXwJXbTHqpbLtjo4TL8PEY4jm2XmogmrcXH9I0wvmAfTwKkRN8HZOjJU2cbMxZiQB1eKeUKMPnr1nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLI58UJ8; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o2+d3pCo"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62Q5dn0S666646;
-	Thu, 26 Mar 2026 10:19:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fEp6/4
-	SzrI5VfbwnKEoVIxybnutuKXrm+C/u9yO/csg=; b=o2+d3pCo0U2L59fILEhYQO
-	64dZ3SntT9QsU5wzmWS4qiafQAhBUrvZT//ktSu9bbNbavogIaDp2cgFj2X+jkwS
-	HHABGySuZBnbov2pjNo5pMxylNGbzCcWVmS7niejppKsXHjkGumJKTdb90d+JUaI
-	8DBRDZVAbNETZ8HYpNVUxD+3qsuqWcgB/+bf6VtjpuIoZUFfZ2T0sR2m69BWf10Q
-	/xZK7FjYphZDouSNhk054K5gieVPHj92/Au9LHOiLYCR+PLDR8cfFHWPVGpM6nT6
-	gPnLYcB/BTZGEGF0PmpmBfnYyBjiF/ZsLqb4U8t+Sw0PqHq+BMTFfIkMLrOOUlmg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kty4kyk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 10:19:15 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62Q6uEvu026797;
-	Thu, 26 Mar 2026 10:19:14 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275m2cqr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 10:19:14 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62QAJCcN590550
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Mar 2026 10:19:12 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 45CBF58055;
-	Thu, 26 Mar 2026 10:19:12 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4DC8A58043;
-	Thu, 26 Mar 2026 10:19:11 +0000 (GMT)
-Received: from [9.61.136.69] (unknown [9.61.136.69])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Mar 2026 10:19:11 +0000 (GMT)
-Message-ID: <00fa1811-97a7-4a71-8946-7eae73ce5b12@linux.ibm.com>
-Date: Thu, 26 Mar 2026 06:19:10 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLI58UJ8"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48557c8ad47so6161015e9.0
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 03:46:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774521960; x=1775126760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uWeS487NzYUaa3hGKWOyH/n+tSqTSbzSaVNvnjqb4bk=;
+        b=hLI58UJ8v2QepCbMQ7JXS34BNPDhv0dCXKaAHRysAX/8YJJ5cIP4FVXpB5Dj7sVUsj
+         c7zeZDyRI2tLXE4fRHkuju7HFVHxZFEwouQq6R49k2w53PL/shhfNNzk6wDTbkFyXEve
+         5SfNlCSRmeBRfnzPdf36kfW5+5lnEYBj4EMvoOyqMDWfvenhSQIfiNm3ggi4ZmntM7ot
+         HCogKDoNDiuGehloKtT4Oygmb1LvkNv7k452N1cZ/tVd3k+U6cuGuCOsVxoIOzVD4ifk
+         biF43fIKqPSOGULHXaI/prV96Bp+hQnBG386+/m6WOVv3jojVD4Yx5ce0nlhbEZTZ8Gm
+         lR4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774521960; x=1775126760;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uWeS487NzYUaa3hGKWOyH/n+tSqTSbzSaVNvnjqb4bk=;
+        b=XvqDc76LE0UjLo/dzKHQ+HPiXUnERlEaU1yLyYvZQVXMpIuL3uDLSqZbOdKgM0cKhi
+         2IhO5I+JzbmQS9OPvuAYtNwnsMIUvA/BTzEDZcqJ56qKmt6H8DGUR5RsDa5HSbtOGckY
+         1jUhk0R+5X6WpgaC+pUk65Gm2Tf22slSlPpGO4ytOslm5g4IDDwk/dW8DjjfIW4rGvKh
+         rCEQ2DnlOvbK4c0ku/AnvObA2lRE6WpIGpTl+J6Mx9PpMVcWPa4DyhFckj83R+JlpTTh
+         4IPj5IAqj/pzPbm9u1vRPnQ8QkZL19o0e0IO5wtyrifcCTbaUjp/rD8XtR9WS5Maq2BF
+         omFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVtKLTMmFLZrJKYtk1UWJoo++exK3X6mcEht7Pg7wOgm4zmm5xOiy2Hthr8nexQ7+Twu3o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVtonVm2FS7Z+gGwSeZrrk1E+x9hfVrY31qYexCxzxj0UgNs4y
+	RiBUt+ohjAcvz78LRKdeFGsmhCUI6SxPEoi8LorXXbnAiC9bV77wGCYF
+X-Gm-Gg: ATEYQzwyPewL7l7CnGEiHi+3sTZkvxfFQx1CeU6CxZ4Gpa7wvTTOBTq63VmXPLsYV0X
+	0jMvT9BVAEGH4c3KZplXWPFDZTgmUSr7mVVE9F91O4jfumaio1XyVSeMKfQ37agvYJSGpuV4vvO
+	X+Anm/e07+g+UoLxnz0mnU9z/iTL72Dee6whFOOjABVu7kHHqveBJy3txsKKzZDk/R5mhxXkhwJ
+	DN0GwLU+dxObZU5Q3e0CJzGRzOiytDnSv568A4T2Ttz6iuv45alPhYAAmmOC4vayQEmqZ5fbnAG
+	+2YvktJJ2WKlRfYkdUGHOltu9ATMdTtEDryNTdJ/UP+LfKSdwjctqvNHikiB8IZ0ZUawtSdugwV
+	9fN0oxS3mV8OnKwrS2UpmGWkhbERCC8h8N7JnOy3hzhrZjjZ60RTZ9J+rmoUXaQQHfRjIloX5VG
+	zRWf3OdRJvvOwumPuNAGLBUGr9uJNId0n3LkxR/ertIO4fbLQvFN0ibqxCbrrU2nWp
+X-Received: by 2002:a05:600c:8b31:b0:485:30f7:6e88 with SMTP id 5b1f17b1804b1-487160881a5mr109891615e9.31.1774521959596;
+        Thu, 26 Mar 2026 03:45:59 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919df6d4sm6790010f8f.25.2026.03.26.03.45.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 03:45:59 -0700 (PDT)
+Date: Thu, 26 Mar 2026 10:45:57 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org, Jon
+ Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan
+ <david.kaplan@amd.com>, Sean Christopherson <seanjc@google.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
+ <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP
+ Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern
+ <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard
+ Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
+ <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Asit Mallick
+ <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260326104557.24295cbb@pumpkin>
+In-Reply-To: <20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
+References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+	<20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+	<20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
+	<20260324221308.7sh6afdy6r6tsf4w@desk>
+	<20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+	<20260326083934.fk4wyhe6rgiss34z@desk>
+	<20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/24] fixup! KVM: s390: Remove non-atomic
- dat_crstep_xchg()
-To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        imbrenda@linux.ibm.com
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com
-References: <20260325210149.888028-1-akrowiak@linux.ibm.com>
- <20260325210149.888028-2-akrowiak@linux.ibm.com>
- <c1deb93a-a2cd-4a5f-a8e2-9cc078f407c8@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <c1deb93a-a2cd-4a5f-a8e2-9cc078f407c8@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c50823 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=vxBSpDEMcLf9NR8dcUgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA3MSBTYWx0ZWRfX6bIsSPKjNF+h
- IPbFDI8EJSc6pvLSBkZdYJaDM2HMjxZ2HpV0LTz10j9+pLWicddkw4cRyKeBI1blRAx9La4VoRD
- ZhKHdBoJnxPxVWk/K+Iy98qgFRkJMe40hW1q1TIA665DE6dN9/N3A7Zql597zeasArT6OZvujUr
- bIyA/xJRcEUU+sZ4/Aa2AzecQ1cWSNCgioxrrWxO+Vk3GyIpF5bOgnEtii0xmuz7yvh7+JgsNTu
- 5km/pdyPZn3Cu3AHk/uEp/nlroxzs7QJnHhfzvPpp1MK/B/1p7z+2F7+hEvXuIaD/aycjKdiW5n
- cBrVXXpAsvrOr0Rz54lSAYVH9uQHY3q9tb3MzxP1+QlO8ADWAxguFwQ6FOHVnT2wI+XsYxM9bE8
- tBFIby6bP/K4jZWOuOShz7Ob4IWeOrIXsO8ML09yYS7/yOhatoI1Z6xVNfnd0c0m8E/N6WaeWt4
- frftbuar/hDEGvBxdxQ==
-X-Proofpoint-GUID: PDF0gmlfHNPnscKRZwjgajpRDwATdX7k
-X-Proofpoint-ORIG-GUID: PDF0gmlfHNPnscKRZwjgajpRDwATdX7k
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
- phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603260071
 
+On Thu, 26 Mar 2026 11:01:20 +0100
+Borislav Petkov <bp@alien8.de> wrote:
 
+> On Thu, Mar 26, 2026 at 01:39:34AM -0700, Pawan Gupta wrote:
+> > I believe the equivalent for cpu_feature_enabled() in asm is the
+> > ALTERNATIVE. Please let me know if I am missing something.  
+> 
+> Yes, you are.
+> 
+> The point is that you don't want to stick those alternative calls inside some
+> magic bhb_loop function but hand them in from the outside, as function
+> arguments.
+> 
+> Basically what I did.
+> 
+> Then you were worried about this being C code and it had to be noinstr... So
+> that outer function can be rewritten in asm, I think, and still keep it well
+> separate.
+> 
+> I'll try to rewrite it once I get a free minute, and see how it looks.
+> 
 
-On 3/25/26 5:30 PM, Matthew Rosato wrote:
-> On 3/25/26 5:00 PM, Anthony Krowiak wrote:
->> From: Claudio Imbrenda <imbrenda@linux.ibm.com>
->>
->> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Tony/Claudio, I suspect this was included on accident and will be
-> handled separately and dropped from this series?  I don't even see it
-> mentioned in the cover letter.
->
-> If intentional and intended to be part of this series, then please add a
-> proper commit message.
+I think someone tried getting C code to write the values to global data
+and getting the asm to read them.
+That got discounted because it spilt things between two largely unrelated files.
 
-This definitely does not belong in this series. I accidentally included it
-when building the patch series.
+I think the BPF code would need significant refactoring to call a C function.
 
->
->> ---
->>   arch/s390/kvm/gmap.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
->> index 967a280b3235..19379d162777 100644
->> --- a/arch/s390/kvm/gmap.h
->> +++ b/arch/s390/kvm/gmap.h
->> @@ -198,7 +198,7 @@ static inline bool __must_check _gmap_crstep_xchg_atomic(struct gmap *gmap, unio
->>   							 union crste oldcrste, union crste newcrste,
->>   							 gfn_t gfn, bool needs_lock)
->>   {
->> -	unsigned long align = 8 + (is_pmd(*crstep) ? 0 : 11);
->> +	unsigned long align = is_pmd(*crstep) ? _PAGE_ENTRIES : _PAGE_ENTRIES * _CRST_ENTRIES;
->>   
->>   	lockdep_assert_held(&gmap->kvm->mmu_lock);
->>   	if (!needs_lock)
-
+	David
