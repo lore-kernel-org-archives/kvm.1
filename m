@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABD53CFF42
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071383A1D1B
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549081; cv=none; b=HjoUfBsDZNJgWnamUSkk2w6ZYypA3Gf3vVPKBli6ncFp50F1FWTJVPM0mCMKlza2CMmKj9EnhGAvaxEP5y+SRFXcNdsyP0OMS06djU8k3JutflPG+mrzLzpWXx1zOl7+3UT+ZCsGAnjD4eIwd30IdgNY7jg26RNdtc6CjpBLw88=
+	t=1774549084; cv=none; b=GZF6zM9QKpIq3Xw1T241z84jTaMOzP4ayPyS6hB2W8qYfAOu2ggN1fTAkGmCOFEGSBo0zwnuxOT6XaQ8tJ9FxdZI5bXOUfu3FQfqoCpyu/9ePA5y3hFy2V0FxUNgOL38UPWmjI1qail6SJ4dIyw+CIAV6rGznkxS8EGyG641dzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549081; c=relaxed/simple;
-	bh=pS1J8W8fO4+3tnDj88CZnxAyKm0FKvsBhMP+n0FPrMc=;
+	s=arc-20240116; t=1774549084; c=relaxed/simple;
+	bh=kV5YnC97ln5+DVsaOb883H58Ze7qwkIsim21YHCrnRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pX2UHMU+Qh5LI66XIR9zw3o5klXlGTr6UeEuxrUr5sdHxYnE7Ib11Oq5RaDzFFLxwCwEMrf2Jv59P10yKt0pj/GO3jTioA6N+a5FSJQbUgTHtT0IT2Z6uOXaio/ezhJPCmN0zZJE3EI558pL4WNGpcgsWWVHVZs7/7UoIhZyfks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VHLwbOfe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pv76CWUR; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=I+YrgodpAo/df6fLSMfbmpuavlKxEgrXM5dYdTKfiNgxS+zLGKKAnVki663Va19VIw3BTZQfV1c0S9F1aiVZO1aTMBolZF3FfgxLzjvIu1nrJikLQLHqSLQW9Py1gZxgKLOOkNaRY24fnG1aUGYTVw1eCASWH2XY0JI3JMiSaQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FSWwM62B; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eVLAVCfv; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VHLwbOfe";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pv76CWUR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FSWwM62B";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eVLAVCfv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549075;
+	s=mimecast20190719; t=1774549077;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K8T8CyELIjmZrSOM7uiAWDk5u4n6lA2+sMqy1wRdzGU=;
-	b=VHLwbOfeWoYEC4v2zsR67kJwOcCH+hk1tMmfrdtqROZHdyvHHSJL4QykpHzow7FfxFS/1l
-	NDSMF8JNdXUKfLzvmTECi0YjvMe/nKTbE13YJEUWXXXPJb+2svJzb8xVU9BITwRrLpY3ZX
-	1i7AdegOVnhXL893fhx9dLM1jqitCpU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ys9YR6CdTMd5WSS5mBv+iUvUa9v1KcPcwFdGEo7dT2o=;
+	b=FSWwM62BP54lE3XKw5IKH8Sp5UM3Q1Twt158Me4rFUu5FDh+Da2wJNTFxkaUL+1s8QbJu6
+	gDhdm+JPIYNA8t1Z6QGLuzjR8Ej7hcplE5N0z2n7CS/YqfZt9mrWMCIlwQ3pU2dtxQZl3c
+	ZVqrCvgMJPAsehFNp5+F6QW9z7b+2zY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-5A1e-aGFNXKhE6NT-t5XFA-1; Thu, 26 Mar 2026 14:17:53 -0400
-X-MC-Unique: 5A1e-aGFNXKhE6NT-t5XFA-1
-X-Mimecast-MFC-AGG-ID: 5A1e-aGFNXKhE6NT-t5XFA_1774549072
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439a85832c0so81285f8f.2
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:53 -0700 (PDT)
+ us-mta-652-HiWMDTDMM62YdLXaA1v_4g-1; Thu, 26 Mar 2026 14:17:56 -0400
+X-MC-Unique: HiWMDTDMM62YdLXaA1v_4g-1
+X-Mimecast-MFC-AGG-ID: HiWMDTDMM62YdLXaA1v_4g_1774549075
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-439cbfcfc21so1233657f8f.2
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549072; x=1775153872; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774549075; x=1775153875; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K8T8CyELIjmZrSOM7uiAWDk5u4n6lA2+sMqy1wRdzGU=;
-        b=pv76CWUR+uVQiJITEeL8bO/xrA/ZgiMrciFb7w8oQiRuZjtQqLgK3VW4oqwyZuepdS
-         enfDCJhdhKiKdJdCsBzaenxKQs7iA3T0T2z/FfMv2E4evMxIutVUh3vOtxjACry8wZT7
-         MysqHU86lo2VgR0g5YWgzm/Um4oI9L7yHlEJcmipIzcgFlFspodJaQbCCiuV9Y19n1H7
-         NafDZxct59bQrfRyyk0SBah65N3O4//XmVRrk5wsydeWEnz22f8B9s/ls/DlmAO+fguo
-         357jxcgzwFwbmxEgTQPztqE9V/17YzysDZkwqurYdgzcu/gXiIbc+7Rp1Qx54fjilhy/
-         yFnA==
+        bh=ys9YR6CdTMd5WSS5mBv+iUvUa9v1KcPcwFdGEo7dT2o=;
+        b=eVLAVCfvgV/96ymIetRJaJ+nYiognZrool41FFlNySC8t+pXe0nDlScW8E2MOCn5Fh
+         bgPVZI9I9OnwUQJXRaKO2Yja1rBcps50hjsMHLWIvzl2plQVD3yXPFBrUOLaxYIve1j4
+         /QOQEs1EmaMXPiMHIBSNSbLdHm9gmwAe1QkV9Y0r8hRrgl2vK+Bhiofx3Q6rAPNkslgC
+         r5ypFpwc1RLTE07y9nYbh3A/T/JOMQhqgPzeBxAnS3zdJ5UkGNPGiWadTJE8mtP/CA7j
+         SaepI0ofFS51s4EAtTkULxngpCTdMfwMGiPbM8eZqgmK0vEnMHCAJLq61/htNDEEY4uw
+         E6NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549072; x=1775153872;
+        d=1e100.net; s=20251104; t=1774549075; x=1775153875;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=K8T8CyELIjmZrSOM7uiAWDk5u4n6lA2+sMqy1wRdzGU=;
-        b=BRlO7tgVQ5P9uFVSuPPIHrLGs/x0x7GRkeCpU0SmkjqtQKqmmIOcMqtAqdfyDXOeod
-         58L1L215KzOaU+chaPOJOegfJSbYr2vTcpcB6bb8S15zb/+khuH4I8H+HP8NwBZwjQpS
-         le9nfwTU1XU1tYJSq6MlOz3BOrZhF9lppybbZeG26z63sUF70dj9m8t7HpCVIWdGLRFg
-         Av0Pdq4jVZ1Zb+Qxo04n8hJEPJtHCD3uVDG1BKLA+i7FrQci2RHXdICkKCdD1ymXXSjQ
-         QkCV3f/2JZjjJCEWC1m8G5vbBxSkF8b1JdT+EtYLDmg/Cn4R39IRPK8by2kIWl2JKUmX
-         MBRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWeU2H4bH5pT6yyRhjZXRKc0HXmU5p8gcM/ECrJpvuNml/2N+iJv+tegsZz/+bVUAODiuo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTiqeWpIZuel0qU23yrU70MilcmzevlHUu/HaJgkq2KOrZUxtc
-	6kjNvSy6IuzIu6o01fJNkj+CB4CiafFgy//ThTvy5vDNzjRwxw2xr+T2Zx/fyizNkfDm0fyhfUK
-	t2K6zPXJ7YZ5XuooWQHsryM5LDXqzi4s/J3oJnDwt49QhvuF4Z7YM9w==
-X-Gm-Gg: ATEYQzzPWKN4W6cS+fKkZbbGsbxDXFgGykT3lIR1V6MPh1qfCxuMMghnt2Nw3lMzO7E
-	jOaR+EMdkZchKWcuiAkyvtMA9532e9uZN6LWziv6gA5rczcPPU9425q/4O+8cR8kl5Mf9Va3E3W
-	0b93X2yOvLEfOM5kW2xieQte3nEU/jnKrrLwqt/IYz4IZFZ9u9UCHw7CyeVNwEMx9sO43SekvT3
-	yWDSsirTNWnxLOWwTPexivpBE0pXpReVzJkzpivZRjGgJkSRSvJfbiutx78Imb4Pi8XxNzWk8I+
-	BR6o9o4AtXdrTG6DtNvwULO7/7Ip82hi5qps7x1/4x0HRs08Tg1jFE7MRYIlUco4159d1m0Bh6o
-	/eall07yF57aT7rkpTPXnSt0u7fxwLx8tpV45q64RjS9NgcDFly4AUA+jYZ80oIiHmPXPpIgMck
-	nxu30LWlJc6S529bKyguEVLZK7
-X-Received: by 2002:a05:6000:220b:b0:43b:43ae:8c25 with SMTP id ffacd0b85a97d-43b88a44842mr13657636f8f.52.1774549072092;
-        Thu, 26 Mar 2026 11:17:52 -0700 (PDT)
-X-Received: by 2002:a05:6000:220b:b0:43b:43ae:8c25 with SMTP id ffacd0b85a97d-43b88a44842mr13657569f8f.52.1774549071543;
-        Thu, 26 Mar 2026 11:17:51 -0700 (PDT)
+        bh=ys9YR6CdTMd5WSS5mBv+iUvUa9v1KcPcwFdGEo7dT2o=;
+        b=MR7Iw/DBnyB0tt6EBk6xWrqO7anLQQZBBLLJJKNDOpbfqOqyh7CUE1U1Yh62mdvOMq
+         5bk5nzSnwMOAtTx/rITqf4fhbqWXqR8owR7efONTXBfxf4vBMem6JRcUvjU7+VeHDTxs
+         6pxeDE9vGg+ZLLF/2Pm0y/EfK2wfg5XIEV7BFHWHTrkr+nMPMCpO1BCxbPB7WIumfJsr
+         xrTQfMr9KqyuxV0rDXTOKMEBsj4lyo3Qu7EBl7ccpO9+EtYU0sW1HUt2pnaKhqfwVjD+
+         TV+rJfMgeDoFnTFh3BEOPFM59c0jJMRfOj9ZZGbIkg0E+D2tJS0B3jAQC8VPaTzaPpAR
+         f+Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCL3f5slAKKoNN9O8VwulCltMNpVlmwteRP/Q3NBR9petIqEQcqEmn+7RMBVz6AWPxLAk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD73FAj89qoG8mdcJPu5l9j55ODUb2gVR6sBqQWcUSDPfDRxCp
+	dv1/uHD1pSPUh5CkErvcOKe9TdxHp2QGh1Ml3iSPA+2psWCVT466GceoNNWoI+2WsmFvvbFfve0
+	QzovY/TSQZ3JbnizaxMYwARrQeaZdrc3n+Q7O9zGDY0vjEmPkrmOWkQ==
+X-Gm-Gg: ATEYQzwFcP7J7oa9ZrwhxlA1DjlL8qrPYvdfIBIbMioD7yf3CSlR1zwDYhg9VtPT4tL
+	AXMUer1Q+vPsNZdO3wIXU0QfkrgAwpmPCE2VcYIQHg+Q2gmofErEjE+rhbI1Ma0CpZ16Kbe4vbc
+	bd9s1Fs/kfoGKyxnFUXBw7D8xtcNXySoF5fo7I1+YWflR3TUonExNhFmoAGC2BQyZPYolAzZq7I
+	5jzuWJlAl/l/U8LTwtWovDNpOMvAwKGC42g4v2a4tZzo1UOjhFKoSV2NuowVbyggFyxUXbt7Pkx
+	f91dpQweWYPtSM2XoDzfoFMI88pggYw102CLIV61xwJWCoXL3DkoDfeovu+/KRzmpmJD87vM/66
+	zDcgcNk3DZtToUkzrq0YAfhKrYLvV6Ch43tbeDCJRuzOOsLUUF2RWM4zX+kTVsTec3YgwW+hmHW
+	wbp9lX/4qav4aGV1DAPmMgewee
+X-Received: by 2002:a05:6000:1ac7:b0:439:b440:b8b0 with SMTP id ffacd0b85a97d-43b889f5ae2mr13531509f8f.45.1774549074993;
+        Thu, 26 Mar 2026 11:17:54 -0700 (PDT)
+X-Received: by 2002:a05:6000:1ac7:b0:439:b440:b8b0 with SMTP id ffacd0b85a97d-43b889f5ae2mr13531444f8f.45.1774549074443;
+        Thu, 26 Mar 2026 11:17:54 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b9192e3f9sm10324620f8f.7.2026.03.26.11.17.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919cf1c4sm9612818f8f.23.2026.03.26.11.17.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:17:50 -0700 (PDT)
+        Thu, 26 Mar 2026 11:17:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 10/24] KVM: x86/mmu: split XS/XU bits for EPT
-Date: Thu, 26 Mar 2026 19:17:08 +0100
-Message-ID: <20260326181723.218115-11-pbonzini@redhat.com>
+Subject: [PATCH 11/24] KVM: x86/mmu: move cr4_smep to base role
+Date: Thu, 26 Mar 2026 19:17:09 +0100
+Message-ID: <20260326181723.218115-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326181723.218115-1-pbonzini@redhat.com>
 References: <20260326181723.218115-1-pbonzini@redhat.com>
@@ -100,205 +100,167 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When EPT is in use, replace ACC_USER_MASK with ACC_USER_EXEC_MASK,
-so that supervisor and user-mode execution can be controlled
-independently (ACC_USER_MASK would not allow a setting similar to
-XU=0 XS=1 W=1 R=1).
+Guest page tables can be reused independent of the value of CR4.SMEP
+(at least if WP=1).  However, this is not true of EPT MBEC pages,
+because presence of EPT entries is signaled by bits 0-2 when MBEC
+is off, and bits 0-2 + bit 10 when MBEC is on.
 
-Replace shadow_x_mask with shadow_xs_mask/shadow_xu_mask, to allow
-setting XS and XU bits separately in EPT entries.
-
-Note that ACC_USER_EXEC_MASK is already set through ACC_ALL in
-the kvm_mmu_page roles, but it does not propagate to the XU bit
-because shadow_xs_mask == shadow_xu_mask.  On the other hand,
-access tracking for eptad=0 does take it into account when
-saving/restoring page permissions.
+In preparation for enabling MBEC, move cr4_smep to the base role.
+This makes the smep_andnot_wp bit redundant, so remove it.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c      |  2 +-
- arch/x86/kvm/mmu/mmutrace.h |  6 ++---
- arch/x86/kvm/mmu/spte.c     | 49 +++++++++++++++++++++++--------------
- arch/x86/kvm/mmu/spte.h     |  8 +++---
- 4 files changed, 40 insertions(+), 25 deletions(-)
+ Documentation/virt/kvm/x86/mmu.rst | 10 ++++------
+ arch/x86/include/asm/kvm-x86-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h    | 23 +++++++++++++++--------
+ arch/x86/kvm/mmu/mmu.c             |  6 +++---
+ 4 files changed, 23 insertions(+), 17 deletions(-)
 
+diff --git a/Documentation/virt/kvm/x86/mmu.rst b/Documentation/virt/kvm/x86/mmu.rst
+index 2b3b6d442302..666aa179601a 100644
+--- a/Documentation/virt/kvm/x86/mmu.rst
++++ b/Documentation/virt/kvm/x86/mmu.rst
+@@ -184,10 +184,8 @@ Shadow pages contain the following information:
+     Contains the value of efer.nx for which the page is valid.
+   role.cr0_wp:
+     Contains the value of cr0.wp for which the page is valid.
+-  role.smep_andnot_wp:
+-    Contains the value of cr4.smep && !cr0.wp for which the page is valid
+-    (pages for which this is true are different from other pages; see the
+-    treatment of cr0.wp=0 below).
++  role.cr4_smep:
++    Contains the value of cr4.smep for which the page is valid.
+   role.smap_andnot_wp:
+     Contains the value of cr4.smap && !cr0.wp for which the page is valid
+     (pages for which this is true are different from other pages; see the
+@@ -435,8 +433,8 @@ from being written by the kernel after cr0.wp has changed to 1, we make
+ the value of cr0.wp part of the page role.  This means that an spte created
+ with one value of cr0.wp cannot be used when cr0.wp has a different value -
+ it will simply be missed by the shadow page lookup code.  A similar issue
+-exists when an spte created with cr0.wp=0 and cr4.smep=0 is used after
+-changing cr4.smep to 1.  To avoid this, the value of !cr0.wp && cr4.smep
++exists when an spte created with cr0.wp=0 and cr4.smap=0 is used after
++changing cr4.smap to 1.  To avoid this, the value of !cr0.wp && cr4.smap
+ is also made a part of the page role.
+ 
+ Large pages
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index de709fb5bd76..a02b486cc6fe 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -93,6 +93,7 @@ KVM_X86_OP_OPTIONAL(sync_pir_to_irr)
+ KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
+ KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
+ KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
++KVM_X86_OP_OPTIONAL_RET0(tdp_has_smep)
+ KVM_X86_OP(load_mmu_pgd)
+ KVM_X86_OP_OPTIONAL(link_external_spt)
+ KVM_X86_OP_OPTIONAL(set_external_spte)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 65671d3769f0..50a941ff61d1 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -342,8 +342,8 @@ struct kvm_kernel_irq_routing_entry;
+  *     paging has exactly one upper level, making level completely redundant
+  *     when has_4_byte_gpte=1.
+  *
+- *   - on top of this, smep_andnot_wp and smap_andnot_wp are only set if
+- *     cr0_wp=0, therefore these three bits only give rise to 5 possibilities.
++ *   - on top of this, smap_andnot_wp is only set if cr0_wp=0,
++ *     therefore these two bits only give rise to 3 possibilities.
+  *
+  * Therefore, the maximum number of possible upper-level shadow pages for a
+  * single gfn is a bit less than 2^14.
+@@ -359,12 +359,19 @@ union kvm_mmu_page_role {
+ 		unsigned invalid:1;
+ 		unsigned efer_nx:1;
+ 		unsigned cr0_wp:1;
+-		unsigned smep_andnot_wp:1;
+ 		unsigned smap_andnot_wp:1;
+ 		unsigned ad_disabled:1;
+ 		unsigned guest_mode:1;
+ 		unsigned passthrough:1;
+ 		unsigned is_mirror:1;
++
++		/*
++		 * cr4_smep is also set for EPT MBEC.  Because it affects
++		 * which pages are considered non-present (bit 10 additionally
++		 * must be zero if MBEC is on) it has to be in the base role.
++		 */
++		unsigned cr4_smep:1;
++
+ 		unsigned:3;
+ 
+ 		/*
+@@ -391,10 +398,10 @@ union kvm_mmu_page_role {
+  * tables (because KVM doesn't support Protection Keys with shadow paging), and
+  * CR0.PG, CR4.PAE, and CR4.PSE are indirectly reflected in role.level.
+  *
+- * Note, SMEP and SMAP are not redundant with sm*p_andnot_wp in the page role.
+- * If CR0.WP=1, KVM can reuse shadow pages for the guest regardless of SMEP and
+- * SMAP, but the MMU's permission checks for software walks need to be SMEP and
+- * SMAP aware regardless of CR0.WP.
++ * Note, SMAP is not redundant with smap_andnot_wp in the page role.  If
++ * CR0.WP=1, KVM can reuse shadow pages for the guest regardless of SMAP,
++ * but the MMU's permission checks for software walks need to be SMAP
++ * aware regardless of CR0.WP.
+  */
+ union kvm_mmu_extended_role {
+ 	u32 word;
+@@ -404,7 +411,6 @@ union kvm_mmu_extended_role {
+ 		unsigned int cr4_pse:1;
+ 		unsigned int cr4_pke:1;
+ 		unsigned int cr4_smap:1;
+-		unsigned int cr4_smep:1;
+ 		unsigned int cr4_la57:1;
+ 		unsigned int efer_lma:1;
+ 	};
+@@ -1856,6 +1862,7 @@ struct kvm_x86_ops {
+ 	int (*set_tss_addr)(struct kvm *kvm, unsigned int addr);
+ 	int (*set_identity_map_addr)(struct kvm *kvm, u64 ident_addr);
+ 	u8 (*get_mt_mask)(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
++	bool (*tdp_has_smep)(struct kvm *kvm);
+ 
+ 	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
+ 			     int root_level);
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index dd5419a1f891..a6ee467ad838 100644
+index a6ee467ad838..e768aeb05886 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5472,7 +5472,7 @@ static void reset_shadow_zero_bits_mask(struct kvm_vcpu *vcpu,
- static inline bool boot_cpu_is_amd(void)
- {
- 	WARN_ON_ONCE(!tdp_enabled);
--	return shadow_x_mask == 0;
-+	return shadow_xs_mask == 0;
+@@ -227,7 +227,7 @@ static inline bool __maybe_unused is_##reg##_##name(struct kvm_mmu *mmu)	\
  }
+ BUILD_MMU_ROLE_ACCESSOR(base, cr0, wp);
+ BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pse);
+-BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, smep);
++BUILD_MMU_ROLE_ACCESSOR(base, cr4, smep);
+ BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, smap);
+ BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pke);
+ BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, la57);
+@@ -5745,7 +5745,7 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
  
- /*
-diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index dcfdfedfc4e9..3429c1413f42 100644
---- a/arch/x86/kvm/mmu/mmutrace.h
-+++ b/arch/x86/kvm/mmu/mmutrace.h
-@@ -357,8 +357,8 @@ TRACE_EVENT(
- 		__entry->sptep = virt_to_phys(sptep);
- 		__entry->level = level;
- 		__entry->r = shadow_present_mask || (__entry->spte & PT_PRESENT_MASK);
--		__entry->x = is_executable_pte(__entry->spte);
--		__entry->u = shadow_user_mask ? !!(__entry->spte & shadow_user_mask) : -1;
-+		__entry->x = (__entry->spte & (shadow_xs_mask | shadow_nx_mask)) == shadow_xs_mask;
-+		__entry->u = !!(__entry->spte & (shadow_xu_mask | shadow_user_mask));
- 	),
+ 	role.base.efer_nx = ____is_efer_nx(regs);
+ 	role.base.cr0_wp = ____is_cr0_wp(regs);
+-	role.base.smep_andnot_wp = ____is_cr4_smep(regs) && !____is_cr0_wp(regs);
++	role.base.cr4_smep = ____is_cr4_smep(regs);
+ 	role.base.smap_andnot_wp = ____is_cr4_smap(regs) && !____is_cr0_wp(regs);
+ 	role.base.has_4_byte_gpte = !____is_cr4_pae(regs);
  
- 	TP_printk("gfn %llx spte %llx (%s%s%s%s) level %d at %llx",
-@@ -366,7 +366,7 @@ TRACE_EVENT(
- 		  __entry->r ? "r" : "-",
- 		  __entry->spte & PT_WRITABLE_MASK ? "w" : "-",
- 		  __entry->x ? "x" : "-",
--		  __entry->u == -1 ? "" : (__entry->u ? "u" : "-"),
-+		  __entry->u ? "u" : "-",
- 		  __entry->level, __entry->sptep
- 	)
- );
-diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
-index 7b5f118ae211..fc7eb73476f6 100644
---- a/arch/x86/kvm/mmu/spte.c
-+++ b/arch/x86/kvm/mmu/spte.c
-@@ -29,8 +29,9 @@ bool __read_mostly kvm_ad_enabled;
- u64 __read_mostly shadow_host_writable_mask;
- u64 __read_mostly shadow_mmu_writable_mask;
- u64 __read_mostly shadow_nx_mask;
--u64 __read_mostly shadow_x_mask; /* mutual exclusive with nx_mask */
- u64 __read_mostly shadow_user_mask;
-+u64 __read_mostly shadow_xs_mask; /* mutual exclusive with nx_mask and user_mask */
-+u64 __read_mostly shadow_xu_mask; /* mutual exclusive with nx_mask and user_mask */
- u64 __read_mostly shadow_accessed_mask;
- u64 __read_mostly shadow_dirty_mask;
- u64 __read_mostly shadow_mmio_value;
-@@ -216,22 +217,30 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
- 	 * when CR0.PG is toggled, but leveraging that to ignore the mitigation
- 	 * would tie make_spte() further to vCPU/MMU state, and add complexity
- 	 * just to optimize a mode that is anything but performance critical.
-+	 *
-+	 * Use ACC_USER_EXEC_MASK here assuming only Intel processors (EPT)
-+	 * are affected by the NX huge page erratum.
- 	 */
--	if (level > PG_LEVEL_4K && (pte_access & ACC_EXEC_MASK) &&
-+	if (level > PG_LEVEL_4K &&
-+	    (pte_access & (ACC_EXEC_MASK | ACC_USER_EXEC_MASK)) &&
- 	    is_nx_huge_page_enabled(vcpu->kvm)) {
--		pte_access &= ~ACC_EXEC_MASK;
-+		pte_access &= ~(ACC_EXEC_MASK | ACC_USER_EXEC_MASK);
- 	}
- 
- 	if (pte_access & ACC_READ_MASK)
- 		spte |= PT_PRESENT_MASK; /* or VMX_EPT_READABLE_MASK */
- 
--	if (pte_access & ACC_EXEC_MASK)
--		spte |= shadow_x_mask;
--	else
--		spte |= shadow_nx_mask;
--
--	if (pte_access & ACC_USER_MASK)
--		spte |= shadow_user_mask;
-+	if (shadow_nx_mask) {
-+		if (!(pte_access & ACC_EXEC_MASK))
-+			spte |= shadow_nx_mask;
-+		if (pte_access & ACC_USER_MASK)
-+			spte |= shadow_user_mask;
-+	} else {
-+		if (pte_access & ACC_EXEC_MASK)
-+			spte |= shadow_xs_mask;
-+		if (pte_access & ACC_USER_EXEC_MASK)
-+			spte |= shadow_xu_mask;
-+	}
- 
- 	if (level > PG_LEVEL_4K)
- 		spte |= PT_PAGE_SIZE_MASK;
-@@ -318,11 +327,13 @@ static u64 make_spte_executable(u64 spte, u8 access)
- {
- 	u64 set, clear;
- 
--	if (access & ACC_EXEC_MASK)
--		set = shadow_x_mask;
-+	if (shadow_nx_mask)
-+		set = (access & ACC_EXEC_MASK) ? 0 : shadow_nx_mask;
+@@ -5757,7 +5757,6 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
  	else
--		set = shadow_nx_mask;
--	clear = set ^ (shadow_nx_mask | shadow_x_mask);
-+		set =
-+			(access & ACC_EXEC_MASK ? shadow_xs_mask : 0) |
-+			(access & ACC_USER_EXEC_MASK ? shadow_xu_mask : 0);
-+	clear = set ^ (shadow_nx_mask | shadow_xs_mask | shadow_xu_mask);
- 	return modify_spte_protections(spte, set, clear);
- }
+ 		role.base.level = PT32_ROOT_LEVEL;
  
-@@ -389,7 +400,7 @@ u64 make_nonleaf_spte(u64 *child_pt, bool ad_disabled)
+-	role.ext.cr4_smep = ____is_cr4_smep(regs);
+ 	role.ext.cr4_smap = ____is_cr4_smap(regs);
+ 	role.ext.cr4_pse = ____is_cr4_pse(regs);
  
- 	spte |= __pa(child_pt) | shadow_present_mask | PT_WRITABLE_MASK |
- 		PT_PRESENT_MASK /* or VMX_EPT_READABLE_MASK */ |
--		shadow_user_mask | shadow_x_mask | shadow_me_value;
-+		shadow_user_mask | shadow_xs_mask | shadow_xu_mask | shadow_me_value;
+@@ -5816,6 +5815,7 @@ kvm_calc_tdp_mmu_root_page_role(struct kvm_vcpu *vcpu,
  
- 	if (ad_disabled)
- 		spte |= SPTE_TDP_AD_DISABLED;
-@@ -497,10 +508,11 @@ void kvm_mmu_set_ept_masks(bool has_ad_bits)
- 	shadow_accessed_mask	= VMX_EPT_ACCESS_BIT;
- 	shadow_dirty_mask	= VMX_EPT_DIRTY_BIT;
- 	shadow_nx_mask		= 0ull;
--	shadow_x_mask		= VMX_EPT_EXECUTABLE_MASK;
-+	shadow_xs_mask		= VMX_EPT_EXECUTABLE_MASK;
-+	shadow_xu_mask		= VMX_EPT_EXECUTABLE_MASK;
- 	shadow_present_mask	= VMX_EPT_SUPPRESS_VE_BIT;
- 
--	shadow_acc_track_mask	= VMX_EPT_RWX_MASK;
-+	shadow_acc_track_mask	= VMX_EPT_RWX_MASK | VMX_EPT_USER_EXECUTABLE_MASK;
- 	shadow_host_writable_mask = EPT_SPTE_HOST_WRITABLE;
- 	shadow_mmu_writable_mask  = EPT_SPTE_MMU_WRITABLE;
- 
-@@ -548,7 +560,8 @@ void kvm_mmu_reset_all_pte_masks(void)
- 	shadow_accessed_mask	= PT_ACCESSED_MASK;
- 	shadow_dirty_mask	= PT_DIRTY_MASK;
- 	shadow_nx_mask		= PT64_NX_MASK;
--	shadow_x_mask		= 0;
-+	shadow_xs_mask		= 0;
-+	shadow_xu_mask		= 0;
- 	shadow_present_mask	= PT_PRESENT_MASK;
- 
- 	shadow_acc_track_mask	= 0;
-diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 121bfb2217e8..204f16aaf4e5 100644
---- a/arch/x86/kvm/mmu/spte.h
-+++ b/arch/x86/kvm/mmu/spte.h
-@@ -54,7 +54,8 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
- 
- #define ACC_READ_MASK    PT_PRESENT_MASK
- #define ACC_WRITE_MASK   PT_WRITABLE_MASK
--#define ACC_USER_MASK    PT_USER_MASK
-+#define ACC_USER_MASK    PT_USER_MASK   /* non EPT */
-+#define ACC_USER_EXEC_MASK ACC_USER_MASK /* EPT only */
- #define ACC_EXEC_MASK    8
- #define ACC_ALL          (ACC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK | ACC_READ_MASK)
- 
-@@ -184,8 +185,9 @@ extern bool __read_mostly kvm_ad_enabled;
- extern u64 __read_mostly shadow_host_writable_mask;
- extern u64 __read_mostly shadow_mmu_writable_mask;
- extern u64 __read_mostly shadow_nx_mask;
--extern u64 __read_mostly shadow_x_mask; /* mutual exclusive with nx_mask */
- extern u64 __read_mostly shadow_user_mask;
-+extern u64 __read_mostly shadow_xs_mask; /* mutual exclusive with nx_mask and user_mask */
-+extern u64 __read_mostly shadow_xu_mask; /* mutual exclusive with nx_mask and user_mask */
- extern u64 __read_mostly shadow_accessed_mask;
- extern u64 __read_mostly shadow_dirty_mask;
- extern u64 __read_mostly shadow_mmio_value;
-@@ -363,7 +365,7 @@ static inline bool is_last_spte(u64 pte, int level)
- 
- static inline bool is_executable_pte(u64 spte)
- {
--	return (spte & (shadow_x_mask | shadow_nx_mask)) == shadow_x_mask;
-+	return (spte & (shadow_xs_mask | shadow_xu_mask | shadow_nx_mask)) != shadow_nx_mask;
- }
- 
- static inline kvm_pfn_t spte_to_pfn(u64 pte)
+ 	role.access = ACC_ALL;
+ 	role.cr0_wp = true;
++	role.cr4_smep = kvm_x86_call(tdp_has_smep)(vcpu->kvm);
+ 	role.efer_nx = true;
+ 	role.smm = cpu_role.base.smm;
+ 	role.guest_mode = cpu_role.base.guest_mode;
 -- 
 2.53.0
 
