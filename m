@@ -1,164 +1,382 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA2235F612;
-	Thu, 26 Mar 2026 08:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE23F373C13;
+	Thu, 26 Mar 2026 08:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514529; cv=none; b=Bi/F9as3ktXADocIdIQB64QUmEBiISN/V/M01X68N6VH8HONiPSPFve6ZRskvvnQiEsY4tvfKfn91iQ4HSC4yamXWMFSppp9263xLgw1J7eX/a1eTj2a7EBlsS6EQJnfLtE9lTR41t+KnGexG99Zn5aM1Qidk2g2C/cGq68JsMY=
+	t=1774514733; cv=none; b=YpRCMHCaIOl37715tr+gnbNEt10iVmqgEaiK/ToJykyV0rr2BiW0hte/LNMnMnZOVq43ytjffGjvBrgQpvQltGpYRDCSUNvoKurYceByNbAMiJqegVX2Q0ZoGs9XgNcvH4JG3hBxWDtq6cDi0Skj9C/4Wlj8h67/LgWDVuLvvSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774514529; c=relaxed/simple;
-	bh=4MXTZi02qDWDZ/7PsLgwqab9shZCnf3DgC2ixokvzH0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tTewgR8dPemvfCTAy2dK72PYKEB9qy4f1M7dx0EFfQnx2zbYwGKqbcAVYqLhIkOyNgxvBgODf6rpXvaVSgbi48MPV/8vlWnsYj3qaJu+lgDzUtbH9DFaE65viFQ3fDVG2HTr0CesyHqTKf/iq86FGhLyX+xBSNgX3XgTd0nF7E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zf5TImpo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774514733; c=relaxed/simple;
+	bh=RCIS3TmrsQLZCvQrLffcBJIMHxpVO32AqhjFbps73FI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JnGo/nzpVW3L0R3tZq2ovAlG6JwLWLU6gTwibTdpMvg4KK5eYQb4aEcbFf+5FIMF6STU/zWAUXBnnCuybLWKwlbBA5bN9XqpY2qqo61sx2JXvalaNUbvfzC4B8FAnqb9+q5IBv+bLOtQ7wndU+/npfrHrEjixPag56j+cSORQmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IDQLW9KK; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zf5TImpo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F063C2BC87;
-	Thu, 26 Mar 2026 08:42:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774514529;
-	bh=4MXTZi02qDWDZ/7PsLgwqab9shZCnf3DgC2ixokvzH0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Zf5TImpomYw1infcDhd6sl6UsbdPtwCS3Ee6bIMuJgdbpciFcDhAXTBM8SenbNVkU
-	 mbjFKHsHtbKzUM0cUrUS0VgvxH98yDpS1/9tv3IrVRJM+617P1ufRtC1RhtRw1XSQt
-	 79Dq7fPojYix+HOp8ak4xDwk6IUlmxOJR22pwa5gz5+9s0OuVkb6Zi4CNkYQzen6w2
-	 eQhb7ZkDP8rVCeu8QWp+IAK9wq+LhPGO5kdxNtVKXF4T3mLwWR+6lsnPeDm8Mrp3o4
-	 HXqQB8cV3KrIWhnwNFqHn0m4gEKHcs7ROdpxYT0+BQYUgaxgUXygC9/gY+ANxBhw69
-	 /AgGEESrWp9LA==
-Message-ID: <cfe3c03d-6e46-43d8-a0bd-f60c22a4f145@kernel.org>
-Date: Thu, 26 Mar 2026 09:42:02 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IDQLW9KK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774514731; x=1806050731;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=RCIS3TmrsQLZCvQrLffcBJIMHxpVO32AqhjFbps73FI=;
+  b=IDQLW9KKGccmxQ11vCWTHVBQ2rgH27kAcR30aJaDLIZWQNg8tJQKhx6g
+   ixKdgk0wRO7pFQSwW9537vOkqPyJH3Q5LAgrb9v4O6I+gJkYvgVI3N65P
+   5Fs1jMy7ydIciTILWmijJxi9lRGh/Mh4LovHEOpv4oLojQraM5eAc++fF
+   H79kxBmzaIPvhnCRnTGVBFbP8mhKvl8JEQGzeztEJIbSfPcl1dKbbNiS5
+   hqIJ1Tl0OLnS67xwEN0SA4ko4fxlRdCqLHbwhtF7BYSpfMlBe7H8IvXXD
+   EouRDw3d5H8v7OmGSfux2IoAciUCrs6AIAOm+8fQ81ul5T13Bv3o/bn84
+   A==;
+X-CSE-ConnectionGUID: S8CdtYrVSsmYdkuqyzdGEg==
+X-CSE-MsgGUID: Wl9e+vDeSAqUspdbUKNCBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644600"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="86644600"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:19 -0700
+X-CSE-ConnectionGUID: XffPzyIKTY24/Ylz6k+G5w==
+X-CSE-MsgGUID: 7064ok2vReG0w2bFmH6aOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="224967098"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:15 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: binbin.wu@linux.intel.com,
+	dan.j.williams@intel.com,
+	dave.hansen@linux.intel.com,
+	ira.weiny@intel.com,
+	kai.huang@intel.com,
+	kas@kernel.org,
+	nik.borisov@suse.com,
+	paulmck@kernel.org,
+	pbonzini@redhat.com,
+	reinette.chatre@intel.com,
+	rick.p.edgecombe@intel.com,
+	sagis@google.com,
+	seanjc@google.com,
+	tony.lindgren@linux.intel.com,
+	vannapurve@google.com,
+	vishal.l.verma@intel.com,
+	yilun.xu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	yan.y.zhao@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Zhenzhong Duan <zhenzhong.duan@intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v6 01/22] x86/virt/tdx: Move low level SEAMCALL helpers out of <asm/tdx.h>
+Date: Thu, 26 Mar 2026 01:43:52 -0700
+Message-ID: <20260326084448.29947-2-chao.gao@intel.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
+References: <20260326084448.29947-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/pagewalk: fix race between concurrent split and
- refault
-To: Andrew Morton <akpm@linux-foundation.org>, mboone@akamai.com
-Cc: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
-References: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
- <20260325175006.1c3cae2ee50dd491a153226e@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260325175006.1c3cae2ee50dd491a153226e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 3/26/26 01:50, Andrew Morton wrote:
-> On Wed, 25 Mar 2026 10:59:16 +0100 Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org> wrote:
-> 
->> The splitting of a PUD entry in walk_pud_range() can race with
->> a concurrent thread refaulting the PUD leaf entry causing it to
->> try walking a PMD range that has disappeared.
->>
->> An example and reproduction of this is to try reading numa_maps of
->> a process while VFIO-PCI is setting up DMA (specifically the
->> vfio_pin_pages_remote call) on a large BAR for that process.
->>
->> This will trigger a kernel BUG:
->> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
->> BUG: unable to handle page fault for address: ffffa23980000000
->> PGD 0 P4D 0
->> Oops: Oops: 0000 [#1] SMP NOPTI
-> 
-> Thanks, updated.
-> 
-> AI review has a couple of questions:
-> 	https://sashiko.dev/#/patchset/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3%40akamai.com
-> 
-> It flagged the same things against the v1 patch - maybe nobody checked?
-> 
+From: Kai Huang <kai.huang@intel.com>
 
+TDX host core code implements three seamcall*() helpers to make SEAMCALL
+to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
+are exposed to other kernel code which includes <asm/tdx.h>.
 
-"could a concurrent thread collapse the PUD into a huge leaf right
-before pmd_offset() is called?"
+However, other than the TDX host core, seamcall*() are not expected to
+be used by other kernel code directly.  For instance, for all SEAMCALLs
+that are used by KVM, the TDX host core exports a wrapper function for
+each of them.
 
-No. Collapsing while holding mmap lock etc is impossible. That's what
-the comment says, if there is a PUD table, the PUD table can't go away.
+Move seamcall*() and related code out of <asm/tdx.h> and make them only
+visible to TDX host core.
 
-Not to mention that a thing like "PUD collapse" does not exist.
+Since TDX host core tdx.c is already very heavy, don't put low level
+seamcall*() code there but to a new dedicated "seamcall_internal.h".  Also,
+currently tdx.c has seamcall_prerr*() helpers which additionally print
+error message when calling seamcall*() fails.  Move them to
+"seamcall_internal.h" as well. In such way all low level SEAMCALL helpers
+are in a dedicated place, which is much more readable.
 
-"Should pmd_offset() be passed the address of the snapshot (&pudval)
-instead?"
+Copy the copyright notice from the original files and consolidate the
+date ranges to:
 
-No.
+	Copyright (C) 2021-2023 Intel Corporation
 
-"Can this loop infinitely on unsplittable PUD leaves? ... For device
-memory mapped as large PUD leaves, split_huge_pud() does nothing and the
-entry remains a leaf."
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+---
+v5:
+ - s/seamcall.h/seamcall_internal.h [Binbin]
+ - Fix an unintentional change to sc_retry() during code movement.
+v4:
+ - Collect reviews
+ - add "internal" to the new header file [Dave]
+ - document the scope of the new header file [Dave]
+ - correct the copyright notice [Dave]
+v2:
+ - new
+---
+ arch/x86/include/asm/tdx.h                |  47 ----------
+ arch/x86/virt/vmx/tdx/seamcall_internal.h | 109 ++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.c               |  47 +---------
+ 3 files changed, 111 insertions(+), 92 deletions(-)
+ create mode 100644 arch/x86/virt/vmx/tdx/seamcall_internal.h
 
-split_huge_pud() -> __split_huge_pud() checks "pud_trans_huge()".
-
-pud_trans_huge() is mostly just a check for "is this a pud leaf". RiscV
-checks pud_leaf(), x86 just the _PAGE_PSE bit. PPC64 with radix the
-_PAGE_PTE bit.
-
-
-So this will match any PUD leaves, and the code will split (here clear
-the PTE) them. As long as pud_trans_huge() is properly implemented by an
-architecture making use of PUD mappings. PUD support is guarded by
-CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD. It's really just the three
-architectures above that support it.
-
-(non-present entries might not be handled properly yet, but we don't
-really support non-present entries on the pud level, so not a concern)
-
-
-Great waste of 15min of my time ;)
-
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 6b338d7f01b7..cb2219302dfc 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -97,54 +97,7 @@ static inline long tdx_kvm_hypercall(unsigned int nr, unsigned long p1,
+ #endif /* CONFIG_INTEL_TDX_GUEST && CONFIG_KVM_GUEST */
+ 
+ #ifdef CONFIG_INTEL_TDX_HOST
+-u64 __seamcall(u64 fn, struct tdx_module_args *args);
+-u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
+-u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
+ void tdx_init(void);
+-
+-#include <linux/preempt.h>
+-#include <asm/archrandom.h>
+-#include <asm/processor.h>
+-
+-typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+-
+-static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+-						  struct tdx_module_args *args)
+-{
+-	lockdep_assert_preemption_disabled();
+-
+-	/*
+-	 * SEAMCALLs are made to the TDX module and can generate dirty
+-	 * cachelines of TDX private memory.  Mark cache state incoherent
+-	 * so that the cache can be flushed during kexec.
+-	 *
+-	 * This needs to be done before actually making the SEAMCALL,
+-	 * because kexec-ing CPU could send NMI to stop remote CPUs,
+-	 * in which case even disabling IRQ won't help here.
+-	 */
+-	this_cpu_write(cache_state_incoherent, true);
+-
+-	return func(fn, args);
+-}
+-
+-static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+-			   struct tdx_module_args *args)
+-{
+-	int retry = RDRAND_RETRY_LOOPS;
+-	u64 ret;
+-
+-	do {
+-		preempt_disable();
+-		ret = __seamcall_dirty_cache(func, fn, args);
+-		preempt_enable();
+-	} while (ret == TDX_RND_NO_ENTROPY && --retry);
+-
+-	return ret;
+-}
+-
+-#define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
+-#define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
+-#define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
+ int tdx_cpu_enable(void);
+ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
+diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+new file mode 100644
+index 000000000000..be5f446467df
+--- /dev/null
++++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+@@ -0,0 +1,109 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * SEAMCALL utilities for TDX host-side operations.
++ *
++ * Provides convenient wrappers around SEAMCALL assembly with retry logic,
++ * error reporting and cache coherency tracking.
++ *
++ * Copyright (C) 2021-2023 Intel Corporation
++ */
++
++#ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
++#define _X86_VIRT_SEAMCALL_INTERNAL_H
++
++#include <linux/printk.h>
++#include <linux/types.h>
++#include <asm/archrandom.h>
++#include <asm/processor.h>
++#include <asm/tdx.h>
++
++u64 __seamcall(u64 fn, struct tdx_module_args *args);
++u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
++u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
++
++typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
++
++static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
++						  struct tdx_module_args *args)
++{
++	lockdep_assert_preemption_disabled();
++
++	/*
++	 * SEAMCALLs are made to the TDX module and can generate dirty
++	 * cachelines of TDX private memory.  Mark cache state incoherent
++	 * so that the cache can be flushed during kexec.
++	 *
++	 * This needs to be done before actually making the SEAMCALL,
++	 * because kexec-ing CPU could send NMI to stop remote CPUs,
++	 * in which case even disabling IRQ won't help here.
++	 */
++	this_cpu_write(cache_state_incoherent, true);
++
++	return func(fn, args);
++}
++
++static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
++			   struct tdx_module_args *args)
++{
++	int retry = RDRAND_RETRY_LOOPS;
++	u64 ret;
++
++	do {
++		preempt_disable();
++		ret = __seamcall_dirty_cache(func, fn, args);
++		preempt_enable();
++	} while (ret == TDX_RND_NO_ENTROPY && --retry);
++
++	return ret;
++}
++
++#define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
++#define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
++#define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
++
++typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
++
++static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
++{
++	pr_err("SEAMCALL (0x%016llx) failed: 0x%016llx\n", fn, err);
++}
++
++static inline void seamcall_err_ret(u64 fn, u64 err,
++				    struct tdx_module_args *args)
++{
++	seamcall_err(fn, err, args);
++	pr_err("RCX 0x%016llx RDX 0x%016llx R08 0x%016llx\n",
++			args->rcx, args->rdx, args->r8);
++	pr_err("R09 0x%016llx R10 0x%016llx R11 0x%016llx\n",
++			args->r9, args->r10, args->r11);
++}
++
++static __always_inline int sc_retry_prerr(sc_func_t func,
++					  sc_err_func_t err_func,
++					  u64 fn, struct tdx_module_args *args)
++{
++	u64 sret = sc_retry(func, fn, args);
++
++	if (sret == TDX_SUCCESS)
++		return 0;
++
++	if (sret == TDX_SEAMCALL_VMFAILINVALID)
++		return -ENODEV;
++
++	if (sret == TDX_SEAMCALL_GP)
++		return -EOPNOTSUPP;
++
++	if (sret == TDX_SEAMCALL_UD)
++		return -EACCES;
++
++	err_func(fn, sret, args);
++	return -EIO;
++}
++
++#define seamcall_prerr(__fn, __args)						\
++	sc_retry_prerr(__seamcall, seamcall_err, (__fn), (__args))
++
++#define seamcall_prerr_ret(__fn, __args)					\
++	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
++
++#endif /* _X86_VIRT_SEAMCALL_INTERNAL_H */
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 8b8e165a2001..06d9709ade85 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -39,6 +39,8 @@
+ #include <asm/cpu_device_id.h>
+ #include <asm/processor.h>
+ #include <asm/mce.h>
++
++#include "seamcall_internal.h"
+ #include "tdx.h"
+ 
+ static u32 tdx_global_keyid __ro_after_init;
+@@ -59,51 +61,6 @@ static LIST_HEAD(tdx_memlist);
+ 
+ static struct tdx_sys_info tdx_sysinfo;
+ 
+-typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
+-
+-static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
+-{
+-	pr_err("SEAMCALL (0x%016llx) failed: 0x%016llx\n", fn, err);
+-}
+-
+-static inline void seamcall_err_ret(u64 fn, u64 err,
+-				    struct tdx_module_args *args)
+-{
+-	seamcall_err(fn, err, args);
+-	pr_err("RCX 0x%016llx RDX 0x%016llx R08 0x%016llx\n",
+-			args->rcx, args->rdx, args->r8);
+-	pr_err("R09 0x%016llx R10 0x%016llx R11 0x%016llx\n",
+-			args->r9, args->r10, args->r11);
+-}
+-
+-static __always_inline int sc_retry_prerr(sc_func_t func,
+-					  sc_err_func_t err_func,
+-					  u64 fn, struct tdx_module_args *args)
+-{
+-	u64 sret = sc_retry(func, fn, args);
+-
+-	if (sret == TDX_SUCCESS)
+-		return 0;
+-
+-	if (sret == TDX_SEAMCALL_VMFAILINVALID)
+-		return -ENODEV;
+-
+-	if (sret == TDX_SEAMCALL_GP)
+-		return -EOPNOTSUPP;
+-
+-	if (sret == TDX_SEAMCALL_UD)
+-		return -EACCES;
+-
+-	err_func(fn, sret, args);
+-	return -EIO;
+-}
+-
+-#define seamcall_prerr(__fn, __args)						\
+-	sc_retry_prerr(__seamcall, seamcall_err, (__fn), (__args))
+-
+-#define seamcall_prerr_ret(__fn, __args)					\
+-	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
+-
+ /*
+  * Do the module global initialization once and return its result.
+  * It can be done on any cpu.  It's always called with interrupts
 -- 
-Cheers,
+2.47.3
 
-David
