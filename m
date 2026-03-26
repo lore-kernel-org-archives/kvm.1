@@ -1,182 +1,166 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A375E40B6D6
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 16:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE5940627C
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 16:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774540857; cv=none; b=P4MKjNfKyYR41fk6aFIcOHqEtoeEzHi2rjcPJiFwLAZHhPwmMngtQ3OgqTF7reg1KakuLxu/C8zHJ+LKTq8IdCQsJBvLcWIAWYgnXVfJcY4iDJcUqnIXEjTOsuSWn4IfPuXbdaGYkjrwviVlR1jXx7cf+Xd6bxzzUrMskbuE6j8=
+	t=1774541621; cv=none; b=elI1esEjJKZgkp4VnyM3UGprit/3tXh5JjxzazuMsSZEBjaQVIFkGZ9uYJNLJkkCcPhrYZXGfs4JvCoKJv4dkxiI/4baWBhB5sBtI4fMoEAHkzHD8Zr/0Y9l30n16Lv+7WCYpLm+LIhVzKd8Ugt2wq2s2lw4WAGsr9Muw9VhscU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774540857; c=relaxed/simple;
-	bh=7vpLCTUVAkDxR6bZEhiew0W9WLqy4jZ/4JMQSAqKAtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L2cWENdgPoIgWkZ9LlCA6bMv77O1ft1jb8h93y6pQ50IrImbATlCp3JsD3MGB+YjXlbSPZjXY21Xe7JdRhRSHyMMjveQ+hHBb9dYCpwEuIfBwLom7uaSIG7Zvk7PcvsXaKbwU40eQ2mXQoHpbcyb5r7ArHFDIUgvCb2jbPOgSy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lqPnS6HB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=T4yx8yyE; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1774541621; c=relaxed/simple;
+	bh=vHwSlD9/P3shMuKdtN2uo3VaT0321Z6u8H9M1BOMVXs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=friFIz+7zk5OZ0cADBqO5WwQn0nwxHmdh8Tki9uqxhD/T3/hUmH8MriXW5Lt5uJlTyYq/WYP/alfpbd32XA2D/s77tNDTsCcmPIAMMFNewYUNybBw7GnbbzHViyQA/uQffl3rFMP/5OCS2KTU123opddFGTAH9Jn+Tz+z40Vzn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZTEDuYzN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lqPnS6HB";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="T4yx8yyE"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62QF9qIP481189
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 16:00:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=ECC+K5fQgmcE5dkI04RZqYls
-	9iR/vuOsXzyZFSZOHcs=; b=lqPnS6HBViB5u5fap46r619+PbuzdXnfZtMS4xU+
-	igKtkDhfIWDYprk8wHEkHeYgrmkheml/hsZxOh2m9qpdRjPTrg2D2UpD7KPcBKdA
-	Zpbb2hZkaVarLGOuG4zzAChhr8Y4MQhzoaq5XrkjfZl5D3lRdN8D2yCFUogyhW+x
-	BcSeW8gLfwYymnLMAZfrlDbODT3G8ItOjo+eWwAxWFv7CIP55GVZUlfzy7bVVO9o
-	aHZc5WMTOlOB8ZBCgSGoGXJ7WmawJWA/RMPmoVwuHXZ3gYM1lzE75iYQd5xkD1CD
-	CdeWmlWWNiCRL0TP/7dRs+8xW7NQZtkK/wrZpwBwHCwXLQ==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4pymkgy7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 16:00:53 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2c17e14e499so1101415eec.1
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 09:00:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774540853; x=1775145653; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ECC+K5fQgmcE5dkI04RZqYls9iR/vuOsXzyZFSZOHcs=;
-        b=T4yx8yyEIJzQkxMwixzXXNjMheI9uVAQMQLRpQAVTlGhFEOBDIMuYgKFuEDrn57rIn
-         u3fU7/5NTIhVOQsF2OJBPjTUnnRlYGG1vo+EcvD5wTQy+lYq+8Q9I79O7kt6ACYUtusL
-         8201CLvd1nl+7KXmw20/Dq+L8LdARI5zp6xaJ7TfvX26p1yUlmLMRK/avDTnJ6NCSO+c
-         9UzoWFDhfK8R31oVYdSthVKqAGVOPLYD1V1wtwWhgyH0wLYvaldbR5vcKckTmoPEGo33
-         oVnF7yU1FvF0BkLD5urlDqRwVhPxTXK+JUcWiZfFWaSBVJaR30HeIipLWX5BbnJa7n+b
-         qhCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774540853; x=1775145653;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ECC+K5fQgmcE5dkI04RZqYls9iR/vuOsXzyZFSZOHcs=;
-        b=d7REIdYKmpOHDmhUIW9NQpjoVC968uMHirrRgRBuXq8Medv1w2OTcYb748nFqSjh0o
-         6/bQyxkWYS6r/YBbskvFH1K5kc+w6nWjuazTJ8WgSxeZfiGMQ4jZcRSV0rwp51zwvBNL
-         1boIj6Gw5Q5CanH4pwWiNlSoFNOZyBIfXYKE8IwxBURP/Cho5YmHKanEXWNr5wOZ6VIw
-         LdwG6Z2kNzFjhEQJrtZIkby9uA1QY63Wrq0e/nnnSWoC1mhHXDrZRjRwcCnyqb9S/4bK
-         iwOba6mupnyelVLEFgTdAMC+75+1BLLCepC8lSgSm+qU9Hku2T+madk3TLCXUJchP0X1
-         Cvwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWI6xdm04KZmCGKrwMysq1OiGfsulWXxbGA0qYVJNH+CrlT18Px4MQFZyYRmOmOpd407zE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9e1SHrjdkYOxeC+s83BIIaMilPyNzC6qtJYiERr7SytBjUQie
-	VTtQOGQ9A/EQMW8I/R74/dggHpV2Hh0apH6bTr+w8UZ+9ggywSx9BHzQn8biJNm9mzqp74BLeIO
-	XCae8GuE0ehyY/JkdYAzRhAn97ZbixGaTt1NpEhCwo6+7wtZ6m5JkR0Q=
-X-Gm-Gg: ATEYQzxEnJa/Kl6/CRQoo/8GLGDGTU33q9N3tnsoLgkNrT/UqJjVlyf8YHnr4N9dGNS
-	qVFcLPbQ7kt/z7JiftAEf33NPEEtSvN9LSHtxPa9dSj65zZf75/slbR772Wehr3WAz/NvtreI9Y
-	2/+4yBGUW3pjC8CtIpRbWXQFZUVb+J/lSVtDPpcbsJ/e1Se3ZQvkTnn0pTAsxG0jS9MgaBlPfCu
-	NjgT6zbBAFAeAdAftqAWODTC172J27HrTODFmghElrRDmPkeihWKCHCz+A775nQ6FO0aJy1vnzF
-	LxzF1LDGgIYJUtrPGxpwRPPRcoxRpPnDIi9x5yMaC82mbEeS4p8rdTR5/0asT9dlS3PM/RWtNRV
-	ALsrtTQf8IDY6CE4toIkOY0hSIN28z3U=
-X-Received: by 2002:a05:7022:402:b0:11d:f89d:85a0 with SMTP id a92af1059eb24-12a96ed3fa1mr4307350c88.27.1774540852808;
-        Thu, 26 Mar 2026 09:00:52 -0700 (PDT)
-X-Received: by 2002:a05:7022:402:b0:11d:f89d:85a0 with SMTP id a92af1059eb24-12a96ed3fa1mr4307304c88.27.1774540852061;
-        Thu, 26 Mar 2026 09:00:52 -0700 (PDT)
-Received: from localhost ([140.82.166.162])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12aa6513e9bsm4989209c88.0.2026.03.26.09.00.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 09:00:51 -0700 (PDT)
-Date: Thu, 26 Mar 2026 11:00:49 -0500
-From: Andrew Jones <andrew.jones@oss.qualcomm.com>
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-        Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix double-free of sdata in
- kvm_pmu_clear_snapshot_area()
-Message-ID: <2bepmdibreb2mkxxgmrbenfl5tnx4jgxddzvsd4h6ii6myqw6v@tuqenrqdfutj>
-References: <20260318092956.708246-1-xujiakai2025@iscas.ac.cn>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZTEDuYzN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774541616;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IcNdKFMqicaUbMZIA/K+36eC5oa2UieOgzSoD7f4QE0=;
+	b=ZTEDuYzNd2ft/6PWNpI+FA3E0c5rQIGuYyyptmbLA3P6R3ZAIkD0wkelHuSUYSAYdUK/ld
+	3dyE9SqEBSbnsup0XJDQP/usDITKaVqE7HbYFv6hABZMziMCMdbIUon56VEVKRaxM6834K
+	9bOAHX1GjG7yIxei34PMGugtVn/j9QE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-hbMjby0pNeyL5I8hP6PzEQ-1; Thu,
+ 26 Mar 2026 12:13:33 -0400
+X-MC-Unique: hbMjby0pNeyL5I8hP6PzEQ-1
+X-Mimecast-MFC-AGG-ID: hbMjby0pNeyL5I8hP6PzEQ_1774541612
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C71B519560B1;
+	Thu, 26 Mar 2026 16:13:31 +0000 (UTC)
+Received: from [10.44.32.183] (unknown [10.44.32.183])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C6EAA1955D84;
+	Thu, 26 Mar 2026 16:13:29 +0000 (UTC)
+Message-ID: <0c3f5ab5-05be-4ef4-b16f-84e5f27fe540@redhat.com>
+Date: Thu, 26 Mar 2026 17:13:27 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318092956.708246-1-xujiakai2025@iscas.ac.cn>
-X-Proofpoint-ORIG-GUID: 5btJVt5mha6u03ZVRk4945e5gUoW3mOi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDExMiBTYWx0ZWRfX93wczeOApfPl
- SYt7D6kSloHNTSBvrMxltfk37NEPZFQDbigzsWRZucc3w4c/b3BhEQU7JZewZPhKpf7qCjmHP77
- yxvSr2J0eZKdB4dVhR5VHWA/NTKeB8doTSpPWO4uPH7j+sw5wZpo289jsZ2en4CkI4anA0f8Q+6
- mc+3/dcJgV2LCS47d7H0GL7KLe3sJhqSznTuz96YAOpmhEGOSbwd3kj4W3c11yXRDtqw1lv/4od
- 2uRUqC3rFmI/wa53ASNwswNXYhJc1aSEHVdfkNx6pDHcaoqGi5i0WUtXclXWBvjJh1EYe6ghjl4
- TNE/fh7H6ptjq5CtmVg7tWo1Oo1ItSwiTmmmHygnApTumpkSzvbriiQUrepgXvTig96d8PaF56L
- PXjJJbElXTZJGrt5T+B3H7GJcRjFNCrL7LvoHbOMqdb8BJ4qlrWmfGEGvsII818iqftqrFhuzRT
- Lf2icBJ2yP8mxoMorEQ==
-X-Authority-Analysis: v=2.4 cv=SvedKfO0 c=1 sm=1 tr=0 ts=69c55835 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=FA8e0eGMvKrdCSP4i1MA:9 a=CjuIK1q_8ugA:10
- a=scEy_gLbYbu1JhEsrz4S:22
-X-Proofpoint-GUID: 5btJVt5mha6u03ZVRk4945e5gUoW3mOi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_03,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 adultscore=0 impostorscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603260112
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH kvm-unit-tests 8/9] x86/vmx: run EPT tests with MBEC
+ enabled when available
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: kvm@vger.kernel.org
+Cc: Jon Kohler <jon@nutanix.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Amit Shah <amit.shah@amd.com>, Sean Christopherson <seanjc@google.com>
+References: <20260326145035.119519-1-pbonzini@redhat.com>
+ <20260326145035.119519-9-pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260326145035.119519-9-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Wed, Mar 18, 2026 at 09:29:56AM +0000, Jiakai Xu wrote:
-> In kvm_riscv_vcpu_pmu_snapshot_set_shmem(), when kvm_vcpu_write_guest()
-> fails, kvpmu->sdata is freed but not set to NULL. This leaves a dangling
-> pointer that will be freed again when kvm_pmu_clear_snapshot_area() is
-> called during vcpu teardown, triggering a KASAN double-free report.
-> 
-> First free occurs in kvm_riscv_vcpu_pmu_snapshot_set_shmem():
->  kvm_riscv_vcpu_pmu_snapshot_set_shmem arch/riscv/kvm/vcpu_pmu.c:443
->  kvm_sbi_ext_pmu_handler arch/riscv/kvm/vcpu_sbi_pmu.c:74
->  kvm_riscv_vcpu_sbi_ecall arch/riscv/kvm/vcpu_sbi.c:608
->  kvm_riscv_vcpu_exit arch/riscv/kvm/vcpu_exit.c:240
->  kvm_arch_vcpu_ioctl_run arch/riscv/kvm/vcpu.c:1008
->  kvm_vcpu_ioctl virt/kvm/kvm_main.c:4476
-> 
-> Second free (double-free) occurs in kvm_pmu_clear_snapshot_area():
->  kvm_pmu_clear_snapshot_area arch/riscv/kvm/vcpu_pmu.c:403 [inline]
->  kvm_riscv_vcpu_pmu_deinit.part arch/riscv/kvm/vcpu_pmu.c:905
->  kvm_riscv_vcpu_pmu_deinit arch/riscv/kvm/vcpu_pmu.c:893
->  kvm_arch_vcpu_destroy arch/riscv/kvm/vcpu.c:199
->  kvm_vcpu_destroy virt/kvm/kvm_main.c:469 [inline]
->  kvm_destroy_vcpus virt/kvm/kvm_main.c:489
->  kvm_arch_destroy_vm arch/riscv/kvm/vm.c:54
->  kvm_destroy_vm virt/kvm/kvm_main.c:1301 [inline]
->  kvm_put_kvm virt/kvm/kvm_main.c:1338
->  kvm_vm_release virt/kvm/kvm_main.c:1361
-> 
-> Fix it by setting kvpmu->sdata to NULL after kfree() in
-> kvm_riscv_vcpu_pmu_snapshot_set_shmem(), so that the subsequent
-> kfree(NULL) in kvm_pmu_clear_snapshot_area() becomes a safe no-op.
-> 
-> This bug was found by fuzzing the KVM RISC-V PMU interface.
-> 
-> Fixes: c2f41ddbcdd756 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
-> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-> ---
->  arch/riscv/kvm/vcpu_pmu.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index e873430e596b2..ac1b9a91a19db 100644
-> --- a/arch/riscv/kvm/vcpu_pmu.c
-> +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -441,6 +441,7 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
->  	/* No need to check writable slot explicitly as kvm_vcpu_write_guest does it internally */
->  	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
->  		kfree(kvpmu->sdata);
-> +		kvpmu->sdata = NULL;
->  		sbiret = SBI_ERR_INVALID_ADDRESS;
->  		goto out;
->  	}
-> -- 
-> 2.34.1
->
+On 3/26/26 15:50, Paolo Bonzini wrote:
+> diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+> index 023512e6..bf03451a 100644
+> --- a/x86/vmx_tests.c
+> +++ b/x86/vmx_tests.c
+> @@ -1044,6 +1044,8 @@ static int insn_intercept_exit_handler(union exit_reason exit_reason)
+>    */
+>   static int __setup_ept(u64 hpa, bool enable_ad)
+>   {
+> +	u64 secondary;
+> +
+>   	if (!(ctrl_cpu_rev[0].clr & CPU_SECONDARY) ||
+>   	    !(ctrl_cpu_rev[1].clr & CPU_EPT)) {
+>   		printf("\tEPT is not supported\n");
+> @@ -1067,9 +1069,13 @@ static int __setup_ept(u64 hpa, bool enable_ad)
+>   	if (enable_ad)
+>   		eptp |= EPTP_AD_FLAG;
+>   
+> +	secondary = vmcs_read(CPU_EXEC_CTRL1) | CPU_EPT;
+> +	if (is_mbec_supported())
+> +		secondary |= CPU_MODE_BASED_EPT_EXEC;
+> +
+>   	vmcs_write(EPTP, eptp);
+>   	vmcs_write(CPU_EXEC_CTRL0, vmcs_read(CPU_EXEC_CTRL0)| CPU_SECONDARY);
+> -	vmcs_write(CPU_EXEC_CTRL1, vmcs_read(CPU_EXEC_CTRL1)| CPU_EPT);
+> +	vmcs_write(CPU_EXEC_CTRL1, secondary);
+>   
+>   	return 0;
+>   }
 
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+This is missing a hunk:
+
+diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+index 023512e6..b5994719 100644
+--- a/x86/vmx_tests.c
++++ b/x86/vmx_tests.c
+@@ -4886,7 +4946,7 @@ static void test_ept_eptp(void)
+                 report_prefix_pop();
+         }
+  
+-       secondary &= ~(CPU_EPT | CPU_URG);
++       secondary &= ~(CPU_URG | CPU_EPT | CPU_MODE_BASED_EPT_EXEC);
+         vmcs_write(CPU_EXEC_CTRL1, secondary);
+         report_prefix_pushf("Enable-EPT disabled, unrestricted-guest disabled");
+         test_vmx_valid_controls();
+
+and possibly this as well for consistency:
+
+diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+index b5994719..cf1022ba 100644
+--- a/x86/vmx_tests.c
++++ b/x86/vmx_tests.c
+@@ -5068,7 +5068,7 @@ static void test_pml(void)
+  
+  	primary |= CPU_SECONDARY;
+  	vmcs_write(CPU_EXEC_CTRL0, primary);
+-	secondary &= ~(CPU_PML | CPU_EPT);
++	secondary &= ~(CPU_PML | CPU_EPT | CPU_MODE_BASED_EPT_EXEC);
+  	vmcs_write(CPU_EXEC_CTRL1, secondary);
+  	report_prefix_pushf("enable-PML disabled, enable-EPT disabled");
+  	test_vmx_valid_controls();
+
+Paolo
+
