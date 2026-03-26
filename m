@@ -1,203 +1,341 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834B83EF66D;
-	Thu, 26 Mar 2026 12:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774528556; cv=fail; b=Y3cuZ34ZgrbhEm4p+6HXRT/kcM542GKBVGw9W1xrj88+U4lO6HMJoGPa1oaAtx2GUmxaD1emvfY40VYiUb+Ddq2Fft5hV7Opm6cRUS0TrLWTCkaEQWFzIwESPC9FcJWtTOszapkxuZHOTyaKVlOIwf6iLBQ32l9iPSph2MnB7a4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774528556; c=relaxed/simple;
-	bh=AZY2S5A2fYoSiK0df5X1Wg5/ZRT+xC5rEJfXgqWKNWo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lCK/tAPk8vzVWBYkUOP/PeuPFpxQNMgAgPpLucxZ6GGGU91ETucH0JiBmZNHM7q7YcCLJ9HPYSaaICAm7FjVjU1dePsyDfEoPy25JvG4eOxBOX9Hd8J0Y9smPhxR/GDdc+1fvdopNhUZz0CwI2meFF6VAzEMmP/qKGFnQ4RnOvM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MzeahdXa; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1713F8DE5
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 12:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774528816; cv=none; b=pE7qTieSM5NWutHICM0M+vlZuZJdC4uXGYYSszpsMRBHOWsAAx33aBxiZZWZ5diG/5Ct2bdEnD9pJKqxIN4ZKESWbfyH606q301PnyPH5JQdqLlLHZ4v9kuD14At9Nbi7Cmcg2YBCpRVp7a18mpLa+7Bjb9Hv3gUZSboBqsEpQY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774528816; c=relaxed/simple;
+	bh=XdwLuOs+MOooUYSe+ks/VcJ4OJqU9KOmfrBBGbeAzf0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B3fVTo//lkUvlrw7vdWfFPSHh/mkr9oqSmsZ8Ly2ugRNaDpfhTzTA5txvD+E6T+KCOAkmpPfQuUMwnQjdiLBv+AgD7NSJvuq6xFxP4XYGs3tPW73cywZIX9TFVrqOkF1INBS7w6vRDo5c22DRd98xwsxRSQyd3BoJCJ/21xUDes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE1dIbpR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MzeahdXa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774528553; x=1806064553;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=AZY2S5A2fYoSiK0df5X1Wg5/ZRT+xC5rEJfXgqWKNWo=;
-  b=MzeahdXaJszYLDGIP1lmrRmS11xlKNtQFEziKA1MW47S9OYBzZvlk4c8
-   GWUeBIbyhr+3zLALPdMp6aUOnvSy8Sj1SEvUMkrWXJ2qA+n3BdTSL9z24
-   2bZF3dy/Cu3GL0vKaEj2yVGOj6B+gn2g6idfiuL0c58CdUUFgylTVqe5F
-   fjjqnI8Gw/sF60JP8r5O3VQu6JgOljvMR4WHUsM67LOGulvNZgNEvlgNi
-   bBHPxU1pYGosSE5Z0ll06bMHxfBbx34SKiklzp4WgIhxzdj6RzruElXlK
-   Gv89go5J7f4pafscE2Pzrpd0RNWBbfnydGpavmsH10kjpKnTzo04bWVGb
-   g==;
-X-CSE-ConnectionGUID: PQcOJB6ETuSY6ErV1Dg/Cw==
-X-CSE-MsgGUID: D1d3t2GyS9OajFK2Cqs0LA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="101039676"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="101039676"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 05:35:52 -0700
-X-CSE-ConnectionGUID: s28/StKfSmOMQhnAHOsjhA==
-X-CSE-MsgGUID: kiA3hO9CT3W5LDpPfbiOnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="229061828"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 05:35:51 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Mar 2026 05:35:50 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 26 Mar 2026 05:35:50 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.40) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Mar 2026 05:35:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tj+Ih6J8P20DQ8TRuByZAefkyVQSKRbG5geOS1UqKW6osPUnfTFBJhEnmeLd9X2eDSi42ay9gTZWXhBRm/12JMDMWBqIUts8y5W5kAM5QFUbMVRPTINC/lymeTzGj1XITUDRmbO92tLoHKnOxhauxRwuOrLPxhcT1nqR+xqN02ybp7n2xycKFxU3xcsuxbO1d06BLopvOr7YXGl9LhxdZW7jmhHdPDO84+edyPrgebn1GkivdxbIpo4fllN7rnybH/MeY/ZtFXRJ4BqkTcpb3k0S2HEc1PxvpTiZHQ3HTRL+4+xEqSv1x5OHM4VYhVvaSp0NQwg7tMCQ6D33xPo5QQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PJdul1oZDiz79b7de5OL4jBXt9bcLP3QAhWnZaSJMAQ=;
- b=atAmK9UgqVCJtiUYdluVSCwMfqvmDOpKrT38UmcR1jPixex6AXqOk6gry1dZiDCcO3WuVR9bQlJkN5dTSbXXPMgalI4XD/AQAHEbOUesCnyel7yyz/DpoOEoixRfRCqn5OrgoZ6i9X23cLGYyKOhY4TWlfOt1viTzWIgY3iLSyiL/GRYokVe5ujt4IDXS0GRMDjxRZ5yA2rBTktQOOhiyvhCa8iL+iBSa9PqlOroNaOzcDPQSEKoJsbFd8WFqcimZF2ZEUtY63nBwp8rCvoDfUgbbZWMWw05W0rdjlcyJgFBfgd+2j7i1Ie34v5i4kOnt3mg2Pf2cgSno69jo3RaVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by BN9PR11MB5289.namprd11.prod.outlook.com (2603:10b6:408:136::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.7; Thu, 26 Mar
- 2026 12:35:46 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9769.004; Thu, 26 Mar 2026
- 12:35:45 +0000
-Date: Thu, 26 Mar 2026 20:35:33 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>
-CC: <binbin.wu@linux.intel.com>, <dan.j.williams@intel.com>,
-	<dave.hansen@linux.intel.com>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
-	<kas@kernel.org>, <nik.borisov@suse.com>, <paulmck@kernel.org>,
-	<pbonzini@redhat.com>, <reinette.chatre@intel.com>,
-	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
-	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
-	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>,
-	<xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v6 12/22] x86/virt/tdx: Reset software states during TDX
- module shutdown
-Message-ID: <acUoFXtbQGz2Nh2s@intel.com>
-References: <20260326084448.29947-1-chao.gao@intel.com>
- <20260326084448.29947-13-chao.gao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260326084448.29947-13-chao.gao@intel.com>
-X-ClientProxiedBy: TP0P295CA0016.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:5::20) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE1dIbpR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F93BC2BCB3
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 12:40:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774528816;
+	bh=XdwLuOs+MOooUYSe+ks/VcJ4OJqU9KOmfrBBGbeAzf0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mE1dIbpRP8k3il7XHOI3zIwSueN6/qnZtimTF08TLzeOpd+3hLj2eO+Ul9gFrGEv8
+	 lIewo+Z1dncCPDDjtLASZUvUqqtJwEQypM41f77uVYlBbqeL/YLEM0NMMgImxaPMYE
+	 /DSUCPFeBQMkp14vjJImlgwGDA9TSis6dtkmrT9GwEDMDPnFZ79t2XhxD49j/2kGbw
+	 EJV+zxsvBsl5Qd0XhnxXWEpS2XgoMN0amQ5CuwfRRNyqQg1OSY5vfD4C8DmOacOEZa
+	 dZXW+ZP5Ui4GUm1bcLEuj+l4TPVX1S4a6m7OKiLvrU4jtw/sT8Y4jKW+AUEzONNqPi
+	 CJ4ajRRYnN8UA==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-667f8794e97so1667897a12.2
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 05:40:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUfV8kBHFuG9mHrIiq5nK9Kj/K12+x5hhRIH4YmTP8+1B1Ct3wcDjlAfNSieFw5oHB0oQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4AYnlsXUrhr+7uR1Czph8Rv3YsUFj+vrcO7x7G/OdAr50Z6IL
+	zRyr/uXCJY6tj5VZEGw/KJG/BlVfGIKxBQt2L/HpfZ3kOE9VYFzVCQw3Ua/lAfXB9E64bFYKIKa
+	22dF4zO19Wwa/UPwbYyXplPqhsV+ihxw=
+X-Received: by 2002:a17:906:a2d8:b0:b98:4c58:f499 with SMTP id
+ a640c23a62f3a-b9a54253a96mr407705266b.28.1774528814483; Thu, 26 Mar 2026
+ 05:40:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|BN9PR11MB5289:EE_
-X-MS-Office365-Filtering-Correlation-Id: 104b3296-b85a-4214-489e-08de8b3433d0
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: JifvSvQ3do4QHnzqsFOEGks+yP0+scXM+G7t3Li/WDIM/7hxxOvcWC9jCDueCQBH19ArEoqsSDBR5Xt7bCVyIQ2knuK09qFMIF8x06t5oM/KMOHLJRCHbDOKHBI8qNPLuj+LHP2c9TP7G0YjQXVT9wqDyYMelff3xCsTdy6+xyy7cGTgK1sNmyzw9ZPR5W5KmZSZEsP2kWU+2CXDlGnrJw9afpw732HZhLQiR0be/SSpauKAntSxsifNEYhYAtFwyUxLFdyM2iQCQXzJD5nmrqOrJ4Z+eEu91Yo8G+T+M46Q/YmRzdyRGBnGXHgWDt2RCLyvb1E9R174UurkhXi6foiUAUBMF+TfpLJRrodDWywZ3xct7N/HY+P5ARtUiSw9UaUZ/iqUQABznU9dojD8We7SfSx0XFw+g7tFJ838uFoYAVmsJmZr/Ugr8EClCwq1e9KDffLqtMy+AbuJ/b1rHR86GC8KzPg+DfW8+PenE2p2rWXORNafO6cJF+3gVA/KAqWLkUxCuC6LwY5wG9Xy/WYEGJsfFG+SnXJdbkDW5w0pdqvY3EPHRILf50U0do4/b1hmdjm1NP/dIcUOoKr4Daa5hv4cGZZuwROSCoE2Gs1sCN97Nhg5uPgVH4RMpgRdM+oS2PXEeJWz76fj6VCRNTMDD01P17hZwmAoHDVi86bniKm6awfYQy970fPuNGNYlLzpDFS187mT2e7HeY+mhOw/m4r/dDCYNyMdU2h+PSs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tsW+V0Bpnmz0YXf5vNuZm1q+8yVTkbY/q9Z1qo+jIcaHEicYeId8wGnqfpWA?=
- =?us-ascii?Q?nBr23UrWZyDDYZvKsuKStRu22xZHDeCDbQ4afCJzo9xOh9eRUvaTlvHmOBye?=
- =?us-ascii?Q?kui+VReaYuKzJFMzLBklbGz34q78TXm5dSCRtT1HOCGeoo3hgxSD+7tJWj09?=
- =?us-ascii?Q?omTCxaABCutxl/J+r910UuPgfEc8dwjnIg5T/5Xv8yhMZpd7VhJs20S387JP?=
- =?us-ascii?Q?mTQdL5DV2FcnPvDETUt+7+VQrg2j5p38YgW1TgL/cVvGbIneDB6YJOoIdDrE?=
- =?us-ascii?Q?s2mRe3sX7s2kwgNTD0XyvzC6+bp0qQdnaCspgcE8C2Ga93flWjPVXHYPRb4g?=
- =?us-ascii?Q?ytburVjbNuBFtiJHbsyAZ8NfxY/w9RgD3lRxaYYEvoobBwcJqawc7S9FJDut?=
- =?us-ascii?Q?Mx5oLnruKnAwy4Oo0Ug1LXc7V2r8ep+/UarN23u5NUu0L09e907/5bH/LYuI?=
- =?us-ascii?Q?gjvBFp8Zm1VWnpt9CZ+jf4eIqoeA4sKGqAQa9Qrg3V+qaAFBD/rvjYzz5tjP?=
- =?us-ascii?Q?Tm8h/IuhDJy2XuToxzoNpbUGKRReAPNTl6RU/pXPOYmamGVPS30J68flFCIi?=
- =?us-ascii?Q?XiuzmQ+CTKiuMw4hCJDyYBvhrwNmk+yfX7QGoO/EIOZ8OjuSkQ9GPMflkMsG?=
- =?us-ascii?Q?IS2i7Hs0Nibp9ubIIVJP5oKcMGX+5zkLv78LVkD/nsOYYzAZ66O6syeYX0M5?=
- =?us-ascii?Q?uXNwJO9YeemxtpncCdUwfvqnZfOkXzX5otBxvtzKdY0eqKRONHl4Zr4sPwZj?=
- =?us-ascii?Q?vUiUyU/uf1OPlxMaJ3rmd4AsOk0/eh3CDKLsrItlUIaHoqOs8Akj05/2OK1V?=
- =?us-ascii?Q?4pEqGiU68lOb8b7iZp0Y5KlFSTNg7YsvEmAiZNLbeIhX/RDq2Zrq9FF08k/4?=
- =?us-ascii?Q?lVZ4Dvpj+TRo1mdOiPV8TYovHYwRuSoycUV0DcAAmfQSucM41uMoArvpti+r?=
- =?us-ascii?Q?1uNwAjvQwIR8JhpfpOLyG/UKBmSDpKc8OkLlUqQWAoRtQ+CKel9D6pkDHdZN?=
- =?us-ascii?Q?J2XpifUXwX8GVmL38atAEWAfFFD+e0lZGAYRb2xfZssrIdFIJTOyeNVUe+ba?=
- =?us-ascii?Q?bJJKK7YjCFwjqBF2ld2+hxrxPWhO+tqKmLnntNV9CcCQQKMHUYaTKGqTyT4A?=
- =?us-ascii?Q?UiVBIsP2SwgMDr7XWf1iWmxX6Gnp84b1vN4d05hoxQHKAOpIWgKj1tilQmEE?=
- =?us-ascii?Q?BZ16NWiFSbc5bylGNj5mVWkS9EN57PVZsBSWt6Mr/Es/HIjkBYuWDt6+/Y7/?=
- =?us-ascii?Q?v1amCBmUoRXpCGDQ3asXnAmu9Tu6zie+j3SWoNzC+XRgpB4MFcqB12zPVrDV?=
- =?us-ascii?Q?2uzKHabZXhc7tc0yS51Kj9zxwTCj8h0HAj21/BYNwF2cvbnnIrGH3ATUNXQ7?=
- =?us-ascii?Q?Q7SGaVYfo3nRhNty83anlE6BQoPUmGlb92xlSkPhNx8JX78ymdQvj3MhJQDU?=
- =?us-ascii?Q?sqSudGtWHRpnGQuHRLDeNtTlJd6B+FYkTjCbJ4Xptgzs7wpwjcZ6eC3sAyT4?=
- =?us-ascii?Q?caTw480W05YFACZ0m8RqpInIPEB7FDDyNCRXpqWwqCd9QQEeSu2coDiEzjBf?=
- =?us-ascii?Q?qm6y9UFhZEvUYzWY8G1m9p4nE8Afs01r9FnkaWtwtWgOWtK/0w6+n1TuJLAY?=
- =?us-ascii?Q?SkXgKB5MndnyTccZIyNj1YiivxvRgR5QxTeU/+1qpKoqUej3zGk85yLB7Lsv?=
- =?us-ascii?Q?JtR+E8osbw/xJVkY4/SzgypmefSJx5bgak2v+DlT4lDyeRM1n+/A3/6jsgqy?=
- =?us-ascii?Q?Z+huyh8eBA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: m0TjWEPz1RHZP6wDVZF/f/q9yCtGgOQazS58xwGJmjgExllY/+BjsCdKtReAsyskBle2PnTWk8oQfrx1Rxx02oq+TrH5tD+DCjjZrE2UPegjBJrgcK95UNGg7hrMx6x/uzFs4Ls145OQF+v5HpZNrFev343mTQNsewoz5+EWddug4dmISUSyuhpq+nwzFKTstMnpeFefqmRMlXUmGoZsgl2RPaNGqR9ssAMlCnIdhqNrkM1XdPyKwvX72tV/JDvij9QinrxsPeT3kam6d+QSjp7wn134W6/jx8CXIPG/81/dfti67GsYBG+SEYAuRlbpXDwZeVT1gyYmzoZ6JKQKmg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 104b3296-b85a-4214-489e-08de8b3433d0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 12:35:45.8554
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qfLS1GHAxskvBdDC4+CBZqzXXIg0C64y1vLtj8ioo8ITMYSXqoe4p+RMlktwJ/Sa/KbMSuHpkYn5cVekU9dIqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5289
-X-OriginatorOrg: intel.com
+References: <20260324091521.2338235-1-gaosong@loongson.cn> <20260324091521.2338235-3-gaosong@loongson.cn>
+ <CAAhV-H7y8S6G+kh+qZ_q7Ug4JtzoGQ-ehUuA3uE63=gCpXyCGQ@mail.gmail.com> <ee4faccb-5a46-93a9-edcd-4c2544d614b3@loongson.cn>
+In-Reply-To: <ee4faccb-5a46-93a9-edcd-4c2544d614b3@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 26 Mar 2026 20:40:11 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H42ZD8jWq4QdEHcq31X0iHM8EwjWbSs8gobGMZ8YuGpyw@mail.gmail.com>
+X-Gm-Features: AQROBzAfwfHNpsbS8OMB2muFvAZrxOGaKQcZlPdMsOvsr5CVDm6pWTxjiJe7fd0
+Message-ID: <CAAhV-H42ZD8jWq4QdEHcq31X0iHM8EwjWbSs8gobGMZ8YuGpyw@mail.gmail.com>
+Subject: Re: [PATCH v8 2/2] LoongArch: KVM: Add dmsintc inject msi to the dest vcpu
+To: gaosong <gaosong@loongson.cn>
+Cc: maobibo@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	kernel@xen0n.name, linux-kernel@vger.kernel.org, lixianglai@loongson.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> int tdx_module_shutdown(void)
-> {
-> 	struct tdx_module_args args = {};
->+	int ret, cpu;
-> 
-> 	/*
-> 	 * Shut down the TDX module and prepare handoff data for the next
->@@ -1188,7 +1189,23 @@ int tdx_module_shutdown(void)
-> 	 * modules as new modules likely have higher handoff version.
-> 	 */
-> 	args.rcx = tdx_sysinfo.handoff.module_hv;
->-	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
->+	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
->+	if (ret)
->+		return ret;
->+
->+	tdx_module_status = TDX_MODULE_UNINITIALIZED;
+On Thu, Mar 26, 2026 at 8:26=E2=80=AFPM gaosong <gaosong@loongson.cn> wrote=
+:
+>
+> =E5=9C=A8 2026/3/26 =E4=B8=8B=E5=8D=883:52, Huacai Chen =E5=86=99=E9=81=
+=93:
+> > Hi, Song,
+> >
+> > I'm sorry but it seems there are still bugs...
+> >
+> > On Tue, Mar 24, 2026 at 5:41=E2=80=AFPM Song Gao <gaosong@loongson.cn> =
+wrote:
+> >> Implement irqfd deliver msi to vcpu and vcpu dmsintc inject irq.
+> >> Add irqfd choice dmsintc to set msi irq by the msg_addr and
+> >> implement dmsintc set msi irq.
+> >>
+> >> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> >> ---
+> >>   arch/loongarch/include/asm/kvm_dmsintc.h |  5 ++
+> >>   arch/loongarch/include/asm/kvm_pch_pic.h |  4 +-
+> >>   arch/loongarch/kvm/intc/dmsintc.c        | 73 ++++++++++++++++++++++=
+++
+> >>   arch/loongarch/kvm/intc/pch_pic.c        | 16 +++++-
+> >>   arch/loongarch/kvm/interrupt.c           |  2 +
+> >>   arch/loongarch/kvm/irqfd.c               | 11 ++--
+> >>   6 files changed, 102 insertions(+), 9 deletions(-)
+> >>
+> >> diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch=
+/include/asm/kvm_dmsintc.h
+> >> index b04b89dd2a35..081ec8a7b874 100644
+> >> --- a/arch/loongarch/include/asm/kvm_dmsintc.h
+> >> +++ b/arch/loongarch/include/asm/kvm_dmsintc.h
+> >> @@ -11,11 +11,16 @@ struct loongarch_dmsintc {
+> >>          struct kvm *kvm;
+> >>          uint64_t msg_addr_base;
+> >>          uint64_t msg_addr_size;
+> >> +       uint32_t cpu_mask;
+> >>   };
+> >>
+> >>   struct dmsintc_state {
+> >>          atomic64_t  vector_map[4];
+> >>   };
+> >>
+> >> +void dmsintc_inject_irq(struct kvm_vcpu *vcpu);
+> >> +int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm, struct kvm_vcpu *vcp=
+u,
+> >> +                               u32 vector, int level);
+> >> +int kvm_dmsintc_set_msi_irq(struct kvm *kvm, u32 addr, int data, int =
+level);
+> > I think addr should be u64.
+> Got it.
+> >>   int kvm_loongarch_register_dmsintc_device(void);
+> >>   #endif
+> >> diff --git a/arch/loongarch/include/asm/kvm_pch_pic.h b/arch/loongarch=
+/include/asm/kvm_pch_pic.h
+> >> index 7f33a3039272..5f49b1f82c56 100644
+> >> --- a/arch/loongarch/include/asm/kvm_pch_pic.h
+> >> +++ b/arch/loongarch/include/asm/kvm_pch_pic.h
+> >> @@ -70,6 +70,8 @@ struct loongarch_pch_pic {
+> >>
+> >>   int kvm_loongarch_register_pch_pic_device(void);
+> >>   void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level=
+);
+> >> -void pch_msi_set_irq(struct kvm *kvm, int irq, int level);
+> >> +struct kvm_kernel_irq_routing_entry;
+> >> +int pch_msi_set_irq(struct kvm *kvm,
+> >> +               struct kvm_kernel_irq_routing_entry *e, int level);
+> >>
+> >>   #endif /* __ASM_KVM_PCH_PIC_H */
+> >> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/in=
+tc/dmsintc.c
+> >> index 1bb61e55d061..6837ccbb4473 100644
+> >> --- a/arch/loongarch/kvm/intc/dmsintc.c
+> >> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> >> @@ -4,9 +4,82 @@
+> >>    */
+> >>
+> >>   #include <linux/kvm_host.h>
+> >> +#include <asm/kvm_csr.h>
+> >>   #include <asm/kvm_dmsintc.h>
+> >>   #include <asm/kvm_vcpu.h>
+> >>
+> >> +int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
+> >> +                               struct kvm_vcpu *vcpu,
+> >> +                               u32 vector, int level)
+> >> +{
+> >> +       struct kvm_interrupt vcpu_irq;
+> >> +       struct dmsintc_state *ds;
+> >> +
+> >> +       if (!level)
+> >> +               return 0;
+> >> +       if (!vcpu || vector >=3D 256)
+> >> +               return -EINVAL;
+> >> +       ds =3D &vcpu->arch.dmsintc_state;
+> >> +       if (!ds)
+> >> +               return -ENODEV;
+> >> +       set_bit(vector, (unsigned long *)&ds->vector_map);
+> >> +       vcpu_irq.irq =3D INT_AVEC;
+> >> +       kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
+> >> +       kvm_vcpu_kick(vcpu);
+> >> +       return 0;
+> >> +}
+> >> +
+> >> +int kvm_dmsintc_set_msi_irq(struct kvm *kvm, u32 addr, int data, int =
+level)
+> > The kvm_ prefix can be removed.
+> I will remove it.
+> >> +{
+> >> +       unsigned int virq, dest;
+> >> +       struct kvm_vcpu *vcpu;
+> >> +
+> >> +       virq =3D (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
+> >> +       dest =3D (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mas=
+k;
+> >> +       if (dest > KVM_MAX_VCPUS)
+> > I think it should be "if (dest > KVM_MAX_VCPUS)".
+> hmm.I'm not quite sure about here ,   or  ">=3D" ?
+Yes, I mean it should be  ">=3D".
 
-Sashiko commented:
-"""
-If a TDX module update fails after this shutdown completes, does this leave
-the system in an unrecoverable state?
-Since tdx_module_status is left as TDX_MODULE_UNINITIALIZED, if KVM is
-later reloaded, it appears it will call tdx_enable(), observe the
-uninitialized status, and invoke init_tdx_module() again.
-Because init_tdx_module() is not re-entrant, won't it blindly append
-duplicate memory regions to the global tdx_memlist and allocate new TDMR
-arrays and PAMT memory?
-This seems like it would permanently leak the previous allocations and
-eventually fail when construct_tdmrs() rejects overlapping TDMRs. Is there
-a mechanism to prevent re-initialization if the subsequent update steps fail?
-"""
+Huacai
 
-This is a valid issue.
-
-A fix is: set tdx_module_status to TDX_MODULE_ERROR here. Failures preserve
-ERROR state; success explicitly transitions to INITIALIZED (patch 15).
-Alternatively, we could introduce a dedicated shutdown state.
-
-Note that the VMXON series moves TDX initialization to boot time, eliminating
-runtime re-initialization (init_tdx_module() calls) entirely.
+> >> +               return -EINVAL;
+> >> +       vcpu =3D kvm_get_vcpu_by_cpuid(kvm, dest);
+> >> +       if (!vcpu)
+> >> +               return -EINVAL;
+> >> +       return dmsintc_deliver_msi_to_vcpu(kvm, vcpu, virq, level);
+> >> +}
+> >> +
+> >> +void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
+> >> +{
+> >> +       struct dmsintc_state *ds =3D &vcpu->arch.dmsintc_state;
+> >> +       unsigned int i;
+> >> +       unsigned long temp[4], old;
+> >> +
+> >> +       if (!ds)
+> >> +               return;
+> >> +
+> >> +       for (i =3D 0; i < 4; i++) {
+> >> +               old =3D atomic64_read(&(ds->vector_map[i]));
+> >> +               if (old)
+> >> +                       temp[i] =3D atomic64_xchg(&(ds->vector_map[i])=
+, 0);
+> >> +       }
+> >> +
+> >> +       if (temp[0]) {
+> >> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR0);
+> >> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR0, temp[0]|old);
+> >> +       }
+> >> +
+> >> +       if (temp[1]) {
+> >> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR1);
+> >> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR1, temp[1]|old);
+> >> +       }
+> >> +
+> >> +       if (temp[2]) {
+> >> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR2);
+> >> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR2, temp[2]|old);
+> >> +       }
+> >> +
+> >> +       if (temp[3]) {
+> >> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR3);
+> >> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR3, temp[3]|old);
+> >> +       }
+> >> +}
+> >> +
+> >>   static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
+> >>                                  struct kvm_device_attr *attr,
+> >>                                  bool is_write)
+> >> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/in=
+tc/pch_pic.c
+> >> index dd7e7f8d53db..1c0ed0665736 100644
+> >> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> >> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> >> @@ -4,6 +4,7 @@
+> >>    */
+> >>
+> >>   #include <asm/kvm_eiointc.h>
+> >> +#include <asm/kvm_dmsintc.h>
+> >>   #include <asm/kvm_pch_pic.h>
+> >>   #include <asm/kvm_vcpu.h>
+> >>   #include <linux/count_zeros.h>
+> >> @@ -67,9 +68,20 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, i=
+nt irq, int level)
+> >>   }
+> >>
+> >>   /* msi irq handler */
+> >> -void pch_msi_set_irq(struct kvm *kvm, int irq, int level)
+> >> +int pch_msi_set_irq(struct kvm *kvm,
+> >> +               struct kvm_kernel_irq_routing_entry *e, int level)
+> >>   {
+> >> -       eiointc_set_irq(kvm->arch.eiointc, irq, level);
+> >> +       u64 msg_addr;
+> >> +
+> >> +       msg_addr =3D (((u64)e->msi.address_hi) << 32) | e->msi.address=
+_lo;
+> > Define and evaluate at the same time.
+> >
+> Got it .
+>
+> Thanks.
+> Song Gao
+> > Huacai
+> >
+> >> +       if (cpu_has_msgint && kvm->arch.dmsintc &&
+> >> +               msg_addr >=3D kvm->arch.dmsintc->msg_addr_base &&
+> >> +               msg_addr < (kvm->arch.dmsintc->msg_addr_base  + kvm->a=
+rch.dmsintc->msg_addr_size)) {
+> >> +               return kvm_dmsintc_set_msi_irq(kvm, msg_addr, e->msi.d=
+ata, level);
+> >> +       }
+> >> +
+> >> +       eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
+> >> +       return 0;
+> >>   }
+> >>
+> >>   static int loongarch_pch_pic_read(struct loongarch_pch_pic *s, gpa_t=
+ addr, int len, void *val)
+> >> diff --git a/arch/loongarch/kvm/interrupt.c b/arch/loongarch/kvm/inter=
+rupt.c
+> >> index fb704f4c8ac5..32930959f7c2 100644
+> >> --- a/arch/loongarch/kvm/interrupt.c
+> >> +++ b/arch/loongarch/kvm/interrupt.c
+> >> @@ -7,6 +7,7 @@
+> >>   #include <linux/errno.h>
+> >>   #include <asm/kvm_csr.h>
+> >>   #include <asm/kvm_vcpu.h>
+> >> +#include <asm/kvm_dmsintc.h>
+> >>
+> >>   static unsigned int priority_to_irq[EXCCODE_INT_NUM] =3D {
+> >>          [INT_TI]        =3D CPU_TIMER,
+> >> @@ -33,6 +34,7 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, un=
+signed int priority)
+> >>                  irq =3D priority_to_irq[priority];
+> >>
+> >>          if (kvm_guest_has_msgint(&vcpu->arch) && (priority =3D=3D INT=
+_AVEC)) {
+> >> +               dmsintc_inject_irq(vcpu);
+> >>                  set_gcsr_estat(irq);
+> >>                  return 1;
+> >>          }
+> >> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
+> >> index 9a39627aecf0..308ef08b634c 100644
+> >> --- a/arch/loongarch/kvm/irqfd.c
+> >> +++ b/arch/loongarch/kvm/irqfd.c
+> >> @@ -28,10 +28,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry=
+ *e,
+> >>   {
+> >>          if (!level)
+> >>                  return -1;
+> >> -
+> >> -       pch_msi_set_irq(kvm, e->msi.data, level);
+> >> -
+> >> -       return 0;
+> >> +       return pch_msi_set_irq(kvm, e, level);
+> >>   }
+> >>
+> >>   /*
+> >> @@ -71,13 +68,15 @@ int kvm_set_routing_entry(struct kvm *kvm,
+> >>   int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e=
+,
+> >>                  struct kvm *kvm, int irq_source_id, int level, bool l=
+ine_status)
+> >>   {
+> >> +       if (!level)
+> >> +               return -EWOULDBLOCK;
+> >> +
+> >>          switch (e->type) {
+> >>          case KVM_IRQ_ROUTING_IRQCHIP:
+> >>                  pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, le=
+vel);
+> >>                  return 0;
+> >>          case KVM_IRQ_ROUTING_MSI:
+> >> -               pch_msi_set_irq(kvm, e->msi.data, level);
+> >> -               return 0;
+> >> +               return pch_msi_set_irq(kvm, e, level);
+> >>          default:
+> >>                  return -EWOULDBLOCK;
+> >>          }
+> >> --
+> >> 2.39.3
+> >>
+> >>
+>
+>
