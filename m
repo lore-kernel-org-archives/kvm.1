@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A3E3932C6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B273939CD;
 	Thu, 26 Mar 2026 03:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774494752; cv=none; b=OnG/9twRFck37iccr0Qq0NjsD/eftZVbxhssCIx9yeLfDcHmNUajrrkLWyx+/1m3RIhRawu104CfbePSUqqT+NeUhuodd2d4+Fzx8Yxd+fBOWBXXhYdIJaPAiN8wUiq91PMw88nxE+gJs0/HCbPYjHJBvwwE3nNXtEsh+q5gbOM=
+	t=1774494752; cv=none; b=gSpc1ZkuN4rHaiG6e0For4KktuMIpUC6Kf7mExnpRHlSEFXv5Fe+wvchcYFI5hymQNKi+G4yzt3Sd0ozCxX3OUDUHNVGAXHWQqqYgJLk8rXIBt/euzRZogi84mrZd389crdldcAZIxU1GHjDOrNo7Y+kXznf94HsPhztlBrtgow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774494752; c=relaxed/simple;
-	bh=53QaIKDk7fN2Ew8/rOTS7tu4uaix84f/2x/Yx6CWKOs=;
+	bh=la1WaIfCaF2/MggGDt7wbuSsGkHH2X29eUAojHCz++c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFYJYbG4YLcFFe+W5WCBT59wkCygkCtjxmEO+3tesWyMfVtJVKXLiM/+PltK2JMLBs0O50yRyiAnNXlPOoqYjIWbjuVVfC6oTYdWbrcVFct7npCw3TY1L8j1BxNZOR0g2z8wjk5iRuAwnoghF0kULwgPJxhRRUlMS9VcD26RuSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZn8vwOb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=BnM90kOcKiT2dQ0fNCVBsmg+VjklTE/6YzAYtrEafBOhmbzwGzCpUbf6ZfoszLf9JKC87yCFUi/uLZkcV/Wo38DN9+X0iCj7gBucbode7wddoiT8Z8gssdvQ9kh/AE5+FI21TPmihb1LXw8HN7X9g5qwmzDvhsyNs+CvFUjAHQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1HxAGRV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZn8vwOb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26002C2BCB4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1HxAGRV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823E9C2BCB1;
 	Thu, 26 Mar 2026 03:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774494752;
-	bh=53QaIKDk7fN2Ew8/rOTS7tu4uaix84f/2x/Yx6CWKOs=;
+	bh=la1WaIfCaF2/MggGDt7wbuSsGkHH2X29eUAojHCz++c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZn8vwOb/i6G3QnJfKP1r6rO/frFGWu7iNe8gAVwnCXX0Lxyt80xFyVAjiWhkNLJ5
-	 85EUvaIPTwKZyaPwRiIWnz8+RTbW55LBMsN6veIZ1BE+BHdDlkX3z9eXd36YgFbl2F
-	 Yn7ByzcLVuQOyOjGUkB5Wiq3RKN1BwD8fNfUV78T6SDAPfysTo1m7E2N/qLPB08dD4
-	 gl8GX+QcUe/7dLEhZ+nbRRrWPQFUHdGaHBv3p3/KkxBZJkcKH2OXnTzMrXRkT+NtNE
-	 JGfHOfS2mDqIHM8FMmFDL8vOn1ATXX8tWguuoKNbpc214qzfZV3ksEeuklHd0PCuQd
-	 dwOUaX+IBrI2Q==
+	b=q1HxAGRVaDEjq8OkBiIxOOiCuTAg4fxAIka0NEvejD65vfPpZmeigFyD/sURXXmqP
+	 8qqKH6X1szexGxPWIJs/Jb4MW6mSovTdKYVOtMu+wBHYyzCas2nB97Xnj8ExP1Y0/J
+	 KIKCrEy2YYhT6Hoe2O0AFAXdAswPY6H7wx2K1Vy1fy97EtQDqe+eXUGoQ5Gvt+9FUW
+	 Ipw7ugmjd3abal+XDIG4MUGL4Os/Ite+x0E2pPfDbc8kscDNaRIzojOxudlsOxVYBZ
+	 yvXxxd1uwtWQ6myFgytXUUZdBQ7EiEKzjXuDF0ruYUTmy7eaZCzvVGbmSB7Vw2Jrbe
+	 srKymrlxIYaGw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -33,9 +33,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v4 3/6] KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits in SVM
-Date: Thu, 26 Mar 2026 03:11:47 +0000
-Message-ID: <20260326031150.3774017-4-yosry@kernel.org>
+Subject: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on nested SVM transitions
+Date: Thu, 26 Mar 2026 03:11:48 +0000
+Message-ID: <20260326031150.3774017-5-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
 In-Reply-To: <20260326031150.3774017-1-yosry@kernel.org>
 References: <20260326031150.3774017-1-yosry@kernel.org>
@@ -47,138 +47,166 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce a per-vendor PMU callback for reprogramming counters with a
-mediated PMU, and register a callback on AMD to disable a counter based
-on the vCPU's setting of Host-Only or Guest-Only EVENT_SELECT bits (if
-EFER.SVME is set). In other words, disable the counter if Host-Only and
-guest_mode() or Guest-Only and !guest_mode().
+Reprogram all counters on nested transitions for the mediated PMU, to
+re-evaluate Host-Only and Guest-Only bits and enable/disable the PMU
+counters accordingly. For example, if Host-Only is set and Guest-Only is
+cleared, a counter should be disabled when entering guest mode and
+enabled when exiting guest mode.
 
-kvm_mediated_pmu_refresh_event_filter() ensures that
-ARCH_PERFMON_EVENTSEL_ENABLE is set for any enabled counters before
-mediated_reprogram_counter() callback, and kvm_mediated_pmu_load()
-writes the updated value of eventsel_hw to the appropriate MSR after the
-counters are reprogrammed through KVM_REQ_PMU.
+Having one of Host-Only and Guest-Only set is only effective when
+EFER.SVME is set, so also trigger counter reprogramming when EFER.SVME
+is toggled.
 
-Note that the behavior is equivalent if both bits are cleared or if both
-bits are set, events are counted regardless of host/guest state (from
-L1's perspective), so KVM should always keep the counter enabled unless
-only one of the bits is set.
+Track counters with one of Host-Only and Guest-Only set as counters
+requiring reprogramming on nested transitions in a bitmap. Use the
+bitmap to only request KVM_PMU_REQ if some counters need reprogramming,
+and only reprogram the counters that actually need it.
 
-It's a bit unnatural to check if both bits are set or cleared, then
-check EFER.SVME, then go back to checking the set bit. This ordering
-will be needed by following changes that will track counters with only
-one Host-Only/Guest-Only bit set regardless of EFER.SVME.
+Track such counters even if EFER.SVME is cleared, such that if/when
+EFER.SVME is set, KVM can reprogram those counters and enable/disable
+them appropriately. Otherwise, toggling EFER.SVME would need to
+reprogram all counters and use a different code path than
+kvm_pmu_handle_nested_transition().
 
-Host-Only and Guest-Only bits are currently reserved, so this change is
-a noop, but the bits will be allowed with mediated PMU in a following
-change when fully supported.
-
-Originally-by: Jim Mattson <jmattson@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/include/asm/kvm-x86-pmu-ops.h |  1 +
- arch/x86/include/asm/perf_event.h      |  2 ++
- arch/x86/kvm/pmu.c                     |  1 +
- arch/x86/kvm/pmu.h                     |  1 +
- arch/x86/kvm/svm/pmu.c                 | 29 ++++++++++++++++++++++++++
- 5 files changed, 34 insertions(+)
+ arch/x86/include/asm/kvm_host.h |  6 ++++++
+ arch/x86/kvm/pmu.c              |  1 +
+ arch/x86/kvm/pmu.h              | 13 +++++++++++++
+ arch/x86/kvm/svm/pmu.c          | 13 ++++++++++++-
+ arch/x86/kvm/svm/svm.c          |  1 +
+ arch/x86/kvm/x86.h              |  5 +++++
+ 6 files changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-pmu-ops.h b/arch/x86/include/asm/kvm-x86-pmu-ops.h
-index d5452b3433b7d..11ce0012b8301 100644
---- a/arch/x86/include/asm/kvm-x86-pmu-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-pmu-ops.h
-@@ -27,6 +27,7 @@ KVM_X86_PMU_OP_OPTIONAL(cleanup)
- KVM_X86_PMU_OP_OPTIONAL(write_global_ctrl)
- KVM_X86_PMU_OP(mediated_load)
- KVM_X86_PMU_OP(mediated_put)
-+KVM_X86_PMU_OP_OPTIONAL(mediated_reprogram_counter)
- #endif
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index d3bdc98281339..b2f8710838372 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -594,6 +594,12 @@ struct kvm_pmu {
+ 	DECLARE_BITMAP(pmc_counting_instructions, X86_PMC_IDX_MAX);
+ 	DECLARE_BITMAP(pmc_counting_branches, X86_PMC_IDX_MAX);
  
- #undef KVM_X86_PMU_OP
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index ff5acb8b199b0..5961c002b28eb 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -60,6 +60,8 @@
- #define AMD64_EVENTSEL_INT_CORE_ENABLE			(1ULL << 36)
- #define AMD64_EVENTSEL_GUESTONLY			(1ULL << 40)
- #define AMD64_EVENTSEL_HOSTONLY				(1ULL << 41)
-+#define AMD64_EVENTSEL_HOST_GUEST_MASK			\
-+	(AMD64_EVENTSEL_HOSTONLY | AMD64_EVENTSEL_GUESTONLY)
- 
- #define AMD64_EVENTSEL_INT_CORE_SEL_SHIFT		37
- #define AMD64_EVENTSEL_INT_CORE_SEL_MASK		\
++	/*
++	 * Whether or not PMU counters need to be reprogrammed on transitions
++	 * between L1 and L2 (or when nesting enablement is toggled).
++	 */
++	DECLARE_BITMAP(pmc_needs_nested_reprogram, X86_PMC_IDX_MAX);
++
+ 	u64 ds_area;
+ 	u64 pebs_enable;
+ 	u64 pebs_enable_rsvd;
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index d6ac3c55fce55..e35d598f809a2 100644
+index e35d598f809a2..a7b38c104d067 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -559,6 +559,7 @@ static int reprogram_counter(struct kvm_pmc *pmc)
+@@ -932,6 +932,7 @@ static void kvm_pmu_reset(struct kvm_vcpu *vcpu)
+ 	pmu->need_cleanup = false;
  
- 	if (kvm_vcpu_has_mediated_pmu(pmu_to_vcpu(pmu))) {
- 		kvm_mediated_pmu_refresh_event_filter(pmc);
-+		kvm_pmu_call(mediated_reprogram_counter)(pmc);
- 		return 0;
- 	}
+ 	bitmap_zero(pmu->reprogram_pmi, X86_PMC_IDX_MAX);
++	bitmap_zero(pmu->pmc_needs_nested_reprogram, X86_PMC_IDX_MAX);
  
+ 	kvm_for_each_pmc(pmu, pmc, i, pmu->all_valid_pmc_idx) {
+ 		pmc_stop_counter(pmc);
 diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index b1f2418e960ac..bdbe0456049d0 100644
+index bdbe0456049d0..fb73806d3bfa0 100644
 --- a/arch/x86/kvm/pmu.h
 +++ b/arch/x86/kvm/pmu.h
-@@ -40,6 +40,7 @@ struct kvm_pmu_ops {
- 	bool (*is_mediated_pmu_supported)(struct x86_pmu_capability *host_pmu);
- 	void (*mediated_load)(struct kvm_vcpu *vcpu);
- 	void (*mediated_put)(struct kvm_vcpu *vcpu);
-+	void (*mediated_reprogram_counter)(struct kvm_pmc *pmc);
- 	void (*write_global_ctrl)(u64 global_ctrl);
- 
- 	const u64 EVENTSEL_EVENT;
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 7aa298eeb0721..60931dfd624b2 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -260,6 +260,34 @@ static void amd_mediated_pmu_put(struct kvm_vcpu *vcpu)
- 		wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, pmu->global_status);
+@@ -248,6 +248,19 @@ static inline bool kvm_pmu_is_fastpath_emulation_allowed(struct kvm_vcpu *vcpu)
+ 				  X86_PMC_IDX_MAX);
  }
  
-+static void amd_mediated_pmu_handle_host_guest_bits(struct kvm_pmc *pmc)
++static inline void kvm_pmu_handle_nested_transition(struct kvm_vcpu *vcpu)
 +{
-+	struct kvm_vcpu *vcpu = pmc->vcpu;
-+	u64 host_guest_bits;
++	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 +
-+	if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
++	if (bitmap_empty(pmu->pmc_needs_nested_reprogram, X86_PMC_IDX_MAX))
 +		return;
 +
-+	/* Count all events if both bits are cleared or both bits are set */
-+	host_guest_bits = pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_MASK;
-+	if (hweight64(host_guest_bits) != 1)
-+		return;
-+
-+	/* Host-Only and Guest-Only are ignored if EFER.SVME == 0 */
-+	if (!(vcpu->arch.efer & EFER_SVME))
-+		return;
-+
-+	if (!!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) == is_guest_mode(vcpu))
-+		return;
-+
-+	pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
++	BUILD_BUG_ON(sizeof(pmu->pmc_needs_nested_reprogram) != sizeof(atomic64_t));
++	atomic64_or(*(s64 *)pmu->pmc_needs_nested_reprogram,
++		    &vcpu_to_pmu(vcpu)->__reprogram_pmi);
++	kvm_make_request(KVM_REQ_PMU, vcpu);
 +}
 +
-+static void amd_mediated_pmu_reprogram_counter(struct kvm_pmc *pmc)
-+{
-+	amd_mediated_pmu_handle_host_guest_bits(pmc);
-+}
-+
- struct kvm_pmu_ops amd_pmu_ops __initdata = {
- 	.rdpmc_ecx_to_pmc = amd_rdpmc_ecx_to_pmc,
- 	.msr_idx_to_pmc = amd_msr_idx_to_pmc,
-@@ -273,6 +301,7 @@ struct kvm_pmu_ops amd_pmu_ops __initdata = {
- 	.is_mediated_pmu_supported = amd_pmu_is_mediated_pmu_supported,
- 	.mediated_load = amd_mediated_pmu_load,
- 	.mediated_put = amd_mediated_pmu_put,
-+	.mediated_reprogram_counter = amd_mediated_pmu_reprogram_counter,
+ void kvm_pmu_deliver_pmi(struct kvm_vcpu *vcpu);
+ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu);
+ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned pmc, u64 *data);
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index 60931dfd624b2..cc1eabb0ad15f 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -262,17 +262,28 @@ static void amd_mediated_pmu_put(struct kvm_vcpu *vcpu)
  
- 	.EVENTSEL_EVENT = AMD64_EVENTSEL_EVENT,
- 	.MAX_NR_GP_COUNTERS = KVM_MAX_NR_AMD_GP_COUNTERS,
+ static void amd_mediated_pmu_handle_host_guest_bits(struct kvm_pmc *pmc)
+ {
++	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
+ 	struct kvm_vcpu *vcpu = pmc->vcpu;
+ 	u64 host_guest_bits;
+ 
++	__clear_bit(pmc->idx, pmu->pmc_needs_nested_reprogram);
++
+ 	if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
+ 		return;
+ 
+-	/* Count all events if both bits are cleared or both bits are set */
++	/*
++	 * If both bits are cleared or both bits are set, count all events.
++	 * Otherwise, the counter enablement should be re-evaluated on every
++	 * nested transition. Track which counters need to be re-evaluated even
++	 * if EFER.SVME == 0, such that the counters are correctly reprogrammed
++	 * on nested transitions after EFER.SVME is set.
++	 */
+ 	host_guest_bits = pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_MASK;
+ 	if (hweight64(host_guest_bits) != 1)
+ 		return;
+ 
++	__set_bit(pmc->idx, pmu->pmc_needs_nested_reprogram);
++
+ 	/* Host-Only and Guest-Only are ignored if EFER.SVME == 0 */
+ 	if (!(vcpu->arch.efer & EFER_SVME))
+ 		return;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d2ca226871c2f..1ac00d2cba0ab 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -261,6 +261,7 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
+ 				set_exception_intercept(svm, GP_VECTOR);
+ 		}
+ 
++		kvm_pmu_handle_nested_transition(vcpu);
+ 		kvm_make_request(KVM_REQ_RECALC_INTERCEPTS, vcpu);
+ 	}
+ 
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index f1c29ac306917..966e4138308f6 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -9,6 +9,7 @@
+ #include "kvm_cache_regs.h"
+ #include "kvm_emulate.h"
+ #include "cpuid.h"
++#include "pmu.h"
+ 
+ #define KVM_MAX_MCE_BANKS 32
+ 
+@@ -152,6 +153,8 @@ static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
+ {
+ 	vcpu->arch.hflags |= HF_GUEST_MASK;
+ 	vcpu->stat.guest_mode = 1;
++
++	kvm_pmu_handle_nested_transition(vcpu);
+ }
+ 
+ static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
+@@ -164,6 +167,8 @@ static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	vcpu->stat.guest_mode = 0;
++
++	kvm_pmu_handle_nested_transition(vcpu);
+ }
+ 
+ static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
 -- 
 2.53.0.1018.g2bb0e51243-goog
 
