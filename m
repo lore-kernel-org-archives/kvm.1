@@ -1,206 +1,178 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012058.outbound.protection.outlook.com [52.101.53.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EDA145355
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 00:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774484193; cv=none; b=IgnJcxWAzK5rSXOQ3JunGPc6t2H5Nt5L85/4v9htxh+9QjBCfe93aawDtjYtEXA513wGuGGk+PZ9emxMkcpWctaR0nnc8hAP7+G0IRxKGtpvHr9mQBZol0qpN/abZZijNELi19QHxp317CDfb8kmaSUvveKGU7053+w1tU5r4dc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774484193; c=relaxed/simple;
-	bh=Ga/XSqQK6HKy0Dl3aD8LE9+FbyO+uRDFEnE5zVDr73w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BfBAl2ZgLBdBagbnKN/K1EVw7wKzzgcNgVpXIC6UQl3iWIUXRVK531dnamfpl5Yjzkj+u2K0vTR7Pi+nwINlXWoiYL9nOU9eN0PpBaXC5j0d3kVgFEHFv4Y15myWvoOM+Vq79L2wCyTktWuTm731BEJW5A3mAJfv20VyTVcJPhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CmOeSSkd; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107224466C;
+	Thu, 26 Mar 2026 00:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774485709; cv=fail; b=FbXFrnKE8n3y10RXJ1PEyMx9hkI8LlNTynKBILC6YMiQXzTfKsxiWAJcuEwPeVEavOyipwe6FNq9cMy3PQ1QM9sHclYBvr2TxohrExYLMdViDyBY1jYuySIuMvmlkYySOSv3NHZC/f8TQVgyOdO/TNX7JOBBhAJ4XLs5e1flGjU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774485709; c=relaxed/simple;
+	bh=Vlaa4LHgK27wE6EwdU+VlrDqnWPC9QzVW02wWT4jU3w=;
+	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WMwc2dI8VoYfJkZBIOo/uCvcLLEf64px7mjMS/NvlkytnVr3yPRCFxBGDbm8+iDHSsk78S1MuET57FoZ2XD7S2D02UThK3gBN0xsTNzEsgRa6fMNSe+pxW3pkjh6oPTzIoOsV04Amq4RL8B+dENO3UM8y316rF1zzyCuaYaeBlU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=citrix.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=MB1A1WWg; arc=fail smtp.client-ip=52.101.53.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CmOeSSkd"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so50155ad.0
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 17:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774484191; x=1775088991; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x7oCiyyYQVCUAosHdVU4REC/mGXQFa/aTpvPTN8fvIE=;
-        b=CmOeSSkdsyvLR9Ic5xcjBd2hPfWBklPD+Lj1aP/G82Iz5E+StJ0Kx50BOSO0Y1SXzo
-         t0LKiFRyARa5bpZN1yrMk3xT2W7G2y+6Uumj/ie0dAYnNCJn137X3HESAN7pZZm3glpE
-         nmrT9rh4yi6L57mOJWOQgARukLrqubYN1cTUjvf8TMO27IAt6LSHQ1X3W3GO2ezsd788
-         SpGITfziOQGAqgTNo4Fnofph9OKjiK3d0NQ6DlCGDanpxq3gGdxPghbvEgJvvGCmPDcH
-         WkdNY0P2Kfr5+v1kec1dZ9uv0NK3m9w320CHNKFU1WfqK/jAc8ZpQ9Mxe46p8Wm4OI6r
-         2aqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774484191; x=1775088991;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x7oCiyyYQVCUAosHdVU4REC/mGXQFa/aTpvPTN8fvIE=;
-        b=sk1obxMdZ6xKYqN6d3vYITJBgJnqPoubpTVY9tkxaKH2benxCxfDHLGOuk1ij0Rm65
-         b4mB+L0IiPDucg9JBOefxrz+5B2BwzZ+nhuUVIVBt6KHbo9OO6jw03YXhFK9brxtGjJJ
-         HgddG4d0zM/HUiuy8vMPiMLZZITYW9kQXF56rIdcFxyJYT8z6+rCyC5qM3R13Eizw/aW
-         KHAhHoLvY+usjqa8wVt/BGKD2zRqCfQ+B0erxsYYsPDgEHIzrk3y1B72ZDJ1vlYmJtTG
-         IJmgnv9z03qS06y4pF4fZJzpXnsYS/RDcnERyXZkC+k6BTAYORPZRg4+p2or1ki7MUWS
-         XbGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdawrnGhVJ2r+bGT2cGUQPuPGyUuFi96YUSuVd4MesmECpayx2AvEVM6l8MmGaeo7x5tk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyqf8K0qR+hBz9Jbl7xMSgpsSLPE1bn5X9NyLTG05i15k1oU/Ph
-	4XelHUcUUj7L6baERjwcO62pBXMs4oKZcJ8KrkS//Sk1nCG4fALtBVOT+gh3w32k/Q==
-X-Gm-Gg: ATEYQzzlgVSxnxtshMyA4JQO346heMyl7zVtTlcuV66oFdFm9oQdkLqsCUa6b2iflvA
-	sTjz6EBeGbsoArRTosrOvE4jeZsjMd+o44DPXeYAXaHnKESbJgWWD0GKHgUtTkhOA65zeJ6ctY7
-	d+VXmu6Bf9Lw3Lfrir72QK1v+AHDSmkxBq8nwfehIPh8KuSORhJbVlQEw0j1HTR2FJihoBjdWrV
-	t1tvxBNqEdAY6XBgMOQZO5rCmkPrumtsmiu88Tb3EohdthE3+ftMFNwIR+byUZwWDGB+7zkJ4ci
-	JUJ615LXMgTral2wcLXW+9ridTTjGEhnkyl9TxojgT0cQQ0egKVcO2pYOl5oK1jAZDCS1UMJMyl
-	L4htEn85bLLDoiTxLbXK1ZUhzw0FBCeA5e82vOe6iRVTt13NEJor/ZZQyFWPSlfP9Z9RXV2P0Zb
-	FKrcrSqIZR33QDVr/H8XcE5EeSH90qYX7a++h3fPoyns0J8I0IJ5QPVRfrOCaNhg==
-X-Received: by 2002:a17:902:daca:b0:2ad:ab68:f2c3 with SMTP id d9443c01a7336-2b0c11d9534mr432105ad.13.1774484190023;
-        Wed, 25 Mar 2026 17:16:30 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc76bc66sm10468195ad.13.2026.03.25.17.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 17:16:29 -0700 (PDT)
-Date: Thu, 26 Mar 2026 00:16:25 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 12/14] iommufd: Add APIs to preserve/unpreserve a vfio
- cdev
-Message-ID: <acRpb2ADF7cpsllM@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-13-skhawaja@google.com>
- <acREeKQJlSrd2kZS@google.com>
- <acRG3Vi3OGNsVgNR@google.com>
- <acRSQQt_V29S1Ufh@google.com>
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="MB1A1WWg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dAwmkLL6HiJn3J3pqVFB7Z0ukl67BwArqoShucm95a4+JPTo9KDM9sGgD38aGMcP6pm3x6RhBdb8VIZ4SDP5AcwXfrPCATWUJV9JwVCB0vJVgpIBPnkXJss1ppRAmxpDi3c+sChQIg9lipbn3/Vpj+2REZTsCaQMxortd/owaCL6+ETQaCIhOqh+ZU10fDFoQu+HSNclGuFpu94ScbVvv4dP+e3bsh59yAEJFKuIRcqo8o3x51smBFuLWI6D7aJkUkgLfh/wOt24Umbph/NiQ7hNlLIv0OfYkC8h83imRS+9VAb05YyEcd3eWIrwG5RTNKZUFenx+Vtd0eg0i5sxcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vlaa4LHgK27wE6EwdU+VlrDqnWPC9QzVW02wWT4jU3w=;
+ b=miGtAzL+Jl2rmsdng7Iu6oUYYNKOo/pwCsTTVWcwCy6GB1SDXzsG3mhWiWxX+ce4MStjJtK86vmOZ3MnsRiasUA0ub6hLMYbGIr+lvZ99PokqXsHnbdw0t3k17vT8k/YdLzWbiQDJANJ82M/yKvmMy9tUZuo1hYd+8SEsQ9GzZyNtDG4uiCMf+lao0abW9vXkrYq9ldldmz+t9da2mQyYjBeiG88tS81B52tAU4QoJkUvTemxJzbOtY6XqP3O91RfBFQCmq8sx3nQ2VPhFd4dxmvLJvRzrUtCI343j/Xxjz3EcmHMftopnhrkGiST6qBgRrThx59dNMOFcHxqkQiJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vlaa4LHgK27wE6EwdU+VlrDqnWPC9QzVW02wWT4jU3w=;
+ b=MB1A1WWgjZh4KJuDbY/pwwnrlclmtehP3yPKZZkQ0Ek8i54bvvHp6+1GOk1g0Cvys8gkIqXSWS3xUb5ZG7wDK0F05OWHTlDXki6ped4wA+NfRbj2Adw2U2/+C+47fBqqZqSAHZqDa79ZFWFzOZaPhtlXfh1qtU5YtzkuzzwUt/s=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=citrix.com;
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
+ by MW5PR03MB6878.namprd03.prod.outlook.com (2603:10b6:303:1c8::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
+ 2026 00:40:32 +0000
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37%6]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
+ 00:40:31 +0000
+Message-ID: <dc8d4117-3089-48bb-8911-b4d64481fc44@citrix.com>
+Date: Thu, 26 Mar 2026 00:40:24 +0000
+User-Agent: Mozilla Thunderbird
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, KPrateek.Nayak@amd.com,
+ Michael.Roth@amd.com, Nathan.Fontenot@amd.com, Tycho.Andersen@amd.com,
+ aik@amd.com, ardb@kernel.org, babu.moger@amd.com, bp@alien8.de,
+ darwi@linutronix.de, dave.hansen@linux.intel.com, davem@davemloft.net,
+ dyoung@redhat.com, herbert@gondor.apana.org.au, hpa@zytor.com,
+ jackyli@google.com, jacobhxu@google.com, john.allen@amd.com,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mingo@redhat.com, nikunj@amd.com, pawan.kumar.gupta@linux.intel.com,
+ pbonzini@redhat.com, peterz@infradead.org, pgonda@google.com,
+ rientjes@google.com, seanjc@google.com, tglx@kernel.org,
+ thomas.lendacky@amd.com, x86@kernel.org, xin@zytor.com
+Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, dave.hansen@intel.com
+References: <a1701ab4-d80f-496c-bdb3-5d94d2d2f673@intel.com>
+ <4ec520a1-68c7-4833-9e8f-edc610e5fdfa@citrix.com>
+ <48f11469-6435-4f3c-ab67-705ad730b042@amd.com>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+In-Reply-To: <48f11469-6435-4f3c-ab67-705ad730b042@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P265CA0121.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c6::9) To CH8PR03MB8275.namprd03.prod.outlook.com
+ (2603:10b6:610:2b9::7)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <acRSQQt_V29S1Ufh@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|MW5PR03MB6878:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0343cb96-a289-41ac-0d2f-08de8ad04918
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	v1byWSP2kWlmE5vtt/60Qzc2u9xYWVx/YFz6nsb+/zDxurCCIOyAhxC3emmoIBpURoXZzFuX4T+r2oqltsj3vYRkg1/iKbXebsmQ8DxsX0p3L2bUWJsHWF61cQm1oyiHWmRIboPfSEOZYWakHgzBJNSvrVjjfZf09f0EFmUh2ad7X5dthee8vXrCq5e/Y0pLO29teOYo2HlgsEKw4SJ+t4lzBSm/xOJBCn97ECeZ1NFF7jb/AkgRTI8iTrPr9U+u7VfjyZ+20oFx97i8Xe1cTc2cq5jk6vZvRxjmas4H5bJ+0NdzhQAiUK7LUXPu0pBXFriKneZsQB5SEtz/lJB/671gqQL2/KK8YcV6y1VnhNqDabpSHXmD2umLp0mfr0SMayNY+iOKGzm8jwvq4RISvJwaErw8hxKecPuObSAOV1+QykMUaPPAvaAEH6ZCAd++glXxVGGPgMlH3w19cWupRK+svAy96kINnXnlN4Av4t9MwSXw5K0J2Fp9b+UZZppAar3YbSmbEEoejoVtOIgq6c5gggWX+b/BL4qfn7IOPcuMwILBoGMf/paQIPe/9kElx8h/KFoGHMHJXSTTZb8+up7qeFVNr3ZkLjaN9NaqJ3zLRQutZpSvVrHR3pZmX1oP2wUNCCrJ/sPqK/QQykkz9BaMHXzGcbO2JRsAIcQt+t0+DMkWysfVZ6QwbCW0bNo7h78l3VaT8427BaMB1zmWlnGuEarQLDr9bDNKGokV9U0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1RaSi9wNVN0Yi9Gcm9kRzl0UFcwejRIYUVCZ2F5b0R6b05mWmxBWTRqRlRk?=
+ =?utf-8?B?eDArc3JCQk5XaStyeUVyaFp1Z2YvTXdxV1p2Mkg1NFNTMHlVdTBUQjcwME1k?=
+ =?utf-8?B?R3R6N1lFVkFtdDViaFhIK1JidlhnQWMvWTY0YmVsY3c0T25teFNuK1o0bldP?=
+ =?utf-8?B?c0FpK0dsYXZZT2lqdTZEbCtvRVZIZG15SE52cTd2Z3FhNmJTZ3FPZFVTUkZP?=
+ =?utf-8?B?REYxQllKME1YZVJOWElwWFU2SXBreE5kYUFsMTJyaENxTEc1N1NGcC8wRUpW?=
+ =?utf-8?B?bFYvU2pvUU1uUVREaDZ3TlBHcmMrb1gxWUdCeU5pT0crc1hncyt5L3hJOTU4?=
+ =?utf-8?B?SDVrc2hFY1V5VEljaE5FK1hReThRMkRnSDVrZ01lT01teEpnWUFlM0FYOXEw?=
+ =?utf-8?B?cThMUXZrV1hLTVV5SU9PY3RTQzVxdVpNSG5iYlFLOFNrcUxzb25tWWJqUkNG?=
+ =?utf-8?B?T1FINksxczV3alRaQXlBV3lrRUJPYUwyT3FrdnloVThuci9FaFpDTU9QTnFm?=
+ =?utf-8?B?djR6R3hrUXliS3lsa29pSnN1RVgyMGZ0enI2Zy84YnpQQVd3TGlEdmlKb1Zj?=
+ =?utf-8?B?NnNTUVEyKzd5MXlwdUdlM2FITi83NWU2SVNZeHNiNDdZMmNFaDliWFhxbHRV?=
+ =?utf-8?B?ZkdSYm5MZEUwY3B3YzJnRW95QytLcWRuNVd2QkNoKzMzeFEzZnk2ekQrdjE2?=
+ =?utf-8?B?d2NGMzJVWndySVBRQUl5eFRBeUJsV0Jvb3gzZ09GNUVjckRzYnZPbmZHZmdC?=
+ =?utf-8?B?K3NmaEE3YUt0eit5a3l3d1BCRjBHRk53S3VubTRPYmFLeExBZk5IZ0ZvY0xr?=
+ =?utf-8?B?Q2NGcGU5WDdUaXprYkM0dG1pMldKaDVZTHFlbXdYWjJHalJlVlBBOExGeXBr?=
+ =?utf-8?B?Z29UQU4vaDUyVkpTZzk1bEdFaWxRNkVJbklTZDk1SUNOZktOTmIyaFZmZG9o?=
+ =?utf-8?B?eWR1eDd1NHhUTWo2VWJXK3c5N0JyamdINGJ4TDg1ZlpaN21wMXN5V1NUQWZj?=
+ =?utf-8?B?eXJWdnBJSEdrTWdWWjhzQW83V2pOaDVmNThBa0FHS24vVEcwSmoyMHVpNnRZ?=
+ =?utf-8?B?WXJNdlJrOE1aNTBkeVd6U3pEbmc1a1dOMlVIRjJKdzI4WFZxckhkQXRRc1ZN?=
+ =?utf-8?B?M3h5Y1VrblI2QlRoeG9LMDVKT1lLY3g2dytQRnJRb1V5b21kbWE2Z0I4SExU?=
+ =?utf-8?B?RnJhSGtTRjM0cXZKN3FBZStVQXV3S2VaZjVsNTdUR3lpTjN5elhxSXJScUdi?=
+ =?utf-8?B?aDJJTDBqZHQ5dEJ0M0F0RS8xcXdDODB6aXpRSjBNVXF0U20vNUI0NVlQRVBt?=
+ =?utf-8?B?OXhyOE1RdDRYWkt4ZlMzMURHcCtxWGNEbXdOWDdsSDc5RWFlWVdPRUNoU3V3?=
+ =?utf-8?B?RVkrRzVWRkRVNEhtVkJXTTAvaGdOcnlWZnI3NVFNeXRsb2xjUHZJWEpjY01J?=
+ =?utf-8?B?bjdTcFpmRkhLYUZJYUhlckxhMXR0TWc2NlJuN1JFSFJodzY2dFoybHpleHVo?=
+ =?utf-8?B?dHVSUVhrNHUzQXpQZFJKaFBTdlIyS0sybGhXQlh6Z3BGMVQ0WFlFMGFVUURn?=
+ =?utf-8?B?RHVYdG5VQWljS0p2b3NicU5GWEhYL3RFYkVZMlR4U25NZ3pyN20vQXJqZ1Ba?=
+ =?utf-8?B?NXVaK1lxVUZnRWJzY2Z0MGpNTFlzZHBOcU5Lb2cwampJdFh0OFZDMzBZWElV?=
+ =?utf-8?B?eUN3Rm5LWlJ0ZWFUU2RBT1B4YWJaYklBN3RkcVRZQ25jWEdaS01xTFgzWTFz?=
+ =?utf-8?B?WWFjckdWdmdlL0hZdmlYOXdrSUU5SjR3RTVWRVA4dmI0RXl5T2NEa1VXNExY?=
+ =?utf-8?B?bWYrOGVQQXhpcUYyb2dOZS95bjhnOUx2Ly9hZWZvTElGL3Q4Ymo4ZlorSFp4?=
+ =?utf-8?B?b3lHNXZ2VXQxWjBCVEI0TWxxR0RGNGwxeXVTZDhXSUs3RmhTRHBwaUtpTFJl?=
+ =?utf-8?B?U1AvMmdENmtLTDQ3NUg3Y2Z2WXR3N0tYSzN6Nm5LajJ5YWVpNWp2TklsVjFJ?=
+ =?utf-8?B?b1VQUDF3bzFNZWNBcUFmUWphNnNUdjBMZGZnOElkM2tKV1ZwZGxRS3I1SXla?=
+ =?utf-8?B?RW0yUkxLRFBhR2tIWDNRaVJFYmxVRTZpTUV5T0FzTHV5MXRJZE8yYys5ck50?=
+ =?utf-8?B?QzRiZEwvTFBKbi9yU0NuanhjaTVtR3VwaTJBUW1PK1czRTFyL0NOdDJVWmZR?=
+ =?utf-8?B?OWRQd0tZbTllaC9tazE3aDVGRlF5akt6SGd4c2lTbENUUi9yZ0tMRzFld3FS?=
+ =?utf-8?B?SkVBYXp6a05zSGM4SDVYSjQrSlJ4ZXlPbzlsQ1A2bW5TQytNV254VzJsRU40?=
+ =?utf-8?B?OHlya2VjdkpHL3BCZVg0bE93WkZSY2p1QTVtZzJzMGNRZ2gxMWdITjRsU2Rh?=
+ =?utf-8?Q?si6NPsiYLv+3yQ/o=3D?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0343cb96-a289-41ac-0d2f-08de8ad04918
+X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 00:40:31.8993
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FpGYn6E+J0VytbXs3zkJSy5mUilZqiG4u2czYRwugyg/hmbm4l+R0eDpBSpEsfnCJd14Fho0JV8xsjpVY4seAex9Sh99G68TG3R8kzYmaqA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR03MB6878
 
-On Wed, Mar 25, 2026 at 09:23:13PM +0000, Pranjal Shrivastava wrote:
->On Wed, Mar 25, 2026 at 08:41:46PM +0000, Samiullah Khawaja wrote:
->> On Wed, Mar 25, 2026 at 08:24:24PM +0000, Pranjal Shrivastava wrote:
->> > On Tue, Feb 03, 2026 at 10:09:46PM +0000, Samiullah Khawaja wrote:
->> > > Add APIs that can be used to preserve and unpreserve a vfio cdev. Use
->> > > the APIs exported by the IOMMU core to preserve/unpreserve device. Pass
->> > > the LUO preservation token of the attached iommufd into IOMMU preserve
->> > > device API. This establishes the ownership of the device with the
->> > > preserved iommufd.
->> > >
->> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> > > ---
->> > >  drivers/iommu/iommufd/device.c | 69 ++++++++++++++++++++++++++++++++++
->> > >  include/linux/iommufd.h        | 23 ++++++++++++
->> > >  2 files changed, 92 insertions(+)
->> > >
->> > > diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
->> > > index 4c842368289f..30cb5218093b 100644
->> > > --- a/drivers/iommu/iommufd/device.c
->> > > +++ b/drivers/iommu/iommufd/device.c
->> > > @@ -2,6 +2,7 @@
->> > >  /* Copyright (c) 2021-2022, NVIDIA CORPORATION & AFFILIATES
->> > >   */
->> > >  #include <linux/iommu.h>
->> > > +#include <linux/iommu-lu.h>
->> > >  #include <linux/iommufd.h>
->> > >  #include <linux/pci-ats.h>
->> > >  #include <linux/slab.h>
->> > > @@ -1661,3 +1662,71 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
->> > >  	iommufd_put_object(ucmd->ictx, &idev->obj);
->> > >  	return rc;
->> > >  }
->> > > +
->> > > +#ifdef CONFIG_IOMMU_LIVEUPDATE
->> > > +int iommufd_device_preserve(struct liveupdate_session *s,
->> > > +			    struct iommufd_device *idev,
->> > > +			    u64 *tokenp)
->> > > +{
->> > > +	struct iommufd_group *igroup = idev->igroup;
->> > > +	struct iommufd_hwpt_paging *hwpt_paging;
->> > > +	struct iommufd_hw_pagetable *hwpt;
->> > > +	struct iommufd_attach *attach;
->> > > +	int ret;
->> > > +
->> > > +	mutex_lock(&igroup->lock);
->> > > +	attach = xa_load(&igroup->pasid_attach, IOMMU_NO_PASID);
->> >
->> > By explicitly looking up IOMMU_NO_PASID, we skip any PASID attachments
->> > the device might have. Since PASID live update is NOT supported in this
->> > series, should we check if the pasid_attach xarray contains anything
->> > other than IOMMU_NO_PASID and return -EOPNOTSUPP?
->> >
->> > Otherwise, we silently fail to preserve those domains without informing
->> > the VMM?
+On 25/03/2026 9:53 pm, Kalra, Ashish wrote:
+> On 3/4/2026 9:56 AM, Andrew Cooper wrote:
+>> It should be:
 >>
->> VMM should be able to preserve the NO_PASID domains even if it has PASID
->> attachments. This is the intended behaviour, I will document it in the
->> uAPI docs.
+>> static inline bool __rmpopt(unsigned long addr, unsigned int fn)
+>> {
+>>     bool res;
+>>
+>>     asm volatile (".byte 0xf2, 0x0f, 0x01, 0xfc"
+>>                  : "=ccc" (res)
+>>                  : "a" (addr), "c" (fn));
+>>
+>>     return res;
+>> }
+>>
+> The above constraints to use on_each_cpu_mask() is forcing the use of:
 >
->I think I'm miscommunicating here. My concern isn't about whether the
->kernel can mechanically preserve the NO_PASID domain when PASID
->attachments exist. I agree that part works fine.
->
->My concern is purely about silent state loss. If a VMM asks the kernel
->to preserve a device, it expects the entire IOMMU state for that device
->to be safely handed over. If the kernel silently skips the PASID
->attachments and returns success (0), the VMM on the new kernel will wake
->up assuming those PASIDs are still perfectly intact. When the guest
->attempts a PASID-tagged DMA, it will unexpectedly fault.
+> void rmpopt(void *val)
 
-This is a valid concern about silent state loss and I should have been
-elaborate in my reply earlier.
+No.  You don't break your thin wrapper in order to force it into a
+wrong-shaped hole.
 
-My thinking is that PASID preservation should be a granular and opt-in
-feature.
+You need something like this:
 
-- PRESERVE_DEVICE only preserves the IOMMU_NO_PASID attachment.
-- A future patch would add mechanism to mark PASID attachment for
-   preservation. The VMM would have to call this for each specific PASID
-   it wants to preserve.
->
->So the question is: how strictly should the kernel protect userspace
->from this footgun? A few options that I can see:
->
->1. Rely on uAPI docs
->2. Fail the preserve ioctl (-EOPNOTSUPP) if active PASID attachments
->   are detected.
->3. Add an opt-in flag: We could add a flag to the ioctl
->   (IOMMU_LU_FLAG_IGNORE_PASID) so userspace has to explicitly
->   acknowledge the state drop?
->
->Options 2 or 3 are especially important when we consider backwards
->compatibility. If this series is merged in 7.2  with the "silent drop"
->behavior now, when full PASID live update support is eventually added
->in a future kernel, userspace will have no robust way to know if it's
->running on a kernel that preserves PASIDs or silently drops them. By
->returning an error or requiring a flag now, we reserve the right to
->cleanly implement the feature later without breaking the UAPI contract.
+void do_rmpopt_optimise(void *val)
+{
+    unsigned long addr = *(unsigned long *)val;
 
-I think these are valid points and I will return -EOPNOTSUPP if active
-PASID attachments are detected.
+    WARN_ON_ONCE(__rmpopt(addr, OPTIMISE));
+}
 
-I will update this in next revision.
->
->This is an open question from me, I'm okay with any of the 3 options
->I'd like to know what the maintainers think about this as well.
->
->[ ---- >8 ----- ]
->
->Thanks,
->Praan
+to invoke the wrapper safely from the IPI.  That will at obvious when
+something wrong occurs.
 
-Thanks,
-Sami
+~Andrew
