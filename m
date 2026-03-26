@@ -1,207 +1,147 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504A9410D06
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2723A640C
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549489; cv=pass; b=sjMXTc28FaoE6AjJfF+rcIsVP76PHHVPeawfZJFMm3vAO90eYOnrPvDUEH+E0v/X7QntLOG7R7nFxZuEIzewkmOc9gMxkPtsX+Ygiqqn8Kj8taxcjEzp2CpTmovqKEI9DlUKZetXiF6LSPXhhuHI7qWNvfpHlv6K1Efiz5jvLtw=
+	t=1774549536; cv=pass; b=bjkk52+RqrYNRgCQUFohLW9jFqNfXs115b+V+vVgu1RD0LkfDS6vM37Inp1EErCWOf9NNPLEFb5rK5WZaI2rNj14L5trzgsTigt4MrNmIRHLpL/TQU9GQQWYScN6Izn+JFZACTmknZld+9T6xnUrq9oObmXSrQGfX+Lf7fz/4Ig=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549489; c=relaxed/simple;
-	bh=vV0FfkMOXsfsipj7YfWLpHAGdujKQ79g0MHFT4jDWso=;
+	s=arc-20240116; t=1774549536; c=relaxed/simple;
+	bh=Ju4GuypyYdw0ImWV7ufhXgfThhO1xwtog0FALkHkh7Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c2iKNiwMwMFFjb6/u5zE6TvrU/1c0q2qHLDtSl5rSKnbwetnRMbmSbhpDwVRum5R245NCTJ5BlTQ0P5UznHrYTQvpo5oIfIgX70IQr6todH5CP8dhxqJhY/r48xJooiEWXUngYGKjrk0JA8Na34Bj0FpudxwEHe5pMMFk/bshuQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivx61MaE; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=qe1WmQNn90O3NwjoGYLY9cWCtS7JLHQlmE3OaBglqNmpLLPhGpwWFzV8KzV5SBFu96Ery3d54iPHeQepZp7Q8EtRMD9oH5FssD7vHiW0T8LwXeDesuEqSomwqa4d428OhmH4x1kdd9UVcF8RYi+AKIhmhHxFtV2yGeHi+/6n3uo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WAY0gTdh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ddG6tUSB; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivx61MaE"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50b6c45781aso88251cf.0
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:24:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774549487; cv=none;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WAY0gTdh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ddG6tUSB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774549534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ju4GuypyYdw0ImWV7ufhXgfThhO1xwtog0FALkHkh7Q=;
+	b=WAY0gTdh6Yf7pUGionykx23jVOQ44COTnkmAwdg5AGmWt58YgvEaIlJzPE/bx2HzrbZtot
+	EygbusRXg5DmmTFDnOFUyHYOO3TF/yeEO4LeU/3bcsKuM+0hT0ANoWSDELCqkIxcKqtPmx
+	TpHkOxbBTtLKkndinzqxmViJj1cmpRw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-422-joWRmIZWOM69dPv2HL9cpg-1; Thu, 26 Mar 2026 14:25:33 -0400
+X-MC-Unique: joWRmIZWOM69dPv2HL9cpg-1
+X-Mimecast-MFC-AGG-ID: joWRmIZWOM69dPv2HL9cpg_1774549532
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43b93781cb8so977390f8f.3
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:25:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774549532; cv=none;
         d=google.com; s=arc-20240605;
-        b=RRSSGAjs1sG9E0OjKxESW15PqJOXRnA8IylNBZWYqdXt7VAvXLRw9s1aAleGsnA0rt
-         49h8CqQnoXWdw5Ipad6JiTJN7km7LXELTH/CXoRtxL97VS153EwWM/hXEvRkRtr/ee/I
-         XGPhtIS/bwpm1zQncv55zpSRMlNf3vXU3C5ceoGhTk2BZKsQQDKNHvdD+f25BrQXd+XT
-         iIkoF3LBaaZ1ooqN+L8EMpvWJnZeERdZeQv1JpiARuuW0VKmi4ZjBF5mESjyuTcwS002
-         m6jFaTdBwM4a6zu7eiCYYODk35uQVVLnCaWgVY6U7m0bQb2zWYsE4r/oouvmhLi6BXxa
-         UhQQ==
+        b=XqcfCpzMqmVo5di22e8cjgrdNIq9OEy4pKocb+ZTX0x8xJKrM2t4gmah2mQ6LFeXVK
+         2mxoWgHcWIuDTLbMmU4gccToIZatZyjSQaXciiwUriqfJ73krhHL5Q+FR9tCqFIRTjCu
+         9FVOl6fDMqY31Z7/jhcLofk+Y2VKUU7Q0kY3KDR+KcsWt9Rvp3Kkv7nCeWTyRSQmJsYE
+         IpStbr1/iL2tirs/sOrNUXi1awlIke9xgxHxZ/e+ciqSzT4tBBE4yq0MgbgxwdMYeX1L
+         AqGJH7o89+knbjBKbiGyFlgjLOPzOS03UhnrOIv8fV0GrYDhA+DT+kplvhSLauzuYhT6
+         8mFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-        fh=mhpMAOhJbcQEHYL6dRWBjT9PBc1IJ3wDYScwXfI0K3c=;
-        b=e5m3YRnRjDzZsy21g72bF+hmug7u3G4yTWym9AgtHl7NfbhzOGvAxDTkJ5BSKnZgAQ
-         UKOAU2ZZncWggx0lEGMBnQNnP6ny74mBesW18lSmDWNq0j0fp6rOZEmo967c1gB4uZHu
-         w/YjC0WmvC30RB2k5JzoLxYNSswHLc4v+XDfno7pV4+1yM1VJf8DgP/I+wblyx4DdOVV
-         E17XtAqivY5nEOXBGrV5Tsz/Jx7+YcKDhWGCFHzkK5NmHBlIEf86lG1lIIFY227j1Kxh
-         IBzs5+GnSKam5nhTYfBScjYRHgl3KpCYJhY+2Q2J8KeC1eJKBQOJegDd1OcVlLeAOBOb
-         VuUg==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Ju4GuypyYdw0ImWV7ufhXgfThhO1xwtog0FALkHkh7Q=;
+        fh=ERAwXdbgOwSo7vs9e7iqyfoxl7FJMj0JbuZe2VUrPPU=;
+        b=b80avF4qaIaOUaD3bsDt9FX+jKXRR7D+yPhyF5IiJ0ybFpWDbaIsEFepPE0hDIRSOk
+         xAn7u/wTldk3f6gOvwGctpxO1qm+X69YaSZVuO0crYfv+88KlY8vrWbQAfqtcZADvoa8
+         JQGOhgFVzCccfqmkR5PzB2Rwvbd/69Ahpf5gtKY5vIsD/SsCwUdliHXGpkbBxQkzQQ7M
+         lr58a+UMTgqOK5gvWkesDJYgEYWtlnB2hr3TvzNOF1bo5TakPnDmrrrWaDe/WlqgbEoQ
+         GUkS61pRisIlY5YkiVok8DhtU6DS2R1lH5EAdvi+umwnzjVnOXsHJn3Ccc3lmKHD2/5y
+         Os8w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774549487; x=1775154287; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-        b=ivx61MaEp/zQSux3x9+QX1b20Umy0hUiUf9oBIKs6blgAjjNfS9Za2ym9fx8hoS5Ae
-         KeSdZEESFQBlIt8r1Rr8gy/L0qE2HX85PT0stEf5aU3wHylzbZxmERJoozV3u8uAXo6X
-         +zGsup3KrpP90Q0Ml2ooSVmTpxx+ZlpwNOHSZAy9dzHWMiFzPceOg3xPvL3TsnxTYXGn
-         GN7S/SIrKq428BIafT62c5HPqPIcHiOq8jCEbonkmgBtkpSs9yLBKCHMWO3Elq6UBOyy
-         1GQFEvnUeVBDyWWTFc2MoseBFMEd8NSklddYv29BWZy59sJNLa0FGsATNEeeCAuQ7BBO
-         1CvQ==
+        d=redhat.com; s=google; t=1774549532; x=1775154332; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ju4GuypyYdw0ImWV7ufhXgfThhO1xwtog0FALkHkh7Q=;
+        b=ddG6tUSBnKyXWs5EYuBWPXhkHCNk3qiwgnXZcbCx8mjpMFq+FqNvkbu8qJOVz18Fhy
+         dM68NIAd5aRzC6tOEMgS069TrCm6g0/YXYn+5fszylQOoULw/BUvVekmSW0V3/7ayMKK
+         +yAxWUH2nF3ZfrGp3OnI/N2ASuA9ildmSlfRYUITkXDZolE0fGL9w/VFf2GCXtQ8J51G
+         IKL5TQTm2w3hFhrrKYJEznF7dYOcOoY7sUgGPW/JN1i6l4E6NE3DhUfBdOVZSYEJgFMX
+         vf9/Xau8ePAdzVdLTFTgqc3/P1cBrGGSaIjnJ+F7L65Zpq0+rNAVBaPxKYTI0iWCHz6U
+         uT9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549487; x=1775154287;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-        b=fPkaxkGPmuiC4rJMcQh+33EViqxukHFXuz/L8eKbhKOVK3WXLJ99cw0jmRF+rG+RL/
-         /HjE66mLEaS1fL45uK/6/LIBai69X3XRgHxEsWeUOP2zb9OsnfHZypdcr6Dzn1YY4e10
-         xdaP2x8yT82cAU9Fm0n7LBgjdqtxAkG6kUnT9+JjF8ltTrV8W3TQbh8/G5P/oqtnUdv0
-         Zo9zfy2CUIC+RU+r3N9EUy76chKrUgeMX84AyTpPOs+m10TngmCpHUHeQexYU36kxW5t
-         5/SQAlwdygRxE1Mc62DkJsK1d76+Ly4wTgDAlwKADgGHSbPiQSnKknd221rfNAQhPE7J
-         0iZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIDUpw4OHLFWySfRXuwGWIYdkev+RBBQL3u0p3MxqKLGDcrD7pL3vSPERIoipOrtZbCR0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi5F3293gGFDdswxmfLtBVzTbxRHzvtZ8OOE7YYa+k4KkrXqge
-	ER92OFdGgPU+/zxsxrz02ke/cJUmjk6P9+hLS7n7wBb+XGJ2cq5XTTu3gkCFmbkvGDkl5M5Tnn2
-	zt8rshiXNfJSH2qULr/MkwHOTMZPlrRt/H8KakNKn
-X-Gm-Gg: ATEYQzxG4dJalrMIO4iq8J9H0fkFVU14LorllgkcvcB9cY1Bw8OMSnLIQsmnCkhBqQ1
-	JjYsGi44k7KlOBdFP0b8tXgdAvJi07YKFCMZZdn+sOa0GUk3sFclRDoR751IfXCduN3Ymu3I5l6
-	HvM3vFjb7O1kkTtteoSjDiAOu/UW/lH5IX2LL8RtZN5yD8GdPIHHvUY6cCOP5xbDUoGCeM9q3Wi
-	mW+UK7KchH5N+t+jC0ljytnTtReZMc2CRWeMBP3uU4nsc0ayEdXZtl0EM/n46sbuVFH6NDMfVv3
-	TayT40za3OXufAYMQcfRvdyONXm1kyI60Q==
-X-Received: by 2002:a05:622a:93:b0:50b:71e4:878c with SMTP id
- d75a77b69052e-50ba1e41c39mr1037271cf.15.1774549486349; Thu, 26 Mar 2026
- 11:24:46 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774549532; x=1775154332;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ju4GuypyYdw0ImWV7ufhXgfThhO1xwtog0FALkHkh7Q=;
+        b=n5QbxLf2/gTJLlnh71Q6mF9EVtRyEY71DstJmDpC+lczKbqBL0OkjVS1Ij6kZmFuq5
+         SCsIQUCnLk3jQKz/uSyaouCaQd7GvQlqftE1HJ1mnX/o4nL/EJyvX7vwuPnpMf+dxJj7
+         bgw8vbYccqnaYVL8lqOkygY26kROLzfvfvMAS+JTQ5LyvhDo4Wc8ynB8KR16gKr9NHhp
+         TxZRJ300CHTNEAkdKORenDVGkt0tA8Bqv8t44VsSP1yQazRiJlPEWxLrBQKGnIJQmS+G
+         5o+ZsrKcA2DnBm74vekcTMGj6hzNfVPOozBqGJCQY/Us4KdqPETZJM7tQRtKTYfPKG1z
+         /1xA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmbYSr7Y/JOlEB9aLzGg8E2ClI0fjrmvHa5JasakKu1g6LT8y8iqYs5nijA/3+SiwoR34=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyLnl9quzzW29LBgq973/R+WSuJ4LMrxR9t0ReGyLHFXUEeqpM
+	o8Pm5CDa5IxsCqPLhAAOpDqwoOlezZ0Vojie6LQ14cT75FOCL/WwSL/3M1gVfyFUh4ikK9acKc1
+	4OsE7UyWv2MwpDV5YkCvuHNrNWemqhahNQF4+4fF+IsNgiXt/N+y9zMVTZPwct7bZ4X1gJfMWjf
+	cLEw0KJbOtpEeS6GdfdqcbZqNMNiVh
+X-Gm-Gg: ATEYQzxUw5SOH7b2Fs840W/jyk5ItrGkIIPnaexEPpBioDsBUshCKz4wzUzPD2l7sdS
+	X64fIaCOk08XJwFxzH21t0c8Xj9063nctQhLrPYvqVwSqkWwKzh0g+/B3gXJRUHtnJDN3ASWnwf
+	+yqMkIUpsyRLKsuVcAyxcuhUE1EsOUpoVvUAuCqAQgU/0K31iLi9sdZOF+DAqBtyUI/Pss/HG7P
+	hXycwycZ2xp/Vy3smZ8+isogPMqIycAbl6ZhEVQuzQkdvJyWeM9T+U2f7IoyGin53FCslyz5ZZI
+	sFTd
+X-Received: by 2002:a05:600c:1f12:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-487160564abmr131776465e9.16.1774549531556;
+        Thu, 26 Mar 2026 11:25:31 -0700 (PDT)
+X-Received: by 2002:a05:600c:1f12:b0:47e:e48b:506d with SMTP id
+ 5b1f17b1804b1-487160564abmr131776075e9.16.1774549531118; Thu, 26 Mar 2026
+ 11:25:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326080836.695207-1-surenb@google.com> <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
-In-Reply-To: <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 26 Mar 2026 11:24:35 -0700
-X-Gm-Features: AQROBzDeN__PRe-Y7mIO9LZxPL3s1KNrdWWWOsbo7He0DKFlde5Dab9lnrvUpiU
-Message-ID: <CAJuCfpG_xa5nxSRrvu4TnwhCrmocPkHpWEQbE_yeyN3L69Y6tQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+References: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
+ <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com> <56190adc345148396ba6b3e52672e662145f7dc7.camel@intel.com>
+ <CAMxuvaytU-pM+rviUbNGWMhvbAYutwvaSXW_O=sn+QfOzF35Xw@mail.gmail.com> <7802b50589c80a7276a50cc473c1aa579750a30c.camel@intel.com>
+In-Reply-To: <7802b50589c80a7276a50cc473c1aa579750a30c.camel@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 26 Mar 2026 19:25:19 +0100
+X-Gm-Features: AQROBzA4Xxa8YCmGcRxu79Svr4HUz2dOQ6f5ejBx1X38OfhAGi0MWHQBY_m3IsA
+Message-ID: <CABgObfZ7_w8Q-dW=Sd4YA3P==BuN1edPv7Ty4EpPyU8ctW6RLg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, kas@kernel.org, "Qiang, Chenyi" <chenyi.qiang@intel.com>, 
+	"Anvin, H. Peter" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, kvm <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, 
+	"the arch/x86 maintainers" <x86@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 26, 2026 at 2:18=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
+Il mer 25 mar 2026, 18:21 Edgecombe, Rick P
+<rick.p.edgecombe@intel.com> ha scritto:
 >
-> -cc old email
+> Ah, I see now! So the problem is not that the kernel is accidentally
+> re-accepting the memory. It's that host userspace is not actually
+> removing the memory during unplug. Hmm. Why not fix userspace then? If
+> the memory is unplugged it should not be usable anymore by the guest.
+> If it is still accessible then it seems kind of like a bug, no?
 >
-> (Gentle reminder to please send all new stuff to ljs@kernel.org - at some
-> point I'm going to set a rule to ignore kernel mail sent to the old addre=
-ss
-> so, if you need a response you should send to the new :)
-
-Ack, sorry about that and thanks for all the reviews, Lorenzo!
-
-I noticed Sashiko's concerns at [1] and a number of them are false
-positives but I see at least one new claim which might be legit. I'll
-check if it holds water.
-
-[1] https://sashiko.dev/#/patchset/20260326080836.695207-1-surenb%40google.=
-com
-
+> And! This totally justifies the warning. If the error is ignored, the
+> guest would think the memory is zeroed, but it could have old data in
+> it. It's exactly the kind of tricks a VMM could play to attack the
+> guest.
 >
->
-> On Thu, Mar 26, 2026 at 01:08:30AM -0700, Suren Baghdasaryan wrote:
-> > Now that we have vma_start_write_killable() we can replace most of the
-> > vma_start_write() calls with it, improving reaction time to the kill
-> > signal.
-> >
-> > There are several places which are left untouched by this patchset:
-> >
-> > 1. free_pgtables() because function should free page tables even if a
-> > fatal signal is pending.
-> >
-> > 2. userfaultd code, where some paths calling vma_start_write() can
-> > handle EINTR and some can't without a deeper code refactoring.
-> >
-> > 3. mpol_rebind_mm() which is used by cpusset controller for migrations
-> > and operates on a remote mm. Incomplete operations here would result
-> > in an inconsistent cgroup state.
-> >
-> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
-> > vma_start_write() out of these functions and replacing it with
-> > vma_assert_write_locked(), then callers of these functions should
-> > lock the vma themselves using vma_start_write_killable() whenever
-> > possible.
-> >
-> > Changes since v4 [1]:
-> > - added Reviewed-by, per Barry Song and Lorenzo Stoakes (wherever the c=
-ode
-> > stayed the same)
-> > - split patch 2 into 3 parts, per Lorenzo Stoakes
-> > - converted vma_start_write() in mseal_apply(), per Sashiko
-> > - changed vma_start_write_killable() error handling in
-> > set_mempolicy_home_node(), per Lorenzo Stoakes
-> > - added comment why mm->locked_vm is fine even when we exit early,
-> > per Sashiko
-> > - moved vma locking before vrm_calc_charge() in move_vma(), per Sashiko
-> > and Lorenzo Stoakes
-> > - set give_up_on_oom on error in vma_merge_existing_range() to propagat=
-e
-> > the error, per Lorenzo Stoakes
-> > - moved validate_mm() out of the error path in expand_upwards(),
-> > per Lorenzo Stoakes
-> > - dropped the patch changing S390 error handling, per Sashiko and
-> > Lorenzo Stoakes
-> > - reworked error handling in clear_refs_write(), per Lorenzo Stoakes
-> > - uninlined process_vma_walk_lock() while changing its return type,
-> > per Lorenzo Stoakes
-> >
-> > [1] https://lore.kernel.org/all/20260322054309.898214-1-surenb@google.c=
-om/
-> >
-> > Suren Baghdasaryan (6):
-> >   mm/vma: cleanup error handling path in vma_expand()
-> >   mm: use vma_start_write_killable() in mm syscalls
-> >   mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
-> >   mm/vma: use vma_start_write_killable() in vma operations
-> >   mm: use vma_start_write_killable() in process_vma_walk_lock()
-> >   KVM: PPC: use vma_start_write_killable() in
-> >     kvmppc_memslot_page_merge()
-> >
-> >  arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
-> >  fs/proc/task_mmu.c                 |  12 +--
-> >  mm/khugepaged.c                    |   5 +-
-> >  mm/madvise.c                       |   4 +-
-> >  mm/memory.c                        |   2 +
-> >  mm/mempolicy.c                     |  12 ++-
-> >  mm/mlock.c                         |  28 ++++--
-> >  mm/mprotect.c                      |   5 +-
-> >  mm/mremap.c                        |   8 +-
-> >  mm/mseal.c                         |   5 +-
-> >  mm/pagewalk.c                      |  22 +++--
-> >  mm/vma.c                           | 146 +++++++++++++++++++++--------
-> >  mm/vma_exec.c                      |   6 +-
-> >  13 files changed, 190 insertions(+), 70 deletions(-)
-> >
-> >
-> > base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
-> > --
-> > 2.53.0.1018.g2bb0e51243-goog
-> >
+> Another option could be to perform a TDG.MEM.PAGE.RELEASE TDCALL from
+> the guest when it unplugs the memory, to put it in an unaccepted state.
+> This would be more robust to buggy VMM behavior. But working around
+> buggy VM behavior would need a high bar.
+
+Wouldn't it actually be a very low bar? Just from these two paragraphs
+of yours, it's clear that the line between buggy and malicious is
+fine, in fact I think userspace should not care at all about removing
+the memory. Only the guest cares about acceptance state.
+
+Doing a RELEASE TDCALL seems more robust and not hard.
+
+Paolo
+
