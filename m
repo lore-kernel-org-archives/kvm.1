@@ -1,435 +1,115 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37726390C83
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 02:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774492906; cv=pass; b=KlE3C5p+Hm7XIIMzYmQQy6UZa8YC+s+oYHn6wHSSnAuScleXmrKrf65kPbEARNTTmRUxRJK2L9D3yqREn85Jd2wUVU9FnRS3zTifRNZ6El45qB1DJmIU5jpwN2y3XlS+J5ImcVrK/diWB2NDnFoLuBJK8qaZEEx6hknxuC5Z1vQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774492906; c=relaxed/simple;
-	bh=NZuXp9OMgbMNwXIjDFC+3NSoAl7iWLz7wHWTMwoa3bQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eiygj92hUf2SH1ZVAOkLggH54JPwjpvXHyFdln9OxFf6HmIln0a5x5RRNJ3HXMllYgTqgIObKdHMU1zYD2BlOdT7xk/IzIUQL/6eQGDrI24SKymVe8wgPt815kmQqaE0NfX0bqQg5UkTqvnKEEmO9p5bUn5DmDJ2q3xSrDW4JAU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GftbzEJl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EMS11hPB; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B239A372B57;
+	Thu, 26 Mar 2026 03:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774494751; cv=none; b=cWVfsapJbr/wKASgXHkfBT5uhiJnBaAnQZSSXOvlZgq+y77MrVS0se45zVAgYNcIIoxk4WuvAfVmAceiaNgEdo4K70f1Oblz84ArXEhK7UmhlopMjy+rtsmwQDzlTwaR8OMfcOw6E1lXAdph+ZlJGrCDjCRURspkiheiovcFjf0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774494751; c=relaxed/simple;
+	bh=h/r8PIV+ojYyJjtZwQ41PHWtZzD7MW1lTxeoc/rWfdg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZTnAZkJIYY5klrZk0+QP4AhK8XgkyyNFoawsuZRUFW+CZO4uEd9/r1Yt3iWYkqGBMN7D9SyxIdq8T4HaRwzbVr/Fr8XAA8MpwVlyxWkN/58wpzvginJSKF8JLMa+aiGvok3iJ9g+xq38dClSN5Mvk7ZjeiqgBJ5XZ7ByCur02aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlhLAeoy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GftbzEJl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EMS11hPB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774492904;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e03kIxAl55kIcXh5aMreNNyQExpmH90DzHI1x2EvTDI=;
-	b=GftbzEJl8bGDF2KNSyw/ljiydj/CxAjBNMAD0JJv7PDvt0HiquY3z9IlTbm7EM8I4Q6HZQ
-	GTK/AdCoYlxQhrpskHfhq/eClNi7IWnTCJo0g/TjTirhkZJazP5NCix90Vd39Am2iUwveW
-	5BM+/U9qsadVUg/d7kfx9MZn04hXYOI=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-uS2iEJwaPba2lotqWmZqfw-1; Wed, 25 Mar 2026 22:41:42 -0400
-X-MC-Unique: uS2iEJwaPba2lotqWmZqfw-1
-X-Mimecast-MFC-AGG-ID: uS2iEJwaPba2lotqWmZqfw_1774492901
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2b0baf3cf5bso6900675ad.0
-        for <kvm@vger.kernel.org>; Wed, 25 Mar 2026 19:41:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774492901; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XWCFdjgwvqIirAsc43O8+CATNvn36oQDZhnHXiEXaZpZU/4dhuxrXpyhXcM91ajJR5
-         xLoafNxpMtnFMxBu6S+I2pT8SRN8/yL/J59/vABZL9t1fqZhqJkWXq2Hm7L36gNAGeFO
-         WMV89whCEGYFUq+qCsUZ6CD6Ae6xkrxaCNjBQh3ZsUOPoqzYpCyCkivGFixuoxMILpTq
-         HLme34+B3UIcvi01hr45MZD51P6hxVc/+qVnF2hhv400yUot0Lhfp5NUq3tOUjGxt9gF
-         aKG4V4XKKBe5sbBAq+K9matoHTARMm1o+FJ6NESGZVlyWhyP36fmdhf7s76ojN5PVkWX
-         J7jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=e03kIxAl55kIcXh5aMreNNyQExpmH90DzHI1x2EvTDI=;
-        fh=0Z1Q99nZA0qY0iVnk4zTVTLbge63KLVm/HhKzJYneuE=;
-        b=WcArSmZHPVzGoFByph6SBoCqMf5rfu7eAk1PQFq5AXavndU0zjwf3y5FGVvcJ7cfNl
-         hjSnPaIdG33ta9S3ofh91GLjwbr9CvFIMdK8aohTXgmbhHKPklDVSXiDHh2OkE65dZEP
-         Usnp9gQR+OAMgQqMH4ZwJkKTkqVXPLAt3a6Ga2LBz5guzmhD665gDeKcg7gPGutcfHtv
-         5Ue6mxttOf/AI35DZZWSb4J3plLUzfsbSFhe+OBGc7UIi9C8bhEiFVfHHck03XiuxJFS
-         DaPrPwrvUNpihTmWEzgxTHZ9rPKpLlkrH2hQYtJUh7wEvxaGUMf0bmMNbV9Ps+A1u0J+
-         pYQw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774492901; x=1775097701; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e03kIxAl55kIcXh5aMreNNyQExpmH90DzHI1x2EvTDI=;
-        b=EMS11hPBjOVpp6PQEqXTQb9u4+6udRUC/NCHIWfTEy9RAscX0ujZ9+9hIooFjbFbQf
-         bG3Szho1Cndm0rv6lVXsI9CLc1pkG+eSEnpj+vlnMPhpueLzl+sNYHa1WM56FMmOy5F5
-         qq8Hn5l38MzczdLZvlV32z62WAw7T9rr/dfbsUk+MceERJuGesVs1xM3jWA6X1Y+3oVL
-         e0DAaNkgPVSi0mAQkQcrzV1a1QHIdMR4evgTdfKgQPHwpvMWyuP/UkfT8bnLSMFN28tX
-         3FRqP9879LIiQ7JVvKn9MhTjTCmOxh7V+27LP0DFEkMexCn2smufOePmbWqer/RFmES7
-         jjVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774492901; x=1775097701;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=e03kIxAl55kIcXh5aMreNNyQExpmH90DzHI1x2EvTDI=;
-        b=UPn6gjDBVtz71YTZlqz7Q0IavWO8lykMW/UzYytyuQ5Rja8ktxjSlSWOCO+aeMDd1H
-         F+xdhAemGlPZbBUTHJWauTcKLqwuCmvQn0HaGXshZ0Y+/z9/njMsjoYixMwiXUNmezh1
-         ZbXCksY4ICB+M8uWLuJn5G4mvR4igtqLmD/HQzZ4Qoo3UV1vrx/pcNv2OmsbIEP5h13E
-         m4CUx2W3vz2UiSNWgwS0ykW6O2p9Q3OUbuf6G4sJDEFTk7o63TVCQ0+U3812jHmnd3sz
-         iaFCCtmANWqKOUkg3usaMXuhnPgxNH0AIyF2Pi+0mttyzZXTMS3+zjkufh8ZRaOd/4x7
-         5/Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCUOLj8TMn2f1T1K4aMvo+Gx4djTqxmPQzGB3HtPXhMM4Vg4LsRVOGEMSqYcXo/3sE4iwXI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy45qyPaOGPKKZQHzmkPaR35QnNn9E+Ikn12Z8AheDFRlItVtj+
-	hMgbe1MJdM1AP6ITfXMf1PtmbwKFNwiRZqEaBlzPKOpXyKbT2DpzE9r0RiXhVWnV4kPj1NVI3DK
-	bQqhHAXJnhXI7OvvSMQm1ZEX/KvkEKs5rG5EF7JwmMyc+weVTllNTXn3/Z3BDBhz4Fc64t/AXnT
-	jmOuuP7h89LuIyWdTg011aJgCfKOQG
-X-Gm-Gg: ATEYQzzz8IgUImMN+SW8gluZKVVxdVnib3hlpp8fRBkbZ72QpneiZ+AzK2Ola6TjL7Y
-	IkhcJ7krPNBLPPcrjh2EAtNorGNoDAmbcNud+ptPmrt4FoY4n1lmrJFMmed03LrQYiukRa4tPtI
-	lN5Vb/1kXB7Jd6jRjsoCkuAAqfA/9DHcHSUpnN1NXJDKe8IpvlVvO3i46gN5huuub1wDTWISYzm
-	7Rk
-X-Received: by 2002:a17:90b:278e:b0:359:8f63:9a25 with SMTP id 98e67ed59e1d1-35c007b464emr8662449a91.3.1774492901088;
-        Wed, 25 Mar 2026 19:41:41 -0700 (PDT)
-X-Received: by 2002:a17:90b:278e:b0:359:8f63:9a25 with SMTP id
- 98e67ed59e1d1-35c007b464emr8662429a91.3.1774492900454; Wed, 25 Mar 2026
- 19:41:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlhLAeoy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012D7C4CEF7;
+	Thu, 26 Mar 2026 03:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774494751;
+	bh=h/r8PIV+ojYyJjtZwQ41PHWtZzD7MW1lTxeoc/rWfdg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RlhLAeoy0egsTPV1/RCTyOqfRguKNljOafnZa/ZNkPoIxpLWMK/iPyrwGse5fitA6
+	 tofMaQ/Z48gAwj6sG9W0myECQm2y7WXYSxfqqPY7tTpqrtRfYeHHhcd/NzZK4EpYQC
+	 MVuDkUMOjEiuYaIeQOEUWj/CmvGaDKo3mlUBDdBRTRXjI6nXIpiv+SM6gNKg33sjLN
+	 6KoJGZbJsTQOa4tg6ekg+lGGln80YdKtXOo7WwlREHqrHmMEJiaFhgN09O/cvtD1ku
+	 S0RJO1UqZDIZunZOm7V0yGXhLOtboJzumqPxpR2O0oYWUh2FAbf4jNnT33D1DRiVK4
+	 4QY9SKTp90jRQ==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v4 0/6] KVM: x86/pmu: Add support for AMD Host-Only/Guest-Only bits
+Date: Thu, 26 Mar 2026 03:11:44 +0000
+Message-ID: <20260326031150.3774017-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
- <20260312130639.138988-5-simon.schippers@tu-dortmund.de> <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
- <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de> <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
-In-Reply-To: <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 26 Mar 2026 10:41:29 +0800
-X-Gm-Features: AQROBzCWaeA2at0khp-5AihPvjzqWo4VROly4dD8VgJGx1hCknikvahWTNJja5M
-Message-ID: <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mst@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
-	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 25, 2026 at 10:48=E2=80=AFPM Simon Schippers
-<simon.schippers@tu-dortmund.de> wrote:
->
-> On 3/24/26 11:14, Simon Schippers wrote:
-> > On 3/24/26 02:47, Jason Wang wrote:
-> >> On Thu, Mar 12, 2026 at 9:07=E2=80=AFPM Simon Schippers
-> >> <simon.schippers@tu-dortmund.de> wrote:
-> >>>
-> >>> This commit prevents tail-drop when a qdisc is present and the ptr_ri=
-ng
-> >>> becomes full. Once an entry is successfully produced and the ptr_ring
-> >>> reaches capacity, the netdev queue is stopped instead of dropping
-> >>> subsequent packets.
-> >>>
-> >>> If producing an entry fails anyways due to a race, tun_net_xmit retur=
-ns
-> >>> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected becaus=
-e
-> >>> LLTX is enabled and the transmit path operates without the usual lock=
-ing.
-> >>>
-> >>> The existing __tun_wake_queue() function wakes the netdev queue. Race=
-s
-> >>> between this wakeup and the queue-stop logic could leave the queue
-> >>> stopped indefinitely. To prevent this, a memory barrier is enforced
-> >>> (as discussed in a similar implementation in [1]), followed by a rech=
-eck
-> >>> that wakes the queue if space is already available.
-> >>>
-> >>> If no qdisc is present, the previous tail-drop behavior is preserved.
-> >>
-> >> I wonder if we need a dedicated TUN flag to enable this. With this new
-> >> flag, we can even prevent TUN from using noqueue (not sure if it's
-> >> possible or not).
-> >>
-> >
-> > Except of the slight regressions because of this patchset I do not see
-> > a reason for such a flag.
-> >
-> > I have never seen that the driver prevents noqueue. For example you can
-> > set noqueue to your ethernet interface and under load you soon get
-> >
-> > net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
-> >                                            dev->name);
-> >
-> > followed by a -ENETDOWN. And this is not prevented even though it is
-> > clearly not something a user wants.
-> >
-> >>>
-> >>> Benchmarks:
-> >>> The benchmarks show a slight regression in raw transmission performan=
-ce,
-> >>> though no packets are lost anymore.
-> >>>
-> >>> The previously introduced threshold to only wake after the queue stop=
-ped
-> >>> and half of the ring was consumed showed to be a descent choice:
-> >>> Waking the queue whenever a consume made space in the ring strongly
-> >>> degrades performance for tap, while waking only when the ring is empt=
-y
-> >>> is too late and also hurts throughput for tap & tap+vhost-net.
-> >>> Other ratios (3/4, 7/8) showed similar results (not shown here), so
-> >>> 1/2 was chosen for the sake of simplicity for both tun/tap and
-> >>> tun/tap+vhost-net.
-> >>>
-> >>> Test setup:
-> >>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
-> >>> Average over 20 runs @ 100,000,000 packets. SRSO and spectre v2
-> >>> mitigations disabled.
-> >>>
-> >>> Note for tap+vhost-net:
-> >>> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
-> >>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf=
-)
-> >>>
-> >>> +--------------------------+--------------+----------------+---------=
--+
-> >>> | 1 thread                 | Stock        | Patched with   | diff    =
- |
-> >>> | sending                  |              | fq_codel qdisc |         =
- |
-> >>> +------------+-------------+--------------+----------------+---------=
--+
-> >>> | TAP        | Transmitted | 1.151 Mpps   | 1.139 Mpps     | -1.1%   =
- |
-> >>> |            +-------------+--------------+----------------+---------=
--+
-> >>> |            | Lost/s      | 3.606 Mpps   | 0 pps          |         =
- |
-> >>> +------------+-------------+--------------+----------------+---------=
--+
-> >>> | TAP        | Transmitted | 3.948 Mpps   | 3.738 Mpps     | -5.3%   =
- |
-> >>> |            +-------------+--------------+----------------+---------=
--+
-> >>> | +vhost-net | Lost/s      | 496.5 Kpps   | 0 pps          |         =
- |
-> >>> +------------+-------------+--------------+----------------+---------=
--+
-> >>>
-> >>> +--------------------------+--------------+----------------+---------=
--+
-> >>> | 2 threads                | Stock        | Patched with   | diff    =
- |
-> >>> | sending                  |              | fq_codel qdisc |         =
- |
-> >>> +------------+-------------+--------------+----------------+---------=
--+
-> >>> | TAP        | Transmitted | 1.133 Mpps   | 1.109 Mpps     | -2.1%   =
- |
-> >>> |            +-------------+--------------+----------------+---------=
--+
-> >>> |            | Lost/s      | 8.269 Mpps   | 0 pps          |         =
- |
-> >>> +------------+-------------+--------------+----------------+---------=
--+
-> >>> | TAP        | Transmitted | 3.820 Mpps   | 3.513 Mpps     | -8.0%   =
- |
-> >>> |            +-------------+--------------+----------------+---------=
--+
-> >>> | +vhost-net | Lost/s      | 4.961 Mpps   | 0 pps          |         =
- |
-> >>> +------------+-------------+--------------+----------------+---------=
--+
-> >>>
-> >>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.=
-org/
-> >>>
-> >>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> >>> ---
-> >>>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
-> >>>  1 file changed, 28 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> >>> index b86582cc6cb6..9b7daec69acd 100644
-> >>> --- a/drivers/net/tun.c
-> >>> +++ b/drivers/net/tun.c
-> >>> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff =
-*skb, struct net_device *dev)
-> >>>         struct netdev_queue *queue;
-> >>>         struct tun_file *tfile;
-> >>>         int len =3D skb->len;
-> >>> +       bool qdisc_present;
-> >>> +       int ret;
-> >>>
-> >>>         rcu_read_lock();
-> >>>         tfile =3D rcu_dereference(tun->tfiles[txq]);
-> >>> @@ -1063,13 +1065,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buf=
-f *skb, struct net_device *dev)
-> >>>
-> >>>         nf_reset_ct(skb);
-> >>>
-> >>> -       if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-> >>> +       queue =3D netdev_get_tx_queue(dev, txq);
-> >>> +       qdisc_present =3D !qdisc_txq_has_no_queue(queue);
-> >>> +
-> >>> +       spin_lock(&tfile->tx_ring.producer_lock);
-> >>> +       ret =3D __ptr_ring_produce(&tfile->tx_ring, skb);
-> >>> +       if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present=
-) {
-> >>
-> >> So, it's possible that the administrator is switching between noqueue
-> >> and another qdisc. So ptr_ring_produce() can fail here, do we need to
-> >> check that or not?
-> >>
-> >
-> > Do you mean that? My thoughts:
-> >
-> > Switching from noqueue to some qdisc can cause a
-> >
-> > net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
-> >                                            dev->name);
-> >
-> > followed by a return of -ENETDOWN in __dev_queue_xmit().
-> > This is because tun_net_xmit detects some qdisc with
-> >
-> > qdisc_present =3D !qdisc_txq_has_no_queue(queue);
-> >
-> > and returns NETDEV_TX_BUSY even though __dev_queue_xmit() did still
-> > detect noqueue.
-> >
-> > I am not sure how to solve this/if this has to be solved.
-> > I do not see a proper way to avoid parallel execution of ndo_start_xmit
-> > and a qdisc change (dev_graft_qdisc only takes qdisc_skb_head lock).
-> >
-> > And from my understanding the veth implementation faces the same issue.
->
-> How about rechecking if a qdisc is connected?
-> This would avoid -ENETDOWN.
->
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index f48dc299e4b2..2731a1a70732 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -4845,10 +4845,17 @@ int __dev_queue_xmit(struct sk_buff *skb, struct =
-net_device *sb_dev)
->                                 if (is_list)
->                                         rc =3D NETDEV_TX_OK;
->                         }
-> +                       bool qdisc_present =3D !qdisc_txq_has_no_queue(tx=
-q);
->                         HARD_TX_UNLOCK(dev, txq);
->                         if (!skb) /* xmit completed */
->                                 goto out;
->
-> +                       /* Maybe a qdisc was connected in the meantime */
-> +                       if (qdisc_present) {
-> +                               kfree_skb(skb);
-> +                               goto out;
-> +                       }
-> +
->                         net_crit_ratelimited("Virtual device %s asks to q=
-ueue packet!\n",
->                                              dev->name);
->                         /* NETDEV_TX_BUSY or queue was stopped */
->
+v4 of Jim's series adding support for AMD's Host-Only and Guest-Only
+performance counter eventsel bits in KVM's mediated PMU passthrough
+implementation.
 
-Probably not, and we likely won't hit this warning because qdisc could
-not be changed during ndo_start_xmit().
+These bits allow an nSVM-enabled guest to configure performance counters
+that count only during L1 execution (Host-Only) or only during L2 execution
+(Guest-Only).
 
-I meant something like this:
+KVM updates the hardware event selector ENABLE bit at the following state
+transitions to ensure counters only count in the appropriate mode:
 
-1) set noqueue to tuntap
-2) produce packets so tuntap is full
-3) set e.g fq_codel to tuntap
-4) then we can hit the failure of __ptr_ring_produce()
+  - EFER.SVME changes: Enable/disable Guest-Only counters
+  - Nested VMRUN: Disable Host-Only, enable Guest-Only counters
+  - Nested VMEXIT: Enable Host-Only, disable Guest-Only counters
 
-Rethink of the code, it looks just fine.
+v3 -> v4:
+- Dropped amd_pmu_set_eventsel_hw(), moved handling of
+  Host-Only/Guest-Only bits to PMU counter reprogramming and funnelled
+  all processing through KVM_REQ_PMU [Sean].
+  - For this to work, added a per-vendor callback for reprogramming PMU
+    counters.
+- Sorta restored the bitmask from v1, except now it's a single bitmask
+  tracking all counters that need to be reprogrammed on nested
+  transitions. The bitmask is used to avoid unnecessary KVM_REQ_PMU
+  requests and only reprogram counters as needed  [Jim].
+  - This is also needed to avoid directling calling vendor code from
+    {enter/leave}_guest_mode() as requested by Sean.
+- Added prep patches moving enable_pmu/enable_mediated_pmu and
+  guest_mode helpers to facilitate following changes without circular
+  dependencies and to avoid including new headers from leaf headers.
 
->
-> >
-> >
-> > Switching from some qdisc to noqueue is no problem I think.
-> >
-> >>> +               netif_tx_stop_queue(queue);
-> >>> +               /* Avoid races with queue wake-ups in __tun_wake_queu=
-e by
-> >>> +                * waking if space is available in a re-check.
-> >>> +                * The barrier makes sure that the stop is visible be=
-fore
-> >>> +                * we re-check.
-> >>> +                */
-> >>> +               smp_mb__after_atomic();
-> >>
-> >> Let's document which barrier is paired with this.
-> >>
-> >
-> > I am basically copying the (old) logic of veth [1] proposed by
-> > Jakub Kicinski. I must admit I am not 100% sure what it pairs with.
-> >
-> > [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.or=
-g/
+v3: https://lore.kernel.org/kvm/20260207012339.2646196-1-jmattson@google.com/
 
-So it looks like it implicitly tries to pair with tun_ring_consume():
+Jim Mattson (2):
+  KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediated
+    PMU
+  KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only
+    bits
 
-1) spinlock(consumer_lock)
-2) store NULL to ptr_ring // STORE
-3) spinunlock(consumer_lock) // RELEASE
-4) spinlock(consumer_lock) // ACQURE
-5) check empty
-6) spinunlock(consumer_lock)
-7) netif_wakeup_queue() // test_and_set() which is an RMW
+Yosry Ahmed (4):
+  KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+  KVM: x86: Move guest_mode helpers to x86.h
+  KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits in
+    SVM
+  KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on nested SVM
+    transitions
 
-RELEASE + ACQUIRE implies a full barrier
+ arch/x86/include/asm/kvm-x86-pmu-ops.h        |   1 +
+ arch/x86/include/asm/kvm_host.h               |   6 +
+ arch/x86/include/asm/perf_event.h             |   2 +
+ arch/x86/kvm/kvm_cache_regs.h                 |  23 --
+ arch/x86/kvm/pmu.c                            |  12 ++
+ arch/x86/kvm/pmu.h                            |  17 ++
+ arch/x86/kvm/svm/pmu.c                        |  44 ++++
+ arch/x86/kvm/svm/svm.c                        |   1 +
+ arch/x86/kvm/x86.c                            |   9 -
+ arch/x86/kvm/x86.h                            |  31 ++-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ .../kvm/x86/svm_pmu_host_guest_test.c         | 199 ++++++++++++++++++
+ 14 files changed, 319 insertions(+), 35 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
 
-I see several problems
 
-1) Due to batch consumption, we may get spurious wakeups under heavy
-load (we can try disabling batch consuming to see if it helps).
-2) So the barriers don't help but would slow down the consuming
-3) Two spinlocks were used instead of one, this is another reason we
-will see a performance regression
-4) Tricky code that needs to be understood or at least requires a comment t=
-weak.
-
-Note that due to ~IFF_TX_SKB_SHARING, pktgen can't clone skbs, so we
-may not notice the real degradation.
-
-> >
-> >>> +               if (!__ptr_ring_produce_peek(&tfile->tx_ring))
-> >>> +                       netif_tx_wake_queue(queue);
-> >>> +       }
-> >>> +       spin_unlock(&tfile->tx_ring.producer_lock);
-> >>> +
-> >>> +       if (ret) {
-> >>> +               /* If a qdisc is attached to our virtual device,
-> >>> +                * returning NETDEV_TX_BUSY is allowed.
-> >>> +                */
-> >>> +               if (qdisc_present) {
-> >>> +                       rcu_read_unlock();
-> >>> +                       return NETDEV_TX_BUSY;
-> >>> +               }
-> >>>                 drop_reason =3D SKB_DROP_REASON_FULL_RING;
-> >>>                 goto drop;
-> >>>         }
-> >>>
-> >>>         /* dev->lltx requires to do our own update of trans_start */
-> >>> -       queue =3D netdev_get_tx_queue(dev, txq);
-> >>>         txq_trans_cond_update(queue);
-> >>>
-> >>>         /* Notify and wake up reader process */
-> >>> --
-> >>> 2.43.0
-> >>>
-> >>
-> >> Thanks
-> >>
->
-
-Thanks
+base-commit: 3d6cdcc8883b5726513d245eef0e91cabfc397f7
+-- 
+2.53.0.1018.g2bb0e51243-goog
 
