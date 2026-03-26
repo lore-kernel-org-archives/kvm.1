@@ -1,60 +1,60 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA9832573F;
-	Thu, 26 Mar 2026 14:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F87737E2FD;
+	Thu, 26 Mar 2026 14:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774536161; cv=none; b=U4WKFQ1oAem67B+xBc1vOBsoMdve8d8cqMC9xPuuDrxvUJdS3lqlAOjjOCH4fhX3t1c4AeJosttVvqzxBCG6weyAWI3WI/fZau0MA2DGu4th9kvYJ4wVapmP7AUduGEMfH/57lHrdKUjPuG9HyBFQW1KhD2swNQHeiOS4W0CxXA=
+	t=1774536552; cv=none; b=G7HVMdDBaK/9FKFfLhtaRbwdi7Cbm4bQ5CLZ+wPNvy+ba309trrPT4I9Ghea4aw3Q0Rsvcttp5krgP7HX/floCBPm08e16sWxHDUkzBunagBUcyt77QiJkB0XQfiGk2ypd0lE1uzozcaUTnYmZKpRMVCxJDHG24P5Qq7PwTERzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774536161; c=relaxed/simple;
-	bh=WZSUkjewi+G+I4jiyyJacg6tE+mFmgkVOE5SqBCLnCY=;
+	s=arc-20240116; t=1774536552; c=relaxed/simple;
+	bh=r1H9W7VPNRX8e0ooNXQUZ2CxbJTTzUwVCl1kj5blLlU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eNFvSuE8/GRLw87IZ70t6VkRL84dJDr0Mu7eBpQAowRif4NVG93mCQ7cZa0pptTQGFUFb2HirGIut/vri95qo2FZ33eI+xnVzh3iN5bqXBXyjBw78QUr9ZmQs4oYQG2AAZkcmKZR9rNK+lk7dH6tdlPSdvYeByXIHQd9mcb8Ve4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZI93bD5x; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=q8i/yoQD9chm9UPJahZh96sLYSYs6LjC4MdgNp0jAfpfOQclzjYjrxwP4jRbkB8Kql86qVc3OGwiA22cl5DMbSwHzU9iZbOg4hqlEZU35d6W0b2OoiKBYs1MNxuaiRGkImKT+/RCPdyJ/WY4ma8+MyoJj0tV9GwNkCOACUibNio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jsWkEHlo; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZI93bD5x"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62QEaFP01559171;
-	Thu, 26 Mar 2026 14:42:03 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jsWkEHlo"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62QC0Gm93819926;
+	Thu, 26 Mar 2026 14:49:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2+4m+R
-	1k59x1VCvTjmjYTfrl6g6JQq+SMm2UdPiwJj0=; b=ZI93bD5x8/U1ST49QFN2wD
-	ytReWHWn/qhTN0J55lvxLzqtASS6a0Z/4hCJhmN9IWFgTtK2atC+Eel1OuUWX34u
-	LoKNvtZ00M0Jvz7/csjQkixZyyxhHDaD/izJeGmTC65joJ0hrKcdtZ6w4alV5P6T
-	k0MC+rmX93fgWLM+LiWBZmaxvv7xr0BorwqrXp38CYg/H6GMa5U+DbRdl/KHVB/l
-	sgWcZEt99T1SLiSHqzfW5uGg9EFrEpEYWJ8zLMP0qChjrtmWgw2RXukvLK0aTGXE
-	G6Dy2UZsVZha1bngScP0o+XTXBZZZMwuhJ0SVvnk1aOlzwhSYRwQJM2OxKQs8jgQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Qd3OxW
+	CJ+JuGavIWWTTESE5Y6IqoXtMz+GPv9NvAJvE=; b=jsWkEHloVw4924W1d2JNBg
+	/ITkl5CBA+CtRBlNgl+jzEf+GYL2NgMrLGBAeNWy8Mc4bSjUDccRYvbvXoZ88X4U
+	sJ7VjeG+GvThkSYRmDbAXmjmkM800INJeb4+Kk9QHQg02TwJ3U7mF+cAxEDMoGa5
+	RojXci8mVXQx9WFKLJNMC/Lxb3TOXj5S3UQIcmJeCKTwDmFqNCwRhgTfMgbJTyf7
+	wuSiT2rIAvaNUr/IHldsWpC5ZV3mp4eC3TUmTzNVB/QG9E3zOQt2cPYi/k1jLIzF
+	BsuXF4w+S+G8JOb8JAoiM6Y7bosZY6ksot4llmMHwVdYWLpjlCQOkOV04Vs/eYuA
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktv4q54-1
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kty5pby-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 14:42:02 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62QD0l1E004399;
-	Thu, 26 Mar 2026 14:42:01 GMT
+	Thu, 26 Mar 2026 14:49:05 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62QEh3B0031598;
+	Thu, 26 Mar 2026 14:49:04 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d28c2b47r-1
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d25nt3grk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 14:42:01 +0000
+	Thu, 26 Mar 2026 14:49:04 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62QEg0FG23724504
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62QEn0U329294962
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Mar 2026 14:42:00 GMT
+	Thu, 26 Mar 2026 14:49:00 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0AC62004B;
-	Thu, 26 Mar 2026 14:41:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6546120043;
+	Thu, 26 Mar 2026 14:49:00 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 43B7F20040;
-	Thu, 26 Mar 2026 14:41:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id BAC7D20040;
+	Thu, 26 Mar 2026 14:48:59 +0000 (GMT)
 Received: from [9.52.200.39] (unknown [9.52.200.39])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Mar 2026 14:41:59 +0000 (GMT)
-Message-ID: <9a8c1bd7-5d95-4d79-aae2-fc06c448b9a3@linux.ibm.com>
-Date: Thu, 26 Mar 2026 15:41:59 +0100
+	Thu, 26 Mar 2026 14:48:59 +0000 (GMT)
+Message-ID: <f894d3f7-01a2-46c7-b2b0-5933919dfe98@de.ibm.com>
+Date: Thu, 26 Mar 2026 15:48:59 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,134 +62,63 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/9] sched/kvm: Semantics-aware vCPU scheduling for
- oversubscribed KVM
-To: Wanpeng Li <kernellwp@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Juri Lelli <juri.lelli@redhat.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, Wanpeng Li <wanpengli@tencent.com>,
-        richie@linux.ibm.com
-References: <20251219035334.39790-1-kernellwp@gmail.com>
+Subject: Re: [PATCH v5 00/10] KVM: s390: More memory management fixes
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        frankja@linux.ibm.com, nrb@linux.ibm.com, seiden@linux.ibm.com,
+        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
+        david@kernel.org
+References: <20260326131719.98229-1-imbrenda@linux.ibm.com>
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20251219035334.39790-1-kernellwp@gmail.com>
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+In-Reply-To: <20260326131719.98229-1-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: erLmoXAei3x8HRURwrQG2FuDCOcPJiSv
-X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c545bb cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c54761 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=GvQkQWPkAAAA:8
- a=Biw2TRemLrSBvjo0t4kA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDEwMSBTYWx0ZWRfXxe9F2N/ZjXIH
- tJB6yDjkY2ogyl+lfbbRGNGrcIw1rydEExj/bMKjQNzO070sVSocK1lKWrWXXVHaGDPUCSGWdCm
- vCwTjLbiESvyIXPrRZHG5dhkhieOA9xMfhm2HKhUEg0Dq/9wOJLjdXFYqzYdkonda3ZBgW9bDYl
- KGX5LpvDNuXiCdiYsxcAuCogGQFIxjSe2oYw/1c4j2V9lvtvQh7fFa15zuuFiC8fixuTzAWHtTi
- 6yWH9uZK/oq2CurtdjglAA9qKTNi/pRtqY97q+/aSUpxKFt1lCjOsZstB64ENiFDAy1LaXLjVAJ
- 93MjJkyugrbV9Um6aNLgOrqioSZTxgMRoYW+2LloqUCB6N1MlrVUbVpORuNzGWilaJZ8L1aJJZG
- csEqx/OnUiZFJOJcdYxsafgyNWROCU1R5OOYTsYPtNrFwod2/bT/ynt0324HAkagWhzXmZh/j4j
- 9CA857mdEx0CSGl+y4g==
-X-Proofpoint-GUID: xYqIeJ0C4J9bawb4bXQpmxX4nzGNpwIB
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=H4Np5_ecnopd_ErY5ncA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDEwNCBTYWx0ZWRfX9Ll8vG8NatPm
+ sT12pSsg8MePVbxRoEdHnM72/d73fGjp3pcUJgRSokAY6SbyjrYLm9CZHzGy/MIO4BrOdQl4sBF
+ oJDiAYuxg8Y04bEe57Kq4vrPNwADXgliVMjFhuVIu80lKhPefzCrw/fd4j+iGyjXVLd2AcBi0tt
+ v+W0Hwnb1DRNFXuVyvZdDkY3LP2CDUaG2YaKF7GWXhQjfPr3J9jtQEa7G2Z4Ck8hmZiwC25ulzD
+ k9m3+FraqOdA6jKr7Vn4LmvmwC4SPDrTUBrXCoEaIADzF0eNOVoWhFlzofT1ZhYbMNERbuYuccO
+ bdi2kVjPGoLQ7R9YDskO69/JYSxdyeTcd+TmavuSnLC4NFkp/yGNtjnDpIk6a3h0Ri7qtqeUADK
+ 5cyNItZd4w4xVsoTZTaXMzjneIr1KlZE410lt7RGkvcuFD0OFNpjlCzjd219jGFfZ7jUstxJuSc
+ uSnLW9NRSh/jtflZDUA==
+X-Proofpoint-GUID: x09bbc0zZmstP82Y2GPM8aVcAmt562cx
+X-Proofpoint-ORIG-GUID: x09bbc0zZmstP82Y2GPM8aVcAmt562cx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-26_03,2026-03-26_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
+ malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603260101
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603260104
 
-Am 19.12.25 um 04:53 schrieb Wanpeng Li:
-> From: Wanpeng Li <wanpengli@tencent.com>
+Am 26.03.26 um 14:17 schrieb Claudio Imbrenda:
+> This series fixes some bugs that have been recently introduced with the
+> big gmap rewrite.
 > 
-> This series addresses long-standing yield_to() inefficiencies in
-> virtualized environments through two complementary mechanisms: a vCPU
-> debooster in the scheduler and IPI-aware directed yield in KVM.
+> Most of the fixes are related to vSIE (nested guests), although some
+> are more general. The last patch fixes an issue introduced last year.
 > 
-> Problem Statement
-> -----------------
-> 
-> In overcommitted virtualization scenarios, vCPUs frequently spin on locks
-> held by other vCPUs that are not currently running. The kernel's
-> paravirtual spinlock support detects these situations and calls yield_to()
-> to boost the lock holder, allowing it to run and release the lock.
-> 
-> However, the current implementation has two critical limitations:
-> 
-> 1. Scheduler-side limitation:
-> 
->     yield_to_task_fair() relies solely on set_next_buddy() to provide
->     preference to the target vCPU. This buddy mechanism only offers
->     immediate, transient preference. Once the buddy hint expires (typically
->     after one scheduling decision), the yielding vCPU may preempt the target
->     again, especially in nested cgroup hierarchies where vruntime domains
->     differ.
-> 
->     This creates a ping-pong effect: the lock holder runs briefly, gets
->     preempted before completing critical sections, and the yielding vCPU
->     spins again, triggering another futile yield_to() cycle. The overhead
->     accumulates rapidly in workloads with high lock contention.
+> v4->v5
+> * Use gmap_crstep_xchg_atomic() in gmap_handle_minor_crste_fault()
+>    instead of dat_crstep_xchg_atomic()
+> * Check the special bit in the new pte and crste, instead of the old
+>    one in _gmap_crstep_xchg_atomic() and in _gmap_ptep_xchg()
+> * Fix handling of pgste spinlock
+> * Handle more unshadowing events in _do_shadow_pte() and in
+>    _do_shadow_crste()
 
-Wanpeng,
+Lets add this version to kvms390/master. This already is much much better
+than the current 7.0-rc state. It is hard to review the differences and
+we want to get these fixes queued asap. kvms390/master is picked up by
+next so we will have CI coverage inside (and outside) of IBM.
 
-late but not forgotten.
-
-So Richie Buturla gave this a try on s390 with some variations but still
-without cgroup support (next step).
-The numbers look very promising (diag 9c is our yieldto hypercall). With
-super high overcommitment the benefit shrinks again, but results are still
-positive. We are probably running into other limits.
-
-2:1 Overcommit Ratio:
-diag9c calls:                       225,804,073 →  213,913,266  (-5.3%)
-Dbench thrpt (per-run mean):        +1.3%
-Dbench thrpt (per-run median):      +0.8%
-Dbench thrpt (total across runs):   +1.3%
-Dbench thrpt (avg/VM):              +1.3%
-
-4:1:
-diag9c calls:                       833,455,152 →  556,597,627 (-33.2%)
-Dbench thrpt (per-run mean):        +7.2%
-Dbench thrpt (per-run median):      +8.5%
-Dbench thrpt (total across runs):   +7.2%
-Dbench thrpt (avg/VM):              +7.2%
-
-
-6:1:
-diag9c calls:                       967,501,378 →  737,178,419 (-23.8%)
-Dbench thrpt (per-run mean):        +5.1%
-Dbench thrpt (per-run median):      +4.8%
-Dbench thrpt (total across runs):   +5.1%
-Dbench thrpt (avg/VM):              +5.1%
-
-
-
-8:1:
-diag9c calls:                       872,165,596 → 653,481,530 (-25.1%)
-Dbench thrpt (per-run mean):        +11.5%
-Dbench thrpt (per-run median):      +11.4%
-Dbench thrpt (total across runs):   +11.5%
-Dbench thrpt (avg/VM):              +11.5%
-
-9:1:
-diag9c calls:                       809,384,976  → 587,597,163 (-27.4%)
-Dbench thrpt (per-run mean):        +4.5%
-Dbench thrpt (per-run median):      +4.0%
-Dbench thrpt (total across runs):   +4.5%
-Dbench thrpt (avg/VM):              +4.5%
-
-
-10:1:
-diag9c calls:                       711,772,971 → 477,448,374 (-32.9%)
-Dbench thrpt (per-run mean):        +3.6%
-Dbench thrpt (per-run median):      +1.6%
-Dbench thrpt (total across runs):   +3.6%
-Dbench thrpt (avg/VM):              +3.6%
-
+If something is really broken we can refresh kvms390/master, otherwise
+we can still do followup patches.
