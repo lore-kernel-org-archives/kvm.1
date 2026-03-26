@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA8C3A1A5B
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851A13A1681
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549055; cv=none; b=MPE/Q3YpVSnURsIplvlXDScgXNywcpDcki7jqZh603vg0jOAo10ZDbhJYOjlNcFTrSTOMJk6rVQl9JLwGGLNXzW/wTXdsxM3j/0l7QSh4vLaRGY0I4b35hdwLCpl7JH1T9MUZAMCheWEagn5Mj8cOjt6s6DzFDNqkBY96GuLeDo=
+	t=1774549057; cv=none; b=BQ50mpms4RLRx6M3ABJe+wF5zDh7N7JylPi29/5Dj+RunlAwtWBYwDeLlKIeXvfkVXDVQck7e5XZileP02Rh4hYCSVoC7tcKLQa/b5SDljulOIO9PbuUsdIkV2XUWdalPMvZjtdXufzMIxEPL1o2/uvvCfqBTX7ss2uP5suVFHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549055; c=relaxed/simple;
-	bh=/hgPA8ofUfgPut6kjk1EiKMkvUvqj4HcFOe/kxoKD5U=;
+	s=arc-20240116; t=1774549057; c=relaxed/simple;
+	bh=+XRLjOpS4v+IUj8Epgk8vsqlWWWhFf+iPFdKVLl6SyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmimshJ85Oidv/OP788jRCSwvIr2yn/x0Idb2SBlcgZ43+qAxOGnJNEuRuJ4NbowVEJiP0F44n2rBKFFtbhyn8kbzyzz8ns9RdbwW0x8Sm9SGLMG8U6NEEC9W6DfifIpml7MfEzMllshah7BP+mQE++JsHdJU0eqcc4hKStixJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fnEfgenV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=i9RoY2bM; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=h5zqQAF6xbGwddUFfCr9SGrYaI38lOluPg53v8w4s4qGMXiqzajDF0zJOpLO4sQ0GljRRudZUeDTHwAMZmiKV8Qd8qiWN4YeTP1AI3tRg5GG1a72YXYKmimFpn+pKYg+Od6r0dPKgc1DG7LmefnXr51rf2LjX4QKmpFNAdL/Dcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R0EKKGDk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ppq93EGH; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fnEfgenV";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="i9RoY2bM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R0EKKGDk";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ppq93EGH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549052;
+	s=mimecast20190719; t=1774549054;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WDapCol8DB+8Onsizv1MMEQf+Ju0eOGDbqoSTr6KUVY=;
-	b=fnEfgenV3Zbm+30x+QylL2KciQzotj5fsmOPXHsDC5brcxKIp7XfIuxfzM6axnV9isbWCm
-	FVnUSQriRvQizDAk8rL1yVkEZ5IzYGPoU2pnJ5iFNs9N/IVoajNDFG3G0FWx9q/I+JVtW/
-	urkzZut3Ln3PalG3mxVHyQ7uYbSwoxc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=NZNDRdV67MUP45bmnySAtmpJD5gxz3701J4cRjhnqB0=;
+	b=R0EKKGDkPy+zAB1bDDg4F12CcFyv5+brnUiB7y2qb5GvzvqdwurAnVbDKCOjj8bkxk9ii5
+	H4WFgwm/tJSYhcR5mFqwojfOp7UOsYg3rsKu00NgM2YWEq+dxUXqA/4q2/M4Z7AYpH//3Z
+	GjlIGosEW4/LGhTh/JjTXT9HXWBjvgU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-dooUKcF-ONOL23zNPdYn6w-1; Thu, 26 Mar 2026 14:17:30 -0400
-X-MC-Unique: dooUKcF-ONOL23zNPdYn6w-1
-X-Mimecast-MFC-AGG-ID: dooUKcF-ONOL23zNPdYn6w_1774549049
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4362197d1easo842410f8f.2
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:30 -0700 (PDT)
+ us-mta-445-DQTU6ORfOraxW9ILqy7aww-1; Thu, 26 Mar 2026 14:17:33 -0400
+X-MC-Unique: DQTU6ORfOraxW9ILqy7aww-1
+X-Mimecast-MFC-AGG-ID: DQTU6ORfOraxW9ILqy7aww_1774549052
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-486fb142205so17973555e9.1
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549049; x=1775153849; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774549052; x=1775153852; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WDapCol8DB+8Onsizv1MMEQf+Ju0eOGDbqoSTr6KUVY=;
-        b=i9RoY2bMJWiDNAhtB064Er8wZviqeEtFxYXU57iHddcxP7SAecRiyOTMD+xphFtUGM
-         gFw4wRAsfmYFF5VKDCNyon/gm8EJT2gF6muWuO+wlRB7Cv5LX342xuz7zXKVfdJb5oTB
-         cqkV7UU/fQUF1gbY5AzTp5MYUPzPgsm4j42SVGwEOpe7NbNn/m9SgV47rRd4gtWSOrb2
-         lrcVaXtaJ4QGPYALnpo9F/t2UnVj6U0xywAl3+++Kqm3Xsm1Q+2KdCs5tm5b7DYeg47x
-         r0UD+zum/ZJa4s1TXnfzeplAAHPHlz8mjZRtO50bnTrWaEEE6w5SuroJCNMDwx7buzLT
-         KVXA==
+        bh=NZNDRdV67MUP45bmnySAtmpJD5gxz3701J4cRjhnqB0=;
+        b=Ppq93EGHnaFYB0wuR6HlipR53JmjRrUyUU31fXBE7zWLUZO+ZDV2Ln1K68B9ZeDrDY
+         2CbNWubRZfhtWdiU3LeNfcNO/hFI8okWDIEC6DcW9eGuu+LLyX8kLi5GsFuLQKp8PrZ9
+         hQ9L+HsMWaet+4YB7Ye3Z9e4vDD3dMFD5p91XsHmai6YsCd2yUazDH5HGMHHLWT8d2GJ
+         tgamg8WYsIB6GLcwFwu1Xnojyuhtiui6Vu+OuDpzzD6FB9x0T2sjatz9CihZ+UkJrU0q
+         j82TMnnT9a08MW4k6rfZYHQH5uwR+n4PZ6SJDtjB0PZEg6Eh/bC/gKjWid9ugYD9AbPd
+         pN+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549049; x=1775153849;
+        d=1e100.net; s=20251104; t=1774549052; x=1775153852;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WDapCol8DB+8Onsizv1MMEQf+Ju0eOGDbqoSTr6KUVY=;
-        b=M1uPBjoexOOqZ9hnI1zSW/F6x9k5C/K7EWOdEBpLIF7c0ucKUMGAdE2P+qg2RHjxMf
-         l/3/W/GO3uoxHM6GyMJFYjCfHWwVlQbbNPupvotUcyqhXa+tfsXytYBfpM/HnNvJrorx
-         Gfr+DqB9JXrCwFwOXYktdJ92LryeTEcjT6Gj7k3LkpPoF+kj3vOh/d5zFDz1i6VxhO4R
-         K1kotY+vwCPIZxS4CEMEBQQB1j3BGPRzSBqtQrwzuzNG09nIO6JpDFvg3FuItsjPgjPx
-         YFsQsFHO3EgtS8ah35I7gESGGRY9uSQr9EPwhpfuTEn5ZRMSFz7tcsTQ2MPDHXUlbMGy
-         nCJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSFpT8VBtjbmgImY6y2Hekwaa9B8UI8qyWMQugpC1ilS3dGXTemCSekAzzQj0bxzYJswY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynsxhBc8AeQMgOejljGPlcvC1SGGJaYtREX0y5TOu6F/UjAWhk
-	dvUFV+coYYFiSyFY1Gt76FIrapymC4GZ5X4+O6VaPuWA0jmm7qTLPo79x92I8MyV8ZamFj1Uf+s
-	Coqc9BrpVWlKrkJpTxl4V4N7G41TS6uTuvd3VCTaChtoG6mevaNFfww==
-X-Gm-Gg: ATEYQzwH3wllIQd0iQAP4yGEmGGT4nMj3VJAMsTEO0grP89rtr2RGPw5in9qn62GXl1
-	AJ3j6Ly0PEV4wU6O3kqWABBMRFXGY0jq7eMFDV28VLRRrNJ8tYIuLL8wlMTQXE/oqWfT/bzZeaj
-	+5y+3eDLVTARi6fvn9A1yBq7NdkU5QYtZLXEfeKOZbgVk3Joc1A8kW9+IGNmjBgJaxlBsDGrosj
-	jzn73YHrqshDJ/fB1BtOw6ZvELF2LhXX7XA7+bMS5mOPdM67WQ3H5nKLSojiySLsgfH7+ny4L+j
-	sDCF6NcD6D7qyZ+l8m3g3XkKmXdKWJo6UucpptAJdgubrPGM2J6GFufeWIT8q4NayUaFQ9kzmQJ
-	cI94RF30oUoesT59yHfPNJ6IfHpRwFs2BSLvyoHiB2GsDFXcPc2VtYIbvXCmJMhrm1TLjzf2zg3
-	Z8pOlU8vZv9Qa7gbnY2F0FLvzA
-X-Received: by 2002:a05:6000:2c06:b0:43b:5762:2999 with SMTP id ffacd0b85a97d-43b88a8e8ffmr12921631f8f.37.1774549049151;
-        Thu, 26 Mar 2026 11:17:29 -0700 (PDT)
-X-Received: by 2002:a05:6000:2c06:b0:43b:5762:2999 with SMTP id ffacd0b85a97d-43b88a8e8ffmr12921578f8f.37.1774549048681;
-        Thu, 26 Mar 2026 11:17:28 -0700 (PDT)
+        bh=NZNDRdV67MUP45bmnySAtmpJD5gxz3701J4cRjhnqB0=;
+        b=I3bXcsmpqVUpGnwawWnA8oazzPwrJf6BSgpsWn+Cp1FeYfouMOrSfF2qwOrCIv0yh0
+         u/hTM+SLYoUULWak5Ut5mipYuQ4g2Vv0wNAqCJqGNyoE5dgqY5HtidK+HBGds4j/qZrB
+         bExHEu7YP1DR986dtkCc11PAGRGuD7lokjB9GDS01C2VP52JChtoTCgCbie0UUfU5Yoi
+         As4Ht09Uj+R20yEZTfFB+j0g4a+WKnet1b0ycAlaGzoBypwqseYfDzAwYoWMaIbMkaUQ
+         LjdmfEuiTrcTkxunVGgUicCE+rGIjMd4igmzKNAnF7AmuZYuZWeNRIOJnJNB+FBsao1H
+         xEAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtPqR3rY1gKTSyIzD7aRdwIf096tequcd725r1EEX54T3OMudZxe5OkZV3j+QMxGrlTmM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGbgYmypFd44EsEgmnVu8WsZfbXmHM3at3FGcKjLlGR2VzRVia
+	97U+9w8+lt/jzfVHh7a9DXk4lbaTrBHD2AL2c4XS2s6E0DwZcmbQlhtCP219SoWLFOlDcgt1dzN
+	tefpT17m6TVp9Kjg9jRykdOOjUvSuhfhOju1F0isZObmJySL7zqY+AA==
+X-Gm-Gg: ATEYQzxJluBjoKPA9a+FgQmrh/SYcx9bm8dQzk1sd1z2qx/0OHqbVPAvZgxC0i21GDf
+	Ne2qXlRKNABKSqoGkBTWDYwjSn5Or6LKXus2eNbTbMpvoW+goVcNs5zgq/0yDHHKICi1VWnYgzZ
+	FFl/EC9uHXse69UcOds0D3HN884rNDexRa6N2DPMp8t+0B6J0qmMNS36cAZTYTgdBPSkAtZc0TX
+	rdpS0poM2OjTnRYOZ0r6P6xBUcRZUwHqUWeJEq7bJOYALA7CPKa6lQy0JQyoLqvLUbPcpg7LrNv
+	DKhFP/UQfwwmNvBa5aWPje9zd7W0OoJ1Qdknicz92IAcWsd23WJ55IjQATOiB8vJEB0z1JHBau3
+	LH6+Hajo6AZ614H1AjcjHW2w4NBH265fcPkKGxrvHqcNZ9t6YGA2ZWSkpr6d0mpIwp+foJ9zsY9
+	5d/d8KdraHKhiXmQtnqDPBr2U/
+X-Received: by 2002:a05:600c:8b53:b0:485:33ad:3c9f with SMTP id 5b1f17b1804b1-48716071d0bmr131990715e9.25.1774549051751;
+        Thu, 26 Mar 2026 11:17:31 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b53:b0:485:33ad:3c9f with SMTP id 5b1f17b1804b1-48716071d0bmr131990135e9.25.1774549051290;
+        Thu, 26 Mar 2026 11:17:31 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e7111sm9492066f8f.37.2026.03.26.11.17.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722d23679sm97827235e9.9.2026.03.26.11.17.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:17:27 -0700 (PDT)
+        Thu, 26 Mar 2026 11:17:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 01/24] KVM: TDX/VMX: rework EPT_VIOLATION_EXEC_FOR_RING3_LIN into PROT_MASK
-Date: Thu, 26 Mar 2026 19:16:59 +0100
-Message-ID: <20260326181723.218115-2-pbonzini@redhat.com>
+Subject: [PATCH 02/24] KVM: x86/mmu: remove SPTE_PERM_MASK
+Date: Thu, 26 Mar 2026 19:17:00 +0100
+Message-ID: <20260326181723.218115-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326181723.218115-1-pbonzini@redhat.com>
 References: <20260326181723.218115-1-pbonzini@redhat.com>
@@ -102,87 +102,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Jon Kohler <jon@nutanix.com>
 
-EPT exit qualification bit 6 is used when mode-based execute control
-is enabled, and reflects user executable addresses. Rework name to
-reflect the intention and add to EPT_VIOLATION_PROT_MASK, which allows
-simplifying the return evaluation in
-tdx_is_sept_violation_unexpected_pending a pinch.
+SPTE_PERM_MASK is no longer referenced by anything in the kernel.
 
-Rework handling in __vmx_handle_ept_violation to unconditionally clear
-EPT_VIOLATION_PROT_USER_EXEC until MBEC is implemented, as suggested by
-Sean [1].
-
-Note: Intel SDM Table 29-7 defines bit 6 as:
-  If the "mode-based execute control" VM-execution control is 0, the
-  value of this bit is undefined. If that control is 1, this bit is the
-  logical-AND of bit 10 in the EPT paging-structure entries used to
-  translate the guest-physical address of the access causing the EPT
-  violation. In this case, it indicates whether the guest-physical
-  address was executable for user-mode linear addresses.
-
-[1] https://lore.kernel.org/all/aCJDzU1p_SFNRIJd@google.com/
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Jon Kohler <jon@nutanix.com>
-Message-ID: <20251223054806.1611168-2-jon@nutanix.com>
+Message-ID: <20251223054806.1611168-3-jon@nutanix.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/vmx.h | 5 +++--
- arch/x86/kvm/vmx/common.h  | 9 +++++++--
- arch/x86/kvm/vmx/tdx.c     | 2 +-
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ arch/x86/kvm/mmu/spte.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index b92ff87e3560..7fdc6b787d70 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -597,10 +597,11 @@ enum vm_entry_failure_code {
- #define EPT_VIOLATION_PROT_READ		BIT(3)
- #define EPT_VIOLATION_PROT_WRITE	BIT(4)
- #define EPT_VIOLATION_PROT_EXEC		BIT(5)
--#define EPT_VIOLATION_EXEC_FOR_RING3_LIN BIT(6)
-+#define EPT_VIOLATION_PROT_USER_EXEC	BIT(6)
- #define EPT_VIOLATION_PROT_MASK		(EPT_VIOLATION_PROT_READ  | \
- 					 EPT_VIOLATION_PROT_WRITE | \
--					 EPT_VIOLATION_PROT_EXEC)
-+					 EPT_VIOLATION_PROT_EXEC  | \
-+					 EPT_VIOLATION_PROT_USER_EXEC)
- #define EPT_VIOLATION_GVA_IS_VALID	BIT(7)
- #define EPT_VIOLATION_GVA_TRANSLATED	BIT(8)
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 91ce29fd6f1b..28086fa86fe0 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -42,9 +42,6 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+ #define SPTE_BASE_ADDR_MASK (((1ULL << 52) - 1) & ~(u64)(PAGE_SIZE-1))
+ #endif
  
-diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-index 412d0829d7a2..adf925500b9e 100644
---- a/arch/x86/kvm/vmx/common.h
-+++ b/arch/x86/kvm/vmx/common.h
-@@ -94,8 +94,13 @@ static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
- 	/* Is it a fetch fault? */
- 	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
- 		      ? PFERR_FETCH_MASK : 0;
--	/* ept page table entry is present? */
--	error_code |= (exit_qualification & EPT_VIOLATION_PROT_MASK)
-+	/*
-+	 * ept page table entry is present?
-+	 * note: unconditionally clear USER_EXEC until mode-based
-+	 * execute control is implemented
-+	 */
-+	error_code |= (exit_qualification &
-+		       (EPT_VIOLATION_PROT_MASK & ~EPT_VIOLATION_PROT_USER_EXEC))
- 		      ? PFERR_PRESENT_MASK : 0;
- 
- 	if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c5065f84b78b..fa740f70ee75 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1855,7 +1855,7 @@ static inline bool tdx_is_sept_violation_unexpected_pending(struct kvm_vcpu *vcp
- 	if (eeq_type != TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION)
- 		return false;
- 
--	return !(eq & EPT_VIOLATION_PROT_MASK) && !(eq & EPT_VIOLATION_EXEC_FOR_RING3_LIN);
-+	return !(eq & EPT_VIOLATION_PROT_MASK);
- }
- 
- static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+-#define SPTE_PERM_MASK (PT_PRESENT_MASK | PT_WRITABLE_MASK | shadow_user_mask \
+-			| shadow_x_mask | shadow_nx_mask | shadow_me_mask)
+-
+ #define ACC_EXEC_MASK    1
+ #define ACC_WRITE_MASK   PT_WRITABLE_MASK
+ #define ACC_USER_MASK    PT_USER_MASK
 -- 
 2.53.0
 
