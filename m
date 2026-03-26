@@ -1,110 +1,172 @@
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9323B8950
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 08:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C23431E3;
+	Thu, 26 Mar 2026 08:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774512536; cv=none; b=NaGeTQmDcQwx0O9T6bWYPbQtq2pmA0WL/vORjOp2Um5KRxvrHEBmUfTyoSoz9O83nZx2dFjJl+1whW+Yt2eo6sDekYwpg49/135zVwC6u0wZJISB6P6SfzYlksNNoii3zdSlw6f+m/JsWD2ySIEcO19fBaKcCX8HBCh0kpuRo6E=
+	t=1774514383; cv=none; b=SUQml2GD/971+vpg6mHBxyT03F9zwHIDIYM5f70HGKC+UQ5zHQm3Mxe7ooI48XcaFSRR490u/2t0GWe/Ey/xm3LM3gWUllrf1cw0Id9RHPtpWRk2nz834RanAfTCmnDdGgVZou7hQG9aRQhi6Xm2Mz+xYvUeCbua8zi0DQGLEFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774512536; c=relaxed/simple;
-	bh=7fxUvQarsZza+ZSNU1G51Ztbl4ikxZMWuEapYuAipV8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OhWX/qPqi3pi4XFy7CaRn7LCQDpfpeTRMxkMCH2kFZ3RmmZIjFsG94qplElSz1cQnh4/lrdH9Nh02lGWvYWoYj13lqiwWQ/+fllhDncxmjfzVL1z+h7vg4LkxW3brX5BXEJtxTIHfdkA7Du8KADS/H20Wfl6Mm399Yq9rESTjOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fc4bFJFx; arc=none smtp.client-ip=74.125.82.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+	s=arc-20240116; t=1774514383; c=relaxed/simple;
+	bh=6vSpyGPjeFRTtvTBtbIoMDWm0//t1rVmCeXYqkxOhEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFEt+I6BW/3dQXlVCSwkmkzJhN/2jW16696/iwCQn/zr8gMfk1y/9YGGTUtZKpnFD2BlmmBVKZ1xJn6Fq5WZk2MnVfhcvZ/0MsrX10SiZjm4yCJLAkh7oXg0mjFUCt93IV2FKvIg5OX+PdFO1DJ1nhsZd2QIFt/DUYynkQu7M7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DJ4NHV1h; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fc4bFJFx"
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2c1631e6189so5957842eec.0
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 01:08:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774512535; x=1775117335; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5NgLz5FVqf/NV7m9qbKXaNWE4w/1GDJf1IUGYhV4ad8=;
-        b=fc4bFJFxER2E6T+QO701rz5XLCfU0mh6Ee4++ewdR7OSdiAKUDGN+vu8QOgwOXC9uP
-         dhuLANhMBE7sLE+eNruFgKAMEjZmzYzyuuzH49tWMfCUG7aQCeiqUXFnnaQqQxVjIkZB
-         LT666Bxwm76QTmS5Ck0Z0CX/CQwl7Nxd5zF63yuhmwFRf8ikJcEXW325s3fnbWdvDd9+
-         5WVNAIS4vQU0o83ty2f1YJ+EIiZvrLq1HdoHFcL6UdUqeq1e7frei+h7nsCs1ZdzU+EV
-         53EOVLbUoIk1b6oFfaZ/aoEM3Gkq1dkwDL9f/MgbPiWmBH3DZs24hsP/rpkbnsaI0Rc/
-         FtQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774512535; x=1775117335;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5NgLz5FVqf/NV7m9qbKXaNWE4w/1GDJf1IUGYhV4ad8=;
-        b=YkFQ3TvehSkaDX6T2z/pHxmomc/gjDo2FtxY2R75XCIeHPldmiMq3X1bGAadlUfQEP
-         Qpv94ITdmfJ1wEHILB7WKkNe9EehwkLZn93rEp8fXmnOqTC49vfHa10eNF3inOCuev1x
-         y5AUN5PXS2HTMHbovHEHgyL8oRPLrn57Y6ejFGnfuYKDvX7Z57iV4isbLgDEpUyaprOC
-         E0XYr+g2dtuHpcIb6IQaFg08Ig1QV2+nhry2reYOruyRaDGOUjfR+/YTuwCXGNtHZSOX
-         uFdPI4CBwa0iMEWvm9NBo5xXIKcfYm0FegKfGXNtNcBQlcyS8DeYy9iDGjrn9imQeW74
-         VEgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXTIa2ouR6+ppLDDNfGusKQczGNxvFJ+t/AtQ/jn5uSN5xb49ih6gqX9PvQin/R9cKNIFw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjI15RQdwakgKrbhXGrsL7hvdS945Lb5jKOid6T1nrd4vA8J6+
-	hHtG25UBQ2ZI6lokcZ8RynzxKX5aSzX10ibSX+kGNxEBYQtfXkXbaxlIe0fGbTHwbFvngUHPbpi
-	hEIn9Ng==
-X-Received: from dyt4.prod.google.com ([2002:a05:693c:8084:b0:2c1:63c5:aa2e])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:7304:b0:2c0:c96a:a4db
- with SMTP id 5a478bee46e88-2c15d2ba52bmr4025361eec.4.1774512534535; Thu, 26
- Mar 2026 01:08:54 -0700 (PDT)
-Date: Thu, 26 Mar 2026 01:08:36 -0700
-In-Reply-To: <20260326080836.695207-1-surenb@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DJ4NHV1h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774514382; x=1806050382;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6vSpyGPjeFRTtvTBtbIoMDWm0//t1rVmCeXYqkxOhEk=;
+  b=DJ4NHV1h7yqPJvEeDxJRm5mSI6RW2Cv2xMYVAF4VZ69c65zzSak98vix
+   tdpeyvcU78ZX9p/mapjaxxSHeSc8+oAsodfKU4ulMRhj8rxruEqHcTsLu
+   RdoLENsgvDYwXMIRAT/w/LEwsJVgPeOv6ocMnX0uUSUhWElWEfR8DfFKp
+   kaMsav71wea7u7X9AcgVOHzxSsyKct6/WBvVaudLxd2fvSoGWc2SpnuC7
+   i+TOWawHfRZ25cK2LD7bdk+Sxkk9PVFdOS4bC6296pcXKyb0UBVMHeYqi
+   CHV24bFv5HiSWZ7G8kPopokSi+Skd4xP61CRbWRseEVDd+FQKtkcfb/NM
+   g==;
+X-CSE-ConnectionGUID: PkTNvgnFRP+Pzrzlo3FOwQ==
+X-CSE-MsgGUID: gQ65NXCrTcetSsWAXSe1Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75468502"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="75468502"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:39:41 -0700
+X-CSE-ConnectionGUID: xHn+uvVyTvSUDrv+QgRcxw==
+X-CSE-MsgGUID: kwAYSHBcT3Sh+NfYSJvwpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="262856864"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:39:41 -0700
+Date: Thu, 26 Mar 2026 01:39:34 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260326083934.fk4wyhe6rgiss34z@desk>
+References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+ <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+ <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
+ <20260324221308.7sh6afdy6r6tsf4w@desk>
+ <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260326080836.695207-1-surenb@google.com>
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260326080836.695207-7-surenb@google.com>
-Subject: [PATCH v5 6/6] KVM: PPC: use vma_start_write_killable() in kvmppc_memslot_page_merge()
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
 
-Replace vma_start_write() with vma_start_write_killable(), improving
-reaction time to the kill signal.
-Replace vma_start_write() in kvmppc_memslot_page_merge().
+On Wed, Mar 25, 2026 at 09:37:59PM +0100, Borislav Petkov wrote:
+> On Tue, Mar 24, 2026 at 03:13:08PM -0700, Pawan Gupta wrote:
+> > This is cleaner. A few things to consider are, CLEAR_BRANCH_HISTORY that
+> > calls clear_bhb_loop() would be calling into C code very early during the
+> > kernel entry. The code generated here may vary based on the compiler. Any
+> > indirect branch here would be security risk. This needs to be noinstr so
+> > that it can't be hijacked by probes and ftraces.
+> > 
+> > At kernel entry, calling into C before mitigations are applied is risky.
+> 
+> You can write the above function in asm if you prefer - should still be
+> easier.
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- arch/powerpc/kvm/book3s_hv_uvmem.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I believe the equivalent for cpu_feature_enabled() in asm is the
+ALTERNATIVE. Please let me know if I am missing something.
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 5fbb95d90e99..0a28b48a46b8 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
- 			ret = H_STATE;
- 			break;
- 		}
--		vma_start_write(vma);
-+		if (vma_start_write_killable(vma)) {
-+			ret = H_STATE;
-+			break;
-+		}
- 		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
- 		vm_flags = vma->vm_flags;
- 		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
--- 
-2.53.0.1018.g2bb0e51243-goog
+Regarding your intent to move the loop count selection out of the BHB
+sequence, below is what I could come up. It is not as pretty as the C
+version, but it is trying to achieve something similar:
 
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index ecae3cef9d8c..54c65b0a3f65 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -1494,6 +1494,20 @@ SYM_CODE_START_NOALIGN(rewind_stack_and_make_dead)
+ SYM_CODE_END(rewind_stack_and_make_dead)
+ .popsection
+ 
++/*
++ * Between the long and short version of BHB clear sequence, just the
++ * loop count differs based on BHI_CTRL, see Intel's BHI guidance.
++ */
++#define BHB_SHORT_LOOP_OUTER	5
++#define BHB_SHORT_LOOP_INNER	5
++
++#define BHB_LONG_LOOP_OUTER	12
++#define BHB_LONG_LOOP_INNER	7
++
++#define BHB_MOVB(type, reg)						\
++	ALTERNATIVE __stringify(movb $BHB_SHORT_LOOP_##type, reg),	\
++		    __stringify(movb $BHB_LONG_LOOP_##type, reg), X86_FEATURE_BHI_CTRL
++
+ /*
+  * This sequence executes branches in order to remove user branch information
+  * from the branch history tracker in the Branch Predictor, therefore removing
+@@ -1540,12 +1554,7 @@ SYM_FUNC_START(clear_bhb_loop_nofence)
+ 	/* BPF caller may require all registers to be preserved */
+ 	push	%rax
+ 
+-	/*
+-	 * Between the long and short version of BHB clear sequence, just the
+-	 * loop count differs based on BHI_CTRL, see Intel's BHI guidance.
+-	 */
+-	ALTERNATIVE "movb $5,  %al",	\
+-		    "movb $12, %al", X86_FEATURE_BHI_CTRL
++	BHB_MOVB(OUTER, %al)
+ 
+ 	ANNOTATE_INTRA_FUNCTION_CALL
+ 	call	1f
+@@ -1567,8 +1576,7 @@ SYM_FUNC_START(clear_bhb_loop_nofence)
+ 	 * but some Clang versions (e.g. 18) don't like this.
+ 	 */
+ 	.skip 32 - 14, 0xcc
+-2:	ALTERNATIVE "movb $5, %ah",	\
+-		    "movb $7, %ah", X86_FEATURE_BHI_CTRL
++2:	BHB_MOVB(INNER, %ah)
+ 3:	jmp	4f
+ 	nop
+ 4:	sub	$1, %ah
+
+
+Below is how the disassembly looks like:
+
+clear_bhb_loop_nofence:
+	...
+	call    1f
+	jmp     5f
+	// BHB_MOVB(OUTER, %al)
+	mov    $0x5,%al
