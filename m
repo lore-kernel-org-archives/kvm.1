@@ -1,223 +1,119 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CB73BED64
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 09:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F343DA7E0;
+	Thu, 26 Mar 2026 10:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774518906; cv=none; b=NiEnU3T4bQaf/Y0iLWvxPU5tW57JZdnjNIWId/cv6TMmtPO7UCqUvk5gMvFB5Cph/YvQCfZOupEbA/Yl+mx4jGDKtQso0QtzjMUhCMVGY0TK/RIM9oorJ0wDdpR+oC36/+Pd3ea04vG6/spmTfIyetbS2CxE9kNLoB+dvA0OZ8w=
+	t=1774519337; cv=none; b=i48molvcGsAOMoqsgYwkZRQ2mP/hLb7a+1Sl0DXjR74+Q8D76l4Cpus7/2vV26UAyHoxnyieBNoybmofev0b8BV3FelY1DMn5tyV4b6AYRJowoUWW/YzDyacjQxP7cI3Q9e+0/WdAultYkN5m0syEh9fP/WMnyrGHObX26ooBGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774518906; c=relaxed/simple;
-	bh=8BltPTgRrYXS74k/jRdBXdCWWkCHR1h2kZanq93z8Js=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPtVV4E0xMwza2tpk+y1zi9pUaFsXD4bDj0bjIY3qNSYAdPEAQQy7P+pOGqtdBuC+UzKGTEg0w05ed/VtsgGotieqkGhyIVC9XrIdWrYeOwmd+kNHrZweVyAgLsedXKF7hytdH6B+zrrzhH1cKMxdExYTmHTnXYuVj9DIrPQ5yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=fScM982w; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=B6RG94pn; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=fScM982w; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=B6RG94pn; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1774519337; c=relaxed/simple;
+	bh=UXJmkilgCUI/u+gPAR4mHLGMXteOiBgjgCWr/Gty7iQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NjLNwmb5JR2YXoMK5ZWIwmBuq7cpiBJ1Ya8OD3hrBPaSqfglZHPh6kKkUUcJ+fjz+qSPPj6BSXTeeDmLcMwog9vkNNPnW5la3ibw+P/irrLFPHsuyK54yc4ZK/mEzokr+xPrf9yX5LOGCrG5BcR9gROUd03cAqrRt3gXgJPwvak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ijMJ9dSk; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="fScM982w";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="B6RG94pn";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="fScM982w";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="B6RG94pn"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ijMJ9dSk"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8492640E015B;
+	Thu, 26 Mar 2026 10:02:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id MsheAMuzPrx7; Thu, 26 Mar 2026 10:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1774519325; bh=C2mWFe1qNi3PMZA4pOcAbJW8lmILDzuIi8XH3/XIOf4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ijMJ9dSk7+FFkbX12jIwy02uXnJL10wiFXoCPlwyUqT13WtlMZYKjbxhSv6iYc2V8
+	 nUsd00ftkQEUSwaK2E8alb0ef0/Xupyc18HwfYLnMtaijlwsn+75oPXw9IfCKIFI83
+	 RHVX7eE26VoJ5RkSC25P344LGu7gvbWuaxieYQirZGWgh6SzurTshnpHRQ00s4d5nj
+	 CNbq3g4A7hcApqUVqYTdPUzLrN8f8Yz97R8rmza03yD0SKlewWB23DacOnI3rnbs+e
+	 OfLHcLTgKyi0xISxpH6ZxdE0XoT4Tg98OsWAocu4lxrtE/noMbsP00NjCt77wGW0BM
+	 LlodWonuMOXUtG/PQwiUnR84xAs9n8OB5RedkQC/v7W6YTECWY+QjdAXmMiwddEYnS
+	 HckdK7FGeZtdMD5SWlmZ7HEIyCFn5WEHYx0OEe94m7OecMA0vBubPauJQrCQFzxUHm
+	 c2kAHHiOlnKIdCpDEFfvGX15hQ/NbwV5R4yxFdmd7+RLQSbY19hvOVAXwGQrz3SDbn
+	 ioNRWPdf69PAI3UX7KuhcQ63egfggLs8jKUJfW5mx7c445PFGK1T3Eud9r2pJisEWG
+	 /xTdFmPl3sUGISDldtEsZehMg3aiW1BhxxDgHb4cJUS1Oc+kD8NmUhVFtMLfP+6SlB
+	 XQ4dP5hDqOLsb+WVplWrz9TE=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 728AB5BDAF;
-	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MomJ//0oEOiFuI1ilZROD9J75KQ9oPOeV2ufT1YvQwo=;
-	b=fScM982wQUhdU44H8+ReTLKRpECzZSS4xPf3Tp88zk5uQjq/lapx7GTCfM5Flj65fwqzWX
-	Y1JbqAh2s1kAiieEObSRHgvVb8EsTeMoVkWdYf+MjezkamAYRUyFnnTwOFtFyVToSJCqqh
-	YbwDX23uBx4Ge59RJG7URZMn1SNT+MY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774518901;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MomJ//0oEOiFuI1ilZROD9J75KQ9oPOeV2ufT1YvQwo=;
-	b=B6RG94pn8Rnaav8lvSUMP2AqtmYja5d0B/dK9n6+rRqkIRmBOSsWnPvsuczaS4kYKH8Hl0
-	7mL8LKKeURmv7FCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fScM982w;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B6RG94pn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MomJ//0oEOiFuI1ilZROD9J75KQ9oPOeV2ufT1YvQwo=;
-	b=fScM982wQUhdU44H8+ReTLKRpECzZSS4xPf3Tp88zk5uQjq/lapx7GTCfM5Flj65fwqzWX
-	Y1JbqAh2s1kAiieEObSRHgvVb8EsTeMoVkWdYf+MjezkamAYRUyFnnTwOFtFyVToSJCqqh
-	YbwDX23uBx4Ge59RJG7URZMn1SNT+MY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774518901;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MomJ//0oEOiFuI1ilZROD9J75KQ9oPOeV2ufT1YvQwo=;
-	b=B6RG94pn8Rnaav8lvSUMP2AqtmYja5d0B/dK9n6+rRqkIRmBOSsWnPvsuczaS4kYKH8Hl0
-	7mL8LKKeURmv7FCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 666274A0A3;
-	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 62cKGXUCxWnkYAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:55:01 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 68366A0C71; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: <linux-fsdevel@vger.kernel.org>
-Cc: <linux-block@vger.kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	<linux-ext4@vger.kernel.org>,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org,
-	linux-aio@kvack.org,
-	Benjamin LaHaise <bcrl@kvack.org>,
-	Jan Kara <jack@suse.cz>,
-	kvm@vger.kernel.org,
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id BF59740E0140;
+	Thu, 26 Mar 2026 10:01:27 +0000 (UTC)
+Date: Thu, 26 Mar 2026 11:01:20 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 27/42] kvm: Use private inode list instead of i_private_list
-Date: Thu, 26 Mar 2026 10:54:21 +0100
-Message-ID: <20260326095354.16340-69-jack@suse.cz>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
-References: <20260326082428.31660-1-jack@suse.cz>
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
+References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+ <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+ <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
+ <20260324221308.7sh6afdy6r6tsf4w@desk>
+ <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+ <20260326083934.fk4wyhe6rgiss34z@desk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2244; i=jack@suse.cz; h=from:subject; bh=8BltPTgRrYXS74k/jRdBXdCWWkCHR1h2kZanq93z8Js=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJJMyHuU/3ELVIudu1rF0GGX7ypYh6CAVU2g NgW+LKl4xiJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCSQAKCRCcnaoHP2RA 2aduB/9Jwc/U1s4qbiVmV4BfMyZLi02tfp5luwGvNuxAPtN0u0xT+6Z3YsHsIiwR7NUdsVwGd6e rcry5sQjYJJO8IB8+L3A28rPif3tndKm4DrWEjaLYNzJbfk2nY12VLSzIgApxw9pf3Es2vubl0d T0fnoy12qDN7D75ASstI0WO8lXP3ogab4Q3VAFi/TLyDMmP6lozAMlF74ecvAnl/DjBDzFAVS0I nyLkdUVPaUsVlhufM3J/I3S2kLKimCRVEfho7FP1MtAy81+LIx06rLrH27swvyRa98FfkdCFHBr L10qT7jYDA/adaIUnTHkIqPKqN4msKrQuHiFY4p5QLE6B0/R
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	R_RATELIMIT(0.00)[to_ip_from(RLhafujjw6m7bafrsz8p45s31g),to(RLpnp1psq57oqao6ocwdpbxen9)];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,ZenIV.linux.org.uk,mit.edu,gmail.com,suse.com,mail.parknet.co.jp,linux.dev,suse.de,kvack.org,suse.cz,redhat.com,lst.de];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Rspamd-Queue-Id: 728AB5BDAF
-X-Spam-Flag: NO
-X-Spam-Score: -1.51
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260326083934.fk4wyhe6rgiss34z@desk>
 
-Instead of using mapping->i_private_list use a list in private part of
-the inode.
+On Thu, Mar 26, 2026 at 01:39:34AM -0700, Pawan Gupta wrote:
+> I believe the equivalent for cpu_feature_enabled() in asm is the
+> ALTERNATIVE. Please let me know if I am missing something.
 
-CC: kvm@vger.kernel.org
-CC: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- virt/kvm/guest_memfd.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+Yes, you are.
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 017d84a7adf3..42b237491c4e 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -30,6 +30,7 @@ struct gmem_file {
- struct gmem_inode {
- 	struct shared_policy policy;
- 	struct inode vfs_inode;
-+	struct list_head gmem_file_list;
- 
- 	u64 flags;
- };
-@@ -39,8 +40,8 @@ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
- 	return container_of(inode, struct gmem_inode, vfs_inode);
- }
- 
--#define kvm_gmem_for_each_file(f, mapping) \
--	list_for_each_entry(f, &(mapping)->i_private_list, entry)
-+#define kvm_gmem_for_each_file(f, inode) \
-+	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
- 
- /**
-  * folio_file_pfn - like folio_file_page, but return a pfn.
-@@ -202,7 +203,7 @@ static void kvm_gmem_invalidate_begin(struct inode *inode, pgoff_t start,
- 
- 	attr_filter = kvm_gmem_get_invalidate_filter(inode);
- 
--	kvm_gmem_for_each_file(f, inode->i_mapping)
-+	kvm_gmem_for_each_file(f, inode)
- 		__kvm_gmem_invalidate_begin(f, start, end, attr_filter);
- }
- 
-@@ -223,7 +224,7 @@ static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
- {
- 	struct gmem_file *f;
- 
--	kvm_gmem_for_each_file(f, inode->i_mapping)
-+	kvm_gmem_for_each_file(f, inode)
- 		__kvm_gmem_invalidate_end(f, start, end);
- }
- 
-@@ -609,7 +610,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	kvm_get_kvm(kvm);
- 	f->kvm = kvm;
- 	xa_init(&f->bindings);
--	list_add(&f->entry, &inode->i_mapping->i_private_list);
-+	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
- 
- 	fd_install(fd, file);
- 	return fd;
-@@ -945,6 +946,7 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
- 	mpol_shared_policy_init(&gi->policy, NULL);
- 
- 	gi->flags = 0;
-+	INIT_LIST_HEAD(&gi->gmem_file_list);
- 	return &gi->vfs_inode;
- }
- 
+The point is that you don't want to stick those alternative calls inside some
+magic bhb_loop function but hand them in from the outside, as function
+arguments.
+
+Basically what I did.
+
+Then you were worried about this being C code and it had to be noinstr... So
+that outer function can be rewritten in asm, I think, and still keep it well
+separate.
+
+I'll try to rewrite it once I get a free minute, and see how it looks.
+
 -- 
-2.51.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
