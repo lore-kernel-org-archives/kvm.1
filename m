@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619593BED17;
-	Thu, 26 Mar 2026 08:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C9F3BF677;
+	Thu, 26 Mar 2026 08:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514743; cv=none; b=kAIWa8Bs/jrxGe0RVaHZEuQR9SQtqwDbRh3yinbTHrxC5GEXI3J2s14IiOFcsggvCyPeqwXcQLPgnj8pi1NTcaQNwhV4ciDAuqoPRZvG6QMS+1ACigyYPQdienmeMT2BagHO5+7kGRmuMJ85z6ER+LhE+NpMTzutYMOnAuwmbzs=
+	t=1774514743; cv=none; b=naKEPXbRLIf94bAOT0iitgUmD7MAX5ufDoNOi0H6idr0IgmUEe/ZY4ZG63HABHuywWPF6RwWb7NdxRqi/N8hIDelEZN7Tvtt+mDVpkrz+fdn6LNW9Ot/G24qdVdsl6oA4hz91pucntvsMQIQf44jvsZz8+zeR24ZVT6c15nevVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774514743; c=relaxed/simple;
-	bh=1fx+fAJLsWNxzd2CEiDJi6nvSpDeuresO1vN6drzTF4=;
+	bh=nZIjkeSVnZT593UpsPc5pD8DdilhJOgI5a05J4luZ6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVrvzG1cM8TslWLChbl+d8xjhBcaiOub0PEJ5Mgc6G+oEGqtAQV1eSUeva7ErEHp9/fpsOi1VgcBz7G1JeJH4jgoTZ8OEeqkMLbw+sp3TF+QKlZntuKU4aQKxhzc9YKu4vqZuJAmvCd35kaDbOXDxreU63F/dUM0Wqj2cqnxjLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T67Xr8zx; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=kBdADcAHT1hJdeAD2a7QTDx4vN3lBHzNbccAo+Mw0gSKhrxi7rQwmtgmch9iZcdhHzzm/t06di1J9N59MeOf9b0Xi1Z99VjddEG4a+qL+fdAvlbr6gpI63v8JzI9Oy5Y/9qERMjPhVMB66BHZLKFOSaky6AiLMq2YhcYobz4jnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TeG9GXdL; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T67Xr8zx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TeG9GXdL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774514741; x=1806050741;
+  t=1774514742; x=1806050742;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1fx+fAJLsWNxzd2CEiDJi6nvSpDeuresO1vN6drzTF4=;
-  b=T67Xr8zxpR3+GHLUlQZg3qfJqOQYVk52kJKUpxky0nN+VCEs46c2fuAU
-   ZDYLTzPxCT2RvHGF8UJri+wPazcTuKPLJcMaJCSdKTWq1ufB3yKcKeCRI
-   OOQN0K6Fqr4gQAC9XnfreEV4oQwwu17KvgyZpUuwKU2dBWxBqVxqU9yfh
-   yNUtvFkQ+AMF4njqfx9UQSEPpBhXJlATQkrZP0qWPYR0zf8sFscRpRiWy
-   6FdarN4bPGdxQleNUdwZgK6PInb8dCqQsxrRHJxqpz/uVgx1k+7/LlO59
-   PZJG/A7tjsfavi6HWY8R2V8aHglYdL/4BDkm4UEwhHIEuqSi7e8scUvWr
-   g==;
-X-CSE-ConnectionGUID: +TAGfBVsQdiF1BQ8VKivNQ==
-X-CSE-MsgGUID: D+y7ZXYKTfm5RlI/Rfg2Qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644703"
+  bh=nZIjkeSVnZT593UpsPc5pD8DdilhJOgI5a05J4luZ6U=;
+  b=TeG9GXdL2waq80frRWnN00F35OocHBYFsfT/lYvhAoX4Q6uC/gbvM6MH
+   +KzpLzsj0FYislXiCyTIW3iO+YNCormJX+P0kBS3MauIEHMEX/WTz6Zu8
+   xMRJCUCm8AptkolOSmkICWQGR1Y6eH5dOqQYpJEeS9+Q20fUj+xGQPoUA
+   09DvwmXVjR8RfX5sl4DO8S4kFhDbOpzOWQ4p2umlx6kJWhE5yOlQAs1O+
+   63zncO5q4cPRPhUDERdF0nq0jpeXhlQ5Scfmj/JERl5yXM11QYP8StfSu
+   /xVdA35n/rPSSxf1hz1BJc1YBCPn70JCSVzy3GkVxcKVcKxZ/9ZNp4ZAO
+   w==;
+X-CSE-ConnectionGUID: 6hXrEZavT2m9Jl8NPTfQYQ==
+X-CSE-MsgGUID: +qqGKtTjSBG72U2Tui4cFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644719"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="86644703"
+   d="scan'208";a="86644719"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:23 -0700
-X-CSE-ConnectionGUID: 74eYlt/JSDesN3+1kt6+1Q==
-X-CSE-MsgGUID: AaH2xMepQV6TEu7e5NlPEg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:24 -0700
+X-CSE-ConnectionGUID: WCWK48lsQXuDI3UzBdLcRg==
+X-CSE-MsgGUID: NnFyng9dR/ethUa+N7Jkuw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="224967218"
+   d="scan'208";a="224967225"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:22 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:23 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v6 12/22] x86/virt/tdx: Reset software states during TDX module shutdown
-Date: Thu, 26 Mar 2026 01:44:03 -0700
-Message-ID: <20260326084448.29947-13-chao.gao@intel.com>
+Subject: [PATCH v6 14/22] x86/virt/seamldr: Do TDX per-CPU initialization after updates
+Date: Thu, 26 Mar 2026 01:44:05 -0700
+Message-ID: <20260326084448.29947-15-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
 References: <20260326084448.29947-1-chao.gao@intel.com>
@@ -86,86 +86,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The TDX module requires a one-time global initialization (TDH.SYS.INIT) and
-per-CPU initialization (TDH.SYS.LP.INIT) before use. These initializations
-are guarded by software flags to prevent repetition.
-
-After TDX module updates, the new TDX module requires the same global and
-per-CPU initializations, but the existing software flags prevent
-re-initialization.
-
-Reset all software flags guarding the initialization flows to allow the
-global and per-CPU initializations to be triggered again after updates.
+After installing the new TDX module, each CPU needs to be initialized
+again to make the CPU ready to run any other SEAMCALLs. So, call
+tdx_cpu_enable() on all CPUs.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
-v6:
- - reset tdx_lp_initialized for offlined CPUs and update the comment
-   accordingly [Kai]
-v5:
- - add a comment to clarify why state access doesn't require holding a
-   lock. [Kai]
----
- arch/x86/virt/vmx/tdx/tdx.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ arch/x86/virt/vmx/tdx/seamldr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f87fad429f4e..a2a46c734d5e 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -55,6 +55,8 @@ static struct tdmr_info_list tdx_tdmr_list;
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+index 0c282a7565a1..8b196ce45546 100644
+--- a/arch/x86/virt/vmx/tdx/seamldr.c
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -201,6 +201,7 @@ enum module_update_state {
+ 	MODULE_UPDATE_START,
+ 	MODULE_UPDATE_SHUTDOWN,
+ 	MODULE_UPDATE_CPU_INSTALL,
++	MODULE_UPDATE_CPU_INIT,
+ 	MODULE_UPDATE_DONE,
+ };
  
- static enum tdx_module_status_t tdx_module_status;
- static DEFINE_MUTEX(tdx_module_lock);
-+static bool sysinit_done;
-+static int sysinit_ret;
- 
- /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
- static LIST_HEAD(tdx_memlist);
-@@ -70,8 +72,6 @@ static int try_init_module_global(void)
- {
- 	struct tdx_module_args args = {};
- 	static DEFINE_RAW_SPINLOCK(sysinit_lock);
--	static bool sysinit_done;
--	static int sysinit_ret;
- 
- 	lockdep_assert_irqs_disabled();
- 
-@@ -1179,6 +1179,7 @@ EXPORT_SYMBOL_FOR_KVM(tdx_enable);
- int tdx_module_shutdown(void)
- {
- 	struct tdx_module_args args = {};
-+	int ret, cpu;
- 
- 	/*
- 	 * Shut down the TDX module and prepare handoff data for the next
-@@ -1188,7 +1189,23 @@ int tdx_module_shutdown(void)
- 	 * modules as new modules likely have higher handoff version.
- 	 */
- 	args.rcx = tdx_sysinfo.handoff.module_hv;
--	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
-+	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
-+	if (ret)
-+		return ret;
-+
-+	tdx_module_status = TDX_MODULE_UNINITIALIZED;
-+	sysinit_done = false;
-+	sysinit_ret = 0;
-+
-+	/*
-+	 * Since the TDX module is shut down and gone, mark all CPUs
-+	 * (including offlined ones) as uninitialied. This is called in
-+	 * stop_machine() (where CPU hotplug is disabled), preventing
-+	 * races with other tdx_lp_initialized accesses.
-+	 */
-+	for_each_possible_cpu(cpu)
-+		per_cpu(tdx_lp_initialized, cpu) = false;
-+	return 0;
- }
- 
- static bool is_pamt_page(unsigned long phys)
+@@ -261,6 +262,9 @@ static int do_seamldr_install_module(void *seamldr_params)
+ 			case MODULE_UPDATE_CPU_INSTALL:
+ 				ret = seamldr_install(seamldr_params);
+ 				break;
++			case MODULE_UPDATE_CPU_INIT:
++				ret = tdx_cpu_enable();
++				break;
+ 			default:
+ 				break;
+ 			}
 -- 
 2.47.3
 
