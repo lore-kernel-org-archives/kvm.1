@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D2E39D6D4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984AE3FE660
 	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 14:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774536649; cv=none; b=ABkSVA7hxKWg2JEbJou6aFRWH523YJD/cbdqLz5q16J8n732i7UuQ3EitPBHOH6LcS2Mzqp/wsZjxKit49pfN/3qMN74+KxM4vgPUZlbZcL7x+Hl/2cVO4ogNfKyXKlAwo2mgv1RDMboXjmLWhPUE3IKnQXWgnd2FODZ4qIOaIc=
+	t=1774536650; cv=none; b=n4hg/KNoSR/KiBzO5zRL6RltZpEvQoKri+OqZzT1RFBsK1/mGq/xpoSU2oxG9u5FyfU2/GWykblS8ftkuMcjNagn34j7x7FKRLO/lCtFja2wBIta2ATe5j7+/niIqHlS20+meS19J2+tfmOM4RHITEPEFT7fz4dRGUrCqsorTAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774536649; c=relaxed/simple;
-	bh=7ukQYmSDa7tI02PDc9mH5B/nRfC9xmEO7FtyKiP7Hr8=;
+	s=arc-20240116; t=1774536650; c=relaxed/simple;
+	bh=4SH0tUL81OqtnKAEQFZmfSzfp7qD4Ejp7r027LUei1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LlydI903gx51xIdlYdxBy+WX+Is110Buufm1tdOXxu5Ovg2QzryE+Ch3nJrJpCqCL7m2FH8mh72CPpP8CwemwOgZj8d8HjqBYnkkiypQeZmE40a/sZv7dQXUX7Ic0B5YQnsZKL07jYLpAoPx+pswODVI8iGgByfump4ttAIwtcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QC4qwIdR; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=hqeXb/Rth3Q2Zs0ipOswNSAb3m2EQO4DEOswaZuye2YsyDEKx6ZbBcq1zaG51cxZek2/atwigq2MC8JSTQNecpUIskcF4aOMopNjcckOwU+FZYxgJGbKXwTvYw06IkXN/2glletUSqtBF9iy8I81bqN/+TRFKWL/za2ymDKzVe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CQKz7amb; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QC4qwIdR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CQKz7amb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1774536647;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8A33S7zM4JP6choVLSyjNDm+YLEdbpOizGwKKY408Qs=;
-	b=QC4qwIdRiT8ONvBZ4fJc8FVNGHwXPGDCpPiixylrp8YNbn31QQ1d0efxEFiYWHnBwvNC0T
-	ML/ro8hJ2JBaun9XbatmLHYATJRfy7Pm0JRcrokEDwf7spCqve9WBcoDXl1YvmMaHQFyij
-	U8K5sCg9HHZSIAo5Q3xMbCh2cRTrJ4E=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=fA0FMWauda9Fpz17m5zCa4BfJK737AG5sib/q/f5ZdM=;
+	b=CQKz7ambJr5uyWpc1whgD6l5vqxmvEakRr2JpjQyqoouGAORmk/V0wqmHzna+eTd1H8If3
+	Ive3qrmLEPqzYwsNTs1IKdHlvTzEz1KAs9sl0LrpNlO5Jab53oS8gsecFhhkYbPkxDQa1p
+	yTur2ZYGdsOKX9UpN8G1Dx8iO13R2Og=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-epNxmPyiPZSkckhybPv3mA-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-Sfcwwr5sObS3HvyfBqmXtA-1; Thu,
  26 Mar 2026 10:50:43 -0400
-X-MC-Unique: epNxmPyiPZSkckhybPv3mA-1
-X-Mimecast-MFC-AGG-ID: epNxmPyiPZSkckhybPv3mA_1774536642
+X-MC-Unique: Sfcwwr5sObS3HvyfBqmXtA-1
+X-Mimecast-MFC-AGG-ID: Sfcwwr5sObS3HvyfBqmXtA_1774536641
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9798318005B6;
-	Thu, 26 Mar 2026 14:50:42 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BD0BA195609E;
+	Thu, 26 Mar 2026 14:50:41 +0000 (UTC)
 Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.eng.rdu2.dc.redhat.com [10.6.68.74])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E6EB518001FE;
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1798018001FE;
 	Thu, 26 Mar 2026 14:50:41 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: kvm@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Nikunj A Dadhania <nikunj@amd.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH kvm-unit-tests 6/9] x86/vmx: add mode-based execute control test for Skylake and above
-Date: Thu, 26 Mar 2026 10:50:32 -0400
-Message-ID: <20260326145035.119519-7-pbonzini@redhat.com>
+Subject: [PATCH kvm-unit-tests 5/9] x86/vmx: diagnose unexpected EPT violations
+Date: Thu, 26 Mar 2026 10:50:31 -0400
+Message-ID: <20260326145035.119519-6-pbonzini@redhat.com>
 In-Reply-To: <20260326145035.119519-1-pbonzini@redhat.com>
 References: <20260326145035.119519-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -63,165 +63,167 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Introduce a new test for mode-based execute control (MBEC) in the VMX
-controls, validating the dependency between MBEC and EPT VM-execution
-controls. The test ensures that VM entry fails when MBEC is enabled
-without EPT, and succeeds in valid combinations.
+Knowing the exit qualification when a test incorrectly raises an
+EPT violation greatly simplifies debugging.  This requires a tweak to
+__TEST_EQ, allowing any code block instead of just a function name for
+the abort code.
 
-Update the unit test configuration to include a specific test case for
-MBEC on Skylake-Server CPU model, as that was the first CPU series to
-have MBEC.
+For this particular case, include advanced vmexit info in the diagnosis.
 
-Passing test result
-Test suite: vmx_controls_test_mbec
-PASS: MBEC disabled, EPT disabled (valid combination): vmlaunch succeeds
-PASS: MBEC enabled, EPT disabled (invalid combination): vmlaunch fails
-PASS: MBEC enabled, EPT disabled (invalid combination): VMX inst error is 7 (actual 7)
-PASS: MBEC enabled, EPT enabled (valid combination): vmlaunch succeeds
-PASS: MBEC disabled, EPT enabled (valid combination): vmlaunch succeeds
-
-Test ran with "-vmx-mbec":
-Test suite: vmx_controls_test_mbec
-SKIP: test_mode_based_execute_control : "Secondary execution" or
-"enable EPT" or "enable mode-based execute control" control not supported
-
-Co-authored-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- x86/unittests.cfg |  9 +++++++
- x86/vmx.h         |  8 ++++++
- x86/vmx_tests.c   | 64 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 81 insertions(+)
+ lib/util.h      | 10 +++-----
+ x86/vmx.h       |  8 +++---
+ x86/vmx_tests.c | 65 ++++++++++++++++++++++++++++---------------------
+ 3 files changed, 44 insertions(+), 39 deletions(-)
 
-diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-index 522318d3..b82bbc4e 100644
---- a/x86/unittests.cfg
-+++ b/x86/unittests.cfg
-@@ -324,6 +324,15 @@ qemu_params = -cpu max,+vmx
- arch = x86_64
- groups = vmx
+diff --git a/lib/util.h b/lib/util.h
+index 00d0b47d..93f16410 100644
+--- a/lib/util.h
++++ b/lib/util.h
+@@ -41,17 +41,13 @@ do {											\
+ 			    (unsigned long) _b, _bin_b, (unsigned long) _b,		\
+ 			    fmt[0] == '\0' ? "" : "\n", ## args);			\
+ 		dump_stack();								\
+-		if (assertion)								\
+-			do_abort();							\
++		if (assertion) { do_abort; }						\
+ 	}										\
+ 	report_passed();								\
+ } while (0)
  
-+# VMX controls is a generic test; however, mode-based execute control
-+# aka MBEC is only available on Skylake and above, be specific about
-+# the CPU model and test it directly.
-+[vmx_controls_test_mbec]
-+file = vmx.flat
-+extra_params = -cpu Skylake-Server,+vmx,+vmx-mbec -append "vmx_controls_test_mbec"
-+arch = x86_64
-+groups = vmx
-+
- [ept]
- file = vmx.flat
- test_args = "ept_access*"
+-/* FIXME: Extend VMX's assert/abort framework to SVM and other environs. */
+-static inline void dummy_abort(void) {}
+-
+-#define TEST_EXPECT_EQ(a, b) __TEST_EQ(a, b, #a, #b, 0, dummy_abort, "")
++#define TEST_EXPECT_EQ(a, b) __TEST_EQ(a, b, #a, #b, 0, , "")
+ #define TEST_EXPECT_EQ_MSG(a, b, fmt, args...) \
+-	__TEST_EQ(a, b, #a, #b, 0, dummy_abort fmt, ## args)
++	__TEST_EQ(a, b, #a, #b, 0, fmt, ## args)
+ 
+ #endif
 diff --git a/x86/vmx.h b/x86/vmx.h
-index 0e29a57d..b492ec74 100644
+index d9f493d3..0e29a57d 100644
 --- a/x86/vmx.h
 +++ b/x86/vmx.h
-@@ -510,6 +510,7 @@ enum Ctrl1 {
- 	CPU_SHADOW_VMCS		= 1ul << 14,
- 	CPU_RDSEED		= 1ul << 16,
- 	CPU_PML                 = 1ul << 17,
-+	CPU_MODE_BASED_EPT_EXEC = 1ul << 22,
- 	CPU_USE_TSC_SCALING	= 1ul << 25,
- };
+@@ -37,9 +37,9 @@ do {								\
+ 	report_passed();					\
+ } while (0)
  
-@@ -843,6 +844,13 @@ static inline bool is_invvpid_type_supported(unsigned long type)
- 	return ept_vpid.val & (VPID_CAP_INVVPID_ADDR << (type - INVVPID_ADDR));
- }
+-#define TEST_ASSERT_EQ(a, b) __TEST_EQ(a, b, #a, #b, 1, __abort_test, "")
++#define TEST_ASSERT_EQ(a, b) __TEST_EQ(a, b, #a, #b, 1, __abort_test(), "")
+ #define TEST_ASSERT_EQ_MSG(a, b, fmt, args...) \
+-	__TEST_EQ(a, b, #a, #b, 1, __abort_test, fmt, ## args)
++	__TEST_EQ(a, b, #a, #b, 1, __abort_test(), fmt, ## args)
  
-+static inline bool is_mbec_supported(void)
-+{
-+	return (ctrl_cpu_rev[0].clr & CPU_SECONDARY) &&
-+	       (ctrl_cpu_rev[1].clr & CPU_EPT) &&
-+	       (ctrl_cpu_rev[1].clr & CPU_MODE_BASED_EPT_EXEC);
-+}
-+
- extern u64 *bsp_vmxon_region;
- extern bool launched;
+ struct vmcs_hdr {
+ 	u32 revision_id:31;
+@@ -718,9 +718,9 @@ enum vm_entry_failure_code {
+ #define EPT_VLT_PADDR		(1ull << 8)
+ #define EPT_VLT_GUEST_USER	(1ull << 9)
+ #define EPT_VLT_GUEST_RW	(1ull << 10)
+-#define EPT_VLT_GUEST_EX	(1ull << 11)
++#define EPT_VLT_GUEST_NX	(1ull << 11)
+ #define EPT_VLT_GUEST_MASK	(EPT_VLT_GUEST_USER | EPT_VLT_GUEST_RW | \
+-				 EPT_VLT_GUEST_EX)
++				 EPT_VLT_GUEST_NX)
  
+ #define MAGIC_VAL_1		0x12345678ul
+ #define MAGIC_VAL_2		0x87654321ul
 diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
-index 0e3dca3c..dbc456cb 100644
+index 707e8ca4..0e3dca3c 100644
 --- a/x86/vmx_tests.c
 +++ b/x86/vmx_tests.c
-@@ -4876,6 +4876,69 @@ skip_unrestricted_guest:
- 	vmcs_write(EPTP, eptp_saved);
+@@ -2157,13 +2157,46 @@ static int exit_monitor_from_l2_handler(union exit_reason exit_reason)
+ 	return VMX_TEST_EXIT;
  }
  
-+/*
-+ * Test the dependency between mode-based execute control for EPT (MBEC) and
-+ * enable EPT VM-execution controls.
-+ *
-+ * When MBEC (bit 22 of secondary processor-based VM-execution controls) is enabled,
-+ * it allows separate execute permissions for supervisor-mode and user-mode linear
-+ * addresses in EPT paging structures. However, per Intel SDM requirement:
-+ *
-+ * "If the 'mode-based execute control for EPT' VM-execution control is 1,
-+ * the 'enable EPT' VM-execution control must also be 1."
-+ *
-+ * This test validates that VM entry fails when MBEC is enabled without EPT,
-+ * and succeeds in all other valid combinations.
-+ *
-+ * [Intel SDM Vol. 3C, Section 26.6.2, Table 26-7]
-+ */
-+static void test_mode_based_execute_control(void)
++static void
++diagnose_ept_violation_qual(u64 expected, u64 actual)
 +{
-+	u32 primary_saved = vmcs_read(CPU_EXEC_CTRL0);
-+	u32 secondary_saved = vmcs_read(CPU_EXEC_CTRL1);
-+	u32 primary = primary_saved;
-+	u32 secondary = secondary_saved;
 +
-+	/* Skip test if required VM-execution controls are not supported */
-+	if (!is_mbec_supported()) {
-+		report_skip("MBEC not supported");
-+		return;
-+	}
++#define DIAGNOSE(flag)							\
++do {									\
++	if ((expected & flag) != (actual & flag))			\
++		printf(#flag " %sexpected\n",				\
++		       (expected & flag) ? "" : "un");			\
++} while (0)
 +
-+	/* Test case 1: MBEC disabled, EPT disabled - should be valid */
-+	primary |= CPU_SECONDARY;
-+	vmcs_write(CPU_EXEC_CTRL0, primary);
-+	secondary &= ~(CPU_MODE_BASED_EPT_EXEC | CPU_EPT);
-+	vmcs_write(CPU_EXEC_CTRL1, secondary);
-+	report_prefix_pushf("MBEC disabled, EPT disabled (valid combination)");
-+	test_vmx_valid_controls();
-+	report_prefix_pop();
++	DIAGNOSE(EPT_VLT_RD);
++	DIAGNOSE(EPT_VLT_WR);
++	DIAGNOSE(EPT_VLT_FETCH);
++	DIAGNOSE(EPT_VLT_PERM_RD);
++	DIAGNOSE(EPT_VLT_PERM_WR);
++	DIAGNOSE(EPT_VLT_PERM_EX);
++	DIAGNOSE(EPT_VLT_LADDR_VLD);
++	DIAGNOSE(EPT_VLT_PADDR);
++	DIAGNOSE(EPT_VLT_GUEST_USER);
++	DIAGNOSE(EPT_VLT_GUEST_RW);
++	DIAGNOSE(EPT_VLT_GUEST_NX);
 +
-+	/* Test case 2: MBEC enabled, EPT disabled - should be invalid per SDM */
-+	secondary |= CPU_MODE_BASED_EPT_EXEC;
-+	vmcs_write(CPU_EXEC_CTRL1, secondary);
-+	report_prefix_pushf("MBEC enabled, EPT disabled (invalid combination)");
-+	test_vmx_invalid_controls();
-+	report_prefix_pop();
-+
-+	/* Test case 3: MBEC enabled, EPT enabled - should be valid */
-+	secondary |= CPU_EPT;
-+	setup_dummy_ept();
-+	report_prefix_pushf("MBEC enabled, EPT enabled (valid combination)");
-+	test_vmx_valid_controls();
-+	report_prefix_pop();
-+
-+	/* Test case 4: MBEC disabled, EPT enabled - should be valid */
-+	secondary &= ~CPU_MODE_BASED_EPT_EXEC;
-+	vmcs_write(CPU_EXEC_CTRL1, secondary);
-+	report_prefix_pushf("MBEC disabled, EPT enabled (valid combination)");
-+	test_vmx_valid_controls();
-+	report_prefix_pop();
-+
-+	vmcs_write(CPU_EXEC_CTRL0, primary_saved);
-+	vmcs_write(CPU_EXEC_CTRL1, secondary_saved);
++#undef DIAGNOSE
 +}
 +
- /*
-  * If the 'enable PML' VM-execution control is 1, the 'enable EPT'
-  * VM-execution control must also be 1. In addition, the PML address
-@@ -5336,6 +5399,7 @@ static void test_vm_execution_ctls(void)
- 	test_pml();
- 	test_vpid();
- 	test_ept_eptp();
-+	test_mode_based_execute_control();
- 	test_vmx_preemption_timer();
+ static void assert_exit_reason(u64 expected)
+ {
+ 	u64 actual = vmcs_read(EXI_REASON);
+ 
+-	TEST_ASSERT_EQ_MSG(expected, actual, "Expected %s, got %s.",
+-			   exit_reason_description(expected),
+-			   exit_reason_description(actual));
++        __TEST_EQ(expected, actual, "expected", "actual", 1, {
++		printf("guest linear address %lx\n", vmcs_read(GUEST_LINEAR_ADDRESS));
++		if (actual == VMX_EPT_VIOLATION) {
++			u64 qual = vmcs_read(EXI_QUALIFICATION);
++			diagnose_ept_violation_qual(0, qual);
++		}
++		__abort_test();
++	}, "Expected %s, got %s.",
++		   exit_reason_description(expected),
++		   exit_reason_description(actual));
  }
  
+ static void skip_exit_insn(void)
+@@ -2276,29 +2309,6 @@ asm(
+ 	"ret42_end:\n"
+ );
+ 
+-static void
+-diagnose_ept_violation_qual(u64 expected, u64 actual)
+-{
+-
+-#define DIAGNOSE(flag)							\
+-do {									\
+-	if ((expected & flag) != (actual & flag))			\
+-		printf(#flag " %sexpected\n",				\
+-		       (expected & flag) ? "" : "un");			\
+-} while (0)
+-
+-	DIAGNOSE(EPT_VLT_RD);
+-	DIAGNOSE(EPT_VLT_WR);
+-	DIAGNOSE(EPT_VLT_FETCH);
+-	DIAGNOSE(EPT_VLT_PERM_RD);
+-	DIAGNOSE(EPT_VLT_PERM_WR);
+-	DIAGNOSE(EPT_VLT_PERM_EX);
+-	DIAGNOSE(EPT_VLT_LADDR_VLD);
+-	DIAGNOSE(EPT_VLT_PADDR);
+-
+-#undef DIAGNOSE
+-}
+-
+ static void do_ept_access_op(enum ept_access_op op)
+ {
+ 	ept_access_test_data.op = op;
+@@ -2360,8 +2370,7 @@ static void do_ept_violation(bool leaf, enum ept_access_op op,
+ 	qual = vmcs_read(EXI_QUALIFICATION);
+ 
+ 	/* Mask undefined bits (which may later be defined in certain cases). */
+-	qual &= ~(EPT_VLT_GUEST_USER | EPT_VLT_GUEST_RW | EPT_VLT_GUEST_EX |
+-		 EPT_VLT_PERM_USER_EX);
++	qual &= ~(EPT_VLT_GUEST_MASK | EPT_VLT_PERM_USER_EX);
+ 
+ 	diagnose_ept_violation_qual(expected_qual, qual);
+ 	TEST_EXPECT_EQ(expected_qual, qual);
 -- 
 2.52.0
 
