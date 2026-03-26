@@ -1,83 +1,83 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BEC42EEB7
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591DC43634A
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549115; cv=none; b=g/t66J+ScApYFj+EUgZ0eF5MJ+WohmANds2oNIp1IvP9HkY5478tqV9VV/gZ+AHTVUxjiXdTfQvjli7n2g0SJMpUgu6H24SaAn8tkE0g3mYyfzaliK1MKo6O61dy4SrDx5ZnkkwdR2qFEu5tqYpbV48Uk1Xmo/lOADkaFYVhLdU=
+	t=1774549117; cv=none; b=iYgjaDEB50+c0RuX11nQPKqwzofCG5BPAvH7YCp+SjUMYxlNd317PvH/DI+KuKgHYh+t4VJ7MTqMwBK1XcS6IzK2jhoyJ4Rzmb6kRS0Kw0eZHgMr4YkwtH2wHns6uVBKL99RIRnrhhAocGuE/7vk5LmBoNX7ehSFstDGa2Y2MIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549115; c=relaxed/simple;
-	bh=KyJghWuDVBsbgkhZkBaY+oSIj/LbtZ/LGaEKZV/V7ZQ=;
+	s=arc-20240116; t=1774549117; c=relaxed/simple;
+	bh=VqDC5nq0YNGqKNZ6RKmT3do9bT1aOH4fFp5OqMgujK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t88G8ntQCW+MU1dSzKLyj/5NY/WElFisrReqAUee+WhtXYwJWdAH4/EqVezUq1xkg8PAYsRc+vS5jn5E80V1TDj4yBrSRHXmVYnlFyozCq7dLdw8ex/o9qigIrhomYYzLCAZSHJoU6Kh2S7dRn/1bKFRenN5BHgIjQEi3t4N1O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E7x7R6Np; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ltb3BX/x; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=t4aISLeSiRGFqEFWMdPpnLPrQd7UK49AhxfSefPZgnVySwy7sMQYmdl5f8FzG0NAjXcY6Cd33JDQkiMW+Sdurf8V0dse6B2BLTeInjGKvSO4yjbdRSxvwvJe5pFaVEht5d2zElfgwe3EA1bS7jYfepk2hOr/+l8D6kvYdWVHOCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dowjdQNt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=j1Wm4oqu; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E7x7R6Np";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ltb3BX/x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dowjdQNt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="j1Wm4oqu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549112;
+	s=mimecast20190719; t=1774549115;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EJv4bFxkGZXT+fQXF05wmQFYDvr/WaoBBgiyg84ew/A=;
-	b=E7x7R6NpyY7GFdXGD/uUUSKZ1zgCn4QK7MJOTv1gcyLxkKNlp1By8qXieP95ZuloAMKm+B
-	Us1DRaK2TZuruV3qrIqpyRokiHPR3gomD70ZqdcUXFJ0zZtaHZGaA238AnnFmD0ZXMu0eM
-	CZl0J4LjQlD4+dMIx1nNCfRnp2aE9ys=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=HYNGVWrKJXR6S3Kdoud61y7GGD55W7Al+2THWDfCOTw=;
+	b=dowjdQNtp7bcCxRdCUj+uYNm6O7BLae4G+IwzjhGGlmOMSxdRkBgFVTmQpHTilIssPXQu9
+	Wr5V9IjW7180SH+9puEVEYlxI5ZfmD9RZz7XwmGqHmZ5UWaASVAZuwHj8ABAd/FjtO5uOc
+	+zhnl1bnDJ9GSnFYXHcksPWBA1ywhGA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-45Yz7KAjM-CJ2KeqRcfnSw-1; Thu, 26 Mar 2026 14:18:31 -0400
-X-MC-Unique: 45Yz7KAjM-CJ2KeqRcfnSw-1
-X-Mimecast-MFC-AGG-ID: 45Yz7KAjM-CJ2KeqRcfnSw_1774549110
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b8f23bdc7so94440f8f.3
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:18:31 -0700 (PDT)
+ us-mta-711-wPSPdm53Meq8pAhQkLDiiQ-1; Thu, 26 Mar 2026 14:18:34 -0400
+X-MC-Unique: wPSPdm53Meq8pAhQkLDiiQ-1
+X-Mimecast-MFC-AGG-ID: wPSPdm53Meq8pAhQkLDiiQ_1774549113
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-485397788b3so10701195e9.2
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:18:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549110; x=1775153910; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774549112; x=1775153912; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EJv4bFxkGZXT+fQXF05wmQFYDvr/WaoBBgiyg84ew/A=;
-        b=Ltb3BX/xa0mGZtjv0sXsj56ix2jvd4VAM1ItB4z8W7g9/YDIXLrIl/8Iub+s0jtk7d
-         VdldVAJVuRphPc236uu+f+BdjgOf5psgTTS0tuOD34vlDG3xiRZMkeKv/qVHIwmx2jQH
-         LVj0xpYnFj+2Sv1PqUufHP23vbDzytTAsb5zWivWbMyCv09OJGR9XEHjseB9A3wWWc7M
-         lilnhNwNwPKcqVjhR5nDDunuene2byBjVqwfKl12lBizxzGpRkJRrZv+sV91J2tuCIPD
-         jhd14u6vM5Kc54gWczdokeM7pkWp+6Ad/UFHYgR7Kzo5F0ruMJqo/JkNDDWr1SNaPagi
-         sLWw==
+        bh=HYNGVWrKJXR6S3Kdoud61y7GGD55W7Al+2THWDfCOTw=;
+        b=j1Wm4oqu0B2jyLQymexPN11iS5AdsBWVEnEP2qLb0/h4G9xZdNZTlRybnQo/AI/Tfn
+         o9Jh4AE5ZV5sBS3tAlYjFgPlN4KXxRpH0WoOEcI23JWg9xmcuRoTpXtn/Mj1JaG2vPxm
+         6yXMljda38lGbh3MUKovkRXptOvoCdUSyp3Ii+NYJsAwXYIDQNZOAcTmJZgLVRMW2epE
+         73QF35r0kGN4JvDuvtV71LrAObG4NBpx9bxT/CpEE+9E/BAVouTXtthHcElNDPBetSsM
+         XYWSsaPYVnxw/9yn3JRA4Mjvbj/HQV24aw9bVAlgD0cmq9KZeK0QKv9O6ao0uPsHfFVs
+         74uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549110; x=1775153910;
+        d=1e100.net; s=20251104; t=1774549112; x=1775153912;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=EJv4bFxkGZXT+fQXF05wmQFYDvr/WaoBBgiyg84ew/A=;
-        b=Ntc7bpNQZ6ugMButXQJVlW2P0ftgBdV9fHTIxEKDCIjaY5LXBBnuCGunVA1j29RbKa
-         M+y0cjHoZAe+xDT+LHJI7uXh2Sgdt5ttFnzkIy0Qgariub46W0gw0bzfbby7A6WA49Lq
-         2Z9r1MBCimppJa9lLnw1uVwSosIOPGrSgIyoWJRejLMs/YoX/g4ffnSI0jA0EPuXh/KE
-         9ZPe4+7zpNmZt5oxvBe6U4UPOPMT5nX8KIBeaDg85/hTfMXZCiJUDRWiDtzl606sBIPM
-         pFpF+F3SC6dt6WQw7WVPM25MM3llU4yXP6TfcFf2ICbK6nCa5tQ0P00sU9lVt7dpQWcE
-         02qA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlkNXoUuqHY3ns41odkd5k2vWBTSNGLK9v8Z1i/KzkgKlcBHqpdFnpufHzCFGtTM1Ek84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVgNxOMQFlTMBlYe4VJqrgFSJHl5kIAv4ZXoMYbEZ8JbOIy/lX
-	EZa3gEwgUk0enVpFRQ2fQv/oD3Yo7kgn1lriNCREfeV8zjvsM+iJGHFcPYiYrhQESLzckxgPx0v
-	5ASqZSwEt9SFG2p/QhFYK5IRq+lUG/RsSh4xTtN8GvGMQQSDnyVidDA==
-X-Gm-Gg: ATEYQzzPsOth+qrYB6FHKVjvqouFuf55f+D3/Z5SlZmbr1A24o4oJr8+xXtb8EFSsf1
-	8T37ia0XwulGoKxCAuRFKZ8TSRJStS75ZxcvWVXCxMPqSPsATp48Zr/ieI1SYEbxzmFMfHE033V
-	JbigJoieUwVKAog0VuS92kZ+/t59zuapHABrkgaWvV7RhZyeTkv7CDV2+fvyJHriMPPAGXHS5wL
-	Fn2RlxD0d4MHHIoPNOOU7IJLMDvJPEYIm4GH6Ji+uNRvvzezY2RgwJKTnDyM54exU+6oiUwaplj
-	Ft9zBgQ2WEJ9f8QOhF7zClqnFl4LLcEKxxE3Irhbi07IjJR4OT9pbP7QP0bq4OcCdw8HsnsFVum
-	tGTGcpG+JEDmhbb+EdKxE8EXm4iBziFljzZPm8htocUJzTdGQRcaOQVh/CfPeqYXWMaMmCBrq15
-	TshveNld9ctsuSiS7ecBNZtllO
-X-Received: by 2002:a05:600c:4685:b0:483:6a8d:b2f9 with SMTP id 5b1f17b1804b1-48715fc3994mr129405685e9.5.1774549109900;
-        Thu, 26 Mar 2026 11:18:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:4685:b0:483:6a8d:b2f9 with SMTP id 5b1f17b1804b1-48715fc3994mr129405095e9.5.1774549109381;
-        Thu, 26 Mar 2026 11:18:29 -0700 (PDT)
+        bh=HYNGVWrKJXR6S3Kdoud61y7GGD55W7Al+2THWDfCOTw=;
+        b=pTHZ1VAyc/1RWUG4AN1d4m98Lf1WD6TWXD9yIqXwl7HT77JKiZBl85ZwKZiA20e1DF
+         +v0RG9LRkKja5/sL9EgRtRhDLHFlE2ATp/GaXWYrwDXHGqEqM+x42PyiqjVQOXdjhqDY
+         6CGjDopIPp40w+2KET/xGb4HVPbnc+wUT81uOqJRA2DbAwh9iip68lFNoXKTi/PZIQWf
+         gi526ZTSQ3oWNDKBJhDCahionnfSqBCgaUd6avd/uWjn1Rcd/RA+ftsY+hVHV+RUGjb7
+         PJ7K+20dwGYQ+jS5PFhO9m5BWf8IBmjVVVwkfpF3DD41T0LyB6/sIpkigGT0qE2rvLu8
+         BOsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFIkaR5EocDso8yr1tnUT48irgabYN9nN4DbDSavtRYQfD1KK7TMom4hc6kMKkXoeEofA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAVmP8tcmo3bPLyWvjbBgr1o3wbtZUg16n/nvSHXT37vECcf3f
+	mi4n4DneEqb6VVKxb9liEkavP9gRZ7HryQOV+QrGO7CsmYRCQpa1+VsiZZ4f9BmPHC6qrGC1rQk
+	6/dC4sTl/K99AUCtUAdY+lii2D46XT1WcCfbK97isx54cnlQmeN9XQrAsD7XuPQ==
+X-Gm-Gg: ATEYQzyabK/03Mmm+xhR/wFE1q8e++TXtiSGJDdCCoBR4G44Gg5Z2+4otg4z7/xg69C
+	D2uPMNYZXqyFfLmzZGi4wAdOyZ7Mi9eXXm7y2IHlu1HqdrYRINHQeBBRy1O1fnQKml7UOo3UcWl
+	i8YmQ2CkHt8Dzw6NKkZbyu3ttbJoszBvxFtMGuAmQsiQU8XbXtSZc0O4NVMVYJaXZ/Qif1p8d2H
+	u7wF+DMa1bIzQVmXzVythCIMGXRbOyNuKX1kINqPLbHzOjc2zU7sijBymHB+Tf/hR2REjLzbqwR
+	1sYYAEJNW9lqf2QFvscJvg0UjNycDN77P6ZOXt8FoY9OtGkY0t2jkuhBQG5SheAaxy+UVG33b0l
+	xTwftWh7rurT4Qg1T+OsMLF7I+CPLft/YUSiYB/E7ShockPNjThJ8XC7E5I/dbxSZv7T1m2aH+g
+	w6M/8+PqjLjq1hJBToSKqwJWpw
+X-Received: by 2002:a05:600c:c10e:b0:485:3af5:7e53 with SMTP id 5b1f17b1804b1-48716039dfamr105341775e9.19.1774549112298;
+        Thu, 26 Mar 2026 11:18:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:c10e:b0:485:3af5:7e53 with SMTP id 5b1f17b1804b1-48716039dfamr105341435e9.19.1774549111836;
+        Thu, 26 Mar 2026 11:18:31 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c6b495sm102069845e9.2.2026.03.26.11.18.27
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e7111sm9497117f8f.37.2026.03.26.11.18.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:18:28 -0700 (PDT)
+        Thu, 26 Mar 2026 11:18:31 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 24/24] KVM: nSVM: enable GMET for guests
-Date: Thu, 26 Mar 2026 19:17:22 +0100
-Message-ID: <20260326181723.218115-25-pbonzini@redhat.com>
+Subject: [PATCH 25/24] stats hack
+Date: Thu, 26 Mar 2026 19:17:23 +0100
+Message-ID: <20260326181723.218115-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326181723.218115-1-pbonzini@redhat.com>
 References: <20260326181723.218115-1-pbonzini@redhat.com>
@@ -100,62 +100,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-All that needs to be done is moving the GMET bit from vmcs12 to
-vmcs02.  The only new thing is that __nested_svm_check_controls
-now ensures that ignored-if-unavailable bits are zero in
-svm->nested.ctl.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/nested.c | 6 ++++++
- arch/x86/kvm/svm/svm.c    | 3 +++
- 2 files changed, 9 insertions(+)
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/svm/svm.c          | 2 +-
+ arch/x86/kvm/vmx/vmx.c          | 2 +-
+ arch/x86/kvm/x86.c              | 1 +
+ 4 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 4c7bc0e7f908..235477bac7e7 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -343,6 +343,8 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
- static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 					 struct vmcb_ctrl_area_cached *control)
- {
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+
- 	if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
- 		return false;
- 
-@@ -364,6 +366,9 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 		return false;
- 	}
- 
-+	if (!gmet_enabled || !guest_cpu_cap_has(vcpu, X86_FEATURE_GMET))
-+		svm->nested.ctl.nested_ctl &= ~SVM_NESTED_CTL_GMET_ENABLE;
-+
- 	return true;
- }
- 
-@@ -832,6 +837,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 	/* Use vmcb01 MMU and format if guest does not use nNPT */
- 	if (nested_npt_enabled(svm)) {
- 		vmcb02->control.nested_ctl &= ~SVM_NESTED_CTL_GMET_ENABLE;
-+		vmcb02->control.nested_ctl |= (svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_GMET_ENABLE);
- 
- 		nested_svm_init_mmu_context(vcpu);
- 	}
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2a26c8fe3f4b..1bd12c03c319 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1705,6 +1705,7 @@ struct kvm_vcpu_stat {
+ 	u64 nmi_injections;
+ 	u64 req_event;
+ 	u64 nested_run;
++	u64 nested_run_gmet;
+ 	u64 directed_yield_attempted;
+ 	u64 directed_yield_successful;
+ 	u64 preemption_reported;
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 700090c3408c..430e4f4ef55b 100644
+index 430e4f4ef55b..705bfb98ebfc 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -5372,6 +5372,9 @@ static __init void svm_set_cpu_caps(void)
- 		if (boot_cpu_has(X86_FEATURE_PFTHRESHOLD))
- 			kvm_cpu_cap_set(X86_FEATURE_PFTHRESHOLD);
+@@ -4424,7 +4424,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		/* Track VMRUNs that have made past consistency checking */
+ 		if (svm->nested.nested_run_pending &&
+ 		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
+-                        ++vcpu->stat.nested_run;
++                        ++vcpu->stat.nested_run, vcpu->stat.nested_run_gmet += !!(svm->vmcb->control.nested_ctl & SVM_NESTED_CTL_GMET_ENABLE);
  
-+		if (boot_cpu_has(X86_FEATURE_GMET))
-+			kvm_cpu_cap_set(X86_FEATURE_GMET);
-+
- 		if (vgif)
- 			kvm_cpu_cap_set(X86_FEATURE_VGIF);
+ 		svm->nested.nested_run_pending = 0;
+ 	}
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 65892dc6f478..262cf8a69bb8 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7749,7 +7749,7 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		 */
+ 		if (vmx->nested.nested_run_pending &&
+ 		    !vmx_get_exit_reason(vcpu).failed_vmentry)
+-			++vcpu->stat.nested_run;
++                        ++vcpu->stat.nested_run, vcpu->stat.nested_run_gmet += !!nested_cpu_has2(get_vmcs12(vcpu), SECONDARY_EXEC_MODE_BASED_EPT_EXEC);
  
+ 		vmx->nested.nested_run_pending = 0;
+ 	}
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index fd1c4a36b593..09e4b53f34f8 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -299,6 +299,7 @@ const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	STATS_DESC_COUNTER(VCPU, nmi_injections),
+ 	STATS_DESC_COUNTER(VCPU, req_event),
+ 	STATS_DESC_COUNTER(VCPU, nested_run),
++	STATS_DESC_COUNTER(VCPU, nested_run_gmet),
+ 	STATS_DESC_COUNTER(VCPU, directed_yield_attempted),
+ 	STATS_DESC_COUNTER(VCPU, directed_yield_successful),
+ 	STATS_DESC_COUNTER(VCPU, preemption_reported),
 -- 
 2.53.0
 
