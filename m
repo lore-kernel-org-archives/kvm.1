@@ -1,272 +1,251 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE4B391515;
-	Thu, 26 Mar 2026 13:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032993B47DC;
+	Thu, 26 Mar 2026 14:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774531069; cv=none; b=lzwUTi9Xm3Sn8C2wUwCnG+HI7RD6uzPmC1iJIhDazZugMntUzzTfI6kmDjnhIoYBCRbYLZVbBzfETnbkQm+9/HrWLtGXycvG3eX70tW9OExmdLWU8CfA68QT6A4C07YDUj7mQfWCNUdSfo/fDV6ODSZ8fNVgKZBZNTlEMtWoXTs=
+	t=1774535307; cv=none; b=S96/BDPAQNMOzR4genmhCCcOtNsDFkHqv1qZrvfoAI/Qde3a3U5EYSW0rNtMKNELy9uV1IrGzSXVMHEyIpIGGpS0GNJ3rAJhuwnkFwC94wAGmU8rpg/i35jWIDSgaqI3PBmxLXj7Ew0AS8YiWjRC/9A5Xtz6U1s1q+8jireT9SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774531069; c=relaxed/simple;
-	bh=UQtUEHaQsqRmHnv53TrlrarbtmDWCkbdmo7byFNh86I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQmTCRzRUJeDg2POK6+s1CcUlN5BoMQslt00A3GWYMpldDt4osrRfpc2DIXUabK/xx/iggdIWn+P2XKj3dbaGLc9PA2+wBv9LX3XmX4bmlHls8UUNbEqeSkD/01QOzV/ztg2A+Ef7CRKklQTUUkT7siYp25LsP7Zy8qnWtbyy7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nXr2I9Bn; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774535307; c=relaxed/simple;
+	bh=dA/pZ4/shfNbho/ZEQkoqhst9cEeIl6GK7g6aLxe5UI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b2/OpEO7Bv1YLCqTMiEVQ0uZpwhMb/DruhPLGbjblVsMwTHLJ6xntXGtUz/ZDgCUHGDAkrtgbcb55JIeQVOBCheNTtdx2q3l44NVT+gjND2YrtRYk3IJ7HQGk4nxzTgzhNRw/mlmyY2XsfxBREksmwfsH/6MuM3S8BEi6zuHJZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Um+LlErD; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nXr2I9Bn"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62QD33oO028990;
-	Thu, 26 Mar 2026 13:17:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=8c26P9cAngHTk0pkx
-	z5TB+Mqm0wiAwcu3yunCC1wMDY=; b=nXr2I9BnmEWMCqcMXwxvnyA+XEv7W/mqL
-	w9yzKMK/vLxtMCG2CW13L9/GrKC8OJhCXSLYsk+BLPwvvoDG+SY8RRyyHZRCRVWg
-	T6SQAHpzTXZDULUXYL6Qk+MB/ASkHAUWIU7O4xYpirQIBdakbsF+e5K3pEfI8ROu
-	lD7OH40RVIxkZGyKpjpQ817V2+sLUIdThOG7Cm1vRkilkkqTahJQcVrW2qmMWSH6
-	NN19/9nxDtcparhYniVvb/xIqV2DtMXstq/52EGmV11XWYc0fxLcX9sOY8R+frtQ
-	VsWpsj8TQHcrZEFG5auTAj3HuG6CEmZ8SzF5VcV/7jLHLJBFencVg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqnd1r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 13:17:31 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62QCA6pK004387;
-	Thu, 26 Mar 2026 13:17:30 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d28c2atxq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 13:17:30 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62QDHQH729885044
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Mar 2026 13:17:27 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C663E20040;
-	Thu, 26 Mar 2026 13:17:26 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A358520043;
-	Thu, 26 Mar 2026 13:17:25 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.23.142])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Mar 2026 13:17:25 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        borntraeger@de.ibm.com, frankja@linux.ibm.com, nrb@linux.ibm.com,
-        seiden@linux.ibm.com, gra@linux.ibm.com, schlameuss@linux.ibm.com,
-        hca@linux.ibm.com, david@kernel.org
-Subject: [PATCH v5 04/10] KVM: s390: Fix gmap_link()
-Date: Thu, 26 Mar 2026 14:17:13 +0100
-Message-ID: <20260326131719.98229-5-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260326131719.98229-1-imbrenda@linux.ibm.com>
-References: <20260326131719.98229-1-imbrenda@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Um+LlErD"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25313175A;
+	Thu, 26 Mar 2026 07:28:18 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DEF663F905;
+	Thu, 26 Mar 2026 07:28:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774535304; bh=dA/pZ4/shfNbho/ZEQkoqhst9cEeIl6GK7g6aLxe5UI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Um+LlErDMPe0y91KuxuR/T0n/cwQ2fONLwEeDEFAWG7mHGE69Hr4FTTnTUXuwEVc/
+	 RQzpyXcebKDzXSFGEFu2nV+p4hCsK88v1/kfRyabXgV4mAKRhrJCyMuAPIs2TYxamR
+	 SUUiTUvJFhDgAZPKb3TyR/8VsI2Ve21OCUq18pZA=
+Date: Thu, 26 Mar 2026 14:28:14 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 1/3] KVM: arm64: selftests: Add library functions for NV
+Message-ID: <e2zrxu275atds5ejuhyda7o2wba5kzvinyx35ocfway3xlcjmj@5gyhvy57fhwp>
+References: <20260325003620.2214766-1-weilin.chang@arm.com>
+ <20260325003620.2214766-2-weilin.chang@arm.com>
+ <86o6kc46x8.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RYfWOBV0NQ2a_FLXKXoj1Dg4CIZgVeom
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA5MyBTYWx0ZWRfX1o8pAZ0VnflV
- kb38zPgV8Sei7lc3NejZjhKKD3QRV8+Vbg3XVH5g+lC0izo7rlooEcKjev7prCeCJdrh6Iznw25
- m5XtkiB6XF/KVujp5dvQuPRwmU2Gd1FvK4XGAu+LSS1jMDXVGB7S5FPexHOxDMUh+3NI+y0WZwU
- NjluyP/o/NEJZ+ozDw9GxOiWnNhlxgcGgiKrNJascWMde+LiQeAHDp1eA3M33mjkm/Yo040M/6S
- /+KYUxcgfbE+iX8YdgTk3g31n1ugv5+lNbTcFeB+Ma++MijydF06F2XeYVJrcbI03gm+U3vFkSy
- o47vhRjOzvh1iRtLg+jUsASaLqrWWpZeNlJF3iXTM258N8BSgXnTkV1nHXmsjg9RCA4InuLl11o
- 2/Y0SNaHlXkUbR0iDkR2JH/yWOKDNuelSSV6MnVBiJbl+uOD63A+sC7yp4EMsuIAiodANDpg+te
- tiiMQmhrrD4P1yB9ahg==
-X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c531eb cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=jDauOpCy_z-6rDg_B6MA:9
-X-Proofpoint-GUID: RYfWOBV0NQ2a_FLXKXoj1Dg4CIZgVeom
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603260093
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86o6kc46x8.wl-maz@kernel.org>
 
-The slow path of the fault handler ultimately called gmap_link(), which
-assumed the fault was a major fault, and blindly called dat_link().
+On Wed, Mar 25, 2026 at 09:03:47AM +0000, Marc Zyngier wrote:
+> On Wed, 25 Mar 2026 00:36:18 +0000,
+> Wei-Lin Chang <weilin.chang@arm.com> wrote:
+> > 
+> > The API is designed for userspace to first call prepare_{l2_stack,
+> > hyp_state, eret_destination, nested_sync_handler}, with a function
+> > supplied to prepare_eret_destination() to be run in L2. Then run_l2()
+> > can be called in L1 to run the given function in L2.
+> > 
+> > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> > ---
+> >  tools/testing/selftests/kvm/Makefile.kvm      |  2 +
+> >  .../selftests/kvm/include/arm64/nested.h      | 18 ++++++
+> >  .../testing/selftests/kvm/lib/arm64/nested.c  | 61 +++++++++++++++++++
+> >  .../selftests/kvm/lib/arm64/nested_asm.S      | 35 +++++++++++
+> >  4 files changed, 116 insertions(+)
+> >  create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
+> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
+> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested_asm.S
+> > 
+> > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> > index 98da9fa4b8b7..5e681e8e0cd7 100644
+> > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > @@ -34,6 +34,8 @@ LIBKVM_arm64 += lib/arm64/gic.c
+> >  LIBKVM_arm64 += lib/arm64/gic_v3.c
+> >  LIBKVM_arm64 += lib/arm64/gic_v3_its.c
+> >  LIBKVM_arm64 += lib/arm64/handlers.S
+> > +LIBKVM_arm64 += lib/arm64/nested.c
+> > +LIBKVM_arm64 += lib/arm64/nested_asm.S
+> >  LIBKVM_arm64 += lib/arm64/processor.c
+> >  LIBKVM_arm64 += lib/arm64/spinlock.c
+> >  LIBKVM_arm64 += lib/arm64/ucall.c
+> > diff --git a/tools/testing/selftests/kvm/include/arm64/nested.h b/tools/testing/selftests/kvm/include/arm64/nested.h
+> > new file mode 100644
+> > index 000000000000..739ff2ee0161
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/kvm/include/arm64/nested.h
+> > @@ -0,0 +1,18 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +/*
+> > + * ARM64 Nested virtualization defines
+> > + */
+> > +
+> > +#ifndef SELFTEST_KVM_NESTED_H
+> > +#define SELFTEST_KVM_NESTED_H
+> > +
+> > +void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
+> > +void prepare_hyp_state(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
+> > +void prepare_eret_destination(struct kvm_vm *vm, struct kvm_vcpu *vcpu, void *l2_pc);
+> > +void prepare_nested_sync_handler(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
+> > +
+> > +void run_l2(void);
+> > +void after_hvc(void);
+> > +void do_hvc(void);
+> > +
+> > +#endif /* SELFTEST_KVM_NESTED_H */
+> > diff --git a/tools/testing/selftests/kvm/lib/arm64/nested.c b/tools/testing/selftests/kvm/lib/arm64/nested.c
+> > new file mode 100644
+> > index 000000000000..111d02f44cfe
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/kvm/lib/arm64/nested.c
+> > @@ -0,0 +1,61 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * ARM64 Nested virtualization helpers
+> > + */
+> > +
+> > +#include "kvm_util.h"
+> > +#include "nested.h"
+> > +#include "processor.h"
+> > +#include "test_util.h"
+> > +
+> > +#include <asm/sysreg.h>
+> > +
+> > +static void hvc_handler(struct ex_regs *regs)
+> > +{
+> > +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> > +	GUEST_PRINTF("hvc handler\n");
+> > +	regs->pstate = PSR_MODE_EL2h | PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT;
+> > +	regs->pc = (u64)after_hvc;
+> > +}
+> > +
+> > +void prepare_l2_stack(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> > +{
+> > +	size_t l2_stack_size;
+> > +	uint64_t l2_stack_paddr;
+> > +
+> > +	l2_stack_size = vm->page_size == 4096 ? DEFAULT_STACK_PGS * vm->page_size :
+> > +					 vm->page_size;
+> 
+> Please use symbolic constants. Also, this looks wrong if the default
+> stack size is 32k and the page size is 16k. You probably want to
+> express a stack size directly, rather than a number of pages.
 
-In case of minor faults, things were not always handled properly; in
-particular the prefix and vsie marker bits were ignored.
+Makes sense, will fix the size of the stack.
 
-Move dat_link() into gmap.c, renaming it accordingly. Once moved, the
-new _gmap_link() function will be able to correctly honour the prefix
-and vsie markers.
+> 
+> > +	l2_stack_paddr = __vm_phy_pages_alloc(vm, l2_stack_size / vm->page_size,
+> > +					      0, 0, false);
+> > +	vcpu_set_reg(vcpu, ARM64_CORE_REG(sp_el1), l2_stack_paddr + l2_stack_size);
+> > +}
+> > +
+> > +void prepare_hyp_state(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> > +{
+> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), HCR_EL2_RW);
+> 
+> Surely the E2H value matters. Or are you planning to only run this on
+> configuration that hardcode E2H==0? That'd be pretty limiting.
 
-This will cause spurious unshadows in some uncommon cases.
+Yes it does matter, I was tunnel-visioned in trying to make L1 <-> L2
+transition work with the bare minimum, and missed what we will want in
+the future.
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Fixes: 94fd9b16cc67 ("KVM: s390: KVM page table management functions: lifecycle management")
-Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
----
- arch/s390/kvm/dat.c  | 48 -------------------------------------
- arch/s390/kvm/dat.h  |  2 --
- arch/s390/kvm/gmap.c | 56 ++++++++++++++++++++++++++++++++++++++++----
- 3 files changed, 52 insertions(+), 54 deletions(-)
+> 
+> > +}
+> > +
+> > +void prepare_eret_destination(struct kvm_vm *vm, struct kvm_vcpu *vcpu, void *l2_pc)
+> > +{
+> > +	vm_paddr_t do_hvc_paddr = addr_gva2gpa(vm, (vm_vaddr_t)do_hvc);
+> > +	vm_paddr_t l2_pc_paddr = addr_gva2gpa(vm, (vm_vaddr_t)l2_pc);
+> > +
+> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SPSR_EL2), PSR_MODE_EL1h |
+> > +							    PSR_D_BIT     |
+> > +							    PSR_A_BIT     |
+> > +							    PSR_I_BIT     |
+> > +							    PSR_F_BIT);
+> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ELR_EL2), l2_pc_paddr);
+> > +	/* HACK: use TPIDR_EL2 to pass address, see run_l2() in nested_asm.S */
+> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), do_hvc_paddr);
+> > +}
+> > +
+> > +void prepare_nested_sync_handler(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+> > +{
+> > +	if (!vm->handlers) {
+> > +		vm_init_descriptor_tables(vm);
+> > +		vcpu_init_descriptor_tables(vcpu);
+> > +	}
+> > +	vm_install_sync_handler(vm, VECTOR_SYNC_LOWER_64,
+> > +				ESR_ELx_EC_HVC64, hvc_handler);
+> > +}
+> > diff --git a/tools/testing/selftests/kvm/lib/arm64/nested_asm.S b/tools/testing/selftests/kvm/lib/arm64/nested_asm.S
+> > new file mode 100644
+> > index 000000000000..4ecf2d510a6f
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/kvm/lib/arm64/nested_asm.S
+> > @@ -0,0 +1,35 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+> > + * ARM64 Nested virtualization assembly helpers
+> > + */
+> > +
+> > +.globl run_l2
+> > +.globl after_hvc
+> > +.globl do_hvc
+> > +run_l2:
+> > +	/*
+> > +	 * At this point TPIDR_EL2 will contain the gpa of do_hvc from
+> > +	 * prepare_eret_destination(). gpa of do_hvc have to be passed in
+> > +	 * because we want L2 to issue an hvc after it returns from the user
+> > +	 * passed function. In order for that to happen the lr must be
+> > +	 * controlled, which at this point holds the value of the address of
+> > +	 * the next instruction after this run_l2() call, which is not useful
+> > +	 * for L2. Additionally, L1 can't translate gva into gpa, so we can't
+> > +	 * calculate it here.
+> > +	 *
+> > +	 * So first save lr, then move TPIDR_EL2 to lr so when the user supplied
+> > +	 * L2 function returns, L2 jumps to do_hvc and let the L1 hvc handler
+> > +	 * take control. This implies we expect the L2 code to preserve lr and
+> > +	 * calls a regular ret in the end, which is true for normal C functions.
+> > +	 * The hvc handler will jump back to after_hvc when finished, and lr
+> > +	 * will be restored and we can return run_l2().
+> > +	 */
+> > +	stp	x29, lr, [sp, #-16]!
+> > +	mrs	x0, tpidr_el2
+> > +	mov	lr, x0
+> > +	eret
+> > +after_hvc:
+> > +	ldp	x29, lr, [sp], #16
+> > +	ret
+> > +do_hvc:
+> > +	hvc #0
+> 
+> This probably works for a single instruction L2 guest, but not having
+> any save/restore of the L2 context makes it hard to build anything on
+> top of this.
 
-diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
-index 4d44c0f9ad45..7b8d70fe406d 100644
---- a/arch/s390/kvm/dat.c
-+++ b/arch/s390/kvm/dat.c
-@@ -997,54 +997,6 @@ bool dat_test_age_gfn(union asce asce, gfn_t start, gfn_t end)
- 	return _dat_walk_gfn_range(start, end, asce, &test_age_ops, 0, NULL) > 0;
- }
- 
--int dat_link(struct kvm_s390_mmu_cache *mc, union asce asce, int level,
--	     bool uses_skeys, struct guest_fault *f)
--{
--	union crste oldval, newval;
--	union pte newpte, oldpte;
--	union pgste pgste;
--	int rc = 0;
--
--	rc = dat_entry_walk(mc, f->gfn, asce, DAT_WALK_ALLOC_CONTINUE, level, &f->crstep, &f->ptep);
--	if (rc == -EINVAL || rc == -ENOMEM)
--		return rc;
--	if (rc)
--		return -EAGAIN;
--
--	if (WARN_ON_ONCE(unlikely(get_level(f->crstep, f->ptep) > level)))
--		return -EINVAL;
--
--	if (f->ptep) {
--		pgste = pgste_get_lock(f->ptep);
--		oldpte = *f->ptep;
--		newpte = _pte(f->pfn, f->writable, f->write_attempt | oldpte.s.d, !f->page);
--		newpte.s.sd = oldpte.s.sd;
--		oldpte.s.sd = 0;
--		if (oldpte.val == _PTE_EMPTY.val || oldpte.h.pfra == f->pfn) {
--			pgste = __dat_ptep_xchg(f->ptep, pgste, newpte, f->gfn, asce, uses_skeys);
--			if (f->callback)
--				f->callback(f);
--		} else {
--			rc = -EAGAIN;
--		}
--		pgste_set_unlock(f->ptep, pgste);
--	} else {
--		oldval = READ_ONCE(*f->crstep);
--		newval = _crste_fc1(f->pfn, oldval.h.tt, f->writable,
--				    f->write_attempt | oldval.s.fc1.d);
--		newval.s.fc1.sd = oldval.s.fc1.sd;
--		if (oldval.val != _CRSTE_EMPTY(oldval.h.tt).val &&
--		    crste_origin_large(oldval) != crste_origin_large(newval))
--			return -EAGAIN;
--		if (!dat_crstep_xchg_atomic(f->crstep, oldval, newval, f->gfn, asce))
--			return -EAGAIN;
--		if (f->callback)
--			f->callback(f);
--	}
--
--	return rc;
--}
--
- static long dat_set_pn_crste(union crste *crstep, gfn_t gfn, gfn_t next, struct dat_walk *walk)
- {
- 	union crste newcrste, oldcrste;
-diff --git a/arch/s390/kvm/dat.h b/arch/s390/kvm/dat.h
-index 22dafc775335..efedcf96110c 100644
---- a/arch/s390/kvm/dat.h
-+++ b/arch/s390/kvm/dat.h
-@@ -540,8 +540,6 @@ int dat_set_slot(struct kvm_s390_mmu_cache *mc, union asce asce, gfn_t start, gf
- 		 u16 type, u16 param);
- int dat_set_prefix_notif_bit(union asce asce, gfn_t gfn);
- bool dat_test_age_gfn(union asce asce, gfn_t start, gfn_t end);
--int dat_link(struct kvm_s390_mmu_cache *mc, union asce asce, int level,
--	     bool uses_skeys, struct guest_fault *f);
- 
- int dat_perform_essa(union asce asce, gfn_t gfn, int orc, union essa_state *state, bool *dirty);
- long dat_reset_cmma(union asce asce, gfn_t start_gfn);
-diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-index 956be4c01797..03e15b5e0b9a 100644
---- a/arch/s390/kvm/gmap.c
-+++ b/arch/s390/kvm/gmap.c
-@@ -631,10 +631,60 @@ static inline bool gmap_1m_allowed(struct gmap *gmap, gfn_t gfn)
- 	return test_bit(GMAP_FLAG_ALLOW_HPAGE_1M, &gmap->flags);
- }
- 
-+static int _gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, int level,
-+		      struct guest_fault *f)
-+{
-+	union crste oldval, newval;
-+	union pte newpte, oldpte;
-+	union pgste pgste;
-+	int rc = 0;
-+
-+	rc = dat_entry_walk(mc, f->gfn, gmap->asce, DAT_WALK_ALLOC_CONTINUE, level,
-+			    &f->crstep, &f->ptep);
-+	if (rc == -ENOMEM)
-+		return rc;
-+	if (KVM_BUG_ON(rc == -EINVAL, gmap->kvm))
-+		return rc;
-+	if (rc)
-+		return -EAGAIN;
-+	if (KVM_BUG_ON(get_level(f->crstep, f->ptep) > level, gmap->kvm))
-+		return -EINVAL;
-+
-+	if (f->ptep) {
-+		pgste = pgste_get_lock(f->ptep);
-+		oldpte = *f->ptep;
-+		newpte = _pte(f->pfn, f->writable, f->write_attempt | oldpte.s.d, !f->page);
-+		newpte.s.sd = oldpte.s.sd;
-+		oldpte.s.sd = 0;
-+		if (oldpte.val == _PTE_EMPTY.val || oldpte.h.pfra == f->pfn) {
-+			pgste = gmap_ptep_xchg(gmap, f->ptep, newpte, pgste, f->gfn);
-+			if (f->callback)
-+				f->callback(f);
-+		} else {
-+			rc = -EAGAIN;
-+		}
-+		pgste_set_unlock(f->ptep, pgste);
-+	} else {
-+		do {
-+			oldval = READ_ONCE(*f->crstep);
-+			newval = _crste_fc1(f->pfn, oldval.h.tt, f->writable,
-+					    f->write_attempt | oldval.s.fc1.d);
-+			newval.s.fc1.sd = oldval.s.fc1.sd;
-+			if (oldval.val != _CRSTE_EMPTY(oldval.h.tt).val &&
-+			    crste_origin_large(oldval) != crste_origin_large(newval))
-+				return -EAGAIN;
-+		} while (!gmap_crstep_xchg_atomic(gmap, f->crstep, oldval, newval, f->gfn));
-+		if (f->callback)
-+			f->callback(f);
-+	}
-+
-+	return rc;
-+}
-+
- int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fault *f)
- {
- 	unsigned int order;
--	int rc, level;
-+	int level;
- 
- 	lockdep_assert_held(&gmap->kvm->mmu_lock);
- 
-@@ -646,9 +696,7 @@ int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fau
- 		else if (order >= get_order(_SEGMENT_SIZE) && gmap_1m_allowed(gmap, f->gfn))
- 			level = TABLE_TYPE_SEGMENT;
- 	}
--	rc = dat_link(mc, gmap->asce, level, uses_skeys(gmap), f);
--	KVM_BUG_ON(rc == -EINVAL, gmap->kvm);
--	return rc;
-+	return _gmap_link(mc, gmap, level, f);
- }
- 
- static int gmap_ucas_map_one(struct kvm_s390_mmu_cache *mc, struct gmap *gmap,
--- 
-2.53.0
+Agreed, we need L2 save/restore to meaningfully test NV.
 
+Thanks,
+Wei-Lin Chang
+
+> 
+> Thanks,
+> 
+> 	M.
+> 
+> -- 
+> Without deviation from the norm, progress is not possible.
