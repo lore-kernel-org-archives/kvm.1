@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A903C1412;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2169374169;
 	Thu, 26 Mar 2026 08:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514745; cv=none; b=TQ//nloA83ilSA/71V1uVvPdZ1JG++gzpsyC5FGEnUMQMb2fJKGJmcl+DSYavemHlczNMWDpqyfgAKp27HWDzi/IAzIG807J0914Y1JmH8TILBhXDq8GvCDpd53cCo5aL6uRysuFNExNQXJ0fo196GVxvT39FuAEZGLU1EPfT/g=
+	t=1774514745; cv=none; b=MfGsiYdTjmFyPfYV3q7OaBM75JyFLtzLqcHuwslT8UiXdHwKTCLXrz/6DLG+Wqkjg75kv7lB1w6BOKJqF2WcxtWOsyPidAzfIOcyeMQzEMG/Uos5au0GzbcwS0W8T9hgo2efs5YesGQ+tsY2gN05p9BgQ6613f6wd8U98NmzYkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774514745; c=relaxed/simple;
-	bh=Xsfo46nlclfFy6U09yRzSstZCwBgdA7D6/oVyRXAANQ=;
+	bh=xvaNJTfVPQw1urCsOAJz1lE9ABKHlHI7ev1QUlnuhmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IltzhjmyIRwmfzlLqeox56KagRVSZDluih1aqmLRw2Abu3U3ipxACqjCBJ+fAMYw7zn/CYreCjemj70Zcekv+gcp9rlM0LZ/icHzc91GbCRyGnDMCMzsb6i30d5sM+iMQbj1Ueea3koIh7f+39gC5c9ctAkTwguhc1bwAE7ojwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FJciR8PZ; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=B7zy9pM9MEue8IzTUag+sArd0vIcjBflKpisSKrfFPgkIXWmYQdhPJFCq+1nLha17rnGeQiub5HqgvTS6XFnJz28u/si8isZXVqeA16hPoUYYpyZtK1znavhEKjjbR3LfOsdvRa5RdMLLb9kcYfvOYT46GKbcr65W0E7fCUEMVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NGv34o77; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FJciR8PZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NGv34o77"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1774514744; x=1806050744;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Xsfo46nlclfFy6U09yRzSstZCwBgdA7D6/oVyRXAANQ=;
-  b=FJciR8PZksBLiu1g29V61CBhg9gV/l+oPU7neoWKBk1i2RFCw/fPZOZ2
-   Etfq9kj/uHz+6B4ouz2qHXs/j8b89FBTLLiI/u636UBtbzbIpMCWtfzgn
-   +UyWbfWuswDP4PmDA60M2qgvm/jJUFWABfXhPKogKUdo+l/LNuW4nfb1g
-   1qa28XGSHbFQBxLvlUg327yXhForj4TuJ3eK7hw3/TCAgPDnP+SWFB2mT
-   kh0/rO+zdprDTR0kp0I5PluI/q4K5mptWvvyMjsAtSdDSKvdFhv2gVtIo
-   ZQXGCiYbuaT77IKphZwfV1wo5ny529msGOHSo0hDdfZbiaThNTOOaDnWR
-   A==;
-X-CSE-ConnectionGUID: pahSF+FURxmID2pbVk7Jwg==
-X-CSE-MsgGUID: jFj49ko/TYCsLO7+jmN6RA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644711"
+  bh=xvaNJTfVPQw1urCsOAJz1lE9ABKHlHI7ev1QUlnuhmQ=;
+  b=NGv34o77JLKHR0apNmd1Dwa2yX2SL2faDAQd6z6eLy3JP3Ha5HmK7NJT
+   Me8qbxdY0jf7tvSwmGJuBLPqazr2HAwBzPBrD9Sj+/Cu2iDfl21DBfKuT
+   eg3o6f7HqufaDD+gzbBmQ5EMGiBrq6x86iY3WAdJW8i5DEpvo+4DFYdbM
+   CKpnngH+AC41HN8u2x2g9M/l/OnLHA0+3qPv4CuS7i6qZr2vBZ7jsleU7
+   SmBwBKgdwMviVmyzr3CfDC49m/+WqY3AjuOO+uqfMUoyZDHu/UxXOEzQm
+   JgivAvID/0PPRWNThclku2km2zjQPGDsWPnBBNcuDEbRMwg7ieHjetHYJ
+   w==;
+X-CSE-ConnectionGUID: lJNGoQ45Q9e7KemfIsjSZw==
+X-CSE-MsgGUID: WN/M+t8ATfqSwV3xCOttHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644736"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="86644711"
+   d="scan'208";a="86644736"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:23 -0700
-X-CSE-ConnectionGUID: RMBBDnk5Q/KrHbEm9yV4uQ==
-X-CSE-MsgGUID: DL5dmLBORuCyWaX7IJoX5A==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:25 -0700
+X-CSE-ConnectionGUID: pULqjt9ARv6HsQbPU998yw==
+X-CSE-MsgGUID: F+r/oZIXRVOUgu9NWhKdbw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="224967221"
+   d="scan'208";a="224967235"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:23 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:24 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v6 13/22] x86/virt/seamldr: Install a new TDX module
-Date: Thu, 26 Mar 2026 01:44:04 -0700
-Message-ID: <20260326084448.29947-14-chao.gao@intel.com>
+Subject: [PATCH v6 16/22] x86/virt/tdx: Update tdx_sysinfo and check features post-update
+Date: Thu, 26 Mar 2026 01:44:07 -0700
+Message-ID: <20260326084448.29947-17-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
 References: <20260326084448.29947-1-chao.gao@intel.com>
@@ -86,71 +86,157 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Following the shutdown of the existing TDX module, the update process
-continues with installing the new module. P-SEAMLDR provides the
-SEAMLDR.INSTALL SEAMCALL to perform this installation, which must be
-executed on all CPUs.
+tdx_sysinfo contains all metadata of the active TDX module, including
+versions, supported features, and TDMR/TDCS/TDVPS information etc. These
+values may change over updates. Blindly refreshing the entire tdx_sysinfo
+could disrupt running software, as it may subtly rely on the previous state
+unless proven otherwise.
 
-Implement SEAMLDR.INSTALL and execute it on every CPU.
+Adopt a conservative approach, like microcode updates, by only refreshing
+version information that does not affect functionality, while ignoring
+all other changes. This is acceptable as new modules are required to
+maintain backward compatibility.
+
+Any updates to metadata beyond versions should be justified and reviewed on
+a case-by-case basis.
+
+Note that preallocating a tdx_sys_info buffer before updates is to avoid
+having to handle -ENOMEM when updating tdx_sysinfo after a successful
+update.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
-v6:
- - wrap seamldr_call(P_SEAMLDR_INSTALL..) in a helper [Kiryl]
 v5:
- - drop "serially" from the changelog as it doesn't matter to
-   this patch
+ - Drop the comment above tdx_module_post_update() [Kai]
+
+v3:
+ - use 'old' instead of 'cur' as the local variable to represent the
+   sysinfo of the previous module [Binbin]
+ - combine if(ret) and WARN_ONCE(1, ...) to WARN_ONCE(ret, ...) [Binbin]
+ - Improve the print log messages after detecting new features from updates.
+   [Binbin]
+
+v2:
+ - don't add a separate function for version and feature checks. Do them
+   directly in tdx_module_post_update()
+ - add a comment about preallocating a tdx_sys_info buffer in
+   seamldr_install_module().
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/virt/vmx/tdx/seamldr.c | 18 ++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.c     | 39 +++++++++++++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h     |  3 +++
+ 3 files changed, 59 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index a8fd29818378..0c282a7565a1 100644
+index 6d3ea6d36f36..0ab2413e3754 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -19,6 +19,7 @@
- 
- /* P-SEAMLDR SEAMCALL leaf function */
- #define P_SEAMLDR_INFO			0x8000000000000000
-+#define P_SEAMLDR_INSTALL		0x8000000000000001
- 
- #define SEAMLDR_MAX_NR_MODULE_4KB_PAGES	496
- #define SEAMLDR_MAX_NR_SIG_4KB_PAGES	4
-@@ -73,6 +74,13 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
- }
- EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
- 
-+static int seamldr_install(const struct seamldr_params *params)
-+{
-+	struct tdx_module_args args = { .rcx = __pa(params) };
+@@ -299,6 +299,18 @@ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+  */
+ int seamldr_install_module(const u8 *data, u32 size)
+ {
++	int ret;
 +
-+	return seamldr_call(P_SEAMLDR_INSTALL, &args);
++	/*
++	 * Preallocating a tdx_sys_info buffer before an update is to avoid
++	 * having to handle -ENOMEM when updating tdx_sysinfo after a
++	 * successful update.
++	 */
++	struct tdx_sys_info *sysinfo __free(kfree) = kzalloc(sizeof(*sysinfo),
++							     GFP_KERNEL);
++	if (!sysinfo)
++		return -ENOMEM;
++
+ 	struct seamldr_params *params __free(free_seamldr_params) =
+ 						init_seamldr_params(data, size);
+ 	if (IS_ERR(params))
+@@ -306,6 +318,10 @@ int seamldr_install_module(const u8 *data, u32 size)
+ 
+ 	update_data.failed = false;
+ 	set_target_state(MODULE_UPDATE_START + 1);
+-	return stop_machine(do_seamldr_install_module, params, cpu_online_mask);
++	ret = stop_machine(do_seamldr_install_module, params, cpu_online_mask);
++	if (ret)
++		return ret;
++
++	return tdx_module_post_update(sysinfo);
+ }
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 7592cba58c19..69c97b73e243 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1224,6 +1224,45 @@ int tdx_module_run_update(void)
+ 	return 0;
+ }
+ 
++int tdx_module_post_update(struct tdx_sys_info *info)
++{
++	struct tdx_sys_info_version *old, *new;
++	int ret;
++
++	/* Shouldn't fail as the update has succeeded. */
++	ret = get_tdx_sys_info(info);
++	if (WARN_ONCE(ret, "version retrieval failed after update, replace the TDX module\n"))
++		return ret;
++
++	old = &tdx_sysinfo.version;
++	new = &info->version;
++	pr_info("version %u.%u.%02u -> %u.%u.%02u\n", old->major_version,
++						      old->minor_version,
++						      old->update_version,
++						      new->major_version,
++						      new->minor_version,
++						      new->update_version);
++
++	/*
++	 * Blindly refreshing the entire tdx_sysinfo could disrupt running
++	 * software, as it may subtly rely on the previous state unless
++	 * proven otherwise.
++	 *
++	 * Only refresh version information (including handoff version)
++	 * that does not affect functionality, and ignore all other
++	 * changes.
++	 */
++	tdx_sysinfo.version	= info->version;
++	tdx_sysinfo.handoff	= info->handoff;
++
++	if (!memcmp(&tdx_sysinfo, info, sizeof(*info)))
++		return 0;
++
++	pr_info("TDX module features have changed after updates, but might not take effect.\n");
++	pr_info("Please consider updating your BIOS to install the TDX module.\n");
++	return 0;
 +}
 +
- static void free_seamldr_params(struct seamldr_params *params)
+ static bool is_pamt_page(unsigned long phys)
  {
- 	free_page((unsigned long)params);
-@@ -192,6 +200,7 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
- enum module_update_state {
- 	MODULE_UPDATE_START,
- 	MODULE_UPDATE_SHUTDOWN,
-+	MODULE_UPDATE_CPU_INSTALL,
- 	MODULE_UPDATE_DONE,
- };
+ 	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index c62874b87d7a..f8686247c660 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -4,6 +4,8 @@
  
-@@ -249,6 +258,9 @@ static int do_seamldr_install_module(void *seamldr_params)
- 				if (primary)
- 					ret = tdx_module_shutdown();
- 				break;
-+			case MODULE_UPDATE_CPU_INSTALL:
-+				ret = seamldr_install(seamldr_params);
-+				break;
- 			default:
- 				break;
- 			}
+ #include <linux/bits.h>
+ 
++#include <asm/tdx_global_metadata.h>
++
+ /*
+  * This file contains both macros and data structures defined by the TDX
+  * architecture and Linux defined software data structures and functions.
+@@ -122,5 +124,6 @@ struct tdmr_info_list {
+ 
+ int tdx_module_shutdown(void);
+ int tdx_module_run_update(void);
++int tdx_module_post_update(struct tdx_sys_info *info);
+ 
+ #endif
 -- 
 2.47.3
 
