@@ -1,68 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D9E3A2560;
-	Thu, 26 Mar 2026 23:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A194933A9EB
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 23:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774567424; cv=none; b=Oal84bHtVMncgCDxZsTxxUe7jRlwRdBItg6jstacQsxAkP261PKuccsqu61YE+RBZ/tYOIGbEhgH/svbhms+Mx5QCD/M/Z+hpkfEPcaYKeGdhZ8nM3bgObDKfa3IR4MYC64Rikwb53VdRsPNNxJSuS+U73KPJYhZSPFCDdNXgr4=
+	t=1774568221; cv=none; b=iyAmHWx34Tz3Yv5Hd+WtEnN0ETjbgBFDSoIomUmQKAVzA9wEl8Li7z1qT+bBWpaxRnXw014NshgrkzomugD0x/F2xJKqdZOBgrXDG0hAKuol0nfiNy/MRLZ9x1i5wc8moNAEJyUZiYWVsxWLbow2ARFt9W4WgbzZFhBmRxnOFYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774567424; c=relaxed/simple;
-	bh=ywefAlrhCimBtUrBIPGiIi039tfFwchTq617Tcwm5Zg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=okVHp/5FzVRAA8Ji4FbJYBg45DLtyRfKggn6BnZWqDxQpHIaDCO19p5mJFnsODiFj4cvy7bOFA8zw8MXlYwKAK6bKUW9PpCWxHWzBDHqDTpS3T670G/aF+PUy/4mFYkqZX5J6+wIA3DcGitc2rcELDsgX3a3Iw3dAewYaCDA8M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bXZehikS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774568221; c=relaxed/simple;
+	bh=F4F0fC/fb8Buu2CY08Nu1pjRrsmhaG6N9M4V+dSU6GA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=AobCY2IiLNeig+0ZGBNhrubQaD7zSR2TPvwCvb2aQE1PjbUs8TW7QuNIam+toU7wemc5q3qVpiLrvOxsxo9hcwiyO+h9hs466R7t4tnnjVKH3FwVF/76XMCWZsaEO1lo9sp66KU7myu6/EjgfVjgxgFSdz2we769IuDJuLlUDxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rFn7hXIK; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bXZehikS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57D4C19424;
-	Thu, 26 Mar 2026 23:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774567423;
-	bh=ywefAlrhCimBtUrBIPGiIi039tfFwchTq617Tcwm5Zg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bXZehikSOnzJCjqTWi0vMkzNfGuZk/eIT/VwIhjH+YfQJA7FfwufOkVdraXZLMtit
-	 UFempOXqyIbWdgsdvIhVsdje87SqXt0LakogZA+AVEscO5nxcNvZivw0Js6Ko2SmCv
-	 WXz3MnsabMlyPLfXxSQ4Yi2IA2HAJPnOJ22/LWqk=
-Date: Thu, 26 Mar 2026 16:23:42 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
- James Houghton <jthoughton@google.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
- <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/15]  mm, kvm: allow uffd support in guest_memfd
-Message-Id: <20260326162342.b8178cb8940123324c1c9211@linux-foundation.org>
-In-Reply-To: <20260306171815.3160826-1-rppt@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rFn7hXIK"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35ba237d2e0so1773554a91.2
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 16:36:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774568219; x=1775173019; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HFvOjUtymmKlW6mv6haGIZI39TLsFlaNWWSpopNMudM=;
+        b=rFn7hXIKMqD927d5bElYsxtQfyUKYq+Z22i7UmMa63m1YOq0S4wzI+QNd4FUdsWPr3
+         xwsEfLd0mZaarxZtAVEe+woSG8QoTP+jjoT/S3Wp3LAOkPUpTOPGUM6vwAY2KThrF3lD
+         e5f34YSSEv82o96wV39TF/Ua9LmfNEnHokyShXT/4XrPhuRVseBaU/s0mbvcD0MWeG4g
+         0JAc1C1Vb161dqaGTqDcqGbD3PlniYTzi77RaQZz1MP3sllutztunFq/3XnzKnkL8xXA
+         pCraFTYWRJFQnDu6hvgx2j4I9hjZ29p1Mu9vN4kY4qT0yLnoihSf/I71T3dVfm+eBivp
+         oq5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774568219; x=1775173019;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HFvOjUtymmKlW6mv6haGIZI39TLsFlaNWWSpopNMudM=;
+        b=ApQZQBpUXOeU2enl4+M7HiQpsXJ4p/CuN61IOSedlAn/ckukVyuON54qffLK7wpVTM
+         byMxmfGN4sN6j8P5bUzAdi4D82TjAfEVvrMseueHyPAYQTds57F8uLKFBoanF792gU69
+         /37JnJ3rbeKvNvXrx9AJWiMI+YiYid3Z56buFiiRFM6pc3Jj5C3dg7YQuLEWCcgg1D7j
+         yIDOj7HzhYQSZUa0HSvpeeyarCii7rz0phpeCKbVmSjz6c+h4IPp/NgmSuIuJJJb/UsW
+         pspjoj5L0hM+6q0R25M0fo5Lw3JFjsGtDNckxElhQiv4z2C4jWIW8bj9L/ccGsEO70n+
+         EE2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXo1KshFH15kJF+QqOi5mcy6i4sZBdgMGM+MpIOSDzvFOXbfv/lzF/dqOIXkX/3EC7BAaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yytbz0HME1VBHZh2JjJ8tnNW7xZhpGdkMuGGsZJHJPPXwGxOSCx
+	Bpc2EBLimeEQIpaS8qos5A6yEH6dWUJ0i3wwnHH414MreufNPHtWOHS5muHbIfyS5f2TIL++P1D
+	WXs9S2y4H8vMRRh0Uzso1KjzRhA==
+X-Received: from pjbcp9.prod.google.com ([2002:a17:90a:fb89:b0:35c:1a37:ace])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3e8e:b0:35c:d98:d682 with SMTP id 98e67ed59e1d1-35c2ff8b101mr403470a91.9.1774568218647;
+ Thu, 26 Mar 2026 16:36:58 -0700 (PDT)
+Date: Thu, 26 Mar 2026 16:36:38 -0700
+In-Reply-To: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <cover.1774568083.git.ackerleytng@google.com>
+Subject: [POC PATCH 0/6] guest_memfd in-place conversion selftests for SNP
+From: Ackerley Tng <ackerleytng@google.com>
+To: ackerleytng@google.com
+Cc: aik@amd.com, akpm@linux-foundation.org, andrew.jones@linux.dev, 
+	aneesh.kumar@kernel.org, axelrasmussen@google.com, baohua@kernel.org, 
+	bhe@redhat.com, binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, chrisl@kernel.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, david@kernel.org, forkloop@google.com, 
+	hpa@zytor.com, ira.weiny@intel.com, jgg@ziepe.ca, jmattson@google.com, 
+	jroedel@suse.de, jthoughton@google.com, kasong@tencent.com, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com, 
+	mhiramat@kernel.org, michael.roth@amd.com, mingo@redhat.com, 
+	nphamcs@gmail.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	pbonzini@redhat.com, pratyush@kernel.org, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, rostedt@goodmis.org, 
+	seanjc@google.com, shikemeng@huaweicloud.com, shivankg@amd.com, 
+	shuah@kernel.org, skhan@linuxfoundation.org, steven.price@arm.com, 
+	suzuki.poulose@arm.com, tabba@google.com, tglx@kernel.org, 
+	vannapurve@google.com, vbabka@kernel.org, weixugc@google.com, 
+	willy@infradead.org, wyihan@google.com, x86@kernel.org, yan.y.zhao@intel.com, 
+	yuanchu@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri,  6 Mar 2026 19:18:00 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+With these POC patches, I was able to test the set memory
+attributes/conversion ioctls with SNP. The content policies work :)
 
-> These patches enable support for userfaultfd in guest_memfd.
+Ackerley Tng (6):
+  KVM: selftests: Initialize guest_memfd with INIT_SHARED
+  KVM: selftests: Call snp_launch_update_data() providing copy of memory
+  KVM: selftests: Make guest_code_xsave more friendly
+  KVM: selftests: Allow specifying CoCo-privateness while mapping a page
+  KVM: selftests: Test conversions for SNP
+  KVM: selftests: Test content modes ZERO and PRESERVE for SNP
 
-Review of this series is very thin at this time so can I please ask
-potential reviewers to spend some time with it?
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  12 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  13 +-
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  35 ++-
+ .../selftests/kvm/x86/sev_smoke_test.c        | 255 +++++++++++++++++-
+ 5 files changed, 295 insertions(+), 22 deletions(-)
 
-To create additional time for review I have relocated this series to
-the tail of the mm-unstable queue.  That probably means that movement
-into the mm-stable branch and upstreaming will occur in the second week
-of the upcoming (7.1-rc1) merge window.
-
-Thanks.
+--
+2.53.0.1018.g2bb0e51243-goog
