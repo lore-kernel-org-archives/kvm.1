@@ -1,172 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C23431E3;
-	Thu, 26 Mar 2026 08:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA2235F612;
+	Thu, 26 Mar 2026 08:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514383; cv=none; b=SUQml2GD/971+vpg6mHBxyT03F9zwHIDIYM5f70HGKC+UQ5zHQm3Mxe7ooI48XcaFSRR490u/2t0GWe/Ey/xm3LM3gWUllrf1cw0Id9RHPtpWRk2nz834RanAfTCmnDdGgVZou7hQG9aRQhi6Xm2Mz+xYvUeCbua8zi0DQGLEFY=
+	t=1774514529; cv=none; b=Bi/F9as3ktXADocIdIQB64QUmEBiISN/V/M01X68N6VH8HONiPSPFve6ZRskvvnQiEsY4tvfKfn91iQ4HSC4yamXWMFSppp9263xLgw1J7eX/a1eTj2a7EBlsS6EQJnfLtE9lTR41t+KnGexG99Zn5aM1Qidk2g2C/cGq68JsMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774514383; c=relaxed/simple;
-	bh=6vSpyGPjeFRTtvTBtbIoMDWm0//t1rVmCeXYqkxOhEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kFEt+I6BW/3dQXlVCSwkmkzJhN/2jW16696/iwCQn/zr8gMfk1y/9YGGTUtZKpnFD2BlmmBVKZ1xJn6Fq5WZk2MnVfhcvZ/0MsrX10SiZjm4yCJLAkh7oXg0mjFUCt93IV2FKvIg5OX+PdFO1DJ1nhsZd2QIFt/DUYynkQu7M7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DJ4NHV1h; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1774514529; c=relaxed/simple;
+	bh=4MXTZi02qDWDZ/7PsLgwqab9shZCnf3DgC2ixokvzH0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tTewgR8dPemvfCTAy2dK72PYKEB9qy4f1M7dx0EFfQnx2zbYwGKqbcAVYqLhIkOyNgxvBgODf6rpXvaVSgbi48MPV/8vlWnsYj3qaJu+lgDzUtbH9DFaE65viFQ3fDVG2HTr0CesyHqTKf/iq86FGhLyX+xBSNgX3XgTd0nF7E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zf5TImpo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DJ4NHV1h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774514382; x=1806050382;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6vSpyGPjeFRTtvTBtbIoMDWm0//t1rVmCeXYqkxOhEk=;
-  b=DJ4NHV1h7yqPJvEeDxJRm5mSI6RW2Cv2xMYVAF4VZ69c65zzSak98vix
-   tdpeyvcU78ZX9p/mapjaxxSHeSc8+oAsodfKU4ulMRhj8rxruEqHcTsLu
-   RdoLENsgvDYwXMIRAT/w/LEwsJVgPeOv6ocMnX0uUSUhWElWEfR8DfFKp
-   kaMsav71wea7u7X9AcgVOHzxSsyKct6/WBvVaudLxd2fvSoGWc2SpnuC7
-   i+TOWawHfRZ25cK2LD7bdk+Sxkk9PVFdOS4bC6296pcXKyb0UBVMHeYqi
-   CHV24bFv5HiSWZ7G8kPopokSi+Skd4xP61CRbWRseEVDd+FQKtkcfb/NM
-   g==;
-X-CSE-ConnectionGUID: PkTNvgnFRP+Pzrzlo3FOwQ==
-X-CSE-MsgGUID: gQ65NXCrTcetSsWAXSe1Hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75468502"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="75468502"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:39:41 -0700
-X-CSE-ConnectionGUID: xHn+uvVyTvSUDrv+QgRcxw==
-X-CSE-MsgGUID: kwAYSHBcT3Sh+NfYSJvwpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="262856864"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:39:41 -0700
-Date: Thu, 26 Mar 2026 01:39:34 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260326083934.fk4wyhe6rgiss34z@desk>
-References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
- <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
- <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
- <20260324221308.7sh6afdy6r6tsf4w@desk>
- <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zf5TImpo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F063C2BC87;
+	Thu, 26 Mar 2026 08:42:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774514529;
+	bh=4MXTZi02qDWDZ/7PsLgwqab9shZCnf3DgC2ixokvzH0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Zf5TImpomYw1infcDhd6sl6UsbdPtwCS3Ee6bIMuJgdbpciFcDhAXTBM8SenbNVkU
+	 mbjFKHsHtbKzUM0cUrUS0VgvxH98yDpS1/9tv3IrVRJM+617P1ufRtC1RhtRw1XSQt
+	 79Dq7fPojYix+HOp8ak4xDwk6IUlmxOJR22pwa5gz5+9s0OuVkb6Zi4CNkYQzen6w2
+	 eQhb7ZkDP8rVCeu8QWp+IAK9wq+LhPGO5kdxNtVKXF4T3mLwWR+6lsnPeDm8Mrp3o4
+	 HXqQB8cV3KrIWhnwNFqHn0m4gEKHcs7ROdpxYT0+BQYUgaxgUXygC9/gY+ANxBhw69
+	 /AgGEESrWp9LA==
+Message-ID: <cfe3c03d-6e46-43d8-a0bd-f60c22a4f145@kernel.org>
+Date: Thu, 26 Mar 2026 09:42:02 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/pagewalk: fix race between concurrent split and
+ refault
+To: Andrew Morton <akpm@linux-foundation.org>, mboone@akamai.com
+Cc: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
+ <20260325175006.1c3cae2ee50dd491a153226e@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260325175006.1c3cae2ee50dd491a153226e@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 25, 2026 at 09:37:59PM +0100, Borislav Petkov wrote:
-> On Tue, Mar 24, 2026 at 03:13:08PM -0700, Pawan Gupta wrote:
-> > This is cleaner. A few things to consider are, CLEAR_BRANCH_HISTORY that
-> > calls clear_bhb_loop() would be calling into C code very early during the
-> > kernel entry. The code generated here may vary based on the compiler. Any
-> > indirect branch here would be security risk. This needs to be noinstr so
-> > that it can't be hijacked by probes and ftraces.
-> > 
-> > At kernel entry, calling into C before mitigations are applied is risky.
+On 3/26/26 01:50, Andrew Morton wrote:
+> On Wed, 25 Mar 2026 10:59:16 +0100 Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org> wrote:
 > 
-> You can write the above function in asm if you prefer - should still be
-> easier.
-
-I believe the equivalent for cpu_feature_enabled() in asm is the
-ALTERNATIVE. Please let me know if I am missing something.
-
-Regarding your intent to move the loop count selection out of the BHB
-sequence, below is what I could come up. It is not as pretty as the C
-version, but it is trying to achieve something similar:
-
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index ecae3cef9d8c..54c65b0a3f65 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -1494,6 +1494,20 @@ SYM_CODE_START_NOALIGN(rewind_stack_and_make_dead)
- SYM_CODE_END(rewind_stack_and_make_dead)
- .popsection
- 
-+/*
-+ * Between the long and short version of BHB clear sequence, just the
-+ * loop count differs based on BHI_CTRL, see Intel's BHI guidance.
-+ */
-+#define BHB_SHORT_LOOP_OUTER	5
-+#define BHB_SHORT_LOOP_INNER	5
-+
-+#define BHB_LONG_LOOP_OUTER	12
-+#define BHB_LONG_LOOP_INNER	7
-+
-+#define BHB_MOVB(type, reg)						\
-+	ALTERNATIVE __stringify(movb $BHB_SHORT_LOOP_##type, reg),	\
-+		    __stringify(movb $BHB_LONG_LOOP_##type, reg), X86_FEATURE_BHI_CTRL
-+
- /*
-  * This sequence executes branches in order to remove user branch information
-  * from the branch history tracker in the Branch Predictor, therefore removing
-@@ -1540,12 +1554,7 @@ SYM_FUNC_START(clear_bhb_loop_nofence)
- 	/* BPF caller may require all registers to be preserved */
- 	push	%rax
- 
--	/*
--	 * Between the long and short version of BHB clear sequence, just the
--	 * loop count differs based on BHI_CTRL, see Intel's BHI guidance.
--	 */
--	ALTERNATIVE "movb $5,  %al",	\
--		    "movb $12, %al", X86_FEATURE_BHI_CTRL
-+	BHB_MOVB(OUTER, %al)
- 
- 	ANNOTATE_INTRA_FUNCTION_CALL
- 	call	1f
-@@ -1567,8 +1576,7 @@ SYM_FUNC_START(clear_bhb_loop_nofence)
- 	 * but some Clang versions (e.g. 18) don't like this.
- 	 */
- 	.skip 32 - 14, 0xcc
--2:	ALTERNATIVE "movb $5, %ah",	\
--		    "movb $7, %ah", X86_FEATURE_BHI_CTRL
-+2:	BHB_MOVB(INNER, %ah)
- 3:	jmp	4f
- 	nop
- 4:	sub	$1, %ah
+>> The splitting of a PUD entry in walk_pud_range() can race with
+>> a concurrent thread refaulting the PUD leaf entry causing it to
+>> try walking a PMD range that has disappeared.
+>>
+>> An example and reproduction of this is to try reading numa_maps of
+>> a process while VFIO-PCI is setting up DMA (specifically the
+>> vfio_pin_pages_remote call) on a large BAR for that process.
+>>
+>> This will trigger a kernel BUG:
+>> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+>> BUG: unable to handle page fault for address: ffffa23980000000
+>> PGD 0 P4D 0
+>> Oops: Oops: 0000 [#1] SMP NOPTI
+> 
+> Thanks, updated.
+> 
+> AI review has a couple of questions:
+> 	https://sashiko.dev/#/patchset/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3%40akamai.com
+> 
+> It flagged the same things against the v1 patch - maybe nobody checked?
+> 
 
 
-Below is how the disassembly looks like:
+"could a concurrent thread collapse the PUD into a huge leaf right
+before pmd_offset() is called?"
 
-clear_bhb_loop_nofence:
-	...
-	call    1f
-	jmp     5f
-	// BHB_MOVB(OUTER, %al)
-	mov    $0x5,%al
+No. Collapsing while holding mmap lock etc is impossible. That's what
+the comment says, if there is a PUD table, the PUD table can't go away.
+
+Not to mention that a thing like "PUD collapse" does not exist.
+
+"Should pmd_offset() be passed the address of the snapshot (&pudval)
+instead?"
+
+No.
+
+"Can this loop infinitely on unsplittable PUD leaves? ... For device
+memory mapped as large PUD leaves, split_huge_pud() does nothing and the
+entry remains a leaf."
+
+split_huge_pud() -> __split_huge_pud() checks "pud_trans_huge()".
+
+pud_trans_huge() is mostly just a check for "is this a pud leaf". RiscV
+checks pud_leaf(), x86 just the _PAGE_PSE bit. PPC64 with radix the
+_PAGE_PTE bit.
+
+
+So this will match any PUD leaves, and the code will split (here clear
+the PTE) them. As long as pud_trans_huge() is properly implemented by an
+architecture making use of PUD mappings. PUD support is guarded by
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD. It's really just the three
+architectures above that support it.
+
+(non-present entries might not be handled properly yet, but we don't
+really support non-present entries on the pud level, so not a concern)
+
+
+Great waste of 15min of my time ;)
+
+-- 
+Cheers,
+
+David
