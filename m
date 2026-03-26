@@ -1,516 +1,138 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA83AA195
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 21:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774561165; cv=none; b=A1Jr2gZOz9d6ATTH7AKwiM1EqYo+J1CjFsQheU6XUuAubLzW3uttB0PuOslJ3lXf3jRJxM3fyg+v9JeJqH/9d82WTEjh5TVq7idMRXRyEpDGV6SA2qLZ50bFCax1wWp4DIhblVJ+eVFJHe4fW7NLvKv/+7CjGoCRv8dZriYeGWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774561165; c=relaxed/simple;
-	bh=1Ccy9hJ24+odiZq4gSl3CHdrrsnnH82L3nOkOdBf6lg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gkIyHtdF7qDRoA6cqlU94pa6hVnBTskNivj4IJXxWeCp+ivu/NSf37XMzCqtmqN9oBHLiUkcyJZgj+nIhmla9r6MDPXMJ4C/2Dz10lTsHgkaAW9B+NIaOKNklXfeJjGpCUtVdrDLHKsSuef45ovxTiyGV7pF5fFELZA29hylq6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RznE9mJ4; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0365E322A00
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 21:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774562220; cv=pass; b=uV4/WSkUtH2fhkBwBX3wMWdS9VQizMiw62ryLWqC/fFgxhQAHrEKCbeZVPrEEI2Jo86sOxrkGuKHIm3pD0XABPdbSpt+xzD0n+J1iHcVaItHrNzYNv0MAGYKw0E4XsodJ/RlfmreDoOoulrvhrfN1S3Aib4AU09n17QGRA6IDOs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774562220; c=relaxed/simple;
+	bh=vbWIOEfqSbsqmebzcidRuMdnREb+FHm0JupshMflAjg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jUUBXJj6NfpwpmYmh7PtyB/gCN2dTEjGuFiVYdc5A1nYqWiDLlwKSfOOLquy5XsqZZ63PDXDSTIdIFC3MHhvconBWjfhG2fbaEE8eM1hmn6tH2axa0nzHaDWjMjkjYEGoZTzqP8wZUfXHMGowK5eAAzTI4l5oRO7urtVm0TOKGM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EYR6T130; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RznE9mJ4"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35b95a7444bso865601a91.1
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 14:39:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EYR6T130"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-661ce258878so3863a12.0
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 14:56:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774562217; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q5r1yItL23bMgMbAXZRmnphx2LFI7D6U4dWLKE2PXc3vI0KnC6wye7tvJWvKfiGJ02
+         wLQAWVj0Ifz93Bvg/XmH1n5pzcaHzg5ziwDcwdKrHXWVX0nNQrfjTZ8nHg0mplYXvdSO
+         IjWv3CzMl+U/Y6czoPeIx4+5u2ju5qIAJMI3+DymlZYJv5uZ5fjH8BNrtLZQn0TV0V6m
+         VWNJhAMudA9U9poPU7WwuPPLewQ+c+v/GM2d2mPm982xA+zZ+HY3HlyYw08wEoQzFzIK
+         oPGpp0dnluZmdLZAgJneMUHFr77d2b7fkQa9hjO+Jo0+qvfM4CsH0zKs+gsU2NvRV6S0
+         gicQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MEmcE5ZcVNzsLkYYvvz4gjReNb+1g33mjp+MWnHjCUo=;
+        fh=9uYmSCFqs5rotygwQMTGb5yZS9soLr6l1q8dcw9kLcc=;
+        b=CdloVTQkIekvuiWWLcUFh6yEtSkel3rCrqOfFQobunzcB8uEdtLhOr2L17qX9qxyd9
+         8m/EaWXDbPiAn1nhIlBOWImfySyyart+NtmVIXqc8b+OKoLtDn2x2l8+MutbqVBLs+Qb
+         o42cWfeEWKVsU19nj7RICUkAMceG4GfIlqNf2NGSXGVqCtRKciVYxCWgmxasnEfB2GNJ
+         lp3IJWHJDBv4efyfKz5KJkMzCP5JYbXI3G7C0in9HFW/tfrR4a0+eawvefSUv/c0yYBJ
+         r41YoC774kb8B8aYnwz3tiikJZ7fEoc7FOzPpYpWPQr1iNmidrOTFGIJ3ee9D/TM17/H
+         BP9A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774561157; x=1775165957; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CCYpXjeLBBDyCBHQMCqV7APFrQnNkgT9+u/rvK+zGmE=;
-        b=RznE9mJ4a2aR7uDZE4lb+l/yIbQhXvLW9I7qKmbwbMUXWMDqztWDMGb65hVVVyxun2
-         ru715aB4gjsY4+25guQuGW/07OpwivyHZe8c9n7bWzqYUIJ44tfg7kpzNavGFxCyUgUm
-         W6kncBgeR5ZKDLyC2kZbQm8FOt0+EVelHDRUvlRDB6QRiDY9w/Xkh1k/mjziHwMDy4Q0
-         4bkd9JqCQsIcCKqdpyoqLIqfZ839QYwnhq7qIU/d9QOufHKxq57P8WSXc7M2OzDMkqzQ
-         5wpQUCnzKzzJjx0H3DYeMh++evH4aoFms73CsUUUuVmZlAcwQg1alp527UODQH5gYIF1
-         R9OA==
+        d=google.com; s=20251104; t=1774562217; x=1775167017; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MEmcE5ZcVNzsLkYYvvz4gjReNb+1g33mjp+MWnHjCUo=;
+        b=EYR6T130QGrlYd/rzeTGvEqJSf5mN3SQIu4wZpbG8gFJ1D9LIpl1MUcAkQBxe99soq
+         NTdqIJEw45auvuQEPSQJBLMe2wQYZ3OJc5W6C4jKLRiABdwifwRYqxpdWP6iGQMtEhKR
+         E4TqE5JqaIC9mIfxipAdogWB7B5F69QXslS42mlAOZrMVucEzbu2ShJUhIOWPMtImn4Z
+         bOP0KhZ2cQSYDMbHhQz8Wd1PUP4kti1Em2esxGGaFHyvO7sTCPWfTRQFi4/uqiI45uOJ
+         yOldmbbr0bZVFi/zdkumJB7HzMECizO9Izb+8ErfY+OgvTZ5R3h1n5r2qd/DjjzV5Ui2
+         d/vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774561157; x=1775165957;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CCYpXjeLBBDyCBHQMCqV7APFrQnNkgT9+u/rvK+zGmE=;
-        b=fvN+o/6qZavLMx69icPe5IJuhLq0BoUxe0JygIHddX27XoeB9SXrUcMyAbXf4ho00H
-         8u263HoMYUL1qhwyma8doRmCbL7H+O238WbBo1Ydky66MueQvniKMavLakyCg34wgK8i
-         +tib49pVPZFh0bX6Bec3+NKvhtVn5S/fP9bKlWKscDjUiqlgVpjztogrmJiEwW0DQZ0i
-         SBDC9PZTsqfXH/m4Y3yUuv/jkEdoGLc4u78nQ2dorDPs2liDAirfyoXyS5OIf/9FeQ3d
-         PrmTa87OvA/tLW2qAJng/jAdV+TfGwPnt5kymt0tEHnTJLWM5laDGz5UlxOTJBXSa0U4
-         zFsw==
-X-Forwarded-Encrypted: i=1; AJvYcCVo3u9PktmVhm/0sJfpL/uvsRpRxltcz0olHeLyx9E2tKV1zk2QPRjCBjIvFnw1yfXJhD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7G49ffYWPPgu0NIRUxYMnrkKIcoLE+8cZr3Vruxt26IzQN1MB
-	ue0bv7eAsp/ZjVqjWmzlDVDLnXBuAESN4MxgrEejkWlG/NxEp7SqpOL+mPohVSRjEA==
-X-Gm-Gg: ATEYQzzK/dEPYyDag4GuVJoBP1wXCT8mGgpbZjGUb896hlM7mJkEmw2pbyyYoPXd/n+
-	5LvcRwOCRafY+JNDxm31ZWoj49vCOhuDMGsSuy3F4U/bAxr897hTPaxWrk1bdnqybs8RxLFsEaq
-	Icu3fUpjirC4FuAAR1vhlmDL09XXtRSfCXZT2l7t3pIPKXe4ZqSsd+8LXeFFt4oL9l0fL0U0diJ
-	gTZaZjE/oplODpYcpdoy+pkxgk7uTwqJj8Kka5IYci/OgYr7TUoJRkUwOyDhlqtwoIj4E2Smk0T
-	0EziUsRVljbMZwJdrshRLbW+Rbwi6UuPX2a8FXiR0me7yiTIIjGiwv6wk0+lwJC/oE9fpu/nni7
-	2aoHvn05UITnZv+rvBEyt4g9VWxTPA4vtAgB+KbMHiBnPlgxmxq0G+UpcfsAiSbSmn9mGb1oxnU
-	XKMOiWh5E6cG+t2dRjMufvdiK+9mWawZaMvXZMs6RkpLdysoH0FrP7z58djJNa0AKa3KF5kmMV
-X-Received: by 2002:a17:90b:164a:b0:359:f2e1:5906 with SMTP id 98e67ed59e1d1-35c2ffb6610mr150758a91.4.1774561156125;
-        Thu, 26 Mar 2026 14:39:16 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c22a81744sm2682845a91.5.2026.03.26.14.39.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 14:39:11 -0700 (PDT)
-Date: Thu, 26 Mar 2026 21:39:07 +0000
-From: David Matlack <dmatlack@google.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	Askar Safin <safinaskar@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Chris Li <chrisl@kernel.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
-	Marco Elver <elver@google.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-Message-ID: <acWne_ZCcF4YQN25@google.com>
-References: <20260323235817.1960573-3-dmatlack@google.com>
- <20260325231207.GA1292813@bhelgaas>
+        d=1e100.net; s=20251104; t=1774562217; x=1775167017;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MEmcE5ZcVNzsLkYYvvz4gjReNb+1g33mjp+MWnHjCUo=;
+        b=I8d2WJG23A8aR/TGYm/a1m/cJ/YFn+2ijl3si5/S0m8OEFx8E9ERzdNEdekAJsix+H
+         SsojKU4ftTjPhOUUGu2rDk/Oeh1x27wVM3f+qfE1r3iLbBPS6F6rxdeK6Cr7Wpu2r7na
+         oCvYz7HzUCR1TV0qpeCK/pfUhcj3x6xwOBmO0TM/pjGcMfcpgTkQJ1oDpGSsTfBrO5Uk
+         NcqFaavlSADz0+s0qgV1pm1c8FyDIipwKSIxELw1fcl7dZaTu5I+ITjXRdbr2qvw5YRP
+         s4jpeiQ/dUb5k+VnBcek9N2Gv9BzsVmHgyYEK8n086CXTPWjFIUx5ShjsAFOzZQjGtVW
+         Q1kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYn8BvpDH/g+ZbE3+9dJBOweZH0sGsSNhprVb2gHpOILqzT4+2MiXVdOxYhWrxoS5R0cs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye7HsImcziUMvV8L3DyOSTY9CYHJWtu8sHAPUyoLgqnje7GWOk
+	cG9MtSl4RhwaNHB0Vm/PgTiDmZUG8JzbnmG9ZBW579yf18z8E2biGM1CsLUelZTp6jgA4P+yMnl
+	OqExndLEc3KGkwpM68QAKIwrE0LDOcpm7Wp0SCUmG
+X-Gm-Gg: ATEYQzwY53O8WMbArom2zk2h0034EhxRJ/9+ZWHe7AJ+W0DvMYshmRz/O/7SNC8fdb0
+	8ELRocX7jtNXKwd8tRy5H9xEMG5sVS2klnfKtvEb5UPNU6HqPN+fXUPYB5bGF3kkdALxc7ySAgH
+	sCFfoa2Br77bR1n1PRKYBWe1ZIJysbryYlbJn4n4PFtPRUDK8sNBxlrrozQvmltS3T5DFSdtXGx
+	atyhBnf9Punh7pHzL7MWat6ncyWCCx/tgB7cJYoO0lOpA5dBmeAl6NWugPQAJluQwDq3EYJcqXy
+	lEQW/PtZlGZenuD6Bw==
+X-Received: by 2002:aa7:c757:0:b0:665:d39:4afc with SMTP id
+ 4fb4d7f45d1cf-66b19d7f94amr13694a12.6.1774562216825; Thu, 26 Mar 2026
+ 14:56:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325231207.GA1292813@bhelgaas>
+References: <20260212155905.3448571-1-jmattson@google.com> <20260212155905.3448571-5-jmattson@google.com>
+ <gqj4y6awen5dfxy32lbskcxw6xdv4xiiouycyftjacndjinhvp@7p4dtgdh6tjw>
+ <aY9BPKhzgxo4UuHB@google.com> <CALMp9eR4ayj_gwsDQVH8pQvzqgEYVB6ExWp3aFgJXRWikLEikw@mail.gmail.com>
+ <aY-jViitsLQm9B83@google.com> <CALMp9eTnXW9=0=+RxQjeXfA++UP3MX0LzXo5qwUP-dCCQjOLVQ@mail.gmail.com>
+ <aZT5eldlkLpRm7OD@google.com> <CALMp9eSMLwiE7JPs53w8Nyq2HB-Thmv3wNiRkMV1zrJmJeoZag@mail.gmail.com>
+ <CAO9r8zPwT3cZjvPaqBjFtZDd72Ffjomb6J=QjnXr3V8LkASCHg@mail.gmail.com>
+In-Reply-To: <CAO9r8zPwT3cZjvPaqBjFtZDd72Ffjomb6J=QjnXr3V8LkASCHg@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 26 Mar 2026 14:56:45 -0700
+X-Gm-Features: AQROBzB7NvOUANLJwQsGxY0UhtynaAQWyKZHYOlZO6Z3zZDd4zAlzCmoqi97Rss
+Message-ID: <CALMp9eRp-fp7RaULeLZ7itAJBKH=LMRqgUJ-H=ks7K0rjN9wCw@mail.gmail.com>
+Subject: Re: [PATCH v4 4/8] KVM: x86: nSVM: Redirect IA32_PAT accesses to
+ either hPAT or gPAT
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-03-25 06:12 PM, Bjorn Helgaas wrote:
+On Thu, Mar 26, 2026 at 2:26=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Thu, Mar 26, 2026 at 2:19=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
+> >
+> > On Tue, Feb 17, 2026 at 3:27=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> >
+> > > Side topic, either as a prep patch (to duplicate code) or as a follow=
+-up patch
+> > > (to move the PAT handling in x86.c to vmx.c), the "common" handling o=
+f PAT should
+> > > be fully forked between VMX and SVM.  As of this patch, it's not just=
+ misleading,
+> > > it's actively dangerous since calling kvm_get_msr_common() for SVM wo=
+uld get the
+> > > wrong value.
+> >
+> > Though I included this change in v5 and v6, TIL that TDX calls
+> > kvm_[gs]et_msr_common(MSR_IA32_CR_PAT), so the common handling is not
+> > fully forked.
+>
+> Do you plan to drop this patch or add PAT handling in
+> tdx_{get/set}_msr()? If you'll drop it, maybe add a warning if
+> kvm_[gs]et_msr_common(MSR_IA32_CR_PAT) is called from SVM?
 
-Thank you for the thorough review Bjorn!
+I plan to leave the MSR_IA32_CR_PAT code in kvm_[gs]et_msr_common().
+Replicating the code in tdx.c seems like the wrong direction to go.
 
-> On Mon, Mar 23, 2026 at 11:57:54PM +0000, David Matlack wrote:
-> > Add an API to enable the PCI subsystem to participate in a Live Update
-> > and track all devices that are being preserved by drivers. Since this
-> > support is still under development, hide it behind a new Kconfig
-> > PCI_LIVEUPDATE that is marked experimental.
-> 
-> Can you list the interfaces being added here
-
-Yes will do.
-
-> > +config PCI_LIVEUPDATE
-> > +	bool "PCI Live Update Support (EXPERIMENTAL)"
-> > +	depends on PCI && LIVEUPDATE
-> > +	help
-> > +	  Support for preserving PCI devices across a Live Update. This option
-> > +	  should only be enabled by developers working on implementing this
-> > +	  support. Once enough support as landed in the kernel, this option
-> > +	  will no longer be marked EXPERIMENTAL.
-> 
-> This would be a good place for a one-sentence explanation of what
-> "preserving PCI devices" means.  Obviously the physical devices stay
-> there; what's interesting is that the hardware continues operating
-> without interruption across the update.
-> 
-> s/support as landed/support has landed/ (maybe no need for this
-> sentence at all)
-
-Will do.
-
-> > + * Driver API
-> > + * ==========
-> > + *
-> > + * Drivers that support file-based device preservation must register their
-> > + * ``liveupdate_file_handler`` with the PCI subsystem by calling
-> > + * ``pci_liveupdate_register_flb()``. This ensures the PCI subsystem will be
-> > + * notified whenever a device file is preserved so that ``struct pci_ser``
-> > + * can be allocated to track all preserved devices. This struct is an ABI
-> > + * and is eventually handed off to the next kernel via Kexec-Handover (KHO).
-> > + *
-> > + * In the "outgoing" kernel (before kexec), drivers should then notify the PCI
-> > + * subsystem directly whenever the preservation status for a device changes:
-> > + *
-> > + *  * ``pci_liveupdate_preserve(pci_dev)``: The device is being preserved.
-> > + *
-> > + *  * ``pci_liveupdate_unpreserve(pci_dev)``: The device is no longer being
-> > + *    preserved (preservation is cancelled).
-> > + *
-> > + * In the "incoming" kernel (after kexec), drivers should notify the PCI
-> > + * subsystem with the following calls:
-> > + *
-> > + *  * ``pci_liveupdate_retrieve(pci_dev)``: The device file is being retrieved
-> > + *    by userspace.
-> 
-> I'm not clear on what this means.  Is this telling the PCI core that
-> somebody else (userspace?) is doing something?  Why does the PCI core
-> care?  The name suggests that this interface would retrieve some data
-> from the PCI core, but that doesn't seem to be what's happening.
-
-I think this function can go away in the next version.
-
-I added this so that the PCI core could prevent userspace from
-retrieving the preserved file associated with the device from LUO if
-the device is not in a singleton IOMMU group (see next patch). But per
-the discussion with Yi I am going to move that check to probe time.
-
-> > + *
-> > + *  * ``pci_liveupdate_finish(pci_dev)``: The device is done participating in
-> > + *    Live Update. After this point the device may no longer be even associated
-> > + *    with the same driver.
-> 
-> This sets "dev->liveupdate_incoming = false", and the only place we
-> check that is in pci_liveupdate_retrieve().  In particular, there's
-> nothing in the driver bind/unbind paths that seems related.  I guess
-> pci_liveupdate_finish() just means the driver can't call
-> pci_liveupdate_retrieve() any more?
-
-liveupdate_incoming is used by VFIO in patch 10:
-
-  https://lore.kernel.org/kvm/20260323235817.1960573-11-dmatlack@google.com/
-
-Fundamentally, I think drivers will need to know that the device they
-are dealing with was preserved across the Live Update so they can react
-accordingly and this is how they know. This feels like an appropriate
-responsibility to delegate to the PCI core since it can be common across
-all PCI devices, rather than requiring drivers to store their own state
-about which devices were preserved. I suspect PCI core will also use
-liveupdate_incoming in the future (e.g. to avoid assigning new BARs) as
-we implement more of the device preservation.
-
-And in case you are also wondering about liveupdate_outgoing, I forsee
-that being used for things like skipping disabling bus mastering in
-pci_device_shutdown().
-
-I think it would be a good idea to try to split this patch up, so there
-is more breathing room to explain this context in the commit messages.
-> 
-> > + * device file for as long as it is preserved.
-> > + *
-> > + * However, there is a window of time in the incoming kernel when a device is
-> > + * first probed and when userspace retrieves the device file with
-> > + * ``LIVEUPDATE_SESSION_RETRIEVE_FD`` when the device could be bound to any
-> > + * driver.
-> 
->   ... window of time in the incoming kernel between a device being
->   probed and userspace retrieving the device file ... when the device
->   could be bound ...
-> 
-> I'm not sure what it means to retrieve a device file.  It doesn't
-> sound like the usual Unix "device file" or "special file" in /dev/,
-> since those aren't "retrieved".
-
-For the forseeable future, device preservation will be triggered by
-userspace preserving a VFIO device file in a LUO session using the ioctl
-LIVEUPDATE_SESSION_PRESERVE_FD.  After kexec, userspace retrieves the
-preserved file with the ioctl LIVEUPDATE_SESSION_RETRIEVE_FD.
-
-This section would probably make more sense if it talked about VFIO
-specifically instead of abstract "files" since that is the currently the
-only use-case.
-
-I expect non-VFIO drivers (i.e. "in-kernel") drivers could be supported
-eventually but they will likely need a different API.
-
-> > +static DEFINE_MUTEX(pci_flb_outgoing_lock);
-> 
-> It'd be handy if there were some excuse to mention "FLB" and expand it
-> once in the doc above, since I have no idea what it means or where to
-> look for it.  Maybe unfortunate that it will be pronounced "flub" ;)
-
-I will add a section explaining FLB to the kerneldoc above.
-
-> > +static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
-> > +{
-> > +	struct pci_dev *dev = NULL;
-> > +	int max_nr_devices = 0;
-> > +	struct pci_ser *ser;
-> > +	unsigned long size;
-> > +
-> > +	/*
-> > +	 * Don't both accounting for VFs that could be created after this
-> > +	 * since preserving VFs is not supported yet. Also don't account
-> > +	 * for devices that could be hot-plugged after this since preserving
-> > +	 * hot-plugged devices across Live Update is not yet an expected
-> > +	 * use-case.
-> 
-> s/Don't both accounting/Don't bother accounting/ ? not sure of intent
-
-"Don't bother" was the intent.
-
-> I suspect the important thing here is that this allocates space for
-> preserving X devices, and each subsequent pci_liveupdate_preserve()
-> call from a driver uses up one of those slots.
-> 
-> My guess is this is just an allocation issue and from that point of
-> view there's no actual problem with enabling VFs or hot-adding devices
-> after this point; it's just that pci_liveupdate_preserve() will fail
-> after X calls.
-
-Yes that is correct.
-
-> > +static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
-> > +{
-> > +	struct pci_ser *ser = args->obj;
-> > +
-> > +	WARN_ON_ONCE(ser->nr_devices);
-> 
-> I guess this means somebody (userspace?) called .unpreserve() before
-> all the drivers that had called pci_liveupdate_preserve() have also
-> called pci_liveupdate_unpreserve()?
-> 
-> If this is userspace-triggerable, maybe it's worth a meaningful
-> message including one or more of the device IDs from ser->devices[]?
-
-This is not userspace triggerable unless there is a bug in LUO and/or
-the driver (VFIO). By the way, that is the case for all of the WARN_ONs
-in this commit. They are no userspace-triggerable, they are just there
-to catch "this should never happen, there must be a kernel bug" type
-issues.
-
-I see that a lot of your comments are about these WARN_ONs so do you
-have any general guidance on how I should be handling them?
-
-> > +static void pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
-> > +{
-> > +	struct pci_dev_ser *dev_ser;
-> > +	int i;
-> > +
-> > +	dev_ser = pci_ser_find(ser, dev);
-> > +
-> > +	/*
-> > +	 * This should never happen unless there is a kernel bug or
-> > +	 * corruption that causes the state in struct pci_ser to get
-> > +	 * out of sync with struct pci_dev.
-> 
-> Corruption can be a bug anywhere and isn't really worth mentioning,
-> but the "out of sync" part sounds like it glosses over something
-> important.
-> 
-> I guess this happens if there was no successful
-> pci_liveupdate_preserve(X) before calling
-> pci_liveupdate_unpreserve(X)?  That does sound like a kernel bug (I
-> suppose a VFIO or other driver bug?), and I would just say what
-> happened directly instead of calling it "out of sync".
-
-No not even that would cause this warning to fire because
-pci_liveupdate_unpreserve() bails immediately if liveupdate_outgoing
-isn't true. This truly should never happen, hence the WARN.
-
-> 
-> > +	 */
-> > +	if (pci_WARN_ONCE(dev, !dev_ser, "Cannot find preserved device!"))
-> 
-> Seems like an every-time sort of message if this indicates a driver bug?
-> 
-> It's enough of a hassle to convince myself that pci_WARN_ONCE()
-> returns the value that caused the warning that I would prefer:
-> 
->   if (!dev_ser) {
->     pci_warn(...) or pci_WARN_ONCE(...)
->     return;
->   }
-
-For "this should really never happen" warnings, which is the case here,
-my preference is to use WARN_ON_ONCE() since you only need to see it
-happen once to know there is a bug somewhere, and logging every time can
-lead to overwhelmingly interleaved logs if it happens too many times.
-
-> > +	for (i = ser->nr_devices; i > 0; i--) {
-> > +		struct pci_dev_ser *prev = &ser->devices[i - 1];
-> > +		int cmp = pci_dev_ser_cmp(&new, prev);
-> > +
-> > +		/*
-> > +		 * This should never happen unless there is a kernel bug or
-> > +		 * corruption that causes the state in struct pci_ser to get out
-> > +		 * of sync with struct pci_dev.
-> 
-> Huh.  Same comment as above.  I don't think this is telling me
-> anything useful.  I guess what happened is we're trying to preserve X
-> and X is already in "ser", but we should have returned -EBUSY above
-> for that case.  If we're just saying memory corruption could cause
-> bugs, I think that's pointless.
-> 
-> Actually I'm not even sure we should check for this.
-> 
-> > +		 */
-> > +		if (WARN_ON_ONCE(!cmp))
-> > +			return -EBUSY;
-
-This is another "this should really never happen" check. I could just
-return without warning but this is a sign that something is very wrong
-somewhere in the kernel and it is trivial to just add WARN_ON_ONCE() so
-that it gets flagged in dmesg. In my experience that can be very helpful
-to track down logic bugs during developemt and rare race conditions at
-scale in production environments.
-
-> > +void pci_liveupdate_unpreserve(struct pci_dev *dev)
-> > +{
-> > +	struct pci_ser *ser;
-> > +	int ret;
-> > +
-> > +	/* This should never happen unless the caller (driver) is buggy */
-> > +	if (WARN_ON_ONCE(!dev->liveupdate_outgoing))
-> 
-> Why once?  Is there some situation where we could get a flood?  Since
-> we have a pci_dev, maybe a pci_warn() that would indicate the driver
-> and device would be more useful?
-
-ONCE because this is a sign of a kernel bug and one instance is enough
-to warrant debugging and fixing. Allowing multiple could lead to logs
-interleaving, log rotation, and other issues if there is an excessive
-amount.
-
-I also chose full WARN_ON_ONCE() over just a warning log line so that
-the user gets a backtrace and can see the caller.
-
-I agree that showing the PCI device and driver would be helpful so
-pci_WARN_ONCE() would be better.
-
-> > +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
-> > +
-> > +	/* This should never happen unless there is a bug in LUO */
-> > +	if (WARN_ON_ONCE(ret))
-> 
-> Is LUO completely in-kernel? 
-
-Yes
-
-> I think this warning message would be
-> kind of obscure if this is something that could be triggered by a
-> userspace bug.
-
-This can only be triggered by a kernel bug.
-
-> Also, we do have the pci_dev, which a WARN_ON_ONCE()
-> doesn't take advantage of at all.
-
-I'll switch to pci_WARN_ONCE().
-
-> > +	/*
-> > +	 * Live Update is enabled and there is incoming FLB data, but none of it
-> > +	 * matches pci_liveupdate_flb.compatible.
-> > +	 *
-> > +	 * This could mean that no PCI FLB data was passed by the previous
-> > +	 * kernel, but it could also mean the previous kernel used a different
-> > +	 * compatibility string (i.e.a different ABI). The latter deserves at
-> > +	 * least a WARN_ON_ONCE() but it cannot be distinguished from the
-> > +	 * former.
-> 
-> This says both "there is incoming FLB data" and "no PCI FLB data".  I
-> guess maybe it's possible to have FLB data but no *PCI* FLB data?
-
-Yes, PCI is just the users of File-Lifecycle Bound (FLB) data to
-preserve state across Live Update.
-
-> s/i.e.a/i.e., /
-
-Will do.
-
-
-> > +	 */
-> > +	if (ret == -ENOENT) {
-> > +		pr_info_once("PCI: No incoming FLB data detected during Live Update");
-> 
-> Not sure "FLB" will be meaningful to users here.  Maybe we could say
-> something like ("no FLB data compatible with %s\n", pci_liveupdate_flb.compatible)?
-
-Good idea, will do!
-
-> > +u32 pci_liveupdate_incoming_nr_devices(void)
-> > +{
-> > +	struct pci_ser *ser;
-> > +
-> > +	if (pci_liveupdate_flb_get_incoming(&ser))
-> > +		return 0;
-> 
-> Seems slightly overcomplicated to return various error codes from
-> pci_liveupdate_flb_get_incoming(), only to throw them away here and
-> special-case the "return 0".  I think you *could* set
-> "ser->nr_devices" to zero at entry to
-> pci_liveupdate_flb_get_incoming() and make this just:
-> 
->   pci_liveupdate_flb_get_incoming(&ser);
->   return ser->nr_devices;
-
-pci_liveupdate_flb_get_incoming() fetches the preserved pci_ser struct
-from LUO (the struct that the previous kernel allocated and populated).
-If pci_liveupdate_flb_get_incoming() returns an error, it means there
-was no struct pci_ser preserved by the previous kernel (or at least not
-that the current kernel is compatible with), so we return 0 here to
-indicate that 0 devices were preserved.
-
-> > +void pci_liveupdate_setup_device(struct pci_dev *dev)
-> > +{
-> > +	struct pci_ser *ser;
-> > +
-> > +	if (pci_liveupdate_flb_get_incoming(&ser))
-> > +		return;
-> > +
-> > +	if (!pci_ser_find(ser, dev))
-> > +		return;
-> 
-> If pci_liveupdate_flb_get_incoming() set ser->nr_devices to zero at
-> entry, the bsearch() in pci_ser_find() would return NULL if there were
-> no devices to search:
-> 
->   pci_liveupdate_flb_get_incoming(&ser);
->   if (!pci_ser_find(ser, dev))
->     return;
-
-I think this is explained by my reply to the previous comment.  If
-pci_liveupdate_flb_get_incoming() returns an error then there was no
-pci_ser struct passed to use by the previous kernel. Thus we return.
-
-> > diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-> > new file mode 100644
-> > index 000000000000..7764795f6818
-> > --- /dev/null
-> > +++ b/include/linux/kho/abi/pci.h
-> 
-> It seems like most of include/linux/ is ABI, so does kho/abi/ need to
-> be separated out in its own directory?
-
-include/linux/kho/abi/ contains all of the structs, enums, etc. that are
-handed off between kernels during a Live Update. If almost anything
-changes in this directory, it breaks our ability to upgrade/downgrade
-via Live Update. That's why it's split off into its own directory.
-
-include/linux/ is not part of the Live Update ABI. Changes to those
-headers to not affect our ability to upgrade/downgrade via Live Update.
-
-> It's kind of unusual for the hierarchy to be this deep, especially
-> since abi/ is the only thing in include/linux/kho/.
-
-Yes I agree, but that is outside the scope of this patchset I think.
-This directory already exists.
+There's no precedent that I can see for checking the vendor module in
+common code (though we do have kvm_x86_ops.name). I could add a
+warning if invoked with (vcpu->arch.efer & EFER_SVME). WDYT?
