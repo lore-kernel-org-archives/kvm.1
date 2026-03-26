@@ -1,181 +1,135 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775773E3C73
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 22:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB43024728F;
+	Thu, 26 Mar 2026 22:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774563957; cv=none; b=R3LU96ucBsx4QLjbdAzHarFdmuSOzJN3RZEfdSAfwJfqDeGySYmv/4MWe9Tx/HBL4fP5jlo8963upsZvtCFHBrhNptIfE/LdkCIhAlDs2wG2/twIFS6gfnnXnEM0CItU82yG/+lSaoeBk+OKlKiH0MYVnjcN/T8xCNy6MvmdC64=
+	t=1774565367; cv=none; b=RSAfMGjFxUC7j1bkhEB0TsEo1XPD8yGDRi7uchU2XiXRY/ziOfkLILyV6/swkhTTf5YGVg6RPPdZ7MnlWsDrhwlSEShmAsSXbH8gVa2wCJ06V1qVJXOgUkqqKwjvkNM9W2bEWX7H3b/v4SNMW2Lw95ecy0GcMxSQ7QProM3rjzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774563957; c=relaxed/simple;
-	bh=ZhM8xOm5+doKADQlrumIE2RLmxJeg0RcHplnkyjK7i8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IP3zArps+Y7MJ7sJTEeL/XkCdagK9mQYwgtv4RXNMpJCn96zBU/PLz1J5kOnfH87vwHEEmmYPJ6kdoIYxvFsmPG2whTxuvxVMdzs1F4WBsSqbP+AhtpfXt3C1i8MJfv7cnGy2LIH9yxGVtnPVWkxwYZNNTQT5nP11F/E17vxnzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O/p9iK6F; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1774565367; c=relaxed/simple;
+	bh=Nkssu31T4ASGATxhou3Hn/jkOwEBY1N+E/b79UGlPgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fB+wOkvQVKFjCnATlPwd43S/sPJU8C1cYo0733tFxXGQqateSvBEESykZ9hBfClVeAaorq2++QVqQz9ZneGUjrrjCIYP2PccmUalBY8/0zd9c3zOKmhvcHc0YxfO6NheIepIKgM/dbs74NkCmBFUB2/Ko4+QHbt9B0NTAGjaRKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jYi2DL0P; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O/p9iK6F"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2adef9d486bso27639555ad.2
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 15:25:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774563955; x=1775168755; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HYq3s+F9mgPwmWrETdAju7b1wzJHYtnrsY9IbvdmqE0=;
-        b=O/p9iK6FUUUjsmcIGFyX+3MexKMppjm614iNBml3tIr+yiB0RLkBcJQD6MIrCr69FS
-         8FeRFfclcPETMHdmrwupP7aTdXWJIredVdSEwp4an1JgHYddB4NjLW+sFqMPSiwlJjgM
-         pjECbPsDeTUf1bLmYaVbueY3pMuUyxnJoRks3UYa3Q2BeYSQ2QB26385Ewes0jOJGrQF
-         TY+O8L0NmJyd6H4QWOe2F4gx6vTycii4ZygbzhDvTXAPeJgkZfqfGxmKFqLEUDy7wUG/
-         1ZmnwOGHGfheBShB3t0aspteIqswcDQbNIfHLmlVebcaiBSqBogBsxDxTscd8FPTAvoF
-         FGKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774563955; x=1775168755;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HYq3s+F9mgPwmWrETdAju7b1wzJHYtnrsY9IbvdmqE0=;
-        b=ZV9vsXrwMzOJXwOREtoXetlr3fUjdaJYbHR4eiZFz0R3aFObfaDriPGDeUdWA7oA4k
-         +kFUmMJ266GUL9HndebesbT3NX8z+THP9h+OU4/AEYwi+5CWU+mSIx3eRps4UqsRch6F
-         H34HUKTFxuOfQ1ZHdvABveRYqbrBXv1+pLTBSfdGoMRGODNptrdlWymtcxiPER7Mchdp
-         vqVGDzF9fspGYhfgOzDR3F3wFCOqe0tgXplN7CIW9nqycEIuzvZC4eI1PLuu50RHMxoU
-         0MigCt5BmJHa6jewYhMsjnu1sMOadGqrN65xNgFSE+VKDZvuhdfGS9A4vCW9OPC9aDQd
-         wUfg==
-X-Gm-Message-State: AOJu0Yyk1rPTd+yqxBQNuhbT8cDHL/SVQ45SmRjwqMgCGUMZK4f8c6Rf
-	F4ReCv5ehP/nTRF2y2U4TkLNVlBIyeOVMSDREwuBErw0/MzkEqfIU7gIAQkL27UBUvImfP2Ihyq
-	jG34VUWek3tWzdF9dx1i8jE5jqA==
-X-Received: from plpw13.prod.google.com ([2002:a17:902:9a8d:b0:2b0:6121:c2d1])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ccd2:b0:2b0:5520:f497 with SMTP id d9443c01a7336-2b0cdc0f454mr2752855ad.9.1774563954612;
- Thu, 26 Mar 2026 15:25:54 -0700 (PDT)
-Date: Thu, 26 Mar 2026 15:24:53 -0700
-In-Reply-To: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jYi2DL0P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774565366; x=1806101366;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Nkssu31T4ASGATxhou3Hn/jkOwEBY1N+E/b79UGlPgE=;
+  b=jYi2DL0PeZaXGUwu7uLLWwLAdn3UJ2u1E8YWdSpKhl7zGGyqEipGWwCE
+   B1naxsHFJcPjvCWxLqGAkiyLf5y5sFeJnOwZtPI6fslpcXZyOfhKw1ZKF
+   ApsZdcSqkmgXrKwozNxNztD1YbDRhKlU91p1V5I7KJavmwWgoISCbpoBj
+   jaCXLYIwdwiAX67z/1KWZSilXv3tvwyR2X+umB2lf19BbbEyXDkXjAaLv
+   9G5c+szvWDzNPVHxcut0J2XiJLq7/MEScSel1Gd97Y7M0f+u6OzmbVRrj
+   vkoJM5peWQykSdBqpSWCAy4Vdczftts2NtrPPpKcPaCbFBW8026ySZ7M7
+   Q==;
+X-CSE-ConnectionGUID: 7ivh9qObQ8+iflQ7PhElMw==
+X-CSE-MsgGUID: oWn9zCERRHqGnJ75sDi5+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="93023067"
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
+   d="scan'208";a="93023067"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 15:49:25 -0700
+X-CSE-ConnectionGUID: OpYG/3SsSgepX3OMdGdPcw==
+X-CSE-MsgGUID: m/x6tl02R7CjOiWo68fqcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
+   d="scan'208";a="229920793"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 26 Mar 2026 15:49:23 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w5tVw-000000009Rx-3AwL;
+	Thu, 26 Mar 2026 22:49:20 +0000
+Date: Fri, 27 Mar 2026 06:48:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v4 2/6] KVM: x86: Move guest_mode helpers to x86.h
+Message-ID: <202603270611.WB2i1rjQ-lkp@intel.com>
+References: <20260326031150.3774017-3-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=3745;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ZGSq+gTFZDY/anw9T28+HYi6HmGJV6iDHsC4BSDh08w=; b=bl10NJA+tRza4190u7kAzLQjI0OEISMmC1hhtBIOQpOao11zciKPixnzxzkJzUPyjzD9rwpIj
- X6HVw8GptTzD9pYDEM6AtX43w8wyaJLsoqTW8KTBj/fh9MfJfpHu8EW
-X-Mailer: b4 0.14.3
-Message-ID: <20260326-gmem-inplace-conversion-v4-44-e202fe950ffd@google.com>
-Subject: [PATCH RFC v4 44/44] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
-From: Ackerley Tng <ackerleytng@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326031150.3774017-3-yosry@kernel.org>
 
-From: Sean Christopherson <seanjc@google.com>
+Hi Yosry,
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
+kernel test robot noticed the following build errors:
 
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
+[auto build test ERROR on 3d6cdcc8883b5726513d245eef0e91cabfc397f7]
 
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yosry-Ahmed/KVM-x86-Move-enable_pmu-enable_mediated_pmu-to-pmu-h-and-pmu-c/20260326-191518
+base:   3d6cdcc8883b5726513d245eef0e91cabfc397f7
+patch link:    https://lore.kernel.org/r/20260326031150.3774017-3-yosry%40kernel.org
+patch subject: [PATCH v4 2/6] KVM: x86: Move guest_mode helpers to x86.h
+config: x86_64-buildonly-randconfig-004-20260327 (https://download.01.org/0day-ci/archive/20260327/202603270611.WB2i1rjQ-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260327/202603270611.WB2i1rjQ-lkp@intel.com/reproduce)
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603270611.WB2i1rjQ-lkp@intel.com/
 
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index cbcb5d6d04436..ed1bf27d149dc 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE, 0);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE, 0);
- 
- 	pthread_create(&vm_thread, NULL,
- 		       (void *(*)(void *))run_vcpu_get_exit_reason,
-@@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
- 	pthread_join(vm_thread, &thread_return);
- 	exit_reason = (uint32_t)(uint64_t)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(uint64_t));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	uint32_t exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
+All errors (new ones prefixed by >>):
+
+   In file included from arch/x86/kvm/svm/svm_onhyperv.c:11:
+>> arch/x86/kvm/svm/svm.h:520:6: error: call to undeclared function 'is_guest_mode'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     520 |         if (is_guest_mode(&svm->vcpu))
+         |             ^
+   arch/x86/kvm/svm/svm.h:578:6: error: call to undeclared function 'is_guest_mode'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     578 |         if (is_guest_mode(&svm->vcpu) && !nested_vgif_enabled(svm))
+         |             ^
+   arch/x86/kvm/svm/svm.h:639:6: error: call to undeclared function 'is_guest_mode'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     639 |         if (is_guest_mode(&svm->vcpu))
+         |             ^
+   arch/x86/kvm/svm/svm.h:802:9: error: call to undeclared function 'is_guest_mode'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     802 |         return is_guest_mode(vcpu) && (svm->nested.ctl.int_ctl & V_INTR_MASKING_MASK);
+         |                ^
+   In file included from arch/x86/kvm/svm/svm_onhyperv.c:12:
+   In file included from arch/x86/kvm/svm/svm_ops.h:7:
+>> arch/x86/kvm/x86.h:169:20: error: conflicting types for 'is_guest_mode'
+     169 | static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
+         |                    ^
+   arch/x86/kvm/svm/svm.h:520:6: note: previous implicit declaration is here
+     520 |         if (is_guest_mode(&svm->vcpu))
+         |             ^
+   5 errors generated.
+
+
+vim +/is_guest_mode +520 arch/x86/kvm/svm/svm.h
+
+0b97f929831a70 Sean Christopherson 2026-02-18  509  
+0b97f929831a70 Sean Christopherson 2026-02-18  510  static inline void svm_mark_intercepts_dirty(struct vcpu_svm *svm)
+0b97f929831a70 Sean Christopherson 2026-02-18  511  {
+0b97f929831a70 Sean Christopherson 2026-02-18  512  	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
+0b97f929831a70 Sean Christopherson 2026-02-18  513  
+0b97f929831a70 Sean Christopherson 2026-02-18  514  	/*
+0b97f929831a70 Sean Christopherson 2026-02-18  515  	 * If L2 is active, recalculate the intercepts for vmcb02 to account
+0b97f929831a70 Sean Christopherson 2026-02-18  516  	 * for the changes made to vmcb01.  All intercept configuration is done
+0b97f929831a70 Sean Christopherson 2026-02-18  517  	 * for vmcb01 and then propagated to vmcb02 to combine KVM's intercepts
+0b97f929831a70 Sean Christopherson 2026-02-18  518  	 * with L1's intercepts (from the vmcb12 snapshot).
+0b97f929831a70 Sean Christopherson 2026-02-18  519  	 */
+0b97f929831a70 Sean Christopherson 2026-02-18 @520  	if (is_guest_mode(&svm->vcpu))
+0b97f929831a70 Sean Christopherson 2026-02-18  521  		nested_vmcb02_recalc_intercepts(svm);
+0b97f929831a70 Sean Christopherson 2026-02-18  522  }
+0b97f929831a70 Sean Christopherson 2026-02-18  523  
 
 -- 
-2.53.0.1018.g2bb0e51243-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
