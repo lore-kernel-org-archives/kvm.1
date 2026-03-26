@@ -1,181 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF043328E6
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 19:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B2933A9FC;
+	Thu, 26 Mar 2026 19:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774551813; cv=none; b=JldkbEVZ6d/awtVLBBVoW7Z3tGd9vMYJHGxyqthSZSAQ/PLxrZI2aC+Ev1QkJViDM5Ii004ZAUTe3vdAU0EhXNWdnaU1412sX5opuchxGV1CWeBFiuIDW28tBPjji9PtuVXgXofnu0jaxSCPbxb+FgNDnUbPytfzzhSQT+eVUlQ=
+	t=1774551938; cv=none; b=BEJE5aAYbaXoDnbuacPoOGCStm66R7vMGa+hfzqJxNffaeDsCR/swapgjHiml0VmarXU4ZlNugZTbh1lySkpCFtwdfbJwwXpyq2NJepvLR5jPCHbrvnXfwVhs5SrEI0bYoeu1UfmVmGXWRCeDHi68Pd2XOk4H6EoF6FE2eK8fp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774551813; c=relaxed/simple;
-	bh=H3ZANKprj/TgNWGd+SUawc9wkwCTzwy1BeR8pADdSwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kVbsQd2JAJYLIOonRRHsgXQzmal2L25qmwq4yul3zWFDvG71RDxuxBYCj9gddDzogSt5rXDUNr9vZLHZaJSKVDmHy+TfQlETzDo3IJONv7gdqItvwjbfiFe5P/dfC+6V0yygvXSVIErl6AnFeuS80KfVdqzb+KM1YveSAeawg2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u97SDTgX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774551938; c=relaxed/simple;
+	bh=dwdYpT7gHFwLIVM/vV2jTq1BZSxOXfyEuivKQvtyja8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oi7g3tRHizAhRO4IHm+w47ULpMAsL40w1pCqUGST/FHdKhbwdHsURiIDhq7KlIsjaXDfiPA60PGi73FXRszdLh4MCld7yQi8XondvbqJiYCEthrQ+9ZhxtXPOSQfEllG9o30qxGfOU6bszuTwIwLFauWCK0iFep/X5tLe40hQSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Zv6Xlvpf; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u97SDTgX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BF1C116C6
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 19:03:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774551813;
-	bh=H3ZANKprj/TgNWGd+SUawc9wkwCTzwy1BeR8pADdSwI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=u97SDTgXTlzOMF+8m1DUlWk5+B5s05tTe7VXmdb8L06wfedBUbsvunVUdI1pLXAzP
-	 u/5gAQ51s8CvSpqkgsWM+xtJvxJqtCelDJpqQPqlGIVbfigHsQGzSE8DyRKaZdEEic
-	 MqAWh97TXPg85OTGbFuiYiJM4Fg09HdJKyHbj3yiX9OFwyEUX61+oCHbMkPhbWejzn
-	 97Nm3UXaYQweEB92yACV3iJEajEF0rsOrDA6bYKpau5O74ICgPCb78frC1dlO7gWjj
-	 NwbwBn3AzOuDAV/K270aDl+DHRcr32J2redoGF5me47guJvt+kff4HN+ctYAK64HR7
-	 TEvk2bhrf6E1A==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66b1019bb55so650430a12.1
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 12:03:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXFHbm6OqiYWwF8yX6gx4c2emoXP1iwE+ICkupJnJRDJkHYgld19Pd5HUDVh6DmWByMJxg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUjY4sr6o1/NqCxriMBCekwE+ewgQ9g+rjBBHjDQBUGG54FmXv
-	9gR8CKPENBd4FdrGi/pjgvBm6RRXo7iJj2BHk/Zp7IX3R2PEmPkPCbUzHDvGYLp5sKGMiJyWlPr
-	QfbnYd0n8dDrMPF/T/PsBFBwgDeEf0B4=
-X-Received: by 2002:a17:906:eecd:b0:b98:36cd:7e0e with SMTP id
- a640c23a62f3a-b9a542737camr610146966b.45.1774551811888; Thu, 26 Mar 2026
- 12:03:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Zv6Xlvpf"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62Q89MDS3011996;
+	Thu, 26 Mar 2026 19:05:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RegP/k
+	Y2TA8NJMDdQN28ncPjNidJcrgVawfmnm71jZU=; b=Zv6Xlvpfg/Tu4plMqfbnpC
+	++rpcOEK/pc2V/A9J6Cf8QaaKr5lZFmYIacouUquLJkOXhuL/6Wst/ceeVJXGeSp
+	6GtY58QPhttJL7NetqB/fICoLT7uUBX5eNBn8zTeOKxvaFrPv/OpKQDG+xApv+Gm
+	wGYRtWMDByu2F3YTiWo20Z6heMDsjFAvWqRAZyqmxlgQSZj3PdP7KHjLrTJLjjtB
+	sVT1Bn4h6ER8sRZO96WfLu6k0V4yTaB6JkdchYrI1InPgng0KSez9SYqYXr1/7gW
+	zXhgjNevIQQq1sDrUCgb2466hGwYpQzPZzMHGCRXXlyHwABjZ4FaWG0AQjdZ5PFA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqpujh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Mar 2026 19:05:32 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62QFtHua011824;
+	Thu, 26 Mar 2026 19:05:31 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d27vkc4wp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Mar 2026 19:05:31 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62QJ550C5046990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Mar 2026 19:05:05 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5DA3F58055;
+	Thu, 26 Mar 2026 19:05:29 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E5C958059;
+	Thu, 26 Mar 2026 19:05:27 +0000 (GMT)
+Received: from [9.61.247.58] (unknown [9.61.247.58])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 26 Mar 2026 19:05:27 +0000 (GMT)
+Message-ID: <3d6457b9-715a-4cbb-9c69-d8a7e7473c89@linux.ibm.com>
+Date: Thu, 26 Mar 2026 12:05:27 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326174944.3820245-1-jmattson@google.com> <20260326174944.3820245-2-jmattson@google.com>
-In-Reply-To: <20260326174944.3820245-2-jmattson@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 26 Mar 2026 12:03:20 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMYdLjH8BuN_GWsS_BNrdE+Kbz=d6Y-Cxt3GTXMpdEM+w@mail.gmail.com>
-X-Gm-Features: AQROBzDXNpZkaYQ2rFx8prlIgRpDL-u1SWDMIRceFjxW53ZNgIHOU49tyDb09oo
-Message-ID: <CAO9r8zMYdLjH8BuN_GWsS_BNrdE+Kbz=d6Y-Cxt3GTXMpdEM+w@mail.gmail.com>
-Subject: Re: [PATCH v6 01/10] KVM: x86: Define KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
+ devices
+To: Niklas Schnelle <schnelle@linux.ibm.com>,
+        Julian Ruess <julianr@linux.ibm.com>, wintera@linux.ibm.com,
+        ts@linux.ibm.com, oberpar@linux.ibm.com, gbayer@linux.ibm.com,
+        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Yishai Hadas <yishaih@nvidia.com>,
+        Shameer Kolothum
+ <skolothumtho@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>
+Cc: mjrosato@linux.ibm.com, raspl@linux.ibm.com, hca@linux.ibm.com,
+        agordeev@linux.ibm.com, gor@linux.ibm.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org
+References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
+ <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
+ <4096cb9d402b1aabc9667d450221cb0922e78d90.camel@linux.ibm.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <4096cb9d402b1aabc9667d450221cb0922e78d90.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: iofcWBWmC3FuwplsueNdk_00KF2trhKr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDEzNSBTYWx0ZWRfX5LTuzM/ZXY4X
+ EMGzXi5f7nmgqxCJ7TH8cXKx37peozQHxaD3eGvDD+Nd6fe70w5S2no1MONLmQvRolWyREHg+yv
+ KcfRpKD7/9NCtiV4OtQUJCD0KRjIlS8An3j409/BR0aVxiTrX0w7yWvUmHQfRmZ+wZins5wyThX
+ VOobPuHybaWjjJSI8u+1CdhIAN6dBGVnst2SCvQF/p5NdT2JEMswXBaTRvhVLXfH9gInYhAK8+m
+ JXpa/MC5I+EWQgHbDFuTyqaoG9Fjp4ZTxqOZMgt6aT3cE6vOAGNWdlo74Ki5JZ2O8CxDJv2CaCw
+ XH6l0M4VHU+0+EyGtzs0ekbYl1cgs8Y1cMgI0DpkMLUL9nV+hIgo95oMVYz5e06v4R5f0U3Lii4
+ ac238bQaLVq4zKlGGDK4ciB0mKNu1OyZoc7qnglc0R6D2pSZFKFX1GYVtJbsYMmJ2HXchYh7mcy
+ WxM53sZR8y8y2H0ZP+A==
+X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c5837c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=8knF3OVK0f20Sk4uvPEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: iofcWBWmC3FuwplsueNdk_00KF2trhKr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-26_03,2026-03-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603260135
 
-On Thu, Mar 26, 2026 at 10:50=E2=80=AFAM Jim Mattson <jmattson@google.com> =
-wrote:
->
-> Define a quirk to control whether nested SVM shares L1's PAT with L2
-> (legacy behavior) or gives L2 its own independent gPAT (correct behavior
-> per the APM).
->
-> When the quirk is enabled (default), L2 shares L1's PAT, preserving the
-> legacy KVM behavior. When userspace disables the quirk, KVM correctly
-> virtualizes the PAT for nested SVM guests, giving L2 a separate gPAT as
-> specified in the AMD architecture.
->
-> Signed-off-by: Jim Mattson <jmattson@google.com>
-> ---
->  Documentation/virt/kvm/api.rst  | 14 ++++++++++++++
->  arch/x86/include/asm/kvm_host.h |  3 ++-
->  arch/x86/include/uapi/asm/kvm.h |  1 +
->  arch/x86/kvm/svm/svm.h          |  7 +++++++
->  4 files changed, 24 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> index 032516783e96..2d56f17e3760 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -8551,6 +8551,20 @@ KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM   By defa=
-ult, KVM relaxes the consisten
->                                             bit to be cleared.  Note that=
- the vmcs02
->                                             bit is still completely contr=
-olled by the
->                                             host, regardless of the quirk=
- setting.
-> +
-> +KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT        By default, KVM for nested SV=
-M guests
-> +                                           shares the IA32_PAT MSR betwe=
-en L1 and
-> +                                           L2. This is legacy behavior a=
-nd does
-> +                                           not match the AMD architectur=
-e
-> +                                           specification. When this quir=
-k is
-> +                                           disabled and nested paging (N=
-PT) is
-> +                                           enabled for L2, KVM correctly
-> +                                           virtualizes a separate guest =
-PAT
-> +                                           register for L2, using the g_=
-pat
-> +                                           field in the VMCB. When NPT i=
-s
-> +                                           disabled for L2, L1 and L2 co=
-ntinue
-> +                                           to share the IA32_PAT MSR reg=
-ardless
-> +                                           of the quirk setting.
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D   =3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  7.32 KVM_CAP_MAX_VCPU_ID
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index d3bdc9828133..0809d8f28208 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -2511,7 +2511,8 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot=
-, unsigned long npages);
->          KVM_X86_QUIRK_SLOT_ZAP_ALL |           \
->          KVM_X86_QUIRK_STUFF_FEATURE_MSRS |     \
->          KVM_X86_QUIRK_IGNORE_GUEST_PAT |       \
-> -        KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM)
-> +        KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM       \
 
-There is a missing "|" here, it's fixed in patch 3, but I think it
-should be fixed up here (maybe when applied).
+On 3/26/2026 6:03 AM, Niklas Schnelle wrote:
+> On Wed, 2026-03-25 at 14:31 +0100, Julian Ruess wrote:
+>> Add a vfio_pci variant driver for the s390-specific Internal Shared
+>> Memory (ISM) devices used for inter-VM communication.
+>>
+>> This enables the development of vfio-pci-based user space drivers for
+>> ISM devices.
+>>
+>> On s390, kernel primitives such as ioread() and iowrite() are switched
+>> over from function-handle-based PCI load/stores instructions to PCI
+>> memory-I/O (MIO) loads/stores when these are available and not
+>> explicitly disabled. Since these instructions cannot be used with ISM
+>> devices, ensure that classic function-handle-based PCI instructions are
+>> used instead.
+>>
+>> The driver is still required even when MIO instructions are disabled, as
+>> the ISM device relies on the PCI store block (PCISTB) instruction to
+>> perform write operations.
+>>
+>> Stores are not fragmented, therefore one ioctl corresponds to exactly
+>> one PCISTB instruction. User space must ensure to not write more than
+>> 4096 bytes at once to an ISM BAR which is the maximum payload of the
+>> PCISTB instruction.
+>>
+>> Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+>> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+>> Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
+>> ---
+>>   drivers/vfio/pci/Kconfig      |   2 +
+>>   drivers/vfio/pci/Makefile     |   2 +
+>>   drivers/vfio/pci/ism/Kconfig  |  10 ++
+>>   drivers/vfio/pci/ism/Makefile |   3 +
+>>   drivers/vfio/pci/ism/main.c   | 408 ++++++++++++++++++++++++++++++++++++++++++
+>>   5 files changed, 425 insertions(+)
+>>
+> --- snip ---
+>> +
+>> +static int ism_vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
+>> +					      struct vfio_region_info *info,
+>> +					      struct vfio_info_cap *caps)
+>> +{
+>> +	struct vfio_pci_core_device *vdev =
+>> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+>> +	struct pci_dev *pdev = vdev->pdev;
+>> +
+>> +	switch (info->index) {
+>> +	case VFIO_PCI_CONFIG_REGION_INDEX:
+>> +		info->offset = ISM_VFIO_PCI_INDEX_TO_OFFSET(info->index);
+>> +		info->size = pdev->cfg_size;
+>> +		info->flags = VFIO_REGION_INFO_FLAG_READ |
+>> +			      VFIO_REGION_INFO_FLAG_WRITE;
+>> +		break;
+>> +	case VFIO_PCI_BAR0_REGION_INDEX ... VFIO_PCI_BAR5_REGION_INDEX:
+>> +		info->offset = ISM_VFIO_PCI_INDEX_TO_OFFSET(info->index);
+>> +		info->size = pci_resource_len(pdev, info->index);
+>> +		if (!info->size) {
+>> +			info->flags = 0;
+>> +			break;
+>> +		}
+>> +		info->flags = VFIO_REGION_INFO_FLAG_READ |
+>> +			      VFIO_REGION_INFO_FLAG_WRITE;
+>> +		break;
+>> +	default:
+>> +		info->offset = 0;
+>> +		info->size = 0;
+>> +		info->flags = 0;
+>> +		return -EINVAL;
+> Thinking more about this, the above default handling actually breaks
+> additional regions such as the one added by Farhan for the error
+> events. I think this needs to instead call the generic
+> vfio_pci_ioctl_get_region_info() for other regions.
 
-> +        KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT)
->
->  #define KVM_X86_CONDITIONAL_QUIRKS             \
->         (KVM_X86_QUIRK_CD_NW_CLEARED |          \
-> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/=
-kvm.h
-> index 5f2b30d0405c..3ada2fa9ca86 100644
-> --- a/arch/x86/include/uapi/asm/kvm.h
-> +++ b/arch/x86/include/uapi/asm/kvm.h
-> @@ -477,6 +477,7 @@ struct kvm_sync_regs {
->  #define KVM_X86_QUIRK_STUFF_FEATURE_MSRS       (1 << 8)
->  #define KVM_X86_QUIRK_IGNORE_GUEST_PAT         (1 << 9)
->  #define KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM (1 << 10)
-> +#define KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT    (1 << 11)
->
->  #define KVM_STATE_NESTED_FORMAT_VMX    0
->  #define KVM_STATE_NESTED_FORMAT_SVM    1
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index ff1e4b4dc998..67aa5d34332e 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -616,6 +616,13 @@ static inline bool nested_npt_enabled(struct vcpu_sv=
-m *svm)
->         return svm->nested.ctl.misc_ctl & SVM_MISC_ENABLE_NP;
->  }
->
-> +static inline bool l2_has_separate_pat(struct vcpu_svm *svm)
-> +{
-> +       return nested_npt_enabled(svm) &&
-> +               !kvm_check_has_quirk(svm->vcpu.kvm,
-> +                                    KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT)=
-;
-> +}
-> +
->  static inline bool nested_vnmi_enabled(struct vcpu_svm *svm)
->  {
->         return guest_cpu_cap_has(&svm->vcpu, X86_FEATURE_VNMI) &&
-> --
-> 2.53.0.1018.g2bb0e51243-goog
->
+Note for error events we are using a VFIO device feature and not a 
+region. At this point we actually don't have additional regions. I do 
+agree that if we were to add a zpci specific region we would need to 
+update here and ism_vfio_pci_rw() to allow region read/write ops. This 
+ISM driver would also need to support all the possible callbacks in 
+struct vfio_pci_regops.
+
+Given that we don't have any additional regions yet, I am conflicted if 
+it makes sense to add all the code to support additional regions without 
+a good way to test it. Maybe its something we can defer when if we add 
+additional regions? Thanks
+
+Farhan
+
+
+>> +	}
+>> +	return 0;
+>> +}
+> --- snip ---
