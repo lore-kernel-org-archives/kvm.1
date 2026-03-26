@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1AA3AE1BF
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3633A6EED
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549077; cv=none; b=YssC8aOO6BkLNN5tAoc2hd85SZ46nMTYFapNS1fzbWKwSf/q62ntRsSCkiJ4xddk3OTRXYxBaSUkQiZfPkuRvrv0v2dumfZrcKB1fpsIo+yKyW0aygxTDBwG/pCGywaHoq5/iu7Y1mIRvO+J99W18m4EuDjqUrQko2dvv6XdZK0=
+	t=1774549076; cv=none; b=Q0M5niyr3vdKodoZ/a2+8AuWdZuBq/mGK86jobBtL/3AUMFczN/xfSO/sZrnh/eaTYco3hWgmxHUNq14MyIUzDCaCtZ628zM2RUGV4uo8X1tJYGbxwcb/uXtvA2LJmV/qotyg5QoVgO6ufDHoTPsTqfZsyKBug5D8qCO0hOF3v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549077; c=relaxed/simple;
-	bh=vTy9O5IsDlG6v8B6glBVPqw3VYt2VMRG16l4ZUpy0Nk=;
+	s=arc-20240116; t=1774549076; c=relaxed/simple;
+	bh=V/j0bLtLOQJRuJo1v2hvbWXQwZPcKv+m9rMFbbyuUo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVnRqM2/fP0X+Q9FniqVdlmv5tTZtWEs5dHIXCx/8r7J9nVjYn0YP9gzVw+r/nY4N+fQynd2Cmj/whQfXkfPQJaZwdj05g1s++ymxz51BJdncY3TgsB4L1tEIMKeVmAP/7t1C9G5iq9nsPTiOcwxnkaWhyYX+LExSxyNHUX/UvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bsrwoVuo; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mG6eZKcy; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=EmzB9alW2zj0I4F48JLKTpm9aciJdx/ecviTKi1YiLclg0gqnqZ6NaCyMpV2Y+hsfeQN5idkuCBD6/l2HcF3lKY/Wox0CLpXMT4+y4UKrjbUXRbslBu/FU5Es8vHItPVhdxY/996vjkERAZLZjl53sBUX/Fncv+QsE+kahQrxtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OvgHvG8z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=P4VQIWvM; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bsrwoVuo";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mG6eZKcy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OvgHvG8z";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="P4VQIWvM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549072;
+	s=mimecast20190719; t=1774549069;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PcMqJJGPCLK+VRPcw/NPeynhXQGvPO9SUzIgJSMzXxQ=;
-	b=bsrwoVuoyn4/ZHOnmOrS05emEVE+RX6X8N0/r5fAvy4K6Fflp4F4PrCQpo+ourKP7wmohL
-	7wMUBy1TIteRyic4oe81lM0KGPmZXx/7SyrLDG1ecCt4/tWC2ZKw/huQHA9nDEwrviG/hK
-	O74oTBXjMMnxZRiLaVzZhQUhZjxyvLg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0LD9F/oJ5sRufl5xgAEZXqtBZxVR/nArSRHajjH786M=;
+	b=OvgHvG8zubYyt5QVbMvTIugbfdHTEBd4AgxN8PTNb7f8bWXhB8y20l0FsP/C5hdRgwa/22
+	HxiWD+scjnGSoLv+DS7yTlC1BUXmdHCB6voax5ZdwSEwqEaT02Vn5qvKtSK1PPUrpVnU+B
+	ValHPZASKxppRJbM1LvQWxgGo5cRjgA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-dmxgeYkNPCalmOEAzJVORg-1; Thu, 26 Mar 2026 14:17:51 -0400
-X-MC-Unique: dmxgeYkNPCalmOEAzJVORg-1
-X-Mimecast-MFC-AGG-ID: dmxgeYkNPCalmOEAzJVORg_1774549070
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b8f23bdc7so94080f8f.3
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:50 -0700 (PDT)
+ us-mta-632-AXrqmOIvMo6cgqfYYMRTWA-1; Thu, 26 Mar 2026 14:17:48 -0400
+X-MC-Unique: AXrqmOIvMo6cgqfYYMRTWA-1
+X-Mimecast-MFC-AGG-ID: AXrqmOIvMo6cgqfYYMRTWA_1774549067
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43b8f9374dfso1284658f8f.0
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549070; x=1775153870; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774549067; x=1775153867; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PcMqJJGPCLK+VRPcw/NPeynhXQGvPO9SUzIgJSMzXxQ=;
-        b=mG6eZKcyzthQv+cEEXcHKzy48vo2Os9/l16Lj1agQOaD5NUCKQpJu/z+f1RlGKJmQA
-         FAM2j5JDWAcYefN+LQdZ+KXkX6pVZASuLyr3WpT/F5B8MXDnP1i/ed+/CWg1E69MI/9p
-         +vHL+WTTYLVYsnRmIBaV9/qO0zsFRd5tHeDpnRyWyHM1+FZEg0dspm67Fs3UHCi1BjKk
-         nUXy+UQipNsurKc+9kpRMs02L71hOhQNL5H+08YOMds8Ueq/fXmfdXsnpXlHViaHI9d/
-         dV+U2EKmQ+8gMVx5qOaIoqtQGBGvfGerBO4NGASyjL8Uhcp3mr9M/W+TwB8DTv0LgeDb
-         Elhw==
+        bh=0LD9F/oJ5sRufl5xgAEZXqtBZxVR/nArSRHajjH786M=;
+        b=P4VQIWvMthmWzk+/Dzwf8teLT8DpPe7rNwkaeH3+aa6+IaAzdSovNFaxuhR0L3HxRc
+         xgwM9viROgxAIvWa7kNBhzrDKNfvy4YH1bLAMwZrBlvt43GxcRYheen/I8F49qRwuh2i
+         aR2dR0rYAPE0MwYpJhrjZYHjehO2OtYtQ04/uV0K6a2qi8BB2iXhc1MEc5a+xj/PC7kB
+         sOw4xnc5O0mz0orT4b/I+0omNVfAudjH2TV8wlfQd+0KVC/IEm6DNzqhDo8qgJKliPAI
+         zZQuLMuZWi+k4J/1IBh27IunY8b4+mCudPel+h84tE/8+Xi59BfqjFoC8h16mO+OulPQ
+         CWtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549070; x=1775153870;
+        d=1e100.net; s=20251104; t=1774549067; x=1775153867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PcMqJJGPCLK+VRPcw/NPeynhXQGvPO9SUzIgJSMzXxQ=;
-        b=cEk2M9R7iAWvbkKFhpf8CU2CktzowqY/iTQ/94ZJ7fF+idQOq559UQ4bM1rF2o3tik
-         oL3U712+4EtAzKP+yAvQrD59wlruNJzAiRNuzXykGZfiET/J/T18w9s2fkw2dJdL1Ddj
-         n2cGjKVDYq9p1RH9DdNaaShUblFo02cdUM1/WSPTDllxY4s34WwPWg76gv32wSkpYyGU
-         3SVimnsKBTuPQJy7dPq72ieY8Al7hdJXhwjMaWuphwf+nhMCxhGrT+lo6qtPMLZlSZjg
-         8DsoLF4dQHbzx1AnkzWQ1ML4D/h0h5u9pB8Zdiwo6GEQbHvhBvl7khIuhUJO9U22H1Nr
-         rD4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXJZDMAHY3nsiOBznIxvV9sucYuFgY+jB/JjJpP3hpVNafoYBFLQDuTjlbyNqK/F6rE71Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFMflad6S+2hWzpqiLUMb8qw+sXvDN5ZKeXxwwelP387d1W3Jv
-	dcgoL/vUyPin+VpqiZMUm3gxPExJRqtPUOz01ih0h/JzvreXTbJ/tXlxsTGud6yki5UcOGS6VMW
-	5z0IR/wi7AbYwgJ/LN5C1HFBnnXbsI8l7PgqLniZhCOtwuIg3IzyqNw==
-X-Gm-Gg: ATEYQzwPu9ML5SLTsb2DW6yf0EkWtCH9zTOyQns1QZFfzoxkrYcImS8/x909msW9sj+
-	X3qDOOIduWzTyYqBQMOwE8UI86xM5Y9X3kPf6xiNgN57pwPmxsmTem3WO0D74KPZl8Xq9OR7RJ/
-	GwfvZmjoqszTUKQ6IInkEGRS/Cor8C7q8lnwZJtrMw9VbEbfwfLtsvdd9m7jtvA2YIrZXDekPCQ
-	AhBPdUhKNN1ulWVx1n+FsR5kY/2RT+2Yfcav5rhYPwCDIfrn46rRvkbsNtXh7rDiwr4gI6DOFVJ
-	cQmDcvl4Nn6EpqG33vcNqqLlKsJLuwbnRjQDrDEjon1b+XO5VB0AT0uaGqEZ07szGDZeImQXMyQ
-	UodJSbPwmuac9UcCPbOqf3HjGw1GbCODV5B/em5ltp4MXfZ6kIaSSgils8lR8CDQhPG5QQEXskU
-	ZU0V3jCPLokGXr1VisL16Z6KnB
-X-Received: by 2002:a05:6000:60f:b0:43b:3c06:c30a with SMTP id ffacd0b85a97d-43b889b2542mr13985142f8f.18.1774549069700;
-        Thu, 26 Mar 2026 11:17:49 -0700 (PDT)
-X-Received: by 2002:a05:6000:60f:b0:43b:3c06:c30a with SMTP id ffacd0b85a97d-43b889b2542mr13985075f8f.18.1774549069217;
-        Thu, 26 Mar 2026 11:17:49 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b91942f24sm10449273f8f.11.2026.03.26.11.17.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        bh=0LD9F/oJ5sRufl5xgAEZXqtBZxVR/nArSRHajjH786M=;
+        b=SNiNDrK7t2pq3FXW3Q3ux6XWhwCnuU+ygfdcZEPius2f9FCJfMQUSfOnYc4nreogau
+         6coELahRsDq7SUAtkkxFPqFkN4QFBIbss0XApuwfpvY0EQx2IETEk/7czy+9Fy3XEg8W
+         eVv1uODdoSGMxhnRNc/Kn7eAZGPplHcwaMxAxoMkbgBjLEBkd6v0sJdJ7nh3emyM2Vom
+         tHi2BZA8iVuZ/jg+KoUuL7T4STnOeKdrxCVvLC3SsOxJKsmW4vbctiqeIZCZQc1pY6Zu
+         XeJKyOtG5iaVqNY+vKz+N/2Tu6R2KwtiX7aTpubfA6dMOI7aQDj5+q61llddWBkb824c
+         vs9g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+UGcTJrG6RBGYGTgJRpeMmukglbErERUsNcT1fDRCC8IJ6LFstILARMUYeqcAaC3BJAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBl9p59PDuzcWD+easaEzbCFy9NFQ9M/cQg6jRKIqnx9gpYarZ
+	5VEMpl/0BRBpCHtwbWsJ+LMq0PR35xgYVhJRI4Z1f/UVZW84S6yewvItJUk/IzMC3QDD9fqLlf2
+	+Sj1sYeR0ZIjRwHe4us9oVQSGOBnnfTKf17tPiHBdgtp+OxFauVP7Kg==
+X-Gm-Gg: ATEYQzyZci4RbChpilGdAkChf5QS3tiNxeJUsMztH6lzL38lObTcTLtXugnP9BTNDIV
+	OoiKb1TDfcs9OiUj770+V1Hhwa3rNZSpwEBHTVhghq/fEhxwiBJhqEB/V7Od39Od3iTFTtorrly
+	T7kBk7qsGEKcgJcYgBX2lQppnlCc/AwVRLYZ+i7MtE8M8VDWfQsLRqBSCZIMk9oABmYw+4teIPI
+	FT0Otpj0Inn6fIg+D6xTH5yNzwB06oNi14lGuYaP3Qg3c1vm/sSDwI8rdDdQiqwP9lGh18nmhbI
+	p3RIyaixdCs4roT/jqRMjSprSHwfUMH64pzRixzx9LKh0EBSYCEY0N2qKZDbvFyMrydIETFJCXP
+	yDDnyakLIVOmvM6F/OldqPXuh4iKNmO66L7LORkBYFwjA7nFzwW/R+oKNbKEI7JKSsDqiTTK42s
+	nVNtloXqcjBaA90PkCT/teKbDk
+X-Received: by 2002:a05:6000:1786:b0:43b:945c:e557 with SMTP id ffacd0b85a97d-43b97a1f474mr5123374f8f.11.1774549066266;
         Thu, 26 Mar 2026 11:17:46 -0700 (PDT)
+X-Received: by 2002:a05:6000:1786:b0:43b:945c:e557 with SMTP id ffacd0b85a97d-43b97a1f474mr5123279f8f.11.1774549065524;
+        Thu, 26 Mar 2026 11:17:45 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.85.67])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919cf2c8sm9012428f8f.20.2026.03.26.11.17.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 11:17:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 09/24] KVM: x86/mmu: separate more EPT/non-EPT permission_fault()
-Date: Thu, 26 Mar 2026 19:17:07 +0100
-Message-ID: <20260326181723.218115-10-pbonzini@redhat.com>
+Subject: [PATCH 08/24] KVM: x86/mmu: introduce ACC_READ_MASK
+Date: Thu, 26 Mar 2026 19:17:06 +0100
+Message-ID: <20260326181723.218115-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326181723.218115-1-pbonzini@redhat.com>
 References: <20260326181723.218115-1-pbonzini@redhat.com>
@@ -100,79 +100,394 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now that EPT is not abusing anymore ACC_USER_MASK, move its
-handling entirely in the !ept branch.  Merge smepf and ff
-into a single variable because EPT's "SMEP" (actually
-MBEC) is defined differently.
+Read permissions so far were only needed for EPT, which does not need
+ACC_USER_MASK.  Therefore, for EPT page tables ACC_USER_MASK was repurposed
+as a read permission bit.
+
+In order to implement nested MBEC, EPT will genuinely have four kinds of
+accesses, and there will be no room for such hacks; bite the bullet at
+last, enlarging ACC_ALL to four bits and permissions[] to 2^4 bits (u16).
+
+The new code does not enforce that the XWR bits on non-execonly processors
+have their R bit set, even when running nested: none of the shadow_*_mask
+values have bit 0 set, and make_spte() genuinely relies on ACC_READ_MASK
+being requested!  This works becase, if execonly is not supported by the
+processor, shadow EPT will generate an EPT misconfig vmexit if the XWR
+bits represent a non-readable page, and therefore the pte_access argument
+to make_spte() will also always have ACC_READ_MASK set.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 12 +++++-----
+ arch/x86/kvm/mmu.h              |  2 +-
+ arch/x86/kvm/mmu/mmu.c          | 39 +++++++++++++++++++++------------
+ arch/x86/kvm/mmu/mmutrace.h     |  3 ++-
+ arch/x86/kvm/mmu/paging_tmpl.h  | 35 +++++++++++++++++------------
+ arch/x86/kvm/mmu/spte.c         | 18 ++++++---------
+ arch/x86/kvm/mmu/spte.h         |  5 +++--
+ arch/x86/kvm/vmx/capabilities.h |  5 -----
+ arch/x86/kvm/vmx/common.h       |  5 +----
+ arch/x86/kvm/vmx/vmx.c          |  3 +--
+ 10 files changed, 67 insertions(+), 60 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 6e4e3ef9b8c7..65671d3769f0 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -327,11 +327,11 @@ struct kvm_kernel_irq_routing_entry;
+  * the number of unique SPs that can theoretically be created is 2^n, where n
+  * is the number of bits that are used to compute the role.
+  *
+- * But, even though there are 20 bits in the mask below, not all combinations
++ * But, even though there are 21 bits in the mask below, not all combinations
+  * of modes and flags are possible:
+  *
+  *   - invalid shadow pages are not accounted, mirror pages are not shadowed,
+- *     so the bits are effectively 18.
++ *     so the bits are effectively 19.
+  *
+  *   - quadrant will only be used if has_4_byte_gpte=1 (non-PAE paging);
+  *     execonly and ad_disabled are only used for nested EPT which has
+@@ -346,7 +346,7 @@ struct kvm_kernel_irq_routing_entry;
+  *     cr0_wp=0, therefore these three bits only give rise to 5 possibilities.
+  *
+  * Therefore, the maximum number of possible upper-level shadow pages for a
+- * single gfn is a bit less than 2^13.
++ * single gfn is a bit less than 2^14.
+  */
+ union kvm_mmu_page_role {
+ 	u32 word;
+@@ -355,7 +355,7 @@ union kvm_mmu_page_role {
+ 		unsigned has_4_byte_gpte:1;
+ 		unsigned quadrant:2;
+ 		unsigned direct:1;
+-		unsigned access:3;
++		unsigned access:4;
+ 		unsigned invalid:1;
+ 		unsigned efer_nx:1;
+ 		unsigned cr0_wp:1;
+@@ -365,7 +365,7 @@ union kvm_mmu_page_role {
+ 		unsigned guest_mode:1;
+ 		unsigned passthrough:1;
+ 		unsigned is_mirror:1;
+-		unsigned :4;
++		unsigned:3;
+ 
+ 		/*
+ 		 * This is left at the top of the word so that
+@@ -491,7 +491,7 @@ struct kvm_mmu {
+ 	 * Byte index: page fault error code [4:1]
+ 	 * Bit index: pte permissions in ACC_* format
+ 	 */
+-	u8 permissions[16];
++	u16 permissions[16];
+ 
+ 	u64 *pae_root;
+ 	u64 *pml4_root;
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 830f46145692..23f37535c0ce 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -81,7 +81,7 @@ u8 kvm_mmu_get_max_tdp_level(void);
+ void kvm_mmu_set_mmio_spte_mask(u64 mmio_value, u64 mmio_mask, u64 access_mask);
+ void kvm_mmu_set_mmio_spte_value(struct kvm *kvm, u64 mmio_value);
+ void kvm_mmu_set_me_spte_mask(u64 me_value, u64 me_mask);
+-void kvm_mmu_set_ept_masks(bool has_ad_bits, bool has_exec_only);
++void kvm_mmu_set_ept_masks(bool has_ad_bits);
+ 
+ void kvm_init_mmu(struct kvm_vcpu *vcpu);
+ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr0,
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 5f578435b5ad..dd5419a1f891 100644
+index 170952a840db..5f578435b5ad 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5553,7 +5553,6 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+@@ -2033,7 +2033,7 @@ static bool kvm_sync_page_check(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp)
+ 	 */
+ 	const union kvm_mmu_page_role sync_role_ign = {
+ 		.level = 0xf,
+-		.access = 0x7,
++		.access = ACC_ALL,
+ 		.quadrant = 0x3,
+ 		.passthrough = 0x1,
+ 	};
+@@ -5527,7 +5527,7 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
+  * update_permission_bitmask() builds what is effectively a
+  * two-dimensional array of bools.  The second dimension is
+  * provided by individual bits of permissions[pfec >> 1], and
+- * logical &, | and ~ operations operate on all the 8 possible
++ * logical &, | and ~ operations operate on all the 16 possible
+  * combinations of ACC_* bits.
+  */
+ #define ACC_BITS_MASK(access) \
+@@ -5537,15 +5537,24 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
+ 	 (4 & (access) ? 1 << 4 : 0) | \
+ 	 (5 & (access) ? 1 << 5 : 0) | \
+ 	 (6 & (access) ? 1 << 6 : 0) | \
+-	 (7 & (access) ? 1 << 7 : 0))
++	 (7 & (access) ? 1 << 7 : 0) | \
++	 (8 & (access) ? 1 << 8 : 0) | \
++	 (9 & (access) ? 1 << 9 : 0) | \
++	 (10 & (access) ? 1 << 10 : 0) | \
++	 (11 & (access) ? 1 << 11 : 0) | \
++	 (12 & (access) ? 1 << 12 : 0) | \
++	 (13 & (access) ? 1 << 13 : 0) | \
++	 (14 & (access) ? 1 << 14 : 0) | \
++	 (15 & (access) ? 1 << 15 : 0))
  
- 	const u16 x = ACC_BITS_MASK(ACC_EXEC_MASK);
- 	const u16 w = ACC_BITS_MASK(ACC_WRITE_MASK);
--	const u16 u = ACC_BITS_MASK(ACC_USER_MASK);
- 	const u16 r = ACC_BITS_MASK(ACC_READ_MASK);
+ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ {
+ 	unsigned byte;
+ 
+-	const u8 x = ACC_BITS_MASK(ACC_EXEC_MASK);
+-	const u8 w = ACC_BITS_MASK(ACC_WRITE_MASK);
+-	const u8 u = ACC_BITS_MASK(ACC_USER_MASK);
++	const u16 x = ACC_BITS_MASK(ACC_EXEC_MASK);
++	const u16 w = ACC_BITS_MASK(ACC_WRITE_MASK);
++	const u16 u = ACC_BITS_MASK(ACC_USER_MASK);
++	const u16 r = ACC_BITS_MASK(ACC_READ_MASK);
  
  	bool cr4_smep = is_cr4_smep(mmu);
-@@ -5586,21 +5585,24 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ 	bool cr4_smap = is_cr4_smap(mmu);
+@@ -5568,24 +5577,26 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ 		unsigned pfec = byte << 1;
+ 
+ 		/*
+-		 * Each "*f" variable has a 1 bit for each UWX value
++		 * Each "*f" variable has a 1 bit for each ACC_* combo
+ 		 * that causes a fault with the given PFEC.
+ 		 */
+ 
++		/* Faults from reads to non-readable pages */
++		u16 rf = (pfec & (PFERR_WRITE_MASK|PFERR_FETCH_MASK)) ? 0 : (u16)~r;
  		/* Faults from writes to non-writable pages */
- 		u16 wf = (pfec & PFERR_WRITE_MASK) ? (u16)~w : 0;
+-		u8 wf = (pfec & PFERR_WRITE_MASK) ? (u8)~w : 0;
++		u16 wf = (pfec & PFERR_WRITE_MASK) ? (u16)~w : 0;
  		/* Faults from user mode accesses to supervisor pages */
--		u16 uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
--		/* Faults from fetches of non-executable pages*/
--		u16 ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
--		/* Faults from kernel mode fetches of user pages */
--		u16 smepf = 0;
-+		u16 uf = 0;
-+		/* Faults from fetches of non-executable pages */
-+		u16 ff = 0;
+-		u8 uf = (pfec & PFERR_USER_MASK) ? (u8)~u : 0;
++		u16 uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
+ 		/* Faults from fetches of non-executable pages*/
+-		u8 ff = (pfec & PFERR_FETCH_MASK) ? (u8)~x : 0;
++		u16 ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
+ 		/* Faults from kernel mode fetches of user pages */
+-		u8 smepf = 0;
++		u16 smepf = 0;
  		/* Faults from kernel mode accesses of user pages */
- 		u16 smapf = 0;
+-		u8 smapf = 0;
++		u16 smapf = 0;
  
--		if (!ept) {
-+		if (ept) {
-+			ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
-+		} else {
-+			const u16 u = ACC_BITS_MASK(ACC_USER_MASK);
-+
+ 		if (!ept) {
  			/* Faults from kernel mode accesses to user pages */
- 			u16 kf = (pfec & PFERR_USER_MASK) ? 0 : u;
+-			u8 kf = (pfec & PFERR_USER_MASK) ? 0 : u;
++			u16 kf = (pfec & PFERR_USER_MASK) ? 0 : u;
  
--			/* Not really needed: !nx will cause pte.nx to fault */
--			if (!efer_nx)
--				ff = 0;
-+			uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
-+
-+			if (efer_nx)
-+				ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
- 
- 			/* Allow supervisor writes if !cr0.wp */
- 			if (!cr0_wp)
-@@ -5608,7 +5610,7 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
- 
- 			/* Disallow supervisor fetches of user code if cr4.smep */
- 			if (cr4_smep)
--				smepf = (pfec & PFERR_FETCH_MASK) ? kf : 0;
-+				ff |= (pfec & PFERR_FETCH_MASK) ? kf : 0;
- 
- 			/*
- 			 * SMAP:kernel-mode data accesses from user-mode
-@@ -5629,7 +5631,7 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ 			/* Not really needed: !nx will cause pte.nx to fault */
+ 			if (!efer_nx)
+@@ -5618,7 +5629,7 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
  				smapf = (pfec & (PFERR_RSVD_MASK|PFERR_FETCH_MASK)) ? 0 : kf;
  		}
  
--		mmu->permissions[byte] = ff | uf | wf | rf | smepf | smapf;
-+		mmu->permissions[byte] = ff | uf | wf | rf | smapf;
+-		mmu->permissions[byte] = ff | uf | wf | smepf | smapf;
++		mmu->permissions[byte] = ff | uf | wf | rf | smepf | smapf;
  	}
  }
+ 
+diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
+index 764e3015d021..dcfdfedfc4e9 100644
+--- a/arch/x86/kvm/mmu/mmutrace.h
++++ b/arch/x86/kvm/mmu/mmutrace.h
+@@ -25,7 +25,8 @@
+ #define KVM_MMU_PAGE_PRINTK() ({				        \
+ 	const char *saved_ptr = trace_seq_buffer_ptr(p);		\
+ 	static const char *access_str[] = {			        \
+-		"---", "--x", "w--", "w-x", "-u-", "-ux", "wu-", "wux"  \
++		"----", "r---", "-w--", "rw--", "--u-", "r-u-", "-wu-", "rwu-", \
++		"---x", "r--x", "-w-x", "rw-x", "--ux", "r-ux", "-wux", "rwux"	\
+ 	};							        \
+ 	union kvm_mmu_page_role role;				        \
+ 								        \
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index 901cd2bd40b8..fb1b5d8b23e5 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -170,25 +170,24 @@ static bool FNAME(prefetch_invalid_gpte)(struct kvm_vcpu *vcpu,
+ 	return true;
+ }
+ 
+-/*
+- * For PTTYPE_EPT, a page table can be executable but not readable
+- * on supported processors. Therefore, set_spte does not automatically
+- * set bit 0 if execute only is supported. Here, we repurpose ACC_USER_MASK
+- * to signify readability since it isn't used in the EPT case
+- */
+ static inline unsigned FNAME(gpte_access)(u64 gpte)
+ {
+ 	unsigned access;
+ #if PTTYPE == PTTYPE_EPT
+ 	access = ((gpte & VMX_EPT_WRITABLE_MASK) ? ACC_WRITE_MASK : 0) |
+ 		((gpte & VMX_EPT_EXECUTABLE_MASK) ? ACC_EXEC_MASK : 0) |
+-		((gpte & VMX_EPT_READABLE_MASK) ? ACC_USER_MASK : 0);
++		((gpte & VMX_EPT_READABLE_MASK) ? ACC_READ_MASK : 0);
+ #else
+-	BUILD_BUG_ON(ACC_EXEC_MASK != PT_PRESENT_MASK);
+-	BUILD_BUG_ON(ACC_EXEC_MASK != 1);
++	/*
++	 * P is set here, so the page is always readable and W/U/!NX represent
++	 * allowed accesses.
++	 */
++	BUILD_BUG_ON(ACC_READ_MASK != PT_PRESENT_MASK);
++	BUILD_BUG_ON(ACC_WRITE_MASK != PT_WRITABLE_MASK);
++	BUILD_BUG_ON(ACC_USER_MASK != PT_USER_MASK);
++	BUILD_BUG_ON(ACC_EXEC_MASK & (PT_WRITABLE_MASK | PT_USER_MASK | PT_PRESENT_MASK));
+ 	access = gpte & (PT_WRITABLE_MASK | PT_USER_MASK | PT_PRESENT_MASK);
+-	/* Combine NX with P (which is set here) to get ACC_EXEC_MASK.  */
+-	access ^= (gpte >> PT64_NX_SHIFT);
++	access |= gpte & PT64_NX_MASK ? 0 : ACC_EXEC_MASK;
+ #endif
+ 
+ 	return access;
+@@ -501,10 +500,18 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ 
+ 		if (write_fault)
+ 			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_WRITE;
+-		if (user_fault)
+-			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_READ;
+-		if (fetch_fault)
++		else if (fetch_fault)
+ 			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_INSTR;
++		else
++			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_READ;
++
++		/*
++		 * Accesses to guest paging structures are either "reads" or
++		 * "read+write" accesses, so consider them the latter if write_fault
++		 * is true.
++		 */
++		if (access & PFERR_GUEST_PAGE_MASK)
++			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_READ;
+ 
+ 		/*
+ 		 * Note, pte_access holds the raw RWX bits from the EPTE, not
+diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+index e9dc0ae44274..7b5f118ae211 100644
+--- a/arch/x86/kvm/mmu/spte.c
++++ b/arch/x86/kvm/mmu/spte.c
+@@ -194,12 +194,6 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	int is_host_mmio = -1;
+ 	bool wrprot = false;
+ 
+-	/*
+-	 * For the EPT case, shadow_present_mask has no RWX bits set if
+-	 * exec-only page table entries are supported.  In that case,
+-	 * ACC_USER_MASK and shadow_user_mask are used to represent
+-	 * read access.  See FNAME(gpte_access) in paging_tmpl.h.
+-	 */
+ 	WARN_ON_ONCE((pte_access | shadow_present_mask) == SHADOW_NONPRESENT_VALUE);
+ 
+ 	if (sp->role.ad_disabled)
+@@ -228,6 +222,9 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 		pte_access &= ~ACC_EXEC_MASK;
+ 	}
+ 
++	if (pte_access & ACC_READ_MASK)
++		spte |= PT_PRESENT_MASK; /* or VMX_EPT_READABLE_MASK */
++
+ 	if (pte_access & ACC_EXEC_MASK)
+ 		spte |= shadow_x_mask;
+ 	else
+@@ -391,6 +388,7 @@ u64 make_nonleaf_spte(u64 *child_pt, bool ad_disabled)
+ 	u64 spte = SPTE_MMU_PRESENT_MASK;
+ 
+ 	spte |= __pa(child_pt) | shadow_present_mask | PT_WRITABLE_MASK |
++		PT_PRESENT_MASK /* or VMX_EPT_READABLE_MASK */ |
+ 		shadow_user_mask | shadow_x_mask | shadow_me_value;
+ 
+ 	if (ad_disabled)
+@@ -491,18 +489,16 @@ void kvm_mmu_set_me_spte_mask(u64 me_value, u64 me_mask)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_set_me_spte_mask);
+ 
+-void kvm_mmu_set_ept_masks(bool has_ad_bits, bool has_exec_only)
++void kvm_mmu_set_ept_masks(bool has_ad_bits)
+ {
+ 	kvm_ad_enabled		= has_ad_bits;
+ 
+-	shadow_user_mask	= VMX_EPT_READABLE_MASK;
++	shadow_user_mask	= 0;
+ 	shadow_accessed_mask	= VMX_EPT_ACCESS_BIT;
+ 	shadow_dirty_mask	= VMX_EPT_DIRTY_BIT;
+ 	shadow_nx_mask		= 0ull;
+ 	shadow_x_mask		= VMX_EPT_EXECUTABLE_MASK;
+-	/* VMX_EPT_SUPPRESS_VE_BIT is needed for W or X violation. */
+-	shadow_present_mask	=
+-		(has_exec_only ? 0ull : VMX_EPT_READABLE_MASK) | VMX_EPT_SUPPRESS_VE_BIT;
++	shadow_present_mask	= VMX_EPT_SUPPRESS_VE_BIT;
+ 
+ 	shadow_acc_track_mask	= VMX_EPT_RWX_MASK;
+ 	shadow_host_writable_mask = EPT_SPTE_HOST_WRITABLE;
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index bc02a2e89a31..121bfb2217e8 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -52,10 +52,11 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+ #define SPTE_BASE_ADDR_MASK (((1ULL << 52) - 1) & ~(u64)(PAGE_SIZE-1))
+ #endif
+ 
+-#define ACC_EXEC_MASK    1
++#define ACC_READ_MASK    PT_PRESENT_MASK
+ #define ACC_WRITE_MASK   PT_WRITABLE_MASK
+ #define ACC_USER_MASK    PT_USER_MASK
+-#define ACC_ALL          (ACC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK)
++#define ACC_EXEC_MASK    8
++#define ACC_ALL          (ACC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK | ACC_READ_MASK)
+ 
+ #define SPTE_LEVEL_BITS			9
+ #define SPTE_LEVEL_SHIFT(level)		__PT_LEVEL_SHIFT(level, SPTE_LEVEL_BITS)
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index 4e371c93ae16..609477f190e8 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -300,11 +300,6 @@ static inline bool cpu_has_vmx_flexpriority(void)
+ 		cpu_has_vmx_virtualize_apic_accesses();
+ }
+ 
+-static inline bool cpu_has_vmx_ept_execute_only(void)
+-{
+-	return vmx_capability.ept & VMX_EPT_EXECUTE_ONLY_BIT;
+-}
+-
+ static inline bool cpu_has_vmx_ept_4levels(void)
+ {
+ 	return vmx_capability.ept & VMX_EPT_PAGE_WALK_4_BIT;
+diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+index adf925500b9e..1afbf272efae 100644
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -85,11 +85,8 @@ static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
+ {
+ 	u64 error_code;
+ 
+-	/* Is it a read fault? */
+-	error_code = (exit_qualification & EPT_VIOLATION_ACC_READ)
+-		     ? PFERR_USER_MASK : 0;
+ 	/* Is it a write fault? */
+-	error_code |= (exit_qualification & EPT_VIOLATION_ACC_WRITE)
++	error_code = (exit_qualification & EPT_VIOLATION_ACC_WRITE)
+ 		      ? PFERR_WRITE_MASK : 0;
+ 	/* Is it a fetch fault? */
+ 	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 8b24e682535b..e27868fa4eb7 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8798,8 +8798,7 @@ __init int vmx_hardware_setup(void)
+ 	set_bit(0, vmx_vpid_bitmap); /* 0 is reserved for host */
+ 
+ 	if (enable_ept)
+-		kvm_mmu_set_ept_masks(enable_ept_ad_bits,
+-				      cpu_has_vmx_ept_execute_only());
++		kvm_mmu_set_ept_masks(enable_ept_ad_bits);
+ 	else
+ 		vt_x86_ops.get_mt_mask = NULL;
  
 -- 
 2.53.0
