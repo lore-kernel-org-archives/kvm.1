@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDBD3A8745
-	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1AA3AE1BF
+	for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549072; cv=none; b=rJlot9PmtNudDigypclw6/mDT5WAzceHI92XBgEY/MryNzM62bA0U+mcIRLWhTX33NO5EJQpM28pMuXvx4d4N13JQtnlQTRw4h4RSv6KjSlaPfFW5CvktUd3Jxd4qbA0aINu4i4BgHflM6Ppaiz4NGWF4m3jRbdgWU/mOM42fGs=
+	t=1774549077; cv=none; b=YssC8aOO6BkLNN5tAoc2hd85SZ46nMTYFapNS1fzbWKwSf/q62ntRsSCkiJ4xddk3OTRXYxBaSUkQiZfPkuRvrv0v2dumfZrcKB1fpsIo+yKyW0aygxTDBwG/pCGywaHoq5/iu7Y1mIRvO+J99W18m4EuDjqUrQko2dvv6XdZK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549072; c=relaxed/simple;
-	bh=DmwSj31cAqA8fbZFdzkQEEIbD8DZuAQfK9Iu7JvJLPI=;
+	s=arc-20240116; t=1774549077; c=relaxed/simple;
+	bh=vTy9O5IsDlG6v8B6glBVPqw3VYt2VMRG16l4ZUpy0Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HomuPC4gt/aZolXSNFaRVeGb7LwG+IbPDK0PTfVG5UXO8rzS1Y3OYk5besMuscIG+8rzd5/eZdcv5cKgxKx6sOzGVB9ZFu6hMi+zrY5T0hnDloxy5gbIfcJz0R1J+5sQ0cGNiVLp6+8gWVK4ebybdx3pMAunQrAgXvE6BMnMOxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=chG50r/1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CADiJYEG; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=TVnRqM2/fP0X+Q9FniqVdlmv5tTZtWEs5dHIXCx/8r7J9nVjYn0YP9gzVw+r/nY4N+fQynd2Cmj/whQfXkfPQJaZwdj05g1s++ymxz51BJdncY3TgsB4L1tEIMKeVmAP/7t1C9G5iq9nsPTiOcwxnkaWhyYX+LExSxyNHUX/UvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bsrwoVuo; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mG6eZKcy; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="chG50r/1";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CADiJYEG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bsrwoVuo";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mG6eZKcy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774549067;
+	s=mimecast20190719; t=1774549072;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=piO1nL/pS5Yr4rvE1o1jj+wOaY1ORSkY1ednhzkEqCo=;
-	b=chG50r/1FzaRivcaGXp3uUJTGJYPWGj/seIuu+fnqLG6U2zfLkTO0vFzSc06ZGfk16dEr4
-	k33GlcBfpjYGNTT4Rr6VVaD/7TMW/fQ582ogUPKd7//6dqMwkL7+CuRtZv5hf6Z1InSqwh
-	CM2fiu/dclNgCXJPjfXz3HX1v57WKZc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=PcMqJJGPCLK+VRPcw/NPeynhXQGvPO9SUzIgJSMzXxQ=;
+	b=bsrwoVuoyn4/ZHOnmOrS05emEVE+RX6X8N0/r5fAvy4K6Fflp4F4PrCQpo+ourKP7wmohL
+	7wMUBy1TIteRyic4oe81lM0KGPmZXx/7SyrLDG1ecCt4/tWC2ZKw/huQHA9nDEwrviG/hK
+	O74oTBXjMMnxZRiLaVzZhQUhZjxyvLg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-XXjiRzrMM7aq3KYQxBjwfA-1; Thu, 26 Mar 2026 14:17:46 -0400
-X-MC-Unique: XXjiRzrMM7aq3KYQxBjwfA-1
-X-Mimecast-MFC-AGG-ID: XXjiRzrMM7aq3KYQxBjwfA_1774549065
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so11016875e9.3
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:46 -0700 (PDT)
+ us-mta-623-dmxgeYkNPCalmOEAzJVORg-1; Thu, 26 Mar 2026 14:17:51 -0400
+X-MC-Unique: dmxgeYkNPCalmOEAzJVORg-1
+X-Mimecast-MFC-AGG-ID: dmxgeYkNPCalmOEAzJVORg_1774549070
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b8f23bdc7so94080f8f.3
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 11:17:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774549065; x=1775153865; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774549070; x=1775153870; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=piO1nL/pS5Yr4rvE1o1jj+wOaY1ORSkY1ednhzkEqCo=;
-        b=CADiJYEGAzoys8nmTekiDrMuOMRExeF9Zz/83VjrdihvVgokndZEXaAk3yiUMXciuv
-         909brPO/j63dU5K/no7mG0k9gd70FpNgVbmHt+kf6oXFskyCPStgUzrZw6u7JIJ8kfhL
-         gap9G7kvB+1gGz0B2LPMohABKE/XjR1Msc31G263MqfTwpl8WNK7YE5aCrpu15serXj1
-         SJt/64yBbAe5OMrwqTbPBmQ43xqOkc99RzE8EjoKRTYkEc5Tl9WDUjH3o7fULHqeJzsE
-         icmv6xYQDFVQnKtVD4+CnzKrYCXlT3pia3mY9KpdY8QclvSN5ZEX1h6wL7QhcMD/Xl7Q
-         y7TA==
+        bh=PcMqJJGPCLK+VRPcw/NPeynhXQGvPO9SUzIgJSMzXxQ=;
+        b=mG6eZKcyzthQv+cEEXcHKzy48vo2Os9/l16Lj1agQOaD5NUCKQpJu/z+f1RlGKJmQA
+         FAM2j5JDWAcYefN+LQdZ+KXkX6pVZASuLyr3WpT/F5B8MXDnP1i/ed+/CWg1E69MI/9p
+         +vHL+WTTYLVYsnRmIBaV9/qO0zsFRd5tHeDpnRyWyHM1+FZEg0dspm67Fs3UHCi1BjKk
+         nUXy+UQipNsurKc+9kpRMs02L71hOhQNL5H+08YOMds8Ueq/fXmfdXsnpXlHViaHI9d/
+         dV+U2EKmQ+8gMVx5qOaIoqtQGBGvfGerBO4NGASyjL8Uhcp3mr9M/W+TwB8DTv0LgeDb
+         Elhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549065; x=1775153865;
+        d=1e100.net; s=20251104; t=1774549070; x=1775153870;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=piO1nL/pS5Yr4rvE1o1jj+wOaY1ORSkY1ednhzkEqCo=;
-        b=S/U725j4pet5vDMrPqWkQ1pyokKBsqwMZcQKcCqva1WY4Jw1HZ0IsWBiPbuIX/Ui0f
-         EhqRyA8Y7bdIk1bFPtaoG+60mAi93t86RJI44g7NYsOYRp/ya/hPtkfw6hn0eYvbTRTs
-         dPfnxm5Zy7cBBu2gPZJwU6OPm3Suz7Idv2frAAQ5o+3ZyxLdsNscGZ4ak7eKpbXKGRqV
-         +cnp9T/pEEhmyKiQN0bA971WxbpVjYHHN8aFzvRAGEYFg4/lS30gW/NQgWnSicgM9Ye0
-         VW2wY/D9pNbVdiuAhzocrx58OWTs2HNK99hk5eixXv26wx3HIYPfyLydgWG2kqlxdUa0
-         3w9g==
-X-Forwarded-Encrypted: i=1; AJvYcCU/Zz6lVb/7ouzZkaa0FHvAjs+OTJ23/43K9IlmWrLvG8WdfWsqYbJ+M8EmjF6evwRv/uE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUFW25rjCNgRGtj4dq7HGN5OzVez5nH2IT6jCbsQsAM/fZbUh9
-	vf7BHoDCW/jcWfkhQLMrsUbQGfYvDLjzsX2JNbfAB12p1tejZw8aJfpoQII3Xf8TTjiLwrbDTWg
-	FpEoGMcm+jOWS2h7cELAyRW7EVrYbmWsKxsO1PBclmqeoAuC7R4JYag==
-X-Gm-Gg: ATEYQzxbawVGyKwhyPhgIGWkl/XHajVeAzAb8qdqU9MT2UMEqR5OjMp7+by5Jgyo7lX
-	VQPh6YHzLWe+HvnFbSQ/wUl6j2kU23j1gm+7tk5rXYkZvn4LfEUSG+xYeSOCz1DTWpljDhTJ917
-	ge6b/2hTDLNcHK4NqgXVblLrh1Z8FIsx3UyCmPG26XtpbDXCWW+v0F2xV4k4Otuv2eNmiph056M
-	G4o6xZE7NJkFkx0aCh7qvQwb47wUG6Ps0eERUhqmTO2DCAKTRFNDFKDp2DIYqZrldBTMlS8Ts0j
-	QjqpKEKho8c+qDcOe3cCnt52C0gEbXLrHR5bc2LXW61qZ3NHUOahBqS30SBHsZ/5mt73PcqMB2E
-	3F2LvAyAxJZMJepaw24nQ3i+EoJ68307NyO+gXqRKf0wjAaUHb69C1/ny4bN66LUGwtwAyoP1Zh
-	9hE0wORKYORvU1llDNFQxN9f5r
-X-Received: by 2002:a05:600c:4254:b0:487:2092:b2e0 with SMTP id 5b1f17b1804b1-4872092b38bmr32523025e9.1.1774549064568;
-        Thu, 26 Mar 2026 11:17:44 -0700 (PDT)
-X-Received: by 2002:a05:600c:4254:b0:487:2092:b2e0 with SMTP id 5b1f17b1804b1-4872092b38bmr32522575e9.1.1774549063983;
-        Thu, 26 Mar 2026 11:17:43 -0700 (PDT)
+        bh=PcMqJJGPCLK+VRPcw/NPeynhXQGvPO9SUzIgJSMzXxQ=;
+        b=cEk2M9R7iAWvbkKFhpf8CU2CktzowqY/iTQ/94ZJ7fF+idQOq559UQ4bM1rF2o3tik
+         oL3U712+4EtAzKP+yAvQrD59wlruNJzAiRNuzXykGZfiET/J/T18w9s2fkw2dJdL1Ddj
+         n2cGjKVDYq9p1RH9DdNaaShUblFo02cdUM1/WSPTDllxY4s34WwPWg76gv32wSkpYyGU
+         3SVimnsKBTuPQJy7dPq72ieY8Al7hdJXhwjMaWuphwf+nhMCxhGrT+lo6qtPMLZlSZjg
+         8DsoLF4dQHbzx1AnkzWQ1ML4D/h0h5u9pB8Zdiwo6GEQbHvhBvl7khIuhUJO9U22H1Nr
+         rD4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXJZDMAHY3nsiOBznIxvV9sucYuFgY+jB/JjJpP3hpVNafoYBFLQDuTjlbyNqK/F6rE71Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFMflad6S+2hWzpqiLUMb8qw+sXvDN5ZKeXxwwelP387d1W3Jv
+	dcgoL/vUyPin+VpqiZMUm3gxPExJRqtPUOz01ih0h/JzvreXTbJ/tXlxsTGud6yki5UcOGS6VMW
+	5z0IR/wi7AbYwgJ/LN5C1HFBnnXbsI8l7PgqLniZhCOtwuIg3IzyqNw==
+X-Gm-Gg: ATEYQzwPu9ML5SLTsb2DW6yf0EkWtCH9zTOyQns1QZFfzoxkrYcImS8/x909msW9sj+
+	X3qDOOIduWzTyYqBQMOwE8UI86xM5Y9X3kPf6xiNgN57pwPmxsmTem3WO0D74KPZl8Xq9OR7RJ/
+	GwfvZmjoqszTUKQ6IInkEGRS/Cor8C7q8lnwZJtrMw9VbEbfwfLtsvdd9m7jtvA2YIrZXDekPCQ
+	AhBPdUhKNN1ulWVx1n+FsR5kY/2RT+2Yfcav5rhYPwCDIfrn46rRvkbsNtXh7rDiwr4gI6DOFVJ
+	cQmDcvl4Nn6EpqG33vcNqqLlKsJLuwbnRjQDrDEjon1b+XO5VB0AT0uaGqEZ07szGDZeImQXMyQ
+	UodJSbPwmuac9UcCPbOqf3HjGw1GbCODV5B/em5ltp4MXfZ6kIaSSgils8lR8CDQhPG5QQEXskU
+	ZU0V3jCPLokGXr1VisL16Z6KnB
+X-Received: by 2002:a05:6000:60f:b0:43b:3c06:c30a with SMTP id ffacd0b85a97d-43b889b2542mr13985142f8f.18.1774549069700;
+        Thu, 26 Mar 2026 11:17:49 -0700 (PDT)
+X-Received: by 2002:a05:6000:60f:b0:43b:3c06:c30a with SMTP id ffacd0b85a97d-43b889b2542mr13985075f8f.18.1774549069217;
+        Thu, 26 Mar 2026 11:17:49 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c9f58fsm75858805e9.11.2026.03.26.11.17.41
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b91942f24sm10449273f8f.11.2026.03.26.11.17.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:17:42 -0700 (PDT)
+        Thu, 26 Mar 2026 11:17:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 07/24] KVM: x86/mmu: rename and clarify BYTE_MASK
-Date: Thu, 26 Mar 2026 19:17:05 +0100
-Message-ID: <20260326181723.218115-8-pbonzini@redhat.com>
+Subject: [PATCH 09/24] KVM: x86/mmu: separate more EPT/non-EPT permission_fault()
+Date: Thu, 26 Mar 2026 19:17:07 +0100
+Message-ID: <20260326181723.218115-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326181723.218115-1-pbonzini@redhat.com>
 References: <20260326181723.218115-1-pbonzini@redhat.com>
@@ -100,106 +100,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The BYTE_MASK macro is the central point of the black magic
-in update_permission_bitmask().  Rename it to something
-that relates to how it is used, and add a comment explaining
-how it works.
-
-Using shifts instead of powers of two was actually suggested by
-David Hildenbrand back in 2017 for clarity[1] but I evidently
-forgot his suggestion when applying to kvm.git.
-
-[1] https://lore.kernel.org/kvm/e4b5df86-31ae-2f4e-0666-393753e256df@redhat.com/
+Now that EPT is not abusing anymore ACC_USER_MASK, move its
+handling entirely in the !ept branch.  Merge smepf and ff
+into a single variable because EPT's "SMEP" (actually
+MBEC) is defined differently.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 55 ++++++++++++++++++++++++++++++------------
- 1 file changed, 39 insertions(+), 16 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index b922a8b00057..170952a840db 100644
+index 5f578435b5ad..dd5419a1f891 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5517,29 +5517,53 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
- 				    max_huge_page_level);
- }
+@@ -5553,7 +5553,6 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
  
--#define BYTE_MASK(access) \
--	((1 & (access) ? 2 : 0) | \
--	 (2 & (access) ? 4 : 0) | \
--	 (3 & (access) ? 8 : 0) | \
--	 (4 & (access) ? 16 : 0) | \
--	 (5 & (access) ? 32 : 0) | \
--	 (6 & (access) ? 64 : 0) | \
--	 (7 & (access) ? 128 : 0))
--
-+/*
-+ * Build a mask with all combinations of PTE access rights that
-+ * include the given access bit.  The mask can be queried with
-+ * "mask & (1 << access)", where access is a combination of
-+ * ACC_* bits.
-+ *
-+ * By mixing and matching multiple masks returned by ACC_BITS_MASK,
-+ * update_permission_bitmask() builds what is effectively a
-+ * two-dimensional array of bools.  The second dimension is
-+ * provided by individual bits of permissions[pfec >> 1], and
-+ * logical &, | and ~ operations operate on all the 8 possible
-+ * combinations of ACC_* bits.
-+ */
-+#define ACC_BITS_MASK(access) \
-+	((1 & (access) ? 1 << 1 : 0) | \
-+	 (2 & (access) ? 1 << 2 : 0) | \
-+	 (3 & (access) ? 1 << 3 : 0) | \
-+	 (4 & (access) ? 1 << 4 : 0) | \
-+	 (5 & (access) ? 1 << 5 : 0) | \
-+	 (6 & (access) ? 1 << 6 : 0) | \
-+	 (7 & (access) ? 1 << 7 : 0))
- 
- static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
- {
- 	unsigned byte;
- 
--	const u8 x = BYTE_MASK(ACC_EXEC_MASK);
--	const u8 w = BYTE_MASK(ACC_WRITE_MASK);
--	const u8 u = BYTE_MASK(ACC_USER_MASK);
-+	const u8 x = ACC_BITS_MASK(ACC_EXEC_MASK);
-+	const u8 w = ACC_BITS_MASK(ACC_WRITE_MASK);
-+	const u8 u = ACC_BITS_MASK(ACC_USER_MASK);
+ 	const u16 x = ACC_BITS_MASK(ACC_EXEC_MASK);
+ 	const u16 w = ACC_BITS_MASK(ACC_WRITE_MASK);
+-	const u16 u = ACC_BITS_MASK(ACC_USER_MASK);
+ 	const u16 r = ACC_BITS_MASK(ACC_READ_MASK);
  
  	bool cr4_smep = is_cr4_smep(mmu);
- 	bool cr4_smap = is_cr4_smap(mmu);
- 	bool cr0_wp = is_cr0_wp(mmu);
- 	bool efer_nx = is_efer_nx(mmu);
+@@ -5586,21 +5585,24 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ 		/* Faults from writes to non-writable pages */
+ 		u16 wf = (pfec & PFERR_WRITE_MASK) ? (u16)~w : 0;
+ 		/* Faults from user mode accesses to supervisor pages */
+-		u16 uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
+-		/* Faults from fetches of non-executable pages*/
+-		u16 ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
+-		/* Faults from kernel mode fetches of user pages */
+-		u16 smepf = 0;
++		u16 uf = 0;
++		/* Faults from fetches of non-executable pages */
++		u16 ff = 0;
+ 		/* Faults from kernel mode accesses of user pages */
+ 		u16 smapf = 0;
  
-+	/*
-+	 * In hardware, page fault error codes are generated (as the name
-+	 * suggests) on any kind of page fault.  permission_fault() and
-+	 * paging_tmpl.h already use the same bits after a successful page
-+	 * table walk, to indicate the kind of access being performed.
-+	 *
-+	 * However, PFERR_PRESENT_MASK and PFERR_RSVD_MASK are never set here,
-+	 * exactly because the page walk is successful.  PFERR_PRESENT_MASK is
-+	 * removed by the shift, while PFERR_RSVD_MASK is repurposed in
-+	 * permission_fault() to indicate accesses that are *not* subject to
-+	 * SMAP restrictions.
-+	 */
- 	for (byte = 0; byte < ARRAY_SIZE(mmu->permissions); ++byte) {
- 		unsigned pfec = byte << 1;
+-		if (!ept) {
++		if (ept) {
++			ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
++		} else {
++			const u16 u = ACC_BITS_MASK(ACC_USER_MASK);
++
+ 			/* Faults from kernel mode accesses to user pages */
+ 			u16 kf = (pfec & PFERR_USER_MASK) ? 0 : u;
  
-@@ -5586,10 +5610,9 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
- 			 *   - The access is supervisor mode
- 			 *   - If implicit supervisor access or X86_EFLAGS_AC is clear
- 			 *
--			 * Here, we cover the first four conditions.
--			 * The fifth is computed dynamically in permission_fault();
--			 * PFERR_RSVD_MASK bit will be set in PFEC if the access is
--			 * *not* subject to SMAP restrictions.
-+			 * Here, we cover the first four conditions.  The fifth
-+			 * is computed dynamically in permission_fault() and
-+			 * communicated by setting PFERR_RSVD_MASK.
- 			 */
- 			if (cr4_smap)
+-			/* Not really needed: !nx will cause pte.nx to fault */
+-			if (!efer_nx)
+-				ff = 0;
++			uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
++
++			if (efer_nx)
++				ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
+ 
+ 			/* Allow supervisor writes if !cr0.wp */
+ 			if (!cr0_wp)
+@@ -5608,7 +5610,7 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ 
+ 			/* Disallow supervisor fetches of user code if cr4.smep */
+ 			if (cr4_smep)
+-				smepf = (pfec & PFERR_FETCH_MASK) ? kf : 0;
++				ff |= (pfec & PFERR_FETCH_MASK) ? kf : 0;
+ 
+ 			/*
+ 			 * SMAP:kernel-mode data accesses from user-mode
+@@ -5629,7 +5631,7 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
  				smapf = (pfec & (PFERR_RSVD_MASK|PFERR_FETCH_MASK)) ? 0 : kf;
+ 		}
+ 
+-		mmu->permissions[byte] = ff | uf | wf | rf | smepf | smapf;
++		mmu->permissions[byte] = ff | uf | wf | rf | smapf;
+ 	}
+ }
+ 
 -- 
 2.53.0
 
