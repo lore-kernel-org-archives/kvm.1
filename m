@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428F63B7B9E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E06037646C;
 	Thu, 26 Mar 2026 08:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774514737; cv=none; b=jwoUgcd4sLPCqusIqTPJJZd9dCrNCAdR7wxLwvdESJnquYuWUwvewXO8JZVq70LK1rsagCbJ6XjkWPxCDTDjnBBEHiZN0/vpamcQA4ORCDb1PwgIFZ4SFNe9ZpWZwVBFi5H/gAW8/Y3HTAFYdPlAhZQefV+MqU8VxA9C8IaTWJA=
+	t=1774514737; cv=none; b=GvPp1HlScOJ1MFLA5meDrqNHqInhvvE+cuhWDxETuSrJZoYkutQPMngYPMw/p5z/1WEZHJCIEORuovgR97RE4gIQ+b4zfMpfuKo9fEzQbLB5eclFTtHoxjBwKOfQFDYkyL1te+l96RukWsjMbnPZbyQrZrO2LxUWOR5GJkg/xc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774514737; c=relaxed/simple;
-	bh=LKtJv2aSkclECscWwWpd002IFSXWMdx7BUkLP/fO4cY=;
+	bh=VBd8WdSmb2YsqkQkUNmlRwozCWDFWYXpSHN8UfROpDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ebbqS+u5jtDMscxRG+uhvVQVLlDPtFExsH7xESTBOo9mnA1siD1hIhIZtdtkZVkMJYw3rxsMZO5y5fMqB6Rq73wmYhcEb7eNJVoMcrj6tydkPdniujXtYsM85xDNOoMCOspKOgOibPO7rNgbqdvwlsoWwoGJy9vElkIxKGOucDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dNb2xJBi; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version:Content-Type; b=eKbJOMv1xvO0KMyECA2VeqPVsmm5812Zde+eWp00VuLere/2uk0eZV+SBzhJ5R4DfsPfGbVOSd/ujbGYxmWcvs59abADp316krvkUgFzb+fyJNAj3q3bDCJDJ96BqvDsQYsNW+NR51ige349cwBb5rqzgJI3nznE+Vd/yUAY7+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H+cqe3rM; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dNb2xJBi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H+cqe3rM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774514735; x=1806050735;
+  t=1774514736; x=1806050736;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LKtJv2aSkclECscWwWpd002IFSXWMdx7BUkLP/fO4cY=;
-  b=dNb2xJBiQSLzc0awgQO7NIk3ESuDChL/QhdlAjrX7L13feqT3ppMcs9H
-   EO/ufRqRCZzGLLVB10mQ7O4Cd5Z4AGRIYzRlpHKzbbtQBml2Efkdt1NB9
-   UaxTuyII92gWQBWFONzSOCj/DDerKqVVyIvJ6/dwT6Iu6AjPEUHB1lKrL
-   ONe2fteI4oke3efujDwrMRQ4xbwFKqcps0x9c6SydnsG4FfeI/aAOJtXo
-   E8J7ym8QmGp69+fwtQ08e54Kg5xKJxnLjGcJkVJKSawtlkuPqyf7own+x
-   UYs81OD7N72aqQPyKTTuiHmjtGTK0N3FL1BzIbjqBhFtMHGVj8B15TKs9
-   A==;
-X-CSE-ConnectionGUID: k+uWsI2rQYOKjaVoSu07yg==
-X-CSE-MsgGUID: ZuvNIYGGSS+9ZTEj3d2mGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644632"
+  bh=VBd8WdSmb2YsqkQkUNmlRwozCWDFWYXpSHN8UfROpDQ=;
+  b=H+cqe3rMrjmjLUTEimtXfNYpY4kj1pBmdgTSb6j7ibwf5G0j9rEhhDOh
+   nHCOOiHhJ6LV6KQfMH+FwpDjvxNswPG311rt7VeK3XUAICnBPxl/4boId
+   IsUhLLCsiM1WgJHEYiNx31gXsCuMzAe3Ide0K5QvG0VhYcMin9g8N3JoT
+   V5Q02FXtS3rQIN7j0Vcis7IVzwUAieiRo3HhHebIT8dF05yt9SBIyufuh
+   +Y4yDBFkxm5SRCAGn8gLr6fARWTKqH/3xwuFVIu9Ml+Oj1gshr7ecNVpO
+   iaokLu368KmSeDteDMBo5G6VY9JJ+EzU2kSBsYInKwayjnLwa+DhF9ByT
+   w==;
+X-CSE-ConnectionGUID: ez/apaVxQaarlB2SFjsCbg==
+X-CSE-MsgGUID: iQR2oir8QTqHLUayNXLwmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86644643"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="86644632"
+   d="scan'208";a="86644643"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:20 -0700
-X-CSE-ConnectionGUID: u0QBerOiQ6mCNt9YFKeJ1g==
-X-CSE-MsgGUID: bcpP1zXKSsSgmheB34ZW0g==
+X-CSE-ConnectionGUID: kOFGkcH9T961sPNC96bEpg==
+X-CSE-MsgGUID: W8QCBDTmQTKEyYaXtxPb3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="224967136"
+   d="scan'208";a="224967150"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:18 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 01:45:19 -0700
 From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
+To: linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com,
 	dan.j.williams@intel.com,
 	dave.hansen@linux.intel.com,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v6 05/22] x86/virt/seamldr: Add a helper to retrieve P-SEAMLDR information
-Date: Thu, 26 Mar 2026 01:43:56 -0700
-Message-ID: <20260326084448.29947-6-chao.gao@intel.com>
+Subject: [PATCH v6 06/22] coco/tdx-host: Expose P-SEAMLDR information via sysfs
+Date: Thu, 26 Mar 2026 01:43:57 -0700
+Message-ID: <20260326084448.29947-7-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260326084448.29947-1-chao.gao@intel.com>
 References: <20260326084448.29947-1-chao.gao@intel.com>
@@ -87,137 +87,186 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-P-SEAMLDR returns its information such as version number, in response to
-the SEAMLDR.INFO SEAMCALL.
+TDX module updates require userspace to select the appropriate module
+to load. Expose necessary information to facilitate this decision. Two
+values are needed:
 
-This information is useful for userspace. For example, the admin can decide
-which TDX module versions are compatible with the P-SEAMLDR according to
-the P-SEAMLDR version.
+- P-SEAMLDR version: for compatibility checks between TDX module and
+		     P-SEAMLDR
+- num_remaining_updates: indicates how many updates can be performed
 
-Add a helper to retrieve P-SEAMLDR information in preparation for
-exposing P-SEAMLDR version and other necessary information to userspace.
-Export the new kAPI for use by tdx-host.ko.
-
-Note that there are two distinct P-SEAMLDR APIs with similar names:
-
-  SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
-                information such as version and remaining updates.
-
-  SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
-                    and system information such as Convertible Memory
-		    Regions (CMRs) and number of CPUs and sockets.
-
-The former is used here.
-
-For details, see "Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
-Interface Specification" revision 343755-003.
+Expose them as tdx-host device attributes. Make seamldr attributes
+visible only when the update feature is supported, as that's their sole
+purpose. Unconditional exposure is also problematic because reading them
+triggers P-SEAMLDR calls that break KVM on CPUs with a specific erratum
+(to be enumerated and handled in a later patch).
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
 v6:
- - Clarify that this patch introduces a helper for retrieving info, not
-   the retrieval itself [Xiaoyao]
+ - use TDX_VERSION_FMT macro [Dave]
+ - drop revision/chapter numbers [Kiryl/Xiaoyao]
+ - use is_visible to control seamldr attribute visibility
+   rather than do that manually during device probe. Due
+   to this change, drop all RBs.
 v5:
- - add a comment for slow_virt_to_phys() [Kai]
+ - fix typos [Binbin]
+ - register seamldr_group during device probe
 v4:
- - put seamldr_info on stack [Dave]
- - improve changelogs to explain SEAMLDR.INFO and SEAMLDR.SEAMINFO [Dave]
- - add P-SEAMLDR spec information in the changelog [Dave]
- - add proper comments above ABI structure definition [Dave]
- - add unused ABI structure fields rather than marking them as reserved
-   to better align with the specc [Dave] (I omitted "not used by kernel"
-   tags since there are 5-6 such fields and maintaining these tags would
-   be tedious.)
----
- arch/x86/include/asm/seamldr.h  | 36 +++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/seamldr.c | 19 ++++++++++++++++-
- 2 files changed, 54 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/include/asm/seamldr.h
+ - Make seamldr attribute permission "0400" [Dave]
+ - Don't include implementation details in OS ABI docs [Dave]
+ - Tag tdx_host_group as static [Kai]
 
-diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
-new file mode 100644
-index 000000000000..c67e5bc910a9
---- /dev/null
-+++ b/arch/x86/include/asm/seamldr.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_SEAMLDR_H
-+#define _ASM_X86_SEAMLDR_H
+v3:
+ - use #ifdef rather than .is_visible() to control P-SEAMLDR sysfs
+   visibility [Yilun]
+---
+ .../ABI/testing/sysfs-devices-faux-tdx-host   | 22 ++++++
+ arch/x86/include/asm/tdx.h                    |  6 ++
+ drivers/virt/coco/tdx-host/tdx-host.c         | 76 ++++++++++++++++++-
+ 3 files changed, 103 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+index 2cf682b65acf..f7221f2e5fec 100644
+--- a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
++++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+@@ -4,3 +4,25 @@ Description:	(RO) Report the version of the loaded TDX module. The TDX module
+ 		version is formatted as x.y.z, where "x" is the major version,
+ 		"y" is the minor version and "z" is the update version. Versions
+ 		are used for bug reporting, TDX module updates etc.
 +
-+#include <linux/types.h>
++What:		/sys/devices/faux/tdx_host/seamldr/version
++Contact:	linux-coco@lists.linux.dev
++Description:	(RO) Report the version of the loaded SEAM loader. The SEAM
++		loader version is formatted as x.y.z, where "x" is the major
++		version, "y" is the minor version and "z" is the update version.
++		Versions are used for bug reporting and compatibility checks.
++
++What:		/sys/devices/faux/tdx_host/seamldr/num_remaining_updates
++Contact:	linux-coco@lists.linux.dev
++Description:	(RO) Report the number of remaining updates. TDX maintains a
++		log about each TDX module that has been loaded. This log has
++		a finite size, which limits the number of TDX module updates
++		that can be performed.
++
++		After each successful update, the number reduces by one. Once it
++		reaches zero, further updates will fail until next reboot. The
++		number is always zero if the P-SEAMLDR doesn't support updates.
++
++		See Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
++		Interface Specification, Chapter "SEAMLDR_INFO" and Chapter
++		"SEAMLDR.INSTALL" for more information.
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index cb2219302dfc..1fb2a3f6b9e1 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -103,6 +103,12 @@ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
+ const struct tdx_sys_info *tdx_get_sysinfo(void);
+ 
++static inline bool tdx_supports_runtime_update(const struct tdx_sys_info *sysinfo)
++{
++	/* To be enabled when kernel is ready. */
++	return false;
++}
++
+ int tdx_guest_keyid_alloc(void);
+ u32 tdx_get_nr_guest_keyids(void);
+ void tdx_guest_keyid_free(unsigned int keyid);
+diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+index f9b1168d0900..01f68c390a49 100644
+--- a/drivers/virt/coco/tdx-host/tdx-host.c
++++ b/drivers/virt/coco/tdx-host/tdx-host.c
+@@ -11,6 +11,7 @@
+ #include <linux/sysfs.h>
+ 
+ #include <asm/cpu_device_id.h>
++#include <asm/seamldr.h>
+ #include <asm/tdx.h>
+ 
+ static const struct x86_cpu_id tdx_host_ids[] = {
+@@ -46,7 +47,80 @@ static struct attribute *tdx_host_attrs[] = {
+ 	&dev_attr_version.attr,
+ 	NULL,
+ };
+-ATTRIBUTE_GROUPS(tdx_host);
++
++static const struct attribute_group tdx_host_group = {
++	.attrs = tdx_host_attrs,
++};
++
++static ssize_t seamldr_version_show(struct device *dev, struct device_attribute *attr,
++				    char *buf)
++{
++	struct seamldr_info info;
++	int ret;
++
++	ret = seamldr_get_info(&info);
++	if (ret)
++		return ret;
++
++	return sysfs_emit(buf, TDX_VERSION_FMT"\n", info.major_version,
++						    info.minor_version,
++						    info.update_version);
++}
++
++static ssize_t num_remaining_updates_show(struct device *dev,
++					  struct device_attribute *attr,
++					  char *buf)
++{
++	struct seamldr_info info;
++	int ret;
++
++	ret = seamldr_get_info(&info);
++	if (ret)
++		return ret;
++
++	return sysfs_emit(buf, "%u\n", info.num_remaining_updates);
++}
 +
 +/*
-+ * This is called the "SEAMLDR_INFO" data structure and is defined
-+ * in "SEAM Loader (SEAMLDR) Interface Specification".
++ * Open-code DEVICE_ATTR_ADMIN_RO to specify a different 'show' function
++ * for P-SEAMLDR version as version_show() is used for TDX module version.
 + *
-+ * The SEAMLDR.INFO documentation requires this to be aligned to a
-+ * 256-byte boundary.
++ * Admin-only readable as reading these attributes calls into P-SEAMLDR,
++ * which may have potential performance and system impact.
 + */
-+struct seamldr_info {
-+	u32	version;
-+	u32	attributes;
-+	u32	vendor_id;
-+	u32	build_date;
-+	u16	build_num;
-+	u16	minor_version;
-+	u16	major_version;
-+	u16	update_version;
-+	u32	acm_x2apicid;
-+	u32	num_remaining_updates;
-+	u8	seam_info[128];
-+	u8	seam_ready;
-+	u8	seam_debug;
-+	u8	p_seam_ready;
-+	u8	reserved[93];
-+} __packed __aligned(256);
++static struct device_attribute dev_attr_seamldr_version =
++	__ATTR(version, 0400, seamldr_version_show, NULL);
++static DEVICE_ATTR_ADMIN_RO(num_remaining_updates);
 +
-+static_assert(sizeof(struct seamldr_info) == 256);
++static struct attribute *seamldr_attrs[] = {
++	&dev_attr_seamldr_version.attr,
++	&dev_attr_num_remaining_updates.attr,
++	NULL,
++};
 +
-+int seamldr_get_info(struct seamldr_info *seamldr_info);
-+
-+#endif /* _ASM_X86_SEAMLDR_H */
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 65616dd2f4d2..8410df3a0bf4 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -8,8 +8,13 @@
- 
- #include <linux/spinlock.h>
- 
-+#include <asm/seamldr.h>
-+
- #include "seamcall_internal.h"
- 
-+/* P-SEAMLDR SEAMCALL leaf function */
-+#define P_SEAMLDR_INFO			0x8000000000000000
-+
- /*
-  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-  * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-@@ -18,8 +23,20 @@
-  */
- static DEFINE_RAW_SPINLOCK(seamldr_lock);
- 
--static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
-+static int seamldr_call(u64 fn, struct tdx_module_args *args)
- {
- 	guard(raw_spinlock)(&seamldr_lock);
- 	return seamcall_prerr(fn, args);
- }
-+
-+int seamldr_get_info(struct seamldr_info *seamldr_info)
++static bool seamldr_group_visible(struct kobject *kobj)
 +{
-+	/*
-+	 * Use slow_virt_to_phys() since @seamldr_info may be allocated on
-+	 * the stack.
-+	 */
-+	struct tdx_module_args args = { .rcx = slow_virt_to_phys(seamldr_info) };
++	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
 +
-+	return seamldr_call(P_SEAMLDR_INFO, &args);
++	if (!sysinfo)
++		return false;
++
++	return tdx_supports_runtime_update(sysinfo);
 +}
-+EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
++
++DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(seamldr);
++
++static const struct attribute_group seamldr_group = {
++	.name = "seamldr",
++	.attrs = seamldr_attrs,
++	.is_visible = SYSFS_GROUP_VISIBLE(seamldr),
++};
++
++static const struct attribute_group *tdx_host_groups[] = {
++	&tdx_host_group,
++	&seamldr_group,
++	NULL,
++};
+ 
+ static struct faux_device *fdev;
+ 
 -- 
 2.47.3
 
