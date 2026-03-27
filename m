@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A783F9FB
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DC62C11ED
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774619135; cv=none; b=hgMcdY6NdzeRtt6ez54rMqfwdQb/i63jqEAvJrNPsrtfWpdDg+mzqqLDofbQe+JD25MXknQIN+QGXRXzxR/JqPReKxSbKy1tjmo4w/Iln0ix9OPhuN1BDC5CNQc7Ebvv9SPARAOvvsN/EgWloIhbozSC/3TRVOxX9UAqoVhBnC8=
+	t=1774619143; cv=none; b=HbFywHcvnocvNIYhBkGoVaKSpo7I/ynz7a70KxZ646d6sGf3Yzd8uqLNmnmJVkNhCbIVmWFrJzSCV6+FSMySYcEa1lb7ejbvp6HdecqvZpynpcjR7jqCOl9DHysWw46svNPFmxW9KyVCDHPDaCQtrGQ+d/3RMvAFpm1iSGjWhPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774619135; c=relaxed/simple;
-	bh=4ZP0aK6Af5K0iHPCE6OX/U5NsCexHaSzThCSpWRuPPY=;
+	s=arc-20240116; t=1774619143; c=relaxed/simple;
+	bh=JJ9s6EXYd8A6IBGfE9x5tI1Y7hIRtXXfqLkuA6zDkzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eb50t1kKhpwK1o7XemMLjFyvCBgo8tKrqX3CfF+3rYdn95lQ/aZ1s6YvDh4jfntg7nX1BQFWYQF8+oEVY5ly2oumkcGV8gMSyulX4iKXnR91clxYX/nxvgoQzXjuKjYE3if3X4Io93Vww1M9DZpLW/2U4gE4sLV1IJWaBavadFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I2afZ3Or; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=SzEnIJVL057dnUz0nfH6gfkbRu4QCHbe72AmFh2Fe6X3Yr4EdZCIy5oy5MCntLED3oZ60YXfmB+NqG95V19Cu/3QfWvGn3v56x77Ft/tajumBzcCY8ujjO82I5m1YGLcGryD29gsabsvbVmnO5utWy55tsg7glXLcEIwpf0gghQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkeoJNbV; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I2afZ3Or"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkeoJNbV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774619133;
+	s=mimecast20190719; t=1774619141;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H/XDk77uMM0K3ipW2XJci7E6+UCDLhxSXeqP3bT3a4k=;
-	b=I2afZ3OrYJZ/6Gn8mCU1Ujxy5w4bZFYocma8BxczXMqfr6KQxTc5RW96WDFBM3biNGs3d6
-	wNdaDZdWW05k1VFS969AKLYpRr0gnENIcwycAwOCWPIndhHK8iAiPv0v7S9QZRwM0OKFwV
-	1qP7E5PlrKh9UPjjkUmKWD0EX+EEZ9Q=
+	bh=9JzUxiWgZKU4O9M4M3xcPRJsDXu15tLrDMHHzBytk4Q=;
+	b=PkeoJNbVe/dge9spNlEMSuViugDhY2zQ6HFkxgQo3ZSb4Iwg1Sy4dOI4VpauIFydVT+6s1
+	Q8UqEGkz/U5Y3rbUEp/9buq53P7kGQs/9hzAm9BDM4E2/d9rW/BGq0xQKzjN8c/Vq6Wdrj
+	BPRlK9SdT52bXVPIt18N2htdZAi/R9Y=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-68-DOJP0ZnzNQusPNRZ2L7tGQ-1; Fri,
- 27 Mar 2026 09:45:29 -0400
-X-MC-Unique: DOJP0ZnzNQusPNRZ2L7tGQ-1
-X-Mimecast-MFC-AGG-ID: DOJP0ZnzNQusPNRZ2L7tGQ_1774619127
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-_BZLUMrgO5OwUxmnCD4LLQ-1; Fri,
+ 27 Mar 2026 09:45:37 -0400
+X-MC-Unique: _BZLUMrgO5OwUxmnCD4LLQ-1
+X-Mimecast-MFC-AGG-ID: _BZLUMrgO5OwUxmnCD4LLQ_1774619134
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D6E21956094;
-	Fri, 27 Mar 2026 13:45:27 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 31BC0195609D;
+	Fri, 27 Mar 2026 13:45:34 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.44.32.150])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0681D1800673;
-	Fri, 27 Mar 2026 13:45:19 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8A55C180036E;
+	Fri, 27 Mar 2026 13:45:27 +0000 (UTC)
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org,
@@ -69,9 +69,9 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
 	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
 	Artyom Tarasenko <atar4qemu@gmail.com>,
 	Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 10/15] hw/ppc: Use glib2 instead of strcasecmp/strncasecmp
-Date: Fri, 27 Mar 2026 15:43:56 +0200
-Message-ID: <20260327134401.270186-11-kkostiuk@redhat.com>
+Subject: [PATCH v2 11/15] osdep: Remove unused strings.h
+Date: Fri, 27 Mar 2026 15:43:57 +0200
+Message-ID: <20260327134401.270186-12-kkostiuk@redhat.com>
 In-Reply-To: <20260327134401.270186-1-kkostiuk@redhat.com>
 References: <20260327134401.270186-1-kkostiuk@redhat.com>
 Precedence: bulk
@@ -83,29 +83,27 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-This is a change in semantics. g_ascii_strcasecmp() doesn't honour
-locale but strcasecmp() does. But this is OK for at least one reason:
- (1) QEMU always runs with the C locale so there's not an actual
-     behaviour change here
+We don't use strcasecmp/strncasecmp anymore. Also, we don't
+use any other strings.h function. So this include is no more
+needed.
 
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- hw/ppc/spapr_caps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/qemu/osdep.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 170795ad6a..f4a26a85b5 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -129,7 +129,7 @@ static void spapr_cap_set_string(Object *obj, Visitor *v, const char *name,
-         return;
-     }
-     for (i = 0; i < cap->possible->num; i++) {
--        if (!strcasecmp(val, cap->possible->vals[i])) {
-+        if (!g_ascii_strcasecmp(val, cap->possible->vals[i])) {
-             spapr->cmd_line_caps[cap->index] = true;
-             spapr->eff.caps[cap->index] = i;
-             return;
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 92856decd4..3718fae351 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -114,7 +114,6 @@ QEMU_EXTERN_C int daemon(int, int);
+ #include <stdio.h>
+ 
+ #include <string.h>
+-#include <strings.h>
+ #include <inttypes.h>
+ #include <limits.h>
+ /* Put unistd.h before time.h as that triggers localtime_r/gmtime_r
 -- 
 2.52.0
 
