@@ -1,103 +1,116 @@
-Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
+Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D6C23D2AB
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 02:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636B420C029
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 02:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774579065; cv=none; b=sstDkIwcFiUCFSyE4H+GLJ2z0V+G+yQEIxHgNxrtTYyzyaAi4kGbSW4Oao9h1ECBDXENBMAB0fIxuRIbQW7lRPaUoQRtiqLEbaeUG8UVauyIvRuBRhSWryupSuiW/8w8SvphyJH8CVO5C7Iid8RRppQtDHwNGvdfT7asTSSaRr8=
+	t=1774579970; cv=none; b=h75Z+ffvBb9WFcR9HEf939sClfAA4zfibp/SlgFLDn7+oGAmyjCw8hTuZ65YCkcnQrjx7tAdPy5QVg5fHV6hdgsGE5qxi6RG8TM6Xi1KdGtDqYzpqvS+RVLoRBI54WQW7Mgqh++An6HmhpBTvAQpzgYOmtPizOJqxaaYdBiCH70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774579065; c=relaxed/simple;
-	bh=sso6wnQOmcPsgryxLOS1dyVwikJhyGMFvPTQ2LZWG4E=;
-	h=Message-ID:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dv/E1HNDPu6I10A3r317tQZqtuyL1VuJ3gQ32/kzyPiptp6CX9Mx/VT1rkPt4lk4Ps4dtsCbv7fGTntJ5Z4laR8/wy2Mmg9Mt2Z8em0JlXKHKuo+cplVGT0nwUq5/wILGxRfF0t/nbVQdamBw+wxdfyZO8ocIccxNlETUmJFVac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d22wXMMk; arc=none smtp.client-ip=209.85.216.66
+	s=arc-20240116; t=1774579970; c=relaxed/simple;
+	bh=vIlM3XWl5/+SsBHow1+ctgAWWaYcw1vAtlL/Ep3PTrw=;
+	h=From:Date:Subject:To:Cc:In-Reply-To:References:Message-Id; b=Wg7L8H242Zo5zefL3GmiM/+7ljCRWxddOyW9JjRTRObx/RTVXXg6UGjEH1NS0r2+2KLMjPLC+aXO4DPgrvNg+nb3Nq11ChoKu4XzPP8o8z3QEApdy1nOUX50D/S8Rw6gbc+TYHXubOB2jXlWdukp4ptdn5QCQksrEGMYFQb3q94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ehd0+lea; arc=none smtp.client-ip=209.85.216.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d22wXMMk"
-Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-359f35dfef6so949428a91.2
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 19:37:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ehd0+lea"
+Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-35c206f0481so1296334a91.0
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 19:52:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774579063; x=1775183863; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sso6wnQOmcPsgryxLOS1dyVwikJhyGMFvPTQ2LZWG4E=;
-        b=d22wXMMkjn/NjO4GOwLaM1sTDTtKwSLtx+RiUhbp+cSixJe/JsgMy1/Hm6Uf9+Cksd
-         Z8VbOp6jLJaZg88aX//q0Pf82Rg/cb8lTg45LnrIoNzjwOZo6Z/29BvpGvg+dbphH9Mc
-         UuBMmPAuxLKid7N44nHk9PVGEAnYeFC3WhV6vIzrq1feZWezbfB2kBEXPXT7BGOpqhAO
-         xhHJblABqLyEQ6eNR2CafURq4vrgDhwB8bsWLgL3E6MSio0vgbDaEqx5exyM/OVLwjCN
-         XTZarEVw1n6l8mmev1Xput6P/+U4rsRcMdMC6xHuzd6Ypb1E+bFZkliH9k4ia50bngEQ
-         MeqQ==
+        d=gmail.com; s=20251104; t=1774579968; x=1775184768; darn=vger.kernel.org;
+        h=message-id:references:in-reply-to:cc:to:subject:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XjZF/plAApAJ5rw+kw5yej0Npygs8FHjmZQbsUjCob4=;
+        b=ehd0+leaV4AMXd4Z0pWjoXCy6y8SfJSzmnqCyH9PLwUDWVIumI8uhKXXwYfot8jb5p
+         T+mxgR15BccakRRKhhPUTXxthmHM5BiCusLLclyFV77fRyXpD/+d/h6WG71QtLQBhgA2
+         qfvOH/DecqrlbDOu/SPybkaSLnmrjrHHHGKVnUq3gCXL/Q+pEk/0qx2TCJwCW4NjRdYm
+         528ijL72YFRoJuACbGMRcQ8S3m2o77/Z3ox9+OSTV7TXVJQQ91PvewlRnqjDmWnBGldK
+         M0jbBTCPjJrq+uEapUx/FsbpLyPQT807lJRv0+r2ZvqzvUMC7LZZujVGUe71QY/jUudc
+         CFug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774579063; x=1775183863;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:date:message-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sso6wnQOmcPsgryxLOS1dyVwikJhyGMFvPTQ2LZWG4E=;
-        b=PGSvk4wihacMYti87g4Sj9ElUfUFgbDpwk2F9tQdJSmd9iNoIdFkcUIAuMm9UtuglY
-         CkS2CoDfVhxQ9ZbLF1DJAEUKMCQkdGdPCsCF7MOlP+MOzNlHCW3aOBITozf/oV4nbTB3
-         salZ8vs/QeJ3STeNzmKnMdzR2HlLNbfNG/7cmnJxxkupP05XcJNpTNaijt67e21TdGQs
-         JxVwIj40IPlQyyvVEEG6mIUVq0ezmdzjuFwoBTI0ZVM7wG8oLWb566b7budOeoo5fQQB
-         x3KYsKVtb4aOpu5m+2moagsr/eZaYR5NXhIjytO7xw0HGhu3aMBeXIrcceB6SYLsDa82
-         SrDQ==
-X-Gm-Message-State: AOJu0Yy9OGuT/bPF1EguX3MiD9Vk0K3XlkiQ9xTM2sLwrtbS1DuLecxo
-	QAokOJFChaRCbD4wi8i0SZRvVCN7weR5fSIuughufLaAvRuv7az4zBHkQOyo1/gwkJOviw==
-X-Gm-Gg: ATEYQzxoeOkY2HfcBiH9AE0U+RPahTWw1iUBJzn7+DXj0ziyuJmpmGYkJMdiZX23ckx
-	iBYw/FJF2XmqziPTT/MRvF898npgYMe1Eng4+I85+fkes506kkWDAs4ByNR7oMmEo9XZEnyq/oc
-	T5V3De3lCyyF8o1BJUUOaHZ9DIvoS9n4+9AFydQsKI/9nP+vm07sJjPU99QZWTFAfF0gl2n6JEo
-	7uI0bmlPs8k3mkTs6/PV55Xy+ubF9LPj3lVXLLppD/s4f5t7tCN+ntBT23Ddr9ANGDmkI9x+ZjL
-	dr/8d9XSc28+B3K/PZ14fc8Afgs04ReWCXxYSpz/ZVRurdm8++958JtPGoaECg3N/2eJ+viGJwJ
-	hfInziYpGDj4KTgP8bPMkdCKH9ytXUa8bGeJI1vK/AVBEVxFYNJh6hkGnLE86P51Y6/PmS3la3y
-	4oKt6aWobR7yII0uTxQwsu
-X-Received: by 2002:a17:90b:1804:b0:356:24f0:af08 with SMTP id 98e67ed59e1d1-35c2ffb7149mr783481a91.1.1774579063148;
-        Thu, 26 Mar 2026 19:37:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774579968; x=1775184768;
+        h=message-id:references:in-reply-to:cc:to:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XjZF/plAApAJ5rw+kw5yej0Npygs8FHjmZQbsUjCob4=;
+        b=s25ALe+5c4I5f+lI6Dogj+PyT8oYf3/MLd9d/iGzeC3QSWSaiFwQ5VScECZD4zNNBF
+         5FgV+hTI9ggKqPfKDTRH0KTu2KIuS3rOljkYZPmMX9VyYYoHfzMCzbTn0Z3Kg+gWlONl
+         vzcXHPIe+D42ikpN74sWxgqpyFCpO3CbPvbNhrFmrn2sTv/oHquyCJcywXh8a6I/sCY3
+         7fdXmf55miCZaVb2aWLXipewWK+Ip9TSm96aIEgx9y9NH41dwU2oafyjusrmVrvn+bVK
+         oBOEhpqyk+C3qgSW/b7Ioz4q7m8zafpxr1jqTUP3UvMtH9FPpza55Zx1zMk/KIqds/1P
+         JFpg==
+X-Gm-Message-State: AOJu0YyY74spFb/eGHglrxWQEaSmcUHS7eXBb3T0uDNYigMN8vYRd1V7
+	EKsruWvyqs9qoby2udF43f2z1mT233SzqQApomkqyjk4Rxf6b9nSs3FLtKd/btqpmXOpMA==
+X-Gm-Gg: ATEYQzwWWRn+Ftcn0PMV08tZHlTuHedp3GbdKWkvgu3rVraSlw0fCfmrgB48RHg/ojx
+	zHV/dqLJbPDAWvot+i+FwkFwS4iK9ajuyZaGQOFL86+/arH3T2KT1QwcynzmWRHcVZfCAbnQlc7
+	ea6AIhLDwY+CkDLz//XM1UdoAXjb62x2lMA2FVk36BsshxJGCX4282dgN3GirrTj3TLQEdmYvW8
+	Qa94FixHJK79DvcBhFXkOGcdWszLn3lDUFVqXVVBiXMH0xi9h4eXVjEcpc1z+wOTahYVFWr0QSE
+	RFMfgBbPULJS/e30a27C2XDOwpd5TNMu7y/dCkEf1YYMjgjpufvVNQn2I0yJSQhRoG1dCoJHNQ1
+	bCbJqBrAvgb9rWHTkYiv27s9bwsn4vZx++5nINPbv3jDmRQNQ4EylfK0QiBL4VxknjXGAoMCypn
+	qUaxdQ41mbtp3ncmAkqOr/
+X-Received: by 2002:a17:90a:e705:b0:356:2c7b:c026 with SMTP id 98e67ed59e1d1-35c300f42f9mr801520a91.23.1774579967927;
+        Thu, 26 Mar 2026 19:52:47 -0700 (PDT)
 Received: from [127.0.1.1] ([112.28.134.53])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c22ce693csm2933495a91.14.2026.03.26.19.37.41
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2d8d47c6sm381008a91.1.2026.03.26.19.52.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 19:37:42 -0700 (PDT)
-Message-ID: <69c5ed76.170a0220.1f4965.c4f3@mx.google.com>
-Date: Thu, 26 Mar 2026 19:37:42 -0700 (PDT)
+        Thu, 26 Mar 2026 19:52:47 -0700 (PDT)
 From: vince <liuwf0302@gmail.com>
+Date: Fri, 27 Mar 2026 10:48:49 +0800
+Subject: [PATCH v2 0/2] Add GDB stub and step-debug support for x86 and arm64
 To: kvm@vger.kernel.org
 Cc: Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH kvmtool 2/2] arm64: Add GDB stub and step-debug support
-In-Reply-To: <cdc9df07-5da4-41f0-b386-56fb1ae37e56@arm.com>
+In-Reply-To: <20260318154156.2064989-1-liuwf0302@gmail.com>
 References: <20260318154156.2064989-1-liuwf0302@gmail.com>
- <20260318154156.2064989-3-liuwf0302@gmail.com>
- <cdc9df07-5da4-41f0-b386-56fb1ae37e56@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Message-Id: <177457996500.86179.14991222733583648054@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-Hi Ryan,
+This series adds a built-in GDB remote stub for kvmtool on x86 and arm64,
+including packet handling, architecture glue, and integration into the run loop.
 
-Thanks, this is a good point.
+It also adds basic documentation and test coverage so the feature can be
+validated and maintained across both architectures.
 
-On arm64, simply patching guest memory with a BRK instruction is not by itself
-enough to guarantee that a later guest instruction fetch will observe the new
-instruction. This is different from x86, where software breakpoint patching is
-generally sufficient without extra instruction-cache maintenance.
+Changes in v2:
+- address review comments on the arm64 software breakpoint instruction
+  visibility path
+- split guest memory writes from guest instruction patching in the GDB stub
+- synchronize arm64 guest instruction patches when inserting, removing, and
+  stepping over software breakpoints
+- drop the test-spec and security-notes documents to keep the series focused
 
-I checked QEMU's KVM path as well. While its software breakpoint handling also
-patches guest memory directly, I did not find an explicit cache maintenance
-sequence in the userspace insertion/removal path.
 
-To make kvmtool's arm64 software breakpoint path more robust, I updated the
-implementation so that instruction patches (both inserting the BRK and
-restoring the original instruction when stepping over it) go through a
-dedicated guest-instruction write path, and arm64 now performs instruction
-cache synchronization for those patched bytes.
+vince (2):
+  x86: Add GDB stub and step-debug support
+  arm64: Add GDB stub and step-debug support
 
-I have tested this locally and it works as expected.
+ Makefile                       |   13 +-
+ README                         |   29 +
+ arm/aarch64/gdb.c              |  752 ++++++++++++
+ builtin-run.c                  |   13 +-
+ docs/gdb-stub-architecture.md  |  142 +++
+ gdb.c                          | 2104 ++++++++++++++++++++++++++++++++
+ include/kvm/gdb.h              |  148 +++
+ include/kvm/kvm-config.h       |    2 +
+ kvm-cpu.c                      |    9 +-
+ term.c                         |   18 +-
+ tests/Makefile                 |    4 +
+ tests/boot/Makefile            |   10 +-
+ tests/gdb/Makefile             |    8 +
+ tests/gdb/test-x86-gdb-stub.py |  178 +++
+ x86/gdb.c                      |  577 +++++++++
+ 15 files changed, 3995 insertions(+), 12 deletions(-)
+ create mode 100644 arm/aarch64/gdb.c
+ create mode 100644 docs/gdb-stub-architecture.md
+ create mode 100644 gdb.c
+ create mode 100644 include/kvm/gdb.h
+ create mode 100644 tests/gdb/Makefile
+ create mode 100644 tests/gdb/test-x86-gdb-stub.py
+ create mode 100644 x86/gdb.c
 
-I'll include this in the next version.
+-- 
+2.34.1
 
-Thanks,
-vince
