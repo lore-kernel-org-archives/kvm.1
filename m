@@ -1,123 +1,120 @@
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBEA22D7B5
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 14:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774621217; cv=pass; b=oFpesSQg7OBLLTJEbwrxCvkK21htNQsX6qhQOJzOe4CPg3WNgozM0l0vabDCipzuuTobtD8hHU/HmcBPfPsXxuIA9e6RS3H94LpnIk5d0rjpQPyBogttr0mWU1KnOhlWCbZzky4/3Z/A34dWrX62YBGDByVvzcpju1DFmCc0/gY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774621217; c=relaxed/simple;
-	bh=h4EmkHMn9ibIoN2/Jf+eFFYHaBZUJUVQrG0xettR+is=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nHm4c/OQBwum/ZLr3cOISVM5mbvEOH5oKNw8udS/KHHxgr7Hz1/93GrK2qzIx7yPC47kw+vzERKZMoFRZlNREn476mOvmS5c9LY4527fVx6gfJGTw9PmOpJx1QCkky2awztje1QZ5Vv5BLIFlg//4od7pJOlyT6cdooUcwAapcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QP/5ksUI; arc=pass smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B803F7875;
+	Fri, 27 Mar 2026 14:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774622272; cv=none; b=s5tZlK2HxtOx9UmrpGPJ0E0t+11/RnSQMeaKkt2olr6UsV0jLnQQdMKIZwtD3ocT+mp+yiJziqqvZwSC0/n5ISWknUww+kK+YAP2kN+P2YEegFvQA7GQLfJdyQ1h4P81wMZ4pfJkevKtLgdge0jk3mbXv92RFeEpePgxnEglHTc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774622272; c=relaxed/simple;
+	bh=rBaosBE0xHnpR4CfpExm5lZKwHweHdm8x+3Ll2q+xvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=LiC4hIIO8r42X1RIqHHaBqlHM8CqAi0WuL87HdiT3h2UiYlnkAfGs7PDQSgWGtpvLS85t+OuibL1SskNlMJ3AYak4vzhA1TmY1Xgidvt732zpTuCXPtBUWLaS3wa/dLlot/R6HvnUporXx8D6Taxpl65FwEH6QE6JrLBlYXzMnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=VVSUr77H; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QP/5ksUI"
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64ad9fabd08so2337834d50.2
-        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 07:20:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774621216; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MPk7V/9d93InEYGkNt80/xVOuebG79rBC/f+oZKp1CfvfVM8ePSNWWVKPMVWiZZpBx
-         pTSrTvPN5ilP565BNaooRXoABRItmdgO/TE6SoLHmJ8Se0iThEtNyP9SgaMxO0Y5N+jM
-         UZuyLlh/WmD6fc+SX+CY3i8EIuRc26BGupwefFRlvGrsrLnuo8XV4w/j8n2DuZ7631Uo
-         teZJFZ5cz84urXgS1nezUujIHsE7Ql35DXiQvnaCufrG36MfYIvmEPUbr1XgYTeKdCRO
-         vLxsLjoz7GObhy/Bn0vgD0h0nDlgGZfJOoGWj/3ZfSXIv+qyew0l678HUsSXV2OUL5Nu
-         chkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=h4EmkHMn9ibIoN2/Jf+eFFYHaBZUJUVQrG0xettR+is=;
-        fh=055iueh/FBmoe5A0bzxqGXu5i8jl1IeiUG/EXdr5a+4=;
-        b=JZsPAUTpgzc+Y9g/ldbKYZIoHQGH0cvk/Yxt+iCCUtY/W1h6qfmgLWoqhKgZAs2bBX
-         6Sors+K+0H/fffIL7c+YL9PpcGY36Ztt+ToFALJmfgG04apvU07yMzuby0J/chFrype/
-         1nc1iclhS868OuU3ilAmSPOYHnHDq/6iaAVyTYMvg1Ycxk1q/BTSJZXWuRZkyGvQ5lG9
-         yq9JT13OTO4vg4clfkY9pCSv8/fOZhyJ6wGAw35/CS/AqwNjQ9VdHWEfux0Tz8E9nzbF
-         ESC58eQ9ERF9te1SeND50wxOG9nxsS/TRZCg7MW+CTiryKFn9Q3WA8aKOud1Nueytfom
-         3oBg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774621216; x=1775226016; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=h4EmkHMn9ibIoN2/Jf+eFFYHaBZUJUVQrG0xettR+is=;
-        b=QP/5ksUI5iH86uWmS4tGYX2AWzs6q0uK/Mrj149f+o5pu09fEpJQBezLpk2j9r0w6Q
-         r3V0vS0eG5iZnimXIe7qQoMdFa34bwhYhMl3KrbXEhR64Cyb2PAR1yExM0YeFZ2dQ/dL
-         TXo9NRGoNkh9zdajY8sAuaQ/Tfd3LgSFWBMxDwG9c6lPMOs/IJq4ETfLYoWlwq4jfcSL
-         BrijCjW6wjTc143eaqKeOrg8jMia4w1FMDsKr5kZtPv6m6CdqEoPZFSeeTDSmAFpo/w/
-         ISBy5bDSfVL0+JpEffuTHsYrcjRbWpXDk3hxpqmghV3T6u8cSeAdPXgYmwV4fKkTQkUc
-         EIpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774621216; x=1775226016;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h4EmkHMn9ibIoN2/Jf+eFFYHaBZUJUVQrG0xettR+is=;
-        b=g3mdXUJILNlp2q8Fi0/hwk950X4WAFYTAFU/PRYF7QYbLdY4DpNUkG+aRcnFwzyfwW
-         0Csu6Z4L+ZBQHyjzHXpAXiIT1IdryWA67/MRvGrUh3ZWXVq8aRhRkLdM8ReU6KsRNE2y
-         MWtIKyUqn8+koD+f84sLvySI+uLeXZKgLEj+ILctOQ7F9ExfupnRHUG130BL1KFbMq1j
-         P/yrFgxQIda54BrLFEgORStZaDGHIw73Md4ng9GP7puSid4nu3NYVovTQHQGIn9fJDOD
-         1efkwuBiqcyY5CYCy1kE/wLZvnCMMPnwGCOl/JGrW3rR0kqgs0wzBzPuBfiWyL4WdSnl
-         BqKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjWD2qxJ4Duc6RwoToHbXkIUjCB7PnXHpO17Ti9BCAVF5r4da5LMXbf8Mk/tklHJu4ZJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbP/eo3tbMSCJXE6pL/LsRB7nPJ2VZJ88uwOv0hFt1bnnHz6Fj
-	StSjIurCNabL1IKHLVK4Gb888McBhOeKQGMhCSxyoWISJGYOe6ba/cCnaHuRgjyFrTifS4e0JBg
-	w8MJoIzECvQb8m5rC1eFa1T8fVr50vy4UAcfD6cmDWw==
-X-Gm-Gg: ATEYQzyKsM8lCR6t3zqpzuxro4GiG/R4xxI2Gj3OH4sJhqIv2kgAV6uRdj8/B0LNUhm
-	BkAI8+mXBVNsd0DTbqEw979QxdiurkrPeQDGN+gM6/fMq6aBzaVdUgwLjfLqqdNuMGuldtYhVDl
-	QYCd5EN9bUAFGCx+XBzh+IWbT8ikHR75KEgzX0fY4SvPFKBODRBH4adX51Ga1UNt+m3apI3kbzW
-	J126MB6A2/II07R7AoY+BLkg1QebpeuM9Tf9lvrUf9M7WkY5rKDA8UALIDk7Xr3QID2UpwHTG0i
-	j63FvNaPaJzbl8uazYBzVjcHIdE1NECQlt3W7FxcCkhc5zC8JF8SUYVQxuE68ScVeVgTMTulafx
-	iKg==
-X-Received: by 2002:a53:d60d:0:b0:64e:f106:60e5 with SMTP id
- 956f58d0204a3-64ff73b6081mr1959808d50.52.1774621215306; Fri, 27 Mar 2026
- 07:20:15 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="VVSUr77H"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A7C035B1;
+	Fri, 27 Mar 2026 07:37:43 -0700 (PDT)
+Received: from devkitleo.cambridge.arm.com (devkitleo.cambridge.arm.com [10.1.196.90])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE4EA3F905;
+	Fri, 27 Mar 2026 07:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774622269; bh=rBaosBE0xHnpR4CfpExm5lZKwHweHdm8x+3Ll2q+xvc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VVSUr77HEC3cZ3e8mCoZA+3RLhgaRRNOUCuGTX6S559KKiuhtB6vxpOV40N48ssFM
+	 tRX1PBw05CUIVrknE5F+TWpeG6ixsYLwHJkHNF71t4MqaBoqOnKwggWDvL44kkeAZy
+	 UMFtNdDxN0UrjL202wp0PPAieLzEmHevI+2cMZLs=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	liuyonglong@huawei.com,
+	Jonathan.Cameron@huawei.com,
+	yezhenyu2@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH] arm64/kvm: Enable eager hugepage splitting if HDBSS is available
+Date: Fri, 27 Mar 2026 14:37:39 +0000
+Message-ID: <acaWMwB2emS7HrHW@devkitleo>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <6cce203f-89d9-4e9d-8b28-9629eb53b180@huawei.com>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com> <20260225040421.2683931-5-zhengtian10@huawei.com> <acQj5grOdZT8LUGp@devkitleo> <acQna2hLwdr1juTN@devkitleo> <6cce203f-89d9-4e9d-8b28-9629eb53b180@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260327134401.270186-1-kkostiuk@redhat.com> <20260327134401.270186-14-kkostiuk@redhat.com>
-In-Reply-To: <20260327134401.270186-14-kkostiuk@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 27 Mar 2026 14:20:03 +0000
-X-Gm-Features: AQROBzBFRtQAiDsGDqgRuOyZis6C54lKjmWtnXZGQUZFVhOVaki8E6WZtmCjCXU
-Message-ID: <CAFEAcA_B7hU2+YXEem-9-avrz64cvz6X=NB+bb8hfdMu9PdgGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 13/15] util: Remove unused sys/param.h
-To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
-	qemu-ppc@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org, 
-	Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
-	"Edgar E . Iglesias" <edgar.iglesias@gmail.com>, Alistair Francis <alistair@alistair23.me>, 
-	Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-	=?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
-	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
-	Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, 
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
-	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, Artyom Tarasenko <atar4qemu@gmail.com>, 
-	Max Filippov <jcmvbkbc@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Fri, 27 Mar 2026 at 13:45, Kostiantyn Kostiuk <kkostiuk@redhat.com> wrote:
->
-> We dropped the use of PATH_MAX in commit f3a8bdc1d5b26 (which
-> basically completely rewrote the path handling).
-> Now we don't need any sys/param.h defines.
->
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+On Fri, Mar 27, 2026 at 03:40:30PM +0800, Tian Zheng wrote:
+> 
+> On 3/26/2026 2:20 AM, Leonardo Bras wrote:
+> > FEAT_HDBSS speeds up guest memory dirty tracking by avoiding a page fault
+> > and saving the entry in a tracking structure.
+> > 
+> > That may be a problem when we have guest memory backed by hugepages or
+> > transparent huge pages, as it's not possible to do on-demand hugepage
+> > splitting, relying only on eager hugepage splitting.
+> > 
+> > So, at stage2 initialization, enable eager hugepage splitting with
+> > chunk = PAGE_SIZE if the system supports HDBSS.
+> > 
+> > Signed-off-by: Leonardo Bras <leo.bras@arm.com>
+> > ---
+> >   arch/arm64/kvm/mmu.c | 8 ++++++--
+> >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > index 070a01e53fcb..bdfa72b7c073 100644
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -993,22 +993,26 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+> >   	mmu->last_vcpu_ran = alloc_percpu(typeof(*mmu->last_vcpu_ran));
+> >   	if (!mmu->last_vcpu_ran) {
+> >   		err = -ENOMEM;
+> >   		goto out_destroy_pgtable;
+> >   	}
+> >   	for_each_possible_cpu(cpu)
+> >   		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) = -1;
+> > -	 /* The eager page splitting is disabled by default */
+> > -	mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> > +	 /* The eager page splitting is disabled by default if system has no HDBSS */
+> > +	if (system_supports_hacdbs())
+> > +		mmu->split_page_chunk_size = PAGE_SIZE;
+> > +	else
+> > +		mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> > +
+> >   	mmu->split_page_cache.gfp_zero = __GFP_ZERO;
+> >   	mmu->pgd_phys = __pa(pgt->pgd);
+> >   	if (kvm_is_nested_s2_mmu(kvm, mmu))
+> >   		kvm_init_nested_s2_mmu(mmu);
+> >   	return 0;
+> >   out_destroy_pgtable:
+> 
+> 
+> Thanks again for sending this patch. I'll integrate it into the next version
+> and run some tests.
+> 
+> 
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-(If you need to do a v3 for some reason you could merge this
-with the previous patch; but it's not worth respinning just
-to do that.)
-
-thanks
--- PMM
+Awesome, thanks!
+Leo
