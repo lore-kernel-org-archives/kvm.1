@@ -1,163 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD13221265;
-	Fri, 27 Mar 2026 20:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07EF1A683B
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 20:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774644804; cv=none; b=YpoD0MVE106KDLvOZMUiLf+shWtQmuv3mf0Miul4jwp3KJBOOWbltLK4XvCOv4I+uwkSRQoWgtrMC/7wDhgnHwjZIskaeieA/GtbW+Y39YQhX8SBY1+DYRZ18qrQPRs90sBzwTjWGqvL2J3zvkqMT8JI7ysZM4BHcyoRgiI9O4U=
+	t=1774644904; cv=none; b=BTKWlqwWth9LFkMTL1RXmlxtkRITJUvGVpCtG05FDDpjnOYukftvG8pTbzt0kFhPkk9J07x9Ei8Of3i0OupnOKTaIlHso5ZTS6IZb396raQpm4BBx4R+VcXGtvP81TndNBmOp+cqxC4PxrSw1ei5k+I4mMYGtmKK9FEI4psid2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774644804; c=relaxed/simple;
-	bh=eEugc8t5pgiuzczKwsspjpIM3kBN+pWWZIDzezaPAmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YrLah2VACFVUcTzBHStrAO24eGT2TOkJ8ecpwtER0avaH2KPBlwcYWcfpafOOI2l1OdrF5Wi+AC72L56W3+ZeEmoXP3/tuzTSorHJE+UYIq3fJV1L3qDY2Aq+wyuysjXDqAyMODEuYGH8gHJJ21bsBL+B2KRg0RUmYeyaLZ9dJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WVhXDd64; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774644904; c=relaxed/simple;
+	bh=bLDW7ocpivdedUtMlS9+zeEC0kBNj+LNYBRecq2aDkk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=inlK1GpYcnI8UjYGSkfAko3t3CqCa1KoUypjLKru04sKQ2sQ9sNAmzHFEwPmb7qGYheFX1WO/Nvp9/cAeIJkKnUlL7VEJgZsMCoOjZCqUU4Sw2HPVai3YBg+Frpg6AvI/BUQ+GOO/UjORQqgscKMJLYxJLfZ7eGY2ycn0TBfolg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tIgeL0+3; arc=none smtp.client-ip=74.125.82.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WVhXDd64"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774644803; x=1806180803;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eEugc8t5pgiuzczKwsspjpIM3kBN+pWWZIDzezaPAmc=;
-  b=WVhXDd64sBj1nVX3FdnCZiO4klDotuvwkP+07+RGLarOWTOK/tni26Yv
-   vvIfX9rQuzo2Rv/6lKPopKjNsTLT8zOOfRKl77mcTaaciP9JDz/ceVORo
-   aUoeMAcCGafCXZmiqugCvk5uAdw2SQl7+XstPNB75Q27/YlT/Kam/wdXr
-   tXtnhObpixzQYGMwx3gb7XoF2kYNjmwlcrznG4C6QNQLJlx/F/G1e7cjg
-   ekTj/xY2LK65nI/fH+7ftA0tJ6IUvbAjiBU3V0SfZDCG6Mv+oOoGdxZyl
-   Os3DNYGb5eOqTffP+qD9YN0wHtSDwWvQ84TAKBAR6UNpyK7AZ4PLtbXN3
-   Q==;
-X-CSE-ConnectionGUID: vLqsiPg2Rziog0mOavgt0g==
-X-CSE-MsgGUID: j3CJTqCeRuStXT550vdnRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="63279569"
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="63279569"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 13:53:22 -0700
-X-CSE-ConnectionGUID: wbXB46noTLi7HFsl5MYUAg==
-X-CSE-MsgGUID: 9XuiyE0rSsWjqmcFtm54kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="222104554"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.241.240.169]) ([10.241.240.169])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 13:53:22 -0700
-Message-ID: <d7827dd3-a37e-42a5-ba84-3517147d10a4@intel.com>
-Date: Fri, 27 Mar 2026 13:53:21 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tIgeL0+3"
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2c1030ca85eso3557947eec.0
+        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:55:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774644902; x=1775249702; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xdmn94fDq5EabxgUHdZFE1PchWB5l0Hn00gGljt6mxc=;
+        b=tIgeL0+3usm0cBbuJlPEDE1DR5GtwuekkqKyZFz6t64WPMm4kmKq77RNOI0HPZI7n1
+         yLypwOV+Or4awm7rubp2H2kfDjaTcn1w/7XBzwknyj7u1RAzbTqUNim6pmFb8EA2Yj2G
+         v1k9x3pGEy+8s6Qlj5yocVfombWrFpit7xxBpcSSbjSMTmDBw/BQjbRBC2vaAfcvbrax
+         Z+T7aLOMNBQB4pbQyR8g0Ki1mQ+WiaI26G69yfM6vMR6ZY8hOXK+CU7HNZrjm+ZY2tGn
+         Oz8Nie+28q8aybrBtOTM3QjreU+wAsb32Di8wzypLMT2AouThNOnBos5GtFoIy06i+hr
+         8CBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774644902; x=1775249702;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xdmn94fDq5EabxgUHdZFE1PchWB5l0Hn00gGljt6mxc=;
+        b=rMt9Au29Q2JH5TtsK1yuxrlcPb82qW8AZquL6diGcLhaD3jUNWna5PB3soE3WZCZKH
+         p5noxsDQ+ZKCvVHp/UIqtq/UiNKpPz3kuWI6xwiGjGZMJ6prXpNDsat6ckZsLcFzA3sj
+         mEggtM3tS/6ATbOss2Omc3WDo8NE+ZxwOoVtDF1gJVdqNEfjiWzpZho4urpf4i6OQF4h
+         FmZwQoQ8A4shOEbZmxVrr01vkZgQwGdxc3U8fohytcIJKPNDy1HeKuRYQI3dVIoMa+Rm
+         L77EkaSNigGnNygEWpNrlyfNZFLXJISfjHOWfFgZ8II4uGlpza6R9UwTpg4YgQhcxGMB
+         icoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX3omTL4+jADw5gB68N61qabwB8cka2sc8G3bIAMhYaO3mcEVMPWR6vXtHLn2ohYv+qusk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaZk/6MnV9hquIiP5T17PK+X8SiUOcCYlgTNXa2zHRAlPDE9FI
+	bZBuheahKrrM00/5Sx4nmv1J4nX+3WEHPjogPlHQfA+I+dEI0nbApuRwaLpRsl6FfD4h5HYK4XE
+	SungVHw==
+X-Received: from dybse8.prod.google.com ([2002:a05:7301:4908:b0:2be:77bc:5c34])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:693c:3113:b0:2c0:cff4:b456
+ with SMTP id 5a478bee46e88-2c185e5a4e2mr2359718eec.29.1774644901334; Fri, 27
+ Mar 2026 13:55:01 -0700 (PDT)
+Date: Fri, 27 Mar 2026 13:54:51 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] KVM: x86/pmu: Do not map fixed counters >= 3 to
- generic perf events
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260226230606.146532-1-zide.chen@intel.com>
- <20260226230606.146532-2-zide.chen@intel.com>
- <e94e4b40-11e4-4dce-adc7-6a9ce4993480@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <e94e4b40-11e4-4dce-adc7-6a9ce4993480@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <20260327205457.604224-1-surenb@google.com>
+Subject: [PATCH v6 0/6] Use killable vma write locking in most places
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, ljs@kernel.org, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+
+Now that we have vma_start_write_killable() we can replace most of the
+vma_start_write() calls with it, improving reaction time to the kill
+signal.
+
+There are several places which are left untouched by this patchset:
+
+1. free_pgtables() because function should free page tables even if a
+fatal signal is pending.
+
+2. userfaultd code, where some paths calling vma_start_write() can
+handle EINTR and some can't without a deeper code refactoring.
+
+3. mpol_rebind_mm() which is used by cpusset controller for migrations
+and operates on a remote mm. Incomplete operations here would result
+in an inconsistent cgroup state.
+
+4. vm_flags_{set|mod|clear} require refactoring that involves moving
+vma_start_write() out of these functions and replacing it with
+vma_assert_write_locked(), then callers of these functions should
+lock the vma themselves using vma_start_write_killable() whenever
+possible.
+
+Changes since v5 [1]:
+- Added Reviewed-by for unchanged patches, per Lorenzo Stoakes
+
+Patch#2:
+- Fixed locked_vm counter if mlock_vma_pages_range() fails in
+mlock_fixup(), per Sashiko
+- Avoid VMA re-locking in madvise_update_vma(), mprotect_fixup() and
+mseal_apply() when vma_modify_XXX creates a new VMA as it will already be
+locked. This prevents the possibility of incomplete operation if signal
+happens after a successful vma_modify_XXX modified the vma tree,
+per Sashiko
+- Removed obsolete comment in madvise_update_vma() and mprotect_fixup()
+
+Patch#4:
+- Added clarifying comment for vma_start_write_killable() when locking a
+detached VMA
+- Override VMA_MERGE_NOMERGE in vma_expand() to prevent callers from
+falling back to a new VMA allocation, per Sashiko
+- Added a note in the changelog about temporary workaround of using
+ENOMEM to propagate the error in vma_merge_existing_range() and
+vma_expand()
+
+Patch#5:
+- Added fatal_signal_pending() check in do_mbind() to detect
+queue_pages_range() failures due to a pendig fatal signal, per Sashiko
+
+[1] https://lore.kernel.org/all/20260326080836.695207-1-surenb@google.com/
+
+Suren Baghdasaryan (6):
+  mm/vma: cleanup error handling path in vma_expand()
+  mm: use vma_start_write_killable() in mm syscalls
+  mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
+  mm/vma: use vma_start_write_killable() in vma operations
+  mm: use vma_start_write_killable() in process_vma_walk_lock()
+  KVM: PPC: use vma_start_write_killable() in
+    kvmppc_memslot_page_merge()
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+ fs/proc/task_mmu.c                 |  12 +--
+ mm/khugepaged.c                    |   5 +-
+ mm/madvise.c                       |  13 ++-
+ mm/memory.c                        |   2 +
+ mm/mempolicy.c                     |  21 +++-
+ mm/mlock.c                         |  30 ++++--
+ mm/mprotect.c                      |  25 +++--
+ mm/mremap.c                        |   8 +-
+ mm/mseal.c                         |  24 ++++-
+ mm/pagewalk.c                      |  22 ++--
+ mm/vma.c                           | 162 ++++++++++++++++++++++-------
+ mm/vma_exec.c                      |   6 +-
+ 13 files changed, 251 insertions(+), 84 deletions(-)
 
 
-
-On 3/23/2026 10:48 PM, Mi, Dapeng wrote:
-> 
-> On 2/27/2026 7:06 AM, Zide Chen wrote:
->> Only fixed counters 0..2 have matching generic cross-platform
->> hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
->> Therefore, perf_get_hw_event_config() is only applicable to these
->> counters.
->>
->> KVM does not intend to emulate fixed counters >= 3 on legacy
->> (non-mediated) vPMU, while for mediated vPMU, KVM does not care what
->> the fixed counter event mappings are.  Therefore, return 0 for their
->> eventsel.
->>
->> Also remove __always_inline as BUILD_BUG_ON() is no longer needed.
->>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->>  arch/x86/kvm/vmx/pmu_intel.c | 26 ++++++++++++++------------
->>  1 file changed, 14 insertions(+), 12 deletions(-)
->>
->> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->> index 27eb76e6b6a0..4bfd16a9e6c7 100644
->> --- a/arch/x86/kvm/vmx/pmu_intel.c
->> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->> @@ -454,28 +454,30 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>   * different perf_event is already utilizing the requested counter, but the end
->>   * result is the same (ignoring the fact that using a general purpose counter
->>   * will likely exacerbate counter contention).
->> - *
->> - * Forcibly inlined to allow asserting on @index at build time, and there should
->> - * never be more than one user.
->>   */
->> -static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
->> +static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
->>  {
->>  	const enum perf_hw_id fixed_pmc_perf_ids[] = {
->>  		[0] = PERF_COUNT_HW_INSTRUCTIONS,
->>  		[1] = PERF_COUNT_HW_CPU_CYCLES,
->>  		[2] = PERF_COUNT_HW_REF_CPU_CYCLES,
->>  	};
->> -	u64 eventsel;
->> -
->> -	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
->> -	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
->> +	u64 eventsel = 0;
-> 
-> I'm not sure if we can directly add the "slots" event support in the
-> perf_hw_id list. It looks more straightforward, but it need to involve perf
-> changes and impact all architectures. Not sure if it's worthy to do it.
-> Current way is fine for me if we decided not to support the fixed counter 3
-> for  the legacy emulated vPMU.
-
-If the emulated vPMU does not intend to support fixed counter 3 and
-above, which is currently the case, I do not see any benefit in
-extending enum perf_hw_id, which is generic across platforms.
-
-> Maybe one minor optimization, we can directly return here and then don't
-> need to add so much indents, e.g.,
-> 
-> if (index >=3)
-> 
->     return eventsel;
-
-Yes, Agreed. The code is cleaner and it's more logical.
-
-> 
-> 
->>  
->>  	/*
->> -	 * Yell if perf reports support for a fixed counter but perf doesn't
->> -	 * have a known encoding for the associated general purpose event.
->> +	 * Fixed counters 3 and above don't have corresponding generic hardware
->> +	 * perf event, and KVM does not intend to emulate them on non-mediated
->> +	 * vPMU.
->>  	 */
->> -	eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
->> -	WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
->> +	if (index < 3) {
->> +		/*
->> +		 * Yell if perf reports support for a fixed counter but perf
->> +		 * doesn't have a known encoding for the associated general
->> +		 * purpose event.
->> +		 */
->> +		eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
->> +		WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
->> +	}
->>  	return eventsel;
->>  }
->>  
+base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
+-- 
+2.53.0.1018.g2bb0e51243-goog
 
