@@ -1,144 +1,95 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436573EF66B
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC68394463;
+	Fri, 27 Mar 2026 13:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774619171; cv=none; b=j++KfsV6Fe/lcnLA+erCqrUTGABmAIgGHRmZIlYz8om3O2QStUvDi7m57ZV9QK867MzU6CpospQnj5/lNKdKtN4wodTpCJEMSL/lcTDNdNB1E3Yt3IWghO0+8/oef9Cud53+Hrs19la9GyYwhd07CXXklGcYFejvV75vaK5szyE=
+	t=1774619778; cv=none; b=O58Q3VG90hfBmR+ypgV9kArLpvFVHg+NxnVNb4ZZCEM5ckq0xXTQZ9oRtqxfNZ4tye2/K0Ar1GnxfBK1PtkycOej8gvnciZZE7iTd/yvoTAqJu9USyveDPZnpbCEtPGHib2JBwNLCgY0BYj1BRLFOJ3IeSF0MtxIlj+6wmMUEiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774619171; c=relaxed/simple;
-	bh=M3mKnRIuDKs4NDJTUdrVebV0HAd1eZl9EMr4XSzrSDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNThiGTHKGN2WkJpkidyW1tngwRNOMkGvILBSeFwWKwPkInYd6qh0srRJtM4KyyECuWXUjnPltsC4pH34ZfkoC9TOxCkbbyZUTFGKem1ngA23xWp+ugOpcRNBKdUeKHW4wR2vYvBHhcLSJdGzEc8O2niDBrFZlXpVqASGjVlzRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O0Hffq32; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774619778; c=relaxed/simple;
+	bh=WCss18sy6f8aOP99Nk+4QmSSu+zP78Vtv2kjNibzlRU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HxcgX5QE76LtXWFMO0FPKP7TQ//+cyCagzLaqKRNuW4yPsGYWD7GXLI74HBH83B/AfXruQWDciqSDQO3inSasiVRfmwa1PnKNFhlGqdbBi+nd3q8Nt78HjQkpB2RMRDSoELI6mWMZlTbuK6yQw70plZOEXp/nTCrDLGa9JE6SXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ch1QomEW; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O0Hffq32"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774619169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E5I4/G72hvVsFtElipL0UZ7WDqmWzfz7Df4ICX/cOls=;
-	b=O0Hffq32sREdE16Q90nwsM0RhHKg7F1tM2lpbrQfUTTcwBxph3WBs8vK2au/2TDXN0ow3V
-	ujcxLuIutljpqtarRFurjYBSLRMCaFtlIeI4s4sZ+Gvqalbq+pUltyKa9LG/GaTkDLvG7y
-	ZGvJErP/OxFJxrI6zG321t38FbUVKvc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-B3v5Nm5sNkuoJ7zD4fQKiQ-1; Fri,
- 27 Mar 2026 09:46:05 -0400
-X-MC-Unique: B3v5Nm5sNkuoJ7zD4fQKiQ-1
-X-Mimecast-MFC-AGG-ID: B3v5Nm5sNkuoJ7zD4fQKiQ_1774619163
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C5067195608E;
-	Fri, 27 Mar 2026 13:46:02 +0000 (UTC)
-Received: from srv1.redhat.com (unknown [10.44.32.150])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 86AA8180075C;
-	Fri, 27 Mar 2026 13:45:55 +0000 (UTC)
-From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-To: qemu-block@nongnu.org,
-	qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org,
-	qemu-ppc@nongnu.org,
-	kvm@vger.kernel.org,
-	qemu-riscv@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>,
-	Hanna Reitz <hreitz@redhat.com>,
-	"Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Chinmay Rath <rathc@linux.ibm.com>,
-	Glenn Miles <milesg@linux.ibm.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-	Artyom Tarasenko <atar4qemu@gmail.com>,
-	Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 15/15] meson: Don't require nm for non-modular builds
-Date: Fri, 27 Mar 2026 15:44:01 +0200
-Message-ID: <20260327134401.270186-16-kkostiuk@redhat.com>
-In-Reply-To: <20260327134401.270186-1-kkostiuk@redhat.com>
-References: <20260327134401.270186-1-kkostiuk@redhat.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ch1QomEW"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26DCE15A1;
+	Fri, 27 Mar 2026 06:56:10 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8DDB63F99C;
+	Fri, 27 Mar 2026 06:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774619776; bh=WCss18sy6f8aOP99Nk+4QmSSu+zP78Vtv2kjNibzlRU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ch1QomEW70t+DRrnli8fMm69HGPNma+E9iROlZi7nQwaoX6dUOQ2JtWnRSIdpGqg7
+	 fZSIz7auQeuccyoYEIQo10XRwAP4aihUy6i1bGlld6hD18OxpUTK41orhRrdaSB5fV
+	 nr9RhTZJNZx6SnSUjSgZiRXnR7ex2+tuAeEXGGxQ=
+Date: Fri, 27 Mar 2026 13:56:11 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, will@kernel.org, maz@kernel.org,
+	oupton@kernel.org, miko.lenczewski@arm.com, kevin.brodsky@arm.com,
+	broonie@kernel.org, ardb@kernel.org, suzuki.poulose@arm.com,
+	lpieralisi@kernel.org, joey.gouly@arm.com, yuzenghui@huawei.com
+Subject: Re: (subset) [PATCH v17 0/8] support FEAT_LSUI
+Message-ID: <acaMex3Pq13njdRt@e129823.arm.com>
+References: <20260314175133.1084528-1-yeoreum.yun@arm.com>
+ <177461632621.2272468.5197255307509898250.b4-ty@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177461632621.2272468.5197255307509898250.b4-ty@arm.com>
 
-In the MSVC build environment, nm is missing; at the same time,
-scripts/undefsym.py exits with code 0 at the beginning
-for non-modular builds.
+Hi Catalin,
 
-So, this change is harmless because it already didn't do anything
-in non-modular builds, but remove the additional tool requirements.
+> On Sat, 14 Mar 2026 17:51:25 +0000, Yeoreum Yun wrote:
+> > Since Armv9.6, FEAT_LSUI supplies the load/store instructions for
+> > previleged level to access to access user memory without clearing
+> > PSTATE.PAN bit.
+> >
+> > This patchset support FEAT_LSUI and applies it mainly in
+> > futex atomic operation and others.
+> >
+> > [...]
+>
+> Applied to arm64 (for-next/feat_lsui), thanks!
 
-Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
----
- meson.build | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+Thanks!
 
-diff --git a/meson.build b/meson.build
-index 4a3fc306b7..cc9e9784e9 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3908,6 +3908,9 @@ modinfo_generate = find_program('scripts/modinfo-generate.py')
- modinfo_files = []
- audio_modinfo_files = []
- 
-+block_syms = []
-+qemu_syms = []
-+
- block_mods = []
- system_mods = []
- emulator_modules = []
-@@ -4023,18 +4026,18 @@ if enable_modules
-   if emulator_modules.length() > 0
-     alias_target('modules', emulator_modules)
-   endif
--endif
- 
--nm = find_program('nm')
--undefsym = find_program('scripts/undefsym.py')
--block_syms = custom_target('block.syms', output: 'block.syms',
--                             input: [libqemuutil, block_mods],
--                             capture: true,
--                             command: [undefsym, nm, '@INPUT@'])
--qemu_syms = custom_target('qemu.syms', output: 'qemu.syms',
--                             input: [libqemuutil, system_mods],
--                             capture: true,
--                             command: [undefsym, nm, '@INPUT@'])
-+  nm = find_program('nm')
-+  undefsym = find_program('scripts/undefsym.py')
-+  block_syms = custom_target('block.syms', output: 'block.syms',
-+                              input: [libqemuutil, block_mods],
-+                              capture: true,
-+                              command: [undefsym, nm, '@INPUT@'])
-+  qemu_syms = custom_target('qemu.syms', output: 'qemu.syms',
-+                              input: [libqemuutil, system_mods],
-+                              capture: true,
-+                              command: [undefsym, nm, '@INPUT@'])
-+endif
- 
- authz_ss = authz_ss.apply({})
- libauthz = static_library('authz', authz_ss.sources() + genh,
--- 
-2.52.0
+>
+> I decided to drop patch [6/8] (arm64: armv8_deprecated: disable swp
+> emulation when FEAT_LSUI present). The way FEAT_LSUI support looks now,
+> we still have uaccess_enable_privileged() working properly and we could
+> even support SWP emulation using exclusives. While it's highly unlikely
+> to see both 32-bit EL0 and FEAT_LSUI in practice,
 
+This is one of decisive reason to drop the swp emulation with LSUI
+(https://lore.kernel.org/all/aXDbBKhE1SdCW6q4@willie-the-truck/)
+
+However,
+
+> models may support the
+> combination and disabling SWP emulation feels pretty artificial.
+
+But I'm not sure this is a sufficient rationale for supporting SWP with LSUI,
+since it's highly unlikely to encounter a real CPU that supports both 32-bit EL0
+and FEAT_LSUI.
+
+Anyway, it's fair enough to drop 6/8 right now.
+But I appreciate whether it would be good to support SWP emulation with
+LSUI so that let me respin for it with the former patch.
+
+[...]
+
+--
+Sincerely,
+Yeoreum Yun
