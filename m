@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8795930E82E
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEF43128D9
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774619098; cv=none; b=czE4fytRAPDhBmWFaXA3pYwyWeVpEnQsfQ3eb9OMtJUolBER7QRPLBNphiOvYM0Zxd2qL/EOap38r++G2gc1IsFTwt1PWF6uBMvJo4IpE3bdS8Vv/fQOqfvFww8/uqkcch9uilgue00+pK6WQCviUcfWc6mtt7RJR7IJMxwmj6I=
+	t=1774619105; cv=none; b=axKfur2PPcmH/bkocxrzxrnXoryUb6x/48icxbOiCfsGpgGBqJCh0QDPtSQpEFGyH4a+QsnduOdjS9UKUKt3UWRqD2aNx3tUQk0fPE7IKD9Z9XO4suNJ4QjiSFdcibeeRDvsWiefQi+BnasJ1vAOupDTSolDA6zujmxI9rvgCDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774619098; c=relaxed/simple;
-	bh=Bx+ScUx0aoshgRXPF/JZodx90P2ETIjlhke8xh9nW1M=;
+	s=arc-20240116; t=1774619105; c=relaxed/simple;
+	bh=rmH50mlXFctItJxUYf6IhN5duqqGL9Gyb2aMvIETHzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ3ENG4r0rDxXkGqWvq1jT4hmq7h5qQzsN70M7ItSTS5rNzMc+oeBY4T6IW8Tc+mUiR533YK8a58H2PDR4uHqg6IZfWTt+3DOsWzgeJWJavGp3c7I9nKZNQx1PfcppiMsAC0Zbqo5JjL0n2mNCIq/LNKdCcVyhMsNEt7/0E/Y1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L670YR6H; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=LgW1vJy9w0SKQUJjsHH97lEKIuJNDFAkXp8qzqRV+8JG2CnkSIwqqNWyDAezSNPaCyr5fCPXByMkEyHTSKDbWbUZGESBDK48gdzFP177KOg9EiftLIynSW2WQhfwnat5KlGABCu6YFzv1ijlBlGRKw666sZCRABi+L0mtx0PPIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PVHGXsDf; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L670YR6H"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PVHGXsDf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774619096;
+	s=mimecast20190719; t=1774619102;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AR+sep0luI+DD5MyOrfuehNm1J5XGS2aRpMrMqNwkbQ=;
-	b=L670YR6HxyjjEyYTKp75Y/7/5KlEHYzTgc7B72EOFqb73+7WMLHWrzoPyNZf/GFxS53cYa
-	VavybwqPRLt4rWjLXi7VN/57Tk5DYFxoGm06ifC5SpYqk5bWJ9fwSbwR6JK2QD5P1ssALr
-	DsgVFXtzuI+g8qA+bT+vzgfCyqamabc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=S64lHc8nDcDVXki4gsEE1CO0XdJngbvvtfp4BSK2uts=;
+	b=PVHGXsDfoJNtPwf/Vrz8khrH+3hVKbgDwYiCTFCDbyBcO7og+JYrlCvUGS7psgJ1ujC5h0
+	DdbCDE782d7qygXvRZMdPMCGvqR3yjJ+prGPAMQGtTmoXrNw0P0DxMf19K84hqu9HapRye
+	uZ4kZfv7SpyFz+b31O2h6dYCWiutMdk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-xJUuhVajPDWUly-Un_mzhQ-1; Fri,
- 27 Mar 2026 09:44:53 -0400
-X-MC-Unique: xJUuhVajPDWUly-Un_mzhQ-1
-X-Mimecast-MFC-AGG-ID: xJUuhVajPDWUly-Un_mzhQ_1774619090
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-pR8oze6NPIeb-CDJB9r1aQ-1; Fri,
+ 27 Mar 2026 09:45:00 -0400
+X-MC-Unique: pR8oze6NPIeb-CDJB9r1aQ-1
+X-Mimecast-MFC-AGG-ID: pR8oze6NPIeb-CDJB9r1aQ_1774619097
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5A99C1800359;
-	Fri, 27 Mar 2026 13:44:50 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 541481800281;
+	Fri, 27 Mar 2026 13:44:57 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.44.32.150])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61CEB1800671;
-	Fri, 27 Mar 2026 13:44:43 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C548E1800671;
+	Fri, 27 Mar 2026 13:44:50 +0000 (UTC)
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org,
@@ -69,9 +69,9 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
 	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
 	Artyom Tarasenko <atar4qemu@gmail.com>,
 	Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 05/15] hw/arm: Use glib2 instead of strcasecmp/strncasecmp
-Date: Fri, 27 Mar 2026 15:43:51 +0200
-Message-ID: <20260327134401.270186-6-kkostiuk@redhat.com>
+Subject: [PATCH v2 06/15] target/sparc: Use glib2 instead of strcasecmp/strncasecmp
+Date: Fri, 27 Mar 2026 15:43:52 +0200
+Message-ID: <20260327134401.270186-7-kkostiuk@redhat.com>
 In-Reply-To: <20260327134401.270186-1-kkostiuk@redhat.com>
 References: <20260327134401.270186-1-kkostiuk@redhat.com>
 Precedence: bulk
@@ -87,37 +87,34 @@ This is a change in semantics. g_ascii_strcasecmp() doesn't honour
 locale but strcasecmp() does. But this is OK for at least one reason:
  (1) QEMU always runs with the C locale so there's not an actual
      behaviour change here
- (2) we want the comparison on boot names to be a plain ASCII
-     one, not to do weird things with "I" in Turkish locales,
+ (2) we want the comparison on boolean property value to be a plain
+     ASCII one, not to do weird things with "I" in Turkish locales,
      so g_ascii_strcasecmp() is better as it's explicit about that
 
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- hw/arm/xilinx_zynq.c | 8 ++++----
+ target/sparc/cpu.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index d43f36b718..e3cfeb4c08 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -186,13 +186,13 @@ static void zynq_set_boot_mode(Object *obj, const char *str,
-     ZynqMachineState *m = ZYNQ_MACHINE(obj);
-     uint8_t mode = 0;
- 
--    if (!strncasecmp(str, "qspi", 4)) {
-+    if (!g_ascii_strncasecmp(str, "qspi", 4)) {
-         mode = 1;
--    } else if (!strncasecmp(str, "sd", 2)) {
-+    } else if (!g_ascii_strncasecmp(str, "sd", 2)) {
-         mode = 5;
--    } else if (!strncasecmp(str, "nor", 3)) {
-+    } else if (!g_ascii_strncasecmp(str, "nor", 3)) {
-         mode = 2;
--    } else if (!strncasecmp(str, "jtag", 4)) {
-+    } else if (!g_ascii_strncasecmp(str, "jtag", 4)) {
-         mode = 0;
-     } else {
-         error_setg(errp, "%s boot mode not supported", str);
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 1493336e7a..7704610428 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -174,10 +174,10 @@ static void sparc_cpu_parse_features(const char *typename, char *features,
+              * TODO: remove minus-override-plus semantics after
+              *       warning for a few releases
+              */
+-            if (!strcasecmp(val, "on") ||
+-                !strcasecmp(val, "off") ||
+-                !strcasecmp(val, "true") ||
+-                !strcasecmp(val, "false")) {
++            if (!g_ascii_strcasecmp(val, "on") ||
++                !g_ascii_strcasecmp(val, "off") ||
++                !g_ascii_strcasecmp(val, "true") ||
++                !g_ascii_strcasecmp(val, "false")) {
+                 error_setg(errp, "Boolean properties in format %s=%s"
+                                  " are not supported", name, val);
+                 return;
 -- 
 2.52.0
 
