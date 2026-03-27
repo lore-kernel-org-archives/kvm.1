@@ -1,514 +1,613 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691363033FF
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 01:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826972F361F
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 01:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774574043; cv=pass; b=jWSvURu3P3PrsnLvCKjH4TUY+7/ZF8Jc6ShpkEq6KXf+rxxvp4LhGkRQEAG3x/mCIH2+9F2xBkpmBo9RoYkLsPqp7EcjRGcLEx7q9GKu3VUewd+EgZycw7pOSTr2m+MTqadoB7pAelSB8EAw82GCd8E+nM8ltRs51axMsfsR7SQ=
+	t=1774574058; cv=pass; b=aZ5h47zO35TPgOn3Q8baQGl9KzUmDO+mES2DHedbZ8ek56dsFUW22VGSpeaYXjScSYUYGgUTN5icVzvRwJe6l4LqxjxQvhqZGC1LQE/H5MGb6Akgp2j4eaqffyb366WfM1s4phEaEzvs7Ji/pDwIplQZcP7pCPTtdY9vrgficBY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774574043; c=relaxed/simple;
-	bh=K9BdomJ0oyd/P8kHvACnjRTj74BOP1zpB7Ajzk4ly5A=;
+	s=arc-20240116; t=1774574058; c=relaxed/simple;
+	bh=uM0FU2kTYfUOhIKuwEI6sXERO8cA7btOSbdxbBskCKM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hK5Co2D+zBLY6LP+R3LxiE4X+0Kwvq0iKHCbExjBJL9GRMIww7WL4+RH/kG5F1OYU6QxrliMsgRFzN6OfoVb52G/9Bm2Zm3IWemw9f5I0UhCm1ofGfwoxjE8bomLOJKyy1rFNbaZgoYOR9BXFV0BJwoOFYYlXmJR3q078PCLHIQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KnLmiNSG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iFqso8by; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=XW6+nk9kfcWo/vb9VA/9+ondTGnX50gXM1TMNF1EkF6ibN6issMGWAt9abEVBF/cbRRcMiJ5iz/ZpuCKUnuBu2OpVhUPauAPEi1viL1d5LypOSP8xoALMy2DIKpP0mBM6PYzTnEiW4faXP/ZCyCkNSPpCCvtD1X+Qg8Vjbb833s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aQ6uJ8gv; arc=pass smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KnLmiNSG";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iFqso8by"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774574040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6jItjwJJuANgTXGr+5yBvT6YAOU5YWaNA37h+VHMmew=;
-	b=KnLmiNSGWWdq+BL2j/h3+4XhE6nHlk9WVeL+w+BaCU4Xi/MnGLBCV9+Sz2fyieAfyChjMH
-	X0tI3Pueh4CtNKUVdakA5CnaHJK/LzULiyMY6tBaA0zBQaditN0mrv+hBTXyCHeQTnJ6K/
-	e7sjLgppUtsX3Rt/hVn8HVGSQMyLQ6s=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-YTnNQQqCM1yn45PzCpCadg-1; Thu, 26 Mar 2026 21:13:58 -0400
-X-MC-Unique: YTnNQQqCM1yn45PzCpCadg-1
-X-Mimecast-MFC-AGG-ID: YTnNQQqCM1yn45PzCpCadg_1774574038
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c7380305a9aso1855746a12.1
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:13:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774574038; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aQ6uJ8gv"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b9825ba7f9dso404384566b.0
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 18:14:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774574055; cv=none;
         d=google.com; s=arc-20240605;
-        b=jgFP9H3BLVVEQuIJQfnAIRMkGXOw6m5coyI/cacRuNjPWd3FP0nzG0lclhMDEztHsv
-         CzmoecGqKVTlnk4RSyPkZEd+Nzi4kllqNu22glM/z7i4KfYEwcOs5OlVrmb/V0BCglRO
-         7rIu6jGgtfeZ1W883A9WIQ+uxRxPD+ac6NwQQAI9J9t/urhn4rnjMMci9kLYWiWFWPbb
-         1jwwrVh0WwoKWVsiOUPdyAv3Uh0H4dFIVXLLr91KtrBAqFHfhL3j7c1bWcr8uoSiKw65
-         DqqhjWtyRo2SHgeCj2cRhymNKVS6Uw6u1r4puebOf+lge9omHWwuN0RS/z/EQ5Wofp1I
-         r7OQ==
+        b=VluK12hJpw9Mt5XpOd/FvlapmN8C10+rwJwFo68BneJsHDzTdhsvUGALI8iMEdIo/8
+         HARHYBCnuc11BS/4OBdTo9B30ryrgAMMLhSVGc3ZVmuYbYT4IRcNrB/FjIwojrF1wtUF
+         CTAgdkL2vqDoh/V1Jm4vnXTWgnl+T5kXx5spv8o7il4FcrqPjRbk6PqomA2Duu3YM7CK
+         pibXD5Tpz6ds81wc3hygjHlXE/ObitVY/p7ePjykCXL58MlaIo59mJKcCeZYi5OhRThe
+         BqDlM8PAXdGRFdQDcbh058iGV7fv6wiNJTs2sRSGrH574NqTEZvYiGV6U47yOqwBBm91
+         R/9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=6jItjwJJuANgTXGr+5yBvT6YAOU5YWaNA37h+VHMmew=;
-        fh=pqSXGpE6mH6HwjmyztkRRx33jyBkWnhVjHmSXdgE5mA=;
-        b=JnEYDjmamgX1iDymdIXTyEIrD7je3OFVkt4uKQHJfSltc370NIwjHDUaxUB+KW+rA5
-         tptJDvHps7ISSAoLHpRaNefpTVEGLWHTnPzdl+CnMpqKYjEibCYhbTYyVm7wMPsuzamv
-         AWA+ltIKQ9w1CEm/RY7Ugy0gIt1R5CQ+rdvhzZ4HimR1W9t6qaZpTGVSVSebpEMOwJoM
-         P9TIwX5E+8h4SPjfF8fgRDv4F8WvaEYe0cYR6KxT9F0v3PNMUREQpgofm7mOukJs3TdN
-         vY52vDBlGlq5uSEREWl0KLW1wapCRN0TNuZ5+lZBvNSbMlWYF8DtaLSIuDYsA3LzczdG
-         d3Lg==;
+        bh=HhxZX2O1RE14J5J20PYHIBXD8rpdMgbUWp57ctYeyoA=;
+        fh=hNCy33MuhOJBj8tccBSnwH2uZCiXnCEQ3AZcX5zKKno=;
+        b=arARGZiefJObkcbN8n9AKSeH47F34s6o4zYGnWD18jg4Y9WYiAaM/B5XdabagYRCkm
+         9rHkQhlARiE9yzlO02cnmRRvN3iPs84O2FtnCK7vtPMFxy+/L+JdgD9ZRB9WDJ27s5Lw
+         0C0qxGyD0HzNOhi98ryj644RCGYhlAPQel7zrvLH6JKJc0vSwhjB8btuG7CL8fLIfS+Q
+         UN2Khhw22sttTz1OP1u5vIOjLXp+6QbhXj+sjxaXeaeugc18olo5BsMQ1bdRYVFF1H62
+         IXmkBk65x1Ksqi+Kfz8gjsOihl2YgC0t7TZtWR659J3C2ugRQJZ8jRImw00DvFTqbzHM
+         H11g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774574038; x=1775178838; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774574055; x=1775178855; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6jItjwJJuANgTXGr+5yBvT6YAOU5YWaNA37h+VHMmew=;
-        b=iFqso8byqtZv2QaQvyLZfnSyTUBrOwduLRF8MoUFfuN9oDWJm8WETESKA7QuzLp44i
-         S1g9lSWd+g5pI3mkw12rIEg8KALw+A6cVoffZZFQCrMCJBFRoD6HeT7CGTS5TuMONpcN
-         K24UpUSggTJ1jZIzN8s8xUDWkFVC/D9tUBa+4E0Icql+FhdFhdOxQKtifGn0t3aeAiA9
-         /mkZC15eoHwP02C+9QPKLCBtH3ZsRkTmGjWvcJtriIThM8awOxGkY4X+koJp+PqSxtdy
-         btbzj/FjbberdF3S6DJX3eE4Inh1+77S1PY+TVqpbMrrb+rG/WBIja5PAqYPX9Ep+Dyg
-         Tk/Q==
+        bh=HhxZX2O1RE14J5J20PYHIBXD8rpdMgbUWp57ctYeyoA=;
+        b=aQ6uJ8gv3z97tXusFBMzHzAI+pBB85zZmBlg+vlge9JbfBMb6Bmp5GUKGHHj7hIeRW
+         Ls+uvlprVsJ7i2/3F5o8CUywEVF8fXvXWTAGpJyFGlNVQ057rBdq5PXC76kPQwBA9Hhc
+         PezclSvVacmKvlZwMjpORDYQ5QVLY4y3kSDONxiGG4nakz6gEu8OgL3PMW2Rx+C0PtjD
+         QNcmViPCBNpc0HXLzfcyBZ7atUjaHnhWaKJVtpAIQ33oQt7QUbWFrFhN/MJeBT48qm8f
+         i+e4uehfQeiGzIaHpFs14BOT3YMI4nfCcDND2OJ7YF28wkmgv5EPPNSXb/wD32X9ulvZ
+         GVbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774574038; x=1775178838;
+        d=1e100.net; s=20251104; t=1774574055; x=1775178855;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=6jItjwJJuANgTXGr+5yBvT6YAOU5YWaNA37h+VHMmew=;
-        b=WENbI0om7/ddqdmlD6B4wpV/MLFZGOAMlGCUiHPv66y/T4hQhfpI4Xfm1KLNWGyXQi
-         WgxO9LwYSohybXoyZVfuBOSnArcK0brYbgH+HrdmIBxN97etXnsHhNx2ci+VGf0ltVA/
-         jnEyUSOssyJVLPbBf6t1smJfgqaKkhwQeKOCMBOP4dPLSf37VoPKWeAUqTSRZV8ZLBE5
-         b4J72V8AquGSSqRHzFW3y5H89A0GRV1dWni4ooZ+u18TqjpOxOd85zpvv8598j09z+Kb
-         CC8GlFxuInYqlfl4Dq4LzlSNeYVOPiskXUpi33bgDFUMPP+dnWygm6W4P9S9Mm+nXxPW
-         Exsw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBn9FNVEd2f0TGWQpcP/6NibmxZLfOKf3oUxl5qxyz2Ff+Ih+uyRhbGAmb7Syi5FEsegE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy59zGZJrnNqdrZlLg0gPmLhViMAy5Xs8yCASsTgX/7BVQuMZpD
-	ZJ54aQcsMzF2jZXwAYcsXwOm73mxrIHxsgbpxkpGwhD61k+GkbRWvq2/fsNKr6kLgKpV/jPaD4z
-	8C/tTjuv9L/sPBLMxs2DOJgifBIs5FxEEhKJ4Tqfh+ns3121T3sIXmC2iJP9Icd8W6Bfx76Bsms
-	pHKx5YsIykD3+4qSx+MJKW7/0kEg52
-X-Gm-Gg: ATEYQzyQnf6YB1CXMAJFx/qbieyrZQvN7IXd6T0D/WI2AW3o7ZNbw8dwsrDshFPNwZ4
-	FZDPUudakwAPpjWLKgF8myVp0XIK+R8VRKg8t50gblqIpFIzFtazEu9AU75Sa8W8jb2ENro5sPG
-	SDMNeYDuEqTi1oHX0Ih4Dz0ZEWM2ewp5HUg6bBWyWuPl1EZRHpZIlOwo8y9QS5Kl3yuow42D+JX
-	AuGw4M=
-X-Received: by 2002:a05:6a20:1582:b0:394:505d:fcf8 with SMTP id adf61e73a8af0-39c73809298mr3587316637.30.1774574037565;
-        Thu, 26 Mar 2026 18:13:57 -0700 (PDT)
-X-Received: by 2002:a05:6a20:1582:b0:394:505d:fcf8 with SMTP id
- adf61e73a8af0-39c73809298mr3587271637.30.1774574036896; Thu, 26 Mar 2026
- 18:13:56 -0700 (PDT)
+        bh=HhxZX2O1RE14J5J20PYHIBXD8rpdMgbUWp57ctYeyoA=;
+        b=M7fg5X5+Gonm9shXgD5zH7VUle8uwa1S0iMmqmBNZP19+c6Z0Z+WVtfHEqgmV8vtA3
+         qUqUA8iS7hS9Nifc0exl2CPegw0aJ7+wqWxuWUbCYa/LNYu9nzVKznNdfnGDn/dPdg+r
+         eTSeFG6uqFLLPEQkqM6B9Ob1XxhwWa3hzljT3RNWoBdoeO9mxg2FtkzmDb3lITQLHNwX
+         i8lTrVcTeik2eqCn20SSD/j3THHiHNixFi3nM71JLwKviiJzIX/SNkps3ohDZqQYVwkS
+         jpQP9t+BMOLtATlyCqggU0kXSuopfvzFuoDKFqSGlE0uPw1P1Fu+isLdRr7W15kFlGQ5
+         pbcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVvuXxQrWilxhMxJaXmxV/fwqTbBSwe6OUAlmIWGIID0davPM5qzVIX3KiaOUL3T8qh8Ow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvzJ1/7rZPTV9uWEP/UqvMdaldCygrUO1MAiLaDoqAW2vzW/4q
+	vrTx7eNYy1/gGGyEqldBebzrgTdXRdui+kp2SXlfPSvDNRKmm1rNyQg1L8euhVc0ImJepbGBuMS
+	WW+6gb3LBe7Wd2+DPZFkRMcxBapYF5JvSfMfIc1Wq
+X-Gm-Gg: ATEYQzwLh3fjD2IhzQd+CAxiV0oSOqaZ/l62cNMVJ9aHCN8fQ08Jfu+oN1o8jMuUWnU
+	IUWrAQXiqL887LuGF3ETukFSbi/rlpmFojDkWGzDlN3of8wp5kTDsoEu/M4Qn88yPKUzupJIKLW
+	V7Q8jR4bgeKUmmCyBcXTNITN58eW5xjLxQTi2NNPCgQTL8z/3gPl8+HMUDEcNsRWF+tdMOJX4BR
+	Gf1xIbKxLe4drxAVwQl/iC91cFWtBJOoGcalGdNMWjTRNU5FhbSr9kcAp7WUihbkYX8lmGj3m//
+	8rmdhuZ1dthI7Mc/tptimL9c/OCW6uZXQKZTJ9zkCp5KFDD27iNKLLVcNE7kI8O8QjHVXdWxBCy
+	K2o5j
+X-Received: by 2002:a17:907:1c1e:b0:b96:f02b:3d5a with SMTP id
+ a640c23a62f3a-b9b2e9b5216mr262667266b.16.1774574054212; Thu, 26 Mar 2026
+ 18:14:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
- <20260312130639.138988-5-simon.schippers@tu-dortmund.de> <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
- <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de> <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
- <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com> <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
-In-Reply-To: <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Mar 2026 09:13:44 +0800
-X-Gm-Features: AQROBzCm0eJyvWEdhgKck6Ldr_rdZXEPK0YJuDBmFmgznfSwGMPNb_QymFWCZlc
-Message-ID: <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mst@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
-	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev
+References: <20260306171815.3160826-1-rppt@kernel.org> <20260306171815.3160826-11-rppt@kernel.org>
+In-Reply-To: <20260306171815.3160826-11-rppt@kernel.org>
+From: James Houghton <jthoughton@google.com>
+Date: Thu, 26 Mar 2026 18:13:37 -0700
+X-Gm-Features: AQROBzBQyge7wu5M6M8_oSuF4nnH7MkTzeWL7KSgT2vc7Vxrdz4Z0F92-JPqKdQ
+Message-ID: <CADrL8HXajnfE=WusxL=DeF7VcvrsX9z5XDC4mPt1JfMOd7J5DA@mail.gmail.com>
+Subject: Re: [PATCH v2 10/15] shmem, userfaultfd: implement shmem uffd
+ operations using vm_uffd_ops
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
+	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 26, 2026 at 11:31=E2=80=AFPM Simon Schippers
-<simon.schippers@tu-dortmund.de> wrote:
+On Fri, Mar 6, 2026 at 9:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
+e:
 >
-> On 3/26/26 03:41, Jason Wang wrote:
-> > On Wed, Mar 25, 2026 at 10:48=E2=80=AFPM Simon Schippers
-> > <simon.schippers@tu-dortmund.de> wrote:
-> >>
-> >> On 3/24/26 11:14, Simon Schippers wrote:
-> >>> On 3/24/26 02:47, Jason Wang wrote:
-> >>>> On Thu, Mar 12, 2026 at 9:07=E2=80=AFPM Simon Schippers
-> >>>> <simon.schippers@tu-dortmund.de> wrote:
-> >>>>>
-> >>>>> This commit prevents tail-drop when a qdisc is present and the ptr_=
-ring
-> >>>>> becomes full. Once an entry is successfully produced and the ptr_ri=
-ng
-> >>>>> reaches capacity, the netdev queue is stopped instead of dropping
-> >>>>> subsequent packets.
-> >>>>>
-> >>>>> If producing an entry fails anyways due to a race, tun_net_xmit ret=
-urns
-> >>>>> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected beca=
-use
-> >>>>> LLTX is enabled and the transmit path operates without the usual lo=
-cking.
-> >>>>>
-> >>>>> The existing __tun_wake_queue() function wakes the netdev queue. Ra=
-ces
-> >>>>> between this wakeup and the queue-stop logic could leave the queue
-> >>>>> stopped indefinitely. To prevent this, a memory barrier is enforced
-> >>>>> (as discussed in a similar implementation in [1]), followed by a re=
-check
-> >>>>> that wakes the queue if space is already available.
-> >>>>>
-> >>>>> If no qdisc is present, the previous tail-drop behavior is preserve=
-d.
-> >>>>
-> >>>> I wonder if we need a dedicated TUN flag to enable this. With this n=
-ew
-> >>>> flag, we can even prevent TUN from using noqueue (not sure if it's
-> >>>> possible or not).
-> >>>>
-> >>>
-> >>> Except of the slight regressions because of this patchset I do not se=
-e
-> >>> a reason for such a flag.
-> >>>
-> >>> I have never seen that the driver prevents noqueue. For example you c=
-an
-> >>> set noqueue to your ethernet interface and under load you soon get
-> >>>
-> >>> net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
-> >>>                                            dev->name);
-> >>>
-> >>> followed by a -ENETDOWN. And this is not prevented even though it is
-> >>> clearly not something a user wants.
-> >>>
-> >>>>>
-> >>>>> Benchmarks:
-> >>>>> The benchmarks show a slight regression in raw transmission perform=
-ance,
-> >>>>> though no packets are lost anymore.
-> >>>>>
-> >>>>> The previously introduced threshold to only wake after the queue st=
-opped
-> >>>>> and half of the ring was consumed showed to be a descent choice:
-> >>>>> Waking the queue whenever a consume made space in the ring strongly
-> >>>>> degrades performance for tap, while waking only when the ring is em=
-pty
-> >>>>> is too late and also hurts throughput for tap & tap+vhost-net.
-> >>>>> Other ratios (3/4, 7/8) showed similar results (not shown here), so
-> >>>>> 1/2 was chosen for the sake of simplicity for both tun/tap and
-> >>>>> tun/tap+vhost-net.
-> >>>>>
-> >>>>> Test setup:
-> >>>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
-> >>>>> Average over 20 runs @ 100,000,000 packets. SRSO and spectre v2
-> >>>>> mitigations disabled.
-> >>>>>
-> >>>>> Note for tap+vhost-net:
-> >>>>> XDP drop program active in VM -> ~2.5x faster, slower for tap due t=
-o
-> >>>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in pe=
-rf)
-> >>>>>
-> >>>>> +--------------------------+--------------+----------------+-------=
----+
-> >>>>> | 1 thread                 | Stock        | Patched with   | diff  =
-   |
-> >>>>> | sending                  |              | fq_codel qdisc |       =
-   |
-> >>>>> +------------+-------------+--------------+----------------+-------=
----+
-> >>>>> | TAP        | Transmitted | 1.151 Mpps   | 1.139 Mpps     | -1.1% =
-   |
-> >>>>> |            +-------------+--------------+----------------+-------=
----+
-> >>>>> |            | Lost/s      | 3.606 Mpps   | 0 pps          |       =
-   |
-> >>>>> +------------+-------------+--------------+----------------+-------=
----+
-> >>>>> | TAP        | Transmitted | 3.948 Mpps   | 3.738 Mpps     | -5.3% =
-   |
-> >>>>> |            +-------------+--------------+----------------+-------=
----+
-> >>>>> | +vhost-net | Lost/s      | 496.5 Kpps   | 0 pps          |       =
-   |
-> >>>>> +------------+-------------+--------------+----------------+-------=
----+
-> >>>>>
-> >>>>> +--------------------------+--------------+----------------+-------=
----+
-> >>>>> | 2 threads                | Stock        | Patched with   | diff  =
-   |
-> >>>>> | sending                  |              | fq_codel qdisc |       =
-   |
-> >>>>> +------------+-------------+--------------+----------------+-------=
----+
-> >>>>> | TAP        | Transmitted | 1.133 Mpps   | 1.109 Mpps     | -2.1% =
-   |
-> >>>>> |            +-------------+--------------+----------------+-------=
----+
-> >>>>> |            | Lost/s      | 8.269 Mpps   | 0 pps          |       =
-   |
-> >>>>> +------------+-------------+--------------+----------------+-------=
----+
-> >>>>> | TAP        | Transmitted | 3.820 Mpps   | 3.513 Mpps     | -8.0% =
-   |
-> >>>>> |            +-------------+--------------+----------------+-------=
----+
-> >>>>> | +vhost-net | Lost/s      | 4.961 Mpps   | 0 pps          |       =
-   |
-> >>>>> +------------+-------------+--------------+----------------+-------=
----+
-> >>>>>
-> >>>>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kerne=
-l.org/
-> >>>>>
-> >>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> >>>>> ---
-> >>>>>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
-> >>>>>  1 file changed, 28 insertions(+), 2 deletions(-)
-> >>>>>
-> >>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> >>>>> index b86582cc6cb6..9b7daec69acd 100644
-> >>>>> --- a/drivers/net/tun.c
-> >>>>> +++ b/drivers/net/tun.c
-> >>>>> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buf=
-f *skb, struct net_device *dev)
-> >>>>>         struct netdev_queue *queue;
-> >>>>>         struct tun_file *tfile;
-> >>>>>         int len =3D skb->len;
-> >>>>> +       bool qdisc_present;
-> >>>>> +       int ret;
-> >>>>>
-> >>>>>         rcu_read_lock();
-> >>>>>         tfile =3D rcu_dereference(tun->tfiles[txq]);
-> >>>>> @@ -1063,13 +1065,37 @@ static netdev_tx_t tun_net_xmit(struct sk_b=
-uff *skb, struct net_device *dev)
-> >>>>>
-> >>>>>         nf_reset_ct(skb);
-> >>>>>
-> >>>>> -       if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-> >>>>> +       queue =3D netdev_get_tx_queue(dev, txq);
-> >>>>> +       qdisc_present =3D !qdisc_txq_has_no_queue(queue);
-> >>>>> +
-> >>>>> +       spin_lock(&tfile->tx_ring.producer_lock);
-> >>>>> +       ret =3D __ptr_ring_produce(&tfile->tx_ring, skb);
-> >>>>> +       if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_prese=
-nt) {
-> >>>>
-> >>>> So, it's possible that the administrator is switching between noqueu=
-e
-> >>>> and another qdisc. So ptr_ring_produce() can fail here, do we need t=
-o
-> >>>> check that or not?
-> >>>>
-> >>>
-> >>> Do you mean that? My thoughts:
-> >>>
-> >>> Switching from noqueue to some qdisc can cause a
-> >>>
-> >>> net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
-> >>>                                            dev->name);
-> >>>
-> >>> followed by a return of -ENETDOWN in __dev_queue_xmit().
-> >>> This is because tun_net_xmit detects some qdisc with
-> >>>
-> >>> qdisc_present =3D !qdisc_txq_has_no_queue(queue);
-> >>>
-> >>> and returns NETDEV_TX_BUSY even though __dev_queue_xmit() did still
-> >>> detect noqueue.
-> >>>
-> >>> I am not sure how to solve this/if this has to be solved.
-> >>> I do not see a proper way to avoid parallel execution of ndo_start_xm=
-it
-> >>> and a qdisc change (dev_graft_qdisc only takes qdisc_skb_head lock).
-> >>>
-> >>> And from my understanding the veth implementation faces the same issu=
-e.
-> >>
-> >> How about rechecking if a qdisc is connected?
-> >> This would avoid -ENETDOWN.
-> >>
-> >> diff --git a/net/core/dev.c b/net/core/dev.c
-> >> index f48dc299e4b2..2731a1a70732 100644
-> >> --- a/net/core/dev.c
-> >> +++ b/net/core/dev.c
-> >> @@ -4845,10 +4845,17 @@ int __dev_queue_xmit(struct sk_buff *skb, stru=
-ct net_device *sb_dev)
-> >>                                 if (is_list)
-> >>                                         rc =3D NETDEV_TX_OK;
-> >>                         }
-> >> +                       bool qdisc_present =3D !qdisc_txq_has_no_queue=
-(txq);
-> >>                         HARD_TX_UNLOCK(dev, txq);
-> >>                         if (!skb) /* xmit completed */
-> >>                                 goto out;
-> >>
-> >> +                       /* Maybe a qdisc was connected in the meantime=
- */
-> >> +                       if (qdisc_present) {
-> >> +                               kfree_skb(skb);
-> >> +                               goto out;
-> >> +                       }
-> >> +
-> >>                         net_crit_ratelimited("Virtual device %s asks t=
-o queue packet!\n",
-> >>                                              dev->name);
-> >>                         /* NETDEV_TX_BUSY or queue was stopped */
-> >>
-> >
-> > Probably not, and we likely won't hit this warning because qdisc could
-> > not be changed during ndo_start_xmit().
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
-> Okay.
+> Add filemap_add() and filemap_remove() methods to vm_uffd_ops and use
+> them in __mfill_atomic_pte() to add shmem folios to page cache and
+> remove them in case of error.
 >
-> >
-> > I meant something like this:
-> >
-> > 1) set noqueue to tuntap
-> > 2) produce packets so tuntap is full
-> > 3) set e.g fq_codel to tuntap
-> > 4) then we can hit the failure of __ptr_ring_produce()
-> >
-> > Rethink of the code, it looks just fine.
+> Implement these methods in shmem along with vm_uffd_ops->alloc_folio()
+> and drop shmem_mfill_atomic_pte().
 >
-> Yes, in this case it just returns NETDEV_TX_BUSY which is fine with a
-> qdisc attached.
+> Since userfaultfd now does not reference any functions from shmem, drop
+> include if linux/shmem_fs.h from mm/userfaultfd.c
 >
-> >
-> >>
-> >>>
-> >>>
-> >>> Switching from some qdisc to noqueue is no problem I think.
-> >>>
-> >>>>> +               netif_tx_stop_queue(queue);
-> >>>>> +               /* Avoid races with queue wake-ups in __tun_wake_qu=
-eue by
-> >>>>> +                * waking if space is available in a re-check.
-> >>>>> +                * The barrier makes sure that the stop is visible =
-before
-> >>>>> +                * we re-check.
-> >>>>> +                */
-> >>>>> +               smp_mb__after_atomic();
-> >>>>
-> >>>> Let's document which barrier is paired with this.
-> >>>>
-> >>>
-> >>> I am basically copying the (old) logic of veth [1] proposed by
-> >>> Jakub Kicinski. I must admit I am not 100% sure what it pairs with.
-> >>>
-> >>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.=
-org/
-> >
-> > So it looks like it implicitly tries to pair with tun_ring_consume():
-> >
-> > 1) spinlock(consumer_lock)
-> > 2) store NULL to ptr_ring // STORE
-> > 3) spinunlock(consumer_lock) // RELEASE
-> > 4) spinlock(consumer_lock) // ACQURE
-> > 5) check empty
-> > 6) spinunlock(consumer_lock)
-> > 7) netif_wakeup_queue() // test_and_set() which is an RMW
-> >
-> > RELEASE + ACQUIRE implies a full barrier
+> mfill_atomic_install_pte() is not used anywhere outside of
+> mm/userfaultfd, make it static.
 >
-> Thanks.
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/shmem_fs.h      |  14 ----
+>  include/linux/userfaultfd_k.h |  21 +++--
+>  mm/shmem.c                    | 148 ++++++++++++----------------------
+>  mm/userfaultfd.c              |  79 +++++++++---------
+>  4 files changed, 106 insertions(+), 156 deletions(-)
 >
-> >
-> > I see several problems
-> >
-> > 1) Due to batch consumption, we may get spurious wakeups under heavy
-> > load (we can try disabling batch consuming to see if it helps).
+> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> index a8273b32e041..1a345142af7d 100644
+> --- a/include/linux/shmem_fs.h
+> +++ b/include/linux/shmem_fs.h
+> @@ -221,20 +221,6 @@ static inline pgoff_t shmem_fallocend(struct inode *=
+inode, pgoff_t eof)
 >
-> I assume that you mean the waking in the recheck of the producer happens
-> too often and then wakes too often. But this would just take slightly
-> more producer cpu as the SOFTIRQ runs on the producer cpu and not slow
-> down the consumer?
+>  extern bool shmem_charge(struct inode *inode, long pages);
 >
-> Why would disabling batch consume help here?
+> -#ifdef CONFIG_USERFAULTFD
+> -#ifdef CONFIG_SHMEM
+> -extern int shmem_mfill_atomic_pte(pmd_t *dst_pmd,
+> -                                 struct vm_area_struct *dst_vma,
+> -                                 unsigned long dst_addr,
+> -                                 unsigned long src_addr,
+> -                                 uffd_flags_t flags,
+> -                                 struct folio **foliop);
+> -#else /* !CONFIG_SHMEM */
+> -#define shmem_mfill_atomic_pte(dst_pmd, dst_vma, dst_addr, \
+> -                              src_addr, flags, foliop) ({ BUG(); 0; })
+> -#endif /* CONFIG_SHMEM */
+> -#endif /* CONFIG_USERFAULTFD */
+> -
+>  /*
+>   * Used space is stored as unsigned 64-bit value in bytes but
+>   * quota core supports only signed 64-bit values so use that
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.=
+h
+> index 4d8b879eed91..bf4e595ac914 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -93,10 +93,24 @@ struct vm_uffd_ops {
+>         struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t p=
+goff);
+>         /*
+>          * Called during resolution of UFFDIO_COPY request.
+> -        * Should return allocate a and return folio or NULL if allocatio=
+n fails.
+> +        * Should allocate and return a folio or NULL if allocation
+> +        * fails.
+>          */
+>         struct folio *(*alloc_folio)(struct vm_area_struct *vma,
+>                                      unsigned long addr);
+> +       /*
+> +        * Called during resolution of UFFDIO_COPY request.
+> +        * Should lock the folio and add it to VMA's page cache.
 
-We could end up with.
+I don't think "should lock the folio" is accurate. That sounds like
+"it will call folio_lock()" but it actually calls
+__folio_set_locked(). Maybe this is better:
 
-1) consumer wakes up the producer but the slot is not cleaned
-2) producer is woken up but see the ring is full, so it need to drop the pa=
-cket
+"Should only be called with a folio returned by alloc_folio() above.
+The folio will set to locked."
 
-This probably defeat the goal of zero packet loss.
-
-> Wouldn't it just decrease the consumer speed?
-
-Not sure, we probably need a benchmark.
-
+> +        * Returns 0 on success, error code on failure.
+> +        */
+> +       int (*filemap_add)(struct folio *folio, struct vm_area_struct *vm=
+a,
+> +                        unsigned long addr);
+> +       /*
+> +        * Called during resolution of UFFDIO_COPY request on the error
+> +        * handling path.
+> +        * Should revert the operation of ->filemap_add().
+> +        */
+> +       void (*filemap_remove)(struct folio *folio, struct vm_area_struct=
+ *vma);
+>  };
 >
-> Apart from that I do not see a different method to do this recheck.
-> The ring producer is only safely able to do a !produce_peek (so a check
-> for !full).
+>  /* A combined operation mode + behavior flags. */
+> @@ -130,11 +144,6 @@ static inline uffd_flags_t uffd_flags_set_mode(uffd_=
+flags_t flags, enum mfill_at
+>  /* Flags controlling behavior. These behavior changes are mode-independe=
+nt. */
+>  #define MFILL_ATOMIC_WP MFILL_ATOMIC_FLAG(0)
 >
-> The normal waking (after consuming half of the ring) should be fine IMO.
+> -extern int mfill_atomic_install_pte(pmd_t *dst_pmd,
+> -                                   struct vm_area_struct *dst_vma,
+> -                                   unsigned long dst_addr, struct page *=
+page,
+> -                                   bool newly_allocated, uffd_flags_t fl=
+ags);
+> -
+>  extern ssize_t mfill_atomic_copy(struct userfaultfd_ctx *ctx, unsigned l=
+ong dst_start,
+>                                  unsigned long src_start, unsigned long l=
+en,
+>                                  uffd_flags_t flags);
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 7bd887b64f62..68620caaf75f 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3181,118 +3181,73 @@ static struct inode *shmem_get_inode(struct mnt_=
+idmap *idmap,
+>  #endif /* CONFIG_TMPFS_QUOTA */
 >
-> > 2) So the barriers don't help but would slow down the consuming
-> > 3) Two spinlocks were used instead of one, this is another reason we
-> > will see a performance regression
+>  #ifdef CONFIG_USERFAULTFD
+> -int shmem_mfill_atomic_pte(pmd_t *dst_pmd,
+> -                          struct vm_area_struct *dst_vma,
+> -                          unsigned long dst_addr,
+> -                          unsigned long src_addr,
+> -                          uffd_flags_t flags,
+> -                          struct folio **foliop)
+> -{
+> -       struct inode *inode =3D file_inode(dst_vma->vm_file);
+> -       struct shmem_inode_info *info =3D SHMEM_I(inode);
+> +static struct folio *shmem_mfill_folio_alloc(struct vm_area_struct *vma,
+> +                                            unsigned long addr)
+> +{
+> +       struct inode *inode =3D file_inode(vma->vm_file);
+>         struct address_space *mapping =3D inode->i_mapping;
+> +       struct shmem_inode_info *info =3D SHMEM_I(inode);
+> +       pgoff_t pgoff =3D linear_page_index(vma, addr);
+>         gfp_t gfp =3D mapping_gfp_mask(mapping);
+> -       pgoff_t pgoff =3D linear_page_index(dst_vma, dst_addr);
+> -       void *page_kaddr;
+>         struct folio *folio;
+> -       int ret;
+> -       pgoff_t max_off;
+> -
+> -       if (shmem_inode_acct_blocks(inode, 1)) {
+> -               /*
+> -                * We may have got a page, returned -ENOENT triggering a =
+retry,
+> -                * and now we find ourselves with -ENOMEM. Release the pa=
+ge, to
+> -                * avoid a BUG_ON in our caller.
+> -                */
+> -               if (unlikely(*foliop)) {
+> -                       folio_put(*foliop);
+> -                       *foliop =3D NULL;
+> -               }
+> -               return -ENOMEM;
+> -       }
 >
-> You are right, I can change it to a single spin_lock. Apart from that
-> I do not see how the barriers/locking could be reduced further.
+> -       if (!*foliop) {
+> -               ret =3D -ENOMEM;
+> -               folio =3D shmem_alloc_folio(gfp, 0, info, pgoff);
+> -               if (!folio)
+> -                       goto out_unacct_blocks;
+> +       if (unlikely(pgoff >=3D DIV_ROUND_UP(i_size_read(inode), PAGE_SIZ=
+E)))
+> +               return NULL;
 >
-> > 4) Tricky code that needs to be understood or at least requires a comme=
-nt tweak.
-> >
-> > Note that due to ~IFF_TX_SKB_SHARING, pktgen can't clone skbs, so we
-> > may not notice the real degradation.
->
-> So run pktgen with pg_set SHARED?
-
-Probably (as a workaround).
-
-> I am pretty sure that the vhost
-> thread was always at 100% CPU so pktgen was not the bottleneck. And when
-> I had perf enabled I always saw that in my patched version not the
-> creation of SKB's took most CPU in pktgen but a different unnamed
-> function (I assume this is a waiting function).
-
-Let's try and see.
-
-Thanks
-
->
->
-> Thank you!
->
-> >
-> >>>
-> >>>>> +               if (!__ptr_ring_produce_peek(&tfile->tx_ring))
-> >>>>> +                       netif_tx_wake_queue(queue);
-> >>>>> +       }
-> >>>>> +       spin_unlock(&tfile->tx_ring.producer_lock);
-> >>>>> +
-> >>>>> +       if (ret) {
-> >>>>> +               /* If a qdisc is attached to our virtual device,
-> >>>>> +                * returning NETDEV_TX_BUSY is allowed.
-> >>>>> +                */
-> >>>>> +               if (qdisc_present) {
-> >>>>> +                       rcu_read_unlock();
-> >>>>> +                       return NETDEV_TX_BUSY;
-> >>>>> +               }
-> >>>>>                 drop_reason =3D SKB_DROP_REASON_FULL_RING;
-> >>>>>                 goto drop;
-> >>>>>         }
-> >>>>>
-> >>>>>         /* dev->lltx requires to do our own update of trans_start *=
+> -               if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY)) {
+> -                       page_kaddr =3D kmap_local_folio(folio, 0);
+> -                       /*
+> -                        * The read mmap_lock is held here.  Despite the
+> -                        * mmap_lock being read recursive a deadlock is s=
+till
+> -                        * possible if a writer has taken a lock.  For ex=
+ample:
+> -                        *
+> -                        * process A thread 1 takes read lock on own mmap=
+_lock
+> -                        * process A thread 2 calls mmap, blocks taking w=
+rite lock
+> -                        * process B thread 1 takes page fault, read lock=
+ on own mmap lock
+> -                        * process B thread 2 calls mmap, blocks taking w=
+rite lock
+> -                        * process A thread 1 blocks taking read lock on =
+process B
+> -                        * process B thread 1 blocks taking read lock on =
+process A
+> -                        *
+> -                        * Disable page faults to prevent potential deadl=
+ock
+> -                        * and retry the copy outside the mmap_lock.
+> -                        */
+> -                       pagefault_disable();
+> -                       ret =3D copy_from_user(page_kaddr,
+> -                                            (const void __user *)src_add=
+r,
+> -                                            PAGE_SIZE);
+> -                       pagefault_enable();
+> -                       kunmap_local(page_kaddr);
+> -
+> -                       /* fallback to copy_from_user outside mmap_lock *=
 /
-> >>>>> -       queue =3D netdev_get_tx_queue(dev, txq);
-> >>>>>         txq_trans_cond_update(queue);
-> >>>>>
-> >>>>>         /* Notify and wake up reader process */
-> >>>>> --
-> >>>>> 2.43.0
-> >>>>>
-> >>>>
-> >>>> Thanks
-> >>>>
-> >>
-> >
-> > Thanks
-> >
+> -                       if (unlikely(ret)) {
+> -                               *foliop =3D folio;
+> -                               ret =3D -ENOENT;
+> -                               /* don't free the page */
+> -                               goto out_unacct_blocks;
+> -                       }
+> +       folio =3D shmem_alloc_folio(gfp, 0, info, pgoff);
+> +       if (!folio)
+> +               return NULL;
 >
+> -                       flush_dcache_folio(folio);
+> -               } else {                /* ZEROPAGE */
+> -                       clear_user_highpage(&folio->page, dst_addr);
+> -               }
+> -       } else {
+> -               folio =3D *foliop;
+> -               VM_BUG_ON_FOLIO(folio_test_large(folio), folio);
+> -               *foliop =3D NULL;
+> +       if (mem_cgroup_charge(folio, vma->vm_mm, GFP_KERNEL)) {
+> +               folio_put(folio);
+> +               return NULL;
+>         }
+>
+> -       VM_BUG_ON(folio_test_locked(folio));
+> -       VM_BUG_ON(folio_test_swapbacked(folio));
+> +       return folio;
+> +}
+> +
+> +static int shmem_mfill_filemap_add(struct folio *folio,
+> +                                  struct vm_area_struct *vma,
+> +                                  unsigned long addr)
+> +{
+> +       struct inode *inode =3D file_inode(vma->vm_file);
+> +       struct address_space *mapping =3D inode->i_mapping;
+> +       pgoff_t pgoff =3D linear_page_index(vma, addr);
+> +       gfp_t gfp =3D mapping_gfp_mask(mapping);
+> +       int err;
+> +
+>         __folio_set_locked(folio);
+>         __folio_set_swapbacked(folio);
+> -       __folio_mark_uptodate(folio);
+> -
+> -       ret =3D -EFAULT;
+> -       max_off =3D DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
+> -       if (unlikely(pgoff >=3D max_off))
+> -               goto out_release;
+>
+> -       ret =3D mem_cgroup_charge(folio, dst_vma->vm_mm, gfp);
+> -       if (ret)
+> -               goto out_release;
+> -       ret =3D shmem_add_to_page_cache(folio, mapping, pgoff, NULL, gfp)=
+;
+> -       if (ret)
+> -               goto out_release;
+> +       err =3D shmem_add_to_page_cache(folio, mapping, pgoff, NULL, gfp)=
+;
+> +       if (err)
+> +               goto err_unlock;
+>
+> -       ret =3D mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+> -                                      &folio->page, true, flags);
+> -       if (ret)
+> -               goto out_delete_from_cache;
+> +       if (shmem_inode_acct_blocks(inode, 1)) {
+> +               err =3D -ENOMEM;
+> +               goto err_delete_from_cache;
+> +       }
+>
+> +       folio_add_lru(folio);
+>         shmem_recalc_inode(inode, 1, 0);
+> -       folio_unlock(folio);
+> +
+>         return 0;
+> -out_delete_from_cache:
+> +
+> +err_delete_from_cache:
+>         filemap_remove_folio(folio);
+> -out_release:
+> +err_unlock:
+> +       folio_unlock(folio);
+> +       return err;
+> +}
+> +
+> +static void shmem_mfill_filemap_remove(struct folio *folio,
+> +                                      struct vm_area_struct *vma)
+> +{
+> +       struct inode *inode =3D file_inode(vma->vm_file);
+> +
+> +       filemap_remove_folio(folio);
+> +       shmem_recalc_inode(inode, 0, 0);
+>         folio_unlock(folio);
+> -       folio_put(folio);
+> -out_unacct_blocks:
+> -       shmem_inode_unacct_blocks(inode, 1);
+> -       return ret;
+>  }
+>
+>  static struct folio *shmem_get_folio_noalloc(struct inode *inode, pgoff_=
+t pgoff)
+> @@ -3315,6 +3270,9 @@ static bool shmem_can_userfault(struct vm_area_stru=
+ct *vma, vm_flags_t vm_flags)
+>  static const struct vm_uffd_ops shmem_uffd_ops =3D {
+>         .can_userfault          =3D shmem_can_userfault,
+>         .get_folio_noalloc      =3D shmem_get_folio_noalloc,
+> +       .alloc_folio            =3D shmem_mfill_folio_alloc,
+> +       .filemap_add            =3D shmem_mfill_filemap_add,
+> +       .filemap_remove         =3D shmem_mfill_filemap_remove,
+>  };
+>  #endif /* CONFIG_USERFAULTFD */
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 31f3ab6a73e2..a0f8e67006d6 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/userfaultfd_k.h>
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/hugetlb.h>
+> -#include <linux/shmem_fs.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -340,10 +339,10 @@ static bool mfill_file_over_size(struct vm_area_str=
+uct *dst_vma,
+>   * This function handles both MCOPY_ATOMIC_NORMAL and _CONTINUE for both=
+ shmem
+>   * and anon, and for both shared and private VMAs.
+>   */
+> -int mfill_atomic_install_pte(pmd_t *dst_pmd,
+> -                            struct vm_area_struct *dst_vma,
+> -                            unsigned long dst_addr, struct page *page,
+> -                            bool newly_allocated, uffd_flags_t flags)
+> +static int mfill_atomic_install_pte(pmd_t *dst_pmd,
+> +                                   struct vm_area_struct *dst_vma,
+> +                                   unsigned long dst_addr, struct page *=
+page,
+> +                                   uffd_flags_t flags)
+>  {
+>         int ret;
+>         struct mm_struct *dst_mm =3D dst_vma->vm_mm;
+> @@ -387,9 +386,6 @@ int mfill_atomic_install_pte(pmd_t *dst_pmd,
+>                 goto out_unlock;
+>
+>         if (page_in_cache) {
+> -               /* Usually, cache pages are already added to LRU */
+> -               if (newly_allocated)
+> -                       folio_add_lru(folio);
+>                 folio_add_file_rmap_pte(folio, page, dst_vma);
+>         } else {
+>                 folio_add_new_anon_rmap(folio, dst_vma, dst_addr, RMAP_EX=
+CLUSIVE);
+> @@ -404,6 +400,9 @@ int mfill_atomic_install_pte(pmd_t *dst_pmd,
+>
+>         set_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
+>
+> +       if (page_in_cache)
+> +               folio_unlock(folio);
 
+I don't really like doing the folio_unlock() *here*, I think it's
+clearer if the callers (mfill_atomic_pte_continue() and
+__mfill_atomic_pte()) unlocked the folio themselves. But that's just
+my opinion.
+
+> +
+>         /* No need to invalidate - it was non-present before */
+>         update_mmu_cache(dst_vma, dst_addr, dst_pte);
+>         ret =3D 0;
+> @@ -516,13 +515,22 @@ static int __mfill_atomic_pte(struct mfill_state *s=
+tate,
+>          */
+>         __folio_mark_uptodate(folio);
+>
+> +       if (ops->filemap_add) {
+> +               ret =3D ops->filemap_add(folio, state->vma, state->dst_ad=
+dr);
+> +               if (ret)
+> +                       goto err_folio_put;
+> +       }
+> +
+>         ret =3D mfill_atomic_install_pte(state->pmd, state->vma, dst_addr=
+,
+> -                                      &folio->page, true, flags);
+> +                                      &folio->page, flags);
+>         if (ret)
+> -               goto err_folio_put;
+> +               goto err_filemap_remove;
+>
+>         return 0;
+>
+> +err_filemap_remove:
+> +       if (ops->filemap_remove)
+> +               ops->filemap_remove(folio, state->vma);
+>  err_folio_put:
+>         folio_put(folio);
+>         /* Don't return -ENOENT so that our caller won't retry */
+> @@ -535,6 +543,18 @@ static int mfill_atomic_pte_copy(struct mfill_state =
+*state)
+>  {
+>         const struct vm_uffd_ops *ops =3D vma_uffd_ops(state->vma);
+>
+> +       /*
+> +        * The normal page fault path for a MAP_PRIVATE mapping in a
+> +        * file-backed VMA will invoke the fault, fill the hole in the fi=
+le and
+> +        * COW it right away. The result generates plain anonymous memory=
+.
+> +        * So when we are asked to fill a hole in a MAP_PRIVATE mapping, =
+we'll
+> +        * generate anonymous memory directly without actually filling th=
+e
+> +        * hole. For the MAP_PRIVATE case the robustness check only happe=
+ns in
+> +        * the pagetable (to verify it's still none) and not in the page =
+cache.
+> +        */
+> +       if (!(state->vma->vm_flags & VM_SHARED))
+> +               ops =3D &anon_uffd_ops;
+> +
+>         return __mfill_atomic_pte(state, ops);
+>  }
+>
+> @@ -554,7 +574,8 @@ static int mfill_atomic_pte_zeropage(struct mfill_sta=
+te *state)
+>         spinlock_t *ptl;
+>         int ret;
+>
+> -       if (mm_forbids_zeropage(dst_vma->vm_mm))
+> +       if (mm_forbids_zeropage(dst_vma->vm_mm) ||
+> +           (dst_vma->vm_flags & VM_SHARED))
+>                 return mfill_atomic_pte_zeroed_folio(state);
+>
+>         _dst_pte =3D pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
+> @@ -609,11 +630,10 @@ static int mfill_atomic_pte_continue(struct mfill_s=
+tate *state)
+>         }
+>
+>         ret =3D mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+> -                                      page, false, flags);
+> +                                      page, flags);
+>         if (ret)
+>                 goto out_release;
+>
+> -       folio_unlock(folio);
+>         return 0;
+>
+>  out_release:
+> @@ -836,41 +856,18 @@ extern ssize_t mfill_atomic_hugetlb(struct userfaul=
+tfd_ctx *ctx,
+>
+>  static __always_inline ssize_t mfill_atomic_pte(struct mfill_state *stat=
+e)
+>  {
+> -       struct vm_area_struct *dst_vma =3D state->vma;
+> -       unsigned long src_addr =3D state->src_addr;
+> -       unsigned long dst_addr =3D state->dst_addr;
+> -       struct folio **foliop =3D &state->folio;
+>         uffd_flags_t flags =3D state->flags;
+> -       pmd_t *dst_pmd =3D state->pmd;
+> -       ssize_t err;
+>
+>         if (uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+>                 return mfill_atomic_pte_continue(state);
+>         if (uffd_flags_mode_is(flags, MFILL_ATOMIC_POISON))
+>                 return mfill_atomic_pte_poison(state);
+> +       if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY))
+> +               return mfill_atomic_pte_copy(state);
+> +       if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE))
+> +               return mfill_atomic_pte_zeropage(state);
+
+Thanks for this cleanup. :)
+
+>
+> -       /*
+> -        * The normal page fault path for a shmem will invoke the
+> -        * fault, fill the hole in the file and COW it right away. The
+> -        * result generates plain anonymous memory. So when we are
+> -        * asked to fill an hole in a MAP_PRIVATE shmem mapping, we'll
+> -        * generate anonymous memory directly without actually filling
+> -        * the hole. For the MAP_PRIVATE case the robustness check
+> -        * only happens in the pagetable (to verify it's still none)
+> -        * and not in the radix tree.
+> -        */
+> -       if (!(dst_vma->vm_flags & VM_SHARED)) {
+> -               if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY))
+> -                       err =3D mfill_atomic_pte_copy(state);
+> -               else
+> -                       err =3D mfill_atomic_pte_zeropage(state);
+> -       } else {
+> -               err =3D shmem_mfill_atomic_pte(dst_pmd, dst_vma,
+> -                                            dst_addr, src_addr,
+> -                                            flags, foliop);
+> -       }
+> -
+> -       return err;
+> +       return -EOPNOTSUPP;
+
+WARN_ONCE() here I think.
+
+Feel free to add:
+
+Reviewed-by: James Houghton <jthoughton@google.com>
