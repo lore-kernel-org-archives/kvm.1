@@ -1,86 +1,114 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FD43EDAA5;
-	Fri, 27 Mar 2026 13:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEB73E716B;
+	Fri, 27 Mar 2026 13:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774617404; cv=none; b=rIm8zWUbkEbuuNwS/DKy6ycSZCh78vAoySXJqi77cYhKTQaYXsQDzfrKNJ7usxT0YCLYGqaHFSXlM53IHLf5KC7kPbrPGorXGY2Xj0z9fhuHEDFFCxWd28J8rhkSyxfx32aT55+67jY7dtCQukgfRWY5F/ydu2L/uLvQvMVhLM8=
+	t=1774618092; cv=none; b=JHdFQp3Hi4J36Gw3PpwH9LQoo7cmYn5yXFYBIcnRXlkZALy76rxtyezd5I/h1JBt71M3hWTuqno+3yspPUodaxThokhyVO6BsTylv141lRpNh/6z+Ft7Ch9Gd0Dk7nurpsKN49G6q1aYzpNsI6Jpu1XAryxrv33OkF/dSekbAWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774617404; c=relaxed/simple;
-	bh=hCvQnYCBMadBb41sDOIC7/X2d4bp47XZvczCJW89veA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j44DbG0whUNa/BeXuYs6wVFb6Tr6NO8XimEBKTfIBnZLhf9WhWwpLLAiOp6P3nRAnKN5qIroucH7/tsq7JQ2/9z85dO6JbLra6grj9qNUr82PM9yDsM8suD1Io4T35brIkXn3lvDtBUP+nzomTFaWr+PghvhcnRYgfz+Jk50wcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YkSN9AUQ; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774618092; c=relaxed/simple;
+	bh=r/tUcr+DkmKRuSoOmSbqzMlOOVTDeN+O6HtHU+Chplw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ukwMerjOf4sPOfFQ8J51D0TA/ZfBUqwoAT0QXqvJnSmtRieco3Qr5rnqx9QLNtJD67VD1KtDEvpQmJDVhT41Rtfw2CjRQjysLgHEyeY8KGEQH9ra2F80RJfhwerld+mJBE5c8gHsxtJZooC2sTBWpLkLGa+molqZCYuEdpTGUIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgrKpze0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YkSN9AUQ"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86F7B35A1;
-	Fri, 27 Mar 2026 06:16:36 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F05233F915;
-	Fri, 27 Mar 2026 06:16:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774617402; bh=hCvQnYCBMadBb41sDOIC7/X2d4bp47XZvczCJW89veA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YkSN9AUQseR1kOgjTvOjuH5RoY7tsvhDl64v/ztTPODkcniNwe7c5605JdzGxvUMw
-	 UGQmokfgFrWnwVukxlHV7Xpzq1mUZT6/8aOqS54x/7KzhguAR0NmZxP98B7cdJWSaI
-	 jiTMrXgr1VBgaKt7sfDQR1ogiKHkXXJ1rWjf0DHM=
-Date: Fri, 27 Mar 2026 13:16:37 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: will@kernel.org, maz@kernel.org, oupton@kernel.org,
-	miko.lenczewski@arm.com, kevin.brodsky@arm.com, broonie@kernel.org,
-	ardb@kernel.org, suzuki.poulose@arm.com, lpieralisi@kernel.org,
-	joey.gouly@arm.com, yuzenghui@huawei.com
-Subject: Re: (subset) [PATCH v17 0/8] support FEAT_LSUI
-Message-ID: <177461632621.2272468.5197255307509898250.b4-ty@arm.com>
-References: <20260314175133.1084528-1-yeoreum.yun@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgrKpze0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE8BC2BCB1;
+	Fri, 27 Mar 2026 13:28:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774618091;
+	bh=r/tUcr+DkmKRuSoOmSbqzMlOOVTDeN+O6HtHU+Chplw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tgrKpze0AXBEQbD7udKzYR1/j6AEhWlQrKBma1DiYfButx4464/hyCJcpP+ANo9Ap
+	 by/AS0qYxcLqBUSypREH+SHXOKATURaX0us8v4dfKQqXxPoButyOG+KhsuWNRvIeUu
+	 OT9CiE1BJhUnl6+SEPyLb7rKdCHDRBxPXMjA0DrJamezzubk415mrPedbFHfjZqGzC
+	 WAikLjxtn6QB+XzNf1gAfc3zcEHDvFYphLENXO0NWxG/whC/a3SsCFy4iU7xdizwV+
+	 Fd9Nkb17vBj+XSEUZMAIgu5KYakuf0xy9AC3zv8wEWxsEuZC8T/dDcIgvobE8Ac+JG
+	 PHIaX9JpLlSeA==
+Message-ID: <2266e9af-ce5b-401a-8364-0fe2fc3d68a6@kernel.org>
+Date: Fri, 27 Mar 2026 14:28:06 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260314175133.1084528-1-yeoreum.yun@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] change young flag check functions to return bool
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+References: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 14 Mar 2026 17:51:25 +0000, Yeoreum Yun wrote:
-> Since Armv9.6, FEAT_LSUI supplies the load/store instructions for
-> previleged level to access to access user memory without clearing
-> PSTATE.PAN bit.
+On 3/21/26 07:42, Baolin Wang wrote:
+> This is a cleanup patchset to change all young flag check functions to
+> return bool, as discussed with David in the previous thread[1]. Since
+> callers only care about whether the young flag was set, returning bool
+> makes the intention clearer. No functional changes intended.
 > 
-> This patchset support FEAT_LSUI and applies it mainly in
-> futex atomic operation and others.
-> 
-> [...]
+> Ran mm selftests on Arm64 and x86 machines, and no issues were found.
 
-Applied to arm64 (for-next/feat_lsui), thanks!
+Thanks!
 
-I decided to drop patch [6/8] (arm64: armv8_deprecated: disable swp
-emulation when FEAT_LSUI present). The way FEAT_LSUI support looks now,
-we still have uaccess_enable_privileged() working properly and we could
-even support SWP emulation using exclusives. While it's highly unlikely
-to see both 32-bit EL0 and FEAT_LSUI in practice, models may support the
-combination and disabling SWP emulation feels pretty artificial.
+For the whole series:
 
-[1/8] arm64: cpufeature: add FEAT_LSUI
-      https://git.kernel.org/arm64/c/7181f718cb0f
-[2/8] KVM: arm64: expose FEAT_LSUI to guest
-      https://git.kernel.org/arm64/c/f6bff18d05ed
-[3/8] KVM: arm64: kselftest: set_id_regs: add test for FEAT_LSUI
-      https://git.kernel.org/arm64/c/42550d7d8aa6
-[4/8] arm64: futex: refactor futex atomic operation
-      https://git.kernel.org/arm64/c/eaa3babcceaa
-[5/8] arm64: futex: support futex with FEAT_LSUI
-      https://git.kernel.org/arm64/c/44adf2bf40ef
-[7/8] KVM: arm64: use CAST instruction for swapping guest descriptor
-      https://git.kernel.org/arm64/c/16dbe77a5be2
-[8/8] arm64: Kconfig: add support for LSUI
-      https://git.kernel.org/arm64/c/377609ae8b6a
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Catalin
+Cheers,
+
+David
