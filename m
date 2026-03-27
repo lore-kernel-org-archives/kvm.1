@@ -1,162 +1,176 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26097392C29
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 21:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774645258; cv=pass; b=gtnocptgtUnr9lqNHeD4EykhjPbN/EboQ5ZUNLfED3ua6mGFEIIj8jzlXLTStr62LkSr95g3ojsEa+FmkQrTBOtOx+M2O5ufJj9NdEN92l/RBA2mp0oYW9OjpNfu8esJXasd2qwu925kLe1dsvqGfAsWUW7vQOnGPGq1w7Rt01M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774645258; c=relaxed/simple;
-	bh=uHvMP9KDYXp5B8fQ+exmdFOH4CKDCprqxecGbubjPqI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gck1+N4qDXmxqPWxm918kI4KFLBZztGwBHihauB5AAixbXcHtDxSAwqem4pl+AbAnvCOzScCwCEryAEi4grUfLWJNTJKo6zC9Wxp9qz2hCwpc1LuVqmwqUfzFPx9EelpzGfDUEx6BDPASrUuqkFfL+cd+Jyd2kT35tlm14WmqRY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C5TK6hWr; arc=pass smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E923947B3
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 22:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774649085; cv=none; b=qTXAbIewrsaXJ1tjjebER2PLDltC80exWh3JFCW3LG+yeeKcY1Aqcj8LDi2nc9p1t9sq7GK1+pkhSW50L6Cc7lnbyfYNtU4UT41Q04UNyteYyg+t8rVhh8lraa1uv8fhyMLr4IbdcPr1FreVyNpT3kI2wLJkgEA93U/gXDI/hro=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774649085; c=relaxed/simple;
+	bh=GQwxsCPR8M9Q+995FFI0Q1eeMcYdZw4hKw95dWbIkVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kkxAkTN2OKWC5qxbwEmgFS3kKqRH+PIrdZwk6sXGudu8ySmc8FYLMy+5O50guOJ7uQSfR2AuUHgtjkWDrl/o22Pystrfzv7P6RMzgEe5lQZznROEFTMiflTbYUVaOjdb1opdmvQft4m5ZmoDix/Ikx7rn3IBLrEJp5NHAXfnjwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sfAC/uhx; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C5TK6hWr"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5091ed02c54so50461cf.1
-        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 14:00:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774645256; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Jjzm64Pou6tYFPSftFBSyUll3J/KojG/YgZWACr5+v6WF8/nPbCAHlJmtEjXgOhBuf
-         NZ4hswPdzhZx2MW3R5Q6PQFO6XwpLwOwakEJrq6uQQq1AwVYxWjwLMkklarE2Yx/G3ay
-         BT3w9dhJ6hVipaaNbPQXb5U/XLNTgZUdeXxXW2r2M4CCSNBxn+9SlE2TqYZVGlhb1unk
-         ZDUMmY6H1K+Lmho81mf8rwmAWJTInndtBV05OoqLG6IFGz4yyWCuGutkaWpKXrjdZrKx
-         6/T13ttTR+GWaq30LQUTrww6nupv3C+PGomV552hi6/66kLOt8Q2fvHDvsRgQnyCke5/
-         wxVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uHvMP9KDYXp5B8fQ+exmdFOH4CKDCprqxecGbubjPqI=;
-        fh=u8FOVQ5MOat3mLyLv9HBSSl3pF2fbDcqHfMUpAtgZms=;
-        b=FVXC367q6nvgnnIumXBKP0W1ncNNvv94QABjN1E4ASf7EIk82CFwy5HyL0DWHgJb5e
-         nw7dBEj0rDIpsXxu4WgyvaTZN79Tqc5nrhV+y9NV6AZcy8y0pSAxKLW45UxLiW0ggtn4
-         lqSKjZ5RvxicweFxlIeZHTku9GPmlufNN3dLv7J2GuRlIdyHF3cpex1X2GObeM1rU9xn
-         VzNi81Tfs3p4edmg78V/eHg8KRgkPgOt77y1JIK8oTG+HcApRI3q0gJFUesvzraU6ylu
-         UyQ+1jqBl09+gpaSUKe2NDdqSwff7vqoJMgLzEKUeoDPNW7NpK1SfV/w8hUgtvq5Ftgr
-         GC5A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sfAC/uhx"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-356337f058aso1553331a91.2
+        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 15:04:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774645256; x=1775250056; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uHvMP9KDYXp5B8fQ+exmdFOH4CKDCprqxecGbubjPqI=;
-        b=C5TK6hWrjmO6CCAKwL5L2nRhyZs/VMBTmgiL9+IcfWS6Bjam9Vm1Hd3aUX4A2RYEJ0
-         D1YMrEIaEEVaXJm5wp/4tlbOAKnolmX5qSU7ltpNnSbICR/fwmXzvaXQ2NgvjskxFHlo
-         mXh688ehejw8dOT/zGrPPcaxJPps+QcvMi+pylNy18IaSzhBQProQRsFaV5LAG7X7x77
-         jHJbYFaQLsd6NjQYDrnHWnW5Zh0ISaCggUaA6cqfA0+OU/REzuwDkYArZSGzAbX078LK
-         0wivDuKWnMiv3HbobfaSZ00Il1mjUkx5wk+MfrxeQxhCy73hMjf3lTr3XqJuP66DpBXB
-         IdAQ==
+        d=google.com; s=20251104; t=1774649083; x=1775253883; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tv6xySEq32idoJ1hIz3yQfX8s88MuxVvezia0x+Hpy8=;
+        b=sfAC/uhxxirjStfMAZrlGIzhd+b2nzK9q7Jf5D8PtwCaGyhtq0gqj93mG84bz3AUN2
+         /jC9QTqIxN0naBmeoHUb2jFVBUY/kE83YzNsox4u8zVFZ64L2UWi5mRpIKLMvsLeWcqL
+         aKmxJjiNuBjlHoS7V/dzSd8/2tg4L9ey7PhOPxovRy1Wky6TY1o16vb5E/otXMOheSwK
+         uxZTEiYma4WK55N6WCH8B4ncK7NmKcF9q8Li6hvCicfNKW+q68gNUBoo2s5eMMwGArI9
+         fYtJN83WUXvVGBoc7hixFH6MSvqzie1Fyp+3MURidcSxNKQz7KgxBktcNVmGODRRO8GE
+         9JaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774645256; x=1775250056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uHvMP9KDYXp5B8fQ+exmdFOH4CKDCprqxecGbubjPqI=;
-        b=tWZUPP84X2bdG2wMR6ESbBkoNaop7PSSXL8H3dC1dXLpYokSs7eujbGDG2Djvk7ehD
-         1RyM6bFmPJLPW41663Wp+DxsFZ9eNgwY++N2+xLZXzqRpR4mmRjkAr74WPFF9ziYT+9G
-         b4eaL17g+Jr1TFTYnZ2/Mgb4faSNZMOd/tywNl/cbWKKSZBU2o+lNGsXizFFSH7uXO3Q
-         Are8dDFhj+txdhMv0xgG0IQFEMFyC+ScScZ8/5WvSAAvlpdxRTR/hywFqSIHiwj2yu+X
-         hU7Bhmn7GtkcLjz883Rb4e1x5jeJ4qxxngBEUVSaAs7eIJ5yTKRTmAOOFwBvG3gpXZY6
-         mXqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLn+AynInoaivALbVPsPnHBFMRbdUjizi8WKz+xRzZbOv1xm1sXdmIO+i2INbuJkA1KoQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypJXWpfa/n7/KxFwVGg6UyljsaNTG31wUl1r7fENtyeQW0LcG+
-	k94/I0f/1d7AdlH3u+oxvo6DNVY7rvHiHYum0XluWtJxC6D3TO2AGhvaZejz9I4CBecJu/REagM
-	tak0iJxV3M3rTlOwqOfkoGnYcSg9D3Y5GN/u2D1Vc
-X-Gm-Gg: ATEYQzy81VTh7r1febESZ9o2218DWbDmWnuzwoq5i2k7VICIfgcUDTDwCs3Mf9qCCF2
-	4R+9tc7ytlmcZS+7rqMO0AzLcLYfLhz9RJd7P280XOdKA+NvMjhayKe1+QN78CVbtn5+DWhVrnl
-	3DetjhZ/P4EACmUnVzk3xGuUEtR58e6GilZZ3qgFzUmUD1YNS1DYpaDaA0IBUgNnLfTzTElHEaK
-	IfSTubnJqIhD0FJ+yDmVpgiwC4Dt5WZcbCfNfbRP5xZE5IKPR4CZ3JdW4LNgsC3Z+EbCWiRNLHn
-	+/7cu7VYaYT2C8V/vcRBNjb1BBYyohpwGr6x
-X-Received: by 2002:a05:622a:aa50:10b0:509:371:f2ab with SMTP id
- d75a77b69052e-50bb288a2e6mr3465221cf.16.1774645255554; Fri, 27 Mar 2026
- 14:00:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774649083; x=1775253883;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tv6xySEq32idoJ1hIz3yQfX8s88MuxVvezia0x+Hpy8=;
+        b=F7j1UUNHy4sDlCnRZ0g+Pyajc5X1x+HCNVrcrvwHdPI/q2hh0bp/iElLH/Tr2aDDYd
+         CyXfAPtOf5JhpI1k93ROU6puuQB8LaPH/tv+aN1HzhhVJsmJrHEXBdVQATIPEgT0Lusu
+         +ott7KePJjT8y3Yf7Qnuvo/M1A+rd+26Eyskvf6WCcuiEvmw8eVd7Jv8du98oVPbirTf
+         6J5EbCYZnvFAyjEGcocwxwt9z85fXiMJ4L1DPaxe/N3PGL1ZxNdA/0cnTLL/1bVl/CPw
+         3x7xu9AhtvZjOEd8FQmCWlOETAB5ov4akduk6q+Vd4hu/jsRcJAUeSt7Rm3GF5M0Kzyr
+         Yoew==
+X-Forwarded-Encrypted: i=1; AJvYcCWMKQM4Sbekddtkv4TGc4PKqsmm616SEUXBD0eVQxRXqxiJPX6sww325jmaeaNpIPPfTCY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMTLvwdnR+hYRycuCqNvr3QudMBicIH80vlkQN7c3/HGivG0+b
+	9CCE89MGbpz4vyhR5WQ+r/dRiBXzQ2iJ7gRiO2x8agBxnoJ4kVBArZuWuI0AkDAdEg==
+X-Gm-Gg: ATEYQzwquNNKIlhijOmhVBvbf1PxSYHTYnq21CjJegEDTWMhEqmbNYo/2hjAAEjmBEU
+	V4Zg8Ux7gLo0YZ5NjtcprvEsWUd1as3PZcfTlHQvsiMb/9w0i8f+LFwhoi8Rj++jzIqVXMpnXF2
+	N3OAwhmbzCeStSlNrFoosp6aGozI34XgidaaUxy0WlBIaH1KQjJRfNCiflkqXr2KzQ1Dqzf/FOM
+	Zc+JSjBHu0IlipZoAHY9XhhgABVxu2vbLqVrUGsGj911WXJXnBURDIs5yhuTc8D0I/5cVZBNwNC
+	bJ838DWG6sNJq2bArP+8XCjI3SUhiSUEOazi6lHzZ4PDttpVr9F+PL4gU4hwklEdbrcP8JyzQWP
+	eDPvjKgKfxfQ3WVhpWA9Prpm37V7wL4V8dolcavJqaCNzzN0+vTohKqwOPBsHPq2PNZbrx0RxlN
+	tSPWBfN4UkbojQdIjC4iIgksBFP1U75788wForZCFOHAp2Wk01xWuLttG75GbV1w==
+X-Received: by 2002:a17:90b:3b4f:b0:35c:cba:3453 with SMTP id 98e67ed59e1d1-35c30076fe2mr4060371a91.22.1774649082871;
+        Fri, 27 Mar 2026 15:04:42 -0700 (PDT)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35d9507dd72sm138872a91.12.2026.03.27.15.04.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 15:04:41 -0700 (PDT)
+Date: Fri, 27 Mar 2026 22:04:37 +0000
+From: David Matlack <dmatlack@google.com>
+To: Rubin Du <rubind@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 1/2] selftests/vfio: Add NO_SEND_MSI feature flag and
+ MSI helper macros
+Message-ID: <acb-9VOaA6Ld9BdY@google.com>
+References: <20260325214329.464727-1-rubind@nvidia.com>
+ <20260325214329.464727-2-rubind@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326080836.695207-1-surenb@google.com> <20260327094738.7150efc3b0619e6ccf095c23@linux-foundation.org>
- <20260327100322.b539f1a9f3662a0a4c080cce@linux-foundation.org>
- <CAJuCfpFxZsnZqqfoKXX=JEBrBaqZHNAgBE0VHbTc=GhQzP7X=g@mail.gmail.com>
- <df0c2fc2-467a-4ffb-a697-7c89d64bad6b@lucifer.local> <CAJuCfpHthntC=BNpWWYHePTfJJ5WQr_UkByc_-LViuy5V_xQ=A@mail.gmail.com>
-In-Reply-To: <CAJuCfpHthntC=BNpWWYHePTfJJ5WQr_UkByc_-LViuy5V_xQ=A@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 27 Mar 2026 14:00:43 -0700
-X-Gm-Features: AQROBzCX6JW1WY1HEKM5C3tQVZuMaYiRbHqFEwYBGPSueKMxsSn6D7aAg6e_Ipc
-Message-ID: <CAJuCfpG78eMr8JjXLUi3toipy1chx76Bq5qRnt9dBqVLrxfLBw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325214329.464727-2-rubind@nvidia.com>
 
-On Fri, Mar 27, 2026 at 10:38=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
-com> wrote:
->
-> On Fri, Mar 27, 2026 at 10:37=E2=80=AFAM Lorenzo Stoakes (Oracle)
-> <ljs@kernel.org> wrote:
-> >
-> > On Fri, Mar 27, 2026 at 10:32:27AM -0700, Suren Baghdasaryan wrote:
-> > > On Fri, Mar 27, 2026 at 10:03=E2=80=AFAM Andrew Morton
-> > > <akpm@linux-foundation.org> wrote:
-> > > >
-> > > > On Fri, 27 Mar 2026 09:47:38 -0700 Andrew Morton <akpm@linux-founda=
-tion.org> wrote:
-> > > >
-> > > > > Three of your patches lack review tags so now it's 65!
-> > > >
-> > > > Three is now zero, thanks Lorenzo.
-> > >
-> > > I just finished fixups for issues Sashiko flagged. They are pretty
-> > > small but important. Testing them right now and running Sashiko
-> > > locally. Once done I'll post v6 and will ask Lorenzo to re-review
-> > > those specific changes. Sorry Lorenzo, I'll point out the specific
-> > > changes I had to make and will try to make it easy for you.
-> >
-> > No worries :)
-> >
-> > Could you send to ljs@kernel.org on the respin? Sorry to nag about it b=
-ut my
-> > email more and more set up for that and makes my life a wee bit easier =
-:>)
->
-> Absolutely. Thanks for the reminder.
+On 2026-03-25 02:43 PM, Rubin Du wrote:
 
-Doh! Just noticed git send-email doing this:
+> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> index e5ada209b1d1..f2cf2608f757 100644
+> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> @@ -6,6 +6,8 @@
+>  
+>  struct vfio_pci_device;
+>  
+> +#define VFIO_PCI_DRIVER_F_NO_SEND_MSI	(1UL << 0) /* Device cannot trigger MSI */
 
-(body) Adding cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> from
-line 'Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>'
+I don't see any particular reason to add this flag. All of the checks
+for...
 
-But it should also land in your kernel.org mailbox.
-Just posted v6 at:
-https://lore.kernel.org/all/20260327205457.604224-1-surenb@google.com/
+  device->driver.feature & VFIO_PCI_DRIVER_F_NO_SEND_MSI
 
-Lorenzo, please see the cover letter where I list per-patch changes. 3
-patches not listed there were unchanged. That should help a bit with
-re-reviewing them. Thank you!
+can just be rewritten as...
 
->
-> >
-> > > Thanks,
-> > > Suren.
-> >
-> > Cheers, Lorenzo
+  !device->driver.ops->send_msi
+
+to accomplish the same thing. And the latter is less characters while
+still being readable.
+
+> -void vfio_pci_driver_send_msi(struct vfio_pci_device *device)
+> +int vfio_pci_driver_send_msi(struct vfio_pci_device *device)
+>  {
+>  	struct vfio_pci_driver *driver = &device->driver;
+>  
+> +	if (driver->features & VFIO_PCI_DRIVER_F_NO_SEND_MSI)
+> +		return -EOPNOTSUPP;
+> +
+
+I think it would be better to just let vfio_pci_driver_send_msi() fail
+if send_msi() is NULL.
+
+Tests should not be calling vfio_pci_driver_send_msi() if the driver
+does not support send_msi(). Tests that require send_msi() should
+explicitly check for it, rather than detect it by trying to send an MSI.
+
+It's also more readable to explicitly check for send_msi() support
+rather than silently skipping or exiting if send_msi() returns an error.
+The latter reads like it could be due to some problem on the device,
+rather than just a lack of support in the driver.
+
+> -#define ASSERT_NO_MSI(_eventfd) do {			\
+> -	u64 __value;					\
+> -							\
+> -	ASSERT_EQ(-1, read(_eventfd, &__value, 8));	\
+> -	ASSERT_EQ(EAGAIN, errno);			\
+> +#define fcntl_set_msi_nonblock(_self) do {				\
+> +	if (!(_self->device->driver.features & VFIO_PCI_DRIVER_F_NO_SEND_MSI)) \
+> +		fcntl_set_nonblock(_self->msi_fd);			\
+> +} while (0)
+
+I think it may be worthwhile to have the nv_falcon driver still enable
+at least one MSI or MSI-x vector on the device and set driver->msi. This
+will reduce divergence from other drivers, and simplify this commit down
+to just:
+
+diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+index afa0480ddd9b..ebd66d677abb 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+@@ -175,6 +175,9 @@ TEST_F(vfio_pci_driver_test, send_msi)
+ {
+        u64 value;
+
++       if (!self->device->driver.ops->send_msi)
++               SKIP(return, "Driver does not support send_msi()");
++
+        vfio_pci_driver_send_msi(self->device);
+        ASSERT_EQ(8, read(self->msi_fd, &value, 8));
+        ASSERT_EQ(1, value);
+@@ -201,6 +204,9 @@ TEST_F(vfio_pci_driver_test, mix_and_match)
+                                       self->dst_iova,
+                                       self->size);
+
++               if (!self->device->driver.ops->send_msi)
++                       continue;
++
+                vfio_pci_driver_send_msi(self->device);
+                ASSERT_EQ(8, read(self->msi_fd, &value, 8));
+                ASSERT_EQ(1, value);
+
+>  TEST_F(vfio_pci_driver_test, send_msi)
+>  {
+>  	u64 value;
+>  
+> -	vfio_pci_driver_send_msi(self->device);
+> +	if (vfio_pci_driver_send_msi(self->device))
+> +		SKIP(return, "Device does not support MSI\n");
+
+NV GPUs do support MSI/x though, right? This should probably be:
+
+  SKIP(return, "Driver does not support send_msi()\n");
