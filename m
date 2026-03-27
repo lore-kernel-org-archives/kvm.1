@@ -1,222 +1,273 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4038D3DA7F7;
-	Fri, 27 Mar 2026 11:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6FB354AC7;
+	Fri, 27 Mar 2026 11:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774609884; cv=none; b=mnEgTMrVlBX1ncvLndM4W7FLSeiR36o/hdczjgztXOwOTMzvTWBUPEAWfDXzfjPn29dKc8q5qKC4XtGU9HPCNNgAVP0AZSeMJXTNRzufH7IwJPKuK9nTG0XjqkPkk+zpSR2UOOaVL6drg8BTABo9fqHiecw/1QiF78Gea1TJKgA=
+	t=1774611078; cv=none; b=kDPZuFhpDRbGKzK+nY6LtDHm/0vZPZucwXnmZGV/T0wGx2WZDqYhV2NxwlgzMbQnvliudPTgeZXrYLEoxXWKJDexvWxqhZ/Z9niF0vmHDl33VCZyNE24bROdtfi0S4k9DuCDlD/9m7K8+wiIGbgE6R66aoqpLyJ8U35785X4998=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774609884; c=relaxed/simple;
-	bh=/o5Kz1of02MmELb+/C4V3Utie8X3NPuggGf6dDomwuE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Me4kp5FMg+f7+FztJ+bbG3F2tvyPfMLdFhEbySlssO7RlKXTB9tAFdHg3+/rNOt2N+O3QvesT7PknhsLQGb8g/DONIX6FwXvS5It1sfjhYpcMqjZO96DZJ2gSJclI5ZcIFbS7MhNJBOyqwgPauITAoYad6EYlxJb7SkhRVHdiZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SdjooQpT; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1774611078; c=relaxed/simple;
+	bh=mOs+f1u+WyiqSYt3GiUnjwCnkAFMVSxmeQkggvC2jHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/U9A/bs1zX2//gCxxTep92wyEStgieJ9ZvUCwSlLKF/hLaNKlQ3T4/bJJh7aPLCEX9NUZN8zgrzByRJ1XbWr2NziX6UFzZTxSLF+s3ZbxyhY4IVVYHRU3kOY/H2y8ItuJ5A26aKp6dTcmB+Ki1x1btN3A2OIlSmrlQnfXwqDso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4MjpK69; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SdjooQpT"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774609865; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
-	bh=J1M3vNJ2Xb+A8lTwY2I/Kd8j4dTifdhsXrfl8qNINvk=;
-	b=SdjooQpTn7M2UkZWYVbzCNrHcuGOsyOqMnff4LLspz73t1sn+4Jc/lS99Bnt6wmpjmtP4hxVMxlrQpssX+/IjS4CQ8+ZgqDS7hb0abDBkIS/xq7wCOYRaCcizeCv0e4yQJ8V68XIw6SYjc2RDXOCZ7y9gBl7SGlhsYx0J4laFO0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.o6XgF_1774609862;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X.o6XgF_1774609862 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 27 Mar 2026 19:11:04 +0800
-From: fangyu.yu@linux.alibaba.com
-To: anup@brainfault.org
-Cc: alex@ghiti.fr,
-	andrew.jones@oss.qualcomm.com,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	corbet@lwn.net,
-	fangyu.yu@linux.alibaba.com,
-	guoren@kernel.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
-	pbonzini@redhat.com,
-	pjw@kernel.org,
-	radim.krcmar@oss.qualcomm.com
-Subject: Re: Re: Re: [PATCH v5 2/3] RISC-V: KVM: Detect and expose supported HGATP G-stage modes 
-Date: Fri, 27 Mar 2026 19:11:00 +0800
-Message-Id: <20260327111100.20448-1-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAAhSdy1-OPSaigBarUGmNWfcDBqjine+Hm+Urdinv1nLooQMNA@mail.gmail.com>
-References: <CAAhSdy1-OPSaigBarUGmNWfcDBqjine+Hm+Urdinv1nLooQMNA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4MjpK69"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C54C19423;
+	Fri, 27 Mar 2026 11:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774611078;
+	bh=mOs+f1u+WyiqSYt3GiUnjwCnkAFMVSxmeQkggvC2jHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p4MjpK69mTjB/d2r6HzwMtnkpMhj2cskZeq51ftIyHennIa4UuCYvWAsK8iGF7qq7
+	 X4C8uDhyAVOa3c3YnkWLnQ/y52VQT4mIc4BId9LWlE2RE3UWPY+4RT/i56F36rg2n1
+	 F5/yPnkFF9H3F0t35IBJsXhAoitFF4aBJzdqpeVbnchRKAVB7/IfIkX0EzslHgbymv
+	 XLNXYmoqkKQL0dSkCjBjcRJPNokENji14QZKgVc2q/1YzqZssKYyoHVfxEWQp9vZyQ
+	 22A97Yrhcii0R9h3fZ9vztdAWUGJcu8Za9rfEvFS11k9EqOJG3JFV+bAMvC44Xxmj3
+	 y32xynP6g2Alg==
+Date: Fri, 27 Mar 2026 14:31:06 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: James Houghton <jthoughton@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 12/15] mm: generalize handling of userfaults in
+ __do_fault()
+Message-ID: <acZqemRy3ltBWGL2@kernel.org>
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-13-rppt@kernel.org>
+ <CADrL8HVUJ5FL97d9ytxp2WXos6HS+U+ycpsi5VxffsW9vacr9Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADrL8HVUJ5FL97d9ytxp2WXos6HS+U+ycpsi5VxffsW9vacr9Q@mail.gmail.com>
 
->> >> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->> >>
->> >> Extend kvm_riscv_gstage_mode_detect() to probe all HGATP.MODE values
->> >> supported by the host and record them in a bitmask. Keep tracking the
->> >> maximum supported G-stage page table level for existing internal users.
->> >>
->> >> Also provide lightweight helpers to retrieve the supported-mode bitmask
->> >> and validate a requested HGATP.MODE against it.
->> >>
->> >> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->> >> ---
->> >>  arch/riscv/include/asm/kvm_gstage.h | 11 ++++++++
->> >>  arch/riscv/kvm/gstage.c             | 43 +++++++++++++++--------------
->> >>  2 files changed, 34 insertions(+), 20 deletions(-)
->> >>
->> >> diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
->> >> index b12605fbca44..76c37b5dc02d 100644
->> >> --- a/arch/riscv/include/asm/kvm_gstage.h
->> >> +++ b/arch/riscv/include/asm/kvm_gstage.h
->> >> @@ -30,6 +30,7 @@ struct kvm_gstage_mapping {
->> >>  #endif
->> >>
->> >>  extern unsigned long kvm_riscv_gstage_max_pgd_levels;
->> >> +extern u32 kvm_riscv_gstage_mode_mask;
->> >
->> >s/u32/unsigned long/
->> >s/kvm_riscv_gstage_mode_mask/kvm_riscv_gstage_supported_mode_mask/
->> >
->>
->> Ack, will switch the type to unsigned long and rename it to
->> kvm_riscv_gstage_supported_mode_mask in the next revision.
->>
->> >>
->> >>  #define kvm_riscv_gstage_pgd_xbits     2
->> >>  #define kvm_riscv_gstage_pgd_size      (1UL << (HGATP_PAGE_SHIFT + kvm_riscv_gstage_pgd_xbits))
->> >> @@ -75,4 +76,14 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
->> >>
->> >>  void kvm_riscv_gstage_mode_detect(void);
->> >>
->> >> +static inline u32 kvm_riscv_get_hgatp_mode_mask(void)
->> >> +{
->> >> +       return kvm_riscv_gstage_mode_mask;
->> >> +}
->> >> +
->> >> +static inline bool kvm_riscv_hgatp_mode_is_valid(unsigned long mode)
->> >> +{
->> >> +       return kvm_riscv_gstage_mode_mask & BIT(mode);
->> >> +}
->> >> +
->> >>  #endif
->> >> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
->> >> index 2d0045f502d1..328d4138f162 100644
->> >> --- a/arch/riscv/kvm/gstage.c
->> >> +++ b/arch/riscv/kvm/gstage.c
->> >> @@ -16,6 +16,8 @@ unsigned long kvm_riscv_gstage_max_pgd_levels __ro_after_init = 3;
->> >>  #else
->> >>  unsigned long kvm_riscv_gstage_max_pgd_levels __ro_after_init = 2;
->> >>  #endif
->> >> +/* Bitmask of supported HGATP.MODE encodings (BIT(HGATP_MODE_*)). */
->> >> +u32 kvm_riscv_gstage_mode_mask __ro_after_init;
->> >>
->> >>  #define gstage_pte_leaf(__ptep)        \
->> >>         (pte_val(*(__ptep)) & (_PAGE_READ | _PAGE_WRITE | _PAGE_EXEC))
->> >> @@ -315,42 +317,43 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
->> >>         }
->> >>  }
->> >>
->> >> +static bool __init kvm_riscv_hgatp_mode_supported(unsigned long mode)
->> >> +{
->> >> +       csr_write(CSR_HGATP, mode << HGATP_MODE_SHIFT);
->> >> +       return ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == mode);
->> >> +}
->> >> +
->> >>  void __init kvm_riscv_gstage_mode_detect(void)
->> >>  {
->> >> +       kvm_riscv_gstage_mode_mask = 0;
->> >> +       kvm_riscv_gstage_max_pgd_levels = 0;
->> >> +
->> >>  #ifdef CONFIG_64BIT
->> >> -       /* Try Sv57x4 G-stage mode */
->> >> -       csr_write(CSR_HGATP, HGATP_MODE_SV57X4 << HGATP_MODE_SHIFT);
->> >> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV57X4) {
->> >> -               kvm_riscv_gstage_max_pgd_levels = 5;
->> >> -               goto done;
->> >> +       /* Try Sv39x4 G-stage mode */
->> >> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV39X4)) {
->> >> +               kvm_riscv_gstage_mode_mask |= BIT(HGATP_MODE_SV39X4);
->> >> +               kvm_riscv_gstage_max_pgd_levels = 3;
->> >>         }
->> >>
->> >>         /* Try Sv48x4 G-stage mode */
->> >> -       csr_write(CSR_HGATP, HGATP_MODE_SV48X4 << HGATP_MODE_SHIFT);
->> >> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV48X4) {
->> >> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV48X4)) {
->> >> +               kvm_riscv_gstage_mode_mask |= BIT(HGATP_MODE_SV48X4);
->> >>                 kvm_riscv_gstage_max_pgd_levels = 4;
->> >> -               goto done;
->> >>         }
->> >>
->> >> -       /* Try Sv39x4 G-stage mode */
->> >> -       csr_write(CSR_HGATP, HGATP_MODE_SV39X4 << HGATP_MODE_SHIFT);
->> >> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV39X4) {
->> >> -               kvm_riscv_gstage_max_pgd_levels = 3;
->> >> -               goto done;
->> >> +       /* Try Sv57x4 G-stage mode */
->> >> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV57X4)) {
->> >> +               kvm_riscv_gstage_mode_mask |= BIT(HGATP_MODE_SV57X4);
->> >> +               kvm_riscv_gstage_max_pgd_levels = 5;
->> >>         }
->> >>  #else /* CONFIG_32BIT */
->> >>         /* Try Sv32x4 G-stage mode */
->> >> -       csr_write(CSR_HGATP, HGATP_MODE_SV32X4 << HGATP_MODE_SHIFT);
->> >> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV32X4) {
->> >> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV32X4)) {
->> >> +               kvm_riscv_gstage_mode_mask |= BIT(HGATP_MODE_SV32X4);
->> >>                 kvm_riscv_gstage_max_pgd_levels = 2;
->> >> -               goto done;
->> >>         }
->> >>  #endif
->> >>
->> >> -       /* KVM depends on !HGATP_MODE_OFF */
->> >> -       kvm_riscv_gstage_max_pgd_levels = 0;
->> >> -
->> >> -done:
->> >
->> >Here are some statements from RISC-V privilege specification:
->> >"Implementations that support Sv48 must also support Sv39."
->> >"Implementations that support Sv57 must also support Sv48."
->> >"The conversion of an Sv32x4, Sv39x4, Sv48x4, or Sv57x4 guest physical
->> >address is accomplished with the
->> >same algorithm used for Sv32, Sv39, Sv48, or Sv57, as presented in
->> >Section 12.3.2, except that:"
->> >"hgatp substitutes for the usual satp;"
->> >
->> >Based on above it is a waste to try each and every mode.
->> >For example: if mode Sv48x4 is supported then Sv39x4 is also supported.
->> >
->>
->> Radmi and I discussed this topic before; please refer to the following link:
->> https://lore.kernel.org/linux-riscv/20260131061238.52708-1-fangyu.yu@linux.alibaba.com/
+On Thu, Mar 26, 2026 at 06:55:15PM -0700, James Houghton wrote:
+> On Fri, Mar 6, 2026 at 9:19 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > From: Peter Xu <peterx@redhat.com>
+> >
+> > When a VMA is registered with userfaulfd, its ->fault()
+> > method should check if a folio exists in the page cache and call
+> > handle_userfault() with appropriate mode:
+> >
+> > - VM_UFFD_MINOR if VMA is registered in minor mode and the folio exists
+> > - VM_UFFD_MISSING if VMA is registered in missing mode and the folio
+> >   does not exist
+> >
+> > Instead of calling handle_userfault() directly from a specific ->fault()
+> > handler, call __do_userfault() helper from the generic __do_fault().
+> >
+> > For VMAs registered with userfaultfd the new __do_userfault() helper
+> > will check if the folio is found in the page cache using
+> > vm_uffd_ops->get_folio_noalloc() and call handle_userfault() with the
+> > appropriate mode.
+> >
+> > Make vm_uffd_ops->get_folio_noalloc() required method for non-anonymous
+> > VMAs mapped at PTE level.
+> >
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  mm/memory.c      | 43 +++++++++++++++++++++++++++++++++++++++++++
+> >  mm/shmem.c       | 12 ------------
+> >  mm/userfaultfd.c |  8 ++++++++
+> >  3 files changed, 51 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 07778814b4a8..e2183c44d70b 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5328,6 +5328,41 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+> >         return VM_FAULT_OOM;
+> >  }
+> >
+> > +#ifdef CONFIG_USERFAULTFD
+> > +static vm_fault_t __do_userfault(struct vm_fault *vmf)
+> > +{
+> > +       struct vm_area_struct *vma = vmf->vma;
+> > +       struct inode *inode;
+> > +       struct folio *folio;
+> > +
+> > +       if (!(userfaultfd_missing(vma) || userfaultfd_minor(vma)))
+> > +               return 0;
+> > +
+> > +       inode = file_inode(vma->vm_file);
+> > +       folio = vma->vm_ops->uffd_ops->get_folio_noalloc(inode, vmf->pgoff);
+> 
+> If you do away with the change you made to vma_can_userfault(), please
+> add a WARN_ON_ONCE() here if uffd_ops or uffd_ops->get_folio_noalloc
+> are not present.
+> 
+> > +       if (!IS_ERR_OR_NULL(folio)) {
+> > +               /*
+> > +                * TODO: provide a flag for get_folio_noalloc() to avoid
+> > +                * locking (or even the extra reference?)
+> > +                */
+> 
+> I think a whole new op is better than adding a flag. Something like
+> uffd_ops->folio_present().
+
+Right now it follows what shmem does, let's keep it as TODO for future
+optimizations.
+ 
+> > +               folio_unlock(folio);
+> > +               folio_put(folio);
+> > +               if (userfaultfd_minor(vma))
+> > +                       return handle_userfault(vmf, VM_UFFD_MINOR);
+> > +       } else {
+> > +               if (userfaultfd_missing(vma))
+> > +                       return handle_userfault(vmf, VM_UFFD_MISSING);
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +#else
+> > +static inline vm_fault_t __do_userfault(struct vm_fault *vmf)
+> > +{
+> > +       return 0;
+> > +}
+> > +#endif
+> > +
+> >  /*
+> >   * The mmap_lock must have been held on entry, and may have been
+> >   * released depending on flags and vma->vm_ops->fault() return value.
+> > @@ -5360,6 +5395,14 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+> >                         return VM_FAULT_OOM;
+> >         }
+> >
+> > +       /*
+> > +        * If this is an userfaultfd trap, process it in advance before
+> 
+> "If this is a userfault"
+
+Indeed :)
+ 
+> > +        * triggering the genuine fault handler.
+> > +        */
+> > +       ret = __do_userfault(vmf);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> >         ret = vma->vm_ops->fault(vmf);
+> >         if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
+> >                             VM_FAULT_DONE_COW)))
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index 68620caaf75f..239545352cd2 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -2489,13 +2489,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+> >         fault_mm = vma ? vma->vm_mm : NULL;
+> >
+> >         folio = filemap_get_entry(inode->i_mapping, index);
+> > -       if (folio && vma && userfaultfd_minor(vma)) {
+> > -               if (!xa_is_value(folio))
+> > -                       folio_put(folio);
+> > -               *fault_type = handle_userfault(vmf, VM_UFFD_MINOR);
+> > -               return 0;
+> > -       }
+> > -
+> >         if (xa_is_value(folio)) {
+> >                 error = shmem_swapin_folio(inode, index, &folio,
+> >                                            sgp, gfp, vma, fault_type);
+> > @@ -2540,11 +2533,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+> >          * Fast cache lookup and swap lookup did not find it: allocate.
+> >          */
+> >
+> > -       if (vma && userfaultfd_missing(vma)) {
+> > -               *fault_type = handle_userfault(vmf, VM_UFFD_MISSING);
+> > -               return 0;
+> > -       }
+> > -
+> >         /* Find hugepage orders that are allowed for anonymous shmem and tmpfs. */
+> >         orders = shmem_allowable_huge_orders(inode, vma, index, write_end, false);
+> >         if (orders > 0) {
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index 7cd7c5d1ce84..2ac5fad0ed6c 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
+> > @@ -2045,6 +2045,14 @@ bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+> >             !vma_is_anonymous(vma))
+> >                 return false;
+> >
+> > +       /*
+> > +        * File backed memory with PTE level mappigns must implement
+> 
+> "File-backed VMAs (except HugeTLB VMAs) must implement
+> ops->get_folio_alloc() to support userfaults, as all userfaults in
+> file-backed VMAs wlll call ops->get_folio_alloc() to determine the
+> userfault type."
+
+I like (except HugeTLB) more than "PTE ...", but it's not here to determine
+the userfaulfd type, it's here to ensure we can __do_userfault() for a
+memory type. 
+
+	/*
+	 * File backed VMAs (except HugeTLB) must implement
+	 * ops->get_folio_noalloc() because it's required by
+	 * __do_userfault() in page fault handling.
+	 */
+ 
+> > +        * ops->get_folio_noalloc()
+> > +        */
+> > +       if (!vma_is_anonymous(vma) && !is_vm_hugetlb_page(vma) &&
+> > +           !ops->get_folio_noalloc)
+> 
+> With the separate folio_present() (or whatever) op, this check becomes
+> more obvious. (Looking at this right now, it looks like we're checking
+> for UFFDIO_CONTINUE/minor fault support here, but that's not really
+> what's going on.)
+> 
+> Honestly I'm not 100% sure if this check should be here. If it's going
+> to be here, then we should probably also have checks like these here:
 >
->Privilege spec mandates Sv48 and Sv39 when Sv57 is supported
->so the current approach is not based on any assumption.
+> if (vm_flags & VM_UFFD_MINOR && !ops->get_folio_noalloc)
+> 
+> and
+> 
+> if (vm_flags & VM_UFFD_MISSING && !ops->alloc_folio)
+> 
+> So, maybe we should just leave it up to ops->can_userfault() to make
+> sure we're doing the right thing?
 
-Thanks for the pointers from the priv spec. I agree that for selecting a
-working G-stage mode (e.g. picking the highest supported mode), it’s
-sufficient to probe from Sv57x4 downwards.
+This must be in the core so it can reject VMAs that can't be used in
+__do_userfault() without complicating hot path in the page fault handler
+with extra conditions.
 
-Now, I want to build an explicit capability mask of all HGATP.MODE encodings
-that the hardware actually accepts, so that if the userspace config forces
-a specific mode (e.g. Sv48x4), KVM can validate it directly and reject/
-fallback when that exact mode is not supported.
+> 
+> > +               return false;
+> > +
+> >         return ops->can_userfault(vma, vm_flags);
+> >  }
+> >
+> > --
+> > 2.51.0
+> >
 
-As an alternative, we could also do the probing lazily: i.e. when userspace
-requests a specific HGATP mode, we try programming that mode and fail the
-request if it is not accepted. 
-
->Regards,
->Anup
-
-Thanks,
-Fangyu
+-- 
+Sincerely yours,
+Mike.
