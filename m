@@ -1,118 +1,89 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB2430CD82;
-	Fri, 27 Mar 2026 16:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B797734A79A;
+	Fri, 27 Mar 2026 16:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774628821; cv=none; b=dEJJRCLzOZoT/kwKq4Lusq6B0bfXLn5SqSdI2s/gLdaRb8OS5fNyg/z7aW3VOKvsIYUh7v8CkopfuU93blza1LiDiC1LVSFybMz6n+/pZndSSFQWd5M6DKp1/9wEM5pSZkcQE2pgcFu7vytM/crq9Cq8LVHthhhXSfNHrgMdtbQ=
+	t=1774630060; cv=none; b=nsOwQkIfAM+qZiWScDVd3DalgTVPMSwaYnBq+krqMktxgZkZj8PxVep++cC1/Q6jTRg5VO/XVAXlc4URR3UZ0g7G3R5MP1BunDoZko22547QSfjxSrR3Q2gj9GYuWblSAbhu5zLVqZEqCD61/PWUNoGZoz3liicy/JCUzOBhKxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774628821; c=relaxed/simple;
-	bh=r9fSo491Pr2ZPkxIr2VxF0cwVsGRuIjHOyLSjWQE3Fg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=mYIm8038LaRH5r1hm2pONNk1keSs0jMYznriBGq720ifJzU1fZeoZxgdw95CJI+JDv3Cj0rJ8Bh96hLQ5hQH86C/vFnieutcbryiN4GUNfZS2q2tNtGmX+KerBKfsxmR8xcxbBH1Is1AO0AHu3AY53Z8pdZ+QnCkA90nrl/pmvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=e0B35BCC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NZhm2nTZ; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1774630060; c=relaxed/simple;
+	bh=zCHu6vdwFKPQuNA2ItrsbdYzJ6DJHAS5OipAXB0fjEs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CZppH51DmVogYGjmhLI7KiPEqMGS+b6KUGJTs/PPwGaPTiCX4ILaMPvQ39O8I2DRU6mY4yPGdBzr8F+cHt1mKapJAmSd3bP/pGF0/r5dn17xg4DjYHo+8SEudvxzgf+OVjasOSEKeydV43XRoG8ZrJA6oNgN84aj0EXn8dheLfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=n03tXMcp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="e0B35BCC";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NZhm2nTZ"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 22BAE1400176;
-	Fri, 27 Mar 2026 12:26:57 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 27 Mar 2026 12:26:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1774628817; x=1774715217; bh=gI
-	yHgX6wvfbHEELWQCcnLBdqvwXGGWhdsHi15lqfS5E=; b=e0B35BCCRUL4TSowdd
-	3KshmhAd9lU8ALbHBpxPKI1nXCXDSZXGkmnFPHZngvVf/BuxA91VUextySMJgo0v
-	KNUF7hzf8evolTD25d0diS56YHX7LPNRde4I4z3Ob8vyPMeOVIsSxFllLejlnhSS
-	mqHb+2LPJG11BL5q7Ayt6mjTxSp6X8/d16eoxuNj3Fi3cQ1btuOcoio3o/b4CXV8
-	7r4oITO5xDsUn4T3/CILa+cGTrIF/BuF0jmcmHZ0ETwf9MvlHiX0WnGNgVnmDTRz
-	Ztq+nthmSQFgx/yKImiRIwoYkGbWgPFMlmbM6SuCl06UdoJlTSjeP6BGiKqS/Sbj
-	gEnQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1774628817; x=1774715217; bh=gIyHgX6wvfbHEELWQCcnLBdqvwXG
-	GWhdsHi15lqfS5E=; b=NZhm2nTZn5lvtudOod/VpPoK/7soVd+M4rxrNrC2aIFi
-	ynJ+g8YutJ++HCXFGmXzQO86XIIC4xQCa6EmzNNb7WOj5mpYgGdm5eJoiT1wIAXO
-	iykosHvZlh853I60qDeCQazq00snI3zC4YstUBiUlgZuMk3pZzPStHiqRPfpnbMU
-	jQm9WG0RmBJqmgRPekFWFfUQsOwot9W9zdh/Szf3RGPTJ1/uBoHSibhovf7HcrbO
-	UFdsidJFojIlMm1+5R9iftXHb40MqsLBB+n8cY7+HzCeOqEfRkOubvNVpJWtj9qS
-	tH31WWTWwDIm4/Rs5x7uuzR8S408grAUuzhZ9rhcQg==
-X-ME-Sender: <xms:0K_GaQYzz79R5fw7xX34IAnpRATlG-fzHmJ0ltjReUlPpUzmUvz11w>
-    <xme:0K_GaZMruOna2jH7h4mSf-XC5mRM9x6gd5TJR3LhxiBc4soc9yo7KoCLq6fiZ4MfX
-    QYBOst7kkpIcymTxQlsFW3gaVcWcEnvDVY9WyaILbDmyZ5aW5u04w>
-X-ME-Received: <xmr:0K_GaVbVVU0fc6Yag0rPElEbzL_zClWuNCpZZV9fjp7RYkFLMBe3FwY2uLM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffedtjeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
-    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeetteelieeffefhffevteeufeektedulefgueekleeiueelveduheffhefhkeeg
-    veenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhn
-    sggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhgvgi
-    esshhhrgiisghothdrohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidq
-    fhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghr
-    nhgvlhdrohhrgh
-X-ME-Proxy: <xmx:0K_GaX1nFZnICwyDSxm8g2WW5bFspH-ll8OzvYo73lmiH35xOU-RvQ>
-    <xmx:0K_GabdxPr7u8z7todL-zkh9OJGhX_ty4IoNa8aqM3lkRTTPA5JL2Q>
-    <xmx:0K_GaYG7obwoxNvNcBlnqVgNP_RQthq5gng725szzrz7Sny6yRlNVg>
-    <xmx:0K_Gac1OUfvjmGwAdppnply-blmh0KjUFQ0-RvX3bBFUqV1e9PnHZg>
-    <xmx:0a_GaamLUNjg2eE5m_pFkjLRM7XIiZWg_6QH0D0KEoUO47oLA4ODVqON>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Mar 2026 12:26:56 -0400 (EDT)
-Date: Fri, 27 Mar 2026 10:26:55 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: alex@shazbot.org, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: [GIT PULL] VFIO fix for v7.0-rc6
-Message-ID: <20260327102655.65cc762c@shazbot.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="n03tXMcp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0CEC19423;
+	Fri, 27 Mar 2026 16:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774630060;
+	bh=zCHu6vdwFKPQuNA2ItrsbdYzJ6DJHAS5OipAXB0fjEs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n03tXMcpjjYNt0Hx9YQwbPGwEDXWZKfUKohUo5ohPUHbPx+f8qh+KDZeTzpBbg3/7
+	 LokGmm0Pw75YvFbCHRFosn/8qYVSWw0qa92DFLMAQG6xmDRvM6NK+zWmACR7qoWvYF
+	 QyWcblJX4j+wv1GSRREER4cGbV/YrZaU//IBoy1I=
+Date: Fri, 27 Mar 2026 09:47:38 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, lorenzo.stoakes@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org,
+ mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
+ npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+ borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
+Message-Id: <20260327094738.7150efc3b0619e6ccf095c23@linux-foundation.org>
+In-Reply-To: <20260326080836.695207-1-surenb@google.com>
+References: <20260326080836.695207-1-surenb@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi Linus,
+On Thu, 26 Mar 2026 01:08:30 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
 
-Please include this fix for rc6.  Thanks,
+> Now that we have vma_start_write_killable() we can replace most of the
+> vma_start_write() calls with it, improving reaction time to the kill
+> signal.
+> 
+> There are several places which are left untouched by this patchset:
+> 
+> 1. free_pgtables() because function should free page tables even if a
+> fatal signal is pending.
+> 
+> 2. userfaultd code, where some paths calling vma_start_write() can
+> handle EINTR and some can't without a deeper code refactoring.
+> 
+> 3. mpol_rebind_mm() which is used by cpusset controller for migrations
+> and operates on a remote mm. Incomplete operations here would result
+> in an inconsistent cgroup state.
+> 
+> 4. vm_flags_{set|mod|clear} require refactoring that involves moving
+> vma_start_write() out of these functions and replacing it with
+> vma_assert_write_locked(), then callers of these functions should
+> lock the vma themselves using vma_start_write_killable() whenever
+> possible.
 
-Alex
+Thanks, I added this to mm-new.
 
-The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
+It doesn't appear to fix anything and it has no
+appreciable&measured performance benefits, so I just broke my own rule.
 
-  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
+Weasel words: Lorenzo would like it in 7.0, unreviewed patches in
+mm-unstable&mm-new are down to 62 and I'm a sucker for nice patchsets.
 
-are available in the Git repository at:
-
-  https://github.com/awilliam/linux-vfio.git tags/vfio-v7.0-rc6
-
-for you to fetch changes up to e98137f0a874ab36d0946de4707aa48cb7137d1c:
-
-  vfio/pci: Fix double free in dma-buf feature (2026-03-26 06:38:27 -0600)
-
-----------------------------------------------------------------
-VFIO fix for v7.0-rc6
-
- - Fix double-free and reference count underflow if dma-buf file
-   allocation fails. (Alex Williamson)
-
-----------------------------------------------------------------
-Alex Williamson (1):
-      vfio/pci: Fix double free in dma-buf feature
-
- drivers/vfio/pci/vfio_pci_dmabuf.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Three of your patches lack review tags so now it's 65!
