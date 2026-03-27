@@ -1,130 +1,131 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B8B303CAE;
-	Fri, 27 Mar 2026 15:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589142DF155
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 15:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774624932; cv=none; b=A628SB5NkQXOI+zNSYIEOT4sLlthiB3THjO5m7FYhmDDL2QQd9RvTrVw2fI4U+YRenHsmXQ1r/uUtLSP+p4IIS652F25b35CBDL7luVM5okR54o8GkVeQYr+Lqp+8dYYjzDuzNc+sr2m0c/bVuN16ubfflmsNw2tzzH5aOoPBFU=
+	t=1774625008; cv=none; b=SLDCovFHfJzJyun5kt2oMoh2ILgWl68U4uJXLi4hRsO1AYERVUTlf3iRIOXPL2AAptN3GvDo7A+6hwGqayWXM428WTCm3XcQzGUIIDburg4e5fzjzYQ1SFMtywMK64PWnB8OZ3HpOGh0EmCwBE8Ze+XCnSm63ejQucE36EpWHoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774624932; c=relaxed/simple;
-	bh=zq/uFpgNPcQlFhlrC0AY41Tsgqx4q0cvxx5P1zuWSWM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ORNE/XKpZ2IYDhhvzEwCuI1ZbdJW6JWg30mi/gvYIr/xcqW3Iw01xNkG9BXYwRHlWNbaIngOFo3MxXOWOD15ont7Q5FqE+b70ZZ5KHonAowgez4imxBLf1bkOVsUwaSeNiM9PkGfqUD+Za7mssGvXAjONJY0XN+qNzZhWEa/s60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UJ4rmuqI; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774625008; c=relaxed/simple;
+	bh=QGX6i54s5UgwCH2JsvP0SWkUtgqCo1Z1Jbyn2R0CQAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tr1ipH9jK5w5AdW19LDr3YJpjF3wJ8hn6tbA+FFxGgETUaAzp+cvH0e533Fra+EQqDEAL+FrzNQM5lf5M6j8i8h4pOkog7EXg64akzK2BgfRH2a6MnzVXvtY/oEaysOTkX9XGXFKryJ7FnQ4EeCYqS939KWaERwYA5cRHTyZqxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T23mygud; arc=none smtp.client-ip=74.125.82.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UJ4rmuqI"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62R4Lced028990;
-	Fri, 27 Mar 2026 15:22:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=nAcQ2y
-	K2e3da86z0cfYxeS+6kqQDQ+wVnhOdssA91A8=; b=UJ4rmuqILVxhpJ4VWsJbwt
-	WqmWVGwz7POousRiY1En1da6ILxEG4c0C0hz2guWZjyq3/gWr5RxDebDBzvMsbvJ
-	oDCNji7+GlDsS7ADCP0nLecOaLdiznDyF27rAdC78gH5WiI0dHUQsF/PVo+IxvPA
-	3mN2bvppV3mJswiGpN98Ha7mFE+4JfBhrL7dxctUQa93bAMi16EirDjRZ8j6QybL
-	6Yl4cQKymDqL+My0+4p7LpEIb2+j2lIRU/vX3foUizFw0qAKVzNAwWKUkO4amIt4
-	rVDCXSjYxW5CVR5wz1/DI1xuV458M9WvqPEQ/3VlRIwCQunHTsZAKfFHwn7txh6g
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqtvkv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 15:22:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62RAsSBC008745;
-	Fri, 27 Mar 2026 15:22:06 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d26np00y9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 15:22:06 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62RFM5Qj37224868
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 15:22:05 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E77A55805C;
-	Fri, 27 Mar 2026 15:22:04 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B23775805A;
-	Fri, 27 Mar 2026 15:22:03 +0000 (GMT)
-Received: from [9.61.244.240] (unknown [9.61.244.240])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Mar 2026 15:22:03 +0000 (GMT)
-Message-ID: <fd8f5702-8118-4db5-b3be-d68a79fef0de@linux.ibm.com>
-Date: Fri, 27 Mar 2026 11:22:03 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T23mygud"
+Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-2bd9a485bd6so4218804eec.1
+        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 08:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774625006; x=1775229806; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PzJcmu/U65FU4wQTMalP+dP1gUaMd8JFyXaRRb0LPKo=;
+        b=T23mygudOHgEgVw0Zg9uUfDqdzhTr9iIPjB24Z1e9T7SADBUkY0sHEXHsRHp6I5zAq
+         f50TM4Y+dQK9shXHeYyptbnP12GRsb9SCpFm8u9Oj3f9w9KQrpOZpyvPuYQ5YiI3oc0t
+         WJVeC6imr/L2PH63a9bk+R4fTSyLjagJob09L3wnlJUkRkDsVMTU6wES8zBLaCJaLEDS
+         25uAHeHnVJP3VHfcbjwiyYp8C3LeotTwzwp2SUoE3KWvKtWrEiiHuj25td3oHAvHVOre
+         1gP3GFWvwq9YRPbvagOtaEjiElN6lzWfFalR+XzQc0H6IakV+fWWQu+h8hPvg6Eqzo5d
+         TvOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774625006; x=1775229806;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PzJcmu/U65FU4wQTMalP+dP1gUaMd8JFyXaRRb0LPKo=;
+        b=KoypjrnSmJARTi9V8zoSpSfjx2QtyKLZgeWi95xBqd3Xtad1miwo8jHUfr2TYRF4Zr
+         P8hXXwJ3zZ1qdqiKNPPTg1rHoBnWB/uIRW9hYJ04uSTeimh6RtxhpG4nvq0LxzAQi3gc
+         SXZ7e8YOA5kqWwhn5qFJlfyWYyN5B0xwsLtSYWHdgWPf/8hEJdOPsoaKk1xO9Il1nbwR
+         HjDPTQ5PwWHB/kuCMhdn1JFauMWrGVpmMP6CqAyv+bmD+raap7hmtBqkVagNlWl52Krd
+         GJPT5aAvHnhwRTENMMy7JjLufUnbJSU2gKch5153PpZNBTO+183n9Zweci8hvvNo9Qoj
+         GA5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVgdkRPQ5BVqyYPBzuBc3FKuwron1rd26qCq0MLsNz+FYZOSS2c6sQAuYCRNyCCv3QOq4A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy+Jwku6wfh20h4SSRga1B5koaycDJdZ0CQbN+Vx6rOuyMx5FF
+	0BK6cipw4ezGvdgHky5IP7cq2LPO9/6jkCl3J8YcllsR+6w6cvxEIerR
+X-Gm-Gg: ATEYQzzfE7Tgk2msfK1YEdxKt39WBZ8JN9qra95F+nLkVor1YaKPqRS0BjaSHQ0z63i
+	W2KKMSXckUp9TcSd9Vc8GVwztoWAfn/YWoQwMNB2y3ZuMjHkCG9asKDH1Mzns6RepRysZv5+PB6
+	yZNxYAHgvhQBQnkJv9xxx+aPFAEKTicJmxxJTm0PX3VzR6E7f+l3kwRuNoVykYtEgeQUJyyaHaE
+	VPraBlQan6NwfDaanwzDcRgvNrdoH4AEiPaiFik4uZC0ew7BU1yXQ6ysmaDRUNwQ/nGXjFYCGrS
+	m6mxSfjkljdJM7xCAyVH5yZrnwGNF4Rdap226xR1+Ube/CwkZKTuD7Q6oDTraS5+Kjf8UW3X47/
+	gTHSqSCfSfawa9ha6dxqTTli/kfGOekM+h9bRKn2RzhLQbqDPUvUDgAjRwVXHVJCRaNUYjnkgij
+	lgyuiOY+kYqFAI1jpnf+Kxdh+9r/dO6GjFE3PSU9k67dvNLLHzLOSJ4EyKdvfx+8qqOrEEOQsZL
+	+bOF4L/fC8t90ZANzE6Q5RMsSC46Ac=
+X-Received: by 2002:a05:7300:3254:b0:2c0:d92c:2c68 with SMTP id 5a478bee46e88-2c185fad9e0mr1793181eec.31.1774625006061;
+        Fri, 27 Mar 2026 08:23:26 -0700 (PDT)
+Received: from ZEVORN-PC.localdomain ([38.95.120.198])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c16ec4934asm5319735eec.8.2026.03.27.08.23.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 08:23:25 -0700 (PDT)
+Date: Fri, 27 Mar 2026 23:22:49 +0800
+From: Chao Liu <chao.liu.zevorn@gmail.com>
+To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+	qemu-ppc@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org, 
+	Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+	"Edgar E . Iglesias" <edgar.iglesias@gmail.com>, Alistair Francis <alistair@alistair23.me>, 
+	Peter Maydell <peter.maydell@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Harsh Prateek Bora <harshpb@linux.ibm.com>, Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Chinmay Rath <rathc@linux.ibm.com>, 
+	Glenn Miles <milesg@linux.ibm.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Weiwei Li <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+	Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH v2 07/15] target/riscv: Use glib2 instead of
+ strcasecmp/strncasecmp
+Message-ID: <acagsTxLwZYmZaf-@ZEVORN-PC.localdomain>
+References: <20260327134401.270186-1-kkostiuk@redhat.com>
+ <20260327134401.270186-8-kkostiuk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] KVM: s390: Add map/unmap ioctl and clean mappings
- post-guest
-To: Christian Borntraeger <borntraeger@linux.ibm.com>, imbrenda@linux.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: mjrosato@linux.ibm.com
-References: <20260326014247.2085-1-freimuth@linux.ibm.com>
- <20260326014247.2085-2-freimuth@linux.ibm.com>
- <1948daf3-9e5e-471b-94fc-c0aed00b4c09@linux.ibm.com>
-Content-Language: en-US
-From: Douglas Freimuth <freimuth@linux.ibm.com>
-In-Reply-To: <1948daf3-9e5e-471b-94fc-c0aed00b4c09@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PFV2DQFsSr_8ypF90HRZcMtY9_okb9G6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDEwNSBTYWx0ZWRfX4vq0vtY/lAfK
- 3CU2rPsLRSouYVrgDokCWV5GmhNgrEihFQwWpxW31cyQ8r+lqZ2mBdkAo4X77KNpl+cSDwF/yG/
- Hv/E9hvEWNjgIpPSy/fsN4LaQJBWDKzM4SzT218Dg8zF2Gmd/g7jmvpdp0r6bysxFHbYifOvqZo
- pYMLSewgk9Gatd0vXxA0LtnQ9Xps79LSmjVAh6BIv4EUYtC9GmxPAdl/lhJfNce+LCN0ZOfLrQB
- kaSCnVaAVMXorxMtanB04yuSoJSUAJ6MgXmQFqUy1HULq5Rz6jh9xAWPkwpTHXNjMT1NN8Q10SJ
- cm0A8H4hdtLMjPQET5PKGuYGrfJQmvjfWuyA/w/Oc5HPKWAYfJf+DPdYUTO7bYXLhlG80ZDCdWo
- Wwwo9bGcZDh0zHnWWa/VPJSR2+id2NMw/SWqESVtLdR1Awqq1M0hh+tgyubv6pofFRCsXOXXoOy
- +ePAfzfoGzJnmpGF4eA==
-X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c6a09f cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=yp29nr4wFdSsSxMTDoYA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: PFV2DQFsSr_8ypF90HRZcMtY9_okb9G6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_04,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603270105
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327134401.270186-8-kkostiuk@redhat.com>
 
+On Fri, Mar 27, 2026 at 03:43:53PM +0200, Kostiantyn Kostiuk wrote:
+> This is a change in semantics. g_ascii_strcasecmp() doesn't honour
+> locale but strcasecmp() does. But this is OK for at least one reason:
+>  (1) QEMU always runs with the C locale so there's not an actual
+>      behaviour change here
+Reviewed-by: Chao Liu <chao.liu.zevorn@gmail.com>
 
-
-On 3/26/26 7:46 AM, Christian Borntraeger wrote:
-> Am 26.03.26 um 02:42 schrieb Douglas Freimuth:
->> +static int kvm_s390_adapter_map(struct kvm *kvm, unsigned int id, 
->> __u64 addr)
->> +{
->> +    struct s390_io_adapter *adapter = get_io_adapter(kvm, id);
->> +    struct s390_map_info *map;
->> +    unsigned long flags;
->> +    int ret;
->> +
->> +    if (!adapter || !addr)
->> +        return -EINVAL;
->> +
->> +    map = kzalloc_obj(*map, GFP_KERNEL);
+Thanks,
+Chao
 > 
-> GFP_KERNEL_ACCOUNT certainly makes sense. Depending on other feedback 
-> can be
-> added when applying.
+> Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+> ---
+>  target/riscv/monitor.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
+> index a9d3111444..bca04a7580 100644
+> --- a/target/riscv/monitor.c
+> +++ b/target/riscv/monitor.c
+> @@ -303,7 +303,7 @@ static bool reg_is_vreg(const char *name)
+>      }
+>  
+>      for (int i = 0; i < 32; i++) {
+> -        if (strcasecmp(name, riscv_rvv_regnames[i]) == 0) {
+> +        if (g_ascii_strcasecmp(name, riscv_rvv_regnames[i]) == 0) {
+>              return true;
+>          }
+>      }
+> @@ -358,7 +358,7 @@ int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval)
+>              continue;
+>          }
+>  
+> -        if (strcasecmp(csr_ops[csrno].name, name) != 0) {
+> +        if (g_ascii_strcasecmp(csr_ops[csrno].name, name) != 0) {
+>              continue;
+>          }
+>  
+> -- 
+> 2.52.0
 > 
 > 
-
-I will make that change.
