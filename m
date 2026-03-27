@@ -1,114 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEB73E716B;
-	Fri, 27 Mar 2026 13:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8073B22173D
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774618092; cv=none; b=JHdFQp3Hi4J36Gw3PpwH9LQoo7cmYn5yXFYBIcnRXlkZALy76rxtyezd5I/h1JBt71M3hWTuqno+3yspPUodaxThokhyVO6BsTylv141lRpNh/6z+Ft7Ch9Gd0Dk7nurpsKN49G6q1aYzpNsI6Jpu1XAryxrv33OkF/dSekbAWw=
+	t=1774619061; cv=none; b=WLHKWwdbT0ECnHW9nt8T0Hps61vmEDBhvIedlitLBvqTgjaECRQiAxDyVPIISKCD6iHpm+UrJxBhqfLv+i/UA8rOM2BiVy56fEPdq305vyGXpBNoWnh78svht73Rkri9L+gK+/6F83fEH8MlIpx6KN9PprhGYFumikoF+8PUYSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774618092; c=relaxed/simple;
-	bh=r/tUcr+DkmKRuSoOmSbqzMlOOVTDeN+O6HtHU+Chplw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ukwMerjOf4sPOfFQ8J51D0TA/ZfBUqwoAT0QXqvJnSmtRieco3Qr5rnqx9QLNtJD67VD1KtDEvpQmJDVhT41Rtfw2CjRQjysLgHEyeY8KGEQH9ra2F80RJfhwerld+mJBE5c8gHsxtJZooC2sTBWpLkLGa+molqZCYuEdpTGUIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgrKpze0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774619061; c=relaxed/simple;
+	bh=KVfKqju3fWJ4QnHhgMWBtnmH5PrPvAK3hvaGfeBt9lc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CLgJUxFNRNcWAdWjuewPMzTNaB2eI7kMnDzMxAcvyVmC3qNIEM23NV5pHDKfQoFFXWpIckQh01ol0IotlKlaB6iH6ZfEcYWk5QIGgag4BhZJqBob8IGmdHsPApzFVF203VAISfpWH+yrCDv4Nc8cP0TkDTljQOzkEb+kppAlH5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Prtdqtal; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgrKpze0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE8BC2BCB1;
-	Fri, 27 Mar 2026 13:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774618091;
-	bh=r/tUcr+DkmKRuSoOmSbqzMlOOVTDeN+O6HtHU+Chplw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tgrKpze0AXBEQbD7udKzYR1/j6AEhWlQrKBma1DiYfButx4464/hyCJcpP+ANo9Ap
-	 by/AS0qYxcLqBUSypREH+SHXOKATURaX0us8v4dfKQqXxPoButyOG+KhsuWNRvIeUu
-	 OT9CiE1BJhUnl6+SEPyLb7rKdCHDRBxPXMjA0DrJamezzubk415mrPedbFHfjZqGzC
-	 WAikLjxtn6QB+XzNf1gAfc3zcEHDvFYphLENXO0NWxG/whC/a3SsCFy4iU7xdizwV+
-	 Fd9Nkb17vBj+XSEUZMAIgu5KYakuf0xy9AC3zv8wEWxsEuZC8T/dDcIgvobE8Ac+JG
-	 PHIaX9JpLlSeA==
-Message-ID: <2266e9af-ce5b-401a-8364-0fe2fc3d68a6@kernel.org>
-Date: Fri, 27 Mar 2026 14:28:06 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Prtdqtal"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774619059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XAV0D7HY/jIQN3ktUQpKSm/qYS5OD62NK49YaY8qs5w=;
+	b=PrtdqtalObPfjXusX9xl6fy9mfzUPoIfYRNJNRPkVDmryaCirMfXAbm/o6m4g8bUswpFm1
+	B/zY/XEU3Az1DURB377RnqmV7OBSbvUnHEfO179UJHnCJCjgGzHxXFDZ3VfhBeDHlN8D0s
+	3djMsievNn6iVJVQSODXSKHz6d7pK6o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-l3b1Ow2dOZSVVCQGMlUYow-1; Fri,
+ 27 Mar 2026 09:44:15 -0400
+X-MC-Unique: l3b1Ow2dOZSVVCQGMlUYow-1
+X-Mimecast-MFC-AGG-ID: l3b1Ow2dOZSVVCQGMlUYow_1774619053
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 082B0195608E;
+	Fri, 27 Mar 2026 13:44:12 +0000 (UTC)
+Received: from srv1.redhat.com (unknown [10.44.32.150])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D6521800671;
+	Fri, 27 Mar 2026 13:44:04 +0000 (UTC)
+From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org,
+	qemu-ppc@nongnu.org,
+	kvm@vger.kernel.org,
+	qemu-riscv@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	"Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Chinmay Rath <rathc@linux.ibm.com>,
+	Glenn Miles <milesg@linux.ibm.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Artyom Tarasenko <atar4qemu@gmail.com>,
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH v2 00/15] Misc changes to allow building with Windows Clang
+Date: Fri, 27 Mar 2026 15:43:46 +0200
+Message-ID: <20260327134401.270186-1-kkostiuk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] change young flag check functions to return bool
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
-References: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 3/21/26 07:42, Baolin Wang wrote:
-> This is a cleanup patchset to change all young flag check functions to
-> return bool, as discussed with David in the previous thread[1]. Since
-> callers only care about whether the young flag was set, returning bool
-> makes the intention clearer. No functional changes intended.
-> 
-> Ran mm selftests on Arm64 and x86 machines, and no issues were found.
+v2 -> v1:
+ - Added additional commits to remove strcasecmp/strncasecmp usage in
+   favor of g_ascii_strcasecmp/g_ascii_strncasecmp
+ - Don't remove dirent.h from util/drm.c since it's used there
+ - Updated commit messages with more explanation
 
-Thanks!
+v1: https://patchew.org/QEMU/20260326160033.68318-1-kkostiuk@redhat.com/
 
-For the whole series:
+Kostiantyn Kostiuk (14):
+  meson: Use stddef.h instead of unistd.h
+  qom: Use g_ascii_strcasecmp instead of strcasecmp
+  block: Use glib2 instead of strcasecmp/strncasecmp
+  io: Use glib2 instead of strcasecmp/strncasecmp
+  hw/arm: Use glib2 instead of strcasecmp/strncasecmp
+  target/sparc: Use glib2 instead of strcasecmp/strncasecmp
+  target/riscv: Use glib2 instead of strcasecmp/strncasecmp
+  target/ppc: Use glib2 instead of strcasecmp/strncasecmp
+  target/xtensa: Use glib2 instead of strcasecmp/strncasecmp
+  hw/ppc: Use glib2 instead of strcasecmp/strncasecmp
+  osdep: Remove unused strings.h
+  util: Remove unused dirent.h
+  util: Remove unused sys/param.h
+  meson: Don't require nm for non-modular builds
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Paolo Bonzini (1):
+  storage-daemon: use same link arguments as other tools
 
--- 
-Cheers,
+ block/curl.c               |  4 ++--
+ hw/arm/xilinx_zynq.c       |  8 ++++----
+ hw/ppc/spapr_caps.c        |  2 +-
+ include/qemu/osdep.h       |  1 -
+ io/channel-websock.c       |  4 ++--
+ meson.build                | 35 +++++++++++++++++++----------------
+ qom/object.c               |  4 ++--
+ storage-daemon/meson.build | 16 ++++++++--------
+ target/ppc/kvm.c           |  2 +-
+ target/riscv/monitor.c     |  4 ++--
+ target/sparc/cpu.c         |  8 ++++----
+ target/xtensa/xtensa-isa.c |  4 ++--
+ util/path.c                |  2 --
+ 13 files changed, 47 insertions(+), 47 deletions(-)
 
-David
+--
+2.52.0
+
