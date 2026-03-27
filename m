@@ -1,113 +1,114 @@
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DBD6BB5B
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519103ED100
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 13:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774616916; cv=pass; b=MD97Fj88CUI1fT82xTk74o24D1uuKxH59W7Inob+HU4fbcr75CuIw5aNdX+v1KCiksMLwB6uoECNJrRekFc2uYMRnmN1RvBqWjJ7LjzbrlNdODtXdwULzdujOl/RWAypUgrtc6qmyOslG6BCt50LeScC3eiH2y8WXqDrwftZcks=
+	t=1774617392; cv=pass; b=K4Gv9jYH+Iet7YcMrPNycG4byh9eXEjfTQ36uOtvzaF7u1jglIi+kjbkMmzEaWpbiAiFiE77cHadxhh/0LMzw+Q1DxJSwKuJ24Io+oxZlAar+tfVbCgKRgNaxIVSamwkOHYj3wDEXWqzPjqkb4twNHhG6oM1h9FoU8YnuZKt2Mc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774616916; c=relaxed/simple;
-	bh=jJvzAugtCSkcU1V6RJNHAWpr8JqHIq1Yhf0msWw16uY=;
+	s=arc-20240116; t=1774617392; c=relaxed/simple;
+	bh=0npK+LpLA6BChEex8bv3MvWeonr79UU+n6b4CahqHrg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f9kK4Hpf3JbuG8Tbh60B0H1xPvTYdwqNdl6gmR63NBJzO5xiGfX6mG1TanjV9C2hArC78wstne66diVfhSAsJzoANcGJgWDYeQLQNPXq+vw2Equ5s24KJOWye/nx5/lKdOJQh4WOxmOU3et+P5jkb0PGhmqbrwZ5X+BzdUdxg+8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=e6oOCWiY; arc=pass smtp.client-ip=209.85.167.175
+	 To:Cc:Content-Type; b=aKg+VsEh2Oe9gvLt/yoImSOmhAirsNopqcLmw/Z5jaLtICTRykNyhMZQAPrMs+VEj3sJhXNPoEa04ptXznik5IwCNFVQEq38k3jYc5HOpRqmon1EPIqJqaYIskUkm3JQ6lDOOE7U34qp0nM2DpROR6cmB8ou74JwSSYS2yAD0Lw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=2KSR4irP; arc=pass smtp.client-ip=209.85.167.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="e6oOCWiY"
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-46726528f1cso1306264b6e.0
-        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 06:08:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774616914; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="2KSR4irP"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4671cbce32bso560954b6e.3
+        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 06:16:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774617389; cv=none;
         d=google.com; s=arc-20240605;
-        b=kEgqb8NXQmmmGpFEY2A1/PdcVWfCuE4fMsRLZmgoo2tPBzkQtpojgIrQhEMfuu+Mwx
-         BUg8G0RBGn7TKlwOswuSgFtCgVIKO00cJQAbLGAFSdaZOZLR/r0wf5QfMYuRPDdHo9ps
-         ruazNNqgELZmkI4zNYSHsQ8PeveReyjjTcyzZoHQ1Er3dEENERhjFWE+CV7203kJ9gzz
-         0Vz+g6taYBCo4VKxXWQCZLlYAT8xGsWHUSyNjkqNxWzovwpl2pz/Uh/+ZqLN01VHga2r
-         Zch6mIg/Naj1d+CcbWUk59usC/j6yQCQlo765p9VwVNZ9FZzWR9KTfDj1MeafzIa4vj+
-         /0fA==
+        b=ep2AOjBZ0VowghtBfmJMPOWLN70c6Fmkxkhs/e5u7diWgBEqkrHNCtXeiQ7q+B/cvX
+         /pvWAL4Nm8G2xJ5SsrunGAUDj4lfD2JV9k3zJxlULYr95Qnb0ciVS+osm2dtP6F0RIZD
+         xBu39GCXDpJ2oZMWxYyGkdw3Jp5ZHVEyvzeItNvcCoscFkE+ggd7YeAiwAIpN/WulY4p
+         6uM2DVsFNUDyf6SlwtVUv4Z6tDI2Dgv+zMby3A509a7Szfdm/B9PgzHGuuwQXDpO8Zha
+         BEWcF3sPmd18nmcvHu/Djd2YbL/bjgrR2LK4A0w8ZVbibxoWlY1rOkLu494+3Joy6q6V
+         kCmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kmbMPpAvEXl89b9DDmueCespLqdFhwnm0SegHcujUGk=;
-        fh=N+Uhlc/BfJIyO/ewQbZPSNpotg76leMJxBZzRQVGKYo=;
-        b=EUG8w9JylIv+yVPbf4PkuMinQ4aK7LPiKRJ8AJjCpaTxgfHnBYHlI3Nm7Eqgrt5OGm
-         zsJE3pfkNqzMIV1bq4saf748f7mocob2cD1E/Awjwkj/VzAtBZDpTPbwKtfnB2JFWhWX
-         fShpyhVdI/uJZoobbruicLh3SrsLlgtX7qGtjEMqWsCHdW6G2I3uAO0+PqkW9h+6D4R1
-         VakRhUAUTEPRewdPNSd8CLsy4bUwHu3qP4YlzPUs4fR8v0Ivn8BgsynqYlR63Z8WJmiK
-         95oFdgYzeWkQ23nINqd8AemxY5BxjfhHjQI2KH9J53Bz4NYwdaOPOV+AvOnJcayH8HYM
-         bQtg==;
+        bh=LxsmBS0GOSp0jQyHQNaHHHPYwd9SwbtGqsQ8nHJmtNM=;
+        fh=EjCWf22/Esh7NV0R0woU35VIolG2++bDQO2QJjtgzVg=;
+        b=GazT0aBKfBLQDaCPWoDoVpBVue/pCmPfMDzNYYHjSDXwH1k/esifJ+FhV+sW2uGxKS
+         E8oL6dcan+9Y3mBQYiHIh9hP/BpYSIccAIS0upwi06/QI3yiRRuvQUa2/JwFxePJBqtX
+         MNL+czfm7ECfvulIUwyP6NKZBMBAHuyDQbOUuYqkqdS/LPSxvPgulAu0tD1c6B/D0NN4
+         Jp9Di7nhJPTj1gs4Ga44NgEpWqjv9IVj+3dOh8Try4emOxDUvY5ebqceQ+v5Di9UPzyO
+         cLwnID8qljldVm66oZF6ke9BTVXAgerP4fjs7ix86C0K0TZEoz7gSoINZk0t00xXYrC6
+         EdAQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1774616914; x=1775221714; darn=vger.kernel.org;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1774617389; x=1775222189; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kmbMPpAvEXl89b9DDmueCespLqdFhwnm0SegHcujUGk=;
-        b=e6oOCWiYCR7wNu06hhv9zaGlMTNZ1tiH9PpvKaqUfjUYfy6a4CFKxIYbiOnVhd7MND
-         q06iWlsox+uvBNVjtjjqNYT4bfbymRUl4pRPdaTAflyi4RwSmHUylEBk5L0P95OhjqJ1
-         /YphhBq5qpXoyNLEPmkpGSK5kjgNzB/YIB/6pgQfypyxLat2mjDP+t8c64+bBQb6SJ1D
-         m32DqKUc/SCNhieNAxgtJz5ZsjP5UG0rcu2RA3rpeE0vXAIf4sJps3p9VP3jMWptXNs6
-         kFkFBLciLOK6sYIDt17XQKak3HoQVIh18B9tKU62lN1/O9ZgMlHEmfceCP2x2CO18iHg
-         Rl5A==
+        bh=LxsmBS0GOSp0jQyHQNaHHHPYwd9SwbtGqsQ8nHJmtNM=;
+        b=2KSR4irPaxiQvIUfp42MQ5CEh/D/U6dAF5yrTV0Ix1lnCREHf138HtRDRT6v/PZ9bl
+         AL0MWeyvWSajt7TxPxEO5YIiOC/m1KVatbYeDnQ9CHwwUkYzg+ykAu6v8B0qoKJAswq6
+         JYuDNPssNZaq1ikzArHjwIcguSplps9nMNvXxajg3MPb6T5k1nESlQXrx8Y5LeVUeUJF
+         WUw33E6tBiWMHcUCzhacVLGSAU4HSZ68VmUsc8DPVV2d+jYClrOx03yS4C16yTzosAEX
+         wq6F9qt3XlVnwS4g6musHjvNX1o6rKFClzkFX7VW0s+9IruBSWJk7u25O7su1s9ruqjX
+         QUnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774616914; x=1775221714;
+        d=1e100.net; s=20251104; t=1774617389; x=1775222189;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kmbMPpAvEXl89b9DDmueCespLqdFhwnm0SegHcujUGk=;
-        b=NDXlYxdzMQL6h7j+dFU4T83qaD9Nd3QBvHt9khscRiNO/1HiSYZezTbD1EurmJ5igL
-         R4K3ogy32/TNNsTpwwc8roLHr5gG1hlXGxuFkPBwsUuBjmhHxPCKwWD20EIWP6rpMNL4
-         xmDNoawKbZ+EMhfzuHRJlrWT0eSpEIaaRDK8rfCSHujuVgxMd0lFv6vtHQv13e6hxIFm
-         WbhNqp0ta3w08tI9+4r/602mxwMFY1F8AbGFm6HTbmIicSHwBRKS33m8GBcKqA1L5Jxw
-         rnvw1mOvwoJkjg6SGBpOh45EJgDQG2L7LK4qaeAbgJmZv3rHmJltvxbAi0vMrhmK/68v
-         XcqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVdEZRhvOcsVOWLUcEkD7u0uuZte1TQBcJURjWx/BrI2gTBVD930p34EGPeIz4OJJI2BU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxM7zr9klqH8LEkJkZA78wQNiL2/tBj//6xrICAzQmoloTV9cA
-	5XaMXJlHAK9iZU2ERuMoL6wbzSdtNQFTM0gL3bzwHosbX3tSycQRohScx1nOrAYc9Fww3a7ng3A
-	6aHo49Y+97eS2dc88aWC1QrUVQ8e/kvciX33yRTE8AA==
-X-Gm-Gg: ATEYQzw9w7QyarB0Qhd4q3FW9X34UgcZmbm7ntj7me/kRLerPTRacXkxUfv0M9XKbBJ
-	txM8N9iuq/7Mu4xFQ8BlRLDqTYKbSZN7C3PW9qC0hrxmC+mNMqc4OHxq18ofZPLCZUNMol5jsKv
-	+qVG+Y+qkl3BuFTQisYcjpZXKYprCYBgaWvG2Qi9D/StamACzGu/ockB+4dUSalioViOjEnHGuv
-	CCcaRR3YY+xDseJxTiQNFRo3O0pywK6b4ZEEsejR2nyDRtvgtXT+eaSxkjQudUKBMktvrAG9m/H
-	F4jVRJsO9qxh6wqUYwPV0xWqQYBfbrS9q7xgi4R7hO9pr354DjARPLKzYZ6+14+MXCDsr4D1vEF
-	a8lc0hfnw2vR725GKj9UZTS5L+Q==
-X-Received: by 2002:a05:6808:1446:b0:467:3f4:907a with SMTP id
- 5614622812f47-46a8a61bfc9mr1080873b6e.52.1774616914163; Fri, 27 Mar 2026
- 06:08:34 -0700 (PDT)
+        bh=LxsmBS0GOSp0jQyHQNaHHHPYwd9SwbtGqsQ8nHJmtNM=;
+        b=oGmFUlmRN+w6NC9tQORY5UNVX/3dXzaOfEy+/LZoA8Ya4HoELSBS4SsVNiOX/H/Zef
+         VjHQXUr0Xaj3g17JOfWdyadYkP2MFSVLClG7HFCiTaghjQx/BkGsxWxuHyFPDjapCnVm
+         7TZl3E347RxyoxOdCnkvVdSOwYvbhVJlYho0ZwwYt0NY4cQWjGqX1ap4YuAiVRjr6Fal
+         OptQEn6A6ZzbPPhuL0MvRhM5u0PdSV3SL/OJ9TAEEDwKmYCF8NOg2ncH11Rk/SJ1vzSc
+         djWPrrdpWpmjexKLf2VtSMCbGIZMMUSwVXuobYTvDSk7rzr1mRwPXlwMqtjR8HkKRMNx
+         g8vw==
+X-Forwarded-Encrypted: i=1; AJvYcCUb9iAFMix2pb0X7UUnqcMY52vMK9h+B3QrD4Q45zW4e8sWsjdb7H0VvC4bEurxkUSdz8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZjD5CEFmme12CjqMPUlffXzWhuzcL7w/IT3ud8aOvsza09ljQ
+	JAhxIXescu8RU2ae8gK08PQFjtQrc+pokE4hzhSJLZ13gDJbTMq2eIiuHJuW6BS6+mF4gRD6JD2
+	zS8mnd6o+0tPActPgdjSeRhD9oMvP8BwzNkA6TVqFAg==
+X-Gm-Gg: ATEYQzxGJ2x3YgQRVh2ya+7CCSpuC0qVKSqxG05i4Xt360liXG7soR7uwR+93T9gqzm
+	TJ4kmFuhKkhG2tefe8ZyG1h5qJHa4GnpEvyCbDsnPzKWdq6j1SzWxLlf3sMWgW51S3Do0fRVktk
+	a8zOPuXHGqSKT04HLnImbgc+CuwveHdi9NLzrIbG7P18bQf0x5lRp0J6BSK9pUIHUzgJ00GrFzd
+	ZYtEo/ySg3z1mSInzxvWsB/Dv/QcaAuQUQyicFZuqgzrO0e5u3JNXpqJwPFdzRkxZvDo7BV3ZK0
+	TkSnucbfarm0P2ZoVMuxA/8gaWJhpS/0LqyPvyLITofWlutvhliBdqofRojQTDQEgczMAwL4oCw
+	XfqPtKt9gdsl5rry8tZgbRPceRA==
+X-Received: by 2002:a05:6808:4f29:b0:467:32c1:acf1 with SMTP id
+ 5614622812f47-46a8a574768mr975177b6e.39.1774617389039; Fri, 27 Mar 2026
+ 06:16:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311231833.13189-1-osama.abdelkader@gmail.com>
-In-Reply-To: <20260311231833.13189-1-osama.abdelkader@gmail.com>
+References: <20260316151612.13305-1-osama.abdelkader@gmail.com>
+In-Reply-To: <20260316151612.13305-1-osama.abdelkader@gmail.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Fri, 27 Mar 2026 18:38:22 +0530
-X-Gm-Features: AQROBzDaiuO8uOhM7V4GcN6kMarCQKRgIGfEl9WOxz4H4Jv6lFJN2-pYAWK-4is
-Message-ID: <CAAhSdy0kGyp6APnB25v47jqNeaFj59ff15Ja-Kyj=9AXMVQSsg@mail.gmail.com>
-Subject: Re: [PATCH v2] RISC-V: KVM: fix PMU snapshot_set_shmem on 32-bit hosts
+Date: Fri, 27 Mar 2026 18:46:17 +0530
+X-Gm-Features: AQROBzAiBWQwzRrAsNPun8GkheFgn7uHFWTVjZzHMuhgO-eFGjXm39iFGnN1dNM
+Message-ID: <CAAhSdy1c=Bvso+ZCy_6a_1Bh8sznGDs9wErPQdqGWepgq8nQsg@mail.gmail.com>
+Subject: Re: [PATCH v2] riscv: kvm: fix vector context allocation leak
 To: Osama Abdelkader <osama.abdelkader@gmail.com>
 Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
 	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>, kvm@vger.kernel.org, 
+	Alexandre Ghiti <alex@ghiti.fr>, Vincent Chen <vincent.chen@sifive.com>, Andy Chiu <andybnac@gmail.com>, 
+	Greentime Hu <greentime.hu@sifive.com>, kvm@vger.kernel.org, 
 	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Andrew Jones <andrew.jones@oss.qualcomm.com>
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2026 at 4:48=E2=80=AFAM Osama Abdelkader
+On Mon, Mar 16, 2026 at 8:46=E2=80=AFPM Osama Abdelkader
 <osama.abdelkader@gmail.com> wrote:
 >
-> When saddr_high !=3D 0 on RV32, the goto out was unconditional, causing
-> valid 64-bit addresses to be rejected. Only goto out when the address
-> is invalid (64-bit host with saddr_high !=3D 0).
+> When the second kzalloc (host_context.vector.datap) fails in
+> kvm_riscv_vcpu_alloc_vector_context, the first allocation
+> (guest_context.vector.datap) is leaked. Free it before returning.
 >
-> Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+> Fixes: 0f4b82579716 ("riscv: KVM: Add vector lazy save/restore support")
+> Cc: stable@vger.kernel.org
 > Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
 
 Queued this patch for Linux-7.1
 
@@ -116,32 +117,31 @@ Anup
 
 > ---
 > v2:
-> - balance braces properly
+> - Add Fixes: tag
+> - Add Cc: stable@vger.kernel.org
 > ---
->  arch/riscv/kvm/vcpu_pmu.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  arch/riscv/kvm/vcpu_vector.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index 4d8d5e9aa53d..ec0c15726da9 100644
-> --- a/arch/riscv/kvm/vcpu_pmu.c
-> +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -423,11 +423,12 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kv=
-m_vcpu *vcpu, unsigned long s
->         saddr =3D saddr_low;
+> diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
+> index 05f3cc2d8e31..5b6ad82d47be 100644
+> --- a/arch/riscv/kvm/vcpu_vector.c
+> +++ b/arch/riscv/kvm/vcpu_vector.c
+> @@ -80,8 +80,11 @@ int kvm_riscv_vcpu_alloc_vector_context(struct kvm_vcp=
+u *vcpu)
+>                 return -ENOMEM;
 >
->         if (saddr_high !=3D 0) {
-> -               if (IS_ENABLED(CONFIG_32BIT))
-> +               if (IS_ENABLED(CONFIG_32BIT)) {
->                         saddr |=3D ((gpa_t)saddr_high << 32);
-> -               else
-> +               } else {
->                         sbiret =3D SBI_ERR_INVALID_ADDRESS;
-> -               goto out;
-> +                       goto out;
-> +               }
->         }
+>         vcpu->arch.host_context.vector.datap =3D kzalloc(riscv_v_vsize, G=
+FP_KERNEL);
+> -       if (!vcpu->arch.host_context.vector.datap)
+> +       if (!vcpu->arch.host_context.vector.datap) {
+> +               kfree(vcpu->arch.guest_context.vector.datap);
+> +               vcpu->arch.guest_context.vector.datap =3D NULL;
+>                 return -ENOMEM;
+> +       }
 >
->         kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC);
+>         return 0;
+>  }
 > --
 > 2.43.0
 >
