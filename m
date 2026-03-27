@@ -1,89 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEA83451C6;
-	Fri, 27 Mar 2026 16:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016441B808;
+	Fri, 27 Mar 2026 17:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774630525; cv=none; b=qRSon0X4CAl4Cu0fyPkTwKt3WZo4OeqhIOizOgXQkcGxNQBMw/mNjL2V2wpS2KUiQiz6XhVFxPOJDvFI2xZMyo+GKZpK8gxOUbmtf9o7adA0a92eo6gpszgMiR+H6MIj/WfGsYIWVsUZF7Wc0XQeG0+AJ+QuZTt5C9g0wyQ89o0=
+	t=1774631005; cv=none; b=F4FN4K7mLBogp0OQK5eV6vGod9O7OjCyUyJ56JG27a/hRO0bGZBgSKbfxzQHJ3pxzReS90DLwtBGSNgj45k1MOni7txbpuiudMu/SjQi2aUKtPQR52dRa8w9p03QTHpY8xRC9015MxTIvUeyEcl4Hy+37OOVkni6AfevoYHb174=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774630525; c=relaxed/simple;
-	bh=TVMo1XFVXuxmUw2tvJOzz0y0grawZJzuaipTlPoW+rU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kMuIaDvc77gG5lM3nF22vXAOydWehE5ola0arl4uzeUzmmmUzJerP5qB3SWSdFE3WXaSCISLb6HR+HR5o5FSvMoJnfpR3gor7PNT5FbT9ZcGqckCAWmSd1rHJ1/v4/RX7ZEGj3fSFiyhxW46AjRsVhdFEO6QuFIVI2pTIonEqJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLE57vbE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774631005; c=relaxed/simple;
+	bh=jlgvlIx2lZLy/yw0VsiYcAtefj+7HLiDE86xWPu3bn0=;
+	h=Date:From:To:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=A8ja9h07GhvilcgVs+Wd6ogQpliBq5TcFEEZq21kUkoOKmEEEgQoUtKDMkCoYuijmaN4mIivzZSJm5I7bv9CG3Eatw7mekFO7OiE/Tyxo61ZSKCKuDHfMxaKwDGbgIc///oWV4VCCxhi5izMSalB/jUX6CuBLO0CdapdZ8PiBJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oq9Nujey; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLE57vbE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD08C19424;
-	Fri, 27 Mar 2026 16:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774630525;
-	bh=TVMo1XFVXuxmUw2tvJOzz0y0grawZJzuaipTlPoW+rU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hLE57vbEtjRYgTp1wk78TmrhMjM6JVFjeNGB5qMM4WcbsFrlBodTeDplBIagOca5O
-	 mrR/toMDIDWbskHacAZ0IEoh1HT4km4ECIXeAXbNrIVDuIIGTH7HNUyiwig9PjE6NR
-	 XWc1knNM2ytlQ81UVHLNhNnZSEyIFmx8wIPT96hXCX0tmrg1Kt4csy8ICgHDskBYgZ
-	 9JOdvsbp3fM9bh+KtJGUwbrtoe4kQEkUweuSbNCEFCOBJCnrfm6Lyzh+MExvXKR5KD
-	 qkuGCops1OzYb4v1m8FpIYJdoFhCdodI9zoBW05KUDUM0Vs9qFzkZIorZz8gqWfoMd
-	 5edlhMw5xiKBw==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vfio: unhide vdev->debug_root
-Date: Fri, 27 Mar 2026 17:55:08 +0100
-Message-Id: <20260327165521.3779707-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oq9Nujey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F22BC19423;
+	Fri, 27 Mar 2026 17:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774631004;
+	bh=jlgvlIx2lZLy/yw0VsiYcAtefj+7HLiDE86xWPu3bn0=;
+	h=Date:From:To:Subject:In-Reply-To:References:From;
+	b=oq9Nujeyhp7Zx6NT/DmAKRTTx7w3723Jfsgcrx2JTII8ccXAVeunav2gzmNtcCWt4
+	 g+b2onmd9YBtHJ7AgnnAAq/NWR4pHj2kIgRzkSL3306j4h3HOUuTBYP0MQBBSLDCLr
+	 YLaYJ9G1El1MIqjFKuWcT5xV6/7jTsovIMJ3/INw=
+Date: Fri, 27 Mar 2026 10:03:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Suren Baghdasaryan <surenb@google.com>, willy@infradead.org,
+ david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz,
+ jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de,
+ kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com,
+ mpe@ellerman.id.au, chleroy@kernel.org, borntraeger@linux.ibm.com,
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
+ gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
+Message-Id: <20260327100322.b539f1a9f3662a0a4c080cce@linux-foundation.org>
+In-Reply-To: <20260327094738.7150efc3b0619e6ccf095c23@linux-foundation.org>
+References: <20260326080836.695207-1-surenb@google.com>
+	<20260327094738.7150efc3b0619e6ccf095c23@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Fri, 27 Mar 2026 09:47:38 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-When debugfs is disabled, the hisilicon driver now fails to build:
+> Three of your patches lack review tags so now it's 65!
 
-drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c: In function 'hisi_acc_vfio_debug_init':
-drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c:1671:62: error: 'struct vfio_device' has no member named 'debug_root'
- 1671 |         vfio_dev_migration = debugfs_lookup("migration", vdev->debug_root);
-      |                                                              ^~
-
-The driver otherwise relies on dead-code elimination, but this reference
-fails. The single struct member is not going to make much of a difference
-for memory consumption, so just keep this visible unconditionally.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-----
-This seems to be a new build failure, but I could not pinpoint which
-commit caused it, as both the #ifdef and the the use were introduced
-a while ago.
----
- include/linux/vfio.h | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 50b474334a19..31b826efba00 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -74,13 +74,11 @@ struct vfio_device {
- 	u8 iommufd_attached:1;
- #endif
- 	u8 cdev_opened:1;
--#ifdef CONFIG_DEBUG_FS
- 	/*
- 	 * debug_root is a static property of the vfio_device
- 	 * which must be set prior to registering the vfio_device.
- 	 */
- 	struct dentry *debug_root;
--#endif
- };
- 
- /**
--- 
-2.39.5
-
+Three is now zero, thanks Lorenzo.
