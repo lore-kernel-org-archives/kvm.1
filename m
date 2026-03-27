@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD3439280C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121B03921F6;
 	Fri, 27 Mar 2026 20:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774642471; cv=none; b=aH+X9ycZTPOkNSwkCra2xL5EzPvx6vmhxX/wgj4k5CnKzVXKL184Wv+gAJh1XihHpofl3w8Go2WsxCYQioAgCywgDh6PPiqUHuQC8ZnkIHAqwAs6RlVpfkCXL8XrIE4cqEn/rL/xYnG3DLPRAIFOzbhiFed6BNO20aJ7GN6DvvU=
+	t=1774642471; cv=none; b=gZzLfTGeQ1LgsAWZH1CVpXDuCp12lunbTDLi6iwBrlFSWVE3upnX375WNmmbcEg78wvN0UJb2+bdHrEt72APDzB3/Q3Yw5j+VnRJwkqkIVHHrzPChYd6mLpWIWOqdivE0BiwSRVHGBZTOpPQ78vwhPcWjuOozxedowgHNgPNOSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774642471; c=relaxed/simple;
-	bh=oCWebE5dfUT3EHbwMQ1dAxf5XfEn+nRJlGBxh/ODp1s=;
+	bh=1isAVXq6RldAGaJfpOEXaGLNSTFnOTTvj0rcbVDxYKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0Fp9Y+wX6N9SJJ8MC6FXwGwgjYkVZlmon1LWjWxhmGSMv9rmQITT8aulrG9DoExQXsZSTTk11NDf+rfqK+w47OOSEyaILiUalg7piVQtnHALoFBtnH3jDEM2YzCPPcvK2gKkBNjWPS0sb9D/NQ3vj9I8pjG2Lri7epxFvvy+Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BpBUwRuf; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=lFoTmcaeN1UfTgskrHLecPPxeOpecukXjCAF1pGC8o3+oUiEW+nbBLvdKw+rjmoKiX2pjQYFlU3TLboSE//gSP5wfyGlhEOta7J6ohCiGaCkt3uJVY92CLCQgnmi7y0sPtVtgEMyqokWO87Gy9JREUj/hlbzK+vo+gNuNilyPX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SoOZkK/R; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BpBUwRuf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SoOZkK/R"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1774642470; x=1806178470;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oCWebE5dfUT3EHbwMQ1dAxf5XfEn+nRJlGBxh/ODp1s=;
-  b=BpBUwRufVdY6Z7A53uz05gqx7W8OvZ0BNPtkD9Ofu45HvR2UpLoME4dV
-   GoD/y3vPZDFGpMuyyWSmQVoMvqZWTPXkLLaQ72j8Jz+nk9qjsM7Q+Masb
-   JqcByyhQq/ytEZTe6nQZ1kemg06fuxe0If23MlOilf6q1zVc7oJYMWQBq
-   sOhWFPYrggTS9qTShbWa2T0BDRXObpAKJepoWvL5o+AoxAKLv5TieOH5I
-   tvz9r3PbeVMCgwSiOnSE5aGdR/R2JDY4X8JA/zqvTIPYysfhQsNR6VGdS
-   douhAN3lUODH1hQLnui+MtY4bYo+JWsuIXePcLzQqsP10e2XHcuAXbchX
-   A==;
-X-CSE-ConnectionGUID: zN9tAsY4Rc2A6ntAWUuM6Q==
-X-CSE-MsgGUID: b+gz9oixQRCoAaW0cf71fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="101182726"
+  bh=1isAVXq6RldAGaJfpOEXaGLNSTFnOTTvj0rcbVDxYKA=;
+  b=SoOZkK/RgmWsESAkyHcajGG6NCHPGqlTO29Xgrp76Ts/lfvCjDwEX4se
+   JCQEezv6HJlAqjiyUE6f1LLxqxqWk+tibH31JUn5WWYWDUOd2+G5jAx1H
+   4vVJbS/4yQp5ItixFaK7YvGlBb7Xd65Er0euXU/cT5+nThVX98vVxjI2c
+   kUhLcnJMOxo7fu2rzkN8kWK0JJSF1VAsvwXhTzNiLLMgP3X9AgpEIrbdV
+   e7BR5pVaTUBuXlLTCayyDULycdgUbbpOLyCKHhjWU43V599G5njIZV4vR
+   DST+vz2ssAaParfI6rVEDcMkvTEKndZrOWPDe4Z9jiLOsa6CUgZrRq0SB
+   g==;
+X-CSE-ConnectionGUID: DVq6llWER3iM1gbXaKB5Ew==
+X-CSE-MsgGUID: 3CMIXxQxQ9WkrNSPbT9PJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="101182722"
 X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="101182726"
+   d="scan'208";a="101182722"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 13:14:27 -0700
-X-CSE-ConnectionGUID: +BuDfg5XRpa/sIutqk2jLQ==
-X-CSE-MsgGUID: NuTIf+gQRQSIL6oNlJilvg==
+X-CSE-ConnectionGUID: 66h6j2OKTvu26OQPFg66GA==
+X-CSE-MsgGUID: ep7Txl5DRPmUR92+zz0sDg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
-   d="scan'208";a="255922901"
+   d="scan'208";a="255922894"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
   by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 13:14:26 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -54,9 +54,9 @@ Cc: linux-kernel@vger.kernel.org,
 	x86@kernel.org,
 	dave.hansen@intel.com,
 	rick.p.edgecombe@intel.com
-Subject: [PATCH 05/17] KVM: x86/tdp_mmu: Drop zapping KVM_BUG_ON() set_external_spte_present()
-Date: Fri, 27 Mar 2026 13:14:09 -0700
-Message-ID: <20260327201421.2824383-6-rick.p.edgecombe@intel.com>
+Subject: [PATCH 03/17] KVM: TDX: Account all non-transient page allocations for per-TD structures
+Date: Fri, 27 Mar 2026 13:14:07 -0700
+Message-ID: <20260327201421.2824383-4-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
 References: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
@@ -68,62 +68,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Drop some KVM_BUG_ON() that are guarding against TDP MMU attempting to
-propagate unsupported operations to the external set_external_spte() ops.
+From: Sean Christopherson <seanjc@google.com>
 
-Despite the generic naming, external TDP ops are designed completely
-around TDX. They hook the bare minimum of what is needed, and exclude the
-operations that are not supported by TDX. To help wrangle which operations
-are handleable by various operations, warnings and KVM_BUG_ONs exist in
-the code. These warnings and KVM_BUG_ON()s put the burden of understanding
-which operations should be forwarded to TDX code on the TDP MMU
-developers, who often read the code without TDX context.
+Account all non-transient allocations associated with a single TD (or its
+vCPUs), as KVM's ABI is that allocations that are active for the lifetime
+of a VM are accounted.  Leave temporary allocations, i.e. allocations that
+are freed within a single function/ioctl, unaccounted, to again align with
+KVM's existing behavior, e.g. see commit dd103407ca31 ("KVM: X86: Remove
+unnecessary GFP_KERNEL_ACCOUNT for temporary variables").
 
-Future changes will transition the encapsulation of this domain knowledge
-to TDX code by funneling the external EPT updates through a central update
-mechanism. In this paradigm, central update mechanism can encapsulate the
-special knowledge, but will not have as much knowledge about what
-operation is in progress. So remove the set external SPTE based
-KVM_BUG_ON()s in preparation for this future change.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Fixes: 8d032b683c29 ("KVM: TDX: create/destroy VM structure")
+Fixes: a50f673f25e0 ("KVM: TDX: Do TDX specific vcpu initialization")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/x86/kvm/mmu/tdp_mmu.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index dbaeb80f2b64..0809fe8e8737 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -512,13 +512,10 @@ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sp
- 						 gfn_t gfn, u64 *old_spte,
- 						 u64 new_spte, int level)
- {
--	bool was_present = is_shadow_present_pte(*old_spte);
- 	bool is_present = is_shadow_present_pte(new_spte);
- 	bool is_leaf = is_present && is_last_spte(new_spte, level);
- 	int ret = 0;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 38e7b6fa8664..01e070ec10fd 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -2384,7 +2384,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
  
--	KVM_BUG_ON(was_present, kvm);
--
- 	lockdep_assert_held(&kvm->mmu_lock);
- 	/*
- 	 * We need to lock out other updates to the SPTE until the external
-@@ -662,13 +659,6 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(new_spte)) {
- 		int ret;
+ 	ret = -ENOMEM;
  
--		/*
--		 * Users of atomic zapping don't operate on mirror roots,
--		 * so don't handle it and bug the VM if it's seen.
--		 */
--		if (KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
--			return -EBUSY;
--
- 		ret = set_external_spte_present(kvm, iter->sptep, iter->gfn,
- 						&iter->old_spte, new_spte, iter->level);
- 		if (ret)
+-	tdr_page = alloc_page(GFP_KERNEL);
++	tdr_page = alloc_page(GFP_KERNEL_ACCOUNT);
+ 	if (!tdr_page)
+ 		goto free_hkid;
+ 
+@@ -2392,12 +2392,13 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 	/* TDVPS = TDVPR(4K page) + TDCX(multiple 4K pages), -1 for TDVPR. */
+ 	kvm_tdx->td.tdcx_nr_pages = tdx_sysinfo->td_ctrl.tdvps_base_size / PAGE_SIZE - 1;
+ 	tdcs_pages = kzalloc_objs(*kvm_tdx->td.tdcs_pages,
+-				  kvm_tdx->td.tdcs_nr_pages);
++				  kvm_tdx->td.tdcs_nr_pages,
++				  GFP_KERNEL_ACCOUNT);
+ 	if (!tdcs_pages)
+ 		goto free_tdr;
+ 
+ 	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+-		tdcs_pages[i] = alloc_page(GFP_KERNEL);
++		tdcs_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
+ 		if (!tdcs_pages[i])
+ 			goto free_tdcs;
+ 	}
+@@ -2872,7 +2873,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 	int ret, i;
+ 	u64 err;
+ 
+-	page = alloc_page(GFP_KERNEL);
++	page = alloc_page(GFP_KERNEL_ACCOUNT);
+ 	if (!page)
+ 		return -ENOMEM;
+ 	tdx->vp.tdvpr_page = page;
+@@ -2885,14 +2886,14 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 	tdx->vp.tdvpr_pa = page_to_phys(tdx->vp.tdvpr_page);
+ 
+ 	tdx->vp.tdcx_pages = kcalloc(kvm_tdx->td.tdcx_nr_pages, sizeof(*tdx->vp.tdcx_pages),
+-			       	     GFP_KERNEL);
++				     GFP_KERNEL_ACCOUNT);
+ 	if (!tdx->vp.tdcx_pages) {
+ 		ret = -ENOMEM;
+ 		goto free_tdvpr;
+ 	}
+ 
+ 	for (i = 0; i < kvm_tdx->td.tdcx_nr_pages; i++) {
+-		page = alloc_page(GFP_KERNEL);
++		page = alloc_page(GFP_KERNEL_ACCOUNT);
+ 		if (!page) {
+ 			ret = -ENOMEM;
+ 			goto free_tdcx;
 -- 
 2.53.0
 
