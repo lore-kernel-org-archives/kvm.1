@@ -1,141 +1,113 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C107368279;
-	Fri, 27 Mar 2026 03:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774581346; cv=none; b=sXiO3mzVtNyVLPc3YL6ODvFlViUdm1y7bxiMxN23DIzy83v1VfzmAIP9CF3JKopRTA/O4/2VQaCMFQS5AEZvHKYKs8F1nUVwuroVPYtNc+xzYR8d1g8SgDZJ7FTn6IhyqPW8NozWKkoB2UTJ39ZlVkBaSaZAU+W8ZRB3OM9qTA0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774581346; c=relaxed/simple;
-	bh=fQPlU7/Z7DRYjinTle+GkOZKLOiZiZPrCs7WOMiVU5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOrZfNrE4+T0IVDIDMZnqc11qbhNjR0fCIF6m8g9utrsZGCcutH9TITC0+IGDsYh1e35xwofqH+9q53cQfx4jE607B6z88BQT3wDCpNM7yRXOmRiT4kIZurBID1DtKJZcMEP1D2uw7SSaYiAN8NIht+yoUa2sXRNY+qtzP6Hu1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rzr4cZNh; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB3136A036
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 03:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774583026; cv=pass; b=pWU+F6WoX3iRxIPKTomH2+9fkhUMH3mta7vW4r8LXR2KD9p0ifbyBUUphn8fyKJKZmvfyEPyhcwIW1XYgYjVBvc7NdSVXxSrjliJ8/TrhEm5tsGqr9LI/pOQMTesCgz3ZGJIQlPdiS6WXTBOsokEZQ+oqMhaE+q8phX+q8f8RKc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774583026; c=relaxed/simple;
+	bh=XZ+5Uk/DsKDjljxFTH2gNYDX6n86w4DiW+i7ZwAY4FQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EoQk2GzLoA5UrlFVjank9G8Kd4SFFxtaGYMrV23KQ2qA+YbXyOOpnOJS+tcOnQSzctthdAk9Yq+JqWtIrcF9/AqmOBEkVwuCJ7y4ARhzEAalYvZ0K43wnTh9L0kJmaB2p2n+mBGq4CTOuBLUaAHK4g3YB9WKsoFnBCM6Q1NjS6I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u7Ws/JCZ; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rzr4cZNh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774581345; x=1806117345;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fQPlU7/Z7DRYjinTle+GkOZKLOiZiZPrCs7WOMiVU5A=;
-  b=Rzr4cZNhiOE9ReHtZlBTRhNp4NlTPr/Qx6nsb9b7T/uZNxJuqY0oP6+D
-   eANvBGDzv+2d0m6Qpt7/YLqMrCe4GpFUbu3KuO0CGqob5fUPKEGcPFgZy
-   pUQVmPQq2X93YvRJ6V0STbF6GO74G3PhQxGfB04tVU+frkKgyPuKTBtpu
-   2IXBnuSLSsrxw4GcE0nUfyhZeKLc24p2hINb198KbnwuU6q8BW/Z2dUKx
-   cAZnACMc1d1Iy/m7WZijz8ahqTRIQUSUpipRoHuytdqtPcGm6K1eIY/aW
-   LUAYy4poTX87EZSiFxLyAusIHcUT6Z+ocvmM00Stav/ZMEarDM1ekPDRi
-   g==;
-X-CSE-ConnectionGUID: p/ZheyfASxO2rOPjstAViw==
-X-CSE-MsgGUID: RqIuDgRBSZygwQCEOQujDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75620422"
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="75620422"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 20:15:45 -0700
-X-CSE-ConnectionGUID: fgdNJfD2RxeE8wneYslVhA==
-X-CSE-MsgGUID: TYwQd9FQTXysIQeRRWnxqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="248232807"
-Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 26 Mar 2026 20:15:42 -0700
-Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w5xff-000000009if-3DD9;
-	Fri, 27 Mar 2026 03:15:39 +0000
-Date: Fri, 27 Mar 2026 11:15:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>
-Cc: oe-kbuild-all@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v4 2/6] KVM: x86: Move guest_mode helpers to x86.h
-Message-ID: <202603271150.0WNYfBuF-lkp@intel.com>
-References: <20260326031150.3774017-3-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u7Ws/JCZ"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-506362ac5f7so15718571cf.1
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 20:43:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774583024; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KfcJHdc/NNoq01ZWAiUHCopQtDmSWbPgwvhITT6xsDkemYkInRrM1040kedfPU1IDZ
+         YErWLyRUdS6RnU/GRn/co/v3bVzseXHT/YwVRvSFaaSRz7Pfyt7CH3nw9oyLe0hwRvKz
+         aYkvjj7MVIHdniRee6EiT3s2xmoz2D7hFq4I2/NxdYRDTPSGaNRnPFCqi6CbEKduntjI
+         X4rjVTeXN43+Ti6pNcSftTIFi5vIwcRGETa2O1ae/gLsk+W/U7D0jwn797yHjpa2T33/
+         2+sXJKedS8n01v93lXxOpoIxB4QJGLUJB82PV/Mqsc+8FnQ2EJD7eDmGDPuZwUFw+AGD
+         lQvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XZ+5Uk/DsKDjljxFTH2gNYDX6n86w4DiW+i7ZwAY4FQ=;
+        fh=mYI2p2Yb011jpTMzlURFH2xcTujDGn/QhjkdlsYj0Bo=;
+        b=T3CYNkNGvwg7KOQs/b5dfLk8ZKIt4oJz1UMUN4DAPYj/xePuubSvoVXCUy6E81TBll
+         VeUTvSEnj2ZPDirkSUhbrht7JS6J1Z9F4FensVO1FD15/f/QEVHNsXMTgi1T29tSi7Js
+         bRvBnTC4ySAcArv4z1qGPG5/igHxswbuOxLA7xjqnEs05ew9Mit2EBYp9vyJMU491Pb4
+         f5yxF9RyEkYcp+Y3m8DIp3zA0qpZiz0ToPUjaRIz7f/MC8Bp/Piio7uaAOG63WJqwnb/
+         ERI1ikSdB4uATytnmGGP1iJLmKwX3FhI83u559NzrgqmxBCBLXX8uOTovx9JPyQvNNVm
+         PqFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774583024; x=1775187824; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XZ+5Uk/DsKDjljxFTH2gNYDX6n86w4DiW+i7ZwAY4FQ=;
+        b=u7Ws/JCZNimk/pAmatYO3igeRU+sC4Nb/sBDK0vRl6AooNd7ymqtFy5RvKSeP4jHSv
+         26mAA0AqrHmzOWvuvi6GU/G/xaTGgRvp2N+6DtttQXSw/JTOG7f6MuK93Yp0bi8osAon
+         JyC2HPayj1uNLRxfA07Pbq+xVlrF1tejQ327w6lS55WWdGkJU5jozm7cdawikJ9mtPvn
+         F6iZ/X7ob56en+EHu+j9iNmLXIdFCOuJ/T1K4maFljQII5ZYUC7WetRr1LPm8x16bxpE
+         Rhb8Fee71nJxyTg+C/O78t/mx6RpPR4F4tpjgtRzIbJH3mox7N+Dj2RNIe9n0OVSwF0Z
+         1XPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774583024; x=1775187824;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XZ+5Uk/DsKDjljxFTH2gNYDX6n86w4DiW+i7ZwAY4FQ=;
+        b=CgggoRYGLc0o89W/XTYprs9t0hK8rnpfYg7PpkiAxftVtutY8a8uUTG0MPQzDQXzCK
+         ZN25CR62ptHQW1KmMIK5/nzvuJTz0WA1jdbtq/dPw8cLzEQsDXq4V9odU9RlXamjg5kA
+         ipTigSVaXOrGlLgqtpoZ06XHYP1dsXw6aJfwvmKvP3iSbeno5npBpraf3yZpkaWXhQlp
+         MKTzvwPyuOq6OzuSwrA9GTvPryiQkXfbgCcEFJcNZ6bmy3QMCTQCeFBJVE+ybDizFABd
+         CoWq1/ZwVKyiHQx9PRuSeTpqqsIN3zn0ef5iHWKCVEDZ5xST0GeYz+kFNhFdbimYHyey
+         flXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWxJUcqgxjtYcHsy0ecIs9XT2KJf8yGi0xVZzXzNqbp630pJkpkGZrglTIt3/RC2sjy6kA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTI2hfhQJRTfBZ50H+4MClks9KcrlhcBrAfnLoSlfslp8ccCCq
+	88guuVqk6stULl2Y2/rgpUdA5nHBGO59+DVpn0nFoVMoTuZdDsRb4R8Es3u+pYDJBbTTbpySpqB
+	PjUW3EugymnQavxspqMVfWoFk8SbB+YVa2edPq7wN
+X-Gm-Gg: ATEYQzxifWgB6RTQhiyHevbLcdqKsxbNgxjwY1b43pZT0b7rGPCrZwmVij3C23ZBSIx
+	FXofUK9XRCydWg4Vx+gs28mIjYMyd0ZG9yJ/6p7Kq8MJrx1cpQtFmLMjlZqg0nOM42E8q0zIkVL
+	Z9ry7yqFSbJgSaY/Sl/OAFYMDoBusF3lwQ+MUD+OPgwyk2W9oh4hREhi2TVa6mz/u1bFAiYAUKj
+	KnT43AZ/FeJIRsIY+bBIuvueRMV1OkXGq4YgIMUUEoQ/++osGQgA8YQeo9j2M8zMdSGtWZhXh51
+	x5x6RQ==
+X-Received: by 2002:a05:622a:5a0a:b0:50b:4c64:4730 with SMTP id
+ d75a77b69052e-50ba37d3a17mr14739431cf.15.1774583024002; Thu, 26 Mar 2026
+ 20:43:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326031150.3774017-3-yosry@kernel.org>
+References: <dd3984b3bce9df3591927f927668cb31cc7ecf34.1774460059.git.mst@redhat.com>
+ <CACGkMEuL613R8GRUX2hjRuJcvP0LNC_6_D1Y1yEjtTqehy6zJA@mail.gmail.com>
+In-Reply-To: <CACGkMEuL613R8GRUX2hjRuJcvP0LNC_6_D1Y1yEjtTqehy6zJA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 26 Mar 2026 20:43:33 -0700
+X-Gm-Features: AQROBzBTAZQiZv5gITUpNks5cRGZmqvxfVTU9Y6vZlwD1VKoOLXGxZ_EY6bfseI
+Message-ID: <CANn89iKJUMP+7udEPs_j2Z5pPJnc8-Gkn==5OLr63OJQs1a5Mg@mail.gmail.com>
+Subject: Re: [PATCH v2 net] ptr_ring: disable KCSAN warnings
+To: Jason Wang <jasowang@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	Simon Schippers <simon.schippers@tu-dortmund.de>, willemdebruijn.kernel@gmail.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
+	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
+	netdev@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Yosry,
+On Wed, Mar 25, 2026 at 8:17=E2=80=AFPM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> On Thu, Mar 26, 2026 at 1:36=E2=80=AFAM Michael S. Tsirkin <mst@redhat.co=
+m> wrote:
+>
+> Acked-by: Jason Wang <jasowang@redhat.com>
+>
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-[auto build test ERROR on 3d6cdcc8883b5726513d245eef0e91cabfc397f7]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Yosry-Ahmed/KVM-x86-Move-enable_pmu-enable_mediated_pmu-to-pmu-h-and-pmu-c/20260326-191518
-base:   3d6cdcc8883b5726513d245eef0e91cabfc397f7
-patch link:    https://lore.kernel.org/r/20260326031150.3774017-3-yosry%40kernel.org
-patch subject: [PATCH v4 2/6] KVM: x86: Move guest_mode helpers to x86.h
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20260327/202603271150.0WNYfBuF-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260327/202603271150.0WNYfBuF-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603271150.0WNYfBuF-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from arch/x86/kvm/svm/svm_onhyperv.c:11:
-   arch/x86/kvm/svm/svm.h: In function 'svm_mark_intercepts_dirty':
->> arch/x86/kvm/svm/svm.h:520:13: error: implicit declaration of function 'is_guest_mode' [-Wimplicit-function-declaration]
-     520 |         if (is_guest_mode(&svm->vcpu))
-         |             ^~~~~~~~~~~~~
-   In file included from arch/x86/kvm/svm/svm_ops.h:7,
-                    from arch/x86/kvm/svm/svm_onhyperv.c:12:
-   arch/x86/kvm/x86.h: At top level:
->> arch/x86/kvm/x86.h:169:20: error: conflicting types for 'is_guest_mode'; have 'bool(struct kvm_vcpu *)' {aka '_Bool(struct kvm_vcpu *)'}
-     169 | static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
-         |                    ^~~~~~~~~~~~~
-   arch/x86/kvm/svm/svm.h:520:13: note: previous implicit declaration of 'is_guest_mode' with type 'int()'
-     520 |         if (is_guest_mode(&svm->vcpu))
-         |             ^~~~~~~~~~~~~
---
-   In file included from kvm/svm/svm_onhyperv.c:11:
-   kvm/svm/svm.h: In function 'svm_mark_intercepts_dirty':
-   kvm/svm/svm.h:520:13: error: implicit declaration of function 'is_guest_mode' [-Wimplicit-function-declaration]
-     520 |         if (is_guest_mode(&svm->vcpu))
-         |             ^~~~~~~~~~~~~
-   In file included from kvm/svm/svm_ops.h:7,
-                    from kvm/svm/svm_onhyperv.c:12:
-   arch/x86/kvm/x86.h: At top level:
->> arch/x86/kvm/x86.h:169:20: error: conflicting types for 'is_guest_mode'; have 'bool(struct kvm_vcpu *)' {aka '_Bool(struct kvm_vcpu *)'}
-     169 | static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
-         |                    ^~~~~~~~~~~~~
-   kvm/svm/svm.h:520:13: note: previous implicit declaration of 'is_guest_mode' with type 'int()'
-     520 |         if (is_guest_mode(&svm->vcpu))
-         |             ^~~~~~~~~~~~~
-
-
-vim +/is_guest_mode +520 arch/x86/kvm/svm/svm.h
-
-0b97f929831a70 Sean Christopherson 2026-02-18  509  
-0b97f929831a70 Sean Christopherson 2026-02-18  510  static inline void svm_mark_intercepts_dirty(struct vcpu_svm *svm)
-0b97f929831a70 Sean Christopherson 2026-02-18  511  {
-0b97f929831a70 Sean Christopherson 2026-02-18  512  	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
-0b97f929831a70 Sean Christopherson 2026-02-18  513  
-0b97f929831a70 Sean Christopherson 2026-02-18  514  	/*
-0b97f929831a70 Sean Christopherson 2026-02-18  515  	 * If L2 is active, recalculate the intercepts for vmcb02 to account
-0b97f929831a70 Sean Christopherson 2026-02-18  516  	 * for the changes made to vmcb01.  All intercept configuration is done
-0b97f929831a70 Sean Christopherson 2026-02-18  517  	 * for vmcb01 and then propagated to vmcb02 to combine KVM's intercepts
-0b97f929831a70 Sean Christopherson 2026-02-18  518  	 * with L1's intercepts (from the vmcb12 snapshot).
-0b97f929831a70 Sean Christopherson 2026-02-18  519  	 */
-0b97f929831a70 Sean Christopherson 2026-02-18 @520  	if (is_guest_mode(&svm->vcpu))
-0b97f929831a70 Sean Christopherson 2026-02-18  521  		nested_vmcb02_recalc_intercepts(svm);
-0b97f929831a70 Sean Christopherson 2026-02-18  522  }
-0b97f929831a70 Sean Christopherson 2026-02-18  523  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks!
