@@ -1,70 +1,70 @@
-Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4905D13B5AE
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 02:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE5420C029
+	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 02:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774580010; cv=none; b=VzBmLeEv3BTjozSYrRRYQIB9PT83zf9xJMz3xPj4/V5nDljyA7v40cauYLEiDuZNsfv76V6sOOPtKbxJOW/elZjSkywW9LR3acs2xl6wjpBR+MUh7TbZuotyoHp0c4Up6p3R1gM8YkNHyJ5GF8ts9pWhfy4NNsdCD/nslqQDbLk=
+	t=1774580010; cv=none; b=gWUK+9nLVLGw9w5kfWImEQRcp7qRA3Cs39L6VuO74JgdKGLz3Fy2gbKwvSiM2kUHMElCgO7cVvlJv/AemodyJMSuMuHEynxuBjpea8eBB947f3rSWIAHGy0V9bxPPjc35516+6r9jM5iS6xWzNZAr8+nGOZ55LxvgB8hRrdVPWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774580010; c=relaxed/simple;
-	bh=tsZHX15aGtnE8PAJ0xQ+SZTKy5jEaXZfvzMdXDijLjs=;
+	bh=lw+4MjLRWjOu9cUZCkxEn58fR5Db9RDqnEh7mropBVI=;
 	h=From:Date:Subject:To:Cc:In-Reply-To:References:Message-Id:
-	 MIME-Version:Content-Type; b=aodoWtQ04pG9kqao6S0vfe7z68eVqyI64MszU1CNt1926HSAH6eysL4HwvWQ9Uks7wPvOt4E8FIalf1eE8LZICXxFr8BQzNYWSSWL3Y21PLiRgaDjb3Cfjc/H/kCDe0hhAaJj3pBxL+si6p5QD9pd/Ppja4pcoutwE2Z7+4Nu0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cnw7N7K1; arc=none smtp.client-ip=209.85.210.194
+	 MIME-Version:Content-Type; b=N9qgPRD0kxOLKqooz6tLUV6FufHhwflMYGyjnf7RapWSupjnyfmCPgbo09kp5l2WQkp610S3O5yPdmBrqpfvBx21nskHMp9KkYMmq+53Ft0sxe2Ai81HITU2quAyVfABRBMr/ue/abDM1oWLKjf7pYl7kkvBkpfv+GNwEeUVEl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2j2oHpc; arc=none smtp.client-ip=209.85.210.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cnw7N7K1"
-Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-82a893d289bso735616b3a.0
-        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 19:53:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2j2oHpc"
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-82ae379000fso637192b3a.1
+        for <kvm@vger.kernel.org>; Thu, 26 Mar 2026 19:53:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774580007; x=1775184807; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774580006; x=1775184806; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:references
          :in-reply-to:cc:to:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d++U8+2mWetiX1fHFjf/dOveUOjjNfillRGvBF51VtY=;
-        b=cnw7N7K1293dp6HzhS8HXbcrz2Jin2VIKyrfdNB6Jlp8fe0S9v0ZZGuQiWPQ02oB4U
-         ApZE+7oSQ9MrCCPQgPST/SbaYM/qv0kuPrZm6LQrW5yQqR7Y6g9P2awVGU+C8flY+h6W
-         6AN7FjQSpJKvlvf+6jLdw3oTPUGkOFPeugArHckZR+H9MfbAVEjKHmT+HmD2NAu2Vubk
-         lwT+4hOcQN/9RGorJhyrVCwxeLSR0/q7RsPzNyy1W070/GZjfyS56XZgymUdLnAh4dsH
-         geW3PPmpWD17rWPUVEvAbocNgjk8DNlx5RaiT1iYkqQj40MM42t8m5Fhlksjf6sOg9dL
-         rCww==
+        bh=sucKtmTu4pKqnVV/LS5p41qFHoW/ab9Y+ETuuHx2c8s=;
+        b=f2j2oHpcEQGkQPq2U0KGU8FLYQwGI++cmMPUI6AuL52yIrkxdpAB9IySd7fRFO7T3F
+         CN9EQdTFHMAaFWinzOg7SDx0GXvFLImcOss9VkBwK+1JMHvD0xu36KXBc9cCQFqwwYSI
+         HJXxcpapNDkrjKWU0RqOlgvezGY9pxR+pTAbfRJ+NEXMLzB41E3tgxL38qTHOqYXXZhu
+         gkiifGxYEctpTB2WTWvcZKvuyUBKBZSvikKcDL9fvDafSd2lf8nRzKoKC2GyGAstvvWr
+         FsdqUm6Gs0eOcPqFb3XGkuV/klRhVDbXd6HNTEF1VNve6vqm/lGbvEurSeHtynIeOUNr
+         Tijw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774580007; x=1775184807;
+        d=1e100.net; s=20251104; t=1774580006; x=1775184806;
         h=content-transfer-encoding:mime-version:message-id:references
          :in-reply-to:cc:to:subject:date:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=d++U8+2mWetiX1fHFjf/dOveUOjjNfillRGvBF51VtY=;
-        b=jaRHzQ25Vx4dhXThjdeCsicPtWWxtg2lRmwUb71mbrWtEynBRqk8dG/9E+E52aYE2e
-         Oi25dwAXmJc85sUJjUbnuyJNoTh0hKp01ahQ94gejBvXuCuRw8N6vfHbLUnyTJl3AF3z
-         G9aeWu72mDk4okey6alKWmw+0s6xyWgzl9I9L6HgDHlW+3iNUVeJU5aMCNUeli7t7uMV
-         deBaOiDLNsP2PLqzD7KdqJexrmEx8KUpuyHKDvJJHU6iXEJUiHNNlvPzWhwvGIhj9ptc
-         rZEuyFw/SzUoklPav9i7qL0UY9m0dr5+j4lVA5sO7WF1UdS0g9dqP2CSOOcsLZwGaQUy
-         DfZQ==
-X-Gm-Message-State: AOJu0Yx55jh8q8LLTHu1ifVvGDC1hWGj0tTMzz5Xn981NgZU1ljcysp0
-	IH9h48cbngoVfcvTsnPvKi8brkL+tNMRpdDJS9ey0ooSRG8YafC2aF7ZfGIbrubOkI+JgA==
-X-Gm-Gg: ATEYQzxZJQq+oCp36/EeUSJbdkQDs9ueAqk5Gdu2fYF7HKPqzFj7KYeNpChVBv/r2x3
-	4rWxuDMkRIdxkssVdgxnpd1pFJkHSE4GmFLRzbYrzoFZBLfvDEAxr0yQ46kQsITaQegOQHP4RzJ
-	xK2Ga7dAcgrxneIc3X0sBSGPJzBV+GpXH4dCE/U35qrd4pkHx0+fHg3hOgofl647ikRiXSHVaRP
-	dgTiaKGOtf+Z9Zbx3DRQ9tAIUQfDxrOVjrb+PD25OV2G5Hsrzraj4vLM0moMegcJaZSvFJXuTAa
-	/0f8RxyWwEWMc3Pz7QkV8uWeXnzNaB5WUA9OUoV89l25AEHj8R/j7RVeAY1kLdwEB26WBWYPJKG
-	Pp9Z+IcN3KybFte+a1Lin7eXuleW9lDdAxBDc0+oi2ckKh/d8q3fp5BeT8vm6mpOZvFO2xipMj/
-	Y0yfKh/IL4NPpowhdfPMF+
-X-Received: by 2002:a05:6a00:600d:b0:82c:24a6:2a75 with SMTP id d2e1a72fcca58-82c95d2ba9fmr811062b3a.10.1774580006876;
-        Thu, 26 Mar 2026 19:53:26 -0700 (PDT)
+        bh=sucKtmTu4pKqnVV/LS5p41qFHoW/ab9Y+ETuuHx2c8s=;
+        b=Rl0ST1QdVs6b2ROv5iga3PH/HT9mNTU3qT0CdNQkmTJxK/V09Agy9NN2EO3HLIxo9i
+         PNrIdv0VISTnlfc+UwyQ7YCsWjK2l0JBpds5/yP2lQ15jQMxvoq+220m8gzFAQTt8myI
+         loUKEOrQmS3DeCUJ2Y2puaH0i45kfiyjBocKYucvJ9PRFldZ2zM2n9z3cigC//dj0VO9
+         kMXb1Swab1MAH+LlzGZyPX9JkGaUECu6/FnlDvna8DCPBOtloYBvDMH+nGdJnaIHxEWn
+         O35IeK0rNnIspoYI3Sqcd9eNvpB+pJOqOpepO6YJxoIga7zAnGonbR7BQnoQ4siTYc2G
+         E3Wg==
+X-Gm-Message-State: AOJu0Yzh1U2S5103otV6QDpumgW1zLuODYGM+F4iAkUGAXxXrBlK3ctn
+	0JGn2x0hCxLw+AhF9Q42WWT28btrQIFUv/jZTxyzC1Q/ss2GOIgzddmmoZyz1kxm4NryGg==
+X-Gm-Gg: ATEYQzx0SRpAjBZZeQuzz07Dq4DqJHebW14CszdnpFx3qqpz1Lgfl9c5J11ScljcgQL
+	b5YWJTZZmmgQiRGejKXvNFm+glKnfoZyVhYH23eqRqHRN7BIvJSw7E6uyxrB9IZ41/flOkG4iip
+	dWkWOiH0SaYXJq632z0682Q8syhdyd8B7OdShFA28RdjnO1vwuVglxJIuq1+rJayuLBCt2GjTVf
+	xCh/IGy4fH6VBtC+01FgVY+2iGMqmhCkOBjp6+t5dqmM8zRrRmWbWlyWIg3OMGCGv8rex2/ORNo
+	cEGh3xQcA+vL7hnVawGFCdiF/tmb9aWHArqJMsiNGc1kqyakoGSRf3q8CqB+ju0xGznaQZnkPJP
+	R8D7JcO7gs5Wr5D7bOu4tejwjPkfAIB3Gy/T6y50n7s/pwqkQpc/AplqtipuMVcRcuqhTJIlg5H
+	vuEJFwcuwhmT5MpWaE5q04
+X-Received: by 2002:a05:6a00:3697:b0:829:b08f:7353 with SMTP id d2e1a72fcca58-82c96875f24mr649643b3a.7.1774580003890;
+        Thu, 26 Mar 2026 19:53:23 -0700 (PDT)
 Received: from [127.0.1.1] ([112.28.134.53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d1e14e7sm3911019b3a.4.2026.03.26.19.53.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d1e14e7sm3911019b3a.4.2026.03.26.19.53.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 19:53:26 -0700 (PDT)
+        Thu, 26 Mar 2026 19:53:23 -0700 (PDT)
 From: vince <liuwf0302@gmail.com>
 Date: Fri, 27 Mar 2026 10:48:49 +0800
-Subject: [PATCH v2 2/2] arm64: Add GDB stub and step-debug support
+Subject: [PATCH v2 1/2] x86: Add GDB stub and step-debug support
 To: kvm@vger.kernel.org
 Cc: Ryan Roberts <ryan.roberts@arm.com>
 In-Reply-To: <177457996500.86179.14991222733583648054@gmail.com>
 References: <20260318154156.2064989-1-liuwf0302@gmail.com> <177457996500.86179.14991222733583648054@gmail.com>
-Message-Id: <177458000411.86256.7809200855543079818@gmail.com>
+Message-Id: <177458000064.86256.18394173730946703220@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,74 +74,2631 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Changes in v2:
-- add a dedicated guest-instruction write path for software breakpoint patching
-- synchronize arm64 instruction patches when inserting, removing, and stepping
-  over software breakpoints
-
 ---
- Makefile          |   2 +-
- arm/aarch64/gdb.c | 752 ++++++++++++++++++++++++++++++++++++++++++++++
- gdb.c             | 345 +++++++++++++++++++--
- include/kvm/gdb.h |  12 +-
- x86/gdb.c         |   4 +
- 5 files changed, 1083 insertions(+), 32 deletions(-)
- create mode 100644 arm/aarch64/gdb.c
+ Makefile                       |   13 +-
+ README                         |   29 +
+ builtin-run.c                  |   13 +-
+ docs/gdb-stub-architecture.md  |  142 +++
+ gdb.c                          | 1819 ++++++++++++++++++++++++++++++++
+ include/kvm/gdb.h              |  138 +++
+ include/kvm/kvm-config.h       |    2 +
+ kvm-cpu.c                      |    9 +-
+ term.c                         |   18 +-
+ tests/Makefile                 |    4 +
+ tests/boot/Makefile            |   10 +-
+ tests/gdb/Makefile             |    8 +
+ tests/gdb/test-x86-gdb-stub.py |  178 ++++
+ x86/gdb.c                      |  573 ++++++++++
+ 14 files changed, 2944 insertions(+), 12 deletions(-)
+ create mode 100644 docs/gdb-stub-architecture.md
+ create mode 100644 gdb.c
+ create mode 100644 include/kvm/gdb.h
+ create mode 100644 tests/gdb/Makefile
+ create mode 100644 tests/gdb/test-x86-gdb-stub.py
+ create mode 100644 x86/gdb.c
 
 diff --git a/Makefile b/Makefile
-index 7d75a67..3472d40 100644
+index d84dc8e..7d75a67 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -131,7 +131,6 @@ endif
+@@ -131,6 +131,8 @@ endif
  #x86
  ifeq ($(ARCH),x86)
  	DEFINES += -DCONFIG_X86
--	DEFINES += -DCONFIG_HAS_GDB_STUB
- 	OBJS	+= gdb.o
++	DEFINES += -DCONFIG_HAS_GDB_STUB
++	OBJS	+= gdb.o
  	OBJS	+= hw/i8042.o
  	OBJS	+= hw/serial.o
-@@ -198,6 +197,7 @@ ifeq ($(ARCH), arm64)
- 	OBJS		+= arm/aarch64/kvm.o
- 	OBJS		+= arm/aarch64/pvtime.o
- 	OBJS		+= arm/aarch64/pmu.o
-+	OBJS		+= arm/aarch64/gdb.o
- 	ARCH_INCLUDE	:= $(HDRS_ARM_COMMON)
- 	ARCH_INCLUDE	+= -Iarm/aarch64/include
+ 	OBJS	+= x86/boot.o
+@@ -140,6 +142,7 @@ ifeq ($(ARCH),x86)
+ 	OBJS	+= x86/irq.o
+ 	OBJS	+= x86/kvm.o
+ 	OBJS	+= x86/kvm-cpu.o
++	OBJS	+= x86/gdb.o
+ 	OBJS	+= x86/mptable.o
+ # Exclude BIOS object files from header dependencies.
+ 	OTHEROBJS	+= x86/bios.o
+@@ -188,6 +191,7 @@ endif
+ # ARM64
+ ifeq ($(ARCH), arm64)
+ 	DEFINES		+= -DCONFIG_ARM64
++	OBJS		+= gdb.o
+ 	OBJS		+= $(OBJS_ARM_COMMON)
+ 	OBJS		+= arm/aarch64/arm-cpu.o
+ 	OBJS		+= arm/aarch64/kvm-cpu.o
+@@ -551,10 +555,17 @@ x86/bios/bios-rom.h: x86/bios/bios.bin.elf
+ 	$(E) "  NM      " $@
+ 	$(Q) cd x86/bios && sh gen-offsets.sh > bios-rom.h && cd ..
  
-diff --git a/arm/aarch64/gdb.c b/arm/aarch64/gdb.c
++
++BOOT_TEST_KERNEL ?= $(firstword $(wildcard /boot/vmlinuz-$(shell uname -r) /boot/vmlinuz-* /boot/vmlinuz))
++
+ check: all
+ 	$(MAKE) -C tests
+ 	./$(PROGRAM) run tests/pit/tick.bin
+-	./$(PROGRAM) run -d tests/boot/boot_test.iso -p "init=init"
++	@if [ -n "$(BOOT_TEST_KERNEL)" ] && [ -r "$(BOOT_TEST_KERNEL)" ]; then \
++		./$(PROGRAM) run -k "$(BOOT_TEST_KERNEL)" -d tests/boot/boot_test.iso -p "init=init"; \
++	else \
++		echo "SKIP: boot runtime check (no readable /boot/vmlinuz* found)."; \
++	fi
+ .PHONY: check
+ 
+ install: all
+diff --git a/README b/README
+index d3c2d3a..c0b7d37 100644
+--- a/README
++++ b/README
+@@ -88,6 +88,35 @@ or
+ 		 --kernel ../../arch/x86/boot/bzImage \
+ 		 --network virtio
+ 
++GDB remote debugging
++--------------------
++
++kvmtool now supports a built-in GDB stub on x86 and arm64.
++
++Start a guest with a GDB server on localhost port 1234:
++
++  ./lkvm run --gdb 1234 --kernel <guest-kernel> [other options]
++
++To wait for GDB to attach before running guest vCPUs:
++
++  ./lkvm run --gdb 1234 --gdb-wait --kernel <guest-kernel> [other options]
++
++From GDB:
++
++  (gdb) target remote :1234
++
++Recommended kernel-debug workflow:
++
++ - Use a single vCPU for stepping-sensitive sessions:
++
++     ./lkvm run --gdb 1234 --gdb-wait -c 1 --kernel <guest-kernel> ...
++
++ - Use nokaslr in the guest command line for stable symbol addresses.
++
++Quick validation command:
++
++  make -C tests/gdb smoke
++
+ The tool has been written by Pekka Enberg, Cyrill Gorcunov, Asias He,
+ Sasha Levin and Prasad Joshi. Special thanks to Avi Kivity for his help
+ on KVM internals and Ingo Molnar for all-around support and encouragement!
+diff --git a/builtin-run.c b/builtin-run.c
+index c26184e..64c86ba 100644
+--- a/builtin-run.c
++++ b/builtin-run.c
+@@ -33,6 +33,7 @@
+ #include "kvm/guest_compat.h"
+ #include "kvm/kvm-ipc.h"
+ #include "kvm/builtin-debug.h"
++#include "kvm/gdb.h"
+ 
+ #include <linux/types.h>
+ #include <linux/err.h>
+@@ -276,6 +277,10 @@ static int loglevel_parser(const struct option *opt, const char *arg, int unset)
+ 			"Enable MMIO debugging"),			\
+ 	OPT_INTEGER('\0', "debug-iodelay", &(cfg)->debug_iodelay,	\
+ 			"Delay IO by millisecond"),			\
++	OPT_INTEGER('\0', "gdb", &(cfg)->gdb_port,			\
++			"Start GDB stub on given TCP port"),		\
++	OPT_BOOLEAN('\0', "gdb-wait", &(cfg)->gdb_wait,			\
++			"Wait for GDB connection before starting VM"),	\
+ 									\
+ 	OPT_ARCH(RUN, cfg)						\
+ 	OPT_END()							\
+@@ -734,8 +739,12 @@ static struct kvm *kvm_cmd_run_init(int argc, const char **argv)
+ 		kvm->vmlinux = kvm->cfg.vmlinux_filename;
+ 	}
+ 
+-	if (kvm->cfg.nrcpus == 0)
+-		kvm->cfg.nrcpus = nr_online_cpus;
++	if (kvm->cfg.nrcpus == 0) {
++		if (kvm->cfg.gdb_port)
++			kvm->cfg.nrcpus = 1;
++		else
++			kvm->cfg.nrcpus = nr_online_cpus;
++	}
+ 
+ 	if (!kvm->cfg.ram_size)
+ 		kvm->cfg.ram_size = get_ram_size(kvm->cfg.nrcpus);
+diff --git a/docs/gdb-stub-architecture.md b/docs/gdb-stub-architecture.md
 new file mode 100644
-index 0000000..d07dd84
+index 0000000..fc4b928
 --- /dev/null
-+++ b/arm/aarch64/gdb.c
-@@ -0,0 +1,752 @@
++++ b/docs/gdb-stub-architecture.md
+@@ -0,0 +1,142 @@
++# kvmtool GDB Stub Architecture
++
++## 1. Background and goals
++
++kvmtool now provides a built-in GDB Remote Serial Protocol (RSP) stub for
++guest kernel debugging on x86 and arm64.
++
++Design goals:
++
++1. Provide practical remote debugging (`target remote`) for `lkvm run`
++2. Support breakpoints, single-step, register access, and memory access
++3. Keep protocol handling generic and architecture-specific behavior isolated
++4. Improve stepping stability in kernel-heavy interrupt contexts
++
++---
++
++## 2. Top-level architecture
++
++```
++┌──────────────────────────────────────────────────────────────┐
++│  Host                                                        │
++│                                                              │
++│  ┌─────────┐  GDB RSP over TCP   ┌────────────────────────┐ │
++│  │  GDB    │ ◄──────────────────► │  kvmtool GDB stub      │ │
++│  │(client) │  localhost:PORT     │  (gdb.c / x86,gdb.c /  │ │
++│  └─────────┘                     │   arm/aarch64/gdb.c)   │ │
++│                                  └──────────┬─────────────┘ │
++│                                             │ KVM ioctls    │
++│                                  ┌──────────▼─────────────┐ │
++│                                  │  KVM vCPU threads      │ │
++│                                  │  KVM_EXIT_DEBUG        │ │
++│                                  │  KVM_SET_GUEST_DEBUG   │ │
++│                                  └──────────┬─────────────┘ │
++│                                             │               │
++│  ┌──────────────────────────────────────────▼─────────────┐ │
++│  │  Guest VM (Linux kernel/userspace)                    │ │
++│  └────────────────────────────────────────────────────────┘ │
++└──────────────────────────────────────────────────────────────┘
++```
++
++### 2.1 Generic layer (`gdb.c`)
++
++Responsibilities:
++
++- RSP packet transport and command dispatch
++- stop-reply generation
++- software/hardware breakpoint bookkeeping
++- coordination between vCPU threads and the GDB thread
++- guest virtual memory access with controlled translation fallback
++
++### 2.2 Architecture layer (`x86/gdb.c`, `arm/aarch64/gdb.c`)
++
++Responsibilities:
++
++- map GDB register layout to KVM register interfaces
++- program architecture debug controls (single-step / hw breakpoints)
++- classify debug exit reasons
++- apply architecture-specific resume fixes
++  - x86: `RFLAGS` handling (`TF`/`RF` and step window IRQ behavior)
++  - arm64: `PSTATE/DAIF` handling for single-step windows
++
++---
++
++## 3. Thread model and synchronization
++
++Two cooperating runtime contexts:
++
++1. **vCPU thread**
++   - Executes `KVM_RUN`
++   - On `KVM_EXIT_DEBUG`, enters `kvm_gdb__handle_debug()`
++
++2. **GDB thread**
++   - Accepts TCP connection from GDB
++   - Runs packet-level debug sessions while guest is stopped
++   - Decides resume behavior (`continue`, `step`, detach)
++
++Synchronization primitives:
++
++- `stopped_vcpu`: currently trapped vCPU
++- `vcpu_stopped`: condvar for vCPU -> GDB notification
++- `vcpu_resume`: condvar for GDB -> vCPU release
++- VM-wide pause/continue via `kvm__pause()` / `kvm__continue()`
++
++---
++
++## 4. Control-flow highlights
++
++### 4.1 Debug trap flow
++
++```text
++guest executes
++ -> KVM_EXIT_DEBUG
++ -> vCPU thread marks stopped_vcpu and waits
++ -> GDB thread runs debug session and handles packets
++ -> debug state is updated for resume
++ -> vCPU is signaled and VM continues
++```
++
++### 4.2 Software breakpoint step-over flow
++
++```text
++hit software breakpoint
++ -> restore original instruction bytes
++ -> run single-step over current instruction
++ -> reinsert software breakpoint bytes
++ -> resume according to user command semantics
++```
++
++This avoids immediate retrap on the same breakpoint byte.
++
++### 4.3 Step stability strategy
++
++- x86: adjust resume flags before stepping and restore state after stop
++- arm64: save and restore DAIF around the step window
++
++Goal: reduce interrupt noise during `next/finish` style stepping without
++changing guest behavior permanently.
++
++---
++
++## 5. Protocol support boundary
++
++Core packet handling includes:
++
++- `?`, `g/G`, `p/P`, `m/M`, `X`
++- `Z/z` software/hardware breakpoints
++- `c/s`, `C/S`
++- `qSupported`, `qXfer:features:read`
++
++Protocol safety hardening in the common layer includes:
++
++- binary write length handling based on packet boundaries (not `strlen`)
++- bounded thread-list formatting for `qfThreadInfo`
++
++---
++
++## 6. Practical boundaries
++
++- Kernel stepping is inherently noisy under interrupts and scheduling
++- For stable stepping sessions, prefer `-c 1` and `nokaslr`
++- The architecture split is designed for maintainability and incremental
++  extension of protocol features over time
+diff --git a/gdb.c b/gdb.c
+new file mode 100644
+index 0000000..50f7dfe
+--- /dev/null
++++ b/gdb.c
+@@ -0,0 +1,1819 @@
 +/*
-+ * AArch64 architecture-specific GDB stub support.
++ * GDB Remote Serial Protocol (RSP) stub for kvmtool.
 + *
-+ * GDB AArch64 register set (org.gnu.gdb.aarch64.core, described in target.xml):
++ * Enables debugging a KVM guest via a standard GDB connection,
++ * similar to QEMU's -s/-S options.
 + *
-+ *  No.  Name    Size   KVM field
-+ *  ---  ------  ----   ---------
-+ *   0   x0       8     regs.regs[0]
-+ *   1   x1       8     regs.regs[1]
-+ *   ...
-+ *  30   x30      8     regs.regs[30]  (link register)
-+ *  31   sp       8     sp_el1  (kernel SP; SP_EL0 when PSTATE.EL==0)
-+ *  32   pc       8     regs.pc
-+ *  33   cpsr     4     regs.pstate (low 32 bits)
++ * Usage:
++ *   lkvm run --gdb 1234 -k bzImage ...   # listen on TCP port 1234
++ *   lkvm run --gdb 1234 --gdb-wait ...   # wait for GDB before starting
 + *
-+ * Total: 31×8 + 8 + 8 + 4 = 268 bytes
++ *   (gdb) target remote localhost:1234
 + *
-+ * Software breakpoints:
-+ *   BRK #0  →  little-endian bytes: 0x00 0x00 0x20 0xD4
-+ *   (u32 = 0xD4200000)
-+ *   ARM64 BRK is always 4 bytes and must be 4-byte aligned.
++ * Features:
++ *   - Continue / single-step
++ *   - Ctrl+C interrupt
++ *   - Software breakpoints (Z0/z0) via INT3
++ *   - Hardware execution breakpoints (Z1/z1)
++ *   - Hardware write/access watchpoints (Z2/z4)
++ *   - Multi-vCPU: all vCPUs paused on stop, per-thread register access
++ *   - Target XML register description
++ */
++
++#include "kvm/gdb.h"
++
++#ifdef CONFIG_ARM64
++#include <asm/ptrace.h>
++#endif
++
++#include "kvm/kvm.h"
++#include "kvm/kvm-cpu.h"
++#include "kvm/util.h"
++#include "kvm/util-init.h"
++#include "kvm/mutex.h"
++
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <netinet/tcp.h>
++#include <arpa/inet.h>
++#include <pthread.h>
++#include <poll.h>
++#include <fcntl.h>
++#include <signal.h>
++#include <errno.h>
++#include <string.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <ctype.h>
++#include <unistd.h>
++
++#include <linux/kvm.h>
++
++#define GDB_MAX_SW_BP		64
++#define GDB_MAX_HW_BP		4
++#define GDB_PACKET_MAX		16384
++#define GDB_SW_BP_INSN		0xCC	/* INT3 */
++
++/*
++ * Only use raw address-as-GPA fallback for very low addresses where
++ * real-mode/early-boot identity mapping is plausible.
++ */
++#define GDB_IDMAP_FALLBACK_MAX	0x100000ULL
++
++/* Software breakpoint saved state */
++struct sw_bp {
++	u64  addr;
++	u8   orig_byte;
++	int  refs;
++	bool active;
++};
++
++/*
++ * All GDB stub state lives here.
++ * Accesses must be done with gdb.lock held, except where noted.
++ */
++static struct kvm_gdb {
++	int		 port;
++	int		 listen_fd;
++	int		 fd;		/* Connected GDB fd, -1 if none */
++	bool		 active;	/* Stub is configured */
++	bool		 wait;		/* --gdb-wait: block until GDB connects */
++	bool		 connected;	/* A GDB client is currently connected */
++
++	struct kvm	*kvm;
++	pthread_t	 thread;
++
++	/* vCPU ↔ GDB thread synchronisation */
++	pthread_mutex_t	lock;
++	pthread_cond_t	vcpu_stopped;	/* vCPU → GDB: we hit a debug event */
++	pthread_cond_t	vcpu_resume;	/* GDB → vCPU: you may run again */
++
++	/*
++	 * Set by vCPU thread when it enters debug handling.
++	 * Cleared when GDB signals vcpu_resume.
++	 */
++	struct kvm_cpu	*stopped_vcpu;
++
++	/* Currently selected thread for Hg / Hc commands (-1 = any) */
++	int		 g_tid;		/* register ops */
++	int		 c_tid;		/* step/continue */
++
++	/* Breakpoints */
++	struct sw_bp		sw_bp[GDB_MAX_SW_BP];
++	struct kvm_gdb_hw_bp	hw_bp[GDB_MAX_HW_BP];
++
++	/* If true we are about to single-step the current vCPU */
++	bool		 single_step;
++
++	/* Used to wait for GDB connection before starting vCPUs */
++	pthread_cond_t	 connected_cond;
++} gdb = {
++	.fd          = -1,
++	.listen_fd   = -1,
++	.g_tid       = -1,
++	.c_tid       = -1,
++	.lock        = PTHREAD_MUTEX_INITIALIZER,
++	.vcpu_stopped   = PTHREAD_COND_INITIALIZER,
++	.vcpu_resume    = PTHREAD_COND_INITIALIZER,
++	.connected_cond = PTHREAD_COND_INITIALIZER,
++};
++
++struct sw_bp_resume {
++	int	idx;
++	u64	addr;
++	bool	active;
++	bool	auto_resume;
++};
++
++static struct sw_bp_resume sw_bp_resume = {
++	.idx = -1,
++};
++
++static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len);
++static struct kvm_cpu *current_vcpu(void);
++
++/* ------------------------------------------------------------------ */
++/* Utility: hex / binary conversion                                    */
++/* ------------------------------------------------------------------ */
++
++static const char hex_chars[] = "0123456789abcdef";
++
++static int hex_nibble(char c)
++{
++	if (c >= '0' && c <= '9') return c - '0';
++	if (c >= 'a' && c <= 'f') return c - 'a' + 10;
++	if (c >= 'A' && c <= 'F') return c - 'A' + 10;
++	return -1;
++}
++
++static void bin_to_hex(const void *bin, size_t len, char *hex)
++{
++	const u8 *b = bin;
++	for (size_t i = 0; i < len; i++) {
++		hex[i * 2]     = hex_chars[b[i] >> 4];
++		hex[i * 2 + 1] = hex_chars[b[i] & 0xf];
++	}
++}
++
++/* Returns number of bytes written, or -1 on invalid hex. */
++static int hex_to_bin(const char *hex, size_t hexlen, void *bin)
++{
++	u8 *b = bin;
++	if (hexlen & 1)
++		return -1;
++	for (size_t i = 0; i < hexlen / 2; i++) {
++		int hi = hex_nibble(hex[i * 2]);
++		int lo = hex_nibble(hex[i * 2 + 1]);
++		if (hi < 0 || lo < 0)
++			return -1;
++		b[i] = (u8)((hi << 4) | lo);
++	}
++	return hexlen / 2;
++}
++
++static int gdb_unescape_binary(const char *in, size_t in_len, void *out,
++			       size_t out_len)
++{
++	const u8 *src = (const u8 *)in;
++	u8 *dst = out;
++	size_t i = 0, j = 0;
++
++	while (i < in_len && j < out_len) {
++		u8 ch = src[i++];
++
++		if (ch == '}') {
++			if (i >= in_len)
++				return -1;
++			ch = src[i++] ^ 0x20;
++		}
++
++		dst[j++] = ch;
++	}
++
++	return (i == in_len && j == out_len) ? 0 : -1;
++}
++
++/* Parse a hex number from *p, advancing *p past the digits. */
++static u64 parse_hex(const char **p)
++{
++	u64 val = 0;
++	while (**p && hex_nibble(**p) >= 0) {
++		val = (val << 4) | hex_nibble(**p);
++		(*p)++;
++	}
++	return val;
++}
++
++/* ------------------------------------------------------------------ */
++/* Packet I/O                                                          */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Read exactly one byte from fd.
++ * Returns the byte value [0..255] or -1 on error/EOF.
++ */
++static int gdb_read_byte(int fd)
++{
++	unsigned char c;
++	ssize_t r = read(fd, &c, 1);
++	if (r <= 0)
++		return -1;
++	return c;
++}
++
++/*
++ * Receive one GDB RSP packet.
++ * Skips leading junk until '$', reads data until '#', reads 2-char checksum.
++ * Returns:
++ *   >= 0  number of bytes in buf (NUL-terminated)
++ *   -1    I/O error or disconnect
++ *   -2    Ctrl+C received (0x03 interrupt byte)
++ */
++static int gdb_recv_packet(int fd, char *buf, size_t bufsz)
++{
++	int c;
++
++retry:
++	/* Scan for '$' or 0x03 */
++	do {
++		c = gdb_read_byte(fd);
++		if (c < 0)
++			return -1;
++		if (c == 0x03)
++			return -2;
++	} while (c != '$');
++
++	/* Read packet data */
++	size_t len = 0;
++	u8 cksum = 0;
++	while (1) {
++		c = gdb_read_byte(fd);
++		if (c < 0)
++			return -1;
++		if (c == '#')
++			break;
++		if (len + 1 >= bufsz)
++			return -1;	/* overflow */
++		buf[len++] = (char)c;
++		cksum += (u8)c;
++	}
++	buf[len] = '\0';
++
++	/* Read 2-digit checksum from client */
++	int cs_hi = gdb_read_byte(fd);
++	int cs_lo = gdb_read_byte(fd);
++	if (cs_hi < 0 || cs_lo < 0)
++		return -1;
++
++	u8 expected = (u8)((hex_nibble(cs_hi) << 4) | hex_nibble(cs_lo));
++	if (expected != cksum) {
++		/* Checksum mismatch: NAK and retry (best-effort send) */
++		char nak = '-';
++		if (write(fd, &nak, 1) < 0)
++			return -1;
++		goto retry;
++	}
++
++	/* ACK (best-effort send) */
++	char ack = '+';
++	if (write(fd, &ack, 1) < 0)
++		return -1;
++
++	return (int)len;
++}
++
++/*
++ * Send a GDB RSP packet "$data#checksum".
++ * data must be a NUL-terminated string.
++ * Returns 0 on success, -1 on error.
++ */
++static int gdb_send_packet(int fd, const char *data)
++{
++	size_t len = strlen(data);
++	u8 cksum = 0;
++	for (size_t i = 0; i < len; i++)
++		cksum += (u8)data[i];
++
++	char trailer[4];
++	snprintf(trailer, sizeof(trailer), "#%02x", cksum);
++
++	/* We send as three separate writes to avoid a heap allocation.
++	 * Small enough that no buffering is needed. */
++	char header = '$';
++	if (write(fd, &header, 1)   != 1 ||
++	    write(fd, data, len)    != (ssize_t)len ||
++	    write(fd, trailer, 3)   != 3)
++		return -1;
++
++	/* Consume the ACK/NAK (best-effort; ignore NACK) */
++	char ack;
++	if (read(fd, &ack, 1) != 1)
++		return -1;
++	return 0;
++}
++
++static void gdb_send_ok(int fd)
++{
++	gdb_send_packet(fd, "OK");
++}
++
++static void gdb_send_error(int fd, int err)
++{
++	char buf[8];
++	snprintf(buf, sizeof(buf), "E%02x", err & 0xff);
++	gdb_send_packet(fd, buf);
++}
++
++static void gdb_send_empty(int fd)
++{
++	gdb_send_packet(fd, "");
++}
++
++/* ------------------------------------------------------------------ */
++/* vCPU selection helpers                                              */
++/* ------------------------------------------------------------------ */
++
++/* Convert a GDB thread-ID string to a vCPU index (0-based).
++ * GDB thread IDs are 1-based (thread 1 = vCPU 0).
++ * Returns -1 on "all threads" or parse error, or the vCPU index.
++ */
++static int tid_to_vcpu(const char *s)
++{
++	const char *p = s;
++
++	if (s[0] == '-' && s[1] == '1')
++		return -1;	/* "all threads" */
++	if (!*p)
++		return -2;
++	/* GDB may send hex thread IDs; parse as hex */
++	long tid = (long)parse_hex(&p);
++	if (*p != '\0' || tid <= 0)
++		return -2;
++	return (int)(tid - 1);
++}
++
++static int sw_bp_find(u64 addr)
++{
++	for (int i = 0; i < GDB_MAX_SW_BP; i++) {
++		if (gdb.sw_bp[i].active && gdb.sw_bp[i].addr == addr)
++			return i;
++	}
++
++	return -1;
++}
++
++static int sw_bp_restore(int idx)
++{
++	if (idx < 0 || idx >= GDB_MAX_SW_BP || !gdb.sw_bp[idx].active)
++		return -1;
++
++	return gdb_write_guest_mem(gdb.sw_bp[idx].addr,
++				  &gdb.sw_bp[idx].orig_byte,
++				  1) ? 0 : -1;
++}
++
++static int sw_bp_reinsert(int idx)
++{
++	if (idx < 0 || idx >= GDB_MAX_SW_BP || !gdb.sw_bp[idx].active)
++		return -1;
++
++	u8 brk = GDB_SW_BP_INSN;
++	return gdb_write_guest_mem(gdb.sw_bp[idx].addr,
++				  &brk,
++				  1) ? 0 : -1;
++}
++
++static bool prepare_sw_bp_resume(bool auto_resume)
++{
++	struct kvm_cpu *vcpu = current_vcpu();
++	u64 bp_addr;
++	int idx;
++
++	if (!vcpu || !kvm_gdb__arch_is_sw_bp_exit(vcpu))
++		return false;
++
++	bp_addr = kvm_gdb__arch_debug_pc(vcpu);
++	idx = sw_bp_find(bp_addr);
++	if (idx < 0)
++		return false;
++
++	if (sw_bp_restore(idx) < 0)
++		return false;
++
++	gdb.sw_bp[idx].active = false;
++	sw_bp_resume.idx = idx;
++	sw_bp_resume.addr = bp_addr;
++	sw_bp_resume.active = true;
++	sw_bp_resume.auto_resume = auto_resume;
++
++	return true;
++}
++
++static bool finish_sw_bp_resume(bool *auto_resume)
++{
++	int idx;
++
++	if (!sw_bp_resume.active)
++		return false;
++
++	idx = sw_bp_resume.idx;
++	if (idx >= 0 && idx < GDB_MAX_SW_BP) {
++		gdb.sw_bp[idx].active = true;
++		sw_bp_reinsert(idx);
++	}
++
++	*auto_resume = sw_bp_resume.auto_resume;
++	sw_bp_resume.idx = -1;
++	sw_bp_resume.active = false;
++	return true;
++}
++
++#if !defined(CONFIG_X86) && !defined(CONFIG_ARM64)
++void kvm_gdb__arch_read_registers(struct kvm_cpu *vcpu, u8 *buf, size_t *size)
++{
++	*size = 0;
++}
++
++void kvm_gdb__arch_write_registers(struct kvm_cpu *vcpu, const u8 *buf,
++				    size_t size)
++{
++}
++
++int kvm_gdb__arch_read_register(struct kvm_cpu *vcpu, int regno,
++				u8 *buf, size_t *size)
++{
++	return -1;
++}
++
++int kvm_gdb__arch_write_register(struct kvm_cpu *vcpu, int regno,
++				 const u8 *buf, size_t size)
++{
++	return -1;
++}
++
++u64 kvm_gdb__arch_get_pc(struct kvm_cpu *vcpu)
++{
++	return 0;
++}
++
++void kvm_gdb__arch_set_pc(struct kvm_cpu *vcpu, u64 pc)
++{
++}
++
++void kvm_gdb__arch_set_debug(struct kvm_cpu *vcpu, bool single_step,
++			      struct kvm_gdb_hw_bp *hw_bps)
++{
++}
++
++void kvm_gdb__arch_prepare_resume(struct kvm_cpu *vcpu, bool single_step,
++				   bool from_debug_exit)
++{
++}
++
++void kvm_gdb__arch_handle_stop(struct kvm_cpu *vcpu)
++{
++}
++
++const char *kvm_gdb__arch_target_xml(void)
++{
++	return NULL;
++}
++
++size_t kvm_gdb__arch_reg_pkt_size(void)
++{
++	return 0;
++}
++
++int kvm_gdb__arch_signal(struct kvm_cpu *vcpu)
++{
++	return 5;
++}
++
++bool kvm_gdb__arch_is_sw_bp_exit(struct kvm_cpu *vcpu)
++{
++	return false;
++}
++
++u64 kvm_gdb__arch_debug_pc(struct kvm_cpu *vcpu)
++{
++	return 0;
++}
++
++void kvm_gdb__arch_reinject_sw_bp(struct kvm_cpu *vcpu)
++{
++}
++#endif
++
++/* Return the vCPU pointer for the currently selected thread (g_tid).
++ * Falls back to vCPU 0.
++ */
++static struct kvm_cpu *current_vcpu(void)
++{
++	if (gdb.stopped_vcpu)
++		return gdb.stopped_vcpu;
++
++	int idx = (gdb.g_tid <= 0) ? 0 : (gdb.g_tid - 1);
++	if (idx >= gdb.kvm->nrcpus)
++		idx = 0;
++	return gdb.kvm->cpus[idx];
++}
++
++/* ------------------------------------------------------------------ */
++/* Guest memory access                                                 */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Linux x86-64 virtual address space constants.
++ * Used as a last-resort fallback when KVM_TRANSLATE fails.
 + *
-+ * Debug exit detection via ESR_EL2 (kvm_run->debug.arch.hsr):
-+ *   EC = bits[31:26]
-+ *   0x3C = BRK64  (AArch64 BRK instruction)  → software breakpoint
-+ *   0x32 = SSTEP  (software single-step)
-+ *   0x30 = HW_BP  (hardware execution breakpoint)
-+ *   0x35 = WPTFAR (watchpoint)
++ * __START_KERNEL_map (0xffffffff80000000):
++ *   Maps physical RAM starting from 0.  With nokaslr the kernel binary
++ *   is loaded at physical 0x1000000 and linked at 0xffffffff81000000.
++ *   Formula: GPA = GVA - __START_KERNEL_map
++ *
++ * PAGE_OFFSET / direct-map (0xffff888000000000):
++ *   Direct 1:1 mapping of all physical RAM.
++ *   Formula: GPA = GVA - PAGE_OFFSET
++ *   This offset is fixed in the x86-64 ABI regardless of KASLR.
++ */
++#ifdef CONFIG_X86
++# define GDB_KERNEL_MAP_BASE	0xffffffff80000000ULL
++# define GDB_DIRECT_MAP_BASE	0xffff888000000000ULL
++# define GDB_DIRECT_MAP_SIZE	0x100000000000ULL	/* 16 TB */
++#endif
++
++/*
++ * Translate a guest virtual address (GVA) to a guest physical address (GPA).
++ *
++ * Uses three strategies in order:
++ *
++ * 1. KVM_TRANSLATE on the currently selected vCPU.
++ *    Fails when the vCPU was paused in user mode with Linux KPTI active,
++ *    because the user-mode page table (CR3) does not map kernel addresses.
++ *
++ * 2. KVM_TRANSLATE on every other vCPU.
++ *    On multi-vCPU systems, another vCPU may be paused in kernel mode
++ *    whose page tables do include kernel mappings.
++ *
++ * 3. Fixed-offset arithmetic for well-known Linux x86-64 kernel ranges.
++ *    This is the safety net for single-vCPU systems where ALL vCPUs are
++ *    paused in user mode (common when debugging a booted VM running a
++ *    shell).  Only reliable with the nokaslr kernel parameter.
++ *
++ * Returns the GPA on success, or (u64)-1 on failure.
++ */
++static u64 gva_to_gpa(u64 gva)
++{
++	struct kvm_cpu *cur = current_vcpu();
++
++	/* Strategy 1: KVM_TRANSLATE on the preferred vCPU */
++	if (cur) {
++		struct kvm_translation trans = { .linear_address = gva };
++		if (ioctl(cur->vcpu_fd, KVM_TRANSLATE, &trans) == 0 &&
++		    trans.valid)
++			return trans.physical_address;
++	}
++
++	/*
++	 * Strategy 2: try every other vCPU.
++	 *
++	 * Linux KPTI uses separate CR3 values for user mode and kernel mode.
++	 * If the selected vCPU was interrupted while running a userspace
++	 * process its CR3 points to the user-mode page table, which does NOT
++	 * map kernel virtual addresses (0xffffffff8xxxxxxx).  A different
++	 * vCPU that was paused inside the kernel will have the kernel-mode
++	 * CR3 loaded and can translate those addresses successfully.
++	 */
++	for (int i = 0; i < gdb.kvm->nrcpus; i++) {
++		struct kvm_cpu *vcpu = gdb.kvm->cpus[i];
++		if (vcpu == cur)
++			continue;
++		struct kvm_translation trans = { .linear_address = gva };
++		if (ioctl(vcpu->vcpu_fd, KVM_TRANSLATE, &trans) == 0 &&
++		    trans.valid)
++			return trans.physical_address;
++	}
++
++#ifdef CONFIG_X86
++	/*
++	 * Strategy 3: fixed-offset fallback for x86-64 Linux kernel ranges.
++	 *
++	 * When ALL vCPUs are paused in user mode (e.g. a single-vCPU VM
++	 * running a shell), KVM_TRANSLATE will fail for every kernel address.
++	 * We fall back to the known-fixed virtual→physical offsets.
++	 *
++	 * Direct physical map (PAGE_OFFSET): always fixed, KASLR-safe.
++	 * Kernel text/data (__START_KERNEL_map): fixed only with nokaslr.
++	 */
++	if (gva >= GDB_DIRECT_MAP_BASE &&
++	    gva <  GDB_DIRECT_MAP_BASE + GDB_DIRECT_MAP_SIZE)
++		return gva - GDB_DIRECT_MAP_BASE;
++
++	if (gva >= GDB_KERNEL_MAP_BASE)
++		return gva - GDB_KERNEL_MAP_BASE;
++#endif
++
++	return (u64)-1;
++}
++
++/*
++ * Read/write guest memory at a guest virtual address.
++ * Handles page-boundary crossing and GVA→GPA translation.
++ * Falls back to treating the address as a GPA if translation fails.
++ */
++static bool gdb_read_guest_mem(u64 addr, void *buf, size_t len)
++{
++	u8 *out = buf;
++
++	while (len > 0) {
++		u64 gpa = gva_to_gpa(addr);
++		/*
++		 * Only fall back to treating addr as GPA for low (real-mode /
++		 * identity-mapped) addresses.  For kernel virtual addresses
++		 * (above 2GB) the fallback would produce a wildly wrong GPA
++		 * and cause guest_flat_to_host() to print a spurious warning.
++		 */
++		if (gpa == (u64)-1) {
++			if (addr < GDB_IDMAP_FALLBACK_MAX)
++				gpa = addr;	/* real-mode identity mapping */
++			else
++				return false;
++		}
++
++		/* Clamp transfer to the current page */
++		size_t page_rem = 0x1000 - (gpa & 0xfff);
++		size_t chunk = (page_rem < len) ? page_rem : len;
++
++		u8 *host = guest_flat_to_host(gdb.kvm, gpa);
++		if (!host || !host_ptr_in_ram(gdb.kvm, host) ||
++		    !host_ptr_in_ram(gdb.kvm, host + chunk - 1))
++			return false;
++
++		memcpy(out, host, chunk);
++		out  += chunk;
++		addr += chunk;
++		len  -= chunk;
++	}
++	return true;
++}
++
++static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len)
++{
++	const u8 *in = buf;
++
++	while (len > 0) {
++		u64 gpa = gva_to_gpa(addr);
++		if (gpa == (u64)-1) {
++			if (addr < GDB_IDMAP_FALLBACK_MAX)
++				gpa = addr;
++			else
++				return false;
++		}
++
++		size_t page_rem = 0x1000 - (gpa & 0xfff);
++		size_t chunk = (page_rem < len) ? page_rem : len;
++
++		u8 *host = guest_flat_to_host(gdb.kvm, gpa);
++		if (!host || !host_ptr_in_ram(gdb.kvm, host) ||
++		    !host_ptr_in_ram(gdb.kvm, host + chunk - 1))
++			return false;
++
++		memcpy(host, in, chunk);
++		in   += chunk;
++		addr += chunk;
++		len  -= chunk;
++	}
++	return true;
++}
++
++/* ------------------------------------------------------------------ */
++/* Software breakpoints                                                */
++/* ------------------------------------------------------------------ */
++
++static int sw_bp_insert(u64 addr, int len)
++{
++	for (int i = 0; i < GDB_MAX_SW_BP; i++) {
++		if (gdb.sw_bp[i].refs > 0 && gdb.sw_bp[i].addr == addr) {
++			gdb.sw_bp[i].refs++;
++			return 0;
++		}
++	}
++
++	/* Find a free slot */
++	for (int i = 0; i < GDB_MAX_SW_BP; i++) {
++		if (gdb.sw_bp[i].refs > 0)
++			continue;
++
++		u8 orig;
++		if (!gdb_read_guest_mem(addr, &orig, 1)) {
++			pr_warning("GDB: sw_bp_insert read failed at GVA 0x%llx",
++				   (unsigned long long)addr);
++			return -1;
++		}
++		u8 brk = GDB_SW_BP_INSN;
++		if (!gdb_write_guest_mem(addr, &brk, 1)) {
++			pr_warning("GDB: sw_bp_insert write failed at GVA 0x%llx",
++				   (unsigned long long)addr);
++			return -1;
++		}
++
++		gdb.sw_bp[i].addr   = addr;
++		gdb.sw_bp[i].orig_byte = orig;
++		gdb.sw_bp[i].refs   = 1;
++		gdb.sw_bp[i].active = true;
++		return 0;
++	}
++	return -1;	/* table full */
++}
++
++static int sw_bp_remove(u64 addr, int len)
++{
++	for (int i = 0; i < GDB_MAX_SW_BP; i++) {
++		if (gdb.sw_bp[i].refs <= 0 || gdb.sw_bp[i].addr != addr)
++			continue;
++
++		if (--gdb.sw_bp[i].refs > 0)
++			return 0;
++
++		if (gdb.sw_bp[i].active)
++			gdb_write_guest_mem(addr, &gdb.sw_bp[i].orig_byte, 1);
++		gdb.sw_bp[i].active = false;
++		return 0;
++	}
++	return -1;
++}
++
++/* Return true if there is an active software breakpoint at addr. */
++static bool sw_bp_active_at(u64 addr)
++{
++	for (int i = 0; i < GDB_MAX_SW_BP; i++) {
++		if (gdb.sw_bp[i].active && gdb.sw_bp[i].addr == addr)
++			return true;
++	}
++	return false;
++}
++
++/* Remove all software breakpoints before resuming the guest. */
++static void sw_bp_remove_all(void)
++{
++	for (int i = 0; i < GDB_MAX_SW_BP; i++) {
++		if (gdb.sw_bp[i].refs <= 0)
++			continue;
++		if (gdb.sw_bp[i].active)
++			gdb_write_guest_mem(gdb.sw_bp[i].addr,
++					    &gdb.sw_bp[i].orig_byte, 1);
++		gdb.sw_bp[i].refs = 0;
++		gdb.sw_bp[i].active = false;
++	}
++}
++
++/* ------------------------------------------------------------------ */
++/* Hardware breakpoints / watchpoints                                  */
++/* ------------------------------------------------------------------ */
++
++static int hw_bp_insert(int type, u64 addr, int len)
++{
++	for (int i = 0; i < GDB_MAX_HW_BP; i++) {
++		if (!gdb.hw_bp[i].active) {
++			gdb.hw_bp[i].addr   = addr;
++			gdb.hw_bp[i].len    = len;
++			gdb.hw_bp[i].type   = type;
++			gdb.hw_bp[i].active = true;
++			return 0;
++		}
++	}
++	return -1;
++}
++
++static int hw_bp_remove(int type, u64 addr, int len)
++{
++	for (int i = 0; i < GDB_MAX_HW_BP; i++) {
++		if (gdb.hw_bp[i].active &&
++		    gdb.hw_bp[i].addr == (u64)addr &&
++		    gdb.hw_bp[i].type == type) {
++			gdb.hw_bp[i].active = false;
++			return 0;
++		}
++	}
++	return -1;
++}
++
++/*
++ * Apply current debug configuration to all vCPUs.
++ * Only step_vcpu gets KVM_GUESTDBG_SINGLESTEP; all others keep breakpoint
++ * interception active but run without TF set.
++ */
++static void apply_debug_to_all(struct kvm_cpu *step_vcpu, bool single_step)
++{
++	for (int i = 0; i < gdb.kvm->nrcpus; i++)
++		kvm_gdb__arch_set_debug(gdb.kvm->cpus[i],
++					gdb.kvm->cpus[i] == step_vcpu && single_step,
++					gdb.hw_bp);
++}
++
++/* ------------------------------------------------------------------ */
++/* Stop reply                                                          */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Send a "T" stop-reply packet:
++ *   T<sig>thread:<tid>;
++ * where <sig> = SIGTRAP (5) in hex.
++ */
++static void gdb_send_stop_reply(int fd, struct kvm_cpu *vcpu)
++{
++	int sig = kvm_gdb__arch_signal(vcpu);
++	int tid = (int)(vcpu->cpu_id + 1);
++
++	char buf[80];
++	/* Include swbreak: since we advertise swbreak+ in qSupported */
++	if (kvm_gdb__arch_is_sw_bp_exit(vcpu))
++		snprintf(buf, sizeof(buf), "T%02xswbreak:;thread:%x;", sig, tid);
++	else
++		snprintf(buf, sizeof(buf), "T%02xthread:%x;", sig, tid);
++	gdb_send_packet(fd, buf);
++}
++
++/* ------------------------------------------------------------------ */
++/* qXfer: features                                                     */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Handle qXfer:features:read:target.xml:offset,length
++ * Returns true if handled.
++ */
++static bool handle_qxfer_features(int fd, const char *annex,
++				   u64 offset, u64 reqlen)
++{
++	if (strcmp(annex, "target.xml") != 0)
++		goto notfound;
++
++	const char *xml = kvm_gdb__arch_target_xml();
++	if (!xml)
++		goto notfound;
++
++	size_t xmllen = strlen(xml);
++	if (offset >= xmllen) {
++		gdb_send_packet(fd, "l");	/* end-of-data */
++		return true;
++	}
++
++	size_t avail = xmllen - offset;
++	size_t send  = (avail < reqlen) ? avail : reqlen;
++	bool   last  = (offset + send >= xmllen);
++
++	/* Response: 'm' (more) or 'l' (last) followed by data */
++	size_t bufsz = 2 + send * 2 + 1;
++	char *buf = malloc(bufsz);
++	if (!buf) {
++		gdb_send_error(fd, ENOMEM);
++		return true;
++	}
++	buf[0] = last ? 'l' : 'm';
++	/* The content is text, not binary – copy it directly */
++	memcpy(buf + 1, xml + offset, send);
++	buf[1 + send] = '\0';
++	gdb_send_packet(fd, buf);
++	free(buf);
++	return true;
++
++notfound:
++	gdb_send_packet(fd, "E00");
++	return true;
++}
++
++/* ------------------------------------------------------------------ */
++/* Main GDB packet dispatcher                                          */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Handle one GDB packet.
++ * Returns:
++ *   0  continue protocol loop
++ *   1  resume guest (c / s / C / S)
++ *   2  detach / kill
++ */
++static int handle_packet(int fd, const char *pkt, size_t pkt_len)
++{
++	const char *p = pkt;
++	const char *pkt_end = pkt + pkt_len;
++
++	switch (*p++) {
++
++	/* ---- ? : stop reason ---- */
++	case '?':
++		gdb_send_stop_reply(fd, current_vcpu());
++		break;
++
++	/* ---- g : read all registers ---- */
++	case 'g': {
++		struct kvm_cpu *vcpu = current_vcpu();
++		size_t regsz = kvm_gdb__arch_reg_pkt_size();
++		u8 *regbuf = malloc(regsz);
++		if (!regbuf) { gdb_send_error(fd, ENOMEM); break; }
++
++		size_t written = 0;
++		kvm_gdb__arch_read_registers(vcpu, regbuf, &written);
++
++		char *hexbuf = malloc(written * 2 + 1);
++		if (!hexbuf) { free(regbuf); gdb_send_error(fd, ENOMEM); break; }
++		bin_to_hex(regbuf, written, hexbuf);
++		hexbuf[written * 2] = '\0';
++		gdb_send_packet(fd, hexbuf);
++		free(hexbuf);
++		free(regbuf);
++		break;
++	}
++
++	/* ---- G : write all registers ---- */
++	case 'G': {
++		struct kvm_cpu *vcpu = current_vcpu();
++		size_t hexlen = strlen(p);
++		size_t binlen = hexlen / 2;
++		u8 *regbuf = malloc(binlen);
++		if (!regbuf) { gdb_send_error(fd, ENOMEM); break; }
++		if (hex_to_bin(p, hexlen, regbuf) < 0) {
++			free(regbuf);
++			gdb_send_error(fd, EINVAL);
++			break;
++		}
++		kvm_gdb__arch_write_registers(vcpu, regbuf, binlen);
++		free(regbuf);
++		gdb_send_ok(fd);
++		break;
++	}
++
++	/* ---- p n : read register n ---- */
++	case 'p': {
++		struct kvm_cpu *vcpu = current_vcpu();
++		int regno = (int)parse_hex(&p);
++		u8 regbuf[16] = {0};
++		size_t rsize = 0;
++		if (kvm_gdb__arch_read_register(vcpu, regno, regbuf, &rsize) < 0) {
++			gdb_send_error(fd, EINVAL);
++			break;
++		}
++		char hexbuf[33];
++		bin_to_hex(regbuf, rsize, hexbuf);
++		hexbuf[rsize * 2] = '\0';
++		gdb_send_packet(fd, hexbuf);
++		break;
++	}
++
++	/* ---- P n=v : write register n ---- */
++	case 'P': {
++		struct kvm_cpu *vcpu = current_vcpu();
++		int regno = (int)parse_hex(&p);
++		if (*p++ != '=') { gdb_send_error(fd, EINVAL); break; }
++		size_t hexlen = strlen(p);
++		u8 regbuf[16] = {0};
++		hex_to_bin(p, hexlen, regbuf);
++		if (kvm_gdb__arch_write_register(vcpu, regno, regbuf,
++						 hexlen / 2) < 0)
++			gdb_send_error(fd, EINVAL);
++		else
++			gdb_send_ok(fd);
++		break;
++	}
++
++	/* ---- m addr,len : read memory ---- */
++	case 'm': {
++		u64 addr = parse_hex(&p);
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		u64 len  = parse_hex(&p);
++		if (len > 4096) len = 4096;
++
++		u8 *mem = malloc(len);
++		if (!mem) { gdb_send_error(fd, ENOMEM); break; }
++		if (!gdb_read_guest_mem(addr, mem, len)) {
++			free(mem);
++			gdb_send_error(fd, EFAULT);
++			break;
++		}
++		char *hexbuf = malloc(len * 2 + 1);
++		if (!hexbuf) { free(mem); gdb_send_error(fd, ENOMEM); break; }
++		bin_to_hex(mem, len, hexbuf);
++		hexbuf[len * 2] = '\0';
++		gdb_send_packet(fd, hexbuf);
++		free(hexbuf);
++		free(mem);
++		break;
++	}
++
++	/* ---- M addr,len:data : write memory ---- */
++	case 'M': {
++		u64 addr = parse_hex(&p);
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		u64 len  = parse_hex(&p);
++		if (*p++ != ':') { gdb_send_error(fd, EINVAL); break; }
++		if (len > 4096) { gdb_send_error(fd, EINVAL); break; }
++
++		u8 *mem = malloc(len);
++		if (!mem) { gdb_send_error(fd, ENOMEM); break; }
++		if (hex_to_bin(p, len * 2, mem) < 0 ||
++		    !gdb_write_guest_mem(addr, mem, len)) {
++			free(mem);
++			gdb_send_error(fd, EFAULT);
++			break;
++		}
++		free(mem);
++		gdb_send_ok(fd);
++		break;
++	}
++
++	/* ---- X addr,len:data : write binary memory ---- */
++	case 'X': {
++		u64 addr = parse_hex(&p);
++		const char *data;
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		u64 len  = parse_hex(&p);
++		if (*p++ != ':') { gdb_send_error(fd, EINVAL); break; }
++		if (len == 0) {
++			gdb_send_ok(fd);
++			break;
++		}
++		if (len > 4096) { gdb_send_error(fd, EINVAL); break; }
++		data = p;
++		size_t data_len = (size_t)(pkt_end - data);
++		u8 *mem = malloc(len);
++		if (!mem) { gdb_send_error(fd, ENOMEM); break; }
++		if (gdb_unescape_binary(data, data_len, mem, len) < 0 ||
++		    !gdb_write_guest_mem(addr, mem, len)) {
++			free(mem);
++			gdb_send_error(fd, EFAULT);
++			break;
++		}
++		free(mem);
++		gdb_send_ok(fd);
++		break;
++	}
++
++	/* ---- c [addr] : continue ---- */
++	case 'c': {
++		if (*p) {
++			u64 addr = parse_hex(&p);
++			kvm_gdb__arch_set_pc(current_vcpu(), addr);
++		}
++		gdb.single_step = prepare_sw_bp_resume(true) ? true : false;
++		return 1;	/* resume */
++	}
++
++	/* ---- C sig[;addr] : continue with signal ---- */
++	case 'C': {
++		/* We ignore the signal number but honour the address. */
++		parse_hex(&p);	/* skip signal */
++		if (*p == ';') {
++			p++;
++			u64 addr = parse_hex(&p);
++			kvm_gdb__arch_set_pc(current_vcpu(), addr);
++		}
++		gdb.single_step = prepare_sw_bp_resume(true) ? true : false;
++		return 1;	/* resume */
++	}
++
++	/* ---- s [addr] : single step ---- */
++	case 's': {
++		if (*p) {
++			u64 addr = parse_hex(&p);
++			kvm_gdb__arch_set_pc(current_vcpu(), addr);
++		}
++		gdb.single_step = true;
++		prepare_sw_bp_resume(false);
++		return 1;	/* resume */
++	}
++
++	/* ---- S sig[;addr] : step with signal ---- */
++	case 'S': {
++		parse_hex(&p);	/* skip signal */
++		if (*p == ';') {
++			p++;
++			u64 addr = parse_hex(&p);
++			kvm_gdb__arch_set_pc(current_vcpu(), addr);
++		}
++		gdb.single_step = true;
++		prepare_sw_bp_resume(false);
++		return 1;
++	}
++
++	/* ---- Z type,addr,len : insert breakpoint/watchpoint ---- */
++	case 'Z': {
++		int type = (int)parse_hex(&p);
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		u64 addr = parse_hex(&p);
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		int len  = (int)parse_hex(&p);
++
++		int rc;
++		if (type == 0) {
++			rc = sw_bp_insert(addr, len);
++		} else {
++			/* type 1=exec, 2=write, 3=read, 4=access */
++			int hwtype = type - 1;	/* 0=exec,1=write,2=read,3=access */
++				rc = hw_bp_insert(hwtype, addr, len);
++				if (rc == 0)
++					apply_debug_to_all(NULL, false);
++		}
++		if (rc == 0) gdb_send_ok(fd); else gdb_send_error(fd, ENOSPC);
++		break;
++	}
++
++	/* ---- z type,addr,len : remove breakpoint/watchpoint ---- */
++	case 'z': {
++		int type = (int)parse_hex(&p);
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		u64 addr = parse_hex(&p);
++		if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++		int len  = (int)parse_hex(&p);
++
++		int rc;
++		if (type == 0) {
++			rc = sw_bp_remove(addr, len);
++		} else {
++			int hwtype = type - 1;
++				rc = hw_bp_remove(hwtype, addr, len);
++				if (rc == 0)
++					apply_debug_to_all(NULL, false);
++		}
++		if (rc == 0) gdb_send_ok(fd); else gdb_send_error(fd, ENOENT);
++		break;
++	}
++
++	/* ---- H op tid : set thread ---- */
++	case 'H': {
++		char op = *p++;
++		int vcpu_idx = tid_to_vcpu(p);
++		if (vcpu_idx >= gdb.kvm->nrcpus || vcpu_idx < -1) {
++			gdb_send_error(fd, EINVAL);
++			break;
++		}
++		if (op == 'g')
++			gdb.g_tid = (vcpu_idx < 0) ? -1 : vcpu_idx + 1;
++		else if (op == 'c')
++			gdb.c_tid = (vcpu_idx < 0) ? -1 : vcpu_idx + 1;
++		else {
++			gdb_send_error(fd, EINVAL);
++			break;
++		}
++		gdb_send_ok(fd);
++		break;
++	}
++
++	/* ---- T tid : is thread alive? ---- */
++	case 'T': {
++		u64 tid = parse_hex(&p);
++		int idx = (int)(tid - 1);
++		if (tid > 0 && idx < gdb.kvm->nrcpus)
++			gdb_send_ok(fd);
++		else
++			gdb_send_error(fd, ESRCH);
++		break;
++	}
++
++	/* ---- D : detach ---- */
++	case 'D':
++		gdb_send_ok(fd);
++		return 2;
++
++	/* ---- k : kill ---- */
++	case 'k':
++		return 2;
++
++	/* ---- q : general queries ---- */
++	case 'q': {
++		if (strncmp(p, "Supported", 9) == 0) {
++			char buf[256];
++			snprintf(buf, sizeof(buf),
++				 "PacketSize=%x;"
++				 "qXfer:features:read+;"
++				 "swbreak+;hwbreak+",
++				 GDB_PACKET_MAX);
++			gdb_send_packet(fd, buf);
++
++		} else if (strncmp(p, "Xfer:features:read:", 19) == 0) {
++			p += 19;
++			/* annex:offset,length */
++			char annex[64];
++			const char *colon = strchr(p, ':');
++			if (!colon) { gdb_send_error(fd, EINVAL); break; }
++			size_t annex_len = (size_t)(colon - p);
++			if (annex_len >= sizeof(annex)) annex_len = sizeof(annex)-1;
++			memcpy(annex, p, annex_len);
++			annex[annex_len] = '\0';
++			p = colon + 1;
++			u64 offset = parse_hex(&p);
++			if (*p++ != ',') { gdb_send_error(fd, EINVAL); break; }
++			u64 reqlen = parse_hex(&p);
++			handle_qxfer_features(fd, annex, offset, reqlen);
++
++		} else if (strcmp(p, "C") == 0) {
++			/* Current thread ID */
++			char buf[32];
++			int tid = gdb.stopped_vcpu
++				  ? (int)(gdb.stopped_vcpu->cpu_id + 1) : 1;
++			snprintf(buf, sizeof(buf), "QC%x", tid);
++			gdb_send_packet(fd, buf);
++
++		} else if (strcmp(p, "fThreadInfo") == 0) {
++			/* First batch of thread IDs */
++			char buf[256];
++			char *bp = buf;
++			*bp++ = 'm';
++			for (int i = 0; i < gdb.kvm->nrcpus; i++) {
++				size_t rem = sizeof(buf) - (size_t)(bp - buf);
++				int w = snprintf(bp, rem, "%s%x", i ? "," : "", i + 1);
++				if (w < 0)
++					break;
++				if ((size_t)w >= rem) {
++					bp = buf + sizeof(buf) - 1;
++					break;
++				}
++				bp += w;
++			}
++			*bp = '\0';
++			gdb_send_packet(fd, buf);
++
++		} else if (strcmp(p, "sThreadInfo") == 0) {
++			gdb_send_packet(fd, "l");	/* end of thread list */
++
++		} else if (strncmp(p, "ThreadExtraInfo,", 16) == 0) {
++			p += 16;
++			u64 tid = parse_hex(&p);
++			int idx = (int)(tid - 1);
++			char info[64];
++			if (idx >= 0 && idx < gdb.kvm->nrcpus)
++				snprintf(info, sizeof(info),
++					 "vCPU %d", idx);
++			else
++				snprintf(info, sizeof(info), "unknown");
++			char hexinfo[sizeof(info) * 2 + 1];
++			bin_to_hex(info, strlen(info), hexinfo);
++			hexinfo[strlen(info) * 2] = '\0';
++			gdb_send_packet(fd, hexinfo);
++
++		} else if (strncmp(p, "Symbol:", 7) == 0) {
++			gdb_send_ok(fd);
++		} else {
++			gdb_send_empty(fd);
++		}
++		break;
++	}
++
++	/* ---- v : extended commands ---- */
++	case 'v': {
++		if (strncmp(p, "Cont?", 5) == 0) {
++			gdb_send_empty(fd);
++		} else if (strncmp(p, "Cont;", 5) == 0) {
++			gdb_send_empty(fd);
++		} else {
++			gdb_send_empty(fd);
++		}
++		break;
++	}
++
++	default:
++		gdb_send_empty(fd);
++		break;
++	}
++
++	return 0;
++}
++
++/* ------------------------------------------------------------------ */
++/* Debug session: handle GDB interaction when guest is stopped        */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Called from the GDB thread when a vCPU has stopped.
++ * Loops handling GDB packets until a resume command is received.
++ *
++ * send_stop_first: if true, send a T05 stop reply immediately.
++ *   - true:  use when resuming from c/s (GDB is waiting for a stop reply)
++ *            or after Ctrl+C (GDB expects a stop reply after 0x03).
++ *   - false: use for the initial GDB connection handshake (GDB will ask
++ *            for the stop reason via '?').
++ *
++ * Returns:
++ *   0  resume normally
++ *   1  detach / kill
++ */
++static int run_debug_session(struct kvm_cpu *vcpu, bool send_stop_first)
++{
++	int fd = gdb.fd;
++	char *pkt = malloc(GDB_PACKET_MAX);
++	if (!pkt)
++		return 1;
++
++	/* Announce the stop only when the caller needs it */
++	if (send_stop_first)
++		gdb_send_stop_reply(fd, vcpu);
++
++	int ret = 0;
++	while (1) {
++		/*
++		 * Poll for: socket data or Ctrl+C while running.
++		 * Here the guest is stopped so just do a blocking read.
++		 */
++		int r = gdb_recv_packet(fd, pkt, GDB_PACKET_MAX);
++		if (r == -1) {
++			pr_warning("GDB: connection lost");
++			ret = 1;
++			break;
++		}
++		if (r == -2) {
++			/* Ctrl+C while stopped – send stop reply again */
++			gdb_send_stop_reply(fd, vcpu);
++			continue;
++		}
++
++		int action = handle_packet(fd, pkt, (size_t)r);
++		if (action == 1)
++			break;	/* resume */
++		if (action == 2) {
++			ret = 1;
++			break;	/* detach/kill */
++		}
++	}
++
++	free(pkt);
++	return ret;
++}
++
++/* ------------------------------------------------------------------ */
++/* GDB thread: accept connection and handle Ctrl+C                    */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Enable debug interception on all vCPUs after GDB connects.
++ */
++static void gdb_enable_debug(void)
++{
++	for (int i = 0; i < gdb.kvm->nrcpus; i++)
++		kvm_gdb__arch_set_debug(gdb.kvm->cpus[i], false, gdb.hw_bp);
++}
++
++/*
++ * Disable debug interception on all vCPUs when GDB disconnects.
++ */
++static void gdb_disable_debug(void)
++{
++	for (int i = 0; i < gdb.kvm->nrcpus; i++)
++		kvm_gdb__arch_set_debug(gdb.kvm->cpus[i], false, NULL);
++}
++
++/*
++ * Main body of the GDB thread.
++ * Accepts one GDB connection at a time, handles debug sessions.
++ */
++static void *gdb_thread_fn(void *arg)
++{
++	struct kvm *kvm = arg;
++
++	/* Block signals that are intended for vCPU threads */
++	sigset_t mask;
++	sigemptyset(&mask);
++	sigaddset(&mask, SIGKVMEXIT);
++	sigaddset(&mask, SIGKVMPAUSE);
++	sigaddset(&mask, SIGKVMTASK);
++	pthread_sigmask(SIG_BLOCK, &mask, NULL);
++
++	pr_info("GDB: listening on port %d", gdb.port);
++
++	while (1) {
++		/* Accept a new GDB connection */
++		struct sockaddr_in client;
++		socklen_t clen = sizeof(client);
++		int cfd = accept(gdb.listen_fd, (struct sockaddr *)&client,
++				 &clen);
++		if (cfd < 0) {
++			if (errno == EINTR)
++				continue;
++			pr_warning("GDB: accept failed: %s", strerror(errno));
++			break;
++		}
++
++		/* Disable Nagle for lower latency */
++		int one = 1;
++		setsockopt(cfd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
++
++		pr_info("GDB: connected from %s", inet_ntoa(client.sin_addr));
++
++		if (gdb.wait) {
++			/*
++			 * --gdb-wait mode: vCPUs have not yet called KVM_RUN.
++			 * Enable single-step on vCPU 0 so it stops at its
++			 * very first instruction.  All other vCPUs get normal
++			 * debug (SW_BP intercept) without single-step.
++			 *
++			 * This must be done BEFORE signalling connected_cond so
++			 * that kvm_gdb__init() cannot return (and the vCPU
++			 * threads cannot start) until the debug flags are set.
++			 */
++			kvm_gdb__arch_set_debug(kvm->cpus[0], true, gdb.hw_bp);
++			for (int i = 1; i < kvm->nrcpus; i++)
++				kvm_gdb__arch_set_debug(kvm->cpus[i], false,
++							gdb.hw_bp);
++		}
++
++		pthread_mutex_lock(&gdb.lock);
++		gdb.fd        = cfd;
++		gdb.connected = true;
++		/* Notify the main thread if it was waiting for --gdb-wait */
++		pthread_cond_broadcast(&gdb.connected_cond);
++		pthread_mutex_unlock(&gdb.lock);
++
++		if (!gdb.wait) {
++			/*
++			 * Normal (non-wait) mode: the guest is already running.
++			 *
++			 * Pause all vCPUs FIRST, then enable debug interception.
++			 * This prevents any INT3 in the running guest (e.g. from
++			 * Linux jump-label patching) from triggering
++			 * KVM_EXIT_DEBUG before GDB has finished its initial
++			 * handshake.
++			 *
++			 * The initial debug session runs WITHOUT sending a stop
++			 * reply upfront; GDB will ask for the stop reason with
++			 * the '?' packet once it has completed the handshake.
++			 */
++			kvm__pause(kvm);
++			gdb_enable_debug();
++
++			if (run_debug_session(kvm->cpus[0], false)) {
++				/* GDB detached or connection lost */
++				gdb_disable_debug();
++				sw_bp_remove_all();
++				kvm__continue(kvm);
++				goto disconnect;
++			}
++
++			/* GDB sent c/s – apply debug flags and resume */
++			apply_debug_to_all(gdb.single_step ? kvm->cpus[0] : NULL,
++					   gdb.single_step);
++			kvm__continue(kvm);
++
++		} else {
++			/*
++			 * --gdb-wait mode: wait for vCPU 0 to stop at its
++			 * first instruction (via the single-step flag we set
++			 * above).
++			 */
++			pthread_mutex_lock(&gdb.lock);
++			while (!gdb.stopped_vcpu)
++				pthread_cond_wait(&gdb.vcpu_stopped, &gdb.lock);
++			struct kvm_cpu *vcpu = gdb.stopped_vcpu;
++			pthread_mutex_unlock(&gdb.lock);
++
++			/* Pause all other vCPUs */
++			kvm__pause(kvm);
++
++			/*
++			 * Initial session: no upfront stop reply.
++			 * GDB will ask with '?' after completing its handshake.
++			 */
++			if (run_debug_session(vcpu, false)) {
++				pthread_mutex_lock(&gdb.lock);
++				gdb.stopped_vcpu = NULL;
++				pthread_cond_signal(&gdb.vcpu_resume);
++				pthread_mutex_unlock(&gdb.lock);
++				kvm__continue(kvm);
++				goto disconnect;
++			}
++
++			apply_debug_to_all(gdb.single_step ? vcpu : NULL,
++					   gdb.single_step);
++			pthread_mutex_lock(&gdb.lock);
++			gdb.stopped_vcpu = NULL;
++			pthread_cond_signal(&gdb.vcpu_resume);
++			pthread_mutex_unlock(&gdb.lock);
++			kvm__continue(kvm);
++		}
++
++		/* -------------------------------------------------------- */
++		/* Main event loop: guest is now running                    */
++		/* -------------------------------------------------------- */
++		while (1) {
++			pthread_mutex_lock(&gdb.lock);
++			struct kvm_cpu *vcpu = gdb.stopped_vcpu;
++			pthread_mutex_unlock(&gdb.lock);
++
++			if (vcpu) {
++				bool auto_resume;
++
++				/*
++				 * A vCPU stopped at a breakpoint or single-step.
++				 * Pause all other vCPUs (stopped_vcpu already has
++				 * paused=1, so kvm__pause() counts it immediately).
++				 *
++				 * Send T05 proactively – GDB is waiting for a stop
++				 * reply after the 'c'/'s' command it sent.
++				 */
++				kvm__pause(kvm);
++				kvm_gdb__arch_handle_stop(vcpu);
++
++				if (finish_sw_bp_resume(&auto_resume)) {
++					gdb.single_step = false;
++					kvm_gdb__arch_prepare_resume(vcpu, false, true);
++					pthread_mutex_lock(&gdb.lock);
++					gdb.stopped_vcpu = NULL;
++					pthread_cond_signal(&gdb.vcpu_resume);
++					pthread_mutex_unlock(&gdb.lock);
++
++					if (auto_resume) {
++						apply_debug_to_all(NULL, false);
++						kvm__continue(kvm);
++						continue;
++					}
++				}
++
++				if (run_debug_session(vcpu, true)) {
++					pthread_mutex_lock(&gdb.lock);
++					gdb.stopped_vcpu = NULL;
++					pthread_cond_signal(&gdb.vcpu_resume);
++					pthread_mutex_unlock(&gdb.lock);
++					kvm__continue(kvm);
++					goto disconnect;
++				}
++
++				kvm_gdb__arch_prepare_resume(vcpu, gdb.single_step, true);
++				apply_debug_to_all(gdb.single_step ? vcpu : NULL,
++					   gdb.single_step);
++				pthread_mutex_lock(&gdb.lock);
++				gdb.stopped_vcpu = NULL;
++				pthread_cond_signal(&gdb.vcpu_resume);
++				pthread_mutex_unlock(&gdb.lock);
++				kvm__continue(kvm);
++
++			} else {
++				/*
++				 * No vCPU stopped. Poll the socket for Ctrl+C
++				 * or unexpected packets.
++				 */
++				struct pollfd pfd = {
++					.fd     = cfd,
++					.events = POLLIN,
++				};
++				int r = poll(&pfd, 1, 200 /* ms */);
++				if (r < 0 && errno != EINTR)
++					goto disconnect;
++				if (r == 0)
++					continue;
++
++				/* Peek at the first byte */
++				unsigned char byte;
++				ssize_t n = recv(cfd, &byte, 1, MSG_PEEK);
++				if (n <= 0)
++					goto disconnect;
++
++				if (byte == 0x03) {
++					recv(cfd, &byte, 1, 0);	/* consume */
++
++					/*
++					 * Ctrl+C: pause all vCPUs.
++					 * If a vCPU happened to stop at a
++					 * breakpoint at the same time, use that
++					 * one; otherwise use vCPU 0.
++					 */
++					kvm__pause(kvm);
++
++					pthread_mutex_lock(&gdb.lock);
++					struct kvm_cpu *cur =
++						gdb.stopped_vcpu
++						? gdb.stopped_vcpu
++						: kvm->cpus[0];
++					pthread_mutex_unlock(&gdb.lock);
++
++					/*
++					 * Send T05 proactively – GDB expects a
++					 * stop reply after the Ctrl+C it sent.
++					 */
++					if (run_debug_session(cur, true)) {
++						pthread_mutex_lock(&gdb.lock);
++						if (gdb.stopped_vcpu) {
++							gdb.stopped_vcpu = NULL;
++							pthread_cond_signal(
++							  &gdb.vcpu_resume);
++						}
++						pthread_mutex_unlock(&gdb.lock);
++						kvm__continue(kvm);
++						goto disconnect;
++					}
++
++					kvm_gdb__arch_prepare_resume(cur, gdb.single_step,
++							   !!gdb.stopped_vcpu);
++					apply_debug_to_all(gdb.single_step ? cur : NULL,
++						   gdb.single_step);
++
++					pthread_mutex_lock(&gdb.lock);
++					if (gdb.stopped_vcpu) {
++						gdb.stopped_vcpu = NULL;
++						pthread_cond_signal(
++						  &gdb.vcpu_resume);
++					}
++					pthread_mutex_unlock(&gdb.lock);
++
++					kvm__continue(kvm);
++
++				} else {
++					/*
++					 * Unexpected packet while running –
++					 * handle it (probably a query).
++					 */
++					char pktbuf[GDB_PACKET_MAX];
++					int pr = gdb_recv_packet(cfd, pktbuf,
++							sizeof(pktbuf));
++					if (pr < 0)
++						goto disconnect;
++					handle_packet(cfd, pktbuf, (size_t)pr);
++				}
++			}
++		}
++
++disconnect:
++		pr_info("GDB: client disconnected");
++		gdb_disable_debug();
++		sw_bp_remove_all();
++
++		pthread_mutex_lock(&gdb.lock);
++		gdb.fd        = -1;
++		gdb.connected = false;
++		/* If a vCPU is still stuck waiting, let it go */
++		if (gdb.stopped_vcpu) {
++			gdb.stopped_vcpu->paused = 0;
++			gdb.stopped_vcpu = NULL;
++			pthread_cond_broadcast(&gdb.vcpu_resume);
++		}
++		pthread_mutex_unlock(&gdb.lock);
++
++		close(cfd);
++	}
++
++	return NULL;
++}
++
++/* ------------------------------------------------------------------ */
++/* Public API                                                          */
++/* ------------------------------------------------------------------ */
++
++/*
++ * Called from a vCPU thread when KVM_EXIT_DEBUG is received.
++ * Blocks until the GDB session says to resume.
++ */
++void kvm_gdb__handle_debug(struct kvm_cpu *vcpu)
++{
++	if (!gdb.active)
++		return;
++
++	/*
++	 * Filter out native guest INT3s that are NOT in our sw_bp table.
++	 *
++	 * With KVM_GUESTDBG_USE_SW_BP enabled, KVM intercepts every INT3
++	 * in the guest, including ones that belong to the guest kernel
++	 * itself (e.g. int3_selftest(), jump-label patching, kprobes).
++	 * Those are not our breakpoints, so we re-inject the #BP exception
++	 * back to the guest and return without involving GDB at all.
++	 *
++	 * This check is intentionally done before acquiring gdb.lock so
++	 * that the common fast-path (native guest INT3, not our BP) does
++	 * not serialise on the lock.
++	 */
++	if (kvm_gdb__arch_is_sw_bp_exit(vcpu)) {
++		u64 bp_addr = kvm_gdb__arch_debug_pc(vcpu);
++		pr_warning("GDB: sw_bp exit at 0x%llx, active=%d",
++			   (unsigned long long)bp_addr,
++			   sw_bp_active_at(bp_addr));
++		if (!sw_bp_active_at(bp_addr)) {
++			kvm_gdb__arch_reinject_sw_bp(vcpu);
++			return;
++		}
++	}
++
++	pthread_mutex_lock(&gdb.lock);
++
++	if (!gdb.connected) {
++		/* GDB not connected yet – ignore debug events */
++		pthread_mutex_unlock(&gdb.lock);
++		return;
++	}
++
++	/*
++	 * Mark ourselves as paused so that kvm__pause() from the GDB
++	 * thread does not wait for us (it counts paused vCPUs immediately).
++	 */
++	vcpu->paused       = 1;
++	gdb.stopped_vcpu   = vcpu;
++
++	/* Wake the GDB thread */
++	pthread_cond_signal(&gdb.vcpu_stopped);
++
++	/* Sleep until the GDB thread says we may run again */
++	pthread_cond_wait(&gdb.vcpu_resume, &gdb.lock);
++
++	vcpu->paused = 0;
++	pthread_mutex_unlock(&gdb.lock);
++}
++
++bool kvm_gdb__active(struct kvm *kvm)
++{
++	return gdb.active;
++}
++
++/* ------------------------------------------------------------------ */
++/* init / exit                                                         */
++/* ------------------------------------------------------------------ */
++
++int kvm_gdb__init(struct kvm *kvm)
++{
++	if (!kvm->cfg.gdb_port)
++		return 0;
++
++#if !defined(CONFIG_X86) && !defined(CONFIG_ARM64)
++	pr_err("GDB stub is supported only on x86 and arm64");
++	return -ENOSYS;
++#endif
++
++	gdb.port = kvm->cfg.gdb_port;
++	gdb.wait = kvm->cfg.gdb_wait;
++	gdb.kvm  = kvm;
++
++	if (kvm->nrcpus > 1)
++		pr_warning("GDB: SMP guest debugging may make 'next/finish' unstable; use -c 1 for reliable stepping");
++
++	/* Create TCP listen socket */
++	gdb.listen_fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
++	if (gdb.listen_fd < 0)
++		die_perror("GDB: socket");
++
++	int reuse = 1;
++	setsockopt(gdb.listen_fd, SOL_SOCKET, SO_REUSEADDR, &reuse,
++		   sizeof(reuse));
++
++	struct sockaddr_in addr = {
++		.sin_family      = AF_INET,
++		.sin_port        = htons((u16)gdb.port),
++		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
++	};
++	if (bind(gdb.listen_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
++		die_perror("GDB: bind");
++	if (listen(gdb.listen_fd, 1) < 0)
++		die_perror("GDB: listen");
++
++	gdb.active = true;
++
++	if (pthread_create(&gdb.thread, NULL, gdb_thread_fn, kvm) != 0)
++		die_perror("GDB: pthread_create");
++
++	if (gdb.wait) {
++		pr_info("GDB: waiting for connection on port %d ...",
++			gdb.port);
++		pthread_mutex_lock(&gdb.lock);
++		while (!gdb.connected)
++			pthread_cond_wait(&gdb.connected_cond, &gdb.lock);
++		pthread_mutex_unlock(&gdb.lock);
++		pr_info("GDB: client connected, starting VM");
++	}
++
++	return 0;
++}
++late_init(kvm_gdb__init);
++
++int kvm_gdb__exit(struct kvm *kvm)
++{
++	if (!gdb.active)
++		return 0;
++
++	gdb.active = false;
++
++	/*
++	 * Unblock the GDB thread if it is waiting in accept().
++	 *
++	 * close() alone is NOT sufficient on Linux: close() removes the fd
++	 * from the process fd table but the underlying socket object lives on
++	 * (accept() holds an internal reference), so accept() keeps blocking.
++	 * shutdown(SHUT_RDWR) triggers the socket's wait-queue wakeup, which
++	 * causes accept() to return immediately with EINVAL.
++	 */
++	if (gdb.listen_fd >= 0) {
++		shutdown(gdb.listen_fd, SHUT_RDWR);
++		close(gdb.listen_fd);
++		gdb.listen_fd = -1;
++	}
++
++	/* Unblock the GDB thread if it is inside a debug session */
++	if (gdb.fd >= 0) {
++		close(gdb.fd);
++		gdb.fd = -1;
++	}
++
++	/* Wake any vCPU stuck in kvm_gdb__handle_debug() */
++	pthread_mutex_lock(&gdb.lock);
++	if (gdb.stopped_vcpu) {
++		gdb.stopped_vcpu->paused = 0;
++		gdb.stopped_vcpu         = NULL;
++	}
++	pthread_cond_broadcast(&gdb.vcpu_resume);
++	pthread_mutex_unlock(&gdb.lock);
++
++	pthread_join(gdb.thread, NULL);
++	return 0;
++}
++late_exit(kvm_gdb__exit);
+diff --git a/include/kvm/gdb.h b/include/kvm/gdb.h
+new file mode 100644
+index 0000000..655fae8
+--- /dev/null
++++ b/include/kvm/gdb.h
+@@ -0,0 +1,138 @@
++#ifndef KVM__GDB_H
++#define KVM__GDB_H
++
++#include <stdbool.h>
++#include <stddef.h>
++#include <linux/types.h>
++
++struct kvm;
++struct kvm_cpu;
++
++/* Hardware breakpoint descriptor (shared with arch-specific code) */
++struct kvm_gdb_hw_bp {
++	u64  addr;
++	int  len;	/* 1, 2, 4, or 8 bytes */
++	int  type;	/* 0=exec, 1=write, 2=read, 3=access */
++	bool active;
++};
++
++#ifdef CONFIG_HAS_GDB_STUB
++
++/*
++ * Public GDB stub API
++ */
++
++/* Initialize and start the GDB stub (called from late_init) */
++int kvm_gdb__init(struct kvm *kvm);
++
++/* Shutdown the GDB stub */
++int kvm_gdb__exit(struct kvm *kvm);
++
++/* Called by kvm_cpu__start() when KVM_EXIT_DEBUG occurs */
++void kvm_gdb__handle_debug(struct kvm_cpu *vcpu);
++
++/* Returns true when a GDB stub is active on this VM */
++bool kvm_gdb__active(struct kvm *kvm);
++
++/*
++ * Architecture-specific callbacks (implemented per-arch, e.g. x86/gdb.c)
++ */
++
++/* Read all registers into buf, set *size to number of bytes written */
++void kvm_gdb__arch_read_registers(struct kvm_cpu *vcpu, u8 *buf,
++				   size_t *size);
++
++/* Write all registers from buf (size bytes) */
++void kvm_gdb__arch_write_registers(struct kvm_cpu *vcpu, const u8 *buf,
++				    size_t size);
++
++/* Read a single register (GDB regno) into buf, set *size */
++int kvm_gdb__arch_read_register(struct kvm_cpu *vcpu, int regno,
++				 u8 *buf, size_t *size);
++
++/* Write a single register (GDB regno) from buf (size bytes) */
++int kvm_gdb__arch_write_register(struct kvm_cpu *vcpu, int regno,
++				  const u8 *buf, size_t size);
++
++/* Return current PC of the vCPU */
++u64 kvm_gdb__arch_get_pc(struct kvm_cpu *vcpu);
++
++/* Set PC of the vCPU */
++void kvm_gdb__arch_set_pc(struct kvm_cpu *vcpu, u64 pc);
++
++/*
++ * Enable/disable guest debugging on a vCPU.
++ *  single_step: true  → enable instruction-level single-step
++ *  hw_bps:      array of 4 hardware breakpoints (may be NULL)
++ */
++void kvm_gdb__arch_set_debug(struct kvm_cpu *vcpu, bool single_step,
++			      struct kvm_gdb_hw_bp *hw_bps);
++
++/*
++ * Prepare guest architectural state before resuming from a GDB stop.
++ * from_debug_exit is true when the current stop came from KVM_EXIT_DEBUG.
++ */
++void kvm_gdb__arch_prepare_resume(struct kvm_cpu *vcpu, bool single_step,
++				   bool from_debug_exit);
++
++/*
++ * Called when a KVM_EXIT_DEBUG stop is selected for a GDB session.
++ * Arch code can restore temporary state applied for stepping.
++ */
++void kvm_gdb__arch_handle_stop(struct kvm_cpu *vcpu);
++
++/* Return the GDB target XML description string (NULL-terminated) */
++const char *kvm_gdb__arch_target_xml(void);
++
++/* Total byte size of the 'g' register packet */
++size_t kvm_gdb__arch_reg_pkt_size(void);
++
++/* GDB signal number to report on stop (SIGTRAP=5) */
++int kvm_gdb__arch_signal(struct kvm_cpu *vcpu);
++
++/*
++ * Returns true if the KVM_EXIT_DEBUG exit was caused by a software
++ * breakpoint (INT3 / #BP exception), as opposed to a hardware debug
++ * trap (#DB, single-step, hardware breakpoint).
++ */
++bool kvm_gdb__arch_is_sw_bp_exit(struct kvm_cpu *vcpu);
++
++/*
++ * Returns the guest virtual address of the INT3 instruction that triggered
++ * the current software-breakpoint exit (i.e. the byte that holds 0xCC).
++ * Only meaningful when kvm_gdb__arch_is_sw_bp_exit() returns true.
++ */
++u64 kvm_gdb__arch_debug_pc(struct kvm_cpu *vcpu);
++
++/*
++ * Re-inject the #BP exception back into the guest so that the guest's
++ * own INT3 handler (e.g. kernel jump-label patching, int3_selftest) sees
++ * it instead of us treating it as a GDB breakpoint.
++ * Only meaningful when kvm_gdb__arch_is_sw_bp_exit() returns true.
++ */
++void kvm_gdb__arch_reinject_sw_bp(struct kvm_cpu *vcpu);
++
++#else
++
++static inline int kvm_gdb__init(struct kvm *kvm)
++{
++	return 0;
++}
++
++static inline int kvm_gdb__exit(struct kvm *kvm)
++{
++	return 0;
++}
++
++static inline void kvm_gdb__handle_debug(struct kvm_cpu *vcpu)
++{
++}
++
++static inline bool kvm_gdb__active(struct kvm *kvm)
++{
++	return false;
++}
++
++#endif
++
++#endif /* KVM__GDB_H */
+diff --git a/include/kvm/kvm-config.h b/include/kvm/kvm-config.h
+index 592b035..15a8317 100644
+--- a/include/kvm/kvm-config.h
++++ b/include/kvm/kvm-config.h
+@@ -54,6 +54,8 @@ struct kvm_config {
+ 	const char *real_cmdline;
+ 	struct virtio_net_params *net_params;
+ 	bool single_step;
++	int  gdb_port;		/* GDB stub TCP port (0 = disabled) */
++	bool gdb_wait;		/* Wait for GDB connection before starting */
+ 	bool vnc;
+ 	bool gtk;
+ 	bool sdl;
+diff --git a/kvm-cpu.c b/kvm-cpu.c
+index 1c566b3..74f0a6a 100644
+--- a/kvm-cpu.c
++++ b/kvm-cpu.c
+@@ -3,6 +3,7 @@
+ #include "kvm/symbol.h"
+ #include "kvm/util.h"
+ #include "kvm/kvm.h"
++#include "kvm/gdb.h"
+ #include "kvm/virtio.h"
+ #include "kvm/mutex.h"
+ #include "kvm/barrier.h"
+@@ -174,8 +175,12 @@ int kvm_cpu__start(struct kvm_cpu *cpu)
+ 		case KVM_EXIT_UNKNOWN:
+ 			break;
+ 		case KVM_EXIT_DEBUG:
+-			kvm_cpu__show_registers(cpu);
+-			kvm_cpu__show_code(cpu);
++			if (kvm_gdb__active(cpu->kvm)) {
++				kvm_gdb__handle_debug(cpu);
++			} else {
++				kvm_cpu__show_registers(cpu);
++				kvm_cpu__show_code(cpu);
++			}
+ 			break;
+ 		case KVM_EXIT_IO: {
+ 			bool ret;
+diff --git a/term.c b/term.c
+index b8a70fe..40064e2 100644
+--- a/term.c
++++ b/term.c
+@@ -26,6 +26,11 @@ static pthread_t term_poll_thread;
+ /* ctrl-a is used for escape */
+ #define term_escape_char	0x01
+ 
++static bool guest_has_started(struct kvm *kvm)
++{
++	return kvm->cpus && kvm->cpus[0] && kvm->cpus[0]->thread != 0;
++}
++
+ int term_getc(struct kvm *kvm, int term)
+ {
+ 	static bool term_got_escape = false;
+@@ -36,12 +41,21 @@ int term_getc(struct kvm *kvm, int term)
+ 
+ 	if (term_got_escape) {
+ 		term_got_escape = false;
+-		if (c == 'x')
+-			kvm__reboot(kvm);
++		if (c == 'x') {
++			if (guest_has_started(kvm))
++				kvm__reboot(kvm);
++			else
++				raise(SIGTERM);
++		}
+ 		if (c == term_escape_char)
+ 			return c;
+ 	}
+ 
++	if (c == 0x03 && !guest_has_started(kvm)) {
++		raise(SIGTERM);
++		return -1;
++	}
++
+ 	if (c == term_escape_char) {
+ 		term_got_escape = true;
+ 		return -1;
+diff --git a/tests/Makefile b/tests/Makefile
+index cad14ec..46671cd 100644
+--- a/tests/Makefile
++++ b/tests/Makefile
+@@ -12,6 +12,10 @@ boot:
+ 	$(MAKE) -C boot
+ .PHONY: boot
+ 
++gdb:
++	$(MAKE) -C gdb smoke
++.PHONY: gdb
++
+ clean:
+ 	$(MAKE) -C kernel clean
+ 	$(MAKE) -C pit clean
+diff --git a/tests/boot/Makefile b/tests/boot/Makefile
+index 2b950d2..89fef2f 100644
+--- a/tests/boot/Makefile
++++ b/tests/boot/Makefile
+@@ -1,17 +1,17 @@
+ NAME	:= init
+ 
+ OBJ	:= $(NAME).o
+-MKISOFS := $(shell which mkisofs)
+-ifndef MKISOFS
+-MKISOFS := $(shell which xorrisofs)
++MKISOFS := $(shell command -v mkisofs 2>/dev/null)
++ifeq ($(MKISOFS),)
++MKISOFS := $(shell command -v xorrisofs 2>/dev/null)
+ endif
+ 
+-all: $(.o)
++all: $(OBJ)
+ 	rm -rf rootfs
+ 	mkdir rootfs
+ 	gcc -static init.c -o rootfs/init
+ ifdef MKISOFS
+-	$(MKISOFS) rootfs -o boot_test.iso
++	$(MKISOFS) -o boot_test.iso rootfs
+ else
+ 	$(error "mkisofs or xorriso needed to build boot_test.iso")
+ endif
+diff --git a/tests/gdb/Makefile b/tests/gdb/Makefile
+new file mode 100644
+index 0000000..58fc79d
+--- /dev/null
++++ b/tests/gdb/Makefile
+@@ -0,0 +1,8 @@
++PORT ?= 12345
++LKVM ?= ../../lkvm
++GUEST ?= ../pit/tick.bin
++PYTHON ?= python3
++
++smoke: $(LKVM) $(GUEST)
++	$(PYTHON) test-x86-gdb-stub.py --lkvm $(LKVM) --guest $(GUEST) --port $(PORT)
++.PHONY: smoke
+diff --git a/tests/gdb/test-x86-gdb-stub.py b/tests/gdb/test-x86-gdb-stub.py
+new file mode 100644
+index 0000000..a92f34a
+--- /dev/null
++++ b/tests/gdb/test-x86-gdb-stub.py
+@@ -0,0 +1,178 @@
++#!/usr/bin/env python3
++import argparse
++import os
++import socket
++import subprocess
++import sys
++import time
++
++
++def checksum(data: bytes) -> bytes:
++	return f"#{sum(data) & 0xff:02x}".encode()
++
++
++class RspClient:
++	def __init__(self, sock: socket.socket):
++		self.sock = sock
++
++	def _read_exact(self, length: int) -> bytes:
++		buf = bytearray()
++		while len(buf) < length:
++			chunk = self.sock.recv(length - len(buf))
++			if not chunk:
++				raise RuntimeError("unexpected EOF")
++			buf.extend(chunk)
++		return bytes(buf)
++
++	def send_packet(self, payload: bytes) -> None:
++		self.sock.sendall(b"$" + payload + checksum(payload))
++		ack = self._read_exact(1)
++		if ack != b"+":
++			raise RuntimeError(f"unexpected ack: {ack!r}")
++
++	def recv_packet(self) -> bytes:
++		while True:
++			ch = self._read_exact(1)
++			if ch == b"$":
++				break
++			if ch in (b"+", b"-"):
++				continue
++			raise RuntimeError(f"unexpected prefix byte: {ch!r}")
++
++		payload = bytearray()
++		while True:
++			ch = self._read_exact(1)
++			if ch == b"#":
++				break
++			payload.extend(ch)
++
++		got = self._read_exact(2)
++		expected = f"{sum(payload) & 0xff:02x}".encode()
++		if got.lower() != expected:
++			self.sock.sendall(b"-")
++			raise RuntimeError(
++				f"checksum mismatch: got {got!r}, expected {expected!r}"
++			)
++
++		self.sock.sendall(b"+")
++		return bytes(payload)
++
++
++def escape_binary(data: bytes) -> bytes:
++	out = bytearray()
++	for value in data:
++		if value in (ord("#"), ord("$"), ord("}"), ord("*")):
++			out.append(ord("}"))
++			out.append(value ^ 0x20)
++		else:
++			out.append(value)
++	return bytes(out)
++
++
++def wait_for_port(port: int, timeout: float) -> socket.socket:
++	deadline = time.time() + timeout
++	last_error = None
++	while time.time() < deadline:
++		try:
++			sock = socket.create_connection(("127.0.0.1", port), timeout=1)
++			sock.settimeout(5)
++			return sock
++		except OSError as exc:
++			last_error = exc
++			time.sleep(0.1)
++	raise RuntimeError(f"failed to connect to GDB stub: {last_error}")
++
++
++def stop_process(proc: subprocess.Popen) -> None:
++	if proc.poll() is not None:
++		return
++	proc.terminate()
++	try:
++		proc.wait(timeout=5)
++	except subprocess.TimeoutExpired:
++		proc.kill()
++		proc.wait(timeout=5)
++
++
++def main() -> int:
++	parser = argparse.ArgumentParser()
++	parser.add_argument("--lkvm", required=True)
++	parser.add_argument("--guest", required=True)
++	parser.add_argument("--port", type=int, required=True)
++	args = parser.parse_args()
++
++	if not os.path.exists("/dev/kvm"):
++		print("SKIP: /dev/kvm is unavailable")
++		return 0
++
++	proc = subprocess.Popen(
++		[
++			os.path.abspath(args.lkvm),
++			"run",
++			"--gdb",
++			str(args.port),
++			"--gdb-wait",
++			os.path.abspath(args.guest),
++		],
++		stdout=subprocess.PIPE,
++		stderr=subprocess.STDOUT,
++	)
++
++	try:
++		sock = wait_for_port(args.port, 10)
++		client = RspClient(sock)
++
++		client.send_packet(b"qSupported:multiprocess+")
++		reply = client.recv_packet().decode()
++		assert "PacketSize=" in reply
++		assert "qXfer:features:read+" in reply
++
++		client.send_packet(b"?")
++		reply = client.recv_packet().decode()
++		assert reply.startswith("T")
++
++		client.send_packet(b"qXfer:features:read:target.xml:0,80")
++		reply = client.recv_packet().decode()
++		assert reply[0] in ("m", "l")
++		assert "<target" in reply[1:]
++
++		client.send_packet(b"g")
++		reply = client.recv_packet().decode()
++		assert len(reply) > 32
++		assert len(reply) % 2 == 0
++		regs = bytes.fromhex(reply)
++		rip = int.from_bytes(regs[16 * 8:16 * 8 + 8], "little")
++
++		client.send_packet(f"Z0,{rip:x},1".encode())
++		reply = client.recv_packet().decode()
++		assert reply == "OK"
++
++		client.send_packet(f"z0,{rip:x},1".encode())
++		reply = client.recv_packet().decode()
++		assert reply == "OK"
++
++		payload = bytes([0x23, 0x24, 0x7D, 0x2A, 0x55])
++		addr = 0x200000
++		binary = escape_binary(payload)
++		client.send_packet(
++			f"X{addr:x},{len(payload):x}:".encode() + binary
++		)
++		reply = client.recv_packet().decode()
++		assert reply == "OK"
++
++		client.send_packet(f"m{addr:x},{len(payload):x}".encode())
++		reply = client.recv_packet().decode()
++		assert reply == payload.hex()
++
++		client.send_packet(b"D")
++		reply = client.recv_packet().decode()
++		assert reply == "OK"
++		sock.close()
++		print("PASS: x86 GDB stub smoke test")
++		return 0
++	finally:
++		stop_process(proc)
++
++
++if __name__ == "__main__":
++	sys.exit(main())
+diff --git a/x86/gdb.c b/x86/gdb.c
+new file mode 100644
+index 0000000..9e9ab0f
+--- /dev/null
++++ b/x86/gdb.c
+@@ -0,0 +1,573 @@
++/*
++ * x86 / x86-64 architecture-specific GDB stub support.
++ *
++ * GDB x86-64 register set (described in target.xml):
++ *
++ *  No.  Name      Size    KVM field
++ *  ---  ------    ----    ---------
++ *   0   rax        8      regs.rax
++ *   1   rbx        8      regs.rbx
++ *   2   rcx        8      regs.rcx
++ *   3   rdx        8      regs.rdx
++ *   4   rsi        8      regs.rsi
++ *   5   rdi        8      regs.rdi
++ *   6   rbp        8      regs.rbp
++ *   7   rsp        8      regs.rsp
++ *   8   r8         8      regs.r8
++ *   9   r9         8      regs.r9
++ *  10   r10        8      regs.r10
++ *  11   r11        8      regs.r11
++ *  12   r12        8      regs.r12
++ *  13   r13        8      regs.r13
++ *  14   r14        8      regs.r14
++ *  15   r15        8      regs.r15
++ *  16   rip        8      regs.rip
++ *  17   eflags     4      regs.rflags (low 32 bits)
++ *  18   cs         4      sregs.cs.selector
++ *  19   ss         4      sregs.ss.selector
++ *  20   ds         4      sregs.ds.selector
++ *  21   es         4      sregs.es.selector
++ *  22   fs         4      sregs.fs.selector
++ *  23   gs         4      sregs.gs.selector
++ *
++ * Total: 16×8 + 8 + 4 + 6×4 = 164 bytes
 + */
 +
 +#include "kvm/gdb.h"
@@ -152,123 +2709,25 @@ index 0000000..d07dd84
 +#include <string.h>
 +#include <errno.h>
 +
-+#include <asm/ptrace.h>
 +#include <linux/kvm.h>
 +
-+/* ------------------------------------------------------------------ */
-+/* Register layout constants                                           */
-+/* ------------------------------------------------------------------ */
++#define GDB_NUM_REGS		24
++#define GDB_REG_RIP		16
++#define GDB_REG_EFLAGS		17
++#define GDB_REG_CS		18
 +
-+#define GDB_NUM_REGS		34	/* x0-x30, sp, pc, cpsr */
-+#define GDB_REG_SP		31
-+#define GDB_REG_PC		32
-+#define GDB_REG_CPSR		33
++/* Byte size of the 'g' register packet */
++#define GDB_REGS_SIZE		(16 * 8 + 8 + 4 + 6 * 4)	/* 164 */
 +
-+/* Byte size of the 'g' register packet: 31×8 + 8 + 8 + 4 = 268 */
-+#define GDB_REGS_SIZE		268
-+
-+/* BRK #0 instruction encoding (little-endian) */
-+#define BRK0_INSN		0xD4200000U
-+
-+/* ESR EC field */
-+#define ESR_EC_SHIFT		26
-+#define ESR_EC_MASK		(0x3fU << ESR_EC_SHIFT)
-+#define ESR_EC_BRK64		0x3C	/* AArch64 BRK instruction */
-+#define ESR_EC_SSTEP		0x32	/* software single-step */
-+#define ESR_EC_HW_BP		0x30	/* hardware execution breakpoint */
-+#define ESR_EC_WATCHPT		0x35	/* watchpoint */
-+
-+#define ARM64_DAIF_MASK		(PSR_A_BIT | PSR_I_BIT | PSR_F_BIT)
++#define X86_EFLAGS_TF		(1U << 8)
++#define X86_EFLAGS_IF		(1U << 9)
++#define X86_EFLAGS_RF		(1U << 16)
 +
 +static struct {
 +	struct kvm_cpu *vcpu;
-+	u32		daif_bits;
 +	bool		pending;
++	bool		if_was_set;
 +} step_irq_state;
-+
-+/* ------------------------------------------------------------------ */
-+/* ARM64_CORE_REG helper (same logic as arm/aarch64/kvm-cpu.c)        */
-+/* ------------------------------------------------------------------ */
-+
-+static __u64 __core_reg_id(__u64 offset)
-+{
-+	__u64 id = KVM_REG_ARM64 | KVM_REG_ARM_CORE | offset;
-+
-+	if (offset < KVM_REG_ARM_CORE_REG(fp_regs))
-+		id |= KVM_REG_SIZE_U64;
-+	else if (offset < KVM_REG_ARM_CORE_REG(fp_regs.fpsr))
-+		id |= KVM_REG_SIZE_U128;
-+	else
-+		id |= KVM_REG_SIZE_U32;
-+
-+	return id;
-+}
-+
-+#define ARM64_CORE_REG(x)	__core_reg_id(KVM_REG_ARM_CORE_REG(x))
-+
-+/* VBAR_EL1: S3_0_C12_C0_0  (op0=3, op1=0, CRn=12, CRm=0, op2=0) */
-+#define KVM_REG_VBAR_EL1	ARM64_SYS_REG(3, 0, 12, 0, 0)
-+/* ESR_EL1:  S3_0_C5_C2_0   (op0=3, op1=0, CRn=5, CRm=2, op2=0) */
-+#define KVM_REG_ESR_EL1		ARM64_SYS_REG(3, 0, 5, 2, 0)
-+
-+/* ------------------------------------------------------------------ */
-+/* Single-register get/set helpers                                     */
-+/* ------------------------------------------------------------------ */
-+
-+static int get_one_reg(struct kvm_cpu *vcpu, __u64 id, u64 *val)
-+{
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_GET_ONE_REG id=0x%llx failed: %s",
-+			   (unsigned long long)id, strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+static int set_one_reg(struct kvm_cpu *vcpu, __u64 id, u64 val)
-+{
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)&val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_SET_ONE_REG id=0x%llx failed: %s",
-+			   (unsigned long long)id, strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * pstate for KVM_GET_ONE_REG is 32-bit; wrap it so the 64-bit helper works.
-+ */
-+static int get_pstate(struct kvm_cpu *vcpu, u32 *out)
-+{
-+	u64 id = ARM64_CORE_REG(regs.pstate);
-+	u32 val;
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)&val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_GET_ONE_REG(pstate) failed: %s",
-+			   strerror(errno));
-+		return -1;
-+	}
-+	*out = val;
-+	return 0;
-+}
-+
-+static int set_pstate(struct kvm_cpu *vcpu, u32 val)
-+{
-+	u64 id = ARM64_CORE_REG(regs.pstate);
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)&val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_SET_ONE_REG(pstate) failed: %s",
-+			   strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
 +
 +/* ------------------------------------------------------------------ */
 +/* Target XML                                                          */
@@ -278,41 +2737,31 @@ index 0000000..d07dd84
 +	"<?xml version=\"1.0\"?>\n"
 +	"<!DOCTYPE target SYSTEM \"gdb-target.dtd\">\n"
 +	"<target version=\"1.0\">\n"
-+	"  <feature name=\"org.gnu.gdb.aarch64.core\">\n"
-+	"    <reg name=\"x0\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x1\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x2\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x3\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x4\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x5\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x6\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x7\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x8\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x9\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x10\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x11\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x12\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x13\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x14\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x15\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x16\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x17\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x18\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x19\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x20\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x21\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x22\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x23\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x24\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x25\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x26\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x27\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x28\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x29\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x30\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"sp\"   bitsize=\"64\" type=\"data_ptr\"/>\n"
-+	"    <reg name=\"pc\"   bitsize=\"64\" type=\"code_ptr\"/>\n"
-+	"    <reg name=\"cpsr\" bitsize=\"32\"/>\n"
++	"  <feature name=\"org.gnu.gdb.i386.core\">\n"
++	"    <reg name=\"rax\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rbx\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rcx\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rdx\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rsi\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rdi\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rbp\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rsp\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"r8\"     bitsize=\"64\"/>\n"
++	"    <reg name=\"r9\"     bitsize=\"64\"/>\n"
++	"    <reg name=\"r10\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"r11\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"r12\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"r13\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"r14\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"r15\"    bitsize=\"64\"/>\n"
++	"    <reg name=\"rip\"    bitsize=\"64\" type=\"code_ptr\"/>\n"
++	"    <reg name=\"eflags\" bitsize=\"32\"/>\n"
++	"    <reg name=\"cs\"     bitsize=\"32\" type=\"int\"/>\n"
++	"    <reg name=\"ss\"     bitsize=\"32\" type=\"int\"/>\n"
++	"    <reg name=\"ds\"     bitsize=\"32\" type=\"int\"/>\n"
++	"    <reg name=\"es\"     bitsize=\"32\" type=\"int\"/>\n"
++	"    <reg name=\"fs\"     bitsize=\"32\" type=\"int\"/>\n"
++	"    <reg name=\"gs\"     bitsize=\"32\" type=\"int\"/>\n"
 +	"  </feature>\n"
 +	"</target>\n";
 +
@@ -326,84 +2775,79 @@ index 0000000..d07dd84
 +	return GDB_REGS_SIZE;
 +}
 +
-+void kvm_gdb__arch_sync_guest_insn(void *host, size_t len)
-+{
-+	char *start = host;
-+	char *end = start + len;
++/* ------------------------------------------------------------------ */
++/* Helpers: read/write KVM register structures                        */
++/* ------------------------------------------------------------------ */
 +
-+	__builtin___clear_cache(start, end);
++static int get_regs(struct kvm_cpu *vcpu, struct kvm_regs *regs)
++{
++	if (ioctl(vcpu->vcpu_fd, KVM_GET_REGS, regs) < 0) {
++		pr_warning("GDB: KVM_GET_REGS failed: %s", strerror(errno));
++		return -1;
++	}
++	return 0;
++}
++
++static int set_regs(struct kvm_cpu *vcpu, struct kvm_regs *regs)
++{
++	if (ioctl(vcpu->vcpu_fd, KVM_SET_REGS, regs) < 0) {
++		pr_warning("GDB: KVM_SET_REGS failed: %s", strerror(errno));
++		return -1;
++	}
++	return 0;
++}
++
++static int get_sregs(struct kvm_cpu *vcpu, struct kvm_sregs *sregs)
++{
++	if (ioctl(vcpu->vcpu_fd, KVM_GET_SREGS, sregs) < 0) {
++		pr_warning("GDB: KVM_GET_SREGS failed: %s", strerror(errno));
++		return -1;
++	}
++	return 0;
 +}
 +
 +/* ------------------------------------------------------------------ */
-+/* Helpers: which SP to expose as GDB register 31                     */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * When the guest is in EL1 (kernel mode), the active stack pointer is SP_EL1.
-+ * When in EL0 (user mode), the active SP is SP_EL0 (regs.sp in kvm_regs).
-+ * Return the appropriate KVM register ID for the active SP.
-+ */
-+static __u64 sp_reg_id(struct kvm_cpu *vcpu)
-+{
-+	u32 pstate;
-+
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		return ARM64_CORE_REG(sp_el1);	/* best-effort default */
-+
-+	/* PSTATE.EL = bits [3:2] */
-+	if (((pstate >> 2) & 0x3) >= 1)
-+		return ARM64_CORE_REG(sp_el1);
-+	else
-+		return ARM64_CORE_REG(regs.sp);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Register read / write (bulk 'g'/'G' packet)                        */
++/* Register read / write                                               */
 +/* ------------------------------------------------------------------ */
 +
 +void kvm_gdb__arch_read_registers(struct kvm_cpu *vcpu, u8 *buf, size_t *size)
 +{
-+	u8 *p = buf;
-+	u32 pstate;
-+	int i;
++	struct kvm_regs  regs;
++	struct kvm_sregs sregs;
 +
 +	*size = 0;
 +
-+	/* x0-x30: 31 × 8 bytes */
-+	for (i = 0; i < 31; i++) {
-+		u64 xn;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.regs[i]), &xn) < 0)
-+			return;
-+		memcpy(p, &xn, 8);
-+		p += 8;
-+	}
-+
-+	/* sp (register 31): 8 bytes — active stack pointer */
-+	{
-+		u64 sp;
-+
-+		if (get_one_reg(vcpu, sp_reg_id(vcpu), &sp) < 0)
-+			return;
-+		memcpy(p, &sp, 8);
-+		p += 8;
-+	}
-+
-+	/* pc (register 32): 8 bytes */
-+	{
-+		u64 pc;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc) < 0)
-+			return;
-+		memcpy(p, &pc, 8);
-+		p += 8;
-+	}
-+
-+	/* cpsr (register 33): 4 bytes — low 32 bits of pstate */
-+	if (get_pstate(vcpu, &pstate) < 0)
++	if (get_regs(vcpu, &regs) < 0 || get_sregs(vcpu, &sregs) < 0)
 +		return;
-+	memcpy(p, &pstate, 4);
++
++	u8 *p = buf;
++
++	/* GPRs – 8 bytes each, GDB order */
++#define PUT64(field) do { memcpy(p, &regs.field, 8); p += 8; } while (0)
++	PUT64(rax); PUT64(rbx); PUT64(rcx); PUT64(rdx);
++	PUT64(rsi); PUT64(rdi); PUT64(rbp); PUT64(rsp);
++	PUT64(r8);  PUT64(r9);  PUT64(r10); PUT64(r11);
++	PUT64(r12); PUT64(r13); PUT64(r14); PUT64(r15);
++#undef PUT64
++
++	/* rip (8 bytes) */
++	memcpy(p, &regs.rip, 8);
++	p += 8;
++
++	/* eflags (4 bytes – low 32 bits of rflags) */
++	u32 eflags = (u32)regs.rflags;
++	memcpy(p, &eflags, 4);
 +	p += 4;
++
++	/* Segment selectors (4 bytes each) */
++#define PUTSEL(seg) do {			\
++	u32 sel = (u32)sregs.seg.selector;	\
++	memcpy(p, &sel, 4);			\
++	p += 4;					\
++} while (0)
++	PUTSEL(cs); PUTSEL(ss); PUTSEL(ds);
++	PUTSEL(es); PUTSEL(fs); PUTSEL(gs);
++#undef PUTSEL
 +
 +	*size = (size_t)(p - buf);
 +}
@@ -411,91 +2855,102 @@ index 0000000..d07dd84
 +void kvm_gdb__arch_write_registers(struct kvm_cpu *vcpu, const u8 *buf,
 +				    size_t size)
 +{
-+	const u8 *p = buf;
-+	int i;
-+
 +	if (size < GDB_REGS_SIZE)
 +		return;
 +
-+	/* x0-x30 */
-+	for (i = 0; i < 31; i++) {
-+		u64 xn;
++	struct kvm_regs  regs;
++	struct kvm_sregs sregs;
 +
-+		memcpy(&xn, p, 8);
-+		p += 8;
-+		if (set_one_reg(vcpu, ARM64_CORE_REG(regs.regs[i]), xn) < 0)
-+			return;
-+	}
++	if (get_regs(vcpu, &regs) < 0 || get_sregs(vcpu, &sregs) < 0)
++		return;
 +
-+	/* sp */
-+	{
-+		u64 sp;
++	const u8 *p = buf;
 +
-+		memcpy(&sp, p, 8);
-+		p += 8;
-+		if (set_one_reg(vcpu, sp_reg_id(vcpu), sp) < 0)
-+			return;
-+	}
++#define GET64(field) do { memcpy(&regs.field, p, 8); p += 8; } while (0)
++	GET64(rax); GET64(rbx); GET64(rcx); GET64(rdx);
++	GET64(rsi); GET64(rdi); GET64(rbp); GET64(rsp);
++	GET64(r8);  GET64(r9);  GET64(r10); GET64(r11);
++	GET64(r12); GET64(r13); GET64(r14); GET64(r15);
++#undef GET64
 +
-+	/* pc */
-+	{
-+		u64 pc;
++	memcpy(&regs.rip, p, 8);
++	p += 8;
 +
-+		memcpy(&pc, p, 8);
-+		p += 8;
-+		if (set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc) < 0)
-+			return;
-+	}
++	u32 eflags;
++	memcpy(&eflags, p, 4);
++	regs.rflags = (regs.rflags & ~0xffffffffULL) | eflags;
++	p += 4;
 +
-+	/* cpsr */
-+	{
-+		u32 pstate;
++	/* Segment selectors – only update the selector field */
++#define SETSEL(seg) do {				\
++	u32 sel;					\
++	memcpy(&sel, p, 4);				\
++	sregs.seg.selector = (u16)sel;			\
++	p += 4;						\
++} while (0)
++	SETSEL(cs); SETSEL(ss); SETSEL(ds);
++	SETSEL(es); SETSEL(fs); SETSEL(gs);
++#undef SETSEL
 +
-+		memcpy(&pstate, p, 4);
-+		p += 4;
-+		set_pstate(vcpu, pstate);
-+	}
++	set_regs(vcpu, &regs);
++	/* We don't write sregs back for segment selector-only changes
++	 * to avoid corrupting descriptor caches; GDB mainly needs rip. */
++	(void)sregs;
 +}
-+
-+/* ------------------------------------------------------------------ */
-+/* Single-register read/write ('p n' / 'P n=v')                       */
-+/* ------------------------------------------------------------------ */
 +
 +int kvm_gdb__arch_read_register(struct kvm_cpu *vcpu, int regno,
 +				 u8 *buf, size_t *size)
 +{
++	struct kvm_regs  regs;
++	struct kvm_sregs sregs;
++
 +	if (regno < 0 || regno >= GDB_NUM_REGS)
 +		return -1;
 +
-+	if (regno < 31) {
-+		/* x0 – x30 */
-+		u64 xn;
++	if (get_regs(vcpu, &regs) < 0)
++		return -1;
 +
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.regs[regno]), &xn) < 0)
-+			return -1;
-+		memcpy(buf, &xn, 8);
-+		*size = 8;
-+	} else if (regno == GDB_REG_SP) {
-+		u64 sp;
++	if (regno >= GDB_REG_CS && get_sregs(vcpu, &sregs) < 0)
++		return -1;
 +
-+		if (get_one_reg(vcpu, sp_reg_id(vcpu), &sp) < 0)
-+			return -1;
-+		memcpy(buf, &sp, 8);
++	if (regno < 16) {
++		/* GPRs */
++		static const size_t offs[] = {
++			offsetof(struct kvm_regs, rax),
++			offsetof(struct kvm_regs, rbx),
++			offsetof(struct kvm_regs, rcx),
++			offsetof(struct kvm_regs, rdx),
++			offsetof(struct kvm_regs, rsi),
++			offsetof(struct kvm_regs, rdi),
++			offsetof(struct kvm_regs, rbp),
++			offsetof(struct kvm_regs, rsp),
++			offsetof(struct kvm_regs, r8),
++			offsetof(struct kvm_regs, r9),
++			offsetof(struct kvm_regs, r10),
++			offsetof(struct kvm_regs, r11),
++			offsetof(struct kvm_regs, r12),
++			offsetof(struct kvm_regs, r13),
++			offsetof(struct kvm_regs, r14),
++			offsetof(struct kvm_regs, r15),
++		};
++		memcpy(buf, (u8 *)&regs + offs[regno], 8);
 +		*size = 8;
-+	} else if (regno == GDB_REG_PC) {
-+		u64 pc;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc) < 0)
-+			return -1;
-+		memcpy(buf, &pc, 8);
++	} else if (regno == GDB_REG_RIP) {
++		memcpy(buf, &regs.rip, 8);
 +		*size = 8;
++	} else if (regno == GDB_REG_EFLAGS) {
++		u32 eflags = (u32)regs.rflags;
++		memcpy(buf, &eflags, 4);
++		*size = 4;
 +	} else {
-+		/* GDB_REG_CPSR */
-+		u32 pstate;
-+
-+		if (get_pstate(vcpu, &pstate) < 0)
-+			return -1;
-+		memcpy(buf, &pstate, 4);
++		/* Segment selectors (18–23) */
++		struct kvm_segment *segs[] = {
++			&sregs.cs, &sregs.ss, &sregs.ds,
++			&sregs.es, &sregs.fs, &sregs.gs,
++		};
++		int idx = regno - GDB_REG_CS;
++		u32 sel = (u32)segs[idx]->selector;
++		memcpy(buf, &sel, 4);
 +		*size = 4;
 +	}
 +
@@ -508,36 +2963,67 @@ index 0000000..d07dd84
 +	if (regno < 0 || regno >= GDB_NUM_REGS)
 +		return -1;
 +
-+	if (regno < 31) {
-+		u64 xn;
++	struct kvm_regs regs;
++	if (get_regs(vcpu, &regs) < 0)
++		return -1;
 +
-+		if (size < 8)
-+			return -1;
-+		memcpy(&xn, buf, 8);
-+		return set_one_reg(vcpu, ARM64_CORE_REG(regs.regs[regno]), xn);
-+	} else if (regno == GDB_REG_SP) {
-+		u64 sp;
-+
-+		if (size < 8)
-+			return -1;
-+		memcpy(&sp, buf, 8);
-+		return set_one_reg(vcpu, sp_reg_id(vcpu), sp);
-+	} else if (regno == GDB_REG_PC) {
-+		u64 pc;
-+
-+		if (size < 8)
-+			return -1;
-+		memcpy(&pc, buf, 8);
-+		return set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc);
-+	} else {
-+		/* GDB_REG_CPSR */
-+		u32 pstate;
-+
-+		if (size < 4)
-+			return -1;
-+		memcpy(&pstate, buf, 4);
-+		return set_pstate(vcpu, pstate);
++	if (regno < 16) {
++		static const size_t offs[] = {
++			offsetof(struct kvm_regs, rax),
++			offsetof(struct kvm_regs, rbx),
++			offsetof(struct kvm_regs, rcx),
++			offsetof(struct kvm_regs, rdx),
++			offsetof(struct kvm_regs, rsi),
++			offsetof(struct kvm_regs, rdi),
++			offsetof(struct kvm_regs, rbp),
++			offsetof(struct kvm_regs, rsp),
++			offsetof(struct kvm_regs, r8),
++			offsetof(struct kvm_regs, r9),
++			offsetof(struct kvm_regs, r10),
++			offsetof(struct kvm_regs, r11),
++			offsetof(struct kvm_regs, r12),
++			offsetof(struct kvm_regs, r13),
++			offsetof(struct kvm_regs, r14),
++			offsetof(struct kvm_regs, r15),
++		};
++		if (size < 8) return -1;
++		memcpy((u8 *)&regs + offs[regno], buf, 8);
++		return set_regs(vcpu, &regs);
 +	}
++
++	if (regno == GDB_REG_RIP) {
++		if (size < 8) return -1;
++		memcpy(&regs.rip, buf, 8);
++		return set_regs(vcpu, &regs);
++	}
++
++	if (regno == GDB_REG_EFLAGS) {
++		u32 eflags;
++		if (size < 4) return -1;
++		memcpy(&eflags, buf, 4);
++		regs.rflags = (regs.rflags & ~0xffffffffULL) | eflags;
++		return set_regs(vcpu, &regs);
++	}
++
++	/* Segment selector: write via sregs */
++	struct kvm_sregs sregs;
++	if (get_sregs(vcpu, &sregs) < 0)
++		return -1;
++
++	struct kvm_segment *segs[] = {
++		&sregs.cs, &sregs.ss, &sregs.ds,
++		&sregs.es, &sregs.fs, &sregs.gs,
++	};
++	int idx = regno - GDB_REG_CS;
++	u32 sel;
++	if (size < 4) return -1;
++	memcpy(&sel, buf, 4);
++	segs[idx]->selector = (u16)sel;
++
++	if (ioctl(vcpu->vcpu_fd, KVM_SET_SREGS, &sregs) < 0)
++		return -1;
++
++	return 0;
 +}
 +
 +/* ------------------------------------------------------------------ */
@@ -546,58 +3032,75 @@ index 0000000..d07dd84
 +
 +u64 kvm_gdb__arch_get_pc(struct kvm_cpu *vcpu)
 +{
-+	u64 pc = 0;
-+
-+	get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc);
-+	return pc;
++	struct kvm_regs regs;
++	if (get_regs(vcpu, &regs) < 0)
++		return 0;
++	return regs.rip;
 +}
 +
 +void kvm_gdb__arch_set_pc(struct kvm_cpu *vcpu, u64 pc)
 +{
-+	set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc);
++	struct kvm_regs regs;
++	if (get_regs(vcpu, &regs) < 0)
++		return;
++	regs.rip = pc;
++	set_regs(vcpu, &regs);
 +}
 +
 +/* ------------------------------------------------------------------ */
-+/* Debug control (single-step + hardware breakpoints / watchpoints)   */
++/* Debug control (single-step + hardware breakpoints)                 */
 +/* ------------------------------------------------------------------ */
 +
 +/*
-+ * BCR (Breakpoint Control Register) for an enabled execution breakpoint:
-+ *
-+ *   Bit  1    : EN = 1 (enable)
-+ *   Bits 3:2  : PMC = 0b11 (match EL0 + EL1, i.e. user and kernel)
-+ *   Bits 8:5  : BAS = 0b1111 (byte address select, all 4 bytes of insn)
-+ *   Bits 13:9 : (reserved / HMC, leave 0)
-+ *   Bits 15:14: SSC = 0b00
++ * DR7 bit layout:
++ *   G0..G3 (bits 1,3,5,7): global enable for DR0..DR3
++ *   cond0..cond3 (bits 16-17, 20-21, 24-25, 28-29):
++ *     00=execution, 01=write, 11=read/write
++ *   len0..len3 (bits 18-19, 22-23, 26-27, 30-31):
++ *     00=1B, 01=2B, 10=8B, 11=4B
 + */
-+#define BCR_EXEC_ANY	0x000001e7ULL	/* EN=1, PMC=11, BAS=1111 */
 +
-+/*
-+ * WCR (Watchpoint Control Register) base: EN=1, PAC=EL0+EL1
-+ *   Bit  1    : EN = 1
-+ *   Bits 3:2  : PAC = 0b11 (EL0 + EL1)
-+ *   Bits 5:4  : (LSC — Load/Store/Both) — set by caller
-+ *   Bits 12:5 : BAS — set by caller (byte enable)
-+ */
-+#define WCR_BASE	0x7ULL		/* EN=1, PAC=11 */
-+
-+static u64 arm64_watchpoint_bas(u64 addr, int len)
++static u64 dr7_for_bp(struct kvm_gdb_hw_bp *bps)
 +{
-+	int shift = addr & 7;
-+	u64 mask;
++	u64 dr7 = 0;
 +
-+	if (len <= 0 || len > 8 || shift + len > 8)
-+		return 0;
++	for (int i = 0; i < 4; i++) {
++		if (!bps[i].active)
++			continue;
 +
-+	mask = (1ULL << len) - 1;
-+	return mask << shift;
++		/* Global enable bit */
++		dr7 |= (1ULL << (i * 2 + 1));
++
++		/* Condition */
++		u64 cond;
++		switch (bps[i].type) {
++		case 0:  cond = 0; break;	/* execution  (00) */
++		case 1:  cond = 1; break;	/* write      (01) */
++		case 2:  cond = 3; break;	/* read/write (11) – no read-only */
++		case 3:  cond = 3; break;	/* access     (11) */
++		default: cond = 0; break;
++		}
++		dr7 |= (cond << (16 + i * 4));
++
++		/* Length */
++		u64 len;
++		switch (bps[i].len) {
++		case 1:  len = 0; break;	/* 1B (00) */
++		case 2:  len = 1; break;	/* 2B (01) */
++		case 4:  len = 3; break;	/* 4B (11) */
++		case 8:  len = 2; break;	/* 8B (10) */
++		default: len = 0; break;
++		}
++		dr7 |= (len << (18 + i * 4));
++	}
++
++	return dr7;
 +}
 +
 +void kvm_gdb__arch_set_debug(struct kvm_cpu *vcpu, bool single_step,
 +			      struct kvm_gdb_hw_bp *hw_bps)
 +{
 +	struct kvm_guest_debug dbg = { 0 };
-+	int i;
 +
 +	dbg.control = KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP;
 +
@@ -605,69 +3108,15 @@ index 0000000..d07dd84
 +		dbg.control |= KVM_GUESTDBG_SINGLESTEP;
 +
 +	if (hw_bps) {
-+		bool any_hw = false;
-+		int bp_idx = 0;	/* hardware breakpoints (exec) use dbg_bvr/bcr */
-+		int wp_idx = 0;	/* watchpoints use dbg_wvr/wcr */
-+
-+		for (i = 0; i < 4; i++) {
-+			if (!hw_bps[i].active)
-+				continue;
-+
-+			if (hw_bps[i].type == 0) {
-+				/* Execution breakpoint (Z1) */
-+				if (bp_idx >= KVM_ARM_MAX_DBG_REGS)
-+					continue;
-+				dbg.arch.dbg_bvr[bp_idx] =
-+					hw_bps[i].addr & ~3ULL; /* 4-byte align */
-+				dbg.arch.dbg_bcr[bp_idx] = BCR_EXEC_ANY;
-+				bp_idx++;
-+			} else {
-+				/* Watchpoint: write(1), read(2), access(3) */
-+				u64 wcr;
-+				u64 bas;
-+
-+				if (wp_idx >= KVM_ARM_MAX_DBG_REGS)
-+					continue;
-+
-+				/*
-+				 * BAS: byte-address-select bitmask.
-+				 * For len=1→0x1, len=2→0x3, len=4→0xf, len=8→0xff.
-+				 * Encode in WCR bits [12:5].
-+				 */
-+				bas = arm64_watchpoint_bas(hw_bps[i].addr,
-+						   hw_bps[i].len);
-+				if (!bas)
-+					continue;
-+
-+				/*
-+				 * LSC (Load/Store Control):
-+				 *   01 = load (read), 10 = store (write),
-+				 *   11 = load+store (access)
-+				 * Bits [4:3] of WCR.
-+				 */
-+				{
-+					u64 lsc;
-+
-+					switch (hw_bps[i].type) {
-+					case 1:  lsc = 0x2; break;  /* write */
-+					case 2:  lsc = 0x1; break;  /* read  */
-+					default: lsc = 0x3; break;  /* access */
-+					}
-+					wcr = WCR_BASE |
-+					      (lsc << 3) |
-+					      (bas << 5);
-+				}
-+
-+				dbg.arch.dbg_wvr[wp_idx] =
-+					hw_bps[i].addr & ~7ULL; /* 8-byte align */
-+				dbg.arch.dbg_wcr[wp_idx] = wcr;
-+				wp_idx++;
++		u64 dr7 = dr7_for_bp(hw_bps);
++		if (dr7) {
++			dbg.control |= KVM_GUESTDBG_USE_HW_BP;
++			for (int i = 0; i < 4; i++) {
++				if (hw_bps[i].active)
++					dbg.arch.debugreg[i] = hw_bps[i].addr;
 +			}
-+			any_hw = true;
++			dbg.arch.debugreg[7] = dr7;
 +		}
-+
-+		if (any_hw)
-+			dbg.control |= KVM_GUESTDBG_USE_HW;
 +	}
 +
 +	if (ioctl(vcpu->vcpu_fd, KVM_SET_GUEST_DEBUG, &dbg) < 0)
@@ -678,36 +3127,45 @@ index 0000000..d07dd84
 +void kvm_gdb__arch_prepare_resume(struct kvm_cpu *vcpu, bool single_step,
 +				   bool from_debug_exit)
 +{
-+	u32 pstate;
++	struct kvm_regs regs;
 +
-+	if (!single_step || !from_debug_exit)
++	if (!from_debug_exit)
 +		return;
 +
-+	if (get_pstate(vcpu, &pstate) < 0)
++	if (get_regs(vcpu, &regs) < 0)
 +		return;
 +
-+	step_irq_state.vcpu = vcpu;
-+	step_irq_state.daif_bits = pstate & ARM64_DAIF_MASK;
-+	step_irq_state.pending = true;
++	regs.rflags &= ~X86_EFLAGS_TF;
++	if (single_step)
++		regs.rflags |= X86_EFLAGS_TF;
 +
-+	pstate |= ARM64_DAIF_MASK;
-+	set_pstate(vcpu, pstate);
++	if (single_step) {
++		step_irq_state.vcpu = vcpu;
++		step_irq_state.pending = true;
++		step_irq_state.if_was_set = !!(regs.rflags & X86_EFLAGS_IF);
++		regs.rflags &= ~X86_EFLAGS_IF;
++	}
++
++	regs.rflags |= X86_EFLAGS_RF;
++	set_regs(vcpu, &regs);
 +}
 +
 +void kvm_gdb__arch_handle_stop(struct kvm_cpu *vcpu)
 +{
-+	u32 pstate;
++	struct kvm_regs regs;
 +
 +	if (!step_irq_state.pending || step_irq_state.vcpu != vcpu)
 +		return;
 +
-+	if (get_pstate(vcpu, &pstate) < 0)
++	if (get_regs(vcpu, &regs) < 0)
 +		return;
 +
-+	pstate &= ~ARM64_DAIF_MASK;
-+	pstate |= step_irq_state.daif_bits;
-+	set_pstate(vcpu, pstate);
++	if (step_irq_state.if_was_set)
++		regs.rflags |= X86_EFLAGS_IF;
++	else
++		regs.rflags &= ~X86_EFLAGS_IF;
 +
++	set_regs(vcpu, &regs);
 +	step_irq_state.pending = false;
 +	step_irq_state.vcpu = NULL;
 +}
@@ -716,695 +3174,71 @@ index 0000000..d07dd84
 +/* Stop signal                                                         */
 +/* ------------------------------------------------------------------ */
 +
-+int kvm_gdb__arch_signal(struct kvm_cpu *vcpu __attribute__((unused)))
++int kvm_gdb__arch_signal(struct kvm_cpu *vcpu)
 +{
-+	/* All debug exits report SIGTRAP (5) */
++	/* Always report SIGTRAP (5) */
 +	return 5;
 +}
 +
 +/* ------------------------------------------------------------------ */
-+/* Software-breakpoint exit detection and re-injection                 */
++/* Software-breakpoint re-injection                                    */
 +/* ------------------------------------------------------------------ */
 +
 +/*
-+ * ARM64 debug exits are identified by the EC field in ESR_EL2
-+ * (reported in kvm_run->debug.arch.hsr).
-+ *
-+ *   EC = bits[31:26] of HSR.
-+ *   0x3C = ESR_ELx_EC_BRK64 → AArch64 BRK instruction.
++ * x86 exception numbers in kvm_run->debug.arch.exception:
++ *   1  = #DB  (single-step / hardware breakpoint)
++ *   3  = #BP  (INT3 software breakpoint)
 + */
 +bool kvm_gdb__arch_is_sw_bp_exit(struct kvm_cpu *vcpu)
 +{
-+	u32 hsr = vcpu->kvm_run->debug.arch.hsr;
-+	u32 ec  = (hsr >> ESR_EC_SHIFT) & 0x3f;
-+
-+	return ec == ESR_EC_BRK64;
++	return vcpu->kvm_run->debug.arch.exception == 3;
 +}
 +
 +/*
-+ * Return the guest virtual address of the BRK instruction that triggered
-+ * the current debug exit.
++ * Return the address of the INT3 byte that triggered the exit.
 + *
-+ * On ARM64, when KVM intercepts a BRK:
-+ *   - The guest PC has NOT been advanced (no RIP-style auto-increment).
-+ *   - The PC register (regs.pc) still points at the BRK instruction itself.
-+ *   - kvm_run->debug.arch.far is the FAR_EL2 value, which is UNKNOWN for
-+ *     instruction-class exceptions (BRK), so we do NOT use far here.
++ * KVM intercepts the #BP VM-exit BEFORE delivering the exception to the
++ * guest.  At that point the guest RIP still points at the INT3 instruction
++ * itself (not the next byte), and KVM copies that value into
++ * kvm_run->debug.arch.pc.  So no adjustment is needed.
 + *
-+ * Therefore we read the current PC via KVM_GET_ONE_REG.
++ * (Earlier code subtracted 1 here, which was wrong: it produced an address
++ * one byte before the INT3, causing sw_bp_active_at() to miss every hit.)
 + */
 +u64 kvm_gdb__arch_debug_pc(struct kvm_cpu *vcpu)
 +{
-+	return kvm_gdb__arch_get_pc(vcpu);
++	return vcpu->kvm_run->debug.arch.pc;
 +}
 +
 +/*
-+ * Re-inject the BRK exception into the guest so that the guest kernel's own
-+ * brk_handler (in arch/arm64/kernel/debug-monitors.c) can process it.
++ * Re-inject the #BP exception so the guest's own INT3 handler sees it.
 + *
-+ * ARM64 does not support arbitrary exception injection via KVM_SET_VCPU_EVENTS
-+ * (the ARM64 kvm_vcpu_events struct only has SError).  Instead, we manually
-+ * simulate what the CPU would do when taking a synchronous exception to EL1:
-+ *
-+ *   1. Save current PC → ELR_EL1          (exception return address)
-+ *   2. Save current PSTATE → SPSR_EL1     (saved processor state)
-+ *   3. Set ESR_EL1 = HSR from the debug exit  (syndrome for brk_handler)
-+ *   4. Read VBAR_EL1 to find the exception vector base
-+ *   5. Set PC = VBAR_EL1 + vector_offset   (synchronous exception vector)
-+ *   6. Set PSTATE = EL1h mode, all interrupts masked
-+ *
-+ * Vector offset within VBAR_EL1 (ARM ARM D1.10):
-+ *   +0x000  current EL, SP_EL0  (PSTATE.EL==1, PSTATE.SP==0)
-+ *   +0x200  current EL, SP_ELx  (PSTATE.EL==1, PSTATE.SP==1)  ← common kernel
-+ *   +0x400  lower EL, AArch64   (PSTATE.EL==0)
-+ *   +0x600  lower EL, AArch32   (not used here)
-+ *   Synchronous = +0x000 within each quadrant.
-+ *
-+ * On failure, we advance PC by 4 to skip the BRK and avoid an infinite loop,
-+ * accepting that the kernel's BRK handler won't run for this instruction.
++ * At this point:
++ *   - Guest RIP points at the INT3 byte itself (KVM intercepted the VM-exit
++ *     before the exception was delivered, so the CPU has not yet advanced RIP).
++ *   - We inject exception #3 with no error code.
++ *   - When KVM delivers the injected #BP, the CPU will advance RIP past the
++ *     INT3 and push RIP+1 into the exception frame, which is the standard
++ *     x86 #BP convention the guest's handler expects.
 + */
 +void kvm_gdb__arch_reinject_sw_bp(struct kvm_cpu *vcpu)
 +{
-+	u64 pc, vbar;
-+	u32 pstate, hsr;
-+	u64 new_pc;
-+	u64 vec_off;
++	struct kvm_vcpu_events events;
 +
-+	hsr = vcpu->kvm_run->debug.arch.hsr;
-+
-+	/* Read current PC and PSTATE */
-+	if (get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc) < 0)
-+		goto advance_pc;
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		goto advance_pc;
-+
-+	/* Read VBAR_EL1 — the base of the EL1 exception vector table */
-+	if (get_one_reg(vcpu, KVM_REG_VBAR_EL1, &vbar) < 0)
-+		goto advance_pc;
-+
-+	/* Step 1: ELR_EL1 = current PC (return address = BRK instruction) */
-+	if (set_one_reg(vcpu, ARM64_CORE_REG(elr_el1), pc) < 0)
-+		goto advance_pc;
-+
-+	/* Step 2: SPSR_EL1 = current PSTATE */
-+	{
-+		u64 spsr = pstate;
-+		struct kvm_one_reg reg = {
-+			.id   = ARM64_CORE_REG(spsr[KVM_SPSR_EL1]),
-+			.addr = (u64)&spsr,
-+		};
-+		if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg) < 0) {
-+			pr_warning("GDB: reinject: KVM_SET_ONE_REG(spsr) failed: %s",
-+				   strerror(errno));
-+			goto advance_pc;
-+		}
-+	}
-+
-+	/*
-+	 * Step 3: ESR_EL1 = syndrome from the BRK exit.
-+	 * The HSR value (ESR_EL2 at the time of the VM exit) contains the
-+	 * correct EC and ISS (BRK immediate) that the kernel's brk_handler
-+	 * will inspect via read_sysreg(esr_el1).
-+	 */
-+	if (set_one_reg(vcpu, KVM_REG_ESR_EL1, (u64)hsr) < 0)
-+		goto advance_pc;
-+
-+	/*
-+	 * Step 4+5: Determine vector offset and set PC.
-+	 *
-+	 * PSTATE.EL = bits[3:2], PSTATE.SP = bit[0].
-+	 */
-+	{
-+		u32 el    = (pstate >> 2) & 0x3;
-+		u32 spsel = pstate & 0x1;
-+
-+		if (el >= 1) {
-+			/* From EL1: current EL, SP_ELx or SP_EL0 */
-+			vec_off = spsel ? 0x200ULL : 0x000ULL;
-+		} else {
-+			/* From EL0: lower EL, AArch64 */
-+			vec_off = 0x400ULL;
-+		}
-+	}
-+	new_pc = vbar + vec_off;
-+	if (set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), new_pc) < 0)
-+		goto advance_pc;
-+
-+	/* Step 6: Set PSTATE = EL1h mode, all interrupts masked */
-+	if (set_pstate(vcpu, PSR_D_BIT | PSR_A_BIT | PSR_I_BIT |
-+			     PSR_F_BIT | PSR_MODE_EL1h) < 0)
-+		goto advance_pc;
-+
-+	return;
-+
-+advance_pc:
-+	/*
-+	 * Fallback: skip the 4-byte BRK instruction to prevent an infinite
-+	 * KVM_EXIT_DEBUG loop.  The guest's BRK handler will NOT run.
-+	 */
-+	pr_warning("GDB: reinject_sw_bp failed; skipping BRK at 0x%llx",
-+		   (unsigned long long)pc);
-+	set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc + 4);
-+}
-diff --git a/gdb.c b/gdb.c
-index 50f7dfe..0b9bc3b 100644
---- a/gdb.c
-+++ b/gdb.c
-@@ -47,12 +47,45 @@
- #include <ctype.h>
- #include <unistd.h>
- 
-+#ifdef CONFIG_ARM64
-+/*
-+ * KVM register ID for TTBR1_EL1: S3_0_C2_C0_1
-+ * op0=3, op1=0, CRn=2, CRm=0, op2=1
-+ * Built without including arch headers to keep gdb.c architecture-agnostic.
-+ */
-+# define GDB_KVM_REG_ARM64		0x6000000000000000ULL
-+# define GDB_KVM_REG_ARM64_SYSREG	(0x0013ULL << 16)
-+# define GDB_KVM_REG_SIZE_U64		0x0030000000000000ULL
-+# define GDB_ARM64_SYSREG(op0,op1,crn,crm,op2) \
-+	(GDB_KVM_REG_ARM64 | GDB_KVM_REG_SIZE_U64 | GDB_KVM_REG_ARM64_SYSREG | \
-+	 (((u64)(op0) & 0x3)  << 14) | \
-+	 (((u64)(op1) & 0x7)  << 11) | \
-+	 (((u64)(crn) & 0xf)  <<  7) | \
-+	 (((u64)(crm) & 0xf)  <<  3) | \
-+	 (((u64)(op2) & 0x7)  <<  0))
-+# define GDB_KVM_REG_TTBR1_EL1		GDB_ARM64_SYSREG(3, 0, 2, 0, 1)
-+#endif
-+
- #include <linux/kvm.h>
- 
- #define GDB_MAX_SW_BP		64
- #define GDB_MAX_HW_BP		4
- #define GDB_PACKET_MAX		16384
--#define GDB_SW_BP_INSN		0xCC	/* INT3 */
-+
-+#ifdef CONFIG_ARM64
-+/*
-+ * ARM64 software breakpoint: BRK #0 (little-endian 4-byte encoding)
-+ * Encoding: 0xD4200000  →  bytes: 0x00 0x00 0x20 0xD4
-+ */
-+# define GDB_SW_BP_INSN_LEN	4
-+static const u8 GDB_SW_BP_INSN[4] = { 0x00, 0x00, 0x20, 0xD4 };
-+#else
-+/*
-+ * x86 software breakpoint: INT3 (1-byte opcode 0xCC)
-+ */
-+# define GDB_SW_BP_INSN_LEN	1
-+static const u8 GDB_SW_BP_INSN[1] = { 0xCC };
-+#endif
- 
- /*
-  * Only use raw address-as-GPA fallback for very low addresses where
-@@ -63,7 +96,7 @@
- /* Software breakpoint saved state */
- struct sw_bp {
- 	u64  addr;
--	u8   orig_byte;
-+	u8   orig_bytes[GDB_SW_BP_INSN_LEN];	/* original instruction bytes */
- 	int  refs;
- 	bool active;
- };
-@@ -130,6 +163,7 @@ static struct sw_bp_resume sw_bp_resume = {
- };
- 
- static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len);
-+static bool gdb_write_guest_insn(u64 addr, const void *buf, size_t len);
- static struct kvm_cpu *current_vcpu(void);
- 
- /* ------------------------------------------------------------------ */
-@@ -367,9 +401,9 @@ static int sw_bp_restore(int idx)
- 	if (idx < 0 || idx >= GDB_MAX_SW_BP || !gdb.sw_bp[idx].active)
- 		return -1;
- 
--	return gdb_write_guest_mem(gdb.sw_bp[idx].addr,
--				  &gdb.sw_bp[idx].orig_byte,
--				  1) ? 0 : -1;
-+	return gdb_write_guest_insn(gdb.sw_bp[idx].addr,
-+				   gdb.sw_bp[idx].orig_bytes,
-+				   GDB_SW_BP_INSN_LEN) ? 0 : -1;
- }
- 
- static int sw_bp_reinsert(int idx)
-@@ -377,10 +411,9 @@ static int sw_bp_reinsert(int idx)
- 	if (idx < 0 || idx >= GDB_MAX_SW_BP || !gdb.sw_bp[idx].active)
- 		return -1;
- 
--	u8 brk = GDB_SW_BP_INSN;
--	return gdb_write_guest_mem(gdb.sw_bp[idx].addr,
--				  &brk,
--				  1) ? 0 : -1;
-+	return gdb_write_guest_insn(gdb.sw_bp[idx].addr,
-+				   GDB_SW_BP_INSN,
-+				   GDB_SW_BP_INSN_LEN) ? 0 : -1;
- }
- 
- static bool prepare_sw_bp_resume(bool auto_resume)
-@@ -537,25 +570,217 @@ static struct kvm_cpu *current_vcpu(void)
-  *   This offset is fixed in the x86-64 ABI regardless of KASLR.
-  */
- #ifdef CONFIG_X86
-+/*
-+ * x86-64 Linux kernel virtual address layout (with nokaslr):
-+ *   __START_KERNEL_map  0xffffffff80000000  kernel text, GPA = GVA - base
-+ *   PAGE_OFFSET         0xffff888000000000  direct phys map, GPA = GVA - base
-+ */
- # define GDB_KERNEL_MAP_BASE	0xffffffff80000000ULL
- # define GDB_DIRECT_MAP_BASE	0xffff888000000000ULL
- # define GDB_DIRECT_MAP_SIZE	0x100000000000ULL	/* 16 TB */
- #endif
- 
-+#ifdef CONFIG_ARM64
-+/*
-+ * ARM64 Linux kernel virtual address layout:
-+ *
-+ * Linear map (PAGE_OFFSET):
-+ *   The kernel maps all physical RAM at PAGE_OFFSET.  The exact value
-+ *   depends on VA_BITS (48 or 52), but for a standard kernel with VA_BITS=48:
-+ *     PAGE_OFFSET = 0xffff000000000000
-+ *   With VA_BITS=39 (some embedded configs):
-+ *     PAGE_OFFSET = 0xffffff8000000000
-+ *   Formula: GPA = GVA - PAGE_OFFSET
-+ *
-+ * Kernel text / vmalloc (KIMAGE_VADDR):
-+ *   Standard arm64 kernel is linked at 0xffff800008000000 (VA_BITS=48).
-+ *   The kernel image occupies [KIMAGE_VADDR, KIMAGE_VADDR + TEXT_OFFSET + size).
-+ *   For kvmtool guests, the default load address is usually 0x80000 (physical),
-+ *   so kernel text GPA ≈ GVA - 0xffff800008000000 + 0x80000
-+ *   = GVA - 0xffff800007f80000.
-+ *
-+ *   Simpler approximation: treat the full vmalloc/kernel range as a linear
-+ *   region from 0xffff800000000000 onward, with offset 0xffff800000000000 -
-+ *   PHYS_OFFSET where PHYS_OFFSET is typically 0x40000000 on kvmtool guests.
-+ *
-+ * In practice, KVM_TRANSLATE works correctly when the vCPU is paused in EL1
-+ * (kernel mode).  The fallback is only needed when the vCPU is paused in EL0
-+ * (userspace) with TTBR1_EL1 loaded but active stage-1 translation using
-+ * TTBR0_EL1 (user page table) which does not cover kernel addresses.
-+ *
-+ * We use the same strategy as x86: check for the well-known linear map range
-+ * first, then fall back to the kernel image range.
-+ *
-+ * PAGE_OFFSET for VA_BITS=48:  0xffff000000000000
-+ * All kernel virtual addresses are ≥ 0xffff000000000000.
-+ * kvmtool maps guest RAM at physical 0x40000000 (ARM64 default).
-+ *
-+ * Linear map formula:  GPA = GVA - 0xffff000000000000 + 0
-+ *   (works because kvmtool's physical memory starts at GPA 0x0 in the slot,
-+ *    but the guest itself sees RAM at IPA 0x40000000.  See arm/kvm.c.)
-+ *
-+ * Kernel image formula: GPA = GVA - 0xffff800008000000 + 0x80000
-+ *   Approximated as:    GPA = GVA - 0xffff800007f80000
-+ *
-+ * Because these offsets vary by kernel config, this fallback is a best-effort
-+ * heuristic; use nokaslr and ensure the vCPU is in EL1 for reliable results.
-+ */
-+
-+/* VA_BITS=48 linear map base (PAGE_OFFSET) */
-+# define GDB_ARM64_PAGE_OFFSET		0xffff000000000000ULL
-+/* kvmtool ARM64 guest RAM starts at IPA 0x80000000 (ARM_MEMORY_AREA) */
-+# define GDB_ARM64_PHYS_OFFSET		0x80000000ULL
-+# define GDB_ARM64_LINEAR_MAP_SIZE	0x1000000000000ULL  /* 256 TB region */
-+
-+/* Kernel image virtual base (KIMAGE_VADDR, VA_BITS=48) */
-+# define GDB_ARM64_KIMAGE_VADDR		0xffff800008000000ULL
-+/* TEXT_OFFSET: read from kernel image header; 0x0 for newer kernels, 0x80000 for older */
-+# define GDB_ARM64_TEXT_OFFSET		0x0ULL
-+
-+/*
-+ * arm64_sw_walk_ttbr1() - software walk of the kernel stage-1 page table.
-+ *
-+ * KVM_TRANSLATE is not implemented on ARM64 (returns ENXIO).  Instead we
-+ * manually walk the TTBR1_EL1 4-level page table that the guest kernel uses
-+ * for all kernel virtual addresses (bit[55] == 1, i.e. TTBR1 range).
-+ *
-+ * Supports 4KB granule, VA_BITS=48 (the most common arm64 Linux config):
-+ *   Level 0 (PGD): bits [47:39]  →  9 bits, 512 entries
-+ *   Level 1 (PUD): bits [38:30]  →  9 bits, 512 entries
-+ *   Level 2 (PMD): bits [29:21]  →  9 bits, 512 entries
-+ *   Level 3 (PTE): bits [20:12]  →  9 bits, 512 entries
-+ *   Page offset:   bits [11:0]   → 12 bits
-+ *
-+ * Each entry is 8 bytes.  Bits [47:12] of a non-block entry hold the next
-+ * table's IPA (= GPA in kvmtool's flat Stage-2 identity map).
-+ *
-+ * Block entries:
-+ *   L1 block: 1 GB,  output address = entry[47:30] << 30
-+ *   L2 block: 2 MB,  output address = entry[47:21] << 21
-+ *
-+ * Entry validity:
-+ *   bit[0] == 1:  valid
-+ *   bit[1] == 1:  table (if at L0/L1/L2), page (if at L3)
-+ *   bit[1] == 0:  block (if at L1/L2), reserved (if at L0)
-+ *
-+ * Returns the GPA on success, (u64)-1 on failure.
-+ */
-+static u64 arm64_sw_walk_ttbr1(u64 gva)
-+{
-+	struct kvm_cpu *cur = current_vcpu();
-+	struct kvm_one_reg reg;
-+	u64 ttbr1;
-+
-+	if (!cur) {
-+		pr_warning("GDB: arm64_walk: no current_vcpu");
-+		return (u64)-1;
-+	}
-+
-+	/*
-+	 * Read TTBR1_EL1.  The ASID field is in bits [63:48]; the base
-+	 * address is in bits [47:1] (BADDR), effectively [47:12] for 4KB
-+	 * granule after masking ASID and CnP.
-+	 */
-+	reg.id   = GDB_KVM_REG_TTBR1_EL1;
-+	reg.addr = (u64)&ttbr1;
-+	if (ioctl(cur->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: arm64_walk: KVM_GET_ONE_REG(TTBR1_EL1) failed: %s",
++	if (ioctl(vcpu->vcpu_fd, KVM_GET_VCPU_EVENTS, &events) < 0) {
++		pr_warning("GDB: KVM_GET_VCPU_EVENTS failed: %s",
 +			   strerror(errno));
-+		return (u64)-1;
++		return;
 +	}
 +
-+	/* Strip ASID (bits [63:48]) and CnP (bit[0]) to get table base GPA */
-+	u64 tbl = ttbr1 & 0x0000fffffffff000ULL;
++	events.exception.injected     = 1;
++	events.exception.nr           = 3;	/* #BP */
++	events.exception.has_error_code = 0;
 +
-+	pr_debug("GDB: arm64_walk GVA=0x%llx TTBR1=0x%llx tbl=0x%llx",
-+		 (unsigned long long)gva,
-+		 (unsigned long long)ttbr1,
-+		 (unsigned long long)tbl);
-+
-+	/* VA bits for each level (4KB granule, VA_BITS=48) */
-+	int shifts[4] = { 39, 30, 21, 12 };
-+	u64 masks[4]  = { 0x1ff, 0x1ff, 0x1ff, 0x1ff };
-+
-+	for (int level = 0; level < 4; level++) {
-+		u64 idx   = (gva >> shifts[level]) & masks[level];
-+		u64 entry_gpa = tbl + idx * 8;
-+
-+		/* Read the 8-byte page-table entry from guest memory */
-+		u8  *host = guest_flat_to_host(gdb.kvm, entry_gpa);
-+		if (!host || !host_ptr_in_ram(gdb.kvm, host) ||
-+		    !host_ptr_in_ram(gdb.kvm, host + 7)) {
-+			pr_warning("GDB: arm64_walk L%d: entry_gpa=0x%llx not in RAM (tbl=0x%llx idx=%llu)",
-+				   level,
-+				   (unsigned long long)entry_gpa,
-+				   (unsigned long long)tbl,
-+				   (unsigned long long)idx);
-+			return (u64)-1;
-+		}
-+
-+		u64 pte;
-+		memcpy(&pte, host, 8);
-+
-+		pr_debug("GDB: arm64_walk L%d idx=%llu entry_gpa=0x%llx pte=0x%llx",
-+			 level, (unsigned long long)idx,
-+			 (unsigned long long)entry_gpa,
-+			 (unsigned long long)pte);
-+
-+		/* Entry must be valid (bit[0]) */
-+		if (!(pte & 1ULL)) {
-+			pr_warning("GDB: arm64_walk L%d: pte=0x%llx not valid",
-+				   level, (unsigned long long)pte);
-+			return (u64)-1;
-+		}
-+
-+		if (level == 3) {
-+			/* L3 page entry: output address = pte[47:12] */
-+			u64 pa = (pte & 0x0000fffffffff000ULL) |
-+				 (gva & 0xfffULL);
-+			pr_debug("GDB: arm64_walk -> PA=0x%llx", (unsigned long long)pa);
-+			return pa;
-+		}
-+
-+		/* bit[1]: 0 = block, 1 = table */
-+		if (!(pte & 2ULL)) {
-+			/* Block entry at L1 (1GB) or L2 (2MB) */
-+			if (level == 1) {
-+				u64 pa = (pte & 0x0000ffffc0000000ULL) |
-+					 (gva & 0x3fffffffULL);
-+				pr_debug("GDB: arm64_walk L1 block -> PA=0x%llx", (unsigned long long)pa);
-+				return pa;
-+			} else if (level == 2) {
-+				u64 pa = (pte & 0x0000ffffffe00000ULL) |
-+					 (gva & 0x1fffffULL);
-+				pr_debug("GDB: arm64_walk L2 block -> PA=0x%llx", (unsigned long long)pa);
-+				return pa;
-+			}
-+			/* L0 block is reserved */
-+			pr_warning("GDB: arm64_walk L%d: unexpected block entry", level);
-+			return (u64)-1;
-+		}
-+
-+		/* Table entry: next level base = pte[47:12] */
-+		tbl = pte & 0x0000fffffffff000ULL;
-+	}
-+
-+	return (u64)-1;
++	if (ioctl(vcpu->vcpu_fd, KVM_SET_VCPU_EVENTS, &events) < 0)
++		pr_warning("GDB: KVM_SET_VCPU_EVENTS failed: %s",
++			   strerror(errno));
 +}
-+#endif
-+
- /*
-  * Translate a guest virtual address (GVA) to a guest physical address (GPA).
-  *
-  * Uses three strategies in order:
-  *
-  * 1. KVM_TRANSLATE on the currently selected vCPU.
-- *    Fails when the vCPU was paused in user mode with Linux KPTI active,
-- *    because the user-mode page table (CR3) does not map kernel addresses.
-+ *    Fails when the vCPU was paused in user mode (Linux KPTI / ARM64 TTBR0)
-+ *    because the user-mode page table does not map kernel addresses.
-  *
-  * 2. KVM_TRANSLATE on every other vCPU.
-  *    On multi-vCPU systems, another vCPU may be paused in kernel mode
-- *    whose page tables do include kernel mappings.
-+ *    whose page tables include kernel mappings.
-  *
-- * 3. Fixed-offset arithmetic for well-known Linux x86-64 kernel ranges.
-+ * 3. Fixed-offset arithmetic for well-known Linux kernel ranges.
-  *    This is the safety net for single-vCPU systems where ALL vCPUs are
-  *    paused in user mode (common when debugging a booted VM running a
-  *    shell).  Only reliable with the nokaslr kernel parameter.
-@@ -577,12 +802,11 @@ static u64 gva_to_gpa(u64 gva)
- 	/*
- 	 * Strategy 2: try every other vCPU.
- 	 *
--	 * Linux KPTI uses separate CR3 values for user mode and kernel mode.
--	 * If the selected vCPU was interrupted while running a userspace
--	 * process its CR3 points to the user-mode page table, which does NOT
--	 * map kernel virtual addresses (0xffffffff8xxxxxxx).  A different
--	 * vCPU that was paused inside the kernel will have the kernel-mode
--	 * CR3 loaded and can translate those addresses successfully.
-+	 * x86 Linux KPTI / ARM64: user-mode page tables do NOT map kernel
-+	 * virtual addresses.  If the selected vCPU was interrupted while
-+	 * running a userspace process, a different vCPU that was paused inside
-+	 * the kernel will have the kernel-mode page table loaded and can
-+	 * translate kernel addresses successfully.
- 	 */
- 	for (int i = 0; i < gdb.kvm->nrcpus; i++) {
- 		struct kvm_cpu *vcpu = gdb.kvm->cpus[i];
-@@ -596,11 +820,10 @@ static u64 gva_to_gpa(u64 gva)
- 
- #ifdef CONFIG_X86
- 	/*
--	 * Strategy 3: fixed-offset fallback for x86-64 Linux kernel ranges.
-+	 * Strategy 3 (x86-64): fixed-offset fallback for Linux kernel ranges.
- 	 *
- 	 * When ALL vCPUs are paused in user mode (e.g. a single-vCPU VM
- 	 * running a shell), KVM_TRANSLATE will fail for every kernel address.
--	 * We fall back to the known-fixed virtual→physical offsets.
- 	 *
- 	 * Direct physical map (PAGE_OFFSET): always fixed, KASLR-safe.
- 	 * Kernel text/data (__START_KERNEL_map): fixed only with nokaslr.
-@@ -613,6 +836,54 @@ static u64 gva_to_gpa(u64 gva)
- 		return gva - GDB_KERNEL_MAP_BASE;
- #endif
- 
-+#ifdef CONFIG_ARM64
-+	/*
-+	 * Strategy 3 (ARM64): software page-table walk via TTBR1_EL1.
-+	 *
-+	 * KVM_TRANSLATE is NOT implemented on ARM64 (always returns ENXIO).
-+	 * Instead we read TTBR1_EL1 (kernel page-table base) and walk the
-+	 * stage-1 4-level page table in software using guest_flat_to_host()
-+	 * to access guest memory.
-+	 *
-+	 * This works correctly regardless of KASLR or non-standard PHYS_OFFSET,
-+	 * as long as:
-+	 *   - The vCPU has TTBR1_EL1 configured (true after MMU is enabled).
-+	 *   - kvmtool's stage-2 IPA→GPA mapping is a flat identity (it is).
-+	 *   - The granule is 4KB with VA_BITS=48 (standard arm64 Linux).
-+	 *
-+	 * Fallback to fixed-offset arithmetic is kept for early boot (MMU off)
-+	 * or unusual kernel configs.
-+	 */
-+	if (gva >= 0xffff000000000000ULL) {
-+		u64 gpa = arm64_sw_walk_ttbr1(gva);
-+		if (gpa != (u64)-1)
-+			return gpa;
-+	}
-+
-+	/*
-+	 * Fixed-offset fallback (best-effort, requires nokaslr):
-+	 *
-+	 *   Linear map  [0xffff000000000000, 0xffff000000000000 + 256TB):
-+	 *     GPA = GVA - PAGE_OFFSET + PHYS_OFFSET
-+	 *   Kernel image [0xffff800000000000, ...):
-+	 *     GPA = GVA - KIMAGE_VADDR + TEXT_OFFSET + PHYS_OFFSET
-+	 *
-+	 * These constants match VA_BITS=48, 4KB granule, kvmtool default
-+	 * PHYS_OFFSET=0x40000000, TEXT_OFFSET=0x80000.
-+	 */
-+
-+	/* Linear map range: [PAGE_OFFSET, PAGE_OFFSET + LINEAR_MAP_SIZE) */
-+	if (gva >= GDB_ARM64_PAGE_OFFSET &&
-+	    gva <  GDB_ARM64_PAGE_OFFSET + GDB_ARM64_LINEAR_MAP_SIZE)
-+		return gva - GDB_ARM64_PAGE_OFFSET + GDB_ARM64_PHYS_OFFSET;
-+
-+	/* Kernel image / vmalloc range: [0xffff800000000000, ...) */
-+	if (gva >= GDB_ARM64_KIMAGE_VADDR)
-+		return gva - GDB_ARM64_KIMAGE_VADDR
-+		       + GDB_ARM64_TEXT_OFFSET
-+		       + GDB_ARM64_PHYS_OFFSET;
-+#endif
-+
- 	return (u64)-1;
- }
- 
-@@ -657,7 +928,8 @@ static bool gdb_read_guest_mem(u64 addr, void *buf, size_t len)
- 	return true;
- }
- 
--static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len)
-+static bool gdb_write_guest_mem_internal(u64 addr, const void *buf, size_t len,
-+					 bool sync_icache)
- {
- 	const u8 *in = buf;
- 
-@@ -679,6 +951,8 @@ static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len)
- 			return false;
- 
- 		memcpy(host, in, chunk);
-+		if (sync_icache)
-+			kvm_gdb__arch_sync_guest_insn(host, chunk);
- 		in   += chunk;
- 		addr += chunk;
- 		len  -= chunk;
-@@ -686,6 +960,16 @@ static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len)
- 	return true;
- }
- 
-+static bool gdb_write_guest_mem(u64 addr, const void *buf, size_t len)
-+{
-+	return gdb_write_guest_mem_internal(addr, buf, len, false);
-+}
-+
-+static bool gdb_write_guest_insn(u64 addr, const void *buf, size_t len)
-+{
-+	return gdb_write_guest_mem_internal(addr, buf, len, true);
-+}
-+
- /* ------------------------------------------------------------------ */
- /* Software breakpoints                                                */
- /* ------------------------------------------------------------------ */
-@@ -704,21 +988,20 @@ static int sw_bp_insert(u64 addr, int len)
- 		if (gdb.sw_bp[i].refs > 0)
- 			continue;
- 
--		u8 orig;
--		if (!gdb_read_guest_mem(addr, &orig, 1)) {
-+		if (!gdb_read_guest_mem(addr, gdb.sw_bp[i].orig_bytes,
-+					GDB_SW_BP_INSN_LEN)) {
- 			pr_warning("GDB: sw_bp_insert read failed at GVA 0x%llx",
- 				   (unsigned long long)addr);
- 			return -1;
- 		}
--		u8 brk = GDB_SW_BP_INSN;
--		if (!gdb_write_guest_mem(addr, &brk, 1)) {
-+		if (!gdb_write_guest_insn(addr, GDB_SW_BP_INSN,
-+					  GDB_SW_BP_INSN_LEN)) {
- 			pr_warning("GDB: sw_bp_insert write failed at GVA 0x%llx",
- 				   (unsigned long long)addr);
- 			return -1;
- 		}
- 
- 		gdb.sw_bp[i].addr   = addr;
--		gdb.sw_bp[i].orig_byte = orig;
- 		gdb.sw_bp[i].refs   = 1;
- 		gdb.sw_bp[i].active = true;
- 		return 0;
-@@ -736,7 +1019,8 @@ static int sw_bp_remove(u64 addr, int len)
- 			return 0;
- 
- 		if (gdb.sw_bp[i].active)
--			gdb_write_guest_mem(addr, &gdb.sw_bp[i].orig_byte, 1);
-+			gdb_write_guest_insn(addr, gdb.sw_bp[i].orig_bytes,
-+				     GDB_SW_BP_INSN_LEN);
- 		gdb.sw_bp[i].active = false;
- 		return 0;
- 	}
-@@ -760,8 +1044,9 @@ static void sw_bp_remove_all(void)
- 		if (gdb.sw_bp[i].refs <= 0)
- 			continue;
- 		if (gdb.sw_bp[i].active)
--			gdb_write_guest_mem(gdb.sw_bp[i].addr,
--					    &gdb.sw_bp[i].orig_byte, 1);
-+			gdb_write_guest_insn(gdb.sw_bp[i].addr,
-+					     gdb.sw_bp[i].orig_bytes,
-+					     GDB_SW_BP_INSN_LEN);
- 		gdb.sw_bp[i].refs = 0;
- 		gdb.sw_bp[i].active = false;
- 	}
-diff --git a/include/kvm/gdb.h b/include/kvm/gdb.h
-index 655fae8..257b088 100644
---- a/include/kvm/gdb.h
-+++ b/include/kvm/gdb.h
-@@ -16,7 +16,7 @@ struct kvm_gdb_hw_bp {
- 	bool active;
- };
- 
--#ifdef CONFIG_HAS_GDB_STUB
-+#if defined(CONFIG_X86) || defined(CONFIG_ARM64)
- 
- /*
-  * Public GDB stub API
-@@ -90,6 +90,12 @@ size_t kvm_gdb__arch_reg_pkt_size(void);
- /* GDB signal number to report on stop (SIGTRAP=5) */
- int kvm_gdb__arch_signal(struct kvm_cpu *vcpu);
- 
-+/*
-+ * Make a guest instruction patch visible to later instruction fetches.
-+ * host points at the host virtual address backing the patched guest bytes.
-+ */
-+void kvm_gdb__arch_sync_guest_insn(void *host, size_t len);
-+
- /*
-  * Returns true if the KVM_EXIT_DEBUG exit was caused by a software
-  * breakpoint (INT3 / #BP exception), as opposed to a hardware debug
-@@ -133,6 +139,10 @@ static inline bool kvm_gdb__active(struct kvm *kvm)
- 	return false;
- }
- 
-+static inline void kvm_gdb__arch_sync_guest_insn(void *host, size_t len)
-+{
-+}
-+
- #endif
- 
- #endif /* KVM__GDB_H */
-diff --git a/x86/gdb.c b/x86/gdb.c
-index 9e9ab0f..a295491 100644
---- a/x86/gdb.c
-+++ b/x86/gdb.c
-@@ -107,6 +107,10 @@ size_t kvm_gdb__arch_reg_pkt_size(void)
- 	return GDB_REGS_SIZE;
- }
- 
-+void kvm_gdb__arch_sync_guest_insn(void *host, size_t len)
-+{
-+}
-+
- /* ------------------------------------------------------------------ */
- /* Helpers: read/write KVM register structures                        */
- /* ------------------------------------------------------------------ */
 -- 
 2.34.1
 
