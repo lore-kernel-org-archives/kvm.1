@@ -1,298 +1,245 @@
-Received: from mx0a-002c1b01.pphosted.com (mx0a-002c1b01.pphosted.com [148.163.151.68])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F14333F597
-	for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 16:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.151.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774627437; cv=fail; b=VoN69LICfr4qPtZReQURnt+zwF8JDJe6ORaUvqrthlm8/4FuSSqr74aT2+GJP2eINV0x9SFt6fENwvsKkubtNdrB8fyCA3fm7StRdneJNwbbB1suqxoIPo4SYFEY/7vCN09cSaBIxRrqZFVpA270e9ob2CBlkjAnv/DwT8ewRSU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774627437; c=relaxed/simple;
-	bh=mcLyIvwN7YxSGAHO9MTGh78p+zRbLS6Co2rAIT61ZEU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=F1riqIcMGvlzxt0V0mdWKXmK+qcEz7yI4btgeQevSZ36b12jsrbl+xYy0C3BXaGhTCznV5+t+lGSiIsWdHXiQIynT44mxaVKkSOnkEt99qqN3zOXz58r3brpiYwa6kiULdE87jrCbhT70WtDijcEuZMZAL0pG+CLt4DdxceDN5U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=sjVNls8F; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=WFeeAea9; arc=fail smtp.client-ip=148.163.151.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nutanix.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABC8347525;
+	Fri, 27 Mar 2026 16:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774628556; cv=none; b=BuWhMrKE2acMSkrlzh8Gk5Q2b7A4Baj4Ahgob2ijKjpVY7RpWB4Rf1FBBhyzM2dd2QKh5hsWwUBBU74RP8oideSZX1lkyxJnoCgqSA5sQ7M6MfWOVRP0p/fyyJsWBFGrKYH4m9AQ+xChBiL5fVelXOVxah613mKNmoZLH6u9WUo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774628556; c=relaxed/simple;
+	bh=Dpc5ajG0cpPMRfGSQYtwGoqlsNmZJIl2iPLJGtGNLoE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=aDYm8yKdNfmIOPsgaMd+6qdJXlK0SDEXEs4iNIhBE8OPTeKcVMN3AajGon0wdN8UpIE6RHvoJb7fPKdquwr8fPpUpAeBHFcd90c6mKJK6ZS9W2e3rpKBOjQGjcuyH5GTNfvVbKTTBkqysYn1xE0NyMFC+/gidK5K9aa3rMjV/zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lc4VH80t; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="sjVNls8F";
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="WFeeAea9"
-Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
-	by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62R2Efbe2156679;
-	Fri, 27 Mar 2026 09:03:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
-	cc:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	proofpoint20171006; bh=mcLyIvwN7YxSGAHO9MTGh78p+zRbLS6Co2rAIT61Z
-	EU=; b=sjVNls8FZZXLDYuJ4gX6SrcPuaJO+K9+akm2Rjx9SklkA2Gx9gGhSNhgW
-	p+t40F77Bu2N6zWjwHvWRAXZuISbu8RF98WCg9nIVL5DA/1wxDBPNZ+hPAteYEML
-	sFIDo6BgKn3Iz1gFtpxSGQxEuneEFSUGdMt0iAGcLjkcn/f9havt8rm7/cwnRZEM
-	V45/7QrYVWjBzly0fhhAs9JRgMXR2a+vwquEADL12T59wc8tEg7gNBlEBV3bhXOi
-	qY+jCvOkgwJKSSzIEIlEv1J7Ak1imn3uZjkoIJdIcaZwT/XHg8oREpmxcpJBmMTl
-	CNRwLVH6JW/vd5MoPnBJaZMYV8wKw==
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11020076.outbound.protection.outlook.com [52.101.56.76])
-	by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 4d5gx3s5t6-2
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 09:03:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PH2LG5qi2vg9o8qHCBQyRoiLQSQ/2s+AzSCed2tjQGjbe60vbMNkIo2lM/rp4P6nqUpUth0+DbwHsZXYIoMye928BpI1PbeNBvfm56wzja7J0xtjoW7sOLoQmOqL1LBakAYb+8ZeQzr69mBU0O2OnNiWXWDJ0YKgWIxt44fBW+4A7s4D+c+LnDKSVMH8E78J1i1uZK/BI2xSY39MShgHDszczy/welxqQfiuR44TK7YU2ceshcBLCdt3mayULfXcoI9gSWu6U9B34QCLfq75T/L9b9B7ihcnVVkNYlCK/K6aLCjD8/AvxoIxWCFGpelo8Vd60K8aMVatn5yFSIcvAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mcLyIvwN7YxSGAHO9MTGh78p+zRbLS6Co2rAIT61ZEU=;
- b=sugxXZ+Z+AaoG3qmkjI/W84lMmhZEAHr67ObMmK58n33+xSM6mdHJOhadQi0Xd6rUV7IHUQpcycgNCT/rIXq7dymLiih/q4sjv6BfT3aImickvcsUujLMohWzlusOIGKFaw2t0o/JXIKD68shTZSzN7/gkaFN5Z//vU4bv1CuiPcg7ycuPy2HytzF/phHeh7iFh+9/LwdFGAkTahbjJfYfDbYKMQSs3Mm7bxw+T6CjNbqMjS03PcgejcaNbXPXIz+uJ2fIH3hNmrh7yLjXQ2dL1F2kCCdZ0xHXm720AvIUAWYAP2BgwCiZfVdDRxKMO+sKooNn4WH2LYuLa6NwJCyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mcLyIvwN7YxSGAHO9MTGh78p+zRbLS6Co2rAIT61ZEU=;
- b=WFeeAea9H55p/mn3RsmnltZN+ThYaRaAZX6v3AaY1++WSHJ2MW+9TMwkPPhKzmnVIPNQSPrH7nIPO2GDFep77aZL02MhWBwzydJbWoI2LDtlX78Vo7tgXT91QN1uo24+M3RnpxnIXSk5eel0WiRsyojPnpD4CP+5+Pw4Brf/QTqKFI6pV5cdh1Yh/fkT0mukeGEjsZfKvNT89ESOr353PAoDCf76TUhQn358LX0LsmMuJ2CddpGh3f0i8YY+oU6EeKzPIigsMgH0/OJq+NQMtUy9H53J1AucPmU8QHi0JEjp2r2riGGoqKxxnHDF1rXC123sBEv4Db+BoKOTreWGSQ==
-Received: from DS0PR02MB11138.namprd02.prod.outlook.com (2603:10b6:8:2f7::17)
- by CH3PR02MB10131.namprd02.prod.outlook.com (2603:10b6:610:1a2::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Fri, 27 Mar
- 2026 16:03:40 +0000
-Received: from DS0PR02MB11138.namprd02.prod.outlook.com
- ([fe80::c2e6:9a7:5b0f:384a]) by DS0PR02MB11138.namprd02.prod.outlook.com
- ([fe80::c2e6:9a7:5b0f:384a%4]) with mapi id 15.20.9745.024; Fri, 27 Mar 2026
- 16:03:40 +0000
-From: Jon Kohler <jon@nutanix.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        Nikunj A Dadhania
-	<nikunj@amd.com>,
-        "amit.shah@amd.com" <amit.shah@amd.com>,
-        Sean
- Christopherson <seanjc@google.com>
-Subject: Re: [PATCH kvm-unit-tests 3/9] svm: add basic GMET tests
-Thread-Topic: [PATCH kvm-unit-tests 3/9] svm: add basic GMET tests
-Thread-Index: AQHcvS/xMubyT6B3B0WMeNcOYyqYdrXCjCIA
-Date: Fri, 27 Mar 2026 16:03:40 +0000
-Message-ID: <E9047E4D-3CE0-40B1-A818-1FC04E59DC9D@nutanix.com>
-References: <20260326145035.119519-1-pbonzini@redhat.com>
- <20260326145035.119519-4-pbonzini@redhat.com>
-In-Reply-To: <20260326145035.119519-4-pbonzini@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: Apple Mail (2.3864.300.41.1.7)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR02MB11138:EE_|CH3PR02MB10131:EE_
-x-ms-office365-filtering-correlation-id: e7b357a3-a602-48e6-8096-08de8c1a6a02
-x-ld-processed: bb047546-786f-4de1-bd75-24e5b6f79043,ExtAddr
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|10070799003|376014|1800799024|366016|38070700021|22082099003|18002099003|56012099003;
-x-microsoft-antispam-message-info:
- roXQrzsijbvCgl340jg0QBUYcXeAp+6p40g8UXhW+MOS4J1Di4fXONnlXbKJ15CJPzl0pP/OJoeuxVWtf3RI9SEwwgGTZZDebiWAJlSBsOMDwu4QypwnP9oi1zjyZxd+Vy6kOFhOTjKq/qJlHuFmDMxaia6ZXfTasxC83FBE3BqF/9DrqO2OnZxRcTR08w0MNSliKjcJCZkIZpSIdZAULO2Lg+S0eq6jRp6JWcu5p0a1z2DlgPLZsGQSydYI1sP0BCWKHkICwVnBR//FncZ7cexUE02QQbqGHxv85F5CsTgWf9i/hICSK5pYBzHQloaeOXulr28bbmXjU3aM4m+74R7pdTuR2MgEQD9We4Ea6XL4482HihlQsfnS7p5K/IR1FgtmjBD1MlFvWkezjCMWPfea5kax/0L9WYn6LBuCOo1vDU7ea3/3w+EE2WWWHSDc8oAL185cueAQv+AEpr/xLY+CR1moyZ+Kc2b6VjNVxk7LcU+XE7xhP9eVA70jTDZjwhWP0OYd4o7XywDHHua1xEjC+jXbK5FKnoX05jj8B3wZQ1qVQyYvmuDjQ6XdEJ0IBsj9rXfN8WKDHySCYO2ogfnBJpunGtMvfYusGmtbE7CXY2NG+Bt+RoJcJoJc19o/PAXonIsia+t9UuX7MXShyIg/1VsF7FfC2BsJ5SCREsSQTpQceClNg1v0Gpc7xY2sBHFLiFESEQvWnOvrWuAVsm5AQYpZJxJw06ulwp2auLgK1wOoXdSf8SXij0TALDAvFJJWWo16SZLuye/AeVPjJuKMgsaDIcVgmGjmY7Rcpdc=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR02MB11138.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(1800799024)(366016)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VHdaV1oweDJ1eDJ1eUlURXNXV0pER2RCYSt2L01QazdFdkZtMTlYcWFnWmZq?=
- =?utf-8?B?L2pXUWtNU0k1RytKWlhlZ3JxbGR2Vkx5b0FHRG1kUWM5cW5xL2JDV09GNmZJ?=
- =?utf-8?B?NkhFdHB1KzJXbHc3UFR2ZmZvRmc4d296cWc5cWZUcGJpbHo4VkljeVF3dGQr?=
- =?utf-8?B?V2xGZEw3eFNtUWFhY25KMFl1NElmUW0vUUFHSExUbFV0U2s4NXpLZnZsU2hv?=
- =?utf-8?B?cVM0S0dzekpKTmlYRThQTVRhVktHZ2hFOUhVbmpPQWJxZ1NsbGl4OHUyRzVr?=
- =?utf-8?B?cGEwTmJ0eEZ0Wk42Smx2NDhONjhJR0Y2NWttTWFrWGhVYzRmMUFkQTFtY0U0?=
- =?utf-8?B?QlB6V011U3VvdG1UblBndm5sN2NJMWJBWEZSMkRmam55YU1EQ21tbDVHTUh4?=
- =?utf-8?B?dlM1S1JObXhidXc5cW9CNEYxd3UveWRqM1gvZVY4M0FEa2tnY0czeUF5dUZN?=
- =?utf-8?B?NkRXb2NTUzdsR0FjZ1V3YXYwR0Y4MXNha3EzdHRFdVYrdGMyTW1hcjhrTU10?=
- =?utf-8?B?NE9MSTFJMU9RMWZ6VjBXMkRZNkpwc1RzYnRDbHhYNzllVHVYc0NVWUlTMFE5?=
- =?utf-8?B?S0RIUFhzaUVweTJpcUJjTUc2c0kyR2N2Z1RzNXgrWXRUdXRWSmh2MHBxNzgv?=
- =?utf-8?B?bS9lT01lUjJZSUtMeDJSRjhRRGVZUTZpSnVJQkh4L01ydW9yczFUSGlkbGEz?=
- =?utf-8?B?RU4vQjFScC9rTFBIcXNhaE9wckl0dzdkZVVIaEZEYy83MEJJK0ZCZmRwQkg1?=
- =?utf-8?B?VDl3RllGUmFjTjcvQkFhYkE4ejUzdXNNbGRtTmpqcUdpMHVabnNkbGZPaWtv?=
- =?utf-8?B?Qll3LzdwNFRBYUNudnl3NE5FMEpJNlJzazIvNHc4ME40Z1BOZEtCV0M0QVFi?=
- =?utf-8?B?QnlVSlR1dzNKaCtua2oxWG9wRnBzSmxydCtLeVhsSmxleVMvdC80TEpzTytp?=
- =?utf-8?B?T1VRYnNuNWd6TjN4RHovR2RaUngxV3BQKzdNRUhDNlhMYm1oaUU0YWx4U0Jr?=
- =?utf-8?B?Wlg3S1FEd01nUWhqSkluNFE2UXBJdFJRM0dEcWVFZVRrREdoU050S2dSUjcv?=
- =?utf-8?B?Mm5TU0FtNDRXTndSbmdlSjJKa2lMVXFMNk5uK0w2VzVyN3Y3MTlSZDZKRU82?=
- =?utf-8?B?N2JRV29pbzFoNkFkbUhjTXJHaUJEM21IQjV0NVhhTUxWTmt6UHJuSldTQTYz?=
- =?utf-8?B?QTRLQnJHSEZ6TFhlTlFJRDdEUkJKeEJ4b0h5Ni9nempmWWVKL2FJczB2MHRV?=
- =?utf-8?B?N3dQeWhtK0hmaloyYVI1czNxemgrZVgzU1FHUzNUUTZZeFNzUmF6VWExOG1t?=
- =?utf-8?B?QklDb0ZpdE5CbWdjNGJiNllIVm5pZlY0c0Nia0lPWW5aei80OTVMbEdIL1Ux?=
- =?utf-8?B?NzN3WWQ3V1NvU0VtRGJydXhvUGI0OTVvcnplOWdpd3Vkc0REdnZweHhjL2Ey?=
- =?utf-8?B?V2g3TXlOMVFkYUNwWGorVTlwcHBqdjZOdXQrUWNXZGdFTytXV3FPcVNERmEy?=
- =?utf-8?B?MkhNVlRhNXVWWC9peE0xaExIeTZDcng5b2JIWDJvWXVzczJ6WS8reVFIbTV2?=
- =?utf-8?B?clJYMUx5UUJUZ2dYMmR0TEdyWVNuOE80WjJCd3N0eVI0NmFMUFE5OEUzcmxC?=
- =?utf-8?B?UmFaM2Rwam1TdjV6RDc2Tlk5QkJkS1Nualc2MS9aajNZaWR4NlFLZ1RyZjVa?=
- =?utf-8?B?S0JISExMVHdCdzNvYnFpcWNRMWI0bExSWHppbUFLV2VNR2xPRTFmRjBNMlp1?=
- =?utf-8?B?RDJIQ1FsRnNKWkFOdTAwUkdJalFZQ3RmWXhZaWxRRWZoR2tuRFdWUnBJencx?=
- =?utf-8?B?UzhibzFXOGhyOFpjS0xLcmN3Titybk10d2o5c0VkUEZkMFpITWo2L1BRc3p4?=
- =?utf-8?B?aW9ObVRudEgyZUJXT1hlWVl1WVIvM0NXWDhtY2ZPbDlQb1pxcVh3ODNlMEZ1?=
- =?utf-8?B?OXpLVHFmekhqNDJJVTBnVDBuS1EvR0JzeHFkWXNqRmtsK2t0aG14ajhDTDk0?=
- =?utf-8?B?N2ZiR3JwQy91Ly9XekRmRW56dUpMUU9SVEpGajNmSHJVa2doY0taRFJUcnpG?=
- =?utf-8?B?YVRDaHlPTnVpZEExbDdxVjBSNmlrdUt5TlhwQUdOaC9oWXJCTWtTODJ5aFVI?=
- =?utf-8?B?Um5FZWpkQUh1bTAwODU1N0NJUTVwQm50MDZGTFF3VmFUdzExUVhXaS9aWTE5?=
- =?utf-8?B?YmQ1R29HRHpwcGlXc2EvNjlob1h6UGFzWGZGcnRGR2w1M29EcEZLckthNGJH?=
- =?utf-8?B?bFJGbjFsWjh4elZHc2pNTmZURko3dXB2MUNoMnEvMWJldU1FTnhDeGFGdXNH?=
- =?utf-8?B?OGVBd1dvLy9mMmk1MkVtRzNGM1FnRmJMUGdBVlV4czJDdGcvNXdJWmQvZ2hk?=
- =?utf-8?Q?fZPIvUZ0RRzCpN1QOtk6GNmZ472VffCoZiz3rT52is6Kx?=
-x-ms-exchange-antispam-messagedata-1: 0JtBYJZrnK1OqIds57TYwlPjhYEyrANO+Go=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D1740D4CC17F5D46A83A5233CD4EA1B7@namprd02.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lc4VH80t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774628554; x=1806164554;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Dpc5ajG0cpPMRfGSQYtwGoqlsNmZJIl2iPLJGtGNLoE=;
+  b=Lc4VH80tRTef8mGmrlv/Lp9GHUDoc08LReuDTE/o/SALoxvxyq1ufUEZ
+   sCUWCSIYrbhkNAcKyaeA2VzqChF40kznTF1YqnxNGlnUyazBwTxa9tWCC
+   yEdMKahVyISCIelAa463+re2H1CilukniF5DbLzJy2/Odh5fhvQCHbzr5
+   /7ChRUfws1CCSuLm/FIziVfTtnrSJdkyJwzLt6cEWqPUkAkWhC2qBY6C2
+   AVLyAt3X0gY2jwHe6tWyjCmHn1HWoH/2LFDcxMKEKGCQR9T+rBuwe72ce
+   g/3Sw35bEzhU1x56AivmgNRZ3mLWAljJ36IVAF02u64EHhS11cumcABtE
+   A==;
+X-CSE-ConnectionGUID: kdZgef1YS/q/cV4RmqMcgA==
+X-CSE-MsgGUID: P5RYNBDURWCPaxhzMz3diA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="79565483"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="79565483"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 09:22:33 -0700
+X-CSE-ConnectionGUID: tR+Io45vSYuS88IP1jfBmA==
+X-CSE-MsgGUID: KaNlKWGERvGU+ZdObMcuzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="220516105"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by fmviesa006.fm.intel.com with ESMTP; 27 Mar 2026 09:22:30 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com,
+	x86@kernel.org
+Cc: chao.gao@intel.com,
+	dave.jiang@intel.com,
+	baolu.lu@linux.intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	zhenzhong.duan@intel.com,
+	kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com,
+	dave.hansen@linux.intel.com,
+	kas@kernel.org,
+	xiaoyao.li@intel.com,
+	vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/31] PCI/TSM: PCIe Link Encryption Establishment via TDX platform services
+Date: Sat, 28 Mar 2026 00:01:01 +0800
+Message-Id: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	AJB6C+nq4enwSocMDr2/mLMMSLROB2ArzJa5BoIBSLaRhXAb6VAhxcVo3RdGtYEZYdFmrP2inXY1HO7wzM2MfF3ANwzB21RG3FH1rwyxBROif7R2SGsZhUnMrvqmThy3BEoL4cLf9nXuLzGqQZRipMb3zjfFNRH8NNh4MuGbyTXAYTilFhOLZ6mZop+AmXoELrTZMuJXD9UvucyDk591Iuoz3OHx3fulhMpsAC3jlQoFnnYDhFbXu1jt73hamCd2jPTIA9xCh4FFRK99qB2LDD9AY4EHcSo8IXOmomj7z32gquxW7i2pC0oznU4dUzPwHDfxsyw3iQse/Ve+mfTNOg==
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR02MB11138.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7b357a3-a602-48e6-8096-08de8c1a6a02
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2026 16:03:40.8716
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: f75P+GAY0KO+thHkmukMUEjZtipv9o/hmUQarjQRDYsepR1B1xHjRGTD01uS49RNSocOgiUiMQeuMoHETvS0JMz2W4rnevsyfTuN7wy37DI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB10131
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDExMSBTYWx0ZWRfX0RjcUivEYZLD
- eN0e38SxaAmTshmiHXnLPKxDNG5IR+y++vVhELxTg7Dp+AZ3/kELvUKSYakDOjGIOAXUC1I0bqu
- ygT2kvQecSLe015zHNdckPSYGOsx26S++lv4Wh6z+n/QwXbTWVGty54QvTgY2NnEOBhqjrsXaYx
- PZKQP86uO72pE9l4Dv23FHVUVwfHI5kLFIFM4JFabcc+JSGyIn7+fQ+Ps3a7IDYV5p/ACY/AZ8F
- 2EkyqT6o/iT1Csmw7SjZFC4VmCJQlmFSqcjRUiEgUR6LGv8795lj3mFwPR8vPCZyXV7WjReml3n
- PR43nJhSAqKrAwrje6ZkR5u77wN8OVLmYa/yfg18NbyzvjLuSKotXuU9i63Ecb04AQMEAof5jUV
- oMb17TIMZku/WX3hnuhd9I61I/4rYcCH9SAAu5NKvBbH2DiFUyi4682CLvoyApx5Qc5fwJ54Kfd
- TDJjP2SB0pYYxxkBX2g==
-X-Authority-Analysis: v=2.4 cv=OvhCCi/t c=1 sm=1 tr=0 ts=69c6aa62 cx=c_pps
- a=BIqkfoc/VDQRyBVOA29iEg==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=0kUYKlekyDsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VofLwUrZ8Iiv6rRUPXIb:22 a=y4UcunY2MAxhM4LwGdWI:22 a=20KFwNOVAAAA:8
- a=F8_LWFB0NVUnusN1VekA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 4RaQ4MD6gbtvGa_vcVEySdvzbih8JRl8
-X-Proofpoint-GUID: 4RaQ4MD6gbtvGa_vcVEySdvzbih8JRl8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-27_01,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Reason: safe
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-DQoNCj4gT24gTWFyIDI2LCAyMDI2LCBhdCAxMDo1MOKAr0FNLCBQYW9sbyBCb256aW5pIDxwYm9u
-emluaUByZWRoYXQuY29tPiB3cm90ZToNCj4gDQo+IFRoZXNlIGNvdmVyIHRocmVlIGJhc2ljIHNj
-ZW5hcmlvcyBvZiBydW5uaW5nIHN1Y2Nlc3NmdWxseSwNCj4gZmFpbGluZyBkdWUgdG8gTlg9MSBh
-bmQgZmFpbGluZyBkdWUgdG8gVS9TPTEuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBQYW9sbyBCb256
-aW5pIDxwYm9uemluaUByZWRoYXQuY29tPg0KPiAtLS0NCj4gTWFrZWZpbGUgICAgICAgICAgICB8
-ICAyICstDQo+IGxpYi94ODYvcHJvY2Vzc29yLmggfCAgMSArDQo+IHg4Ni9zdm0uYyAgICAgICAg
-ICAgfCAxNyArKysrKysrKysrDQo+IHg4Ni9zdm0uaCAgICAgICAgICAgfCAgMSArDQo+IHg4Ni9z
-dm1fbnB0LmMgICAgICAgfCA4MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrLS0NCj4gNSBmaWxlcyBjaGFuZ2VkLCAxMDEgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlv
-bnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9NYWtlZmlsZSBiL01ha2VmaWxlDQo+IGluZGV4IDBj
-ZTA4MTNiLi40MDNmZDQ5NSAxMDA2NDQNCj4gLS0tIGEvTWFrZWZpbGUNCj4gKysrIGIvTWFrZWZp
-bGUNCj4gQEAgLTkzLDcgKzkzLDcgQEAgQ09NTU9OX0NGTEFHUyArPSAkKHd1bnVzZWRfYnV0X3Nl
-dF9wYXJhbWV0ZXIpDQo+IENGTEFHUyArPSAkKENPTU1PTl9DRkxBR1MpDQo+IENGTEFHUyArPSAk
-KHdtaXNzaW5nX3BhcmFtZXRlcl90eXBlKQ0KPiBDRkxBR1MgKz0gJCh3b2xkX3N0eWxlX2RlY2xh
-cmF0aW9uKQ0KPiAtQ0ZMQUdTICs9IC1Xb3ZlcnJpZGUtaW5pdCAtV21pc3NpbmctcHJvdG90eXBl
-cyAtV3N0cmljdC1wcm90b3R5cGVzDQo+ICtDRkxBR1MgKz0gLVdtaXNzaW5nLXByb3RvdHlwZXMg
-LVdzdHJpY3QtcHJvdG90eXBlcw0KPiANCj4gIyBFdmFsdWF0ZSBhbmQgYWRkIGxhdGUgY2ZsYWdz
-IGxhc3QgLS0gdGhleSBtYXkgZGVwZW5kIG9uIHByZXZpb3VzIGZsYWdzDQo+IExBVEVfQ0ZMQUdT
-IDo9ICQoTEFURV9DRkxBR1MpDQo+IGRpZmYgLS1naXQgYS9saWIveDg2L3Byb2Nlc3Nvci5oIGIv
-bGliL3g4Ni9wcm9jZXNzb3IuaA0KPiBpbmRleCA0MmRkMmQyYS4uMzJjZTA4ZTIgMTAwNjQ0DQo+
-IC0tLSBhL2xpYi94ODYvcHJvY2Vzc29yLmgNCj4gKysrIGIvbGliL3g4Ni9wcm9jZXNzb3IuaA0K
-PiBAQCAtMzc3LDYgKzM3Nyw3IEBAIHN0cnVjdCB4ODZfY3B1X2ZlYXR1cmUgew0KPiAjZGVmaW5l
-IFg4Nl9GRUFUVVJFX1BBVVNFRklMVEVSIFg4Nl9DUFVfRkVBVFVSRSgweDgwMDAwMDBBLCAwLCBF
-RFgsIDEwKQ0KPiAjZGVmaW5lIFg4Nl9GRUFUVVJFX1BGVEhSRVNIT0xEIFg4Nl9DUFVfRkVBVFVS
-RSgweDgwMDAwMDBBLCAwLCBFRFgsIDEyKQ0KPiAjZGVmaW5lIFg4Nl9GRUFUVVJFX1ZHSUYgWDg2
-X0NQVV9GRUFUVVJFKDB4ODAwMDAwMEEsIDAsIEVEWCwgMTYpDQo+ICsjZGVmaW5lIFg4Nl9GRUFU
-VVJFX0dNRVQgWDg2X0NQVV9GRUFUVVJFKDB4ODAwMDAwMEEsIDAsIEVEWCwgMTcpDQo+ICNkZWZp
-bmUgWDg2X0ZFQVRVUkVfVk5NSSBYODZfQ1BVX0ZFQVRVUkUoMHg4MDAwMDAwQSwgMCwgRURYLCAy
-NSkNCj4gI2RlZmluZSBYODZfRkVBVFVSRV9TTUUgWDg2X0NQVV9GRUFUVVJFKDB4ODAwMDAwMUYs
-IDAsIEVBWCwgIDApDQo+ICNkZWZpbmUgWDg2X0ZFQVRVUkVfU0VWIFg4Nl9DUFVfRkVBVFVSRSgw
-eDgwMDAwMDFGLCAwLCBFQVgsICAxKQ0KPiBkaWZmIC0tZ2l0IGEveDg2L3N2bS5jIGIveDg2L3N2
-bS5jDQo+IGluZGV4IDU4Y2JmMGE1Li5hODVkYTkwNSAxMDA2NDQNCj4gLS0tIGEveDg2L3N2bS5j
-DQo+ICsrKyBiL3g4Ni9zdm0uYw0KPiBAQCAtNDMsNiArNDMsMjMgQEAgdTY0ICpucHRfZ2V0X3Bt
-bDRlKHZvaWQpDQo+IHJldHVybiBwbWw0ZTsNCj4gfQ0KPiANCj4gK3ZvaWQgbnB0X3ByZXBhcmVf
-Z21ldF9wdGUoYm9vbCB1c2VyKQ0KPiArew0KPiArIGV4dGVybiB1OCBzdGFydDsNCj4gKyB1NjQg
-YWRkcmVzcyA9ICh1NjQpJnN0YXJ0ICYgfigxIDw8IDIxKTsNCj4gKyB1NjQgbWFzayA9IHVzZXIg
-PyBQVF9VU0VSX01BU0sgOiAwOw0KPiArIHU2NCAqcHRlOw0KPiArIGludCBpOw0KPiArDQo+ICsN
-Cj4gKyAvKiBmbGlwIHRoZSBVIGJpdCBvbiB0aGUgMiBNaUIgcmVnaW9uIHdoZXJlIHRoZSBjb2Rl
-IGlzIGxvYWRlZC4NCj4gKyAqIHRoZSBVIGJpdCBpcyBvbmx5IHVzZWQgZm9yIGV4ZWN1dGlvbiwg
-dGhlcmVmb3JlIHBhZ2UgdGFibGUgYWNjZXNzZXMgaWdub3JlIGl0DQo+ICsgKi8NCj4gKyBwdGUg
-PSBucHRfZ2V0X3B0ZShhZGRyZXNzKTsNCj4gKyBmb3IgKGkgPSAwOyBpIDwgNTEyOyBpKyspDQo+
-ICsgcHRlW2ldID0gKHB0ZVtpXSAmIH5QVF9VU0VSX01BU0spIHwgbWFzazsNCj4gK30NCj4gKw0K
-PiBib29sIHNtcF9zdXBwb3J0ZWQodm9pZCkNCj4gew0KPiByZXR1cm4gY3B1X2NvdW50KCkgPiAx
-Ow0KPiBkaWZmIC0tZ2l0IGEveDg2L3N2bS5oIGIveDg2L3N2bS5oDQo+IGluZGV4IDk0NzIwNmJi
-Li5jNTY5NWIzNyAxMDA2NDQNCj4gLS0tIGEveDg2L3N2bS5oDQo+ICsrKyBiL3g4Ni9zdm0uaA0K
-PiBAQCAtNDE4LDYgKzQxOCw3IEBAIHU2NCAqbnB0X2dldF9wdGUodTY0IGFkZHJlc3MpOw0KPiB1
-NjQgKm5wdF9nZXRfcGRlKHU2NCBhZGRyZXNzKTsNCj4gdTY0ICpucHRfZ2V0X3BkcGUodTY0IGFk
-ZHJlc3MpOw0KPiB1NjQgKm5wdF9nZXRfcG1sNGUodm9pZCk7DQo+ICt2b2lkIG5wdF9wcmVwYXJl
-X2dtZXRfcHRlKGJvb2wgdXNlcik7DQo+IGJvb2wgc21wX3N1cHBvcnRlZCh2b2lkKTsNCj4gYm9v
-bCBkZWZhdWx0X3N1cHBvcnRlZCh2b2lkKTsNCj4gYm9vbCBmZXBfc3VwcG9ydGVkKHZvaWQpOw0K
-PiBkaWZmIC0tZ2l0IGEveDg2L3N2bV9ucHQuYyBiL3g4Ni9zdm1fbnB0LmMNCj4gaW5kZXggYmQ1
-ZThmMzUuLjc1ZDljMmM5IDEwMDY0NA0KPiAtLS0gYS94ODYvc3ZtX25wdC5jDQo+ICsrKyBiL3g4
-Ni9zdm1fbnB0LmMNCj4gQEAgLTg3LDYgKzg3LDc5IEBAIHN0YXRpYyBib29sIG5wdF91c19jaGVj
-ayhzdHJ1Y3Qgc3ZtX3Rlc3QgKnRlc3QpDQo+ICAgICYmICh2bWNiLT5jb250cm9sLmV4aXRfaW5m
-b18xID09IDB4MTAwMDAwMDA1VUxMKTsNCj4gfQ0KPiANCj4gK3N0YXRpYyBib29sIG5wdF9nbWV0
-X3N1cHBvcnRlZCh2b2lkKQ0KPiArew0KPiArIHJldHVybiBucHRfc3VwcG9ydGVkKCkgJiYgdGhp
-c19jcHVfaGFzKFg4Nl9GRUFUVVJFX0dNRVQpOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBu
-cHRfZ21ldF9udWxsX3ByZXBhcmUoc3RydWN0IHN2bV90ZXN0ICp0ZXN0KQ0KPiArew0KPiArIC8q
-IHNldCBVPTAgLSBubyBmYWlsdXJlICovDQo+ICsgbnB0X3ByZXBhcmVfZ21ldF9wdGUoZmFsc2Up
-Ow0KPiArIHZtY2ItPmNvbnRyb2wubmVzdGVkX2N0bCB8PSBTVk1fTkVTVEVEX0dNRVQ7DQo+ICt9
-DQo+ICsNCj4gK3N0YXRpYyBib29sIG5wdF9nbWV0X251bGxfY2hlY2soc3RydWN0IHN2bV90ZXN0
-ICp0ZXN0KQ0KPiArew0KPiArIC8qIHJlc2V0IFU9MSAqLw0KPiArIG5wdF9wcmVwYXJlX2dtZXRf
-cHRlKHRydWUpOw0KPiArIHZtY2ItPmNvbnRyb2wubmVzdGVkX2N0bCAmPSB+U1ZNX05FU1RFRF9H
-TUVUOw0KPiArICAgICAgICByZXR1cm4gdm1jYi0+Y29udHJvbC5leGl0X2NvZGUgPT0gU1ZNX0VY
-SVRfVk1NQ0FMTDsNCj4gK30NCg0KTml0OiBzcGFjZSB2cyB0YWJzIGFib3ZlIF5eDQoNCj4gKw0K
-PiArc3RhdGljIHZvaWQgbnB0X2dtZXRfbnhfcHJlcGFyZShzdHJ1Y3Qgc3ZtX3Rlc3QgKnRlc3Qp
-DQo+ICt7DQo+ICsgdTY0ICpwdGUgPSBucHRfZ2V0X3B0ZSgodTY0KSBudWxsX3Rlc3QpOw0KPiAr
-DQo+ICsgLyogc2V0IFU9MCAtIGZhaWx1cmUgd2lsbCBiZSBmcm9tIE5YICovDQo+ICsgbnB0X3By
-ZXBhcmVfZ21ldF9wdGUoZmFsc2UpOw0KPiArICpwdGUgfD0gUFQ2NF9OWF9NQVNLOw0KPiArIHZt
-Y2ItPmNvbnRyb2wubmVzdGVkX2N0bCB8PSBTVk1fTkVTVEVEX0dNRVQ7DQo+ICsNCj4gKyB0ZXN0
-LT5zY3JhdGNoID0gcmRtc3IoTVNSX0VGRVIpOw0KPiArIHdybXNyKE1TUl9FRkVSLCB0ZXN0LT5z
-Y3JhdGNoIHwgRUZFUl9OWCk7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyBib29sIG5wdF9nbWV0X254
-X2NoZWNrKHN0cnVjdCBzdm1fdGVzdCAqdGVzdCkNCj4gK3sNCj4gKyB1NjQgKnB0ZSA9IG5wdF9n
-ZXRfcHRlKCh1NjQpIG51bGxfdGVzdCk7DQo+ICsNCj4gKyAvKiByZXNldCBVPTEsIE5YPTAgKi8N
-Cj4gKyBucHRfcHJlcGFyZV9nbWV0X3B0ZSh0cnVlKTsNCj4gKyAqcHRlICY9IH5QVDY0X05YX01B
-U0s7DQo+ICsgdm1jYi0+Y29udHJvbC5uZXN0ZWRfY3RsICY9IH5TVk1fTkVTVEVEX0dNRVQ7DQo+
-ICsNCj4gKyB3cm1zcihNU1JfRUZFUiwgdGVzdC0+c2NyYXRjaCk7DQo+ICsNCj4gKyAvKiBlcnJh
-dGEgMTIxOCAtIHRoZSBVIGJpdCBpbiB0aGUgcGFnZSBmYXVsdCBlcnJvciBjb2RlIG1heSBiZSBp
-bmNvcnJlY3QgKi8NCj4gKyByZXR1cm4gKHZtY2ItPmNvbnRyb2wuZXhpdF9jb2RlID09IFNWTV9F
-WElUX05QRikNCj4gKyAgICAmJiAoKHZtY2ItPmNvbnRyb2wuZXhpdF9pbmZvXzEgJiB+UEZFUlJf
-VVNFUl9NQVNLKSA9PSAweDEwMDAwMDAxMVVMTCk7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lk
-IG5wdF9nbWV0X3VzX3ByZXBhcmUoc3RydWN0IHN2bV90ZXN0ICp0ZXN0KQ0KPiArew0KPiArIHU2
-NCAqcHRlID0gbnB0X2dldF9wdGUoKHU2NCkgbnVsbF90ZXN0KTsNCj4gKw0KPiArIG5wdF9wcmVw
-YXJlX2dtZXRfcHRlKGZhbHNlKTsNCj4gKyAqcHRlIHw9IFBUX1VTRVJfTUFTSzsNCj4gKyB2bWNi
-LT5jb250cm9sLm5lc3RlZF9jdGwgfD0gU1ZNX05FU1RFRF9HTUVUOw0KPiArDQo+ICsgdGVzdC0+
-c2NyYXRjaCA9IHJkbXNyKE1TUl9FRkVSKTsNCj4gKyB3cm1zcihNU1JfRUZFUiwgdGVzdC0+c2Ny
-YXRjaCB8IEVGRVJfTlgpOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgYm9vbCBucHRfZ21ldF91c19j
-aGVjayhzdHJ1Y3Qgc3ZtX3Rlc3QgKnRlc3QpDQo+ICt7DQo+ICsgbnB0X3ByZXBhcmVfZ21ldF9w
-dGUodHJ1ZSk7DQo+ICsgdm1jYi0+Y29udHJvbC5uZXN0ZWRfY3RsICY9IH5TVk1fTkVTVEVEX0dN
-RVQ7DQo+ICsNCj4gKyB3cm1zcihNU1JfRUZFUiwgdGVzdC0+c2NyYXRjaCk7DQo+ICsNCj4gKyAv
-KiBlcnJhdGEgMTIxOCAtIHRoZSBVIGJpdCBpbiB0aGUgcGFnZSBmYXVsdCBlcnJvciBjb2RlIG1h
-eSBiZSBpbmNvcnJlY3QgKi8NCj4gKyByZXR1cm4gKHZtY2ItPmNvbnRyb2wuZXhpdF9jb2RlID09
-IFNWTV9FWElUX05QRikNCj4gKyAgICAmJiAoKHZtY2ItPmNvbnRyb2wuZXhpdF9pbmZvXzEgJiB+
-UEZFUlJfVVNFUl9NQVNLKSA9PSAweDEwMDAwMDAxMVVMTCk7DQo+ICt9DQo+ICsNCj4gc3RhdGlj
-IHZvaWQgbnB0X3J3X3ByZXBhcmUoc3RydWN0IHN2bV90ZXN0ICp0ZXN0KQ0KPiB7DQo+IA0KPiBA
-QCAtMzgwLDkgKzQ1Myw5IEBAIHNraXBfcHRlX3Rlc3Q6DQo+IHZtY2ItPnNhdmUuY3I0ID0gc2df
-Y3I0Ow0KPiB9DQo+IA0KPiAtI2RlZmluZSBOUFRfVjFfVEVTVChuYW1lLCBwcmVwYXJlLCBndWVz
-dF9jb2RlLCBjaGVjaykgXA0KPiArI2RlZmluZSBOUFRfVjFfVEVTVChuYW1lLCBwcmVwYXJlLCBn
-dWVzdF9jb2RlLCBjaGVjaywgbW9yZS4uLikgXA0KPiB7ICNuYW1lLCBucHRfc3VwcG9ydGVkLCBw
-cmVwYXJlLCBkZWZhdWx0X3ByZXBhcmVfZ2lmX2NsZWFyLCBndWVzdF9jb2RlLCBcDQo+IC0gIGRl
-ZmF1bHRfZmluaXNoZWQsIGNoZWNrIH0NCj4gKyAgZGVmYXVsdF9maW5pc2hlZCwgY2hlY2ssIG1v
-cmUgfQ0KPiANCj4gI2RlZmluZSBOUFRfVjJfVEVTVChuYW1lKSB7ICNuYW1lLCAudjIgPSBuYW1l
-IH0NCj4gDQo+IEBAIC0zOTAsNiArNDYzLDEyIEBAIHN0YXRpYyBzdHJ1Y3Qgc3ZtX3Rlc3QgbnB0
-X3Rlc3RzW10gPSB7DQo+IE5QVF9WMV9URVNUKG5wdF9ueCwgbnB0X254X3ByZXBhcmUsIG51bGxf
-dGVzdCwgbnB0X254X2NoZWNrKSwNCj4gTlBUX1YxX1RFU1QobnB0X25wLCBucHRfbnBfcHJlcGFy
-ZSwgbnB0X25wX3Rlc3QsIG5wdF9ucF9jaGVjayksDQo+IE5QVF9WMV9URVNUKG5wdF91cywgbnB0
-X3VzX3ByZXBhcmUsIG5wdF91c190ZXN0LCBucHRfdXNfY2hlY2spLA0KPiArIE5QVF9WMV9URVNU
-KG5wdF9nbWV0X251bGwsIG5wdF9nbWV0X251bGxfcHJlcGFyZSwgbnVsbF90ZXN0LCBucHRfZ21l
-dF9udWxsX2NoZWNrLA0KPiArIC5zdXBwb3J0ZWQgPSBucHRfZ21ldF9zdXBwb3J0ZWQpLA0KPiAr
-IE5QVF9WMV9URVNUKG5wdF9nbWV0X254LCBucHRfZ21ldF9ueF9wcmVwYXJlLCBudWxsX3Rlc3Qs
-IG5wdF9nbWV0X254X2NoZWNrLA0KPiArIC5zdXBwb3J0ZWQgPSBucHRfZ21ldF9zdXBwb3J0ZWQp
-LA0KPiArIE5QVF9WMV9URVNUKG5wdF9nbWV0X3VzLCBucHRfZ21ldF91c19wcmVwYXJlLCBudWxs
-X3Rlc3QsIG5wdF9nbWV0X3VzX2NoZWNrLA0KPiArIC5zdXBwb3J0ZWQgPSBucHRfZ21ldF9zdXBw
-b3J0ZWQpLA0KPiBOUFRfVjFfVEVTVChucHRfcncsIG5wdF9yd19wcmVwYXJlLCBucHRfcndfdGVz
-dCwgbnB0X3J3X2NoZWNrKSwNCj4gTlBUX1YxX1RFU1QobnB0X3J3X3Bmd2FsaywgbnB0X3J3X3Bm
-d2Fsa19wcmVwYXJlLCBudWxsX3Rlc3QsIG5wdF9yd19wZndhbGtfY2hlY2spLA0KPiBOUFRfVjFf
-VEVTVChucHRfbDFtbWlvLCBucHRfbDFtbWlvX3ByZXBhcmUsIG5wdF9sMW1taW9fdGVzdCwgbnB0
-X2wxbW1pb19jaGVjayksDQo+IC0tIA0KPiAyLjUyLjANCj4gDQo+IA0KDQo=
+This series is based on mainline v7.0-rc2 and targets v7.1 (quite
+aggressive though). The merge path will be through tsm.git with tip.git
+acks where needed. I know there are several parallel series on the fly,
+so Dave you can wait for Dan to review, or ack/nak as you have time,
+thanks.  No KVM change, no acks from kvm.git is needed.
+
+== Overview ==
+
+This series adds a PCI/TSM low-level driver implementation for TDX
+Connect (the TEE I/O architecture for Intel platforms). PCI/TSM is the
+Linux PCI core subsystem [1][2] that supports Link Encryption & trust
+establishment between CoCo-VM and assigned devices, allowing CoCo-VM to
+accept devices for private memory access (private DMA). This series
+only implements Link Encryption. It is a pre-requisite for trusted
+device assignment in TDX system.
+
+Two protocols, SPDM (Security Protocol and Data Model) and PCI
+IDE (Integrity and Data Encryption) work together to establish the Link
+Encryption. SPDM creates trust on untrusted transit for key exchanging.
+IDE performs the actual real-time encryption for data traffic. In TSM
+world, they are managed by secure firmwares, e.g. TDX Module.
+
+To manage these protocols, TDX Module introduces Extensions to support
+long running / hard-irq preemptible flows inside. Host invokes these
+flows via Extension-SEAMCALLs.
+
+This series has 2 distinct parts:
+
+  Patches  1-13: TDX core cleanups and TDX Module Extensions enabling
+  Patches 14-31: tdx_host TSM driver for PCIe Link Encryption
+
+[1]: https://lore.kernel.org/linux-coco/20251031212902.2256310-1-dan.j.williams@intel.com/
+[2]: https://lore.kernel.org/linux-coco/20251105040055.2832866-1-dan.j.williams@intel.com/
+
+== Merge notes ==
+
+ - Merge conflicts with parallel series:
+   Sean's VMXON: https://lore.kernel.org/all/20260214012702.2368778-1-seanjc@google.com/
+   Chao's runtime update: https://lore.kernel.org/all/20260326084448.29947-1-chao.gao@intel.com/
+
+ - Picked several patches from parallel series:
+   Patch  1: https://lore.kernel.org/all/20260323-fuller_tdx_kexec_support-v2-1-87a36409e051@intel.com/
+   Patch 14: https://lore.kernel.org/all/20260303000207.1836586-2-dan.j.williams@intel.com/
+   Patch 15: https://lore.kernel.org/all/20260326084448.29947-3-chao.gao@intel.com/
+
+== Changelog ==
+v2:
+- Subject change. previously it was:
+  "PCI/TSM: TDX Connect: SPDM Session and IDE Establishment"
+- Remove __free() for core TDX and refactor all tdx_ext functions
+- Use kzalloc(PAGE_SIZE, ...) instead of alloc_page() in TDX core
+- Check feature0 support before reading optional global metadata
+- Split the TDX Module Extensions enabling into small patches
+- Enable TDX Module Extensions along with Basic TDX enabling
+- Refactor SEAMCALL version handling
+- For tdx_page_array, make page allocation method configurable
+  - For TDX Module Extensions, use contiguous page allocation
+  - For IOMMU_MT, use a custom page allocation
+- Print TDX Extensions memory usage
+- Various Changelog & comments refine
+
+v1: https://lore.kernel.org/all/20251117022311.2443900-1-yilun.xu@linux.intel.com/
+- No tdx_enable() needed in tdx-host
+- Simplify tdx_page_array kAPI, no singleton mode input
+- Refactor the handling of TDX_INTERRUPTED_RESUMABLE
+- Refine the usage of scope-based cleanup in tdx-host
+- Set nr_stream_id in tdx-host, not in PCI ACPI initialization
+- Use KEYP table + ECAP bit50 to decide Domain ID reservation
+- Refactor IDE Address Association Register setup
+- Remove prototype patches
+- Refactor tdx_enable_ext() locking because of Sean's change
+- Pick ACPICA KEYP patch from ACPICA repo
+- Select TDX Connect feature for TDH.SYS.CONFIG, remove temporary
+  solution for TDH.SYS.INIT
+- Use Rick's tdx_errno.h movement patch [6]
+- Factor out scope-based cleanup patches in mm
+- Remove redunant header files, add header files only when first used
+- Use dev_err_probe() when possible
+- keyp_info_match() refactor
+- Use bitfield.h macros for PAGE_LIST_INFO & HPA_ARRAY_T raw value
+- Remove reserved fields for spdm_config_info_t
+- Simplify return for tdh_ide_stream_block()
+- Other small fixes for Jonathan's comments
+
+RFC: https://lore.kernel.org/linux-coco/20250919142237.418648-1-dan.j.williams@intel.com/
+
+
+Chao Gao (1):
+  coco/tdx-host: Introduce a "tdx_host" device
+
+Dan Williams (1):
+  PCI/TSM: Report active IDE streams per host bridge
+
+Dave Jiang (1):
+  acpi: Add KEYP support to fw_table parsing
+
+Kiryl Shutsemau (1):
+  x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
+
+Lu Baolu (2):
+  iommu/vt-d: Cache max domain ID to avoid redundant calculation
+  iommu/vt-d: Reserve the MSB domain ID bit for the TDX module
+
+Xu Yilun (21):
+  x86/virt/tdx: Move bit definitions of TDX_FEATURES0 to public header
+  x86/virt/tdx: Add tdx_page_array helpers for new TDX Module objects
+  x86/virt/tdx: Support allocating contiguous pages for tdx_page_array
+  x86/virt/tdx: Extend tdx_page_array to support IOMMU_MT
+  x86/virt/tdx: Read global metadata for TDX Module Extensions/Connect
+  x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
+  x86/virt/tdx: Configure TDX Module with optional TDX Connect feature
+  x86/virt/tdx: Move tdx_clflush_page() up in the file
+  x86/virt/tdx: Add extra memory to TDX Module for Extensions
+  x86/virt/tdx: Make TDX Module initialize Extensions
+  x86/virt/tdx: Enable the Extensions after basic TDX Module init
+  x86/virt/tdx: Extend tdx_clflush_page() to handle compound pages
+  coco/tdx-host: Support Link TSM for TDX host
+  x86/virt/tdx: Add a helper to loop on TDX_INTERRUPTED_RESUMABLE
+  iommu/vt-d: Export a helper to do function for each dmar_drhd_unit
+  coco/tdx-host: Setup all trusted IOMMUs on TDX Connect init
+  mm: Add __free() support for __free_page()
+  coco/tdx-host: Parse ACPI KEYP table to init IDE for PCI host bridges
+  x86/virt/tdx: Add SEAMCALL wrappers for IDE stream management
+  coco/tdx-host: Implement IDE stream setup/teardown
+  coco/tdx-host: Finally enable SPDM session and IDE Establishment
+
+Zhenzhong Duan (4):
+  x86/virt/tdx: Add SEAMCALL wrappers for trusted IOMMU setup and clear
+  coco/tdx-host: Add a helper to exchange SPDM messages through DOE
+  x86/virt/tdx: Add SEAMCALL wrappers for SPDM management
+  coco/tdx-host: Implement SPDM session setup
+
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/tdx-host/Kconfig            |  16 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/tdx-host/Makefile           |   1 +
+ Documentation/ABI/testing/sysfs-class-tsm     |  13 +
+ arch/x86/include/asm/shared/tdx.h             |   1 +
+ .../vmx => include/asm/shared}/tdx_errno.h    |  30 +-
+ arch/x86/include/asm/tdx.h                    |  95 +-
+ arch/x86/include/asm/tdx_global_metadata.h    |  14 +
+ arch/x86/kvm/vmx/tdx.h                        |   1 -
+ arch/x86/virt/vmx/tdx/tdx.h                   |  42 +-
+ drivers/iommu/intel/iommu.h                   |   2 +
+ include/linux/acpi.h                          |   3 +
+ include/linux/dmar.h                          |   2 +
+ include/linux/fw_table.h                      |   1 +
+ include/linux/gfp.h                           |   1 +
+ include/linux/pci-ide.h                       |   4 +
+ include/linux/tsm.h                           |   3 +
+ arch/x86/virt/vmx/tdx/tdx.c                   | 839 ++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  36 +
+ drivers/acpi/tables.c                         |  12 +-
+ drivers/iommu/intel/dmar.c                    |  67 ++
+ drivers/iommu/intel/iommu.c                   |  10 +-
+ drivers/pci/ide.c                             |   9 +-
+ drivers/virt/coco/tdx-host/tdx-host.c         | 952 ++++++++++++++++++
+ drivers/virt/coco/tsm-core.c                  |  97 ++
+ lib/fw_table.c                                |   9 +
+ 27 files changed, 2202 insertions(+), 61 deletions(-)
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ rename arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h (61%)
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
+
+
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+-- 
+2.25.1
+
