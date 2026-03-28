@@ -1,89 +1,90 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B813F1E7C23
-	for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 00:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039811FC0EF;
+	Sat, 28 Mar 2026 00:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774658460; cv=none; b=LdP223UOsy2PtSogPJ5zvxAjH3RJLpZwUzKcNxYhKHmlHA0aLrpDsdvBg64uAvaI2kUTKq4BSffaEGDXP66LxmBP/eVoKzAg0bqJt9tm+xD7MdXoSqDKnd9MPQVVt8bXAHJcvarOipBSQLSohBPJYR26I6t53vFplnjwQnxEwbw=
+	t=1774658583; cv=none; b=Rkp9C3p80jIBzgPw0iP3rWRV2BPOw+gbk+2aFtsWps8V2+AA55wiVXZLVWpKDtV+Upwzt0/NfsVNiamzi1PARRkjMZBC4DCHb2Bgx5vFXmXngTQ+7vvFt3hp+JCxrhmXRRyIQVTPt05iCXYU6X0iDMTbHKP4wPgN75LMGxxuGbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774658460; c=relaxed/simple;
-	bh=kkMbLQiF1yiu/4D1F7gdIJP7OU7OUWLGjeRdK2oxbv8=;
+	s=arc-20240116; t=1774658583; c=relaxed/simple;
+	bh=7NSTQHAfTLzUwxbewhUsEMWtdbDebIbYLUZFZavLeDg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t2f/XWsSiegUh4c2nHIqScSZXMU3vmk9+E8k4YeL5jIZ7np3Bn8jRKtwhqnEGNlQ3zIkXMv9VtGZp8Iev0buMMoluBcNe1vdn8V992W+G+qXxM/pWf3jStNhRklsA2meRn30Z/799vHw6aKke/bWymtiPkOtiTcaoCHJ+mgAk9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mudcc9W6; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=U5KwsUAAK4rbkKYCjyacb1f0EfoFaLsF/+5VOdN4fH284cHcWQhUupCJIE7G8DmhKnobUC3J4Ue878LuamW+inXbGvAfGwAZ18Wo8k2ZssRLDOfLkf2OunBYR5xQmEgTByfYiGvDpXCS/SYZu1mBM52n5SLK7au77/Nv/nEopvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LUH2KR/2; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mudcc9W6"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b243198058so12775ad.1
-        for <kvm@vger.kernel.org>; Fri, 27 Mar 2026 17:40:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774658458; x=1775263258; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nStNyZTKOlE87jhF0HQxL1hyyc8Mzt87SSZU0LYZvHU=;
-        b=Mudcc9W6ig0osqUmr9sB6PHER6SstR4CpEvrfwmPE+YKuPaqrG47VvZMRRzjmjFJo6
-         OjBh0pza1AdQkf+w8PbAd8fNACt31lsYIHSrOAnwDnBcdYryrWZ9r+LIkKXhycv8c3dP
-         nBGWncGC+Gj/fw6EgVyDRQfUTclAfK1xn5Lh5xyuY86bynaDW3Mt6Nv3zsnVdRcndwQt
-         Ya/WIF6Mb91bp0qDXq7jn2hdd7DDpn89KEyRIiO7dc322yXgIwcd7QpUclinSxCogTyy
-         1jE7MnQhFkVzt2Ki/qle+2gfw8E2j1lNTkGz1VNuURDyt/Lsn38cbATsmlZS52nOj/jg
-         BfaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774658458; x=1775263258;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nStNyZTKOlE87jhF0HQxL1hyyc8Mzt87SSZU0LYZvHU=;
-        b=cHc8ppwipMNkQHMVsO/tMCbfxiCCP9fBhJra+l+MXvcqJ480qRuBECpRxyg9+1qUUZ
-         C0UW8TuMi2GaXrw6kYjRaVspBc+X7CQcqkZADVrKPO7rB0Tv5aDeZ4tS7JrI62DelTVv
-         kp0AHn2+dUHKXh9s6/Id94TgkJm0QhbHK433ovWNJpE9Tm1q30RmeH9upFweXGhHCu7t
-         8bXsH+m/5HHTnBp5jcRp7Z1n/+4MsR+/ZgPKnD/gHg3Of5/SacU1PX4JjUNF9LC3wZwc
-         MY1LTVV0m7AFzCbEw2y6sKs7lnYHSRLq0bDQvfLFLEg0YPYDJrrjRmzgnd/qZnvmvS60
-         VTiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzjvtaXHuiNDfL8iX474m/cSjqc4VgBPNiapBY+4IkFs/1NXo3jvwR/gWfeoRhGwQ4d2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJ8samileHVRB3ubimqeM/P9UJZNMi5RnkoEvVi+2dL+0Nu6W3
-	dLvHWOo5nSLrHH1EizExTQ8vELIRYd16udHL9MW4nEcqfp4pILgXDj90/aTmDDIamw==
-X-Gm-Gg: ATEYQzxGhJUuJI91dBZPv2hQI90lHLLrnC4Biu4iakhehXAVYamuHHFXmH3EcXrHWnj
-	Bm8wTemeY+5cKfGZ8m0xD59KpUQrOl9xaKfhv4RKLF0syOOYzlYFDb85ObfJIE5h66oqDo4x3hl
-	miAJ1XuUNZ2x2RuRyklmhG4AXqE/oXF52AwfVWVR7ZxYnCtfhTtZquDyvZ9NUMdahQONzJj6QGu
-	94ZSj0pfs4wRclUG/DUlSuHIhLM6bjjXuzcICQ95s+n84F5bQSWaUAEsgT/0srWNf5NgnE3dRBA
-	bgs/KK+QevPrmswBcwnYm7RSDOGBf8VyH1X4UHdj5RctUyXybAQZ767cSs6nBSDBwomXW+boFCz
-	eIPWCpugn7aXxw45zc8OgjA2LTYqDSwW3Nujm9RFPl+mJBcD2r5EQMPxkIJ2ZdTJPAf4b4h6v0X
-	VIYkkvoCEPbJj6IEfTz8v2lhmNGdLBPsuWUiGaTogH88SKXqRFPh1bW8O47Yc=
-X-Received: by 2002:a17:902:ea02:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2b242d1addbmr913375ad.19.1774658457398;
-        Fri, 27 Mar 2026 17:40:57 -0700 (PDT)
-Received: from google.com (249.53.168.34.bc.googleusercontent.com. [34.168.53.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2427c4cafsm5106475ad.81.2026.03.27.17.40.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 17:40:56 -0700 (PDT)
-Date: Sat, 28 Mar 2026 00:40:52 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, rientjes@google.com,
-	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
-	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
-	dave.hansen@linux.intel.com
-Subject: Re: [PATCH RFC v2 5/7] mm: selftests: Add shmem memory failure test
-Message-ID: <accjlG9lUyDQO_mz@google.com>
-References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-5-92c596402a7a@google.com>
- <78a855da-8fc2-4e85-90a0-6bf9af030c02@linux.alibaba.com>
- <acHeLL0l948jRchK@google.com>
- <52c26e05-5bbc-4f63-84bf-c4879a6de7d1@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LUH2KR/2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774658582; x=1806194582;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7NSTQHAfTLzUwxbewhUsEMWtdbDebIbYLUZFZavLeDg=;
+  b=LUH2KR/2cTnaQ30segD0hwq3e0Bh9q6n67OKtudrVOFN1G7SrxNKZA6w
+   Cx+qCxnxuUaBsmM7E3rN5L5CEDtF2rvlR1URWSvOPTT3F6mrNXP225uvt
+   qU8YDLOItJ8EukusaZPLcWu0qgJ2MsFM/6CT0xq6O/MI02QR02Wz1Jct/
+   CJ14W+TBALaqjRfHac4R2XJDC7yrP1rYq56YZw0r9C5DP+pJ5kl6jFSFh
+   I0gdlPaTHtBabClZ+EibyLVSO9cnCu6U18KS/Dh2qcHewdMxHZx5uYkNP
+   a1Dp2+1HtoC9L2jP7QWcPPUUm4qp36Flgv4QnzYfSZSjN9fxtogotz2+g
+   Q==;
+X-CSE-ConnectionGUID: tvHgASnVSPG9Kv8o5DVH0A==
+X-CSE-MsgGUID: wwlSCmctSFG4Scz8wPdaaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75935237"
+X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
+   d="scan'208";a="75935237"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 17:43:01 -0700
+X-CSE-ConnectionGUID: IWJPWWYgSgyOxbjfYtEolg==
+X-CSE-MsgGUID: plpu0+QbQhqAtYmA408DUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
+   d="scan'208";a="263411944"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 17:43:02 -0700
+Date: Fri, 27 Mar 2026 17:42:56 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260328004256.mm2ttj5iwvu5kdpa@desk>
+References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
+ <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+ <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
+ <20260324221308.7sh6afdy6r6tsf4w@desk>
+ <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+ <20260326083934.fk4wyhe6rgiss34z@desk>
+ <20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
+ <20260326104557.24295cbb@pumpkin>
+ <20260326202931.wlggnd3nfj6hngpb@desk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -92,58 +93,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <52c26e05-5bbc-4f63-84bf-c4879a6de7d1@linux.alibaba.com>
+In-Reply-To: <20260326202931.wlggnd3nfj6hngpb@desk>
 
-On Tue, Mar 24, 2026 at 08:36:36PM +0800, Baolin Wang wrote:
-> 
-> 
-> On 3/24/26 8:43 AM, Lisa Wang wrote:
-> > On Sat, Mar 21, 2026 at 02:30:04PM +0800, Baolin Wang wrote:
-> > > 
-> > > 
-> > > On 3/20/26 7:30 AM, Lisa Wang wrote:
-> > > > Add a shmem memory failure selftest to test the shmem memory failure is
-> > > > correct after modifying shmem return value.
-> > > > 
-> > > > Test that
-> > > > + madvise() call returns 0 at the first time
-> > > > + trigger a SIGBUS when the poisoned shmem page is fault-in again.
-> > > > 
-> > > > Signed-off-by: Lisa Wang <wyihan@google.com>
-> > > > ---
-> > > 
-> > > Why not move the shmem memory failure test into memory-failure.c?
+On Thu, Mar 26, 2026 at 01:29:31PM -0700, Pawan Gupta wrote:
+> On Thu, Mar 26, 2026 at 10:45:57AM +0000, David Laight wrote:
+> > On Thu, 26 Mar 2026 11:01:20 +0100
+> > Borislav Petkov <bp@alien8.de> wrote:
 > > 
-> > Do you mean let memory-failure.c kernel code check by itself?
-> > The reason I write the selftest instead of combining in memory-failure.c
-> > is because
-> > + do not need extra checking code in kernel code
-> > + make it easier to trace the entire execution flow, starting from the
-> >    madvise() down through shmem_error_remove_folio() and into the
-> >    truncate_error_folio() logic.
+> > > On Thu, Mar 26, 2026 at 01:39:34AM -0700, Pawan Gupta wrote:
+> > > > I believe the equivalent for cpu_feature_enabled() in asm is the
+> > > > ALTERNATIVE. Please let me know if I am missing something.  
+> > > 
+> > > Yes, you are.
+> > > 
+> > > The point is that you don't want to stick those alternative calls inside some
+> > > magic bhb_loop function but hand them in from the outside, as function
+> > > arguments.
+> > > 
+> > > Basically what I did.
+> > > 
+> > > Then you were worried about this being C code and it had to be noinstr... So
+> > > that outer function can be rewritten in asm, I think, and still keep it well
+> > > separate.
+> > > 
+> > > I'll try to rewrite it once I get a free minute, and see how it looks.
+> > > 
 > > 
-> > Pleas let me know if I've missed something. Thanks!
+> > I think someone tried getting C code to write the values to global data
+> > and getting the asm to read them.
+> > That got discounted because it spilt things between two largely unrelated files.
 > 
-> That's not quite what I meant. I mean, since there is already a
-> memory-failure.c in mm selftests (see [1]), I think we should move the shmem
-> memory failure test cases into that file.
+> 
+> The implementation with global variables wasn't that bad, let me revive it.
+> 
+> This part which ties sequence to BHI mitigation, which is not ideal,
+> (because VMSCAPE also uses it) it does seems a cleaner option.
+> 
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+> @@ -2095,6 +2095,11 @@ static void __init bhi_select_mitigation(void)
+> 
+>  static void __init bhi_update_mitigation(void)
+>  {
+> +   if (!cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
+> +       bhi_seq_outer_loop = 5;
+> +       bhi_seq_inner_loop = 5;
+> +   }
+> +
+> 
+> I believe this can be moved to somewhere common to all mitigations.
+> 
+> > I think the BPF code would need significant refactoring to call a C function.
+> 
+> Ya, true. Will use globals and keep clear_bhb_loop() in asm.
 
-Got it. Thank you for pointing out.
-Is anyone currently working on the shmem memory failure test? If not, I
-will merge it into my next version.
+While testing this approach, I noticed that syscalls were suffering an 8%
+regression on ICX for Native BHI mitigation:
 
-I have a question regarding the current implementation:
-```
-ret = sigsetjmp(signal_jmp_buf, 1);
-if (!self->triggered) {
-	self->triggered = true;
-	ASSERT_EQ(variant->inject(self, addr), 0);
-	FORCE_READ(*addr);
-}
-```
-Here is difficult to distinguish whether the SIGBUS is triggered by the
-injection or the read operation. I am considering splitting these into
-two separate SIGBUS jump blocks. Is it reasonable for me to split them?
+  $ perf bench syscall basic -l 100000000
 
+Bisection pointed to the change for using 8-bit registers (al/ah replacing
+eax/ecx) as the main contributor to the regression. (Global variables added
+a bit, but within noise).
 
-> [1] https://lore.kernel.org/all/20260206031639.2707102-1-linmiaohe@huawei.com/T/#m18e62ccb3e87316ec37dcde9389c1ba1c56d0951
+Further digging revealed a strange behavior, using %ah for the inner loop
+was causing the regression, interchanging %al and %ah in the loops
+(for movb and sub) eliminated the regression.
+
+<clear_bhb_loop_nofence>:
+
+	movb	bhb_seq_outer_loop(%rip), %al
+
+	call	1f
+	jmp	5f
+1:	call	2f
+.Lret1:	RET
+2:	movb	bhb_seq_inner_loop(%rip), %ah
+3:	jmp	4f
+	nop
+4:	sub	$1, %ah <---- No regression with %al here
+	jnz	3b
+	sub	$1, %al
+	jnz	1b
+
+My guess is, "sub $1, %al" is faster than "sub $1, %ah". Using %al in the
+inner loop, which is executed more number of times is likely making the
+difference. A perf profile is needed to confirm this.
+
+Never imagined a register selection can make an 8% difference in
+performance! Anyways, will update the patch with this finding.
