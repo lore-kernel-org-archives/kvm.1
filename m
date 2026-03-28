@@ -1,106 +1,318 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715A9350D4F;
-	Sat, 28 Mar 2026 12:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECCA38F9C
+	for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 14:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774699839; cv=none; b=idvw0vZasCWtKC09RJJMrl6FbB+K7+TrAITPVoyVeZFwEpzgI0Zm49hF0jUcNQvkK3108+aXI60WZLf9AWr3+VvUon75YNxv0tFwhhZtxy3FDZiRgNDElfUAx5qRGklYlJEK1hDzqrw5BlqTyCIWpTNEHW8t3EOK5D7Q42SXHcA=
+	t=1774709411; cv=none; b=dSXA2bNJMCFc+XVG+BdzuWrGRu+1jxBf+n99kIhIvGOdHRswoHUzPUv1oBO0ENhN+LsgWqxS/sIc2tZx8n8JcRzIrAzaDWsvCsRFuIoj1xOrL4h5KpVQlYyJI60zosSvJ+41MvEbt3swaoJAaqswl89SwYBxJSojYbx6O+dfoAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774699839; c=relaxed/simple;
-	bh=NTFcZ7aSZIsyP3qPdyEPoyvUbM7dBDc1cogifZf44fs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P9XCRS2qW87CLdzcr8Zki5ktXAEtAvaTVtrv6LymA3iPpHFyYZeUoy2W6aUVFGTREiJP5JtKLK9uERT4Xbd6YMWR5L2P4XAprMHCdi+v1AFI26tMhMr5rUpkzb2IzeRg0fNh1PaeJfhEP3+XI/nDw3jNksx/uWP0sUlqGnbdQew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LQI2u2FJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774709411; c=relaxed/simple;
+	bh=W/dF5TM5llUTLZ/uWOcqXpRf3oDbfH+06zQyU1PsRSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HsUY/rSb28k8a1iy7mj9TkutB7qeEDJ1y/tL+L/gdRY41Z1L8eusbDe7C6TSqz4X2TnTbBsMMn529dHB+IhAnRx51k3q21TyhmBtAHDGiGcRalRR6pA6IdCkM45fk8VGc+vPeD/mqKAdxSuYT/cgw9oU9a66PGAh/ITmWyUQ/Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TkbdHUep; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LQI2u2FJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AC2C4CEF7;
-	Sat, 28 Mar 2026 12:10:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774699839;
-	bh=NTFcZ7aSZIsyP3qPdyEPoyvUbM7dBDc1cogifZf44fs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LQI2u2FJrZdfURKcCR9tStL7U7j9JDQoiHCmq72vccMs+ZUBhp+9/TKvL161WNaYt
-	 HB6Cn/KW4bpF4LE8szU/Ttp0n1iAeBjvFxI338mQ+OH5v7/aZmAQ9mRmTZhzpLHT8Q
-	 2ij/qw3sRiilAWVo3GAkTfwxr5AaAfiGpMiRoVeACXWF2FpqJdBr1mqCSFspFTpRGG
-	 IWAWGn1ScwG3hTcEoF9XWrUzsMNbRCB9m36GDK5FSVbYng9NVfLXXuJIcV7JatH039
-	 EqdHKj9j/+OVngUAIX3Bg6ahCKh6k16Ub4DhdqyNRlVlqKadrI7x9Bvws94pvNi0EJ
-	 U/HidD7p2Gw6Q==
-Message-ID: <4c5e9bad-82f0-4714-99c2-8ccd79a45043@kernel.org>
-Date: Sat, 28 Mar 2026 13:10:25 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TkbdHUep"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so30277005ad.2
+        for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 07:50:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774709409; x=1775314209; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=smegvq7/E5Ae3Bgud8MEFapuzExHDZ3+vLTBeNIrvmw=;
+        b=TkbdHUeppERc8GuW6hPFX384DR1OZDbU6oIjF5XI+VwxnPItmKFW1iVoP0/8KNN+ki
+         dVT+eTLuPQFxlxWTCA95n0RVJVMia55FXtJIZUR+n/0w7WDkfPKuNfNucuSn9aQkhpQw
+         LyfySx6MZlslrA0CsufpXQeLhYHaOT9sRBQ9yMtgO+NEUjTlkfzV/XcsAelFcOPbjtPe
+         1SyMNmdwvWfFzf9XeaXtHqGWFhp1UmCCQP5yJnGtO7oCji3jqrd4E9zsRlMFyBUBq33K
+         IAd3Jk/LibntiiuM85YIjxIVTEqixh4InQEAfxDQFXODPN+hYQUK8N+pl3SKlYTfKkWl
+         06Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774709409; x=1775314209;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=smegvq7/E5Ae3Bgud8MEFapuzExHDZ3+vLTBeNIrvmw=;
+        b=HLb5Wt7FtgaiphjJipdjAosk8imvrTbHjvqZY5SUHowjyYCL6mGAnXYa1kOmhQOSUP
+         f4eXm/GQqteXpRJvggLfWRfclSna91JYce2VHjg31dlOwKn5JMH02guSwa8dr8351cP1
+         +rYXm4Yyg0DKins/9u0uTyxZsuF1KAMdGogw7W3UBVZdAuRp3chqSUQ2IIDSzkpbyJfI
+         NPVtQ27mWCK0N/vi3BcO/jQN4ZHT8h6Xht4W6LC8bVjLKrr0+ZmpVQpmbyqzzhgNjjAc
+         LhB/6qBkgCW1J/3VSXu3mekhLtYqAVDID4JEbHZFXhctW5MebjfEIikxTSt1RMegDkrH
+         a/1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXUgX50Y6uptDk8yZTV0H22UYtsx7bLKJaSy4pnM9u35B0dFMlM0usUFpxtKzU+ac4u84c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGcc60ZZgIIcH0vMueU2b8xTgTEn/wDUxBqXEeWuOa5bS9eVkB
+	soDpHnM5nyHThaLz8uW0owlFgIpKM0XYTVV9KvERqvkpR15DWB14x7RlvxfBTRvI
+X-Gm-Gg: ATEYQzy13Jkwd5ClAp2HO7tdpweP2p0DEhBWmGKXfdiXFXIoeICEcuFuH/XVWZA6E/j
+	ByngGblF/dP+wcf/25J8jGeGlTbpaAHjArjaEHiVIT8NXOXvrLLblsTg0X7w3cEKFvxYOxd37UJ
+	OXwQrfXcIkYadeDaSy4uxdO0BUWvsck6Vd8mz+LD3A8BqvlxquGSVDC9EzoHx3T6lovspwknGeC
+	C+UVrXhz39V1naK01wazTfkcCcxJdxjz/T4lpVBQ9i3hHmjz4Da7tE1l6Oj4GeTVWil6oxIlslO
+	nrZJFi6dUGXv9E3S+qY9bqczZkNsHHUJxlWCxAPnYFrB5nZvdDxblNrYujigAQKla7Av7fn7Dye
+	GBMqcZf+yS5WA2ugJTRDgqZyOvV1Q1xJ6PSyIUIW7DgbtmOucV2BjlnfkapFUBEZSjSTvfG40vo
+	5nDC/8ri/gt6/EAGZMrEmFvoJm
+X-Received: by 2002:a17:903:2f85:b0:2ae:ac0c:5a29 with SMTP id d9443c01a7336-2b0cdc207demr71113865ad.10.1774709409030;
+        Sat, 28 Mar 2026 07:50:09 -0700 (PDT)
+Received: from localhost ([27.7.157.176])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242677d3dsm29553965ad.29.2026.03.28.07.50.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 07:50:08 -0700 (PDT)
+Date: Sat, 28 Mar 2026 20:20:05 +0530
+From: shaikh kamaluddin <shaikhkamal2012@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	kvm <kvm@vger.kernel.org>,
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
+	linux-rt-devel@lists.linux.dev,
+	Shuah Khan <skhan@linuxfoundation.org>, me@brighamcampbell.com
+Subject: Re: [PATCH] KVM: mmu_notifier: make mn_invalidate_lock non-sleeping
+ for non-blocking invalidations
+Message-ID: <acfqnRZ4A_aYnm09@acer-nitro-anv15-41>
+References: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
+ <20260211120944.-eZhmdo7@linutronix.de>
+ <aYyhfvC_2s000P7H@google.com>
+ <aactOOfirdVRYfNS@acer-nitro-anv15-41>
+ <ae2143b3-ce28-4c87-afcf-1505694246d8@redhat.com>
+ <abMS7MALNrmluvh5@acer-nitro-anv15-41>
+ <b51de5cb-8198-4664-afcc-7386ecda81a8@redhat.com>
+ <acNwYsm4GfViqiJS@acer-nitro-anv15-41>
+ <CABgObfb8POHRUmhu2yoH7B=m5eg_VQpmDcPoj=PttaRkN=dQTg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/12] bus: fsl-mc: use generic driver_override
- infrastructure
-To: Ioana Ciornei <ioana.ciornei@nxp.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Nipun Gupta <nipun.gupta@amd.com>,
- Nikhil Agarwal <nikhil.agarwal@amd.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- Long Li <longli@microsoft.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Armin Wolf <W_Armin@gmx.de>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Vineeth Vijayan <vneethv@linux.ibm.com>,
- Peter Oberparleiter <oberpar@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Harald Freudenberger <freude@linux.ibm.com>,
- Holger Dengler <dengler@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C4=82=C2=A9rez?=
- <eperezma@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
- linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-spi@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-arm-kernel@lists.infradead.org,
- Gui-Dong Han <hanguidong02@gmail.com>
-References: <20260324005919.2408620-1-dakr@kernel.org>
- <20260324005919.2408620-3-dakr@kernel.org>
- <cvcetxkxjq2tz6n2vsofhyzove3qdi2e4r6rq6yxou3joejk2h@rmt5ygav7ssu>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <cvcetxkxjq2tz6n2vsofhyzove3qdi2e4r6rq6yxou3joejk2h@rmt5ygav7ssu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CABgObfb8POHRUmhu2yoH7B=m5eg_VQpmDcPoj=PttaRkN=dQTg@mail.gmail.com>
 
-
-
-Le 25/03/2026 à 13:01, Ioana Ciornei a écrit :
-> On Tue, Mar 24, 2026 at 01:59:06AM +0100, Danilo Krummrich wrote:
->> When a driver is probed through __driver_attach(), the bus' match()
->> callback is called without the device lock held, thus accessing the
->> driver_override field without a lock, which can cause a UAF.
->>
->> Fix this by using the driver-core driver_override infrastructure taking
->> care of proper locking internally.
->>
->> Note that calling match() from __driver_attach() without the device lock
->> held is intentional. [1]
->>
->> Link: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fdriver-core%2FDGRGTIRHA62X.3RY09D9SOK77P%40kernel.org%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b9262ddecdd4ce29f9808de8a66485e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639100369055903282%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2BRfjlUkq7oWV%2F0v2S2B%2BEuxCY%2FLRQv6qHiEWiupd6kc%3D&reserved=0 [1]
->> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
->> Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugzilla.kernel.org%2Fshow_bug.cgi%3Fid%3D220789&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b9262ddecdd4ce29f9808de8a66485e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639100369055936232%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=XL1K1ICiygOZnlvDUbQFe192KnLsBQms0HFNGCuyz%2Fw%3D&reserved=0
->> Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Thu, Mar 26, 2026 at 07:23:58PM +0100, Paolo Bonzini wrote:
+> Il mer 25 mar 2026, 06:19 shaikh kamaluddin
+> <shaikhkamal2012@gmail.com> ha scritto:
+> >
+> > 1. Added oom_enter callback to struct mmu_notifier_ops in include/linux/mmu_notifier.h
+> > 2. Implemented __mmu_notifier_oom_enter() in mm/mmu_notifier.c to invoke registered callbacks
+> > 3. Called mmu_notifier_oom_enter(mm) from __oom_kill_process in mm/oom_kill.c before any invalidations
+> > 4. As per your suggestion, move existing kvm_destroy_vm() logic that already handles unbalanced invalidation to the new helper function kvm_mmu_notifier_detach() and invoke it from the kvm_destroy_vm()
 > 
-> Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+> This is not fully clear to me... It could be caused by a recursive
+> locking, or also a false positive. It's hard to say without seeing the
+> full backtrace, but seeing "lock(srcu)" is suspicious.
 > 
+> I wouldn't have expected deferral to be necessary; and it seems to me
+> that, if you defer removal to some time after the OOM reaper starts,
+> you'd have the same problem as before with sleeping spinlocks.
+> 
+> Can you post the original patch without deferral?
+> 
+> Paolo
+>
+Hi Paolo,
+
+Here's the current implementation without deferral as you requested.
+
+As you suspected, it causes an SRCU deadlock. The callback calls
+kvm_mmu_notifier_detach() which attempts mmu_notifier_unregister()
+while __mmu_notifier_oom_enter is holding SRCU.
+
+Kernel log shows:
+  WARNING: possible recursive locking detected
+  lock(srcu) at __synchronize_srcu
+  already holding lock at __mmu_notifier_oom_enter
+
+Should the callback simply set a flag (kvm->oom_reaping) and have
+invalidate_range_start check this flag to return early?
+
+Current implementation (diff attached):
+diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+index 07a2bbaf86e9..bdc035242f13 100644
+--- a/include/linux/mmu_notifier.h
++++ b/include/linux/mmu_notifier.h
+@@ -88,6 +88,23 @@ struct mmu_notifier_ops {
+ 	void (*release)(struct mmu_notifier *subscription,
+ 			struct mm_struct *mm);
+
++	/*
++	 * Called when the OOM reaper is about to reap this mm.
++	 * This is invoked before any invalidation attempts and allows
++	 * the subscriber to handle the fact that OOM reclaim will proceed
++	 * in non-blockable mode.
++	 *
++	 * This callback is optional and is called in atomic context.
++	 * It must not sleep or use any locks that may block.
++	 *
++	 * Common use case: unregister the MMU notifier to avoid being
++	 * called back in non-blockable invalidation context where
++	 * sleeping locks cannot be used.
++	 *
++	 * This is called with a reference held on the mm_struct.
++	 */
++	void (*oom_enter)(struct mmu_notifier *subscription,
++			  struct mm_struct *mm);
+ 	/*
+ 	 * clear_flush_young is called after the VM is
+ 	 * test-and-clearing the young/accessed bitflag in the
+@@ -375,6 +392,7 @@ mmu_interval_check_retry(struct mmu_interval_notifier *interval_sub,
+
+ extern void __mmu_notifier_subscriptions_destroy(struct mm_struct *mm);
+ extern void __mmu_notifier_release(struct mm_struct *mm);
++extern void __mmu_notifier_oom_enter(struct mm_struct *mm);
+ extern int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
+ 					  unsigned long start,
+ 					  unsigned long end);
+@@ -402,6 +420,13 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
+ 		__mmu_notifier_release(mm);
+ }
+
++static inline void mmu_notifier_oom_enter(struct mm_struct *mm)
++{
++	if (mm_has_notifiers(mm))
++		__mmu_notifier_oom_enter(mm);
++
++}
++
+ static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
+ 					  unsigned long start,
+ 					  unsigned long end)
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index a6cdf3674bdc..7c2259fabb6d 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -359,6 +359,27 @@ void __mmu_notifier_release(struct mm_struct *mm)
+ 		mn_hlist_release(subscriptions, mm);
+ }
+
++void __mmu_notifier_oom_enter(struct mm_struct *mm)
++{
++	struct mmu_notifier *subscription;
++	int id;
++	pr_info("Entering :func:%s\n", __func__);
++	if (!mm->notifier_subscriptions)
++		return;
++
++	id = srcu_read_lock(&srcu);
++	hlist_for_each_entry_rcu(subscription,
++				 &mm->notifier_subscriptions->list, hlist,
++				 rcu_read_lock_held(&srcu)) {
++		if(subscription->ops->oom_enter)
++			subscription->ops->oom_enter(subscription, mm);
++
++	}
++	srcu_read_unlock(&srcu, id);
++	pr_info("Done:%s\n", __func__);
++
++}
++
+ /*
+  * If no young bitflag is supported by the hardware, ->clear_flush_young can
+  * unmap the address and return 1 or 0 depending if the mapping previously
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5c6c95c169ee..9b487b210980 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -947,6 +947,9 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 	mm = victim->mm;
+ 	mmgrab(mm);
+
++	/* Notify MMU notifiers about the OOM event */
++	mmu_notifier_oom_enter(mm);
++
+ 	/* Raise event before sending signal: task reaper must see this */
+ 	count_vm_event(OOM_KILL);
+ 	memcg_memory_event_mm(mm, MEMCG_OOM_KILL);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 1bc1da66b4b0..ffa40ebab452 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -885,6 +885,43 @@ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+ 	srcu_read_unlock(&kvm->srcu, idx);
+ }
+
++static void kvm_mmu_notifier_detach(struct kvm *kvm)
++{
++    /* Ensure this function is only executed once */
++    if (xchg(&kvm->mn_killed, 1))
++        return;
++
++    /* Unregister the MMU notifier */
++    mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
++
++    /*
++     * At this point, pending calls to invalidate_range_start()
++     * have completed but no more MMU notifiers will run, so
++     * mn_active_invalidate_count may remain unbalanced.
++     * No threads can be waiting in kvm_swap_active_memslots() as the
++     * last reference on KVM has been dropped, but freeing
++     * memslots would deadlock without this manual intervention.
++     *
++     * If the count isn't unbalanced, i.e. KVM did NOT unregister its MMU
++     * notifier between a start() and end(), then there shouldn't be any
++     * in-progress invalidations.
++     */
++
++    WARN_ON(rcuwait_active(&kvm->mn_memslots_update_rcuwait));
++    if (kvm->mn_active_invalidate_count)
++        kvm->mn_active_invalidate_count = 0;
++    else
++        WARN_ON(kvm->mmu_invalidate_in_progress);
++}
++
++static void kvm_mmu_notifier_oom_enter(struct mmu_notifier *mn,
++					struct mm_struct *mm)
++{
++	struct kvm *kvm;
++	kvm = container_of(mn, struct kvm, mmu_notifier);
++	kvm_mmu_notifier_detach(kvm);
++}
++
+ static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
+ 	.invalidate_range_start	= kvm_mmu_notifier_invalidate_range_start,
+ 	.invalidate_range_end	= kvm_mmu_notifier_invalidate_range_end,
+@@ -892,6 +929,7 @@ static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
+ 	.clear_young		= kvm_mmu_notifier_clear_young,
+ 	.test_young		= kvm_mmu_notifier_test_young,
+ 	.release		= kvm_mmu_notifier_release,
++	.oom_enter		= kvm_mmu_notifier_oom_enter,
+ };
+
+ static int kvm_init_mmu_notifier(struct kvm *kvm)
+@@ -1280,24 +1318,9 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ 		kvm->buses[i] = NULL;
+ 	}
+ 	kvm_coalesced_mmio_free(kvm);
+-	mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
+-	/*
+-	 * At this point, pending calls to invalidate_range_start()
+-	 * have completed but no more MMU notifiers will run, so
+-	 * mn_active_invalidate_count may remain unbalanced.
+-	 * No threads can be waiting in kvm_swap_active_memslots() as the
+-	 * last reference on KVM has been dropped, but freeing
+-	 * memslots would deadlock without this manual intervention.
+-	 *
+-	 * If the count isn't unbalanced, i.e. KVM did NOT unregister its MMU
+-	 * notifier between a start() and end(), then there shouldn't be any
+-	 * in-progress invalidations.
+-	 */
+-	WARN_ON(rcuwait_active(&kvm->mn_memslots_update_rcuwait));
+-	if (kvm->mn_active_invalidate_count)
+-		kvm->mn_active_invalidate_count = 0;
+-	else
+-		WARN_ON(kvm->mmu_invalidate_in_progress);
++
++	/* Detach the MMU notifier before unregistering it */
++	kvm_mmu_notifier_detach(kvm);
+ 	kvm_arch_destroy_vm(kvm);
+ 	kvm_destroy_devices(kvm);
+ 	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
 
 
-Applied, thanks
+Thanks,
+Kamal
+> >
+> > Key Design Decision:
+> > ------------------------------
+> > Implementation point no 4, while testing, Issue I was encountering is a recursive locking problem with the srcu lock, which is being acquired twice in the same context. This happens during the __mmu_notifier_oom_enter() and __synchronize_srcu() calls, leading to a potential deadlock.
+> > Please find below log snippet while launching the Guest VM
+> 
