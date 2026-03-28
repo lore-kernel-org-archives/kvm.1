@@ -1,212 +1,100 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EB4239E9B
-	for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 16:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902D3260592;
+	Sat, 28 Mar 2026 16:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774714871; cv=none; b=cgZXksjJjF85o+CB28rVMG/h61ezSEs4TUWMlxlCZTwngqzji29tyHi1slxPdROVOL9NnXAU1BwT3jTYZ5NHqUq9JzAUnJE5Klf8TKK0x/KbW31jWmV5lJo85cTqJO8h1pcjMt82yZIUsT0LnSR55DMuu5pac3pVczta5BBLNto=
+	t=1774717071; cv=none; b=MfyPKXTYaJKOyPUUEO6D5WbBS0E0t4v0vZBSm11+bzWtyg/sE++BhoJy7/Y0ixX0f77GO4Mk8yWGqbkwtLt8yhdRHTfCqlwd5Lc5qHaajcuYVV5yVluIQUJyRtn9Zam9cG05QhALsMsS02cWhiqt0iQv4VN5dB9YZlLgZvSWBWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774714871; c=relaxed/simple;
-	bh=/GEXZkmKX4s9b/SmUpPLX93M0m6mbEsjeCZUiizWuRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Np7Z9kMXWMsuGL+XAKcjxPmw+bXSpZxMDQRu9ue3MfWr/TYua91r9sauSNIbGHE16vqJAhCKDZUN9q+6Fjf3SDnex/Tt6nUAA0tknzwDBONFFXdayH9HR16uJkdZyGd6K3DkIujLU/0lg/4VAzXhnPKnP/bQ8bEGcSdGir86v7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hk6/E81D; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774717071; c=relaxed/simple;
+	bh=y/qxSyVeI3PObxX+49CAWDn0IKCh/fhFCy1cSY5dJSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XnzzbP/6oQPZMcPuIWsalVwyBc9xtqLAIJ+m6botCju/CWlFxZ2WsU7EYcrxvBQyNa8XQ6Y4t/vudyjl9OoK7p5TdtX68oEVNXPZqqKJvzghpC4DbOnqRlj9TMRgbYEkwM9WolF31GHIdTPvPrcaceX5mnCyHYsee5MUL66UKys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Co6t69Sk; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hk6/E81D"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a2a5236811so2248203e87.1
-        for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 09:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774714868; x=1775319668; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A/VNplDWWCZzS7/n5RiNsPZoo6NH5P9/pGe+zWFZeD0=;
-        b=hk6/E81D6cClSEGFnMqTMmF+zi8ptjtz7PeWuB+bAqJILXbKbERttj3BUZveYoScs4
-         BnkhclGwiEuVtGRKGUU2+Z/evi1g/W0pid5nTr3J2P0xU3R+W+Wu4LddJ51PLVDG0Qxi
-         XGTtJxZ8qGMAXZLAqWXeo8mbV5Ou12TnA2Ptj9DEFZXa0JYgNpi9cG8U+taOo2yFxzAz
-         nTCjaRTZRY63jmJVAzlkpGWzEplNg9c7sfZP7tKs/cmXUXXrkApm0O0M0Vpu5MbrnAtN
-         rMob7frToW8EEHdaFxfBCcKHaIM2dQo/QzYVNwv64LbNhOhCDnWHG487O7hzKENnb3Jo
-         lyJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774714868; x=1775319668;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=A/VNplDWWCZzS7/n5RiNsPZoo6NH5P9/pGe+zWFZeD0=;
-        b=kSANXhWzKWS902F7eKyKkSYXiyIpVBF1TVXt/3XdVQujVosgnrHwa5GXDb+byLjrPP
-         O0JP9q4TgAAOmVCwCkX2iBIuPj1jMsMOnOMJfE4j/iEN096e7/6k6AcnPHOSJTJk1Y5Z
-         H+ts19oZqUG6+sW3flJWx8Ly32vHyWyb3YrP5UIBJAjSwqA4wz3FfuiXiVLXZNZ6ibz0
-         Q869QZ4fa/4rz/m+0exLjLiD3ZL5kVaS69lghPDlOxCMV4veWMEEwDmBEQV9hTwGVC8K
-         imXOn+Wb7A2nM2faog2lsA1Wd3vq1ohrx/rqFG0/YY7CrNQDCeJsxVj7OBX9dbRob10+
-         cCSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUsU0YcuOpRHBMk7gGfQV5eh+ovhEfBjab+vQZsQx7sFnqRgbWuz/OofampvCc/HnZMKE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMEkGhCchNpKUMuN7I7ML1O7IUQM4HEukGhr+2SfsqBIpw5HDb
-	8Y7g2h0OHvuWtWsAwIoEIPVMNdZ+PKeOFplKMfZXjVSm3ncBff6rfW75
-X-Gm-Gg: ATEYQzwlvPWBtZ3SRiJo5tEoXsIx1ZzMdlVSqbdARMKreAXoXrApvUChT6W9aXg2RBd
-	kmKOxrofVvUYtP/jlofpdt4MEq5usnzorFbMjQeFITGnGBE7O7k5mYnAph+yYyRZC9twbeQc6mm
-	3rc6+7M8A14jVEeOQfM3YkNmsdaCrUU/a2IF5qZvtb6NPGJiFZLdH0GFOYyx/3ryP2dbJoE9iaz
-	ax81Mo5GxRKNAMXu+And8xGwA5Rx5psEi1THKYVCRGHx7/BQhAFA4YPYN4ET/1F8le+g+0otIhn
-	KoCncnLqgwAnPfvniSmwyurq7zy6EbKWZtZ61HYWGmY0QPzRYwywYitbAASEhgoRlvfVse4ZueY
-	51Vm1PM8zztr4Zea/xtVMFFIaJW9PgBRr2KA45YJil1XO1wNvBCUDfGiqAbXzwrE16dTFpStgaO
-	ojcqTFGC+Kouw2HrilIjhl65K3mfZBu6s/86NJHPKSpAcWVAc8j/PTWVSNA6AQfUtm
-X-Received: by 2002:a05:600c:828a:b0:487:338:b4df with SMTP id 5b1f17b1804b1-48727d8818cmr86841645e9.15.1774692519962;
-        Sat, 28 Mar 2026 03:08:39 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4872716799dsm32314725e9.25.2026.03.28.03.08.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 03:08:39 -0700 (PDT)
-Date: Sat, 28 Mar 2026 10:08:37 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>, x86@kernel.org, Jon Kohler
- <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, "H. Peter Anvin"
- <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan
- <david.kaplan@amd.com>, Sean Christopherson <seanjc@google.com>, Dave
- Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP
- Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern
- <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard
- Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Asit Mallick
- <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>,
- bpf@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260328100837.7e6dc7fe@pumpkin>
-In-Reply-To: <20260328004256.mm2ttj5iwvu5kdpa@desk>
-References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
-	<20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
-	<20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
-	<20260324221308.7sh6afdy6r6tsf4w@desk>
-	<20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
-	<20260326083934.fk4wyhe6rgiss34z@desk>
-	<20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
-	<20260326104557.24295cbb@pumpkin>
-	<20260326202931.wlggnd3nfj6hngpb@desk>
-	<20260328004256.mm2ttj5iwvu5kdpa@desk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Co6t69Sk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774717069; x=1806253069;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=y/qxSyVeI3PObxX+49CAWDn0IKCh/fhFCy1cSY5dJSo=;
+  b=Co6t69SkVuDrZt3FjGWGGWzwIHAJ34O4Mc8MacHYyMZ9OVunryTNHxNP
+   btnu2kqfRgYv/KDlcRuDeoKEyJ4feTAoLwn2jmdtOAvHPQvWffUZgpxyt
+   acg47OPDYtfIPZOZ8pRlyP9rYff2QZSu4tGBjMVdoNvWUwRtmi29F9Ort
+   unewwHD0sVeIsbXIH7TdS4KPUhMsHk/LPTCmoiOwEI9F00juy17jcCcFP
+   fNkNZn36wkJQzvYn1zYdjAg5a11O+BpDEHtkBW6bAgfpqVo3JsjUz8/4m
+   sctCLye90K5wB1dsxs3S01X4RHXkApwEMsXDI2Z/UKQqmQp8KrAM84kpn
+   A==;
+X-CSE-ConnectionGUID: TykyYVGgSDuRqReisKS19Q==
+X-CSE-MsgGUID: 8ZesbqxyRpOj5JTBe4+AQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75829241"
+X-IronPort-AV: E=Sophos;i="6.23,146,1770624000"; 
+   d="scan'208";a="75829241"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2026 09:57:48 -0700
+X-CSE-ConnectionGUID: JkixPn/tT2WqHybIc5qRGA==
+X-CSE-MsgGUID: bsYNMB26TkGx4Koyv2usaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,146,1770624000"; 
+   d="scan'208";a="225499237"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 28 Mar 2026 09:57:43 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6Wyi-00000000BbF-2MxD;
+	Sat, 28 Mar 2026 16:57:40 +0000
+Date: Sun, 29 Mar 2026 00:57:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, chao.gao@intel.com, dave.jiang@intel.com,
+	baolu.lu@linux.intel.com, yilun.xu@linux.intel.com,
+	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
+ the TDX module
+Message-ID: <202603290006.za7iiDgF-lkp@intel.com>
+References: <20260327160132.2946114-20-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327160132.2946114-20-yilun.xu@linux.intel.com>
 
-On Fri, 27 Mar 2026 17:42:56 -0700
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com> wrote:
+Hi Xu,
 
-> On Thu, Mar 26, 2026 at 01:29:31PM -0700, Pawan Gupta wrote:
-> > On Thu, Mar 26, 2026 at 10:45:57AM +0000, David Laight wrote:  
-> > > On Thu, 26 Mar 2026 11:01:20 +0100
-> > > Borislav Petkov <bp@alien8.de> wrote:
-> > >   
-> > > > On Thu, Mar 26, 2026 at 01:39:34AM -0700, Pawan Gupta wrote:  
-> > > > > I believe the equivalent for cpu_feature_enabled() in asm is the
-> > > > > ALTERNATIVE. Please let me know if I am missing something.    
-> > > > 
-> > > > Yes, you are.
-> > > > 
-> > > > The point is that you don't want to stick those alternative calls inside some
-> > > > magic bhb_loop function but hand them in from the outside, as function
-> > > > arguments.
-> > > > 
-> > > > Basically what I did.
-> > > > 
-> > > > Then you were worried about this being C code and it had to be noinstr... So
-> > > > that outer function can be rewritten in asm, I think, and still keep it well
-> > > > separate.
-> > > > 
-> > > > I'll try to rewrite it once I get a free minute, and see how it looks.
-> > > >   
-> > > 
-> > > I think someone tried getting C code to write the values to global data
-> > > and getting the asm to read them.
-> > > That got discounted because it spilt things between two largely unrelated files.  
-> > 
-> > 
-> > The implementation with global variables wasn't that bad, let me revive it.
-> > 
-> > This part which ties sequence to BHI mitigation, which is not ideal,
-> > (because VMSCAPE also uses it) it does seems a cleaner option.
-> > 
-> > --- a/arch/x86/kernel/cpu/bugs.c
-> > +++ b/arch/x86/kernel/cpu/bugs.c
-> > @@ -2095,6 +2095,11 @@ static void __init bhi_select_mitigation(void)
-> > 
-> >  static void __init bhi_update_mitigation(void)
-> >  {
-> > +   if (!cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
-> > +       bhi_seq_outer_loop = 5;
-> > +       bhi_seq_inner_loop = 5;
-> > +   }
-> > +
-> > 
-> > I believe this can be moved to somewhere common to all mitigations.
-> >   
-> > > I think the BPF code would need significant refactoring to call a C function.  
-> > 
-> > Ya, true. Will use globals and keep clear_bhb_loop() in asm.  
-> 
-> While testing this approach, I noticed that syscalls were suffering an 8%
-> regression on ICX for Native BHI mitigation:
-> 
->   $ perf bench syscall basic -l 100000000
-> 
-> Bisection pointed to the change for using 8-bit registers (al/ah replacing
-> eax/ecx) as the main contributor to the regression. (Global variables added
-> a bit, but within noise).
-> 
-> Further digging revealed a strange behavior, using %ah for the inner loop
-> was causing the regression, interchanging %al and %ah in the loops
-> (for movb and sub) eliminated the regression.
-> 
-> <clear_bhb_loop_nofence>:
-> 
-> 	movb	bhb_seq_outer_loop(%rip), %al
-> 
-> 	call	1f
-> 	jmp	5f
-> 1:	call	2f
-> .Lret1:	RET
-> 2:	movb	bhb_seq_inner_loop(%rip), %ah
-> 3:	jmp	4f
-> 	nop
-> 4:	sub	$1, %ah <---- No regression with %al here
-> 	jnz	3b
-> 	sub	$1, %al
-> 	jnz	1b
-> 
-> My guess is, "sub $1, %al" is faster than "sub $1, %ah". Using %al in the
-> inner loop, which is executed more number of times is likely making the
-> difference. A perf profile is needed to confirm this.
+kernel test robot noticed the following build warnings:
 
-I bet it is also CPU dependant - it is quite likely that there isn't
-any special hardware to support partial writes of %ah so it ends up taking
-a slow path (possibly even a microcoded one to get an 8% regression).
+[auto build test WARNING on 11439c4635edd669ae435eec308f4ab8a0804808]
 
-As well as swapping %al <-> %ah try changing the outer loop decrement to
-	sub $0x100, %ax
-since %al is zero that will set the z flag the same.
+url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yilun/x86-tdx-Move-all-TDX-error-defines-into-asm-shared-tdx_errno-h/20260328-151524
+base:   11439c4635edd669ae435eec308f4ab8a0804808
+patch link:    https://lore.kernel.org/r/20260327160132.2946114-20-yilun.xu%40linux.intel.com
+patch subject: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for the TDX module
+config: i386-randconfig-141-20260328 (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+smatch: v0.5.0-9004-gb810ac53
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF-lkp@intel.com/reproduce)
 
-I've just hacked a test into some test code I've got.
-I'm not seeing an unexpected costs on either zen-5 or haswell.
-So it may be more subtle.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603290006.za7iiDgF-lkp@intel.com/
 
-	David
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
+>> WARNING: modpost: vmlinux: section mismatch in reference: iommu_max_domain_id+0x55 (section: .text.iommu_max_domain_id) -> acpi_table_parse_keyp (section: .init.text)
 
-> 
-> Never imagined a register selection can make an 8% difference in
-> performance! Anyways, will update the patch with this finding.
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
