@@ -1,93 +1,96 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE79346E70
-	for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 21:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A1236CE14
+	for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 23:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774735140; cv=none; b=OpamL/Qwf5idP91A+Xls4icj2P2EOf6egj5Yp83g91b0/G8tWV53avmVBjJUckLvK/AiawFNrQDQASmMrSdR4wibf8U14QEMc0kpD1EC5s+zTVN7kjL8Lplojk/aMQP+723zqkWaPFp5zMtnOlbh+r+ZGek2VGazxY1B4qvlnG0=
+	t=1774738912; cv=none; b=GR7gKDwZJA1q826rNHqIxlEbdoPSKTyGObG20xEigzwaj9RxkW9m1OD+NBUUDloWv/QvhTl6EVvpDF1cr/mj8P4o0/Bmj+71ZyfT4uSjKA8G3PXhEyHh7+JxUADj6HPSZA02Z756EHOFG5Jf1XrgmpoNtH6ACKa+SJ3qlC++4Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774735140; c=relaxed/simple;
-	bh=w1OtwFSIIEFzlkWZVlPJH50aUgOjLaM4Wyv4g9zgn88=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a0uud0tvHA9BIq6wK0/WbTIBtH10QDZ4/C56KON1Uu4Iw/Sq2sh1jhxQ/HbNMz36DzZxbU51qG0a6cGgj3xS9pRmaD6s6t4uciPHq669uz6+3DFGaucdVx12/RRGLa1FgUJSqqD5Kp6VbNq9H1yRRq034iZ5NXI6WyzSxuyoh+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdhLs8pz; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1774738912; c=relaxed/simple;
+	bh=lDpXKbbx+iUKi1EaJXjH5FYWfPCjxXzTGrKbapyCYk8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tbMqpj9raheEJS/8nIoN8ZoZk8OaCopyLks9iu+bRG1jSTvpVC4alS1e+LCt7lhpz54j1k3wzb+Bd8QtM8BV3CzobdFWH6x7Lts/sgUFPsUrcTBvVE1pQMh2G+X77gBWxDxBSciW+05fVvk/grsE/2NSwpuBmhaQgXSrxN+fnvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E6ewS6Db; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdhLs8pz"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48558d6ef83so31180395e9.3
-        for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 14:58:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E6ewS6Db"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-486fd5360d4so42916745e9.1
+        for <kvm@vger.kernel.org>; Sat, 28 Mar 2026 16:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774735137; x=1775339937; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GovFc/Quryn7Wrtc0cRqpho3m7htvaaEbNv4FAPywhk=;
-        b=gdhLs8pzN4KgWuKwMOBKIfF2RBEaICGTNwYrXwU6m+D40/kr/+XbCsZp8i84fcmRTZ
-         YzLYGuGM8A3VSNNaRy51lfmyjhGIthjIz5zXKWJX4As/ieh8Rya2/2v3CcDTVBwOOT34
-         4vUyEDiTwfCWtaPzxgOxiQUSZ7F3syThzuQagRnuELS8vfU1mfsBzBTpwfvIF+RicJSz
-         Ei0Qb02X/pCoSc7Z9hCWIInZq4E/TE8LaXobGWYDmyR3r1pmJHjXPmnD8k1M+fhUOuXm
-         y1KHuyyDEf07j1lylNOE8okNkIh3PH0cUekxrbCr60tkHkN+GHAuJo9F+OfBirlIez04
-         Pl3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774735137; x=1775339937;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774738908; x=1775343708; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GovFc/Quryn7Wrtc0cRqpho3m7htvaaEbNv4FAPywhk=;
-        b=OBDAoWIYPUY5yuHEiX1yh+nphIvZKbEl6TLhcPEpHzVtiHVyK1cDKpCNAY4Thuz5cB
-         3lVg23qmn0/5Cv90DEW0yrO7cXikPq/obhrhqC4RhQ8FdaXr0rl80KWXpBavq9/sm/TS
-         IyzU2w1asG+INN5NfOJe2XQ3/0QoWwvoy7MO1Llpx0qe8rTKMKD/HBWFlXkojNMtYiMU
-         K+dm9oekgI03MzD8JE07XfdFYwgpfMEzYmWdP5vYLOyHlNLdmJ04TAyi/hS1wUbT/VOA
-         G7GJcza5hi0KKYAVNC7bwYFX1UNdvmlLPFjom96w08svPHBWIeeqv42vlyFk33Y5qK2V
-         E1pw==
-X-Gm-Message-State: AOJu0YyHhlpRxpW0xFsVcwt1HY5uylkZ11xcJpnvQ3FWd3mdgiV7kqhd
-	l0Niv3HEtc25dNLZuCbkWbSm8tFt+Y71QdMK73G4EixHaWrJi/huwyPtZV6u6S7tRmI=
-X-Gm-Gg: ATEYQzw137lFmf8DcrNrZxjjb04vxLjPrOj1ut9AOn729A5j31cESXIEmFtXOuU9i3C
-	35KMvEye17NyfGesauBhCa6waQR5q75iFEEqI7VqkNVxtDysOrKFRiK/1wQjNdiZlagzI1xz/A9
-	25en+EaGqPqlwoD4n8SSLPFmFKz9sxtzpUg84Ixmo9lCZe5ynJ4pgYphe5TpNjgo+jmyf21IlW+
-	tywvaoxJrAqK9xqmCcxOqxBwRyuhKKXXWH9B0ODF8jdVBpLGL6GvdlXr9DqwiS/lxBoS0uR7YEI
-	vTyTMkLiaHjdJ65PUJ0hPNTw1qa4FCMlLrC0z75LArsMpWvJmLMtnWZe2xKVfn1FE92GjdaEmk6
-	qkIeGrEGmsIck9owDFq/6t/U2KnGVvY4U4vUM67QTLZUDK4KxI5S/+HUnpGeq1Pt2MtfIOEJ6q/
-	BGtXnoDAvIns9/W31jqUKlwTAvB/ME3Ui7Vht/1KhIfDUEIUUxVkVNJLUK4n7coAt5yeY3Ex5kQ
-	lMHApWx2OzVCVvdd7t2Gv/XpBY7889CohWPNLWDtRg++jTavBUB5r9FaFCzUsOqbsyKDoKmWQ9A
-	DL6ixjpecfDqj6A3lqf2p72DSPMbTCtjTK4YFvFoDvGbnP9VrfnhuuDnvvA=
-X-Received: by 2002:a05:600c:3586:b0:487:1fbf:e0bb with SMTP id 5b1f17b1804b1-48727d5a17cmr130395765e9.6.1774735136501;
-        Sat, 28 Mar 2026 14:58:56 -0700 (PDT)
+        bh=YBt6KoG15kjXguWZ637dFltb5bZY9qwpDoNpuJqHG30=;
+        b=E6ewS6DbFHi7hUux5YifeZAVXoMpkdKW86wLRhCcVE6kpBKuPG8X9e9MSlKsy7fqgn
+         U/QL553f76br5VrG51/ngz7KzYw3UZREhWp705Z601gdYFIYwwCeO6N6bhuadDoq6rlF
+         ytr996B5OSyUVWGARgXEDTuIZU3ucgYF6e/NKKiSjnz4dfN00254TMB57ftju8DLJvu6
+         myuBfD0MR7dh93DbklPSsOyHwXJ3LGQuBF2jSQNakI6O41faW9JDkJMy23EViOBX+IgZ
+         4qksxDLZYAMhVcnnBt/1kmVSxv4TByMYibaP0OGmC2wHpQzPhKZuSYgOvFRw/IcxH8c5
+         57jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774738908; x=1775343708;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YBt6KoG15kjXguWZ637dFltb5bZY9qwpDoNpuJqHG30=;
+        b=LDFtEhlAafQb/wIIjhl5U8G/NR2/xkKDGOi4Xby93BqEWSq73cujRPTVBsLEF8RQoQ
+         6r6u7J4qgi5Bwflr+S4KOT1kBxSO5t50izZB5EAotOopdZ/HTmA45AZoDvNuL0ttkBew
+         /lZLlV/2qzfrkk+LWIXGWH7Ruo+5ZAL42eHZhDvCvdqJowjmi+zy1fDpGBilsE9B5UMB
+         XcRnaBWGDgDZiw7zzzlSNuPn/pP45qqEtGhCgcdkyP/JCzzOX3wJeVPz4DOzwXdr2XE/
+         eAVMn9g4Tkmdsv2U7Il/0rrYA0OWg62bOEF2t7petrDdaeeg8/SPthqvK2R27cu+VykW
+         kPkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDi4WwHfC3B7YME9X7vEYTcgO5XyAjPuMZVZxYGHN31s6hQfJZVN2q1MlVG9Pzx8BkQOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY6WqJVkgvcrU+d65sW2yK+FFfvE3rd/tbZtSqkSyi/M7blNYJ
+	7z5MCGw9X3oJRSCiQWql78iFUIJMB3ojQ2rkrmljqRwPv3yw3f7e6Ct7
+X-Gm-Gg: ATEYQzwvaXo7F/BEvUJxDnDu12ciEwaeuhoOZdLPnqge4PfCLvPAje7WoScuLORwFTs
+	AlDTk6+S6dvt8esvjzqY/GTa3cAaTL/w7hvWh+NLNeRjE2exvs+0PuJFIhCPO4CnqWR33XtNj3a
+	+SbExcyq95WCqXEVZCe5G8p2oURuwkkMVTuAFDtaUA/dKdWlaDN4tqgQKE4dUo2Nv/NA7cVvwv6
+	ZPBdy4WbfZ6W7ms3r6dXmnQT/IzCMsWRLfbkSegMogrKp+h5IMO+eL9ocq3K+SYRtxA8pOyGdey
+	m9rn17xWw13ORPRN/38s+plMYcLT8rZoBtKu+gc5vg1psnzbqrVwtoyMOK17RqhXoryWibTaqgA
+	fSo7UavlethX46KlwHlAcmtHJxuID0uKmSRLd2kbFj9dFZ/ygQwlQsOWzLX1+UK6I71VEf/Ma8e
+	dHjRDd/P/kjtUZ4IJqwWUkmfZDWYGyYyIc2pQBZQBsfTYW1uxl4IFs/UvEeqoeFikJ9rxcV99QM
+	Vk2RUS+wPql8rytRLZEBqcRhnSAYf7AHhPSfzrGpJi25aSj2JBeTpuR3L0EQEVW5Oxg8kUtGKMK
+	lGG3qVIgO0cda0+t0f1X27Wve7+PBHyA88YWut9ntDEypCSmdkn5KgdVov0=
+X-Received: by 2002:a05:600c:1d0e:b0:485:a4de:f4f9 with SMTP id 5b1f17b1804b1-48727ee54bcmr130405885e9.27.1774738908324;
+        Sat, 28 Mar 2026 16:01:48 -0700 (PDT)
 Received: from archlinux.kangaroo-newton.ts.net ([185.213.155.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c845b8sm158502225e9.4.2026.03.28.14.58.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4873061ef41sm75078355e9.3.2026.03.28.16.01.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 14:58:56 -0700 (PDT)
+        Sat, 28 Mar 2026 16:01:48 -0700 (PDT)
 From: Christos Longros <chris.longros@gmail.com>
 To: Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org,
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Christos Longros <chris.longros@gmail.com>
-Subject: [PATCH] vfio/pci: sanitize bogus INTx interrupt pin values
-Date: Sat, 28 Mar 2026 22:58:08 +0100
-Message-ID: <20260328215808.16108-1-chris.longros@gmail.com>
+Subject: [PATCH v2] vfio/pci: sanitize bogus INTx interrupt pin values
+Date: Sun, 29 Mar 2026 00:01:26 +0100
+Message-ID: <20260328230126.73230-1-chris.longros@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260328215808.16108-1-chris.longros@gmail.com>
+References: <20260328215808.16108-1-chris.longros@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Some PCI devices report invalid interrupt pin values in config space
-(e.g., 0xFF instead of the valid range 0-4).  The VFIO PCI config
-virtualization layer passes these values through to userspace, causing
-QEMU to crash with an assertion failure in pci_irq_handler() when it
-computes irq_num = pin - 1, which exceeds PCI_NUM_PINS (4).
+Some PCI devices may report out-of-range interrupt pin values in
+config space (e.g., 0xFF when the device is in an error state).
+The VFIO PCI config virtualization layer passes these values through
+to userspace, causing QEMU to crash with an assertion failure in
+pci_irq_handler() when it computes irq_num = pin - 1, which exceeds
+PCI_NUM_PINS (4).
 
 The existing code already handles bogus VF interrupt pins (set to 0
-per SR-IOV spec §3.4.1.18), but physical functions with out-of-range
+per SR-IOV spec 3.4.1.18), but physical functions with out-of-range
 pin values are not caught.  Extend the condition that clears the
 virtualized interrupt pin to also cover values outside 1-4.
-
-Observed on Realtek RTL8852CE (10ec:c852) which reports interrupt pin
-0xFF in hardware config space.
 
 Signed-off-by: Christos Longros <chris.longros@gmail.com>
 ---
