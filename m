@@ -1,85 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACD031ED80
-	for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 16:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B98D2367D9
+	for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 16:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774801237; cv=none; b=Q0JfZQG3v4+6UmitWEwOjl5kj4hJYrjwEM7w5aGmi9kLJcqgUQx9Bgfcqjkq3tKApoKE16vYsCKvIu2PCYnJTjRGa+GqL9fSAoavaikVkgWT7XyyUr/GhcIW+SeovZ1GkStyf5h5PCvn1gs1YMqHZEY4nP/VnH2qauHYPWS+mXE=
+	t=1774801386; cv=none; b=bm6YJazei6qXePg5OT7n/PonedsgkuSg/0OgbpOpre55D9KPCU/Qm5uRrsotekfjI/n8N2zj7qju7UKzh8cjXtMpurz6YSVVElcVD14knPJt/3kRmEF54B6caI8laVtvPKzt8gbqybKv3BN2286wF123qj5Y/T5FNYqdZeT6dy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774801237; c=relaxed/simple;
-	bh=jNlxeein1vPxNVfjQwpfWghJO7KYdgT+xIIJQND8iOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ft615UFHYy839r9M09ljc+WapTQFpMIp6NzTXKLA60Mo7haErhGa7qTZIn8XcoH459Bt/XnvnGFTM/Qu89BT5xhO5wiMlkn4Oc8EZCwZk+BnhZWcaesD32xtHXhw56yofYI+myrAfs4ny10jaHjoflEsmuRxmcOHebgfq84AaLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E0VRtLyV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UZrTwxGS; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1774801386; c=relaxed/simple;
+	bh=4ATS/w5ilyTZCGdNEt11O3ZPqSdhk07QwetqwZRQn/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=upugibShxW3vC3B/47YYwu3C1SH8vLzkgtW8oNJSBT8CCRGtYi6QMcn7F7h8XBz/uY5TP4azDpd1QOXlnUPv+1WbC8HZgR49+YfLa4NP6OafpuvO/jqW6D+hdrFJQ45ek3OfD8zPKn7e+g9RE9G/wUWOo4G0qNAK3Y50nP4hcgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FUzJKqjl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NfzDQYUi; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E0VRtLyV";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UZrTwxGS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FUzJKqjl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NfzDQYUi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774801233;
+	s=mimecast20190719; t=1774801383;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=XoMoT892CRhaVQ9rWQPaS0oE2azcElFPE2OMBF9QxpE=;
-	b=E0VRtLyV/3lgYO0GC8PXmn82ucZAo0R3m9pWffkksWvu/M/QMFv1ulQCZk8c4huStU+6+v
-	QramyhsYodJ4LVSx4qTl09KtcTyvAIihngPPmnlwQMlGGuAnt6ouVxOGxrJVMHmkafBwPh
-	E/miSE/j58B2D2APrAjU1cqYqyeKfCA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=7CkbaMckWtOu+BAt2/YNvYUDOoVNDTgPUoFz2iLggDQ=;
+	b=FUzJKqjlDokIkxrkySNMTeKYmPngac8blWMtG2zFX4he/pQ+Kzfi6CB/6QFV/TQZFsfuHa
+	AnLM8aWVLMA2OkYeNtoecxexPStwerS6h2NmUocVfuY983niao0ju3N70xqioThiRhTSzz
+	QMC4/U+KdV4frreJpncJW+2VDFDgDDg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-DAuljdEdNTKqmOqCRyDqFQ-1; Sun, 29 Mar 2026 12:20:32 -0400
-X-MC-Unique: DAuljdEdNTKqmOqCRyDqFQ-1
-X-Mimecast-MFC-AGG-ID: DAuljdEdNTKqmOqCRyDqFQ_1774801231
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-486fb29a8b8so31374365e9.0
-        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 09:20:31 -0700 (PDT)
+ us-mta-460-3xugR3CINvS9UZP506-Szg-1; Sun, 29 Mar 2026 12:23:01 -0400
+X-MC-Unique: 3xugR3CINvS9UZP506-Szg-1
+X-Mimecast-MFC-AGG-ID: 3xugR3CINvS9UZP506-Szg_1774801381
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-486f89b7f69so30786595e9.0
+        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 09:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774801230; x=1775406030; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774801381; x=1775406181; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XoMoT892CRhaVQ9rWQPaS0oE2azcElFPE2OMBF9QxpE=;
-        b=UZrTwxGSfm+Ra4RjlDbOMkiMofB0ygjVtZ4c2JLXqgytBYPQjFpctJadMSXHE7tC9j
-         w6Tg2J5zuG/9dhVhqlXQLabP+leHjEV0CpjAb1gZTrYnjdgP60+swH7zgoOCGzbuG+zz
-         +Y+V0BmXnH6X1k17Urgao2t9m5cU98TtrapjYVj7M/Es4gsqbZtaMxBIDsyEYzIrx9XV
-         uwrYmi3XgcwEGDpki1tobnp6i7BDq2d2q2bS1shHVMSYGiz56AAxYAyDz8kLfQyvwHFC
-         9Mz0Fh7c3ULb5dqOz1WxCn3f1kNqaAk7mlnZtACfTDeUPiegY4iX6nXeChzQUiJQLGwB
-         TZsA==
+        bh=7CkbaMckWtOu+BAt2/YNvYUDOoVNDTgPUoFz2iLggDQ=;
+        b=NfzDQYUi+50qt2whROP24nNZ7e/ath/9LckgM+BGTMPKuXoMLtHyJ5m0elQzWZq2oi
+         RZFpULq7rGBjYR3eVBGT2Re+/7RQbftym7M+trLtBr9Kaga2ib+Awq37LXQPgtvjMeTT
+         qeFjTBqBGNSf7o2/lc6XJGY7NDTk303OzWSlqeCSPDir7qG+O8jM4iRSIKoXyKhqZrHx
+         LeyPT9LbNJenFeEwoaum3wloMoBIkSb0t6Mh3elGm1jQjcZFRGHgi0jEs4i4/iqwiGJB
+         KcHdF49a2+A5Hg0WqaaDBlPKWsKWV/2JtuqtfWzBYhHS8jPKez4tRy6Z84QfdXZYgjj+
+         3zNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774801230; x=1775406030;
+        d=1e100.net; s=20251104; t=1774801381; x=1775406181;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XoMoT892CRhaVQ9rWQPaS0oE2azcElFPE2OMBF9QxpE=;
-        b=HDh+Xo686zJg4PF3dSmNYqdc4LZfVBkN128Mmdnm6dsrTlIMJJad788SDJlMRYcEbj
-         FZFLSmRB7lEmDsKN9lVLiDlc5Bg7SlVCtELsNAyHJduXP2EjIibfeTFvXNqnEdagTtTq
-         MoRM/2/5/bfkMoW7Vv0jasVuc12sFkU3wF2jmcP44pSXsJKZM652l3X4/AlWsVcz0Pf5
-         /w0hWCAdRXCVnTcnHP4BC8Et4iH20tVUfNtntTqz0YYSL0HPsLRtCSKZ07/bDcueNDgh
-         WordnrYrZgSW30koMlmUTswrfUzglbeG940CuK504fjQXxdu9SlIj7LXOjrtxP0qb7mu
-         RNdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5xz7h8QXzVJC7Xgp9lq0sfHsdFY2ECgWZiq1BNTvGUdMbMNsce5GAeNneeGznLiHtVhY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPLquD3HLGpiBmnX3hM+nyZHZTNj6xcKCycEO8Plig7F2s8Hdt
-	NU8UAdIS8QJ9MMT+Bc1pePXKTN/OS8jRgfnFSr6hWjC9kbOoWSHkWHa7cWbg7fieJTNbfWzRgmY
-	KtRW/y11C36jc0YE3Yycf4sbMhHeWRvHQmBuoZtQExsF43qrR4s+V/MP7zrjeUQ==
-X-Gm-Gg: ATEYQzy+5PtNcOYSIQEJrmkssAkfGePRYsWblie+aWpFObecwHGVN5QOhsM8qqgfBqt
-	QMcaBoZrUT4zypGQWXWd3TSFVvyYzdWOXSFUOle1d48qBxbWrt/JSBfKhYgd+OwbrLhDUZUhVc/
-	eMkqHwIyjz1t9hvOprYIBQ4yKx10sFMVael8KiVqk6V7HjSdVRKkTJZB3HXcG+4jqEk1xkNz0Q5
-	AMpE4HN7nNg4JPSE8N8/tqmzd276Uv9WYB8CuetnzGthDZlAGN9t6ptenbpfnQjdw2S/LXu/VZa
-	c1yOXgqRgXgX9olIUC7P25aG6HJP+clT4JxRJ+J6kgcRku7ty17vDcU7mtofX10X1Z00dWUkByE
-	ya7tDQxcRc6/nwvIZGsaZUs2GJyoaMTdQzB9SmqfRCd+rfIK/vZGbMyjNo6O4ih4A26H8i/NOPR
-	VQzHj9EQ9d4MQwvStugAzGukO9ZLHtYP5ujTs0G6RsxRvL/4cYXx7aRTDL
-X-Received: by 2002:a05:600c:3505:b0:485:4135:5c92 with SMTP id 5b1f17b1804b1-48727c7c6e0mr142237085e9.0.1774801230286;
-        Sun, 29 Mar 2026 09:20:30 -0700 (PDT)
-X-Received: by 2002:a05:600c:3505:b0:485:4135:5c92 with SMTP id 5b1f17b1804b1-48727c7c6e0mr142236835e9.0.1774801229797;
-        Sun, 29 Mar 2026 09:20:29 -0700 (PDT)
+        bh=7CkbaMckWtOu+BAt2/YNvYUDOoVNDTgPUoFz2iLggDQ=;
+        b=PbEz6nQ/fBMc2RG4bCV+iCqj7LN0xemPqCeEUjmRjcdf6HHXxpZQhJTa7jkR1COgRo
+         ZXpuGU8caio3XU5ZOHvmrxrocrFUSTrIjiaQjxsGjkWDXBPGiErT95v/8xJlKJqL/7dA
+         zWdZmdSuBIPpAEc2dcxrF6oO8PKBRJ5aIyk1qbGCsQQmRMoTX+2yQZ/h1BwBspKmMxLj
+         j9TruviE4rrdfttJQC8eaSnDZSg30LmdxdlK4hBA7YVVAY4tifvKCkJFnfQebKHJ5FM9
+         mcCexWfvYivY/cRVuwz6fYvTNAEAUoCCit422vuZz3LyCOZPTlOp4ZOhE7cL4Xxa8QLr
+         91tg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIMwkrY+U5AdNI10XcBK7Yfu2rHk5rjon1DgnL/dlYnCTw/Bzys/SFzgQfnhOOJB1RciA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQyR7mQmHL/4fc93vcFvxvAtCTvnTtKsMmHhjgVv2jr8R/QWAR
+	tkdrVvWrVJEYmHHzkvscnlRs/KV5dY8L2q1UBalhd7OcJe+Pfe3sBPN4vsA4sdOJ6+UuWujcZ5F
+	6GpT8nILEX9AEPu7NHAN9pbCimWPZkBeQp7nXP5dI7wvn/KyiZGPTkg==
+X-Gm-Gg: ATEYQzzqJlGIC/tiBb4QNRylW4BFe7d+Phh4Pa2HInQ7t9KCljDJ0/gWzFj/rSA/SLl
+	VpfE784JPGf+CRlmMpiUipwqJR7zAejfLBpOLKHktXP97alxFso7zlNK/g/5WWRtghZSUqqAn31
+	a1kl5GwxzfWdQLLYySrzXp2uEAf3wnxQYBqELLlhD4fgCTtCNMRi6TRIa7CRG8BWKjFMlndwgsw
+	kLGZ/j+xi4p96SWtkojaXUC4ADOrJYfs2lCb24WMOlfFUUqzkwO4Spz4tK6Y/XX0tw1jM59lyTE
+	Jcyg2Csxq2R/qs++MynAi8OYsVVcFbFau+ZzxKNmvCODxij0AIHJpmhx1V71Ue1e6dtzxvqg6RF
+	3EJBQDSioG6+pqGi2i0YS/bhuK3BOoGJKMoVt54A0h8ssbg939Tgp87ogRM63BvtGH3Ztf3duxu
+	LfHUyUpn5VX3Y3wKImteW7++5jG3FMLkL7JXQ35cu+Tfx5Qg3QI/m+HcNB
+X-Received: by 2002:a05:600c:64c8:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-48727eb7f4dmr158844435e9.19.1774801380563;
+        Sun, 29 Mar 2026 09:23:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:64c8:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-48727eb7f4dmr158844125e9.19.1774801380099;
+        Sun, 29 Mar 2026 09:23:00 -0700 (PDT)
 Received: from [10.242.181.123] (93-44-53-42.ip95.fastwebnet.it. [93.44.53.42])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2580194sm11296346f8f.37.2026.03.29.09.20.28
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48730628efasm198566045e9.5.2026.03.29.09.22.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 09:20:28 -0700 (PDT)
+        Sun, 29 Mar 2026 09:22:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
+To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM fixes for Linux 7.0-rc6
-Date: Sun, 29 Mar 2026 18:20:27 +0200
-Message-ID: <20260329162027.105662-1-pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
+Date: Sun, 29 Mar 2026 18:22:56 +0200
+Message-ID: <20260329162258.106549-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -89,64 +92,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Linus,
+From: Sean Christopherson <seanjc@google.com>
 
-The following changes since commit 0138af2472dfdef0d56fc4697416eaa0ff2589bd:
+When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
+existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
+right about it being impossible to convert a shadow-present SPTE to an
+MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
+memory that are outside the scope of KVM.
 
-  Merge tag 'erofs-for-7.0-rc6-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs (2026-03-25 18:41:35 -0700)
+E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
+to emulted MMIO and then the guest hits a relevant page fault, KVM will
+install the MMIO SPTE without first zapping the shadow-present SPTE.
 
-are available in the Git repository at:
+  ------------[ cut here ]------------
+  is_shadow_present_pte(*sptep)
+  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
+  Call Trace:
+   <TASK>
+   mmu_set_spte+0x237/0x440 [kvm]
+   ept_page_fault+0x535/0x7f0 [kvm]
+   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
+   kvm_mmu_page_fault+0x8d/0x620 [kvm]
+   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb5/0x730
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x47fa3f
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Debugged-by: Alexander Bulekov <bkov@amazon.com>
+Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-for you to fetch changes up to df83746075778958954aa0460cca55f4b3fc9c02:
-
-  KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE (2026-03-27 22:33:33 +0100)
-
-----------------------------------------------------------------
-s390:
-
-* Lots of small and not-so-small fixes for the newly rewritten gmap,
-  mostly affecting the handling of nested guests.
-
-x86:
-
-* Fix an issue with shadow paging, which causes KVM to install an MMIO PTE
-  in the shadow page tables without first zapping a non-MMIO SPTE if KVM
-  didn't see the write that modified the shadowed guest PTE.  While commit
-  a54aa15c6bda3 was right about it being impossible to miss such a write
-  if it was coming from the guest, it failed to account for writes to
-  guest memory that are outside the scope of KVM: if userspace modifies
-  the guest PTE, and then the guest hits a relevant page fault, KVM will
-  get confused.
-
-----------------------------------------------------------------
-Claudio Imbrenda (10):
-      KVM: s390: vsie: Fix dat_split_ste()
-      KVM: s390: Remove non-atomic dat_crstep_xchg()
-      KVM: s390: vsie: Fix check for pre-existing shadow mapping
-      KVM: s390: Fix gmap_link()
-      KVM: s390: Correctly handle guest mappings without struct page
-      KVM: s390: vsie: Fix nested guest memory shadowing
-      KVM: s390: vsie: Fix refcount overflow for shadow gmaps
-      KVM: s390: vsie: Fix unshadowing while shadowing
-      KVM: s390: vsie: Fix guest page tables protection
-      KVM: s390: Fix KVM_S390_VCPU_FAULT ioctl
-
-Paolo Bonzini (1):
-      Merge tag 'kvm-s390-master-7.0-2' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
-
-Sean Christopherson (2):
-      KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
-      KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE
-
- arch/s390/kvm/dat.c      | 100 +++++------------------------
- arch/s390/kvm/dat.h      |  23 +++----
- arch/s390/kvm/gaccess.c  |  71 +++++++++++++++------
- arch/s390/kvm/gmap.c     | 160 +++++++++++++++++++++++++++++++++--------------
- arch/s390/kvm/gmap.h     |  33 ++++++----
- arch/s390/kvm/kvm-s390.c |  18 +++++-
- arch/s390/kvm/vsie.c     |   4 +-
- arch/x86/kvm/mmu/mmu.c   |  17 ++---
- 8 files changed, 241 insertions(+), 185 deletions(-)
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index b922a8b00057..98406d6aa2d6 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3044,12 +3044,6 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 	bool prefetch = !fault || fault->prefetch;
+ 	bool write_fault = fault && fault->write;
+ 
+-	if (unlikely(is_noslot_pfn(pfn))) {
+-		vcpu->stat.pf_mmio_spte_created++;
+-		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
+-		return RET_PF_EMULATE;
+-	}
+-
+ 	if (is_shadow_present_pte(*sptep)) {
+ 		if (prefetch && is_last_spte(*sptep, level) &&
+ 		    pfn == spte_to_pfn(*sptep))
+@@ -3073,6 +3067,14 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 			was_rmapped = 1;
+ 	}
+ 
++	if (unlikely(is_noslot_pfn(pfn))) {
++		vcpu->stat.pf_mmio_spte_created++;
++		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
++		if (flush)
++			kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
++		return RET_PF_EMULATE;
++	}
++
+ 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
+ 			   false, host_writable, &spte);
+ 
+-- 
+2.53.0
 
