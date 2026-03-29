@@ -1,255 +1,152 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6DB299A81
-	for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 13:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774791722; cv=pass; b=KkAgfuDaBkbIuCdXNElyjap4E96BD3eGkyxNl3s5rsjvOW3Aqkzbwsaj8X/2pXqBVgmCnRYEHX6D24166csMv3stPc5lBv66FD8BvT3hyudhbC/Tw3Uo/3wMyT4ebWnLW8C/T8ho1hn8jj5O5ulbn6qb3/qbyo6ncA6xmhuOvHY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774791722; c=relaxed/simple;
-	bh=yG0GY9Z7DdEjRqq/jjl/HZBwFW+WK1FwgjS1QWQk1HQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CeZ6DvSuzCkzSVTnxxFs3NNs0+ncmovgnzel6mJr62zxnL/QPDa/0QQrAHXx/LjZJN/7mcIaeGeJ7MYy31XYCkDUKXbP+PKqpXBYWWLgbZPK1r5UdF3GQBh4JOJRka9RWnGy083ZSG9WUdKGEbBarG9DLn9C11e9tPaW1/2w9v0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HT4Gxsi3; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACD031ED80
+	for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 16:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774801237; cv=none; b=Q0JfZQG3v4+6UmitWEwOjl5kj4hJYrjwEM7w5aGmi9kLJcqgUQx9Bgfcqjkq3tKApoKE16vYsCKvIu2PCYnJTjRGa+GqL9fSAoavaikVkgWT7XyyUr/GhcIW+SeovZ1GkStyf5h5PCvn1gs1YMqHZEY4nP/VnH2qauHYPWS+mXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774801237; c=relaxed/simple;
+	bh=jNlxeein1vPxNVfjQwpfWghJO7KYdgT+xIIJQND8iOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ft615UFHYy839r9M09ljc+WapTQFpMIp6NzTXKLA60Mo7haErhGa7qTZIn8XcoH459Bt/XnvnGFTM/Qu89BT5xhO5wiMlkn4Oc8EZCwZk+BnhZWcaesD32xtHXhw56yofYI+myrAfs4ny10jaHjoflEsmuRxmcOHebgfq84AaLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E0VRtLyV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UZrTwxGS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HT4Gxsi3"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5091ed02c54so629331cf.1
-        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 06:42:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774791720; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YtXJaJofQ4grcvaTiumfH5kGFgH4ZykMLqhq7cZBDuWPRYYAWzDNspm/WLhIXh5uYY
-         7+GlLh4zF6J50eZXLxowxnYZdXgQqOMeHELvhdCY+qdBKSy8ippLG7Qzowtqm9KJdzt5
-         ZjY07cBlqt3/1N18N3Ft+l54LgjUBFl8fZYbBgMCTk7j5WyDB6zi0uq8BsYFSGFxw5gx
-         GBldxnurcxPVKL+4e+EXFAx9cowUN7ebvJeFMKYabB+wh6v5uoVcz6gKwML5FQGwkaTP
-         I2KvvCls8Zde0I2McEhidLm06LvGqy4LE/pNUhowQeGdXy0ofCHPuX9A6bbZXo/s74r/
-         ThFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=aF4Epmx2n9nntDB8c7LNu8cL/wQsJEEhS1gBTnU+6mE=;
-        fh=CfMDX/fA7/FNbjiKLAkiUPaCnvtvICR3FSR1LKL6PHE=;
-        b=k3LzDftBKLxKaAqXdnUcth/oIDz6KB3gPY6dUp6bJbJnhjgkMd/YmLoZHVwDA2qrZR
-         YZXRVW9oFSujClPzpbLHqkt7IVOzj7P5QmVyjaUZma5K0+rKfCFWpmPxP8M9rY+SIuE/
-         s+aeoW2sZ2dcZwzt0KoswvY5vkhFzRZ+epoyRLPzdKQhu9lJRRkXhvAl1OIVi8LQmBXz
-         k4xsiVguna3/PQoB8dIGMYsMuP5tMFDW5ZJOWGdBLyaDF/J2OKrTNK5CN+hq76YR0zVm
-         fkj9Sx8m6RwATXbKe9X+/ynSGdIJfEXWkuBiXYGjmG3NbqB6y4d2n5pZCazfuzIEfgjq
-         AHwQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E0VRtLyV";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UZrTwxGS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774801233;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XoMoT892CRhaVQ9rWQPaS0oE2azcElFPE2OMBF9QxpE=;
+	b=E0VRtLyV/3lgYO0GC8PXmn82ucZAo0R3m9pWffkksWvu/M/QMFv1ulQCZk8c4huStU+6+v
+	QramyhsYodJ4LVSx4qTl09KtcTyvAIihngPPmnlwQMlGGuAnt6ouVxOGxrJVMHmkafBwPh
+	E/miSE/j58B2D2APrAjU1cqYqyeKfCA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-467-DAuljdEdNTKqmOqCRyDqFQ-1; Sun, 29 Mar 2026 12:20:32 -0400
+X-MC-Unique: DAuljdEdNTKqmOqCRyDqFQ-1
+X-Mimecast-MFC-AGG-ID: DAuljdEdNTKqmOqCRyDqFQ_1774801231
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-486fb29a8b8so31374365e9.0
+        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 09:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774791720; x=1775396520; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aF4Epmx2n9nntDB8c7LNu8cL/wQsJEEhS1gBTnU+6mE=;
-        b=HT4Gxsi3Mf9YoNvm7wwrU3VZmqN3c0vmNcp6ngKGBHCXXKIDiR6wn5EMw2VXLgv7aV
-         FkRMPAqw9gdXJvW1CHQNl6BBXH7gVfEEcLZYcLHd53e4P5Kw1wKG9ZgeAjP0OKq+Z6bx
-         PyiGPwZD7vP6Sw4OIFjQpjwpm5ko/bH10CpWRZbfrlOQBhY87etDcQZYTR47yWxpHcU+
-         Ua85FUVy0Qo3mI/y6kgfjfbMFeVhbnX22o5+6WMf0914MJIxezAJG29CwyvF9uRa5RkE
-         S+z5KvOwluY7OcRwHZ4kdvvMJzyEnVkjjZkHKxmYOzVzvTXqqC5bLum1Owxf5WsxrGZ1
-         fo2g==
+        d=redhat.com; s=google; t=1774801230; x=1775406030; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XoMoT892CRhaVQ9rWQPaS0oE2azcElFPE2OMBF9QxpE=;
+        b=UZrTwxGSfm+Ra4RjlDbOMkiMofB0ygjVtZ4c2JLXqgytBYPQjFpctJadMSXHE7tC9j
+         w6Tg2J5zuG/9dhVhqlXQLabP+leHjEV0CpjAb1gZTrYnjdgP60+swH7zgoOCGzbuG+zz
+         +Y+V0BmXnH6X1k17Urgao2t9m5cU98TtrapjYVj7M/Es4gsqbZtaMxBIDsyEYzIrx9XV
+         uwrYmi3XgcwEGDpki1tobnp6i7BDq2d2q2bS1shHVMSYGiz56AAxYAyDz8kLfQyvwHFC
+         9Mz0Fh7c3ULb5dqOz1WxCn3f1kNqaAk7mlnZtACfTDeUPiegY4iX6nXeChzQUiJQLGwB
+         TZsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774791720; x=1775396520;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774801230; x=1775406030;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aF4Epmx2n9nntDB8c7LNu8cL/wQsJEEhS1gBTnU+6mE=;
-        b=jjV6w55b1ETskMN2VUKT8izy29ga7ktxWTVFAEWKVz221G3BgOR0kQIQ8sugrjravf
-         4M9pf1Fda11Q8+NGeSxVIZoqIvjvu6KZelWZtzCfeNN+ILe0iBR7Z7z+MFfvdzPKzJ1p
-         neu6nd21gsYP8OayVZ5t5ztGXlTExwZCMWDNaxjeP3q0FSxiRAAGH+kcmydPKl81t+ZA
-         4MoLxccSj5lgCOhil7vNEa2T0A/nduFwnFH91xdcQCZSQyMMGPE18DCngfqs62JGt8+L
-         eOnFPUoZGOncs60yeWyqTlZsSpn8VRJOqui2elDHp7NhtYRg7+ULMA0+VIEyZx2OedaN
-         8xYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWzULWAiDKPtKqT/v/Ki/HzX8gilj+v+0D/5/Mj5bpwtHZt2qp4wrLM+DBYMpxYw3wDEQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCkkcsEoDiyCDXy4z+DBvXKD/7ddBSbXPJhcLXLFEU4h35xEw9
-	JaWBJ74p4ILqPEH45pNIk98zrqV+vJP43wglJx7uP5q8R4uptD9kN4YEyTpIGO4zcjymdOfjCkz
-	vyn9s4KO+ALC2NQaZ1HpJqCRvKRsYv7MCPxiGdzW5
-X-Gm-Gg: ATEYQzylvr045v/D5XWghRGrMLEUkwad35OD51L9k2Y1z0NSzWwcze9NLEKiSuIYzi6
-	klysInWKmFTC8K67tar/iT8T1qcTqBSycEDpZ9LNKNhrpyau095hgmnIa8Kl9QG9EuXE6TErxPS
-	rNIsMUoboY3OvVUV96OcajLG+sAqzUUkSwiUQx6yz2jq/jpCZDjsE/GCFfJiU3ENEvGOsRHLy2G
-	l51lLW8N9Yn36WqEb9L8Jfl6hGCUnw9FU5LLadrLQkzGvsUhLdofjJgXNPCXFQbrcQXjl/xwqyo
-	VUrK7zU/
-X-Received: by 2002:a05:622a:3cd:b0:509:1d4b:f86f with SMTP id
- d75a77b69052e-50bb27f6ef2mr18579571cf.14.1774791719904; Sun, 29 Mar 2026
- 06:41:59 -0700 (PDT)
+        bh=XoMoT892CRhaVQ9rWQPaS0oE2azcElFPE2OMBF9QxpE=;
+        b=HDh+Xo686zJg4PF3dSmNYqdc4LZfVBkN128Mmdnm6dsrTlIMJJad788SDJlMRYcEbj
+         FZFLSmRB7lEmDsKN9lVLiDlc5Bg7SlVCtELsNAyHJduXP2EjIibfeTFvXNqnEdagTtTq
+         MoRM/2/5/bfkMoW7Vv0jasVuc12sFkU3wF2jmcP44pSXsJKZM652l3X4/AlWsVcz0Pf5
+         /w0hWCAdRXCVnTcnHP4BC8Et4iH20tVUfNtntTqz0YYSL0HPsLRtCSKZ07/bDcueNDgh
+         WordnrYrZgSW30koMlmUTswrfUzglbeG940CuK504fjQXxdu9SlIj7LXOjrtxP0qb7mu
+         RNdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5xz7h8QXzVJC7Xgp9lq0sfHsdFY2ECgWZiq1BNTvGUdMbMNsce5GAeNneeGznLiHtVhY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPLquD3HLGpiBmnX3hM+nyZHZTNj6xcKCycEO8Plig7F2s8Hdt
+	NU8UAdIS8QJ9MMT+Bc1pePXKTN/OS8jRgfnFSr6hWjC9kbOoWSHkWHa7cWbg7fieJTNbfWzRgmY
+	KtRW/y11C36jc0YE3Yycf4sbMhHeWRvHQmBuoZtQExsF43qrR4s+V/MP7zrjeUQ==
+X-Gm-Gg: ATEYQzy+5PtNcOYSIQEJrmkssAkfGePRYsWblie+aWpFObecwHGVN5QOhsM8qqgfBqt
+	QMcaBoZrUT4zypGQWXWd3TSFVvyYzdWOXSFUOle1d48qBxbWrt/JSBfKhYgd+OwbrLhDUZUhVc/
+	eMkqHwIyjz1t9hvOprYIBQ4yKx10sFMVael8KiVqk6V7HjSdVRKkTJZB3HXcG+4jqEk1xkNz0Q5
+	AMpE4HN7nNg4JPSE8N8/tqmzd276Uv9WYB8CuetnzGthDZlAGN9t6ptenbpfnQjdw2S/LXu/VZa
+	c1yOXgqRgXgX9olIUC7P25aG6HJP+clT4JxRJ+J6kgcRku7ty17vDcU7mtofX10X1Z00dWUkByE
+	ya7tDQxcRc6/nwvIZGsaZUs2GJyoaMTdQzB9SmqfRCd+rfIK/vZGbMyjNo6O4ih4A26H8i/NOPR
+	VQzHj9EQ9d4MQwvStugAzGukO9ZLHtYP5ujTs0G6RsxRvL/4cYXx7aRTDL
+X-Received: by 2002:a05:600c:3505:b0:485:4135:5c92 with SMTP id 5b1f17b1804b1-48727c7c6e0mr142237085e9.0.1774801230286;
+        Sun, 29 Mar 2026 09:20:30 -0700 (PDT)
+X-Received: by 2002:a05:600c:3505:b0:485:4135:5c92 with SMTP id 5b1f17b1804b1-48727c7c6e0mr142236835e9.0.1774801229797;
+        Sun, 29 Mar 2026 09:20:29 -0700 (PDT)
+Received: from [10.242.181.123] (93-44-53-42.ip95.fastwebnet.it. [93.44.53.42])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2580194sm11296346f8f.37.2026.03.29.09.20.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2026 09:20:28 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] KVM fixes for Linux 7.0-rc6
+Date: Sun, 29 Mar 2026 18:20:27 +0200
+Message-ID: <20260329162027.105662-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260327113618.4051534-1-maz@kernel.org> <20260327113618.4051534-22-maz@kernel.org>
- <86ecl549aw.wl-maz@kernel.org>
-In-Reply-To: <86ecl549aw.wl-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Sun, 29 Mar 2026 14:41:22 +0100
-X-Gm-Features: AQROBzAIIIl4BXFhMlior6x1Oks2QHN0i-uK1SaLiMYW9yClQIV8jdg80mHlByo
-Message-ID: <CA+EHjTz60sr7sVaizJT3Cxg+AHLBy09032VBvmqc-dRtEFeNeg@mail.gmail.com>
-Subject: Re: [PATCH v2 21/30] KVM: arm64: Kill topup_memcache from kvm_s2_fault
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
-	Quentin Perret <qperret@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Marc,
+Linus,
 
-On Fri, 27 Mar 2026 at 14:49, Marc Zyngier <maz@kernel.org> wrote:
->
-> On Fri, 27 Mar 2026 11:36:09 +0000,
-> Marc Zyngier <maz@kernel.org> wrote:
-> >
-> > The topup_memcache field can be easily replaced by the equivalent
-> > conditions, and the resulting code is not much worse.
+The following changes since commit 0138af2472dfdef0d56fc4697416eaa0ff2589bd:
 
-This is easier to reason about I think, so (not sure if it applies to
-fold-ins, but fwiw):
-Reviewed-by: Fuad Tabba <tabba@google.com>
+  Merge tag 'erofs-for-7.0-rc6-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs (2026-03-25 18:41:35 -0700)
 
-Thanks,
-/fuad
+are available in the Git repository at:
 
-> >
-> > Tested-by: Fuad Tabba <tabba@google.com>
-> > Reviewed-by: Fuad Tabba <tabba@google.com>
-> > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  arch/arm64/kvm/mmu.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > index e8bda71e862b2..5b05caecdbd92 100644
-> > --- a/arch/arm64/kvm/mmu.c
-> > +++ b/arch/arm64/kvm/mmu.c
-> > @@ -1712,7 +1712,6 @@ static short kvm_s2_resolve_vma_size(const struct kvm_s2_fault_desc *s2fd,
-> >
-> >  struct kvm_s2_fault {
-> >       bool writable;
-> > -     bool topup_memcache;
-> >       bool mte_allowed;
-> >       bool is_vma_cacheable;
-> >       bool s2_force_noncacheable;
-> > @@ -1983,9 +1982,8 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
-> >               .logging_active = logging_active,
-> >               .force_pte = logging_active,
-> >               .prot = KVM_PGTABLE_PROT_R,
-> > -             .topup_memcache = !perm_fault || (logging_active && kvm_is_write_fault(s2fd->vcpu)),
-> >       };
-> > -     void *memcache;
-> > +     void *memcache = NULL;
-> >       int ret;
-> >
-> >       /*
-> > @@ -1994,9 +1992,11 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
-> >        * only exception to this is when dirty logging is enabled at runtime
-> >        * and a write fault needs to collapse a block entry into a table.
-> >        */
-> > -     ret = prepare_mmu_memcache(s2fd->vcpu, fault.topup_memcache, &memcache);
-> > -     if (ret)
-> > -             return ret;
-> > +     if (!perm_fault || (logging_active && kvm_is_write_fault(s2fd->vcpu))) {
-> > +             ret = prepare_mmu_memcache(s2fd->vcpu, true, &memcache);
-> > +             if (ret)
-> > +                     return ret;
-> > +     }
-> >
-> >       /*
-> >        * Let's check if we will get back a huge page backed by hugetlbfs, or
->
-> Sashiko has spotted [1] an interesting corner case here, which is that the
-> original code always initialises memcache to its correct value, while
-> we now only do it in a limited number of cases.
->
-> I'm proposing to restore the original behaviour by folding the
-> following change into this patch, splitting the retrieval of the
-> memcache pointer from the top-up and avoiding the ugly pointer
-> indirection:
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 1fe7182be45ac..03e1f389339c7 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1513,25 +1513,22 @@ static bool kvm_vma_is_cacheable(struct vm_area_struct *vma)
->         }
->  }
->
-> -static int prepare_mmu_memcache(struct kvm_vcpu *vcpu, bool topup_memcache,
-> -                               void **memcache)
-> +static void *get_mmu_memcache(struct kvm_vcpu *vcpu)
->  {
-> -       int min_pages;
-> -
->         if (!is_protected_kvm_enabled())
-> -               *memcache = &vcpu->arch.mmu_page_cache;
-> +               return &vcpu->arch.mmu_page_cache;
->         else
-> -               *memcache = &vcpu->arch.pkvm_memcache;
-> -
-> -       if (!topup_memcache)
-> -               return 0;
-> +               return &vcpu->arch.pkvm_memcache;
-> +}
->
-> -       min_pages = kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu);
-> +static int topup_mmu_memcache(struct kvm_vcpu *vcpu, void *memcache)
-> +{
-> +       int min_pages = kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu);
->
->         if (!is_protected_kvm_enabled())
-> -               return kvm_mmu_topup_memory_cache(*memcache, min_pages);
-> +               return kvm_mmu_topup_memory_cache(memcache, min_pages);
->
-> -       return topup_hyp_memcache(*memcache, min_pages);
-> +       return topup_hyp_memcache(memcache, min_pages);
->  }
->
->  /*
-> @@ -1589,7 +1586,8 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->         gfn_t gfn;
->         int ret;
->
-> -       ret = prepare_mmu_memcache(s2fd->vcpu, true, &memcache);
-> +       memcache = get_mmu_memcache(s2fd->vcpu);
-> +       ret = topup_mmu_memcache(s2fd->vcpu, memcache);
->         if (ret)
->                 return ret;
->
-> @@ -1993,7 +1991,7 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->         bool perm_fault = kvm_vcpu_trap_is_permission_fault(s2fd->vcpu);
->         struct kvm_s2_fault_vma_info s2vi = {};
->         enum kvm_pgtable_prot prot;
-> -       void *memcache = NULL;
-> +       void *memcache;
->         int ret;
->
->         /*
-> @@ -2002,9 +2000,10 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->          * only exception to this is when dirty logging is enabled at runtime
->          * and a write fault needs to collapse a block entry into a table.
->          */
-> +       memcache = get_mmu_memcache(s2fd->vcpu);
->         if (!perm_fault || (memslot_is_logging(s2fd->memslot) &&
->                             kvm_is_write_fault(s2fd->vcpu))) {
-> -               ret = prepare_mmu_memcache(s2fd->vcpu, true, &memcache);
-> +               ret = topup_mmu_memcache(s2fd->vcpu, memcache);
->                 if (ret)
->                         return ret;
->         }
->
-> The bot has also pointed out a couple of cases where memcache and
-> permission faults interact badly. I'll look into them separately, as
-> they predate this rework.
->
-> Thanks,
->
->         M.
->
-> [1] https://sashiko.dev/#/patchset/20260327113618.4051534-1-maz%40kernel.org?patch=12134
->
-> --
-> Without deviation from the norm, progress is not possible.
+  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+
+for you to fetch changes up to df83746075778958954aa0460cca55f4b3fc9c02:
+
+  KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE (2026-03-27 22:33:33 +0100)
+
+----------------------------------------------------------------
+s390:
+
+* Lots of small and not-so-small fixes for the newly rewritten gmap,
+  mostly affecting the handling of nested guests.
+
+x86:
+
+* Fix an issue with shadow paging, which causes KVM to install an MMIO PTE
+  in the shadow page tables without first zapping a non-MMIO SPTE if KVM
+  didn't see the write that modified the shadowed guest PTE.  While commit
+  a54aa15c6bda3 was right about it being impossible to miss such a write
+  if it was coming from the guest, it failed to account for writes to
+  guest memory that are outside the scope of KVM: if userspace modifies
+  the guest PTE, and then the guest hits a relevant page fault, KVM will
+  get confused.
+
+----------------------------------------------------------------
+Claudio Imbrenda (10):
+      KVM: s390: vsie: Fix dat_split_ste()
+      KVM: s390: Remove non-atomic dat_crstep_xchg()
+      KVM: s390: vsie: Fix check for pre-existing shadow mapping
+      KVM: s390: Fix gmap_link()
+      KVM: s390: Correctly handle guest mappings without struct page
+      KVM: s390: vsie: Fix nested guest memory shadowing
+      KVM: s390: vsie: Fix refcount overflow for shadow gmaps
+      KVM: s390: vsie: Fix unshadowing while shadowing
+      KVM: s390: vsie: Fix guest page tables protection
+      KVM: s390: Fix KVM_S390_VCPU_FAULT ioctl
+
+Paolo Bonzini (1):
+      Merge tag 'kvm-s390-master-7.0-2' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
+
+Sean Christopherson (2):
+      KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
+      KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE
+
+ arch/s390/kvm/dat.c      | 100 +++++------------------------
+ arch/s390/kvm/dat.h      |  23 +++----
+ arch/s390/kvm/gaccess.c  |  71 +++++++++++++++------
+ arch/s390/kvm/gmap.c     | 160 +++++++++++++++++++++++++++++++++--------------
+ arch/s390/kvm/gmap.h     |  33 ++++++----
+ arch/s390/kvm/kvm-s390.c |  18 +++++-
+ arch/s390/kvm/vsie.c     |   4 +-
+ arch/x86/kvm/mmu/mmu.c   |  17 ++---
+ 8 files changed, 241 insertions(+), 185 deletions(-)
+
