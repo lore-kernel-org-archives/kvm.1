@@ -1,209 +1,255 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0D8374722
-	for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 13:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774790246; cv=none; b=X1OHI76Vxt4ubJxbvdC7t96xKYhBpHuEbjVei0jhzVFdGS8hHg65zQpvn8FxP36iftSWCLTdcxMSIRK6Cg9hmwH8c9I/SE5YHwWR+ee2GhjrYK2AGzuryum8dK7K2C9t750/ZHyyh9/Fcsja9EjKisDuRHbKu/uTZxIjW3aQtmM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774790246; c=relaxed/simple;
-	bh=pmpqx1e9U+UK3wPkcTvBqSxmqbSIT871fIcbydBa3xg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eM9fu69aDqSji35yhzQGgXxcZkEaYUTb2eA/iK5DExpWWdQvPY6XJD/8Tu/7FJxSeIJI5WBOX1ljmyDn5+pDomqxdLoP46e2jda0/jVGj1V1G0pBqBsWmL18BDdIfZ8bhESjuV4i/9tvHv8byatDhAw+3W4LD3qunpzUJWyuwOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U7mWUfiX; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6DB299A81
+	for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 13:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774791722; cv=pass; b=KkAgfuDaBkbIuCdXNElyjap4E96BD3eGkyxNl3s5rsjvOW3Aqkzbwsaj8X/2pXqBVgmCnRYEHX6D24166csMv3stPc5lBv66FD8BvT3hyudhbC/Tw3Uo/3wMyT4ebWnLW8C/T8ho1hn8jj5O5ulbn6qb3/qbyo6ncA6xmhuOvHY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774791722; c=relaxed/simple;
+	bh=yG0GY9Z7DdEjRqq/jjl/HZBwFW+WK1FwgjS1QWQk1HQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CeZ6DvSuzCkzSVTnxxFs3NNs0+ncmovgnzel6mJr62zxnL/QPDa/0QQrAHXx/LjZJN/7mcIaeGeJ7MYy31XYCkDUKXbP+PKqpXBYWWLgbZPK1r5UdF3GQBh4JOJRka9RWnGy083ZSG9WUdKGEbBarG9DLn9C11e9tPaW1/2w9v0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HT4Gxsi3; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U7mWUfiX"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2aaf43014d0so24517555ad.2
-        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 06:17:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HT4Gxsi3"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5091ed02c54so629331cf.1
+        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 06:42:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774791720; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YtXJaJofQ4grcvaTiumfH5kGFgH4ZykMLqhq7cZBDuWPRYYAWzDNspm/WLhIXh5uYY
+         7+GlLh4zF6J50eZXLxowxnYZdXgQqOMeHELvhdCY+qdBKSy8ippLG7Qzowtqm9KJdzt5
+         ZjY07cBlqt3/1N18N3Ft+l54LgjUBFl8fZYbBgMCTk7j5WyDB6zi0uq8BsYFSGFxw5gx
+         GBldxnurcxPVKL+4e+EXFAx9cowUN7ebvJeFMKYabB+wh6v5uoVcz6gKwML5FQGwkaTP
+         I2KvvCls8Zde0I2McEhidLm06LvGqy4LE/pNUhowQeGdXy0ofCHPuX9A6bbZXo/s74r/
+         ThFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=aF4Epmx2n9nntDB8c7LNu8cL/wQsJEEhS1gBTnU+6mE=;
+        fh=CfMDX/fA7/FNbjiKLAkiUPaCnvtvICR3FSR1LKL6PHE=;
+        b=k3LzDftBKLxKaAqXdnUcth/oIDz6KB3gPY6dUp6bJbJnhjgkMd/YmLoZHVwDA2qrZR
+         YZXRVW9oFSujClPzpbLHqkt7IVOzj7P5QmVyjaUZma5K0+rKfCFWpmPxP8M9rY+SIuE/
+         s+aeoW2sZ2dcZwzt0KoswvY5vkhFzRZ+epoyRLPzdKQhu9lJRRkXhvAl1OIVi8LQmBXz
+         k4xsiVguna3/PQoB8dIGMYsMuP5tMFDW5ZJOWGdBLyaDF/J2OKrTNK5CN+hq76YR0zVm
+         fkj9Sx8m6RwATXbKe9X+/ynSGdIJfEXWkuBiXYGjmG3NbqB6y4d2n5pZCazfuzIEfgjq
+         AHwQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774790245; x=1775395045; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9UX+gGrIRP7HRhBCYkm8PVH6w9Y8VLiDpuR6eBzVdyw=;
-        b=U7mWUfiXugSDfBPjCiaLZiaeFMGT1v5CVRY7KcmOlKXlNVFs08TzPdqWWnyCUUUc6c
-         vOPp4Fn0qlPO1CeE2uMuyvWhJWwFLtipvpMNVeCRSJ5kQ5I/p4H0hskMH/nEfJHdUhJv
-         qXxvPFeMnyUjiEwmNj1ijz7C091T5lNWXUWp5/N2JQjIsZ7p6U1Dza9yWZ0te0LAPRjX
-         wxYxeKhnLPKJ3vprlRLkEKiYSt/HKSKNBjxqDAGSLNT+TDZorH7EOzK79bw/v1dIAOET
-         Kcuse2x02V6KsMrTBLY3lklcyFO1JrAl4xZ/EfJyV10sorXByKQRPjdqkjH50oA6vwXz
-         jGqg==
+        d=google.com; s=20251104; t=1774791720; x=1775396520; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aF4Epmx2n9nntDB8c7LNu8cL/wQsJEEhS1gBTnU+6mE=;
+        b=HT4Gxsi3Mf9YoNvm7wwrU3VZmqN3c0vmNcp6ngKGBHCXXKIDiR6wn5EMw2VXLgv7aV
+         FkRMPAqw9gdXJvW1CHQNl6BBXH7gVfEEcLZYcLHd53e4P5Kw1wKG9ZgeAjP0OKq+Z6bx
+         PyiGPwZD7vP6Sw4OIFjQpjwpm5ko/bH10CpWRZbfrlOQBhY87etDcQZYTR47yWxpHcU+
+         Ua85FUVy0Qo3mI/y6kgfjfbMFeVhbnX22o5+6WMf0914MJIxezAJG29CwyvF9uRa5RkE
+         S+z5KvOwluY7OcRwHZ4kdvvMJzyEnVkjjZkHKxmYOzVzvTXqqC5bLum1Owxf5WsxrGZ1
+         fo2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774790245; x=1775395045;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774791720; x=1775396520;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9UX+gGrIRP7HRhBCYkm8PVH6w9Y8VLiDpuR6eBzVdyw=;
-        b=CQZ9AceYwvqqSrpwFFpd7H/H21pP/CSC4p4tY4n/JQRU4ZFh5t+l2MS8p9hILYjkEU
-         WAf/61Ci3oHz6UtXJ+GljTgxeItu+fHnlWbVJ/Rn8UrqM38VargKVnqTS/LtX6Gde7MO
-         daCnZzkMOn7FBGCLJehenfALMqX1kmEZpXNNQFK+Y4fW9eQxkeM7M6Nh31izLaqrwzwQ
-         sWZzTju6rzQUn36p8PAwDFRuONy0xydb1zRY+v3zMDN/QAlt7jLtCsd28kukMth2KOvw
-         H+filGxBRQaed6bRriejh0xjUZqnqY+X/YhMak/ED4sM+e4GIzDyJ2NNtS1Ebl7/Q7HN
-         3Kng==
-X-Forwarded-Encrypted: i=1; AJvYcCUxTW0s9oeR4DN9tWishbPlltiiM7PkN20Gs63lJ8XFNfM7CZvkH3FZqswVTGGnUNpeI9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRjWb6FW6zHxfN+UjZnZhvcAVrr6aRaZxavO6FUR/zffeCsk++
-	NuqC6H86Yfxd0kfCTI4cc7cSdjiPcTY1gXWNhEU4HQx1VATsuD3ghq2a
-X-Gm-Gg: ATEYQzzMHZDUtDg+creDLEPCvGrRZ4/fss7nNx2+koQo6v16k7N6vl/hHjcp8r9gRf3
-	YQ8Qzm+uDgDf3QXyAI/VGa0nToAMfvUToaQIteMpRx7OMcpfuA2J7OHYNnXZsDKOPcSrXsOm6ji
-	nOfLsckgI4OMSKWK+9jEZ1DLV5cAAowjg6EbMg6Lp4MGGx9ae0nSgQ55viywD22+9WO5Pt9vWVH
-	L6VXo1tpQQZRukz2XTycWuR/V8+tg/CTjWTETn1NBQpzDTqt7N3WdK1SYxmNxYn67jkeLaQRJFK
-	u4NeYoVnzpuTfvwp14+c61IqeDbcd1CVcQ14nKzW9omflDM1x9WqYZB65naPHprdab10ELZQoeI
-	l6yP0Fxd8Y0z8wqtdST7IarD32r+b/xLDQEH4YgYO+oRNtMxpSy56rKRrJJHsw905Tze2GQMkXD
-	hQiPQZVK/2O1Qpd/AZ7pmGOzYHkKhXwJ9WfaRQ1xBvUg==
-X-Received: by 2002:a17:902:e883:b0:2b0:6323:1758 with SMTP id d9443c01a7336-2b0cdd1ad56mr100407635ad.48.1774790244913;
-        Sun, 29 Mar 2026 06:17:24 -0700 (PDT)
-Received: from acer-nitro-anv15-41.. ([115.99.157.74])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24264224esm50635465ad.15.2026.03.29.06.17.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 06:17:23 -0700 (PDT)
-From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-To: "H. Peter Anvin" <hpa@zytor.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	"shaikh.kamal" <shaikhkamal2012@gmail.com>,
-	syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
-Subject: [PATCH] KVM: x86/xen: Fix sleeping lock in hard IRQ context on PREEMPT_RT
-Date: Sun, 29 Mar 2026 18:45:43 +0530
-Message-ID: <20260329131543.91733-1-shaikhkamal2012@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=aF4Epmx2n9nntDB8c7LNu8cL/wQsJEEhS1gBTnU+6mE=;
+        b=jjV6w55b1ETskMN2VUKT8izy29ga7ktxWTVFAEWKVz221G3BgOR0kQIQ8sugrjravf
+         4M9pf1Fda11Q8+NGeSxVIZoqIvjvu6KZelWZtzCfeNN+ILe0iBR7Z7z+MFfvdzPKzJ1p
+         neu6nd21gsYP8OayVZ5t5ztGXlTExwZCMWDNaxjeP3q0FSxiRAAGH+kcmydPKl81t+ZA
+         4MoLxccSj5lgCOhil7vNEa2T0A/nduFwnFH91xdcQCZSQyMMGPE18DCngfqs62JGt8+L
+         eOnFPUoZGOncs60yeWyqTlZsSpn8VRJOqui2elDHp7NhtYRg7+ULMA0+VIEyZx2OedaN
+         8xYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWzULWAiDKPtKqT/v/Ki/HzX8gilj+v+0D/5/Mj5bpwtHZt2qp4wrLM+DBYMpxYw3wDEQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCkkcsEoDiyCDXy4z+DBvXKD/7ddBSbXPJhcLXLFEU4h35xEw9
+	JaWBJ74p4ILqPEH45pNIk98zrqV+vJP43wglJx7uP5q8R4uptD9kN4YEyTpIGO4zcjymdOfjCkz
+	vyn9s4KO+ALC2NQaZ1HpJqCRvKRsYv7MCPxiGdzW5
+X-Gm-Gg: ATEYQzylvr045v/D5XWghRGrMLEUkwad35OD51L9k2Y1z0NSzWwcze9NLEKiSuIYzi6
+	klysInWKmFTC8K67tar/iT8T1qcTqBSycEDpZ9LNKNhrpyau095hgmnIa8Kl9QG9EuXE6TErxPS
+	rNIsMUoboY3OvVUV96OcajLG+sAqzUUkSwiUQx6yz2jq/jpCZDjsE/GCFfJiU3ENEvGOsRHLy2G
+	l51lLW8N9Yn36WqEb9L8Jfl6hGCUnw9FU5LLadrLQkzGvsUhLdofjJgXNPCXFQbrcQXjl/xwqyo
+	VUrK7zU/
+X-Received: by 2002:a05:622a:3cd:b0:509:1d4b:f86f with SMTP id
+ d75a77b69052e-50bb27f6ef2mr18579571cf.14.1774791719904; Sun, 29 Mar 2026
+ 06:41:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260327113618.4051534-1-maz@kernel.org> <20260327113618.4051534-22-maz@kernel.org>
+ <86ecl549aw.wl-maz@kernel.org>
+In-Reply-To: <86ecl549aw.wl-maz@kernel.org>
+From: Fuad Tabba <tabba@google.com>
+Date: Sun, 29 Mar 2026 14:41:22 +0100
+X-Gm-Features: AQROBzAIIIl4BXFhMlior6x1Oks2QHN0i-uK1SaLiMYW9yClQIV8jdg80mHlByo
+Message-ID: <CA+EHjTz60sr7sVaizJT3Cxg+AHLBy09032VBvmqc-dRtEFeNeg@mail.gmail.com>
+Subject: Re: [PATCH v2 21/30] KVM: arm64: Kill topup_memcache from kvm_s2_fault
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	kvm@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
+	Quentin Perret <qperret@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On PREEMPT_RT, kvm_xen_set_evtchn_fast() acquires a sleeping lock
-(gpc->lock) from hard IRQ context (xen_timer_callback), triggering:
+Hi Marc,
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 0, name: swapper/5
-  preempt_count: 10100, expected: 0
-  RCU nest depth: 0, expected: 0
-  4 locks held by swapper/5/0:
-  INFO: lockdep is turned off.
-  irq event stamp: 1766
-  hardirqs last  enabled at (1765): [<ffffffff81678fd4>] tick_nohz_idle_got_tick+0x84/0x90
-  hardirqs last disabled at (1766): [<ffffffff8b665051>] sysvec_apic_timer_interrupt+0x11/0xd0
-  softirqs last  enabled at (0): [<ffffffff81289e76>] copy_process+0x1586/0x58b0
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  Preempt disabled at:
-  [<ffffffff8b6650bc>] sysvec_apic_timer_interrupt+0x7c/0xd0
-  CPU: 5 UID: 0 PID: 0 Comm: swapper/5 Not tainted 6.13.0-rc1-syzkaller-00026-g2d5404caa8c7 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-  Call Trace:
-   <IRQ>
-   __dump_stack lib/dump_stack.c:94 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-   __might_resched+0x30d/0x8f0 kernel/sched/core.c:10318
-   rt_spin_lock+0x70/0x130 kernel/locking/spinlock_rt.c:48
-   kvm_xen_set_evtchn_fast+0x20b/0xa40 arch/x86/kvm/xen.c:1820
-   xen_timer_callback+0x91/0x1a0 arch/x86/kvm/xen.c:142
-   __run_hrtimer kernel/time/hrtimer.c:1739 [inline]
-   __hrtimer_run_queues+0x20b/0xa00 kernel/time/hrtimer.c:1803
+On Fri, 27 Mar 2026 at 14:49, Marc Zyngier <maz@kernel.org> wrote:
+>
+> On Fri, 27 Mar 2026 11:36:09 +0000,
+> Marc Zyngier <maz@kernel.org> wrote:
+> >
+> > The topup_memcache field can be easily replaced by the equivalent
+> > conditions, and the resulting code is not much worse.
 
-The Xen timer uses HRTIMER_MODE_ABS_HARD for latency-sensitive event
-delivery (see commit 77c9b9dea4fb ("KVM: x86/xen: Use fast path for Xen
-timer delivery")). On PREEMPT_RT, hard IRQ hrtimers execute in hard IRQ
-context where sleeping locks cannot be acquired.
+This is easier to reason about I think, so (not sure if it applies to
+fold-ins, but fwiw):
+Reviewed-by: Fuad Tabba <tabba@google.com>
 
-Use irq_work to defer event injection to a context where sleeping locks
-are permitted on PREEMPT_RT. This preserves the hard IRQ timer precision
-on non-RT kernels while avoiding the lock context violation on RT.
+Thanks,
+/fuad
 
-The approach follows the existing pvclock_irq_work pattern in
-arch/x86/kvm/x86.c.
-
-Tested on PREEMPT_RT kernel (CONFIG_PREEMPT_RT=y) with the syzbot C
-reproducer - no crash observed after 30+ minutes of continuous execution.
-Also tested on non-RT kernel (CONFIG_PREEMPT_RT=n) to verify no
-regression in the fast path.
-
-Reported-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
-Fixes: 77c9b9dea4fb ("KVM: x86/xen: Use fast path for Xen timer delivery")
-
-Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
----
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/xen.c              | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 5a3bfa293e8b..533b45289d53 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -746,6 +746,7 @@ struct kvm_vcpu_xen {
- 	u64 timer_expires; /* In guest epoch */
- 	atomic_t timer_pending;
- 	struct hrtimer timer;
-+	struct irq_work timer_inject_irqwork;
- 	int poll_evtchn;
- 	struct timer_list poll_timer;
- 	struct kvm_hypervisor_cpuid cpuid;
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index d6b2a665b499..01fa7b165355 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -122,6 +122,24 @@ void kvm_xen_inject_timer_irqs(struct kvm_vcpu *vcpu)
- 	}
- }
- 
-+static void xen_timer_inject_irqwork(struct irq_work *work)
-+{
-+	struct kvm_vcpu_xen *xen = container_of(work, struct kvm_vcpu_xen,
-+						timer_inject_irqwork);
-+	struct kvm_vcpu *vcpu = container_of(xen, struct kvm_vcpu, arch.xen);
-+	struct kvm_xen_evtchn e;
-+	int rc;
-+
-+	e.vcpu_id = vcpu->vcpu_id;
-+	e.vcpu_idx = vcpu->vcpu_idx;
-+	e.port = vcpu->arch.xen.timer_virq;
-+	e.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
-+
-+	rc = kvm_xen_set_evtchn_fast(&e, vcpu->kvm);
-+	if (rc != -EWOULDBLOCK)
-+		vcpu->arch.xen.timer_expires = 0;
-+}
-+
- static enum hrtimer_restart xen_timer_callback(struct hrtimer *timer)
- {
- 	struct kvm_vcpu *vcpu = container_of(timer, struct kvm_vcpu,
-@@ -132,6 +150,17 @@ static enum hrtimer_restart xen_timer_callback(struct hrtimer *timer)
- 	if (atomic_read(&vcpu->arch.xen.timer_pending))
- 		return HRTIMER_NORESTART;
- 
-+	/*
-+	 * On PREEMPT_RT, this callback runs in hard IRQ context where
-+	 * kvm_xen_set_evtchn_fast() cannot acquire sleeping locks
-+	 * (specifically gpc->lock). Defer to irq_work which runs in
-+	 * thread context on RT.
-+	 */
-+	if (in_hardirq()) {
-+		irq_work_queue(&vcpu->arch.xen.timer_inject_irqwork);
-+		return HRTIMER_NORESTART;
-+	}
-+
- 	e.vcpu_id = vcpu->vcpu_id;
- 	e.vcpu_idx = vcpu->vcpu_idx;
- 	e.port = vcpu->arch.xen.timer_virq;
-@@ -2303,6 +2332,8 @@ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
- 	timer_setup(&vcpu->arch.xen.poll_timer, cancel_evtchn_poll, 0);
- 	hrtimer_setup(&vcpu->arch.xen.timer, xen_timer_callback, CLOCK_MONOTONIC,
- 		      HRTIMER_MODE_ABS_HARD);
-+	init_irq_work(&vcpu->arch.xen.timer_inject_irqwork,
-+		      xen_timer_inject_irqwork);
- 
- 	kvm_gpc_init(&vcpu->arch.xen.runstate_cache, vcpu->kvm);
- 	kvm_gpc_init(&vcpu->arch.xen.runstate2_cache, vcpu->kvm);
--- 
-2.43.0
-
+> >
+> > Tested-by: Fuad Tabba <tabba@google.com>
+> > Reviewed-by: Fuad Tabba <tabba@google.com>
+> > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  arch/arm64/kvm/mmu.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > index e8bda71e862b2..5b05caecdbd92 100644
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -1712,7 +1712,6 @@ static short kvm_s2_resolve_vma_size(const struct kvm_s2_fault_desc *s2fd,
+> >
+> >  struct kvm_s2_fault {
+> >       bool writable;
+> > -     bool topup_memcache;
+> >       bool mte_allowed;
+> >       bool is_vma_cacheable;
+> >       bool s2_force_noncacheable;
+> > @@ -1983,9 +1982,8 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+> >               .logging_active = logging_active,
+> >               .force_pte = logging_active,
+> >               .prot = KVM_PGTABLE_PROT_R,
+> > -             .topup_memcache = !perm_fault || (logging_active && kvm_is_write_fault(s2fd->vcpu)),
+> >       };
+> > -     void *memcache;
+> > +     void *memcache = NULL;
+> >       int ret;
+> >
+> >       /*
+> > @@ -1994,9 +1992,11 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+> >        * only exception to this is when dirty logging is enabled at runtime
+> >        * and a write fault needs to collapse a block entry into a table.
+> >        */
+> > -     ret = prepare_mmu_memcache(s2fd->vcpu, fault.topup_memcache, &memcache);
+> > -     if (ret)
+> > -             return ret;
+> > +     if (!perm_fault || (logging_active && kvm_is_write_fault(s2fd->vcpu))) {
+> > +             ret = prepare_mmu_memcache(s2fd->vcpu, true, &memcache);
+> > +             if (ret)
+> > +                     return ret;
+> > +     }
+> >
+> >       /*
+> >        * Let's check if we will get back a huge page backed by hugetlbfs, or
+>
+> Sashiko has spotted [1] an interesting corner case here, which is that the
+> original code always initialises memcache to its correct value, while
+> we now only do it in a limited number of cases.
+>
+> I'm proposing to restore the original behaviour by folding the
+> following change into this patch, splitting the retrieval of the
+> memcache pointer from the top-up and avoiding the ugly pointer
+> indirection:
+>
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 1fe7182be45ac..03e1f389339c7 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1513,25 +1513,22 @@ static bool kvm_vma_is_cacheable(struct vm_area_struct *vma)
+>         }
+>  }
+>
+> -static int prepare_mmu_memcache(struct kvm_vcpu *vcpu, bool topup_memcache,
+> -                               void **memcache)
+> +static void *get_mmu_memcache(struct kvm_vcpu *vcpu)
+>  {
+> -       int min_pages;
+> -
+>         if (!is_protected_kvm_enabled())
+> -               *memcache = &vcpu->arch.mmu_page_cache;
+> +               return &vcpu->arch.mmu_page_cache;
+>         else
+> -               *memcache = &vcpu->arch.pkvm_memcache;
+> -
+> -       if (!topup_memcache)
+> -               return 0;
+> +               return &vcpu->arch.pkvm_memcache;
+> +}
+>
+> -       min_pages = kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu);
+> +static int topup_mmu_memcache(struct kvm_vcpu *vcpu, void *memcache)
+> +{
+> +       int min_pages = kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu);
+>
+>         if (!is_protected_kvm_enabled())
+> -               return kvm_mmu_topup_memory_cache(*memcache, min_pages);
+> +               return kvm_mmu_topup_memory_cache(memcache, min_pages);
+>
+> -       return topup_hyp_memcache(*memcache, min_pages);
+> +       return topup_hyp_memcache(memcache, min_pages);
+>  }
+>
+>  /*
+> @@ -1589,7 +1586,8 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
+>         gfn_t gfn;
+>         int ret;
+>
+> -       ret = prepare_mmu_memcache(s2fd->vcpu, true, &memcache);
+> +       memcache = get_mmu_memcache(s2fd->vcpu);
+> +       ret = topup_mmu_memcache(s2fd->vcpu, memcache);
+>         if (ret)
+>                 return ret;
+>
+> @@ -1993,7 +1991,7 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+>         bool perm_fault = kvm_vcpu_trap_is_permission_fault(s2fd->vcpu);
+>         struct kvm_s2_fault_vma_info s2vi = {};
+>         enum kvm_pgtable_prot prot;
+> -       void *memcache = NULL;
+> +       void *memcache;
+>         int ret;
+>
+>         /*
+> @@ -2002,9 +2000,10 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+>          * only exception to this is when dirty logging is enabled at runtime
+>          * and a write fault needs to collapse a block entry into a table.
+>          */
+> +       memcache = get_mmu_memcache(s2fd->vcpu);
+>         if (!perm_fault || (memslot_is_logging(s2fd->memslot) &&
+>                             kvm_is_write_fault(s2fd->vcpu))) {
+> -               ret = prepare_mmu_memcache(s2fd->vcpu, true, &memcache);
+> +               ret = topup_mmu_memcache(s2fd->vcpu, memcache);
+>                 if (ret)
+>                         return ret;
+>         }
+>
+> The bot has also pointed out a couple of cases where memcache and
+> permission faults interact badly. I'll look into them separately, as
+> they predate this rework.
+>
+> Thanks,
+>
+>         M.
+>
+> [1] https://sashiko.dev/#/patchset/20260327113618.4051534-1-maz%40kernel.org?patch=12134
+>
+> --
+> Without deviation from the norm, progress is not possible.
