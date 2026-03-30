@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EBB3C873E;
-	Mon, 30 Mar 2026 12:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749583CA481
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 12:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774874670; cv=none; b=dPV2X/1mIhNqYdlZtXmjFYfuTy1a1pR7ks7fHBnA8P/BABahT9hH/GDmPioN15U3N5N753ll8I+yKy2rsgvoYEw0mfh+BV4FJuH6F8DbTh0BqDmg36wmbbIiToBaTbpryswqURE+PKEdpI4Y7mNPhMorsbqyKBYH34AMYbdrZa8=
+	t=1774875132; cv=none; b=goJ9rsZ0AUb7BWo894bgnZCpmi/jyn4jkeVfb9QfbQtTVaQcpwADguyn6o/qbhj5wN0hml9IY4LuIpTLton2o16gdL9QawGulhfm6UesDtUJujm0sVtTqy2CVEj6IHAfmILWOM4Gcd4nMxzqQeq+iRzex3bnbonr9uR5weZFjZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774874670; c=relaxed/simple;
-	bh=9HVTseeoFiIFa1Fuc9Y15PQ06JUGNKZbZi8P95OXuDQ=;
+	s=arc-20240116; t=1774875132; c=relaxed/simple;
+	bh=9JudKNmHyCn/6TcFI/SCSPRL9JonW0YzgZWeWDww0MM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GB6a6JLuIcS8RGj94ySezirX1UwtyySqcNkoiqf9VZA6hW/LyIPLS6TX6sRKz6TYLa1bZYR6UTAUID0j79k4+024JrkIMf4QTuLY3XwRmEGFjy+tIwi7mSZPspSuSl2bVBiWFnJABHW6iZkSGlfMToEwZHr+n5qWkwmkCsde2Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdUEB20z; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AoxbNyDwfrJ/d1Z9E/QGJ5KHxvlgS8iEUP5hYKtaAj3NlyFs4GBYvtG6rm2tzTbpGZCoPQD8MjouZkgK7NTh1Vp6qjS9Zd9v7D9k4ugrSL/4RukTlDTJ7OMj87VFRwtIg/rmYfDWUL77vddRKVtKAY09iujI/qp/z6kHiSQzZ4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxxoNTEi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdUEB20z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C8AC4CEF7;
-	Mon, 30 Mar 2026 12:44:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxxoNTEi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3A5C2BCB0;
+	Mon, 30 Mar 2026 12:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774874670;
-	bh=9HVTseeoFiIFa1Fuc9Y15PQ06JUGNKZbZi8P95OXuDQ=;
+	s=k20201202; t=1774875132;
+	bh=9JudKNmHyCn/6TcFI/SCSPRL9JonW0YzgZWeWDww0MM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VdUEB20z+Lwu6rTtqj0w4fa8LjzZCYX/5qW3Fx5bOky8C6ZDx4TAJy00b2esFRITv
-	 Y80TghZR+LB1YtLDbmfH17zGUW1fqGQMbOcOYsAj9MaTtT3SG6uqRsT+ZcaWlpKokZ
-	 06WgLSCdbaopzqiO1j+djGt8FuMrZveQMs+2wnyCbDLqRlP4Z8i8gyhcIWxvUjCfvT
-	 VN9z8doWTrc+NsXGfAvXc/JkMYQlFP7hobmVjJmgTKVrsO51s2DeYVbhR0VZOR0y/1
-	 FH6rVwUht82fWcI4T32Ttv7I0vXEVzaSVBxmVPFXV4qWxTMqZH+I4xLDaa8FdDqNSE
-	 WthusplwyrF9A==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 723C4F40086;
-	Mon, 30 Mar 2026 08:44:28 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 30 Mar 2026 08:44:28 -0400
-X-ME-Sender: <xms:LHDKaRfv8FXvKBQFHoPUmLPprtB7cEW_CcdC0oCTyXJgkfTZAtsIHQ>
-    <xme:LHDKaRG0BIcPoL0y1Z4IzJE-If8lPdaP9y87E7pxU4rcLRyjj0YYdOb8byx9Y2QsV
-    0KYlr-FJvj2rqsmxj00ULpXu1NbrmQrNlwrzKGUQOtgXCB9_6UAQoI>
-X-ME-Received: <xmr:LHDKafGH8VITfF1kzX9dfd-U-hi0h-U2_9Fp6C5KbbFUhltHg91dBdBCXoW1bg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeeltdduucetufdoteggodetrf
+	b=SxxoNTEiTuSZvljd4NGDd1oYJ6CkJK+RCFXkIl9pqCz/LkK7ItQEuVXCrtaATugBT
+	 bkWTVRLX9EnxU0XnohIHtEphj/JVgzSPU0PhaOIKf08WqBDcqg/shVHv09aIH4IQHA
+	 NPgd6IEirlGpG4crWVmsPJmWjvNAHAQRoTkNBqt6DAU6NnU4PlRSNov/xvT34a38mD
+	 i+wFTqUqZ1+SqecJnLLvpwK8iweXlgEAYNl6glQgAaFgWw3vma8ba1chhzdTMVpEV/
+	 0zDN9w3XQESFzgYLU771ebUESjqZ5ZBhAA8Ty9avu9U2QmnoiNt+n8+XMJhzQ8nnnw
+	 0sJVtpTi6US8A==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DD7BEF4006E;
+	Mon, 30 Mar 2026 08:52:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 30 Mar 2026 08:52:10 -0400
+X-ME-Sender: <xms:-nHKacvOiLiy5ZPpc5EnHxkvZAEmOq7MVFYDL4cCSdVGZqB9thOuLA>
+    <xme:-nHKaQ0vG3c8oUcCQFD-4tq5cZArOErIK6aYr3wWqAZUwlJhhTYtkjocDPDwplFje
+    POvdT2Tws3U10vJhOdDBGICoP7ZKDe-dF-oTLUCtZPgtg-jJvubrWk>
+X-ME-Received: <xmr:-nHKaSHexO-y1FKcWrxkE6TynR6WjnDtyTiw6cpYW3uwUaeFZ74jJGWfUnv6xQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeeltddvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
@@ -53,15 +53,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeeltdduucetufdote
     hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
     nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
     dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:LHDKaYlocBCyuf6flcFG-zO8Ft_hyXML0dmCgCG76djiBxdjqrf_jQ>
-    <xmx:LHDKaawg_EW56LzzG5rBqsqafnHnGkHnClpy_-UGibyT1N7mcNI9tw>
-    <xmx:LHDKadaiYwvAdarWx0mZ28GJCFNCUnYxjKPLR2K8AnQekqh3Af54nQ>
-    <xmx:LHDKaesV2_6ilyetHDTbW1N1jaYtNOqUACNuH2vA9fYS8JM8IUviiQ>
-    <xmx:LHDKaaNh_RRdQ7goQBfRsfSOlWFp9Qvn4wppwxdYEdmdas7csKIDbv4d>
+X-ME-Proxy: <xmx:-nHKaVN3PHj4Bt4iEStu30LqHJ25WXWpvF9NthBneH3Capn5GcK95w>
+    <xmx:-nHKaQv39F0QThTV1HgL_L24EMyK2IB8Fy0MVoxb6-j3kjaExZB5lg>
+    <xmx:-nHKaZsSsM58p5KrKXGsq79pKPXY2DQfSAodVnkXgKrZzgL5GQ5JcA>
+    <xmx:-nHKaVa2e97hMT3MAVUdRmz9JlpjvjFpMdYUgupjAdd1m7KTnqSzow>
+    <xmx:-nHKaTgY5f5K7bNFvJmhN4zBa6hOkFvvtuNabrH4PXokn70D9PmQTsUv>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Mar 2026 08:44:26 -0400 (EDT)
-Date: Mon, 30 Mar 2026 12:44:22 +0000
+ 30 Mar 2026 08:52:09 -0400 (EDT)
+Date: Mon, 30 Mar 2026 12:52:09 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
@@ -73,11 +73,11 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	yilun.xu@linux.intel.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v6 08/22] x86/virt/seamldr: Allocate and populate a
- module update request
-Message-ID: <acpvmL2CjWxv9DsU@thinkstation>
+Subject: Re: [PATCH v6 10/22] x86/virt/seamldr: Abort updates if errors
+ occurred midway
+Message-ID: <acpx5UNVERdsvCBZ@thinkstation>
 References: <20260326084448.29947-1-chao.gao@intel.com>
- <20260326084448.29947-9-chao.gao@intel.com>
+ <20260326084448.29947-11-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -86,68 +86,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326084448.29947-9-chao.gao@intel.com>
+In-Reply-To: <20260326084448.29947-11-chao.gao@intel.com>
 
-On Thu, Mar 26, 2026 at 01:43:59AM -0700, Chao Gao wrote:
-> P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX module
-> update requests. This structure contains physical addresses pointing to
-> the module binary and its signature file (or sigstruct), along with an
-> update scenario field.
+On Thu, Mar 26, 2026 at 01:44:01AM -0700, Chao Gao wrote:
+> The TDX module update process has multiple steps, each of which may
+> encounter failures.
 > 
-> TDX modules are distributed in the tdx_blob format defined in
-> blob_structure.txt from the "Intel TDX module Binaries Repository". A
-> tdx_blob contains a header, sigstruct, and module binary. This is also the
-> format supplied by the userspace to the kernel.
+> The current state machine of updates proceeds to the next step regardless
+> of errors. But continuing updates when errors occur midway is pointless.
 > 
-> Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure
-> accordingly. This structure will be passed to P-SEAMLDR to initiate the
-> update.
-> 
-> Note that the sigstruct_pa field in SEAMLDR_PARAMS has been extended to
-> a 4-element array. The updated "SEAM Loader (SEAMLDR) Interface
-> Specification" will be published separately. P-SEAMLDR compatibility
-> validation (such as 4KB vs 16KB sigstruct support) is left to userspace,
-> which must verify the P-SEAMLDR version meets the TDX module's minimum
-> requirements.
+> Abort the update by setting a flag to indicate that a CPU has encountered
+> an error, forcing all CPUs to exit the execution loop. Note that failing
+> CPUs do not acknowledge the current step. This keeps all other CPUs waiting
+> in the current step (since advancing to the next step requires all CPUs to
+> acknowledge the current step) until they detect the fault flag and exit the
+> loop.
 > 
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 > Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 > Reviewed-by: Kai Huang <kai.huang@intel.com>
 
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-See nit below.
-
-> +static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
-> +{
-> +	const struct tdx_blob *blob = (const void *)data;
-> +	int module_size, sig_size;
-> +	const void *sig, *module;
-> +
-> +	/* Ensure the size is valid otherwise reading any field from the blob may overflow. */
-
-Comment is too long for single line. Make it multi line.
-
-> +	if (size <= sizeof(struct tdx_blob) || size <= blob->offset_of_module)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	if (blob->version != TDX_BLOB_VERSION_1) {
-> +		pr_err("unsupported blob version: %x\n", blob->version);
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
-> +	/* Split the blob into a sigstruct and a module. */
-> +	sig		= blob->data;
-> +	sig_size	= blob->offset_of_module - sizeof(struct tdx_blob);
-> +	module		= data + blob->offset_of_module;
-> +	module_size	= size - blob->offset_of_module;
-> +
-> +	if (sig_size <= 0 || module_size <= 0 || blob->length != size)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	return alloc_seamldr_params(module, module_size, sig, sig_size);
-> +}
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
