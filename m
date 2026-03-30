@@ -1,94 +1,94 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1023A3ACF16
-	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 08:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9E3386561
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 08:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774859212; cv=pass; b=F7BStwLDRlE+edCD811X9fx5U1QUdDiISluxBvq50kB597b01FKW3vR+tHKnVFk13Ex9gejoVR4z0rxyKfoVy9RM18e+tIdj4ry89K7k+/2/1YE+GAhN+8l4XAFzEwK0QFD1Xbgv09zY03LoymZBwRqd+AfZQBs7LA3GxzYRI/U=
+	t=1774859215; cv=pass; b=neXiUL8ClaghMchjFGz2b5/JMacGp5D21oLPiP++S/KgLGiLdu0Myd5nufCcS6yGYhkHu4qlBO2p0Nw15msz9KG4clzz8X6EEF4mmHytKBb/jubBXDqfa64ALhPGM55+lTgMP7OGFrYK42KO5sWYrpdcybs9MgYJtH6yY0swF9E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774859212; c=relaxed/simple;
-	bh=xeABj9Q9+uze/Q8D/nPpkuTVaAaU0qpqyihPsjSHTbA=;
+	s=arc-20240116; t=1774859215; c=relaxed/simple;
+	bh=jbFKa+ewHrccFkXMUpriY7DHURgEYAzQRjauuSftmmo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aR1N6XzH96eukUfESJ/bTN9I4B443eoyPbcnbNsTGg2tbONRUf6tVhlkw01inlVPgslARcYb+CE3DQfCsH8Xr2YJnIZQe69e2SLRHyxaBAdsYpr5/sJdC2Cc5XCN27KyeWuH7TDfsXl7lpXkMuKhGsHbmDR5upqDlVy0B9mslLw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=K5EuU9OF; arc=pass smtp.client-ip=209.85.210.43
+	 To:Cc:Content-Type; b=OgFSSWv8l0GXHE+U3isLMieIiNz4bWhRr20MCi78SAGe9hCDhBxaFoX4Mhedjg+isRLe/4X6Bd+7hctr1uoLajK182WvHsWGeAc/g5dFgoVsGGVTg1NQJeoKIuvePi53HKRUVDicP4rwaBOMep8Zfsfonk4eJkbYAP4dkIRCorw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=L6gOVKuJ; arc=pass smtp.client-ip=209.85.161.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="K5EuU9OF"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d74aa6bcdbso2307368a34.2
-        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 01:26:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774859210; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="L6gOVKuJ"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-67df51b26ddso2639683eaf.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 01:26:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774859213; cv=none;
         d=google.com; s=arc-20240605;
-        b=gZ2j68YBIV2MxfmkC2LTwWREzcuiSfbY3+/Lg2fmrE7Lk4N4z8X0pgIYcAY/Qf9R8V
-         g91O+L83U1CdZ+9xCW0ecbHeMK2AMc1HkORdOidc53gPMli/JUmoh8f9zKTcm3xwgE7+
-         cimsOscRxda49Np2UO6hiXSIfL9KjIozJN+wVTAgG3WDsoR9C34BONWJgazxqPbNN/tr
-         hiXfLWQCA+dSkMbyF5XAXAH8kf2BBT3xRSFJGj6Yu2wDy+JNxDTZFiGzm5kS1FcNaoox
-         hbT8Q+j/+9Z0hgcy1Dg1ZqakVj3TPd6a4o9E2owaMmyE70d+jA+Ib1gUGRNnVv0Mb14I
-         1ccw==
+        b=ZI7tbudBvsnDTICRJdZFQtgXcHecLTVURfU460xELfO93f9iAWW2786oyQg0P6eS+K
+         xLAL9+t9hRNnZPgv5SCyBzqtpLmprTrRgOp6MOGMt1TImhPX618ne/XoRubnmFGU/bL0
+         WJe8I4/R4qgGuHoM2fn4/OVMj6rQZmo0WlefDzPNwFbk/ZrmH/TfXFr+4gtpU5crVbCp
+         DhfdytdTCQoTs6UEIfzmHgqNhUYJR9Sd6p/JIpxg3BTH87WSbSupJZqpc/aEJg4ZDns0
+         kmqXM0mc9dnTs22XJDOBAOJm9+vCg2vjQIm7JVgFk9nkND0EOoLCcwKotvlSmSKTaOq1
+         dspg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=qm+c0B0VghS5x1igpBlA8KgdD3cjShXIS4o/gceuxM8=;
-        fh=TqF6DCXrQcN/90lIZ/fnZ+fpQINAr+yQV66QcPF3CVY=;
-        b=LBgZ9IDAYoIz0DEQwLDUjV9iI9SiivINjrCYRQ4/xiW6TQMogXseSIMHroy9Ml8wFE
-         JQKxWP++sdVU51ww2wXEbZ3dOwN8CowMRUOY+VgSp7RR5NrzBzNceWcgbBdOpeF/xiRq
-         RWqw5UbUA/aYwZFeOk9Ra63X3OuDSFaucaCARNPYO9Y7R9sWQ2DfR/aa0eRyKVeJQnNZ
-         AAOBndKozZMNSbPQ+cuuXTJbW5FGA98lpuEm+50w+Z2Rm8i4NVfHeU8HhsskyYZXG8O/
-         +mBRgjpCo7XGuGJnDFh5+0S3gLHh3CJURwH+w8TzMyQE/2LuiDbQNotMARyMuokcB2qc
-         mFPw==;
+        bh=feNTViC8MFBS6AQiIqWex0bCSJJNY3jWANzumtuP1Dw=;
+        fh=bP8EZjOZyhRyagNkyE3wbjQKnUxLW735Qku+/etpwAI=;
+        b=Wn3GWxto/GxOJcoS8olIm+NCSXA9YSlycF224qb1/KEhvKnsNqRI5ldmL+a/MaCFLa
+         FlTMw6HXYpxQoosF7rY2l+WLclFteuc8XrZExlrLtNDceeYIfknu1Bj/qpxlATdh+Dhw
+         WFMAGlXcJgHEwIq9EgDN9CNFv2bceaVqVhcvFZ+4pP6PHrJNsg8hIsetscAHPle6gzzM
+         mWiDUUW3RRkHlyAmsD+KzXwkxXBWU4zSRJBmVpxWS4STFyUijR7fz6d/sqVLLwJbzBq8
+         GJR9O8U4JenAefX94J5Itm7ca3QyLczTI/nE6l4y121ziAGXjswEJrsunwuxGR037QTr
+         V2Lg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1774859210; x=1775464010; darn=vger.kernel.org;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1774859213; x=1775464013; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qm+c0B0VghS5x1igpBlA8KgdD3cjShXIS4o/gceuxM8=;
-        b=K5EuU9OFJQS832FMAhb3ihjbGCQVIUw843pv6+XZk84vnWfBJ6Qj2635sLbxY27gz7
-         b9ocAxSlnaCbVQSVfcXJ/zMDl+jNJifQ6q+DGBCXzimowYw4yNRkGf8ANnEu3pO9CfZC
-         vYGbQ+VNYT/GFE88/c2Wz01TRIYw2RYZ42tuvHuHySzBeMktxe1ikBzbX2mz9EmJ0S4i
-         u33uwHZYoy2tdOs0S8z07/rXHCoHK7+5mXy1LQ3Foh0SYk97TlXFo241+YEdYx9Ha6IX
-         e7wIR67IvRJd6LzwKLhqCdT5PeshiGx5HyzNYAQa+2t0O2qup+d/3WWUvQ/9GkKAB8q3
-         AZvg==
+        bh=feNTViC8MFBS6AQiIqWex0bCSJJNY3jWANzumtuP1Dw=;
+        b=L6gOVKuJzzXzlXDxQXDC+0+c+BrFOzFmO3n8kTJLXSrahbfz3x3NFzFnnORA6OKt5n
+         jp3BnQbTwVvkZRScx3L7NNsZC8GM4f6Nf91Jow4e/viqW3VgVxpg03JPi/jn+bE/3ZsJ
+         DdPkCbyWVEdsc7LB4Ik8021nlppwSqAf5XpfFrIoCQMDvZWFJTyXGmTQzQ4akULdLoJA
+         vSI7nktHnJpKwNcaux8Omi9XKUrVrdT9NWNEUsZ8Y5nrH4ph0xSRtdHPQ/lDQvKrAq4l
+         wNg2rPG/uRP7SMocpyjdEtTIqhJkzapYjGbgYvb9RI6f+vrTnofl+E8idMeljoNJ3b7H
+         G9lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774859210; x=1775464010;
+        d=1e100.net; s=20251104; t=1774859213; x=1775464013;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qm+c0B0VghS5x1igpBlA8KgdD3cjShXIS4o/gceuxM8=;
-        b=QJf0S540SDfa8xm0QP0gZXK2Mb6Fjzu0Yf5ns1h8qfCR3Qn57Yie5q18gmM/M75TmH
-         o4y/81MzV9DRNVRXXKMA3ahWz/E6R222/bQ8XV95z+32MFa495lYSTFKhgTtjpx+d+Q2
-         eLOLlgSPSejRRdY7plu8b+WT6oIYKI/qGx5L/JzPh7kAQP9zQrWZ4/7zB7U8NF4bgV8b
-         zcawUvb1p14q2heyFdkspHVFUg75jCOIczbk3sZwLuNKjPj3i6aVIgOaEgVBo4Ruf2z8
-         iT31fdxBKHErHUxCfx31lFiqG0yFCqBKGDrXvFxUfXuXM5wY1wwoL3BbGnsxIGgOv22j
-         6VgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHpqxpPSSAp7ohV5x278hML9FKqkSxiNV4dAW/q1zammNisw9SyKC0dUDeEJISAKrKnYo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw85zjPWbqVvIbDTwwzE1bmsHzVZNVillRtQFkjtvVCsltw4laP
-	W5JfnN2EIgHQoUMwm1ta0ip5VOCUKLH6uJTPKs7mpyEXqwRoEIuQLFTyEkfilqLEsjuq1WEpbGo
-	7DiU2BCLEDED6S8rt6/+Y/obhRB03nldxNdfosgxQgg==
-X-Gm-Gg: ATEYQzyyXhSD7fOFLNSehLzON/l2GcXM4nAJ8RrhtfWt9m8LtDb/Ern+dJd5PhOdv+J
-	HlzB0kYQEcb0cGuDSgbTpCuiSZGJh77IHAtqHjn8AIoiViRZAnlS7reOXYcm449YlAKMrKf7jfq
-	8eJpC4F/b2LQGaXp+sCkbStrHJynbU+VRTXwVRJckmIjmxeBhEwRkEYSUihMvQ6Z8g9dqxAYvdK
-	HzxwuCbKvpB79j9ohjbpuyM5eAiRfwY1Xr7znbWMtuN1IYiHUaKVQK1IjIPHFY9S1grh6mvoMPE
-	Jg50Bf0GrWmnmAwW/931c03ooXrpuswoqGMvEXqP7XA8a1scay3SJc+IN5qsveH2EZOvcZpaVpO
-	WlKiZCbx5bdImjicC4etWY+3yjg==
-X-Received: by 2002:a05:6820:81c1:b0:67e:294b:726b with SMTP id
- 006d021491bc7-67e294b7605mr3423411eaf.40.1774859210004; Mon, 30 Mar 2026
- 01:26:50 -0700 (PDT)
+        bh=feNTViC8MFBS6AQiIqWex0bCSJJNY3jWANzumtuP1Dw=;
+        b=s6Dznw/zs0vzRWFM+n88tk9MS6wU5z9kF46h5a8KvtLtbaB+ZZWJAt0Jhy+Zsc9OHv
+         qzExvy7PL4x8+84F/9AktBAGUmw3kcZXUuVxog55fQlhMGJLq+Zjmt0G6doJwv8KmdLZ
+         h1HEpVYoEZpX/AdfQLs4iD9mu7DMWXBCMK35WbtahDq4zRZtmHn/EVrgLlUMhpXvb+NZ
+         0oiAYY3J6/a5U3/wUoUuPBYn5GJRDINdqWO99t/PKV+WmOUowoA9bHj+jy2kVxHrR6YM
+         gjU1J1ScamFIw8vfxGzaQTLJinNkIPySqzQYWNBwVoXUBiO+xGo3RkoLzdUmWtMFQls+
+         0Mqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTEzKEXwk7mbNXk+xLwCSyOwimD2M/nbBp1YHf8h7JsdE0UL1+CwZjdmfIy+DqbOgiz88=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuAWykWOF9IJr+C9fSvqcLmbOed1B9s1CAtAXSbWwrIDjOSdLn
+	V0uypkUFNZRISTtksc0VAZA5ip4STI+sCIJYbQPQVtsg9DPbuoTrNtFZ1bmHo0CNEqx9PEUpgtL
+	PtBr3+R2/hhmR4Pm5OeyqnhqLNOaB34e0E8X6uqBtng==
+X-Gm-Gg: ATEYQzwiMkpS/YTutLw4bZkdbCXQJBf9woZ9hifemaahS5BkrczVQtrL28iA7lI4mfw
+	JJzDGdBos3hbZsrddHJ25VKD4A8zSNj0+n05g8W3umTCHyoq3/ySc+9pQAa3fSIfXvllUp7CWCr
+	9+ZingBH54MvYrwqi7moGJom9QWaYWMRmSncyNTXedscwXCD+rPNcYBQJYPB2AG6NQ/kdzn3WYq
+	4UjGdkAmp9Dy0qfYEhSWFGcNdPql5M/v0fxL6rRsJoEFVRg6jZh4CVEezYoNN7PgfVNoziSpsOB
+	JBGNK/a+T5+/hVd1U+WLsH26pbfPK24IKfH5ltIz/KEasQ4KlJqvd/oBkilljr0PvpzagfsIk/O
+	GXBY0jsp4gywabiJNkdHY+6Uv8g==
+X-Received: by 2002:a05:6820:8188:b0:67c:f1d7:3d50 with SMTP id
+ 006d021491bc7-67e186566fdmr6317419eaf.32.1774859213091; Mon, 30 Mar 2026
+ 01:26:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260318092956.708246-1-xujiakai2025@iscas.ac.cn>
-In-Reply-To: <20260318092956.708246-1-xujiakai2025@iscas.ac.cn>
+References: <20260319035902.924661-1-xujiakai2025@iscas.ac.cn>
+In-Reply-To: <20260319035902.924661-1-xujiakai2025@iscas.ac.cn>
 From: Anup Patel <anup@brainfault.org>
-Date: Mon, 30 Mar 2026 13:56:38 +0530
-X-Gm-Features: AQROBzAttgYdkDk6vZa7Y9rWU3gasICclOjTZXUHJQOVCZXeCVLUqT-WwqE4H2U
-Message-ID: <CAAhSdy01NHCwXRXMkpCrYSLpdApB5EC4kU9qig3q2KD1K34Atg@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix double-free of sdata in kvm_pmu_clear_snapshot_area()
+Date: Mon, 30 Mar 2026 13:56:41 +0530
+X-Gm-Features: AQROBzD8YcMhVDsongcGEG3uL_G8BwWLXwkEeCGZRFqCzB5qKwscWNn1JiDFjFg
+Message-ID: <CAAhSdy0nu1kCYxo2gmpHAgdQKFSUPb36fBoUELE-LLf_BwSO9w@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Fix integer overflow in kvm_pmu_validate_counter_mask()
 To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
 Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
@@ -98,41 +98,49 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 18, 2026 at 3:00=E2=80=AFPM Jiakai Xu <xujiakai2025@iscas.ac.cn=
+On Thu, Mar 19, 2026 at 9:29=E2=80=AFAM Jiakai Xu <xujiakai2025@iscas.ac.cn=
 > wrote:
 >
-> In kvm_riscv_vcpu_pmu_snapshot_set_shmem(), when kvm_vcpu_write_guest()
-> fails, kvpmu->sdata is freed but not set to NULL. This leaves a dangling
-> pointer that will be freed again when kvm_pmu_clear_snapshot_area() is
-> called during vcpu teardown, triggering a KASAN double-free report.
+> When a guest initiates an SBI_EXT_PMU_COUNTER_CFG_MATCH call with
+> ctr_base=3D0xfffffffffffffffe, ctr_mask=3D0xeb5f and flags=3D0x1
+> (SBI_PMU_CFG_FLAG_SKIP_MATCH), kvm_riscv_vcpu_pmu_ctr_cfg_match()
+> first invokes kvm_pmu_validate_counter_mask() to verify whether
+> ctr_base and ctr_mask are valid, by evaluating:
+>  !ctr_mask || (ctr_base + __fls(ctr_mask) >=3D kvm_pmu_num_counters(kvpmu=
+))
 >
-> First free occurs in kvm_riscv_vcpu_pmu_snapshot_set_shmem():
->  kvm_riscv_vcpu_pmu_snapshot_set_shmem arch/riscv/kvm/vcpu_pmu.c:443
->  kvm_sbi_ext_pmu_handler arch/riscv/kvm/vcpu_sbi_pmu.c:74
->  kvm_riscv_vcpu_sbi_ecall arch/riscv/kvm/vcpu_sbi.c:608
->  kvm_riscv_vcpu_exit arch/riscv/kvm/vcpu_exit.c:240
->  kvm_arch_vcpu_ioctl_run arch/riscv/kvm/vcpu.c:1008
->  kvm_vcpu_ioctl virt/kvm/kvm_main.c:4476
+> With the above inputs, __fls(0xeb5f) equals 15, and adding 15 to
+> 0xfffffffffffffffe causes an integer overflow, wrapping around to 13.
+> Since 13 is less than kvm_pmu_num_counters(), the validation wrongly
+> succeeds.
 >
-> Second free (double-free) occurs in kvm_pmu_clear_snapshot_area():
->  kvm_pmu_clear_snapshot_area arch/riscv/kvm/vcpu_pmu.c:403 [inline]
->  kvm_riscv_vcpu_pmu_deinit.part arch/riscv/kvm/vcpu_pmu.c:905
->  kvm_riscv_vcpu_pmu_deinit arch/riscv/kvm/vcpu_pmu.c:893
->  kvm_arch_vcpu_destroy arch/riscv/kvm/vcpu.c:199
->  kvm_vcpu_destroy virt/kvm/kvm_main.c:469 [inline]
->  kvm_destroy_vcpus virt/kvm/kvm_main.c:489
->  kvm_arch_destroy_vm arch/riscv/kvm/vm.c:54
->  kvm_destroy_vm virt/kvm/kvm_main.c:1301 [inline]
->  kvm_put_kvm virt/kvm/kvm_main.c:1338
->  kvm_vm_release virt/kvm/kvm_main.c:1361
+> Thereafter, since flags & SBI_PMU_CFG_FLAG_SKIP_MATCH is satisfied,
+> the code evaluates:
+>  !test_bit(ctr_base + __ffs(ctr_mask), kvpmu->pmc_in_use)
 >
-> Fix it by setting kvpmu->sdata to NULL after kfree() in
-> kvm_riscv_vcpu_pmu_snapshot_set_shmem(), so that the subsequent
-> kfree(NULL) in kvm_pmu_clear_snapshot_area() becomes a safe no-op.
+> Here __ffs(0xeb5f) equals 0, so test_bit() receives 0xfffffffffffffffe
+> as the bit index and attempts to access the corresponding element of
+> the kvpmu->pmc_in_use, which results in an invalid memory access. This
+> triggers the following Oops:
+>  Unable to handle kernel paging request at virtual address e3ebffff12abba=
+89
+>   generic_test_bit include/asm-generic/bitops/generic-non-atomic.h:128
+>   kvm_riscv_vcpu_pmu_ctr_cfg_match arch/riscv/kvm/vcpu_pmu.c:758
+>   kvm_sbi_ext_pmu_handler arch/riscv/kvm/vcpu_sbi_pmu.c:49
+>   kvm_riscv_vcpu_sbi_ecall arch/riscv/kvm/vcpu_sbi.c:608
+>   kvm_riscv_vcpu_exit arch/riscv/kvm/vcpu_exit.c:240
+>
+> The root cause is that kvm_pmu_validate_counter_mask() does not account
+> for the case where ctr_base itself is out of range, allowing the
+> subsequent addition to silently overflow and bypass the check.
+>
+> Fix this by explicitly validating ctr_base against kvm_pmu_num_counters()
+> before performing the addition.
 >
 > This bug was found by fuzzing the KVM RISC-V PMU interface.
 >
-> Fixes: c2f41ddbcdd756 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+> Fixes: 0cb74b65d2e5e6 ("RISC-V: KVM: Implement perf support without sampl=
+ing")
 > Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
 > Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
 
@@ -143,24 +151,32 @@ Anup
 
 
 > ---
->  arch/riscv/kvm/vcpu_pmu.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/riscv/kvm/vcpu_pmu.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
 > diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index e873430e596b2..ac1b9a91a19db 100644
+> index e873430e596b2..a098a9b417ad8 100644
 > --- a/arch/riscv/kvm/vcpu_pmu.c
 > +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -441,6 +441,7 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_=
-vcpu *vcpu, unsigned long s
->         /* No need to check writable slot explicitly as kvm_vcpu_write_gu=
-est does it internally */
->         if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area=
-_size)) {
->                 kfree(kvpmu->sdata);
-> +               kvpmu->sdata =3D NULL;
->                 sbiret =3D SBI_ERR_INVALID_ADDRESS;
->                 goto out;
->         }
+> @@ -266,8 +266,10 @@ static int pmu_ctr_read(struct kvm_vcpu *vcpu, unsig=
+ned long cidx,
+>  static int kvm_pmu_validate_counter_mask(struct kvm_pmu *kvpmu, unsigned=
+ long ctr_base,
+>                                          unsigned long ctr_mask)
+>  {
+> -       /* Make sure the we have a valid counter mask requested from the =
+caller */
+> -       if (!ctr_mask || (ctr_base + __fls(ctr_mask) >=3D kvm_pmu_num_cou=
+nters(kvpmu)))
+> +       unsigned long num_ctrs =3D kvm_pmu_num_counters(kvpmu);
+> +
+> +       /* Make sure we have a valid counter mask requested from the call=
+er */
+> +       if (!ctr_mask || ctr_base >=3D num_ctrs || (ctr_base + __fls(ctr_=
+mask) >=3D num_ctrs))
+>                 return -EINVAL;
+>
+>         return 0;
 > --
 > 2.34.1
 >
