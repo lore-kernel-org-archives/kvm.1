@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DE93BA257;
-	Mon, 30 Mar 2026 10:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485ED3BD23B;
+	Mon, 30 Mar 2026 10:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774865514; cv=none; b=AHbggwK/TXNitVplLvxIWfnMb/H75GR8Rkgzu7RxDg6zA54He4NfTFSC1axhRvr+PKbN4hP/4XaevgSD3VFGdfSBnhnsKZL+F4NlquvwH19962PPxHRa7Xa0iGmlfEGBAw/xi7STVn0GrUB0uk2wuGWehrn3vVneVKWhz9amJEw=
+	t=1774865521; cv=none; b=rngStRcHg60awidOZSj4nvQhbLE61Mzb7xduZjBVsj8kehpOxvBn2wH7ilcczyUzuh8xCQl02A1KGLjxi4x0ZFcOw6FsEtN02y/mV0MnKtftTPSKYblEVoYf6s9r0gfRlij82HHd6CEcqJw0vVzXOtX3s8KpKArfPhnbTPus44E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774865514; c=relaxed/simple;
-	bh=ynjTmCe+1IWEv5uzQ9YDrK1M2CISmsrzcaIqVGmX5v0=;
+	s=arc-20240116; t=1774865521; c=relaxed/simple;
+	bh=5SzGyiFXZk7l7ucReQ40iRkaPGcy2CcX6r/21eMkk2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cD8cRdoDkqMyVTXjnBmq+ceBZm93e1eH6Q/grDNfdh99sldkTFLjFgzeXKCWyIvKlyRq0ptwngL75ZKGyjW6uD4PKZPNiY6R9Df7FIWKIOlc6UwaxJY8gU+2pDA0RxCdey2BpbJnUZm4vA6Jws6t8yOKytqv8JLYdyGMYBowd8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9PBouR4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=K3p5tkE9Q7W0VNqE7u1b9RKBMWnasRmRVZ5YXLamRSBlgAbWjsFSeKOoGzDu7inY/DYLw0FnF6yKCKauZe8Ksu5nQf6yHbKB7lH729pcVjrZwBRjskvdwFNLIbJV3ToslLQH7/smtAbNGkRxeNalqtyDeiUuHxM4egcmKM0uI/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rnZmUZP7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9PBouR4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9232FC2BCB5;
-	Mon, 30 Mar 2026 10:11:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rnZmUZP7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500A1C4AF09;
+	Mon, 30 Mar 2026 10:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774865513;
-	bh=ynjTmCe+1IWEv5uzQ9YDrK1M2CISmsrzcaIqVGmX5v0=;
+	s=k20201202; t=1774865520;
+	bh=5SzGyiFXZk7l7ucReQ40iRkaPGcy2CcX6r/21eMkk2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9PBouR46yBSGMp/xczSDwNBSz01ILMMSUj54LcWOXbIqNAWCWDiQOgfDL2mOpJeX
-	 jWmG3aMQSTYTPDkRqV982sQciqG5TEdyiaeAEcRpBwctsK1vNMR8kLvjmKH+OTaMh8
-	 ZXPPiEZPMEfVIIMFDVu/qYHj/2MLKn7dwA3DEdchKRyf2i77SsBedtIGw2xcPwO4fw
-	 YgMb4eBrNILU5qOsa8Au+P2E4ooFL2zy8mIGhp+S7Anm6rAiRfKpcXiCw8L/gYdBge
-	 Ata/+5uKD1wBFajLa+AtZtMH42pL7iE6FbyBqGi+1qfJDSK3Z0NwCVZnovq4SmH0T7
-	 KWc50FhDtW59A==
+	b=rnZmUZP7gvczpmYCEel4ZXmQ2PPmuQj3/XLGNLve0YawXSP2n2h581cordUCP7K2b
+	 MmmnEb7e8DcyW1uRo2AewcgnTOx9blnu4afb+Q6gn6po2hgdRBuRrJswZumlsmYQNN
+	 WYGrErDR5bviDJ6dVcSCtl71iYEOnC/KGr//7ne2uRD2lGWNH5EdqFy8ypdTN6NjbK
+	 wMigsbkomvod7dn/ko2q+w52YIV1vn+g4FPibveRYXwvjuSLuiL4fl4nvG3oPg8ZBe
+	 Vh0YR62YlJQBCLgTH39pGzGix1bhYmhld6ri6Jv3CHDGtgiWE7cMHSiyIKoqN90k+r
+	 gOXP70eeEkHwg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 04/15] userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
-Date: Mon, 30 Mar 2026 13:11:05 +0300
-Message-ID: <20260330101116.1117699-5-rppt@kernel.org>
+Subject: [PATCH v3 05/15] userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()
+Date: Mon, 30 Mar 2026 13:11:06 +0300
+Message-ID: <20260330101116.1117699-6-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260330101116.1117699-1-rppt@kernel.org>
 References: <20260330101116.1117699-1-rppt@kernel.org>
@@ -71,195 +71,143 @@ Content-Transfer-Encoding: 8bit
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Split the code that finds, locks and verifies VMA from mfill_atomic() into
-a helper function.
+Implementation of UFFDIO_COPY for anonymous memory might fail to copy data
+from userspace buffer when the destination VMA is locked (either with
+mm_lock or with per-VMA lock).
 
-This function will be used later during refactoring of
-mfill_atomic_pte_copy().
+In that case, mfill_atomic() releases the locks, retries copying the data
+with locks dropped and then re-locks the destination VMA and
+re-establishes PMD.
 
-Add a counterpart mfill_put_vma() helper that unlocks the VMA and releases
-map_changing_lock.
+Since this retry-reget dance is only relevant for UFFDIO_COPY and it never
+happens for other UFFDIO_ operations, make it a part of
+mfill_atomic_pte_copy() that actually implements UFFDIO_COPY for anonymous
+memory.
 
-[avagin@google.com: fix lock leak in mfill_get_vma()]
-Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
+As a temporal safety measure to avoid breaking biscection
+mfill_atomic_pte_copy() makes sure to never return -ENOENT so that the
+loop in mfill_atomic() won't retry copiyng outside of mmap_lock.  This is
+removed later when shmem implementation will be updated later and the loop
+in mfill_atomic() will be adjusted.
+
+[akpm@linux-foundation.org: update mfill_copy_folio_retry()]
+  Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
+Link: https://lkml.kernel.org/r/20260306171815.3160826-6-rppt@kernel.org
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/userfaultfd.c | 126 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 75 insertions(+), 51 deletions(-)
+ mm/userfaultfd.c | 75 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 51 insertions(+), 24 deletions(-)
 
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 291e5cfed431..c6a38db45343 100644
+index c6a38db45343..82e1a3255e1e 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -157,6 +157,75 @@ static void uffd_mfill_unlock(struct vm_area_struct *vma)
+@@ -405,35 +405,63 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+ 	return ret;
  }
- #endif
  
-+static void mfill_put_vma(struct mfill_state *state)
++static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio)
 +{
-+	if (!state->vma)
-+		return;
-+
-+	up_read(&state->ctx->map_changing_lock);
-+	uffd_mfill_unlock(state->vma);
-+	state->vma = NULL;
-+}
-+
-+static int mfill_get_vma(struct mfill_state *state)
-+{
-+	struct userfaultfd_ctx *ctx = state->ctx;
-+	uffd_flags_t flags = state->flags;
-+	struct vm_area_struct *dst_vma;
++	unsigned long src_addr = state->src_addr;
++	void *kaddr;
 +	int err;
 +
-+	/*
-+	 * Make sure the vma is not shared, that the dst range is
-+	 * both valid and fully within a single existing vma.
-+	 */
-+	dst_vma = uffd_mfill_lock(ctx->mm, state->dst_start, state->len);
-+	if (IS_ERR(dst_vma))
-+		return PTR_ERR(dst_vma);
++	/* retry copying with mm_lock dropped */
++	mfill_put_vma(state);
 +
-+	/*
-+	 * If memory mappings are changing because of non-cooperative
-+	 * operation (e.g. mremap) running in parallel, bail out and
-+	 * request the user to retry later
-+	 */
-+	down_read(&ctx->map_changing_lock);
-+	state->vma = dst_vma;
-+	err = -EAGAIN;
-+	if (atomic_read(&ctx->mmap_changing))
-+		goto out_unlock;
++	kaddr = kmap_local_folio(folio, 0);
++	err = copy_from_user(kaddr, (const void __user *) src_addr, PAGE_SIZE);
++	kunmap_local(kaddr);
++	if (unlikely(err))
++		return -EFAULT;
 +
-+	err = -EINVAL;
++	flush_dcache_folio(folio);
 +
-+	/*
-+	 * shmem_zero_setup is invoked in mmap for MAP_ANONYMOUS|MAP_SHARED but
-+	 * it will overwrite vm_ops, so vma_is_anonymous must return false.
-+	 */
-+	if (WARN_ON_ONCE(vma_is_anonymous(dst_vma) &&
-+	    dst_vma->vm_flags & VM_SHARED))
-+		goto out_unlock;
++	/* reget VMA and PMD, they could change underneath us */
++	err = mfill_get_vma(state);
++	if (err)
++		return err;
 +
-+	/*
-+	 * validate 'mode' now that we know the dst_vma: don't allow
-+	 * a wrprotect copy if the userfaultfd didn't register as WP.
-+	 */
-+	if ((flags & MFILL_ATOMIC_WP) && !(dst_vma->vm_flags & VM_UFFD_WP))
-+		goto out_unlock;
-+
-+	if (is_vm_hugetlb_page(dst_vma))
-+		return 0;
-+
-+	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
-+		goto out_unlock;
-+	if (!vma_is_shmem(dst_vma) &&
-+	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
-+		goto out_unlock;
++	err = mfill_establish_pmd(state);
++	if (err)
++		return err;
 +
 +	return 0;
-+
-+out_unlock:
-+	mfill_put_vma(state);
-+	return err;
 +}
 +
- static pmd_t *mm_alloc_pmd(struct mm_struct *mm, unsigned long address)
+ static int mfill_atomic_pte_copy(struct mfill_state *state)
  {
- 	pgd_t *pgd;
-@@ -767,8 +836,6 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 		.src_addr = src_start,
- 		.dst_addr = dst_start,
- 	};
--	struct mm_struct *dst_mm = ctx->mm;
--	struct vm_area_struct *dst_vma;
- 	long copied = 0;
- 	ssize_t err;
+-	struct vm_area_struct *dst_vma = state->vma;
+ 	unsigned long dst_addr = state->dst_addr;
+ 	unsigned long src_addr = state->src_addr;
+ 	uffd_flags_t flags = state->flags;
+-	pmd_t *dst_pmd = state->pmd;
+ 	struct folio *folio;
+ 	int ret;
  
-@@ -783,57 +850,17 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 	VM_WARN_ON_ONCE(dst_start + len <= dst_start);
+-	if (!state->folio) {
+-		ret = -ENOMEM;
+-		folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, dst_vma,
+-					dst_addr);
+-		if (!folio)
+-			goto out;
++	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, dst_addr);
++	if (!folio)
++		return -ENOMEM;
  
- retry:
--	/*
--	 * Make sure the vma is not shared, that the dst range is
--	 * both valid and fully within a single existing vma.
--	 */
--	dst_vma = uffd_mfill_lock(dst_mm, dst_start, len);
--	if (IS_ERR(dst_vma)) {
--		err = PTR_ERR(dst_vma);
-+	err = mfill_get_vma(&state);
-+	if (err)
- 		goto out;
--	}
--
--	/*
--	 * If memory mappings are changing because of non-cooperative
--	 * operation (e.g. mremap) running in parallel, bail out and
--	 * request the user to retry later
--	 */
--	down_read(&ctx->map_changing_lock);
--	err = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
--		goto out_unlock;
--
--	err = -EINVAL;
--	/*
--	 * shmem_zero_setup is invoked in mmap for MAP_ANONYMOUS|MAP_SHARED but
--	 * it will overwrite vm_ops, so vma_is_anonymous must return false.
--	 */
--	if (WARN_ON_ONCE(vma_is_anonymous(dst_vma) &&
--	    dst_vma->vm_flags & VM_SHARED))
--		goto out_unlock;
--
--	/*
--	 * validate 'mode' now that we know the dst_vma: don't allow
--	 * a wrprotect copy if the userfaultfd didn't register as WP.
--	 */
--	if ((flags & MFILL_ATOMIC_WP) && !(dst_vma->vm_flags & VM_UFFD_WP))
--		goto out_unlock;
+-		ret = mfill_copy_folio_locked(folio, src_addr);
++	ret = -ENOMEM;
++	if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
++		goto out_release;
  
- 	/*
- 	 * If this is a HUGETLB vma, pass off to appropriate routine
- 	 */
--	if (is_vm_hugetlb_page(dst_vma))
--		return  mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
-+	if (is_vm_hugetlb_page(state.vma))
-+		return  mfill_atomic_hugetlb(ctx, state.vma, dst_start,
- 					     src_start, len, flags);
- 
--	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
--		goto out_unlock;
--	if (!vma_is_shmem(dst_vma) &&
--	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
--		goto out_unlock;
--
--	state.vma = dst_vma;
--
- 	while (state.src_addr < src_start + len) {
- 		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
- 
-@@ -852,8 +879,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 		if (unlikely(err == -ENOENT)) {
- 			void *kaddr;
- 
--			up_read(&ctx->map_changing_lock);
--			uffd_mfill_unlock(state.vma);
-+			mfill_put_vma(&state);
- 			VM_WARN_ON_ONCE(!state.folio);
- 
- 			kaddr = kmap_local_folio(state.folio, 0);
-@@ -882,9 +908,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 			break;
+-		/* fallback to copy_from_user outside mmap_lock */
+-		if (unlikely(ret)) {
+-			ret = -ENOENT;
+-			state->folio = folio;
+-			/* don't free the page */
+-			goto out;
+-		}
+-	} else {
+-		folio = state->folio;
+-		state->folio = NULL;
++	ret = mfill_copy_folio_locked(folio, src_addr);
++	if (unlikely(ret)) {
++		/*
++		 * Fallback to copy_from_user outside mmap_lock.
++		 * If retry is successful, mfill_copy_folio_locked() returns
++		 * with locks retaken by mfill_get_vma().
++		 * If there was an error, we must mfill_put_vma() anyway and it
++		 * will take care of unlocking if needed.
++		 */
++		ret = mfill_copy_folio_retry(state, folio);
++		if (ret)
++			goto out_release;
  	}
  
--out_unlock:
--	up_read(&ctx->map_changing_lock);
--	uffd_mfill_unlock(state.vma);
-+	mfill_put_vma(&state);
+ 	/*
+@@ -443,17 +471,16 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 	 */
+ 	__folio_mark_uptodate(folio);
+ 
+-	ret = -ENOMEM;
+-	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
+-		goto out_release;
+-
+-	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
++	ret = mfill_atomic_install_pte(state->pmd, state->vma, dst_addr,
+ 				       &folio->page, true, flags);
+ 	if (ret)
+ 		goto out_release;
  out:
- 	if (state.folio)
- 		folio_put(state.folio);
+ 	return ret;
+ out_release:
++	/* Don't return -ENOENT so that our caller won't retry */
++	if (ret == -ENOENT)
++		ret = -EFAULT;
+ 	folio_put(folio);
+ 	goto out;
+ }
 -- 
 2.53.0
 
