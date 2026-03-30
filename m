@@ -1,204 +1,223 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010048.outbound.protection.outlook.com [40.93.198.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953673DEADF;
-	Mon, 30 Mar 2026 22:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774909190; cv=none; b=oaoXnTazJBcX9xnUDZ7vuTpqC8bxBhzuH4KB/sbnoYmy6w33K4JiRrupR2Y120TZpC083FyeACo0fK6cApELCkAiVqTn8EVkx+D8R5dEGSeuKfADo+i7DVBKwwu57rcU8R0b1iekVK9+8XAjops6q6er1jdWHy+1naAsyM4QJIw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774909190; c=relaxed/simple;
-	bh=JnqD3TyeRpoIZtONomIeXGLdtj9GythGM2M0IEDzOHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hzSJa06CwE1bTcNcZjZRFV8Q+5o8l2CiWTAFfZuloO5FCEHSgqNOFqqlmfZKFEpFBt5L7OC4NMXiJ1b5z/joNiG06uYVqDZJhznCyv2n1DtUmM4sKJdBRD45aEuytuTgvd7jQvUbeBvGYfYWr2aTEhlzYCV5UK/SFAZSSog7ipg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=rsMDelTK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Uw23/BER; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B82B3E2765;
+	Mon, 30 Mar 2026 22:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774909550; cv=fail; b=XTTvI6L9Nvty50Bq4AYU2cR9045jUWDMX570iQ38jjVlN6JGQeVjO/d6uK2ZUxHsNkmvoOw7HiBHpi62ylypSWS8pDkGmZresmaTWm7p/JU6IGq/jilFf2W9wGgvNJy2MTW0e42CntHyFqZhYcOVNtCedTMvmxDzQ9m0Frq9x0E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774909550; c=relaxed/simple;
+	bh=nGYWRpZe74T3A8cKInxUoqUgXbFx4bTMQUDBsciZMgs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JEF+5Quf/5Fk39KdnbR+iXA7bFx5JXuAdNAr7oWI28q0CKMi7J72m9Q3T+KzI3QquRnizjLn74QyaVats/hVF9T4a/E/WfbhFwseVnnhfHgT9SMe4JLT9ejJSMJaHmUSI1ccGvkxRxQ3+jaTM+mFBxXdz+NDuaURpagSecS6yKo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kUY7DfQe; arc=fail smtp.client-ip=40.93.198.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="rsMDelTK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Uw23/BER"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id A34571400236;
-	Mon, 30 Mar 2026 18:19:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Mon, 30 Mar 2026 18:19:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774909175;
-	 x=1774995575; bh=KC7yQsjEhXBnsf9FMpaaJaCC82chs8zFL/gXSJLxi9E=; b=
-	rsMDelTKjUOtps85fyCwciCwrhsEZRaJeLLPC1xzRUM1MA1FPPq0TgUNkDRDZXAO
-	Vctc87CcmrabRVOQ4Tf273hTccJeuqG4ZDNHlXKB+spuHl/HWYqhQaaN7MbP9fKJ
-	SF76/criD00FzDJ87r30ko5Z0i+QfCGMETxKXEEWNbIHxe7ALZnmIkuCQ9yavhcI
-	qzCESEAJXzSqJi5knf9ZpHJyeWaH3sNO5olARxe+0tVUfY9+s3raAjfSlWdaw9Rv
-	+0owSTg4GHBUg8AZoBEv8cjBGFozJbMto9MJbRGIcXCemz3ZH82sSwXRhuuSHSc0
-	T8OvPhE5duzEmgpv68Yg5g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774909175; x=
-	1774995575; bh=KC7yQsjEhXBnsf9FMpaaJaCC82chs8zFL/gXSJLxi9E=; b=U
-	w23/BERkzzcwlsh4WH1Xs+QYpJTrqlfYCHWGiAx+qtSrqJobvpO81iVv3R9nCH7Y
-	Pf1LzRd9gJU9Lm6zeHNYZfvEhz9QAaAF9rDxYUQk2+zNSzG3zDaeRQQEMVrnpL/H
-	Z9Cb06pQ1fbajbbj0s4dXHhQvFiUHGVvHJ7J5xkzD9+bfPxGfXaKvhX6pUbomZ94
-	armodre+frmYICv0ejpQVcTbt2m8pc6vBTvERIyqMHV44gsqlpOI5JiI6nTtWkiF
-	JPeuRZR8k/p3/fcOpMXEjNEGSxDC6c0ML8Sogq1+qdV56zCC9KCT+pOsOe8VEy+f
-	/2u2kCy/9PgfbpETaStkA==
-X-ME-Sender: <xms:9_bKabkc3dpjrtQAnKkuVjHxE1R_iFwY1GKsortez2ee5vF9AreLLQ>
-    <xme:9_bKaVnBQkMSoeP5D2iq-cJKxTwN_aUnRNH-MviyQU6LE8cFYli_G9q20ciwM2B-E
-    XpZWQRa0M6RNhJ4FLDouJONxrLXwyb7bb8zwZZlm0JmZJJ0bqq6sg>
-X-ME-Received: <xmr:9_bKaTYp4juNpEsp7XMxMBUqMqTCOtC3pCXxaBgzFL9kJ18bfZbCW1CL4SM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefgedtudeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepkedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheprhhoshgvnhhpsehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvggvshes
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepghhushhtrghvohgrrhhssehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhhrghruggvnhhinhhgsehvghgvrhdrkh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorhhgpdhr
-    tghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:9_bKafTkNwlnUcq_IgCXAGRCCNidkuumwzg0fCKMRuoIQMam7o9nQw>
-    <xmx:9_bKaVtp_No0rgSUUCcqBvtqHnpS_b-F7s9Xxa_S3SRw6VKdLsSN5w>
-    <xmx:9_bKaZHNhI_jdvb9s6k7S8gaw9KnqS8XV23VC0WHyx0QIMrSQNlaOg>
-    <xmx:9_bKaeyCib2l4_7XgjZZ_AdgwMW8w1ZkVztL1gFrQG1ZCBQkBpevaw>
-    <xmx:9_bKafnkmGLDis_p3tmuzKDCNAAcv6D7_NwVSytkq-eoCkhw8_ceRsBo>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Mar 2026 18:19:34 -0400 (EDT)
-Date: Mon, 30 Mar 2026 16:19:33 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: kvm@vger.kernel.org, Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva"
- <gustavoars@kernel.org>, linux-kernel@vger.kernel.org (open list),
- linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by
- other areas):Keyword:\b__counted_by(_le|_be)?\b), alex@shazbot.org, Leon
- Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH] vfio: pci: use kzalloc_flex
-Message-ID: <20260330161933.6471d473@shazbot.org>
-In-Reply-To: <20260326023747.54485-1-rosenp@gmail.com>
-References: <20260326023747.54485-1-rosenp@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kUY7DfQe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=S/WN7B4YocB8M//4cRE2u1TyEvtBuWJcqzSefw9VuQt/KHsTij8H5kb2fIYuoHPkSJFDyI9wtwAbLb5tQ0MWToW4Se2dXguEXRmzssZmIolJyWcnBwwP4UUKH9ZJxv9MR/WKb9fuJO8T7u8wTdNPLzywJNrdvJtiPJ/p8rObXRJfO60O7Gl2X8csZG7LWPt+PQv8l2Ax4h9BEXf15o99FpZbJfOtN8ObPyGG/9yiT+wBqkP7vBAe6nQv3uj91JRLwvpXktDL57PX3wJY6mY6rwKF784hQpabJjIC/xRa0JXzLdpu/Vo6mTjgXfGbA4NXYwae/6U9y6pQBU6gOPZezg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UDEjg2gV12AEtF+Bklri8W3gV+iB+zqZGjN7Tgxvjao=;
+ b=PqP/4wpMXZRuAfNb5tLJQ5U2KnZrJ153aUIbdPctTrVLJXcjBF4D69xfOexQoSsXgOHYoIl6mfwJ5holHwt7fDA8Ktzo42I2FwlCGBr7ZrcMrn7gWqHCoLYhDO+vszT3HEGkb0AYBOBS9R5BkhILFsBUmQT3G36B95PCEBgbSSKW/f7b4eTFdZN+kB1P0HgguVSTi3/D47Nn+FsZRnoYRn/44mAQN1eQmWZN7mpcZYM2Q21mEv9uTkYpyjMxbFkl1H33W5mLThb14A1RK9TR6TUwd4nd44JeVJNht+5i/3dqyOBevgfgNavf0cKBGEbHQu3OKwBT1uoJyg0iISt3HQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UDEjg2gV12AEtF+Bklri8W3gV+iB+zqZGjN7Tgxvjao=;
+ b=kUY7DfQe+X3MgtgzmwIbFQIq/Ep+9gVO2MVeaDNIKA56divK8OtfthDTBkO9IQsv7VzmsfIcjoXAnsLUlbHh4szKsdNiTkQnFRt4vWvPFFDfQ2IR6u45wkBDcoK6u5kumVT2Ocixhz9VwRgbhzUo4+M9/xxErwc60UdmRZjSTso=
+Received: from BL1PR13CA0115.namprd13.prod.outlook.com (2603:10b6:208:2b9::30)
+ by BL3PR12MB6572.namprd12.prod.outlook.com (2603:10b6:208:38f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 22:25:32 +0000
+Received: from BL6PEPF00020E64.namprd04.prod.outlook.com
+ (2603:10b6:208:2b9:cafe::52) by BL1PR13CA0115.outlook.office365.com
+ (2603:10b6:208:2b9::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
+ 30 Mar 2026 22:25:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00020E64.mail.protection.outlook.com (10.167.249.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 22:25:31 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 30 Mar
+ 2026 17:25:29 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <jackyli@google.com>, <pgonda@google.com>,
+	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
+	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH v3 0/6] Add RMPOPT support.
+Date: Mon, 30 Mar 2026 22:25:07 +0000
+Message-ID: <cover.1774654874.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E64:EE_|BL3PR12MB6572:EE_
+X-MS-Office365-Filtering-Correlation-Id: 334744f9-3d84-4ec5-68e8-08de8eab4155
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|921020|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	9u73myT6SQ0UNDRSqVa07s4T296GYv4XHhWxp4EJ/Cd8LB4pFe6zJcwy0pxf6lHmLhF/OD34oECX71NpydrFNN3bHm1Imxhy9hLx2puwsPg9hPI3AUomSm7PQHKHTTQomLItoR4xhzQ94Sj73VxdhrSWg3oqPd89sAqSUpQPs5QDmL+qrvSqRJZ6JHrlOqBVUkvQ8z74PUbpwVdN697UuohqgYKQbG/ZIJHg6JseqUXehsz0CJjw57uJyVsOIYnTCAQvuDAwVbMw+7pwmkcCg9Z2GK1uI1w0yGKdqyh4C19zymEKwCtN/dsjbYy7T7u1NTvq87mHYTS9Gym7WX0hvAuAk7yF43gUi9a2KEpoiWJ7JNOCTjtxWcZCRVopLVAzzVex2W44V3fqvJihOrpcPD8qzPou06rCIkcNk8A6QQSSSPyUipWeiQAMCs3d9KCn/3jxh0FbZxTNnjLGpDS+ZmygdvPDCCXfQsoDs13bjayrxGXb9mNS9b5HBUm8EXDhlStmnV3lXDvZFq9XLgDmbviiY/EE3FqXY/SJwLwQMYTEFAZRBQeRbeURUNNTDn8OC6F6k/edrCrwUV2fY/VmzfZqfHhz0J0RWsp/ATIm5wyEMeazb0Y6UY2Ae7o+YdnJ2vnGK9Vhixw0E5lZErX0CFGdGlLFdWjIVuMD/dMDjdKFg5qb2i74xvOiKaEm2bhULGJiM7zvdBymnoTx1ANMrKMbA1Vz67nFPzOqLuG60QcY+2P9Qzy9pLgUCzgn2jZ8YCIoyFJNnekvlaI/sSCPymmT6BUTj4eNaNPpC1xS2aX1F7XhyrwyzQ2/Hv6n/rmd
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Ee7QnGV05casOfGSHvR8Alcy3ByPOP8jw+/Bje5e0dyXwx5x5aN2H+f2vbngBLs7+rE4xihsmzRElCSso23UicBoZRJdKVOHjeMRCYWTNlC9QfYynk2ui8DFRKiry6RLLN2khRwFdduKwoGcarKbeFVaChh38esnzYBU/ic36eblc5xTMtfGuOTCRgGHaXdHbzWnQnAIjbeYAzinCHVK4PT/E8LPrE4RQ8mEc2UpPPhA+0yqvdF0ooCfoDdqGbFUK6dAayZB9JP+DXEDH5+HATKhgVevA9DtCF6Dn0xCDMINmhN+hFndThrc5I/yCDG7nZsfoIRhFkJLSZ8rKewjPx70xlx16P4BLV6fIleLAxkfdsFjTzC4kRkZ7eqXy5yXughd6FYXm69uUu/imNumdCkxguu/68EB3glZL0vHF56+IThGsFYfWTqUys92Wvra
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 22:25:31.9396
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 334744f9-3d84-4ec5-68e8-08de8eab4155
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00020E64.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6572
 
-[Cc +Leon]
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-On Wed, 25 Mar 2026 19:37:47 -0700
-Rosen Penev <rosenp@gmail.com> wrote:
+In the SEV-SNP architecture, hypervisor and non-SNP guests are subject
+to RMP checks on writes to provide integrity of SEV-SNP guest memory.
 
-> Simplify allocation by using a flexible array member and kzalloc_flex.
-> Less memory management needed.
-> 
-> Use __counted_by for extra runtime analysis. Move assignment to after
-> allocation as required by __counted_by.
+The RMPOPT architecture enables optimizations whereby the RMP checks
+can be skipped if 1GB regions of memory are known to not contain any
+SNP guest memory.
 
-I don't understand this statement, nr_ranges was previously set after
-the allocation of phys_vec.  The only reordering was relative to
-setting vdev, but that appears arbitrary.
+RMPOPT is a new instruction designed to minimize the performance
+overhead of RMP checks for the hypervisor and non-SNP guests. 
 
-In fact, we don't need to explicitly set the __counted_by variable at
-all, kzalloc_flex() handles that.  So if anything, it's now redundant.
+RMPOPT instruction currently supports two functions. In case of the
+verify and report status function the CPU will read the RMP contents,
+verify the entire 1GB region starting at the provided SPA is HV-owned.
+For the entire 1GB region it checks that all RMP entries in this region
+are HV-owned (i.e, not in assigned state) and then accordingly updates
+the RMPOPT table to indicate if optimization has been enabled and
+provide indication to software if the optimization was successful.
 
-Leon, any other comments?  This should have a v2 removing the
-redundancy and fixing the commit log.
+In case of report status function, the CPU returns the optimization
+status for the 1GB region.
 
-NB. This will be a bit messy to merge since kref and completion exist in
-linux-next via drm, but maybe Linus will consolidate the hole in the
-structure when he resolves it.  Thanks,
+The RMPOPT table is managed by a combination of software and hardware.
+Software uses the RMPOPT instruction to set bits in the table,
+indicating that regions of memory are entirely HV-owned.  Hardware
+automatically clears bits in the RMPOPT table when RMP contents are
+changed during RMPUPDATE instruction.
 
-Alex
+For more information on the RMPOPT instruction, see the AMD64 RMPOPT
+technical documentation.
 
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 18 +++++-------------
->  1 file changed, 5 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index 3a803923141b..40e7e035a720 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -14,12 +14,12 @@ struct vfio_pci_dma_buf {
->  	struct vfio_pci_core_device *vdev;
->  	struct list_head dmabufs_elm;
->  	size_t size;
-> -	struct phys_vec *phys_vec;
->  	struct p2pdma_provider *provider;
->  	u32 nr_ranges;
->  	struct kref kref;
->  	struct completion comp;
->  	u8 revoked : 1;
-> +	struct phys_vec phys_vec[] __counted_by(nr_ranges);
->  };
->  
->  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> @@ -95,7 +95,6 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
->  		up_write(&priv->vdev->memory_lock);
->  		vfio_device_put_registration(&priv->vdev->vdev);
->  	}
-> -	kfree(priv->phys_vec);
->  	kfree(priv);
->  }
->  
-> @@ -258,33 +257,28 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  	if (ret)
->  		goto err_free_ranges;
->  
-> -	priv = kzalloc_obj(*priv);
-> +	priv = kzalloc_flex(*priv, phys_vec, get_dma_buf.nr_ranges);
->  	if (!priv) {
->  		ret = -ENOMEM;
->  		goto err_free_ranges;
->  	}
-> -	priv->phys_vec = kzalloc_objs(*priv->phys_vec, get_dma_buf.nr_ranges);
-> -	if (!priv->phys_vec) {
-> -		ret = -ENOMEM;
-> -		goto err_free_priv;
-> -	}
->  
-> -	priv->vdev = vdev;
->  	priv->nr_ranges = get_dma_buf.nr_ranges;
-> +	priv->vdev = vdev;
->  	priv->size = length;
->  	ret = vdev->pci_ops->get_dmabuf_phys(vdev, &priv->provider,
->  					     get_dma_buf.region_index,
->  					     priv->phys_vec, dma_ranges,
->  					     priv->nr_ranges);
->  	if (ret)
-> -		goto err_free_phys;
-> +		goto err_free_priv;
->  
->  	kfree(dma_ranges);
->  	dma_ranges = NULL;
->  
->  	if (!vfio_device_try_get_registration(&vdev->vdev)) {
->  		ret = -ENODEV;
-> -		goto err_free_phys;
-> +		goto err_free_priv;
->  	}
->  
->  	exp_info.ops = &vfio_pci_dmabuf_ops;
-> @@ -323,8 +317,6 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  	dma_buf_put(priv->dmabuf);
->  err_dev_put:
->  	vfio_device_put_registration(&vdev->vdev);
-> -err_free_phys:
-> -	kfree(priv->phys_vec);
->  err_free_priv:
->  	kfree(priv);
->  err_free_ranges:
+As SNP is enabled by default the hypervisor and non-SNP guests are
+subject to RMP write checks to provide integrity of SNP guest memory.
+
+This patch-series adds support to enable RMP optimizations for up to
+2TB of system RAM across the system and allow RMPUPDATE to disable
+those optimizations as SNP guests are launched.
+
+Support for RAM larger than 2 TB will be added in follow-on series.
+
+This series also introduces support to re-enable RMP optimizations
+during SNP guest termination, after guest pages have been converted
+back to shared.
+
+RMP optimizations are performed asynchronously by queuing work on a
+dedicated workqueue after a 10 second delay.
+
+Delaying work allows batching of multiple SNP guest terminations.
+
+Once 1GB hugetlb guest_memfd support is merged, support for 
+re-enabling RMPOPT optimizations during 1GB page cleanup will be added
+in follow-on series.
+
+Additionally add debugfs interface to report per-CPU RMPOPT status
+across all system RAM.
+
+v3:
+- Drop all RMPOPT kthread support and introduce adding custom and
+dedicated workqueue to schedule delayed and asynchronous RMPOPT work.
+- Drop the guest_memfd inode cleanup interface and add support to
+re-enable RMP optimizations during guest shutdown using the 
+asynchronous and delayed workqueue interface.
+- Introduce new __rmpopt() helper and rmpopt() and 
+rmpopt_report_status() wrappers on top which use rax and rcx
+parameters to closely match RMPOPT specs. 
+- Use new optimized RMPOPT loop to issue RMPOPT instructions on all
+system RAM upto 2TB and all CPUs, by optimizing each range on one CPU
+first, then let other CPUs execute RMPOPT in parallel so they can skip
+most work as the range has already been optimized.
+- Also add support for running the optimized RMPOPT loop only on 
+one thread per core. 
+- Replace all PUD_SIZE references with SZ_1G to conform to 1GB regions
+as specified by RMPOPT specifications and not be dependent on PUD_SIZE
+which makes the RMPOPT patch-set independent of x86 page table sizes.
+- Use wrmsrq_on_cpu() to program the RMPOPT_BASE MSR registers on 
+all CPUs that removes all ugly casting to use on_each_cpu_mask().
+- Fix inline commits and patch commit messages
+
+
+v2:
+- Drop all NUMA and Socket configuration and enablement support and 
+enable RMPOPT support for up to 2TB of system RAM.
+- Drop get_cpumask_of_primary_threads() and enable per-core RMPOPT
+base MSRs and issue RMPOPT instruction on all CPUs.
+- Drop the configfs interface to manually re-enable RMP optimizations.
+- Add new guest_memfd cleanup interface to automatically re-enable
+RMP optimizations during guest shutdown.
+- Include references to the public RMPOPT documentation.
+- Move debugfs directory for RMPOPT under architecuture specific
+parent directory.
+
+Ashish Kalra (6):
+  x86/cpufeatures: Add X86_FEATURE_AMD_RMPOPT feature flag
+  x86/sev: Add support for enabling RMPOPT
+  x86/sev: Add support to perform RMP optimizations asynchronously
+  x86/sev: Add interface to re-enable RMP optimizations.
+  KVM: SEV: Perform RMP optimizations on SNP guest shutdown
+  x86/sev: Add debugfs support for RMPOPT
+
+ arch/x86/include/asm/cpufeatures.h |   2 +-
+ arch/x86/include/asm/msr-index.h   |   3 +
+ arch/x86/include/asm/sev.h         |   2 +
+ arch/x86/kernel/cpu/scattered.c    |   1 +
+ arch/x86/kvm/svm/sev.c             |   2 +
+ arch/x86/virt/svm/sev.c            | 263 +++++++++++++++++++++++++++++
+ drivers/crypto/ccp/sev-dev.c       |   4 +
+ 7 files changed, 276 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
 
