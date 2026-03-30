@@ -1,159 +1,265 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039C83D413D
-	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 13:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD55A260565
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 13:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774877907; cv=none; b=qVODa8JCnb4OvYsDEZec9qttm4DS77MhrU7XtsK1o7ykJTcR/rhu0Ga+kf8eF8p4M8xDRFWPaJ1SCzm54CjLHSogDecFHunB6FLNaCT4987wZBgc5vD5jLXv/jCMXihCT5mNDRV4EUg+WaJo3wBUNdYRU//GR914ejXwnBGaekg=
+	t=1774878522; cv=none; b=TWkbZM2UxSF0fCINBzufGqLGOzFGOtfA2djr8FjN1QZaAMqtslhTPd9heozjj6U+DBvLCMLOcgJ3PTICcJFlY70LqsTSCp5LtgqKK7rJScMcmY/bhCHpD0jCYQa2tJoxOcPwfRNONEtLo3gmMQXBfkysFurfHuW46Ct2YbMdfcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774877907; c=relaxed/simple;
-	bh=RrqPwUTqEGSLs/qe8j7V9519WR0mB2p6TiOM/sI99YI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RxWa8WBPyoZGbpxZHBkeWiEtRF7Xhzp7FgKaw6eGAhmj+0BwKK6sFTDcyFL/NWUws2uv2uGciPcgIAit2jvTlXW2ipTDntoyfDfDyflW+f4MqQjAbU2tjlIHDYMnm74et35e0sBLlmtXFscPfbJyliHJwZe8OAe/En8/mbS2PDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pA3iVf4a; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774878522; c=relaxed/simple;
+	bh=f3kEW98WK9EcyX72K/U5UD+F3rGK/4d/or99b/Abpxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ddzzd4cTBIZ3PrTYOvPHUN6h27kcVm6LJt0zKNYW//adSR9jzPDzXxur2dNG6P6yK0gx54eaqROgNwf+woPFSbx0L1vTrPYGS9TwHAbvCotiYzqPdDoQ9aVZUUeLwVVqS5WGt9jv5uz/mW8hbRzDRhi5+/eUvtCwr5NIdZp9bfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YWARlAU9; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pA3iVf4a"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-483487335c2so47985175e9.2
-        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 06:38:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YWARlAU9"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so876289f8f.3
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 06:48:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774877904; x=1775482704; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1K6y9UsF1LewekM6lbBYNrYJF23PRCqYpwk55A2eahA=;
-        b=pA3iVf4at0n1Dk+uCuV0jywyOz8zydHO5R+WDOoxWu7iYnP9sf7Km9D2Y1AW054ruT
-         QTt9f+KSObhvgPiBTK5JYhRzvVxE8Me1DOkAITgtScc2xB39tUMMUXDaH+HiUCw8JuJF
-         hTgvzbnkMkUbDTwtLACwmKxaDuA+RJo25Xu3rTc3wq7Mj70x0vEjYaOIOmBbN5Eb7OqU
-         IZR1V0Mi0HrJbqnTjmm9f8jxOxnzC+sykXUzw5a3TE/QegKH3tFk1vEdCrQ6D14jvMSg
-         fni65n7PJR/bO+j1mIH4eVeKxHJ4C7xjBx7wQGJ2ItiVbKZzEpCYpIv6lmmcQ13iAZeW
-         1kdg==
+        d=suse.com; s=google; t=1774878518; x=1775483318; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=m2UWLhFLqzaB3574DuyBh7oJTMtmzHTn/Ed1EUPm7SE=;
+        b=YWARlAU9iXaWPz3cy1A1Ojctr5LQpRboeXqDz1WI8ieZNWwP8NDHD04vklGEY7TfO4
+         yLRj5l4xJTIdm3i4biQ7wvO5N5HE5ABx2c20tmkX8AhWIRCi2aLN+0THJLkTqtNgSeKq
+         y9qjGk4U+vkVvpT4W36v06GJzowct5zEUFrr536Z3sskEiUET6D2OCj3ALDaEAhq53X7
+         ECKHzIpT5Bcm2akU5EY1oHoz41Z0JnIEsQwhgAAjC55lLbHlJfImpio2gFlrwFB9GmcK
+         NIBWJa6jJPQePs1rNgHqLZujAAUQCQrMZ0ljWInao8tfS99CAB7w5CFwWhNKB3a8ztO6
+         H2ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774877904; x=1775482704;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1K6y9UsF1LewekM6lbBYNrYJF23PRCqYpwk55A2eahA=;
-        b=Bca75cjzG4TrBymJmp7Vto2EoSAcMTYL+OfQ6x6PuXggIFWXf5xb9WWTKVFB+WgGlK
-         js55TWwPR8YA3wjhz5k8hxhwouRJLUG15l2WYM+A08YS7Z1OOhPgMRPHwlLbtBItVC3T
-         lEklkqizsDzQAy+s6v6gZlgLCuMSvgGLRQlqR7t/R8wbL9bRkPnpnymy1uwZVuiM9Lhk
-         xLZ+XU4HxjexBEKC6tGTjTmjYBeZWVBOc0ObdJTXDx8AGnwv+eWEnVma1JZx2YGMb5hQ
-         8IXhtEVG9qsod0NgUoHZ85bPUUZrUHYjXKE2eGqEEeDsABQXMI2J2SgB+9OUv2e54oEF
-         P/bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhY4p8HAikZO3JEjs6RrX+OGQlMj34UwKabU5e5B1xuu3UJldViccRn4ctNGwtGi3mlQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOys2wlE8qvi3cQCO/JO2BnYUEoXre9tac1qTHtSIC7hXQ7Pc0
-	CIF0Kybs8AxR3vQMFrTwNwjEAqr0OiOVe1PRmuq5YsDsUTO2IvjA3ABg
-X-Gm-Gg: ATEYQzxLj1852ACEbCM2G3M59Qi+Pi4P3A7li8l3YlAaawj4gjC1nu0NlbqSUtLeX2h
-	wopArVZBrxRuMuROHMMNFv9kK03LA0ErR9DIyp8OutqBf9ONib4ymjcPJ9FKaV5LiTyw/zm55V6
-	zL9LCUsWWB7n1leLsqRrRk+qlEpuBSQ4Anc8S70h7Nm1IlRDm/QyvROaV1S//TJYPveATp6EbSX
-	L+Wr4xPSl/jreiyTiX2Lj6YKZT0ReWLR+K9mGEc0aByuoQ6lJ02PyDNS8CJ3uLjY6BdsmaBhPwL
-	Tp/9Y2NZeOL/zqPL6iJOAM1H7Uh3M4aqrPPpJAhgAwtlQBUl7WhYwLbRLWQPM3s0QviPUlM2EaE
-	42O5YMCPAWucweDaZNiMtNLIrz0iqrn0IZHIjh1rxz9+voIgGjSf8OPob/KQyWU4Z3iyesLAJFo
-	ivFjxwwHZUaHv+qpTFcDCpPaq9BU7lyJiFAVxiC4ZnIw2NngB2r7qM/bqcCXZ7
-X-Received: by 2002:a05:600c:5249:b0:487:386:3714 with SMTP id 5b1f17b1804b1-48727f7bb08mr231528425e9.17.1774877904186;
-        Mon, 30 Mar 2026 06:38:24 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722d40741sm294000475e9.13.2026.03.30.06.38.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 06:38:23 -0700 (PDT)
-Date: Mon, 30 Mar 2026 14:38:20 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: "Bird, Tim" <Tim.Bird@sony.com>, "pmladek@suse.com" <pmladek@suse.com>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>, "senozhatsky@chromium.org"
- <senozhatsky@chromium.org>, Shashank Balaji <shashankbalaji02@gmail.com>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- "francesco@valla.it" <francesco@valla.it>, "geert@linux-m68k.org"
- <geert@linux-m68k.org>, "linux-embedded@vger.kernel.org"
- <linux-embedded@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, x86@kernel.org, Paolo Bonzini
- <bonzini@gnu.org>, Sean Christopherson <seanjc@google.com>, KVM
- <kvm@vger.kernel.org>
-Subject: Re: [PATCH v3] printk: fix zero-valued printk timestamps in early
- boot
-Message-ID: <20260330143820.605b29ed@pumpkin>
-In-Reply-To: <87fr5ib6ks.ffs@tglx>
-References: <39b09edb-8998-4ebd-a564-7d594434a981@bird.org>
-	<20260210234741.3262320-1-tim.bird@sony.com>
-	<87zf3ud92r.ffs@tglx>
-	<MW5PR13MB5632FC91EE0EF8754331400DFD57A@MW5PR13MB5632.namprd13.prod.outlook.com>
-	<87jyuvboo2.ffs@tglx>
-	<87fr5ib6ks.ffs@tglx>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20251104; t=1774878518; x=1775483318;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m2UWLhFLqzaB3574DuyBh7oJTMtmzHTn/Ed1EUPm7SE=;
+        b=fNOygkEs1RDak25GAmdMS3GET7zewD8+k2Zh1/UnheBE1oZHTnWTxc4b1c8zpGkH7b
+         nzlc+hlienCzdaNVeqIqI37Q7uege4IS8iYm403vMKGuVy0ixP7Ht0HY/xQzmJiSYnpO
+         AQMzEgS+bD2Y/Ip2zlhRyxpRrlS4osVMerSbCLhrywRTnZ0Hp+B9TIwLBG7CeKArVnBn
+         HwnHf8aUmT1QbL6QYv0FvKoHrv5UKK2IY+bzJyQIT5bO7NS6It2xP2U/0mLL9kizxQgX
+         NDQTJ12IfG2swaRZNIi4ApT67R0Dmz9wDpZ4+QdNaO42NFfgewuQLBd4F3ZHX7r6weIK
+         A88Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWFLcjmRjf4zOHtmO28q/xfcNm+7CtP2AERgBVV7LaiX2WoA1Ff52gVtHzC+KBiqavwAlk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWSOH2SBq+eoXye6HzPY2vi9g4Ob5/xkb+X0Xcuguk91z8VpCf
+	QvMrpSZifj2VbfwLccmDT4vFv1pe/Q+b+rd5LdvWdtg0I348V4gxL+33bN2CH6yRlIA=
+X-Gm-Gg: ATEYQzyG72fhK7nr1xkDkMjKUeOvGOTKecrnSYK8r01UDI8GTk/ShLPeMsOz+d+tFmY
+	e//a1ZVkLsB8ILBYIA3DIYfBykuABUl+puYAgAlID0uWx8Th/kLNSi6pBadk/4/UlbN0nWKH+vt
+	OtyJQP2N+jCzFfklOPZ/Ak+PJkptYYbVUNezRfUIBmlaBGjW86Am/BiRt8Fs//WHAO01CSUI2Rr
+	+ttWuxEkJlE3/1m5ZCrmRcv4tlkpTp5vMBN6GWJexXeZlHNFH2hPO2+w9dlDtukmGC1+fsJW7hJ
+	G7YDz4TQ/ITmiZkdamIortQB6GN2NXbfweu3umsKoBai0RFQiTmDZJuL6fM1FdLM/Ex9F3Vb/G/
+	e2OCVkUoVBypGQdFYZ8H/sNNDAFZ5rV5/YpbMOqTV63wtzFgfVtKxazvIGj+fvhbxncBf9bxy56
+	K5QB/bxwNzDa3AsNZrI4dyn4TxoQ==
+X-Received: by 2002:a05:6000:186f:b0:43d:184:8a9c with SMTP id ffacd0b85a97d-43d01848d07mr4354587f8f.12.1774878518231;
+        Mon, 30 Mar 2026 06:48:38 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf245e2f6sm19726998f8f.18.2026.03.30.06.48.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 06:48:37 -0700 (PDT)
+Message-ID: <7d67722b-5107-4dc3-b8fb-04c3c86a1563@suse.com>
+Date: Mon, 30 Mar 2026 16:48:36 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/31] x86/virt/tdx: Support allocating contiguous
+ pages for tdx_page_array
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
+ xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-5-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260327160132.2946114-5-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 30 Mar 2026 00:42:59 +0200
-Thomas Gleixner <tglx@kernel.org> wrote:
 
-...
-> If you want to have early timestamps then you have to go through the low
-> level code on every architecture and do the proper sanity checks,
-> enumerations, etc. no matter what. There is no guarantee that you can
-> use any clock unconditionally during very early boot.
+
+On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
+> The current tdx_page_array implementation allocates scattered order-0
+> pages. However, some TDX Module operations benefit from contiguous
+> physical memory. E.g. Enabling TDX Module Extensions (an optional TDX
+> feature) requires ~50MB memory and never returns. Such allocation
+> would at worst cause ~25GB permanently fragmented memory if each
+> allocated page is from a different 2M region.
 > 
-> As you have to do that anyway, there is _zero_ justification for an
-> extra facility side stepping sched clock, which would just create
-> another pile of technical debt.
+> Support allocating contiguous pages for tdx_page_array by making the
+> allocation method configurable. Change the tdx_page_array_alloc() to
+> accept a custom allocation function pointer and a context parameter.
+> Wrap the specific allocation into a tdx_page_array_alloc_contig()
+> helper.
 > 
-> Quite the contrary, I'm going to get rid of technical debt:
+> The foreseeable caller will allocate ~50MB memory with this helper,
+> exceeding the maximum HPAs (512) a root page can hold, the typical usage
+> will be:
 > 
->   The get_cycles() related changes in tsc.h are going to end up in a
->   obviously revised formal patch tomorrow as there is exactly _zero_
->   requirement to provide this as a functional interface.
+>   - struct tdx_page_array *array = tdx_page_array_alloc_contig(nr_pages);
+>   - for each 512-page bulk
+>     - tdx_page_array_populate(array, offset);
+>     - seamcall(TDH_XXX_ADD, array, ...);
 > 
->   1) The default implementation in asm-generic returns 0
+> The configurable allocation method would also benefit more
+> tdx_page_array usages. TDX Module may require more specific memory
+> layouts encoded in the root page. Will introduce them in following
+> patches.
 > 
->      Ergo any code depending on a functional implementation is broken
->      by definition.
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>   arch/x86/virt/vmx/tdx/tdx.c | 42 +++++++++++++++++++++++++++++++++----
+>   1 file changed, 38 insertions(+), 4 deletions(-)
 > 
->   2) The ops/cycles metrics are as bogus as the infamous BogoMIPS metrics
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index a3021e7e2490..6c4ed80e8e5a 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -289,7 +289,8 @@ static void tdx_free_pages_bulk(unsigned int nr_pages, struct page **pages)
+>   		__free_page(pages[i]);
+>   }
 >   
->      The "cycle" counter runs on almost all contemporary CPUs at a fixed
->      frequency, which is completely unrelated to the actual CPU
->      frequency and therefore to the actual CPU cycles.
-> 
->      The only realistic metric is ops/sec and nothing else and that can
->      be trivially achieved by using the generic time getter interfaces.
+> -static int tdx_alloc_pages_bulk(unsigned int nr_pages, struct page **pages)
+> +static int tdx_alloc_pages_bulk(unsigned int nr_pages, struct page **pages,
+> +				void *data)
+>   {
+>   	unsigned int filled, done = 0;
+>   
+> @@ -326,7 +327,10 @@ void tdx_page_array_free(struct tdx_page_array *array)
+>   EXPORT_SYMBOL_GPL(tdx_page_array_free);
+>   
+>   static struct tdx_page_array *
+> -tdx_page_array_alloc(unsigned int nr_pages)
+> +tdx_page_array_alloc(unsigned int nr_pages,
+> +		     int (*alloc_fn)(unsigned int nr_pages,
+> +				     struct page **pages, void *data),
+> +		     void *data)
 
-ops/sec is also horrid because you get all all the interrupt time getting
-in the way.
-Additionally it is only any use for relative comparisons done on exactly
-the same hardware, and is entirely useless is you are trying to show that
-a short code loop is running at/near the theoretical rate.
+This interface seems cumbersome, since you will always have separate 
+allocation paths:
 
-The only thing I've found that works is the PERF_COUNT_HW_CPU_CYCLES
-counter (low 32 bits).
-In userspace you do have to directly read the register (rather than using
-the library function - too much overhead), and ignore any silly values
-generated by interrupts and process switches.
-But it is accurate enough to time single function calls and see the
-effect of things like mispredicted branches and the data-dependency of
-divide instructions.
+Contig, Bulk and Iommu mt pages let's just keep them separate. I.e the 
+flow should be:
 
-But I do agree that the TSC is entirely useless for measuring what it was
-originally intended to measure.
+1. Do common allocation by calling tdx_page_array_alloc (you aren't 
+passing the alloc function) you just get a bare-bones tdx_page_array struct
 
-	David
+2. Do the specific allocation in either :
 
-> 
->      Those might end up resulting in bogus benchmark results too if the
->      underlying clocksource is jiffies, but that's again a matter of
->      accepting reality.
-> 
->      If people really mandate that ops/bogo_cycles is required for the
->      very wrong reasons, then I'm happy to bring it back with a global
->      name change from get_cycles() to get_bogo_cycles() which excludes
->      it from any serious usage including printk.
-> 
-> Thanks,
-> 
->         tglx
+tdx_page_array_create - for the bulk case
+tdx_page_array_alloc_contig - for the contig case
+tdx_page_array_create_iommu_mt - for the iommu case. Here you can open 
+code tdx_alloc_pages_iommu_mt.
+
+And keep the specific clearly separate in each function.
+
+>   {
+>   	struct tdx_page_array *array = NULL;
+>   	struct page **pages = NULL;
+> @@ -348,7 +352,7 @@ tdx_page_array_alloc(unsigned int nr_pages)
+>   	if (!pages)
+>   		goto out_free;
+>   
+> -	ret = tdx_alloc_pages_bulk(nr_pages, pages);
+> +	ret = alloc_fn(nr_pages, pages, data);
+>   	if (ret)
+>   		goto out_free;
+>   
+> @@ -388,7 +392,7 @@ struct tdx_page_array *tdx_page_array_create(unsigned int nr_pages)
+>   	if (nr_pages > TDX_PAGE_ARRAY_MAX_NENTS)
+>   		return NULL;
+>   
+> -	array = tdx_page_array_alloc(nr_pages);
+> +	array = tdx_page_array_alloc(nr_pages, tdx_alloc_pages_bulk, NULL);
+>   	if (!array)
+>   		return NULL;
+>   
+> @@ -521,6 +525,36 @@ int tdx_page_array_ctrl_release(struct tdx_page_array *array,
+>   }
+>   EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_release);
+>   
+> +static int tdx_alloc_pages_contig(unsigned int nr_pages, struct page **pages,
+> +				  void *data)
+> +{
+> +	struct page *page;
+> +	int i;
+> +
+> +	page = alloc_contig_pages(nr_pages, GFP_KERNEL, numa_mem_id(),
+> +				  &node_online_map);
+> +	if (!page)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < nr_pages; i++)
+> +		pages[i] = page + i;
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * For holding large number of contiguous pages, usually larger than
+> + * TDX_PAGE_ARRAY_MAX_NENTS (512).
+> + *
+> + * Similar to tdx_page_array_alloc(), after allocating with this
+> + * function, call tdx_page_array_populate() to populate the tdx_page_array.
+> + */
+> +static __maybe_unused struct tdx_page_array *
+> +tdx_page_array_alloc_contig(unsigned int nr_pages)
+> +{
+> +	return tdx_page_array_alloc(nr_pages, tdx_alloc_pages_contig, NULL);
+> +}
+> +
+>   #define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
+>   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+>   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+
