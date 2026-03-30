@@ -1,50 +1,52 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659C03BB48;
-	Mon, 30 Mar 2026 23:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A93C26E706
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 23:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774914444; cv=none; b=F4/QnzAqWabLaEh3UWvgqdtd/hngE22JhEPiQVqFYAAx6jnMTy+xd+iQ+PtzuQJuvNGWRZ6e4HnMW7lvCyskCKu27xwM/l5EVS/lyW3JOUraaohcJmbvFEwvn1vfuPP/c4K36auJL7EtKEE5RcrA4CoCn8pQBTTNWuK5GZ4fhdQ=
+	t=1774914464; cv=none; b=RU99rEpSBpOijrRk4Jbn1gkH23oXBN5v4mws9xpqreDvEAYVUS+OPnxNRl4O0JCh8xMMDZ6fNDLW6t8yoAbFQ4kxeSAYVA4zeCrT5KnBFTGbqCFGJ/ZWr37uNKGeg2ij539qVEAAC/e6a+ol7zD0BDQZP5UJT1vuyufulX7xQl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774914444; c=relaxed/simple;
-	bh=1D+J8m8W3eZqzLOejGXNGGoG7xOv1BdqgV86m2xJ0p0=;
+	s=arc-20240116; t=1774914464; c=relaxed/simple;
+	bh=+3fwCG1qKxLOojihPmepQSc2ZE/nZklG+DGJatd29uQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ah6H8HKy4uLiKHqCnH6hRScyNrb1nNojRH2h2g7pQpTnmlc/5CKUDU41jjAQzvG4FlXKAbsMajdBmUqSI5d2CBXPiBspRtKSwZdThv9JKwv5t8q4aXncd1QaqEXfxDBnyARRPRd4yG07+wiHiQwaG4OUwBmJdQtIZunATCnCf/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b+eyBxbP; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=bf5ZjUgCPRP8stflY5fm989izwpCNEfLxEnLgse8SVKvgsR5DbD/smYZxiTgKcSGjZb+GVaLPWP6O1GPHficsuE/8pBal13BuDSwYkpf/UfXzZMMLIaUFyRlGTqL7a1njzOe1P1ui0O3VcdHpGqrgzMawMWnaB4sxSp8rgUjeeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=NcLpuMzz; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b+eyBxbP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774914442; x=1806450442;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1D+J8m8W3eZqzLOejGXNGGoG7xOv1BdqgV86m2xJ0p0=;
-  b=b+eyBxbPHZvVSKxxSxHKAjQq50k0DzaJOluJB4b10sNP8CfazHl/fzw+
-   oIYj5OHEBFT/oOgZl5zSCN1DsftsW8i07z/sCoasi97wSP+PFr2hB54RH
-   JmK9bidLeBTapoO6p6qOoFBp0hKqMKkROqg09vl79EKiFgq+mvHWsXgH7
-   aCm5plAk16djw2RHepXnTABcvzccsBYh09eCtYQ4tvrOK3qbw7zgVIjQL
-   3TKb4txpOSRSy2FOpXcTCj00W7laOGhwakG/fxbo2wcGTMT2oRdiopaGy
-   jpDcfZ3uitVc7/8F6yxaGxkCWNsChqJO5zQKpOAG4YLMgB4ICwsJFFr8D
-   A==;
-X-CSE-ConnectionGUID: rJnitn9hTseJzHicO4z+pg==
-X-CSE-MsgGUID: Kifo8ESiSk6j0t5Ijaea2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="75090542"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="75090542"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 16:47:22 -0700
-X-CSE-ConnectionGUID: 8VtA7xPBQV6oAIMsJ0kXVA==
-X-CSE-MsgGUID: mw3vnuuIRWG7PJAvdjWMlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="226169255"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.27]) ([10.125.111.27])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 16:47:21 -0700
-Message-ID: <d457f4c3-0a2c-4898-9192-8983d4765f11@intel.com>
-Date: Mon, 30 Mar 2026 16:47:27 -0700
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="NcLpuMzz"
+Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
+	by cmsmtp with ESMTPS
+	id 7GuBwVzSgc9KC7MKXwmMjq; Mon, 30 Mar 2026 23:47:37 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id 7MKWwNFocgdjv7MKWwX3Iv; Mon, 30 Mar 2026 23:47:36 +0000
+X-Authority-Analysis: v=2.4 cv=DrxW+H/+ c=1 sm=1 tr=0 ts=69cb0b98
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=k5Y5iPg+dmTXVWgYE/XtfQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7T7KSl7uo7wA:10 a=r1p2_3pzAAAA:8
+ a=pGLkceISAAAA:8 a=dDOLuRY1p3SJo1XcY-4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=r_pkcD-q9-ctt7trBg_g:22 a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4/rBevFXE6E7bBuTDPVuFgP11XxT7qV//szAEW71+DM=; b=NcLpuMzzeyVS2f5ifqYbMzkaS8
+	IYDciHUvu162hFsoueHqTLw0xmnUi1jxmYM7pa6v7hsNk71EAvkkVPEDbMT+OvkMzQYjOaL6mYdAG
+	mADJB4NTwqzhLpSMZLq6Qstqh2MC6f4W99nVKqSPMmZZYaGe8RF1/n5rG2gUoTBd9rXgH8AJUycmo
+	MpT5A+CvMtkYlSMQsAxVR77s7QZXx36absmZmtrrwmufU/+KeZ4ym1/Ui7XHULFKbWYZmMAmoqlq6
+	4NVfp/LDeXuNOEeWtI5OuJT4L9FfuNjL+c4hdZno1nLShfxQ0XUucIO2iTB0xf1NdNC8gxKjynRYq
+	iuHtPe8w==;
+Received: from [177.238.16.13] (port=50212 helo=[192.168.0.21])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.99.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1w7MKV-00000002F8t-3hkJ;
+	Mon, 30 Mar 2026 18:47:36 -0500
+Message-ID: <37378f49-437f-438b-ad6c-d60480feb306@embeddedor.com>
+Date: Mon, 30 Mar 2026 17:46:09 -0600
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,104 +54,68 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] KVM: SEV: Perform RMP optimizations on SNP guest
- shutdown
-To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1774755884.git.ashish.kalra@amd.com>
- <b3566eb53194f1262dd74c930e0ee2f835733a38.1774755884.git.ashish.kalra@amd.com>
+Subject: Re: [PATCH] vfio: pci: use kzalloc_flex
+To: Rosen Penev <rosenp@gmail.com>, Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ open "list:KERNEL" HARDENING "(not" covered by other
+ "areas):Keyword:b__counted_by(_le|_be)?b" <linux-hardening@vger.kernel.org>,
+ Leon Romanovsky <leon@kernel.org>
+References: <20260326023747.54485-1-rosenp@gmail.com>
+ <20260330161933.6471d473@shazbot.org>
+ <CAKxU2N8rpaLXXsD7sUvw3ffMe8JUREGc9ru_HX0r4Uw4RT_q1g@mail.gmail.com>
 Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <b3566eb53194f1262dd74c930e0ee2f835733a38.1774755884.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <CAKxU2N8rpaLXXsD7sUvw3ffMe8JUREGc9ru_HX0r4Uw4RT_q1g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.16.13
+X-Source-L: No
+X-Exim-ID: 1w7MKV-00000002F8t-3hkJ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.21]) [177.238.16.13]:50212
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfHxgqTA35+a9lTm8PB6Vdz9QRM5Cq65wBOBaYeXLy7bbJnN0U2+A3pX1AZfxd+WiirlcYDJSPLxyMLT93hVALKg4piGqNtN+yVzNs5N2V1h616O2iveN
+ 5y/+wjQS4SYN0NkB58Qvbm6P38ScCHHbyMlKps8/Hlmk4aS6k6BeWqmWirqeyGv0QUgucU6ttA5QDSgJDkslqZdRnZnMZp0v7Dc=
 
-On 3/30/26 15:27, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> As SNP guests are launched, pages converted to private cause RMPUPDATE
-> to disable the corresponding RMPOPT optimizations.
-> 
-> Conversely, during SNP guest termination, when guest pages are
-> converted back to shared and are not assigned, RMPOPT will be used
-> to re-enable RMP optimizations.
 
-This is all super passive. It makes it impossible to tell what is
-background versus imperative voice on what the patch is doing.
 
-	== Background / Problem ==
+On 3/30/26 17:24, Rosen Penev wrote:
+> On Mon, Mar 30, 2026 at 4:16 PM Alex Williamson <alex@shazbot.org> wrote:
+>>
+>> [Cc +Leon]
+>>
+>> On Wed, 25 Mar 2026 19:37:47 -0700
+>> Rosen Penev <rosenp@gmail.com> wrote:
+>>
+>>> Simplify allocation by using a flexible array member and kzalloc_flex.
+>>> Less memory management needed.
+>>>
+>>> Use __counted_by for extra runtime analysis. Move assignment to after
+>>> allocation as required by __counted_by.
+>>
+>> I don't understand this statement, nr_ranges was previously set after
+>> the allocation of phys_vec.  The only reordering was relative to
+>> setting vdev, but that appears arbitrary.
+> Yes that one. My understanding is __counted_by mandates immediate
+> assignment after allocation. Otherwise UBSAN complains.
 
-	Pages are converted from shared to private as SNP guests are
-	launched. This destroys existing RMPOPT optimizations in the
-	regions where pages are converted.
+Not true. However, it's best practice.
 
-	Conversely, guest pages are converted back to shared during SNP
-	guest termination and their region may become eligible for
-	RMPOPT optimization.
+The requirement is that the _counter_ must be initialized before
+the first reference to the flexible-array member.
 
-	== Solution ==
-
-	To take advantage of this, perform RMPOPT after guest
-	termination. Do it after a delay so that a single RMPOPT pass
-	can be done if multiple guests terminate in a short period of
-	time.
-	
-With a fixed changelog:
-
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-
-I'm just saying "ack" on this one because it's a pretty KVM-specific
-thing about when the guest is destroyed to the point of being good for
-RMPOPT. This needs many more eyeballs from the KVM folks than me.
+-Gustavo
