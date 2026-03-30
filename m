@@ -1,199 +1,132 @@
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011063.outbound.protection.outlook.com [52.101.62.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2035B377023;
-	Mon, 30 Mar 2026 20:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774901459; cv=none; b=LCPETV2n5/rjlrwqONXv261RW3EwDFyEWnflEdGWillT7Q8uwGyYN2SNAgIQska92mUPzu2WCZhgOiB2ie0gM2GZmhXuqqSnWwQcOnJMeE8TyNpvnZQNJAt88FvpHVpU07/t2C+XeOiTsJQC67067qatBjEQ2Q6KkLr0xXcP9U8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774901459; c=relaxed/simple;
-	bh=HVnPKL4GDfzYYaqgylKaMGdGqe750h3OqeetAX+ZooI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PoaEIn0DzqB0t7yHe2UAlQtSucETMbF9FA330BOLAVdxbcpdb7PWKudtV25Y3SLTrkMJR+X0IGwZ0UtLWWyBkl+uZ9hlVLA/md0TLQ7u0MYCPhsVEZD8a/2+bOSeWHb3xFlyoB2H8An+498MY4uCWhIdUYKwrNQWzNM/pRqOvRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=p3Q7z9HD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CAP30Hzc; arc=none smtp.client-ip=103.168.172.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A09375F73;
+	Mon, 30 Mar 2026 20:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774901721; cv=fail; b=Z2ZVHbTQItDs18iGdYmYTofJqBe+ErC+14JHqRnAzzZJKA8Gnfmqkeup99VBJHcbz5bqEoNDCI5vC54PvFZGBOwB7pHcFFe70Ysl5xbFB9c171wHinvli3+pmRQx7rWy8OWm+cvhpoGycUgZylU1dIe+ztPBGLfx2Sw69MxVUUw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774901721; c=relaxed/simple;
+	bh=F8VvRIa61ySn53QN4ryRxPf8ipaP5WOXFvDiRiWytsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KHFRpvVubfqtzWHKVb1aNQ2hnB5EsJ3+Uh5+/khnXCyIxecJaRZY6Ag0234Gp8mL8VqXvhfwDiyVFbfDYMKKI/8HnH4cvyOCzXp8H52g+4af3JT3d/daUJVv6nX3o837IWEMfZnsF96IBJ6zOFzU1Px7JF1SGeDy1XqXALsXFnM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=l+L/EG4M; arc=fail smtp.client-ip=52.101.62.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="p3Q7z9HD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CAP30Hzc"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.phl.internal (Postfix) with ESMTP id 32B1F1380404;
-	Mon, 30 Mar 2026 16:10:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 30 Mar 2026 16:10:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774901456;
-	 x=1774908656; bh=l6vFZymkQIpCjGyZZ0waTIjtR5dYu9l/RauB0EHs2cg=; b=
-	p3Q7z9HDaMO9l49KzGyd6QCozBDRkYMrNAMT016WX/fHIPodDvJbWxfN7o7Rq7vD
-	ssq4dL3KEVXFE49rB8recUd5fVpSerRill0EPB9eG2k4c2akGO+Qp/G8D31RmPbX
-	7TlkrNox2UjWyTlfcttMC7E71kdY+trnef5Hm61drgcfUPakTcCNL6kKwNKjRSBV
-	U1uiNaG+fKZAZmTv0+H0872Gvi06OSqLLzx0vsDX2qjVrQBFMlsZacR2mbGsDkc/
-	gT6xVnpGv8MRHmzJBZo58FBd6w5IU+6ogcmojJLtPY3KydD8fWurT3VIXthGtQVM
-	kQSao6bXLTSzYllu1/tldQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774901456; x=
-	1774908656; bh=l6vFZymkQIpCjGyZZ0waTIjtR5dYu9l/RauB0EHs2cg=; b=C
-	AP30HzcjqUcGAYtq0Vy0npz+WQZ0xoM+V3KrqPMrmRQ5BSmU53GGUiyx5E4wI6yA
-	FyTr5/p4paazsu/Iipz8yYZU+1phMDKI7hagtD986FHeu0o1F4zYmBZsEakuW92m
-	weI9ASAX8aFEL8Rs0Uec3ctb/HnJ1MgKC92d8MBdvS6OH7G3ewGRc0+tfGddZ4Gk
-	WxhrjWBcLoGs93zMy/odTXwHEJHh5W5FS+Et9LrpEfOcBRgJ0bBAStrIpl6DkWE0
-	Q7ETKFm9iu5onjWSvKFXn0ELTMMUBd/OPVAOOtwXaNWNshQ6cuB1Amc/2nwRZfpT
-	eHg87urYI5Ec6Lkq0sXvA==
-X-ME-Sender: <xms:z9jKafG3C1ppH9T_m6ALHXE4Xg8LRK7hBmf8rBxsDTwjV0YmtGN7zQ>
-    <xme:z9jKafRfVIq8DMXZsvpeUjwD446zuGALRlY6oTA_zptsdyXkE-2d-NbNcA082cKf0
-    ss8FY21mgRpxHw-PTPA5PC2K5vCU9145ou0r7AQwqll0ampOmU>
-X-ME-Received: <xmr:z9jKaX5EMTRV_NaboCc_h79atFYxCsQIiTsRvvS3id2SmTFWS4FBTgmuiO8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeelledtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
-    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopeehuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepug
-    grkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjghhgseiiihgvphgvrdgtrgdp
-    rhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoh
-    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
-    rhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehiohgrnhgrrdgtihhorh
-    hnvghisehngihprdgtohhmpdhrtghpthhtohepnhhiphhunhdrghhuphhtrgesrghmugdr
-    tghomhdprhgtphhtthhopehnihhkhhhilhdrrghgrghrfigrlhesrghmugdrtghomhdprh
-    gtphhtthhopehkhihssehmihgtrhhoshhofhhtrdgtohhm
-X-ME-Proxy: <xmx:z9jKaXPahdSu6NAxzDLCWHFq0SjTPnbaOV6q1JEVDN1n0TGZgvSOLg>
-    <xmx:z9jKaYs_pZi1AKnrgY4kd6IlWW19DwfnZAklgCAjMJf5o-edI-wG2g>
-    <xmx:z9jKaebkSHmk2-FfV3M99S1E_Kbm3scLKfLmyO_zzcLIBxoGL3vJxQ>
-    <xmx:z9jKacg_NAD9M03CgHB8mak7EEebVzjqapJHxaBa4zGAHu1ISFIb7w>
-    <xmx:0NjKafrBqSu7i3ficH69WDNrAzczvh4pW1jhPhZmK7WHcIBXnovlo-fr>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Mar 2026 16:10:52 -0400 (EDT)
-Date: Mon, 30 Mar 2026 14:10:50 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "Russell King" <linux@armlinux.org.uk>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- "Ioana Ciornei" <ioana.ciornei@nxp.com>,
- "Nipun Gupta" <nipun.gupta@amd.com>,
- "Nikhil Agarwal" <nikhil.agarwal@amd.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
- "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>, "Armin Wolf" <W_Armin@gmx.de>,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Mathieu Poirier" <mathieu.poirier@linaro.org>,
- "Vineeth Vijayan" <vneethv@linux.ibm.com>,
- "Peter Oberparleiter" <oberpar@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Harald Freudenberger" <freude@linux.ibm.com>,
- "Holger Dengler" <dengler@linux.ibm.com>,
- "Mark Brown" <broonie@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Jason Wang" <jasowang@redhat.com>,
- "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
- Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- "Juergen Gross" <jgross@suse.com>,
- "Stefano Stabellini" <sstabellini@kernel.org>,
- "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-hyperv@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
- <linux-s390@vger.kernel.org>, <linux-spi@vger.kernel.org>,
- <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
- <xen-devel@lists.xenproject.org>, <linux-arm-kernel@lists.infradead.org>,
- "Gui-Dong Han" <hanguidong02@gmail.com>, alex@shazbot.org
-Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
-Message-ID: <20260330141050.2cb47bd9@shazbot.org>
-In-Reply-To: <DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
-References: <20260324005919.2408620-1-dakr@kernel.org>
-	<20260324005919.2408620-6-dakr@kernel.org>
-	<DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="l+L/EG4M"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F2Gc4mHbjYpPoBQcnPKCiaCI6vOXZdf/g4TL6A/SeCZhan5e8/fk6yi1MHDpFCumTzYd/Z7a3A3I2FpjoVIe/SKpqU2+YcKouFxfl24aVcNR9OleEl/Nkf41yrWAKk9fBCYRX2kWSf7YRPgCtfbz/KIXHGBkHA50jnarel+XyjXvtUyTK8a1Tyhm0bADI1vjET4JYA3BHjejR6J+tKamz36lXKa/z/EkM5yOsiDaNzrO+xUkR27qwAEz3+n8BDMyni9hK6IKPx3vZM0sarpBLOkvfYl2o2NWI2PLyOTjX3EbFkoiUWErLX15FZGxtwaUCHGFSbcMV84gh1sUzlDU4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F8VvRIa61ySn53QN4ryRxPf8ipaP5WOXFvDiRiWytsA=;
+ b=lavlHhEXtBa5oijpdOTaRnAvDjRjvKzMM70uzOU5hphHPLoUlqWicju0a0LiV5GSC7Zz8VPSFouUkXNepKwkg/RvCOOtnpqRPJDBzeX8oA9sJ215Iq5FWIb/fFoUfkHR5mz4YtHM1+U9nuqiWeGY5P63Gce6T10YUanvvvUERpDsWU1JhMwX3X7kz/z8yKEOpm5bF1DTYWKEuCTTvYXcOSjDeiELU+2bDCY+Gz6MNk6i0MoiI27oVn1R+L0dizpGmxLXTWOtNQjI66JBzCsZ6EHzHh7XobQeWFvVGEWn1lAM0w8YGXVloygUwHm+xemRDgj2Mfl5x6SqsgCvpLM6+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F8VvRIa61ySn53QN4ryRxPf8ipaP5WOXFvDiRiWytsA=;
+ b=l+L/EG4MFNf2fy2+aEbI1w0Jcni90Yf0R0oTv29+RDCsoBfiYXnwYD4CB9b+6n4CGkNeOmVOh7OPa3w7QoZ5fGkFxaq+zFrWFMyU7/llCohR0+lh0kBUeh/88N+KITbVrQajy8pjBG7+r3FGYKIqRye8A+qVwZ/yoPgCfbAXtjncGpyzNI6+kQjo4gQP21FmK7z+dL5FoW8ENtACL/OrchSuNLykexAGaGtleChUIalvx1MccAxzf0QrYrTtNlDdwjHyh9x9hiSc4taXE/T/kL1j6Z1W7VqHoUqgv6lgjIswBlwRWYI896Wk4tUCr30rrayaV5MKdjrorNCjfNg7Ug==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
+ (2603:10b6:80f:fc04::8d2) by BL1PR12MB5706.namprd12.prod.outlook.com
+ (2603:10b6:208:385::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 20:15:11 +0000
+Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
+ ([fe80::e30:d7d3:95f0:78e7]) by SA5PPF80B25317E.namprd12.prod.outlook.com
+ ([fe80::e30:d7d3:95f0:78e7%6]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
+ 20:15:11 +0000
+From: Rubin Du <rubind@nvidia.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Shuah Khan <shuah@kernel.org>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v10 1/2] selftests/vfio: Add NO_SEND_MSI feature flag and MSI helper macros
+Date: Mon, 30 Mar 2026 13:15:09 -0700
+Message-ID: <20260330201509.598220-1-rubind@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <acb-9VOaA6Ld9BdY@google.com>
+References: <acb-9VOaA6Ld9BdY@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0218.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::13) To SA5PPF80B25317E.namprd12.prod.outlook.com
+ (2603:10b6:80f:fc04::8d2)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA5PPF80B25317E:EE_|BL1PR12MB5706:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5490674e-12f2-49c9-8197-08de8e990b93
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	NrHlCRSZg7RxT0bNXt5rOxqZeU9TXf/+4uuz60XIhl5H+c7qVmuRfrAEt6aLSUXiT/NztRCbXrYazo6hiZuEURzQTZJbdP8OIC8RuY9N/g7/xmvrMb9GAb5P+qQLcM4LyfCj2DtM68VzGP0k/7VmagsU9D3Aw71UgrLUxwmmgGSvpnG+pf51a6Ul8H9DMrqa7IpJZMH3Hn6SyRzCZuKqoMjZ0TXa/k3TGKWSyfRcbg/hk7+Id9yI6KKvUlWRTu4f/sx8knpsXyM0OM4V2p0RaDZOUi57jkWdIv+BmP3KlQdxannTZmbHjS3VuAZoQltORb2B2JvZFBBSj2swvIXwmuQ6t8Zs4pre4FkLCggi5FE+vXdOEC/MIotq7eP1oLRQII9nOe5ZSet38Il4UeKfeKHF3JWJZ4OQLVag8zBxWiH8wTV0mBV3hIgPsRdx3GmL4Wvdfu4GazX4bQ5vHyRlCCob67UAMLbWoFjNfacqtDqH9oxy6E/0R7dAi7uL54cdbUp+jQYY8l6VTkk84ey7Ff5pdVj2eg1DTMXvf2LWbDjKHUW4enVVdd4tEjkdYoOpqRvnHtP/k4F2UQhaSdfDTe0FD1bxqDfMLmBRnkzqhdid+n1ruWvNL6AynWyQkG8Do8oLSToSXxzIZSftbJQZcD0W22moujOZ4NPXUDSkpjx5nYVVgm8rG24dQFwsDgKO0pj+Qtofye6rxjBOFBINV4e506OL8rRXFVdktEEczgo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA5PPF80B25317E.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CqyzwlYun+TN7+QL4r4vZsXA6wUEmzApz02ykSgq24vkXv+44KBS85opJxuE?=
+ =?us-ascii?Q?Lvu/EOalEcBmapUye/boLQSLhCCpjDtN1Q2fLdtshdkxHyF/puE2VJt7t/fV?=
+ =?us-ascii?Q?GXc8BltRjhnTTy1koqJD6Dzx2D++Dz9/MoILsaVpm5WzRqlBjznWI4auGxUp?=
+ =?us-ascii?Q?xfsSYZYM8dcmxs0D4vYglxoB5RQK79EOrUnaJh15S0LuVCwmnRWjpUUMvIe5?=
+ =?us-ascii?Q?JuPwjyDFI4uHgRpz4gC4+rrELXPJcDtgB26rij98FRdC84jibFfpPj4iGwwK?=
+ =?us-ascii?Q?O1YO9r4ks+49m+pwwN+p0bJuhOikcTxc1qmUDI5XH/O5o/N9cFj/0sqZWiK7?=
+ =?us-ascii?Q?WxXkeIZx3ozE2FgzPq/oQmmj9wVmoVCOBRr4JKFeCvfC4Y5G2ZnKwjp7DNWA?=
+ =?us-ascii?Q?E9W6xputHn2C/ov+HTJcdA37UQ5DuoV7CTzEDw239et6ndVAKVyeowj/ww+Y?=
+ =?us-ascii?Q?bRFI41nVTJ0M8XYizuojDqYFUA13l8wed5sz3pCUkY7dr/JnenoHJsbzV5G/?=
+ =?us-ascii?Q?AaGxTi3Vlll5beJTI1AFC1gfDQgU7PXLBcob7P4yOjDj2hmdKv7+vTz2ZXuS?=
+ =?us-ascii?Q?Y8T1jIjUnXO/3NPbLX7VvYQ5M562TBjz6necho+YdIt5DEvksVTJ1l6f6w9J?=
+ =?us-ascii?Q?51/YENkhmry9/rhCCGJKAywUWoHAiE8xCshv1nMazs7a99SFJvhmcAgYbcfP?=
+ =?us-ascii?Q?dOB4N58Opijcsm7DZC+pMw/t4AJjajfIc3QRB4IDJchol5qfDJvxwf6nY8NQ?=
+ =?us-ascii?Q?1wsx3r9q3msh/jeVhksn8IUwENhfKx7c2sjmWbD5k9R2zHsp5NuXoPcLZdht?=
+ =?us-ascii?Q?Ee+oz7SgoQaJMxyf5vIjHRvsB5nOiIL1z8M8vXBAtudJHQ1ON9u+w1r/tVMD?=
+ =?us-ascii?Q?VZ0BcCh5o83/RpnF6PLTus96AQucJTQnGI2lPgUKi0FdsVRXWL89u7IsLP6H?=
+ =?us-ascii?Q?GnlcDXH84PrDcR6A6hc0P8NRcUzSJgC9N+mlK4/OMtfn5mqZR+E0r+pvv3km?=
+ =?us-ascii?Q?KnRHpG1ALnyuWoT4rFtaOr0H7JU2T1gD/jGVnkCTHjE16/eQius8rVKQsYum?=
+ =?us-ascii?Q?USJz7bDg2Qj2mAIw/Aek3/ljKRFYH85I5U4giCx3PKcpNFdGnkLq844TA9XA?=
+ =?us-ascii?Q?mnwlRYJmp2UsWpVX2O9XupV8N8Cg4fzuDLBLU/RlSmw5/l3l+kLdNZIlzjGq?=
+ =?us-ascii?Q?aiF71PcncxxcYyFbB0yOG9k2sYCr17w0ev3Z9wzpu6NjQK/qXzOVw1SsAIZ1?=
+ =?us-ascii?Q?y1nhHSfSbKIkIf/Kdi0M65MKBiDb3O3lbshu2BBC+ooAucxfh4eVgnQjJ4Xc?=
+ =?us-ascii?Q?iZEY3qDWqRxYQVfFTEaLV3RX8hQyHxvMCtijuczjaRPuQX12klcwX+Lo39ax?=
+ =?us-ascii?Q?DFUrkff2wAVc62wEVs88tWgmhUUkMPKYcMOdleypkH5R/iBGIGOyS9CIE6hk?=
+ =?us-ascii?Q?XLnrftls0DOGTJXMs2MafC/ZzgrzvJxaj0ZITX14GoSIisBez2+EKPAQhevn?=
+ =?us-ascii?Q?RHLPNfn3I8DExdgI3PPj42IlscumPf6tss99eEnus6M4QzgPqxhOW0PO5Qyx?=
+ =?us-ascii?Q?qO69aw2QbcWf536p4aIOoHIGPgug1dTy5JwsLCcJYlZax1Oi2LLt59lFnT/2?=
+ =?us-ascii?Q?OK5f+1RaIHavG3vPxhHygw5eolGRFrATxHnSyNxPBXiyH2WXqo5XREPt2S3I?=
+ =?us-ascii?Q?K+PS9jZXgsXVFAeaviRrsjLdJOqG7FuNE5dnf+DxwMGpGtnldoKIO5ci1D8E?=
+ =?us-ascii?Q?jLjWgZnfPw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5490674e-12f2-49c9-8197-08de8e990b93
+X-MS-Exchange-CrossTenant-AuthSource: SA5PPF80B25317E.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 20:15:11.0450
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RiUSH34WDOaVLUOcv0V0oijcONtERZR50ol4k/Uhl5ouzEvJbk5hnanqmDXLtGh6CjE0Oj3iLzSvTcfk3i+1Vw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5706
 
-On Mon, 30 Mar 2026 19:38:41 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+On Fri, 27 Mar 2026, David Matlack wrote:
+> I think it may be worthwhile to have the nv_falcon driver still enable
+> at least one MSI or MSI-x vector on the device and set driver->msi.
 
-> (Cc: Jason)
-> 
-> On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> > index d43745fe4c84..460852f79f29 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
-> >  	    pdev->is_virtfn && physfn == vdev->pdev) {
-> >  		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
-> >  			 pci_name(pdev));
-> > -		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
-> > -						  vdev->vdev.ops->name);
-> > -		WARN_ON(!pdev->driver_override);
-> > +		WARN_ON(device_set_driver_override(&pdev->dev,
-> > +						   vdev->vdev.ops->name));  
-> 
-> Technically, this is a change in behavior. If vdev->vdev.ops->name is NULL, it
-> will trigger the WARN_ON(), whereas before it would have just written "(null)"
-> into driver_override.
+Enabling MSI/MSI-x on the GPU would require bringing up additional
+GPU components beyond the Falcon microcontroller. I'd prefer to keep
+the driver minimal and avoid pulling in complexity that isn't related
+to exercising the DMA path.
 
-It's worse than that.  Looking at the implementation in [1], we have:
-
-+static inline int device_set_driver_override(struct device *dev, const char *s)
-+{
-+	return __device_set_driver_override(dev, s, strlen(s));
-+}
-
-So if name is NULL, we oops in strlen() before we even hit the -EINVAL
-and WARN_ON().
-
-I don't believe we have any vfio-pci variant drivers where the name is
-NULL, but kasprintf() handling NULL as "(null)" was a consideration in
-this design, that even if there is no name the device is sequestered
-with a driver_override that won't match an actual driver.
-
-> I assume that vfio_pci_core drivers are expected to set the name in struct
-> vfio_device_ops in the first place and this code (silently) relies on this
-> invariant?
-
-We do expect that, but it was previously safe either way to make sure
-VFs are only bound to the same ops driver or barring that, at least
-don't perform a standard driver match.  The last thing we want to
-happen automatically is for a user owned PF to create SR-IOV VFs that
-automatically bind to native kernel drivers.
- 
-> Alex, Jason: Should we keep this hunk above as is and check for a proper name in
-> struct vfio_device_ops in vfio_pci_core_register_device() with a subsequent
-> patch?
-
-Given the oops, my preference would be to roll it in here.  This change
-is what makes it a requirement that name cannot be NULL, where this was
-safely handled with kasprintf().  Thanks,
-
-Alex
-
-
-[1] https://lore.kernel.org/all/20260302002729.19438-2-dakr@kernel.org/
-
-> 
-> >  	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
-> >  		   pdev->is_virtfn && physfn == vdev->pdev) {
-> >  		struct pci_driver *drv = pci_dev_driver(pdev);  
-
+Rubin Du
