@@ -1,253 +1,145 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA60F3A783B;
-	Mon, 30 Mar 2026 08:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774858392; cv=none; b=pPNx1I2dbE750BHSMBFTGcyssvXK38CHwXWnSvQCAC7kwllD1EczPzdRtEhESC+BOYxg72zSFZ9CyEaziC5E8Km/8WrcFKW+tlGbuppdiTn+kEk3R4Dbknmd0mV0EQOVYDrkEz8X2m3o49apvzdyQUb2zxlhsHXrPBPmBZ9QwOc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774858392; c=relaxed/simple;
-	bh=S9VBokTfyuol+KEs/iM33D113CZLefIGDEVMxYEoMdk=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=X2T/LtXyhxlK8JZl0uDpn3tDJtNdichDSLS8Ft1wgCeJg7mYgxAtRZtjB08OAjvo75bTkyYulZ6QhwN8c/35sjA9okerXVrgkMOOg7VBVJ6NvbPKFPdg592P2TSnNoG01Z/klIKVklJ/SmEBqkJ0pVHVElpbMSUiEarWHVbNL/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4fkkWw63wqz4xQXB;
-	Mon, 30 Mar 2026 16:13:00 +0800 (CST)
-Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
-	by mse-fl1.zte.com.cn with SMTP id 62U8CuS6055225;
-	Mon, 30 Mar 2026 16:12:56 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp02[null])
-	by mapi (Zmail) with MAPI id mid12;
-	Mon, 30 Mar 2026 16:12:58 +0800 (CST)
-X-Zmail-TransId: 2b0469ca308a8c5-48805
-X-Mailer: Zmail v1.0
-Message-ID: <202603301612587174XZ6QMCrymBqv30S6BN50@zte.com.cn>
-In-Reply-To: <202603301608170032mtkGKX7wRcAkPKDQ5I-F@zte.com.cn>
-References: 202603301608170032mtkGKX7wRcAkPKDQ5I-F@zte.com.cn
-Date: Mon, 30 Mar 2026 16:12:58 +0800 (CST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB703AC0D4
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 08:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774859209; cv=pass; b=XfgdiCAN+fv7WyZkWXLdw3Nx3kTzFFsMWpyt4aPi+ewOnw0YmO5Y7EAuSBZCU0uXNPu6o+wFKl/NHsAV56K7E+vvL0U1L1EaWpR0LGT0VR4Qh+J19i+Ld1bsR9zDjN+dzEdA+NCsQFw73Ku52XZPIz9v1V/j29ndylAA/MN2f38=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774859209; c=relaxed/simple;
+	bh=IhxgybiTrBtDOxHoMDpLJXIgUazGtbz1BMBYhnGZdU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eh23ivcvze8WQZTYJKq89Nh41G7mjBuDREb+pIKMzuLm2BmzoyjtSWrdtNTAaHHcA0gXm5CfywiQFaMLuoy24c43DqmcoVn04Xpsxv+Tb9E2pTv8hXg4Q8NhjMInVAO+NOQjXUC2ZEeo7vYGC6hjkuWWWr259IcT1gPTqX3UUF4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=Z5QHjMEP; arc=pass smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="Z5QHjMEP"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7d7eb85fb81so4200127a34.0
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 01:26:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774859207; cv=none;
+        d=google.com; s=arc-20240605;
+        b=B1KKuIuDI2UppeU+1UexEZGC8DPbXIaf4G/7GkGcHiMdNDN7kTogz2Cw4N+8lbZwbB
+         KIDBOpRq5dzWCJ6frNMSINHu/smYIZkUV0Un3LQ2duGTIDAEmQRHHSgnHtxprDSh6+d2
+         UaaQx/5TiRL4ibBfgBzdOjcGRLDeHa2uVkuJWOmkewRFPve+gk7F5miEJj5sTRI8JvtB
+         NnptGaJRpdkTqWlqebncsGznjRs1H1paWJMGrJYyeBk+GfXgGs3Ibz2GqBfgKhmCuD6L
+         iHeO4mQ3ID/BM+okF/tNcn/sfEicBUJe2Ez97UTRcJZVXkuNB4m9EEb/5iUFRQui/sMA
+         rjYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/gohPRZM3Pl5gGZYd1SEWk3NT0Z9V00jCIRMY1+DdSI=;
+        fh=MbqrfQVppmldpNVVQhR0tLyK3WUUXUfjUPUDhyD89T4=;
+        b=MO4hW7G2j1Geh3KXhfpmYWaeaPq/AGyNOAiy050gqOJlIaBv5h98YZqQDgn5b1wAKS
+         t+1rZoQDxc0wp9lXWfLq03RQfK1+Q0n2Prs46CfRR7ixGY/xukU1+UaaY15BLkUinx2s
+         YNR7tjpGpu7Az0DqIDAvlD6afGUiu86RMLg/yhLNDbIFyt0/WMQcMexNpy/+puRkI+tk
+         BgZxGe6wBZL/KM3lU7koF0yYtqetopQSgDMF1+skhf5L78spC3mQkapLZjWfh+KrAG0k
+         Vgm+mAymaCrlCAPvXCFyJn38DoUZpjFzCDZtWctBoweq8SDhhQjS/me/EKsFzvoQFSZo
+         26cA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1774859207; x=1775464007; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/gohPRZM3Pl5gGZYd1SEWk3NT0Z9V00jCIRMY1+DdSI=;
+        b=Z5QHjMEPBPtUlgT0HPgrKZ3jNS36dF3PsrH7BR+9nnVUjSORehFetYQbaA+TGU3ZI6
+         h1wK7WxgPinzl7UeA/oT0wdN9UWSQpSkJgxMP5ldSBoTl0Smlsp8Tw29ZLzkIO2QDAE7
+         icfwB6mw7fPevqXROl5wYdnoWRt9lpBTUfx5/SiKhNtPcZhKvxH0Wu8JtNTvOzYzW6pa
+         ADA6TpbdsxqRxh8qpJlkzMuvYwNEnTKU1dbF4KnM9qepaTw+6w0qbh/TWW8ogYp7XP6J
+         XwlL1ZQRIBTT/1foMxevnTKkoY9bUKXoWusgS/rhSpbsc2AbDUb0YXtac6HnKkTYVLkj
+         ZOQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774859207; x=1775464007;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/gohPRZM3Pl5gGZYd1SEWk3NT0Z9V00jCIRMY1+DdSI=;
+        b=knXeYb6/WgAKFHSJzvMfUb+mlNEarEMpAFq9PrUON2uXRng1YFEHAazrpC+dBy4FN9
+         OZMjbVPtK/XflChPvthv0AufJ1uw2P9stOxmdhHhBpx71boBfTMslFD6U04aEfLjpcca
+         qV82UMoQXR/voZZTOxl/S/nVK7Z0zItERXwNdk6w1OO/YYHaNIimu4jn8lhDHiCiyTIr
+         A7fpqetNERiodTM1GWi6OQotH+xeF2nMBgU2C3wLY8N561azCehcokZSGEUYbY/T13mg
+         OCH9hWhFts3c0mOWamgxxh+0zzYLFf07LStEvCdIf4DFW/UuG0rDUvR6URYn/M+NQ2WJ
+         mYTg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnZx4qV5R/0TAB+4d+xD0926sPIAvwKKl1b7Zkxcr6rJkPslIBwnMgENXBew8jkvLQRdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN/MEXSzD8G6lRpKo8Jx2Us7Zc2vInqpc77kAeaiFdU1bqio35
+	oI3U1tKD0EPpta5VC/YZKxwxIPoQRSHOhEi3SJaXxL/cdDOhQ5gIL5lzqqSb4emPeIYCxB1Gd2p
+	qUZSXTMsGULOOXqCII01BM4diRpN2Xkeu+ApWvZI8yw==
+X-Gm-Gg: ATEYQzx6yei9kcbRRHD4IynUcbj1Sv9xxstBulo8voPy5808Fen6ijwA/lkW0Xqjs3m
+	37vbVcbG0ISbdshc/kQrGSSgrcCo1FWA175j1+IdME0z6D0as1Dnhn6pntGo3LwVOOmGF59ubeO
+	XPt37lZuQu4e5ZBoMAn2aiMXE4/NTjD6Tb43iYYFMuCNNZln+OIeh8UyswbDL0GqQdwYmeY5EtA
+	30v07l1X42EJjEfYhfojLw/c7Om6fWouuVAy3uytl/SJJ+T1movskSdzr/waVO35td54jFqPV1V
+	r82PkktPXgagvUyRt3ab3ExF0WF7a8puWdp8RotxrdX6iIh67+xKfy9AOJtiZnXV87XU9OIk/yg
+	vgLnFCwbBcMlzfIkO7VbOqgzJ2Q==
+X-Received: by 2002:a05:6820:f02f:b0:67e:2013:aa49 with SMTP id
+ 006d021491bc7-67e2013ab10mr5470274eaf.61.1774859207468; Mon, 30 Mar 2026
+ 01:26:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
-        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>
-Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <wang.yechao255@zte.com.cn>
-Subject: =?UTF-8?B?wqBbUEFUQ0ggdjQgMi8yXSBSSVNDLVY6IEtWTTogU3BsaXQgaHVnZSBwYWdlcyBkdXJpbmcgZmF1bHQgaGFuZGxpbmcgZm9yIGRpcnR5IGxvZ2dpbmc=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 62U8CuS6055225
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 30 Mar 2026 16:13:00 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69CA308C.002/4fkkWw63wqz4xQXB
+MIME-Version: 1.0
+References: <20260317114759.53165-1-r4o5m6e8o@163.com>
+In-Reply-To: <20260317114759.53165-1-r4o5m6e8o@163.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Mon, 30 Mar 2026 13:56:36 +0530
+X-Gm-Features: AQROBzBNAoeEH4dtJiurCDIIFIldpeiaCAUkebJle2PJfQjHD7l832yD7YxCj4E
+Message-ID: <CAAhSdy21XejojvdgkYdqO-40iF9AfN6k1Nx8X0PSpmF2D6_GzQ@mail.gmail.com>
+Subject: Re: [PATCH] riscv: kvm: add null pointer check for vector datap
+To: "rom.wang" <r4o5m6e8o@163.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Yufeng Wang <wangyufeng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Wang Yechao <wang.yechao255@zte.com.cn>
+On Tue, Mar 17, 2026 at 5:18=E2=80=AFPM rom.wang <r4o5m6e8o@163.com> wrote:
+>
+> From: Yufeng Wang <wangyufeng@kylinos.cn>
+>
+> Add WARN_ON check before accessing cntx->vector.datap in
+> kvm_riscv_vcpu_vreg_addr() to detect potential null pointer
+> dereferences early, consistent with the pattern used in
+> kvm_riscv_vcpu_vector_reset().
+>
+> This helps catch initialization issues where vector context
+> allocation may have failed.
+>
+> Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
 
-During dirty logging, all huge pages are write-protected. When the guest
-writes to a write-protected huge page, a page fault is triggered. Before
-recovering the write permission, the huge page must be split into smaller
-pages (e.g., 4K). After splitting, the normal mapping process proceeds,
-allowing write permission to be restored at the smaller page granularity.
+LGTM.
 
-If dirty logging is disabled because migration failed or was cancelled,
-only recover the write permission at the 4K level, and skip recovering the
-huge page mapping at this time to avoid the overhead of freeing page tables.
-The huge page mapping can be recovered in the ioctl context, similar to x86,
-in a later patch.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
----
- arch/riscv/include/asm/kvm_gstage.h |   4 +
- arch/riscv/kvm/gstage.c             | 126 ++++++++++++++++++++++++++++
- 2 files changed, 130 insertions(+)
+Queued this patch for Linux-7.1
 
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index 595e2183173e..373748c6745e 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -53,6 +53,10 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 			      bool page_rdonly, bool page_exec,
- 			      struct kvm_gstage_mapping *out_map);
+Thanks,
+Anup
 
-+int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
-+                                struct kvm_mmu_memory_cache *pcache,
-+                                gpa_t addr, u32 target_level, bool flush);
-+
- enum kvm_riscv_gstage_op {
- 	GSTAGE_OP_NOP = 0,	/* Nothing */
- 	GSTAGE_OP_CLEAR,	/* Clear/Unmap */
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index d2001d508046..ffec3e5ddcaf 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -163,13 +163,32 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
- 	return 0;
- }
 
-+static void kvm_riscv_gstage_update_pte_prot(struct kvm_gstage *gstage, u32 level,
-+					     gpa_t addr, pte_t *ptep, pgprot_t prot)
-+{
-+	pte_t new_pte;
-+
-+	if (pgprot_val(pte_pgprot(ptep_get(ptep))) == pgprot_val(prot))
-+		return;
-+
-+	new_pte = pfn_pte(pte_pfn(ptep_get(ptep)), prot);
-+	new_pte = pte_mkdirty(new_pte);
-+
-+	set_pte(ptep, new_pte);
-+
-+	gstage_tlb_flush(gstage, level, addr);
-+}
-+
- int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 			      struct kvm_mmu_memory_cache *pcache,
- 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
- 			      bool page_rdonly, bool page_exec,
- 			      struct kvm_gstage_mapping *out_map)
- {
-+	bool found_leaf;
-+	u32 ptep_level;
- 	pgprot_t prot;
-+	pte_t *ptep;
- 	int ret;
-
- 	out_map->addr = gpa;
-@@ -203,12 +222,119 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 		else
- 			prot = PAGE_WRITE;
- 	}
-+
-+	found_leaf = kvm_riscv_gstage_get_leaf(gstage, gpa, &ptep, &ptep_level);
-+	if (found_leaf) {
-+		/*
-+		 * ptep_level is the current gstage mapping level of addr, out_map->level
-+		 * is the required mapping level during fault handling.
-+		 *
-+		 * 1) ptep_level > out_map->level
-+		 * This happens when dirty logging is enabled and huge pages are used.
-+		 * KVM must track the pages at 4K level, and split the huge mapping
-+		 * into 4K mappings.
-+		 *
-+		 * 2) ptep_level < out_map->level
-+		 * This happens when dirty logging is disabled and huge pages are used.
-+		 * The gstage is split into 4K mappings, but the out_map level is now
-+		 * back to the huge page level. Ignore the out_map level this time, and
-+		 * just update the pte prot here. Otherwise, we would fall back to mapping
-+		 * the gstage at huge page level in `kvm_riscv_gstage_set_pte`, with the
-+		 * overhead of freeing the page tables(not support now), which would slow
-+		 * down the vCPUs' performance.
-+		 *
-+		 * It is better to recover the huge page mapping in the ioctl context when
-+		 * disabling dirty logging.
-+		 *
-+		 * 3) ptep_level == out_map->level
-+		 * We already have the ptep, just update the pte prot if the pfn not change.
-+		 * There is no need to invoke `kvm_riscv_gstage_set_pte` again.
-+		 */
-+		if (ptep_level > out_map->level) {
-+			kvm_riscv_gstage_split_huge(gstage, pcache, gpa,
-+						    out_map->level, true);
-+		} else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size) == hpa) {
-+			kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa, ptep, prot);
-+			return 0;
-+		}
-+	}
-+
- 	out_map->pte = pfn_pte(PFN_DOWN(hpa), prot);
- 	out_map->pte = pte_mkdirty(out_map->pte);
-
- 	return kvm_riscv_gstage_set_pte(gstage, pcache, out_map);
- }
-
-+static inline unsigned long make_child_pte(unsigned long huge_pte, int index,
-+					   unsigned long child_page_size)
-+{
-+	unsigned long child_pte = huge_pte;
-+	unsigned long child_pfn_offset;
-+
-+	/*
-+	 * The child_pte already has the base address of the huge page being
-+	 * split. So we just have to OR in the offset to the page at the next
-+	 * lower level for the given index.
-+	 */
-+	child_pfn_offset = index * (child_page_size / PAGE_SIZE);
-+	child_pte |= pte_val(pfn_pte(child_pfn_offset, __pgprot(0)));
-+
-+	return child_pte;
-+}
-+
-+int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
-+				struct kvm_mmu_memory_cache *pcache,
-+				gpa_t addr, u32 target_level, bool flush)
-+{
-+	u32 current_level = kvm_riscv_gstage_pgd_levels - 1;
-+	pte_t *next_ptep = (pte_t *)gstage->pgd;
-+	unsigned long huge_pte, child_pte;
-+	unsigned long child_page_size;
-+	pte_t *ptep;
-+	int i, ret;
-+
-+	if (!pcache)
-+		return -ENOMEM;
-+
-+	while(current_level > target_level) {
-+		ptep = (pte_t *)&next_ptep[gstage_pte_index(addr, current_level)];
-+
-+		if (!pte_val(ptep_get(ptep)))
-+			break;
-+
-+		if (!gstage_pte_leaf(ptep)) {
-+			next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
-+			current_level--;
-+			continue;
-+		}
-+
-+		huge_pte = pte_val(ptep_get(ptep));
-+
-+		ret = gstage_level_to_page_size(current_level - 1, &child_page_size);
-+		if (ret)
-+			return ret;
-+
-+		next_ptep = kvm_mmu_memory_cache_alloc(pcache);
-+		if (!next_ptep)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < PTRS_PER_PTE; i++) {
-+			child_pte = make_child_pte(huge_pte, i, child_page_size);
-+			set_pte((pte_t *)&next_ptep[i], __pte(child_pte));
-+		}
-+
-+		set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
-+				__pgprot(_PAGE_TABLE)));
-+
-+		if (flush)
-+			gstage_tlb_flush(gstage, current_level, addr);
-+
-+		current_level--;
-+	}
-+
-+	return 0;
-+}
-+
- void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
- 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op)
- {
--- 
-2.47.3
+> ---
+>  arch/riscv/kvm/vcpu_vector.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
+> index 46fbf48f2503..e989cb9f1ac4 100644
+> --- a/arch/riscv/kvm/vcpu_vector.c
+> +++ b/arch/riscv/kvm/vcpu_vector.c
+> @@ -129,6 +129,7 @@ static int kvm_riscv_vcpu_vreg_addr(struct kvm_vcpu *=
+vcpu,
+>         } else if (reg_num <=3D KVM_REG_RISCV_VECTOR_REG(31)) {
+>                 if (reg_size !=3D vlenb)
+>                         return -EINVAL;
+> +               WARN_ON(!cntx->vector.datap);
+>                 *reg_addr =3D cntx->vector.datap +
+>                             (reg_num - KVM_REG_RISCV_VECTOR_REG(0)) * vle=
+nb;
+>         } else {
+> --
+> 2.34.1
+>
