@@ -1,80 +1,80 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A4F3A8733
-	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 07:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD25259CA9
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 08:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774857520; cv=none; b=AscHmHaKF+OcmzExN34ElkazfI3Lk1e2t9yP9LzEa7KFl2HobgqkREICot1TOM2/CzhsooRbsqP6TuTmMaiAhrPqJfrDs2gbD0cSlmVso6Yex1JrmMQMXaRUsMdkEVSA3n1QRbeWva0X6t8Q1qv39qlMa6giD9UQHt5ByP8q2CI=
+	t=1774857712; cv=none; b=HFbgjHO+TpPygPjcecNHPaVAW83BfUL4k9JYRRC4S539iHoIa4mM/uRcPHoSr0pTvKqZlv7aHo1xE0BGvm1Gs6kRxQz3xBA/dtS4KZyPjWk3dPUeOnI4Pm5Dn41SAJHK4d/u1YxiRmac+MkvtexR433vZjIBpj79/SXBRjQ1RTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774857520; c=relaxed/simple;
-	bh=zEZGwGF3sKc0G9zq1ffG0PV9TQ4YaNhIAp7e0h+68pU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ejif+T045ZmcS1xgbUWlGE4c0sR9CFKFAv1F5Vs8bcm8coZg4SW1ea6w+M1U45D0ItuHX54jthwNAgXCYUtgQd9w6Rfv2hSfiUDHoPp+/mcaOqz0AN1siuQwmjO7XBQFiCYAWleFOMipxIaX457lLS13ifpydV0igyJC3wy61Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KUXXfz5M; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=snK2Ns/c; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1774857712; c=relaxed/simple;
+	bh=woHof7wfkrzWjNOrAi7nzaTttmXDmDaMclAa0u+1qkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jbqF7PTTsbxodHj1WeuzFWmVoQ17O/NpXRfAAUT6ACqpkqFCSsAl8Zf6xYdDuHt7k2YsIZzX+TwwxPb3AAvMfcKT+I7zgr23VC+MCjT18iULAEpUAfzzNMJ1254/KulkWbdWErmaT1AVhgQ+BArnbBrYiZWZsznRCzJSGt5rL9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G2FbehJZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cKL8TGw9; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KUXXfz5M";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="snK2Ns/c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G2FbehJZ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cKL8TGw9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774857518;
+	s=mimecast20190719; t=1774857710;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=I9UHxN7TKiM+B8XGIaW8UV2fs43HChjHFnISdi8ej/0=;
-	b=KUXXfz5MjhsQTQwbOTY35MEN17/zCDxj0tpasDhApEKJBXK1FPjSV6jw9uiaKDooHwaKpA
-	5fFY9rpV7vIarDkueWw4lNph1yd0UjlIC1zDac+O4RtXB8G5e/zMpTensMyNt8Nm754WeE
-	Khd4iyQtm9hMi7nMUOvD2dd+30aV4dk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZMEDTog/V2EbiuJTJRgUNGd1J4MxLV+lIo/zs81mrgs=;
+	b=G2FbehJZjs2EqJNJ191uU4m1jZPX8E/JJGn6uutdga4yWMw0kZvjzxd5ZKXFOCjY7TaBGg
+	4cA+Xdc/wjVHuYBzEwvjQNcjrtbQQZ6FGgPdZpaWrjnFCkDIcUB6LDa9WuOIk62WFi+PQl
+	PcqyovUShOpy+22mQ909MX+ooyaIqks=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-ZUIB1Eg1O-mRoqG0tFu68w-1; Mon, 30 Mar 2026 03:58:36 -0400
-X-MC-Unique: ZUIB1Eg1O-mRoqG0tFu68w-1
-X-Mimecast-MFC-AGG-ID: ZUIB1Eg1O-mRoqG0tFu68w_1774857515
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b93781cb8so3930834f8f.3
-        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 00:58:36 -0700 (PDT)
+ us-mta-696-4BGf15gRNSKNEdquPKXrRA-1; Mon, 30 Mar 2026 04:01:48 -0400
+X-MC-Unique: 4BGf15gRNSKNEdquPKXrRA-1
+X-Mimecast-MFC-AGG-ID: 4BGf15gRNSKNEdquPKXrRA_1774857707
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b96365ea8so3940446f8f.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 01:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774857514; x=1775462314; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774857707; x=1775462507; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I9UHxN7TKiM+B8XGIaW8UV2fs43HChjHFnISdi8ej/0=;
-        b=snK2Ns/cMIQbzd3fAvTfGWy2J1uhkaxgwxvE+sZxNsCSwKrWvaKoos3+SSnueadsGE
-         n8xh9SUUw7cSNOVbP1Pc7hFzGI0u/4NukHXkE/IutV+nn27UOI7rhgJP97Hxc2MsAg5N
-         jovKvIfxX207ao8z7IllRfAq46ddajgwBAHJqd5If9Tx1czy9cQoikx37s40Dht+oQr5
-         mxbcXfJy/9V4a/YgWHjCZJi3fjnAI0m9n0lMGGpTXfh9SMEkA6gjlqnEdIOmerqT/elN
-         4FUttZ5wMvYxkjh5B08CU5s74FvbLuXjWPmNHH57O5aekRCocI8QkTNlThf0o/50FgiP
-         kUeg==
+        bh=ZMEDTog/V2EbiuJTJRgUNGd1J4MxLV+lIo/zs81mrgs=;
+        b=cKL8TGw9JS13WZEJGUXPN2Sxu4TfZMBm+1JOZIjSMPvRd/2uYVirj3QeDh79TkD4tz
+         sKfyH2b8lt6/4bBV54aTmXeNp0XIPEhx/fKl9yFK3+cTRiD63FV2Lxg1y02cmfVeNnxC
+         IGqJ1g0jEXVrBYgm20sf5VDOp0TPih6u3LFOl/EX6rZoCipKLQ3h4oaIcXgCpBl8ktob
+         kz4sPq2AoSfcYdaEjVeIU9mHqe1sEC55hq/qytxZ5yj1Zj3JDg19MZiFbgL0uI7+p7S+
+         HGMwgvhFixbZDlqxZOGmq4ZPWh20BkxaNMojGlDFTVL2S7IsCLbbCF8wRyZfSg8SqSMv
+         P0DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774857514; x=1775462314;
+        d=1e100.net; s=20251104; t=1774857707; x=1775462507;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I9UHxN7TKiM+B8XGIaW8UV2fs43HChjHFnISdi8ej/0=;
-        b=LCKjK9ADlx8wgYvTO6Q3WiAAf2cG/yb5QnG5LWjvtCrsYgkJrc0y3WiYYJJ5nsEygi
-         e24eF8WrmvN1w30/tQ8a3jZBDJyxr4FwCOV57vVqtLzbHaOuDcSg5zpIOWwhe1gA4lBx
-         KxUxW3fQ6+DGGnf7HfqspC9XJweRec6t6I8+3sp4F0qcdUVrKaOwcA3B3RUk5+2QWqBB
-         dR4uNaZwbCB1VGIYWTxxpUYUcN7QeTF1CF0YKsWb2fyalv7HuZ5m6dWL/Z8VnbLxLr2t
-         wY4XQVcIeeQKRosYRT59QG2g0898GO1BSJ8WAllb9mFscJ8lTvrOmtpZZaPetYcjs+nX
-         adng==
-X-Forwarded-Encrypted: i=1; AJvYcCV57VFqE004H9yPGXCKnXvf4ukUMu1lEntqItILjKoBUWCW9WCt1OSZz+vXWfhM1d4Vfac=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaoBfNI0Te7dcV9rAQd91QOo2b0tbiLFg9vEJXxO8VmMB28zfy
-	D0lFg3JWEOCVAuwhkWwovk5mQzDGi95jVB1mrphNyv5eEXrQ1i4H4PlVpBqkWssiqGREF0sqJF4
-	Ja4ahdYyU0IIde91pMBBZ8n8QQcRYcqL1qZuiCkhRN73J9c7zyGoP1KeEd45CMA==
-X-Gm-Gg: ATEYQzyaSrRrlEo7A7VOl8NpFgPyx9JKA7undBV0we+P3kTD5/MUALOuuWNBrG1+iCQ
-	Td7m70/2TUEQ0x7eTkckejQlNyDIN+1q3jVDX1whvDO2uk+TsowfPwuYszE1orVVCgECidfiFju
-	w3enNR9oeA7Ml2hc5hvT4IJZFbKhVLlaxDxf+lKJK6cHvkPeMWqkZuLWbNv/+3jVXazBFB2XmHy
-	4vu4HF1xlK9XxAaeRSThFqJc9ySrsTzzcuJM9iy1kNdruWdcm3zeu4E0QmK/TwaDscnH5OFpf5i
-	1Zzzau3TJjPIZ8bzeMDM5LJpXtPbuYOVTPgFBuq3IyAhJTSBJfKOFiZj30JkzijnaHm5G4HzmI2
-	w9x5AkHIMoH9Om/Q+3R5Oh9l2gITcF6jeVxQUVACI97fU0X+02BpV/m4XGyyZmvOcNsMGloSNey
-	HleM2KuzWBXgz005IdBypMYi0j
-X-Received: by 2002:a05:6000:2307:b0:43b:3d02:7806 with SMTP id ffacd0b85a97d-43b9ea4a457mr18934814f8f.28.1774857514331;
-        Mon, 30 Mar 2026 00:58:34 -0700 (PDT)
-X-Received: by 2002:a05:6000:2307:b0:43b:3d02:7806 with SMTP id ffacd0b85a97d-43b9ea4a457mr18934767f8f.28.1774857513811;
-        Mon, 30 Mar 2026 00:58:33 -0700 (PDT)
+        bh=ZMEDTog/V2EbiuJTJRgUNGd1J4MxLV+lIo/zs81mrgs=;
+        b=R2bHf3Hv2lk+HAYiXc92g47N+vtoMgYQ4nXUxRE857cl1XwwuppKqsa1t4rnEGhVvj
+         wgCzHi/KKFifqWudq26R3MXJR9/QS6LPfT2ws+OGbnj3tyGYWEvnaiqo5gAj+jeTjDhi
+         4kbKBYTDuk2PT16MhDUwbBGUy6dnTv2A5bncXAM+9AK0e4cAoqVIBl7HX4gz6NoVvZMp
+         zUE6hSO+6Ck4BB6afarRPjSmtHtFP8RvyyxoAwjQFCYE8RqYIiblo4LE8cG8O6+Vf5WK
+         BxfXhHKrGKjveF1UqOc7GUhNzsmlWjtT71W3BjkX5KxYWd7iEwxzS2tOmmYuCpzZFfwP
+         nFRA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOzYteN3MlLHMc1MsmbSf9sHGxtDPcoDwiioMhgx5PyJguMEI0rAElg7m4jTPzr3x/dFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPjaoIabeqUNIU8108Tm1K3mQm1rw3jIlldtG+KWZfIPaTppd2
+	fmFoO5tWnkl3MxSh8lK6bxPW4Xy8Ihg21HtTpiSkPxPZzoteVOsqx4KnVfeVFJnc84TRi6n2JNe
+	QvQJcYvB0CqNkiZ2JB1JzG/MiWPPx+txF1oJ0OQjRNdA0PVS50QMBCA==
+X-Gm-Gg: ATEYQzz/cValTrY3lRVQXvNIPcYojj+k6JkIG263uttxFXd2Mh+gQ0dItwjOBA2Bom7
+	0Z3rYVKgKPuPOBtp99MCrgmzcHKXJSseo8s/kuIGZhglalD22TWPOtc17PlzdKrvZd37AOdftWI
+	UreIfsiNDyqnjFHjvZTU+eDrQhzt7kcESrY0xicycUOiHlnsY1FiYo07sDN2Fph7sIkVMKMI4Qj
+	Jpa4f8JWd00wMYRPW6/+WLcqXDvdJFyO2Noaiy6Dui94yNKIIyZ40L3iwkmbJfvVRmEXdUftWqF
+	NaD3QvT4E+LkjCLnJ7twcERKuFS9aRP9MjDsZ1lIZcALLr1pTcuEt2gn6w4TmrU6uUhixT6mgu9
+	g5JWmKO4TSCOMlqUbU+MALSfcLvDoJ/vyupGsX+gBvcSwBfgmmb/osj6EyR0oj/uti3xblMHIsG
+	37gMqgzYJceFCGE0GEvs1+njmB
+X-Received: by 2002:a05:600c:529b:b0:485:3ec6:e634 with SMTP id 5b1f17b1804b1-48727d84100mr178013615e9.15.1774857706998;
+        Mon, 30 Mar 2026 01:01:46 -0700 (PDT)
+X-Received: by 2002:a05:600c:529b:b0:485:3ec6:e634 with SMTP id 5b1f17b1804b1-48727d84100mr178013245e9.15.1774857706436;
+        Mon, 30 Mar 2026 01:01:46 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf24739easm17845984f8f.30.2026.03.30.00.58.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4873069d469sm150150745e9.14.2026.03.30.01.01.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 00:58:33 -0700 (PDT)
+        Mon, 30 Mar 2026 01:01:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -82,9 +82,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Alexander Bulekov <bkov@amazon.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	stable@vger.kernel.org
-Subject: [PATCH for-6.1] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
-Date: Mon, 30 Mar 2026 09:58:31 +0200
-Message-ID: <20260330075831.153407-1-pbonzini@redhat.com>
+Subject: [PATCH for-5.15] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
+Date: Mon, 30 Mar 2026 10:01:44 +0200
+Message-ID: <20260330080144.158592-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -139,19 +139,18 @@ Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 04d060f37053..a9f24eeb4477 100644
+index acb9193fc06a..3a705aebb52b 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2814,12 +2814,6 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+@@ -2717,11 +2717,6 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
  	pgprintk("%s: spte %llx write_fault %d gfn %llx\n", __func__,
  		 *sptep, write_fault, gfn);
  
 -	if (unlikely(is_noslot_pfn(pfn))) {
--		vcpu->stat.pf_mmio_spte_created++;
 -		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
 -		return RET_PF_EMULATE;
 -	}
@@ -159,12 +158,11 @@ index 04d060f37053..a9f24eeb4477 100644
  	if (is_shadow_present_pte(*sptep)) {
  		/*
  		 * If we overwrite a PTE page pointer with a 2MB PMD, unlink
-@@ -2841,6 +2835,15 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+@@ -2743,6 +2738,14 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
  			was_rmapped = 1;
  	}
  
 +	if (unlikely(is_noslot_pfn(pfn))) {
-+		vcpu->stat.pf_mmio_spte_created++;
 +		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
 +		if (flush)
 +			kvm_flush_remote_tlbs_with_address(vcpu->kvm, gfn,
@@ -172,9 +170,9 @@ index 04d060f37053..a9f24eeb4477 100644
 +		return RET_PF_EMULATE;
 +	}
 +
- 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
- 			   true, host_writable, &spte);
- 
+ 	set_spte_ret = set_spte(vcpu, sptep, pte_access, level, gfn, pfn,
+ 				speculative, true, host_writable);
+ 	if (set_spte_ret & SET_SPTE_WRITE_PROTECTED_PT) {
 -- 
 2.53.0
 
