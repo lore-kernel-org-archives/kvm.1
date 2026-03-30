@@ -1,84 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9553F33B97B;
-	Mon, 30 Mar 2026 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1043DDDA3;
+	Mon, 30 Mar 2026 17:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774890324; cv=none; b=JzmpCLiFDMC5ZMhlNK42FexUN4v2RpIiRGuTXxBM91/BTbT/uwUFqylFPhQKNvHq5pLplzrQ73/qXYMJHHiLMAqZa8dRKBXP3mdrDcXRVZERi7H7dHkog3KTGwdxfrcc7t0229CUC4nXRLrUO6z21VQl/3lV0GdEPHYB8Va/uVw=
+	t=1774892332; cv=none; b=LkbEgkd3oYeTgAdP3a+TledJGBDEkkFkdCC3u0LX6FiMRENwPCI1wr/g0VlHl6HEonO7NJKpASu1Rpf0jClPjD/r8w05Ih95V9hzZ/DjI9+yxSRUgR/iTxwGNpYhAkHwySHaoJdyEiIJycbXYkB9CH0cIQZndNAhjkLypOR+RS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774890324; c=relaxed/simple;
-	bh=OFtDuFmsAEV2mQbq8ryV0+0J0YdGy5oZq6dDxXj1x3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mucjuE2uVvUllTGfHBJX9B5CbCjFN5Gl3T1M+SQtI67QJ762+GHZDapU9CVQ/JNRNES4I1lMNGVDkwBUoZtg4gd614CVUGBROCK2OA8jPNUGi0ZQ+laKo+cC/NGn4fmn6zkEFsTFlGsl6rgVBKIeuA5GWAFTOpXQErO1CRpQ5No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tvxa/aqa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774892332; c=relaxed/simple;
+	bh=/8RwifExta3hi9wb0UAvoCzja5DI/LlE9XUZDEKtDlU=;
+	h=Content-Type:Date:Message-Id:From:Subject:Cc:To:Mime-Version:
+	 References:In-Reply-To; b=SD8/xN6VvQvaqrPz4qfgFA7f66EYFReohMjCkweFjH6MvN3fnm090XKAjsbU3JPrdnHUPk+NJ79ISrUX+5fuZMtNyd2BaYa5JuSOgsiIL6QsTw4+A5K57JMivfJlh2eXmh1HXIEnwOKknpQKb7Gj4xj90Bg3eU+1OtFq9Vk1KiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S56YWHrx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tvxa/aqa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59691C4CEF7;
-	Mon, 30 Mar 2026 17:05:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S56YWHrx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39967C2BCB5;
+	Mon, 30 Mar 2026 17:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774890324;
-	bh=OFtDuFmsAEV2mQbq8ryV0+0J0YdGy5oZq6dDxXj1x3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tvxa/aqaN+wKCzER2P/+leTkpZMUSiJPc61rt3WJbW7IGVU8Iw4uPhyK78Gpcan24
-	 9hHmPKOcK2A03Zdrb1OBgJQgMzvRkhDkwqQSBk/aYEU2Mp9QbgNj7R/4+NNQX16kC2
-	 kzSjJ9Oq2HLYXJG2gUQg1+Pv3AvO0FIkWQMxz9aY0pwvu3a+7temfgn+7ZLfN2z7zI
-	 KQ7qoX9BT9V+4601dsGVG1gga7DX+DrJuVG8aRqCyfv2TIUSoBoBGoV3Aa26qteggB
-	 pkRlekyM3lUArwuaw1F8w31mEzIA/RLPqn4mJCJl6beuSck8ITp/ku7lOkDBP07Ca/
-	 SZKmCZBr8HsgA==
-Date: Mon, 30 Mar 2026 18:05:19 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	Sascha Bischoff <sascha.bischoff@arm.com>
-Subject: Re: [PATCH 00/15] KVM: arm64: First batch of vgic-v5 related fixes
-Message-ID: <687585f6-8948-4e71-bdb1-44af69417ff6@sirena.org.uk>
-References: <20260326153530.3981879-1-maz@kernel.org>
+	s=k20201202; t=1774892332;
+	bh=/8RwifExta3hi9wb0UAvoCzja5DI/LlE9XUZDEKtDlU=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=S56YWHrxhwHLS+EfSzEoW6H9YreN8wrQZ/7HEDAWqAjDAvn6rNoi6jXsbwo3fyTXv
+	 TjHIGPt2qRPbkCCC5yCfSjAbtAw6BzXCZXCaq/yn658JrR6/xBRJ7/mYaDQNBA9Pmv
+	 wsEtOTKeR8oMh9VC6LyR87wz4W/9tT1+Zpl9oixkuOSdi9YZxoGPEs7WRJpEIUF6YP
+	 QT3eMcBSThXdTkmokN7Q16p5we5dG5K2/LjDkgP9NUYvkxjgwB7vubbfIKhxuyu2dj
+	 oq30Tych+FNSMtuze99IC0ZOa+AcROHbp3uZujJVXn+3TGN1ylZ7O8WH21Mk5oRMNX
+	 /gBaIKRkeOGJg==
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 30 Mar 2026 19:38:41 +0200
+Message-Id: <DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
+Cc: "Russell King" <linux@armlinux.org.uk>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Ioana Ciornei" <ioana.ciornei@nxp.com>, "Nipun Gupta"
+ <nipun.gupta@amd.com>, "Nikhil Agarwal" <nikhil.agarwal@amd.com>, "K. Y.
+ Srinivasan" <kys@microsoft.com>, "Haiyang Zhang" <haiyangz@microsoft.com>,
+ "Wei Liu" <wei.liu@kernel.org>, "Dexuan Cui" <decui@microsoft.com>, "Long
+ Li" <longli@microsoft.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Armin
+ Wolf" <W_Armin@gmx.de>, "Bjorn Andersson" <andersson@kernel.org>, "Mathieu
+ Poirier" <mathieu.poirier@linaro.org>, "Vineeth Vijayan"
+ <vneethv@linux.ibm.com>, "Peter Oberparleiter" <oberpar@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger"
+ <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Harald
+ Freudenberger" <freude@linux.ibm.com>, "Holger Dengler"
+ <dengler@linux.ibm.com>, "Mark Brown" <broonie@kernel.org>, "Michael S.
+ Tsirkin" <mst@redhat.com>, "Jason Wang" <jasowang@redhat.com>, "Xuan Zhuo"
+ <xuanzhuo@linux.alibaba.com>, =?utf-8?q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, "Juergen Gross" <jgross@suse.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, "Oleksandr Tyshchenko"
+ <oleksandr_tyshchenko@epam.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-hyperv@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <platform-driver-x86@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-remoteproc@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+ <linux-spi@vger.kernel.org>, <virtualization@lists.linux.dev>,
+ <kvm@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
+ <linux-arm-kernel@lists.infradead.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Gui-Dong Han" <hanguidong02@gmail.com>
+To: "Alex Williamson" <alex@shazbot.org>, "Jason Gunthorpe" <jgg@ziepe.ca>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FEqMr0d8osX/JtEA"
-Content-Disposition: inline
-In-Reply-To: <20260326153530.3981879-1-maz@kernel.org>
-X-Cookie: HUGH BEAUMONT died in 1982!!
+Mime-Version: 1.0
+References: <20260324005919.2408620-1-dakr@kernel.org>
+ <20260324005919.2408620-6-dakr@kernel.org>
+In-Reply-To: <20260324005919.2408620-6-dakr@kernel.org>
 
+(Cc: Jason)
 
---FEqMr0d8osX/JtEA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index d43745fe4c84..460852f79f29 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier_bl=
+ock *nb,
+>  	    pdev->is_virtfn && physfn =3D=3D vdev->pdev) {
+>  		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+>  			 pci_name(pdev));
+> -		pdev->driver_override =3D kasprintf(GFP_KERNEL, "%s",
+> -						  vdev->vdev.ops->name);
+> -		WARN_ON(!pdev->driver_override);
+> +		WARN_ON(device_set_driver_override(&pdev->dev,
+> +						   vdev->vdev.ops->name));
 
-On Thu, Mar 26, 2026 at 03:35:15PM +0000, Marc Zyngier wrote:
-> Well, merging the first batch of vgic-v5 patches didn't go smoothly at
-> all. We initially found a couple of regressions, but most of the crap
-> was actually uncovered by everyone's new best friend (enemy?), the AI
-> bot sitting behind sashiko.dev [1].
+Technically, this is a change in behavior. If vdev->vdev.ops->name is NULL,=
+ it
+will trigger the WARN_ON(), whereas before it would have just written "(nul=
+l)"
+into driver_override.
 
-I threw this at my CI, nothing blew up though that's not testing any
-GICv5 stuff particuarly.  FWIW:
+I assume that vfio_pci_core drivers are expected to set the name in struct
+vfio_device_ops in the first place and this code (silently) relies on this
+invariant?
 
-Tested-by: Mark Brown <broonie@kernel..org>
+Alex, Jason: Should we keep this hunk above as is and check for a proper na=
+me in
+struct vfio_device_ops in vfio_pci_core_register_device() with a subsequent
+patch?
 
---FEqMr0d8osX/JtEA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnKrU4ACgkQJNaLcl1U
-h9AW3wf9EdXqIBsaQlQwQxuOvZ3k/PpuS/CZNW4ACvUO2DScpqwdQ0kqubK0wzr6
-Kr0C7MKhZYadbDGhFYyVzPe7xXv4eCLm9UQgW/cxz+81H0eKEYqHEadi5vqcpx7h
-CdL85S6ZoSQmX4MQAB3A7qgH47+a6ZCpklKWnhM07hSYdO4eBcLtDz3GgsC+gLIA
-+ShtQ+egZ3fNVCGqbxCKumRMT3kB9p83xzlOZahLP/S9ZwMRX0KMEdbTmTlA0yUE
-ZsN5c7jW6Ab6rQcwgBB9spUYPZ3eF6/OosLMDBupD/eeFtXazmKw+7D4ws+ha6nJ
-5n6SHqstbRQoNg0wohXPl169w9a4Dw==
-=eT1A
------END PGP SIGNATURE-----
-
---FEqMr0d8osX/JtEA--
+>  	} else if (action =3D=3D BUS_NOTIFY_BOUND_DRIVER &&
+>  		   pdev->is_virtfn && physfn =3D=3D vdev->pdev) {
+>  		struct pci_driver *drv =3D pci_dev_driver(pdev);
