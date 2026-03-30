@@ -1,309 +1,227 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010025.outbound.protection.outlook.com [52.101.56.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F2B2ECD1D;
-	Mon, 30 Mar 2026 22:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09673E6DF0
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 22:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774909680; cv=fail; b=QpY83hYjVuz5w/oBk5Cr8Z3FSvI/gyQ46NVpMS3MbnFxO7o7J8S/LQRHv7wShNgx/nWfbDfD/oFldwNDlxNgRjjsC342PL7eSgVAwyBysocK5o006KBT3lpxCcEyRZ7prWvsbTLlUTeFTCinuL4CdFjpUohjbSBxVaYJpG/z/u0=
+	t=1774910027; cv=pass; b=iZHMQQXQsa3Jjh93txaHt9Ta/sRYsQu9UXq57QB4uG1XIbFiyKIVV20e8nqk/zcV624Y4HkYWeP5Tvf45ayNioxD4mhdAa0keaiMMilEK5azOsgSbOerQxM64KOUy3IIx79Ul+uDsPXZ5YF/ln0HLBqBkSOwVPHcCBdwkmVUUFw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774909680; c=relaxed/simple;
-	bh=B08BzL4bUlZA479/ayP0vpa44usqAHD68UYyj4AZaIw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTs6VQ8FfKcreXFizq4yeR6KDQYZBLcE+Og/otg9HHpN8XwptT71prKHdycnfpvBzAE0fgA7flJd5H/FQXG9v0OeAj8S9XhdAV809oqrapcCdZJkWmZjQM3PChAkbMclSa3WYrJBK4ljFTuj+Z7DuQEcP6q0QH4KarQl2x9xL90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BnsOf1HN; arc=fail smtp.client-ip=52.101.56.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1774910027; c=relaxed/simple;
+	bh=e9kO4i8JRYHa4vG3b7wxafUDCr6xuJfaRYocvq41hns=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=HRO6n0pQV0VnW83oaE8nU/qC+m9Lc69W37D5QihZygLMw9BGMzp/rV7hCZzJARymeqSIq19/kqTR8yIfYG18Br+iBNYU+wAKC4SgjEzubetWsCKzKk2Vc88c7XXfFZ9K/rnd1QnspearN938BH4CsaCiOb3tWnOQuEZC1IhI2So=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/BFbV/a; arc=pass smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BnsOf1HN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XiJ6jbI9Yc2QpZGNDbQ5Tgf+jjsC/2FYHx3DCCE2pkoHvlv4DmaLBME+AkrqYHQjbGvKVvoz9WEFE/2MHOJEIKgY19oyDjXRmWgBGlDVpkzb+BYqFssvlCTBUwzIfbAghkF1ILrGNKLXFg8MA2Ie19i2TXrKWitoYW3GzyrGA+TIMu8gE710i3T5XyEsmCwiKL0KyKik5nsdJZ875cTqSbJRqWlDFLEiHWqpb0uOD7hoccysiKmiXuRKQffSSHkqUSGsICROLFYyS9dxhlkDpo/8L4bO9vSzcUJSjd/fX//KTfxpUpr/VySlk/Lm6yfCs/io6KlU+kY3nRQ8PiMmcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kMySisFAIG5ncG9Qw6fAdUl7gZdelDGZNv0cJE/pflU=;
- b=q2awvA+ZRMI8mBeAg3LZ9femD78EWxQCDMaMfC8SJ7v0ZeYqqTKqsMB/7Bxfx/NcfgpQyBFEqUrtlqF5uJYW7VOKY/YAvTphrOOBxbWXNXlMXjGphBIwGWkS5XVjHhtBn0zQk8mBooWmougPGHpLbKDuLiK1jfn9uikIrEUmGecGYEyd2XaDgVfJjqIkrYnuC6KULWAMab9SXfxCUY6EVoMzcqaxjiJz7DNkHRRUhQQp98uJZ37K2BSoPLCPbKEmQ/Rpb0H+CgQ2FyVn116HODEsmLufY0+RAOnrobWRcco3oVsjpmETKDZj8Uc/l34e+bO0TgFdWRFB8SWbrgaF9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kMySisFAIG5ncG9Qw6fAdUl7gZdelDGZNv0cJE/pflU=;
- b=BnsOf1HNWRnR+WFzI0Qjd2hpytjia/WFMM/LEg2zwJ77I75zSyOXCogQ2/sbx5cdYjX0MvlM/IqLSANJf1v1Do0Rpat9+s3vPLUTIacTalnqGL65UWeIBTHFAdpCslQnIugD9aOVmPx+Uo/IcDOIMQnwiZDF0V7Rnl6lAMUZjL4=
-Received: from BN9PR03CA0535.namprd03.prod.outlook.com (2603:10b6:408:131::30)
- by PH7PR12MB8053.namprd12.prod.outlook.com (2603:10b6:510:279::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 22:27:35 +0000
-Received: from BN1PEPF00004680.namprd03.prod.outlook.com
- (2603:10b6:408:131:cafe::ba) by BN9PR03CA0535.outlook.office365.com
- (2603:10b6:408:131::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
- 30 Mar 2026 22:27:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00004680.mail.protection.outlook.com (10.167.243.85) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 22:27:35 +0000
-Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 30 Mar
- 2026 17:27:33 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
-	<Nathan.Fontenot@amd.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-Subject: [PATCH v3 6/6] x86/sev: Add debugfs support for RMPOPT
-Date: Mon, 30 Mar 2026 22:27:24 +0000
-Message-ID: <3368b33065b45d14902ce8471ab8434d79446096.1774755884.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1774755884.git.ashish.kalra@amd.com>
-References: <cover.1774755884.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q/BFbV/a"
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-650086e46b5so471500d50.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 15:33:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774910019; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YjAcVZ8loblISjeEHP+TqFvFS+Y3V2eMrz75GtpbgoHkGyHhNJxM2ORBq3FJJn8f5g
+         h8zlxDtPWRrdLabVudWw/AKathAIHujUtrU8fi3YFAzbt4j1I0OSP/ioHD3J+flyQxB0
+         b3+D4qoemp1tYgyL7elfifQXNTypRG3BZlgKof7XWBPM5t/s3W9n2fWkhj16DAxR8uCS
+         NnQijLYbDSk+BSRWczYhQWjyFrNVBzfNQjRsenyH3qeA/arUKadE6D+l8MKG5y/tHPOr
+         XtvBUzs0OdL4KChCOEeQSy9AOLfPD+RHPhBPPH7OOilhyR1pX4qdNze7BOYVvOH9Ju2j
+         FM1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=iSQIVtNwmgy11GPH4hBTtVMQtkU5/chWZgBufGmlYz8=;
+        fh=5AO88n8XTjTnUtkbeESv8iKczAdpBtSnA+QD1vYRrnM=;
+        b=K7arthXlISuLjjSnxTDkdY5BrqwkJ0QrP9E6KmURXQPjEnE4d+VdlCsF5mrMRnam6q
+         ZCiH2k0qvpUhpu5GJefriHDkTYyl/ss1wKIVLZmSodWIfKWjm8+KUjropZybkhjRPqh7
+         4501DTachAla/FYTP5ITr5MlYm4QPF9FjUgtQh/3Ar99JXJB1+sUz5A3p6nHeUiTVzMP
+         j6IkfQKuSYRhJcPizQdF/JZENvA1BRdzbu0/rpuI0v55Al+Ohh4OHUDMGVC02HTRc1cn
+         L5D4FfqEAAvpvJrKM49cr2zFRnzXCY0/02mD8tyYkU6OUzlI9AX/P9VoOpXuuiIyL5uS
+         EfIg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774910019; x=1775514819; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iSQIVtNwmgy11GPH4hBTtVMQtkU5/chWZgBufGmlYz8=;
+        b=Q/BFbV/aPAcYVVAzhWfL4G/WJVe9Q65iLiq9EpY3KMc31V4t0yyqvAuqtp4b0iYfMd
+         1CezyxPAuigdyBXJrl0SlYDhdMhX4m+hinunTEbvEbAqXmFHlYuBiMESt7mrh0VeBb2d
+         kNEx3a169q8WVGanePGIuB9Xs0ZBdpELXmnFSxFn4zl5127SRhUgkawRpPwKSw3iWZhC
+         pjoVVe3DtaPdDTDIsW9n0qFIO2pnz3RjPen8q/yKliKLJEMLqkWRdyzpXo4wpjxkH36g
+         4dHF18MBUP2dbHHIrBc0KX08O9RPdtoa/0F59TeIqHUddFewfJNRpB6NPqan6bBOBcJQ
+         mFKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774910019; x=1775514819;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iSQIVtNwmgy11GPH4hBTtVMQtkU5/chWZgBufGmlYz8=;
+        b=sHQSwAGOPJXcJDhbArB1JyNpqZ/55FIYqiEEz5YC+VP1ZYTiFrJFzt8H5h2h8JlKPL
+         MAmRPR7d5TP70eu/xoOU3ON0Wgi3fak6P0RH6CtpkkYtoCUgxvA1tORbDzC8RR4jeEDz
+         QMd/aBdXzG3g1gze3rIk5OEL2RbyX24dVpBpt1OpYntN1BFz6fmfzOt70f1qlJXbzO80
+         w7w/I524f7hHP9gjyV+a47yB1le7IeqZWu3AQMT2YAwZoAmS4PuMLAI8FnhKLnieNZq3
+         1+Ipn0q4osgJq9T2vCsPhkBzzObVxHFL3rKx9u51+nIvutuufHmi39sy169PRJIxJvOr
+         1AMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUawMnwYmvQHVa1g2HlOZhxXWnGNI834o44rsVGRwq6hf98AdlOJqqlH+cKlN0lMrbiOyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQMpCIeWGsqTfDLVqgE83j7RqjlyDyyHpgBEilFq538Ym6hUzT
+	wwa3t4mH7C8+1Dg2nsmMMRL8SN3P+2hya2tGbI28v1+rehMwcl1Do6yvv/9nmEZ9wuGQl5ont4x
+	GAKR43633GVvTmPtdsP9mVma99N6TZJJ3KZ3SSwk/Tw==
+X-Gm-Gg: ATEYQzy4kA+CtoRxr/Svne+CBacCUjmp7YizJB4hZvFrReQfc6MAueIM60SkcWbzo6m
+	kpnQOxKSn7v8Sb6VHtFx/7bB2abEi0DzU/DRQ+5hTLquodQVC7hjjOzpED+Mav9Ne4PD/Q0FDn7
+	hem5TvNnXZ7NAGAVr/OujhXk2G8SjBjn9UQEB1UTPhjlLUw6UO6iXZZjhGb7JvrHzaUY+w6ZwX9
+	R/fIPRmeH5pfVSPSrI93rHUI1d2xx1h+rJ1L69NUTHXYnUwwlNx1YQwel8KOLsbphNtXasc79LX
+	+vJSA63+d+dDcCfItX3Kc12jtWQtzcXt603yVoGwEw==
+X-Received: by 2002:a05:690c:e363:b0:79f:6e27:a4da with SMTP id
+ 00721157ae682-79f6e27a8c0mr34255967b3.1.1774910019233; Mon, 30 Mar 2026
+ 15:33:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004680:EE_|PH7PR12MB8053:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1ed5153-2096-45c2-095a-08de8eab8ab2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|7416014|18002099003|22082099003|56012099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	bmKocBsy1h1uzNxfkNG1ibCSEkByZoWqOnwTeE/P2NTOwM+4IYEPgCPJA7BvE0CJuycdiVQ4zvhbO14PSERmtewC0XTokJLyv9cnJOAnX0ojXML6/s6T9LjYYNOGggUPQlavSW4CgcQFzVaqz0dnu7CkU9l+0ZgjZ8S75fFY+og5iDxQLKXMnfVCilDdnEJE5JeDGUk0hikU6C8fl9WRtSKJBJvLFlpbNCseB7CA365I5BA/w9cu5/WXsAuag8GDlmLHfkWh4o8wyLcfid+Y6Ap3uGT3jAPRwIrzJORdaAX0yUd7UYsqOSudvWOrwslHAo8LQKCTM1+RshhHvOaF5wo7qM5VDeL8dlLNcEt+fHyZCvw4hS21vGc1bVIRZeh+0i99PPxcESHk7kShi9wJQV/mxfXYJpdRP8EtBJAkxihtx8Gjg3+JB6NmJancIDrUYvbTH/GaQGPZOI0tXzpaEE9WpfUxXRg9+DTyk4oy5I9FMQmvkrsiNZycvCnhg/l+cLcI0Rj2pTolzZRcyMz4qU+aInK3S0USHIvpBXRPaE0IUparKvPj90JwLp5wLqkzVcMak6EQVUzy0Jmy811XxZQxkNPGLKZZRDjAP794dZsalSr1CJGJIGOdyc++TXApq7ZpMOjNhFl3yZCbJg6N/gvXqdbkPT/sGpWgp8LADWua3aDu3tQWhnY5oia/AcgCcYyMLGPpXgYdMZxPiEbHyyY/wwplPiWVjFykMVGMdRwaAazI6V/Kn+inA6QrQO35z2pcKV4NwoKW+KK7dntmS8RHq+CDme888srCurwmNbn5z0E8TSzJJw5hNxkpTq5d
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(7416014)(18002099003)(22082099003)(56012099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	wAyi6SrK5Ks6ZHn51PTPfF/N4VKeLND7obVDv9xTbx/7d7bw5jaXMCLEWo1FSe9jKAcaLX5Bqp/vedOo45HFd1mdYGUFGy+InsFp6UJySI7jeNINPUAczC0XamDdNzmXts8Ll8McKaKLejU/ldvSGDQFFS3YFpG2BHnrhy/rMkPSylyssdrwvx+5YH9jEMa9NDYvU0CyXoTvhYkk+v+iGOrqKxC+u1JdQ7WZlLb/cY5yMwudkc52xWGzNxpjmUQ1Y4i/QAc5dsCGmJ7R0DR9DFwhPWv2XOEOZ/vuW5zwqt3aZkO1trGywqtrFFzunr9trrIHxolYqhSOu9Po9pegdGOvWL8C2gmHJDzfvbSWjELtYSsB6rshHtk0qfm9twcEgwl4ZZiJCWxBTBv256QUM4HaV77mzGS+Sqk0HCupnA8tRWsd+Yp6rLvHMrDnsUl/
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 22:27:35.0249
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1ed5153-2096-45c2-095a-08de8eab8ab2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004680.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8053
+From: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+Date: Tue, 31 Mar 2026 01:33:28 +0300
+X-Gm-Features: AQROBzBOf-pe5jARXyQ2xtgPPEYRjgNTKCd_ydItIeFDxwB4jvitxg0Ydy4TYnM
+Message-ID: <CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com>
+Subject: [BUG] x86/tdx: handle_in()/handle_out() use one-bit-too-wide GENMASK
+ for port I/O
+To: x86@kernel.org
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org, kas@kernel.org, 
+	dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use:
 
-Add a debugfs interface to report per-CPU RMPOPT status across all
-system RAM.
+    u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
 
-To dump the per-CPU RMPOPT status for all system RAM:
+GENMASK(h, l) includes bit h. For size=1 (INB), this produces
+GENMASK(8, 0) = 0x1FF (9 bits) instead of GENMASK(7, 0) = 0xFF (8
+bits). The mask is one bit too wide for all I/O sizes:
 
-/sys/kernel/debug/rmpopt# cat rmpopt-table
+    size=1 (INB): GENMASK(8,0)  = 0x1FF       vs correct 0xFF
+(extra: bit 8)
+    size=2 (INW): GENMASK(16,0) = 0x1FFFF     vs correct 0xFFFF
+(extra: bit 16)
+    size=4 (INL): GENMASK(32,0) = 0x1FFFFFFFF vs correct 0xFFFFFFFF
+(extra: bit 32)
 
-Memory @  0GB: CPU(s): none
-Memory @  1GB: CPU(s): none
-Memory @  2GB: CPU(s): 0-1023
-Memory @  3GB: CPU(s): 0-1023
-Memory @  4GB: CPU(s): none
-Memory @  5GB: CPU(s): 0-1023
-Memory @  6GB: CPU(s): 0-1023
-Memory @  7GB: CPU(s): 0-1023
-...
-Memory @1025GB: CPU(s): 0-1023
-Memory @1026GB: CPU(s): 0-1023
-Memory @1027GB: CPU(s): 0-1023
-Memory @1028GB: CPU(s): 0-1023
-Memory @1029GB: CPU(s): 0-1023
-Memory @1030GB: CPU(s): 0-1023
-Memory @1031GB: CPU(s): 0-1023
-Memory @1032GB: CPU(s): 0-1023
-Memory @1033GB: CPU(s): 0-1023
-Memory @1034GB: CPU(s): 0-1023
-Memory @1035GB: CPU(s): 0-1023
-Memory @1036GB: CPU(s): 0-1023
-Memory @1037GB: CPU(s): 0-1023
-Memory @1038GB: CPU(s): none
+In handle_in(), this causes the VMM response's extra bit to overwrite
+one bit of RAX that should be preserved. For INB, bit 8 (AH bit 0) is
+overwritten from the VMM response instead of being preserved from the
+guest's prior AX. On native x86, INB only modifies AL -- AH is
+preserved.
 
-Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+In handle_out(), one extra bit of regs->ax is sent to the VMM beyond
+what the I/O width requires.
+
+I did not find a broad exploit in common kernel callers under tested
+GCC/Clang toolchains, because many typed u8/u16/u32 paths naturally
+truncate or zero-extend the value before reuse. That is not a full
+non-exploitability proof, though: some ordinary in-tree caller shapes
+may still preserve the primitive, especially read/test/write-back
+sequences such as inl(...) followed by a branch and outl(same_value,
+...), or inb(...) followed by if (v) outb(v, ...). I am therefore
+treating this as a correctness bug in the #VE emulation path with
+guest-config-
+dependent leak potential, not as a proven broad exploit.
+
+Expected vs observed (INB, size=1)
+----------------------------------
+
+Native x86 INB: writes AL (bits 0-7). AH (bit 8+) is preserved.
+
+TDX handle_in() with buggy mask: clears bits 0-8, then sets bits 0-8
+from VMM response. AH bit 0 depends on VMM, not the guest's prior AX.
+
+Live reproduction
+-----------------
+
+GCP c3-standard-4 Confidential VM (TDX), kernel 6.17.0-1009-gcp, 2026-03-30.
+
+Kernel module sets AX to two values, does INB from CMOS port 0x71, checks AH:
+
+    Test A (AX=0x0000): result AX=0x0026 AL=0x26 AH=0x00
+    Test B (AX=0x0100): result AX=0x0026 AL=0x26 AH=0x00
+    *** AH same in both tests (0x00) -- bit 8 from VMM, not initial AX ***
+    *** GENMASK off-by-one CONFIRMED on live TDX ***
+
+    10x test: bit8 set with AX=0x0000: 0/10
+    10x test: bit8 set with AX=0x0100: 0/10
+    *** Bit 8 independent of initial AX -- CONFIRMED ***
+
+In test B, AH should be 0x01 (preserved). Instead it is 0x00 --
+overwritten from VMM data. 10/10 consistent. Reproduced twice on
+2026-03-30, including a fresh rerun on a new GCP TDX VM.
+
+Additional live write-side confirmation
+---------------------------------------
+
+Separate raw-asm kernel modules confirmed the write-side primitive
+reaches the outbound sink for all widths:
+
+    [outb] before outb A = 0x005a
+    [outb] before outb B = 0x015a
+    [outw] before outw A = 0x00008086
+    [outw] before outw B = 0x00018086
+    [outl] before outl A = 0x0000000012378086
+    [outl] before outl B = 0x0000000112378086
+
+For correct emulation, only the intended-width values should be
+exposed to the VMM: 0x5a / 0x8086 / 0x12378086. With the current
+handle_out() mask, the paired local payload simulator gives:
+
+    outb: 0x05a vs 0x15a
+    outw: 0x08086 vs 0x18086
+    outl: 0x012378086 vs 0x112378086
+
+This is not a host-side capture on a controllable TDX VMM, so I am not
+treating it as a full confidentiality exploit. It does strengthen the
+claim that the extra-bit write-side primitive is real on live TDX for
+outb, outw, and outl.
+
+Secondary issue: missing zero-extension for INL
+------------------------------------------------
+
+Separately, handle_in() does not zero-extend bits 32-63 of RAX for
+size=4 (INL). On native x86-64, INL writes EAX which zero-extends to
+RAX (Intel SDM Vol. 1, 3.4.1.1). handle_in() preserves bits above the
+mask instead.
+
+handle_mmio() in the same file handles this correctly:
+
+    case INSN_MMIO_READ:
+        /* Zero-extend for 32-bit operation */
+        extend_size = size == 4 ? sizeof(*reg) : 0;
+
+read_msr() also does it correctly:
+
+    regs->ax = lower_32_bits(args.r11);
+
+handle_in() has no equivalent. Same compiler truncation caveat applies
+-- no known practical impact via standard inl() callers.
+
+A separate raw-asm kernel module reproduced this on the same GCP TDX
+kernel. Preloading RAX=0xDEADBEEF00000000 before INL 0xCFC produced
+RAX=0xDEADBEEE12378086, and preloading RAX=0x1234567800000000 produced
+RAX=0x1234567812378086. Bits 33-63 remain stale from pre-INL RAX; bit
+32 reflects VMM-controlled data; lower 32 bits contain the expected
+PCI config data.
+
+Fix
 ---
- arch/x86/virt/svm/sev.c | 107 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 107 insertions(+)
 
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index 784c0e79200e..04d905894408 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -20,6 +20,8 @@
- #include <linux/amd-iommu.h>
- #include <linux/nospec.h>
- #include <linux/workqueue.h>
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
- 
- #include <asm/sev.h>
- #include <asm/processor.h>
-@@ -143,6 +145,13 @@ static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
- 
- static unsigned long snp_nr_leaked_pages;
- 
-+static cpumask_t rmpopt_cpumask;
-+static struct dentry *rmpopt_debugfs;
-+
-+struct seq_paddr {
-+	phys_addr_t next_seq_paddr;
-+};
-+
- #undef pr_fmt
- #define pr_fmt(fmt)	"SEV-SNP: " fmt
- 
-@@ -500,6 +509,8 @@ static inline bool __rmpopt(u64 rax, u64 rcx)
- 		     : "a" (rax), "c" (rcx)
- 		     : "memory", "cc");
- 
-+	assign_cpu(smp_processor_id(), &rmpopt_cpumask, optimized);
-+
- 	return optimized;
- }
- 
-@@ -514,6 +525,17 @@ static void rmpopt(void *val)
- 	__rmpopt(rax, rcx);
- }
- 
-+/*
-+ * 'val' is a system physical address.
-+ */
-+static void rmpopt_report_status(void *val)
-+{
-+	u64 rax = ALIGN_DOWN((u64)val, SZ_1G);
-+	u64 rcx = RMPOPT_FUNC_REPORT_STATUS;
-+
-+	__rmpopt(rax, rcx);
-+}
-+
- static void rmpopt_work_handler(struct work_struct *work)
- {
- 	phys_addr_t pa;
-@@ -560,6 +582,89 @@ static void rmpopt_all_physmem(bool early)
- 				   msecs_to_jiffies(RMPOPT_WORK_TIMEOUT));
- }
- 
-+/*
-+ * start() can be called multiple times if allocated buffer has overflowed
-+ * and bigger buffer is allocated.
-+ */
-+static void *rmpopt_table_seq_start(struct seq_file *seq, loff_t *pos)
-+{
-+	phys_addr_t end_paddr = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
-+	struct seq_paddr *p = seq->private;
-+
-+	if (*pos == 0) {
-+		p->next_seq_paddr = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
-+		return &p->next_seq_paddr;
-+	}
-+
-+	if (p->next_seq_paddr == end_paddr)
-+		return NULL;
-+
-+	return &p->next_seq_paddr;
-+}
-+
-+static void *rmpopt_table_seq_next(struct seq_file *seq, void *v, loff_t *pos)
-+{
-+	phys_addr_t end_paddr = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
-+	phys_addr_t *curr_paddr = v;
-+
-+	(*pos)++;
-+	if (*curr_paddr == end_paddr)
-+		return NULL;
-+	*curr_paddr += SZ_1G;
-+
-+	return curr_paddr;
-+}
-+
-+static void rmpopt_table_seq_stop(struct seq_file *seq, void *v)
-+{
-+}
-+
-+static int rmpopt_table_seq_show(struct seq_file *seq, void *v)
-+{
-+	phys_addr_t *curr_paddr = v;
-+
-+	seq_printf(seq, "Memory @%3lluGB: ",
-+		   *curr_paddr >> (get_order(SZ_1G) + PAGE_SHIFT));
-+
-+	cpumask_clear(&rmpopt_cpumask);
-+	on_each_cpu_mask(cpu_online_mask, rmpopt_report_status,
-+			 (void *)*curr_paddr, true);
-+
-+	if (cpumask_empty(&rmpopt_cpumask))
-+		seq_puts(seq, "CPU(s): none\n");
-+	else
-+		seq_printf(seq, "CPU(s): %*pbl\n", cpumask_pr_args(&rmpopt_cpumask));
-+
-+	return 0;
-+}
-+
-+static const struct seq_operations rmpopt_table_seq_ops = {
-+	.start = rmpopt_table_seq_start,
-+	.next = rmpopt_table_seq_next,
-+	.stop = rmpopt_table_seq_stop,
-+	.show = rmpopt_table_seq_show
-+};
-+
-+static int rmpopt_table_open(struct inode *inode, struct file *file)
-+{
-+	return seq_open_private(file, &rmpopt_table_seq_ops, sizeof(struct seq_paddr));
-+}
-+
-+static const struct file_operations rmpopt_table_fops = {
-+	.open = rmpopt_table_open,
-+	.read = seq_read,
-+	.llseek = seq_lseek,
-+	.release = seq_release_private,
-+};
-+
-+static void rmpopt_debugfs_setup(void)
-+{
-+	rmpopt_debugfs = debugfs_create_dir("rmpopt", arch_debugfs_dir);
-+
-+	debugfs_create_file("rmpopt-table", 0444, rmpopt_debugfs,
-+			    NULL, &rmpopt_table_fops);
-+}
-+
- static __init void configure_and_enable_rmpopt(void)
- {
- 	phys_addr_t pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
-@@ -613,6 +718,8 @@ static __init void configure_and_enable_rmpopt(void)
- 	 * optimizations on all physical memory.
- 	 */
- 	rmpopt_all_physmem(TRUE);
-+
-+	rmpopt_debugfs_setup();
- }
- 
- /*
--- 
-2.43.0
+In both handle_in() and handle_out(), change:
 
+    u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+
+to:
+
+    u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+
+Reproduction modules available on request: portio_test.c (read-side
+INB), portio_pure_out_test.c / portio_pure_outw_test.c (write-side),
+portio_zeroext_test.c (INL zero-extension).
+
+    Tested on: GCP c3-standard-4 Confidential VM (TDX)
+    Kernel:    6.17.0-1009-gcp (Ubuntu 24.04)
+
+Borys Tsyrulnikov
