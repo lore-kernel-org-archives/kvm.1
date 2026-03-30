@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B410F3BF66E;
-	Mon, 30 Mar 2026 10:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F9026AE5;
+	Mon, 30 Mar 2026 10:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774867975; cv=none; b=d4MnVEIpJEWt0EsVhCnnZxwmBwMCjjuCwbtcd91+8y2NdSDAthnjDAxghx47SJU0P6HISJNP4Wg6Wy4trfm5QDbPk+Xzwp5isHf8EFRc5TFJjJ63vHcdTUPFzLN1cvCjnNo+064sL7scsNHJ1Yir//HxVU1HPpGu17jpakgnmhg=
+	t=1774868293; cv=none; b=JnUTnOpJy7wzyIXafe3ji21bBpns8Acrzjt8XlDLp3V1q5mbliLiVfDUELuzJW0sBSk7hgAY+ez3H3Lo7vbQgV8Q+D6wTTZ9KNPv8VwrAiqrgMP2oIml6ls/6bC8PLI1orLa5thldkECiEAjtm8s/KzzRIiFLusj09oHLbFe4jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774867975; c=relaxed/simple;
-	bh=+19Be+jxc7eVo6ptCT9N5p5AxdrCYoGU6ESzG8t9WMM=;
+	s=arc-20240116; t=1774868293; c=relaxed/simple;
+	bh=mONBCtbmbPff0A3dabS2nwwbs9ct9e5u1BA9P4VrR5c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bffrWO8sxRm+p8UKeklN6zYIUKh583TgP4XI2HbuwnLU9/1wdNb2QKG3sRYA8QvsZvYdse8+QJeByWZQHe8JRprtcI6Kdl137NOfX/fSRIGY5x+4C8Pygj0d7NCKjQgpw3/YgIzbDeMcVrTjZ+C9IyxxTcFbqvtwb9pZQv6bREM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ww1bWqYF; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=JtqPYMoRSgarA0T9Zp3OjKx6WJZNJzaHy6NVs1bZacXwhyB7Ef3erMf2q6QSlPjFrrvf5wGBVDFT7o5+JkRMtLMFFYYG7MHaCNLDNBiRDz3td7nZ42E8QTAQwwUIcbtJurphoiI5iO4AACt1w2YSEJKGH3aehKF/s2eY7Uba3Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=O7cDYZFH; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ww1bWqYF"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="O7cDYZFH"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43A1B1C2B;
-	Mon, 30 Mar 2026 03:52:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B3351C01;
+	Mon, 30 Mar 2026 03:58:02 -0700 (PDT)
 Received: from [10.57.13.56] (unknown [10.57.13.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CEE5E3F915;
-	Mon, 30 Mar 2026 03:52:49 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0D4A13F915;
+	Mon, 30 Mar 2026 03:58:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774867973; bh=+19Be+jxc7eVo6ptCT9N5p5AxdrCYoGU6ESzG8t9WMM=;
+	t=1774868288; bh=mONBCtbmbPff0A3dabS2nwwbs9ct9e5u1BA9P4VrR5c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ww1bWqYFHkJLZhcCE6e8ZBiflNW2C5IphbVCSs/zVp/vxuEClcMS56xJox2ODahwj
-	 LRbyhNBB3fyWq5WX4kJWb+mBsO+xQWPASS6t7IPQrBSXBMZlSMjqaAR1bIi5HLon85
-	 iF0M837dqYrazZwcQ7FR4BsQCvEpvt9PN+k5O8Co=
-Message-ID: <4a2ab5b0-dec6-4ee2-8790-f27c2501f653@arm.com>
-Date: Mon, 30 Mar 2026 11:52:48 +0100
+	b=O7cDYZFHXEzuxS8cQTR9gIEc1iShETlDG4sQ/XazlOkV5Mry75J+eICB0NiKv1k8b
+	 vleJTNMbKT4ovAUQsnrDoU09OL258RoFomntVNwjHtTcFp2F0bgoQYw7qTcvmA15iV
+	 0fBuYUY/dJ4ycbTn4G3WwWoi/4cWPdqxRX0+03BQ=
+Message-ID: <053a048d-bcb7-46ef-a4c2-c5d0c84a3177@arm.com>
+Date: Mon, 30 Mar 2026 11:58:03 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,82 +35,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 32/48] arm64: Don't expose stolen time for realm
- guests
+Subject: Re: [PATCH v13 34/48] arm64: RMI: support RSI_HOST_CALL
 Content-Language: en-GB
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+Cc: Joey Gouly <joey.gouly@arm.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
  Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
  Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
  Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
  <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
  Vishal Annapurve <vannapurve@google.com>
 References: <20260318155413.793430-1-steven.price@arm.com>
- <20260318155413.793430-33-steven.price@arm.com>
+ <20260318155413.793430-35-steven.price@arm.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260318155413.793430-33-steven.price@arm.com>
+In-Reply-To: <20260318155413.793430-35-steven.price@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 18/03/2026 15:53, Steven Price wrote:
-> It doesn't make much sense as a realm guest wouldn't want to trust the
-> host. It will also need some extra work to ensure that KVM will only
-> attempt to write into a shared memory region. So for now just disable
-> it.
+> From: Joey Gouly <joey.gouly@arm.com>
 > 
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Forward RSI_HOST_CALLS to KVM's HVC handler.
+
+Minor nit: Please could we add a line or two, explaining what 
+RSI_HOST_CALL is ? e.g.:
+
+Realm's can talk to the hypervisor using the RSI_HOST_CALL, which
+the RMM forwards to the KVM. Handle them as regular hypercalls.
+
+Suzuki
+
+> 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 > Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
 > ---
 > Changes since v7:
->   * Update the documentation to add a note about stolen time being
->     unavailable in a realm.
+>   * Avoid turning a negative return from kvm_smccc_call_handler() into a
+>     error response to the guest. Instead propogate the error back to user
+>     space.
+> Changes since v4:
+>   * Setting GPRS is now done by kvm_rec_enter() rather than
+>     rec_exit_host_call() (see previous patch - arm64: RME: Handle realm
+>     enter/exit). This fixes a bug where the registers set by user space
+>     were being ignored.
 > ---
->   Documentation/virt/kvm/api.rst | 3 +++
->   arch/arm64/kvm/arm.c           | 5 ++++-
->   2 files changed, 7 insertions(+), 1 deletion(-)
+>   arch/arm64/kvm/rmi-exit.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
 > 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index bc180c853faf..70911fe6d435 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -9240,6 +9240,9 @@ is supported, than the other should as well and vice versa.  For arm64
->   see Documentation/virt/kvm/devices/vcpu.rst "KVM_ARM_VCPU_PVTIME_CTRL".
->   For x86 see Documentation/virt/kvm/x86/msr.rst "MSR_KVM_STEAL_TIME".
+> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+> index b4843f094615..7eff6967530c 100644
+> --- a/arch/arm64/kvm/rmi-exit.c
+> +++ b/arch/arm64/kvm/rmi-exit.c
+> @@ -116,6 +116,19 @@ static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
+>   	return -EFAULT;
+>   }
 >   
-> +Note that steal time accounting is not available when a guest is running
-> +within a Arm CCA realm (machine type KVM_VM_TYPE_ARM_REALM).
+> +static int rec_exit_host_call(struct kvm_vcpu *vcpu)
+> +{
+> +	int i;
+> +	struct realm_rec *rec = &vcpu->arch.rec;
 > +
->   8.25 KVM_CAP_S390_DIAG318
->   -------------------------
->   
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 61182eb0cf70..7d92ddb06460 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -469,7 +469,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   		r = system_supports_mte();
->   		break;
->   	case KVM_CAP_STEAL_TIME:
-> -		r = kvm_arm_pvtime_supported();
-> +		if (kvm_is_realm(kvm))
-> +			r = 0;
-> +		else
-> +			r = kvm_arm_pvtime_supported();
+> +	vcpu->stat.hvc_exit_stat++;
+> +
+> +	for (i = 0; i < REC_RUN_GPRS; i++)
+> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
+> +
+> +	return kvm_smccc_call_handler(vcpu);
+> +}
+> +
+>   static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
+>   {
+>   	struct realm_rec *rec = &vcpu->arch.rec;
+> @@ -183,6 +196,8 @@ int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
+>   		return rec_exit_psci(vcpu);
+>   	case RMI_EXIT_RIPAS_CHANGE:
+>   		return rec_exit_ripas_change(vcpu);
+> +	case RMI_EXIT_HOST_CALL:
+> +		return rec_exit_host_call(vcpu);
+>   	}
 
-Could this be handled in kvm_realm_ext_allowed() ?
+Probably we should move the RMI_EXIT_HOST_CALL case addition in 
+kvm_rec_pre_enter() to this hunk to keep all in one place ?
+
+Otherwise, looks good to me.
 
 Suzuki
 
 
->   		break;
->   	case KVM_CAP_ARM_EL1_32BIT:
->   		r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
+>   
+>   	kvm_pr_unimpl("Unsupported exit reason: %u\n",
 
