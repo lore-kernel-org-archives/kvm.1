@@ -1,188 +1,160 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AB237D135
-	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 06:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774851733; cv=none; b=pJBUxf3RTWl3YKCCKpDWAXHvLXc2p25zvWKBeqTTCGNgN7cgjYAO4QtqW4SmcSOp480/wU0GKg+zXYl1PUHb090lnqx3sqMmBCbWJOMpr5mlvpSTBnaxtrGSiLI0t7ut13rVxLUhj/GMLfrKQSWDdoKNmlMyDZ1jMwmrCg/v2sE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774851733; c=relaxed/simple;
-	bh=2Q3sHfHVl0uTOU0PkxV4Dtu553zyQ5HsII5inPyRfTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MEaseVOuS4ZytUILuC3LukMJB9tAHvYlgfun7qws/Kg+pj0Slw8XK2e7IBqF49ZOi0wSAq1/LfAkWwhkILWzZEzTYmjhBBWBwD/eYHG0EbxNLk2nk7ZZERD1OqzGPtYTYuFw8jTDuEoThxGxcWahrUA3TuddW5ZPxBr24kWWSA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ITBmfkdG; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BAA2EA754
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 06:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774851966; cv=pass; b=tTmH7g6ljE0ahNoBWQ2ERPKA+7uWADYC42dRoaUWWqtO+glj2s4B0N8Kr9rySMN5+GSEVmA+A9vNITV0IAohQKHTNlS2ZLkQ0k1qFGdvCqW1wjnjLq3bTtkj9LnVb8ncqADIcU1WN3LRLZFBPNAYNCXwMRfGsOzYBaBiL/UVDs0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774851966; c=relaxed/simple;
+	bh=7/2jt3MiR29tu71W2kAToigR83F/W34kwzsrw6lCAac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XeVIrwl29VbhbOtgFzMSZ9bgIBGP4AjQUkajIrEFa/o5P7dysSxhrj8lT7nMNj+iKbFwzrpCcipoJ37uBwCwV4StTO9cGQdWy68ig7Qtgz330/jN2juql4umv/9h8vHoSqeegFRstOAIOOT+xyDh6OqEJM6B4T+5NK9sKqFUVGc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=sCFV6hwg; arc=pass smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ITBmfkdG"
-Message-ID: <0064952b-048c-455d-ad89-e27e5cb82591@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774851728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JRGlqTUddNs22qbjK1XF9AytOTARdjde3qWaPPuWarI=;
-	b=ITBmfkdGvwuPDXnsffYC3RL1CaOmCF/2VlOTHdKT+Q7ImF10cXOMIoVaLLRIU4blXOt6tP
-	duQCcmk2g36LuwcQWBgCNhYQYhVZf0XcLdzLJABnsHxs6Gkks4lvw9jpYB4A7jo5ZZy2Hs
-	0Pk3+FiE2FReGdaXwbt6hKscxnFc+Cc=
-Date: Mon, 30 Mar 2026 14:21:50 +0800
+	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="sCFV6hwg"
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-67c250805ccso1528794eaf.1
+        for <kvm@vger.kernel.org>; Sun, 29 Mar 2026 23:26:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774851964; cv=none;
+        d=google.com; s=arc-20240605;
+        b=edCaxn47ZLdhkGzlWhttg12b3cNdNnq5Ty4inlv1i2gIRpMZwzNWMwe3oh5dD8hdjJ
+         4dYYh6tUZy9tTk8vfQ7fhtYNnmXv1TiUQynWCtbPd076LMFyJ7TvEBqPtw3i8Kq8s97i
+         kLHjxrD7gHrYHWL9I/XTO5kGIbHuAbLR26kVZfSns01iCoRZ0DbfGozJ/b2eh1xSka1e
+         LtzunAaeReITq9gbb85svtLYgPoF/vNCYaNozS09dsb+xPuzOWfwNTLoX6YmkfhsLXB+
+         V/3tbY0MQUln39gBMfwpZZduxN8r4+Mf64fzeyxRvf3ZqOzyd0mT1smVnEVQvulHdHn1
+         nE5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BJL4Mjb1KkwQXihagjZYCJrbQf8hr8cjcUo/ljk+BF0=;
+        fh=Tje/I1vJrcbuuiJoOWtO3LJgSGNdwcrBa4GsP6Ntrfc=;
+        b=iVCm3UKcHwtsGkwFzoIvO+SDZDWSLjkKYuLRZ9MLnXAj57rx06S71J85KkC9WAhVj1
+         /U66YBQ+hxTm64LkS/zZ3g9PSkfkbN60KrAkb7rL72fctv02aC/daSMwzEo/pE4JMBf9
+         wXY9SxfVoL7hTILI0w8zN2VGBJpQKi8J9HwBDSZiR82I2LMkWpsIE7/tjNfQUDVgw4Cs
+         35vTtt3qSb3lKTJmy/g0HbtFjzpE0TYcMNL7ggFujv3Ny0Cl7AP5RkARYAQPWtboD9MO
+         /sxv8sUTDA1ssfEFS/2JTbI9e3XhrATi0436diaoGmdKNUScIb7z+jyNMfIO1TrcU0cq
+         V5yw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1774851964; x=1775456764; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BJL4Mjb1KkwQXihagjZYCJrbQf8hr8cjcUo/ljk+BF0=;
+        b=sCFV6hwg5bi1IhX41qbVoqrD/9ie+TAOXsMVpOLRpPBcgJJ/x6I73YygvsblrGHjGx
+         Zs8eLT3ycWZ40bc/MXP3o/P4SLJ3jHQ9aey6xaoU2nyzWKC1HPs9gvRjIbhvS2ekBrtn
+         fkl7rPsjk6NSziU6Qc9GONdmkPC7AP5NQcwMtYlzJ1Dfprz7IGosBB5yK/T17AweTfH+
+         x3SwvkM8PxKmSo0Ycq96zq76rnXmv8zMRnaGiBxZDvqTdK2st9ead/O2U5p3vGsdI+cv
+         1WNKW8slxQ7AW9E0636eV59iTWOSnn7bq/BwyxCUdc21j18oDVj0UxFiKruui+KiSWaj
+         D8wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774851964; x=1775456764;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BJL4Mjb1KkwQXihagjZYCJrbQf8hr8cjcUo/ljk+BF0=;
+        b=cH2wDidnF+LnT08sUi5eA5LixZkOm5DO6Qyg2c/Ogx/Rw5FOYBXVkdEthigmId/yGz
+         rtHLtKAdmMAEsIlE9XAR+b24lHHUu5M5oHBymmwFgmv6QkRmf4wxAQq9bY0VSRRsnThR
+         xXm9GzO2ZZqmI0VcybE6C64q8CqeQGpQG9EWvz5nedKIbf9UUfXx7I5NcdLo8oE+noBE
+         /81QBBPDM86P0rYpZ2oP78FGT8TuCEKlfF7vowg/idur3NALDUGNwKc8o6YrTdta+oMV
+         Z0x8IO2mfdIsYbFzjMpw6W3Z+t0ksISW9Qx3G4g92K5FAJHVNNBz5MGsTueKZq04T+wL
+         hjgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSXH9qkGAKtaMMuNo4113qghOLBpyza59+TyUyTXLF8xBFlPlTaeOzzd31caWMsTFGp8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzafBAmhDIM1kH1RuzmQ6Ffo+42FNQ7V/rCrv555jdQxRkcLL/T
+	fbFAMIazH0iyQDbU2VB3/AHnKxjF3k7PDfKeKAtfkUSOqUG1+iDrVpqiGMrTfpiqMr6gBNjVgOe
+	PQmcsbXe7BHUXsGEeLY7IYJfRiEn8MZRN09nk0syOkA==
+X-Gm-Gg: ATEYQzw38fJo+Tt2JMdjsWruMEC7raPp4XP4HQr+6wSlgwm3Ja4dDp+0ZUJZBVE1R8x
+	dWU/2P6dJ9TMw8fx9d8nAIHUJyjug/6MHu7hXTBLTar0z/j4LdTp6sh2/8XJwhmbUddBGiquLc6
+	UULphk7jBV2SuILPTPgPXKUYVAFRcUy9ELcRga6aPl6WyLJLcaqsbG3ax5I5+Sdvgw9CL2NArMw
+	MHkuK0Pr6vkkxtgYxCCpPT9TstplTrDvUIicuT5s+1YbF08ou4fDVA4uiSb2DzGrGqgpBWdZve/
+	mMxv/dHwuQFfprRhGV0t/EzyFvmzkfalpRe2ZnLeg1sujdu1KL/uH7Jibf9J/f6l5A8hMkmjxDC
+	scXHLI/F7XtvzhnhZck1M7MAn4Q==
+X-Received: by 2002:a05:6820:1746:b0:67e:1259:ab08 with SMTP id
+ 006d021491bc7-67e185f02a4mr5516515eaf.5.1774851964222; Sun, 29 Mar 2026
+ 23:26:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v17 24/24] KVM: selftests: Add guest_memfd testcase to
- fault-in on !mmap()'d memory
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Gavin Shan <gshan@redhat.com>, Shivank Garg <shivankg@amd.com>,
- Vlastimil Babka <vbabka@suse.cz>, Xiaoyao Li <xiaoyao.li@intel.com>,
- David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Tao Chan <chentao@kylinos.cn>,
- James Houghton <jthoughton@google.com>
-References: <20250729225455.670324-1-seanjc@google.com>
- <20250729225455.670324-25-seanjc@google.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20250729225455.670324-25-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260316141234007qSAOsesu2cSQsj-LA-qq3@zte.com.cn> <20260316141631543e3oVI3JGADhz5veSRD_eC@zte.com.cn>
+In-Reply-To: <20260316141631543e3oVI3JGADhz5veSRD_eC@zte.com.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Mon, 30 Mar 2026 11:55:52 +0530
+X-Gm-Features: AQROBzDjrvHHyJxz8FHwAkL524ioyt0BKjQVXcYMmumnhJBSe00NB84q2suAzEk
+Message-ID: <CAAhSdy0KBL1oTbsTVnqdcFmkcOBGs+kEyQWKmJ5iYj8MzJw0Jw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] RISC-V: KVM: Fix lost write protection on huge
+ pages during dirty logging
+To: wang.yechao255@zte.com.cn
+Cc: atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, nutty.liu@hotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Mar 16, 2026 at 11:46=E2=80=AFAM <wang.yechao255@zte.com.cn> wrote:
+>
+> From: Wang Yechao <wang.yechao255@zte.com.cn>
+>
+> When enabling dirty log in small chunks (e.g., QEMU default chunk
+> size of 256K), the chunk size is always smaller than the page size
+> of huge pages (1G or 2M) used in the gstage page tables. This caused
+> the write protection to be incorrectly skipped for huge PTEs because
+> the condition `(end - addr) >=3D page_size` was not satisfied.
+>
+> Remove the size check in `kvm_riscv_gstage_wp_range()` to ensure huge
+> PTEs are always write-protected regardless of the chunk size. Additionall=
+y,
+> explicitly align the address down to the page size before invoking
+> `kvm_riscv_gstage_op_pte()` to guarantee that the address passed to the
+> operation function is page-aligned.
+>
+> This fixes the issue where dirty pages might not be tracked correctly
+> when using huge pages.
+>
+> Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programmin=
+g")
+> Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+> Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
 
-On 7/30/25 6:54 AM, Sean Christopherson wrote:
-> Add a guest_memfd testcase to verify that a vCPU can fault-in guest_memfd
-> memory that supports mmap(), but that is not currently mapped into host
-> userspace and/or has a userspace address (in the memslot) that points at
-> something other than the target guest_memfd range.  Mapping guest_memfd
-> memory into the guest is supposed to operate completely independently from
-> any userspace mappings.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+LGTM.
+
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Regards,
+Anup
+
+
 > ---
->  .../testing/selftests/kvm/guest_memfd_test.c  | 64 +++++++++++++++++++
->  1 file changed, 64 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-> index 088053d5f0f5..b86bf89a71e0 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -13,6 +13,7 @@
->  
->  #include <linux/bitmap.h>
->  #include <linux/falloc.h>
-> +#include <linux/sizes.h>
->  #include <setjmp.h>
->  #include <signal.h>
->  #include <sys/mman.h>
-> @@ -21,6 +22,7 @@
->  
->  #include "kvm_util.h"
->  #include "test_util.h"
-> +#include "ucall_common.h"
->  
->  static void test_file_read_write(int fd)
->  {
-> @@ -298,6 +300,66 @@ static void test_guest_memfd(unsigned long vm_type)
->  	kvm_vm_free(vm);
->  }
->  
-> +static void guest_code(uint8_t *mem, uint64_t size)
-> +{
-> +	size_t i;
-> +
-> +	for (i = 0; i < size; i++)
-> +		__GUEST_ASSERT(mem[i] == 0xaa,
-> +			       "Guest expected 0xaa at offset %lu, got 0x%x", i, mem[i]);
-> +
-> +	memset(mem, 0xff, size);
-> +	GUEST_DONE();
-> +}
-> +
-> +static void test_guest_memfd_guest(void)
-> +{
-> +	/*
-> +	 * Skip the first 4gb and slot0.  slot0 maps <1gb and is used to back
-> +	 * the guest's code, stack, and page tables, and low memory contains
-> +	 * the PCI hole and other MMIO regions that need to be avoided.
-> +	 */
-> +	const uint64_t gpa = SZ_4G;
-> +	const int slot = 1;
-> +
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	uint8_t *mem;
-> +	size_t size;
-> +	int fd, i;
-> +
-> +	if (!kvm_has_cap(KVM_CAP_GUEST_MEMFD_MMAP))
-> +		return;
-> +
-> +	vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1, guest_code);
-> +
-> +	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_MMAP),
-> +		    "Default VM type should always support guest_memfd mmap()");
-> +
-> +	size = vm->page_size;
-> +	fd = vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP);
-
-This test fails on arm64 when vm->page_size is 4k and host's page_size
-is 64k:
-
-[root@localhost kvm]# ./guest_memfd_test
-Random seed: 0x6b8b4567
-__vm_create: mode='PA-bits:40,  VA-bits:48,  4K pages' type='0', pages='660'
-==== Test Assertion Failure ====
-  include/kvm_util.h:683: fd >= 0
-  pid=889 tid=889 errno=22 - Invalid argument
-     1	0x000000000040262b: vm_create_guest_memfd at kvm_util.h:683
-     2	 (inlined by) test_guest_memfd_guest at guest_memfd_test.c:450
-     3	 (inlined by) main at guest_memfd_test.c:491
-     4	0x00007fff8f56af3b: ?? ??:0
-     5	0x00007fff8f56b007: ?? ??:0
-     6	0x0000000000402a2f: _start at ??:?
-  KVM_CREATE_GUEST_MEMFD failed, rc: -1 errno: 22 (Invalid argument)
-
-Thanks,
-Zenghui
-
-> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL, fd, 0);
-> +
-> +	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-> +	TEST_ASSERT(mem != MAP_FAILED, "mmap() on guest_memfd failed");
-> +	memset(mem, 0xaa, size);
-> +	munmap(mem, size);
-> +
-> +	virt_pg_map(vm, gpa, gpa);
-> +	vcpu_args_set(vcpu, 2, gpa, size);
-> +	vcpu_run(vcpu);
-> +
-> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
-> +
-> +	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-> +	TEST_ASSERT(mem != MAP_FAILED, "mmap() on guest_memfd failed");
-> +	for (i = 0; i < size; i++)
-> +		TEST_ASSERT_EQ(mem[i], 0xff);
-> +
-> +	close(fd);
-> +	kvm_vm_free(vm);
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
->  	unsigned long vm_types, vm_type;
-> @@ -314,4 +376,6 @@ int main(int argc, char *argv[])
->  
->  	for_each_set_bit(vm_type, &vm_types, BITS_PER_TYPE(vm_types))
->  		test_guest_memfd(vm_type);
-> +
-> +	test_guest_memfd_guest();
->  }
+>  arch/riscv/kvm/gstage.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index b67d60d722c2..d2001d508046 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+> @@ -304,10 +304,9 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gs=
+tage, gpa_t start, gpa_t end
+>                 if (!found_leaf)
+>                         goto next;
+>
+> -               if (!(addr & (page_size - 1)) && ((end - addr) >=3D page_=
+size))
+> -                       kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+> -                                               ptep_level, GSTAGE_OP_WP)=
+;
+> -
+> +               addr =3D ALIGN_DOWN(addr, page_size);
+> +               kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+> +                                       ptep_level, GSTAGE_OP_WP);
+>  next:
+>                 addr +=3D page_size;
+>         }
+> --
+> 2.27.0
