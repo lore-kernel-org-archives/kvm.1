@@ -1,125 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DA7306D2A;
-	Mon, 30 Mar 2026 12:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7639B13777E;
+	Mon, 30 Mar 2026 12:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774873068; cv=none; b=q2JL4bde+BvCSTKlfu750r6w4wATGnKRIcRizQOTAI/Daah3Se+hwgApTgx3jRKhp+SlLfr37gcrDVC+/qTeqXghzh0D5GDdZ1M5tA0apk8CNtfNhm9nDpXSYqvNXGR+oiJawPKxsVgxJDbXj2tPsnMRtEvkQpkC2sFfKe45gB4=
+	t=1774873597; cv=none; b=c65y1+1oQ0s8bwcJ6dxCjmqHzgKtQo2slcTeRonDjlXiF4C2pXlKi/DM8xjyypz07cw3FnCyBEW9Qll8SRraTaZEq88LqezUNbf2sDQr5Kh3pdvIh0dPnz/un3WxXEKCCh+VEIi8UHKBC3m/gjhnaQbs2OZ2Ps8dbaR0W1DUIeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774873068; c=relaxed/simple;
-	bh=zeKFVpdAfIum0NKsvb2F2pCJfenzKs8whCcofbsI9Js=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EikA263QQdvothWQGAcASx4ym2NZi5hqF1hZl0LXv8s0wMZmj6HsWY3HiNswgy0llmT/Dzn3Rig4nTc1BxJ1jkDLAyVsQhU0ituTpcZoNFFD95LcL1NZ50sOakdrFq9wyZ+tR3apNlWWYi987c/LHe4Ra1lZSQUBqmiHDO6X07A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naxpmJpu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774873597; c=relaxed/simple;
+	bh=QRkVq68AhvQBU2IIyTcjOxCFbwOvpa/xx4EJ6j98e/o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AhHQ7bzCKbVvxYIJq67HT8ATrbtbhjw8IwSGbyfATZt3ilbGZtBRrWDJkdWkJdWnuJBhfmGWyDRvIdqxirQ4RoUxk8lADv2ooxzQ2MQbVL/lZqMZxW+NDUOeh7ICATprdOLRMQMm4ZSvYUof1WjmqEQBckhoBzEIV9mUO6j5EkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=azDjTWd1; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naxpmJpu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED12C4CEF7;
-	Mon, 30 Mar 2026 12:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774873067;
-	bh=zeKFVpdAfIum0NKsvb2F2pCJfenzKs8whCcofbsI9Js=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=naxpmJpudZmV6cJ2x3BxM2UAxdDKK6zOxpRWUSCx0VMwLBXL84/DFUlWV5fE9h+S+
-	 9SFx/+SHIMWaCcAKmpdQZ0LChs37rgXC8qGSzNDLSglWsdJYDsmgJ5BM6xMeyb0gID
-	 dVPka1n8WQ9QmHba8CQb4yS5Vr7H1sPCZvBS0L5EJ9wLnK8RrRYsQmNgfbhFLebJEp
-	 Ec8L7efFMrGk/ieoZvlRfQCilFy146xciS7Cr+4CadLELFsILNcSqDzITk7TLmBwS1
-	 xVFWoqfWVRFhil7QW8+aQWz4MCt7a+49OqryJ2FuSZWRCbLwzZwEbyvL0VDDPmiLE8
-	 eXtcwnXvpCngg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w7BYv-000000074gj-04eQ;
-	Mon, 30 Mar 2026 12:17:45 +0000
-Date: Mon, 30 Mar 2026 13:17:44 +0100
-Message-ID: <878qb9cxzr.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Cc: Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose
- <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Mark Brown
- <broonie@kernel.org>,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="azDjTWd1"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774873590; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=e3bSMhi6+wVEeJDisGEe9u8O9wBAMD6ULsYIH98k5xg=;
+	b=azDjTWd16GBLsCRCEE45XXhC0diX0GZtiSJ2c4Ii+2ZM/EhUlev8hzoG9zFgNkY73VMmActOt3mWN6reK/7yVxwho3BxmJ0Y0vhzLjqMePAA1f2xoZXcnkrnMLd1WsLXhpJrjgDJ7vsy2gA7QZqkqzYUHaBiG7d/ujwoADPfdvo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R691e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.zfcHH_1774873586;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X.zfcHH_1774873586 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 30 Mar 2026 20:26:28 +0800
+From: fangyu.yu@linux.alibaba.com
+To: pbonzini@redhat.com,
+	corbet@lwn.net,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	skhan@linuxfoundation.org
+Cc: guoren@kernel.org,
+	radim.krcmar@oss.qualcomm.com,
+	andrew.jones@oss.qualcomm.com,
+	linux-doc@vger.kernel.org,
 	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH v4 35/49] KVM: arm64: GICv3: nv: Plug L1 LR sync into deactivation primitive
-In-Reply-To: <2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
-References: <20251120172540.2267180-1-maz@kernel.org>
-	<20251120172540.2267180-36-maz@kernel.org>
-	<2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v6 0/4] Support runtime configuration for per-VM's HGATP mode
+Date: Mon, 30 Mar 2026 20:25:57 +0800
+Message-Id: <20260330122601.22140-1-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: vishnu@os.amperecomputing.com, tabba@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, christoffer.dall@arm.com, broonie@kernel.org, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 30 Mar 2026 12:51:51 +0100,
-Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
-> 
-> Hi Fuad Tabba,
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-To be brutally honest, I doubt Fuad really cares about NV,
+Currently, RISC-V KVM hardcodes the G-stage page table format (HGATP mode)
+to the maximum mode detected at boot time (e.g., SV57x4 if supported). but
+often such a wide GPA is unnecessary, just as a host sometimes doesn't need
+sv57.
 
->    I'm trying to run nested VMs on Ampere platforms after this patch
-> series(v6.19+) but nested VMs are not booting and triggering soft
-> lockups on L0 and L0 hang. But just before this patch I could able to
-> successfully boot the Nested VMs.
+This patch introduces per-VM configurability of the G-stage mode via a new
+KVM capability: KVM_CAP_RISCV_SET_HGATP_MODE. User-space can now explicitly
+request a specific HGATP mode (SV39x4, SV48x4, SV57x4 or SV32x4) during
+VM creation.
 
-So the host dies? There isn't much here that interacts with the host
-at all. Worse case, the L1 dies by not making progress.
+---
+Changes in v6 (Anup's suggestions):
+    - Reworked kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size() to
+      take "unsigned long pgd_levels" instead of "struct kvm_arch *".
+    - Moved kvm_riscv_gstage_mode() helper from kvm_host.h to kvm_gstage.h.
+    - Renamed kvm->arch.kvm_riscv_gstage_pgd_levels to kvm->arch.pgd_levels.
+    - Added pgd_levels to struct kvm_gstage to avoid repeated
+      gstage->kvm->arch pointer chasing.
+    - Link to v5:
+      https://lore.kernel.org/linux-riscv/20260204134507.33912-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v5:
+    - Use architectural HGATP.MODE encodings as the bit index for the supported-mode
+      bitmap and for the VM-mode selection UAPI; no new UAPI mode/bit defines are
+      introduced(per Radim).
+    - Allow KVM_CAP_RISCV_SET_HGATP_MODE on RV32 as well(per Drew).
+    - Link to v4:
+      https://lore.kernel.org/linux-riscv/20260202140716.34323-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v4:
+    - Extend kvm_riscv_gstage_mode_detect() to probe all HGATP.MODE values
+      supported by the host and record them in a bitmask.
+    - Treat unexpected pgd_levels in kvm_riscv_gstage_mode() as an internal error
+      (e.g. WARN_ON_ONCE())(per Radim).
+    - Move kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size() to header
+      as static inline helpers(per Radim).
+    - Drop gstage_mode_user_initialized and Remove the kvm_debug() message from
+      KVM_CAP_RISCV_SET_HGATP_MODE(per Radim).
+    - Link to v3:
+      https://lore.kernel.org/linux-riscv/20260125150450.27068-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v3:
+    - Reworked the patch formatting (per Drew).
+    - Dropped kvm->arch.kvm_riscv_gstage_mode and derive HGATP.MODE from
+      kvm_riscv_gstage_pgd_levels via a helper, avoiding redundant per-VM state(per Drew).
+    - Removed kvm_riscv_gstage_max_mode and keep only kvm_riscv_gstage_max_pgd_levels
+      for host capability detection(per Drew).
+    - Other initialization and return value issues(per Drew).
+    - Enforce that KVM_CAP_RISCV_SET_HGATP_MODE can only be enabled before any vCPUs
+      are created by rejecting the ioctl once kvm->created_vcpus is non-zero(per Radim).
+    - Add a memslot safety check and reject the capability unless
+      kvm_are_all_memslots_empty(kvm) is true, ensuring the G-stage format is not
+      changed after any memslots have been installed(per Radim).
+    - Link to v2:
+      https://lore.kernel.org/linux-riscv/20260105143232.76715-1-fangyu.yu@linux.alibaba.com/
 
-> 
-> I bisected the failure to a single commit which is this patch which is
-> causing the issue.
-> 
-> I would like to understand from you that did you observed anything
-> like that?
+Fangyu Yu (4):
+  RISC-V: KVM: Support runtime configuration for per-VM's HGATP mode
+  RISC-V: KVM: Cache gstage pgd_levels in struct kvm_gstage
+  RISC-V: KVM: Detect and expose supported HGATP G-stage modes
+  RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE
 
-No. If I had, I wouldn't have merged the series.
-
-> 
-> Were you able to boot Nested VMs successfully after v6.19+?
-
-I boot L3s every day.
-
-> LOG:
-> [  164.647367] Call trace:
-> [  164.647368]  smp_call_function_many_cond+0x334/0x7a0 (P)
-> [  164.647372]  smp_call_function_many+0x20/0x40
-> [  164.647374]  kvm_make_all_cpus_request+0xec/0x1b8
-> [  164.647377]  vgic_queue_irq_unlock+0x1c8/0x2c8
-> [  164.647380]  kvm_vgic_inject_irq+0x194/0x1e0
-> [  164.647381]  kvm_vm_ioctl_irq_line+0x170/0x400
-> [  164.647386]  kvm_vm_ioctl+0x7b8/0xc88
-> [  164.647389]  __arm64_sys_ioctl+0xb4/0x118
-> [  164.647393]  invoke_syscall+0x6c/0x100
-> [  164.647397]  el0_svc_common.constprop.0+0x48/0xf0
-> [  164.647398]  do_el0_svc+0x24/0x38
-> [  164.647400]  el0_svc+0x3c/0x170
-> [  164.647403]  el0t_64_sync_handler+0xa0/0xe8
-> [  164.647405]  el0t_64_sync+0x1b0/0x1b8
-
-This trace is about interrupt injection from userspace, not
-deactivation of a HW interrupt.
-
-None of that makes much sense.
-
-	M.
+ Documentation/virt/kvm/api.rst      |  27 ++++++++
+ arch/riscv/include/asm/kvm_gstage.h |  58 ++++++++++++++--
+ arch/riscv/include/asm/kvm_host.h   |   1 +
+ arch/riscv/kvm/gstage.c             | 102 ++++++++++++++--------------
+ arch/riscv/kvm/main.c               |  12 ++--
+ arch/riscv/kvm/mmu.c                |  70 ++++++-------------
+ arch/riscv/kvm/vm.c                 |  20 +++++-
+ arch/riscv/kvm/vmid.c               |   3 +-
+ include/uapi/linux/kvm.h            |   1 +
+ 9 files changed, 178 insertions(+), 116 deletions(-)
 
 -- 
-Jazz isn't dead. It just smells funny.
+2.50.1
+
