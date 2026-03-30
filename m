@@ -1,144 +1,159 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010064.outbound.protection.outlook.com [52.101.61.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7758B3C5DA6;
-	Mon, 30 Mar 2026 13:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774877624; cv=fail; b=ey/Bqsx7LnLextof73vsxOpno8x6g04dsCd+6wiczBU6iWFS3kN5k/q0obAbzktdB98rOHIHcqtrAziZthzbc+cFX1oJflkaR8Aq+7wdMnBqouba1nxPxQPSLw2MK2/T/jQ7GxOqyFR9SDwbGnc8O2MnYFhyHmbzU6WD3Wv6pgM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774877624; c=relaxed/simple;
-	bh=9Pujk4dGqlufmzXKIKaeVEa2ZxJqxSMql42An88JObY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=vE27TNZ8eKzlPRSHE8tnI7KQvpQKrwcjOajkNHM8NiYWQ7p2k+SDvYLAqLNSd3Fg1yXn4omtkvclXQ+9pX4vuO2GB00EL8FSGSAnthvWLJ2D4IXjKUb1wGMWAd2dL5LxvR10o2K04eHPg2qy2/n+0rSTjQetmxNZ2NO0nwCQ000=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rRGE3Kn8; arc=fail smtp.client-ip=52.101.61.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039C83D413D
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 13:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774877907; cv=none; b=qVODa8JCnb4OvYsDEZec9qttm4DS77MhrU7XtsK1o7ykJTcR/rhu0Ga+kf8eF8p4M8xDRFWPaJ1SCzm54CjLHSogDecFHunB6FLNaCT4987wZBgc5vD5jLXv/jCMXihCT5mNDRV4EUg+WaJo3wBUNdYRU//GR914ejXwnBGaekg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774877907; c=relaxed/simple;
+	bh=RrqPwUTqEGSLs/qe8j7V9519WR0mB2p6TiOM/sI99YI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RxWa8WBPyoZGbpxZHBkeWiEtRF7Xhzp7FgKaw6eGAhmj+0BwKK6sFTDcyFL/NWUws2uv2uGciPcgIAit2jvTlXW2ipTDntoyfDfDyflW+f4MqQjAbU2tjlIHDYMnm74et35e0sBLlmtXFscPfbJyliHJwZe8OAe/En8/mbS2PDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pA3iVf4a; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rRGE3Kn8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TFkhqAcWfnnFDha2DFJFBjBuVOlNVH1AKQDQwAXBZe6UFbTUvKnXMgD0eaaMeJp/Qol5LM7BXAhO4IQAs8zkWhwcqw2R157PSxbjJQK/3V3PLBtEG5IUJQuPGG6705HqbhUrqRRVRvEyNJDnPPram4xD0jJa63sHsjCbG6N63x9cQMY7a0yuVgUZBweorvVa3T3DegGFG1bvbnYPL46cexR8Bi1iiiUj/1wFdrqrqNwePQFNwQvg6fvh5cjAfGPh+wVcRS2/jpbFA9iN8AVlduJ2nOL8WT1dfHoFDC129leduFLgMCm/UzyC6HC4PozGmeq6BQWCwt7B4n9l2kvOEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9Pujk4dGqlufmzXKIKaeVEa2ZxJqxSMql42An88JObY=;
- b=S+GNVBYhX2mRkaaexUSfaUScZEGA8MAXPRj43BvfuLTzlEfa2bXYGcw4zwymTN3Kids25pEV2H+f94rSZQZtNCZxLeNGuqBjWKV5afXSqXTxPb5bRuvHKM4h3el265uDXcdgkaOZpbq9PGFx8cK0SSOO75G9Hf+RZj/acpabeyS3xbNA7GAo27bk++xgk/rnQmiJ5nRRWROiS4JZeYARM8M4Uex9REskMKQwfpwrv3PTeqyWSPHWJXkN7QTDRTaLqdQO4lNI9ljIGgvW7gTyo2FluvoYsxqu3Rrb0NYCBfbA003vs2fAs0VNG2PXIOl28XFEX60A9qV6JwAAynPfBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9Pujk4dGqlufmzXKIKaeVEa2ZxJqxSMql42An88JObY=;
- b=rRGE3Kn8qe73Z2xFAVeFhhBxXrv0EgFmjZCVSaR16OzuZz+0szs2/l9BZk7fBVRrfiaeIW9U1cYAxTFY/XgL9BozIOj3JGqo0QYMsF8plbJYEbRDeOroJjv3sUU5GvBqNmvQ+n0Nrr9V3ue6w1gOCHzFYZPG6E3tnAZMl+B3fgAnveRd9g80KrAapjkJco36je1BRJjJRHuw7YZq99elOpNQgs6IFi9P1IVCPcI+gi8lHZB/Z2ovcWS8UE2fR5AEEgsMvSvbWBF1lf2jpq/P2eu1BCxRedwMc5YQXS3q+L4CsRJoM/RBo5SpjDCceqK4sZDUh4LSqvHGAO7kcUQ6yQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SA1PR12MB8162.namprd12.prod.outlook.com (2603:10b6:806:33a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 13:33:38 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
- 13:33:38 +0000
-Date: Mon, 30 Mar 2026 10:33:36 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Matt Evans <mattev@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Alex Mastro <amastro@fb.com>, Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org
-Subject: Re: [RFC v2 PATCH 09/10] vfio/pci: Add mmap() attributes to DMABUF
- feature
-Message-ID: <20260330133336.GT310919@nvidia.com>
-References: <20260312184613.3710705-1-mattev@meta.com>
- <20260312184613.3710705-10-mattev@meta.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312184613.3710705-10-mattev@meta.com>
-X-ClientProxiedBy: BLAPR03CA0180.namprd03.prod.outlook.com
- (2603:10b6:208:32f::10) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pA3iVf4a"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-483487335c2so47985175e9.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 06:38:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774877904; x=1775482704; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1K6y9UsF1LewekM6lbBYNrYJF23PRCqYpwk55A2eahA=;
+        b=pA3iVf4at0n1Dk+uCuV0jywyOz8zydHO5R+WDOoxWu7iYnP9sf7Km9D2Y1AW054ruT
+         QTt9f+KSObhvgPiBTK5JYhRzvVxE8Me1DOkAITgtScc2xB39tUMMUXDaH+HiUCw8JuJF
+         hTgvzbnkMkUbDTwtLACwmKxaDuA+RJo25Xu3rTc3wq7Mj70x0vEjYaOIOmBbN5Eb7OqU
+         IZR1V0Mi0HrJbqnTjmm9f8jxOxnzC+sykXUzw5a3TE/QegKH3tFk1vEdCrQ6D14jvMSg
+         fni65n7PJR/bO+j1mIH4eVeKxHJ4C7xjBx7wQGJ2ItiVbKZzEpCYpIv6lmmcQ13iAZeW
+         1kdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774877904; x=1775482704;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1K6y9UsF1LewekM6lbBYNrYJF23PRCqYpwk55A2eahA=;
+        b=Bca75cjzG4TrBymJmp7Vto2EoSAcMTYL+OfQ6x6PuXggIFWXf5xb9WWTKVFB+WgGlK
+         js55TWwPR8YA3wjhz5k8hxhwouRJLUG15l2WYM+A08YS7Z1OOhPgMRPHwlLbtBItVC3T
+         lEklkqizsDzQAy+s6v6gZlgLCuMSvgGLRQlqR7t/R8wbL9bRkPnpnymy1uwZVuiM9Lhk
+         xLZ+XU4HxjexBEKC6tGTjTmjYBeZWVBOc0ObdJTXDx8AGnwv+eWEnVma1JZx2YGMb5hQ
+         8IXhtEVG9qsod0NgUoHZ85bPUUZrUHYjXKE2eGqEEeDsABQXMI2J2SgB+9OUv2e54oEF
+         P/bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhY4p8HAikZO3JEjs6RrX+OGQlMj34UwKabU5e5B1xuu3UJldViccRn4ctNGwtGi3mlQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOys2wlE8qvi3cQCO/JO2BnYUEoXre9tac1qTHtSIC7hXQ7Pc0
+	CIF0Kybs8AxR3vQMFrTwNwjEAqr0OiOVe1PRmuq5YsDsUTO2IvjA3ABg
+X-Gm-Gg: ATEYQzxLj1852ACEbCM2G3M59Qi+Pi4P3A7li8l3YlAaawj4gjC1nu0NlbqSUtLeX2h
+	wopArVZBrxRuMuROHMMNFv9kK03LA0ErR9DIyp8OutqBf9ONib4ymjcPJ9FKaV5LiTyw/zm55V6
+	zL9LCUsWWB7n1leLsqRrRk+qlEpuBSQ4Anc8S70h7Nm1IlRDm/QyvROaV1S//TJYPveATp6EbSX
+	L+Wr4xPSl/jreiyTiX2Lj6YKZT0ReWLR+K9mGEc0aByuoQ6lJ02PyDNS8CJ3uLjY6BdsmaBhPwL
+	Tp/9Y2NZeOL/zqPL6iJOAM1H7Uh3M4aqrPPpJAhgAwtlQBUl7WhYwLbRLWQPM3s0QviPUlM2EaE
+	42O5YMCPAWucweDaZNiMtNLIrz0iqrn0IZHIjh1rxz9+voIgGjSf8OPob/KQyWU4Z3iyesLAJFo
+	ivFjxwwHZUaHv+qpTFcDCpPaq9BU7lyJiFAVxiC4ZnIw2NngB2r7qM/bqcCXZ7
+X-Received: by 2002:a05:600c:5249:b0:487:386:3714 with SMTP id 5b1f17b1804b1-48727f7bb08mr231528425e9.17.1774877904186;
+        Mon, 30 Mar 2026 06:38:24 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722d40741sm294000475e9.13.2026.03.30.06.38.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 06:38:23 -0700 (PDT)
+Date: Mon, 30 Mar 2026 14:38:20 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: "Bird, Tim" <Tim.Bird@sony.com>, "pmladek@suse.com" <pmladek@suse.com>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>, "senozhatsky@chromium.org"
+ <senozhatsky@chromium.org>, Shashank Balaji <shashankbalaji02@gmail.com>,
+ "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
+ "francesco@valla.it" <francesco@valla.it>, "geert@linux-m68k.org"
+ <geert@linux-m68k.org>, "linux-embedded@vger.kernel.org"
+ <linux-embedded@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, x86@kernel.org, Paolo Bonzini
+ <bonzini@gnu.org>, Sean Christopherson <seanjc@google.com>, KVM
+ <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3] printk: fix zero-valued printk timestamps in early
+ boot
+Message-ID: <20260330143820.605b29ed@pumpkin>
+In-Reply-To: <87fr5ib6ks.ffs@tglx>
+References: <39b09edb-8998-4ebd-a564-7d594434a981@bird.org>
+	<20260210234741.3262320-1-tim.bird@sony.com>
+	<87zf3ud92r.ffs@tglx>
+	<MW5PR13MB5632FC91EE0EF8754331400DFD57A@MW5PR13MB5632.namprd13.prod.outlook.com>
+	<87jyuvboo2.ffs@tglx>
+	<87fr5ib6ks.ffs@tglx>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA1PR12MB8162:EE_
-X-MS-Office365-Filtering-Correlation-Id: d65c013a-1b1e-47d5-9b76-08de8e60f2f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	Mfv/xvRXOyL2vpO+FpgYNHd4FLCNjGCkxGPSjHmtB9tmVkxhFOQGdfbjNt6N7qaWbNFQT9lneIv0q58YldF+QLT7v2kViTsQwrPv5DuZojtFbryCU0YAcb5BInmCZfFMRmDHQ0eUSYVp5DE6+gQXqIRu7EoSXP49Yxfw/99xAqOuDKdaBy4oZwZx2xEtBuMvG5CS2GCxUZifQu98bBSdVFjto2Hd0LAVNFOuGiKiRCJ+O+tky9nRL5b94ZVD6LFQdtJt5TvifQCfNM6oOHKjJWzSVSDt5P4Ulwyjx/I/DkJOIUAnx613VSZEoMXHLs0PdO81x1XH+ErrbARX4bx3RtPJaDgl7quc/fecTLtvsut4Wiyrw7hBhgtDyd0huF6FUcb/a8YqxmxUm6H9x8Fv6cq+inmwDTivSL44uFbXnb94PmHaVYRk2y02XhHykG7O4o76xoDpCW11MdiVQdOmiCwLfBVzza3ks99s0us+Xn96tIlVIcoAJqS0IEJUHQ2PR/loWXNof7fOx9VdhXFIe7Cyyqm+de16Z1I5PsCKdZaDlgdTUCx45YTQ/KjSWW0VXRmO7YcApRaQpZGiZ8xAZBVaJRQ0WGbliTJyqUpUzH0lskW4Rq/2KUs0WJiK24WasVeyCkGJTxdQX9MVIswL9pwkm+uJfCgKPJpFwP14nnHG/WJvylgw3qGY2RiViDPHncwDWhszng0Y5SCK0mp4sJ2yiUicaEcXi/ymCav+lkw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Cep76aewBNsCGFY5xmYcGu8FL9LNfZWdDJnBVCZsy1v0WRJdbZF3wGwRzhPe?=
- =?us-ascii?Q?vTZRR1n5FARtqFhg3T83oveQ1a/Cq3CX3i7R3BjsTNICssUZ+rTLPrPKwEPa?=
- =?us-ascii?Q?PAQrH7mkggoWY1Y4VXGWOxAxEjZ3EIPCIfI9HQpjEguuoE1Mpll4AguNECj8?=
- =?us-ascii?Q?/KCiLWsXBK2+8HLrQQ1bic4J6Q09eoLeKDEAlS0RNfYc1FlCHI/voqE0pnUt?=
- =?us-ascii?Q?+vJKtanZlvnhDI8L4fyYCdKsiyiS8lHjmGWpyPNDzM4AI3rohJpqd1c3Q7Vn?=
- =?us-ascii?Q?tHYG4d7MGARa8xEC/LXoOkdCgr8GXI7v74DhToU4SvGUdqRIV/YKJbZhH5Fj?=
- =?us-ascii?Q?XWJnykD+EdugJEkgcUiqg44NA4G/s88skV1B5tTNmu97Au8bIFBHxA0pJ3Sk?=
- =?us-ascii?Q?yeOScJdgID1iPiN2t5RiIVxkdBIUCCvYHlNOaQBKRIuczmuL7DQIX/YuSkPL?=
- =?us-ascii?Q?KCYcCEEnxjYzbCx9WAnc1CfkFp/STWIVDi8RqeMNExJoyDhh8Vsr8puWlYCN?=
- =?us-ascii?Q?4khvvEgrX4l2DhCWADyY03ZiHew8RTyy64/vD1GbmtipmVVUNOposTyhkffz?=
- =?us-ascii?Q?Ok5UAvr4HALPSc6zRe0CPr3ZfEJqt6T8X+bWrgUl2pmskzSDFCET46x/Wdju?=
- =?us-ascii?Q?lXUCtex6fugJh/xI5UkHG/31A2Z3q15oiiWge6M6K10+FamVbcEVzkSdU0/p?=
- =?us-ascii?Q?uQTDmPBMWJ+A/IXb2WR8oLfQX4SIPi4QHUrV48iieYOR9rFkq6Z1PlL3+6vy?=
- =?us-ascii?Q?JAIa8XErdIlSUBEtfC5hTr3KtXvmmK4YY1JnTsTc1Q9d64W+YSba2Ambt7Tg?=
- =?us-ascii?Q?c/wnUmux5CdQs1jLnCQ7GHYC26o4UsZMP8UDh9/8nWN27NUZ8zVWzeEIqfcL?=
- =?us-ascii?Q?NtMky89NAa2sHoa9aEH9kFub/Ff3dxbHVZnbEgo8Bdt7IkN/3Xqgam86hb5/?=
- =?us-ascii?Q?e1kExIhSwbvuYEEV+kQPTa6k5hzq2725l6dJg9XE6w1wATn3bqVeSIpOayXG?=
- =?us-ascii?Q?P6psBimVltaxzUHmtuDpVX38SAJuKVZhJ+O4Ao4Np42I+MeO6dIIUw83sMmI?=
- =?us-ascii?Q?YhEo2Z/wiMjzo/0dungT8PrWygW17vAnnBR59CxKGYFzz7W7IzEkDAcN9M+1?=
- =?us-ascii?Q?nVxm1XLmUnHh+fSzs9eThiWdJp4D+ouQl0glnpHgrrXRWu3+TSNKKHdqturk?=
- =?us-ascii?Q?ReUN003Cek4pkaGha9iXjwT4pLl1RTyy7Le/C64FdETemdkx9EX4FjEvA+bF?=
- =?us-ascii?Q?hgycsoJE/JdpzLDg/rLlOBUsDFujkp+77XFcZj2UpYx86FmpDDJVu4L2xvE6?=
- =?us-ascii?Q?cIzJxxDJlY1Ea7XCgxUkv3fu/whTP011KuYBAEH/8k6ih6K00Z27ZLp2NSP2?=
- =?us-ascii?Q?Os+gRVI+6blZz72ZDrEml5J+MwtOKwvwYK2HJKnB+Vuu+q+u+21bbGINiebC?=
- =?us-ascii?Q?w7AwGQW6z6yoNUZSYAkzoNp3Xvda15jkyMMBFzqPqPGMNUFIRcekFG0WNl8a?=
- =?us-ascii?Q?1Elj4Nfqyi9IyHjwf7H177vfi6bojk30Xioiuk/e15bEkZe+uHJxqoJTmD7a?=
- =?us-ascii?Q?aiR6ude0gJYo285MYdiEeU5rPrBMKETWrbVbG9enTYSKSi/b+isbUjAXYJ1i?=
- =?us-ascii?Q?Jq3ECUoDETSltq//rjwSqhzlxwl6HkIlyi/HE5cvWaGYlQvrlZM7LPAQrlqj?=
- =?us-ascii?Q?gQ7vNWS2nilZY8B9GgtHh+5mg4G+7/xTwekX02F53ys5Cj5G?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d65c013a-1b1e-47d5-9b76-08de8e60f2f2
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 13:33:38.0534
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p3MYCT7qiID55Jcg8RSvibbewI/Asvb/fjEkLiMAOkyH9qVHWouDI8ZDzKj6hp8b
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8162
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 12, 2026 at 11:46:07AM -0700, Matt Evans wrote:
-> A new field is reserved in vfio_device_feature_dma_buf.flags to
-> request CPU-facing memory type attributes for mmap()s of the buffer.
-> Add a flag VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC, which results in WC
-> PTEs for the DMABUF's BAR region.
+On Mon, 30 Mar 2026 00:42:59 +0200
+Thomas Gleixner <tglx@kernel.org> wrote:
 
-This seems very straightforward, I like it
+...
+> If you want to have early timestamps then you have to go through the low
+> level code on every architecture and do the proper sanity checks,
+> enumerations, etc. no matter what. There is no guarantee that you can
+> use any clock unconditionally during very early boot.
+> 
+> As you have to do that anyway, there is _zero_ justification for an
+> extra facility side stepping sched clock, which would just create
+> another pile of technical debt.
+> 
+> Quite the contrary, I'm going to get rid of technical debt:
+> 
+>   The get_cycles() related changes in tsc.h are going to end up in a
+>   obviously revised formal patch tomorrow as there is exactly _zero_
+>   requirement to provide this as a functional interface.
+> 
+>   1) The default implementation in asm-generic returns 0
+> 
+>      Ergo any code depending on a functional implementation is broken
+>      by definition.
+> 
+>   2) The ops/cycles metrics are as bogus as the infamous BogoMIPS metrics
+>   
+>      The "cycle" counter runs on almost all contemporary CPUs at a fixed
+>      frequency, which is completely unrelated to the actual CPU
+>      frequency and therefore to the actual CPU cycles.
+> 
+>      The only realistic metric is ops/sec and nothing else and that can
+>      be trivially achieved by using the generic time getter interfaces.
 
-Did I get it right that the idea is the user would request a dmabuf
-with these flags and then mmap the dmabuf?
+ops/sec is also horrid because you get all all the interrupt time getting
+in the way.
+Additionally it is only any use for relative comparisons done on exactly
+the same hardware, and is entirely useless is you are trying to show that
+a short code loop is running at/near the theoretical rate.
 
-Jason
+The only thing I've found that works is the PERF_COUNT_HW_CPU_CYCLES
+counter (low 32 bits).
+In userspace you do have to directly read the register (rather than using
+the library function - too much overhead), and ignore any silly values
+generated by interrupts and process switches.
+But it is accurate enough to time single function calls and see the
+effect of things like mispredicted branches and the data-dependency of
+divide instructions.
+
+But I do agree that the TSC is entirely useless for measuring what it was
+originally intended to measure.
+
+	David
+
+> 
+>      Those might end up resulting in bogus benchmark results too if the
+>      underlying clocksource is jiffies, but that's again a matter of
+>      accepting reality.
+> 
+>      If people really mandate that ops/bogo_cycles is required for the
+>      very wrong reasons, then I'm happy to bring it back with a global
+>      name change from get_cycles() to get_bogo_cycles() which excludes
+>      it from any serious usage including printk.
+> 
+> Thanks,
+> 
+>         tglx
