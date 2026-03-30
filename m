@@ -1,108 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A6A3793D0;
-	Mon, 30 Mar 2026 16:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D186387591;
+	Mon, 30 Mar 2026 16:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774888139; cv=none; b=ad3UZ87Atc+Dl/pvWDK+z/lXRL8Ov7hrVab+QiNPu5ZlVC9MX0oCq9ri5wrtS0jczBclwSiJ+d1TNskvmxR7WXe4adgM7n72sImtpUZWe1aNyZtSKF9h93oGVwroBSalNi0LSLRCJdNeSTgEcbBbs39Tx1s6dzmR7f6ckh6qt9I=
+	t=1774889928; cv=none; b=ZnD5bGUYo7jle0syvMOY6S6syR+r24oZSzYe+M/BZvygOHOC7chN56HHSqhvuJYc4yHsS1JmNoKtw0m7rwgOozyASDvITb3R6IJ3TyiFN2YGmNATkFeYljsH60z3OI4KxjF3/Q+4erYeI2LK5o8BoRKe1+WgDjqLTOn/SU3igqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774888139; c=relaxed/simple;
-	bh=HnR3T8HyhR5zh3UidQc9tY5GP+iCNJ+9G4eesNsn66c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SUDhd07PBiVBhnoqnSir44k5vwicaFjFvBEUZlOJFdDDaR8IErB8Rf9InZ6cehUx0Jd/MF34n0qqEwAsLtPANDZ6s449VHBmdImlyZ8HxHR5H3TvmMHhGk+t90Wr+vTzN8AAnX1qU4OVjpW2aSW50YKaddGsKtKhItNVDp4X2Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/3XWocf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774889928; c=relaxed/simple;
+	bh=VKLvp+uMOOd5LtXSPJlywGPSf2VfxikxJgexH7lMKFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pjdwG3qA9wT8xfrKKPSWnUM4TIWWXzDCN3DYit3a8fEjx7HDqgtBTsG+vgo+pwS4T2xHZXG4NdzB309dGJ3388LT0Wg/TrieC2B2PS7hFxuxwLvfQ5X/a7G7pIEWkdjBQSGPk/retUM8+fAsIoOpIVN3NWn2Vwyg+fPcbYEe3hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=R+KSHUsn; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/3XWocf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2732FC4CEF7;
-	Mon, 30 Mar 2026 16:28:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774888138;
-	bh=HnR3T8HyhR5zh3UidQc9tY5GP+iCNJ+9G4eesNsn66c=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=P/3XWocfTvHDzL/TvgnY90VGL4nSlLd5QBe5hsYLKubBK3nWHOJaPjPq5JQAaRhM8
-	 iAGk5KjaD3ik9GNqL6YSdRdGeXxBgLs24zJtsj3e6fxOpDbi7ZZd8I/d1cyMypX8NE
-	 2XOL2YHA8im3TC/6MZc4CKSvIWYdWZeBHcvNBDXSWRJJuejsAH9jaZzQRbryV+m5kG
-	 lnPI2WxSgVXB97c4laa/t/vZgU3QAb4tmja9ypMEFSoxTNm4EFRWFco06IOLdeGzNC
-	 AdWvpkXe36xoTq6sFQYDIMUXUgS6vorYizdKVDGjM2rmv+ZiFnuwAzo46ijHVV7DUf
-	 PA+6jJae0BAbA==
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="R+KSHUsn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=LTYcvaP5MEZnE+DljoPd73awiPBytEGfcZ6MHlkjhGA=; b=R+KSHUsn6FqBDM6KGGgxGj/Cz5
+	bN/ZlNffp9KiVMc1nTrjrIIRvoWeIrimELIrliaHthag29/n0qpvD056G6AlgpwiekIx2e5aXWZIx
+	Co0B1gG4ciOcSm0kV0C6iVZe6jiaZeSeVVs5cjJdzOONR3pPfput9jGav1GyzT0eqJPkMb2Twp8Ss
+	0J1byszlS+zY6BY63OJFURoYN7LQM2/Qq/YqyO2f/YNwdVxW7075NyzG1u3op0PWbVrhJ65Zr2wTb
+	N/BM0a+FKiRiiQvjkOpyi/Pfgq5zBORtaPDe10yNXJbCwIFHa+jR4sNvJ80Ze9jQF5A7FCfarA9LR
+	+w3gOueA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w7Fwb-000000071eX-3KA4;
+	Mon, 30 Mar 2026 16:58:29 +0000
+Date: Mon, 30 Mar 2026 17:58:29 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 07/15] userfaultfd: introduce vm_uffd_ops
+Message-ID: <acqrtd7E6UxrX6Ji@casper.infradead.org>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-8-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 30 Mar 2026 18:28:48 +0200
-Message-Id: <DHG9BXUEUEU4.2DTNLE8Z61DKX@kernel.org>
-Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
-Cc: "Russell King" <linux@armlinux.org.uk>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Ioana Ciornei" <ioana.ciornei@nxp.com>, "Nipun Gupta"
- <nipun.gupta@amd.com>, "Nikhil Agarwal" <nikhil.agarwal@amd.com>, "K. Y.
- Srinivasan" <kys@microsoft.com>, "Haiyang Zhang" <haiyangz@microsoft.com>,
- "Wei Liu" <wei.liu@kernel.org>, "Dexuan Cui" <decui@microsoft.com>, "Long
- Li" <longli@microsoft.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Armin
- Wolf" <W_Armin@gmx.de>, "Bjorn Andersson" <andersson@kernel.org>, "Mathieu
- Poirier" <mathieu.poirier@linaro.org>, "Vineeth Vijayan"
- <vneethv@linux.ibm.com>, "Peter Oberparleiter" <oberpar@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger"
- <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Harald
- Freudenberger" <freude@linux.ibm.com>, "Holger Dengler"
- <dengler@linux.ibm.com>, "Mark Brown" <broonie@kernel.org>, "Michael S.
- Tsirkin" <mst@redhat.com>, "Jason Wang" <jasowang@redhat.com>, "Xuan Zhuo"
- <xuanzhuo@linux.alibaba.com>, =?utf-8?q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, "Alex Williamson" <alex@shazbot.org>, "Juergen
- Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>,
- "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Christophe Leroy
- (CS GROUP)" <chleroy@kernel.org>, <linux-kernel@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-hyperv@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <platform-driver-x86@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-remoteproc@vger.kernel.org>, <linux-s390@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <virtualization@lists.linux.dev>,
- <kvm@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
- <linux-arm-kernel@lists.infradead.org>, "Gui-Dong Han"
- <hanguidong02@gmail.com>
-To: "Bjorn Helgaas" <helgaas@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260324005919.2408620-6-dakr@kernel.org>
- <20260326180825.GA1330769@bhelgaas>
-In-Reply-To: <20260326180825.GA1330769@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330101116.1117699-8-rppt@kernel.org>
 
-On Thu Mar 26, 2026 at 7:08 PM CET, Bjorn Helgaas wrote:
-> On Tue, Mar 24, 2026 at 01:59:09AM +0100, Danilo Krummrich wrote:
->> When a driver is probed through __driver_attach(), the bus' match()
->> callback is called without the device lock held, thus accessing the
->> driver_override field without a lock, which can cause a UAF.
->>=20
->> Fix this by using the driver-core driver_override infrastructure taking
->> care of proper locking internally.
->>=20
->> Note that calling match() from __driver_attach() without the device lock
->> held is intentional. [1]
->>=20
->> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@ker=
-nel.org/ [1]
->> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220789
->> Fixes: 782a985d7af2 ("PCI: Introduce new device binding path using pci_d=
-ev.driver_override")
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> ---
->>  drivers/pci/pci-driver.c           | 11 +++++++----
->>  drivers/pci/pci-sysfs.c            | 28 ----------------------------
->>  drivers/pci/probe.c                |  1 -
->>  include/linux/pci.h                |  6 ------
->
-> For the above:
->
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
->
-> "driver_override" is mentioned several places in
-> Documentation/ABI/testing/sysfs-bus-*.  I assume this series doesn't
-> change the behavior documented there?
+On Mon, Mar 30, 2026 at 01:11:08PM +0300, Mike Rapoport wrote:
+> First, there is no fundamental reason to limit userfaultfd support only to
+> the core memory types and userfaults can be handled similarly to regular
+> page faults provided a VMA owner implements appropriate callbacks.
+> 
+> Second, historically various code paths were conditioned on
+> vma_is_anonymous(), vma_is_shmem() and is_vm_hugetlb_page() and some of
+> these conditions can be expressed as operations implemented by a
+> particular memory type.
+> 
+> Introduce vm_uffd_ops extension to vm_operations_struct that will delegate
+> memory type specific operations to a VMA owner.
 
-Correct, none of this is altered.
+But the VMA owner already gets control of the page fault.  We don't need
+the vm_uffd_ops to be accessible from the vm_operations_struct.  The
+page faullt handler can pass a vm_uffd_ops into the uffd functions that
+it calls.
