@@ -1,163 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DEA346766;
-	Mon, 30 Mar 2026 19:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2035B377023;
+	Mon, 30 Mar 2026 20:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774900465; cv=none; b=gJEqLAwb0VI//+7PSA9O7XL270ZQEk3WnswsAhzalSoQqlgQYJ7mg2nnAD8vxvqclUH43XQF/3m+9XALXF5H9N7aMZmqerJhpYrwXflNhyPoodTNCx1BEk8v7zPgNwjgVGv0ybuDL/R1fPMGLrNuvi85SDraalTDm1B/bxgXOrY=
+	t=1774901459; cv=none; b=LCPETV2n5/rjlrwqONXv261RW3EwDFyEWnflEdGWillT7Q8uwGyYN2SNAgIQska92mUPzu2WCZhgOiB2ie0gM2GZmhXuqqSnWwQcOnJMeE8TyNpvnZQNJAt88FvpHVpU07/t2C+XeOiTsJQC67067qatBjEQ2Q6KkLr0xXcP9U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774900465; c=relaxed/simple;
-	bh=PVggmHFroeTCysyxMzuB1gpR33ZPKG+IwSLIbZBkreE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=NtdJmi9cLT+qJ4CGTTp6h98mokn3Etkn6vCsq9VRc8zypEkJp4iBhPMEtGlmLB/g1cxkE+1rwW7MDJK8R0XDiMKjGFG23kZEuKd5ZuC3pcNN0RQ0qls6ViZMatFv/bB5nCskOdcDdOik0iqP5vqB59+8J0xp8agzBZVEJeJF98Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mmH6caD6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774901459; c=relaxed/simple;
+	bh=HVnPKL4GDfzYYaqgylKaMGdGqe750h3OqeetAX+ZooI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PoaEIn0DzqB0t7yHe2UAlQtSucETMbF9FA330BOLAVdxbcpdb7PWKudtV25Y3SLTrkMJR+X0IGwZ0UtLWWyBkl+uZ9hlVLA/md0TLQ7u0MYCPhsVEZD8a/2+bOSeWHb3xFlyoB2H8An+498MY4uCWhIdUYKwrNQWzNM/pRqOvRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=p3Q7z9HD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CAP30Hzc; arc=none smtp.client-ip=103.168.172.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mmH6caD6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19772C4CEF7;
-	Mon, 30 Mar 2026 19:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774900464;
-	bh=PVggmHFroeTCysyxMzuB1gpR33ZPKG+IwSLIbZBkreE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mmH6caD6cf5ZzhC0rQz1KMrVf2wx+yEwqntoWzM87S8JUIu+KlW5rT2ui/qXnKvz5
-	 GGCdaqeYY+TcWZ7rJNCO7bjpaNo8naiq2FqdOn63pssh5xZlFSNEP0PUjY8dVIZd9b
-	 ZInP9Szdi2A1JQQXjXLO2fJ1oCYmTHfcC/voVBJQ=
-Date: Mon, 30 Mar 2026 12:54:23 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, Andrei Vagin
- <avagin@google.com>, Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
- Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, James
- Houghton <jthoughton@google.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
- <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 00/15] mm, kvm: allow uffd support in guest_memfd
-Message-Id: <20260330125423.90bc3c6b0e9164d19e8a3995@linux-foundation.org>
-In-Reply-To: <20260330101116.1117699-1-rppt@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="p3Q7z9HD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CAP30Hzc"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.phl.internal (Postfix) with ESMTP id 32B1F1380404;
+	Mon, 30 Mar 2026 16:10:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 30 Mar 2026 16:10:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774901456;
+	 x=1774908656; bh=l6vFZymkQIpCjGyZZ0waTIjtR5dYu9l/RauB0EHs2cg=; b=
+	p3Q7z9HDaMO9l49KzGyd6QCozBDRkYMrNAMT016WX/fHIPodDvJbWxfN7o7Rq7vD
+	ssq4dL3KEVXFE49rB8recUd5fVpSerRill0EPB9eG2k4c2akGO+Qp/G8D31RmPbX
+	7TlkrNox2UjWyTlfcttMC7E71kdY+trnef5Hm61drgcfUPakTcCNL6kKwNKjRSBV
+	U1uiNaG+fKZAZmTv0+H0872Gvi06OSqLLzx0vsDX2qjVrQBFMlsZacR2mbGsDkc/
+	gT6xVnpGv8MRHmzJBZo58FBd6w5IU+6ogcmojJLtPY3KydD8fWurT3VIXthGtQVM
+	kQSao6bXLTSzYllu1/tldQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774901456; x=
+	1774908656; bh=l6vFZymkQIpCjGyZZ0waTIjtR5dYu9l/RauB0EHs2cg=; b=C
+	AP30HzcjqUcGAYtq0Vy0npz+WQZ0xoM+V3KrqPMrmRQ5BSmU53GGUiyx5E4wI6yA
+	FyTr5/p4paazsu/Iipz8yYZU+1phMDKI7hagtD986FHeu0o1F4zYmBZsEakuW92m
+	weI9ASAX8aFEL8Rs0Uec3ctb/HnJ1MgKC92d8MBdvS6OH7G3ewGRc0+tfGddZ4Gk
+	WxhrjWBcLoGs93zMy/odTXwHEJHh5W5FS+Et9LrpEfOcBRgJ0bBAStrIpl6DkWE0
+	Q7ETKFm9iu5onjWSvKFXn0ELTMMUBd/OPVAOOtwXaNWNshQ6cuB1Amc/2nwRZfpT
+	eHg87urYI5Ec6Lkq0sXvA==
+X-ME-Sender: <xms:z9jKafG3C1ppH9T_m6ALHXE4Xg8LRK7hBmf8rBxsDTwjV0YmtGN7zQ>
+    <xme:z9jKafRfVIq8DMXZsvpeUjwD446zuGALRlY6oTA_zptsdyXkE-2d-NbNcA082cKf0
+    ss8FY21mgRpxHw-PTPA5PC2K5vCU9145ou0r7AQwqll0ampOmU>
+X-ME-Received: <xmr:z9jKaX5EMTRV_NaboCc_h79atFYxCsQIiTsRvvS3id2SmTFWS4FBTgmuiO8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeelledtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
+    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeehuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepug
+    grkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjghhgseiiihgvphgvrdgtrgdp
+    rhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoh
+    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
+    rhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehiohgrnhgrrdgtihhorh
+    hnvghisehngihprdgtohhmpdhrtghpthhtohepnhhiphhunhdrghhuphhtrgesrghmugdr
+    tghomhdprhgtphhtthhopehnihhkhhhilhdrrghgrghrfigrlhesrghmugdrtghomhdprh
+    gtphhtthhopehkhihssehmihgtrhhoshhofhhtrdgtohhm
+X-ME-Proxy: <xmx:z9jKaXPahdSu6NAxzDLCWHFq0SjTPnbaOV6q1JEVDN1n0TGZgvSOLg>
+    <xmx:z9jKaYs_pZi1AKnrgY4kd6IlWW19DwfnZAklgCAjMJf5o-edI-wG2g>
+    <xmx:z9jKaebkSHmk2-FfV3M99S1E_Kbm3scLKfLmyO_zzcLIBxoGL3vJxQ>
+    <xmx:z9jKacg_NAD9M03CgHB8mak7EEebVzjqapJHxaBa4zGAHu1ISFIb7w>
+    <xmx:0NjKafrBqSu7i3ficH69WDNrAzczvh4pW1jhPhZmK7WHcIBXnovlo-fr>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 16:10:52 -0400 (EDT)
+Date: Mon, 30 Mar 2026 14:10:50 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "Russell King" <linux@armlinux.org.uk>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Ioana Ciornei" <ioana.ciornei@nxp.com>,
+ "Nipun Gupta" <nipun.gupta@amd.com>,
+ "Nikhil Agarwal" <nikhil.agarwal@amd.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
+ "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Armin Wolf" <W_Armin@gmx.de>,
+ "Bjorn Andersson" <andersson@kernel.org>,
+ "Mathieu Poirier" <mathieu.poirier@linaro.org>,
+ "Vineeth Vijayan" <vneethv@linux.ibm.com>,
+ "Peter Oberparleiter" <oberpar@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Harald Freudenberger" <freude@linux.ibm.com>,
+ "Holger Dengler" <dengler@linux.ibm.com>,
+ "Mark Brown" <broonie@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Jason Wang" <jasowang@redhat.com>,
+ "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
+ Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ "Juergen Gross" <jgross@suse.com>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-hyperv@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
+ <linux-s390@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+ <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
+ <xen-devel@lists.xenproject.org>, <linux-arm-kernel@lists.infradead.org>,
+ "Gui-Dong Han" <hanguidong02@gmail.com>, alex@shazbot.org
+Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
+Message-ID: <20260330141050.2cb47bd9@shazbot.org>
+In-Reply-To: <DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
+References: <20260324005919.2408620-1-dakr@kernel.org>
+	<20260324005919.2408620-6-dakr@kernel.org>
+	<DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 30 Mar 2026 13:11:01 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+On Mon, 30 Mar 2026 19:38:41 +0200
+"Danilo Krummrich" <dakr@kernel.org> wrote:
 
-> These patches enable support for userfaultfd in guest_memfd.
+> (Cc: Jason)
+> 
+> On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> > index d43745fe4c84..460852f79f29 100644
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
+> >  	    pdev->is_virtfn && physfn == vdev->pdev) {
+> >  		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+> >  			 pci_name(pdev));
+> > -		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
+> > -						  vdev->vdev.ops->name);
+> > -		WARN_ON(!pdev->driver_override);
+> > +		WARN_ON(device_set_driver_override(&pdev->dev,
+> > +						   vdev->vdev.ops->name));  
+> 
+> Technically, this is a change in behavior. If vdev->vdev.ops->name is NULL, it
+> will trigger the WARN_ON(), whereas before it would have just written "(null)"
+> into driver_override.
 
-Thanks, I've updated mm.git's mm-unstable branch to this version.  I
-added a little note-to-self to keep tabs on willy's [07/15] comment.
+It's worse than that.  Looking at the implementation in [1], we have:
 
-The series seems to be converging nicely.  Several of the patches
-aren't showing R-b/A-b at this time.
++static inline int device_set_driver_override(struct device *dev, const char *s)
++{
++	return __device_set_driver_override(dev, s, strlen(s));
++}
 
-I've moved this series even further down-queue, so it's definitely in
-the second-week-of-merge-window batch.  So I'll be looking to move it
-into mm-stable around Monday of that week (Apr 27?).  Four weeks for
-testing, review and little touchups.
+So if name is NULL, we oops in strlen() before we even hit the -EINVAL
+and WARN_ON().
 
-> v3 changes:
-> * add fixes from Harry and Andrei
-> * fix handling of WP-only mode for WP_ASYNC contexts in vma_can_userfault()
-> * address David's comments about mfill_get_pmd() and rename it to
->   mfill_establish_pmd()
-> * add VM_WARN()s for unsupported operations (James)
-> * update comments using James' suggestions
+I don't believe we have any vfio-pci variant drivers where the name is
+NULL, but kasprintf() handling NULL as "(null)" was a consideration in
+this design, that even if there is no name the device is sequestered
+with a driver_override that won't match an actual driver.
 
-Here's how v3 altered mm.git:
+> I assume that vfio_pci_core drivers are expected to set the name in struct
+> vfio_device_ops in the first place and this code (silently) relies on this
+> invariant?
 
-
- include/linux/userfaultfd_k.h |    6 +++---
- mm/memory.c                   |    2 +-
- mm/userfaultfd.c              |   12 ++++++++----
- 3 files changed, 12 insertions(+), 8 deletions(-)
-
---- a/include/linux/userfaultfd_k.h~b
-+++ a/include/linux/userfaultfd_k.h
-@@ -96,14 +96,14 @@ struct vm_uffd_ops {
- 	struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
- 	/*
- 	 * Called during resolution of UFFDIO_COPY request.
--	 * Should allocate and return a folio or NULL if allocation
--	 * fails.
-+	 * Should allocate and return a folio or NULL if allocation fails.
- 	 */
- 	struct folio *(*alloc_folio)(struct vm_area_struct *vma,
- 				     unsigned long addr);
- 	/*
- 	 * Called during resolution of UFFDIO_COPY request.
--	 * Should lock the folio and add it to VMA's page cache.
-+	 * Should only be called with a folio returned by alloc_folio() above.
-+	 * The folio will be set to locked.
- 	 * Returns 0 on success, error code on failure.
- 	 */
- 	int (*filemap_add)(struct folio *folio, struct vm_area_struct *vma,
---- a/mm/memory.c~b
-+++ a/mm/memory.c
-@@ -5493,7 +5493,7 @@ static vm_fault_t __do_fault(struct vm_f
- 	}
+We do expect that, but it was previously safe either way to make sure
+VFs are only bound to the same ops driver or barring that, at least
+don't perform a standard driver match.  The last thing we want to
+happen automatically is for a user owned PF to create SR-IOV VFs that
+automatically bind to native kernel drivers.
  
- 	/*
--	 * If this is an userfaultfd trap, process it in advance before
-+	 * If this is a userfault trap, process it in advance before
- 	 * triggering the genuine fault handler.
- 	 */
- 	ret = __do_userfault(vmf);
---- a/mm/userfaultfd.c~b
-+++ a/mm/userfaultfd.c
-@@ -502,7 +502,7 @@ static int __mfill_atomic_pte(struct mfi
- 	} else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
- 		clear_user_highpage(&folio->page, state->dst_addr);
- 	} else {
--		VM_WARN_ONCE(1, "unknown UFFDIO operation");
-+		VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
- 	}
- 
- 	/*
-@@ -612,8 +612,10 @@ static int mfill_atomic_pte_continue(str
- 	struct page *page;
- 	int ret;
- 
--	if (!ops)
-+	if (!ops) {
-+		VM_WARN_ONCE(1, "UFFDIO_CONTINUE for unsupported VMA");
- 		return -EOPNOTSUPP;
-+	}
- 
- 	folio = ops->get_folio_noalloc(inode, pgoff);
- 	/* Our caller expects us to return -EFAULT if we failed to find folio */
-@@ -864,6 +866,7 @@ static __always_inline ssize_t mfill_ato
- 	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE))
- 		return mfill_atomic_pte_zeropage(state);
- 
-+	VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
- 	return -EOPNOTSUPP;
- }
- 
-@@ -2044,8 +2047,9 @@ bool vma_can_userfault(struct vm_area_st
- 		return false;
- 
- 	/*
--	 * File backed memory with PTE level mappigns must implement
--	 * ops->get_folio_noalloc()
-+	 * File backed VMAs (except HugeTLB) must implement
-+	 * ops->get_folio_noalloc() because it's required by __do_userfault()
-+	 * in page fault handling.
- 	 */
- 	if (!vma_is_anonymous(vma) && !is_vm_hugetlb_page(vma) &&
- 	    !ops->get_folio_noalloc)
-_
+> Alex, Jason: Should we keep this hunk above as is and check for a proper name in
+> struct vfio_device_ops in vfio_pci_core_register_device() with a subsequent
+> patch?
+
+Given the oops, my preference would be to roll it in here.  This change
+is what makes it a requirement that name cannot be NULL, where this was
+safely handled with kasprintf().  Thanks,
+
+Alex
+
+
+[1] https://lore.kernel.org/all/20260302002729.19438-2-dakr@kernel.org/
+
+> 
+> >  	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
+> >  		   pdev->is_virtfn && physfn == vdev->pdev) {
+> >  		struct pci_driver *drv = pci_dev_driver(pdev);  
 
