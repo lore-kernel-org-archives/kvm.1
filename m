@@ -1,153 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9303A785E
-	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 07:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9493A7F74;
+	Mon, 30 Mar 2026 07:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774856959; cv=none; b=TAoXO/LueYo89ggHmImfotg7dGRdkscsRMSYMTuh+37U+J/f7tdDVVUJdR579eE6zUWZoEMOV5SPtyccF3U4B0IINeneUplVmJWhdPccsJ6eNgrAulKfvXeqVYBewt3k/fXb1wKHpBiFpqSSrhP4EHMwaZ1fH0WcbpfyBfP0QG8=
+	t=1774857042; cv=none; b=L4Dx3jLQCInqYWu2r4iG1xVwHe7Vj5m5HSAnpH7FhQ+D5DFqrVAymrfvZXGfhAhBMO9UYzD/HR/r0Ue1apBsoo/ioEpVas4nnbkq2SMe+hEq01Y3UoPCPT562EZqU5azBwo9Uw7mA+urHfeY+3BOhauETy1DNGagxYTaAWrAFGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774856959; c=relaxed/simple;
-	bh=PgD3o0jwMp6kDXwgJ79jkjmidrEPYUAbk5Dd5GJ6mE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cwR7cNGmp4MUgcka77RmxVTUBudSgajGLFqgEV8+OWh9bnxnTGpliKWzgZOQaQRpGPyj4v0J9FpHjIeSVhleF0JpBPdSzwvhl+DzN+5Z62bmUJE4GYDS3LQQXi38yjtr8pH6RmdR4rkUKdGaZXgONkRFsTOJq9T+sOEhQOfzw+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZtscpV1n; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VDJxOLAU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774857042; c=relaxed/simple;
+	bh=PiqY889LgWIFkgy64QEXf0fNl10xIm5k8j8z4gckHog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XSZsND132PrfHodL9y/ta1vYs/ABsD4YDAB0zMPoU1FAEMsmBfPpTqmyJbIeEWLgczRcWme+1ztcpRILO5O5N/E/c0KMb2p05x3l/2uHpkuRv9b9L2Pa+XJuDbroxeFkGymi5OpEGn8J2Jr4FBsK1f/EuauB12KFtzyXCkQ3MJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPK+V+ee; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZtscpV1n";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VDJxOLAU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774856957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JVY6xwa07Prh7BoAXHjyZRtVv7vEWGmZ2sCIyoIQnwc=;
-	b=ZtscpV1nTMNtvG/BBLiyCDkNNfDVLZW9IO7BGqSmbmI28Lf3rImwio0FBVYpM0UOdAifAZ
-	g7pq1jWYe8141WiYsZmAaILj2H4WhPPqr61gYwZWE2S8wM4DY4hp4GEXvqVy6R1oApOv0x
-	+xnbAginK7wk1QmJV08e76L6zNpymRw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-495-nBLesAagOmi1lwXr5kFfrg-1; Mon, 30 Mar 2026 03:49:15 -0400
-X-MC-Unique: nBLesAagOmi1lwXr5kFfrg-1
-X-Mimecast-MFC-AGG-ID: nBLesAagOmi1lwXr5kFfrg_1774856954
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b95f9f837so3351554f8f.0
-        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 00:49:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774856954; x=1775461754; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JVY6xwa07Prh7BoAXHjyZRtVv7vEWGmZ2sCIyoIQnwc=;
-        b=VDJxOLAUdFVmZFfJcUrJWCELk0XJmPkp8bKsuKEbcJyvNu8t7Owda2G6dnY1N53giN
-         BSQpEdKK+o5ytG7//vGF3mM5yMYkJcF5gOuTeqTRtRNYCRee003LooiocV5xhN0/lYep
-         7lPT2P1i2Wavzaa2q/Bu3z5lyOpXznOWb2XHRC5A7mP5L/yp0jlpcROkfR/TpFOlku9X
-         Pgm/oL2/0jn8C4yl+3EfXmrCF1X8q0f7vU74XstaMkYWdFqFDMl3+URj5cugwGAUnAUD
-         eoOJPYBoP+CCASHBvcILSRVWyUkVxknFJvi7BBhAfK0KRkho+tPn3PtiZRd0JZVWs37s
-         iZrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774856954; x=1775461754;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JVY6xwa07Prh7BoAXHjyZRtVv7vEWGmZ2sCIyoIQnwc=;
-        b=UIYCv5GRyCiVluEk8IC7nsc20qjdkmySmSxHxedwCp3Z2HNoggreNThyJ1iiSGB8gi
-         eCYPApcVNQh/c/2+BKK2v6WCLTv0Q9RspK4m+PNyrdx9DCMoJ5zYOXrJH6fRWHdRZLDV
-         7UW6Vq/IHMrFo8QOSqAZNwOzlmVzHzPrWg9v4lLkx5Ko/s6sCitcoDC3zGrkRUQYFDZL
-         LI/1rGI69HD8nj2jKFFvd9ZJ36fnCn9ZqLL8yFyFneWXT2NjyMrycYeYMBwyHyut9iLG
-         /U94N1KAFe/CgNETE1+ScziArdPqHY03/NkzyE5I0VyjFmRO/RZbHEopdTg4aFnenxKM
-         VW1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVD5y5H3wTNOQEK5VWTgqv3KG1AosdfcYg8Q6vFhBUMPRWSPosxGbZvNTUPxZVLZEmyJds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFb/F4Vvh4gKUBMTj8zxcnpxiVFVMo4HgEVwZvoUpAG4VENCmF
-	gYAnyiOdhI9GlvbpVd34CQSf+ZaYK19kTSwgB3wikpWAwWDqVqU2oXXT7cPKDqLTwPpR4MACzAK
-	W6tmkXpQqKLY4hTWuyrRUxJcgByKYDEJID/KcDh81F65cw2Qq+8JnmA==
-X-Gm-Gg: ATEYQzwM2cZ9zuDS/0gfbuvd8jOtNkmSfMu1m4JNFw6u+SvA+q4ClCiLWz8UXue3Y3b
-	pgpnUAeMmkB71CO5faOEEziqAPxqiYvbSVJkMIP9kL82mwQcUvRoL1/pQxKDRUWce5Yoj2bdpxX
-	ZyGDwWpv67F5sCx0TEyjfnvWsEo5WFVpMKbtGyMo0sOt5sCydr6nEaqZ6gVOZXo8duafLseF7hu
-	YY+7QcHUocTQgsWtCk1eGJV/8BGeUkECuW12HlwPMtLa+kx0o5jkX5Bssc966PJPPSdCdrUqtBd
-	p1LDvgXdFOGWNWNNivRVBilSOaPtUMKS0ZOsiMZg/gSlKzsFaJV173yt5L5l6WP6yPhxBFKY/XU
-	CXwEWpKM2HY90EBuxo/uXgE54ItVuGhZ6bqHcvUw0/dkPuT5Pz+7pmBRJ2HKYzPYrvB4gHWwr2E
-	0KX8/KszrfbAVIhwwjiE156GZe
-X-Received: by 2002:a05:600c:c493:b0:487:575:5e1 with SMTP id 5b1f17b1804b1-48727ef5571mr181061385e9.24.1774856954313;
-        Mon, 30 Mar 2026 00:49:14 -0700 (PDT)
-X-Received: by 2002:a05:600c:c493:b0:487:575:5e1 with SMTP id 5b1f17b1804b1-48727ef5571mr181061045e9.24.1774856953875;
-        Mon, 30 Mar 2026 00:49:13 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722d23679sm489316315e9.9.2026.03.30.00.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 00:49:13 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	stable@vger.kernel.org
-Subject: [PATCH for-6.18] KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE
-Date: Mon, 30 Mar 2026 09:49:09 +0200
-Message-ID: <20260330074909.140480-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPK+V+ee"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774857040; x=1806393040;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PiqY889LgWIFkgy64QEXf0fNl10xIm5k8j8z4gckHog=;
+  b=KPK+V+ee4XD39KoTlzjnkP8DYv7aTkcJzIsEq1GfpvoMNQJdclOLx8Xx
+   GMaF9IdTHqGcCJcD/Uku6ZCG5CUbq1skFor/wC+q6Mxr4339TboXPhNPf
+   y3X1Z39oh62wk3UKy9wz3429KEyyzm+nMy+MqF8JRmBH7URqKQcS3NGZy
+   IzYTBR/BRV/C7mbdKKWf49GPwcVbUhp4cEecz6hwlnmZS9z2XYgvVbxAf
+   SQYYWLy+TJNZG5leui0co9K6uh5FJgnJwbNsVKjb2vpS7LwGdnJXlPUgR
+   CTudDE8JJjLIc/f4QStsK49j8zR05MRyU+anAp8a1GnB+z0e4kAWef5FV
+   w==;
+X-CSE-ConnectionGUID: r0+1M4wARfCEXk01WAplVw==
+X-CSE-MsgGUID: SdaLfyDbRT2YqQBOBiygdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="86535292"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
+   d="scan'208";a="86535292"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 00:50:40 -0700
+X-CSE-ConnectionGUID: bKF/FAIKQWWW1FZgYCMAFQ==
+X-CSE-MsgGUID: siJjBhNRTiWlFjG6FstUpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
+   d="scan'208";a="263912729"
+Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 30 Mar 2026 00:50:36 -0700
+Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w77OK-000000000pd-3V3D;
+	Mon, 30 Mar 2026 07:50:32 +0000
+Date: Mon, 30 Mar 2026 15:49:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Jim Mattson <jmattson@google.com>
+Subject: Re: [PATCH v7 1/9] KVM: x86: Define
+ KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT
+Message-ID: <202603301501.N2sdlIQ9-lkp@intel.com>
+References: <20260327234023.2659476-2-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327234023.2659476-2-jmattson@google.com>
 
-From: Sean Christopherson <seanjc@google.com>
+Hi Jim,
 
-commit df83746075778958954aa0460cca55f4b3fc9c02 upstream.
+kernel test robot noticed the following build errors:
 
-Adjust KVM's sanity check against overwriting a shadow-present SPTE with a
-another SPTE with a different target PFN to only apply to direct MMUs,
-i.e. only to MMUs without shadowed gPTEs.  While it's impossible for KVM
-to overwrite a shadow-present SPTE in response to a guest write, writes
-from outside the scope of KVM, e.g. from host userspace, aren't detected
-by KVM's write tracking and so can break KVM's shadow paging rules.
+[auto build test ERROR on 3d6cdcc8883b5726513d245eef0e91cabfc397f7]
 
-  ------------[ cut here ]------------
-  pfn != spte_to_pfn(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:3069 at mmu_set_spte+0x1e4/0x440 [kvm], CPU#0: vmx_ept_stale_r/872
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 872 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mmu_set_spte+0x1e4/0x440 [kvm]
-  Call Trace:
-   <TASK>
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+url:    https://github.com/intel-lab-lkp/linux/commits/Jim-Mattson/KVM-x86-Define-KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT/20260328-110805
+base:   3d6cdcc8883b5726513d245eef0e91cabfc397f7
+patch link:    https://lore.kernel.org/r/20260327234023.2659476-2-jmattson%40google.com
+patch subject: [PATCH v7 1/9] KVM: x86: Define KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT
+config: x86_64-randconfig-016-20260330 (https://download.01.org/0day-ci/archive/20260330/202603301501.N2sdlIQ9-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260330/202603301501.N2sdlIQ9-lkp@intel.com/reproduce)
 
-Fixes: 11d45175111d ("KVM: x86/mmu: Warn if PFN changes on shadow-present SPTE in shadow MMU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/mmu/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603301501.N2sdlIQ9-lkp@intel.com/
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index a8fe777ba274..dad7abb1112b 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3060,7 +3060,8 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
- 			child = spte_to_child_sp(pte);
- 			drop_parent_pte(vcpu->kvm, child, sptep);
- 			flush = true;
--		} else if (WARN_ON_ONCE(pfn != spte_to_pfn(*sptep))) {
-+		} else if (pfn != spte_to_pfn(*sptep)) {
-+			WARN_ON_ONCE(vcpu->arch.mmu->root_role.direct);
- 			drop_spte(vcpu->kvm, sptep);
- 			flush = true;
- 		} else
+All errors (new ones prefixed by >>):
+
+   In file included from arch/x86/kvm/svm/svm_onhyperv.c:11:
+   arch/x86/kvm/svm/svm.h: In function 'l2_has_separate_pat':
+>> arch/x86/kvm/svm/svm.h:626:18: error: implicit declaration of function 'kvm_check_has_quirk'; did you mean 'kvm_check_request'? [-Wimplicit-function-declaration]
+     626 |                 !kvm_check_has_quirk(svm->vcpu.kvm,
+         |                  ^~~~~~~~~~~~~~~~~~~
+         |                  kvm_check_request
+   In file included from arch/x86/kvm/svm/svm_ops.h:7,
+                    from arch/x86/kvm/svm/svm_onhyperv.c:12:
+   arch/x86/kvm/x86.h: At top level:
+>> arch/x86/kvm/x86.h:429:20: error: conflicting types for 'kvm_check_has_quirk'; have 'bool(struct kvm *, u64)' {aka '_Bool(struct kvm *, long long unsigned int)'}
+     429 | static inline bool kvm_check_has_quirk(struct kvm *kvm, u64 quirk)
+         |                    ^~~~~~~~~~~~~~~~~~~
+   arch/x86/kvm/svm/svm.h:626:18: note: previous implicit declaration of 'kvm_check_has_quirk' with type 'int()'
+     626 |                 !kvm_check_has_quirk(svm->vcpu.kvm,
+         |                  ^~~~~~~~~~~~~~~~~~~
+--
+   In file included from kvm/svm/svm_onhyperv.c:11:
+   kvm/svm/svm.h: In function 'l2_has_separate_pat':
+   kvm/svm/svm.h:626:18: error: implicit declaration of function 'kvm_check_has_quirk'; did you mean 'kvm_check_request'? [-Wimplicit-function-declaration]
+     626 |                 !kvm_check_has_quirk(svm->vcpu.kvm,
+         |                  ^~~~~~~~~~~~~~~~~~~
+         |                  kvm_check_request
+   In file included from kvm/svm/svm_ops.h:7,
+                    from kvm/svm/svm_onhyperv.c:12:
+   arch/x86/kvm/x86.h: At top level:
+>> arch/x86/kvm/x86.h:429:20: error: conflicting types for 'kvm_check_has_quirk'; have 'bool(struct kvm *, u64)' {aka '_Bool(struct kvm *, long long unsigned int)'}
+     429 | static inline bool kvm_check_has_quirk(struct kvm *kvm, u64 quirk)
+         |                    ^~~~~~~~~~~~~~~~~~~
+   kvm/svm/svm.h:626:18: note: previous implicit declaration of 'kvm_check_has_quirk' with type 'int()'
+     626 |                 !kvm_check_has_quirk(svm->vcpu.kvm,
+         |                  ^~~~~~~~~~~~~~~~~~~
+
+
+vim +626 arch/x86/kvm/svm/svm.h
+
+   618	
+   619	static inline bool l2_has_separate_pat(struct vcpu_svm *svm)
+   620	{
+   621		/*
+   622		 * If KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT is disabled while a vCPU
+   623		 * is running, the L2 IA32_PAT semantics for that vCPU are undefined.
+   624		 */
+   625		return nested_npt_enabled(svm) &&
+ > 626			!kvm_check_has_quirk(svm->vcpu.kvm,
+   627					     KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
+   628	}
+   629	
+
 -- 
-2.53.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
