@@ -1,174 +1,136 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83FA3CD8D7;
-	Mon, 30 Mar 2026 12:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B79382F01;
+	Mon, 30 Mar 2026 12:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774873605; cv=none; b=UByQ/M/2D1hd7z/irJZ6wKoJbXR9+CCUpL1IAtO3eNtLRCBWyQtNXzeuF3cPetYhTZ/2aoRAUAxIzfEk1hMsYTycPy8mbzVXjRZ8sFIzeatG9C0yy9CeY5R8YChtDEM66d0mdgSz6z8eSzEsCjryWJR7wN3HGNfctjuXRnDKZp0=
+	t=1774873798; cv=none; b=lnnS9vOzgJIuiHPYXcpuLE23LkkCPcf/YanbY1XsFAWjan+7PSQfqkHvRsakdM3trG0ahH7EvEFvm3Mh9nUrwNsWVbgmMQ3vjEwbxgBKgEapei4HLLf4F4KWqQaAyZXDZIx4YHNHN6nE+HBYfpriTVj+uPyXmGSmL3k/3oNiidE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774873605; c=relaxed/simple;
-	bh=t+nBbtYRRgP5iBScihFqmbDfpM8X25wYYMjt+qeUvm0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iV6ID3GE38bLNeFjCujc0arlznsl61D+OV1qmv3dXViX/6cWvoog4k57gSgpn0SLC80oGALeouqLVpejRisLzoIxJeYrvPtQBVxGSCebscFvuXxqKd/TVD8SKSGe4nLjhF2iKALlzShSVdMyiyfafhhsadKD1+PiNjI0PQaLkrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gAgl0YHo; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1774873798; c=relaxed/simple;
+	bh=YI9ngTKL0hM0XLThFYbjiFmYCp4kFJt7PwEH2IVxP80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g2sAZq6otDQnpSWktgtB0SJmWdrkCVOvtxn09/dEn4OGl6kkIQUWF1EptZdYg3Ui+2OlRDakyhnyWdh0jSS3T+/ObiWTwBfRFwfjWCCAym4bg37/tXt1tIKoFnr4jcPEgWe/nvk7Ufr79DzQKxoI6Y4J/ZQRLxDMCaZhrGjl99Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ld2s6wKW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gAgl0YHo"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774873595; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=hFPV9OZsT6eJowdta/xFZt6DIyl+vW5qGVBuswXMeAQ=;
-	b=gAgl0YHoRXUI4fqRUUraqNR7gl5evH2jb92yTK3Zo72XiGqGp3L7jU5oUdX1wrauvmb75qSXROgnS5d9vsElxXNMTfFFjxBF/AOg2SXRYas1CBYQ0JDwNllD1Kmfu6oOBc/kaHqLNuWdLqLd8Nz2Y4btnAIYFUwvgKiUZ0RCiSE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.zfcJd_1774873592;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X.zfcJd_1774873592 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 30 Mar 2026 20:26:33 +0800
-From: fangyu.yu@linux.alibaba.com
-To: pbonzini@redhat.com,
-	corbet@lwn.net,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	skhan@linuxfoundation.org
-Cc: guoren@kernel.org,
-	radim.krcmar@oss.qualcomm.com,
-	andrew.jones@oss.qualcomm.com,
-	linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v6 4/4] RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE
-Date: Mon, 30 Mar 2026 20:26:01 +0800
-Message-Id: <20260330122601.22140-5-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260330122601.22140-1-fangyu.yu@linux.alibaba.com>
-References: <20260330122601.22140-1-fangyu.yu@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ld2s6wKW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA46C4CEF7;
+	Mon, 30 Mar 2026 12:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774873798;
+	bh=YI9ngTKL0hM0XLThFYbjiFmYCp4kFJt7PwEH2IVxP80=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ld2s6wKW+G0Zy3B92sSrulA+nNI4FzEuK2pDw5S76M8aKf/gRWR1KqqamUaYRanut
+	 MUFGzsy6/UE4o/H7RM1THcNedg1b5VODp2RyLFw24z1sWWUa+eOMMu0glGlcGoAOPI
+	 o+KZPxl//12SVhqsytZoUXXFwQvmc1atH1/DyU/I/8eozh4pknlDk6KYaxKDxm00cp
+	 rjyvRdF3fHialfAsb/XgAHkkPgXLz0BvB8xD5GiKHK3eyD31FTlpEocqTlaNuVY7H+
+	 7IsxGgCrjh/Cew2qi8vbUXqFSq94h6yz4BVkbo6XeiS6u8vBYjSnYd2JME3nQrdQ3h
+	 hkTHEG3KDbJEg==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 42AE3F40068;
+	Mon, 30 Mar 2026 08:29:57 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 30 Mar 2026 08:29:57 -0400
+X-ME-Sender: <xms:xWzKacsnxPy-4lpQzn63jTqrVryceyzkT17tf7-Sw1e24ltX7xqoQw>
+    <xme:xWzKaSyFx4VaPaYJmU2xFaAslXajQ-ZvHG56a8-f4Sy6I_h4kd71VQAQMcfx03mv5
+    5umTOpaZtnX56OkAdLQ7VavotAvgCS3vEsZ-an_kOZFhzmgC3BdBw>
+X-ME-Received: <xmr:xWzKafyk-m2DFVKeNjRrRLdDwG7TEmj3ycWPoM-Z_7eRB2Pcx6cseeGOoi2pmg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekleekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpefhvdetgeehjeeugfejudehveeltdfhleettdfgvdfhudekvdeltdevudeihfei
+    heenucffohhmrghinhepmhgvmhdrphgrghgvnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
+    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdei
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrihgtkhdrphdrvggughgvtghomh
+    gsvgesihhnthgvlhdrtghomhdprhgtphhtthhopehpsghonhiiihhnihesrhgvughhrght
+    rdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepug
+    grvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehm
+    rghrtggrnhgurhgvrdhluhhrvggruhesrhgvughhrghtrdgtohhmpdhrtghpthhtohephh
+    hprgesiiihthhorhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhg
+    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtg
+    homhdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+X-ME-Proxy: <xmx:xWzKaY4GUugIx7YUMTpnQCdApdGV8XrFga9MRfHAk7PilZev779xog>
+    <xmx:xWzKaYAIqm88zSs1LSD9oB3WKmQL8_onzxZBBrOH9aJVs06aL3tgAQ>
+    <xmx:xWzKaSD2_9zIWUQ80ZKlBD3nD897rHyh3suKSg0Gbs7LOAVHMmOSQA>
+    <xmx:xWzKaRqiQD99_24aWSfRdbKMglD-WT9I0rCeP71hG1feUgmLNx06gA>
+    <xmx:xWzKac1q0Uti6lWT3EV7XhimSrpZ1CCfbyQOXYNZ5-fXKYV1emBAnB9L>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 08:29:55 -0400 (EDT)
+Date: Mon, 30 Mar 2026 12:29:52 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "Qiang, Chenyi" <chenyi.qiang@intel.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
+Message-ID: <acprNlPP7J_ttMrz@thinkstation>
+References: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
+ <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com>
+ <56190adc345148396ba6b3e52672e662145f7dc7.camel@intel.com>
+ <CAMxuvaytU-pM+rviUbNGWMhvbAYutwvaSXW_O=sn+QfOzF35Xw@mail.gmail.com>
+ <7802b50589c80a7276a50cc473c1aa579750a30c.camel@intel.com>
+ <CABgObfZ7_w8Q-dW=Sd4YA3P==BuN1edPv7Ty4EpPyU8ctW6RLg@mail.gmail.com>
+ <424048885a01dcb6a7ef0256f0dc8a9adb546f22.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <424048885a01dcb6a7ef0256f0dc8a9adb546f22.camel@intel.com>
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+On Thu, Mar 26, 2026 at 08:40:06PM +0000, Edgecombe, Rick P wrote:
+> Hi Paolo!
+> 
+> On Thu, 2026-03-26 at 19:25 +0100, Paolo Bonzini wrote:
+> > > Another option could be to perform a TDG.MEM.PAGE.RELEASE TDCALL from
+> > > the guest when it unplugs the memory, to put it in an unaccepted state.
+> > > This would be more robust to buggy VMM behavior. But working around
+> > > buggy VM behavior would need a high bar.
+> > 
+> > Wouldn't it actually be a very low bar? Just from these two paragraphs
+> > of yours, it's clear that the line between buggy and malicious is
+> > fine, in fact I think userspace should not care at all about removing
+> > the memory. Only the guest cares about acceptance state.
+> > 
+> > Doing a RELEASE TDCALL seems more robust and not hard.
+> 
+> I mean I guess the contract is a bit fuzzy. The reason why I was thinking it was
+> a host userspace bug is because the conventional bare metal behavior of
+> unplugging memory should be that it is no longer accessible, right? If the guest
+> could still use the unplugged memory, it could be surprising for userspace and
+> the guest. Also, ideally I'd think the behavior wouldn't cover up guest bugs
+> where it tried to keep using the memory. So forgetting about TDX, isn't it
+> better behavior in general for unplugging memory, to actually pull it from the
+> guest? Did I look at that wrong?
+> 
+> As for the bar to change the guest, I was first imagining it would be the size
+> of the accept memory plumbing. Which was not a small effort and has had a steady
+> stream of bugs to squash where the accept was missed.
+> 
+> But I didn't actually POC anything to check the scope so maybe that was a bit
+> hasty. Should we do a POC? But considering the scope, I wonder if SNP has the
+> same problem.
 
-Add a VM capability that allows userspace to select the G-stage page table
-format by setting HGATP.MODE on a per-VM basis.
+Doing RELEASE will be required with TDX Connect in the picture.
+Otherwise userspace wouldn't be able to pull the memory out of TD.
+So, let's do it and drop the first patch.
 
-Userspace enables the capability via KVM_ENABLE_CAP, passing the requested
-HGATP.MODE in args[0]. The request is rejected with -EINVAL if the mode is
-not supported by the host, and with -EBUSY if the VM has already been
-committed (e.g. vCPUs have been created or any memslot is populated).
+We can suggest that userspace actually remove the memory, but I don't
+think it should be part of the contract. Userspace might have a reasons
+to keep the memory around.
 
-KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE) returns a bitmask of the
-HGATP.MODE formats supported by the host.
-
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
----
- Documentation/virt/kvm/api.rst | 27 +++++++++++++++++++++++++++
- arch/riscv/kvm/vm.c            | 18 ++++++++++++++++--
- include/uapi/linux/kvm.h       |  1 +
- 3 files changed, 44 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 032516783e96..9d7f6958fa81 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -8902,6 +8902,33 @@ helpful if user space wants to emulate instructions which are not
- This capability can be enabled dynamically even if VCPUs were already
- created and are running.
- 
-+7.47 KVM_CAP_RISCV_SET_HGATP_MODE
-+---------------------------------
-+
-+:Architectures: riscv
-+:Type: VM
-+:Parameters: args[0] contains the requested HGATP mode
-+:Returns:
-+  - 0 on success.
-+  - -EINVAL if args[0] is outside the range of HGATP modes supported by the
-+    hardware.
-+  - -EBUSY if vCPUs have already been created for the VM, if the VM has any
-+    non-empty memslots.
-+
-+This capability allows userspace to explicitly select the HGATP mode for
-+the VM. The selected mode must be supported by both KVM and hardware. This
-+capability must be enabled before creating any vCPUs or memslots.
-+
-+If this capability is not enabled, KVM will select the default HGATP mode
-+automatically. The default is the highest HGATP.MODE value supported by
-+hardware.
-+
-+``KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE)`` returns a bitmask of
-+HGATP.MODE values supported by the host. A return value of 0 indicates that
-+the capability is not supported. Supported-mode bitmask use HGATP.MODE
-+encodings as defined by the RISC-V privileged specification, such as Sv39x4
-+corresponds to HGATP.MODE=8, so userspace should test bitmask & BIT(8).
-+
- 8. Other capabilities.
- ======================
- 
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index 4d82a886102c..5e82a3ad3ad0 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -201,6 +201,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_VM_GPA_BITS:
- 		r = kvm_riscv_gstage_gpa_bits(kvm->arch.pgd_levels);
- 		break;
-+	case KVM_CAP_RISCV_SET_HGATP_MODE:
-+		r = kvm_riscv_get_hgatp_mode_mask();
-+		break;
- 	default:
- 		r = 0;
- 		break;
-@@ -211,12 +214,23 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 
- int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- {
-+	if (cap->flags)
-+		return -EINVAL;
-+
- 	switch (cap->cap) {
- 	case KVM_CAP_RISCV_MP_STATE_RESET:
--		if (cap->flags)
--			return -EINVAL;
- 		kvm->arch.mp_state_reset = true;
- 		return 0;
-+	case KVM_CAP_RISCV_SET_HGATP_MODE:
-+		if (!kvm_riscv_hgatp_mode_is_valid(cap->args[0]))
-+			return -EINVAL;
-+
-+		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
-+			return -EBUSY;
-+#ifdef CONFIG_64BIT
-+		kvm->arch.pgd_levels = 3 + cap->args[0] - HGATP_MODE_SV39X4;
-+#endif
-+		return 0;
- 	default:
- 		return -EINVAL;
- 	}
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 80364d4dbebb..a74a80fd4046 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -989,6 +989,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_ARM_SEA_TO_USER 245
- #define KVM_CAP_S390_USER_OPEREXEC 246
- #define KVM_CAP_S390_KEYOP 247
-+#define KVM_CAP_RISCV_SET_HGATP_MODE 248
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
 -- 
-2.50.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
