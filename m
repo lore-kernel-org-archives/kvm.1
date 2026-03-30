@@ -1,281 +1,301 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B6B3E9F89;
-	Mon, 30 Mar 2026 22:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E363BB48;
+	Mon, 30 Mar 2026 23:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774911280; cv=none; b=SxZ41tOOywz4/Frrz2eqIrX9ifsn+cZyHhZQnJf/E/ZVC95Mg4ciVDw/J3McOHHd1pWb0JGwvbeXjkcD1zvOVKQDswXB5pkFTG0GRN8c4T2U+Lv6tGJyh8QlpRS+2Xc+OO0OEsMA1B9xH2p8Wad06BYtKIpdooa1xskm3QGjYC4=
+	t=1774912936; cv=none; b=rK1+35sy4QLstHDQtz7/XXOllQYT+zUuN4dRBrSbGkpOxNeVcsGenhKpcwIYXwZWdCGov6XLNR31LqIf1cvdAgHRI7bLRrgHd62gszRyQBIdOf9w/GiFTAeBH89NkTZSBSIbcuINtW1gHXcVyWvQnm9uXF+vyGE+ENi20VsLBPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774911280; c=relaxed/simple;
-	bh=D72YCLwgexObNKWUs+QMeapQr6cp2LwytErV3nWFNrI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=VUdV3JGbCwrp0sNwIHvpy3ZfaSryr2NacbSaAvPKQFbeItXWj6ZoDgsO6ELHcELTzNpegglv54h7wg0MAdyhyNklf4yh12/XZWCsTIerk887nCHf238AMGnhd9JRFvqnskchF145I/PgRXn/PPndUT6ozUSgDOIUAA6tNOEN3Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8syhKKs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774912936; c=relaxed/simple;
+	bh=ng9W5b/WchynJ+QCgePlqtKnClGVfH9wutZDSpGWAQ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IoRCGrwZf4UyArA79zagDOD5Llnu4qDDubtgU6oQSSZ5Q0jWA/mw+sSMFzHJ1N7O3SY5o4ono9Zr1b6b6wnmsTgwXxMDyBw20qsb/7mNONB3iZkrmj19+GEJOgIFnWcaZN0uBR100hfr5UW0erv60cNSWc+2fjVA5DMveJz0mBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hrFNQpd2; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8syhKKs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35DFC4CEF7;
-	Mon, 30 Mar 2026 22:54:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774911279;
-	bh=D72YCLwgexObNKWUs+QMeapQr6cp2LwytErV3nWFNrI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=B8syhKKsyFZJp5ViyX++4WrxJjf/s9SAF7iygNRC2lm40WrFlLGTAnr0hFbEHEWpg
-	 ia0nmVOXtkUh3vhlhox571th3beaW/qiZ0UhWghrTL0ijZ1lHdbckIr1aHU9zAe5G0
-	 CvsSlIKv0lEt3fPrjfgSEPOeIVkS1hIVMfwLKgsEWB5ljchs42iEpW0WypBa1aNJds
-	 nbeHvJqpoSsA0leiKgJIfEu3KmnUNxL6DcREVydRzDquesl/x/Xq6CUf44WrwNt74U
-	 7/bdEe0ptuFtBXnFOID+jZrpG5MRU/isthWqPdqX6EOggBOF7qrB3M+2MOfD0eEOQv
-	 QGKQ7dkrgXF1g==
-Date: Mon, 30 Mar 2026 17:54:37 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	Askar Safin <safinaskar@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Chris Li <chrisl@kernel.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
-	Marco Elver <elver@google.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-Message-ID: <20260330225437.GA111390@bhelgaas>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hrFNQpd2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774912935; x=1806448935;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ng9W5b/WchynJ+QCgePlqtKnClGVfH9wutZDSpGWAQ0=;
+  b=hrFNQpd2+83NYDThaxJ3OC8zqZZoegPp2LuTNGOjzwX42RDHq2p0iay9
+   TgoAmYInKjfZ68sgjEnspgdfSmW0DGTaIEQxALY891JYzWz/2/VxhAuhj
+   GTXScElbRE5ceJkAPS2tqbmLXWzbRyXHcRbglII8vivdwlJVUXgUjmxUN
+   +MhGLc95RBcqvAqmOi20oDyUUqDYqr3FTnZQiJAP8hq3dFdG37fljGY/u
+   tEIiNuiYncAkXqrORmv/Pa+tQHYtCFti64YPwhsOIPn975AmQ3rNRjxKb
+   2tuwRK6JdowcfUNX+7ddSTG/SQ6E1Me3E3+DXFT4ylRVlfoaVf2Pk1g38
+   A==;
+X-CSE-ConnectionGUID: aAoOyiwrTbqubecHpr/9Ug==
+X-CSE-MsgGUID: SxTBZNp5R/Cz1UHLGaz38w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="75933006"
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="75933006"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 16:22:15 -0700
+X-CSE-ConnectionGUID: Oa2UjkAoTKigWg3WH8W9EQ==
+X-CSE-MsgGUID: fGbeimd5SPa57jZBjYC+1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
+   d="scan'208";a="226165170"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.27]) ([10.125.111.27])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 16:22:13 -0700
+Message-ID: <ab41b1d8-e464-4ad6-ac07-7318686db10e@intel.com>
+Date: Mon, 30 Mar 2026 16:22:19 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acWne_ZCcF4YQN25@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1774755884.git.ashish.kalra@amd.com>
+ <6345df31337125280f91ad8f37843aa865fd85fc.1774755884.git.ashish.kalra@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <6345df31337125280f91ad8f37843aa865fd85fc.1774755884.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 26, 2026 at 09:39:07PM +0000, David Matlack wrote:
-> On 2026-03-25 06:12 PM, Bjorn Helgaas wrote:
-> > On Mon, Mar 23, 2026 at 11:57:54PM +0000, David Matlack wrote:
-> > > Add an API to enable the PCI subsystem to participate in a Live Update
-> > > and track all devices that are being preserved by drivers. Since this
-> > > support is still under development, hide it behind a new Kconfig
-> > > PCI_LIVEUPDATE that is marked experimental.
-> ...
+On 3/30/26 15:26, Ashish Kalra wrote:
+...
+> As SEV-SNP is enabled by default on boot when an RMP table is
+> allocated by BIOS, the hypervisor and non-SNP guests are subject to
+> RMP write checks to provide integrity of SNP guest memory.
 
-> > This sets "dev->liveupdate_incoming = false", and the only place we
-> > check that is in pci_liveupdate_retrieve().  In particular, there's
-> > nothing in the driver bind/unbind paths that seems related.  I guess
-> > pci_liveupdate_finish() just means the driver can't call
-> > pci_liveupdate_retrieve() any more?
+This is a long-winded way of saying:
+
+	When SEV-SNP is enabled, all writes to memory are checked to
+	ensure integrity of SNP guest memory. This imposes performance
+	overhead on the whole system.
+
+> RMPOPT is a new instruction that minimizes the performance overhead of
+> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+> checks to be skipped for 1GB regions of memory that are known not to
+> contain any SEV-SNP guest memory.
 > 
-> liveupdate_incoming is used by VFIO in patch 10:
-> 
->   https://lore.kernel.org/kvm/20260323235817.1960573-11-dmatlack@google.com/
-> 
-> Fundamentally, I think drivers will need to know that the device they
-> are dealing with was preserved across the Live Update so they can react
-> accordingly and this is how they know. This feels like an appropriate
-> responsibility to delegate to the PCI core since it can be common across
-> all PCI devices, rather than requiring drivers to store their own state
-> about which devices were preserved. I suspect PCI core will also use
-> liveupdate_incoming in the future (e.g. to avoid assigning new BARs) as
-> we implement more of the device preservation.
+> Add support for performing RMP optimizations asynchronously using a
+> dedicated workqueue, scheduling delayed work to perform RMP
+> optimizations every 10 seconds.
 
-Yes.  It's easier to review if this is added at the point where it is
-used.
+Gah, does it really do this _every_ 10 seconds? Whether or not any
+guests are running or if the SEV-SNP state has changed at *all*? This
+code doesn't implement that, right? If so, why mention it here?
 
-> And in case you are also wondering about liveupdate_outgoing, I forsee
-> that being used for things like skipping disabling bus mastering in
-> pci_device_shutdown().
-> 
-> I think it would be a good idea to try to split this patch up, so there
-> is more breathing room to explain this context in the commit messages.
+> +static void rmpopt_work_handler(struct work_struct *work)
+> +{
+> +	phys_addr_t pa;
+> +
+> +	pr_info("Attempt RMP optimizations on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
+> +		rmpopt_pa_start, rmpopt_pa_end);
+> +
+> +	/*
+> +	 * RMPOPT optimizations skip RMP checks at 1GB granularity if this
+> +	 * range of memory does not contain any SNP guest memory. Optimize
+> +	 * each range on one CPU first, then let other CPUs execute RMPOPT
+> +	 * in parallel so they can skip most work as the range has already
+> +	 * been optimized.
+> +	 */
 
-Sounds good.
+This comment could be much more clear.
 
-> > > +	 * Don't both accounting for VFs that could be created after this
-> > > +	 * since preserving VFs is not supported yet. Also don't account
-> > > +	 * for devices that could be hot-plugged after this since preserving
-> > > +	 * hot-plugged devices across Live Update is not yet an expected
-> > > +	 * use-case.
-> > 
-> > s/Don't both accounting/Don't bother accounting/ ? not sure of intent
-> 
-> "Don't bother" was the intent.
-> 
-> > I suspect the important thing here is that this allocates space for
-> > preserving X devices, and each subsequent pci_liveupdate_preserve()
-> > call from a driver uses up one of those slots.
-> > 
-> > My guess is this is just an allocation issue and from that point of
-> > view there's no actual problem with enabling VFs or hot-adding devices
-> > after this point; it's just that pci_liveupdate_preserve() will fail
-> > after X calls.
-> 
-> Yes that is correct.
+First, the granularity has *zero* to do with this optimization.
 
-Mentioning VFs in the comment is a slight misdirection when the actual
-concern is just about the number of devices.
+Second, the optimization this code is doing only makes sense if the RMP
+itself is caching the RMPOPT result in a global, single place. That's
+not explained. It needs something like:
 
-> I see that a lot of your comments are about these WARN_ONs so do you
-> have any general guidance on how I should be handling them?
+	RMPOPT does three things: It scans the RMP table, stores the
+	result of the scan in the global RMP table and copies that
+	result to a per-CPU table. The scan is the most expensive part.
+	If a second RMPOPT occurs, it can skip the expensive scan if it
+	sees the "cached" scan result in the RMP.
 
-If it's practical to arrange it so we dereference a NULL pointer or
-similar, that's my preference because it doesn't take extra code and
-it's impossible to ignore.  Sometimes people add "if (!ptr) return
--EINVAL;" to internal functions where "ptr" should never be NULL.  IMO
-cases like that should just use assume "ptr" is valid and use it.
-Likely not a practical strategy in your case.
+	Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
+	on every other primary thread. This potentially allows the
+	followers to use the "cached" scan results to avoid repeating
+	full scans.
 
-> > > +	if (pci_WARN_ONCE(dev, !dev_ser, "Cannot find preserved device!"))
-> > 
-> > Seems like an every-time sort of message if this indicates a driver bug?
-> > 
-> > It's enough of a hassle to convince myself that pci_WARN_ONCE()
-> > returns the value that caused the warning that I would prefer:
-> > 
-> >   if (!dev_ser) {
-> >     pci_warn(...) or pci_WARN_ONCE(...)
-> >     return;
-> >   }
-> 
-> For "this should really never happen" warnings, which is the case here,
-> my preference is to use WARN_ON_ONCE() since you only need to see it
-> happen once to know there is a bug somewhere, and logging every time can
-> lead to overwhelmingly interleaved logs if it happens too many times.
+> +	cpumask_clear_cpu(smp_processor_id(), &primary_threads_cpumask);
 
-I'm objecting more to using the return value of pci_WARN_ONCE() than
-the warning itself.  It's not really obvious what WARN_ONCE() should
-return and kind of a hassle to figure it out, so I think it's clearer
-in this case to test dev_ser directly.
+How do you know that the current CPU is *in* 'primary_threads_cpumask'
+in the first place? I guess it doesn't hurt to do RMPOPT in two places,
+but why not just be careful about it?
 
-> > > +	for (i = ser->nr_devices; i > 0; i--) {
-> > > +		struct pci_dev_ser *prev = &ser->devices[i - 1];
-> > > +		int cmp = pci_dev_ser_cmp(&new, prev);
-> > > +
-> > > +		/*
-> > > +		 * This should never happen unless there is a kernel bug or
-> > > +		 * corruption that causes the state in struct pci_ser to get out
-> > > +		 * of sync with struct pci_dev.
-> > 
-> > Huh.  Same comment as above.  I don't think this is telling me
-> > anything useful.  I guess what happened is we're trying to preserve X
-> > and X is already in "ser", but we should have returned -EBUSY above
-> > for that case.  If we're just saying memory corruption could cause
-> > bugs, I think that's pointless.
-> > 
-> > Actually I'm not even sure we should check for this.
-> > 
-> > > +		 */
-> > > +		if (WARN_ON_ONCE(!cmp))
-> > > +			return -EBUSY;
-> 
-> This is another "this should really never happen" check. I could just
-> return without warning but this is a sign that something is very wrong
-> somewhere in the kernel and it is trivial to just add WARN_ON_ONCE() so
-> that it gets flagged in dmesg. In my experience that can be very helpful
-> to track down logic bugs during developemt and rare race conditions at
-> scale in production environments.
+Also, logically, 'primary_threads_cpumask' never changes (modulo CPU
+hotplug). The thing you're tracking here is "primary CPUs that need to
+have RMPOPT executed on them". That's a far different thing than the
+name for the variable.
 
-OK.  Maybe just remove the comment.  It's self-evident that
-WARN_ON_ONCE() is a "shouldn't happen" situation, and I don't think
-the comment contains useful information.
+> +	/* current CPU */
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		rmpopt((void *)pa);
 
-> > > +u32 pci_liveupdate_incoming_nr_devices(void)
-> > > +{
-> > > +	struct pci_ser *ser;
-> > > +
-> > > +	if (pci_liveupdate_flb_get_incoming(&ser))
-> > > +		return 0;
-> > 
-> > Seems slightly overcomplicated to return various error codes from
-> > pci_liveupdate_flb_get_incoming(), only to throw them away here and
-> > special-case the "return 0".  I think you *could* set
-> > "ser->nr_devices" to zero at entry to
-> > pci_liveupdate_flb_get_incoming() and make this just:
-> > 
-> >   pci_liveupdate_flb_get_incoming(&ser);
-> >   return ser->nr_devices;
-> 
-> pci_liveupdate_flb_get_incoming() fetches the preserved pci_ser struct
-> from LUO (the struct that the previous kernel allocated and populated).
-> If pci_liveupdate_flb_get_incoming() returns an error, it means there
-> was no struct pci_ser preserved by the previous kernel (or at least not
-> that the current kernel is compatible with), so we return 0 here to
-> indicate that 0 devices were preserved.
+This _looks_ rather wonky because it's casting a 'pa' to a virtual
+address for no apparent reason.
 
-Right.  Here's what I was thinking:
+Also, rmpopt() itself does 1G alignment. This code ^ also aligns the
+start and end. Why?
 
-  pci_liveupdate_flb_get_incoming(...)
-  {
-    struct pci_ser *ser = *serp;
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G) {
+> +		on_each_cpu_mask(&primary_threads_cpumask, rmpopt,
+> +				 (void *)pa, true);
+> +
+> +		 /* Give a chance for other threads to run */
+> +		cond_resched();
+> +
+> +	}
+> +
+> +	cpumask_set_cpu(smp_processor_id(), &primary_threads_cpumask);
+> +}
 
-    ser->nr_devices = 0;
+Honestly, I _really_ wish this series would dispense with *all* the
+optimizations in the first version. This looks really wonky because
+'primary_threads_cpumask' is a global variable and is initialized before
+the work function when it could probably be done within the work function.
 
-    ret = liveupdate_flb_get_incoming(...);
-    ...
-    if (ret == -ENOENT) {
-      pr_info_once("PCI: No incoming FLB data detected during Live Update");
-      return;
-    }
+It's also *really* generically and non-descriptively named for a
+global-scope variable.
 
-    WARN_ONCE(ret, "PCI: Failed to retrieve incoming ...");
-  }
+> +static void rmpopt_all_physmem(bool early)
+> +{
+> +	if (!rmpopt_wq)
+> +		return;
+> +
+> +	if (early)
+> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work,
+> +				   msecs_to_jiffies(1));
+> +	else
+> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work,
+> +				   msecs_to_jiffies(RMPOPT_WORK_TIMEOUT));
+> +}
 
-  u32 pci_liveupdate_incoming_nr_devices(void)
-  {
-    pci_liveupdate_flb_get_incoming(&ser);
-    return ser->nr_devices;
-  }
+This is rather unfortunate on several levels.
 
-> > > +++ b/include/linux/kho/abi/pci.h
-> > 
-> > It seems like most of include/linux/ is ABI, so does kho/abi/ need to
-> > be separated out in its own directory?
-> 
-> include/linux/kho/abi/ contains all of the structs, enums, etc. that are
-> handed off between kernels during a Live Update. If almost anything
-> changes in this directory, it breaks our ability to upgrade/downgrade
-> via Live Update. That's why it's split off into its own directory.
-> 
-> include/linux/ is not part of the Live Update ABI. Changes to those
-> headers to not affect our ability to upgrade/downgrade via Live Update.
-> 
-> > It's kind of unusual for the hierarchy to be this deep, especially
-> > since abi/ is the only thing in include/linux/kho/.
-> 
-> Yes I agree, but that is outside the scope of this patchset I think.
-> This directory already exists.
+First, even if the 'bool early' thing was a good idea, this should be
+written:
 
-Agreed.
+	unsigned long timeout = RMPOPT_WORK_TIMEOUT;
 
-Bjorn
+	if (early)
+		timeout = 1;
+	
+	queue_delayed_work(rmpopt_wq,
+			   &rmpopt_delayed_work,			
+			   msecs_to_jiffies(timeout));
+
+But, really, why does it even *need* a bool for early/late? Just do a
+late_initcall() if you want this done near boot time.
+
+
+>  static __init void configure_and_enable_rmpopt(void)
+>  {
+>  	phys_addr_t pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+> @@ -499,6 +582,37 @@ static __init void configure_and_enable_rmpopt(void)
+>  	 */
+>  	for_each_online_cpu(cpu)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+
+What is the scope of MSR_AMD64_RMPOPT_BASE? Can you have it enabled on
+one thread and not the other? Could they be different values both for
+enabling and the rmpopt_base value?
+
+If it's not per-thread, then why is it being initialized for each thread?
+
+> +	/*
+> +	 * Create an RMPOPT-specific workqueue to avoid scheduling
+> +	 * RMPOPT workitem on the global system workqueue.
+> +	 */
+> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_UNBOUND, 1);
+> +	if (!rmpopt_wq)
+> +		return;
+
+I'd probably just put this first. Then if the allocation fails, you
+don't even bother doing the WRMSRs. Heck if you did that, you could even
+use the MSR bit for the indicator of if RMPOPT is supported.
+
+> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, rmpopt_work_handler);
+> +
+> +	rmpopt_pa_start = pa_start;
+
+Why is there a 'rmpopt_pa_start' and 'pa_start'?
+
+> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
+> +
+> +	/* Limit memory scanning to the first 2 TB of RAM */
+> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
+> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
+> +
+> +	/* Only one thread per core needs to issue RMPOPT instruction */
+> +	for_each_online_cpu(cpu) {
+> +		if (!topology_is_primary_thread(cpu))
+> +			continue;
+> +
+> +		cpumask_set_cpu(cpu, &primary_threads_cpumask);
+> +	}
+> +
+> +	/*
+> +	 * Once all per-CPU RMPOPT tables have been configured, enable RMPOPT
+> +	 * optimizations on all physical memory.
+> +	 */
+> +	rmpopt_all_physmem(TRUE);
+>  }
