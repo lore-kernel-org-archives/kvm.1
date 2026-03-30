@@ -1,184 +1,228 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2A33BED77;
-	Mon, 30 Mar 2026 10:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5373BED74;
+	Mon, 30 Mar 2026 10:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774865588; cv=none; b=JJ8XucR+WrxQnVScXx3PX/VhtPTubtEVKBQWRmlvcKi+uyxTJbWC6xLkoyc1BQKH1H5V2aBc5S4NRHMUh4vIbUQq110GwhuwboKmV4/VntLXi2G/EYY+CzNSArsKcEKl8EawW7ZkEeFNHUaM55BGZqf+M5NkwetRRpHkS8wZ7nU=
+	t=1774865609; cv=none; b=I/YxyAu+FTQmM17T4ahy/cOwz3/ihBpZ4+92lNEzsm37aqjyOGDN/4ReNKSqVsMYg8JFJHt3v1BpgwzLLxWIsiDdjW9q+DzQvYn8ZGjdtGCjrURa9Hy1dVpqZglQU2/2KCDKJv7wgkW3RcCUG25IoF/c8eBkWonGaEpvKmCmZ9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774865588; c=relaxed/simple;
-	bh=z+HQ68nm/PN2NlXH0rkdfjkI55JODdIviAntTrnHsgk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLn9CQmuGRpE/fAc6XGIlnwOl0SMPKwIgpGv5RM8EmKtjkAzJBAkxBjg7MJGIBycaa2Lso5aSoKC9APZ6xN9GqMpYETmPvZXrmcCSWt4HZ2uZOqvdol39g6Dt8UWHojhlogAW6VA2pw26ZCb7CjPXPiMhAH4P5z8T4hb+3+m8OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qd78A1P9; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qd78A1P9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A609C4CEF7;
-	Mon, 30 Mar 2026 10:13:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774865587;
-	bh=z+HQ68nm/PN2NlXH0rkdfjkI55JODdIviAntTrnHsgk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qd78A1P9UWhpE5pfNF5/si0YUJqDBpx6QABMZxnbsGfRv1tputO1o/Fj0hI6yR2fH
-	 FvsnZ3AoBWYzWJ6RcLz9fOYYD1ih9BqPFODUF8l6Vh3PzjLcOB5dH2WtsPAsSXEgpG
-	 2+ChD4WcGvre9pwNNmv+CFQ0efph6oYKrdKUJ93AefdcAxed2DAnXngn0RfTKB/hzH
-	 PLKhreYyx3SRJHaKu3Ob1dWqrvWyNNiReXe6WM02HJLPe3DzUBff3z58LQnwRvWy4I
-	 JHLJmjIAFYy7zsrRy7Gj+f+bVK9sOlM4R0u+cgTVjfLpeclDzbfvWJeXXyhPaDh+NF
-	 fuwMYcrpMklmQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 15/15] KVM: selftests: test userfaultfd missing for guest_memfd
-Date: Mon, 30 Mar 2026 13:11:16 +0300
-Message-ID: <20260330101116.1117699-16-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260330101116.1117699-1-rppt@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
+	s=arc-20240116; t=1774865609; c=relaxed/simple;
+	bh=02iaw6UdM2pgji2fbxQdTw6RH+O3+yK4hzLaQ0plBWE=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=lAQnHYSJ3onXsTN1Yg5trmwl6f6WZrHKg7uniDlcEL1V+ckyWhb3u1vfZpdGIhE2Awmw1srPG76AyO2wbdymIV1ytzezcbBkhMueR5KwetbfqXdPN5MSisUCJxu5Csif0Zw5gCSe+kEg1vpbpD81n9sSKJNLFklyYeuiRaYKEUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Bx28LETMpp3e4fAA--.25013S3;
+	Mon, 30 Mar 2026 18:13:24 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDx6+DATMppZrJgAA--.54687S3;
+	Mon, 30 Mar 2026 18:13:22 +0800 (CST)
+Subject: Re: [PATCH v2 3/3] LoongArch: KVM: Set vcpu_is_preempted() macro
+ rather than function
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, kernel@xen0n.name,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Juergen Gross <jgross@suse.com>
+References: <20260317092911.1400248-1-maobibo@loongson.cn>
+ <20260317092911.1400248-4-maobibo@loongson.cn>
+ <CAAhV-H5aKoTTdjwzco6Yv84SJgtt0Eq9xXNp6PkcDaxM+H9gZw@mail.gmail.com>
+ <6118cbb5-f895-e04d-7b76-91f9e9ad3b05@loongson.cn>
+ <CAAhV-H5J-jaej47xSq6F8_Y6nTSJW3pJ=kd9sTAUxdKegmG+Yw@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <ab101f57-39d5-fb3e-f8a7-612838c1fbe5@loongson.cn>
+Date: Mon, 30 Mar 2026 18:10:37 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <CAAhV-H5J-jaej47xSq6F8_Y6nTSJW3pJ=kd9sTAUxdKegmG+Yw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDx6+DATMppZrJgAA--.54687S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Gw4xAw1DZF1kXw1ftr48Zrc_yoW7CrWUpr
+	yUCFnYyF48Ww1xG3y2qw4jkrn0vwn7GFn7X3W3Ga4rAa1DtFnrJr1UtrWj9Fy0qw1kKF10
+	qF95Xr4xuFyaywcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
+	67AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+	8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
+	CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+	1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
+	vfC2KfnxnUUI43ZEXa7IU8zwZ7UUUUU==
 
-From: Nikita Kalyazin <kalyazin@amazon.com>
 
-The test demonstrates that a missing userfaultfd event in guest_memfd can
-be resolved via a UFFDIO_COPY ioctl.
 
-Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- .../testing/selftests/kvm/guest_memfd_test.c  | 80 ++++++++++++++++++-
- 1 file changed, 79 insertions(+), 1 deletion(-)
+On 2026/3/30 下午6:00, Huacai Chen wrote:
+> On Fri, Mar 20, 2026 at 11:01 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2026/3/19 下午8:48, Huacai Chen wrote:
+>>> Hi, Bibo,
+>>>
+>>> On Tue, Mar 17, 2026 at 5:29 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>> vcpu_is_preempted() is performance sensitive called in function
+>>>> osq_lock(), here set it as macro. So that parameter is not parsed
+>>>> at most time, it can avoid cache line thrashing across numa node.
+>>>>
+>>>> Here is part of unixbench result on 3C5000 DualWay machine with 32
+>>>> Cores and 2 Numa node.
+>>>>             origin    with patch    CONFIG_PARAVIRT disabled
+>>>> execl     6871.9    7134.2        7190.8
+>>>> fstime    425.5     959.9         956.1
+>>>>
+>>>>   From the test result, with macro method it is almost the same with
+>>>> CONFIG_PARAVIRT disabled, and there is some improvment compared with
+>>>> function method.
+>>>>
+>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>> ---
+>>>>    arch/loongarch/include/asm/qspinlock.h | 27 +++++++++++++++++++++-----
+>>>>    arch/loongarch/kernel/paravirt.c       | 15 ++------------
+>>>>    2 files changed, 24 insertions(+), 18 deletions(-)
+>>>>
+>>>> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
+>>>> index 66244801db67..b5d7a038faf1 100644
+>>>> --- a/arch/loongarch/include/asm/qspinlock.h
+>>>> +++ b/arch/loongarch/include/asm/qspinlock.h
+>>>> @@ -5,8 +5,10 @@
+>>>>    #include <linux/jump_label.h>
+>>>>
+>>>>    #ifdef CONFIG_PARAVIRT
+>>>> -
+>>>> +#include <asm/kvm_para.h>
+>>>>    DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
+>>>> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
+>>>> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
+>>>>
+>>>>    #define virt_spin_lock virt_spin_lock
+>>>>
+>>>> @@ -34,10 +36,25 @@ static inline bool virt_spin_lock(struct qspinlock *lock)
+>>>>           return true;
+>>>>    }
+>>>>
+>>>> -#define vcpu_is_preempted vcpu_is_preempted
+>>>> -
+>>>> -bool vcpu_is_preempted(int cpu);
+>>>> -
+>>>> +/*
+>>>> + * Macro is better than inline function here
+>>>> + * With inline function, parameter cpu is parsed even though it is not used.
+>>>> + * This may cause cache line thrashing across NUMA node.
+>>>> + * With macro method, parameter cpu is parsed only when it is used.
+>>> What is the test result with inline function? If it isn't
+>>> significantly worse than with macro, we usually prefer inline
+>>> functions.
+>> In the beginning, I had the similar thoughts. And inline function is
+>> better to maintain, however here is obvious performance gap between
+>> inline and macro method.
+> Strange, try __always_inline to replace inline? Maybe inline fails for
+> some cases?
+__always_inline is the same with inline.
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 29f8d686c09f..eb29ee5d2991 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -439,6 +439,82 @@ static void test_uffd_minor(int fd, size_t total_size)
- 	close(uffd);
- }
- 
-+static void test_uffd_missing(int fd, size_t total_size)
-+{
-+	struct uffdio_register uffd_reg;
-+	struct uffdio_copy uffd_copy;
-+	struct uffd_msg msg;
-+	struct fault_args args;
-+	pthread_t fault_thread;
-+	void *mem, *buf = NULL;
-+	int uffd, ret;
-+	off_t offset = page_size;
-+	void *fault_addr;
-+	const char test_val = 0xab;
-+
-+	ret = posix_memalign(&buf, page_size, total_size);
-+	TEST_ASSERT_EQ(ret, 0);
-+	memset(buf, test_val, total_size);
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC);
-+	TEST_ASSERT(uffd != -1, "userfaultfd creation should succeed");
-+
-+	struct uffdio_api uffdio_api = {
-+		.api = UFFD_API,
-+		.features = 0,
-+	};
-+	ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-+
-+	uffd_reg.range.start = (unsigned long)mem;
-+	uffd_reg.range.len = total_size;
-+	uffd_reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
-+
-+	fault_addr = mem + offset;
-+	args.addr = fault_addr;
-+
-+	ret = pthread_create(&fault_thread, NULL, fault_thread_fn, &args);
-+	TEST_ASSERT(ret == 0, "pthread_create should succeed");
-+
-+	ret = read(uffd, &msg, sizeof(msg));
-+	TEST_ASSERT(ret != -1, "read from userfaultfd should succeed");
-+	TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
-+	TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
-+		    "pagefault should occur at expected address");
-+	TEST_ASSERT(!(msg.arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_WP),
-+		    "pagefault should not be write-protect");
-+
-+	uffd_copy.dst = (unsigned long)fault_addr;
-+	uffd_copy.src = (unsigned long)(buf + offset);
-+	uffd_copy.len = page_size;
-+	uffd_copy.mode = 0;
-+	ret = ioctl(uffd, UFFDIO_COPY, &uffd_copy);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_COPY) should succeed");
-+
-+	/* Wait for the faulting thread to complete - this provides the memory barrier */
-+	ret = pthread_join(fault_thread, NULL);
-+	TEST_ASSERT(ret == 0, "pthread_join should succeed");
-+
-+	/*
-+	 * Now it's safe to check args.value - the thread has completed
-+	 * and memory is synchronized
-+	 */
-+	TEST_ASSERT(args.value == test_val,
-+		    "memory should contain the value that was copied");
-+	TEST_ASSERT(*(char *)(mem + offset) == test_val,
-+		    "no further fault is expected");
-+
-+	ret = munmap(mem, total_size);
-+	TEST_ASSERT(!ret, "munmap should succeed");
-+	free(buf);
-+	close(uffd);
-+}
-+
- static void test_guest_memfd_flags(struct kvm_vm *vm)
- {
- 	uint64_t valid_flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
-@@ -494,8 +570,10 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- 	gmem_test(fallocate, vm, flags);
- 	gmem_test(invalid_punch_hole, vm, flags);
- 
--	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-+	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
- 		gmem_test(uffd_minor, vm, flags);
-+		gmem_test(uffd_missing, vm, flags);
-+	}
- }
- 
- static void test_guest_memfd(unsigned long vm_type)
--- 
-2.53.0
+With the following sentences in osq_lock(). With inline method, 
+parameter node_cpu(node->prev) will be parsed and put in temp register 
+in the beginning before the inline function is called, so that there 
+will be one memory access.
+
+And I ask with LLVM guys, they say that LLVM framework does this, not 
+LLVM arch specified. inline is different with macro actually.
+
+However with marcro method, parameter node_cpu(node->prev) will not be 
+parsed until virt_preempt_key() is set with true.
+
+if (smp_cond_load_relaxed(&node->locked, VAL || need_resched() ||
+                                vcpu_is_preempted(node_cpu(node->prev))))
+
+Regards
+Bibo Mao
+> 
+> 
+> Huacai
+> 
+>>
+>> Here is part of unixbench result on 3C5000 DualWay machine with 32
+>> Cores and 2 Numa node, based on 7.0.0-rc4 kernel version.
+>> vcpu_is_preempted() is implemented with different methods.
+>>            origin (function)   inline        macro
+>> execl     7025.7             6991.2        7242.3
+>> fstime    474.6              703.1         1071.1
+>>
+>> Regards
+>> Bibo Mao
+>>>
+>>>
+>>>
+>>> Huacai
+>>>
+>>>> + */
+>>>> +#define vcpu_is_preempted(cpu)                                                 \
+>>>> +({                                                                             \
+>>>> +       bool __val;                                                             \
+>>>> +                                                                               \
+>>>> +       if (!static_branch_unlikely(&virt_preempt_key))                         \
+>>>> +               __val = false;                                                  \
+>>>> +       else {                                                                  \
+>>>> +               struct kvm_steal_time *src;                                     \
+>>>> +               src = &per_cpu(steal_time, cpu);                                \
+>>>> +               __val = !!(READ_ONCE(src->preempted) & KVM_VCPU_PREEMPTED);     \
+>>>> +       }                                                                       \
+>>>> +       __val;                                                                  \
+>>>> +})
+>>>>    #endif /* CONFIG_PARAVIRT */
+>>>>
+>>>>    #include <asm-generic/qspinlock.h>
+>>>> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
+>>>> index b74fe6db49ab..2d1206e486e2 100644
+>>>> --- a/arch/loongarch/kernel/paravirt.c
+>>>> +++ b/arch/loongarch/kernel/paravirt.c
+>>>> @@ -10,8 +10,8 @@
+>>>>    #include <asm/paravirt.h>
+>>>>
+>>>>    static int has_steal_clock;
+>>>> -static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+>>>> -static DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
+>>>> +DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+>>>> +DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
+>>>>    DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
+>>>>
+>>>>    static bool steal_acc = true;
+>>>> @@ -261,17 +261,6 @@ static int pv_time_cpu_down_prepare(unsigned int cpu)
+>>>>           return 0;
+>>>>    }
+>>>>
+>>>> -bool vcpu_is_preempted(int cpu)
+>>>> -{
+>>>> -       struct kvm_steal_time *src;
+>>>> -
+>>>> -       if (!static_branch_unlikely(&virt_preempt_key))
+>>>> -               return false;
+>>>> -
+>>>> -       src = &per_cpu(steal_time, cpu);
+>>>> -       return !!(src->preempted & KVM_VCPU_PREEMPTED);
+>>>> -}
+>>>> -EXPORT_SYMBOL(vcpu_is_preempted);
+>>>>    #endif
+>>>>
+>>>>    static void pv_cpu_reboot(void *unused)
+>>>> --
+>>>> 2.39.3
+>>>>
+>>
+>>
 
