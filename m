@@ -1,282 +1,171 @@
-Received: from iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com [18.207.52.234])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2032B3254A3;
-	Mon, 30 Mar 2026 14:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.207.52.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628343264EF;
+	Mon, 30 Mar 2026 14:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774882304; cv=none; b=O2OGa6qstioaGNSUIu36iR8F/1CPMA4r5gwfyDtqIahhMIr2dK131HnkRjQDfwaghQxEdcgkK+JKQyG3BRU4WakXtc2PTGWEuaLRJlBBpvgF96VYe7MPHHT4oxrhnNlsiGd9UuEAfetLwuzDpMXwUvMpKZLDOSNpLkh2BakX1sE=
+	t=1774882422; cv=none; b=jjZWqQKW2QdRrQ+PwaiyYNJxaT5ZdFc41G+mgoziNY8VYBf96IAeEOZLkylE6xUjoRMiKc1iHHUxwuOqBwkFBDQblefr1LDOfm5BhniUMa3uaUMJtSCLU5CLAm2Q8QjS5GEaDXcR5Wur82T92kKSBh0PyzlGjUav8QgEFSsj32c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774882304; c=relaxed/simple;
-	bh=bG8Z1D3gbKWP/yDjn+ezIFhT0Ed0AS+oYaKyJds5mHw=;
-	h=Content-Type:MIME-Version:From:To:CC:Subject:Date:Message-ID:
-	 References:In-Reply-To:MIME-Version; b=gltxpX9LGxNdIGtLO8qhchlO+5namnkUwnwRDe0TUHFR3LbAXsHa1t3ZUysPs4fdvkd2/2nIMBNv147ynQe3gh+Au+h6fOXlRcpQdITJtw9NYfKwvSkosy6q1kN3wF1TxhLn03RYaCHKG0w12bgjUIpr5QqCqmZAYNFym+urS+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=lqrSjnTx; arc=none smtp.client-ip=18.207.52.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+	s=arc-20240116; t=1774882422; c=relaxed/simple;
+	bh=DfYVsRNVn8VQ2MJI8p8at6JPpsiaadxH8kM9rmOjgPE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KJLPLeO56lS/FZNbIqTlduqDikCmoBC/lns9C2Kt2m16wLUixtcR0PrEpUdM0XxN30mMozVpdLwiBvw8DLoEJXPDv+s9sdjpkmm9aj6lsBL9s5qO4qgy0/la47ziPMz+dDDMoN3d2cJkdwheMea/hDOyQJF13Ymu3RDUFRRBK4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hkQZDCfM; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="lqrSjnTx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1774882303; x=1806418303;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to;
-  bh=dTSvER0RGyHjky6bHxPduzBZMv+zJjLg7A0MuNE3W3o=;
-  b=lqrSjnTxTwDaJiv+nqbEcHWA5QVf7FV95VJVL5FnU8g0uCMtt4eN/JZp
-   xN5M0RjbRqrMbvXd1HOHc9+nLFtEm+tiqKeuaPhKcGsmSIZDBlsvTt0wm
-   7nBcqMn6mdOtQ3FeN+QdMO7HrsaHOPb+cMDT6NuybjWT+QfBjO/hgGWp7
-   bz3KJvQFgnMAZUjLgLz49B7CviwKJLxzx1I88IhNMJmXeBFvdxWWriaLI
-   QcQA7yN/JGY5D0Fw5iFmz8HU3RxIMvTP2sppRaqhnCsn0aF73tfRnDt3f
-   yskLOv4QrGMGpxSZTaXkjByHQTOZqXF/YA+6vS8zcP4mTMX3feTdoYq1N
-   Q==;
-X-CSE-ConnectionGUID: +0asUoQYSxyHVIgULdB39g==
-X-CSE-MsgGUID: FsB5EcsZTQmIp7oQMwpQZg==
-X-Amazon-filename: smime.p7s
-X-IronPort-AV: E=Sophos;i="6.23,150,1770595200"; 
-   d="p7s'346?scan'346,208,346";a="15100306"
-Content-Type: multipart/mixed; boundary="===============4823398576471499449=="
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hkQZDCfM"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62U7fWAt2411380;
+	Mon, 30 Mar 2026 14:53:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=0V+FdM
+	fUhjzexF9yP5xAkxwKX2+ToVNj99U1BMia3Yk=; b=hkQZDCfM7YeSHYMQK4Jh6a
+	GqYvaV9A3ztsWO8T5QIClrHDDkUukpuwaxVBD7pAv0wbpb4ZVjGTmluc0ZRaU/u1
+	dX1Kiu/5q/gYkgirzyIySSmIENDQ3fQOrKqM26GaHLoy+8OhlEyAP5nSfh/G0p51
+	L9twA2F31Zys4zkCZo/kMUyK1jg0FKMK14V2ao/f9/WvPyOq2gs3lZmpPAouVolA
+	U5n0ZhN/GSU3+s0K0qFFvEVNSBVRrENxAPhUow7UEs6nr0+iV8dp7qoANhyjhFk2
+	AMrNSn/kjvUlpg5gAcha1q94VD3H2PNgjL1wW8waNt5jucYeZcvy/9de3+skdyVw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgf6x2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Mar 2026 14:53:39 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62UBZnu9008751;
+	Mon, 30 Mar 2026 14:53:38 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6v11d2k3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Mar 2026 14:53:38 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62UErZSo30933616
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Mar 2026 14:53:35 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0DA9C20040;
+	Mon, 30 Mar 2026 14:53:35 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C22422004B;
+	Mon, 30 Mar 2026 14:53:34 +0000 (GMT)
+Received: from [9.111.73.117] (unknown [9.111.73.117])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 30 Mar 2026 14:53:34 +0000 (GMT)
+Message-ID: <ac419933-6eb5-4a11-894f-94c19c6e8003@linux.ibm.com>
+Date: Mon, 30 Mar 2026 16:53:34 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from ip-10-4-22-235.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.22.235])
-  by internal-iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 14:51:39 +0000
-Received: from EX19MTAUEA001.ant.amazon.com [72.21.196.67:31057]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.12.35:2525] with esmtp (Farcaster)
- id 9722e371-26e5-4702-94ef-c0b8ac460937; Mon, 30 Mar 2026 14:51:39 +0000 (UTC)
-X-Farcaster-Flow-ID: 9722e371-26e5-4702-94ef-c0b8ac460937
-Received: from EX19D001UEB002.ant.amazon.com (10.252.135.17) by
- EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 30 Mar 2026 14:51:36 +0000
-Received: from EX19D001UEB002.ant.amazon.com (10.252.135.17) by
- EX19D001UEB002.ant.amazon.com (10.252.135.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 30 Mar 2026 14:51:36 +0000
-Received: from EX19D001UEB002.ant.amazon.com ([fe80::19d6:e954:f18:6292]) by
- EX19D001UEB002.ant.amazon.com ([fe80::19d6:e954:f18:6292%3]) with mapi id
- 15.02.2562.037; Mon, 30 Mar 2026 14:51:36 +0000
-From: "Woodhouse, David" <dwmw@amazon.co.uk>
-To: "rostedt@goodmis.org" <rostedt@goodmis.org>, "shaikhkamal2012@gmail.com"
-	<shaikhkamal2012@gmail.com>
-CC: "syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com"
-	<syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com>,
-	"me@brighamcampbell.com" <me@brighamcampbell.com>, "seanjc@google.com"
-	<seanjc@google.com>, "linux-rt-devel@lists.linux.dev"
-	<linux-rt-devel@lists.linux.dev>, "hpa@zytor.com" <hpa@zytor.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "paul@xen.org"
-	<paul@xen.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>
-Subject: Re:  [PATCH] KVM: x86/xen: Fix sleeping lock in hard IRQ context on
- PREEMPT_RT
-Thread-Topic: [PATCH] KVM: x86/xen: Fix sleeping lock in hard IRQ context on
- PREEMPT_RT
-Thread-Index: AQHcwFS04Gd7OxUeTEezGEroO0FIQQ==
-Date: Mon, 30 Mar 2026 14:51:36 +0000
-Message-ID: <bb7b66ad99097c5326196b61d644cff255e30394.camel@amazon.co.uk>
-References: <20260329131543.91733-1-shaikhkamal2012@gmail.com>
-	 <20260330101814.7fa1e31e@gandalf.local.home>
-In-Reply-To: <20260330101814.7fa1e31e@gandalf.local.home>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-MIME-Version: 1.0
-
---===============4823398576471499449==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 08/10] KVM: s390: Use gpa_t in priv.c
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@linux.ibm.com,
+        akrowiak@linux.ibm.com
+References: <20260316180310.17765-1-frankja@linux.ibm.com>
+ <20260316180310.17765-9-frankja@linux.ibm.com>
+ <20260318170259.2cb92001@p-imbrenda>
 Content-Language: en-US
-Content-Type: multipart/signed; micalg=sha-256;
-	protocol="application/pkcs7-signature"; boundary="=-4TfNX9rrV7rNrltxw1Z9"
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260318170259.2cb92001@p-imbrenda>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDExNiBTYWx0ZWRfX78UoYgPlaTXw
+ 2+RYvZ0/3s3dPv/QZJ8kYOYhp995mNbf/UIRQxtCvYKDk7ojuCkUN4pYKeiqKvZefTn0h8tpXf0
+ YuCGGGHXodcwdkDFLf1+X2EeALY9H8exak6g2trrM0JnFUtqQvkSJVOo1SukwXaKRg1qSu6n3ey
+ BcE/TH5wev+s4zWG2eLbthdttqmkvZ0vUEOd1eq7KulBnmNavYKnnWnpKRJjKdirLGqCnVouRhG
+ Ti7oCu5SeYbpo+Cs5VVkpggj1QE1JadYTFhyMr4V1HsNNc97yVNBdSMPDvZ3FszeVyuO9sn4htj
+ Fz5L6ZZxnSKYg8c3eu5cLLXIk6JTCGoVy6uaiIIAfp8tm8F+Uflarx1Bforx2O//TJ4p6RUPY/T
+ kQ3na7gAGbK2HFdXNKRoLQrn07XZNPPe/TV8h86snIN02ujyFZDSorOqB2Ld/qhsvQmb3Bap6MI
+ rhDhDDAkkZXqrncQizg==
+X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69ca8e73 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=ZXZ5jkJX7H5pkj7HFxgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: DM8dmbxiB1oKFP5ZQUqDUNgiJf2O-EEh
+X-Proofpoint-ORIG-GUID: DM8dmbxiB1oKFP5ZQUqDUNgiJf2O-EEh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-29_05,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603300116
 
---=-4TfNX9rrV7rNrltxw1Z9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2026-03-30 at 10:18 -0400, Steven Rostedt wrote:
->=20
-> > +static void xen_timer_inject_irqwork(struct irq_work *work)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_vcpu_xen *xen =3D container_of(wor=
-k, struct kvm_vcpu_xen,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 timer_inject_irqwork);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_vcpu *vcpu =3D container_of(xen, s=
-truct kvm_vcpu, arch.xen);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_xen_evtchn e;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 int rc;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 e.vcpu_id =3D vcpu->vcpu_id;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 e.vcpu_idx =3D vcpu->vcpu_idx;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 e.port =3D vcpu->arch.xen.timer_virq;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 e.priority =3D KVM_IRQ_ROUTING_XEN_EVTCHN_PRI=
-O_2LEVEL;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 rc =3D kvm_xen_set_evtchn_fast(&e, vcpu->kvm)=
-;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 if (rc !=3D -EWOULDBLOCK)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 vcpu->arch.xen.timer_expires =3D 0;
-> > +}
->=20
-> Why duplicate this code and not simply make a static inline helper
-> function that is used in both places?
-
-It's already duplicating the functionality; the original
-xen_timer_callback() will already fall back to injecting the IRQ in
-process context when it needs to (by setting vcpu-
->arch.xen.timer_pending and then setting KVM_REQ_UNBLOCK).
-
-All you had to do was make kvm_xen_set_evtchn_fast() return=C2=A0
--EWOULDBLOCK in the in_hardirq() case in order to use the existing
-fallback, surely?=20
-
-Better still, can't kvm_xen_set_evtchn_fast() just use read_trylock()
-instead?
-
---=-4TfNX9rrV7rNrltxw1Z9
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkYw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhUwggT9oAMCAQICEFQru/eJkU7BxeS7T6sWKmYwDQYJKoZIhvcN
-AQELBQAwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNV
-BAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBS
-U0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EwHhcNMjQxMjE1MDAw
-MDAwWhcNMjYxMjE1MjM1OTU5WjAiMSAwHgYJKoZIhvcNAQkBFhFkd213QGFtYXpvbi5jby51azCC
-AiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANhjs6T4tJ0lcw4+6sawEn2FowmhunUBsnSV
-ccB+aA7s3Zd9PZV46CU6phAlCWpKk1yFVcD1Rnc4ux17o4LbUgFXiKrORS0jiF/5Oa0rXG3FISG1
-Xdjt8oPKIq+9Z1s2e7Ipi5WWj4AG/xlkH/YMMctL9O8CCRHSrhiChbE/gR57x9PAnt5aeZZ2YWza
-GOOeceaZe+u6vHCHITRmknSAnAX/aNoNJNsQCGcfrE83y9iHmP8BFrSRZqajBKlKq8tyJd5FnSwP
-H3kSUcQlHOwiIfCRFXP4rpXSZ7nKOEZr3SXH06ADY9gZtrSpwBbuzKWDPGWMRuRnz8ogj/Y6DeU4
-2zB/ZAIi5b0BzWf4u0rBEQD5xtpOCxYHc2nXQaFSWu36kP1JaNqElE51OQ92EyVKfW3N6qZcKiBr
-VijXY2EtR+/5W9ixRFnEs4nIeb94Sf92UMEeG9ew2yVvcYXXNPaicGnrkESNC19/a8YXxQEZfrmB
-eAPT9viQJhn3O+sD4pP0Ss3SjVZc6EO7vfoP07bt2n9YE08XSPkxcyb1J/4t/+AskkKeYFBGdpjg
-xd+iLFxjSwBytZuh3+7DuHUfg876WA44ieQDrhHSjuvuAZ1Wb8WUsrpzrcLoYjqFmb/bf6/yyoxl
-t31mdgPC+FLc+Yu1BQwXC3JMbrvbFBVTtn5X2EKDAgMBAAGjggHQMIIBzDAfBgNVHSMEGDAWgBQJ
-wPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUWvtA1XsSV8xjgfFQL/DUTNIbJu4wDgYDVR0P
-AQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwEwYDVR0lBAwwCgYIKwYBBQUHAwQwUAYDVR0gBEkwRzA6
-BgwrBgEEAbIxAQIBCgIwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly9zZWN0aWdvLmNvbS9TTUlNRUNQ
-UzAJBgdngQwBBQEDMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2Vj
-dGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUF
-BwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xp
-ZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDov
-L29jc3Auc2VjdGlnby5jb20wHAYDVR0RBBUwE4ERZHdtd0BhbWF6b24uY28udWswDQYJKoZIhvcN
-AQELBQADggEBAED6T+rfP2XPdLfHoCd5n1iGIcYauWfPHRdZN2Tw7a7NEXIkm2yZNizOSpp3NrMi
-WOBN13XgqnYLsqdpxJhbjwKczKX50/qfhhkOHtrQ0GRkucybK447Aaul80cZT8T3WG9U9dhl3Ct/
-MuyKBWQg3MYlbUT6u4kC9Pk8rd+cR14ttYRUWDKTS2BrL7e8jpNmtCoEakDkMY4MrpoMwM1f4ANV
-qZ8cnDntwXq5ormZIksN2DqxsKLmrFyVAONhqSST72ImBfIVWhFRTCF9tTcI5wE/0Skl25FZmSsB
-B2LUgecgK7MZyw9Do/b0sYS+8YmA/ujUCqNb0fPJBE/B9vBomhswggYVMIIE/aADAgECAhBUK7v3
-iZFOwcXku0+rFipmMA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTI0MTIxNTAwMDAwMFoXDTI2MTIxNTIzNTk1OVowIjEgMB4GCSqGSIb3DQEJ
-ARYRZHdtd0BhbWF6b24uY28udWswggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYY7Ok
-+LSdJXMOPurGsBJ9haMJobp1AbJ0lXHAfmgO7N2XfT2VeOglOqYQJQlqSpNchVXA9UZ3OLsde6OC
-21IBV4iqzkUtI4hf+TmtK1xtxSEhtV3Y7fKDyiKvvWdbNnuyKYuVlo+ABv8ZZB/2DDHLS/TvAgkR
-0q4YgoWxP4Eee8fTwJ7eWnmWdmFs2hjjnnHmmXvrurxwhyE0ZpJ0gJwF/2jaDSTbEAhnH6xPN8vY
-h5j/ARa0kWamowSpSqvLciXeRZ0sDx95ElHEJRzsIiHwkRVz+K6V0me5yjhGa90lx9OgA2PYGba0
-qcAW7sylgzxljEbkZ8/KII/2Og3lONswf2QCIuW9Ac1n+LtKwREA+cbaTgsWB3Np10GhUlrt+pD9
-SWjahJROdTkPdhMlSn1tzeqmXCoga1Yo12NhLUfv+VvYsURZxLOJyHm/eEn/dlDBHhvXsNslb3GF
-1zT2onBp65BEjQtff2vGF8UBGX65gXgD0/b4kCYZ9zvrA+KT9ErN0o1WXOhDu736D9O27dp/WBNP
-F0j5MXMm9Sf+Lf/gLJJCnmBQRnaY4MXfoixcY0sAcrWbod/uw7h1H4PO+lgOOInkA64R0o7r7gGd
-Vm/FlLK6c63C6GI6hZm/23+v8sqMZbd9ZnYDwvhS3PmLtQUMFwtyTG672xQVU7Z+V9hCgwIDAQAB
-o4IB0DCCAcwwHwYDVR0jBBgwFoAUCcDy/AvalNtf/ivfqJlCz8ngrQAwHQYDVR0OBBYEFFr7QNV7
-ElfMY4HxUC/w1EzSGybuMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMBMGA1UdJQQMMAoG
-CCsGAQUFBwMEMFAGA1UdIARJMEcwOgYMKwYBBAGyMQECAQoCMCowKAYIKwYBBQUHAgEWHGh0dHBz
-Oi8vc2VjdGlnby5jb20vU01JTUVDUFMwCQYHZ4EMAQUBAzBaBgNVHR8EUzBRME+gTaBLhklodHRw
-Oi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29SU0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3Vy
-ZUVtYWlsQ0EuY3JsMIGKBggrBgEFBQcBAQR+MHwwVQYIKwYBBQUHMAKGSWh0dHA6Ly9jcnQuc2Vj
-dGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5j
-cnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLnNlY3RpZ28uY29tMBwGA1UdEQQVMBOBEWR3bXdA
-YW1hem9uLmNvLnVrMA0GCSqGSIb3DQEBCwUAA4IBAQBA+k/q3z9lz3S3x6AneZ9YhiHGGrlnzx0X
-WTdk8O2uzRFyJJtsmTYszkqadzazIljgTdd14Kp2C7KnacSYW48CnMyl+dP6n4YZDh7a0NBkZLnM
-myuOOwGrpfNHGU/E91hvVPXYZdwrfzLsigVkINzGJW1E+ruJAvT5PK3fnEdeLbWEVFgyk0tgay+3
-vI6TZrQqBGpA5DGODK6aDMDNX+ADVamfHJw57cF6uaK5mSJLDdg6sbCi5qxclQDjYakkk+9iJgXy
-FVoRUUwhfbU3COcBP9EpJduRWZkrAQdi1IHnICuzGcsPQ6P29LGEvvGJgP7o1AqjW9HzyQRPwfbw
-aJobMYIExDCCBMACAQEwgaswgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNo
-ZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UE
-AxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EC
-EFQru/eJkU7BxeS7T6sWKmYwDQYJYIZIAWUDBAIBBQCgggHpMBgGCSqGSIb3DQEJAzELBgkqhkiG
-9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDMzMDE0NTEzNFowLwYJKoZIhvcNAQkEMSIEIM2Hc0GO
-feVx9/EuwmT3rg6/TnQ7iPK9m7u8gyKnlSZtMIG8BgkrBgEEAYI3EAQxga4wgaswgZYxCzAJBgNV
-BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAW
-BgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhl
-bnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0ECEFQru/eJkU7BxeS7T6sWKmYwgb4GCyqGSIb3
-DQEJEAILMYGuoIGrMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhBUK7v3
-iZFOwcXku0+rFipmMA0GCSqGSIb3DQEBAQUABIICAJt7GRlwnmQssNLGngtbOLR6cIXfwCHMO9Og
-aLIHoGlI10+OSfwt5kSqKGUTf2zuaHG2gFKRGnEbUUD92IOb4IJoKPopwhUyftj0TZuBL6YfwAkV
-aRCKKz1/016cbeLZCfGXxj/qJchnLtl/u7F1v4kaP0ZmV+oIcrLQ+GQnB5BugSzq2mAK7yQW0PTp
-eQOLoxBh9GbZvG+f1K09UsgyVV3Eb56b3eJiQ8MhT/Rqg/hIVpHBXs4fIcSKeBC/0jBSgnEgZipu
-ZPPtDkGfe9ssbFtwWTGPgTXyKiNk/LHx62mQhyVpRrznrm8zyWyiaK2SsmAV/AeTEenrIm5SoEN0
-vx+dvEkgqdb0I7dOtV7YAgy/tdrhZuaFxmkslfLegxtdTPnpxgYXQJUHVbuHWzfWoSWF9oCFmHFX
-I3pwmFPT6tXEGTlJERW9zQHno8dt0GPQWOUK3k27fgptKX4sMtHLkGW+S3aX4EJGMrOmnY4PaiwM
-cOinTTngZdGJEnjyDbWyPql1hMtZAj4XPTLzwS7ZO+ccLvaaPzkhwjSuSW/ctuAAnkJ5F5Z3ct/k
-Nya4s1Kl7aA1+mt9MviulpeWJKsRzb7/NvssBtnLHlPcB9npX2Iu742L34nFl8ywCwEc+lBm8WDf
-ZWvXHkGaVSGSGhAidmupoZHFsBFsSok03zY+wJUxAAAAAAAA
-
-
---=-4TfNX9rrV7rNrltxw1Z9--
-
---===============4823398576471499449==
-Content-Type: multipart/alternative; boundary="===============8858558829183178805=="
-MIME-Version: 1.0
-Content-Disposition: inline
-
---===============8858558829183178805==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-
-
-
-Amazon Development Centre (London) Ltd. Registered in England and Wales wit=
-h registration number 04543232 with its registered office at 1 Principal Pl=
-ace, Worship Street, London EC2A 2FA, United Kingdom.
-
-
-
---===============8858558829183178805==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-<br><br><br>Amazon Development Centre (London) Ltd.Registered in England an=
-d Wales with registration number 04543232 with its registered office at 1 P=
-rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
-
---===============8858558829183178805==--
---===============4823398576471499449==--
+On 3/18/26 17:02, Claudio Imbrenda wrote:
+> On Mon, 16 Mar 2026 16:23:55 +0000
+> Janosch Frank <frankja@linux.ibm.com> wrote:
+> 
+>> More unsigned long to gpa_t conversions.
+>>
+>> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+>> ---
+>>   arch/s390/kvm/gaccess.h |  8 ++++++++
+>>   arch/s390/kvm/priv.c    | 27 ++++++++++++---------------
+>>   2 files changed, 20 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
+>> index f23dc0729649..970d9020dc14 100644
+>> --- a/arch/s390/kvm/gaccess.h
+>> +++ b/arch/s390/kvm/gaccess.h
+>> @@ -89,6 +89,14 @@ static inline unsigned long kvm_s390_logical_to_effective(struct kvm_vcpu *vcpu,
+>>   	return _kvm_s390_logical_to_effective(&vcpu->arch.sie_block->gpsw, ga);
+>>   }
+>>   
+>> +static inline gpa_t kvm_s390_real_to_abs_effective(struct kvm_vcpu *vcpu,
+>> +						   unsigned long gra)
+> 
+> the name is confusing, it should be something more like
+> kvm_logical_to_abs, or kvm_logical_effective_to_abs
+Since logical can be virtual, I don't think these suggestions fit the 
+bill. It works for logical to effective since that's about address size. 
+Logical is a catch-all and so is effective.
