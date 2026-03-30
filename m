@@ -1,238 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE27A3C9ED0;
-	Mon, 30 Mar 2026 11:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774871945; cv=none; b=KVuvxHfXTwVcLt3MaINMACxnvp1PTqm5YMmyN//5POo+H1xRiascZYJdeVS9YLHcGJHI3D7ksfgtHPLoL+5qcUmjNAXtRYrcSyurpZ5GZ/YP2YmeJgMJqWAQMJPeRygCR1BLgZPYpJFK3gH7gmKTq9P55ftmZdYhuiAsyu0a78g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774871945; c=relaxed/simple;
-	bh=OjF9jnKvHJuUhcj8kbGOZ7BW8KyRGB6l0B8doDNPLi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P+VTXdioMM62bTxm3CwBwHPWbT3bmYf3M+qLXG+Q3dOfvkFAQ9hlGie5WN0hRdpZAKoNEhMhlyi219GJj4HsRHOxGy8Whdp7SDVaEXj/miLJQEoOdnqPB7TFYJEDYUslMRzcoWuhj6v9pWCzZNxedyk8bADqPG6UQn1Pi9s6blQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqi0p01m; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D9C3BE621
+	for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 12:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774872202; cv=pass; b=W9Wbsd0J4KqPvaguk9NAwerEEmdYKY4TLf5L8w7PXZtY7qdni10uEjkRn3BURUuNygPJiZT2yjdbhZEXQEEbbzq6q/lKynjWskwmwxcRi6ekdNOTSEdLj9PHc4ReC4Vuc1crMHe9jYEZ4rv3WH7/LFoXuLxerZ68xbpXurxzPMI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774872202; c=relaxed/simple;
+	bh=dlojckMTP0EqbPzAwVconofdQz/0gm7fgmh/1rE97gc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oub/m62N/m6XTeF3TF9p8i8nYAsIQcWO/k/Crm+8iaifZxX//hzj96guBsxLFtK9Gzg6qZg9FnFZ2Y+412IfxBqra+vVxkWA51TDQus1ePOjOiOUBJAMtZFjmsK1tsO0IZyTeAdpTqbS5BWKWHT1X7P0/TIsnyLcrdyVu94P/1w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9lQ9wH/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qYCW2dCe; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqi0p01m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CF0C2BCB0;
-	Mon, 30 Mar 2026 11:59:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774871945;
-	bh=OjF9jnKvHJuUhcj8kbGOZ7BW8KyRGB6l0B8doDNPLi4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hqi0p01miFDcfjtDesxXRXmpNbgBafEO4gb1/suHg0ZWzk0sw96LgOAVmeB4N+9kL
-	 mst2v1uSS3A+qdLAv49n2zw1avUgmHHir8rQu4OXSAmqW0SGCVR4lXa/QKzoV9lzVy
-	 +YSHjcYnPj8ez0u57CZmFAm+xc+kNVnlVmgtPm8Qgzyoh/FSW99+zxuNBd8kbAW9IA
-	 srNv+kWsCxWtjW3zJ0UFEPBoZhz4fusYjve0re+HFSDL6wX/JcEac2ojU5OsBlIVlT
-	 pXtsf8C2shw6Bw7S1Zo4m3DIMZVNpfZxUqP8VwRdIMihBUnlM+bfdNaDOrdj+J0/tx
-	 iCoKawthjDhYg==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2F468F4006C;
-	Mon, 30 Mar 2026 07:59:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Mon, 30 Mar 2026 07:59:04 -0400
-X-ME-Sender: <xms:iGXKaSbAzoikW_mRVcDGqgZOL52Gj1s8wqLoFFQA5IHmroHr1L37_A>
-    <xme:iGXKaeslEAn5JGFx7WlYpRYQP8J1LP-18BY87e-9VuBP0vhuXRDOqIv0FyF0pll0k
-    lyquAyJOxGGgUUytu-F01soPihKfCaRWQWQnbj9P0SfF5bZg_IETo-E>
-X-ME-Received: <xmr:iGXKaU-wZmZl1SlKcj6iJVcVaTsY-uHTbsnCjx3146hnzv6XSYxsZfww2NvECg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekleefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtphhtthhope
-    htghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrght
-    rdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvh
-    gvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeigkeei
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtg
-    hpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghp
-    thhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:iGXKaeVqAyvsd1dlNtVHl7CI1RkkeQTlIw2xmHemQ_Gh0dEQVy6weA>
-    <xmx:iGXKaYvriyc1NMRB0emm3peeP6Cr0rYscEfrwTvzjR5N9pq80j42bg>
-    <xmx:iGXKac-DTfL7bm0NGxRQySDtQor3sQGL69gxeJS-Q1c2P0LxK9Susg>
-    <xmx:iGXKaZ0v5V0DeaQ4IWN1pwOLhzBDACddYSsx35ZEikvAgPCJ4vb5vw>
-    <xmx:iGXKaZRdyT3D1D5-kHagGbFMX6hFt7XFgohYaffII5raSGMfzSLBKQnR>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Mar 2026 07:59:01 -0400 (EDT)
-Date: Mon, 30 Mar 2026 11:58:56 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
- TDH.SYS.DISABLE
-Message-ID: <acpiGUKS-WRmLoxp@thinkstation>
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
- <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9lQ9wH/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qYCW2dCe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774872200;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3+c+wp6lYqHlPGMdt+a3t3fT0eXuCeYj5fFyxz3577M=;
+	b=L9lQ9wH/K/fqHml9GabCo2t7U5qyzFetTXCKSRhPzTpOTUrPjYPku+5mNaU0Ydat5b2laT
+	3g5RJbjTd9PO1vlYC1z6FeM4GoRxkLjkewrsBka62X/FKQP/OofOwL08Om2+FSY3VMeWe1
+	EHW7DoVEmYLR8ttjs9TTXmHvG3nWyq0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-06WU38Z8MWmhMJsQxNUQzg-1; Mon, 30 Mar 2026 08:03:18 -0400
+X-MC-Unique: 06WU38Z8MWmhMJsQxNUQzg-1
+X-Mimecast-MFC-AGG-ID: 06WU38Z8MWmhMJsQxNUQzg_1774872198
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43cff5ef652so593480f8f.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 05:03:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774872198; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I/xEcsL1kzUwXv/LbXJxvU/Ou5GA1fXZfCoxKL1/4KSHIBVBUF5oqC0To3PPOjgO2s
+         r+L+DO3WQErPJ7yCcFkc4/7yJVUoQVnFeJZLjpGK37cb6eFdlmy+YWxHTlCPKS31dGhr
+         42Pt+kUAbBWJKXeNhniy9uHXiOk9kgJX7NQFtTvIQeSwlhKnUtTYgr/LaXCJoI5+hMVV
+         19TRAqGHUx/WbIGe6dYtfGk4alJokQiQDolsOx+WhQSczjEcZG28B5UwKIzCFC/kDn+L
+         WER5w6U9P1BlgnvDF1jWaB3YVEd1kYMmlV3QfUqOULSOarJ1h3/6dngI28iIN0+0IOfZ
+         9IEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3+c+wp6lYqHlPGMdt+a3t3fT0eXuCeYj5fFyxz3577M=;
+        fh=5Lw/HGKJ+8zJXISiApHzH9cgJ56F3WHZbEDIJ+izNqs=;
+        b=VFaE97d3whiTBPkewG9bfftZOE7LhrQ16LMLIFPKBCk8cqfcwcgIFxtHW3Y5bOjyNE
+         Da80mJ5wZZyjqn9WrmcshtJVmmLQZppw76pBrM4JPlTQqo4dc6NM1WjitYa2Cc2ZV4Le
+         av5eJ00mxJvoxF2WNXbISZljn+puRWK3fBZ8aSR7P4i9tjj4/UBy/zdEKuizTfBb0UkY
+         gbFa2jLFp+9uyLUByIPPmaZ4tmcWCXwYg6B/Bo3lLbuyS9grUxC0vl7I+8pnqFwma+lq
+         uTknP7eVbozml79h5o8FbBnReE95FHjj6cTQcV9yOKkU+QZd/a2sy9PWxmnwFUiUrwfV
+         7/yA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774872198; x=1775476998; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3+c+wp6lYqHlPGMdt+a3t3fT0eXuCeYj5fFyxz3577M=;
+        b=qYCW2dCetNtc8bgmUg+o28DUf2af/r+qAvux6RVFNdBqRSZ3WN0rUtWWQcOA5OjKkL
+         7GnhhZ+qC0qlonF8nr1eoWUGA1hGrezIVOGyR7NXOrKCJ/hoPNAFYHkXxJ3sI3+mCF+W
+         t7OV9r8EvO7ObpLBRNKpJzoFgeCNzJuxEndFEYMFzBTGzlU3AFkkHVeLdCXR9FS/Fl68
+         KV28+g/WUBEP/oORmvF9c9vOVqJ6L632rKHmbmCPfLLngfHUYsJd/uKITBbkZEHQn9h0
+         tipDPvm/snaodD9NHEDLcbB2DyW2XTyjy81JQzNnEfju1D3vmUydJ9W4jXYvQ+unl0ps
+         81Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774872198; x=1775476998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3+c+wp6lYqHlPGMdt+a3t3fT0eXuCeYj5fFyxz3577M=;
+        b=mfOu+WrbFF4f9yI5qB2ZQZC4NDveGSqBQnPHaO597s+PwG4XjfVegCRC7C1IHc6AF3
+         z5HFRR+507/i6sLW9cRFgR2JwWYKQUvYutKVc2pJ8QT4x2cU4X/3GyV3ShFSo79Qtxv4
+         bbT/txaTKRpOjkTRUGKnFx1Y0C12KziDs6239omJXLg2xwX7BW7zEwShJyDu/ijNRAx7
+         at+KdngwELZzLtY+zIbxrZozUUik909eSNkoFpjoaWEVnKdSNviuxDRGRjWhJZZdCZ/7
+         nJnKKVMPh4fIbZ/aC4m9Py2MYIWgJ42WNUwhAFFtXYSGUEOg/YuAqvyVMFv2QVmTPhkE
+         UPBA==
+X-Gm-Message-State: AOJu0YyJIHPmy26sVUAhctDnWrInOcLMQVzVG8Ftaq/hpcLGWPJ9ZwIj
+	XrYTVbd5vpSknum9YhUETk/zBvlyMEeahtz0YMyIsznhQ70QWmaqx6KetCmS7LqNgewkLZcnsPI
+	XdON0ZC1BAb/kWfOKdeBaTTgI/oSoOpSEhRgzQZg19yc2TXIlezchAKXlMKHwb76LGKV4Or3UHW
+	X2UeKW5uRf9DQ9DPpka6QwAQsUoU3V
+X-Gm-Gg: ATEYQzyAu0kRBOUJ1zfTqUoC4Tu4mNzL+Ef4agE3BpWaekeaDYnGV99rdwxxvWX78gj
+	yFpq3ZC7L0Q95KEETZkM4pp8hzulVjO2udQ0Jf5hoUTDdtR8allOzzcr69xlliU0BU7WxHEE0Xt
+	Um2CXLlvOXBpeu0ACfBwPiejE7yvrznbRImdry2lkV6WfwdxwhJBTuX2HpW0aHBgksYX6kzJevj
+	KDzrqKTwzLYwPlqXa8mHZXhr5nS0b76LXVkmGVjYPDoLO/dc61RLP5Sg2XX/YOPtyDSTIsqXsA9
+	ZmUO
+X-Received: by 2002:a05:600c:8485:b0:487:2671:fb8f with SMTP id 5b1f17b1804b1-48727d73642mr226867785e9.8.1774872197365;
+        Mon, 30 Mar 2026 05:03:17 -0700 (PDT)
+X-Received: by 2002:a05:600c:8485:b0:487:2671:fb8f with SMTP id
+ 5b1f17b1804b1-48727d73642mr226867195e9.8.1774872196886; Mon, 30 Mar 2026
+ 05:03:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
+References: <20260327152356.250625-1-imbrenda@linux.ibm.com>
+In-Reply-To: <20260327152356.250625-1-imbrenda@linux.ibm.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 30 Mar 2026 14:03:05 +0200
+X-Gm-Features: AQROBzB3DWnxPR3jSWpAVvne6HolnmzmB3FcTS64hP940Rx9hlh4ePIXuVThH7M
+Message-ID: <CABgObfbyp0HXTozDZs9L45xMfAHRyqTKYKX8tQ=VQyCFTpqdLA@mail.gmail.com>
+Subject: Re: [GIT PULL v1 00/10] KVM: s390: More memory management fixes for 7.0
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com, 
+	borntraeger@de.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 23, 2026 at 02:59:06PM -0600, Vishal Verma wrote:
-> Some early TDX-capable platforms have an erratum where a partial write
-> to TDX private memory can cause a machine check on a subsequent read.
-> On these platforms, kexec and kdump have been disabled in these cases,
-> because the old kernel cannot safely hand off TDX state to the new
-> kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
-> provides a way to cleanly disable TDX and allow kexec to proceed.
-> 
-> The new SEAMCALL has an enumeration bit, but that is ignored. It is
-> expected that users will be using the latest TDX module, and the failure
-> mode for running the missing SEAMCALL on an older module is not fatal.
-> 
-> This can be a long running operation, and the time needed largely
-> depends on the amount of memory that has been allocated to TDs. If all
-> TDs have been destroyed prior to the sys_disable call, then it is fast,
-> with only needing to override the TDX module memory.
-> 
-> After the SEAMCALL completes, the TDX module is disabled and all memory
-> resources allocated to TDX are freed and reset. The next kernel can then
-> re-initialize the TDX module from scratch via the normal TDX bring-up
-> sequence.
-> 
-> The SEAMCALL can return two different error codes that expect a retry.
->  - TDX_INTERRUPTED_RESUMABLE can be returned in the case of a host
->    interrupt. However, it will not return until it makes some forward
->    progress, so we can expect to complete even in the case of interrupt
->    storms.
->  - TDX_SYS_BUSY will be returned on contention with other TDH.SYS.*
->    SEAMCALLs, however a side effect of TDH.SYS.DISABLE is that it will
->    block other SEAMCALLs once it gets going. So this contention will be
->    short lived.
-> 
-> So loop infinitely on either of these error codes, until success or other
-> error.
-> 
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
->  arch/x86/include/asm/shared/tdx_errno.h |  1 +
->  arch/x86/include/asm/tdx.h              |  3 +++
->  arch/x86/virt/vmx/tdx/tdx.h             |  1 +
->  arch/x86/virt/vmx/tdx/tdx.c             | 28 ++++++++++++++++++++++++++++
->  4 files changed, 33 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-> index 8bf6765cf082..246b4fd54a48 100644
-> --- a/arch/x86/include/asm/shared/tdx_errno.h
-> +++ b/arch/x86/include/asm/shared/tdx_errno.h
-> @@ -15,6 +15,7 @@
->  #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
->  #define TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE	0x6000000700000000ULL
->  #define TDX_INTERRUPTED_RESUMABLE		0x8000000300000000ULL
-> +#define TDX_SYS_BUSY				0x8000020200000000ULL
->  #define TDX_OPERAND_INVALID			0xC000010000000000ULL
->  #define TDX_OPERAND_BUSY			0x8000020000000000ULL
->  #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 7674fc530090..a0a4a15142fc 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -172,6 +172,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
->          return level - 1;
->  }
->  
-> +void tdx_sys_disable(void);
-> +
->  u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
->  u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
->  u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
-> @@ -203,6 +205,7 @@ static inline void tdx_init(void) { }
->  static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
->  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
->  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-> +static inline void tdx_sys_disable(void) { }
->  #endif	/* CONFIG_INTEL_TDX_HOST */
->  
->  #endif /* !__ASSEMBLER__ */
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index dde219c823b4..e2cf2dd48755 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -46,6 +46,7 @@
->  #define TDH_PHYMEM_PAGE_WBINVD		41
->  #define TDH_VP_WR			43
->  #define TDH_SYS_CONFIG			45
-> +#define TDH_SYS_DISABLE			69
->  
->  /*
->   * SEAMCALL leaf:
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 0802d0fd18a4..3a76000dec7a 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -37,6 +37,7 @@
->  #include <asm/msr.h>
->  #include <asm/cpufeature.h>
->  #include <asm/tdx.h>
-> +#include <asm/shared/tdx_errno.h>
->  #include <asm/cpu_device_id.h>
->  #include <asm/processor.h>
->  #include <asm/mce.h>
-> @@ -1940,3 +1941,30 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
->  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
->  }
->  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
-> +
-> +void tdx_sys_disable(void)
-> +{
-> +	struct tdx_module_args args = {};
-> +	u64 ret;
-> +
-> +	/*
-> +	 * Don't loop forever.
+On Fri, Mar 27, 2026 at 4:24=E2=80=AFPM Claudio Imbrenda <imbrenda@linux.ib=
+m.com> wrote:
+>
+> Ciao Paolo,
+>
+> here are a few more important fixes for the new gmap code.
+> These are (hopefully) the last fixes for this release cycle
+>
+> please pull :)
 
-Nit: Add a new line here.
+Done, in fact they're in -rc6 already.
 
-> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
-> +	 *    calls.
+Thanks,
 
-And here.
+Paolo
 
-> +	 *  - TDX_SYS_BUSY could transiently contend with TDH.SYS.* SEAMCALLs,
-> +	 *    but will lock out future ones.
+>
+> The following changes since commit 0138af2472dfdef0d56fc4697416eaa0ff2589=
+bd:
+>
+>   Merge tag 'erofs-for-7.0-rc6-fixes' of git://git.kernel.org/pub/scm/lin=
+ux/kernel/git/xiang/erofs (2026-03-25 18:41:35 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/=
+kvm-s390-master-7.0-2
+>
+> for you to fetch changes up to 0a28e06575b3f3b30c1e99fc08fa0907956f35a4:
+>
+>   KVM: s390: Fix KVM_S390_VCPU_FAULT ioctl (2026-03-26 16:12:38 +0100)
+>
+> ----------------------------------------------------------------
+> KVM: s390: More memory management fixes
+>
+> Lots of small and not-so-small fixes for the newly rewritten gmap,
+> mostly affecting the handling of nested guests.
+>
+> ----------------------------------------------------------------
+> Claudio Imbrenda (10):
+>       KVM: s390: vsie: Fix dat_split_ste()
+>       KVM: s390: Remove non-atomic dat_crstep_xchg()
+>       KVM: s390: vsie: Fix check for pre-existing shadow mapping
+>       KVM: s390: Fix gmap_link()
+>       KVM: s390: Correctly handle guest mappings without struct page
+>       KVM: s390: vsie: Fix nested guest memory shadowing
+>       KVM: s390: vsie: Fix refcount overflow for shadow gmaps
+>       KVM: s390: vsie: Fix unshadowing while shadowing
+>       KVM: s390: vsie: Fix guest page tables protection
+>       KVM: s390: Fix KVM_S390_VCPU_FAULT ioctl
+>
+>  arch/s390/kvm/dat.c      | 100 +++++------------------------
+>  arch/s390/kvm/dat.h      |  23 +++----
+>  arch/s390/kvm/gaccess.c  |  71 +++++++++++++++------
+>  arch/s390/kvm/gmap.c     | 160 +++++++++++++++++++++++++++++++++--------=
+------
+>  arch/s390/kvm/gmap.h     |  33 ++++++----
+>  arch/s390/kvm/kvm-s390.c |  18 +++++-
+>  arch/s390/kvm/vsie.c     |   4 +-
+>  7 files changed, 231 insertions(+), 178 deletions(-)
+>
 
-Locked out by who? Is it TDX module contract? I don't see it documented in
-the spec.
-
-I assumed that if the SEAMCALL fails other SEAMCALLs suppose to be
-functional. Hm?
-
-> +	 *
-> +	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
-> +	 * run after this until a full reinitialization is done.
-> +	 */
-> +	do {
-> +		ret = seamcall(TDH_SYS_DISABLE, &args);
-> +	} while (ret == TDX_INTERRUPTED_RESUMABLE || ret == TDX_SYS_BUSY);
-> +
-> +	/*
-> +	 * Print SEAMCALL failures, but not SW-defined error codes
-> +	 * (SEAMCALL faulted with #GP/#UD, TDX not supported).
-> +	 */
-> +	if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
-> +		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
-> +}
-> 
-> -- 
-> 2.53.0
-> 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
