@@ -1,60 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFCA3FB7FE;
-	Tue, 31 Mar 2026 14:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF131329E4B;
+	Tue, 31 Mar 2026 14:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774967560; cv=none; b=MseVlxRM0a1sJF5MTjr3/cV3ifARVj5gCw21MXm2JWuOJlsspMpF5FEaiEwzWB4Ft6nycAJKpbp4KW+ou1AR0eduxa29nyvuodz1KfXfJlAAcWOLtoSC3e9GLW2OG7ktIFqKey+qnHI76W3th7jIaXR27+eYLUn+XXqVTz1bgBA=
+	t=1774968019; cv=none; b=tUKSrDrBBDFG2N88nD0ZnyL9K6ps6yekWE6RYKf/dxZ7cfBtQ70gfMeI5zK1TM6lCdq14YbmBv9QJiCh91+aokNCAd6Cje/NacS0AdViW05fWiVYj0H6QfyEq6+16bwo5iHRV3O9orU+gp1o/gaCL8bHcO59j1wlkvhjOKXi8EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774967560; c=relaxed/simple;
-	bh=eCcZFLBMKfzOLFrTMyw6/QPJblN9ZaXUah2YenOiatQ=;
+	s=arc-20240116; t=1774968019; c=relaxed/simple;
+	bh=CxK5eQocQ9FQWY1jgFLkFY1OzPjcTFeXueFlb3s4J0Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sP6g+XkFxaYpGe0UT2UnoNxKzJ7pbkLC2MdeP/VrHnu3yTy69sAHXPOuRR2+woZly1L80jqnxBGNglRUMmmOcIQ/zqqQyK440dKB51X0464idTBGVvDJ/e58xC6HoUyL6ARXG84GY11eRSsHVBTJPGR8KOQDQYtmcXHZO1jvDtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zck+Jne5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=StJ7chGbKYU64mYtMUdq9ZEc8Mn+cw6jb0IF3PZEm1t5DYDANjXAtkSf/aLX8o9JVFYF9ktx9T5XD8kUa3KTbFqraJpWNBQyscOTpUal6f4QElErV8QIFYL9+1YT9OwJCzU4doyXfrCdpMtKcakimy4MnE+3WSyWktDRzv9Ysbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eBBTzrfp; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zck+Jne5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CCCC19424;
-	Tue, 31 Mar 2026 14:32:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774967560;
-	bh=eCcZFLBMKfzOLFrTMyw6/QPJblN9ZaXUah2YenOiatQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zck+Jne5EuclgGsxonpXVSJJaoN10ildftuLrZuUiFKQeHmChX1y7iFUOzhIn0915
-	 3beBBAYGThwIgQD9OF23CIYHAXoaY1EMDIQ5+LQlMvBkKJuFSFufIfhSxwkbT8xysl
-	 pT1ZNVdwzR79WKuUktdBRdvoXyNu0BxDpt7zALp2cZ/bPbxkM6i4pf/V7SXdtJ8XFw
-	 rP777dipQdkTEK10hyfpevVhB+dLfoI3xl8f/vDZxjHUpuHu5cF79a+EmdKyW5n4FC
-	 fqoF67FQusrW3nObktdTNu2kjRDxZoTKqHUKOtv8qXptagyfoPAkCy4S98/M8PSW0Y
-	 wAagqRHHVbs3w==
-Date: Tue, 31 Mar 2026 17:32:28 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
-Message-ID: <acva_NKf7T5rbIC8@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
- <20260330101116.1117699-3-rppt@kernel.org>
- <actxscYZGFiyvUcs@hyeyoo>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eBBTzrfp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774968018; x=1806504018;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CxK5eQocQ9FQWY1jgFLkFY1OzPjcTFeXueFlb3s4J0Q=;
+  b=eBBTzrfpjkJI5Ot95uF36/uymOd6avR8i6Lcql/NQUhmo6ETkPBN4hSN
+   IIiajTzopPGUTHwHZoSY7DYsj7aBz9IOFQEIiTfS85fho6Vzyli509RPF
+   W1k/IBLuGv6ufe+NgjrgxtXPKnE/rgyrM3D1sHUoP1Vmfnh3ZqJBmRiVq
+   TkeIY3ai1XY9ibryAakVdy9z0yyTwSpqYruzGk/3GhgqbWv2tOTeHIdo9
+   6WkBot58wc2W0rVJ5KX2aVomylETY9JkADr//kJ+VmnRipzdh2p1sBms/
+   FOxyKYQBaInqfHNUg/3QrnefeAk5/D6/R6IhyRitghMsm++DGgdjKmCHP
+   Q==;
+X-CSE-ConnectionGUID: fWZQzeOYRHmqEU80i3Cdfw==
+X-CSE-MsgGUID: wZ/qGE68RQGGA5n+2hfOfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75699855"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="75699855"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:40:18 -0700
+X-CSE-ConnectionGUID: cffhhCypT8KX9UrmnFNALw==
+X-CSE-MsgGUID: TXxSmoE9Qk+M+3o+YqC3vQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="264322294"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa001.jf.intel.com with ESMTP; 31 Mar 2026 07:40:13 -0700
+Date: Tue, 31 Mar 2026 22:19:03 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Williams, Dan J" <dan.j.williams@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 05/31] x86/virt/tdx: Extend tdx_page_array to support
+ IOMMU_MT
+Message-ID: <acvX1x5nDdGtZWyI@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-6-yilun.xu@linux.intel.com>
+ <828f174d49a1ecaec65ba1179e08c6b22e249297.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -63,115 +74,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <actxscYZGFiyvUcs@hyeyoo>
+In-Reply-To: <828f174d49a1ecaec65ba1179e08c6b22e249297.camel@intel.com>
 
-Hi Harry,
-
-On Tue, Mar 31, 2026 at 04:03:13PM +0900, Harry Yoo (Oracle) wrote:
-> On Mon, Mar 30, 2026 at 01:11:03PM +0300, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > mfill_atomic() passes a lot of parameters down to its callees.
-> > 
-> > Aggregate them all into mfill_state structure and pass this structure to
-> > functions that implement various UFFDIO_ commands.
-> > 
-> > Tracking the state in a structure will allow moving the code that retries
-> > copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
-> > loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
-> > memory.
-> > 
-> > The mfill_state definition is deliberately local to mm/userfaultfd.c,
-> > hence shmem_mfill_atomic_pte() is not updated.
-> > 
-> > [harry.yoo@oracle.com: properly initialize mfill_state.len to fix
-> >                        folio_add_new_anon_rmap() WARN]
-> > Link: https://lkml.kernel.org/r/abehBY7QakYF9bK4@hyeyoo
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > ---
-> >  mm/userfaultfd.c | 148 ++++++++++++++++++++++++++---------------------
-> >  1 file changed, 82 insertions(+), 66 deletions(-)
-> > 
-> > @@ -790,12 +804,14 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
-> >  	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
-> >  		goto out_unlock;
-> >  
-> > -	while (src_addr < src_start + len) {
-> > -		pmd_t dst_pmdval;
-> > +	state.vma = dst_vma;
-> 
-> Oh wait, the lock leak was introduced in patch 2.
-
-Lock leak was introduced in patch 4 that moved getting the vma.
-Patch 2 missed the assignment of state.len and introduced an issue with
-bound checks.
-
-> If there's an error between uffd_mfill_lock() and `state.vma = dst_vma`,
-> it remains unlocked.
-> 
-> Probably should have been fixed in 2, not patch 4...
-> Sorry didn't realize it earlier.
-> 
-> > -		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
-> > +	while (state.src_addr < src_start + len) {
-> > +		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+> > +static int tdx_alloc_pages_iommu_mt(unsigned int nr_pages, struct page **pages,
+> > +				    void *data)
+> > +{
+> > +	unsigned int iq_order = (unsigned int)(long)data;
+> > +	struct folio *t_iq, *t_ctxiq;
+> > +	int ret;
 > > +
-> > +		pmd_t dst_pmdval;
-> >  
-> > -		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
-> > +		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
-> >  		if (unlikely(!dst_pmd)) {
-> >  			err = -ENOMEM;
-> >  			break;
-> > @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
-> >  
-> >  out_unlock:
-> >  	up_read(&ctx->map_changing_lock);
-> > -	uffd_mfill_unlock(dst_vma);
-> > +	uffd_mfill_unlock(state.vma);
-> >  out:
-> > -	if (folio)
-> > -		folio_put(folio);
-> > +	if (state.folio)
-> > +		folio_put(state.folio);
+> > +	/* TODO: folio_alloc_node() is preferred, but need numa info */
+> > +	t_iq = folio_alloc(GFP_KERNEL | __GFP_ZERO, iq_order);
+> > +	if (!t_iq)
+> > +		return -ENOMEM;
+> > +
+> > +	t_ctxiq = folio_alloc(GFP_KERNEL | __GFP_ZERO, iq_order);
+> > +	if (!t_ctxiq) {
+> > +		ret = -ENOMEM;
+> > +		goto out_t_iq;
+> > +	}
+> > +
+> > +	ret = tdx_alloc_pages_bulk(nr_pages - 2, pages + 2, NULL);
+> > +	if (ret)
+> > +		goto out_t_ctxiq;
+> > +
+> > +	pages[0] = folio_page(t_iq, 0);
+> > +	pages[1] = folio_page(t_ctxiq, 0);
 > 
-> Sashiko raised a concern [2] that it the VMA might be unmapped and
-> a new mapping created as a uffd hugetlb vma and leak the folio by
-> going through
+> To me it seems like this can't really be called a page array any more. The first
+> two u64's are too special. Instead it's a special one-off ABI format passed via
+> a page.
 > 
-> `if (is_vm_hugetlb_page(dst_vma))
->         return mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
->                                     src_start, len, flags);`
-> 
-> but it appears to be a false positive (to me) because
-> 
-> `if (atomic_read(&ctx->mmap_changing))` check should have detected unmapping
-> and free the folio?
+> BTW, I can't find TDH.IOMMU.SETUP in the docs. Any pointers?
 
-I think it's real, and it's there more or less from the beginning, although
-nobody hit it yet :)
+https://cdrdv2.intel.com/v1/dl/getContent/858625
 
-Before retrying the copy we drop all the locks, so if the copy is really
-long the old mapping can be wiped and a new mapping can be created instead.
-
-There's already a v4 of a patch that attempts to solve this:
-
-https://lore.kernel.org/all/20260331134158.622084-1-devnexen@gmail.com
- 
-> [2] https://sashiko.dev/#/patchset/20260330101116.1117699-1-rppt%40kernel.org?patch=13671
 > 
-> >  	VM_WARN_ON_ONCE(copied < 0);
-> >  	VM_WARN_ON_ONCE(err > 0);
-> >  	VM_WARN_ON_ONCE(!copied && !err);
+> > +
+> > +	return 0;
+> > +
+> > +out_t_ctxiq:
+> > +	folio_put(t_ctxiq);
+> > +out_t_iq:
+> > +	folio_put(t_iq);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +/**
+> > + * tdx_page_array_create_iommu_mt() - Create a page array for IOMMU Memory Tables
+> > + * @iq_order: The allocation order for the IOMMU Invalidation Queue.
+> > + * @nr_mt_pages: Number of additional order-0 pages for the MT.
+> > + *
+> > + * Allocate and populate a specialized tdx_page_array for IOMMU_MT structures.
+> > + * The resulting array consists of two multi-order folios (at index 0 and 1)
+> > + * followed by the requested number of order-0 pages.
+> > + *
+> > + * Return: Fully populated tdx_page_array or NULL on failure> > + */
+> > +struct tdx_page_array *
+> > +tdx_page_array_create_iommu_mt(unsigned int iq_order, unsigned int nr_mt_pages)
+> > +{
+> > +	unsigned int nr_pages = nr_mt_pages + 2;
 > 
-> Otherwise looks correct to me.
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+> Consider the amount of tricks that are needed to coax the tdx_page_array to
+> populate the handoff page as needed. It adds 2 pages here, then subtracts them
+> later in the callback. Then tweaks the pa in tdx_page_array_populate() to add
+> the length...
 
--- 
-Sincerely yours,
-Mike.
+mm.. The tricky part is the specific memory requirement/allocation, the
+common part is the pa list contained in a root page. Maybe we only model
+the later, let the specific user does the memory allocation. Is that
+closer to your "break concepts apart" idea?
+
+> 
+> > +	struct tdx_page_array *array;
+> > +	int populated;
+> > +
+> > +	if (nr_pages > TDX_PAGE_ARRAY_MAX_NENTS)
+> > +		return NULL;
+> > +
+> > +	array = tdx_page_array_alloc(nr_pages, tdx_alloc_pages_iommu_mt,
+> > +				     (void *)(long)iq_order);
+> > +	if (!array)
+> > +		return NULL;
+> > +
+> > +	populated = tdx_page_array_populate(array, 0);
+> > +	if (populated != nr_pages)
+> > +		goto out_free;
+> > +
+> > +	return array;
+> > +
+> > +out_free:
+> > +	tdx_page_array_free(array);
+> > +	return NULL;
+> > +}
+> > +EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
