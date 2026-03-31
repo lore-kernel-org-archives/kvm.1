@@ -1,122 +1,134 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41C91B81CA
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 00:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774915418; cv=none; b=DjXc26SyIt/6gGYAVYEchfIePQ50Eqtri0lV9yrkhIvTsWyhG8IQz3o3IDUn8Tt5xBiXV37md6IPm1E12XbkXmSzbuLcYSfAs1BNmz+E4MjjfWNWZuVSe8r1w+BbbFk5VEQAwtwH1RvDHXCuKDIIzSQE61Zni/aGrW/xwcD38fM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774915418; c=relaxed/simple;
-	bh=tGFV2VhgTREgrfP98G0uJ3HUP/CSGaSbu+qGayezE0E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=olZ+Ax+2ZX4P6Dm+zB0anbiXdHHzvio27Bl/+j+Gc3/TUFU53+4keZDH79WL0WYmI71xLGx1aeimfEuA/2zevp0KhhAJQPf9MuX/Y+1Fz+9nsdge+mtnqpqLP4stClqwFppFdnyN8DvK95fW3LUX8DY750QMmd3EaUj88jsFqbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SLP4FRdH; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A3C175A6C
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 00:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774916330; cv=pass; b=uPbzu8zURwZHwbdwykbQdSvUk2kR8T0+O53IO6mUmEVv7Mc7APB3T5cB+Py+bC86KFXd+GEkh7y6Au5Z/nn20pm+U0a6XwlyOdQ4bi0Xc6RmGqzK/AA6S3LC5MBUuFAJEhUiDEUxOiUZK5wSkT7WZHTx7r9uD8J6iI8oQiDAIUM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774916330; c=relaxed/simple;
+	bh=7RaN9qNmZD8w81PNEK6wj4TA72Y+HDMEXcjQqjMp2ow=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lALAfLPIaxdRpbz3c3Sll1zw9uc5gQOe8Z5UjnjvZkkSRLVMPTCaoOZ2uf+6gNnLpuSECRm5uBB23ztOjUkhDUO3Zo8bu3MeXJ3tbAJEWZvHbtYeYAF2gAn1Nc5/Hz7XephbN603Y8fbcVvAvor6jaOt8in3zLuNq2vNv1fVIFE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fXe0fOmo; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SLP4FRdH"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8d006a80ccbso647924185a.2
-        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 17:03:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fXe0fOmo"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66c24b42efbso1183975a12.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 17:18:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774916328; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PG7OQdBbjXprsmIH2/xb/l0EzMqZRLgzjtE14KSQcql0wp75OyVkzFKjKtyOVpM2sb
+         KxJmkTOmGTIsm3XQUgYIq+RbnhwY0sqZEPZ9eD9F3l4+JheoGp8RdXay+LS7WwaC3CYj
+         wCBdg9J0lBplIAhxyANH21nxrrV920f8+hG3pNhDmSlyRiEsgl7Iiy7OGR8PhGMpikrL
+         WbapsBeXTtZ8MacKfQkDIUdnjmH0lyi71U3MnMUTnWyl3/NTIRuNZ6Y9EsmucghhPQbg
+         nfHpXA9O6uWxp1ln5qGIZixOpR/Sc4VHDu03HeitjWUiXyWjAvcFBf9d6LOh4E3LNLcr
+         JFUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NPx0UKhp6L9irwnUG6E0gP3VYCDhzREJ2tJuZubyGeg=;
+        fh=PEyCDZMqENrNE1PnNCHqnk3GMtNaxIuVS1t5Jg63PhA=;
+        b=fXEvpHny/T0VKtQOhQkRXrLFRozuwZzLcF2w9XZb7yl1A6h1Ns826iCq2sYb677R98
+         FyLic2qtJGTANy/Ynj6gJkcX4tovijOzTuHXw1jJlrZhQh3jePakSe0hJO50c5BhFR4K
+         seRHtnIqn1cU9syO6ESWNEE1i9o3XB8fCeE4UI7pMq4PhMQckaS5d205+2RfPU4pYUT0
+         42rwBOJo9t02lcPWfgixoJ+3e+CzCprcTcs8FSIYRIRyP7apvaBzG64ncepUOqAufwlZ
+         5fY4XhNx5PQks2rSmlSI0z2p8mtf4OptBlMPE9UYITKoQoxE4oXipoqXl+nJr33oNh/k
+         IXWw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1774915416; x=1775520216; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W4YBgDlQG7t09O0fcPskt9PfuzfmSkfNvE01lxkkeEk=;
-        b=SLP4FRdHz+CzxQ6VGVwelbz2oEWoQ1X35DiIGfJpcj0QPxlYn/KmJAsUuNzt6fcjDS
-         oWFof3bAvc5j9KdXtQI9f0VMQa0DvcYaweoG2FV3kW+pV2IW7exO/w0Jq5JoXb7RzBFU
-         +adMRpEIOxmBYmoJ6Cd4CIPGogUaGjpgg9R7KlEUEusODFVhLu9PmurFQGEwwH568in0
-         /c3nKwBolvQhoYhiQw+G+W9H4e+vTwj4jenX2n+3SNc/Hx90+MZzdERumY/6y3+1RkKq
-         xHRskO965ayYetBnW41UBqBIEHmT4XK4G3bUOJVLeZZjQms3kAdDJ6ChpuO093uiFxnf
-         Q5Sg==
+        d=gmail.com; s=20251104; t=1774916328; x=1775521128; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NPx0UKhp6L9irwnUG6E0gP3VYCDhzREJ2tJuZubyGeg=;
+        b=fXe0fOmoIxuH7EOmbAZKwUtsvdWBFUfjGnWRvFdnqMuxWm+Yoke0OBLQu+8prcwqiU
+         TqN3lAcG8t5hL6xV4CBOso912yfgpcg3GV8OUgijBucgh1xUTLOh/n9Jtbk2ofsg32Pr
+         EEIEycGQlOt/f/I0LNfg5JlxvK1FNpdhduQ9lbcAz1dRdkEXznc9hIpMUIr0nPonbSvQ
+         OuoKbnflwEaL5rN44BkLdebFyI7AaNDkiO0mIjoXO8IyWOhGyVXsMSy9jhUlGDD3D+Y8
+         pr9KE2njWm5X4qiUG9HdDFkRU2kR+cyFdWhBRWzUhUmXkNLQ69mg/1PNBACvZn+v9W8y
+         bQvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774915416; x=1775520216;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W4YBgDlQG7t09O0fcPskt9PfuzfmSkfNvE01lxkkeEk=;
-        b=pwGhDYzHQ4A+X01kyUiany03hangqqIP3PPR1oiZssJEG1Z3IgQ0s4uucar9SCqurw
-         D7mQD014Ya2NiOfBotEwoYZHiWViQFUDLU2uFbdG3p1iTDCC9aLGEN97EYx91C6hbfBs
-         JVBdPjoNRYogM5bElo+plZ2kOc2PI6GrVmO5TbfeSH4dfOIdV3VLITCHEmvDlTrh9uK+
-         eTHF+w6NO5uKXv31YlzXGfvMhKt7sckVeiYmWptN87VawMGc7dtQ0N6GmSg18aTiUx3C
-         MmwCmJgVXMbk2T0QcP6jzeGxRrsowop3LCVCEBNEwEUpqtDvq3BmTCaS3PBrVf9R6CXj
-         ivBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUtcqeJgM6ypCroc3RFWbGcqv2b96shlNgXN9Jj9/MiUOwZOjuW0KK7jP8xyf25L6W9q6Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFd8s4MRf6nhH26JApU7c/6QyCG6KIay9d7BRsLajVe7cG47kM
-	EoGmNy/N6QB2snCce1CzB51LMTbzrHhDFQSCbprBbnd9WMQB2jHZEqCzLv4ZKm9z9Ys=
-X-Gm-Gg: ATEYQzx6ppMCv6tmEmPUWpp+kXa90I3cdfs75ba2bQysrkYUagCLBpKKVU/1LGfNiPI
-	a0I1F0B9sK8RzHj1jc5105rS4zcfvpgNtjjvmhjz2QnhK+sZ3Dj+0RP6M366EL9jqRdKHp8V8D9
-	6xfbkMXf29s/d0dHT7mnmyOZFe64TIXQ4udK/+qx9jF1+ToSs/3u9cVBiKok+nPozaMJN6AKF0/
-	10/kZsnzE/RBLcSodyeKGkGjSt9Vkk4KAuB8Hr85gNLoqBrV9KRGrOK3Xmm9mWFBY6Y5BZUXbmo
-	QPqfnHPDc4hChSr4YFmaAKMZwsAWwJbRWezKao+wAYLUrE+sFLgdYDfNWw/jvNctaPYvEVUO4EV
-	H2Iqu+Debk2/USQ1xyNQMpzwsQy9AMo3TVuE6PI8K3aO/Rxj23gdt+VE3INPpMngM4XfMezDp/5
-	8NRq1murPPhsedPSc8z8ijF3NncB6t6YsSjvhoeNPrhnGf/dCR6uueGuPC1eL5Zazm87CKuA==
-X-Received: by 2002:a05:620a:4482:b0:8ca:fe5c:ea6d with SMTP id af79cd13be357-8d01c842aa8mr1753223385a.59.1774915415598;
-        Mon, 30 Mar 2026 17:03:35 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d02806a37bsm712637385a.34.2026.03.30.17.03.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 17:03:34 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w7MZy-00000005rSd-0n0u;
-	Mon, 30 Mar 2026 21:03:34 -0300
-Date: Mon, 30 Mar 2026 21:03:34 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Julian Ruess <julianr@linux.ibm.com>, wintera@linux.ibm.com,
-	ts@linux.ibm.com, oberpar@linux.ibm.com, gbayer@linux.ibm.com,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>, mjrosato@linux.ibm.com,
-	raspl@linux.ibm.com, hca@linux.ibm.com, agordeev@linux.ibm.com,
-	gor@linux.ibm.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
- devices
-Message-ID: <20260331000334.GI246076@ziepe.ca>
-References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
- <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
- <4096cb9d402b1aabc9667d450221cb0922e78d90.camel@linux.ibm.com>
- <3d6457b9-715a-4cbb-9c69-d8a7e7473c89@linux.ibm.com>
- <64e3158a441c79c55febead9aac956c31f034fb9.camel@linux.ibm.com>
- <20260330093646.03b0455f@shazbot.org>
- <20260330155651.GD246076@ziepe.ca>
- <20260330120945.023b2295@shazbot.org>
- <20260330181645.GE246076@ziepe.ca>
- <20260330123925.713edac4@shazbot.org>
+        d=1e100.net; s=20251104; t=1774916328; x=1775521128;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NPx0UKhp6L9irwnUG6E0gP3VYCDhzREJ2tJuZubyGeg=;
+        b=Qlb9D0cS69IAxpDMM3p2YMxlL3PTgY0cuq+xe9Vapm1HiqxLKHCoAx3oA3TGyAZRQo
+         A8gjwK0HD3KFr3sbBdsFq2jzaViy37SgvqALGaxwu/FdkiL7R0Ld/jTOSBq6dN5FUp6Y
+         hyBPJaulpp0HAAk/ozXbjLKtN8Lt6gzA1UpVcIhM7V8/baKm5ValXjv62Z9VIp7a6SBy
+         d2MnAoIiZizs6xA446f25Z/v5fXdLHKnzv5LQ7mDi0bPJiTlBhh0L0YloyhZCb+ChGty
+         3Rnt2uPIjG6M9HE4KRku5cM0X872pSihlaijzkqYqusgLPBA0Zrxd1XPxIBu9dnz0ayX
+         G4GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgpQytELD9siPCbuZdQ1XpDzo4S7A/EucBjd4wZ/jih3cnbw5BgeXLZ+VH6XOzfJdZzlA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwckU4YhKN1UbftEYe1vVdBvtKQ7IrqPi0zoY1PPPmuicmrGTca
+	sqvKzOjgYdM+DasTSxTOEx1BFpUUwCHsIc5UuOUBLvuNjAxkQX/9Y7RpI+j/5Mc6qEhYzy23QHd
+	M6Z7uePOseeVKMIv/+FIJyOWAFMyQd5M=
+X-Gm-Gg: ATEYQzxa+NJ26ZjiRGdV+44fdsdbCJG9uSDhcrKuCNeWDb6prKro+zDrQkXz0OISF3j
+	Wf2uZm18wm9ZUlZpTHb9hCr0dqoO/72jOHlQ/CtiRTYJFm3RnWcIZFuYANmIPjKav5/bzKzZ/zS
+	YbK12rO/RXjO8xAc+JF8lIqzeS0Up1NnICMlRF1+xlk3Ah+R6AzWYbv27SHS4sNINhXPTVldJVt
+	7733AZeETxNVmADw2tHu622BS3yldIp9x/STi94Vgcw7RMDnlGYsCwqarGkpmjXx4gYZC/oSdNH
+	t0vmBLxCYDmuNy6h+t6cwwdygvITe42W51aQwZa781nT9fCCRa37C9Z9WUKlEognaf/Y7Lzj3Ek
+	XKmbh5w==
+X-Received: by 2002:a05:6402:254b:b0:66c:3447:5b9c with SMTP id
+ 4fb4d7f45d1cf-66c34475c4bmr725787a12.7.1774916327803; Mon, 30 Mar 2026
+ 17:18:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330123925.713edac4@shazbot.org>
+References: <20260326023747.54485-1-rosenp@gmail.com> <20260330161933.6471d473@shazbot.org>
+ <CAKxU2N8rpaLXXsD7sUvw3ffMe8JUREGc9ru_HX0r4Uw4RT_q1g@mail.gmail.com> <37378f49-437f-438b-ad6c-d60480feb306@embeddedor.com>
+In-Reply-To: <37378f49-437f-438b-ad6c-d60480feb306@embeddedor.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Mon, 30 Mar 2026 17:18:35 -0700
+X-Gm-Features: AQROBzBKRQYSFXx9_6h0avqLn1ZFhu4Xxz9aDa6KCEykyNNN8CWHNZ4gO0PhEXI
+Message-ID: <CAKxU2N_o=x=wSjiQqyB68VvhxP_ZoGoSyQagKm=0BdKkgrmPnw@mail.gmail.com>
+Subject: Re: [PATCH] vfio: pci: use kzalloc_flex
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:KERNEL HARDENING (not covered by other areas):Keyword:b__counted_by(_le|_be)?b" <linux-hardening@vger.kernel.org>, Leon Romanovsky <leon@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 30, 2026 at 12:39:25PM -0600, Alex Williamson wrote:
-> Yes, that would be the ideal balance of enabling larger BARs while
-> retaining compatibility for existing devices.  Sounds like we'll
-> continue down the variant driver path for this one-off device for
-> now.  It remains fairly self contained so long as we don't add more
-> regions for vfio-pci-core to manage.
-> 
-> This could be a good project if someone is looking though, especially
-> if it had a build-time config option to set the minimum region size so
-> we can exercise it before we hit 1TB BARs.  Thanks,
-
-Well, it took claude an hour to vibe code a draft from a four sentence
-prompt.. I see many things that need changing/cleaning in here, but
-the patch strategy and general idea looks sound.
-
-I guess another day of effort would probably get things into something
-presentable. We are not so far away - maybe the variant driver path is
-not necessary?
-
-https://github.com/jgunthorpe/linux/commits/vfio_maple_tree/
-
-Jason
+On Mon, Mar 30, 2026 at 4:47=E2=80=AFPM Gustavo A. R. Silva
+<gustavo@embeddedor.com> wrote:
+>
+>
+>
+> On 3/30/26 17:24, Rosen Penev wrote:
+> > On Mon, Mar 30, 2026 at 4:16=E2=80=AFPM Alex Williamson <alex@shazbot.o=
+rg> wrote:
+> >>
+> >> [Cc +Leon]
+> >>
+> >> On Wed, 25 Mar 2026 19:37:47 -0700
+> >> Rosen Penev <rosenp@gmail.com> wrote:
+> >>
+> >>> Simplify allocation by using a flexible array member and kzalloc_flex=
+.
+> >>> Less memory management needed.
+> >>>
+> >>> Use __counted_by for extra runtime analysis. Move assignment to after
+> >>> allocation as required by __counted_by.
+> >>
+> >> I don't understand this statement, nr_ranges was previously set after
+> >> the allocation of phys_vec.  The only reordering was relative to
+> >> setting vdev, but that appears arbitrary.
+> > Yes that one. My understanding is __counted_by mandates immediate
+> > assignment after allocation. Otherwise UBSAN complains.
+>
+> Not true. However, it's best practice.
+>
+> The requirement is that the _counter_ must be initialized before
+> the first reference to the flexible-array member.
+OTOH kzalloc_flex automatically sets it for GCC15 and above. Useful to
+keep it right after for an eventual coccinelle script...
+>
+> -Gustavo
