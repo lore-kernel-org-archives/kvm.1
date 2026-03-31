@@ -1,148 +1,111 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2683E3DAF;
-	Tue, 31 Mar 2026 12:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D43DA5B9;
+	Tue, 31 Mar 2026 13:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774961027; cv=none; b=lj4dVtRCs2Md0s5fThEk31RS4OBTyEM7lT8XUP1odUulkjzRaVi2CC4kXoa6sQA9q6nmA4sVXJZXhbOv3w7qssLpx0eWKhq0R8GpDqV/X1qQ+CTBMN28HaHE9lJkcTTHekcoLDSJZby+ILbtR+Qfr414rh3pyy/RcqkDdWaOCCw=
+	t=1774965188; cv=none; b=d1amKmRChtaoZGlcJh/Scf/Dw5Jp/lp8xMb3R8VPeGuTCX+24iTtXWJ14uoT87vOlkFPaAB8mzyY0ZKHEc7r3Hp+PRhX3COAXmbvsvn6eXXIl96kS7ipDUDckAjaVqJHXZiNMakjF+51i0Mm/tKK/HZ+7ra0rq7R4dS3ynm+Ba4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774961027; c=relaxed/simple;
-	bh=XaK/jOeHRwV+N+fhpd3s2Pd9o6jdHebnW8hLXe2SR3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8IdnAMp+aKj+ObOstRCIykGWwVC6tjMtSTY2Sf/cESjNzXa41wNP8rQBbefdm0wD4htJAD5tcHkAdQPpliHdclvWWNjs27KvW3bAimgjxOX/8TSoSdTSsTeKfnn1bk5AsojnwEYECGvCT3SAbm+KS35xrhZ1v2Khs7+nZqqylg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D3rpsPdn; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774965188; c=relaxed/simple;
+	bh=r+pFe1PDSqztfT2fZ08Q6HLabDULFA1GwolFuuOun88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ros7F/LBx3QebfXG6J2ORVHw6h30ccObNX9bDoq3zPsCEn8HiYtrDj3PQiKqeEQy+AD+CaJ+kUbqN8GFirVZyMb5c5VC2qATWDKd4jEqNrTS0bNweycqp4fIan+Gc9VhBLe3qOTTomNXSp6ELnLGmCLY/SHiG3GhJKLwoHJ1WsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f3cvfwEp; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D3rpsPdn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f3cvfwEp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774961026; x=1806497026;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XaK/jOeHRwV+N+fhpd3s2Pd9o6jdHebnW8hLXe2SR3E=;
-  b=D3rpsPdnQFHTAUxxugr26edSt7e1N2t9Bx6vn4W1XH/cr5hN4ltW9YeE
-   H8E65YguCV/9clSw0bL1IzZlnZS2mxtfjRACG7nq5mYHV7uY8ab74i2bw
-   bXMAkMMbCUsSebNeM6gNAMOL8wZ7+0VXQ9JkI0JDqHr9MD0AStzN91Aos
-   y8TP0RXTVYfwjEdjycDT3VBRZlU7Freqka7ZnsWIyh8Y3SOWu5N8lD5oz
-   rUiOb8afov/z8L2vZkr1zv5w5LszkuufmOb3Z9Ixo/clsVbjA4CAILVYG
-   z9ZgkeVTdzKb25EYd4Oow8YTzHcT183P0KryIso8q/qnqTSb6YmW9rA0P
-   w==;
-X-CSE-ConnectionGUID: 7iu+bTHUQ/GChfYzyqPOCg==
-X-CSE-MsgGUID: uSf0By01R2WhOZLyZBcZag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76084616"
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="76084616"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 05:43:46 -0700
-X-CSE-ConnectionGUID: 1tMcUPwGSt2vZFW9MSOIMw==
-X-CSE-MsgGUID: szn6bRtEQnGpQhYWmR6wbQ==
+  t=1774965188; x=1806501188;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=r+pFe1PDSqztfT2fZ08Q6HLabDULFA1GwolFuuOun88=;
+  b=f3cvfwEpoMxrIe+EmoK4b5zsJeCzp6eubbrOH3DaPyGQYz+yPPRj2bjv
+   XLlMlFJ51H3FbEEXe29lpWvFzLCQNZAtF0JTHPFk27uK3BvZbQvGRFZM0
+   4lZiDVlhnytP4JI5E9xUKQbQvftJ6j87OJC2FN5mAHl7x0+cOMwil3oxl
+   8Fac8pRwwPhy/HrExhRzvuzwXuKTcdocBlNxQD/DnTqNwAQw75GVYm1/n
+   TY92d92UhLiQJy4o1BsLpEci+tf6xbwaBisIHle1X4ynKArfT++gP2GAe
+   LNpfHoih4H+B+2YU6bW2S+AFV8jGADr/rhrXQlnHOKRp7FF/4RRFxgwji
+   Q==;
+X-CSE-ConnectionGUID: 5iFAkSwHQcmFiT+Oxo53qw==
+X-CSE-MsgGUID: cLixKqMdSEG3Ti4OMMOTYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="98589617"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="98589617"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 06:53:07 -0700
+X-CSE-ConnectionGUID: eJL/tyDFTNuo8+YWRPpMpg==
+X-CSE-MsgGUID: MHGr1+t+TDutrHK33c8pfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="221492247"
-Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 05:43:45 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: binbin.wu@linux.intel.com,
-	dan.j.williams@intel.com,
-	dave.hansen@linux.intel.com,
-	ira.weiny@intel.com,
-	kai.huang@intel.com,
-	kas@kernel.org,
-	nik.borisov@suse.com,
-	paulmck@kernel.org,
-	pbonzini@redhat.com,
-	reinette.chatre@intel.com,
-	rick.p.edgecombe@intel.com,
-	sagis@google.com,
-	seanjc@google.com,
-	tony.lindgren@linux.intel.com,
-	vannapurve@google.com,
-	vishal.l.verma@intel.com,
-	yilun.xu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	yan.y.zhao@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v7 22/22] x86/virt/seamldr: Log TDX module update failures
-Date: Tue, 31 Mar 2026 05:41:35 -0700
-Message-ID: <20260331124214.117808-23-chao.gao@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331124214.117808-1-chao.gao@intel.com>
-References: <20260331124214.117808-1-chao.gao@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="256870739"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 31 Mar 2026 06:53:02 -0700
+Date: Tue, 31 Mar 2026 21:31:53 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for
+ new TDX Module objects
+Message-ID: <acvMyTp8eZ5L3vjw@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+ <4af194d0-f1d7-4acf-aeef-cf3bb3a4b10e@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <4af194d0-f1d7-4acf-aeef-cf3bb3a4b10e@suse.com>
 
-Currently, there is no way to restore a TDX module from shutdown state to
-running state. This means if errors occur after a successful module
-shutdown, they are unrecoverable since the old module is gone but the new
-module isn't installed. All subsequent SEAMCALLs to the TDX module will
-fail, so TDs will be killed due to SEAMCALL failures.
+On Mon, Mar 30, 2026 at 04:31:43PM +0300, Nikolay Borisov wrote:
+> 
+> 
+> On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
+> <snip>
+> 
+> > +/**
+> > + * tdx_page_array_ctrl_leak() - Leak data pages and free the container
+> > + * @array: The tdx_page_array to be leaked.
+> > + *
+> > + * Call this function when failed to reclaim the control pages. Free the root
+> > + * page and the holding structures, but orphan the data pages, to prevent the
+> > + * host from re-allocating and accessing memory that the hardware may still
+> > + * consider private.
+> > + */
+> > +void tdx_page_array_ctrl_leak(struct tdx_page_array *array)
+> > +{
+> > +	if (!array)
+> > +		return;
+> > +
+> > +	kfree(array->pages);
+> > +	kfree(array->root);
+> > +	kfree(array);
+> > +}
+> > +EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_leak);
+> 
+> This instantly raises a red flag if by design an API has the ability to
 
-Log a message to clarify that SEAMCALL errors are expected in this
-scenario. This ensures that after update failures, the first message in
-dmesg explains the situation rather than showing confusing call traces from
-various code paths.
+OK. With the discussion in this thread, I tend to remove this leak API.
 
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
----
-v4:
- - Use pr_warn_once() instead of reinventing it [Yilun]
-v3:
- - Rephrase the changelog to eliminate the confusing uses of 'i.e.' and 'e.g.'
-   [Dave/Yilun]
----
- arch/x86/virt/vmx/tdx/seamldr.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+> simply leak memory. Under what conditions this might be required, can't we
+> do something to gracefully handle the case when pages cannot be freed
+> instantly, i.e queued freeing or some such ? Simply leaking them is a big
+> NO.
 
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index b3f3b40627c3..a972f9ba6877 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -252,6 +252,11 @@ static void ack_state(void)
- 		set_target_state(update_data.state + 1);
- }
- 
-+static void print_update_failure_message(void)
-+{
-+	pr_err_once("update failed, SEAMCALLs will report failure until TDs killed\n");
-+}
-+
- /*
-  * See multi_cpu_stop() from where this multi-cpu state-machine was
-  * adopted, and the rationale for touch_nmi_watchdog().
-@@ -291,10 +296,13 @@ static int do_seamldr_install_module(void *seamldr_params)
- 				break;
- 			}
- 
--			if (ret)
-+			if (ret) {
- 				WRITE_ONCE(update_data.failed, true);
--			else
-+				if (curstate > MODULE_UPDATE_SHUTDOWN)
-+					print_update_failure_message();
-+			} else {
- 				ack_state();
-+			}
- 		} else {
- 			touch_nmi_watchdog();
- 			rcu_momentary_eqs();
--- 
-2.47.3
+It was intended to be called when failing to reclaim pages from secure
+firmware, maybe because of firmware bug. In this case kernel has no idea
+what to do. Leaking is a last resort here, don't expect things still work.
 
