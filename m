@@ -1,204 +1,175 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012056.outbound.protection.outlook.com [40.107.200.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BE4175A71;
-	Tue, 31 Mar 2026 08:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774945844; cv=none; b=fYckGtdAURjTTNWZDJe/oTh4vz++TmbfipXrEiVZhNBGCDqc9fDBagEsbXZguSHB+GXOkVDphol4GHqKy1MCzM+XwuN2jC1t8XpKCcqJtC445WnR2IVzE2AkwLG3UtSzZ0JQZRAr0Uw3R7IvHPDoXyKH90yhhTmWhZ2gJT4qBcM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774945844; c=relaxed/simple;
-	bh=lHXKyn0rIPGWYtihxusYrWFI7wDP4RG8DEssesQ7JMM=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=UZnjY1HDdPh1gwviEB0FLuRYa3pFLf2AA1ijVoGhUWJPaysZ7R5QH2Gv9Nt+sfVzb6UE5uc1F0/uiTDp3Nik7+5irJ55SmG4RxuwEVhGlNg68NNYOyaXn3N9mzlx3Mo8Tp7m0E0AshD9/2DwAdoyGXV9MuK6XXns4gFAZUZ9TmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HXyY125h; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAB53ECBD6;
+	Tue, 31 Mar 2026 09:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774949313; cv=fail; b=eXCdoXSmoKyjpYk9oD/Bt+6zptD419ZrZOLteVP34DXEP/2BQC1MiBJPbwTrI6oqfdyzFdcDUBTHwdJxYhREN1sjaykOeHPZ/DcVzanMmdFkyTsPngiTR/VcXPopEeZTd0XBgRF9QO8XpoQ30CtHL2zdk71NYgwKr2C9VHkRENw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774949313; c=relaxed/simple;
+	bh=uHQzTHKidC6zGehBDohrsvZLuzIJQhaAaGDT1fKJapo=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZWYKbB7cAuWXnNVK4JoTwUcNN3jV+tqw5mQRbpCW0kIDmxSQDeKJO4oEDLAHjODsdmUohPbbFkgnKXdxyt0Fp3wZIridoKyGdmWqsx+IcpiKxAo9YfgV7PNew+GjIykKgxN6g+316NU/hAgqwfj/eUyE2uiRPGeknHnDH6KP68E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KDHeidxv; arc=fail smtp.client-ip=40.107.200.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HXyY125h"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V6YvFi4032815;
-	Tue, 31 Mar 2026 08:30:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IFfMgu
-	5WL9hOmQ5pM5pTR61tcKadLN/xaLZW4Ubsqts=; b=HXyY125hQGKb09knH6QIpq
-	tfi7AITG+9Q3yB99ZT5HGerJ9JqIsfjrKzAdJbuRGFUymR6tdF2LoCG/UpDpxceK
-	1gEzAXHtIyUXlyuIVje8XtLXKWBzW2NMgi9ySUWgVwB8PaECeu9ZFtK9/OzLVKA1
-	57OrIMkVqriAwBiJaQHsSAMlaOtWNu4gK1LqBvYwrtW8uYiBPlJGTfg6QEsXXUn+
-	PseUchpz2tVCu+pJ9lM4aZDpQJjWO+exSRFi9huvrgNTDY+QqCaygN2NsyBolZYD
-	OLNYQSnMmJvcQggFGVHb9pHRVYwQGgO4kOUl8tDN3Jv6LoBfWxvOekSrSM+FdRzg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66ms1ugh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Mar 2026 08:30:37 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62V7p1gR031034;
-	Tue, 31 Mar 2026 08:30:36 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjr1nk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 Mar 2026 08:30:36 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62V8UZIK56623416
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 31 Mar 2026 08:30:35 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9588C5807B;
-	Tue, 31 Mar 2026 08:30:35 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5130F5807A;
-	Tue, 31 Mar 2026 08:30:32 +0000 (GMT)
-Received: from [9.52.215.169] (unknown [9.52.215.169])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 31 Mar 2026 08:30:32 +0000 (GMT)
-Message-ID: <4fb2b835ec81ca0ef24bc1c867d177a7d04b4873.camel@linux.ibm.com>
-Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
- devices
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex@shazbot.org>
-Cc: Farhan Ali <alifm@linux.ibm.com>, Julian Ruess <julianr@linux.ibm.com>,
-        wintera@linux.ibm.com, ts@linux.ibm.com, oberpar@linux.ibm.com,
-        gbayer@linux.ibm.com, Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum	
- <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>, mjrosato@linux.ibm.com,
-        raspl@linux.ibm.com, hca@linux.ibm.com, agordeev@linux.ibm.com,
-        gor@linux.ibm.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260331000334.GI246076@ziepe.ca>
-References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
-	 <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
-	 <4096cb9d402b1aabc9667d450221cb0922e78d90.camel@linux.ibm.com>
-	 <3d6457b9-715a-4cbb-9c69-d8a7e7473c89@linux.ibm.com>
-	 <64e3158a441c79c55febead9aac956c31f034fb9.camel@linux.ibm.com>
-	 <20260330093646.03b0455f@shazbot.org> <20260330155651.GD246076@ziepe.ca>
-	 <20260330120945.023b2295@shazbot.org> <20260330181645.GE246076@ziepe.ca>
-	 <20260330123925.713edac4@shazbot.org> <20260331000334.GI246076@ziepe.ca>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 31 Mar 2026 10:29:31 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KDHeidxv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rLmKYn5YJn68D/G+afccdJoIxpFP3Vjmh/KZmm42UGBut2GZnENpp81skIAUjgnJDW49tA0XudHLvnkDoyXkMJo8+0sUNO9Igj9FAFdEPESW1bvVkeBRriwF3zURvvsBiUcn67GxUiwHBSs51VL8GZm1ty0tkQmoKbcKhCMiXfLWbPlMu1IsxhnQx3AXfHS1HKGzXfe7D4q0zAS0Go+jqlzaA/y87PAFLAl9RZ7x30kDsavCsD7rbm2GRbJyG5zyXw1t2i+pmqhEybYES1NSDZMpSidUt/bLzyqweWN4BzbYQzAXQBL5iuTOniywZb0Uq7mLyWh/ROL9yKHLuAY2Vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=djSlYpWyg6z/P8Llek1Kr+XhDVAOqr/G3/8r+o4KRPI=;
+ b=ur7ev1A8A1vx+aXb7igwEZ3U41ptAzpRLgsswKr1lXuwU5M72+c/+osuxB3psALLD+q/6Hn3LirnIeHpMEo/aX9918v9bj0WtCRigFaFAWFzezC1Dg97ibcAXjWlR47ZkTVCCwjcVolgy+UGxiuT5kUgY/HzXvloo0TR4kKOxdokwUOVm3oxJofGGTuq62RPWq0gfriwLTGdcVzcbMmeoCxh/X0F936jk0lX0A0YBnEWR5OzC+Zkp8QxER1itDcejlyXnUluWNuECW+O+BoUC0qK98WVq4/iwLOElaJ9hvINVJyVWPXOUt0pufnZQgl4hgmEXzRT8OHc9uilVqTFdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=djSlYpWyg6z/P8Llek1Kr+XhDVAOqr/G3/8r+o4KRPI=;
+ b=KDHeidxv1tFE/XOxpI86KzRAIYmIPbQduMOPUxVbikOLadE7wS+ZjZ9AZrRi+0kAHtM6bjGLPJ9XWp27IPKMM8J9rIWj65sQBbbWhinl7x2wyDHfcehwKus8LAoWCRVbBpdx2QEwWfabFqDUjjvMTPEfT32FGZNfpgAQkFDF8nk=
+Received: from BL1P223CA0026.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:2c4::31)
+ by LV2PR12MB5823.namprd12.prod.outlook.com (2603:10b6:408:178::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Tue, 31 Mar
+ 2026 09:28:28 +0000
+Received: from BL6PEPF0001AB53.namprd02.prod.outlook.com
+ (2603:10b6:208:2c4:cafe::f7) by BL1P223CA0026.outlook.office365.com
+ (2603:10b6:208:2c4::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.29 via Frontend Transport; Tue,
+ 31 Mar 2026 09:28:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB53.mail.protection.outlook.com (10.167.241.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Tue, 31 Mar 2026 09:28:27 +0000
+Received: from [10.143.201.178] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 31 Mar
+ 2026 04:28:23 -0500
+Message-ID: <99507d9b-c3be-4a77-8b84-79a30c7dd402@amd.com>
+Date: Tue, 31 Mar 2026 14:58:15 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=J6enLQnS c=1 sm=1 tr=0 ts=69cb862d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=NEAV23lmAAAA:8
- a=eic7ZF46ImWAZUYm3ecA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDA3OCBTYWx0ZWRfX8yuY0RA5lt8o
- 8rslq/FMUqDNmBM8KrV+Rh+yp1Dc5HzYMsfAoZ+0whoI0UN1WEVxr3tF9fEV+38irmqoynfw8Ty
- tT/MqXorMR3cjsEOoVy6nfhWsJqTKMiRIdLmWWVRZKbNSdNNzOgMXy83rm4vBusK+OR2q6ZKFGX
- rlONXxR7riwKaUSNp1CSu+fY5Y+BgmO5rwAxsjDJGVvPoQMt1+CHrCbKLikxR4utcFOqYreGXvu
- pqAF+CxjX3ZuL4xqUNdtGoUymGyANJzBwQYjXWCS3/8w67YLraNEFof5vSrZ0X1lIPgXnu6khVf
- lB6eJgKE18piGlQPBbbL7Y92ihEdyc5kMJj3n3BZI6cRNVDGOmE17O0A520TYn0v5Seg/+/azqN
- fxtImW+91ivhuSUNxnQR4t1yA5mol9ugHDxQxZ9nprWCxxwtDjmjtE6Cla8v9JFJO99+EVjzam5
- 9dIBL+Lv+N2I+OtZcSA==
-X-Proofpoint-GUID: tk1974_lsb68QMwYxrWQJxpZl794BysI
-X-Proofpoint-ORIG-GUID: tk1974_lsb68QMwYxrWQJxpZl794BysI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-31_02,2026-03-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 adultscore=0 priorityscore=1501 bulkscore=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603310078
+User-Agent: Mozilla Thunderbird
+CC: <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar
+	<mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<suravee.suthikulpanit@amd.com>, <vasant.hegde@amd.com>,
+	<nikunj.dadhania@amd.com>, <Manali.Shukla@amd.com>
+Subject: Re: [PATCH] KVM: x86: Add support for cmpxchg16b emulation
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>
+References: <20260306102047.29760-1-sarunkod@amd.com>
+ <aar082uQQhXKNiSQ@google.com>
+ <d2cba245-8532-4f89-8a95-0661b4c3eb36@redhat.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <d2cba245-8532-4f89-8a95-0661b4c3eb36@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB53:EE_|LV2PR12MB5823:EE_
+X-MS-Office365-Filtering-Correlation-Id: c412de38-dcc6-4f4a-0c37-08de8f07ddb6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	Xbd/cY32atkcLgz+wHmzBJ6aiiW94mdmaM//MiL8hxsYhVm/fZtugjC/m1AcTV2EZtxgGUa+1l1LycMfQU5u/SVWfdsvlI8Zkwrb2XoBJeuTCwr4UvfAvql0otDylGNdM4g+0Vm/ielEB8Iy0yIJzHfTZaGo48BFQs8A+OhmVb+6dBWHoghqfKHkG1d+FJjXYbx7Pd2AVeMiO2HP+KaVBtHOxfp0nV752oc6+eHyZfrlWcs6olxXw0BaYUpCO6bsEIXlVe3Bzq3Z1gLLOxsjH0ptpRIRGUznfbQPVsgfcdy+RXfxKqVuzv7iJIqqvKncydXbJsEdxotl7uDhiBxp8IH05JEhHQ/M8GeeBwMPkJ/d+XqO/HqzX/aHXq5dY6LVQPhP0O8sSJBj9qPGJZuBhKbJJECuB63ApiZKujU3NdnOAm/zCk39aK8MPL7/8+FKhtbGy8f+a6pO1E67VGv0NoCTTXzyez7Xb1d75geyUlw78QDnoNt/I4BOu4P/Gh8kfkMAdm2yymhvF0W2+fPdFIM8meV4vGU3bc6LEemzj6I1nuaTMcMCwk+BQcs4A0dQeP1TlnWyzPez/7NT5eaOmXWroxVUcobuqF9kLfxIIrHl3dTS0Z9QJZVWuc5hS3KAzbpMY1m0MRxqdhp5i/dDYu1Gj+teiOaBoFp8DWozMLErylW5+WlIwNEuKOnPmO58MxcDuolHGtWjomvxwWUYS8/LUXTc51Xqt+7PdDmHXdKBawZolHeP6fdlTXWrMJOSN6ahev/jXL0BAbii0s/Xlw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	DLT/1WjmL+TUg5ejIoVZqdvRr8eCh3d2f+Gb7pI9I7TddZrlrzF0KNxC/667JvxsyBUbNtMKjObOnftLDbbx4U6LGwHyg58pVy0auXeAsfwWLW4SpuY+grhKh3A2IOtzH8F+hnPyagiOtYiHKzslF8/Rblnc+wNXtj/jiOWwtrHG996+3XqEXKNkFx94B75oUJ8pISO44V7XmPunLkODCRNbiRWzVF3jbh6YEs0yrEb7owqRR+ttvn2kej7GNjm29nZrgauwrnGNg3zE1NsBuME6kaeKkc68Bvz9OlfO0YSgBLzM4XidCU56x+wrncWLTo9dGsLdkYbLpRDSfhNvyBX69UyK/ptWqwqkP1iiQk8rIqHAFHUc/ky9LzXkttCRR0H0qDUnYKoWqWxrbWIOdTdcE09MKuYCklICOTvICHR1QEAGScifj4VBNFuJjoZC
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 09:28:27.9996
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c412de38-dcc6-4f4a-0c37-08de8f07ddb6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB53.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5823
 
-On Mon, 2026-03-30 at 21:03 -0300, Jason Gunthorpe wrote:
-> On Mon, Mar 30, 2026 at 12:39:25PM -0600, Alex Williamson wrote:
-> > Yes, that would be the ideal balance of enabling larger BARs while
-> > retaining compatibility for existing devices.  Sounds like we'll
-> > continue down the variant driver path for this one-off device for
-> > now.  It remains fairly self contained so long as we don't add more
-> > regions for vfio-pci-core to manage.
-> >=20
-> > This could be a good project if someone is looking though, especially
-> > if it had a build-time config option to set the minimum region size so
-> > we can exercise it before we hit 1TB BARs.  Thanks,
->=20
-> Well, it took claude an hour to vibe code a draft from a four sentence
-> prompt.. I see many things that need changing/cleaning in here, but
-> the patch strategy and general idea looks sound.
->=20
-> I guess another day of effort would probably get things into something
-> presentable. We are not so far away - maybe the variant driver path is
-> not necessary?
->=20
-> https://github.com/jgunthorpe/linux/commits/vfio_maple_tree/
->=20
-> Jason
 
-I'm in no way against changing the offset handling in general but for
-what it's worth, we need a variant driver for ISM regardless, though it
-would be smaller with large offset support. This is because besides the
-large BAR we also have to use our classic function handle based PCI
-instructions to access that BAR instead of the newer memory-I/O (MIO)
-PCI instructions. And sadly the way the ISM device uses the PCI Store
-Block instruction there is no straight forward way to enable the newer
-instructions even if we changed the device implementation. This also
-means that we would want to keep the no-mmap() restriction.
 
-Thanks,
-Niklas
+On 3/12/2026 5:16 PM, Paolo Bonzini wrote:
+> On 3/6/26 16:38, Sean Christopherson wrote:
+>>> -    if (ctxt->dst.bytes == 16)
+>>> +    /* Use of the REX.W prefix promotes operation to 128 bits */
+>>> +    if (ctxt->rex_bits & REX_W)
+>>
+>> Uh, yeah, and the caller specifically pivoted on this size.  I'm a-ok 
+>> with a
+>> sanity check, but it should be exactly that, e.g.
+>>
+>>     if (WARN_ON_ONCE(8 + (ctxt->rex_bits & REX_W) * 8 != 
+>> ctxt->dst.bytes))
+>>         return X86EMUL_UNHANDLEABLE;
+>
+>
+>> And then emulator_cmpxchg_emulated() should be taught to do 
+>> cmpxchg16b itself:
+>>
+>>     /* guests cmpxchg8b have to be emulated atomically */
+>>     if (bytes > 8 || (bytes & (bytes - 1)))
+>>         goto emul_write;
+>>
+>> That might be a big lift, e.g. to get a 16-byte uaccess version.  If 
+>> it's
+>> unreasonably difficult, we should reject emulation of LOCK CMPXCHG16B.
+>
+> It's actually pretty easy because a kind soul already wrote the
+> cmpxchg8b version of the macros.  Compile-tested only (and checked
+> that the asm does have the instruction):
+>
+> diff --git a/arch/x86/include/asm/uaccess.h 
+> b/arch/x86/include/asm/uaccess.h
+> index 3a7755c1a4410..f40e815263233 100644
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -388,14 +388,13 @@ do {                                    \
+>          *_old = __old;                        \
+>      likely(success);                    })
+>
+> -#ifdef CONFIG_X86_32
+> -#define __try_cmpxchg64_user_asm(_ptr, _pold, _new, label) ({    \
+> +#define __try_cmpxchg8b_16b_user_asm(_b, _ptr, _pold, _new, 
+> label)({    \
+>      bool success;                            \
+>      __typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);        \
+>      __typeof__(*(_ptr)) __old = *_old;                \
+>      __typeof__(*(_ptr)) __new = (_new);                \
+>      asm_goto_output("\n"                        \
+> -             "1: " LOCK_PREFIX "cmpxchg8b %[ptr]\n"        \
+> +             "1: " LOCK_PREFIX "cmpxchg" #_b "b %[ptr]\n"    \
+
+Hi Paolo,
+
+I think its better to keep two implementations separate because this
+adds an additional complexity while passing the upper and lower half
+of the "_new"
+The cmpxchg8b expects ecx as "(u32)((u64)_new >> 32)" where as
+cmpxchg16b expects ecx as "(u64)((u128)_new >> 64)"
+
+Thanks
+Sairaj
