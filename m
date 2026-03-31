@@ -1,70 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F3B45BD7C
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 21:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3733EC2F4;
+	Tue, 31 Mar 2026 21:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774993733; cv=none; b=AiVskmMYm1+XMmquum6B9Ku+BQItwHp2q9hVKWX44o43t52txV+dx1OT5UR2HNH8cKJzUqAc/+PlWtRC2qUiwAZp76Ozfpw+bNkevN/hRoVUgVPHwOlPbhpUrerWZKR3cs9sYmiT/8xOiT9sQO2qAH16uON8UBEJ2SH7+5dAk3s=
+	t=1774994256; cv=none; b=MUHNnAOZp+aOPQixmFcA2cZGtXXtEIgYgh93T3Dx2NKWctsgLZ4zOtE/1/8Ap7oAsQJGbwRhuRhOlJsQhUZlnLOBvPuAhWT/lqP5IwC7rfS7ySKMGR+bNe9cxXEVYrVOE6zElwy54uiuHLJT3Tx572IIAWv60MdWv/KYb3mBvzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774993733; c=relaxed/simple;
-	bh=xjBK0mzjHlXWnIev6nElepTIE4coNcu8WYAmBIYGbfQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=piCYIAI2z6CVGjygYRXyvBw9WMtcxVwYxUFuLa1K+4QStp59pGTSqmWlG1G86GsPpzNR57l1GN1fzeYYkVMCiEItD6g1S+AlpWWBrH3d/kN1Vu2eyE5JKTkYUGWQSqk6t7FA3EiK2i/EEvmUZAA9M+GB4HQ3c2CUQtcJ4CSoMvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qCzz/Hdg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774994256; c=relaxed/simple;
+	bh=uOuPEvwHizN6Y83fqDmEOv+kQCiiMjx/uNtq//NcO9Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pxTuZ8oLXwNU35Koe5BUiyhR0yCPkIIB5ojM3f9Xkj5L38t3PAcnyoCudrZyW+36KSuTkajoryGv+vG0fIf05ohYQ+3SsjjToCu/HF3cwOdIBEA2arDjI8sNIn5XnnOWdiO/G39Fdj41qDu5rNWN72Zwd4bCaKm2Yh1coaEKoNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1K1FQXn; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qCzz/Hdg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E37C19423;
-	Tue, 31 Mar 2026 21:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774993732;
-	bh=xjBK0mzjHlXWnIev6nElepTIE4coNcu8WYAmBIYGbfQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=qCzz/HdgYcH39k1/VusVZCROEG7QF5n4Oji6dry8xZBEhuIDpSQkI3ByDOSCVdjpL
-	 J8Jcw53sGQNGo2hw4pvzPblGnwnLWCiSNw7EG2b7gG/npfMsQ37NuJW94iLZ7jwVpN
-	 AbGsY436baupmjavEr1YjIe9b55BJ2L94YbcJ1T0/gic2rgRQv1Q4M4oCEpsCobe8X
-	 P79WBwGCKqa4xovAgEqOR7xHMImeKa9ZpvvHuykVUdUUIqZqVJ+wVT5A/HO8o7DbaQ
-	 xCO8UlkOcaAgLvXLWAJVQYVYM0EzZNlp8uMge5kBSniP84AGPPBUqnQiO3jqUmp8tE
-	 ykpUyH7PTZTrw==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1K1FQXn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774994254; x=1806530254;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uOuPEvwHizN6Y83fqDmEOv+kQCiiMjx/uNtq//NcO9Q=;
+  b=h1K1FQXnBdpgj4BspR07cdro7Gwb7kwc3W5667NlU1zEz0TcA+3y0wYS
+   ui1G3YKPQooazajqQOHdhV9DYHJlxHHvZ2txfSd1HyUdcr8/sMMnKoNKb
+   RJdCYQdvh8fC1/HUhYqEgZmikJS0fu1KP2BTHQuVMcNBWCYpA17ozmBTq
+   72J5BEyws1Vodc1DN4WFNJqEdz29V+XKi00usUsM2BqH1PuLtnCdjKLFL
+   9OJO0vAOUyGVfxUJ/GPO48TupuKZ3u2myeQRc75V/AQRkY/HGX6VDEzHl
+   Fgjg87CJfdIKcPpkkeNhxHlzW7uyGcRjUADpjx/bS9u8enQNO8es9lqLf
+   w==;
+X-CSE-ConnectionGUID: e+UJp+ZiSNyIVrfRedk0qg==
+X-CSE-MsgGUID: vrod8zRWQ0GFeegQkE8iNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="93603550"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="93603550"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:33 -0700
+X-CSE-ConnectionGUID: QFTIB9rGR4evUXeFW+xzPg==
+X-CSE-MsgGUID: VbnlA3H2R/C9Vcd2AR4efA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="231288511"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 14:57:33 -0700
+Message-ID: <ee096f1e-b994-4d56-a78c-cb0e867ea047@linux.intel.com>
+Date: Tue, 31 Mar 2026 14:57:32 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] x86/tdx: Fix off-by-one in port I/O handling
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260331112430.71425-1-kas@kernel.org>
+ <20260331112430.71425-2-kas@kernel.org>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260331112430.71425-2-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Mar 2026 23:48:50 +0200
-Message-Id: <DHHARIP50BM1.2DW62G3K7DDI2@kernel.org>
-Subject: Re: [PATCH] vfio/pci: Require vfio_device_ops.name
-Cc: <alex@shazbot.org>, <kvm@vger.kernel.org>
-To: "Alex Williamson" <alex.williamson@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260331202443.2598404-1-alex.williamson@nvidia.com>
-In-Reply-To: <20260331202443.2598404-1-alex.williamson@nvidia.com>
+Content-Transfer-Encoding: 7bit
 
-On Tue Mar 31, 2026 at 10:24 PM CEST, Alex Williamson wrote:
-> vfio-pci-core code makes use of the vfio_device_ops.name field in order
-> to set a default driver_override for VFs created on a user-owned PF.
-> This avoids default driver matching, which might otherwise bind those
-> VFs to native drivers.
->
-> The mechanism for this currently uses kasprintf(), which will set
-> driver_override to the literal "(null)" if name is NULL.  This is
-> effective in sequestering the device, but presents a challenging debug
-> situation to differentiate driver_override being set to "(null)" versus
-> being NULL and interpreted as "(null)" via the sysfs show attribute.
->
-> There's also a tree-wide effort to convert to generic driver_override
-> support, where passing NULL will generate an error, resulting in a
-> WARN_ON without setting any driver_override.
->
-> All drivers making use of vfio-pci-core already set a driver name,
-> therefore by requiring this behavior, all of these corner cases are
-> rendered moot.  This is expected to have no impact on current
-> in-kernel drivers.
->
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Hi Kirill,
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+On 3/31/2026 4:24 AM, Kiryl Shutsemau (Meta) wrote:
+> handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use:
+> 
+>     u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+> 
+> GENMASK(h, l) includes bit h. For size=1 (INB), this produces
+> GENMASK(8, 0) = 0x1FF (9 bits) instead of GENMASK(7, 0) = 0xFF (8
+> bits). The mask is one bit too wide for all I/O sizes.
+> 
+> Fix the mask calculation.
+> 
+> Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
+> Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
+
+LGTM. Can you include a link to the bug report or related discussion in 
+the commit log? It will help understand the impact of this issue.
+
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+>  arch/x86/coco/tdx/tdx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 7b2833705d47..4d7f71d50122 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -693,7 +693,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+>  		.r13 = PORT_READ,
+>  		.r14 = port,
+>  	};
+> -	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+> +	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+>  	bool success;
+>  
+>  	/*
+> @@ -713,7 +713,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+>  
+>  static bool handle_out(struct pt_regs *regs, int size, int port)
+>  {
+> -	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+> +	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+>  
+>  	/*
+>  	 * Emulate the I/O write via hypercall. More info about ABI can be found
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
