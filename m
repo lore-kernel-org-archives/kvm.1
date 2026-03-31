@@ -1,236 +1,221 @@
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02CB331209;
-	Tue, 31 Mar 2026 19:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2838239F
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774984729; cv=none; b=fB2PHm0w/TrZqQt82UuzNECJTDId9la+fgheacyKNNzyBQ8K4jYBo5vl0S07XVOhm7WdsMGKGGcY9UGFmpdZCQigucmfa83rGjaqTvgFhDNAZeine/X4AiuN/BtyuiSlhmiDTZExFtK1Upkl2pV6PkXzPAdMe1kCCre4RSsDGO0=
+	t=1774984947; cv=none; b=r+e65Hjxo2Y1K4SK27txwhhkS0EKEd/o1YStC+Mb0aButF97aza1H7H6H3plbvRp84iI+cpxal/xjsEB8YhomEvZ+88/qOt56227Kn4XEoUfuQDuX1CcR+6sGp18jsD2+gapDtKjCG9BQxl4WtSQ5JTUu3Dul1QZ2IvJWubd11w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774984729; c=relaxed/simple;
-	bh=eJC1dGMKA7WWnvIcrQkw8YE6B7Kq4iS3s/Ohm6s3FTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q7cyVZixgrTANTH2w906VJGg7cBfHcSHigcgxxc0v8SASIzl9UXZex9tliDTPYItbEkd9bDeOK/Z5jOc+Z/fuhiSLbOt8Ye5KtwcboWl4QPcRRGZ0cMe/nKISVAowILWu0udKvqwCdEQrN9TZXVdR49sMPWltSBEGVl5ATH0a20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Jix2YZqP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qPkl0NIe; arc=none smtp.client-ip=202.12.124.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1774984947; c=relaxed/simple;
+	bh=MV24UBx1iZwlGLgfkmZNjBK9za5HvihxdoLsYgrQNdY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=c/RHU0psGR/POFsmH2BUtvcej3Ma7EQHiHfAhazvJlAG2ym1TIdjY55M8F+1mPcroQpmLB/8fiQtXa8hD9uGTrgBGhPLaCPp06wefWcuj+rB6gYL3Cad6xFszebv5uUKhrkGTvRcAsDWvZ4gWH1hWFj3V7c7NXMHXnI4AFmvbOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WuRZAutX; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Jix2YZqP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qPkl0NIe"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id D592A130008E;
-	Tue, 31 Mar 2026 15:18:43 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 31 Mar 2026 15:18:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774984723;
-	 x=1774991923; bh=e2GLgeMPntSzKQd7unYxJVNrGT++Ey/+j0e558YaVKo=; b=
-	Jix2YZqPgfjz22R+GBZTSkmM/A+yTGqbP2D7RrPJTBlHCtwUy2TreQYJzy0FYt4E
-	mn6iGMSZZUAvgOUzmgtxkvDhEQqNq9so/LsT2uXs0WUjbk/iVyGgezKLdcntmYCJ
-	j1mTHgBbF1XmhYE9OLcmwaqRwm079G64C6NXLlTJGqXGDGeTuyvQuKL+LrxHsVyt
-	h07JL26/s5vAaqvA+uFn5EtvqWaXeuVPLWaay4hdvRDT/GeDy5zchULu+Xf5bCKw
-	aMCGUFvWJ4r5sa9ylZo53CH1LtcUihVM+4twawyn4uPT0avFIdaMYMGGz87cRj5W
-	75pcl2tsTe5q72qXomhEng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774984723; x=
-	1774991923; bh=e2GLgeMPntSzKQd7unYxJVNrGT++Ey/+j0e558YaVKo=; b=q
-	Pkl0NIe505sDev2vE+9dEjJ2QQvY24shKDHRjyi5iJrJ3lhJmCH83R7Ej6uIsdKx
-	Ah2qPK0lawqj3n8MX9UbaZlR8zOv0eboHPEu2zTV9Ar46wm3SvS5yBG219IjmBDw
-	/8aE106Yb9iAY8X18cayks75OdeneZOPyq2pnCyvpFrGdunxzgrlbZPAQhHCnM3H
-	MhJM8//IeSYiIyV967PwBaCx9UybPaAajGdNOPqf34786RvJS1R2NeBhzECYdV9r
-	Hhp4kbOPpgzUg+fw9gf2jEWED5P2y3OiIotVEJPhPvUaSmHyFEthzrD5syHkfCDz
-	oj1hrBx1gCRLurULKhEqQ==
-X-ME-Sender: <xms:Eh7MaYVXhSLS49doWxNbldxcSkPJQ2lBgD6S-cXj9ML6P8DuIhi54A>
-    <xme:Eh7MaY3CTvPt8pC-6__rnVlJHk3AMpws04d9x1eLmygsx9xxcOKA3tvfX2RGrzeid
-    3eITD6bgIngUTpBItaVYS7mKstrqZdkyduHlmJydVKX9r92pk1CAA>
-X-ME-Received: <xmr:Eh7MaWAMOBeQDrW_EEEiAtExZoJg9HXrtPbMbrU13INIpg2pRTwgJd0Tapg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
-    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
-    gvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudegveeu
-    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
-    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohephedupdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhig
-    rdhorhhgrdhukhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtih
-    honhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepihhorghnrgdrtghiohhrnhgvihesnhigphdrtghomhdprhgtphhtthhopehnih
-    hpuhhnrdhguhhpthgrsegrmhgurdgtohhmpdhrtghpthhtohepnhhikhhhihhlrdgrghgr
-    rhifrghlsegrmhgurdgtohhmpdhrtghpthhtohepkhihshesmhhitghrohhsohhfthdrtg
-    homh
-X-ME-Proxy: <xmx:Eh7MaXq2mlnlOelEQan96Ie-hgy-LAK8CHBHQdkG7r27nkHcaWiIbg>
-    <xmx:Eh7Mab_KIxvqr4OxQc5evz-T_S8zOMbzrx08jzw5C5b7mvco3Iesuw>
-    <xmx:Eh7MaefX2P0crsZiJ44xT0eYo0t5zG2qKmdKMy8HHuopFTELtHeNKg>
-    <xmx:Eh7MaRJs8ye8aup8P2JAiOncajQ7Ro6xy3heBDnJcGy9BvoI7oIX_g>
-    <xmx:Ex7MaSUwhQGLpsFOIWtvVzTCvrLLbvifdUNGQI9PxQ_RqFwZ-CC-1T0v>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:18:38 -0400 (EDT)
-Date: Tue, 31 Mar 2026 13:18:37 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>
-Cc: "Russell King" <linux@armlinux.org.uk>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- "Ioana Ciornei" <ioana.ciornei@nxp.com>,
- "Nipun Gupta" <nipun.gupta@amd.com>,
- "Nikhil Agarwal" <nikhil.agarwal@amd.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
- "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>, "Armin Wolf" <W_Armin@gmx.de>,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Mathieu Poirier" <mathieu.poirier@linaro.org>,
- "Vineeth Vijayan" <vneethv@linux.ibm.com>,
- "Peter Oberparleiter" <oberpar@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Harald Freudenberger" <freude@linux.ibm.com>,
- "Holger Dengler" <dengler@linux.ibm.com>,
- "Mark Brown" <broonie@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Jason Wang" <jasowang@redhat.com>,
- "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
- Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- "Juergen Gross" <jgross@suse.com>,
- "Stefano Stabellini" <sstabellini@kernel.org>,
- "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-hyperv@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
- <linux-s390@vger.kernel.org>, <linux-spi@vger.kernel.org>,
- <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
- <xen-devel@lists.xenproject.org>, <linux-arm-kernel@lists.infradead.org>,
- "Gui-Dong Han" <hanguidong02@gmail.com>, alex@shazbot.org
-Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
-Message-ID: <20260331131837.6a9fe9ec@shazbot.org>
-In-Reply-To: <DHGTLY0FJWD2.2VLT6NQWF97YY@kernel.org>
-References: <20260324005919.2408620-1-dakr@kernel.org>
-	<20260324005919.2408620-6-dakr@kernel.org>
-	<DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
-	<20260330141050.2cb47bd9@shazbot.org>
-	<DHGT9XCG8Y96.3IB1EI6FF1ZDZ@kernel.org>
-	<DHGTLY0FJWD2.2VLT6NQWF97YY@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WuRZAutX"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c69a734a4so4645609b3a.1
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774984945; x=1775589745; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RgviwJOYXSKWdLh3uc7LH1qbSAomaRwT7h2reEIozb0=;
+        b=WuRZAutXb5SA7vjnhXxQXjzu5qcgrSvx93fdayyhxK68BlAvjFfOdxBQ6RfuU6kojT
+         zni6eHKUt7eRBdkWGyQPyEfxVcD4xcktsS2JF0dJrtHWo949ijU/fAlICrIhRsrea+2I
+         5aZ17Fea9dVJLOUX368tdgIiC5fnZhGCRM4DO1KtUha6AxJ+IvvsazeCOr/Ba/1IJH6z
+         g1EhkmIY0ITWlPnSBCtwL/K/7zrAUmwxRM0kuyDyFtWOter//00p2Kli+QnXrhuzmJJS
+         ak8b2FFBPcvsjoTsqwLEguiXh2Rjjh79FC3zvQZ4TSj51sy5t/TDYeo1+R36EtZNFJdh
+         ouIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774984945; x=1775589745;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RgviwJOYXSKWdLh3uc7LH1qbSAomaRwT7h2reEIozb0=;
+        b=dsNLMhreR74D5UwppijzYx3hDJiD0F9gl5fiwfuqu/UeJl3o69fYzjDQulDnBLZuVW
+         igs5xDVz/WkidbNVctdtko8qwZiUiaTB7SQT30kl6wJnEND0VSyIOPq0mD/tl0ax+K0p
+         J9m4zhL7QH9d9zc0k7kqezoUxV8l4Tvd1KfMQOOAE+CvHiW2T0qjsiEEjF014kanhAGR
+         7QDvXfvJJzUL2w2IOaPbvsnuNcRP60Izwdw6Kd7PpFueuX04vc0i6J8aZU5CUXIaZmBf
+         Rap2whpCvRB01BROwaSrkCgM+GJb4ATyP+70qMJcRSeozdbWFR2CaS9Dn4WNkjipTdNr
+         amrA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0CztA7aG7k898bu18jr4fsXlPVqPiNb7NeeIEQQPkqAeifLbuA2FYPZiXgoJJIeOI5PU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx94vcSq8sbJ2OdE3baHnNF2H51shGnqXlDYAI1UFfIM6+sJU69
+	OpvoxUnhBaCHBq3uvuK8dl3RX5H78ZA7c1bQ3P4Xn6TfqkWZJwl/NkU8PCkM3hj08AgoEygQA/z
+	TUiEAbg==
+X-Received: from pfx38.prod.google.com ([2002:a05:6a00:a466:b0:829:8aa0:dc3c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e94:b0:81e:b2ba:5b3a
+ with SMTP id d2e1a72fcca58-82ce8943f81mr765456b3a.8.1774984944418; Tue, 31
+ Mar 2026 12:22:24 -0700 (PDT)
+Date: Tue, 31 Mar 2026 12:22:22 -0700
+In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com> <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
+Message-ID: <acwe7kKyjfEQ0sIf@google.com>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+From: Sean Christopherson <seanjc@google.com>
+To: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 31 Mar 2026 10:22:14 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
-
-> On Tue Mar 31, 2026 at 10:06 AM CEST, Danilo Krummrich wrote:
-> > On Mon Mar 30, 2026 at 10:10 PM CEST, Alex Williamson wrote:  
-> >> On Mon, 30 Mar 2026 19:38:41 +0200
-> >> "Danilo Krummrich" <dakr@kernel.org> wrote:
-> >>  
-> >>> (Cc: Jason)
-> >>> 
-> >>> On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:  
-> >>> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> >>> > index d43745fe4c84..460852f79f29 100644
-> >>> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> >>> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> >>> > @@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
-> >>> >  	    pdev->is_virtfn && physfn == vdev->pdev) {
-> >>> >  		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
-> >>> >  			 pci_name(pdev));
-> >>> > -		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
-> >>> > -						  vdev->vdev.ops->name);
-> >>> > -		WARN_ON(!pdev->driver_override);
-> >>> > +		WARN_ON(device_set_driver_override(&pdev->dev,
-> >>> > +						   vdev->vdev.ops->name));    
-> >>> 
-> >>> Technically, this is a change in behavior. If vdev->vdev.ops->name is NULL, it
-> >>> will trigger the WARN_ON(), whereas before it would have just written "(null)"
-> >>> into driver_override.  
-> >>
-> >> It's worse than that.  Looking at the implementation in [1], we have:
-> >>
-> >> +static inline int device_set_driver_override(struct device *dev, const char *s)
-> >> +{
-> >> +	return __device_set_driver_override(dev, s, strlen(s));
-> >> +}
-> >>
-> >> So if name is NULL, we oops in strlen() before we even hit the -EINVAL
-> >> and WARN_ON().  
-> >
-> > This was changed in v2 [2] and the actual code in-tree is
-> >
-> > 	static inline int device_set_driver_override(struct device *dev, const char *s)
-> > 	{
-> > 		return __device_set_driver_override(dev, s, s ? strlen(s) : 0);
-> > 	}
-> >
-> > so it does indeed return -EINVAL for a NULL pointer.
-
-Ok, good.
-
-> >> I don't believe we have any vfio-pci variant drivers where the name is
-> >> NULL, but kasprintf() handling NULL as "(null)" was a consideration in
-> >> this design, that even if there is no name the device is sequestered
-> >> with a driver_override that won't match an actual driver.
-> >>  
-> >>> I assume that vfio_pci_core drivers are expected to set the name in struct
-> >>> vfio_device_ops in the first place and this code (silently) relies on this
-> >>> invariant?  
-> >>
-> >> We do expect that, but it was previously safe either way to make sure
-> >> VFs are only bound to the same ops driver or barring that, at least
-> >> don't perform a standard driver match.  The last thing we want to
-> >> happen automatically is for a user owned PF to create SR-IOV VFs that
-> >> automatically bind to native kernel drivers.
-> >>    
-> >>> Alex, Jason: Should we keep this hunk above as is and check for a proper name in
-> >>> struct vfio_device_ops in vfio_pci_core_register_device() with a subsequent
-> >>> patch?  
-> >>
-> >> Given the oops, my preference would be to roll it in here.  This change
-> >> is what makes it a requirement that name cannot be NULL, where this was
-> >> safely handled with kasprintf().  
-> >
-> > Again, no oops here. :)
-> >
-> > I still think it makes more sense to fail early in
-> > vfio_pci_core_register_device(), rather than silently accept "(null)" in
-> > driver_override. It also doesn't seem unreasonable with only the WARN_ON(), but
-> > I can also just add vdev->vdev.ops->name ?: "(null)".  
+On Mon, Mar 23, 2026, Vishal Verma wrote:
+> From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > 
-> (Or just skip the call if !vdev->vdev.ops->name, as a user will read "(null)"
-> from sysfs either way.)
+> KVM tries to take care of some required cache flushing earlier in the
+> kexec path in order to be kind to some long standing races that can occur
+> later in the operation. Until recently, VMXOFF was handled within KVM.
+> Since VMX being enabled is required to make a SEAMCALL, it had the best
+> per-cpu scoped operation to plug the flushing into. So it is kicked off
+> from there.
+> 
+> This early kexec cache flushing in KVM happens via a syscore shutdown
+> callback. Now that VMX enablement control has moved to arch/x86, which has
+> grown its own syscore shutdown callback, it no longer make sense for it to
+> live in KVM. It fits better with the TDX enablement managing code.
+> 
+> In addition, future changes will add a SEAMCALL that happens immediately
+> before VMXOFF, which means the cache flush in KVM will be too late to
+> flush the cache before the last SEAMCALL. So move it to the newly added TDX
+> arch/x86 syscore shutdown handler.
+> 
+> Since tdx_cpu_flush_cache_for_kexec() is no longer needed by KVM, make it
+> static and remove the export. Since it is also not part of an operation
+> spread across disparate components, remove the redundant comments and
+> verbose naming.
+> 
+> In the existing KVM based code, CPU offline also funnels through
+> tdx_cpu_flush_cache_for_kexec(). So the centralization to the arch/x86
+> syscore shutdown callback elides this CPU offline time behavior. However,
+> WBINVD is already generally done at CPU offline as matter of course. So
+> don't bother adding TDX specific logic for this, and rely on the normal
+> WBINVD to handle it.
+> 
+> Acked-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 
-Hmm, I suppose they would, but there's a fundamental difference between
-driver_override being set to "(null)" vs being NULL and only
-interpreted as "(null)" via show.  The former would prevent ID table
-matching, the latter would not.  The former is what was intended here,
-without realizing both look the same through sysfs and present a
-difficult debugging challenge.
+Ingoring the potential fixup needed for the existing bug...
 
-Given no oops for strlen() now and no known in-kernel drivers with a
-NULL name, I can post a patch that rejects a NULL name in the ops
-structure in vfio_pci_core_register_device(), avoiding the entire
-situation.
+Acked-by: Sean Christopherson <seanjc@google.com>
 
-For this,
+> ---
+>  arch/x86/include/asm/tdx.h  |  6 ------
+>  arch/x86/kvm/vmx/tdx.c      | 10 ----------
+>  arch/x86/virt/vmx/tdx/tdx.c | 39 ++++++++++++++++++++-------------------
+>  3 files changed, 20 insertions(+), 35 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 2917b3451491..7674fc530090 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -205,11 +205,5 @@ static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
+>  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
+>  #endif	/* CONFIG_INTEL_TDX_HOST */
+>  
+> -#ifdef CONFIG_KEXEC_CORE
+> -void tdx_cpu_flush_cache_for_kexec(void);
+> -#else
+> -static inline void tdx_cpu_flush_cache_for_kexec(void) { }
+> -#endif
+> -
+>  #endif /* !__ASSEMBLER__ */
+>  #endif /* _ASM_X86_TDX_H */
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index b7264b533feb..50a5cfdbd33e 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -440,16 +440,6 @@ void tdx_disable_virtualization_cpu(void)
+>  		tdx_flush_vp(&arg);
+>  	}
+>  	local_irq_restore(flags);
+> -
+> -	/*
+> -	 * Flush cache now if kexec is possible: this is necessary to avoid
+> -	 * having dirty private memory cachelines when the new kernel boots,
+> -	 * but WBINVD is a relatively expensive operation and doing it during
+> -	 * kexec can exacerbate races in native_stop_other_cpus().  Do it
+> -	 * now, since this is a safe moment and there is going to be no more
+> -	 * TDX activity on this CPU from this point on.
+> -	 */
+> -	tdx_cpu_flush_cache_for_kexec();
+>  }
+>  
+>  #define TDX_SEAMCALL_RETRIES 10000
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index cb9b3210ab71..0802d0fd18a4 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -224,8 +224,28 @@ static int tdx_offline_cpu(unsigned int cpu)
+>  	return 0;
+>  }
+>  
+> +static void tdx_cpu_flush_cache(void)
+> +{
+> +	lockdep_assert_preemption_disabled();
+> +
+> +	if (!this_cpu_read(cache_state_incoherent))
+> +		return;
+> +
+> +	wbinvd();
+> +	this_cpu_write(cache_state_incoherent, false);
+> +}
+> +
+>  static void tdx_shutdown_cpu(void *ign)
+>  {
+> +	/*
+> +	 * Flush cache now if kexec is possible: this is necessary to avoid
+> +	 * having dirty private memory cachelines when the new kernel boots,
+> +	 * but WBINVD is a relatively expensive operation and doing it during
+> +	 * kexec can exacerbate races in native_stop_other_cpus().  Do it
+> +	 * now, since this is a safe moment and there is going to be no more
+> +	 * TDX activity on this CPU from this point on.
+> +	 */
+> +	tdx_cpu_flush_cache();
+>  	x86_virt_put_ref(X86_FEATURE_VMX);
+>  }
+>  
+> @@ -1920,22 +1940,3 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+>  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
+> -
+> -#ifdef CONFIG_KEXEC_CORE
+> -void tdx_cpu_flush_cache_for_kexec(void)
+> -{
+> -	lockdep_assert_preemption_disabled();
 
-Acked-by: Alex Williamson <alex@shazbot.org>
+Is there a pre-existing bug here that gets propagate to tdx_shutdown_cpu()?  When
+called from kvm_offline_cpu(), preemption won't be fully disabled, but per-CPU
+access are fine because the task is pinned to the target CPU.
 
-Thanks,
-Alex
+See https://lore.kernel.org/all/aUVx20ZRjOzKgKqy@google.com
+
+> -
+> -	if (!this_cpu_read(cache_state_incoherent))
+> -		return;
+> -
+> -	/*
+> -	 * Private memory cachelines need to be clean at the time of
+> -	 * kexec.  Write them back now, as the caller promises that
+> -	 * there should be no more SEAMCALLs on this CPU.
+> -	 */
+> -	wbinvd();
+> -	this_cpu_write(cache_state_incoherent, false);
+> -}
+> -EXPORT_SYMBOL_FOR_KVM(tdx_cpu_flush_cache_for_kexec);
+> -#endif
+> 
+> -- 
+> 2.53.0
+> 
