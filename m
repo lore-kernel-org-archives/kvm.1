@@ -1,153 +1,97 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229332BD0B
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 05:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFD7385509;
+	Tue, 31 Mar 2026 06:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774935792; cv=none; b=qYSkuLe6ymGjwHgc0HAFkmoZJRSpQrJcSk+uIX52oujZm0T6cajIGcyWgMeZgZCFxH70QEiA4/vLX6irzqSVUrWiY8LZYD3/f/6UHbDff8f30eNAkHETn6aUUP9dVw8MtemSJFPJj6bLbr5Q0j+iCbBVZVvxGcIK/Jx+BIhGXpk=
+	t=1774938326; cv=none; b=eDR/Y6pkIRbIuOlbsTyFzJecqcGhIOL+jNWvUiaOJTNLu7Ly25GrYx5TpOZac0Ss3TN+8wkBrw+Cok7YTe3QYtCZcITZMoL5imrfajDGtRZgKKnaj8TzDP58eqrKF2Gtx+63okK/GhHZ+zFrVBhA83G5gTzgKi2TefpmoUPlsHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774935792; c=relaxed/simple;
-	bh=vSB+ljS0jlhp1cm4eU7MyoYZxLluHbOT/8kE0YlcoaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sa3JMaxzMDqPuf5cFjZ2ztpjUI2YgY2ufqgr8oF3Xrc3wAzERJ8e03xualuzehWLXTXiEfwQuww+Eye4GzcinPp/iQsQRdKbA2s+cBGuw60RuMIxHK7GXDjJlknFhI9qutFWfbo94FBTheeClNvNXVvGES59UixmhJIEINCuuPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UcpTubK+; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774938326; c=relaxed/simple;
+	bh=UhU7giXO/4/XwBFR6g8fWJ7VGxRAyzkloQXuM0newp8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uh9iAm0cP+jCBtHFiyW65kKw0vf9JDFoSOoRDvkNP5RLpYLra8BzmbkGuGIeucaBwbl6XG8+xYZkSJfJ5OaemJnKVU7piBUqG4ZSUR/CObhlfI2eFKOvP4HvqBptqnd5AlqW+XP30vQd8iexjY+c4u8ZsXvqnLBf2wMJ72swmAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JIJqMTqc; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UcpTubK+"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F651493B;
-	Mon, 30 Mar 2026 22:43:02 -0700 (PDT)
-Received: from [10.57.18.211] (unknown [10.57.18.211])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03D1A3F641;
-	Mon, 30 Mar 2026 22:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774935788; bh=vSB+ljS0jlhp1cm4eU7MyoYZxLluHbOT/8kE0YlcoaI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UcpTubK+EvW+7IXovLRXihaJceuFtVVv/2TbkFcvixMghUlnloG/D5wcq1cmQt/bU
-	 0gc/qT4RsaXBg/GLVxWOnhkdSiZ/M7mCCQijhg378kx6Xj+56B1lPHXAx9hgUYtvk6
-	 aZzLSM6CDWf+C0onhJJ46xM3pRi07C4BgmO5zA5o=
-Message-ID: <8deec1ce-044e-484a-9f9c-82163f3ac801@arm.com>
-Date: Tue, 31 Mar 2026 11:13:01 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JIJqMTqc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774938325; x=1806474325;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UhU7giXO/4/XwBFR6g8fWJ7VGxRAyzkloQXuM0newp8=;
+  b=JIJqMTqcigYqZ4Eud9yagVb/2T11uWktERGIwnUiGI4OXGxmu7RqAGFw
+   GJmBX8wzVC6b8a43XfETguVArlepqFsD80V1nyudbxoWG+azwNzlhRKI1
+   aOu3HPvkulWYAZUN/YJc17dgstr1IvZZkA7Ubp2UmX6Nss1BAMlgeKRaC
+   xkgjXAHwf2WiyxtBTQ8e1lpp8XVSMdASkv8nRjov/+mn7x6d/BTm1QXxH
+   fv/9H7MuTrBEJSaN9jQMjuuBNu5QNLrsE/V7EYTjPTKb3C51XHD840wwC
+   MZ912O3wKqq48ueO/3rOj+VXpampiz2FpmK4VvhFUU1zSWMf/aoj9l6Gl
+   w==;
+X-CSE-ConnectionGUID: nxTn2hKmQb6q2XineSpcKA==
+X-CSE-MsgGUID: 43oM8jYgSlGh31WcSgvqUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="98548904"
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="98548904"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 23:25:24 -0700
+X-CSE-ConnectionGUID: fDCrYkeNTcCE7MyMjV2QuA==
+X-CSE-MsgGUID: J2lxHIqFQlSV8pOohhyOfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="221402278"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.246.52])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 23:25:18 -0700
+Date: Tue, 31 Mar 2026 09:25:14 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for
+ new TDX Module objects
+Message-ID: <actoyocXRKv8_Kcc@tlindgre-MOBL1>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+ <1dd0b8f4d1ad5cd07b5139ed8c944e1e1d004661.camel@intel.com>
+ <acpPsPivfllpWfv1@yilunxu-OptiPlex-7050>
+ <23b92a154c859450d106de6c9badbe284e3aa19f.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/30] KVM: arm64: Initialize struct kvm_s2_fault
- completely at declaration
-To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
- <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>,
- Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <tabba@google.com>,
- Will Deacon <will@kernel.org>, Quentin Perret <qperret@google.com>
-References: <20260327113618.4051534-1-maz@kernel.org>
- <20260327113618.4051534-11-maz@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260327113618.4051534-11-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23b92a154c859450d106de6c9badbe284e3aa19f.camel@intel.com>
 
-On 27/03/26 5:05 PM, Marc Zyngier wrote:
-> From: Fuad Tabba <tabba@google.com>
+On Mon, Mar 30, 2026 at 11:25:08PM +0000, Edgecombe, Rick P wrote:
+> On Mon, 2026-03-30 at 18:25 +0800, Xu Yilun wrote:
+> > Yes in POC code we do write dedicated code for each type, but it ends up
+> > with plenty of similar logics on caller side about root page
+> > manipulation. By now, the differences are not much, but I think we
+> > should not write copies for every type, we should stop new types.
 > 
-> Simplify the initialization of struct kvm_s2_fault in user_mem_abort().
-> 
-> Instead of partially initializing the struct via designated initializers
-> and then sequentially assigning the remaining fields (like write_fault
-> and topup_memcache) further down the function, evaluate those
-> dependencies upfront.
-> 
-> This allows the entire struct to be fully initialized at declaration. It
-> also eliminates the need for the intermediate fault_data variable and
-> its associated fault pointer, reducing boilerplate.
-> 
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Hmm, doesn't it seem like this is quickly becoming complicated though, to
+> combine all the different types together? And it seems there are more coming
+> that people want to add to this.
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Most of the list entry types are the same with just some bits unused.
 
-> ---
->  arch/arm64/kvm/mmu.c | 34 ++++++++++++++++------------------
->  1 file changed, 16 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index e77b0b60697f6..2b85daaa4426b 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1962,8 +1962,9 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  			  struct kvm_memory_slot *memslot, unsigned long hva,
->  			  bool fault_is_perm)
->  {
-> -	int ret = 0;
-> -	struct kvm_s2_fault fault_data = {
-> +	bool write_fault = kvm_is_write_fault(vcpu);
-> +	bool logging_active = memslot_is_logging(memslot);
-> +	struct kvm_s2_fault fault = {
->  		.vcpu = vcpu,
->  		.fault_ipa = fault_ipa,
->  		.nested = nested,
-> @@ -1971,19 +1972,18 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  		.hva = hva,
->  		.fault_is_perm = fault_is_perm,
->  		.ipa = fault_ipa,
-> -		.logging_active = memslot_is_logging(memslot),
-> -		.force_pte = memslot_is_logging(memslot),
-> -		.s2_force_noncacheable = false,
-> +		.logging_active = logging_active,
-> +		.force_pte = logging_active,
->  		.prot = KVM_PGTABLE_PROT_R,
-> +		.fault_granule = fault_is_perm ? kvm_vcpu_trap_get_perm_fault_granule(vcpu) : 0,
-> +		.write_fault = write_fault,
-> +		.exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu),
-> +		.topup_memcache = !fault_is_perm || (logging_active && write_fault),
->  	};
-> -	struct kvm_s2_fault *fault = &fault_data;
->  	void *memcache;
-> +	int ret;
->  
-> -	if (fault->fault_is_perm)
-> -		fault->fault_granule = kvm_vcpu_trap_get_perm_fault_granule(fault->vcpu);
-> -	fault->write_fault = kvm_is_write_fault(fault->vcpu);
-> -	fault->exec_fault = kvm_vcpu_trap_is_exec_fault(fault->vcpu);
-> -	VM_WARN_ON_ONCE(fault->write_fault && fault->exec_fault);
-> +	VM_WARN_ON_ONCE(fault.write_fault && fault.exec_fault);
->  
->  	/*
->  	 * Permission faults just need to update the existing leaf entry,
-> @@ -1991,9 +1991,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  	 * only exception to this is when dirty logging is enabled at runtime
->  	 * and a write fault needs to collapse a block entry into a table.
->  	 */
-> -	fault->topup_memcache = !fault->fault_is_perm ||
-> -				(fault->logging_active && fault->write_fault);
-> -	ret = prepare_mmu_memcache(fault->vcpu, fault->topup_memcache, &memcache);
-> +	ret = prepare_mmu_memcache(vcpu, fault.topup_memcache, &memcache);
->  	if (ret)
->  		return ret;
->  
-> @@ -2001,17 +1999,17 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  	 * Let's check if we will get back a huge page backed by hugetlbfs, or
->  	 * get block mapping for device MMIO region.
->  	 */
-> -	ret = kvm_s2_fault_pin_pfn(fault);
-> +	ret = kvm_s2_fault_pin_pfn(&fault);
->  	if (ret != 1)
->  		return ret;
->  
-> -	ret = kvm_s2_fault_compute_prot(fault);
-> +	ret = kvm_s2_fault_compute_prot(&fault);
->  	if (ret) {
-> -		kvm_release_page_unused(fault->page);
-> +		kvm_release_page_unused(fault.page);
->  		return ret;
->  	}
->  
-> -	return kvm_s2_fault_map(fault, memcache);
-> +	return kvm_s2_fault_map(&fault, memcache);
->  }
->  
->  /* Resolve the access fault by making the page young again. */
+Regards,
+
+Tony
