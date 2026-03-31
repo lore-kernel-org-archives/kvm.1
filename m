@@ -1,46 +1,47 @@
 Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012048.outbound.protection.outlook.com [52.101.48.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6131345CC0;
-	Tue, 31 Mar 2026 17:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFB1346A11;
+	Tue, 31 Mar 2026 17:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774977767; cv=fail; b=RuOK9MCtzAoEYkJ1aDUW6O48V9m/oNHd+R/Hg9SKIEReWu0S1vQfh8bhJyoMrUWOnTVc39yZJqiPCGr57AC8IM8gSXBMtRWaGyIba+hqz1bc+oTIdws9HsXToyz8KGxiEnyN1FI8B/Y5L3YOAig0JmAYUSCDRpelCxtgv2vV4UI=
+	t=1774977769; cv=fail; b=R/Kkpsp//fJUUIQVxZGZvk1d5zWgrirHGuGWfNzK6/1wAH7g6XZ0rcEHdMqt0qE796nR6nBzPNBr00/HCdWV+3tqQVG6R56egKRb6q1HMklqB4l8W52UUXMxMxnvt7FHFMZvk5OQfjJ8KHPHJOsFosU4nhs8NhWCPPDYmqeheKU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774977767; c=relaxed/simple;
-	bh=XNRVDUm4ohyfehWzrIrrekmHDFsAzXbGqLuv8HY9vL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pSeBGKcgpxckWFlNzA6zI1asPmmZ54ar8dUxxxGpNGnQw3wbHxdBZVxEECvW1CGXVSbCzPd6JuYutyhgibtQmK5kZZ8hzviqjg0rrs88Xm/iXTOM0P8dvNQ5tz76W7EdLZOv+y7U5EXSdPEfFnlc39Q2sZIqsCZpvvi2a32+XJ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tyfs2Z5P; arc=fail smtp.client-ip=52.101.48.48
+	s=arc-20240116; t=1774977769; c=relaxed/simple;
+	bh=yq2mBjbY6Zk3rVv9TSb1PEV1Wph2xo1GFEHGEFv3Jj0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JNm3iYcfSxXMX+dtCLw+Q0AKBiso5UuewZgqkjUKL1Tv3jPGKcsNoF5bybHNASz7cJYlZLUsEbco2mRD/z8kO/cKksEzNqAKWsGRdTMf2W3+rEMS3XzK3GXzKmVtA6addqc5me9PwytoBzNrgWcobJEePQJMOsw7JTqwb+FSOs0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iouvaTdd; arc=fail smtp.client-ip=52.101.48.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tyfs2Z5P"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iouvaTdd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kfhO8yHIMTrjXzRRfpOBW2shpTVEGREzEBUDr1+c3xkHG3D7UfnwauJtHd7wpZvLMRtj3I0wqKdLr2xXxSgt1/62MzvzqQZMWFKUkoJ7hWjozHh/VWfgDQxpyYdo/Dhwb3YWcAo25jZNT8Im+WpRZi8qkElILjfIgtd5dAce9FrTt/mMuwuMp71tM4gthLi7XyHzli1XeFTQ1aAAXEsCDPFmLbOyNkuAoS9CwK3hVgWRRIIgAFODXK6YwFl6VuH0xKUpCJDCoKfbRklV4r9tPlyQkihhqFTNtLbwaCbsBcwE+A9fxygs7s8U7mTCTrkwZ2g091C7igUCXTPvINUX1g==
+ b=AvnHxLTQoCqhxdSKDxqRC38MHG+NFXkGhWVxxS9huGb38K7BhIxmIDtIotAGYUGyMZaHbt9cfUVtCKxwTiH5X42m90whx7lYstyH2celTHqHnKtQw44jBzu87XNJr+8pBbnLEjZflm/OrWU/8m/1yP5OgfhjkP4uy+pxCllToa7jDK+l+oDvZPuirN7I6wLhBEpspKT7F4b+5/h6sWMC5cmrSqkMgZbe8YYk5huf9EwVy2ecjKR6BhAj7NT0LsKyk3dpveHlzLy1Ucw7hTZ56xrshM0v+xTC5ofO8ObJOiNbfcxFqCHJ2e8Ogvlf3+X7EE0muG8AAKTgEdGOlEfl/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QWVjJYpTF0lQpO/vn6U5NltGCUI0O2AwvJDKwcwq9Os=;
- b=INfCwrfXlA+mULUWrYryM5roQIQndKY9+4WaMlD6G9G+ZO7+jXguSuUJVfk0OEKhccNYpH9kJFgpagqjxQHug7e2RaMDcBf1gSRMsmPLP20hYd1q6pFkVDYxr5hgsNX24dXgcLHUrUp+v23HXRTSCfdLkIC0iQPHun3j3BlU0Nah1WWIOlFuCleForYTWb2Ghl6oN8hRdtBVJ/aAK4FuHm4eBExtdwJ3whbqZNGDOpmA5rc+0VjgCuEZjXe6JeA7ZQoohbaqx/Oa5CllERur8RkvBpi/Jwj66XdvjKdUrlss/FJnsD7Fe6XJO6K3WTtD9CluX560AwCO6cYBn/y1kg==
+ bh=t1keSgbOQzk7oZh5Eq36vKvQ0XuothpXlQrBUKXAkp8=;
+ b=yNPErFPMLBTaQ6hwNlwhoQsuWl50sEp64iJPTfODbaLIhpPLfJgf2n44aG+91DTfExv6IMOZDKoJr9ZrEgC2XRZ2/VpPXj3BnB2eB4rxlYhWovENK9JhAO7BFkmGY5qTDCpuD7PjEBHdkEjumZwNWmgAwFe8C0u7GVDknpnmDup1VGjUvi8Pp2aPYxyTc1aOifLif3tflnqKX/gUIEYjccmbDdsQYBvYKsNjV3R7fbYTX7cs41oAr2BjC3hmQ5fu69xddheNDeErhcFe/k1K7gtqazAD8PDciRaiT+ClrKAr0GLOTMNOAad/ZHgWPlvb/wre1n5YSRIAt8r/iJIT1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QWVjJYpTF0lQpO/vn6U5NltGCUI0O2AwvJDKwcwq9Os=;
- b=tyfs2Z5PomSBV14B1bKWgHzA/rknXvKTIcYi4P7EYrF+f4koM9jlju/P+Blc/1FyAFT58cXK05meM/WRgGG5FqUsUPUA9C7BMX73rmZLSFo3MvyMFs5dxO7ispdpv9Ag7x7CHU42IBnOCFVKjkM32pdASrFCdlU6aa/wSwlpMooDy+9qwA9eWgKkwBknB2YpYY/XpcNhL0bqtN1Y3B9Df1sgNlMCq8eQvgJrzvhyN3AlHQV1gsaqiTltUoKaXwGj6Z+YYxBXYlaUpbX334oweHenpNbcTm8eKVWUgYydCylgDnWJa2lUJFQel8/rIaOGgYyp0HnwfF0gB224vzgCFw==
+ bh=t1keSgbOQzk7oZh5Eq36vKvQ0XuothpXlQrBUKXAkp8=;
+ b=iouvaTdd4AEqLDcZIehNlbNnt7ylaxdWg2UZSUzuTHy0jT/WyKbreHgdmYVDZAo7gExYmPxR/nOWtAtxDCSyANvrKld84GrHQA0mqcl2QtfZ7UUCzad6VT2K6gf2y/+Rh1ldEQUFKQdo964AeFC5BN0mSYljiXOjCLiDvOeFF9Zep8dmv8M2fBdfc3jqQQiLndST+g6VuCjavw71qTEWUY6IRoBQNh/daYrbhAfKhFR6kQF7/ZvLa4psyqkk7Qnk5MI2mwS8rG/BTZkeT3cZtClDn0JB/FtWEsno+MyYijiS84lFRJKGCfqFqqUNDAa+VzeaQoXRi7RyzffmJ7cxrw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
  (2603:10b6:80f:fc04::8d2) by CY3PR12MB9678.namprd12.prod.outlook.com
  (2603:10b6:930:101::12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 17:22:42 +0000
+ 2026 17:22:45 +0000
 Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
  ([fe80::e30:d7d3:95f0:78e7]) by SA5PPF80B25317E.namprd12.prod.outlook.com
  ([fe80::e30:d7d3:95f0:78e7%6]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 17:22:42 +0000
+ 17:22:45 +0000
 From: Rubin Du <rubind@nvidia.com>
 To: Alex Williamson <alex@shazbot.org>,
 	David Matlack <dmatlack@google.com>,
@@ -48,14 +49,16 @@ To: Alex Williamson <alex@shazbot.org>,
 Cc: kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v11 0/3] selftests/vfio: Add NVIDIA GPU Falcon DMA test driver
-Date: Tue, 31 Mar 2026 10:22:38 -0700
-Message-ID: <20260331172241.50456-1-rubind@nvidia.com>
+Subject: [PATCH v11 2/3] selftests/vfio: Allow drivers without send_msi() support
+Date: Tue, 31 Mar 2026 10:22:40 -0700
+Message-ID: <20260331172241.50456-3-rubind@nvidia.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260331172241.50456-1-rubind@nvidia.com>
+References: <20260331172241.50456-1-rubind@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR02CA0022.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::35) To SA5PPF80B25317E.namprd12.prod.outlook.com
+X-ClientProxiedBy: BYAPR03CA0008.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::21) To SA5PPF80B25317E.namprd12.prod.outlook.com
  (2603:10b6:80f:fc04::8d2)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -65,137 +68,185 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA5PPF80B25317E:EE_|CY3PR12MB9678:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1cb751cf-c7db-4767-63b2-08de8f4a1dda
+X-MS-Office365-Filtering-Correlation-Id: b3fec843-35b0-4919-cff8-08de8f4a1f80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003;
+	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	z1KGcEjqlhZAemfPpd0PtpymB8m7nRJpEJI8p6CvCN2KfgcuCY5tQT4tPZy00ZDam/e+nkpcYU92/hPw2xS/uI+hey5aXxrX44hzYE+YqWloEl6xQzPFqpvgAsuamgA1Ejr4l9Ozw0ddPu8yxxskNwhPrlks0vA4mF9b6o+d9FydZw6StNqLNuFgm8FtV+hbOijx5g8doeA5zA+pCg1OpZJP5/ihTiZpQFbkr/aUPDqvLZisc/+5Os6n7+66MlNhknWOoAu1ObD/lYdMaRMdJkmWDaJLGRuc5BUw8Yte3nWlHSwwdFGsVpJ1qS4CyeJJPC420LXyrE82k7n4nElehlfgVRxPTm7eG9QGSZlAdBbHDHJtSQpcmw+lpyMa5Mmvl31D+8lVhWgusR9G0QgM7VNLEdgxjWukTZ9J0vzb/yzHmaf8P54/Ha4NdGpB8QTTVMHj7hHQ0YJUkhJ2A5mZT2U2qUuNGaOC0uXg2VoAHMzFun/8onxSfEjooJZYjY7s3tTMDJ+PPNNOkMvN/I2FcQ8t4Zpp857movaMNnQpFFT5FgxrQ2cE6eFED2yio5Z3dC1YZKDWj57+UFT/QLmQFxDIEZd3E0m68fjLJ6p+zVO/kpTWO04rBhdBC49zcfxi6RxQolyefgSipeRqKt8yr1AsawcJZEy1SufQQR5o87mlN23hiOXazJ7KQaEYpTX/brLkXp4CCyvXEnIcvCumY5zHhtrIobyjfM5ZSWIDzDA=
+	GW0ZPFesN6V7vMVCddz6AQkjFjTj7ayLwez951NAVUAmkMG4vkFUlPkbR7Dav+ttGlesib1VVtMe2ul2z153INnTaqtiYLCCOJ3Hz/Q/jRxI59EVpwrW4MrfmYu+S5aVIu+oLFhbBKAGNHUv5d4JkzG7VTN0aQGLLeh69ENZlg+7iWH7HPAXPA2swjjaeFfT42zi7c8LfLlnu/azCYCu77icuJ5Ybb4omNiD4SnN2fySALU8sk3irASagmEajYcDK57ZzzwN81MpponX3RQeRzW9AVvRI9eJVBCC6fbicVrISxmaRX0kw2XqHn3NwTPgA4MFnJJXVmwwIZLXj0c/lel3xI1L08s1MKxnJw8mf4PTDFk6L9miscVRe701Ah6VVSJlSJZKwTISB/fmkLZ5rj1iCEXU2Aei/fr/+P/XCVS1gIZFHYLiR+u/zxq+SXOAcUxzhch5OR3NNFsDy/HW8xME1ERRIY475WtwNDR8erY7yVJKOJEMWEhAkdipK1d5SDAkwL+aefCttYeJyEJJpqa9wsmQKwHyWS4zlBD1oS88rPYIWOe6T7EsvMt/hK/qJxrl6iFhh8DOC/czXpx1SFGqQH5qd6JsvSPxrFZFG90Od1EQiGvxWeFJNNNwQNrMXlmP7euXUzQRs1+jTwPtyvgdsYw5lVbfyVOLZ4yxGCUsSpF+BTVqwyANy0sv0hyQebyqtG+C+rnxz2Vk1LOehfkDI5E/3N6tlY1PoSRS7Xs=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA5PPF80B25317E.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA5PPF80B25317E.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U7qLH9Pp47Qde0oN2wYFu9nal8TyCRkxAtNfkxlQqUnwymu2tK3x86l4CaFm?=
- =?us-ascii?Q?sok2GVp66ckoTlN1jH4B6XgNYwhCfDiaHCi4LswRJIWx7o6KKsP1/WvylWem?=
- =?us-ascii?Q?fWz8tlI1mAdgpgC6yxFuxiNN+zlhTv4Xmfkab1eDyL5KOHs9v4BpkFLZmICb?=
- =?us-ascii?Q?al9R2D4uN8U5WwXfEIBgFjvdAV1b3ni4f8RDg2wpxPUxMP7wWEG8W0kQMj5z?=
- =?us-ascii?Q?fOngEHsNPjPltLANf7DCYF4iAzt+/PsXz+lQV63KTBaZPVC7lNEOQd94kqLE?=
- =?us-ascii?Q?fAF/sc/c99frgRiv0gYDQQyv32Zjp2gMpQnvpAywCkHOM+Nb01g4LOmYiBsQ?=
- =?us-ascii?Q?jjdja3bEhgPT2301gTRocUivjx5HW+nlqPRYQCTWYNrTDsCf5oy2Kz7dcJWe?=
- =?us-ascii?Q?wVEvcHwSji3hZwx6EmQAoBUifXdGqSQWEZQDS/oLosFPSr+wtkiB8lIjgkul?=
- =?us-ascii?Q?3NBkV5pXfkRTROB4Y/DoDABN7BLu5/x2nBf2JZsf7U4K0+kCinRIbjB/pH62?=
- =?us-ascii?Q?Nf3H1NTOup4nvPDGzkrWzAAJypZfBp/1vF9UKlkYo7MnKPmvz50f0MRTif1M?=
- =?us-ascii?Q?Xd/uP/HIYUnUJKx7kVvG6IgqitrWjHHnrJvw0Ghve43ZLVACuc3/SIM2JHn9?=
- =?us-ascii?Q?0E+h/igrT+6xs3n8QpKHJN64h7vSBveqfYTzZAGyTBb+CWHhuX0dz9WSEOKt?=
- =?us-ascii?Q?itvD4mVUX+ONjKxLXz8brYT91HfTP8JM1UCy4lMHvXIB6ZvEGywCOdyej9Jn?=
- =?us-ascii?Q?kNNO9DMmVcmYB9ui3/JEkn35XeSuT0kAgl55a9E3APD4c90AVmhXeaS5fPVq?=
- =?us-ascii?Q?g57nMjfkfvXy3pYW894N+tNtVIqtiWU0K7qQsjit198xHTThDa6OaStF9ZJA?=
- =?us-ascii?Q?6o2xYi0ZA5FW22yPgtUCqB8mlzl7XB2hsFgd1/OfvSZMGbYmAgqYO9trBmuT?=
- =?us-ascii?Q?4yW62I80AUCubuHdRyBLY0HpUTOAKqVEgAoqYBMPAMZLcJwWb1LilxL/6ib7?=
- =?us-ascii?Q?IXvU/sUz8InSIfQq2NoWGQjSLpAO2wtyUi7LFr8mSew6haQ+FJyWxBoPIoGd?=
- =?us-ascii?Q?QbEnNmH3vJdfiRVVB+U/p/1Yk1Un6MxXz5PvseRfTvbGi+X/hcHjq/wr7qcm?=
- =?us-ascii?Q?74zBtCh0UJruvpDzIHcYnpNBSM1bxOJ/nquPCJV+nGB4B6VBuhWDwCzksuUG?=
- =?us-ascii?Q?vrKX0v7o18O7PE1DDYZBT31XWE/YMvLoxW7AgT1KIWVm7KKbebMS5q+58o07?=
- =?us-ascii?Q?hGSPVujIoSSkraSIXvHE2guGOUl/g95QVOv6+UvkUVp1kKnhYUnXgJHfdwTp?=
- =?us-ascii?Q?Cbp8CXFx6ljQnH7jiVVJ9dI4YuaE1fjDaMEnSCh2iKhbKSLR832aqbT+Lg6B?=
- =?us-ascii?Q?OUgTwDy0x7FUD4GP9mkHfIC/neJEqasmXTNZ2vNX4MlM+aCC6YI3SDns6+R7?=
- =?us-ascii?Q?i7r7rgQz68/PKDH5YSbjIZKphn2NxiN2HhQq8MPo/aqfDQdiWyrgN1IPsKO9?=
- =?us-ascii?Q?L4ZQu+KGzj7EDkmsQoGVCJuKRf2aiy+pOrb1AXiyj4GrWApsGNCDcFDOsh3k?=
- =?us-ascii?Q?1a4NlvNu4Xj2aPmQIbIht7PKK9Gr9NHByZ1bn5dFX2wBKpxGstQyXlxRiCDJ?=
- =?us-ascii?Q?a2srwSArDOGR2AVQVOVtatBKvNmAe2sD86GehQlB6x/L3c93kKChoMDqXgmd?=
- =?us-ascii?Q?OFIXmrmHDMqL2UKbTGcSPiTBeNRSdyRyEyRY1N9kwiWPSP6HJzrW9bRloSP4?=
- =?us-ascii?Q?/iwgwZH+eQ=3D=3D?=
+	=?us-ascii?Q?YZ1O7RJmAXHbM4IYrOhUf96aTcvxpNE+cf07Q/EJScRCxgwrtrX6T3O2t+G1?=
+ =?us-ascii?Q?zFcAZC8Hem+5eg3RVv4l0sYIShqNoycct01/GeOnnrPskdF3McSQQzH6rMoK?=
+ =?us-ascii?Q?3b42zB4dwDVONfeLJfLgrQQTFYmCAHMjjl3amaT9ZHe0rUGuMQ/LTBFCAi+T?=
+ =?us-ascii?Q?b3cVbt1CShkw9zK4rokAm4e9WRYa+u+p2Hqo6sMQlQYrPSuGAW4xF2lOy+md?=
+ =?us-ascii?Q?kQfkDVelGUVk+dzO6eLwzCI45uJSUZtTNdg82AJ9KBB3JKy4q91DMAoyqYS4?=
+ =?us-ascii?Q?caQdiwkIglKAY06y4aFLD4yQeGn3vOeALpPGKaMWYLs2fRJhxqxw1g6pR5jL?=
+ =?us-ascii?Q?qsoP2xl/GnO34I1m9mnKy/vqbxm1Ymi//9+FLRH3y73U2Etphqh4OpAEy1X2?=
+ =?us-ascii?Q?bf4kT/RRIlzXEpc5pJYq296C/iul9pJUyYnXeGYEiBF26dY30WTRUoaer72a?=
+ =?us-ascii?Q?c1WNeZltUx2i0koN31lph6Rzf7ONVQZMuFVTuZMzQfEKmRmU16AugIbkDnzd?=
+ =?us-ascii?Q?dIlQft55xs6M5FOvaFOZKsOt3CkFuA6Fex2Rrb5eea59dtrLgkwlApqF7VkV?=
+ =?us-ascii?Q?SJuJUgrEGD9fvFYqraFUzCxp+Dirfa21vxPZSbA+w/nWS1m3YQWr4Ki18FEs?=
+ =?us-ascii?Q?ieEwZqcyoCDODvAClnqe8kurXaMkt4xI9YhIvYtv43S6wPh2xpdcn65oEeD/?=
+ =?us-ascii?Q?6GegVO5qnvmrVOJmcuf86RaJq1DUV5ID/aiugdb5keRd3KEZoljdqLt1qPZL?=
+ =?us-ascii?Q?oZF2ygQVUrhf6z04ZXcPbx6D1tTXh8S2TBELsO2aCC/VKMwoRCGnUYUmlySx?=
+ =?us-ascii?Q?5pI6wS27ixQ4IJG9FWH49gBgdroHFM6kzv2OQ17S275iKTo8G86DSW7OB2uk?=
+ =?us-ascii?Q?7Taw45Ytusbkh6d6LOPqg+Jn48uAEMBVAAq/ANZORmzZKpOhwcp1yINAT9dj?=
+ =?us-ascii?Q?zSklu4dWUnpfW9UCbz9W3T1/2G0+88mqqbRFflBXwsOoSdxKB4L2DIEtsjkn?=
+ =?us-ascii?Q?IxGq6Dp2yIMBnZ+rZWL/PwvI49c09ahETuhC9q0qSpYvqjSTwZ0pBGA7XkSp?=
+ =?us-ascii?Q?oC0PJHnu3IpIOgZre/COhmr7hrqn81OOMpeZOF8YjugRQ2tAPRZHhlCPRFGD?=
+ =?us-ascii?Q?MjCe/Qobn6ToTt8jNY0HLnSZGQP/xt0NcmuH3ztKw5NM/F4FSUGVswMyufIP?=
+ =?us-ascii?Q?Ji1IoQnqKUVAnk2/+W1ezmXVwRhKjRARWpZETxiCDY3QBGiY+cZoaJ1F3Lsb?=
+ =?us-ascii?Q?LkPmyDGPF0xXb6d+mhLGi1fhFSzX1gxPQEYSVM5Glv9RwMD1S1306Hr5mWaQ?=
+ =?us-ascii?Q?q5e+TNSZ8l8HdQv/9tTvNgNQkYT0zz3Ab75Ex6v8lNr1nFc1kxGFSh6AuzFj?=
+ =?us-ascii?Q?Rrqz0o1nwUwrq4fwRAOFcBUcX0ISZ0S1sccLaSMlZY/tSEQl9Db4gagbcOvE?=
+ =?us-ascii?Q?C7SMgeQ5Obc/B4yGj7ZUdd3YZyAGqVMm6EsRmBCKNDQvbvwNE4guJNjSudS5?=
+ =?us-ascii?Q?QTsL/blXLG4AXgJpj2Xr8uqU21bOFDRN7mBLKb4AlXEeKKqvSbXesUpgHrIQ?=
+ =?us-ascii?Q?l8imyKC9KaVwFsJVnBAqlaHny3gH1iop5nxSQ6IKx+Zk+ENanrbeaRAXLfZa?=
+ =?us-ascii?Q?KwrpTlaODMv20AfiC2vjRg/W8VC8wMOPiXIpM3kFI9N+8mP0btTFvzRvT3Yd?=
+ =?us-ascii?Q?QRBiABEtlAi56wHTMzRLnbzkc0tmUUCQg6YR3PkhctzSehPA8ite7MmK8Sb7?=
+ =?us-ascii?Q?9lFli/Gy1Q=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb751cf-c7db-4767-63b2-08de8f4a1dda
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3fec843-35b0-4919-cff8-08de8f4a1f80
 X-MS-Exchange-CrossTenant-AuthSource: SA5PPF80B25317E.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 17:22:42.6639
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 17:22:45.3723
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zU46KiwE5Fx+Z5HOKW9D6/K3gJYIaSnIO4zljbupaKxhoc4BedWMCAVBhwPLaDKvN+Fw+cU13A/Yg7hk/u8MGA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: fqBzOY0eZ3jDemGv8C8JbV/QLVtLRsPt2BB5MvZ4UGf0spLjAVpqY6UudJke69Px+W1C2rBGLC3UIRewTMap4A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9678
 
-Patch 1:
+Allow drivers that cannot trigger MSI interrupts to leave the send_msi
+callback NULL. Add an fcntl_set_msi_nonblock() wrapper that only sets
+nonblocking mode when send_msi is available, and update ASSERT_NO_MSI()
+to skip when the driver lacks MSI support. The send_msi test SKIPs and
+mix_and_match skips the MSI portion per iteration.
 
-Add a chunking loop to vfio_pci_driver_memcpy() so that it handles
-arbitrarily sized memcpy requests by breaking them into
-max_memcpy_size-sized chunks. This allows tests to request any memcpy
-size. Update the test to use a size of 4x max_memcpy_size to exercise
-the chunking logic.
+Signed-off-by: Rubin Du <rubind@nvidia.com>
+---
+ .../selftests/vfio/vfio_pci_driver_test.c     | 41 ++++++++++++-------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
 
-Add vfio_pci_cmd_set()/vfio_pci_cmd_clear() macros for PCI_COMMAND
-operations.
-
-Patch 2:
-
-Allow drivers that cannot trigger MSI interrupts to leave the
-send_msi callback NULL. Tests check ops->send_msi directly and
-gracefully skip MSI-related operations when it is absent.
-
-Patch 3:
-
-Introduce the nv_falcon plugin driver, which extracts and adapts
-relevant functionality from NVIDIA's gpu-admin-tools project [1] and
-integrates it into the VFIO selftest framework. As a result, any
-system equipped with a PCIe slot and a supported NVIDIA GPU can now
-run VFIO DMA selftests using commonly available hardware.
-
-Falcons are general-purpose microcontrollers present on NVIDIA GPUs
-that can perform DMA operations between system memory and device
-memory.
-
-[1] https://github.com/NVIDIA/gpu-admin-tools
-
-Note on version numbering: v1 through v9 were internal review
-iterations that were mistakenly carried over to the upstream
-submission. Apologies for the confusion, the internal changelog
-has been dropped.
-
-Changes in v11:
-- Split into 3 patches: added precursor patch that moves
-  memcpy chunking into vfio_pci_driver_memcpy() and adds generic
-  vfio_pci_cmd_set()/vfio_pci_cmd_clear() PCI command helpers
-- Replaced feature flag with NULL send_msi callback check
-- Renamed nv_falcons/ to nv_falcon/; moved struct gpu_device to
-  .c file; renamed to_nv_gpu() to to_gpu_device()
-- Allow gpu_poll_register() and fsp_poll_queue() callers to
-  propagate timeout errors
-- Fixed macro alignment in hw.h
-
-Changes in v10:
-- Replaced NULL pointer checks on send_msi() with per-device
-  VFIO_PCI_DRIVER_F_NO_SEND_MSI feature flag
-- Changed vfio_pci_driver_send_msi() to return int with the feature
-  check moved inside, so callers branch on the return value
-- Added fcntl_set_msi_nonblock(self) and updated ASSERT_NO_MSI(self)
-  macros that check the flag internally
-- Moved DMA execution from memcpy_start() to memcpy_wait() so that
-  memcpy_start() stores parameters and returns immediately, emulating
-  async behavior to conform to the memcpy_start()/memcpy_wait() contract
-- Split GPU_ARCH_PASCAL into GPU_ARCH_PASCAL (P100, PMC reset) and
-  GPU_ARCH_PASCAL_10X (P4/P40, engine reset) to match per-product
-  reset behavior
-- Minor cleanups: improved size_to_dma_encoding(), fixed DMA address
-  bits mask
-
-Rubin Du (3):
-  selftests/vfio: Add memcpy chunking and PCI command helpers
-  selftests/vfio: Allow drivers without send_msi() support
-  selftests/vfio: Add NVIDIA Falcon driver for DMA testing
-
- .../selftests/vfio/lib/drivers/nv_falcon/hw.h | 349 ++++++++
- .../vfio/lib/drivers/nv_falcon/nv_falcon.c    | 755 ++++++++++++++++++
- .../lib/include/libvfio/vfio_pci_device.h     |  10 +
- tools/testing/selftests/vfio/lib/libvfio.mk   |   2 +
- .../selftests/vfio/lib/vfio_pci_driver.c      |  21 +-
- .../selftests/vfio/vfio_pci_driver_test.c     |  59 +-
- 6 files changed, 1171 insertions(+), 25 deletions(-)
- create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcon/hw.h
- create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
-
+diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+index 879e9813b44a..70de769262ed 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+@@ -11,11 +11,18 @@
+ 
+ static const char *device_bdf;
+ 
+-#define ASSERT_NO_MSI(_eventfd) do {			\
+-	u64 __value;					\
+-							\
+-	ASSERT_EQ(-1, read(_eventfd, &__value, 8));	\
+-	ASSERT_EQ(EAGAIN, errno);			\
++#define fcntl_set_msi_nonblock(_self) do {				\
++	if (_self->device->driver.ops->send_msi)			\
++		fcntl_set_nonblock(_self->msi_fd);			\
++} while (0)
++
++#define ASSERT_NO_MSI(_self) do {					\
++	u64 __value;							\
++									\
++	if (!_self->device->driver.ops->send_msi)			\
++		break;							\
++	ASSERT_EQ(-1, read(_self->msi_fd, &__value, 8));		\
++	ASSERT_EQ(EAGAIN, errno);					\
+ } while (0)
+ 
+ static void region_setup(struct iommu *iommu,
+@@ -129,7 +136,7 @@ TEST_F(vfio_pci_driver_test, init_remove)
+ 
+ TEST_F(vfio_pci_driver_test, memcpy_success)
+ {
+-	fcntl_set_nonblock(self->msi_fd);
++	fcntl_set_msi_nonblock(self);
+ 
+ 	memset(self->src, 'x', self->size);
+ 	memset(self->dst, 'y', self->size);
+@@ -140,12 +147,12 @@ TEST_F(vfio_pci_driver_test, memcpy_success)
+ 					    self->size));
+ 
+ 	ASSERT_EQ(0, memcmp(self->src, self->dst, self->size));
+-	ASSERT_NO_MSI(self->msi_fd);
++	ASSERT_NO_MSI(self);
+ }
+ 
+ TEST_F(vfio_pci_driver_test, memcpy_from_unmapped_iova)
+ {
+-	fcntl_set_nonblock(self->msi_fd);
++	fcntl_set_msi_nonblock(self);
+ 
+ 	/*
+ 	 * Ignore the return value since not all devices will detect and report
+@@ -153,13 +160,12 @@ TEST_F(vfio_pci_driver_test, memcpy_from_unmapped_iova)
+ 	 */
+ 	vfio_pci_driver_memcpy(self->device, self->unmapped_iova,
+ 			       self->dst_iova, self->size);
+-
+-	ASSERT_NO_MSI(self->msi_fd);
++	ASSERT_NO_MSI(self);
+ }
+ 
+ TEST_F(vfio_pci_driver_test, memcpy_to_unmapped_iova)
+ {
+-	fcntl_set_nonblock(self->msi_fd);
++	fcntl_set_msi_nonblock(self);
+ 
+ 	/*
+ 	 * Ignore the return value since not all devices will detect and report
+@@ -167,14 +173,16 @@ TEST_F(vfio_pci_driver_test, memcpy_to_unmapped_iova)
+ 	 */
+ 	vfio_pci_driver_memcpy(self->device, self->src_iova,
+ 			       self->unmapped_iova, self->size);
+-
+-	ASSERT_NO_MSI(self->msi_fd);
++	ASSERT_NO_MSI(self);
+ }
+ 
+ TEST_F(vfio_pci_driver_test, send_msi)
+ {
+ 	u64 value;
+ 
++	if (!self->device->driver.ops->send_msi)
++		SKIP(return, "Driver does not support send_msi()\n");
++
+ 	vfio_pci_driver_send_msi(self->device);
+ 	ASSERT_EQ(8, read(self->msi_fd, &value, 8));
+ 	ASSERT_EQ(1, value);
+@@ -201,6 +209,9 @@ TEST_F(vfio_pci_driver_test, mix_and_match)
+ 				       self->dst_iova,
+ 				       self->size);
+ 
++		if (!self->device->driver.ops->send_msi)
++			continue;
++
+ 		vfio_pci_driver_send_msi(self->device);
+ 		ASSERT_EQ(8, read(self->msi_fd, &value, 8));
+ 		ASSERT_EQ(1, value);
+@@ -213,7 +224,7 @@ TEST_F_TIMEOUT(vfio_pci_driver_test, memcpy_storm, 60)
+ 	u64 total_size;
+ 	u64 count;
+ 
+-	fcntl_set_nonblock(self->msi_fd);
++	fcntl_set_msi_nonblock(self);
+ 
+ 	/*
+ 	 * Perform up to 250GiB worth of DMA reads and writes across several
+@@ -232,7 +243,7 @@ TEST_F_TIMEOUT(vfio_pci_driver_test, memcpy_storm, 60)
+ 				     driver->max_memcpy_size, count);
+ 
+ 	ASSERT_EQ(0, vfio_pci_driver_memcpy_wait(self->device));
+-	ASSERT_NO_MSI(self->msi_fd);
++	ASSERT_NO_MSI(self);
+ }
+ 
+ static bool device_has_selftests_driver(const char *bdf)
 -- 
 2.43.0
 
