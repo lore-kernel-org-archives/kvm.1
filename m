@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F7C3B0AFD;
-	Tue, 31 Mar 2026 07:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B17F3C73F0
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 07:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774941734; cv=none; b=cNEVMPTGM0vywZ9yClHErGqwW8+TmlAiwYdcVgF5q6TfnxyPLiN9aDcb1VcIDqT5t1mnJzGTqv6nHfJxIC+eACyn2M3g5Ur8sSsFAHU/TF75ubHR36m0Fuh76muRGgUM/u/qjWWN0M6NKrasAzpEj64NzJyJQiYjH82Gi2r5BXg=
+	t=1774942099; cv=none; b=BxCIuepvAUZQqd+a1UwHAlfbEC5z03fQ4nltMIzVcdHF4M5AwxOT0LW72OmOfL+tsZyIpTbQ7/hXc/PXwcgtR0++7e3JhrIpYSlLcuEOQ+Dzu9RY79SUj4MCcM7xhMzltxnx4qvcHU9/YANbaAXj7gUbuEd8iMSIA2gP7pUcemM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774941734; c=relaxed/simple;
-	bh=C1YKXGKjApcPGj6BR6AhID4Gp4kW/avbsOowHqInjZc=;
+	s=arc-20240116; t=1774942099; c=relaxed/simple;
+	bh=kdsJ3g2eaTU1MECoZPvu7qbxM61nRqIBwKT0qvl9+ss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vF1G/qpSfWrFTu2pQZfQCtNxB/djWhHuKAINqhf5gjQi5ScT+QWW3jJQw+ZrD9bFDn8y3wqaAaLsEuYfBud5TpNoxwHKg72tk5vDH8qpVhIKOkY3GTuJRE3P0fT97ZDg+BbJKjdI1SWGqCZVrc4pY/vAS5/VNn+UpmvHlnKQOds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l850NY0b; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=XupHxgys96fJWXgO7JvzV+FX7JtbmdmUAnCWg3kj+n8DV7xiq9ev+iyRqdaoWBLbkWuxX24OAk+9tuR/vp186l3vtil56mQ36DvhqYJoDtzsdJFBKgYoHZV6kWKZB1j9qknKMtnZwCiQj3REBzvlZV5fyGfKA8OuuC+zCQDwL4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cGVNBoiP; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l850NY0b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774941733; x=1806477733;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=C1YKXGKjApcPGj6BR6AhID4Gp4kW/avbsOowHqInjZc=;
-  b=l850NY0b30hXs0cvJjwy+0UtJARQgD5okXgxfq308f1AczMc94PUJtKV
-   UdleadmiwnN/9xVZDTN0f+5JxDAok5yskmBdpG2xhPIAYjW9M/dSEri87
-   Xx1xeIZdDUNTe1pcpnucuskvwKZctVVsk52IJP1xjX/lkvp/NAlx2TvtV
-   VDQhzyphplN8v2jc34cyxhGgh722UasIfLqtmpRlC2Oa3qFE46pW1ONGh
-   HeQTuJPwouR3J0DSMDPi+h/Uv46N0UTzqevNA03VrL8nqn6RF/5SHNSOT
-   Yom9YIm0PFqFsbLK9FNjB+mWyoOs6L4LJUnhQBLN0VYwoeacKUPE5AFrX
-   w==;
-X-CSE-ConnectionGUID: 8NCEHOrmSbCxHelE+jDl4g==
-X-CSE-MsgGUID: Su8X609gSKC0tReyf8AwFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="93328655"
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="93328655"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 00:22:13 -0700
-X-CSE-ConnectionGUID: x0CbGA/6S6GVD2t9iXXBoA==
-X-CSE-MsgGUID: SWJYIpSRQgS7gMnP8WtOmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="225287432"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 00:22:08 -0700
-Message-ID: <4be868dc-d6e1-4488-8f28-34ef1d3659ac@linux.intel.com>
-Date: Tue, 31 Mar 2026 15:20:44 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cGVNBoiP"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0802A495B;
+	Tue, 31 Mar 2026 00:28:12 -0700 (PDT)
+Received: from [10.57.18.211] (unknown [10.57.18.211])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8AED53F641;
+	Tue, 31 Mar 2026 00:28:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774942097; bh=kdsJ3g2eaTU1MECoZPvu7qbxM61nRqIBwKT0qvl9+ss=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cGVNBoiPOj2/VMnLTabPEgViojzmPo93OiL/bnktpqu9ikVoEnTLDlnE+CS2qsq3G
+	 5xySVo0MjOdfU81Qs7NPVclPT+EEHn5v/ayPXJKWuiwvdITGmqRG90JWKH10y1wYzr
+	 ehLh2htBIOVdb3UWpT9KB1eOZSCSJ1D8k5wOYPdY=
+Message-ID: <2f4e1c85-b124-4b4c-a3b6-c8d8784e6418@arm.com>
+Date: Tue, 31 Mar 2026 12:58:11 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,145 +35,109 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
- the TDX module
-To: kernel test robot <lkp@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
- linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- dan.j.williams@intel.com, x86@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, chao.gao@intel.com, dave.jiang@intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
- xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-References: <20260327160132.2946114-20-yilun.xu@linux.intel.com>
- <202603290006.za7iiDgF-lkp@intel.com>
+Subject: Re: [PATCH v2 14/30] KVM: arm64: Kill fault->ipa
+To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
+ <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>,
+ Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <tabba@google.com>,
+ Will Deacon <will@kernel.org>, Quentin Perret <qperret@google.com>
+References: <20260327113618.4051534-1-maz@kernel.org>
+ <20260327113618.4051534-15-maz@kernel.org>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <202603290006.za7iiDgF-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20260327113618.4051534-15-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 3/29/26 00:57, kernel test robot wrote:
-> kernel test robot noticed the following build warnings:
+
+
+On 27/03/26 5:06 PM, Marc Zyngier wrote:
+> fault->ipa, in a nested contest, represents the output of the guest's
+> S2 translation for the fault->fault_ipa input, and is equal to
+> fault->fault_ipa otherwise,
 > 
-> [auto build test WARNING on 11439c4635edd669ae435eec308f4ab8a0804808]
+> Given that this is readily available from kvm_s2_trans_output(),
+> drop fault->ipa and directly compute fault->gfn instead, which
+> is really what we want.
 > 
-> url:https://github.com/intel-lab-lkp/linux/commits/Xu-Yilun/x86-tdx-Move- 
-> all-TDX-error-defines-into-asm-shared-tdx_errno-h/20260328-151524
-> base:   11439c4635edd669ae435eec308f4ab8a0804808
-> patch link:https://lore.kernel.org/r/20260327160132.2946114-20- 
-> yilun.xu%40linux.intel.com
-> patch subject: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for the TDX module
-> config: i386-randconfig-141-20260328 (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF- 
-> lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> smatch: v0.5.0-9004-gb810ac53
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603290006.za7iiDgF- 
-> lkp@intel.com/reproduce)
+> Tested-by: Fuad Tabba <tabba@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+> ---
+>  arch/arm64/kvm/mmu.c | 14 +++++---------
+>  1 file changed, 5 insertions(+), 9 deletions(-)
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot<lkp@intel.com>
-> | Closes:https://lore.kernel.org/oe-kbuild-all/202603290006.za7iiDgF-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>, old ones prefixed by <<):
-> 
->>> WARNING: modpost: vmlinux: section mismatch in reference: iommu_max_domain_id+0x55 (section: .text.iommu_max_domain_id) -> acpi_table_parse_keyp (section: .init.text)
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index c6cd6ce5254be..67e5e867e01dc 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1643,7 +1643,7 @@ static short kvm_s2_resolve_vma_size(struct vm_area_struct *vma,
+>  				     unsigned long hva,
+>  				     struct kvm_memory_slot *memslot,
+>  				     struct kvm_s2_trans *nested,
+> -				     bool *force_pte, phys_addr_t *ipa)
+> +				     bool *force_pte)
+>  {
+>  	short vma_shift;
+>  
+> @@ -1681,8 +1681,6 @@ static short kvm_s2_resolve_vma_size(struct vm_area_struct *vma,
+>  
+>  		max_map_size = *force_pte ? PAGE_SIZE : PUD_SIZE;
+>  
+> -		*ipa = kvm_s2_trans_output(nested);
+> -
+>  		/*
+>  		 * If we're about to create a shadow stage 2 entry, then we
+>  		 * can only create a block mapping if the guest stage 2 page
+> @@ -1722,7 +1720,6 @@ struct kvm_s2_fault {
+>  	bool is_vma_cacheable;
+>  	bool s2_force_noncacheable;
+>  	unsigned long mmu_seq;
+> -	phys_addr_t ipa;
+>  	gfn_t gfn;
+>  	kvm_pfn_t pfn;
+>  	bool logging_active;
+> @@ -1738,6 +1735,7 @@ static int kvm_s2_fault_get_vma_info(struct kvm_s2_fault *fault)
+>  {
+>  	struct vm_area_struct *vma;
+>  	struct kvm *kvm = fault->vcpu->kvm;
+> +	phys_addr_t ipa;
+>  
+>  	mmap_read_lock(current->mm);
+>  	vma = vma_lookup(current->mm, fault->hva);
+> @@ -1748,8 +1746,7 @@ static int kvm_s2_fault_get_vma_info(struct kvm_s2_fault *fault)
+>  	}
+>  
+>  	fault->vma_pagesize = 1UL << kvm_s2_resolve_vma_size(vma, fault->hva, fault->memslot,
+> -							     fault->nested, &fault->force_pte,
+> -							     &fault->ipa);
+> +							     fault->nested, &fault->force_pte);
+>  
+>  	/*
+>  	 * Both the canonical IPA and fault IPA must be aligned to the
+> @@ -1757,9 +1754,9 @@ static int kvm_s2_fault_get_vma_info(struct kvm_s2_fault *fault)
+>  	 * mapping in the right place.
+>  	 */
+>  	fault->fault_ipa = ALIGN_DOWN(fault->fault_ipa, fault->vma_pagesize);
+> -	fault->ipa = ALIGN_DOWN(fault->ipa, fault->vma_pagesize);
+> +	ipa = fault->nested ? kvm_s2_trans_output(fault->nested) : fault->fault_ipa;
+> +	fault->gfn = ALIGN_DOWN(ipa, fault->vma_pagesize) >> PAGE_SHIFT;
+>  
+> -	fault->gfn = fault->ipa >> PAGE_SHIFT;
+>  	fault->mte_allowed = kvm_vma_mte_allowed(vma);
+>  
+>  	fault->vm_flags = vma->vm_flags;
+> @@ -1970,7 +1967,6 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>  		.memslot = memslot,
+>  		.hva = hva,
+>  		.fault_is_perm = fault_is_perm,
+> -		.ipa = fault_ipa,
+>  		.logging_active = logging_active,
+>  		.force_pte = logging_active,
+>  		.prot = KVM_PGTABLE_PROT_R,
 
-
-acpi_table_parse_keyp() is marked as __init. But this patch causes the
-intel iommu driver to call it from a runtime function.
-
-int __init_or_acpilib
-acpi_table_parse_keyp(enum acpi_keyp_type id,
-                       acpi_tbl_entry_handler_arg handler_arg, void *arg)
-{
-         return __acpi_table_parse_entries(ACPI_SIG_KEYP,
-                                           sizeof(struct 
-acpi_table_keyp), id,
-                                           NULL, handler_arg, arg, 0);
-}
-
-One way to solve this might be parsing the table once in the __init
-context and store the result in variable that could be used after boot.
-
-How about the following additional change (untested)?
-
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 097c4a90302f..0b384a58a3a0 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -63,6 +63,7 @@ LIST_HEAD(dmar_drhd_units);
-  struct acpi_table_header * __initdata dmar_tbl;
-  static int dmar_dev_scope_status = 1;
-  static DEFINE_IDA(dmar_seq_ids);
-+static bool tdx_tvm_usable __ro_after_init;
-
-  static int alloc_iommu(struct dmar_drhd_unit *drhd);
-  static void free_iommu(struct intel_iommu *iommu);
-@@ -915,6 +916,17 @@ dmar_validate_one_drhd(struct acpi_dmar_header 
-*entry, void *arg)
-  	return 0;
-  }
-
-+static void __init intel_iommu_check_tdxc_enhancement(void)
-+{
-+	int tvm_usable = 0;
-+	int ret;
-+
-+	ret = acpi_table_parse_keyp(ACPI_KEYP_TYPE_CONFIG_UNIT,
-+				    keyp_config_unit_tvm_usable, &tvm_usable);
-+	if (ret >= 0)
-+		tdx_tvm_usable = !!tvm_usable;
-+}
-+
-  void __init detect_intel_iommu(void)
-  {
-  	int ret;
-@@ -923,6 +935,8 @@ void __init detect_intel_iommu(void)
-  		.ignore_unhandled = true,
-  	};
-
-+	intel_iommu_check_tdxc_enhancement();
-+
-  	down_write(&dmar_global_lock);
-  	ret = dmar_table_detect();
-  	if (!ret)
-@@ -1046,24 +1060,6 @@ static int keyp_config_unit_tvm_usable(union 
-acpi_subtable_headers *header,
-  	return 0;
-  }
-
--static bool platform_is_tdxc_enhanced(void)
--{
--	static int tvm_usable = -1;
--	int ret;
--
--	/* only need to parse once */
--	if (tvm_usable != -1)
--		return !!tvm_usable;
--
--	tvm_usable = 0;
--	ret = acpi_table_parse_keyp(ACPI_KEYP_TYPE_CONFIG_UNIT,
--				    keyp_config_unit_tvm_usable, &tvm_usable);
--	if (ret < 0)
--		tvm_usable = 0;
--
--	return !!tvm_usable;
--}
--
-  static unsigned long iommu_max_domain_id(struct intel_iommu *iommu)
-  {
-  	unsigned long ndoms = cap_ndoms(iommu->cap);
-@@ -1075,7 +1071,7 @@ static unsigned long iommu_max_domain_id(struct 
-intel_iommu *iommu)
-  	 * the VMM’s DID setting, reserving the MSB bit for the TDX module. The
-  	 * TDX module always sets this reserved bit on the trusted DMA table.
-  	 */
--	if (ecap_tdxc(iommu->ecap) && platform_is_tdxc_enhanced()) {
-+	if (ecap_tdxc(iommu->ecap) && tdx_tvm_usable) {
-  		pr_info_once("Most Significant Bit of domain ID reserved.\n");
-  		return ndoms >> 1;
-  	}
-
-Thanks,
-baolu
