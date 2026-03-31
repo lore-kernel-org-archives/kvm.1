@@ -1,269 +1,89 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E269728641E
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 03:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EFB2417D1;
+	Tue, 31 Mar 2026 03:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774927870; cv=none; b=P6DX/kbO/bCqTR/Ai4fg7qlI5GGJFvpxmdPqGx3Jf6IoPTod00r7x8IDxy80ohE40P/jHT0w/Qi92bc/VsObzaiSu8fKLiYxoXVU+GqKiq0lACOgQkGDxi+u/ajWsJz07nbuPAWKKiZVKeuUrIDfPNxPv6Po1SsGEF4CTtfck/E=
+	t=1774928000; cv=none; b=WpJa9X6fozRmgVEql+nIJhZrcCna0AaNwzILBqWMutrK3+25W13M2DwfMBuU1XXZSuKQpqTF9npzJASi8VGl3y13RM0amiUczHi1nO9aUKFZEPqAYQ6imPZ0mniSx+yPF0ZUrvNO8nYRsR+dwwOJrE9PtOALhOsfJ7Blbw/EIac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774927870; c=relaxed/simple;
-	bh=xWAz2vfxxyrbPfnyEcrbzm08uOYTH60HDJlet3HGVt8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q6zLSP7eHuP9InR4YRy1xoxh7o6H2CaWxggozHPmCQXuq8q3sKMneKIDeCeIDYdco080iusykX1MZw9Nev/RTghefRliBjD4UDHMgKIeByteTHY87zHc2IQpMB6GA7uLfTP26uf+NAtEpNMmNoi5+xz8nPAUQze/GGmhdnMsbbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vq9yU+Lw; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774928000; c=relaxed/simple;
+	bh=GJTZklG1sKmF/WrfX8qINx8zDJviAcgKqqdK+YrWwGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YBnAmdWxvTI7B0WUdAD43ohFNMgNXSp0kOQXjDu+YhxUwHMmISfFEmwuMHCYhMOgf41nLwpdm1iz7HktohdN94PK7uT20ebOX3Zd8FKHAgjeaIy3S8SIwjKic0YE6AK4mYeNNXLMWl/5yXJFAEW166LsrfwFh2jG0bUizi7vO8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sanwzxU3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vq9yU+Lw"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6CCDE1BCA;
-	Mon, 30 Mar 2026 20:31:00 -0700 (PDT)
-Received: from [10.57.18.211] (unknown [10.57.18.211])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0D3A3F641;
-	Mon, 30 Mar 2026 20:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774927866; bh=xWAz2vfxxyrbPfnyEcrbzm08uOYTH60HDJlet3HGVt8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vq9yU+LwH8v+2F1F3o0fefBH1/kUCb8hMfrZE4Q8g4kFfT7nkyFx53XkMPZz7K4Gz
-	 iCDO+Im3XfdX/V46EpxEGIjyu6IP55FeRLbN4EEkUJ0CQvd6mdZapIzTb7uFpR+tEg
-	 olOu+UbvkDZtmQzgHzrEgR3OHrGiuZONCwJjMLIk=
-Message-ID: <40b94374-b171-4f72-bb8b-d215fee630c6@arm.com>
-Date: Tue, 31 Mar 2026 09:00:59 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sanwzxU3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB6BC19424;
+	Tue, 31 Mar 2026 03:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774928000;
+	bh=GJTZklG1sKmF/WrfX8qINx8zDJviAcgKqqdK+YrWwGQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sanwzxU3DS9SwZaOPuydSXSU9Pk16mt7rrDRoYhsMp9Okbj/gYJPVBAfRWia9b9Mi
+	 wCGflSfwtRHBB4zKWEHDat5VETvwzfrA8NwQB25Mrqwlz9JVqdnfANXwyJVprS05QF
+	 EGB0S/NYVdt2FSbX3VB8UAYTq8U/8kZSJPbKuH0Vwsbo8EkWliF0blYzIPH124vaSh
+	 g6sNUyYvpHrPFrkS2sCfReyXu/FimdZjvsgJ6DHaBsnV74g7aBJIWUCdhHvWjs0Ddz
+	 5GeJbcT7uXRrAE93lS59cdUtV0ne2sus6eFYwPAzEbfjnebtsbRZa4jwBRqU24HLBJ
+	 kxfaTlEGYJe0Q==
+Date: Tue, 31 Mar 2026 12:33:18 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 01/15] userfaultfd: introduce
+ mfill_copy_folio_locked() helper
+Message-ID: <actAfiUYvUjUNiZM@hyeyoo>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-2-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/30] KVM: arm64: Extract stage-2 permission logic in
- user_mem_abort()
-To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
- <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>,
- Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <tabba@google.com>,
- Will Deacon <will@kernel.org>, Quentin Perret <qperret@google.com>
-References: <20260327113618.4051534-1-maz@kernel.org>
- <20260327113618.4051534-6-maz@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260327113618.4051534-6-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330101116.1117699-2-rppt@kernel.org>
 
-
-
-On 27/03/26 5:05 PM, Marc Zyngier wrote:
-> From: Fuad Tabba <tabba@google.com>
+On Mon, Mar 30, 2026 at 01:11:02PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Extract the logic that computes the stage-2 protections and checks for
-> various permission faults (e.g., execution faults on non-cacheable
-> memory) into a new helper function, kvm_s2_fault_compute_prot(). This
-> helper also handles injecting atomic/exclusive faults back into the
-> guest when necessary.
+> Split copying of data when locks held from mfill_atomic_pte_copy() into a
+> helper function mfill_copy_folio_locked().
 > 
-> This refactoring step separates the permission computation from the
-> mapping logic, making the main fault handler flow clearer.
+> This makes improves code readability and makes complex
+> mfill_atomic_pte_copy() function easier to comprehend.
 > 
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-
+> No functional change.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  arch/arm64/kvm/mmu.c | 163 +++++++++++++++++++++++--------------------
->  1 file changed, 87 insertions(+), 76 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 1f2c2200ccd8d..d1ffdce18631a 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1809,6 +1809,89 @@ static int kvm_s2_fault_pin_pfn(struct kvm_s2_fault *fault)
->  	return 1;
->  }
->  
-> +static int kvm_s2_fault_compute_prot(struct kvm_s2_fault *fault)
-> +{
-> +	struct kvm *kvm = fault->vcpu->kvm;
-> +
-> +	/*
-> +	 * Check if this is non-struct page memory PFN, and cannot support
-> +	 * CMOs. It could potentially be unsafe to access as cacheable.
-> +	 */
-> +	if (fault->vm_flags & (VM_PFNMAP | VM_MIXEDMAP) && !pfn_is_map_memory(fault->pfn)) {
-> +		if (fault->is_vma_cacheable) {
-> +			/*
-> +			 * Whilst the VMA owner expects cacheable mapping to this
-> +			 * PFN, hardware also has to support the FWB and CACHE DIC
-> +			 * features.
-> +			 *
-> +			 * ARM64 KVM relies on kernel VA mapping to the PFN to
-> +			 * perform cache maintenance as the CMO instructions work on
-> +			 * virtual addresses. VM_PFNMAP region are not necessarily
-> +			 * mapped to a KVA and hence the presence of hardware features
-> +			 * S2FWB and CACHE DIC are mandatory to avoid the need for
-> +			 * cache maintenance.
-> +			 */
-> +			if (!kvm_supports_cacheable_pfnmap())
-> +				return -EFAULT;
-> +		} else {
-> +			/*
-> +			 * If the page was identified as device early by looking at
-> +			 * the VMA flags, vma_pagesize is already representing the
-> +			 * largest quantity we can map.  If instead it was mapped
-> +			 * via __kvm_faultin_pfn(), vma_pagesize is set to PAGE_SIZE
-> +			 * and must not be upgraded.
-> +			 *
-> +			 * In both cases, we don't let transparent_hugepage_adjust()
-> +			 * change things at the last minute.
-> +			 */
-> +			fault->s2_force_noncacheable = true;
-> +		}
-> +	} else if (fault->logging_active && !fault->write_fault) {
-> +		/*
-> +		 * Only actually map the page as writable if this was a write
-> +		 * fault.
-> +		 */
-> +		fault->writable = false;
-> +	}
-> +
-> +	if (fault->exec_fault && fault->s2_force_noncacheable)
-> +		return -ENOEXEC;
-> +
-> +	/*
-> +	 * Guest performs atomic/exclusive operations on memory with unsupported
-> +	 * attributes (e.g. ld64b/st64b on normal memory when no FEAT_LS64WB)
-> +	 * and trigger the exception here. Since the memslot is valid, inject
-> +	 * the fault back to the guest.
-> +	 */
-> +	if (esr_fsc_is_excl_atomic_fault(kvm_vcpu_get_esr(fault->vcpu))) {
-> +		kvm_inject_dabt_excl_atomic(fault->vcpu, kvm_vcpu_get_hfar(fault->vcpu));
-> +		return 1;
-> +	}
-> +
-> +	if (fault->nested)
-> +		adjust_nested_fault_perms(fault->nested, &fault->prot, &fault->writable);
-> +
-> +	if (fault->writable)
-> +		fault->prot |= KVM_PGTABLE_PROT_W;
-> +
-> +	if (fault->exec_fault)
-> +		fault->prot |= KVM_PGTABLE_PROT_X;
-> +
-> +	if (fault->s2_force_noncacheable) {
-> +		if (fault->vfio_allow_any_uc)
-> +			fault->prot |= KVM_PGTABLE_PROT_NORMAL_NC;
-> +		else
-> +			fault->prot |= KVM_PGTABLE_PROT_DEVICE;
-> +	} else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC)) {
-> +		fault->prot |= KVM_PGTABLE_PROT_X;
-> +	}
-> +
-> +	if (fault->nested)
-> +		adjust_nested_exec_perms(kvm, fault->nested, &fault->prot);
-> +
-> +	return 0;
-> +}
-> +
->  static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  			  struct kvm_s2_trans *nested,
->  			  struct kvm_memory_slot *memslot, unsigned long hva,
-> @@ -1863,68 +1946,14 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  
->  	ret = 0;
->  
-> -	/*
-> -	 * Check if this is non-struct page memory PFN, and cannot support
-> -	 * CMOs. It could potentially be unsafe to access as cacheable.
-> -	 */
-> -	if (fault->vm_flags & (VM_PFNMAP | VM_MIXEDMAP) && !pfn_is_map_memory(fault->pfn)) {
-> -		if (fault->is_vma_cacheable) {
-> -			/*
-> -			 * Whilst the VMA owner expects cacheable mapping to this
-> -			 * PFN, hardware also has to support the FWB and CACHE DIC
-> -			 * features.
-> -			 *
-> -			 * ARM64 KVM relies on kernel VA mapping to the PFN to
-> -			 * perform cache maintenance as the CMO instructions work on
-> -			 * virtual addresses. VM_PFNMAP region are not necessarily
-> -			 * mapped to a KVA and hence the presence of hardware features
-> -			 * S2FWB and CACHE DIC are mandatory to avoid the need for
-> -			 * cache maintenance.
-> -			 */
-> -			if (!kvm_supports_cacheable_pfnmap())
-> -				ret = -EFAULT;
-> -		} else {
-> -			/*
-> -			 * If the page was identified as device early by looking at
-> -			 * the VMA flags, fault->vma_pagesize is already representing the
-> -			 * largest quantity we can map.  If instead it was mapped
-> -			 * via __kvm_faultin_pfn(), fault->vma_pagesize is set to PAGE_SIZE
-> -			 * and must not be upgraded.
-> -			 *
-> -			 * In both cases, we don't let transparent_hugepage_adjust()
-> -			 * change things at the last minute.
-> -			 */
-> -			fault->s2_force_noncacheable = true;
-> -		}
-> -	} else if (fault->logging_active && !fault->write_fault) {
-> -		/*
-> -		 * Only actually map the page as fault->writable if this was a write
-> -		 * fault.
-> -		 */
-> -		fault->writable = false;
-> +	ret = kvm_s2_fault_compute_prot(fault);
-> +	if (ret == 1) {
-> +		ret = 1; /* fault injected */
-> +		goto out_put_page;
->  	}
-> -
-> -	if (fault->exec_fault && fault->s2_force_noncacheable)
-> -		ret = -ENOEXEC;
-> -
->  	if (ret)
->  		goto out_put_page;
->  
-> -	/*
-> -	 * Guest performs atomic/exclusive operations on memory with unsupported
-> -	 * attributes (e.g. ld64b/st64b on normal memory when no FEAT_LS64WB)
-> -	 * and trigger the exception here. Since the fault->memslot is valid, inject
-> -	 * the fault back to the guest.
-> -	 */
-> -	if (esr_fsc_is_excl_atomic_fault(kvm_vcpu_get_esr(fault->vcpu))) {
-> -		kvm_inject_dabt_excl_atomic(fault->vcpu, kvm_vcpu_get_hfar(fault->vcpu));
-> -		ret = 1;
-> -		goto out_put_page;
-> -	}
-> -
-> -	if (fault->nested)
-> -		adjust_nested_fault_perms(fault->nested, &fault->prot, &fault->writable);
-> -
->  	kvm_fault_lock(kvm);
->  	pgt = fault->vcpu->arch.hw_mmu->pgt;
->  	if (mmu_invalidate_retry(kvm, fault->mmu_seq)) {
-> @@ -1961,24 +1990,6 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  		}
->  	}
->  
-> -	if (fault->writable)
-> -		fault->prot |= KVM_PGTABLE_PROT_W;
-> -
-> -	if (fault->exec_fault)
-> -		fault->prot |= KVM_PGTABLE_PROT_X;
-> -
-> -	if (fault->s2_force_noncacheable) {
-> -		if (fault->vfio_allow_any_uc)
-> -			fault->prot |= KVM_PGTABLE_PROT_NORMAL_NC;
-> -		else
-> -			fault->prot |= KVM_PGTABLE_PROT_DEVICE;
-> -	} else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC)) {
-> -		fault->prot |= KVM_PGTABLE_PROT_X;
-> -	}
-> -
-> -	if (fault->nested)
-> -		adjust_nested_exec_perms(kvm, fault->nested, &fault->prot);
-> -
->  	/*
->  	 * Under the premise of getting a FSC_PERM fault, we just need to relax
->  	 * permissions only if fault->vma_pagesize equals fault->fault_granule. Otherwise,
 
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+-- 
+Cheers,
+Harry / Hyeonggon
