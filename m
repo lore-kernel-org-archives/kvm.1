@@ -1,126 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFEC2233A;
-	Tue, 31 Mar 2026 00:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41C91B81CA
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 00:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774915315; cv=none; b=gY92kzRi+icYGfPQD7CbPu4VxzoUNADaK6LNmVj830rv7Q2EfVH3BxAyXqb8Vfx8eCnB+u8hz+c5hyDYlZ/FAN9JXSkz4fWHp9oiX4qPxvHk5brzrICwLYM+mp3fdGwobLMWX0ByU7SOjVsRzxc9/AoiqU7BEyAkcpTrCRBVa7c=
+	t=1774915418; cv=none; b=DjXc26SyIt/6gGYAVYEchfIePQ50Eqtri0lV9yrkhIvTsWyhG8IQz3o3IDUn8Tt5xBiXV37md6IPm1E12XbkXmSzbuLcYSfAs1BNmz+E4MjjfWNWZuVSe8r1w+BbbFk5VEQAwtwH1RvDHXCuKDIIzSQE61Zni/aGrW/xwcD38fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774915315; c=relaxed/simple;
-	bh=FrVPNveUKWwewTpJIPBld0xtx9ac1wapC+j9jmpCs94=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E1d7jmilAILCEEm/Glvgd1qotQz0U260I+QVDNhfkVS/8wufjzB8luiS70TqUoT6BMh8LfF0NW1j/2OrUD4ZWMUjNiDHNuSfW7CfyMokweYVu/edKGTZDxICo+fIjibShECnxhBVGdWmyNybe6rIY9ct4ow/FgYkPrK7/sNsJ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cPVV+JJF; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774915418; c=relaxed/simple;
+	bh=tGFV2VhgTREgrfP98G0uJ3HUP/CSGaSbu+qGayezE0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=olZ+Ax+2ZX4P6Dm+zB0anbiXdHHzvio27Bl/+j+Gc3/TUFU53+4keZDH79WL0WYmI71xLGx1aeimfEuA/2zevp0KhhAJQPf9MuX/Y+1Fz+9nsdge+mtnqpqLP4stClqwFppFdnyN8DvK95fW3LUX8DY750QMmd3EaUj88jsFqbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SLP4FRdH; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cPVV+JJF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774915314; x=1806451314;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FrVPNveUKWwewTpJIPBld0xtx9ac1wapC+j9jmpCs94=;
-  b=cPVV+JJF59/SEbK9n/yQgboI1O0oFvx8xU29+eQEzdXqjwJlZJGPzVmc
-   pSCRbLHjqDWJzMuX9LfE+O+mls+o0fqw/Um4GJF7ADy25mBemXepG3hFJ
-   TX8rR8+epunP0+Fg4TR1P+d9tI0SWjgcjBY5KQ9bkK0mmYuIEyf5Y4WS8
-   eHuEZ3lvHkI8JOu9IksX5vRoM48XoN5d5YNlHFENBgP0VBiZ5zQCjatFw
-   JLMV/dLMAsufCEWrpxY18okfEz7nMcpMS4p3EySghdbD7QgLkFlhFhKTj
-   FLiOB3MsvL8jBN1cd9YO4Iu4vMKmFZJj3UhM5cOYsZGIzg8hbJnE7hQjg
-   Q==;
-X-CSE-ConnectionGUID: 0neabk56RSmqaNjsMcXsWQ==
-X-CSE-MsgGUID: qxTa8EJLSqKobjZjtQqEMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="79820030"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="79820030"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 17:01:54 -0700
-X-CSE-ConnectionGUID: WFWux0hnQMm6Hjh4H7qMXg==
-X-CSE-MsgGUID: pD2iA+QDT1qeObvhsCXWRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="221797132"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.27]) ([10.125.111.27])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 17:01:53 -0700
-Message-ID: <00796d77-0a95-4ed1-bc42-a813551a3cd2@intel.com>
-Date: Mon, 30 Mar 2026 17:01:59 -0700
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SLP4FRdH"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8d006a80ccbso647924185a.2
+        for <kvm@vger.kernel.org>; Mon, 30 Mar 2026 17:03:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1774915416; x=1775520216; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W4YBgDlQG7t09O0fcPskt9PfuzfmSkfNvE01lxkkeEk=;
+        b=SLP4FRdHz+CzxQ6VGVwelbz2oEWoQ1X35DiIGfJpcj0QPxlYn/KmJAsUuNzt6fcjDS
+         oWFof3bAvc5j9KdXtQI9f0VMQa0DvcYaweoG2FV3kW+pV2IW7exO/w0Jq5JoXb7RzBFU
+         +adMRpEIOxmBYmoJ6Cd4CIPGogUaGjpgg9R7KlEUEusODFVhLu9PmurFQGEwwH568in0
+         /c3nKwBolvQhoYhiQw+G+W9H4e+vTwj4jenX2n+3SNc/Hx90+MZzdERumY/6y3+1RkKq
+         xHRskO965ayYetBnW41UBqBIEHmT4XK4G3bUOJVLeZZjQms3kAdDJ6ChpuO093uiFxnf
+         Q5Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774915416; x=1775520216;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W4YBgDlQG7t09O0fcPskt9PfuzfmSkfNvE01lxkkeEk=;
+        b=pwGhDYzHQ4A+X01kyUiany03hangqqIP3PPR1oiZssJEG1Z3IgQ0s4uucar9SCqurw
+         D7mQD014Ya2NiOfBotEwoYZHiWViQFUDLU2uFbdG3p1iTDCC9aLGEN97EYx91C6hbfBs
+         JVBdPjoNRYogM5bElo+plZ2kOc2PI6GrVmO5TbfeSH4dfOIdV3VLITCHEmvDlTrh9uK+
+         eTHF+w6NO5uKXv31YlzXGfvMhKt7sckVeiYmWptN87VawMGc7dtQ0N6GmSg18aTiUx3C
+         MmwCmJgVXMbk2T0QcP6jzeGxRrsowop3LCVCEBNEwEUpqtDvq3BmTCaS3PBrVf9R6CXj
+         ivBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtcqeJgM6ypCroc3RFWbGcqv2b96shlNgXN9Jj9/MiUOwZOjuW0KK7jP8xyf25L6W9q6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFd8s4MRf6nhH26JApU7c/6QyCG6KIay9d7BRsLajVe7cG47kM
+	EoGmNy/N6QB2snCce1CzB51LMTbzrHhDFQSCbprBbnd9WMQB2jHZEqCzLv4ZKm9z9Ys=
+X-Gm-Gg: ATEYQzx6ppMCv6tmEmPUWpp+kXa90I3cdfs75ba2bQysrkYUagCLBpKKVU/1LGfNiPI
+	a0I1F0B9sK8RzHj1jc5105rS4zcfvpgNtjjvmhjz2QnhK+sZ3Dj+0RP6M366EL9jqRdKHp8V8D9
+	6xfbkMXf29s/d0dHT7mnmyOZFe64TIXQ4udK/+qx9jF1+ToSs/3u9cVBiKok+nPozaMJN6AKF0/
+	10/kZsnzE/RBLcSodyeKGkGjSt9Vkk4KAuB8Hr85gNLoqBrV9KRGrOK3Xmm9mWFBY6Y5BZUXbmo
+	QPqfnHPDc4hChSr4YFmaAKMZwsAWwJbRWezKao+wAYLUrE+sFLgdYDfNWw/jvNctaPYvEVUO4EV
+	H2Iqu+Debk2/USQ1xyNQMpzwsQy9AMo3TVuE6PI8K3aO/Rxj23gdt+VE3INPpMngM4XfMezDp/5
+	8NRq1murPPhsedPSc8z8ijF3NncB6t6YsSjvhoeNPrhnGf/dCR6uueGuPC1eL5Zazm87CKuA==
+X-Received: by 2002:a05:620a:4482:b0:8ca:fe5c:ea6d with SMTP id af79cd13be357-8d01c842aa8mr1753223385a.59.1774915415598;
+        Mon, 30 Mar 2026 17:03:35 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d02806a37bsm712637385a.34.2026.03.30.17.03.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 17:03:34 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w7MZy-00000005rSd-0n0u;
+	Mon, 30 Mar 2026 21:03:34 -0300
+Date: Mon, 30 Mar 2026 21:03:34 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Julian Ruess <julianr@linux.ibm.com>, wintera@linux.ibm.com,
+	ts@linux.ibm.com, oberpar@linux.ibm.com, gbayer@linux.ibm.com,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>, mjrosato@linux.ibm.com,
+	raspl@linux.ibm.com, hca@linux.ibm.com, agordeev@linux.ibm.com,
+	gor@linux.ibm.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
+ devices
+Message-ID: <20260331000334.GI246076@ziepe.ca>
+References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
+ <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
+ <4096cb9d402b1aabc9667d450221cb0922e78d90.camel@linux.ibm.com>
+ <3d6457b9-715a-4cbb-9c69-d8a7e7473c89@linux.ibm.com>
+ <64e3158a441c79c55febead9aac956c31f034fb9.camel@linux.ibm.com>
+ <20260330093646.03b0455f@shazbot.org>
+ <20260330155651.GD246076@ziepe.ca>
+ <20260330120945.023b2295@shazbot.org>
+ <20260330181645.GE246076@ziepe.ca>
+ <20260330123925.713edac4@shazbot.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/31] x86/tdx: Move all TDX error defines into
- <asm/shared/tdx_errno.h>
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
- xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-2-yilun.xu@linux.intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260327160132.2946114-2-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330123925.713edac4@shazbot.org>
 
-On 3/27/26 09:01, Xu Yilun wrote:
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> [enhance log]
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
+On Mon, Mar 30, 2026 at 12:39:25PM -0600, Alex Williamson wrote:
+> Yes, that would be the ideal balance of enabling larger BARs while
+> retaining compatibility for existing devices.  Sounds like we'll
+> continue down the variant driver path for this one-off device for
+> now.  It remains fairly self contained so long as we don't add more
+> regions for vfio-pci-core to manage.
+> 
+> This could be a good project if someone is looking though, especially
+> if it had a build-time config option to set the minimum region size so
+> we can exercise it before we hit 1TB BARs.  Thanks,
 
-This is missing a SoB from the person sending the patch.
+Well, it took claude an hour to vibe code a draft from a four sentence
+prompt.. I see many things that need changing/cleaning in here, but
+the patch strategy and general idea looks sound.
 
-Honestly, for something coming all from one company, I'd just prefer
-that folks simplify the tale of woe about how a patch came to be
-written. Just axe the SoB's and put one on it. Credit folks with a blurb
-in the changelog if you have to.
+I guess another day of effort would probably get things into something
+presentable. We are not so far away - maybe the variant driver path is
+not necessary?
+
+https://github.com/jgunthorpe/linux/commits/vfio_maple_tree/
+
+Jason
