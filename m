@@ -1,53 +1,53 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29D73AA4E5
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F42C3A75A8
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774986094; cv=none; b=OXJBzBgDlpr/KuS4nKOqV7lrQfPEN5wX1E9GmQ6zWdLxvF5+9KJqcsc71rWv20VlVerZ0MYQX884avolw/ha5OBVwfAs/DoqDo17Pu3oN6MNGdoww2NPOdluCuj72DMPpVn6FJ/g9bsm8g1iD2f+zAuxc1okxG7iIHV6iI3tYhc=
+	t=1774986095; cv=none; b=ldc864QUUrQawEQrPObY2JN2anKhH+Jpvlbfj8uPp/x0zvFi+Y/PN2o6Dwyy5eeW+G0kaQHsNbDxRIbJxTQrinXIrWaSvgyS7T6PgAkK8X7UMT795znuy1vPEngS033hUjgcckH8jjRDNREMn7r2pBza3VJQTawE7atV4ZjyG0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774986094; c=relaxed/simple;
-	bh=WeOMjsB1r6GltdpOLs46DMj4DDR4vx1W74epJhK2/I8=;
+	s=arc-20240116; t=1774986095; c=relaxed/simple;
+	bh=Q6tKwqG75/2Nso99cogxl8nqEUCuWw9K6h1ZRxlNLsA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Vu1lJqCkb8nZnNYV2VhHtu8VyYwa82soOdVSMloGEJyhd5nHnxxvZWxWodRT2pRGVZn+/eunI2txo4GLcMYHgGOkMs9S0eg316BDAyUMGycZ9Y9MoyBgGoVEbNHCmyF/zb4NGeA6lcwMJvZcJ3Z8WaGDnSTA9QEh3iir2PKN44k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LGGyhv9s; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=WQQ0j1o0tI1L4WvcdM+tSwxdKVAl5tZ9rGOlHozFmaUFE4US0csSqAEBAJQnuPzBInhP+Rg19ShFT+RJVo/9LF+s8p7xH+4U+crJAZAi3cF9NrQ3IHr6CEQd2xf340O0BIxS1ayOwBw1B9cjJ3diK7hPT9q7WtSvKcOyw1j1eUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OCz5IUi8; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LGGyhv9s"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35d96923dd2so3840291a91.1
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:41:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OCz5IUi8"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c1e1a6cfbso4460020b3a.0
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:41:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774986092; x=1775590892; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774986094; x=1775590894; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWdzHNPfRffL+aobHn8nvBhlPUaE8JjmT+a1EKnSiWk=;
-        b=LGGyhv9sZuroLWxFf23MDTaZLv4nTKG/Iup9Ql8kswf3DZ583Cwq3nt0ldnHzAkE72
-         7mNoz76TwmLeq28cAZnqAQRspmfbjcv5utftI/HAruUBUqKyW4S2XrYf6jyCBDYhkghC
-         VGp8hnJ1T0UG5pA8W4XG2MZ2I3JsH2KDd1cEveu6G1QHM2k4g1CHl9t2ZB98Or+mU4np
-         eJ0/h/i4f5jbE79EtWe0YdHWVo522C49/q5smSjXFKPH8cdYgp6iFyHxParOsZ7OSTrs
-         YhUh2IL6PrbGKlPhIn9bCWPCX8k96EjSGrVuHrsYizO48EIROb0xhtw2ELFwmaIwD04K
-         vsyA==
+        bh=dSekHtjObZUzAoWl4snvwsD79wmyoH1yZzVr5SPZq0Q=;
+        b=OCz5IUi8Q1qL11zyoDEfAlPUfkBqwgNq7rjC27XXFfD4maQdwMPZMLW+2QFy+3BJxz
+         tbfvwpezNeR2uYSJPVUNtHKJuov8etqXWdBgITgICZvLehk2rormcP9gz/Ld75g3QWcI
+         61gCLbfln/edJ1Iy6qcVpW7b1dKazRHK8txhA5Q0uHj4wcfL/8+tCV8aG80KB8r8Vb0+
+         wM6JVorxOx5o4xRTwGr1Cl1fAitBFjTtsxFofgopb317dFz7jM+X9RoGMzDxjqA+Luoj
+         lr5SaDLSel0wQyO6Vk0S0NCo98vajrvgK8cErra6DQNXEpfWoTE42slnW0Owmng2xRXt
+         LDww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774986092; x=1775590892;
+        d=1e100.net; s=20251104; t=1774986094; x=1775590894;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWdzHNPfRffL+aobHn8nvBhlPUaE8JjmT+a1EKnSiWk=;
-        b=Lf4KrvFxLtTDFSJmu2bZmC4TZMuFhfjIYaUnAD7o9I9QtIlEIC7CC0WgNH/6MHvwpu
-         UxBIRtCBkuR5pW2bVhPlCV9KcVoCt8L1g41Z0LLtB2NJuNy4D3fkMmpcklIRo2FAkYA3
-         mi5rL2qP7wySdckMmZMsU67t5aa0z778EMdB3P381l16bo46spqtMTd3o6AsYGZ1CGUp
-         30zE2IHpTmtKhGMDKTs4k3Z2w+CRU0JrS7fEixpC2h5F21zhT6GJSBk5n4M1wCZfKX3l
-         kunqj43SEGZz6kfvJJ8DweMxKkfMNvEdhX2NhSnVHLzm2zJ9mQGd3g/c7dF4fakmD362
-         ZDMQ==
-X-Gm-Message-State: AOJu0YzGcPX5KW98b5MbwXxoxUZ+j9x9zuOFMbkmY7XpdY8dHN3Vnrqi
-	ZSqlYdrVWJiEtlHBx9g7mrIjX7MXpLCyupr6xUA3ehGV5rZrq77tag3t4lp9oGsv+M03E2X6mtX
-	EnRqLYd9n
-X-Received: from pjyp16.prod.google.com ([2002:a17:90a:e710:b0:35d:9fc4:2679])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c8c:b0:35b:96bb:47ba
- with SMTP id 98e67ed59e1d1-35dc7057f68mr472428a91.26.1774986091940; Tue, 31
- Mar 2026 12:41:31 -0700 (PDT)
-Date: Tue, 31 Mar 2026 19:40:24 +0000
+        bh=dSekHtjObZUzAoWl4snvwsD79wmyoH1yZzVr5SPZq0Q=;
+        b=iihY4sjn63kAwYcwbQWb+yygtEe/ge1qXa8qtXUkz0vOgMhEYU/vB6/9mrpPbJ1WNW
+         yXkNoKdVYtLD59RZo0CzdPPHSNn5IFZCxA8vXMlXEcydUneMu6NIASXem6wGTk3HxP9+
+         7szhZvbVmXj5TU/Nh1MfUP/mEXVWogrezONdA771aIokbhCqWZ4OUX9peexxygEPGqpX
+         cUtBuiq0WZbqib1TEqXJ5tSxLg+TZNqiHsUd64xEgQe+nLXezR5vmkR8ZaA4VfeeK+qx
+         NK1SnUbjtUTIdNw7kUnZWAqD2Htn0ISizvYBd2WrkM0Go5Oj65fjzclmJAoVmPWKgbpq
+         2Z4Q==
+X-Gm-Message-State: AOJu0Yw0p//KESbW5eeJp3xAY8DFo6aaGW3StnL8fe9B5yEn+tyLocKN
+	FTYmNGHN3u3Sa8EZnQzAFfRGgt0PI8hHJDx0WA1T/pA19ErkiRDBvdltZDkGJrBoxCHtJAAFNYE
+	oUtL+U0WB
+X-Received: from pfbdo1.prod.google.com ([2002:a05:6a00:4a01:b0:829:7f86:623])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3c95:b0:82c:e1a0:3445
+ with SMTP id d2e1a72fcca58-82ce8ac8cebmr863602b3a.27.1774986093604; Tue, 31
+ Mar 2026 12:41:33 -0700 (PDT)
+Date: Tue, 31 Mar 2026 19:40:25 +0000
 In-Reply-To: <20260331194033.3890309-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,8 +57,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260331194033.3890309-1-jrhilke@google.com>
 X-Mailer: git-send-email 2.53.0.1118.gaef5881109-goog
-Message-ID: <20260331194033.3890309-6-jrhilke@google.com>
-Subject: [PATCH v2 05/14] KVM: selftests: Add support for random host IRQ affinity
+Message-ID: <20260331194033.3890309-7-jrhilke@google.com>
+Subject: [PATCH v2 06/14] KVM: selftests: Allow blocking vCPUs via HLT
 From: Josh Hilke <jrhilke@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, David Matlack <dmatlack@google.com>, 
@@ -67,113 +67,93 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Add the '-a' flag to vfio_pci_irq_test to randomly affinitize the
-device's host IRQ to different physical CPUs throughout the test.  This
-stresses the kernel's ability to maintain correct interrupt routing and
-delivery even as the underlying hardware IRQ affinity is changed
-dynamically via /proc/irq/.
+Add the '-b' flag to vfio_pci_irq_test to test IRQ delivery while
+vCPUs are in a halted state. This verifies that interrupts correctly
+wake vCPUs from HLT, which is a critical path for both power
+management and correct architectural behavior during asynchronous events.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
 Co-developed-by: Josh Hilke <jrhilke@google.com>
 ---
- .../testing/selftests/kvm/vfio_pci_irq_test.c | 33 +++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ .../testing/selftests/kvm/vfio_pci_irq_test.c | 21 ++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/vfio_pci_irq_test.c b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-index 6f40b3c2b985..1957d1b7bbf2 100644
+index 1957d1b7bbf2..98dc1f4a7836 100644
 --- a/tools/testing/selftests/kvm/vfio_pci_irq_test.c
 +++ b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-@@ -88,9 +88,11 @@ static void send_msi(struct vfio_pci_device *device, int msi)
+@@ -16,6 +16,7 @@
+ #include <libvfio.h>
+ 
+ static bool done;
++static bool block;
+ 
+ static bool guest_ready_for_irqs[KVM_MAX_VCPUS];
+ static bool guest_received_irq[KVM_MAX_VCPUS];
+@@ -42,7 +43,10 @@ static void guest_code(void)
+ 	WRITE_ONCE(guest_ready_for_irqs[guest_get_vcpu_id()], true);
+ 
+ 	while (!READ_ONCE(done)) {
+-		cpu_relax();
++		if (block)
++			hlt();
++		else
++			cpu_relax();
+ 	}
+ 
+ 	GUEST_DONE();
+@@ -88,11 +92,12 @@ static void send_msi(struct vfio_pci_device *device, int msi)
  
  static void help(const char *name)
  {
--	printf("Usage: %s [-h] segment:bus:device.function\n",
-+	printf("Usage: %s [-a] [-h] segment:bus:device.function\n",
+-	printf("Usage: %s [-a] [-h] segment:bus:device.function\n",
++	printf("Usage: %s [-a] [-b] [-h] segment:bus:device.function\n",
  	       name);
  	printf("\n");
-+	printf("  -a: Randomly affinitize the device IRQ to different CPUs\n"
-+	       "      throughout the test.\n");
+ 	printf("  -a: Randomly affinitize the device IRQ to different CPUs\n"
+ 	       "      throughout the test.\n");
++	printf("  -b: Block vCPUs (e.g. HLT) instead of spinning in guest-mode\n");
  	printf("\n");
  	exit(KSFT_FAIL);
  }
-@@ -113,6 +115,7 @@ int main(int argc, char **argv)
- 	u8 vector = 32 + rand() % (UINT8_MAX - 32);
- 
- 	/* Test configuration (overridable by command line flags). */
-+	bool irq_affinity = false;
- 	int nr_irqs = 1000;
- 	int nr_vcpus = 1;
- 
-@@ -122,13 +125,19 @@ int main(int argc, char **argv)
- 	struct vfio_pci_device *device;
- 	struct iommu *iommu;
- 	const char *device_bdf;
-+	FILE *irq_affinity_fp;
- 	int i, j, c, msi, irq;
- 	struct kvm_vm *vm;
-+	int irq_cpu;
-+	int ret;
+@@ -133,11 +138,14 @@ int main(int argc, char **argv)
  
  	device_bdf = vfio_selftests_get_bdf(&argc, argv);
  
--	while ((c = getopt(argc, argv, "h")) != -1) {
-+	while ((c = getopt(argc, argv, "ah")) != -1) {
+-	while ((c = getopt(argc, argv, "ah")) != -1) {
++	while ((c = getopt(argc, argv, "abh")) != -1) {
  		switch (c) {
-+		case 'a':
-+			irq_affinity = true;
+ 		case 'a':
+ 			irq_affinity = true;
+ 			break;
++		case 'b':
++			block = true;
 +			break;
  		case 'h':
  		default:
  			help(argv[0]);
-@@ -163,6 +172,14 @@ int main(int argc, char **argv)
- 			continue;
- 	}
+@@ -162,6 +170,8 @@ int main(int argc, char **argv)
  
-+	if (irq_affinity) {
-+		char path[PATH_MAX];
+ 	kvm_assign_irqfd(vm, gsi, device->msi_eventfds[msi]);
+ 
++	sync_global_to_guest(vm, block);
 +
-+		snprintf(path, sizeof(path), "/proc/irq/%d/smp_affinity_list", irq);
-+		irq_affinity_fp = fopen(path, "w");
-+		TEST_ASSERT(irq_affinity_fp, "fopen(%s) failed", path);
-+	}
-+
- 	/* Set a consistent seed so that test are repeatable. */
- 	srand(0);
+ 	for (i = 0; i < nr_vcpus; i++)
+ 		pthread_create(&vcpu_threads[i], NULL, vcpu_thread_main, vcpus[i]);
  
-@@ -172,6 +189,13 @@ int main(int argc, char **argv)
+@@ -226,6 +236,11 @@ int main(int argc, char **argv)
+ 	WRITE_TO_GUEST(vm, done, true);
  
- 		kvm_route_msi(vm, gsi, vcpu, vector);
- 
-+		if (irq_affinity && vcpu->id == 0) {
-+			irq_cpu = rand() % get_nprocs();
-+
-+			ret = fprintf(irq_affinity_fp, "%d\n", irq_cpu);
-+			TEST_ASSERT(ret > 0, "Failed to affinitize IRQ-%d to CPU %d", irq, irq_cpu);
+ 	for (i = 0; i < nr_vcpus; i++) {
++		if (block) {
++			kvm_route_msi(vm, gsi, vcpus[i], vector);
++			send_msi(device, msi);
 +		}
 +
- 		for (j = 0; j < nr_vcpus; j++) {
- 			TEST_ASSERT(
- 				!READ_FROM_GUEST(vm, guest_received_irq[vcpu->id]),
-@@ -189,6 +213,8 @@ int main(int argc, char **argv)
- 			if (timespec_to_ns(timespec_elapsed(start)) > TIMEOUT_NS) {
- 				printf("Timeout waiting for interrupt!\n");
- 				printf("  vCPU: %d\n", vcpu->id);
-+				if (irq_affinity)
-+					printf("  irq_cpu: %d\n", irq_cpu);
- 
- 				TEST_FAIL("vCPU never received IRQ!\n");
- 			}
-@@ -203,6 +229,9 @@ int main(int argc, char **argv)
  		pthread_join(vcpu_threads[i], NULL);
  	}
  
-+	if (irq_affinity)
-+		fclose(irq_affinity_fp);
-+
- 	printf("Host interrupts handled:\n");
- 	printf("  IRQ-%d: %lu\n", irq, get_irq_count(irq) - irq_count);
- 	printf("  Posted-interrupt notification events: %lu\n",
 -- 
 2.53.0.1118.gaef5881109-goog
 
