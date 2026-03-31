@@ -1,64 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26973EF0D2;
-	Tue, 31 Mar 2026 13:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8B43E8C61;
+	Tue, 31 Mar 2026 14:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774965518; cv=none; b=EOnJx3AQFt7RkUOM4pcjE8bHl7DNzo3k9LeZBxc3vvN5jvUDqkDaxdDr1uQixSovxc+gQFW8DUC/kdoi9vN+2N70H0FU/w+HhUrsajURhBtebr45ivFTSKRpiPOlIF6w07urDrDkFxHSKZCH0HovgNUcW2IbQqQLlTzsKcGcD64=
+	t=1774966445; cv=none; b=OVlyxgwMpig51UMMkrY0QygV4mk60tMxPwCaiv8SlSGYK49nonQlUJ3Hl49rmlW5pGzF7kj753pYqYV9Lr5NWSLXLmKg2N1DrdEsAiGe5j0ZPFcz1d72H6m3SEHxI3NKWf6QZFdBKPsRoYP7uW6Hq+dTjF5YdHD+fk6TNk/tpy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774965518; c=relaxed/simple;
-	bh=PPljGw9YHSDgqARUKl/8MSJo6myqRucdPKY3A3kp0j4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JnDe9nA4thhfU3ciocpLj0fqeVemZzR/CleKCErJoXJb/He4IV6DO1e7FR8ANJaOCIhgLwNYiVnpYr1DUkd7skFWX+BpX27Mj/RHnipp0Q41aAiwjaoNw5mrcSCcwYl2JE2dP4++3IizLqvyFSIeQx4YFnHBxXZiinBjS0+BCUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N0J2pcbM; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1774966445; c=relaxed/simple;
+	bh=0WokdVZGVQOySMRtOFuViCjuFlNJiqco1s6MePa8OP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=UwJ7uTIrzZewYH1ZOPzApz4ox0KWURKdHnmfM1v9kBTo10gKoT0KcIa5TCtZkLDuETr75Jh59uGg75aGskH/xt3jY7+kUQIzEq7700tigYWng09AogyAKzunvfyJxSp0DjBiCfnJl3Yn3WBpKmhqfIyb+tI3CREv/OCOytoX/y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SLROPAAq; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N0J2pcbM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774965514; x=1806501514;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PPljGw9YHSDgqARUKl/8MSJo6myqRucdPKY3A3kp0j4=;
-  b=N0J2pcbMWkQH5Dxcjg68CAZlWqo2QnzCwZm5SGY+/YC6fditCTS25Q/h
-   SuFzrkzyVUPjRe7UaqTA0+izKN/BDntv33BnxsqSmTqFoIwC1R8rVbFhV
-   cAuw5ZjGBjTYL2HU0bb3Gn/VfEZoe33UtnijT71MfPP378Qel90zgipPJ
-   jnxyjPKxRUwAtoWwmG8SFijT0wB1JzyybJ6e7SWVg5IRXy7BooPEilPku
-   9wvDmVXrCI6c760TG4NRzeUEGl9BV9igrT0GLjTtKOvyejQnxWbP1mx1X
-   g2ks4C/TtMMw/qfUBjrI1f06XD1QpAM8PeKx6d2wQGbosUUV5T+RUo+I0
-   w==;
-X-CSE-ConnectionGUID: C+4uJXGUTIa1toakdE8Z7Q==
-X-CSE-MsgGUID: PhK8BQEhRyaLTEj50V51YQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86674921"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="86674921"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 06:58:32 -0700
-X-CSE-ConnectionGUID: laxniY+xRXG2+3wcucwqXw==
-X-CSE-MsgGUID: Pn1ePiK3TCmbnWGsr0g9jA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="225540978"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 31 Mar 2026 06:58:28 -0700
-Date: Tue, 31 Mar 2026 21:37:18 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
-	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
-	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 04/31] x86/virt/tdx: Support allocating contiguous
- pages for tdx_page_array
-Message-ID: <acvODhP/Fa/ehNTw@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-5-yilun.xu@linux.intel.com>
- <7d67722b-5107-4dc3-b8fb-04c3c86a1563@suse.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SLROPAAq"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1565249C7;
+	Tue, 31 Mar 2026 07:13:57 -0700 (PDT)
+Received: from devkitleo.cambridge.arm.com (devkitleo.cambridge.arm.com [10.1.196.90])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC9EF3F641;
+	Tue, 31 Mar 2026 07:13:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774966442; bh=0WokdVZGVQOySMRtOFuViCjuFlNJiqco1s6MePa8OP0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SLROPAAq4tm06CZlvLbnK6UlSl74cbeF4PnQYHt9YVrFbK4s7f7jkSNb87VbkRboy
+	 XXkf4Lg/itNksvkyv6pSBDL/ICC5mCXYYcQ0SnbvaUsn7q3qpwFoRaJP/O5WcrtsmP
+	 3Bp268ytYRpb6dxbptQOk8QvUD84hzofzk3QHT0g=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	liuyonglong@huawei.com,
+	Jonathan.Cameron@huawei.com,
+	yezhenyu2@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH v3 0/5] Support the FEAT_HDBSS introduced in Armv9.5
+Date: Tue, 31 Mar 2026 15:13:50 +0100
+Message-ID: <acvWnjG0AZBHL21q@devkitleo>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260225040421.2683931-1-zhengtian10@huawei.com>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,32 +63,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7d67722b-5107-4dc3-b8fb-04c3c86a1563@suse.com>
+Content-Transfer-Encoding: 8bit
 
-> >   static struct tdx_page_array *
-> > -tdx_page_array_alloc(unsigned int nr_pages)
-> > +tdx_page_array_alloc(unsigned int nr_pages,
-> > +		     int (*alloc_fn)(unsigned int nr_pages,
-> > +				     struct page **pages, void *data),
-> > +		     void *data)
+On Wed, Feb 25, 2026 at 12:04:16PM +0800, Tian Zheng wrote:
+> This series of patches add support to the Hardware Dirty state tracking
+> Structure(HDBSS) feature, which is introduced by the ARM architecture
+> in the DDI0601(ID121123) version.
 > 
-> This interface seems cumbersome, since you will always have separate
-> allocation paths:
+> The HDBSS feature is an extension to the architecture that enhances
+> tracking translation table descriptors' dirty state, identified as
+> FEAT_HDBSS. This feature utilizes hardware assistance to achieve dirty
+> page tracking, aiming to significantly reduce the overhead of scanning
+> for dirty pages.
 > 
-> Contig, Bulk and Iommu mt pages let's just keep them separate. I.e the flow
-> should be:
+> The purpose of this feature is to make the execution overhead of live
+> migration lower to both the guest and the host, compared to existing
+> approaches (write-protect or search stage 2 tables).
 > 
-> 1. Do common allocation by calling tdx_page_array_alloc (you aren't passing
-> the alloc function) you just get a bare-bones tdx_page_array struct
+> After these patches, users(such as qemu) can use the
+> KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl to enable or disable the HDBSS
+> feature before and after the live migration.
 > 
-> 2. Do the specific allocation in either :
+> v2:
+> https://lore.kernel.org/linux-arm-kernel/20251121092342.3393318-1-zhengtian10@huawei.com/
 > 
-> tdx_page_array_create - for the bulk case
-> tdx_page_array_alloc_contig - for the contig case
-> tdx_page_array_create_iommu_mt - for the iommu case. Here you can open code
-> tdx_alloc_pages_iommu_mt.
+> v2->v3 changes:
+> - Remove the ARM64_HDBSS configuration option and ensure this feature
+> is only enabled in VHE mode.
+> - Move HDBSS-related variables to the arch-independent portion of the
+> kvm structure.
+> - Remove error messages during HDBSS enable/disable operations
+> - Change HDBSS buffer flushing from handle_exit to vcpu_put,
+> check_vcpu_requests, and kvm_handle_guest_abort.
+> - Add fault handling for HDBSS including buffer full, external abort,
+> and general protection fault (GPF).
+> - Add support for a 4KB HDBSS buffer size, mapped to the value 0b0000.
+> - Add a second argument to the ioctl to turn HDBSS on or off.
 > 
-> And keep the specific clearly separate in each function.
+> Tian Zheng (1):
+>   KVM: arm64: Document HDBSS ioctl
+> 
+> eillon (4):
+>   arm64/sysreg: Add HDBSS related register information
+>   KVM: arm64: Add support to set the DBM attr during memory abort
+>   KVM: arm64: Add support for FEAT_HDBSS
+>   KVM: arm64: Enable HDBSS support and handle HDBSSF events
+> 
+>  Documentation/virt/kvm/api.rst       |  16 +++++
+>  arch/arm64/include/asm/cpufeature.h  |   5 ++
+>  arch/arm64/include/asm/esr.h         |   7 ++
+>  arch/arm64/include/asm/kvm_host.h    |  17 +++++
+>  arch/arm64/include/asm/kvm_mmu.h     |   1 +
+>  arch/arm64/include/asm/kvm_pgtable.h |   4 ++
+>  arch/arm64/include/asm/sysreg.h      |  11 +++
+>  arch/arm64/kernel/cpufeature.c       |  12 ++++
+>  arch/arm64/kvm/arm.c                 | 102 +++++++++++++++++++++++++++
+>  arch/arm64/kvm/hyp/pgtable.c         |   6 ++
+>  arch/arm64/kvm/hyp/vhe/switch.c      |  19 +++++
+>  arch/arm64/kvm/mmu.c                 |  70 ++++++++++++++++++
+>  arch/arm64/kvm/reset.c               |   3 +
+>  arch/arm64/tools/cpucaps             |   1 +
+>  arch/arm64/tools/sysreg              |  29 ++++++++
+>  include/uapi/linux/kvm.h             |   1 +
+>  tools/include/uapi/linux/kvm.h       |   1 +
+>  17 files changed, 305 insertions(+)
+> 
+> --
+> 2.33.0
+> 
 
-Thank for the suggestion. There are also other concerns in this thread,
-but I'll take this into consideration.
+
+Hi Tian,
+
+I was thinking: maybe instead of putting the HDBSS (and HACDBS) stuff 
+across a bunch of KVM files, we should try to focus them all on a single 
+arch/arm64/kvm/dirty_bit.c file (plus a header such as 
+arch/arm64/include/asm/kvm_dirty_bit.h).
+
+What is your opinion on that?
+
+Thanks!
+Leo
+
