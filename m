@@ -1,143 +1,131 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B17F3C73F0
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 07:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B583CE4B3;
+	Tue, 31 Mar 2026 07:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774942099; cv=none; b=BxCIuepvAUZQqd+a1UwHAlfbEC5z03fQ4nltMIzVcdHF4M5AwxOT0LW72OmOfL+tsZyIpTbQ7/hXc/PXwcgtR0++7e3JhrIpYSlLcuEOQ+Dzu9RY79SUj4MCcM7xhMzltxnx4qvcHU9/YANbaAXj7gUbuEd8iMSIA2gP7pUcemM=
+	t=1774943454; cv=none; b=C2yygD57j3RQzk9MN8rn1FcQsROZVgHb0OGA4DP3G0VHucqHElx+BCqDtXr99IWdpFYECM8/SMdEn1qXF2L4iRRvJm/IHlkAVStFp4orl1Cv92ZOfmV39VGQg1DnJoq17sMvOmvPE1w0xtCo5GX1rNU1oLqXm15vwNIaowqksUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774942099; c=relaxed/simple;
-	bh=kdsJ3g2eaTU1MECoZPvu7qbxM61nRqIBwKT0qvl9+ss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XupHxgys96fJWXgO7JvzV+FX7JtbmdmUAnCWg3kj+n8DV7xiq9ev+iyRqdaoWBLbkWuxX24OAk+9tuR/vp186l3vtil56mQ36DvhqYJoDtzsdJFBKgYoHZV6kWKZB1j9qknKMtnZwCiQj3REBzvlZV5fyGfKA8OuuC+zCQDwL4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cGVNBoiP; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774943454; c=relaxed/simple;
+	bh=QmBrY5BKVbXz9CXTgV6unLVzlvXFNRWXO9R3+/R7gS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LasJe4qmdOaPSUPZmvFZL757LM+s0tJCkdCh9vEV0efvpHTUvS1UxUkA4dGKcikd246bb8OVMVQtsMdayJb1Ubq481yDq7CvcgVhDfBYP+iqwz0Bo7CkafVP387OOnFEi7MEZBFNUQ/hh9wf/6im7Yi0C+kcOvwGOZOa5NoeApw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otLloVur; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cGVNBoiP"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0802A495B;
-	Tue, 31 Mar 2026 00:28:12 -0700 (PDT)
-Received: from [10.57.18.211] (unknown [10.57.18.211])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8AED53F641;
-	Tue, 31 Mar 2026 00:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774942097; bh=kdsJ3g2eaTU1MECoZPvu7qbxM61nRqIBwKT0qvl9+ss=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cGVNBoiPOj2/VMnLTabPEgViojzmPo93OiL/bnktpqu9ikVoEnTLDlnE+CS2qsq3G
-	 5xySVo0MjOdfU81Qs7NPVclPT+EEHn5v/ayPXJKWuiwvdITGmqRG90JWKH10y1wYzr
-	 ehLh2htBIOVdb3UWpT9KB1eOZSCSJ1D8k5wOYPdY=
-Message-ID: <2f4e1c85-b124-4b4c-a3b6-c8d8784e6418@arm.com>
-Date: Tue, 31 Mar 2026 12:58:11 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otLloVur"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26696C19423;
+	Tue, 31 Mar 2026 07:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774943454;
+	bh=QmBrY5BKVbXz9CXTgV6unLVzlvXFNRWXO9R3+/R7gS0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=otLloVurIebAAh64mVkWyy1Yx4OPNvjHY6Wavo2/t4scZtIey5FAsclGVAReyXELv
+	 acxPd9t/ZfkfPv+8RIRukk+mhkmlBvA+a2FBtpVBpcMXMdKf9jax1Ic5HrqbXCTaup
+	 L75gDcEL/qZJCWDPtiE0uv2tcJ6ipRACww0DE+70ADtXMBfVxH1qiK2c2+ILM1nif2
+	 c6tAhrmqudLZPc4H8kWeC1d15Fd6KPnMbP8ucuuzdJcntZ/ZyBTViRoOtw++xYFqIP
+	 mZ8dgFOzD3fLbeFA3spBT4TBU6/1zqW4GUaEm90ycw/3i2nT+5rj39NOfszj0isSvg
+	 0qPx21ePK4h+w==
+Date: Tue, 31 Mar 2026 16:50:52 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 03/15] userfaultfd: introduce mfill_establish_pmd()
+ helper
+Message-ID: <act83N6QP8kgcrZn@hyeyoo>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-4-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/30] KVM: arm64: Kill fault->ipa
-To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
- <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>,
- Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <tabba@google.com>,
- Will Deacon <will@kernel.org>, Quentin Perret <qperret@google.com>
-References: <20260327113618.4051534-1-maz@kernel.org>
- <20260327113618.4051534-15-maz@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260327113618.4051534-15-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330101116.1117699-4-rppt@kernel.org>
 
-
-
-On 27/03/26 5:06 PM, Marc Zyngier wrote:
-> fault->ipa, in a nested contest, represents the output of the guest's
-> S2 translation for the fault->fault_ipa input, and is equal to
-> fault->fault_ipa otherwise,
+On Mon, Mar 30, 2026 at 01:11:04PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Given that this is readily available from kvm_s2_trans_output(),
-> drop fault->ipa and directly compute fault->gfn instead, which
-> is really what we want.
+> There is a lengthy code chunk in mfill_atomic() that establishes the PMD
+> for UFFDIO operations.  This code may be called twice: first time when the
+> copy is performed with VMA/mm locks held and the other time after the copy
+> is retried with locks dropped.
 > 
-> Tested-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-
+> Move the code that establishes a PMD into a helper function so it can be
+> reused later during refactoring of mfill_atomic_pte_copy().
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  arch/arm64/kvm/mmu.c | 14 +++++---------
->  1 file changed, 5 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index c6cd6ce5254be..67e5e867e01dc 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1643,7 +1643,7 @@ static short kvm_s2_resolve_vma_size(struct vm_area_struct *vma,
->  				     unsigned long hva,
->  				     struct kvm_memory_slot *memslot,
->  				     struct kvm_s2_trans *nested,
-> -				     bool *force_pte, phys_addr_t *ipa)
-> +				     bool *force_pte)
->  {
->  	short vma_shift;
->  
-> @@ -1681,8 +1681,6 @@ static short kvm_s2_resolve_vma_size(struct vm_area_struct *vma,
->  
->  		max_map_size = *force_pte ? PAGE_SIZE : PUD_SIZE;
->  
-> -		*ipa = kvm_s2_trans_output(nested);
-> -
->  		/*
->  		 * If we're about to create a shadow stage 2 entry, then we
->  		 * can only create a block mapping if the guest stage 2 page
-> @@ -1722,7 +1720,6 @@ struct kvm_s2_fault {
->  	bool is_vma_cacheable;
->  	bool s2_force_noncacheable;
->  	unsigned long mmu_seq;
-> -	phys_addr_t ipa;
->  	gfn_t gfn;
->  	kvm_pfn_t pfn;
->  	bool logging_active;
-> @@ -1738,6 +1735,7 @@ static int kvm_s2_fault_get_vma_info(struct kvm_s2_fault *fault)
->  {
->  	struct vm_area_struct *vma;
->  	struct kvm *kvm = fault->vcpu->kvm;
-> +	phys_addr_t ipa;
->  
->  	mmap_read_lock(current->mm);
->  	vma = vma_lookup(current->mm, fault->hva);
-> @@ -1748,8 +1746,7 @@ static int kvm_s2_fault_get_vma_info(struct kvm_s2_fault *fault)
->  	}
->  
->  	fault->vma_pagesize = 1UL << kvm_s2_resolve_vma_size(vma, fault->hva, fault->memslot,
-> -							     fault->nested, &fault->force_pte,
-> -							     &fault->ipa);
-> +							     fault->nested, &fault->force_pte);
->  
->  	/*
->  	 * Both the canonical IPA and fault IPA must be aligned to the
-> @@ -1757,9 +1754,9 @@ static int kvm_s2_fault_get_vma_info(struct kvm_s2_fault *fault)
->  	 * mapping in the right place.
->  	 */
->  	fault->fault_ipa = ALIGN_DOWN(fault->fault_ipa, fault->vma_pagesize);
-> -	fault->ipa = ALIGN_DOWN(fault->ipa, fault->vma_pagesize);
-> +	ipa = fault->nested ? kvm_s2_trans_output(fault->nested) : fault->fault_ipa;
-> +	fault->gfn = ALIGN_DOWN(ipa, fault->vma_pagesize) >> PAGE_SHIFT;
->  
-> -	fault->gfn = fault->ipa >> PAGE_SHIFT;
->  	fault->mte_allowed = kvm_vma_mte_allowed(vma);
->  
->  	fault->vm_flags = vma->vm_flags;
-> @@ -1970,7 +1967,6 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  		.memslot = memslot,
->  		.hva = hva,
->  		.fault_is_perm = fault_is_perm,
-> -		.ipa = fault_ipa,
->  		.logging_active = logging_active,
->  		.force_pte = logging_active,
->  		.prot = KVM_PGTABLE_PROT_R,
 
+Looks good to me,
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+>  mm/userfaultfd.c | 102 ++++++++++++++++++++++++-----------------------
+>  1 file changed, 52 insertions(+), 50 deletions(-)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index fa9622ec7279..291e5cfed431 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> +static int mfill_establish_pmd(struct mfill_state *state)
+> +{
+> +	struct mm_struct *dst_mm = state->ctx->mm;
+> +	pmd_t *dst_pmd, dst_pmdval;
+> +
+> +	dst_pmd = mm_alloc_pmd(dst_mm, state->dst_addr);
+> +	if (unlikely(!dst_pmd))
+> +		return -ENOMEM;
+> +
+> +	dst_pmdval = pmdp_get_lockless(dst_pmd);
+> +	if (unlikely(pmd_none(dst_pmdval)) &&
+> +	    unlikely(__pte_alloc(dst_mm, dst_pmd)))
+> +		return -ENOMEM;
+> +
+> +	dst_pmdval = pmdp_get_lockless(dst_pmd);
+> +	/*
+> +	 * If the dst_pmd is THP don't override it and just be strict.
+> +	 * (This includes the case where the PMD used to be THP and
+> +	 * changed back to none after __pte_alloc().)
+> +	 */
+> +	if (unlikely(!pmd_present(dst_pmdval) || pmd_leaf(dst_pmdval)))
+
+Just noting:						 ^ this was
+						 pmd_trans_huge() but
+						 now it is pmd_leaf().
+
+but since the present bit is separately checked and hugetlb vma is handled
+in a different path I don't expect functional change.
+
+> +		return -EEXIST;
+> +	if (unlikely(pmd_bad(dst_pmdval)))
+> +		return -EFAULT;
+> +
+> +	state->pmd = dst_pmd;
+> +	return 0;
+> +}
+
+-- 
+Cheers,
+Harry / Hyeonggon
