@@ -1,156 +1,425 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F23E4C92
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 15:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409BE421EF7
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 15:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774970666; cv=pass; b=RjKpyoJvsk8jDjuHX+5eSCXBneqca6w5tyzX8cobdk7RWcwRODBVGakTxl07kpU8G4ltQz8sAXxUeOc9ESuq992BW34ebLuG2+dllI4V4bpzb5BVuAd8tWc85WzgdsvhbKKKhOKvYaCtJnh702C1XAOfT1I0vfa4USRQKBbDA2o=
+	t=1774971295; cv=pass; b=BlonXlyPFi/WBsBPai78+cOBT277L06lAZ8K7I6NpOfAldQE7Zp9+d0eTNdDFwQvK7km2OwHGraPvEoO7GJ9XSQT+fTDCMx40FMYg0hG+YDKjMWR+nA3cepteo+1l493ktsVtmwsDoFsxKkxDl0WTXTa3ppQoRQPfIcQal+nng4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774970666; c=relaxed/simple;
-	bh=rVzD9RZ8DOj+OZScnURt3JaaKOoh5Y6w5keNNJrEDEk=;
+	s=arc-20240116; t=1774971295; c=relaxed/simple;
+	bh=cUh21QIiIeQZvWIphMul6jErMzcQZ1z24liyA14tYCA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fp73X3Fkc5YcJ9keqxATiwwXskIdm9ezvcFVAkL+gtwz7laME6Q/EfecUmtwXZrBvlW4TQ/jXZZZPhLbfnKvqlyHVr8JYOkL2ZMlHkut9/aN66rsUqCwNYYQDFm+9qod7RlSEhBYxV+CmMhtx082/fR6Cnot4mspDZ8VTBThTc8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NgpBhtFm; arc=pass smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	 To:Cc:Content-Type; b=Yj7L3YnjVVmeXPSZOvrNF8YHLRZG1HiUG3qQ8Dwt7L2YZGxQqjNu4exG3fQXtcSw3ZHOHx9Xhvbg6XkNDp9fIXYTs1NlJ7wRUHJMWS1ADyR7f4K9buSeuheVN43eEdTiiVsqTjBU7S9XL0y4nDQ9bskdk8FRx+hkFknebECnA2g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mdAXSpqO; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NgpBhtFm"
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62VFOBH13120450
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 08:24:24 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=rVzD9RZ8DOj+OZScnURt3JaaKOoh5Y6w5keNNJrEDEk=; b=NgpBhtFmItDM
-	CNbcwb/E9DkdCKHJ/+HXG5nYnUCSAGdnK0J1DywzsfubqT3zoyDOiorROwlve6f5
-	Fabj2p7OS4l9/vDda/nt1iaWFhmj/dD7ikbmlCSU9C3dxHoD/BW1829WKG1gSNUo
-	bvhspgCJNM7QlFoJ6rz3LBSz57IF68o48IZ5V4B4vXaE0cFVG0Wx1twzhAphguZA
-	x2QO4KynACOL7v8zMEgjTg34ybae8h4kqqcSIVWunaNwvXNvzVjB0rqBMikZSh7r
-	g5YEFzd1SPUtzJOBJK+aZ0ehLdWWfxZnd/kXQFeHL1MALxrPKcsgO9HqIAQQZ7ex
-	Zwkn3t7Umw==
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4d6xrcndvt-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 08:24:23 -0700 (PDT)
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-415583a6862so14950051fac.1
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 08:24:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774970663; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mdAXSpqO"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-66b0dc690bcso11514a12.1
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 08:34:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774971288; cv=none;
         d=google.com; s=arc-20240605;
-        b=BIQZA2HcWFKuFd0ZDWl8PMKIZC+8nhnS1W9DyXSTEeJySts151EDMrFgiu9Fg/+MiK
-         IlF8Q7JH0LK/7ncwiii0k12Zd6MFo3M3yx//S6t51dCUSydK44ezZY8I2WXkaM7yNRaf
-         MLfUEPj+cIbAIxnz2mblufD+uZ4snrP0Xyiq5wy11n7q6f4PcWUEMIADoO4RPx5RXS5B
-         2vlcDOsYAn0KxSzehUYYBJRdXO+XTmOOsAkZ/IxxcZlilgUrBEt1rJ/mv2Ll5ETHRJr+
-         66ffkuP2QuyhGkrJUpUo1hksD+CcQipNndbP6GjxpPphGe9qGPPI87zOdZInb0PnY9yb
-         cHjA==
+        b=AJ9R99CQPCB9LVaI3EekLbQA4qLb/D91JAEc3ZXbkJR8RZnwtyHsyyMqIggKiNc0Fk
+         ayWAAfywMZw9n+H/3YLDHnx1u3q1yCBa3ra8soJxuazLWc9JQ+xNmR4cBsGo59lwXFu5
+         Q4zQFvvbpvpvNUF6uRtS/yh+Ti9pAa/NxYxhzuiaNLzanvfdIgwKH7f4rVC97ZeeRNHv
+         S7ZBdEMQtNPe1jrFvxQ7cb2SvycXPdFFJiHni8U2exd7M3S8ZnLeRktqUnT8It4+Dahr
+         7/msV32CGe8mBe/UUbQP5/+crDc0aSIZbUt6lMcWqUAMRveED4++hG+L4pDo+f1U0heA
+         BH9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=rVzD9RZ8DOj+OZScnURt3JaaKOoh5Y6w5keNNJrEDEk=;
-        fh=gx576K/+qk6ONBsangW9IeaArAi819pfU7RepzgRJHE=;
-        b=F+IzM1dvArkTVOkHfHqGDnrD1OqA7/poEjL89QXLHmRmewuwTRNbHPvlp3q08fibqa
-         yU7Cn2no8u362c81lZAms8IYLVMulQuuDcLm2JUKPHxDkFQlF6RpoMiBJ6N+OXuCJKxH
-         5tZUQUEUsQsHBMcmwnO8WSGi6JaQiuP/tzz71/czNhMJLCvF9cEbnV9mt23cDiC3w9k1
-         0wK1QgipZYoWqH19LHRO0i6JFblDNOGuYipcyUoPguYulsh5Ww7WV78pn5mPJ3MMydZV
-         cSD5n8ovUgcafq4ROayGFCphLr7QMmHoRQGkLusCy6iaH2W1CEfvO/oSXuWOSm5uTeGG
-         3hyw==;
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+        fh=97N+FU01/WBRtQkBR5kEDy474Y1Oye4+o3sJ5grrZE0=;
+        b=c2clIrzAEJ5/ymzLZBIgjakWkQMWrpr0WQJ3sgyAAfafHjQEiHdX6XV+FKD2gZ0pq7
+         XqjjnxEuOkmz04nWgTJdchienIipX0lmSKQ70F7drUAS+ac+I2aJV1ujNv7u97eFOqw+
+         VJP3wEllywIBnihzo0ODb5H1a2GfnMZsLAogHxAsHavZJuDRa5UIOUSPoXfLR4gicM70
+         AsXB3QVgwUZYFWOdNojGzBtN0YAUDcgEs2PF+edhNaXXDWgiEZ56DzyKyCNqMjzUfgUn
+         pFDWM5QlGJeNZiLXjgo0hIDf+12rRS2II2hBUy2+QMffrgEgyzh4/HsSrcvNWgJKd5G9
+         wMHA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774971288; x=1775576088; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+        b=mdAXSpqOYhFSo4ejfOm0rTihWZ3cP6MR+BQiKVJO1Bc0WQKh9E/3lJ3wniqyGT84Rd
+         QW8rc9TE4g43tsY8pGLiEoMcJKJTlGqEN7m2ljvvpYmNEuMmTYo1cuoP7ynu+pWQhGBH
+         1Mk7S/86ImaDI4U9lzcOCg02+CUxGK893j3M0r4qlHIZADcu1XsZ1sEdFgt8NgYUQhIG
+         8ac+KGKxD8rrl8n3M9AMzGcM7Xow6So52H2PLR/2j7fsZa5uRl9rinGfICihZx/KqG3N
+         BnAQifjyNijXqOlze11FV/IbttXfJ3FwJ6kllH73Elow1H8JVQuL9vaiQ/bKRxv9w+NB
+         eHHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774970663; x=1775575463;
+        d=1e100.net; s=20251104; t=1774971288; x=1775576088;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rVzD9RZ8DOj+OZScnURt3JaaKOoh5Y6w5keNNJrEDEk=;
-        b=CTKEbuktcP3LMSv4bmQ0NHcuwnJF6hpsgymw1RxcF2otQqL8JxuFcRYZFoSc9cX8Sa
-         lItBgMLh8Bk3KNiSYHI6HOT7IOyDNNu5H5PSxUs8B933zQx6fRlO36H10qaF3kscoNou
-         fadumuOl4mJ6SkK2t/r3r7pvBE2KcEEMFcASgVAH9OhUuNj6dkWTuvY36TPFWDUM3/6+
-         ZadPisrY1hsPThJV6N7w0zIXw+oXVivQLLqeVdGA2hISiLkYL46FM4hbA5erCQqa/P5Z
-         03I6vEboRMJJH/dwLL3CwXlPIBZG0zXPbTrr3r3jZwfThTUXcVEze4knmU7UtsAZWT45
-         kr5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXkA6+njPgbmZukTPnQ4UimcSrNtjA9hVF/ZptZq7n622u0tm180l9W1IhDSmk+UJsRtGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFBm3g9DTIdJVytwy4EAVNZQkqhLEX19UCA92qh6XqpyyPwZmy
-	HO3MEvk8XC3h1wwNy+V23URPgDIFCOvC4vDJNE3NyGYW+7VLsKUfctl3STTGY8AhmBi6MYA9yKd
-	X74NQWVPGVePomAgb56dRlO2mjJIv5Ew4K/jRmk15oH9LH+IzM9fyk+sVG9HCDU+ebsDD7+s6J6
-	/5TCaVv7rZRPw7BOT+89F9nt/vDpo=
-X-Gm-Gg: ATEYQzyQ0ufXoZrnYUqVtOkskehBiBf4U1Hktg4/QdtbZ2XQHre5PE5YFEyi7i2ppRi
-	56trIwqG24h1YqTYb0YH6ciktai1HCKtlBdXyxU2/Dzo/DVI3y2tE+toUYn8SPyAhtC8TcIZWV3
-	xwVEjdilBdMwiyzWacDiA1E7mT3CUHVuCxl/1XZod5J/qsQYeyUfy7df8Wh3x44T20LXYS8GDLX
-	9uc
-X-Received: by 2002:a05:6820:2901:b0:67f:31e3:81a with SMTP id 006d021491bc7-67f31e31008mr367462eaf.2.1774970662742;
-        Tue, 31 Mar 2026 08:24:22 -0700 (PDT)
-X-Received: by 2002:a05:6820:2901:b0:67f:31e3:81a with SMTP id
- 006d021491bc7-67f31e31008mr367434eaf.2.1774970662327; Tue, 31 Mar 2026
- 08:24:22 -0700 (PDT)
+        bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+        b=VFExZTX5QE4kPIHEWJ3igmt4Ws6J7eYtCmF2rhuT0Kwxsa5lPnC5gtMAYVTwIxk0ku
+         PjcLJ6X2NcPxXA7RZp0EoxlqfHqbDu7zqcY6PslUn3Kjy7TzEWUl1644MJbJy44aVLGy
+         86P2CT0PiXlBEJGnrDKr48GD61KqrsWmeToIp2TU6LuRfyNRMqYOwy1U8Qj2F6uaPghz
+         CjUSDuCFSAeaAlyZIAGViFyGFpHFpfHK3b9VVlzfRx8jhnFZ/8sRSKBUh7UShKsNn96O
+         gQrnSYRGVMD4S8Q6DpzE1Q+4og/lgVeEscBabU0l9nT8C7aZWXIj1X9IPxlJqRg5FuM2
+         9K9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVpj78+lgDn6ARAcFT6ooLwip/dV3Wm/GM/COlLc7ZTzAoXZAITZsEjRhFMJow7osDFcuo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGj7O25ko7dcWrQNkMI1VsQ5VKoQKK5kPSEPHLCNvK0j11WsBV
+	VMqCZ1AeymqDoF0zuTNOBjUy8B24YC1fmi4fTGgceB+bvHKIKJcelPwtgiqTlQn/IwWMiKBa/yn
+	F7okbrg7ERMY4b//6iTUdXt9oTdkJ3vSanrXZPRfl
+X-Gm-Gg: ATEYQzxZYKUxtkScQzDcf0n5atbUQFeUhIjmgYWbG0/d/l6Fzqdm9XqUozfBT32qb7r
+	iISPFTvZ1KHT+rirWOTQiLRyL8/gJQUIN3IFrlkX6upOkrqu+UNE9CkvPhKoI9MLDA6+tsz1Yiw
+	zscc1nXw/qHjouVlyBuZMFucBZCSmDKJNYASuNVt17DH4L8KZSyVvc88tij770leqM7cZX7gzmk
+	B9wjNrZThafYgp2r08PqesC3VGtMrH918XZDQZ9wMFsQzRmLT4dUaiwAIc44odX0H728f2F52NK
+	U1DHUNV/wWxP3nGGq0FrT4YuLXTLu08elZyYWQ==
+X-Received: by 2002:aa7:d157:0:b0:66b:ea0e:1782 with SMTP id
+ 4fb4d7f45d1cf-66d95ac6b83mr3294a12.2.1774971287536; Tue, 31 Mar 2026 08:34:47
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312184613.3710705-1-mattev@meta.com> <20260312184613.3710705-10-mattev@meta.com>
- <20260330133336.GT310919@nvidia.com>
-In-Reply-To: <20260330133336.GT310919@nvidia.com>
-From: Matt Evans <mattev@meta.com>
-Date: Tue, 31 Mar 2026 16:24:11 +0100
-X-Gm-Features: AQROBzBjz_Oa24Ou_FBmQkKdtClzBrzQA9IDx3XIRw5UCOwDpX9lbYyqY3Y5W8c
-Message-ID: <CAFzAbJHqnuV2vA-LPQy3xo1KesLUxJOCtS4FigsaZtaZEi19jQ@mail.gmail.com>
-Subject: Re: [RFC v2 PATCH 09/10] vfio/pci: Add mmap() attributes to DMABUF feature
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-        Alex Mastro <amastro@fb.com>, Mahmoud Adam <mngyadam@amazon.de>,
-        David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org
+References: <20260327205457.604224-1-surenb@google.com> <20260327161226.17e680fec33117d67dc8b5f9@linux-foundation.org>
+ <f128b795-5577-40f9-8dae-936be4253642@lucifer.local> <CAJuCfpHmUop-UzxM9QN7OiAnXUzj461+9ErgtXrtve_bR0_NjA@mail.gmail.com>
+In-Reply-To: <CAJuCfpHmUop-UzxM9QN7OiAnXUzj461+9ErgtXrtve_bR0_NjA@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 31 Mar 2026 08:34:34 -0700
+X-Gm-Features: AQROBzCjbp_TCkkxwhu_axsyxtZ1SbbwXiNA5twqFRnYfWa0PnszaVM289IvRRY
+Message-ID: <CAJuCfpF5CqSMU4yz5mgSOTbSLfMsmATGk4vcKWiqrzV3rGkZEw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/6] Use killable vma write locking in most places
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: ZrH698zj9NQ6tRbIk58M9ughKPl4KloA
-X-Proofpoint-ORIG-GUID: ZrH698zj9NQ6tRbIk58M9ughKPl4KloA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDE0OCBTYWx0ZWRfX9ANc2dc1UXIj
- MZUQbPO2BGSgKzcx/bBWnLbfcFZqXOFH0H+c+tYwNJPSiXsatz4wm9SvjcL0ONWVzlAAT0TwBbb
- 9zv5Jn8mP3OD73TeaDPx0fK3t0FLmRmamQO1zdgUHQOnJNWjPDtET1evjuAZ6mSpNa2quZWGIDb
- uayRnS8w1JzexRbYWpqEnfJBzeK+Yxh5RFcHQE38zrDwyYEbZa/4doRO58OA2QP3swp3RaVX24/
- mmzG/iZeK00aoPuNGeFhV7XtDiaP4T1Wrp3chM77wFkURSPBRNdxs5jJMHvuHw0Oo4Umw8sCGCW
- 6RRFmGdT5bqavwuJDEyxASwo12dYKacKimJjpeqctMKp6Cb2ymhj6mk8TLQ8IfSyos9X9Um2FWJ
- KDDWirL6VD4v/MoPQl3YLjS1hV011DzxzhQX4vGZf5d3ViSWV3vTNV6hcMNzvW1vZZv0GdU5w7g
- 7MpM4IQ9IUZZ5d9gLEA==
-X-Authority-Analysis: v=2.4 cv=MKZtWcZl c=1 sm=1 tr=0 ts=69cbe727 cx=c_pps
- a=nSjmGuzVYOmhOUYzIAhsAg==:117 a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22
- a=Ikd4Dj_1AAAA:8 a=scxTcjKw9OI2Du0FDOwA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=1zu1i0D7hVQfj8NKfPKu:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-31_03,2026-03-31_02,2025-10-01_01
 
-HI Jason,
-
-On Mon, Mar 30, 2026 at 2:33=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
+On Tue, Mar 31, 2026 at 8:06=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
 >
-> On Thu, Mar 12, 2026 at 11:46:07AM -0700, Matt Evans wrote:
-> > A new field is reserved in vfio_device_feature_dma_buf.flags to
-> > request CPU-facing memory type attributes for mmap()s of the buffer.
-> > Add a flag VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC, which results in WC
-> > PTEs for the DMABUF's BAR region.
+> On Tue, Mar 31, 2026 at 2:51=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@ker=
+nel.org> wrote:
+> >
+> > On Fri, Mar 27, 2026 at 04:12:26PM -0700, Andrew Morton wrote:
+> > > On Fri, 27 Mar 2026 13:54:51 -0700 Suren Baghdasaryan <surenb@google.=
+com> wrote:
+> > >
+> > > > Now that we have vma_start_write_killable() we can replace most of =
+the
+> > > > vma_start_write() calls with it, improving reaction time to the kil=
+l
+> > > > signal.
+> > > >
+> > > > There are several places which are left untouched by this patchset:
+> > > >
+> > > > 1. free_pgtables() because function should free page tables even if=
+ a
+> > > > fatal signal is pending.
+> > > >
+> > > > 2. userfaultd code, where some paths calling vma_start_write() can
+> > > > handle EINTR and some can't without a deeper code refactoring.
+> > > >
+> > > > 3. mpol_rebind_mm() which is used by cpusset controller for migrati=
+ons
+> > > > and operates on a remote mm. Incomplete operations here would resul=
+t
+> > > > in an inconsistent cgroup state.
+> > > >
+> > > > 4. vm_flags_{set|mod|clear} require refactoring that involves movin=
+g
+> > > > vma_start_write() out of these functions and replacing it with
+> > > > vma_assert_write_locked(), then callers of these functions should
+> > > > lock the vma themselves using vma_start_write_killable() whenever
+> > > > possible.
+> > >
+> > > Updated, thanks.
+> >
+> > Andrew - sorry I think we need to yank this and defer to next cycle,
+> > there's too many functional changes here.
+> >
+> > (There was not really any way for me to predict this would happen ahead=
+ of
+> > time, unfortunately.)
 >
-> This seems very straightforward, I like it
+> Ok, no objections from me. I'll post v6 removing the part Lorenzo
+> objects to and you can pick it up whenever you deem appropriate.
+
+Just saw Lorenzo's other reply about reworking some vma error handling
+first. I'll wait for that rework before posting the new version.
+
 >
-> Did I get it right that the idea is the user would request a dmabuf
-> with these flags and then mmap the dmabuf?
-
-Right, export it with a requested attribute (as possibly some
-sub-slice(s) of a larger BAR if you like) and then map it (no
-attributes need to be specified at mmap() time).
-
-Thanks,
-
-Matt
+> >
+> > >
+> > > > Changes since v5 [1]:
+> > > > - Added Reviewed-by for unchanged patches, per Lorenzo Stoakes
+> > > >
+> > > > Patch#2:
+> > > > - Fixed locked_vm counter if mlock_vma_pages_range() fails in
+> > > > mlock_fixup(), per Sashiko
+> > > > - Avoid VMA re-locking in madvise_update_vma(), mprotect_fixup() an=
+d
+> > > > mseal_apply() when vma_modify_XXX creates a new VMA as it will alre=
+ady be
+> > > > locked. This prevents the possibility of incomplete operation if si=
+gnal
+> > > > happens after a successful vma_modify_XXX modified the vma tree,
+> > > > per Sashiko
+> >
+> > Prevents the possibility of an incomplete operation? But
+> > vma_write_lock_killable() checks to see if you're _already_ write locke=
+d
+> > and would make the operation a no-op? So how is this even a delta?
+> >
+> > It's a brave new world, arguing with sashiko via a submitter... :)
+>
+> Yeah, this is not really a problem but I thought I would change it up
+> to make it apparent that the extra vma_write_lock_killable() is not
+> even called.
+>
+> >
+> > > > - Removed obsolete comment in madvise_update_vma() and mprotect_fix=
+up()
+> > > >
+> > > > Patch#4:
+> > > > - Added clarifying comment for vma_start_write_killable() when lock=
+ing a
+> > > > detached VMA
+> > > > - Override VMA_MERGE_NOMERGE in vma_expand() to prevent callers fro=
+m
+> > > > falling back to a new VMA allocation, per Sashiko
+> > > > - Added a note in the changelog about temporary workaround of using
+> > > > ENOMEM to propagate the error in vma_merge_existing_range() and
+> > > > vma_expand()
+> > > >
+> > > > Patch#5:
+> > > > - Added fatal_signal_pending() check in do_mbind() to detect
+> > > > queue_pages_range() failures due to a pendig fatal signal, per Sash=
+iko
+> > >
+> > > Changes since v5:
+> > >
+> > >
+> > >  mm/madvise.c   |   15 ++++++++++-----
+> > >  mm/mempolicy.c |    9 ++++++++-
+> > >  mm/mlock.c     |    2 ++
+> > >  mm/mprotect.c  |   26 ++++++++++++++++----------
+> > >  mm/mseal.c     |   27 +++++++++++++++++++--------
+> > >  mm/vma.c       |   20 ++++++++++++++++++--
+> > >  6 files changed, 73 insertions(+), 26 deletions(-)
+> > >
+> > > --- a/mm/madvise.c~b
+> > > +++ a/mm/madvise.c
+> > > @@ -172,11 +172,16 @@ static int madvise_update_vma(vm_flags_t
+> > >       if (IS_ERR(vma))
+> > >               return PTR_ERR(vma);
+> > >
+> > > -     madv_behavior->vma =3D vma;
+> > > -
+> > > -     /* vm_flags is protected by the mmap_lock held in write mode. *=
+/
+> > > -     if (vma_start_write_killable(vma))
+> > > -             return -EINTR;
+> > > +     /*
+> > > +      * If a new vma was created during vma_modify_XXX, the resultin=
+g
+> > > +      * vma is already locked. Skip re-locking new vma in this case.
+> > > +      */
+> > > +     if (vma =3D=3D madv_behavior->vma) {
+> > > +             if (vma_start_write_killable(vma))
+> > > +                     return -EINTR;
+> > > +     } else {
+> > > +             madv_behavior->vma =3D vma;
+> > > +     }
+> > >
+> > >       vma->flags =3D new_vma_flags;
+> > >       if (set_new_anon_name)
+> > > --- a/mm/mempolicy.c~b
+> > > +++ a/mm/mempolicy.c
+> > > @@ -1546,7 +1546,14 @@ static long do_mbind(unsigned long start
+> > >                       flags | MPOL_MF_INVERT | MPOL_MF_WRLOCK, &pagel=
+ist);
+> > >
+> > >       if (nr_failed < 0) {
+> > > -             err =3D nr_failed;
+> > > +             /*
+> > > +              * queue_pages_range() might override the original erro=
+r with -EFAULT.
+> > > +              * Confirm that fatal signals are still treated correct=
+ly.
+> > > +              */
+> > > +             if (fatal_signal_pending(current))
+> > > +                     err =3D -EINTR;
+> > > +             else
+> > > +                     err =3D nr_failed;
+> > >               nr_failed =3D 0;
+> > >       } else {
+> > >               vma_iter_init(&vmi, mm, start);
+> > > --- a/mm/mlock.c~b
+> > > +++ a/mm/mlock.c
+> > > @@ -518,6 +518,8 @@ static int mlock_fixup(struct vma_iterat
+> > >               vma->flags =3D new_vma_flags;
+> > >       } else {
+> > >               ret =3D mlock_vma_pages_range(vma, start, end, &new_vma=
+_flags);
+> > > +             if (ret)
+> > > +                     mm->locked_vm -=3D nr_pages;
+> > >       }
+> > >  out:
+> > >       *prev =3D vma;
+> > > --- a/mm/mprotect.c~b
+> > > +++ a/mm/mprotect.c
+> > > @@ -716,6 +716,7 @@ mprotect_fixup(struct vma_iterator *vmi,
+> > >       const vma_flags_t old_vma_flags =3D READ_ONCE(vma->flags);
+> > >       vma_flags_t new_vma_flags =3D legacy_to_vma_flags(newflags);
+> > >       long nrpages =3D (end - start) >> PAGE_SHIFT;
+> > > +     struct vm_area_struct *new_vma;
+> > >       unsigned int mm_cp_flags =3D 0;
+> > >       unsigned long charged =3D 0;
+> > >       int error;
+> > > @@ -772,21 +773,26 @@ mprotect_fixup(struct vma_iterator *vmi,
+> > >               vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+> > >       }
+> > >
+> > > -     vma =3D vma_modify_flags(vmi, *pprev, vma, start, end, &new_vma=
+_flags);
+> > > -     if (IS_ERR(vma)) {
+> > > -             error =3D PTR_ERR(vma);
+> > > +     new_vma =3D vma_modify_flags(vmi, *pprev, vma, start, end,
+> > > +                                &new_vma_flags);
+> > > +     if (IS_ERR(new_vma)) {
+> > > +             error =3D PTR_ERR(new_vma);
+> > >               goto fail;
+> > >       }
+> > >
+> > > -     *pprev =3D vma;
+> > > -
+> > >       /*
+> > > -      * vm_flags and vm_page_prot are protected by the mmap_lock
+> > > -      * held in write mode.
+> > > +      * If a new vma was created during vma_modify_flags, the result=
+ing
+> > > +      * vma is already locked. Skip re-locking new vma in this case.
+> > >        */
+> > > -     error =3D vma_start_write_killable(vma);
+> > > -     if (error)
+> > > -             goto fail;
+> > > +     if (new_vma =3D=3D vma) {
+> > > +             error =3D vma_start_write_killable(vma);
+> > > +             if (error)
+> > > +                     goto fail;
+> > > +     } else {
+> > > +             vma =3D new_vma;
+> > > +     }
+> > > +
+> > > +     *pprev =3D vma;
+> > >
+> > >       vma_flags_reset_once(vma, &new_vma_flags);
+> > >       if (vma_wants_manual_pte_write_upgrade(vma))
+> > > --- a/mm/mseal.c~b
+> > > +++ a/mm/mseal.c
+> > > @@ -70,17 +70,28 @@ static int mseal_apply(struct mm_struct
+> > >
+> > >               if (!vma_test(vma, VMA_SEALED_BIT)) {
+> > >                       vma_flags_t vma_flags =3D vma->flags;
+> > > -                     int err;
+> > > +                     struct vm_area_struct *new_vma;
+> > >
+> > >                       vma_flags_set(&vma_flags, VMA_SEALED_BIT);
+> > >
+> > > -                     vma =3D vma_modify_flags(&vmi, prev, vma, curr_=
+start,
+> > > -                                            curr_end, &vma_flags);
+> > > -                     if (IS_ERR(vma))
+> > > -                             return PTR_ERR(vma);
+> > > -                     err =3D vma_start_write_killable(vma);
+> > > -                     if (err)
+> > > -                             return err;
+> > > +                     new_vma =3D vma_modify_flags(&vmi, prev, vma, c=
+urr_start,
+> > > +                                                curr_end, &vma_flags=
+);
+> > > +                     if (IS_ERR(new_vma))
+> > > +                             return PTR_ERR(new_vma);
+> > > +
+> > > +                     /*
+> > > +                      * If a new vma was created during vma_modify_f=
+lags,
+> > > +                      * the resulting vma is already locked.
+> > > +                      * Skip re-locking new vma in this case.
+> > > +                      */
+> > > +                     if (new_vma =3D=3D vma) {
+> > > +                             int err =3D vma_start_write_killable(vm=
+a);
+> > > +                             if (err)
+> > > +                                     return err;
+> > > +                     } else {
+> > > +                             vma =3D new_vma;
+> > > +                     }
+> > > +
+> > >                       vma_set_flags(vma, VMA_SEALED_BIT);
+> > >               }
+> > >
+> > > --- a/mm/vma.c~b
+> > > +++ a/mm/vma.c
+> > > @@ -531,6 +531,10 @@ __split_vma(struct vma_iterator *vmi, st
+> > >       err =3D vma_start_write_killable(vma);
+> > >       if (err)
+> > >               goto out_free_vma;
+> > > +     /*
+> > > +      * Locking a new detached VMA will always succeed but it's just=
+ a
+> > > +      * detail of the current implementation, so handle it all the s=
+ame.
+> > > +      */
+> > >       err =3D vma_start_write_killable(new);
+> > >       if (err)
+> > >               goto out_free_vma;
+> > > @@ -1197,8 +1201,14 @@ int vma_expand(struct vma_merge_struct *
+> > >
+> > >       mmap_assert_write_locked(vmg->mm);
+> > >       err =3D vma_start_write_killable(target);
+> > > -     if (err)
+> > > +     if (err) {
+> > > +             /*
+> > > +              * Override VMA_MERGE_NOMERGE to prevent callers from
+> > > +              * falling back to a new VMA allocation.
+> > > +              */
+> > > +             vmg->state =3D VMA_MERGE_ERROR_NOMEM;
+> > >               return err;
+> > > +     }
+> > >
+> > >       target_sticky =3D vma_flags_and_mask(&target->flags, VMA_STICKY=
+_FLAGS);
+> > >
+> > > @@ -1231,8 +1241,14 @@ int vma_expand(struct vma_merge_struct *
+> > >                * is pending.
+> > >                */
+> > >               err =3D vma_start_write_killable(next);
+> > > -             if (err)
+> > > +             if (err) {
+> > > +                     /*
+> > > +                      * Override VMA_MERGE_NOMERGE to prevent caller=
+s from
+> > > +                      * falling back to a new VMA allocation.
+> > > +                      */
+> > > +                     vmg->state =3D VMA_MERGE_ERROR_NOMEM;
+> > >                       return err;
+> > > +             }
+> > >               err =3D dup_anon_vma(target, next, &anon_dup);
+> > >               if (err)
+> > >                       return err;
+> > > _
+> > >
