@@ -1,1303 +1,278 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011052.outbound.protection.outlook.com [40.93.194.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218CB2FFDE3;
-	Tue, 31 Mar 2026 17:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27DB3644A2
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 17:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774977779; cv=fail; b=OkekGS0JFAEc+q6G2SWpZdLz2ik2+1udKszwJDa1l4ZTclf3rHwCwKCLIvLCBYjpkws7dWp+NJfv/Cn4Vjq4iRbgxeCrrXlRjKSJBI26F2UtO5JVqU53l6aikaOn0t0JGtMBATPyDULTimnf1XcyabANHfiHg6yDBDIHxxMv3mc=
+	t=1774977801; cv=pass; b=OVYelvJxQLnC2EjTUfFxc8N+onfbQOlpUMnRYXTvIiDFvF6ewjMXjULD/gaB3hThnBtuhLMiY/4lZ7G9w6BV7buXPAvGdTeie/EdhKIWa/ku7W6D658wbSpPlk9he0vNKLiUg6cBafCvoMR/Qn2xAyZ2nZxbhE2d2BxK7PfRs28=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774977779; c=relaxed/simple;
-	bh=xqy2hc7/YfloKK83mbuRHwkD2UVF+yjF3cLKWfHMzPA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RdK5C3fp7E5kSLCPdKKVDwFsnnrd6isp3H5fBsd6NPJ19sMWqO3+FNRQc2a3aRmmlPvck8fOB3bRHIxmMnwx//WnUJNY3P5GvDabtkRH0YL8p7PEthfw6guamVJVmcR7Rd6IyqcW6tXoje/wVqWR7RAUGyLzhxBkJyniWlHZePM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hVzjk0wg; arc=fail smtp.client-ip=40.93.194.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1774977801; c=relaxed/simple;
+	bh=4O8B+ssQ4Pb5V7qee9AVzd4LQ8TvBPiwQPihEYeTN3A=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JEuIC2W+Nw8SQjZW0hA/B6rZdl5e9SZvS9x5YfIdwFxEMFs0PlU8DvM9qhPG+8Tscoq9uTNfHS1eHmC+yK0vbD/AQIP8dnOgTYyMZwYfUXDDVEclYq+msL/nsGNhSty8Y43k88GHZ6FHhCgHq0+lMH0B4rIeoKO7Y7AlK6IcqEg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eeK3AIIQ; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hVzjk0wg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pyS4r3JLDA2xscXkZVRDPwNc+5SpwqMpDNrKYRZixmVUi2cOaq9al7BAKm/S1riAk5WYcjMF5D2SWi4iJ/VSPQKW4OdORiI4JYYXNN+MsU0Vf74zsuS/tWjmpFBNmcci2EpaPJFcFnkkPxqvsEx2x6XIPX3vitnfxlm6n5AnGiCxqB+J3XaTfEnofYmKMtcT4vEOxexAjzBt0AFk4b0q/ZSyg3KZenFmDZ0EvWWYZrLo6MZqcl+FZlRbVUBSq6c4nII5GlSSahm/sR60fpc5vXbTPw3cpzLYUJsDxDuUc0LiLHMSYgGKI4pzK9lMOfN1UgQTvzvpZpmR9uylQwyqhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PzPG677dLz8lavcdSwMShzidqU6AwOq/AK7U0ViJAn8=;
- b=Em+ps4vZLqK1F2fiB/F+RsW4RLJCAJYXul2IGi8tteQ33P2JVdNMJEUJyk1aTUFR6e7Pq1uiGq3UiJLRx5LD/DRxctc1AdT3eCG9/jV6abg85/qdgUsy/pyzG7lVz5B0gZNUQcrtu63RQIZM2j+8vvC0FqagNAEPALNq73aIAVhEAsc9lUkayPTj8Ikj6q+iqGsIfKU1WCYgd7kcII5tEZk+IimXAfONmjV/M2hdwZmW8ZTQVh41ujQF8zmH/w0FcYefHw25ACpJcMS/+gXFFtjpDTma+xyznZUIWSqSyhPaTxTuMT8PM1NFq950N7x6ffYKPSz4qKmexiZ4yPc4/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PzPG677dLz8lavcdSwMShzidqU6AwOq/AK7U0ViJAn8=;
- b=hVzjk0wgQSjR1btVH009pbppglVNrcc7lUmRJysolpTwkcZ5BJVfjhkriOuER8cf7q3SS6b2hqT1VJq4i2Bd93zclcMBr3Xfn1XDRpuIl9jWuP2/pBIAgopK3s4TBPM72usGQJe9OWDuocHMtGPju1P3y1WYdQOnTxUfpUm7zR6RX7DQffsT60PVzEaEj8UczYa1B0r7KeGyczeYvipXDktWTYQZggrtjJGF7McSmN6hwgymKIZIrx2pDnr6vk55+hUKDV9TnjIiLescBcfxZc9q5GNUsjOcCnqLPwSn8U+3upbaKiyIHr6UejRDsSOR+nROWfE/yqhx0D9aCRbISg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
- (2603:10b6:80f:fc04::8d2) by CY3PR12MB9678.namprd12.prod.outlook.com
- (2603:10b6:930:101::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 17:22:46 +0000
-Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
- ([fe80::e30:d7d3:95f0:78e7]) by SA5PPF80B25317E.namprd12.prod.outlook.com
- ([fe80::e30:d7d3:95f0:78e7%6]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 17:22:46 +0000
-From: Rubin Du <rubind@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>,
-	David Matlack <dmatlack@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v11 3/3] selftests/vfio: Add NVIDIA Falcon driver for DMA testing
-Date: Tue, 31 Mar 2026 10:22:41 -0700
-Message-ID: <20260331172241.50456-4-rubind@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260331172241.50456-1-rubind@nvidia.com>
-References: <20260331172241.50456-1-rubind@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR05CA0101.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::42) To SA5PPF80B25317E.namprd12.prod.outlook.com
- (2603:10b6:80f:fc04::8d2)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eeK3AIIQ"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-509062d829dso647681cf.1
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 10:23:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774977799; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ECXp/ec3/MCVpzVKXXR9DDMifTOt16gUjMnFBdDRYnuh3vX8Bgm7oGhFcYoIz4HQoX
+         AccLWR8sgwl6rAmU6KGScDO4fMZnQk1W+iYSA9TtxJGQrj3Lj8kb9EV0StEcvuOj9kZk
+         Z2DLuqj97Ht2qeVAGhnyW12GEyYwJwGC4u5JFA1+u21QVrVVqd6VjnkxTY1NqaJMuB3p
+         IypvB5qSO7La1cvx8x4qi+6DJ3wNifNG/INbW/8K0TQ0O/7jaVkHOyKUtvCj67NiR3ar
+         1ttD15Gj607Yb5rgt5LKXrJOoQkHyAEt1zWViXmhQx3RG9ltKlbTkdgWc8bSgKZnOBpi
+         kUnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=xfWyR5Bt/s3UxGGXxRm5lQuzzRDmpPpu5B45UFWlrgw=;
+        fh=xutXh6t7q6zBn0D3J6yTjyII/H/L4pqb7JUOspu6D3M=;
+        b=X3s81CugsYVrSDlB2FqvliIB285MSP8J4690TzCqWDvMGQMJHEIAAD1zaxZMMw/YTU
+         NAeXvDaiQe1AP9Doypy9lxAZYuz21cYerL5+szElV08Zao+xhqp/bZmg5SZpQnc4ihhv
+         OnIkPXejmxDJFZedT8attSBqo0MkLfKFmbFqa0v2BydfK4DitI321AXXRoqL9wq4Ybrj
+         0BW+BifiMTvTbCTyEsYXwnb+lIQliOePIM4T3qClAcLm7urVZXYlxDWEpe41zklkQxwj
+         Q+He42P2AbqURnTqXSvtwbyBp3Ww+TqiVhxb7s6hYDVXuoF4ZV9SFYMyqf4G50LMXYxf
+         +iOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774977799; x=1775582599; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xfWyR5Bt/s3UxGGXxRm5lQuzzRDmpPpu5B45UFWlrgw=;
+        b=eeK3AIIQctth5woJ6Y4FFocEYOhJ1I/U5sA6IEO/DcP8PdQLn9kuCR8skI8oIK1+s4
+         dsgc7V+52ctM4V9dRP8YIvSIqLBcR8b4QLgZ4hdXM3ASqh2rB74/cahLnE+gnXCLh7pA
+         DWMk1VFNifLQ8/DpARPJPOrU2OMf54YmZBf3RClT6E899LXIVabC34SVJSGiibX72wOb
+         D9NBJrkUVLFRX+QiX8B/agFMFsHf/qI//yQaRXAUvdOvtlB19mccOMJUuXEAjVtp4SiA
+         Hh0wimtrmrBXR/kA42++64rs2Qnx+w3fyoyKumm1ji3AqbpCDjY4L2qAHJltzpqB6nMa
+         KaVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774977799; x=1775582599;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xfWyR5Bt/s3UxGGXxRm5lQuzzRDmpPpu5B45UFWlrgw=;
+        b=NPga2VEWZe5WOOki5qJegtx8KnFUxfJWhOiZBl+cvXMCzwm8Hc00CWhmtvXcgI+oqK
+         EWU2hv49KTzy/jQdw0viq9LIsKWhM33ilBsa0dWNW2UURsbjiNM9AsAy3tbpOM2qMyIk
+         tHWvqdjqT2DhQjhy/IOOTrOXB4jqPGbc+X7nf/VUP2k3RgAjsXQj0pktwSKhooK1hRTk
+         gC+aMmZ6Kqi/cnNFSy6U+jh2Y2g2U8hvWIISTa0Ip6jNdJ0X7Ggdqx/CJg1K+sXam8su
+         G0RYvap2V/RXIOS93PjpsuvrT02AMYMnTc0cYFlUTueoeGnLXjmwHkMBDyNSpgoEVqYQ
+         1ZBA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXzLQpActs9MOB6N32/fi/yKYksyszoczA6iHvZ+neETZAezbVjrGYwQgmmMWZnswpU1M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx159r33bwHHw3V6mElndLoeJbseDjywKKI0GNcZv9ZCm6lXorZ
+	QIKVylA6N/CpVSuDbF1dG6n3Pd3ccHi6I4wfLUTIoVz8uJBDlEbd7dRGu96HQHuE2/Uq7l6noHM
+	MMhhGy7mTu3hSpPzuYvIv6NiW3IIKGwK2Qva4gzvE
+X-Gm-Gg: ATEYQzx/Rc8ouets6Vr5UpBeYrfqlJ0N/JGoryFAbzzUD/T5ccI8XGv+2et+fqvsSdm
+	Ob+PdWQEExFNYaI9niUZXqK69qh/aQmSaQ2Weg5G+tFRAVmHMWclg9ifzlyMNPegSKlKah91kzp
+	RA9GbqMgiYlC3WemzbP/4oC8SyjO9CNaotOY0OeIgFuCjpcRewF5HdLFsdX64xVzMafiL4XJ2Sb
+	N3a/LP6nUyWx9tCDZBwxGqk3f45dNymTUXfjIKBsz40jnzmQ1jVbJZPD4iB5IZrARQq7spo8yYn
+	BhDRH3tp
+X-Received: by 2002:ac8:7e8a:0:b0:509:cd7:aa18 with SMTP id
+ d75a77b69052e-50d3b84b356mr2139331cf.10.1774977797806; Tue, 31 Mar 2026
+ 10:23:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA5PPF80B25317E:EE_|CY3PR12MB9678:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c584f45-9118-4109-3edf-08de8f4a2047
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7xyKsP9A8bK1EfP/uXNSt0vmgGI4GlpuJd4HjDYxgqCVzQ+ATko7/LhRFfEsJCETThfZau8jj40Ea1E0/Akn2oqVnHdw2pt8GGLA3fL1WY4taanhIOMSZkV2Jd9LRPsLU7LBym3fMWNBByrLlFtGWhmdUqqvO9vn4o7GfkZJfT0qoq1yrQXINSq2NgZbEzRNiBkyID/I/aULzDCgFQVrg7E83fHYGiOTB7sDQYGzJKn4fUjjmIQuYlYemr1r9fb+xyqg3Z/nCXKRM+QOjmkw8sjOwqdwT1OaRuFT/okdU+LYfx3rJvpMN5WjNX/4gLjblpIA1k/u9MMrCAAFtKQ95k/HUo8eRmwdFu6dUe0bp4AOnF2RPl+PIZQZ/QyxD2JYjENT0hnhEbx8siwaTVvaPWOKbFyNcsolhRK6im4A3BnhWUgS+Za0rC5A/QxOMi5cOawPyxt8rlBioiC7X/u+XfCbfUAXyLmsrsTwLsDA/AnKBprMHhNpFbedWbw2kZxfbKpqk0Wk5zLkRxQiMccVqfccuEU58rxM1/9ekqRSd6XTEzxpKGMzlNeUT7oLkETHW82brmuF15GrVk+y0Ccf5XLhup3pvAh8KuVpSDd6kgK6l5JXrqpWVpuTEg0PSduSr23e0g8OCn3vaWMp53yf7Z4Y55QVSGE116B+N2Z+lKKeoHLXhhTEomAZa2l5B+x0KJc5BKIIOTC6asoeVLsXSe5S/6qQZI/DF14LeDxvjr3bnWgFdBMntz44gBIO+9N6
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA5PPF80B25317E.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5WhE8rp4oc8nZmivJqPEfEHBWVjkp0a+B/rzG9yZVzxI5dpXrCKvPqT3DFx5?=
- =?us-ascii?Q?oNFm3zZQItUhx9BKVfX9tIqHXwF3Y+GPp2/mDyt/njV/LGFl70yfWbskagW6?=
- =?us-ascii?Q?LIZybADXjO1zNVGzuvDXrb2n39TS+Ol99yiw97frTGPHP5TpjxreT40aJZlY?=
- =?us-ascii?Q?lu+LHhMXshd553GfBUawvZgHuHCBiK7ljdTplQSJVuLlqe8Xh9KWHcwtTr8o?=
- =?us-ascii?Q?CkTi+gDfJmijlZc72zUlb90+GBvMPoT1d/8q8FvT1cZocHfP+pIs2O5H7ztP?=
- =?us-ascii?Q?bT53/lrxmOtfZ1i+r4Z6EjBhL4agaTg8smdvYesPwNhYowC2ssBTdMoIbJAA?=
- =?us-ascii?Q?Ier1kUWeOyfssCcHUEtqoyxfILujSKgYCtnJfyQ94EEYte9mFlFgPHCq4uvl?=
- =?us-ascii?Q?TjApy8Sc4tdlDZxDQuOhcAziw+0i0c2wc/S48k1hlOuBNVejDnWQajruHCtf?=
- =?us-ascii?Q?CTYubJ5zjle9TN+Pf1zlkukAPbUJie7DU0W2HXK/Yoiofu2kzpSicKTbULRS?=
- =?us-ascii?Q?QeCxYn03IywoIL2e0zIGTAkbC/wY1ZXdpxv+rgltw1XL3BMmzz/jJW2mtFR+?=
- =?us-ascii?Q?FqSrH7bAC445mIHD2gHnTIi7RiOiwyaHYgtPOXrILThdIbQpquq+jaimTVFl?=
- =?us-ascii?Q?rGM3VwMYmAprn16rLbgPYW7DyvXoPfkRee0RLP83SEkRVgj5LZXc1Av7umRI?=
- =?us-ascii?Q?lEyTbZoKEBVlrI9x7EpIaY6HP54aIuUAc8NZTJatZ7hyBykxOwNgLEMize4r?=
- =?us-ascii?Q?4/ZvH25/IHSh1D5TeEvXe8FBUOvvg7LrBzilIx3G+bCmS+qhNHEVklBHmO/y?=
- =?us-ascii?Q?VZBTZ3aD3GR93/QWaurJ0ceUDvl4yAS0OLPC+ABBT7oGqqeplXK++iLRCb1r?=
- =?us-ascii?Q?b0wfh4aEXXV4NgHhlC853phS5MeDsTg8yS4mbERyeHEVVLRU4rJHuHatxFl4?=
- =?us-ascii?Q?M6iEMXGuK3XJwBpJSEym+KY/LUHyJuz/UiOXvfLwKVTovkq+FP9w/DJgbQqG?=
- =?us-ascii?Q?bsx/grPwNSY38HUBXHMX0unM9vsIcT9Akg56ARphRKzlt6AI+qUtjZL/LEY1?=
- =?us-ascii?Q?pFDiqQIeaEN//GHGC6M9qx9peJQWwS4C30/djBlcH/my4pUBM5mMBrROjS6D?=
- =?us-ascii?Q?IBbCxqpR+f0ImeH9k0I/foMETPxYCGvl0XGkOZGCnqvSm+DGiUfa1PQCix1T?=
- =?us-ascii?Q?bzn7U+7kgjtjKzrc9kgQKk9ri2Z2cTAX48pocoPGK7OHsQxqARb8jeLwwTKS?=
- =?us-ascii?Q?D3f8qsbsCxxjzD/fyYpiXdxsUFHzkS4SFTyFYzCSf4VL0w2GpzviFr8dDDSY?=
- =?us-ascii?Q?lDGvu69eIfAUt+j33sdSjb4XWnAOfesIdAYhAY1ozI2RwXVxhxfd0mOg4pBY?=
- =?us-ascii?Q?FWKlEwsFJqE7b72NuTtYf5ZhzbpT7WQxLsAN+t3mzflY39ahIcDnL/99wjhd?=
- =?us-ascii?Q?1a0C3cPkw3ZDaRxEz3UP9ge/JlAzFfQbyBjNxCHbA8lMy7HZEaISDLUmPG6y?=
- =?us-ascii?Q?HoIvaZ77sdCBvZRifz+btyB90pz19+IamPxK89vpwXPDQDhp61DbP1h7ZwqA?=
- =?us-ascii?Q?Rr5/2qFfGe4o5T67Llyz4VEq8hHXG9VRQ6eckI9ASXPAniRoZ8fz25ZV0Q4d?=
- =?us-ascii?Q?J2xpmptAofvW5MwuzqJpvVJD2QH5Ksn9yYnpjEvKlKVE8H+5mH8Vl2StjdAN?=
- =?us-ascii?Q?65cTveBmRwk3hQZPA8c3y77SoqqpkcphkrTICGpSgRynU6+xNy/bZXwX+O1r?=
- =?us-ascii?Q?+qLovL0PwQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c584f45-9118-4109-3edf-08de8f4a2047
-X-MS-Exchange-CrossTenant-AuthSource: SA5PPF80B25317E.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 17:22:46.6841
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4T+/tIyxlInZF2xIIgyMEe1RNdPKfST1QTb8FPnYi/WxM8YKRTYP9QwLx1Z044hBPkaApy3cQLg9NzWop/FZXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9678
+From: Raghavendra Rao Ananta <rananta@google.com>
+Date: Tue, 31 Mar 2026 10:23:06 -0700
+X-Gm-Features: AQROBzAug7VW6B-qzD1poV9KLyWd12C1M343Pk2V-DjifVSozVj00eJJb1i-ZW0
+Message-ID: <CAJHc60zTBn9xMksi-_UBK=W07rp2vGVZ9ToYhFyadNz4zCVHAA@mail.gmail.com>
+Subject: [RFC] Observed lockdep circular dependency in SR-IOV paths
+To: Alex Williamson <alex@shazbot.org>
+Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Josh Hilke <jrhilke@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add a new VFIO PCI driver for NVIDIA GPUs that enables DMA testing
-via the Falcon (Fast Logic Controller) microcontrollers. This driver
-extracts and adapts the DMA test functionality from NVIDIA's
-gpu-admin-tools project and integrates it into the existing VFIO
-selftest framework.
+Hi Alex,
 
-Falcons are general-purpose microcontrollers present on NVIDIA GPUs
-that can perform DMA operations between system memory and device
-memory. By leveraging Falcon DMA, this driver allows NVIDIA GPUs to
-be tested alongside Intel IOAT and DSA devices using the same
-selftest infrastructure.
+While running the vfio_pci_sriov_uapi_test [1] on a CONFIG_LOCKDEP
+enabled kernel (7.0-rc1), we observed the following lockdep circular
+locking dependency warning:
 
-The driver is named 'nv_falcon' to reflect that it specifically
-controls the Falcon microcontrollers for DMA operations, rather
-than exposing general GPU functionality.
+[  286.997167] ======================================================
+[  287.003363] WARNING: possible circular locking dependency detected
+[  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
+[  287.015074] ------------------------------------------------------
+[  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
+[  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
+vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.036530]
+[  287.036530] but task is already holding lock:
+[  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
+vfio_group_fops_unl_ioctl+0x44d/0x7b0
+[  287.051879]
+[  287.051879] which lock already depends on the new lock.
+[  287.051879]
+[  287.060070]
+[  287.060070] the existing dependency chain (in reverse order) is:
+[  287.067568]
+[  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
+[  287.073941]        __mutex_lock+0x92/0xb80
+[  287.078058]        vfio_assign_device_set+0x66/0x1b0
+[  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
+[  287.088638]        vfio_pci_probe+0xd2/0x100
+[  287.092933]        local_pci_probe_callback+0x4d/0xa0
+[  287.098001]        process_scheduled_works+0x2ca/0x680
+[  287.103158]        worker_thread+0x1e8/0x2f0
+[  287.107452]        kthread+0x10c/0x140
+[  287.111230]        ret_from_fork+0x18e/0x360
+[  287.115519]        ret_from_fork_asm+0x1a/0x30
+[  287.119983]
+[  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
+[  287.127219]        __flush_work+0x345/0x490
+[  287.131429]        pci_device_probe+0x2e3/0x490
+[  287.135979]        really_probe+0x1f9/0x4e0
+[  287.140180]        __driver_probe_device+0x77/0x100
+[  287.145079]        driver_probe_device+0x1e/0x110
+[  287.149803]        __device_attach_driver+0xe3/0x170
+[  287.154789]        bus_for_each_drv+0x125/0x150
+[  287.159346]        __device_attach+0xca/0x1a0
+[  287.163720]        device_initial_probe+0x34/0x50
+[  287.168445]        pci_bus_add_device+0x6e/0x90
+[  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
+[  287.177719]        sriov_add_vfs+0x2c/0x60
+[  287.181838]        sriov_enable+0x306/0x4a0
+[  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
+[  287.191715]        sriov_numvfs_store+0xd9/0x1c0
+[  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
+[  287.201338]        vfs_write+0x2be/0x3b0
+[  287.205286]        ksys_write+0x73/0x100
+[  287.209233]        do_syscall_64+0x14d/0x750
+[  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.219120]
+[  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
+[  287.225491]        __lock_acquire+0x14c6/0x2800
+[  287.230048]        lock_acquire+0xd3/0x2f0
+[  287.234168]        down_write+0x3a/0xc0
+[  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.243436]        __rpm_callback+0x8c/0x310
+[  287.247730]        rpm_resume+0x529/0x6f0
+[  287.251765]        __pm_runtime_resume+0x68/0x90
+[  287.256402]        vfio_pci_core_enable+0x44/0x310
+[  287.261216]        vfio_pci_open_device+0x1c/0x80
+[  287.265947]        vfio_df_open+0x10f/0x150
+[  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+[  287.275476]        __se_sys_ioctl+0x71/0xc0
+[  287.279679]        do_syscall_64+0x14d/0x750
+[  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.289559]
+[  287.289559] other info that might help us debug this:
+[  287.289559]
+[  287.297582] Chain exists of:
+[  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
+--> &new_dev_set->lock
+[  287.297582]
+[  287.310023]  Possible unsafe locking scenario:
+[  287.310023]
+[  287.315961]        CPU0                    CPU1
+[  287.320510]        ----                    ----
+[  287.325059]   lock(&new_dev_set->lock);
+[  287.328917]
+lock((work_completion)(&arg.work));
+[  287.336153]                                lock(&new_dev_set->lock);
+[  287.342523]   lock(&vdev->memory_lock);
+[  287.346382]
+[  287.346382]  *** DEADLOCK ***
+[  287.346382]
+[  287.352315] 2 locks held by vfio_pci_sriov_/18636:
+[  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
+at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
+[  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
+at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
+[  287.376976]
+[  287.376976] stack backtrace:
+[  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
+Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
+[  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
+[  287.381356] Call Trace:
+[  287.381357]  <TASK>
+[  287.381358]  dump_stack_lvl+0x54/0x70
+[  287.381361]  print_circular_bug+0x2e1/0x300
+[  287.381363]  check_noncircular+0xf9/0x120
+[  287.381364]  ? __lock_acquire+0x5b4/0x2800
+[  287.381366]  __lock_acquire+0x14c6/0x2800
+[  287.381368]  ? pci_mmcfg_read+0x4f/0x220
+[  287.381370]  ? pci_mmcfg_write+0x57/0x220
+[  287.381371]  ? lock_acquire+0xd3/0x2f0
+[  287.381373]  ? pci_mmcfg_write+0x57/0x220
+[  287.381374]  ? lock_release+0xef/0x360
+[  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381377]  lock_acquire+0xd3/0x2f0
+[  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381379]  ? lock_is_held_type+0x76/0x100
+[  287.381382]  down_write+0x3a/0xc0
+[  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+[  287.381385]  __rpm_callback+0x8c/0x310
+[  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
+[  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+[  287.381390]  rpm_resume+0x529/0x6f0
+[  287.381392]  ? lock_is_held_type+0x76/0x100
+[  287.381394]  __pm_runtime_resume+0x68/0x90
+[  287.381396]  vfio_pci_core_enable+0x44/0x310
+[  287.381398]  vfio_pci_open_device+0x1c/0x80
+[  287.381399]  vfio_df_open+0x10f/0x150
+[  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+[  287.381402]  __se_sys_ioctl+0x71/0xc0
+[  287.381404]  do_syscall_64+0x14d/0x750
+[  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.381406]  ? trace_irq_disable+0x25/0xd0
+[  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.381410] RIP: 0033:0x447c8b
+[  287.381413] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24
+10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00
+00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28
+00 00
+[  287.381414] RSP: 002b:00007ffff5fb2530 EFLAGS: 00000246 ORIG_RAX:
+0000000000000010
+[  287.381415] RAX: ffffffffffffffda RBX: 00007ffff5fb2d90 RCX: 0000000000447c8b
+[  287.381416] RDX: 00007ffff5fb25b0 RSI: 0000000000003b6a RDI: 0000000000000006
+[  287.381417] RBP: 00007ffff5fb2620 R08: 0000000000000000 R09: 00000000ffffffff
+[  287.381418] R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffff5fb2d78
+[  287.381419] R13: 0000000000000016 R14: 00000000004f5440 R15: 0000000000000016
+[  287.381423]  </TASK>
 
-Reference implementation:
-https://github.com/NVIDIA/gpu-admin-tools
+Initial analysis suggests it could be a false positive, depicting a
+classic ABBA circular locking scenario:
+* Trace#1 and Trace#2: Triggered while setting sriov_numvfs, where the
+PF's vdev->memory_lock (A) is taken first, and then the VF's
+dev_set->lock is allocated and taken (B).
+* Trace#0: Triggered during VFIO_GROUP_GET_DEVICE_FD where first the
+VF's dev_set->lock is taken (B) and then the PF's vdev->memory_lock
+(A) is taken.
 
-Signed-off-by: Rubin Du <rubind@nvidia.com>
----
- .../selftests/vfio/lib/drivers/nv_falcon/hw.h | 349 ++++++++
- .../vfio/lib/drivers/nv_falcon/nv_falcon.c    | 755 ++++++++++++++++++
- tools/testing/selftests/vfio/lib/libvfio.mk   |   2 +
- .../selftests/vfio/lib/vfio_pci_driver.c      |   3 +
- 4 files changed, 1109 insertions(+)
- create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcon/hw.h
- create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
+From Trace#1/Trace#2, the dev_set->lock (B) is allocated and
+immediately grabbed during VF creation. Since it isn't taken until
+after the device is fully created and VFIO_GROUP_GET_DEVICE_FD is
+called on it, it's perfectly synchronized, and therefore cannot cause
+a deadlock. As far as we know, this is at least true for the VFs being
+created, i.e, we were able to find a 'dev_set' from the
+'vfio_device_set_xa' xarray using 'idx' in vfio_assign_device_set().
 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/nv_falcon/hw.h b/tools/testing/selftests/vfio/lib/drivers/nv_falcon/hw.h
-new file mode 100644
-index 000000000000..feafa8edccf3
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/drivers/nv_falcon/hw.h
-@@ -0,0 +1,349 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
-+ */
-+#ifndef _NV_FALCON_HW_H_
-+#define _NV_FALCON_HW_H_
-+
-+/* PMC (Power Management Controller) Registers */
-+#define NV_PMC_BOOT_0							0x00000000
-+#define NV_PMC_ENABLE							0x00000200
-+#define NV_PMC_ENABLE_PWR						0x00002000
-+#define NV_PMC_ENABLE_HUB						0x20000000
-+
-+/* Falcon Base Pages for Different Engines */
-+#define NV_PPWR_FALCON_BASE						0x10a000
-+#define NV_PGSP_FALCON_BASE						0x110000
-+
-+/* Falcon Common Register Offsets (relative to base_page) */
-+#define NV_FALCON_DMACTL_OFFSET					0x010c
-+#define NV_FALCON_CPUCTL_OFFSET					0x0100
-+#define NV_FALCON_ENGINE_RESET_OFFSET				0x03c0
-+
-+/* DMEM Control Register Flags */
-+#define NV_PPWR_FALCON_DMEMC_AINCR_TRUE			0x01000000
-+#define NV_PPWR_FALCON_DMEMC_AINCW_TRUE			0x02000000
-+
-+/* Falcon DMEM port offsets (for port 0) */
-+#define NV_FALCON_DMEMC_OFFSET					0x1c0
-+#define NV_FALCON_DMEMD_OFFSET					0x1c4
-+
-+/* DMA Register Offsets (relative to base_page) */
-+#define NV_FALCON_DMA_ADDR_LOW_OFFSET				0x110
-+#define NV_FALCON_DMA_MEM_OFFSET				0x114
-+#define NV_FALCON_DMA_CMD_OFFSET				0x118
-+#define NV_FALCON_DMA_BLOCK_OFFSET				0x11c
-+#define NV_FALCON_DMA_ADDR_HIGH_OFFSET				0x128
-+
-+/* DMA Global Address Top Bits Register */
-+#define NV_GPU_DMA_ADDR_TOP_BITS_REG			0x100f04
-+
-+/* DMA Command Register Bit Definitions */
-+#define NV_FALCON_DMA_CMD_WRITE_BIT				0x20
-+#define NV_FALCON_DMA_CMD_SIZE_SHIFT				8
-+#define NV_FALCON_DMA_CMD_DONE_BIT				0x2
-+
-+/*
-+ * Falcon DMA is synchronous, so a transfer size and count larger than
-+ * its per-operation maximum adds no value.
-+ */
-+
-+/* DMA block size and alignment */
-+#define NV_FALCON_DMA_MAX_TRANSFER_SIZE			256
-+#define NV_FALCON_DMA_MAX_TRANSFER_COUNT		1
-+
-+/* DMACTL register bits */
-+#define NV_FALCON_DMACTL_DMEM_SCRUBBING			0x1
-+#define NV_FALCON_DMACTL_READY_MASK			0x6
-+
-+/* Falcon Core Selection Register */
-+#define NV_FALCON_CORE_SELECT_OFFSET			0x1668
-+#define NV_FALCON_CORE_SELECT_MASK			0x30
-+
-+/* Falcon mailbox register (for Ada+ reset check) */
-+#define NV_FALCON_MAILBOX_TEST_OFFSET			0x40c
-+#define NV_FALCON_MAILBOX_RESET_MAGIC			0xbadf5620
-+
-+/* Falcon Message Queue Register Offsets (relative to base_page) */
-+#define NV_FALCON_QUEUE_HEAD_BASE_OFFSET		0x2c00
-+#define NV_FALCON_QUEUE_TAIL_BASE_OFFSET		0x2c04
-+#define NV_FALCON_QUEUE_STRIDE				0x8
-+#define NV_FALCON_MSG_QUEUE_HEAD_BASE_OFFSET		0x2c80
-+#define NV_FALCON_MSG_QUEUE_TAIL_BASE_OFFSET		0x2c84
-+
-+/* FSP Falcon Base Pages */
-+#define NV_FSP_FALCON_BASE						0x8f0100
-+/* base_page = cpuctl & ~0xfff */
-+#define NV_FSP_FALCON_BASE_PAGE						0x8f0000
-+#define NV_FSP_EMEM_BASE						0x8f2000
-+
-+/* FSP EMEM Port Offsets (relative to FSP EMEM base) */
-+#define NV_FSP_EMEMC_OFFSET						0xac0
-+#define NV_FSP_EMEMD_OFFSET						0xac4
-+#define NV_FSP_EMEM_PORT_STRIDE						0x8
-+
-+/* EMEM Control Register Flags (same as DMEM) */
-+#define NV_FALCON_EMEMC_AINCR					0x01000000
-+#define NV_FALCON_EMEMC_AINCW					0x02000000
-+
-+/* FSP RPC channel configuration */
-+#define NV_FSP_RPC_CHANNEL_SIZE					1024
-+#define NV_FSP_RPC_MAX_PACKET_SIZE				1024
-+#define NV_FSP_RPC_CHANNEL_HOPPER				2
-+#define NV_FSP_RPC_EMEM_BASE					\
-+	(NV_FSP_RPC_CHANNEL_HOPPER * NV_FSP_RPC_CHANNEL_SIZE)
-+
-+/* FSP EMEM port 2 registers (pre-computed for Hopper channel 2) */
-+#define NV_FSP_EMEM_PORT2_CTRL		(NV_FSP_EMEM_BASE + NV_FSP_EMEMC_OFFSET + \
-+					 NV_FSP_RPC_CHANNEL_HOPPER * NV_FSP_EMEM_PORT_STRIDE)
-+#define NV_FSP_EMEM_PORT2_DATA		(NV_FSP_EMEM_BASE + NV_FSP_EMEMD_OFFSET + \
-+					 NV_FSP_RPC_CHANNEL_HOPPER * NV_FSP_EMEM_PORT_STRIDE)
-+
-+/* FSP queue register offsets (pre-computed for Hopper channel 2) */
-+#define NV_FSP_QUEUE_HEAD	\
-+	(NV_FSP_FALCON_BASE_PAGE + NV_FALCON_QUEUE_HEAD_BASE_OFFSET + \
-+	 NV_FSP_RPC_CHANNEL_HOPPER * NV_FALCON_QUEUE_STRIDE)
-+#define NV_FSP_QUEUE_TAIL	\
-+	(NV_FSP_FALCON_BASE_PAGE + NV_FALCON_QUEUE_TAIL_BASE_OFFSET + \
-+	 NV_FSP_RPC_CHANNEL_HOPPER * NV_FALCON_QUEUE_STRIDE)
-+#define NV_FSP_MSG_QUEUE_HEAD	\
-+	(NV_FSP_FALCON_BASE_PAGE + NV_FALCON_MSG_QUEUE_HEAD_BASE_OFFSET + \
-+	 NV_FSP_RPC_CHANNEL_HOPPER * NV_FALCON_QUEUE_STRIDE)
-+#define NV_FSP_MSG_QUEUE_TAIL	\
-+	(NV_FSP_FALCON_BASE_PAGE + NV_FALCON_MSG_QUEUE_TAIL_BASE_OFFSET + \
-+	 NV_FSP_RPC_CHANNEL_HOPPER * NV_FALCON_QUEUE_STRIDE)
-+
-+/* MCTP Header */
-+#define NV_MCTP_HDR_SEID_SHIFT					16
-+#define NV_MCTP_HDR_SEID_MASK					0xff
-+#define NV_MCTP_HDR_SEQ_SHIFT					28
-+#define NV_MCTP_HDR_SEQ_MASK					0x3
-+#define NV_MCTP_HDR_EOM_BIT					0x40000000
-+#define NV_MCTP_HDR_SOM_BIT					0x80000000
-+
-+/* MCTP Message Header */
-+#define NV_MCTP_MSG_TYPE_SHIFT					0
-+#define NV_MCTP_MSG_TYPE_MASK					0x7f
-+#define NV_MCTP_MSG_TYPE_VENDOR_DEFINED				0x7e
-+#define NV_MCTP_MSG_VENDOR_ID_SHIFT				8
-+#define NV_MCTP_MSG_VENDOR_ID_MASK				0xffff
-+#define NV_MCTP_MSG_VENDOR_ID_NVIDIA				0x10de
-+#define NV_MCTP_MSG_NVDM_TYPE_SHIFT				24
-+#define NV_MCTP_MSG_NVDM_TYPE_MASK				0xff
-+
-+/* NVDM response type */
-+#define NV_NVDM_TYPE_RESPONSE					0x15
-+
-+/* Minimum response size: mctp_hdr + msg_hdr + status_hdr + type + status */
-+#define NV_FSP_RPC_MIN_RESPONSE_WORDS			5
-+
-+/* FBIF (Frame Buffer Interface) Registers */
-+/* Legacy PMU FBIF offsets (Kepler, Maxwell Gen1) */
-+#define NV_PMU_LEGACY_FBIF_CTL_OFFSET			0x624
-+#define NV_PMU_LEGACY_FBIF_TRANSCFG_OFFSET		0x600
-+
-+/* PMU FBIF offsets */
-+#define NV_PMU_FBIF_CTL_OFFSET					0xe24
-+#define NV_PMU_FBIF_TRANSCFG_OFFSET				0xe00
-+
-+/* GSP FBIF offsets */
-+#define NV_GSP_FBIF_CTL_OFFSET					0x624
-+#define NV_GSP_FBIF_TRANSCFG_OFFSET				0x600
-+
-+/* OFA Falcon Base Page and FBIF offsets (used for Hopper+ DMA) */
-+#define NV_OFA_FALCON_BASE						0x844000
-+#define NV_OFA_FBIF_CTL_OFFSET					0x424
-+#define NV_OFA_FBIF_TRANSCFG_OFFSET				0x400
-+
-+/* OFA DMA support check register (Hopper+) */
-+#define NV_OFA_DMA_SUPPORT_CHECK_REG			0x8443c0
-+
-+/* FSP NVDM command types */
-+#define NV_NVDM_TYPE_FBDMA						0x22
-+#define NV_FBDMA_SUBCMD_ENABLE					0x1
-+
-+/* FBIF CTL2 offset (relative to fbif_ctl) */
-+#define NV_FBIF_CTL2_OFFSET						0x60
-+
-+/* FBIF TRANSCFG register bits */
-+#define NV_FBIF_TRANSCFG_TARGET_MASK			0x3
-+#define NV_FBIF_TRANSCFG_SYSMEM_DEFAULT			0x5
-+
-+/* FBIF CTL register bits */
-+#define NV_FBIF_CTL_ALLOW_PHYS_MODE				0x10
-+#define NV_FBIF_CTL_ALLOW_FULL_PHYS_MODE			0x80
-+
-+/* Memory clear register offsets */
-+#define NV_MEM_CLEAR_OFFSET						0x100b20
-+#define NV_BOOT_COMPLETE_OFFSET					0x118234
-+#define NV_BOOT_COMPLETE_MASK					0x3ff
-+
-+/* FSP boot complete register (Hopper+) */
-+#define NV_FSP_BOOT_COMPLETE_OFFSET				0x200bc
-+#define NV_FSP_BOOT_COMPLETE_MASK				0xff
-+
-+enum gpu_arch {
-+	GPU_ARCH_UNKNOWN = -1,
-+	GPU_ARCH_KEPLER = 0,
-+	GPU_ARCH_MAXWELL_GEN1,
-+	GPU_ARCH_MAXWELL_GEN2,
-+	GPU_ARCH_PASCAL,
-+	GPU_ARCH_PASCAL_10X,
-+	GPU_ARCH_VOLTA,
-+	GPU_ARCH_TURING,
-+	GPU_ARCH_AMPERE,
-+	GPU_ARCH_ADA,
-+	GPU_ARCH_HOPPER,
-+};
-+
-+enum falcon_type {
-+	FALCON_TYPE_PMU_LEGACY = 0,
-+	FALCON_TYPE_PMU,
-+	FALCON_TYPE_GSP,
-+	FALCON_TYPE_OFA,
-+};
-+
-+struct falcon {
-+	u32 base_page;
-+	u32 dmactl;
-+	u32 engine_reset;
-+	u32 fbif_ctl;
-+	u32 fbif_ctl2;
-+	u32 fbif_transcfg;
-+	u32 dmem_control_reg;
-+	u32 dmem_data_reg;
-+	bool no_outside_reset;
-+};
-+
-+struct gpu_properties {
-+	u32 pmc_enable_mask;
-+	bool memory_clear_supported;
-+	enum falcon_type falcon_type;
-+};
-+
-+static const u32 verified_gpu_map[] = {
-+	0x0e40a0a2,	/* K520 */
-+	0x0e6000a1,	/* GTX660 */
-+	0x0e63a0a1,	/* K4000 */
-+	0x0f22d0a1,	/* K80 */
-+	0x108000a1,	/* GT635 */
-+	0x117010a2,	/* GTX750 */
-+	0x117020a2,	/* GTX745 */
-+	0x124320a1,	/* M60 */
-+	0x130000a1,	/* P100 */
-+	0x134000a1,	/* P4 */
-+	0x132000a1,	/* P40 */
-+	0x140000a1,	/* V100 */
-+	0x164000a1,	/* T4 */
-+	0xb77000a1,	/* A16 */
-+	0x170000a1,	/* A100 */
-+	0xb72000a1,	/* A10 */
-+	0x180000a1,	/* H100 */
-+	0x194000a1,	/* L4 */
-+	0x192000a1,	/* L40S */
-+};
-+
-+#define VERIFIED_GPU_MAP_SIZE ARRAY_SIZE(verified_gpu_map)
-+
-+static const struct gpu_properties gpu_properties_map[] = {
-+	[GPU_ARCH_KEPLER] = {
-+		.pmc_enable_mask = NV_PMC_ENABLE_PWR | NV_PMC_ENABLE_HUB,
-+		.memory_clear_supported = false,
-+		.falcon_type = FALCON_TYPE_PMU_LEGACY,
-+	},
-+	[GPU_ARCH_MAXWELL_GEN1] = {
-+		.pmc_enable_mask = NV_PMC_ENABLE_PWR | NV_PMC_ENABLE_HUB,
-+		.memory_clear_supported = false,
-+		.falcon_type = FALCON_TYPE_PMU_LEGACY,
-+	},
-+	[GPU_ARCH_MAXWELL_GEN2] = {
-+		.pmc_enable_mask = NV_PMC_ENABLE_PWR,
-+		.memory_clear_supported = false,
-+		.falcon_type = FALCON_TYPE_PMU,
-+	},
-+	[GPU_ARCH_PASCAL] = {
-+		.pmc_enable_mask = NV_PMC_ENABLE_PWR,
-+		.memory_clear_supported = false,
-+		.falcon_type = FALCON_TYPE_PMU,
-+	},
-+	[GPU_ARCH_PASCAL_10X] = {
-+		.pmc_enable_mask = 0,
-+		.memory_clear_supported = false,
-+		.falcon_type = FALCON_TYPE_PMU,
-+	},
-+	[GPU_ARCH_VOLTA] = {
-+		.pmc_enable_mask = 0,
-+		.memory_clear_supported = false,
-+		.falcon_type = FALCON_TYPE_GSP,
-+	},
-+	[GPU_ARCH_TURING] = {
-+		.pmc_enable_mask = 0,
-+		.memory_clear_supported = true,
-+		.falcon_type = FALCON_TYPE_GSP,
-+	},
-+	[GPU_ARCH_AMPERE] = {
-+		.pmc_enable_mask = 0,
-+		.memory_clear_supported = true,
-+		.falcon_type = FALCON_TYPE_GSP,
-+	},
-+	[GPU_ARCH_ADA] = {
-+		.pmc_enable_mask = 0,
-+		.memory_clear_supported = true,
-+		.falcon_type = FALCON_TYPE_PMU,
-+	},
-+	[GPU_ARCH_HOPPER] = {
-+		.pmc_enable_mask = 0,
-+		.memory_clear_supported = true,
-+		.falcon_type = FALCON_TYPE_OFA,
-+	},
-+};
-+
-+static const struct falcon falcon_map[] = {
-+	[FALCON_TYPE_PMU_LEGACY] = {
-+		.base_page = NV_PPWR_FALCON_BASE,
-+		.dmactl = NV_PPWR_FALCON_BASE + NV_FALCON_DMACTL_OFFSET,
-+		.engine_reset = NV_PPWR_FALCON_BASE + NV_FALCON_ENGINE_RESET_OFFSET,
-+		.fbif_ctl = NV_PPWR_FALCON_BASE + NV_PMU_LEGACY_FBIF_CTL_OFFSET,
-+		.fbif_ctl2 = NV_PPWR_FALCON_BASE +
-+			     NV_PMU_LEGACY_FBIF_CTL_OFFSET + NV_FBIF_CTL2_OFFSET,
-+		.fbif_transcfg = NV_PPWR_FALCON_BASE + NV_PMU_LEGACY_FBIF_TRANSCFG_OFFSET,
-+		.dmem_control_reg = NV_PPWR_FALCON_BASE + NV_FALCON_DMEMC_OFFSET,
-+		.dmem_data_reg = NV_PPWR_FALCON_BASE + NV_FALCON_DMEMD_OFFSET,
-+		.no_outside_reset = false,
-+	},
-+	[FALCON_TYPE_PMU] = {
-+		.base_page = NV_PPWR_FALCON_BASE,
-+		.dmactl = NV_PPWR_FALCON_BASE + NV_FALCON_DMACTL_OFFSET,
-+		.engine_reset = NV_PPWR_FALCON_BASE + NV_FALCON_ENGINE_RESET_OFFSET,
-+		.fbif_ctl = NV_PPWR_FALCON_BASE + NV_PMU_FBIF_CTL_OFFSET,
-+		.fbif_ctl2 = NV_PPWR_FALCON_BASE + NV_PMU_FBIF_CTL_OFFSET + NV_FBIF_CTL2_OFFSET,
-+		.fbif_transcfg = NV_PPWR_FALCON_BASE + NV_PMU_FBIF_TRANSCFG_OFFSET,
-+		.dmem_control_reg = NV_PPWR_FALCON_BASE + NV_FALCON_DMEMC_OFFSET,
-+		.dmem_data_reg = NV_PPWR_FALCON_BASE + NV_FALCON_DMEMD_OFFSET,
-+		.no_outside_reset = false,
-+	},
-+	[FALCON_TYPE_GSP] = {
-+		.base_page = NV_PGSP_FALCON_BASE,
-+		.dmactl = NV_PGSP_FALCON_BASE + NV_FALCON_DMACTL_OFFSET,
-+		.engine_reset = NV_PGSP_FALCON_BASE + NV_FALCON_ENGINE_RESET_OFFSET,
-+		.fbif_ctl = NV_PGSP_FALCON_BASE + NV_GSP_FBIF_CTL_OFFSET,
-+		.fbif_ctl2 = NV_PGSP_FALCON_BASE + NV_GSP_FBIF_CTL_OFFSET + NV_FBIF_CTL2_OFFSET,
-+		.fbif_transcfg = NV_PGSP_FALCON_BASE + NV_GSP_FBIF_TRANSCFG_OFFSET,
-+		.dmem_control_reg = NV_PGSP_FALCON_BASE + NV_FALCON_DMEMC_OFFSET,
-+		.dmem_data_reg = NV_PGSP_FALCON_BASE + NV_FALCON_DMEMD_OFFSET,
-+		.no_outside_reset = false,
-+	},
-+	[FALCON_TYPE_OFA] = {
-+		.base_page = NV_OFA_FALCON_BASE,
-+		.dmactl = NV_OFA_FALCON_BASE + NV_FALCON_DMACTL_OFFSET,
-+		.engine_reset = NV_OFA_FALCON_BASE + NV_FALCON_ENGINE_RESET_OFFSET,
-+		.fbif_ctl = NV_OFA_FALCON_BASE + NV_OFA_FBIF_CTL_OFFSET,
-+		.fbif_ctl2 = NV_OFA_FALCON_BASE + NV_OFA_FBIF_CTL_OFFSET + NV_FBIF_CTL2_OFFSET,
-+		.fbif_transcfg = NV_OFA_FALCON_BASE + NV_OFA_FBIF_TRANSCFG_OFFSET,
-+		.dmem_control_reg = NV_OFA_FALCON_BASE + NV_FALCON_DMEMC_OFFSET,
-+		.dmem_data_reg = NV_OFA_FALCON_BASE + NV_FALCON_DMEMD_OFFSET,
-+		.no_outside_reset = true,
-+	},
-+};
-+
-+#endif /* _NV_FALCON_HW_H_ */
-diff --git a/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c b/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
-new file mode 100644
-index 000000000000..9e2943040c4d
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
-@@ -0,0 +1,755 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
-+ */
-+#include <stdint.h>
-+#include <strings.h>
-+#include <unistd.h>
-+#include <stdbool.h>
-+#include <string.h>
-+#include <time.h>
-+
-+#include <linux/errno.h>
-+#include <linux/io.h>
-+#include <linux/pci_ids.h>
-+
-+#include <libvfio.h>
-+
-+#include "hw.h"
-+
-+struct gpu_device {
-+	enum gpu_arch arch;
-+	void *bar0;
-+	bool is_memory_clear_supported;
-+	const struct falcon *falcon;
-+	u32 pmc_enable_mask;
-+	bool fsp_dma_enabled;
-+
-+	/* Pending memcpy parameters, set by memcpy_start() */
-+	u64 memcpy_src;
-+	u64 memcpy_dst;
-+	u64 memcpy_size;
-+	u64 memcpy_count;
-+};
-+
-+static inline struct gpu_device *to_gpu_device(struct vfio_pci_device *device)
-+{
-+	return device->driver.region.vaddr;
-+}
-+
-+static enum gpu_arch nv_gpu_arch_lookup(u32 pmc_boot_0)
-+{
-+	u32 arch = (pmc_boot_0 >> 24) & 0x1f;
-+
-+	switch (arch) {
-+	case 0x0e:
-+	case 0x0f:
-+	case 0x10:
-+		return GPU_ARCH_KEPLER;
-+	case 0x11:
-+		return GPU_ARCH_MAXWELL_GEN1;
-+	case 0x12:
-+		return GPU_ARCH_MAXWELL_GEN2;
-+	case 0x13:
-+		/* P100 (impl 0) uses PMC reset; P4/P40 use engine reset */
-+		if (((pmc_boot_0 >> 20) & 0xf) == 0)
-+			return GPU_ARCH_PASCAL;
-+		return GPU_ARCH_PASCAL_10X;
-+	case 0x14:
-+		return GPU_ARCH_VOLTA;
-+	case 0x16:
-+		return GPU_ARCH_TURING;
-+	case 0x17:
-+		return GPU_ARCH_AMPERE;
-+	case 0x18:
-+		return GPU_ARCH_HOPPER;
-+	case 0x19:
-+		return GPU_ARCH_ADA;
-+	default:
-+		return GPU_ARCH_UNKNOWN;
-+	}
-+}
-+
-+static inline u32 gpu_read32(struct gpu_device *gpu, u32 offset)
-+{
-+	return readl(gpu->bar0 + offset);
-+}
-+
-+static inline void gpu_write32(struct gpu_device *gpu, u32 offset, u32 value)
-+{
-+	writel(value, gpu->bar0 + offset);
-+}
-+
-+static int gpu_poll_register(struct vfio_pci_device *device,
-+			     const char *name, u32 offset,
-+			     u32 expected, u32 mask, u32 timeout_ms)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	struct timespec start, now;
-+	u64 elapsed_ms;
-+	u32 value;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+
-+	for (;;) {
-+		value = gpu_read32(gpu, offset);
-+		if ((value & mask) == expected)
-+			return 0;
-+
-+		clock_gettime(CLOCK_MONOTONIC, &now);
-+		elapsed_ms = (now.tv_sec - start.tv_sec) * 1000
-+			     + (now.tv_nsec - start.tv_nsec) / 1000000;
-+
-+		if (elapsed_ms >= timeout_ms)
-+			break;
-+
-+		usleep(1000);
-+	}
-+
-+	dev_err(device,
-+		"Timeout polling %s (0x%x): value=0x%x expected=0x%x mask=0x%x after %llu ms\n",
-+		name, offset, value, expected, mask,
-+		(unsigned long long)elapsed_ms);
-+	return -ETIMEDOUT;
-+}
-+
-+static int fsp_poll_queue(struct vfio_pci_device *device, const char *name,
-+			  u32 head_reg, u32 tail_reg, bool wait_empty,
-+			  u32 timeout_ms)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	struct timespec start, now;
-+	u64 elapsed_ms;
-+	u32 head, tail;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+
-+	for (;;) {
-+		head = gpu_read32(gpu, head_reg);
-+		tail = gpu_read32(gpu, tail_reg);
-+		if (wait_empty ? (head == tail) : (head != tail))
-+			return 0;
-+
-+		clock_gettime(CLOCK_MONOTONIC, &now);
-+		elapsed_ms = (now.tv_sec - start.tv_sec) * 1000
-+			     + (now.tv_nsec - start.tv_nsec) / 1000000;
-+
-+		if (elapsed_ms >= timeout_ms)
-+			break;
-+
-+		usleep(1000);
-+	}
-+
-+	dev_err(device,
-+		"Timeout polling %s: head=0x%x tail=0x%x wait_empty=%d after %llu ms\n",
-+		name, head, tail, wait_empty,
-+		(unsigned long long)elapsed_ms);
-+	return -ETIMEDOUT;
-+}
-+
-+static void fsp_emem_write(struct vfio_pci_device *device, u32 offset,
-+			   const u32 *data, u32 count)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	u32 i;
-+
-+	/* Configure port with auto-increment for read and write */
-+	gpu_write32(gpu, NV_FSP_EMEM_PORT2_CTRL,
-+		    offset | NV_FALCON_EMEMC_AINCR | NV_FALCON_EMEMC_AINCW);
-+
-+	for (i = 0; i < count; i++)
-+		gpu_write32(gpu, NV_FSP_EMEM_PORT2_DATA, data[i]);
-+}
-+
-+static void fsp_emem_read(struct vfio_pci_device *device, u32 offset,
-+			  u32 *data, u32 count)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	u32 i;
-+
-+	/* Configure port with auto-increment for read and write */
-+	gpu_write32(gpu, NV_FSP_EMEM_PORT2_CTRL,
-+		    offset | NV_FALCON_EMEMC_AINCR | NV_FALCON_EMEMC_AINCW);
-+
-+	for (i = 0; i < count; i++)
-+		data[i] = gpu_read32(gpu, NV_FSP_EMEM_PORT2_DATA);
-+}
-+
-+static int fsp_rpc_send_data(struct vfio_pci_device *device, const u32 *data,
-+			     u32 count)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	int ret;
-+
-+	ret = fsp_poll_queue(device, "fsp_cmd_queue_empty",
-+			     NV_FSP_QUEUE_HEAD, NV_FSP_QUEUE_TAIL, true, 1000);
-+	if (ret)
-+		return ret;
-+
-+	fsp_emem_write(device, NV_FSP_RPC_EMEM_BASE, data, count);
-+
-+	/* Update queue head/tail to signal data is ready */
-+	gpu_write32(gpu, NV_FSP_QUEUE_TAIL,
-+		    NV_FSP_RPC_EMEM_BASE + (count - 1) * 4);
-+	gpu_write32(gpu, NV_FSP_QUEUE_HEAD, NV_FSP_RPC_EMEM_BASE);
-+
-+	return ret;
-+}
-+
-+static int fsp_rpc_receive_data(struct vfio_pci_device *device, u32 *data,
-+				u32 max_count, u32 timeout_ms)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	u32 head, tail;
-+	u32 msg_size_words;
-+	int ret;
-+
-+	ret = fsp_poll_queue(device, "fsp_msg_queue_ready",
-+			     NV_FSP_MSG_QUEUE_HEAD, NV_FSP_MSG_QUEUE_TAIL,
-+			     false, timeout_ms);
-+	if (ret)
-+		return ret;
-+
-+	head = gpu_read32(gpu, NV_FSP_MSG_QUEUE_HEAD);
-+	tail = gpu_read32(gpu, NV_FSP_MSG_QUEUE_TAIL);
-+
-+	msg_size_words = (tail - head + 4) / 4;
-+	if (msg_size_words > max_count)
-+		msg_size_words = max_count;
-+
-+	fsp_emem_read(device, NV_FSP_RPC_EMEM_BASE, data, msg_size_words);
-+
-+	/* Reset message queue tail to acknowledge receipt */
-+	gpu_write32(gpu, NV_FSP_MSG_QUEUE_TAIL, head);
-+
-+	return msg_size_words;
-+}
-+
-+static void fsp_reset_rpc_state(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	u32 head, tail;
-+
-+	head = gpu_read32(gpu, NV_FSP_QUEUE_HEAD);
-+	tail = gpu_read32(gpu, NV_FSP_QUEUE_TAIL);
-+
-+	if (head == tail) {
-+		head = gpu_read32(gpu, NV_FSP_MSG_QUEUE_HEAD);
-+		tail = gpu_read32(gpu, NV_FSP_MSG_QUEUE_TAIL);
-+		if (head == tail)
-+			return;
-+	}
-+
-+	/* Best-effort drain; timeout is expected if no pending message. */
-+	fsp_poll_queue(device, "fsp_msg_queue_drain",
-+		       NV_FSP_MSG_QUEUE_HEAD, NV_FSP_MSG_QUEUE_TAIL, false, 5000);
-+
-+	gpu_write32(gpu, NV_FSP_QUEUE_TAIL, NV_FSP_RPC_EMEM_BASE);
-+	gpu_write32(gpu, NV_FSP_QUEUE_HEAD, NV_FSP_RPC_EMEM_BASE);
-+	gpu_write32(gpu, NV_FSP_MSG_QUEUE_TAIL, NV_FSP_RPC_EMEM_BASE);
-+	gpu_write32(gpu, NV_FSP_MSG_QUEUE_HEAD, NV_FSP_RPC_EMEM_BASE);
-+}
-+
-+static inline u32 mctp_header_build(u8 seid, u8 seq, bool som, bool eom)
-+{
-+	u32 hdr = 0;
-+
-+	hdr |= (seid & NV_MCTP_HDR_SEID_MASK) << NV_MCTP_HDR_SEID_SHIFT;
-+	hdr |= (seq & NV_MCTP_HDR_SEQ_MASK) << NV_MCTP_HDR_SEQ_SHIFT;
-+	if (som)
-+		hdr |= NV_MCTP_HDR_SOM_BIT;
-+	if (eom)
-+		hdr |= NV_MCTP_HDR_EOM_BIT;
-+
-+	return hdr;
-+}
-+
-+static inline u32 mctp_msg_header_build(u8 nvdm_type)
-+{
-+	u32 hdr = 0;
-+
-+	hdr |= (NV_MCTP_MSG_TYPE_VENDOR_DEFINED & NV_MCTP_MSG_TYPE_MASK)
-+		<< NV_MCTP_MSG_TYPE_SHIFT;
-+	hdr |= (NV_MCTP_MSG_VENDOR_ID_NVIDIA & NV_MCTP_MSG_VENDOR_ID_MASK)
-+		<< NV_MCTP_MSG_VENDOR_ID_SHIFT;
-+	hdr |= (nvdm_type & NV_MCTP_MSG_NVDM_TYPE_MASK)
-+		<< NV_MCTP_MSG_NVDM_TYPE_SHIFT;
-+
-+	return hdr;
-+}
-+
-+static inline u8 mctp_msg_header_get_nvdm_type(u32 hdr)
-+{
-+	return (hdr >> NV_MCTP_MSG_NVDM_TYPE_SHIFT) & NV_MCTP_MSG_NVDM_TYPE_MASK;
-+}
-+
-+static int fsp_rpc_send_cmd(struct vfio_pci_device *device, u8 nvdm_type,
-+			    const u32 *data, u32 data_count, u32 timeout_ms)
-+{
-+	u32 max_packet_words = NV_FSP_RPC_MAX_PACKET_SIZE / 4;
-+	u32 packet[256];
-+	u32 resp_buf[256];
-+	u32 total_words;
-+	int resp_words;
-+	u8 resp_nvdm_type;
-+	int ret;
-+
-+	total_words = 2 + data_count;
-+	if (total_words > max_packet_words)
-+		return -EINVAL;
-+
-+	packet[0] = mctp_header_build(0, 0, true, true);
-+	packet[1] = mctp_msg_header_build(nvdm_type);
-+
-+	if (data_count > 0)
-+		memcpy(&packet[2], data, data_count * sizeof(u32));
-+
-+	ret = fsp_rpc_send_data(device, packet, total_words);
-+	if (ret)
-+		return ret;
-+
-+	resp_words = fsp_rpc_receive_data(device, resp_buf, 256, timeout_ms);
-+	if (resp_words < 0)
-+		return resp_words;
-+
-+	if (resp_words < NV_FSP_RPC_MIN_RESPONSE_WORDS)
-+		return -EPROTO;
-+
-+	resp_nvdm_type = mctp_msg_header_get_nvdm_type(resp_buf[1]);
-+	if (resp_nvdm_type != NV_NVDM_TYPE_RESPONSE)
-+		return -EPROTO;
-+
-+	if (resp_buf[3] != nvdm_type)
-+		return -EPROTO;
-+
-+	if (resp_buf[4] != 0)
-+		return -resp_buf[4];
-+
-+	return 0;
-+}
-+
-+static int fsp_init(struct vfio_pci_device *device)
-+{
-+	int ret;
-+
-+	ret = gpu_poll_register(device, "fsp_boot_complete",
-+				NV_FSP_BOOT_COMPLETE_OFFSET,
-+				NV_FSP_BOOT_COMPLETE_MASK, 0xffffffff, 5000);
-+	if (ret)
-+		return ret;
-+
-+	fsp_reset_rpc_state(device);
-+	return ret;
-+}
-+
-+static int fsp_fbdma_enable(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	u32 cmd_data = NV_FBDMA_SUBCMD_ENABLE;
-+	int ret = 0;
-+
-+	if (gpu->fsp_dma_enabled)
-+		return ret;
-+
-+	ret = fsp_rpc_send_cmd(device, NV_NVDM_TYPE_FBDMA, &cmd_data, 1, 5000);
-+	if (ret)
-+		return ret;
-+
-+	gpu->fsp_dma_enabled = true;
-+	return ret;
-+}
-+
-+static bool fsp_check_ofa_dma_support(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	u32 val = gpu_read32(gpu, NV_OFA_DMA_SUPPORT_CHECK_REG);
-+
-+	return (val >> 16) != 0xbadf;
-+}
-+
-+static int size_to_dma_encoding(u64 size)
-+{
-+	size = min_t(u64, size, NV_FALCON_DMA_MAX_TRANSFER_SIZE);
-+
-+	if (!size || (size & 0x3))
-+		return -EINVAL;
-+
-+	return ffs(size) - 3;
-+}
-+
-+static void falcon_dmem_port_configure(struct vfio_pci_device *device,
-+				       u32 offset, bool auto_inc_read,
-+				       bool auto_inc_write)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct falcon *falcon = gpu->falcon;
-+	u32 memc_value = offset;
-+
-+	/* Set auto-increment flags */
-+	if (auto_inc_read)
-+		memc_value |= NV_PPWR_FALCON_DMEMC_AINCR_TRUE;
-+	if (auto_inc_write)
-+		memc_value |= NV_PPWR_FALCON_DMEMC_AINCW_TRUE;
-+
-+	gpu_write32(gpu, falcon->dmem_control_reg, memc_value);
-+}
-+
-+static void falcon_select_core_falcon(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct falcon *falcon = gpu->falcon;
-+	u32 core_select_reg = falcon->base_page + NV_FALCON_CORE_SELECT_OFFSET;
-+	u32 core_select;
-+
-+	/* Read current value */
-+	core_select = gpu_read32(gpu, core_select_reg);
-+
-+	/* Clear bits 4:5 to select falcon core (not RISCV) */
-+	core_select &= ~NV_FALCON_CORE_SELECT_MASK;
-+
-+	gpu_write32(gpu, core_select_reg, core_select);
-+}
-+
-+static int falcon_enable(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct falcon *falcon = gpu->falcon;
-+	u32 mailbox_test_reg;
-+	u32 mailbox_val;
-+
-+	/* Ada-specific: Check if falcon needs reset before enable */
-+	if (gpu->arch == GPU_ARCH_ADA) {
-+		mailbox_test_reg = falcon->base_page + NV_FALCON_MAILBOX_TEST_OFFSET;
-+		mailbox_val = gpu_read32(gpu, mailbox_test_reg);
-+		if (mailbox_val == NV_FALCON_MAILBOX_RESET_MAGIC)
-+			gpu_write32(gpu, falcon->engine_reset, 1);
-+	}
-+
-+	/* Enable the falcon based on control method */
-+	if (!falcon->no_outside_reset) {
-+		if (gpu->pmc_enable_mask != 0) {
-+			u32 pmc_enable;
-+
-+			/* Enable via PMC_ENABLE register */
-+			pmc_enable = gpu_read32(gpu, NV_PMC_ENABLE);
-+			gpu_write32(gpu, NV_PMC_ENABLE, pmc_enable | gpu->pmc_enable_mask);
-+		} else {
-+			/* Enable by deasserting engine reset */
-+			gpu_write32(gpu, falcon->engine_reset, 0);
-+		}
-+	}
-+
-+	if (gpu->arch < GPU_ARCH_HOPPER) {
-+		falcon_select_core_falcon(device);
-+
-+		/* Wait for DMACTL to be ready (bits 1:2 should be 0) */
-+		return gpu_poll_register(device, "falcon_dmactl", falcon->dmactl,
-+					0, NV_FALCON_DMACTL_READY_MASK, 1000);
-+	}
-+
-+	return 0;
-+}
-+
-+static void falcon_disable(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct falcon *falcon = gpu->falcon;
-+	u32 pmc_enable;
-+
-+	if (falcon->no_outside_reset)
-+		return;
-+
-+	if (gpu->pmc_enable_mask != 0) {
-+		/* Disable via PMC_ENABLE */
-+		pmc_enable = gpu_read32(gpu, NV_PMC_ENABLE);
-+		gpu_write32(gpu, NV_PMC_ENABLE, pmc_enable & ~gpu->pmc_enable_mask);
-+	} else {
-+		/* Disable by asserting engine reset */
-+		gpu_write32(gpu, falcon->engine_reset, 1);
-+	}
-+}
-+
-+static int falcon_reset(struct vfio_pci_device *device)
-+{
-+	falcon_disable(device);
-+
-+	return falcon_enable(device);
-+}
-+
-+static int nv_gpu_falcon_dma_init(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct falcon *falcon;
-+	u32 transcfg;
-+	u32 dmactl;
-+	u32 ctl;
-+	int ret = 0;
-+
-+	falcon = gpu->falcon;
-+
-+	vfio_pci_cmd_set(device, PCI_COMMAND_MASTER);
-+
-+	if (gpu->arch >= GPU_ARCH_HOPPER) {
-+		ret = fsp_init(device);
-+		if (ret) {
-+			dev_err(device, "Failed to init FSP: %d\n", ret);
-+			return ret;
-+		}
-+
-+		ret = fsp_fbdma_enable(device);
-+		if (ret) {
-+			dev_err(device, "Failed to enable FSP FBDMA: %d\n", ret);
-+			return ret;
-+		}
-+
-+		if (!fsp_check_ofa_dma_support(device)) {
-+			dev_err(device, "OFA DMA not supported with current firmware\n");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+
-+	if (gpu->is_memory_clear_supported) {
-+		/* For Turing+, wait for boot to complete first */
-+		if (gpu->arch >= GPU_ARCH_TURING) {
-+			/* Wait for boot complete - Hopper+ uses FSP register */
-+			if (gpu->arch >= GPU_ARCH_HOPPER) {
-+				ret = gpu_poll_register(device,
-+					"fsp_boot_complete",
-+					NV_FSP_BOOT_COMPLETE_OFFSET,
-+					NV_FSP_BOOT_COMPLETE_MASK,
-+					0xffffffff, 5000);
-+			} else {
-+				ret = gpu_poll_register(device,
-+					"boot_complete",
-+					NV_BOOT_COMPLETE_OFFSET,
-+					NV_BOOT_COMPLETE_MASK,
-+					0xffffffff, 5000);
-+			}
-+			if (ret)
-+				return ret;
-+
-+			ret = gpu_poll_register(device,
-+				"memory_clear_finished",
-+				NV_MEM_CLEAR_OFFSET, 0x1, 0xffffffff, 5000);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	if (!falcon->no_outside_reset) {
-+		ret = falcon_reset(device);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	falcon_dmem_port_configure(device, 0, false, false);
-+
-+	transcfg = gpu_read32(gpu, falcon->fbif_transcfg);
-+	transcfg &= ~NV_FBIF_TRANSCFG_TARGET_MASK;
-+	transcfg |= NV_FBIF_TRANSCFG_SYSMEM_DEFAULT;
-+	gpu_write32(gpu, falcon->fbif_transcfg, transcfg);
-+
-+	gpu_write32(gpu, falcon->fbif_ctl2, 0x1);
-+
-+	ctl = gpu_read32(gpu, falcon->fbif_ctl);
-+	ctl |= NV_FBIF_CTL_ALLOW_PHYS_MODE | NV_FBIF_CTL_ALLOW_FULL_PHYS_MODE;
-+	gpu_write32(gpu, falcon->fbif_ctl, ctl);
-+
-+	dmactl = gpu_read32(gpu, falcon->dmactl);
-+	dmactl &= ~NV_FALCON_DMACTL_DMEM_SCRUBBING;
-+	gpu_write32(gpu, falcon->dmactl, dmactl);
-+
-+	return ret;
-+}
-+
-+static int nv_gpu_falcon_dma(struct vfio_pci_device *device,
-+			     u64 address,
-+			     u32 size_encoding,
-+			     bool write)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct falcon *falcon = gpu->falcon;
-+	u32 dma_cmd;
-+
-+	gpu_write32(gpu, NV_GPU_DMA_ADDR_TOP_BITS_REG,
-+		    (address >> 47) & 0x1ffff);
-+	gpu_write32(gpu, falcon->base_page + NV_FALCON_DMA_ADDR_HIGH_OFFSET,
-+		    (address >> 40) & 0x7f);
-+	gpu_write32(gpu, falcon->base_page + NV_FALCON_DMA_ADDR_LOW_OFFSET,
-+		    (address >> 8) & 0xffffffff);
-+	gpu_write32(gpu, falcon->base_page + NV_FALCON_DMA_BLOCK_OFFSET,
-+		    address & 0xff);
-+	gpu_write32(gpu, falcon->base_page + NV_FALCON_DMA_MEM_OFFSET, 0);
-+
-+	dma_cmd = (size_encoding << NV_FALCON_DMA_CMD_SIZE_SHIFT);
-+
-+	/* Set direction: write (DMEM->mem) or read (mem->DMEM) */
-+	if (write)
-+		dma_cmd |= NV_FALCON_DMA_CMD_WRITE_BIT;
-+
-+	gpu_write32(gpu, falcon->base_page + NV_FALCON_DMA_CMD_OFFSET, dma_cmd);
-+
-+	return gpu_poll_register(device, "dma_done",
-+		falcon->base_page + NV_FALCON_DMA_CMD_OFFSET,
-+		NV_FALCON_DMA_CMD_DONE_BIT, NV_FALCON_DMA_CMD_DONE_BIT,
-+		1000);
-+}
-+
-+static int nv_gpu_memcpy_chunk(struct vfio_pci_device *device,
-+				iova_t src,
-+				iova_t dst,
-+				u32 size_encoding)
-+{
-+	int ret;
-+
-+	ret = nv_gpu_falcon_dma(device, src, size_encoding, false);
-+	if (ret) {
-+		dev_err(device, "Failed DMA read (src=0x%llx, encoding=%u)\n",
-+			(unsigned long long)src, size_encoding);
-+		return ret;
-+	}
-+
-+	ret = nv_gpu_falcon_dma(device, dst, size_encoding, true);
-+	if (ret) {
-+		dev_err(device, "Failed DMA write (dst=0x%llx, encoding=%u)\n",
-+			(unsigned long long)dst, size_encoding);
-+		return ret;
-+	}
-+
-+	return ret;
-+}
-+
-+static int nv_gpu_probe(struct vfio_pci_device *device)
-+{
-+	enum gpu_arch gpu_arch;
-+	u32 pmc_boot_0;
-+	void *bar0;
-+	int i;
-+
-+	if (vfio_pci_config_readw(device, PCI_VENDOR_ID) != PCI_VENDOR_ID_NVIDIA)
-+		return -ENODEV;
-+
-+	if (vfio_pci_config_readw(device, PCI_CLASS_DEVICE) >> 8 !=
-+	    PCI_BASE_CLASS_DISPLAY)
-+		return -ENODEV;
-+
-+	/* Get BAR0 pointer for reading GPU registers */
-+	bar0 = device->bars[0].vaddr;
-+	if (!bar0)
-+		return -ENODEV;
-+
-+	/* Read PMC_BOOT_0 register from BAR0 to identify GPU */
-+	pmc_boot_0 = readl(bar0 + NV_PMC_BOOT_0);
-+
-+	/* Look up GPU architecture to verify this is a supported GPU */
-+	gpu_arch = nv_gpu_arch_lookup(pmc_boot_0);
-+	if (gpu_arch == GPU_ARCH_UNKNOWN) {
-+		dev_err(device, "Unsupported GPU architecture for PMC_BOOT_0: 0x%x\n",
-+			pmc_boot_0);
-+		return -ENODEV;
-+	}
-+
-+	/* Check verified GPU map */
-+	for (i = 0; i < VERIFIED_GPU_MAP_SIZE; i++) {
-+		if (verified_gpu_map[i] == pmc_boot_0)
-+			return 0;
-+	}
-+
-+	dev_info(device, "Unvalidated GPU: PMC_BOOT_0: 0x%x, possibly not supported\n",
-+		pmc_boot_0);
-+
-+	return 0;
-+}
-+
-+static void nv_gpu_init(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	const struct gpu_properties *props;
-+	enum gpu_arch gpu_arch;
-+	u32 pmc_boot_0;
-+	int ret;
-+
-+	VFIO_ASSERT_GE(device->driver.region.size, sizeof(*gpu));
-+
-+	/* Read PMC_BOOT_0 register from BAR0 to identify GPU */
-+	pmc_boot_0 = readl(device->bars[0].vaddr + NV_PMC_BOOT_0);
-+
-+	/* Look up GPU architecture */
-+	gpu_arch = nv_gpu_arch_lookup(pmc_boot_0);
-+	VFIO_ASSERT_NE(gpu_arch, GPU_ARCH_UNKNOWN,
-+		       "Unsupported GPU architecture (PMC_BOOT_0=0x%x)\n", pmc_boot_0);
-+
-+	props = &gpu_properties_map[gpu_arch];
-+
-+	/* Populate GPU structure */
-+	gpu->arch = gpu_arch;
-+	gpu->bar0 = device->bars[0].vaddr;
-+	gpu->is_memory_clear_supported = props->memory_clear_supported;
-+	gpu->falcon = &falcon_map[props->falcon_type];
-+	gpu->pmc_enable_mask = props->pmc_enable_mask;
-+
-+	ret = falcon_enable(device);
-+	VFIO_ASSERT_EQ(ret, 0, "Failed to enable falcon: %d\n", ret);
-+
-+	/* Initialize falcon for DMA */
-+	ret = nv_gpu_falcon_dma_init(device);
-+	VFIO_ASSERT_EQ(ret, 0, "Failed to initialize falcon DMA: %d\n", ret);
-+
-+	device->driver.max_memcpy_size = NV_FALCON_DMA_MAX_TRANSFER_SIZE;
-+	device->driver.max_memcpy_count = NV_FALCON_DMA_MAX_TRANSFER_COUNT;
-+}
-+
-+static void nv_gpu_remove(struct vfio_pci_device *device)
-+{
-+	falcon_disable(device);
-+	vfio_pci_cmd_clear(device, PCI_COMMAND_MASTER);
-+}
-+
-+/*
-+ * Falcon DMA can only process one transfer at a time,
-+ * so the actual work is deferred to memcpy_wait() to conform to the
-+ * memcpy_start()/memcpy_wait() contract.
-+ */
-+static void nv_gpu_memcpy_start(struct vfio_pci_device *device,
-+				iova_t src, iova_t dst, u64 size, u64 count)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+
-+	VFIO_ASSERT_EQ(gpu->memcpy_count, 0);
-+
-+	gpu->memcpy_src = src;
-+	gpu->memcpy_dst = dst;
-+	gpu->memcpy_size = size;
-+	gpu->memcpy_count = count;
-+}
-+
-+static int nv_gpu_memcpy_wait(struct vfio_pci_device *device)
-+{
-+	struct gpu_device *gpu = to_gpu_device(device);
-+	int chunk_encoding;
-+	int ret;
-+
-+	VFIO_ASSERT_NE(gpu->memcpy_count, 0);
-+
-+	chunk_encoding = size_to_dma_encoding(gpu->memcpy_size);
-+	if (chunk_encoding < 0) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	ret = nv_gpu_memcpy_chunk(device, gpu->memcpy_src, gpu->memcpy_dst,
-+				  chunk_encoding);
-+
-+out:
-+	gpu->memcpy_count = 0;
-+	return ret;
-+}
-+
-+const struct vfio_pci_driver_ops nv_falcon_ops = {
-+	.name = "nv_falcon",
-+	.probe = nv_gpu_probe,
-+	.init = nv_gpu_init,
-+	.remove = nv_gpu_remove,
-+	.memcpy_start = nv_gpu_memcpy_start,
-+	.memcpy_wait = nv_gpu_memcpy_wait,
-+};
-diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-index 9f47bceed16f..d7017b0a0767 100644
---- a/tools/testing/selftests/vfio/lib/libvfio.mk
-+++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-@@ -14,6 +14,8 @@ LIBVFIO_C += drivers/ioat/ioat.c
- LIBVFIO_C += drivers/dsa/dsa.c
- endif
- 
-+LIBVFIO_C += drivers/nv_falcon/nv_falcon.c
-+
- LIBVFIO_OUTPUT := $(OUTPUT)/libvfio
- 
- LIBVFIO_O := $(patsubst %.c, $(LIBVFIO_OUTPUT)/%.o, $(LIBVFIO_C))
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-index e6c5b9c703f4..153bf4a7a19f 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-@@ -7,11 +7,14 @@ extern struct vfio_pci_driver_ops dsa_ops;
- extern struct vfio_pci_driver_ops ioat_ops;
- #endif
- 
-+extern struct vfio_pci_driver_ops nv_falcon_ops;
-+
- static struct vfio_pci_driver_ops *driver_ops[] = {
- #ifdef __x86_64__
- 	&dsa_ops,
- 	&ioat_ops,
- #endif
-+	&nv_falcon_ops,
- };
- 
- void vfio_pci_driver_probe(struct vfio_pci_device *device)
--- 
-2.43.0
+I've tried this naiive diff, which seems to help with the issue, but
+may not be a complete solution:
 
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -106,7 +107,8 @@ int vfio_assign_device_set(struct vfio_device
+*device, void *set_id)
+ found_get_ref:
+        dev_set->device_count++;
+        xa_unlock(&vfio_device_set_xa);
+-       mutex_lock(&dev_set->lock);
++       mutex_lock_nested(&dev_set->lock, SINGLE_DEPTH_NESTING);
+        device->dev_set = dev_set;
+        list_add_tail(&device->dev_set_list, &dev_set->device_list);
+        mutex_unlock(&dev_set->lock);
+
+I wanted your opinion or suggestions on how to proceed with the warning.
+
+Thank you.
+Raghavendra
+
+[1]: https://lore.kernel.org/all/20260303193822.2526335-1-rananta@google.com/
