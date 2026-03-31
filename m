@@ -1,146 +1,136 @@
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766535DA60
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 23:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F72A199D8;
+	Tue, 31 Mar 2026 23:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774998587; cv=none; b=T7OidYxiD0AzubwVbwc3QWFl9L0tk8J8U11bOfHRVlwZuBFOKYSa3M+KYJ684wR/pCB3spsihcxtk7fZP4uswHCDL3P+Fd+Z4AehM1GEMmD6i9k49w8HqUJ0CmxqPex+QDiFNj2USC6Ckd0pLY6ti4Vzy3vmxPet8vh/n4Rb/NM=
+	t=1774999321; cv=none; b=NqR4RuA7k/rjuZGg+E2Pu2uusxX/ns/95fLbWPOBp7NFv6OkcMvo1XbG5uWbPB4UoPM5eyHB4phkXwjBhcNnbqoN69WbQraPbcpSxzIKtKotkiNiq5J1O8mbB2ezsR8Efzkurw1Ix1ercR2j4zTEW3EZxrUYMzQlzePOhDJp8NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774998587; c=relaxed/simple;
-	bh=LcwrEE/Su6MqZg1BVVUXTgS+hDQtivNXll3DuxETR5E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uX9Fsk+hZ+MGHTdol88+IrbVG+z31HTGIvauiUbVHj7kgFeLmnSc5TVv0W3zI9ye/6mg9SurC5XW3fEAJ6qDRfwStWtNoy+paC5ese2u2iKU/4HKKoYQyrLkK5K4X/d46cHUGKgCsM0Xqn2+kf/E0r2WRsNrrzEtt2Cj8rYmmSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpLq93JW; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1774999321; c=relaxed/simple;
+	bh=jwRtq2vulzWQDdfbN3/eFGApt7bVHBTpANIg8ZeIR5c=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=Mkbz3u+xI535aEeBN7jEfT2DiKNJznWa4A1PKsVNHveXeLpzTAW/4JRnK3kXoD2TebFjGZcSur4wEFbvQ0Lpax9kkPDGMKMLlgcDPu45fMv/dLciTg7V2QJLjZ07BHfWwaSi9z0631lRDiACZRbTUPfvCNT2zzK4Un7DfhU52NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IFw+dOsI; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpLq93JW"
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-67e23011c93so1232041eaf.3
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 16:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1774998585; x=1775603385; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cAxWk+l9wnHigA07/m15Z7FRvAHJCuXF+wjFvuQTo7w=;
-        b=WpLq93JW1LhcDqYBATrkbc/fP5BwgszTYjHTA3FXUN1LOsuQJot7TD0HRvUVli1J/S
-         vz89CzQT7EHzaHrVzxI59BFstRbAp3sdQjjqhvLjzee16e344e115X5WWBURKvbLTYlV
-         N3Ju1z+DHTPVC47nnOttAyrL6Nb28EyoeVawU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774998585; x=1775603385;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cAxWk+l9wnHigA07/m15Z7FRvAHJCuXF+wjFvuQTo7w=;
-        b=Vn98i/uHNj450mC06QKY4ew9eYNmA+YrXX3zcSMNMqsZChL8e80ixGOw4+GPV1TPQk
-         EZmHfOjDSLcctJLhNfDbB9ObpOXUMtXYTB6faaqlfKece3dEHt0CHux6V/hI9+3E6hYe
-         0h0T+LMLc9vj75LUwN2fZMp95wlT6CteHIgEWaR1nCG8luSW4GThWa/oTcm52pTwl90K
-         p8bJXP5t6FiAUTMKu0TCFpfrXrgbqbfMayHY+pEgX54GCl+YsX0Zyv/LW8fahzWTvtK/
-         XYxipezeTwwWc5LnqaE7SPxqD4hnAF9JWR25TgNIe+0BhzONQkXiIZMlpufbpSTDKULH
-         19nA==
-X-Gm-Message-State: AOJu0YwtCDtpfB4hOFGCpO5Gb0bPHgh5aAFm/oZw/l8udIodgwariYlt
-	WXTOG8VlDNVLCOjn4nb5t+90HPfYGmr1WaKtWWN5usdjOA9xkFztdk2hf+EafdH3ks8=
-X-Gm-Gg: ATEYQzxoIC4UD9FIc/dSbtzRyTDkycwMHRSOq0pXMuKJ8FKcAI8aaIVdDwn0jroqxQv
-	nkloSuuVfG98MxFwzEeINs21eIDoxxDxYp/2un/RweFeU5C0Vy6I2gmI6cO+mxl4hEWv0Q2pYx6
-	ngL1DA6LSMfS3v6LONYysuihu+epGMdtXb6N0iiWNOJMyqDCi65sgbBuRCyzWu9ONM7zuoBxNTE
-	PmgcXT91B+tNdJsS1KaCTIbwyDDTL+VCyFB+VpMRADzCVUwuvXEhO+UNitecii85rTiSNpih02v
-	14qQ3lJip/O/dX79k+bOZ6qtv2ZNE9ep1TXtNwuPdGPjx29j/9ZJyrrvt9UlQadUFtqqXTkIpFh
-	ifEHpIn/pklzgvszPUSz3jevl43h1gHVnHlrI2jiT1XwG/c/QN7sdck3jLuW+ElgLPvaJlReTJP
-	t3drFIfjHNj0MxlLd0ORx5WUt/cbNGrfkUx+o=
-X-Received: by 2002:a05:6820:4c12:b0:67e:160c:369b with SMTP id 006d021491bc7-67fabcd99b7mr657522eaf.49.1774998585004;
-        Tue, 31 Mar 2026 16:09:45 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67e231ea41dsm7828492eaf.15.2026.03.31.16.09.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2026 16:09:44 -0700 (PDT)
-Message-ID: <4334432d-982e-4450-9281-de739c25ebfd@linuxfoundation.org>
-Date: Tue, 31 Mar 2026 17:09:43 -0600
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IFw+dOsI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Content-Type:From:Mime-Version:Subject:Date:
+	Message-Id:To; bh=xl1EKG4pCevLqe5iacLgtuioFR0JlXNF6YuvQrm8tZk=;
+	b=IFw+dOsIaY+QjkZudLXTpD1LvBeY+Rg2mk8Pw33qhJNlEoHyt708iDVnt3Ijnm
+	RrC5U3VOGcBG5TXkHUCcolGFlzV+KM7TbFz9ojHvp5yOKgDvsZZzaZsQ4Osnquhn
+	jscklqlUGp1qf7CyCqxp35TCz8/BDC4lAqKEWXG4kgU+4=
+Received: from smtpclient.apple (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD333beVsxp3DxyCg--.54778S2;
+	Wed, 01 Apr 2026 07:21:03 +0800 (CST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: zhaogezhang <18341265598@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: selftests: Guard execinfo.h inclusion for non-glibc
- builds
-To: Hisam Mehboob <hisamshar@gmail.com>
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Aqib Faruqui <aqibaf@amazon.com>,
- shuah@kernel.org, pbonzini@redhat.com, seanjc@google.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260319000842.1213426-2-hisamshar@gmail.com>
- <091f264f-21f1-464d-913a-1500643728c7@linuxfoundation.org>
- <137f63af-a993-4b1c-a9e9-931718a47343@linuxfoundation.org>
- <f044f31d-740d-4cdb-834c-59de7691203d@gmail.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <f044f31d-740d-4cdb-834c-59de7691203d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] vmx/nested: Set the SGX feature flag only when hardware supported.
+Date: Wed, 1 Apr 2026 07:20:51 +0800
+Message-Id: <06C8A09D-CBED-40F2-9B15-9FBBD138768E@163.com>
+References: <8fbedc9183f61400c772b36562963cfc8c3a8797.camel@intel.com>
+Cc: seanjc@google.com, weixq1@chinatelecom.cn, zhangzg12@chinatelecom.cn,
+ dave.hansen@linux.intel.com, bp@alien8.de, hanht2@chinatelecom.cn,
+ hpa@zytor.com, mingo@redhat.com, linux-kernel@vger.kernel.org, tglx@kernel.org,
+ pbonzini@redhat.com, kvm@vger.kernel.org
+In-Reply-To: <8fbedc9183f61400c772b36562963cfc8c3a8797.camel@intel.com>
+To: Kai Huang <kai.huang@intel.com>
+X-Mailer: iPhone Mail (23D127)
+X-CM-TRANSID:_____wD333beVsxp3DxyCg--.54778S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCFWkGF47ur4rJFy3ZFy7KFg_yoW5WryDpr
+	yfGFyDtr4vgFySyw4SvF1UXFyava1kJrWvgr1jka4jgFnIqr97Jr1xtwn5uFyUWrWxu34S
+	vw4jqFya9wnxA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jsb18UUUUU=
+X-CM-SenderInfo: jpryjkyrswkkmzybiqqrwthudrp/xtbC5h9aVmnMVt88QAAA3l
 
-On 3/25/26 12:47, Hisam Mehboob wrote:
-> On 3/25/26 23:03, Shuah Khan wrote:
->> On 3/24/26 12:02, Shuah Khan wrote:
->>> On 3/18/26 18:08, Hisam Mehboob wrote:
->>>> The backtrace() function and execinfo.h are GNU extensions available
->>>> in glibc but not in non-glibc C libraries such as musl. Building KVM
->>>> selftests with musl-gcc fails with:
->>>>
->>>>    lib/assert.c:9:10: fatal error: execinfo.h: No such file or directory
->>>>
->>>> Guard the inclusion of execinfo.h under #ifdef __GLIBC__, and wrap
->>>> all backtrace() usage under the same guard with a fallback message
->>>> for non-glibc builds indicating that stack traces are not available.
->>>>
->>>> Unlike the approach of adding a weak stub for backtrace(), this
->>>> explicitly handles the non-glibc case rather than silently providing
->>>> an empty implementation.
->>>>
->>>> Link: https://lore.kernel.org/kvm/20250829142556.72577-7- aqibaf@amazon.com/
->>>>
->>>> Suggested-by: Aqib Faruqui <aqibaf@amazon.com>
->>>> Signed-off-by: Hisam Mehboob <hisamshar@gmail.com>
+Thanks to all the maintainers for your timely feedback and correction. Much a=
+ppreciated!
+
+
+> =E5=9C=A8 2026=E5=B9=B44=E6=9C=881=E6=97=A5=EF=BC=8C05:07=EF=BC=8CHuang, K=
+ai <kai.huang@intel.com> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> =EF=BB=BFOn Tue, 2026-03-31 at 09:30 -0700, Sean Christopherson wrote:
+>>> On Tue, Mar 24, 2026, Kai Huang wrote:
+>>> On Tue, 2026-03-24 at 11:27 +0800, 18341265598@163.com wrote:
+>>>> From: "zhaoge.zhang" <zhangzg12@chinatelecom.cn>
+>>>>=20
+>>>> If the hardware does not support the SGX feature and we set the
+>>>> corresponding flag, when the L1 hypervisor enables the corresponding
+>>>> feature in VMCS12, the VM entry will fail.
+>>>>=20
+>>>> Reported-by: wei xiaoqiong <weixq1@chinatelecom.cn>
+>>>> Signed-off-by: zhaoge.zhang <zhangzg12@chinatelecom.cn>
+>>>> Reviewed-by: Huaitong Han <hanht2@chinatelecom.cn>
 >>>> ---
->>>>   tools/testing/selftests/kvm/lib/assert.c | 7 +++++++
->>>>   1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/tools/testing/selftests/kvm/lib/assert.c b/tools/ testing/selftests/kvm/lib/assert.c
->>>> index b49690658c60..3442b80c37c1 100644
->>>> --- a/tools/testing/selftests/kvm/lib/assert.c
->>>> +++ b/tools/testing/selftests/kvm/lib/assert.c
->>>> @@ -6,7 +6,9 @@
->>>>    */
->>>>   #include "test_util.h"
->>>> +#ifdef __GLIBC__
->>>>   #include <execinfo.h>
->>>> +#endif
->>> > Is __GLIBC__ defined in musl-gcc? Looks like that is the case with the
->>> error?
->>
->> If __GLIBC__ isn't there you shouldn't see this error because the include
->> is in - this error doesn't make sense if __GLIBC__ isn't defined. What
->> am I missing?
->>
-> 
-> To clarify the compiler error you mentioned: the error log in the commit message shows the failure that occurs before this patch is applied. Because musl-gcc doesn't define __GLIBC__, the original unconditional <execinfo.h> inclusion causes the build to fail. The #ifdef in my patch was intended to fix that exact failure.
-> 
->> +#ifdef __GLIBC__
->>   #include <execinfo.h>
->> +#endif
->>
->> Also check tools/testing/selftests/bpf/test_progs.c - I think backtrace()
->> stub needs be defined only for the !__GLIBC__ case
->>
-> 
-> Looking at how bpf/test_progs.c handles it, I agree the weak stub approach is much cleaner. I will implement it so that it still prints an explicit warning message when a trace is unavailable.
-> 
-> If you are okay with this, I will move forward with a v2 patch.
-> 
+>>>> arch/x86/kvm/vmx/nested.c |  2 +-
+>>>> arch/x86/kvm/vmx/vmx.c    | 11 -----------
+>>>> arch/x86/kvm/vmx/vmx.h    | 11 +++++++++++
+>>>> 3 files changed, 12 insertions(+), 12 deletions(-)
+>>>>=20
+>>>> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+>>>> index 937aeb4..396ac07 100644
+>>>> --- a/arch/x86/kvm/vmx/nested.c
+>>>> +++ b/arch/x86/kvm/vmx/nested.c
+>>>> @@ -7278,7 +7278,7 @@ static void nested_vmx_setup_secondary_ctls(u32 e=
+pt_caps,
+>>>>        msrs->secondary_ctls_high |=3D
+>>>>            SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES;
+>>>>=20
+>>>> -    if (enable_sgx)
+>>>> +    if (enable_sgx && cpu_has_sgx())
+>>>>        msrs->secondary_ctls_high |=3D SECONDARY_EXEC_ENCLS_EXITING;
+>>>> }
+>>>=20
+>>> Are you seeing the case where enable_sgx is true but cpu_has_sgx() repor=
+ts
+>>> false?
+>>>=20
+>>> It's quite strange because during KVM load, if cpu_has_sgx() is false,
+>>> enable_sgx is guaranteed to be false.
+>>>=20
+>>> The only case that I can think of is after KVM loads somehow machine che=
+ck
+>>> happens, which "soft disables" SGX (CPUID reports SGX1 as 0).
+>>>=20
+>>> Is this the case you are meeting?
+>>=20
+>> It's a moot point (unless I'm getting -ENOCOFFEE, which is very possible a=
+t the
+>> moment), because "enable_sgx" is cleared if ENCLS-exiting isn't supported=
+.
+>>=20
+>>    if (!cpu_has_vmx_encls_vmexit())
+>>        enable_sgx =3D false;
+>>=20
+>> Where cpu_has_vmx_encls_vmexit() is peeking at vmcs_config.cpu_based_2nd_=
+exec_ctrl:
+>>=20
+>>  static inline bool cpu_has_vmx_encls_vmexit(void)
+>>  {
+>>    return vmcs_config.cpu_based_2nd_exec_ctrl &
+>>        SECONDARY_EXEC_ENCLS_EXITING;
+>>  }
+>>=20
+>> And thus already incorporates this code:
+>>=20
+>>    if (!cpu_has_sgx())
+>>        _cpu_based_2nd_exec_control &=3D ~SECONDARY_EXEC_ENCLS_EXITING;
+>>=20
+>>=20
+>> I suppose the #MC could happen between setup_vmcs_config() and
+>> nested_vmx_setup_ctls_msrs(), but at that point, KVM is hosed no matter w=
+hat.
+>=20
+> Exactly.  I think we can ignore this unless we can get more info from the
+> author :-)
 
-Ultimately kvm maintainers make the call - send v2 patch
-
-thanks,
--- Shuah
