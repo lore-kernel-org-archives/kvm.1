@@ -1,136 +1,158 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884E3A5E8D
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C69B3A0E84
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774985408; cv=none; b=QwBi8G+9HtwcZVIlkDQORtMmkLVEl/HWsRgQK9afYsxBTmNQhrWJ97BBuz1kG7sfnI5zQwcSgu50gGiqlzmHHbajzlCthcc06XdMqz/ZZ/X7K3tX5Sc/pQ8Pq6E/x+XCCavL9lc7Ytne/FQIbv9Ab81jf+WWGlfz1VmxllQnIZo=
+	t=1774986083; cv=none; b=XmjAToilbECl5axI430x71JwD5LVhYFX09egUVOtCeugaj9bUrpJggH/5GYwOKcrwg7VJngrd6n4txIwgWZ1hvcwLsmBEd715fvFAAN551guwDztVEUOA9twTFeZhJzke6PKS2NhLOMoiofZpHLgXdsx4sf4WdFbPwIWsSEEApM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774985408; c=relaxed/simple;
-	bh=hnUDt77C71ymSAORPdjXdt9/qUTqGq/wBBDTgrqrROQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hhGybUnoAhg1+Sygc5qIcxs0NxKX+FFsy8IZ1PBy9EcMOEGNs+qU7bkP8VkCxxsBvByi53d9yps0S9HQxf3LUWB4uSq8kzWsARiKQF2ubU21wkBuwWkiHp9A7+lbQ/k/6LkPVBdbKheLdnP3nrMdHQD2EoxGTMScaPF7e1oax9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IA8xZy/r; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1774986083; c=relaxed/simple;
+	bh=JOD+lzXay/71dtnNBEn5+gO2df/+z5eTXghDPdynl40=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HFrXmAQruanxyOU0qgMOOv7oGdJFFwSnEFrF8mY8l249LehySW1WE62E3tZMHIFkxRnGyYWbiB/+i9D5/TL0ykP2kFfQhaDHztBqLGc0IxtNPRnDjmEJDelJf7GOgL5dGd6BnIX8SnybWFf0qo3UliLgo5sK2oM3Zwe6qIiAsyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rhG173Jl; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IA8xZy/r"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b23af7d7e8so137886285ad.0
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:30:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rhG173Jl"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b630753cc38so13493861a12.1
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:41:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774985406; x=1775590206; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p2WegTQIoj8z+As4wwIqDMWlL5KxHd9mGRxfuRiVd74=;
-        b=IA8xZy/rhZAliO+B94vi3Dk2DYSlAqCFQzl/YHrdNHQeX0lkc2s7SJk7aGZhOI8jLx
-         rwxCNomxxRqVvnYBh5atxbCKyaP8RITFnFM5F+DIBWzyIJgIaioQmk5VSMxTH1/GHr2U
-         kusSpr57Lyu1ljuANme+NxJ4sicLKTLUGj2QeN1u2y+oLvFu6CjwOkKOUirdqz2fCCX7
-         Ru3u1b1OCRUASJqrL5Y9Mi94dBPZUbdwrAyMqw7lthBRRJlbDKPW6XsY7wc4BJLKCT29
-         2NzBYFP46yuAD01OkslV0+sqehARZOC9nnYskFCqidMHenkLqdrOZgF9fRIdWCk1ROTI
-         +LJQ==
+        d=google.com; s=20251104; t=1774986082; x=1775590882; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r1Q/2yd3CABWU9e8ZHhd5Ccwcv4RlMANKgMqqauS8hM=;
+        b=rhG173JlxxuAPC5qUW4D1SfBK/GSEXU39y9nkWiqIaZ8Zf7EuH3iP6n3PjZv+FYfs1
+         6V3dRjl8lpPXjb2ymipbFr2NuU7qVFbrprer+ByylQstuCLOQ+sklsyfrxkqyj7ddaqI
+         kKpNuhHKd2NDOdN1stlaBck+pzkm5MtIvqHIkuAnZ59rkXmQWCIR5pCkxICGWJHQlPL7
+         vWNypdjf3p5vbqKwzFqLhXNnyZCjs1MclaQdKyUoqAzxZiQ1tKuCGA3CodKh9GqcMxZa
+         tUpKTx/WF2IS2IPbfqi7xRP8I3u3Zr474Vf8eQrEkC4wNpErhbVEkaLMZcjr7Jf4v/Hs
+         Cf3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774985406; x=1775590206;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p2WegTQIoj8z+As4wwIqDMWlL5KxHd9mGRxfuRiVd74=;
-        b=kMbeYYe1voJx9936NNd+XSHzC1Ae6fK9IfkddqDkfeKqFOH3iKBQ8s5b6OGTA8GyJL
-         EbWivcMKZMhiryHLdORd85ZuIOoZbJ0DsOAX/tKZOqkseBi6vLltEAyJ5yTiKLiB0uw7
-         DxTLgwndEP0296BPfOEFe76aMq7ucDyCvbX6gpTcuSgqHp6C5xy/yomnItZAHHqB27l5
-         Yg3GaMS2XW0Oy5TL1Zzo4nYBaAPRqaPhOLjqS60CM90scPY8Tm6bkuilD50E5v5K4M8a
-         WdUVaNokSUAq1WKXnGkcCPNyycr+shhVXhPCYthIc/9QSk/AO7BNOxQ12tJmlaXDDO7X
-         5q9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVXB0OygDwzYYtbVmaVeZ4yTrKgkhKGkDosbJSom5O/5mpefcJzfQBT8/XH1/9Qf5+I434=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+BXPlzBy0dTSB/t8m98z+61yNIG3xjWHnmXr//6GsImWK9Mtt
-	CPwqB8/W92DQsOpwTV8L1UfgtSOG1mJPxo0XmvOEtRA+RCwELMgryt+3RWRn4c5ubg5hXBFexSw
-	DGHFJ1Q==
-X-Received: from plgq11.prod.google.com ([2002:a17:902:eb8b:b0:2b0:ada8:a666])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c411:b0:2b0:62dd:3a80
- with SMTP id d9443c01a7336-2b269b38df6mr4579345ad.17.1774985406005; Tue, 31
- Mar 2026 12:30:06 -0700 (PDT)
-Date: Tue, 31 Mar 2026 12:30:04 -0700
-In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-1-87a36409e051@intel.com>
+        d=1e100.net; s=20251104; t=1774986082; x=1775590882;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r1Q/2yd3CABWU9e8ZHhd5Ccwcv4RlMANKgMqqauS8hM=;
+        b=NuIMhqhvsXSPHY0z9kuH8hifB8WS4buX7BsgfEGm8MGW4uoLAMInwiPxlCWUMwqny0
+         4r+4hKWXrEX06++wEdfD6yHQ/jNl6C6QrU6mv7WONsr5h+iWXM5N1oAEMaYHjFCfohdv
+         O+QLej5yk+MqLOM2oTlOkFu5UDgTkrdHvYmfALZfr4Cw9A1u/rnykSNr4Pu4gcH5nUrL
+         yJOC+lPgoCVq11W+VerWK1H6nRrUnjWgYW/S5LjfVWvyL3mBQ25eRQGWZYg7yzGfCPW4
+         5rjq4I8Vytpr95A9Zemo2yxdlUfvcvQ58TssWShAQieUtTqyXtUZK5PMqXaQ1bj/arA+
+         VnCg==
+X-Gm-Message-State: AOJu0YxlG7D9E+7ZujAQmSSmXqSl2Nc0SNcrWLXDdZqIL7dxG2SsW+5l
+	w/RybTOIn/1zrbCQZAxOEBP7ld7Tqu/I1WOC8i2FquU1VRZwNrz9Mp5Z93xnzJS+g0YSMZHtotD
+	TTIDNq2YH
+X-Received: from pfbjf1.prod.google.com ([2002:a05:6a00:6e41:b0:821:82a1:fe7d])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:600d:b0:827:3946:a23c
+ with SMTP id d2e1a72fcca58-82ce88d3bd7mr808960b3a.10.1774986081665; Tue, 31
+ Mar 2026 12:41:21 -0700 (PDT)
+Date: Tue, 31 Mar 2026 19:40:19 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com> <20260323-fuller_tdx_kexec_support-v2-1-87a36409e051@intel.com>
-Message-ID: <acwgvBzK01IrAAeU@google.com>
-Subject: Re: [PATCH v2 1/5] x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
-From: Sean Christopherson <seanjc@google.com>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+X-Mailer: git-send-email 2.53.0.1118.gaef5881109-goog
+Message-ID: <20260331194033.3890309-1-jrhilke@google.com>
+Subject: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
+ test device interrupts
+From: Josh Hilke <jrhilke@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, David Matlack <dmatlack@google.com>, 
+	Alex Williamson <alex@shazbot.org>, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 23, 2026, Vishal Verma wrote:
-> diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-> similarity index 64%
-> rename from arch/x86/kvm/vmx/tdx_errno.h
-> rename to arch/x86/include/asm/shared/tdx_errno.h
-> index 6ff4672c4181..8bf6765cf082 100644
-> --- a/arch/x86/kvm/vmx/tdx_errno.h
-> +++ b/arch/x86/include/asm/shared/tdx_errno.h
-> @@ -1,14 +1,15 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -/* architectural status code for SEAMCALL */
-> -
-> -#ifndef __KVM_X86_TDX_ERRNO_H
-> -#define __KVM_X86_TDX_ERRNO_H
-> +#ifndef _ASM_X86_SHARED_TDX_ERRNO_H
-> +#define _ASM_X86_SHARED_TDX_ERRNO_H
-> +#include <asm/trapnr.h>
->  
-> +/* Upper 32 bit of the TDX error code encodes the status */
->  #define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
->  
->  /*
-> - * TDX SEAMCALL Status Codes (returned in RAX)
-> + * TDX Status Codes (returned in RAX)
->   */
-> +#define TDX_SUCCESS				0ULL
->  #define TDX_NON_RECOVERABLE_VCPU		0x4000000100000000ULL
->  #define TDX_NON_RECOVERABLE_TD			0x4000000200000000ULL
->  #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
-> @@ -17,6 +18,7 @@
->  #define TDX_OPERAND_INVALID			0xC000010000000000ULL
->  #define TDX_OPERAND_BUSY			0x8000020000000000ULL
->  #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
-> +#define TDX_RND_NO_ENTROPY			0x8000020300000000ULL
->  #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
->  #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
->  #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
-> @@ -28,6 +30,20 @@
->  #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
->  #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
->  
-> +/*
-> + * SW-defined error codes.
-> + *
-> + * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
-> + * TDX module.
-> + */
-> +#define TDX_ERROR			_BITULL(63)
-> +#define TDX_NON_RECOVERABLE		_BITULL(62)
-> +#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
-> +#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _ULL(0xFFFF0000))
-> +
-> +#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
-> +#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
+I am taking over development of this series from David Matlack. 
+v1: https://lore.kernel.org/kvm/20250912222525.2515416-1-dmatlack@google.com/
 
-I don't think the host's SW-defined error codes should be used by the guest.  The
-guest can't even make SEAMCALLs.  So unless I'm misunderstanding the purpose, I
-don't think it makes sense to move these into tdx_errno.h.
+This series is based on the kvm-upstream/queue branch.
 
-Regardless, please split this up into two patches:
+This series introduces vfio_pci_irq_test, which exercises the delivery
+of VFIO device interrupts (MSI/MSI-X) to guest vCPUs, and links the
+VFIO selftests library into KVM selftests to enable testing of VFIO-KVM
+interactions.
 
- 1. Move tdx_errno.h
- 2. Land more #defines in tdx_errno.h
+The test requires a PCI device bound to vfio-pci. It can be invoked by
+passing the BDF the VFIO selftests setup script, and then running the
+test with the device BDF:
 
-Because IIUC, tdx_errno.h holds *only* architecturally defined values, which makes
-(1) super duper trivial to review and ack.
+  $ ./tools/testing/selftests/vfio/scripts/setup.sh 0000:6a:01.0
+  $ tools/testing/selftests/kvm/vfio_pci_irq_test 0000:6a:01.0
+
+This test only supports x86. Testing physical device interrupts (-d argument) is
+only supported for Intel because there are no VFIO selftest drivers for AMD
+devices.
+
+The test can be run with following command-line arguments allow for broad
+coverage of the interrupt delivery path:
+
+  -a: Random IRQ Affinity. Randomly affinitizes the device IRQ to different 
+      host CPUs to verify stable delivery during interrupt steering changes.
+  -b: Block vCPUs. Causes vCPUs to HLT instead of spinning, verifying that 
+      Posted-interrupt wakeup (PIW) correctly kicks blocked vCPUs.
+  -d: Device MSI Triggers. Uses the physical device to trigger MSIs instead 
+      of eventfd emulation (requires a supported device driver).
+  -e: Clear GSI Routes. Periodically destroys/recreates KVM's GSI routing 
+      table to verify handling of dynamic IRQ updates.
+  -i: IRQ Count. Sets the number of interrupts to generate (default 1000).
+  -n: NMI Delivery. Routes interrupts as NMIs into the guest to verify the 
+      VFIO-NMI delivery path.
+  -p: vCPU Pinning. Migrates vCPUs to random physical CPUs to verify that 
+      posted interrupts follow the vCPU across host cores.
+  -t: Timeout. Configurable timeout in seconds to wait for an interrupt.
+  -v: vCPU Count. Distributes interrupts across multiple vCPUs via 
+      round-robin routing.
+  -x: xAPIC Mode. Forces legacy xAPIC mode to verify compatibility.
+
+
+Changelog
+---------
+v2:
+ - Split the monolithic test into a series of logical patches (Sean)
+ - Move READ_FROM_GUEST and WRITE_TO_GUEST macros to kvm_util.h (Sean)
+ - Add gettid, sched_setaffinity, and sched_getaffinity to kvm_syscalls.h (Sean)
+ - Extract /proc/interrupts parsing logic into lib/irq_util.c (Sean)
+ - Add -t command-line option for configurable interrupt timeout (Sean)
+ - Improve assertion messages with specific vCPU failure context (Sean)
+ - Update guest loop to use cpu_relax() when not blocking (Sean)
+ - Add KVM_RANDOM_SEED support to kvm_selftest_init for reproducibility (Sean)
+ - Randomize the default IRQ vector and GSI (Sean)
+ - Ensure blocked vCPUs are cleaned up correctly after HLT (Sean)
+ - Use kvm_mmap() instead of mmap() (Sean)
+
+v1: https://lore.kernel.org/kvm/20250912222525.2515416-1-dmatlack@google.com/
+
+David Matlack (11):
+  KVM: selftests: Build and link sefltests/vfio/lib into KVM selftests
+  KVM: selftests: Add vfio_pci_irq_test
+  KVM: selftests: Add support for random host IRQ affinity
+  KVM: selftests: Allow blocking vCPUs via HLT
+  KVM: selftests: Add support for physical device MSI triggers
+  KVM: selftests: Add option to clear GSI routes
+  KVM: selftests: Make test IRQ count configurable
+  KVM: selftests: Add support for NMI delivery
+  KVM: selftests: Add support for vCPU pinning
+  KVM: selftests: Support testing with multiple vCPUs
+  KVM: selftests: Add xAPIC mode support
+
+Josh Hilke (3):
+  KVM: selftests: Add helper functions for IRQ testing
+  KVM: selftests: Reproduce tests that rely on randomization
+  KVM: selftests: Make vfio_pci_irq_test timeout configurable
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   7 +-
+ .../testing/selftests/kvm/include/irq_util.h  |  11 +
+ .../selftests/kvm/include/kvm_syscalls.h      |   7 +
+ .../testing/selftests/kvm/include/kvm_util.h  |  11 +
+ tools/testing/selftests/kvm/lib/irq_util.c    |  84 ++++
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  11 +-
+ .../testing/selftests/kvm/vfio_pci_irq_test.c | 439 ++++++++++++++++++
+ 7 files changed, 568 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/irq_util.h
+ create mode 100644 tools/testing/selftests/kvm/lib/irq_util.c
+ create mode 100644 tools/testing/selftests/kvm/vfio_pci_irq_test.c
+
+-- 
+2.53.0.1118.gaef5881109-goog
+
