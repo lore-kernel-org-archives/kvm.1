@@ -1,53 +1,53 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBD83A872A
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31893C872F
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774986111; cv=none; b=AeuYUlSJ2AEa/gH2dVKLlnJwQ95ZttkOWIYAgiXFF3Fc+XTllJn3PjwZk9ffDrmNO/hWhlsVRHtjG4qBOSgp5nf/2kwmuwBi49RYN880lI9dy7Kn48wQnfNMsEdheHmAOAihb9nKaK6LupcX3ayBfCXyxYvjpYi4WE930Ryqf1Y=
+	t=1774986113; cv=none; b=NDQZcZtqcCquvCbs/BFqULP3HkfYqG74fsEky0aBm6VnN+aMrSo8p46+I9omz9rXVKeXA/fPVVGWK6lbYUQxn6fjqCttgBAC3sLEgGkdGuVXsSIm6/1nw4ShPVP5ykMa0R1i9R7UYEC0+TFW/5O6R7ZacdisPsYkG/pYaNWbbVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774986111; c=relaxed/simple;
-	bh=P4QrZ6iBlp0WSADdpmIS8D4np8J7E0ei9W07xCJWxX4=;
+	s=arc-20240116; t=1774986113; c=relaxed/simple;
+	bh=ygUBfuucnX37gMgIs9R3vZLogUSp7PQvndDS/D25urM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uHwcywxcYjpHKqGv2awra7qkrzwwN5c2WQTPXT5JD6ZFo4ofBGL4UQ9W1Yt3kIEV+W31Bhs5EZ6/TMznDVmxPimUWFD39vDDENvdq65YPpIzuI1CJOnor548LOsYIkLA5bcwF6nD0pwSA2VqhW4z273OXhA6qe6U98LZfu0Y4Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=avq+f88C; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=XlBiU557DDo80rN0uWok+RyttgIfqNSyfxAbKL6jmf/pUgNddHCcOoNnw9JFzryikTtH6Cu4ELl+AN1QPyriU92QPiqj5if7e96CVdQuJWJZWvzD6cGllPuIOxD6523bMFm/x8klaKsmuj9mZunDuwiFR/FSpCN0o/xC523TbbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HDPXP/kJ; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="avq+f88C"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c6929bd26so10025383b3a.3
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:41:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HDPXP/kJ"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76ad3b732eso2604926a12.1
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:41:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774986109; x=1775590909; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774986111; x=1775590911; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bOIjxDZ+8P3srB1/ihVvJJjCQWIf21JptIqBnpZHmmg=;
-        b=avq+f88CQTODZ31Hlg/9i1iQNmMgLVbs50TrKjYY/szHQo/i2Gk+pHvcqwArWNl5gL
-         fhlVBf3EFJAggtmSH7Jyxt21rEjROSXMLCW3GXNGIwOO3h75v6GjCqMIiThPzYvxCOvW
-         ZbsACyOIjsE8eS+m4wx2hXnvVhHtNXyBA36w2kouF5tWbPqHgUurMGItv+M6QsI2bciq
-         eJauhh4vQIFoyocgCOZG0bIXBR5qGReE5TTbfjrvw/JlfP4N4cxrdVPscrIg4rzde8T9
-         j71xvrLkaYOEbsOtGBMGaa7CPZvcivANazqqoc/Z0OvXqq07e0AbBfqYVD3lqRW+4JRZ
-         9taw==
+        bh=nYmjsQzRuJVE1bgLHN7Edl/ckRjbUuuJAPqEITm3ILY=;
+        b=HDPXP/kJ0rB2309OHKhSUAk2BF3j1yJeZtOKETjFDyExfSYPa/24UyPt4HfzX2fOC6
+         /WVO2CxsYioxY3KgvEh6E+H9jPjywpCnll2praBviJKS46mwYr7TBo2kpolsOCt+QqrT
+         GJhFc/OOIL7lM3yRpi+grU1CezbG5aUgciNsb8IBj7R+ZaXcjou/fq+eqrMUmUdpVzmo
+         heFVQUv878TlX4rpwLOd9AflXbAG5W8nGpHQapgpjfz0kDcJC+a9d5ybBwe+w6DsSi4Z
+         DLdCo7b08FI7+yrrkXrmteSmef8gcDf+LEVksxbEdCCYnqfSO9dTRLOkcMOG3kdG/8Hl
+         KtLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774986109; x=1775590909;
+        d=1e100.net; s=20251104; t=1774986111; x=1775590911;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bOIjxDZ+8P3srB1/ihVvJJjCQWIf21JptIqBnpZHmmg=;
-        b=gaH8uLooGo3Q4Uivt0B76X7OqNdE6QMZe8PrXYb8eVscqtWo2ZSFM2q5KFR6eprSAl
-         QvGB+8PIPP5X2fvBxuTa95JwEQcMi5pmAhNuD/sSWfoaxMJvOV18RRDJgTOHeGm77CA2
-         Dg3kFY5/JyN493Uomg3Xwbzz8T1A0LwlBM6lBooe68Poen26atXDs9iX0aY1ZOJdYDvh
-         KnWI7/eNqwP46PZLcxFC6WVuf0eRpfmcm+CMi7S3i97KaCQDU+pNSh6w/ELSWasHzQ2n
-         laCdF5FsZiaGC5Go+Wo3urwgfMBwi+duw2vPnhO0CFyIIFgStl7hSK+I3iJdDpniEDDw
-         v5Kw==
-X-Gm-Message-State: AOJu0YyjrFc9vDKzFCIgd6qR0NXMcs1c1wQYIRjddB+9OX0K2hPgzMRI
-	zWMsjnIa2HjZrnArVjDNyAqLF+ulwbwe2gwvZQSOCyx5dBdvFqX/qbXRaULHIULzYQzsgO8wVTf
-	GCn65lsj3
-X-Received: from pfbhh5.prod.google.com ([2002:a05:6a00:8685:b0:829:8ad6:fe7f])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:908a:b0:823:1252:9428
- with SMTP id d2e1a72fcca58-82ce88f596bmr879625b3a.9.1774986109404; Tue, 31
- Mar 2026 12:41:49 -0700 (PDT)
-Date: Tue, 31 Mar 2026 19:40:32 +0000
+        bh=nYmjsQzRuJVE1bgLHN7Edl/ckRjbUuuJAPqEITm3ILY=;
+        b=qZJfLNWR8eMxjKM4W6eGQyHe7Tt/AjyEYIJVjcks7YKNraUv4xTmXcTcdjQVRf2WC4
+         wD+lNQJnrDxqTVqG/CR6u0RxACcu41Ny6d2WHoDmfi429kpcoacgaZk8Yq7jE/W3zBCN
+         m0RNccpDSISV6OJr4fEPxqUarVJvApFpDtkvgD3zXjlh4XHzprXTgAMvDCPyez/BXbF5
+         d/mUKbrI4DI2dP+n/EtRlrWmUDPNuRgeclvXG8TsiDKF1M6h0gtU83SrxP516Pu0k3fO
+         oixhE0sTiesgFCMh24w5uK7+blY/qscJw77M/VWKYmr+RuB5MJcoOUDBK6AR9C9+cY6Z
+         3JaQ==
+X-Gm-Message-State: AOJu0YwIgiaUT6SVFOcsTqtpKam4gn1FVmiAVIecctzJWlSYnuAgz5I+
+	Z6qV3GCooBaXmTftubm6gC4KbZN9dacyYiM9SRfqiXQrqaoXjgMYzreu011HEU/b0V3BWL9c74y
+	CJolwTbZ5
+X-Received: from pfbfk3.prod.google.com ([2002:a05:6a00:3a83:b0:82c:213e:7964])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7287:b0:398:98f2:744d
+ with SMTP id adf61e73a8af0-39ef7761d80mr446946637.45.1774986110915; Tue, 31
+ Mar 2026 12:41:50 -0700 (PDT)
+Date: Tue, 31 Mar 2026 19:40:33 +0000
 In-Reply-To: <20260331194033.3890309-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,129 +57,82 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260331194033.3890309-1-jrhilke@google.com>
 X-Mailer: git-send-email 2.53.0.1118.gaef5881109-goog
-Message-ID: <20260331194033.3890309-14-jrhilke@google.com>
-Subject: [PATCH v2 13/14] KVM: selftests: Add xAPIC mode support
+Message-ID: <20260331194033.3890309-15-jrhilke@google.com>
+Subject: [PATCH v2 14/14] KVM: selftests: Make vfio_pci_irq_test timeout configurable
 From: Josh Hilke <jrhilke@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, David Matlack <dmatlack@google.com>, 
 	Alex Williamson <alex@shazbot.org>, Josh Hilke <jrhilke@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: David Matlack <dmatlack@google.com>
-
-Add the '-x' flag to vfio_pci_irq_test to allow the guest to use legacy
-xAPIC mode instead of the default x2APIC mode. This ensures the test
-verifies the interrupt delivery paths for both generations of APIC
-architecture in the KVM selftest environment.
+Add a '-t' flag to vfio_pci_irq_test to allow configuring the
+interrupt timeout. This provides flexibility for running the test in
+different environments where interrupt delivery times may vary.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
-Co-developed-by: Josh Hilke <jrhilke@google.com>
 ---
- .../testing/selftests/kvm/vfio_pci_irq_test.c | 28 +++++++++++++++----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ tools/testing/selftests/kvm/vfio_pci_irq_test.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/vfio_pci_irq_test.c b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-index 8c6c7c424b92..2dcac6fbc009 100644
+index 2dcac6fbc009..807e9aecc887 100644
 --- a/tools/testing/selftests/kvm/vfio_pci_irq_test.c
 +++ b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-@@ -15,6 +15,7 @@
+@@ -25,7 +25,7 @@ static bool guest_received_nmi[KVM_MAX_VCPUS];
  
- #include <libvfio.h>
+ static pid_t vcpu_tids[KVM_MAX_VCPUS];
  
-+static bool x2apic = true;
- static bool done;
- static bool block;
- 
-@@ -28,14 +29,20 @@ static pid_t vcpu_tids[KVM_MAX_VCPUS];
+-#define TIMEOUT_NS (2ULL * 1000 * 1000 * 1000)
++static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
  
  static u32 guest_get_vcpu_id(void)
  {
--	return x2apic_read_reg(APIC_ID);
-+	if (x2apic)
-+		return x2apic_read_reg(APIC_ID);
-+	else
-+		return xapic_read_reg(APIC_ID) >> 24;
- }
- 
- static void guest_irq_handler(struct ex_regs *regs)
- {
- 	WRITE_ONCE(guest_received_irq[guest_get_vcpu_id()], true);
- 
--	x2apic_write_reg(APIC_EOI, 0);
-+	if (x2apic)
-+		x2apic_write_reg(APIC_EOI, 0);
-+	else
-+		xapic_write_reg(APIC_EOI, 0);
- }
- 
- static void guest_nmi_handler(struct ex_regs *regs)
-@@ -45,7 +52,10 @@ static void guest_nmi_handler(struct ex_regs *regs)
- 
- static void guest_code(void)
- {
--	x2apic_enable();
-+	if (x2apic)
-+		x2apic_enable();
-+	else
-+		xapic_enable();
- 
- 	sti_nop();
- 
-@@ -186,7 +196,7 @@ static void send_msi(struct vfio_pci_device *device, bool use_device_msi, int ms
+@@ -196,7 +196,7 @@ static void send_msi(struct vfio_pci_device *device, bool use_device_msi, int ms
  
  static void help(const char *name)
  {
--	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-v nr_vcpus] segment:bus:device.function\n",
-+	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-v nr_vcpus] [-x] segment:bus:device.function\n",
+-	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-v nr_vcpus] [-x] segment:bus:device.function\n",
++	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-t timeout] [-v nr_vcpus] [-x] segment:bus:device.function\n",
  	       name);
  	printf("\n");
  	printf("  -a: Randomly affinitize the device IRQ to different CPUs\n"
-@@ -202,6 +212,7 @@ static void help(const char *name)
+@@ -210,6 +210,7 @@ static void help(const char *name)
+ 	printf("  -n: Route some of the device interrupts to be delivered as\n"
+ 	       "      an NMI into the guest.\n");
  	printf("  -p: Pin vCPU threads to random pCPUs throughout the test.\n");
++	printf("  -t: The timeout in seconds to wait for an interrupt.\n");
  	printf("  -v: Set the number of vCPUs that the test should create.\n"
  	       "      Interrupts will be round-robined among vCPUs.\n");
-+	printf("  -x: Use xAPIC mode instead of x2APIC mode in the guest.\n");
- 	printf("\n");
- 	exit(KSFT_FAIL);
- }
-@@ -244,7 +255,7 @@ int main(int argc, char **argv)
+ 	printf("  -x: Use xAPIC mode instead of x2APIC mode in the guest.\n");
+@@ -255,7 +256,7 @@ int main(int argc, char **argv)
  
  	device_bdf = vfio_selftests_get_bdf(&argc, argv);
  
--	while ((c = getopt(argc, argv, "abdehi:npv:")) != -1) {
-+	while ((c = getopt(argc, argv, "abdehi:npv:x")) != -1) {
+-	while ((c = getopt(argc, argv, "abdehi:npv:x")) != -1) {
++	while ((c = getopt(argc, argv, "abdehi:npv:xt:")) != -1) {
  		switch (c) {
  		case 'a':
  			irq_affinity = true;
-@@ -270,6 +281,9 @@ int main(int argc, char **argv)
+@@ -278,6 +279,9 @@ int main(int argc, char **argv)
+ 		case 'p':
+ 			pin_vcpus = true;
+ 			break;
++		case 't':
++			timeout_ns = (u64)atoi_positive("Timeout (seconds)", optarg) * 1000ULL * 1000 * 1000;
++			break;
  		case 'v':
  			nr_vcpus = atoi_positive("nr_vcpus", optarg);
  			break;
-+		case 'x':
-+			x2apic = false;
-+			break;
- 		case 'h':
- 		default:
- 			help(argv[0]);
-@@ -280,6 +294,9 @@ int main(int argc, char **argv)
- 	vm_install_exception_handler(vm, vector, guest_irq_handler);
- 	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
+@@ -387,7 +391,7 @@ int main(int argc, char **argv)
+ 			if (!do_nmi && READ_FROM_GUEST(vm, guest_received_irq[vcpu->id]))
+ 				break;
  
-+	if (!x2apic)
-+		virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
-+
- 	iommu = iommu_init(default_iommu_mode);
- 	device = vfio_pci_device_init(device_bdf, iommu);
- 	msi = setup_msi(device, use_device_msi);
-@@ -295,6 +312,7 @@ int main(int argc, char **argv)
- 
- 	kvm_assign_irqfd(vm, gsi, device->msi_eventfds[msi]);
- 
-+	sync_global_to_guest(vm, x2apic);
- 	sync_global_to_guest(vm, block);
- 
- 	for (i = 0; i < nr_vcpus; i++)
+-			if (timespec_to_ns(timespec_elapsed(start)) > TIMEOUT_NS) {
++			if (timespec_to_ns(timespec_elapsed(start)) > timeout_ns) {
+ 				printf("Timeout waiting for interrupt!\n");
+ 				printf("  vCPU: %d\n", vcpu->id);
+ 				printf("  do_nmi: %d\n", do_nmi);
 -- 
 2.53.0.1118.gaef5881109-goog
 
