@@ -1,131 +1,170 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B583CE4B3;
-	Tue, 31 Mar 2026 07:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6883D891E;
+	Tue, 31 Mar 2026 08:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774943454; cv=none; b=C2yygD57j3RQzk9MN8rn1FcQsROZVgHb0OGA4DP3G0VHucqHElx+BCqDtXr99IWdpFYECM8/SMdEn1qXF2L4iRRvJm/IHlkAVStFp4orl1Cv92ZOfmV39VGQg1DnJoq17sMvOmvPE1w0xtCo5GX1rNU1oLqXm15vwNIaowqksUo=
+	t=1774944404; cv=none; b=Tl9JMR9FcHw2HWTv19S52AvdetOD7iIIqJub4hRQbOYnlnYpTpFHjK25gdbT9/GgUr8d8Elc3XdZCeaKn0uVfFwufspSSDvhMSYiCEQkJiZkYDlqIugTWMrClj3H/L89K3TgU2QgZynB4GU2oBGwxKi2hGw09Cq7l44DAxrlde0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774943454; c=relaxed/simple;
-	bh=QmBrY5BKVbXz9CXTgV6unLVzlvXFNRWXO9R3+/R7gS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LasJe4qmdOaPSUPZmvFZL757LM+s0tJCkdCh9vEV0efvpHTUvS1UxUkA4dGKcikd246bb8OVMVQtsMdayJb1Ubq481yDq7CvcgVhDfBYP+iqwz0Bo7CkafVP387OOnFEi7MEZBFNUQ/hh9wf/6im7Yi0C+kcOvwGOZOa5NoeApw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otLloVur; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774944404; c=relaxed/simple;
+	bh=7ZnFUcGBpSYxCeawHwcWvE73wN8LYb8XSX/aZ34llBU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=TmHlnZtNmU3jHLj6h29vNybS2m7yJ5sOdOKIXHMp0k5qZWLS/KyQCITR99waDuHMeSMB0DKq0YVKU0UIQScxlPfhk8S3ZDSDs4W8Cj0XZj9j75cssyBDtmBr8b4a4IUN/GRR/f8h0WbahOGBgY0pqb4Re+3FeMUT4gO1uSaRtSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWIlCHwQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otLloVur"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26696C19423;
-	Tue, 31 Mar 2026 07:50:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWIlCHwQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9364DC2BCB1;
+	Tue, 31 Mar 2026 08:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774943454;
-	bh=QmBrY5BKVbXz9CXTgV6unLVzlvXFNRWXO9R3+/R7gS0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=otLloVurIebAAh64mVkWyy1Yx4OPNvjHY6Wavo2/t4scZtIey5FAsclGVAReyXELv
-	 acxPd9t/ZfkfPv+8RIRukk+mhkmlBvA+a2FBtpVBpcMXMdKf9jax1Ic5HrqbXCTaup
-	 L75gDcEL/qZJCWDPtiE0uv2tcJ6ipRACww0DE+70ADtXMBfVxH1qiK2c2+ILM1nif2
-	 c6tAhrmqudLZPc4H8kWeC1d15Fd6KPnMbP8ucuuzdJcntZ/ZyBTViRoOtw++xYFqIP
-	 mZ8dgFOzD3fLbeFA3spBT4TBU6/1zqW4GUaEm90ycw/3i2nT+5rj39NOfszj0isSvg
-	 0qPx21ePK4h+w==
-Date: Tue, 31 Mar 2026 16:50:52 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/15] userfaultfd: introduce mfill_establish_pmd()
- helper
-Message-ID: <act83N6QP8kgcrZn@hyeyoo>
-References: <20260330101116.1117699-1-rppt@kernel.org>
- <20260330101116.1117699-4-rppt@kernel.org>
+	s=k20201202; t=1774944403;
+	bh=7ZnFUcGBpSYxCeawHwcWvE73wN8LYb8XSX/aZ34llBU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=AWIlCHwQfZsUuHzOmGZpVGY5YC2rf+d68CeBHq+msonYwp7U2eqLrZxes/cDwOhzj
+	 cxpHUVzGLXyiRtTuiesiUTZk1jZ4TcDex7KFW8cftoKdzZUi7rr5OJwggbIXG1Qkjk
+	 y+1kJYFjlXJgwRMxjX5gpnBgZX2SWzf28LHVl+Lqu+vuVqVDfsqOYyI0fBSLNK4oiz
+	 5o/ZjxvWe1HfMi03Q77GYttGBzv0VRF/kGrPedoVKNJAcdTkHpW3bIz1sDtXTCy1mo
+	 2Z3qOFa/hlvy8JEPivh5B8wp9J/5+CgONWe9R6Y+M3smVnPJrUWUnRppA4rHbFzvHS
+	 mmm1NDCdVo7ag==
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330101116.1117699-4-rppt@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 31 Mar 2026 10:06:32 +0200
+Message-Id: <DHGT9XCG8Y96.3IB1EI6FF1ZDZ@kernel.org>
+Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
+Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "Russell King"
+ <linux@armlinux.org.uk>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Ioana Ciornei"
+ <ioana.ciornei@nxp.com>, "Nipun Gupta" <nipun.gupta@amd.com>, "Nikhil
+ Agarwal" <nikhil.agarwal@amd.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
+ "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Armin Wolf" <W_Armin@gmx.de>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Mathieu Poirier"
+ <mathieu.poirier@linaro.org>, "Vineeth Vijayan" <vneethv@linux.ibm.com>,
+ "Peter Oberparleiter" <oberpar@linux.ibm.com>, "Heiko Carstens"
+ <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger"
+ <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Harald
+ Freudenberger" <freude@linux.ibm.com>, "Holger Dengler"
+ <dengler@linux.ibm.com>, "Mark Brown" <broonie@kernel.org>, "Michael S.
+ Tsirkin" <mst@redhat.com>, "Jason Wang" <jasowang@redhat.com>, "Xuan Zhuo"
+ <xuanzhuo@linux.alibaba.com>, =?utf-8?q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, "Juergen Gross" <jgross@suse.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, "Oleksandr Tyshchenko"
+ <oleksandr_tyshchenko@epam.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-hyperv@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <platform-driver-x86@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-remoteproc@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+ <linux-spi@vger.kernel.org>, <virtualization@lists.linux.dev>,
+ <kvm@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
+ <linux-arm-kernel@lists.infradead.org>, "Gui-Dong Han"
+ <hanguidong02@gmail.com>
+To: "Alex Williamson" <alex@shazbot.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260324005919.2408620-1-dakr@kernel.org>
+ <20260324005919.2408620-6-dakr@kernel.org>
+ <DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
+ <20260330141050.2cb47bd9@shazbot.org>
+In-Reply-To: <20260330141050.2cb47bd9@shazbot.org>
 
-On Mon, Mar 30, 2026 at 01:11:04PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> There is a lengthy code chunk in mfill_atomic() that establishes the PMD
-> for UFFDIO operations.  This code may be called twice: first time when the
-> copy is performed with VMA/mm locks held and the other time after the copy
-> is retried with locks dropped.
-> 
-> Move the code that establishes a PMD into a helper function so it can be
-> reused later during refactoring of mfill_atomic_pte_copy().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-
-Looks good to me,
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-
->  mm/userfaultfd.c | 102 ++++++++++++++++++++++++-----------------------
->  1 file changed, 52 insertions(+), 50 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index fa9622ec7279..291e5cfed431 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> +static int mfill_establish_pmd(struct mfill_state *state)
+On Mon Mar 30, 2026 at 10:10 PM CEST, Alex Williamson wrote:
+> On Mon, 30 Mar 2026 19:38:41 +0200
+> "Danilo Krummrich" <dakr@kernel.org> wrote:
+>
+>> (Cc: Jason)
+>>=20
+>> On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:
+>> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_=
+pci_core.c
+>> > index d43745fe4c84..460852f79f29 100644
+>> > --- a/drivers/vfio/pci/vfio_pci_core.c
+>> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> > @@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier=
+_block *nb,
+>> >  	    pdev->is_virtfn && physfn =3D=3D vdev->pdev) {
+>> >  		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+>> >  			 pci_name(pdev));
+>> > -		pdev->driver_override =3D kasprintf(GFP_KERNEL, "%s",
+>> > -						  vdev->vdev.ops->name);
+>> > -		WARN_ON(!pdev->driver_override);
+>> > +		WARN_ON(device_set_driver_override(&pdev->dev,
+>> > +						   vdev->vdev.ops->name)); =20
+>>=20
+>> Technically, this is a change in behavior. If vdev->vdev.ops->name is NU=
+LL, it
+>> will trigger the WARN_ON(), whereas before it would have just written "(=
+null)"
+>> into driver_override.
+>
+> It's worse than that.  Looking at the implementation in [1], we have:
+>
+> +static inline int device_set_driver_override(struct device *dev, const c=
+har *s)
 > +{
-> +	struct mm_struct *dst_mm = state->ctx->mm;
-> +	pmd_t *dst_pmd, dst_pmdval;
-> +
-> +	dst_pmd = mm_alloc_pmd(dst_mm, state->dst_addr);
-> +	if (unlikely(!dst_pmd))
-> +		return -ENOMEM;
-> +
-> +	dst_pmdval = pmdp_get_lockless(dst_pmd);
-> +	if (unlikely(pmd_none(dst_pmdval)) &&
-> +	    unlikely(__pte_alloc(dst_mm, dst_pmd)))
-> +		return -ENOMEM;
-> +
-> +	dst_pmdval = pmdp_get_lockless(dst_pmd);
-> +	/*
-> +	 * If the dst_pmd is THP don't override it and just be strict.
-> +	 * (This includes the case where the PMD used to be THP and
-> +	 * changed back to none after __pte_alloc().)
-> +	 */
-> +	if (unlikely(!pmd_present(dst_pmdval) || pmd_leaf(dst_pmdval)))
-
-Just noting:						 ^ this was
-						 pmd_trans_huge() but
-						 now it is pmd_leaf().
-
-but since the present bit is separately checked and hugetlb vma is handled
-in a different path I don't expect functional change.
-
-> +		return -EEXIST;
-> +	if (unlikely(pmd_bad(dst_pmdval)))
-> +		return -EFAULT;
-> +
-> +	state->pmd = dst_pmd;
-> +	return 0;
+> +	return __device_set_driver_override(dev, s, strlen(s));
 > +}
+>
+> So if name is NULL, we oops in strlen() before we even hit the -EINVAL
+> and WARN_ON().
 
--- 
-Cheers,
-Harry / Hyeonggon
+This was changed in v2 [2] and the actual code in-tree is
+
+	static inline int device_set_driver_override(struct device *dev, const cha=
+r *s)
+	{
+		return __device_set_driver_override(dev, s, s ? strlen(s) : 0);
+	}
+
+so it does indeed return -EINVAL for a NULL pointer.
+
+> I don't believe we have any vfio-pci variant drivers where the name is
+> NULL, but kasprintf() handling NULL as "(null)" was a consideration in
+> this design, that even if there is no name the device is sequestered
+> with a driver_override that won't match an actual driver.
+>
+>> I assume that vfio_pci_core drivers are expected to set the name in stru=
+ct
+>> vfio_device_ops in the first place and this code (silently) relies on th=
+is
+>> invariant?
+>
+> We do expect that, but it was previously safe either way to make sure
+> VFs are only bound to the same ops driver or barring that, at least
+> don't perform a standard driver match.  The last thing we want to
+> happen automatically is for a user owned PF to create SR-IOV VFs that
+> automatically bind to native kernel drivers.
+> =20
+>> Alex, Jason: Should we keep this hunk above as is and check for a proper=
+ name in
+>> struct vfio_device_ops in vfio_pci_core_register_device() with a subsequ=
+ent
+>> patch?
+>
+> Given the oops, my preference would be to roll it in here.  This change
+> is what makes it a requirement that name cannot be NULL, where this was
+> safely handled with kasprintf().
+
+Again, no oops here. :)
+
+I still think it makes more sense to fail early in
+vfio_pci_core_register_device(), rather than silently accept "(null)" in
+driver_override. It also doesn't seem unreasonable with only the WARN_ON(),=
+ but
+I can also just add vdev->vdev.ops->name ?: "(null)".
+
+Please let me know what you prefer.
+
+- Danilo
+
+> [1] https://lore.kernel.org/all/20260302002729.19438-2-dakr@kernel.org/
+
+[2] https://lore.kernel.org/driver-core/20260303115720.48783-1-dakr@kernel.=
+org/
