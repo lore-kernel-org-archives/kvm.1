@@ -1,172 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BA93ED5C2;
-	Tue, 31 Mar 2026 09:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238DB3ED5DD
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 09:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774950180; cv=none; b=av+1rmQS5Nd/HR4r8pRH3sQmHNeSjIOhOWfH0fJKC6msZW6KHbCu98hisGASxQkvm3RdSEvIQDGQ2GuUCfYh9Jgrmm63JRQibI/QefHSzA9rbiXSojtrpVJRGdRXFSxE4CEIGvZNBaCdRBDYImYt/29wg9bnDthXuN42TzUjjhQ=
+	t=1774950395; cv=none; b=ISb85Joow9qr6xELPIs09brLpvtJOaWLsRCEVwKfrOzmUCBE9w1tFW0ZZAdJF/76U64CmACmdV5svu7g8FToccUpJoavvCbu2LcC5WuUc+RB73aQXyfK0rC7tkSVr85AeufO0ZRSIJ9ubGbM1nygobcRIbjGK4qvJF6pldHwmJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774950180; c=relaxed/simple;
-	bh=Wz1JPZfYFZ/7NHEBqvrgk49xoWPlVfGaLJ0JuwcL59Y=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rXn81DkGPcPeTxGE+Sy3BzBJz+ntPeJevQbn12g8W9NJynQpNncvCed9YUy7IaDRrlDgKvsU8OA/dfh31nYeUUj8oovkg/Lugybcw58HFs3bK3orrrcE99z0gtEjbbfOV1ZCQY/1MGaazyhLRLNotoJLLkvq2v0QDFc/mFQFgl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgEPV76C; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774950395; c=relaxed/simple;
+	bh=LEucAejffe3SCX1dTTSNEI6iLjp8Gtq1WK31zyi61Gw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KD9o8uZ3giLTJ+ZZ4H+GqUbPY1F6q6Q2YtccQqAl9qIKFD7nsATeJvl9TJ1LxXt/0TEvWH5+bVRKEkgv5j9FTM9FhoR2EWz/+UUyls16Q3kTegFcGPtIM6Was7sOVm9uN9qHLbVk3/GE9R+GikHDbedzAjaicGwgw6MbpAaERGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Cbu/bocu; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgEPV76C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8C3C19423;
-	Tue, 31 Mar 2026 09:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774950180;
-	bh=Wz1JPZfYFZ/7NHEBqvrgk49xoWPlVfGaLJ0JuwcL59Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IgEPV76ClMMw4kJ9lusAJKJ3rOwdntvbZsOyRSsNzCGLJlYx0/MeL3ZmWEVr+ANjG
-	 rns8L+YdnWl0TNfyDYr9PgggVNaBtIY87RZ0ZZLIdVyvanagus9T9Cb3JPS9/1Ieh3
-	 xuboOczfpKyIABb2MVZbS7zNBflmHiD3cE/O6WawXn7X8tvwT5JCWWVe4AQFs03APD
-	 IIl6Z0NqjTqCgz3UYcn6UywafENS29rI+MG9Q2Mek6ObjJ70Cewq7+0Mvcy9YXK6HA
-	 GpDfbyLvd+bpH2hrudIXWwH0ZJ9JqmqE9884adyi0iNPwQIeFrXjl7nxiX1j498eaF
-	 ybb1Y0dELnRYA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w7Vcf-00000007Pek-20fN;
-	Tue, 31 Mar 2026 09:42:57 +0000
-Date: Tue, 31 Mar 2026 10:42:57 +0100
-Message-ID: <86a4vo49ni.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Cc: Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Mark Brown
- <broonie@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH v4 35/49] KVM: arm64: GICv3: nv: Plug L1 LR sync into deactivation primitive
-In-Reply-To: <1e050b67-2276-41ad-9265-796ba853dc7c@os.amperecomputing.com>
-References: <20251120172540.2267180-1-maz@kernel.org>
-	<20251120172540.2267180-36-maz@kernel.org>
-	<2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
-	<878qb9cxzr.wl-maz@kernel.org>
-	<1e050b67-2276-41ad-9265-796ba853dc7c@os.amperecomputing.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Cbu/bocu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mA
+	ML65gwGw/hBVTTFnvPtutWm8H1pcKIMUoFmnKDgNc=; b=Cbu/bocuJu6KXLNbF3
+	fie46PjArZnh+G+sM1zG6asm1f5YjaYf5+cZGjp0R8Qjm9/i9zaMlArQ3mpBwIBJ
+	Z5qjCA3SCRcWY3OJfwfdAP+/sjXM3GnM/+7E0M7rLKZE0xxS1994qP21CqrYMyiW
+	ZrSdva/HSzcaSq+fCo3kR+0OY=
+Received: from thinkpadx13gen2i.. (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wB3yHHol8tpiBESCg--.11028S2;
+	Tue, 31 Mar 2026 17:46:18 +0800 (CST)
+From: Zongmin Zhou <min_halo@163.com>
+To: kvm@vger.kernel.org,
+	will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH kvmtool] riscv: Add BFloat16 extensions support
+Date: Tue, 31 Mar 2026 17:46:14 +0800
+Message-Id: <20260331094614.123614-1-min_halo@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: vishnu@os.amperecomputing.com, tabba@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, christoffer.dall@arm.com, broonie@kernel.org, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wB3yHHol8tpiBESCg--.11028S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr48CFyfuFy5tFyxWw1fCrg_yoW5GFW8pF
+	n7A3s3KrWrXas09a4Iqr98Gw15Xw45u395Gw42krs7Jry5Aryftrn5G3W3ua1DJayv9FnI
+	vF1kWrW0vr4rAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3Oz-UUUUU=
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbC0gptGWnLl+qNFAAA3q
 
-On Tue, 31 Mar 2026 07:31:54 +0100,
-Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
-> 
-> Hi Marc,
-> Many thanks for your reply.
-> 
-> On 30-03-2026 17:47, Marc Zyngier wrote:
-> > On Mon, 30 Mar 2026 12:51:51 +0100,
-> > Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
-> >> 
-> >> Hi Fuad Tabba,
-> > 
-> > To be brutally honest, I doubt Fuad really cares about NV,
-> 
-> I see Tested-by: fuad Tabba on this patch so tried to reach out him.
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-Rather than the author of the patch?
+Expose the BFloat16 extensions (Zfbfmin, Zvfbfmin, Zvfbfwma) to KVM guests
+when available in hardware.
+Add command-line options to disable each extension individually.
 
-> 
-> > 
-> >>     I'm trying to run nested VMs on Ampere platforms after this patch
-> >> series(v6.19+) but nested VMs are not booting and triggering soft
-> >> lockups on L0 and L0 hang. But just before this patch I could able to
-> >> successfully boot the Nested VMs.
-> > 
-> > So the host dies? There isn't much here that interacts with the host
-> > at all. Worse case, the L1 dies by not making progress.
-> 
-> Initially L1 become unresponsive then L0 becomes unresponsive, soft
-> lockups and L0 hang.
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+---
+ riscv/fdt.c                         | 3 +++
+ riscv/include/kvm/kvm-config-arch.h | 9 +++++++++
+ 2 files changed, 12 insertions(+)
 
-I've never seen this in the past 6 months. Doesn't mean there is no
-bug, but so far I haven't seen any of that.
-
-[...]
-
-> >> Were you able to boot Nested VMs successfully after v6.19+?
-> > 
-> > I boot L3s every day.
-> 
-> Do you mean L2s or L3s on top of L2s?
-
-I'm running an L0 host, itself running L1 guests, themselves running
-L2 guests, themselves running L3 guests. That's what "running L3s"
-means.
-
-> I running L1 and L2 using latest QEMU, do you use QEMU or kvmtool run
-> L1 and L2 in your regression tests?
-
-Both. And that really shouldn't matter.
-
-> 
-> 
-> > 
-> >> LOG:
-> >> [  164.647367] Call trace:
-> >> [  164.647368]  smp_call_function_many_cond+0x334/0x7a0 (P)
-> >> [  164.647372]  smp_call_function_many+0x20/0x40
-> >> [  164.647374]  kvm_make_all_cpus_request+0xec/0x1b8
-> >> [  164.647377]  vgic_queue_irq_unlock+0x1c8/0x2c8
-> >> [  164.647380]  kvm_vgic_inject_irq+0x194/0x1e0
-> >> [  164.647381]  kvm_vm_ioctl_irq_line+0x170/0x400
-> >> [  164.647386]  kvm_vm_ioctl+0x7b8/0xc88
-> >> [  164.647389]  __arm64_sys_ioctl+0xb4/0x118
-> >> [  164.647393]  invoke_syscall+0x6c/0x100
-> >> [  164.647397]  el0_svc_common.constprop.0+0x48/0xf0
-> >> [  164.647398]  do_el0_svc+0x24/0x38
-> >> [  164.647400]  el0_svc+0x3c/0x170
-> >> [  164.647403]  el0t_64_sync_handler+0xa0/0xe8
-> >> [  164.647405]  el0t_64_sync+0x1b0/0x1b8
-> > 
-> > This trace is about interrupt injection from userspace, not
-> > deactivation of a HW interrupt.
-> > None of that makes much sense.
-> 
-> Although this behavior is puzzling, it matches the trace I typically
-> observe on L0. After reverting the patch, I was able to boot L2 guests
-> successfully.
-
-Well, this patch fixes real bugs, so it isn't going anywhere.
-
-The patch you are reverting addresses the deactivation of a HW
-interrupt, which is likely to be a timer (that's the only one we
-support). The stacktrace points to the userspace injection of an SPI.
-
-If we need to broadcast IPI, that's because there is no other SPI
-currently in flight. But if a CPU is not responding to the IPI, what
-is it doing? How does this interact with the patch you are reverting?
-
-Given that I don't know what you're running, how you are running it,
-that I don't have access to whatever HW you are using, and that you
-are providing no useful information that'd help me debug this, I will
-leave it up to you to debug it and come back with a detailed analysis
-of the problem.
-
-Thanks,
-
-	M.
-
+diff --git a/riscv/fdt.c b/riscv/fdt.c
+index 510641e..2368c19 100644
+--- a/riscv/fdt.c
++++ b/riscv/fdt.c
+@@ -55,6 +55,7 @@ struct isa_ext_info isa_info_arr[] = {
+ 	{"zcf",		KVM_RISCV_ISA_EXT_ZCF},
+ 	{"zcmop",	KVM_RISCV_ISA_EXT_ZCMOP},
+ 	{"zfa",		KVM_RISCV_ISA_EXT_ZFA},
++	{"zfbfmin",	KVM_RISCV_ISA_EXT_ZFBFMIN},
+ 	{"zfh",		KVM_RISCV_ISA_EXT_ZFH},
+ 	{"zfhmin",	KVM_RISCV_ISA_EXT_ZFHMIN},
+ 	{"zicbom",	KVM_RISCV_ISA_EXT_ZICBOM},
+@@ -79,6 +80,8 @@ struct isa_ext_info isa_info_arr[] = {
+ 	{"ztso",	KVM_RISCV_ISA_EXT_ZTSO},
+ 	{"zvbb",	KVM_RISCV_ISA_EXT_ZVBB},
+ 	{"zvbc",	KVM_RISCV_ISA_EXT_ZVBC},
++	{"zvfbfmin",	KVM_RISCV_ISA_EXT_ZVFBFMIN},
++	{"zvfbfwma",	KVM_RISCV_ISA_EXT_ZVFBFWMA},
+ 	{"zvfh",	KVM_RISCV_ISA_EXT_ZVFH},
+ 	{"zvfhmin",	KVM_RISCV_ISA_EXT_ZVFHMIN},
+ 	{"zvkb",	KVM_RISCV_ISA_EXT_ZVKB},
+diff --git a/riscv/include/kvm/kvm-config-arch.h b/riscv/include/kvm/kvm-config-arch.h
+index d3e1f56..d56f9ba 100644
+--- a/riscv/include/kvm/kvm-config-arch.h
++++ b/riscv/include/kvm/kvm-config-arch.h
+@@ -123,6 +123,9 @@ int riscv__cpu_type_parser(const struct option *opt, const char *arg, int unset)
+ 	OPT_BOOLEAN('\0', "disable-zfa",				\
+ 		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZFA],	\
+ 		    "Disable Zfa Extension"),				\
++	OPT_BOOLEAN('\0', "disable-zfbfmin",				\
++		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZFBFMIN],	\
++		    "Disable Zfbfmin Extension"),			\
+ 	OPT_BOOLEAN('\0', "disable-zfh",				\
+ 		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZFH],	\
+ 		    "Disable Zfh Extension"),				\
+@@ -195,6 +198,12 @@ int riscv__cpu_type_parser(const struct option *opt, const char *arg, int unset)
+ 	OPT_BOOLEAN('\0', "disable-zvbc",				\
+ 		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZVBC],	\
+ 		    "Disable Zvbc Extension"),				\
++	OPT_BOOLEAN('\0', "disable-zvfbfmin",				\
++		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZVFBFMIN],	\
++		    "Disable Zvfbfmin Extension"),			\
++	OPT_BOOLEAN('\0', "disable-zvfbfwma",				\
++		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZVFBFWMA],	\
++		    "Disable Zvfbfwma Extension"),			\
+ 	OPT_BOOLEAN('\0', "disable-zvfh",				\
+ 		    &(cfg)->ext_disabled[KVM_RISCV_ISA_EXT_ZVFH],	\
+ 		    "Disable Zvfh Extension"),				\
 -- 
-Without deviation from the norm, progress is not possible.
+2.34.1
+
