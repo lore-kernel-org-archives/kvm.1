@@ -1,157 +1,115 @@
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E261A274FE9;
-	Tue, 31 Mar 2026 20:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4635233DEE5;
+	Tue, 31 Mar 2026 20:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774989863; cv=none; b=DJY35KNgYIghbm6AZWqaalSScKhgjyT3/KPnKi0CI9S51VjZz9Aib8e0hIDjiajP9hk4GVevoJjYEA0CqkR3WWO3Wl6xBf762LPaW/7Krqv9HsWqm7ME2lePzvCm4z1VZgMAFtBwIYC+iunBf4gzpoms2mS84jFqSR6tJXSGxNs=
+	t=1774990274; cv=none; b=Fg92q7M/jZwKynpjk4G23OQUV0reIKjnGKDgtKi1Vpv5ROVYAxEpPV967iyswDezVMitrWFE7g2btgTjJdpT57yyRkL+XFo7crmLZIdOZJegXAhW5Dpe1JYlSsocuSYaLhgWLFd5oHH4rIU/0bUh+1tQwxr76d6Nxiyd2YdS6G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774989863; c=relaxed/simple;
-	bh=9JiShWLzsMfEIFKmmLnX3lKHoUsByhcPPiUx3sx9ljc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rBq6d7iE6tLdpmKcPk/GLQwt8LUxhRbkUhWng9oy5r/ldZSndEZuCbMMG21hlBUr8baIEAWja9CLEoJwEJGo0AEBxteZ/44dycMPnRncggnp6WN82Y3OnK3I1AqCuGFcMWK64ErJtd+2xaC2RXfBOfNlj5s6wezeZDp+nHvPI3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=VBMvaleZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tqbvb7P5; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1774990274; c=relaxed/simple;
+	bh=R2SNtf8D9RTFGTcrXAVFU3cnZEn4csddMjgdX7pSwAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q+DN4590cH8BOnnmTk+mrdycWG1eLfc4b8UJm8ADff3oLTbRVR7uFEmq4Q5ezkpHJVPn0EwTJcuTGBZrRJjlrPRsGX3J0XJcmOa2wt4bnNbYqtSvxtuMz8Or+XVQimWvh27BWeFyBHMMf+UV4F0uoF9WrjeyZJfxIyHrYIKZhMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umIoWgTc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="VBMvaleZ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tqbvb7P5"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 351F01D00157;
-	Tue, 31 Mar 2026 16:44:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 31 Mar 2026 16:44:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774989858;
-	 x=1775076258; bh=2naYgeCqp4JHbxNG5hbN+LbC6Dsxev/Fv44jf/ivh80=; b=
-	VBMvaleZt+xdbRoJyYB18VABz+FxWi5/91aNae+7rgz1BX7PhajEbbuasS3ij4DC
-	huNWU9C8s2HgnV1dR5Q8WOziXdzFdclCqr66L+YwjQvOpCKzGhHbwQHJx3LJBWrv
-	P4chF+s7ESahKXNCRl7o1AjyaZY+s+m2CiDWyB66XPt5b1J1gkClWOPk42htFW+F
-	WkFRi3Hj1dWTCIOEONw7bKiPhc/+3d90vj1UWLKz9Mlc4N5gH9cS17ru5HoxFTAp
-	6X8W0IyFewnU5kxfy5S/Cye7goWBgY7qju0OeiKqr/Ud9YYppINfjjxIuNqiY8vT
-	H5sNi0jZRbbuxxe7eqdTng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774989858; x=
-	1775076258; bh=2naYgeCqp4JHbxNG5hbN+LbC6Dsxev/Fv44jf/ivh80=; b=t
-	qbvb7P5NAclNR0cZUBetzKGIU/7IELKS2xk1k1jYuzZfkFMw9cJXJ0BaRq6BTV9K
-	UnlvjVeugDQlaVgODJBCMnm6855GbY43OZrut7Wuv565ZuPeByyWklx2MRnpGJMg
-	LUi6JKaKlVGsD6sd0jeMnO7ltOK/uxUaNcIX3tGGX5PhiyisNQcazkOw/whg8vI3
-	b5+0bVyz1ejTL0FjPtr1t3NcShfolO93Uxfs1GhN8GUc7CHYkrSfoUTDhd0OyKkD
-	0xtGzdveLUa10B182NEX0F7TqYcwozl7GnUJJ10s1dWPDTCAIDCLul488BcNtyOr
-	HyGfIYxS8xzzKy5cJTFCA==
-X-ME-Sender: <xms:IjLMacrsgBD3gu0IR37Z5YNDHIlTiFshUvC-nZwKKrMhH9IYpGsjyQ>
-    <xme:IjLMaex8fKqYyhE-bGQ7QRv3D0-xPg9cVLaipR1MzJ-in1ntgG1dq1Mwhse_N_kLq
-    O3C8oSz4_S6tQY13Y9LrFAXQ7Rc3HEikbJXyvx96Un60GsSWF1qUg>
-X-ME-Received: <xmr:IjLMadCEF2kj4gnvPHD0jZcqmaLp7Kcmu7ZHzqm1Fb3K9rTJxpZC8IJi7Ak>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
-    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeejteekhedvleehjefhgfdvteetudevieeiuefhhfevjeduleefiedvueegudeu
-    hfenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhn
-    sggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshgthh
-    hnvghllhgvsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtohepjhhgghesiihivghp
-    vgdrtggrpdhrtghpthhtoheprghlihhfmheslhhinhhugidrihgsmhdrtghomhdprhgtph
-    htthhopehjuhhlihgrnhhrsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtohepfihi
-    nhhtvghrrgeslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehtsheslhhinhhugi
-    drihgsmhdrtghomhdprhgtphhtthhopehosggvrhhprghrsehlihhnuhigrdhisghmrdgt
-    ohhmpdhrtghpthhtohepghgsrgihvghrsehlihhnuhigrdhisghmrdgtohhmpdhrtghpth
-    htohephihishhhrghihhesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:IjLMadMHc0M9iz76WizsN6efPPoIczIRKKmwZ9NFezIwWr3eGz8THQ>
-    <xmx:IjLMacCXhD6Y4QmbnmdrEbvb9Pj8kgau2UDjPp_maGCGGQgnegxCbw>
-    <xmx:IjLMaXkSOn2zDgo6cmx_kEKJ8COd9oytX3566cieldik_L-wEzovzQ>
-    <xmx:IjLMaYrwSnimeExXGjhTOtXaE-BqIgdMOJkhvCkw2ezyHO7qd81ocg>
-    <xmx:IjLMaYe4jDFN5PiN3KCRBYvEJ1Fp8oM_asnpUxrtq9sBpIsJyaTH2ijC>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 16:44:17 -0400 (EDT)
-Date: Tue, 31 Mar 2026 14:44:15 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Farhan Ali <alifm@linux.ibm.com>, Julian
- Ruess <julianr@linux.ibm.com>, wintera@linux.ibm.com, ts@linux.ibm.com,
- oberpar@linux.ibm.com, gbayer@linux.ibm.com, Yishai Hadas
- <yishaih@nvidia.com>, Shameer Kolothum	 <skolothumtho@nvidia.com>, Kevin
- Tian <kevin.tian@intel.com>, mjrosato@linux.ibm.com, raspl@linux.ibm.com,
- hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
- devices
-Message-ID: <20260331144415.33f3414b@shazbot.org>
-In-Reply-To: <4fb2b835ec81ca0ef24bc1c867d177a7d04b4873.camel@linux.ibm.com>
-References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
-	<20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
-	<4096cb9d402b1aabc9667d450221cb0922e78d90.camel@linux.ibm.com>
-	<3d6457b9-715a-4cbb-9c69-d8a7e7473c89@linux.ibm.com>
-	<64e3158a441c79c55febead9aac956c31f034fb9.camel@linux.ibm.com>
-	<20260330093646.03b0455f@shazbot.org>
-	<20260330155651.GD246076@ziepe.ca>
-	<20260330120945.023b2295@shazbot.org>
-	<20260330181645.GE246076@ziepe.ca>
-	<20260330123925.713edac4@shazbot.org>
-	<20260331000334.GI246076@ziepe.ca>
-	<4fb2b835ec81ca0ef24bc1c867d177a7d04b4873.camel@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umIoWgTc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE44FC19423;
+	Tue, 31 Mar 2026 20:51:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774990273;
+	bh=R2SNtf8D9RTFGTcrXAVFU3cnZEn4csddMjgdX7pSwAo=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=umIoWgTcfhrBkTMgHFOTEX1PmSj7PIroh7pe4F2vc3cJojsur0HYjxdIAC/VsHteo
+	 tpAPwQ/jrzHEIW1W+Ck9eqAlg3mmTxp3IpIHngCWCF6W7Sa+eRdRttyCQeFapqtuIg
+	 bOwFL9MqIJat8ePbOGFIz2RyMooTApuhKJchsGHVXOXmTqdPZigcSQCbyvlxec+1vh
+	 kZ+w1Jkln1E74pnaXMbfKQusFRrIn6DoWWWgjQ/dBhORvXoTw9pgZvu8V/q0gdMG4N
+	 JvOwZNfDEoKsTIgmvC7CCQHvAvE1priJlIrt18/cEvJ6Hhq38VHZxAkRKf1i0Y/S/k
+	 jlM0C7lI+mKMg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 8219BCE00EF; Tue, 31 Mar 2026 13:51:11 -0700 (PDT)
+Date: Tue, 31 Mar 2026 13:51:11 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Sonam Sanju <sonam.sanju@intel.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vineeth Pillai <vineeth@bitbyteword.org>,
+	Dmitry Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu
+ out of resampler_lock
+Message-ID: <2d080c02-9602-4b22-94ce-1f7a71cc19a4@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260323053353.805336-1-sonam.sanju@intel.com>
+ <20260323064248.1660757-1-sonam.sanju@intel.com>
+ <acwPr_Aic9xd95_R@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acwPr_Aic9xd95_R@google.com>
 
-On Tue, 31 Mar 2026 10:29:31 +0200
-Niklas Schnelle <schnelle@linux.ibm.com> wrote:
-
-> On Mon, 2026-03-30 at 21:03 -0300, Jason Gunthorpe wrote:
-> > On Mon, Mar 30, 2026 at 12:39:25PM -0600, Alex Williamson wrote:  
-> > > Yes, that would be the ideal balance of enabling larger BARs while
-> > > retaining compatibility for existing devices.  Sounds like we'll
-> > > continue down the variant driver path for this one-off device for
-> > > now.  It remains fairly self contained so long as we don't add more
-> > > regions for vfio-pci-core to manage.
-> > > 
-> > > This could be a good project if someone is looking though, especially
-> > > if it had a build-time config option to set the minimum region size so
-> > > we can exercise it before we hit 1TB BARs.  Thanks,  
-> > 
-> > Well, it took claude an hour to vibe code a draft from a four sentence
-> > prompt.. I see many things that need changing/cleaning in here, but
-> > the patch strategy and general idea looks sound.
-> > 
-> > I guess another day of effort would probably get things into something
-> > presentable. We are not so far away - maybe the variant driver path is
-> > not necessary?
-> > 
-> > https://github.com/jgunthorpe/linux/commits/vfio_maple_tree/
-> > 
-> > Jason  
+On Tue, Mar 31, 2026 at 11:17:19AM -0700, Sean Christopherson wrote:
+> +srcu folks
 > 
-> I'm in no way against changing the offset handling in general but for
-> what it's worth, we need a variant driver for ISM regardless, though it
-> would be smaller with large offset support. This is because besides the
-> large BAR we also have to use our classic function handle based PCI
-> instructions to access that BAR instead of the newer memory-I/O (MIO)
-> PCI instructions. And sadly the way the ISM device uses the PCI Store
-> Block instruction there is no straight forward way to enable the newer
-> instructions even if we changed the device implementation. This also
-> means that we would want to keep the no-mmap() restriction.
+> Please don't post subsequent versions In-Reply-To previous versions, it tends to
+> muck up tooling.
+> 
+> On Mon, Mar 23, 2026, Sonam Sanju wrote:
+> > irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
+> > synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
+> > This can deadlock when multiple irqfd workers run concurrently on the
+> > kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
+> > created and destroyed:
+> > 
+> >   CPU A (mutex holder)               CPU B/C/D (mutex waiters)
+> >   irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
+> >    irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
+> >     mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
+> >     list_del_rcu(...)                     ...blocked...
+> >     synchronize_srcu_expedited()      // Waiters block workqueue,
+> >       // waits for SRCU grace            preventing SRCU grace
+> >       // period which requires            period from completing
+> >       // workqueue progress          --- DEADLOCK ---
+> > 
+> > In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
+> > the else branch is called directly within the mutex.  In the if-last
+> > branch, kvm_unregister_irq_ack_notifier() also calls
+> > synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
+> > synchronize_srcu_expedited() is called after list_add_rcu() but
+> > before mutex_unlock().  All paths can block indefinitely because:
+> > 
+> >   1. synchronize_srcu_expedited() waits for an SRCU grace period
+> >   2. SRCU grace period completion needs workqueue workers to run
+> >   3. The blocked mutex waiters occupy workqueue slots preventing progress
+> 
+> Unless I'm misunderstanding the bug, "fixing" in this in KVM is papering over an
+> underlying flaw.  Essentially, this would be establishing a rule that
+> synchronize_srcu_expedited() can *never* be called while holding a mutex.  That's
+> not viable.
 
-It feels a bit late in the cycle for an untested maple tree conversion
-anyway, though I am interested in it for v7.2.  So I think we're agreed
-in the variant driver here to handle the excessively large BAR with no
-currently foreseeable need for additional regions, and maybe it gets
-simplified when that conversion occurs later.  Thanks,
+First, it is OK to invoke synchronize_srcu_expedited() while holding
+a mutex.  Second, the synchronize_srcu_expedited() function's use of
+workqueues is the same as that of synchronize_srcu(), so in an alternate
+universe where it was not OK to invoke synchronize_srcu_expedited() while
+holding a mutex, it would also not be OK to invoke synchronize_srcu()
+while holding that same mutex.  Third, it is also OK to acquire that
+same mutex within a workqueue handler.  Fourth, SRCU and RCU use their
+own workqueue, which no one else should be using (and that prohibition
+most definitely includes the irqfd workers).
 
-Alex
+As a result, I do have to ask...  When you say "multiple irqfd workers",
+exactly how many such workers are you running?
+
+							Thanx, Paul
+
+> >   4. The mutex holder never releases the lock -> deadlock
