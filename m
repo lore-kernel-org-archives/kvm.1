@@ -1,124 +1,146 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93E445BD6B
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 23:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766535DA60
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 23:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774998282; cv=none; b=DtQMxyzcPvKFWqDGG3vWm4nLnWvUlOItziTcd2FrSCBchtJI6/5HXjrbDu4xyumflmoMTUnEqd6R3FtXIcT4I7TIQnMaFUZ3g+uY/5xf9UPGwZDPR3xO+kkVqEbiQfHGENtVWJb+Ld1gVl9nsUSgImJ7cgqtGCrd63HdvrIxNaI=
+	t=1774998587; cv=none; b=T7OidYxiD0AzubwVbwc3QWFl9L0tk8J8U11bOfHRVlwZuBFOKYSa3M+KYJ684wR/pCB3spsihcxtk7fZP4uswHCDL3P+Fd+Z4AehM1GEMmD6i9k49w8HqUJ0CmxqPex+QDiFNj2USC6Ckd0pLY6ti4Vzy3vmxPet8vh/n4Rb/NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774998282; c=relaxed/simple;
-	bh=pN/i0QyQE864eRZEEAl0yyK2SbJLSBPkZs34zuowLPE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dPPiLXCP+m+Ook9wFovsG3GR/sm8aSv9mFdU+hOg/RlPd+BReq7L0TiM+dYS2o+Cha12HuyDGuTPvfVXrVmIp6Pg+xIBx1prSTpbNdCWYTU3TKtvXxGSkxxR4CfAJC27Y3JqYKKVAvqkCwVPwx1r89RzJ6haph9zm2GydskgdBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UwfV7vFy; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1774998587; c=relaxed/simple;
+	bh=LcwrEE/Su6MqZg1BVVUXTgS+hDQtivNXll3DuxETR5E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uX9Fsk+hZ+MGHTdol88+IrbVG+z31HTGIvauiUbVHj7kgFeLmnSc5TVv0W3zI9ye/6mg9SurC5XW3fEAJ6qDRfwStWtNoy+paC5ese2u2iKU/4HKKoYQyrLkK5K4X/d46cHUGKgCsM0Xqn2+kf/E0r2WRsNrrzEtt2Cj8rYmmSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpLq93JW; arc=none smtp.client-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UwfV7vFy"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c70d1f56eso3795658b3a.0
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 16:04:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpLq93JW"
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-67e23011c93so1232041eaf.3
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 16:09:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774998281; x=1775603081; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HEnbERBIDQ4MTbld4MJTDZBsNz2jmuUspcqZ6/0jR0c=;
-        b=UwfV7vFy5iNtxMa3P8nxUoc3VApmSv0ffRGPpW1GMypBmFEWaDkT2vLAEBQMRHFN0a
-         7lzW0xL7Y4G+bXsEyj69MIxwAJwWmoE6JyF1YiV7uDzWIRqYA71Cyd+Jp8NDne0cGtyc
-         ywyEF+w9tv7CYcjzjOkh+Zi4jN/W98ghEbgBDXK29/YrjIFJE9LVOKuwiLeDOngd2JVQ
-         /GgT035yI3L0+iNw8NUA4T4Hi9oTl6m/K6UHAmMSh0qGfaZi+Vu1eQePmN854GJBLKPq
-         rfhxQju4zij6x+w4F/JCDjzcmT6XYai0wbhM0qVdCrWlI/K4FSUoEjlmfpf+SFq1ciWL
-         FM4Q==
+        d=linuxfoundation.org; s=google; t=1774998585; x=1775603385; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cAxWk+l9wnHigA07/m15Z7FRvAHJCuXF+wjFvuQTo7w=;
+        b=WpLq93JW1LhcDqYBATrkbc/fP5BwgszTYjHTA3FXUN1LOsuQJot7TD0HRvUVli1J/S
+         vz89CzQT7EHzaHrVzxI59BFstRbAp3sdQjjqhvLjzee16e344e115X5WWBURKvbLTYlV
+         N3Ju1z+DHTPVC47nnOttAyrL6Nb28EyoeVawU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774998281; x=1775603081;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HEnbERBIDQ4MTbld4MJTDZBsNz2jmuUspcqZ6/0jR0c=;
-        b=WvXMuz+q4ekxXZNy2RtuBb4LIejHVuS+8p+GkTtGpYD8+hga6GVcWTJCpAc2vDnXwd
-         yghwMSjtfoWS2J/XSBolOtoYpSswhmQvKmiFm7khf3KOYtx72PWk7scYxgutHH+vDJIa
-         +FlNsxTpVZWpAFY0o48QRKTvWQ/0aAUYnadvnZw0srl/CdMrd2PHzC9383+st7V4R9ll
-         6avfDxOSxx3RJKZxksJdgSpXIpl6qwkIibVMclpkYNBXdu0l5p+uRG3aFEGqrTTBgbMw
-         rgF0P7pvcmBP6yVcmvqDVKK+/qcb3N918MYJx8SVi4BO29fZ6PkatShm57QKh+520elX
-         3xiw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcfZVEoPseMH36ckXkIrLObk9Tnsxs6IygZzlCBeG81WLU4eDYil354WyEKHNKcwQS/a0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh5gZcd1nFX1R01wnghHUfzo0xXxcXF6xM+tY9JL876J5/2DbV
-	J4kta/zM0jai0MY494v17oNlp2e4uG+Pnc4g1a96He2xz9n7ibq7QUmflvB/xWnkwyTSGTfaCbu
-	2AYQPRA==
-X-Received: from pfbw8.prod.google.com ([2002:a05:6a00:b488:b0:82a:128b:1d95])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c86:b0:82a:190b:2225
- with SMTP id d2e1a72fcca58-82ce8992790mr1124317b3a.31.1774998280940; Tue, 31
- Mar 2026 16:04:40 -0700 (PDT)
-Date: Tue, 31 Mar 2026 16:04:39 -0700
-In-Reply-To: <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
+        d=1e100.net; s=20251104; t=1774998585; x=1775603385;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cAxWk+l9wnHigA07/m15Z7FRvAHJCuXF+wjFvuQTo7w=;
+        b=Vn98i/uHNj450mC06QKY4ew9eYNmA+YrXX3zcSMNMqsZChL8e80ixGOw4+GPV1TPQk
+         EZmHfOjDSLcctJLhNfDbB9ObpOXUMtXYTB6faaqlfKece3dEHt0CHux6V/hI9+3E6hYe
+         0h0T+LMLc9vj75LUwN2fZMp95wlT6CteHIgEWaR1nCG8luSW4GThWa/oTcm52pTwl90K
+         p8bJXP5t6FiAUTMKu0TCFpfrXrgbqbfMayHY+pEgX54GCl+YsX0Zyv/LW8fahzWTvtK/
+         XYxipezeTwwWc5LnqaE7SPxqD4hnAF9JWR25TgNIe+0BhzONQkXiIZMlpufbpSTDKULH
+         19nA==
+X-Gm-Message-State: AOJu0YwtCDtpfB4hOFGCpO5Gb0bPHgh5aAFm/oZw/l8udIodgwariYlt
+	WXTOG8VlDNVLCOjn4nb5t+90HPfYGmr1WaKtWWN5usdjOA9xkFztdk2hf+EafdH3ks8=
+X-Gm-Gg: ATEYQzxoIC4UD9FIc/dSbtzRyTDkycwMHRSOq0pXMuKJ8FKcAI8aaIVdDwn0jroqxQv
+	nkloSuuVfG98MxFwzEeINs21eIDoxxDxYp/2un/RweFeU5C0Vy6I2gmI6cO+mxl4hEWv0Q2pYx6
+	ngL1DA6LSMfS3v6LONYysuihu+epGMdtXb6N0iiWNOJMyqDCi65sgbBuRCyzWu9ONM7zuoBxNTE
+	PmgcXT91B+tNdJsS1KaCTIbwyDDTL+VCyFB+VpMRADzCVUwuvXEhO+UNitecii85rTiSNpih02v
+	14qQ3lJip/O/dX79k+bOZ6qtv2ZNE9ep1TXtNwuPdGPjx29j/9ZJyrrvt9UlQadUFtqqXTkIpFh
+	ifEHpIn/pklzgvszPUSz3jevl43h1gHVnHlrI2jiT1XwG/c/QN7sdck3jLuW+ElgLPvaJlReTJP
+	t3drFIfjHNj0MxlLd0ORx5WUt/cbNGrfkUx+o=
+X-Received: by 2002:a05:6820:4c12:b0:67e:160c:369b with SMTP id 006d021491bc7-67fabcd99b7mr657522eaf.49.1774998585004;
+        Tue, 31 Mar 2026 16:09:45 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67e231ea41dsm7828492eaf.15.2026.03.31.16.09.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 16:09:44 -0700 (PDT)
+Message-ID: <4334432d-982e-4450-9281-de739c25ebfd@linuxfoundation.org>
+Date: Tue, 31 Mar 2026 17:09:43 -0600
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
- <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
- <acwe7kKyjfEQ0sIf@google.com> <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
-Message-ID: <acxTBwaw6_xYSShf@google.com>
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into arch/x86
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: selftests: Guard execinfo.h inclusion for non-glibc
+ builds
+To: Hisam Mehboob <hisamshar@gmail.com>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Aqib Faruqui <aqibaf@amazon.com>,
+ shuah@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260319000842.1213426-2-hisamshar@gmail.com>
+ <091f264f-21f1-464d-913a-1500643728c7@linuxfoundation.org>
+ <137f63af-a993-4b1c-a9e9-931718a47343@linuxfoundation.org>
+ <f044f31d-740d-4cdb-834c-59de7691203d@gmail.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <f044f31d-740d-4cdb-834c-59de7691203d@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 31, 2026, Rick P Edgecombe wrote:
-> On Tue, 2026-03-31 at 12:22 -0700, Sean Christopherson wrote:
-> > > -
-> > > -#ifdef CONFIG_KEXEC_CORE
-> > > -void tdx_cpu_flush_cache_for_kexec(void)
-> > > -{
-> > > -	lockdep_assert_preemption_disabled();
-> >=20
-> > Is there a pre-existing bug here that gets propagate to tdx_shutdown_cp=
-u()?=C2=A0
-> > When called from kvm_offline_cpu(), preemption won't be fully disabled,=
- but
-> > per-CPU access are fine because the task is pinned to the target CPU.
-> >=20
-> > See https://lore.kernel.org/all/aUVx20ZRjOzKgKqy@google.com
->=20
-> Yes. And actually it got hit during development of this series. This patc=
-h will
-> conflict with the fix:
-> https://lore.kernel.org/lkml/20260312100009.924136-1-kai.huang@intel.com/
->=20
-> Oh, you acked it actually. But I was under the impression that after this=
- patch
-> here, the splat wouldn't be triggered. So it inadvertently fixes it.
+On 3/25/26 12:47, Hisam Mehboob wrote:
+> On 3/25/26 23:03, Shuah Khan wrote:
+>> On 3/24/26 12:02, Shuah Khan wrote:
+>>> On 3/18/26 18:08, Hisam Mehboob wrote:
+>>>> The backtrace() function and execinfo.h are GNU extensions available
+>>>> in glibc but not in non-glibc C libraries such as musl. Building KVM
+>>>> selftests with musl-gcc fails with:
+>>>>
+>>>>    lib/assert.c:9:10: fatal error: execinfo.h: No such file or directory
+>>>>
+>>>> Guard the inclusion of execinfo.h under #ifdef __GLIBC__, and wrap
+>>>> all backtrace() usage under the same guard with a fallback message
+>>>> for non-glibc builds indicating that stack traces are not available.
+>>>>
+>>>> Unlike the approach of adding a weak stub for backtrace(), this
+>>>> explicitly handles the non-glibc case rather than silently providing
+>>>> an empty implementation.
+>>>>
+>>>> Link: https://lore.kernel.org/kvm/20250829142556.72577-7- aqibaf@amazon.com/
+>>>>
+>>>> Suggested-by: Aqib Faruqui <aqibaf@amazon.com>
+>>>> Signed-off-by: Hisam Mehboob <hisamshar@gmail.com>
+>>>> ---
+>>>>   tools/testing/selftests/kvm/lib/assert.c | 7 +++++++
+>>>>   1 file changed, 7 insertions(+)
+>>>>
+>>>> diff --git a/tools/testing/selftests/kvm/lib/assert.c b/tools/ testing/selftests/kvm/lib/assert.c
+>>>> index b49690658c60..3442b80c37c1 100644
+>>>> --- a/tools/testing/selftests/kvm/lib/assert.c
+>>>> +++ b/tools/testing/selftests/kvm/lib/assert.c
+>>>> @@ -6,7 +6,9 @@
+>>>>    */
+>>>>   #include "test_util.h"
+>>>> +#ifdef __GLIBC__
+>>>>   #include <execinfo.h>
+>>>> +#endif
+>>> > Is __GLIBC__ defined in musl-gcc? Looks like that is the case with the
+>>> error?
+>>
+>> If __GLIBC__ isn't there you shouldn't see this error because the include
+>> is in - this error doesn't make sense if __GLIBC__ isn't defined. What
+>> am I missing?
+>>
+> 
+> To clarify the compiler error you mentioned: the error log in the commit message shows the failure that occurs before this patch is applied. Because musl-gcc doesn't define __GLIBC__, the original unconditional <execinfo.h> inclusion causes the build to fail. The #ifdef in my patch was intended to fix that exact failure.
+> 
+>> +#ifdef __GLIBC__
+>>   #include <execinfo.h>
+>> +#endif
+>>
+>> Also check tools/testing/selftests/bpf/test_progs.c - I think backtrace()
+>> stub needs be defined only for the !__GLIBC__ case
+>>
+> 
+> Looking at how bpf/test_progs.c handles it, I agree the weak stub approach is much cleaner. I will implement it so that it still prints an explicit warning message when a trace is unavailable.
+> 
+> If you are okay with this, I will move forward with a v2 patch.
+> 
 
-Ah, that's why I was a bit confused.  I was assuming tdx_shutdown_cpu() was=
- a
-cpuhp callback, but it's actually an IPI callback.
+Ultimately kvm maintainers make the call - send v2 patch
 
-Hmm, isn't this patch wrong then?  Ah, no, the changelog says:
-
-  However, WBINVD is already generally done at CPU offline as matter of cou=
-rse.
-  So don't bother adding TDX specific logic for this, and rely on the norma=
-l
-  WBINVD to handle it.
-
-What's the "normal" WBINVD?  At the very least, tdx_offline_cpu() should ha=
-ve a
-comment that explicitly calls out where that WBVIND is.  I assume you're re=
-ferring
-to the wbinvd() calls in things like hlt_play_dead()?
-
-But unless the WBINVD is actually costly, why bother getting fancy?
-
-> But that other patch is much more backport friendly.
-
+thanks,
+-- Shuah
