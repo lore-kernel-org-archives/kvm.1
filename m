@@ -1,137 +1,236 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E77436F430
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 19:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02CB331209;
+	Tue, 31 Mar 2026 19:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774984425; cv=none; b=uIuQ/sYkAdveaQdmNpnzbKPqnKHMJXRx9cRfHgHs+VzZqLC4cpYaRz5OQ5xrZeCAeknawTluX/RaK8FyVdbSlXcOQHAS+99a9JzdVdr1BXmkKz5eH53l7o5TevF3f6qS4NTYggNh+Nfu6dS+0n+A9jYuRXBMjwk/jkF/73SXD54=
+	t=1774984729; cv=none; b=fB2PHm0w/TrZqQt82UuzNECJTDId9la+fgheacyKNNzyBQ8K4jYBo5vl0S07XVOhm7WdsMGKGGcY9UGFmpdZCQigucmfa83rGjaqTvgFhDNAZeine/X4AiuN/BtyuiSlhmiDTZExFtK1Upkl2pV6PkXzPAdMe1kCCre4RSsDGO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774984425; c=relaxed/simple;
-	bh=JwIOSwMZt26fkLD8+ealZ4vso2YTqrr5jBlFqKa29fY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LLrtQSkFthAyMXzPf88IO2W3NwSlY9zO8ZPN0jOSnUXa82JcA6AHziVXMxBFz3wa+t8CKj924k6zVL6oUR6A56tQ3J42tzDR2CEaPWR19gRXq5bVjsqerbMF1w5Kr2mmjwlVfbMeYTq+OzpZVpI4DJ/84Jy93QicyBxfsW7VFps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eAMApFrU; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1774984729; c=relaxed/simple;
+	bh=eJC1dGMKA7WWnvIcrQkw8YE6B7Kq4iS3s/Ohm6s3FTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q7cyVZixgrTANTH2w906VJGg7cBfHcSHigcgxxc0v8SASIzl9UXZex9tliDTPYItbEkd9bDeOK/Z5jOc+Z/fuhiSLbOt8Ye5KtwcboWl4QPcRRGZ0cMe/nKISVAowILWu0udKvqwCdEQrN9TZXVdR49sMPWltSBEGVl5ATH0a20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Jix2YZqP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qPkl0NIe; arc=none smtp.client-ip=202.12.124.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eAMApFrU"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c70d1f56eso3721382b3a.0
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 12:13:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774984424; x=1775589224; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wPFb8gmW1pUOsvxSl8LLmBIFYkh0IuYqfsVEay082zo=;
-        b=eAMApFrUik0K+hhHqNng2ZRnqkR5qXsBle6vXAABGlHpRweHVKwpiwT6SswHeRisfM
-         hUhyEkcAECa5aOJBtfqaB5V4d0P8fmSrSAEpxJgLdkAg+83KMeDujOrNskkTKKUVAGQh
-         MT+9iFF8mtoBC3Z3NxreudQ0Y+XvU8dYUUMCIfHTfbZR56ctRTx6o+tatqkBp7CdOcIH
-         lRg8tH84VIVVdZUeXnoYFS3Rk5zUF/IWT55f7NK+vlnYWQFMpbDXGDeVOab8OTbrHY0/
-         nQ7Cuy5m6B7fvp2Dn2mF7CerA+KH/AxmYeh4VWZ8GiIis+oxL5lydaNmjGuGYDS5X1nv
-         prDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774984424; x=1775589224;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wPFb8gmW1pUOsvxSl8LLmBIFYkh0IuYqfsVEay082zo=;
-        b=moJEaySpLhYI3Cda+xRVB0+cDieiZSrsWDa0Vnn4GxD29Vr+OXIKDdiUw3uKXBj5op
-         rCsDqAfK48fKQ23mR/V6l81kXQv3/HNxF2z3/ZaopVioGEzrlV+AztXXGlIJPTxcxA6V
-         oD3rONPqCKwCsPamCcuDHalQu1065ojgvIwcYjF6oH7c1nVJdiGH2pwlgHDikeEFOB4d
-         NWjliv72vg0/A2o7QfJkAQEFepPEv5elFr+KoGQF2q4RA//yqqlPOFRbAwruXP1D3uo6
-         ICSpt1gDMp3mB4Nh09i6cNNoDzFnrfZdIFFfXCUqgrPBcVkKUvNh6l5QYOnk1Pijx3hb
-         J0DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWDwW6So5ZYgk0KfNvEfT/bDOQrDpYSZ3EATsQuMBKGZobqjV3BXdZy8zRyqHt7QEjRPFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc2X+ceIFPxdGFypQQi3T9l5YIE5a97VaJYCIxCB/QhZ0fNXab
-	pQWE09/35pVm6XSB2mzPGh5W7JqdcEz5bL1WHVMaUt272xhKneSehb3wiuzYZWa76bagBrhnGF3
-	GoYp+2Q==
-X-Received: from pfud5.prod.google.com ([2002:a05:6a00:10c5:b0:829:9b56:fe32])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:230b:b0:781:2291:1045
- with SMTP id d2e1a72fcca58-82ce88c0d33mr744086b3a.8.1774984423697; Tue, 31
- Mar 2026 12:13:43 -0700 (PDT)
-Date: Tue, 31 Mar 2026 12:13:42 -0700
-In-Reply-To: <acYrxIxoENyZhKCV@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Jix2YZqP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qPkl0NIe"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id D592A130008E;
+	Tue, 31 Mar 2026 15:18:43 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 31 Mar 2026 15:18:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774984723;
+	 x=1774991923; bh=e2GLgeMPntSzKQd7unYxJVNrGT++Ey/+j0e558YaVKo=; b=
+	Jix2YZqPgfjz22R+GBZTSkmM/A+yTGqbP2D7RrPJTBlHCtwUy2TreQYJzy0FYt4E
+	mn6iGMSZZUAvgOUzmgtxkvDhEQqNq9so/LsT2uXs0WUjbk/iVyGgezKLdcntmYCJ
+	j1mTHgBbF1XmhYE9OLcmwaqRwm079G64C6NXLlTJGqXGDGeTuyvQuKL+LrxHsVyt
+	h07JL26/s5vAaqvA+uFn5EtvqWaXeuVPLWaay4hdvRDT/GeDy5zchULu+Xf5bCKw
+	aMCGUFvWJ4r5sa9ylZo53CH1LtcUihVM+4twawyn4uPT0avFIdaMYMGGz87cRj5W
+	75pcl2tsTe5q72qXomhEng==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774984723; x=
+	1774991923; bh=e2GLgeMPntSzKQd7unYxJVNrGT++Ey/+j0e558YaVKo=; b=q
+	Pkl0NIe505sDev2vE+9dEjJ2QQvY24shKDHRjyi5iJrJ3lhJmCH83R7Ej6uIsdKx
+	Ah2qPK0lawqj3n8MX9UbaZlR8zOv0eboHPEu2zTV9Ar46wm3SvS5yBG219IjmBDw
+	/8aE106Yb9iAY8X18cayks75OdeneZOPyq2pnCyvpFrGdunxzgrlbZPAQhHCnM3H
+	MhJM8//IeSYiIyV967PwBaCx9UybPaAajGdNOPqf34786RvJS1R2NeBhzECYdV9r
+	Hhp4kbOPpgzUg+fw9gf2jEWED5P2y3OiIotVEJPhPvUaSmHyFEthzrD5syHkfCDz
+	oj1hrBx1gCRLurULKhEqQ==
+X-ME-Sender: <xms:Eh7MaYVXhSLS49doWxNbldxcSkPJQ2lBgD6S-cXj9ML6P8DuIhi54A>
+    <xme:Eh7MaY3CTvPt8pC-6__rnVlJHk3AMpws04d9x1eLmygsx9xxcOKA3tvfX2RGrzeid
+    3eITD6bgIngUTpBItaVYS7mKstrqZdkyduHlmJydVKX9r92pk1CAA>
+X-ME-Received: <xmr:Eh7MaWAMOBeQDrW_EEEiAtExZoJg9HXrtPbMbrU13INIpg2pRTwgJd0Tapg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
+    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
+    gvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudegveeu
+    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
+    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohephedupdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhig
+    rdhorhhgrdhukhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtih
+    honhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepihhorghnrgdrtghiohhrnhgvihesnhigphdrtghomhdprhgtphhtthhopehnih
+    hpuhhnrdhguhhpthgrsegrmhgurdgtohhmpdhrtghpthhtohepnhhikhhhihhlrdgrghgr
+    rhifrghlsegrmhgurdgtohhmpdhrtghpthhtohepkhihshesmhhitghrohhsohhfthdrtg
+    homh
+X-ME-Proxy: <xmx:Eh7MaXq2mlnlOelEQan96Ie-hgy-LAK8CHBHQdkG7r27nkHcaWiIbg>
+    <xmx:Eh7Mab_KIxvqr4OxQc5evz-T_S8zOMbzrx08jzw5C5b7mvco3Iesuw>
+    <xmx:Eh7MaefX2P0crsZiJ44xT0eYo0t5zG2qKmdKMy8HHuopFTELtHeNKg>
+    <xmx:Eh7MaRJs8ye8aup8P2JAiOncajQ7Ro6xy3heBDnJcGy9BvoI7oIX_g>
+    <xmx:Ex7MaSUwhQGLpsFOIWtvVzTCvrLLbvifdUNGQI9PxQ_RqFwZ-CC-1T0v>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 31 Mar 2026 15:18:38 -0400 (EDT)
+Date: Tue, 31 Mar 2026 13:18:37 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>
+Cc: "Russell King" <linux@armlinux.org.uk>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Ioana Ciornei" <ioana.ciornei@nxp.com>,
+ "Nipun Gupta" <nipun.gupta@amd.com>,
+ "Nikhil Agarwal" <nikhil.agarwal@amd.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
+ "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Armin Wolf" <W_Armin@gmx.de>,
+ "Bjorn Andersson" <andersson@kernel.org>,
+ "Mathieu Poirier" <mathieu.poirier@linaro.org>,
+ "Vineeth Vijayan" <vneethv@linux.ibm.com>,
+ "Peter Oberparleiter" <oberpar@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Harald Freudenberger" <freude@linux.ibm.com>,
+ "Holger Dengler" <dengler@linux.ibm.com>,
+ "Mark Brown" <broonie@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Jason Wang" <jasowang@redhat.com>,
+ "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
+ Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ "Juergen Gross" <jgross@suse.com>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-hyperv@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
+ <linux-s390@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+ <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
+ <xen-devel@lists.xenproject.org>, <linux-arm-kernel@lists.infradead.org>,
+ "Gui-Dong Han" <hanguidong02@gmail.com>, alex@shazbot.org
+Subject: Re: [PATCH 05/12] PCI: use generic driver_override infrastructure
+Message-ID: <20260331131837.6a9fe9ec@shazbot.org>
+In-Reply-To: <DHGTLY0FJWD2.2VLT6NQWF97YY@kernel.org>
+References: <20260324005919.2408620-1-dakr@kernel.org>
+	<20260324005919.2408620-6-dakr@kernel.org>
+	<DHGATG6LJOM1.2AI7BYQ2O4DFU@kernel.org>
+	<20260330141050.2cb47bd9@shazbot.org>
+	<DHGT9XCG8Y96.3IB1EI6FF1ZDZ@kernel.org>
+	<DHGTLY0FJWD2.2VLT6NQWF97YY@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260319005605.8965-1-yan.y.zhao@intel.com> <20260319005703.8983-1-yan.y.zhao@intel.com>
- <a14531ab-f069-41f9-8c5c-9fe6f28a9454@intel.com> <acOmoOP2fFUyOByC@yzhao56-desk.sh.intel.com>
- <189f00877360117ab91ec3a6cb8b8239f4fff06a.camel@intel.com> <acYrxIxoENyZhKCV@yzhao56-desk.sh.intel.com>
-Message-ID: <acwc5sDHFbHJGG4O@google.com>
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
- private memory
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"sagis@google.com" <sagis@google.com>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 27, 2026, Yan Zhao wrote:
-> On Thu, Mar 26, 2026 at 12:57:26AM +0800, Edgecombe, Rick P wrote:
-> > On Wed, 2026-03-25 at 17:10 +0800, Yan Zhao wrote:
-> > > > I don't really understand what this is saying.
-> > > > 
-> > > > Is the concern that KVM might want to set up page tables for memory
-> > > > that differ from how it was allocated? I'm a bit worried that this
-> > > > assumes something about folios that doesn't always hold.
-> > > > 
-> > > > I think the hugetlbfs gigantic support uses folios in at least a
-> > > > few spots today.
-> > > Below is the background of this problem. I'll try to include a short
-> > > summary in the next version's patch logs.
-> > 
-> > While this patchset is kind of pre-work for TDX huge pages, the reason
-> > to separate it out and push it earlier is because it has some value on
-> > it's own. So I'd think to focus mostly on the impact of the change
-> > today.
-> > 
-> > How about this justification:
-> > 1. Because KVM handles guest memory as PFNs, and the SEAMCALLs under
-> > discussion are only used there, PFN is more natural.
-> > 
-> > 2. The struct page was partly making sure we didn't pass a wrong arg
-> > (typical type safety) and partly ensuring that KVM doesn't pass non-
-> > convertible memory, however the SEAMCALLs themselves can check this for
-> > the kernel. So the case is already covered by warnings.
-> > 
-> > In conclusion, the PFN is more natural and the original purpose of
-> > struct page is already covered.
+On Tue, 31 Mar 2026 10:22:14 +0200
+"Danilo Krummrich" <dakr@kernel.org> wrote:
 
-Most importantly, having core TDX make assumptions based on the struct page and/or
-folio will create subtle dependencies that are easily avoided.
+> On Tue Mar 31, 2026 at 10:06 AM CEST, Danilo Krummrich wrote:
+> > On Mon Mar 30, 2026 at 10:10 PM CEST, Alex Williamson wrote:  
+> >> On Mon, 30 Mar 2026 19:38:41 +0200
+> >> "Danilo Krummrich" <dakr@kernel.org> wrote:
+> >>  
+> >>> (Cc: Jason)
+> >>> 
+> >>> On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:  
+> >>> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> >>> > index d43745fe4c84..460852f79f29 100644
+> >>> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> >>> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> >>> > @@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
+> >>> >  	    pdev->is_virtfn && physfn == vdev->pdev) {
+> >>> >  		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+> >>> >  			 pci_name(pdev));
+> >>> > -		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
+> >>> > -						  vdev->vdev.ops->name);
+> >>> > -		WARN_ON(!pdev->driver_override);
+> >>> > +		WARN_ON(device_set_driver_override(&pdev->dev,
+> >>> > +						   vdev->vdev.ops->name));    
+> >>> 
+> >>> Technically, this is a change in behavior. If vdev->vdev.ops->name is NULL, it
+> >>> will trigger the WARN_ON(), whereas before it would have just written "(null)"
+> >>> into driver_override.  
+> >>
+> >> It's worse than that.  Looking at the implementation in [1], we have:
+> >>
+> >> +static inline int device_set_driver_override(struct device *dev, const char *s)
+> >> +{
+> >> +	return __device_set_driver_override(dev, s, strlen(s));
+> >> +}
+> >>
+> >> So if name is NULL, we oops in strlen() before we even hit the -EINVAL
+> >> and WARN_ON().  
+> >
+> > This was changed in v2 [2] and the actual code in-tree is
+> >
+> > 	static inline int device_set_driver_override(struct device *dev, const char *s)
+> > 	{
+> > 		return __device_set_driver_override(dev, s, s ? strlen(s) : 0);
+> > 	}
+> >
+> > so it does indeed return -EINVAL for a NULL pointer.
 
-> > Sean said somewhere IIRC that he would have NAKed the struct page thing
-> > if he had seen it, for even the base support.
+Ok, good.
 
-Yes.
+> >> I don't believe we have any vfio-pci variant drivers where the name is
+> >> NULL, but kasprintf() handling NULL as "(null)" was a consideration in
+> >> this design, that even if there is no name the device is sequestered
+> >> with a driver_override that won't match an actual driver.
+> >>  
+> >>> I assume that vfio_pci_core drivers are expected to set the name in struct
+> >>> vfio_device_ops in the first place and this code (silently) relies on this
+> >>> invariant?  
+> >>
+> >> We do expect that, but it was previously safe either way to make sure
+> >> VFs are only bound to the same ops driver or barring that, at least
+> >> don't perform a standard driver match.  The last thing we want to
+> >> happen automatically is for a user owned PF to create SR-IOV VFs that
+> >> automatically bind to native kernel drivers.
+> >>    
+> >>> Alex, Jason: Should we keep this hunk above as is and check for a proper name in
+> >>> struct vfio_device_ops in vfio_pci_core_register_device() with a subsequent
+> >>> patch?  
+> >>
+> >> Given the oops, my preference would be to roll it in here.  This change
+> >> is what makes it a requirement that name cannot be NULL, where this was
+> >> safely handled with kasprintf().  
+> >
+> > Again, no oops here. :)
+> >
+> > I still think it makes more sense to fail early in
+> > vfio_pci_core_register_device(), rather than silently accept "(null)" in
+> > driver_override. It also doesn't seem unreasonable with only the WARN_ON(), but
+> > I can also just add vdev->vdev.ops->name ?: "(null)".  
+> 
+> (Or just skip the call if !vdev->vdev.ops->name, as a user will read "(null)"
+> from sysfs either way.)
 
-> > And the two points above don't actually require discussion of even huge
-> > pages. So does it actually add any value to dive into the issues you list
-> > below?
-> I wanted to mention the issues listed below because I'm not sure if anyone has
-> the same question as me: why do we have to convert struct page to PFN if they
-> can both achieve the same purpose, given that currently all private memory
-> allocated by gmem has struct page backing?
+Hmm, I suppose they would, but there's a fundamental difference between
+driver_override being set to "(null)" vs being NULL and only
+interpreted as "(null)" via show.  The former would prevent ID table
+matching, the latter would not.  The former is what was intended here,
+without realizing both look the same through sysfs and present a
+difficult debugging challenge.
 
-From https://lore.kernel.org/all/aWgyhmTJphGQqO0Y@google.com:
+Given no oops for strlen() now and no known in-kernel drivers with a
+NULL name, I can post a patch that rejects a NULL name in the ops
+structure in vfio_pci_core_register_device(), avoiding the entire
+situation.
 
- : I'm not at all opposed to backing guest_memfd with "struct page", quite the
- : opposite.  What I don't want is to bake assumptions into KVM code that doesn't
- : _require_ struct page, because that has cause KVM immense pain in the past.
- : 
- : And I'm strongly opposed to KVM special-casing TDX or anything else, precisely
- : because we struggled through all that pain so that KVM would work better with
- : memory that isn't backed by "struct page", or more specifically, memory that has
- : an associated "struct page", but isn't managed by core MM, e.g. isn't refcounted.
+For this,
+
+Acked-by: Alex Williamson <alex@shazbot.org>
+
+Thanks,
+Alex
