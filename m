@@ -1,60 +1,60 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8B43E8C61;
-	Tue, 31 Mar 2026 14:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFCA3FB7FE;
+	Tue, 31 Mar 2026 14:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774966445; cv=none; b=OVlyxgwMpig51UMMkrY0QygV4mk60tMxPwCaiv8SlSGYK49nonQlUJ3Hl49rmlW5pGzF7kj753pYqYV9Lr5NWSLXLmKg2N1DrdEsAiGe5j0ZPFcz1d72H6m3SEHxI3NKWf6QZFdBKPsRoYP7uW6Hq+dTjF5YdHD+fk6TNk/tpy8=
+	t=1774967560; cv=none; b=MseVlxRM0a1sJF5MTjr3/cV3ifARVj5gCw21MXm2JWuOJlsspMpF5FEaiEwzWB4Ft6nycAJKpbp4KW+ou1AR0eduxa29nyvuodz1KfXfJlAAcWOLtoSC3e9GLW2OG7ktIFqKey+qnHI76W3th7jIaXR27+eYLUn+XXqVTz1bgBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774966445; c=relaxed/simple;
-	bh=0WokdVZGVQOySMRtOFuViCjuFlNJiqco1s6MePa8OP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=UwJ7uTIrzZewYH1ZOPzApz4ox0KWURKdHnmfM1v9kBTo10gKoT0KcIa5TCtZkLDuETr75Jh59uGg75aGskH/xt3jY7+kUQIzEq7700tigYWng09AogyAKzunvfyJxSp0DjBiCfnJl3Yn3WBpKmhqfIyb+tI3CREv/OCOytoX/y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SLROPAAq; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774967560; c=relaxed/simple;
+	bh=eCcZFLBMKfzOLFrTMyw6/QPJblN9ZaXUah2YenOiatQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sP6g+XkFxaYpGe0UT2UnoNxKzJ7pbkLC2MdeP/VrHnu3yTy69sAHXPOuRR2+woZly1L80jqnxBGNglRUMmmOcIQ/zqqQyK440dKB51X0464idTBGVvDJ/e58xC6HoUyL6ARXG84GY11eRSsHVBTJPGR8KOQDQYtmcXHZO1jvDtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zck+Jne5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SLROPAAq"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1565249C7;
-	Tue, 31 Mar 2026 07:13:57 -0700 (PDT)
-Received: from devkitleo.cambridge.arm.com (devkitleo.cambridge.arm.com [10.1.196.90])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC9EF3F641;
-	Tue, 31 Mar 2026 07:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774966442; bh=0WokdVZGVQOySMRtOFuViCjuFlNJiqco1s6MePa8OP0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLROPAAq4tm06CZlvLbnK6UlSl74cbeF4PnQYHt9YVrFbK4s7f7jkSNb87VbkRboy
-	 XXkf4Lg/itNksvkyv6pSBDL/ICC5mCXYYcQ0SnbvaUsn7q3qpwFoRaJP/O5WcrtsmP
-	 3Bp268ytYRpb6dxbptQOk8QvUD84hzofzk3QHT0g=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	maz@kernel.org,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	liuyonglong@huawei.com,
-	Jonathan.Cameron@huawei.com,
-	yezhenyu2@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v3 0/5] Support the FEAT_HDBSS introduced in Armv9.5
-Date: Tue, 31 Mar 2026 15:13:50 +0100
-Message-ID: <acvWnjG0AZBHL21q@devkitleo>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225040421.2683931-1-zhengtian10@huawei.com>
-References: <20260225040421.2683931-1-zhengtian10@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zck+Jne5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CCCC19424;
+	Tue, 31 Mar 2026 14:32:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774967560;
+	bh=eCcZFLBMKfzOLFrTMyw6/QPJblN9ZaXUah2YenOiatQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zck+Jne5EuclgGsxonpXVSJJaoN10ildftuLrZuUiFKQeHmChX1y7iFUOzhIn0915
+	 3beBBAYGThwIgQD9OF23CIYHAXoaY1EMDIQ5+LQlMvBkKJuFSFufIfhSxwkbT8xysl
+	 pT1ZNVdwzR79WKuUktdBRdvoXyNu0BxDpt7zALp2cZ/bPbxkM6i4pf/V7SXdtJ8XFw
+	 rP777dipQdkTEK10hyfpevVhB+dLfoI3xl8f/vDZxjHUpuHu5cF79a+EmdKyW5n4FC
+	 fqoF67FQusrW3nObktdTNu2kjRDxZoTKqHUKOtv8qXptagyfoPAkCy4S98/M8PSW0Y
+	 wAagqRHHVbs3w==
+Date: Tue, 31 Mar 2026 17:32:28 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
+Message-ID: <acva_NKf7T5rbIC8@kernel.org>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-3-rppt@kernel.org>
+ <actxscYZGFiyvUcs@hyeyoo>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -63,85 +63,115 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <actxscYZGFiyvUcs@hyeyoo>
 
-On Wed, Feb 25, 2026 at 12:04:16PM +0800, Tian Zheng wrote:
-> This series of patches add support to the Hardware Dirty state tracking
-> Structure(HDBSS) feature, which is introduced by the ARM architecture
-> in the DDI0601(ID121123) version.
-> 
-> The HDBSS feature is an extension to the architecture that enhances
-> tracking translation table descriptors' dirty state, identified as
-> FEAT_HDBSS. This feature utilizes hardware assistance to achieve dirty
-> page tracking, aiming to significantly reduce the overhead of scanning
-> for dirty pages.
-> 
-> The purpose of this feature is to make the execution overhead of live
-> migration lower to both the guest and the host, compared to existing
-> approaches (write-protect or search stage 2 tables).
-> 
-> After these patches, users(such as qemu) can use the
-> KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl to enable or disable the HDBSS
-> feature before and after the live migration.
-> 
-> v2:
-> https://lore.kernel.org/linux-arm-kernel/20251121092342.3393318-1-zhengtian10@huawei.com/
-> 
-> v2->v3 changes:
-> - Remove the ARM64_HDBSS configuration option and ensure this feature
-> is only enabled in VHE mode.
-> - Move HDBSS-related variables to the arch-independent portion of the
-> kvm structure.
-> - Remove error messages during HDBSS enable/disable operations
-> - Change HDBSS buffer flushing from handle_exit to vcpu_put,
-> check_vcpu_requests, and kvm_handle_guest_abort.
-> - Add fault handling for HDBSS including buffer full, external abort,
-> and general protection fault (GPF).
-> - Add support for a 4KB HDBSS buffer size, mapped to the value 0b0000.
-> - Add a second argument to the ioctl to turn HDBSS on or off.
-> 
-> Tian Zheng (1):
->   KVM: arm64: Document HDBSS ioctl
-> 
-> eillon (4):
->   arm64/sysreg: Add HDBSS related register information
->   KVM: arm64: Add support to set the DBM attr during memory abort
->   KVM: arm64: Add support for FEAT_HDBSS
->   KVM: arm64: Enable HDBSS support and handle HDBSSF events
-> 
->  Documentation/virt/kvm/api.rst       |  16 +++++
->  arch/arm64/include/asm/cpufeature.h  |   5 ++
->  arch/arm64/include/asm/esr.h         |   7 ++
->  arch/arm64/include/asm/kvm_host.h    |  17 +++++
->  arch/arm64/include/asm/kvm_mmu.h     |   1 +
->  arch/arm64/include/asm/kvm_pgtable.h |   4 ++
->  arch/arm64/include/asm/sysreg.h      |  11 +++
->  arch/arm64/kernel/cpufeature.c       |  12 ++++
->  arch/arm64/kvm/arm.c                 | 102 +++++++++++++++++++++++++++
->  arch/arm64/kvm/hyp/pgtable.c         |   6 ++
->  arch/arm64/kvm/hyp/vhe/switch.c      |  19 +++++
->  arch/arm64/kvm/mmu.c                 |  70 ++++++++++++++++++
->  arch/arm64/kvm/reset.c               |   3 +
->  arch/arm64/tools/cpucaps             |   1 +
->  arch/arm64/tools/sysreg              |  29 ++++++++
->  include/uapi/linux/kvm.h             |   1 +
->  tools/include/uapi/linux/kvm.h       |   1 +
->  17 files changed, 305 insertions(+)
-> 
-> --
-> 2.33.0
-> 
+Hi Harry,
 
+On Tue, Mar 31, 2026 at 04:03:13PM +0900, Harry Yoo (Oracle) wrote:
+> On Mon, Mar 30, 2026 at 01:11:03PM +0300, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > mfill_atomic() passes a lot of parameters down to its callees.
+> > 
+> > Aggregate them all into mfill_state structure and pass this structure to
+> > functions that implement various UFFDIO_ commands.
+> > 
+> > Tracking the state in a structure will allow moving the code that retries
+> > copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
+> > loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
+> > memory.
+> > 
+> > The mfill_state definition is deliberately local to mm/userfaultfd.c,
+> > hence shmem_mfill_atomic_pte() is not updated.
+> > 
+> > [harry.yoo@oracle.com: properly initialize mfill_state.len to fix
+> >                        folio_add_new_anon_rmap() WARN]
+> > Link: https://lkml.kernel.org/r/abehBY7QakYF9bK4@hyeyoo
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> >  mm/userfaultfd.c | 148 ++++++++++++++++++++++++++---------------------
+> >  1 file changed, 82 insertions(+), 66 deletions(-)
+> > 
+> > @@ -790,12 +804,14 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> >  	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+> >  		goto out_unlock;
+> >  
+> > -	while (src_addr < src_start + len) {
+> > -		pmd_t dst_pmdval;
+> > +	state.vma = dst_vma;
+> 
+> Oh wait, the lock leak was introduced in patch 2.
 
-Hi Tian,
+Lock leak was introduced in patch 4 that moved getting the vma.
+Patch 2 missed the assignment of state.len and introduced an issue with
+bound checks.
 
-I was thinking: maybe instead of putting the HDBSS (and HACDBS) stuff 
-across a bunch of KVM files, we should try to focus them all on a single 
-arch/arm64/kvm/dirty_bit.c file (plus a header such as 
-arch/arm64/include/asm/kvm_dirty_bit.h).
+> If there's an error between uffd_mfill_lock() and `state.vma = dst_vma`,
+> it remains unlocked.
+> 
+> Probably should have been fixed in 2, not patch 4...
+> Sorry didn't realize it earlier.
+> 
+> > -		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+> > +	while (state.src_addr < src_start + len) {
+> > +		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+> > +
+> > +		pmd_t dst_pmdval;
+> >  
+> > -		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
+> > +		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
+> >  		if (unlikely(!dst_pmd)) {
+> >  			err = -ENOMEM;
+> >  			break;
+> > @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> >  
+> >  out_unlock:
+> >  	up_read(&ctx->map_changing_lock);
+> > -	uffd_mfill_unlock(dst_vma);
+> > +	uffd_mfill_unlock(state.vma);
+> >  out:
+> > -	if (folio)
+> > -		folio_put(folio);
+> > +	if (state.folio)
+> > +		folio_put(state.folio);
+> 
+> Sashiko raised a concern [2] that it the VMA might be unmapped and
+> a new mapping created as a uffd hugetlb vma and leak the folio by
+> going through
+> 
+> `if (is_vm_hugetlb_page(dst_vma))
+>         return mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
+>                                     src_start, len, flags);`
+> 
+> but it appears to be a false positive (to me) because
+> 
+> `if (atomic_read(&ctx->mmap_changing))` check should have detected unmapping
+> and free the folio?
 
-What is your opinion on that?
+I think it's real, and it's there more or less from the beginning, although
+nobody hit it yet :)
 
-Thanks!
-Leo
+Before retrying the copy we drop all the locks, so if the copy is really
+long the old mapping can be wiped and a new mapping can be created instead.
 
+There's already a v4 of a patch that attempts to solve this:
+
+https://lore.kernel.org/all/20260331134158.622084-1-devnexen@gmail.com
+ 
+> [2] https://sashiko.dev/#/patchset/20260330101116.1117699-1-rppt%40kernel.org?patch=13671
+> 
+> >  	VM_WARN_ON_ONCE(copied < 0);
+> >  	VM_WARN_ON_ONCE(err > 0);
+> >  	VM_WARN_ON_ONCE(!copied && !err);
+> 
+> Otherwise looks correct to me.
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
+
+-- 
+Sincerely yours,
+Mike.
