@@ -1,33 +1,60 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CBE3AA4E8;
-	Tue, 31 Mar 2026 11:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7353B19B5;
+	Tue, 31 Mar 2026 11:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774955154; cv=none; b=gku/mTitXTuLad9FcXLWp1YsuHqvxjGTVzppNtIdtcinslI79E1OkQwZx8TtCq5x+Hmd05MoQiPWVu9PjULOUxDj5vtowuCOEOYtIWtZ+dSQJhGd+m1tbjiUTwkK6il4H6YE6U87nKExx4xHKvE+GmibTK7QLIBCLseQGLzPBWU=
+	t=1774955841; cv=none; b=QughEA9U2CLqhb8LZslkJCOnHBiL5yYCia4/eeUnbTvJWGBjnRBVSadPHpKl8qqHsaM4Na2tfh5EQISQc94ydBV/T30CE6mX7cgEAiNX8iB0Uv7SPmH/zZJih/7PoWBLdcr5y+rDx7weG9gltIvbjnqzD+kmd0zs92s6bbD1OoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774955154; c=relaxed/simple;
-	bh=SXqEk71BSaaBeUSF2ew0z1un4HM7vo7rVW84ixT4WY4=;
+	s=arc-20240116; t=1774955841; c=relaxed/simple;
+	bh=uosfJHyJ0PgndOBCkuomCpw+akmmEVKGl42x5B5LXfk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VAm6lXFtULMaiU+xN7C+uySIaGsYiylO5z3CZ1u26QICMLKiUTWHZtoehl9I1Qvz5FqalecPFdt+m0QeNfLoqhNcJTIAMiSuyo8nJzzU+aMKRUNxVlgPbmw35/K4rxUFxwCuu49QlgIbix9BLaWoXqttwKex0X7FMKc7p0hNf8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=H7Gb0/Lc; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=eeO8R4hz3IL+XmQeuJcQesHaUUhe3TUOp7I70eT8oK7L/I1TYYMC1TUElcN5n907Jr5EvujT1UIUogjfP/3UOxlwuifJ4VNLRyj3NtSMOLsx/zloII2fpzBwF0b/wPFHqMhQmi/5WFxbuvcAKAhrhtjKk6cqoIVZrK8/7B/z+Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SR9OTIFx; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="H7Gb0/Lc"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3D4C4983;
-	Tue, 31 Mar 2026 04:05:45 -0700 (PDT)
-Received: from [10.57.17.66] (unknown [10.57.17.66])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF3FA3F641;
-	Tue, 31 Mar 2026 04:05:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774955151; bh=SXqEk71BSaaBeUSF2ew0z1un4HM7vo7rVW84ixT4WY4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H7Gb0/LcvB0+eLbF5RvOApy2pS6wZvhm623HaPVBt4XeMLB0uQZ16neUC2vLOdAzl
-	 0soNXv7Pgbu6loJbbx8OAh8hXbrM4Vw+1kwi75/1fWNtgf32alsML8n3SklnvDsOPy
-	 2ZY0jSixIxU7I23ihVmOkK9wYuhcN3f7T3RfUEEk=
-Message-ID: <152f5070-fda6-4381-bc40-4a70908c27c1@arm.com>
-Date: Tue, 31 Mar 2026 12:05:47 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SR9OTIFx"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V8mmbG371620;
+	Tue, 31 Mar 2026 11:17:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RIOWBn
+	2h0WwLoKl1CfFSXwKcshhW6ZkrVgHm7r3aJDY=; b=SR9OTIFxxcv+9hNteXFIs3
+	AA+nZs+G2L99dZ5ROfk3z6FoFAGFW8pO1W9oGtDv25XtevC3ee7q4x8oZzxGQ9sh
+	FKvilUdc12oRTdMFoLnUaC70WAsbuWdI5Z84KqSstJxf359Jt7dqq8t3Bzu38qCp
+	26ryGhZiswKjnuuuUZdECu3do38stdJQKAPGHPleMHSUMLBni67H5BOi67d6dE7G
+	rybfDDQKlqt5DZwN6FCWmqWw3lnlWfYFG/fsGfs1mdPyreOBRG7Ql99Tcw6JuTWm
+	aCJEdvlzDokFJh3YqNfqFV5/l/jvs/xhDnlw+tHEq/kOcs3Enh6xx1vQIQhRZRPQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d65dcag9s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 11:17:14 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62V82lGj030990;
+	Tue, 31 Mar 2026 11:17:13 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjrjq6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 11:17:13 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62VBHB8439060112
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Mar 2026 11:17:11 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6F6EF58055;
+	Tue, 31 Mar 2026 11:17:11 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80A725804B;
+	Tue, 31 Mar 2026 11:17:09 +0000 (GMT)
+Received: from [9.61.13.195] (unknown [9.61.13.195])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Mar 2026 11:17:09 +0000 (GMT)
+Message-ID: <70d7b2c7-77d7-4b53-bcb1-524b459fe426@linux.ibm.com>
+Date: Tue, 31 Mar 2026 07:17:08 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,255 +62,190 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 10/48] arm64: RMI: Ensure that the RMM has GPT entries
- for memory
-Content-Language: en-GB
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
- Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260318155413.793430-1-steven.price@arm.com>
- <20260318155413.793430-11-steven.price@arm.com> <acrj-cKphy4hJsEG@p14s>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <acrj-cKphy4hJsEG@p14s>
+Subject: Re: [PATCH v1 00/23] s390/vfio-ap: Implement live guest migration of
+ guests using AP devices
+To: Alex Williamson <alex@shazbot.org>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
+        mjrosato@linux.ibm.com, pasic@linux.ibm.com, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com
+References: <20260325210149.888028-1-akrowiak@linux.ibm.com>
+ <20260330102748.6423ff89@shazbot.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260330102748.6423ff89@shazbot.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=RsjI7SmK c=1 sm=1 tr=0 ts=69cbad3a cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=AhJJE_Kw0ly2J05s9D4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: RGsLswygIdp7vEfyqIwS9gGHq-Rpp_HR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDEwNCBTYWx0ZWRfX+nrgZJDuBaMb
+ krF4kGdz9siXfHDYpMeBhCq6xKmJbny3Q2MH11VmMOKbAvcz0an2u9y1kWqEFJL2IujoYcAJMvG
+ TFtvGThGteCq4tE7mUrIIig2WJ8+Ox2HN4kZ+qKRSoaUtfVPCR54NjqUT2lVP89etJV9NvUPRdK
+ uxeuS+S+66pk+jJpiV0SaH15IUQzH40RMKNFM9KuwigQjxX34lmUDSYaltuKyrnPlnZK8Qwdivi
+ 2xi31p5w/WpA4E16e45V4/UDC5uectktyLDf10gbY0BJC56VlAY/rph2Gqo2oO2JATaCvdl0ccS
+ fGJfA+nZ91epe/Nndc36PMPuYrAiErhVbvnOOKrTstnCSNEhv/JzNVJYrDInNy28mAZIzbw4lAX
+ U3ZIDSX1eE6Bn8eY9TqglvW+LQ567TSKduee9hID7ac0O9IvKfrzShSYE5HC+jYXfKJE2sENsgV
+ jg5sTWlUkbq0o0ax7JQ==
+X-Proofpoint-ORIG-GUID: RGsLswygIdp7vEfyqIwS9gGHq-Rpp_HR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_02,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603310104
 
-Hi Mathieu,
 
-On 30/03/2026 21:58, Mathieu Poirier wrote:
-> Hi,
-> 
-> On Wed, Mar 18, 2026 at 03:53:34PM +0000, Steven Price wrote:
->> The RMM may not be tracking all the memory of the system at boot. Create
->> the necessary tracking state and GPTs within the RMM so that all boot
->> memory can be delegated to the RMM as needed during runtime.
+
+On 3/30/26 12:27 PM, Alex Williamson wrote:
+> On Wed, 25 Mar 2026 17:00:47 -0400
+> Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
+>
+>> This patch series implements live guest migration of a guest to which AP
+>> devices have been passed through. To better comprehend this design, one has
+>> to understand that VFIO AP mediated device is not used to provide userspace
+>> with direct access to a device as is the case with other devices that use
+>> the VFIO framework to pass them through to a guest. The sole purpose of the
+>> VFIO AP mediated device is to manage an AP configuration for a guest. An AP
+>> configuration is comprised of the AP adapter IDs (APID), AP queue
+>> indexes (APQI) and domain numbers of the control domains to which a guest
+>> will be granted access. Once the VFIO AP mediated device is attached to a
+>> guest, its AP configuration is set by the vfio_ap device driver. Once set,
+>> all access to the AP devices is handled by the s390 Interpretive Execution
+>> facility; in other words, the vfio_ap device driver plays no role in
+>> providing direct access to the AP devices in the guest's AP configuration.
 >>
->> Note: support is currently missing for SROs which means that if the RMM
->> needs memory donating this will fail (and render CCA unusable in Linux).
+>> The only role that the vfio_ap device driver plays in the migration
+>> process is to verify that the AP configuration for the source guest is
+>> compatible with the AP configuration of the destination guest.
+>> Incompatibility will result in a live guest migration failure.
+>> In order to be compatible, the following requirements must be met:
 >>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> New patch for v13
->> ---
->>   arch/arm64/kvm/rmi.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 89 insertions(+)
+>> 1. The destination guest will be started with the same QEMU command line
+>>     as the source guest, so the mediated device supplying the AP
+>>     configuration on both guests must have the same name (UUID).
+> AFAIK, same UUID is not a requirement for out-of-tree mdev drivers
+> supporting migration.  You're really concerned more with the
+> configuration/composition of the mdev device, so requiring the same
+> UUID seems a bit arbitrary.
+
+As stated above, the destination guest will be started with the same
+QEMU command line as the source guest. Within that command line
+will be a '-device' parameter like the following:
+
+-device 
+'{"driver":"vfio-ap","id":"hostdev0","sysfsdev":"/sys/bus/mdev/devices/62177883-f1bb-47f0-914d-32a22e3a8804"}
+
+Note that sysfsdev is the path to the mdev named 
+62177883-f1bb-47f0-914d-32a22e3a8804;
+therefore, the mdev with that name must exist on the destination guest or
+the migration will fail with the following error:
+
+error: device not found: mediated device 
+'62177883-f1bb-47f0-914d-32a22e3a8804' not found
+
+>
+>> 2. The AP configuration assigned via the VFIO AP mediated device on both
+>>     guests must be compatible. As such, each AP configuration must meet
+>>     the following requirements:
 >>
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index 9590dff9a2c1..80aedc85e94a 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -4,6 +4,7 @@
->>    */
->>   
->>   #include <linux/kvm_host.h>
->> +#include <linux/memblock.h>
->>   
->>   #include <asm/kvm_pgtable.h>
->>   #include <asm/rmi_cmds.h>
->> @@ -56,6 +57,18 @@ static int rmi_check_version(void)
->>   	return 0;
->>   }
->>   
->> +/*
->> + * These are the 'default' sizes when passing 0 as the tracking_region_size.
->> + * TODO: Support other granule sizes
->> + */
->> +#ifdef CONFIG_PAGE_SIZE_4KB
->> +#define RMM_GRANULE_TRACKING_SIZE	SZ_1G
->> +#elif defined(CONFIG_PAGE_SIZE_16KB)
->> +#define RMM_GRANULE_TRACKING_SIZE	SZ_32M
->> +#elif defined(CONFIG_PAGE_SIZE_64KB)
->> +#define RMM_GRANULE_TRACKING_SIZE	SZ_512M
->> +#endif
->> +
->>   static int rmi_configure(void)
->>   {
->>   	struct rmm_config *config __free(free_page) = NULL;
->> @@ -95,6 +108,80 @@ static int rmi_configure(void)
->>   	return 0;
->>   }
->>   
->> +static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
->> +{
->> +	start = ALIGN_DOWN(start, RMM_GRANULE_TRACKING_SIZE);
-> 
-> This will produce an error on systems where the start of system memory is not
-> aligned to RMM_GRANULE_TRACKING_SIZE.  For instance, on QEMU-SBSA the system
-> memory starts at 0x100_4300_0000.  With the above and RMM_GRANULE_TRACKING_SIZE
-> set to SZ_1G, @start becomes 0x100_4000_0000, which falls outside the memory map
-> known to the TF-A.  I fixed it with these modifications:
-
-Thanks for raising this. This would need to be addressed in the RMM
-spec, I have raised it with the team and will be addressed soon.
-
-> 
-> LINUX:
-> 
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 10ff1c3bddaf..21bfbbe2f047 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -424,7 +424,9 @@ static int rmi_configure(void)
->   
->   static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
->   {
-> -       start = ALIGN_DOWN(start, RMM_GRANULE_TRACKING_SIZE);
-> +       phys_addr_t offset;
-> +
-> +       offset = start - ALIGN_DOWN(start, RMM_GRANULE_TRACKING_SIZE);
->          end = ALIGN(end, RMM_GRANULE_TRACKING_SIZE);
->   
->          while (start < end) {
-> @@ -439,7 +441,13 @@ static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t end)
->                                  start);
->                          return -ENODEV;
->                  }
-> -               start += RMM_GRANULE_TRACKING_SIZE;
-> +
-> +               if (offset) {
-> +                       start += (RMM_GRANULE_TRACKING_SIZE - offset);
-> +                       offset = 0;
-> +               } else {
-> +                       start += RMM_GRANULE_TRACKING_SIZE;
-> +               }
->          }
->   
->          return 0;
-> 
-> RMM:
-> 
-> diff --git a/runtime/rmi/granule.c b/runtime/rmi/granule.c
-> index cef521fc0869..60358d9ee81e 100644
-> --- a/runtime/rmi/granule.c
-> +++ b/runtime/rmi/granule.c
-> @@ -209,9 +209,11 @@ void smc_granule_tracking_get(unsigned long addr,
->                  return;
->          }
->   
-> +#if 0
->          if (!ALIGNED(addr, RMM_INTERNAL_TRACKING_REGION_SIZE)) {
->                  return;
->          }
-> +#endif
->   
->          g = find_granule(addr);
->          if (g != NULL) {
-> 
-> This is likely not the right fix but hopefully provides some guidance.  Send me
-> your patches when you have an idea and I'll test them.
-
-We will send you the update once it is fixed in the RMM spec. The rough 
-idea is to remove the ALIGNMENT restrictions and return a Range that
-the host can iterate over to find "regions" with the same type of
-memory.
-
-
-Cheers
-Suzuki
-
-
-> 
-> Thanks,
-> Mathieu
-> 
-> 
->> +	end = ALIGN(end, RMM_GRANULE_TRACKING_SIZE);
->> +
->> +	while (start < end) {
->> +		unsigned long ret, category, state;
->> +
->> +		ret = rmi_granule_tracking_get(start, &category, &state);
->> +		if (ret != RMI_SUCCESS ||
->> +		    state != RMI_TRACKING_FINE ||
->> +		    category != RMI_MEM_CATEGORY_CONVENTIONAL) {
->> +			/* TODO: Set granule tracking in this case */
->> +			kvm_err("Granule tracking for region isn't fine/conventional: %llx",
->> +				start);
->> +			return -ENODEV;
->> +		}
->> +		start += RMM_GRANULE_TRACKING_SIZE;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static unsigned long rmi_l0gpt_size(void)
->> +{
->> +	return 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
->> +				      rmm_feat_reg1));
->> +}
->> +
->> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
->> +{
->> +	unsigned long l0gpt_sz = rmi_l0gpt_size();
->> +
->> +	start = ALIGN_DOWN(start, l0gpt_sz);
->> +	end = ALIGN(end, l0gpt_sz);
->> +
->> +	while (start < end) {
->> +		int ret = rmi_gpt_l1_create(start);
->> +
->> +		if (ret && ret != RMI_ERROR_GPT) {
->> +			/*
->> +			 * FIXME: Handle SRO so that memory can be donated for
->> +			 * the tables.
->> +			 */
->> +			kvm_err("GPT Level1 table missing for %llx\n", start);
->> +			return -ENOMEM;
->> +		}
->> +		start += l0gpt_sz;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int rmi_init_metadata(void)
->> +{
->> +	phys_addr_t start, end;
->> +	const struct memblock_region *r;
->> +
->> +	for_each_mem_region(r) {
->> +		int ret;
->> +
->> +		start = memblock_region_memory_base_pfn(r) << PAGE_SHIFT;
->> +		end = memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
->> +		ret = rmi_verify_memory_tracking(start, end);
->> +		if (ret)
->> +			return ret;
->> +		ret = rmi_create_gpts(start, end);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>   static int rmm_check_features(void)
->>   {
->>   	if (kvm_lpa2_is_enabled() && !rmi_has_feature(RMI_FEATURE_REGISTER_0_LPA2)) {
->> @@ -120,6 +207,8 @@ void kvm_init_rmi(void)
->>   		return;
->>   	if (rmi_configure())
->>   		return;
->> +	if (rmi_init_metadata())
->> +		return;
->>   
->>   	/* Future patch will enable static branch kvm_rmi_is_available */
->>   }
->> -- 
->> 2.43.0
+>>     * Both guests must have the same number of APQNs
 >>
+>>     * Each APQN assigned to the source guest must also be assigned to the
+>>       destination guest
+>>
+>>     * Each APQN assigned to both guests must reference an AP queue with the
+>>       same hardware capabilities
+> Why isn't this sufficient vs also requiring the same UUID?
+>        
+>> Note: There is a forthcoming consumer of this series which will be a QEMU
+>>        patch series is entitled:
+>>        'hw/vfio/ap: Implement live guest migration of guests using AP
+>>        devices'
+>>
+>> This design also adds a use case for enabling and disabling
+>> migration of guests to which AP devices have been passed through. To
+>> facilitate this, a new read/write sysfs 'migratable' attribute is added to
+>> the mediated device. This attribute specifies whether the vfio device is
+>> migratable (1) or not (0). When the value of this attribute is changed, the
+>> vfio_ap device driver will signal an eventfd to userspace. It is up to
+>> userspace to respond to the change by enabling or disabling migration of
+>> the guest to which the mediated device is attached. The operation will be
+>> rejected with a 'Device or resource busy' message if a migration is in
+>> progress.
+> This seems inherently racy.  What happens if the device becomes
+> unmigratable while it's being migrated?
+>
+> If userspace is deciding that the device is now unmigratable, why does
+> it need to signal this through the kernel driver rather than with the
+> userspace orchestration agent?  The entire path seems unnecessary.
+>
+>> Userspace must also have a means for retrieving the value of the sysfs
+>> 'migratable' attribute when the guest is started to initialize whether it
+>> can be migrated. For this, The VFIO_DEVICE_GET_INFO ioctl is used. The
+>> struct vfio_device_info object passed to the ioctl will be extended with a
+>> capability specifying the vfio device attributes. One of the attributes
+>> will contain the value of the mediated device's 'migratable' attribute.
+> This is just broken, it's redundant to our current device feature
+> mechanism for exposing migration support.  If you want the capability
+> to create unmigratable devices statically, can't that be encompassed
+> within the definition of the mdev type?  Dynamic migration support just
+> seems like it's involving the kernel in orchestration it shouldn't be a
+> part of.  Thanks,
+>
+> Alex
+>   
+>> Anthony Krowiak (23):
+>>    s390/vfio-ap: Store queue hardware info when probed
+>>    s390/vfio-ap: Provide access to queue objects and related info
+>>    s390/vfio-ap: Add header file for xfer of vfio device caps to
+>>      userspace
+>>    MAINTAINERS: Add new header file for the S390 VFIO AP DRIVER
+>>      maintainers
+>>    s390/vfio-ap: A sysfs 'migratable' attribute to enable/disable
+>>      migration of guest
+>>    s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
+>>    s390/vfio-ap: Signal event to enable/disable live guest migration
+>>    s390/vfio-ap: Return value of sysfs migratable attribute from
+>>      VFIO_DEVICE_GET_INFO ioctl
+>>    s390/vfio-ap: Data structures for facilitating vfio device migration
+>>    s390/vfio-ap: Initialize/release vfio device migration data
+>>    s390-vfio-ap: Callback to set vfio device mig state during guest
+>>      migration
+>>    s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
+>>    s390/vfio-ap: File ops called to save the vfio device migration state
+>>    s390/vfio-ap: Transition device migration state from STOP to RESUMING
+>>    s390/vfio-ap: File ops called to resume the vfio device migration
+>>    s390/vfio-ap: Transition device migration state from RESUMING to STOP
+>>    s390/vfio-ap: Transition device migration state from STOP_COPY to STOP
+>>    s390/vfio-ap: Transition device migration state from STOP to RUNNING
+>>      and vice versa
+>>    s390-vfio-ap: Callback to get the current vfio device migration state
+>>    s390/vfio-ap: Callback to get the size of data to be migrated during
+>>      guest migration
+>>    s390/vfio-ap: Provide API to query whether migration is in progress
+>>    s390/vfio-ap: Disallow blocking migration in progress
+>>    s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
+>>
+>>   Documentation/arch/s390/vfio-ap.rst     |  339 +++++--
+>>   MAINTAINERS                             |    1 +
+>>   drivers/s390/crypto/Makefile            |    2 +-
+>>   drivers/s390/crypto/vfio_ap_drv.c       |    4 +-
+>>   drivers/s390/crypto/vfio_ap_migration.c | 1131 +++++++++++++++++++++++
+>>   drivers/s390/crypto/vfio_ap_ops.c       |  263 +++++-
+>>   drivers/s390/crypto/vfio_ap_private.h   |   20 +
+>>   include/uapi/linux/vfio.h               |    2 +
+>>   include/uapi/linux/vfio_ap.h            |   34 +
+>>   9 files changed, 1685 insertions(+), 111 deletions(-)
+>>   create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
+>>   create mode 100644 include/uapi/linux/vfio_ap.h
 >>
 
