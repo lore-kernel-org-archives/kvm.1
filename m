@@ -1,123 +1,154 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D2236AB6B
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 06:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07982BF3D7;
+	Tue, 31 Mar 2026 07:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774940277; cv=none; b=m3fAox0NVCgYN82brTYOFJI4eCAcqMg7BGPOiM6yviDoV51x94s/Ae71VAw6XflP00AduLeMriFQ97vmMvNMoC/BhZ1yjWrHBv37JYGXdsCQBY0giDd8+WxGS9SzNkkwJebJoJfEQF9B6mx4iigVdVEVYJklOCi+aaRJaQRIXUQ=
+	t=1774940595; cv=none; b=aXfIFN5cKcYq73Ms9RebcyIm2ZUNCK1RWa7F6M4Sfy47wuzFTuwgJMBol5EVMy9Ch5OJGTKOEgnehAapruKNdCAJGZvKK4JT1C9vh2qqFlAOUAAI9oRd+hUN7xK4lqZiGVDZGk1LeU2D3pF/wHrPQYfR61Q+dJGw9tfGqS9YnLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774940277; c=relaxed/simple;
-	bh=2tOMaJp56iXUOV/xkh3Q08VCKzhADZC2/A1u7wVNqcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BecjymQRJT4gOyyPX62Ci29MuK4dMmh1VvTLml7f2WZoVT7z8fAZVOun9P+Tos10o2PjXeOpo79jm5S5aEjpOaV32/Ggu8UOrKxIOhQRVXPAvqXtV7SBuZMHFHL/Gu6liev0kDlmuCqYbLxER4TZQgNAmHTexI13l4ziWg/rpb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jUXTOiLI; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1774940595; c=relaxed/simple;
+	bh=ic+S5YIOVZVio0bt8w8FKUddY4R5LxfMt3J8CL3Z2pY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nS4jf73YXOnsYrdZFkupmt1phWF7BVJkWMv02A+fjWGe6MF4yNzVpkdtvCwVN4OY0Bpquxmr9rPNXxpshd3NvhSoeVlpbyAgtuc2R8hgsQkyzHjqCri0q7tNGN8t344xTOTHvMo2ZsP9gS/WvbA6fRJFNrYCkh7AWTp7zZY+6qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7BkWakY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="jUXTOiLI"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47AC4495B;
-	Mon, 30 Mar 2026 23:57:49 -0700 (PDT)
-Received: from [10.57.18.211] (unknown [10.57.18.211])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A77703F7D8;
-	Mon, 30 Mar 2026 23:57:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774940275; bh=2tOMaJp56iXUOV/xkh3Q08VCKzhADZC2/A1u7wVNqcE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jUXTOiLI9uc4O/BtVmCD3Pfg6t+oABR1hnVEsw1GT0cmK6m8Z8yv2axk3OU8o/8ns
-	 E+sb+tkKwzB96Osa4oxz67fau7jGEOlCGveXKEBX4SYadsF6KoNdegLMx9hyzeKSKi
-	 zmUnKQuO2UoHxyr3MRgMXyzl4mtuN2b8FKFr48No=
-Message-ID: <8bd2b649-01b5-44f4-a034-c202e226e97c@arm.com>
-Date: Tue, 31 Mar 2026 12:27:48 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7BkWakY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBFBC19423;
+	Tue, 31 Mar 2026 07:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774940595;
+	bh=ic+S5YIOVZVio0bt8w8FKUddY4R5LxfMt3J8CL3Z2pY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z7BkWakYWogd1+dlacH+q+UQNww+wVXoAME49WY2cx7GjFabSYL49wrASs3mSyhuS
+	 kohcpBLMxpJ5WYqZwsAj0+9fWIxhRXPfU9U9VuLRPS4gKM75uM3teIQ0Zu/kZU+ABC
+	 4v9e//T8Mwif3OEvRMtktAYV3OgKazSPdCbPR5UmugDNGQa5WzOgd34W0Et+ie4AXp
+	 hghn6Ww/zX7tgwUWfWXUGQCNcGRd3VD3++E6xV5ic0jzFd/qGOgPIotcfrq2jpmUcq
+	 GEEnFWYaoiTh2dhBX+JEWgWG2JPNWGk0qGJ7GV3jBhIF2ijo3nwaUzhNvHgHp3vH0W
+	 UIcnlpKA4zy3w==
+Date: Tue, 31 Mar 2026 16:03:13 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
+Message-ID: <actxscYZGFiyvUcs@hyeyoo>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-3-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/30] KVM: arm64: Hoist MTE validation check out of
- MMU lock path
-To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
- <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>,
- Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <tabba@google.com>,
- Will Deacon <will@kernel.org>, Quentin Perret <qperret@google.com>
-References: <20260327113618.4051534-1-maz@kernel.org>
- <20260327113618.4051534-13-maz@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260327113618.4051534-13-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330101116.1117699-3-rppt@kernel.org>
 
-On 27/03/26 5:06 PM, Marc Zyngier wrote:
-> From: Fuad Tabba <tabba@google.com>
+On Mon, Mar 30, 2026 at 01:11:03PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Simplify the non-cacheable attributes assignment by using a ternary
-> operator. Additionally, hoist the MTE validation check (mte_allowed) out
-> of kvm_s2_fault_map() and into kvm_s2_fault_compute_prot(). This allows
-> us to fail faster and avoid acquiring the KVM MMU lock unnecessarily
-> when the VMM introduces a disallowed VMA for an MTE-enabled guest.
+> mfill_atomic() passes a lot of parameters down to its callees.
 > 
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Aggregate them all into mfill_state structure and pass this structure to
+> functions that implement various UFFDIO_ commands.
+> 
+> Tracking the state in a structure will allow moving the code that retries
+> copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
+> loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
+> memory.
+> 
+> The mfill_state definition is deliberately local to mm/userfaultfd.c,
+> hence shmem_mfill_atomic_pte() is not updated.
+> 
+> [harry.yoo@oracle.com: properly initialize mfill_state.len to fix
+>                        folio_add_new_anon_rmap() WARN]
+> Link: https://lkml.kernel.org/r/abehBY7QakYF9bK4@hyeyoo
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  arch/arm64/kvm/mmu.c | 28 ++++++++++++----------------
->  1 file changed, 12 insertions(+), 16 deletions(-)
+>  mm/userfaultfd.c | 148 ++++++++++++++++++++++++++---------------------
+>  1 file changed, 82 insertions(+), 66 deletions(-)
 > 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 0c71e3a9af8b0..ee2a548999b1b 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1870,18 +1870,21 @@ static int kvm_s2_fault_compute_prot(struct kvm_s2_fault *fault)
->  	if (fault->exec_fault)
->  		fault->prot |= KVM_PGTABLE_PROT_X;
+> @@ -790,12 +804,14 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+>  	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+>  		goto out_unlock;
 >  
-> -	if (fault->s2_force_noncacheable) {
-> -		if (fault->vm_flags & VM_ALLOW_ANY_UNCACHED)
-> -			fault->prot |= KVM_PGTABLE_PROT_NORMAL_NC;
-> -		else
-> -			fault->prot |= KVM_PGTABLE_PROT_DEVICE;
-> -	} else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC)) {
-> +	if (fault->s2_force_noncacheable)
-> +		fault->prot |= (fault->vm_flags & VM_ALLOW_ANY_UNCACHED) ?
-> +			       KVM_PGTABLE_PROT_NORMAL_NC : KVM_PGTABLE_PROT_DEVICE;
-> +	else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC))
->  		fault->prot |= KVM_PGTABLE_PROT_X;
-> -	}
+> -	while (src_addr < src_start + len) {
+> -		pmd_t dst_pmdval;
+> +	state.vma = dst_vma;
 
-Is not the existing code block bit more cleaner though ?
+Oh wait, the lock leak was introduced in patch 2.
+If there's an error between uffd_mfill_lock() and `state.vma = dst_vma`,
+it remains unlocked.
 
->  
->  	if (fault->nested)
->  		adjust_nested_exec_perms(kvm, fault->nested, &fault->prot);
->  
-> +	if (!fault->fault_is_perm && !fault->s2_force_noncacheable && kvm_has_mte(kvm)) {
-> +		/* Check the VMM hasn't introduced a new disallowed VMA */
-> +		if (!fault->mte_allowed)
-> +			return -EFAULT;
-> +	}
+Probably should have been fixed in 2, not patch 4...
+Sorry didn't realize it earlier.
+
+> -		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+> +	while (state.src_addr < src_start + len) {
+> +		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
 > +
->  	return 0;
->  }
+> +		pmd_t dst_pmdval;
 >  
-> @@ -1918,15 +1921,8 @@ static int kvm_s2_fault_map(struct kvm_s2_fault *fault, void *memcache)
->  		}
->  	}
+> -		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
+> +		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
+>  		if (unlikely(!dst_pmd)) {
+>  			err = -ENOMEM;
+>  			break;
+> @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 >  
-> -	if (!fault->fault_is_perm && !fault->s2_force_noncacheable && kvm_has_mte(kvm)) {
-> -		/* Check the VMM hasn't introduced a new disallowed VMA */
-> -		if (fault->mte_allowed) {
-> -			sanitise_mte_tags(kvm, fault->pfn, fault->vma_pagesize);
-> -		} else {
-> -			ret = -EFAULT;
-> -			goto out_unlock;
-> -		}
-> -	}
-> +	if (!fault->fault_is_perm && !fault->s2_force_noncacheable && kvm_has_mte(kvm))
-> +		sanitise_mte_tags(kvm, fault->pfn, fault->vma_pagesize);
->  
->  	/*
->  	 * Under the premise of getting a FSC_PERM fault, we just need to relax
+>  out_unlock:
+>  	up_read(&ctx->map_changing_lock);
+> -	uffd_mfill_unlock(dst_vma);
+> +	uffd_mfill_unlock(state.vma);
+>  out:
+> -	if (folio)
+> -		folio_put(folio);
+> +	if (state.folio)
+> +		folio_put(state.folio);
 
+Sashiko raised a concern [2] that it the VMA might be unmapped and
+a new mapping created as a uffd hugetlb vma and leak the folio by
+going through
+
+`if (is_vm_hugetlb_page(dst_vma))
+        return mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
+                                    src_start, len, flags);`
+
+but it appears to be a false positive (to me) because
+
+`if (atomic_read(&ctx->mmap_changing))` check should have detected unmapping
+and free the folio?
+
+[2] https://sashiko.dev/#/patchset/20260330101116.1117699-1-rppt%40kernel.org?patch=13671
+
+>  	VM_WARN_ON_ONCE(copied < 0);
+>  	VM_WARN_ON_ONCE(err > 0);
+>  	VM_WARN_ON_ONCE(!copied && !err);
+
+Otherwise looks correct to me.
+
+-- 
+Cheers,
+Harry / Hyeonggon
