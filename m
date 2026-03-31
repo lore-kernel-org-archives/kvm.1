@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BC2363C47;
-	Tue, 31 Mar 2026 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1F93F54CB;
+	Tue, 31 Mar 2026 14:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774969078; cv=none; b=KxIpoKHsSei7ct93Sxw/jDZO/2UFbkJwOJG1tVBfSzC+TSZ0JtR9l2jbrvX7jEb+9VydR4g/b9kBu7x4SX17vTIUQf69K+r+3f4oPcqy1TBgqwze+uw2PLNO4WfsBU/pJmEhHn8BgVIrBvhXOtx56A6GKuZyj29DIdNHOthzpgQ=
+	t=1774969090; cv=none; b=iEWfakv122jpgV9azL61VCLIMVRE56jNgNudirz3yu2csJNkamyJzJREcPq55OzRetZ5c7b0PNMLOoX0pa/KYDy4ZvgAXA+K5SUS0A33Otj2gi7WHX4xRGdtnJJ46wty3Y0Zo9ZUlHcbehJFNFECLBJboAUVg+CtlqtzGiUUqQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774969078; c=relaxed/simple;
-	bh=JMNO0YhxJS51lysv4C/4Q5uZvt68M+YjNYl03i+E778=;
+	s=arc-20240116; t=1774969090; c=relaxed/simple;
+	bh=sHgfIFGCrS1CuYalHpv8GUnSomSOgoC1zvzwLIckvRY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R8Eg0VjMj8G8MeAzLli/A/5YMflKVpB4FO+XoYa3FEI0sZZQXIhNrQz7SvJf5eFTURewEmmwd/hm0CwYuJJ4/AzvvS9x5rhDU0tHWzfaCTnzMIuSW2u/YC2F40UmC2jEo3I81b2eQyL5qC9qqIkyDdy9Tv6ZO7gY8zsI9zR2j14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Womdp6Fv; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=OiCkgmXJkfEIyDEqDAdw8PDrTKg+RvBkDHkob/uUYlxs6ydizh+jTNoys/BczkQ7BLyeqWR6Llq+C/kFz1pMVS/UwWFqqMS409Kf1BAkkk6Hzn9a6ZoZlAA6KDhvOhG+xfH34ULl+XU3Jb7YqH3PM3SUaeaaMfvTtxRuIi6hx3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T4z7z5ul; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Womdp6Fv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T4z7z5ul"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774969077; x=1806505077;
+  t=1774969089; x=1806505089;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=JMNO0YhxJS51lysv4C/4Q5uZvt68M+YjNYl03i+E778=;
-  b=Womdp6Fv1UuRVBlpPaqFsjAzq6NwhxHPadN0T/9ucDgex2fAdZ4lO2rF
-   JbPLkQejShptBP+4OZfo5jrv2EEQe11clmJbys2DyPR1MhuA4mL7Cm+qg
-   Xa1/ZOEFj1nCaSsFoVO1V6NHXNQJenzB7uyeJEcOxi8gA5zkIFtEPTkaa
-   RXlk29uRpu1XKT/hGmnr7assHfRrv7nFmm4RYsiP5x+JhSISJYEk8QkZs
-   Dc/1AVr0WiZM2hnnouNmGaYv4jhsj5vrnik2y1+5aDkFCL7iI1GHigRPT
-   P9pL8amvp7eagN0zxyAWDBVqVj92zVme3adrRtss1CrcXWUPIDspESEwX
-   w==;
-X-CSE-ConnectionGUID: NtdTkHmWQeCYNH8n9ABCKQ==
-X-CSE-MsgGUID: yctW6H9wQae9ZKhQ2kyf2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="87376895"
+  bh=sHgfIFGCrS1CuYalHpv8GUnSomSOgoC1zvzwLIckvRY=;
+  b=T4z7z5ulXBgbzkVKNpmcDxnlH5v2hhW7neuVS4kBzUv1vIz8QNproJ0Q
+   N77v14LHvLshYJP4gM1UNGlR3HBm/AACgl5xiy8IhJY5QtyQB70Xwd+bo
+   3QOSLNSYC4VzoFF1xL3UySkxInwF2F/IcpgSgRGbCJbcUmtV4+1jH0b3g
+   +yVenzjS459HjEMvA6a4OAAJLqndppFrcco9HpihaLxJZKHfwwajnjJ8T
+   mkmVn+dLnmUDLRDgu4acBMe9ms/il7vBv/RKDk/pW4Y3Cpgj3GvsYt6zP
+   IO6G4OjBpRRt91iLixfNKuX/21nNuIOCm0Qth9VoX88NM4ttV23oszCJH
+   Q==;
+X-CSE-ConnectionGUID: HTrzxnFcSFWSyRx2d/LCDQ==
+X-CSE-MsgGUID: aHuS6tFvTeqY/2TdnuH8lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="87376917"
 X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="87376895"
+   d="scan'208";a="87376917"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:57:56 -0700
-X-CSE-ConnectionGUID: 7603ujl3QP2yJmXHOURNSQ==
-X-CSE-MsgGUID: oBk9QGQaRnivesQd/msccg==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:58:08 -0700
+X-CSE-ConnectionGUID: h6FJNCpxQlSNa60ItNigZg==
+X-CSE-MsgGUID: XRVTNJXDSMCOHxts269/xg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="256885517"
+   d="scan'208";a="256885549"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.111.50]) ([10.125.111.50])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:57:55 -0700
-Message-ID: <114e44e8-b06f-4b45-b962-fab2e6c03b68@intel.com>
-Date: Tue, 31 Mar 2026 07:58:02 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:58:08 -0700
+Message-ID: <95126568-3031-4d0a-85c8-d3934b6fec3e@intel.com>
+Date: Tue, 31 Mar 2026 07:58:14 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,8 +68,8 @@ Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260331124214.117808-1-chao.gao@intel.com>
  <20260331124214.117808-7-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -118,10 +118,29 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 3/31/26 05:41, Chao Gao wrote:
-> Expose them as tdx-host device attributes. Make seamldr attributes
-> visible only when the update feature is supported, as that's their sole
-> purpose. Unconditional exposure is also problematic because reading them
-> triggers P-SEAMLDR calls that break KVM on CPUs with a specific erratum
-> (to be enumerated and handled in a later patch).
+> +/*
+> + * Open-code DEVICE_ATTR_ADMIN_RO to specify a different 'show' function
+> + * for P-SEAMLDR version as version_show() is used for TDX module version.
+> + *
+> + * Admin-only readable as reading these attributes calls into P-SEAMLDR,
+> + * which may have potential performance and system impact.
+> + */
+> +static struct device_attribute dev_attr_seamldr_version =
+> +	__ATTR(version, 0400, seamldr_version_show, NULL);
+> +static DEVICE_ATTR_ADMIN_RO(num_remaining_updates);
 
-The erratum is irrelevant, IMNHO. Or it *should* be irrelevant.
+I don't like that these are really *exactly* the same, except for the
+name but are defined so differently. I see three alternatives that are
+better:
+
+1. Open code *both* so they look the same
+2. Define a macro that both can use that has a seamldr_## prefix
+3. Move the code to a new file to avoid symbol conflicts.
+
+I'd honestly be fine with any of those.
+
+The other option is to just put the module information at the top
+directory so the sysfs name differentiates things.
+
+For real, how many things are going to be in the seamldr directory? If
+it's just two, is it worth having a directory?
