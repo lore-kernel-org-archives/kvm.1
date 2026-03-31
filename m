@@ -1,177 +1,234 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60FF3A9DA9
-	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 10:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDBC2F39CE;
+	Tue, 31 Mar 2026 10:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774953501; cv=none; b=bjr0vEkvw+aSJS+yfQpKE4sEskaPHgXi5FR588PyMEKQWZ8YUskfM7RIy7QnSbtlrw/WUbIqNieexFH+bLmVilSv83Tt7Z9/dG4+Mv8vV8rangcskS0cNNg3AkE5QCOezAkcOPki3Bx96cFwN0J/OfGsGN6p8tVc+voFnQl4+0g=
+	t=1774953539; cv=none; b=RctvYYWgNcaI+6JrJClry2+aVrd0l894AcKuRQMC6r0z8B0V/ZQmSl9Jfpo/sFVKJLXYSkOWKuD/DfpkyeEwAwXl5Rri29eO1uyworwGU5jby1lMEVOljQ+CJFRNYY4fW6A7KP2hZpg/oI2SbC2wt8LZbxbL3awe1GDrigs89Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774953501; c=relaxed/simple;
-	bh=EchK1OhTgSh8S7cgMHy7fOb1l+kJpOBAiQ+NkOjsT/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kZ/v9WJGS4r+aEM2mJGLfAfwXxnCIwuvTa2DY/rb2lwQZUQJc18BHtZcvybv7MQZeHE06NF+3fK+ZurCZfpNgXthYy+A+nGzDI7mn4Gi7UG6I/dXUwiqNi4Zbukg0Vgz1waWY/Rpt4kaWadZ123knaufxtfWlJy935lg3SLLilc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=c3NS/ahf; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1774953539; c=relaxed/simple;
+	bh=ns25mF2UrLHOJDvx/LnwaHuyB+Hf+Nyj2xT98c2l78k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KrFnw6Q0Xt9lkucaNae8fhbMaifjbaEEnG8YxP1CsvMX4SNbMvbdwXTTQNYwbHG+GM1cGpT8Cbt9nOtD6TX+pIS+VsY7Hc1pDbCtcexZS4lbaA8jrQUmdAko/EwhoZo30PMnJMK6djbIM4HMVvxdPJAWj3Xs2Q8duaCeXH90cLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kj7mU3zJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="c3NS/ahf"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4887fd35e60so1910655e9.2
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 03:38:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774953498; x=1775558298; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=j1GwY5PsDoqBTLy6YsGXd3gbj61OJIiAY2NVv6n/DA0=;
-        b=c3NS/ahfG27c9ix2wu7ycDtUlNtNBE3J4sQb05btFMaVz6NRrioAm2XPsqPXaiMf0W
-         osZD1kvwg4TutNUZb+Oz6MJMPh0HaEULzFsyZPOOar2lU/rw86x5dzqo+q0rwi88Qns1
-         SnBgNVF+LQaLTQggQsewqI8KPzm/Q7bGSg3qN6iX8vkag5jhK2Hdi27y3MVhHtwqlIxl
-         JSh9SCZzo6e9ydfGMCW6BqYTFCC2bS8HlmrDP8YPW9YlP1Kzoam4cw9bG0LccOy8VKIF
-         U+eYydvGKSce/+5u0pbs7L/m41AoL6DmzzYpAeh89+21/TPDgVQm8arKsSEgv7j78keK
-         0lNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774953498; x=1775558298;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j1GwY5PsDoqBTLy6YsGXd3gbj61OJIiAY2NVv6n/DA0=;
-        b=SoUZufPzaIxqOPKNE5q9/k2AIGre5ce0a6xZznSVmdN64Ey4+N7JCqHsBm2c/icsEF
-         R6Fb05qe0H2nG/1vyDWq6uDbGlfgpEVKH9D1orRm+u4HUAVtf31GaFxmxIeYofnziwi0
-         7kL2Rm+HxqziuLmS686hm9yRhHrtO9fcXigbS2e6bGQV8gCgBtHi1yFmud3sXEEZhrLo
-         3raRxOc8366IKfflHPDwbR8vfCEuPVzQBxr10ucnYNmvaIyNmES31ALBKG/g9DvGnIwf
-         YcAQ7iHS2Iqjr8BoYHx+guL96r5F9rlCHkn2+N6QVXE+XDQVvX9WFprFx/c3Vfq8UDc/
-         ud4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUV/klbqJFaGqG0RQVSnWpsFUo/8HnEHf1gqQvCu/NH2j+t3/oHGCEu/Fnn1FWKpNLuQf0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywprhht2DiS/8xlHZM4pcku0QpPTYC78XHutR76m34qiz9ni9gW
-	HLxzbEWYdy1gV4d2mmB+6ReWroUPhnVHsyFA5NMnQgCf1YxIJcjCdsW2BtDPpA22viw=
-X-Gm-Gg: ATEYQzwurfTID47k1Q9fTCUAKr2oac/ZRgLZwcGwHZQfr6CAss42mFkaBqhhnYM4IHF
-	aDotqIeQv6fT5oUWQeG7cZuSSqR6vxBlWghPCZCEmfCEqHRL/rE0t83V09yfIhZTmNu3Xc4vj3m
-	LWleChubyJR/0W+oACvg25XvzbKrl+ZCJ+xE53PxI20JIC1deevHWuP9cZX1XKfhSstUA55gmBm
-	OA6zHdpHXNZHdB77VTI+1TBoWp3z8sPRArjOcFTjHHuOiwgf2A/HH7lqUMKqeqvN8XgZ/0bmx3s
-	cbpZJOK6nwQUUMRdE4G3BsmtgggzrIFQWqiqwZ4AcPI/5iKV367gZwh2AyjaalyotR01UVQm1qb
-	LM3ehwS7jyUo925NWiMvA0Y+A/YpiqH6aRmJ9Eu5fAwmFo/ToViXGFQj7Yp6iuoqTUD+kzlvE9q
-	MBfgNJUVoR3H2dMw+BOT6iQtX9qg==
-X-Received: by 2002:a05:600c:a00e:b0:488:7b85:b16c with SMTP id 5b1f17b1804b1-4887b85b27dmr34221595e9.29.1774953498161;
-        Tue, 31 Mar 2026 03:38:18 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.133.10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e822078sm32745645e9.9.2026.03.31.03.38.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2026 03:38:17 -0700 (PDT)
-Message-ID: <730feb0b-7022-4d22-9ead-3efc4b4ab4ab@suse.com>
-Date: Tue, 31 Mar 2026 13:38:16 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kj7mU3zJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0EFC19423;
+	Tue, 31 Mar 2026 10:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774953539;
+	bh=ns25mF2UrLHOJDvx/LnwaHuyB+Hf+Nyj2xT98c2l78k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Kj7mU3zJLCNNKhIQIiBnX3/r4iNBlU6v60RiEgsOF7hVhyKpPx7fHySOX/1HcZ6HT
+	 g46QUG/QO0DvQW1+pKythy1s52UNDgvTjrWLTdj5d7spmSO1LFbNQUyRArY7Mj37Z3
+	 7GHfGdvFSXRLtrA12eblkVnS0sp8uYMAOeilRIccIqfzkyfaGXDubOLNifxNz+z1EL
+	 JmAWQ1FY+eJeiMxXzo4jYsxtkMZYa6oPg7TWrLWfmhPzaBZ1DhSvnKuYoSeP9/E2Xm
+	 kG8zGjdKyVcdRF/Y9LgYk7Ghn6/jZmqo2vQFXc8thsNIf/gxryTLdUM9GwUrpEdsQe
+	 Zc/hNO6wMpYBA==
+Date: Tue, 31 Mar 2026 11:38:57 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, 
+	rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, 
+	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v6 5/6] mm: use vma_start_write_killable() in
+ process_vma_walk_lock()
+Message-ID: <4e1c47a9-77a2-4f29-8de5-37f9958f5885@lucifer.local>
+References: <20260327205457.604224-1-surenb@google.com>
+ <20260327205457.604224-6-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/31] x86/virt/tdx: Configure TDX Module with optional
- TDX Connect feature
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
- xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-9-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260327160132.2946114-9-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327205457.604224-6-surenb@google.com>
 
-
-
-On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
-> TDX Module supports optional TDX features (e.g. TDX Connect & TDX Module
-> Extensions) that won't be enabled by default. It extends TDH.SYS.CONFIG
-> for host to choose to enable them on bootup.
-> 
-> Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
-> features to enable. The bitmap uses the same definitions as
-> TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
-> configuration, e.g. TDX Module Extensions is a service that supports TDX
-> Connect, it is implicitly enabled when TDX Connect is enabled. Setting
-> TDX_FEATURES0_EXT in the bitmap has no effect.
-> 
-> TDX Module advances the version of TDH.SYS.CONFIG for the change, so
-> use the latest version (v1) for optional feature enabling. But
-> supporting existing Modules which only support v0 is still necessary
-> until they are deprecated, enumerate via TDX_FEATURES0 to decide which
-> version to use.
-> 
-> TDX Module updates global metadata when optional features are enabled.
-> Host should update the cached tdx_sysinfo to reflect these changes.
-> 
-> Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+On Fri, Mar 27, 2026 at 01:54:56PM -0700, Suren Baghdasaryan wrote:
+> Replace vma_start_write() with vma_start_write_killable() when
+> process_vma_walk_lock() is used with PGWALK_WRLOCK option.
+> Adjust its direct and indirect users to check for a possible error
+> and handle it. Ensure users handle EINTR correctly and do not ignore
+> it. When queue_pages_range() fails, check whether it failed due to
+> a fatal signal or some other reason and return appropriate error.
+>
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > ---
->   arch/x86/virt/vmx/tdx/tdx.h |  3 ++-
->   arch/x86/virt/vmx/tdx/tdx.c | 16 +++++++++++++++-
->   2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index e5a9331df451..870bb75da3ba 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -58,7 +58,8 @@
->   #define TDH_PHYMEM_CACHE_WB		40
->   #define TDH_PHYMEM_PAGE_WBINVD		41
->   #define TDH_VP_WR			43
-> -#define TDH_SYS_CONFIG			45
-> +#define TDH_SYS_CONFIG_V0		45
-> +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+>  fs/proc/task_mmu.c | 12 ++++++------
+>  mm/mempolicy.c     | 10 +++++++++-
+>  mm/pagewalk.c      | 22 +++++++++++++++-------
+>  3 files changed, 30 insertions(+), 14 deletions(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index e091931d7ca1..33e5094a7842 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -1774,15 +1774,15 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+>  	struct vm_area_struct *vma;
+>  	enum clear_refs_types type;
+>  	int itype;
+> -	int rv;
+> +	int err;
+>
+>  	if (count > sizeof(buffer) - 1)
+>  		count = sizeof(buffer) - 1;
+>  	if (copy_from_user(buffer, buf, count))
+>  		return -EFAULT;
+> -	rv = kstrtoint(strstrip(buffer), 10, &itype);
+> -	if (rv < 0)
+> -		return rv;
+> +	err = kstrtoint(strstrip(buffer), 10, &itype);
+> +	if (err)
+> +		return err;
+>  	type = (enum clear_refs_types)itype;
+>  	if (type < CLEAR_REFS_ALL || type >= CLEAR_REFS_LAST)
+>  		return -EINVAL;
+> @@ -1824,7 +1824,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+>  						0, mm, 0, -1UL);
+>  			mmu_notifier_invalidate_range_start(&range);
+>  		}
+> -		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
+> +		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
+>  		if (type == CLEAR_REFS_SOFT_DIRTY) {
+>  			mmu_notifier_invalidate_range_end(&range);
+>  			flush_tlb_mm(mm);
+> @@ -1837,7 +1837,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+>  	}
+>  	put_task_struct(task);
+>
+> -	return count;
+> +	return err ? : count;
+>  }
+>
+>  const struct file_operations proc_clear_refs_operations = {
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index c38a90487531..51f298cfc33b 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vma_walk_ops = {
+>   *      (a hugetlbfs page or a transparent huge page being counted as 1).
+>   * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
+>   * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
+> + * -EINTR - walk got terminated due to pending fatal signal.
+>   */
+>  static long
+>  queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
+> @@ -1545,7 +1546,14 @@ static long do_mbind(unsigned long start, unsigned long len,
+>  			flags | MPOL_MF_INVERT | MPOL_MF_WRLOCK, &pagelist);
+>
+>  	if (nr_failed < 0) {
+> -		err = nr_failed;
+> +		/*
+> +		 * queue_pages_range() might override the original error with -EFAULT.
+> +		 * Confirm that fatal signals are still treated correctly.
+> +		 */
+> +		if (fatal_signal_pending(current))
+> +			err = -EINTR;
+> +		else
+> +			err = nr_failed;
 
-Since newer versions of tdx module apis are backwards compatible with 
-older ones, and v0 are actually deprecated why have both definitions?
+Is that really a big deal? Does it really matter if the caller doesn't get
+-EINTR in this case? This feels like another sashiko nitpick and is adding a
+bunch of additional complexity here.
 
+I mean if you 'filter' error messages you might always end up with an error
+that's different than the original...
 
-<snip>
+>  		nr_failed = 0;
+>  	} else {
+>  		vma_iter_init(&vmi, mm, start);
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index 3ae2586ff45b..eca7bc711617 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -443,14 +443,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
+>  		mmap_assert_write_locked(mm);
+>  }
+>
+> -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
+> -					 enum page_walk_lock walk_lock)
+> +static int process_vma_walk_lock(struct vm_area_struct *vma,
+> +				 enum page_walk_lock walk_lock)
+>  {
+>  #ifdef CONFIG_PER_VMA_LOCK
+>  	switch (walk_lock) {
+>  	case PGWALK_WRLOCK:
+> -		vma_start_write(vma);
+> -		break;
+> +		return vma_start_write_killable(vma);
+>  	case PGWALK_WRLOCK_VERIFY:
+>  		vma_assert_write_locked(vma);
+>  		break;
+> @@ -462,6 +461,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
+>  		break;
+>  	}
+>  #endif
+> +	return 0;
+>  }
+>
+>  /*
+> @@ -505,7 +505,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
+>  			if (ops->pte_hole)
+>  				err = ops->pte_hole(start, next, -1, &walk);
+>  		} else { /* inside vma */
+> -			process_vma_walk_lock(vma, ops->walk_lock);
+> +			err = process_vma_walk_lock(vma, ops->walk_lock);
+> +			if (err)
+> +				break;
+>  			walk.vma = vma;
+>  			next = min(end, vma->vm_end);
+>  			vma = find_vma(mm, vma->vm_end);
+> @@ -722,6 +724,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
+>  		.vma		= vma,
+>  		.private	= private,
+>  	};
+> +	int err;
+>
+>  	if (start >= end || !walk.mm)
+>  		return -EINVAL;
+> @@ -729,7 +732,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
+>  		return -EINVAL;
+>
+>  	process_mm_walk_lock(walk.mm, ops->walk_lock);
+> -	process_vma_walk_lock(vma, ops->walk_lock);
+> +	err = process_vma_walk_lock(vma, ops->walk_lock);
+> +	if (err)
+> +		return err;
+>  	return __walk_page_range(start, end, &walk);
+>  }
+>
+> @@ -752,6 +757,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+>  		.vma		= vma,
+>  		.private	= private,
+>  	};
+> +	int err;
+>
+>  	if (!walk.mm)
+>  		return -EINVAL;
+> @@ -759,7 +765,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+>  		return -EINVAL;
+>
+>  	process_mm_walk_lock(walk.mm, ops->walk_lock);
+> -	process_vma_walk_lock(vma, ops->walk_lock);
+> +	err = process_vma_walk_lock(vma, ops->walk_lock);
+> +	if (err)
+> +		return err;
+>  	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
+>  }
+>
+> --
+> 2.53.0.1018.g2bb0e51243-goog
+>
