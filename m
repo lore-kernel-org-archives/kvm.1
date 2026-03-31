@@ -1,74 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A8637C90D;
-	Tue, 31 Mar 2026 18:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F70C38F65C
+	for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 18:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774981764; cv=none; b=Lfevhil0njSI3CppK7x5Povg+AnjG3s17TfH1PHoveBOencMxQj9oVVP/rTp08GjKt3qN8zkjv4QpswvumplbT1y++ca8MJUMZsCJ9/PSl0riBH6cunfewr/JVG6xkLZUoDiuMcxfteDqCaHeYV5shSfUwPgnjcYAHq2Ax+YTyE=
+	t=1774982525; cv=none; b=b7FrqKHCk0f4v9G0Z1eInBsRz5X+Aabe60LCzRmieLz/WH7zVBWM2FkgvV1BhTqI3+D6v0X3etkN86MQa95f+vPfXhmS48yANjVHvQcJjAmoSHaq1Os1m9TEP+S5PaG3AsLvhPABj+XYgeOYdBOo70xHH8cBDgQbDV0RVTghxC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774981764; c=relaxed/simple;
-	bh=F+p+n3x+VzyufNJY9nXy/ifCuLJFzInK3nA+2woKvxI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Ee40sRn9y1iNh96eI8ipbHqiJOeDR/sRb/K0n9GxFBYnJaBDpseF+jWDMteFUPNEwdKyLX0OSM38FN2FYf0wqmcIRN5/pMifhtyDhVnEk4Co1HtcWouZT8TESD5JmB+LGhglsqotUfOxKelEJeT0+aN7D8VLmzB9HHFLElW1c2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=psWL4NZu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774982525; c=relaxed/simple;
+	bh=+FJ5FLJcEXm4rAPFPTJEhGYEkMnrX7SvZZ5VX9XiGfY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KP2i8fkSIQXbEaTqTIzOw+VD7EVhX47R8ZwTAUezHskXv/bz8U7WpxxX1vDrJ9gxfQkehFONXS82YVIndMZi9cWUCPPBr9RS/BmOnii0uSPNiu1tEizBllB9sImkfAOyYBOFSCI0HppXgTvgG+znTEyUOS1kmBQnTsrWNTKF9Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k7QIKybk; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="psWL4NZu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF9FC19423;
-	Tue, 31 Mar 2026 18:29:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774981763;
-	bh=F+p+n3x+VzyufNJY9nXy/ifCuLJFzInK3nA+2woKvxI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=psWL4NZu9ag0FPb5FMERi89uk3vAYSdwJ6Jr11ixC6/8u6RxEisHJvG4oMZ0ss1wa
-	 h0dqxH5s2StJz2k2ac1CKvcdQ53N1oEowBsSLP/n5D8dDYwwFkfqAo6gZliPYRZnJi
-	 fs/N0xEVjUD6NdlZrzBZLQz+El5FY7Bxd/dn0oVM=
-Date: Tue, 31 Mar 2026 11:29:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, willy@infradead.org,
- david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org,
- mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
- npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
- borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v6 2/6] mm: use vma_start_write_killable() in mm
- syscalls
-Message-Id: <20260331112921.854d4f6cc793dba0972ee9f1@linux-foundation.org>
-In-Reply-To: <CAJuCfpE5w8r_6Ss=5ZPrEb1RQOTG6HyY8Pivac=iiyqFRZvD4g@mail.gmail.com>
-References: <20260327205457.604224-1-surenb@google.com>
-	<20260327205457.604224-3-surenb@google.com>
-	<5d90d998-9b8d-435c-b684-260600311797@lucifer.local>
-	<CAJuCfpE5w8r_6Ss=5ZPrEb1RQOTG6HyY8Pivac=iiyqFRZvD4g@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k7QIKybk"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cd9fa609aso762363b3a.3
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 11:42:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774982522; x=1775587322; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tz/A+PqaaRYnfto3SVdrefA60vgOfGvRg58Zg5Q2MyA=;
+        b=k7QIKybkQzYY3lZtVDwe6pBeKr+m0doM0cawB+TrSkWzUPb7SIwz4VvZ78CsjHv53r
+         d/SFOE3MmrYWZgKWaHdq7YM1+JhHxeqkJH37biChRUP/PhbMniNElliVvunovvn8HNDV
+         Z5zdC5Qqi+MD1ey7iEN3gcVzjMmC2dxVtM/06IiNln+TVzVV3cdv8Ml6NMc6Zcqc3JOO
+         gmXfCZgvpiCGPKfpiDiM/5cCDxyPXW2azwWJ84ppQpfcrXHWtVHZ1XgN4ykMie6E1Tq5
+         nA8JvTXSFqj6dT1q9OlfzxP3dWGwAEXNwo5uUv+oExFgm80IQoR7tsMOxnG/YZMef28P
+         1YyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774982522; x=1775587322;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tz/A+PqaaRYnfto3SVdrefA60vgOfGvRg58Zg5Q2MyA=;
+        b=DuSMIfEuVviM4tqSPNH0jfk50VipfYxk/JDw3el23XE5S3MIL53d7RC9l8LAoi2rov
+         ryBFhF/YZPclxEvQ9CuSvOjxvoSB9Gp2p/tfLWhKZLxMOz7L4XD7F6Kd9ZqFFoMn3Hbp
+         M9psClGcson7BVCuQTVW/KYRZXYRnuYLhlKE+amcq/5/7E7C/buD/vkV3XMwdiu+bOhK
+         L3AEEyF9IcG2k3U1KnIWIuEj40z3d5J5NQIpwkfBlqFfh8nnazLIA/8divZb0SLrcLuG
+         PVAQgO7S7V6jKzbtTfusV1wizHTnJ70AaloowokXA+pweTvTR5ZlCdvTSI08+fvGduPx
+         nRnA==
+X-Forwarded-Encrypted: i=1; AJvYcCVycSLJzCOVsLEsEO+d4TFN3W3+kECy9ovpWXoYRf0UdfAeKcxzqUzszA8o4hlzmba0Z64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCrOqdI9DUBi6Bi6tqGXzBYUh61pbeXZR9q3puPQz4XMMx0Vht
+	FaNjWy6PS7QfLLFL+h8tSAuLyBx1rL0tXQ9LRTuM5B+5oTYmsxr6KWpR1NviAIUX2ttAIXYPmq7
+	aQPq+FA==
+X-Received: from pfbct24.prod.google.com ([2002:a05:6a00:f98:b0:82c:6e7c:ac61])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94d5:b0:82c:9c5a:4c32
+ with SMTP id d2e1a72fcca58-82ce8943aabmr599684b3a.6.1774982521969; Tue, 31
+ Mar 2026 11:42:01 -0700 (PDT)
+Date: Tue, 31 Mar 2026 11:42:00 -0700
+In-Reply-To: <CAG_fn=V4ZD8x40sXx2Ctd=LGzQEaeRMJF_yiA8Ekw2ZzuYcSMQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260310234829.2608037-1-seanjc@google.com> <20260310234829.2608037-11-seanjc@google.com>
+ <CAG_fn=V4ZD8x40sXx2Ctd=LGzQEaeRMJF_yiA8Ekw2ZzuYcSMQ@mail.gmail.com>
+Message-ID: <acwVeCYISAoBbREz@google.com>
+Subject: Re: [PATCH 10/21] KVM: SEV: Move standard VM-scoped helpers to detect
+ SEV+ guests to sev.c
+From: Sean Christopherson <seanjc@google.com>
+To: Alexander Potapenko <glider@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jethro Beekman <jethro@fortanix.com>, "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 31 Mar 2026 08:01:11 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
-
-> > Instead? That is, assuming we really need to care about this at all.
-> >
-> > But I think I don't like this change at all?
+On Tue, Mar 17, 2026, Alexander Potapenko wrote:
+> > -static __always_inline bool sev_guest(struct kvm *kvm)
+> > -{
+> > -       return ____sev_guest(kvm);
+> > -}
+> > -static __always_inline bool sev_es_guest(struct kvm *kvm)
+> > -{
+> > -       return ____sev_es_guest(kvm);
+> > -}
 > 
-> Yeah, this was the part I wasn't sure if it's worth adding. With your
-> vote confirming my scepticism I'll go ahead and remove the parts I
-> added to avoid extra vma_start_write_killable() call (3 instances in
-> all) and will post v7.
+> arch/x86/kvm/svm/avic.c is still using sev_es_guest(), isn't it?
 
-Thanks.  I'll remove v6 from mm.git and shall await Lorenzo's advice on
-v7.
+When applied against kvm/master, yes.  I posted this against v7.0-rc2, which
+didn't have commit 87d0f901a9bd ("KVM: SVM: Set/clear CR8 write interception when
+AVIC is (de)activated").
 
+If that's the only flaw, I'll fixup "KVM: SEV: Provide vCPU-scoped accessors for
+detecting SEV+ guests" when applying (instead of sending a v2).
