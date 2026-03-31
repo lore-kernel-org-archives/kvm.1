@@ -1,122 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF83F3793DF;
-	Tue, 31 Mar 2026 18:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A8637C90D;
+	Tue, 31 Mar 2026 18:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774981697; cv=none; b=qV51r9yvvS0YM2KJqhEvmMGlrLUfYOPS+ZMLp9X87JAmdBlKtwB8jqozxZOWshiypxASZrLOsxHqwmAIDvQ2cE1n70+jtu5XZjL96hYcEu6bZlakFMU/7CqRUlx3RNVrc7sZJa/03oMrxB625WJdlqyT55hL6QiNmlAi61W1MgE=
+	t=1774981764; cv=none; b=Lfevhil0njSI3CppK7x5Povg+AnjG3s17TfH1PHoveBOencMxQj9oVVP/rTp08GjKt3qN8zkjv4QpswvumplbT1y++ca8MJUMZsCJ9/PSl0riBH6cunfewr/JVG6xkLZUoDiuMcxfteDqCaHeYV5shSfUwPgnjcYAHq2Ax+YTyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774981697; c=relaxed/simple;
-	bh=8AGddt+oTchyVvnjvvBnpho8FpvEFgRCXBZxjjKcVsQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P+TU1g01EE4gq5kSeCsuY9iXASMpHhLdp3JdcQ36GmQgrHJnDvIaZD+EfEko56RWelKI4FgsIWQaDBLwQRBIuKCCcpgXUzbcU3VRGbl6KLIbJ1WHWgFflIv0kLoDAJ8XTs/AyzBZNwoMAlUAhY+FmmjlM/LQ1SM5hTUd7jNgBlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PejUT+GM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774981764; c=relaxed/simple;
+	bh=F+p+n3x+VzyufNJY9nXy/ifCuLJFzInK3nA+2woKvxI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Ee40sRn9y1iNh96eI8ipbHqiJOeDR/sRb/K0n9GxFBYnJaBDpseF+jWDMteFUPNEwdKyLX0OSM38FN2FYf0wqmcIRN5/pMifhtyDhVnEk4Co1HtcWouZT8TESD5JmB+LGhglsqotUfOxKelEJeT0+aN7D8VLmzB9HHFLElW1c2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=psWL4NZu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PejUT+GM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415DAC19424;
-	Tue, 31 Mar 2026 18:28:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774981697;
-	bh=8AGddt+oTchyVvnjvvBnpho8FpvEFgRCXBZxjjKcVsQ=;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="psWL4NZu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF9FC19423;
+	Tue, 31 Mar 2026 18:29:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774981763;
+	bh=F+p+n3x+VzyufNJY9nXy/ifCuLJFzInK3nA+2woKvxI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PejUT+GMZYic55pRDV/PK2C935pBAL0wAC9Mkhl/2BVkCurENcUwKeuJ96EUeh3sI
-	 v4XuHD35b7dkynUAdvCkvBuQIGyKwXolnErCCGztFaNiqUjF9tZB+6cU73g30At9Ij
-	 pKP9Wti23Eu1YAtWBUTWKknA3ec4y3wtYfoo3k81Fmg+wNZ4RVFbxz8KfXr6XauYz4
-	 BK3K0xVlGAipsK99e9sd6PkXwbH0X1c65IBuR7CTUKQclRcI2t24eGz08CaU9lGlx2
-	 DrQBEgVKPNXSLOYFyAx692vwWN/JFWZg5lDPGcrtdo5ceZq+Rg83yy7O57zjRZy9NN
-	 b2ROrOHV3aGMg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w7dp0-00000007aEG-3i5q;
-	Tue, 31 Mar 2026 18:28:14 +0000
-Date: Tue, 31 Mar 2026 19:28:14 +0100
-Message-ID: <865x6b4zwh.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose
- <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <tabba@google.com>,
-	Will Deacon <will@kernel.org>,
-	Quentin Perret <qperret@google.com>
-Subject: Re: [PATCH v2 12/30] KVM: arm64: Hoist MTE validation check out of MMU lock path
-In-Reply-To: <8bd2b649-01b5-44f4-a034-c202e226e97c@arm.com>
-References: <20260327113618.4051534-1-maz@kernel.org>
-	<20260327113618.4051534-13-maz@kernel.org>
-	<8bd2b649-01b5-44f4-a034-c202e226e97c@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	b=psWL4NZu9ag0FPb5FMERi89uk3vAYSdwJ6Jr11ixC6/8u6RxEisHJvG4oMZ0ss1wa
+	 h0dqxH5s2StJz2k2ac1CKvcdQ53N1oEowBsSLP/n5D8dDYwwFkfqAo6gZliPYRZnJi
+	 fs/N0xEVjUD6NdlZrzBZLQz+El5FY7Bxd/dn0oVM=
+Date: Tue, 31 Mar 2026 11:29:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, willy@infradead.org,
+ david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org,
+ mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
+ npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+ borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v6 2/6] mm: use vma_start_write_killable() in mm
+ syscalls
+Message-Id: <20260331112921.854d4f6cc793dba0972ee9f1@linux-foundation.org>
+In-Reply-To: <CAJuCfpE5w8r_6Ss=5ZPrEb1RQOTG6HyY8Pivac=iiyqFRZvD4g@mail.gmail.com>
+References: <20260327205457.604224-1-surenb@google.com>
+	<20260327205457.604224-3-surenb@google.com>
+	<5d90d998-9b8d-435c-b684-260600311797@lucifer.local>
+	<CAJuCfpE5w8r_6Ss=5ZPrEb1RQOTG6HyY8Pivac=iiyqFRZvD4g@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: anshuman.khandual@arm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, tabba@google.com, will@kernel.org, qperret@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 7bit
 
-On Tue, 31 Mar 2026 07:57:48 +0100,
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Tue, 31 Mar 2026 08:01:11 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+
+> > Instead? That is, assuming we really need to care about this at all.
+> >
+> > But I think I don't like this change at all?
 > 
-> On 27/03/26 5:06 PM, Marc Zyngier wrote:
-> > From: Fuad Tabba <tabba@google.com>
-> > 
-> > Simplify the non-cacheable attributes assignment by using a ternary
-> > operator. Additionally, hoist the MTE validation check (mte_allowed) out
-> > of kvm_s2_fault_map() and into kvm_s2_fault_compute_prot(). This allows
-> > us to fail faster and avoid acquiring the KVM MMU lock unnecessarily
-> > when the VMM introduces a disallowed VMA for an MTE-enabled guest.
-> > 
-> > Signed-off-by: Fuad Tabba <tabba@google.com>
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  arch/arm64/kvm/mmu.c | 28 ++++++++++++----------------
-> >  1 file changed, 12 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > index 0c71e3a9af8b0..ee2a548999b1b 100644
-> > --- a/arch/arm64/kvm/mmu.c
-> > +++ b/arch/arm64/kvm/mmu.c
-> > @@ -1870,18 +1870,21 @@ static int kvm_s2_fault_compute_prot(struct kvm_s2_fault *fault)
-> >  	if (fault->exec_fault)
-> >  		fault->prot |= KVM_PGTABLE_PROT_X;
-> >  
-> > -	if (fault->s2_force_noncacheable) {
-> > -		if (fault->vm_flags & VM_ALLOW_ANY_UNCACHED)
-> > -			fault->prot |= KVM_PGTABLE_PROT_NORMAL_NC;
-> > -		else
-> > -			fault->prot |= KVM_PGTABLE_PROT_DEVICE;
-> > -	} else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC)) {
-> > +	if (fault->s2_force_noncacheable)
-> > +		fault->prot |= (fault->vm_flags & VM_ALLOW_ANY_UNCACHED) ?
-> > +			       KVM_PGTABLE_PROT_NORMAL_NC : KVM_PGTABLE_PROT_DEVICE;
-> > +	else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC))
-> >  		fault->prot |= KVM_PGTABLE_PROT_X;
-> > -	}
-> 
-> Is not the existing code block bit more cleaner though ?
+> Yeah, this was the part I wasn't sure if it's worth adding. With your
+> vote confirming my scepticism I'll go ahead and remove the parts I
+> added to avoid extra vma_start_write_killable() call (3 instances in
+> all) and will post v7.
 
-What is wrong with this? Are you stating a matter of personal taste ?
+Thanks.  I'll remove v6 from mm.git and shall await Lorenzo's advice on
+v7.
 
-Ternary operators are great at making things more readable by reducing
-the amount of nesting, and I'm all in favour of anything that makes
-this $%^&*( code easier to parse.
-
-Or are you pointing out a technical issue?
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
