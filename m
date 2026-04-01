@@ -1,247 +1,154 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F72EBB8D
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775059562; cv=pass; b=Gc0aPUPyB3N+NpzxYhyy+UUvdmoI9Mu4ALbo7JMg8MJZEHBUmwQq5Y0Bqb7Z0ZUItvrkirW53PQIvUcfdfUdzaYdlXub6PVGxOxNUDiJAe6h0eGi4mU6H3uPHL83FXshDgFnt5jXHqI4JG7P/N808HdHvTRcymhS6RvAmrWj8/U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775059562; c=relaxed/simple;
-	bh=vDEr12M9PgzwCflKiVXqB+gPHmI7O1NfvjvgGy/ZKC4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nGXC4+WW3MnXTi5GpcGH+sf1oNZAPUHy8xatIS/3LTWBuW/tn5CwnY08nH5+PCB7IkRNm/+3wkF/Bjr39nAZFAWhU6ihL2DXp02/X04c+gbwRqePKvUO0DsGu7OEOWxTs2bY50eXKuW0M1vjIAp7lXc6lsS1Apuxypa56s1l0XI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=2UmXWEZJ; arc=pass smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0773B3C5DC3;
+	Wed,  1 Apr 2026 16:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775059853; cv=none; b=d14BXQf2Mu3a/IpSdf2pzAto9Y3JMZLO1R6f3tqeC9eIK53oSnb1nKHelHwrvP8JbGoiA2tkIa/RsX4HloH4DSiUNCZ8uwog5B0ibxB6vJ0FZAKsLI75sqiB182UR6hxd+EqcOZNoa7A2PvuyaF/k43CWfuIBGdBesEOrZTzwd8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775059853; c=relaxed/simple;
+	bh=6jLc5HKAxgT52lf7fuUEFVPGFditJTLBCspmftAOZoY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AC6G2cOvsUU9tbkMexal0jRC0Bf/fpvsLanYFGW6mdIar5ZKBhEjnhigt+5Kxd0Hc8Q5HgzqTsy1sA+arZlBhSJoCCgv28HE+fjbCo4eny9Tg9jVPdRoLLtVTFe788bgSrbPNHQ7rrIFrnPrlCsNkk59XKK2tSRXREZkBYFS578=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dPYCZf8x; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="2UmXWEZJ"
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-679b072ed3aso3822957eaf.1
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 09:06:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775059560; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lZkh3gxQCadI3HzXdVr97DAzf8C3ETXjnVeZmjugKhqCnlbISd8RsOkDhClL62gBvm
-         OB97lKplMW6Pis42l90a9teQBgSTB2UuUr52soh8wbP1A5waRCxoZOBMyOHS75LKyxTB
-         fKE0aBUg1nt8RyN5BOrdaCLD4rh9/DzlC8gttlcn4daqLyP9umeMgBJzG8hX04L+tXyq
-         BrzbNlGgqw6lFSA8bmGsHrj8UfYiuKRKpApegBj+j/i9hBA1hNRAXu+Kv9PwMMkamFrz
-         c6rpx7MxnSO4BCuSHRCPIfrPVcPHE/ZCxuXLnpL3yS5Sd0hcVROt5wHxKTKXvzkpksfm
-         QgpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2K4NyhHCMd8zoqLYq9nB5V2Ysiwf1MV0VYCls+gbenU=;
-        fh=oF7Sm0Ec2PKyD0teOVuJmNK9bJLDvtkDTiVr5f5vCoU=;
-        b=dZVzyvkhNdzNEk+JfRqbFn7IgB9Vlz+OJ5zN0+6Yhyv700TP3koR9X1DV6/Ud2LZBB
-         i+gGUMAfUpIM1ckmXV1veycwZgyEKaaj3L/Qa3cluuyoLESYELPUalVshfyvgKfP5aGu
-         u7HJeS2NRjPIqQ3hBO+IqL3ici8RpAm9EZM16zzqzZaamo2g/LafCE7WLhhMiI4PFMNm
-         zxx4gDFZAeXlatQSDADEdLVc9IF77NtyJxNbTNZg9BIhbFY8MS0c573m8d6Uc/8z9IL7
-         7t73labbPPvPnB7+TRW9GjjJDBDIbkdArn4BsXsNe4/aIqZOwotCtueMAS12rhtFlqZY
-         F4Lg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1775059560; x=1775664360; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2K4NyhHCMd8zoqLYq9nB5V2Ysiwf1MV0VYCls+gbenU=;
-        b=2UmXWEZJQAieOb2YCEOHpZqRXUf6cDUmAzxN7YYZuGyUdA9vTuHIp9Kmpshrg4ZkwV
-         gj6R2B3RKB40GQl6WYgeYts9OKbvcQmXeuH/NnV0uhgeM1SXheZ6Bl4yvARiazUjG8cg
-         z0guXopDReZ6f+FSaCSdDCcpAxHqLgjaGgiaZXDJcr0pZw4TyXDimRn5mzInsBTT+m9U
-         10+nEloLjFxLQYgQYt0dWmd8BX6VazmvW1t/HM7o6goqqkNqvVzXDBj9r10RnL+en1eS
-         e3hnNkKg8CJF7XB4I/rkA2Js2aSGvE8/uy8JM2tY4aUaNrzb8fZmDHEWbZmhCcOpvjIp
-         z/YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775059560; x=1775664360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2K4NyhHCMd8zoqLYq9nB5V2Ysiwf1MV0VYCls+gbenU=;
-        b=T624FiR8ysfQdbJNR1rVJIVLMDH+IY+P8Iz/u7eeMDz2arZqFglJqXkGsbkwxGogEO
-         TKxiNt720XxmN5jrnvKe8efWIaZipAh33Ut9TXqil/g0q/BGRw36smd6XZ/gokS93F/u
-         yq/5YKK9HWK5uP9Gj15Yy9HX+GDpnt2yyKkQ1UW3qqMIMiQE4OQG1RyHKfHM2soBsC2P
-         fKw6MpgDU9qvyypxbrGGZSrfJeoYOUMz9a8CVxoExn1A+J2O78We2t3t/GBvBdM6OzS/
-         Fs9QsGUI8MutCfHYLxY/NepLB/Jup01hYO9YqOIAh9/VRzNUXAu7hHsEJrQq/X4Vu8Lm
-         drAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWw51v8LP4n3kkaH1iNlbARAUhhY3Q9sIhokx4gJorDP9X608swfZfFVhBg4QcGxFdKHtM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBLgBpQiE3zUSyfsYcXfqTt++G5y4PXJZSrVxx64Rmb9KqXKxJ
-	nBJ0SJTienXF9vmVJMOH03El4b/62RniAoXVg3el/NALZ3t5VcWMNH5oUQGlmagVGc8VAoEYDt8
-	HlMqoPHMmNL+Tf5mPRkLhC/ChcDjjWgTYJFysq2csDw==
-X-Gm-Gg: ATEYQzxAkhKwRUPJk1cf+ZK5lEBAjSFkGIAh5N3F5BXhjZTniIqmacXxRYQeTcm+CUI
-	xUhEMj3b1NyzWnYgGZqI87x9ruUpKnBI3I0Dx/7CxfeZXS9wp6KxmJn17ZGCQNHq1o3cP7/wMM4
-	fGrNMl9oLP6t16NGz7J5FYxVym4ru8wUUKgHK/hfhc/vfc0WqgRDfAFtTsHi62H/I1irn7jrdpY
-	T1cgJefZ6TjlIc7yI02PPTQh2zrM+wxitrWpCuD/XzdyejfEcOSx54OkGhoHflysUetIYeqLYUa
-	daCT6o9u9MldMHGut9bORJp4zdLkg2R4xtG1Qs/KnbgIsMv2mpXxGSLsERdGv0ze4bT5W0clcwN
-	eedjWuedhvEuz2FM7jBWoK5Z+kQ==
-X-Received: by 2002:a05:6820:20e:b0:67e:160c:36b2 with SMTP id
- 006d021491bc7-67fabc4777emr2159558eaf.28.1775059560252; Wed, 01 Apr 2026
- 09:06:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dPYCZf8x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775059851; x=1806595851;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6jLc5HKAxgT52lf7fuUEFVPGFditJTLBCspmftAOZoY=;
+  b=dPYCZf8x+f0zy1oaJMD4voq6EoF0pmucNPuB9grdrdMd0Qfv0reVrLwE
+   WTHehoFfYZX48VvZfenqUnucxJrVAYTBVtbyWM4tCcedHo8T0PBfvtAzh
+   9UGV965M9MqEm9TtfEiW/CjSXEFKTHhm0PEFDmSD2+mQoU7ZKdyObWb08
+   2ED6hpWlHPjyUIZZ9W37Um4Y+SFsOed9Ane37MXWhvCz9Y63OFAvTGHxA
+   m/i3Ayz5h0yX9DOJ/inLfxVsC9RX+FWhfC6STY0173BPuFbUFJ+EPWeoQ
+   5almwP5FnlID0FHxuWzIHgPcGveDmMO2XMhHODvnpdlMWV9exQyiRZRVo
+   g==;
+X-CSE-ConnectionGUID: ht88SO9gTz++L6TYaiNgyQ==
+X-CSE-MsgGUID: vrziLJk8R4mwH6OiZuHPqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75279968"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="75279968"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 09:10:50 -0700
+X-CSE-ConnectionGUID: KlfNQRJJTByqKi9yHJMoxA==
+X-CSE-MsgGUID: vKzv2u4eSBe0URP2nyUeXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="249926498"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 09:10:48 -0700
+Message-ID: <790d81e3-8e58-4219-94c7-835d1e41cac5@intel.com>
+Date: Wed, 1 Apr 2026 09:10:56 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330122601.22140-1-fangyu.yu@linux.alibaba.com> <20260330122601.22140-4-fangyu.yu@linux.alibaba.com>
-In-Reply-To: <20260330122601.22140-4-fangyu.yu@linux.alibaba.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 1 Apr 2026 21:35:48 +0530
-X-Gm-Features: AQROBzDM7bVlUhSWF6Q8E65n0DpGAN3y24N8aEA-TFGvi-8F5L0Cn7-ZT4MJS6I
-Message-ID: <CAAhSdy0ri8sWZn0CsCpfSgNqXw5gEesfKxcKqc56azVOrqz86w@mail.gmail.com>
-Subject: Re: [PATCH v6 3/4] RISC-V: KVM: Detect and expose supported HGATP
- G-stage modes
-To: fangyu.yu@linux.alibaba.com
-Cc: pbonzini@redhat.com, corbet@lwn.net, atish.patra@linux.dev, pjw@kernel.org, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	skhan@linuxfoundation.org, guoren@kernel.org, radim.krcmar@oss.qualcomm.com, 
-	andrew.jones@oss.qualcomm.com, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+ thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1774755884.git.ashish.kalra@amd.com>
+ <6345df31337125280f91ad8f37843aa865fd85fc.1774755884.git.ashish.kalra@amd.com>
+ <ab41b1d8-e464-4ad6-ac07-7318686db10e@intel.com>
+ <e2e38a91-ef8c-41d0-9373-0fdb6f246847@amd.com>
+ <a1a5fa97-b067-4145-a4dc-fbb04fe9c720@amd.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <a1a5fa97-b067-4145-a4dc-fbb04fe9c720@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 30, 2026 at 5:56=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote=
-:
->
-> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->
-> Extend kvm_riscv_gstage_mode_detect() to probe all HGATP.MODE values
-> supported by the host and record them in a bitmask. Keep tracking the
-> maximum supported G-stage page table level for existing internal users.
->
-> Also provide lightweight helpers to retrieve the supported-mode bitmask
-> and validate a requested HGATP.MODE against it.
->
-> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-> ---
->  arch/riscv/include/asm/kvm_gstage.h | 11 ++++++++
->  arch/riscv/kvm/gstage.c             | 43 +++++++++++++++--------------
->  2 files changed, 34 insertions(+), 20 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm=
-/kvm_gstage.h
-> index 70d9d483365e..bbf8f45c6563 100644
-> --- a/arch/riscv/include/asm/kvm_gstage.h
-> +++ b/arch/riscv/include/asm/kvm_gstage.h
-> @@ -31,6 +31,7 @@ struct kvm_gstage_mapping {
->  #endif
->
->  extern unsigned long kvm_riscv_gstage_max_pgd_levels;
-> +extern u32 kvm_riscv_gstage_supported_mode_mask;
->
->  #define kvm_riscv_gstage_pgd_xbits     2
->  #define kvm_riscv_gstage_pgd_size      (1UL << (HGATP_PAGE_SHIFT + kvm_r=
-iscv_gstage_pgd_xbits))
-> @@ -102,4 +103,14 @@ static inline void kvm_riscv_gstage_init(struct kvm_=
-gstage *gstage, struct kvm *
->         gstage->pgd_levels =3D kvm->arch.pgd_levels;
->  }
->
-> +static inline u32 kvm_riscv_get_hgatp_mode_mask(void)
-> +{
-> +       return kvm_riscv_gstage_supported_mode_mask;
-> +}
-> +
-> +static inline bool kvm_riscv_hgatp_mode_is_valid(unsigned long mode)
-> +{
-> +       return kvm_riscv_gstage_supported_mode_mask & BIT(mode);
-> +}
-> +
->  #endif
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index 7c4c34bc191b..459041255c14 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-> @@ -16,6 +16,8 @@ unsigned long kvm_riscv_gstage_max_pgd_levels __ro_afte=
-r_init =3D 3;
->  #else
->  unsigned long kvm_riscv_gstage_max_pgd_levels __ro_after_init =3D 2;
->  #endif
-> +/* Bitmask of supported HGATP.MODE encodings (BIT(HGATP_MODE_*)). */
-> +u32 kvm_riscv_gstage_supported_mode_mask __ro_after_init;
->
->  #define gstage_pte_leaf(__ptep)        \
->         (pte_val(*(__ptep)) & (_PAGE_READ | _PAGE_WRITE | _PAGE_EXEC))
-> @@ -315,42 +317,43 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *g=
-stage, gpa_t start, gpa_t end
->         }
->  }
->
-> +static bool __init kvm_riscv_hgatp_mode_supported(unsigned long mode)
-> +{
-> +       csr_write(CSR_HGATP, mode << HGATP_MODE_SHIFT);
-> +       return ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) =3D=3D mode);
-> +}
-> +
->  void __init kvm_riscv_gstage_mode_detect(void)
->  {
-> +       kvm_riscv_gstage_supported_mode_mask =3D 0;
-> +       kvm_riscv_gstage_max_pgd_levels =3D 0;
-> +
->  #ifdef CONFIG_64BIT
-> -       /* Try Sv57x4 G-stage mode */
-> -       csr_write(CSR_HGATP, HGATP_MODE_SV57X4 << HGATP_MODE_SHIFT);
-> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) =3D=3D HGATP_MODE_S=
-V57X4) {
-> -               kvm_riscv_gstage_max_pgd_levels =3D 5;
-> -               goto done;
-> +       /* Try Sv39x4 G-stage mode */
-> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV39X4)) {
-> +               kvm_riscv_gstage_supported_mode_mask |=3D BIT(HGATP_MODE_=
-SV39X4);
-> +               kvm_riscv_gstage_max_pgd_levels =3D 3;
->         }
->
->         /* Try Sv48x4 G-stage mode */
-> -       csr_write(CSR_HGATP, HGATP_MODE_SV48X4 << HGATP_MODE_SHIFT);
-> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) =3D=3D HGATP_MODE_S=
-V48X4) {
-> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV48X4)) {
-> +               kvm_riscv_gstage_supported_mode_mask |=3D BIT(HGATP_MODE_=
-SV48X4);
->                 kvm_riscv_gstage_max_pgd_levels =3D 4;
-> -               goto done;
+On 4/1/26 08:47, Kalra, Ashish wrote:
+> For programming the RMPOPT_BASE MSR performance is not really that
+> important as it is for issuing the RMPOPT instruction on only thread
+> per core, and as we are programming the RMPOPT_BASE MSRs on all CPUs/
+> threads to the same (starting) physical address to support all RAM
+> up-to 2TB for RMP optimizations, therefore, i don't think it is that
+> critical to implement wrmsrq_on_cpumask() and instead we can
+> continue to program the RMPOPT_BASE MSR on all CPUs (threads).
+I don't mean to be a grammar pedant. But, man, that's hard to parse when
+written as a single sentence.
 
-Keep the original approach until then NACK to this series.
+I'm also not quite sure what the resistance is to going and adding the
+precise function that is needed:
 
-Regards,
-Anup
+int wrmsrq_on_cpus(const struct cpumask *mask, u32 msr_no, u64 q)
+{
+        int err;
+        struct msr_info rv;
 
->         }
->
-> -       /* Try Sv39x4 G-stage mode */
-> -       csr_write(CSR_HGATP, HGATP_MODE_SV39X4 << HGATP_MODE_SHIFT);
-> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) =3D=3D HGATP_MODE_S=
-V39X4) {
-> -               kvm_riscv_gstage_max_pgd_levels =3D 3;
-> -               goto done;
-> +       /* Try Sv57x4 G-stage mode */
-> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV57X4)) {
-> +               kvm_riscv_gstage_supported_mode_mask |=3D BIT(HGATP_MODE_=
-SV57X4);
-> +               kvm_riscv_gstage_max_pgd_levels =3D 5;
->         }
->  #else /* CONFIG_32BIT */
->         /* Try Sv32x4 G-stage mode */
-> -       csr_write(CSR_HGATP, HGATP_MODE_SV32X4 << HGATP_MODE_SHIFT);
-> -       if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) =3D=3D HGATP_MODE_S=
-V32X4) {
-> +       if (kvm_riscv_hgatp_mode_supported(HGATP_MODE_SV32X4)) {
-> +               kvm_riscv_gstage_supported_mode_mask |=3D BIT(HGATP_MODE_=
-SV32X4);
->                 kvm_riscv_gstage_max_pgd_levels =3D 2;
-> -               goto done;
->         }
->  #endif
->
-> -       /* KVM depends on !HGATP_MODE_OFF */
-> -       kvm_riscv_gstage_max_pgd_levels =3D 0;
-> -
-> -done:
->         csr_write(CSR_HGATP, 0);
->         kvm_riscv_local_hfence_gvma_all();
->  }
-> --
-> 2.50.1
->
+        memset(&rv, 0, sizeof(rv));
+
+        rv.msr_no = msr_no;
+        rv.reg.q = q;
+
+        err = smp_call_function_many(mask, __wrmsr_on_cpu, &rv, 1);
+
+        return err;
+}
+EXPORT_SYMBOL(wrmsrq_on_cpus);
+
+It's just wrmsrq_on_cpu(), replace the 'cpu' with a cpumask and
+s/_single/_many/. I think. Unless I'm missing something.
