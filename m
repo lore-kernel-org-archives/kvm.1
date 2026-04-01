@@ -1,118 +1,110 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197851D7E41;
-	Wed,  1 Apr 2026 17:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17D73148A3
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 18:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775065924; cv=none; b=h8F2n5qiFIhxqn890emlGJ7E1ysiGPPOq5lBWCcnZ3SjH4RjeOU+GxdLj0Wx9EwdSfEDl+ZTqiYpO5Baq7BvgZ2pp+v4nHoMgGTiao57L+WWZJuX2AT2YFHxvqbdH9WlX7csLe2JWSDFXBaVm5TSM5sSrzei86hWDgEOl3gy52Y=
+	t=1775067127; cv=none; b=qdnK4EvTwnhgzKqnchDcntYXbkCn3VwxOh2m0i6UIUS68vfqLjFafMV7AbaePmJILBr8UaqkRcFQg/VjU5MtvDNKmsBIDf5xcst5f/wwd+Bcj58chEXqLwppbIxNTPxSzWh2QHRShggOVroorimAX4HJXAy0TzhKFfKgLiq8uvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775065924; c=relaxed/simple;
-	bh=Z7OtGW0OcP6COrQsj+sMjxEVnUFPSJFpJBVxO3Oqqak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d11xMG6d/kYBh8xLYbeAY0URJzCnad2AZXuy9HFks9A5GZRBSjBsSTCG8pAiAZtpLXJvFhq881J7t8jbEO6lMPVi2gOx3CjrLgKC2wDSoWhtTy6RPv6wWcjQPp8NHEL0EckAD05f7xEXndBG1XEhggoN8pms59yzuAIIVpruIeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Vb4w8y3T; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775067127; c=relaxed/simple;
+	bh=71II0EatvhljVaIL9l3M+R/q80RIz409yIhJNQPejPc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PYaVgEtbJOD+wwzVMOCOx5cEn7Y0TZnlal9lXRhCY8ob6qLlTo1vdCW8QQSjemxX5T5KZ8D6pntMfPO55XmQBNTs5UjtkGuFIyODXDcybmjijT3xzGfvsnHjZziG62zJyR4JphHpyvGPNBIin2Ooz6TlQYR8SKq1BZOi6YphsNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WShyAtRo; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Vb4w8y3T"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6318MDhq3435060;
-	Wed, 1 Apr 2026 17:51:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:sender:subject:to; s=pp1; bh=rjnKA/ygAYM8RRgVpD3jFK1
-	aW/rdBPc7dS+ZR7d8DGI=; b=Vb4w8y3TiYIRuKLBjHN4S1+Mt8GU0j8/yZ0l6Ng
-	4u71Shnv3WcRkMbGFY+QQL39Zqbop/nuX+Mr7Uj3fDgBaE96Ld2OStqAJcrhQbIa
-	SJybnxjarp10406J69rmmXxpw9x+SWD1h3W/aapcP5VttGEfYYGBT6TdAtrlvhyH
-	7NqiHlvNkSsHxZKo5YxZflb+aMbmuVazA+mlz+Iawz5TJesbXZkJxqIbc3JnSkvG
-	ovPmTwJ9JHXSQ/jKddPNpxprjHtKBzFkJ90HlbToTHkuZbyQ3BVH51+nbPY1SyMj
-	5DAsomHMOCyog73wy4RsQ14Zut62uN+TKpsXQr8mtcap4rQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d65dcgsht-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 17:51:57 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631GFgen008732;
-	Wed, 1 Apr 2026 17:51:56 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6v11pjtc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 17:51:56 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631Hprsk56623390
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Apr 2026 17:51:53 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E4E9320043;
-	Wed,  1 Apr 2026 17:51:52 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA10C20040;
-	Wed,  1 Apr 2026 17:51:52 +0000 (GMT)
-Received: from vela (unknown [9.111.87.118])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  1 Apr 2026 17:51:52 +0000 (GMT)
-Received: from brueckner by vela with local (Exim 4.99.1)
-	(envelope-from <brueckner@linux.ibm.com>)
-	id 1w7zjM-00000002T03-0phi;
-	Wed, 01 Apr 2026 19:51:52 +0200
-Date: Wed, 1 Apr 2026 19:51:52 +0200
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: Eric Farman <farman@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] KVM: s390: vsie: Accommodate ESA prefix pages
-Message-ID: <ac1bOMm2QsE1z1WM@linux.ibm.com>
-References: <20260401151221.2272408-1-farman@linux.ibm.com>
- <20260401151221.2272408-4-farman@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WShyAtRo"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cf0130d17so18058b3a.3
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 11:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775067126; x=1775671926; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AbEr00zbJN9l4OpkyONzYOWax76lpPtRnsktjJvjXs8=;
+        b=WShyAtRoXWKdTVtB7vtVjsHcc/EC/TRwZWEJM6LKNI+cZRA8k86gIUJrzW6eZKtReG
+         jgATZPHZALuP+bsFqp1ZYcLsYkycU9F2i6ZBh8G1bwCcW0DOCXlLik4nwT7CEQh6MQZC
+         liiyScJ0EPfSJaeup2FQglRZaRuG3VPgLfOgxZpxAcWRdqDuOOO3kz41juRbXcaSofQ6
+         iyGtaViuvRRKCGn0eQscLlD/wV84DlN43DsJDGdmYo4VWTT8yywXXQXptwKuu8GQwH7z
+         aGj7WIcRAgjoEez+je2/xyo5VTEi87Ivgv144I7m+ufRw3hSL3ReMqHrRB2lzbnfmuED
+         E1kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775067126; x=1775671926;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AbEr00zbJN9l4OpkyONzYOWax76lpPtRnsktjJvjXs8=;
+        b=k3qjPf+Cvfdac1RdFk6nX2ES64rgPPRs+H6cULo3te5xjbagOq4tEeGrXeYlOOg/EO
+         MGbEwtnSDZO7I0UzTtSFTMNRvB36OAnQFRlC0TyUu60jcMjN6COgQ7NDyjX2zWTasJO2
+         1vWkGsVxxY7Cuay/8737v0wbR39puSwwQdGxeahlD22/6DhekQFRRmaBQvBhYbUs20c7
+         tBM2vBCcKZKKXFaSPeQvZrasMAYD4nnGJjrcF+qSn0YNru1FgxwTZdXb7545U/H6RSdP
+         hhBDD9dLVX/ghxYODzQ5ji1LC29PaLg7AF/EA6q9LHTzqBxLs1HjKgTYtuuXDyiSADhE
+         0tUw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9nzUQBevM4MyKRUPCEpDbBwg8vqfkP2NGYqZX7K/kRD5o2rmom7baMxg/dXXXNh6wWFg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKpobs/ditQWXO46zc8i14aOjMTnp9jlr/ypQno6lscfINiE1V
+	8/WleOTJ2Zg5obK2j6nn0JA1uPLLYBnjM8ExMMRl+8YRtTNiuW5Jv0/Ec7kf4mjCE1sWtBza8yh
+	M/EfNDw==
+X-Received: from pfbhh9.prod.google.com ([2002:a05:6a00:8689:b0:829:f706:70e4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3988:b0:82c:24d3:29d7
+ with SMTP id d2e1a72fcca58-82ce88ead18mr5007330b3a.9.1775067125841; Wed, 01
+ Apr 2026 11:12:05 -0700 (PDT)
+Date: Wed, 1 Apr 2026 11:12:04 -0700
+In-Reply-To: <76F29857-47D8-470B-9F4D-DD98D8755EB0@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260401151221.2272408-4-farman@linux.ibm.com>
-Sender: Hendrik Brueckner <brueckner@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RsjI7SmK c=1 sm=1 tr=0 ts=69cd5b3d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=YQLdh9iJH_ubtHatsGwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: ove0_gdI9NS7iy6D2PHCM30a5yLOPIed
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDE2NyBTYWx0ZWRfX9/0DI17A/9s8
- S+7czFn/p9mRwLzwY0G4YFtn/++KrOZRO6L4Q+hiMI3J6ggplZATIli2LvJPzaOISYyldKbCmd1
- NsKWLBwRuqhJl9QveOhk2Jr6ylDMMvQDLxCufHs2Qb7Bt8tjSqvZoF8IlqaCXqZ3n9cgYq6mRt+
- HJTvUX3DNyO3QEG+b3InIRxb8IWOaAPyfygxoIhY0VVlgtKfdFhgkc4W3Z1uOK1iuEo7jFpdZbT
- EF9eu+l7r8H7Iz5AxD45bdEXnBFFiOftza20n9uSNEOJElb3qSq9hRcQ/+T0DU9ylNt0z5lP/nU
- mxjmmrxakDvvR5ACEvyTiNLalQSwhrlkSy0Zd3sXmAGQmHFfjAcrgqlXDZZsufzXUx/ISXsCGwW
- IsH5r0DIBhCkJQapLOmDB2dan0M+SYWgI3AiNfhCdmuckObYAoeo+D817GeTypl9KtZPwIxwwoY
- F0L7Q5OePJ2m9JR9FrA==
-X-Proofpoint-ORIG-GUID: ove0_gdI9NS7iy6D2PHCM30a5yLOPIed
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2604010167
+Mime-Version: 1.0
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
+ <acwe7kKyjfEQ0sIf@google.com> <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
+ <acxTBwaw6_xYSShf@google.com> <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
+ <76F29857-47D8-470B-9F4D-DD98D8755EB0@zytor.com>
+Message-ID: <ac1f9KntTv0SaktS@google.com>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+From: Sean Christopherson <seanjc@google.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Apr 01, 2026 at 05:12:20PM +0200, Eric Farman wrote:
-> The prefix page address occupies a different number
-> of bits for z/Architecture versus ESA mode. Adjust the
-> definition to cover both, and permit an ESA mode
-> address within the nested codepath.
+On Wed, Apr 01, 2026, H. Peter Anvin wrote:
+> On April 1, 2026 8:03:02 AM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
+> >On 3/31/26 16:04, Sean Christopherson wrote:
+> >> But unless the WBINVD is actually costly, why bother getting fancy?
+> >
+> >WBINVD might be the most expensive single instruction in the whole ISA.
+> >
+> >That said, I'd much rather have a potentially unnecessary WBINVD than
+> >miss one. The thing I'd be worried about would be something wonky like:
+> >
+> >	1. CPU offline does WBINVD
+> >	2. Some other TDX call gets made, dirties caches again
+> >	3. tdx_offline_cpu() skips WBINVD
+> >
+> >So, let's just do both for now: Do WBINVD in tdx_offline_cpu() and
+> >comment that it might be redundant with other things in the CPU offline
+> >procedure.
+> >
+> >This really needs to be solved with infrastructure and keeping data
+> >about the reasons for needing WBINVD, not relying on code ordering or
+> >fragile semantics.
 > 
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+> It is, *by far*, the most expensive *uninterruptible* instruction in the ISA.
+> REP string instructions can of course be arbitrarily long, but are
+> interruptible and so don't really count.
+> 
+> Some MSRs used during very early (pre-OS) initialization might be even slower
+> on some implementations, but that's not visible to Linux and no workload of
+> any kind is running.
 
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Sorry, "costly" wasn't the right word.  I know WBINVD super expensive, but unless
+someone cares deeply about the latency of offlining a CPU after its down TDX stuff,
+the "cost" is effectively zero.
