@@ -1,206 +1,154 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012027.outbound.protection.outlook.com [40.93.195.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D1A1C695
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 09:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775036162; cv=none; b=plKsjYPhy8BfhbUr/b9eFCW+wDHmnuAAs//IuZK/0QU9tfyUe4NYIdy11HwnAkYGCmPJtQsz99j07EphnmodFup1Gjhd/AnkWRf5TOzBfZbroq9h6H8EE65Ns3d9eZkTAQE7D8S2rYeTHkxBc3EI26ED16Cal8B7p8VKqyvQPEg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775036162; c=relaxed/simple;
-	bh=4V/FW6fK6X5i2m7UgvuVEcz+vvW5eTftn0cz50oh42M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G2vvz5Dwe9HKjCCoY+2qZzx7h/FYH6BfUuXvkgJVTMVtWC0zemtAHSexJbXFCRMKGCZC1RW8SBoZGdsSCgyNdyCFGzILQLI1JMiDOoJyyOThrVPNzDmj20Whlx341Hva/LqJMrd5BziTCmtb8Js0Z8IByLme9xBxZ3QittxvBjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TXW42sFa; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4016227E05F;
+	Wed,  1 Apr 2026 09:41:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775036488; cv=fail; b=mUXxJwSW6vdhdCGUFl9KsGHXlIPif8Q5JWGD2UINFiV4U/jRadjdCvv/DFp1OWqtiPa4Fzx0uKKSJUCoboeiZV52n7u22b4l9nqXV2Ywt86kusl9I9s11GEH/O3El7GG4hbTuupf1pEzgD31gvwyZeF7d3hYtFb/7q2LdkDwKT0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775036488; c=relaxed/simple;
+	bh=gynynm3yjGtKtEk+ivV7oEw8CmvF87WKKaLUctvadYQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=RaKzQJ23w/8NOkMYyk7rbZlR69B7yd2Q/9ALodWyRX2x1SRA3vPyKkTcRgPmftqYld/jhRF8hR75v+ggrDM5TK8hCzK8bVB8zd2tsDBBBm6dPsq5lH7Ftof0mfWEcMec8feND9E8Xbb8fq+gMNqdGWzZG5y2kaNdyHz6+9gXCY4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PbBH/X6l; arc=fail smtp.client-ip=40.93.195.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TXW42sFa"
-Message-ID: <5194cf52-f8a8-4479-a95e-233104272839@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775036148;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FA42hI52ujEO2ZvjmTzgrIggej28Ooo69DQnS/txLtU=;
-	b=TXW42sFanZADGvoENLxUoMiviEyVXa/layMETVbX2HzYh8Zzks5ZKL0I1bfuc9Htc6+z49
-	/VRnEfpdy+FW/jSiFaU0w2cU2YzBsQRAv94FnzJZK8TLfiCKY2VLkSpxjcHVd/gPxbDGPr
-	+voT42sxaqnWmYyBHl2PgXLZBVxuyHI=
-Date: Wed, 1 Apr 2026 17:34:58 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PbBH/X6l"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yvAo/7jEkSYam7EZX/vtDrnLwjPEIUQI7Ejs4KEXxEf9rIReTtACDdeP2IsqmdSMdm5C0On7nvV++k5TO+K05XYhTUP3eGsSOFhe3a1BIgydmx8+swGcVSxkPN83Qk+tIzthlrdhaS7kZhqmxmPBzyB/qVkm6SSXdx3mBLYjU+mHxAm3UPPoh8JnO4eu2YQWyAmp/Bmt5QvHlSIyS0M6jXV2dQM0rggs355xGU0QHoBPSIXfrzPDmHdmcCIq+F1U25y+7W7YtCyQhq5pbcMxAKsZlrtKw/SIuhbIrPdKAR1Xppgq3bIwuQyl5eCDR4Agx4jZkADSrFXwkq/AEOXzeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bFGSHnI8hSuVeWM4haBlD+5o4RiQW95LJvrLGffnIXY=;
+ b=oegSeJak4sep108wdfTsNDTrlyyrNj44Up+jDaUMIIO9wVpO2DH0uD/lyti66Yt28hrYxZqKSHvzkngkgKYHi1HqhwMbaTgVANyrgfFxLwVDr4CaKET2yH+jfX2i3nSaRZW0zx5T2GvbLtwlJA30MVV6uv7Szj/3Ya9W5HthoAlXlxBRzuV9Sawv8ZVBwp3c4HEBahcVJCXSD5HkwufavXhWNl3c0zGgko/ktwDGLeSM2aOZBnZ53xR138gpsP6HSuAPMlSU3LnzVQ6JFzQC7F4X3FCyzTcEGpmlgMfPMsbkrd1kNQ/ssf5s+02ymFH2FhJfCwL6bWEjZBPFzq3c0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bFGSHnI8hSuVeWM4haBlD+5o4RiQW95LJvrLGffnIXY=;
+ b=PbBH/X6lQnuDWKIAcIw/zbd6KZkBkyNoUH2IHIahUSleBAdaRX6xFywlilRflikyoAMmsUDc+9KehjFTQyt6UKlbFg78RrzwmNQI1Cj5xpKzGzUhP6Psa4Jm9vvXFzfl6sa4wdlMl8IgxoUWU/yDsZ5QZ/RbcaZ4wC0Q+JiNaEI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9193.namprd12.prod.outlook.com (2603:10b6:610:195::14)
+ by MN2PR12MB4192.namprd12.prod.outlook.com (2603:10b6:208:1d5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
+ 2026 09:41:24 +0000
+Received: from CH3PR12MB9193.namprd12.prod.outlook.com
+ ([fe80::9e02:c4dd:e87b:5a74]) by CH3PR12MB9193.namprd12.prod.outlook.com
+ ([fe80::9e02:c4dd:e87b:5a74%3]) with mapi id 15.20.9769.016; Wed, 1 Apr 2026
+ 09:41:24 +0000
+Message-ID: <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+Date: Wed, 1 Apr 2026 15:11:17 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
+ trigger path
+To: Prasanna Kumar T S M <ptsm@linux.microsoft.com>, nikhil.agarwal@amd.com,
+ alex@shazbot.org, pieter.jansen-van-vuuren@amd.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+Content-Language: en-US
+From: "Gupta, Nipun" <nipun.gupta@amd.com>
+In-Reply-To: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0081.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::8) To CH3PR12MB9193.namprd12.prod.outlook.com
+ (2603:10b6:610:195::14)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu
- out of resampler_lock
-To: Sonam Sanju <sonam.sanju@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vineeth Pillai <vineeth@bitbyteword.org>, Sonam Sanju
- <sonam.sanju@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vineeth Pillai <vineeth@bitbyteword.org>
-Cc: Dmitry Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260323053353.805336-1-sonam.sanju@intel.com>
- <20260323064248.1660757-1-sonam.sanju@intel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <20260323064248.1660757-1-sonam.sanju@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9193:EE_|MN2PR12MB4192:EE_
+X-MS-Office365-Filtering-Correlation-Id: 217480df-3192-452c-5958-08de8fd2d6ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	FzS0zlk339iwW0eemu6pCGiqZxYrBNcYRENFb2QonqwcnSFerOn7wN6LqmpeUhlw9DkrMpZUtTU5QpTwmcwZikhc+6mqlI5fqbf2hQWxDHbVX8s8zqxtG0qz9ucwzylz3zPNGD/0jLZku6q50IjL+4PkSbtgfqkd4Lb5sdqHt/AOSPoV5kmKmcaQolwt27AoS+SM5Syf+wf1O/JBg3PGriJndyLzdwe6Ed9W/97RGjXYKdpBS1jQi94vQbbBFpkEq9oOTa//D36NOYIoq2TU9tKfJX83Kii0ipzYo8ViY+JprvT6mlnCnDcRnjiaaInDGfD44yECRGXHOopcJ91CAVLOnox5XrN/8UPVz0TOg9iP9rpKn/Z5FH9DY6IIdK1/FZqEVfH1VUHjWaqtsuvjdmwzjHYUfMxoyzLC/moUMH3N+49GLxZBiSbm8e++HRqJg9isZxU9MXZlUzQbnn7c22wuHNqT3X0UcK+is/bPHbKzF40dfwrhrR9yjxPADsxTPkrGKggJwQuamTNZKmcoeJjtPOc2HrgjvpDlMCnYxigAB8bgMhB08QLfYRoDy3k3QoYz51SdBVUPh2dCy+iOcIHgRu+87Bt5u8fZvw9u3u209sK/hM0ob1L+evOMt32iYMyTImulK15DJA1B/yp/O1jNG0s4hSrrYjba3sEcmLhhBkXkIprUEK7eTF/d6luenN/Ye0FZL45ERDGoQ/gobA195GGipd4aTTrYApzvJQ0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9193.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dWpIeDlFUGpyRkdsd3VwcW9nUTdkVVBITW9Ub1pQeFJyU0pOUjFqOVhVb0lu?=
+ =?utf-8?B?VzBVN1NFUUNCSnN6RXVZN0tPZUZyMkdhTU9KR0dGWUk2d3lDK0xUWlZRTkYr?=
+ =?utf-8?B?b0VwZEk3cnVNbWh1cExMM2F3b3ZCdzZWQ3dyZExMSEs4cUU3WThGMWxuN09T?=
+ =?utf-8?B?cHVKUFFtTGl4QnVmNkFKNkViYnBRdE1NRnF1aWVzay8zOFYxMnFGbTRBMitp?=
+ =?utf-8?B?VFJYQmZvL1NuMHNaRis1Ym5pd283TS96SWlrenhqVlpTWTI4cDM4RDlDMC9R?=
+ =?utf-8?B?b051SzFxZDN5Z0l3WTJpaWpaUFo0Q0J4Y0FhcEJRQ3krZk1UWEtBN0NxYVNh?=
+ =?utf-8?B?dkdPU1RoaDFpREkzSzhSdjRvSVVRL1VSSnk5N3hMUko5SldueGZFQnB3a3ZV?=
+ =?utf-8?B?UFpTbFpqSGVhVDluSkJLWW1PZHQxUXdUL0xCdlVaNDJaOVFzMmN2ZDJpRVBI?=
+ =?utf-8?B?N05IdEdtRXBjZTBUVFYyakRlZm14WUg2RCtPNUo5bm1OQmFaRE9sR3NLQ1J6?=
+ =?utf-8?B?Q1NqdGVTUXdCeTBEZ21iZ0grR3ZEdktzZGdmRGxPRkloYVFxcHRiY3hvMDVV?=
+ =?utf-8?B?OFU2SEg4V3pXZ0dxalNlQVpMQ1dpdXRoZHFvQVNqTkRxU09KWFR2eG4wOXph?=
+ =?utf-8?B?alJCZzVqT3FSUjRQemJXdkJkYnFKLzVTaG1CbXVjQmFJSFFaUGFZcFhvNklE?=
+ =?utf-8?B?TEhJUE9PMDNWbVVIand0bUQxMnN5MFpVQW93MmMva21DYUZTWmQrSVpQZ3Rt?=
+ =?utf-8?B?UktaaWIwbmNLRjVXUnIrZXR2SUNZK2hESjBRRDF2QzBZcEhFV0p0SUhQUjN3?=
+ =?utf-8?B?YVNUbFEvNXN5U0FIL200amp0WktrbjlBa0hnNjh0anEyZGE5UmRUSW96YVc0?=
+ =?utf-8?B?ODltaVhrcTB1T3ozemp1WjF5cXF0KzM3VU94eFFvNUVrNHF1bUxRUW9aRmFJ?=
+ =?utf-8?B?N2J1Y2p5eWRWRjdudElWS0hTTU1rLzdwTmNjRDc4ZHhZdWhXbWNudXFKaUw1?=
+ =?utf-8?B?MTFCR1NXVXZCSURwTEszMTh5SDBVV3RKcXJlWGdIcm83Z3VzV0hqZWR3ejlW?=
+ =?utf-8?B?SG1hejNMQzBudHdXSGtpTzBxdnR2andDR0VMbGQ5RXhKZDdkVzB5cjJEeWZM?=
+ =?utf-8?B?Ny9xT2JlNEp0S25wbTdxMjJMSnBKVnJQcXJQbHpTUWdoWFFTaWsxWHJ2bGdH?=
+ =?utf-8?B?OURqQXVTeEZaRm0zcWNxK2p6dzA5QTA5cEpBRTNvcTNybk54bHZGTTlQU3Bx?=
+ =?utf-8?B?L2M3Nmt2NHQwNVg1cU4vZlNDT0RtczFzOWd0emF6MENpOWRuS01Hd2dvM24r?=
+ =?utf-8?B?QnRKUFg0YVRlNGZvVzNKOHFNK2ZmOTQ2NENydE02cythRmN1RnYvSlBPNjJt?=
+ =?utf-8?B?b01BTXFJV3pKNWx3cE4rTzZlK01saEJOZGxsei85RzBsZUgzenlPTmFTaVls?=
+ =?utf-8?B?d084SmR6dkpwbDhoQ2RkU1JkNDcxaFAzK3RqOCt4TkNuRlVJTDQ1RnQ3MDZi?=
+ =?utf-8?B?ZzR2YVhBcTBtakZ2eVoxcjBWbXlrM3pvSHhrdFdJSjErcWVYNVFkQW02Z0xy?=
+ =?utf-8?B?VnZrT3NtK09uVEwvZXBxQTFEK0hrZG96dTltN3g0anZMaEtUenJoRXVzLzdP?=
+ =?utf-8?B?NTh6Y0VJU3QyZTFXUGVadExpcFpiTTBIRjdkWDZVOEYzU0kwVUZ2aHJqVkZJ?=
+ =?utf-8?B?ZHNDVWZSRVdBUE1GSld1UzBTOFBjMjNDeEM5bWNGVDk4TFhkSkFNNDBCS1hY?=
+ =?utf-8?B?VUlEd3hzNEpNY1d0eFJzYWVwSXRic1VwNy9EaUhHNDdCRDdyRE9obmJCVzVH?=
+ =?utf-8?B?eHg4bDRESjhTSmk0MHhzY0cveCtFTGh6R0Z0NkRaeXhwblg5RUtqTWxNbkhC?=
+ =?utf-8?B?TDdBL25VOFdvTmNnMWsrY1ZubXJQQk45SVBsb1M1cWl3WVR3Wk1OVDdOU3hX?=
+ =?utf-8?B?T2JOOXJ1cTF5OHROSk5Bb1V4bFhBdzJnWjd6Q1haa3o0Wi9HcVFpOU1kckZJ?=
+ =?utf-8?B?clhPOVlGVVdBV0J0MDdFa1pLUlhFNHpiUXlIZ0lZa1BEN0FSTWR4OENtakk4?=
+ =?utf-8?B?UlAzUVBSK0RVbXJOV0tObWhRTHlLVW9MQ1k0VXFSTzJYcFBoeDhVQjg1aTVs?=
+ =?utf-8?B?ZTdzRVdJa25TdHBjRGZXbXVmWUVReUIrdHk1T0gyV3M1RTZOb1duSkdMWjBH?=
+ =?utf-8?B?Z0lMckR2eVpWYVV6WjVPcU1BRjk0VGFnWTAvcHh2SW1TZVUybURPU1NpVHM5?=
+ =?utf-8?B?QUxsaGREVCtETHpXYkx4ekRJVDFKeFlhQ2ptSGdiQlVmMWlOV2ZRdStLSGlq?=
+ =?utf-8?Q?UuhoYgUirf0MOgxMuq?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 217480df-3192-452c-5958-08de8fd2d6ad
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9193.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 09:41:24.5208
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 55GSg0rrwqOYC7E2UL0AqrFWwjfhHJ8BKBdLqnUbKH5k5iI1rzZeAQ03gtC4YH7D
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4192
 
-On 3/23/26 14:42, Sonam Sanju wrote:
-> irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
-> synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
-> This can deadlock when multiple irqfd workers run concurrently on the
-> kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
-> created and destroyed:
->
->   CPU A (mutex holder)               CPU B/C/D (mutex waiters)
->   irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
->    irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
->     mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
->     list_del_rcu(...)                     ...blocked...
->     synchronize_srcu_expedited()      // Waiters block workqueue,
->       // waits for SRCU grace            preventing SRCU grace
->       // period which requires            period from completing
->       // workqueue progress          --- DEADLOCK ---
->
-> In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
-> the else branch is called directly within the mutex.  In the if-last
-> branch, kvm_unregister_irq_ack_notifier() also calls
-> synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
-> synchronize_srcu_expedited() is called after list_add_rcu() but
-> before mutex_unlock().  All paths can block indefinitely because:
->
->   1. synchronize_srcu_expedited() waits for an SRCU grace period
->   2. SRCU grace period completion needs workqueue workers to run
->   3. The blocked mutex waiters occupy workqueue slots preventing progress
->   4. The mutex holder never releases the lock -> deadlock
->
-> Fix both paths by releasing the mutex before calling
-> synchronize_srcu_expedited().
->
-> In irqfd_resampler_shutdown(), use a bool last flag to track whether
-> this is the final irqfd for the resampler, then release the mutex
-> before the SRCU synchronization.  This is safe because list_del_rcu()
-> already removed the entries under the mutex, and
-> kvm_unregister_irq_ack_notifier() uses its own locking (kvm->irq_lock).
->
-> In kvm_irqfd_assign(), simply move synchronize_srcu_expedited() after
-> mutex_unlock().  The SRCU grace period still completes before the irqfd
-> goes live (the subsequent srcu_read_lock() ensures ordering).
->
-> Signed-off-by: Sonam Sanju <sonam.sanju@intel.com>
-> ---
-> v2:
->  - Fix the same deadlock in kvm_irqfd_assign() (Vineeth Pillai)
->
->  virt/kvm/eventfd.c | 30 +++++++++++++++++++++++-------
->  1 file changed, 23 insertions(+), 7 deletions(-)
->
-> diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-> index 0e8b8a2c5b79..8ae9f81f8bb3 100644
-> --- a/virt/kvm/eventfd.c
-> +++ b/virt/kvm/eventfd.c
-> @@ -93,6 +93,7 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
->  {
->  	struct kvm_kernel_irqfd_resampler *resampler = irqfd->resampler;
->  	struct kvm *kvm = resampler->kvm;
-> +	bool last = false;
->  
->  	mutex_lock(&kvm->irqfds.resampler_lock);
->  
-> @@ -100,19 +101,27 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
->  
->  	if (list_empty(&resampler->list)) {
->  		list_del_rcu(&resampler->link);
-> +		last = true;
-> +	}
-> +
-> +	mutex_unlock(&kvm->irqfds.resampler_lock);
-> +
-> +	/*
-> +	 * synchronize_srcu_expedited() (called explicitly below, or internally
-> +	 * by kvm_unregister_irq_ack_notifier()) must not be invoked under
-> +	 * resampler_lock.  Holding the mutex while waiting for an SRCU grace
-> +	 * period creates a deadlock: the blocked mutex waiters occupy workqueue
-> +	 * slots that the SRCU grace period machinery needs to make forward
-> +	 * progress.
-> +	 */
-> +	if (last) {
->  		kvm_unregister_irq_ack_notifier(kvm, &resampler->notifier);
-> -		/*
-> -		 * synchronize_srcu_expedited(&kvm->irq_srcu) already called
-> -		 * in kvm_unregister_irq_ack_notifier().
-> -		 */
->  		kvm_set_irq(kvm, KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID,
->  			    resampler->notifier.gsi, 0, false);
->  		kfree(resampler);
->  	} else {
->  		synchronize_srcu_expedited(&kvm->irq_srcu);
->  	}
-> -
-> -	mutex_unlock(&kvm->irqfds.resampler_lock);
->  }
->  
->  /*
-> @@ -450,9 +459,16 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
->  		}
->  
->  		list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
-> -		synchronize_srcu_expedited(&kvm->irq_srcu);
->  
->  		mutex_unlock(&kvm->irqfds.resampler_lock);
-> +
-> +		/*
-> +		 * Ensure the resampler_link is SRCU-visible before the irqfd
-> +		 * itself goes live.  Moving synchronize_srcu_expedited() outside
-> +		 * the resampler_lock avoids deadlock with shutdown workers waiting
-> +		 * for the mutex while SRCU waits for workqueue progress.
-> +		 */
-> +		synchronize_srcu_expedited(&kvm->irq_srcu);
->  	}
->  
->  	/*
 
-Building on the discussion so far, it would be helpful from the SRCU
-side to gather a bit more evidence to classify the issue.
 
-Calling synchronize_srcu_expedited() while holding a mutex is generally
-valid, so the observed behavior may be workload-dependent.
+On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
+> Add validation to ensure MSI is configured before accessing cdx_irqs
+> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+> 
+> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+> sets config_msi to 1 only when called through the EVENTFD path. The
+> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+> done, but there was no enforcement of this call ordering.
+> 
+> This matches the protection used in the PCI VFIO driver where
+> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
+> 
+> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
 
-The reported deadlock seems to rely on the assumption that SRCU grace
-period progress is indirectly blocked by irqfd workqueue saturation.
-It would be good to confirm whether that assumption actually holds.
-
-In particular:
-
-1) Are SRCU GP kthreads/workers still making forward progress when
-the system is stuck?
-
-2) How many irqfd workers are active in the reported scenario, and
-can they saturate CPU or worker pools?
-
-3) Do we have a concrete wait-for cycle showing that tasks blocked
-on resampler_lock are in turn preventing SRCU GP completion?
-
-4) Is the behavior reproducible in both irqfd_resampler_shutdown()
-and kvm_irqfd_assign() paths?
-
-If SRCU GP remains independent, it would help distinguish whether
-this is a strict deadlock or a form of workqueue starvation / lock
-contention.
-
-A timestamp-correlated dump (blocked stacks + workqueue state +
-SRCU GP activity) would likely be sufficient to classify this.
-
-Happy to help look at traces if available.
-
-Thanx, Kunwu
-
+Acked-by: Nipun Gupta <nipun.gupta@amd.com>
