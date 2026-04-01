@@ -1,140 +1,97 @@
 Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23891E834E
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41601EB9F2
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775077973; cv=none; b=tp8xejJoXHJVsHtxsZgNGIedj3VCuMZWzLlvoSffsk/cqaOw0z0jQbZLhw0SyVw/0yqvICgotvXh3vnUVNyQ7n6lVp/K4/SmpiaIuUe2ZKnqPsEXKvgSJqMrCAJVX3eKsNr69sxa0S7ZmymBxpw6n7tnkCR0b4foSphrT66Y2+E=
+	t=1775078182; cv=none; b=hZ0eCWO6jCXi7j90zrq1DHqTmMCwMjpwBrSrxao4G2tSlHuM7mK/Dfyoqv+xD9izU4mr/evKLbOZLRHj1BBoMOb6qDbkQZivnDP0D5AI3bsM1YIw+AybBMzFExR6nhysvw3EWts7ipq7Bvugvj/phPsO804hMs0AyiDcwzD66rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775077973; c=relaxed/simple;
-	bh=jHr1hj3c2yB3sDc5e+7Fsc3y1i+wAYJMQ0SyKmFoIMI=;
+	s=arc-20240116; t=1775078182; c=relaxed/simple;
+	bh=l6iX1nTTLN/2uZkvSFq8geykaFQBjso9ZjDDB1VMUM8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ksAph4b4gCe7tK8XtkR5H8bGKw0BiFAAoSaqMuXZn1Whoq4y2SA8MFq7Co28ISOVMQqq98yR7KvAZDDTDczfwweUXrraEE93JNiuavOmOzFKvYhWv0SjmJBflPakI6yYcn/rvNZ5P3aJAlZSPS4JgWWt0OcfsTc54zdljPqJhn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OTlW0bkS; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=ae4T3oC+p63w6iDRV0BT5mhlKHKQjP6oQs5rVi8Ou+SYWU2nKrDidvXURa+lR7bmiyPb62Mf/g1+mdVdYqM/luho8F59VPMoErv6CTxLHiQGwG0bUopSLO+hQaLPT2khFxkO4UWThZH9XavtKkx9+gcCFY+7CzsDWiGEe32ZJak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QvsIVPub; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OTlW0bkS"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c649dc145so89015b3a.3
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:12:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QvsIVPub"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82ce1c395ccso441931b3a.2
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:16:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775077971; x=1775682771; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775078181; x=1775682981; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L2hTe6/qAASYky4w9/7qUWXPsVepZndGTLTeQA9+UIs=;
-        b=OTlW0bkSqgXE3dUioitPbQH+plsaBZ2Chg8+LMd2AphjT17Hh0vJNM/3FIs6hwqvy/
-         QZNs9UjTx4eu0fCMxYsJGHl6+nGSyfmh0lsJ0DCALvLbHZWQeXGQa6zSFk7ZThdbiIXq
-         /iHQxC2gB3MfUX5lRYZgOODK9wBkbE6ROnps/4dsAvi2Gx+eeFWFPiJyCKRPOBz2hiWq
-         BpcqGomwu97z8uRjDAj8Cc45bFWazhyJIU6bzSeZXciP4Ow/EZiyjOUi6rWkKZpSg63l
-         x12criIchU7LN1wnFnOR6DoGeODlHGiK78ChIaD7NpTdFYc/A6GowR+n/2/KV8swr6+j
-         xiPQ==
+        bh=ebhOtBJLLq955jMRQ0doD/9JGBRayn9HmmZNW0XQhFg=;
+        b=QvsIVPublX4qQPIgSGS1MDedO5t2sI5YArEUv7IyNTNF0PxhUFSFdBicnH7j5RWAHu
+         9mBrW1wvCxJ68CFHF8gy8WSFf8FZjkas3YXJ7D27jzfTlJshdkkSKwr/iDZLKvyfu+Qy
+         q81ISHQFWIyjUj3QithW670sR4PtNqYaJHWKtQbnrudr+lgiuYYMx8Z+4UpNzl66k9Q3
+         02LNaH2mVEX7Tdhc4lcyephislGwaYHj4ibptbpTwXSM9wCfUTBSQ77jg5GhsproJ/aI
+         ycieIL7iEgorfS5juVtutoFRddQ4s2t5zZzNJkZFC/H7f/w2eZ3jdYzB6l9NdeFdV4/Z
+         NrlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775077971; x=1775682771;
+        d=1e100.net; s=20251104; t=1775078181; x=1775682981;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L2hTe6/qAASYky4w9/7qUWXPsVepZndGTLTeQA9+UIs=;
-        b=TOp8PJwkC1HoYJL3wasK6K5Gc5py82Ayx8ylpxCQMMN3UwG1Dljd/vPCBM6gvXYakC
-         8Cwk5ntKDRpf2YfIZ2HG8Qgcyl4LJw3taNegJGTStNU35noQow6RbaEfWnMjF4/iEMpZ
-         pPQN0tKssapipz4Q1AmQFkRYLnuJvOGAheTpruHUvjLEj/jn3dHhzgxyPOWF1V4c1tw8
-         KgJ7MNJOgiDejNjMMv5W1Qvjht5hrvUoS7W+a2QM5tp5EnIfXmVnUEuJgKE2kwhfzYTA
-         smDHP2nrluLSNuac9rtu4aA5WY2zVUQC+Obdfwypoov5vXEQIJra0IqFejMIFGNtwFEk
-         +TgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZan4i21BG+CO+ID/0obKctZfchujaaeoTb7sZIxrWvj48FDP4i7KZj8l13DXvsJWK2QA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBp+XKf5fC20Ap4HqFOqmOb5oUfknWdu1D7WvnC64l4pJ9jl3W
-	enw5SAVIxsfLLtsHFdJ/qS/y6vzZ3z4JrN5GLLM9a1lthb1sEtlACsuqb7PpU/oSBlCBcU25nA2
-	61PVmEQ==
-X-Received: from pfbhw14.prod.google.com ([2002:a05:6a00:890e:b0:82a:ff5:27be])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:84d:b0:82a:fc5:fb81
- with SMTP id d2e1a72fcca58-82ce88c3336mr5445243b3a.5.1775077970623; Wed, 01
- Apr 2026 14:12:50 -0700 (PDT)
-Date: Wed, 1 Apr 2026 14:12:49 -0700
-In-Reply-To: <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+        bh=ebhOtBJLLq955jMRQ0doD/9JGBRayn9HmmZNW0XQhFg=;
+        b=lWCPFGNyMXG9Te42Vg3+MuldokWv7BxMeD8DUDjI0oWa9CEgavotNflc1d+gc6ISJG
+         1lIKGBDDEFDeYgXKhaup4es4QRQO0F5yMrNTuIFY4OP1gJcEJn8OF8O3bWQ6yNDFJbF5
+         0eHrXY+KnCYxr4zhrsiNUlPQK/lfZkSFjWxl65xhGh7RxIOxUBkNW/68urJ1H6ToDR+a
+         ymJ+EnEqNqrlBYfmMTFkwD1lbmNtAld5D/vXfupE18KxaEWcJ+kmnk37ehJfU8oBAVT/
+         NQF5L68Df0PyuKVFMTjImzDEoRf2TBl9wHk6vFZWLlmNW6VWswqofSe8m01JWfnz0iux
+         yfgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOq/uEfyFwRZK8p0qe98eVrOshq1DNHI39HTKORDdtIrO2zYlSqeFsWZCIij1LIZI0jgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5QDyEakUXJKJdZImZt7FkjYFNolo+kqUYspdsOrIdsj1J5x4N
+	r4D4LS0E2Fvot8vJuj3GUrLaIrCdLImhPzb54HncXMerKTN0QyTVClOFw+Fq59kYS5F3KHmsCdP
+	zml6BAA==
+X-Received: from pfwy21.prod.google.com ([2002:a05:6a00:1c95:b0:82c:e41e:8959])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8b84:b0:82c:ec1b:9e15
+ with SMTP id d2e1a72fcca58-82cec1ba300mr3372988b3a.1.1775078180972; Wed, 01
+ Apr 2026 14:16:20 -0700 (PDT)
+Date: Wed, 1 Apr 2026 14:16:19 -0700
+In-Reply-To: <CAKcXpBzJ=ZNL=_XJBoG9sFXb0pt4JrF0wP3u_2eQSx-FizbOcQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com> <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
-Message-ID: <ac2KUaWxpVxmfUtY@google.com>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+References: <CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com>
+ <CAKcXpByCeeqCg9gMnsNzz1hhS36gZuJ6YsBAMBZJWG0n35bcRQ@mail.gmail.com> <CAKcXpBzJ=ZNL=_XJBoG9sFXb0pt4JrF0wP3u_2eQSx-FizbOcQ@mail.gmail.com>
+Message-ID: <ac2LI_UPPrf45vmp@google.com>
+Subject: Re: [REGRESSION 6.19, BISECTED] KVM: x86: kvmclock rate-limit removal
+ causes IPI storm and high guest steal time
 From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
-	jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+To: Lei Chen <lei.chen@smartx.com>
+Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>, kvm@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, pbonzini@redhat.com, 
+	Igor Raits <igor@gooddata.com>, Jan Cipa <jan.cipa@gooddata.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Apr 01, 2026, Michael Roth wrote:
-> On Thu, Mar 26, 2026 at 03:24:19PM -0700, Ackerley Tng wrote:
-> >  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> >  static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
-> >  {
-> > @@ -2635,6 +2625,8 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
-> >  		return -EINVAL;
-> >  	if (!PAGE_ALIGNED(attrs->address) || !PAGE_ALIGNED(attrs->size))
-> >  		return -EINVAL;
-> > +	if (attrs->error_offset)
-> > +		return -EINVAL;
-> >  	for (i = 0; i < ARRAY_SIZE(attrs->reserved); i++) {
-> >  		if (attrs->reserved[i])
-> >  			return -EINVAL;
-> > @@ -4983,6 +4975,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
-> >  		return 1;
-> >  	case KVM_CAP_GUEST_MEMFD_FLAGS:
-> >  		return kvm_gmem_get_supported_flags(kvm);
-> > +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
-> > +		if (vm_memory_attributes)
-> > +			return 0;
-> > +
-> > +		return kvm_supported_mem_attributes(kvm);
+On Wed, Apr 01, 2026, Lei Chen wrote:
+> Hi Jaroslav,
 > 
-> Based on the discussion from the PUCK call this morning, it sounds like it
-> would be a good idea to limit kvm_supported_mem_attributes() to only
-> reporting KVM_MEMORY_ATTRIBUTE_PRIVATE if the underlying CoCo
-> implementation has all the necessary enablement to support in-place
-> conversion via guest_memfd. In the case of SNP, there is a
-> documentation/parameter check in snp_launch_update() that needs to be
-> relaxed in order for userspace to be able to pass in a NULL 'src'
-> parameter (since, for in-place conversion, it would be initialized in place
-> as shared memory prior to the call, since by the time kvm_gmem_poulate()
-> it will have been set to private and therefore cannot be faulted in via
-> GUP (and if it could, we'd be unecessarily copying the src back on top
-> of itself since src/dst are the same).
+> I apologize for the late reply.
 > 
-> So maybe there should be an arch hook to check a whitelist of VM types
-> that support KVM_MEMORY_ATTRIBUTE_PRIVATE when vm_memory_attributes=0,
-> and if we decide to enable it for SNP as part of this series you could
-> include the 1-2 patches needed there, or I could enable the SNP support
-> separately as a small series and I guess that would then become a prereq
-> for the SNP self-tests?
+> I have reviewed the code and identified two scenarios that currently
+> trigger the KVM_REQ_GLOBAL_CLOCK_UPDATE request:
+> 
+> Scenario 1: kvm_write_system_time
+> This code path occurs when the hypervisor (such as QEMU) adjusts the
+> time, or when the guest writes to the TSC.
+> 
+> Scenario 2: vcpu schedule in kvm_arch_vcpu_load
+> If this function triggers KVM_REQ_GLOBAL_CLOCK_UPDATE, it indicates
+> that the virtual machine is not using the master_clock.
+> 
+> Those two cases are uncommon. Could you please provide your dmesg and
+> help check which code path triggers KVM_REQ_GLOBAL_CLOCK_UPDATE?
 
-If it's trivial-ish, my preference would be to include SNP as part of this series,
-_before_ KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES is exposed to userspace.  I think
-that would avoid the need for pivoting on the VM type?  I.e. don't advertise
-support until all VM types play nice.
+I'm also mildly curious as to why KVM_REQ_GLOBAL_CLOCK_UPDATE is being
+triggered, but I don't know that it matters.  E.g. fixing the underlying flaw
+(if one even exists) could fix Jaroslav's setup, but it won't fix setups where
+the "uncommon" cases are unavoidable, e.g. on setups that _can't_ use a master
+clock for whatever reason.
 
-> Not sure if additional enablement is needed for TDX or not before
-> KVM_MEMORY_ATTRIBUTE_PRIVATE would be advertised, but similar
-> considerations there.
+At a glance, explicitly ratelimiting kvm_gen_kvmclock_update() seems like the
+simplest option to address the regression.
