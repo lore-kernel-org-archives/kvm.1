@@ -1,183 +1,249 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383F43AEF27;
-	Wed,  1 Apr 2026 15:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775056362; cv=none; b=cFU7l/BvHyXE8IQU09DrrDFYlItfkP0EboPHUM+4TffWpKwWHzFO6keOXzzVH/7rYtWzG2RI4OxgmIkHYgtYpiCaQFl+1MKzm4DyLPXfWBpwBM1gHf2G8D+YTlYklijQLM7XBkxNRCXSebQ9FimObp6d721OXvXVMsxKQrBXiIE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775056362; c=relaxed/simple;
-	bh=fy5nGluSqUE590irHKaYzBriBiSZkDcsOx2WEIWcQFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsPzvnM1s6T3m/rTO/Gcn7RFvcEbPYLWIJGn2PHZo7KHRTlXHP0KdlFbh1y8/nZ67f0P+D5Sh+4PfE6em8sNX1GyrzLy83TP4Bn6xUSxhGSKulf9PMsvxYfscTAqMOpAXqhngS4HOBR6kTRg4ouTDJu1nFK5xhID6INuBIzziRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=G86IkIn6; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7911C33A9CF;
+	Wed,  1 Apr 2026 15:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775056595; cv=fail; b=Oh1sAApF7K2YH2WwkflIOPJiV8wz+KHfuw2Q/ES8t+osiSW8BZplaGUI/m5sCjWKwi5g1/0agfMpgzWaNDqFrDwWT4FLVbtcd0xYueENsX9wxlPqLfMxvCZu9ZWMLAFRv1nWpikblgS7bWkP73kF47qKCtNTJIaEs/QVX0YAbOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775056595; c=relaxed/simple;
+	bh=x2NMzsmDvLwnojKiM1+PjmgqTBmuN9XZreZZ3av69S0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ud7ZDaoXjPPniu4cqcQr6Rq25JiNflGQrIWIcSww8bKFtlCIifBacwGmgtd/g95eDD6riqxgr0O3DRgLVsmujwzxKH6/3SXgULIhCbfCdJAXpfgFFzfWsIAQnIzwdnb7lIOrtYCqKjEfLpLCGo8OnxajkwCJWbpE81uKARoScMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FWb+47bj; arc=fail smtp.client-ip=52.101.46.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="G86IkIn6"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631B2CQi138974;
-	Wed, 1 Apr 2026 15:12:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=xf4jV6+vAFBCBkNqi
-	wVCGfB0u3KUmiRk2dXlwWAQ0Vg=; b=G86IkIn6kzcJn7j1QBSoPRr8BASEK+ilS
-	hA2P5v6AZgo9l8Z6UTqF0mD01aC+8MLWpgtdUqBb0EJLbT7So2jrmJroVdhFvXMl
-	JBbA/TGE2+3vvxnDyiJa9h5ZrET4XeXOlL8NYx13f2atvGFF5iSJfY51WpcCg5mb
-	E/1n23XIEVDS0RNEDPUkojAVMkMBgdVwT4D+gbw+h3vV0rA+BNhBS2/ZQKv0c+m4
-	5Vb1kk6C1i7j7tD7+cFiKu8CxJJ6mFgmta3yFFQ3WJi+fvQ/yUqHRdswWZMZ0hIH
-	hMqmH1QZG1fl5RnEELu4IL+Rt37mx0AICSAHQwmcej/vfIdYiNpgA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgr805-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 15:12:29 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631EpJes005910;
-	Wed, 1 Apr 2026 15:12:29 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6spy6822-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 15:12:29 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631FCOIP27919026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Apr 2026 15:12:25 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D844B20043;
-	Wed,  1 Apr 2026 15:12:24 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A992120040;
-	Wed,  1 Apr 2026 15:12:24 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  1 Apr 2026 15:12:24 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id 8F0F0E067F; Wed, 01 Apr 2026 17:12:24 +0200 (CEST)
-From: Eric Farman <farman@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v2 3/4] KVM: s390: vsie: Accommodate ESA prefix pages
-Date: Wed,  1 Apr 2026 17:12:20 +0200
-Message-ID: <20260401151221.2272408-4-farman@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260401151221.2272408-1-farman@linux.ibm.com>
-References: <20260401151221.2272408-1-farman@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FWb+47bj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dpRH/8qTGowq8wTk7e6gZK05hdTDq9RWP6Apgt13BaCSJC2D2kXLJJemX8a8eUI/ahpdROi0ZgQv+QKDFGhj/klFDEavM2krUdCysCROuqvdAc7Y3YMZ6lbvrSZxuXMQvD2PVN7oAaz9hQQ/zncLZWdYburCXv0UcHnjejWK+grM5iXN7yvCX75vmgBjcNKIrh9UMvzDzAA3xSUyAy5aemzTZ7m+Wlm3HSxN6Mdyq6JRigMhh8p3LnWpG7jstrCRMo60n7mtEedLSlNpdonn2HT4dZMCa6tt0DJ+eQZTAe0CcgIHnDuw8UDwuPPMDHpyu5rBk1nudJQr6LzVXybcdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3+9k8JR0Ma+fU77OX2G1VmdHTeBqJ7vzDnkf43am6Zs=;
+ b=Xqf8XhhcEp4psCMi/Af5EMPdwjgeHy0JDwSyNYXTB8NqhBDJEJ28MDJy1tikXnqF2TKg4+1QLz8jceH9v5iShNKq39gBEyljHOx8mNZOGgMpWY+vBEnZOzfM3L1DefQDjWIgT6XZtaFmQvSdQbPNOyvH8PrINMxpE7Phlw15C8NlhOyB9y7WAiWtJ13l1HHBWGX+IkEsDhqO25IB4ipDNOYLHLrCmutqXUsbOyOJfcWX2E7zCVn+Hd4OkvmfK8N+2CSDdD+hbg1OF3F/ciSHSYViFLDO7/FFGA3x73uJjUD460CoaqLOKg/d+JUw+CUZte0jnc482rKfdmYRnO5sEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3+9k8JR0Ma+fU77OX2G1VmdHTeBqJ7vzDnkf43am6Zs=;
+ b=FWb+47bjFKXeXDde3tKB0z8gHotXO6r2s+QPw0GnH+EWuYOuSnsARujou4nZz2ACsblrlnJZfydz8+NDw3p3YYocs9lo8W0CyApmmS/ciRIhAfqySx+LNpAlvePz5Y7Wahj1Nyv5T1Xk5Si0D2YSz7l9o2c8GEfZHwSd+NTeJMI=
+Received: from MN0P221CA0003.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:52a::6)
+ by SJ2PR12MB8979.namprd12.prod.outlook.com (2603:10b6:a03:548::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Wed, 1 Apr
+ 2026 15:16:29 +0000
+Received: from BL6PEPF0001AB58.namprd02.prod.outlook.com
+ (2603:10b6:208:52a:cafe::1d) by MN0P221CA0003.outlook.office365.com
+ (2603:10b6:208:52a::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
+ 1 Apr 2026 15:16:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB58.mail.protection.outlook.com (10.167.241.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 15:16:29 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Apr
+ 2026 10:16:28 -0500
+Date: Wed, 1 Apr 2026 10:16:11 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
+	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
+	<ira.weiny@intel.com>, <jmattson@google.com>, <jroedel@suse.de>,
+	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
+	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
+	<shivankg@amd.com>, <steven.price@arm.com>, <tabba@google.com>,
+	<willy@infradead.org>, <wyihan@google.com>, <yan.y.zhao@intel.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, "Sean
+ Christopherson" <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
+	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>
+Subject: Re: [PATCH RFC v4 07/44] KVM: guest_memfd: Only prepare folios for
+ private pages
+Message-ID: <s4dbqrv2c6yzt4nsflfarnggtl25xlz6mzg74tfeg3eskceno6@6l5hpfmcbju3>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-7-e202fe950ffd@google.com>
+ <CAEvNRgF+FjJ1EWSR_rzD1=N040ZitiRrM2O3N0Kj5yN5rT3h+Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDEzOCBTYWx0ZWRfXyEd7tSiJtd2R
- A2o3pk8mp32vn9ss0BGY6sYq76fMdBhxo5Cwsa7PWYgmcps2WS1fkSM35leKq436bkoU4aRLldI
- UHaINVC9YqnqNlP+NrkGikn+DxptWggBWdYlaaQNWDLrPsED/rGGdu5NLKG+tSwVO/piKd/SmQH
- whaX3MFwh/jTOkJMpHx6R6z/FByIhGidAr6LO7EE+R4QI/zyBk+0YZXwKJRsAKtAEoYbTqrf1M9
- 0yY/M+riScJDmxequg2oU89rz7gIUgOfATkdkHpqsGNUdwng47BsVg2LdFvrhj2rSI6G0xLaWGq
- ihyq7kJcuppp5+GDXOYbHMz90mPvQIN75z40Ph1X5bhMjpc6CLNmdirFn64+NpYtfSEvi9xPqLw
- ZUHHk1/L+GEUVXAonuMKJHqhn6dRk1NmqcGD16UXKGiV3Zzi1qTIY2PXcwsEHLEru6TMjtCC3kY
- DyCMupCaeKzKVTbIB8w==
-X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69cd35dd cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=b85Ou7KXdJ74_8UzWO4A:9
-X-Proofpoint-GUID: yIOuiux52fQFLWcqObZ96vLGKlAP-S7q
-X-Proofpoint-ORIG-GUID: yIOuiux52fQFLWcqObZ96vLGKlAP-S7q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
- spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010138
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgF+FjJ1EWSR_rzD1=N040ZitiRrM2O3N0Kj5yN5rT3h+Q@mail.gmail.com>
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB58:EE_|SJ2PR12MB8979:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff40745b-b42a-494c-3951-08de9001a639
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|7416014|376014|82310400026|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	mui79d6WuBdwGPubUtn7BNSU3jT282Dhswk6ENFdhnDCc9ZI8zlPlr73kshxh//pWhss6OcsMg5zHvXhxwrUSpIlnTIaPkKy7aOTuwsign9ECxrbbJcVf2j5xCrBMT7meU1CV/ChOjqkM8gTfQnJ3PLQNgJqu9VWeyjmWKJm9Of0fsltOBRrnWr0JssZ4SAelkWvbZzaCYHjI3hxLLS0tVm2TsSShHbbQO2HAFRgP2todtk3Z0+cAJ1U0UJjXYpNdZLMlqov6uMiI59nvrofXy6nJeLgFPULBjT7YJaTkXZicRaQtUp/lfjXm1krIOneTxqIAFmGKRD4UWTM0FGVB0hVy405FF9BGRGn1pzd+v9IRvB6vTrag6bq0cOQyo1NAcszcawZNhREoX1+FDjOYXzGiTiCpBC6sYeIT7hh6Ei07SCagTlzn4r9axGOoNLVj6bejksqoJDoO0d3TAFhZfQvrUrAMethbT2q1HjSp5zOG7w4I0PcLHsy4mvJ19K2EmDnYTI7hCEKZlViRanMXRtSwDyYmPr75hCAu0PxtcEgBeaE0prXuHdDt6FsirfDjoLd9PDzSVsUIUnmixFa3yGoNtpaedR1EJP98l5pUIq5jitqmmiFfuqGGt0KtcNbuVJU5zwzTRkdmpeM8OHxBf6baQYwNzdOJV0/QNhOjOPUT6c/n4CksnZ5ZNvjKUUwBLzYJiZ92VwrN4YKlxr1cEr5+XB7q41x36BhiDuiWqa9V8G5uXCuc4g8MSEoTxWo09k48ActffrteUeNfwfS5w==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(82310400026)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	6j0hghzGGfUdhgvFuRXBlwdLqgPU+otHpxr1M7O7RokP7WQ8mPd4l79jTc5H90IqV/NkKXvpi3PJH8AYLdpcP7vjdB10HSAwSyG7aAK7cHVuFYq5IKnDqP5Mb1gsIVNmjXD/UDU6f+6FxDQU2MtiumT6n3evwWvFAcgX0g0p5lpk9OT+SAHTjAUt8tqvg5Cxy0FyXs+WY3Cz0RtVtnU9+/xGSfxc+zwo+/Hi9hPf8Xu1kHMPpm4UH2pBDy7yNNFDBAFMY/GBKwZkrLW1RxBpI8W6h3cpUrbz8gJGVb12cxBfSz76JXXFMOoEcJGmgjQYO/oEg/V/D/74m8oMMyec3kP+IHaey5Fd5ybIdoY9CogEDAzI781QP4r7wYTguMG9uWHZ6w1mMZZoA7a9Sasces9jKAOgrKWrXKzJ7nub54kZ61mu+gPWAjyegATcwOvB
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 15:16:29.0873
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff40745b-b42a-494c-3951-08de9001a639
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB58.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8979
 
-The prefix page address occupies a different number
-of bits for z/Architecture versus ESA mode. Adjust the
-definition to cover both, and permit an ESA mode
-address within the nested codepath.
+On Wed, Apr 01, 2026 at 07:05:16AM -0700, Ackerley Tng wrote:
+> Ackerley Tng <ackerleytng@google.com> writes:
+> 
+> > All-shared guest_memfd used to be only supported for non-CoCo VMs where
+> > preparation doesn't apply. INIT_SHARED is about to be supported for
+> > non-CoCo VMs in a later patch in this series.
+> >
+> > In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
+> > guest_memfd in a later patch in this series.
+> >
+> > This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
+> > shared folio for a CoCo VM where preparation applies.
+> >
+> > Add a check to make sure that preparation is only performed for private
+> > folios.
+> >
+> > Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
+> > conversion to shared.
+> >
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> > ---
+> >  virt/kvm/guest_memfd.c | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index b6ffa8734175d..d414ebfcb4c19 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -900,6 +900,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  		     int *max_order)
+> >  {
+> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> > +	struct inode *inode;
+> >  	struct folio *folio;
+> >  	int r = 0;
+> >
+> > @@ -907,7 +908,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  	if (!file)
+> >  		return -EFAULT;
+> >
+> > -	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+> > +	inode = file_inode(file);
+> > +	filemap_invalidate_lock_shared(inode->i_mapping);
+> >
+> >  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+> >  	if (IS_ERR(folio)) {
+> > @@ -920,7 +922,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  		folio_mark_uptodate(folio);
+> >  	}
+> >
+> > -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> > +	if (kvm_gmem_is_private_mem(inode, index))
+> > +		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> 
+> Michael, I might have misunderstood you at the last guest_memfd call:
+> sev_gmem_prepare() doesn't prepare a page for being a shared page,
+> right? Does this work? That prepare is only called to "make private"?
 
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
----
- arch/s390/include/asm/kvm_host_types.h | 3 +--
- arch/s390/kvm/kvm-s390.h               | 5 ++++-
- arch/s390/kvm/vsie.c                   | 7 ++++++-
- 3 files changed, 11 insertions(+), 4 deletions(-)
+Hmm, I guess your guest_memfd-inplace-conversion-v4 branch is out of sync with
+these patches?
 
-diff --git a/arch/s390/include/asm/kvm_host_types.h b/arch/s390/include/a=
-sm/kvm_host_types.h
-index 1394d3fb648f..3f50942bdfe6 100644
---- a/arch/s390/include/asm/kvm_host_types.h
-+++ b/arch/s390/include/asm/kvm_host_types.h
-@@ -137,8 +137,7 @@ struct mcck_volatile_info {
- struct kvm_s390_sie_block {
- 	atomic_t cpuflags;		/* 0x0000 */
- 	__u32 : 1;			/* 0x0004 */
--	__u32 prefix : 18;
--	__u32 : 1;
-+	__u32 prefix : 19;
- 	__u32 ibc : 12;
- 	__u8	reserved08[4];		/* 0x0008 */
- #define PROG_IN_SIE (1<<0)
-diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
-index bf1d7798c1af..dc0573b7aa4b 100644
---- a/arch/s390/kvm/kvm-s390.h
-+++ b/arch/s390/kvm/kvm-s390.h
-@@ -122,7 +122,9 @@ static inline int kvm_is_ucontrol(struct kvm *kvm)
- #endif
- }
-=20
--#define GUEST_PREFIX_SHIFT 13
-+#define GUEST_PREFIX_SHIFT 12
-+#define GUEST_PREFIX_MASK_ZARCH 0x7fffe
-+#define GUEST_PREFIX_MASK_ESA   0x7ffff
- static inline u32 kvm_s390_get_prefix(struct kvm_vcpu *vcpu)
- {
- 	return vcpu->arch.sie_block->prefix << GUEST_PREFIX_SHIFT;
-@@ -133,6 +135,7 @@ static inline void kvm_s390_set_prefix(struct kvm_vcp=
-u *vcpu, u32 prefix)
- 	VCPU_EVENT(vcpu, 3, "set prefix of cpu %03u to 0x%x", vcpu->vcpu_id,
- 		   prefix);
- 	vcpu->arch.sie_block->prefix =3D prefix >> GUEST_PREFIX_SHIFT;
-+	vcpu->arch.sie_block->prefix &=3D GUEST_PREFIX_MASK_ZARCH;
- 	kvm_make_request(KVM_REQ_TLB_FLUSH, vcpu);
- 	kvm_make_request(KVM_REQ_REFRESH_GUEST_PREFIX, vcpu);
- }
-diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-index a3cf1d89d573..e5a23f1c9749 100644
---- a/arch/s390/kvm/vsie.c
-+++ b/arch/s390/kvm/vsie.c
-@@ -479,7 +479,7 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct v=
-sie_page *vsie_page)
- 	struct kvm_s390_sie_block *scb_s =3D &vsie_page->scb_s;
- 	/* READ_ONCE does not work on bitfields - use a temporary variable */
- 	const uint32_t __new_prefix =3D scb_o->prefix;
--	const uint32_t new_prefix =3D READ_ONCE(__new_prefix);
-+	uint32_t new_prefix =3D READ_ONCE(__new_prefix);
- 	const bool wants_tx =3D READ_ONCE(scb_o->ecb) & ECB_TE;
- 	bool had_tx =3D scb_s->ecb & ECB_TE;
- 	unsigned long new_mso =3D 0;
-@@ -527,6 +527,11 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct =
-vsie_page *vsie_page)
-=20
- 	scb_s->icpua =3D scb_o->icpua;
-=20
-+	if (!(atomic_read(&scb_s->cpuflags) & CPUSTAT_ZARCH))
-+		new_prefix &=3D GUEST_PREFIX_MASK_ESA;
-+	else
-+		new_prefix &=3D GUEST_PREFIX_MASK_ZARCH;
-+
- 	if (!(atomic_read(&scb_s->cpuflags) & CPUSTAT_SM))
- 		new_mso =3D READ_ONCE(scb_o->mso) & 0xfffffffffff00000UL;
- 	/* if the hva of the prefix changes, we have to remap the prefix */
---=20
-2.51.0
+I have the below local patch based on top of that for SNP-specific enablement,
+which is basically identically, so suffice to say: yes, this should work
+for SNP :) If any architecture pops up that needs to do some prep in
+advance of mapping shared pages, then we could potentially plumb the
+shared/private flag through to the arch-specific prep hook, as was also
+suggested on the call, but it doesn't seem like that's needed by any
+users for now.
 
+-Mike
+
+  Author: Michael Roth <michael.roth@amd.com>
+  Date:   Mon Oct 27 07:58:32 2025 -0500
+  
+      KVM: guest_memfd: Don't prepare shared folios
+  
+      In the current guest_memfd logic, "preparation" is only used currently
+      to describe the additional work of putting a guest_memfd page into an
+      architecturally-defined "private" state, such as updating RMP table
+      entries for SEV-SNP guests. As such, there's no input to the
+      corresponding kvm_arch_gmem_prepare() hooks as to whether a page is
+      being prepared/accessed as shared or as private, so "preparation" will
+      end up being erroneously done on pages that were supposed to remain in a
+      shared state. Rather than plumb through the additional information
+      needed to distinguish between shared vs. private preparation, just
+      continue to only do preparation on private pages, as was the case prior
+      to support for GUEST_MEMFD_FLAG_MMAP being introduced.
+  
+      Signed-off-by: Michael Roth <michael.roth@amd.com>
+  
+  diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+  index 3acc6d983449..4869e59e4fc5 100644
+  --- a/virt/kvm/guest_memfd.c
+  +++ b/virt/kvm/guest_memfd.c
+  @@ -1249,7 +1249,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+                  folio_mark_uptodate(folio);
+          }
+  
+  -       r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+  +       if (!kvm_gmem_is_shared_mem(file_inode(file), index))
+  +               r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+  
+          folio_unlock(folio);
+
+> 
+> >
+> >  	folio_unlock(folio);
+> >
+> > @@ -930,7 +933,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  		folio_put(folio);
+> >
+> >  out:
+> > -	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+> > +	filemap_invalidate_unlock_shared(inode->i_mapping);
+> >  	return r;
+> >  }
+> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> >
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
