@@ -1,137 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6139E2853E9;
-	Wed,  1 Apr 2026 18:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE6B3126DD
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 18:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775068217; cv=none; b=Mylg7EdeOnmv1cgPETSquYxmdc/nB3O4ZdvsSBSrYR0KyhXbuOjSSyDEkxIjT28bmFzovOw6f3P5l60BN41RZDxXVG8BKpVXqoIC8WfsOiPJcCLw6DY8e/3Dn7dONr8qfAbVLMiXsql7vvfUksaiyKhbGov82kjjaMTi6imqBig=
+	t=1775069531; cv=none; b=rhehAxZ+q8mw3no9FFYcisdZuKjVNDrROgpGJW2DlJgEJxaFA3b+0n9nNC7ivaGUGmv+WOcSC/7HvtaDrtl45NHVHsykxGqvHs3rzUZv8ukUWWjXUmwQ85BRgNVYb/uqaKPun+zWtwS+KpRIvvf3mvLa+udlmH3grhPXJubl468=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775068217; c=relaxed/simple;
-	bh=j3dW7Y5ZFl7ejx+K0m5YQjOz8Xi7YjIUYeJUo5MkZIw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BjUw6hvLQYL0bV/ydGYbMVXM2Jj5UmG98RV/F3ZghToS7HOsCpR/ET6KZ3YkT/hR4thyi7oJPF4atTBgAGkngvLlQIW3LAExN5zQrL2aIlyqafNhJc9A+SDHTcRwycQVCoDcC6GISYRlyn6tD7Xacgn/oVFh55lHrF2r+wDLB1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9Hfs6uj; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775069531; c=relaxed/simple;
+	bh=qgfGohko+APZAaH/7y2fR7nUw6KD1f1uI734TpAydHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t6MrnctYUxtyw2uG6M8Lb7mPkLaan3hJyWIC7H5OOnoSNz7ZlMKYOwD68nXlcR0m3ffc2FlLZ/yWzMY1xi8Gu020oRvEBZpHzvhlvkE3pi686wIgIOoV0udJTtyPWLwozOKch3khuNc0fSUMpxuz+xvdBiOMLPardTJbDyDq96Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OPjQ8fzZ; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9Hfs6uj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775068215; x=1806604215;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=j3dW7Y5ZFl7ejx+K0m5YQjOz8Xi7YjIUYeJUo5MkZIw=;
-  b=f9Hfs6uj9fTezH17o3/0D5XmQF926J0hDNKZ+362W8I3dKCE4hTlvSoG
-   x2/WbtWWYvuFq0NYpZVQwdvqiwTl+w2rZ3H2+04XVQnCojjUwzyaHvn2G
-   kDklJDrBzTcuHgeaL3No3tLpMX0AGYZHBVFv0R/E645GMmvykAy6M881t
-   cEM8N42J56EBwZvnK4jZBgzB9qYdWDWwZABSeCWH+bKnx+8QnCxPwR+AN
-   edNcbMRyNYEyFNrnTUm1Lm2yARFgOJ6SRnSrsd+S5w+XwrMnY5T9mv+Tq
-   1iDImYirA8PQ7HDSnT1PlNHazd4DQ0SRNgZ/VJ2xInzEsQSx8ELGv+IEq
-   g==;
-X-CSE-ConnectionGUID: bVyZCu4dQEGGvdmPenRIpw==
-X-CSE-MsgGUID: 9oln7x5YRAybvaBdvioJJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78713190"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="78713190"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:30:14 -0700
-X-CSE-ConnectionGUID: lRWM8gBVRjOCnQLWL39MUA==
-X-CSE-MsgGUID: pqVK514SSKuI9+NttUXH1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="221907622"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:30:13 -0700
-Message-ID: <93153bca-6668-47f6-8dcc-7baaaa5b2ec6@intel.com>
-Date: Wed, 1 Apr 2026 11:30:21 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OPjQ8fzZ"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82a67ce6969so66353b3a.1
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 11:52:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775069530; x=1775674330; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tcs/cMuSXrZ4J+WkXbRV1FBy++2l4MW9BpKWgidiJTI=;
+        b=OPjQ8fzZMS1ifImedtWklq4J/Lq+/oqhKlrleh+v2VDYjUxbgLe7P8mBcN/Qkn9ceq
+         UoD1nP5ELpIUttF5NWJQvn9YeAG4tSC7+IQerr/p7tieNXpFWNiIney76E9Zq8eTYTTH
+         HR38oU4b0MD3WNI1ba8bQpa+4zf8CU0yRei6nlcEteB1bUtCkEAJwV0uySk9HTWHU7bf
+         Aoiagq7+hfEUy0cmweo8MvHDVBfd3SCv4SW8f8rEQdoa7DqZAwOuMG56liaigyV/9Bdo
+         U4Y8h9kcFhoE9dnGb6ml68mQwhLaJ6xj3Bfo1mzK8TrxzHoBgmVLPMI/7WmRzX+GV8X0
+         LbrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775069530; x=1775674330;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tcs/cMuSXrZ4J+WkXbRV1FBy++2l4MW9BpKWgidiJTI=;
+        b=Y0v3Bv/t3CE4ca/TTG5DUZgx72GO8GRC73Jqk9tSqTMkAp6+2S50oDT0EmbPxUnjXD
+         pBR2H5LH+NctH2wZdhz8Gob2g9oiLEp2RrfPkXda9ssgRxjyt3hNjq1RhGF/zmQmyuPC
+         bVpnMakBE00JR/lq5g2enKqyvgqQQvIg6eA7M65Lp3fcKgadx7Xo2MWF7N9wI3hsofTS
+         N+zoAl7osfQtzZlgsGWy2zdGy/OAAMevwxh/J//Q6EPaf10W4XLCjzIHXrCr6HBfH6uN
+         k135/CdTSvcMuayJVxYuyN1ilLX69R88eEhWXAO3H/3j5yk7qfU9fqeuyLkIbw86T9On
+         AuBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUfD3McHMJtmIvfuCm/6SxZLSYUO+4hWWmdSS+pVwt/EQwSW0U2wmvjHaarfhBiqO6wxI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRNFDCasqPQjv54+CuU6mXlw/6H4a7vB3MJVGEyIX6GFCA32yO
+	/kK4gy25bLYEZ4eGhRs61SWlTh6GrZhwx7tRLYKdwP/nulPoVvYPxLcjY4T4jFdTujGi9FxrDjQ
+	Gf50pCQ==
+X-Gm-Gg: ATEYQzzW+M9+PONgR9fKtYOuUBjEK2/HzrUcRLtXOHVoVd3IzKf93ungt6SuUicrH9A
+	rS2l/TfcjhvzzRMxtt6ob6VAf93zBX5KrNwF+f9/nBEGIM/D8tlbBY1sQ1FwUklRYgTIaa3PVI+
+	+BWrKHWUv5YraN+1A+keP9f80a5xauFodo2sZpgS99tyIPlHddYoJmU0cNvxWNUiddAZMmh1rO6
+	sv/55K3+Zqc1jZQhDnVkgs10Ht4ViCk9jo7llCtqQjTmpXoBKpdS+S34sA2Gxe6UXcXPpNv8yV4
+	VW3AEy1Qa6qhkzx5stjh7WOwxLY+J9fMFR4FvJvqzUo0H9hXkalQk0QDSoVoNwC0l8JtamYWaWy
+	c3EmFc0GxgsOMr5PZcSO2ynM423PyZ+ZxOQG2RZLPRvKXnTO5TU7nC6JfSGYLIvuAn/hKg9eNWF
+	msfug3WKgTLhAz+ESrOKzX5lqk86nhT8WWSPw5PNcq1wDKa0WeqezACOmNtxvCHQ==
+X-Received: by 2002:a05:6a00:f97:b0:82a:805a:7cc with SMTP id d2e1a72fcca58-82ce88bbc42mr4637886b3a.4.1775069529369;
+        Wed, 01 Apr 2026 11:52:09 -0700 (PDT)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9b3aaeesm711791b3a.13.2026.04.01.11.52.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 11:52:07 -0700 (PDT)
+Date: Wed, 1 Apr 2026 18:52:03 +0000
+From: David Matlack <dmatlack@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Josh Hilke <jrhilke@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>
+Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib
+ and test device interrupts
+Message-ID: <ac1pUx_jYv2yCMnX@google.com>
+References: <20260331194033.3890309-1-jrhilke@google.com>
+ <ac1hI93pEo-x-7YU@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into
- arch/x86
-To: Sean Christopherson <seanjc@google.com>, "H. Peter Anvin" <hpa@zytor.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang <kai.huang@intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
- <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
- <acwe7kKyjfEQ0sIf@google.com>
- <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
- <acxTBwaw6_xYSShf@google.com>
- <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
- <76F29857-47D8-470B-9F4D-DD98D8755EB0@zytor.com>
- <ac1f9KntTv0SaktS@google.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ac1f9KntTv0SaktS@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac1hI93pEo-x-7YU@google.com>
 
-On 4/1/26 11:12, Sean Christopherson wrote:
-> Sorry, "costly" wasn't the right word.  I know WBINVD super
-> expensive, but unless someone cares deeply about the latency of
-> offlining a CPU after its down TDX stuff, the "cost" is effectively
-> zero.
+On 2026-04-01 11:17 AM, Sean Christopherson wrote:
+> On Tue, Mar 31, 2026, Josh Hilke wrote:
 
-I once increased the CPU online/offline latency once and got nastygrams
-from folks. IIRC, I added a synchronize_rcu() which incurs way more
-latency than WBINVD, but folks _do_ care about CPU online/offline
-latency surprisingly.
+> > This test only supports x86. Testing physical device interrupts (-d argument) is
+> > only supported for Intel because there are no VFIO selftest drivers for AMD
+> > devices.
+> 
+> This needs to be expressed in code and human readable error messages to the user.
+> I already knew the basic of what the VFIO selfests are doing, and it still took
+> me 5+ minutes to find the DSA driver and probing logic.
+> 
+> Concretely, this code needs to be part of the standard vfio selftests APIs:
+> 
+> 	device = vfio_pci_device_init(device_bdf, iommu);
+> 
+> 	has_driver = !!device->driver.ops;
+> 
+> E.g. have vfio_pci_device_init() explicitly return an error (or NULL) if it can't
+> init the device driver.
 
-In this case, though, I'm happy to add the WBINVD for simplicity and
-wait for a possible repeat of the torches an pitchforks.
+No. Not every VFIO selftest or user of libvfio needs a driver. A driver
+is only needed in tests that want to use the driver, i.e. want to call
+one of the very obviously named functions:
+
+ - vfio_pci_driver_send_msi()
+ - vfio_pci_driver_memcpy()
+ - etc.
+
+Requiring a driver for vfio_pci_device_init() to return non-NULL would
+significantly reduce our ability to test VFIO on different platforms and
+environments.
+
+> The fixtures in vfio_pci_driver_test.c already blindly assume success, so you
+> might not need to do much beyond changing main() in that file.
+
+I don't follow. What is the issue with vfio_pci_driver_test.?
+
+> And then, also as a vfio_pci_device_xxx() API, add a helper to print out what
+> devices are supported, e.g. so that KVM selftests can do something like:
+
+Agree this would be nice to have. Is this a blocker for this series?
+
+> struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
+> {
+> 	struct vfio_pci_device *device;
+> 	struct iommu *iommu;
+> 
+> 	iommu = iommu_init(default_iommu_mode);
+> 
+> 	device = vfio_pci_device_init(bdf, iommu);
+> 	if (!device) {
+> 		vfio_pci_device_print_drivers(stderr);
+> 		TEST_FAIL("No driver found for BDF '%s'", bdf);
+> 	}
+> 	return device;
+> }
+> 
+> Because as is, this requires way too much a priori knowledge and magic for
+> upstream.  The user shouldn't have to dig through code just to understand what
+> devices are supported.
+>
+> Ideally, VFIO selftests would also provide a script, utility, and/or helper to
+> identify BDFs for devices it has drivers for.  In my experience, binding a device
+> to VFIO is trivial.  Finding the device in the first place is more annoying.
+
+Agree this would be nice to have. Is this a blocker for this series?
