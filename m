@@ -1,1101 +1,212 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011005.outbound.protection.outlook.com [52.101.62.5])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0922347DF92;
-	Wed,  1 Apr 2026 14:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775054571; cv=fail; b=SlSSS/4MuP/InaxiapSpSTSbAJElVm8etQAj4tv62XM38ssPhu9gV2dzEV6F/9LP1ud796h/8Flcmhktp/Bh2xH6KhEJSdo5QB3bSSaEaZzMHyFBYZZQZ3XZdnDxIFhT4qorBLh+joypJD03SnT5cqptOBe0aaN7otLWVdkOb5k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775054571; c=relaxed/simple;
-	bh=2rr7y30pUE1DoIZLeKSK4BDDV3Me8otLx+M2LBJxUO0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uFGvWgZDiDgiSkE2gTmXU+HU8HDvzo7tf1YBUbtuduEq7NwSAw2N/Wnh3SZA5uvOGAceZz93zMTq6zPmi0KRj1buNMxj+oIRO65Pvpx9UQM+X2FNYJyptlQPosPIKGYXKNm0UkpqMTflnTWHTPAxlOulWspdx30zKiICoe1JBX0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CJdANlb8; arc=fail smtp.client-ip=52.101.62.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C37932AAB2;
+	Wed,  1 Apr 2026 14:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775055042; cv=none; b=r7hyo8O5+Ei//vszKv3vcAtLe2I+cOD7ltX1jxaGgavnfmmZ40lV9NxlrFniUo58XklCdIpFuAuaFGCyuPyzZfOF6jnHGQeA8l0ARbkoMeSyagzvuEe8OvLsTBzlguhacXoOnJY1UJTSqwQD9gT/m/d1A+dKYNvO9Rp/nVrfPaw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775055042; c=relaxed/simple;
+	bh=42j/rXFWYTWigblZmdaAlvQQHg/NsDReCMHaCWDyLdc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iKlwIarlw18AtIR965lc8p/emm5YfTPUI3oxxvNQRTTMmOKOyHF6L9Dd4MN28ZX8c3ow1XxnklCCow89ytz3+yqCczwac5IWMpy1inbAnroNUPZuUZ/lZ48K46/HQGazGnVFPmTpyHwi8IEX0l2Dj+LzMUlJVNdePktG0sN/Nq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SPE7h3Sr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CJdANlb8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gOxVWFeH8Cr5QnfwXM59CVMUwc+GqLCZbHcUP19Fl3iZZxYlI5JBJ6gemNOaJuUGuCeNVXaoaBG9qKWZ7ltr63km0R3/Jb2qC9I5y6Y4nPJfmEcOAvcgIfOw1HJk1GNo8f3TRumxHe8nMfafQWzx2XuOr2YKcLU4qAtuWelF9xGUqB3qLzEHWXz/+XCznx4greHY/n1MuOVhCIjw3e2Qex5oiuOa2bf6RGC1nj9X7KzroJPpIzTyz3M+vJxiiNX67pr6yjc+LRJdMil4LqeOjCeZtdpogT58XnOSQ+If6CQCIe+c03gPxfdImLd3Sp5uGJhehHGC7YWymV58/AtjBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vjCsG53TfBRVec16a3ioXovRaqDjw+chXjBxWlfAVf0=;
- b=Vf9esN3Z6mot6VG9PMhJzbA1K40ZnybB7VpbV7LlrLmVGEvL5a29CIQcBkcFBcSNPcZESQk8rLHSDtNMiHkaqtOhVGO2H+bEd0l6iJvvToJf0/IZmHKnUNl/tEjc/XmqiRRZ3TiQloaAt+YCfT/Sf4wwayrvGJd6rbVDp/axqRG3aZwLbP8dGhDeXnv9tSOhc1/6Mri9NRnYDmxmnhbU5FLI27nFCjK5Gr2QhlRocRDmRRG6N1CC715lWHtD1LTCcSWVd8gUWG3tcXs6hf/zIBLiZgy43BG/nOEAnx+7kgV/js8U6W8hzHSWdw84hb1SJhVw97vNA1q0lrrJ4qYsWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vjCsG53TfBRVec16a3ioXovRaqDjw+chXjBxWlfAVf0=;
- b=CJdANlb8V2dofl/T59hEIjBo74pY7Glo2/6FNfAS/LvdockPvAujhD4wZRkqgfdVcf82uLFSa965ViMhmCBla3yR5m5HIHvPHcpP0N91QQMuC3TmldTi/X34J+b92VdP3hXHD0v+IBiq5PrORu+TVKQeGW3SpwkZ2JtdyTbKnpKMXZCquIPdYP9URiVplpyA/XqtWe21x6sVZw+vVED9/5v1lYbUw4F6ALMwOwTIwx/MXC02pBe9hci+ECHlY+C3jvkHfkfXCwNrpZa18qSDlLAgq3ValSkzNKmKxko3olPooFpPk8q13cAkG/qTTZcvN0hplYjbvgLJhLGPKWjgaw==
-Received: from BL1P222CA0005.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:2c7::10)
- by IA0PR12MB8255.namprd12.prod.outlook.com (2603:10b6:208:404::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 14:42:30 +0000
-Received: from BN1PEPF00005FFF.namprd05.prod.outlook.com
- (2603:10b6:208:2c7:cafe::cb) by BL1P222CA0005.outlook.office365.com
- (2603:10b6:208:2c7::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
- 1 Apr 2026 14:42:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN1PEPF00005FFF.mail.protection.outlook.com (10.167.243.231) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 14:42:30 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 1 Apr
- 2026 07:42:06 -0700
-Received: from nvidia-4028GR-scsim.nvidia.com (10.126.231.35) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Wed, 1 Apr 2026 07:41:59 -0700
-From: <mhonap@nvidia.com>
-To: <alwilliamson@nvidia.com>, <dan.j.williams@intel.com>,
-	<jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
-	<alejandro.lucero-palau@amd.com>, <dave@stgolabs.net>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <dmatlack@google.com>, <shuah@kernel.org>,
-	<jgg@ziepe.ca>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
-	<kevin.tian@intel.com>, <ankita@nvidia.com>
-CC: <vsethi@nvidia.com>, <cjia@nvidia.com>, <targupta@nvidia.com>,
-	<zhiw@nvidia.com>, <kjaju@nvidia.com>, <linux-kselftest@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <mhonap@nvidia.com>
-Subject: [PATCH v2 20/20] selftests/vfio: Add CXL Type-2 VFIO assignment test
-Date: Wed, 1 Apr 2026 20:09:17 +0530
-Message-ID: <20260401143917.108413-21-mhonap@nvidia.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260401143917.108413-1-mhonap@nvidia.com>
-References: <20260401143917.108413-1-mhonap@nvidia.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SPE7h3Sr"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631BbE844019302;
+	Wed, 1 Apr 2026 14:50:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MMBuOi
+	GExGo9XVQyG+qprS7rpH8L7Cgj1MLPDxpdx7I=; b=SPE7h3SrgBnS45Shw0OGM8
+	BqrsuPoMhtTukH3BDYcNABCjvDIbfh1ummmnIWbvf8NwpAN1tQXEVSkag+kLOuwl
+	neFU1PhSIJJ2eFhHRYU3vfNcz2XMlYH1z/GlYUnx20nsXIhPFWCk5yh7n3SvAiel
+	B/sLTlvMnU7fXzaQ75MQc2kW/tOZb8Ahdt46F2p9TXOaluq1H9VxnSvH9GakCMDL
+	l6QaeChSvS1RyTg5HYsZe7Ddqa9cNe0MbZEUVXFF4aRpzAZY9K3zOSc3F/P8ZfDx
+	0imqUpdDAHg5m6Q6jWqHvdgSHlvODGA0rnqT236xzHXteBqgxTOar5fmLMwl6gTw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d65dcg0mf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 14:50:32 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631CO9Hb013922;
+	Wed, 1 Apr 2026 14:50:32 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6ttknygb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 14:50:31 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631EoR2u47448360
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 14:50:27 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BBD2320043;
+	Wed,  1 Apr 2026 14:50:27 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 62D2120040;
+	Wed,  1 Apr 2026 14:50:27 +0000 (GMT)
+Received: from [9.111.57.22] (unknown [9.111.57.22])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Apr 2026 14:50:27 +0000 (GMT)
+Message-ID: <e9172a57-4125-41e1-aea9-0feaa5ff6eaf@linux.ibm.com>
+Date: Wed, 1 Apr 2026 16:50:27 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFF:EE_|IA0PR12MB8255:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91458d26-46a1-4ed3-c0e3-08de8ffce730
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700016|82310400026|921020|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	1RCWw4hPZ3WpuvB9xRmHjeX98DHPWQuruL18fUYIwGUGXjKzNhsNowrtb/CooSmKDlYYzprax56pgTiFJMmOBzBxm72c/ulVToL8TU4MG0/O12MV8KsGY+sTPtW6vAkP3dQK9fi6eUx4ID7+CBOrDzygQppafKfslyFB+IuomXK0N80+dJbzvM8nCRRVGiKFTX1s+t4AGgHTHHpizX4QCES5BTUudhBpZeHr2dv1LMSXTJBQ4NXn2q4+Vv7ZY23CSSbr6MzfEJv2eRJFoQHw+hzInYv9Kfmctu0+Aa92dvj8m9PAx2p2iWCVzkFrnpk0JZQcSytspNp54EQur7rEElqDXgJEaJvtlYmzNZ3hacLT3d8kHfc+60F8I98lGJAPb//eMp+k7+XEpj13Vz4ScrCJA8iSNITvN6oq1U/WVCLi6HOU4Ug33vInV9JknUDT2NuxdzBIAyyW8i1iq4HToTAkKhKLVhdq5hepsI7yJfPnCS0bvmaM9O650W20TVm6rFr7aXY2q4p4qs73ZZ/kJU0PELEwyZp0h10j3ITHwviX0kPGsoPj7I5gXXBkMSGUN2zgjkb+I1LjBNOAP3snaHyc5gzdiZeJsss5bsbhaef+nT9CMXxA9zDUM7kXzDkSYKwlgqG0bJqA+Ouh800eUSv14MuRwvogNM3U60rHOtBwgm5nLVI7/7s1046eEoMTlohbtaQP7SuR1f21BTpw/MVNckYdT9f2uYMZmbhOraqANSqSUmRJN5ZADzU7/jVNBCJcmaI/6sBQr7rkBHGKK5fmwW4sJvMRLcQ1WIx0o/ovpIqPRhykYli9nTV1xu8Q
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700016)(82310400026)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Oo0ZhNW0E2ZCtPHIttj9iQZmdbG0y2bcX36cMWEBLhhygcesr9SrEajDHJABzGqL2IRuq8vd0+ZV00jWpxsTTqmz5GnypXMk7txBNNqtaABj7leGOcRSUI5grUEsN9N4/c2aAVEK4pWwuvbvCoMSC7g7zrvY0uL27FgVAJAGWRue7VF6NSGFhExOt3qFNcvk5ix5+WFFYQ17Y32wdNdcqyRI2bhoFnmv0FyvUQlsAxCN2NX1KT12RSJIqTJ1P0r3k5PFdSkd+lPzdNFLWRje7cvg8QEJamZsk96ck+3Ma8zOTzI/UymcDyyqozU6m3sPACJ+EOn6IyPxMC+cgyHKlFWF2VLBRi6WmYvvVIhN+zCH6SYUBSt2fXvjqX6FgP4RW8kyCsW49wriHzfhdydYJqYDzHFUeswi+iWZ0v5Xh/BvaHW64QRtPwrKHlryJDV/
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 14:42:30.4556
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91458d26-46a1-4ed3-c0e3-08de8ffce730
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00005FFF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8255
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/4] KVM: s390: vsie: Disable some bits when in ESA
+ mode
+To: Eric Farman <farman@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20260401020915.1339228-1-farman@linux.ibm.com>
+ <20260401020915.1339228-3-farman@linux.ibm.com>
+ <91feaccb-9d28-4519-8e89-43f75e88b8bd@linux.ibm.com>
+ <ca84cb51f1d4f6520012ef2e2df475a5d2a344f2.camel@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <ca84cb51f1d4f6520012ef2e2df475a5d2a344f2.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=RsjI7SmK c=1 sm=1 tr=0 ts=69cd30b8 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=bbUTgpqrEuBwE8QX_m4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 0GEZgkY25yg_BUVfxDpBy0a_oNIrIv4y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDEzOCBTYWx0ZWRfXwlgNFMMMb70e
+ erBQVC+CxgXBfL1EotMZptRnjy6Q0RCJflMdRlsFEG6hMRbXcnj7qSgRab7zwUJc5PitEmR3qfi
+ KQ6R0KOhZ8lzLJbXswLeC5nOxxu/T2MQp0Y86ykU3rJVSZ7pzZ0nH2kd7+Flc+At62LYVraeyi7
+ X5qhiF6vZRF/Yrx5kK2NkSW2WBHbb/+6/amcPzhyZHTD4QBkxFhma+Q2/zWQFEOf5gCeT++TE9u
+ 92pkOFzbC4bVp19vzSft+xSB7t99CO9VR9wPS5U73rPEagbmPwlnf5gWE438LCqmGVRmCtMQBlK
+ Plcd5ftz2Wp562xcveRKuVB6v+uzMglPvpg9KbGLc9jyRyk49P9yCferbPQWM44jmmKeZouN2Si
+ yS2N3JFxThyUNqGT+fGI9MZWmPttmo7xUCIXYftbCwKRfCqXF9d0Nm9XueLnhNbsvaGoNuknKjI
+ lQMWcUgrt2tzYrooGBg==
+X-Proofpoint-ORIG-GUID: 0GEZgkY25yg_BUVfxDpBy0a_oNIrIv4y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2604010138
 
-From: Manish Honap <mhonap@nvidia.com>
+On 4/1/26 15:46, Eric Farman wrote:
+> On Wed, 2026-04-01 at 14:58 +0200, Christian Borntraeger wrote:
+>>
+>> Am 01.04.26 um 04:09 schrieb Eric Farman:
+>>> In the event that a nested guest is put in ESA mode,
+>>> ensure that some bits are scrubbed from the shadow SCB.
+>>>
+>>> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+>>
+>> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+>> apart from one thing below
+>>
+>>> ---
+>>>    arch/s390/kvm/vsie.c | 14 ++++++++++++++
+>>>    1 file changed, 14 insertions(+)
+>>>
+>>> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+>>> index 888370a02ef7..584fc7803632 100644
+>>> --- a/arch/s390/kvm/vsie.c
+>>> +++ b/arch/s390/kvm/vsie.c
+>>> @@ -387,6 +387,17 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>>>    	return 0;
+>>>    }
+>>>    
+>>> +static void shadow_esa(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>>> +{
+>>> +	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
+>>> +
+>>> +	/* Ensure these bits are indeed turned off */
+>>> +	scb_s->eca &= ~ECA_VX;
+>>> +	scb_s->ecb &= ~ECB_GS;
+>>> +	scb_s->ecb3 &= ~ECB3_RI;
+>>> +	scb_s->ecd &= ~ECD_HOSTREGMGMT;
+>>
+>> shouldnt we also remove the TE bit (transactional execution)?
+> 
+> Ahh, good point. Yeah, that should be removed.
+> 
+> @Janosch, I'll spin a quick v2 with this and the other nits, so you don't have to do the fixups.
+> Just want to doublecheck this one.
 
-Add vfio_cxl_type2_test and build it from the vfio selftest Makefile. The
-binary expects a PCI BDF (argv or VFIO_SELFTESTS_BDF) with the device
-already on vfio-pci and CONFIG_VFIO_CXL_CORE enabled.
+Great, thanks
 
-It exercises:
-- VFIO_DEVICE_GET_INFO,
-- GET_REGION_INFO,
-- VFIO_DEVICE_INFO_CAP_CXL capability list,
-- sparse component-BAR vs DPA/COMP_REG regions,
-- HDM decoder emulation (masks, commit, lock),
-- DVSEC-backed config where the driver exposes it.
-
-Large region read/write loops and FLR-heavy test cases are still
-pending; Need to revisit these in next version of patches.
-
-vfio_pci_device_setup() skips auto-mmap for BARs that carry
-sparse-mmap capabilities; those require the caller to mmap only the
-windows advertised by the capability.
-
-Signed-off-by: Manish Honap <mhonap@nvidia.com>
----
- tools/testing/selftests/vfio/Makefile         |   1 +
- .../selftests/vfio/lib/vfio_pci_device.c      |   3 +-
- .../selftests/vfio/vfio_cxl_type2_test.c      | 920 ++++++++++++++++++
- 3 files changed, 923 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/vfio/vfio_cxl_type2_test.c
-
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 3c796ca99a50..2cac98302609 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -4,6 +4,7 @@ TEST_GEN_PROGS += vfio_iommufd_setup_test
- TEST_GEN_PROGS += vfio_pci_device_test
- TEST_GEN_PROGS += vfio_pci_device_init_perf_test
- TEST_GEN_PROGS += vfio_pci_driver_test
-+TEST_GEN_PROGS += vfio_cxl_type2_test
- 
- TEST_FILES += scripts/cleanup.sh
- TEST_FILES += scripts/lib.sh
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index fac4c0ecadef..98832acc31ac 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -257,7 +257,8 @@ static void vfio_pci_device_setup(struct vfio_pci_device *device)
- 		struct vfio_pci_bar *bar = device->bars + i;
- 
- 		vfio_pci_region_get(device, i, &bar->info);
--		if (bar->info.flags & VFIO_REGION_INFO_FLAG_MMAP)
-+		if ((bar->info.flags & VFIO_REGION_INFO_FLAG_MMAP) &&
-+		    !(bar->info.flags & VFIO_REGION_INFO_FLAG_CAPS))
- 			vfio_pci_bar_map(device, i);
- 	}
- 
-diff --git a/tools/testing/selftests/vfio/vfio_cxl_type2_test.c b/tools/testing/selftests/vfio/vfio_cxl_type2_test.c
-new file mode 100644
-index 000000000000..272412a7b22f
---- /dev/null
-+++ b/tools/testing/selftests/vfio/vfio_cxl_type2_test.c
-@@ -0,0 +1,920 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * vfio_cxl_type2_test - selftests for CXL Type-2 device passthrough via vfio-pci
-+ *
-+ * Tests the UAPI and emulation layer introduced by CONFIG_VFIO_CXL_CORE
-+ *
-+ * Usage:
-+ *   ./vfio_cxl_type2_test <BDF>
-+ * or set the environment variable VFIO_SELFTESTS_BDF before running.
-+ *
-+ * The device must be a CXL Type-2 device (e.g. a GPU with coherent memory).
-+ * Tests adapt automatically to firmware-committed (COMMITTED/COMMIT_LOCK set)
-+ * and CONFIG_LOCK-set hardware states instead of skipping.
-+ *
-+ * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved
-+ */
-+
-+#include <fcntl.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+
-+#include <linux/pci_regs.h>
-+#include <cxl/cxl_regs.h>
-+#include <linux/sizes.h>
-+#include <linux/vfio.h>
-+
-+#include <libvfio.h>
-+
-+#include "kselftest_harness.h"
-+
-+/* Userspace equivalents of kernel helpers not available in user headers */
-+#ifndef BIT
-+#define BIT(n)			(1u << (n))
-+#endif
-+#ifndef GENMASK
-+#define GENMASK(h, l)		(((~0u) >> (31 - (h))) & ((~0u) << (l)))
-+#endif
-+#define VFIO_PCI_INDEX_TO_OFFSET(idx)	((uint64_t)(idx) << 40)
-+
-+static const char *device_bdf;
-+
-+/* ------------------------------------------------------------------ */
-+/* CXL UAPI constants (mirrors include/uapi/linux/vfio.h)             */
-+/* ------------------------------------------------------------------ */
-+
-+#define VFIO_DEVICE_INFO_CAP_CXL	6
-+
-+#define PCI_VENDOR_ID_CXL		0x1e98
-+
-+#ifndef VFIO_REGION_SUBTYPE_CXL
-+#define VFIO_REGION_SUBTYPE_CXL		1
-+#endif
-+#ifndef VFIO_REGION_SUBTYPE_CXL_COMP_REGS
-+#define VFIO_REGION_SUBTYPE_CXL_COMP_REGS 2
-+#endif
-+
-+/*
-+ * HDM Decoder register layout within the component register block.
-+ * Offsets relative to the start of the HDM decoder capability block.
-+ * The HDM decoder block begins at hdm_decoder_offset within the COMP_REGS
-+ * region; add hdm_decoder_offset before indexing into the region.
-+ */
-+#define HDM_GLOBAL_CTRL_OFFSET		0x04
-+#define HDM_DECODER_FIRST_OFFSET	0x10
-+#define HDM_DECODER_STRIDE		0x20
-+#define HDM_DECODER_BASE_LO		0x00
-+#define HDM_DECODER_BASE_HI		0x04
-+#define HDM_DECODER_SIZE_LO		0x08
-+#define HDM_DECODER_SIZE_HI		0x0c
-+#define HDM_DECODER_CTRL		0x10
-+
-+#define HDM_CTRL_COMMIT			BIT(9)
-+#define HDM_CTRL_COMMITTED		BIT(10)
-+#define HDM_CTRL_RESERVED_MASK		(BIT(15) | GENMASK(31, 28))
-+
-+#define CXL_LOCK_RESERVED_MASK GENMASK(15, 1)
-+
-+/* ------------------------------------------------------------------ */
-+/* Helpers                                                            */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * Walk the vfio_device_info capability chain embedded in @buf.
-+ * Returns a pointer to the capability with the given @id, or NULL.
-+ */
-+static const struct vfio_info_cap_header *
-+find_device_cap(const void *buf, size_t bufsz, uint16_t id)
-+{
-+	const struct vfio_device_info *info = buf;
-+	const struct vfio_info_cap_header *cap;
-+
-+	if (!(info->flags & VFIO_DEVICE_FLAGS_CAPS) || !info->cap_offset)
-+		return NULL;
-+
-+	cap = (const struct vfio_info_cap_header *)
-+		((const char *)buf + info->cap_offset);
-+
-+	while (true) {
-+		if (cap->id == id)
-+			return cap;
-+		if (!cap->next)
-+			return NULL;
-+		cap = (const struct vfio_info_cap_header *)
-+			((const char *)buf + cap->next);
-+		if ((const char *)cap + sizeof(*cap) > (const char *)buf + bufsz)
-+			return NULL;
-+	}
-+}
-+
-+/*
-+ * Walk the vfio_region_info capability chain embedded in @buf.
-+ * Returns a pointer to the capability with the given @id, or NULL.
-+ * @buf must have been obtained from VFIO_DEVICE_GET_REGION_INFO with
-+ * argsz large enough to hold the full capability chain.
-+ */
-+static const struct vfio_info_cap_header *
-+find_region_cap(const void *buf, size_t bufsz, uint16_t id)
-+{
-+	const struct vfio_region_info *info = buf;
-+	const struct vfio_info_cap_header *cap;
-+
-+	if (!(info->flags & VFIO_REGION_INFO_FLAG_CAPS) || !info->cap_offset)
-+		return NULL;
-+
-+	cap = (const struct vfio_info_cap_header *)
-+		((const char *)buf + info->cap_offset);
-+
-+	while (true) {
-+		if (cap->id == id)
-+			return cap;
-+		if (!cap->next)
-+			return NULL;
-+		cap = (const struct vfio_info_cap_header *)
-+			((const char *)buf + cap->next);
-+		if ((const char *)cap + sizeof(*cap) > (const char *)buf + bufsz)
-+			return NULL;
-+	}
-+}
-+
-+/*
-+ * Read a 32-bit value from the COMP_REGS region at @offset (HDM-relative).
-+ */
-+static uint32_t comp_regs_read32(struct vfio_pci_device *dev,
-+				 uint32_t region_idx, uint64_t offset)
-+{
-+	uint32_t val;
-+	loff_t pos = (loff_t)VFIO_PCI_INDEX_TO_OFFSET(region_idx) + offset;
-+	ssize_t r;
-+
-+	r = pread(dev->fd, &val, sizeof(val), pos);
-+	if (r != sizeof(val))
-+		return ~0u;
-+	return val;
-+}
-+
-+/*
-+ * Write a 32-bit value to the COMP_REGS region at @offset.
-+ * Mirrors the error-propagation contract of comp_regs_read32() which returns
-+ * ~0u on a short or failed pread.
-+ */
-+static ssize_t comp_regs_write32(struct vfio_pci_device *dev,
-+				 uint32_t region_idx, uint64_t offset,
-+				 uint32_t val)
-+{
-+	loff_t pos = (loff_t)VFIO_PCI_INDEX_TO_OFFSET(region_idx) + offset;
-+
-+	return pwrite(dev->fd, &val, sizeof(val), pos);
-+}
-+
-+/*
-+ * HDM register accessors.
-+ *
-+ * The COMP_REGS region starts at the CXL component register block
-+ * start (comp_reg_offset).  The HDM decoder capability block begins at
-+ * hdm_decoder_offset within this region. These helpers add
-+ * hdm_decoder_offset so that callers can continue to use the HDM-relative
-+ * offsets defined by the macros above.
-+ */
-+static uint32_t hdm_regs_read32(struct vfio_pci_device *dev,
-+				uint32_t region_idx,
-+				uint64_t hdm_decoder_offset,
-+				uint64_t hdm_off)
-+{
-+	return comp_regs_read32(dev, region_idx, hdm_decoder_offset + hdm_off);
-+}
-+
-+static ssize_t hdm_regs_write32(struct vfio_pci_device *dev,
-+				uint32_t region_idx,
-+				uint64_t hdm_decoder_offset,
-+				uint64_t hdm_off,
-+				uint32_t val)
-+{
-+	return comp_regs_write32(dev, region_idx, hdm_decoder_offset + hdm_off, val);
-+}
-+
-+/*
-+ * Traverse the CXL Capability Array at COMP_REGS region offset 0 to find the
-+ * HDM Decoder capability block offset and decoder count.
-+ *
-+ * COMP_REGS region layout at offset 0 (CXL Capability Array):
-+ *   Dword 0 bits[31:24] (CXL_CM_CAP_HDR_ARRAY_SIZE_MASK): entry count N.
-+ *   Dwords 1..N at offset (cap*4): bits[15:0] = cap ID (CXL_CM_CAP_HDR_ID_MASK),
-+ *   bits[31:20] = byte offset from COMP_REGS start (CXL_CM_CAP_PTR_MASK).
-+ *
-+ * HDM Decoder cap ID = 0x5 (CXL_CM_CAP_CAP_ID_HDM).
-+ * HDMC at hdm_decoder_offset+0 bits[3:0]: count = (field==0) ? 1 : field*2.
-+ *
-+ * Returns true on success; sets *hdm_off and *hdm_cnt.
-+ */
-+static bool find_hdm_decoder_info(struct vfio_pci_device *dev,
-+				  uint32_t comp_regs_idx,
-+				  uint64_t *hdm_off, uint8_t *hdm_cnt)
-+{
-+	uint32_t hdr, num_caps, i;
-+
-+	/* Read CXL Capability Array Header (dword 0) */
-+	hdr = comp_regs_read32(dev, comp_regs_idx, 0);
-+	if (hdr == ~0u)
-+		return false;
-+
-+	/* Validate: bits[15:0] must be CM_CAP_HDR_CAP_ID (1) */
-+	if ((hdr & 0xffff) != 1)
-+		return false;
-+
-+	/* bits[31:24] = number of capability entries */
-+	num_caps = (hdr >> 24) & 0xff;
-+
-+	for (i = 1; i <= num_caps; i++) {
-+		uint32_t entry = comp_regs_read32(dev, comp_regs_idx, i * 4);
-+		uint32_t cap_id = entry & 0xffff; /* CXL_CM_CAP_HDR_ID_MASK */
-+
-+		if (cap_id == 0x5) { /* CXL_CM_CAP_CAP_ID_HDM */
-+			uint32_t hdmc;
-+			uint32_t field;
-+
-+			/* bits[31:20]: byte offset from COMP_REGS start */
-+			*hdm_off = (entry >> 20) & 0xfff;
-+
-+			/* Read HDMC register at hdm_decoder_offset + 0 */
-+			hdmc = comp_regs_read32(dev, comp_regs_idx, *hdm_off);
-+			if (hdmc == ~0u)
-+				return false;
-+
-+			/* bits[3:0]: 0 = 1 decoder, N = N*2 decoders */
-+			field = hdmc & 0xf;
-+			*hdm_cnt = field ? (uint8_t)(field * 2) : 1;
-+			return true;
-+		}
-+	}
-+	return false;
-+}
-+
-+/*
-+ * Find the CXL DVSEC capability base in config space.
-+ */
-+#define PCI_DVSEC_VENDOR_ID_CXL	0x1e98
-+#define PCI_DVSEC_ID_CXL_DEVICE	0x0000
-+#define PCI_EXT_CAP_ID_DVSEC	0x23
-+
-+static uint16_t find_cxl_dvsec(struct vfio_pci_device *dev)
-+{
-+	uint16_t pos = PCI_CFG_SPACE_SIZE; /* 0x100 */
-+	int iter = 0;
-+
-+	while (pos && iter++ < 64) {
-+		uint32_t hdr  = vfio_pci_config_readl(dev, pos);
-+		uint32_t hdr1, hdr2;
-+		uint16_t cap_id	 = hdr & 0xffff;
-+		uint16_t next	 = (hdr >> 20) & 0xffc;
-+
-+		if (cap_id == PCI_EXT_CAP_ID_DVSEC) {
-+			hdr1 = vfio_pci_config_readl(dev, pos + 4);
-+			hdr2 = vfio_pci_config_readl(dev, pos + 8);
-+			/*
-+			 * PCIe DVSEC Header 1 layout (Table 9-16):
-+			 *   Bits [15: 0] = DVSEC Vendor ID
-+			 *   Bits [19:16] = DVSEC Revision
-+			 *   Bits [31:20] = DVSEC Length
-+			 * DVSEC Header 2 layout:
-+			 *   Bits [15: 0] = DVSEC ID
-+			 */
-+			if ((hdr1 & 0xffff) == PCI_DVSEC_VENDOR_ID_CXL &&
-+			    (hdr2 & 0xffff) == PCI_DVSEC_ID_CXL_DEVICE)
-+				return pos;
-+		}
-+		pos = next;
-+	}
-+	return 0;
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Fixture                                                            */
-+/* ------------------------------------------------------------------ */
-+
-+FIXTURE(cxl_type2) {
-+	struct iommu *iommu;
-+	struct vfio_pci_device *dev;
-+
-+	/* Filled in during FIXTURE_SETUP from the CXL cap */
-+	struct vfio_device_info_cap_cxl cxl_cap;
-+	uint16_t dvsec_base;
-+
-+	/*
-+	 * Sizes derived from VFIO_DEVICE_GET_REGION_INFO at setup time.
-+	 * These are not in the CXL cap struct; query the region directly.
-+	 */
-+	uint64_t dpa_size;       /* size of the DPA region */
-+	uint64_t hdm_regs_size;  /* size of the COMP_REGS region */
-+
-+	/*
-+	 * HDM decoder info derived from the COMP_REGS region at setup time.
-+	 * hdm_count and hdm_decoder_offset are no longer in the UAPI cap struct;
-+	 * they are derived by traversing the CXL Capability Array and reading
-+	 * the HDM Decoder Capability register (HDMC).
-+	 */
-+	uint64_t hdm_decoder_offset; /* byte offset in COMP_REGS to HDM block */
-+	uint8_t  hdm_count;          /* number of HDM decoders */
-+
-+	/* DPA mmap pointer (may be NULL if test skips mmap sub-tests) */
-+	void *dpa_mmap;
-+	size_t dpa_mmap_size;
-+};
-+
-+FIXTURE_SETUP(cxl_type2)
-+{
-+	uint8_t infobuf[512] = {};
-+	struct vfio_device_info *info = (void *)infobuf;
-+	const struct vfio_device_info_cap_cxl *cap;
-+
-+	self->iommu = iommu_init(default_iommu_mode);
-+	self->dev   = vfio_pci_device_init(device_bdf, self->iommu);
-+
-+	/* Query device info with space for capability chain */
-+	info->argsz = sizeof(infobuf);
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_INFO, info));
-+
-+	if (!(info->flags & VFIO_DEVICE_FLAGS_CXL)) {
-+		printf("Device %s is not a CXL Type-2 device — skipping\n",
-+		       device_bdf);
-+		SKIP(return, "not a CXL Type-2 device");
-+	}
-+
-+	cap = (const struct vfio_device_info_cap_cxl *)
-+		find_device_cap(infobuf, sizeof(infobuf),
-+				VFIO_DEVICE_INFO_CAP_CXL);
-+	ASSERT_NE(NULL, cap);
-+	memcpy(&self->cxl_cap, cap, sizeof(*cap));
-+
-+	/*
-+	 * Populate dpa_size and hdm_regs_size from region queries.
-+	 */
-+	{
-+		struct vfio_region_info ri = { .argsz = sizeof(ri) };
-+
-+		ri.index = cap->dpa_region_index;
-+		ASSERT_EQ(0, ioctl(self->dev->fd,
-+				   VFIO_DEVICE_GET_REGION_INFO, &ri));
-+		self->dpa_size = ri.size;
-+
-+		ri.index = cap->comp_regs_region_index;
-+		ASSERT_EQ(0, ioctl(self->dev->fd,
-+				   VFIO_DEVICE_GET_REGION_INFO, &ri));
-+		self->hdm_regs_size = ri.size;
-+	}
-+
-+	/*
-+	 * Derive hdm_decoder_offset and hdm_count from the COMP_REGS region.
-+	 * These fields were removed from vfio_device_info_cap_cxl to keep the
-+	 * UAPI minimal; userspace derives them via the CXL Capability Array.
-+	 */
-+	ASSERT_TRUE(find_hdm_decoder_info(self->dev,
-+					  cap->comp_regs_region_index,
-+					  &self->hdm_decoder_offset,
-+					  &self->hdm_count));
-+
-+	self->dvsec_base    = find_cxl_dvsec(self->dev);
-+	self->dpa_mmap      = MAP_FAILED;
-+	self->dpa_mmap_size = 0;
-+}
-+
-+FIXTURE_TEARDOWN(cxl_type2)
-+{
-+	if (self->dpa_mmap != MAP_FAILED && self->dpa_mmap_size)
-+		munmap(self->dpa_mmap, self->dpa_mmap_size);
-+	vfio_pci_device_cleanup(self->dev);
-+	iommu_cleanup(self->iommu);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Tests: VFIO_DEVICE_GET_INFO                                        */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * CXL and PCI flags must both be set; CAPS must be set since we have a cap.
-+ */
-+TEST_F(cxl_type2, device_flags)
-+{
-+	uint8_t infobuf[512] = {};
-+	struct vfio_device_info *info = (void *)infobuf;
-+
-+	info->argsz = sizeof(infobuf);
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_INFO, info));
-+
-+	ASSERT_TRUE(info->flags & VFIO_DEVICE_FLAGS_CXL);
-+	ASSERT_TRUE(info->flags & VFIO_DEVICE_FLAGS_PCI);
-+	ASSERT_TRUE(info->flags & VFIO_DEVICE_FLAGS_CAPS);
-+
-+	printf("device flags: 0x%x  num_regions: %u\n",
-+	       info->flags, info->num_regions);
-+}
-+
-+/*
-+ * The CXL capability must report sane HDM and DPA values.
-+ * hdm_count and hdm_decoder_offset are no longer in the cap struct; they
-+ * are derived from the COMP_REGS region in FIXTURE_SETUP and stored in
-+ * self->hdm_count and self->hdm_decoder_offset.
-+ */
-+TEST_F(cxl_type2, cxl_cap_fields)
-+{
-+	const struct vfio_device_info_cap_cxl *c = &self->cxl_cap;
-+
-+	ASSERT_EQ(VFIO_DEVICE_INFO_CAP_CXL, c->header.id);
-+	ASSERT_EQ(1, c->header.version);
-+
-+	/* Must have at least one HDM decoder (derived from HDMC bits[3:0]) */
-+	ASSERT_GT(self->hdm_count, 0);
-+
-+	/* COMP_REGS region size must be non-zero and 4-byte aligned */
-+	ASSERT_GT(self->hdm_regs_size, 0ULL);
-+	ASSERT_EQ(0ULL, self->hdm_regs_size % 4);
-+
-+	/*
-+	 * hdm_decoder_offset is derived from the CXL Capability Array.
-+	 * It must be:
-+	 *   - non-zero (the CXL Capability Array Header precedes the HDM block)
-+	 *   - dword-aligned
-+	 *   - strictly less than hdm_regs_size (HDM block fits in the region)
-+	 */
-+	ASSERT_GT(self->hdm_decoder_offset, 0ULL);
-+	ASSERT_EQ(0ULL, self->hdm_decoder_offset % 4);
-+	ASSERT_LT(self->hdm_decoder_offset, self->hdm_regs_size);
-+
-+	/* Region indices must not be ~0U (sentinel for "not found") */
-+	ASSERT_NE(~0U, c->dpa_region_index);
-+	ASSERT_NE(~0U, c->comp_regs_region_index);
-+
-+	/* The two regions must be distinct */
-+	ASSERT_NE(c->dpa_region_index, c->comp_regs_region_index);
-+
-+	/*
-+	 * FIRMWARE_COMMITTED: decoder was pre-programmed by firmware; DPA
-+	 * region is immediately live.  dpa_size must be non-zero in this case.
-+	 */
-+	if (c->flags & VFIO_CXL_CAP_FIRMWARE_COMMITTED)
-+		ASSERT_GT(self->dpa_size, 0ULL);
-+
-+	printf("hdm_count=%u dpa_size=0x%llx hdm_regs_size=0x%llx "
-+	       "hdm_decoder_offset=0x%llx "
-+	       "dpa_idx=%u comp_regs_idx=%u flags=0x%x "
-+	       "(firmware_committed=%d cache_capable=%d)\n",
-+	       self->hdm_count, (unsigned long long)self->dpa_size,
-+	       (unsigned long long)self->hdm_regs_size,
-+	       (unsigned long long)self->hdm_decoder_offset,
-+	       c->dpa_region_index, c->comp_regs_region_index, c->flags,
-+	       !!(c->flags & VFIO_CXL_CAP_FIRMWARE_COMMITTED),
-+	       !!(c->flags & VFIO_CXL_CAP_CACHE_CAPABLE));
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Tests: VFIO_DEVICE_GET_REGION_INFO                                 */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * The component register BAR must report its real (non-zero) size with
-+ * READ/WRITE/MMAP flags and a VFIO_REGION_INFO_CAP_SPARSE_MMAP capability.
-+ * The sparse areas advertise the GPU/accelerator register windows — the
-+ * mmappable parts of the BAR that do NOT contain CXL component registers.
-+ *
-+ * Three topologies are possible depending on where comp_regs sits in the BAR:
-+ *   Topology A [gpu_regs | comp_regs]      → 1 area: [0, comp_reg_offset)
-+ *   Topology B [comp_regs | gpu_regs]      → 1 area: [comp_end, bar_len)
-+ *   Topology C [gpu_regs | comp_regs | gpu_regs] → 2 areas
-+ *
-+ * In all cases each sparse area is a GPU register window; no area may overlap
-+ * the CXL component register block at [comp_reg_offset, comp_reg_offset +
-+ * comp_reg_size).
-+ */
-+TEST_F(cxl_type2, component_bar_sparse_mmap)
-+{
-+	struct vfio_region_info probe = { .argsz = sizeof(probe) };
-+	struct vfio_region_info *reg;
-+	const struct vfio_region_info_cap_sparse_mmap *sparse;
-+	uint32_t bar_idx = self->cxl_cap.hdm_regs_bar_index;
-+	uint64_t comp_reg_offset;
-+	uint64_t total_gpu_size;
-+	uint8_t *buf;
-+	uint32_t needed;
-+	uint32_t i;
-+
-+	/* First probe: learn required buffer size and basic flags */
-+	probe.index = bar_idx;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, &probe));
-+
-+	ASSERT_GT(probe.size, 0ULL);
-+	ASSERT_TRUE(probe.flags & VFIO_REGION_INFO_FLAG_READ);
-+	ASSERT_TRUE(probe.flags & VFIO_REGION_INFO_FLAG_WRITE);
-+	ASSERT_TRUE(probe.flags & VFIO_REGION_INFO_FLAG_MMAP);
-+
-+	/* Kernel must signal caps are present by expanding argsz */
-+	ASSERT_GT(probe.argsz, (uint32_t)sizeof(probe));
-+	needed = probe.argsz;
-+
-+	buf = calloc(1, needed);
-+	ASSERT_NE(NULL, buf);
-+	reg = (struct vfio_region_info *)buf;
-+	reg->argsz = needed;
-+	reg->index = bar_idx;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, reg));
-+
-+	/* Must carry a sparse-mmap cap */
-+	sparse = (const struct vfio_region_info_cap_sparse_mmap *)
-+		find_region_cap(buf, needed, VFIO_REGION_INFO_CAP_SPARSE_MMAP);
-+	ASSERT_NE(NULL, sparse);
-+
-+	/* 1 area (topology A or B) or 2 areas (topology C); never more */
-+	ASSERT_GE(sparse->nr_areas, 1U);
-+	ASSERT_LE(sparse->nr_areas, 2U);
-+
-+	/*
-+	 * comp_reg_offset = hdm_regs_offset - CXL_CM_OFFSET.
-+	 * hdm_regs_offset is the BAR-relative address of the CXL.mem area
-+	 * start, which sits CXL_CM_OFFSET (0x1000) bytes into the component
-+	 * register block.
-+	 */
-+	ASSERT_GE(self->cxl_cap.hdm_regs_offset, (uint64_t)CXL_CM_OFFSET);
-+	comp_reg_offset = self->cxl_cap.hdm_regs_offset - CXL_CM_OFFSET;
-+
-+	total_gpu_size = 0;
-+	for (i = 0; i < sparse->nr_areas; i++) {
-+		uint64_t area_start = sparse->areas[i].offset;
-+		uint64_t area_end   = area_start + sparse->areas[i].size;
-+
-+		/* Each area must be non-empty and fit within the BAR */
-+		ASSERT_GT(sparse->areas[i].size, 0ULL);
-+		ASSERT_LE(area_end, reg->size);
-+
-+		/*
-+		 * No sparse area may overlap the CXL component register block.
-+		 * Use hdm_regs_offset as a witness point: it is comp_reg_offset
-+		 * + CXL_CM_OFFSET, guaranteed inside the block.
-+		 */
-+		ASSERT_FALSE(area_start <= self->cxl_cap.hdm_regs_offset &&
-+			     self->cxl_cap.hdm_regs_offset < area_end);
-+
-+		total_gpu_size += sparse->areas[i].size;
-+
-+		printf("  sparse area[%u]: offset=0x%llx size=0x%llx\n", i,
-+		       (unsigned long long)area_start,
-+		       (unsigned long long)sparse->areas[i].size);
-+	}
-+
-+	/* GPU windows together must be strictly smaller than the full BAR */
-+	ASSERT_LT(total_gpu_size, reg->size);
-+
-+	printf("component BAR %u: bar_size=0x%llx comp_reg_offset=0x%llx "
-+	       "nr_areas=%u total_gpu=0x%llx flags=0x%x\n",
-+	       bar_idx, (unsigned long long)reg->size,
-+	       (unsigned long long)comp_reg_offset,
-+	       sparse->nr_areas, (unsigned long long)total_gpu_size,
-+	       reg->flags);
-+
-+	free(buf);
-+}
-+
-+/*
-+ * DPA region must be readable, writable, and mmappable.
-+ * Its size must be non-zero (verified in fixture setup via self->dpa_size).
-+ */
-+TEST_F(cxl_type2, dpa_region_info)
-+{
-+	struct vfio_region_info reg = { .argsz = sizeof(reg) };
-+
-+	reg.index = self->cxl_cap.dpa_region_index;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, &reg));
-+
-+	ASSERT_EQ(self->dpa_size, reg.size);
-+	ASSERT_TRUE(reg.flags & VFIO_REGION_INFO_FLAG_READ);
-+	ASSERT_TRUE(reg.flags & VFIO_REGION_INFO_FLAG_WRITE);
-+	ASSERT_TRUE(reg.flags & VFIO_REGION_INFO_FLAG_MMAP);
-+
-+	printf("DPA region: size=0x%llx offset=0x%llx flags=0x%x\n",
-+	       (unsigned long long)reg.size,
-+	       (unsigned long long)reg.offset, reg.flags);
-+}
-+
-+/*
-+ * COMP_REGS region must be readable and writable but not mmappable.
-+ * Its size covers [comp_reg_offset, comp_reg_offset + hdm_regs_size), which
-+ * includes both the CXL Capability Array prefix (hdm_decoder_offset bytes)
-+ * and the HDM decoder block. Size is available in self->hdm_regs_size
-+ * (populated from this same region query at fixture setup time).
-+ */
-+TEST_F(cxl_type2, comp_regs_region_info)
-+{
-+	struct vfio_region_info reg = { .argsz = sizeof(reg) };
-+
-+	reg.index = self->cxl_cap.comp_regs_region_index;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, &reg));
-+
-+	ASSERT_EQ(self->hdm_regs_size, reg.size);
-+	ASSERT_TRUE(reg.flags  & VFIO_REGION_INFO_FLAG_READ);
-+	ASSERT_TRUE(reg.flags  & VFIO_REGION_INFO_FLAG_WRITE);
-+	ASSERT_FALSE(reg.flags & VFIO_REGION_INFO_FLAG_MMAP);
-+
-+	printf("COMP_REGS region: size=0x%llx offset=0x%llx flags=0x%x\n",
-+	       (unsigned long long)reg.size,
-+	       (unsigned long long)reg.offset, reg.flags);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Tests: DPA region mmap                                             */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * mmap() the DPA region and verify the first page can be read.
-+ * The region uses lazy fault insertion so the first access triggers the
-+ * vfio_cxl_region_page_fault path.
-+ */
-+TEST_F(cxl_type2, dpa_mmap_fault)
-+{
-+	struct vfio_region_info reg = { .argsz = sizeof(reg) };
-+	size_t map_size;
-+	void *ptr;
-+	uint8_t *p;
-+	uint8_t val;
-+
-+	reg.index = self->cxl_cap.dpa_region_index;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, &reg));
-+
-+	/* Map just the first 2MB or the full region, whichever is smaller */
-+	map_size = (size_t)reg.size < (size_t)(2 * SZ_1M)
-+		 ? (size_t)reg.size : (size_t)(2 * SZ_1M);
-+
-+	ptr = mmap(NULL, map_size, PROT_READ | PROT_WRITE,
-+		   MAP_SHARED, self->dev->fd, (off_t)reg.offset);
-+	ASSERT_NE(MAP_FAILED, ptr);
-+
-+	self->dpa_mmap = ptr;
-+	self->dpa_mmap_size = map_size;
-+
-+	/* First access - triggers vmf_insert_pfn */
-+	p = (uint8_t *)ptr;
-+	val = *p;
-+	(void)val;
-+
-+	printf("DPA mmap: ptr=%p size=0x%zx first byte=0x%02x\n",
-+	       ptr, map_size, (uint8_t)val);
-+
-+	/* Write a pattern and read it back */
-+	*p = 0xab;
-+	ASSERT_EQ(0xab, *p);
-+}
-+
-+/*
-+ * mmap() of the COMP_REGS region (no MMAP flag) must fail.
-+ */
-+TEST_F(cxl_type2, comp_regs_no_mmap)
-+{
-+	struct vfio_region_info reg = { .argsz = sizeof(reg) };
-+	void *ptr;
-+
-+	reg.index = self->cxl_cap.comp_regs_region_index;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, &reg));
-+
-+	ptr = mmap(NULL, (size_t)reg.size, PROT_READ,
-+		   MAP_SHARED, self->dev->fd, (off_t)reg.offset);
-+	ASSERT_EQ(MAP_FAILED, ptr);
-+
-+	printf("mmap of COMP_REGS correctly failed (errno=%d)\n", errno);
-+}
-+
-+/*
-+ * mmap() of the CXL component register block within the component BAR must
-+ * fail with EINVAL.  The kernel blocks any mmap request whose range overlaps
-+ * [comp_reg_offset, comp_reg_offset + comp_reg_size) even though the BAR as
-+ * a whole carries the MMAP flag (GPU windows are mmappable).
-+ *
-+ * hdm_regs_offset (= comp_reg_offset + CXL_CM_OFFSET) is a page-aligned
-+ * address guaranteed to lie inside the component register block.
-+ */
-+TEST_F(cxl_type2, comp_reg_mmap_blocked)
-+{
-+	struct vfio_region_info bar_reg = { .argsz = sizeof(bar_reg) };
-+	void *ptr;
-+
-+	bar_reg.index = self->cxl_cap.hdm_regs_bar_index;
-+	ASSERT_EQ(0, ioctl(self->dev->fd, VFIO_DEVICE_GET_REGION_INFO, &bar_reg));
-+	ASSERT_TRUE(bar_reg.flags & VFIO_REGION_INFO_FLAG_MMAP);
-+
-+	/*
-+	 * hdm_regs_offset is page-aligned and is comp_reg_offset + CXL_CM_OFFSET
-+	 * (0x1000), so it is always within the component register block.
-+	 */
-+	ASSERT_EQ(0ULL, self->cxl_cap.hdm_regs_offset % SZ_4K);
-+
-+	ptr = mmap(NULL, (size_t)SZ_4K, PROT_READ,
-+		   MAP_SHARED, self->dev->fd,
-+		   (off_t)(bar_reg.offset + self->cxl_cap.hdm_regs_offset));
-+	ASSERT_EQ(MAP_FAILED, ptr);
-+	ASSERT_EQ(EINVAL, errno);
-+
-+	printf("comp_reg_mmap_blocked: hdm_regs_offset=0x%llx correctly blocked "
-+	       "(errno=%d)\n",
-+	       (unsigned long long)self->cxl_cap.hdm_regs_offset, errno);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Tests: COMP_REGS region (HDM decoder emulation)                    */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * Reading HDM Capability (offset 0x00) must return a non-zero value
-+ * consistent with at least one decoder being present.
-+ * Bits [3:0] encode the HDM decoder count.
-+ */
-+TEST_F(cxl_type2, hdm_cap_read)
-+{
-+	uint32_t cap;
-+	uint32_t idx = self->cxl_cap.comp_regs_region_index;
-+	uint64_t hdm_off = self->hdm_decoder_offset;
-+
-+	cap = hdm_regs_read32(self->dev, idx, hdm_off, CXL_HDM_DECODER_CAP_OFFSET);
-+	ASSERT_NE(~0u, cap);
-+
-+	/*
-+	 * Verify the live HDMC register matches the count we derived in setup.
-+	 * Encoding: bits[3:0] = 0 → 1 decoder; N → N*2 decoders.
-+	 */
-+	{
-+		uint32_t field = cap & 0xf;
-+		uint8_t expected = field ? (uint8_t)(field * 2) : 1;
-+
-+		ASSERT_EQ(self->hdm_count, expected);
-+	}
-+
-+	printf("HDM Capability register: 0x%08x  decoder_count_field=%u  hdm_count=%u\n",
-+	       cap, cap & 0xf, self->hdm_count);
-+}
-+
-+/*
-+ * HDM decoder COMMIT -> COMMITTED transition.
-+ *
-+ * On firmware-committed hardware (COMMITTED already set) the COMMIT path
-+ * is not exercisable.  Instead verify the committed state is self-consistent:
-+ * COMMITTED set, BASE/SIZE non-zero and large enough to cover dpa_size, and
-+ * reserved bits cleared by the emulation layer.
-+ *
-+ * On hardware where the decoder is not yet committed, exercise the full
-+ * COMMIT=1 -> COMMITTED=1 path followed by COMMIT=0 -> COMMITTED=0.
-+ */
-+TEST_F(cxl_type2, hdm_ctrl_commit_to_committed)
-+{
-+	uint32_t idx = self->cxl_cap.comp_regs_region_index;
-+	uint64_t hdm_off = self->hdm_decoder_offset;
-+	uint64_t base_lo_off = HDM_DECODER_FIRST_OFFSET + HDM_DECODER_BASE_LO;
-+	uint64_t base_hi_off = HDM_DECODER_FIRST_OFFSET + HDM_DECODER_BASE_HI;
-+	uint64_t size_lo_off = HDM_DECODER_FIRST_OFFSET + HDM_DECODER_SIZE_LO;
-+	uint64_t size_hi_off = HDM_DECODER_FIRST_OFFSET + HDM_DECODER_SIZE_HI;
-+	uint64_t ctrl_off    = HDM_DECODER_FIRST_OFFSET + HDM_DECODER_CTRL;
-+	uint32_t ctrl_readback;
-+	uint32_t base_lo, base_hi, size_lo, size_hi;
-+	uint64_t dec_base, dec_size;
-+
-+	ctrl_readback = hdm_regs_read32(self->dev, idx, hdm_off, ctrl_off);
-+
-+	if (ctrl_readback & HDM_CTRL_COMMITTED) {
-+		/*
-+		 * Firmware-committed decoder: verify the committed state is
-+		 * self-consistent.
-+		 *
-+		 * BASE is expected to be zero: the kernel clears BASE_LO/HI in
-+		 * the shadow for firmware-committed decoders so that the host
-+		 * HPA does not leak to the guest.  The VMM will write the guest
-+		 * GPA into BASE before booting the VM.
-+		 *
-+		 * SIZE must cover at least dpa_size, and reserved bits must be
-+		 * clear (the emulation scrubs them on every write).
-+		 */
-+		base_lo = hdm_regs_read32(self->dev, idx, hdm_off, base_lo_off);
-+		base_hi = hdm_regs_read32(self->dev, idx, hdm_off, base_hi_off);
-+		size_lo = hdm_regs_read32(self->dev, idx, hdm_off, size_lo_off);
-+		size_hi = hdm_regs_read32(self->dev, idx, hdm_off, size_hi_off);
-+		dec_base = ((uint64_t)base_hi << 32) | (base_lo & ~GENMASK(27, 0));
-+		dec_size = ((uint64_t)size_hi << 32) | (size_lo & ~GENMASK(27, 0));
-+
-+		ASSERT_EQ(0ULL, dec_base);
-+		ASSERT_GE(dec_size, self->dpa_size);
-+		ASSERT_EQ(0u, ctrl_readback & HDM_CTRL_RESERVED_MASK);
-+
-+		printf("Decoder 0 firmware-committed: ctrl=0x%08x "
-+		       "base=0x%llx (zeroed by kernel) size=0x%llx dpa_size=0x%llx\n",
-+		       ctrl_readback,
-+		       (unsigned long long)dec_base,
-+		       (unsigned long long)dec_size,
-+		       (unsigned long long)self->dpa_size);
-+		return;
-+	}
-+
-+	/* Decoder not committed: exercise COMMIT=1 -> COMMITTED=1 path */
-+	ASSERT_EQ(4, hdm_regs_write32(self->dev, idx, hdm_off, base_lo_off, 0x10000000));
-+	ASSERT_EQ(4, hdm_regs_write32(self->dev, idx, hdm_off, base_hi_off, 0));
-+	ASSERT_EQ(4, hdm_regs_write32(self->dev, idx, hdm_off, size_lo_off, 0x10000000));
-+	ASSERT_EQ(4, hdm_regs_write32(self->dev, idx, hdm_off, size_hi_off, 0));
-+
-+	ASSERT_EQ(4, hdm_regs_write32(self->dev, idx, hdm_off, ctrl_off, HDM_CTRL_COMMIT));
-+	ctrl_readback = hdm_regs_read32(self->dev, idx, hdm_off, ctrl_off);
-+	ASSERT_TRUE(ctrl_readback & HDM_CTRL_COMMITTED);
-+
-+	printf("HDM decoder 0 CTRL after COMMIT=1: 0x%08x (COMMITTED set)\n",
-+	       ctrl_readback);
-+
-+	ASSERT_EQ(4, hdm_regs_write32(self->dev, idx, hdm_off, ctrl_off, 0));
-+	ctrl_readback = hdm_regs_read32(self->dev, idx, hdm_off, ctrl_off);
-+	ASSERT_FALSE(ctrl_readback & HDM_CTRL_COMMITTED);
-+
-+	printf("HDM decoder 0 CTRL after COMMIT=0: 0x%08x (COMMITTED cleared)\n",
-+	       ctrl_readback);
-+}
-+
-+/*
-+ * CXL Lock (DVSEC offset 0x14):
-+ *   - Reserved bits GENMASK(15,1) must be cleared.
-+ *   - Once locked, CXL Control writes must be discarded.
-+ *
-+ * On firmware-committed hardware CONFIG_LOCK is set before OS load by the
-+ * BIOS.
-+ * In this case verify:
-+ * (a) Lock reserved bits are zero,
-+ * (b) a write to CXL Control is silently discarded by the emulation.
-+ * Both are directly testable without needing to transition from unlocked
-+ * to locked.
-+ *
-+ * On hardware where CONFIG_LOCK is not yet set, exercise the full sequence:
-+ * write reserved bits (must be cleared), set CONFIG_LOCK, verify Control
-+ * writes are then discarded.
-+ */
-+TEST_F(cxl_type2, dvsec_lock_semantics)
-+{
-+	uint16_t dvsec = self->dvsec_base;
-+	uint16_t lock_val, ctrl_before, ctrl_after;
-+
-+	if (!dvsec)
-+		SKIP(return, "CXL DVSEC not found in config space");
-+
-+	lock_val = vfio_pci_config_readw(self->dev,
-+					 dvsec + CXL_DVSEC_LOCK_OFFSET);
-+
-+	if (lock_val & CXL_DVSEC_LOCK_CONFIG_LOCK) {
-+		/*
-+		 * Lock is already set: verify reserved bits are zero in the
-+		 * current shadow, then verify a Control write is discarded.
-+		 */
-+		ASSERT_EQ(0u, lock_val & CXL_LOCK_RESERVED_MASK);
-+
-+		ctrl_before = vfio_pci_config_readw(self->dev,
-+						    dvsec + CXL_DVSEC_CONTROL_OFFSET);
-+		/* Attempt to flip CXL_Mem_Enable (bit 2) */
-+		vfio_pci_config_writew(self->dev, dvsec + CXL_DVSEC_CONTROL_OFFSET,
-+				       ctrl_before ^ BIT(2));
-+		ctrl_after = vfio_pci_config_readw(self->dev,
-+						   dvsec + CXL_DVSEC_CONTROL_OFFSET);
-+		ASSERT_EQ(ctrl_before, ctrl_after);
-+
-+		printf("CONFIG_LOCK set: lock=0x%04x, "
-+		       "Control write discarded (ctrl=0x%04x unchanged)\n",
-+		       lock_val, ctrl_after);
-+		return;
-+	}
-+
-+	/* Lock is not set: exercise reserved-bit masking and lock-set sequence */
-+	vfio_pci_config_writew(self->dev, dvsec + CXL_DVSEC_LOCK_OFFSET,
-+			       CXL_LOCK_RESERVED_MASK);
-+	lock_val = vfio_pci_config_readw(self->dev,
-+					 dvsec + CXL_DVSEC_LOCK_OFFSET);
-+	ASSERT_EQ(0u, lock_val & CXL_LOCK_RESERVED_MASK);
-+	ASSERT_FALSE(lock_val & CXL_DVSEC_LOCK_CONFIG_LOCK);
-+
-+	ctrl_before = vfio_pci_config_readw(self->dev,
-+					    dvsec + CXL_DVSEC_CONTROL_OFFSET);
-+	vfio_pci_config_writew(self->dev, dvsec + CXL_DVSEC_LOCK_OFFSET,
-+			       CXL_DVSEC_LOCK_CONFIG_LOCK);
-+	lock_val = vfio_pci_config_readw(self->dev,
-+					 dvsec + CXL_DVSEC_LOCK_OFFSET);
-+	ASSERT_TRUE(lock_val & CXL_DVSEC_LOCK_CONFIG_LOCK);
-+
-+	vfio_pci_config_writew(self->dev, dvsec + CXL_DVSEC_CONTROL_OFFSET,
-+			       ctrl_before ^ BIT(0));
-+	ctrl_after = vfio_pci_config_readw(self->dev,
-+					   dvsec + CXL_DVSEC_CONTROL_OFFSET);
-+	ASSERT_EQ(ctrl_before, ctrl_after);
-+
-+	printf("Lock set, Control write discarded: "
-+	       "lock=0x%04x ctrl_before=0x%04x ctrl_after=0x%04x\n",
-+	       lock_val, ctrl_before, ctrl_after);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* main                                                               */
-+/* ------------------------------------------------------------------ */
-+
-+int main(int argc, char *argv[])
-+{
-+	device_bdf = vfio_selftests_get_bdf(&argc, argv);
-+	return test_harness_run(argc, argv);
-+}
--- 
-2.25.1
+> 
+>>
+>>> +}
+>>> +
+>>>    /* shadow (round up/down) the ibc to avoid validity icpt */
+>>>    static void prepare_ibc(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>>>    {
+>>> @@ -590,6 +601,9 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>>>    	scb_s->hpid = HPID_VSIE;
+>>>    	scb_s->cpnc = scb_o->cpnc;
+>>>    
+>>> +	if (!(atomic_read(&scb_s->cpuflags) & CPUSTAT_ZARCH))
+>>> +		shadow_esa(vcpu, vsie_page);
+>>> +
+>>>    	prepare_ibc(vcpu, vsie_page);
+>>>    	rc = shadow_crycb(vcpu, vsie_page);
+>>>    out:
 
