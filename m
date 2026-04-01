@@ -1,68 +1,50 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010015.outbound.protection.outlook.com [52.101.61.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9033F0AAE;
-	Wed,  1 Apr 2026 14:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775053152; cv=fail; b=VCpWXalUvEZBDJrgeUHBgXOQ6Q13vuG1Mslx7NcpEjZSwVS7e+0PFoskdt4Uq2T393Dnl5wOGlnu7SmTm3UEhmTIyGpZtkQPf6H3S8Pz77qGiGgpL6Zq0hGntOf3b3dYsZLAM+Wa+anJB3HM1aJVuji8FWmttYW/RDXD29so03E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775053152; c=relaxed/simple;
-	bh=y8HtYo2v0L0NG2EMaB96JxPDEH/6B3zmSKlS3pf9ciM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=miHcn39+a4n/5YgjlkNRoVc0b/WtgtmFXFFi3BObdZeqMk18a5YP/Iw2+oNe8QPlkkthO1b5ptsyzTXPzzJA7HgTqW0c6mdWdBsUBkZdCiB4sRgwBHeDrOfT2uzrc1qaVAPiIQQCig8O+VgupavykhEP8mX67q9ONaSrdUmi6rQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PUogEf64; arc=fail smtp.client-ip=52.101.61.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF6245090A;
+	Wed,  1 Apr 2026 14:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775053435; cv=none; b=MpTkHtOJldHbU28kuRFItFbNUhviuJI/mq01F6kP7LTsFuK67vECWiWRWC7cvMO6f9IJBPVZoS3ftLbJxgHBY9KtLSrw6d+JZ+8ACWRDmduOPac38TMiMA1a/yeeTRxi9paRRLULouFBdW9O8Pl/NVtqzLkov4x9f2JQIiYqbio=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775053435; c=relaxed/simple;
+	bh=DryLhhG4NN71YimAfpuPlkKlSrpcP5IEAQgbutXVFjQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UstHNIece61rjZt+ZjEX9NmcDw09zTbHR1YgNUqL3qfLc7wlzHpWv/yhVqJ5Dk8bgmC5X3p8XZJBTl2ulhrdkP8mNmn6pNl937gSlg8wJobAh4Ekbd7qrSO9cCtukCcRDz4tTINp9j14hlWSgkI7lotKcY1LF2ueLb1uAT0AesE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kFlvsNSQ; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PUogEf64"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ydzcSljaztsUVxnqcPUQ9YINb2U8FAM2P56QHSWhNs3vhpPLDIOKIuCybpfnDqyGQiCyAe4XYBMmmdeWFrdd4EGsM/nyuGOtruZQkIIYxx81rJDqiNoZRgzL8PWQbzUbRLwIMrdyvYK8OxhljD2D3xda6/PHE+YaXqJOfpdINQJYvCivsslbuygjts5ctZrSTnNoxNXlj7a8WSsc0TPAGj2p9kb9kYkx/8YgUVXi2+2V69NUbPwAf8F1y7NJuM8h67Ed7vP7CBEU354P35jVg1XnZSdZ/6Kno7O8BNdOGhAlm2ZMI7zdiyL32lwJ6raOPce0rWVICEAEd3pQAWrNsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MRR8wHueRVdemVlOtbvQxeCM0SeFTKhFDNGLLLukHaw=;
- b=pFgFDmCAw1RKqltrzHaTOoYd53tbZKDSKO3A7SM7ERKC43PdzMuek9jo4I5EOYFlJZohZWVDcdP8u/8QbwUxde21E4OLjnphGxnMB0vRikxi3eMqkwlwtMsa/UCncmwiS8SEIsXTtKvi9wZOsfwhA//l2uBAR5HZdMC1hxLMuubwudGc55/QAjk2V6Q1TSJ8iZuIYlbpVKfyRhfz2p/U7Tv1KJEnkVljjyEAw8o262R73yTe1peAqk+acoXxDdAThFu/N5OIfdqahl9k4Q8cfgJW9NXlpB6Tu3vywn0A3fsH/sv6UY9+L3PDZZftbakpGDRYSE5J7FvurlKGuElb4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MRR8wHueRVdemVlOtbvQxeCM0SeFTKhFDNGLLLukHaw=;
- b=PUogEf64wPnYSR+VJGZwKapb1qUmd+uyo6+jvKaocVnZpZ6sqt0XKm3Xg+seG0L4X9CRjp5Sc2rEqKM7Df3D3QvsWYTncRUF1PDry7Q/5FKr+FmD0XyvCd7UxIDC41dDETkrUDOnSVoV4TKGAm1FLzFZNnW84pipYY2GbPsEJpI=
-Received: from DS7P220CA0009.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:1ca::13) by
- DS0PR12MB8246.namprd12.prod.outlook.com (2603:10b6:8:de::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.18; Wed, 1 Apr 2026 14:19:06 +0000
-Received: from CY4PEPF0000EE39.namprd03.prod.outlook.com
- (2603:10b6:8:1ca:cafe::bb) by DS7P220CA0009.outlook.office365.com
- (2603:10b6:8:1ca::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.31 via Frontend Transport; Wed,
- 1 Apr 2026 14:19:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000EE39.mail.protection.outlook.com (10.167.242.11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 14:19:05 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Apr
- 2026 09:19:05 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Apr
- 2026 07:19:05 -0700
-Received: from [172.31.185.117] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 1 Apr 2026 09:19:03 -0500
-Message-ID: <524fc5dd-e06b-4857-82e7-f0a969966bc9@amd.com>
-Date: Wed, 1 Apr 2026 19:49:02 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kFlvsNSQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775053434; x=1806589434;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DryLhhG4NN71YimAfpuPlkKlSrpcP5IEAQgbutXVFjQ=;
+  b=kFlvsNSQouiUfjhvZ9rpisTmwbTsiDRdvBF0FDpwwLwfOgKMV/azFl11
+   8XKXL1th7AFTdoWLhz75hGW9Z9fi9TKMa7OgE2V0p0zg/WZx+LFQjDg6j
+   elDE2uZag1zVut0pdskQHCj+qhbb/ZqBPQNLYpQS9fsas5ScsQEl/6MzY
+   kl1cPk5Pmoy5xvs/Be2dL6u/0ns3RjHyHPOvqQ1KWnwUQXmsrcg+1EnHP
+   QxBX2bRbg4qgQ9qutMpmEpqHPTaZbW/96Mu86J19pkMz5yNkkvpVdvwwX
+   m0SUq8gwRvE0nDbqoJNz0flpwo0ZwMMGeIXq6hM9+QCPqXrNJLKwcN0Bx
+   w==;
+X-CSE-ConnectionGUID: AzQfwiLbSva1j42wcui9ww==
+X-CSE-MsgGUID: Im0LRQWBSyO3wDbe9A2M0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="79980416"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="79980416"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 07:23:53 -0700
+X-CSE-ConnectionGUID: A4o2gcf+QSGnQ54UDaA6eQ==
+X-CSE-MsgGUID: AS6L6CMYTbGOJTBlROViPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="226938217"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.95]) ([10.125.111.95])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 07:23:52 -0700
+Message-ID: <eabf56d3-3b6b-478e-9901-8c639291d79a@intel.com>
+Date: Wed, 1 Apr 2026 07:24:00 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,249 +52,112 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: SEV-ES guest shutdown: linux-next regression with QEMU 10.2.2;
- smp>1
-To: Tom Lendacky <thomas.lendacky@amd.com>, Sean Christopherson
-	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-CC: open list <linux-kernel@vger.kernel.org>, KVM <kvm@vger.kernel.org>
-References: <c820e242-9f3a-4210-b414-19d11b022404@amd.com>
- <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
- <2723ab8b-8fad-469d-9ef2-918358953b16@amd.com>
- <c5f86b40-7330-4ff3-a2df-90729d1c9fef@amd.com>
+Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
+ TDH.SYS.DISABLE
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Verma, Vishal L" <vishal.l.verma@intel.com>, "kas@kernel.org"
+ <kas@kernel.org>
+Cc: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
+ "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
+ <acpiGUKS-WRmLoxp@thinkstation>
+ <def1f4395865ad0d22be245647fbb75ab8698ab8.camel@intel.com>
+ <acu4raBTjdFcfVlS@thinkstation>
+ <b9aa84d76c131132b5268712a44200e804c31aeb.camel@intel.com>
+ <944b3fe5fa8955319030a7dfc0ea164bb0266e68.camel@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: "Aithal, Srikanth" <sraithal@amd.com>
-In-Reply-To: <c5f86b40-7330-4ff3-a2df-90729d1c9fef@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE39:EE_|DS0PR12MB8246:EE_
-X-MS-Office365-Filtering-Correlation-Id: c034d206-7bfd-4849-6d10-08de8ff9a1d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Myp0DmUw2gu7LngdXRVsVBuSEjmDHly7VbknRLWXBsoQmrUQTE418ZfXRdRplc9Iqn4vGbm1Zx5MneuWjH8esIqwPf/+H7X2l3gMceIfgfkF17SStbOV98F1KgGM7bdXNfeTO+HQGH3pZPilbkdg+9PaT3xALjEQErHds3WfGSsOzZhReGBH7bp/0rUVbRizckMAtrh8RWU1q7yzbequsRfHFpxm2tztiJ0sox6ZPtaaAJxVTFN263tmgWtkzNHm0m2gBhUCrujyqa9Q8I4SwRAUI6xtbB1S9Y8sbNKD5cHcu1/V8wu3zhqMNU29Httwx+6d+/nKEO7O5B6F0Aj4SuhelJJqdi/sJZEMq+rCYXZbPe5PSnnLmTioz77fhfoFGon2IT2WE+qi7YnAqqGfM2nk6xw2ps0Z9084HqD4r5el2mo+ohSwfVcTOdzhsMxzV3uGQF3RfAQMdAVRYL0EBP+FnLQqmG4h88o9faOWdnkhcRSg3Qlcq068pcSSXX19UYtG1HBsh3wAbYEwFqScUMSsq5xWTJBCZKpoZif3A2LbETOI2BHTTv5ZkSWbtHW48POksdvk//+usqTDUZ4usgmle7r04258GXXtG+mryoUO81GzI7kyoVBZvOkdxMtaSqzOQB8dzi0LJN5EoSrY3ossHAHH2zqGhaoqxXQ7QlrlGzn02ChW1yCmiWn1BLZ+/f4X2ORc0k1pgAIdSeiY+xJX6bmwb5y95At1jjjz3+4SIK0awidsbOp4DWyE/DImL2z+DW40LYT2UlS6XT2AGw1Pf/Hhje+a2RnXJs5X5WQ=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	zHGLCoMRzOynXaDIMp0w2wfx1ykUih5F1AqjQVYv+kaXJlZTRv0Bwp+ripmK+VKBVvbCGa++OyjGwQ/TuMZOQQbQeU8HjB2f56P/VufzllQHffcD9l86by0CV8qTGsAna2CEOrj6tg8IyG+zZdXCYFZetwAJq9uuUdDZw/Cd/n+nVnjnRSSjp8mhIW4CGNc3ha6wSjhoMNjLFjmdWcFUOSQ8k0UJPce0nla37cMT2g5OXXT4de0/Twap8Zu0IBQEFUUcy/MQUSk9l/cIvfyQgNnoq4mmb15WAQBtpx/s4ar7fS6/TlDVJvpec/nmQWwUozH4htsw/MJ/lB9iCxutIa0tUWkHsrt3ZMdNiE5JkZpkkjYibNYwOoS/XZ7WNc2k9kzcKKD7r8JNBuuyc5rL8Upq0/Hl8v0p8nqiYm5Yc8jb7O1OD328Mf9EYpbIwdmf
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 14:19:05.6924
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c034d206-7bfd-4849-6d10-08de8ff9a1d3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE39.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8246
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <944b3fe5fa8955319030a7dfc0ea164bb0266e68.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 4/1/2026 6:23 PM, Tom Lendacky wrote:
-> On 4/1/26 06:24, Aithal, Srikanth wrote:
->> Hello Tom,
->>
->>
->> On 3/23/2026 6:40 PM, Tom Lendacky wrote:
->>> On 3/20/26 11:08, Aithal, Srikanth wrote:
->>>> Hello,
->>>>
->>>> I am hitting a failure when shutting down a SEV-ES guest (smp>1) on
->>>> recent linux-next, and narrowed it down with bisection on the host
->>>> kernel. The issue appears with more than one vCPU (e.g. -smp 2); with -
->>>> smp 1 shutdown completes normally in my tests. The same guest shutdown
->>>> path works with an older host kernel (<next-20260304) and is also
->>>> avoided with current QEMU master or by cherry-picking a specific QEMU
->>>> commit onto v10.2.2.
->>>>
->>>> Environment:
->>>> Host kernel: linux-next, tag next-20260319 [1] (also observed starting
->>>> from next-20260304).
->>>> Guest: SEV-ES Linux guest; -smp 2 (or more) reproduces the issue; -smp 1
->>>> does not in my testing.
->>>> Hypervisor / QEMU: Initially QEMU v10.2.2 (stable). Later tested QEMU
->>>> master at 8e711856d763 [2].
->>>>
->>>> Details on issue:
->>>>
->>>> After SEV-ES guest shutdown , the serial log shows a register dump
->>>> (example below) .
->>>>
->>>> [   12.613383] reboot: Power down^M
->>>> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
->>>> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
->>>> EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
->>>> ES =0000 00000000 0000ffff 00009300
->>>> CS =f000 00800000 0000ffff 00009b00
->>>> SS =0000 00000000 0000ffff 00009300
->>>> DS =0000 00000000 0000ffff 00009300
->>>> FS =0000 00000000 0000ffff 00009300
->>>> GS =0000 00000000 0000ffff 00009300
->>>> LDT=0000 00000000 0000ffff 00008200
->>>> TR =0000 00000000 0000ffff 00008b00
->>>> GDT=     00000000 0000ffff
->>>> IDT=     00000000 0000ffff
->>>> CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
->>>> DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000
->>>> DR3=0000000000000000
->>>> DR6=00000000ffff0ff0 DR7=0000000000000400
->>>> EFER=0000000000000000
->>>> Code=b0 96 b5 61 ca ef 3f 51 00 c3 65 51 19 77 b1 e0 e5 e2 91 b8 <0c> 5d
->>>> c7 fc 59 bc 2b 6f 90 89 44 23 ec ec 2f 62 fd e0 8f d5 c7 31 24 70 e2 7d
->>>> c6 ee 00 00
->>>> -> Hangs here
->>>>
->>>> Host kernel bisect (with QEMU v10.2.2) led to:
->>>>
->>>> Good (no crash on guest shutdown):
->>>> 32d76cdfa1222c88262da5b12e0b2bba444c96fa
->>>> KVM: SVM: Move core EFER.SVME enablement to kernel (local build tagged
->>>> 7.0.0-rc232d76cdfa1222 during testing.)
->>>>
->>>> Bad (crash reproduced):
->>>> 428afac5a8ea9c55bb8408e02dc92b8f85bf5f30
->>>> KVM: x86: Move bulk of emergency virtualization logic to virt subsystem
+On 3/31/26 14:36, Edgecombe, Rick P wrote:
+> On Tue, 2026-03-31 at 18:22 +0000, Verma, Vishal L wrote:
+>>> I guess the actual behaviour is dependant on the return code. It is
+>>> obviously going to be the case for TDX_SUCCESS. And from the discussion,
+>>> I guess that's true for TDX_SYS_BUSY and TDX_INTERRUPTED_RESUMABLE.
 >>>
->>> Any chance you have the enable_virt_at_load module option set to false?
+>>> What about other cases? The spec draft also lists TDX_SYS_NOT_READY and
+>>> TDX_SYS_SHUTDOWN.
+>> I think these are safe too - TDX_SYS_SHUTDOWN means the module has
+>> already been shutdown, which this seamcall would've done, so things
+>> should be in the same state either way.
 >>
->> No, it is set to Y.
->> # cat /sys/module/kvm/parameters/enable_virt_at_load
->> Y
->>
->>
->>>
->>>>
->>>> So the first bad commit in my host kernel bisect was 428afac5a8ea. The
->>>> commit prior [32d76cdfa122] did not have this issue.
->>>>
->>>> Later I used QEMU master and with same linux-next next-20260319 as host,
->>>> it did not reproduce the shutdown issue .. that was using QEMU master
->>>> [2].
->>>>
->>>> QEMU master contains 56d89db2cfd82c53439778fbf39294bf35194dba (target/
->>>> i386: convert SEV-ES termination requests to guest panic events).
->>>> Cherry-picking that commit onto QEMU v10.2.2 resolved or at least
->>>> avoided the shutdown crash in my setup.
->>>
->>> Well, if it is converting a guest termination request, that is still not
->>> good. It should be a clean shutdown.
->>>
->>>>
->>>>
->>>> Questions:
->>>>
->>>> KVM: Is the interaction/issue with older QEMU (e.g. v10.2.2) expected
->>>> here, or is there anything that should be adjusted or documented
->>>> following 428afac5a8ea, like for multi-vCPU SEV-ES guests?
->>>> QEMU: Would a stable backport of 56d89db2cfd8 to 10.2.x (or equivalent
->>>> handling of SEV-ES termination) be appropriate for users staying on
->>>> stable QEMU while moving to newer host kernels?
->>>
->>> That wouldn't actually solve the issue, it is just a much more user
->>> friendly error message. Is there a termination event in the host dmesg
->>> log?
->>
->>
->> The guest shutdown proceeds normally until:
->> [ OK ] Reached target poweroff.target - System Power Off.
->> [ 9.918849] reboot: Power down
->>
->> At that point the serial console freezes with the register dump below
->> (EIP=0000b004, HLT=1, EFER=0, etc.).
->>
->> [  OK  ] Finished systemd-poweroff.service - System Power Off.
->> [  OK  ] Reached target poweroff.target - System Power Off.
->> [   10.029330] reboot: Power down
->> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
->> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
->> EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
->> ES =0000 00000000 0000ffff 00009300
->> CS =f000 00800000 0000ffff 00009b00
->> SS =0000 00000000 0000ffff 00009300
->> DS =0000 00000000 0000ffff 00009300
->> FS =0000 00000000 0000ffff 00009300
->> GS =0000 00000000 0000ffff 00009300
->> LDT=0000 00000000 0000ffff 00008200
->> TR =0000 00000000 0000ffff 00008b00
->> GDT=     00000000 0000ffff
->> IDT=     00000000 0000ffff
->> CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
->> DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000
->> DR3=0000000000000000
->> DR6=00000000ffff0ff0 DR7=0000000000000400
->> EFER=0000000000000000
->> Code=98 59 0c db 72 6c 94 71 3d a6 36 32 49 a8 08 22 bd d7 8c bb <4c> 3c
->> d9 bd 90 b5 2e a0 69 26 53 df aa 4c bb fe 5a d9 b6 ee 7b 45 02 2e cf d9
->> 60 48 00 00
->>
->>
->>
->> QEMU does **not** exit on its own — it appears stuck.
->>
->> Only after I press Ctrl+C do I see in host dmesg:
->> kvm_amd: SEV-ES guest requested termination: 0x0:0x0
-> 
-> So we would have to see what is triggering that termination request.
-> 
-> We can probably instrument a guest kernel to get some more info.
+>> TDX_SYS_NOT_READY means the module hasn't been initialized yet. This
+>> seamcall should just exit, and the module is already blocking any
+>> seamcall that need the module to be initialized. The seamcalls to
+>> initialize the module will be allowed, as they are after a sys_disable
+>> call anyway.
+> Should the seamcall return success in the case where it would return
+> TDX_SYS_NOT_READY? It is in basically a reset state right? The errors we care
+> about are actual errors (TDX_SW_ERROR), so it makes no difference to the code in
+> the patch. But it might be a nicer API for the seamcall?
 
-Sure, I can apply any debug patch and provide the debug logs.
+The problem is that the module doesn't have *a* reset state.
+TDX_SYS_NOT_READY gets returned before the module is initialized and
+initialization is a long, arduous process.
 
-Note: I'm heading out on PTO until next Wednesday (April 8th). I won't 
-be able to gather additional debug logs until I return.
+For instance, I believe the module stays "not ready" in the middle of
+giving it PAMT memory and a keyID and all that jazz.
 
-> 
->>
->> I also set `kvm_amd.dump_invalid_vmcb=1` before reproducing, but it
->> produced no additional output.
->>
->> This issue is still present on latest linux-next next-20260331 [https://
->> git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?
->> h=next-20260331, tag name    next-20260331
->> (e5da3eef8dadab4e98b228725ca8948edd9d601f)]
-> 
-> Is it only with linux-next? Which would point to a kernel change vs a
-> Qemu change.
+TDX_SYS_NOT_READY is a way of saying it can't easily *make* it to the
+actual reset state that TDH.SYS.DISABLE wants it to be in.
 
-Yes, it is specific to linux-next (starting from next-20260304, bisected 
-to 428afac5a8ea "KVM: x86: Move bulk of emergency virtualization logic 
-to virt subsystem").
+It's arguable that the module should be made more resilient to stop
+returning TDX_SYS_NOT_READY. But it's not as simple as just changing a
+return code in the module.
 
-- With older host kernels (< next-20260304) + QEMU 10.2.2 → clean 
-shutdown (no hang, no termination message, QEMU exits normally).
-- With linux-next (next-20260331) + QEMU 10.2.2 → hang at the register 
-dump after "reboot: Power down"; only Ctrl+C triggers the "SEV-ES guest 
-requested termination: 0x0:0x0" message.
-- With linux-next + QEMU master (or 10.2.2 + cherry-pick of 
-56d89db2cfd8) → no hang (the termination is converted to a guest panic 
-instead).
-
-
-> 
-> Thanks,
-> Tom
-> 
->>
->>>
->>> Thanks,
->>> Tom
->>>
->>>>
->>>> Thank you,
->>>>
->>>> Srikanth Aithal <sraithal@amd.com>
->>>>
->>>> References
->>>>
->>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
->>>> — next-20260319
->>>> [2] https://gitlab.com/qemu-project/qemu — master 8e711856d763
->>>>
->>>>
->>>
->>
-> 
-
+I'm OK with it continuing to return TDX_SYS_NOT_READY for now. I think
+it's a useful indicator. Maybe the kernel can't do much with it, but
+it's a little window into what went wrong.
