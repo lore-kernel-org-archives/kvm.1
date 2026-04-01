@@ -1,148 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF99C47DD50;
-	Wed,  1 Apr 2026 18:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C46E32ED2E
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 19:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775069584; cv=none; b=ekyQm8GcfxchBVGPnINomACmJ7xMex9ipq2edn+klNM2n6RU6YC4uyHzgEuCyiJcuJh+TqBehhgCYxuMW19aXjwFimG5Fg9kEcBWk6kJpxofeCZPd/hFcJDaRZ1jbAQzIkcYZhcN8Sbkoti0lVovOQVWrDFA+vegf+edqunsOUo=
+	t=1775070443; cv=none; b=hEpqneeMqbSZd1OMStMDvnE0GjtVEAuqi7yTEYjsz7v5PPJvBs56ODaxy7nDZK1e/Y4H4fIjnl3CLOv/L/rp6VZIb4HDLkNU7afMSgzT+3+Om8A1UE2PF9r4pktwaCSsWPhIrNwsOEVd8VqP9aQPTth9+a5t/vPe0TLFWMxcnbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775069584; c=relaxed/simple;
-	bh=ZdkptTRmZ1xWZy0UTX5CWn5xL1JL0Tsfe3zndQo+s+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CsfGYQbEbwNDb/HecaC2F6Ztmytk+gxbz7Usv4SNlzN2JTLxkaNKsG5L8hzWbAICoi/gRVli4lAyvtnFj4cYBfc7bD57WHdocgsy7DJFlb9CCvzRdMtBXB+63S3AZlFY8KV+4TDzmnAaFAXFTOWR78J5ne0Hdj9GXL1NHc2RddA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hou/2XiH; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1775070443; c=relaxed/simple;
+	bh=OMdO+tFJ6OLziUdlu33dLXoZ/7vMDQMQWjuAHyb5DSQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iIjh2LjGZrR2iiVSBI1wuvMBuB/AwQJ5zNZtEOh5fYGFT4x2Ehc3K4ZdrTitWeZALQbMElcd2Isk5LOgIywf01qN+5PSAsqXwT59oJ+bb38YOQSr2Xb/G3muL6Q8yOf9uXKDanhMEz3b3AiyVMd6ES7Bef2oMmSs1jIPfbBEllg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ki9yxLOO; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hou/2XiH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775069584; x=1806605584;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZdkptTRmZ1xWZy0UTX5CWn5xL1JL0Tsfe3zndQo+s+A=;
-  b=hou/2XiHpZmH5ITGsz34cC+y3nFNyxbDX2Xcw5pdK1vGIhnWPWGyDxgT
-   cDMJCym+uWCAD7LB4GWcU6DY78fa/BOJJt6Nzcp8eFz5v1gDqfOA1ipPw
-   e2/4J85pTmOUEc44Xpio9grTXa1tHVhKGXjdq/sQJMgZVMHNjUyaCsXlP
-   Ln8gsBnwRM5RMsvSFhYaNXP4niqQQ8e5BIUPlXgRfiIp1A+gjSC64I4Th
-   T5t+An64U8dClbMDszvrMwI0CBeLkZCR6rPz/hPeMR1ZNo7r4IgHvNfuS
-   LkwTKGcEZJuEHlwezW7eCdbNCB5MijDsdrOPTKa9iIo4irumtKgiGMti1
-   A==;
-X-CSE-ConnectionGUID: LPv6ZBgKQKKsNMN+Apkwbg==
-X-CSE-MsgGUID: MHprvaz+R+qh4RaJxP4amQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="98733266"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="98733266"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:53:02 -0700
-X-CSE-ConnectionGUID: OJBGm0UASVyXcsCQ/xRU2w==
-X-CSE-MsgGUID: 2MDbFtqGQE2+9OO6MLo/wQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="225749343"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:53:02 -0700
-Date: Wed, 1 Apr 2026 11:52:56 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260401185256.f2ostywtxzddnwm2@desk>
-References: <20260324221308.7sh6afdy6r6tsf4w@desk>
- <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
- <20260326083934.fk4wyhe6rgiss34z@desk>
- <20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
- <20260326104557.24295cbb@pumpkin>
- <20260326202931.wlggnd3nfj6hngpb@desk>
- <20260328004256.mm2ttj5iwvu5kdpa@desk>
- <20260328100837.7e6dc7fe@pumpkin>
- <20260401081236.3rjp2wigkr6w3nym@desk>
- <20260401100200.5b347628@pumpkin>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ki9yxLOO"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso34088a91.2
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 12:07:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775070441; x=1775675241; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zvC/ZzJIOCXDarRg/n8zFp8o9/BNtILNk5qQeZwmHBk=;
+        b=Ki9yxLOOucbK9voIhyDBndxPq5ZAFL6tndYmKjfijWTvv+qZt3eiMwmikbIkaoNva8
+         6LKDSI6KO2TRAx6NPUqwahxalc/s5za6fOS7HBFc6nqS3Cz485gPMNJb08mD7qStPjxi
+         JsiiLTuUynlzGIfmiDwLbdtaIjcLtNOBouw+j7PibB+X0cKIMVvDyAE1WX4T3lCtPKT4
+         PeuAIufaEcDYLgAH0H2Pu6DqaLF4IAHMzePdufGl+jhLp/aIy+XJJYktyPkDFR1iWng6
+         eaxWKEcTiEUu9dVTEOc15dQ/CQXKnljuUMdnuNq6Huf6S9oDO59k4QR4ZopjhPL1HqTh
+         +nag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775070441; x=1775675241;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zvC/ZzJIOCXDarRg/n8zFp8o9/BNtILNk5qQeZwmHBk=;
+        b=DxeFrWzd3BPT6/fQAD7YDFYcdQDMG9GLIYyTPdzcBBlAVru8ogjeejzFEAkOErpwS1
+         ntBLJ0AHArBw6Z/jWt1l4tfpMYoId1UDHQ3V3qv33oLuNtCExgedTixWkXhVqzqN2TUh
+         xj8Xg7hGy0KU7t3ykRnMvyl3tQ0w+gQFtvY31tyhDmMEFu0fCdKQn+Rj5qVyZ9uMA2vr
+         AKa5T3gqD0AMXFcjcjrkNPF6fllfNz+upWfruC9hTBGZRHfAWl3noGECka4zBwSwbnKv
+         atEBoE4qZ7lZVipXafQx/nxAEZYu98zNNDsM8MY6HgyTtAwTFQBbNv29O3z8IonLb3a7
+         YZ0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWwSmUY56WJagKFyVj+g7fcBbKmUri8iRTxCaX5Ivcun/MdSdGIp5HbSgeRlTwSScQ6Fhw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyte0eOVVYhgwzqknxMUiUoXtBQ4ekHcodSXuQ/+OZicH5oHCy
+	AP2b3xEibznM87PeNV9f+gIGJnyttrfu5dVaEZApqq1ATd8/uqPXl58otjjznzo75ZUIifFmCTO
+	PvxojwA==
+X-Received: from pjbcz6.prod.google.com ([2002:a17:90a:d446:b0:35c:f64:bdb0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c1:b0:359:8e5e:43de
+ with SMTP id 98e67ed59e1d1-35dc6fcbd0cmr4002183a91.22.1775070441207; Wed, 01
+ Apr 2026 12:07:21 -0700 (PDT)
+Date: Wed, 1 Apr 2026 12:07:19 -0700
+In-Reply-To: <ac1pUx_jYv2yCMnX@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260401100200.5b347628@pumpkin>
+Mime-Version: 1.0
+References: <20260331194033.3890309-1-jrhilke@google.com> <ac1hI93pEo-x-7YU@google.com>
+ <ac1pUx_jYv2yCMnX@google.com>
+Message-ID: <ac1s55_oLEUQx8Hs@google.com>
+Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
+ test device interrupts
+From: Sean Christopherson <seanjc@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Josh Hilke <jrhilke@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Apr 01, 2026 at 10:02:00AM +0100, David Laight wrote:
-> > > As well as swapping %al <-> %ah try changing the outer loop decrement to
-> > > 	sub $0x100, %ax
-> > > since %al is zero that will set the z flag the same.  
-> > 
-> > Unfortunately, using "sub $0x100, %ax"(with %al as inner loop) isn't better
-> > than just using "sub $1, %ah" in the outer loop:
-> > 
-> >   Event                     %al inner      + sub %ax       Delta
-> >   ----------------------  -------------  -------------  ----------
-> >   cycles                    776,775,020    813,372,036     +4.7%
-> >   instructions/cycle               1.23           1.17     -4.5%
-> >   branch-misses               4,792,502      7,610,323    +58.8%
-> >   uops_issued.any           768,019,010    827,465,137     +7.7%
-> >   time elapsed                 0.1627s        0.1707s      +4.9%
+On Wed, Apr 01, 2026, David Matlack wrote:
+> On 2026-04-01 11:17 AM, Sean Christopherson wrote:
+> > On Tue, Mar 31, 2026, Josh Hilke wrote:
 > 
-> That is even more interesting.
-> The 'sub %ax' version has more uops and more branch-misses.
-> Looks like the extra cost of the %ah access is less than the cost
-> of the extra mis-predicted branches.
+> > > This test only supports x86. Testing physical device interrupts (-d argument) is
+> > > only supported for Intel because there are no VFIO selftest drivers for AMD
+> > > devices.
+> > 
+> > This needs to be expressed in code and human readable error messages to the user.
+> > I already knew the basic of what the VFIO selfests are doing, and it still took
+> > me 5+ minutes to find the DSA driver and probing logic.
+> > 
+> > Concretely, this code needs to be part of the standard vfio selftests APIs:
+> > 
+> > 	device = vfio_pci_device_init(device_bdf, iommu);
+> > 
+> > 	has_driver = !!device->driver.ops;
+> > 
+> > E.g. have vfio_pci_device_init() explicitly return an error (or NULL) if it can't
+> > init the device driver.
 > 
-> Makes me wonder where a version that uses %cl fits?
-> (Or use a zero-extending read and %eax/%ecx - likely to be the same.)
-> I'll bet 'one beer' that is nearest the 'sub %ax' version.
+> No. Not every VFIO selftest or user of libvfio needs a driver. A driver
+> is only needed in tests that want to use the driver, i.e. want to call
+> one of the very obviously named functions:
+> 
+>  - vfio_pci_driver_send_msi()
+>  - vfio_pci_driver_memcpy()
+>  - etc.
+> 
+> Requiring a driver for vfio_pci_device_init() to return non-NULL would
+> significantly reduce our ability to test VFIO on different platforms and
+> environments.
 
-%cl didn't make a noticeable difference, but ...
+Ah, sorry.  I was speed reading and missed that some (most?) tests don't require
+a driver.  Scratch the "make it unconditional", but there still needs to be an
+API to up-level binding to a driver.  KVM selftests shouldn't have to manually
+check for that.
 
-    Event                      %al/%ah        %al/%cl        Delta
-                             (inner/outer)  (inner/outer)
-    ----------------------  -------------  -------------  ----------
-    cycles                    776,380,149    778,294,183     +0.2%
-    instructions/cycle               1.23           1.22     -0.4%
-    branch-misses               4,986,437      5,679,599    +13.9%
-    uops_issued.any           773,223,387    765,724,878     -1.0%
-    time elapsed                 0.1631s        0.1637s      +0.4%
+> > The fixtures in vfio_pci_driver_test.c already blindly assume success, so you
+> > might not need to do much beyond changing main() in that file.
+> 
+> I don't follow. What is the issue with vfio_pci_driver_test.?
 
-... there are meaningful gains with 32-bit registers:
+What I was trying to say is that if vfio_pci_device_init() were to unconditionally
+require a driver, then vfio_pci_driver_test() should Just Work.  But that doesn't
+make a whole lot of sense given the above.  Though it could use the new API that
+checks for a driver.
 
-    Event                      %al/%ah        %eax/%ecx      Delta
-                             (inner/outer)  (inner/outer)
-    ----------------------  -------------  -------------  ----------
-    cycles                    776,380,149    706,331,177     -9.0%
-    instructions/cycle               1.23           1.35     +9.9%
-    branch-misses               4,986,437      6,089,306    +22.1%
-    uops_issued.any           773,223,387    774,539,522     +0.2%
-    time elapsed                 0.1631s        0.1482s      -9.1%
+> > And then, also as a vfio_pci_device_xxx() API, add a helper to print out what
+> > devices are supported, e.g. so that KVM selftests can do something like:
+> 
+> Agree this would be nice to have. Is this a blocker for this series?
 
-These values are for userspace tests with immediates. Next, I will test how
-they perform with memory loads in kernel. Before we finalize these uarch
-nuances needs to be tested on a variety of CPUs.
+Yes.  KVM selftests need to assert there's a driver before trying to proceed.
+
+> > struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
+> > {
+> > 	struct vfio_pci_device *device;
+> > 	struct iommu *iommu;
+> > 
+> > 	iommu = iommu_init(default_iommu_mode);
+> > 
+> > 	device = vfio_pci_device_init(bdf, iommu);
+> > 	if (!device) {
+> > 		vfio_pci_device_print_drivers(stderr);
+> > 		TEST_FAIL("No driver found for BDF '%s'", bdf);
+> > 	}
+> > 	return device;
+> > }
+> > 
+> > Because as is, this requires way too much a priori knowledge and magic for
+> > upstream.  The user shouldn't have to dig through code just to understand what
+> > devices are supported.
+> >
+> > Ideally, VFIO selftests would also provide a script, utility, and/or helper to
+> > identify BDFs for devices it has drivers for.  In my experience, binding a device
+> > to VFIO is trivial.  Finding the device in the first place is more annoying.
+> 
+> Agree this would be nice to have. Is this a blocker for this series?
+
+Yes.  As I mentioned to Josh off-list, I'm not willing to accept a "we pinky-swear
+we'll make this stuff user friendly".  It's not that I don't trust you and Josh
+(and others), it's that for me, this level of user-friendly behavior isn't nice
+to have, it's mandatory for these tests to be usable upstream.
+
+Internally we can squeak by with barebones, unhelpful tests, because the run
+commands are often hardcoded somewhere and there is piles of documentation elsewhere.
+But for upstream, none of that holds true.
+
+If it were weeks of effort, I would be more open to treating this as nice to have,
+but AFAICT writing the code should be less than a days worth of work.
