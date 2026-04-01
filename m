@@ -1,136 +1,177 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669853B8BB2
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A5B3630AD
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775077352; cv=none; b=nwSG4igz8ad5FanBzvWu+y6H4miTnWJAAb4EvYtrY2C9d6ESAG9vSU+b8Nc+lxjjaszq7ZQLnpfLkfanszJNWGudR9aEHV8W12YUREbL88CFvPvU2ioUU8nQ2cVOCb/axP2S4QBRrG7n+sz9nkLjbbv4VpHONvZpJVhb4Mh2xBY=
+	t=1775077500; cv=none; b=YyVueprq9LIjsrptP+x97fC3v7QlTE43ky5KrODXK04AI2Ic4qSmSq3hHW5RtUdhtMX9/E+zyNdzQqMDNq6YgfEeoq0s1qbS5P+Cb4Ce/94GysSF/KC67rGQNK2HNkML3uIr7SuIpa8LQqNAzEA0WABZN4fqGKMRYzDngEISBx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775077352; c=relaxed/simple;
-	bh=/vuIx1V+G5o+pbSAs+wUn8doNkEqrz0xObFAiDyvvQM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KxDKslVQoyb1hyGt1rafjb/1fg13OCzEPf+embEQ8bhlxX4XZ3MOaevXTTD3IG2ykJGjOfpZPFmeFZCfaO5x0qNt+GqhLPPShPwq890IuLd7fXnTA+HX1y8oQkkOQ0nSuKKEjJVb3Rlkdsoy7eZkHdNo7vPjoAmIB7eT18rHW9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F5YwtxKM; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1775077500; c=relaxed/simple;
+	bh=nKoM68jymx43xt6viB2FGyBTxfjzpi8jc7eXGmyt4Vw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gG6YUBadAaZ0OU/d/It66PhF4sgooVEcB2/t7NiMYBAHNj4vxY9yLuGYzKui77pvnwwrUU7UxMKFFgTsOBYFRzoCY7tO2Q5rIKLCte06tKDksIAGfudJXu7AfinyB+dZctzhmtss4AmmDoD9Wq3YuyFTqqez79OQBUdkcpPXefE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qWOh+Jiq; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F5YwtxKM"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-486fe655187so1749165e9.2
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:02:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qWOh+Jiq"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a90510a6d1so987685ad.0
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775077349; x=1775682149; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wu484ARXgNjrCXY792DVUqnqI/7zasFvjnpp9c4Q+uo=;
-        b=F5YwtxKMd+mxPFVHQvdmK+DkR7mFGVRFJ4yuTbtCdbO/s8JaIumai05wUYozsjwBV/
-         Mn4VufeYnG9Q6adttCRt58GcPyCDw0LktQH6UE6sF8RsNM5JgRdO/R/juh3hQHgaVHl8
-         PJd96V7uw7QsVTvWJtZbx+aN9VrdT9XRn4U3Dc1akyRuwLnWOSheaipU4g9MGBUnUz2c
-         D/rxmutpHH/P/vIflZY7j3iMSEB764FCsa3wklxlsSR4WiBQOZkMec4e867zki2UK1dm
-         6kUnHaZ4mMwAd0kxBtoe/G3xAzYA1FD5jl/vV3wbHXewXXBqOoa46OWYHqVWvJwUWmPA
-         waDA==
+        d=google.com; s=20251104; t=1775077498; x=1775682298; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2G9uSQqW1t77mVxoAaIkc05+KXCw20NeU1W0ypS1GQ=;
+        b=qWOh+JiqtqWNw2VFOt9n9NXE+60ueErcIVNA0FmQzkZp4PTa7PBIFksiMndKSIT58y
+         vtK/FXvcOzEBMKtAZWEdNOnzouiRW8fDJg7V7lb70WU1O3QKW/6DYSwxM8JmOMKzQhAW
+         w5XBQTEnuOwNEhx5gd3QKb8aE7P7i4lJDWEI3ynUqWP8lbuUNK+IVsgr7WcsH74nU8CU
+         JBAde1z6Z1Z+qQvpBTdqOuIzljIS5cO1zYyhZuY2j2bW2jJL74dPyOiU7ZoVdn+qGDSh
+         0AhBdJ9XKXS9D/QYWakz11lo0ol/T1WykuXAhJisaejbIjXkN0Sv9fF/tMiMBqnEKBPD
+         Snmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775077349; x=1775682149;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wu484ARXgNjrCXY792DVUqnqI/7zasFvjnpp9c4Q+uo=;
-        b=sRsjYe7gvGztMoATfxc36P7qHiGW8vG/D50mEVwhuwLwz9fGfEZ9PwGIPiNEmAAkZM
-         s8eYFcriuoCxq008yh/t3CiClxRF6kwtYxlKuWtD2Al1FjQoGB9SCw36wv7Uj/rAiOjx
-         XNJ/I1MmNm9FHpPaTEV9Pm8Q0k5M2jsay2G3H0+YpxG0cogPk01NkZGgZBDFiZDXTCdd
-         Zo0S9IzlEN8+RsqnS83ny88WN4rgdDxVK4Ckrlao0Ilkp+Xwy/HgNvOQWqF03Sk1333A
-         ca+n6vvl1K88ruQpAHXEMUQuuhGwJrgG24Oq+Tswj/gAH79cnHPgumhtI4fPV0fGfNaN
-         bFNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkk39a91A07FW6MkgUVHXO9MaVWQSA5oaq2nJQOnhxZCnMzacQ9IaD8eI9k1pxKU9PlU0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxbys8E07184cghnR4cPpYrBD2b0KYnpG3xEWndTESCP2/Oed/9
-	tBcunGKOEIf5MeWCbQWlvSjbczofz/q08mH4L+uARvgEvNyTIJewWwm0JgqwqKL7mYE=
-X-Gm-Gg: ATEYQzyN7HHHTSRT1dVlkO64muA9ivGCxgdViX5JcoN957IgGnkMLhgFeXKxW0q8ayn
-	FJvLdCcAGUosgU49BFfVzu2Rsfrn4dfIeT2j7ZMGRU4EBj4CwtoGQOW+S/ZnJzrPB2cxGGcc6tp
-	49oiYrto9ZIY8AjtZ+eLiLM5gT3CEy7LMAId7jddBI3FUQiWbZIjM2pMMW1zWJZSOuRoxk7CgQF
-	oKV1o9ln56KJfVVMBF8JrZGCdyLcn68KaEf+Ue0+rJwqCyTFioOFWIjEXp6vO1NXWCdNiNAnqTc
-	OHhpU3eaAYWm9CSIzLCOS6uPpMZdB14+WeRtOzX69eSvyIoFvW3ZGG9mTjnj6mJDNO/sNwXYyKI
-	MdcSFTXZ3jMdlk5QwTu1uY5zzHYkF2Nv4D+dWaM0Q9zokoSI+UHrikvGX4osRHi3Cj3GzuWhbny
-	MVnlrkmsqYjs5ZCPl7mE3ogJs5yXPCezwglT7PM7VQ08+Ri21XlK1NnE/knA2jkOF75Q==
-X-Received: by 2002:a05:600c:c165:b0:488:7ff6:1f75 with SMTP id 5b1f17b1804b1-4888b786676mr11650045e9.21.1775077348657;
-        Wed, 01 Apr 2026 14:02:28 -0700 (PDT)
-Received: from [192.168.69.228] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888955d711sm41710665e9.9.2026.04.01.14.02.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Apr 2026 14:02:27 -0700 (PDT)
-Message-ID: <b449667f-11d0-48d8-864b-dc17f30a18fd@linaro.org>
-Date: Wed, 1 Apr 2026 23:02:26 +0200
+        d=1e100.net; s=20251104; t=1775077498; x=1775682298;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2G9uSQqW1t77mVxoAaIkc05+KXCw20NeU1W0ypS1GQ=;
+        b=Yttk62Sh6uldWyicsDz4MFeBhX5i+SYoJl9gAu2H98Js3xefSltzwvacIRBMtPzfVV
+         S5xK4uINzCTHLY6vCMZ1Jk+abY1VKwgKf48GAhPJF4bNJ+bCFksALLzkkJUZNZiOMWfu
+         35DW2HPA+Gak7bgEbzHLkzXsmPM1fj0M+Gt529mBeMA14AXB4dO5YVrM/JvMJjh3jPeL
+         v5VSEDBY+f4fMmoxVXLpRqpF9c2bOfGFCsWiNOFzb0rC2QQyL+car4rX2oCw7Cy0h11+
+         qD8g1cqWtyK8nQrR/I5V3Q4QhV9KjDXFs9OlIPaQpovOpcDRdVGE5Dg+eqpoQfrEsLy/
+         +cIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRJZbQA7+lcCYMda9z2ppRnuECwgLFetwPp33ldOYJupb0oZSsf983K34Wj2WZ0nVaAks=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV9VQEb0wDhQ/6i3IzOCdZpjbgARX+gKV1mZHdEHsdb9OXsFHz
+	TjBto7e+6eC9wp47x17B/Vfb5/kcc4ukRqtgysF47vLzco6fL8Pay/CfarLBIQ3FLJb8rshlqTQ
+	qfuFhPQ==
+X-Received: from plhk15.prod.google.com ([2002:a17:902:d58f:b0:2b0:6c44:fc55])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c48:b0:2b2:4f43:b49a
+ with SMTP id d9443c01a7336-2b2698a1054mr47624785ad.22.1775077498214; Wed, 01
+ Apr 2026 14:04:58 -0700 (PDT)
+Date: Wed, 1 Apr 2026 14:04:56 -0700
+In-Reply-To: <cxmtst7txfodp6lo4ipue3trohx2ge7nkagkfzfixfdnlf5qlo@e3jw3tmbe272>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-11.1 3/8] accel/kvm: Expose all non-target specific
- declarations
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Eric Farman <farman@linux.ibm.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>, Huacai Chen
- <chenhuacai@kernel.org>, qemu-riscv@nongnu.org,
- Alexander Graf <agraf@csgraf.de>, Pedro Barbuda <pbarbuda@microsoft.com>,
- Anton Johansson <anjo@rev.ng>, Song Gao <gaosong@loongson.cn>,
- Weiwei Li <liwei1518@gmail.com>, Aleksandar Rikalo <arikalo@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cornelia Huck
- <cohuck@redhat.com>, qemu-s390x@nongnu.org,
- Chao Liu <chao.liu.zevorn@gmail.com>, Bibo Mao <maobibo@loongson.cn>,
- qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Mohamed Mediouni <mohamed@unpredictable.fr>, Zhao Liu <zhao1.liu@intel.com>
-References: <20260401201753.92290-1-philmd@linaro.org>
- <20260401201753.92290-4-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260401201753.92290-4-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-8-e202fe950ffd@google.com> <cxmtst7txfodp6lo4ipue3trohx2ge7nkagkfzfixfdnlf5qlo@e3jw3tmbe272>
+Message-ID: <ac2IeJNrrBuKtYn2@google.com>
+Subject: Re: [PATCH RFC v4 08/44] KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
+	jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 1/4/26 22:17, Philippe Mathieu-Daudé wrote:
-> None of the declarations guarded within the COMPILING_PER_TARGET
-> checks use target-specific declaration. "cpu.h" is not required
-> since some time (maybe commit 4fb54de823e "meson: build target
-> libraries with common dependencies"). Remove the restrictions.
+On Tue, Mar 31, 2026, Michael Roth wrote:
+> On Thu, Mar 26, 2026 at 03:24:17PM -0700, Ackerley Tng wrote:
+> > Introduce a "version 2" of KVM_SET_MEMORY_ATTRIBUTES to support returning
+> > information back to userspace.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/system/kvm.h | 5 -----
->   1 file changed, 5 deletions(-)
+> Hi Ackerley,
 > 
-> diff --git a/include/system/kvm.h b/include/system/kvm.h
-> index a2463a3ac3f..8bf7a10deac 100644
-> --- a/include/system/kvm.h
-> +++ b/include/system/kvm.h
-> @@ -224,9 +224,6 @@ void kvm_irqchip_add_change_notifier(Notifier *n);
->   void kvm_irqchip_remove_change_notifier(Notifier *n);
->   void kvm_irqchip_change_notify(void);
->   
-> -#ifdef COMPILING_PER_TARGET
-> -#include "cpu.h"
+> Not trying to bikeshed below, but I'm working on getting related QEMU
+> patches cleaned up to post soon and was working through some of the new
+> uAPI bits, and plumbing some of these capabilities in seems a little
+> awkward in a couple places so wondering if we should revisit how some of
+> this API is defined...
+> 
+> > 
+> > This new ioctl and structure will, in a later patch, be shared as a
+> > guest_memfd ioctl, where the padding in the new kvm_memory_attributes2
+> > structure will be for writing the response from the guest_memfd ioctl to
+> > userspace.
+> > 
+> > A new ioctl is necessary for these reasons:
+> > 
+> > 1. KVM_SET_MEMORY_ATTRIBUTES is currently a write-only ioctl and does not
+> >    allow userspace to read fields. There's nothing in code (yet?) that
+> >    validates this, but using _IOWR for consistency would be prudent.
+> > 
+> > 2. KVM_SET_MEMORY_ATTRIBUTES, when used as a guest_memfd ioctl, will need
+> >    an additional field to provide userspace with more error details.
+> > 
+> > Alternatively, a completely new ioctl could be defined, unrelated to
+> > KVM_SET_MEMORY_ATTRIBUTES, but using the same ioctl number and struct for
+> > the vm and guest_memfd ioctls streamlines the interface for userspace. In
+> > addition, any memory attributes, implemented on the vm or guest_memfd
+> > ioctl, can be easily shared with the other.
+> > 
+> > Add KVM_CAP_MEMORY_ATTRIBUTES2 to indicate that struct
+> > kvm_memory_attributes2 exists and can be used either with
+> > KVM_SET_MEMORY_ATTRIBUTES2 via the vm or guest_memfd ioctl.
+> 
+> The guest_memfd support for the KVM_SET_MEMORY_ATTRIBUTES2 ioctl isn't
+> added until patch #10, and to scan for it you sort of need to infer it
+> via KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES reporting non-zero (i.e.
+> KVM_MEMORY_ATTRIBUTE_PRIVATE), so it's confusing to state that
+> KVM_CAP_MEMORY_ATTRIBUTES2 means you can use the struct via a guest_memfd
+> ioctl.
+> 
+> I think the above is trying to simply say that the corresponding struct
+> exists, and remain agnostic about how it can be used. But if that were
+> the case, there would be no way to know when KVM_SET_MEMORY_ATTRIBUTES2 is
+> available in the first place, so in the case of KVM ioctls at least,
+> KVM_CAP_MEMORY_ATTRIBUTES2 is advertising both the struct and the ioctl,
+> whereas for guest_memfd it's only advertising the struct and not saying
+> anything about whether a similar gmem ioctl is available to use it.
 
-Missing:
++1 to everything Mike said.
 
-   #include "qemu/queue.h"
+> Instead, maybe they should both have the same semantics:
+> 
+>   KVM_CAP_MEMORY_ATTRIBUTES2: *SET_ATTRIBUTES* ioctl exists for KVM that utilizes
+>     struct kvm_memory_attributes2
+> 
+>   KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES: *SET_ATTRIBUTES* ioctl exists for
+>     guest_memfd that utilizes struct kvm_memory_attributes2
+> 
+> In which case you would leave out any mention of guest_memfd here as far as
+> the documentation does, and then in patch #10 you could modify it to be
+> something like:
+> 
+>    4.145 KVM_SET_MEMORY_ATTRIBUTES2
+>    ---------------------------------
+> 
+>   -:Capability: KVM_CAP_MEMORY_ATTRIBUTES2
+>   +:Capability: KVM_CAP_MEMORY_ATTRIBUTES2, KVM_GUEST_MEMFD_CAP_MEMORY_ATTRIBUTES
+>   -:Architectures: x86
+>   +:Architectures: all
+>   -:Type: vm ioctl
+>   +:Type: vm, guest_memfd ioctl
+>    :Parameters: struct kvm_memory_attributes2 (in/out)
+>    :Returns: 0 on success, <0 on error
 
->   /**
->    * kvm_update_guest_debug(): ensure KVM debug structures updated
->    * @cs: the CPUState for this cpu
-> @@ -449,8 +446,6 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
->   int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
->                                          hwaddr *phys_addr);
->   
-> -#endif /* COMPILING_PER_TARGET */
-> -
->   bool kvm_arch_supports_vmfd_change(void);
->   int kvm_arch_on_vmfd_change(MachineState *ms, KVMState *s);
->   
+As discussed at PUCK, I think we should omit KVM_CAP_MEMORY_ATTRIBUTES2 and
+vm-scoped support entirely until it's needed (which may be never).
 
+> and *then* add in your mentions of how the usage/fields differ for
+> guest_memfd/KVM_GUEST_MEMFD_CAP_MEMORY_ATTRIBUTES case vs. KVM ioctls.
+> 
+> This avoids needing to issue 2 checks for the guest_memfd variant vs. 1
+> for KVM, but more importantly avoids subtle differences in how these
+> similarly-named capabilities are used/documented that might cause
+> unecessary confusion.
