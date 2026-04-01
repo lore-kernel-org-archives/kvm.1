@@ -1,120 +1,181 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7312C42048
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 23:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCE636493F
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 23:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775087384; cv=pass; b=J4YfNnkh+ljXS/EsqsppPhYn24PsE3auewH7Tet1IzoNOdjWBC3N0AwLew5rV6hLSvJMdPVwgU6DGW3nSs/MPPlVFzpWaE7Szr9QbC7/SFW/OlHylRngRnD5Gg7vjf3mO676q61IiZNZhm3Dw77w49sMBi8kJWIklK0JwunCoT4=
+	t=1775087475; cv=pass; b=tplj1bQvFcKwtFt1uMQw+JyrgHlX4MkNwrve4htvQhydn5+3fF6QZ3nCAxQOfp/dIAApisNblHs+asPSbCJMv3z6mglWFwYxdnGnakxA8N/BobV/hrclemVX0s/94odz1bzyno3eWRHWTyyWQVpiMJlvqQgZTwBKrzzljJcOMVo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775087384; c=relaxed/simple;
-	bh=iG/nvbn3Pb7aYhfA0ETCNPN5CmuEko6aAtCikb10pKI=;
+	s=arc-20240116; t=1775087475; c=relaxed/simple;
+	bh=yzjtUkfkiMnp1+jnYEQszUfxDN2987B+o/b9DTHb5fE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IzeciHeIhU2M2zPIeatiqBQWijLuGOz8lWgtM+ZuunwrQl7ziDFtq0X0W3Ono5EnJ2IYZFqwOWVvxdM8uX6GU/DDArtv1CETmZuDqFnnPbv2B4xTJNh7Fx2KF1TCLcLKxGxCpipRjdZmti1PYkSWTL8ytxoUMCN+gI68xSJjQDA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q15E9qiX; arc=pass smtp.client-ip=209.85.160.172
+	 To:Cc:Content-Type; b=VvVQ8IiLEPgy2vqW1JQ/yrHrP5spuyKccC7o7p4NjwkBDWVFIGYuBH2256ohW6daltE3aewUoMuXl+llLDXiJ6G8DV2jaYOvk4tXbebj4o9sZs8/vaabU14sOZHboqyzXigXq0GcgMNuoElCrDE2pUTHHb3embLr0pOkvS5sOMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QeD2awcW; arc=pass smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q15E9qiX"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-509062d829dso137771cf.1
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 16:49:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775087382; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QeD2awcW"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38b13652c87so3170141fa.0
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 16:51:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775087472; cv=none;
         d=google.com; s=arc-20240605;
-        b=JVBXdQEcbOR9OBjQv6rhP3cRIBITArGG7u/DMBP0Nsp/lqEZL6qteHlaFj6YwosyGx
-         4o+vHK+6R7MEYg3uCmBDpL9cv7fyr6eOijXQw+0ZPeT/vz9R21HRm1OfYbBW8BgQB6uT
-         HekMmKgbEooqTJLnas3+wwVDA0UKW9Ojk2YPq3RponE8XYzz2HsOuCRPy/TI7Niv587f
-         Lf+8PZubwRAAxpuYDk0UWSk4GKMIssZGELxrsLEVaEmZnS87KvMTUJuCBpSneTSSfkSP
-         1fH+43d+S+NFnFEwtS2zb1a+7aXihVNGMm1N1oGclzjAvTMRPUyq5PhbmJi70IGf7/G/
-         UatQ==
+        b=HCosPw6ZpRUOsnVptZzndnVFhzsSJo/t82YYsTQvgPMdRVQ56nY49vvQqach8/VzWk
+         63JKue4gkc8DnbN9ujR/lG7eQqlGQVBusV9mp0eq12m1bS759As/bpORs2JkGBPxH0DM
+         l7t70YWoxAossck4iGzlmRco+pjs25mmC43Muo7CEhR708Bcb1q4sawS7vcrzq8ES4l/
+         dpX7NxM0i8BsAdZiKd6+NgTRvGHxk8U0xMQQxy7rXH8YfRVVMDKaTiHYygxuF5znO0wA
+         86S7lrJEUaiWyKOSMNhMyqXZBba6tbPUvFsRMxXaRFJMDelUovRcvEohaw5T4A7VIrBS
+         J9yw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=iG/nvbn3Pb7aYhfA0ETCNPN5CmuEko6aAtCikb10pKI=;
-        fh=mocTuIGOCx5uTTZsWedeeWKiCMGCgtomF7tEK/xiGDs=;
-        b=R2Y4IWO7eAeH3lnQ1blXkqQFquxTaFqUmoGzVZtw3mwri8W0+UdA5AN0vr3dyFTidI
-         3BMdn1i4PZfRN8x+SuJY8Wnm2ZXGpLaiizyph1B1chfGZpX/oui+mI46zSKPWugz1I8v
-         m1lH0S9uP1Xua5Nx5lqGoeym3dQGBfPakF8TsqjRVneiEVOW/gioy9YjwOhsc3fQ8naT
-         LyjKJrH+Bpw8LtNCUr1ZMrq2Z8igYOY9FjnuiRNofZExSxSOSTAGFHhyTST3l5MQOfyf
-         tvp6qXvdp2MH6J5hIIjkix6kVgS8lRxHDEROiYEJAZxstIQB5DbMDxCaQ6vYXSD45FxA
-         HNkQ==;
+        bh=KrtPc1BoZKzf+l9BeRZJghfFWfe/poRp7LJs2i1Q0GA=;
+        fh=D9+0oKKI02G9hFABkgt2VPermnBQI76X0AB010iXeEo=;
+        b=afx8qlclKINnMgOJ7GvZ5Bo5I/V5wNMwJ6bzOdBLvoXgDEFaZzlab9CuuX8VcGakdS
+         CEqXYTPiYbOdJuu/cm1oLgYfEbWFFTbCbwnJw7HvsmiZS2WrkuzrV9TEOFxDZuxHitXS
+         fmc8kc9Pfb5AMp5Nc5llc6cDv7s9hQB4PZATulba59WhKn+4J97KwmdCNMibqRvDDR/H
+         QzAZjL9VNK+OoekFSOsPgm5Ag8Sq/arZRWqA1AbJcXU5HRm4ngM5yxQkoBOBBvAU3KrW
+         96gM5g0zcqj8odWdTsgpyTJx7PWZBPblCd7Nl40GPfn7iH+ROn89IBDWb3if+IfwCRyT
+         GoCg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775087382; x=1775692182; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775087472; x=1775692272; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iG/nvbn3Pb7aYhfA0ETCNPN5CmuEko6aAtCikb10pKI=;
-        b=Q15E9qiXFn/WSZNXYz3vLsOhc5U9YfKTatm2xeiM5xeTv4HJ86zHcF8nBfr41x69zh
-         7uwRmGhk3NE0bpaF2SJxTq65n38bcUIIsQg2xVZ+JfKKRpNNPwNTnQQVyDaygI+BAWjx
-         GJRoq9OSzIngedDYIpP5MgTyIpxcwH2blZ1UcbfaIz1yxjXh993LkBPyUqTaMN8VH2oR
-         zzvsvdJjkZ091Q2dD4NmKJmQXsH+xNw/zx4xwhl/QFXkV7nsX1c2+JgJ9mdKVhL/irb/
-         rVNEQdoH9VjM/0L+6S3V78iClDgWTcXD4MkPiD4uJvsbTcFrCUrY2Bzlpw+Vz3I6V98x
-         tOBQ==
+        bh=KrtPc1BoZKzf+l9BeRZJghfFWfe/poRp7LJs2i1Q0GA=;
+        b=QeD2awcWlUpAoKmUdiSOIYjp4oiJWS0NhME6RllF4WkbqnvOyUPY/t8HWZngy83l5s
+         OgyiI+67BCet+ZnldGlZpd4CjyeV/NlYnC7kr+bd/2Ag9Bv1s+b4otmOl1XIek8ruSyy
+         Yyu/yQN7LBUTuwZXm9PGpJe0pW/uBEEUu5q/0a8QIXFOSeix0UfvBAorjc3DsYCC2BUb
+         IoQ6dawkQL8JtC1irKQU5GsCHJppadcvmf6/Tx4qUzx2FQsLVcQQSQFQGuy+Fzdir/EX
+         MNIHanmNtNuLJu9XFrw7z0JFRl8DGBgdUBKSEq4VQbtWycWTIZjghYgj3w1QMtm3xY9l
+         AvPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775087382; x=1775692182;
+        d=1e100.net; s=20251104; t=1775087472; x=1775692272;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iG/nvbn3Pb7aYhfA0ETCNPN5CmuEko6aAtCikb10pKI=;
-        b=CEwf2yHZsP/7BPoz88NeTRpi21dQ08RZVaiqMR9CDZ6LozzgV4DM5b/5je3bTAZERk
-         yfZcewcQc3Tw1EptQk5MsP3wHy1aLPxQmgEdKibCZsUDC03LXyqxmX8OPfqmePYur/Rr
-         68NIueMH0t5RuOeVtN2KgOJPElAkHKEPh/HltrBLARkXrzUdrLh3VPVrvvYrL2JXKWzc
-         PhP8wmcwDGQBuuG5L8k26H0dYVwOLc3pqG4J1KmXurIsFWuFVVFO8EjDDOfh9CiPy99E
-         ruKTYntIfbiW5rYjn4KtlfEMC0QDNCLvXjGJEw0kgW1Fk3hGv/zltT6uT3LOnkBIVjG6
-         ZNMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW3Tj8cyWUhV9roJT+FsdLxl2yQXdYMxnuAk9hNBqXkcwkEh5GV+VuoBqt8xjXp3nUH48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbBG1AZ3kYMrhMd+qDLQEBCEYQVYqdacLcGewqj4k55JqjtryL
-	9cYPkcnU4KRM+pt8/+I0lScw6dAD3xNjxxQz8WRMvpsSp5gnLC7HBrES74MsGUeqcCxpltU5Ef1
-	6fK1avMchtYfF7l2qDnAkakEC5wW8XNaVXl58Ry8=
-X-Gm-Gg: ATEYQzxittbBJHxH62r9XMdOB9O7dw/+39H1E0NTBhCz9VC8n9BEK2sWipYlG/OFq7b
-	pgrG01KrCkzegiOQq5X/4JUP4REjZulrCKC5Q/aPDGXcDMjeNPBayflZ9MNozlqfbj/IvU9uV63
-	se9oqKKlqCRuKPwbBDspFZgCdJEkLxRP5cicIVEtWn8qh5ZlBapvV6Ib85jUY940rAHlFtwnInH
-	JOCq4y51ourbmXmwWHymfB/54XLYFoxGhy687yrqrzTVgbBjUtKp8u9teoUMnpuDvwe15oAlri7
-	Gijt2G4ODQlp/R5QxSPDKI3p21m//q7bwH3X
-X-Received: by 2002:a05:622a:1f8c:b0:509:cd7:aa18 with SMTP id
- d75a77b69052e-50d5062a2c4mr933551cf.10.1775087382102; Wed, 01 Apr 2026
- 16:49:42 -0700 (PDT)
+        bh=KrtPc1BoZKzf+l9BeRZJghfFWfe/poRp7LJs2i1Q0GA=;
+        b=qlFeX5D7Ksn2zd40n9lxk6yPr6i6UEcRjQNAbeJQ9Ue/X/ADxHWoV70gTtUVSutkCD
+         2TgqKhKLMNaEwylwXtv01FWIw+umeuo6GMPqtbMbSmKp75MJf358FNj3hlO2gsc++3gz
+         Kgx9ZC5mNVPJV4WLHlc9WN0Bp+gcu1IZxhJ0ide37FOiNsu2HsODKXUm47MsV8jojW8x
+         A6u2IW4MjCX7S9FM4nxt7CAqLkxvYZpJc3hO3dsd4n/iVn/t7LlWzGFtLuRLDtDxONtZ
+         Q4Lb5qa/WaqnOxPfTYRr6qXI2D/3vlZZZlcJnKZQpMvyvzASoJhKPLvh2ZCpQAUrLLj9
+         W7bg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvZCr2T7ihDqSCMgO+1C09bI20h/EegsYO9urlw4fdjfsZzj9G2j0smfOKE84pBayO8m0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz/jg2rGLEOeagb5E22vtQWbyK+3Tq6DS6qXdVWKHqP2bmj/gH
+	tWhNRKotULwG4BBkSVOuVFhJlhVFmsc379X7V5uBvsfSD2byPT3A2kHRtGDB+X1M23YCOXgcSB+
+	x2Q8sp+m0SJEnhxvtmWj6VWM1GY38imAQxbJQB2sG
+X-Gm-Gg: ATEYQzxBAjTrQxTvFyrRJztgPK0AGAcvbJ2F9S4+kKCGE+9iB1Izer/709fi1HhpP3e
+	/TC6lMLOZEdUJkgBjm4xZMp69+ZosEZ0m7g5zKiUI9EsrsuGnBEmF0GH8OqvZ6Ds/5WScI3JkV2
+	k4pwoTUsLHQ6FQsD/KSJdH/Y8vC5HhgHVxwZI1alOqWhgVeA0nwZWnsGlkP3ovb7Yob+hfOs+/W
+	qqfl/woSsdMoundQBdQcJw1O52eFGT4ICiyGPWIlI0gPQ0KerO9tMB2ppyiF7G3jPALsAt/Dq6R
+	rD28FGSX
+X-Received: by 2002:a2e:3801:0:b0:38a:212d:2bc2 with SMTP id
+ 38308e7fff4ca-38cc30bc722mr15162431fa.30.1775087471480; Wed, 01 Apr 2026
+ 16:51:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-2-jrhilke@google.com>
- <ac1hVBR9qxp6whvJ@google.com>
-In-Reply-To: <ac1hVBR9qxp6whvJ@google.com>
-From: Josh Hilke <jrhilke@google.com>
-Date: Wed, 1 Apr 2026 16:49:31 -0700
-X-Gm-Features: AQROBzDwYY9vVVPNhQ68BJ6YBElyBmavaz4nlTRwfhCOX00wT-JnY_YjfLWiLmc
-Message-ID: <CAAdrzjvr7Pwt6q=Vf-zc=OtXj_x3ymnavctC7=CJdbrncvTXhw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/14] KVM: selftests: Build and link
- sefltests/vfio/lib into KVM selftests
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Alex Williamson <alex.williamson@redhat.com>
+References: <20260303193822.2526335-1-rananta@google.com> <20260303193822.2526335-9-rananta@google.com>
+ <20260311235715.GA2738066.vipinsh@google.com> <CAJHc60yQjfpw9D0VoP0FAfv65g5BpVYddcWQ23q0hRLdcP2k-Q@mail.gmail.com>
+ <CALzav=fkKPR1giHyvZ8Awk=OpzNk8b_xVVwt-AyuXjwGGSY4Zw@mail.gmail.com> <CAJHc60wUShGosroLv64M_+vQXe_d-N3d=yA7PGSWC=_PyEXL+w@mail.gmail.com>
+In-Reply-To: <CAJHc60wUShGosroLv64M_+vQXe_d-N3d=yA7PGSWC=_PyEXL+w@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 1 Apr 2026 16:50:43 -0700
+X-Gm-Features: AQROBzAa-OL6cm9pjYX4FsodMS92uETdidHj5Zi3X3d1bOUQgTJZa2-8JRb8NHQ
+Message-ID: <CALzav=dS+4emsbXLg+JoJGMX_RtQ1uocvfEY6r5Y3VT=UQn6eQ@mail.gmail.com>
+Subject: Re: [PATCH v6 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Vipin Sharma <vipinsh@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 1, 2026 at 11:18=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Wed, Apr 1, 2026 at 4:46=E2=80=AFPM Raghavendra Rao Ananta
+<rananta@google.com> wrote:
 >
-> On Tue, Mar 31, 2026, Josh Hilke wrote:
-> > From: David Matlack <dmatlack@google.com>
+> On Tue, Mar 31, 2026 at 5:11=E2=80=AFPM David Matlack <dmatlack@google.co=
+m> wrote:
 > >
-> > Include libvfio.mk into the KVM selftests Makefile and link it into all
-> > KVM selftests by adding it to LIBKVM_OBJS.
+> > On Tue, Mar 31, 2026 at 4:53=E2=80=AFPM Raghavendra Rao Ananta
+> > <rananta@google.com> wrote:
 > >
-> > Note that KVM selftests build their own copy of sefltests/vfio/lib and
-> > the resulting object files are placed in $(OUTPUT)/lib. This allows the
-> > KVM and VFIO selftests to apply different CFLAGS when building without
-> > conflicting with each other.
+> > > > > +FIXTURE_SETUP(vfio_pci_sriov_uapi_test)
+> > > > > +{
+> > > > > +     char *vf_driver;
+> > > > > +     int nr_vfs;
+> > > > > +
+> > > > > +     nr_vfs =3D sysfs_sriov_totalvfs_get(pf_bdf);
+> > > > > +     if (nr_vfs <=3D 0)
+> > > > > +             SKIP(return, "SR-IOV may not be supported by the PF=
+: %s\n", pf_bdf);
+> > > > > +
+> > > > > +     nr_vfs =3D sysfs_sriov_numvfs_get(pf_bdf);
+> > > > > +     if (nr_vfs !=3D 0)
+> > > > > +             SKIP(return, "SR-IOV already configured for the PF:=
+ %s\n", pf_bdf);
+> > > > > +
+> > > >
+> > > > If there is a test failure (ASSERT) then fixture cleanup will not r=
+un
+> > > > leaving SR-IOV enabled and all subsequent tests will skip.
+> > > >
+> > > > Since this test is specific to SR-IOV and user is intentionally pas=
+sing
+> > > > a device to test, I think we can just reset the VFs to 0 before
+> > > > proceeding instead of skipping.
+> > > >
+> > > The idea was to eliminate the assumption that if 'sriov_numvfs'
+> > > returns > 0, someone else might be using it. This is based on David's
+> > > suggestion: https://lore.kernel.org/all/aQzcQ0fJd-aCRThS@google.com/ =
+.
+> > > Moreover, the device might be in a partial state. So, even if the nex=
+t
+> > > test proceeds, it could fail due to other reasons.
+> > >
+> > > But I see your point about cleanup on failure. I think this is a
+> > > common issue across all tests. Was the expectation that we rely on
+> > > cleanup.sh to take care of all the cleanups, regardless of test
+> > > pass/failure?
 > >
-> > Cc: Alex Williamson <alex.williamson@redhat.com>
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> > Change-Id: Ib76374497945025fff60f77e6c72308e900b33f0
+> > I think we rely on the fact that test cases run in sub-processes and
+> > so if there is a failure in fixture setup then the child process exits
+> > and all vfio and iommufd fds are cleaned up. So the device is still
+> > "clean" for the next test.
+> >
+> > However if we are modifying system state like the number of VFs
+> > enabled on a device, I think Vipin is right we need to clean up after
+> > ourselves if the error occurs in fixture setup.
 >
-> Please drop gerrit's garbage before posting.
+> In that case, since the FIXTURE_TEARDOWN() is not invoked for a
+> failure in FIXTURE_SETUP(), the test must install its own cleaning
+> handler. Using conventional error handling with goto labels might also
+> be tricky because the sysfs lib contains ASSERTs. Even if we do reset
+> sriov_nrvfs and exit, since the failure is in FIXTURE_SETUP(), it's
+> highly likely that it's going to fail again.
+>
+> Since we need the VF creation only once, shall we simply do this setup
+> in main()?
+>
+> int main()
+> {
+>   pf_bdf =3D vfio_selftests_get_bdf(&argc, argv);
+>   vf_bdf =3D setup_vf(pf_bdf); // Do all the sysfs stuff here
+>   ret =3D test_harness_run(argc, argv);
+>   destroy_vf();
+>
+>   return ret;
+> }
+>
+> Another possible way is to expose the VF from setup.sh itself and pass
+> it as an arg to the test.
+>
+> WDYT?
 
-Ugh sorry, *face palm*.
+Creating and destroying VFs in main() outside of the test harness
+sounds like a good solution to me.
