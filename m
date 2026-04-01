@@ -1,76 +1,77 @@
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361D6301493
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 04:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1B529992B
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 04:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775017268; cv=none; b=FAlWPTMidzwwT0JbwbFH4XxkLvlKaAK6Hdu8LA2FnazXrBpl4g1gt19f4pKzrMWtYWrkms9iYIQ8MRI3Rt7d+2hjPr49ytm1xbgfDOQhtLIubmNBTJ08oQqt1+dIiQM365NU83a+O+LB95NRBQpsjjlQS7BiuFgRoY1wWMbHhHU=
+	t=1775017274; cv=none; b=KLrLxbwADKBIpkLWyKBh4k9MF3z9k9eH110McATOr4cCwT4yJRCdoDqJLjsFcXOyvHPLr+tlk4zoc0imJtGVIGkppQG9dVLTDVH7zFy3yccSWySEDaB7I7ZzAxzmkynSXtGcayX0jqIsh0EOMCWJutDDZIEQUYYHRB98q3cyHio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775017268; c=relaxed/simple;
-	bh=Bc/QHipkVhuUtOrqXl6OPRSHLzVbHDYRerAHoQvQySY=;
+	s=arc-20240116; t=1775017274; c=relaxed/simple;
+	bh=hquWfDfAFQGiIvCw6xQD75uAqUU9pzovahxNfUp3T9M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fIHaCp7GTKuDWZe76ppwLnSyxnXLPTjVb98W1G9g3kQ40lJ7roRS7ObBiMcx3va1X+h1Mibvy+mr1onR3DXHhhfpn/Ke8xfkQxO3FIztQA+ltTyfEQDbolbzlrwBRSsg0D1c2AeSZBYiC9cuJ72sjvszEeIPF6G86LwBrs8WjVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HKIbhnIS; arc=none smtp.client-ip=209.85.214.193
+	 MIME-Version; b=WZFQ9CgdmaQbhgVporCbT7719Gwq0LgPhrfqSWpGQjpQoFVD4bZhHZeINh/n6mF+RsamegGYLZ/AhmuqiuBmTvo7M+ll30jtWGLkhRBxsxzSG3SMnW2i/01BMaLDSt5PqcdLkNcc8RJtvWil+exYsCaHMh/4bbDDQqKQF6X0bDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PxBWKQk6; arc=none smtp.client-ip=209.85.210.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HKIbhnIS"
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2b23f90f53aso40335975ad.0
-        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 21:21:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PxBWKQk6"
+Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-82ce49785a0so448278b3a.2
+        for <kvm@vger.kernel.org>; Tue, 31 Mar 2026 21:21:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775017265; x=1775622065; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775017272; x=1775622072; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DF0VcLkrU6dsj+zxi4HzeQoG1dxvv9EP9ODQPgvKgDU=;
-        b=HKIbhnISzqSKz5a9BLWJklUb7GMaUDRpsI3C7CpLYQ1XbZL4LTRi6HtJvq4HF9st/m
-         vL5AQUlwJDKxCpIpp2jAid4448O0z7GGL8T1sUbBn7kydtBw/0kmg1H8yCrGgQ2q+qWW
-         LHVnm2pxGH1jwv2ATy+NtvkSl4b3i0ENGX/GNzq4dHIs7FG5fllJGpa16beVZvDZ9/6m
-         XlQF2k+XFVPBdEQhF3X2oLqNVsYl9RJ2K+YTEIibLgG8XTZqqY3F6OAfybuW91sL4CGo
-         Uhhy2wXjEb0pmJecAnCM9CFWBz+hnHuo+DcTBr+EyHEnTyMp644xjVrcfAoweTDXvqXU
-         Zypw==
+        bh=I7FDr2kDvu1n5fVDVKC3hI/+/zkjyMNWloUzLCrsbjE=;
+        b=PxBWKQk6yNmdDVa9c8wag4eWxKL7lJvmbzzF4EhXe7tkQOVZ6NJWVHbRUFBMIH3PlG
+         l5qSJLfpnR5TLyuvc7l8ZkRlzxrtBlCRuiwHXO/QSwwMr7D65hMkEBPeElxjRw7G3huG
+         JpjwhPAzxKydCnTZcqMlyyvS+vKRw4dmBrJoBtkMLpNd4W4ConBJaAG1cFHp8yFAb/ko
+         w8LN+VL+XuhBLNWzrt/x8m5fFdmWk3lY8Do5NIozqXLGHXKLkz/halWWHIhBloXmNFqC
+         +Tcrf99mcp1gDFhEkoc9pcYWcF4c9xkzxBPdFDUlmm0W2lx40S17mRNuE5MfUEqD/J//
+         2GAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775017265; x=1775622065;
+        d=1e100.net; s=20251104; t=1775017272; x=1775622072;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DF0VcLkrU6dsj+zxi4HzeQoG1dxvv9EP9ODQPgvKgDU=;
-        b=bWOCQ+aEUFn7x6yx5eO1BQHzZWN2wDU3muLWrJuE9l56JusFzcbUiJ5cGwPfWg3zEj
-         RU5sF7/Ki4+1+wvz1urrxlmvqb8mPYAGzzx+R18VC8oi8L3bAe04bzaRVD0KHApaQS6x
-         /I8QiRHboqvWsDAEvM35/Ielfoi9ASbSPcpwAmYuCv45PJ/d9t6sPQ30YEYa1jvUSxhM
-         Y1sTPUFH8N2L0dsUoYTecs1lLtX5xEVTuKO1vMPXVESaZKeGqeotJxPj3DDVrZTU51No
-         7ihGpvGVl8CBodgcxVeOeDIz2FXarissNwuBNR23eMZj/ULqMVYIwa/s5kctTPIO+lT/
-         OXVA==
-X-Gm-Message-State: AOJu0YxVo8jLAE8Bce5JPbikQpr+z//Nnrs03KVO+1ZBlzqZH4G0YbmZ
-	zvY65+ch9TxJPgKPdtHXwee89/6D9tmSL6PYSFOzca8KkIVb7yZr02nOOpaZ8lwqZ3D4ljHG
-X-Gm-Gg: ATEYQzxg+2zl+ILLDU9akK/of6VZoDhDAOexYl3meanv9AjFijTdSajnvGBemB3JEV8
-	q9AeCHOuc10sW9sHVdE6GQTG2mg/WsAp39JSP1GrX2m0oaFZAGhRlVjqRS9kBgnjbMoZhswCuE+
-	kRynuW91jAEicv+VmVYjMLJC9ybdc3dK+kZIxY7VAINZU9SPrh9rAhBkKnVZ9IVCa4yeKQx3YXy
-	6wG1vCpRIj4WWMADBsJqIj71x6yYXqxQR3rNDGr+lNbWq4ko/CA3TzaP8A0dsq4YKILG+5A8pzF
-	SYtCTqEGyMRXY1vjgDvLH6FaHifSVfaTfpTPHonTHi6OKFBPQiTpuyQR/AzjOIIy0uildicFUtY
-	N2XM187rRoNpMVu1CGLdlmftJ0jhdiHYP9jaCiOfH2+xJcWRGxoxjDTB1JuqIK93E43Sd6Xl52R
-	wFvjK5A+CByNNdl4PfdNbD6t16Ws7iWdjEiPXINmmmQr/mEbTz+WAaKbxEh+VSBV2eJdk=
-X-Received: by 2002:a17:902:f788:b0:2b0:663f:6b4b with SMTP id d9443c01a7336-2b269c6b069mr25086355ad.18.1775017265136;
-        Tue, 31 Mar 2026 21:21:05 -0700 (PDT)
-Received: from tmp.KDq6ZOvlsr (n058152022035.netvigator.com. [58.152.22.35])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242660881sm126160655ad.22.2026.03.31.21.21.01
+        bh=I7FDr2kDvu1n5fVDVKC3hI/+/zkjyMNWloUzLCrsbjE=;
+        b=NbpTXqSuqbLfjETvR7w3K5PSh9vbb5lcNryH88R8/WUaAVO2OEyAJkNTBqGtVNSkCh
+         aX1bXTRxGvKPPzAS1UTU27piSNzhw1DQ3vGVZPp5uX3YXXoTekSj0cmMGJcGJVPdGTq/
+         drjw1rqRMQKlqYFJrbAO3hsDcHcR/uTKDC98qhylHswugYTHcS2oSRwG5vpjxChSD20y
+         Bym209HhPbrWr3n/g8f245IlNiQdnJmhGGEFN1rooYKdkXOPuZTiw6XMgLxGOHpPGuvB
+         /73gKpQkhFP0jlzv6byh0NZ2YoW/YqF62VIWQLnyiGc+NkpskRbn1H/Z4uSDAmL7E8NF
+         /WuA==
+X-Gm-Message-State: AOJu0YzSUBDdBwsNS66f+3UZyJeCMUsrVW7dHDzMG1xbQdpoHQhpVTXC
+	du0TRn6UOPX+dH4Bb133RvcyKM+oOoYmaiSRW920Pj641z2onMyDLS02zWLFc2a2Hxo2q72H
+X-Gm-Gg: ATEYQzx9tdXKexuy2cSE7T7o2iwqbjn3J2LNecpOcQ7A3XXf+Zqj2w2UXM28Ozy4/Pf
+	7+U4kOQJR5f+rhRW54fP47kPxbZw65LpaVnZto2KkypAf6na3k+gaI1+trXODSzXAG0p13+FQk5
+	5/h44zThyleGy5+pxaBZeNLlmuEEdFm1HyXQfVQU+fQjGQT0qqPyQ+5DQi11rnWdcPwWjZUUmbb
+	i1fxRN8Yyh5ebQj1yqMrWFxGUKoHxxcokInhBcwt5yfQp/Wv+8fbK06AeQeth6N6wBjtx8qUMJ9
+	UNXC9CLpE5hA/upXxWo2qqgBlGTQTk3nrzhb0Ryx4UtdCxE6LzbLuYvgebD5TlbWsbnQ4nWOW5u
+	HXZjfyTQhz53kzC8sNRzNIAdday3W4CKiTAUBkFiGLnSjyOWfUoCfmk6NhzSNkGzQcAjyhYorbU
+	IINcy38Af9+Zi2CPx/v28bCrTZOqjgxfNVtiuGjsi8IKqENcBypfJmkKkEAx+0+l0C7w6LBg==
+X-Received: by 2002:aa7:9e52:0:b0:82c:e9cc:f61d with SMTP id d2e1a72fcca58-82ce9ccf6fcmr1300631b3a.9.1775017272293;
+        Tue, 31 Mar 2026 21:21:12 -0700 (PDT)
+Received: from tmp.QEZdWPZ5kd (n058152109154.netvigator.com. [58.152.109.154])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85d019dsm14260354b3a.29.2026.03.31.21.21.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 21:21:04 -0700 (PDT)
+        Tue, 31 Mar 2026 21:21:11 -0700 (PDT)
 From: vince <liuwf0302@gmail.com>
 To: kvm@vger.kernel.org
 Cc: ryan.roberts@arm.com,
 	will@kernel.org,
 	julien.thierry.kdev@gmail.com,
 	vince <liuwf0302@gmail.com>
-Subject: [PATCH v3 2/3] arm64: Add GDB stub and step-debug support
-Date: Wed,  1 Apr 2026 12:20:33 +0800
-Message-Id: <20260401042034.755639-3-liuwf0302@gmail.com>
+Subject: [PATCH v3 3/3] arm64: Sync guest instruction patches for GDB breakpoints
+Date: Wed,  1 Apr 2026 12:20:34 +0800
+Message-Id: <20260401042034.755639-4-liuwf0302@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260401042034.755639-2-liuwf0302@gmail.com>
+In-Reply-To: <20260401042034.755639-3-liuwf0302@gmail.com>
 References: <177457996500.86179.14991222733583648054@gmail.com>
  <20260401042034.755639-1-liuwf0302@gmail.com>
  <20260401042034.755639-2-liuwf0302@gmail.com>
+ <20260401042034.755639-3-liuwf0302@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,806 +80,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the arm64 architecture backend for the built-in GDB stub, including
-register mapping, software/hardware breakpoint handling, and step-debug
-resume behavior suitable for kernel debugging paths.
-
-The generic protocol layer remains shared with x86, while arm64-specific
-state transitions and debug controls are implemented in arm/aarch64 code.
-
-Link: https://lore.kernel.org/kvm/
-Signed-off-by: vince <liuwf0302@gmail.com>
 ---
- Makefile          |   2 +-
- arm/aarch64/gdb.c | 745 ++++++++++++++++++++++++++++++++++++++++++++++
- include/kvm/gdb.h |   2 +-
- 3 files changed, 747 insertions(+), 2 deletions(-)
- create mode 100644 arm/aarch64/gdb.c
+ arm/aarch64/gdb.c |  8 ++++++++
+ include/kvm/gdb.h | 10 ++++++++++
+ x86/gdb.c         |  4 ++++
+ 3 files changed, 22 insertions(+)
 
-diff --git a/Makefile b/Makefile
-index 7d75a67..3472d40 100644
---- a/Makefile
-+++ b/Makefile
-@@ -131,7 +131,6 @@ endif
- #x86
- ifeq ($(ARCH),x86)
- 	DEFINES += -DCONFIG_X86
--	DEFINES += -DCONFIG_HAS_GDB_STUB
- 	OBJS	+= gdb.o
- 	OBJS	+= hw/i8042.o
- 	OBJS	+= hw/serial.o
-@@ -198,6 +197,7 @@ ifeq ($(ARCH), arm64)
- 	OBJS		+= arm/aarch64/kvm.o
- 	OBJS		+= arm/aarch64/pvtime.o
- 	OBJS		+= arm/aarch64/pmu.o
-+	OBJS		+= arm/aarch64/gdb.o
- 	ARCH_INCLUDE	:= $(HDRS_ARM_COMMON)
- 	ARCH_INCLUDE	+= -Iarm/aarch64/include
- 
 diff --git a/arm/aarch64/gdb.c b/arm/aarch64/gdb.c
-new file mode 100644
-index 0000000..cbe854b
---- /dev/null
+index cbe854b..7872686 100644
+--- a/arm/aarch64/gdb.c
 +++ b/arm/aarch64/gdb.c
-@@ -0,0 +1,745 @@
-+/*
-+ * AArch64 architecture-specific GDB stub support.
-+ *
-+ * GDB AArch64 register set (org.gnu.gdb.aarch64.core, described in target.xml):
-+ *
-+ *  No.  Name    Size   KVM field
-+ *  ---  ------  ----   ---------
-+ *   0   x0       8     regs.regs[0]
-+ *   1   x1       8     regs.regs[1]
-+ *   ...
-+ *  30   x30      8     regs.regs[30]  (link register)
-+ *  31   sp       8     sp_el1  (kernel SP; SP_EL0 when PSTATE.EL==0)
-+ *  32   pc       8     regs.pc
-+ *  33   cpsr     4     regs.pstate (low 32 bits)
-+ *
-+ * Total: 31x8 + 8 + 8 + 4 = 268 bytes
-+ *
-+ * Software breakpoints:
-+ *   BRK #0  ->  little-endian bytes: 0x00 0x00 0x20 0xD4
-+ *   (u32 = 0xD4200000)
-+ *   ARM64 BRK is always 4 bytes and must be 4-byte aligned.
-+ *
-+ * Debug exit detection via ESR_EL2 (kvm_run->debug.arch.hsr):
-+ *   EC = bits[31:26]
-+ *   0x3C = BRK64  (AArch64 BRK instruction)  -> software breakpoint
-+ *   0x32 = SSTEP  (software single-step)
-+ *   0x30 = HW_BP  (hardware execution breakpoint)
-+ *   0x35 = WPTFAR (watchpoint)
-+ */
-+
-+#include "kvm/gdb.h"
-+#include "kvm/kvm-cpu.h"
-+#include "kvm/util.h"
-+
-+#include <sys/ioctl.h>
-+#include <string.h>
-+#include <errno.h>
-+
-+#include <asm/ptrace.h>
-+#include <linux/kvm.h>
-+
-+/* ------------------------------------------------------------------ */
-+/* Register layout constants                                           */
-+/* ------------------------------------------------------------------ */
-+
-+#define GDB_NUM_REGS		34	/* x0-x30, sp, pc, cpsr */
-+#define GDB_REG_SP		31
-+#define GDB_REG_PC		32
-+#define GDB_REG_CPSR		33
-+
-+/* Byte size of the 'g' register packet: 31x8 + 8 + 8 + 4 = 268 */
-+#define GDB_REGS_SIZE		268
-+
-+/* ESR EC field */
-+#define ESR_EC_SHIFT		26
-+#define ESR_EC_BRK64		0x3C	/* AArch64 BRK instruction */
-+
-+#define ARM64_DAIF_MASK		(PSR_A_BIT | PSR_I_BIT | PSR_F_BIT)
-+
-+static struct {
-+	struct kvm_cpu *vcpu;
-+	u32		daif_bits;
-+	bool		pending;
-+} step_irq_state;
-+
-+/* ------------------------------------------------------------------ */
-+/* ARM64_CORE_REG helper (same logic as arm/aarch64/kvm-cpu.c)        */
-+/* ------------------------------------------------------------------ */
-+
-+static __u64 __core_reg_id(__u64 offset)
+@@ -203,6 +203,14 @@ size_t kvm_gdb__arch_reg_pkt_size(void)
+ 	return GDB_REGS_SIZE;
+ }
+ 
++void kvm_gdb__arch_sync_guest_insn(void *host, size_t len)
 +{
-+	__u64 id = KVM_REG_ARM64 | KVM_REG_ARM_CORE | offset;
++	char *start = host;
++	char *end = start + len;
 +
-+	if (offset < KVM_REG_ARM_CORE_REG(fp_regs))
-+		id |= KVM_REG_SIZE_U64;
-+	else if (offset < KVM_REG_ARM_CORE_REG(fp_regs.fpsr))
-+		id |= KVM_REG_SIZE_U128;
-+	else
-+		id |= KVM_REG_SIZE_U32;
-+
-+	return id;
++	__builtin___clear_cache(start, end);
 +}
 +
-+#define ARM64_CORE_REG(x)	__core_reg_id(KVM_REG_ARM_CORE_REG(x))
-+
-+/* VBAR_EL1: S3_0_C12_C0_0  (op0=3, op1=0, CRn=12, CRm=0, op2=0) */
-+#define KVM_REG_VBAR_EL1	ARM64_SYS_REG(3, 0, 12, 0, 0)
-+/* ESR_EL1:  S3_0_C5_C2_0   (op0=3, op1=0, CRn=5, CRm=2, op2=0) */
-+#define KVM_REG_ESR_EL1		ARM64_SYS_REG(3, 0, 5, 2, 0)
-+
-+/* ------------------------------------------------------------------ */
-+/* Single-register get/set helpers                                     */
-+/* ------------------------------------------------------------------ */
-+
-+static int get_one_reg(struct kvm_cpu *vcpu, __u64 id, u64 *val)
-+{
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_GET_ONE_REG id=0x%llx failed: %s",
-+			   (unsigned long long)id, strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+static int set_one_reg(struct kvm_cpu *vcpu, __u64 id, u64 val)
-+{
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)&val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_SET_ONE_REG id=0x%llx failed: %s",
-+			   (unsigned long long)id, strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * pstate for KVM_GET_ONE_REG is 32-bit; wrap it so the 64-bit helper works.
-+ */
-+static int get_pstate(struct kvm_cpu *vcpu, u32 *out)
-+{
-+	u64 id = ARM64_CORE_REG(regs.pstate);
-+	u32 val;
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)&val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_GET_ONE_REG(pstate) failed: %s",
-+			   strerror(errno));
-+		return -1;
-+	}
-+	*out = val;
-+	return 0;
-+}
-+
-+static int set_pstate(struct kvm_cpu *vcpu, u32 val)
-+{
-+	u64 id = ARM64_CORE_REG(regs.pstate);
-+	struct kvm_one_reg reg = { .id = id, .addr = (u64)&val };
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg) < 0) {
-+		pr_warning("GDB: KVM_SET_ONE_REG(pstate) failed: %s",
-+			   strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Target XML                                                          */
-+/* ------------------------------------------------------------------ */
-+
-+static const char target_xml[] =
-+	"<?xml version=\"1.0\"?>\n"
-+	"<!DOCTYPE target SYSTEM \"gdb-target.dtd\">\n"
-+	"<target version=\"1.0\">\n"
-+	"  <feature name=\"org.gnu.gdb.aarch64.core\">\n"
-+	"    <reg name=\"x0\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x1\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x2\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x3\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x4\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x5\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x6\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x7\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x8\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x9\"   bitsize=\"64\"/>\n"
-+	"    <reg name=\"x10\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x11\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x12\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x13\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x14\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x15\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x16\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x17\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x18\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x19\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x20\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x21\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x22\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x23\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x24\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x25\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x26\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x27\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x28\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x29\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"x30\"  bitsize=\"64\"/>\n"
-+	"    <reg name=\"sp\"   bitsize=\"64\" type=\"data_ptr\"/>\n"
-+	"    <reg name=\"pc\"   bitsize=\"64\" type=\"code_ptr\"/>\n"
-+	"    <reg name=\"cpsr\" bitsize=\"32\"/>\n"
-+	"  </feature>\n"
-+	"</target>\n";
-+
-+const char *kvm_gdb__arch_target_xml(void)
-+{
-+	return target_xml;
-+}
-+
-+size_t kvm_gdb__arch_reg_pkt_size(void)
-+{
-+	return GDB_REGS_SIZE;
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Helpers: which SP to expose as GDB register 31                     */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * When the guest is in EL1 (kernel mode), the active stack pointer is SP_EL1.
-+ * When in EL0 (user mode), the active SP is SP_EL0 (regs.sp in kvm_regs).
-+ * Return the appropriate KVM register ID for the active SP.
-+ */
-+static __u64 sp_reg_id(struct kvm_cpu *vcpu)
-+{
-+	u32 pstate;
-+
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		return ARM64_CORE_REG(sp_el1);	/* best-effort default */
-+
-+	/* PSTATE.EL = bits [3:2] */
-+	if (((pstate >> 2) & 0x3) >= 1)
-+		return ARM64_CORE_REG(sp_el1);
-+	else
-+		return ARM64_CORE_REG(regs.sp);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Register read / write (bulk 'g'/'G' packet)                        */
-+/* ------------------------------------------------------------------ */
-+
-+void kvm_gdb__arch_read_registers(struct kvm_cpu *vcpu, u8 *buf, size_t *size)
-+{
-+	u8 *p = buf;
-+	u32 pstate;
-+	int i;
-+
-+	*size = 0;
-+
-+	/* x0-x30: 31 x 8 bytes */
-+	for (i = 0; i < 31; i++) {
-+		u64 xn;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.regs[i]), &xn) < 0)
-+			return;
-+		memcpy(p, &xn, 8);
-+		p += 8;
-+	}
-+
-+	/* sp (register 31): 8 bytes -- active stack pointer */
-+	{
-+		u64 sp;
-+
-+		if (get_one_reg(vcpu, sp_reg_id(vcpu), &sp) < 0)
-+			return;
-+		memcpy(p, &sp, 8);
-+		p += 8;
-+	}
-+
-+	/* pc (register 32): 8 bytes */
-+	{
-+		u64 pc;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc) < 0)
-+			return;
-+		memcpy(p, &pc, 8);
-+		p += 8;
-+	}
-+
-+	/* cpsr (register 33): 4 bytes -- low 32 bits of pstate */
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		return;
-+	memcpy(p, &pstate, 4);
-+	p += 4;
-+
-+	*size = (size_t)(p - buf);
-+}
-+
-+void kvm_gdb__arch_write_registers(struct kvm_cpu *vcpu, const u8 *buf,
-+				    size_t size)
-+{
-+	const u8 *p = buf;
-+	int i;
-+
-+	if (size < GDB_REGS_SIZE)
-+		return;
-+
-+	/* x0-x30 */
-+	for (i = 0; i < 31; i++) {
-+		u64 xn;
-+
-+		memcpy(&xn, p, 8);
-+		p += 8;
-+		if (set_one_reg(vcpu, ARM64_CORE_REG(regs.regs[i]), xn) < 0)
-+			return;
-+	}
-+
-+	/* sp */
-+	{
-+		u64 sp;
-+
-+		memcpy(&sp, p, 8);
-+		p += 8;
-+		if (set_one_reg(vcpu, sp_reg_id(vcpu), sp) < 0)
-+			return;
-+	}
-+
-+	/* pc */
-+	{
-+		u64 pc;
-+
-+		memcpy(&pc, p, 8);
-+		p += 8;
-+		if (set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc) < 0)
-+			return;
-+	}
-+
-+	/* cpsr */
-+	{
-+		u32 pstate;
-+
-+		memcpy(&pstate, p, 4);
-+		p += 4;
-+		set_pstate(vcpu, pstate);
-+	}
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Single-register read/write ('p n' / 'P n=v')                       */
-+/* ------------------------------------------------------------------ */
-+
-+int kvm_gdb__arch_read_register(struct kvm_cpu *vcpu, int regno,
-+				 u8 *buf, size_t *size)
-+{
-+	if (regno < 0 || regno >= GDB_NUM_REGS)
-+		return -1;
-+
-+	if (regno < 31) {
-+		/* x0 - x30 */
-+		u64 xn;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.regs[regno]), &xn) < 0)
-+			return -1;
-+		memcpy(buf, &xn, 8);
-+		*size = 8;
-+	} else if (regno == GDB_REG_SP) {
-+		u64 sp;
-+
-+		if (get_one_reg(vcpu, sp_reg_id(vcpu), &sp) < 0)
-+			return -1;
-+		memcpy(buf, &sp, 8);
-+		*size = 8;
-+	} else if (regno == GDB_REG_PC) {
-+		u64 pc;
-+
-+		if (get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc) < 0)
-+			return -1;
-+		memcpy(buf, &pc, 8);
-+		*size = 8;
-+	} else {
-+		/* GDB_REG_CPSR */
-+		u32 pstate;
-+
-+		if (get_pstate(vcpu, &pstate) < 0)
-+			return -1;
-+		memcpy(buf, &pstate, 4);
-+		*size = 4;
-+	}
-+
-+	return 0;
-+}
-+
-+int kvm_gdb__arch_write_register(struct kvm_cpu *vcpu, int regno,
-+				  const u8 *buf, size_t size)
-+{
-+	if (regno < 0 || regno >= GDB_NUM_REGS)
-+		return -1;
-+
-+	if (regno < 31) {
-+		u64 xn;
-+
-+		if (size < 8)
-+			return -1;
-+		memcpy(&xn, buf, 8);
-+		return set_one_reg(vcpu, ARM64_CORE_REG(regs.regs[regno]), xn);
-+	} else if (regno == GDB_REG_SP) {
-+		u64 sp;
-+
-+		if (size < 8)
-+			return -1;
-+		memcpy(&sp, buf, 8);
-+		return set_one_reg(vcpu, sp_reg_id(vcpu), sp);
-+	} else if (regno == GDB_REG_PC) {
-+		u64 pc;
-+
-+		if (size < 8)
-+			return -1;
-+		memcpy(&pc, buf, 8);
-+		return set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc);
-+	} else {
-+		/* GDB_REG_CPSR */
-+		u32 pstate;
-+
-+		if (size < 4)
-+			return -1;
-+		memcpy(&pstate, buf, 4);
-+		return set_pstate(vcpu, pstate);
-+	}
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* PC                                                                  */
-+/* ------------------------------------------------------------------ */
-+
-+u64 kvm_gdb__arch_get_pc(struct kvm_cpu *vcpu)
-+{
-+	u64 pc = 0;
-+
-+	get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc);
-+	return pc;
-+}
-+
-+void kvm_gdb__arch_set_pc(struct kvm_cpu *vcpu, u64 pc)
-+{
-+	set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc);
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Debug control (single-step + hardware breakpoints / watchpoints)   */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * BCR (Breakpoint Control Register) for an enabled execution breakpoint:
-+ *
-+ *   Bit  1    : EN = 1 (enable)
-+ *   Bits 3:2  : PMC = 0b11 (match EL0 + EL1, i.e. user and kernel)
-+ *   Bits 8:5  : BAS = 0b1111 (byte address select, all 4 bytes of insn)
-+ *   Bits 13:9 : (reserved / HMC, leave 0)
-+ *   Bits 15:14: SSC = 0b00
-+ */
-+#define BCR_EXEC_ANY	0x000001e7ULL	/* EN=1, PMC=11, BAS=1111 */
-+
-+/*
-+ * WCR (Watchpoint Control Register) base: EN=1, PAC=EL0+EL1
-+ *   Bit  1    : EN = 1
-+ *   Bits 3:2  : PAC = 0b11 (EL0 + EL1)
-+ *   Bits 5:4  : (LSC -- Load/Store/Both) -- set by caller
-+ *   Bits 12:5 : BAS -- set by caller (byte enable)
-+ */
-+#define WCR_BASE	0x7ULL		/* EN=1, PAC=11 */
-+
-+static u64 arm64_watchpoint_bas(u64 addr, int len)
-+{
-+	int shift = addr & 7;
-+	u64 mask;
-+
-+	if (len <= 0 || len > 8 || shift + len > 8)
-+		return 0;
-+
-+	mask = (1ULL << len) - 1;
-+	return mask << shift;
-+}
-+
-+void kvm_gdb__arch_set_debug(struct kvm_cpu *vcpu, bool single_step,
-+			      struct kvm_gdb_hw_bp *hw_bps)
-+{
-+	struct kvm_guest_debug dbg = { 0 };
-+	int i;
-+
-+	dbg.control = KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP;
-+
-+	if (single_step)
-+		dbg.control |= KVM_GUESTDBG_SINGLESTEP;
-+
-+	if (hw_bps) {
-+		bool any_hw = false;
-+		int bp_idx = 0;	/* hardware breakpoints (exec) use dbg_bvr/bcr */
-+		int wp_idx = 0;	/* watchpoints use dbg_wvr/wcr */
-+
-+		for (i = 0; i < 4; i++) {
-+			if (!hw_bps[i].active)
-+				continue;
-+
-+			if (hw_bps[i].type == 0) {
-+				/* Execution breakpoint (Z1) */
-+				if (bp_idx >= KVM_ARM_MAX_DBG_REGS)
-+					continue;
-+				dbg.arch.dbg_bvr[bp_idx] =
-+					hw_bps[i].addr & ~3ULL; /* 4-byte align */
-+				dbg.arch.dbg_bcr[bp_idx] = BCR_EXEC_ANY;
-+				bp_idx++;
-+			} else {
-+				/* Watchpoint: write(1), read(2), access(3) */
-+				u64 wcr;
-+				u64 bas;
-+
-+				if (wp_idx >= KVM_ARM_MAX_DBG_REGS)
-+					continue;
-+
-+				/*
-+				 * BAS: byte-address-select bitmask.
-+				 * For len=1->0x1, len=2->0x3, len=4->0xf, len=8->0xff.
-+				 * Encode in WCR bits [12:5].
-+				 */
-+				bas = arm64_watchpoint_bas(hw_bps[i].addr,
-+						   hw_bps[i].len);
-+				if (!bas)
-+					continue;
-+
-+				/*
-+				 * LSC (Load/Store Control):
-+				 *   01 = load (read), 10 = store (write),
-+				 *   11 = load+store (access)
-+				 * Bits [4:3] of WCR.
-+				 */
-+				{
-+					u64 lsc;
-+
-+					switch (hw_bps[i].type) {
-+					case 1:  lsc = 0x2; break;  /* write */
-+					case 2:  lsc = 0x1; break;  /* read  */
-+					default: lsc = 0x3; break;  /* access */
-+					}
-+					wcr = WCR_BASE |
-+					      (lsc << 3) |
-+					      (bas << 5);
-+				}
-+
-+				dbg.arch.dbg_wvr[wp_idx] =
-+					hw_bps[i].addr & ~7ULL; /* 8-byte align */
-+				dbg.arch.dbg_wcr[wp_idx] = wcr;
-+				wp_idx++;
-+			}
-+			any_hw = true;
-+		}
-+
-+		if (any_hw)
-+			dbg.control |= KVM_GUESTDBG_USE_HW;
-+	}
-+
-+	if (ioctl(vcpu->vcpu_fd, KVM_SET_GUEST_DEBUG, &dbg) < 0)
-+		pr_warning("GDB: KVM_SET_GUEST_DEBUG failed: %s",
-+			   strerror(errno));
-+}
-+
-+void kvm_gdb__arch_prepare_resume(struct kvm_cpu *vcpu, bool single_step,
-+				   bool from_debug_exit)
-+{
-+	u32 pstate;
-+
-+	if (!single_step || !from_debug_exit)
-+		return;
-+
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		return;
-+
-+	step_irq_state.vcpu = vcpu;
-+	step_irq_state.daif_bits = pstate & ARM64_DAIF_MASK;
-+	step_irq_state.pending = true;
-+
-+	pstate |= ARM64_DAIF_MASK;
-+	set_pstate(vcpu, pstate);
-+}
-+
-+void kvm_gdb__arch_handle_stop(struct kvm_cpu *vcpu)
-+{
-+	u32 pstate;
-+
-+	if (!step_irq_state.pending || step_irq_state.vcpu != vcpu)
-+		return;
-+
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		return;
-+
-+	pstate &= ~ARM64_DAIF_MASK;
-+	pstate |= step_irq_state.daif_bits;
-+	set_pstate(vcpu, pstate);
-+
-+	step_irq_state.pending = false;
-+	step_irq_state.vcpu = NULL;
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Stop signal                                                         */
-+/* ------------------------------------------------------------------ */
-+
-+int kvm_gdb__arch_signal(struct kvm_cpu *vcpu __attribute__((unused)))
-+{
-+	/* All debug exits report SIGTRAP (5) */
-+	return 5;
-+}
-+
-+/* ------------------------------------------------------------------ */
-+/* Software-breakpoint exit detection and re-injection                 */
-+/* ------------------------------------------------------------------ */
-+
-+/*
-+ * ARM64 debug exits are identified by the EC field in ESR_EL2
-+ * (reported in kvm_run->debug.arch.hsr).
-+ *
-+ *   EC = bits[31:26] of HSR.
-+ *   0x3C = ESR_ELx_EC_BRK64 -> AArch64 BRK instruction.
-+ */
-+bool kvm_gdb__arch_is_sw_bp_exit(struct kvm_cpu *vcpu)
-+{
-+	u32 hsr = vcpu->kvm_run->debug.arch.hsr;
-+	u32 ec  = (hsr >> ESR_EC_SHIFT) & 0x3f;
-+
-+	return ec == ESR_EC_BRK64;
-+}
-+
-+/*
-+ * Return the guest virtual address of the BRK instruction that triggered
-+ * the current debug exit.
-+ *
-+ * On ARM64, when KVM intercepts a BRK:
-+ *   - The guest PC has NOT been advanced (no RIP-style auto-increment).
-+ *   - The PC register (regs.pc) still points at the BRK instruction itself.
-+ *   - kvm_run->debug.arch.far is the FAR_EL2 value, which is UNKNOWN for
-+ *     instruction-class exceptions (BRK), so we do NOT use far here.
-+ *
-+ * Therefore we read the current PC via KVM_GET_ONE_REG.
-+ */
-+u64 kvm_gdb__arch_debug_pc(struct kvm_cpu *vcpu)
-+{
-+	return kvm_gdb__arch_get_pc(vcpu);
-+}
-+
-+/*
-+ * Re-inject the BRK exception into the guest so that the guest kernel's own
-+ * brk_handler (in arch/arm64/kernel/debug-monitors.c) can process it.
-+ *
-+ * ARM64 does not support arbitrary exception injection via KVM_SET_VCPU_EVENTS
-+ * (the ARM64 kvm_vcpu_events struct only has SError).  Instead, we manually
-+ * simulate what the CPU would do when taking a synchronous exception to EL1:
-+ *
-+ *   1. Save current PC -> ELR_EL1          (exception return address)
-+ *   2. Save current PSTATE -> SPSR_EL1     (saved processor state)
-+ *   3. Set ESR_EL1 = HSR from the debug exit  (syndrome for brk_handler)
-+ *   4. Read VBAR_EL1 to find the exception vector base
-+ *   5. Set PC = VBAR_EL1 + vector_offset   (synchronous exception vector)
-+ *   6. Set PSTATE = EL1h mode, all interrupts masked
-+ *
-+ * Vector offset within VBAR_EL1 (ARM ARM D1.10):
-+ *   +0x000  current EL, SP_EL0  (PSTATE.EL==1, PSTATE.SP==0)
-+ *   +0x200  current EL, SP_ELx  (PSTATE.EL==1, PSTATE.SP==1)  <- common kernel
-+ *   +0x400  lower EL, AArch64   (PSTATE.EL==0)
-+ *   +0x600  lower EL, AArch32   (not used here)
-+ *   Synchronous = +0x000 within each quadrant.
-+ *
-+ * On failure, we advance PC by 4 to skip the BRK and avoid an infinite loop,
-+ * accepting that the kernel's BRK handler won't run for this instruction.
-+ */
-+void kvm_gdb__arch_reinject_sw_bp(struct kvm_cpu *vcpu)
-+{
-+	u64 pc = 0, vbar;
-+	u32 pstate, hsr;
-+	bool have_pc = false;
-+	u64 new_pc;
-+	u64 vec_off;
-+
-+	hsr = vcpu->kvm_run->debug.arch.hsr;
-+
-+	/* Read current PC and PSTATE */
-+	if (get_one_reg(vcpu, ARM64_CORE_REG(regs.pc), &pc) < 0)
-+		goto advance_pc;
-+	have_pc = true;
-+	if (get_pstate(vcpu, &pstate) < 0)
-+		goto advance_pc;
-+
-+	/* Read VBAR_EL1 -- the base of the EL1 exception vector table */
-+	if (get_one_reg(vcpu, KVM_REG_VBAR_EL1, &vbar) < 0)
-+		goto advance_pc;
-+
-+	/* Step 1: ELR_EL1 = current PC (return address = BRK instruction) */
-+	if (set_one_reg(vcpu, ARM64_CORE_REG(elr_el1), pc) < 0)
-+		goto advance_pc;
-+
-+	/* Step 2: SPSR_EL1 = current PSTATE */
-+	{
-+		u64 spsr = pstate;
-+		struct kvm_one_reg reg = {
-+			.id   = ARM64_CORE_REG(spsr[KVM_SPSR_EL1]),
-+			.addr = (u64)&spsr,
-+		};
-+		if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg) < 0) {
-+			pr_warning("GDB: reinject: KVM_SET_ONE_REG(spsr) failed: %s",
-+				   strerror(errno));
-+			goto advance_pc;
-+		}
-+	}
-+
-+	/*
-+	 * Step 3: ESR_EL1 = syndrome from the BRK exit.
-+	 * The HSR value (ESR_EL2 at the time of the VM exit) contains the
-+	 * correct EC and ISS (BRK immediate) that the kernel's brk_handler
-+	 * will inspect via read_sysreg(esr_el1).
-+	 */
-+	if (set_one_reg(vcpu, KVM_REG_ESR_EL1, (u64)hsr) < 0)
-+		goto advance_pc;
-+
-+	/*
-+	 * Step 4+5: Determine vector offset and set PC.
-+	 *
-+	 * PSTATE.EL = bits[3:2], PSTATE.SP = bit[0].
-+	 */
-+	{
-+		u32 el    = (pstate >> 2) & 0x3;
-+		u32 spsel = pstate & 0x1;
-+
-+		if (el >= 1) {
-+			/* From EL1: current EL, SP_ELx or SP_EL0 */
-+			vec_off = spsel ? 0x200ULL : 0x000ULL;
-+		} else {
-+			/* From EL0: lower EL, AArch64 */
-+			vec_off = 0x400ULL;
-+		}
-+	}
-+	new_pc = vbar + vec_off;
-+	if (set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), new_pc) < 0)
-+		goto advance_pc;
-+
-+	/* Step 6: Set PSTATE = EL1h mode, all interrupts masked */
-+	if (set_pstate(vcpu, PSR_D_BIT | PSR_A_BIT | PSR_I_BIT |
-+			     PSR_F_BIT | PSR_MODE_EL1h) < 0)
-+		goto advance_pc;
-+
-+	return;
-+
-+advance_pc:
-+	/*
-+	 * Fallback: skip the 4-byte BRK instruction to prevent an infinite
-+	 * KVM_EXIT_DEBUG loop.  The guest's BRK handler will NOT run.
-+	 * Only attempt the skip if we successfully read PC; otherwise we
-+	 * cannot safely advance and just return to avoid writing garbage.
-+	 */
-+	if (!have_pc) {
-+		pr_warning("GDB: reinject_sw_bp failed before PC was read");
-+		return;
-+	}
-+	pr_warning("GDB: reinject_sw_bp failed; skipping BRK at 0x%llx",
-+		   (unsigned long long)pc);
-+	set_one_reg(vcpu, ARM64_CORE_REG(regs.pc), pc + 4);
-+}
+ /* ------------------------------------------------------------------ */
+ /* Helpers: which SP to expose as GDB register 31                     */
+ /* ------------------------------------------------------------------ */
 diff --git a/include/kvm/gdb.h b/include/kvm/gdb.h
-index 31d44ad..623dad0 100644
+index 623dad0..8e10cd7 100644
 --- a/include/kvm/gdb.h
 +++ b/include/kvm/gdb.h
-@@ -16,7 +16,7 @@ struct kvm_gdb_hw_bp {
- 	bool active;
- };
+@@ -90,6 +90,12 @@ size_t kvm_gdb__arch_reg_pkt_size(void);
+ /* GDB signal number to report on stop (SIGTRAP=5) */
+ int kvm_gdb__arch_signal(struct kvm_cpu *vcpu);
  
--#ifdef CONFIG_HAS_GDB_STUB
-+#if defined(CONFIG_X86) || defined(CONFIG_ARM64)
- 
++/*
++ * Make a guest instruction patch visible to later instruction fetches.
++ * host points at the host virtual address backing the patched guest bytes.
++ */
++void kvm_gdb__arch_sync_guest_insn(void *host, size_t len);
++
  /*
-  * Public GDB stub API
+  * Returns true if the KVM_EXIT_DEBUG exit was caused by a software
+  * breakpoint (INT3 / #BP exception), as opposed to a hardware debug
+@@ -133,6 +139,10 @@ static inline bool kvm_gdb__active(struct kvm *kvm)
+ 	return false;
+ }
+ 
++static inline void kvm_gdb__arch_sync_guest_insn(void *host, size_t len)
++{
++}
++
+ #endif
+ 
+ #endif /* KVM__GDB_H */
+diff --git a/x86/gdb.c b/x86/gdb.c
+index f0fa941..91d8a5a 100644
+--- a/x86/gdb.c
++++ b/x86/gdb.c
+@@ -107,6 +107,10 @@ size_t kvm_gdb__arch_reg_pkt_size(void)
+ 	return GDB_REGS_SIZE;
+ }
+ 
++void kvm_gdb__arch_sync_guest_insn(void *host, size_t len)
++{
++}
++
+ /* ------------------------------------------------------------------ */
+ /* Helpers: read/write KVM register structures                        */
+ /* ------------------------------------------------------------------ */
 -- 
 2.34.1
 
