@@ -1,161 +1,139 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4EE346797
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 20:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84F7347C6
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 20:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775074355; cv=none; b=SaZ0BjiadY2HP3SVQWNvqdAmr7/kcMHIjDuIPZNZ6d4ThcO7s4VcSAAiHDa94wya4Jf+ntDEJFXKS940j63rJt4pDDxBx25We7x+qSyHaD/UJ3VjmLXyUAQ4jgNjMnL4TZAODCEGt2bqiZCIcpwwp+jVd3aDrS/v2xM53J2DmEM=
+	t=1775074679; cv=none; b=TSU8a5Q1IX/S96C8oOOqidBkMsdfI/N3Ylh+QoFFyDbmqOFM//rdl+dhErZVvXpHqc7zSzhchq8GeOwD1miEf6zOqR5f81UlrSFQF+fks4BkeQ0ib4iDqZjMyUyNr4A9mkXa+ZUB2rzsGGdSbl60bf17AGGduuFZixQKo6rJS14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775074355; c=relaxed/simple;
-	bh=mzmf/tQAZzg3tkFAS++cse6duFS6+EMTyZUDvfhK15Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=op3jOLU3giWkHymtUg4uaoMCeXZsAkG6B/5NzHixgti1LvKVTf0zvSt1galg2OxdItEuq5B8Dw5vTvBPgkK17CRtyfXBtsFX/EyMe8F4byO0YPnnPUCUfR4Ie6xG5t8Etd8P2GS+BvaQBgMhJJOfZSJVegP34jg+B6wKDMDrkhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gdc+Ofnd; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1775074679; c=relaxed/simple;
+	bh=L/oTqa8h3Me6Y9+KhXIyoZwZJ/gNDsHsDWyCLmfKkrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GPVViNenwBm4vmSQhS0vig899iZCqylGKqS2wdrzAxMNUMO1cnN10nsuvU8aNwefw67kVZbATl3wRI6i1ECml5wL9CCDVjOQOP7Vx1IfL2dzyfjXBZEDL3tGBAQQzzMRaBWnkds/+79zA8ZyBUK6lbtebrSD1v+NU1nwDWf/fQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o7doQ+3p; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gdc+Ofnd"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ad9f316d68so353105ad.2
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 13:12:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o7doQ+3p"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-486ff201041so1078465e9.1
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 13:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775074354; x=1775679154; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NcqhMR+RXJk6KO94WYqbTA+Ubd1MxPDKOWjFYBI0Cwk=;
-        b=Gdc+Ofndx2j7Ee6xvNKw5uFkTB+8B0Lwoux21DzUvjvTdMLlpGyVl5ytsyZARgxQry
-         7xkQHF00ZnHw8zUjwdzFvsFeM+9l5xFuHF8KGB8gYzect/+B76Abv+4FtNQBx1Vp5YQN
-         jo0xwKol1gJYkQhcqJm2P2N8qtle5LqvQ/Y1d182iLcnvdAGoCcv2ekmm1Z5zUMB3kw8
-         pXY7l1m4djrHZ70Vh4v+a4y28FFkJ2t6NwDfjCiuitvXUeH4/jaXE0XFqZh/H6kSvso2
-         HaGf4bREvk3J/OurFoLil19C7MXLXqAvgrxipPEDw5YF7+rVlodFz7LCPK1GcoUI9aiP
-         gYmA==
+        d=linaro.org; s=google; t=1775074676; x=1775679476; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=D9EJVmPQy6eeZJJyEDHNsSijB+T9mGxWe0hCWzvTRWs=;
+        b=o7doQ+3pEYCmTxNK984qUq5xbAh4jhN39t5Rw1ODVB6+4YTckSmbjwZZaaN+N8pWTO
+         urhb05pAq8DXItF/4309Ik+n+QuwSDHPHhDwL/mtEjhjork8x1U5KtWxlJtCESwH5yc0
+         gsH5GkXReJxS03jgvCwCcDiDI5Jt4zi/U2DwkfheksnPTgPpVkUUBAcc42JmQFKL5baR
+         LUK1xb4RHSSfzaqfDmQhkw7TNK8pI3hJoj0nbLDB7kpkgDhFho/Q4tUFK4IZ024XAwjt
+         QppmQoII92Z8s5fJ53Is32qJWA3HOHbgbzMM3IWU5C/qO+kde7wb0Qkdk6Ce2yJuEbbd
+         /Qpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775074354; x=1775679154;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NcqhMR+RXJk6KO94WYqbTA+Ubd1MxPDKOWjFYBI0Cwk=;
-        b=C8vH0ZUmwGzaOa6gbZGprUg6EgVOZI/+bsBdPEoyjM8ieE6m0JA/PHQL3Psw4mdgVo
-         tyYxYlRHFT6LY7usNRnzbko8AKUqgtTdy/6xJUMzqip8d2rbNzKTpbVUZgS0+eL23q7P
-         +GsyLxyWHIQYlOyBAbjG6vWV/WMkZIHkpU/7W6pG9f0mKlg32uvrJUrPYnQpTiS96JZX
-         Oe7pzx3hPlgNI6hMa3oUpcTYCsNbvp3XKbGhU4nrrBk6w5PCbVkCVADwz9ARpZJ5N2Ef
-         ymMzxTWtS0epbH5XSMHV9pDjURbpdj1XV3yYzzxiA99GMuF1aRm/KlirqVQspyzyFNxP
-         PdeA==
-X-Forwarded-Encrypted: i=1; AJvYcCX62B2h/EiE48FiJx9DsyJg4sjCy45P6S9+IWveNCK0mcywKh+T3gy1VQbXlInllPy1nH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxBM+zeV3TNVqMmwtM2sBXOizPm6vA7as2V0rQqwvmzq4Y0bj3
-	nFkNwYb5JwO/zEy32q/i3aySyodaASoAHCa9IMoibQ541U3fqxNwswBqN0Vp/rtwPQ==
-X-Gm-Gg: ATEYQzzovi7P99UGQNYoVl5sy4VlYAZ5+j1ZKDIRJW0TCD3kroGhDpPU5QDlQ2RiTbe
-	t6Ck5RxsU+hVn3Q53Q5DfE1ekg3/vSa+b5C7wASRx54ITcbv4w1lxML9PPU/ndMqoh7iCprYDHH
-	VthnPJg0q9h27+reh5IwbyjBbi69LuD1aSPWrUiar6/LGNeEm31/Ve39pXTkgxNbPPIui2XQrLA
-	hISPsx8kYKEMWb3gqNU/xRwZYozwFP+OR0hSKa37EBzqaS5cjfLJis7TG6dqgcV7p1Pr5e8l0dj
-	+GYUkFRElcfKac2WNNgTFaVc89Fj5QBcVfBewOjNb4K1duWtJWuoG0dAlbPNC5lwlNKJPXnM5Cx
-	KhibtVfwh3a0hh7//6P228aOFvszs3nHBfooJbgU8VDYJjVVR+CYxcm23ITfxmYlkE6WYP3edyJ
-	QWqzKqshevLcTtxSga/veLcNDqR2yxrgaHjSxXBEndKBXbsnqW61CnBE3YlxDJVw==
-X-Received: by 2002:a17:903:248:b0:2b2:5723:12c3 with SMTP id d9443c01a7336-2b269ccfbfemr47949205ad.43.1775074353331;
-        Wed, 01 Apr 2026 13:12:33 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27477c54bsm7811775ad.27.2026.04.01.13.12.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 13:12:32 -0700 (PDT)
-Date: Wed, 1 Apr 2026 20:12:28 +0000
-From: David Matlack <dmatlack@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Josh Hilke <jrhilke@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>
-Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib
- and test device interrupts
-Message-ID: <ac18LHQLalPb4z0-@google.com>
-References: <20260331194033.3890309-1-jrhilke@google.com>
- <ac1hI93pEo-x-7YU@google.com>
- <ac1pUx_jYv2yCMnX@google.com>
- <ac1s55_oLEUQx8Hs@google.com>
+        d=1e100.net; s=20251104; t=1775074676; x=1775679476;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D9EJVmPQy6eeZJJyEDHNsSijB+T9mGxWe0hCWzvTRWs=;
+        b=oSNYA2/1BjxC8eXW+swtf6wwAogM4xd8QutYKwKbBaax7V0Mvkg9AWrLqWaa+8MB1g
+         Oj5glrAiMF/iyJgMOgwTBnLB2qouPJsaEzobU59arF3b4nX4X4t0d0C/TWz5yOIv6dRF
+         wAdU1YGZ3Qbd7OpUqoJgp/jVSWMrhrAHQzPqVmjNLh0ENt9D3v9G0p4D8G1EgWV5g1J0
+         lICzQQYOMRTIVe1bEU1yWUu3/pC6N1SWvqk74PQrB+idJ93JHz/lb2HniQXQbN8lOhmX
+         mDTkBhQg/OMysL7KCDl24x0GVSt4kmW+6MaG7Ctekiy1uSt0zJKW2ne9SvzeeS5d74Oi
+         Di/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXbr+tUpUNjBHQaozJR4Vcj3ohJgSuHVlz9Mp4wgwrKDSraad2nM1CBaSjOHfXEn/FCCXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx39hVf7iMcTUzTkN+Ux5dCAHJpE1ZHoDAZNJGwJIMp0WEJpZSJ
+	1br4cXhB9foWV9ClO9X6UXV1wpAkoE49ZkHyKaPtIsZ/REGVod5Wt6SXZrsqfpnvLU9ZlXMSVvL
+	FHbXM8e0=
+X-Gm-Gg: ATEYQzxlVswwLw8PpOJJKoaPLpRi1IPuc4sraIEZPa/cSV202UwtkgYiRrDdnt+sR51
+	uS+IOKeTI3pnRx8wZ8vDAxbqskkgUrzYBhBF6yV+FlfT+BEAOemHB4q9UZ0faZwVKIJDg5Wggka
+	9WNlBB10P1ngWcelg5llVgQHDqlTzSvxOi2VXvxbcSH4rlYfrpDHVNFlRQLhGBJEHYQBai+RX+C
+	gxv2Zq1A2qJ1cKAzamon5evGF7oWp5u3HxMcekD4dY5hiPshGIHA1KUD4YJ1R69ENc5EDqEiVPs
+	864A2rrVuUElWid9GlcWTbMOiy8L7BxGa1rQKm/jf2wAEWHrP848OWcYDY9VaYW56xfeANrNbRh
+	eA1k72/hL8gT9ObJ+cs4Rsu6WXi/aQLZG9/kD08jt/GlhPCbP+D7ObQ926k2ypQ1dzkdyIvCl9y
+	XF4UjTFh+V0tlFvOe047NAFcV4XULkh9GyuZZ0WEWTpSBaKRYmlg5+TaB283PmHHDEr92Dp310
+X-Received: by 2002:a05:600c:310a:b0:485:3d3e:167b with SMTP id 5b1f17b1804b1-4888b6d4a4fmr11059385e9.5.1775074676186;
+        Wed, 01 Apr 2026 13:17:56 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a7165aasm24239995e9.14.2026.04.01.13.17.54
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 01 Apr 2026 13:17:55 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eric Farman <farman@linux.ibm.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+	kvm@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	qemu-riscv@nongnu.org,
+	Alexander Graf <agraf@csgraf.de>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Anton Johansson <anjo@rev.ng>,
+	Song Gao <gaosong@loongson.cn>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	qemu-s390x@nongnu.org,
+	Chao Liu <chao.liu.zevorn@gmail.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	qemu-arm@nongnu.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-11.1 0/8] target/arm: Compile accelerator-related objects as common code
+Date: Wed,  1 Apr 2026 22:17:44 +0200
+Message-ID: <20260401201753.92290-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac1s55_oLEUQx8Hs@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 2026-04-01 12:07 PM, Sean Christopherson wrote:
-> On Wed, Apr 01, 2026, David Matlack wrote:
-> > On 2026-04-01 11:17 AM, Sean Christopherson wrote:
-> > > On Tue, Mar 31, 2026, Josh Hilke wrote:
+First drop TARGET_KVM_HAVE_GUEST_DEBUG (all targets but MIPS
+support it), then -- after minor changes -- move the ARM
+specific accelerator units to target_common_system_arch[]
+source set, allowing to remove arm_system_ss[] for good.
 
-> > Agree this would be nice to have. Is this a blocker for this series?
-> 
-> Yes.  KVM selftests need to assert there's a driver before trying to proceed.
+Philippe Mathieu-Daudé (8):
+  accel/kvm: Include missing 'exec/vaddr.h' header
+  accel/kvm: Remove TARGET_KVM_HAVE_GUEST_DEBUG
+  accel/kvm: Expose all non-target specific declarations
+  target/arm: Compile WHPX as common object
+  target/arm: Remove target_ulong use in hvf_handle_psci_call()
+  target/arm: Compile HVF as common object
+  target/arm: Remove target_ulong cast in kvm_arm_handle_dabt_nisv()
+  target/arm: Compile KVM as common object
 
-That exists in the new test:
+ configs/targets/aarch64-softmmu.mak     |  1 -
+ configs/targets/i386-softmmu.mak        |  1 -
+ configs/targets/loongarch64-softmmu.mak |  1 -
+ configs/targets/ppc-softmmu.mak         |  1 -
+ configs/targets/ppc64-softmmu.mak       |  1 -
+ configs/targets/riscv64-softmmu.mak     |  1 -
+ configs/targets/s390x-softmmu.mak       |  1 -
+ configs/targets/x86_64-softmmu.mak      |  1 -
+ include/system/kvm.h                    | 13 +------------
+ include/system/kvm_int.h                |  2 --
+ accel/kvm/kvm-accel-ops.c               |  4 ----
+ accel/kvm/kvm-all.c                     | 13 ++-----------
+ target/arm/hvf/hvf.c                    |  2 +-
+ target/arm/kvm.c                        |  3 +--
+ target/mips/kvm.c                       |  5 +++++
+ target/arm/hvf/meson.build              |  2 +-
+ target/arm/meson.build                  | 12 +++++++-----
+ target/arm/whpx/meson.build             |  6 +++---
+ 18 files changed, 21 insertions(+), 49 deletions(-)
 
-static int setup_msi(struct vfio_pci_device *device, bool use_device_msi)
-{
-	const int flags = MAP_SHARED | MAP_ANONYMOUS;
-	const int prot = PROT_READ | PROT_WRITE;
-	struct dma_region *region;
+-- 
+2.53.0
 
-	if (use_device_msi) {
-		/* A driver is required to generate an MSI. */
-		TEST_REQUIRE(device->driver.ops);
-
-But I think you are also asking to have a helper that prints out the
-list of available drivers in this case. That should be trivial to add.
-
-VFIO selftests could expose add a helper that handles checking for
-device->driver.ops and, if null, printing an error message and list of
-available drivers and exiting with KSFT_SKIP.
-
-One wrinkle here is we are probably going to merge a driver soon that
-does not support send_msi():
-
-  https://lore.kernel.org/kvm/20260331172241.50456-1-rubind@nvidia.com/
-
-So we should also have an API for that. e.g. Add 2 helpsers:
-
-  - vfio_pci_has_driver()
-  - vfio_pci_has_driver_send_msi()
-
-This test would use the latter.
-
-> > > struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
-> > > {
-> > > 	struct vfio_pci_device *device;
-> > > 	struct iommu *iommu;
-> > > 
-> > > 	iommu = iommu_init(default_iommu_mode);
-> > > 
-> > > 	device = vfio_pci_device_init(bdf, iommu);
-> > > 	if (!device) {
-> > > 		vfio_pci_device_print_drivers(stderr);
-> > > 		TEST_FAIL("No driver found for BDF '%s'", bdf);
-> > > 	}
-> > > 	return device;
-> > > }
-> > > 
-> > > Because as is, this requires way too much a priori knowledge and magic for
-> > > upstream.  The user shouldn't have to dig through code just to understand what
-> > > devices are supported.
-> > >
-> > > Ideally, VFIO selftests would also provide a script, utility, and/or helper to
-> > > identify BDFs for devices it has drivers for.  In my experience, binding a device
-> > > to VFIO is trivial.  Finding the device in the first place is more annoying.
-> > 
-> > Agree this would be nice to have. Is this a blocker for this series?
-> 
-> Yes.  As I mentioned to Josh off-list, I'm not willing to accept a "we pinky-swear
-> we'll make this stuff user friendly".  It's not that I don't trust you and Josh
-> (and others), it's that for me, this level of user-friendly behavior isn't nice
-> to have, it's mandatory for these tests to be usable upstream.
-> 
-> Internally we can squeak by with barebones, unhelpful tests, because the run
-> commands are often hardcoded somewhere and there is piles of documentation elsewhere.
-> But for upstream, none of that holds true.
-> 
-> If it were weeks of effort, I would be more open to treating this as nice to have,
-> but AFAICT writing the code should be less than a days worth of work.
-
-Yeah that's fine, I don't think it adds too much extra work, and it's
-something I'd like to have anyway. I just wanted to confirm if it should
-be part (or merged ahead of this series) or can be separate. Thanks!
