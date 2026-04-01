@@ -1,33 +1,69 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0283F7875;
-	Wed,  1 Apr 2026 10:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775040900; cv=none; b=Ug5os7P3gnziQl7lrU7iub2bMpOer7tDbIkf7hIiCkXUBJ2nM/PvtzzApJelzMU4+zfoYk2imWXlKrg0+PfRNB9ctw6dEhuGd/kwnvn+voPtV6aVzsVnMyKsW5MvJTCnvXftdU8PfIyYZKcXr/KklDlOGd85EF5Cmq88EQ8iHXs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775040900; c=relaxed/simple;
-	bh=RhVbx9A+k7+t4+OVCUY/jrTWiwCuNBFhvPqqAl2AgBU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FPQIPg9eHLIt4S0scd+v/hZ58kjQc4ljWjoJ/dHV/MN3pDae/vx/6EujoSpwYK7EBVOB8SwO4kvxNYzFzbB4xS/a0I8VKK4K3FRDWw9IMW7yiFn3nYstom1MUxrcUqLY4EdHWwheFIQgq5jcJnt8YZfjMn5CieN2b7Qux5HXYsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EXbNk1pV; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012007.outbound.protection.outlook.com [40.93.195.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682643DEAD0;
+	Wed,  1 Apr 2026 11:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775042686; cv=fail; b=BaePQgEXgNKlTiXN35nQ3UjNE5+7BG6Fv6M+uKjgZ6wvYbCamFQa6hwYug9saQqVDZZpHZpnlHI/aEIAqy/a+GMmswaFg5GXaujkpR+G4wK6W4cYYX5JgCZSW9WHSyTAcnPmCu1OU/ClF57o1g3Qnh1j8wCQcjuPVcq+6sJQC3w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775042686; c=relaxed/simple;
+	bh=PnfhNJdrT/2PwI0UdMuBrKwYCUB/1h3v0KZLBZgr6Pc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dpR2RQxCai4SrHqWgUN+ftUgnkR1qThBaCfIxrqBztQJI1nY8diImVgLGp/e8FXodZBwezZvBAFZH9DSrqdcHUlEOVc3aizPjIknjm422XXXVnKHBpoDzGuqf2ZuQSgFdtX3Fcv9fZ7f/hiOmO0fJKsrEwLuYsECSa+rCKwXnUo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=He91qtGM; arc=fail smtp.client-ip=40.93.195.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EXbNk1pV"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 81D991BB0;
-	Wed,  1 Apr 2026 03:54:48 -0700 (PDT)
-Received: from [10.57.60.254] (unknown [10.57.60.254])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 992E83F915;
-	Wed,  1 Apr 2026 03:54:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775040894; bh=RhVbx9A+k7+t4+OVCUY/jrTWiwCuNBFhvPqqAl2AgBU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EXbNk1pVYehbxfvN3KBco3LIyqhPnRw4Zo0WK4sFP/K0NUO2yY9FuZEjywLemQ4OH
-	 NW1OXqZpKq70tg9a05nMSqhyX9S5DYaEIETD1BRdr66yn7sIxjLYbd+5f0sCFLtVpJ
-	 suMBq+V+9Q4hQXIoFaFem8vX9yLVcDIdZf/C6/Fc=
-Message-ID: <19051463-03ad-4be3-b877-4a2ee4c0d0c6@arm.com>
-Date: Wed, 1 Apr 2026 11:54:47 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="He91qtGM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qblzlQCyfPEbF9bCAcISu1SON5Ig2q8Qb5BCouktUlZON5BOUXRF+ms+l6iBwU3J6WIDsHbQJszAqb/K1y3KVPknBjXL4CAJFtvyxSvbMoARAcaF5biIlWw4e3wA7mu7XlUBLD6N8zehoWi0u4xsDdkrrSQX1mpA64ENm2xVJwniwQDD7tr4T3Ef6Ql9XgoGWfRu+r61YgAASh6g+AS8Ju2dfLEJbup2WNeRSjvq34Mc21lzpT0D9olc1IUSZf4Cx4+NCD8FLupSUHpnWh62U444SxnVxBpV3xiR4A1GRauQ2IDPVci4sjYWIB4wIBqV+JwiYO2L/pcxbFfpiZmjXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BiLuVfFW9PfzXfcap2z04MArr+6eUcKnlSVl3Tv8hkU=;
+ b=Izd0iI50mPDuOYBXo6fIV0yznEG4zib4Evv7BPvXbhbAYmDWysqB3uMUI84svnygLHS7qdoO4zFusl8dSGcD1ZMMrt67WdxSMUsdOenO+Hosz8s+U5Nkg9TazWnNYa3Exynw9USKr5e92okoCWsciEnQ3ZWE2fnfIn8DEIcdKyh2la4iRZ3a4dNXvoTrBmTM03Ag2ZmxqfVc+bKhQm6hx4+Fw8GLBV/1Qc5CRQTl8Zcy/nRtbZs6Bs98se9iH1G0u2wPAwD6WpRX9G/RR/I1CSoPqWHYdeMFGY3JbNl8vWXr+c0n66DAiNaE4HF6IUqlV1WC0zZ0ZXakIsOTtqF9PA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BiLuVfFW9PfzXfcap2z04MArr+6eUcKnlSVl3Tv8hkU=;
+ b=He91qtGMsO5n++08WN6ITY0i+2fwmOvdAl4PRe5if8witgu3Trm4BqFjigHN6A93bR1KCE6hDWIjZaZBNI8YOsQM73r5+saq0bA/FvnBdL98p80tGHMoYvs6sFUj5VNFUrd+mU8txhKZXqvFVE0KanOEU4Gq7LaAnCY408UhBvY=
+Received: from BN0PR04CA0152.namprd04.prod.outlook.com (2603:10b6:408:eb::7)
+ by IA0PR12MB8088.namprd12.prod.outlook.com (2603:10b6:208:409::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
+ 2026 11:24:41 +0000
+Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
+ (2603:10b6:408:eb:cafe::77) by BN0PR04CA0152.outlook.office365.com
+ (2603:10b6:408:eb::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
+ 1 Apr 2026 11:24:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 11:24:41 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 1 Apr
+ 2026 06:24:40 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 1 Apr
+ 2026 06:24:40 -0500
+Received: from [172.31.185.117] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 1 Apr 2026 06:24:39 -0500
+Message-ID: <2723ab8b-8fad-469d-9ef2-918358953b16@amd.com>
+Date: Wed, 1 Apr 2026 16:54:38 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,367 +71,209 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 12/48] arm64: RMI: Basic infrastructure for creating a
- realm.
-To: Wei-Lin Chang <weilin.chang@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260318155413.793430-1-steven.price@arm.com>
- <20260318155413.793430-13-steven.price@arm.com>
- <xpl4tvzm22ruavicwzgpcw7dsh5mtclhsp5tnkkyybgrxiwptj@f4tmkuyutitp>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <xpl4tvzm22ruavicwzgpcw7dsh5mtclhsp5tnkkyybgrxiwptj@f4tmkuyutitp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: SEV-ES guest shutdown: linux-next regression with QEMU 10.2.2;
+ smp>1
+To: Tom Lendacky <thomas.lendacky@amd.com>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+CC: open list <linux-kernel@vger.kernel.org>, KVM <kvm@vger.kernel.org>
+References: <c820e242-9f3a-4210-b414-19d11b022404@amd.com>
+ <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
+Content-Language: en-US
+From: "Aithal, Srikanth" <sraithal@amd.com>
+In-Reply-To: <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB04.amd.com: sraithal@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|IA0PR12MB8088:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ae75442-c087-4838-fc02-08de8fe14484
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|82310400026|30052699003|1800799024|22082099003|13003099007|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	oezBeQyoSdj+KmDLn4GvslD9mFsuSnv1i6ukih7n2YCfocOIsWtrEMTbfnRxOxoT2vBcOf/7wYb0gYd5DK63Rpmgzu9hM1aUEF8n5q+7kQnxJx4CWJB+pcgOKSjLgrnakFbMiVYHFEhDfI2qLMlDhY1f2NuO5ZZ4mkaCuQdXxo1D1RHV3+hDG+s6yG5FlNz6yUggQgZphapaiK0Fh/rK2Ao5mhppT0pEuFTlY1YzLbv/azeEAG6a/vtdvP69mNAgGmBqj2WGf157DFh4+kYs5//AWuKeuykNL4Zt2AsjtZBz67PQeHjDA+fBfZZOhlwIEv+YiA9wLPArit2VvxcfE5kMFao6Kn6f+0hrl1avdXNkd6z5VotHOG9L1umXAAbd9w5ja4ut/L6KzTiVt4bZkazm87uJeph3gN+Ud2VoGZiB6FbfvRyVks9faDJVFLE7R6og+vLbFesXPrCElYIWK3WQV1IoX7U18kph0Y5/yc0LvMgbKFk9wf9tM1OwRj+qrE3UKMyz3XkJO+8/Pibn9KXjX8z03zR3aiQF5oQMC9UKy4R5lAxZovOCtZk5w8yOCSTQfQWyd/rxTaceF+o4xPZCL/WhRIZLzZCsJ+6Upp/kvrPK6SSoJ+ntFOiRwxepGtfeGd1Fka9tiBkvvr932KcqhOLMhGwSz2OorAivEQdHIagCHXjFJqOVT1vK+XZdlMZyEcLjhjkzKR6wSCs53MEP+OMvpI7e/PBwNlxGd9G/+xQpwEpoDP3F1zhTFis28twP5OKYKX6iV5yXvy/3pqLdku6VZvOFITIXtULxS1s=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(82310400026)(30052699003)(1800799024)(22082099003)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	mhMMJvfJqi8TyG9SEcu5NaATkY5315QnmLaHmRlgn0g+34zEImWAXo5Xv0/T+OzdEGJGYX3jTuPhwFhFHt3OClBJpgZwfyFt4kAkQ8/Oxqr3y35Hlv9kNm/q2W7rejzu6bOJpZ1KWLrWNfzjZnvmB07ECG0vjCy65LJLVZPL9+bKHmTKUO5dXDk8ODj8dtGdeNW9iPrg2wO4l+a9rEtRRa3EvSqqRnk8D5vwb/XpXLtRO/pqX524IPKyvf5MUxTLPadVSY7DQcJXjxZDxaJxOGff722WyXraLjk4VF0t19AkQiEsX7APKwgibACnVgrwJHKyp+v0qg9d/ujfwFcN3OlHxO5thZBluHdZfK5srJqNBZ9fOfqycNxh7GaPD93FytFMXPWNyIj8TvVUUJ1CRY7Ewfj1wRB3wSPpR7qv8KMTlh1xjK1T5CD6tvtc2Qzp
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 11:24:41.2729
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ae75442-c087-4838-fc02-08de8fe14484
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000467F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8088
 
-On 21/03/2026 16:34, Wei-Lin Chang wrote:
-> On Wed, Mar 18, 2026 at 03:53:36PM +0000, Steven Price wrote:
->> Introduce the skeleton functions for creating and destroying a realm.
->> The IPA size requested is checked against what the RMM supports.
+Hello Tom,
+
+
+On 3/23/2026 6:40 PM, Tom Lendacky wrote:
+> On 3/20/26 11:08, Aithal, Srikanth wrote:
+>> Hello,
 >>
->> The actual work of constructing the realm will be added in future
->> patches.
+>> I am hitting a failure when shutting down a SEV-ES guest (smp>1) on
+>> recent linux-next, and narrowed it down with bisection on the host
+>> kernel. The issue appears with more than one vCPU (e.g. -smp 2); with -
+>> smp 1 shutdown completes normally in my tests. The same guest shutdown
+>> path works with an older host kernel (<next-20260304) and is also
+>> avoided with current QEMU master or by cherry-picking a specific QEMU
+>> commit onto v10.2.2.
 >>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v12:
->>  * Drop the RMM_PAGE_{SHIFT,SIZE} defines - the RMM is now configured to
->>    be the same as the host's page size.
->>  * Rework delegate/undelegate functions to use the new RMI range based
->>    operations.
->> Changes since v11:
->>  * Major rework to drop the realm configuration and make the
->>    construction of realms implicit rather than driven by the VMM
->>    directly.
->>  * The code to create RDs, handle VMIDs etc is moved to later patches.
->> Changes since v10:
->>  * Rename from RME to RMI.
->>  * Move the stage2 cleanup to a later patch.
->> Changes since v9:
->>  * Avoid walking the stage 2 page tables when destroying the realm -
->>    the real ones are not accessible to the non-secure world, and the RMM
->>    may leave junk in the physical pages when returning them.
->>  * Fix an error path in realm_create_rd() to actually return an error value.
->> Changes since v8:
->>  * Fix free_delegated_granule() to not call kvm_account_pgtable_pages();
->>    a separate wrapper will be introduced in a later patch to deal with
->>    RTTs.
->>  * Minor code cleanups following review.
->> Changes since v7:
->>  * Minor code cleanup following Gavin's review.
->> Changes since v6:
->>  * Separate RMM RTT calculations from host PAGE_SIZE. This allows the
->>    host page size to be larger than 4k while still communicating with an
->>    RMM which uses 4k granules.
->> Changes since v5:
->>  * Introduce free_delegated_granule() to replace many
->>    undelegate/free_page() instances and centralise the comment on
->>    leaking when the undelegate fails.
->>  * Several other minor improvements suggested by reviews - thanks for
->>    the feedback!
->> Changes since v2:
->>  * Improved commit description.
->>  * Improved return failures for rmi_check_version().
->>  * Clear contents of PGD after it has been undelegated in case the RMM
->>    left stale data.
->>  * Minor changes to reflect changes in previous patches.
->> ---
->>  arch/arm64/include/asm/kvm_emulate.h |  5 ++
->>  arch/arm64/include/asm/kvm_rmi.h     | 16 +++++
->>  arch/arm64/kvm/arm.c                 | 12 ++++
->>  arch/arm64/kvm/mmu.c                 | 11 +++-
->>  arch/arm64/kvm/rmi.c                 | 88 ++++++++++++++++++++++++++++
->>  5 files changed, 129 insertions(+), 3 deletions(-)
+>> Environment:
+>> Host kernel: linux-next, tag next-20260319 [1] (also observed starting
+>> from next-20260304).
+>> Guest: SEV-ES Linux guest; -smp 2 (or more) reproduces the issue; -smp 1
+>> does not in my testing.
+>> Hypervisor / QEMU: Initially QEMU v10.2.2 (stable). Later tested QEMU
+>> master at 8e711856d763 [2].
 >>
->> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
->> index f38b50151ce8..39310d9b4e16 100644
->> --- a/arch/arm64/include/asm/kvm_emulate.h
->> +++ b/arch/arm64/include/asm/kvm_emulate.h
->> @@ -701,6 +701,11 @@ static inline enum realm_state kvm_realm_state(struct kvm *kvm)
->>  	return READ_ONCE(kvm->arch.realm.state);
->>  }
->>  
->> +static inline bool kvm_realm_is_created(struct kvm *kvm)
->> +{
->> +	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
->> +}
->> +
->>  static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
->>  {
->>  	return false;
->> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
->> index 3506f50b05cd..0ada525af18f 100644
->> --- a/arch/arm64/include/asm/kvm_rmi.h
->> +++ b/arch/arm64/include/asm/kvm_rmi.h
->> @@ -6,6 +6,8 @@
->>  #ifndef __ASM_KVM_RMI_H
->>  #define __ASM_KVM_RMI_H
->>  
->> +#include <asm/rmi_smc.h>
->> +
->>  /**
->>   * enum realm_state - State of a Realm
->>   */
->> @@ -46,11 +48,25 @@ enum realm_state {
->>   * struct realm - Additional per VM data for a Realm
->>   *
->>   * @state: The lifetime state machine for the realm
->> + * @rd: Kernel mapping of the Realm Descriptor (RD)
->> + * @params: Parameters for the RMI_REALM_CREATE command
->> + * @num_aux: The number of auxiliary pages required by the RMM
->> + * @ia_bits: Number of valid Input Address bits in the IPA
->>   */
->>  struct realm {
->>  	enum realm_state state;
->> +
->> +	void *rd;
->> +	struct realm_params *params;
->> +
->> +	unsigned long num_aux;
->> +	unsigned int ia_bits;
->>  };
->>  
->>  void kvm_init_rmi(void);
->> +u32 kvm_realm_ipa_limit(void);
->> +
->> +int kvm_init_realm_vm(struct kvm *kvm);
->> +void kvm_destroy_realm(struct kvm *kvm);
->>  
->>  #endif /* __ASM_KVM_RMI_H */
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 274d7866efdc..9b17bdfaf0c2 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -253,6 +253,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->>  
->>  	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
->>  
->> +	/* Initialise the realm bits after the generic bits are enabled */
->> +	if (kvm_is_realm(kvm)) {
->> +		ret = kvm_init_realm_vm(kvm);
->> +		if (ret)
->> +			goto err_free_cpumask;
->> +	}
->> +
->>  	return 0;
->>  
->>  err_free_cpumask:
->> @@ -312,6 +319,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->>  	kvm_unshare_hyp(kvm, kvm + 1);
->>  
->>  	kvm_arm_teardown_hypercalls(kvm);
->> +	if (kvm_is_realm(kvm))
->> +		kvm_destroy_realm(kvm);
->>  }
->>  
->>  static bool kvm_has_full_ptr_auth(void)
->> @@ -473,6 +482,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->>  		else
->>  			r = kvm_supports_cacheable_pfnmap();
->>  		break;
->> +	case KVM_CAP_ARM_RMI:
->> +		r = static_key_enabled(&kvm_rmi_is_available);
->> +		break;
->>  
->>  	default:
->>  		r = 0;
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 070a01e53fcb..d6094b60c4ce 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -872,12 +872,16 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
->>  	.icache_inval_pou	= invalidate_icache_guest_page,
->>  };
->>  
->> -static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
->> +static int kvm_init_ipa_range(struct kvm *kvm,
->> +			      struct kvm_s2_mmu *mmu, unsigned long type)
->>  {
->>  	u32 kvm_ipa_limit = get_kvm_ipa_limit();
->>  	u64 mmfr0, mmfr1;
->>  	u32 phys_shift;
->>  
->> +	if (kvm_is_realm(kvm))
->> +		kvm_ipa_limit = kvm_realm_ipa_limit();
->> +
->>  	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
->>  		return -EINVAL;
->>  
->> @@ -974,7 +978,7 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
->>  		return -EINVAL;
->>  	}
->>  
->> -	err = kvm_init_ipa_range(mmu, type);
->> +	err = kvm_init_ipa_range(kvm, mmu, type);
->>  	if (err)
->>  		return err;
->>  
->> @@ -1113,7 +1117,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->>  	write_unlock(&kvm->mmu_lock);
->>  
->>  	if (pgt) {
->> -		kvm_stage2_destroy(pgt);
->> +		if (!kvm_is_realm(kvm))
->> +			kvm_stage2_destroy(pgt);
+>> Details on issue:
+>>
+>> After SEV-ES guest shutdown , the serial log shows a register dump
+>> (example below) .
+>>
+>> [   12.613383] reboot: Power down^M
+>> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
+>> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
+>> EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
+>> ES =0000 00000000 0000ffff 00009300
+>> CS =f000 00800000 0000ffff 00009b00
+>> SS =0000 00000000 0000ffff 00009300
+>> DS =0000 00000000 0000ffff 00009300
+>> FS =0000 00000000 0000ffff 00009300
+>> GS =0000 00000000 0000ffff 00009300
+>> LDT=0000 00000000 0000ffff 00008200
+>> TR =0000 00000000 0000ffff 00008b00
+>> GDT=     00000000 0000ffff
+>> IDT=     00000000 0000ffff
+>> CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
+>> DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000
+>> DR3=0000000000000000
+>> DR6=00000000ffff0ff0 DR7=0000000000000400
+>> EFER=0000000000000000
+>> Code=b0 96 b5 61 ca ef 3f 51 00 c3 65 51 19 77 b1 e0 e5 e2 91 b8 <0c> 5d
+>> c7 fc 59 bc 2b 6f 90 89 44 23 ec ec 2f 62 fd e0 8f d5 c7 31 24 70 e2 7d
+>> c6 ee 00 00
+>> -> Hangs here
+>>
+>> Host kernel bisect (with QEMU v10.2.2) led to:
+>>
+>> Good (no crash on guest shutdown):
+>> 32d76cdfa1222c88262da5b12e0b2bba444c96fa
+>> KVM: SVM: Move core EFER.SVME enablement to kernel (local build tagged
+>> 7.0.0-rc232d76cdfa1222 during testing.)
+>>
+>> Bad (crash reproduced):
+>> 428afac5a8ea9c55bb8408e02dc92b8f85bf5f30
+>> KVM: x86: Move bulk of emergency virtualization logic to virt subsystem
 > 
-> Hi,
+> Any chance you have the enable_virt_at_load module option set to false?
+
+No, it is set to Y.
+# cat /sys/module/kvm/parameters/enable_virt_at_load
+Y
+
+
 > 
-> Question:
-> Since kvm_stage2_destroy() is only called for non-realm VMs, then where
-> does the root level RTT pages get freed?
-> After searching for a while I feel like it is missed, but I am not
-> certain.
+>>
+>> So the first bad commit in my host kernel bisect was 428afac5a8ea. The
+>> commit prior [32d76cdfa122] did not have this issue.
+>>
+>> Later I used QEMU master and with same linux-next next-20260319 as host,
+>> it did not reproduce the shutdown issue .. that was using QEMU master [2].
+>>
+>> QEMU master contains 56d89db2cfd82c53439778fbf39294bf35194dba (target/
+>> i386: convert SEV-ES termination requests to guest panic events).
+>> Cherry-picking that commit onto QEMU v10.2.2 resolved or at least
+>> avoided the shutdown crash in my setup.
+> 
+> Well, if it is converting a guest termination request, that is still not
+> good. It should be a clean shutdown.
+> 
+>>
+>>
+>> Questions:
+>>
+>> KVM: Is the interaction/issue with older QEMU (e.g. v10.2.2) expected
+>> here, or is there anything that should be adjusted or documented
+>> following 428afac5a8ea, like for multi-vCPU SEV-ES guests?
+>> QEMU: Would a stable backport of 56d89db2cfd8 to 10.2.x (or equivalent
+>> handling of SEV-ES termination) be appropriate for users staying on
+>> stable QEMU while moving to newer host kernels?
+> 
+> That wouldn't actually solve the issue, it is just a much more user
+> friendly error message. Is there a termination event in the host dmesg log?
 
-You're absolutely right. I do have a bug fix locally for this:
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 9cfb8c434aa5..3e55c1ff046c 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1148,6 +1148,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
-        if (pgt) {
-                if (!kvm_is_realm(kvm))
-                        kvm_stage2_destroy(pgt);
-+               else
-+                       kvm_pgtable_stage2_destroy_pgd(pgt);
-                kfree(pgt);
-        }
- }
+The guest shutdown proceeds normally until:
+[ OK ] Reached target poweroff.target - System Power Off.
+[ 9.918849] reboot: Power down
 
-The issue here is that we don't want to talk the tables (because they
-will have been scrubbed by the RMM), but I apparently forgot to add the
-call to free the actual memory.
+At that point the serial console freezes with the register dump below 
+(EIP=0000b004, HLT=1, EFER=0, etc.).
 
-Thanks,
-Steve
+[  OK  ] Finished systemd-poweroff.service - System Power Off.
+[  OK  ] Reached target poweroff.target - System Power Off.
+[   10.029330] reboot: Power down
+EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
+ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
+EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
+ES =0000 00000000 0000ffff 00009300
+CS =f000 00800000 0000ffff 00009b00
+SS =0000 00000000 0000ffff 00009300
+DS =0000 00000000 0000ffff 00009300
+FS =0000 00000000 0000ffff 00009300
+GS =0000 00000000 0000ffff 00009300
+LDT=0000 00000000 0000ffff 00008200
+TR =0000 00000000 0000ffff 00008b00
+GDT=     00000000 0000ffff
+IDT=     00000000 0000ffff
+CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
+DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 
+DR3=0000000000000000
+DR6=00000000ffff0ff0 DR7=0000000000000400
+EFER=0000000000000000
+Code=98 59 0c db 72 6c 94 71 3d a6 36 32 49 a8 08 22 bd d7 8c bb <4c> 3c 
+d9 bd 90 b5 2e a0 69 26 53 df aa 4c bb fe 5a d9 b6 ee 7b 45 02 2e cf d9 
+60 48 00 00
 
+
+
+QEMU does **not** exit on its own — it appears stuck.
+
+Only after I press Ctrl+C do I see in host dmesg:
+kvm_amd: SEV-ES guest requested termination: 0x0:0x0
+
+I also set `kvm_amd.dump_invalid_vmcb=1` before reproducing, but it 
+produced no additional output.
+
+This issue is still present on latest linux-next next-20260331 
+[https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?h=next-20260331, 
+tag name	next-20260331 (e5da3eef8dadab4e98b228725ca8948edd9d601f)]
+
+> 
 > Thanks,
-> Wei-Lin Chang
+> Tom
 > 
->>  		kfree(pgt);
->>  	}
->>  }
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index 80aedc85e94a..700b8c935d29 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -6,6 +6,8 @@
->>  #include <linux/kvm_host.h>
->>  #include <linux/memblock.h>
->>  
->> +#include <asm/kvm_emulate.h>
->> +#include <asm/kvm_mmu.h>
->>  #include <asm/kvm_pgtable.h>
->>  #include <asm/rmi_cmds.h>
->>  #include <asm/virt.h>
->> @@ -182,6 +184,92 @@ static int rmi_init_metadata(void)
->>  	return 0;
->>  }
->>  
->> +u32 kvm_realm_ipa_limit(void)
->> +{
->> +	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
->> +}
->> +
->> +static int undelegate_range(phys_addr_t phys, unsigned long size)
->> +{
->> +	unsigned long ret;
->> +	unsigned long top = phys + size;
->> +	unsigned long out_top;
->> +
->> +	while (phys < top) {
->> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
->> +		if (ret == RMI_SUCCESS)
->> +			phys = out_top;
->> +		else if (ret != RMI_BUSY && ret != RMI_BLOCKED)
->> +			return ret;
->> +	}
->> +
->> +	return ret;
->> +}
->> +
->> +static int undelegate_page(phys_addr_t phys)
->> +{
->> +	return undelegate_range(phys, PAGE_SIZE);
->> +}
->> +
->> +static int free_delegated_page(phys_addr_t phys)
->> +{
->> +	if (WARN_ON(undelegate_page(phys))) {
->> +		/* Undelegate failed: leak the page */
->> +		return -EBUSY;
->> +	}
->> +
->> +	free_page((unsigned long)phys_to_virt(phys));
->> +
->> +	return 0;
->> +}
->> +
->> +void kvm_destroy_realm(struct kvm *kvm)
->> +{
->> +	struct realm *realm = &kvm->arch.realm;
->> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->> +
->> +	write_lock(&kvm->mmu_lock);
->> +	kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
->> +			       BIT(realm->ia_bits - 1), true);
->> +	write_unlock(&kvm->mmu_lock);
->> +
->> +	if (realm->params) {
->> +		free_page((unsigned long)realm->params);
->> +		realm->params = NULL;
->> +	}
->> +
->> +	if (!kvm_realm_is_created(kvm))
->> +		return;
->> +
->> +	WRITE_ONCE(realm->state, REALM_STATE_DYING);
->> +
->> +	if (realm->rd) {
->> +		phys_addr_t rd_phys = virt_to_phys(realm->rd);
->> +
->> +		if (WARN_ON(rmi_realm_destroy(rd_phys)))
->> +			return;
->> +		free_delegated_page(rd_phys);
->> +		realm->rd = NULL;
->> +	}
->> +
->> +	if (WARN_ON(undelegate_range(kvm->arch.mmu.pgd_phys, pgd_size)))
->> +		return;
->> +
->> +	WRITE_ONCE(realm->state, REALM_STATE_DEAD);
->> +
->> +	/* Now that the Realm is destroyed, free the entry level RTTs */
->> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
->> +}
->> +
->> +int kvm_init_realm_vm(struct kvm *kvm)
->> +{
->> +	kvm->arch.realm.params = (void *)get_zeroed_page(GFP_KERNEL);
->> +
->> +	if (!kvm->arch.realm.params)
->> +		return -ENOMEM;
->> +	return 0;
->> +}
->> +
->>  static int rmm_check_features(void)
->>  {
->>  	if (kvm_lpa2_is_enabled() && !rmi_has_feature(RMI_FEATURE_REGISTER_0_LPA2)) {
->> -- 
->> 2.43.0
 >>
+>> Thank you,
+>>
+>> Srikanth Aithal <sraithal@amd.com>
+>>
+>> References
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+>> — next-20260319
+>> [2] https://gitlab.com/qemu-project/qemu — master 8e711856d763
+>>
+>>
+> 
 
