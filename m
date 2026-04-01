@@ -1,179 +1,233 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9947A0D1
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3656429806;
+	Wed,  1 Apr 2026 16:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775062625; cv=none; b=MBOevpVV6rjz3XXtGI+XQ570VZpdiFEjqytdJgauQ12dKUZzrxh0lro07gJhWXtc3Fm9BJd+UjaCbW0FTe5bo09He6+Zgbt7WgUZvOn7zJ6dbE/eKUZEOW7xB3X1vGYrMjINsLCnNqWpiHhfQ0Fz+N+Xx9e5b7iVh/0FuGKsDZM=
+	t=1775062670; cv=none; b=abBuAdEq+A1aRWTnjTYd+bkg2eOuhkhlEwD1ARh1aj8iNIGr+LNcfZk0lcNA3R5ex3qRrc2XlNdHcPVvG7s+oOBfKVBZy6yrjLfUpav89xNyz3NqqTMEo8x8qAMNyk/17q+EbSPw53RXAtSj46rBGCDzDYTh8dJNt6OsMIcco88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775062625; c=relaxed/simple;
-	bh=9K8qEXFqyzKJpC8ZLLoahNwvyalEjitEt7cWRXS0mT0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MdczlozncdX1jOoMkK7Y0gBNtm/YNcuAghHYBMKdPKy4WkK+gmAX2JtQFPRhg1HPHqP111VXNTqQBm8obhVd8SGmR8RBn+CBK2Ebqr91F5NiXvHb0DHgbCQVly8Gm937OVfKB7C+3toyn60Y6uDM3qCEaUYy7ebZz/teF5Cmgac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLuvfoMV; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775062670; c=relaxed/simple;
+	bh=bqcjZxFpXk9wQTPA42bx7ptfsXvOF/E9CA7AExNd9fk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LRqqfTnek+yY9vdtD6CDamtTCdMA8vbKKNpY4pWR1D1aZkwaRXLQ6e6dlTyH0xiu+arMGWePBv93K+b/HyPX2/g9E7d4dymmzmYOc2NwLhFcoCWJkdSFiAelX8ZdZiMBnVUhidR8S39rjt4Oa8JIRlE+qeTVbrBZKRHC5VJX7Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Zya+XYxf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GNbMXHao; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLuvfoMV"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c741b950511so3717511a12.0
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 09:57:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775062623; x=1775667423; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rM2u8ZzUGBvIFzvvpzHw03ujiSHlUv6pEE3M+q9IjM0=;
-        b=nLuvfoMV6TZkguTeKhuDEQqxZ8mfUiBdEjsogtcZgmaMMuOF1naOURzGE2v+fDYtb9
-         JmFXXKKLMuGvVXRxqrHhhQq+x8n8cDkrUp5/FLvceYDA0CQftVZX6WC6tsfuQiyXnIsP
-         bzkKO2Il5VKZHLDsMBSzJ10z3gncjpz1NTjrG7AvnVYAnPs0Ui0TqKYyXQ+Oa24xhvqv
-         WDKhdv8zfCK9uqRvHCJloyXs7D9qRZ4HdcC4GmkbhT7R70g6wUnw6n1Nf4HmzoLmDPYu
-         YPAknKi3Z8LQWWUTFV5BXBFzLxuwcjKm/SmBpqrxSYTidgW8/bOZaCV/WfXPbn0vPLnK
-         XXYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775062623; x=1775667423;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rM2u8ZzUGBvIFzvvpzHw03ujiSHlUv6pEE3M+q9IjM0=;
-        b=N5qXrJdOcJkTl68WoT2UzTCCdhT80phxt01hYHkwP2wQBC0Ibzyu3SD2U+3sAsATZ7
-         vRTOnThW22QwMtaDQ7JsnUdmSkqSZaudw2HNb7ULemGQTIyuAPl+kL4cYp7bdFfsqAAA
-         aExf7SZEfi5mzRkphH6aF7wtAam7JvrvSWy1ATqDXmO0iqlm5QDlII6lBBKsd0/7k6gf
-         aFS4VcyZhN+xuuWzubDPYzhbIQt3hDlMwP5KWnTJ9xmzTIwsdSNw/3DreqqKzxYQdK0b
-         /Ic7RGK/EODKBdSawFThTJ0hwEmwvsRrP6mhPc0qKI5hzlrG2GS6lnpDpcimiFE+saHs
-         N30g==
-X-Gm-Message-State: AOJu0YyFKcDBWnT15wCtjSpNtPQQzTk/i7HASmfZPwjs/8Wlvri91YqZ
-	vxS50d0h0Ct9qrgxoIC8SWGlVbXUVJGgC3h0wZE4U5UsDVDwT6UnEri1tIDejhBgBQbkP57dfZS
-	G3YW6/w==
-X-Received: from pfbmu26.prod.google.com ([2002:a05:6a00:6e9a:b0:82c:989e:71f6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:430e:b0:398:9fc9:e077
- with SMTP id adf61e73a8af0-39ef76b219dmr4645406637.29.1775062622958; Wed, 01
- Apr 2026 09:57:02 -0700 (PDT)
-Date: Wed, 1 Apr 2026 09:57:01 -0700
-In-Reply-To: <CAB29vr=U=SaQR9m_O_cZwEKAG2LTnbYGjE+uT0snUT7Jco_3bQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Zya+XYxf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GNbMXHao"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F227F1400276;
+	Wed,  1 Apr 2026 12:57:46 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Wed, 01 Apr 2026 12:57:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775062666;
+	 x=1775149066; bh=XxvpCMyRZU3ZKxLxX631RMdtg2ENH68G+eyTgr/tj+Q=; b=
+	Zya+XYxfotcjNIGpsYqFnOtHid+F/hWMumOo7h2pPyeJR1Hc6wIwxi7ZbSPSw9g0
+	EViLkB4lKii6g7rzYFeHebq4jOYLNikGE8xYPrqpXllP93EA7r5B9AGriZ7QQRRd
+	MFLEkyFWNnkLlnnHxZtOUA+PZAbMXyZXGnLtVJTO3NOg6HTUpU37E1TcoZhEFeWC
+	Q2iiPgk9VThIrqq5tnCqHoRGWesIvQQfZqurHRxQoAqQBUAdx46WYdvT1LR3DPQN
+	5qdnD4XEc4y/MwD8HuWBMdOtArsdL2M0Da8wd0d6Aq21/Oa1maz7mjL6BhDb1B9U
+	8IXXOy62IdAqsARfHQFyug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775062666; x=
+	1775149066; bh=XxvpCMyRZU3ZKxLxX631RMdtg2ENH68G+eyTgr/tj+Q=; b=G
+	NbMXHaopmG20doDX5bOixDvwvqj8tnIeBfJkErzeRy91HlnIf7zm0P22CSGnbS2K
+	ao3eSOJsa+I8YWwnfO3QqsCvUWwo3W6cC0ZwfW05IWL2Ql/JJqi1UXXukt7Nq5om
+	zXLlGB6YOTBEzV71RrX33PSjqvwRwAYhGaZitdIcjLYLVDCXdHlTiuxtLh4Tl7qP
+	kWIyzVG/DREfnLg9Lt6nWCQUS5PJiSwzolF11qmYEouHSgdHGQP/jMr6vBr4N2UT
+	/7ENKdhmGFF+ws+U5/5vfmWNkSdaYTcdvARgZ7qe8mLmWjbrD0YFREzaY1pvDKXc
+	QIRIFPeNIXFNaly31U0pw==
+X-ME-Sender: <xms:ik7Nab-oXTV8IauUuVByCN3dMk0BANUAC3ZOLrTCUv2atU5pHD44YA>
+    <xme:ik7NaRG_9uFkQ51FN53BQpsqYT729YgUq_7wCWH3xk4Z8_plOLZunxqMMawSMm0_i
+    DzPzMWjpuitg8_K39HTH2f-QQb3b8vnqw8vc5B5tlod3ISKppPAwyM>
+X-ME-Received: <xmr:ik7NaRjeY5cqRdsM7IEXwXDjxDb4X8VRT06-xvRSnnT59WweNso57YjHBC0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefieeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
+    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
+    gvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudegveeu
+    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
+    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudegpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrghdprhgtphhtth
+    hopegrkhhrohifihgrkheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehlihhn
+    uhigqdhsfeeltdesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
+    igqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvhhm
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhjhhgvrhhnvgeslhhinh
+    hugidrihgsmhdrtghomhdprhgtphhtthhopegsohhrnhhtrhgrvghgvghrseguvgdrihgs
+    mhdrtghomhdprhgtphhtthhopehmjhhrohhsrghtoheslhhinhhugidrihgsmhdrtghomh
+    dprhgtphhtthhopehprghsihgtsehlihhnuhigrdhisghmrdgtohhm
+X-ME-Proxy: <xmx:ik7NaW-eZ_ms-AsnmOrjr5yyFd2F-qvAs8dfAvmSWh-CpExCRd3XMw>
+    <xmx:ik7NaRY1d3gcO3X8Bnr5BMvqHOc5lbBRhJUYsJkiVDt5V7zdrK4xPg>
+    <xmx:ik7NaUsoPRYWehsvzTowC3G1_IzrRRnrSSjCAeKg6BakuvcAi6Gipg>
+    <xmx:ik7NaVksV1PCsaaI1IevFCi572p0Z-U9aw4Xz9ljlp_9fLmCGP_C_g>
+    <xmx:ik7Naer7-U0B7nbycG7K9eyIiRJ98rA3GqbVkHJEaWzVWX4-DUHPtOgG>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Apr 2026 12:57:45 -0400 (EDT)
+Date: Wed, 1 Apr 2026 10:57:43 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Anthony Krowiak <akrowiak@linux.ibm.com>
+Cc: alex@shazbot.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, jjherne@linux.ibm.com,
+ borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+ kwankhede@nvidia.com, fiuczy@linux.ibm.com, pbonzini@redhat.com,
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com
+Subject: Re: [PATCH v1 00/23] s390/vfio-ap: Implement live guest migration
+ of guests using AP devices
+Message-ID: <20260401105743.6c88f13a@shazbot.org>
+In-Reply-To: <3f320ef3-c539-4671-8fbf-283ea9f48633@linux.ibm.com>
+References: <20260325210149.888028-1-akrowiak@linux.ibm.com>
+	<20260330102748.6423ff89@shazbot.org>
+	<2949d622-fa65-4df1-af04-0665ed115ad4@linux.ibm.com>
+	<20260331114009.43e41a3a@shazbot.org>
+	<3f320ef3-c539-4671-8fbf-283ea9f48633@linux.ibm.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAB29vr=U=SaQR9m_O_cZwEKAG2LTnbYGjE+uT0snUT7Jco_3bQ@mail.gmail.com>
-Message-ID: <ac1OXbMbAY4snEPg@google.com>
-Subject: Re: [PATCH] KVM: nSVM: Snapshot vmcb12 save.rip to prevent TOCTOU race
-From: Sean Christopherson <seanjc@google.com>
-To: "=?utf-8?B?7ZmN6ri464+Z?=" <jeon1691951@gmail.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, gregkh@linuxfoundation.org, 
-	yosryahmed@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-+Yosry's email used for upstream stuff
+On Wed, 1 Apr 2026 09:38:59 -0400
+Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
 
-On Thu, Mar 26, 2026, =ED=99=8D=EA=B8=B8=EB=8F=99 wrote:
-> Hi all,
->=20
-> Following Greg's suggestion to turn the proposed fix into a real patch,
-> here is a minimal fix for the vmcb12->save.rip TOCTOU race in KVM's
-> nested SVM implementation.
->=20
-> Background
-> ----------
->=20
-> The CVE-2021-29657 fix introduced nested_copy_vmcb_save_to_cache() to
-> snapshot vmcb12 fields before validation and use, preventing a racing L1
-> vCPU from modifying vmcb12 between check and use. However, the save area
-> cache deliberately excluded rip, rsp, and rax -- only efer, cr0, cr3,
-> cr4, dr6, and dr7 are snapshotted.
->=20
-> As a result, vmcb12->save.rip is still read three separate times from
-> the live guest-mapped HVA pointer during a single nested VMRUN:
->=20
->   1) enter_svm_guest_mode() passes vmcb12->save.rip to
->      nested_vmcb02_prepare_control(), where it is stored in
->      svm->soft_int_old_rip, svm->soft_int_next_rip, and
->      vmcb02->control.next_rip
->=20
->   2) nested_vmcb02_prepare_save() calls
->      kvm_rip_write(vcpu, vmcb12->save.rip), setting the KVM-internal
->      vCPU register state
->=20
->   3) nested_vmcb02_prepare_save() then does
->      vmcb02->save.rip =3D vmcb12->save.rip, setting the hardware VMCB02
->      save areaq
->=20
-> Since vmcb12 is mapped via kvm_vcpu_map() as a direct HVA into guest
-> physical memory with no write protection, a concurrent L1 vCPU can
-> modify vmcb12->save.rip between these reads, producing a three-way RIP
-> inconsistency. This is the save-area analog of CVE-2021-29657.
->=20
-> The inconsistency is particularly dangerous when combined with soft
+> On 3/31/26 1:40 PM, Alex Williamson wrote:
+> > On Tue, 31 Mar 2026 08:07:06 -0400
+> > Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
+> >  
+> >> On 3/30/26 12:27 PM, Alex Williamson wrote:  
+> >>> On Wed, 25 Mar 2026 17:00:47 -0400
+> >>> Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
+> >>>     
+> >>>> This patch series implements live guest migration of a guest to which AP
+> >>>> devices have been passed through. To better comprehend this design, one has
+> >>>> to understand that VFIO AP mediated device is not used to provide userspace
+> >>>> with direct access to a device as is the case with other devices that use
+> >>>> the VFIO framework to pass them through to a guest. The sole purpose of the
+> >>>> VFIO AP mediated device is to manage an AP configuration for a guest. An AP
+> >>>> configuration is comprised of the AP adapter IDs (APID), AP queue
+> >>>> indexes (APQI) and domain numbers of the control domains to which a guest
+> >>>> will be granted access. Once the VFIO AP mediated device is attached to a
+> >>>> guest, its AP configuration is set by the vfio_ap device driver. Once set,
+> >>>> all access to the AP devices is handled by the s390 Interpretive Execution
+> >>>> facility; in other words, the vfio_ap device driver plays no role in
+> >>>> providing direct access to the AP devices in the guest's AP configuration.
+> >>>>
+> >>>> The only role that the vfio_ap device driver plays in the migration
+> >>>> process is to verify that the AP configuration for the source guest is
+> >>>> compatible with the AP configuration of the destination guest.
+> >>>> Incompatibility will result in a live guest migration failure.
+> >>>> In order to be compatible, the following requirements must be met:
+> >>>>
+> >>>> 1. The destination guest will be started with the same QEMU command line
+> >>>>      as the source guest, so the mediated device supplying the AP
+> >>>>      configuration on both guests must have the same name (UUID).  
+> >>> AFAIK, same UUID is not a requirement for out-of-tree mdev drivers
+> >>> supporting migration.  You're really concerned more with the
+> >>> configuration/composition of the mdev device, so requiring the same
+> >>> UUID seems a bit arbitrary.  
+> > Combining replies:
+> >
+> > On Tue, 31 Mar 2026 07:17:08 -0400
+> > Anthony Krowiak <akrowiak@linux.ibm.com> wrote:  
+> >> As stated above, the destination guest will be started with the same
+> >> QEMU command line as the source guest. Within that command line
+> >> will be a '-device' parameter like the following:
+> >>
+> >> -device
+> >> '{"driver":"vfio-ap","id":"hostdev0","sysfsdev":"/sys/bus/mdev/devices/62177883-f1bb-47f0-914d-32a22e3a8804"}
+> >>
+> >> Note that sysfsdev is the path to the mdev named
+> >> 62177883-f1bb-47f0-914d-32a22e3a8804;
+> >> therefore, the mdev with that name must exist on the destination guest or
+> >> the migration will fail with the following error:
+> >>
+> >> error: device not found: mediated device
+> >> '62177883-f1bb-47f0-914d-32a22e3a8804' not found  
+> > Then this is a requirement of your tooling, not a kernel requirement, not
+> > something the kernel should care about.  QEMU matches devices by their
+> > virtual bus path, not the sysfsdev or host attributes.  In the case of
+> > VF migration with vfio-pci variant drivers we cannot require that the
+> > source and target devices exist at the same bus address.  Ideally the
+> > pre-copy data from the source device to the target will include relevant
+> > configuration information to validate that the source and target are
+> > compatible, regardless of the uuid.  
+> 
+> Maybe the problem here is stating that having the same UUID is a
+> requirement in the patch series description. I agree this is
+> not a kernel requirement; however, a live guest migration will not
+> succeed unless the destination host has a mediated device with
+> a UUID that matches that of the UUID of the mediated device used
+> to pass through s390 crypto devices to the source guest for the
+> reason I stated above. Would it help if I removed item #1 as a
+> requirement?
 
-Eh, I wouldn't call this dangerous per se.  Problematic, sure, but AFAICT t=
-he
-host is never at risk.  My official stance is that any panics due to KVM WA=
-RNs
-when running with panic_on_warn=3D1 are NOT considered KVM DoS issues.
+Yes, AIUI this is an artifact of your tooling.  The destination QEMU
+can be started with any arbitrary UUID and should accept an incoming
+migration, routing the migration to the correct device by the virtual
+path, independent of the UUID.
 
-KVM WARNs are 100% worth fixing, especially if they're guest- and/or user-t=
-riggerable,
-but the WARNs themselves aren't security/DoS issues, because in my very str=
-ong
-opinion, allowing use of /dev/kvm with panic_on_warn=3D1 when the platform =
-owner
-cares about host uptime is user/admin error.
+> >>>> 2. The AP configuration assigned via the VFIO AP mediated device on both
+> >>>>      guests must be compatible. As such, each AP configuration must meet
+> >>>>      the following requirements:
+> >>>>
+> >>>>      * Both guests must have the same number of APQNs
+> >>>>
+> >>>>      * Each APQN assigned to the source guest must also be assigned to the
+> >>>>        destination guest
+> >>>>
+> >>>>      * Each APQN assigned to both guests must reference an AP queue with the
+> >>>>        same hardware capabilities  
+> >>> Why isn't this sufficient vs also requiring the same UUID?  
+> >> I explained why in my previous response.  
+> > See above, userspace tooling requirements don't imply kernel
+> > requirement.  
+> 
+> Got it.
+> 
+> > A userspace interface can still exist, I just don't find this path
+> > through the driver to the VM acceptable with this justification.
+> > Mechanisms already exist for the device to refuse a state transition or
+> > generate an error for a migration already in progress.  IMHO, it would
+> > be acceptable for the device to block a key change if the migration is
+> > already in progress.  If the key change cannot be represented in the
+> > migration data stream, then it's up to the orchestration of the
+> > migration to make sure they stay synchronized, but I don't see that
+> > the vfio uAPI needs to be involved.  Thanks,  
+> 
+> As I stated in the cover letter description, all access to the AP 
+> devices is handled by the s390 Interpretive Execution facility, so 
+> without a complete redesign of the vfio_ap device driver, there is no 
+> way to know that a master key change is being requested. I do get your 
+> point, however, so I will figure out how best to handle this in 
+> userspace. Thanks for you review.
 
-> interrupt injection (event_inj with TYPE_SOFT): KVM records
-> soft_int_old_rip from read #1 but the vCPU state and hardware VMCB
-> reflect reads #2 and #3 respectively. If interrupt delivery faults,
-> svm_complete_interrupts() uses the stale soft_int_old_rip to
-> reconstruct pre-injection state, which no longer matches reality.
+The cover letter has one sentence describing the Interpretive Execution
+facility handling access to the device.  There are a lot of subtleties
+there that are not obvious to laypersons.
 
-None of this matches reality though, in the sense that the instant L1 mucks=
- with
-vmcb12->save.rip while VMRUN is in-flight, all bets are off.  I.e. from an
-architectural perspective, KVM doesn't need to get anything "right", becaus=
-e
-the L1 hypervisor has firmly triggered undefined behavior.
+It seems like the architecture really doesn't have the ability
+to monitor state changes of the device, and therefore represent those
+changes in the migration data stream, so you want to fallback to a
+cooperative scheme with a side-band channel to interrupt or block
+migration when an asynchronous configuration change happens.
 
-What exactly goes wrong?  The changelog mentions a WARN, and at glance, the=
- only
-one that seems relevant is this one in kvm_requeue_exception():
+I just don't see that such cooperation needs a new uAPI through the
+device; either the device itself could perform the same within the
+existing uAPI or the agent changing the configuration could coordinate
+with the migration orchestration.  Thanks,
 
-	WARN_ON_ONCE(kvm_is_exception_pending(vcpu));
-
-> I am aware of Yosry Ahmed's larger patch series (v3-v6) that
-> reworks the entire vmcb12 caching architecture and would subsume
-> this fix. However, that series is still under review and has not
-> yet been merged. This patch is a minimal, self-contained fix that
-> can be applied immediately to close the TOCTOU window on rip, rsp,
-> and rax.
->
-> Fix
-> ---
->=20
-> Add rip, rsp, and rax to struct vmcb_save_area_cached, snapshot them
-> in __nested_copy_vmcb_save_to_cache(), and replace all direct reads
-> of vmcb12->save.{rip,rsp,rax} with reads from the cached copy. This
-> ensures all consumers within a single nested VMRUN see consistent
-> register values.
-
-What is actually visibliy problematic?
-=20
-Assuming the worst case scenario is a WARN, then I'm very strongly inclined=
- to
-either (a) not apply this patch at all and instead wait for Yosry's full se=
-ries,
-or (b) have Yosry slot in the most minimal fix (e.g. for just RIP) in a sta=
-ble@
-friendly location in his series.
-
-There are many, many nSVM issues that need to be fixed, many of which are f=
-unctional
-problems for well-behaved setups.  For me, those are by far the priority.  =
-I also
-want to fix the a guest-triggerable WARN_ON_ONCE(), but it's not urgent, an=
-d not
-something I want to spend a lot of effort on with respect to providing an L=
-TS-friendly
-commit (though if we can get one cheaply, that'd be great).
+Alex
