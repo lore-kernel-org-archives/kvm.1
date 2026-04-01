@@ -1,74 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218F237EFF8;
-	Wed,  1 Apr 2026 07:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197E827442;
+	Wed,  1 Apr 2026 07:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028357; cv=none; b=oFimjsHm0x48OmIzNVM6/F2Z33ZG/qg0n1tBMm8HnF1Djtj6P7mc9K8dCT8vjWBqmR4Ubaj9tUp9PWMGqj5c+Oz/ASxUlzEY+xt5kiRaWHT9y+aRVrJ07kywQHb7uO8+d2myxP2+WmTeY69b+e8Y5XtQt37mY9/wFMqZZjOA1BE=
+	t=1775028975; cv=none; b=tpOZvfEhxmzMol7HXRnp/S5CGXW/8XcHkYnGJh9tTCzttKNZtHCOz2LfX+DzKYGt3Nevi8rw1HkT9E5m4xpj4D2tUYR1fzRsVRbGOGQF0CiV8Ix79YzNes/FWbT1LzzE4aYWMFbmoz4CDu9F2Z0Y/jl77YvQ/fIHhXMTCmexpk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775028357; c=relaxed/simple;
-	bh=FhwsZtMOZ+uGw5ieFFVhF8MAkcuS1b31cZzn2Qf87Dk=;
+	s=arc-20240116; t=1775028975; c=relaxed/simple;
+	bh=5rTB7ibb4EJd260wLqdjnMqvReSP2z55srJA8vs8o5A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZGF7kWapQAUAcsPEEPQ1eCXEc0Ygbjii0+qiaA3qFw0/H8e9ghO6A4Vc26mqlmgoomxUDOcGzVcTgcpaoXkfbfDan9ywv++C+YeQ6UbcwbybEp2BDOFY86/VF7ZYxNBBXJzBjifcRVA6PlvfgOOe2+nJ0ALcVycAZaydZoQhVVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ib3BaTse; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kuEt21VIF7AHnGnmdHhrxlJszG0WmJidT+sAEeGxtg5MCLhcwF5y/u+VFJkKrZyJK7MbL9HyenJssjPk1hmbZXVq0hucGbcIHlNpVK3noZtAy6DM9t181X4L92MDIQlEKig4dL6hyAFZZK9VB9Nr3rgMh0r2bJr23IW/kcxl9t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4CtlpsL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ib3BaTse"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775028356; x=1806564356;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FhwsZtMOZ+uGw5ieFFVhF8MAkcuS1b31cZzn2Qf87Dk=;
-  b=Ib3BaTsezVwogX0b3NtlWeJlL1nBYP7adSQTBnalh/IuzKfF+GonfdxZ
-   pgJshCwcUqP1x4/Az5zMymgJkiW+l5TWm9ciPokmF2sdc4uqIb/C+Y8+m
-   XH8fUk8GfpMkmpqCv5iIxGDgiqe8qM0FAH0UiWiga2VX5qK8km7hWa9NI
-   vlCQwPXIUBRt6u/9Yvg90gx3jIQm5l24+1/UdjtoOWskaOsMRBJ5h2VWk
-   WE5Crn6pwfExv3nChp2pD0+mRCuPc5/2jYIrCI7vIWvBTSS66IufIazRM
-   gNOGXuYinUHbqsNZlefww7vjPFKvRiJFjMn31AX9JXd4/IPKXuFRsW0YR
-   Q==;
-X-CSE-ConnectionGUID: YSb+kV8OT1OVzXKob+wFzg==
-X-CSE-MsgGUID: 9hjxdfi4QPW6cfAs+dZBgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="63608578"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="63608578"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 00:25:55 -0700
-X-CSE-ConnectionGUID: rIQoQuwmTJScUtTe40e3Vg==
-X-CSE-MsgGUID: d68xut/KSTihRltqGFcalg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="226841778"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.127])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 00:25:49 -0700
-Date: Wed, 1 Apr 2026 10:25:45 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for
- new TDX Module objects
-Message-ID: <aczIea-JCb5umtch@tlindgre-MOBL1>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-4-yilun.xu@linux.intel.com>
- <1dd0b8f4d1ad5cd07b5139ed8c944e1e1d004661.camel@intel.com>
- <acpPsPivfllpWfv1@yilunxu-OptiPlex-7050>
- <23b92a154c859450d106de6c9badbe284e3aa19f.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4CtlpsL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380D7C4CEF7;
+	Wed,  1 Apr 2026 07:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775028975;
+	bh=5rTB7ibb4EJd260wLqdjnMqvReSP2z55srJA8vs8o5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k4CtlpsL26Rsw+EZZiTev651DLF0iUWb89sMoje+UpM9F2+9JyFQZV7uiePHV1H+n
+	 /i2ukQTEDcgSXP4NUwDuAFdXGGwo/Skow9y1ktYu/p7/E3VMhv2M4hEufIewFANfj8
+	 p/BLMWEdSs+wgnXhSzjJHNiUJoU+H+Ex153JmRFl3GB3ug+v36/cIap6jkeDHIb3Q+
+	 JRUnqk4t12bzXNjWSMzpk1U40HVspfd5ZbNgLe5tm1fZfUSyJLrweLyQKM44XGSoKI
+	 DaMJMVfeLeLKAMo2esv8n7fnhIzaVPkwV2qo94yC5nfESljP26VOXlECeRxjDtAXLF
+	 kONBLyKbWn1wA==
+Date: Wed, 1 Apr 2026 10:36:03 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
+Message-ID: <aczK4-vrULRiTvyh@kernel.org>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-3-rppt@kernel.org>
+ <actxscYZGFiyvUcs@hyeyoo>
+ <acva_NKf7T5rbIC8@kernel.org>
+ <acvnEd3-s6XI26vb@hyeyoo>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,25 +65,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <23b92a154c859450d106de6c9badbe284e3aa19f.camel@intel.com>
+In-Reply-To: <acvnEd3-s6XI26vb@hyeyoo>
 
-On Mon, Mar 30, 2026 at 11:25:08PM +0000, Edgecombe, Rick P wrote:
-> On Mon, 2026-03-30 at 18:25 +0800, Xu Yilun wrote:
-> > The caller is not aware of singleton mode. Actually, I'm trying to make
-> > the tdx_page_array independent of HPA_ARRAY_T or HPA_LIST_INFO details
-> > when allocating/populating, root page is still populated even not needed
-> > for singleton mode. The differences only happen when collaping the struct
-> > into u64 SEAMCALL parameters.
+On Wed, Apr 01, 2026 at 12:24:01AM +0900, Harry Yoo (Oracle) wrote:
+> On Tue, Mar 31, 2026 at 05:32:28PM +0300, Mike Rapoport wrote:
+> |         /*
+> |          * Make sure the vma is not shared, that the dst range is
+> |          * both valid and fully within a single existing vma.
+> |          */
+> |         dst_vma = uffd_mfill_lock(dst_mm, dst_start, len);
 > 
-> It seems tdx_page_array combines two concepts. An array of pages, and the method
-> that the pages get handed to the TDX module. What if we broke apart these
-> concepts?
+> It acquires the vma lock (or mmap_lock) here, but doesn't set state.vma.
+> 
+> |         if (IS_ERR(dst_vma)) {
+> |                 err = PTR_ERR(dst_vma);
+> |                 goto out;
+> |         }
 
-We could add an enum for the LIST_INFO type to intialized the tdx_page_array?
+...
 
-Then the code using the tdx_page_array could initialize the root page based on
-the LIST_INFO type for the SEAMCALL.
+> |         if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
+> |                 goto out_unlock;
+> |         if (!vma_is_shmem(dst_vma) &&
+> |             uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+> |                 goto out_unlock;
+> |
+> |         state.vma = dst_vma;
+> 
+> It is set here. So if anything before this jumps to `out_unlock`
+> label due to a sanity check,
+> 
+> [...]
+> 
+> |         while (state.src_addr < src_start + len) {                              
+> |                 VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);             
+> |                                                                                 
+> |                 pmd_t dst_pmdval;         
+> | [...]
+> | 
+> | out_unlock:
+> |         up_read(&ctx->map_changing_lock);
+> |         uffd_mfill_unlock(state.vma);
+> 
+> the `vma` parameter will be NULL?
+> 
+> If I'm not missing something this is introduced in patch 2 and
+> fixed in patch 4.
 
-Regards,
+You are right.
+Here's a fixup (it causes a conflict in patch 4 though).
+Andrew, I can send v4 if you prefer.
 
-Tony
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index fa9622ec7279..c4074b6f4aca 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -764,6 +764,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 		err = PTR_ERR(dst_vma);
+ 		goto out;
+ 	}
++	state.vma = dst_vma;
+ 
+ 	/*
+ 	 * If memory mappings are changing because of non-cooperative
+@@ -804,8 +805,6 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+ 		goto out_unlock;
+ 
+-	state.vma = dst_vma;
+-
+ 	while (state.src_addr < src_start + len) {
+ 		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+ 
+ 
+
+-- 
+Sincerely yours,
+Mike.
