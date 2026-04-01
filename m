@@ -1,143 +1,179 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E393F1669;
-	Wed,  1 Apr 2026 16:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9947A0D1
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060951; cv=none; b=f7UpGjOAnMKGP3igFiaOrLMk+PS4vYAYEeldiKix0FSuAYp4lrRc2FFLM7+T7WcQmd4PO4Jl4fez8fNM+ipAtJvrHn1mDRYA7CBUoObyj0kt+9oiCefq7ak4U5PJK83MSD9XxM1kkG5UsC68OITEoVlWyS9kHZc8357nYGcoIQI=
+	t=1775062625; cv=none; b=MBOevpVV6rjz3XXtGI+XQ570VZpdiFEjqytdJgauQ12dKUZzrxh0lro07gJhWXtc3Fm9BJd+UjaCbW0FTe5bo09He6+Zgbt7WgUZvOn7zJ6dbE/eKUZEOW7xB3X1vGYrMjINsLCnNqWpiHhfQ0Fz+N+Xx9e5b7iVh/0FuGKsDZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060951; c=relaxed/simple;
-	bh=lpKRatsiKjme51mt1hfc1a4RLa4UswyEdIlbv0MRluU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MASU5BiplAAC4r2ojV9Qe3Ns3K++vHV4NrXFHG1JrzA63avVfoBZJ8wGwRxlo5MmNvthP6p517ScUeaEMfmqsSZ1iLw/zqc6wARJ8ddFpehkLqdMuTyNhkhAdCg5G7QsZuqu8aOkAEFhSCFVgQzGRuFdNBrczauOeUC20SNp824=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VYq58tWi; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775062625; c=relaxed/simple;
+	bh=9K8qEXFqyzKJpC8ZLLoahNwvyalEjitEt7cWRXS0mT0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MdczlozncdX1jOoMkK7Y0gBNtm/YNcuAghHYBMKdPKy4WkK+gmAX2JtQFPRhg1HPHqP111VXNTqQBm8obhVd8SGmR8RBn+CBK2Ebqr91F5NiXvHb0DHgbCQVly8Gm937OVfKB7C+3toyn60Y6uDM3qCEaUYy7ebZz/teF5Cmgac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLuvfoMV; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VYq58tWi"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6316tLV03728917;
-	Wed, 1 Apr 2026 16:29:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=8QC9Fk
-	+OLA7N5EuWutkyWpfjvL6o15fl0W8VJ8R99rw=; b=VYq58tWiWVgFmhF0JU2Amg
-	XunKj9wOkBfJN6cR2hHSh3kPylzwj88drIvV0y9jdm6KgpQTbFF7iUZ8vV1RuBgS
-	YFzk5gIxmicF3mVtpE3wuHTKVgl0uMnSnegOkOVm5fEGLYPiHheOjwSb6eRPTumN
-	ufRvel/rGzmarRPGLlBlV6mHhrALus9ZfZjmbcr2dO9J6Anf38c8SCSvkdkBvja1
-	lW650OYe+pmIamhEWRReaf4y18pyssf9KNHIjLKnyT92TRA+RoYs1sSjsWf2tFd+
-	WlmSxgXQB0rUsdrKID6vMgrN2mUjk5YsfrG1ruJKyPR2auBs/LEnOknZMT/Cqp8g
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgrh93-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 16:29:02 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631G4Eeb031034;
-	Wed, 1 Apr 2026 16:29:01 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjx91e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 16:29:01 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631GT0NI33620568
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Apr 2026 16:29:00 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E0C958055;
-	Wed,  1 Apr 2026 16:29:00 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3D9265804B;
-	Wed,  1 Apr 2026 16:28:58 +0000 (GMT)
-Received: from [9.61.244.25] (unknown [9.61.244.25])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Apr 2026 16:28:58 +0000 (GMT)
-Message-ID: <d059a16f-4b17-4a10-9006-cf05045e6945@linux.ibm.com>
-Date: Wed, 1 Apr 2026 09:28:57 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLuvfoMV"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c741b950511so3717511a12.0
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 09:57:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775062623; x=1775667423; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rM2u8ZzUGBvIFzvvpzHw03ujiSHlUv6pEE3M+q9IjM0=;
+        b=nLuvfoMV6TZkguTeKhuDEQqxZ8mfUiBdEjsogtcZgmaMMuOF1naOURzGE2v+fDYtb9
+         JmFXXKKLMuGvVXRxqrHhhQq+x8n8cDkrUp5/FLvceYDA0CQftVZX6WC6tsfuQiyXnIsP
+         bzkKO2Il5VKZHLDsMBSzJ10z3gncjpz1NTjrG7AvnVYAnPs0Ui0TqKYyXQ+Oa24xhvqv
+         WDKhdv8zfCK9uqRvHCJloyXs7D9qRZ4HdcC4GmkbhT7R70g6wUnw6n1Nf4HmzoLmDPYu
+         YPAknKi3Z8LQWWUTFV5BXBFzLxuwcjKm/SmBpqrxSYTidgW8/bOZaCV/WfXPbn0vPLnK
+         XXYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775062623; x=1775667423;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rM2u8ZzUGBvIFzvvpzHw03ujiSHlUv6pEE3M+q9IjM0=;
+        b=N5qXrJdOcJkTl68WoT2UzTCCdhT80phxt01hYHkwP2wQBC0Ibzyu3SD2U+3sAsATZ7
+         vRTOnThW22QwMtaDQ7JsnUdmSkqSZaudw2HNb7ULemGQTIyuAPl+kL4cYp7bdFfsqAAA
+         aExf7SZEfi5mzRkphH6aF7wtAam7JvrvSWy1ATqDXmO0iqlm5QDlII6lBBKsd0/7k6gf
+         aFS4VcyZhN+xuuWzubDPYzhbIQt3hDlMwP5KWnTJ9xmzTIwsdSNw/3DreqqKzxYQdK0b
+         /Ic7RGK/EODKBdSawFThTJ0hwEmwvsRrP6mhPc0qKI5hzlrG2GS6lnpDpcimiFE+saHs
+         N30g==
+X-Gm-Message-State: AOJu0YyFKcDBWnT15wCtjSpNtPQQzTk/i7HASmfZPwjs/8Wlvri91YqZ
+	vxS50d0h0Ct9qrgxoIC8SWGlVbXUVJGgC3h0wZE4U5UsDVDwT6UnEri1tIDejhBgBQbkP57dfZS
+	G3YW6/w==
+X-Received: from pfbmu26.prod.google.com ([2002:a05:6a00:6e9a:b0:82c:989e:71f6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:430e:b0:398:9fc9:e077
+ with SMTP id adf61e73a8af0-39ef76b219dmr4645406637.29.1775062622958; Wed, 01
+ Apr 2026 09:57:02 -0700 (PDT)
+Date: Wed, 1 Apr 2026 09:57:01 -0700
+In-Reply-To: <CAB29vr=U=SaQR9m_O_cZwEKAG2LTnbYGjE+uT0snUT7Jco_3bQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
- devices
-To: Julian Ruess <julianr@linux.ibm.com>, schnelle@linux.ibm.com,
-        wintera@linux.ibm.com, ts@linux.ibm.com, oberpar@linux.ibm.com,
-        gbayer@linux.ibm.com, Alex Williamson <alex@shazbot.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>
-Cc: mjrosato@linux.ibm.com, raspl@linux.ibm.com, hca@linux.ibm.com,
-        agordeev@linux.ibm.com, gor@linux.ibm.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org
-References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
- <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDE1MiBTYWx0ZWRfXwiDqhZdR7r2b
- 2NeRzSts7j1FXaM+q1fLgqbT48zd1+k7VdnOq6xA8kmwEkPOLLBFCW+pGCs0iHDJmzvDU39055k
- LXkfSexkVXZyhAq6cj2j0LLh49DYV7Q6pegGgoQ2nwrsrLtYcawtydTxd4brFfhv83WTQkPKsyW
- ifA8IrS+X8WnsShS9kBnKY4fpbpGI+7DdJDKoxpmRk9n0SHXUyMdmGrwN4WxisHttBPRo/WCSE/
- Q0EETLleHswEmgOZgIWrqZJ8QmSfxs1mMap4F94rKazS3pa65uC9WtOOKwFmO4CEqSTX7sVtFgS
- KIQ70MVUnPlHZgXIEOKO76EhZpwP5kr92aR1rPT2JP521uN6g2ardtuWMMe7wLNnLtdpYDngxMr
- 4N8/kVtRn4J6ludMUCM/dt74Haaktb57cwKBieYoZGt9uBfM+u8aUkTVg231s+keiphQCJzio98
- DAP/J2od+V1BV6RPawg==
-X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69cd47ce cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=akap8JHnbm7pTVdsz3UA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: bfWW_YluBv6JnohcvqC4Kb3bOE2DEqql
-X-Proofpoint-ORIG-GUID: bfWW_YluBv6JnohcvqC4Kb3bOE2DEqql
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
- spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010152
+Mime-Version: 1.0
+References: <CAB29vr=U=SaQR9m_O_cZwEKAG2LTnbYGjE+uT0snUT7Jco_3bQ@mail.gmail.com>
+Message-ID: <ac1OXbMbAY4snEPg@google.com>
+Subject: Re: [PATCH] KVM: nSVM: Snapshot vmcb12 save.rip to prevent TOCTOU race
+From: Sean Christopherson <seanjc@google.com>
+To: "=?utf-8?B?7ZmN6ri464+Z?=" <jeon1691951@gmail.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, gregkh@linuxfoundation.org, 
+	yosryahmed@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
++Yosry's email used for upstream stuff
 
-On 3/25/2026 6:31 AM, Julian Ruess wrote:
-> Add a vfio_pci variant driver for the s390-specific Internal Shared
-> Memory (ISM) devices used for inter-VM communication.
+On Thu, Mar 26, 2026, =ED=99=8D=EA=B8=B8=EB=8F=99 wrote:
+> Hi all,
+>=20
+> Following Greg's suggestion to turn the proposed fix into a real patch,
+> here is a minimal fix for the vmcb12->save.rip TOCTOU race in KVM's
+> nested SVM implementation.
+>=20
+> Background
+> ----------
+>=20
+> The CVE-2021-29657 fix introduced nested_copy_vmcb_save_to_cache() to
+> snapshot vmcb12 fields before validation and use, preventing a racing L1
+> vCPU from modifying vmcb12 between check and use. However, the save area
+> cache deliberately excluded rip, rsp, and rax -- only efer, cr0, cr3,
+> cr4, dr6, and dr7 are snapshotted.
+>=20
+> As a result, vmcb12->save.rip is still read three separate times from
+> the live guest-mapped HVA pointer during a single nested VMRUN:
+>=20
+>   1) enter_svm_guest_mode() passes vmcb12->save.rip to
+>      nested_vmcb02_prepare_control(), where it is stored in
+>      svm->soft_int_old_rip, svm->soft_int_next_rip, and
+>      vmcb02->control.next_rip
+>=20
+>   2) nested_vmcb02_prepare_save() calls
+>      kvm_rip_write(vcpu, vmcb12->save.rip), setting the KVM-internal
+>      vCPU register state
+>=20
+>   3) nested_vmcb02_prepare_save() then does
+>      vmcb02->save.rip =3D vmcb12->save.rip, setting the hardware VMCB02
+>      save areaq
+>=20
+> Since vmcb12 is mapped via kvm_vcpu_map() as a direct HVA into guest
+> physical memory with no write protection, a concurrent L1 vCPU can
+> modify vmcb12->save.rip between these reads, producing a three-way RIP
+> inconsistency. This is the save-area analog of CVE-2021-29657.
+>=20
+> The inconsistency is particularly dangerous when combined with soft
+
+Eh, I wouldn't call this dangerous per se.  Problematic, sure, but AFAICT t=
+he
+host is never at risk.  My official stance is that any panics due to KVM WA=
+RNs
+when running with panic_on_warn=3D1 are NOT considered KVM DoS issues.
+
+KVM WARNs are 100% worth fixing, especially if they're guest- and/or user-t=
+riggerable,
+but the WARNs themselves aren't security/DoS issues, because in my very str=
+ong
+opinion, allowing use of /dev/kvm with panic_on_warn=3D1 when the platform =
+owner
+cares about host uptime is user/admin error.
+
+> interrupt injection (event_inj with TYPE_SOFT): KVM records
+> soft_int_old_rip from read #1 but the vCPU state and hardware VMCB
+> reflect reads #2 and #3 respectively. If interrupt delivery faults,
+> svm_complete_interrupts() uses the stale soft_int_old_rip to
+> reconstruct pre-injection state, which no longer matches reality.
+
+None of this matches reality though, in the sense that the instant L1 mucks=
+ with
+vmcb12->save.rip while VMRUN is in-flight, all bets are off.  I.e. from an
+architectural perspective, KVM doesn't need to get anything "right", becaus=
+e
+the L1 hypervisor has firmly triggered undefined behavior.
+
+What exactly goes wrong?  The changelog mentions a WARN, and at glance, the=
+ only
+one that seems relevant is this one in kvm_requeue_exception():
+
+	WARN_ON_ONCE(kvm_is_exception_pending(vcpu));
+
+> I am aware of Yosry Ahmed's larger patch series (v3-v6) that
+> reworks the entire vmcb12 caching architecture and would subsume
+> this fix. However, that series is still under review and has not
+> yet been merged. This patch is a minimal, self-contained fix that
+> can be applied immediately to close the TOCTOU window on rip, rsp,
+> and rax.
 >
-> This enables the development of vfio-pci-based user space drivers for
-> ISM devices.
->
-> On s390, kernel primitives such as ioread() and iowrite() are switched
-> over from function-handle-based PCI load/stores instructions to PCI
-> memory-I/O (MIO) loads/stores when these are available and not
-> explicitly disabled. Since these instructions cannot be used with ISM
-> devices, ensure that classic function-handle-based PCI instructions are
-> used instead.
->
-> The driver is still required even when MIO instructions are disabled, as
-> the ISM device relies on the PCI store block (PCISTB) instruction to
-> perform write operations.
->
-> Stores are not fragmented, therefore one ioctl corresponds to exactly
-> one PCISTB instruction. User space must ensure to not write more than
-> 4096 bytes at once to an ISM BAR which is the maximum payload of the
-> PCISTB instruction.
->
-> Reviewed-by: Alexandra Winter<wintera@linux.ibm.com>
-> Reviewed-by: Niklas Schnelle<schnelle@linux.ibm.com>
-> Signed-off-by: Julian Ruess<julianr@linux.ibm.com>
+> Fix
 > ---
+>=20
+> Add rip, rsp, and rax to struct vmcb_save_area_cached, snapshot them
+> in __nested_copy_vmcb_save_to_cache(), and replace all direct reads
+> of vmcb12->save.{rip,rsp,rax} with reads from the cached copy. This
+> ensures all consumers within a single nested VMRUN see consistent
+> register values.
 
-I think we have decided to not support any additional regions with this 
-patch. Feel free to add
+What is actually visibliy problematic?
+=20
+Assuming the worst case scenario is a WARN, then I'm very strongly inclined=
+ to
+either (a) not apply this patch at all and instead wait for Yosry's full se=
+ries,
+or (b) have Yosry slot in the most minimal fix (e.g. for just RIP) in a sta=
+ble@
+friendly location in his series.
 
-Reviewed-by: Farhan Ali<alifm@linux.ibm.com>
-
-
+There are many, many nSVM issues that need to be fixed, many of which are f=
+unctional
+problems for well-behaved setups.  For me, those are by far the priority.  =
+I also
+want to fix the a guest-triggerable WARN_ON_ONCE(), but it's not urgent, an=
+d not
+something I want to spend a lot of effort on with respect to providing an L=
+TS-friendly
+commit (though if we can get one cheaply, that'd be great).
