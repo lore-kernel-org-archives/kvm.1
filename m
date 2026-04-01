@@ -1,278 +1,232 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5A23D7DF;
-	Wed,  1 Apr 2026 07:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775029824; cv=fail; b=q6v5CY0VEUifmcbvnb/6068L+35eee9mJzG04SQc3Y5F88CxE/38zWcqx0D67g7X7VA8Mjl+JpjVQ1A9XSRYkGHGFkpEOedOQuYSvVjktHjFsSKWCil8PXU+dWvLLTFDG7mCfboGCF7WtYz7LkjbZyJ8I2KdoXwuAGe9HTIVMKw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775029824; c=relaxed/simple;
-	bh=dCsM2GcGnu2yIGAAgyi0yWivqPZW1FD9lH6nyKLaDxY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sToKg0oU16J8MN1tLnXA5F3VNAaU7UOxbdK6jbe1Kc9LfXsjl7PYaNfweepAQ7/gSi9o9/Qj+ZfQJ4mT3wB220OxkNsUggh1RNOL0sP70UO7U5OQ4+vj5phEwycsMK6rDbQMJgqYW8UKQgJHJXwqjQhVcfjq0WLdAcqjfe/VzTo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LsizoOWe; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D5B375AB2;
+	Wed,  1 Apr 2026 08:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775031172; cv=none; b=WL3hR2ojWF9avXM2xkOyXwyJvma5SDtPbs8wFQesPg+Iq/8vvNwIz+ao9v7CJauQDVzQ001VQX0WZQX5yuxUImuwe4wPUerLKlpWyekgq0Nyf47AGG4deaCakc8ew6wiqRC+YnGCc/NpFuAhinMJBtjccZ6iKJnqEVVPKyFyWlM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775031172; c=relaxed/simple;
+	bh=8C75pF4ufa2nXsmgsc1kxnPOWcRm5xn+aaUG2usdOjY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=siLXC7jWViHBey6ktAgtUHDJd6suFBsr0vWzUPFlMnhnuGDRygNK9KRL4SRsos451xhQfcu7SlaUKpSwjSm0BqsNR9ulyul7NzONJH2fCDMqUpySncdldPBSJgBtr0VJrlEAOq0h4ziXhjQbc6PgkmNTwJ1BkoSeao0bXoLQKsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AEG/4e9U; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LsizoOWe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AEG/4e9U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775029823; x=1806565823;
+  t=1775031169; x=1806567169;
   h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=dCsM2GcGnu2yIGAAgyi0yWivqPZW1FD9lH6nyKLaDxY=;
-  b=LsizoOWequEqBn2f8RnjNuDKlRMhK1jNKxNPUgieTxneEAk7HD2xiu59
-   9/0svJWwSPHzCK9ziMmIkzjpIQ0V/UmSPZD2PCXPu5hHxsaS1w60Yi7rN
-   BeEvaERCyrcIJApoqexD2Eq8o9SdNyiD6oq0rRbefEPvIi7+6O7TVq2pD
-   YkXC7njQU8IvEIavHy6o1EcdHHo4F0ntMyRXfbPQAyrzSgZ9CYdXsJrT4
-   ADDMP5Yl30LBrULc4jmQnTF49MUhCr7iEeLGpiO0tP5x9Dk0ne8tppEdz
-   zgH69etzEZhG44sEXcy/iOQjVZzBGckiGNL8EFI3Q3pvhHTZtisep19bI
-   g==;
-X-CSE-ConnectionGUID: VQCZFRj1SEWXyaK5yBsOkA==
-X-CSE-MsgGUID: YVk8LMEkSgqywtdWcBtn8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76073737"
+   mime-version:in-reply-to;
+  bh=8C75pF4ufa2nXsmgsc1kxnPOWcRm5xn+aaUG2usdOjY=;
+  b=AEG/4e9U0CdVpbXBDG9edO7qAH3hZUqz96cynw80+uZTwvbDQFXCLJg+
+   0XFJoekb5UsGGEWZjf99RMdaGQPeO9nRME8R/dMJoZVIMb3Zx6q6Xzje8
+   JZ2YIvzHqwBCiuzttuGvDBB32tidbbO8+lPJy1xxzOoV2KXKm7VTBIHHE
+   C5kdVrSQoXZha6Ci7tTBeU/hekE1AS3ymmc6DgnzaHU6vgnqe2n4SEuI9
+   XRS8JqoTIud+XmODQh6CokqZHaUEt1c4PXGiMIQIOlNA32x6d44ABp943
+   i/SwuBDmgk0Fa7Sj40LItTg95ebBI8aFtXgCINPPvALOh2HrW77W0mJCN
+   Q==;
+X-CSE-ConnectionGUID: vplyl0ZnR9Ka0yWWN3iigw==
+X-CSE-MsgGUID: B0ngQWBHSSuTdHevg1WKvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76075476"
 X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="76073737"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 00:50:22 -0700
-X-CSE-ConnectionGUID: ckf3masOQk2ddxUax5JZBg==
-X-CSE-MsgGUID: z8c1q0CZSlC9UK12jDEcPA==
+   d="scan'208";a="76075476"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 01:12:47 -0700
+X-CSE-ConnectionGUID: UXspTpIlSE+1qXsGp2q3sA==
+X-CSE-MsgGUID: shy62LvOTCql9rHS4cDP+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="228216662"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 00:50:21 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 1 Apr 2026 00:50:20 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 1 Apr 2026 00:50:20 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.43) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 1 Apr 2026 00:50:20 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U+ArUEzJEnRYFAyANvDDFeykXCyXexPa0tIzxcamjEwRg3G7ln1+PIsSqBYtjXTC0QfPTg16P2X8YburUrfam/QSvQOjRygZw49MwVjNllA5jyy6PuW2J41/4EHKV3uWheQK0NfPLzs8UUZgAYCPn/xXfrQT7x/nTVpX83eZzEbyB80cbIaUXjSJMjrGs4uMTlE1DQkXzF+U75vsQr6pRHsJ5XaaQbGBAkMiizoapx9cuxh9cY4etz9+AktQ5bIAx3XGE54UrGMUREnv5gQpURWf6Uq3rKw+lMsPUBT01JSBuIrmldbJFPBVEGwc7GnLTY1V8QH6gqqnB49DVrD7dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KF6Exkw1vbHwRtb9ZHyEkSlzPa9zTFNss5Jh2ogtolM=;
- b=h6hQ4PwAIMmk+UluWDoXZX8wkCQJegLleupM82tHe8yV8vjSdBLOVIb5BJjTbdKAtg2Lx6o04ngRdSpRJ9my/YVq067Un+4EpwRKsYAWC/0RuGtqyQgdUjOOLVCcEDd1FPKYhqWTXyu8/XeydHoHowhJd885mcLQcXmB5LaU1UYSl9Trn2UhJ9kvdwoxCLkDt2u1clhdLxR63fRp4MnCzS1z+3eaJe8SCt+XB0bnob9JvK99lSM/Xu4l46P0eTxSVqMkocorWDwN5i2OejeyR8oG4EODyhu/SOkFykpvdAJJuAyHZxt/rwPYSItUZCIkJJvE1jMqIEGdt+FggXgNrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by BL3PR11MB6531.namprd11.prod.outlook.com (2603:10b6:208:38e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 07:50:16 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9769.016; Wed, 1 Apr 2026
- 07:50:15 +0000
-Date: Wed, 1 Apr 2026 15:49:58 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <binbin.wu@linux.intel.com>,
-	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>,
-	<ira.weiny@intel.com>, <kai.huang@intel.com>, <kas@kernel.org>,
-	<nik.borisov@suse.com>, <paulmck@kernel.org>, <pbonzini@redhat.com>,
-	<reinette.chatre@intel.com>, <rick.p.edgecombe@intel.com>,
-	<sagis@google.com>, <seanjc@google.com>, <tony.lindgren@linux.intel.com>,
-	<vannapurve@google.com>, <vishal.l.verma@intel.com>,
-	<yilun.xu@linux.intel.com>, <xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v7 07/22] coco/tdx-host: Implement firmware upload sysfs
- ABI for TDX module updates
-Message-ID: <aczOJt4QuJpQA4c8@intel.com>
-References: <20260331124214.117808-1-chao.gao@intel.com>
- <20260331124214.117808-8-chao.gao@intel.com>
- <01fc8946-eb84-46fa-9458-f345dd3f6033@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <01fc8946-eb84-46fa-9458-f345dd3f6033@intel.com>
-X-ClientProxiedBy: SI2PR01CA0046.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::18) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+   d="scan'208";a="231027919"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 01:12:47 -0700
+Date: Wed, 1 Apr 2026 01:12:36 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260401081236.3rjp2wigkr6w3nym@desk>
+References: <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
+ <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
+ <20260324221308.7sh6afdy6r6tsf4w@desk>
+ <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
+ <20260326083934.fk4wyhe6rgiss34z@desk>
+ <20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
+ <20260326104557.24295cbb@pumpkin>
+ <20260326202931.wlggnd3nfj6hngpb@desk>
+ <20260328004256.mm2ttj5iwvu5kdpa@desk>
+ <20260328100837.7e6dc7fe@pumpkin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|BL3PR11MB6531:EE_
-X-MS-Office365-Filtering-Correlation-Id: f7b92ae1-7872-4270-10b1-08de8fc35005
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: AviCKx0eHMYHRj3F9ZxtJbWX47/jjI4jvgunzoYEkuNW24lKEM3XQ+bMBEOM129YbbesSmbnMKGwji2uUdY4ZMYuFW+7wTWP8KRFPPxegZW5lp59hr2sQk24AxZHbS7wmxVLoJ6MMn0vzwv/K2IgDeH9NcWnx1IMwXLDlEDJrW8bWSZn+tpEdDS1l5gwImVvaBta7Jidu0dMAPHbhMRAVJwIyJsaBa28odLJIAEPGU5P19rpTPQOnYc2nj89P2cZhfc73M7BKNyaQ0lma4pt0Q8nx/6PapssUkwYYqO9HZ0E31qxajgDC3GC7+bPuWZjcv3pePUrMvKmsqqQDRS3umR0LkPvLmr0TcNRlpixe9v/0TjF3mOD1ZKy25Ni9r9rKk7uC9yR6fp9WbkUnMaAd9xNX0/7TN3NLq6yjWW0jSETBxdzFt202ceqzP2bbHJB2PXqRzgZ7Yk7GihLk+5KpFzlsgoKQdyIIeLp+6Ll/J39dZF5w7VMp++yk79cPLIblzacbtiaJVrktEKdM2kGmY+ch582ML9wn/ZM+h6xa55Iw1fPAU+r6dkgAtbRxKt41PF4PBGP3npaBx3na0ni3Uk0yRlWPz1IRoeKD2dWw46uhsrH3SXHRJdjb8BvOPuei7O0IH9xNOpoJeBcdNUIk+0TfwmkCNJFYIZF77jEObcgzcV0D4bItTkzEcssZeKa
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vmWVLIUk0WruovJ25z3V6/KDWteIC8+S1DnUjWhu1FSdCn8dIj5ZaWd0aq7S?=
- =?us-ascii?Q?wspSDoBsiqx9yMhgcK1imMIPFNhAoZlRazubQ/BlnfafKQgcFkupg4Mki1HY?=
- =?us-ascii?Q?CxTecs/hMtvEQl/M3L+lAFMhvsVtPi2PR7l0+GkGirbtFzdxhtS9ZpJlu6P/?=
- =?us-ascii?Q?ko9nNxpcnVaL2iBJNvVI8PmMbxsQsl6QzKwAHMZnd1GP4Cb9tdu638G4aSa8?=
- =?us-ascii?Q?NM4SMbXOYklhma2/Yh0y7ZhXWpk3zck5QR/o8kFOIfau1RtRr71fPpLdaVk0?=
- =?us-ascii?Q?Xp5ntJHD0jd77v33pAdaP1dWKP3Xw426rMmHXK2QqIjViTfNQA3xKUw1quHZ?=
- =?us-ascii?Q?m4Iqa/Sy7dobcVWo3EXfFPc+DSDUzBOlVJJW7o5V9+2PY7s4E7LGMASuCFoZ?=
- =?us-ascii?Q?2m8ZRFGjXw0wbhBSpRoqLwdeh129YzlvCN4un15MXOp5xtS3Q5/uqUm4aKvt?=
- =?us-ascii?Q?9W7xCVmTZzbx8XBumRBRudvzeIt69spbilSCYPaqhFxEgjKYRbESY/hpSnlu?=
- =?us-ascii?Q?tl+XpuRd17t++ERmKLFGqzoH32BvsWxDSv/chGUjkyDmyz2Le3xL/l7qCzKl?=
- =?us-ascii?Q?n/TWL8HdK2Mi9Lwphjx5RxGZx3yyJyOCAkNJ1whGZuN0MCtEe/KdZur6x+93?=
- =?us-ascii?Q?rUeAzzLSq09NO4yTNST1yvinfHuKl9AUqtyH8aIMsbb1ckSaqx5fNAUyhORY?=
- =?us-ascii?Q?6XalMSkoiYoT0sA79G0KyKDeon8+QMg/ypdJxZalzePntnxc3hUU8t4MEDNp?=
- =?us-ascii?Q?SKPaYvIQDiAbYD8EZT3Prc+nbXriK4yqa5l5A3Dsmdguk/e67UZ2TbjJIMkx?=
- =?us-ascii?Q?7zCu0fEWHsawmkNVFVCz039cPq94N8eSZ4MmBXI5Y0Qp6gteRXKUoHQVXyNY?=
- =?us-ascii?Q?thZAVK4jokug+y/jUYx2udqCoMWCOMltd8wRO9MRHi7etGaLA/o5wT1Hn5EN?=
- =?us-ascii?Q?nPNm+Bq9XTRHj7lmiiJb3PPlyvbYlwXbWqrmyo1Xq+FG7n1hZruqKQJ5xYVh?=
- =?us-ascii?Q?Zu9KGyJU1Uw9EDJmmCufLBvLuoowRBnT//BNTEt5VoYiL30FjtWcXKV0357F?=
- =?us-ascii?Q?MAzlCQM76R+vf9d4f197WjPpSlP9GmldXwF1cSFmJqU6ZjYJveuChKl8HCPb?=
- =?us-ascii?Q?rik/TqHO6G2weaisBk/IMGwGm4NRYvtzC6VpYObWxP3+DB1/V513h1F85Wb4?=
- =?us-ascii?Q?cohuycf6tH1VakglZKcCROM0oQnfcJu3BOgGZuCGrjFmQUCpFhDJgg1jic/+?=
- =?us-ascii?Q?+rsY5ofNPid72dLdcB8Xd1sgyAO1mN782xyg/JopyYUxYnUSItckHEuWrNdl?=
- =?us-ascii?Q?QOi2TphMwp7JazQm06ql/7gtrcfC9bQPfMEOBRNzGcuYw0rxsFBKyeCQwOLQ?=
- =?us-ascii?Q?X8e4xYYhoL9YjnM99Q37DQBU91ndccWL5Ybca8q5v1eWvTgUDjfvCzcIFfux?=
- =?us-ascii?Q?gAznQ0doaKInc3shWDg8ZR7l0l6w82hmkTfETafCNQkE7lgqUHCGZ5Qaf7PE?=
- =?us-ascii?Q?mv7p6l9jTRLTx4jTZnZ5AoyympMNZ7M+03uM059PDEHnb8p6lfL/1Bz+ypGc?=
- =?us-ascii?Q?1s3uoAXSLgzb8nK59aQ3cJPf+nDXKLXcpj7JGFZABawEg/tpNMaRo0lYFEni?=
- =?us-ascii?Q?eFpXyZKhaldHHFYnMm3zWUN2Aiwpq2FDBFB62F7B9gNPVB1OooTq9N5YFtFk?=
- =?us-ascii?Q?4HqYmW33RwkMZHTZs9JWTzi0i5ndFExmR7Spg6GqxmRvXchdkxMZx8hLct4C?=
- =?us-ascii?Q?1lVO88Tf2g=3D=3D?=
-X-Exchange-RoutingPolicyChecked: LMKeG24wIJpS79gqDVLn7rjSnf/rcFqIU5ljIh/4HXq1/y2pJ4ItK+SKeH2D3guxZrYtOVbAvRwqY2fgVbH9HaTRRKG0eK4cEaNq8anpFrKyM+ak3Lu8Xz/a8jNbQe9+ikU9RVjysq97GeMu+0W6mK/uQBxf39J5KvAanHKniGpyBr9aRWgpuM9sq/s0KbPOfttUzV67asW0RkDpji7TyrN915HZzJFIKRQRWBYfefjFxD4g4+o/VrrmM1DlAM9TW9Ho9AqPXmvLlD/WTijUontWflZDYlJM9qM6eGNIphf426h9i5l4LNiqjrsSra9SmYSrZXcrpPW60RYXREKsoQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7b92ae1-7872-4270-10b1-08de8fc35005
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 07:50:15.8542
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9T8+0DTFnHr+H4UYGrEBDlkd9gMMwuiizFa0bBD1XHAlyBc52VbNmsMlYSashiLM+hp0c6Bnxg0ODequ2oQl7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6531
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260328100837.7e6dc7fe@pumpkin>
 
-On Tue, Mar 31, 2026 at 08:11:22AM -0700, Dave Hansen wrote:
->On 3/31/26 05:41, Chao Gao wrote:
->> +static enum fw_upload_err tdx_fw_poll_complete(struct fw_upload *fwl)
->> +{
->> +	/*
->> +	 * TDX module updates are completed in the previous phase
->> +	 * (tdx_fw_write()). If any error occurred, the previous phase
->> +	 * would return an error code to abort the update process. In
->> +	 * other words, reaching this point means the update succeeded.
->> +	 */
->> +	return FW_UPLOAD_ERR_NONE;
->> +}
->> +
->
->This will be the seventh 'fw_upload_ops' and the third that has this
->pattern of not needing a ->poll_complete() implementation. It seems like
->allowing a NULL ->poll_complete or having a common stub for this pattern
->would be worthwhile.
+On Sat, Mar 28, 2026 at 10:08:37AM +0000, David Laight wrote:
+> On Fri, 27 Mar 2026 17:42:56 -0700
+> Pawan Gupta <pawan.kumar.gupta@linux.intel.com> wrote:
+> 
+> > On Thu, Mar 26, 2026 at 01:29:31PM -0700, Pawan Gupta wrote:
+> > > On Thu, Mar 26, 2026 at 10:45:57AM +0000, David Laight wrote:  
+> > > > On Thu, 26 Mar 2026 11:01:20 +0100
+> > > > Borislav Petkov <bp@alien8.de> wrote:
+> > > >   
+> > > > > On Thu, Mar 26, 2026 at 01:39:34AM -0700, Pawan Gupta wrote:  
+> > > > > > I believe the equivalent for cpu_feature_enabled() in asm is the
+> > > > > > ALTERNATIVE. Please let me know if I am missing something.    
+> > > > > 
+> > > > > Yes, you are.
+> > > > > 
+> > > > > The point is that you don't want to stick those alternative calls inside some
+> > > > > magic bhb_loop function but hand them in from the outside, as function
+> > > > > arguments.
+> > > > > 
+> > > > > Basically what I did.
+> > > > > 
+> > > > > Then you were worried about this being C code and it had to be noinstr... So
+> > > > > that outer function can be rewritten in asm, I think, and still keep it well
+> > > > > separate.
+> > > > > 
+> > > > > I'll try to rewrite it once I get a free minute, and see how it looks.
+> > > > >   
+> > > > 
+> > > > I think someone tried getting C code to write the values to global data
+> > > > and getting the asm to read them.
+> > > > That got discounted because it spilt things between two largely unrelated files.  
+> > > 
+> > > 
+> > > The implementation with global variables wasn't that bad, let me revive it.
+> > > 
+> > > This part which ties sequence to BHI mitigation, which is not ideal,
+> > > (because VMSCAPE also uses it) it does seems a cleaner option.
+> > > 
+> > > --- a/arch/x86/kernel/cpu/bugs.c
+> > > +++ b/arch/x86/kernel/cpu/bugs.c
+> > > @@ -2095,6 +2095,11 @@ static void __init bhi_select_mitigation(void)
+> > > 
+> > >  static void __init bhi_update_mitigation(void)
+> > >  {
+> > > +   if (!cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
+> > > +       bhi_seq_outer_loop = 5;
+> > > +       bhi_seq_inner_loop = 5;
+> > > +   }
+> > > +
+> > > 
+> > > I believe this can be moved to somewhere common to all mitigations.
+> > >   
+> > > > I think the BPF code would need significant refactoring to call a C function.  
+> > > 
+> > > Ya, true. Will use globals and keep clear_bhb_loop() in asm.  
+> > 
+> > While testing this approach, I noticed that syscalls were suffering an 8%
+> > regression on ICX for Native BHI mitigation:
+> > 
+> >   $ perf bench syscall basic -l 100000000
+> > 
+> > Bisection pointed to the change for using 8-bit registers (al/ah replacing
+> > eax/ecx) as the main contributor to the regression. (Global variables added
+> > a bit, but within noise).
+> > 
+> > Further digging revealed a strange behavior, using %ah for the inner loop
+> > was causing the regression, interchanging %al and %ah in the loops
+> > (for movb and sub) eliminated the regression.
+> > 
+> > <clear_bhb_loop_nofence>:
+> > 
+> > 	movb	bhb_seq_outer_loop(%rip), %al
+> > 
+> > 	call	1f
+> > 	jmp	5f
+> > 1:	call	2f
+> > .Lret1:	RET
+> > 2:	movb	bhb_seq_inner_loop(%rip), %ah
+> > 3:	jmp	4f
+> > 	nop
+> > 4:	sub	$1, %ah <---- No regression with %al here
+> > 	jnz	3b
+> > 	sub	$1, %al
+> > 	jnz	1b
+> > 
+> > My guess is, "sub $1, %al" is faster than "sub $1, %ah". Using %al in the
+> > inner loop, which is executed more number of times is likely making the
+> > difference. A perf profile is needed to confirm this.
+> 
+> I bet it is also CPU dependant - it is quite likely that there isn't
+> any special hardware to support partial writes of %ah so it ends up taking
+> a slow path (possibly even a microcoded one to get an 8% regression).
 
-Thanks for this suggestion. allowing a NULL ->poll_complete looks good.
+Strangely, %ah in the inner loop incurs less uops and has fewer branch
+misses, yet takes more cycles. Below is the perf data for the sequence on a
+Rocket Lake (similar observation on ICX and EMR):
 
-I will post a separate series for this. the core change would be:
+  Event                     %al inner      %ah inner       Delta
+  ----------------------  -------------  -------------  ----------
+  cycles                    776,775,020    972,322,384    +25.2%
+  instructions/cycle               1.23           0.98    -20.3%
+  branch-misses               4,792,502        560,449    -88.3%
+  uops_issued.any           768,019,010    696,888,357     -9.3%
+  time elapsed                 0.1627s        0.2048s     +25.9%
 
-From b0d02c337db9df040b702f57a28e960da04bd9e3 Mon Sep 17 00:00:00 2001
-From: Chao Gao <chao.gao@intel.com>
-Date: Tue, 31 Mar 2026 22:17:36 -0700
-Subject: [PATCH] firmware_loader: Make fw_upload_ops::poll_complete() optional
+Time elapsed directly correlates with the increase in cycles.
 
-mpfs-auto-update.c and thp7312.c implement poll_complete() as a trivial
-stub that simply returns FW_UPLOAD_ERR_NONE, because their write() is
-synchronous and the upload completes before fw_upload_ops::write() returns.
+> As well as swapping %al <-> %ah try changing the outer loop decrement to
+> 	sub $0x100, %ax
+> since %al is zero that will set the z flag the same.
 
-Make poll_complete() optional so that drivers with synchronous write()
-don't need to duplicate this trivial stub. When the callback is not
-provided, assume the upload has completed and simply return
-FW_UPLOAD_ERR_NONE.
+Unfortunately, using "sub $0x100, %ax"(with %al as inner loop) isn't better
+than just using "sub $1, %ah" in the outer loop:
 
-An alternative would be defining and exporting a common stub, but
-exporting a stub seems unnecessary and differs from the optional
-fw_upload_ops::cleanup() handling.
+  Event                     %al inner      + sub %ax       Delta
+  ----------------------  -------------  -------------  ----------
+  cycles                    776,775,020    813,372,036     +4.7%
+  instructions/cycle               1.23           1.17     -4.5%
+  branch-misses               4,792,502      7,610,323    +58.8%
+  uops_issued.any           768,019,010    827,465,137     +7.7%
+  time elapsed                 0.1627s        0.1707s      +4.9%
 
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/kvm/01fc8946-eb84-46fa-9458-f345dd3f6033@intel.com/
----
- drivers/base/firmware_loader/sysfs_upload.c | 12 +++++++++---
- include/linux/firmware.h                    |  2 +-
- 2 files changed, 10 insertions(+), 4 deletions(-)
+> I've just hacked a test into some test code I've got.
+> I'm not seeing an unexpected costs on either zen-5 or haswell.
+> So it may be more subtle.
 
-diff --git a/drivers/base/firmware_loader/sysfs_upload.c b/drivers/base/firmware_loader/sysfs_upload.c
-index f59a7856934c..06788a6d7227 100644
---- a/drivers/base/firmware_loader/sysfs_upload.c
-+++ b/drivers/base/firmware_loader/sysfs_upload.c
-@@ -158,6 +158,13 @@ static void fw_upload_prog_complete(struct fw_upload_priv *fwlp)
-	mutex_unlock(&fwlp->lock);
- }
- 
-+static enum fw_upload_err fw_upload_poll_complete(struct fw_upload_priv *fwlp)
-+{
-+	if (!fwlp->ops->poll_complete)
-+		return FW_UPLOAD_ERR_NONE;
-+	return fwlp->ops->poll_complete(fwlp->fw_upload);
-+}
-+
- static void fw_upload_main(struct work_struct *work)
- {
-	struct fw_upload_priv *fwlp;
-@@ -197,7 +204,7 @@ static void fw_upload_main(struct work_struct *work)
-	}
- 
-	fw_upload_update_progress(fwlp, FW_UPLOAD_PROG_PROGRAMMING);
--	ret = fwlp->ops->poll_complete(fwl);
-+	ret = fw_upload_poll_complete(fwlp);
-	if (ret != FW_UPLOAD_ERR_NONE)
-		fw_upload_set_error(fwlp, ret);
- 
-@@ -306,8 +313,7 @@ firmware_upload_register(struct module *module, struct device *parent,
-	if (!name || name[0] == '\0')
-		return ERR_PTR(-EINVAL);
- 
--	if (!ops || !ops->cancel || !ops->prepare ||
--	    !ops->write || !ops->poll_complete) {
-+	if (!ops || !ops->cancel || !ops->prepare || !ops->write) {
-		dev_err(parent, "Attempt to register without all required ops\n");
-		return ERR_PTR(-EINVAL);
-	}
-diff --git a/include/linux/firmware.h b/include/linux/firmware.h
-index aae1b85ffc10..c320e8b3e708 100644
---- a/include/linux/firmware.h
-+++ b/include/linux/firmware.h
-@@ -57,7 +57,7 @@ struct fw_upload {
-  *			  size written or a negative error code. The write()
-  *			  op will be called repeatedly until all data is
-  *			  written.
-- * @poll_complete:	  Required: Check for the completion of the
-+ * @poll_complete:	  Optional: Check for the completion of the
-  *			  HW authentication/programming process.
-  * @cancel:		  Required: Request cancellation of update. This op
-  *			  is called from the context of a different kernel
--- 
-2.47.3
+This is puzzling, but atleast it is evident that using %al for the inner
+loop seems to be the best option. In summary:
 
-
->
->I also don't think you need to be that verbose. This would be fine:
->
->	/*
->	 * The upload completed during tdx_fw_write().
->	 * Never poll for completion.
->	 */
-
-Sure. thanks.
->
->
->
+  Variant   Cycles     Uops Issued  Branch Misses
+  -------  ----------  -----------  -------------
+  %al       776M        768M           4.8M         (fastest)
+  %ah       972M (+25%) 697M (-9%)     560K (-88%)  (fewer uops + misses, yet slowest)
+  sub %ax   813M (+5%)  827M (+8%)     7.6M (+59%)  (most uops + misses)
