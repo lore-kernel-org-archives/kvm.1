@@ -1,64 +1,64 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF88126E706
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 20:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B913A9DA6
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775076951; cv=none; b=maHYOq1O8GJlrSIGDwCeAxf5KArGl7UAGgkuJNGHoARA5X8+mpSjDTY24rGuq7DyEO4URgDRPPJw7f47IT+dvrTdvxkcxGWNfdDs23QiZ+UVZVMmcH5/kSn3kvjDVSaNj8RoaUs5l4683ntt2G5XUTVJt7aPt6KrmO44OC88FCs=
+	t=1775077240; cv=none; b=JFGZqeBZfUhu97OpJJV8sOK87c36gI6p/oS9t7OZ6gFgP6oqoYRMuxZ/E2YHCFSiExVfm+qRcjgPbpDY098LOvTScS4ZMHHl7BlsQfqcce6EuMCTv0OsxkLfXC/hYP/zGbMwzzxBFfvgfVi1w3ayCjB5YtmXp7Xq+gQkeyZgYYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775076951; c=relaxed/simple;
-	bh=NpvwDk23uIaHCeK3yVRCiuJ3r9ceunuwiGrGOwiH+jA=;
+	s=arc-20240116; t=1775077240; c=relaxed/simple;
+	bh=rwCTMhhW1mlm2pQN2PUj1MkMfhRFEtQPzL6FszfFEdk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=V2wlMA1GM+Txwq31fVpOgDvgty3HPvXynsj0xOcjO6JTw+BzA/QMQNFQ/+PxbQeROfjzoxEpcsKn0T7yMFiz22MEpNJCKb7Ef6UDkvQ+mGN85Uhdn8KIyZqEAH6LARC7PynXGXt7E9zjCATyFlWI6ItlK6mQozXi62rEtnSkVDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A/PT21FM; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=mMNyuXedozE2dk7EZ0NlRYgpINnYZQFtWAWJrTJwGdZmQjUsEAKA7gWSazq2qKEha7mD8Rqw4Ze+ZttS39J2hvOw62Lke1lLfNk8Y2I9CptbQuXCv6uU6qUwBa9V92deg97EDCSketEgLIs2I6kro9Sdodn46qCDkt3g5h7ERTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E3bC+BZ8; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A/PT21FM"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82a855dc82aso93486b3a.2
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 13:55:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E3bC+BZ8"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b23af7d7e8so5566435ad.0
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775076948; x=1775681748; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775077239; x=1775682039; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PBu0DbYuV4o+iB7UUEswME7tXh/PWT1UOPPFS4CrV84=;
-        b=A/PT21FM2tYilbztwGIy8WJlHNVgNPtlvaU9A1LzsfYy5KDesoTtZ8Bq8b1VrD0sJn
-         vnGKtKs2gCWt9UhRBG97Hxij7FcFLNB9gopJ+HVSDbztGWkhxCMvp/aL4ohphBLUZyk1
-         0BHz1V8AlMrmHwYVCMhJ5lcpqVnhaVZ775cc/x9syUrzf8hRkb6BKpQAArIU6g+wuDBW
-         3ZLIpRR+ZYAn40o7BjvLYzNzBLzZPbZqxCahmMWuWWjvqcANOKBZvP5Krxxp4Iniv7h7
-         Dg3Q/ewKMFHS0ijBTYndz4FW0657o7QU/q/Jh91yQODdjVfon2AchbpvLTs8bOxhYqA9
-         xraQ==
+        bh=R/Onj4oOQCUP+/EEd8Xnfd/XRtqXrJLCIkDndkOebLk=;
+        b=E3bC+BZ8x4/SPCTvD+ufe1mlHOyqjLXeUQPuxbIUQW5QGD1t+FAM5Q7E2b4PqH3ttr
+         R4i/vfvUEqKcQCiqANvC1gUQcPqcKWLhAp7QUa4X1aSs1sU0/NAwrlAbyAp6zDbCOvpa
+         zBqPwEOIpGuIZrHVkBRRIPxhpZNwzPHgaMs3gnMsien25j9WEer1jpqNJh+HT8nzvUPX
+         43rn5084rbAwkkEk8vsRgyx+hWQniwIWA7NF6wCVhR7sXEVzf26GL4q72f83Uf7hxhLE
+         5bLr3Qsp6Wg2Ry1d3lW0K9YEnytYlO8NJ/Yli7BhaZ+HkvtlB8sanwdoVMatWXPg2pqS
+         3FNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775076948; x=1775681748;
+        d=1e100.net; s=20251104; t=1775077239; x=1775682039;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PBu0DbYuV4o+iB7UUEswME7tXh/PWT1UOPPFS4CrV84=;
-        b=VtFVRvAK1B2CULDN4F3sNAT6wetVnl7PipciwKFQ9OCDYPnJOT4pJJKHXhBXjurbOq
-         w7CkbgXdOwx749xCPLPQ6QRgdy5+hEe7uePsYB9E5nY2479zjxdGH3CTseUgWQxSUoRs
-         pZwe9Yj06Fk47+agfiO7tmHUZzudFuKXmzHy34Ge+0zbRxYWq/IGNpGjF4a0tZS1A10G
-         AeFiVU58gB/zJA0wFuRdjenAVDzFXy9MV9HVcxS5X0pKf/h8H0rEDOfMytCPytzKQiJO
-         ItZV9dKcpnwOOajo1zw5/kanNe28rm0kjBt/4+ucRfnlPX4pn5A3e5MdZxt3mwAlx4HL
-         CfHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZy6NPcO7yZW45mP1Z7xDRNAG/mFAMK0GlV8bupe/lWE7qzXQm2fPLaQ7xpfXguTodM4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwABAZbgSFSyQbxZjjAxNfL5tZT6QsZrcCTWrw+/IZJyp7jiP3I
-	kubxRR/DlEGGlrH6p37uHIFAHdiekzFtT/AT9xAbFapI0fxWtlR4Er0fByCETGEJircFLzABPu+
-	h4ybsiQ==
-X-Received: from pfde18.prod.google.com ([2002:aa7:8c52:0:b0:829:9f63:c89a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:22d4:b0:82c:da94:eb54
- with SMTP id d2e1a72fcca58-82ce8ae4c35mr5489486b3a.27.1775076948423; Wed, 01
- Apr 2026 13:55:48 -0700 (PDT)
-Date: Wed, 1 Apr 2026 13:55:47 -0700
-In-Reply-To: <20260331194033.3890309-12-jrhilke@google.com>
+        bh=R/Onj4oOQCUP+/EEd8Xnfd/XRtqXrJLCIkDndkOebLk=;
+        b=QtHEmWmP5tB+dfGyB9KA6M91L6NnNMKC557RjLk4B6ttGSzPG6gE8ZkoUQF/Is6ITg
+         boxD7qI4fALsJQsKEnrYeZepjnw/k8tTLFDFUAmHxaOa8qdr13SFdcQLts/h/U9dcyTK
+         MhYmSeg2X0KQumkWUNu/wgb1SxzRserGxnkIEsorB7kFLecQ3DE6elGeANz+qnU8cBA/
+         sKNojgmQ0umCqJSHl9h6J+GD+WdoDH9gHOSusWRihDe5/UkLo1Z1c+5l3zmtGJpcXkpT
+         tXGwMPMFLKxjcv8eGx3MMy9bqISvuQEX6SItRiI33b7zt3GCqQTsmmw0CHxDZ8BE34UJ
+         qmVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVts1+dWhwsoapWstcsA/FUEccuQ9Q/Kdk9oDFmHKSEc67oii+d18CQE0NiEXWzg3mHDM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzh+xMeGK2bXwxBdU9rd0Oo3siQjAYZJlwHxIUmXJooEd5UbC2a
+	vbR+1zNUhr46mudwKaT930qhIQG3QNNEHIaclwyO41zmX5kevu44DlHUBoFIyYdMX0Zjy9NYsWu
+	E/kri+g==
+X-Received: from plgy11.prod.google.com ([2002:a17:903:22cb:b0:2b0:4ce1:a0e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1250:b0:2b0:60f1:de58
+ with SMTP id d9443c01a7336-2b275dc23b8mr6460715ad.45.1775077238622; Wed, 01
+ Apr 2026 14:00:38 -0700 (PDT)
+Date: Wed, 1 Apr 2026 14:00:37 -0700
+In-Reply-To: <20260331194033.3890309-15-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-12-jrhilke@google.com>
-Message-ID: <ac2GU_u3tzyTIcls@google.com>
-Subject: Re: [PATCH v2 11/14] KVM: selftests: Add support for vCPU pinning
+References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-15-jrhilke@google.com>
+Message-ID: <ac2HdXsXyQ0U_-WR@google.com>
+Subject: Re: [PATCH v2 14/14] KVM: selftests: Make vfio_pci_irq_test timeout configurable
 From: Sean Christopherson <seanjc@google.com>
 To: Josh Hilke <jrhilke@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
@@ -66,142 +66,49 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Mar 31, 2026, Josh Hilke wrote:
-> From: David Matlack <dmatlack@google.com>
+> Add a '-t' flag to vfio_pci_irq_test to allow configuring the
+> interrupt timeout. This provides flexibility for running the test in
+> different environments where interrupt delivery times may vary.
 > 
-> Add the '-p' flag to vfio_pci_irq_test to pin vCPU threads to random
-> physical CPUs throughout the test. This stresses the interaction between
-> vCPU migration and interrupt delivery, ensuring that interrupts find
-> their target even as the vCPU moves across the host's pCPUs.
-
-This isn't "pinning" in the normal sense of the word in KVM-land.  Pinning in
-KVM usually means affining a vCPU to _one_ pCPU and never changing that
-affinity.  What you're doing here is *very* different; you're delibrately
-mucking with affinity to force pCPU migrations.  That isn't bad by any means,
-but calling it "pinning" is super confusing, and I would argue the use of '-p'
-is flat out wrong.  I would suggest '-m' for migrate if it's available.
-
 > Signed-off-by: David Matlack <dmatlack@google.com>
 > Signed-off-by: Josh Hilke <jrhilke@google.com>
-> Co-developed-by: Josh Hilke <jrhilke@google.com>
 > ---
->  .../selftests/kvm/include/kvm_syscalls.h      |  7 ++
->  .../testing/selftests/kvm/vfio_pci_irq_test.c | 79 ++++++++++++++++++-
->  2 files changed, 83 insertions(+), 3 deletions(-)
+>  tools/testing/selftests/kvm/vfio_pci_irq_test.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> index d4e613162bba..5f839f735640 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> @@ -73,9 +73,16 @@ static inline int kvm_dup(int fd)
->  	return new_fd;
->  }
->  
-> +static inline int gettid(void)
-> +{
-> +	return syscall(__NR_gettid);
-> +}
-> +
->  __KVM_SYSCALL_DEFINE(munmap, 2, void *, mem, size_t, size);
->  __KVM_SYSCALL_DEFINE(close, 1, int, fd);
->  __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
->  __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
-> +__KVM_SYSCALL_DEFINE(sched_setaffinity, 3, pid_t, pid, size_t, cpusetsize, const cpu_set_t *, mask);
-> +__KVM_SYSCALL_DEFINE(sched_getaffinity, 3, pid_t, pid, size_t, cpusetsize, cpu_set_t *, mask);
-
-Please add these separately and use then throughout, e.g. in rseq_test.c (which
-doesn't very similar migration shenanigans).
-
->  #endif /* SELFTEST_KVM_SYSCALLS_H */
 > diff --git a/tools/testing/selftests/kvm/vfio_pci_irq_test.c b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-> index fa77ce348251..c2f48c6710dd 100644
+> index 2dcac6fbc009..807e9aecc887 100644
 > --- a/tools/testing/selftests/kvm/vfio_pci_irq_test.c
 > +++ b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-> @@ -22,6 +22,8 @@ static bool guest_ready_for_irqs[KVM_MAX_VCPUS];
->  static bool guest_received_irq[KVM_MAX_VCPUS];
->  static bool guest_received_nmi[KVM_MAX_VCPUS];
+> @@ -25,7 +25,7 @@ static bool guest_received_nmi[KVM_MAX_VCPUS];
 >  
-> +static pid_t vcpu_tids[KVM_MAX_VCPUS];
-> +
->  #define TIMEOUT_NS (2ULL * 1000 * 1000 * 1000)
+>  static pid_t vcpu_tids[KVM_MAX_VCPUS];
+>  
+> -#define TIMEOUT_NS (2ULL * 1000 * 1000 * 1000)
+
+Aren't there defines for this sort of thing?
+
+> +static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
 >  
 >  static u32 guest_get_vcpu_id(void)
-> @@ -64,12 +66,64 @@ static void *vcpu_thread_main(void *arg)
->  	struct kvm_vcpu *vcpu = arg;
->  	struct ucall uc;
+>  {
+> @@ -196,7 +196,7 @@ static void send_msi(struct vfio_pci_device *device, bool use_device_msi, int ms
 >  
-> +	WRITE_ONCE(vcpu_tids[vcpu->id], syscall(__NR_gettid));
+>  static void help(const char *name)
+>  {
+> -	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-v nr_vcpus] [-x] segment:bus:device.function\n",
+> +	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-t timeout] [-v nr_vcpus] [-x] segment:bus:device.function\n",
+>  	       name);
+>  	printf("\n");
+>  	printf("  -a: Randomly affinitize the device IRQ to different CPUs\n"
+> @@ -210,6 +210,7 @@ static void help(const char *name)
+>  	printf("  -n: Route some of the device interrupts to be delivered as\n"
+>  	       "      an NMI into the guest.\n");
+>  	printf("  -p: Pin vCPU threads to random pCPUs throughout the test.\n");
+> +	printf("  -t: The timeout in seconds to wait for an interrupt.\n");
 
-Heh, what's the point of adding gettid() if you don't use it?
-
-> +
->  	vcpu_run(vcpu);
->  	TEST_ASSERT_EQ(UCALL_DONE, get_ucall(vcpu, &uc));
->  
->  	return NULL;
->  }
->  
-> +static int get_cpu(struct kvm_vcpu *vcpu)
-> +{
-> +	pid_t tid = vcpu_tids[vcpu->id];
-> +	cpu_set_t cpus;
-> +	int cpu = -1;
-> +	int i;
-> +
-> +	kvm_sched_getaffinity(tid, sizeof(cpus), &cpus);
-> +
-> +	for (i = 0; i < get_nprocs(); i++) {
-> +		if (!CPU_ISSET(i, &cpus))
-> +			continue;
-> +
-> +		if (cpu != -1) {
-> +			cpu = i;
-> +		} else {
-> +			/* vCPU is pinned to multiple CPUs */
-> +			return -1;
-
-Given that this is for debugging failures, printing -1 isn't as helpful as it
-could be.  Ideally the test would print something similar to the output of
-`taskset -c -p <pid>`.
-
-> +		}
-> +	}
-> +
-> +	return cpu;
-> +}
-> +
-> +static void pin_vcpu_threads(int nr_vcpus, int start_cpu, cpu_set_t *available_cpus)
-> +{
-> +	const size_t size = sizeof(cpu_set_t);
-> +	int nr_cpus, cpu, vcpu_index = 0;
-> +	cpu_set_t target_cpu;
-> +
-> +	nr_cpus = get_nprocs();
-> +	CPU_ZERO(&target_cpu);
-> +
-> +	for (cpu = start_cpu;; cpu = (cpu + 1) % nr_cpus) {
-
-Why round-robin the pCPUs?  If anything, that _reduces_ coverage because it
-creates a single pattern for how vCPUs are affined.  And vCPUs will never be
-affined to the same pCPU.
-
-Why not fully randomize the affinity?  Again, this isn't pinning, it's forced
-task migration.
-
-> +		if (vcpu_index == nr_vcpus)
-> +			break;
-> +
-> +		if (!CPU_ISSET(cpu, available_cpus))
-> +			continue;
-> +
-> +		CPU_SET(cpu, &target_cpu);
-> +
-> +		kvm_sched_setaffinity(vcpu_tids[vcpu_index], size, &target_cpu);
-
-If you're affining to _one_ pCPU, just use pin_task_to_cpu().  Actually, all
-of this belongs in a helper, e.g. pin_task_to_random_cpu().
-
-> +		CPU_CLR(cpu, &target_cpu);
-> +
-> +		vcpu_index++;
-> +	}
-> +}
+Uh, for *each* interrupt?  That's insane.  Something is massively wrong if an IRQ
+isn't delivered in waaay under a second.  If this is purely a "sometimes IRQs get
+delayed for a long time because the host is massively overloaded", set the timeout
+to something absurd, e.g. 10 seconds, and call it good.  Then rely on the runner
+to deal with the total runtime.
