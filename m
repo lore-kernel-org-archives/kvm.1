@@ -1,160 +1,222 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C46E32ED2E
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 19:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BFA2F1FD0
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 19:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775070443; cv=none; b=hEpqneeMqbSZd1OMStMDvnE0GjtVEAuqi7yTEYjsz7v5PPJvBs56ODaxy7nDZK1e/Y4H4fIjnl3CLOv/L/rp6VZIb4HDLkNU7afMSgzT+3+Om8A1UE2PF9r4pktwaCSsWPhIrNwsOEVd8VqP9aQPTth9+a5t/vPe0TLFWMxcnbo=
+	t=1775073491; cv=none; b=RaBpfYAf7J9pLq4Ofw48wxwMiVp9+IG6usmp9mrZrY0BOZSoSDdJwRQ0JR45COcRytqZRhmSoh+XfvMjbcOT7XeUXAz8iU9NH6T5FLr1OLAjp937BoF4dXx5oDogbVWjwXXhmpf72/Y1qk0JEPaDoJgzcLQa1v4UdEOIcmHEdL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775070443; c=relaxed/simple;
-	bh=OMdO+tFJ6OLziUdlu33dLXoZ/7vMDQMQWjuAHyb5DSQ=;
+	s=arc-20240116; t=1775073491; c=relaxed/simple;
+	bh=Wqoar2unzDoT2DyLSBYD980RM/oTqjHcs0ISRny8uF0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iIjh2LjGZrR2iiVSBI1wuvMBuB/AwQJ5zNZtEOh5fYGFT4x2Ehc3K4ZdrTitWeZALQbMElcd2Isk5LOgIywf01qN+5PSAsqXwT59oJ+bb38YOQSr2Xb/G3muL6Q8yOf9uXKDanhMEz3b3AiyVMd6ES7Bef2oMmSs1jIPfbBEllg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ki9yxLOO; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=jGg1mQmE3MkXlckAMnxoGVH3xXasQAvbxnWlnlJO5FgTUiGBK+n1hJnZ4AbpflrknoNHOf5SRk52qyD3f8A3humtQkUrW2tyas0rejZqqlPum2g5cDX85Ga07OHg2Csl7wHmjezUoFRDPJfjrrG9ydFusWObxe6Jwa3zsWmXidA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qgxjLfI3; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ki9yxLOO"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso34088a91.2
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 12:07:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qgxjLfI3"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cf084fe58so54016b3a.1
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 12:58:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775070441; x=1775675241; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775073489; x=1775678289; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvC/ZzJIOCXDarRg/n8zFp8o9/BNtILNk5qQeZwmHBk=;
-        b=Ki9yxLOOucbK9voIhyDBndxPq5ZAFL6tndYmKjfijWTvv+qZt3eiMwmikbIkaoNva8
-         6LKDSI6KO2TRAx6NPUqwahxalc/s5za6fOS7HBFc6nqS3Cz485gPMNJb08mD7qStPjxi
-         JsiiLTuUynlzGIfmiDwLbdtaIjcLtNOBouw+j7PibB+X0cKIMVvDyAE1WX4T3lCtPKT4
-         PeuAIufaEcDYLgAH0H2Pu6DqaLF4IAHMzePdufGl+jhLp/aIy+XJJYktyPkDFR1iWng6
-         eaxWKEcTiEUu9dVTEOc15dQ/CQXKnljuUMdnuNq6Huf6S9oDO59k4QR4ZopjhPL1HqTh
-         +nag==
+        bh=vqH8DHhTLq1D+fFWiyEUoVviy2/FTguWqWJAhYHEYnY=;
+        b=qgxjLfI3zD9KKk8FrUrQPmgYWEKwSTg9r/HhCZPeH2JP65BR1pE6P28IEiC2I4nLkZ
+         VjeM2tkICoYbDG1WXToatPkWffyCzEAJrsC2GNu59xNMr0ElS1oVodk9+sXFdRV4Fzqh
+         tDVflqwEuP35oUsFZpDMIPh1v8DCnKOqHVbDyfcX94ci32Ha3l40vtwNuONYHiOfH3BY
+         Fjels6ToCzofv9WAMV6/aufkw9WT/C4393GJbyrgrecUtZ/G7wvAfTue+tjzLRq+XT0l
+         B4XPw16hGh6zqg79mOWvLh9uX8h0HZv8AJi1YAy11ZS2H4XMNxfA+mNQCVZ9y+2ZkTCx
+         HWTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775070441; x=1775675241;
+        d=1e100.net; s=20251104; t=1775073489; x=1775678289;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvC/ZzJIOCXDarRg/n8zFp8o9/BNtILNk5qQeZwmHBk=;
-        b=DxeFrWzd3BPT6/fQAD7YDFYcdQDMG9GLIYyTPdzcBBlAVru8ogjeejzFEAkOErpwS1
-         ntBLJ0AHArBw6Z/jWt1l4tfpMYoId1UDHQ3V3qv33oLuNtCExgedTixWkXhVqzqN2TUh
-         xj8Xg7hGy0KU7t3ykRnMvyl3tQ0w+gQFtvY31tyhDmMEFu0fCdKQn+Rj5qVyZ9uMA2vr
-         AKa5T3gqD0AMXFcjcjrkNPF6fllfNz+upWfruC9hTBGZRHfAWl3noGECka4zBwSwbnKv
-         atEBoE4qZ7lZVipXafQx/nxAEZYu98zNNDsM8MY6HgyTtAwTFQBbNv29O3z8IonLb3a7
-         YZ0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWwSmUY56WJagKFyVj+g7fcBbKmUri8iRTxCaX5Ivcun/MdSdGIp5HbSgeRlTwSScQ6Fhw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyyte0eOVVYhgwzqknxMUiUoXtBQ4ekHcodSXuQ/+OZicH5oHCy
-	AP2b3xEibznM87PeNV9f+gIGJnyttrfu5dVaEZApqq1ATd8/uqPXl58otjjznzo75ZUIifFmCTO
-	PvxojwA==
-X-Received: from pjbcz6.prod.google.com ([2002:a17:90a:d446:b0:35c:f64:bdb0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c1:b0:359:8e5e:43de
- with SMTP id 98e67ed59e1d1-35dc6fcbd0cmr4002183a91.22.1775070441207; Wed, 01
- Apr 2026 12:07:21 -0700 (PDT)
-Date: Wed, 1 Apr 2026 12:07:19 -0700
-In-Reply-To: <ac1pUx_jYv2yCMnX@google.com>
+        bh=vqH8DHhTLq1D+fFWiyEUoVviy2/FTguWqWJAhYHEYnY=;
+        b=Adq7oK+LXgZ39i7s4SqcCUwuV3b42JCqLHiMGiHb/ljg9KPgyiv+MNuXXb6fAigbCd
+         tgD3J86+qjllcWJWeVjB2N8+5zaWnbK1+XaFPnO+3Md9ZQmU70ZXZA6zOLTvDbUHsaJj
+         zenkGX9EDnFCKqtQ1+3cMI/DfSVsahgYr5WQABZp/nBy43QGeut3+Egpp5y2UrQIdPhp
+         Qwdx/hu8PeR53OvZ21fuC0+CbCFvXQFNnVm6noIvdKIeUQqSfcQRO2TwXgoxfbN0qQyI
+         R6kW4h48rNvjtsDOrX19UBCoSYOzhC2nioMr88qv/k9kYSOp1pqp/4fi3l56aptBNKZs
+         q4Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCUul3mZhNcgzmg/PWRWeOktKZsz9efVQ86genh+7Ux/bVj1cifus3q+EzQMAZoG+0oo7js=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIqRioJwd2+kMjrDHx7VjAOfrjiBtzfu7F6heQonAj1GdhvGaK
+	eAIATbPBF8wPZTy8+L+6rB9m7klsv+WZTO5HWfnqKdLVviuLKuuDJqMYRkxHNmQH1LHMBjiYM3T
+	vHQ5wig==
+X-Received: from pfbil4.prod.google.com ([2002:a05:6a00:8d44:b0:82a:ea7:3561])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d82:b0:82c:e816:4135
+ with SMTP id d2e1a72fcca58-82cfb9c0d13mr716399b3a.47.1775073489293; Wed, 01
+ Apr 2026 12:58:09 -0700 (PDT)
+Date: Wed, 1 Apr 2026 12:58:08 -0700
+In-Reply-To: <20260331194033.3890309-4-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <ac1hI93pEo-x-7YU@google.com>
- <ac1pUx_jYv2yCMnX@google.com>
-Message-ID: <ac1s55_oLEUQx8Hs@google.com>
-Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
- test device interrupts
+References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-4-jrhilke@google.com>
+Message-ID: <ac140E1-ZeVg9mq_@google.com>
+Subject: Re: [PATCH v2 03/14] KVM: selftests: Add vfio_pci_irq_test
 From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Josh Hilke <jrhilke@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Apr 01, 2026, David Matlack wrote:
-> On 2026-04-01 11:17 AM, Sean Christopherson wrote:
-> > On Tue, Mar 31, 2026, Josh Hilke wrote:
+On Tue, Mar 31, 2026, Josh Hilke wrote:
+> +int main(int argc, char **argv)
+> +{
+> +	/*
+> +	 * Pick a random vector and a random GSI to use for device IRQ.
+> +	 *
+> +	 * Pick an IRQ vector in range [32, UINT8_MAX]. Min value is 32 because
+> +	 * Linux/x86 reserves vectors 0-31 for exceptions and architecture
+> +	 * defined NMIs and interrupts.
+> +	 *
+> +	 * Pick a GSI in range [24, KVM_MAX_IRQ_ROUTES - 1]. The min value is 24
+> +	 * because KVM reserves GSIs 0-15 for legacy ISA IRQs and 16-23 only go
+> +	 * to the IOAPIC. The max is KVM_MAX_IRQ_ROUTES - 1, because
+> +	 * KVM_MAX_IRQ_ROUTES is exclusive.
+> +	*/
+> +	u32 gsi = 24 + rand() % (KVM_MAX_IRQ_ROUTES - 1 - 24);
+> +	u8 vector = 32 + rand() % (UINT8_MAX - 32);
+
+Ahh, now I see why you included "Reproduce tests that rely on randomization" in
+this series.
+
+I think I'd prefer to tweak guest_random_state() to drop the "guest" in favor of
+"kvm", and then use that framework in host code as well.  Then you wouldn't need
+to open code the % fun.
+
+> +	/* Test configuration (overridable by command line flags). */
+> +	int nr_irqs = 1000;
+> +	int nr_vcpus = 1;
+> +
+> +	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+> +	pthread_t vcpu_threads[KVM_MAX_VCPUS];
+> +	u64 irq_count, pin_count, piw_count;
+> +	struct vfio_pci_device *device;
+> +	struct iommu *iommu;
+> +	const char *device_bdf;
+> +	int i, j, c, msi, irq;
+> +	struct kvm_vm *vm;
+> +
+> +	device_bdf = vfio_selftests_get_bdf(&argc, argv);
+> +
+> +	while ((c = getopt(argc, argv, "h")) != -1) {
+> +		switch (c) {
+> +		case 'h':
+> +		default:
+> +			help(argv[0]);
+> +		}
+> +	}
+> +
+> +	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
+> +	vm_install_exception_handler(vm, vector, guest_irq_handler);
+> +
+> +	iommu = iommu_init(default_iommu_mode);
+> +	device = vfio_pci_device_init(device_bdf, iommu);
+> +	msi = setup_msi(device);
+> +	irq = get_irq_number(device_bdf, msi);
+> +
+> +	irq_count = get_irq_count(irq);
+> +	pin_count = get_irq_count_by_name("PIN:");
+> +	piw_count = get_irq_count_by_name("PIW:");
+
+I'm *very* skeptical of blindling printing PIN/PIW.  They're Intel specific and
+are global to the entire system.  Outside of debugging specific issues, I don't
+see them providing much value, while on the other hand, they could easily confuse
+readers.  And unlike the IRQ counts, the data won't be lost when the test exits.
+
+As for the get_irq_number() and get_irq_count(), those need to be much more clearly
+scoped to /proc/interrupts.  E.g. "irq" in KVM context most often refers to the
+guest IRQ vector, not the host Linux make-believe IRQ number.
+
+> +	printf("%s %s MSI-X[%d] (IRQ-%d) %d times\n",
+> +               "Notifying the eventfd for",
+
+Where's the rest of this line?  Oh, this is the first %s.  LOL, that's ridiculous.
+
+	printf("Notifying the eventfd for BDF %s, MSI-X[%d] (IRQ-%d) %d times\n",
+	       device_bdf, msi, irq, nr_irqs);
+	       
+> +	       device_bdf, msi, irq, nr_irqs);
+> +
+> +	kvm_assign_irqfd(vm, gsi, device->msi_eventfds[msi]);
+> +
+> +	for (i = 0; i < nr_vcpus; i++)
+> +		pthread_create(&vcpu_threads[i], NULL, vcpu_thread_main, vcpus[i]);
+> +
+> +	for (i = 0; i < nr_vcpus; i++) {
+> +		struct kvm_vcpu *vcpu = vcpus[i];
+> +
+> +		while (!READ_FROM_GUEST(vm, guest_ready_for_irqs[vcpu->id]))
+> +			continue;
+> +	}
+> +
+> +	/* Set a consistent seed so that test are repeatable. */
+> +	srand(0);
+
+And using a pRNG instead of rand() should make this unnecessary.
+
+> +	for (i = 0; i < nr_irqs; i++) {
+> +		struct kvm_vcpu *vcpu = vcpus[i % nr_vcpus];
+> +		struct timespec start;
+> +
+> +		kvm_route_msi(vm, gsi, vcpu, vector);
+> +
+> +		for (j = 0; j < nr_vcpus; j++) {
+> +			TEST_ASSERT(
+> +				!READ_FROM_GUEST(vm, guest_received_irq[vcpu->id]),
+> +				"IRQ flag for vCPU %d not clear prior to test",
+> +				vcpu->id);
+> +		}
+> +
+> +		send_msi(device, msi);
+> +
+> +		clock_gettime(CLOCK_MONOTONIC, &start);
+> +		for (;;) {
+> +			if (READ_FROM_GUEST(vm, guest_received_irq[vcpu->id]))
+> +				break;
+> +
+> +			if (timespec_to_ns(timespec_elapsed(start)) > TIMEOUT_NS) {
+> +				printf("Timeout waiting for interrupt!\n");
+> +				printf("  vCPU: %d\n", vcpu->id);
+> +
+> +				TEST_FAIL("vCPU never received IRQ!\n");
+
+Which vCPU?  What BDF+MSI?  Some of that is available in earlier messages, but
+failure messages should be standalone.
+
+> +			}
+> +		}
+> +
+> +		WRITE_TO_GUEST(vm, guest_received_irq[vcpu->id], false);
+> +	}
+> +
+> +	WRITE_TO_GUEST(vm, done, true);
+> +
+> +	for (i = 0; i < nr_vcpus; i++) {
+
+Unnecessary curly braces.
+
+> +		pthread_join(vcpu_threads[i], NULL);
+> +	}
+> +
+> +	printf("Host interrupts handled:\n");
+> +	printf("  IRQ-%d: %lu\n", irq, get_irq_count(irq) - irq_count);
+> +	printf("  Posted-interrupt notification events: %lu\n",
+> +	       get_irq_count_by_name("PIN:") - pin_count);
+> +	printf("  Posted-interrupt wakeup events: %lu\n",
+> +	       get_irq_count_by_name("PIW:") - piw_count);
+> +
+> +	vfio_pci_device_cleanup(device);
+> +	iommu_cleanup(iommu);
+> +
+> +	return 0;
+> +}
+> -- 
+> 2.53.0.1118.gaef5881109-goog
 > 
-> > > This test only supports x86. Testing physical device interrupts (-d argument) is
-> > > only supported for Intel because there are no VFIO selftest drivers for AMD
-> > > devices.
-> > 
-> > This needs to be expressed in code and human readable error messages to the user.
-> > I already knew the basic of what the VFIO selfests are doing, and it still took
-> > me 5+ minutes to find the DSA driver and probing logic.
-> > 
-> > Concretely, this code needs to be part of the standard vfio selftests APIs:
-> > 
-> > 	device = vfio_pci_device_init(device_bdf, iommu);
-> > 
-> > 	has_driver = !!device->driver.ops;
-> > 
-> > E.g. have vfio_pci_device_init() explicitly return an error (or NULL) if it can't
-> > init the device driver.
-> 
-> No. Not every VFIO selftest or user of libvfio needs a driver. A driver
-> is only needed in tests that want to use the driver, i.e. want to call
-> one of the very obviously named functions:
-> 
->  - vfio_pci_driver_send_msi()
->  - vfio_pci_driver_memcpy()
->  - etc.
-> 
-> Requiring a driver for vfio_pci_device_init() to return non-NULL would
-> significantly reduce our ability to test VFIO on different platforms and
-> environments.
-
-Ah, sorry.  I was speed reading and missed that some (most?) tests don't require
-a driver.  Scratch the "make it unconditional", but there still needs to be an
-API to up-level binding to a driver.  KVM selftests shouldn't have to manually
-check for that.
-
-> > The fixtures in vfio_pci_driver_test.c already blindly assume success, so you
-> > might not need to do much beyond changing main() in that file.
-> 
-> I don't follow. What is the issue with vfio_pci_driver_test.?
-
-What I was trying to say is that if vfio_pci_device_init() were to unconditionally
-require a driver, then vfio_pci_driver_test() should Just Work.  But that doesn't
-make a whole lot of sense given the above.  Though it could use the new API that
-checks for a driver.
-
-> > And then, also as a vfio_pci_device_xxx() API, add a helper to print out what
-> > devices are supported, e.g. so that KVM selftests can do something like:
-> 
-> Agree this would be nice to have. Is this a blocker for this series?
-
-Yes.  KVM selftests need to assert there's a driver before trying to proceed.
-
-> > struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
-> > {
-> > 	struct vfio_pci_device *device;
-> > 	struct iommu *iommu;
-> > 
-> > 	iommu = iommu_init(default_iommu_mode);
-> > 
-> > 	device = vfio_pci_device_init(bdf, iommu);
-> > 	if (!device) {
-> > 		vfio_pci_device_print_drivers(stderr);
-> > 		TEST_FAIL("No driver found for BDF '%s'", bdf);
-> > 	}
-> > 	return device;
-> > }
-> > 
-> > Because as is, this requires way too much a priori knowledge and magic for
-> > upstream.  The user shouldn't have to dig through code just to understand what
-> > devices are supported.
-> >
-> > Ideally, VFIO selftests would also provide a script, utility, and/or helper to
-> > identify BDFs for devices it has drivers for.  In my experience, binding a device
-> > to VFIO is trivial.  Finding the device in the first place is more annoying.
-> 
-> Agree this would be nice to have. Is this a blocker for this series?
-
-Yes.  As I mentioned to Josh off-list, I'm not willing to accept a "we pinky-swear
-we'll make this stuff user friendly".  It's not that I don't trust you and Josh
-(and others), it's that for me, this level of user-friendly behavior isn't nice
-to have, it's mandatory for these tests to be usable upstream.
-
-Internally we can squeak by with barebones, unhelpful tests, because the run
-commands are often hardcoded somewhere and there is piles of documentation elsewhere.
-But for upstream, none of that holds true.
-
-If it were weeks of effort, I would be more open to treating this as nice to have,
-but AFAICT writing the code should be less than a days worth of work.
