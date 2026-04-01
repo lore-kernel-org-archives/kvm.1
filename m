@@ -1,308 +1,290 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010009.outbound.protection.outlook.com [52.101.84.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9346A477E43
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060312; cv=none; b=Z0NcdcNve2CNCryklqLTlMNs66XZfQTrKEKyfrEeIWR+ionBEl9hHogXVwMnUlt96uOjUqltZfSsH6UCke4Wx/7WFiQfMQFMkwBqWycr4DwEEnwoSiFFckcSc0s7Q9kuXxFIm6EyhcvtEcRv0HkapxT9TBXro0BXNR8Punsf5lY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060312; c=relaxed/simple;
-	bh=FqCaRPdFgCc/to3y1/YRgTf4frnYwdgRGfmFaq8NqAo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fko9FcrSjFS6jvLd7yeFt8mSzKk5DOs9yvX2xGH14oPCvvC7EYWk5bOD7C6YjqNuPTQ/wOTKNsJfUbBRcU+wCZAezdd29UN0msmq8ByPT/hr8SdpiuPyPTp6x0pofb21QfgRKo5RSYoxgEkDzvj3ZqPkgae1/eyfhsYF/mt3b6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S2PoUS5I; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CD427E05F
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.9
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775060589; cv=fail; b=By0wSQo184RURiuZh98rbGFzE+t6X1HFWK7qSTVVNJohMWDiPT11km8EnkMzk39YZHQD5eMrBDUdSlEcNAjNmy14DUwIXvoJpcaVvNTx0rObuwlpVhww7kdvT6ANugk0eR36KcJYwq5rrE3bvWYb/Pni4m0rdrDIKiQ/TsJhtjY=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775060589; c=relaxed/simple;
+	bh=5l/g/0CfSRc1e7WOW9M9XSTkZ7SjTd9hmWN57npOxb4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=No94ct/E21WWBjNwtSsxbFPJrNLp3Sm/tqsW0KQWOALpLpzuRbEfT69jL8OH+qJPvv04M1f1CL6C7aI2frv51ITmanobzy8+ACHLp/GFbByVsxXPsmlC/ObppSNr5M8Ce1xZEWTY4I+nK0MOkxVpwL9zwutKPxCHEmNYtQgnFRE=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qTTEsHU1; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qTTEsHU1; arc=fail smtp.client-ip=52.101.84.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S2PoUS5I"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35d93a8149bso1429399a91.0
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 09:18:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775060305; x=1775665105; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8oep0xPVTL/A3/itmiVgy18Jj282Zsdu9CLfS6+cGQQ=;
-        b=S2PoUS5I6bwDonKmt8yv0vGCS+m6IaMU69PEW4iMBoOJjVvrzq1AILPBIJpB9ZcpiR
-         Z+SLTJ6uJTgyejVS83tquvoC6umL25ntVoNsXQZ0JnN1bsaamge+tYhhhYFGh3bwSnJN
-         gRWEHYKtXVI/vEEk8UYlJtCLXnWof6AW9LJ8oEot3qEyVpVIgQTaVhLsAx9UzgaGKTkB
-         IUEeSY8fRtOZ7kAJ+8u5mUCxY9ycreCWvzoxatmhvjaAeJr8ZsVCuVI6S5VRr5ERsmgL
-         b7MpwxPejWjEos74Pr2xg6L0ppKlf3chN51tXXNjGlSPinhHIDkNlNpkQNi6RpGsXtqp
-         TNlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775060305; x=1775665105;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8oep0xPVTL/A3/itmiVgy18Jj282Zsdu9CLfS6+cGQQ=;
-        b=YQ0FJ7luxDz7+gRbV42xR0CnzbcNj83louDAeJaHYkXdvmyKcnbrI9t/lf56b4d2wT
-         JWbqXnHiCi6mISgQVIP+vHi2BdKpJqfs0fAw4C5H8YfAQ6zvoJzJtHqEJU2KY7wwjGjx
-         qPHD0g6LRm+7KXLG2FfbMjg2TRfpYb5bSG0xF7HEuAusuXcbSHlTY9kmWwIBRKhn4Qca
-         o1YyA3b3kB3p2qcDuknpFob1rWGDQiu21g89zvIY+cwNvmZx7skNOjX0zUWTt2g8kp+k
-         BmJfIJlZ5V0Gu0RpyI6R1+2wR//BHbg1aD4jYe0TTCWae56A2E/jAhHPddvYpdWMUke1
-         J4uw==
-X-Forwarded-Encrypted: i=1; AJvYcCXucTWaHptSeWumioPP8X1Byd3HnRYGOxcf1TKTDW1Qq7pbK96zQy2jEbpcS2U8iVxR+mg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg8D6T9lmcmrAKvKszmy1fD5V89KT7VlANZvnUFOSnUdmOchmo
-	+32kKFc/Eh20e6MWpI8HXN2vOBrkjkW3n0co9u+fUVUAFc1hyWneMP2j4UOcs9Uk+6IWXXfdf2n
-	1HkhovQ==
-X-Received: from pjbnp13.prod.google.com ([2002:a17:90b:4c4d:b0:35d:97d0:f6eb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f0e:b0:35b:e4f0:f9b4
- with SMTP id 98e67ed59e1d1-35dc6f660e3mr3232235a91.10.1775060304380; Wed, 01
- Apr 2026 09:18:24 -0700 (PDT)
-Date: Wed, 1 Apr 2026 09:18:23 -0700
-In-Reply-To: <524fc5dd-e06b-4857-82e7-f0a969966bc9@amd.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qTTEsHU1";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qTTEsHU1"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=NbcY03Cgjh0O/TBlNEaWt56aPrf4aHk2PhO1tRP2KcpRALngyEzWpMgBNO9smH6VJQENaMEGBkTmPYvsa7ldZNirzeik0uYpBFnmWJCWqEa3lLbULSPLyOINSN1xXOL1Fr9nFHD13o64OlabLqyeqhbLQjGbitlyrECHn1ENhuVNK1d3gvPzm7y2eo935ZVr6W0yxf79MvlviPurivWDMfzCPN8yUd7bCF2YoM3ML6Ve1WdSLNmSYS/2bXhpmM+ktT2g0chyPzhU7wcEQ79+dZ8r7O9po4rdqhKYs2a2tq+k0QCrHPJEsr/vpAAqsPYTUnHCKA/S4ih14rDDhRIJrA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/IV5Af936hUwI51CMAETSccI5Fp94i9wAOweF0aeOhE=;
+ b=ArcSoV8Il6E6kvqO837njzrLMIx9Yx3h8+/hcz3c8IQsmVzViHu0l93RXWTOEb95o0dUai4gmhzWsXsGgmErAt3YqSt55Pv00VZqXeiHHz+749mk5oZoxwBh1gehX8nJtIoHIGd/nTBxMZs0tEcfBBA5pQ9WPAzFqOVkUze7/cGqMoGVyky7D5FKy7EYvjK7HL1vN115a5V29O01Dn25MMB6UNry4xNXShK+f/hacmNY1APuZOre9aqyn0ofLVV2fHO9R8M7MDIEI5QAUKqVLqLRKiU7fl56gJil0DTBgiDAwwBGahJ89v7G18+FEvgb99fm1vvfrlutLJucTP59BQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/IV5Af936hUwI51CMAETSccI5Fp94i9wAOweF0aeOhE=;
+ b=qTTEsHU1PuBQ3tzpXzZnt6NSz9XuIGdAlKng4+ModD8LK+uXZhtOiKBFPiVsU7nLFJhrROwWZZcQ4t8d/lufDPyQrS5gKnAfyR6z+qIAKX7erDEIiQAaVjwBgo7uuYuQwWL3Rpd71K6tEEvzBYxoKNUE1qcHoYh0SmYwS7IihSw=
+Received: from DU2PR04CA0328.eurprd04.prod.outlook.com (2603:10a6:10:2b5::33)
+ by PAWPR08MB8912.eurprd08.prod.outlook.com (2603:10a6:102:33d::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Wed, 1 Apr
+ 2026 16:23:01 +0000
+Received: from DB5PEPF00014B95.eurprd02.prod.outlook.com
+ (2603:10a6:10:2b5:cafe::79) by DU2PR04CA0328.outlook.office365.com
+ (2603:10a6:10:2b5::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
+ 1 Apr 2026 16:23:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB5PEPF00014B95.mail.protection.outlook.com (10.167.8.233) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
+ via Frontend Transport; Wed, 1 Apr 2026 16:23:01 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ds7XSQiZWzwbXLu6PU4m+S48F/dG1MjENBzFqwYfIlDBQofdirOgsaaSyR0ZI3Q19T4fr5ydoAGTywf2/ewH/jfit5OsCLjtbZC5KYeOIv2ctFHpw3mU42G1lpTvo0EslSpyj+JiO3mmX/aOXU64Y1HAJkJs/mi0xV1vwotiptng3SEiEjMXk0w3mvuNVrng9WDW5YGOvhjEWQgOJT9q7JNC3L3rS3VCWaOyo2n/xmyOAz97OoTSkLWGBqi7aO/aPinlLa0mif96jsKHcQeh58Z/saYz/j6E/zaA5WgeQJRWY8Nw3C3AXjN76Xkyq5ICslWSF1rOUg0BFs9zacX1OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/IV5Af936hUwI51CMAETSccI5Fp94i9wAOweF0aeOhE=;
+ b=DYF3gCi/LEzoyzk7V5BLgNu6WUP6aKJ9SPd6pWt02osFKMkh7t/zpDdhFRl3sG5UtFpmGsdnZVoXqcNGAesgmX5Pgcfw+SkPnhHSHdjJLDF656Heviz3jHujv3hZgUfroOvw4vdKe/qLdtNEojON6tE7bF8rUSY1TZjWpmn3GrvQBtCLjGO8giBY6PWZfWefYLClp8SSgA9XwHA/aoDwVhzQiASbvW57RcyTG+x7RVkxVPyeFR7mOGhhicelc7zHcsE7W/y236d59wY46SnzB7olkm3Fe8KZ3ifbTSY1p/FMK5Z02dUime7UoxLDzSJRCnIQJF/PWIr/dE2KoMM/xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/IV5Af936hUwI51CMAETSccI5Fp94i9wAOweF0aeOhE=;
+ b=qTTEsHU1PuBQ3tzpXzZnt6NSz9XuIGdAlKng4+ModD8LK+uXZhtOiKBFPiVsU7nLFJhrROwWZZcQ4t8d/lufDPyQrS5gKnAfyR6z+qIAKX7erDEIiQAaVjwBgo7uuYuQwWL3Rpd71K6tEEvzBYxoKNUE1qcHoYh0SmYwS7IihSw=
+Received: from AS4PR08MB8241.eurprd08.prod.outlook.com (2603:10a6:20b:504::10)
+ by VI0PR08MB11646.eurprd08.prod.outlook.com (2603:10a6:800:308::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Wed, 1 Apr
+ 2026 16:21:58 +0000
+Received: from AS4PR08MB8241.eurprd08.prod.outlook.com
+ ([fe80::dde1:493a:db27:de27]) by AS4PR08MB8241.eurprd08.prod.outlook.com
+ ([fe80::dde1:493a:db27:de27%6]) with mapi id 15.20.9769.014; Wed, 1 Apr 2026
+ 16:21:57 +0000
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
+To: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+CC: nd <nd@arm.com>, "maz@kernel.org" <maz@kernel.org>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, Joey Gouly
+	<Joey.Gouly@arm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "broonie@kernel.org"
+	<broonie@kernel.org>
+Subject: [PATCH] KVM: arm64: vgic-v5: Fold PPI state for all exposed PPIs
+Thread-Topic: [PATCH] KVM: arm64: vgic-v5: Fold PPI state for all exposed PPIs
+Thread-Index: AQHcwfOpGfOoVj9MZkKxsX8ZIufonQ==
+Date: Wed, 1 Apr 2026 16:21:57 +0000
+Message-ID: <20260401162152.932243-1-sascha.bischoff@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.34.1
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic:
+	AS4PR08MB8241:EE_|VI0PR08MB11646:EE_|DB5PEPF00014B95:EE_|PAWPR08MB8912:EE_
+X-MS-Office365-Filtering-Correlation-Id: c25339d8-b0b3-4890-0a92-08de900af1f6
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|376014|1800799024|366016|38070700021|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ VfFzdN9JbMaZc1q+gXrRZaE7J3B96HhVVTPPO5Lsy/tq92d9T6CGehkdpmWYu6o0DcL2euyzTVKWNzIIbvd8lHFOk9SoMRVaZU9iDEq4XotHpyBiTdzsdttmqXXOpM4hMOZD2hcZUMzjiImRTEwIZ0ZzS2xVUkUo/MrC1QifYQbybQzypMIvozGWq5lq6FzVOrqJ4M4U+ioQgFbtb97GsULOdUy3VrokMWBq69iexn2r6iRnL2bVIF0Y3H343NecH/IZlPL9hbSRnW3pzKhF+/AMzeffQupdDKtobgcjTpMsE01ZnT/TSOL+buhRMtgkmbbjQ60VoHykuNecvGpe383aUcrI/f28OQldBcPSR6dBAcOcB8TOD83BzpnIE0W+mxNq7g7iEZjSSlLgTY13SjWULKS+fryngYuNCWDrc9XNCe0xFg9FI5XCfB9/y1H175BlTJkxbi0DEi4KrFSMa041UHvyvDUU3HZ3Y3UijZiQpVm9gtSOZ3nU4hHtpfl4+EiL7TmLCaffbekZmy3/qScXwtqYVAb9yevr04C9pZZFzoAO1rDL9BzMjcS2GipGq4qxmZNg/rwbxxmS70XTvq95szIir6FSZBSLF8u5nYyaD2O5aGZU4gOEG7eFrsVUP/cEq505z1ZuTMyPqP6uQzSym+RNShmdFVOW5GpB2OeW0x5jHhAniX9gDaw0tpR9qVBElebpSo6obeG1DYpawzXeoGzFOvf5fXp5UeFPM8OuU1A7sOHUd39F+n/wIaZVTJhuRfVw3TJpuJh1fsjMXWQ/ea8WwjE2ZQowjkg9+bQ=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR08MB8241.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <c820e242-9f3a-4210-b414-19d11b022404@amd.com> <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
- <2723ab8b-8fad-469d-9ef2-918358953b16@amd.com> <c5f86b40-7330-4ff3-a2df-90729d1c9fef@amd.com>
- <524fc5dd-e06b-4857-82e7-f0a969966bc9@amd.com>
-Message-ID: <ac1FT4G_VpFHRIWl@google.com>
-Subject: Re: SEV-ES guest shutdown: linux-next regression with QEMU 10.2.2; smp>1
-From: Sean Christopherson <seanjc@google.com>
-To: Srikanth Aithal <sraithal@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	open list <linux-kernel@vger.kernel.org>, KVM <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked:
+ IxqDr40YLB0l6IxYT6BDc7W83jK0TQZHqyaHO8yncE2c99hw6Q8rrM7sBtc5ifL8BH95TI2NfQ6S1NYKbD3wTX3le7UWtTpMLyNvE28oxD9j1SLEfENqfTQgn0Z8p5guI05XmrqYYPWC9n4YF2qwm6W/v+G2Mv7R36bioBOLWbE/wOhFmWPiQNPcaQM3i1Vdwkl9f6jzi3dHqq6/oTvIb6tgW0gKdoz9/vUZzxJgPE1eP1f8r/+JEvKNNcpKcBY7MFRoGnrOVt0Sp8i/0ICuZqVTcMo863So3+acRgjcAgxu8AmRvdAdk74p6SOagnz4RRPEPu1KY6qeAz4J6RChBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11646
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB5PEPF00014B95.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	d7c8b113-c6e1-4570-71db-08de900acbee
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|14060799003|36860700016|35042699022|376014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	eP8M7o9vFpzW7CR1ZWMfCouJXKQ4CLgceoAGo0vyfbEBPhfCw3IE62ej1ADZMoxKsr0xOpKQHAJ0hq7zT1+NLnsRnijxSMv3o0icJzQfNWK0riOcIdhEKX5b8yNGL/OmvqZpHHvhDdY8IYHU6VGk4MGbQ7EVwweitTEFDhF/V4eOPVVaYp1ICwmQh/bEh7ujln3GMvueV4MWuUCZCV14+rR3GVw3d/WzPQAq2tw+gUpYzfbg7v5ATVr6dbmzjATePu3FDqD2zM8EN32hjXws17mH570S6B1UxYiQdbo3jENlArBm1yMABVQ0Q2qTG2QmYTaxVkPASUx9OXB0jEbu6S5T5xdZayyn0m9rNJkOlaCoMU8igHFCmuzTN7NGAGO2VBONx9oB0Y+SS2gOvXpKAm2ZqXfc0i8U47JFFmISQibJ7pgskX1REa6amfNTc/pS4ZMVwIm8aJ2Vw31LCKjLaucQ0rNbNeTnql5YGECZr5mZxXON4W+UKxfNwhYXvpEmMXj481n4wkSYxvRRta4rMemvSIVGyx/NKhVAx3igXRojzmcvqVdsu4ihzlANfGRklviswSxbJbJMQoW1irQkbtLfWisgCjcCecga+8lFjl9RnRUNPORHLwHiFJcH3mmWW1ZxFx0WRR0UXAnclVDr59a7sCwV5PCFJfJDP181UEILx/2D9pu42U39Sl+tvaUmmEPvmmBUdzlX64T/PTxiNIhARyB35uqHxVU8pbSz6JomSehbcVS6msAtzsPhMkVRu4B75lFjU7G4+54ZGMkeUg==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(14060799003)(36860700016)(35042699022)(376014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	PhhXLQTxgXBHJ1WDjmMv8tASEEqfoLUTrPg8omQmxDGnKncWozsTUwgU7ZQOyQrmPOHnOHd/k8x7kxZ+d4gCAauAXmMZYqH8umuoX28sUk2wsXptqLkeIQ2GRGjQouPuyUgJTBAn2acFMxVpavzAzTnuzLtFaZfvDCH463z9dqhxVC3iq0WH3IuZJ7vyCXdDN3mbrO9dh3xYk9usgY58wxluIDrKnRVEVSYNiYN0KOTSqX9D6vLfSLx4MteTYAVzhlD2IxOfgoDHYzSqQ7E3sZIPphN7906kneR6oZWYW5ak6clHyV2OB5BVCI+UcYeUjKSSq1EC/iIu+oZc0B+DBuWzulg405WzxUE3BMws7s16CSnMD1w3yrlMbeBehtzeF3KQCD6BFZcUOCSQHILxzyKNNI/x+8upvDMazkEJ7LgYZmz+4IRZpGTO4gbk0uQz
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 16:23:01.5464
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c25339d8-b0b3-4890-0a92-08de900af1f6
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B95.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB8912
 
-On Wed, Apr 01, 2026, Srikanth Aithal wrote:
-> On 4/1/2026 6:23 PM, Tom Lendacky wrote:
-> > On 4/1/26 06:24, Aithal, Srikanth wrote:
-> > > Hello Tom,
-> > >=20
-> > >=20
-> > > On 3/23/2026 6:40 PM, Tom Lendacky wrote:
-> > > > On 3/20/26 11:08, Aithal, Srikanth wrote:
-> > > > > Hello,
-> > > > >=20
-> > > > > I am hitting a failure when shutting down a SEV-ES guest (smp>1) =
-on
-> > > > > recent linux-next, and narrowed it down with bisection on the hos=
-t
-> > > > > kernel. The issue appears with more than one vCPU (e.g. -smp 2); =
-with -
-> > > > > smp 1 shutdown completes normally in my tests. The same guest shu=
-tdown
-> > > > > path works with an older host kernel (<next-20260304) and is also
-> > > > > avoided with current QEMU master or by cherry-picking a specific =
-QEMU
-> > > > > commit onto v10.2.2.
-> > > > >=20
-> > > > > Environment:
-> > > > > Host kernel: linux-next, tag next-20260319 [1] (also observed sta=
-rting
-> > > > > from next-20260304).
-> > > > > Guest: SEV-ES Linux guest; -smp 2 (or more) reproduces the issue;=
- -smp 1
-> > > > > does not in my testing.
-> > > > > Hypervisor / QEMU: Initially QEMU v10.2.2 (stable). Later tested =
-QEMU
-> > > > > master at 8e711856d763 [2].
-> > > > >=20
-> > > > > Details on issue:
-> > > > >=20
-> > > > > After SEV-ES guest shutdown , the serial log shows a register dum=
-p
-> > > > > (example below) .
-> > > > >=20
-> > > > > [=C2=A0 =C2=A012.613383] reboot: Power down^M
-> > > > > EAX=3D00000000 EBX=3D00000000 ECX=3D00000000 EDX=3D00a00f11
-> > > > > ESI=3D00000000 EDI=3D00000000 EBP=3D00000000 ESP=3D00000000
-> > > > > EIP=3D0000b004 EFL=3D00000002 [-------] CPL=3D0 II=3D0 A20=3D1 SM=
-M=3D0 HLT=3D1
-> > > > > ES =3D0000 00000000 0000ffff 00009300
-> > > > > CS =3Df000 00800000 0000ffff 00009b00
-> > > > > SS =3D0000 00000000 0000ffff 00009300
-> > > > > DS =3D0000 00000000 0000ffff 00009300
-> > > > > FS =3D0000 00000000 0000ffff 00009300
-> > > > > GS =3D0000 00000000 0000ffff 00009300
-> > > > > LDT=3D0000 00000000 0000ffff 00008200
-> > > > > TR =3D0000 00000000 0000ffff 00008b00
-> > > > > GDT=3D=C2=A0 =C2=A0 =C2=A000000000 0000ffff
-> > > > > IDT=3D=C2=A0 =C2=A0 =C2=A000000000 0000ffff
-> > > > > CR0=3D60000010 CR2=3D00000000 CR3=3D00000000 CR4=3D00000000
-> > > > > DR0=3D0000000000000000 DR1=3D0000000000000000 DR2=3D0000000000000=
-000
-> > > > > DR3=3D0000000000000000
-> > > > > DR6=3D00000000ffff0ff0 DR7=3D0000000000000400
-> > > > > EFER=3D0000000000000000
-> > > > > Code=3Db0 96 b5 61 ca ef 3f 51 00 c3 65 51 19 77 b1 e0 e5 e2 91 b=
-8 <0c> 5d
-> > > > > c7 fc 59 bc 2b 6f 90 89 44 23 ec ec 2f 62 fd e0 8f d5 c7 31 24 70=
- e2 7d
-> > > > > c6 ee 00 00
-> > > > > -> Hangs here
-> > > > >=20
-> > > > > Host kernel bisect (with QEMU v10.2.2) led to:
-> > > > >=20
-> > > > > Good (no crash on guest shutdown):
-> > > > > 32d76cdfa1222c88262da5b12e0b2bba444c96fa
-> > > > > KVM: SVM: Move core EFER.SVME enablement to kernel (local build t=
-agged
-> > > > > 7.0.0-rc232d76cdfa1222 during testing.)
-> > > > >=20
-> > > > > Bad (crash reproduced):
-> > > > > 428afac5a8ea9c55bb8408e02dc92b8f85bf5f30
-> > > > > KVM: x86: Move bulk of emergency virtualization logic to virt sub=
-system
-> > > >=20
-> > > > Any chance you have the enable_virt_at_load module option set to fa=
-lse?
-> > >=20
-> > > No, it is set to Y.
-> > > # cat /sys/module/kvm/parameters/enable_virt_at_load
-> > > Y
-> > >=20
-> > >=20
-> > > >=20
-> > > > >=20
-> > > > > So the first bad commit in my host kernel bisect was 428afac5a8ea=
-. The
-> > > > > commit prior [32d76cdfa122] did not have this issue.
-> > > > >=20
-> > > > > Later I used QEMU master and with same linux-next next-20260319 a=
-s host,
-> > > > > it did not reproduce the shutdown issue .. that was using QEMU ma=
-ster
-> > > > > [2].
-> > > > >=20
-> > > > > QEMU master contains 56d89db2cfd82c53439778fbf39294bf35194dba (ta=
-rget/
-> > > > > i386: convert SEV-ES termination requests to guest panic events).
-> > > > > Cherry-picking that commit onto QEMU v10.2.2 resolved or at least
-> > > > > avoided the shutdown crash in my setup.
-> > > >=20
-> > > > Well, if it is converting a guest termination request, that is stil=
-l not
-> > > > good. It should be a clean shutdown.
-> > > >=20
-> > > > >=20
-> > > > >=20
-> > > > > Questions:
-> > > > >=20
-> > > > > KVM: Is the interaction/issue with older QEMU (e.g. v10.2.2) expe=
-cted
-> > > > > here, or is there anything that should be adjusted or documented
-> > > > > following 428afac5a8ea, like for multi-vCPU SEV-ES guests?
-> > > > > QEMU: Would a stable backport of 56d89db2cfd8 to 10.2.x (or equiv=
-alent
-> > > > > handling of SEV-ES termination) be appropriate for users staying =
-on
-> > > > > stable QEMU while moving to newer host kernels?
-> > > >=20
-> > > > That wouldn't actually solve the issue, it is just a much more user
-> > > > friendly error message. Is there a termination event in the host dm=
-esg
-> > > > log?
-> > >=20
-> > >=20
-> > > The guest shutdown proceeds normally until:
-> > > [ OK ] Reached target poweroff.target - System Power Off.
-> > > [ 9.918849] reboot: Power down
-> > >=20
-> > > At that point the serial console freezes with the register dump below
-> > > (EIP=3D0000b004, HLT=3D1, EFER=3D0, etc.).
-> > >=20
-> > > [=C2=A0 OK=C2=A0 ] Finished systemd-poweroff.service - System Power O=
-ff.
-> > > [=C2=A0 OK=C2=A0 ] Reached target poweroff.target - System Power Off.
-> > > [=C2=A0=C2=A0 10.029330] reboot: Power down
-> > > EAX=3D00000000 EBX=3D00000000 ECX=3D00000000 EDX=3D00a00f11
-> > > ESI=3D00000000 EDI=3D00000000 EBP=3D00000000 ESP=3D00000000
-> > > EIP=3D0000b004 EFL=3D00000002 [-------] CPL=3D0 II=3D0 A20=3D1 SMM=3D=
-0 HLT=3D1
-> > > ES =3D0000 00000000 0000ffff 00009300
-> > > CS =3Df000 00800000 0000ffff 00009b00
-> > > SS =3D0000 00000000 0000ffff 00009300
-> > > DS =3D0000 00000000 0000ffff 00009300
-> > > FS =3D0000 00000000 0000ffff 00009300
-> > > GS =3D0000 00000000 0000ffff 00009300
-> > > LDT=3D0000 00000000 0000ffff 00008200
-> > > TR =3D0000 00000000 0000ffff 00008b00
-> > > GDT=3D=C2=A0=C2=A0=C2=A0=C2=A0 00000000 0000ffff
-> > > IDT=3D=C2=A0=C2=A0=C2=A0=C2=A0 00000000 0000ffff
-> > > CR0=3D60000010 CR2=3D00000000 CR3=3D00000000 CR4=3D00000000
-> > > DR0=3D0000000000000000 DR1=3D0000000000000000 DR2=3D0000000000000000
-> > > DR3=3D0000000000000000
-> > > DR6=3D00000000ffff0ff0 DR7=3D0000000000000400
-> > > EFER=3D0000000000000000
-> > > Code=3D98 59 0c db 72 6c 94 71 3d a6 36 32 49 a8 08 22 bd d7 8c bb <4=
-c> 3c
-> > > d9 bd 90 b5 2e a0 69 26 53 df aa 4c bb fe 5a d9 b6 ee 7b 45 02 2e cf =
-d9
-> > > 60 48 00 00
-> > >=20
-> > >=20
-> > >=20
-> > > QEMU does **not** exit on its own =E2=80=94 it appears stuck.
-> > >=20
-> > > Only after I press Ctrl+C do I see in host dmesg:
-> > > kvm_amd: SEV-ES guest requested termination: 0x0:0x0
-> >=20
-> > So we would have to see what is triggering that termination request.
+GICv5 supports up to 128 PPIs, which would introduce a large amount of
+overhead if all of them were actively tracked. Rather than keeping
+track of all 128 potential PPIs, we instead only consider the set of
+architected PPIs (the first 64). Moreover, we further reduce that set
+by only exposing a subset of the PPIs to a guest. In practice, this
+means that only 4 PPIs are typically exposed to a guest - the SW_PPI,
+PMUIRQ, and the timers.
 
-IIUC, the termination request only occurs after CTRL+C.  If that's correct,=
- it's
-a red herring, and the real question is why a graceful shutdown hangs.
+When folding the PPI state, changed bits in the active or pending were
+used to choose which state to sync back. However, this breaks badly
+for Edge interrupts when exiting the guest before it has consumed the
+edge. There is no change in pending state detected, and the edge is
+lost forever.
 
-> > We can probably instrument a guest kernel to get some more info.
->=20
-> Sure, I can apply any debug patch and provide the debug logs.
->=20
-> Note: I'm heading out on PTO until next Wednesday (April 8th). I won't be
-> able to gather additional debug logs until I return.
->=20
-> >=20
-> > >=20
-> > > I also set `kvm_amd.dump_invalid_vmcb=3D1` before reproducing, but it
-> > > produced no additional output.
-> > >=20
-> > > This issue is still present on latest linux-next next-20260331 [https=
-://
-> > > git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?
-> > > h=3Dnext-20260331, tag name=C2=A0=C2=A0=C2=A0 next-20260331
-> > > (e5da3eef8dadab4e98b228725ca8948edd9d601f)]
-> >=20
-> > Is it only with linux-next? Which would point to a kernel change vs a
-> > Qemu change.
->=20
-> Yes, it is specific to linux-next (starting from next-20260304, bisected =
-to
-> 428afac5a8ea "KVM: x86: Move bulk of emergency virtualization logic to vi=
-rt
-> subsystem").
->=20
-> - With older host kernels (< next-20260304) + QEMU 10.2.2 =E2=86=92 clean=
- shutdown
-> (no hang, no termination message, QEMU exits normally).
-> - With linux-next (next-20260331) + QEMU 10.2.2 =E2=86=92 hang at the reg=
-ister dump
-> after "reboot: Power down"; only Ctrl+C triggers the "SEV-ES guest reques=
-ted
-> termination: 0x0:0x0" message.
-> - With linux-next + QEMU master (or 10.2.2 + cherry-pick of 56d89db2cfd8)=
- =E2=86=92
-> no hang (the termination is converted to a guest panic instead).
+Given the reduced set of PPIs exposed to the guest, and the issues
+around tracking the edges, drop the tracking of changed state, and
+instead iterate over the limited subset of PPIs exposed to the guest
+directly.
 
-What guest kernel are you using?  Bisecting to that commit for just the *ho=
-st*
-kernel is baffling.  I could see it preventing KVM from loading or somethin=
-g, but
-it should be completely out of scope with respect to guest activity.
+This change drops the second copy of the PPI pending state used for
+detecting edges in the pending state, and reworks
+vgic_v5_fold_ppi_state() to iterate over the VM's PPI mask instead.
 
-How are you initiating shutdown withing the guest?  What's the full QEMU co=
-mmand
-line?
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+---
+ arch/arm64/include/asm/kvm_host.h |  9 +--------
+ arch/arm64/kvm/hyp/vgic-v5-sr.c   |  6 +++---
+ arch/arm64/kvm/vgic/vgic-v5.c     | 28 +++++-----------------------
+ 3 files changed, 9 insertions(+), 34 deletions(-)
 
-Can you also provide the OVMF image?  E.g. in case the hang occurs in EFI r=
-untime
-services or something.
-
-I want to get this sorted out before the merge window and so would prefer n=
-ot to
-delay root causing this by a week or more. =20
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm=
+_host.h
+index a7dc0aac3b934..729bd32207fa6 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -803,14 +803,7 @@ struct kvm_host_data {
+=20
+ 	/* PPI state tracking for GICv5-based guests */
+ 	struct {
+-		/*
+-		 * For tracking the PPI pending state, we need both the entry
+-		 * state and exit state to correctly detect edges as it is
+-		 * possible that an interrupt has been injected in software in
+-		 * the interim.
+-		 */
+-		DECLARE_BITMAP(pendr_entry, VGIC_V5_NR_PRIVATE_IRQS);
+-		DECLARE_BITMAP(pendr_exit, VGIC_V5_NR_PRIVATE_IRQS);
++		DECLARE_BITMAP(pendr, VGIC_V5_NR_PRIVATE_IRQS);
+=20
+ 		/* The saved state of the regs when leaving the guest */
+ 		DECLARE_BITMAP(activer_exit, VGIC_V5_NR_PRIVATE_IRQS);
+diff --git a/arch/arm64/kvm/hyp/vgic-v5-sr.c b/arch/arm64/kvm/hyp/vgic-v5-s=
+r.c
+index 2c4304ffa9f33..47e6bcd437029 100644
+--- a/arch/arm64/kvm/hyp/vgic-v5-sr.c
++++ b/arch/arm64/kvm/hyp/vgic-v5-sr.c
+@@ -37,7 +37,7 @@ void __vgic_v5_save_ppi_state(struct vgic_v5_cpu_if *cpu_=
+if)
+=20
+ 	bitmap_write(host_data_ptr(vgic_v5_ppi_state)->activer_exit,
+ 		     read_sysreg_s(SYS_ICH_PPI_ACTIVER0_EL2), 0, 64);
+-	bitmap_write(host_data_ptr(vgic_v5_ppi_state)->pendr_exit,
++	bitmap_write(host_data_ptr(vgic_v5_ppi_state)->pendr,
+ 		     read_sysreg_s(SYS_ICH_PPI_PENDR0_EL2), 0, 64);
+=20
+ 	cpu_if->vgic_ppi_priorityr[0] =3D read_sysreg_s(SYS_ICH_PPI_PRIORITYR0_EL=
+2);
+@@ -52,7 +52,7 @@ void __vgic_v5_save_ppi_state(struct vgic_v5_cpu_if *cpu_=
+if)
+ 	if (VGIC_V5_NR_PRIVATE_IRQS =3D=3D 128) {
+ 		bitmap_write(host_data_ptr(vgic_v5_ppi_state)->activer_exit,
+ 			     read_sysreg_s(SYS_ICH_PPI_ACTIVER1_EL2), 64, 64);
+-		bitmap_write(host_data_ptr(vgic_v5_ppi_state)->pendr_exit,
++		bitmap_write(host_data_ptr(vgic_v5_ppi_state)->pendr,
+ 			     read_sysreg_s(SYS_ICH_PPI_PENDR1_EL2), 64, 64);
+=20
+ 		cpu_if->vgic_ppi_priorityr[8] =3D read_sysreg_s(SYS_ICH_PPI_PRIORITYR8_E=
+L2);
+@@ -87,7 +87,7 @@ void __vgic_v5_restore_ppi_state(struct vgic_v5_cpu_if *c=
+pu_if)
+ 		       SYS_ICH_PPI_ENABLER0_EL2);
+=20
+ 	/* Update the pending state of the NON-DVI'd PPIs, only */
+-	bitmap_andnot(pendr, host_data_ptr(vgic_v5_ppi_state)->pendr_entry,
++	bitmap_andnot(pendr, host_data_ptr(vgic_v5_ppi_state)->pendr,
+ 		      cpu_if->vgic_ppi_dvir, VGIC_V5_NR_PRIVATE_IRQS);
+ 	write_sysreg_s(bitmap_read(pendr, 0, 64), SYS_ICH_PPI_PENDR0_EL2);
+=20
+diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+index 8680a8354db9d..fdd39ea7f83ec 100644
+--- a/arch/arm64/kvm/vgic/vgic-v5.c
++++ b/arch/arm64/kvm/vgic/vgic-v5.c
+@@ -385,24 +385,14 @@ bool vgic_v5_has_pending_ppi(struct kvm_vcpu *vcpu)
+ void vgic_v5_fold_ppi_state(struct kvm_vcpu *vcpu)
+ {
+ 	struct vgic_v5_cpu_if *cpu_if =3D &vcpu->arch.vgic_cpu.vgic_v5;
+-	DECLARE_BITMAP(changed_active, VGIC_V5_NR_PRIVATE_IRQS);
+-	DECLARE_BITMAP(changed_pending, VGIC_V5_NR_PRIVATE_IRQS);
+-	DECLARE_BITMAP(changed_bits, VGIC_V5_NR_PRIVATE_IRQS);
+-	unsigned long *activer, *pendr_entry, *pendr;
++	unsigned long *activer, *pendr;
+ 	int i;
+=20
+ 	activer =3D host_data_ptr(vgic_v5_ppi_state)->activer_exit;
+-	pendr_entry =3D host_data_ptr(vgic_v5_ppi_state)->pendr_entry;
+-	pendr =3D host_data_ptr(vgic_v5_ppi_state)->pendr_exit;
++	pendr =3D host_data_ptr(vgic_v5_ppi_state)->pendr;
+=20
+-	bitmap_xor(changed_active, cpu_if->vgic_ppi_activer, activer,
+-		   VGIC_V5_NR_PRIVATE_IRQS);
+-	bitmap_xor(changed_pending, pendr_entry, pendr,
+-		   VGIC_V5_NR_PRIVATE_IRQS);
+-	bitmap_or(changed_bits, changed_active, changed_pending,
+-		  VGIC_V5_NR_PRIVATE_IRQS);
+-
+-	for_each_set_bit(i, changed_bits, VGIC_V5_NR_PRIVATE_IRQS) {
++	for_each_set_bit(i, vcpu->kvm->arch.vgic.gicv5_vm.vgic_ppi_mask,
++			 VGIC_V5_NR_PRIVATE_IRQS) {
+ 		u32 intid =3D vgic_v5_make_ppi(i);
+ 		struct vgic_irq *irq;
+=20
+@@ -462,15 +452,7 @@ void vgic_v5_flush_ppi_state(struct kvm_vcpu *vcpu)
+ 	 * incoming changes are merged with the outgoing changes on the return
+ 	 * path.
+ 	 */
+-	bitmap_copy(host_data_ptr(vgic_v5_ppi_state)->pendr_entry, pendr,
+-		    VGIC_V5_NR_PRIVATE_IRQS);
+-
+-	/*
+-	 * Make sure that we can correctly detect "edges" in the PPI
+-	 * state. There's a path where we never actually enter the guest, and
+-	 * failure to do this risks losing pending state
+-	 */
+-	bitmap_copy(host_data_ptr(vgic_v5_ppi_state)->pendr_exit, pendr,
++	bitmap_copy(host_data_ptr(vgic_v5_ppi_state)->pendr, pendr,
+ 		    VGIC_V5_NR_PRIVATE_IRQS);
+ }
+=20
+--=20
+2.34.1
