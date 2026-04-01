@@ -1,122 +1,137 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EEA2E62C6
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 18:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6139E2853E9;
+	Wed,  1 Apr 2026 18:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775067966; cv=none; b=Oi4EiuagxosU0f7zfUo+AOtFkXOpnd977WydGLJ624/5bMsh1pUf/+WsqIfbSO0ozbW/tzab9Kuxhx4sfuHZELdOgureqvNmZ5SoKku0pGMSSPUuvNF+dGJfHaXDW5qG/h2Zsog+GpRwv/R+/Qs39LZmZ2/AxMUlYpJt/n7Sczs=
+	t=1775068217; cv=none; b=Mylg7EdeOnmv1cgPETSquYxmdc/nB3O4ZdvsSBSrYR0KyhXbuOjSSyDEkxIjT28bmFzovOw6f3P5l60BN41RZDxXVG8BKpVXqoIC8WfsOiPJcCLw6DY8e/3Dn7dONr8qfAbVLMiXsql7vvfUksaiyKhbGov82kjjaMTi6imqBig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775067966; c=relaxed/simple;
-	bh=0neaokEvDvCfBuu/Fx5r3uiSSbYKBuo5aFELkon2UwI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rVM0HS4GfWG6pY5MGGhwzoEqJzduG6JYJ6wHr5G0fu2PKF8F1F2EJrOE5kjuHbZFhsihwQvIwi38AmqWx3BeC88DeV7YHtVnZYPVVSUEEAyG6XCkFBPlA1ETtNLz2jvaYEg/dZ1iL3JQmt0D8lgZTsT5QT94IYUI7DsPyD+vh38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oOOAKxhZ; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775068217; c=relaxed/simple;
+	bh=j3dW7Y5ZFl7ejx+K0m5YQjOz8Xi7YjIUYeJUo5MkZIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BjUw6hvLQYL0bV/ydGYbMVXM2Jj5UmG98RV/F3ZghToS7HOsCpR/ET6KZ3YkT/hR4thyi7oJPF4atTBgAGkngvLlQIW3LAExN5zQrL2aIlyqafNhJc9A+SDHTcRwycQVCoDcC6GISYRlyn6tD7Xacgn/oVFh55lHrF2r+wDLB1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9Hfs6uj; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oOOAKxhZ"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cd9fa609aso29536b3a.3
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 11:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775067964; x=1775672764; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YhZ1mA0lE5i0zKRyy7QucwZ9Uq6VZ4dPueh6WmVgfzs=;
-        b=oOOAKxhZBwYTCETyH3e6Ud0VaekN+8vs/+llzoyHXK41SD8Rh//psOsLhzr4nMIR4r
-         a4UZXlsBG3mKX/yuT5Xcs8DiJYcRiUDF77qBKsEzbHPi0nM7IH2Bb/L5U77XozfBW711
-         yInyRU0I5NoWZWmmRJ3oYNbfob0TI6Zb6RlxQspFScvhh27Iz0y8VRORElOy06VY3fN1
-         IpHVHvG1uyXDiMUPXdtQNFlxT4aaShbEPpbHY5Hoh4IlTWjCWdS/qCsYQqvCMAGwvXwx
-         GNRoFBmv1m3Q/XdL9kpjMnOjv/kKSNolAQo5pmjYwmPDXjy/zsF+R7z+depB8/GGIPai
-         cbqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775067964; x=1775672764;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YhZ1mA0lE5i0zKRyy7QucwZ9Uq6VZ4dPueh6WmVgfzs=;
-        b=ofgH1SB7JgDmuLDt0/T44CTsUjL4xswbR0U3HdHCVQzSvK9J+VJ1dI75QiGWxlbW09
-         w7nJ7mBbwp4mZKhxfRvnP+RvCeAXQd3VwG65ThTXRR+4uAW7L/XYpDvo8WJxrIO3NMIv
-         yQEO78swupvNlcHXxiVRVLn3gpXwrdXssBr5HGuWxSQpcVPqAL9j/C6c9sHgK5wu0iSV
-         NJdVf3pbqyFH0QwpmFFxoNUiU8kBLRB7a/WhBqmITQsV5ZszHxfcZXz+SFegNX40y4Wm
-         36lIRzck3HZJLxRFYFLH/aBW1i9rkvyYkNY1OHtCScRbpZNG27UrhceGL54lV0+wkAMn
-         fObA==
-X-Forwarded-Encrypted: i=1; AJvYcCVAkCDpNJ1zg5MFINN0sG4GQTNjgK5PdPheO6uKRCrAP2Fz75l/m7b698p41siKQ/I1RtE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsd3CX5yJVInMLFGnLh2mQtu927sDaVRsqBK82NEmW5wLrvDI8
-	yM9jFzAPs0CuZyq2VAeRlswleBUwLeSeVilTGZMPzckd7Epumv5hN/UKxa0p6igQ3R6kxf0se9x
-	M8nBINg==
-X-Received: from pfbii10.prod.google.com ([2002:a05:6a00:8c8a:b0:82c:6cfd:5945])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:348a:b0:82c:6b1b:7ad4
- with SMTP id d2e1a72fcca58-82cfb85d99dmr523717b3a.3.1775067964217; Wed, 01
- Apr 2026 11:26:04 -0700 (PDT)
-Date: Wed, 1 Apr 2026 11:26:03 -0700
-In-Reply-To: <20260331194033.3890309-3-jrhilke@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9Hfs6uj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775068215; x=1806604215;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=j3dW7Y5ZFl7ejx+K0m5YQjOz8Xi7YjIUYeJUo5MkZIw=;
+  b=f9Hfs6uj9fTezH17o3/0D5XmQF926J0hDNKZ+362W8I3dKCE4hTlvSoG
+   x2/WbtWWYvuFq0NYpZVQwdvqiwTl+w2rZ3H2+04XVQnCojjUwzyaHvn2G
+   kDklJDrBzTcuHgeaL3No3tLpMX0AGYZHBVFv0R/E645GMmvykAy6M881t
+   cEM8N42J56EBwZvnK4jZBgzB9qYdWDWwZABSeCWH+bKnx+8QnCxPwR+AN
+   edNcbMRyNYEyFNrnTUm1Lm2yARFgOJ6SRnSrsd+S5w+XwrMnY5T9mv+Tq
+   1iDImYirA8PQ7HDSnT1PlNHazd4DQ0SRNgZ/VJ2xInzEsQSx8ELGv+IEq
+   g==;
+X-CSE-ConnectionGUID: bVyZCu4dQEGGvdmPenRIpw==
+X-CSE-MsgGUID: 9oln7x5YRAybvaBdvioJJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78713190"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="78713190"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:30:14 -0700
+X-CSE-ConnectionGUID: lRWM8gBVRjOCnQLWL39MUA==
+X-CSE-MsgGUID: pqVK514SSKuI9+NttUXH1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="221907622"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 11:30:13 -0700
+Message-ID: <93153bca-6668-47f6-8dcc-7baaaa5b2ec6@intel.com>
+Date: Wed, 1 Apr 2026 11:30:21 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-3-jrhilke@google.com>
-Message-ID: <ac1jO1e2_BIs1Kx0@google.com>
-Subject: Re: [PATCH v2 02/14] KVM: selftests: Add helper functions for IRQ testing
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into
+ arch/x86
+To: Sean Christopherson <seanjc@google.com>, "H. Peter Anvin" <hpa@zytor.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang <kai.huang@intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+ "kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+ <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
+ <acwe7kKyjfEQ0sIf@google.com>
+ <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
+ <acxTBwaw6_xYSShf@google.com>
+ <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
+ <76F29857-47D8-470B-9F4D-DD98D8755EB0@zytor.com>
+ <ac1f9KntTv0SaktS@google.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ac1f9KntTv0SaktS@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 31, 2026, Josh Hilke wrote:
-> diff --git a/tools/testing/selftests/kvm/include/irq_util.h b/tools/testing/selftests/kvm/include/irq_util.h
-> new file mode 100644
-> index 000000000000..a5d6b63b30da
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/irq_util.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTEST_KVM_PROC_UTIL_H
-> +#define SELFTEST_KVM_PROC_UTIL_H
-> +
-> +#include <stdint.h>
-> +
-> +int get_irq_number(const char *device_bdf, int msi);
-> +uint64_t get_irq_count(int irq);
-> +uint64_t get_irq_count_by_name(const char *name);
+On 4/1/26 11:12, Sean Christopherson wrote:
+> Sorry, "costly" wasn't the right word.  I know WBINVD super
+> expensive, but unless someone cares deeply about the latency of
+> offlining a CPU after its down TDX stuff, the "cost" is effectively
+> zero.
 
-These are far too generic.  I'm also not convinced these should exist at all.
-I'll add more context in the next patch.
+I once increased the CPU online/offline latency once and got nastygrams
+from folks. IIRC, I added a synchronize_rcu() which incurs way more
+latency than WBINVD, but folks _do_ care about CPU online/offline
+latency surprisingly.
 
-> +#endif /* SELFTEST_KVM_PROC_UTIL_H */
-> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-> index 8b39cb919f4f..8be02e7980eb 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> @@ -1144,6 +1144,17 @@ vm_adjust_num_guest_pages(enum vm_guest_mode mode, unsigned int num_guest_pages)
->  	memcpy(&(g), _p, sizeof(g));				\
->  })
->  
-> +#define READ_FROM_GUEST(_vm, _variable) ({		\
-> +	sync_global_from_guest(_vm, _variable);		\
-> +	READ_ONCE(_variable);				\
-> +})
-> +
-> +#define WRITE_TO_GUEST(_vm, _variable, _value) do {	\
-> +	WRITE_ONCE(_variable, _value);			\
-> +	sync_global_to_guest(_vm, _variable);		\
-> +} while (0)
-
-These belong in a separate patch.  I also think we should convert as many users
-as possible when they're introduced.
-
-We might want a better name than WRITE_TO_GUEST(), because that suggests it _just_
-writes to guest, but it also writes to the host value.  Maybe SYNC_FROM_GUEST_AND_READ()
-and WRITE_AND_SYNC_TO_GUEST()?  Stupidly verbose, but IMO it doesn't look too weird
-in the code.
-
-> +
-> +
-
-Unnecessary newline.
-
->  /*
->   * Write a global value, but only in the VM's (guest's) domain.  Primarily used
->   * for "globals" that hold per-VM values (VMs always duplicate code and global
+In this case, though, I'm happy to add the WBINVD for simplicity and
+wait for a possible repeat of the torches an pitchforks.
