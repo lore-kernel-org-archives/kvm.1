@@ -1,69 +1,60 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012007.outbound.protection.outlook.com [40.93.195.7])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682643DEAD0;
-	Wed,  1 Apr 2026 11:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775042686; cv=fail; b=BaePQgEXgNKlTiXN35nQ3UjNE5+7BG6Fv6M+uKjgZ6wvYbCamFQa6hwYug9saQqVDZZpHZpnlHI/aEIAqy/a+GMmswaFg5GXaujkpR+G4wK6W4cYYX5JgCZSW9WHSyTAcnPmCu1OU/ClF57o1g3Qnh1j8wCQcjuPVcq+6sJQC3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775042686; c=relaxed/simple;
-	bh=PnfhNJdrT/2PwI0UdMuBrKwYCUB/1h3v0KZLBZgr6Pc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dpR2RQxCai4SrHqWgUN+ftUgnkR1qThBaCfIxrqBztQJI1nY8diImVgLGp/e8FXodZBwezZvBAFZH9DSrqdcHUlEOVc3aizPjIknjm422XXXVnKHBpoDzGuqf2ZuQSgFdtX3Fcv9fZ7f/hiOmO0fJKsrEwLuYsECSa+rCKwXnUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=He91qtGM; arc=fail smtp.client-ip=40.93.195.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055D03FADEE;
+	Wed,  1 Apr 2026 11:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775042734; cv=none; b=teYr6X/kUtD9jVKmhf0FzkRIllPPnYOQC5clLDQSWsWXBQn2EV3r9T1TyX9nboO5QCqA8lGbbhPO5aKw+rtkS7mqATHb13vXbMaM+TFkg8aZLVwVbJopzfZ2X0uoGz+eAVKZEeoBdSb5CNM6hx10RyB79yE+2FVezs0F+uFakK8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775042734; c=relaxed/simple;
+	bh=OCnLWkIkFkss2nBor0nyvAM8mp0fMHdIYYgLKSxMZ1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iIVZZuVX6dwtEhAKnLQjlAmawAk7Y0fERQupaeCmHBh3tlTzjPxj179KfxSsadDxLDU/aGbmL3jzy26hoNYW41iH3YyKwMIMdnLEyHPKcI+X2iqCnKwdhqq9EJEgMLy6ICby2zWv1FaBD8Zkq/sLzUzgQLAzd3Hp8MgAEQhSXQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hY7VaEzu; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="He91qtGM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qblzlQCyfPEbF9bCAcISu1SON5Ig2q8Qb5BCouktUlZON5BOUXRF+ms+l6iBwU3J6WIDsHbQJszAqb/K1y3KVPknBjXL4CAJFtvyxSvbMoARAcaF5biIlWw4e3wA7mu7XlUBLD6N8zehoWi0u4xsDdkrrSQX1mpA64ENm2xVJwniwQDD7tr4T3Ef6Ql9XgoGWfRu+r61YgAASh6g+AS8Ju2dfLEJbup2WNeRSjvq34Mc21lzpT0D9olc1IUSZf4Cx4+NCD8FLupSUHpnWh62U444SxnVxBpV3xiR4A1GRauQ2IDPVci4sjYWIB4wIBqV+JwiYO2L/pcxbFfpiZmjXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BiLuVfFW9PfzXfcap2z04MArr+6eUcKnlSVl3Tv8hkU=;
- b=Izd0iI50mPDuOYBXo6fIV0yznEG4zib4Evv7BPvXbhbAYmDWysqB3uMUI84svnygLHS7qdoO4zFusl8dSGcD1ZMMrt67WdxSMUsdOenO+Hosz8s+U5Nkg9TazWnNYa3Exynw9USKr5e92okoCWsciEnQ3ZWE2fnfIn8DEIcdKyh2la4iRZ3a4dNXvoTrBmTM03Ag2ZmxqfVc+bKhQm6hx4+Fw8GLBV/1Qc5CRQTl8Zcy/nRtbZs6Bs98se9iH1G0u2wPAwD6WpRX9G/RR/I1CSoPqWHYdeMFGY3JbNl8vWXr+c0n66DAiNaE4HF6IUqlV1WC0zZ0ZXakIsOTtqF9PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BiLuVfFW9PfzXfcap2z04MArr+6eUcKnlSVl3Tv8hkU=;
- b=He91qtGMsO5n++08WN6ITY0i+2fwmOvdAl4PRe5if8witgu3Trm4BqFjigHN6A93bR1KCE6hDWIjZaZBNI8YOsQM73r5+saq0bA/FvnBdL98p80tGHMoYvs6sFUj5VNFUrd+mU8txhKZXqvFVE0KanOEU4Gq7LaAnCY408UhBvY=
-Received: from BN0PR04CA0152.namprd04.prod.outlook.com (2603:10b6:408:eb::7)
- by IA0PR12MB8088.namprd12.prod.outlook.com (2603:10b6:208:409::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 11:24:41 +0000
-Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
- (2603:10b6:408:eb:cafe::77) by BN0PR04CA0152.outlook.office365.com
- (2603:10b6:408:eb::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
- 1 Apr 2026 11:24:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 11:24:41 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 1 Apr
- 2026 06:24:40 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 1 Apr
- 2026 06:24:40 -0500
-Received: from [172.31.185.117] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 1 Apr 2026 06:24:39 -0500
-Message-ID: <2723ab8b-8fad-469d-9ef2-918358953b16@amd.com>
-Date: Wed, 1 Apr 2026 16:54:38 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hY7VaEzu"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63175IBu3246357;
+	Wed, 1 Apr 2026 11:25:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=qEZvvB
+	HIkYiCec4/iD9JhXygPb+INqsCI5GTcQpLpMI=; b=hY7VaEzu7YdbqdTbyM4YLv
+	2MxW+fFqh+XyebjnISwaKVBqydeCw9i6JhYf7O7vlli3KQwr7rGiBMLaIk1oved2
+	vMhJZSkEBN0DHeffcWViHK9CRWLAMnEEwvjbYYfCOidosXLOW7sovrgATQucoxZz
+	T1v2FC1MpOl0L/46c02wj51ZlJPjcGico4l1OE9mzmOllkrtFaNYsCrDP9Hxz+RQ
+	OBQw8W/ygFwdyjeg3Lio1J95H1v4l8HtfQGp1m/pm/ulXhNto9E0IcsUibv119xb
+	qbtY+WIpwue4DuWapGLqoT+lZAp605tt21FNuKheHWXwCNlf3V8hq9ozbwryI5SQ
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66ms72ac-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 11:25:19 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631Av3Uq005977;
+	Wed, 1 Apr 2026 11:25:19 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6spy5d8e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 11:25:19 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631BPETk42009046
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 11:25:15 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DAED620040;
+	Wed,  1 Apr 2026 11:25:14 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E27B20043;
+	Wed,  1 Apr 2026 11:25:14 +0000 (GMT)
+Received: from [9.111.57.22] (unknown [9.111.57.22])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Apr 2026 11:25:14 +0000 (GMT)
+Message-ID: <7aed180b-65ad-42fe-8785-d6ee0c112815@linux.ibm.com>
+Date: Wed, 1 Apr 2026 13:25:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,209 +62,148 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: SEV-ES guest shutdown: linux-next regression with QEMU 10.2.2;
- smp>1
-To: Tom Lendacky <thomas.lendacky@amd.com>, Sean Christopherson
-	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-CC: open list <linux-kernel@vger.kernel.org>, KVM <kvm@vger.kernel.org>
-References: <c820e242-9f3a-4210-b414-19d11b022404@amd.com>
- <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
+Subject: Re: [PATCH v1 1/4] KVM: s390: vsie: Allow non-zarch guests
+To: Eric Farman <farman@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20260401020915.1339228-1-farman@linux.ibm.com>
+ <20260401020915.1339228-2-farman@linux.ibm.com>
 Content-Language: en-US
-From: "Aithal, Srikanth" <sraithal@amd.com>
-In-Reply-To: <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB04.amd.com: sraithal@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|IA0PR12MB8088:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ae75442-c087-4838-fc02-08de8fe14484
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|82310400026|30052699003|1800799024|22082099003|13003099007|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	oezBeQyoSdj+KmDLn4GvslD9mFsuSnv1i6ukih7n2YCfocOIsWtrEMTbfnRxOxoT2vBcOf/7wYb0gYd5DK63Rpmgzu9hM1aUEF8n5q+7kQnxJx4CWJB+pcgOKSjLgrnakFbMiVYHFEhDfI2qLMlDhY1f2NuO5ZZ4mkaCuQdXxo1D1RHV3+hDG+s6yG5FlNz6yUggQgZphapaiK0Fh/rK2Ao5mhppT0pEuFTlY1YzLbv/azeEAG6a/vtdvP69mNAgGmBqj2WGf157DFh4+kYs5//AWuKeuykNL4Zt2AsjtZBz67PQeHjDA+fBfZZOhlwIEv+YiA9wLPArit2VvxcfE5kMFao6Kn6f+0hrl1avdXNkd6z5VotHOG9L1umXAAbd9w5ja4ut/L6KzTiVt4bZkazm87uJeph3gN+Ud2VoGZiB6FbfvRyVks9faDJVFLE7R6og+vLbFesXPrCElYIWK3WQV1IoX7U18kph0Y5/yc0LvMgbKFk9wf9tM1OwRj+qrE3UKMyz3XkJO+8/Pibn9KXjX8z03zR3aiQF5oQMC9UKy4R5lAxZovOCtZk5w8yOCSTQfQWyd/rxTaceF+o4xPZCL/WhRIZLzZCsJ+6Upp/kvrPK6SSoJ+ntFOiRwxepGtfeGd1Fka9tiBkvvr932KcqhOLMhGwSz2OorAivEQdHIagCHXjFJqOVT1vK+XZdlMZyEcLjhjkzKR6wSCs53MEP+OMvpI7e/PBwNlxGd9G/+xQpwEpoDP3F1zhTFis28twP5OKYKX6iV5yXvy/3pqLdku6VZvOFITIXtULxS1s=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(82310400026)(30052699003)(1800799024)(22082099003)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	mhMMJvfJqi8TyG9SEcu5NaATkY5315QnmLaHmRlgn0g+34zEImWAXo5Xv0/T+OzdEGJGYX3jTuPhwFhFHt3OClBJpgZwfyFt4kAkQ8/Oxqr3y35Hlv9kNm/q2W7rejzu6bOJpZ1KWLrWNfzjZnvmB07ECG0vjCy65LJLVZPL9+bKHmTKUO5dXDk8ODj8dtGdeNW9iPrg2wO4l+a9rEtRRa3EvSqqRnk8D5vwb/XpXLtRO/pqX524IPKyvf5MUxTLPadVSY7DQcJXjxZDxaJxOGff722WyXraLjk4VF0t19AkQiEsX7APKwgibACnVgrwJHKyp+v0qg9d/ujfwFcN3OlHxO5thZBluHdZfK5srJqNBZ9fOfqycNxh7GaPD93FytFMXPWNyIj8TvVUUJ1CRY7Ewfj1wRB3wSPpR7qv8KMTlh1xjK1T5CD6tvtc2Qzp
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 11:24:41.2729
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ae75442-c087-4838-fc02-08de8fe14484
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000467F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8088
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260401020915.1339228-2-farman@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=J6enLQnS c=1 sm=1 tr=0 ts=69cd009f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=Dd2RYGZ7o6lLYqCbQRkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDEwMyBTYWx0ZWRfX0ZtsrB6VuqJo
+ taIri+/nYd2s5e4g1u8x9jhTO4lPQuyCOYJyRIGcOA9BnqFOaKhSmjMeyXtPfteSTNyN2cycbfA
+ /J7UEDhCQJYUhCFBvYlOwXSiQPiptkpF403ZGz1cXvPHcZbRZcQ1lJnLVB/xbG+xf8azYEGFs8O
+ sBSGR12ABh05CXEo9F4/zIZj/ZjP+OSl7wNodlgpXWTOTfVdhd+lwhtoYxerivj9qFKvCOk4zhD
+ 1IdqbqWbcTzb/3/FkI8VtebqyNopbZn1V77XWTTb6gHtRSbICDUddF/one+gs2kLAJx1RbYdeE5
+ irMrYFpcQh97AVjoPRVcc0v8oeABxIVaKXxNQJPiUP10pkydbfLL5+W0RFN4wCCTDipqwORzwuG
+ /dEhhRwSuMnr9zaqSJCZO9LBu6cjzuNmM5Eo7tmDL59PagwMJXddU8bM/KAKmgal939t3Eqfmj9
+ HgRoaU46WfJSeix6hQg==
+X-Proofpoint-GUID: 3_mUZDt9E4RtYoKBWorv79yk9lTAHpEM
+X-Proofpoint-ORIG-GUID: 3_mUZDt9E4RtYoKBWorv79yk9lTAHpEM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_03,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 adultscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010103
 
-Hello Tom,
-
-
-On 3/23/2026 6:40 PM, Tom Lendacky wrote:
-> On 3/20/26 11:08, Aithal, Srikanth wrote:
->> Hello,
->>
->> I am hitting a failure when shutting down a SEV-ES guest (smp>1) on
->> recent linux-next, and narrowed it down with bisection on the host
->> kernel. The issue appears with more than one vCPU (e.g. -smp 2); with -
->> smp 1 shutdown completes normally in my tests. The same guest shutdown
->> path works with an older host kernel (<next-20260304) and is also
->> avoided with current QEMU master or by cherry-picking a specific QEMU
->> commit onto v10.2.2.
->>
->> Environment:
->> Host kernel: linux-next, tag next-20260319 [1] (also observed starting
->> from next-20260304).
->> Guest: SEV-ES Linux guest; -smp 2 (or more) reproduces the issue; -smp 1
->> does not in my testing.
->> Hypervisor / QEMU: Initially QEMU v10.2.2 (stable). Later tested QEMU
->> master at 8e711856d763 [2].
->>
->> Details on issue:
->>
->> After SEV-ES guest shutdown , the serial log shows a register dump
->> (example below) .
->>
->> [   12.613383] reboot: Power down^M
->> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
->> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
->> EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
->> ES =0000 00000000 0000ffff 00009300
->> CS =f000 00800000 0000ffff 00009b00
->> SS =0000 00000000 0000ffff 00009300
->> DS =0000 00000000 0000ffff 00009300
->> FS =0000 00000000 0000ffff 00009300
->> GS =0000 00000000 0000ffff 00009300
->> LDT=0000 00000000 0000ffff 00008200
->> TR =0000 00000000 0000ffff 00008b00
->> GDT=     00000000 0000ffff
->> IDT=     00000000 0000ffff
->> CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
->> DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000
->> DR3=0000000000000000
->> DR6=00000000ffff0ff0 DR7=0000000000000400
->> EFER=0000000000000000
->> Code=b0 96 b5 61 ca ef 3f 51 00 c3 65 51 19 77 b1 e0 e5 e2 91 b8 <0c> 5d
->> c7 fc 59 bc 2b 6f 90 89 44 23 ec ec 2f 62 fd e0 8f d5 c7 31 24 70 e2 7d
->> c6 ee 00 00
->> -> Hangs here
->>
->> Host kernel bisect (with QEMU v10.2.2) led to:
->>
->> Good (no crash on guest shutdown):
->> 32d76cdfa1222c88262da5b12e0b2bba444c96fa
->> KVM: SVM: Move core EFER.SVME enablement to kernel (local build tagged
->> 7.0.0-rc232d76cdfa1222 during testing.)
->>
->> Bad (crash reproduced):
->> 428afac5a8ea9c55bb8408e02dc92b8f85bf5f30
->> KVM: x86: Move bulk of emergency virtualization logic to virt subsystem
+On 4/1/26 04:09, Eric Farman wrote:
+> Linux/KVM runs in z/Architecture-only mode. Although z/Architecture
+> is built upon a long history of hardware refinements, any other
+> CPU mode is not permitted.
 > 
-> Any chance you have the enable_virt_at_load module option set to false?
-
-No, it is set to Y.
-# cat /sys/module/kvm/parameters/enable_virt_at_load
-Y
-
-
+> Allow a userspace to explicitly enable the use of ESA mode for
+> nested guests, otherwise usage will be rejected.
 > 
->>
->> So the first bad commit in my host kernel bisect was 428afac5a8ea. The
->> commit prior [32d76cdfa122] did not have this issue.
->>
->> Later I used QEMU master and with same linux-next next-20260319 as host,
->> it did not reproduce the shutdown issue .. that was using QEMU master [2].
->>
->> QEMU master contains 56d89db2cfd82c53439778fbf39294bf35194dba (target/
->> i386: convert SEV-ES termination requests to guest panic events).
->> Cherry-picking that commit onto QEMU v10.2.2 resolved or at least
->> avoided the shutdown crash in my setup.
+> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+> ---
+>   arch/s390/include/asm/kvm_host.h | 1 +
+>   arch/s390/kvm/vsie.c             | 8 +++++---
+>   2 files changed, 6 insertions(+), 3 deletions(-)
 > 
-> Well, if it is converting a guest termination request, that is still not
-> good. It should be a clean shutdown.
-> 
->>
->>
->> Questions:
->>
->> KVM: Is the interaction/issue with older QEMU (e.g. v10.2.2) expected
->> here, or is there anything that should be adjusted or documented
->> following 428afac5a8ea, like for multi-vCPU SEV-ES guests?
->> QEMU: Would a stable backport of 56d89db2cfd8 to 10.2.x (or equivalent
->> handling of SEV-ES termination) be appropriate for users staying on
->> stable QEMU while moving to newer host kernels?
-> 
-> That wouldn't actually solve the issue, it is just a much more user
-> friendly error message. Is there a termination event in the host dmesg log?
+> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+> index 3039c88daa63..8a4f4a39f7a2 100644
+> --- a/arch/s390/include/asm/kvm_host.h
+> +++ b/arch/s390/include/asm/kvm_host.h
+> @@ -656,6 +656,7 @@ struct kvm_arch {
+>   	int user_stsi;
+>   	int user_instr0;
+>   	int user_operexec;
+> +	int allow_vsie_esamode;
+>   	struct s390_io_adapter *adapters[MAX_S390_IO_ADAPTERS];
+>   	wait_queue_head_t ipte_wq;
+>   	int ipte_lock_count;
+> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+> index 72895dddc39a..888370a02ef7 100644
+> --- a/arch/s390/kvm/vsie.c
+> +++ b/arch/s390/kvm/vsie.c
+> @@ -125,8 +125,9 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>   	struct kvm_s390_sie_block *scb_o = vsie_page->scb_o;
+>   	int newflags, cpuflags = atomic_read(&scb_o->cpuflags);
+>   
+> -	/* we don't allow ESA/390 guests */
+> -	if (!(cpuflags & CPUSTAT_ZARCH))
+> +	newflags = 0;
 
+Not sure why you have that here but removed setting newflags below.
 
-The guest shutdown proceeds normally until:
-[ OK ] Reached target poweroff.target - System Power Off.
-[ 9.918849] reboot: Power down
+> +	/* we don't allow ESA/390 guests unless explicitly enabled */
+> +	if (!(cpuflags & CPUSTAT_ZARCH) && !vcpu->kvm->arch.allow_vsie_esamode)
+>   		return set_validity_icpt(scb_s, 0x0001U);
+>   
+>   	if (cpuflags & (CPUSTAT_RRF | CPUSTAT_MCDS))
+> @@ -135,7 +136,8 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>   		return set_validity_icpt(scb_s, 0x0007U);
+>   
+>   	/* intervention requests will be set later */
+> -	newflags = CPUSTAT_ZARCH;
 
-At that point the serial console freezes with the register dump below 
-(EIP=0000b004, HLT=1, EFER=0, etc.).
+I'd leave this but set it to 0.
 
-[  OK  ] Finished systemd-poweroff.service - System Power Off.
-[  OK  ] Reached target poweroff.target - System Power Off.
-[   10.029330] reboot: Power down
-EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
-ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
-EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
-ES =0000 00000000 0000ffff 00009300
-CS =f000 00800000 0000ffff 00009b00
-SS =0000 00000000 0000ffff 00009300
-DS =0000 00000000 0000ffff 00009300
-FS =0000 00000000 0000ffff 00009300
-GS =0000 00000000 0000ffff 00009300
-LDT=0000 00000000 0000ffff 00008200
-TR =0000 00000000 0000ffff 00008b00
-GDT=     00000000 0000ffff
-IDT=     00000000 0000ffff
-CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
-DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 
-DR3=0000000000000000
-DR6=00000000ffff0ff0 DR7=0000000000000400
-EFER=0000000000000000
-Code=98 59 0c db 72 6c 94 71 3d a6 36 32 49 a8 08 22 bd d7 8c bb <4c> 3c 
-d9 bd 90 b5 2e a0 69 26 53 df aa 4c bb fe 5a d9 b6 ee 7b 45 02 2e cf d9 
-60 48 00 00
+> +	if (cpuflags & CPUSTAT_ZARCH)
+> +		newflags = CPUSTAT_ZARCH;
+>   	if (cpuflags & CPUSTAT_GED && test_kvm_facility(vcpu->kvm, 8))
+>   		newflags |= CPUSTAT_GED;
+>   	if (cpuflags & CPUSTAT_GED2 && test_kvm_facility(vcpu->kvm, 78)) {
 
+I can fix that up if you want.
 
-
-QEMU does **not** exit on its own — it appears stuck.
-
-Only after I press Ctrl+C do I see in host dmesg:
-kvm_amd: SEV-ES guest requested termination: 0x0:0x0
-
-I also set `kvm_amd.dump_invalid_vmcb=1` before reproducing, but it 
-produced no additional output.
-
-This issue is still present on latest linux-next next-20260331 
-[https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?h=next-20260331, 
-tag name	next-20260331 (e5da3eef8dadab4e98b228725ca8948edd9d601f)]
-
-> 
-> Thanks,
-> Tom
-> 
->>
->> Thank you,
->>
->> Srikanth Aithal <sraithal@amd.com>
->>
->> References
->>
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
->> — next-20260319
->> [2] https://gitlab.com/qemu-project/qemu — master 8e711856d763
->>
->>
-> 
-
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
