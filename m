@@ -1,209 +1,406 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA9436922D;
-	Wed,  1 Apr 2026 15:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775057852; cv=fail; b=SOpmpwTJtl6vd/58OYp9Xiyl2Ry+myAWw7yqsykxN5CRBUnBpJYsQv2DpUyLa2ldSuUbu6/FYIykJkupbTxEgfIwP60b1xbEotlAThJyfMeOU+Tw6AOP2Ou+RzwWb9Z9DaK0KDy1TZLiwnnGmySOUTMT7UPCj+zU8/hDcbhjY8g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775057852; c=relaxed/simple;
-	bh=7a/sdvMHvn2yhZ9SPar1/1/kE8fQeKBmerUmZOag+Ws=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q4rHtRpbaZOlGRuDkXpyNXWI7VYZPpuB8kGYqaMkB8JGnxE+zA23ZoEPaUiVnrmZxY5mcCzFtxetkjZy/8BL458ByN3RHrqtUq6jNq7xCdJUoGv/g+2odJpKxANfBPw8bU5UHQxcuBtJveLSrpdbh+FbQAK2zCvUMn603MzfugI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FhRZ37uD; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183123AA4EB
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 15:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775058011; cv=none; b=JHC6UkNVrdwMFywW9PZ5BZXpysyHSyYtv/jZzkd1YX9+b779CdEpNZaQPFUmCKnsnIKdGpG67zvZqPZWBDMEu0UunvxJZnHPUcZ8JuSQK1nzdaTcRiNhFe7vyKbCdhGVRvccy/0sBuVeRmwFp0oX7Ey/JlT6QRNE9V3cXD8Ovlw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775058011; c=relaxed/simple;
+	bh=CTgR8YuZPM7++i4knWDv7+I4feJbJZe/+D43E6jozRs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=d3yoAHRsjdkCRU9BPZlakPNQv6SJ2IaAXB0tGcpKXAN/qkx9fW4JicQn0aN7gTQOT48/RlkIrR8mxN6AQdRWJ05Eaa5nB2o6uEZnkg7LPOy+ahMPE736t6AfZX6TeyuoND+WFHALX8s1lvNs3t/Se1UxzBvJxL/Q8LezpF0yP+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d73znA1D; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FhRZ37uD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775057852; x=1806593852;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=7a/sdvMHvn2yhZ9SPar1/1/kE8fQeKBmerUmZOag+Ws=;
-  b=FhRZ37uDuhwEzbBya8wRZ8GZBCgVvM49YnJCMKHYnY+YLDl8Tc4tx88c
-   VAvzWxt9qniQTGkkUfH0u04Yg+TgszcN8G+g+pMoTQwZ4ShFzrDNO84Ko
-   303UP7tgl6dtR9K6pdUAfGZJjMwjcU4AqD53Pl0Pc9O00exWemipqaJ3w
-   qSqorR11eA347PdGEdkHqaUvWLyCbhRCluIRRsImpXNqqOMPUeWfNnj+5
-   mZhnZQhGJde8rdOj2o4qE3N1QQw82puApX7POQ6JYceIw0erOaueVzz5S
-   96YlCUxIkODi4ug0i9668558Gwc60wmWGv4YRQu7pjj5RBCme7uoughJk
-   w==;
-X-CSE-ConnectionGUID: u1KXjiEWTryvy4j0iXIMBA==
-X-CSE-MsgGUID: ick4i4anTMyDR33aeaC4DQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75816080"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="75816080"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:37:31 -0700
-X-CSE-ConnectionGUID: WW3qGblIRvKLEKfkNeycMA==
-X-CSE-MsgGUID: pYBLxUGNTUChNFNz6JCWHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="226698696"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:37:30 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 1 Apr 2026 08:37:29 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 1 Apr 2026 08:37:29 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.68) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 1 Apr 2026 08:37:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CsS5HUr/9VWOroHDs/5SiUlMoxh2OC4Ez4GDp+CA8DMLFC57jd2L+Nh1ioxSjI8dgYAPx3c5I1h3pWXQy3zcYFF4TtMCUPdcxln4ndPShSqUEF9lDyV2EGWLACPFpkBbjIOsZCAetcfAoGew9N41+T6eCRXcp+2oKJDSwiihR4YJTLtk9iccuJUMRCXPDheMUDUyksIj67OPYKf2IWTF6k2c8XL9ZpAl9cLNMJhFII2Q/FHszZQIV1yj7NKzHBmqCJx7aZia3C6RsygF1Zdtl3csWzIWOtO0qHuiL+F/Vbv1pN0sBTESqnZflPqtbBuDv9bNsTKL3JwisiRJCIjQgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7a/sdvMHvn2yhZ9SPar1/1/kE8fQeKBmerUmZOag+Ws=;
- b=fXv0qA/EcWDNkEvh10dnHZ3MpyjJwoqAEt108C+AQTpwAKSa0X5OJVYAg8d6QeHfqtgnehkDZziXAxD5lQLiWWErOF5NshVxtf4a9hkoe3NujGvR79MrLJt0iZZgxQmoPWaFlZ6wL7ijns8dZ5RkkYCUJMcuumZ85c16nTkuqk7nhgsKngoMu7I7Ina952bQcqJI/p/2W9T5FT6nucpVeCC5HIv0wthYcj0SP0dmV/sBmkNof29vShBYdme9yUqwB+3OXsMa+aAbvzw7qPGtOZCvR/7CeYxVN7F/wACJiULDqj3jeoZmjHOaeQ5WS5haYtLEbtRkormXYXKY9ki7pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by PH8PR11MB9605.namprd11.prod.outlook.com (2603:10b6:510:3a0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 15:37:26 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9769.015; Wed, 1 Apr 2026
- 15:37:26 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "pbonzini@redhat.com" <pbonzini@redhat.com>, "prsampat@amd.com"
-	<prsampat@amd.com>
-CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>, "kas@kernel.org"
-	<kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
-	"Qiang, Chenyi" <chenyi.qiang@intel.com>, "tglx@kernel.org"
-	<tglx@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>
-Subject: Re: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
-Thread-Topic: [PATCH 2/2] x86/tdx: Accept hotplugged memory before online
-Thread-Index: AQHcu6ISxXKhFiWKBUuIm+vE1xtYKrW+PPMAgADQbgCAAHNtgIABo7qAgAAlqQCABe0qgIADLMUA
-Date: Wed, 1 Apr 2026 15:37:26 +0000
-Message-ID: <49e8b24d836c1883e83ad72d1ab279f9e3eb7455.camel@intel.com>
-References: <20260324-tdx-hotplug-fixes-v1-0-8f29f2c17278@redhat.com>
-	 <20260324-tdx-hotplug-fixes-v1-2-8f29f2c17278@redhat.com>
-	 <56190adc345148396ba6b3e52672e662145f7dc7.camel@intel.com>
-	 <CAMxuvaytU-pM+rviUbNGWMhvbAYutwvaSXW_O=sn+QfOzF35Xw@mail.gmail.com>
-	 <7802b50589c80a7276a50cc473c1aa579750a30c.camel@intel.com>
-	 <CABgObfZ7_w8Q-dW=Sd4YA3P==BuN1edPv7Ty4EpPyU8ctW6RLg@mail.gmail.com>
-	 <424048885a01dcb6a7ef0256f0dc8a9adb546f22.camel@intel.com>
-	 <cab5371d-e0f4-42b7-bae9-2c7f981b26b2@amd.com>
-In-Reply-To: <cab5371d-e0f4-42b7-bae9-2c7f981b26b2@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|PH8PR11MB9605:EE_
-x-ms-office365-filtering-correlation-id: 6d679b0d-94d6-4833-55d3-08de90049372
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|38070700021|22082099003|56012099003;
-x-microsoft-antispam-message-info: IeSm3JeSP8ZuGAi+1XmDSt7W4Bvdc9sXIlFPq+Jbw5PLmkIxoTWvovkPuBZF62v61vEJcvZg8v22o3eAD/kvry+B3jL8JQMB5+1eehYHvjGJPdh+xEuZIUFZ2tV07UMgZLOooZtPMZwFlVUK6rJuGsQOvjtqnlfhzJB6Xku4vNZvJnbqWK8wqwyJUPDFNpNdoygaNNP7tEWh8umZxeXde17UWvMpWgZXZAPKC5k5NPW3wu8ScPmjk1E4RDxdNeONuw6C/P0vEYbF08ixqWiDj2ChFEL2WEFrBAVOgUfUIIIwgwQUUV3OdggMSfRt0a15H6cD3o0bKOsyT3SYlyhTqUDPeTrmGS+nlOb+iVBLB7UH2izFfrO2+zkWhz5aWMBXMS1nrdPI+FUcj88H+MecrVOAXpVwuv/w/5UBc6EiiJEqSrfycwLzji2nHd80uTaTvuOsobl4Fiv9PXPMknoX0T1ffhxHx1nseGqi4JWMV+7IcFLL8Ra/L9Pha8tUdaxgk0Z4QXjWuSJcp442cYLo57tuYyrFJh8MIOJDISvkqAsaKTV8szIXKDqOKhuXqVwW33s/5kZWzK6glXY1ojOS6260Qm9LXsdfQDiOvf6LCcx84q2Ol1edKuQmoE4AfLNx3RFnfCkZYVNswzgTYgs9s5r83BJlcfEwgwXp/Rdm3pp+r5E+mh2GUUtEnTrg2f43eiwVl9tNJfN1Tt+NJnUTCd/fsxDZFs50CBRdJP+ejm0Cais7lBn3vKx3jToo6hldFTEfic3jz+Tcg4MpHe/ijt6G54M6cKwOySDY+GS4Jrc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(38070700021)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OWhaVmdKdGkzMEN2LzJtTHMwSC9SbjVrVXJTc2hSd0ZxcVltaGNLQk1ibWxr?=
- =?utf-8?B?SWE2b1pJTzdsQVVoSHZqYkRRNVRZeEtqbG1qQnFIM0VERmNHc2VUSHEyei84?=
- =?utf-8?B?VGk2eWNxUUdKL3RHL2ExcWVHQWxEVTlCVVpOTVBoNzdOcTY5UDM5bW9yY2I3?=
- =?utf-8?B?MzZoQTdjZmJMbnlXV0h1Z0hhcDNGNzg2NkR5WnE5MG10c291aGpGb014cFRG?=
- =?utf-8?B?bDl0b2VDQW51Zmg0QzRKT0FBcWQvMTJtQy9IVGFFUHpyNFo5NU5wTzVlK24x?=
- =?utf-8?B?ck9FbVFpWUEveFFOQkt1NGdTWktINlJuc3lRckZKSFR2eGlSWjk3d2pxcHMv?=
- =?utf-8?B?ZENHUUZVMnhJRmM5QzREejN5NWN1RS9uRGRyUkVZREFmUVRoS1RCRkR1bW9Z?=
- =?utf-8?B?bHZMTjNjWitDQXRtNnBmVUxEVVpEYVFZdHJhaTRNT0NEQ2d5emZ5UXNXWk9C?=
- =?utf-8?B?dHpPMGJWelkra3ZXQ3NpKzNJMW9ORlV6UXk1bndkRVdnbkRnNGFiWHhwWjZ1?=
- =?utf-8?B?Z05SSUdDZ01TUTV6MytsemRWQUtwS0NyZjM4L1ZCZFNBTlljRWQvR3RuUTF6?=
- =?utf-8?B?a2dUMTdwMlQxTkwvSGw1cHdwN0lYQlhXN0YxQU9QSFRYY1dEczR5djI4V2hU?=
- =?utf-8?B?STlRYkdOdmUrcVRJUS9PTmR5ZlgvTWkyYjdqRWhxa3VJa21uOGFKTnFGRlRU?=
- =?utf-8?B?cmtFU2VPajRMRFpGR1p4WW5WWDlybmJIM1pucDBGRGE5VkVZa2h4TFMvUll3?=
- =?utf-8?B?dmxGVERreFZMdGhCQTZKbnBDNjFualRLRGRwY0RNbDB5bHl2SmFqMUNuRVJL?=
- =?utf-8?B?cW1uUXZBbktNTVhYNEJlUUgyYy9XelhtRmRSeW9WaEJHVVhCOUlhRjJVSzNX?=
- =?utf-8?B?SEFETnNPakYwdC9oMnY1cjh0UklUQVBrcmhJZUVmOWFLWS9XOURkYWRLZGds?=
- =?utf-8?B?WUxEL0xYZjF6aTVXaCtKcEdrblplQ0IrSWZUaUI3cWtpT1ZiWjdUb2ltUDJE?=
- =?utf-8?B?bldyNzZPVWJMblRPVVNNNWhraUdxVXJqd3lOeVNYdkVUaVlUa0JnUHMwNFYr?=
- =?utf-8?B?ZlJGS1BiaUZjWTdxVkoxa1Ryamx6VHc2MHoyRHV5NFJ0NFJVTml3TklrTE9Q?=
- =?utf-8?B?M2g0aDRPcnkzeHdWUEJXbGVXS1NOc3djc29kR3NtbkJaeWZ6bUJKVUFNM01R?=
- =?utf-8?B?WkhjK002NGQ2eTBzSlo5RFVTYUVTTXl1cUtEeUF5ZHR3Y0xCejBmZjRMY0Z1?=
- =?utf-8?B?N1ljODQzSS9yNXdqK2daSHdmS1VycXJGeEV0aS8ycHgvU1d1RXV3VnB3cHNN?=
- =?utf-8?B?UFBUb25VVXFUM0FWSDU5MXdvRlVUTjBnaWZCUVdRZ0htbW1VU3pFRlJxR0ta?=
- =?utf-8?B?Y25ZZU1nbmFVOVEzQUE1cFRqcGpXSTIrOWxmVC9KbUVQTVJYM2ZXVE00UmI3?=
- =?utf-8?B?eWRRYW5RU0lJL09VZjZXcjhsRHlISlc3K0xKN1dGSUZwM2hhWStwaUc2cjhq?=
- =?utf-8?B?SlVTR1NYbGhQUTRycVNHenc1ZFZMY21jQ0NiNjRRbUVQbTBwbnNqQU0vQUN4?=
- =?utf-8?B?clVnanVJZUxON1JrL0M3bjF1MTV4RTh4MDA1ZlBxSUlOVEhxeHZNZ1VramJz?=
- =?utf-8?B?blNNMGdmVGc1UlprUzdZNGRKUTZvVEx6TnRJcXJIRGRCckFheDlzMkUwYThF?=
- =?utf-8?B?MDhQRzZDZlhjUkd1VTBMdDZreDJMWFJmQWxiS3Jwcm9Uc3A3czlMbmNiU254?=
- =?utf-8?B?aGdZL0JuSmNka2txa25ZZkxicGJKelVHU3NiNTMrcE1QR1lyT3hRU2EvQjU1?=
- =?utf-8?B?RlBMeCtGYVhtOHdmYjJueTFhZ2dZcVN1UHJNT2p4UENiSXc0c1hLcDF0WmJQ?=
- =?utf-8?B?Yk5lTFFMaGpQKzhiTDNDcGpoZ0RYNjRuaWg3MU16WGtLMURlMTVjYk91VHF1?=
- =?utf-8?B?cHpDekpUMjladjRzY0pJNTc1NWVQNHdTUzFuZGJhREhlb1dNajFVZmVGQldP?=
- =?utf-8?B?R3BWc3Y0K1h1aWlVaCtqYXV5aXZwTGFSODNhaE92aXdLUzRjSFdjUStkekRo?=
- =?utf-8?B?ZDNwSjZpVGNnUTlDclRZamVSYSsrbno0WUpNb2ZkSFNvamNPaEQxTkxyVG02?=
- =?utf-8?B?ZjZVd202Q3BLbjNCV3huVlpsbG5EbDRabFIzck9NR3dmN3kyQkMxb2JiYzVa?=
- =?utf-8?B?azhOZVdaOVVZbG9ZT2IrOE5mRUx3YlVjZDF5QkJCTnd4WXZ1dzBCT2JzQ1Zm?=
- =?utf-8?B?cTIwdkUxVWJZdDd3dWlWMnZURGNuczBnQTluRjdBNlBzaTBXY0VNdUpRSWxB?=
- =?utf-8?B?ajEwajVtTWY2UUZjUnMxekVybmN0RVJZRkFOWE5RbWN0L3h2NDZuOGp2U1F1?=
- =?utf-8?Q?kEGLDrm8Osk1P7Vk=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <552F7CA01003C44493787082F516A6D8@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d73znA1D"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358e425c261so8608152a91.3
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 08:40:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775058009; x=1775662809; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DhzWUdsAadf2bCm0BnwhX4D6ZCPWNLP0D/pAuORC/t0=;
+        b=d73znA1DjsNxAQnmTg4Q5MPbJeL8XE1dnk5ODfp1B9uV1FUM92Xxh6c9lmI5L7h4g3
+         oYiStoD6+V3jRVXz90d5nPd6c3FzQlVK/6ZonZ2zsi/GsgFnoEtNNj2ye9+2+NBWgRXy
+         4GQLYo9jBpZVj2Bw/ddd+T6RL9NkDQSPDG9KbAGiRA9oFtjYaOX7WaGA/oMUtj8Gl5MV
+         I0gyYQVR8+MkydvwL0bOnzt6v3/DtV7WYCqswk2iBDP0vf8IlfPjqjouUgiKhZF8DxBt
+         1c5i1PhAD31MjYpc4EncJR64KnGDxtsKUi7JQTEKI1F2d7BXtG7FcvXwlIn8mKMymgUm
+         XziA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775058009; x=1775662809;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DhzWUdsAadf2bCm0BnwhX4D6ZCPWNLP0D/pAuORC/t0=;
+        b=qdOfeQDJ+W/LLt5yzFph2NB4j5zKmX94DBFlV/El0LCFh5uu27vZtjK1hng5RZyHWe
+         CmbGbLo6smB4RL/iztQDSiMhCoKpfGsSA+x61Z0LJKKxvmJ4KfiGIAD+LfIdXHGKsvM6
+         Uvvfe7GQCPKgko6ZfQ5QcDGmQy5h7/y3ZkjUfIMjwKrsfKrIP2IVvavCNHHUCqSN0I9Y
+         vDVs5ZxznJpo6Nd8ru0VbusCWBuJqmWgN65jGKMX4O9XC6vQA2WAQBBTZRfI6Kz0t3nS
+         ZeH2HbxtQiZwQQihhdgnwe/CfnXGYHZvqe4Rav+DxpHHIOHTDihi0xOCy6AwlfNMh20A
+         DwzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFXN1zyVllLBwud+QcLB39pOBV8DngS+85QpWvx2k1HRTXG46HTo6xqqeU62JTX2jqj8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLQ+fboOakwoOqekGh+L1bjau+oZ/6XdPM/GVBMwUWSLco4QH4
+	C2u2V7kw7CQ4uyWyWS3PRkDwAVcxyjyDPo4Hxx9KBfKGmFJgEDGbGvOJCs7HOBWZEupkHZedD4N
+	xt2HK4w==
+X-Received: from pjbrv11.prod.google.com ([2002:a17:90b:2c0b:b0:35c:ba7:1b9b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:28ce:b0:35c:29ba:bf92
+ with SMTP id 98e67ed59e1d1-35dc6ea76eemr3856835a91.5.1775058009251; Wed, 01
+ Apr 2026 08:40:09 -0700 (PDT)
+Date: Wed, 1 Apr 2026 08:40:07 -0700
+In-Reply-To: <bb7b66ad99097c5326196b61d644cff255e30394.camel@amazon.co.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: DR3hKItz3sqTufUX/+jXfrO9dM0y0uBej2kJ3e7bY0nYhPvaEvXvTn2x/FNFFCuZgjEx8N37vU1c9RFPZb++8YcZzcsQIau9WEQ5S4UkdDzZ2T+QZSmEoWl15ET1iBaW8nxfRwys8R7oo8C5KvB5CGQLXD/He5JQ6LUkjktUpF8KcxyY+QBPwD3LGJoJmkJHb1mPEML/zdwcL4WwubF1JWbYXMaKNPn/c2TpODgROyT98+GZwWI24TY/p54VK/qhAU+6SUJkisO8r/6we4HSxttM5PKdqhiCc4QJMMI9Z3smtzqooo31P5IpfSjDEj+Gi87NIGA6gqql7AY+ej5EnQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d679b0d-94d6-4833-55d3-08de90049372
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2026 15:37:26.0910
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: R1yf181Sg1vz2eL74Q6Tmd3xADAPSlFNIcCjbdDojQL+8URlK/2uGra/4LnSJiuWETE5J2FeS6xuSaNsl/3OKBT6ik/YZBapYworsFMD5Lg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB9605
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20260329131543.91733-1-shaikhkamal2012@gmail.com>
+ <20260330101814.7fa1e31e@gandalf.local.home> <bb7b66ad99097c5326196b61d644cff255e30394.camel@amazon.co.uk>
+Message-ID: <ac08V4TaM2yh9SY1@google.com>
+Subject: Re: [PATCH] KVM: x86/xen: Fix sleeping lock in hard IRQ context on PREEMPT_RT
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw@amazon.co.uk>
+Cc: "rostedt@goodmis.org" <rostedt@goodmis.org>, 
+	"shaikhkamal2012@gmail.com" <shaikhkamal2012@gmail.com>, 
+	"syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com" <syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com>, 
+	"me@brighamcampbell.com" <me@brighamcampbell.com>, 
+	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "paul@xen.org" <paul@xen.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gTW9uLCAyMDI2LTAzLTMwIGF0IDExOjEwIC0wNDAwLCBQcmF0aWsgUi4gU2FtcGF0IHdyb3Rl
-Og0KPiBTTlAgbGlrZWx5IGhhcyBhbiBhbmFsb2dvdXMgaXNzdWUgdG9vLg0KPiBGYWlsaW5nIHRv
-IHN3aXRjaCBzdGF0ZXMgb24gcmVtb3ZlIHdpbGwgY2F1c2UgdGhhdCBSTVAgZW50cnkgdG8NCj4g
-cmVtYWluIHZhbGlkYXRlZC4gQSBtYWxpY2lvdXMgaHlwZXJ2aXNvciBjb3VsZCB0aGVuIHJlbWFw
-IHRoaXMgR1BBIHRvDQo+IGFub3RoZXIgSFBBIHdoaWNoIHdvdWxkIHB1dCB0aGlzIGluIHRoZSBH
-dWVzdC1JbnZhbGlkIHN0YXRlLiBPbiByZS0NCj4gaG90cGx1ZyBpZiB3ZSBpZ25vcmUgZXJyb3Jz
-IHN1Z2dlc3RlZCBieSBQYXRjaCAxIChpbiBvdXIgY2FzZSB0aGF0J2QNCj4gYmUgUFZBTElEQVRF
-X0ZBSUxfTk9VUERBVEUgZXJyb3IgbGlrZWx5KSwgd2UgY291bGQgaGF2ZSB0d28gUk1QDQo+IGVu
-dHJpZXMgZm9yIHRoZSBzYW1lIEdQQSBhbmQgYm90aCBiZWluZyB2YWxpZGF0ZWQuIFRoaXMgaXMg
-ZGFuZ2Vyb3VzDQo+IGJlY2F1c2UgaHlwZXJ2aXNvciBjb3VsZCBzd2FwIHRoZXNlIGF0IHdpbGwu
-DQoNCk9oLCBJIHdhcyBqdXN0IHdvbmRlcmluZyBpZiB3ZSBjb3VsZCBqdXN0IHplcm8gdGhlIHBh
-Z2Ugb24gYWNjZXB0DQpmYWlsdXJlIGZvciB0aGUgY2FzZSBvZiBhbHJlYWR5IGFjY2VwdGVkLiBI
-YW5kbGUgdGhlIGlzc3VlIGludGVybmFsbHkNCmFuZCBhY3R1YWxseSBnbyBiYWNrIHRvIHNvbWV0
-aGluZyBsaWtlIHBhdGNoIDEuIFdpbGwgaXQgd29yayBmb3IgU05QPw0KDQo+IA0KPiBXb3VsZCBp
-dCBub3QgYmUgYmV0dGVyIHRvIGhhdmUgdGhpcyBpbmZvcm1hdGlvbiBpbiB0aGUgdW5hY2NlcHRl
-ZA0KPiBiaXRtYXAgd2hpY2ggd2UgY291bGQgZXhwbGljaXRseSBxdWVyeSB0byBhY2NlcHQvdW5h
-Y2NlcHQ/DQoNCkl0IG1ha2VzIG1lIHRoaW5rIGFib3V0IHNoYXJlZCBtZW1vcnkgdG9vLiBTaG91
-bGQgdGhlIHVucGx1ZyBldmVudCBhbHNvDQpzaWduYWwgdGhlIGhvc3QgdG8gcmVzZXQgdGhlIG1l
-bW9yeSB0byBwcml2YXRlPyBJZiB0aGUgVk1NIGlzIGFjdHVhbGx5DQpub3QgYWRqdXN0aW5nIHRo
-ZSBndWVzdCBtYXBwaW5nIGZvciBhIHVucGx1Zy9yZS1wbHVnIHRoZW4gdGhlIG1lbW9yeQ0Kd291
-bGQgY29tZSBiYWNrIGFzIHNoYXJlZC4NCg0KQnV0IGl0IHJlYWxseSBzdGFydHMgdG8gZmVlbCBs
-aWtlIHdvcmsgdGhlIGhvc3Qgc2hvdWxkIGJlIGRvaW5nLg0KDQo+IA0KPiBGb3IgQUNQSSBoYXJk
-d2FyZS1zdHlsZSBob3RwbHVnIEkgd2FzIHdvcmtpbmcgd2l0aCB0aGUgVUVGSSBzaWRlIG9uIGEN
-Cj4gUE9DIHRvIHJlZmxlY3QgU1JBVCBob3RwbHVnIHdpbmRvd3MgaW4gVUVGSV9VTkFDQ0VQVEVE
-X01FTU9SWSB1c2luZw0KPiBFRklfTUVNT1JZX0hPVF9QTFVHR0FCTEUgYXR0cmlidXRlIGFuZCB3
-b3JraW5nIHRvIG1vZGlmeSB0aGF0IHNwZWMuDQo+IEnigJltIGxlc3Mgc3VyZSB3aGF0IHRoaXMg
-ZGVzY3JpcHRpb24gZm9yIHZpcnRpby1tZW0gd291bGQgbG9vayBsaWtlDQo+IGFuZCBpZiBpdCdk
-IGJlIHBvc3NpYmxlIHRvIGRvIHRoaXMgZWFybHktYm9vdC4NCg0KDQo=
+On Mon, Mar 30, 2026, David Woodhouse wrote:
+> On Mon, 2026-03-30 at 10:18 -0400, Steven Rostedt wrote:
+> >=20
+> > > +static void xen_timer_inject_irqwork(struct irq_work *work)
+> > > +{
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_vcpu_xen *xen =3D container_of(w=
+ork, struct kvm_vcpu_xen,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 timer_inject_irqwork);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_vcpu *vcpu =3D container_of(xen,=
+ struct kvm_vcpu, arch.xen);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_xen_evtchn e;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 int rc;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 e.vcpu_id =3D vcpu->vcpu_id;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 e.vcpu_idx =3D vcpu->vcpu_idx;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 e.port =3D vcpu->arch.xen.timer_virq;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 e.priority =3D KVM_IRQ_ROUTING_XEN_EVTCHN_P=
+RIO_2LEVEL;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 rc =3D kvm_xen_set_evtchn_fast(&e, vcpu->kv=
+m);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 if (rc !=3D -EWOULDBLOCK)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 vcpu->arch.xen.timer_expires =3D 0;
+> > > +}
+> >=20
+> > Why duplicate this code and not simply make a static inline helper
+> > function that is used in both places?
+>=20
+> It's already duplicating the functionality; the original
+> xen_timer_callback() will already fall back to injecting the IRQ in
+> process context when it needs to (by setting vcpu-
+> >arch.xen.timer_pending and then setting KVM_REQ_UNBLOCK).
+>=20
+> All you had to do was make kvm_xen_set_evtchn_fast() return=C2=A0
+> -EWOULDBLOCK in the in_hardirq() case in order to use the existing
+> fallback, surely?=20
+>=20
+> Better still, can't kvm_xen_set_evtchn_fast() just use read_trylock()
+> instead?
+
+Re-reading through the thread where you proposed using trylock, and through
+commit bbe17c625d68 ("KVM: x86/xen: Fix potential deadlock in kvm_xen_updat=
+e_runstate_guest()"),
+I think I agree with using trylock for "fast" paths.
+
+Though I would prefer to not make it unconditional for the "fast" helper in=
+stead
+of conditional based on in_interrupt().  And before we start doing surgery =
+to
+"fix" a setup no one uses, and also before we use gpcs more broadly, I thin=
+k we
+should try to up-level the gpc APIs to reduce the amount of duplicate, boil=
+erplate
+code.  kvm_xen_update_runstate_guest() and maybe kvm_xen_set_evtchn() will =
+likely
+need to open code some amount of logic, but=20
+
+Side topic, looks like kvm_xen_shared_info_init() is buggy in that it fails=
+ to
+mark the slot as dirty.
+
+E.g. sans the API implementations, I think we can and should end up with co=
+de
+like this:
+
+---
+ arch/x86/kvm/x86.c |  14 ++---
+ arch/x86/kvm/xen.c | 127 ++++++++++++---------------------------------
+ 2 files changed, 37 insertions(+), 104 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0b5d48e75b65..65bad25fd9d4 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3274,15 +3274,8 @@ static void kvm_setup_guest_pvclock(struct pvclock_v=
+cpu_time_info *ref_hv_clock,
+=20
+ 	memcpy(&hv_clock, ref_hv_clock, sizeof(hv_clock));
+=20
+-	read_lock_irqsave(&gpc->lock, flags);
+-	while (!kvm_gpc_check(gpc, offset + sizeof(*guest_hv_clock))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
+-
+-		if (kvm_gpc_refresh(gpc, offset + sizeof(*guest_hv_clock)))
+-			return;
+-
+-		read_lock_irqsave(&gpc->lock, flags);
+-	}
++	if (kvm_gpc_acquire(gpc))
++		return;
+=20
+ 	guest_hv_clock =3D (void *)(gpc->khva + offset);
+=20
+@@ -3305,8 +3298,7 @@ static void kvm_setup_guest_pvclock(struct pvclock_vc=
+pu_time_info *ref_hv_clock,
+=20
+ 	guest_hv_clock->version =3D ++hv_clock.version;
+=20
+-	kvm_gpc_mark_dirty_in_slot(gpc);
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	kvm_gpc_release_dirty(gpc);
+=20
+ 	trace_kvm_pvclock_update(vcpu->vcpu_id, &hv_clock);
+ }
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 91fd3673c09a..a97fd88ee99c 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -42,19 +42,12 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	u32 *wc_sec_hi;
+ 	u32 wc_version;
+ 	u64 wall_nsec;
+-	int ret =3D 0;
+ 	int idx =3D srcu_read_lock(&kvm->srcu);
++	int ret;
+=20
+-	read_lock_irq(&gpc->lock);
+-	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
+-		read_unlock_irq(&gpc->lock);
+-
+-		ret =3D kvm_gpc_refresh(gpc, PAGE_SIZE);
+-		if (ret)
+-			goto out;
+-
+-		read_lock_irq(&gpc->lock);
+-	}
++	ret =3D kvm_gpc_acquire(gpc);
++	if (ret)
++		goto out;
+=20
+ 	/*
+ 	 * This code mirrors kvm_write_wall_clock() except that it writes
+@@ -96,7 +89,7 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	smp_wmb();
+=20
+ 	wc->version =3D wc_version + 1;
+-	read_unlock_irq(&gpc->lock);
++	kvm_gpc_release_dirty(gpc);
+=20
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_MASTERCLOCK_UPDATE);
+=20
+@@ -155,22 +148,14 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcp=
+u,
+ 				 struct gfn_to_pfn_cache *gpc,
+ 				 unsigned int offset)
+ {
+-	unsigned long flags;
+ 	int r;
+=20
+-	read_lock_irqsave(&gpc->lock, flags);
+-	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
+-
+-		r =3D kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock));
+-		if (r)
+-			return r;
+-
+-		read_lock_irqsave(&gpc->lock, flags);
+-	}
++	r =3D kvm_gpc_acquire(gpc);
++	if (r)
++		return r;
+=20
+ 	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	kvm_gpc_release_clean(gpc);
+=20
+ 	/*
+ 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
+@@ -420,27 +405,8 @@ static void kvm_xen_update_runstate_guest(struct kvm_v=
+cpu *v, bool atomic)
+ 	 * Attempt to obtain the GPC lock on *both* (if there are two)
+ 	 * gfn_to_pfn caches that cover the region.
+ 	 */
+-	if (atomic) {
+-		local_irq_save(flags);
+-		if (!read_trylock(&gpc1->lock)) {
+-			local_irq_restore(flags);
+-			return;
+-		}
+-	} else {
+-		read_lock_irqsave(&gpc1->lock, flags);
+-	}
+-	while (!kvm_gpc_check(gpc1, user_len1)) {
+-		read_unlock_irqrestore(&gpc1->lock, flags);
+-
+-		/* When invoked from kvm_sched_out() we cannot sleep */
+-		if (atomic)
+-			return;
+-
+-		if (kvm_gpc_refresh(gpc1, user_len1))
+-			return;
+-
+-		read_lock_irqsave(&gpc1->lock, flags);
+-	}
++	if (__kvm_gpc_acquire(gpc, atomic))
++		return;
+=20
+ 	if (likely(!user_len2)) {
+ 		/*
+@@ -465,6 +431,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vc=
+pu *v, bool atomic)
+ 		 * gpc1 lock to make lockdep shut up about it.
+ 		 */
+ 		lock_set_subclass(&gpc1->lock.dep_map, 1, _THIS_IP_);
++
+ 		if (atomic) {
+ 			if (!read_trylock(&gpc2->lock)) {
+ 				read_unlock_irqrestore(&gpc1->lock, flags);
+@@ -575,13 +542,10 @@ static void kvm_xen_update_runstate_guest(struct kvm_=
+vcpu *v, bool atomic)
+ 		smp_wmb();
+ 	}
+=20
+-	if (user_len2) {
+-		kvm_gpc_mark_dirty_in_slot(gpc2);
+-		read_unlock(&gpc2->lock);
+-	}
++	if (user_len2)
++		kvm_gpc_release_dirty(gpc2);
+=20
+-	kvm_gpc_mark_dirty_in_slot(gpc1);
+-	read_unlock_irqrestore(&gpc1->lock, flags);
++	kvm_gpc_release_dirty(gpc1);
+ }
+=20
+ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
+@@ -645,20 +609,8 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	if (!evtchn_pending_sel)
+ 		return;
+=20
+-	/*
+-	 * Yes, this is an open-coded loop. But that's just what put_user()
+-	 * does anyway. Page it in and retry the instruction. We're just a
+-	 * little more honest about it.
+-	 */
+-	read_lock_irqsave(&gpc->lock, flags);
+-	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
+-
+-		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info)))
+-			return;
+-
+-		read_lock_irqsave(&gpc->lock, flags);
+-	}
++	if (kvm_gpc_acquire(gpc))
++		return;
+=20
+ 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+ 	if (IS_ENABLED(CONFIG_64BIT) && v->kvm->arch.xen.long_mode) {
+@@ -686,8 +638,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+ 	}
+=20
+-	kvm_gpc_mark_dirty_in_slot(gpc);
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	kvm_gpc_release_dirty(gpc);
+=20
+ 	/* For the per-vCPU lapic vector, deliver it as MSI. */
+ 	if (v->arch.xen.upcall_vector)
+@@ -697,8 +648,8 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ {
+ 	struct gfn_to_pfn_cache *gpc =3D &v->arch.xen.vcpu_info_cache;
+-	unsigned long flags;
+ 	u8 rc =3D 0;
++	int r;
+=20
+ 	/*
+ 	 * If the global upcall vector (HVMIRQ_callback_vector) is set and
+@@ -713,33 +664,23 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ 	BUILD_BUG_ON(sizeof(rc) !=3D
+ 		     sizeof_field(struct compat_vcpu_info, evtchn_upcall_pending));
+=20
+-	read_lock_irqsave(&gpc->lock, flags);
+-	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
+-
+-		/*
+-		 * This function gets called from kvm_vcpu_block() after setting the
+-		 * task to TASK_INTERRUPTIBLE, to see if it needs to wake immediately
+-		 * from a HLT. So we really mustn't sleep. If the page ended up absent
+-		 * at that point, just return 1 in order to trigger an immediate wake,
+-		 * and we'll end up getting called again from a context where we *can*
+-		 * fault in the page and wait for it.
+-		 */
+-		if (in_atomic() || !task_is_running(current))
+-			return 1;
+-
+-		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info))) {
+-			/*
+-			 * If this failed, userspace has screwed up the
+-			 * vcpu_info mapping. No interrupts for you.
+-			 */
+-			return 0;
+-		}
+-		read_lock_irqsave(&gpc->lock, flags);
+-	}
++	/*
++	 * This function gets called from kvm_vcpu_block() after setting the
++	 * task to TASK_INTERRUPTIBLE, to see if it needs to wake immediately
++	 * from a HLT. So we really mustn't sleep. If the page ended up absent
++	 * at that point, just return 1 in order to trigger an immediate wake,
++	 * and we'll end up getting called again from a context where we *can*
++	 * fault in the page and wait for it.
++	 *
++	 * If acquiring the cache fails completely, then userspace has screwed
++	 * up the vcpu_info mapping. No interrupts for you.
++	 */
++	r =3D __kvm_gpc_acquire(gpc, in_atomic() || !task_is_running(current));
++	if (r)
++		return r =3D=3D -EWOULDBLOCK ? 1 : 0;
+=20
+ 	rc =3D ((struct vcpu_info *)gpc->khva)->evtchn_upcall_pending;
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	kvm_gpc_release_clean(gpc);
+ 	return rc;
+ }
+=20
+
+base-commit: 3d6cdcc8883b5726513d245eef0e91cabfc397f7
+--=20
+
+[*] https://lore.kernel.org/all/76c61e1cb86e04df892d74c10976597700fe4cb5.ca=
+mel@infradead.org
