@@ -1,53 +1,41 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68D33F165E;
-	Wed,  1 Apr 2026 10:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CA92FD68B;
+	Wed,  1 Apr 2026 10:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775039795; cv=none; b=alZzp19T9t6mYPCW+ZpBZt02dkTcpjiul/HoJlWbsuYdu6a41DUMlLBTBEjp6kGBfMKtziyTDaBLEQ2b05ZGm8nZLTLTXaoaBNe3NV7Y/owuWK+pi5fZ6K+EZCAFaQbhRhgOMsVCvha+WhZfTBdMgq/L3j78BcT4cfG0JnFpu4I=
+	t=1775040566; cv=none; b=f5jEAzOuwNEDBx3ZXa6t/zgo25JSTA9aHkRkdvqpNPiaRhHffTwZq5llq0eVIUBifD4QqczfUHrc9ltjQK0tDX9NlvadRU5GRIE23/Wqj5fYQUSBJK8kuLXRTsxBiAEDICDPEElvDXLv0VEHBtVkPgs7DQCSwLK0lW0J5xayoxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775039795; c=relaxed/simple;
-	bh=qbd0aMEPJKHVVmAHwyCANP8ji9lzQ91FdSs69l2DRFU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEdL8KyJaPdtT2Y7Xk3787vcjh/fy93HVetArNwtSwxKZlWuTk/t3cGCMPZf/uxbUYDc3/rcNXvY/+jsYOwwm9nIKtF0LvcsbR7fWvukVlM/x9/cv+lT7WFYxOpttrMpYcpXRlt08ZO3e9mpBNx55lZefMhqYMwBXuK4Bv59yGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NDj6nClE; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDj6nClE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8974C4CEF7;
-	Wed,  1 Apr 2026 10:36:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775039794;
-	bh=qbd0aMEPJKHVVmAHwyCANP8ji9lzQ91FdSs69l2DRFU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDj6nClEjAAd9rLdWOKR8k9ByOWrXRBsM+TUa+DcAYRJQ4UDUUmoNh7z2TILrEgfa
-	 yfAlhIiHHLUFCu6Pxzh6FezWgGtTpWmZsBd0g9IWRvkq4mKiqH50ARA+Upt5J1B2j8
-	 lpjB+O9sslgZu1MgLJH0T7udFIUNmj0SCizrwD+cZRHeh8HKEMc+zC/Uz1ZeFP8ihE
-	 ux+hfPZ3LsLpFUohPfUDJ7GWqZzyS2d8uR0X6H4EGeNhcERrwhrmzMUE7nUhdNr1YC
-	 VcaeM+Nioo4Smxc0WV9+xTNMroqY6hF1mHf98WKm4jRDBsvbL+OuyNuLqRan8ZN+0g
-	 48csUVOlWW2Mw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w7sw4-00000007oRQ-33Xr;
-	Wed, 01 Apr 2026 10:36:32 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
+	s=arc-20240116; t=1775040566; c=relaxed/simple;
+	bh=pgu/xrikS1EicywTi3slsCZAGoYeoupdv3txZcIG3fw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=SkRNAbj0mBm/9WEqeQrgoJeQSwsrWyemvczSOMYpxj94dHutFv5b5Cj661WOkpxgp7vgvs4hDC6qbRTdU4oz1D4LThlx/p/DGNyqZSSk14FKmEhx17/RkK06jMSYZlzIL/lCh27mwHPHJLYMVISwYZb8IrcMTkn4767xqMf3zsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowABng9oe+Mxp7D+IDA--.28909S2;
+	Wed, 01 Apr 2026 18:49:03 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: anup@brainfault.org
+Cc: alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	atish.patra@linux.dev,
+	jiakaiPeanut@gmail.com,
+	kvm-riscv@lists.infradead.org,
 	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Sascha Bischoff <sascha.bischoff@arm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 16/16] KVM: arm64: set_id_regs: Allow GICv3 support to be set at runtime
-Date: Wed,  1 Apr 2026 11:36:11 +0100
-Message-ID: <20260401103611.357092-17-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260401103611.357092-1-maz@kernel.org>
-References: <20260401103611.357092-1-maz@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	xujiakai2025@iscas.ac.cn
+Subject: Re: [PATCH v2] RISC-V: KVM: Fix use-after-free in kvm_riscv_gstage_get_leaf()
+Date: Wed,  1 Apr 2026 10:49:02 +0000
+Message-Id: <20260401104902.716329-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAAhSdy3V2kipH8sPzXkmnXP=Sh=7wwqhHaAWDyucJnytbL+qtw@mail.gmail.com>
+References: <CAAhSdy3V2kipH8sPzXkmnXP=Sh=7wwqhHaAWDyucJnytbL+qtw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,149 +43,61 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, sascha.bischoff@arm.com, broonie@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-CM-TRANSID:rQCowABng9oe+Mxp7D+IDA--.28909S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrZryDJr47CF17Ar13JryDtrb_yoW8JF1Upr
+	Z5K3y3uFn8Ww4UZrs7J3WkArW5u3yxWr15Ga4DG3Z3Cw45XrW3Wr4I9ryqv3Z8Cr1SvFZI
+	vF1Ut34DZw48Z3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjEoGDUUUUU==
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwsECWnM0NKVfQAAsO
 
-set_id_regs creates a GIC3 guest when possible, and then proceeds
-to write the ID registers as if they were not affected by the presence
-of a GIC. As it turns out, ID_AA64PFR1_EL1 is the proof of the
-contrary.
+Hi Anup,
 
-KVM now makes a point in exposing the GIC support to the guest,
-no matter what userspace says (userspace such as QEMU is known to
-write silly things at times).
+I've been fuzzing the latest kvm-riscv with the spin_trylock() fix 
+applied, and I can still reproduce the use-after-free bug in 
+kvm_riscv_gstage_get_leaf(). This indicates the current fix is 
+insufficient.
 
-Accommodate for this level of nonsense by teaching set_id_regs about
-fields that are mutable, and only compare registers that have been
-re-sanitised first.
+The current code does:
+    mmu_locked = spin_trylock(&kvm->mmu_lock);
+    kvm_riscv_gstage_unmap_range(...);
+    if (mmu_locked)
+        spin_unlock(&kvm->mmu_lock);
+When spin_trylock() fails (lock held by another CPU), the code still 
+proceeds to access the gstage page table without any protection, 
+leading to UAF when concurrent with kvm_riscv_mmu_free_pgd().
 
-Reported-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- .../testing/selftests/kvm/arm64/set_id_regs.c | 52 ++++++++++++++++---
- 1 file changed, 45 insertions(+), 7 deletions(-)
+The fundamental issue is that spin_trylock() returns false in two 
+different cases:
+1. Lock held by current thread (we should continue)
+2. Lock held by another thread (we should NOT continue)
+But the current code doesn't distinguish between them.
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 73de5be58bab0..7899d557c70b6 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -37,6 +37,9 @@ struct reg_ftr_bits {
- 	 * For FTR_LOWER_SAFE, safe_val is used as the minimal safe value.
- 	 */
- 	int64_t safe_val;
-+
-+	/* Allowed to be changed by the host after run */
-+	bool mutable;
- };
- 
- struct test_feature_reg {
-@@ -44,7 +47,7 @@ struct test_feature_reg {
- 	const struct reg_ftr_bits *ftr_bits;
- };
- 
--#define __REG_FTR_BITS(NAME, SIGNED, TYPE, SHIFT, MASK, SAFE_VAL)	\
-+#define __REG_FTR_BITS(NAME, SIGNED, TYPE, SHIFT, MASK, SAFE_VAL, MUT)	\
- 	{								\
- 		.name = #NAME,						\
- 		.sign = SIGNED,						\
-@@ -52,15 +55,20 @@ struct test_feature_reg {
- 		.shift = SHIFT,						\
- 		.mask = MASK,						\
- 		.safe_val = SAFE_VAL,					\
-+		.mutable = MUT,						\
- 	}
- 
- #define REG_FTR_BITS(type, reg, field, safe_val) \
- 	__REG_FTR_BITS(reg##_##field, FTR_UNSIGNED, type, reg##_##field##_SHIFT, \
--		       reg##_##field##_MASK, safe_val)
-+		       reg##_##field##_MASK, safe_val, false)
-+
-+#define REG_FTR_BITS_MUTABLE(type, reg, field, safe_val) \
-+	__REG_FTR_BITS(reg##_##field, FTR_UNSIGNED, type, reg##_##field##_SHIFT, \
-+		       reg##_##field##_MASK, safe_val, true)
- 
- #define S_REG_FTR_BITS(type, reg, field, safe_val) \
- 	__REG_FTR_BITS(reg##_##field, FTR_SIGNED, type, reg##_##field##_SHIFT, \
--		       reg##_##field##_MASK, safe_val)
-+		       reg##_##field##_MASK, safe_val, false)
- 
- #define REG_FTR_END					\
- 	{						\
-@@ -134,7 +142,8 @@ static const struct reg_ftr_bits ftr_id_aa64pfr0_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, CSV2, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, DIT, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, SEL2, 0),
--	REG_FTR_BITS(FTR_EXACT, ID_AA64PFR0_EL1, GIC, 0),
-+	/* GICv3 support will be forced at run time if available */
-+	REG_FTR_BITS_MUTABLE(FTR_EXACT, ID_AA64PFR0_EL1, GIC, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, EL3, 1),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, EL2, 1),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, EL1, 1),
-@@ -634,12 +643,38 @@ static void test_user_set_mte_reg(struct kvm_vcpu *vcpu)
- 		ksft_test_result_pass("ID_AA64PFR1_EL1.MTE_frac no longer 0xF\n");
- }
- 
-+static uint64_t reset_mutable_bits(uint32_t id, uint64_t val)
-+{
-+	struct test_feature_reg *reg = NULL;
-+
-+	for (int i = 0; i < ARRAY_SIZE(test_regs); i++) {
-+		if (test_regs[i].reg == id) {
-+			reg = &test_regs[i];
-+			break;
-+		}
-+	}
-+
-+	if (!reg)
-+		return val;
-+
-+	for (const struct reg_ftr_bits *bits = reg->ftr_bits; bits->type != FTR_END; bits++) {
-+		if (bits->mutable) {
-+			val &= ~bits->mask;
-+			val |= bits->safe_val << bits->shift;
-+		}
-+	}
-+
-+	return val;
-+}
-+
- static void test_guest_reg_read(struct kvm_vcpu *vcpu)
- {
- 	bool done = false;
- 	struct ucall uc;
- 
- 	while (!done) {
-+		uint64_t val;
-+
- 		vcpu_run(vcpu);
- 
- 		switch (get_ucall(vcpu, &uc)) {
-@@ -647,9 +682,11 @@ static void test_guest_reg_read(struct kvm_vcpu *vcpu)
- 			REPORT_GUEST_ASSERT(uc);
- 			break;
- 		case UCALL_SYNC:
-+			val = test_reg_vals[encoding_to_range_idx(uc.args[2])];
-+			val = reset_mutable_bits(uc.args[2], val);
-+
- 			/* Make sure the written values are seen by guest */
--			TEST_ASSERT_EQ(test_reg_vals[encoding_to_range_idx(uc.args[2])],
--				       uc.args[3]);
-+			TEST_ASSERT_EQ(val, reset_mutable_bits(uc.args[2], uc.args[3]));
- 			break;
- 		case UCALL_DONE:
- 			done = true;
-@@ -740,7 +777,8 @@ static void test_assert_id_reg_unchanged(struct kvm_vcpu *vcpu, uint32_t encodin
- 	uint64_t observed;
- 
- 	observed = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(encoding));
--	TEST_ASSERT_EQ(test_reg_vals[idx], observed);
-+	TEST_ASSERT_EQ(reset_mutable_bits(encoding, test_reg_vals[idx]),
-+		       reset_mutable_bits(encoding, observed));
- }
- 
- static void test_reset_preserves_id_regs(struct kvm_vcpu *vcpu)
--- 
-2.47.3
+My proposed fix:
+Use lock_is_held_type() to check if current thread already holds the 
+lock:
+    bool need_unlock = false;
+    if (!lock_is_held_type(&kvm->mmu_lock, LOCK_STATE_HELD)) {
+        spin_lock(&kvm->mmu_lock);
+        need_unlock = true;
+    }
+    kvm_riscv_gstage_unmap_range(...);
+    if (need_unlock)
+        spin_unlock(&kvm->mmu_lock);
+
+However, I'm not sure if this is the best approach. What do you think?
+
+Thanks,
+Jiakai
 
