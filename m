@@ -1,114 +1,136 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B913A9DA6
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669853B8BB2
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 21:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775077240; cv=none; b=JFGZqeBZfUhu97OpJJV8sOK87c36gI6p/oS9t7OZ6gFgP6oqoYRMuxZ/E2YHCFSiExVfm+qRcjgPbpDY098LOvTScS4ZMHHl7BlsQfqcce6EuMCTv0OsxkLfXC/hYP/zGbMwzzxBFfvgfVi1w3ayCjB5YtmXp7Xq+gQkeyZgYYo=
+	t=1775077352; cv=none; b=nwSG4igz8ad5FanBzvWu+y6H4miTnWJAAb4EvYtrY2C9d6ESAG9vSU+b8Nc+lxjjaszq7ZQLnpfLkfanszJNWGudR9aEHV8W12YUREbL88CFvPvU2ioUU8nQ2cVOCb/axP2S4QBRrG7n+sz9nkLjbbv4VpHONvZpJVhb4Mh2xBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775077240; c=relaxed/simple;
-	bh=rwCTMhhW1mlm2pQN2PUj1MkMfhRFEtQPzL6FszfFEdk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mMNyuXedozE2dk7EZ0NlRYgpINnYZQFtWAWJrTJwGdZmQjUsEAKA7gWSazq2qKEha7mD8Rqw4Ze+ZttS39J2hvOw62Lke1lLfNk8Y2I9CptbQuXCv6uU6qUwBa9V92deg97EDCSketEgLIs2I6kro9Sdodn46qCDkt3g5h7ERTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E3bC+BZ8; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775077352; c=relaxed/simple;
+	bh=/vuIx1V+G5o+pbSAs+wUn8doNkEqrz0xObFAiDyvvQM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KxDKslVQoyb1hyGt1rafjb/1fg13OCzEPf+embEQ8bhlxX4XZ3MOaevXTTD3IG2ykJGjOfpZPFmeFZCfaO5x0qNt+GqhLPPShPwq890IuLd7fXnTA+HX1y8oQkkOQ0nSuKKEjJVb3Rlkdsoy7eZkHdNo7vPjoAmIB7eT18rHW9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F5YwtxKM; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E3bC+BZ8"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b23af7d7e8so5566435ad.0
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:00:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F5YwtxKM"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-486fe655187so1749165e9.2
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 14:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775077239; x=1775682039; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R/Onj4oOQCUP+/EEd8Xnfd/XRtqXrJLCIkDndkOebLk=;
-        b=E3bC+BZ8x4/SPCTvD+ufe1mlHOyqjLXeUQPuxbIUQW5QGD1t+FAM5Q7E2b4PqH3ttr
-         R4i/vfvUEqKcQCiqANvC1gUQcPqcKWLhAp7QUa4X1aSs1sU0/NAwrlAbyAp6zDbCOvpa
-         zBqPwEOIpGuIZrHVkBRRIPxhpZNwzPHgaMs3gnMsien25j9WEer1jpqNJh+HT8nzvUPX
-         43rn5084rbAwkkEk8vsRgyx+hWQniwIWA7NF6wCVhR7sXEVzf26GL4q72f83Uf7hxhLE
-         5bLr3Qsp6Wg2Ry1d3lW0K9YEnytYlO8NJ/Yli7BhaZ+HkvtlB8sanwdoVMatWXPg2pqS
-         3FNQ==
+        d=linaro.org; s=google; t=1775077349; x=1775682149; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wu484ARXgNjrCXY792DVUqnqI/7zasFvjnpp9c4Q+uo=;
+        b=F5YwtxKMd+mxPFVHQvdmK+DkR7mFGVRFJ4yuTbtCdbO/s8JaIumai05wUYozsjwBV/
+         Mn4VufeYnG9Q6adttCRt58GcPyCDw0LktQH6UE6sF8RsNM5JgRdO/R/juh3hQHgaVHl8
+         PJd96V7uw7QsVTvWJtZbx+aN9VrdT9XRn4U3Dc1akyRuwLnWOSheaipU4g9MGBUnUz2c
+         D/rxmutpHH/P/vIflZY7j3iMSEB764FCsa3wklxlsSR4WiBQOZkMec4e867zki2UK1dm
+         6kUnHaZ4mMwAd0kxBtoe/G3xAzYA1FD5jl/vV3wbHXewXXBqOoa46OWYHqVWvJwUWmPA
+         waDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775077239; x=1775682039;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R/Onj4oOQCUP+/EEd8Xnfd/XRtqXrJLCIkDndkOebLk=;
-        b=QtHEmWmP5tB+dfGyB9KA6M91L6NnNMKC557RjLk4B6ttGSzPG6gE8ZkoUQF/Is6ITg
-         boxD7qI4fALsJQsKEnrYeZepjnw/k8tTLFDFUAmHxaOa8qdr13SFdcQLts/h/U9dcyTK
-         MhYmSeg2X0KQumkWUNu/wgb1SxzRserGxnkIEsorB7kFLecQ3DE6elGeANz+qnU8cBA/
-         sKNojgmQ0umCqJSHl9h6J+GD+WdoDH9gHOSusWRihDe5/UkLo1Z1c+5l3zmtGJpcXkpT
-         tXGwMPMFLKxjcv8eGx3MMy9bqISvuQEX6SItRiI33b7zt3GCqQTsmmw0CHxDZ8BE34UJ
-         qmVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVts1+dWhwsoapWstcsA/FUEccuQ9Q/Kdk9oDFmHKSEc67oii+d18CQE0NiEXWzg3mHDM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh+xMeGK2bXwxBdU9rd0Oo3siQjAYZJlwHxIUmXJooEd5UbC2a
-	vbR+1zNUhr46mudwKaT930qhIQG3QNNEHIaclwyO41zmX5kevu44DlHUBoFIyYdMX0Zjy9NYsWu
-	E/kri+g==
-X-Received: from plgy11.prod.google.com ([2002:a17:903:22cb:b0:2b0:4ce1:a0e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1250:b0:2b0:60f1:de58
- with SMTP id d9443c01a7336-2b275dc23b8mr6460715ad.45.1775077238622; Wed, 01
- Apr 2026 14:00:38 -0700 (PDT)
-Date: Wed, 1 Apr 2026 14:00:37 -0700
-In-Reply-To: <20260331194033.3890309-15-jrhilke@google.com>
+        d=1e100.net; s=20251104; t=1775077349; x=1775682149;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wu484ARXgNjrCXY792DVUqnqI/7zasFvjnpp9c4Q+uo=;
+        b=sRsjYe7gvGztMoATfxc36P7qHiGW8vG/D50mEVwhuwLwz9fGfEZ9PwGIPiNEmAAkZM
+         s8eYFcriuoCxq008yh/t3CiClxRF6kwtYxlKuWtD2Al1FjQoGB9SCw36wv7Uj/rAiOjx
+         XNJ/I1MmNm9FHpPaTEV9Pm8Q0k5M2jsay2G3H0+YpxG0cogPk01NkZGgZBDFiZDXTCdd
+         Zo0S9IzlEN8+RsqnS83ny88WN4rgdDxVK4Ckrlao0Ilkp+Xwy/HgNvOQWqF03Sk1333A
+         ca+n6vvl1K88ruQpAHXEMUQuuhGwJrgG24Oq+Tswj/gAH79cnHPgumhtI4fPV0fGfNaN
+         bFNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkk39a91A07FW6MkgUVHXO9MaVWQSA5oaq2nJQOnhxZCnMzacQ9IaD8eI9k1pxKU9PlU0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxbys8E07184cghnR4cPpYrBD2b0KYnpG3xEWndTESCP2/Oed/9
+	tBcunGKOEIf5MeWCbQWlvSjbczofz/q08mH4L+uARvgEvNyTIJewWwm0JgqwqKL7mYE=
+X-Gm-Gg: ATEYQzyN7HHHTSRT1dVlkO64muA9ivGCxgdViX5JcoN957IgGnkMLhgFeXKxW0q8ayn
+	FJvLdCcAGUosgU49BFfVzu2Rsfrn4dfIeT2j7ZMGRU4EBj4CwtoGQOW+S/ZnJzrPB2cxGGcc6tp
+	49oiYrto9ZIY8AjtZ+eLiLM5gT3CEy7LMAId7jddBI3FUQiWbZIjM2pMMW1zWJZSOuRoxk7CgQF
+	oKV1o9ln56KJfVVMBF8JrZGCdyLcn68KaEf+Ue0+rJwqCyTFioOFWIjEXp6vO1NXWCdNiNAnqTc
+	OHhpU3eaAYWm9CSIzLCOS6uPpMZdB14+WeRtOzX69eSvyIoFvW3ZGG9mTjnj6mJDNO/sNwXYyKI
+	MdcSFTXZ3jMdlk5QwTu1uY5zzHYkF2Nv4D+dWaM0Q9zokoSI+UHrikvGX4osRHi3Cj3GzuWhbny
+	MVnlrkmsqYjs5ZCPl7mE3ogJs5yXPCezwglT7PM7VQ08+Ri21XlK1NnE/knA2jkOF75Q==
+X-Received: by 2002:a05:600c:c165:b0:488:7ff6:1f75 with SMTP id 5b1f17b1804b1-4888b786676mr11650045e9.21.1775077348657;
+        Wed, 01 Apr 2026 14:02:28 -0700 (PDT)
+Received: from [192.168.69.228] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888955d711sm41710665e9.9.2026.04.01.14.02.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Apr 2026 14:02:27 -0700 (PDT)
+Message-ID: <b449667f-11d0-48d8-864b-dc17f30a18fd@linaro.org>
+Date: Wed, 1 Apr 2026 23:02:26 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-15-jrhilke@google.com>
-Message-ID: <ac2HdXsXyQ0U_-WR@google.com>
-Subject: Re: [PATCH v2 14/14] KVM: selftests: Make vfio_pci_irq_test timeout configurable
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-11.1 3/8] accel/kvm: Expose all non-target specific
+ declarations
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Eric Farman <farman@linux.ibm.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
+ Peter Maydell <peter.maydell@linaro.org>, Huacai Chen
+ <chenhuacai@kernel.org>, qemu-riscv@nongnu.org,
+ Alexander Graf <agraf@csgraf.de>, Pedro Barbuda <pbarbuda@microsoft.com>,
+ Anton Johansson <anjo@rev.ng>, Song Gao <gaosong@loongson.cn>,
+ Weiwei Li <liwei1518@gmail.com>, Aleksandar Rikalo <arikalo@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cornelia Huck
+ <cohuck@redhat.com>, qemu-s390x@nongnu.org,
+ Chao Liu <chao.liu.zevorn@gmail.com>, Bibo Mao <maobibo@loongson.cn>,
+ qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>, Zhao Liu <zhao1.liu@intel.com>
+References: <20260401201753.92290-1-philmd@linaro.org>
+ <20260401201753.92290-4-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260401201753.92290-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 31, 2026, Josh Hilke wrote:
-> Add a '-t' flag to vfio_pci_irq_test to allow configuring the
-> interrupt timeout. This provides flexibility for running the test in
-> different environments where interrupt delivery times may vary.
+On 1/4/26 22:17, Philippe Mathieu-Daudé wrote:
+> None of the declarations guarded within the COMPILING_PER_TARGET
+> checks use target-specific declaration. "cpu.h" is not required
+> since some time (maybe commit 4fb54de823e "meson: build target
+> libraries with common dependencies"). Remove the restrictions.
 > 
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> Signed-off-by: Josh Hilke <jrhilke@google.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  tools/testing/selftests/kvm/vfio_pci_irq_test.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+>   include/system/kvm.h | 5 -----
+>   1 file changed, 5 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/kvm/vfio_pci_irq_test.c b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-> index 2dcac6fbc009..807e9aecc887 100644
-> --- a/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-> +++ b/tools/testing/selftests/kvm/vfio_pci_irq_test.c
-> @@ -25,7 +25,7 @@ static bool guest_received_nmi[KVM_MAX_VCPUS];
->  
->  static pid_t vcpu_tids[KVM_MAX_VCPUS];
->  
-> -#define TIMEOUT_NS (2ULL * 1000 * 1000 * 1000)
+> diff --git a/include/system/kvm.h b/include/system/kvm.h
+> index a2463a3ac3f..8bf7a10deac 100644
+> --- a/include/system/kvm.h
+> +++ b/include/system/kvm.h
+> @@ -224,9 +224,6 @@ void kvm_irqchip_add_change_notifier(Notifier *n);
+>   void kvm_irqchip_remove_change_notifier(Notifier *n);
+>   void kvm_irqchip_change_notify(void);
+>   
+> -#ifdef COMPILING_PER_TARGET
+> -#include "cpu.h"
 
-Aren't there defines for this sort of thing?
+Missing:
 
-> +static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
->  
->  static u32 guest_get_vcpu_id(void)
->  {
-> @@ -196,7 +196,7 @@ static void send_msi(struct vfio_pci_device *device, bool use_device_msi, int ms
->  
->  static void help(const char *name)
->  {
-> -	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-v nr_vcpus] [-x] segment:bus:device.function\n",
-> +	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] [-p] [-t timeout] [-v nr_vcpus] [-x] segment:bus:device.function\n",
->  	       name);
->  	printf("\n");
->  	printf("  -a: Randomly affinitize the device IRQ to different CPUs\n"
-> @@ -210,6 +210,7 @@ static void help(const char *name)
->  	printf("  -n: Route some of the device interrupts to be delivered as\n"
->  	       "      an NMI into the guest.\n");
->  	printf("  -p: Pin vCPU threads to random pCPUs throughout the test.\n");
-> +	printf("  -t: The timeout in seconds to wait for an interrupt.\n");
+   #include "qemu/queue.h"
 
-Uh, for *each* interrupt?  That's insane.  Something is massively wrong if an IRQ
-isn't delivered in waaay under a second.  If this is purely a "sometimes IRQs get
-delayed for a long time because the host is massively overloaded", set the timeout
-to something absurd, e.g. 10 seconds, and call it good.  Then rely on the runner
-to deal with the total runtime.
+>   /**
+>    * kvm_update_guest_debug(): ensure KVM debug structures updated
+>    * @cs: the CPUState for this cpu
+> @@ -449,8 +446,6 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
+>   int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
+>                                          hwaddr *phys_addr);
+>   
+> -#endif /* COMPILING_PER_TARGET */
+> -
+>   bool kvm_arch_supports_vmfd_change(void);
+>   int kvm_arch_on_vmfd_change(MachineState *ms, KVMState *s);
+>   
+
