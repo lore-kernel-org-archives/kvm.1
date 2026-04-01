@@ -1,141 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B374A21ADB7;
-	Wed,  1 Apr 2026 15:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657FB3BC68A;
+	Wed,  1 Apr 2026 15:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775055778; cv=none; b=UEEacq+GGYDmgM0089TYocyC0bbVFuAz3vPa1KWZnr5eVsTxLSaJShGnqZPsSk+yI3oGkzrVs7VLVTLGZHuRj03tn1SjbDq7tNWU9NRnn85Hdj2iv8RLa5+vyaQfSMUP56vdggeRHZrwJ6T7l/JUOaKiwBlgqo42C+1NdCLBAr8=
+	t=1775056360; cv=none; b=q50ourHPf0+TyTWz7Tr49UjoJWs/z/ImYF67M3DEjXCjoMsq299M2kVpuKw+Q6o+3ZtRyquWKJ5PVJoG7YYDZy7H3jDcv26PhAdCjJvrhHss+LSkaP8XvT+B1tPtSEcM1gWTVpPct9yJR4RwpJqKV3oUDniNjMdSiquR7oQv7P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775055778; c=relaxed/simple;
-	bh=N4nxM/Zs/+7tD+W3WyNTlGiHot0Q1qTpcJ50VI5YIWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RLzO8BbVXYozi1iYZTs7AsmB89x8Wjb46Bl6Jm4EnGD4vdtoWB+09bHQhuNDaPQiwh4a8kgzM73dUox/gQxkgSfglGBsNrGG2UTDENH1vXiRlR0pmynaG+zO5DB+aRpXgeyyTsFI2Gy3w4vk43c877YfZz0JZZ35dmLOIvs5dbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VIlTH3Fd; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775056360; c=relaxed/simple;
+	bh=evp5WHmP65YXB+ei9SNJyT07KxvYH91Z3UcOuQuAgyQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Gfa8+HEMTcWji2NgT3Uv7rYNSpoqM1o73YWa5ZNl63a8axlowWHEUPAbQyhB70/2Qq+UoGBrZVYSU/LifZrr7ot42r9opch8CIj13eEKumWl3Y1Rlkk73zK+QvOBVJOL9EoRaHU3sYw+ykVtUV//J0CVFgJKKFpSHQnxB2wlnDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oj15dyE3; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VIlTH3Fd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775055777; x=1806591777;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=N4nxM/Zs/+7tD+W3WyNTlGiHot0Q1qTpcJ50VI5YIWg=;
-  b=VIlTH3FdoYXqhQUDJYzVlrbFfJvI7LJhpEVO9T6LefOmeHqIKhmIuy9I
-   tm522yW5w+bEzRC77VdaYCVkWbrU+1WGQWeOXWVQvvbLZQq0Pb4CtGoFB
-   6fGdhXGtRol2DSg8iBZA0rBQdXd1qqasdfibd5x1/w0EeirQ10khBZsdn
-   2kItAT9PRa8VdKnUGScKjFEKe/2uf/bIyIze7S6lxJ4EeKkYIxESjzGOV
-   oVq1+BaYsJagzfolMa6LfG51iY4WSDYCXge6jyGATnId2cLmJ2k86NoV5
-   jqftazx3CTAyxt/VkroroRvOiGcf8MG3g9GVYxUxIjHlclVrlUjauoalK
-   g==;
-X-CSE-ConnectionGUID: Zapdrz9oTju+x8vv9jJ3WA==
-X-CSE-MsgGUID: FBtWNEbDTd6UbOMvTpqqQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75272308"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="75272308"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:02:56 -0700
-X-CSE-ConnectionGUID: z+My3eUxS0uH0ZEAm0HmDA==
-X-CSE-MsgGUID: w0yt8C68SCmiiGs1Ht19og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="221855782"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.95]) ([10.125.111.95])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 08:02:55 -0700
-Message-ID: <830f1e46-0fb7-4756-827b-c8f46af24374@intel.com>
-Date: Wed, 1 Apr 2026 08:03:02 -0700
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oj15dyE3"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6318ZLYb3518860;
+	Wed, 1 Apr 2026 15:12:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Y7j7t85hhaTdul5ic
+	kmffTl5vlLPWKF/fkJO4lebKxw=; b=oj15dyE3XnzFJEoHOg0jog9rX2tpyrbFJ
+	kRx6CRQd++Y3TK6OR9tFp0umXFF8wfHtR0SKtdYr/+2GH40sRQVL/dyJ6+n0pmdI
+	BWFy+Cbdh9t4DjvbSXHUYngSUOVV64m4ZIDHl5GN7mbJGuff3B513j+e3WYs2zSi
+	QI6uUpTcPOE/qP2nAhB6W0X/j0vm0Z+Tl2SWLHHTN72/gcVcbSp9sAcshUZn/r0Z
+	r9Q5xEmX1cbr8ocfpbjvL9yH8IhPvENwaXNkoE3if5O8pJrzU7hHJ/F3vd1R8cEc
+	zACr0vGdLvGcqJ5buYNNFXYpMzmbklyCYC2ETHKkGeu6SKrG/rI0g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q38snq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 15:12:29 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631Ek4EA021631;
+	Wed, 1 Apr 2026 15:12:28 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6saspaex-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 15:12:28 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631FCOeI59703640
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 15:12:25 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF6942004D;
+	Wed,  1 Apr 2026 15:12:24 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2F6320043;
+	Wed,  1 Apr 2026 15:12:24 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed,  1 Apr 2026 15:12:24 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
+	id 8981AE0152; Wed, 01 Apr 2026 17:12:24 +0200 (CEST)
+From: Eric Farman <farman@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, Eric Farman <farman@linux.ibm.com>
+Subject: [PATCH v2 1/4] KVM: s390: vsie: Allow non-zarch guests
+Date: Wed,  1 Apr 2026 17:12:18 +0200
+Message-ID: <20260401151221.2272408-2-farman@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260401151221.2272408-1-farman@linux.ibm.com>
+References: <20260401151221.2272408-1-farman@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Pull kexec cache flush logic into
- arch/x86
-To: Sean Christopherson <seanjc@google.com>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Vishal L Verma <vishal.l.verma@intel.com>, Kai Huang
- <kai.huang@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
- <20260323-fuller_tdx_kexec_support-v2-2-87a36409e051@intel.com>
- <acwe7kKyjfEQ0sIf@google.com>
- <6ad3ff51bbab85147b716de0b1f4e8b994b1998b.camel@intel.com>
- <acxTBwaw6_xYSShf@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <acxTBwaw6_xYSShf@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kXm7WxIYu7-LlyMdFrdNEWAcI-YREi7g
+X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69cd35dd cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=TcF5ixnfVCNIaZDrkBwA:9
+X-Proofpoint-ORIG-GUID: kXm7WxIYu7-LlyMdFrdNEWAcI-YREi7g
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDEzOCBTYWx0ZWRfX2fl6+RW5wBzE
+ MfEAH4nlvI2xUrwqq7pSLp3ubSoquY5VhAwhiEGuetiRw+rGcvvd72x0wjJRvStDhlle2+nWhxs
+ ZMesC9/zT9fACOQh+fgBzQzsW7LClHQKnYXGh3YYclcKMDc538W/XxlnZqjEZ69a/03xLxEKeU1
+ j5IjA9cYJ5GdHi3CkA07Tb1647SMD8B6k4AMwBhrdEURxJzO+v5nc/M6VJPfgfZspdt//FUO1EI
+ a1Rrtc9RnjX7yq+m7hlps7Oty30u2ZQF0CW9YCq9+k5lQtvN4a+oXfASRlZwHa2Y0gt8D7sJB/C
+ Sx2XIFCP5t7lqyRZxqdlrTgUnItOXNjyQo2Z7vHj49PDo2mAfnd1PyCSvNJ08Sa0dHBV1ZmiuW3
+ jZpeOVIOp1rIgjdgPWJViuvkCw247L8EUtjgGkQAhFwLNB9NcKn+3MJSYx6cNctJ2kHG6n9cfCv
+ hWcueEHNbpx5QXQp8GQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010138
 
-On 3/31/26 16:04, Sean Christopherson wrote:
-> But unless the WBINVD is actually costly, why bother getting fancy?
+Linux/KVM runs in z/Architecture-only mode. Although z/Architecture
+is built upon a long history of hardware refinements, any other
+CPU mode is not permitted.
 
-WBINVD might be the most expensive single instruction in the whole ISA.
+Allow a userspace to explicitly enable the use of ESA mode for
+nested guests, otherwise usage will be rejected.
 
-That said, I'd much rather have a potentially unnecessary WBINVD than
-miss one. The thing I'd be worried about would be something wonky like:
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+---
+ arch/s390/include/asm/kvm_host.h | 1 +
+ arch/s390/kvm/vsie.c             | 8 +++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-	1. CPU offline does WBINVD
-	2. Some other TDX call gets made, dirties caches again
-	3. tdx_offline_cpu() skips WBINVD
+diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm=
+_host.h
+index 3039c88daa63..8a4f4a39f7a2 100644
+--- a/arch/s390/include/asm/kvm_host.h
++++ b/arch/s390/include/asm/kvm_host.h
+@@ -656,6 +656,7 @@ struct kvm_arch {
+ 	int user_stsi;
+ 	int user_instr0;
+ 	int user_operexec;
++	int allow_vsie_esamode;
+ 	struct s390_io_adapter *adapters[MAX_S390_IO_ADAPTERS];
+ 	wait_queue_head_t ipte_wq;
+ 	int ipte_lock_count;
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index 72895dddc39a..eee1b72e14df 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -125,8 +125,8 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, st=
+ruct vsie_page *vsie_page)
+ 	struct kvm_s390_sie_block *scb_o =3D vsie_page->scb_o;
+ 	int newflags, cpuflags =3D atomic_read(&scb_o->cpuflags);
+=20
+-	/* we don't allow ESA/390 guests */
+-	if (!(cpuflags & CPUSTAT_ZARCH))
++	/* we don't allow ESA/390 guests unless explicitly enabled */
++	if (!(cpuflags & CPUSTAT_ZARCH) && !vcpu->kvm->arch.allow_vsie_esamode)
+ 		return set_validity_icpt(scb_s, 0x0001U);
+=20
+ 	if (cpuflags & (CPUSTAT_RRF | CPUSTAT_MCDS))
+@@ -135,7 +135,9 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, st=
+ruct vsie_page *vsie_page)
+ 		return set_validity_icpt(scb_s, 0x0007U);
+=20
+ 	/* intervention requests will be set later */
+-	newflags =3D CPUSTAT_ZARCH;
++	newflags =3D 0;
++	if (cpuflags & CPUSTAT_ZARCH)
++		newflags =3D CPUSTAT_ZARCH;
+ 	if (cpuflags & CPUSTAT_GED && test_kvm_facility(vcpu->kvm, 8))
+ 		newflags |=3D CPUSTAT_GED;
+ 	if (cpuflags & CPUSTAT_GED2 && test_kvm_facility(vcpu->kvm, 78)) {
+--=20
+2.51.0
 
-So, let's just do both for now: Do WBINVD in tdx_offline_cpu() and
-comment that it might be redundant with other things in the CPU offline
-procedure.
-
-This really needs to be solved with infrastructure and keeping data
-about the reasons for needing WBINVD, not relying on code ordering or
-fragile semantics.
