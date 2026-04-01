@@ -1,166 +1,143 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FB53939B5
-	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060874; cv=pass; b=tlXeXQfY8sDvEp+Y5xDKnYa8NYq3v/EJmOs5UMFuvrk9ib3X7lBiURPMxPUuyEUXxB6nESXCQIM0lxtavAFFd0O38s6CDvGZ6cf6F51Ybah+Tvc2dCi0DkcbyNEhz8fUfTEtGJ9TOAkelI1w8OnXcmjyUBLlGLwI+QAvJIBqzGQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060874; c=relaxed/simple;
-	bh=2Ow8bkx3gpfyhSLUKWiSKNyCLx19AuMfizaujCtg4Cc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B9E7pbdVh5hwJ32jdR+BNTA4dIa83Z8X/5G/8/DPLxVv2wIEwynocYDQN9RoNN36s4GRX7zen1UsNIzuCnARZuVMNr7gYGmuR0QJpq7BJePcoFp2d55Bd64DhaorWNjAnSR9LpgP8m9puHyptRLzOxyPOSmps5mNp/jN3fJj/aI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RbRpBP3T; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bIcytGar; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E393F1669;
+	Wed,  1 Apr 2026 16:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775060951; cv=none; b=f7UpGjOAnMKGP3igFiaOrLMk+PS4vYAYEeldiKix0FSuAYp4lrRc2FFLM7+T7WcQmd4PO4Jl4fez8fNM+ipAtJvrHn1mDRYA7CBUoObyj0kt+9oiCefq7ak4U5PJK83MSD9XxM1kkG5UsC68OITEoVlWyS9kHZc8357nYGcoIQI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775060951; c=relaxed/simple;
+	bh=lpKRatsiKjme51mt1hfc1a4RLa4UswyEdIlbv0MRluU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MASU5BiplAAC4r2ojV9Qe3Ns3K++vHV4NrXFHG1JrzA63avVfoBZJ8wGwRxlo5MmNvthP6p517ScUeaEMfmqsSZ1iLw/zqc6wARJ8ddFpehkLqdMuTyNhkhAdCg5G7QsZuqu8aOkAEFhSCFVgQzGRuFdNBrczauOeUC20SNp824=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VYq58tWi; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RbRpBP3T";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bIcytGar"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775060872;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2Ow8bkx3gpfyhSLUKWiSKNyCLx19AuMfizaujCtg4Cc=;
-	b=RbRpBP3TJuoAt1NRirW6asicRzA8dj1K9jwLT0PKxu9vRL2ZgQHg7+l+P776eQA4/7QQHa
-	LE1LWr+0Raz7+NWnW5lyLgTS3MpjvlgF0HplHmfSzCb6dbCQtlJ02aaX1oRlX0Sc8P6e58
-	iX3ZDU6ax+JcqcmkBjoR87UXL4SKdlc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-116-5BLsV6vVOQ-QyiLOEBcaFA-1; Wed, 01 Apr 2026 12:27:49 -0400
-X-MC-Unique: 5BLsV6vVOQ-QyiLOEBcaFA-1
-X-Mimecast-MFC-AGG-ID: 5BLsV6vVOQ-QyiLOEBcaFA_1775060868
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d00dd913cso3623543f8f.1
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 09:27:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775060868; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OW0OFAvlyrJM+P8a63UvnY8iqi+uhg0owol6XqlvPGnW+r8lVwPEVm2ONXpgdkQGZe
-         6JKOyS6s3etVHG7xDvqsFQSPqt2/5rbJQJgBQCyXsrksfaIA63wHVIOa3KHw0DecMf9f
-         pKm8IGzYtFsENNqD0lMXL8F6TABR5I0yEd5NVGxUodoCiozHPrLSbaugsrO/9+OJ4E4O
-         9MW+GnTCwolieXzRICduBtWMe4E6nnQK5KJJuz1YUDZPYgDRv4VmyqW/VI0wTZqLnO+w
-         0WRCXk+lgwTn/TQzay3LLIntU4mtagWQjNTSeuaICeeP2v4nbD3b0EcbgCrrkK4/Z5So
-         tLjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2Ow8bkx3gpfyhSLUKWiSKNyCLx19AuMfizaujCtg4Cc=;
-        fh=HErIJxKP93aBSdPTQbD0Zlqtdn/EClUfaxzvWFMOCOc=;
-        b=YcBK1zGIqk2mbVTNEPaJTjQgWU2RMt9GUtwagPQLiiZlYnemTjd43KhVsdOZcZNfjW
-         0LZEAaAkDA6RYZJXlW1X0N0qbTEDaVf2ANGkoyuHRyPsDCMQhjKfwhPJQnc5uliKHKVX
-         Khru/Gn0HPieC5yYOHkwMNH1Kk6MFHFLINO164yfbSPTyiiUJJ5hCVsA+b5fwbHL3Uoa
-         r+SvgDeXNmnmVKTOrnCVNy2NJ/9i89k3ebX7na/ZxQ+4iicB4v5LwjNDzodAZ5S/w/Ec
-         CHxm/dN1y7MBxa6AvdE1hsKHW0Z8PG7ag4gHURUJRktex/A3BhgPF6OsRiMUqeatJ4Z1
-         6g3w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775060868; x=1775665668; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Ow8bkx3gpfyhSLUKWiSKNyCLx19AuMfizaujCtg4Cc=;
-        b=bIcytGarLswWTMEdDCKO9CriwyBWoa1DOqy0MIeghgb6ELEm6A1S6+H7DjF2Znv8Gr
-         xj2TJ4h7O0CgO7aqxqFzsCptbymN4UpVSuxEJA16gqT1E64bYBbZqULLu7SVctCyI7nu
-         sL4I/B3XYl1WmPQlibR6AIkD3ojGAGPLBaLKRg6cTT0ASWNksy4tSB0ShFjnEqPt2ej3
-         90bBPiIWtucmLXYuFCkZSQhbXCTsVefprQqPFlXdmsey+W8jcd85r4ZskkWzW0/+nPJ8
-         r0ydxo+0QIhgR0RYcZ/6SVBVx7Yh9dI8RJZCk2KaZhDmQpdQ9pYSipoRpatd/i1GNDFj
-         XYZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775060868; x=1775665668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2Ow8bkx3gpfyhSLUKWiSKNyCLx19AuMfizaujCtg4Cc=;
-        b=dg8XcLheAboXM6Zmbj/bXssw2KbM9nY89EkJxES8mno57mkC6Ud6adLqj2ZDAtTpUU
-         uoqhzAD7A+qnaQ78G/PRUe+RtTmwxEstrQ/L0q6pyxjZZY2jhtJ2bYnufYfEHEaSLv5W
-         sBhJt/Jw8CURmZceA9yWzlCsBi0243LaSzXuW6Q53Z2Ux0+DspNib236x9snmSUvnzh4
-         Np49QpEwL23oj9T5vdHMvNQ4AjXvLqkv/ZLReIXknQqO7mNP9vYe1zVADXR4GDxmEaGt
-         Y+u6qA3KT6J8c9c8oA8LjjvXP9VdK3h57oWNHHnfhsH/Cb3A3DS6LpNQ+XbanS86ioP6
-         t0rA==
-X-Forwarded-Encrypted: i=1; AJvYcCX19JUcRidFtX6OTVEMNGlUdeotYaPQ0IjQ/MRAujbRvUFtPHRsM35cRU8VUnPGQa3CP6Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJya/9l7oJA6rJQHl8+cTFMf2W3lM4j3lPFX/QZJPfy2Z25Ff7
-	p3oi3lUvia1et/jT/Y1r5YCAHKFoAPhTCcGQN01alX8GqSkcQL/N5uBxqVGsRg0Ow0lKOGTkQMV
-	TCSaYa7LQutTgqcGtiZ7A6lcr0Vw8hniDrDQ8PLXzuyBJzvvkq/DYZ/3JwZzcL3nYXJffsexKFA
-	acX2XdsGZhnu6zsJH9ppGlhSN4uCPm
-X-Gm-Gg: ATEYQzz+jm3AFZTXAn5ZDs8rmpfpbTYxsXe0Vb6SOrEXMd0jPI3VV21wRJMv4FDOECu
-	ZTdH50fN5cNIX0QhMD6Z1rWMfLBAqvmGYcrWpqwZDmbAipVIn/hTgy70Ev+S7s1OclVwG8dlRhx
-	F8LFr6j5wg7yd+r1ptxQcRcY/XPQoxGw/grknMvxYiU/7kDdONFyqrGhgb5758D3vAe/y2uokOR
-	oZqHFBRq8XskNQ4Th8Zg1gp3eOW7uliodZyd1vp5niLyTnvfh/ZSPGj3sawBB6QC/CaR1Ltx6Za
-	W6vz
-X-Received: by 2002:a05:6000:310a:b0:439:f64b:a82b with SMTP id ffacd0b85a97d-43d1504a6c4mr8118731f8f.6.1775060868241;
-        Wed, 01 Apr 2026 09:27:48 -0700 (PDT)
-X-Received: by 2002:a05:6000:310a:b0:439:f64b:a82b with SMTP id
- ffacd0b85a97d-43d1504a6c4mr8118682f8f.6.1775060867771; Wed, 01 Apr 2026
- 09:27:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VYq58tWi"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6316tLV03728917;
+	Wed, 1 Apr 2026 16:29:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=8QC9Fk
+	+OLA7N5EuWutkyWpfjvL6o15fl0W8VJ8R99rw=; b=VYq58tWiWVgFmhF0JU2Amg
+	XunKj9wOkBfJN6cR2hHSh3kPylzwj88drIvV0y9jdm6KgpQTbFF7iUZ8vV1RuBgS
+	YFzk5gIxmicF3mVtpE3wuHTKVgl0uMnSnegOkOVm5fEGLYPiHheOjwSb6eRPTumN
+	ufRvel/rGzmarRPGLlBlV6mHhrALus9ZfZjmbcr2dO9J6Anf38c8SCSvkdkBvja1
+	lW650OYe+pmIamhEWRReaf4y18pyssf9KNHIjLKnyT92TRA+RoYs1sSjsWf2tFd+
+	WlmSxgXQB0rUsdrKID6vMgrN2mUjk5YsfrG1ruJKyPR2auBs/LEnOknZMT/Cqp8g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgrh93-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 16:29:02 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631G4Eeb031034;
+	Wed, 1 Apr 2026 16:29:01 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjx91e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 16:29:01 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631GT0NI33620568
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 16:29:00 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E0C958055;
+	Wed,  1 Apr 2026 16:29:00 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3D9265804B;
+	Wed,  1 Apr 2026 16:28:58 +0000 (GMT)
+Received: from [9.61.244.25] (unknown [9.61.244.25])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Apr 2026 16:28:58 +0000 (GMT)
+Message-ID: <d059a16f-4b17-4a10-9006-cf05045e6945@linux.ibm.com>
+Date: Wed, 1 Apr 2026 09:28:57 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326181723.218115-1-pbonzini@redhat.com> <BD696E74-1EFB-4E70-9DC8-756A7810599C@nutanix.com>
- <CABgObfYhNJhvVhe1nRG11MMF9p=eT-QoaGNGaN8P+YaywNUg+w@mail.gmail.com> <AD9FE419-97DF-4399-B4C0-C172A2700530@nutanix.com>
-In-Reply-To: <AD9FE419-97DF-4399-B4C0-C172A2700530@nutanix.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 1 Apr 2026 18:27:36 +0200
-X-Gm-Features: AQROBzBGA9y8J6rxz77QcqGW1pZgSQRSn2Yp7ClbcObouaMSQ6-A12iuJjx0S2E
-Message-ID: <CABgObfatgb-XNcPuYR=+rrzj7BXxEhnn19CU5ZFNUPeJhNqX4Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 00/24] KVM: combined patchset for MBEC/GMET support
-To: Jon Kohler <jon@nutanix.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Nikunj A Dadhania <nikunj@amd.com>, 
-	"amit.shah@amd.com" <amit.shah@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	Marcelo Tosatti <mtosatti@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/3] vfio/ism: Implement vfio_pci driver for ISM
+ devices
+To: Julian Ruess <julianr@linux.ibm.com>, schnelle@linux.ibm.com,
+        wintera@linux.ibm.com, ts@linux.ibm.com, oberpar@linux.ibm.com,
+        gbayer@linux.ibm.com, Alex Williamson <alex@shazbot.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>
+Cc: mjrosato@linux.ibm.com, raspl@linux.ibm.com, hca@linux.ibm.com,
+        agordeev@linux.ibm.com, gor@linux.ibm.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org
+References: <20260325-vfio_pci_ism-v8-0-ddc504cde914@linux.ibm.com>
+ <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20260325-vfio_pci_ism-v8-2-ddc504cde914@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDE1MiBTYWx0ZWRfXwiDqhZdR7r2b
+ 2NeRzSts7j1FXaM+q1fLgqbT48zd1+k7VdnOq6xA8kmwEkPOLLBFCW+pGCs0iHDJmzvDU39055k
+ LXkfSexkVXZyhAq6cj2j0LLh49DYV7Q6pegGgoQ2nwrsrLtYcawtydTxd4brFfhv83WTQkPKsyW
+ ifA8IrS+X8WnsShS9kBnKY4fpbpGI+7DdJDKoxpmRk9n0SHXUyMdmGrwN4WxisHttBPRo/WCSE/
+ Q0EETLleHswEmgOZgIWrqZJ8QmSfxs1mMap4F94rKazS3pa65uC9WtOOKwFmO4CEqSTX7sVtFgS
+ KIQ70MVUnPlHZgXIEOKO76EhZpwP5kr92aR1rPT2JP521uN6g2ardtuWMMe7wLNnLtdpYDngxMr
+ 4N8/kVtRn4J6ludMUCM/dt74Haaktb57cwKBieYoZGt9uBfM+u8aUkTVg231s+keiphQCJzio98
+ DAP/J2od+V1BV6RPawg==
+X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69cd47ce cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=akap8JHnbm7pTVdsz3UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: bfWW_YluBv6JnohcvqC4Kb3bOE2DEqql
+X-Proofpoint-ORIG-GUID: bfWW_YluBv6JnohcvqC4Kb3bOE2DEqql
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010152
 
-On Mon, Mar 30, 2026 at 8:59=E2=80=AFPM Jon Kohler <jon@nutanix.com> wrote:
-> > Great, thanks! FWIW I found a small hole (just by code inspection);
-> > translate_nested_gpa is always setting PFERR_USER_MASK and therefore
-> > always using XU (and always allowing execution for GMET). The fix is
-> > not hard, basically translate_nested_gpa needs to become an entry in
-> > the nested_ops and the callers need a little bit of adjustment to pass
-> > more info down. Then the vendor code can do respectively:
+
+On 3/25/2026 6:31 AM, Julian Ruess wrote:
+> Add a vfio_pci variant driver for the s390-specific Internal Shared
+> Memory (ISM) devices used for inter-VM communication.
 >
-> Ok cool, will look forward to that!
+> This enables the development of vfio-pci-based user space drivers for
+> ISM devices.
+>
+> On s390, kernel primitives such as ioread() and iowrite() are switched
+> over from function-handle-based PCI load/stores instructions to PCI
+> memory-I/O (MIO) loads/stores when these are available and not
+> explicitly disabled. Since these instructions cannot be used with ISM
+> devices, ensure that classic function-handle-based PCI instructions are
+> used instead.
+>
+> The driver is still required even when MIO instructions are disabled, as
+> the ISM device relies on the PCI store block (PCISTB) instruction to
+> perform write operations.
+>
+> Stores are not fragmented, therefore one ioctl corresponds to exactly
+> one PCISTB instruction. User space must ensure to not write more than
+> 4096 bytes at once to an ISM BAR which is the maximum payload of the
+> PCISTB instruction.
+>
+> Reviewed-by: Alexandra Winter<wintera@linux.ibm.com>
+> Reviewed-by: Niklas Schnelle<schnelle@linux.ibm.com>
+> Signed-off-by: Julian Ruess<julianr@linux.ibm.com>
+> ---
 
-And a few more from Sashiko...
+I think we have decided to not support any additional regions with this 
+patch. Feel free to add
 
-1) do not clear blindly ACC_USER_EXEC_MASK for NX huge pages in
-make_spte(), because NX huge page mitigation can actually run on AMD
-machines as well.
+Reviewed-by: Farhan Ali<alifm@linux.ibm.com>
 
-2) add a comment about fast_page_fault happening only with XS=3D=3DXU, at
-least for now
-
-3) include the XU bit in __is_bad_mt_xwr(), evaluating bad_mt_xwr for
-(XS|XU, W, R)
-
-4) only enable nested MBEC if enable_mbec=3D=3Dtrue, likewise only set
-X86_FEATURE_GMET in svm_set_cpu_caps if gmet_enabled=3D=3Dtrue
-
-5) check CPL !=3D 3 instead of CPL =3D=3D 0 to recover PFERR_USER_MASK for =
-GMET
-
-6) change shadow_acc_track_mask in "KVM: VMX: enable use of MBEC", not
-"KVM: x86/mmu: split XS/XU bits for EPT" (for consistency with
-shadow_xu_mask).
-
-7) clear SVM_NESTED_CTL_GMET_ENABLE in
-__nested_copy_vmcb_control_to_cache, not __nested_vmcb_check_controls
-(i.e. sanitize the destination of the copy)
-
-Overall a pretty solid analysis from our new overlord. Roughly 50%
-false positives, but I accept that given the high quality of the other
-50%. Also, a couple false positives are worth adding comments about;
-it may not shut up the AI (#1 was explicitly called out as "cannot
-happen" by an incorrect comment that I added...) but it can be useful
-for humans anyway.
-
-That said, it uses a damn *lot* of tokens to do this kind of analysis.
-
-Paolo
 
