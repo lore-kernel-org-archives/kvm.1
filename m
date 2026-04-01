@@ -1,162 +1,204 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0624C3C9432;
-	Wed,  1 Apr 2026 22:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775084366; cv=none; b=bn0wL5D6qoKyxdA5FDM9BV8EfFfuW0zTQ8H0SpIaf+1iAy6b4VbpvghFT815jJ6hMTpZljoZQHhquIJn0MPOu/CTQLujuv/1g+qiiQ9kYTvXUy4yoWQNBHWqnChEgeAp9siJeqdzmHTzLVOTVKYROooc7wv3h92lmsB4U7IOHmg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775084366; c=relaxed/simple;
-	bh=GGmXEXEs/wcuF4+qrxDFGQ+I1Y4CCW5QWiOt3n4q1ek=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=at+oYfuWHDz+rn8DdBB3Q9OPLn+meeL+FDlDchwrqtweyGkLrRiAj1pWvTUGkK4e26kXEctyZuQEgj7hYkMkkG9TWlHCc74NXVDS9L6fa+hofqljJxXK5J2EI98NdW63P0ybQm2cFl6iQWGiNXbb6m51s3YSbvAN1cVpvQHj0+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=IzCyhgmM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nC0pVnmJ; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A30D3BD24D
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 23:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775086933; cv=pass; b=k4kxO9W/M5nU4S6higefFuX85exJ4rGCZcTEmCpz+HSRHsfmsSMR+gkKlhJgfOlY1sMxzWp5+D0PuMdzzmvO+ExmhULAm8rCzE3tRgdXoJGHKjASDuJ/+HWZJTWctxWI7Q9ODW5nN8GYHbzvB17ccrbkKpLlWafAnzxgZjHe6Ac=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775086933; c=relaxed/simple;
+	bh=qacV+HuBZ2gtB7U/IqUOCYRQ36+TsA2+7UYhwty8ejA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZaTDNU7tCmvaocd4NtccX9YiJFY1JK1aijm5W73gPiSMl7hYsViWHBuqIhayUB8PXI3oZnlA0BeyORNBv/Jc3sHcpIju5M50XXaz2k5161BHWv/7RP/xRBProFy8VuzP2VEvYtTmUz7ASheGCa0taSQiXHsp2M/BVu+f+dzUbtY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wGLkj0oC; arc=pass smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="IzCyhgmM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nC0pVnmJ"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 3502E1400164;
-	Wed,  1 Apr 2026 18:59:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 01 Apr 2026 18:59:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1775084362;
-	 x=1775170762; bh=tVGoQ/SKdLaRtjfSRVaI9gemZl6yQxXC/3UoQFv4Zls=; b=
-	IzCyhgmM/h3IjnluBY2opvuewBE0o1Dp2c70IKa6Onr4TM0JsqBAZFevjRgc6OhA
-	MWHR9IHvxjfBWMGBlzgIaiUMxKqyXg/ZSAUhd6oud3KJBXR9Gkyd3uGp+o4kJrr4
-	YBce9dMm3vKYKpkm882XsE3w4H0NkSUylXZ4qirAGDjApqI1AYh//RXUZnfNNp2c
-	4ZdVEaG08BQWThs3SDVBN4ayAEpmjA84OVZVNobFRspBokLiXvSQ3CCjI5R1BZF8
-	LOAYWMeYReuzdJS1M3Rfd1T3y6y+t22EISt0kh7al9NaOx3rVrlxLIdv/cSXymqi
-	l+sGYD+YCXVfFGY1HJu1fA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775084362; x=
-	1775170762; bh=tVGoQ/SKdLaRtjfSRVaI9gemZl6yQxXC/3UoQFv4Zls=; b=n
-	C0pVnmJv6Ss4VD0qxS9gQWyTb+eeOzvzvaTQgdkl4dDbfPaC+xAlkheLR0S0GkVn
-	323nm3PFxYlHKXe0mtcyoSwWJRlKJ06I2jK1jINFVXo5Ac/W+inTT2smCrR/uF7g
-	fi1xUGz9qgPMRW4GtPLZcEbUiUH29E4VGbqbEimrlvkLTvrCyRmxUqcBWB9inelv
-	1dKrz+vUCsPA4tPSMcN0NTIez6xxbnB22uWDAtcj3MnIm0Cvu7+YkkDICi8X+MHZ
-	kAmOVE0IDkmh9rHgcT0K5PV7lW5AA9UOrJ96XgyJDdum05OYMflUrcJOk6bvUNte
-	ov+k4Wj9xfuG3ygmqbcAA==
-X-ME-Sender: <xms:SaPNadi72LYokSLnQNS4OkvcH7ISjQvXAHxPkfHiUWtDAM2U2McxUg>
-    <xme:SaPNaTg1zZND-JBmzG28LjlGKrVXXqVOa1jyz51BsbTgHRqpwLR3iAbcM4MuRWewk
-    sX-5wzFswVPEbYQVcbZjtyYS35HRXM1EHgUCs0lAd5YhKKTRS_gcA>
-X-ME-Received: <xmr:SaPNadK15SBnz909Q5D3qV0CwILM_VqgXtWqAMjGyTUtTBOED2UTAEhY9-I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegfeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
-    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
-    gvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudegveeu
-    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
-    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohephedpmhhouggvpehsmhht
-    phhouhhtpdhrtghpthhtoheptghhrhhishdrlhhonhhgrhhoshesghhmrghilhdrtghomh
-    dprhgtphhtthhopegtlhhgsehrvgguhhgrthdrtghomhdprhgtphhtthhopehkvhhmsehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigsohht
-    rdhorhhg
-X-ME-Proxy: <xmx:SaPNaSFwvSDN90iORJyCkm9w0Xj-MI4VFXvT9QSV4FST1Kcb2S0oFg>
-    <xmx:SaPNaRSsC3Zvs7Qr80Glaoyfv7nIo1Vytu2Jtt09jdAKIO3IVakRsw>
-    <xmx:SaPNaed9c7GSesh_LxjdlUAaZ6dEfp4tlJAYqw_t7p-guPszukPCeA>
-    <xmx:SaPNaQqAAf3vFpVpkTG5peiEJu-9J8m3NU9wrFxPgm4PjZsTAMTDiw>
-    <xmx:SqPNadAVv88cjFIiWxfJ4mQHwV6N2hlVy3vU4dpqZjOK4rFmjyM1NVet>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Apr 2026 18:59:21 -0400 (EDT)
-Date: Wed, 1 Apr 2026 16:59:20 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Christos Longros <chris.longros@gmail.com>
-Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v2] vfio/pci: sanitize bogus INTx interrupt pin values
-Message-ID: <20260401165920.373e7584@shazbot.org>
-In-Reply-To: <20260328230126.73230-1-chris.longros@gmail.com>
-References: <20260328215808.16108-1-chris.longros@gmail.com>
-	<20260328230126.73230-1-chris.longros@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wGLkj0oC"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-509062d829dso133941cf.1
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 16:42:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775086931; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PjTJSrc5QzBm0NGaMxm9cwsclc6/Wdet7X1Ow9e8n4yqnmVLtAWP5euO/v8kr5mGat
+         LXEsKx/GOFI3+5KIR+nLDHdt4ORH8uCkc0fLQ8EGI5lt1j2yKe51Els5sdhJowiXIeW2
+         p/FAzia+CrzmZoUyKE0J6LjWCvLy8GhSmFwparMaYQeS0eaXNR4jEOcyEpCAkQNPHZiT
+         0a53XaciztMxz262nB5JZ7TNfX4AACBRL4D5xT0ZjFrq7jZQGE8OVmmYLlR1Zgo2V+XQ
+         F+u8uVbs4UpXaBtA8XFIf1IyJSOXSDHjBGbpKOx9hUal8vGiSiDF6i/CfDEFLJOKb4x+
+         yKMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8IIkG56WRx+WvTtHjw+aCl7tZOQ45h3Y1TK/DdqOefk=;
+        fh=MMPaHln5xm13/IHH+9tFANM1Ko3gh1QnbFwjf0Shi8E=;
+        b=HCC5d8HWz19Ig2BO6VuBAGULrnEKS0lAo1E80JNKytQMDBSt7d+HJDUQNf4igJHvSy
+         lcMH/paZWhoS+qZKQMhJSmFFhOAKqUp4u4H1yOfbMbb5k5OEyfZTpEYi9mC+wezXwBH/
+         AJJ+LIcgR5oOFOSJ7XVpTTKFsZBqMyDPtFc/VJ60ZS4Wdv2gb5m4mrGMHMRCG4KsPWE9
+         664igMMcbSBtC6uy8+whSH/L7ZfwcVMPyDpjttJidGaTGoNklVP2WikJlrLJmd61SFwQ
+         IGrKyIWIg5+ypMZW6nRlnUJdwv73aEwz0iRgSY12LtuMsuduZrXLAk6rdHo2gopvwB1x
+         slmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775086931; x=1775691731; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8IIkG56WRx+WvTtHjw+aCl7tZOQ45h3Y1TK/DdqOefk=;
+        b=wGLkj0oCmsnwsBL4Zh/U3oY+rmnsWKW5na7sF8JvHsqIYjrF+BB/6h78AIg0Ksug2V
+         pXbqZAV46NTh5l99fA76Ea/C1O20ErAJ9OEtOf12p2iEvZPrjmoC93ICdIKR0oCM7I+U
+         Evk8+jF8I/5BTIHtscsKr4LtfpTiJbHfDPannpfN8U/aoziXbkfZhYzvssNOzeGV14Q/
+         MhjqwscuYk5Lg6WbSIE+ngnH2uBo8ZUFjJIJbYkaoCfX+Oi+M1ZDsPv+uonxW80m24KW
+         aKLU+HF7g+h9bAcZL9T2tDNP7fRk6kQbEWZeSPOIYydH52bOTzRbuBtaJH5t7m8U4a5R
+         3k+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775086931; x=1775691731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8IIkG56WRx+WvTtHjw+aCl7tZOQ45h3Y1TK/DdqOefk=;
+        b=XzU3xBbKuwqPYhloGTcSMG3gUmcAqg1wrT/852cRbzsCNgJm5F2HZsmQsv87fyajzq
+         rBvUMOhU2JkxuXDhSuAk2Fj73J+D6IFAco7vPz7GnxFnkjvLKeSQqySwFcGSZkPG+oH4
+         UrAhNoqh+d/dAKH0052fOBrMRXKz+ZK1z9B3hzMm2T6Kne0WpIKXFG8s9a+qazklAVjl
+         HfZDd1LoeRTrXhfAt67V2x5d/y8atg7Tm3IHpVhunDEzIqayxOtkTAiHpfVYPB4L8+Nz
+         eSUzk9BszhPM1ttXl5QPXssiuEtZrNbd4SEJ089ViPXzHk1VAVY8owIlwRmCgXuQY5aV
+         gx9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWpk+0eyCHECfreED7EPqIHBiLn6iYbzstYAr0ylcmSanf/MpYVeX4l1Rj9RK9fBZyn1ww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNSz4HscmnvUmirZOMvJGdWDd8Qrc8QOJV2+Ve5SsZKkWbtbxf
+	5kDgLA6OgtrEApdW2j4edhxoQ8ZB0iqdVavV16c5fLbb8yakAmnFjjbuk3RQo1POBqSonaAVaxv
+	12DIrUWfvJ0NfjScdyKsNL0EfdtjG+ahy7lDwXoo=
+X-Gm-Gg: ATEYQzxRFje7lLFKPp1uu7rjiSu4vx9cLC0rIllIaAftR/+5apES7iAyQy/Y+W7PrM1
+	81ub6pt00RdcZNR1+SOLuAL46OtxSftpdBOgQcbAxjAzwjnOlNqieeZmqq+r+SXde95vfhCmKIF
+	PewuVfR3R4CtOlZyKuwRL23P8Ty6L/DdEHC4SMQuSL/zpH8ClyyaEcXIaLThMf5B+I5g5DaQIpU
+	MYgxqETbZZcV+aF+b4gqMfH4ZlFmH7Ipomr3riC3RMgFzLS4/+TBx6/ymQTR64ZIFP6GCMtxTQW
+	Xg0V+EBaJsbCLKlWbDEvAwgdxlb41JHnq+2N
+X-Received: by 2002:a05:622a:1985:b0:4e8:aa24:80ec with SMTP id
+ d75a77b69052e-50d507a99aamr814131cf.14.1775086930545; Wed, 01 Apr 2026
+ 16:42:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260331194033.3890309-1-jrhilke@google.com> <ac1hI93pEo-x-7YU@google.com>
+ <ac1pUx_jYv2yCMnX@google.com> <ac1s55_oLEUQx8Hs@google.com> <ac18LHQLalPb4z0-@google.com>
+In-Reply-To: <ac18LHQLalPb4z0-@google.com>
+From: Josh Hilke <jrhilke@google.com>
+Date: Wed, 1 Apr 2026 16:41:59 -0700
+X-Gm-Features: AQROBzADt__uEdh14omoQ4LFvQofVsPpy54qfnn49Uzotn18dRLCs3pEM31g1fM
+Message-ID: <CAAdrzjugqk=APteY4oZNsa2e5kv5-=HBekyYfpzrwFUZ_WapsQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
+ test device interrupts
+To: David Matlack <dmatlack@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 29 Mar 2026 00:01:26 +0100
-Christos Longros <chris.longros@gmail.com> wrote:
+On Wed, Apr 1, 2026 at 1:12=E2=80=AFPM David Matlack <dmatlack@google.com> =
+wrote:
+>
+> On 2026-04-01 12:07 PM, Sean Christopherson wrote:
+> > On Wed, Apr 01, 2026, David Matlack wrote:
+> > > On 2026-04-01 11:17 AM, Sean Christopherson wrote:
+> > > > On Tue, Mar 31, 2026, Josh Hilke wrote:
+>
+> > > Agree this would be nice to have. Is this a blocker for this series?
+> >
+> > Yes.  KVM selftests need to assert there's a driver before trying to pr=
+oceed.
+>
+> That exists in the new test:
+>
+> static int setup_msi(struct vfio_pci_device *device, bool use_device_msi)
+> {
+>         const int flags =3D MAP_SHARED | MAP_ANONYMOUS;
+>         const int prot =3D PROT_READ | PROT_WRITE;
+>         struct dma_region *region;
+>
+>         if (use_device_msi) {
+>                 /* A driver is required to generate an MSI. */
+>                 TEST_REQUIRE(device->driver.ops);
+>
+> But I think you are also asking to have a helper that prints out the
+> list of available drivers in this case. That should be trivial to add.
+>
+> VFIO selftests could expose add a helper that handles checking for
+> device->driver.ops and, if null, printing an error message and list of
+> available drivers and exiting with KSFT_SKIP.
+>
+> One wrinkle here is we are probably going to merge a driver soon that
+> does not support send_msi():
+>
+>   https://lore.kernel.org/kvm/20260331172241.50456-1-rubind@nvidia.com/
+>
+> So we should also have an API for that. e.g. Add 2 helpsers:
+>
+>   - vfio_pci_has_driver()
+>   - vfio_pci_has_driver_send_msi()
+>
+> This test would use the latter.
 
-> Some PCI devices may report out-of-range interrupt pin values in
-> config space (e.g., 0xFF when the device is in an error state).
-> The VFIO PCI config virtualization layer passes these values through
-> to userspace, causing QEMU to crash with an assertion failure in
-> pci_irq_handler() when it computes irq_num = pin - 1, which exceeds
-> PCI_NUM_PINS (4).
-> 
-> The existing code already handles bogus VF interrupt pins (set to 0
-> per SR-IOV spec 3.4.1.18), but physical functions with out-of-range
-> pin values are not caught.  Extend the condition that clears the
-> virtualized interrupt pin to also cover values outside 1-4.
+Ack. I'll add a patch in the series to add these functions to the vfio
+library in v3.
 
-The description has taken quite a change in direction between v1 and
-v2, which makes me wonder what's actually happening here.  v1 suggested
-this was an issue with a specific RTL NIC where the pin register reads
-as 0xFF, but proposes a generic solution.  v2 proposes the same
-solution, but drops the reference to the RTL NIC, instead suggesting
-that a device "in an error state" might have this trait.
+>
+> > > > struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
+> > > > {
+> > > >   struct vfio_pci_device *device;
+> > > >   struct iommu *iommu;
+> > > >
+> > > >   iommu =3D iommu_init(default_iommu_mode);
+> > > >
+> > > >   device =3D vfio_pci_device_init(bdf, iommu);
+> > > >   if (!device) {
+> > > >           vfio_pci_device_print_drivers(stderr);
+> > > >           TEST_FAIL("No driver found for BDF '%s'", bdf);
+> > > >   }
+> > > >   return device;
+> > > > }
+> > > >
+> > > > Because as is, this requires way too much a priori knowledge and ma=
+gic for
+> > > > upstream.  The user shouldn't have to dig through code just to unde=
+rstand what
+> > > > devices are supported.
+> > > >
+> > > > Ideally, VFIO selftests would also provide a script, utility, and/o=
+r helper to
+> > > > identify BDFs for devices it has drivers for.  In my experience, bi=
+nding a device
+> > > > to VFIO is trivial.  Finding the device in the first place is more =
+annoying.
+> > >
+> > > Agree this would be nice to have. Is this a blocker for this series?
+> >
+> > Yes.  As I mentioned to Josh off-list, I'm not willing to accept a "we =
+pinky-swear
+> > we'll make this stuff user friendly".  It's not that I don't trust you =
+and Josh
+> > (and others), it's that for me, this level of user-friendly behavior is=
+n't nice
+> > to have, it's mandatory for these tests to be usable upstream.
+> >
+> > Internally we can squeak by with barebones, unhelpful tests, because th=
+e run
+> > commands are often hardcoded somewhere and there is piles of documentat=
+ion elsewhere.
+> > But for upstream, none of that holds true.
+> >
+> > If it were weeks of effort, I would be more open to treating this as ni=
+ce to have,
+> > but AFAICT writing the code should be less than a days worth of work.
+>
+> Yeah that's fine, I don't think it adds too much extra work, and it's
+> something I'd like to have anyway. I just wanted to confirm if it should
+> be part (or merged ahead of this series) or can be separate. Thanks!
 
-If the device is in error state and the PIN register reads as 0xFF,
-does all of config space read as 0xFF?  Was the PIN register valid
-before?  How did it get into an "error state".
+So I need to add kvm_vfio_device_init() and it will call
+vfio_pci_has_driver(). Then, kvm_vfio_device_init() will TEST_FAIL if
+vfio_pci_has_driver() returns false, correct?
 
-If this has only actually been observed with this RTL NIC, is it
-really an error state or is the hardware non-spec compliant, trying to
-indicate lack of INTx support with 0xFF rather than 0x0.
-
-It would be surprising if a device in an error state was only broken
-relative to the INTx PIN register, and exposing a broken device only
-masking the INTx support seems incomplete.  If we're dealing with a
-specific broken device, maybe the right answer is a quirk to set
-pdev->irq to zero.
-
-Please elaborate on what's actually happening here.  Thanks,
-
-Alex
-
-> Signed-off-by: Christos Longros <chris.longros@gmail.com>
-> ---
->  drivers/vfio/pci/vfio_pci_config.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-> index b4e39253f..ed75c1cc3 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
-> @@ -1829,8 +1829,17 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
->  					cpu_to_le16(PCI_COMMAND_MEMORY);
->  	}
->  
-> +	/*
-> +	 * Sanitize bogus interrupt pin values.  Valid pins are 1 (INTA)
-> +	 * through 4 (INTD); anything else disables legacy interrupts.
-> +	 */
-> +	if (vconfig[PCI_INTERRUPT_PIN] > 4)
-> +		pci_info(pdev, "Bogus INTx pin %d, disabling INTx virtualization\n",
-> +			 vconfig[PCI_INTERRUPT_PIN]);
-> +
->  	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
-> -	    !vdev->pdev->irq || vdev->pdev->irq == IRQ_NOTCONNECTED)
-> +	    !vdev->pdev->irq || vdev->pdev->irq == IRQ_NOTCONNECTED ||
-> +	    vconfig[PCI_INTERRUPT_PIN] > 4)
->  		vconfig[PCI_INTERRUPT_PIN] = 0;
->  
->  	ret = vfio_cap_init(vdev);
-
+Should kvm_vfio_device_init() live in
+tools/testing/selftests/kvm/lib/kvm_util.c?
