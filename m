@@ -1,154 +1,308 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0773B3C5DC3;
-	Wed,  1 Apr 2026 16:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9346A477E43
+	for <kvm@vger.kernel.org>; Wed,  1 Apr 2026 16:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775059853; cv=none; b=d14BXQf2Mu3a/IpSdf2pzAto9Y3JMZLO1R6f3tqeC9eIK53oSnb1nKHelHwrvP8JbGoiA2tkIa/RsX4HloH4DSiUNCZ8uwog5B0ibxB6vJ0FZAKsLI75sqiB182UR6hxd+EqcOZNoa7A2PvuyaF/k43CWfuIBGdBesEOrZTzwd8=
+	t=1775060312; cv=none; b=Z0NcdcNve2CNCryklqLTlMNs66XZfQTrKEKyfrEeIWR+ionBEl9hHogXVwMnUlt96uOjUqltZfSsH6UCke4Wx/7WFiQfMQFMkwBqWycr4DwEEnwoSiFFckcSc0s7Q9kuXxFIm6EyhcvtEcRv0HkapxT9TBXro0BXNR8Punsf5lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775059853; c=relaxed/simple;
-	bh=6jLc5HKAxgT52lf7fuUEFVPGFditJTLBCspmftAOZoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AC6G2cOvsUU9tbkMexal0jRC0Bf/fpvsLanYFGW6mdIar5ZKBhEjnhigt+5Kxd0Hc8Q5HgzqTsy1sA+arZlBhSJoCCgv28HE+fjbCo4eny9Tg9jVPdRoLLtVTFe788bgSrbPNHQ7rrIFrnPrlCsNkk59XKK2tSRXREZkBYFS578=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dPYCZf8x; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775060312; c=relaxed/simple;
+	bh=FqCaRPdFgCc/to3y1/YRgTf4frnYwdgRGfmFaq8NqAo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fko9FcrSjFS6jvLd7yeFt8mSzKk5DOs9yvX2xGH14oPCvvC7EYWk5bOD7C6YjqNuPTQ/wOTKNsJfUbBRcU+wCZAezdd29UN0msmq8ByPT/hr8SdpiuPyPTp6x0pofb21QfgRKo5RSYoxgEkDzvj3ZqPkgae1/eyfhsYF/mt3b6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S2PoUS5I; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dPYCZf8x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775059851; x=1806595851;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6jLc5HKAxgT52lf7fuUEFVPGFditJTLBCspmftAOZoY=;
-  b=dPYCZf8x+f0zy1oaJMD4voq6EoF0pmucNPuB9grdrdMd0Qfv0reVrLwE
-   WTHehoFfYZX48VvZfenqUnucxJrVAYTBVtbyWM4tCcedHo8T0PBfvtAzh
-   9UGV965M9MqEm9TtfEiW/CjSXEFKTHhm0PEFDmSD2+mQoU7ZKdyObWb08
-   2ED6hpWlHPjyUIZZ9W37Um4Y+SFsOed9Ane37MXWhvCz9Y63OFAvTGHxA
-   m/i3Ayz5h0yX9DOJ/inLfxVsC9RX+FWhfC6STY0173BPuFbUFJ+EPWeoQ
-   5almwP5FnlID0FHxuWzIHgPcGveDmMO2XMhHODvnpdlMWV9exQyiRZRVo
-   g==;
-X-CSE-ConnectionGUID: ht88SO9gTz++L6TYaiNgyQ==
-X-CSE-MsgGUID: vrziLJk8R4mwH6OiZuHPqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75279968"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="75279968"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 09:10:50 -0700
-X-CSE-ConnectionGUID: KlfNQRJJTByqKi9yHJMoxA==
-X-CSE-MsgGUID: vKzv2u4eSBe0URP2nyUeXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="249926498"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 09:10:48 -0700
-Message-ID: <790d81e3-8e58-4219-94c7-835d1e41cac5@intel.com>
-Date: Wed, 1 Apr 2026 09:10:56 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S2PoUS5I"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35d93a8149bso1429399a91.0
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 09:18:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775060305; x=1775665105; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8oep0xPVTL/A3/itmiVgy18Jj282Zsdu9CLfS6+cGQQ=;
+        b=S2PoUS5I6bwDonKmt8yv0vGCS+m6IaMU69PEW4iMBoOJjVvrzq1AILPBIJpB9ZcpiR
+         Z+SLTJ6uJTgyejVS83tquvoC6umL25ntVoNsXQZ0JnN1bsaamge+tYhhhYFGh3bwSnJN
+         gRWEHYKtXVI/vEEk8UYlJtCLXnWof6AW9LJ8oEot3qEyVpVIgQTaVhLsAx9UzgaGKTkB
+         IUEeSY8fRtOZ7kAJ+8u5mUCxY9ycreCWvzoxatmhvjaAeJr8ZsVCuVI6S5VRr5ERsmgL
+         b7MpwxPejWjEos74Pr2xg6L0ppKlf3chN51tXXNjGlSPinhHIDkNlNpkQNi6RpGsXtqp
+         TNlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775060305; x=1775665105;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8oep0xPVTL/A3/itmiVgy18Jj282Zsdu9CLfS6+cGQQ=;
+        b=YQ0FJ7luxDz7+gRbV42xR0CnzbcNj83louDAeJaHYkXdvmyKcnbrI9t/lf56b4d2wT
+         JWbqXnHiCi6mISgQVIP+vHi2BdKpJqfs0fAw4C5H8YfAQ6zvoJzJtHqEJU2KY7wwjGjx
+         qPHD0g6LRm+7KXLG2FfbMjg2TRfpYb5bSG0xF7HEuAusuXcbSHlTY9kmWwIBRKhn4Qca
+         o1YyA3b3kB3p2qcDuknpFob1rWGDQiu21g89zvIY+cwNvmZx7skNOjX0zUWTt2g8kp+k
+         BmJfIJlZ5V0Gu0RpyI6R1+2wR//BHbg1aD4jYe0TTCWae56A2E/jAhHPddvYpdWMUke1
+         J4uw==
+X-Forwarded-Encrypted: i=1; AJvYcCXucTWaHptSeWumioPP8X1Byd3HnRYGOxcf1TKTDW1Qq7pbK96zQy2jEbpcS2U8iVxR+mg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg8D6T9lmcmrAKvKszmy1fD5V89KT7VlANZvnUFOSnUdmOchmo
+	+32kKFc/Eh20e6MWpI8HXN2vOBrkjkW3n0co9u+fUVUAFc1hyWneMP2j4UOcs9Uk+6IWXXfdf2n
+	1HkhovQ==
+X-Received: from pjbnp13.prod.google.com ([2002:a17:90b:4c4d:b0:35d:97d0:f6eb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f0e:b0:35b:e4f0:f9b4
+ with SMTP id 98e67ed59e1d1-35dc6f660e3mr3232235a91.10.1775060304380; Wed, 01
+ Apr 2026 09:18:24 -0700 (PDT)
+Date: Wed, 1 Apr 2026 09:18:23 -0700
+In-Reply-To: <524fc5dd-e06b-4857-82e7-f0a969966bc9@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1774755884.git.ashish.kalra@amd.com>
- <6345df31337125280f91ad8f37843aa865fd85fc.1774755884.git.ashish.kalra@amd.com>
- <ab41b1d8-e464-4ad6-ac07-7318686db10e@intel.com>
- <e2e38a91-ef8c-41d0-9373-0fdb6f246847@amd.com>
- <a1a5fa97-b067-4145-a4dc-fbb04fe9c720@amd.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <a1a5fa97-b067-4145-a4dc-fbb04fe9c720@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <c820e242-9f3a-4210-b414-19d11b022404@amd.com> <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
+ <2723ab8b-8fad-469d-9ef2-918358953b16@amd.com> <c5f86b40-7330-4ff3-a2df-90729d1c9fef@amd.com>
+ <524fc5dd-e06b-4857-82e7-f0a969966bc9@amd.com>
+Message-ID: <ac1FT4G_VpFHRIWl@google.com>
+Subject: Re: SEV-ES guest shutdown: linux-next regression with QEMU 10.2.2; smp>1
+From: Sean Christopherson <seanjc@google.com>
+To: Srikanth Aithal <sraithal@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	open list <linux-kernel@vger.kernel.org>, KVM <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/1/26 08:47, Kalra, Ashish wrote:
-> For programming the RMPOPT_BASE MSR performance is not really that
-> important as it is for issuing the RMPOPT instruction on only thread
-> per core, and as we are programming the RMPOPT_BASE MSRs on all CPUs/
-> threads to the same (starting) physical address to support all RAM
-> up-to 2TB for RMP optimizations, therefore, i don't think it is that
-> critical to implement wrmsrq_on_cpumask() and instead we can
-> continue to program the RMPOPT_BASE MSR on all CPUs (threads).
-I don't mean to be a grammar pedant. But, man, that's hard to parse when
-written as a single sentence.
+On Wed, Apr 01, 2026, Srikanth Aithal wrote:
+> On 4/1/2026 6:23 PM, Tom Lendacky wrote:
+> > On 4/1/26 06:24, Aithal, Srikanth wrote:
+> > > Hello Tom,
+> > >=20
+> > >=20
+> > > On 3/23/2026 6:40 PM, Tom Lendacky wrote:
+> > > > On 3/20/26 11:08, Aithal, Srikanth wrote:
+> > > > > Hello,
+> > > > >=20
+> > > > > I am hitting a failure when shutting down a SEV-ES guest (smp>1) =
+on
+> > > > > recent linux-next, and narrowed it down with bisection on the hos=
+t
+> > > > > kernel. The issue appears with more than one vCPU (e.g. -smp 2); =
+with -
+> > > > > smp 1 shutdown completes normally in my tests. The same guest shu=
+tdown
+> > > > > path works with an older host kernel (<next-20260304) and is also
+> > > > > avoided with current QEMU master or by cherry-picking a specific =
+QEMU
+> > > > > commit onto v10.2.2.
+> > > > >=20
+> > > > > Environment:
+> > > > > Host kernel: linux-next, tag next-20260319 [1] (also observed sta=
+rting
+> > > > > from next-20260304).
+> > > > > Guest: SEV-ES Linux guest; -smp 2 (or more) reproduces the issue;=
+ -smp 1
+> > > > > does not in my testing.
+> > > > > Hypervisor / QEMU: Initially QEMU v10.2.2 (stable). Later tested =
+QEMU
+> > > > > master at 8e711856d763 [2].
+> > > > >=20
+> > > > > Details on issue:
+> > > > >=20
+> > > > > After SEV-ES guest shutdown , the serial log shows a register dum=
+p
+> > > > > (example below) .
+> > > > >=20
+> > > > > [=C2=A0 =C2=A012.613383] reboot: Power down^M
+> > > > > EAX=3D00000000 EBX=3D00000000 ECX=3D00000000 EDX=3D00a00f11
+> > > > > ESI=3D00000000 EDI=3D00000000 EBP=3D00000000 ESP=3D00000000
+> > > > > EIP=3D0000b004 EFL=3D00000002 [-------] CPL=3D0 II=3D0 A20=3D1 SM=
+M=3D0 HLT=3D1
+> > > > > ES =3D0000 00000000 0000ffff 00009300
+> > > > > CS =3Df000 00800000 0000ffff 00009b00
+> > > > > SS =3D0000 00000000 0000ffff 00009300
+> > > > > DS =3D0000 00000000 0000ffff 00009300
+> > > > > FS =3D0000 00000000 0000ffff 00009300
+> > > > > GS =3D0000 00000000 0000ffff 00009300
+> > > > > LDT=3D0000 00000000 0000ffff 00008200
+> > > > > TR =3D0000 00000000 0000ffff 00008b00
+> > > > > GDT=3D=C2=A0 =C2=A0 =C2=A000000000 0000ffff
+> > > > > IDT=3D=C2=A0 =C2=A0 =C2=A000000000 0000ffff
+> > > > > CR0=3D60000010 CR2=3D00000000 CR3=3D00000000 CR4=3D00000000
+> > > > > DR0=3D0000000000000000 DR1=3D0000000000000000 DR2=3D0000000000000=
+000
+> > > > > DR3=3D0000000000000000
+> > > > > DR6=3D00000000ffff0ff0 DR7=3D0000000000000400
+> > > > > EFER=3D0000000000000000
+> > > > > Code=3Db0 96 b5 61 ca ef 3f 51 00 c3 65 51 19 77 b1 e0 e5 e2 91 b=
+8 <0c> 5d
+> > > > > c7 fc 59 bc 2b 6f 90 89 44 23 ec ec 2f 62 fd e0 8f d5 c7 31 24 70=
+ e2 7d
+> > > > > c6 ee 00 00
+> > > > > -> Hangs here
+> > > > >=20
+> > > > > Host kernel bisect (with QEMU v10.2.2) led to:
+> > > > >=20
+> > > > > Good (no crash on guest shutdown):
+> > > > > 32d76cdfa1222c88262da5b12e0b2bba444c96fa
+> > > > > KVM: SVM: Move core EFER.SVME enablement to kernel (local build t=
+agged
+> > > > > 7.0.0-rc232d76cdfa1222 during testing.)
+> > > > >=20
+> > > > > Bad (crash reproduced):
+> > > > > 428afac5a8ea9c55bb8408e02dc92b8f85bf5f30
+> > > > > KVM: x86: Move bulk of emergency virtualization logic to virt sub=
+system
+> > > >=20
+> > > > Any chance you have the enable_virt_at_load module option set to fa=
+lse?
+> > >=20
+> > > No, it is set to Y.
+> > > # cat /sys/module/kvm/parameters/enable_virt_at_load
+> > > Y
+> > >=20
+> > >=20
+> > > >=20
+> > > > >=20
+> > > > > So the first bad commit in my host kernel bisect was 428afac5a8ea=
+. The
+> > > > > commit prior [32d76cdfa122] did not have this issue.
+> > > > >=20
+> > > > > Later I used QEMU master and with same linux-next next-20260319 a=
+s host,
+> > > > > it did not reproduce the shutdown issue .. that was using QEMU ma=
+ster
+> > > > > [2].
+> > > > >=20
+> > > > > QEMU master contains 56d89db2cfd82c53439778fbf39294bf35194dba (ta=
+rget/
+> > > > > i386: convert SEV-ES termination requests to guest panic events).
+> > > > > Cherry-picking that commit onto QEMU v10.2.2 resolved or at least
+> > > > > avoided the shutdown crash in my setup.
+> > > >=20
+> > > > Well, if it is converting a guest termination request, that is stil=
+l not
+> > > > good. It should be a clean shutdown.
+> > > >=20
+> > > > >=20
+> > > > >=20
+> > > > > Questions:
+> > > > >=20
+> > > > > KVM: Is the interaction/issue with older QEMU (e.g. v10.2.2) expe=
+cted
+> > > > > here, or is there anything that should be adjusted or documented
+> > > > > following 428afac5a8ea, like for multi-vCPU SEV-ES guests?
+> > > > > QEMU: Would a stable backport of 56d89db2cfd8 to 10.2.x (or equiv=
+alent
+> > > > > handling of SEV-ES termination) be appropriate for users staying =
+on
+> > > > > stable QEMU while moving to newer host kernels?
+> > > >=20
+> > > > That wouldn't actually solve the issue, it is just a much more user
+> > > > friendly error message. Is there a termination event in the host dm=
+esg
+> > > > log?
+> > >=20
+> > >=20
+> > > The guest shutdown proceeds normally until:
+> > > [ OK ] Reached target poweroff.target - System Power Off.
+> > > [ 9.918849] reboot: Power down
+> > >=20
+> > > At that point the serial console freezes with the register dump below
+> > > (EIP=3D0000b004, HLT=3D1, EFER=3D0, etc.).
+> > >=20
+> > > [=C2=A0 OK=C2=A0 ] Finished systemd-poweroff.service - System Power O=
+ff.
+> > > [=C2=A0 OK=C2=A0 ] Reached target poweroff.target - System Power Off.
+> > > [=C2=A0=C2=A0 10.029330] reboot: Power down
+> > > EAX=3D00000000 EBX=3D00000000 ECX=3D00000000 EDX=3D00a00f11
+> > > ESI=3D00000000 EDI=3D00000000 EBP=3D00000000 ESP=3D00000000
+> > > EIP=3D0000b004 EFL=3D00000002 [-------] CPL=3D0 II=3D0 A20=3D1 SMM=3D=
+0 HLT=3D1
+> > > ES =3D0000 00000000 0000ffff 00009300
+> > > CS =3Df000 00800000 0000ffff 00009b00
+> > > SS =3D0000 00000000 0000ffff 00009300
+> > > DS =3D0000 00000000 0000ffff 00009300
+> > > FS =3D0000 00000000 0000ffff 00009300
+> > > GS =3D0000 00000000 0000ffff 00009300
+> > > LDT=3D0000 00000000 0000ffff 00008200
+> > > TR =3D0000 00000000 0000ffff 00008b00
+> > > GDT=3D=C2=A0=C2=A0=C2=A0=C2=A0 00000000 0000ffff
+> > > IDT=3D=C2=A0=C2=A0=C2=A0=C2=A0 00000000 0000ffff
+> > > CR0=3D60000010 CR2=3D00000000 CR3=3D00000000 CR4=3D00000000
+> > > DR0=3D0000000000000000 DR1=3D0000000000000000 DR2=3D0000000000000000
+> > > DR3=3D0000000000000000
+> > > DR6=3D00000000ffff0ff0 DR7=3D0000000000000400
+> > > EFER=3D0000000000000000
+> > > Code=3D98 59 0c db 72 6c 94 71 3d a6 36 32 49 a8 08 22 bd d7 8c bb <4=
+c> 3c
+> > > d9 bd 90 b5 2e a0 69 26 53 df aa 4c bb fe 5a d9 b6 ee 7b 45 02 2e cf =
+d9
+> > > 60 48 00 00
+> > >=20
+> > >=20
+> > >=20
+> > > QEMU does **not** exit on its own =E2=80=94 it appears stuck.
+> > >=20
+> > > Only after I press Ctrl+C do I see in host dmesg:
+> > > kvm_amd: SEV-ES guest requested termination: 0x0:0x0
+> >=20
+> > So we would have to see what is triggering that termination request.
 
-I'm also not quite sure what the resistance is to going and adding the
-precise function that is needed:
+IIUC, the termination request only occurs after CTRL+C.  If that's correct,=
+ it's
+a red herring, and the real question is why a graceful shutdown hangs.
 
-int wrmsrq_on_cpus(const struct cpumask *mask, u32 msr_no, u64 q)
-{
-        int err;
-        struct msr_info rv;
+> > We can probably instrument a guest kernel to get some more info.
+>=20
+> Sure, I can apply any debug patch and provide the debug logs.
+>=20
+> Note: I'm heading out on PTO until next Wednesday (April 8th). I won't be
+> able to gather additional debug logs until I return.
+>=20
+> >=20
+> > >=20
+> > > I also set `kvm_amd.dump_invalid_vmcb=3D1` before reproducing, but it
+> > > produced no additional output.
+> > >=20
+> > > This issue is still present on latest linux-next next-20260331 [https=
+://
+> > > git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?
+> > > h=3Dnext-20260331, tag name=C2=A0=C2=A0=C2=A0 next-20260331
+> > > (e5da3eef8dadab4e98b228725ca8948edd9d601f)]
+> >=20
+> > Is it only with linux-next? Which would point to a kernel change vs a
+> > Qemu change.
+>=20
+> Yes, it is specific to linux-next (starting from next-20260304, bisected =
+to
+> 428afac5a8ea "KVM: x86: Move bulk of emergency virtualization logic to vi=
+rt
+> subsystem").
+>=20
+> - With older host kernels (< next-20260304) + QEMU 10.2.2 =E2=86=92 clean=
+ shutdown
+> (no hang, no termination message, QEMU exits normally).
+> - With linux-next (next-20260331) + QEMU 10.2.2 =E2=86=92 hang at the reg=
+ister dump
+> after "reboot: Power down"; only Ctrl+C triggers the "SEV-ES guest reques=
+ted
+> termination: 0x0:0x0" message.
+> - With linux-next + QEMU master (or 10.2.2 + cherry-pick of 56d89db2cfd8)=
+ =E2=86=92
+> no hang (the termination is converted to a guest panic instead).
 
-        memset(&rv, 0, sizeof(rv));
+What guest kernel are you using?  Bisecting to that commit for just the *ho=
+st*
+kernel is baffling.  I could see it preventing KVM from loading or somethin=
+g, but
+it should be completely out of scope with respect to guest activity.
 
-        rv.msr_no = msr_no;
-        rv.reg.q = q;
+How are you initiating shutdown withing the guest?  What's the full QEMU co=
+mmand
+line?
 
-        err = smp_call_function_many(mask, __wrmsr_on_cpu, &rv, 1);
+Can you also provide the OVMF image?  E.g. in case the hang occurs in EFI r=
+untime
+services or something.
 
-        return err;
-}
-EXPORT_SYMBOL(wrmsrq_on_cpus);
-
-It's just wrmsrq_on_cpu(), replace the 'cpu' with a cpumask and
-s/_single/_many/. I think. Unless I'm missing something.
+I want to get this sorted out before the merge window and so would prefer n=
+ot to
+delay root causing this by a week or more. =20
