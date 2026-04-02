@@ -1,62 +1,65 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3391B31B803
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 22:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4823373BE0
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 22:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775169082; cv=none; b=Z95+ymH0KGG0C3qK62nsyVZg/7CW1JOx9smYWULSmscRVuwSFcRAsNyrdbW44sOBpX9tr3VPr13yf93bW1T7Iq31Rkvwo2jADLVGuCA0KP3rQGyTvvwP9HNS6/C4i3fiJVkbqadOaVVPv0+bvE2g2PQ8cY4aNeEwgEfbr84uQ4U=
+	t=1775169084; cv=none; b=UtM/B5MfGmEbcWV2LX+SsNm99RlEOe8KSgKqIDH6LaGH9CV8SvnxpE4+MOLO4qhI76cFCb/1EfkhNH1J8nULS9EgETEk11Ph8cAQaNPiQv18QGnhSm8T97wL1LV8gvgv/vcyCFiHn0OlGnqnoXTe3foVAlaoTf2O72YUnZME7JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775169082; c=relaxed/simple;
-	bh=nWSMKD++4fY32Qb7VNxn4QlRvNQNcikpO272RvpfzXY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Xy9aGf1tRWJ4OTRr3WzlsFIyRhsouhDCONQbc1JIUaIB2Tc05FjFXlSJ7Amitw7b5QnvNZi7CAc3fk7Ee1MB8SmXfn0pSlrM99kYWrueiosdzJGnF0hE4DQRRmxSlWZ2VmsNctaFepWQZ9E1I1ZhAy2Z9/dGYpGvY2tGX6G7YAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tf1do4CB; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1775169084; c=relaxed/simple;
+	bh=X0ttpMy/Iam3MK8Sh3ziRSgNNEQUC9tuY+SPxPR299I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BMoNCsrXgNnmSYpbdyNXyI5Vp/RJWf2oo3ddHlZ2yP2CauT6O0HF4K8+ZzJ8k5XLdKQ51aL3xtZTvMNKS4a3I0Gkol9OCfC6CO3k5aImjmh2ckP6BLcKiwxc/2HFE06Ypy12+GCEpDNWzaSUnUMbbXiH+0lfaVFCSIoIb+tyaDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XkHBqhpg; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tf1do4CB"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b24af7ca99so14722825ad.1
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 15:31:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XkHBqhpg"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c7414516609so969239a12.3
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 15:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775169080; x=1775773880; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i6PCZBq+n3lN/5mnm+cSqzCfjBiG6m6+Jqo3i/q1UGA=;
-        b=tf1do4CB4SM/B5iJLDTb3fKz89Ri1sgoKIAombdtZ6QuABNlW7ExBFiI+uQnXoVO0f
-         sIARqymC91lygLahArXWNQBuWoMsrONGVcRAfoQH/pKIv+QFn1ZEiiyHJj0UO2iZAE4c
-         AvsNwHYZzQs/bB6wtAOhrAbkN0ityadSKqohD/m8dOiu4Y4i9eWCWjjacSeqimO/Wp5Q
-         7+Me/hyclgQySuTNcN0YLPvcy+rtxqReyXY5qOHLR9zLNMYDMq0Pa1sTeN8tbrJat+xW
-         Sf3p355CGXqDhpesOvN7WazOqhp3bQm5VsIukfpIKwMpeg57A87sQuqJ8sJ3qrO4IWFZ
-         vNbQ==
+        d=google.com; s=20251104; t=1775169082; x=1775773882; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tN1qvvvgvtf7yajVcKYh8yLZ+h708jFgLVbhV2PVstI=;
+        b=XkHBqhpg6IJL3lLhgqi9CcfIACJ8ENAcA84EdBX2ddXfqSpgcBHBVxynAIKYUUutBX
+         35h4yoHo8dpYsTzlq+QwUvys3YiXgV3lWFh9w/Z8QIj1Pd3WrPzOEOgeW75g53apvQYj
+         D1RwuTjpPBoSAmz5ikEqWOwfLsY+ETmOlKYtEHdpwiTVViO3TpejwNuNKpxV3rA/Hzg5
+         xaWtw5SJaFYlvvF9iZUwlckePvr2zMtcJSacSqn3hYuKx4Z4h1wl6vrpVDtLU3Fg+hH6
+         P7/QDmb5ui4jBF4JKqsnIX3oEzF/FZI3rpZg7F9qyynVSTRKlF1RJ9ZhzQ785WIHYUCM
+         0dDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775169080; x=1775773880;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i6PCZBq+n3lN/5mnm+cSqzCfjBiG6m6+Jqo3i/q1UGA=;
-        b=riTfChbl+duNx3skSrfVLrJZ0Ko1Tdl9wBTdjheTRIUe/a9uVHUDv6PoAbpjb0vqAL
-         fYJBWUp61IFZwDy0aEZwzd3cGIKz/qKr/AME8hwkSOMwZBNWyFZFWir76CuvhC6Hhsub
-         2lsDEpNUBwbhk/jpLikieVIiSM312apq+snHaV30dnsH8NTiSp0oyA/ZGMu/z5xXMxZf
-         SDVCj/45AaNTkj/mTEt7z6xTW9vOwepNmAgA0bGufyS1RB0rpdASjSbnU900WXhdg3oQ
-         OIr7V7dLl4H2MYJF+tmyCAECJkDetnecguqmlijRdaaF4MHW5XMxb7uyyJuqmtIFv8d4
-         klCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkA06+ydhbjm+i0sa5aXhT3d3PL2zbyIy26JS7YyZcWJVd/iD6t3i0bgHexQt+90rMPTA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIzWSN17BBm8CmtNFNetytSHhJcXg+gOeykj/idoEfhaPGhVMh
-	VWZsNI0lP1Y7UAFmQLZJ7OYXgE7AuwnIh8Q3B0k1bYY8NnG2q4Hx3m36zQQ9edLFzW2mBUORT/W
-	uRCJ/71YNwQW2Gw==
-X-Received: from pfwy21.prod.google.com ([2002:a05:6a00:1c95:b0:82c:de4c:2172])
+        d=1e100.net; s=20251104; t=1775169082; x=1775773882;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tN1qvvvgvtf7yajVcKYh8yLZ+h708jFgLVbhV2PVstI=;
+        b=E7aEYEq/khYkk+OKrkjIq9ZsQrI3+BX6kwMFgToUDAWgumEAElejhubeFiwcBdmXRX
+         gVWTnewKdMJ58Y8DmWBfc96HhzDsfQC4WbK+onLkzKMFoILfL7qhl7MTS5QP6Es6jGFv
+         GjwPezrt1qw0/uElNq0poF2vuoRtYO6W/nJ8rAWnMLvvoZ75rQS+jO2e9DJ4FEdUFF9T
+         LIL5LhfsZ86AxlY2NXeOi787wHLMPzecC0kIYpduJgezgjJ9k01f7Br9vKdwEdQte1+n
+         LlL6s5zyYp1Cf59t5wfTwazFTAwn94071jxxzlDKKK2eQxFQhPK0yNrSpD73WuLb/sRb
+         E9aw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/sctOYqJUm0zOh6yirXKkoNsUhazxNuPByEjsmw3dEIqz0vkvPYMW5C3thEGgR9oTWpw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEVGwnNYUZrAEeq81xxMu0MhFQzNUT1WZrV2BxC9HPQo+GXEKy
+	i+fl9mu3QD+5+xWuTLYNxgat6Wx8kf009CVmVpc8kw/NdptHb3Lph0UW2UwH7Tgo3wKQP5KGjz1
+	fZzxfToIqx+L3iA==
+X-Received: from pfbhw14.prod.google.com ([2002:a05:6a00:890e:b0:82a:ff5:27d5])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6300:2703:10b0:398:9bb1:ad08 with SMTP id adf61e73a8af0-39f2ee0182cmr430531637.26.1775169080323;
- Thu, 02 Apr 2026 15:31:20 -0700 (PDT)
-Date: Thu,  2 Apr 2026 15:30:59 -0700
+ 2002:a05:6a20:72a9:b0:39c:787:f196 with SMTP id adf61e73a8af0-39f2ee01ccamr522039637.16.1775169081896;
+ Thu, 02 Apr 2026 15:31:21 -0700 (PDT)
+Date: Thu,  2 Apr 2026 15:31:00 -0700
+In-Reply-To: <20260402223108.650572-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260402223108.650572-1-jmattson@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260402223108.650572-1-jmattson@google.com>
-Subject: [PATCH 0/3] KVM: x86: Virtualize AMD CPUID faulting
+Message-ID: <20260402223108.650572-2-jmattson@google.com>
+Subject: [PATCH 1/3] KVM: x86: Rename supports_cpuid_fault to supports_intel_cpuid_fault
 From: Jim Mattson <jmattson@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -67,27 +70,42 @@ To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-AMD's "disable CPUID in usermode" feature is analogous to Intel's "CPUID
-faulting" feature, but it is advertised and activated differently.  The AMD
-feature is advertised via CPUID.80000021H:EAX.CpuidUserDis[bit 17] and
-activated by setting HWCR.CpuidUserDis[bit 35].
+The function, supports_cpuid_fault(), tests for guest support of Intel's
+CPUID faulting feature. Rename the function to supports_intel_cpuid_fault()
+for clarity.
 
-Add virtualization support for the AMD feature.
+Signed-off-by: Jim Mattson <jmattson@google.com>
+---
+ arch/x86/kvm/cpuid.h | 2 +-
+ arch/x86/kvm/x86.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Jim Mattson (3):
-  KVM: x86: Rename supports_cpuid_fault to supports_intel_cpuid_fault
-  KVM: x86: Virtualize AMD CPUID faulting
-  KVM: selftests: Update hwcr_msr_test for CPUID faulting bit
-
- arch/x86/kvm/cpuid.c                          |  2 +-
- arch/x86/kvm/cpuid.h                          |  8 ++++---
- arch/x86/kvm/emulate.c                        | 14 +++++++------
- arch/x86/kvm/x86.c                            | 21 ++++++++++++-------
- .../testing/selftests/kvm/x86/hwcr_msr_test.c |  2 +-
- 5 files changed, 29 insertions(+), 18 deletions(-)
-
-
-base-commit: 3d6cdcc8883b5726513d245eef0e91cabfc397f7
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 039b8e6f40ba..51cbe67c992a 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -181,7 +181,7 @@ static inline int guest_cpuid_stepping(struct kvm_vcpu *vcpu)
+ 	return x86_stepping(best->eax);
+ }
+ 
+-static inline bool supports_cpuid_fault(struct kvm_vcpu *vcpu)
++static inline bool supports_intel_cpuid_fault(struct kvm_vcpu *vcpu)
+ {
+ 	return vcpu->arch.msr_platform_info & MSR_PLATFORM_INFO_CPUID_FAULT;
+ }
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0b5d48e75b65..9768f001011d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4264,7 +4264,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	case MSR_MISC_FEATURES_ENABLES:
+ 		if (data & ~MSR_MISC_FEATURES_ENABLES_CPUID_FAULT ||
+ 		    (data & MSR_MISC_FEATURES_ENABLES_CPUID_FAULT &&
+-		     !supports_cpuid_fault(vcpu)))
++		     !supports_intel_cpuid_fault(vcpu)))
+ 			return 1;
+ 		vcpu->arch.msr_misc_features_enables = data;
+ 		break;
 -- 
 2.53.0.1213.gd9a14994de-goog
 
