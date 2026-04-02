@@ -1,283 +1,244 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A5B308F07
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 13:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775136497; cv=pass; b=ovE0KmKaTmhY394fCYsblMpXUrTnVMSDrzsppNIsKCtDSHt+tSy0z9tdE6tjaUKkfMNMoWaHc8mKWuG0OalORmz5QLUABimbSADFHk1X5EY/95n0k5qLeyzSNyGjsnSFfKXS8xwhikMWaoPvtIWHDQ9InpWept3tcltEbrckcPU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775136497; c=relaxed/simple;
-	bh=Oik/azXGay+Dctz7i0M4srzJ6nnZWFQDxd3kWjkKO1c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iu2lpe3IVmOr7JC9/KOSkvQphFzyg8k7SZuVSJAf8E6AXiYOsisRpOceP6ZnKileRBv9wAIMLJge4Hiql52IMNDlvama4AhV0LU6TSnlZ2Pors8TjSwortfl1ejOvYUuncjau/MGFv9mvecqP6yU3tBtMWxfxYrtNaBeVp0uYn4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=aQ1ocKHU; arc=pass smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E62FD675
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 13:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775136524; cv=none; b=dX3As3nMJlrOW9VwXMolK1nQdHR427/HRRCs5rS8b8jkjJ0U8rxcVmWRbUqoKBEHBWGjUUfSk31yExbu3HsXM2AusAdPBcj/nUPi/iC9WvvdXQmwwS3O7REVjyPQ7ddVJb0/iw5Lm3ik6eIkNFvvlJd4GNgp/5M6YUk4LpfW1BI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775136524; c=relaxed/simple;
+	bh=gGY/VwPUMO0SWDMiHLhnA/IVkYO3C7UOkCh7m+DwrXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uGKs51gqNDNt+56bx/GCHWgOopnb7B0MXgbXDRK+iGp0Ki3b45wfOcUvV4UdVlc6QfDr1Oz0Fdk/5ZkHtor71bkVPi48nEt0a6xghE8sten/ZlzJsXQwp/Y8aIdu0B4Q6SSv2abhqMLOGZSfQSPbA0tdZmg/PfcIa6IMOtW4wd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JZrYqBjC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qGoNj/5B; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="aQ1ocKHU"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-67c250805ccso315478eaf.1
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 06:28:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775136493; cv=none;
-        d=google.com; s=arc-20240605;
-        b=g1DoIyWKIwDh9OzhKRmzuejssmJsBQhu7k9n7Jc0PzD3+7T0VN68Rqu7rRiwdF8dM8
-         hAfK7XAh4H5F/eaW6GEb5XrnlJPTKIvMfk5fq0zaUwQiVQICngcgaYFHEjQFOhl+zF42
-         h/ANS5Ri7mLtI4BysQSiMnQumvDuKHeEweQ+I/M2upvkAKvLlXIMCw+V+fgF5xXhtmuM
-         hseXpZi0FJD1G1uS3Mx1Zq8F4FJbYqDSEj4fJS35zTyeg/33qPAnb+QnIx04GCKHYvui
-         EramkLZv7KA7BrPPH2r7jKnI2J6Uu1VhfeTDvGN7u3Vgk5kctJi78R2n3ayv4p1Dz+Kg
-         H3Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Gwo7+tgUOrb+SJWwjSXGHYxxEG4gJRnUrJiDAJE/ZOA=;
-        fh=sQTC1L+yLaIhWqVPDhT4GZDkjpT7eIvkDgoW38hoZes=;
-        b=asxmDJrWI4JnEgGiCeXhJ52qacm8mgs4+fPuBYcATJum5AT9Jy6z9+cW/9x+KyaNsY
-         +Kq6UVHuzt6Pt7CL0cg5/fFA9Jxm/vIaCCHv9PRLng1KtoZyxzckETfnQR6GrLNfwC1U
-         1I5prSPBtkRXdW36a+h3rxA0DtVsgtZ9AKSc8a2eM8V74BYzky+eiKe+o2VSKjVATQtv
-         XuRXmxjm52koIcxo3we9y7doNdYgDgR/MKPxdPQi+vNiEDW3FsGETA7iaBGcrhHp6ATM
-         Qkad7NM8QUrC3ffS8VVkFO9vIdJ5+gCxxTLDMVTmUp6p8DpJjVIByUgpayTWpt7METUq
-         5X1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JZrYqBjC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qGoNj/5B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775136521;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h/+o6grdtsiw9OGyUnvd5JR5iZVJ9ugAbNz7gRFL3qM=;
+	b=JZrYqBjCkEpXkJ29BmbRJkNlT0B1d41CeARE85mK+LCCumUou66laXSPdyWdZGNWXRmxJa
+	z7twZ1FOL6HeJTzIUHvW8r+Y+CAqvlqrOrXfMdfM+aengdalMC0/7J0R0tOFh6XN33XgoO
+	gNs9feuCCRA7pB6jAtykv5dV2O5Yx+4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-CH8A3DPLPMSqS_cjs3ow9g-1; Thu, 02 Apr 2026 09:28:39 -0400
+X-MC-Unique: CH8A3DPLPMSqS_cjs3ow9g-1
+X-Mimecast-MFC-AGG-ID: CH8A3DPLPMSqS_cjs3ow9g_1775136518
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-487219e0800so5971985e9.2
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 06:28:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1775136493; x=1775741293; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gwo7+tgUOrb+SJWwjSXGHYxxEG4gJRnUrJiDAJE/ZOA=;
-        b=aQ1ocKHUkTDm+/LjT1XF12iuoK54ZyCCUaf0GS32mtnyUIB322TY+TDcKCLkNG4uIR
-         AN+sdr1+sLW3G4sKWxDSiyuY27z6t5l3DSublwa3sk1QTFxxrye4ADzfGMmxggWO1fu8
-         sXL82qGhnAzZAVzsD2svMmVOS8unt6OpSEYKdqhbTsLyz7Pk/YVYLbaxpqYfuJuWBKGx
-         aYIDFhO+YzDQW4LOOj+Ksx0mIgb4SpPG5Kwyw+s5Uns1b6ZKzyjhXwBu4CXHJDBB/Xd2
-         ohQblxpXo6iqRnl0F+Tg0EhKcQea1atGXGu57897vcnZRtv5lmnLr8/eEMFMKPd9eEgi
-         qqdg==
+        d=redhat.com; s=google; t=1775136518; x=1775741318; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=h/+o6grdtsiw9OGyUnvd5JR5iZVJ9ugAbNz7gRFL3qM=;
+        b=qGoNj/5BoZQ/TZsnU6J6WgpmzC/LkxUNcLo2ra+Ee909d2xOeE0md5kSKgbwcDJe2q
+         2C0aAIV+IqqQ4xwKvhOEUUeW4KRP0VxYIjHEPHLap5pCsgqU5orG232wF5cyh9zSyro9
+         A34stdUq+QTW1QxrWA8LQUNXC//UJUlocWBBB/ZxPyFMmch7PNqlZc18rnfVUkWF8zET
+         7SnKZu4wGzrQ+scPi9nM+d7qDtMV5i9hOq/Gj8XROW0xqlJzkvWgKE4De++NRNHYyNfH
+         4lBBT2H1GGNom6zGfWZly+aewNjBrkUhgd1aTPjHFtDBJgH5yBM/lBydp5q0qCHLQNHo
+         Hgiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775136493; x=1775741293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Gwo7+tgUOrb+SJWwjSXGHYxxEG4gJRnUrJiDAJE/ZOA=;
-        b=PNcncNicwjdGhuLunBacvp0dZCaECryV2qIn9uXa8NcFUO2MDj0C5RuFTxodu1GuQj
-         ucw7lIAmiOL6Fq+Cda3dvuWqsR8VDlUB+bv/Po7UfXgPH3YYVGYcZHNcX6hJZzU2GW4Z
-         A0A8ipeUuDRZ9NDbbg78UcYKv3Qhz9JogRCJhWGNPcOxuhMABoP/RJqV823WOzD8B8vV
-         CSct0zqnvAthFJJp/PO9th+fy8tDz3uxuP5TtcBWH1dciStPyP/eFrtIpjZUiuPQJHAy
-         0ynEvTqjqNTBhuK6DGYdtaR4x9Gu+c0a71lasNSN2564KY+AbKEGniXWcragtOw+T+bp
-         MM2w==
-X-Forwarded-Encrypted: i=1; AJvYcCXTB3wDjngUI7WxHQ8/BUVdoB8YW/4FjeLPt3bG8ad4qodNMdcvFlEloG//3IJh4jLWhP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyim1sorZX7CzToYCJ7UWO2lFiiC8C6u5VneKiz6EGuebEmgCCu
-	8vHL5GDYAOhJs7kC3iovm3LoBnlvQ+fjhnU8eurHVW0KNhzH503nF9JkzXvU6TokY6tgE4sNe5Z
-	Eebe0+WUMf6vX718e2vPHCfCdsPoT8wQA1/m+FuGwLg==
-X-Gm-Gg: ATEYQzwaHIeIVDxc4t3eS3pbWI5FbF0XAj1f9HQV45K7SEGAYHcM8b+MXNB+5+Rus0a
-	sJR/7Qc+C9nCWDwa8gycX/TtqED1L9F8PJlGU+XJXWAoqJfx2ED/k5IRszqNnf2qsn1iske0eyV
-	zQqMt4HkwA1uILRscPz6BFZARwN1K5Y404AkYaCeV3HHXclVVZXhaWDwVD9QeX0ur8vSDTc5DD+
-	oVRP1tYGP/gDjakkiK2KXkc3c8gNLqLmehIvZIyYyGovXfiN83FceXNs0UN2k61IwmRkDtjBKtr
-	nQg5bGHA/7Y+fJcqDA9Tmn/SQTIk7vdMry17i9ObopTsJ45yOiovJrxjiEzuh7GuRTEM9Ap583F
-	ICm2uoG7G3qMAqvMoSuFez8tsig==
-X-Received: by 2002:a05:6820:2f01:b0:67f:ac08:d78b with SMTP id
- 006d021491bc7-67fac08d9a1mr2937060eaf.25.1775136493375; Thu, 02 Apr 2026
- 06:28:13 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775136518; x=1775741318;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h/+o6grdtsiw9OGyUnvd5JR5iZVJ9ugAbNz7gRFL3qM=;
+        b=AdnCGCdTCzE++tOWSwpdm8foKK2c5xXe8PZq2zOf2xXb6SahT7vZkcp6Po+sL7eZGs
+         VOtQfG282Ko1VC2rg3cX4xdhy9Tk2r5Ag0jqQ+DijG6HEz+HORXz8h34A3rS2sN5u/FN
+         VAt3RqC55F7ketJOCziymr5yF5GNCAe4gAQvTmg1S+6HlP2rRSAD4YHgZNTuiZKreQKl
+         oB7vzWkYdyZQjr7flBCNPAmpzSbMyWNUQy69Im/yudvn16rT/a7nHlRYPDJ+DH2ElFM2
+         GdFwKA5sL4VcGQZmcEdjT92TyE/Wt7tM5YLS7LUeSD2IC6zrsL7eqqIgs/IuXdgTWVDO
+         v/jA==
+X-Forwarded-Encrypted: i=1; AJvYcCUy3ZQfuUpYYJc628FLfZM4WiJKXr+ahOxkwbBPP/0BAhaXuwtZeqkJWFrGqubnW4urCQA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc0NIQoMUzDYPVrASiEQ6xWCvy6NFZlUnHCE/DOrSqMCYpZFQE
+	tJ9U5TejHAlot9IKlt+4vvmuBcYcZ0Rofgc3OD8Va0CxcExmbDNG38xzSfr7bi1BpTRDnmZDenr
+	qlxQNhYpYWu6hGTDcvGXZZVLFGoW8bneR1qKuL8uf7qNgAfyt1vjMtg==
+X-Gm-Gg: ATEYQzx9D+YxcTLpblwQcKaztNEgoT3Z8nTz4hCTANbbpEfLplJhjTcPnW4GuDKrkqh
+	xG9Alm4eko6AadgckYRNSinlP8rezkHGRl4nTeq2fzvYxwFLnjFRI17CWaSVKw1j2Istn6yXBjH
+	2+AWGktdV33IbKwX2uC9VWwalm/qVTrqNcqkIvYwiLT/hNgVjHsnGs8aOGIAjZibxJnE2uvpVuA
+	Onj5tyhm7K4n5yp3ibgU/t7zW2ZhXF+0ldFq5cYZx+V2eFMlysrIvcvPwIQlLqTb5pFxj3NlaxC
+	9y5hcZNFtFCG5BlNPLOplhrs2cIXRDzKduvkfNz7yUI+YbuLgHXZ+JLGx5qe1gpEsMG2U1DK4Zv
+	/8nsg+FFaZfT7tmDOiljEXLtuxveZo39xd4rzV8k6ETiaNQ+QYOSQtWTz9nfea/lnXT18H0muss
+	cO
+X-Received: by 2002:a05:600c:848d:b0:485:3c66:e230 with SMTP id 5b1f17b1804b1-488835b78f1mr140993835e9.29.1775136518011;
+        Thu, 02 Apr 2026 06:28:38 -0700 (PDT)
+X-Received: by 2002:a05:600c:848d:b0:485:3c66:e230 with SMTP id 5b1f17b1804b1-488835b78f1mr140992975e9.29.1775136517515;
+        Thu, 02 Apr 2026 06:28:37 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-139-105.business.telecomitalia.it. [87.12.139.105])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887a630922sm244763235e9.0.2026.04.02.06.28.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 06:28:36 -0700 (PDT)
+Date: Thu, 2 Apr 2026 15:28:25 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/2] vsock/test: add MSG_PEEK after partial recv test
+Message-ID: <ac5qWSEBM--HuKQK@sgarzare-redhat>
+References: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
+ <20260402-fix_peek-v1-2-ad274fcef77b@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260227121008.442241-1-tjytimi@163.com>
-In-Reply-To: <20260227121008.442241-1-tjytimi@163.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 2 Apr 2026 18:58:01 +0530
-X-Gm-Features: AQROBzCdorpmHyQHBiu4oSiym1sKMdsAQ59SLSIP6DWXbg54kifkZBvpDdbltSk
-Message-ID: <CAAhSdy0M6+1w0FbqzmpQ2gkv4sXgo9+WcbW-TB9mBLvD7=GXDw@mail.gmail.com>
-Subject: Re: [PATCH v7] KVM: riscv: Skip CSR restore if VCPU is reloaded on
- the same core
-To: Jinyu Tang <tjytimi@163.com>
-Cc: =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
-	Atish Patra <atish.patra@linux.dev>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
-	Nutty Liu <nutty.liu@hotmail.com>, Paul Walmsley <pjw@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260402-fix_peek-v1-2-ad274fcef77b@redhat.com>
 
-On Fri, Feb 27, 2026 at 5:40=E2=80=AFPM Jinyu Tang <tjytimi@163.com> wrote:
+On Thu, Apr 02, 2026 at 10:18:02AM +0200, Luigi Leonardi wrote:
+>Add a test that verifies MSG_PEEK works correctly after a partial
+>recv().
 >
-> Currently, kvm_arch_vcpu_load() unconditionally restores guest CSRs,
-> HGATP, and AIA state. However, when a VCPU is loaded back on the same
-> physical CPU, and no other KVM VCPU has run on this CPU since it was
-> last put, the hardware CSRs and AIA registers are still valid.
->
-> This patch optimizes the vcpu_load path by skipping the expensive CSR
-> and AIA writes if all the following conditions are met:
-> 1. It is being reloaded on the same CPU (vcpu->arch.last_exit_cpu =3D=3D =
-cpu).
-> 2. The CSRs are not dirty (!vcpu->arch.csr_dirty).
-> 3. No other VCPU used this CPU (vcpu =3D=3D __this_cpu_read(kvm_former_vc=
-pu)).
->
-> To ensure this fast-path doesn't break corner cases:
-> - Live migration and VCPU reset are naturally safe. KVM initializes
->   last_exit_cpu to -1, which guarantees the fast-path won't trigger.
-> - The 'csr_dirty' flag tracks runtime userspace interventions. If
->   userspace modifies guest configurations (e.g., hedeleg via
->   KVM_SET_GUEST_DEBUG, or CSRs including AIA via KVM_SET_ONE_REG),
->   the flag is set to skip the fast path.
->
-> With the 'csr_dirty' safeguard proven effective, it is safe to
-> include kvm_riscv_vcpu_aia_load() inside the skip logic now.
->
-> Signed-off-by: Jinyu Tang <tjytimi@163.com>
+>This is to test a bug that was present in the `virtio_transport_stream_do_peek()`
 
-Queued this patch for Linux-7.1
+WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
+#11: This is to test a bug that was present in the 
+`virtio_transport_stream_do_peek()`
+
+>when computing the number of bytes to copy: After a partial read, the
+>peek function didn't take into consideration the number of bytes that
+>were already read. So peeking the whole buffer would cause a out-of-bounds read,
+>that resulted in a -EFAULT.
+>
+>This test does exactly this: do a partial recv on a buffer, then try to
+>peek the whole buffer content.
+>
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+> tools/testing/vsock/vsock_test.c | 64 ++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 64 insertions(+)
+>
+>diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+>index 5bd20ccd9335caafe68e8b7a5d02a4deb3d2deec..308f9f8f30d22bec5aaa282356e400d8438fe321 100644
+>--- a/tools/testing/vsock/vsock_test.c
+>+++ b/tools/testing/vsock/vsock_test.c
+>@@ -346,6 +346,65 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
+> 	return test_msg_peek_server(opts, false);
+> }
+>
+>+#define PEEK_AFTER_RECV_LEN 100
+
+Why 100 ?
+Better to use a power of 2 IMO like we do in all other cases IIRC.
+
+>+
+>+static void test_stream_peek_after_recv_client(const struct test_opts *opts)
+>+{
+>+	unsigned char buf[PEEK_AFTER_RECV_LEN];
+>+	int fd;
+>+	int i;
+
+nit: int fd, i;
+
+>+
+>+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+>+	if (fd < 0) {
+>+		perror("connect");
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	for (i = 0; i < sizeof(buf); i++)
+>+		buf[i] = (unsigned char)i;
+
+Why setting the payload in this way ? Can we just do a memset() ?
+
+>+
+>+	control_expectln("SRVREADY");
+
+Why we need this barrier ?
+
+>+
+>+	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
+>+
+>+	close(fd);
+>+}
+>+
+>+static void test_stream_peek_after_recv_server(const struct test_opts *opts)
+>+{
+>+	unsigned char buf[PEEK_AFTER_RECV_LEN];
+>+	int half = PEEK_AFTER_RECV_LEN / 2;
+>+	ssize_t ret;
+>+	int fd;
+>+
+>+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
+>+	if (fd < 0) {
+>+		perror("accept");
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	control_writeln("SRVREADY");
+>+
+>+	/* Partial recv to advance offset within the skb */
+>+	recv_buf(fd, buf, half, 0, half);
+
+Why reading half of the size ?
+
+IMO is better to read just 1 byte, since it is almost certain that an 
+skb does not have a 1-byte payload.
+
+>+
+>+	/* Try to peek more than what remains: should return only 'half'
+
+How we are sure that the sender sent all the bytes ?
+
+>+	 * bytes. Note: we can't use recv_buf() because it loops until
+>+	 * all requested bytes are returned.
+
+Why this is a problem ? (an useful comment should explain the reason)
+
+>+	 */
+>+	ret = recv(fd, buf, sizeof(buf), MSG_PEEK);
+>+	if (ret < 0) {
+
+Should we handle EINTR like we do in recv_buf() ?
+But I still don't understand why we can't use it directly.
 
 Thanks,
-Anup
+Stefano
 
-> ---
->  v6 -> v7:
->  - Moved kvm_riscv_vcpu_aia_load() into the fast-path skip logic, as
->    suggested by Radim Kr=C4=8Dm=C3=A1=C5=99.
->  - Verified the fix for the IMSIC instability issue reported in v3.
->    Testing was conducted on QEMU 10.0.2 with explicitly enabled AIA
->    (`-machine virt,aia=3Daplic-imsic`). The guest boots successfully
->    using virtio-mmio devices like virtio-blk and virtio-net.
+>+		perror("recv");
+>+		exit(EXIT_FAILURE);
+>+	} else if (ret != half) {
+>+		fprintf(stderr, "MSG_PEEK after partial recv returned %d (expected %d)\n",
+>+			ret, half);
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	close(fd);
+>+}
+>+
+> #define SOCK_BUF_SIZE (2 * 1024 * 1024)
+> #define SOCK_BUF_SIZE_SMALL (64 * 1024)
+> #define MAX_MSG_PAGES 4
+>@@ -2520,6 +2579,11 @@ static struct test_case test_cases[] = {
+> 		.run_client = test_stream_tx_credit_bounds_client,
+> 		.run_server = test_stream_tx_credit_bounds_server,
+> 	},
+>+	{
+>+		.name = "SOCK_STREAM MSG_PEEK after partial recv",
+>+		.run_client = test_stream_peek_after_recv_client,
+>+		.run_server = test_stream_peek_after_recv_server,
+>+	},
+> 	{},
+> };
 >
->  v5 -> v6:
->  As suggested by Andrew Jones, checking 'last_exit_cpu' first (most
->  likely to fail on busy hosts) and placing the expensive
->  __this_cpu_read() last, skipping __this_cpu_write() in kvm_arch_vcpu_put=
-()
->  if kvm_former_vcpu is already set to the current VCPU.
 >
->  v4 -> v5:
->  - Dropped the 'vcpu->scheduled_out' check as Andrew Jones pointed out,
->    relying on 'last_exit_cpu', 'former_vcpu', and '!csr_dirty'
->    is sufficient and safe. This expands the optimization to cover many
->    userspace exits (e.g., MMIO) as well.
->  - Added a block comment in kvm_arch_vcpu_load() to warn future
->    developers about maintaining the 'csr_dirty' dependency, as Andrew's
->    suggestion to reduce fragility.
->  - Removed unnecessary single-line comments and fixed indentation nits.
+>-- 
+>2.53.0
 >
->  v3 -> v4:
->  - Addressed Anup Patel's review regarding hardware state inconsistency.
->  - Introduced 'csr_dirty' flag to track dynamic userspace CSR/CONFIG
->    modifications (KVM_SET_ONE_REG, KVM_SET_GUEST_DEBUG), forcing a full
->    restore when debugging or modifying states at userspace.
->  - Kept kvm_riscv_vcpu_aia_load() out of the skip block to resolve IMSIC
->    VS-file instability.
->
->  v2 -> v3:
->  v2 was missing a critical check because I generated the patch from my
->  wrong (experimental) branch. This is fixed in v3. Sorry for my trouble.
->
->  v1 -> v2:
->  Apply the logic to aia csr load. Thanks for Andrew Jones's advice.
-> ---
->  arch/riscv/include/asm/kvm_host.h |  3 +++
->  arch/riscv/kvm/vcpu.c             | 24 ++++++++++++++++++++++--
->  arch/riscv/kvm/vcpu_onereg.c      |  2 ++
->  3 files changed, 27 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
-vm_host.h
-> index 24585304c..7ee47b83c 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
-> @@ -273,6 +273,9 @@ struct kvm_vcpu_arch {
->         /* 'static' configurations which are set only once */
->         struct kvm_vcpu_config cfg;
->
-> +       /* Indicates modified guest CSRs */
-> +       bool csr_dirty;
-> +
->         /* SBI steal-time accounting */
->         struct {
->                 gpa_t shmem;
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index a55a95da5..2e4dfff07 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -24,6 +24,8 @@
->  #define CREATE_TRACE_POINTS
->  #include "trace.h"
->
-> +static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
-> +
->  const struct _kvm_stats_desc kvm_vcpu_stats_desc[] =3D {
->         KVM_GENERIC_VCPU_STATS(),
->         STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
-> @@ -537,6 +539,8 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vc=
-pu *vcpu,
->                 vcpu->arch.cfg.hedeleg |=3D BIT(EXC_BREAKPOINT);
->         }
->
-> +       vcpu->arch.csr_dirty =3D true;
-> +
->         return 0;
->  }
->
-> @@ -581,6 +585,21 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int c=
-pu)
->         struct kvm_vcpu_csr *csr =3D &vcpu->arch.guest_csr;
->         struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
->
-> +       /*
-> +        * If VCPU is being reloaded on the same physical CPU and no
-> +        * other KVM VCPU has run on this CPU since it was last put,
-> +        * we can skip the expensive CSR and HGATP writes.
-> +        *
-> +        * Note: If a new CSR is added to this fast-path skip block,
-> +        * make sure that 'csr_dirty' is set to true in any
-> +        * ioctl (e.g., KVM_SET_ONE_REG) that modifies it.
-> +        */
-> +       if (vcpu !=3D __this_cpu_read(kvm_former_vcpu))
-> +               __this_cpu_write(kvm_former_vcpu, vcpu);
-> +       else if (vcpu->arch.last_exit_cpu =3D=3D cpu && !vcpu->arch.csr_d=
-irty)
-> +               goto csr_restore_done;
-> +
-> +       vcpu->arch.csr_dirty =3D false;
->         if (kvm_riscv_nacl_sync_csr_available()) {
->                 nsh =3D nacl_shmem();
->                 nacl_csr_write(nsh, CSR_VSSTATUS, csr->vsstatus);
-> @@ -624,6 +643,9 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cp=
-u)
->
->         kvm_riscv_mmu_update_hgatp(vcpu);
->
-> +       kvm_riscv_vcpu_aia_load(vcpu, cpu);
-> +
-> +csr_restore_done:
->         kvm_riscv_vcpu_timer_restore(vcpu);
->
->         kvm_riscv_vcpu_host_fp_save(&vcpu->arch.host_context);
-> @@ -633,8 +655,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cp=
-u)
->         kvm_riscv_vcpu_guest_vector_restore(&vcpu->arch.guest_context,
->                                             vcpu->arch.isa);
->
-> -       kvm_riscv_vcpu_aia_load(vcpu, cpu);
-> -
->         kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
->
->         vcpu->cpu =3D cpu;
-> diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
-> index e7ab6cb00..fc08bf833 100644
-> --- a/arch/riscv/kvm/vcpu_onereg.c
-> +++ b/arch/riscv/kvm/vcpu_onereg.c
-> @@ -652,6 +652,8 @@ static int kvm_riscv_vcpu_set_reg_csr(struct kvm_vcpu=
- *vcpu,
->         if (rc)
->                 return rc;
->
-> +       vcpu->arch.csr_dirty =3D true;
-> +
->         return 0;
->  }
->
-> --
-> 2.43.0
->
+
