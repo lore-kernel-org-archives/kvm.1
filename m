@@ -1,189 +1,197 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3550213DDA4
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 01:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775093491; cv=none; b=B+dw1DjF+3XfJ//p8JzE6lSk+QFDApxBuRn9rkv1me7XiPs6AY3vIT7cnkdtJM/Hj+//M8qm4k1xMT9UFjiurx71cup3qurDCv/vEKXNxsXTNSLLYQMImMJu2qOFB16RMVpvSdcERxyxhW6K7eSAZflbNzP4uRP4iuNVSp2yqS4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775093491; c=relaxed/simple;
-	bh=CmiCJDKKLtVBWY4PaNZhE3phmXu2DbyTzXQix20TwNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fz9IW6ywWpJk1IJ/bPCxa467VKSbRz1QrcVHa4Nxl2SfICqQUjGh5y1/PAbgX8ycZymzFh5lCvm4Bd33fP0sf88d3J77kvkv4fHCDoyXppCwwgJPcMwKiro1pBiFuJtzsoMtzefkH4apkOkY4V3I5G5o64LrCwPG/17HarQzES8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=arTX9ihX; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54902282F0C;
+	Thu,  2 Apr 2026 01:47:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775094452; cv=fail; b=k9Fku3GlKrqoqSc44ypo+9HcSKfCU+OaGheLShwe+X/9sQ0hiOoFehxlxeTbQsnv7CfjeOHNtR0sOBbKhtXo1LgbCzVZ7VSPyYNX34AvbW5HGhVaLWvfBBEhuEF9pi7AlLYXO7NbLJB/YQ/obnuNRCRxapgcZU+Arm2STvjtMV8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775094452; c=relaxed/simple;
+	bh=HMFiIJeh5kHx9FyRRCt+Uj4fGzlkHlH1FKJAYp1CyI4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=j7XDkWUP/9FbGjo9VgKg/TpvaEgMEBRDk6QocgWh2HT7CJCbrbah6745txnQccWDepxcyvh1DmeCSPUKVUjJ6BeCvd5EjHX05SAlSnfGWaHRKwyLMNMxuY1j/GKWIkzCR7w4+5nKgS21RmBjcO3TG/DJQW0F+kewZDO/ilCjSX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KpdN7U0t; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="arTX9ihX"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c766cf593daso204786a12.3
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 18:31:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775093490; x=1775698290; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hAh0rZ9dUNksvKcTzl6dU2+Jr09vS06UeooC9PWMHnQ=;
-        b=arTX9ihXtJTrVUYOrC/416+TIEj0MtY2aLqTZD8Ebcm3HXb3OvUe26VXAmmPA4PnBA
-         LAfGHNDdei3k+qFacnuMAbL1/G2hHuWC6ChDLlKgIk6wekQOxePfzLxjrCbkEUiO4ARq
-         uov3PTUG7Qb84THccOJYcuzVHZFoRvt3T4pNlWWEiAkM/BpGH9pyYWBNhVsrkaex76f1
-         9Yy4i6roTjiGZlVYy68cO59IIXXMScem7+I5ntWbdFS8P7KgOFMbN30ObosNlw5CNN3v
-         wDOV5QI/Sp4kQ7J0V8YVBc8iSkQuUqGbeOGT4woyFfmyfyqHnwVIqeRU34tk1WY0nm9V
-         L3kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775093490; x=1775698290;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hAh0rZ9dUNksvKcTzl6dU2+Jr09vS06UeooC9PWMHnQ=;
-        b=bGvPbhyvF9t52cfKb88mobjP34Ctl0pyqgg9RjTXmkNN2zzVVxx3/XBPZ7VHlK+7MW
-         AdNOca+nYE056PbS3nm/aZOzHMhTjoaIgpbt/VyjqvX4nbFMDTgOQGFkAm52GG9qplfj
-         1EQ0h4HF6YxLkjXE2yBM+MY8oBUY5EUksi7BHxlT2fEpagy4WBK1GbYPG0yf4gS4Vqf9
-         u9NP7fDFvsyQma/sRFnd5LouX1eKgYxBS798lSyrqf/g1PCnJUO8xiw+m/E3K7mASk6Q
-         WrYNIupWMo6o7JizuD2H9cZI1ATieSwuBC+JMNKK4gaa5yqHcreH7R4bCdgC0dO6zvtQ
-         BLGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVd15eTZ8L0lzTblofWsrCIQh95MTtLQMzHDACLb0xka3r936RWBbqW/kK9yc1bqV3LSs4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx/YmkG2+Vz+y0f7Sm7pz1Bp2LZK34nmNl4w0Z9VjCG2UHC7ob
-	uRY9fcjfTnq/DPqRZDhJkP+RPECtEo+Rqoc73iiWL1mj7ZcUipPw88Kk
-X-Gm-Gg: ATEYQzx/f1Q9avvxMjJsa+cj43pvpc/IKTUMBesJ6u+ZlQQfQ0CTPNBVyM1gMvz4F8e
-	MfeiR1gGczGIwCaunDYiRo0VnmaaDX/sVcIe+01PGv+e5rKxT6WhgPZvkbvydKTL8nMNX5pSZTb
-	EYzsclF0KupSDey7ElAYRIVW/n4fuItlI/wf7/W2pYGwd1Z26FMP1Yu+PQ3fX4qGo69ZoiFUeAb
-	li2CA3cS3TljHdYRKpVt9uOfs+kxwMiDMz+usn04qMuBTSZR3VbSRjGwGmPXrL/BLgX/37n9K0M
-	RCn5k3ojYcqG6tuGgICcsqspEvP58TYlaBn0ZLElq+1CJ8d0ZuVFke/4aTDW4UC9X2/BcwlOOGD
-	tf4oLS8ItLWPqyjbi06s4ezWppMlhJSLNkGMohY0UtgBGImNrXq8LP3BKSVqtAbFOy0c+n14ALl
-	9/Ls8s/PN8C/vfhMX+2I59OZCWl4kPZnvVDD6RmA4=
-X-Received: by 2002:a05:6a20:394f:b0:398:8026:4811 with SMTP id adf61e73a8af0-39ef77372d3mr6463370637.35.1775093489688;
-        Wed, 01 Apr 2026 18:31:29 -0700 (PDT)
-Received: from acer-nitro-anv15-41.. ([27.4.76.112])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c41b8dsm1091851b3a.34.2026.04.01.18.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 18:31:29 -0700 (PDT)
-From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-To: "H. Peter Anvin" <hpa@zytor.com>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: pbonzini@redhat.com,
-	skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com,
-	"shaikh.kamal" <shaikhkamal2012@gmail.com>
-Subject: [PATCH v2 1/1] KVM: x86/xen: Use trylock for fast path event channel delivery
-Date: Thu,  2 Apr 2026 07:01:02 +0530
-Message-ID: <20260402013102.21951-1-shaikhkamal2012@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ac08V4TaM2yh9SY1@google.com>
-References: <ac08V4TaM2yh9SY1@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KpdN7U0t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775094450; x=1806630450;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=HMFiIJeh5kHx9FyRRCt+Uj4fGzlkHlH1FKJAYp1CyI4=;
+  b=KpdN7U0tTvHJMvWYgpLnmHqy3/9S6toiyqVxrWYEv6RL24weKQ8Eotls
+   v1U0fbkgn0aXyJ9iPCsUEPA4/edHGCDOsTPT2FNNrTogXOKVSsMUvNlee
+   nmP3K4cePrz5JnwqRoyrl0egKaP2Ghp9T81cAVGoD+yafe2vPDymiJGah
+   X0dp564QuHqSZUdygD1W/dmJD7rI0A15smSM7VQGx6hE/HUbRV4Zl8Esy
+   P4T1lO37M7/TTjWzdmDxKwEJ6k+6HZTBx23hn9iioP35ANV62+01ahdpY
+   Y7Q0SjrpurGfBzh6QQ57mI2xJSK0i4hfo3Q1gx353nKGur4ajr7sn1Nte
+   Q==;
+X-CSE-ConnectionGUID: OFKHxFv6RJqRvvlcSw+Ufg==
+X-CSE-MsgGUID: 40d7FaQnRI2yFQd4Uom4QQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="86846775"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="86846775"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 18:46:10 -0700
+X-CSE-ConnectionGUID: I41NF1IDQLSGyZ9DIP0RMg==
+X-CSE-MsgGUID: DNYmVzEPQTajw7enP5Juow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="225829173"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 18:46:11 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 1 Apr 2026 18:46:09 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 1 Apr 2026 18:46:09 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.32) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 1 Apr 2026 18:46:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EJnsekzaOCiM9PLfQSpYqY/yny70dUDozKzQMXJ8CLp6SElxLkKw6Ut49cFJq3bzkk5w1NOqryzAKtQE2PuIGK9eRAmNRRjpUAkpSfWvPDteuf03rNJV2u/s/c9rauTbf2yRnEToFx9+u471wZ7Rv/ZHVVwq15uxOn3el5Fpw+Ubx4rZvaOiu2f+MAot42ebjU8lZD15g5FwrXcSo3MAIpfnEqzqRgW7GBA5RS6+E6i4M5QWDsBBJSDWuEai5zf3IvCZKCqiTkDwcHQ01NrDT9OP2AhCaksBDnOd1iwMt9Gqxj2NnjQzU9kpfvuWnigXGkNSCGdAFgP3Ia3e0WILoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=74Y5F1zchhzAuN6dhqBQN2eIeDDiLT8qO5YIwfoRTjQ=;
+ b=lOhzHu+/H66J/N6HkgzgcNXfn5Aovo4u1/rkPaaOj15g9nKoVbN6+4bR03r+TosrVnmnGatfrTSkMiIfQDSl7/w/3MU7nYsh0DWct+mBX1oGI08Fh3/+tYGjwOrB6CLctZjXU4hz+uGuHnCP3ZHibEAkGeNVraXBlVbtg4Uxa/JjFCMITAtCPJYy1pBJMFWMhi3BR1AKWbJZzoY5v+q/i63z8IFOxj9basYTNkZs9Hub6CYx6cWEpZZu40EEZ6/12Nl981eF6xzNl4zxG7utncaPQ8xJ36mQW1bksZIT+QhmMkszPrmz3h2QrLb9pKTT5XTjUcEvQMPg9z+Vfa8Uyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by IA3PR11MB9301.namprd11.prod.outlook.com (2603:10b6:208:573::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 2 Apr
+ 2026 01:46:04 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%3]) with mapi id 15.20.9769.017; Thu, 2 Apr 2026
+ 01:46:04 +0000
+Date: Thu, 2 Apr 2026 09:06:31 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "Hansen, Dave" <dave.hansen@intel.com>, "seanjc@google.com"
+	<seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>
+Subject: Re: [PATCH 06/17] KVM: x86/tdp_mmu: Morph the !is_frozen_spte()
+ check into a KVM_MMU_WARN_ON()
+Message-ID: <ac3BFyNs78NFBd00@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
+ <20260327201421.2824383-7-rick.p.edgecombe@intel.com>
+ <acoDhjbA0xIycCJH@yzhao56-desk.sh.intel.com>
+ <3a046909b0e295d810ab9a7bf6a35980a9c708ab.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3a046909b0e295d810ab9a7bf6a35980a9c708ab.camel@intel.com>
+X-ClientProxiedBy: TP0P295CA0060.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:3::15) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|IA3PR11MB9301:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2400f2e5-69e6-41d0-d9e1-08de9059999a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: U0cb/Uvmv+4ivOIfZa1u3pDrA/ABhOqry6ls6v0OHTpzhz9zMNh7Q/RGb/j83RDoMypLBrrfUjxv9t814rLFrg6timz7FFQr72/S/i5g040n+n2YYCxSYNlHFpQzGDBr06ftHNUGZBCXFDXxV44T68HBk2lKLqtCCyvY5105V0t/VsHSHciHN+FMmd+fCl/nEVMREOaLsotsMs3Cz2TM6r4NQ0vNXbwv+jJwY0shFmlcMaq/Zd3+3wp0jT+xrVHc4B+zdoxx0r3FFPXXN0uQLTGXNmi4mMXWyIiXeEGr3afq+RY9K2Mc00XwDupNOaLH981G3BKWVTGeWIPhKA2RtnOP2MWaWXsJZnCNpn392HcVZDULGQlXa+0j4RvPunzzH+FgRdcAwh+1IOnFhqeBANoTt+kyGLfMkHH6MzdL80bg/zRUZvxY6irFeZKn1g18LeoWhqv3/wCTZdq7qDih+SLEejoiVcF7ykSioRSnEc3HVUdyWfnD/ehtEAPczUKqL3RZ93EAbw5909Uy7ChwUcNehswIImuVVSfv5n1dCphPvk9sPEddPPBrnX5+pH+cO+hdqbRsoHM0KCMCvBPA2e78mx0M+dLKErXPbxYwIHwrW2RgWpKSnZWF4C/m0QGdE0RkEEok5BTC4bWMLX/DpTqHK3XqerRELTSSxMHfaJc/ijDxtkcGKJdAFtLdrXNv7lPjdTkbK0qJICdW652vtQ5PSbbPYQNZ72RQSMOmdMA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?htKThUoWC1QHPEeodE/pXLedpKz874sp9WPPlJsbBcWj0NYdoW+FiHOPR/?=
+ =?iso-8859-1?Q?9Kuo7bjKQoqRqNly1b6yiDvP2Rv5ohp/tq2fp859yn2jl44AHCdn1LmdLI?=
+ =?iso-8859-1?Q?k4njPN/qDn8coigN7/rSrJHk4ueomoQoE3U2cwSdkiebenNEkIHwKcmy1i?=
+ =?iso-8859-1?Q?0Hzm+kGSRBnthgBvgq41kg5d4dWahnWK8znpYuN39lFs4Kia9ecyjhm635?=
+ =?iso-8859-1?Q?SUBQmIKvwczvpdhKfcs2Uyg8xcjsBcQtI54crim+Mr381ijBn6gjR+kXOb?=
+ =?iso-8859-1?Q?zOOsqCg/uu4o7/Hh7KRCq9nBkIkm2m5VKfQFMEcJXT3diVxe59/+kgarcp?=
+ =?iso-8859-1?Q?SCUOrcKO8nQtUBe1M3w8mNA/2XFum88ObteSlj01FgMXbw573GcoVwTpxu?=
+ =?iso-8859-1?Q?KzPLzovV9bi+ajbZf1InHy7wgL4oEVKpZfavm72G3RFdRyN5VxWcSndESQ?=
+ =?iso-8859-1?Q?YhNZVf/uojUAJEw2lH3CCv26FekHBp8wqqMxQT66SGvwse0AkpDjnxHcT/?=
+ =?iso-8859-1?Q?pG13JQeM0x+VGbBE5xQCXvMzlcw2TvqoQWa/C2885ozwo4TnVTvAkbNmzi?=
+ =?iso-8859-1?Q?LcoQz3VN8+P3aWmJt4DfJMWlPxnwRTPixpiJKqVdsEwdznCY8KvM14jgkD?=
+ =?iso-8859-1?Q?oG7zV6CydvdhEZG4/p1zKRP3Mf2gSQq+KLOrAndk/yCq1nVW5XGLYFD/O6?=
+ =?iso-8859-1?Q?j4J5BUVGO0MSl4ZDvrUFj1/+p+e5lH0pEBRVsyEfSOClnNdCBxEq5FaRc/?=
+ =?iso-8859-1?Q?dVw/+1ulwYH+sR479JNjhzRp7xI6NNcQusy+cXYtdYwIyPpc0OM3Dn6ZuF?=
+ =?iso-8859-1?Q?n5/TuEAZ3IGsIsCrjSt3ILpE0P1hF/vApu07LsNmvfVWJ1P7UXgWVCOCps?=
+ =?iso-8859-1?Q?AycqLTeggxPleMJN0LirENva134WAHK3t0WOBSTeT3VSnqeq5OyCvQFRYC?=
+ =?iso-8859-1?Q?zzNT9w9Hr877qwWXQ7RiBei/y6ROm+ieL1FuKwovZq6uIwZ3soFCkq7h13?=
+ =?iso-8859-1?Q?RHDZZNsf1k8XUsj1DW+TFcaSezsQxHS9MQcaCCUmR0euOWb119W560MiZU?=
+ =?iso-8859-1?Q?NgllCsfJwcDFGo4QdHnc98Sp6eHY8aHGlh9m9C+3spvALfshZjA+UNIzGi?=
+ =?iso-8859-1?Q?jZPsLQGp0xwotsFBaOPcLNYWjgLzTr4TLzWc9yKOoJCd3ihH59rU+adxvD?=
+ =?iso-8859-1?Q?omEhV/nOyM9Ipm8ka8UyawwLYiIxcDQPjmYoEwMwiq80SUkJJyHZGNFMK3?=
+ =?iso-8859-1?Q?kBOc5wFcb0iJoeiEUH/DhAIfgImfhwFyjnLlDgNXpCA42ij6LCpxN8+L9j?=
+ =?iso-8859-1?Q?V9mLadf0FH2uOQnl+RjRQyWjAEJUl5UAQgN38gvyImXMm1N/wwa51phEvv?=
+ =?iso-8859-1?Q?5Hfw2XO556ap0tTY1XHd8UR0e8/uP5X0L7LwbE9tCJc7oGPEvsQpHKTzJ5?=
+ =?iso-8859-1?Q?iKSyYEGd9DX9HpgR6IjAL0s+KHHN9wnOcFmPLxeA5EC2s4D5vqYQKpUXZl?=
+ =?iso-8859-1?Q?m28YLBHyttS++gJDsEFWp9rq26i3sROM7NQX5LdAvo7nKAtEFNXRAW3naX?=
+ =?iso-8859-1?Q?d80KLH2O08oppJSK1AA+1j5+cwfKtbRiWkgCJH/pljMYk5fUX9UFInLWX5?=
+ =?iso-8859-1?Q?MRk2RyWmA/MBZBmeDzCM320qgu1AquIbjAsaZAgaFf5hy4kh1ZQG8Scz6o?=
+ =?iso-8859-1?Q?7brJ8skh6mtiu8BexRZgOW730mab055g77JL669nXqWeHqDZPHyKDlEsuP?=
+ =?iso-8859-1?Q?f+QWwswTLhnQhJ1c/9hktQ/WWirGO2vfCDKs0deBz11dmUhL87+DdACpCk?=
+ =?iso-8859-1?Q?/6zoiytrkA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: M5rAyJgzAl2uRQ+hzVsP6gygXn/y9RcWOv7si105RJCSdKeNJrhDBzRiskD29wd3x/aE3bQj+7yFZJ/ycbOHmmfGH8Ou+VkQ4o7lv7/yvehB+6odlRTGsCgBg8mOzeNP9MA/VUub3PwDB6lTp4N2Vq0/oeY9pQDsE8ZMs5+3DzNcgOVR1FjYu2J4EaQAx351mFqhy6+Q74sf011DpSwO0EKRxa65UnCiry8fqs1kVYSsStF9tFylj9pXKU9fx53IQ0gX2Bu7o+5ItQc+notJLl+OQRfdqzB+1yOtB+Eb+3gzPT6eXad3wAQgS9v1ZABdCtqqtpQPvjwz1h3mN/PJWA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2400f2e5-69e6-41d0-d9e1-08de9059999a
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 01:46:04.2672
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BkhFhgFPNruq1o5qnto5pUY2vswgx3YKKsJstaFTterqZGVCZD0aoSvPTs2OJSgps1ID7/C27SlH9P6LEKqluA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9301
+X-OriginatorOrg: intel.com
 
-kvm_xen_set_evtchn_fast() acquires gpc->lock with read_lock_irqsave(),
-which becomes a sleeping lock on PREEMPT_RT, triggering:
-
-  BUG: sleeping function called from invalid context
-  in_hardirq(): 1, in_serving_softirq(): 0
-  Call Trace:
-   <IRQ>
-   rt_spin_lock+0x70/0x130
-   kvm_xen_set_evtchn_fast+0x20b/0xa40
-   xen_timer_callback+0x91/0x1a0
-   __run_hrtimer
-   hrtimer_interrupt
-
-when called from hard IRQ context (e.g., hrtimer callback).
-
-The function uses read_lock_irqsave() to access two gpc structures:
-shinfo_cache and vcpu_info_cache. On PREEMPT_RT, these rwlocks are
-rt_mutex-based and cannot be acquired from hard IRQ context.
-
-Use read_trylock() instead for both gpc lock acquisitions. If either
-lock is contended, return -EWOULDBLOCK to trigger the existing slow
-path: xen_timer_callback() sets vcpu->arch.xen.timer_pending, kicks
-the vCPU with KVM_REQ_UNBLOCK, and the event gets injected from
-process context via kvm_xen_inject_timer_irqs().
-
-This approach works on all kernels (RT and non-RT) and preserves the
-"fast path" semantics: acquire the lock only if immediately available,
-otherwise bail out rather than blocking.
-
-Reported-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
-Fixes: 77c9b9dea4fb ("KVM: x86/xen: Use fast path for Xen timer delivery")
-Suggested-by: Sean Christopherson <seanjc@google.com>
-
-Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
----
- arch/x86/kvm/xen.c | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index d6b2a665b499..479e8f23a9c4 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -1817,7 +1817,17 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 
- 	idx = srcu_read_lock(&kvm->srcu);
- 
--	read_lock_irqsave(&gpc->lock, flags);
-+	/*
-+	 * Use trylock for the "fast" path. If the lock is contended,
-+	 * return -EWOULDBLOCK to use the slow path which injects the
-+	 * event from process context via timer_pending + KVM_REQ_UNBLOCK.
-+	 */
-+	local_irq_save(flags);
-+	if (!read_trylock(&gpc->lock)) {
-+		local_irq_restore(flags);
-+		srcu_read_unlock(&kvm->srcu, idx);
-+		return -EWOULDBLOCK;
-+	}
- 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
- 		goto out_rcu;
- 
-@@ -1848,10 +1858,22 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	} else {
- 		rc = 1; /* Delivered to the bitmap in shared_info. */
- 		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
--		read_unlock_irqrestore(&gpc->lock, flags);
-+		read_unlock(&gpc->lock);
-+		local_irq_restore(flags);
- 		gpc = &vcpu->arch.xen.vcpu_info_cache;
- 
--		read_lock_irqsave(&gpc->lock, flags);
-+		local_irq_save(flags);
-+		if (!read_trylock(&gpc->lock)) {
-+			/*
-+			 * Lock contended. Set the in-kernel pending flag
-+			 * and kick the vCPU to inject via the slow path.
-+			 */
-+			local_irq_restore(flags);
-+			if (!test_and_set_bit(port_word_bit,
-+					&vcpu->arch.xen.evtchn_pending_sel))
-+				kick_vcpu = true;
-+			goto out_kick;
-+		}
- 		if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
- 			/*
- 			 * Could not access the vcpu_info. Set the bit in-kernel
-@@ -1885,7 +1907,10 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	}
- 
-  out_rcu:
--	read_unlock_irqrestore(&gpc->lock, flags);
-+	read_unlock(&gpc->lock);
-+	local_irq_restore(flags);
-+
-+ out_kick:
- 	srcu_read_unlock(&kvm->srcu, idx);
- 
- 	if (kick_vcpu) {
--- 
-2.43.0
-
+On Wed, Apr 01, 2026 at 12:37:51AM +0800, Edgecombe, Rick P wrote:
+> On Mon, 2026-03-30 at 13:00 +0800, Yan Zhao wrote:
+> 
+> Yep on the typos. 
+> 
+> > > --- a/arch/x86/kvm/mmu/tdp_mmu.c
+> > > +++ b/arch/x86/kvm/mmu/tdp_mmu.c
+> > > @@ -656,7 +656,13 @@ static inline int __must_check
+> > > __tdp_mmu_set_spte_atomic(struct kvm *kvm,
+> > >   	 */
+> > >   	WARN_ON_ONCE(iter->yielded || is_frozen_spte(iter-
+> > > >old_spte));
+> > >   
+> > > -	if (is_mirror_sptep(iter->sptep) &&
+> > > !is_frozen_spte(new_spte)) {
+> > > +	/*
+> > > +	 * FROZEN_SPTE is a temporary state and should never be
+> > > set via higher
+> > > +	 * level helpers.
+> > > +	 */
+> > > +	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
+> > Why is KVM_MMU_WARN_ON() used here for new_spte while WARN_ON_ONCE()
+> > is used
+> > above for old_spte?
+> 
+> For the KVM_MMU_WARN_ON() it was Sean's suggestion.
+> 
+> https://lore.kernel.org/lkml/aYYn0nf2cayYu8e7@google.com/
+> 
+> It allows for compiling it out, so probably a better choice. So I see
+> the options are leave them different or opportunistically convert the
+> other one to KVM_MMU_WARN_ON(). Thoughts?
+I see there are mixed WARN_ON_ONCE() and KVM_MMU_WARN_ON() calls in mmu.c and
+tdp_mmu.c. I'm not sure if there's a rule for which one to use.
+Is it necessary to evaluate them all and have a separate patch to convert
+WARN_ON_ONCE() to KVM_MMU_WARN_ON()?
