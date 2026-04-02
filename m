@@ -1,102 +1,72 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369321F5821;
-	Thu,  2 Apr 2026 06:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D135CB8C;
+	Thu,  2 Apr 2026 06:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775111777; cv=none; b=iDrImjLbB9VwSidsbSqACRDsLCnn8qoQ7wEKK2wQ4KJI6KAh17SqG1b2DYiZf8uITGsW+oDreFMhSQPYDK9Rb74pkDVtl/q3tWA7Qgvsq8dwg2THqo+H7p6wUdl4l1xgf9b1mbVPalHev9ToisjlBDAxRIJomkquji5jf47iDnU=
+	t=1775111911; cv=none; b=hcoF7S7dnzMPovbS4FdfCC3SJD8j0OtEXR1sjx6LeuZU4ZI89J3cEejA59CiHemnn4QhxWcBcR9p+TgesQ4mo2zhaejPSfehGD7DQfIorz3Mqp9IbgfX3h5o0wFQ/z9hE6rHyXnkablDrUmFeCJ0BDeKDqQNNijwOmfAZDcV7U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775111777; c=relaxed/simple;
-	bh=abPjanY1ELVOn0HUfcTH8+1kWmooYWe5YCZGT/mTdwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s6sXNmXcBA+xqdrGFoUj2RbNffKgJKqQvMM4X4i2Ms8NlW9cfzYbSXcWhnsVkBI6hdi7KypdAFW+UtoSwqFEz6d7BpSUwSiEbJJKuqlbU9X73t4/p6l1/rSfzVcD4d0Is+vPOIkiWtVlODQFR/RoB0A/MNxQzTXGYVLajmDTbpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qS/Hc39L; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8WqlEYd1; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qS/Hc39L";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8WqlEYd1"
-Date: Thu, 2 Apr 2026 08:36:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1775111774;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=abPjanY1ELVOn0HUfcTH8+1kWmooYWe5YCZGT/mTdwA=;
-	b=qS/Hc39LSj3QqeRTsqZkS7ncbNrhTIz/6J7U0LsjJ9jo4KqRQKbEqenpDwLLz6qGVHKMQA
-	38fnf5nxzS5CFXSD7ji8gvfME6rMZlqS+qxH8BZeQ2lCoFTavm3ZV8GVHV9jIZI8nUSY5g
-	3F5mCGvEveKVQywOopLFQqKoq4Xq947YzyyJEHUBmHxqnbx7QM+/RsWVhjd3yL1v6SveQi
-	7U7d/gg8N3sMgeZy0L3rRf7QLgUx3m9hrXqx5x8YnbIhnvRXQ50tOmmxpseIvODxqqe08I
-	ISz2L0HSUJSk/LjFtymDKvlqDuQ25jcFDvZwaWj7w7UbjTgb7FS3t8f4tfTENg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1775111774;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=abPjanY1ELVOn0HUfcTH8+1kWmooYWe5YCZGT/mTdwA=;
-	b=8WqlEYd14NFiRq9NXlLXX5wnxhY/PcrYYV2SSqj9kkVZO6VNeu+t0UQxAMJIgrz3Y4t6ej
-	HtnWVuIsvkLBYoAA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw@amazon.co.uk>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	pbonzini@redhat.com, skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2 1/1] KVM: x86/xen: Use trylock for fast path event
- channel delivery
-Message-ID: <20260402063612.VVXEy0qn@linutronix.de>
-References: <ac08V4TaM2yh9SY1@google.com>
- <20260402013102.21951-1-shaikhkamal2012@gmail.com>
+	s=arc-20240116; t=1775111911; c=relaxed/simple;
+	bh=0twSuecxLRxSuOTu2zVUOa1Wj/jEOtJ087psPJJPKtE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hkTpJ18ffouA9oTUXHxJSbuxO/VQh2tagV86MXl5ngckz8nmTguB5QjmR2sh5RKWeMX0QzNEzx4c9S6FQ9T4oZu13FkeMbEg/sEw+qxIJ9v6CRbrUfR0deIIrM9mga67VRWHGrofVMh2KLnh1sv8M3HLZ/TlmGqsnCPEun++LSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-01 (Coremail) with SMTP id qwCowACXPWnZDs5pvkbzCw--.299S2;
+	Thu, 02 Apr 2026 14:38:17 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: anup@brainfault.org
+Cc: alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	atish.patra@linux.dev,
+	jiakaiPeanut@gmail.com,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	xujiakai2025@iscas.ac.cn
+Subject: Re: [PATCH v2] RISC-V: KVM: Fix use-after-free in kvm_riscv_gstage_get_leaf()
+Date: Thu,  2 Apr 2026 06:38:17 +0000
+Message-Id: <20260402063817.1750619-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAAhSdy1tN1i3KZ_EmGPN6dz=DYSfGGxeiTCbHYA3GRezFD4Wiw@mail.gmail.com>
+References: <CAAhSdy1tN1i3KZ_EmGPN6dz=DYSfGGxeiTCbHYA3GRezFD4Wiw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260402013102.21951-1-shaikhkamal2012@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACXPWnZDs5pvkbzCw--.299S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUO07AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8I
+	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aV
+	CY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv
+	0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z2
+	80aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq
+	67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY02Avz4vE14v_GF1l42
+	xK82IYc2Ij64vIr41l4c8EcI0Ec7CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
+	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+	cVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+	Ja73UjIFyTuYvjfU0CJmUUUUU
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiDAgFCWnOBsYLNAABsR
 
-On 2026-04-02 07:01:02 [+0530], shaikh.kamal wrote:
-=E2=80=A6
-> The function uses read_lock_irqsave() to access two gpc structures:
-> shinfo_cache and vcpu_info_cache. On PREEMPT_RT, these rwlocks are
-> rt_mutex-based and cannot be acquired from hard IRQ context.
->=20
-> Use read_trylock() instead for both gpc lock acquisitions. If either
-> lock is contended, return -EWOULDBLOCK to trigger the existing slow
-> path: xen_timer_callback() sets vcpu->arch.xen.timer_pending, kicks
-> the vCPU with KVM_REQ_UNBLOCK, and the event gets injected from
-> process context via kvm_xen_inject_timer_irqs().
->=20
-> This approach works on all kernels (RT and non-RT) and preserves the
-> "fast path" semantics: acquire the lock only if immediately available,
-> otherwise bail out rather than blocking.
+Hi Anup,
 
-No. This split into local_irq_save() + trylock is something you must not
-do. The fact that it does not lead to any warnings does not mean it is
-good.
-One problem is that your trylock will record the current task on the CPU
-as the owner of this lock which can lead to odd lock chains if observed
-by other tasks while trying to PI.
+Thanks for the feedback. I’ll prepare a follow-up patch to improve 
+the locking and add proper comments explaining the conditional locking.
 
-So no.
+Thanks,
+Jiakai
 
-If this is just to shut up syskaller I would suggest to let xen depend
-on !PREEMPT_RT until someone figures out what to do.
-
-> Reported-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D919877893c9d28162dc2
-> Fixes: 77c9b9dea4fb ("KVM: x86/xen: Use fast path for Xen timer delivery")
-> Suggested-by: Sean Christopherson <seanjc@google.com>
->=20
-> Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
-
-Sebastian
