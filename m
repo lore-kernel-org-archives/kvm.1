@@ -1,154 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E94373C07;
-	Thu,  2 Apr 2026 21:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1C53A4F3B;
+	Thu,  2 Apr 2026 21:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775164190; cv=none; b=CoXhgILm30xw6AD7kO0WA4kr5pUBoylh3y70ej8Hw0o0MeR7ePCDqlQ4NRpF9OUB/tVGH28ulgY0v+Glyr6Z2eXKvp1qbe12NOILK8yM0TzgX9PU9qmoz6I8i6g0yl/a4eZSBISjEFOuPsmmm3Amz75f7JArguHrfRBcdViP+xs=
+	t=1775164450; cv=none; b=adeYaJRwbbCq4fxD894CTh8C7yOeK+luDA3PIvTbDu7Z6r8E5M55CR+VPDIxTfEQzpQ+rKlxS7AJT/OP1HnycZlyCgGdszdcGLcdpBtmTN4zgGdwG+0o5sKZ9WIwC71KGrj8tG3keHVGUg2WFywxPx4IqfhVFg2pYBygOalPXmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775164190; c=relaxed/simple;
-	bh=t/Qv1PIe9+OegemoplZWNzKcgzBuLsTusYYmfibiTj8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cm2U7QETw4ftLmru72+dcbX5Pv6vXzzsxdGKnSN2dDh7Mf3feCQYW90BTaFYjmQVlcY7taN/DfsZscKLsoXDmIFlbc8wycxoEfQ1Mir2WUCGXMFzNn4nnt1C5kIXlz77FDn5S+NUftMrIuABc0AGE4hZ6crPr6+LUY+aOkRDYOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RhRytks8; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775164450; c=relaxed/simple;
+	bh=I9dw14O86cZwkKMn5PUe2owUIFbxPW/XNrvSe558xsw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Drnze3GPXiNKAS3tA7+TSZQQckm5EIu6EiYZVQNvKZors5B66sVdNh3xVudz179WeXUi2uxeAbjVw92h6KuRw/NqMq+qckBDQkBm5pIGnDp1c+dO8umOIl5gBeLXTvN+HWLv1lyqQgu0knuId6nfZpzba0FDI9ZPE28rN0irQOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NUdab221; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RhRytks8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775164189; x=1806700189;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=t/Qv1PIe9+OegemoplZWNzKcgzBuLsTusYYmfibiTj8=;
-  b=RhRytks8WAA0O1b3EU1YlH5CCFw2MAfi8oc2WgH+jNFXE5/61LbOvJBH
-   WO3U44YEEocOIRiF9NXZelmheCkR9Kb8/+K+DGSBLAM4peitWZSKo/RcT
-   m82zp0m8vYVg3p8q2/+NH4wPdQLxqv944DKiR/bimXOB6L/tDJsej2uY0
-   FP+dGJTFI+hb47butnLoslcMRiCOk8Nr3jOEJFGsfgpIhLxtLV3r2yvLq
-   RDqJYTFQZeOwiE1Ma5ueJy432HbK2GANahH+/LrzuHTHXGEIQ9DosqK6+
-   U4jabCM/kwsZB01uGA7BHrkQVBXcaeh1gLCX1p18hFkNtPVh7Yxs5R6BK
-   A==;
-X-CSE-ConnectionGUID: GHrN9GhwS0K6ksFEskfNrQ==
-X-CSE-MsgGUID: 9L059uvVQU28mZBhq7502g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="101685518"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="101685518"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 14:09:49 -0700
-X-CSE-ConnectionGUID: 1SAF3qlJTUWMoLqTiChRDQ==
-X-CSE-MsgGUID: vLIigXWjTL60Fx3TLzAKuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="228712084"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.178]) ([10.125.111.178])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 14:09:48 -0700
-Message-ID: <33adf49d-4937-413e-a594-830c11b2bed0@intel.com>
-Date: Thu, 2 Apr 2026 14:09:57 -0700
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NUdab221"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8A4D19F6;
+	Thu,  2 Apr 2026 14:14:01 -0700 (PDT)
+Received: from gaia.lan (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17AE13F7D8;
+	Thu,  2 Apr 2026 14:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775164447; bh=I9dw14O86cZwkKMn5PUe2owUIFbxPW/XNrvSe558xsw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NUdab221kb6KYuy9thKc6lr0wavgu6G0BdzLcaJyX/ORI0eU/ChjYSG6lxDSuHXA8
+	 fHN5vDTYyvgPT+hoq8NrZKJ4GHDaxtuDhSl3FE2itE/3xEMa6nHaegoCLnHUkSowYl
+	 xJOQDb+Epa+QlgYWE+3FczNfLY849JDaZPWkjQBQ=
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Cc: Dave Martin <Dave.Martin@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Eric Auger <eric.auger@redhat.com>
+Subject: Re: (subset) [PATCH v10 00/30] KVM: arm64: Implement support for SME
+Date: Thu,  2 Apr 2026 22:12:18 +0100
+Message-ID: <177516433892.97388.575450953513622752.b4-ty@arm.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
+References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
- private memory
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com,
- dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, kas@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev, kai.huang@intel.com,
- rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, vannapurve@google.com,
- ackerleytng@google.com, sagis@google.com, binbin.wu@linux.intel.com,
- xiaoyao.li@intel.com, isaku.yamahata@intel.com
-References: <20260319005605.8965-1-yan.y.zhao@intel.com>
- <20260319005703.8983-1-yan.y.zhao@intel.com>
- <a14531ab-f069-41f9-8c5c-9fe6f28a9454@intel.com>
- <ac7V0g2q2hN3dU5u@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ac7V0g2q2hN3dU5u@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 4/2/26 13:47, Sean Christopherson wrote:
-> On Thu, Mar 19, 2026, Dave Hansen wrote:
->> On 3/18/26 17:57, Yan Zhao wrote:
->>> Remove the completely unnecessary assumption that memory mapped into a TDX
->>> guest is backed by refcounted struct page memory. From KVM's point of view,
->>> TDH_MEM_PAGE_ADD and TDH_MEM_PAGE_AUG are glorified writes to PTEs, so they
->>> have no business placing requirements on how KVM and guest_memfd manage
->>> memory.
->>
->> I think this goes a bit too far.
->>
->> It's one thing to say that it's more convenient for KVM to stick with
->> pfns because it's what KVM uses now. Or, that the goals of using 'struct
->> page' can be accomplished other ways. It's quite another to say what
->> other bits of the codebase have "business" doing.
->>
->> Sean, can we tone this down a _bit_ to help guide folks in the future?
+On Fri, 06 Mar 2026 17:00:52 +0000, Mark Brown wrote:
+> I've removed the RFC tag from this version of the series, but the items
+> that I'm looking for feedback on remains the same:
 > 
-> I strongly disagree on this one.
+>  - The userspace ABI, in particular:
+>   - The vector length used for the SVE registers, access to the SVE
+>     registers and access to ZA and (if available) ZT0 depending on
+>     the current state of PSTATE.{SM,ZA}.
+>   - The use of a single finalisation for both SVE and SME.
+> 
+> [...]
 
-I think I understand the motivation now. All I'm saying is that instead
-of something like:
+Applied to arm64 (for-next/sysreg), thanks!
 
-	Remove the completely unnecessary assumption that memory mapped
-	into a TDX guest is backed by refcounted struct page memory.
+[01/30] arm64/sysreg: Update SMIDR_EL1 to DDI0601 2025-06
+        https://git.kernel.org/arm64/c/85b6f920a869
 
-I'd rather see something along the lines of
+I looked to add more core arch patches but they all look like
+preparation for subsequent KVM support. If the subsequent patches will
+have to change following review, I couldn't figure out whether the first
+3-4 patches in this series will remain the same.
 
-	KVM's MMUs work with PFNs. This is very much an intentional
-	design choice. It ensures that the KVM MMUs remains flexible
-	and are not too tied to the regular CPU MMUs and the kernel code
-	around	them.
-
-	Using 'struct page' for TDX memory is not a good fit anywhere
-	near the KVM MMU code.
-
-Would you disagree strongly with that kind of rewording?
+-- 
+Catalin
