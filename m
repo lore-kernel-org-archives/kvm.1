@@ -1,121 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA77283FE5
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 22:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207973793DF
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 23:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775170120; cv=none; b=XgO4xZ9LhXJ8GTLxg08i1ob9aQ4b4Zah5h+uOk3yZyJeegDtgZP+BelUH/hGvo1ZPWceb2zeqST7agWQN1luy9+uN33BnI4WNakXXjDVxzTNs52rAVBbA8nxDZA/ZrR2EWohk6Pbv51tXs0jMJ6pfO0y6Ch/Xhmg2BCi3ag7Qa8=
+	t=1775171282; cv=none; b=cV6Hy64yDhv2cLG7jLBNIBp+HvNHbmExgsHNrHf2DOnjxmlnND3PFUG9rPoBl5gl12rGi3Zq0UQiZj2sGIGR9ccdd7xafaNCpC6B7HjOLRcNwf+13EqjthLlM91OishssraYeZYSS8uaYHyR3ENCgwIT6JTCrUFrjW/kIM8KIw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775170120; c=relaxed/simple;
-	bh=1EzzDduWEFqymsRBJbY5RhdXSfv7g6cDY0SmpQfH8X8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=q2RiAIb4dG+lXxkG9+p45lnHGM3IOPpUJWLljZ+Zw+7/TFIYlJwOnClOcDDn0uMpULS9YJfDjQ4XthmOd8+p1B+iL6sPUhWOxa+xC3L5oVhkAcQWxZ+OSOJwmVwuSWZnngbKbA1FGI6TAflcSsT62+Ed+P03/8k3CI9Fi2FCfGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4Uhn7zH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775171282; c=relaxed/simple;
+	bh=2PTm1I4LtYj1YB+Qns32E4oWyIFCWmAEJE74xx20oLU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oWXYY90Ao9p7GZ0DU//mbfufjCNBcDHnP+9BTEH+KSz5flBiE0cCQhWK76WiEYAlI7XQ69ZAEcSkzcgbSQdDUEdgzIBK7LJJnkxR7Rljr+zCwJPfDbut1GZXVQnd5+43k19H0Jn3Sm25cQdbz6FoPgcsGRE33CxSC+oWQ9CmdAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cxp7YJBJ; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4Uhn7zH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BA8C116C6;
-	Thu,  2 Apr 2026 22:48:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775170119;
-	bh=1EzzDduWEFqymsRBJbY5RhdXSfv7g6cDY0SmpQfH8X8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=n4Uhn7zHfBrrJJZshYM3N1hNIjGs16uAQJwLNXt4X9pDdLzrB+jf4Fe6dM9KqTjVk
-	 MDJwLTfCbv0IdfczfcpEfpIey/B5pJjndp/Nfv8yy/jsd4K45SvdQUC8CQ/XU2LMqw
-	 wd7ARtNJNZSwYU5Apjs+xBCMiulldzbZIelboPn2f5yIFJ2le6iK/sIaM97/fgOuLU
-	 uNHKRZs3/633Wxb2HdWt6rZwNb7i/QRkJIgnp8HQ/1fkBP1ekMfCm7jXohJavBCxMN
-	 a4ZMocwi3fkZGDW6WDTTSyNCIaSmceryoLYCULzxn8iaWhq0aEVJr9QySoqgPoPFTD
-	 HR6psiXzI/qXA==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 954A4F40086;
-	Thu,  2 Apr 2026 18:48:38 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 02 Apr 2026 18:48:38 -0400
-X-ME-Sender: <xms:RvLOaX47WS4sAboNNLfzB-6oejnTC5ITbJhme8zJnhjpERDmLFt_Ig>
-    <xme:RvLOacWsAB96sJEm0WRzV8GbokJYuoi_uyTe292wApLHlWi6uVZXpdb3F32iEzetw
-    7enzAWA-K7TRoZSguJ5RFN84elnhqQ7-KCGlTxMzSg3WU6A1dpxRNw>
-X-ME-Received: <xmr:RvLOafiSSX7ZEr39C-nrWOhhwBKL3VTP2C1tCmZLa60fIRWUAPcRQYjIA2NDVW5VVmnMeu025Pm6DgElcE_j-t0F8fpDu6RA1p8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevkfgjfhfugggtgfesthejredttddtjeenucfhrhhomhepffgrnhcuhghilhhl
-    ihgrmhhsuceoughjsgifsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhepud
-    dvteegfffhfedtffduhedtgfffjeelfeffhfevhfejjeefkeffudfgvdeivdfgnecuffho
-    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegujhgsfidomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqudejjedvfedtgeehhedqfeeffeelgedtgeejqdgujhgsfieppehkvghrnhgvlh
-    drohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthhopedugedpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohephihilhhunhdrgihusehlihhnuhigrdhinhhtvg
-    hlrdgtohhmpdhrtghpthhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghp
-    thhtohepuggrvhgvrdhjihgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepsggroh
-    hluhdrlhhusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohephihilhhunhdr
-    gihusehinhhtvghlrdgtohhmpdhrtghpthhtohepiihhvghniihhohhnghdrughurghnse
-    hinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomh
-    dprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:RvLOacfWqJ8bE8pwtpWvrklrtfzQeODyhOwpQsgH576TyjRVXWcikQ>
-    <xmx:RvLOae2sMZ40I4Z2ZGNVXrwkZ0GMYxDt2stuDfCbe-EvJevOhPwP-g>
-    <xmx:RvLOaYpekUOIha95qKmoCAOhJXw1Oo4tDhMYbitRUctjjVztDc-Grg>
-    <xmx:RvLOaWhHuE3WT0t_t0xVhv1bwvgigaD5ZO8ED0ffqrZ9lYPPzmiK8A>
-    <xmx:RvLOack2MV-nQZW0ez9eEtARUOy62wQOgDFDjWqNUZvQKtZuxuDt5WKM>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Apr 2026 18:48:38 -0400 (EDT)
-Date: Thu, 02 Apr 2026 15:48:36 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: chao.gao@intel.com, 
- dave.jiang@intel.com, 
- baolu.lu@linux.intel.com, 
- yilun.xu@linux.intel.com, 
- yilun.xu@intel.com, 
- zhenzhong.duan@intel.com, 
- kvm@vger.kernel.org, 
- rick.p.edgecombe@intel.com, 
- dave.hansen@linux.intel.com, 
- kas@kernel.org, 
- xiaoyao.li@intel.com, 
- vishal.l.verma@intel.com, 
- linux-kernel@vger.kernel.org
-Message-ID: <69cef244d7c91_55682100ed@djbw-dev.notmuch>
-In-Reply-To: <20260327160132.2946114-15-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-15-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v2 14/31] PCI/TSM: Report active IDE streams per host
- bridge
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cxp7YJBJ"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35da86144daso1184238a91.3
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 16:08:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775171281; x=1775776081; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aLa0GVMX6VX9ga114RP9fzeLfvZH9WQjqCx0+9dg7Ds=;
+        b=cxp7YJBJJQGWJDxmsK1oAwfQuVwN57Yi+P0j2OTuYfl0lARJDLC5T+Weu+oVevD1Zz
+         Kg2fdU4C6mgW/mUmlDj24cLI89Y3yWhgU9xykGIEKOUrcpGCQXXb7pJ+IiPzdxwUBgu7
+         L2H/pVeplHtubRmcX9lGV8ybWw1+bvFo+HTlk1VBIQE4w/GYhLEej7vndCHKtTAX1WR8
+         h2Kh8X6+bAxA9rfO3bkRXnJJpd6aqThCB8CM+I/ti54etYqmvAigRqcm9Jsdr405dq1g
+         Jk9ujsqdfpsHlZubWwUh053e1auUnp4sRaFO4pmWFkIV/V3YzWZz7Ijqg6HSq5n91Mwl
+         53tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775171281; x=1775776081;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aLa0GVMX6VX9ga114RP9fzeLfvZH9WQjqCx0+9dg7Ds=;
+        b=lt8uXArNXtqIvV3G/cuFx74TY55khSw8PbFdYwvYgkYUcE964+a4GiohYqXJQVnoMB
+         TiqDDvptdz35Qq/zunFX1V27KNvuAStEy9kkLLghf9sEA830ObLRumQFGtwxwbNkI5n4
+         eAjcgL4U14boDNBajvc5gJu6NWxKcDPMNQcrF3p7R6igmf0czPVNfkUHMe+cyLuODDdo
+         U8tjD7Aque9EiWh/4BLD16hOk3087LLiVr9CHhNTFV+4nhCwqMn+59Tn7oAMcW8ZKBgt
+         QYZ4kfrNG1is9CBBRSnOnWAUvs4xWR2ymAkL64lorVFa51NLMl3JhZyp4LAIS6zzGLKH
+         iGLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFuxxVJD8+cfEjRxyCaKlgLaNcbx1SLA8aeNlaLYOoIH994J3G33i4Ok8rWe+RHU4m4AA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqHuAvoxC+3p5OGypPe1WPwq3lyRRIqIMHDQ2RU/QW5C7T/4mV
+	g0EEQvNoVnC5xs5hKJ+WObDbcbrE+AlvXx9efZGXqItEFczqdpk2HOU16//UOaxJ7CNpeKZrr4/
+	L07aRJQ==
+X-Received: from pjuw16.prod.google.com ([2002:a17:90a:d610:b0:35d:a8d7:ccda])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e70f:b0:35b:e52a:6fe5
+ with SMTP id 98e67ed59e1d1-35de683b19amr592058a91.5.1775171280336; Thu, 02
+ Apr 2026 16:08:00 -0700 (PDT)
+Date: Thu, 2 Apr 2026 16:07:59 -0700
+In-Reply-To: <3051c067-048e-4388-8c22-1e275d8d3b5a@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
+ <8853f8d5-57e6-4ea4-b9b5-8a0182d0d012@intel.com> <abL8SW5JS1aV5goa@google.com>
+ <3051c067-048e-4388-8c22-1e275d8d3b5a@intel.com>
+Message-ID: <ac72z1cfXnpUmkWv@google.com>
+Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
+From: Sean Christopherson <seanjc@google.com>
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Xu Yilun wrote:
-> From: Dan Williams <dan.j.williams@intel.com>
+On Wed, Mar 25, 2026, Chang S. Bae wrote:
+> On 3/12/2026 10:47 AM, Sean Christopherson wrote:
+> > On Thu, Mar 12, 2026, Chang S. Bae wrote:
+> > > 
+> > > However, that is sort of what-if scenarios at best. The host kernel still
+> > > manages EGPR context switching through XSAVE. Saving EGPRs into regs[] would
+> > > introduce an oddity to synchronize between two buffers: regs[] and
+> > > gfpu->fpstate, which looks like unnecessary complexity.
 > 
-> The first attempt at an ABI for this failed to account for naming
-> collisions across host bridges:
-> 
-> Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
-> 
-> Revive this ABI with a per host bridge link that appears at first stream
-> creation for a given host bridge and disappears after the last stream is
-> removed.
-> 
-> For systems with many host bridge objects it allows:
-> 
->     ls /sys/class/tsm/tsmN/pci*/stream*
-> 
-> ...to find all the host bridges with active streams without first iterating
-> over all host bridges. Yilun notes that is handy to have this short cut [1]
-> and from an administrator perspective it helps with inventory for
-> constrained stream resources.
-> 
-> Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> No, this looks ugly. 
 
-Oh, looks like I had yet to get this reviewed on the list. Can I add
-your review and / or test tags and take this for v7.1?
+Sorry, you lost me.  What looks ugly?
+
+> If guest EGPR state is saved in vcpu->arch.regs[], the APX area there isn't
+> necessary:
+> 
+> When the KVM API exposes state in XSAVE format, the frontend can handle this
+> separately. Alongside uABI <-> guest fpstate copy functions, new copy
+> functions may deal with the state between uABI <-> VCPU cache.
+> 
+> Further, one could think of exclusion as such:
+> 
+> diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+> index 76153dfb58c9..5404f9399eea 100644
+> --- a/arch/x86/kernel/fpu/xstate.c
+> +++ b/arch/x86/kernel/fpu/xstate.c
+> @@ -794,9 +794,10 @@ static u64 __init guest_default_mask(void)
+> {
+> 	/*
+> 	 * Exclude dynamic features, which require userspace opt-in even
+> -	 * for KVM guests.
+> +	 * for KVM guests, and APX as extended general-purpose register
+> +	 * states are saved in the KVM cache separately.
+> 	 */
+> -	return ~(u64)XFEATURE_MASK_USER_DYNAMIC;
+> +	return ~((u64)XFEATURE_MASK_USER_DYNAMIC | XFEATURE_MASK_APX);
+> }
+> 
+> But this default bitmask feeds into the permission bits:
+> 
+> 	fpu->guest_perm.__state_perm    = guest_default_cfg.features;
+> 	fpu->guest_perm.__state_size    = guest_default_cfg.size;
+> 
+> This policy looks clear and sensible: permission is granted only if space is
+> reserved to save the state. If there is a strong desire to save memory, I
+> think it should go through a more thorough review to revisit this policy.
+
+And I'm lost again.
