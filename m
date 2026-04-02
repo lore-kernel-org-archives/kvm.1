@@ -1,141 +1,113 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BBB333440
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 19:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF072FF65B;
+	Thu,  2 Apr 2026 19:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775157678; cv=none; b=Kl19Rm3OyyYyczlLn/EbtTg5npzYODyTv6iaxFjHP5SGtxs844vSQXiFzgAP+dtbLMxAHBEChBsH5KqGbmqB+C+QG8cVGtSe7+1KDINP2KQvnRc64zOMGflYMZ6WFBxHSlQOAUcAQyNTjBXOVeK3iYkLXKiUwYac8tzLvY1MHL0=
+	t=1775157784; cv=none; b=UX8O98DjlJIiysRiONLBn8GEG/5o0Zvgm6LAb2qMK4wbwRMjGCrcNQxUc2PsORSEk/AiTE2KXHvweQpFWcR1/J+HcsGJugj6jZyiRvVd4bfyaU4rZEifXEoZXwflg8pvq17ViWWbLFXBJL2cgw4cMz0rqRxhSW26pFOAw6GzEUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775157678; c=relaxed/simple;
-	bh=d6Bx6z0kjINY02UntVtqVAcq8ELwfMQHdiXruOuuW1M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SZPPOS2lwoZ7PtDRf0xa1y9UDfl1KAqJhfZpd00OuDTCxYHX8Slcr7M1lFpOr4INT6RrRUj8TW8359ilUh99tU+RWFRKC8Xqrbzda6yVcyZwzNrMPcV7Nr8c1CX3gWNqodjhxK7DjbUhN4NpAcWUBlMY7tqmoqeSzqHDip0y/WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vIFxfKlR; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vIFxfKlR"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358f058973fso1272680a91.1
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 12:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775157675; x=1775762475; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FpZ+jaTue40+NnSqiLxYhKjKCZkNo+tQ9jXsjdMCoA0=;
-        b=vIFxfKlR+oUD8zxylkckDF3vJibGc14S56oCNcK/qjIAzvFpNd0Z4ls9IqcKK5NB7G
-         PG3vRD8wdC8hF5buCONFa5qjR21b8zZ0g26XBZI+8ibyrZBGdz6PP30PBQHtJO1xuLSz
-         JbEY30kjkqOZVgMqJJxe1co5VDDs5jDx/opQumnWRhBXaXkG9a8UElWubWohAvlHR+bO
-         1oU/CrKRDWXvMHpwWl/N2Q4fQyREoENcHOoxUZTNwRuymmFS0I0YYhrU1hSEkqPLC+WF
-         WuGGiSjUU7yzPXcHL1hXkBDDH61CRmDKFncY6rBqZd/yI1qMLCYKb6wURYTGC9u+ywVK
-         S2pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775157675; x=1775762475;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FpZ+jaTue40+NnSqiLxYhKjKCZkNo+tQ9jXsjdMCoA0=;
-        b=bjswIKf/uefKGTzAo8aBGOMeiojbAxE4rekdBozhHyNudLC2UDYPZ/Ofca0r8p6ZbR
-         7/MValMfmheHGP1sep8Fm143ojXthQu1Uz+Uq2Ki/0Y7UP9C6OLdNkSgRmVv98I4FzDt
-         /oqQ1phhmIWjxdMLnlzGrL2qiUbsSgS3uwDhUYL4fxNhrGXFe1Va8yoiviSfQwBlsinX
-         e6Wdwn44au0SquRcGF0Rii/1pTi4aYdq36JidvZo3rreemmuhY6xCueElz7DfyuLNScv
-         d66LDDF5P8bZk8Q5+YftPGxau8crwAlBcZAkkNlR3XSTy2Y/6NbcztwVB/KxlIkACDmJ
-         hKtg==
-X-Forwarded-Encrypted: i=1; AJvYcCXngBNGGgkF6r/iZ7XtFaKHo2/clb1cr3zeCOYQPuwXG1VGEqmi2Pfugw5tI4j65Jx4dy4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIprg23jk2/DJhB9NSGdMMWon7ISpkMWBTQfIL0p6fcoJKEnXP
-	JPlaUwHzq/hLjOBjTpzgc4sOohaP5HCLe2+/ReWDXKFwukU8asMFV0ztCrkfgrZkmBwdAGPckjQ
-	qmRMAuQ==
-X-Received: from pjbie2.prod.google.com ([2002:a17:90b:4002:b0:35c:e7f:6503])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:1681:b0:35d:8ea1:62c3
- with SMTP id 98e67ed59e1d1-35de67d6654mr83988a91.3.1775157675290; Thu, 02 Apr
- 2026 12:21:15 -0700 (PDT)
-Date: Thu, 2 Apr 2026 12:21:13 -0700
-In-Reply-To: <ac3BFyNs78NFBd00@yzhao56-desk.sh.intel.com>
+	s=arc-20240116; t=1775157784; c=relaxed/simple;
+	bh=ZZOAvRUxnH/88kytzUV498CiaNvVuP2fDmtn3o7NyAk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eFSauU9Sdtl+lG8lIug8StySRM6OvlrCX0cfYrgezBeQnaqYmd2m3CLIFlqP0x3dpWtm4YRTZBwbeVp/wxbsHwt9YxgQgTo6vAy1zpLn4owlEw1FaOOiTU5jJi5+wam6HcHiKQGlOzXE6Nx9ssGRDYUB0MmwL6C+xWy4TWrYIOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1w8Mej-0000000GptX-0Mmv;
+	Thu, 02 Apr 2026 20:20:37 +0200
+Message-ID: <64d44f37-7d31-46be-b9ed-cc86969777dd@maciej.szmigiero.name>
+Date: Thu, 2 Apr 2026 20:20:31 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
- <20260327201421.2824383-7-rick.p.edgecombe@intel.com> <acoDhjbA0xIycCJH@yzhao56-desk.sh.intel.com>
- <3a046909b0e295d810ab9a7bf6a35980a9c708ab.camel@intel.com> <ac3BFyNs78NFBd00@yzhao56-desk.sh.intel.com>
-Message-ID: <ac7BqcqSp8VBmGAi@google.com>
-Subject: Re: [PATCH 06/17] KVM: x86/tdp_mmu: Morph the !is_frozen_spte() check
- into a KVM_MMU_WARN_ON()
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, "kas@kernel.org" <kas@kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: selftests: memslot_perf_test: make host wait timeout
+ configurable
+To: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Shuah Khan <shuah@kernel.org>
+References: <20260402102953.2984284-1-mayuresh.chitale@oss.qualcomm.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Content-Language: en-US, pl-PL
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <20260402102953.2984284-1-mayuresh.chitale@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: mhej@vps-ovh.mhejs.net
 
-On Thu, Apr 02, 2026, Yan Zhao wrote:
-> On Wed, Apr 01, 2026 at 12:37:51AM +0800, Edgecombe, Rick P wrote:
-> > On Mon, 2026-03-30 at 13:00 +0800, Yan Zhao wrote:
-> >=20
-> > Yep on the typos.=20
-> >=20
-> > > > --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> > > > +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> > > > @@ -656,7 +656,13 @@ static inline int __must_check
-> > > > __tdp_mmu_set_spte_atomic(struct kvm *kvm,
-> > > > =C2=A0=C2=A0	 */
-> > > > =C2=A0=C2=A0	WARN_ON_ONCE(iter->yielded || is_frozen_spte(iter-
-> > > > >old_spte));
-> > > > =C2=A0=20
-> > > > -	if (is_mirror_sptep(iter->sptep) &&
-> > > > !is_frozen_spte(new_spte)) {
-> > > > +	/*
-> > > > +	 * FROZEN_SPTE is a temporary state and should never be
-> > > > set via higher
-> > > > +	 * level helpers.
-> > > > +	 */
-> > > > +	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
-> > > Why is KVM_MMU_WARN_ON() used here for new_spte while WARN_ON_ONCE()
-> > > is used
-> > > above for old_spte?
-> >=20
-> > For the KVM_MMU_WARN_ON() it was Sean's suggestion.
-> >=20
-> > https://lore.kernel.org/lkml/aYYn0nf2cayYu8e7@google.com/
-> >=20
-> > It allows for compiling it out, so probably a better choice. So I see
-> > the options are leave them different or opportunistically convert the
-> > other one to KVM_MMU_WARN_ON(). Thoughts?
-> I see there are mixed WARN_ON_ONCE() and KVM_MMU_WARN_ON() calls in mmu.c=
- and
-> tdp_mmu.c. I'm not sure if there's a rule for which one to use.
+On 2.04.2026 12:29, Mayuresh Chitale wrote:
+> When memslot_perf_test is run on qemu, sometimes the RW subtest fails
+> due to sigalarm, indicating that the guest sync did not finish within
+> the expected duration of 10 seconds. Since the current timeout value is
+> itself a bump up from the original 2s, making the host timeout value
+> configurable via a new command line parameter. Now the test can be
+> invoked with '-a' argument to run the test with a suitable host timeout
+> value.
+> 
+> Signed-off-by: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
+> ---
 
-KVM_MMU_WARN_ON() is intended to be used only when having a WARN_ON_ONCE() =
-enabled
-in production environments isn't worth the cost of the code.  E.g. if the c=
-ode in
-question is a low level helper that used "everywhere" and in super hot path=
-s, or
-in extremely paranoid sanity checks where the platform is beyond hosed if t=
-he
-sanity check fails.
+Out of curiosity: which KVM-enabled setup takes more than 10 seconds
+to run that RW test?
+Does it have like, multiple levels of nesting?
 
-The other thing with KVM_MMU_WARN_ON() is that it doesn't evaluate the expr=
-ession
-when CONFIG_KVM_PROVE_MMU=3Dn, i.e. can't be used in if-statements (the onl=
-y case
-where it's used in an if-statement is wrapped with a CONFIG_KVM_PROVE_MMU #=
-ifdef).
+When I wrote that test I calibrated it on a mid-range x86 machine,
+where one iteration took on the order of 0.01 s.
 
-For infrequently used and/or slow paths, and for cases where KVM needs to t=
-ake
-action no matter what, WARN_ON_ONCE() is preferred because if something goe=
-s
-sideways, we'll get a helpful splat even in production.
+10 s time limit per iteration is already three orders of magnitude
+slower than that.
 
-> Is it necessary to evaluate them all and have a separate patch to convert
-> WARN_ON_ONCE() to KVM_MMU_WARN_ON()?
+Otherwise, the patch looks sensible to me.
 
-Nope.  We could probably convert a few select ones if there's good reason t=
-o do
-so, but we definitely don't want to do a bulk conversion.
+Thanks,
+Maciej
+
