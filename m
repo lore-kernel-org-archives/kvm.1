@@ -1,63 +1,62 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6026630C637
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88963C3430
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775149516; cv=none; b=SOT6rktHYWgZTxZZ+ep6eSwToS9ornZYOBQBgui1VNqKKq5iqds3ItR4N3yTVZW5vAJ11T0onvKlZQ+JjSKPDssgOt0WVdVesgfCvwmcb0JagIsoTI9aqAWtds0ygaD/UrPeBfDJCiu4T1LJ4RRW01Vv1DKnmaDcyQSrV82yRpA=
+	t=1775149524; cv=none; b=r8tpo1EBLL3iiNpouU0wXi4OemLAWyBhPfsr862xuVsRdbLH9O2+lSCfaQXrQO5mFKqt49++9I2uO7+8RmiMrvI5FY0KnriBZJdhq5m2I748vIYKhdk7n2dOTJ57+xjUneLuDie2pHZUiZzYUzbW5SyUO5cd/KZO1XYNwtN7xgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775149516; c=relaxed/simple;
-	bh=R2in94FmzWQ9yv3XhT7X3IpoXtiy6hYv7I75wxIanaE=;
+	s=arc-20240116; t=1775149524; c=relaxed/simple;
+	bh=9lonrmz2Oj+AlTTr2Ep1+PMhz7iB0jqbo4tLGpzXkfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sfeseLjcTkPMcNXYep8DZkgh2ssCCSA5xpp2uj2vdEUHfjH2OEwa/v668GyZ7xVSjjpHcD/vsDmfg2/a40TvgqCED5FHAQ2yz7/FC9ndTocByvlqK/uA9VyuVH4Fn/wy1G20UZoXtsx00+rWeUY+g2wMl3Y6ZlwxUksDnHctIAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gRQou6Gb; arc=none smtp.client-ip=209.85.221.47
+	 MIME-Version:Content-Type; b=hMMdBiXLnSL5Is7yenwkrwDPrXSjN4dYBf6ETNHdnOai/RuiFjhsLGXYa6Hm+VBiUqOP7/B4RN28XlB8REXrI40OmppgjoMdffqVWt0mnxUNceS3fKNeV4xQDz+Plwyxd6zTq9gsvAHcG1e+2HH0ZsVNoEys1jH277iQrNM7j6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OXbJZT1X; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gRQou6Gb"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43cfe71e5d3so1030250f8f.0
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:05:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OXbJZT1X"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4853c1ca73aso11346675e9.2
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:05:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775149506; x=1775754306; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1775149514; x=1775754314; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=acVMLUbyHF8kLnpilbLd0pGtSfhr3LEsLd1hqYU3gOo=;
-        b=gRQou6Gbm+JTn8OMiF+1lKBtYVKiVQBs/6mLZ99uQhJWhHwDLwxn97UQQhnVbcCFxr
-         whEkJxr9nkx4SeWdsdmVJGqfHBs+f3dWOmFFlKEdiJUY7NgNLexY9aiub375Uq1IA1ME
-         lyc0YU6FhKLz991HCxjFkNd1vlRasYbpgvkk0Js5EjNgaiEhonfSbDGQQ1S9CIx7MeMQ
-         Z3O1XglFt0ddNAQ3dmK+Uyc7y1lGk2gcuLPsqkoBxsDqphQFM0mzBpXa+7/uM5SrCw3w
-         V3hgKQ74H+/2LOSPqR1/xMZBsj1TX37L0+e6nYBq4cfDb0vHch2DkV6DacCvxSQlwvXV
-         brTQ==
+        bh=5zFCy2/f6gXgpLVosgl6P0mdggO0d7nONWw8yr+5Eo4=;
+        b=OXbJZT1X3lBXMXcj3MocLaodBmC6EfgypK6bSJjnezTvJwgSi3+XppJUzNurPdhd3t
+         TNSz3za1fsg8pSoXi2hZVqHlZS/4BBeBYfL4fzYPdWnoVeHJYljucH7S/6FHBJY21KQc
+         gvkeK1eaE4OSBspGYjXWixnT030uDRPPu/gzppSAtMlG1ZXw2JPYsy+3xNQdPor84kPZ
+         gnBdPVmfAS63mMt4HTMH0y/DwFGhgkGE9DGgF+I+0ORyh4tr7/yVFbaFDk5uuE5wPA4n
+         wbzPQ8ta9bLtzPk2+swYuQWo45g/ql546qyrW5Brr3n/fYm/uIYWZKQ62rznYBo5trCe
+         OlBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775149506; x=1775754306;
+        d=1e100.net; s=20251104; t=1775149514; x=1775754314;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=acVMLUbyHF8kLnpilbLd0pGtSfhr3LEsLd1hqYU3gOo=;
-        b=IlmVDecmlRUdy4Jf8suCV4ukeZ9Ud4dKKrI2371k/TNuT2x82nH5JqZ6qdXUTmc3eG
-         FomAKtw3DV1SWHc0u8Z+smWEhrs/lWn7t3IPlA3x8NPYZJCkBHGUGV0jLdd17NfHKEUE
-         buN+h8eYeofB4ZONRbxLI/i6aCxGBuuolKJwFQ1SYrjcN8zZuywdCWo2r36IShPOcvhj
-         P1jPQyi20pnXARQOVVsB9VHjmw+OUC/WjJwPxf/KOn4I+4ceaHSTthhVa8LcdqoaaYCF
-         bFHtvWDpnLv6/vITj+rYvKggWSSDaShgxcw8AFEv9k5YbeMPFVEt+A6JDh5JGU1BjFuz
-         GdnA==
-X-Gm-Message-State: AOJu0YyoydRSXf6StWC4qIXaN9IR+M6zhyWHGSwMHCcnlH0RnouzBzYD
-	eWL+NXiDMfB1npU4QLzeag0vKGdlhy3Oec8Tjy/0PyNQd89nV0AmsbY2MBt4HPfpOPo=
-X-Gm-Gg: AeBDiesgruVu9Ug+2+kmbdRwKOYPZPWGrO4B7WZ9WNfZ9sCMR1qHViJP9+vyHbrLQCn
-	Caubayo20QwLD4wDSCd6n4GGMhbpNJDK5P1RZd1hGofkNc4K686rmR3ozT+yY1ZEt8D3vSbxyBx
-	2ZHlVsExXcSfyUV0nRXRfK9bJqSVqO5Kn+IYcvPgnoVQBbJJw04i9pqNCh74FKc6BlsXgZQfaWW
-	5iOEyJuepPLQUmTGmPaGsq4bnjpNmanSL84j6zkZskAFZASFmFvjwWAyMri3e9o0romi23hLcTH
-	hSKrTofFiwYd3Aw+JUD0NDlcSzcajEw58netDF4xIY4uYIa878vvKFsUm6IBva+tyfyozQsiFaZ
-	vWuOgzwg8iG5eT43s8rvCt4CkEy7gfDCRmb5lVJ8ppayUsYpci40rm2n4BWcuNwIYImNkpuMvA5
-	Nb1jWeNOfyJGkPCGcDx93gqFPgsKJZeH9ggTGl6037v8APOjTw5YlPYp/tIjXHM8umSPWiUdEtm
-	sN2qTnaZkk=
-X-Received: by 2002:a05:6000:4008:b0:43c:f764:6256 with SMTP id ffacd0b85a97d-43d150f6c7emr16029702f8f.37.1775149506486;
-        Thu, 02 Apr 2026 10:05:06 -0700 (PDT)
+        bh=5zFCy2/f6gXgpLVosgl6P0mdggO0d7nONWw8yr+5Eo4=;
+        b=V1N3LGeVG7PJg39X2ZqgTkkLtxwP41Ahl7dxp23K9gSClWp99Oy5mgK+pOVe8xiJyN
+         HJALwDLQvsWPShtuPh5BH3zeEe6m1xCeWe2pmPzTxFDjNHeNoYUFzc2WMqvfoIfBYGbx
+         AceVJeD925+rAQ+grYx/PPrYREDMChxe/slzYUZ+UP0+82cG63Kyi6ala4/kxI5qLZlc
+         +rFF7vkERJ5Fe8mN4dvlEooIrZnJwyRtdzmCxuWnAsDcMl8dCVv3pKPLPumVkad72tgj
+         N4DaG/fFiKWraZvgHPMWbS+Loz8/XP0oMK8LZO/yW02QObCtoqA2q3W6hPFuy6LUX06X
+         /8hg==
+X-Gm-Message-State: AOJu0YwFvri5UC2RZM5PzZU+JEzcTA8Z2wmmPu0MQbL0e1Lzp/58swsH
+	lDedKh9b4KCEud7QSw+EaQZYgX/wQ21brcIWwYJNj2bvVDf+e6nrH8ZoXMTspfbIChw=
+X-Gm-Gg: ATEYQzzmZ1+JcwwmndbSy83l1P5kCvhOu10kGUPnHMHaiAUtxb55K+B3KgkwzzZrWMc
+	UfUf7nlan3o26WU73YDZBWdzJc95lDyxqGwx1QvP0C8gJGyiDj+Ll/GXO4nJyE5oIndkEijsnE8
+	YH523jz24Ate+OgaX89YCTpAEQhjEVKjWjOonXxFzpvcoh9sPs5+GfOWaMNdKhS7uqhQEIt6hLB
+	RVyZlhcwxDxo0Q2A9jPMZ31Jg/xX3nTCsk7dXT2BJvmKG8WW6Wvnd4C3nNhlVR2/DiclI3jOCkO
+	QkFNbmvaHVFu2eIymhC472rcCq6P/bR/0qbWwyFQNfx06B5JzC0MU9q98MHHB/aiu27SdhmVUcB
+	yHoe5Jcr+wFYjOjAS9gyQYJg9CXhRSc+fBhm8Hx+XxkT+cDognkqGLk6WD0ulcEqy9IR7+vNPmd
+	OxyfiH98KG8WMbtlDaoNCL/c9VBRHID5hDSSYUJVywiOoJXIBIH9bCT1nOP/1GPB8NUNoPedN5
+X-Received: by 2002:a05:600c:a4c:b0:487:1c2:6a56 with SMTP id 5b1f17b1804b1-4888356844bmr156661445e9.3.1775149514437;
+        Thu, 02 Apr 2026 10:05:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2a6f13sm9295799f8f.3.2026.04.02.10.05.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48897fd5680sm666205e9.1.2026.04.02.10.05.12
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 02 Apr 2026 10:05:06 -0700 (PDT)
+        Thu, 02 Apr 2026 10:05:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -68,10 +67,12 @@ Cc: kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-11.1 v2 4/9] accel/kvm: Expose all non-target specific declarations
-Date: Thu,  2 Apr 2026 19:04:29 +0200
-Message-ID: <20260402170434.94783-5-philmd@linaro.org>
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>
+Subject: [PATCH-for-11.1 v2 5/9] target/arm: Compile WHPX as common object
+Date: Thu,  2 Apr 2026 19:04:30 +0200
+Message-ID: <20260402170434.94783-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402170434.94783-1-philmd@linaro.org>
 References: <20260402170434.94783-1-philmd@linaro.org>
@@ -84,39 +85,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-None of the declarations guarded within the COMPILING_PER_TARGET
-checks use target-specific declaration. "cpu.h" is not required
-since some time (maybe commit 4fb54de823e "meson: build target
-libraries with common dependencies"). Remove the restrictions.
+whpx-all.c doesn't use target-specific code, move it from
+arm_system_ss[] to arm_common_system_ss[] to compile it once.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/kvm.h | 5 -----
- 1 file changed, 5 deletions(-)
+ target/arm/whpx/meson.build | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 9b722ad931a..c33fb160b5b 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -225,9 +225,6 @@ void kvm_irqchip_add_change_notifier(Notifier *n);
- void kvm_irqchip_remove_change_notifier(Notifier *n);
- void kvm_irqchip_change_notify(void);
- 
--#ifdef COMPILING_PER_TARGET
--#include "cpu.h"
+diff --git a/target/arm/whpx/meson.build b/target/arm/whpx/meson.build
+index 3df632c9d30..db31e928012 100644
+--- a/target/arm/whpx/meson.build
++++ b/target/arm/whpx/meson.build
+@@ -1,5 +1,5 @@
+-arm_system_ss.add(when: 'CONFIG_WHPX', if_true: files(
++arm_common_system_ss.add(when: 'CONFIG_WHPX', if_true: files(
+   'whpx-all.c',
++), if_false: files(
++  'whpx-stub.c'
+ ))
 -
- /**
-  * kvm_update_guest_debug(): ensure KVM debug structures updated
-  * @cs: the CPUState for this cpu
-@@ -450,8 +447,6 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
- int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
-                                        hwaddr *phys_addr);
- 
--#endif /* COMPILING_PER_TARGET */
--
- bool kvm_arch_supports_vmfd_change(void);
- int kvm_arch_on_vmfd_change(MachineState *ms, KVMState *s);
- 
+-arm_common_system_ss.add(when: 'CONFIG_WHPX', if_false: files('whpx-stub.c'))
 -- 
 2.53.0
 
