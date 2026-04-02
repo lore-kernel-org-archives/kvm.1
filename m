@@ -1,46 +1,45 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010032.outbound.protection.outlook.com [52.101.61.32])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013026.outbound.protection.outlook.com [40.107.201.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3780327E05F;
-	Thu,  2 Apr 2026 18:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F2D3090D5;
+	Thu,  2 Apr 2026 18:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775155481; cv=fail; b=G9h+QDx/YH1CWdnWu+vrG/q4E3sH0WXT8tRJcQGT8Tc8+I/HNt8qGktQhYsF1eMKKmqPGkiygxg2WMmpb3S5dUetI7SFeZcTcWf0v6y/ydjV4vK+0DXgnFDMRs3i9ondtu3ffc8SZl6qyhB9UQ1ZEo1Ohmp87xK7/2dWlKvDwJw=
+	t=1775155496; cv=fail; b=dTgXUvzl8PFZMhbTLOwuRK/Pt+eGTgQyfBGGhTXmCe5ELTHjcjiSdup3LK8uKqRVZMEOcOV1hx6TeWXsVX3UsIfwvsq+p233mbhUPSl/Z77Zz+zboBs1kY8QG2sunHvECZmnvt70SZ/UkVNtahDLPK6p6OYEuAr0AY/zL6IcWzE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775155481; c=relaxed/simple;
-	bh=7YocVnoypeU+Wcr1Srj/BogJAXbzGJvx5ZYGmIcuu5Y=;
+	s=arc-20240116; t=1775155496; c=relaxed/simple;
+	bh=pNN1e0Sx2Zar64oW/bmNsKVv1AEiDBqFIyLiAsTxjVM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HZY9n3bIV1G3jHXggif+MtRMvc5j6gy7GgDW/36gSBi6p1CtsaJcgwlEywR8kkwLjLzpJUEpBDk3H5dVXoitPro1+aKcunAJtVAc83BGoE12w3tQhvpV4jrmv3505iUEiittN1xXAcU/CipSQojeXGx39ef4rhC0C7EmGTu9HrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z6KkQJL0; arc=fail smtp.client-ip=52.101.61.32
+	 MIME-Version:Content-Type; b=M4JGOVjsjYQzOgUTVcmznlnA+YazJNSBxe+/FOyXu92gB2CrYtb8yH/9T+G+uSQwyHknSboM968/gg+9Y3t14iIZvsfNfeEMnwHuH7vAorApQYC+vGbBbo4go0ySr6awC2N2rlDiaLdIl4soirNoXg3jyRP/B3c//dFzty5ClSA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YNi/jDoi; arc=fail smtp.client-ip=40.107.201.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="z6KkQJL0"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YNi/jDoi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wBGsDHQf57ghpcMBOdUUWn6RedNsDLBY2N6mOoo9u2tSYVvZspN2NGa+fFOMtTNMLsyjAJUav6hFK/BbXas3MSn2/tNuz+Y2zY9i08yMfgvJ8i23quKMVg1pEQWcNHKrluMh6IvduYR+zknVfIiEKADjOAz7OCmrzOkdsTTZA7Jk6VSrXYHE4m1pPBbwNQ+o/zd3QmcMI//29fdYZ47KtwVnEHjuVxfSa1WCmcShKMenZEIJYyEom0p0Azd8Fl2YdPWWzQJD1ndx6LMyKVSUZZ066DdB/ypj41V9Sss8XyenqbWNQluIMC8mm/uA74K4bxKDVw0VhvW861gm3UXw2g==
+ b=he/+mAKbzNGtukX8fIpU5ApsHuDU/SVNIpCspqaT38PUu2FNQf/TaecHIO/n9OVXqNuUDK4ybkgo1ryXZ5s4MZC9BJMSkaOz+CoTyXhzXTSskZeeHVwe1EWvNK1UCzQr3ZcIEfF8ILWbm53eRZBIh/sVWdrwmTthLyT9awtNSCcSp5n8s+6QBKYp2ssDR8VCLMCy8gmhp2a6t6Z8i63l1VGEb6rHZ36dh/L8MqmNRnUrrz3E4Q9H5DgqI1HQdFbgjksORXrimxSSE7Hc67u7C4Mb0ATG0ZE7eFeQ+VRCi/7LU9ap762cP9tr4LImDCxeuW2BF4yOBMDDBDkHWKIRkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UOtIeEr4lY22weknO02MJjYqICGa/Yd6cMWtQmCP45w=;
- b=BNJMV+1USOkhgL3R1gnMWEZf0dGxVZTAqYE1i/5x/9/DbnpIWC3RNqFvGlp+OiD+KxOM5GkVSyrBPgBEhV+gEP6q1cHcL5Ld3f7UJoW/kwrKRLnusX7h4FiILO8ZFCwNgl7WUuaj75xkyCxd+Rl7mQ4g1NgrGJvU0u5ZEkh8gJfNjEzXNEmeDCFl7PK3jocAfP+/VFQw1I4wb0KylMjR1VrgzBLBntcJj1vmcjTHGOVSwaGsIQ/NNa77ccPIAmNQTMIYqPNNCp1tYJZ1WYzb9IIev2mF7hAX/VffnJmEwILb7k5+8CP23DZvzEUKWqX+940mce0+YgK0sDq/HQ//vQ==
+ bh=JGAB1FvkNDqsN+ePPcYqmnld2LbbrRnB8XkCZyIUjJQ=;
+ b=PWot06zEU82e/jj3P4r6G2bpEf1x8i5iekMhqTIhue32DksuDCkdgg7Wk8Ni541Zer4lJzQlSqw6Lc8DWO8JuA6ISFfayAETc27u8Pc2uGwTyhtJYb4fKWhw2ms2ARZHCyucUJrNSFHX9q9YEUt2HXdkb505SZADoE4MstUtOA+5raIaPs4U/qoMq7hCFnc8L0hmntkXJrxm7acZOs2gesiF37FrUBDArkRad9u2EN5xjxKvGLyOy7Np36bgvr1tHX9EGhdg/4JTXJZ7YZONhGLrSEZdSNhfHpwy9VkWwKiY3zKLchr1T96QmbsamOxiTdlFcuWIaJJWdIqPLU84rg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UOtIeEr4lY22weknO02MJjYqICGa/Yd6cMWtQmCP45w=;
- b=z6KkQJL0zdsTPC/sFs1r5Uv/LkrESuzazxItS/WbkN/On6NbCFI6u3TvLfLTEKrEdD/WR0jmzvClIxos6IenmPrfNail8mqsT7zwQ6qaDB+gc5zJAV3AmNCPm4XLEV4uZpSJalwwVo/WZ0X+Al6vD6zCcgBwohvA9OMWPPqoUd4=
-Received: from BN0PR04CA0111.namprd04.prod.outlook.com (2603:10b6:408:ec::26)
- by SJ2PR12MB9212.namprd12.prod.outlook.com (2603:10b6:a03:563::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
- 2026 18:44:30 +0000
+ bh=JGAB1FvkNDqsN+ePPcYqmnld2LbbrRnB8XkCZyIUjJQ=;
+ b=YNi/jDoiDXhbCJsHuHFafIFVWsQuh3VEKo4tqHsv+84Dond7C5h1JY49ywwz42OOPt4fmhrIRgWyjADEBRBZS5rVaJZwh55T1ZKivu1Bo+p7sgNgJ+2H3Hjw94IlFiA9BvG9tHQO5Ea7ERaURtOtOQbZnU+PGiwvT6PP6k2xNUA=
+Received: from BN0PR04CA0095.namprd04.prod.outlook.com (2603:10b6:408:ec::10)
+ by DS0PR12MB6390.namprd12.prod.outlook.com (2603:10b6:8:ce::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17; Thu, 2 Apr 2026 18:44:47 +0000
 Received: from BN2PEPF00004FBA.namprd04.prod.outlook.com
- (2603:10b6:408:ec:cafe::c8) by BN0PR04CA0111.outlook.office365.com
- (2603:10b6:408:ec::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.18 via Frontend Transport; Thu,
- 2 Apr 2026 18:44:30 +0000
+ (2603:10b6:408:ec:cafe::17) by BN0PR04CA0095.outlook.office365.com
+ (2603:10b6:408:ec::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.20 via Frontend Transport; Thu,
+ 2 Apr 2026 18:44:47 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,11 +49,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BN2PEPF00004FBA.mail.protection.outlook.com (10.167.243.180) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Thu, 2 Apr 2026 18:44:30 +0000
+ 15.20.9769.17 via Frontend Transport; Thu, 2 Apr 2026 18:44:47 +0000
 Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 2 Apr
- 2026 13:44:26 -0500
+ 2026 13:44:42 -0500
 From: Shivansh Dhiman <shivansh.dhiman@amd.com>
 To: <seanjc@google.com>, <pbonzini@redhat.com>,
 	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
@@ -62,9 +61,9 @@ CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
 	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
 	<xin@zytor.com>, <nikunj.dadhania@amd.com>, <santosh.shukla@amd.com>,
 	<shivansh.dhiman@amd.com>
-Subject: [PATCH v2 5/7] KVM: SVM: Support FRED nested exception injection
-Date: Thu, 2 Apr 2026 18:42:38 +0000
-Message-ID: <20260402184240.1939480-6-shivansh.dhiman@amd.com>
+Subject: [PATCH v2 6/7] KVM: SVM: Dump FRED context in dump_vmcb()
+Date: Thu, 2 Apr 2026 18:42:39 +0000
+Message-ID: <20260402184240.1939480-7-shivansh.dhiman@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260402184240.1939480-1-shivansh.dhiman@amd.com>
 References: <20260402184240.1939480-1-shivansh.dhiman@amd.com>
@@ -80,109 +79,114 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBA:EE_|SJ2PR12MB9212:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ef5a07c-472a-4148-5a61-08de90e7dff8
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBA:EE_|DS0PR12MB6390:EE_
+X-MS-Office365-Filtering-Correlation-Id: 943c973c-69df-46bc-02a6-08de90e7e9fe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700016|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|7416014|82310400026|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	xjbANF7fnvu9erkcqzLa9rQ13/zRE2rHM3re3+urPgw4L0dj2AhKauw2WjSH67shit2Pn1kDdt8rOvh/I0TGXovHIRErCwzdzML+RuBVaXAUFX9j+VGOZdO0+XlkQ8mY+GdgGa01MWfgmSrnrMigOhTqHOFDVrjTc11XsSw5+gDklJGR1tB1ZGGYT5G4lNboHkSaY/xGYn4ol0WqcwC+bwGlVhkX7KJf2VUMYJrsZ9cHPw0MuoTOCO7zfT6n9e+TL//nTRt4039QQuXpBJyUwrfMDpkS2Iyt/gsZa85k/DcPSg49nsK6A41KaqHovFlVf4Ii2N+fp+LiiiD8KdRJnnTQhUjsEv09gnGftcmoRgO/iyDvbHuTdpeDt1YgyVrxoZlbwqW9+mM01hQ50qq64FAYIZAvd/P0v2bYKBzJb0tpFOiZAlqMfr+CbVnkUXTHTa/xZXLbHHMUVe/2T9n0ljDX5UMbuzhNT09lEqAZRnSFpKRqDHPf3JubA9tut3HSQpFSaxll7O8sPnoN32Ol1j2qphLqI+eZs52PcSxxQV3og+5oL15Id/65FPwVVjvJhHaicc6F7VAbOm17pMfKG+zAluzXatBnuAGjBns5I/ZwWSXK11WFFpozZrFpZSUdrKFHy5LArFv+SDn0X3IopIl6Ir4nZjbq4sIrB8Iq9tJYeZgJIRMh59n0Cv02Uf/UkzMBa2/762hRIjRkgx+4vK9QOUdT5V/djELjPwMV58Juny613NdO4ejeA6x1vw+nForEQHNPycg62EoIU5TE2A==
+	2ZGzD7iLGrIxxc8TCpnTS7QJasjQCI2Efc/xzT5RipxmxcppGrF0OkbfWNoUguYfXTNCQKTQsSi9VJY5Ut47v4tCdbP0pXVfOAtEiGTgkNiQjZm636KT4dpMHlLfEIU/f5SAVbHqDSExtuHyw3Pe6RLtLVPhZyNtT7lO2dvFKC83WXNmkd02+CZwq6PJzxooAiJU+fPlc334SeSvF1ocZXyL1KlxOFpAatTsmLbUSqBHfouviAikBY3qD91/Kjozzg1RnNmD9k0SflfPXKs8Cy1B08jJps0+PnY8+kapqSROpUyx6GxpJjjZlY0WI7OIcUQWvEJ4G8I2pCb7ZcfQSs+hsLs0kZjYP8X/jwuLfoM7RyPsv7qR5qstmQcyRmY1vSp5QnKTY86Wo2BdBoPDjBBtvwumfArPWscE3SbliQKHTP+c1K7oRRIltyVNC+6RfIc+h34cQXyESfvpgaHDFrdPS2Uw0HPf33+4TgGQWePn1TvYx3Nd/BWPeMrS1d04LMAlD46IOe29dIiJd4DP14Vp4cwQErWmtDkqG1RLhvhttYZp162N5H6RiH4VgohU/Y6ZqMxFfKCb5H+/pqzCQTIECkHsF0ctCftX5PeBYeYgHeJpOiyH/fHYaJr1nina8lPeqhkPmVIfUSc9tdf3mSLoTQCGNqUNPQbBvNRJ7AdZxEuSW82+6H3Qawr2tocQJTjHadfx/7g6irikS2X7oLS9Zd/xUdTlIyqFYMjSgCSYGTZGaJyUJ/jya3ADQpd4fXte4zXDEmE+xXJLkp5q/g==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(7416014)(82310400026)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	rqdjO80Q+yvLCmeL6W95NRpcEDGXTpIC7Agj/o91WnaHYSFjQ+l1NyYQ8hcOpKUKLGCNY7JVBVnnFNdmDCwuJ1tE19E7DW7s5aRJJqbm5OLrj6nGM60DVqS8YFHoOSvrfG4zE2iEVofAzKgp/uTRrRu7B90FsZU6FRfi1wIDgT0IK5ULBvYLGiYeb/L4qe0rlM0HIXch3YMaxh0ZCaW5fo1wcBUauirsGC2EPhDFJ4nTYSIBN2FbMDPb7Detv663MuLR9BybHFZF+os1p9sOil9NGcoh9/O/l0a3gWTdwN6BMrN7OoW3iIpamiouc5eyGfs4rLIKTY1K0jImCv4qW9PQWgo+iYwZCj9iQFwMfnmIZ6EItWC1dvNVhk0nVJ9EL+vSCtQpu4YJhAjT3GdBfPH9lK+BrsUw3z9HfmSwxQjEwXdWxBFR++n7JsjjAS1L
+	h0q8boJTyvU6OwNQYjwEmqhXVqCoe2UToUB01HuizsIBHHrPyp4CIVYo3wWBcYjF4HSNSrc7eoSZYn0OvGsQQdagi2WZQy87RT6QgNNl7A97nkACQ7VyqOoXx8SiotRCn7U11dXEraagkXkrjG5ldvqdiE/rtOK4EFc1GSYcPGifsIzIv4SXa+OSy5HLBJEwtBpc5+KDWcUJJRpp3uWLTUHcaj2mTjadkRH/6FghQbpEZ1s9oo8lUo8uqDTbPhGuU9GxJ5OmruGsAltnBWI1CwU35dZAQs6z0YNvMLNht8RnxNaDWFY65imAhS3uUZ6jRWr1/M95OKNxdd5+JLAjAHnnRNG9UWYJJuE2ezjYDHJ0EJBZdfY+QmIHS4jD9CSYz7MBB9NUme069wVRuNP9UXkVv+OpuPYbbIgVxO0NLuEjfb4PQKhIjS5UevuLX9Q0
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 18:44:30.2223
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 18:44:47.0332
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ef5a07c-472a-4148-5a61-08de90e7dff8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 943c973c-69df-46bc-02a6-08de90e7e9fe
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BN2PEPF00004FBA.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9212
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6390
 
-From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Add fields related to FRED to dump_vmcb() to dump FRED context.
 
-Set the SVM nested exception bit in EVENT_INJECTION_CTL when
-injecting a nested exception using FRED event delivery to
-ensure:
-  1) A nested exception is injected on a correct stack level.
-  2) The nested bit defined in FRED stack frame is set.
-
-The event stack level used by FRED event delivery depends on whether
-the event was a nested exception encountered during delivery of an
-earlier event, because a nested exception is "regarded" as happening
-on ring 0.  E.g., when #PF is configured to use stack level 1 in
-IA32_FRED_STKLVLS MSR:
-  - nested #PF will be delivered on the stack pointed by FRED_RSP1
-    MSR when encountered in ring 3 and ring 0.
-  - normal #PF will be delivered on the stack pointed by FRED_RSP0
-    MSR when encountered in ring 3.
-
-The SVM nested-exception support ensures a correct event stack level is
-chosen when a VM entry injects a nested exception.
-
-Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Co-developed-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
 ---
 
 Changes in v2:
-- Replace variable 'nested' with 'is_nested' (Sean Christopherson).
-- Formatted variables in reverse fir-tree order (Sean Christopherson).
+- Gate all the FRED MSRs through guest_cpu_cap_has() (Sean Christopherson).
 
 ---
- arch/x86/include/asm/svm.h | 1 +
- arch/x86/kvm/svm/svm.c     | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c | 46 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index a42ed39aa8fb..c0f6523e2b2d 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -656,6 +656,7 @@ static inline void __unused_size_checks(void)
- 
- #define SVM_EVTINJ_VALID (1 << 31)
- #define SVM_EVTINJ_VALID_ERR (1 << 11)
-+#define SVM_EVTINJ_NESTED_EXCEPTION    (1 << 13)
- 
- #define SVM_EXITINTINFO_VEC_MASK SVM_EVTINJ_VEC_MASK
- #define SVM_EXITINTINFO_TYPE_MASK SVM_EVTINJ_TYPE_MASK
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 2da493f9dd8b..39d1177a24f0 100644
+index 39d1177a24f0..7d411df3dd78 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -362,6 +362,7 @@ static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
- static void svm_inject_exception(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_queued_exception *ex = &vcpu->arch.exception;
-+	bool is_nested = is_fred_enabled(vcpu) && ex->nested;
- 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -3343,6 +3343,11 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
+ 	pr_err("%-20s%016llx\n", "allowed_sev_features:", control->allowed_sev_features);
+ 	pr_err("%-20s%016llx\n", "guest_sev_features:", control->guest_sev_features);
  
- 	kvm_deliver_exception_payload(vcpu, ex);
-@@ -373,6 +374,7 @@ static void svm_inject_exception(struct kvm_vcpu *vcpu)
- 	svm->vmcb->control.event_inj = ex->vector
- 		| SVM_EVTINJ_VALID
- 		| (ex->has_error_code ? SVM_EVTINJ_VALID_ERR : 0)
-+		| (is_nested ? SVM_EVTINJ_NESTED_EXCEPTION : 0)
- 		| SVM_EVTINJ_TYPE_EXEPT;
- 
- 	if (is_fred_enabled(vcpu))
-@@ -4158,7 +4160,8 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
- 
- 		kvm_requeue_exception(vcpu, vector,
- 				      exitintinfo & SVM_EXITINTINFO_VALID_ERR,
--				      error_code, false, event_data);
-+				      error_code, exitintinfo & SVM_EVTINJ_NESTED_EXCEPTION,
-+				      event_data);
- 		break;
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED)) {
++		pr_err("%-20s%016llx\n", "exit_int_data:", control->exit_int_data);
++		pr_err("%-20s%016llx\n", "event_inj_data:", control->event_inj_data);
++	}
++
+ 	if (sev_es_guest(vcpu->kvm)) {
+ 		save = sev_decrypt_vmsa(vcpu);
+ 		if (!save)
+@@ -3457,6 +3462,27 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
+ 		       "r14:", vmsa->r14, "r15:", vmsa->r15);
+ 		pr_err("%-15s %016llx %-13s %016llx\n",
+ 		       "xcr0:", vmsa->xcr0, "xss:", vmsa->xss);
++
++		if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED)) {
++			pr_err("%-27s %d %-18s%016llx\n",
++			       "is_fred_enabled:", is_fred_enabled(vcpu),
++			       "guest_evntinjdata:", vmsa->guest_event_inj_data);
++			pr_err("%-12s %016llx %-18s%016llx\n",
++			       "fred_config:", vmsa->fred_config,
++			       "guest_exitintdata:", vmsa->guest_exit_int_data);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_rsp0:", vmsa->fred_rsp0,
++			       "fred_rsp1:", vmsa->fred_rsp1);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_rsp2:", vmsa->fred_rsp2,
++			       "fred_rsp3:", vmsa->fred_rsp3);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_stklvls:", vmsa->fred_stklvls,
++			       "fred_ssp1:", vmsa->fred_ssp1);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_ssp2:", vmsa->fred_ssp2,
++			       "fred_ssp3:", vmsa->fred_ssp3);
++		}
+ 	} else {
+ 		pr_err("%-15s %016llx %-13s %016lx\n",
+ 		       "rax:", save->rax, "rbx:",
+@@ -3484,6 +3510,26 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
+ 		       "r14:", vcpu->arch.regs[VCPU_REGS_R14],
+ 		       "r15:", vcpu->arch.regs[VCPU_REGS_R15]);
+ #endif
++		if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED)) {
++			pr_err("%-26s %d %-18s%016llx\n",
++			       "is_fred_enabled:", is_fred_enabled(vcpu),
++			       "guest_evntinjdata:", save->guest_event_inj_data);
++			pr_err("%-12s%016llx %-18s%016llx\n",
++			       "fred_config:", save->fred_config,
++			       "guest_exitintdata:", save->guest_exit_int_data);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_rsp0:", save->fred_rsp0,
++			       "fred_rsp1:", save->fred_rsp1);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_rsp2:", save->fred_rsp2,
++			       "fred_rsp3:", save->fred_rsp3);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_stklvls:", save->fred_stklvls,
++			       "fred_ssp1:", save->fred_ssp1);
++			pr_err("%-15s %016llx %-13s %016llx\n",
++			       "fred_ssp2:", save->fred_ssp2,
++			       "fred_ssp3:", save->fred_ssp3);
++		}
  	}
- 	case SVM_EXITINTINFO_TYPE_INTR:
+ 
+ no_vmsa:
 -- 
 2.43.0
 
