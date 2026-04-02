@@ -1,105 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6B7361DAC;
-	Thu,  2 Apr 2026 04:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B393366800;
+	Thu,  2 Apr 2026 04:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775104600; cv=none; b=RZY5caQKXbls5sCEouQL7O3A2fTVrtAme+jNy9Gr3+tMELFMylXgu2lU0uM1e+PV7lI/R/xvvSc2zZDbHy6oVNknKx++ZAoi1XDFxnV01BPwKheieiVjhbtyc0zVKSsc0ztPVRvyfMkH7ApQQ5F6NOx1k/EiHsW5cCHz++FkFWg=
+	t=1775105069; cv=none; b=nVsTozOBVbACzGy9ulOQW529os7RgLzSlGJGFwGCnMK4QuX07pm+ijhs5sY2QkvIE4v5RBSqxE7AiCJuTgpjpHiZtPiaTt+RZBSfeTBnhUUlp8BaQbG8JnC1XdsjtvleenO0DI9cGA7FiH9njvi4r9N46WtR3Skj8ngFmkrxru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775104600; c=relaxed/simple;
-	bh=BO7fsz3RgyTfGt+qlAE8Bxk0+VWTbQ00x2Lk1ONZHt8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qkxg80MzsT1VDmoI8Fs4iUIXrgzyLTaw/c57VwTmRboBHkMye0Pwcc4jqUBn6+IZAlx6iwZjihNfDmyM1QvhEwkpsmLtk07Xah61LHQUluWOgAby0GMFlcYpV0Vr05kce7xnqRhFc9v9PqRHA/fT13HpChI7r++EjFCFRKEb8Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqcNtByW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775105069; c=relaxed/simple;
+	bh=5jZatumzTwetQf+a59y3hc8iMuwSoHglSHKuz1ZMO6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Oa9VqMieORR57wo3A5xq8PTQHuUPWUghuleI+Cpbtptm1oN2qNFDf413rc7w93saCK2bg+v4OhTr88TQohUGwhCH6VmpqhKjRqq9q1RD9zOZW1ZRPSpd/IUNjY4u8KLpIpJse70tw+gC67/mm/He3sNTa88Wo3TICk2CzjsH/E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ineCa20N; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqcNtByW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2B2C19423;
-	Thu,  2 Apr 2026 04:36:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775104600;
-	bh=BO7fsz3RgyTfGt+qlAE8Bxk0+VWTbQ00x2Lk1ONZHt8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gqcNtByWtkQTQsw0jAe6rL7YrwTF43tjIQnYEYJvhKocqUKTazKj+U0NtDDdgSVj9
-	 PPPOcN5qR+/3PV9PS2bXWxShnlL9s+povpRCGvGMgKf0M/y4oEu/T0A0ObQecQnxEq
-	 CZyLKctaCMPGy28ehZM4mruaAZtp5GRovrtzKuxrhTUnlWesSR5XUImiu47/SWZjly
-	 96XCdyUiuPbdcEbb9+pM8b65GfTbFbm35BF1+2y/Ri8zF8ySeA2N1DrXbXmUTqAS7W
-	 TSUPWUxcmY0cyJ+vZ3wuww5/gQi4I9fp3HUPq9XQDhd2/8gvVrhM6XBj6Ds76F+U/v
-	 5o7jwiTOXS71Q==
-Date: Thu, 2 Apr 2026 07:36:27 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
-Message-ID: <ac3yS0F7clWYDptU@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
- <20260330101116.1117699-3-rppt@kernel.org>
- <actxscYZGFiyvUcs@hyeyoo>
- <acva_NKf7T5rbIC8@kernel.org>
- <acvnEd3-s6XI26vb@hyeyoo>
- <aczK4-vrULRiTvyh@kernel.org>
- <20260401103717.b236b271a2856d536a48663b@linux-foundation.org>
- <20260401104449.42123600e33e08b5ebad10a5@linux-foundation.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ineCa20N"
+Received: from [192.168.0.12] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 2534420B710C;
+	Wed,  1 Apr 2026 21:44:25 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2534420B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1775105068;
+	bh=RcOVBpXNTnGFlAFScnVQtoQRFGOne0v6JKfhc+RakUc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ineCa20NM4HZqc0TncOKDKzndmknUsUaT4SESR1NpsC+/YiPuCXiNRVDZEyXScrOF
+	 dD/RjraEHSzAd7ujlfenUYiUHVJgvMIVtCufOQ2T/D5W8edCY0Ms1ktYHvKJI3o4TR
+	 UaAmQBhgjSwwUu2dmhQ/DxmVthOuMti2ZgrMcHgA=
+Message-ID: <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
+Date: Thu, 2 Apr 2026 10:14:24 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260401104449.42123600e33e08b5ebad10a5@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
+ trigger path
+To: Alex Williamson <alex@shazbot.org>, "Gupta, Nipun" <nipun.gupta@amd.com>
+Cc: nikhil.agarwal@amd.com, pieter.jansen-van-vuuren@amd.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+ <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+ <20260401122254.363d93c2@shazbot.org>
+Content-Language: en-US
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+In-Reply-To: <20260401122254.363d93c2@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 01, 2026 at 10:44:49AM -0700, Andrew Morton wrote:
-> On Wed, 1 Apr 2026 10:37:17 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+
+
+On 01-04-2026 23:52, Alex Williamson wrote:
+> On Wed, 1 Apr 2026 15:11:17 +0530
+> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
 > 
-> > On Wed, 1 Apr 2026 10:36:03 +0300 Mike Rapoport <rppt@kernel.org> wrote:
-> > 
-> > > Here's a fixup (it causes a conflict in patch 4 though).
-> > > Andrew, I can send v4 if you prefer.
-> > 
-> > Looks pretty simple.  "userfaultfd: introduce mfill_get_vma() and
-> > mfill_put_vma()" now leaves things like this:
+>> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
+>>> Add validation to ensure MSI is configured before accessing cdx_irqs
+>>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+>>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+>>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+>>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+>>>
+>>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+>>> sets config_msi to 1 only when called through the EVENTFD path. The
+>>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+>>> done, but there was no enforcement of this call ordering.
+>>>
+>>> This matches the protection used in the PCI VFIO driver where
+>>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
+>>>
+>>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+>>
+>> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
 > 
-> err, actually, it gets messy.
+> It's an improvement, but I think it also highlights that interrupt
+> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
+> the vfio_cdx_device that is acquired with a guard in
+> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
+> test.  Thanks,
 > 
-> Can we please have a v4?  I think there are a few other things pending?
+> Alex
 
-Sent.
- 
-> I've noted
-> https://lkml.kernel.org/r/202603311743.uZYPu1Gn-lkp@intel.com
+This patch is fixing a specific problem. User space can make VFIO_* 
+calls in a specific order to trigger NULL pointer access. This will not 
+get fixed with a mutex.
 
-Alice fixed this on the Rust side and the fix is queued to char-misc-linus:
-
-https://lore.kernel.org/all/CAH5fLgg63SYHQ34yqy7o2cA5f2Gh0aNTwTeQkzbWb+kV4Rr3Qw@mail.gmail.com
-
-> https://lkml.kernel.org/r/acqrtd7E6UxrX6Ji@casper.infradead.org
-
-We've been through this since Peter's first posting and I think there's a
-consensus about necessity of vm_uffd_ops and the argument was about what
-exact API they should have.
- 
--- 
-Sincerely yours,
-Mike.
+Regards,
+Prasanna Kumar
