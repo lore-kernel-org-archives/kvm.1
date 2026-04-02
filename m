@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2F02D0C9D;
-	Thu,  2 Apr 2026 04:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAD235FF75;
+	Thu,  2 Apr 2026 04:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775103181; cv=none; b=GoVCUBD/11yyqdW6cB/DmamyxP1Ptb+ttP9ge32INePIQlw1H1fEg+VRQc0k6f4A1rSdsZeE18gUmDkHbUXp0cUxampLu8B9d0AgLS6XqUqO0mzcqClcpgp5P8DEYKU7q4SH0RUl4eDMc1WNkrI5puM6Frd52QvHb5GN3SaJkTk=
+	t=1775103188; cv=none; b=VNsGzMIIXmoqFbKGmxi1zqd/sM87b3Qbzw/tKFduQBOBw1KCA+NAsE/WY1b0Gp0gBy+AiAnzDIj9AHaJ9t77YTFhGXggkYzhnMdTJ3ZqICWvpDcabTnWRLRmcrQWUngTEqtgNgCk+1YbkbYM8uEaavvreAwSlabpqhdLE4N8aaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775103181; c=relaxed/simple;
-	bh=lxXvlQh8xQ0EBf3to4Jw9wikE7NXPrSIjYbQ7Uoyt4w=;
+	s=arc-20240116; t=1775103188; c=relaxed/simple;
+	bh=Ye6Z7TrGAOPgV52cgsTw8VTKwOK2VRWtWU0AJXFZvYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDR3j4Na73+e2ilaSZnv1fvIrHkZ3KMuMGkU0d2N048owQSH1rbDn6qFvf9t2jHw+3OK0eSf7yI+1Vej/f7kasnkvSSQClVqsROCAyBGq02eCJM+l/fOrnFsfsr+pYyXDJoUm3JNXScVhRsfiNaWhQHlkMD8IremOfLuL0o1Yt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIZNqIdp; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=fr68rASG4FA8dOs4+xGd4fmBl5V5DyjwZcpNqhDyb9RhNsX96nVU9UrzVJR/qwznSsG7jQ2tWFWmW4N1s/eLJhc8hCXmBKePLxU2+f4kWPhP/DsRf+bqLhtPV0JkzVFsfyzF4hi+Ob565rnD8RqVLxXC3MJcl3B0aHT9/kjVM9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRmA6e+4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIZNqIdp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74D5C19423;
-	Thu,  2 Apr 2026 04:12:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRmA6e+4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829EFC19423;
+	Thu,  2 Apr 2026 04:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775103181;
-	bh=lxXvlQh8xQ0EBf3to4Jw9wikE7NXPrSIjYbQ7Uoyt4w=;
+	s=k20201202; t=1775103187;
+	bh=Ye6Z7TrGAOPgV52cgsTw8VTKwOK2VRWtWU0AJXFZvYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIZNqIdpzm6+W6HPk4rUKciovxte+Ir8R8/epNSPXK4ip3mfFRx//HB3VsV4IcxxY
-	 grhk26iS3k+sEk5UN3RQPGXSmhhMYLSeaXHgHVluotjZ6QucMngudS0xvMQNTYyXnd
-	 fPX67hTxkQB0+QkM0QhDxLlU5z8oq1o45ObGQwWRFVtkvVRHiPuW5c45f/knY49Lxo
-	 bz+Svo6RhYvPkYQaPWYDCZy5cAXqxiuCP3BS1sV6yFr0lF3y+Fv8D/EX7kM03kDhdP
-	 d6LWFm8CkHHdTroVD7ewqX5/jlazhuinnayqlFjpEcdv3LiuGb8upVQNvMeIAdvlqF
-	 nsIyaZ2SbjyKg==
+	b=jRmA6e+4sI6CWSR9vvx2sEwae/Tyg7OdWgDWdkkAJFLADbySZ3w+Kc8qIHWijyYyt
+	 td9MCBLaKdb3hyaXy02gu20EvmzZBDuuI0ToIaNoDa+tsc0I9v+0G5ugQIk24cNKD+
+	 AJF3CpeE0Pa5rXKocaVkb7XlBwvPjSJso9uiDvDfRIAuidLrSvXdo3p4FoVSHkr/Yt
+	 akIdcT4DA/H5AlfRVGz0Vt7EXbuoIIz4Z81yyg0DtMVnL+sNHatuHUsw4idz+ja8Nu
+	 P205Jo18lZ8hRXOvp/l/MPYLlQlGN1Q3CFHpgbgac7eCwkc9AUEYgtNg4dlcYwLa81
+	 DzwMaDHl0HrlA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 08/15] shmem, userfaultfd: use a VMA callback to handle UFFDIO_CONTINUE
-Date: Thu,  2 Apr 2026 07:11:49 +0300
-Message-ID: <20260402041156.1377214-9-rppt@kernel.org>
+Subject: [PATCH v4 09/15] userfaultfd: introduce vm_uffd_ops->alloc_folio()
+Date: Thu,  2 Apr 2026 07:11:50 +0300
+Message-ID: <20260402041156.1377214-10-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402041156.1377214-1-rppt@kernel.org>
 References: <20260402041156.1377214-1-rppt@kernel.org>
@@ -71,155 +71,200 @@ Content-Transfer-Encoding: 8bit
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-When userspace resolves a page fault in a shmem VMA with UFFDIO_CONTINUE
-it needs to get a folio that already exists in the pagecache backing that
-VMA.
+and use it to refactor mfill_atomic_pte_zeroed_folio() and
+mfill_atomic_pte_copy().
 
-Instead of using shmem_get_folio() for that, add a get_folio_noalloc()
-method to 'struct vm_uffd_ops' that will return a folio if it exists in
-the VMA's pagecache at given pgoff.
+mfill_atomic_pte_zeroed_folio() and mfill_atomic_pte_copy() perform
+almost identical actions:
+* allocate a folio
+* update folio contents (either copy from userspace of fill with zeros)
+* update page tables with the new folio
 
-Implement get_folio_noalloc() method for shmem and slightly refactor
-userfaultfd's mfill_get_vma() and mfill_atomic_pte_continue() to support
-this new API.
+Split a __mfill_atomic_pte() helper that handles both cases and uses newly
+introduced vm_uffd_ops->alloc_folio() to allocate the folio.
+
+Pass the ops structure from the callers to __mfill_atomic_pte() to later
+allow using anon_uffd_ops for MAP_PRIVATE mappings of file-backed VMAs.
+
+Note, that the new ops method is called alloc_folio() rather than
+folio_alloc() to avoid clash with alloc_tag macro folio_alloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: James Houghton <jthoughton@google.com>
 ---
- include/linux/userfaultfd_k.h |  7 +++++++
- mm/shmem.c                    | 15 ++++++++++++++-
- mm/userfaultfd.c              | 34 ++++++++++++++++++----------------
- 3 files changed, 39 insertions(+), 17 deletions(-)
+ include/linux/userfaultfd_k.h |  6 +++
+ mm/userfaultfd.c              | 92 ++++++++++++++++++-----------------
+ 2 files changed, 54 insertions(+), 44 deletions(-)
 
 diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 56e85ab166c7..66dfc3c164e6 100644
+index 66dfc3c164e6..55a67421de0a 100644
 --- a/include/linux/userfaultfd_k.h
 +++ b/include/linux/userfaultfd_k.h
-@@ -84,6 +84,13 @@ extern vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason);
- struct vm_uffd_ops {
- 	/* Checks if a VMA can support userfaultfd */
- 	bool (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags);
+@@ -91,6 +91,12 @@ struct vm_uffd_ops {
+ 	 * The returned folio is locked and with reference held.
+ 	 */
+ 	struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
 +	/*
-+	 * Called to resolve UFFDIO_CONTINUE request.
-+	 * Should return the folio found at pgoff in the VMA's pagecache if it
-+	 * exists or ERR_PTR otherwise.
-+	 * The returned folio is locked and with reference held.
++	 * Called during resolution of UFFDIO_COPY request.
++	 * Should allocate and return a folio or NULL if allocation fails.
 +	 */
-+	struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
++	struct folio *(*alloc_folio)(struct vm_area_struct *vma,
++				     unsigned long addr);
  };
  
  /* A combined operation mode + behavior flags. */
-diff --git a/mm/shmem.c b/mm/shmem.c
-index f2a25805b9bf..7bd887b64f62 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3295,13 +3295,26 @@ int shmem_mfill_atomic_pte(pmd_t *dst_pmd,
- 	return ret;
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 832dbdde5868..771a1e607c4c 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -42,8 +42,26 @@ static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+ 	return true;
  }
  
-+static struct folio *shmem_get_folio_noalloc(struct inode *inode, pgoff_t pgoff)
++static struct folio *anon_alloc_folio(struct vm_area_struct *vma,
++				      unsigned long addr)
 +{
-+	struct folio *folio;
-+	int err;
++	struct folio *folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma,
++					      addr);
 +
-+	err = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-+	if (err)
-+		return ERR_PTR(err);
++	if (!folio)
++		return NULL;
++
++	if (mem_cgroup_charge(folio, vma->vm_mm, GFP_KERNEL)) {
++		folio_put(folio);
++		return NULL;
++	}
 +
 +	return folio;
 +}
 +
- static bool shmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
- {
- 	return true;
+ static const struct vm_uffd_ops anon_uffd_ops = {
+ 	.can_userfault	= anon_can_userfault,
++	.alloc_folio	= anon_alloc_folio,
+ };
+ 
+ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+@@ -456,7 +474,8 @@ static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio
+ 	return 0;
  }
  
- static const struct vm_uffd_ops shmem_uffd_ops = {
--	.can_userfault	= shmem_can_userfault,
-+	.can_userfault		= shmem_can_userfault,
-+	.get_folio_noalloc	= shmem_get_folio_noalloc,
- };
- #endif /* CONFIG_USERFAULTFD */
- 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index e3024a39c19d..832dbdde5868 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -191,6 +191,7 @@ static int mfill_get_vma(struct mfill_state *state)
- 	struct userfaultfd_ctx *ctx = state->ctx;
- 	uffd_flags_t flags = state->flags;
- 	struct vm_area_struct *dst_vma;
-+	const struct vm_uffd_ops *ops;
- 	int err;
- 
- 	/*
-@@ -232,10 +233,12 @@ static int mfill_get_vma(struct mfill_state *state)
- 	if (is_vm_hugetlb_page(dst_vma))
- 		return 0;
- 
--	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
-+	ops = vma_uffd_ops(dst_vma);
-+	if (!ops)
- 		goto out_unlock;
--	if (!vma_is_shmem(dst_vma) &&
--	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
-+
-+	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE) &&
-+	    !ops->get_folio_noalloc)
- 		goto out_unlock;
- 
- 	return 0;
-@@ -575,6 +578,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
- static int mfill_atomic_pte_continue(struct mfill_state *state)
+-static int mfill_atomic_pte_copy(struct mfill_state *state)
++static int __mfill_atomic_pte(struct mfill_state *state,
++			      const struct vm_uffd_ops *ops)
  {
- 	struct vm_area_struct *dst_vma = state->vma;
-+	const struct vm_uffd_ops *ops = vma_uffd_ops(dst_vma);
  	unsigned long dst_addr = state->dst_addr;
- 	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
- 	struct inode *inode = file_inode(dst_vma->vm_file);
-@@ -584,17 +588,16 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
- 	struct page *page;
+ 	unsigned long src_addr = state->src_addr;
+@@ -464,16 +483,12 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 	struct folio *folio;
  	int ret;
  
--	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
--	/* Our caller expects us to return -EFAULT if we failed to find folio */
--	if (ret == -ENOENT)
--		ret = -EFAULT;
--	if (ret)
--		goto out;
--	if (!folio) {
--		ret = -EFAULT;
--		goto out;
-+	if (!ops) {
-+		VM_WARN_ONCE(1, "UFFDIO_CONTINUE for unsupported VMA");
-+		return -EOPNOTSUPP;
+-	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, dst_addr);
++	folio = ops->alloc_folio(state->vma, state->dst_addr);
+ 	if (!folio)
+ 		return -ENOMEM;
+ 
+-	ret = -ENOMEM;
+-	if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
+-		goto out_release;
+-
+-	ret = mfill_copy_folio_locked(folio, src_addr);
+-	if (unlikely(ret)) {
++	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY)) {
++		ret = mfill_copy_folio_locked(folio, src_addr);
+ 		/*
+ 		 * Fallback to copy_from_user outside mmap_lock.
+ 		 * If retry is successful, mfill_copy_folio_locked() returns
+@@ -481,9 +496,15 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 		 * If there was an error, we must mfill_put_vma() anyway and it
+ 		 * will take care of unlocking if needed.
+ 		 */
+-		ret = mfill_copy_folio_retry(state, folio);
+-		if (ret)
+-			goto out_release;
++		if (unlikely(ret)) {
++			ret = mfill_copy_folio_retry(state, folio);
++			if (ret)
++				goto err_folio_put;
++		}
++	} else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
++		clear_user_highpage(&folio->page, state->dst_addr);
++	} else {
++		VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
  	}
  
-+	folio = ops->get_folio_noalloc(inode, pgoff);
-+	/* Our caller expects us to return -EFAULT if we failed to find folio */
-+	if (IS_ERR_OR_NULL(folio))
-+		return -EFAULT;
-+
- 	page = folio_file_page(folio, pgoff);
- 	if (PageHWPoison(page)) {
- 		ret = -EIO;
-@@ -607,13 +610,12 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
- 		goto out_release;
- 
- 	folio_unlock(folio);
--	ret = 0;
+ 	/*
+@@ -496,47 +517,30 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 	ret = mfill_atomic_install_pte(state->pmd, state->vma, dst_addr,
+ 				       &folio->page, true, flags);
+ 	if (ret)
+-		goto out_release;
 -out:
 -	return ret;
+-out_release:
++		goto err_folio_put;
++
 +	return 0;
 +
- out_release:
- 	folio_unlock(folio);
- 	folio_put(folio);
++err_folio_put:
++	folio_put(folio);
+ 	/* Don't return -ENOENT so that our caller won't retry */
+ 	if (ret == -ENOENT)
+ 		ret = -EFAULT;
+-	folio_put(folio);
 -	goto out;
 +	return ret;
  }
  
- /* Handles UFFDIO_POISON for all non-hugetlb VMAs. */
+-static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
+-					 struct vm_area_struct *dst_vma,
+-					 unsigned long dst_addr)
++static int mfill_atomic_pte_copy(struct mfill_state *state)
+ {
+-	struct folio *folio;
+-	int ret = -ENOMEM;
+-
+-	folio = vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
+-	if (!folio)
+-		return ret;
+-
+-	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
+-		goto out_put;
++	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+ 
+-	/*
+-	 * The memory barrier inside __folio_mark_uptodate makes sure that
+-	 * zeroing out the folio become visible before mapping the page
+-	 * using set_pte_at(). See do_anonymous_page().
+-	 */
+-	__folio_mark_uptodate(folio);
++	return __mfill_atomic_pte(state, ops);
++}
+ 
+-	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+-				       &folio->page, true, 0);
+-	if (ret)
+-		goto out_put;
++static int mfill_atomic_pte_zeroed_folio(struct mfill_state *state)
++{
++	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+ 
+-	return 0;
+-out_put:
+-	folio_put(folio);
+-	return ret;
++	return __mfill_atomic_pte(state, ops);
+ }
+ 
+ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+@@ -549,7 +553,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+ 	int ret;
+ 
+ 	if (mm_forbids_zeropage(dst_vma->vm_mm))
+-		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
++		return mfill_atomic_pte_zeroed_folio(state);
+ 
+ 	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
+ 					 dst_vma->vm_page_prot));
 -- 
 2.53.0
 
