@@ -1,113 +1,83 @@
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF072FF65B;
-	Thu,  2 Apr 2026 19:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B9F2EC0A2
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 19:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775157784; cv=none; b=UX8O98DjlJIiysRiONLBn8GEG/5o0Zvgm6LAb2qMK4wbwRMjGCrcNQxUc2PsORSEk/AiTE2KXHvweQpFWcR1/J+HcsGJugj6jZyiRvVd4bfyaU4rZEifXEoZXwflg8pvq17ViWWbLFXBJL2cgw4cMz0rqRxhSW26pFOAw6GzEUE=
+	t=1775158456; cv=none; b=B2ly67HNZChSIgTmf18LL/TIfU3Iix7uJq9g1perzb2nsR3rqHsJQK0rSBJqEYZhmypCqjGlmSQvo8f33GZHVqxyQ3HIKrf75P8SZz5HPPduYn9RWmVUQ2FvauUYxj9NY56vRSInp8p1n4/YHqfnUOBCgIDUJFf2IT/9gL5TVRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775157784; c=relaxed/simple;
-	bh=ZZOAvRUxnH/88kytzUV498CiaNvVuP2fDmtn3o7NyAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eFSauU9Sdtl+lG8lIug8StySRM6OvlrCX0cfYrgezBeQnaqYmd2m3CLIFlqP0x3dpWtm4YRTZBwbeVp/wxbsHwt9YxgQgTo6vAy1zpLn4owlEw1FaOOiTU5jJi5+wam6HcHiKQGlOzXE6Nx9ssGRDYUB0MmwL6C+xWy4TWrYIOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1w8Mej-0000000GptX-0Mmv;
-	Thu, 02 Apr 2026 20:20:37 +0200
-Message-ID: <64d44f37-7d31-46be-b9ed-cc86969777dd@maciej.szmigiero.name>
-Date: Thu, 2 Apr 2026 20:20:31 +0200
+	s=arc-20240116; t=1775158456; c=relaxed/simple;
+	bh=77owBfcfXAbQ+XL33KQYqnXu2wee13wnLptzfU6MBIM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FdrpzW84tgApnvopZizbarjRJMEG7HvEWFswyX4uGyWDCe1g79RYjWaVD+Y4fhKvJ2Aucdls307AhCy2EKstP+fAB3CcZtiHmn8KZDwEF4R4MNtbrRIcjj+27TgRqFzQ96u52nsrFOI/NlGTsB6mxrw5qfid2qoch6VsxY7Myew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lmERNNW6; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lmERNNW6"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c70dd30025fso1734055a12.2
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 12:34:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775158455; x=1775763255; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=77owBfcfXAbQ+XL33KQYqnXu2wee13wnLptzfU6MBIM=;
+        b=lmERNNW6RL4m8dVcZz8zxnNtpeHTOvDXlZ0PmUBIpNjbn2Eeh9Rin2N+7agbKyMBfx
+         aAoK9CJShzk6TdKnV93ullpPhssr0XBcK4JLXpA/BnrqCuhgGFd/VvhIH4616cBoMz1A
+         cj9lw0SbLNDzVvmhiY+bYeiGu33BEshPwKA6NA6xZr/2kAcLS78ddBGtFdde+jPHcL5v
+         C1GFwOv1f8wLOCLhfOgJwQvNvGGrJ5CWfElc1bAq24GSudpqfCNeMHMUt48lnx/AMdTW
+         qAdM685UF39eEK5CMKrmXZQgmjvUvd5AeKq2NolDPLb35XalDm6L6a3t2DErQr/DpuFf
+         woXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775158455; x=1775763255;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=77owBfcfXAbQ+XL33KQYqnXu2wee13wnLptzfU6MBIM=;
+        b=qxTBblQxafd+UCxLz3ABcaWOKwfyvYXOLqmvk15eS6z51Vd7FnqtwwtmWu/FvEKj6I
+         AftJ+SZgkLHFhkNcTojrCj2tHuUHKqnOFLO1O2FweoijpsN/oZH8VqfPXi7wXQ8RnQq1
+         NIw0NfJDsyKmmihImg9nPiE/gcjuIX9fPG+eN+yNcDMe5P0fqkN9eRpDI0+Bjw2WPwKE
+         dhImc6ojEqkUBU04MBqhJgo5ChrsJZS6gUJFDOkzHSS+qZqgrJNfs+Ctl/W6gGto4vUv
+         Oti0o8PJFGeCKX6OgQYuaK8Ev6cwp852NG8qpS5Nj1WhfrioiSc/Mkt4IskNiYKmbYjY
+         6M+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVpBq2NNWh2N0Brlra2x0fvFypWqLwG9DLknAUucH2lhCJw/RsWuctk9HSOwmS5BfUxiTY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwouB1hVvJ2wIZu8H93F0kGVwh3OBedxCYuaUXOejBXS3uAZUbg
+	Fam/Z7HuvIhJJirvEIauE8f6/XbvKbEiQ5jMe0qxWIRo3SVaT2C6nIKNgp5rYfoXAW44/QA9TKY
+	Tv/BKKw==
+X-Received: from pfqp30.prod.google.com ([2002:aa7:9e9e:0:b0:82c:6bc2:5e78])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:72a9:b0:39f:a42:9251
+ with SMTP id adf61e73a8af0-39f2ee71340mr159232637.22.1775158454816; Thu, 02
+ Apr 2026 12:34:14 -0700 (PDT)
+Date: Thu, 2 Apr 2026 12:34:13 -0700
+In-Reply-To: <20260402051940.1051-1-spujari79@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: selftests: memslot_perf_test: make host wait timeout
- configurable
-To: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Shuah Khan <shuah@kernel.org>
-References: <20260402102953.2984284-1-mayuresh.chitale@oss.qualcomm.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Content-Language: en-US, pl-PL
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <20260402102953.2984284-1-mayuresh.chitale@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Sender: mhej@vps-ovh.mhejs.net
+Mime-Version: 1.0
+References: <20260402051940.1051-1-spujari79@gmail.com>
+Message-ID: <ac7EtdCz0GNkY6dJ@google.com>
+Subject: Re: [PATCH] KVM TDP MMU FIXES- Replaced unsafe panic calls with
+ proper error handling
+From: Sean Christopherson <seanjc@google.com>
+To: BraveProgrammer <spujari79@gmail.com>
+Cc: pbonzini@redhat.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	binbin.wu@linux.intel.com, vipinsh@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 2.04.2026 12:29, Mayuresh Chitale wrote:
-> When memslot_perf_test is run on qemu, sometimes the RW subtest fails
-> due to sigalarm, indicating that the guest sync did not finish within
-> the expected duration of 10 seconds. Since the current timeout value is
-> itself a bump up from the original 2s, making the host timeout value
-> configurable via a new command line parameter. Now the test can be
-> invoked with '-a' argument to run the test with a suitable host timeout
-> value.
-> 
-> Signed-off-by: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
-> ---
+On Thu, Apr 02, 2026, BraveProgrammer wrote:
+> Unsafe Panic Calls Converted to BUG() AND BUG_ON()
+> AND
+> Added Proper error handling: Using WARN_ON_ONCE(), pr_err()
 
-Out of curiosity: which KVM-enabled setup takes more than 10 seconds
-to run that RW test?
-Does it have like, multiple levels of nesting?
+This isn't "proper error handling", it's sweeping potentiall catastrophic bugs
+under the rug.
 
-When I wrote that test I calibrated it on a mid-range x86 machine,
-where one iteration took on the order of 0.01 s.
+> Signed-off-by: BraveProgrammer <spujari79@gmail.com>
 
-10 s time limit per iteration is already three orders of magnitude
-slower than that.
+Given the name and email, I assume this is trolling or AI slop, but just to be
+clear:
 
-Otherwise, the patch looks sensible to me.
-
-Thanks,
-Maciej
-
+NAK.
