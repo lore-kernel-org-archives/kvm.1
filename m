@@ -1,121 +1,165 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888BA2FD675
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 18:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418F62FD675
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 18:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775152942; cv=none; b=lNFfDLkxH2lM5VYDEbHXoBavLX5OFSu7GFxE5wjf+5Y5XdDj3q/3//krd92NaKBbKAwdgI2UtOoJehf9ZIHeBYvXRYCxPA56R4PvJxFVFlpYy23FNUDWiyFnzbKD8XKbOHFKFAUq3Hl2czb3Ndd65HBfyq/IIm2Hv1DGQoOHqoQ=
+	t=1775153013; cv=none; b=fuIh0cAMDk4cjIZ2eTzNHtMrsKyy2F6UImTyYFxC024IsUZiLlreJzMXdMDehVGKdLa5CtLUOrbROV6tDPhkVE8pyRZKAmDtPGXzWjP2PcOJx01pkDoADHdYODvopoiysz/xxOl9ISmm7/h3NyzQBNoiOQhQtIOlgukbYCO9wRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775152942; c=relaxed/simple;
-	bh=TXDzP/osUqzqvRHn7KTQyS7zwbfOQfMu9RutzAf+uP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UlZT1qBR7z1x4fKnxoqlyXK310YoIFB1EqH7JFkaIelPSYLanke6OiKdypIJPk32IOIQOStsPla+067ufA6ymybt0Gp/80Qs/LzTJZr7Bt2EdAONNEm2KrFF/Wf3arkutk5REEOGRR6rhzOu1ELQoP7Qeb3DAmCo8vrKEt1URWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MDSrkoMQ; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1775153013; c=relaxed/simple;
+	bh=zslShsm+LS4wiFK9zoZ9vJ4mO499VFjmlCodvm7M0z4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=mgKfbU45ffOYeG2vGPNu/4qRVmQnCg2vbIGYQntzz4BDrwzUiL0mCAWjtN8q6PSsPCYoKRZAuS4E7W7jem6pjnnksDtcsjKzENl2AGvfc3J4F0B5KrpsSovRD48ZVHM+CQnqvlV/qMPhxjtf/32ny4adLAYsd/yZakmmZzHxaQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=baEI5sjF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kdBm+ciy; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MDSrkoMQ"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-483487335c2so11750505e9.2
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 11:02:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="baEI5sjF";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kdBm+ciy"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632G4llr2528210
+	for <kvm@vger.kernel.org>; Thu, 2 Apr 2026 18:03:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lYQtuyJBlPg9nIy8rieYc5p+WTM4wC63ZTZ5EXpCsbs=; b=baEI5sjFaoyiOmwJ
+	6mC9I/vBqJCuVOKeeG8RAV8t+T/tQcSPKl4zMsKt/k7zM4s13o8KipNtBQDhNaWY
+	w1XaAgPmtXEOxXd9Wr5XDjiEZ0QtQYWmodYntrfe1tGDBe+fEB0VWaF0L/2n9ANW
+	YP8q2uW/bQpa3Ximk1y2kuzn8KE3Gro4M0Px1yoTyuBHcfMEaAFFP/wpDJNqabDE
+	DUeRYabbiNjQ2fP7b0He/m35pi1ZD3Bi/CfpqdoV0D9ti9ajN38NaNaz1LyGjjY8
+	qnSrGDmZeJsqGJIZbtGLrnPDH5qqeGkt9JXxOL+FfK1fb3uXI69ks+tGb8W6kRCV
+	QKr0xw==
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com [209.85.217.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9txc8ng6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 18:03:31 +0000 (GMT)
+Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-6057cbb45a2so141546137.3
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 11:03:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775152940; x=1775757740; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8Cqd02rloH4qWYkodiVboVkNgAG3Np1UDG5yCBlvtX0=;
-        b=MDSrkoMQShCVzRvTMHBGaX1frU1WyTjCq/V5uGh1zOKYTrH3D+JXCR+MMLR+awU7bx
-         eautEcsLhRz6JeeVc7IKGNCe7mDCscXZA7zZvWz5nvPvXcppPV7EmXw0TH+jClZrxNBA
-         goF1QJrXn3oAqc98AMs6EkMdojADIOe2iqIC0xKxOmRbc43EkAlW+r2+eZBrOXE+yjK0
-         K2yBtdqEoCyB4Gck7LHOeya6hX8O44in1RRyCOzEa55nujMQ/Mb3vQM1GmuGVHRnQ15F
-         JDozzKPvD5snupCh0e98Dni3FjkT2mEaNDE4ODOZtvpZSs993zNkHdLGwrd/1CPCDKEr
-         0Y/g==
+        d=oss.qualcomm.com; s=google; t=1775153010; x=1775757810; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lYQtuyJBlPg9nIy8rieYc5p+WTM4wC63ZTZ5EXpCsbs=;
+        b=kdBm+ciyWcsN5jM9HN5CobVG5Yl8k0cUsQfHkE6kmy1O1/txcNtsGir9g7XuIyY4aW
+         Np3Kv/oxJeEFdfmBaf6L6sxZ1wRhUfE7NF4I+BO8htnGoAmD8oIHBaiJb9gItyZfMPJJ
+         r+WYztcg60poq8JH2AtuGd8zg4hCUZgV3fMTf5n4iLn8xo2EzSV2ZrP/kcRRmq/xQTWE
+         x1m+pGIHrrRPj5F8lJrBo2LY2N7/iQa1M26VcbgVpOla5M9EKxWn2PP5FU2XrN7En/ic
+         rexz9/c45gnBDT8nzv5otJD6G3YSAHN9U7MnB6Knr+e23ss13NSgSja5PMd/GSfkDxEn
+         F2Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775152940; x=1775757740;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Cqd02rloH4qWYkodiVboVkNgAG3Np1UDG5yCBlvtX0=;
-        b=BAs/hX89hbfDephazGDY+C29MLEEtt8MebpMmmRH55ljxYWpcb5DVPi1JRq/elbrqq
-         K7ND9hhKVndXTO7wMZAJ/c4kWIj/oxfbDi09i93tBL45buexi0ndZU0RXGN82532F9vv
-         OMZ56Y+Z4J7hnlUs/Qmhm8cO2WbBfKNYPwAzhXMxP270eYQOTv4BgboN7PZ1e8RRyKQR
-         mSfKFR74kVJO8CZ+IBgAMSTK53CAJtVtaltE/wNh/UF31HPcmEXsPHBAcm3pXUt9m//0
-         7xFD+MnM5vrev6vGxLAZdc3eo5TObqT7gFxBQalfluK/lM4J3kljDSypf6pZDUAWA4J/
-         vknQ==
-X-Gm-Message-State: AOJu0Yy0Qiot3JsJ64R6qvGRIF4AJJ+wPlzaVh7G04yZt8esfmFRg/9t
-	/pgsp5FJqMCu2PAYmNZuhJqMd/gX+9lc2Zsh7FlPJPASTUA6Wb0/gQp6DyO14Yco7Qc=
-X-Gm-Gg: ATEYQzwOUOHYw/DmNkEM7LC3P+XatR3VgCAjlVNcTXZLeYriq94SNQZHQse+YxGuv+1
-	5rNmEheM4nNEOh2k9NlS4hPvRNpyZVNwBDM7DCJDsKSlO8nRkNK0MMkTbodCURkbgpT7Q0MBQfe
-	tLzCfW74+rVpP6Gj2ZFMBgacA2dNe/3kl142p2z4iBt3Bc9nDtEo6taDfwQWB7FSyOi8tKmUbLy
-	wZxT/uloFu3R8S5mnwYxg7Z6E6ejQcEZtAcA/i4rmjc8qXsSaO+xoDvVWfhXawmG7DDGnxmIJcC
-	NZF/Unu45RdsVynHGJ8+v5w/4xAOR8ZUZfmKZ+Y5QW68Jh2rRJe62UPp62a0KsyBZJI1S50B29S
-	POH9G+tdS0gyPAGri9SDVtAn3Yvj4OGwwgdsbImLs5YH/t+HG38qpYGBduDb2Whlc4rwlbzabwv
-	+F1RQlBnehau19yXe+NxlJBduv86IixwG4JFxSVfKVTfBROydDZMq16/DTy9mC4sL3uw==
-X-Received: by 2002:a05:600c:4e88:b0:485:3f72:323f with SMTP id 5b1f17b1804b1-4888358809emr146323355e9.11.1775152939887;
-        Thu, 02 Apr 2026 11:02:19 -0700 (PDT)
-Received: from [192.168.69.228] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8ee2d3sm74726695e9.32.2026.04.02.11.02.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2026 11:02:19 -0700 (PDT)
-Message-ID: <66240c1c-07b8-4faf-84a4-0275d772b82e@linaro.org>
-Date: Thu, 2 Apr 2026 20:02:18 +0200
+        d=1e100.net; s=20251104; t=1775153010; x=1775757810;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lYQtuyJBlPg9nIy8rieYc5p+WTM4wC63ZTZ5EXpCsbs=;
+        b=KTfjo9Pw9KkdZMxNa6zK3akuZxtmeZP0P0qwnu3eyZPm4z/gUjBqSJmUMW/YeasU+w
+         cTJau4WnphFzsKZ0qLawCyFjCAcNKunjcJ23bYm3ggCLna7yYWEAWUCf0k6r3d19BHrQ
+         9TgOlzFmJd3+QxlNK8OFDE01W2OAehfPTwtj7rbmhEGuhAkssRVzwFUoY3HYueLnTaKb
+         e/xUAW7jJeingaCdVAcOiThPkmXzPCNV0MO/l2Ny6L+ZqvruyC89bH2xNIzY5/900kBH
+         DZ1GMy4yBd3wYw+4DrGi7hUhGdkwIXqq45osbuLKg17lJF7JsShSSOrI//U9jpI7VTu8
+         B3Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJVjYSzsQR9+Ry9cxC6In2D1XK5stlsLKW/PB00z/KhIjMYjnddNh89Q/jtHuYXol7ULc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlJPVcIKq/MYgByesT1jbzJGAi9rN8xz1bAh64RM/kC+vj3fxY
+	5hXL94/NYrCcx/pmDdZjIuXZx6Hb0oaPCMOQITdHYXW890uHXasT5UVHKDE+lOH6EPjYfpXMjNv
+	D3GeAKbx46o6aQnXKNvxrlwQzqwUxEgkZKrrcsUySf3XlxB0b2VxA6pQ=
+X-Gm-Gg: ATEYQzx+XyFgudPBAOI2R1iIqXyl0t0sLPq4STQ+OmaaR2NDPCA07W4EpT2JRMGPlAO
+	+AfMujN6TGe4QB3IKJ8PC76lk3LsBhfHzcrvt0m4WhqTQgexhbUxVBGshfjzMcfueiDi1DdSv1m
+	IxB0ro9bmgvs+yi4MHQzX+4rdgsow6yp88LDYFVazPPRiQUO/q7Nv5AwH4RB/gc60GyCVPI67sQ
+	ih6Ati1YWQzqOFemBFQblygQWc8naRwq0OSp8kjNYtENBlkKSec0qS0sv8oxkJZU2VPzVQKj8ha
+	xzi1L9CbOguoLPtp68XPi0jVknviC2W5pDRaluut8gVPQSwoDHuxJMk8JV6H0EdYomHPV9quMd7
+	sKjRKgw9jsSf5gAUUjvtQ3L6XWMDWpX/lknng5ukD+x3KMYZgKHk6vhWT0m+E
+X-Received: by 2002:a05:6102:80a3:b0:604:f029:2262 with SMTP id ada2fe7eead31-605a4fa98ecmr62663137.17.1775153010455;
+        Thu, 02 Apr 2026 11:03:30 -0700 (PDT)
+X-Received: by 2002:a05:6102:80a3:b0:604:f029:2262 with SMTP id ada2fe7eead31-605a4fa98ecmr62587137.17.1775153009715;
+        Thu, 02 Apr 2026 11:03:29 -0700 (PDT)
+Received: from localhost (ip-86-49-249-15.bb.vodafone.cz. [86.49.249.15])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cec5c16sm115340866b.40.2026.04.02.11.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 11:03:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-11.1 v2 4/9] accel/kvm: Expose all non-target specific
- declarations
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org, Anton Johansson <anjo@rev.ng>,
- qemu-s390x@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- qemu-riscv@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20260402170434.94783-1-philmd@linaro.org>
- <20260402170434.94783-5-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20260402170434.94783-5-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 02 Apr 2026 20:03:27 +0200
+Message-Id: <DHIV81G43OJO.2HY4RIYFRD0RL@oss.qualcomm.com>
+Subject: Re: [PATCH v7 1/4] RISC-V: KVM: Support runtime configuration for
+ per-VM's HGATP mode
+Cc: <guoren@kernel.org>, <andrew.jones@oss.qualcomm.com>,
+        <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+To: <fangyu.yu@linux.alibaba.com>, <pbonzini@redhat.com>, <corbet@lwn.net>,
+        <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>,
+        <skhan@linuxfoundation.org>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?=
+ <radim.krcmar@oss.qualcomm.com>
+References: <20260402132303.6252-1-fangyu.yu@linux.alibaba.com>
+ <20260402132303.6252-2-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260402132303.6252-2-fangyu.yu@linux.alibaba.com>
+X-Proofpoint-GUID: GUsqBedQA7CDXo1PkHx7kRSUjt1aDkCl
+X-Proofpoint-ORIG-GUID: GUsqBedQA7CDXo1PkHx7kRSUjt1aDkCl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDE2MiBTYWx0ZWRfX5TubWMElIAV1
+ 5ga2GLBIlYprU/sU5YWOs1ABcnb9/GtlInUvo3iRiw2seeyHUar4FHVsxlFmoo8wISpy1E6tDsZ
+ YOofW3wd9ihQ4pL22Yo1meALhjpvP1abeUvxIS011gdSa3JhnnjXH8aE8y+i2bV/rBB7dOBXPQS
+ BYd2IwmpA6eJFj1+qpqHdcJxIfHjgAsg3eZp9YS2uzC9OSnzqfePerhgJljxaR5p/aTrhbIhrgg
+ x05vqU6msyxoFThI2OwW9riLxjspAIlQ+tChzIS9PwNjftlgqLE3pp7t4eucP1tv2dPaZrUW1PP
+ 70u0CoZyocnfg4wT2JoyFFhCWHTYKTfVJ1HKzWE9X9UyxzwqforKDwT+MHQX8nnzKwTwVJ+7jxD
+ 1+i07OsAEEwSF52BIs7ZgWkzJq4+kkyIxUG5abJjtBVQqML3gfceEn9D+8pifZlC2hETpQYQEMT
+ UTQ//d4g3DyhuAIJyIg==
+X-Authority-Analysis: v=2.4 cv=HKXO14tv c=1 sm=1 tr=0 ts=69ceaf73 cx=c_pps
+ a=N1BjEkVkxJi3uNfLdpvX3g==:117 a=fuErIE+P63Icv3tqjtEZBw==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=SRrdq9N9AAAA:8 a=EUspDBNiAAAA:8 a=W-_n0kkjAAAA:8 a=VwQbUJbxAAAA:8
+ a=yPi4e_CmV_5Q4fPajbcA:9 a=QEXdDO2ut3YA:10 a=crWF4MFLhNY0qMRaF8an:22
+ a=qeNa2pbTr82C0GpJEZFS:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-02_03,2026-04-02_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 adultscore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020162
 
-On 2/4/26 19:04, Philippe Mathieu-Daudé wrote:
-> None of the declarations guarded within the COMPILING_PER_TARGET
-> checks use target-specific declaration. "cpu.h" is not required
-> since some time (maybe commit 4fb54de823e "meson: build target
-> libraries with common dependencies"). Remove the restrictions.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+2026-04-02T21:23:00+08:00, <fangyu.yu@linux.alibaba.com>:
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+>
+> Introduces one per-VM architecture-specific fields to support runtime
+> configuration of the G-stage page table format:
+>
+> - kvm->arch.pgd_levels: the corresponding number of page table levels
+>   for the selected mode.
+>
+> These fields replace the previous global variables
+> kvm_riscv_gstage_mode and kvm_riscv_gstage_pgd_levels, enabling different
+> virtual machines to independently select their G-stage page table format
+> instead of being forced to share the maximum mode detected by the kernel
+> at boot time.
+>
+> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+> Reviewed-by: Anup Patel <anup@brainfault.org>
+> Reviewed-by: Guo Ren <guoren@kernel.org>
 > ---
->   include/system/kvm.h | 5 -----
->   1 file changed, 5 deletions(-)
-> 
-> diff --git a/include/system/kvm.h b/include/system/kvm.h
-> index 9b722ad931a..c33fb160b5b 100644
-> --- a/include/system/kvm.h
-> +++ b/include/system/kvm.h
-> @@ -225,9 +225,6 @@ void kvm_irqchip_add_change_notifier(Notifier *n);
->   void kvm_irqchip_remove_change_notifier(Notifier *n);
->   void kvm_irqchip_change_notify(void);
->   
-> -#ifdef COMPILING_PER_TARGET
-> -#include "cpu.h"
+> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+> @@ -199,7 +199,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
+g ext)
+>  		r =3D KVM_USER_MEM_SLOTS;
+>  		break;
+>  	case KVM_CAP_VM_GPA_BITS:
+> -		r =3D kvm_riscv_gstage_gpa_bits;
+> +		r =3D kvm_riscv_gstage_gpa_bits(kvm->arch.pgd_levels);
 
-Prerequisites still missing, sorry.
+kvm_vm_ioctl_check_extension() also gets called from with kvm =3D=3D NULL
+from kvm_dev_ioctl().  I think we can continue to return
+...(kvm_riscv_gstage_max_pgd_levels) in that case.
 
->   /**
->    * kvm_update_guest_debug(): ensure KVM debug structures updated
->    * @cs: the CPUState for this cpu
-> @@ -450,8 +447,6 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
->   int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
->                                          hwaddr *phys_addr);
->   
-> -#endif /* COMPILING_PER_TARGET */
-> -
->   bool kvm_arch_supports_vmfd_change(void);
->   int kvm_arch_on_vmfd_change(MachineState *ms, KVMState *s);
->   
-
+Thanks.
