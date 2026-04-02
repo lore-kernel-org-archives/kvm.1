@@ -1,170 +1,301 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D9E3DC4CE;
-	Thu,  2 Apr 2026 12:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA273CD8CC;
+	Thu,  2 Apr 2026 13:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775133759; cv=none; b=JybTu8VO8gNZ7oOgBofOlAZl6uhTP4thhI2yXXde1BkHaEmuZde48+sOkSbHD+0Z64gr67o2VUEiJfO9YN4SFelNZHTIQfjkcaSyohVAeSddFfHfeEn7/9n8vS8TktrggUAwP4+wA8qDd/4eC3Hlg1im+smQ8AUFHxoeILQ2SnE=
+	t=1775135305; cv=none; b=cbiBfKaVneIRnOY4242wNAwCR71nDUcF4jFK4/I7R/YuNXZntQ71Ih3DGPGOwy22tixgea1HuudOzrwLesM3tX+gxIjaL/de0nt9fK4dlOha7A49DyC5xduSL9O2UVoP98o6qc5+vc0LVx6TXzvWppxtzfbPjRCEOTRPmkYnCp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775133759; c=relaxed/simple;
-	bh=eXuiAgdKHKGDwjhMoJPybkXIHLyx2xl4IR43FDNFuXQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=XA4b2YgGv6NM81KAOxdtFxHpVakTwkTfODvLA/uh1KcCWDQwficl+I2gInOA4uIZSI4S2Jib1QpKgQsrRexuKJ3ODXbPvf8KRtE2VdYiY55Sl3ELcH7EXLt+IDw8V+rPDEF+7/22VAje9EGP6kRJb8EkmA6CcxoY/C2VLKtjqE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Mjn/K6ku; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Mjn/K6ku"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2B312C43;
-	Thu,  2 Apr 2026 05:42:21 -0700 (PDT)
-Received: from devkitleo.cambridge.arm.com (devkitleo.cambridge.arm.com [10.1.196.90])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 534263F915;
-	Thu,  2 Apr 2026 05:42:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775133747; bh=eXuiAgdKHKGDwjhMoJPybkXIHLyx2xl4IR43FDNFuXQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mjn/K6kuBcKdeIR3d/RDCeq8IGk9fAR4uLseX84J6PK0lk7X6fvW7GsGpxYK69NPz
-	 TagyLFaP67hiiK+hPeAtNGk5rtn59RNu2q84pljWIfC0qxjiqqLoVRn17vHnIWfIIm
-	 xNx6D9GvNhQE/O10koxyjTdCvO9Xx4q/DRG6csNA=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	maz@kernel.org,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	liuyonglong@huawei.com,
-	Jonathan.Cameron@huawei.com,
-	yezhenyu2@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
+	s=arc-20240116; t=1775135305; c=relaxed/simple;
+	bh=0pzuAWzpVngTq7uFimeChvbs2L1mwTDF67Lt+JPnBPo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AeWe7aYLzrXV3z23aE2Xg2ywCvoKIwBgw2mcME2XkqW/N6UBX1fgvy9WyiZaAzkpfbjwuEXKPKW702WwvgyBOqPzT4LGwI9/MpOfMVGXOaDRvJG7pNggItmnA9DoWBLT7jCsbIPEeEGq1b614UjKMMPmrDlfC45eAm3pF0UspNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.185])
+	by gateway (Coremail) with SMTP id _____8AxgsA_as5pSDchAA--.34768S3;
+	Thu, 02 Apr 2026 21:08:15 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+	by front1 (Coremail) with SMTP id qMiowJCx+8E6as5p6oJjAA--.58940S3;
+	Thu, 02 Apr 2026 21:08:14 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: maobibo@loongson.cn,
+	chenhuacai@kernel.org
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	kernel@xen0n.name,
 	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v3 0/5] Support the FEAT_HDBSS introduced in Armv9.5
-Date: Thu,  2 Apr 2026 13:42:17 +0100
-Message-ID: <ac5kKQZEnS93qdDm@devkitleo>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <730aaffa-9dfd-40c3-a372-c774d203b6e1@huawei.com>
-References: <20260225040421.2683931-1-zhengtian10@huawei.com> <acvWnjG0AZBHL21q@devkitleo> <730aaffa-9dfd-40c3-a372-c774d203b6e1@huawei.com>
+	lixianglai@loongson.cn
+Subject: [PATCH v9 1/2] LoongArch: KVM: Add DMSINTC device support
+Date: Thu,  2 Apr 2026 20:42:36 +0800
+Message-Id: <20260402124237.4174550-2-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20260402124237.4174550-1-gaosong@loongson.cn>
+References: <20260402124237.4174550-1-gaosong@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCx+8E6as5p6oJjAA--.58940S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Thu, Apr 02, 2026 at 10:40:37AM +0800, Tian Zheng wrote:
-> 
-> On 3/31/2026 10:13 PM, Leonardo Bras wrote:
-> > On Wed, Feb 25, 2026 at 12:04:16PM +0800, Tian Zheng wrote:
-> > > This series of patches add support to the Hardware Dirty state tracking
-> > > Structure(HDBSS) feature, which is introduced by the ARM architecture
-> > > in the DDI0601(ID121123) version.
-> > > 
-> > > The HDBSS feature is an extension to the architecture that enhances
-> > > tracking translation table descriptors' dirty state, identified as
-> > > FEAT_HDBSS. This feature utilizes hardware assistance to achieve dirty
-> > > page tracking, aiming to significantly reduce the overhead of scanning
-> > > for dirty pages.
-> > > 
-> > > The purpose of this feature is to make the execution overhead of live
-> > > migration lower to both the guest and the host, compared to existing
-> > > approaches (write-protect or search stage 2 tables).
-> > > 
-> > > After these patches, users(such as qemu) can use the
-> > > KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl to enable or disable the HDBSS
-> > > feature before and after the live migration.
-> > > 
-> > > v2:
-> > > https://lore.kernel.org/linux-arm-kernel/20251121092342.3393318-1-zhengtian10@huawei.com/
-> > > 
-> > > v2->v3 changes:
-> > > - Remove the ARM64_HDBSS configuration option and ensure this feature
-> > > is only enabled in VHE mode.
-> > > - Move HDBSS-related variables to the arch-independent portion of the
-> > > kvm structure.
-> > > - Remove error messages during HDBSS enable/disable operations
-> > > - Change HDBSS buffer flushing from handle_exit to vcpu_put,
-> > > check_vcpu_requests, and kvm_handle_guest_abort.
-> > > - Add fault handling for HDBSS including buffer full, external abort,
-> > > and general protection fault (GPF).
-> > > - Add support for a 4KB HDBSS buffer size, mapped to the value 0b0000.
-> > > - Add a second argument to the ioctl to turn HDBSS on or off.
-> > > 
-> > > Tian Zheng (1):
-> > >    KVM: arm64: Document HDBSS ioctl
-> > > 
-> > > eillon (4):
-> > >    arm64/sysreg: Add HDBSS related register information
-> > >    KVM: arm64: Add support to set the DBM attr during memory abort
-> > >    KVM: arm64: Add support for FEAT_HDBSS
-> > >    KVM: arm64: Enable HDBSS support and handle HDBSSF events
-> > > 
-> > >   Documentation/virt/kvm/api.rst       |  16 +++++
-> > >   arch/arm64/include/asm/cpufeature.h  |   5 ++
-> > >   arch/arm64/include/asm/esr.h         |   7 ++
-> > >   arch/arm64/include/asm/kvm_host.h    |  17 +++++
-> > >   arch/arm64/include/asm/kvm_mmu.h     |   1 +
-> > >   arch/arm64/include/asm/kvm_pgtable.h |   4 ++
-> > >   arch/arm64/include/asm/sysreg.h      |  11 +++
-> > >   arch/arm64/kernel/cpufeature.c       |  12 ++++
-> > >   arch/arm64/kvm/arm.c                 | 102 +++++++++++++++++++++++++++
-> > >   arch/arm64/kvm/hyp/pgtable.c         |   6 ++
-> > >   arch/arm64/kvm/hyp/vhe/switch.c      |  19 +++++
-> > >   arch/arm64/kvm/mmu.c                 |  70 ++++++++++++++++++
-> > >   arch/arm64/kvm/reset.c               |   3 +
-> > >   arch/arm64/tools/cpucaps             |   1 +
-> > >   arch/arm64/tools/sysreg              |  29 ++++++++
-> > >   include/uapi/linux/kvm.h             |   1 +
-> > >   tools/include/uapi/linux/kvm.h       |   1 +
-> > >   17 files changed, 305 insertions(+)
-> > > 
-> > > --
-> > > 2.33.0
-> > > 
-> > 
-> > Hi Tian,
-> > 
-> > I was thinking: maybe instead of putting the HDBSS (and HACDBS) stuff
-> > across a bunch of KVM files, we should try to focus them all on a single
-> > arch/arm64/kvm/dirty_bit.c file (plus a header such as
-> > arch/arm64/include/asm/kvm_dirty_bit.h).
-> > 
-> > What is your opinion on that?
-> > 
-> > Thanks!
-> > Leo
-> 
-> 
-> Sorry for the late reply. Yes, I had the same thought before. In the next
-> version, I will
-> 
-> move all the HDBSS-related content into the same file, such as
-> arch/arm64/kvm/dirty_bit.c
-> 
-> and arch/arm64/include/asm/kvm_dirty_bit.h.
-> 
-> 
-> Tian
-> 
-> 
-> > 
-> > 
+Add device model for DMSINTC interrupt controller, implement basic
+create/destroy/set_attr interfaces, and register device model to kvm
+device table.
 
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ arch/loongarch/include/asm/kvm_dmsintc.h |  21 ++++
+ arch/loongarch/include/asm/kvm_host.h    |   3 +
+ arch/loongarch/include/uapi/asm/kvm.h    |   4 +
+ arch/loongarch/kvm/Makefile              |   1 +
+ arch/loongarch/kvm/intc/dmsintc.c        | 117 +++++++++++++++++++++++
+ arch/loongarch/kvm/main.c                |   6 ++
+ include/uapi/linux/kvm.h                 |   2 +
+ 7 files changed, 154 insertions(+)
+ create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
+ create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
 
-Awesome! Then I will work my HACDBS enablement that way as well.
+diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/include/asm/kvm_dmsintc.h
+new file mode 100644
+index 000000000000..b04b89dd2a35
+--- /dev/null
++++ b/arch/loongarch/include/asm/kvm_dmsintc.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2025 Loongson Technology Corporation Limited
++ */
++
++#ifndef __ASM_KVM_DMSINTC_H
++#define __ASM_KVM_DMSINTC_H
++
++
++struct loongarch_dmsintc {
++	struct kvm *kvm;
++	uint64_t msg_addr_base;
++	uint64_t msg_addr_size;
++};
++
++struct dmsintc_state {
++	atomic64_t  vector_map[4];
++};
++
++int kvm_loongarch_register_dmsintc_device(void);
++#endif
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index 19eb5e5c3984..6a8d72cf8e4e 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -22,6 +22,7 @@
+ #include <asm/kvm_ipi.h>
+ #include <asm/kvm_eiointc.h>
+ #include <asm/kvm_pch_pic.h>
++#include <asm/kvm_dmsintc.h>
+ #include <asm/loongarch.h>
+ 
+ #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+@@ -135,6 +136,7 @@ struct kvm_arch {
+ 	struct loongarch_ipi *ipi;
+ 	struct loongarch_eiointc *eiointc;
+ 	struct loongarch_pch_pic *pch_pic;
++	struct loongarch_dmsintc *dmsintc;
+ };
+ 
+ #define CSR_MAX_NUMS		0x800
+@@ -247,6 +249,7 @@ struct kvm_vcpu_arch {
+ 	struct kvm_mp_state mp_state;
+ 	/* ipi state */
+ 	struct ipi_state ipi_state;
++	struct dmsintc_state dmsintc_state;
+ 	/* cpucfg */
+ 	u32 cpucfg[KVM_MAX_CPUCFG_REGS];
+ 
+diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
+index 419647aacdf3..c39b8ac7a90a 100644
+--- a/arch/loongarch/include/uapi/asm/kvm.h
++++ b/arch/loongarch/include/uapi/asm/kvm.h
+@@ -155,4 +155,8 @@ struct kvm_iocsr_entry {
+ #define KVM_DEV_LOONGARCH_PCH_PIC_GRP_CTRL	        0x40000006
+ #define KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT	        0
+ 
++#define KVM_DEV_LOONGARCH_DMSINTC_CTRL			0x40000007
++#define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE		0x0
++#define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE		0x1
++
+ #endif /* __UAPI_ASM_LOONGARCH_KVM_H */
+diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
+index cb41d9265662..6e184e24443c 100644
+--- a/arch/loongarch/kvm/Makefile
++++ b/arch/loongarch/kvm/Makefile
+@@ -19,6 +19,7 @@ kvm-y += vm.o
+ kvm-y += intc/ipi.o
+ kvm-y += intc/eiointc.o
+ kvm-y += intc/pch_pic.o
++kvm-y += intc/dmsintc.o
+ kvm-y += irqfd.o
+ 
+ CFLAGS_exit.o	+= $(call cc-disable-warning, override-init)
+diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+new file mode 100644
+index 000000000000..1bb61e55d061
+--- /dev/null
++++ b/arch/loongarch/kvm/intc/dmsintc.c
+@@ -0,0 +1,117 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2025 Loongson Technology Corporation Limited
++ */
++
++#include <linux/kvm_host.h>
++#include <asm/kvm_dmsintc.h>
++#include <asm/kvm_vcpu.h>
++
++static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
++				struct kvm_device_attr *attr,
++				bool is_write)
++{
++	int addr = attr->attr;
++	void __user *data;
++	struct loongarch_dmsintc *s = dev->kvm->arch.dmsintc;
++	u64 tmp;
++	u32 cpu_bit;
++
++	data = (void __user *)attr->addr;
++	switch (addr) {
++	case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE:
++		if (is_write) {
++			if (copy_from_user(&tmp, data, sizeof(s->msg_addr_base)))
++				return -EFAULT;
++			if (s->msg_addr_base) {
++				/* Duplicate setting are not allowed. */
++				return -EFAULT;
++			}
++			if ((tmp & (BIT(AVEC_CPU_SHIFT) - 1)) == 0)
++				s->msg_addr_base = tmp;
++			else
++				return  -EFAULT;
++			s->msg_addr_base = tmp;
++			cpu_bit = find_first_bit((unsigned long *)&(s->msg_addr_base), 64)
++						- AVEC_CPU_SHIFT;
++			cpu_bit = min(cpu_bit, AVEC_CPU_BIT);
++			s->cpu_mask = GENMASK(cpu_bit - 1, 0) & AVEC_CPU_MASK;
++		}
++		break;
++	case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE:
++		if (is_write) {
++			if (copy_from_user(&tmp, data, sizeof(s->msg_addr_size)))
++				return -EFAULT;
++			if (s->msg_addr_size) {
++				/*Duplicate setting are not allowed. */
++				return -EFAULT;
++			}
++			s->msg_addr_size = tmp;
++		}
++		break;
++	default:
++		kvm_err("%s: unknown dmsintc register, addr = %d\n", __func__, addr);
++		return -ENXIO;
++	}
++
++	return 0;
++}
++
++static int kvm_dmsintc_set_attr(struct kvm_device *dev,
++			struct kvm_device_attr *attr)
++{
++	switch (attr->group) {
++	case KVM_DEV_LOONGARCH_DMSINTC_CTRL:
++		return kvm_dmsintc_ctrl_access(dev, attr, true);
++	default:
++		kvm_err("%s: unknown group (%d)\n", __func__, attr->group);
++		return -EINVAL;
++	}
++}
++
++static int kvm_dmsintc_create(struct kvm_device *dev, u32 type)
++{
++	struct kvm *kvm;
++	struct loongarch_dmsintc *s;
++
++	if (!dev) {
++		kvm_err("%s: kvm_device ptr is invalid!\n", __func__);
++		return -EINVAL;
++	}
++
++	kvm = dev->kvm;
++	if (kvm->arch.dmsintc) {
++		kvm_err("%s: LoongArch DMSINTC has already been created!\n", __func__);
++		return -EINVAL;
++	}
++
++	s = kzalloc(sizeof(struct loongarch_dmsintc), GFP_KERNEL);
++	if (!s)
++		return -ENOMEM;
++
++	s->kvm = kvm;
++	kvm->arch.dmsintc = s;
++	return 0;
++}
++
++static void kvm_dmsintc_destroy(struct kvm_device *dev)
++{
++
++	if (!dev || !dev->kvm || !dev->kvm->arch.dmsintc)
++		return;
++
++	kfree(dev->kvm->arch.dmsintc);
++	kfree(dev);
++}
++
++static struct kvm_device_ops kvm_dmsintc_dev_ops = {
++	.name = "kvm-loongarch-dmsintc",
++	.create = kvm_dmsintc_create,
++	.destroy = kvm_dmsintc_destroy,
++	.set_attr = kvm_dmsintc_set_attr,
++};
++
++int kvm_loongarch_register_dmsintc_device(void)
++{
++	return kvm_register_device_ops(&kvm_dmsintc_dev_ops, KVM_DEV_TYPE_LOONGARCH_DMSINTC);
++}
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 2c593ac7892f..713771a93d90 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -416,6 +416,12 @@ static int kvm_loongarch_env_init(void)
+ 
+ 	/* Register LoongArch PCH-PIC interrupt controller interface. */
+ 	ret = kvm_loongarch_register_pch_pic_device();
++	if (ret)
++		return ret;
++
++	/* Register LoongArch DMSINTC interrupt contrroller interface */
++	if (cpu_has_msgint)
++		ret = kvm_loongarch_register_dmsintc_device();
+ 
+ 	return ret;
+ }
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 80364d4dbebb..0c940fbcee8b 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1224,6 +1224,8 @@ enum kvm_device_type {
+ #define KVM_DEV_TYPE_LOONGARCH_EIOINTC	KVM_DEV_TYPE_LOONGARCH_EIOINTC
+ 	KVM_DEV_TYPE_LOONGARCH_PCHPIC,
+ #define KVM_DEV_TYPE_LOONGARCH_PCHPIC	KVM_DEV_TYPE_LOONGARCH_PCHPIC
++	KVM_DEV_TYPE_LOONGARCH_DMSINTC,
++#define KVM_DEV_TYPE_LOONGARCH_DMSINTC   KVM_DEV_TYPE_LOONGARCH_DMSINTC
+ 
+ 	KVM_DEV_TYPE_MAX,
+ 
+-- 
+2.39.3
 
-Thanks!
-Leo
