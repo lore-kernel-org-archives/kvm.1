@@ -1,269 +1,150 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFC6285CA8;
-	Thu,  2 Apr 2026 13:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6FF3AD500
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 13:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775135307; cv=none; b=IZ0V/xRlx0ply7xQBQlRkQ80l2SGX5i5R2+Vk6a81oBG5A3ynsN+W3YIcfRppf9Z1K/ttVndk8XlPljbtW5FjbBfncb49RZIz0tlR60VPDfWa/FkHg/p3s1LaIjbhQhl7syjnzTI1r4LZAykmOSGCjYX8mPG5ib3TceMg+90hso=
+	t=1775135313; cv=none; b=jmw+t+i1ZnH0rsGRjOP9WAoP2clRXPx9xRwgkDIv7r9R4lh208xDFKmQdU1HYkj9qvhXTY4su4q7Jqv5G9RD/kpCVTUh97FEOyKTvoEZlA0sq9El+W3res2kOZvMrZtj948yA2r2bEtcoIubaJr/sYPahblzs524c7EvfsN4Y0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775135307; c=relaxed/simple;
-	bh=bvczBY/WyeuBZmp33DGd9oyyd3hhtrefGoU6v+iCB+Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lB7rbuiqghHEuwM8nNaoh0x8ooF9jfPKcUDKjXztSSENvp8fxmlLW1nbLNZ877rsRejsVYkI/Evw8gv4fygyWMz0LDK+hWXPpC8TvjprJOzSkxBy/16H24YNbLIhyBWSi88SzHm0tbZOC82L/6ZXUfcl6tFLqm1pDxU+Sissqak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8BxcfA_as5pTDchAA--.28536S3;
-	Thu, 02 Apr 2026 21:08:15 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front1 (Coremail) with SMTP id qMiowJCx+8E6as5p6oJjAA--.58940S4;
-	Thu, 02 Apr 2026 21:08:15 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn,
-	chenhuacai@kernel.org
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	kernel@xen0n.name,
-	linux-kernel@vger.kernel.org,
-	lixianglai@loongson.cn
-Subject: [PATCH v9 2/2] LoongArch: KVM: Add dmsintc inject msi to the dest vcpu
-Date: Thu,  2 Apr 2026 20:42:37 +0800
-Message-Id: <20260402124237.4174550-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20260402124237.4174550-1-gaosong@loongson.cn>
-References: <20260402124237.4174550-1-gaosong@loongson.cn>
+	s=arc-20240116; t=1775135313; c=relaxed/simple;
+	bh=wm02E3T0a1peGSnmnmR4/hZwBTf9XgjeCN8sySv09FI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qPAllKqXMCFm/Wc++eJ3WbWvpay8b4COurnUME5QSTv7cFwFogFqnsDdw78kI3OL5cRgfW1zKqENfBHYlQqvDWNENCLLexEpCzKAGoGy/pj9mBik/xalk7BS37AkqeW1pgQxjDyFwEo0pFvyfw5NjLPjBzBISeFUn3cHncVtqKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gG4/46a4; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cYZsG+LV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gG4/46a4";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cYZsG+LV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775135307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+/AYnKJRH8mdswMQLrHJ90PhRLOmS9dKac7jjdIwogo=;
+	b=gG4/46a4ML6mtIXsXFmkHW0gF/Pr9BkWpKpDfpfqLON17eOGCNt1+femUD5RAv67/IrjPm
+	vC8kBoifyOGfFR4Jz9emkSK6v7bG3OivAj4gVCIjvaHBL0Z29nwKjEtxZyTOKeZkm1b+QH
+	tJKJ9ZFBi9dXkcAhgtY9RrRp+5uG/Ww=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-654-Svl1NXThNwmxzV9XNdwezg-1; Thu, 02 Apr 2026 09:08:25 -0400
+X-MC-Unique: Svl1NXThNwmxzV9XNdwezg-1
+X-Mimecast-MFC-AGG-ID: Svl1NXThNwmxzV9XNdwezg_1775135305
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so18951075e9.0
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 06:08:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775135305; x=1775740105; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+/AYnKJRH8mdswMQLrHJ90PhRLOmS9dKac7jjdIwogo=;
+        b=cYZsG+LVeDHN1bQkWksCIBgA+BAw09xwPLURKL9/PGKjH0adb0lk1Dm1RnrXk7fyZJ
+         IL4V25LFmmv4V87wFWfCjS9Ux6UZCa/onfSwQEzHMlrTD59CpWb4SgFx1jH/lvTWlTSy
+         hqo+QEdLUqdgzMF30lkw9gIw73GCGiHRmNM8/4y3ESxtbhYzx1wsjY5kcBJggG9zzuH5
+         GVNDGHc+9+YYOka7y65daGyWm87vNYIl5t4rK9Pg3+mLPh5wINYDUXWnyEB5Eh1awVsR
+         D8oOAAwnl59cpaTTn5iBtnhm0i0YvxRz8WgbcC/dV6wXOe3p9DijrMyAU+fYJ5ZiVXt+
+         bibg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775135305; x=1775740105;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+/AYnKJRH8mdswMQLrHJ90PhRLOmS9dKac7jjdIwogo=;
+        b=I2jK7JHx3BdjvXwwDHruG0uYhj3e4/JE4Rf81JTpsFcygLJ3I0gOEMVGfq9aVrIYwG
+         166IkgAe5lgLmKInM4uvYyg8gpSLRds4j3D6vXMC5XgkmiwtADqiU/j5GdM3ohewD4MM
+         0RZEt7xk3xqCxRGsfHxd1Uhcizk4PigL6c3/7L2L+3J4dNgdZyxal2QLracezc4qq5oN
+         VLzTHxfG7Uq/SjT62m5XX2KIDWnoJQif913jPQTFvHIMTN4C0tvqfQ4dwr7XMe5Em3/a
+         DzZbYQEVspFcNGP7eUv39Md9mI/EcGUP/o6tfe+l796g/ZMgQwWtH0ZpdgHxCc5CwJEP
+         Jmfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhuXN47qiXSEca806KTWfxWRE3Z5cQsoFzh/x5A97SvIEBszHr+O5smuYuy7dH3THX2nw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9PofdjsZ+SaYtP2VcXDgWT8dBTsGc5CSHNgnrNOEIf9E9v7jt
+	F24LwrpDMUaaDzV0M8e4tNwtcGSJTTMPa2ktll7MsTAB25LH21vKC9e6n+dqWsj+I8DtHcNvkP2
+	R5A0XKvUcsuwFyBpQLu+EtZsPPXD3cbBsi2+5WpNRdPUaVVu9LjAIeg==
+X-Gm-Gg: ATEYQzw+w7HQYbqc6TKE0gg/42ICX91FchGAR67MRvjMjMPkibkFgwops6cBkmnXMUS
+	8E60hH32fvcyEGceiOYsGzMIv8OnccZC2AVZynTODUab1HjA+Iaq5EKVghrWoOgWS0zxo8lBrUR
+	Wf4M+mjGU4mHrxob1qRI5iHSk8dzhzQOBrDbXTlrthwtwrHpecdm4tHVPs+wb3GEaL7t6Wew30H
+	P2dt1v5aVdXHWBWhEQYBp1ZELgXBVag18YJXcF5DUM4pix8BSpG5PerrPmdi0Jjz23rZUUMusnH
+	QrVjmU4sKRspHEAdunWaww6igZM/3VX0OGvR394MeHJZNa0jEot9yZpPRsJWjgVRFObdt4bVFI6
+	MWPnvfs5WiLK/QBOwEBqk8uXAl5Cv5kowxCPdqocILVKPcn2upKIOSPAbuflLfK6R0Nv+j3Mb6n
+	JX
+X-Received: by 2002:a05:600c:3496:b0:486:fbc4:8fe2 with SMTP id 5b1f17b1804b1-4888e0e47damr36924925e9.15.1775135304492;
+        Thu, 02 Apr 2026 06:08:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:3496:b0:486:fbc4:8fe2 with SMTP id 5b1f17b1804b1-4888e0e47damr36924105e9.15.1775135303929;
+        Thu, 02 Apr 2026 06:08:23 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-139-105.business.telecomitalia.it. [87.12.139.105])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e967badsm251669415e9.14.2026.04.02.06.08.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 06:08:23 -0700 (PDT)
+Date: Thu, 2 Apr 2026 15:08:15 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] vsock/virtio: fix MSG_PEEK ignoring skb offset
+ when calculating bytes to copy
+Message-ID: <ac5pVRhTSc0Xr2xy@sgarzare-redhat>
+References: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
+ <20260402-fix_peek-v1-1-ad274fcef77b@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCx+8E6as5p6oJjAA--.58940S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260402-fix_peek-v1-1-ad274fcef77b@redhat.com>
 
-Implement irqfd deliver msi to vcpu and vcpu dmsintc inject irq.
-Add irqfd choice dmsintc to set msi irq by the msg_addr and
-implement dmsintc set msi irq.
+On Thu, Apr 02, 2026 at 10:18:01AM +0200, Luigi Leonardi wrote:
+>`virtio_transport_stream_do_peek()` does not account for the skb offset
+>when computing the number of bytes to copy.
+>
+>This means that, after a partial recv() that advances the offset, a peek
+>requesting more bytes than are available in the sk_buff causes
+>`skb_copy_datagram_iter()` to go past the valid payload, resulting in a -EFAULT.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- arch/loongarch/include/asm/kvm_dmsintc.h |  2 +
- arch/loongarch/include/asm/kvm_pch_pic.h |  4 +-
- arch/loongarch/kvm/intc/pch_pic.c        | 15 +++++++-
- arch/loongarch/kvm/interrupt.c           | 37 ++++++++++++++++++
- arch/loongarch/kvm/irqfd.c               | 48 +++++++++++++++++++++---
- 5 files changed, 97 insertions(+), 9 deletions(-)
+nit:
 
-diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/include/asm/kvm_dmsintc.h
-index b04b89dd2a35..3f6a22f5a4ee 100644
---- a/arch/loongarch/include/asm/kvm_dmsintc.h
-+++ b/arch/loongarch/include/asm/kvm_dmsintc.h
-@@ -11,11 +11,13 @@ struct loongarch_dmsintc {
- 	struct kvm *kvm;
- 	uint64_t msg_addr_base;
- 	uint64_t msg_addr_size;
-+	uint32_t cpu_mask;
- };
- 
- struct dmsintc_state {
- 	atomic64_t  vector_map[4];
- };
- 
-+int dmsintc_set_msi_irq(struct kvm *kvm, u64 addr, int data, int level);
- int kvm_loongarch_register_dmsintc_device(void);
- #endif
-diff --git a/arch/loongarch/include/asm/kvm_pch_pic.h b/arch/loongarch/include/asm/kvm_pch_pic.h
-index 7f33a3039272..5f49b1f82c56 100644
---- a/arch/loongarch/include/asm/kvm_pch_pic.h
-+++ b/arch/loongarch/include/asm/kvm_pch_pic.h
-@@ -70,6 +70,8 @@ struct loongarch_pch_pic {
- 
- int kvm_loongarch_register_pch_pic_device(void);
- void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level);
--void pch_msi_set_irq(struct kvm *kvm, int irq, int level);
-+struct kvm_kernel_irq_routing_entry;
-+int pch_msi_set_irq(struct kvm *kvm,
-+		struct kvm_kernel_irq_routing_entry *e, int level);
- 
- #endif /* __ASM_KVM_PCH_PIC_H */
-diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-index dd7e7f8d53db..875420f8c6ab 100644
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include <asm/kvm_eiointc.h>
-+#include <asm/kvm_dmsintc.h>
- #include <asm/kvm_pch_pic.h>
- #include <asm/kvm_vcpu.h>
- #include <linux/count_zeros.h>
-@@ -67,9 +68,19 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level)
- }
- 
- /* msi irq handler */
--void pch_msi_set_irq(struct kvm *kvm, int irq, int level)
-+int pch_msi_set_irq(struct kvm *kvm,
-+		struct kvm_kernel_irq_routing_entry *e, int level)
- {
--	eiointc_set_irq(kvm->arch.eiointc, irq, level);
-+	u64 msg_addr = (((u64)e->msi.address_hi) << 32) | e->msi.address_lo;
-+
-+	if (cpu_has_msgint && kvm->arch.dmsintc &&
-+		msg_addr >= kvm->arch.dmsintc->msg_addr_base &&
-+		msg_addr < (kvm->arch.dmsintc->msg_addr_base  + kvm->arch.dmsintc->msg_addr_size)) {
-+		return dmsintc_set_msi_irq(kvm, msg_addr, e->msi.data, level);
-+	}
-+
-+	eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
-+	return 0;
- }
- 
- static int loongarch_pch_pic_read(struct loongarch_pch_pic *s, gpa_t addr, int len, void *val)
-diff --git a/arch/loongarch/kvm/interrupt.c b/arch/loongarch/kvm/interrupt.c
-index fb704f4c8ac5..76a133adedc2 100644
---- a/arch/loongarch/kvm/interrupt.c
-+++ b/arch/loongarch/kvm/interrupt.c
-@@ -8,6 +8,42 @@
- #include <asm/kvm_csr.h>
- #include <asm/kvm_vcpu.h>
- 
-+static void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
-+{
-+	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
-+	unsigned int i;
-+	unsigned long temp[4], old;
-+
-+	if (!ds)
-+		return;
-+
-+	for (i = 0; i < 4; i++) {
-+		old = atomic64_read(&(ds->vector_map[i]));
-+		if (old)
-+			temp[i] = atomic64_xchg(&(ds->vector_map[i]), 0);
-+	}
-+
-+	if (temp[0]) {
-+		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR0);
-+		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR0, temp[0]|old);
-+	}
-+
-+	if (temp[1]) {
-+		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR1);
-+		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR1, temp[1]|old);
-+	}
-+
-+	if (temp[2]) {
-+		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR2);
-+		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR2, temp[2]|old);
-+	}
-+
-+	if (temp[3]) {
-+		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR3);
-+		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR3, temp[3]|old);
-+	}
-+}
-+
- static unsigned int priority_to_irq[EXCCODE_INT_NUM] = {
- 	[INT_TI]	= CPU_TIMER,
- 	[INT_IPI]	= CPU_IPI,
-@@ -33,6 +69,7 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int priority)
- 		irq = priority_to_irq[priority];
- 
- 	if (kvm_guest_has_msgint(&vcpu->arch) && (priority == INT_AVEC)) {
-+		dmsintc_inject_irq(vcpu);
- 		set_gcsr_estat(irq);
- 		return 1;
- 	}
-diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
-index 9a39627aecf0..18df75c78de8 100644
---- a/arch/loongarch/kvm/irqfd.c
-+++ b/arch/loongarch/kvm/irqfd.c
-@@ -6,6 +6,28 @@
- #include <linux/kvm_host.h>
- #include <trace/events/kvm.h>
- #include <asm/kvm_pch_pic.h>
-+#include <asm/kvm_vcpu.h>
-+
-+static int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
-+				struct kvm_vcpu *vcpu,
-+				u32 vector, int level)
-+{
-+	struct kvm_interrupt vcpu_irq;
-+	struct dmsintc_state *ds;
-+
-+	if (!level)
-+		return 0;
-+	if (!vcpu || vector >= 256)
-+		return -EINVAL;
-+	ds = &vcpu->arch.dmsintc_state;
-+	if (!ds)
-+		return -ENODEV;
-+	set_bit(vector, (unsigned long *)&ds->vector_map);
-+	vcpu_irq.irq = INT_AVEC;
-+	kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
-+	kvm_vcpu_kick(vcpu);
-+	return 0;
-+}
- 
- static int kvm_set_pic_irq(struct kvm_kernel_irq_routing_entry *e,
- 		struct kvm *kvm, int irq_source_id, int level, bool line_status)
-@@ -16,6 +38,21 @@ static int kvm_set_pic_irq(struct kvm_kernel_irq_routing_entry *e,
- 	return 0;
- }
- 
-+int dmsintc_set_msi_irq(struct kvm *kvm, u64 addr, int data, int level)
-+{
-+	unsigned int virq, dest;
-+	struct kvm_vcpu *vcpu;
-+
-+	virq = (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
-+	dest = (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mask;
-+	if (dest >= KVM_MAX_VCPUS)
-+		return -EINVAL;
-+	vcpu = kvm_get_vcpu_by_cpuid(kvm, dest);
-+	if (!vcpu)
-+		return -EINVAL;
-+	return dmsintc_deliver_msi_to_vcpu(kvm, vcpu, virq, level);
-+}
-+
- /*
-  * kvm_set_msi: inject the MSI corresponding to the
-  * MSI routing entry
-@@ -28,10 +65,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
- {
- 	if (!level)
- 		return -1;
--
--	pch_msi_set_irq(kvm, e->msi.data, level);
--
--	return 0;
-+	return pch_msi_set_irq(kvm, e, level);
- }
- 
- /*
-@@ -71,13 +105,15 @@ int kvm_set_routing_entry(struct kvm *kvm,
- int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
- 		struct kvm *kvm, int irq_source_id, int level, bool line_status)
- {
-+	if (!level)
-+		return -EWOULDBLOCK;
-+
- 	switch (e->type) {
- 	case KVM_IRQ_ROUTING_IRQCHIP:
- 		pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
- 		return 0;
- 	case KVM_IRQ_ROUTING_MSI:
--		pch_msi_set_irq(kvm, e->msi.data, level);
--		return 0;
-+		return pch_msi_set_irq(kvm, e, level);
- 	default:
- 		return -EWOULDBLOCK;
- 	}
--- 
-2.39.3
+WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
+#14: `skb_copy_datagram_iter()` to go past the valid payload, resulting 
+in a -EFAULT.
+
+>
+>The dequeue path already handles this correctly.
+>Apply the same logic to the peek path.
+>
+>Fixes: 0df7cd3c13e4 ("vsock/virtio/vhost: read data from non-linear skb")
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+> net/vmw_vsock/virtio_transport_common.c | 5 ++---
+> 1 file changed, 2 insertions(+), 3 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 8a9fb23c6e853dfea0a24d3787f7d6eb351dd6c6..4b65bfe5d875111f115e0fc4c6727adb66f34830 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -547,9 +547,8 @@ virtio_transport_stream_do_peek(struct vsock_sock *vsk,
+> 	skb_queue_walk(&vvs->rx_queue, skb) {
+> 		size_t bytes;
+>
+>-		bytes = len - total;
+>-		if (bytes > skb->len)
+>-			bytes = skb->len;
+>+		bytes = min_t(size_t, len - total,
+>+			      skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset);
+
+I think we should add some helper like virtio_transport_skb_remain() or 
+virtio_transport_skb_bytes() and use it here but also in places where we 
+check offset < len or offset == len. But maybe better to do that in 
+another patch/series for net-next.
+
+This fix LGTM:
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
