@@ -1,165 +1,130 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418F62FD675
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 18:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775153013; cv=none; b=fuIh0cAMDk4cjIZ2eTzNHtMrsKyy2F6UImTyYFxC024IsUZiLlreJzMXdMDehVGKdLa5CtLUOrbROV6tDPhkVE8pyRZKAmDtPGXzWjP2PcOJx01pkDoADHdYODvopoiysz/xxOl9ISmm7/h3NyzQBNoiOQhQtIOlgukbYCO9wRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775153013; c=relaxed/simple;
-	bh=zslShsm+LS4wiFK9zoZ9vJ4mO499VFjmlCodvm7M0z4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=mgKfbU45ffOYeG2vGPNu/4qRVmQnCg2vbIGYQntzz4BDrwzUiL0mCAWjtN8q6PSsPCYoKRZAuS4E7W7jem6pjnnksDtcsjKzENl2AGvfc3J4F0B5KrpsSovRD48ZVHM+CQnqvlV/qMPhxjtf/32ny4adLAYsd/yZakmmZzHxaQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=baEI5sjF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kdBm+ciy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE33D2F39CE
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 18:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775153251; cv=pass; b=WuRe9k9BfJ3n0XylPzvw0Dz+QwlUFAJdxYGEHcdyN6b+y52YpHJ5qUa0Nb/2xmSCheMiS04TMER29bg7Iwxm/544Mh9OLusaM+fsCdqrzFOp0UUefspfhMySEjyVE/8wpZh/wXw9ccdR9k9umLo0zmoxnEq4qu64D3SN9SJNkyA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775153251; c=relaxed/simple;
+	bh=32dunLOu0xLh29iUMcJlh+tE1m1GN02XAtITUnvH9Y0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IR19xMR+kBUBbjSPbXuf8D9+x0InO4M+NkgNU+x9ymqpPPcDwQkSQflWbkB95w8lYM6iSSO4frRuvThkgKjYr6w22hrAJfujv7/ORobEv0rBd6KdLLtSLFyK/MCh4GR4R84Uq0EOADwI7jrEjF7Dq5qRVkucfk9tAB+u8HLQtDY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n7+LoyMk; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="baEI5sjF";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kdBm+ciy"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632G4llr2528210
-	for <kvm@vger.kernel.org>; Thu, 2 Apr 2026 18:03:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	lYQtuyJBlPg9nIy8rieYc5p+WTM4wC63ZTZ5EXpCsbs=; b=baEI5sjFaoyiOmwJ
-	6mC9I/vBqJCuVOKeeG8RAV8t+T/tQcSPKl4zMsKt/k7zM4s13o8KipNtBQDhNaWY
-	w1XaAgPmtXEOxXd9Wr5XDjiEZ0QtQYWmodYntrfe1tGDBe+fEB0VWaF0L/2n9ANW
-	YP8q2uW/bQpa3Ximk1y2kuzn8KE3Gro4M0Px1yoTyuBHcfMEaAFFP/wpDJNqabDE
-	DUeRYabbiNjQ2fP7b0He/m35pi1ZD3Bi/CfpqdoV0D9ti9ajN38NaNaz1LyGjjY8
-	qnSrGDmZeJsqGJIZbtGLrnPDH5qqeGkt9JXxOL+FfK1fb3uXI69ks+tGb8W6kRCV
-	QKr0xw==
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com [209.85.217.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9txc8ng6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 18:03:31 +0000 (GMT)
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-6057cbb45a2so141546137.3
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 11:03:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n7+LoyMk"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50b6c45781aso94791cf.0
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 11:07:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775153249; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Yb3NinvoLONngEAUyxiXr9iBv8r1lT0mgOG4JWWzPUazgt1XLV6+4aT4wWvI478hsz
+         NnDHUN+ni/PtyatsAxJ/CIvlqe9en3AIjpRuYyAXg9vjkqwMH08tYSS2HahRRIDyzfyY
+         yQCH1OZ9KNjJXFgcwFUu/YoOI8DFQmYiqlXWzt17wEegVUG1E/Tva0BzEUxMO/0LoiVs
+         ikdsyI8WSQEYDxqTpdgjfK+sN0KyI40jCvUJ/C4hU05CLDFVVNOKEqS2q76Fiu+1TFUS
+         jmDzJ+wfzl/KNT2T3l3GylSuw2d27LDkK7rxQJ5hRzLzbZCFD1jND3BkjQp4kS7raWxD
+         tg2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=o+pQMSFdDBQJeZ1ngz+G6eBRPzDEREyVI+8FTyhyuug=;
+        fh=Wq2Je+M8uqngCUuces8yBb92bLqURJsD3rYAb1xyidQ=;
+        b=Kbll71TycaI0DXCaeRSoqpLR1IsFuRHJ1JihZjDPtaMYMFMazZzG8CzG7FiiA0BydX
+         zvLgf9S7LaDsaUgbE9AEU/SGfxB+PEc7xJsLEpVkaMFH889vu1CvlVNp1MvqspLhHILH
+         a2bzpVSQRwREe1ve/ZR991FuBsTWzR2lkPDDzmYJqywLP5I7SWh7dQy/QM5Q84/mcO6O
+         KpzdfqsHCB9DT9RhwoKFl1I2bi0ldWozDizx2oJPdeFaQqg4O8vnSGgMIOFxuWlZLXCB
+         QdHXStuC/9JNNwylC3PGnfs68enXu3/dI8timvFULijBTleDiMG0rnTQ9J4ZLT0B54Po
+         gC8Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775153010; x=1775757810; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1775153249; x=1775758049; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lYQtuyJBlPg9nIy8rieYc5p+WTM4wC63ZTZ5EXpCsbs=;
-        b=kdBm+ciyWcsN5jM9HN5CobVG5Yl8k0cUsQfHkE6kmy1O1/txcNtsGir9g7XuIyY4aW
-         Np3Kv/oxJeEFdfmBaf6L6sxZ1wRhUfE7NF4I+BO8htnGoAmD8oIHBaiJb9gItyZfMPJJ
-         r+WYztcg60poq8JH2AtuGd8zg4hCUZgV3fMTf5n4iLn8xo2EzSV2ZrP/kcRRmq/xQTWE
-         x1m+pGIHrrRPj5F8lJrBo2LY2N7/iQa1M26VcbgVpOla5M9EKxWn2PP5FU2XrN7En/ic
-         rexz9/c45gnBDT8nzv5otJD6G3YSAHN9U7MnB6Knr+e23ss13NSgSja5PMd/GSfkDxEn
-         F2Lg==
+        bh=o+pQMSFdDBQJeZ1ngz+G6eBRPzDEREyVI+8FTyhyuug=;
+        b=n7+LoyMkD/TyvauWaYkN6zX4aCfCwFp3seFqp7aZ3zqSEgfmp5Ju8q0yQnQTxKUvEd
+         FtFq/BSREA/QcyUqIQHBx3ni/gR95UgCuKD7kMOfXUBv/m0XDuB5/OC/haHs1ybOpwS3
+         gx1BtoXKvzVPeGRgOcxZNef4hFbZkM2hcyqgwRpE1UHRMdipjgeBIMnQXq9M8VLKUhLl
+         thMXkBFKh2fBJcxaQeUYXeUQwQQdGjkoOqdJXgDWVRHXV6WfmZ9wZLu+SWVHVzBR8j91
+         Ghi9BiHdTHASqRJ0HAbUDXcX9yciDds9Q3CkXM/CPXtz6/K6YUmynxatqyb0ZPORIxPo
+         U85g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775153010; x=1775757810;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lYQtuyJBlPg9nIy8rieYc5p+WTM4wC63ZTZ5EXpCsbs=;
-        b=KTfjo9Pw9KkdZMxNa6zK3akuZxtmeZP0P0qwnu3eyZPm4z/gUjBqSJmUMW/YeasU+w
-         cTJau4WnphFzsKZ0qLawCyFjCAcNKunjcJ23bYm3ggCLna7yYWEAWUCf0k6r3d19BHrQ
-         9TgOlzFmJd3+QxlNK8OFDE01W2OAehfPTwtj7rbmhEGuhAkssRVzwFUoY3HYueLnTaKb
-         e/xUAW7jJeingaCdVAcOiThPkmXzPCNV0MO/l2Ny6L+ZqvruyC89bH2xNIzY5/900kBH
-         DZ1GMy4yBd3wYw+4DrGi7hUhGdkwIXqq45osbuLKg17lJF7JsShSSOrI//U9jpI7VTu8
-         B3Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJVjYSzsQR9+Ry9cxC6In2D1XK5stlsLKW/PB00z/KhIjMYjnddNh89Q/jtHuYXol7ULc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlJPVcIKq/MYgByesT1jbzJGAi9rN8xz1bAh64RM/kC+vj3fxY
-	5hXL94/NYrCcx/pmDdZjIuXZx6Hb0oaPCMOQITdHYXW890uHXasT5UVHKDE+lOH6EPjYfpXMjNv
-	D3GeAKbx46o6aQnXKNvxrlwQzqwUxEgkZKrrcsUySf3XlxB0b2VxA6pQ=
-X-Gm-Gg: ATEYQzx+XyFgudPBAOI2R1iIqXyl0t0sLPq4STQ+OmaaR2NDPCA07W4EpT2JRMGPlAO
-	+AfMujN6TGe4QB3IKJ8PC76lk3LsBhfHzcrvt0m4WhqTQgexhbUxVBGshfjzMcfueiDi1DdSv1m
-	IxB0ro9bmgvs+yi4MHQzX+4rdgsow6yp88LDYFVazPPRiQUO/q7Nv5AwH4RB/gc60GyCVPI67sQ
-	ih6Ati1YWQzqOFemBFQblygQWc8naRwq0OSp8kjNYtENBlkKSec0qS0sv8oxkJZU2VPzVQKj8ha
-	xzi1L9CbOguoLPtp68XPi0jVknviC2W5pDRaluut8gVPQSwoDHuxJMk8JV6H0EdYomHPV9quMd7
-	sKjRKgw9jsSf5gAUUjvtQ3L6XWMDWpX/lknng5ukD+x3KMYZgKHk6vhWT0m+E
-X-Received: by 2002:a05:6102:80a3:b0:604:f029:2262 with SMTP id ada2fe7eead31-605a4fa98ecmr62663137.17.1775153010455;
-        Thu, 02 Apr 2026 11:03:30 -0700 (PDT)
-X-Received: by 2002:a05:6102:80a3:b0:604:f029:2262 with SMTP id ada2fe7eead31-605a4fa98ecmr62587137.17.1775153009715;
-        Thu, 02 Apr 2026 11:03:29 -0700 (PDT)
-Received: from localhost (ip-86-49-249-15.bb.vodafone.cz. [86.49.249.15])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cec5c16sm115340866b.40.2026.04.02.11.03.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 11:03:28 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775153249; x=1775758049;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=o+pQMSFdDBQJeZ1ngz+G6eBRPzDEREyVI+8FTyhyuug=;
+        b=REO1ESLuSX/niDKFsEM9m7w8zQ4qocsmS0ainmgzmZcY/BoVI/CQ1lZGRErjxB6g40
+         dVsF3Xr7s1P4rEy7fKIexHui8K/TibDk3LHElby+Q9bw/I5J7Jzcsx5cIVvAORUBFsSb
+         CNkXhAQcXSD+B8F5sH4VzzBTn/CX9KA0ezVHYj1ArUtfmDMU/cgC7RaIrs19ATGIBHL0
+         4oTJy8OJYw7t7nWu3CvL+lgb02bILWTPLWcC3xWkFtCZHLJIhNCj931s8M4ZQqZLkyLO
+         GNKybhBAx8077VSNt2cpkeCFROPAysPDRjEmuAK6JqPwE58MA83Y1VKB8uacQcpxmErx
+         Bc2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXBqmQYdVSIv8wma1wXDE6WiLcqKqC/XUUyKYdobFRUBuk9gTPc5a+CG+ZXIqoHb6I6nak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGHnAMWrhw6KA9Ct8CMeurHjpWPlZNuXERz7K4ouxd96khBWtu
+	j6CfULzbwGeEzDA2w1VsT9c3cqVZERUMmzFcgBNYCR2C6tPf0dDRKDL8Z4upihxZJY8vzfUO8OK
+	sySzBcRX/Xfr1tIcr2xZVdEsMDmrM/FUQYuPMaNU=
+X-Gm-Gg: ATEYQzyYnu2P398Y8PW5Fl4crDZDzqPUDllyLkgXdjjARgAM441vWeTQ7arMsshOjFq
+	DyV2hM1/QVuNjnV0A3OjMXy+eW4Yo64G5nOJ+Gib6ueWU0+Hd9NDTke+iFqc+DruAdEJVjfBhq6
+	ZofOt+8RveaEm+krA0JBi7jJJtVAN+CILJQCB2L16TN4DW8Bn1JMBIexWT5dJzV5BCbjPOfq/8b
+	X+PbiDLAcXLeqrSBj5q/sMbFrV2Y2s7YWlpeBwpb4mmi5wX1iC7CEl+/vpjstni7Yv2u5ovBMti
+	Z4woVW4n7phVhLiFGKgnS419+QnWX7P/Rf9I
+X-Received: by 2002:a05:622a:4204:b0:509:25c5:42b4 with SMTP id
+ d75a77b69052e-50d507aabc6mr16012291cf.13.1775153248166; Thu, 02 Apr 2026
+ 11:07:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260331194033.3890309-1-jrhilke@google.com> <ac1hI93pEo-x-7YU@google.com>
+ <ac1pUx_jYv2yCMnX@google.com> <ac1s55_oLEUQx8Hs@google.com>
+ <ac18LHQLalPb4z0-@google.com> <CAAdrzjugqk=APteY4oZNsa2e5kv5-=HBekyYfpzrwFUZ_WapsQ@mail.gmail.com>
+ <CALzav=cO48f7f8yaN6EsSL4uGpojvY7gmCe9oOy+sP_+Kii4mw@mail.gmail.com>
+ <ac26haU_7nXYWke1@google.com> <CAAdrzjvvxX3eEkCBUvSud7qyaSUdzecgAkX1=f+ZQe7Q6ws69A@mail.gmail.com>
+ <ac6o2Z_cs0HA6PpG@google.com> <CALzav=cnT1EQY4DQbqj3vNuG2ino+RSFkZ6UJ0-zDc8bQhBJPg@mail.gmail.com>
+In-Reply-To: <CALzav=cnT1EQY4DQbqj3vNuG2ino+RSFkZ6UJ0-zDc8bQhBJPg@mail.gmail.com>
+From: Josh Hilke <jrhilke@google.com>
+Date: Thu, 2 Apr 2026 11:07:16 -0700
+X-Gm-Features: AQROBzDl2njxjXOizwUsOucvzROFaIhMGpzBF94ZkQCaZsKWp8mIVKoYDNHpjUk
+Message-ID: <CAAdrzjumSUHkQ20RjoX_2d_ebj8SpFKbjSQLjaxF7iH3k30d3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
+ test device interrupts
+To: David Matlack <dmatlack@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Apr 2026 20:03:27 +0200
-Message-Id: <DHIV81G43OJO.2HY4RIYFRD0RL@oss.qualcomm.com>
-Subject: Re: [PATCH v7 1/4] RISC-V: KVM: Support runtime configuration for
- per-VM's HGATP mode
-Cc: <guoren@kernel.org>, <andrew.jones@oss.qualcomm.com>,
-        <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-To: <fangyu.yu@linux.alibaba.com>, <pbonzini@redhat.com>, <corbet@lwn.net>,
-        <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
-        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>,
-        <skhan@linuxfoundation.org>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?=
- <radim.krcmar@oss.qualcomm.com>
-References: <20260402132303.6252-1-fangyu.yu@linux.alibaba.com>
- <20260402132303.6252-2-fangyu.yu@linux.alibaba.com>
-In-Reply-To: <20260402132303.6252-2-fangyu.yu@linux.alibaba.com>
-X-Proofpoint-GUID: GUsqBedQA7CDXo1PkHx7kRSUjt1aDkCl
-X-Proofpoint-ORIG-GUID: GUsqBedQA7CDXo1PkHx7kRSUjt1aDkCl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDE2MiBTYWx0ZWRfX5TubWMElIAV1
- 5ga2GLBIlYprU/sU5YWOs1ABcnb9/GtlInUvo3iRiw2seeyHUar4FHVsxlFmoo8wISpy1E6tDsZ
- YOofW3wd9ihQ4pL22Yo1meALhjpvP1abeUvxIS011gdSa3JhnnjXH8aE8y+i2bV/rBB7dOBXPQS
- BYd2IwmpA6eJFj1+qpqHdcJxIfHjgAsg3eZp9YS2uzC9OSnzqfePerhgJljxaR5p/aTrhbIhrgg
- x05vqU6msyxoFThI2OwW9riLxjspAIlQ+tChzIS9PwNjftlgqLE3pp7t4eucP1tv2dPaZrUW1PP
- 70u0CoZyocnfg4wT2JoyFFhCWHTYKTfVJ1HKzWE9X9UyxzwqforKDwT+MHQX8nnzKwTwVJ+7jxD
- 1+i07OsAEEwSF52BIs7ZgWkzJq4+kkyIxUG5abJjtBVQqML3gfceEn9D+8pifZlC2hETpQYQEMT
- UTQ//d4g3DyhuAIJyIg==
-X-Authority-Analysis: v=2.4 cv=HKXO14tv c=1 sm=1 tr=0 ts=69ceaf73 cx=c_pps
- a=N1BjEkVkxJi3uNfLdpvX3g==:117 a=fuErIE+P63Icv3tqjtEZBw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=SRrdq9N9AAAA:8 a=EUspDBNiAAAA:8 a=W-_n0kkjAAAA:8 a=VwQbUJbxAAAA:8
- a=yPi4e_CmV_5Q4fPajbcA:9 a=QEXdDO2ut3YA:10 a=crWF4MFLhNY0qMRaF8an:22
- a=qeNa2pbTr82C0GpJEZFS:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-02_03,2026-04-02_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- suspectscore=0 priorityscore=1501 adultscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020162
 
-2026-04-02T21:23:00+08:00, <fangyu.yu@linux.alibaba.com>:
-> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+On Thu, Apr 2, 2026 at 10:57=E2=80=AFAM David Matlack <dmatlack@google.com>=
+ wrote:
 >
-> Introduces one per-VM architecture-specific fields to support runtime
-> configuration of the G-stage page table format:
+> On Thu, Apr 2, 2026 at 10:35=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
 >
-> - kvm->arch.pgd_levels: the corresponding number of page table levels
->   for the selected mode.
+> > However!  We _do_ have a KVM testing gap that can be trivially filled a=
+s there
+> > is no existing eventfd_signal() =3D> KVM IRQ injection selftest.  And t=
+his test is
+> > pretty much exactly that.  I just don't want to deal with jumping throu=
+gh VFIO
+> > hoops for effectively no coverage (for KVM).
+> >
+> > If we strip out that fluff, then the test is runnable without _any_ VFI=
+O
+> > involvement, which means it can run by default, e.g. in n environments =
+without
+> > VFIO or VFIO-able devices, e.g. in automated CI testgrids.
+> >
+> > Something like so.  And then we should also rename the test to drop vfi=
+o_pci from
+> > the name, as the VFIO aspect becomes purely optional.
 >
-> These fields replace the previous global variables
-> kvm_riscv_gstage_mode and kvm_riscv_gstage_pgd_levels, enabling different
-> virtual machines to independently select their G-stage page table format
-> instead of being forced to share the maximum mode detected by the kernel
-> at boot time.
->
-> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-> Reviewed-by: Anup Patel <anup@brainfault.org>
-> Reviewed-by: Guo Ren <guoren@kernel.org>
-> ---
-> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-> @@ -199,7 +199,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->  		r =3D KVM_USER_MEM_SLOTS;
->  		break;
->  	case KVM_CAP_VM_GPA_BITS:
-> -		r =3D kvm_riscv_gstage_gpa_bits;
-> +		r =3D kvm_riscv_gstage_gpa_bits(kvm->arch.pgd_levels);
+> That plan sounds good to me!
 
-kvm_vm_ioctl_check_extension() also gets called from with kvm =3D=3D NULL
-from kvm_dev_ioctl().  I think we can continue to return
-...(kvm_riscv_gstage_max_pgd_levels) in that case.
-
-Thanks.
+Awesome, thanks for the thorough example, Sean!
+I'll go with this approach in v3 :)
