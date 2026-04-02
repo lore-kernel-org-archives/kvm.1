@@ -1,145 +1,272 @@
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718AF37C918
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 06:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775110527; cv=pass; b=GywGF13/4hVTtSZlZlmiQfxN7X0VPzzZFFMH7Q5Ac7OqAaPiX/qHNh71vdbz37o4xC7pZWj6xrgvCPK6JBzLsWnSCINk9Q5kL5CL3MG4CvZi9g/gzhN6YJjaYm5arLXAcjEaCGHh1DPc6y5Ea1Sm3V9xHH2mSlP1BC8Pf1B+Sjs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775110527; c=relaxed/simple;
-	bh=wEtRPqU9HxXUvSHcb3pYO+UB1Hmvw9jm3vgzgMrmPz8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mHIozmn9IYwQYt5mrfsGDrHFwVtK2/Q7yzK0s0YAXsAd8xfQzMwjXpnSU44AuxJW3BDfpHEZcAxQ7+BXODo4cHs0ovSuwlgXQxV238IsPnjGiNoM104ticNePgUZ16ioMbhY3+QaN4+9AAY6/OeWvXdNxro39d4llH46WyRfDnA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=jfoOPqEj; arc=pass smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC772FD1A5;
+	Thu,  2 Apr 2026 06:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775111539; cv=none; b=K580D8qdQ3n8XSHjbz9p6Gp9Ia+ZCglcqsPd3sogSzWyGPSe6FTxp7KIwtxyUzSpyFsb4pDUAYDSQRWN3RgprKT49OP0isJFCXutKVQXGw0/QLoWlwAmdr6JSEFGiMVPEQeuEomLr4BjQwDmJK0tkdXEUWou3Qf+NdP/QF/MnQU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775111539; c=relaxed/simple;
+	bh=sU8NdvYB4p/X7fUSQrVrKuq3xJYgUF+d7zRbuhI/TXo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LM/EE79kazWzEZcdZTIj0/J3AtSrp7nAKRuHTHD4yqzyYglGfUvfsoYo5UknTgkGUR/yw+BVoIl4WRri0fAzKF1CFcnrbpFL0f0XQgst/ZmJu+aXaiwvGvEgtmLM6FuNa+b/iQIibqit3p9Nsz+8LFMlEA7z2oopsyiC51S+AgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Si/WQyip; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="jfoOPqEj"
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d4c383f2fcso515845a34.0
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 23:15:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775110525; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BD3G1KEL27xEv8/vApj9zY2L9fNfDhOG0AsCzTL7Jb7Rv/hO/qsfvyrbqB9WRlTLK8
-         /PlBdG+/GxnInMvKUGGKZkA2azg+HEgvlwy41INkywZyNR2i/2jhg/A2zhJ1IWvz/nXm
-         6VgQ1CGuwmxFn0aK8I+JGhamsN7YYl6pGHbrA6mPhElCY+snlQinSHwsdYpAYRV+eSAy
-         5kWFNazvxerrj6jSGB6TIa0kTwKYKUbfFNKzi6WJ4grlVeDohSa0CcncxfVrkaJLu/Lt
-         747FUMtAgUXw5ixjUJym+rQVMeelOsOwI27LriVDnSQ58WPBMXBYJzcPFUg4VMuGWISm
-         lLpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Gmm+ZuAZEoshHephNI5x+CZdRU1jdbvaZcO28wZCH1g=;
-        fh=ssAQtSvfxo+l1oP9bnaOXjO0WOPYtBjyD5g3UIxGOjM=;
-        b=i15oElE86ZQ4YziFfJP9Doh4m22GDnR+DzsmJJiUt1OffDAxcJrPIlK9WNU5QzS5NP
-         q2I3sCk86lXnI0lO/p+FStRA86L1MnjtVgoVW9I3SnVCd2413nsRaYvBASFiRbDrCuX9
-         qrSaS1smxnjISlZXstjfhPAx/whWiO/68mfos3RpS44rU7zz/lnwOh9tVF85qnF8OpGu
-         +W89eFMuTwydfyBgCkJCrahAY/mj6FxD09yZqNKoWeUCdo5G00SfLzQ0vwZ574PZEJ5i
-         dchvuxkbsqUY8Ty6kPgS7P2udpc0LjromzS8F0zbstf+YWAtnlpLFiGwKmPc74t7TivD
-         Dhug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1775110525; x=1775715325; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gmm+ZuAZEoshHephNI5x+CZdRU1jdbvaZcO28wZCH1g=;
-        b=jfoOPqEjlPBSss8khUFMpuLAvHt4rDWfiwPA9Sqo/9hNgrKzka2TiC9rxSq8lCfY+7
-         gz++PUemq6xsgHe4ieo3CI4uvvdv6iUpE2yjStHlqqYZFYFY/Ck44tvn17+WD8UFc9dT
-         32aG/R5QbQo0Rv9OqjFZs8b2uDtTR0Hp+f6zcTHMacrwEhD7w1Ki40if02J2LcCEgxZh
-         c8IATeWCt5y/ZRm2y90I1UWE/RcAYlpRtK7YkF7Fmcbn5W2SAl09Sm83Hre8URRtxkeO
-         pLL9ApA12q6DwNfuIJsj7QhTJ3uPlrnXhz40bn4IlnWe81w9MqvFbu8DExuHXJmNVjaX
-         QzWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775110525; x=1775715325;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Gmm+ZuAZEoshHephNI5x+CZdRU1jdbvaZcO28wZCH1g=;
-        b=k4CN/ekJbEMG33muYGJcbMT91f+f4OBqAykPW0onym99ZcH+xmRb6cHxilqasKlQgm
-         Uyl7NMmLmr6KUf157CW4q6NxIncz1U0TOnZ3A++piaKpsRAXLQctC8ijSPcKmQNZE3bl
-         nU53fAE+9NL4gTpZ45gvqcREgu0Kegb9Xeo6TDzV72MTPTEirCLgShvgHgKTNkVU77ti
-         wc6gzNBiFje8ZwSJOMM0KZcKGNZylQ/37CoL+TWV4/yxIy17x7e8N7H/8Ef7cH21lT+6
-         PIzrO/ZQPcH40J8d69cV2a5SnHqfJClA5I2HegPtJ7jjycm0A4rLjz2B8wYYW7lcPZ0o
-         HxkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTgT8N3TA/W7WNLrLxNp3MqSUMCx5zTkKE8fJexHNW8rhEloH7ZyJtzpsjh8amKuxpI7I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsVOiX58/MTdsvlgAhn35/ZCr34f92/t5MRIqOQiLUXGjChmfX
-	mX6E7mJDSHv1PpEvH9Y/X6wT5mG4jOd0ZywicWB96ZQS+PrCvNvNR9pNnlbvsRdE236pOVrkSYu
-	Fc7bIqiNMZP/dAORXyTsren+NPP7iSkVTiF4Ndx3boA==
-X-Gm-Gg: ATEYQzwTySTLLcbaNM5Alh4FXbcb12m8MU9ADI6SQhLI/ECLV6OkpzhCixF+GYQk3bn
-	cUFdFAnkq+5FB7rhiyLQ2p66iN+unPl47aGga98WfYWKAuW4qQi7vM0YYa2eCs9BUEj7J/hpOmc
-	DGSGKfqC2Oi4+4h/LfNoywq9N0FJyWmyd4yH19RZKfs07AQr9dza4PqvNAdE9S+IDorFYG1KEjb
-	zkIVbRgz9K67rE4YakoHhUyXTHNTjbtip6PunmH7RteFx41taF57Url4i0+0bF8iDo/wNhhdf7t
-	W8Yp9ezfN04KPHanRQ3i6vfh4wSC6iL6Uguf+bVmX+reaVU9TigISFkZL+x4zxKKjVux45dODNt
-	v2lUzIIfiy0Wh4BXPahmTSngEtbo=
-X-Received: by 2002:a05:6820:2083:b0:67e:3c4a:eac2 with SMTP id
- 006d021491bc7-67fabd0f6c5mr3266769eaf.58.1775110525373; Wed, 01 Apr 2026
- 23:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Si/WQyip"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775111538; x=1806647538;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=sU8NdvYB4p/X7fUSQrVrKuq3xJYgUF+d7zRbuhI/TXo=;
+  b=Si/WQyipzWgqpCCChKX1juAKPJKL3+Cwq0RqIFuEkdf9DrDRAn3IepGk
+   DFmMgZkBGSmb9SIsN10FhweFijQdFQk/zDTbVp8mSHBweSxeeDF5IHztz
+   /6pzfPOGqYYewi8l7Vtn+Mi8omS5z73/kCS8sxRPykgNCGNstV8U8U8oP
+   WvauHstFAUNL/Q9oRABeUEgXJrLrelPWARkq/YxmrBq1xqjWNs6suR7AE
+   0EeMbDRd10vxAM1qA5cCh9dI3G164H0AKLXYD40Ik/OipnpYX2KBU/qHG
+   c0AIScfmvsN8ULcztG5+GISf6hBUEFqa//kcoyOgZHFx9Gps5yP5RPsl7
+   g==;
+X-CSE-ConnectionGUID: o0D3GYG/TZ6jQ5l9/ftL0g==
+X-CSE-MsgGUID: 0bXVWd5fQOKjB+d17j+Uag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="75884363"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
+   d="scan'208";a="75884363"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 23:32:17 -0700
+X-CSE-ConnectionGUID: T7OMjpdpRnuywTZ2HpIbrg==
+X-CSE-MsgGUID: QcvLbLpVSKakejjBbE+TwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
+   d="scan'208";a="222042373"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.124.223.130])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 23:32:16 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH v3 0/5] Fuller TDX kexec support
+Date: Thu, 02 Apr 2026 00:32:00 -0600
+Message-Id: <20260402-fuller_tdx_kexec_support-v3-0-34438d7094bf@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAhSdy3V2kipH8sPzXkmnXP=Sh=7wwqhHaAWDyucJnytbL+qtw@mail.gmail.com>
- <20260401104902.716329-1-xujiakai2025@iscas.ac.cn>
-In-Reply-To: <20260401104902.716329-1-xujiakai2025@iscas.ac.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 2 Apr 2026 11:45:13 +0530
-X-Gm-Features: AQROBzCXxzxKAp8muMDJJLpwLYO82PaRHrPCQ2ylV6QJVZYM_9h4TEWap2UJzSw
-Message-ID: <CAAhSdy1tN1i3KZ_EmGPN6dz=DYSfGGxeiTCbHYA3GRezFD4Wiw@mail.gmail.com>
-Subject: Re: [PATCH v2] RISC-V: KVM: Fix use-after-free in kvm_riscv_gstage_get_leaf()
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: alex@ghiti.fr, aou@eecs.berkeley.edu, atish.patra@linux.dev, 
-	jiakaiPeanut@gmail.com, kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	palmer@dabbelt.com, paul.walmsley@sifive.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WPyw6CMBBFf8V0bUkf0IIr/8MYAmWQKlIyLQRD+
+ HcBXbhxNyeZOXfuTDygBU9Oh5kgjNZb160gjwdimqK7AbXVykQwoZjkmtZD2wLmoZryB0xgcj/
+ 0vcNAS6MzlcVKpyWQ9bxHqO20qy/XD/uhvIMJm2/bqNE9aWgQip8IphlnMkmjlGcqTiinaM0j6
+ iOobmDcs4Sz7QK00Tpvksb64PC1FxjFFvYVCfn/11FQRlNdSBWzDFjCf5zXZVne5zvwHhcBAAA
+ =
+X-Change-ID: 20260317-fuller_tdx_kexec_support-bc79694678be
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>, 
+ Chao Gao <chao.gao@intel.com>, Kai Huang <kai.huang@intel.com>, 
+ Kiryl Shutsemau <kas@kernel.org>
+X-Mailer: b4 0.16-dev-ad80c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8331;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=sU8NdvYB4p/X7fUSQrVrKuq3xJYgUF+d7zRbuhI/TXo=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDJnneDP31y3dmVN68uHmM2duVAuUTJc5oHgrkOWc7qVrz
+ aemPE0R6ChlYRDjYpAVU2T5u+cj4zG57fk8gQmOMHNYmUCGMHBxCsBE+l4wMhztepbhHrZCZbrB
+ zfhJa84pesgqn+LavGXqupMrPrGdu/GNkeH14lf1s9Pa4q5aLZ780LHr/JIfXzflsPbNLpI54pP
+ JJscLAA==
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-On Wed, Apr 1, 2026 at 4:19=E2=80=AFPM Jiakai Xu <xujiakai2025@iscas.ac.cn>=
- wrote:
->
-> Hi Anup,
->
-> I've been fuzzing the latest kvm-riscv with the spin_trylock() fix
-> applied, and I can still reproduce the use-after-free bug in
-> kvm_riscv_gstage_get_leaf(). This indicates the current fix is
-> insufficient.
->
-> The current code does:
->     mmu_locked =3D spin_trylock(&kvm->mmu_lock);
->     kvm_riscv_gstage_unmap_range(...);
->     if (mmu_locked)
->         spin_unlock(&kvm->mmu_lock);
-> When spin_trylock() fails (lock held by another CPU), the code still
-> proceeds to access the gstage page table without any protection,
-> leading to UAF when concurrent with kvm_riscv_mmu_free_pgd().
->
-> The fundamental issue is that spin_trylock() returns false in two
-> different cases:
-> 1. Lock held by current thread (we should continue)
-> 2. Lock held by another thread (we should NOT continue)
-> But the current code doesn't distinguish between them.
->
-> My proposed fix:
-> Use lock_is_held_type() to check if current thread already holds the
-> lock:
->     bool need_unlock =3D false;
->     if (!lock_is_held_type(&kvm->mmu_lock, LOCK_STATE_HELD)) {
->         spin_lock(&kvm->mmu_lock);
->         need_unlock =3D true;
->     }
->     kvm_riscv_gstage_unmap_range(...);
->     if (need_unlock)
->         spin_unlock(&kvm->mmu_lock);
->
-> However, I'm not sure if this is the best approach. What do you think?
->
+Hi,
 
-I don't mind improving this further but this now deserves some
-comments about why we are doing this contional locking.
+This series adds a couple of cool things -
+ 1. Allow kexec and kdump on systems with the partial write errata
+ 2. Allow using TDX in the second (kexec'ed) kernel
 
-Regards,
-Anup
+It has been waiting for VMXON refactor to land because the implementation
+is much cleaner on top of that.
+
+KVM folks, just a few deletions on your side and the long discussed moving
+of tdx_errno.h. Tip folks and reviewers, the changes here are pretty small.
+Optimistically, I'm hoping we can iterate this quickly and see it off the
+list in the next few weeks.
+
+Background
+==========
+Some early TDX-capable platforms have an erratum where a partial write
+to TDX private memory can cause a machine check on a subsequent read.
+Currently, kexec and kdump are disabled on these platforms because the
+new (or kdump) kernel may trip over these, causing a machine check.
+
+Future TDX modules will support TDH.SYS.DISABLE SEAMCALL, which disables
+the TDX module and reclaims all memory resources allocated to TDX, and
+cleans up any poison. After this SEAMCALL succeeds, the new kernel
+can also re-initialize the TDX module from scratch via the normal bring-up
+sequence.
+
+It is probably worth mentioning that this is a different kind of cleanup
+than the WBINVD stuff that was the cause of all the fuss in the earlier
+kexec enabling. The WBINVD is flushing private keyid cachelines so they
+are not later written back over the new kernels memory. It needs to happen
+after the last SEAMCALL that might have produced them. So this new
+SEAMCALL is for something else, but also needs to be slotted with respect
+to WBINVD.
+
+Implementation
+==============
+The series adds:
+
+ 1. A pre-requisite patch to move TDX error code definitions to a
+    shared location so that TDX_INTERRUPTED_RESUMABLE etc. are
+    accessible from arch/x86/virt/vmx/tdx/. This comes from the Dynamic
+    PAMT series [0], but is also needed by some other series, and can
+    benefit them all from an early merge. This has now also been reduced
+    to a simple header move, since the new additions in the original
+    patch aren't needed here.
+
+ 2. A preparatory patch to move some straggling stuff into arch/x86 in the
+    wake of the VMXON series. As noted in the discussion in v2, this
+    may need coordination with Kai's patch [1] as they will cause a
+    conflict depending on which is merged first.
+
+ 3. A tdx_sys_disable() helper that wraps calls TDH.SYS.DISABLE with a
+    retry loop to handle TDX_INTERRUPTED_RESUMABLE.
+
+ 4. Integration into the kexec path: Remove the check for partial write
+    errata platforms as this is addressed by the SEAMCALL clearing any
+    poisoned memory locations. Call tdx_sys_disable() in tdx_shutdown
+    which is called via syscore ops in the kexec path. Call
+    tdx_sys_disable() in native_machine_crash_shutdown() to cover the
+    crash (kdump) path.
+
+ 5. A patch to update (remove) the kexec section in TDX docs.
+
+Testing
+=======
+The implementation is based on the draft TDX module spec available at
+[2], and was smoke tested with an engineering build of the TDX module
+that supports the new SEAMCALL. The new kernel was able to initialize
+the TDX module successfully:
+
+  kvm: exiting hardware virtualization
+  kexec_core: Starting new kernel
+  Linux version 7.0.0-rc2-g0077f702b21c...
+  ...
+  virt/tdx: 1034220 KB allocated for PAMT
+  virt/tdx: TDX-Module initialized
+
+All the other TDX CI tests pass, and some other scenarios that were
+manually tested and also pass or behave as expected:
+ - Running on a completely non-TDX system
+ - Running on a TDX capable system with an old module
+ - Running on a TDX capable system where the module hasn't been
+   initialized
+
+During development further testing was done by mocking up the new
+SEAMCALL to introduce delays and exercise the retry loops, combined with
+kexec, kdump, reboot and shutdown flows.
+
+Base
+====
+This series is based on the vmxon branch Sean pushed to kvm_x86,
+kvm-x86-vmxon-2026.03.05.
+
+[0]: https://lore.kernel.org/kvm/20260129011517.3545883-11-seanjc@google.com/
+[1]: https://lore.kernel.org/lkml/20260312100009.924136-1-kai.huang@intel.com/
+[2]: https://cdrdv2.intel.com/v1/dl/getContent/871617
+
+---
+Changes in v3:
+- Various: Collect tags (Kai, Chao, Kiryl, Sean)
+- Patch 1: Collapse to a simple header move, drop new defines, and
+  non-architectural software defines. (Sean)
+- Patch 2: Add WBINVD in the tdx_offline_cpu() path (Sean, Dave)
+- Add a paragraph to the seamcall wrapper commit message talking about
+  printed errors for seamcall failures (Rick)
+- Patch 2: Reword comment in tdx_shutdown_cpu (Chao)
+- Patch 3: Reword comment about the TDX_SYS_BUSY error case (Chao)
+- Patch 3: Formatting fixes in comments (Kiryl)
+- Link to v2: https://patch.msgid.link/20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com
+
+Changes in v2:
+- Use patch 1 from the DPAMT series with other feedback (Kai)
+- Fix commit message typo (s/adjust_/adjust /)
+- In patch 2, drop "too late to be helpful" in favor of something more
+  explicit (Kai)
+- Fix commit message typo in patch 2 (s/both/bother/)
+- In patch 2, add a bit about dropping the TDX specific WBINVD (Kai)
+- Reword some commit logs to use the imperative mood (Chao)
+- Kai raised offline that TDH.SYS.DISABLE can return TDX_SYS_BUSY too.
+  In theory this could happen if another SEAMCALL happens concurrently,
+  however that contention should be short lived. Update the loop to
+  continue on a TDX_SYS_BUSY error code too. (Kai)
+- Patch 3: Add a print for SEAMCALL errors reported by the TDX module
+  (excluding SW errors like #UD and #GP) (Kiryl)
+- Patch 3: Add a sentence to the log about skipping enumeration for the
+  new SEAMCALL (Kiryl)
+- Adjust the patch 4 subject (Chao)
+- Add a new patch to update the docs (Chao)
+- Smoke test with TDX module engineering build with the new SEAMCALL.
+
+Kiryl Shutsemau (1):
+      x86/tdx: Move TDX architectural error codes into <asm/shared/tdx_errno.h>
+
+Rick Edgecombe (2):
+      x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+      x86/virt/tdx: Remove kexec docs
+
+Vishal Verma (2):
+      x86/virt/tdx: Add SEAMCALL wrapper for TDH.SYS.DISABLE
+      x86/tdx: Disable the TDX module during kexec and kdump
+
+ Documentation/arch/x86/tdx.rst                       |  7 -------
+ arch/x86/include/asm/shared/tdx.h                    |  1 +
+ arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h |  8 +++----
+ arch/x86/include/asm/tdx.h                           |  9 +++-----
+ arch/x86/kvm/vmx/tdx.h                               |  1 -
+ arch/x86/virt/vmx/tdx/tdx.h                          |  1 +
+ arch/x86/kernel/crash.c                              |  2 ++
+ arch/x86/kernel/machine_kexec_64.c                   | 16 --------------
+ arch/x86/kvm/vmx/tdx.c                               | 10 ---------
+ arch/x86/virt/vmx/tdx/tdx.c                          | 64 +++++++++++++++++++++++++++++++++++++++++++++-----------
+ 10 files changed, 63 insertions(+), 56 deletions(-)
+
+--
+2.53.0
+
+---
+Kiryl Shutsemau (1):
+      x86/tdx: Move TDX architectural error codes into <asm/shared/tdx_errno.h>
+
+Rick Edgecombe (2):
+      x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+      x86/virt/tdx: Remove kexec docs
+
+Vishal Verma (2):
+      x86/virt/tdx: Add SEAMCALL wrapper for TDH.SYS.DISABLE
+      x86/tdx: Disable the TDX module during kexec and kdump
+
+ Documentation/arch/x86/tdx.rst                     |  7 ---
+ arch/x86/include/asm/shared/tdx.h                  |  1 +
+ .../{kvm/vmx => include/asm/shared}/tdx_errno.h    |  8 +--
+ arch/x86/include/asm/tdx.h                         |  9 +--
+ arch/x86/kvm/vmx/tdx.h                             |  1 -
+ arch/x86/virt/vmx/tdx/tdx.h                        |  1 +
+ arch/x86/kernel/crash.c                            |  2 +
+ arch/x86/kernel/machine_kexec_64.c                 | 16 ------
+ arch/x86/kvm/vmx/tdx.c                             | 10 ----
+ arch/x86/virt/vmx/tdx/tdx.c                        | 64 ++++++++++++++++++----
+ 10 files changed, 63 insertions(+), 56 deletions(-)
+---
+base-commit: f630de1f8d70d7e29e12bc25dc63f9c5f771dc59
+change-id: 20260317-fuller_tdx_kexec_support-bc79694678be
+
+Best regards,
+--  
+Vishal Verma <vishal.l.verma@intel.com>
+
