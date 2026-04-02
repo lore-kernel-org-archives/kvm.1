@@ -1,60 +1,66 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA828390205;
-	Thu,  2 Apr 2026 11:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201223CF051
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 11:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775129260; cv=none; b=pSUW3eBe+kCnq2zwhEfZ1O34pURJWOSfvkvEEcn8l2xuaHVTswKjvxEyO9YVv8grOQou3v9bjb2qMhaOFkO5odjzI6XMVEGfk0cKhYPbs03fmVe1lpySjOe8AZMV7Qwx6z9NXWst5YqLSErvo3YPndkxyDkfQ4p5imkdxKvVaTU=
+	t=1775129398; cv=none; b=Ch9+jvir7C8gDWCtZMOm4ITLK3aKrLWkPMa4mFiVQGDWwyTTns2KoIKrtiQBY1fUoKHy+KN0FIKUN6O1/gpPPjbPQpN2bTXLdhk4C2NNue3ymP+ftVFnhUuKMh5e9ZNQWjOsrvvEKFjO4MJC4PHGIH0f2vqOZxau2uwxw+IBlLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775129260; c=relaxed/simple;
-	bh=EfDeelROU6o6K7Owo7XkjToyiIraH8SU/eYJ2471fYE=;
+	s=arc-20240116; t=1775129398; c=relaxed/simple;
+	bh=8HPlO9h6syLezPB7tv8QuwjjhDGwxOtjBCDDTl2STnY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G6Y/xHZ143LZ8Cp7IX+nhwxu+5LLhA1Ge+7aBDS1vgOhar9xnNhJX6awVOAlPC3wi3kPmATfsLInMNfzqvVrr5cqpDmg3QPl/TMiXclylswQOBWIMo2OmHutM2W8xixoGZ3cgmQ67VnjbN1kNt4qJwdrYD43jRhGpOCIiNYsO6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YgF6jzFi; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=HJ2vMsPcly7hxDYDySF9ZVVS+CscRBS5+cnryyGPH5F75f2LeHDFXD4mJ36UlqsmAu2IFo23QMyiu3U7G1hfgZStX5kl3bMhk90VC+sAbMrebSXYrViluJonzrCketa8SZTTZB4rqcNmtZUheeQRzJy4sJJpAh2TTYje1+JnHhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XyenKcge; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YgF6jzFi"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631K0WS7351518;
-	Thu, 2 Apr 2026 11:26:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=134Al/
-	W95knRgbclnuh/o+ul0rtxFJ1H52x/sjCobRs=; b=YgF6jzFipfEyAM6zl5a9Gx
-	VzeJCcS4/lv3Djnz20DaNE7SeZZ/o4F0zBHs8qcfU8R+A4XbnHDonEorOHLKLd/Z
-	kju5XBFDccNDppwQbDtzpjg7kAgvQPul7NckWK8cupN/675jwZsnZr06hwuHhkyd
-	+c/gNiQsMoiK8GscB1oFx2cLrQ+1g6wSVmazTkPC9Kuh86vR9xLaSCF1X8d978n5
-	EPGQfQS5goZAl2KiYAnGGvnsLXcBBV765e/zfNi40tCmWSmqg0h1nFhmDKroog04
-	c1BxkHhaGfcOdL34LQ8Ngz82zCKTPKjvBfxhT8oES2RK5x6U4+NmkTzA/Vkh0ItQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66g24jr0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Apr 2026 11:26:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 632ArD3G021651;
-	Thu, 2 Apr 2026 11:26:58 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6sassy7a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Apr 2026 11:26:57 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 632BQscG47448446
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Apr 2026 11:26:54 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2CE7820043;
-	Thu,  2 Apr 2026 11:26:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB71920040;
-	Thu,  2 Apr 2026 11:26:53 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Apr 2026 11:26:53 +0000 (GMT)
-Message-ID: <c251ca9c-6fae-4f64-8e10-792f42872582@linux.ibm.com>
-Date: Thu, 2 Apr 2026 13:26:53 +0200
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XyenKcge"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-486fe36cfabso12231095e9.1
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 04:29:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775129386; x=1775734186; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=tT7D8o4V9+zDHS/oQifH2ZnOFQaAuku/SG4Se+wsZAk=;
+        b=XyenKcge2tAq7YuyN1wuPG23vN+4Jv23MRzxi1T6e4WY9DvfuDwffZZS4T42+yabS/
+         KKh1RR3GczW6qMGa/iuc94u2etxHKxgGxNihio+pSQ34fD/hnD5KXO8eySPrX70kW7NW
+         EwHpLl68vuN/A8e+E3J3rXsqx1kVVf1+D8PMP2jlXkJdgYbDYo9bNeuSUQ8KabKa63CT
+         pa0lDV4bkg3DQFgOjSSTEtq4RDSJtW8JsYApryx3UtI9/bwmPoHnrpb/BPwzhG7ANVEe
+         bCIhwOMh+8imLvSYBWdF0II9bVp7QOiSFQvwnjSkxzcVvWoM5rw6yDF21ytm7Jvm9QRu
+         woOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775129386; x=1775734186;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tT7D8o4V9+zDHS/oQifH2ZnOFQaAuku/SG4Se+wsZAk=;
+        b=ZuENoJOwLz6NknCth8o5b5uoRt8i1RY5hnVzBMAWS3WTUfNzHzYHxjWK3+dWvyw0+D
+         vW4u9SQurZTAyBJjDSe8QvcpNJxo8hsAa5PRaEzP9+WBTY1p95U0tQpqxMnK+pbc7Kcy
+         L2RUoBVNqh+ra6JRVdipyG7mAZ9aNGX6qviWCfVx3vZ5iCcDbiGNryXPQslVJGF4Yavq
+         Oirob2yjRbH4cX6u7AV6Bx4es7QnA5CRmaCyVaChDQuL2xgoLLxVVmcY+iLvlszJAZ8Y
+         sAnF93p5IX8EScQv2Qzw8bGCIdZ3XEb20pxYXfnvOA0Kl1zO4Tvhu3WFyiNQIJ9kzdO4
+         F/0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV2toA7pPt81M6LcMAf/YI6wfGtWAcJmWVFb1UVlgn3FG4m2M7j33hzZK5NZkeyrjpKa/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6PK/NjGVA0XtS4o2prIkDsrvvAn1Wzd1jZipNhVPwF4FmoPlx
+	O9E2Lju9SkEgn8kCgit0Um0MWIlms6KO4F+bYmHZsHYyNBf6NWHA5W3aN3GW4m92FrE=
+X-Gm-Gg: ATEYQzyokj1U+pO/cQe40+2VuRzgoNCPQroe+DYnDBcrarzhXA3DpSOQ1I1NRn2bZqA
+	gqWkZk1C6vh2uIZvsjfPVDwDUjyqsonDrFPsFpXN5/JfK9Wx5/IlP3bXGsSoJCeT58pveHIIhE3
+	3SclCGmJxYa/4ixD5KBtZMwk2ebrk1q8JXmC/Z96kmHCp03bwnCI3azxUvDre2CoG0YDO4Fmap+
+	Xn+RxPaWkCvBMa/uLTvgrb3v2Haed/C9WRT8J+buxl1cakCRWj/EqbAosz6yA3j74+8SxbB+RxZ
+	lGWTiwbmHLi9a0uMNATc/Jog/NGGQpvMdrDg4+9tWrcAP3Sn9BmSedDd06hxv/tBZtFu6nWoo+s
+	ZVC5WyXlmSFvGGhWiC6L8Eq3+tsSZNCb6ZT95MtlbrEuDeNF5E+GLD7pla86IEMykAhYomiFrIb
+	iQXL82XkP9O4YWzlw19ojpwaNlCg==
+X-Received: by 2002:a05:600c:8483:b0:487:22ad:403e with SMTP id 5b1f17b1804b1-4888e0cf3a0mr32634805e9.14.1775129386217;
+        Thu, 02 Apr 2026 04:29:46 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a705ebdsm74104865e9.10.2026.04.02.04.29.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 04:29:45 -0700 (PDT)
+Message-ID: <51f2be5a-47d2-4a06-92bb-368aaed73530@suse.com>
+Date: Thu, 2 Apr 2026 14:29:44 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,71 +68,222 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 07/27] KVM: arm64: Provide arm64 KVM API for non-native
- architectures
-To: Marc Zyngier <maz@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Andreas Grapentin <Andreas.Grapentin@ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-References: <20260402042125.3948963-1-seiden@linux.ibm.com>
- <20260402042125.3948963-8-seiden@linux.ibm.com>
- <86y0j53caf.wl-maz@kernel.org>
+Subject: Re: [PATCH v2 27/31] coco/tdx-host: Implement SPDM session setup
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
+ xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-28-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <86y0j53caf.wl-maz@kernel.org>
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260327160132.2946114-28-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Fdo6BZ+6 c=1 sm=1 tr=0 ts=69ce5283 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=z1V4dRcsYzbvUw6_Kx8A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: HI2DK5H5wC6ad5B9YnVOxaWLprzdU9gx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDEwMSBTYWx0ZWRfX3nF5lxvZ6dE7
- FksS0fkJJanzuKM/mt/NzGShaEpUwNpTTBXziUvh2Pow3kPl5764MGt4zfosBudNpv24oVRUgYm
- jsbDHWcjLBJbNZk3kJ7PVY8LXySqOGWIOAm+PZn2Aovr1NWSyzfYZhTcAenA3VqwSS6JUGKKGm+
- NNEbXsLSHWEtDhn10yivwV2WYfTvDee6b/kMbb5xKbjJ2G2XTGbMVJ7bmespGf2xVMg9dfL3arj
- WDU1Iwx3DufEC6KPvPDIro2YCFANpGSJUbFflqHm3N1xR4l2AOIbXrrSQw0RaqGRaPXpuaWTt20
- JpmIB05IXepBc/StFDQ4V4HA3cDs6NT7lMbpjCaop0BAVPvKsyDeRZ33jTgElh8zGAWHLUevM0c
- kNgyp6gBYPStJwHraQ5Lte2qhmrtY7AEVjkaAgnAlRB66GpJQjJNwn1Hy7w4j+PKSfKoJPeFNX5
- 1VEz6vTWPXj07uBaw7Q==
-X-Proofpoint-GUID: HI2DK5H5wC6ad5B9YnVOxaWLprzdU9gx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-02_01,2026-04-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 malwarescore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020101
+Content-Transfer-Encoding: 8bit
 
-Am 02.04.26 um 12:08 schrieb Marc Zyngier:
->> +static inline bool kvm_supports_32bit_el0(void)
->> +{
->> +	return false;
->> +}
->> +
-> 
-> This looks wrong. The original file still has:
-> 
-> #define kvm_supports_32bit_el0()                                \
->          (system_supports_32bit_el0() &&                         \
->           !static_branch_unlikely(&arm64_mismatched_32bit_el0))
-Thanks for spotting.
-Yes, we will fix. Seems to be a leftover when sorting patches.
 
-Christian
+
+On 27.03.26 г. 18:01 ч., Xu Yilun wrote:
+> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> 
+> Implementation for a most straightforward SPDM session setup, using all
+> default session options. Retrieve device info data from TDX Module which
+> contains the SPDM negotiation results.
+> 
+> TDH.SPDM.CONNECT/DISCONNECT are TDX Module Extension introduced
+> SEAMCALLs which can run for longer periods and interruptible. But there
+> is resource constraints that limit how many SEAMCALLs of this kind can
+> run simultaneously. The current situation is One SEAMCALL at a time.
+> Otherwise TDX_OPERAND_BUSY is returned. To avoid "broken indefinite"
+> retry, a tdx_ext_lock is used to guard these SEAMCALLs.
+> 
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   arch/x86/include/asm/shared/tdx_errno.h |   2 +
+>   drivers/virt/coco/tdx-host/tdx-host.c   | 301 +++++++++++++++++++++++-
+>   2 files changed, 299 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
+> index 8bf6765cf082..7db04fe30378 100644
+> --- a/arch/x86/include/asm/shared/tdx_errno.h
+> +++ b/arch/x86/include/asm/shared/tdx_errno.h
+> @@ -29,6 +29,8 @@
+>   #define TDX_EPT_WALK_FAILED			0xC0000B0000000000ULL
+>   #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
+>   #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
+> +#define TDX_SPDM_SESSION_KEY_REQUIRE_REFRESH	0xC0000F4500000000ULL
+> +#define TDX_SPDM_REQUEST			0xC0000F5700000000ULL
+>   
+>   /*
+>    * SW-defined error codes.
+> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+> index 06f3d194e0a8..4d127b7c2591 100644
+> --- a/drivers/virt/coco/tdx-host/tdx-host.c
+> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/pci-doe.h>
+>   #include <linux/pci-tsm.h>
+>   #include <linux/tsm.h>
+> +#include <linux/vmalloc.h>
+>   
+>   #include <asm/cpu_device_id.h>
+>   #include <asm/tdx.h>
+> @@ -32,8 +33,43 @@ MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
+>    */
+>   static const struct tdx_sys_info *tdx_sysinfo;
+>   
+> +#define TDISP_FUNC_ID		GENMASK(15, 0)
+> +#define TDISP_FUNC_ID_SEGMENT		GENMASK(23, 16)
+> +#define TDISP_FUNC_ID_SEG_VALID		BIT(24)
+> +
+> +static inline u32 tdisp_func_id(struct pci_dev *pdev)
+> +{
+> +	u32 func_id;
+> +
+> +	func_id = FIELD_PREP(TDISP_FUNC_ID_SEGMENT, pci_domain_nr(pdev->bus));
+> +	if (func_id)
+> +		func_id |= TDISP_FUNC_ID_SEG_VALID;
+
+This check implies pci_domain_nr returning 0 is considered invalid. 
+Other callers in the kernel seem to not care, they just use the domain 
+nr, so is this check spurious or intentional ?
+
+> +	func_id |= FIELD_PREP(TDISP_FUNC_ID,
+> +			      PCI_DEVID(pdev->bus->number, pdev->devfn));
+> +
+> +	return func_id;
+> +}
+> +
+> +struct spdm_config_info_t {
+> +	u32 vmm_spdm_cap;
+> +#define SPDM_CAP_HBEAT          BIT(13)
+> +#define SPDM_CAP_KEY_UPD        BIT(14)
+
+nit: move those defines above the struct definition, they just break the 
+reading flow as it is.
+
+> +	u8 spdm_session_policy;
+> +	u8 certificate_slot_mask;
+> +	u8 raw_bitstream_requested;
+> +} __packed;
+> +
+>   struct tdx_tsm_link {
+>   	struct pci_tsm_pf0 pci;
+> +	u32 func_id;
+> +	struct page *in_msg;
+> +	struct page *out_msg;
+> +
+> +	u64 spdm_id;
+> +	struct page *spdm_conf;
+> +	struct tdx_page_array *spdm_mt;
+> +	unsigned int dev_info_size;
+> +	void *dev_info_data;
+>   };
+>   
+>   static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
+
+<snip>
+
+> +
+> +static void *tdx_dup_array_data(struct tdx_page_array *array,
+> +				unsigned int data_size)
+> +{
+> +	unsigned int npages = (data_size + PAGE_SIZE - 1) / PAGE_SIZE;
+
+nit: There's DIV_ROUND_UP
+
+> +	void *data, *dup_data;
+> +
+> +	if (npages > array->nr_pages)
+> +		return NULL;
+> +
+> +	data = vm_map_ram(array->pages, npages, -1);
+> +	if (!data)
+> +		return NULL;
+> +
+> +	dup_data = kmemdup(data, data_size, GFP_KERNEL);
+> +	vm_unmap_ram(data, npages);
+> +
+> +	return dup_data;
+> +}
+> +
+
+<snip>
+
+> +
+> +DEFINE_FREE(tdx_spdm_session_teardown, struct tdx_tsm_link *,
+> +	    if (!IS_ERR_OR_NULL(_T)) tdx_spdm_session_teardown(_T))
+> +
+>   static int tdx_tsm_link_connect(struct pci_dev *pdev)
+>   {
+> -	return -ENXIO;
+> +	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
+> +
+> +	struct tdx_tsm_link *tlink_spdm __free(tdx_spdm_session_teardown) =
+> +		tdx_spdm_session_setup(tlink);
+
+Is the free() really needed here, either the session is correctly setup 
+and tlink_spdm is returned. But if session_setup() files then what about 
+calling spdm_session_disconnect() on an unestablished session?
+
+
+> +	if (IS_ERR(tlink_spdm)) {
+> +		pci_err(pdev, "fail to setup spdm session\n");
+> +		return PTR_ERR(tlink_spdm);
+> +	}
+> +
+> +	retain_and_null_ptr(tlink_spdm);
+> +
+> +	return 0;
+>   }
+>   
+
+<snip>
+
