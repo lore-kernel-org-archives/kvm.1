@@ -1,60 +1,64 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56963314B9D;
-	Thu,  2 Apr 2026 12:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134453B47D4
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 12:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775131435; cv=none; b=DivHbg/j3OPl0h/MPvIX6O7xlfjyfsSR7VrHi/nqYnLTUd65xFsZlRtyXhr4KoN3qBTusRsd7SvI20wTl+237VisFKovJfcQsdDPQC1uX1Gfnp/tPEBOqbdNRraWNZFvnrkbZ0sEGpInoKgJqfS/RpzfcHs8qmRZMklJ0TokRUo=
+	t=1775131880; cv=none; b=VYvWaQlcPMWw7nR0im1dsLgGJxGKmUQ9L4fT4e1oxVVsIajQlmy9OmK/zCHaacC3hkNT3FwYtqiGDNk2HqtmxvmY8OSpc/3KEeOPV5HDy+RX98O89koa7CLWQehtMoH4WGp3x8eX/aaf5DNZvwlVBNuFRTCv9SUPDNevCBiFvfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775131435; c=relaxed/simple;
-	bh=1HOfsq25FGmrNZA79MK/iU1oE4zUppSHMT6vyKEjass=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QSIRv0DrZY5dIufSNzDB+cwedGcH5qveMBiycNKeaStqgsD4kucfsdmycgM9PZbBBSPVyNQbCEjjKQ9cY9KrW8FFqQdcyfFhndwN2Aksj0sL2GnWV8EOOz+O8f6N2bNqYPi04RzEg9S6uD+SenumcNySidMXMaBIr7veomopnfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o9UiCS7N; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775131880; c=relaxed/simple;
+	bh=PM6VIR7gz8+am8i4goLgv+xYYu2fQLjYkRL6gda7FC8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=E9C0vNUSzCRf9AqEWAALBXHi+tB7leLN+ddKGi7zb7NbEiBRjuq4kR6TI0UDDa32F9ZK7m9XAlrUe8dOQxj9noZIxHXrxQPQfl3kQBHz60V3NUSkmGgLUAZXSOMtX86Kh9VQdmBbVR0ba0FTd/tBLnweCTjvYolX52imh5Bmc78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rkwt31oD; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o9UiCS7N"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631L8LZ43183710;
-	Thu, 2 Apr 2026 12:03:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=brz/Zf
-	ac1TF7wvape+g9GV0/KMKxBlbw+QwpMf7qPbA=; b=o9UiCS7NDG2FEKoHWDuZhh
-	9WHxDIw+s1Mk+0Y/amF22L0O4tkArEqGewB7fKV7ySfQtql5ELpYt3QWh0G6uuMZ
-	nFX8x1sUR98Suy0knNGu3HoMyGJoothz3SKhwCD9g/5soCIK8Y5yckadLkwdW74c
-	bYsW0LiOKlx4zXzI5sehAKXFAVuynLTDEGnuBsz0UM24ZxfgqRJWQLy0Cf/7/KCO
-	m4vgmp2Hd6o5J03LTkM9hbhGCZwBTtKnaWJmJWMhou+WKeQ7MTZJo/qNrEp8+74W
-	Ca9VmmriGVwALXQkGU94lEj9QtXaBOO9BQ+kFwchLiSYB7FUeEToD3HFftf+s3Kw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dguwnt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Apr 2026 12:03:42 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6327Qwlq030955;
-	Thu, 2 Apr 2026 12:03:41 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhk1r06-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Apr 2026 12:03:41 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 632C3d4Q46399778
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Apr 2026 12:03:39 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8B0A58075;
-	Thu,  2 Apr 2026 12:03:38 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D259058051;
-	Thu,  2 Apr 2026 12:03:37 +0000 (GMT)
-Received: from [9.61.23.155] (unknown [9.61.23.155])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Apr 2026 12:03:37 +0000 (GMT)
-Message-ID: <1571dfed-2c88-4b45-87b2-10c5a0d7774e@linux.ibm.com>
-Date: Thu, 2 Apr 2026 08:03:37 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rkwt31oD"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486fc4725f0so8272165e9.1
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 05:11:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775131877; x=1775736677; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:autocrypt:subject:content-language
+         :from:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=k4hZG7y9nhhpMB94WMMqADvRYY9jN17jXDR7WBkRebk=;
+        b=rkwt31oDa34+Vkpb9ORdHeKxqXibpdEWIJz0UHF8SyAWovWWg3lgdBZyt9LvzfTrgH
+         osvkO0bkSMSQ/Slg6gHzANqxP3+FojoLwYMeR1F/+CpacslxgMETfbQI7GQDhfS/lCGV
+         NbJevh8S3uvbxh4qGZ9eCitDY+qw/pYAMm1UeysTaEpIzv3k4+k+sng0jnthKBTy2ilR
+         UjfXq2LfLtU8CKiil9xufm3zwfbaXMpFEg6Z2oqz6piLTlbSXuTES39hLmr1qcfFrVAS
+         1x4Wd348kjd77HlKS/0Hku9w26Ml4duIJt7GgDB9Cu+2uMaDfo/uOeNuceYXf6u9K+TG
+         waEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775131877; x=1775736677;
+        h=content-transfer-encoding:to:autocrypt:subject:content-language
+         :from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k4hZG7y9nhhpMB94WMMqADvRYY9jN17jXDR7WBkRebk=;
+        b=oEL1La9ttKsOGowukiDgKDmcjleV9lmlIaCaDAyZ85FmbjVFynsTz+xUmpS8e0kJuQ
+         ansU7BZ3fewJX290Q54ccRYrSgJdVrp03YL039/C65bKHnPMWA+SPE/A/978a6qBVSMl
+         z9kySuJBs4t4PqespD1ZouvVVUkfVCX9Gd1t89d58ZAQEC6gVnXfmK3GKT5XONe5l5Om
+         uEo5KCDP4jmxnHIWlM83aS15wVKn7DqiAyZ54a//HcWsKUh0yM3UIBWmVBDwxNcdjc/p
+         ZHVW9sILRKvXMoGVpQycToBkJNVU2dhTlpuiECJiFoDb7EdKuox4tpTb8zSRLjwMEsnm
+         /PlA==
+X-Gm-Message-State: AOJu0YwyvXdcupAcc5Nd/1tjrbyzr9BNqSgx6XOSEPM7gcqxcwxnaACg
+	2jw7KT5hXSg934UDAAxqWtfjoxxc2Sfb6BkyKElO4FlqpTRTY0kOhT1LxISFnSDyvK4=
+X-Gm-Gg: ATEYQzzbM/YyWL53EO6tf+Eq1+tpIN6wFGS/Bf5be2w/xqq34rOAXJ23FpO0jb8THn3
+	ct8dZDFr8tJNguqg+iSU1muB7e8fujdaXtWnOHtlzA16/Arpt1/q1KYnAtDNgh95FsPv6A1aMgr
+	pbUXlbHgrmzA2nJvqKUS/u76Mipy7Bc5zVul3ABKWy859bhh4eoHlQy+2BO6T/ffWPnof37btxm
+	NMw4XfOYVgU4Rk1KGOmYqGuNJ2g4+ZQztC5dF4iTOderio/BNRzTIWJGyAFRDBCl5A332jBopza
+	EWEYtH8d0Kxe80gTR8qLa+/E7jeI0m93dCoCST1NRoRhbq/irjcnNMyClhs0yNbg3oGWIZFxtoR
+	GQzx9Jy/8hYVpjYILLamnsi4cbNWRUMwWd+GYxxOwVnLvjSHoXwWdZtGYI7VFAcG7PqztB6jQ5G
+	gIfu5wEV0N2KIf9A2QPoO0vyDLaDQZPKzS53eHosZ5Lc1AgBBWQRXKnzpr2JzJ2yIikWZ9WPDEN
+	3xmsRUltUhMBhn9jmAmAADaZaaApSPImkPE5Z6Us5+d1E2tcFjOlj11wZJxdoPCKUOMK6RfCRZB
+X-Received: by 2002:a05:600c:3496:b0:486:fbc4:8fe2 with SMTP id 5b1f17b1804b1-4888e0e47damr33863715e9.15.1775131876870;
+        Thu, 02 Apr 2026 05:11:16 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:4f00:540e:67e6:b14f:9ac5? (p200300d82f4f4f00540e67e6b14f9ac5.dip0.t-ipconnect.de. [2003:d8:2f4f:4f00:540e:67e6:b14f:9ac5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c884b8asm62838455e9.15.2026.04.02.05.11.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 05:11:16 -0700 (PDT)
+Message-ID: <39aade54-b81f-4fa4-abcd-615885ca131d@gmail.com>
+Date: Thu, 2 Apr 2026 14:11:13 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,209 +66,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 00/23] s390/vfio-ap: Implement live guest migration of
- guests using AP devices
-To: Alex Williamson <alex@shazbot.org>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
-        mjrosato@linux.ibm.com, pasic@linux.ibm.com, kwankhede@nvidia.com,
-        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com
-References: <20260325210149.888028-1-akrowiak@linux.ibm.com>
- <20260330102748.6423ff89@shazbot.org>
- <2949d622-fa65-4df1-af04-0665ed115ad4@linux.ibm.com>
- <20260331114009.43e41a3a@shazbot.org>
- <3f320ef3-c539-4671-8fbf-283ea9f48633@linux.ibm.com>
- <20260401105743.6c88f13a@shazbot.org>
+From: David Hildenbrand <davidhildenbrand@gmail.com>
 Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260401105743.6c88f13a@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-04-02
+Autocrypt: addr=davidhildenbrand@gmail.com; keydata=
+ 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
+ /Xn6oe5jmKiMLPx9rQ==
+To: KVM <kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDEwNiBTYWx0ZWRfX8rbBibLha/AH
- HgWf9jHrjQ5aa5m4aKiC+NCcMy/mSamDrWt9dbU+JuZ/AdRpKEKq+H5+WMnShRlgkLltBsC0y9/
- 3Iof4CkODfhclAePARY5AtMg+FRoqx3+UoB8qJWFcP3v0zD1vUAlRDQ1luy812EW3lRgTo1AEI2
- 5AYW1rew4ZGnqIeQJJWVc5kAffmAEfpJ0zgQmOc4sihz5pTLwZu6Pfs8O0GCTQ60d+Oc5XpkCSF
- PpfYXuEhJPOp0BeG5nKj2YKALwMuw/Ug81fgDYKgZkqkPN74nPbuTRYHF1VrOl9bCo/8TbtJLtD
- 1Dq1AX98EZeOX9D7paOWUrF9lHJ/fbZWqH7I8XQgEKPBrOvkUfs8XQQILC9a/bzsyYfBEb9zAOA
- SbRdO5JT/ua/pno/wTohr9yq6eqvI17JKJj2KN87/ij4GuFl5JSarnKsjlX6TpzHpJdBh2yYys5
- OwGnUAfd2oJwW626cbQ==
-X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69ce5b1e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=6y9mIIUkAAAA:8
- a=VnNF1IyMAAAA:8 a=tw0iCfVx5RxVUoNpJO4A:9 a=QEXdDO2ut3YA:10
- a=BT1tkpHCJze4Rb8jY6gx:22
-X-Proofpoint-GUID: CCpO5csGqsk5LBDWZ1GGKvT0_YJ5SD5E
-X-Proofpoint-ORIG-GUID: CCpO5csGqsk5LBDWZ1GGKvT0_YJ5SD5E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-02_01,2026-04-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
- spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020106
 
+Hi,
 
+Late reminder :)
 
-On 4/1/26 12:57 PM, Alex Williamson wrote:
-> On Wed, 1 Apr 2026 09:38:59 -0400
-> Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
->
->> On 3/31/26 1:40 PM, Alex Williamson wrote:
->>> On Tue, 31 Mar 2026 08:07:06 -0400
->>> Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
->>>   
->>>> On 3/30/26 12:27 PM, Alex Williamson wrote:
->>>>> On Wed, 25 Mar 2026 17:00:47 -0400
->>>>> Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
->>>>>      
->>>>>> This patch series implements live guest migration of a guest to which AP
->>>>>> devices have been passed through. To better comprehend this design, one has
->>>>>> to understand that VFIO AP mediated device is not used to provide userspace
->>>>>> with direct access to a device as is the case with other devices that use
->>>>>> the VFIO framework to pass them through to a guest. The sole purpose of the
->>>>>> VFIO AP mediated device is to manage an AP configuration for a guest. An AP
->>>>>> configuration is comprised of the AP adapter IDs (APID), AP queue
->>>>>> indexes (APQI) and domain numbers of the control domains to which a guest
->>>>>> will be granted access. Once the VFIO AP mediated device is attached to a
->>>>>> guest, its AP configuration is set by the vfio_ap device driver. Once set,
->>>>>> all access to the AP devices is handled by the s390 Interpretive Execution
->>>>>> facility; in other words, the vfio_ap device driver plays no role in
->>>>>> providing direct access to the AP devices in the guest's AP configuration.
->>>>>>
->>>>>> The only role that the vfio_ap device driver plays in the migration
->>>>>> process is to verify that the AP configuration for the source guest is
->>>>>> compatible with the AP configuration of the destination guest.
->>>>>> Incompatibility will result in a live guest migration failure.
->>>>>> In order to be compatible, the following requirements must be met:
->>>>>>
->>>>>> 1. The destination guest will be started with the same QEMU command line
->>>>>>       as the source guest, so the mediated device supplying the AP
->>>>>>       configuration on both guests must have the same name (UUID).
->>>>> AFAIK, same UUID is not a requirement for out-of-tree mdev drivers
->>>>> supporting migration.  You're really concerned more with the
->>>>> configuration/composition of the mdev device, so requiring the same
->>>>> UUID seems a bit arbitrary.
->>> Combining replies:
->>>
->>> On Tue, 31 Mar 2026 07:17:08 -0400
->>> Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
->>>> As stated above, the destination guest will be started with the same
->>>> QEMU command line as the source guest. Within that command line
->>>> will be a '-device' parameter like the following:
->>>>
->>>> -device
->>>> '{"driver":"vfio-ap","id":"hostdev0","sysfsdev":"/sys/bus/mdev/devices/62177883-f1bb-47f0-914d-32a22e3a8804"}
->>>>
->>>> Note that sysfsdev is the path to the mdev named
->>>> 62177883-f1bb-47f0-914d-32a22e3a8804;
->>>> therefore, the mdev with that name must exist on the destination guest or
->>>> the migration will fail with the following error:
->>>>
->>>> error: device not found: mediated device
->>>> '62177883-f1bb-47f0-914d-32a22e3a8804' not found
->>> Then this is a requirement of your tooling, not a kernel requirement, not
->>> something the kernel should care about.  QEMU matches devices by their
->>> virtual bus path, not the sysfsdev or host attributes.  In the case of
->>> VF migration with vfio-pci variant drivers we cannot require that the
->>> source and target devices exist at the same bus address.  Ideally the
->>> pre-copy data from the source device to the target will include relevant
->>> configuration information to validate that the source and target are
->>> compatible, regardless of the uuid.
->> Maybe the problem here is stating that having the same UUID is a
->> requirement in the patch series description. I agree this is
->> not a kernel requirement; however, a live guest migration will not
->> succeed unless the destination host has a mediated device with
->> a UUID that matches that of the UUID of the mediated device used
->> to pass through s390 crypto devices to the source guest for the
->> reason I stated above. Would it help if I removed item #1 as a
->> requirement?
-> Yes, AIUI this is an artifact of your tooling.  The destination QEMU
-> can be started with any arbitrary UUID and should accept an incoming
-> migration, routing the migration to the correct device by the virtual
-> path, independent of the UUID.
+Our next guest_memfd upstream call is scheduled for today, Thursday,
+2026-04-02 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-If by tooling you are referring to libvirt and/or quemu, then I agree;
-this is an artifact of tooling. According to
-https://www.linux-kvm.org/page/Migration#Requirements,
-"the guest on the destination must be started the same way it was
-started on the source". s390 guests are run under qemu, so the
-qemu command line used to start the source guest will also be used
-to start the destination guest. To pass through
-AP devices to the guest, the mediated device that provides the guest's
-AP configuration - i.e., the crypto devices to which the guest is granted
-access - must be identified on the qemu command line. As stated
-previously, the following qemu command line parameter is included
-for this purpose:
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
 
--device '{"driver":"vfio-ap","id":"hostdev0","sysfsdev":"/sys/bus/mdev/devices/62177883-f1bb-47f0-914d-32a22e3a8804"}
+There is not a lot on the agenda: interaction with guest_memfd and
+VM_DONTDUMP. So let's see what else comes up!
 
-When the qemu command is used to start the destination guest, the same
-qemu command line will be used to start it. As such, qemu will try to open
-an fd for that device. If the mdev with UUID does not exist, the migration
-will fail. In other words, I don't think the guest can be started with any
-arbitrary UUID. Am I wrong about this?
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
-In any case, it is probably not relevant to mention this for this patch 
-series
-since it is not a KVM/kernel requirement, so I will remove it from the
-cover-letter description.
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
->
->>>>>> 2. The AP configuration assigned via the VFIO AP mediated device on both
->>>>>>       guests must be compatible. As such, each AP configuration must meet
->>>>>>       the following requirements:
->>>>>>
->>>>>>       * Both guests must have the same number of APQNs
->>>>>>
->>>>>>       * Each APQN assigned to the source guest must also be assigned to the
->>>>>>         destination guest
->>>>>>
->>>>>>       * Each APQN assigned to both guests must reference an AP queue with the
->>>>>>         same hardware capabilities
->>>>> Why isn't this sufficient vs also requiring the same UUID?
->>>> I explained why in my previous response.
->>> See above, userspace tooling requirements don't imply kernel
->>> requirement.
->> Got it.
->>
->>> A userspace interface can still exist, I just don't find this path
->>> through the driver to the VM acceptable with this justification.
->>> Mechanisms already exist for the device to refuse a state transition or
->>> generate an error for a migration already in progress.  IMHO, it would
->>> be acceptable for the device to block a key change if the migration is
->>> already in progress.  If the key change cannot be represented in the
->>> migration data stream, then it's up to the orchestration of the
->>> migration to make sure they stay synchronized, but I don't see that
->>> the vfio uAPI needs to be involved.  Thanks,
->> As I stated in the cover letter description, all access to the AP
->> devices is handled by the s390 Interpretive Execution facility, so
->> without a complete redesign of the vfio_ap device driver, there is no
->> way to know that a master key change is being requested. I do get your
->> point, however, so I will figure out how best to handle this in
->> userspace. Thanks for you review.
-> The cover letter has one sentence describing the Interpretive Execution
-> facility handling access to the device.  There are a lot of subtleties
-> there that are not obvious to laypersons.
->
-> It seems like the architecture really doesn't have the ability
-> to monitor state changes of the device, and therefore represent those
-> changes in the migration data stream, so you want to fallback to a
-> cooperative scheme with a side-band channel to interrupt or block
-> migration when an asynchronous configuration change happens.
->
-> I just don't see that such cooperation needs a new uAPI through the
-> device; either the device itself could perform the same within the
-> existing uAPI or the agent changing the configuration could coordinate
-> with the migration orchestration.  Thanks,
+-- 
+Cheers,
 
-I understand your view on this and have already agreed to remove
-the new uAPI.
-
->
-> Alex
+David
 
