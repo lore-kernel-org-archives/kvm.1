@@ -1,178 +1,133 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83DC3F0A86
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E037287503
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775152059; cv=none; b=C3jZppukx2cn6PhZ+8yemx2RVvatWByggDiu22SD0SJFjxgGEmY+i9IxA03JEv3kCW2PTWesY8qryRfr9kwIG7J/oFTc+2+LxICvfC6VlkND4+S2hYRHXwjdzdwZBqgl0b7ZUNVeIsXxQiOcF8/rh+BzVkE7ALWMXrGrSfTC9ws=
+	t=1775152337; cv=none; b=I0X7cdmPd1pDAGJsH4kSE4cD2EbuxUqKT4VHfHhcd7Uk5HKJ0UN3CWZL8b+FDRW8NQEVndZHDYOwBYH2VBqGRKc4UwIU0YWNC37m5B0AI1sj71EBzmWTyshEF+XjGu1soMt7v021ovB9DKByez3Df/9DZbuRKcWSCQQ1RWH7CzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775152059; c=relaxed/simple;
-	bh=3Di8gvKsTkDFToM7zcKTmXsWN181yR0mrnfUz3x4i4Q=;
+	s=arc-20240116; t=1775152337; c=relaxed/simple;
+	bh=Ad8mA6CcVmN7s1faVf+ztuQF3tWgYZmGqIjKEOXoWsw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MJcwR3V+pRpYCt+j3hguG6DO8foXmhRHXJvCtrD1KTWBxKYA/6KDU1rZl2+b++Jo7uq29zGVjwB3mq/qEpDRLf2p+zPQ/6aE21HHaRU8OpdQQvtJBmbO7oKeLJ5sTRoxg7V1vPnQsFxbeK7hswQLpgae4mRNLdSpWAegzC9XTC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pi/j7dbu; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=WyhwHQPyasYZ3hmmSIKEBjkldR2o3lHCHrviqLRMlkUBSzwojs/uFrob0c/esQi607kLwC0VQhBNdJaUbeXXk8nY3UU+R9LYKNzkVs0FP7uLaV++UFEkI+oVLLC6kYyW3fhMcQ03tiXiimdtXW3vFT/XdFz1TYFq/TZ4PXmPp3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QQ3d5soq; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pi/j7dbu"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35641c14663so1051318a91.2
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:47:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QQ3d5soq"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c649dc145so631358b3a.3
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775152056; x=1775756856; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775152336; x=1775757136; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+oWiGeGtzmit4npH7dOJB++ykY7dC00uJhoSfG5ovJQ=;
-        b=pi/j7dbuTIkjgqgS05Cl3F3air8pBBt/Eg+pxFA2SiDv68D1V5fwK+8wX8/VgS3Iwt
-         pNFkWASMAZy07Cnx7wRJ2YB4h4I7PVntxGbN/U/RoRLfwmGZW658Va9cTYknrSrvyi5e
-         KdvllXwHQMi9F+7jdAs8wYIiWesKBTgLxUmDrvJgdm19QvPD0w8+0VK5CGdLp1DyuuaT
-         WaPnsXw7mlEJhsjLyIS7h2eGi25MuEs+txgaTXU82uksSL+r8oM/lijU1PCvcVQ/6Quv
-         SOIeG1H6DH3iLL7ZihnT2zZVt59t9HZmS+miy2jpOsHTZO6hBm1DISo/kJUna8Yt+pge
-         6XQg==
+        bh=r89fuvNKa4MTX8mZxF1YzmAzE0YPpremThL3RO0uraw=;
+        b=QQ3d5soqwAaJIirURXIJi4UNmsh+SaNF4lM5mwAy4HTHZALagJSgCST4fK6kszjMC8
+         2pW8eKsGHT19QXbjVL5LiliilmW7AvpzSOl5gZLn53WggqadhsmWePbbmBz/jnDi6014
+         XnTC7IH5Rv6iV90iTBodVd+x5yPjG0+tTwb9MO2ua6olIv41oeV3YCsLoutEuEawFnkP
+         JZt7ylJp5bq+GHqYZJGdHvsPmH35vNDNqSeRpvBaju/9kF7sx4FyiwdWXn2cRjitYKsx
+         HnWcO7GaE0XIehUYVYAC95+/ccpc1KW7rDFMnUPS20hVHnT0/0fa9TRtJkckGlllYPAR
+         6pdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775152056; x=1775756856;
+        d=1e100.net; s=20251104; t=1775152336; x=1775757136;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+oWiGeGtzmit4npH7dOJB++ykY7dC00uJhoSfG5ovJQ=;
-        b=IzceWHx36GrZEgA2Q+xpfGqstz/xUkVCkYaVt7kVLCvsdebSySBbLeO7661kEZxzrD
-         pKfyR4kvr6Y/0QeurNHej0KRVbs350bf4guYAY9AsmQ23jUKoLojwXUAeKOvKIi+c0lW
-         hazKUgIZGmKYXm7xDktMykdivMXhle+Ehok4Zybo825oT7xyHlErBptsTQQr9jSuKVRw
-         yVC8Qe/AcQV3sIZSbZaNcSXj/MpcMsjsFawgDlvrxblrKjpItMmBN5ME8iRkwmv3R32p
-         w11ED1l1pQXE5Uyk2WIVoPokogSQumC0vK+kCNCq1+lnbC13RUKRLx/+Vwfm0VxuNBkm
-         hiww==
-X-Forwarded-Encrypted: i=1; AJvYcCWkeMqjGdycFZA+lEeUN+oAuGM8nywjrcyXqpxIz9TEdU9YLcqPgmqFwFTJaB0qhqyKHag=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtp6ENjjWDeEZObZkUBX8rb4ttvljtyw0u8jt2JWg2NpikREQ7
-	bNMng+MGO2eHRiczGPxdfiGg9Ox+hCzg9t35PCgKLxJaebJa3LbhBSnI8BQ+BjwzqP+MDshGubT
-	/mp1TlQ==
-X-Received: from pjbgv20.prod.google.com ([2002:a17:90b:11d4:b0:35d:9e2d:2f06])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224e:b0:35d:a4c0:a0ac
- with SMTP id 98e67ed59e1d1-35dc6ea7a4emr7893547a91.3.1775152055923; Thu, 02
- Apr 2026 10:47:35 -0700 (PDT)
-Date: Thu, 2 Apr 2026 10:47:34 -0700
-In-Reply-To: <20260402-fuller_tdx_kexec_support-v3-1-34438d7094bf@intel.com>
+        bh=r89fuvNKa4MTX8mZxF1YzmAzE0YPpremThL3RO0uraw=;
+        b=pdi5R5ApQWCqc8xPme4xB/ZbVna+3teAmPbO2OVO4wRoOHWPYjzVH4HExONM7QetdA
+         jRioq12y0MNsY7qqIlsV+TDXOBMnI7QepOag9kG0A6si/uTM9uzYOU5PdIsET9uDNN4q
+         5SUX52E/0P10BepEmDwir8AXI/JCF4C0vde+OFD3LprZtCWfz0Tb5PWHczGl8XZS9TH4
+         v7Mc0+oFP2TdQ7wcrZwVMXzZ6+GEvLe1uois99xK06h9+PPiQ3+EWD7XZGI2KG/a66i1
+         0i67T+CSz69n+dvk2nTexVeNyug93SUllExfiAmYQgEgMemeNK6uPkw70Wy5YHlWLQ4h
+         sP9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUkDkGwsH53hU1YXuM8Mu5eMqJPIOTs8cWdkzJAt0S7k6v8o1aiQChLnAPxWY4YIx4rek4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7+5dKhZGH1ZpG9OweBSNymOFLpa3RjuSNiMHGB/J86cEMdEeY
+	lpzv0Q1yCS+fv5IUKprLYnlv6/0PBuUcDLMwOW85+0nWbbg0mEJgr/IafOX3QUqKOoZQQsBUNEH
+	MzhXlYQ==
+X-Received: from pfblr27.prod.google.com ([2002:a05:6a00:739b:b0:823:b9a:9230])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c9c:b0:82a:1499:263b
+ with SMTP id d2e1a72fcca58-82d0dbdbc9fmr62969b3a.52.1775152335546; Thu, 02
+ Apr 2026 10:52:15 -0700 (PDT)
+Date: Thu, 2 Apr 2026 10:52:14 -0700
+In-Reply-To: <ac20s-AAvqIreILG@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260402-fuller_tdx_kexec_support-v3-0-34438d7094bf@intel.com> <20260402-fuller_tdx_kexec_support-v3-1-34438d7094bf@intel.com>
-Message-ID: <ac6rtq-n0JNa_Oc0@google.com>
-Subject: Re: [PATCH v3 1/5] x86/tdx: Move TDX architectural error codes into <asm/shared/tdx_errno.h>
+References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-4-jrhilke@google.com>
+ <ac140E1-ZeVg9mq_@google.com> <ac20s-AAvqIreILG@google.com>
+Message-ID: <ac6szjc0iLohWhwT@google.com>
+Subject: Re: [PATCH v2 03/14] KVM: selftests: Add vfio_pci_irq_test
 From: Sean Christopherson <seanjc@google.com>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Chao Gao <chao.gao@intel.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Apr 02, 2026, Vishal Verma wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+On Thu, Apr 02, 2026, Josh Hilke wrote:
+> On Wed, Apr 01, 2026 at 12:58:08PM -0700, Sean Christopherson wrote:
+> > On Tue, Mar 31, 2026, Josh Hilke wrote:
+> > > +int main(int argc, char **argv)
+> > > +{
+> > > +	/*
+> > > +	 * Pick a random vector and a random GSI to use for device IRQ.
+> > > +	 *
+> > > +	 * Pick an IRQ vector in range [32, UINT8_MAX]. Min value is 32 because
+> > > +	 * Linux/x86 reserves vectors 0-31 for exceptions and architecture
+> > > +	 * defined NMIs and interrupts.
+> > > +	 *
+> > > +	 * Pick a GSI in range [24, KVM_MAX_IRQ_ROUTES - 1]. The min value is 24
+> > > +	 * because KVM reserves GSIs 0-15 for legacy ISA IRQs and 16-23 only go
+> > > +	 * to the IOAPIC. The max is KVM_MAX_IRQ_ROUTES - 1, because
+> > > +	 * KVM_MAX_IRQ_ROUTES is exclusive.
+> > > +	*/
+> > > +	u32 gsi = 24 + rand() % (KVM_MAX_IRQ_ROUTES - 1 - 24);
+> > > +	u8 vector = 32 + rand() % (UINT8_MAX - 32);
+> > 
+> > Ahh, now I see why you included "Reproduce tests that rely on randomization" in
+> > this series.
+> > 
+> > I think I'd prefer to tweak guest_random_state() to drop the "guest" in favor of
+> > "kvm", and then use that framework in host code as well.  Then you wouldn't need
+> > to open code the % fun.
+> > 
 > 
-> Today there are two separate locations where TDX error codes are defined:
+> How would using the guest_random_state() library remove the need to calculate the appropriate ranges using %? 
+> The library (tools/testing/selftests/kvm/include/test_util.h) only provides:
 > 
->   arch/x86/include/asm/tdx.h
->   arch/x86/kvm/vmx/tdx_errno.h
+> uint64_t guest_random_u64(struct guest_random_state *state);
+> uint32_t guest_random_u32(struct guest_random_state *state);
 > 
-> They have some overlap that is already defined similarly. Reduce the
-> duplication by unifying the architectural error codes at:
+> I could avoid using % by adding a new library function that picks a
+> random number within a range:
 > 
->   asm/shared/tdx_errno.h
-> 
-> ...and update the headers that contained the duplicated definitions to
-> include the new unified header.
-> 
-> "asm/shared" is used for sharing TDX code between the early compressed
-> code and the normal kernel code. While the compressed code for the guest
-> doesn't use these error code header definitions today, it does make the
-> types of calls that return the values they define. So place the defines in
-> "shared" location so that it can, but leave such cleanups for future
-> changes.
-> 
-> [Rick: enhance log]
-> [Vishal: reduce to a simple move of architectural defines only]
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> uint64_t kvm_random_u64_in_range(struct kvm_random_state *state, uint64_t min, uint64_t max);
 
-Nit, when calling out minor amendments, IMO the blurb in the square braces should
-be after the previous SoB so that there's a clear, consistent chain of handling
-and ordering.  I.e.
+Yes, please.  I was thinking that in my head, but never typed it out.  The original
+plan with the pRNG code was to build out the set of APIs for doing random number
+things, it just never picked up steam due to lack of need.
 
-  Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-  [Rick: enhance log]
-  Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-  [Vishal: reduce to a simple move of architectural defines only]
-  Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-
-That makes it clear the Kirill signed off on something, then Rick tweaked the
-changelog and signed off on _that_, and Vishal came along and simplified the
-path.
-
-Acked-by: Sean Christopherson <seanjc@google.com>
-
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
-> ---
->  arch/x86/include/asm/shared/tdx.h                    | 1 +
->  arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h | 7 +++----
->  arch/x86/kvm/vmx/tdx.h                               | 1 -
->  3 files changed, 4 insertions(+), 5 deletions(-)
+> > As for the get_irq_number() and get_irq_count(), those need to be much more clearly
+> > scoped to /proc/interrupts.  E.g. "irq" in KVM context most often refers to the
+> > guest IRQ vector, not the host Linux make-believe IRQ number.
+> > 
 > 
-> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> index 8bc074c8d7c6..6a1646fc2b2f 100644
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -4,6 +4,7 @@
->  
->  #include <linux/bits.h>
->  #include <linux/types.h>
-> +#include <asm/shared/tdx_errno.h>
->  
->  #define TDX_HYPERCALL_STANDARD  0
->  
-> diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-> similarity index 92%
-> rename from arch/x86/kvm/vmx/tdx_errno.h
-> rename to arch/x86/include/asm/shared/tdx_errno.h
-> index 6ff4672c4181..3c1e8ce716e3 100644
-> --- a/arch/x86/kvm/vmx/tdx_errno.h
-> +++ b/arch/x86/include/asm/shared/tdx_errno.h
-> @@ -1,8 +1,7 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /* architectural status code for SEAMCALL */
-> -
-> -#ifndef __KVM_X86_TDX_ERRNO_H
-> -#define __KVM_X86_TDX_ERRNO_H
-> +#ifndef _ASM_X86_SHARED_TDX_ERRNO_H
-> +#define _ASM_X86_SHARED_TDX_ERRNO_H
->  
->  #define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
->  
-> @@ -37,4 +36,4 @@
->  #define TDX_OPERAND_ID_SEPT			0x92
->  #define TDX_OPERAND_ID_TD_EPOCH			0xa9
->  
-> -#endif /* __KVM_X86_TDX_ERRNO_H */
-> +#endif /* _ASM_X86_SHARED_TDX_ERRNO_H */
-> diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
-> index b5cd2ffb303e..ac8323a68b16 100644
-> --- a/arch/x86/kvm/vmx/tdx.h
-> +++ b/arch/x86/kvm/vmx/tdx.h
-> @@ -3,7 +3,6 @@
->  #define __KVM_X86_VMX_TDX_H
->  
->  #include "tdx_arch.h"
-> -#include "tdx_errno.h"
+> How about I rename these to get_proc_irq_num() and get_proc_irq_count()?
+> And then rename the library irq_util.h/c to proc_util.h/c?
 
-For the record, the defines in tdx_errno.h are only ever used by arch/x86/kvm/vmx/tdx.c,
-and that file already included asm/shared/tdx.h by way of arch/x86/include/asm/tdx.h.
+Works for me.
 
->  #ifdef CONFIG_KVM_INTEL_TDX
->  #include "common.h"
+> > > +	/* Set a consistent seed so that test are repeatable. */
+> > > +	srand(0);
+> > 
+> > And using a pRNG instead of rand() should make this unnecessary.
+> > 
 > 
-> -- 
-> 2.53.0
-> 
+> We shouldn't even need a pRNG if we follow your suggestion above and use
+> the guest_random_state() framework for the host, as it would provide the
+> guest_random_u64() function.
+
+Heh, by pRNG I meant guest_random_state itself: "struct guest_random_state" is
+itself a pseudo-RNG implementation.
