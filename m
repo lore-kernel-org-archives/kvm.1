@@ -1,134 +1,198 @@
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAE81624C0
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 23:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775172211; cv=pass; b=DlXYw/HYI362XyAI/iuOKkDPO/i6X5cp+/KSyKqwJzymXIe663OYnPHTifLgA0E5NxFvhnwoEz11rmpWdC1MLkUIMEyV1kwz1Tw9I9NdT5IKFquXCnWiusGTYea1m3q6FECdNSB3heMXqpXoFMMVUmeK4lNwkKvxqkuKSm1z2lM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775172211; c=relaxed/simple;
-	bh=2WAgR3x9pcbMMZEljcq4po1AfFNPTeTXEWuQrsK7vdM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YcZd968aHQE6dET/W4NMHrY068v78ShwT7qKp05q0g4idphW+liBwJmMAZKI9RNfiHOojDi1oVvkxcZRQlCErt2veqkUERY62oPKO0BEzdlz7h8uRbWvuuUZGsi/wiQWwvNb+ykAnlIeC91dtal9r1YNkraigZ/WYrVRBadx/jo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hgMJCw0d; arc=pass smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7908937DE84
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 23:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775172516; cv=none; b=U1gY6ZLAtTKyOCs2uDZtc1px0l+L2HsPdqiG5WlXGug6++7/g1GC5GuMQUiMaXoY54zd7MCfu7Sx9PTHR03NFepk1Ay8xquYwiy8y1Nj+9DqdebEW0rAgKZajhNTmTEzD2yP+BT9WTg+FHBQ5dvGmrrinn0O+tAokbGWJjX1+/Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775172516; c=relaxed/simple;
+	bh=I/krK6D5LnN6MWohk+eXmjCU98F95dnlWB8t4brqKKk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HxnXXUbkjdHMzrS21npSqktaApFJa5Lm1b3E2omLlIcCq+ZaBPI38pMyV274SSHB+hYBJtic5EzK7AAQJtGpj7ljOHNzGXnZomhodK7FS5oOhoR8L4G92GiMmRJZxkh8/2JsSmktC1ASwkOhO0z+hylPskOgDWOdBxTDCXOmWds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cZUN70ep; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hgMJCw0d"
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6055a0414d7so471457137.2
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 16:23:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775172209; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YfUzyBNFSun2PE00hZVII2oMQ0yGyVuFqxtALb7Bey+DIQdATJMJftwOYxRUXg8aON
-         ytxlShFhxmdIYN6sV+b2Yy+Jzwb2HFGc/pe/oCgT1wzBP6/FPxnO9IVbHsyjs1Mf7sya
-         rgpvSgky74tFFkg2PNWVUuYkeL/ehZCF6owJXeOBl1MNh1qTdAV9qwtoQjd9bJafqttB
-         UnZSDQcP0c7dhlHhhS9YUbDX2wCEdGiraBDe5tTEmNxJtaIApD2LctZjvGAryAwk97BC
-         5AK8VggNopQcMIFwqFEZQrum8r/OkIqDpwcF6DpTjUwXlI7QqpW2xL9xSRGyU2Kyl+b/
-         GLdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=gjOPgwHvpL8SXcAqUI6l7te3rZPTzhYxLIlKMmHX23s=;
-        fh=iKNg84BEyZ976U723tfSm3t1Bf8W/HgfQSRQ9eCW1Pc=;
-        b=XXn4Nq1bLvfjzAj+XVv8bf/bprbWr+rNZshz/ixLbFt7YNz89aLuqD0eML8bF/vXjl
-         4x2DD55PRH9tBIxSBqqzeT09rdfP5sJsQva99RXE7Yc9AcQbt91IoFTeWBn0CeB60JT1
-         YvLbAbRs/aO7XxQM/a+L1QuSRaJJ1EPacllTDdKCdk8qx+x643pURC1DBGAOm3ytcOdQ
-         Wwzdy8RzD0BpBlMug5/IvMZzefMcdpNNITTPfbVEu7HN0b4xw0UHHNYaf+MQAkAt1iwC
-         rwsEQOvolL2Hk9Ax9zLMHMgBJLUIOEiQW8OkpdJ52R3AJLHKXj8qxZ7ZmZUx8NWD/nGp
-         SGBA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cZUN70ep"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso1327371a91.2
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 16:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775172209; x=1775777009; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjOPgwHvpL8SXcAqUI6l7te3rZPTzhYxLIlKMmHX23s=;
-        b=hgMJCw0dcnHo4fyIvrToaTOmwNc7K5lDjkPce3jBlzx4+jUkVSHYGFoZ97rc4je6jK
-         UwuI9aiocpsKEetBQ8zM0aCqOpUtzUNWVwsywTGjKdCG6Twc9F2lrhg4IOpMruJtOrWH
-         YTFLSpBwG4DMtXWeV0EmAyxCJUfyNEj85AyK/2AE8IUorAIOqAYGYmsXweXaP5HoDmaS
-         Z9wVwa/QfF5fB+K83ekIo6qLV/uWRafEm7vFikJZb3SAaus2qGJn8C/H28SZFKNf7WJ/
-         RjX64XR4SvTo4J2jOiZKl4YOdyDYktJc+Gq7VXnyC7ajCQPMXSNooRzTQ4aPMx8Dp2FL
-         WVPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775172209; x=1775777009;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1775172515; x=1775777315; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gjOPgwHvpL8SXcAqUI6l7te3rZPTzhYxLIlKMmHX23s=;
-        b=UrGBBTU0NxuYrnztLF5WvlM4DhBguIc3xEtVb6++LifaIA1jtispGGjmTYBJXBBum5
-         GafMFihGeZUQodpE8W2RgVsVrACn8VdsvToiOYURdS0VICn/xRRJ4jbwDG/wnXIgojt1
-         11u6oJhGkGHz7t0WrluZlSN/evm0/WufwvqpQ+WXiev2NhC+RZi8ou7bpXiD9aOmaibu
-         tVBA8HpFS1/XZ2ZwoXuwaqaod92As7A7Oir8Mjt4PA4Gv+ZimpSNO8t1VEWaKeaZWtve
-         RT1Lj8rLyiPEcgsGXTXiyQJnyKXZRSc6m3sK9yfTX4QKRvZrXJpkmpmYSxMJm7U1K+DU
-         1tVw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWe62gPL7D4qQkzDnQKPA04KOV2DscfrT6X2aDrMKGFucFV3y7urFpd6Y0JgNGrqdr2SQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyppmF3JFNlMnqdJWJGxuKVwqxhwCBStdFXSz1EXS6V9+W24/sH
-	ChQIiVq87lEpHnLWs4EIpWMl3jSBJglATAc9/969dlAl4zau0K68fCcGUb3IfEfs/HW6O+kQzp2
-	9ufYk/qyV8jUS1zokXEIgxw9ZpYaP89k6fuPgVC/x
-X-Gm-Gg: AeBDieuwFMQjOlwC8b/Hn/XyoD9K5V5qV4Oyx2IEkiQFqWw5vjd040IhpIxBVVmCLJS
-	4EgfkRXbT2WL79vzyYkkeoUg9oIsyQGY1J/PmeqUHeiuh59+IaZJZCbHei1M2EmHDPtl46zM8AI
-	DQjEB6OS+g7ZtwyAimqLP+ZuKQPWKshW1zYDYP8JmqTz4MMPgVYNNOHq5g3q0jixpK7yx9Y/mQG
-	0A2NJv7klP8toLGQbQu3wNZdclntTdP425IJ+xglY0uJjTPhvD+cA79ckwoqIVE/b2ZC3PbL6oK
-	Y/ZWmFbMLwaSkrOXXGNCIN+ASCoushUyVU+aAkhOHGvbZyH3KAKI53nOick53E3de2rxvA==
-X-Received: by 2002:a05:6102:c47:b0:5ff:da11:fbb4 with SMTP id
- ada2fe7eead31-605a4cd8d9amr397405137.1.1775172209191; Thu, 02 Apr 2026
- 16:23:29 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 2 Apr 2026 16:23:28 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 2 Apr 2026 16:23:28 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260319005703.8983-1-yan.y.zhao@intel.com>
-References: <20260319005605.8965-1-yan.y.zhao@intel.com> <20260319005703.8983-1-yan.y.zhao@intel.com>
+        bh=QHSf2FjaEa5ZnI4HKqJFpv9coUE7HqZnWwa5bp6NaFs=;
+        b=cZUN70ep4xl1kelqxGpdV1YguEU6p3zdGI27GN34CubIItQZ3jchBQ06edBv0WjhQ2
+         syz2ZTWjTeFFvzIL1io457LILmC5YyIMdiCaZw8cFX6q65NDlSQqcvD3lNLZzMM4Uf2a
+         8ExIreq/d1PYNDjx/2zNJJqDgzbO4e6Hv/ZPSE4XGVpF7GJg5YqmYic/CfRtGpCZ4+g2
+         zK/otwEWkSiOZS3mTCpMttosoMWRm7zhtWQGMvHgYUnA3gXFwrA7rEvCQdqZxxQDkymO
+         2ezKSHw30gtSqtrbX4Ayl3u9olD73GHxbUEQEbDDY07DR4WwPYmG0Yul7yFPi1EbNxt8
+         TuRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775172515; x=1775777315;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QHSf2FjaEa5ZnI4HKqJFpv9coUE7HqZnWwa5bp6NaFs=;
+        b=myn7oEKQeIRhhzdMaOoMkQl3RtttQdC3CemhMIAMDvQaDQCamjdBTWSWI2SYiVF1mE
+         lz/F+R72Jcd9iehPT6Wsb+ReWCO8XHb1Ticifpym4GSAartCI+7l2YoAOjUvk0jugiac
+         qZsEeBHLG61JCcUuusJsJ3Igptijb7iUXZET8OTfJQjcRciWLh6MSuhM0IsCM5Ey/oiT
+         4I+zvuX/Sy9SHakbOEzmMKOXDZzdSLg9iSMXSscykkMpVm43c9LshH9SJ1fv0B0/YJLe
+         d3qmCTjqH+C62jLKXFXU6sSLG9+fZtnbkU2ECiOcKzAa0/wb1gQT4aeNxh/LtXi0erWR
+         8byQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEnH2FCM9OSZGZvd0f+xzIZ2SqS3u9ggzHpoimEaYoqBIQG8pVrcPOC5xQgaBTTERe368=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyka3M4gogP52EDbcuYEKu0D+ACB2g/tIFJEe707pl90sfTfW+t
+	buEkSMMetKiQEBDb0y2nzfvfPQJWlwaSdTYu48/GnPE2Ylj5nzXIZl+hQrlOKJy+dQBCQJXygYJ
+	HeuuyRw==
+X-Received: from pjzh24.prod.google.com ([2002:a17:90a:ea98:b0:35d:a9bd:1fef])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1e0f:b0:35b:e4f8:7cb0
+ with SMTP id 98e67ed59e1d1-35de691ad72mr639328a91.21.1775172514620; Thu, 02
+ Apr 2026 16:28:34 -0700 (PDT)
+Date: Thu, 2 Apr 2026 16:28:33 -0700
+In-Reply-To: <4dfb4c106c834cd13da78872bfb262e98581fa55.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Thu, 2 Apr 2026 16:23:28 -0700
-X-Gm-Features: AQROBzBntx9xdv1WNhuZ4VA9cGFnH-Mo9Y24zQ9Jpt4-WeTGuacelxcK9gYE_Jc
-Message-ID: <CAEvNRgGknoP=QscA-efLB0LSS03XttsdN3v0KBVROAXTknAakw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
- private memory
-To: Yan Zhao <yan.y.zhao@intel.com>, seanjc@google.com, pbonzini@redhat.com, 
-	dave.hansen@linux.intel.com
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com, 
-	yilun.xu@linux.intel.com, vannapurve@google.com, sagis@google.com, 
-	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
+ <20260327201421.2824383-8-rick.p.edgecombe@intel.com> <acoUt9vy8OPU1SW9@yzhao56-desk.sh.intel.com>
+ <8a107d4da92d4cf910f9a70991a0e67b42e04d4f.camel@intel.com>
+ <ac3Ng7IZpzJczZ2x@yzhao56-desk.sh.intel.com> <4dfb4c106c834cd13da78872bfb262e98581fa55.camel@intel.com>
+Message-ID: <ac77oSNltyE6vkVD@google.com>
+Subject: Re: [PATCH 07/17] KVM: x86/tdp_mmu: Centralize updates to present
+ external PTEs
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Yan Y Zhao <yan.y.zhao@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, Kai Huang <kai.huang@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yan Zhao <yan.y.zhao@intel.com> writes:
+On Thu, Apr 02, 2026, Rick P Edgecombe wrote:
+> On Thu, 2026-04-02 at 09:59 +0800, Yan Zhao wrote:
+> > On Thu, Apr 02, 2026 at 07:45:54AM +0800, Edgecombe, Rick P wrote:
+> > > On Mon, 2026-03-30 at 14:14 +0800, Yan Zhao wrote:
+> > > > > +	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
+> > > > > +
+> > > > > +	/*
+> > > > > +	 * Temporarily freeze the SPTE until the external PTE operation=
+ has
+> > > > > +	 * completed (unless the new SPTE itself will be frozen), e.g. =
+so
+> > > > > that
+> > > > > +	 * concurrent faults don't attempt to install a child PTE in th=
+e
+> > > > > +	 * external page table before the parent PTE has been written, =
+or
+> > > > > try
+> > > > > +	 * to re-install a page table before the old one was removed.
+> > > > > +	 */
+> > > > > +	if (is_mirror_sptep(iter->sptep))
+> > > > > +		ret =3D __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE);
+> > > > > +	else
+> > > > > +		ret =3D __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
+> > > > > =C2=A0=C2=A0	if (ret)
+> > > > > =C2=A0=C2=A0		return ret;
+> > > > > =C2=A0=20
+> > > > > -	handle_changed_spte(kvm, iter->as_id, iter->gfn, iter->old_spte=
+,
+> > > > > -			=C2=A0=C2=A0=C2=A0 new_spte, iter->level, true);
+> > > > > +	ret =3D __handle_changed_spte(kvm, sp, iter->gfn, iter->old_spt=
+e,
+> > > > > +				=C2=A0=C2=A0=C2=A0 new_spte, iter->level, true);
+> > > >=20
+> > > > What about adding a comment for the tricky part for the mirror page=
+ table:
+> > > > while new_spte is set to FROZEN_SPTE in the above __tdp_mmu_set_spt=
+e_atomic()
+> > >=20
+> > > You meant it sets iter->sptep I think.
+> > >=20
+> > > > for freezing the mirror page table, the original new_spte from the =
+caller of
+> > > > tdp_mmu_set_spte_atomic() is passed to __handle_changed_spte() in o=
+rder to
+> > > > properly update statistics and propagate to the external page table=
+.
+> > >=20
+> > > new_spte was already passed in. What changed? You mean that
+> > > __tdp_mmu_set_spte_atomic() sets iter->sptep and doesn't update new_s=
+pte? If so
+> > > I'm not sure if it threshold TDP MMU.
+> >=20
+> > For mirror page table, a successful path in tdp_mmu_set_spte_atomic() l=
+ooks
+> > like this:
+> > tdp_mmu_set_spte_atomic() {
+> >   __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE); =3D=3D>sets mirror=
+ to frozen
+> >   __handle_changed_spte(kvm, sp, iter->gfn, iter->old_spte,
+> > 			new_spte, iter->level, true);=3D=3D>sets S-EPT to new_spte
+> >   __kvm_tdp_mmu_write_spte(iter->sptep, new_spte);   =3D=3D>sets mirror=
+ to new_spte
+> > }
+> >=20
+> > So, the tricky part is that S-EPT is updated to new_spte ahead of mirro=
+r EPT.
+>=20
+> I still don't see the point. That ordering is not new, and this patch act=
+ually
+> adds a bunch of comments around the operations above and below the
+> __handle_changed_spte() call. If you think something is still missing may=
+be you
+> can suggest something.
 
->
-> [...snip...]
->
-> -u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2)
-> +u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, kvm_pfn_t pfn, struct page *source,
-> +		     u64 *ext_err1, u64 *ext_err2)
->  {
->  	struct tdx_module_args args = {
->  		.rcx = gpa,
->  		.rdx = tdx_tdr_pa(td),
-> -		.r8 = page_to_phys(page),
-> +		.r8 = PFN_PHYS(pfn),
->  		.r9 = page_to_phys(source),
+Ya, I'm a bit confused too.  For me, the "tricky" part is understanding the=
+ need
+to set the mirror SPTE to FROZE_SPTE while updating the external SPTE.  Onc=
+e that
+is understood, I don't find passing in @new_spte to be surprising in any wa=
+y.
 
-Perhaps in some future patch, are we considering also passing pfn
-instead of struct page for source? Would we also update
-kvm_tdx->page_add_src to be a kvm_pfn_t?
+> > > > > @@ -1373,6 +1396,9 @@ static void kvm_tdp_mmu_age_spte(struct kvm=
+ *kvm,
+> > > > > struct tdp_iter *iter)
+> > > > > =C2=A0 {
+> > > > > =C2=A0=C2=A0	u64 new_spte;
+> > > > > =C2=A0=20
+> > > > > +	if (WARN_ON_ONCE(is_mirror_sptep(iter->sptep)))
+> > > > > +		return;
+> > > > > +
+> > > > Add a comment for why mirror page table is not expected here?
+> > >=20
+> > > Ehh, maybe. Thinking about what to put... The warning is kind of chea=
+ting a
+> > > little bit on the idea of the patch: to forward all changes through l=
+imited ops
+> > > in a central place, such that we don't have TDX specifics encoded in =
+core MMU.
+> > > Trying to forward this through properly would result in more burden t=
+o the TDP
+> > > MMU, so that's not the right answer either.
+> > >=20
+> > > "Mirror TDP doesn't support PTE aging" is a pretty obvious comment. I=
+'m fine
+> > > just leaving it without comment, but I can add something like that. O=
+r do you
+> > > have another suggestion?
+> > What about "External TDP doesn't support clearing PTE A/D bit"?
+>=20
+> It sounds too close to "TDX doesn't support..." to me. I think I'd prefer=
+ to not
+> add a comment unless you strongly object.
 
->  	};
->  	u64 ret;
->
-> -	tdx_clflush_page(page);
-> +	tdx_clflush_pfn(pfn);
->  	ret = seamcall_ret(TDH_MEM_PAGE_ADD, &args);
->
->  	*ext_err1 = args.rcx;
->
-> [...snip...]
->
+How about something like this?
+
+	/* TODO: Add support for aging external SPTEs, if necessary. */
+
+That makes it clear that this path is supposed to be unreachable because KV=
+M doesn't
+yet support aging external SPTEs, while not trying to say anything about *w=
+hy*
+KVM doesn't support aging external SPTEs.
