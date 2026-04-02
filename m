@@ -1,143 +1,124 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F8C28150F
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 05:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A87913A3F7
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 05:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775107208; cv=none; b=uGRPfYdftGPB2h3nn4ZSWIRjZbqdkEEPzaDGW529XUnUQ8qk6OpR1HS7RrkORAwXq350MndORbUzBa5XtMVQTw9kGEKupouLmepSn6n2fCzOPjHFBh6pJIChaAzQkpYu1E7nj4quPNKx6TJPhHp5bnsWgGgngHRhqjJbyKba6n8=
+	t=1775107640; cv=none; b=eOYPJKkuda6I3o1uALSN8epZetD7dCL5SdIDPQppHRFvoo4F8urYDviIwUqt/0ayXunAtm9d/gqlA3X/ULkFimCqeEJl8LfBDiGXmfMEMT6o0YmKm4nTgpMTtaqgXQ5xxmWnDzMIDH4NjXClvOpkPQsew8aMaP8PApJ1GZvsguI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775107208; c=relaxed/simple;
-	bh=rirG7dXdlaZs85SD2FS2kk5f6PLtuyhPDVjoQlUhFFs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fDcNb1dvL33NDNwgl738lE3kVV+7AjINfUWEFHM06l6jrbflDlilI5atcefOld31ZhfB6YttbcwUD8mNrxYmhm0D81qW+gIVGJeJN1z57U2V5En6ABgOgctkJenki1CvNgR5iPrE6hPWW0Fied41e0ez/38R+sF9e+K3IWUJ9t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rVxSkwSQ; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775107640; c=relaxed/simple;
+	bh=ENOHIiG/nJeUH4p0ivNLtckZo43UNbpHEyq7JiiHQo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=enT+DnmisNFHYbs0jTiDzwhNxOrpE0A1zv92QABmv/AKSpk1Nr4T1g9mervq8lM4p0iP0fQC6HqGZMYXt93PqkswhxuU6aIOrh/eyB2IQSzmLyi0+/zvHi2ri86jgbe8qVHeZz4PiKWjBXCsndJKDHKF3YXjwuXKxWLpOJCcUA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l01U65lS; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rVxSkwSQ"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35daa02ea08so17423a91.2
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 22:20:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l01U65lS"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b2591757fbso69645ad.0
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 22:27:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775107206; x=1775712006; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xaxw8FD+mFZydbFnh3nyyzgdnrrrUvvU4FLHJUXGXks=;
-        b=rVxSkwSQcxAPMiTMYgi5VMqdOGLQ9JqiZodBFW/HznBFeXcgtFaD/syGMT8TFgzVzZ
-         Ib8bXdmcQZlGQRNiy5A6g+NDWcUSOPcoWvy/MNoUn24Q/tmodo9GHzf07joG9vRNry6s
-         iaWUybbX9szcxBvhN6QGFQxmsuuOUAvmBzvF+9yeawHgCBS5qmNhyD01t8XYjmKzQwVt
-         0aV5C9Kw6vcBfLA+754fMmI0S02G44aHmnunvCFSMUUXNVYKA4lmxPKsLtNA2b+Ft5Oy
-         2d9AmGA1HtuRZdYBCj9rgsFKvg4F918QvIvX0UP1RomFMjENHp6+77hOu3BSiKXd0PMV
-         KfvQ==
+        d=google.com; s=20251104; t=1775107639; x=1775712439; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UkCyRr5ozKiXkuDknWW56qbTFqxmRYk5ffbC+bP6wlM=;
+        b=l01U65lS1eZPHQFyA+KXOu7mK0Q9/ZXm5pfu8VqdnH9+6euXJlsBFPYpm36HqlyDb+
+         b3cdZyrakYjrvUyYrIb/u9I3yTVeWgbJ2Uv1mr+0QovGYuKz91yAtVTJIg76DEh8ZZ9A
+         PgY16SXshWwZ+YKxCQ+jqbbgOLo8yvBy++Y7kwTyzvvUpDCPI8x2emKNr/SN0zYrLU2K
+         vRzi73bO7mzKiEcSaMf5vxdu1qlVwRX8cxjVPs8VBmvjKLN3Pr5a78+9biqZaBzXn+d3
+         o3bdAPufzeARoOC1xUW37QdiYC6aW/M7WM6Pk3mcVKfClt6i+PHQT51f7fD3YPusIvXj
+         RoPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775107206; x=1775712006;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xaxw8FD+mFZydbFnh3nyyzgdnrrrUvvU4FLHJUXGXks=;
-        b=kY3hZiJC9ZOBYy8KPtXFLwOQBT2uKVXvSp1tO2ORLGCRcLeJ06v6kbw/kdGa4B4WF4
-         ZAAJgFNw7WlCJftVTh/+2l4ov+YB7KzpskVwCVZK8RQBPVcw2bFn6KIGcFfGelzeKKOz
-         ubvwmGgn9J2MAJkU9G/omJBwU0mIHIGY8pE+LUi4fLqO3PTExtdpfN/WILrKP9670lS8
-         y6gyv9UsCrDLwzPmTNJnGEMx6AIMXg1LT0fUzpYlPdVVys3TeTL70LVNUhz5RcD+uVGc
-         r4l480ZYvRFnQod/ljK+LlXgAh+0qK+9gXAR/aEhHLTVeza9yaXGqeqiP4REn2woQvRY
-         6CTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxwin5MKpShA5AMxe9pB0Cja4l+ps+dnzJsxUnWA4x+AdkEpBVj95vH+2guPH1PgqCppc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzit7yOgkct4JUlR/RAf45i5zVhaDaxi7uAm57FTa4MbkFwC8lq
-	OAAJEC6VadSQy0v4hQ7GepJnLMl1tW+qwiqwHOcmDgica6R+N2zPwoti
-X-Gm-Gg: AeBDieuIPB3RydwGb+JuMAXDhaeNyg0Bg337b/RmOtC9ku63gFYQtAgjERQ8o9V2qSN
-	QM+QyLbgAUkYsUkolUPwuQqM21JAvWI3wdrUqfZfads8ju6jUtDEXZesFN4cWFvPRUkb+kpMyI0
-	IpREjjH+dmy0/5OQhBbSNvwNgTcb7MWQHhNjI4765VyLAr2uG9roif8eK6n1RnRudojDIP+xq9v
-	TJkAabBoQk2sjWBoV3SQRgM2nD8EstwcuqBL1L6rJqmmNENpRwc3l9pAP1mR4GL11JG6V9LnTWr
-	pW6wt1lfVOpsnWM/YlEo/PlPlrB6keTfqaihIt1vwmGr1Qej6hwP+7n/sM5idzTY3dqR75NcQNV
-	09GDHr8Q+DRExpnjNAvfMEhQaZZwJjeyd5+DvVFUAlWMN0zDFp/1PiU7e0mYK/5exFpGCEKQFBC
-	mZlPAkaHcje2ibvloNzgAXs+0D7vbMSmSslttrNl3z/vMZARrcQTpDe+fsDZQDnSgZUj8=
-X-Received: by 2002:a17:90a:ec86:b0:35b:a241:ffb2 with SMTP id 98e67ed59e1d1-35dc703b635mr3600154a91.7.1775107206477;
-        Wed, 01 Apr 2026 22:20:06 -0700 (PDT)
-Received: from BraveProgrammer ([2402:e280:3d94:585:407a:b266:f3b0:4e10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dd36a1d04sm1841668a91.17.2026.04.01.22.20.03
+        d=1e100.net; s=20251104; t=1775107639; x=1775712439;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UkCyRr5ozKiXkuDknWW56qbTFqxmRYk5ffbC+bP6wlM=;
+        b=ss1g2scPP8osqili5RpBDgLZKv3IWX5NuZuhELWWm0E2Wb3sgQ5Coc0NYg4BNbM4G8
+         FfAX+CXoMbIvk6s7CvN76y94mtT7tibYHRB9O/um42HOBqFXdQmP9CKPNLLxLkpLxMgs
+         1n3d5i/BT/d8rDb9AVOEhMWWQ4G5tQ03WEfGIertaeRP62G0QQl4q0+HZg9KmQwFvyNO
+         RYKI0SCGuzmLpvOfCF3s5N21Vi7y4/mI5WCZkPR5jljapQeKHM9Ta5hsBszCHp5OkXC3
+         zFWXdy302KXbKSW7AFTxtfFyeSEv9sVdycvNr+YGE2tuJFXrkzkkqGnWqUxwR4zHUsXb
+         gnRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXW+Nn5z8Qfp5Ak3YuzTkBFSMOsgBeLA9TSjouGsV5599ORzIHBg9I+MWmsQeXKe6HtsME=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTAFP8bDziV5+q+L7IE87rDYpuMnsWMeNYqWFq/GVa+J6cJuLy
+	F2JAHGs2V+/l7Ww6ZzawVUDc57mlQzeFhJZQ7iCsZroVsuUAivHA4tHG+WRqeYqj
+X-Gm-Gg: AeBDietwb/ItdXAUaOBQptPcP76QrsYFIa22G/AizvuxddzBmDg6SEbsF/1LI36T2rU
+	p/kkx042Gu35phH3z+G5uhozQBmMacIfXvixT0+B4bAJ136LdgNU089GfhrTIAflFelOd4holI5
+	up9Wir/MUQxYHd7Pi4xU8/lj6EdQoDRBr+Tox1JKb2t//OH2Ig4j9KvqkyJ4tNePEGgpCNoxCkd
+	9GZ+gm4gDkzy3uWq1CBCLjBvi9pXPVpp/h589w/L12jWx6JT28N4GuaKCVeRb+hAifJoaVVMu+V
+	rbEYD7mxbb6iIPVaLr9c3XNnR6F/hg3jjJHo0iyxg2UMpvQOuNP7rVHmCHlga+szt5tHKawTgrM
+	PHXTn/zWNP1AU587XlavYitPm8NlFQxlLUtTmsUxENqAXitKzF4PvnHE+fPVQgnpYcVoP8RTHFQ
+	cmAtgKb1TZuQIsGoq0+i9/Sxhb79xv5rI2dXtQQnXXSl6UdZhUZavzZm3Fmlkk4Q==
+X-Received: by 2002:a17:902:f64a:b0:2ae:7fa2:6bda with SMTP id d9443c01a7336-2b27842642bmr1013075ad.1.1775107637991;
+        Wed, 01 Apr 2026 22:27:17 -0700 (PDT)
+Received: from google.com (128.161.199.35.bc.googleusercontent.com. [35.199.161.128])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749c38adsm18227835ad.69.2026.04.01.22.27.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 22:20:05 -0700 (PDT)
-From: BraveProgrammer <spujari79@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: yan.y.zhao@intel.com,
-	kai.huang@intel.com,
-	binbin.wu@linux.intel.com,
-	vipinsh@google.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	BraveProgrammer <spujari79@gmail.com>
-Subject: [PATCH] KVM TDP MMU FIXES- Replaced unsafe panic calls with proper error handling
-Date: Thu,  2 Apr 2026 10:49:40 +0530
-Message-ID: <20260402051940.1051-1-spujari79@gmail.com>
-X-Mailer: git-send-email 2.52.0.windows.1
+        Wed, 01 Apr 2026 22:27:17 -0700 (PDT)
+Date: Thu, 2 Apr 2026 05:27:13 +0000
+From: Josh Hilke <jrhilke@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	David Matlack <dmatlack@google.com>,
+	Alex Williamson <alex@shazbot.org>
+Subject: Re: [PATCH v2 10/14] KVM: selftests: Add support for NMI delivery
+Message-ID: <ac3-MX2wzd3RDyWj@google.com>
+References: <20260331194033.3890309-1-jrhilke@google.com>
+ <20260331194033.3890309-11-jrhilke@google.com>
+ <ac2ANoivTv4t41_i@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac2ANoivTv4t41_i@google.com>
 
-Unsafe Panic Calls Converted to BUG() AND BUG_ON()
-AND
-Added Proper error handling: Using WARN_ON_ONCE(), pr_err()
+On Wed, Apr 01, 2026 at 01:29:42PM -0700, Sean Christopherson wrote:
+> On Tue, Mar 31, 2026, Josh Hilke wrote:
+> > From: David Matlack <dmatlack@google.com>
+> > 
+> > Add the '-n' flag to vfio_pci_irq_test to route device interrupts
+> > to be delivered as NMIs (Non-Maskable Interrupts) into the guest.
+> > This expands test coverage to include KVM's NMI injection and
+> > delivery logic for assigned devices.
+> 
+> The original motivation for sending NMIs wasn't to validate NMI delivery, it was
+> to validate KVM's handling of delivery types that _can't_ be posted, and more
+> specifically KVM's handling of transitions between posted and remapped mode.
+> 
+> NMI just so happens to be the easy choice (SMI support isn't guaranteed, INIT is
+> too destructive).  I.e. any NMI testing is largely a bonus.
+> 
 
-Signed-off-by: BraveProgrammer <spujari79@gmail.com>
----
- arch/x86/kvm/mmu/tdp_mmu.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+Got it. I'll update the commit body to reflect this.
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 9c26038f6b77..3396bf157716 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -590,14 +590,15 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, gfn_t gfn,
- 		pr_err("Invalid SPTE change: cannot replace a present leaf\n"
- 		       "SPTE with another present leaf SPTE mapping a\n"
- 		       "different PFN!\n"
--		       "as_id: %d gfn: %llx old_spte: %llx new_spte: %llx level: %d",
-+		       "as_id: %d gfn: %llx old_spte: %llx new_spte: %llx level: %d\n",
- 		       as_id, gfn, old_spte, new_spte, level);
- 
- 		/*
--		 * Crash the host to prevent error propagation and guest data
--		 * corruption.
-+		 * Return early to prevent invalid SPTE from being set.
-+		 * This prevents guest data corruption while allowing the VM to continue
-+		 * in a degraded state for debugging purposes.
- 		 */
--		BUG();
-+		return;
- 	}
- 
- 	if (old_spte == new_spte)
-@@ -1453,9 +1454,12 @@ static bool wrprot_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
- 	u64 new_spte;
- 	bool spte_set = false;
- 
--	rcu_read_lock();
-+	if (WARN_ON_ONCE(min_level > KVM_MAX_HUGEPAGE_LEVEL)) {
-+		pr_err("Invalid min_level %d for write protection range operation\n", min_level);
-+		return false;
-+	}
- 
--	BUG_ON(min_level > KVM_MAX_HUGEPAGE_LEVEL);
-+	rcu_read_lock();
- 
- 	for_each_tdp_pte_min_level(iter, kvm, root, min_level, start, end) {
- retry:
-@@ -1887,7 +1891,10 @@ static bool write_protect_gfn(struct kvm *kvm, struct kvm_mmu_page *root,
- 	u64 new_spte;
- 	bool spte_set = false;
- 
--	BUG_ON(min_level > KVM_MAX_HUGEPAGE_LEVEL);
-+	if (WARN_ON_ONCE(min_level > KVM_MAX_HUGEPAGE_LEVEL)) {
-+		pr_err("Invalid min_level %d for write protection operation\n", min_level);
-+		return false;
-+	}
- 
- 	rcu_read_lock();
- 
--- 
-2.52.0.windows.1
 
+> > @@ -125,7 +132,7 @@ static void send_msi(struct vfio_pci_device *device, bool use_device_msi, int ms
+> >  
+> >  static void help(const char *name)
+> >  {
+> > -	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] segment:bus:device.function\n",
+> > +	printf("Usage: %s [-a] [-b] [-d] [-e] [-h] [-i nr_irqs] [-n] segment:bus:device.function\n",
+> >  	       name);
+> >  	printf("\n");
+> >  	printf("  -a: Randomly affinitize the device IRQ to different CPUs\n"
+> > @@ -136,6 +143,8 @@ static void help(const char *name)
+> >  	printf("  -e: Destroy and recreate KVM's GSI routing table in between\n"
+> >  	       "      some interrupts.\n");
+> >  	printf("  -i: The number of IRQs to generate during the test.\n");
+> > +	printf("  -n: Route some of the device interrupts to be delivered as\n"
+> 
+> How much is some?
+> 
+
+Every 4th interrupt is an NMI. I'll update the help text in v3.
+
+> > +	       "      an NMI into the guest.\n");
+> >  	printf("\n");
+> >  	exit(KSFT_FAIL);
+> >  }
