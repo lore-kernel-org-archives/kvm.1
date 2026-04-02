@@ -1,61 +1,64 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D116230ACE6
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D029935F600
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775149487; cv=none; b=I/nM7KFkzQuykTVXsaN412s1ENuaqrEy8WKiJeyxknY2I/YL3Is0MKqdVXG3Em0fpirMu7wgXL4R7WgQe4bP6H8Ms8qNFPEFEIGIG/ftdqjUKsg7RJPP6Q76ixsc3ItLMFjS9FV4vfLLMOOu3pDD7V6WhhcU25+n5b0DTq2op88=
+	t=1775149494; cv=none; b=m8404IGOFHyvbNI3nSTMCw1i9ku3lIAAvAjt2ijbyk1VheSgu9edWfe55hrRETbjStcjDETh2iZH46ORiddEePbuX6FPr7IuumNYpY85BqhNZjRBN6NClcePu1fjd3Bzr3w9A0vAJOuwVYiuUCA7RxDrFjP5gPDkK9CYjf27ZjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775149487; c=relaxed/simple;
-	bh=wgBMX9IuK7BfoA9PzeuTwsbN5QBfs57Tfd0TFXNnrnQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bZm1gn/oPAMlg5rxcT+oPtnUbBzTHWNqI96lRQoueyCstFJo7em4zLEYzRjVxQSzKcFs/JX09vIr4zgpEWRwY2WYNbEVcIX2l2A6DdLWSaJQZFj5MWPCPXTQ1L5tNlSF18m6j6IWINevzjB34DIEieP+nALCgRvckQFZFPq76B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rtC8fKPw; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1775149494; c=relaxed/simple;
+	bh=3o4VgDnfNaFXxqn4Nz62e9pf85l7PncTpGINsBMeziA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c0057D4lxce4LaOuUTG6hqutxkksVIo+qeVC+qH/VSjW7aY3d8h81fP7PgtKsCKwnihHizelityhkqD4wNVWwdCZQUDrW2q4Wt0JseA0bKLW9IeULkyb0oWUXKEVb7jpB6jI9S5NdNSwEWVIjtMJII0rLjqjFGjEfXXC53T/d0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wFKASwPy; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rtC8fKPw"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cfd832155so661414f8f.1
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:04:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wFKASwPy"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-482f454be5bso24160855e9.0
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775149477; x=1775754277; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UolboCUEZpC2bIGieZdsWjT74OHHgRoWm02qV7hCKf4=;
-        b=rtC8fKPwjm40ikys3S0lEZpmoy5buYhNSj1WOdRDKbSTZutFE3aIEGqxO8UbzbbXLS
-         vbvYzYSp/STa8l++kvdp1h9gqRlF7XZzmSStLJU4UsiOiMhOAupRyxrh8z5iImzie0Qt
-         sUtWocFsHRhlqRg7D4cXeBoNgW+J2PAgS+mOYwHvOl/8nWDb1eat5s/d3J/mkTOsavQZ
-         jFHyjjFhUOaSxu+Q/0ziJlg/NaQntPe3ZAdDNBRqkjfqQlcjZfWLuiAWD35Xb8KxgsDD
-         OgISr/OfRPGW0Mi5NCZEEg4aSUX+XgTrMD7Uiq7FWFVKLctLqN7xYaSGW484PQcQFDXD
-         QlBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775149477; x=1775754277;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1775149484; x=1775754284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UolboCUEZpC2bIGieZdsWjT74OHHgRoWm02qV7hCKf4=;
-        b=S+nABKUq9ITE6bD0R6Vetc/Sk1BCo+Ok5aOHOL3nDsbgtdEQbNHr2jUxh6lOJdUdiz
-         DsnGPHObh4gY57ZeuxkgjRFbQdWrAVQg1gQnMhZJsKFOvV9FBSY7yTF9Ua5I44aIwJaI
-         Fg/AQWWA0aQiPqUKgKpYA7HmhuW6XcgXUFvA3oIjRioemqZbc6XIMaHOwBBruXjbQlu5
-         OsrvDw5rDAlcPBvYbGFunm2pne2KFGdtx4I2ZZpKXKyDPsa+Ynyhr1+HDrIruc+X/isl
-         NAeAdP5vZzZdlcQi69VuxmbPEPel9fH6llzYqP3/ooGbWO92lBbGlwV1m0G+inqcH5/j
-         HVkg==
-X-Gm-Message-State: AOJu0YztKjkRGbL1qIZ0eFLeiTllc3WCXWNYfM3WqlorwGfd4qeWDaBD
-	lEfTYowmUbQaqs/BK7dRuao79N1kLkNfIqVFe5f/jP3Bg1+u9fbuKOkb4MmrnO1BpQo=
-X-Gm-Gg: AeBDievgQVX5lIic2LWyfJOFz2Y4eBB4hvRZqHDHuh87A+IsaD5d0Y1RGe08T4JNHXR
-	oVGBSEuYc4/fFla6ZJl/eFoAvjBtZ5Ns+152ObUKj86mX+Z+gdLH4VvEE7L6rlPNDRkLzNdq9K1
-	74BMTBG2hrpNX6J94EyYKMTigIEicVrHL7BQ1QdrMvekbO7WH4xI2vzHp0luDWvxGf3YBamrFfH
-	MIjQ8nN4Uz30APh+wtSJ7CXuXm5OqXoQE3ROy1GiNmRbCqrL0u2kcSoTpQXhF0fL/txXcygspwU
-	YFPJEAAzxMYSVBGbr9LHa01PKjLU8EZ7W8pqF80TcVj5uwwVh2EsNk9/A02sJ0GD4/SlwhhzSFl
-	0e4a8WLfSiHUz3fyPoM8mzPISuBGRyWuA1jJOrVogzxRsI+PQ9wdqqI6PTJvcwHMl7RpOCufW43
-	efufzVHbYVrWoaJXFiy8trjg6I5QeIYIXVPdmIpq1fNITWCVV8Ju7BtUZkus3aFl8llCb7gnQIV
-	rbbU8l8XOw=
-X-Received: by 2002:a05:6000:4285:b0:43c:f40f:6c92 with SMTP id ffacd0b85a97d-43d150429c7mr15427579f8f.8.1775149477038;
-        Thu, 02 Apr 2026 10:04:37 -0700 (PDT)
+        bh=KGFFrfbr36AmEzkh74oOA4hg7tq9vtm73qaYZR3gMNw=;
+        b=wFKASwPyuGkQHG9J8S/y0LHqn+3Jotn63Q5T36bDU89+vLsGzpx3wBiyf23DMlD0Fx
+         qHcBjOoYah7bmHkYy+8Cu77viPO+80PigXEDidJqVb+2o1SAZiiBZGFwOQUF7ByKq3b6
+         Mjp9VQYj78ziPDfq16djmT7LfIXd4TCn4yb/tFzODH+JKizoOP1lqcc2O/3dIl46i0jq
+         fUijqt5lB6OiWlB75xbrK/Eq33vy3bWXH+E/WRfYktsrUZRg/t5qmii9ubp9aMHiE8d7
+         lO5zQciqaB38Rac5jp71CqOf6t41s8ab5q+nYUw+R9Cb6e1vnWxH+EC04C8D6CWB9Dqv
+         1ybw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775149484; x=1775754284;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KGFFrfbr36AmEzkh74oOA4hg7tq9vtm73qaYZR3gMNw=;
+        b=Yh+Iuxie3jCVFyt+T0cqm88laOLtnp/xenZwLaS2TdXFsPiaGL8kEiqvG5jmE6PAff
+         KiL/O6VUFzq/dkYpBnXf5xcdy2dc/uv5Y2aSqK9g0fc177mXHy+Bq3WwLFTuFXvqtP+U
+         i8tMl01RUu3M+ydy8zKa63AhmUKPBD+wrzh/6y4QwWnLi4XUaIbcT2NeMFFycyhGBSL0
+         Ndi61Q5qJlkiufU0R0doq0jIruAHRqBLWfpgC6wAXoWwYkPbEHMZSdAY/4zJD8ANb7dG
+         3azRo3+VFTfXH9tPF/0u9Oqgw92OyUuQq6bFPcuSQu+P+QKMoe+IBb0b7lF1HfwpLTAz
+         f8CA==
+X-Gm-Message-State: AOJu0Yyo6xMQFyu76ePsKncoDCbiqtnbXbkrbAjFfVK+pCOGo52g+g3g
+	SkA5KBItFbo5SKnJBxttuxuPrM+o+Z9xaNT0Yg8tFkjyCH4ar0wBkDkQzp+t+XV9n338YI2dH3s
+	XFh7mo+8=
+X-Gm-Gg: ATEYQzzmFUbQlEAkKYWlJGVONuJ/Wwqh8i5Jy5JxrzLqHeT6z0LE/CWOIyknMlW3RNy
+	mWnZaE4QEAYGlxsOHhA+gRR3jVJmCUpIF6croJ/1uigSQ9dX9cQK+356dsl5QR8reI7EQFRwXJT
+	NhksLm/dUjen+TloEWnnJIaKXwD4gV/H44Hu2U10m0P56bWaaEVNDZLXmklmRL8xbLb4v7gZoOD
+	hxxHQS2IS9LzFQjn/HCHKl2VKw+dT9bYcmZsf4O38odZ8wNfYaqJRPm0rnNzZdvMWLPHq363VB0
+	Ae3KOBQWAX10GOfwb4ZkP2d05lnjJxKG5pujWzoUZa4gJITjSRbW3hlBTc//j0ZAVOIpgsvcsCj
+	n3ZLU2fCxarlbYeJO8gxjOBZZuqN+7ykG7vzhcdn6OENauiu+NVDQjxwB2Adaf1bywlQVCdLIcY
+	BPT8DJQvN8yr3GasqXM+fR48a/Ij0zpSQeDuxFXrVGIzAXhF0mvqZtc7YQHgE1h3RhWpWBe9QY8
+	Nkd4BakgQs=
+X-Received: by 2002:a05:600c:3b0a:b0:486:f893:56c6 with SMTP id 5b1f17b1804b1-4888e09ba82mr46452805e9.10.1775149484030;
+        Thu, 02 Apr 2026 10:04:44 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d214f2b63sm6044517f8f.28.2026.04.02.10.04.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a7165aasm104469075e9.14.2026.04.02.10.04.43
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 02 Apr 2026 10:04:36 -0700 (PDT)
+        Thu, 02 Apr 2026 10:04:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -67,60 +70,60 @@ Cc: kvm@vger.kernel.org,
 	Peter Maydell <peter.maydell@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-11.1 v2 0/9] target/arm: Compile accelerator-related objects as common code
-Date: Thu,  2 Apr 2026 19:04:25 +0200
-Message-ID: <20260402170434.94783-1-philmd@linaro.org>
+Subject: [PATCH-for-11.1 v2 1/9] accel/kvm: Include missing 'exec/cpu-common.h' header
+Date: Thu,  2 Apr 2026 19:04:26 +0200
+Message-ID: <20260402170434.94783-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260402170434.94783-1-philmd@linaro.org>
+References: <20260402170434.94783-1-philmd@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-First drop TARGET_KVM_HAVE_GUEST_DEBUG (all targets but MIPS
-support it), then -- after minor changes -- move the ARM
-specific accelerator units to target_common_system_arch[]
-source set, allowing to remove arm_system_ss[] for good.
+kvm-all.c uses EXCP_INTERRUPT and EXCP_HLT, defined in the
+"exec/cpu-common.h" header:
 
-Since v1:
-- Include missing "exec/cpu-common.h" & "qemu/queue.h" headers
+ 17 #define EXCP_INTERRUPT  0x10000 /* async interruption */
+ 18 #define EXCP_HLT        0x10001 /* hlt instruction reached */
 
-(I plan to merge via single-binary tree)
+This header is indirectly included via "system/kvm.h" -> "cpu.h".
+Since we want to remove the latter inclusion, include it here in
+order to avoid otherwise:
 
-Philippe Mathieu-Daudé (9):
-  accel/kvm: Include missing 'exec/cpu-common.h' header
-  accel/kvm: Include missing 'exec/vaddr.h' and 'qemu/queue.h' headers
-  accel/kvm: Remove TARGET_KVM_HAVE_GUEST_DEBUG
-  accel/kvm: Expose all non-target specific declarations
-  target/arm: Compile WHPX as common object
-  target/arm: Remove target_ulong use in hvf_handle_psci_call()
-  target/arm: Compile HVF as common object
-  target/arm: Remove target_ulong cast in kvm_arm_handle_dabt_nisv()
-  target/arm: Compile KVM as common object
+  accel/kvm/kvm-all.c: In function 'kvm_handle_internal_error':
+  accel/kvm/kvm-all.c:3147:20: error: 'EXCP_INTERRUPT' undeclared (first use in this function); did you mean 'SA_INTERRUPT'?
+   3147 |             return EXCP_INTERRUPT;
+        |                    ^~~~~~~~~~~~~~
+  accel/kvm/kvm-all.c: In function 'kvm_cpu_exec':
+  accel/kvm/kvm-all.c:3436:16: error: 'EXCP_HLT' undeclared (first use in this function)
+   3436 |         return EXCP_HLT;
+        |                ^~~~~~~~
+  accel/kvm/kvm-all.c:3490:23: error: 'EXCP_INTERRUPT' undeclared (first use in this function); did you mean 'SA_INTERRUPT'?
+   3490 |                 ret = EXCP_INTERRUPT;
+        |                       ^~~~~~~~~~~~~~
 
- configs/targets/aarch64-softmmu.mak     |  1 -
- configs/targets/i386-softmmu.mak        |  1 -
- configs/targets/loongarch64-softmmu.mak |  1 -
- configs/targets/ppc-softmmu.mak         |  1 -
- configs/targets/ppc64-softmmu.mak       |  1 -
- configs/targets/riscv64-softmmu.mak     |  1 -
- configs/targets/s390x-softmmu.mak       |  1 -
- configs/targets/x86_64-softmmu.mak      |  1 -
- include/system/kvm.h                    | 14 ++------------
- include/system/kvm_int.h                |  2 --
- accel/kvm/kvm-accel-ops.c               |  4 ----
- accel/kvm/kvm-all.c                     | 14 +++-----------
- target/arm/hvf/hvf.c                    |  2 +-
- target/arm/kvm.c                        |  3 +--
- target/mips/kvm.c                       |  5 +++++
- target/arm/hvf/meson.build              |  2 +-
- target/arm/meson.build                  | 12 +++++++-----
- target/arm/whpx/meson.build             |  6 +++---
- 18 files changed, 23 insertions(+), 49 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ accel/kvm/kvm-all.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 774499d34f8..5df3fb90d88 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -36,6 +36,7 @@
+ #include "system/ramblock.h"
+ #include "accel/accel-ops.h"
+ #include "qemu/bswap.h"
++#include "exec/cpu-common.h"
+ #include "exec/tswap.h"
+ #include "exec/target_page.h"
+ #include "system/memory.h"
 -- 
 2.53.0
 
