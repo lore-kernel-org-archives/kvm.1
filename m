@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BA83612F6;
-	Thu,  2 Apr 2026 04:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D9135F61A;
+	Thu,  2 Apr 2026 04:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775103201; cv=none; b=BkEnkDAkno3yFqBQnRrEMOp/6U/XQsrrqiX/5CtUOCUkAN78fRKADPjjgTha9bDlJihyhwtr1FPvUzWt8WNXc0NX4Urhv1U0JtLCSk3PqrKOJvHHsazsS6jWUtxWIlbrQ/VIpjByahrmDtfW6mx2cza58k+UIt9jyEPar2waVQQ=
+	t=1775103208; cv=none; b=DA3D4GiE+Aw59xU9pMYHPPjilLw0wG2Fs042EWZsTQ3v390rXujg+SRb2WftfE2hhHRRVVBW1Qi0Vx8VA1NxPqw0XZKUB2xevQw+Gl3O5bEMtaDT5ouVjEdhQs1ebncPFg4oQ1JanyjiRNtYGD0w8JorpqLsr0GGO70W0N2Qx14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775103201; c=relaxed/simple;
-	bh=5vaQGQBc3neyldkli11Rg6Y+SDtyLj7BMfixF4/GPSE=;
+	s=arc-20240116; t=1775103208; c=relaxed/simple;
+	bh=OBbhkJ8YK27hN9vtg3QQXqgXyuXTuw2IdpJE89KAMWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ur1nDUPvqUv75LG6V9yXl+Uavl2PspcXJg3zOKXFNJdqqs9xYMgcsSnM30uJi4JwX8eq/v6VfTIxjyT7twiVDZTdPq5jCSr4bLZbgY+iZiqkKQfXh4vz1Oa+MOu76GxYTnmLC8ixP+ky/4i1SNGg9Wv9gt8G1lyyF2OUm83Bz3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bt28/m2f; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ELoYoV6VnnZzmSMpTxLJV8au5POKBj7W+ahzWXAv2vHHM/9U0LWuPCQLRazWmAH7QMZiHYRU7EGpN/BR/PXYREkhcqU468F+kWZdBnsdXU/vDz0bUcu9bOqfbLzXWrVDmf0wZr3w/2FCLTs3jeIA3CIi9xgRZo/xVwK/KIerzkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ge0jvZgB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bt28/m2f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178EFC19423;
-	Thu,  2 Apr 2026 04:13:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ge0jvZgB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6102C19423;
+	Thu,  2 Apr 2026 04:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775103201;
-	bh=5vaQGQBc3neyldkli11Rg6Y+SDtyLj7BMfixF4/GPSE=;
+	s=k20201202; t=1775103208;
+	bh=OBbhkJ8YK27hN9vtg3QQXqgXyuXTuw2IdpJE89KAMWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bt28/m2fkum5A4fexrkHIDiwLmCZisqPq7kYstTpZa4gEYge6jHYkI04dMh8zD8uw
-	 Z2KjPZ2GxXl1j5Y/ahMEY7rHgurRo+c/83O8XQj65p1XtNHEOfoXNVei3oY41GnY9m
-	 oe9q7EwPbyUpcMLozGy5HkrGB9QGlPUdhRlmbNNV0HKXR21y6jtVRSwKLdU6N7+JVA
-	 MPKbfI253YnvrF296FFA/9AFxYH9o3fuqQ5JBlzyuGE9+4s4UaZjnp8X40iLlR/eEz
-	 jCsqbSNE7alCszlRzkgCMtGJHHUovkALONmzswZrWCLGdDC1uQLrSJMrXY2RCvwpCh
-	 a/Lfg2MwHGhPQ==
+	b=ge0jvZgBcHS7QaHra70M9H/IHpYJ7VUA9VKvtPTYNwTO/xeQXcKnk3PAeYNSBHr2z
+	 medpk7MIbsJYBNEskrIJ4bLwOMUpfLK3BTdB2vfr0iFRoyui9pgQEyMHQqfDg4cxtF
+	 jRxm6GbtgmRifrhluyNeOpy91Kkpj94G2MdbcryqrzzWNfAFbaUbE5w6rXQANE86wM
+	 6RbTCyAXJyF5kh1EFw9ZYwUegCDNKfg5/s4jBRwriyC03hVnT4NLg7G9Kby5PiDL/z
+	 un6LWEMqYAE/T7GnGXKRT6B3WUAcI7kPvpwE+6rpUKMvRngKZ3lpyQlpmRaGnDnr2B
+	 Y1C5iy4iwJA4w==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 11/15] userfaultfd: mfill_atomic(): remove retry logic
-Date: Thu,  2 Apr 2026 07:11:52 +0300
-Message-ID: <20260402041156.1377214-12-rppt@kernel.org>
+Subject: [PATCH v4 12/15] mm: generalize handling of userfaults in __do_fault()
+Date: Thu,  2 Apr 2026 07:11:53 +0300
+Message-ID: <20260402041156.1377214-13-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402041156.1377214-1-rppt@kernel.org>
 References: <20260402041156.1377214-1-rppt@kernel.org>
@@ -69,75 +69,147 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+From: Peter Xu <peterx@redhat.com>
 
-Since __mfill_atomic_pte() handles the retry for both anonymous and shmem,
-there is no need to retry copying the date from the userspace in the loop
-in mfill_atomic().
+When a VMA is registered with userfaulfd, its ->fault() method should
+check if a folio exists in the page cache and call handle_userfault() with
+appropriate mode:
 
-Drop the retry logic from mfill_atomic().
+- VM_UFFD_MINOR if VMA is registered in minor mode and the folio exists
+- VM_UFFD_MISSING if VMA is registered in missing mode and the folio
+  does not exist
 
+Instead of calling handle_userfault() directly from a specific ->fault()
+handler, call __do_userfault() helper from the generic __do_fault().
+
+For VMAs registered with userfaultfd the new __do_userfault() helper will
+check if the folio is found in the page cache using
+vm_uffd_ops->get_folio_noalloc() and call handle_userfault() with the
+appropriate mode.
+
+Make vm_uffd_ops->get_folio_noalloc() required method for non-anonymous
+VMAs mapped at PTE level.
+
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/userfaultfd.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ mm/memory.c      | 43 +++++++++++++++++++++++++++++++++++++++++++
+ mm/shmem.c       | 12 ------------
+ mm/userfaultfd.c |  9 +++++++++
+ 3 files changed, 52 insertions(+), 12 deletions(-)
 
+diff --git a/mm/memory.c b/mm/memory.c
+index 2f815a34d924..79c5328b26e3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5329,6 +5329,41 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ 	return VM_FAULT_OOM;
+ }
+ 
++#ifdef CONFIG_USERFAULTFD
++static vm_fault_t __do_userfault(struct vm_fault *vmf)
++{
++	struct vm_area_struct *vma = vmf->vma;
++	struct inode *inode;
++	struct folio *folio;
++
++	if (!(userfaultfd_missing(vma) || userfaultfd_minor(vma)))
++		return 0;
++
++	inode = file_inode(vma->vm_file);
++	folio = vma->vm_ops->uffd_ops->get_folio_noalloc(inode, vmf->pgoff);
++	if (!IS_ERR_OR_NULL(folio)) {
++		/*
++		 * TODO: provide a flag for get_folio_noalloc() to avoid
++		 * locking (or even the extra reference?)
++		 */
++		folio_unlock(folio);
++		folio_put(folio);
++		if (userfaultfd_minor(vma))
++			return handle_userfault(vmf, VM_UFFD_MINOR);
++	} else {
++		if (userfaultfd_missing(vma))
++			return handle_userfault(vmf, VM_UFFD_MISSING);
++	}
++
++	return 0;
++}
++#else
++static inline vm_fault_t __do_userfault(struct vm_fault *vmf)
++{
++	return 0;
++}
++#endif
++
+ /*
+  * The mmap_lock must have been held on entry, and may have been
+  * released depending on flags and vma->vm_ops->fault() return value.
+@@ -5361,6 +5396,14 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+ 			return VM_FAULT_OOM;
+ 	}
+ 
++	/*
++	 * If this is a userfault trap, process it in advance before
++	 * triggering the genuine fault handler.
++	 */
++	ret = __do_userfault(vmf);
++	if (ret)
++		return ret;
++
+ 	ret = vma->vm_ops->fault(vmf);
+ 	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
+ 			    VM_FAULT_DONE_COW)))
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 68620caaf75f..239545352cd2 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2489,13 +2489,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+ 	fault_mm = vma ? vma->vm_mm : NULL;
+ 
+ 	folio = filemap_get_entry(inode->i_mapping, index);
+-	if (folio && vma && userfaultfd_minor(vma)) {
+-		if (!xa_is_value(folio))
+-			folio_put(folio);
+-		*fault_type = handle_userfault(vmf, VM_UFFD_MINOR);
+-		return 0;
+-	}
+-
+ 	if (xa_is_value(folio)) {
+ 		error = shmem_swapin_folio(inode, index, &folio,
+ 					   sgp, gfp, vma, fault_type);
+@@ -2540,11 +2533,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+ 	 * Fast cache lookup and swap lookup did not find it: allocate.
+ 	 */
+ 
+-	if (vma && userfaultfd_missing(vma)) {
+-		*fault_type = handle_userfault(vmf, VM_UFFD_MISSING);
+-		return 0;
+-	}
+-
+ 	/* Find hugepage orders that are allowed for anonymous shmem and tmpfs. */
+ 	orders = shmem_allowable_huge_orders(inode, vma, index, write_end, false);
+ 	if (orders > 0) {
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index e672a9e45d0c..935a3f6ebeed 100644
+index 935a3f6ebeed..9ba6ec8c0781 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -29,7 +29,6 @@ struct mfill_state {
- 	struct vm_area_struct *vma;
- 	unsigned long src_addr;
- 	unsigned long dst_addr;
--	struct folio *folio;
- 	pmd_t *pmd;
- };
+@@ -2046,6 +2046,15 @@ bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+ 	    !vma_is_anonymous(vma))
+ 		return false;
  
-@@ -899,7 +898,6 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 	VM_WARN_ON_ONCE(src_start + len <= src_start);
- 	VM_WARN_ON_ONCE(dst_start + len <= dst_start);
++	/*
++	 * File backed VMAs (except HugeTLB) must implement
++	 * ops->get_folio_noalloc() because it's required by __do_userfault()
++	 * in page fault handling.
++	 */
++	if (!vma_is_anonymous(vma) && !is_vm_hugetlb_page(vma) &&
++	    !ops->get_folio_noalloc)
++		return false;
++
+ 	return ops->can_userfault(vma, vm_flags);
+ }
  
--retry:
- 	err = mfill_get_vma(&state);
- 	if (err)
- 		goto out;
-@@ -926,26 +924,6 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 		err = mfill_atomic_pte(&state);
- 		cond_resched();
- 
--		if (unlikely(err == -ENOENT)) {
--			void *kaddr;
--
--			mfill_put_vma(&state);
--			VM_WARN_ON_ONCE(!state.folio);
--
--			kaddr = kmap_local_folio(state.folio, 0);
--			err = copy_from_user(kaddr,
--					     (const void __user *)state.src_addr,
--					     PAGE_SIZE);
--			kunmap_local(kaddr);
--			if (unlikely(err)) {
--				err = -EFAULT;
--				goto out;
--			}
--			flush_dcache_folio(state.folio);
--			goto retry;
--		} else
--			VM_WARN_ON_ONCE(state.folio);
--
- 		if (!err) {
- 			state.dst_addr += PAGE_SIZE;
- 			state.src_addr += PAGE_SIZE;
-@@ -960,8 +938,6 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 
- 	mfill_put_vma(&state);
- out:
--	if (state.folio)
--		folio_put(state.folio);
- 	VM_WARN_ON_ONCE(copied < 0);
- 	VM_WARN_ON_ONCE(err > 0);
- 	VM_WARN_ON_ONCE(!copied && !err);
 -- 
 2.53.0
 
