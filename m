@@ -1,133 +1,123 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E037287503
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775152337; cv=none; b=I0X7cdmPd1pDAGJsH4kSE4cD2EbuxUqKT4VHfHhcd7Uk5HKJ0UN3CWZL8b+FDRW8NQEVndZHDYOwBYH2VBqGRKc4UwIU0YWNC37m5B0AI1sj71EBzmWTyshEF+XjGu1soMt7v021ovB9DKByez3Df/9DZbuRKcWSCQQ1RWH7CzA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775152337; c=relaxed/simple;
-	bh=Ad8mA6CcVmN7s1faVf+ztuQF3tWgYZmGqIjKEOXoWsw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WyhwHQPyasYZ3hmmSIKEBjkldR2o3lHCHrviqLRMlkUBSzwojs/uFrob0c/esQi607kLwC0VQhBNdJaUbeXXk8nY3UU+R9LYKNzkVs0FP7uLaV++UFEkI+oVLLC6kYyW3fhMcQ03tiXiimdtXW3vFT/XdFz1TYFq/TZ4PXmPp3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QQ3d5soq; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BDA3C9429
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775152624; cv=pass; b=SWbo9BWQLWlfPiug8ED80NkHWoJHKmMG2a3KcGlXirD3RpfSVhvyPrSKN/crr6xIg41zz4ohCmNyuskNGvOTyrAttgmG8kSFkAl9gnKEjPckANVHUn32ezp4tmfwIrkmzqSx13SaQy55ear4DC5UiTDAAaqhKAJr81gBtuT5gRo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775152624; c=relaxed/simple;
+	bh=eznhC/MlDgx7IiZC5ju1sPMniSTsz/dNjG2AhUQ680E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o5Xlc3GGR1tLtNavg/VwsQVNrRnb3RXbdxUyM1hs2VFB5EkWIqWIs8u1SOTBi4TGswckoymCPwoZnMNwkS4rJwwEcNmMebvj4HBeKWakxmMsZXcmnlU6E0SZ751weRYUX6jhOooJbBZVtsPqxkZoVzORHHXLCg7B/Ad5QAqO5WY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DACnvgnJ; arc=pass smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QQ3d5soq"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c649dc145so631358b3a.3
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:52:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DACnvgnJ"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a2c77c62d7so1066571e87.0
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:57:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775152622; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VPNmj5P/b3QfSnnlISyyLQvNH6xLSaYlwoi+nISoTN2lncGOsBfLmQRFZb7m3jXUoT
+         LjIzEHwVafUHtpLr/jO/ml5DBFCM8VqW/TbUAqJIKJvDY4lPKO5pCSX+mTa3+bb6gInn
+         bTQMl6pnkIVAjoXMXMzrmYtYzoRK8CnusywkUzkDZLsyus9TQY2uuIDCda+DMW6YLjxg
+         voQhi6MPLicwu934dYitjAGVAz3PuLpjDVhRNUTTaEDJzTmLEbVmGqDWu8xgo412ImYM
+         z3b0yT0dNFrz/J+maRVRwyTrKrzHkGwqJWM9lPZegIHBFGwsAK+zkc0NdF6sgIw7OSqr
+         Ezlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9kTMSQrgNj8HIW4rh9bf84CUmZ/k9a8z2gF7kKzuWJ0=;
+        fh=BNgQBqVeAFS1hMEWvrUkGO6R0s+rbkCH4R94p2eBJJk=;
+        b=CFrJ+Ay/MqyHEbDx7sWwoXKTr2jQeutaioGgxUtQ1/kcaOjSgNuPcsg6ucjkBDNOJM
+         v8H7sSZ1e0AfNtoF6NRexl0f+YBnuLCN1JGDgEU7aUYtB42NY+z17rleQ08O5MTrcgV0
+         4qgPs1UQbTWk4IAN16V1YpPWjYR7UjbyuQLzTTpz4Nkxe1S4/ipQfj0k87p08AtXz/MN
+         AIqv6lkKLXdlDft2AtQWceiW7zpmLC0JAeVTYsL9Bplbjvk8mfuW7l5nqKgBvcAHgulY
+         kQQTXE8eWCQydv7RDILzPUMLgWH82PDgMmfJNebVNYILVuSzL5aBoAettQOz3pvIqtl9
+         5lyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775152336; x=1775757136; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r89fuvNKa4MTX8mZxF1YzmAzE0YPpremThL3RO0uraw=;
-        b=QQ3d5soqwAaJIirURXIJi4UNmsh+SaNF4lM5mwAy4HTHZALagJSgCST4fK6kszjMC8
-         2pW8eKsGHT19QXbjVL5LiliilmW7AvpzSOl5gZLn53WggqadhsmWePbbmBz/jnDi6014
-         XnTC7IH5Rv6iV90iTBodVd+x5yPjG0+tTwb9MO2ua6olIv41oeV3YCsLoutEuEawFnkP
-         JZt7ylJp5bq+GHqYZJGdHvsPmH35vNDNqSeRpvBaju/9kF7sx4FyiwdWXn2cRjitYKsx
-         HnWcO7GaE0XIehUYVYAC95+/ccpc1KW7rDFMnUPS20hVHnT0/0fa9TRtJkckGlllYPAR
-         6pdg==
+        d=google.com; s=20251104; t=1775152622; x=1775757422; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9kTMSQrgNj8HIW4rh9bf84CUmZ/k9a8z2gF7kKzuWJ0=;
+        b=DACnvgnJZLp/L3u3pL22RFHYDoX0laZM7fihGy4qC2PC6mibBEPVEoldYsSYsXjrFM
+         ZwwrOQD8aJvcplVECffsRzmy55Q/bjLjMJ1rXSBY6BuiKqOAhR1CCJwDYsqGlou2uS2+
+         KjOepC7aDDuG9IlgsDYCPon3XauRCEXJxRtHVZCcVWzhCvAkF1DpICImn5LJAAWct5WQ
+         AFpoUgl0aPLQ5qVpj0KDTeJSnAKzK8j7pfXkgjn63y8uMvGFb6uSuju/f2dKMYt/mOTH
+         Yeh/L4bzRDxR0lg6mLmw7SydH8ohC7NAabijhK56F1iGetEo+MfycHHunUa72IxG/1mL
+         9q/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775152336; x=1775757136;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r89fuvNKa4MTX8mZxF1YzmAzE0YPpremThL3RO0uraw=;
-        b=pdi5R5ApQWCqc8xPme4xB/ZbVna+3teAmPbO2OVO4wRoOHWPYjzVH4HExONM7QetdA
-         jRioq12y0MNsY7qqIlsV+TDXOBMnI7QepOag9kG0A6si/uTM9uzYOU5PdIsET9uDNN4q
-         5SUX52E/0P10BepEmDwir8AXI/JCF4C0vde+OFD3LprZtCWfz0Tb5PWHczGl8XZS9TH4
-         v7Mc0+oFP2TdQ7wcrZwVMXzZ6+GEvLe1uois99xK06h9+PPiQ3+EWD7XZGI2KG/a66i1
-         0i67T+CSz69n+dvk2nTexVeNyug93SUllExfiAmYQgEgMemeNK6uPkw70Wy5YHlWLQ4h
-         sP9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUkDkGwsH53hU1YXuM8Mu5eMqJPIOTs8cWdkzJAt0S7k6v8o1aiQChLnAPxWY4YIx4rek4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7+5dKhZGH1ZpG9OweBSNymOFLpa3RjuSNiMHGB/J86cEMdEeY
-	lpzv0Q1yCS+fv5IUKprLYnlv6/0PBuUcDLMwOW85+0nWbbg0mEJgr/IafOX3QUqKOoZQQsBUNEH
-	MzhXlYQ==
-X-Received: from pfblr27.prod.google.com ([2002:a05:6a00:739b:b0:823:b9a:9230])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c9c:b0:82a:1499:263b
- with SMTP id d2e1a72fcca58-82d0dbdbc9fmr62969b3a.52.1775152335546; Thu, 02
- Apr 2026 10:52:15 -0700 (PDT)
-Date: Thu, 2 Apr 2026 10:52:14 -0700
-In-Reply-To: <ac20s-AAvqIreILG@google.com>
+        d=1e100.net; s=20251104; t=1775152622; x=1775757422;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9kTMSQrgNj8HIW4rh9bf84CUmZ/k9a8z2gF7kKzuWJ0=;
+        b=oNtMiidbLWVcEiBoRN/XOVUJ2W7EmayAdj46pd6jM0IPhWSwTXn97J67O0dyrfl1MD
+         1vSWrRgVaPxwouSV/al5vaaI82ZPSx0QEacGp9bwlitaSlC3SbayhFPZhv17e91IWLU2
+         Iez25e1jvIrelWX1wka/an3MjEDk5rRg4tknKL3o/JNMDjOoY6oA1nJ7Q6x/oLu8WgdO
+         DZDUPkYquic7f9qSvFoB80zrQpwi9asoVtOIBCPv9+aL7fgxIUaa0CwChjhk1zaj528b
+         hin/3pgzcW+H99WATi3YeKGJAwdSvd14GQ/Pvc1+R+avjqvgsr/Ec6PDkVMuHHuCkZTF
+         oA3w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEHYvRleYoc1tHWTmJdaIxHZCGCwdNFQtj9yHs8L13UNi+GRSZkoKRKQvrma2OYy+62Rs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4ncjeneYJEMeKF7/30M5g0pytaScqTsfWhR9npvys6aXYXNzI
+	x9c5uZd3bk/8qJ0VYec544ekqtj3L8bFtcgGhyvMXXr7ksAmaitWXDYkiG2GmefdhRHEKzcE3Qm
+	bOetZgXYCab6KeZCoq1LFM/aq2ZmBZNjTyI0d72Lm
+X-Gm-Gg: ATEYQzyGa3jy9ZAm4ozwxbKRfHWWkpZ0yoc54ySm/cmLDee6ZLRsQ0TUxSsRAZfkOvm
+	HBFAg0cKriRazc/+1+5InCxt5LeTtzTxubQlB0/W5jA/fcTDIf/FGOVnEGQz/l2mEhQlv24dGTN
+	jChjvRqAMiWP+aW56qLYCRIczGQ3U4aTN2+ouiGc7Yj4BHNUNeKxK2hLua+SxPF8Xe/QNZXtxV6
+	XU+Ts4h86Fe8fczpJ9NzE8GJDDbH7G59u1lbfbbuovfkbQGwzE1odv2ruJ6KUHZB8VvAR1C4zuE
+	/FC2s4Aj
+X-Received: by 2002:a05:6512:a88:b0:5a2:7ddd:ec16 with SMTP id
+ 2adb3069b0e04-5a2c1f2c29fmr2818020e87.40.1775152621289; Thu, 02 Apr 2026
+ 10:57:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <20260331194033.3890309-4-jrhilke@google.com>
- <ac140E1-ZeVg9mq_@google.com> <ac20s-AAvqIreILG@google.com>
-Message-ID: <ac6szjc0iLohWhwT@google.com>
-Subject: Re: [PATCH v2 03/14] KVM: selftests: Add vfio_pci_irq_test
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260331194033.3890309-1-jrhilke@google.com> <ac1hI93pEo-x-7YU@google.com>
+ <ac1pUx_jYv2yCMnX@google.com> <ac1s55_oLEUQx8Hs@google.com>
+ <ac18LHQLalPb4z0-@google.com> <CAAdrzjugqk=APteY4oZNsa2e5kv5-=HBekyYfpzrwFUZ_WapsQ@mail.gmail.com>
+ <CALzav=cO48f7f8yaN6EsSL4uGpojvY7gmCe9oOy+sP_+Kii4mw@mail.gmail.com>
+ <ac26haU_7nXYWke1@google.com> <CAAdrzjvvxX3eEkCBUvSud7qyaSUdzecgAkX1=f+ZQe7Q6ws69A@mail.gmail.com>
+ <ac6o2Z_cs0HA6PpG@google.com>
+In-Reply-To: <ac6o2Z_cs0HA6PpG@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Thu, 2 Apr 2026 10:56:33 -0700
+X-Gm-Features: AQROBzAnaNyQ1xf2EUVyqVytBNxbNxpcJ948nLLkD2uy-QSimOCwSMIUl3kZHd8
+Message-ID: <CALzav=cnT1EQY4DQbqj3vNuG2ino+RSFkZ6UJ0-zDc8bQhBJPg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
+ test device interrupts
+To: Sean Christopherson <seanjc@google.com>
+Cc: Josh Hilke <jrhilke@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 02, 2026, Josh Hilke wrote:
-> On Wed, Apr 01, 2026 at 12:58:08PM -0700, Sean Christopherson wrote:
-> > On Tue, Mar 31, 2026, Josh Hilke wrote:
-> > > +int main(int argc, char **argv)
-> > > +{
-> > > +	/*
-> > > +	 * Pick a random vector and a random GSI to use for device IRQ.
-> > > +	 *
-> > > +	 * Pick an IRQ vector in range [32, UINT8_MAX]. Min value is 32 because
-> > > +	 * Linux/x86 reserves vectors 0-31 for exceptions and architecture
-> > > +	 * defined NMIs and interrupts.
-> > > +	 *
-> > > +	 * Pick a GSI in range [24, KVM_MAX_IRQ_ROUTES - 1]. The min value is 24
-> > > +	 * because KVM reserves GSIs 0-15 for legacy ISA IRQs and 16-23 only go
-> > > +	 * to the IOAPIC. The max is KVM_MAX_IRQ_ROUTES - 1, because
-> > > +	 * KVM_MAX_IRQ_ROUTES is exclusive.
-> > > +	*/
-> > > +	u32 gsi = 24 + rand() % (KVM_MAX_IRQ_ROUTES - 1 - 24);
-> > > +	u8 vector = 32 + rand() % (UINT8_MAX - 32);
-> > 
-> > Ahh, now I see why you included "Reproduce tests that rely on randomization" in
-> > this series.
-> > 
-> > I think I'd prefer to tweak guest_random_state() to drop the "guest" in favor of
-> > "kvm", and then use that framework in host code as well.  Then you wouldn't need
-> > to open code the % fun.
-> > 
-> 
-> How would using the guest_random_state() library remove the need to calculate the appropriate ranges using %? 
-> The library (tools/testing/selftests/kvm/include/test_util.h) only provides:
-> 
-> uint64_t guest_random_u64(struct guest_random_state *state);
-> uint32_t guest_random_u32(struct guest_random_state *state);
-> 
-> I could avoid using % by adding a new library function that picks a
-> random number within a range:
-> 
-> uint64_t kvm_random_u64_in_range(struct kvm_random_state *state, uint64_t min, uint64_t max);
+On Thu, Apr 2, 2026 at 10:35=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
 
-Yes, please.  I was thinking that in my head, but never typed it out.  The original
-plan with the pRNG code was to build out the set of APIs for doing random number
-things, it just never picked up steam due to lack of need.
+> However!  We _do_ have a KVM testing gap that can be trivially filled as =
+there
+> is no existing eventfd_signal() =3D> KVM IRQ injection selftest.  And thi=
+s test is
+> pretty much exactly that.  I just don't want to deal with jumping through=
+ VFIO
+> hoops for effectively no coverage (for KVM).
+>
+> If we strip out that fluff, then the test is runnable without _any_ VFIO
+> involvement, which means it can run by default, e.g. in n environments wi=
+thout
+> VFIO or VFIO-able devices, e.g. in automated CI testgrids.
+>
+> Something like so.  And then we should also rename the test to drop vfio_=
+pci from
+> the name, as the VFIO aspect becomes purely optional.
 
-> > As for the get_irq_number() and get_irq_count(), those need to be much more clearly
-> > scoped to /proc/interrupts.  E.g. "irq" in KVM context most often refers to the
-> > guest IRQ vector, not the host Linux make-believe IRQ number.
-> > 
-> 
-> How about I rename these to get_proc_irq_num() and get_proc_irq_count()?
-> And then rename the library irq_util.h/c to proc_util.h/c?
-
-Works for me.
-
-> > > +	/* Set a consistent seed so that test are repeatable. */
-> > > +	srand(0);
-> > 
-> > And using a pRNG instead of rand() should make this unnecessary.
-> > 
-> 
-> We shouldn't even need a pRNG if we follow your suggestion above and use
-> the guest_random_state() framework for the host, as it would provide the
-> guest_random_u64() function.
-
-Heh, by pRNG I meant guest_random_state itself: "struct guest_random_state" is
-itself a pseudo-RNG implementation.
+That plan sounds good to me!
