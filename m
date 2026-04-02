@@ -1,251 +1,296 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0242D1DF74F
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 01:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2C02DCF57;
+	Thu,  2 Apr 2026 02:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775094579; cv=pass; b=OyAOm+SPrTOGg8sMyVR5ZLzm0XtdnLwGlgVaYhXFcGzpmb9YvhhvvY/zY/Ac12v5mMlTlJ7VwrxroBupDGZyplvCzgqymxr6Xr9v6+XoEUGbT62xDwz1awd8vJLpI8XJRBgAucJc6PH6ZM5+HL61RlSpAxo2tw50thKW8WdjWs4=
+	t=1775097553; cv=fail; b=pbNGdGDf2Fs2ALjdg6RtWw3Ew0zNfGiqZtBg/PXjDPDmPOTi63HYo4Yz3qPTKOhetJ+nTNeN2Fyq1IS2m6H9darfQIBCtklIyAPzCCAs//akn6ssv8B2Ae0KQRRLWYDx317eEeXLxcYgetMI068QZxZyEWkX4s0Aj1xTZXZx2x8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775094579; c=relaxed/simple;
-	bh=wXyr8q0lg/6QndcBZyJ6JDJgfP3E9JcyNV3xC396vRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ffaEkodcrZoKXGzRtwgqKrRcMAgZOxuy+e2ec3qBUXrlhIllZagczhxQ8NAZqT30lhZrAkYv9WvQ11f2AKBiEH17pDsHM8QacL0ZgijcdWSSu/E4dKxQW38LldZZh+pCa9Nt64BWFP2GH7w73m7852aiDGz2zat6zj66Rzp+cv0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mZY5+vH3; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1775097553; c=relaxed/simple;
+	bh=DeAruTgrxhSIzx1e3Qa9ExyKYVL626o31G/GJ4iDZBo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Nj3ug6S/8DZDM0KZCnFhOr4SG/Z+yNX9moJUvGRjSVAONGaHAHk6GK13RlrZmTrrtvQ76a45Agn09xPGTgrb3w9Tgy5JK7/Z29xP1zwLKZnkZdRd43pPV7SNJ0Fo0EPK6jwjdrz0WQLkZd1xzXw99b1u/qT1ECChGx5lQsn0Wd0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U2pT2oXv; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mZY5+vH3"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5091ed02c54so164351cf.1
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 18:49:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775094577; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N1vZCDrwidyxijKIueIqz+ggzxl7yvRAVkOXxg6UOmBONkEzGS7/Gmiam++hl+EFfJ
-         g3+YgbpcLzfpMlG1wFnHtyG92P2amLWTmSq/WauXLUPxaxf24juB14jHuAYGB4U0t5LI
-         H0mZRK9pMGXAUP2N+ZRVXpX2Mg3oEshYGS2X6CVbyiqT7HOOPJYWy/M/ILNOg7WBc+zA
-         HzoKHqyQkHmmF1E0s80Uk7VokQSQX1wF/Jetj1IrKvp5kiXCCHN4fn+NZ+3e+jZnVhkx
-         yU01HB2oleffTqD0+iS4cokchhuPOCtADXG4Np0vbSVsAK/C27SS7wIl0IUzACNqG4o/
-         EU4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WWNbaYi2rHbjkTYm1hNM9FFoz85bxy3ZvhhbJvgSZOM=;
-        fh=nK5H/YzrNtKkCkZ8HRazmCqjC2kNaDUylxzz32UV38A=;
-        b=WTpLiIEoV3pO/MGU8KyZpJfdj728RX5LOwwW9MNLL6JO/9CCQOykq3+5+7PAAZO4vH
-         uwXF9nQSgVICfjOuK3JFYG9yt5D9Td8gH4OkoimQl/0jetWo8QzmLwV57gIH5XuAVirq
-         DII7WjZ9fynIweUhBjQO/qk1wCQHXav64ySWlvEq3yy2wnu4FMVhFcP8G8jbWsjJbPVT
-         Lnn3jJmZrMliD/wPeYxlbwn5Uwq9zEKACwT14ZED49r7pKyWCPGvcofc95HQU/ET1Fck
-         2Q+SgKdshpYAxwhzQ2ask+RfH/fEW8v6XsSwQNn1mSsbiIbgsJG+slAv0qVUwQO2Vz86
-         DTnA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775094577; x=1775699377; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WWNbaYi2rHbjkTYm1hNM9FFoz85bxy3ZvhhbJvgSZOM=;
-        b=mZY5+vH3BTzrA67W1gbT+9CMf549D1KAeKVaNYJ+l1d0Jb5OxjpXijv/44u3SfLjuJ
-         VO7x44MEy2juRptQC4OoEGnH7you7XXtY4Nd8MuDYKtpe44lyNUpT8tyfcpfiRvvSl8W
-         yWkoCyQcfsVrxc1nkbwOo5SlvyFY6M8geybMAPHiq8XHLOcRPp2G+ihwmc2KOmyafGOd
-         eJjQVuyzJ3vQ9Ax/gtGqYfS2Si0QhiymSjMpK3Hxvc1Km6aEX/msX1uI4ZXUNl5JJhUy
-         iNagYiV3GIYxChbxIcGSXW8yfMM052Ena9WCxycmo4CB53FRVP726mz2vBTstDOjeliN
-         8F6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775094577; x=1775699377;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WWNbaYi2rHbjkTYm1hNM9FFoz85bxy3ZvhhbJvgSZOM=;
-        b=eI2EBLyTrkEO06TxkL7bS2XFgSmTkpdgteTGXpMBS4KRcvnCpCUt5u3An1sylEkd6p
-         iaArdfU9yKJdsray6Ydjhs4+hjYKabB2nV9NB0f+YYXfmMqhpHr1OZ2E2LfFWyb3WCrk
-         UTDvW9owWKHGxyasIuF0qQsy2+WRIWrTv3kdodVQltOeQpaFFd7+UZd7kKLQJKdqQxGJ
-         oS+MGo+d0Oeu81rl5TmmLLRTAxYA8ukPGuRd84uMERMaJo1nfIS4CghJ8CiUlclLfLS3
-         PKlbF6H9yM6DR462yUBoDExw3DdToyTp3nbyV51zaY23gcQrKNQzpbv/5iMzhclTFVPk
-         6i3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXtX6qx+a+IKXBXas3y7QjUkavtMb592AU4jKN8pUjstM3bb3rQoRwyQYAAfBIMegsnvII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsIowxwBwoVAmBpwIdHpolRPBwGh2PsVhgIrtqgLr/sTWp1hC0
-	DCRFsvqVl+ORD5VBYZTwzpU6+ptqzCvbcEMzYg4JtzSM9F8AlZZSDdfzak2Eq+vdZmAjOH/FnXr
-	BMhzCdhBw2Q6nsv8B2OsAE25B3TDTQmPMO0GokyQ=
-X-Gm-Gg: ATEYQzzHh+4QL7S/oyDVqjJ4WhVHCzRNBuLGQQLMBOanDGPmnYCa5n7P3aNRK8DsrRv
-	higbFw2GIYU9+9lDZNsKy/hx76oG/wFOkpULthjhqzqu6/RP1rZaR0tpaLEES9SOUBE0OYpdRUw
-	1hB4y+/P6L72GV3R5RjKlPQ8w3DvAea9jPmyfSiywchtirMcOQMw3AxmCtVIzcAY0bTTZfacQPs
-	gJ/HiIb6AqH5cM7laGgOFppX7QcZhaMdJu1C2P/X1a1nkqao8STB+YsOL87HQ6dKVa+YBuNzyfY
-	SyIUsBNuYjWRfSrnn+dweD2zAUdq8yObz+wD
-X-Received: by 2002:a05:622a:8597:b0:50d:418a:9770 with SMTP id
- d75a77b69052e-50d504aab45mr2409981cf.2.1775094576443; Wed, 01 Apr 2026
- 18:49:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U2pT2oXv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775097551; x=1806633551;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=DeAruTgrxhSIzx1e3Qa9ExyKYVL626o31G/GJ4iDZBo=;
+  b=U2pT2oXv9hSpW60qgMWIONyHER5IpWE4Mgs8vaHohiSHQOWPXX6tzeDa
+   cBKCJznUEiep0hbhRZTv7QV/aS5AXaocmETs/Ult/1iKTwmDJEy9Oft9+
+   22n1VMbymov8d2B0khAoTGA2d34+WeZVXUa811CuY8p5uOotfiM9tlx25
+   8qy3bTQY3OaTtOTFN1x+sh3cKOTIwWT+lJ0iAGjqz4u8k0sHm4dxERcZj
+   tScv880pMLJ5eAvxOuBgbF/mzZfHI/KHbrHKISQB5z8mzFiPwm/YaR9tu
+   C4ySgMSjfvZJpsihkLsCUAbTHmECHkoLsgNvkvIRen00H+LQx2pSiKOQB
+   A==;
+X-CSE-ConnectionGUID: UTdAFPuTRBWrm9neatS+jQ==
+X-CSE-MsgGUID: WVWJntOQQIaUDKs+iW6dNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="86452809"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="86452809"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 19:39:11 -0700
+X-CSE-ConnectionGUID: YnHnFhFXQzm0B90T41g3Yw==
+X-CSE-MsgGUID: M/nWgm1SRkSLVMOwTx88og==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="230918946"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 19:39:11 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 1 Apr 2026 19:39:10 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 1 Apr 2026 19:39:10 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.18) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 1 Apr 2026 19:39:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Vgu9W1EEilixfYnI8eGR803y382Ed0mHo+WqsyENvtqasjBozDk7vdWIKSp8roBjYqgzWcAiasPfecpyUKhsZdVLKpYkoA+ZHj3DbvQtLr8bqCj6yrP/dYIBPfBHc2/72rArS0xqQsE3ObaPG326f5L8Ufo0L25uLtgLlHDmWzKiBYwHC7t6G5StzRntj3/9e+iuLe7IOa6iSah19TaXr4PQ5AfGn8FMtC3iTSig1jmaYY0kABqmxZ0YOF/aEWeCp1OFFULLmKg8qLN9NQiiRJLIZmlm+Hin3F+M4lgc8j0LvnWMwCw7zKKTlPQZieykF1zRXrWzWJbzdpaItNYQ7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zAC6gxMOU+gzI9Foml2VOFPGkJhkLU76lzk+M8gmblU=;
+ b=FguZC4Glq0o8w+n2GerXTDa8DfFhRqTgjjqVvxDbIIbElPZS1jNbHyGRXhrkFcGnAxRRgqSspQ0p/rjrfEvFr2B0NIaL4IKFqg/CccNvQHWs/xKIWNuvric1PJEHZGjeL1Zbd0viR12IXIYFbiooeqDYCMg1UycYYCSdE/BlQ8dqg+n+kKTF8DiBA8D6DOAmKcIGe1u+Dqp0oERYMVg+am5qUS0urM/H1D3YwNzes3du+ZSeDZpyvR+li3PDqDLoI+S6ygrP1hMg1ewbqnJ+3KLEbbh7yDycN5jrqR3KyBDSGqs5cfcF4DE8Ua2MM3a0YRjRH3x/KtC3NAQMg5n+gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by DS7PR11MB6294.namprd11.prod.outlook.com (2603:10b6:8:96::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
+ 2026 02:39:03 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%3]) with mapi id 15.20.9769.017; Thu, 2 Apr 2026
+ 02:39:03 +0000
+Date: Thu, 2 Apr 2026 09:59:31 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "Hansen, Dave" <dave.hansen@intel.com>, "seanjc@google.com"
+	<seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>
+Subject: Re: [PATCH 07/17] KVM: x86/tdp_mmu: Centralize updates to present
+ external PTEs
+Message-ID: <ac3Ng7IZpzJczZ2x@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
+ <20260327201421.2824383-8-rick.p.edgecombe@intel.com>
+ <acoUt9vy8OPU1SW9@yzhao56-desk.sh.intel.com>
+ <8a107d4da92d4cf910f9a70991a0e67b42e04d4f.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8a107d4da92d4cf910f9a70991a0e67b42e04d4f.camel@intel.com>
+X-ClientProxiedBy: TP0P295CA0034.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:4::19) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331194033.3890309-1-jrhilke@google.com> <ac1hI93pEo-x-7YU@google.com>
- <ac1pUx_jYv2yCMnX@google.com> <ac1s55_oLEUQx8Hs@google.com>
- <ac18LHQLalPb4z0-@google.com> <CAAdrzjugqk=APteY4oZNsa2e5kv5-=HBekyYfpzrwFUZ_WapsQ@mail.gmail.com>
- <CALzav=cO48f7f8yaN6EsSL4uGpojvY7gmCe9oOy+sP_+Kii4mw@mail.gmail.com> <ac26haU_7nXYWke1@google.com>
-In-Reply-To: <ac26haU_7nXYWke1@google.com>
-From: Josh Hilke <jrhilke@google.com>
-Date: Wed, 1 Apr 2026 18:49:25 -0700
-X-Gm-Features: AQROBzDgd0C03k6tITU-FGK4zu3Xl10Ufb7uG6WJAwPTMw-uK2oWd9RVEsW8_9k
-Message-ID: <CAAdrzjvvxX3eEkCBUvSud7qyaSUdzecgAkX1=f+ZQe7Q6ws69A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib and
- test device interrupts
-To: David Matlack <dmatlack@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|DS7PR11MB6294:EE_
+X-MS-Office365-Filtering-Correlation-Id: 935c8786-1e57-4722-7901-08de906100e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: bZgB2UstQHMz5qpjbn8oRA2z2wfEIw5uPsgc6mjc+YdqLZLu6GzVWPVp/+dvXu81zYU2ifc1cltN3AKZiGW4n3Xo4XohrAY3LMsklJpOi1yfL6+GrpuPMQVKnA4/KCTo8gCopa2XC1cy1VQTBl5+lhiGQocMuvK4+nz2fJ53+hhfzHXtXMdZeBAfJxehBbwlemaNnfflIDY60pBFSpbThGtqCWYL31KvMMutHORRpMdE0qiSDjXrz9O4lmxRf905arYo6NEw4WAdPBrHPde/OlihXLNqk01/zRyC8WxvTi0MI2xNcSWmcbVxCOu+fiJwEXKNV4HuyNvLq+yLoOkVoVVQIAXdryUi4QWf+EjdcF9c6Sj2dEKaN9DarydLmQ2bMSTS5Uw2yVmqCLMAXCqg5egxjCZ73J5Fr6N3fSrvHawhDNLoqBQumz/4F8ugnlj29n7VWicRNHqR6Gl3psJIidOXkNqGAKs1syFRzI6EJGk1RN/yRnVSS4SNlyWviCj1Y5acGvF+6o9AxjQwNMtfklJj9npp0NMOxf8AOQDvwPMz5opBZiYKB20rSlGc362O5lirz281A77CEHGwWroOPQwm3caNjfmqTwy11act+IMCT2FSsGqa/eefLI2s3z0tQkv8J1gTRs4HeuOhkUAT++tCUqyoJhKVjC5UPcx9o77m0NpMQhfJs4pSR2XS2TljvrSHcGtVk7tiVcwgF4yz2eUyT2RyorANF8+r3oEC+ys=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?25ZepQNpirMMhCXHh+N6MpdEedZ9/I4iXofOBLS2nVCkeqJ+nwoWoKYnFZ?=
+ =?iso-8859-1?Q?Je8jONyruCpCuJTqimcQyOTztZrKFPk5xZEoNOeyFI1sDk4xTO/8g3/FyE?=
+ =?iso-8859-1?Q?zu4xgz30TZ7dC1iEaddIJ8XW5ateuJJwjLvtREXJfUfD5gWele3MnMXo53?=
+ =?iso-8859-1?Q?+jp9lE9iViPGUFAszFOJGqT4OmGj8qdQhBPOPDuJQHV31D6WDKIq+vqdaX?=
+ =?iso-8859-1?Q?HX0iO5vCWMjdwxChEJx8zTE+f1ULBBuC2eSC3gb8MsXq/xBjNvF4OyF096?=
+ =?iso-8859-1?Q?FEFd0l4xViWNwWCM260tTokJ9IguUrg1TXyPyun59WSygY24x6p/DA7Zro?=
+ =?iso-8859-1?Q?samqbbcCZ465yZSfa1SnWy8KqF5QYK0VTLz76fMeZPcbbubir6RH4Po3nW?=
+ =?iso-8859-1?Q?ZF8GPUxRLCBgvCQSJckJze/xu+gMTk/jMaSdLcJf0Rh2+ZNuzzxbubFVZj?=
+ =?iso-8859-1?Q?kJmdQgHh2v3Pavi7M0/u1BM+Wu89brFPfW66/Q0UDhJ6AqYyZCNec/v+oU?=
+ =?iso-8859-1?Q?zcFB83QIg6pIxdd0oI1bOeSuGAWYg0Ivq8my66ueHSkHutb1MaCOt5o7xe?=
+ =?iso-8859-1?Q?ndtsF/LAeHjra0LMw6kQUHQgSzS0tgsXbdj4YMer65LKrdXV7iflinHb0G?=
+ =?iso-8859-1?Q?XPj9igOaBi3fZ5RZFfeGd/dy3L6c2khII8K9n/wdbC3JrXU/dH99Y7a9WP?=
+ =?iso-8859-1?Q?z0bjNW8XzKQfPqkuRtpv7j8aGr2f2wANo4rRq8LqBPj5Ottp6munPNCSj8?=
+ =?iso-8859-1?Q?EeYRdM5WOeLwHPv6TAmUkY0aSqjpl/qcwvaFQl4XtB9uJ2CDTSx327ubog?=
+ =?iso-8859-1?Q?pNHKCtbjF8+hX6ryikuQS9MWcViWgoTbNE/JXet3Iq998Dt+K19/eSxucB?=
+ =?iso-8859-1?Q?hHLdQXXSueYaVKtsxQZ04ZAcEwWKdf1Ld7/g3YLEqVGRvNjhgtc6m07ViT?=
+ =?iso-8859-1?Q?7Hxz/G5cCO4Fa8z7CR8Kf6t/diMqUpvHM4JsAA+UhfGSC1Ct8bC+XrF9vt?=
+ =?iso-8859-1?Q?5YhMS/ov/s/uX7rbBiwUWSXEZHpPBYbyl6QkQ4osoqwNtdrrwlf0jJPVyf?=
+ =?iso-8859-1?Q?fN+uLq/21AXwKyXSW/ilJB8frEwnOrgKtsvDNt9Gkt+lZ0wEyJ9uQI/EZZ?=
+ =?iso-8859-1?Q?qnxekqYMN3qsmAWR7fEYSTdagkyAU9uuQIy+Qhx90kTZU9sOb2LHUkpMLt?=
+ =?iso-8859-1?Q?rFq8uafsyadqcX9qysSYk3c7UOibBQYfnOnUFQskjWINgX0C56GKF9KFDM?=
+ =?iso-8859-1?Q?GU6Cxu5kSbsVWp2H+UzB++8HiG/OM6OPFuYeRtbOhGAcFyE6Nj8dsS4K92?=
+ =?iso-8859-1?Q?59H7bfmMuLrEa9zVlN/zhe7npTfociDStAIiZ+rXARX1pD5tCtkNBgc/I4?=
+ =?iso-8859-1?Q?/H44QsH/cnFZmc7BKVMxqP4dgyND5+KgOU9IbXe5Pf8FY+KnplE75mC7Kz?=
+ =?iso-8859-1?Q?KbWg6MklSa6rInrE8X3OAwOt9rvA2VtDKLlpWYHtOveCcBS4R9TgzSrCZG?=
+ =?iso-8859-1?Q?6nfNn4zvpQEWp30nvYlVSXZ2FQBOzFOe4Vn1fvwmEaBrLAUzcahc/KMLsN?=
+ =?iso-8859-1?Q?Veir2amA79gZkv0cqTxCX97CQ9R5v9E0GegOj1RYmlDdxK083Xk+nrlxyh?=
+ =?iso-8859-1?Q?RKm0lxjv4Hv9J02FRF9v3rUt6X0OSRZfTEno5561MYHcIKwHrFv18+BSIs?=
+ =?iso-8859-1?Q?5fd2ua+fEGxP56M0Dn7pv5/yhIFAGcaTPiaefXJL1X6oNrWTvuSAQew/EQ?=
+ =?iso-8859-1?Q?kC9NSQHkm3xJsmJeVGU590jIwGddbdLoy0YagHcd7/UqFNolK1WdH+yMP0?=
+ =?iso-8859-1?Q?Kh9a9Rfm4Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: ZlS4SI4qB345qv4Jyb/C/39oQEpUBtHAMpwPuFdJ0YtVgV2x05HKxa8WKrxKkhkQJAXLjU+4eJKXx/jKcdUBZly0iJkXw+ORCslHmDF3S/+ecVqrFneJuwUilgMOfJmCq/MSxTQP/MOh+fQVFPUUW2IfRp8zlimcNzH4Dft6tSLBtcks35oBISnpLvrc5jgRFOVitCMfYxOZPN0UEhkpmEyG6aCrvwOXwpD/SdIhLqC1DPnQuKK+KIIA6uXNkiEPIeo/6EAqwBvzZusitN2BgdaI9wCmEZd7ImpT7RyiKRQJdvsShZbrYWPxmcSV822cSZv5ckULvNVGBjlGVFwUVg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 935c8786-1e57-4722-7901-08de906100e9
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 02:39:03.7145
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fAZyDRZLpBuwDPIArZ94cc5S/T9Hh5br8bXlYESmVk/nD5cGkz8mvY0mYwvJtDtaD99s1LedIPEP+77sSfDLRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6294
+X-OriginatorOrg: intel.com
 
-On Wed, Apr 1, 2026 at 5:38=E2=80=AFPM Josh Hilke <jrhilke@google.com> wrot=
-e:
->
-> On Wed, Apr 01, 2026 at 04:58:34PM -0700, David Matlack wrote:
-> > On Wed, Apr 1, 2026 at 4:42=E2=80=AFPM Josh Hilke <jrhilke@google.com> =
-wrote:
-> > >
-> > > On Wed, Apr 1, 2026 at 1:12=E2=80=AFPM David Matlack <dmatlack@google=
-.com> wrote:
-> > > >
-> > > > On 2026-04-01 12:07 PM, Sean Christopherson wrote:
-> > > > > On Wed, Apr 01, 2026, David Matlack wrote:
-> > > > > > On 2026-04-01 11:17 AM, Sean Christopherson wrote:
-> > > > > > > On Tue, Mar 31, 2026, Josh Hilke wrote:
-> > > >
-> > > > > > Agree this would be nice to have. Is this a blocker for this se=
-ries?
-> > > > >
-> > > > > Yes.  KVM selftests need to assert there's a driver before trying=
- to proceed.
-> > > >
-> > > > That exists in the new test:
-> > > >
-> > > > static int setup_msi(struct vfio_pci_device *device, bool use_devic=
-e_msi)
-> > > > {
-> > > >         const int flags =3D MAP_SHARED | MAP_ANONYMOUS;
-> > > >         const int prot =3D PROT_READ | PROT_WRITE;
-> > > >         struct dma_region *region;
-> > > >
-> > > >         if (use_device_msi) {
-> > > >                 /* A driver is required to generate an MSI. */
-> > > >                 TEST_REQUIRE(device->driver.ops);
-> > > >
-> > > > But I think you are also asking to have a helper that prints out th=
-e
-> > > > list of available drivers in this case. That should be trivial to a=
-dd.
-> > > >
-> > > > VFIO selftests could expose add a helper that handles checking for
-> > > > device->driver.ops and, if null, printing an error message and list=
- of
-> > > > available drivers and exiting with KSFT_SKIP.
-> > > >
-> > > > One wrinkle here is we are probably going to merge a driver soon th=
-at
-> > > > does not support send_msi():
-> > > >
-> > > >   https://lore.kernel.org/kvm/20260331172241.50456-1-rubind@nvidia.=
-com/
-> > > >
-> > > > So we should also have an API for that. e.g. Add 2 helpsers:
-> > > >
-> > > >   - vfio_pci_has_driver()
-> > > >   - vfio_pci_has_driver_send_msi()
-> > > >
-> > > > This test would use the latter.
-> > >
-> > > Ack. I'll add a patch in the series to add these functions to the vfi=
-o
-> > > library in v3.
-> > >
-> > > >
-> > > > > > > struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
-> > > > > > > {
-> > > > > > >   struct vfio_pci_device *device;
-> > > > > > >   struct iommu *iommu;
-> > > > > > >
-> > > > > > >   iommu =3D iommu_init(default_iommu_mode);
-> > > > > > >
-> > > > > > >   device =3D vfio_pci_device_init(bdf, iommu);
-> > > > > > >   if (!device) {
-> > > > > > >           vfio_pci_device_print_drivers(stderr);
-> > > > > > >           TEST_FAIL("No driver found for BDF '%s'", bdf);
-> > > > > > >   }
-> > > > > > >   return device;
-> > > > > > > }
-> > > > > > >
-> > > > > > > Because as is, this requires way too much a priori knowledge =
-and magic for
-> > > > > > > upstream.  The user shouldn't have to dig through code just t=
-o understand what
-> > > > > > > devices are supported.
-> > > > > > >
-> > > > > > > Ideally, VFIO selftests would also provide a script, utility,=
- and/or helper to
-> > > > > > > identify BDFs for devices it has drivers for.  In my experien=
-ce, binding a device
-> > > > > > > to VFIO is trivial.  Finding the device in the first place is=
- more annoying.
-> > > > > >
-> > > > > > Agree this would be nice to have. Is this a blocker for this se=
-ries?
-> > > > >
-> > > > > Yes.  As I mentioned to Josh off-list, I'm not willing to accept =
-a "we pinky-swear
-> > > > > we'll make this stuff user friendly".  It's not that I don't trus=
-t you and Josh
-> > > > > (and others), it's that for me, this level of user-friendly behav=
-ior isn't nice
-> > > > > to have, it's mandatory for these tests to be usable upstream.
-> > > > >
-> > > > > Internally we can squeak by with barebones, unhelpful tests, beca=
-use the run
-> > > > > commands are often hardcoded somewhere and there is piles of docu=
-mentation elsewhere.
-> > > > > But for upstream, none of that holds true.
-> > > > >
-> > > > > If it were weeks of effort, I would be more open to treating this=
- as nice to have,
-> > > > > but AFAICT writing the code should be less than a days worth of w=
-ork.
-> > > >
-> > > > Yeah that's fine, I don't think it adds too much extra work, and it=
-'s
-> > > > something I'd like to have anyway. I just wanted to confirm if it s=
-hould
-> > > > be part (or merged ahead of this series) or can be separate. Thanks=
-!
-> > >
-> > > So I need to add kvm_vfio_device_init() and it will call
-> > > vfio_pci_has_driver(). Then, kvm_vfio_device_init() will TEST_FAIL if
-> > > vfio_pci_has_driver() returns false, correct?
-> > >
-> > > Should kvm_vfio_device_init() live in
-> > > tools/testing/selftests/kvm/lib/kvm_util.c?
-> >
-> > I was thinking the new test would do:
-> >
-> >   TEST_REQUIRE(vfio_pci_has_driver_send_msi(device));
-> >
-> > instead of:
-> >
-> >   TEST_REQUIRE(device->driver.ops);
-> >
-> > vfio_pci_has_driver_send_msi() would call vfio_pci_has_driver()
-> > internally and also check that send_msi op is non-null. Both functions
-> > would also log error messages if driver/send_msi is missing to help
-> > the user, as Sean requested.
-> >
-> > And you'll also need to a patch to add a helper script to print the
-> > list of BDFs on the current host that have a VFIO selftests driver. It
-> > might make sense to send that as a standalone patch if Sean is ok with
-> > that.
->
-> That makes sense for setup_msi(). But in Sean's implementation of
-> kvm_vfio_device_init() above, it looks like he wants the test to fail if
-> there's no VFIO selftest driver for the BDF passed into the test.
+On Thu, Apr 02, 2026 at 07:45:54AM +0800, Edgecombe, Rick P wrote:
+> On Mon, 2026-03-30 at 14:14 +0800, Yan Zhao wrote:
+> > > +	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
+> > > +
+> > > +	/*
+> > > +	 * Temporarily freeze the SPTE until the external PTE operation has
+> > > +	 * completed (unless the new SPTE itself will be frozen), e.g. so
+> > > that
+> > > +	 * concurrent faults don't attempt to install a child PTE in the
+> > > +	 * external page table before the parent PTE has been written, or
+> > > try
+> > > +	 * to re-install a page table before the old one was removed.
+> > > +	 */
+> > > +	if (is_mirror_sptep(iter->sptep))
+> > > +		ret = __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE);
+> > > +	else
+> > > +		ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
+> > >   	if (ret)
+> > >   		return ret;
+> > >   
+> > > -	handle_changed_spte(kvm, iter->as_id, iter->gfn, iter->old_spte,
+> > > -			    new_spte, iter->level, true);
+> > > +	ret = __handle_changed_spte(kvm, sp, iter->gfn, iter->old_spte,
+> > > +				    new_spte, iter->level, true);
+> > 
+> > What about adding a comment for the tricky part for the mirror page table:
+> > while new_spte is set to FROZEN_SPTE in the above __tdp_mmu_set_spte_atomic()
+> 
+> You meant it sets iter->sptep I think.
+> 
+> > for freezing the mirror page table, the original new_spte from the caller of
+> > tdp_mmu_set_spte_atomic() is passed to __handle_changed_spte() in order to
+> > properly update statistics and propagate to the external page table.
+> 
+> new_spte was already passed in. What changed? You mean that
+> __tdp_mmu_set_spte_atomic() sets iter->sptep and doesn't update new_spte? If so
+> I'm not sure if it threshold TDP MMU.
 
-Whoops, never mind. I missed part of the discussion above. We're only
-requiring a VFIO selftest driver if we're using device MSIs, correct?
+For mirror page table, a successful path in tdp_mmu_set_spte_atomic() looks
+like this:
+tdp_mmu_set_spte_atomic() {
+  __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE); ==>sets mirror to frozen
+  __handle_changed_spte(kvm, sp, iter->gfn, iter->old_spte,
+			new_spte, iter->level, true);==>sets S-EPT to new_spte
+  __kvm_tdp_mmu_write_spte(iter->sptep, new_spte);   ==>sets mirror to new_spte
+}
+
+So, the tricky part is that S-EPT is updated to new_spte ahead of mirror EPT.
+
+
+> > > -	return 0;
+> > > +	/*
+> > > +	 * Unfreeze the mirror SPTE.  If updating the external SPTE failed,
+> > > +	 * restore the old SPTE so that the SPTE isn't frozen in
+> > > perpetuity,
+> > > +	 * otherwise set the mirror SPTE to the new desired value.
+> > > +	 */
+> > > +	if (is_mirror_sptep(iter->sptep)) {
+> > > +		if (ret)
+> > > +			__kvm_tdp_mmu_write_spte(iter->sptep, iter-
+> > > >old_spte);
+> > > +		else
+> > > +			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
+> > > +	} else {
+> > > +		/*
+> > > +		 * Bug the VM if handling the change failed, as failure is
+> > > only
+> > > +		 * allowed if KVM couldn't update the external SPTE.
+> > > +		 */
+> > > +		KVM_BUG_ON(ret, kvm);
+> > > +	}
+> > > +	return ret;
+> > >   }
+> > >   
+> > >   /*
+> > > @@ -738,6 +759,8 @@ static inline int __must_check
+> > > tdp_mmu_set_spte_atomic(struct kvm *kvm,
+> > >   static u64 tdp_mmu_set_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+> > >   			    u64 old_spte, u64 new_spte, gfn_t gfn, int
+> > > level)
+> > >   {
+> > > +	struct kvm_mmu_page *sp = sptep_to_sp(rcu_dereference(sptep));
+> > > +
+> > >   	lockdep_assert_held_write(&kvm->mmu_lock);
+> > >   
+> > >   	/*
+> > > @@ -751,7 +774,7 @@ static u64 tdp_mmu_set_spte(struct kvm *kvm, int as_id,
+> > > tdp_ptep_t sptep,
+> > >   
+> > >   	old_spte = kvm_tdp_mmu_write_spte(sptep, old_spte, new_spte,
+> > > level);
+> > >   
+> > > -	handle_changed_spte(kvm, as_id, gfn, old_spte, new_spte, level,
+> > > false);
+> > > +	handle_changed_spte(kvm, sp, gfn, old_spte, new_spte, level,
+> > > false);
+> > >   
+> > >   	/*
+> > >   	 * Users that do non-atomic setting of PTEs don't operate on mirror
+> > > @@ -1373,6 +1396,9 @@ static void kvm_tdp_mmu_age_spte(struct kvm *kvm,
+> > > struct tdp_iter *iter)
+> > >   {
+> > >   	u64 new_spte;
+> > >   
+> > > +	if (WARN_ON_ONCE(is_mirror_sptep(iter->sptep)))
+> > > +		return;
+> > > +
+> > Add a comment for why mirror page table is not expected here?
+> 
+> Ehh, maybe. Thinking about what to put... The warning is kind of cheating a
+> little bit on the idea of the patch: to forward all changes through limited ops
+> in a central place, such that we don't have TDX specifics encoded in core MMU.
+> Trying to forward this through properly would result in more burden to the TDP
+> MMU, so that's not the right answer either.
+> 
+> "Mirror TDP doesn't support PTE aging" is a pretty obvious comment. I'm fine
+> just leaving it without comment, but I can add something like that. Or do you
+> have another suggestion?
+What about "External TDP doesn't support clearing PTE A/D bit"?
+I'm ok with leaving without comment if you think it's too obvious.
+
+> > And do we need a similar WARN_ON_ONCE() in kvm_tdp_mmu_clear_dirty_pt_masked()
+> > or clear_dirty_pt_masked()?
+> 
+> Nothing changes for those in this patch though? For the kvm_tdp_mmu_age_spte()
+> case, warning coverage is removed in this patch.
+
+In kvm_tdp_mmu_age_spte() and clear_dirty_pt_masked() SPTEs are updated via
+__tdp_mmu_set_spte_atomic() or tdp_mmu_clear_spte_bits(), which don't propagate
+changes to the external page table.
+So, I think it's better to warn if a mirror root is accidentally passed in to
+those functions.
+
+
+ 
