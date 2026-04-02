@@ -1,154 +1,154 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E398221D3CC
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 20:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E94373C07;
+	Thu,  2 Apr 2026 21:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775162838; cv=none; b=JLxT7G2jHrwBHdcHlcN/4n5VMfyufpa6tASFn/YCVw3vPObdOW2eyQZIpruOCOexsAFJ87qPczehEITRk/D5RXIuS+3ZbkZ5OPGsUMWcTCW0lSAXDf1dhn0JCNk/g2mMJAMLcJaQ2t1nCdgA0I9yrttpdzsQvlwECTPtVlmNom0=
+	t=1775164190; cv=none; b=CoXhgILm30xw6AD7kO0WA4kr5pUBoylh3y70ej8Hw0o0MeR7ePCDqlQ4NRpF9OUB/tVGH28ulgY0v+Glyr6Z2eXKvp1qbe12NOILK8yM0TzgX9PU9qmoz6I8i6g0yl/a4eZSBISjEFOuPsmmm3Amz75f7JArguHrfRBcdViP+xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775162838; c=relaxed/simple;
-	bh=8nZpOk1ITZp1SFtTpWsm5mkCymODMmUYsSMkLRrEUpY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o60TMObWTqB0EY+8OuOyAEw6rnfrRsVWFNRGajSPT1Fd/nzpbWcTgyfQnkHWUEFDivnqgxHq4Jrza8hDs9eyUVjjfYmSURNLkgnNOenSYW/esNl4aNEQ8s/kBETWZnhw+JUt5HFL7DqLLx4ZY8JxlPo7kpy6Q8Dhycskkhr/iw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CHJkQQPu; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775164190; c=relaxed/simple;
+	bh=t/Qv1PIe9+OegemoplZWNzKcgzBuLsTusYYmfibiTj8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cm2U7QETw4ftLmru72+dcbX5Pv6vXzzsxdGKnSN2dDh7Mf3feCQYW90BTaFYjmQVlcY7taN/DfsZscKLsoXDmIFlbc8wycxoEfQ1Mir2WUCGXMFzNn4nnt1C5kIXlz77FDn5S+NUftMrIuABc0AGE4hZ6crPr6+LUY+aOkRDYOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RhRytks8; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CHJkQQPu"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35da37203d2so2437712a91.3
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 13:47:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775162836; x=1775767636; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1P4MvhlffOSgohTRz8NCFqHqCkkaG6iYolwLU/zQxlM=;
-        b=CHJkQQPuipr/+TuDbZjsKc6C4df8nLlwnAZjQbuSZkSSiulIpcSqc143c5LR12sArO
-         5G0zRKNlN9OTB+L/q/6lwt2dfy8xn/zkKe8EEPnFCObgsQ1kQAx/68ub8n3Cds8ijMtm
-         QEpePIEXgOB9JvRRReTM3zevv8n6Awq+IoC3lQ3U/snyeyA6sJ9zlfE7B2y9DA6OMkgT
-         Wly2hExjizHWVDM5PaNkNGc8BKyJPW+TegG9gYjTAyYn35KfrBELE+AEKh5kDjUTbN29
-         TISi+E9kKZqj1hYIh0Uryackh/+u0MUd45QcCFGLwAXadFn06RlAf61FPfno3sWHQ6sU
-         2UqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775162836; x=1775767636;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1P4MvhlffOSgohTRz8NCFqHqCkkaG6iYolwLU/zQxlM=;
-        b=b9Xhg0THCR75o3idSW1afMRf0zCKrbSk+pAyapiv04hjbKu+wwoXS7jwiuq/T2KIRD
-         iTe7slk62zrN4qdP4d2wHgnZcSVcNFJy86rHYQUgBsdhKayYOZCiGajVg75Uw14RoBUd
-         81W7oo3UO9BnhVcpa7KSivcEANAv0cBth2hTHNbH98g3d4NRxFjPUzlttRAl92yWO/Dd
-         CjotO176JXmFbEIGydiBZAeqxT1qJDO0Rj9Wu/7Zc/b0Ma7tyd4djg88T0l2Dltjfu4r
-         CIa0Go0zV4s9z6MH9o1oAx6h2Wy+Ig42EKLm/Cf/8RforPQk5vYsknAPwmjVZp3WAUx1
-         CvEA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwRlpLhEZUnNXPns5u/FT0FWlQ0kG4LlaeGR9eCrOsOXSgimjZF8pS2IqcfSMVyGgF8rA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwozzoTxD+nD4FkN5aR6Bu4HiY6OgxKBYGXo+9TMhjCeuWVYXHP
-	oVthkYUMZIpORDoTvwpnCvCvy6fnKUM7cOrOOEq1CegP4H0WoGYvSInA/yWolal7QLDUD4vXmbD
-	9Rs+OmQ==
-X-Received: from pgac27.prod.google.com ([2002:a05:6a02:295b:b0:c74:1db1:78c5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:39c4:b0:35d:a2d3:5c2e
- with SMTP id 98e67ed59e1d1-35de6956185mr306635a91.20.1775162836155; Thu, 02
- Apr 2026 13:47:16 -0700 (PDT)
-Date: Thu, 2 Apr 2026 13:47:14 -0700
-In-Reply-To: <a14531ab-f069-41f9-8c5c-9fe6f28a9454@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RhRytks8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775164189; x=1806700189;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=t/Qv1PIe9+OegemoplZWNzKcgzBuLsTusYYmfibiTj8=;
+  b=RhRytks8WAA0O1b3EU1YlH5CCFw2MAfi8oc2WgH+jNFXE5/61LbOvJBH
+   WO3U44YEEocOIRiF9NXZelmheCkR9Kb8/+K+DGSBLAM4peitWZSKo/RcT
+   m82zp0m8vYVg3p8q2/+NH4wPdQLxqv944DKiR/bimXOB6L/tDJsej2uY0
+   FP+dGJTFI+hb47butnLoslcMRiCOk8Nr3jOEJFGsfgpIhLxtLV3r2yvLq
+   RDqJYTFQZeOwiE1Ma5ueJy432HbK2GANahH+/LrzuHTHXGEIQ9DosqK6+
+   U4jabCM/kwsZB01uGA7BHrkQVBXcaeh1gLCX1p18hFkNtPVh7Yxs5R6BK
+   A==;
+X-CSE-ConnectionGUID: GHrN9GhwS0K6ksFEskfNrQ==
+X-CSE-MsgGUID: 9L059uvVQU28mZBhq7502g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="101685518"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
+   d="scan'208";a="101685518"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 14:09:49 -0700
+X-CSE-ConnectionGUID: 1SAF3qlJTUWMoLqTiChRDQ==
+X-CSE-MsgGUID: vLIigXWjTL60Fx3TLzAKuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
+   d="scan'208";a="228712084"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.178]) ([10.125.111.178])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 14:09:48 -0700
+Message-ID: <33adf49d-4937-413e-a594-830c11b2bed0@intel.com>
+Date: Thu, 2 Apr 2026 14:09:57 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260319005605.8965-1-yan.y.zhao@intel.com> <20260319005703.8983-1-yan.y.zhao@intel.com>
- <a14531ab-f069-41f9-8c5c-9fe6f28a9454@intel.com>
-Message-ID: <ac7V0g2q2hN3dU5u@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
  private memory
-From: Sean Christopherson <seanjc@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com, 
-	yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com, 
-	sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com, 
-	isaku.yamahata@intel.com
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com,
+ dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, kas@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev, kai.huang@intel.com,
+ rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, vannapurve@google.com,
+ ackerleytng@google.com, sagis@google.com, binbin.wu@linux.intel.com,
+ xiaoyao.li@intel.com, isaku.yamahata@intel.com
+References: <20260319005605.8965-1-yan.y.zhao@intel.com>
+ <20260319005703.8983-1-yan.y.zhao@intel.com>
+ <a14531ab-f069-41f9-8c5c-9fe6f28a9454@intel.com>
+ <ac7V0g2q2hN3dU5u@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ac7V0g2q2hN3dU5u@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 19, 2026, Dave Hansen wrote:
-> On 3/18/26 17:57, Yan Zhao wrote:
-> > Remove the completely unnecessary assumption that memory mapped into a TDX
-> > guest is backed by refcounted struct page memory. From KVM's point of view,
-> > TDH_MEM_PAGE_ADD and TDH_MEM_PAGE_AUG are glorified writes to PTEs, so they
-> > have no business placing requirements on how KVM and guest_memfd manage
-> > memory.
+On 4/2/26 13:47, Sean Christopherson wrote:
+> On Thu, Mar 19, 2026, Dave Hansen wrote:
+>> On 3/18/26 17:57, Yan Zhao wrote:
+>>> Remove the completely unnecessary assumption that memory mapped into a TDX
+>>> guest is backed by refcounted struct page memory. From KVM's point of view,
+>>> TDH_MEM_PAGE_ADD and TDH_MEM_PAGE_AUG are glorified writes to PTEs, so they
+>>> have no business placing requirements on how KVM and guest_memfd manage
+>>> memory.
+>>
+>> I think this goes a bit too far.
+>>
+>> It's one thing to say that it's more convenient for KVM to stick with
+>> pfns because it's what KVM uses now. Or, that the goals of using 'struct
+>> page' can be accomplished other ways. It's quite another to say what
+>> other bits of the codebase have "business" doing.
+>>
+>> Sean, can we tone this down a _bit_ to help guide folks in the future?
 > 
-> I think this goes a bit too far.
-> 
-> It's one thing to say that it's more convenient for KVM to stick with
-> pfns because it's what KVM uses now. Or, that the goals of using 'struct
-> page' can be accomplished other ways. It's quite another to say what
-> other bits of the codebase have "business" doing.
-> 
-> Sean, can we tone this down a _bit_ to help guide folks in the future?
+> I strongly disagree on this one.
 
-I strongly disagree on this one.  IMO, super low level APIs have no business
-placing unnecessary requirements on callers.  Requiring that the target memory
-be convertible?  A-ok because that's an actual requirement of the architecture.
-Requiring or assuming anything about "struct page" or folios?  Not ok.
+I think I understand the motivation now. All I'm saying is that instead
+of something like:
 
-This isn't a convenience thing, it's a core tenent of KVM guest memory managment.
-KVM's MMUs work with PFNs, full stop.  A PFN might have been acquired via GUP and
-thus a refcounted struct page, but there is a hard boundary in KVM between getting
-the page via GUP and installing the PFN into KVM's MMU.
+	Remove the completely unnecessary assumption that memory mapped
+	into a TDX guest is backed by refcounted struct page memory.
 
-KVM didn't always have a hard boundary, and it took us literally years to undo
-the resulting messes.  And the TDX hugepage support that was posted that pulled
-information from "struct page" and/or its folio re-introduced the exact type of
-flawed assumptions that we spent years purging from KVM.
+I'd rather see something along the lines of
 
-So yeah, what I wrote was a strongly worded statement, but that was 100% intentional,
-because I want to be crystal clear that requiring KVM to pass a struct page is a
-complete non-starter for me.
+	KVM's MMUs work with PFNs. This is very much an intentional
+	design choice. It ensures that the KVM MMUs remains flexible
+	and are not too tied to the regular CPU MMUs and the kernel code
+	around	them.
 
-> > Rip out the misguided struct page assumptions/constraints and instead have
-> 
-> Could we maybe tone down the editorializing a bit, please? Folks can
-> have honest disagreements about this stuff while not being "misguided".
+	Using 'struct page' for TDX memory is not a good fit anywhere
+	near the KVM MMU code.
 
-FWIW, I'm not trying to say the intent or people's viewpoints were misguided, I'm
-saying the code itself is misguided.  AFAICT, the "struct page" stuff was added
-to try to harden the TDX implementation, e.g. to guard against effective UAF of
-memory that was assigned to a TD.  But my viewpoint is that requiring a struct
-page made the overall implemenation _less_ robust, and thus the code is misguided
-because its justfication/reasoning was flawed.
-
-> > the two SEAMCALL wrapper APIs take PFN directly. This ensures that for
-> > future huge page support in S-EPT, the kernel doesn't pick up even worse
-> > assumptions like "a hugepage must be contained in a single folio".
-> 
-> I don't really understand what this is saying.
-> 
-> Is the concern that KVM might want to set up page tables for memory that
-> differ from how it was allocated? I'm a bit worried that this assumes
-> something about folios that doesn't always hold.
-
-Heh, the concern is that taking a page/folio in the SEAMCALL wrappers will lead
-to assumptions that don't always hold.  Specifically, the TDX hugepage support[*]
-was building up assumptions that KVM would never attempt to install a hugepage
-that didn't fit into a single folio:
-
-+	if (start_idx + npages > folio_nr_pages(folio))
-+		return TDX_OPERAND_INVALID;
-
-[*] https://lore.kernel.org/all/20250807094132.4453-1-yan.y.zhao@intel.com
-
-> I think the hugetlbfs gigantic support uses folios in at least a few
-> spots today.
-
-Yes, and the in-progress guest_memfd+HugeTLB work will also use folios.  The
-potential hiccup with the above folio_nr_pages() assumption is that KVM may want
-to shatter folios to 4KiB granularity for tracking purposes, but still map
-hugepage when memory is known to be physically contiguous.
-
-That's where a lot of this is coming from.  Taking a "struct page" is a bad
-enough assumption on its own (that all TDX private memory is backed by struct page),
-but even worse it's a slippery slope to even more bad assumptions (e.g. about how
-guest_memfd internally manages its folios).
+Would you disagree strongly with that kind of rewording?
