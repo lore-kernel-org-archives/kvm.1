@@ -1,72 +1,77 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D135CB8C;
-	Thu,  2 Apr 2026 06:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14C01D6BB;
+	Thu,  2 Apr 2026 06:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775111911; cv=none; b=hcoF7S7dnzMPovbS4FdfCC3SJD8j0OtEXR1sjx6LeuZU4ZI89J3cEejA59CiHemnn4QhxWcBcR9p+TgesQ4mo2zhaejPSfehGD7DQfIorz3Mqp9IbgfX3h5o0wFQ/z9hE6rHyXnkablDrUmFeCJ0BDeKDqQNNijwOmfAZDcV7U4=
+	t=1775112134; cv=none; b=nVeESAJrQJREhcYCozW4/ea2M5EoKWN/gnH1cAIZm2J6WtXH2d+zwRZc2BgTyz4d9HkkiwcHpX+ZQSIX57HsbU3EWptXbpGHmJDnIT8Pm2wFNy/WSXnGA34CVRhAe/CZtSeeSin8ywKWV+cgg7hG7Dng8pdk3CSFVkTiu0mHJ3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775111911; c=relaxed/simple;
-	bh=0twSuecxLRxSuOTu2zVUOa1Wj/jEOtJ087psPJJPKtE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hkTpJ18ffouA9oTUXHxJSbuxO/VQh2tagV86MXl5ngckz8nmTguB5QjmR2sh5RKWeMX0QzNEzx4c9S6FQ9T4oZu13FkeMbEg/sEw+qxIJ9v6CRbrUfR0deIIrM9mga67VRWHGrofVMh2KLnh1sv8M3HLZ/TlmGqsnCPEun++LSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowACXPWnZDs5pvkbzCw--.299S2;
-	Thu, 02 Apr 2026 14:38:17 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: anup@brainfault.org
-Cc: alex@ghiti.fr,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	jiakaiPeanut@gmail.com,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com,
-	xujiakai2025@iscas.ac.cn
-Subject: Re: [PATCH v2] RISC-V: KVM: Fix use-after-free in kvm_riscv_gstage_get_leaf()
-Date: Thu,  2 Apr 2026 06:38:17 +0000
-Message-Id: <20260402063817.1750619-1-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAAhSdy1tN1i3KZ_EmGPN6dz=DYSfGGxeiTCbHYA3GRezFD4Wiw@mail.gmail.com>
-References: <CAAhSdy1tN1i3KZ_EmGPN6dz=DYSfGGxeiTCbHYA3GRezFD4Wiw@mail.gmail.com>
+	s=arc-20240116; t=1775112134; c=relaxed/simple;
+	bh=S1O8HaI8EaNch4fIxBRBeg8PXroD/AZZZf9ITX8ieJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVotTbyVyQTWXMzXt2rY1s/nt944cUcHUwuWBW/jtqU6AfnQjsh5UEsQVpKkwdbRlFW7PfrQHIBLa0pfsfeHNbJz3BVHn808FiAA2elDTB7GD6CMyQOv6xiIMerWPlBP5mLbLn7Skqmmbj/Ya6QX25Nc3p3kyIcHQ96P4vqKNGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QNiRKDBO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FEaTuD25; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QNiRKDBO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FEaTuD25"
+Date: Thu, 2 Apr 2026 08:42:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1775112130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S1O8HaI8EaNch4fIxBRBeg8PXroD/AZZZf9ITX8ieJI=;
+	b=QNiRKDBO8UeNhswCpjncHwqbY4cX7WxwSeXUSq8ED+K5Cxg1KaTYyNxdweOpE8fV8ja6z8
+	eHmozn66EOCb8gc2QXLLdJx09CBf9LJslDAW8EIEsxcuXww8Tt5vJICTI5Ng0zPJxXVTMe
+	tAqYgdaAupY2ahwaGrNWg63XRKSuOgdvuVYvM6IAaBOVe5TlZGHNIQVFS3JA5Z7fmRao3K
+	1JuB/03FmpTLVVyvpLPuDvRlDbo+99jwiwA/PpD/flMVcAUz+zeHnjsslpushl8m0rrndW
+	A3VOTYYMlYZdz15NyslTxxjoLvedL45/3CpBYSBSQUWsaUGvz8uH5+fCf++8RQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1775112130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S1O8HaI8EaNch4fIxBRBeg8PXroD/AZZZf9ITX8ieJI=;
+	b=FEaTuD25yB5fdfwCKhlMYFdmyvsHKuMFsBKkx87xMyMVjawpaklmr3FqCidvv8uLEcvWFg
+	fw5AgYR2nWhx6vAA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw@amazon.co.uk>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	"shaikhkamal2012@gmail.com" <shaikhkamal2012@gmail.com>,
+	"syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com" <syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com>,
+	"me@brighamcampbell.com" <me@brighamcampbell.com>,
+	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"paul@xen.org" <paul@xen.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] KVM: x86/xen: Fix sleeping lock in hard IRQ context on
+ PREEMPT_RT
+Message-ID: <20260402064209.8ba7wrBI@linutronix.de>
+References: <20260329131543.91733-1-shaikhkamal2012@gmail.com>
+ <20260330101814.7fa1e31e@gandalf.local.home>
+ <bb7b66ad99097c5326196b61d644cff255e30394.camel@amazon.co.uk>
+ <ac08V4TaM2yh9SY1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACXPWnZDs5pvkbzCw--.299S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUO07AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aV
-	CY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv
-	0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z2
-	80aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq
-	67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY02Avz4vE14v_GF1l42
-	xK82IYc2Ij64vIr41l4c8EcI0Ec7CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
-	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
-	cVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
-	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
-	Ja73UjIFyTuYvjfU0CJmUUUUU
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiDAgFCWnOBsYLNAABsR
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ac08V4TaM2yh9SY1@google.com>
 
-Hi Anup,
+On 2026-04-01 08:40:07 [-0700], Sean Christopherson wrote:
+> Re-reading through the thread where you proposed using trylock, and through
+> commit bbe17c625d68 ("KVM: x86/xen: Fix potential deadlock in kvm_xen_update_runstate_guest()"),
+> I think I agree with using trylock for "fast" paths.
 
-Thanks for the feedback. I’ll prepare a follow-up patch to improve 
-the locking and add proper comments explaining the conditional locking.
+Has bbe17c625d68 been applied for PREEMPT_RT reasons?
 
-Thanks,
-Jiakai
-
+Sebastian
