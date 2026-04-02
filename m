@@ -1,181 +1,158 @@
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29366366DA5
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 19:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775158701; cv=none; b=c+1uD1bjWnAE1ccGpRXe8JIIOPKUUBeWPujNps6GD2h5CaElzicWpZLt8VMgvCQUUBKXBsjmUpc6jdo6Ojvdji+Gv+phNDGswaC8eY4+kWRVsod/8HGUtATjJsO3/PCC0fuP8EcmtbeKLpmMWpnY8ddSAigrbASdr84fWob258g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775158701; c=relaxed/simple;
-	bh=sxuqQOtpTIhnsnruCurB+KsFnny3NxywxLqvf8D1RWM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XakT2mvoXvVwRrZYTgRdmyifsFvBsed9LBpc/5PGghTKwKb58f+rnsDvQnc/CVEwZaT6YYBgVARliIFLAhPY6fkjLuhumtKOcYJZ9L6u3BFL9VTezJuaCjsSGOiw3rL1p3ReoPBaynZJkB+Qr4V44uiH8ClBVsEmK+IHxLI2cxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu; spf=pass smtp.mailfrom=columbia.edu; dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.b=pBQ67VJ4; arc=none smtp.client-ip=148.163.135.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=columbia.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6845637C92B
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 19:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775158811; cv=pass; b=C62ST+KBRc6RozfPR1yuUfRH3pMvCcxtMkaZQvNKUKlUPFEDhb5ou8uc2fGjXsSdjTcpEgYKY68pFPaRnE6ebXPQWzh+QYl2T1bNTq5aYpngugfQGYiOt0nbzsj7eawam4PZOk45p3MGvGXPUA1d+Dj/ST0bnjzJ+CeLZtYb2MA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775158811; c=relaxed/simple;
+	bh=US2V7kzwHw+XpVhDyUggsFAHRpyi5Z5kvJJ43HbFkRM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fsnAwuu3f9bT+xHs9fXxFrTtTdKpAOONjG/B/e58HiJN1dAlOnYylktXMUr6uGvI/iaNcYpEM6y+vvTk5nz+pn1/EGpvmwFUAaAz65qgcLpXr+J2kSXu/SD44Vcb1EULRrqnsyUrdMCDdh6G4ukuda+4pgg0mfXAdVQg8SlBOmY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z+Wc1N8g; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.b="pBQ67VJ4"
-Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632JUMee1387830
-	for <kvm@vger.kernel.org>; Thu, 2 Apr 2026 15:33:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=1Wma
-	Gc9Te9yz0Zibs0J92PxP2axqg3Ucqwb44WM0s3g=; b=pBQ67VJ46+SO5CMoxNw4
-	10vf2BWyi8pCFVjd3/INcGVNa2Rx4KtH2rep92OIs2n1Z89uB2lTfNviu+kbwbPd
-	DjAPZzTjPlQJxf6aaLj8+55swS1/gYcctqfhFYgYzhKlR/0crQjLSGCN03sDQss9
-	4tZHP4P+wILE7QdbAjcgpe5P/Ff4my0GTEA5qtpp8D85WKZQFROup1Kp2l2MpjiS
-	9Yj3nNMZauc2U5s34Um9d9jiL/3yeihYWBvWrqrsZRhGbHQbSjGDG8Q5TIp8ZYZM
-	cU3Bx2XRUUejxzakioCYxP6G9EC5W5f3QZfaBWft5Fh55KmbHTKoFuO3cCmIUNz2
-	vA==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4d9tyua6sf-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 15:33:02 -0400 (EDT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8d3e4c19307so84809485a.1
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 12:33:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z+Wc1N8g"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66bb7118c96so2988a12.0
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 12:40:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775158809; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OoAWZk9fAoNG1S8ur+zgMwpk7OzF18WIDYqcaUMIbktfFMls8lF5IFIms2fp3fvfZ0
+         t9zpxHMeSisdGy9622kZVmBIpg9G6Z/G2KW+2rid2rHX7TCzydm9yflZECXJt8Uszu7u
+         9xBn3zuiyhvK1SvhhgjsQzeriFSkkSTno5suJTTrwWo7WBZTmkOE+obpOerSc6Aq7uus
+         y4ALg/Ei0NA+cDWk54Ld5olA1Qh9JSTJhNwwjEZ1Y+XBN7E4DuIrjJ+OmQ2+F8A00zkS
+         +f7PYB0g1TMuC125KErX5R+Mqt5/17AyXz2yth81Yg8Yp7rJVQdxBW5XXycFHrsJbxDU
+         760w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=J0DvflLdp3i7a17ynT3a78GmDFDn7qbQSpDZ8abq9cA=;
+        fh=mlx9menZcKS4V1irhWL9IVUSJDQMaWnX87XtlXDyoLA=;
+        b=hpjLcRx6HyOo5UuSseGuhJIignlLHjD+I81AKNtzJbd2KBIj7BvpJWVfnB96d12Ye2
+         529IBzWBCXO9Z29IAR5b2ckf59NzvcWpfdR85sRnPEKn88qI6zlZ1ZHFgRAwA0h/E3EM
+         SmBEhlKpwRBXMr763nu13FzbvUOUHYoAI8nMaj+JdbO0h1clNgsNisBdV/cvG7/C2662
+         v1Qybz/tSHr3fA3zraKGTYMUbYdCba0u7vm4TqqUECj4Gg0VXH1KjMWlfDsmowIjafZ/
+         BwbPHsVYXHHuRijpkjOT8PGzGjlBn3F7tqheMGJhQJQ1gWMOytf1lNE+/XhS4TLlQtyi
+         eELg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775158809; x=1775763609; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J0DvflLdp3i7a17ynT3a78GmDFDn7qbQSpDZ8abq9cA=;
+        b=Z+Wc1N8gFdHRRaTj4eCm1Vdd+8m71jgh+a/eRMZKAkXD05ZWd+1ezgQ4peeqABToHi
+         p3hn1BF/wNmKvy0/Ho9Vtmx10Yjna4fouN4cxibja4dMIpVm/lARlT59/RvdAWG9OOxJ
+         v9uONRDeERj3QVAi5frZwvpNdkTLO5YM/MXcbdU0YWdcVlp0ka3P1uZwFlxa5clsoViG
+         kdSEi00rAX2QWbXX+xg8FDQ88TQYTOzktjH4LOJBqty87GKGF01jRyphDX7rlOOo2MKV
+         ym1EHGKXjC1XOditNR23aN/rA3Dpj4b8WErLS4SugPUxYh0ilgtow/l12XpAV2luuSfO
+         iX+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775158381; x=1775763181;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1WmaGc9Te9yz0Zibs0J92PxP2axqg3Ucqwb44WM0s3g=;
-        b=XH90qs222y7qPKNxHPCCb1YvjroKhqNXfEdv95CBaypdBMzutHA0p6I6Dy87wyLM+T
-         32Dm/zHvsCLB3IuyC+rVc381fIc/VgL6awI3GbA1Vj1qkvXM0kBXCadZRhKeYJwhxQGL
-         t7JafaeNHgES0DGAHKkw3OzPWxT+1U1uSX5rs1l97hCUAbNgANy+UrUqzRYNAwCU0nO5
-         f4GtBDwD9ZPVh8Bas0MhZtSrAVB12oVCMVEuU95bBZogCdGdnriyBkpj7+eXiieRu+C2
-         nWkg2LNe3+3aETKrENQusq5B+t1TqAC/lSg4mbreGNBEGnlgHEJfE8DoC/4kEt1isOjl
-         7iFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJHSL7U+Z+FwZM8y4Dh5/7bfUdhh+06zIaQBgM/q4KPgffCwsUkmlVrFZzed8qOywu8u8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkEG1i3sHavF8/T0EuMx2S6PPipRXHKC/mMV4rrJ/vadL8M58Z
-	56zKIR4UctHtYK54gJolngWplVoA+qk140CSZPR5hEe57ceDZZUZveAZgjhpmhE+KwbxV/PgUCR
-	bPd59fyaniSA9cyUEWWqb/DfQ8J4lXmIetMDAbTTIQrKvH3PiNg==
-X-Gm-Gg: ATEYQzzwqWx5U0tPBqmLuK/i4nEFzPk5hLzgCntBpJLvNkII6udvXj66kMWHPdeD/eU
-	h44YZ7dkVuz8FhG5kuWzd03yLexIpUE+LOPppcuvyCgXDzBO1tlorSYOqRLbRplt8gNjfuzGrCY
-	5i78MjYJpLO6Qh1ANL4EiV2ulJY4laqVhWsSk6nrDmW1yyfFa9HULdHhGbJlWzrT8eo0igAu5FH
-	531bcCh+uHBCtziEMkw/XdF8GIzr5tiDyHH0n30SEAdr92mLXqpPh2l5L5iYLpqGWKCpxMSzH7U
-	nPghLj0kjZtnoaHYiwhHqEBK18At6+2htQz8Hrn/bQjn5Hpm1NKJbbOqYkBuUCMFZR6tYaM+5T2
-	YqvbZ8rUuWPViqmuBfS6wGDzJRGD0wPJIrbiLTJo=
-X-Received: by 2002:a05:620a:298b:b0:8cd:9599:b7cb with SMTP id af79cd13be357-8d41c6ac558mr84739985a.25.1775158380992;
-        Thu, 02 Apr 2026 12:33:00 -0700 (PDT)
-X-Received: by 2002:a05:620a:298b:b0:8cd:9599:b7cb with SMTP id af79cd13be357-8d41c6ac558mr84732685a.25.1775158380358;
-        Thu, 02 Apr 2026 12:33:00 -0700 (PDT)
-Received: from [10.206.121.101] ([129.236.224.148])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a80680dcsm283333085a.26.2026.04.02.12.32.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2026 12:32:59 -0700 (PDT)
-Message-ID: <6a171abc-ebd2-4ddf-8c36-34c66ca42043@columbia.edu>
-Date: Thu, 2 Apr 2026 15:32:58 -0400
+        d=1e100.net; s=20251104; t=1775158809; x=1775763609;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=J0DvflLdp3i7a17ynT3a78GmDFDn7qbQSpDZ8abq9cA=;
+        b=HnFLCjNmAZ8DprGwcjyKUj7tSkkojPgwq5fpTtPHZwFhNmrG9k7GkMqTMT6p1c450a
+         KqZOmtBmAjouAI/7Aor4z+vARgVGfAPIR58z8GhspmH3ZbGhQcxg1ZJjAg9vhFP8G2XS
+         kBrmXsaN6sgjIJ3I9TOxZ6kV64q/hZ6SUPcsh5ppnDrRHrbIl29z6A0mod4UzKi3qlPW
+         c79IuzEB+5vSP3wJRavBWhui/3bACHoDQUAkhKvDmmjVJ6Me7pgxHvtb5qv59jE/xxx7
+         VPvwGqbvO7ArntdfqOMSnJwlpyKUbaDQepYTkIiNhHjmmbsof1oKqF9dzkldG4YgnLDt
+         oeVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQeBtZeureSr09bgaTGqWgm4AIDGbkCevZzll4kU2Aq6HD0GN/Kejg0wOmyTcly/Ine9Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVWlsdIW4hOtPblLdN+a9T9Vh//oe8zWWYmad4+oT2IWTaoe/I
+	qbPe2VC+wWsYp8qWU0rfmIYLbo7hjszwFANxAgj7uwaHir2Ar88ftplPch3+SoBj6hChjRFem4/
+	KFSacnp/fBp9v+S1AHZV2cdRJ75yZl1a/G0Lm1PMR
+X-Gm-Gg: AeBDieulL8ypWeuKYaUkC8o43vmuY9qks1GAU721/FyAePydE/Q3D+2wOfW5UJBkktS
+	ScdjkeS+W6XrTl2Ro/fud9AKWlaf9O3GG+EqaPgkkUaV4cagEgSQ3TT1RBig4nKS3w0QeKRhPlX
+	W/zItBPMYxsIHh9NQoZOwq/xCyfEEsTuXScEtIO6AWcVhbcxXl18Y0SdYDuNeoqLWC055vT05iz
+	8/Qhz/3iOPyDU9DCid55ixvNyBtU5nMNsK7beHNOqN+z1KtAVoSKMm7mT6xWbN9OE1mI9xvHD+2
+	JqOsBhw=
+X-Received: by 2002:a05:6402:4588:b0:66b:9469:a0f1 with SMTP id
+ 4fb4d7f45d1cf-66e41481095mr1730a12.14.1775158808171; Thu, 02 Apr 2026
+ 12:40:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/15] userfaultfd: introduce vm_uffd_ops
-To: Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, Andrei Vagin <avagin@google.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Harry Yoo
- <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
-        James Houghton <jthoughton@google.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-        Nikita Kalyazin <kalyazin@amazon.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-References: <20260402041156.1377214-1-rppt@kernel.org>
- <20260402041156.1377214-8-rppt@kernel.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <20260402041156.1377214-8-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=F/hat6hN c=1 sm=1 tr=0 ts=69cec46e cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=k+Kg2sH3hDje3YXt6xVjPQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
- a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=-OANyN2A5GHSoQQpHzcA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDE3NCBTYWx0ZWRfX62XLD99rQXtU
- n4HTThPW29L8IvRC2AM6bzDBnjK2dYBd0RrHCEfKctB6qIX6Lm3ZNzpJ+Ag7zx6gZqFfNsvx6Nn
- j++KH0TBSv+N/oSOkX+Cy4iNiCIp7HSaU7N/RSSSTSGm7AGnDGci2xGhsIv/AnoRGUM3qBmpNmT
- MH0oSYmTI0BviLXb058vbpwViLEXMlt2MSc9mIVv6FhnA0yADZ25RFZj4UqBe6Md2PGvHhvx6oj
- LL9xVxnFoEIyCSHTZ0Fo1fB8VhvSP45phR48fERpv2sDKX5MmTdojARgIlIwP/qySb6xlKRRx6d
- oKwwhov5ONoj8C7GkIGFIxtq6WbVxF8G9oC4sD3zmKv1W8EGWvGNqRhZzlSDVouBie43nFgUcDk
- VeB5fOTjvLgG7IGh4Ba2xPI/yt3DUPUEweL9svOtODqGY+VYqxXGJ6O5/W8MZndmxXTeR56u+4P
- YWhBL+u/3FBCZgkcb4g==
-X-Proofpoint-GUID: Wniyc7wI5DkctPerZc68ygzRtqJ-q2pa
-X-Proofpoint-ORIG-GUID: Wniyc7wI5DkctPerZc68ygzRtqJ-q2pa
-X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11747
- signatures=596818
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 bulkscore=10 priorityscore=1501 suspectscore=0
- spamscore=0 phishscore=0 clxscore=1011 impostorscore=10 lowpriorityscore=10
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020174
+References: <20260327234023.2659476-2-jmattson@google.com> <202603301501.N2sdlIQ9-lkp@intel.com>
+In-Reply-To: <202603301501.N2sdlIQ9-lkp@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 2 Apr 2026 12:39:54 -0700
+X-Gm-Features: AQROBzAy_EbHuWlN5wT5_Opuw5NUyxR9m0jIc3ZzushJ6pVsut7GdsF_uvQSOn8
+Message-ID: <CALMp9eSO6gz4R0f1S=E-sA3YE8KE0uJ30otcGsMV1NS3ujUcNA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/9] KVM: x86: Define KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT
+To: kernel test robot <lkp@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, oe-kbuild-all@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Mike,
+On Mon, Mar 30, 2026 at 12:50=E2=80=AFAM kernel test robot <lkp@intel.com> =
+wrote:
+>
+> Hi Jim,
+>
+> kernel test robot noticed the following build errors:
+>
+> [auto build test ERROR on 3d6cdcc8883b5726513d245eef0e91cabfc397f7]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Jim-Mattson/KVM-x8=
+6-Define-KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT/20260328-110805
+> base:   3d6cdcc8883b5726513d245eef0e91cabfc397f7
+> patch link:    https://lore.kernel.org/r/20260327234023.2659476-2-jmattso=
+n%40google.com
+> patch subject: [PATCH v7 1/9] KVM: x86: Define KVM_X86_QUIRK_NESTED_SVM_S=
+HARED_PAT
+> config: x86_64-randconfig-016-20260330 (https://download.01.org/0day-ci/a=
+rchive/20260330/202603301501.N2sdlIQ9-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20260330/202603301501.N2sdlIQ9-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202603301501.N2sdlIQ9-lkp=
+@intel.com/
+>
+> All errors (new ones prefixed by >>):
+>
+>    In file included from arch/x86/kvm/svm/svm_onhyperv.c:11:
+>    arch/x86/kvm/svm/svm.h: In function 'l2_has_separate_pat':
+> >> arch/x86/kvm/svm/svm.h:626:18: error: implicit declaration of function=
+ 'kvm_check_has_quirk'; did you mean 'kvm_check_request'? [-Wimplicit-funct=
+ion-declaration]
+>      626 |                 !kvm_check_has_quirk(svm->vcpu.kvm,
+>          |                  ^~~~~~~~~~~~~~~~~~~
+>          |                  kvm_check_request
+>    In file included from arch/x86/kvm/svm/svm_ops.h:7,
+>                     from arch/x86/kvm/svm/svm_onhyperv.c:12:
+>    arch/x86/kvm/x86.h: At top level:
+> >> arch/x86/kvm/x86.h:429:20: error: conflicting types for 'kvm_check_has=
+_quirk'; have 'bool(struct kvm *, u64)' {aka '_Bool(struct kvm *, long long=
+ unsigned int)'}
+>      429 | static inline bool kvm_check_has_quirk(struct kvm *kvm, u64 qu=
+irk)
+>          |                    ^~~~~~~~~~~~~~~~~~~
+>    arch/x86/kvm/svm/svm.h:626:18: note: previous implicit declaration of =
+'kvm_check_has_quirk' with type 'int()'
+>      626 |                 !kvm_check_has_quirk(svm->vcpu.kvm,
+>          |                  ^~~~~~~~~~~~~~~~~~~
+> --
 
-On 4/2/26 12:11 AM, Mike Rapoport wrote:
-> @@ -2021,34 +2040,33 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
->  bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
->  		       bool wp_async)
->  {
-> -	vm_flags &= __VM_UFFD_FLAGS;
-> +	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
->  
-> -	if (vma->vm_flags & VM_DROPPABLE)
-> -		return false;
-> -
-> -	if ((vm_flags & VM_UFFD_MINOR) &&
-> -	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
-> -		return false;
-> +	vm_flags &= __VM_UFFD_FLAGS;
->  
->  	/*
-> -	 * If wp async enabled, and WP is the only mode enabled, allow any
-> +	 * If WP is the only mode enabled and context is wp async, allow any
->  	 * memory type.
->  	 */
->  	if (wp_async && (vm_flags == VM_UFFD_WP))
->  		return true;
->  
-> +	/* For any other mode reject VMAs that don't implement vm_uffd_ops */
-> +	if (!ops)
-> +		return false;
-> +
-> +	if (vma->vm_flags & VM_DROPPABLE)
-> +		return false;
-> +
+It looks like svm.h should include x86.h.
 
-Doesn't moving the VM_DROPPABLE check after the wp_async early return make
-the issue David raised in [1] possible again (i.e. moving swapbacked pages
-into a droppable region using UFFDIO_MOVE)? With this change, VM_DROPPABLE
-pages can now be registered with uffd under wp_async, which allows
-UFFDIO_MOVE.
-
-I think the VM_DROPPABLE check should go right before the wp_async check.
-And it would probably benefit from a comment...
-
-[1] https://lore.kernel.org/linux-mm/5a875a3a-2243-4eab-856f-bc53ccfec3ea@redhat.com/
-
-Thanks,
-Tal
-
-  
-
+Sean: Do you want me to send a new series?
