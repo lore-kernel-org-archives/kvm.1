@@ -1,62 +1,62 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88963C3430
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF83DCD88
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 17:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775149524; cv=none; b=r8tpo1EBLL3iiNpouU0wXi4OemLAWyBhPfsr862xuVsRdbLH9O2+lSCfaQXrQO5mFKqt49++9I2uO7+8RmiMrvI5FY0KnriBZJdhq5m2I748vIYKhdk7n2dOTJ57+xjUneLuDie2pHZUiZzYUzbW5SyUO5cd/KZO1XYNwtN7xgs=
+	t=1775149534; cv=none; b=Etuhk8s79WrS2bGX3A/KmsogQhPMeRzY4o0Vluj/ftXGrFZGKWDOwnwSvMISRlREtEG9EFsUJkJ//601v9NNmvURWD99KhlfflpJRi0Zqo+Dm5eoJKe0VCGFD+5OwIYx+i8eZ+JMAPcW+xoQCAPi80cO5LKbNxVMiiBzkNh84XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775149524; c=relaxed/simple;
-	bh=9lonrmz2Oj+AlTTr2Ep1+PMhz7iB0jqbo4tLGpzXkfE=;
+	s=arc-20240116; t=1775149534; c=relaxed/simple;
+	bh=ZVlBx3jUF6dxoULLqnV2A29vKxFoZksTGD2x93xyva8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hMMdBiXLnSL5Is7yenwkrwDPrXSjN4dYBf6ETNHdnOai/RuiFjhsLGXYa6Hm+VBiUqOP7/B4RN28XlB8REXrI40OmppgjoMdffqVWt0mnxUNceS3fKNeV4xQDz+Plwyxd6zTq9gsvAHcG1e+2HH0ZsVNoEys1jH277iQrNM7j6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OXbJZT1X; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version:Content-Type; b=rakwY5bJo2Mhn74cJVwbzzEfsMckvcSti+YEamT5O8hR63XtiPKCpFnZJSDstnEOXXy9PtxWLjtbC5+8vWUvg6yc1FdAz4TtHw87UdhbTfUh16mfYUnM+slwxSje1aImFMPP6fyAEBfu9/1piF43cbvRQ9EcBSyrFMVb8Z7r9Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pRrB2Qt+; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OXbJZT1X"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4853c1ca73aso11346675e9.2
-        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:05:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pRrB2Qt+"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486507134e4so14954125e9.0
+        for <kvm@vger.kernel.org>; Thu, 02 Apr 2026 10:05:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775149514; x=1775754314; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1775149522; x=1775754322; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5zFCy2/f6gXgpLVosgl6P0mdggO0d7nONWw8yr+5Eo4=;
-        b=OXbJZT1X3lBXMXcj3MocLaodBmC6EfgypK6bSJjnezTvJwgSi3+XppJUzNurPdhd3t
-         TNSz3za1fsg8pSoXi2hZVqHlZS/4BBeBYfL4fzYPdWnoVeHJYljucH7S/6FHBJY21KQc
-         gvkeK1eaE4OSBspGYjXWixnT030uDRPPu/gzppSAtMlG1ZXw2JPYsy+3xNQdPor84kPZ
-         gnBdPVmfAS63mMt4HTMH0y/DwFGhgkGE9DGgF+I+0ORyh4tr7/yVFbaFDk5uuE5wPA4n
-         wbzPQ8ta9bLtzPk2+swYuQWo45g/ql546qyrW5Brr3n/fYm/uIYWZKQ62rznYBo5trCe
-         OlBw==
+        bh=G5um0Hkp4gUlr+ZAZ+thc8PXoevdikb9WS1n3IueTF8=;
+        b=pRrB2Qt+dJUVMoJWvhapdPpSQmuw0lZFGzUg/h2hRRIGNapPILxZ8BWQ2NBQZmYouF
+         ciA1VRKXYU/JhGyDtzf7s+R1B43LOVR9+r+7anQwA/yQcLvBQX4X711NQFPGP9FNg/gm
+         tcgjNQr4uV2jWEQhxBOckeuVDyW5b0b+Y3hc4ECXWT8nlAa3/83JtbR/Q3GUJWajK9O9
+         EPln5SbOMkacMlgCOYA+781P0aKjpxqosInHoczJeLAbs2LqQpJ2+O6Gqiblq6Y4EqhF
+         /d3XgvCQuHG93G5uybyigEq9NW4j1uIpWfMB3aW0dIsBhuJx1xm+yrAeuZJ2dXuAedOv
+         /Siw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775149514; x=1775754314;
+        d=1e100.net; s=20251104; t=1775149522; x=1775754322;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5zFCy2/f6gXgpLVosgl6P0mdggO0d7nONWw8yr+5Eo4=;
-        b=V1N3LGeVG7PJg39X2ZqgTkkLtxwP41Ahl7dxp23K9gSClWp99Oy5mgK+pOVe8xiJyN
-         HJALwDLQvsWPShtuPh5BH3zeEe6m1xCeWe2pmPzTxFDjNHeNoYUFzc2WMqvfoIfBYGbx
-         AceVJeD925+rAQ+grYx/PPrYREDMChxe/slzYUZ+UP0+82cG63Kyi6ala4/kxI5qLZlc
-         +rFF7vkERJ5Fe8mN4dvlEooIrZnJwyRtdzmCxuWnAsDcMl8dCVv3pKPLPumVkad72tgj
-         N4DaG/fFiKWraZvgHPMWbS+Loz8/XP0oMK8LZO/yW02QObCtoqA2q3W6hPFuy6LUX06X
-         /8hg==
-X-Gm-Message-State: AOJu0YwFvri5UC2RZM5PzZU+JEzcTA8Z2wmmPu0MQbL0e1Lzp/58swsH
-	lDedKh9b4KCEud7QSw+EaQZYgX/wQ21brcIWwYJNj2bvVDf+e6nrH8ZoXMTspfbIChw=
-X-Gm-Gg: ATEYQzzmZ1+JcwwmndbSy83l1P5kCvhOu10kGUPnHMHaiAUtxb55K+B3KgkwzzZrWMc
-	UfUf7nlan3o26WU73YDZBWdzJc95lDyxqGwx1QvP0C8gJGyiDj+Ll/GXO4nJyE5oIndkEijsnE8
-	YH523jz24Ate+OgaX89YCTpAEQhjEVKjWjOonXxFzpvcoh9sPs5+GfOWaMNdKhS7uqhQEIt6hLB
-	RVyZlhcwxDxo0Q2A9jPMZ31Jg/xX3nTCsk7dXT2BJvmKG8WW6Wvnd4C3nNhlVR2/DiclI3jOCkO
-	QkFNbmvaHVFu2eIymhC472rcCq6P/bR/0qbWwyFQNfx06B5JzC0MU9q98MHHB/aiu27SdhmVUcB
-	yHoe5Jcr+wFYjOjAS9gyQYJg9CXhRSc+fBhm8Hx+XxkT+cDognkqGLk6WD0ulcEqy9IR7+vNPmd
-	OxyfiH98KG8WMbtlDaoNCL/c9VBRHID5hDSSYUJVywiOoJXIBIH9bCT1nOP/1GPB8NUNoPedN5
-X-Received: by 2002:a05:600c:a4c:b0:487:1c2:6a56 with SMTP id 5b1f17b1804b1-4888356844bmr156661445e9.3.1775149514437;
-        Thu, 02 Apr 2026 10:05:14 -0700 (PDT)
+        bh=G5um0Hkp4gUlr+ZAZ+thc8PXoevdikb9WS1n3IueTF8=;
+        b=gl31dpRsYTtnQhPBaWCENQlI4hSYn4xnNYcO1wXyPYbWWu11XMG++dTmGbzKvTVjHZ
+         MYqUhy2hLxDY0SxpKqbyipn8Pu/bJaawtrpEvdz6TNMJG/AaZVlu4x6s/Fg/oF8LtQWd
+         LR/P7iERsjEEvWq5BAVeLS4FKBXPMD1cAO/kiYiW3/cbMISK3S9hDZYBq/iiDRP+FnBJ
+         z94sHa7Z+X+IyLEHFXK3UQN2ICEco5YCXf4D4DJba0pUq+GLthtDV/j3TYmDTr0/Tz7T
+         aTsGSlxb+KNd+AE0iLEY42EgnvwOpMTzm7Y8Njhc2CLWeIFqwBF0ar0vnjeVkRX1svTC
+         kHMA==
+X-Gm-Message-State: AOJu0Yx2OyyZPsaN8jfihCqwGBixyrtVxupqe2FNV0FT0sirmUVMCLv0
+	GEERRRwrG8F3IP98jD3vfsFvF/a1ynyhYkAxPH9OquV6qGXGVgutevy9vMEQj0hK4OQ=
+X-Gm-Gg: ATEYQzyglrdzgjxb0C/GVaoq87g40OAfudmnkoa3ofPfS5LLqmATvh503HCM0x1oUQh
+	XtggzlDn2zUG6aLG8eRXaskzsaPoVtHw/cPZeDtgt796IE0hpgN7LkGUVrt+Bbxv7BYX6ZvEX77
+	Nd8P1RTtWLEJC2VbmM2PjIg9aVbM/bOVYWVW9BnY4VOFdGgTBtV1cVT4Zp1bJz+3vBuscekjgjm
+	hfLvvMbFVlabTP92HgSm8WMAJ3EQEeIJE1OlVtQTlHzVS/6+cFtirYX0qPjuRialMJJDSmktHy4
+	pmUAvcwzEdsRwlgFuERC3J6FXJWLbkqq6jog78kFxNXhE9bKDz7jzkPXBknVmL4LdL0uOJYujAi
+	xwJTuNE60CJYWwiuRvTM4ubvTvu9AYQ9aF7AePylLJgb6B2aiZ4Fu6YzwTXRAiLJGba12z8qXSQ
+	TWcTEgUcp0SBV/ilnxO/D7c2vf7DgX7HdF1MLZQNUGJrBVm1AbhqX/H420h2hr8H5ZUk17WGCu
+X-Received: by 2002:a05:600c:3515:b0:477:76bf:e1fb with SMTP id 5b1f17b1804b1-4888359cee3mr152160325e9.16.1775149521759;
+        Thu, 02 Apr 2026 10:05:21 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48897fd5680sm666205e9.1.2026.04.02.10.05.12
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e832585sm385581555e9.6.2026.04.02.10.05.20
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 02 Apr 2026 10:05:13 -0700 (PDT)
+        Thu, 02 Apr 2026 10:05:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -68,11 +68,10 @@ Cc: kvm@vger.kernel.org,
 	Peter Maydell <peter.maydell@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Pedro Barbuda <pbarbuda@microsoft.com>,
-	Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH-for-11.1 v2 5/9] target/arm: Compile WHPX as common object
-Date: Thu,  2 Apr 2026 19:04:30 +0200
-Message-ID: <20260402170434.94783-6-philmd@linaro.org>
+	Alexander Graf <agraf@csgraf.de>
+Subject: [PATCH-for-11.1 v2 6/9] target/arm: Remove target_ulong use in hvf_handle_psci_call()
+Date: Thu,  2 Apr 2026 19:04:31 +0200
+Message-ID: <20260402170434.94783-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402170434.94783-1-philmd@linaro.org>
 References: <20260402170434.94783-1-philmd@linaro.org>
@@ -85,27 +84,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-whpx-all.c doesn't use target-specific code, move it from
-arm_system_ss[] to arm_common_system_ss[] to compile it once.
+Similarly to commit 3580aa03547 ("target/arm/tcg/psci.c: make
+compilation unit common") which replaced the target_ulong use in
+arm_handle_psci_call(), replace the one in hvf_handle_psci_call.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/whpx/meson.build | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/arm/hvf/hvf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/whpx/meson.build b/target/arm/whpx/meson.build
-index 3df632c9d30..db31e928012 100644
---- a/target/arm/whpx/meson.build
-+++ b/target/arm/whpx/meson.build
-@@ -1,5 +1,5 @@
--arm_system_ss.add(when: 'CONFIG_WHPX', if_true: files(
-+arm_common_system_ss.add(when: 'CONFIG_WHPX', if_true: files(
-   'whpx-all.c',
-+), if_false: files(
-+  'whpx-stub.c'
- ))
--
--arm_common_system_ss.add(when: 'CONFIG_WHPX', if_false: files('whpx-stub.c'))
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 5fc8f6bbbd9..678afe5c8e1 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1418,7 +1418,7 @@ static bool hvf_handle_psci_call(CPUState *cpu, int *excp_ret)
+     bool target_aarch64 = true;
+     CPUState *target_cpu_state;
+     ARMCPU *target_cpu;
+-    target_ulong entry;
++    uint64_t entry;
+     int target_el = 1;
+     int32_t ret = 0;
+ 
 -- 
 2.53.0
 
