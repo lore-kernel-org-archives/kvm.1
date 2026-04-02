@@ -1,102 +1,158 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2788235AC3D
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 03:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEC935E92D;
+	Thu,  2 Apr 2026 04:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775100236; cv=none; b=Ahy05N95cVl8EBonZdkhqmvBMLgifLUC7AqkhrFQ7Fubz6sYWm8ojWAStRAoTWVnTZXSYmseGygyni2YpFrgXapy1/KFbJsuyVOosodc2MuZusCyxmqAUtKqA9T5maow7cAYfOXQ49PSsxJ7WXlYzBrl3l93dgKwbU7pp1awMfI=
+	t=1775103126; cv=none; b=OJNvZgSrKJ3PHOTw52Iu+Vh+GzdlyzMV0UdP7Ct6dLGmYJOGj6UAxEQqDUo1o4ToAxm90aczYqmVZ3Qj1vUmz7pJVjvplBWKx0qAg0/hJuK/+4rzKTyp0LKqhQYc+2eG5g17GarpD5dXj6dRVtF2o/XqYlJBY01LzJEpuikIGa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775100236; c=relaxed/simple;
-	bh=wFEV17vVfa76CsA90nmAYfTFDtEq/4N4gmtI/2tIe44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jxBcNPGmNVY7eauJvYLXvYGDSikl24xzJU8k7Avid8RyOLhcjfSpkPPHazCE5okBFo1rTx+cn5OnXRvDj+Hk/kejsptPae9et27SeqAu8jnVP5MX+W4eftP8mhf+UQwz6RrL1s39N4sO1dc2gf2DLMeP0jE4AF4ciaBP0Z61YaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gBIkSG+s; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1775103126; c=relaxed/simple;
+	bh=YdxT9Os1hSGPmZw1lQ6CLN+t2WtiDCHbfZPu8SvWeQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HArmd6GjaX9amTH3yIEZxnUJqqoIaWEftj19wjM0s0aUYwmPSLuS6jwV+ECD2vI8aGT0M80oZ3oFs45vgmpl04vlnTNv5q2k6FfqQJ895WWbpebznTl7Zzxt6z+LiY9E3+kHxbkEGySE9fB+NVarPND9fZMFlLXIQIfEBCriczg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKKUf4pb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gBIkSG+s"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b2591757fbso61475ad.0
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 20:23:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775100234; x=1775705034; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FGAV7c5XMV3aDL8nK9n4zmairzWoU33cKjELFgWkkp4=;
-        b=gBIkSG+sf5DE8ChTGt5koXauObuoCLFCek2+2A3DxDLWNSDFGcrJ/lu9dDP3WgeNCT
-         O0YoBBsRUkhp/Sb2zw25AC9zI+cuCfK0iJrHybIN/mVa0zyEjCrj57hlWqHlwJUa7e4e
-         JGtmcA8iw8oQPu1eK14hSgXo5BWNGSMDa3GlwU0QXQcrh3OVWOgRCcN3CP4ejvIG6QSB
-         G7uaGcU9XzMHqysPsZ7A/7h9hfSmfRWjnvt0nKTcP5ADK8tPnOLz0lWE4LQ+ijZTxaUR
-         40eKtW4Z2Z6FV8n7kP2GEMRcGEVQBw0DlkzvyW0s7qdO2KjnhEhZWPKroNurSjweNXW5
-         bB2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775100234; x=1775705034;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FGAV7c5XMV3aDL8nK9n4zmairzWoU33cKjELFgWkkp4=;
-        b=OMGUU03DxfuW1+2JC/SCZqvNLEaRRjhkSXeG/jSlW6jCJUFNKpawp4qxYNm5R6O+V5
-         dIvp9LcFbSaweuoT7z2TngAGSyVzxDWyeBEBwzcAck1nuqse2gOPi5ra7dV43wTYiNe0
-         H63Ngya0GcXMO//n5rhnMsDMRu8tip796r6CeV2YWoU49WYBJpGn2G1jpg2LNdKje25G
-         syYjBQVJMepIReZIEw+1NgdwkorbfdHPa0wmrsRTExqLsbSRgNHCQVh2tJzQP1Qe7D/X
-         iqhQ8UR7Qn5yW/jkN8oBR1GtpV3QGfjVl508RLDZSjGsY+/xXj3Z9q7koZlusU3ioqXs
-         t/sg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLj1W8us8PwbGTYRCndfNYYjD7r1hgEEDW4+dJu1hmaCoL90mIHXVJMcn6rk5+zewZp2U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRiFmep3/6Nb8lYjWOpOaDJBznWI0pDoo5KhUBfUEa4fS15P97
-	boCY/Yd3hQFkHUOtiILUJszW/i+jVOYyXViSLY1r7KYdUO+72IXJhLWQWALdyMn+
-X-Gm-Gg: ATEYQzzIWih1mU6Ycg5yUY9Q7gMVbmZD4xQWrV/nYy794gKomTK9ea5yBLnutbvDeOS
-	AIHVsEpsWFAFqPeUW6WrWVi71nJ/S4qp4rGtCTVpemouFjRa7sglLxHRkopTUhPKO+zIBytyrJG
-	cf0pDxFEnLiHS2q8Dl6WKeFy9HWpWQErOT2gycNIhWlR1s3d2tUpjvtq+Kdwt9YiEXAhKnJi53/
-	Bj/LTS0xgEdI1nM3WUxTGWgjhQAe5RBvj2JYawV/LrkvIPXiiIv0quoVG3uCBMxtw+R0cCAMJ5x
-	IVbBKi7QsvyhiMk/yJfLcztadzVeWNwjyby+AeF88GLbC05jLKigjnTdJWjJVywuWISws0zSP4U
-	3/CVDl74xQB6EmEE3vQ93BgS93pNerHkCHNUbFxKd7OxGQLRSAOyjPpRsQdYcaLX0g6kx1GyITz
-	UByAXjTKfyUHNJwsjz1tc1xWDzEuLG3NOlvKBmpOwDGG2W0966jUPpamR5auEHlw==
-X-Received: by 2002:a17:903:22c9:b0:2b2:70ba:305c with SMTP id d9443c01a7336-2b27849c29bmr744365ad.8.1775100233878;
-        Wed, 01 Apr 2026 20:23:53 -0700 (PDT)
-Received: from google.com (128.161.199.35.bc.googleusercontent.com. [35.199.161.128])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27472d55fsm14428665ad.11.2026.04.01.20.23.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 20:23:53 -0700 (PDT)
-Date: Thu, 2 Apr 2026 03:23:47 +0000
-From: Josh Hilke <jrhilke@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	David Matlack <dmatlack@google.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: Re: [PATCH v2 07/14] KVM: selftests: Add support for physical device
- MSI triggers
-Message-ID: <ac3hQ9-PzaelG0NF@google.com>
-References: <20260331194033.3890309-1-jrhilke@google.com>
- <20260331194033.3890309-8-jrhilke@google.com>
- <ac1_Du0JMV4g5W2Z@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKKUf4pb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092F6C19423;
+	Thu,  2 Apr 2026 04:11:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775103126;
+	bh=YdxT9Os1hSGPmZw1lQ6CLN+t2WtiDCHbfZPu8SvWeQE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pKKUf4pbTEdGa00km9nLhdXKDDyJ1GVwXsRXfO8pRSh8eybncdhP7eo0EZ/127FMi
+	 cy5KaxCS6/LgeFl9S4PzmWt9v5lLwwZA04l+DCqOSrUjn4IzVt6Y8h3fd9aB653PRn
+	 dxbrdEgvgfXRoK7quOVCuCTXSlC1N0eYzfSDGRJZ2LL4xuswYT+2mJylXarNQSUthO
+	 ODpK6qi84Au/3YWwX6Obs6dnjC0v1fGTECSqcljzY4IwZWRyAHSoCt2iAxoZ4Ys2Ig
+	 /2pNBiAC4x+a+K/zpycRgg8P2tSKQ2TIkX60sAlg/yA5xUjV50/Y4M6Tnk0tt6uB0q
+	 8838NCi68y7lg==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v4 00/15] mm, kvm: allow uffd support in guest_memfd
+Date: Thu,  2 Apr 2026 07:11:41 +0300
+Message-ID: <20260402041156.1377214-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac1_Du0JMV4g5W2Z@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 01, 2026 at 01:24:46PM -0700, Sean Christopherson wrote:
-> On Tue, Mar 31, 2026, Josh Hilke wrote:
-> > From: David Matlack <dmatlack@google.com>
-> > 
-> > Add the '-d' flag to vfio_pci_irq_test to trigger interrupts using the
-> > physical device hardware instead of emulating them via eventfd writes.
-> > This leverages the VFIO library's driver support to provide a more
-> > realistic validation of the hardware-to-guest interrupt path.
-> 
-> I don't think this should be optional, I think the test should unconditionally
-> validate both path.  The "signal eventfd directly" is effectively a smoke test
-> of the full functionality; if that doesn't work, validating that sending via the
-> device itself is pointless.
-> 
-> To keep the runtime reasonable, maybe do only 10% of the iterations for the eventfd
-> version, capped at a lowish hardcoded value?
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-We can only use physical device interrupts if there is a VFIO selftest
-driver for the device. I can update the test in v3 to validate both
-paths if there's a driver, and fall back to using just eventfds
-otherwise.
+Hi,
+
+These patches enable support for userfaultfd in guest_memfd.
+
+As the ground work I refactored userfaultfd handling of PTE-based memory types
+(anonymous and shmem) and converted them to use vm_uffd_ops for allocating a
+folio or getting an existing folio from the page cache. shmem also implements
+callbacks that add a folio to the page cache after the data passed in
+UFFDIO_COPY was copied and remove the folio from the page cache if page table
+update fails.
+
+In order for guest_memfd to notify userspace about page faults, there are new
+VM_FAULT_UFFD_MINOR and VM_FAULT_UFFD_MISSING that a ->fault() handler can
+return to inform the page fault handler that it needs to call
+handle_userfault() to complete the fault.
+
+Nikita helped to plumb these new goodies into guest_memfd and provided basic
+tests to verify that guest_memfd works with userfaultfd.
+The handling of UFFDIO_MISSING in guest_memfd requires ability to remove a
+folio from page cache, the best way I could find was exporting
+filemap_remove_folio() to KVM.
+
+I deliberately left hugetlb out, at least for the most part.
+hugetlb handles acquisition of VMA and more importantly establishing of parent
+page table entry differently than PTE-based memory types. This is a different
+abstraction level than what vm_uffd_ops provides and people objected to
+exposing such low level APIs as a part of VMA operations.
+
+Also, to enable uffd in guest_memfd refactoring of hugetlb is not needed and I
+prefer to delay it until the dust settles after the changes in this set.
+
+v4 changes:
+* fix lock leak not only in patch 4, but also in patch 2, thanks Harry
+
+v3: https://lore.kernel.org/all/20260330101116.1117699-1-rppt@kernel.org
+* add fixes from Harry and Andrei
+* fix handling of WP-only mode for WP_ASYNC contexts in vma_can_userfault()
+* address David's comments about mfill_get_pmd() and rename it to
+  mfill_establish_pmd()
+* add VM_WARN()s for unsupported operations (James)
+* update comments using James' suggestions
+
+v2: https://lore.kernel.org/all/20260306171815.3160826-1-rppt@kernel.org
+* instead of returning uffd-specific values from ->fault() handlers add
+  __do_userfault() helper to resolve user faults in __do_fault()
+* address comments from Peter
+* rebased on v7.0-c1
+
+RFC: https://lore.kernel.org/all/20260127192936.1250096-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (11):
+  userfaultfd: introduce mfill_copy_folio_locked() helper
+  userfaultfd: introduce struct mfill_state
+  userfaultfd: introduce mfill_establish_pmd() helper
+  userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
+  userfaultfd: retry copying with locks dropped in
+    mfill_atomic_pte_copy()
+  userfaultfd: move vma_can_userfault out of line
+  userfaultfd: introduce vm_uffd_ops
+  shmem, userfaultfd: use a VMA callback to handle UFFDIO_CONTINUE
+  userfaultfd: introduce vm_uffd_ops->alloc_folio()
+  shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
+  userfaultfd: mfill_atomic(): remove retry logic
+
+Nikita Kalyazin (3):
+  KVM: guest_memfd: implement userfaultfd operations
+  KVM: selftests: test userfaultfd minor for guest_memfd
+  KVM: selftests: test userfaultfd missing for guest_memfd
+
+Peter Xu (1):
+  mm: generalize handling of userfaults in __do_fault()
+
+ include/linux/mm.h                            |   5 +
+ include/linux/shmem_fs.h                      |  14 -
+ include/linux/userfaultfd_k.h                 |  73 +-
+ mm/filemap.c                                  |   1 +
+ mm/hugetlb.c                                  |  15 +
+ mm/memory.c                                   |  43 ++
+ mm/shmem.c                                    | 188 ++---
+ mm/userfaultfd.c                              | 694 ++++++++++--------
+ .../testing/selftests/kvm/guest_memfd_test.c  | 191 +++++
+ virt/kvm/guest_memfd.c                        |  84 ++-
+ 10 files changed, 860 insertions(+), 448 deletions(-)
+
+
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+--
+2.53.0
