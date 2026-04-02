@@ -1,45 +1,46 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011037.outbound.protection.outlook.com [40.107.208.37])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011059.outbound.protection.outlook.com [52.101.57.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4D23EFD1A;
-	Thu,  2 Apr 2026 18:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4201361678;
+	Thu,  2 Apr 2026 18:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775155391; cv=fail; b=omiUk2HcOZJfs7dQQoRDdcy9HqqDlhnWkhTDlDXSJHbEpvU42KKuyWwVaMkNzU3qGbS/o1T/lQNDmuwLkgiQrSFfTMaGrkFmP+9/uZpglEK0KSo1Qmd+Msb8OF7r/Xkf4TXh8hJJ50eKFZj47PjZgB37n7mXayzc4tgMXBmuhkY=
+	t=1775155413; cv=fail; b=SiKqly9wQ/bSVt8gR4g/PE+YTuCZikrbWEvREiOHVKl4i+tniHuShDEU52QjcYCeU+A8axqXdG6J3l53WFW1/ahsZBzZBEfTklFn6ldg+Qze2WABOS1YiOvm1xLsDUlOyXeTXfAa03z9VezF362LgTyP+hHSNuPWH2cxoGbeQDM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775155391; c=relaxed/simple;
-	bh=vV6W5GtC2ysS0Qt8XNUI3gVzEGe+A6ySZDjnCvkPGZ8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Op/wq4rktBP7JrnHnDQJTStm2zpL3O9dXaR65Ry8NFGVKrRnN2btyBH8yXG4nYyc1QT7jofKKkQ0ao2RJo0ck8SQlwIIQR6IbgYswmtl854PAjgwLUq3hHCooddm/cRT02iVvVJ0pSA/aYjsrYIYXRUEBIl3Eh8mfpuizaXIwDE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3yvOU4uh; arc=fail smtp.client-ip=40.107.208.37
+	s=arc-20240116; t=1775155413; c=relaxed/simple;
+	bh=kixwIgpJ3n4s2pCwC1D7BRNAhSLvQ4vTAgrMKVQjjys=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VqD/Rr/gPSCotxWaUkALEvDHWCrClmQiu89S6N30Sq3phZehS+Mrz2jre7217jls9KHn6QQ2nOM+V5IA6JT1xi8pMLIHZWLdkj8va4NJuxAfjI84q0sPUrhUfKZF1BSYkFiSODt/pQKAm5vPppbFXJjVvlGG9wqlESY3WIlZRYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wpDm5pXU; arc=fail smtp.client-ip=52.101.57.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3yvOU4uh"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wpDm5pXU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lyfnH+DntjGkB2eHcX7AJJAaEcdm/gMmK2UBb2x4raVHEw+P1CkF+u6nJsO7aCFPgziEHNBwcabPkVkqz8p+4uP0SuKBvjnwHrORBsZP0synXElQOrgOHX4mjJ6Zxa5TChiZQLAWctr670v/4bMETmf7GzJVWV5VvJREPyHHPEhpgKFhqhIqF2CIpkRSaI+k2ZWm3cIDXT8xgLGZlA8CbaBhF40OO7Kwnzw4tIk1v095xbaj23n5JU9r2ACcxqXG+vTMKSEhSvULymP7MvMXm9afl9jPPudHhlPtHbPJ4OwJRGo0TilzZOpa29trouUA/vLERHFjbtx8uidExGFyWw==
+ b=tXSwRIhkh73f0rLpQdvtcdEwaaXIyp1VPZOgdVa8/f/1DXie2Zwhii26rZ52XW/YtTgeqFQuw+D+EI1dQMrYhL8bjGsWetRHN3nLrOMCpEpRDw8WCHqZY0lwgkT2Wgdh6p49UiS4rXrx1Gdv/0NsqOYPca8c77Mg60Hy7aAnwrD6uXAFlQWVHf3waWSs4/wFVB0fhN54n1GWKQaHcA4xviEdryCI3AYB/9RyMvPUbWt2gtE4MKBI5s584IE1HfpQdlHJqjIsQH5zELCydmH9JdeiZkrGlEgtPdM860SCLE9+/naCgEUFk7/gOnosKIcudsqfMUG4JcTLG2bHDnP3ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SN4atzLF1fnQ9Su9eFQaCYD8EWXYPgIPB7F6lnuBCw8=;
- b=p3rI5sNRLJxpPSvbMy8iE2BlEiE1WSlwN+xOpVDtHYPSZwzy7d16endryS+nMt2kLYqKxw1GnLvgt3Ndva/U+gQOYCDft0SiFWpbn1QBJKh5+1Q+MNBVTUGwP+lo0wPYEDekeuOBeUpGT0qcc/5qZ5CULsVYP58B/f3ZGzxDQ6dIRWnbQ2cWrYbC7vWBvFHrnsEEO6bhfA0508/tMD4PfhfelyTwelLZcd+mOQOo6B71akFtatryuSk3+ZRJVLbwiGBqzdrj4oNIPYw8Dy1uze+SsmABby2p0Eg60DIi81S0/tR+ybaKDPcc83IUy26b4lIRJE1L0TwRtYZwYDg1cQ==
+ bh=4W6QnVUudsksppBJjDkGRl1u5wcvj8pwencc/0fprtw=;
+ b=KGOUdibszlRvfuMl45xOz2j70y6n1DBqpFcFs3gI4ruLjBCs20NfIJcy8HukJ2yXeOvaXRPpIXMEKqFUaTbfpMD9o6hNl9+0jaWQg75fpHglvLtKgwh+uDuGr3tjRWz1k2Gg9++2VJNsw6MH4q5vna8Wz4PQQFNIvT2XcIABjl2+/2+j78K1dyTHXfuBPQTS/pyE/qwlxIEamSheYpHuSW12uSyFimkdPusV1hOVzmcokNv1/ItsK8qMpXa27UJTjFOR9Jo1rY7ol7nk8ncxBgJxAXcuTmJeub1LwPPSYZWA1F+qEJ3EoOQNsMhmAVlZZgorKYtUFpvYakYTBwsk+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SN4atzLF1fnQ9Su9eFQaCYD8EWXYPgIPB7F6lnuBCw8=;
- b=3yvOU4uhNIdtZ/M1P9JBEJa6t10lx2A76H72T4ju/x8b35G140FtDf2Rh142LdWW6N6Ik4yKO2HMrKCHJj0hSS0DO3hGVN9HN/4HT1rpQmZeI34BLVRcjt2E9QnXmuWzJbZipPEsovRlZC+gyfz+r+Oj35KNZ2HzPZoDvwUAw9w=
-Received: from BYAPR07CA0038.namprd07.prod.outlook.com (2603:10b6:a03:60::15)
- by SJ0PR12MB6904.namprd12.prod.outlook.com (2603:10b6:a03:483::5) with
+ bh=4W6QnVUudsksppBJjDkGRl1u5wcvj8pwencc/0fprtw=;
+ b=wpDm5pXUz8T5OCp3YYFkWrfzwXRzNIL8YC8qbShr5+aAijIaad4hh297HTGawth7DXNb8SzspAVdcmBg1tur/E5r043RMzb585lI/D+6Utw+xw+CqMxFapDxquHZ3ZBQu0zvc28KxhE+vnI8XLY+F/PwR7Dto/J+8Y0OPGXjFI4=
+Received: from BN0PR02CA0023.namprd02.prod.outlook.com (2603:10b6:408:e4::28)
+ by DS0PR12MB7745.namprd12.prod.outlook.com (2603:10b6:8:13c::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
- 2026 18:43:04 +0000
-Received: from SJ1PEPF00001CE8.namprd03.prod.outlook.com
- (2603:10b6:a03:60:cafe::c5) by BYAPR07CA0038.outlook.office365.com
- (2603:10b6:a03:60::15) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 18:43:16 +0000
+Received: from BN2PEPF00004FC1.namprd04.prod.outlook.com
+ (2603:10b6:408:e4:cafe::31) by BN0PR02CA0023.outlook.office365.com
+ (2603:10b6:408:e4::28) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.18 via Frontend Transport; Thu,
- 2 Apr 2026 18:43:04 +0000
+ 2 Apr 2026 18:43:14 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CE8.mail.protection.outlook.com (10.167.242.24) with Microsoft
+ BN2PEPF00004FC1.mail.protection.outlook.com (10.167.243.187) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Thu, 2 Apr 2026 18:43:03 +0000
+ 15.20.9769.17 via Frontend Transport; Thu, 2 Apr 2026 18:43:14 +0000
 Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 2 Apr
- 2026 13:42:54 -0500
+ 2026 13:43:10 -0500
 From: Shivansh Dhiman <shivansh.dhiman@amd.com>
 To: <seanjc@google.com>, <pbonzini@redhat.com>,
 	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
@@ -61,10 +62,12 @@ CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
 	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
 	<xin@zytor.com>, <nikunj.dadhania@amd.com>, <santosh.shukla@amd.com>,
 	<shivansh.dhiman@amd.com>
-Subject: [PATCH v2 0/7] KVM: SVM: Enable FRED support
-Date: Thu, 2 Apr 2026 18:42:33 +0000
-Message-ID: <20260402184240.1939480-1-shivansh.dhiman@amd.com>
+Subject: [PATCH v2 1/7] KVM: SVM: Initialize FRED VMCB fields
+Date: Thu, 2 Apr 2026 18:42:34 +0000
+Message-ID: <20260402184240.1939480-2-shivansh.dhiman@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260402184240.1939480-1-shivansh.dhiman@amd.com>
+References: <20260402184240.1939480-1-shivansh.dhiman@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,97 +80,146 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE8:EE_|SJ0PR12MB6904:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3b7ee18-831b-41c7-0f01-08de90e7ac61
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FC1:EE_|DS0PR12MB7745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 688313fb-43e1-48aa-8582-08de90e7b2d7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|7416014|82310400026|376014|1800799024|13003099007|18002099003|56012099003;
+	BCL:0;ARA:13230040|82310400026|7416014|1800799024|36860700016|376014|22082099003|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	w4qa8hYP5lEAy2E59IoWAV+nzxTVoMDw1zRnVum8TEpGnsxxxsmRGlYa39GGE7y+p+hIxTSyBX8BxqzZQZowkTO1JpH936ij5Cv7PiWsR9iNSgBSvamLuxDw4TARhsW9tGbB7k+zSraR4oSQCoUjE59GmgiSWg5QIMXgiksciaRv5tSkBbNDhOMjDotahPLQ2OUTUSLB8PGQIYG9oq8gqxu4BbDnoQb8pVUVnSqMFWbSisqe90e7qjZB4JK74Sknhjs/W9aNUMbEF8e/BR0Ahp13J+0H6TJfclIskpBla9g2l/WONq96iqyeI1GGcviKYmFKJHdMZ6O5Sb12dUerQi+rjegdhivjBqP+cIryjl51e41qUBNRLXxwV1G4D2qy1NMY+uBsuLBUZ5r7sN7C5sHB4YnvFBYWtGGEQ70Oq5c6rj+tKo12a5x36qTxn5tnK6IbiLmsPglrbqDcdAF9xYM2j4Dn+lOgiDNjIpC9aik01tNL4W1GZVjII9yd7nBawfmpJVuzLEsZUGtzWITzObxYYLPoBhYjgTtRSzJYqp209O4/GH0YfEku/Bms+/lATr+8G8ivH2siPLS/V2opBIoYI67ZSTGLauYBeHojvYhE/VRbQJfy5DoyQdenbjq2VAT21WRCImu/QJY9fX01/tgb+Le6kzJwHj8HtYVitvomgkhHOQ8Xd2Co2Nc3hHguhslMcZ61wchDwwsmsXCcRLYDRU5ffUkBTQCN2puUaWZwgtCntauqYKEJOaW9IldOMHtGlFq0+w9o9HfgmU+rHKShFZnaEgke14Yl5XhbJAw=
+	lCFXGHfYgq4cLTlGLgGz+cpzqPSLfRhDduBVO4xeZK7ich8b6mA3W54ER6YhM9ef5KOixkwAHc/JUBfUqA6nVYNO8PvsCBtBMLEwY85IZ9gA5Qsk1IS6ydUoS8+wMntC6AN6JI/AM6Eyw+uCs+qNZmmCe93PDiwfw8GrebyLz2HU+KujT7IehXM7zHPiH1CX9LpbwJlp+pcI/A8lhgFW8S8+lmAkJDIe+tiklVrCp/z4GA3stk4r+glJ3pxZW07cVy3jzqeJ3f380XW68pq2Lq05WUt66zOJQyUisxR5+hekdEoh7bmYd5Jo/PhovL35GpGmdnsxcwAWYz2dSOwjRh6V4MUrAzqoAo7l669ZDICIa88criFFZZ7wvHh222OJ8ET08ggaGp0zoCfQjpToLDPDlKMp9gniAbnJ90yHldqixNMNTJfKvYpadiAyr0Css4SNXbpjSeV+QhiHnDOHS3/iRyjzV2JTBDZFz/MX7rBd7S2Imvqh6BuCtKg05KSlQEyzUASEJ8A8Ym8wqsq2+29Kt8TDp6EN3r61dOrtT1rfmjwtQIWhh4iJ3KvHObQCRSzfkm+EHrPQQwc3UTI33nG4tjBLrwQx46EV8EtdSZfBcKfMwP5ceFHHQjGAZUXJdn3xM74p0svLz3WsI5ggGeHmc6ORw8iykzoLvC2yxiIWC/wlb60378tw1oJa+Dk1sxJmNAu6RDHMKYnrayb12IM0UWDffAtxoFusjVXsXkeQP0XExsPr+pH9LJXxY48DloL3xK6aFu8aTXpX/k7SgQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(82310400026)(376014)(1800799024)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(1800799024)(36860700016)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	jYzCy8X+Vu4GEtwMZmOEs7FBR1BBdqd7olt7pB/ica29iJz13VnO0lJrpyVd7Ymf5/veTU7W1a2BKKz1UxZbGcAltWX/jbRUxp65mNRQkLzLabWGyFMJLjRzlFJJ3Fpc+BlwzNVpw6NK1buN8P98kxQBsGGMgBQU6tpCTnQ1WTXI7xQGGJbQIYZtma3I2AXICBt7p7DOln/opcly9DMppAZkaCy7DDqNvkPbcq+xPcewNIvP41Hj6jSb6pqlu1u9SLeQy0f0ghQPs5Z75ejLois0kjNp9pqlIhhVtOsxjboQqIbSDkboZ8uGFuXwjWeSyuz6kwfnukRcZHZIRbiTSC/cTt8yegBg96rvxCjZ1eORqqZ40ASsuU6iNu6Vdnbceej5/v7nJKfs+Nn0bZHLgd/GEsWsa0QWATVSnCZ9tZqeqrI+33E1DLDjjvu2sHK6
+	Va1HUggN9DXtQlZnm1PPaVuRLROeHCRtoLUQ59MoXZBFC/WHf+6XrmiPBGI6ODIuf+yd8lTSCCdSM1GuKyEmxv3hHkHrM4BTbBlMlDFzxQL2Hq0R3r0skMAMLfy1jYDs9GQ59NDF6xBh0GAwxu1DGkx2gEVlz46V4tQ85JB9KU9LJl//iu95GVkffg3K/tRZQ5kqnB/pRyCoZQgWXstk2e5YNouVHnWkH+EMF8ePiDoEzc+Afytod3/8gt4qahh3GVz3iqJKui+OaIOzApTC4Da3yQ9b5K5wznCf0riPl16sAat1nZKUE5shXtAdeWp/mTdRDbRVL6eOqyFN3MWjNE5gFP/Bcp2hG1ilF9PP/LaYMZNNT8yYjFsd9Ne2QJxxRPzSN31HEODFyX54B5GfU6WOBCsSqKbfU6LBZrEV6Fths5RdnhpwJl2nxZkAhMYz
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 18:43:03.5732
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 18:43:14.5093
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3b7ee18-831b-41c7-0f01-08de90e7ac61
+X-MS-Exchange-CrossTenant-Network-Message-Id: 688313fb-43e1-48aa-8582-08de90e7b2d7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE8.namprd03.prod.outlook.com
+	BN2PEPF00004FC1.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6904
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7745
 
-This series adds SVM support for FRED (Flexible Return and Event Delivery)
-virtualization in KVM.
+From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
 
-FRED introduces simplified privilege level transitions to replace IDT-based
-event delivery and IRET returns, providing lower latency event handling while
-ensuring complete supervisor context on delivery and full user context on
-return. FRED defines event delivery for both ring 3->0 and ring 0->0
-transitions, and introduces ERETU for returning to ring 3 and ERETS for
-remaining in ring 0.
+The upcoming AMD FRED (Flexible Return and Event Delivery) feature
+introduces several new fields to the VMCB save area. These fields include
+FRED-specific stack pointers (fred_rsp[0-3], fred_ssp[1-3]), stack level
+tracking (fred_stklvls), and configuration (fred_config).
 
-AMD hardware extends the VMCB to support FRED virtualization with dedicated
-save area fields for FRED MSRs (RSP0-3, SSP1-3, STKLVLS, CONFIG) and control
-fields for event injection data (EXITINTDATA, EVENTINJDATA).
+All FRED MSRs are zeroed on RESET. Reproduce the HW behavior here to
+ensure that vCPU starts with a valid FRED state. Also update the size
+of save areas of VMCB.
 
-The implementation spans seven patches. The important changes are:
-
-1) Extend VMCB structures with FRED fields mentioned above and disable MSR
-   interception for FRED-enabled guests to avoid unnecessary VM exits.
-
-2) Support for nested exceptions where we populate event injection data
-   when delivering exceptions like page faults and debug traps. 
+Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Co-developed-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+---
 
 Changes in v2:
 - Modified the zeroing of FRED MSRs from INIT to RESET and updated the commit
   message (Sean Christopherson).
-- Used guest_cpu_cap_has() instead of checking VMCB bit in recalc intercepts 
-  (Sean Christopherson).
-- Variable rename from 'fred_enable' to 'intercept' (Sean Christopherson).
-- Moved FRED MSRs save/restore logic from svm_vcpu_enter_exit() to 
-  svm_prepare_[host_switch/switch_to_guest]() to reduce some MSR accesses.
-- While switching to host, added a safety check on guest_state_loaded.
-- Removed the need for a new function parameter 'reinject_on_vmexit' in 
-  svm_complete_interrupts() (Paolo Bonzini).
-- Replace variable 'nested' with 'is_nested' (Sean Christopherson).
-- Formatted variables in reverse fir-tree order (Sean Christopherson).
-- Gate all the FRED MSRs through guest_cpu_cap_has() while dumping VMCB
-  (Sean Christopherson).
-- Confined the enabling of vFRED to svm_vcpu_after_set_cpuid() only
-  (Sean Christopherson).
 
-This series is based on top of FRED support for VMX patchset [1],
-patches 1-17. The VMX patchset was rebased on top of v6.18.0 kernel.
-Previous version v1 of this series can be found here:
-https://lore.kernel.org/kvm/20260129063653.3553076-1-shivansh.dhiman@amd.com/
-
-[1] https://lore.kernel.org/kvm/20251026201911.505204-1-xin@zytor.com
-
-Regards,
-Shivansh
 ---
-Neeraj Upadhyay (3):
-  KVM: SVM: Initialize FRED VMCB fields
-  KVM: SVM: Populate FRED event data on event injection
-  KVM: SVM: Support FRED nested exception injection
+ arch/x86/include/asm/svm.h | 33 ++++++++++++++++++++++++++++++---
+ arch/x86/kvm/svm/svm.c     | 12 ++++++++++++
+ 2 files changed, 42 insertions(+), 3 deletions(-)
 
-Shivansh Dhiman (4):
-  KVM: SVM: Disable interception of FRED MSRs for FRED supported guests
-  KVM: SVM: Save restore FRED_RSP0 for FRED supported guests
-  KVM: SVM: Dump FRED context in dump_vmcb()
-  KVM: SVM: Enable FRED virtualization
-
- arch/x86/include/asm/svm.h |  35 ++++++++++-
- arch/x86/kvm/svm/svm.c     | 122 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 152 insertions(+), 5 deletions(-)
-
-base-commit: f76e83ecf6bce6d3793f828d92170b69e636f3c9
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index 17f6c3fedeee..a42ed39aa8fb 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -165,7 +165,10 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+ 	u8 reserved_9[22];
+ 	u64 allowed_sev_features;	/* Offset 0x138 */
+ 	u64 guest_sev_features;		/* Offset 0x140 */
+-	u8 reserved_10[664];
++	u8 reserved_10[40];
++	u64 exit_int_data;		/* Offset 0x170 */
++	u64 event_inj_data;
++	u8 reserved_11[608];
+ 	/*
+ 	 * Offset 0x3e0, 32 bytes reserved
+ 	 * for use by hypervisor/software.
+@@ -360,6 +363,18 @@ struct vmcb_save_area {
+ 	u64 last_excp_to;
+ 	u8 reserved_0x298[72];
+ 	u64 spec_ctrl;		/* Guest version of SPEC_CTRL at 0x2E0 */
++	u8 reserved_0x2e8[448];
++	u64 guest_exit_int_data;        /* GUEST_EXITINTDATA 0x4A8 */
++	u64 guest_event_inj_data;
++	u64 fred_rsp0;
++	u64 fred_rsp1;
++	u64 fred_rsp2;
++	u64 fred_rsp3;
++	u64 fred_stklvls;
++	u64 fred_ssp1;
++	u64 fred_ssp2;
++	u64 fred_ssp3;
++	u64 fred_config;
+ } __packed;
+ 
+ /* Save area definition for SEV-ES and SEV-SNP guests */
+@@ -472,6 +487,18 @@ struct sev_es_save_area {
+ 	u8 fpreg_x87[80];
+ 	u8 fpreg_xmm[256];
+ 	u8 fpreg_ymm[256];
++	u8 reserved_0x670[568];
++	u64 guest_exit_int_data;        /* GUEST_EXITINTDATA 0x8A8 */
++	u64 guest_event_inj_data;
++	u64 fred_rsp0;
++	u64 fred_rsp1;
++	u64 fred_rsp2;
++	u64 fred_rsp3;
++	u64 fred_stklvls;
++	u64 fred_ssp1;
++	u64 fred_ssp2;
++	u64 fred_ssp3;
++	u64 fred_config;
+ } __packed;
+ 
+ struct ghcb_save_area {
+@@ -542,9 +569,9 @@ struct vmcb {
+ 	};
+ } __packed;
+ 
+-#define EXPECTED_VMCB_SAVE_AREA_SIZE		744
++#define EXPECTED_VMCB_SAVE_AREA_SIZE		1280
+ #define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
+-#define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1648
++#define EXPECTED_SEV_ES_SAVE_AREA_SIZE		2304
+ #define EXPECTED_VMCB_CONTROL_AREA_SIZE		1024
+ #define EXPECTED_GHCB_SIZE			PAGE_SIZE
+ 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index f4ccb3e66635..cf6ba59d6d1e 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1110,6 +1110,18 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
+ 	save->idtr.base = 0;
+ 	save->idtr.limit = 0xffff;
+ 
++	if (!init_event) {
++		save->fred_rsp0 = 0;
++		save->fred_rsp1 = 0;
++		save->fred_rsp2 = 0;
++		save->fred_rsp3 = 0;
++		save->fred_stklvls = 0;
++		save->fred_ssp1 = 0;
++		save->fred_ssp2 = 0;
++		save->fred_ssp3 = 0;
++		save->fred_config = 0;
++	}
++
+ 	init_sys_seg(&save->ldtr, SEG_TYPE_LDT);
+ 	init_sys_seg(&save->tr, SEG_TYPE_BUSY_TSS16);
+ 
 -- 
 2.43.0
 
