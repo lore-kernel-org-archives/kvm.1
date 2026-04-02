@@ -1,192 +1,205 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E584F78F26
-	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 00:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775089071; cv=pass; b=ZlQh27DWup5VMXeHxNMTscgMX/bET/kAN5wFt4bFu86npASYYEW7rPOR1TM9TNFmZENZt+GKtiUcNPv7vQ0icWHFslgzBQIxLr0hwDlbaou6vD5zHMv5mcut+frVv6FXw7NM66Np+aFsuUKeFCST7YjQAm8zgRlzyh2gIpYmhuw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775089071; c=relaxed/simple;
-	bh=Xx2XLbKS8Zk9kBbhJ0d+CQnT50VHDG3yvs10dIgOatc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pmHLMA+p6UCzGMHP6ELy5mNTVQJm1rcXwE+XEIZDbE7OLDDcrpoekebbSMs4Jpg6sGw3Cv9tWrHy1DEL3Ilv9R6gZ1riR2W5jh4yS61mKkQtsd30waBXiCMemYYp5oA98lavDozsrStucuxk0lF0DO/eGxd5HsL/2yzh6LW7u70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MsSWs3gE; arc=pass smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B911DED42
+	for <kvm@vger.kernel.org>; Thu,  2 Apr 2026 00:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775090317; cv=none; b=SZX6srftB31aCvTN1g9QWpDlRBtI3QUbsbvy2ycCpwnQ4bM4euNhHQrvOirfCHucSS9nL/xk3WlGOZuwXshPKc7EOeLPvaZ6kfT2lL5m3kKDGs87qqC+5hxyIgeIfSeeHcRjHj0DhpBw75ieuwkg2kppenEQZx9g7DuZm4cuYCA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775090317; c=relaxed/simple;
+	bh=pBtJYqTzwHiHhOyDzopRne4Iiz0YJJ2IFXgr6IwbK4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TZZX0yNn0poGQ2C6x+nF23REZmTT+qHahenAhve+lSAEH1PvirpyKJEk/tvNHpoozs2OkGTzLrOhnREu9zUKlAHewc012sUrL1GytUAOjmChlqCGxv9wjjjfUtboH3Tw4QDT5JwItSUWkjfmP2N0fSvY6vHwxmqc+/qChRZaz4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o//K1mHN; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MsSWs3gE"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50b6c45781aso308891cf.0
-        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 17:17:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775089069; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jr9x/FPN03hi6TmqaejyqmYGTI/dSePWNyJu5n0UwSdpVqSB1pH6CeJryY2pxphYew
-         bjIgA1d6TdTpriWGIMTYmTS8xOv9cXaYwkhhWhcIwCHBaP8WTme0bYh3cu/TVttXHGmg
-         NC4nuy1mjWdV2+Kt0dE5wk/4X/4NH6b15xnT915pnDCEi71aNHFJ5AF/eS2n2s6MsYpM
-         UtqE8lOBIeQnZAriwDPaTALov/2tsygGJ3UwrUlL5YmzZKjzrX44vVyRwktCdVHJwEeY
-         3gPjRiGERazkalbaFKmIkUrczgij8qcI5I15GAgxKCHZSBRNO6rOmy7yvwooffEqUjlp
-         sx3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XaXp/6khXbzGh8S95Ys1JHV/6w/rASl+d+sNNjFsjXI=;
-        fh=Qnt/3mBGT5a1aUQQObjE/uvW9Z1ls22liGyjghJOlCg=;
-        b=YVJhL0FPx7B45Wxck80cwRSjO4JA+gzTET6Ss8KeEuGeoWhBQjTrytwAEBzlX2wGwI
-         Y8hDsZET3x9emt1fdsuwjx66IH5F6w64CXZlswoUK61JTRR6E6MiY3xSvjqPrjfS8K42
-         vo/YQUiux2p9L8YBetZHQApnyVHlhOvzz3rryjKrVlyCcsG5fiwdr7FNdyVovOn9ptaj
-         dTwXmP4BssGr8VNRPj9yEREcS45frALIGrshe57NofTbF83aWxy3Lst7MbTTa8GKYKe3
-         Q4i3N9kz1hbBEiJYp/VyoavaRscLmxSTKQwYvDJxHf+fFsVofpwHeDgYwrznhp420tiq
-         BXQA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o//K1mHN"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b243198058so19265ad.1
+        for <kvm@vger.kernel.org>; Wed, 01 Apr 2026 17:38:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775089069; x=1775693869; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XaXp/6khXbzGh8S95Ys1JHV/6w/rASl+d+sNNjFsjXI=;
-        b=MsSWs3gEWvgQva3WFfJU3XMhgLXle3jnD1ixiK0W15EP/NVQqX8xjIKA0n1rOk4NxN
-         hHXTYFO/POPLrWCloZ6x/4tmV3v9f6kUweGlX9dFEDc59aVIDToJyMF+0S0Pqq5mmGvR
-         ++HgHdeJ+wHdcVEfma7SnWIuE3x6o1d9SPKiltpbWTtiSzfEedvUtbmqNpltLfcExCBq
-         argWr0eBCcaRQCvHFkQj7mVuLL26k5j7kp5G1G8wVS/WB3DW2esEyDj4dTuybme1G5Fr
-         VcvEfunB7rHcOdl/6Yl0i82ZRTtrNXiMDsnOpalsc/ItFLg/4vzmnSs60MYlOa0kV89p
-         Kmtw==
+        d=google.com; s=20251104; t=1775090314; x=1775695114; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WXZyL+wh812/d0uUJjhnC2hkbXbKDp3qsdLK3iL7g+g=;
+        b=o//K1mHNBQVR12ERcD0gFBBPTI7drEamp+zW7+FyH593t/loLS2PMq+Rdc3hZHoWT0
+         Xw3zAnIytBHKruIjs2xpEI3C3yEfzQ3OkvnNYom1oJtdwA0g13o9LbdtVJPmIn7RLC0d
+         TSyDU/7NLeoVuBkNpvQQLAv/OGVAE1HOTPingbj7rti3nBpW3RRXLu3V5vLuJT6crdI9
+         c0N+ztyO9JgTKG2ph6Xb5F5e1A4SGfLDpFNK0A3+J7JoczTJxpo32Qp9tG39XKtp4FWt
+         tQT1rulBX9yPqexweQcRHqjTneo3hpNwhOZyshDnZ85M5x9jrE46wqvoRMsLqwb7l0FK
+         KoCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775089069; x=1775693869;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XaXp/6khXbzGh8S95Ys1JHV/6w/rASl+d+sNNjFsjXI=;
-        b=QswTdrVslD/Fg0zyztQ7k5sAV3xLFiG2jPiBiMFD6026LEXVLKTwLQIh81rduqGP1Y
-         Ru4EI5fghhO6/uft06JPrbViw7i6lT3h7/RltLVV5e8fSje0OhSJOMuDSBYC2KKQG1Qu
-         jVn0boXHIWhqwLe711hU4I70Yusrf7BLkZQQL793eJp/WdOn8Dhrmz/lI8YrTZFXbBA8
-         WkjJJTio2bbsv+bsW60wCSDsMehTyvM2wMZhrbph3/dth0SiyfCDz0aEn5TBhaPFSMQq
-         cEXoSPyBSmElya4bbe6VPtq6X4ik+IyRKqYfXqYCjnaI//xzmcnjhzYtH9pQ0NG3TO1D
-         TcIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXblD2WWJzKz9dtMNFXHdIZCpPHHQLV6OsqIIkw+MNnuCL+x6zulSFT50WMj6O8sQwcsaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbLjLYWOHPSpH7a6NUQi2bczM557Sm62LQdD0j2vkgBzz5aDzW
-	YVFc56vPV7OsG/H34mjP3Dk8LAx8SXZqb2cW9jOk3grUt629U4YIRhR72JqOXmeTIOJzjdaFXfG
-	VUiHPiQC1DkOGyLINLbzRTunor6TPNuaRoEVDtceB
-X-Gm-Gg: ATEYQzwPkKPTgHmArPqaQoZbgTgryzX/+uOODq0XsN6NW4vYK6BZMVammXos6p2JWcd
-	JtQaOKfqi0tQ2zXs5H2j4N22/HxbP6mb6P/XmFMPV9kQmLD4BLwFnvcl5WCFKEh9tLz7Yy6CPI4
-	I7wPNz5myV2soJqkMJzxqNE6TcsEAS7bc0Xe08Pk8ZTnemCLmDq3qdFHtHFK4WQT/p0uzyLnnBp
-	rrGzZYjYKE0N/VA4q5vD/KgWpKzgIsAhkZdpLBUhHGAIvlrrQx6QSfwIoJayJlM2KbTd3iKuxCH
-	kzkLy/xV
-X-Received: by 2002:a05:622a:4204:b0:509:25c5:42b4 with SMTP id
- d75a77b69052e-50d507aabc6mr1517261cf.13.1775089068494; Wed, 01 Apr 2026
- 17:17:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775090314; x=1775695114;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WXZyL+wh812/d0uUJjhnC2hkbXbKDp3qsdLK3iL7g+g=;
+        b=DXN5VwcVyYnU7CNL/UkhLpA447ZYPSMiKRjmF60t3AouyvP+G8azs11jEqQLZwdqVH
+         wpRPc/tMg15gQ/amKi+XwW9mGuy9rEG/LVrHnV7k/ZZV4gEcavk+8MLUKoitqC7+gwX/
+         Cw2QWEVF3Cwbrz88LlApLmwNk/PGL8Ur3JEiObXS37vY+U7Sqt0N1JVpYuv/TgOD7gVV
+         hGN7EauwTcCdMKplHiwMH10Qarsjht/ljm5nXVZAqc4rig9ZLvXhAh27q8DdUCvnhLk5
+         B/ro30eRnhGNCOI3exZ2eDxRgbf2xQVSbz7TZz/GPo/5FxI1fcn+9ZXXmjZWGUWrE1IX
+         0iKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVsIEV74I8M2MlAvDfSgNzTe7+hzVF/8GQZ1HEjHFXknejU9OXq7qvbLTojvAsrZ5AzXt8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEQJIyNd3j5IIAOO19cLjc2A1PDev0NCFjKWTVJR+U5Xm6CvJq
+	QjA6UR+8a6Bl47dqVSOeqxoWVUHuKc08yYXW+8wYA5SR9tboRB8D9hZJli50m0to
+X-Gm-Gg: ATEYQzzIQwzwS/63jtTShJUArMeEYr6HHtD+f4h5IDb5itDGfI1LzE1wHWOekUJzoWY
+	pfeh4gPpAZEwda020rbFCY1wBY4L4mLUhtKDBadnEm/J59Me+eTF2zcVYjjcWOAbPXOTD1sc3Xq
+	q+k33ptmyZfjfQmo4/vdcCJAUEAy9zW5XV97YQUXBqAp3BaoEOlutcvBOPv5ecLWMi5v2RBSJwI
+	PrVyIOfwM097y4WcZnr6eV+zqdVrIU3F7oLefNCRCxZ6Gvo8xaprSprYxcsrSmbQTVvVPL9lS6t
+	WMi3FZ2R3UDMEY0SNUDFf0tm1jLSlKLAsTaWfWlmdTznaYLhxojBdWwi8yt/cUa2Ne/Qr+u4C7g
+	QfdE4LSCX5tXEOB/IG8xvVmc4hVHMNWMfI5CDeyDCdYjcfWqY5pdBfFMbx6gXwZLGQy5SxoOOzh
+	hMQBSkEIbxL+N6pGk3aIsWAUgZqd2wJiNOr/DHnBOi932eVGKGOaSRQhbUshv06Q==
+X-Received: by 2002:a17:903:946:b0:2b0:7a9b:82f3 with SMTP id d9443c01a7336-2b278450383mr362625ad.8.1775090313531;
+        Wed, 01 Apr 2026 17:38:33 -0700 (PDT)
+Received: from google.com (128.161.199.35.bc.googleusercontent.com. [35.199.161.128])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9b261c1sm1067585b3a.6.2026.04.01.17.38.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 17:38:33 -0700 (PDT)
+Date: Thu, 2 Apr 2026 00:38:29 +0000
+From: Josh Hilke <jrhilke@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>
+Subject: Re: [PATCH v2 00/14] KVM: selftests: Link with VFIO selftests lib
+ and test device interrupts
+Message-ID: <ac26haU_7nXYWke1@google.com>
+References: <20260331194033.3890309-1-jrhilke@google.com>
+ <ac1hI93pEo-x-7YU@google.com>
+ <ac1pUx_jYv2yCMnX@google.com>
+ <ac1s55_oLEUQx8Hs@google.com>
+ <ac18LHQLalPb4z0-@google.com>
+ <CAAdrzjugqk=APteY4oZNsa2e5kv5-=HBekyYfpzrwFUZ_WapsQ@mail.gmail.com>
+ <CALzav=cO48f7f8yaN6EsSL4uGpojvY7gmCe9oOy+sP_+Kii4mw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260303193822.2526335-1-rananta@google.com> <20260303193822.2526335-9-rananta@google.com>
- <20260311235715.GA2738066.vipinsh@google.com> <CAJHc60yQjfpw9D0VoP0FAfv65g5BpVYddcWQ23q0hRLdcP2k-Q@mail.gmail.com>
- <CALzav=fkKPR1giHyvZ8Awk=OpzNk8b_xVVwt-AyuXjwGGSY4Zw@mail.gmail.com>
- <CAJHc60wUShGosroLv64M_+vQXe_d-N3d=yA7PGSWC=_PyEXL+w@mail.gmail.com> <CALzav=dS+4emsbXLg+JoJGMX_RtQ1uocvfEY6r5Y3VT=UQn6eQ@mail.gmail.com>
-In-Reply-To: <CALzav=dS+4emsbXLg+JoJGMX_RtQ1uocvfEY6r5Y3VT=UQn6eQ@mail.gmail.com>
-From: Raghavendra Rao Ananta <rananta@google.com>
-Date: Wed, 1 Apr 2026 17:17:36 -0700
-X-Gm-Features: AQROBzBtyV05quHyEyHtQdNo68XIdslJp4UChRV2JizBSERHY3quhSx6z-NhDpI
-Message-ID: <CAJHc60zmnYwg4jFZD5DQAU0Wyfz0ZWjwgigy60+94dRLqFb71g@mail.gmail.com>
-Subject: Re: [PATCH v6 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
-To: David Matlack <dmatlack@google.com>
-Cc: Vipin Sharma <vipinsh@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=cO48f7f8yaN6EsSL4uGpojvY7gmCe9oOy+sP_+Kii4mw@mail.gmail.com>
 
-On Wed, Apr 1, 2026 at 4:51=E2=80=AFPM David Matlack <dmatlack@google.com> =
-wrote:
->
-> On Wed, Apr 1, 2026 at 4:46=E2=80=AFPM Raghavendra Rao Ananta
-> <rananta@google.com> wrote:
+On Wed, Apr 01, 2026 at 04:58:34PM -0700, David Matlack wrote:
+> On Wed, Apr 1, 2026 at 4:42 PM Josh Hilke <jrhilke@google.com> wrote:
 > >
-> > On Tue, Mar 31, 2026 at 5:11=E2=80=AFPM David Matlack <dmatlack@google.=
-com> wrote:
+> > On Wed, Apr 1, 2026 at 1:12 PM David Matlack <dmatlack@google.com> wrote:
 > > >
-> > > On Tue, Mar 31, 2026 at 4:53=E2=80=AFPM Raghavendra Rao Ananta
-> > > <rananta@google.com> wrote:
+> > > On 2026-04-01 12:07 PM, Sean Christopherson wrote:
+> > > > On Wed, Apr 01, 2026, David Matlack wrote:
+> > > > > On 2026-04-01 11:17 AM, Sean Christopherson wrote:
+> > > > > > On Tue, Mar 31, 2026, Josh Hilke wrote:
 > > >
-> > > > > > +FIXTURE_SETUP(vfio_pci_sriov_uapi_test)
-> > > > > > +{
-> > > > > > +     char *vf_driver;
-> > > > > > +     int nr_vfs;
-> > > > > > +
-> > > > > > +     nr_vfs =3D sysfs_sriov_totalvfs_get(pf_bdf);
-> > > > > > +     if (nr_vfs <=3D 0)
-> > > > > > +             SKIP(return, "SR-IOV may not be supported by the =
-PF: %s\n", pf_bdf);
-> > > > > > +
-> > > > > > +     nr_vfs =3D sysfs_sriov_numvfs_get(pf_bdf);
-> > > > > > +     if (nr_vfs !=3D 0)
-> > > > > > +             SKIP(return, "SR-IOV already configured for the P=
-F: %s\n", pf_bdf);
-> > > > > > +
-> > > > >
-> > > > > If there is a test failure (ASSERT) then fixture cleanup will not=
- run
-> > > > > leaving SR-IOV enabled and all subsequent tests will skip.
-> > > > >
-> > > > > Since this test is specific to SR-IOV and user is intentionally p=
-assing
-> > > > > a device to test, I think we can just reset the VFs to 0 before
-> > > > > proceeding instead of skipping.
-> > > > >
-> > > > The idea was to eliminate the assumption that if 'sriov_numvfs'
-> > > > returns > 0, someone else might be using it. This is based on David=
-'s
-> > > > suggestion: https://lore.kernel.org/all/aQzcQ0fJd-aCRThS@google.com=
-/ .
-> > > > Moreover, the device might be in a partial state. So, even if the n=
-ext
-> > > > test proceeds, it could fail due to other reasons.
+> > > > > Agree this would be nice to have. Is this a blocker for this series?
 > > > >
-> > > > But I see your point about cleanup on failure. I think this is a
-> > > > common issue across all tests. Was the expectation that we rely on
-> > > > cleanup.sh to take care of all the cleanups, regardless of test
-> > > > pass/failure?
+> > > > Yes.  KVM selftests need to assert there's a driver before trying to proceed.
 > > >
-> > > I think we rely on the fact that test cases run in sub-processes and
-> > > so if there is a failure in fixture setup then the child process exit=
-s
-> > > and all vfio and iommufd fds are cleaned up. So the device is still
-> > > "clean" for the next test.
+> > > That exists in the new test:
 > > >
-> > > However if we are modifying system state like the number of VFs
-> > > enabled on a device, I think Vipin is right we need to clean up after
-> > > ourselves if the error occurs in fixture setup.
+> > > static int setup_msi(struct vfio_pci_device *device, bool use_device_msi)
+> > > {
+> > >         const int flags = MAP_SHARED | MAP_ANONYMOUS;
+> > >         const int prot = PROT_READ | PROT_WRITE;
+> > >         struct dma_region *region;
+> > >
+> > >         if (use_device_msi) {
+> > >                 /* A driver is required to generate an MSI. */
+> > >                 TEST_REQUIRE(device->driver.ops);
+> > >
+> > > But I think you are also asking to have a helper that prints out the
+> > > list of available drivers in this case. That should be trivial to add.
+> > >
+> > > VFIO selftests could expose add a helper that handles checking for
+> > > device->driver.ops and, if null, printing an error message and list of
+> > > available drivers and exiting with KSFT_SKIP.
+> > >
+> > > One wrinkle here is we are probably going to merge a driver soon that
+> > > does not support send_msi():
+> > >
+> > >   https://lore.kernel.org/kvm/20260331172241.50456-1-rubind@nvidia.com/
+> > >
+> > > So we should also have an API for that. e.g. Add 2 helpsers:
+> > >
+> > >   - vfio_pci_has_driver()
+> > >   - vfio_pci_has_driver_send_msi()
+> > >
+> > > This test would use the latter.
 > >
-> > In that case, since the FIXTURE_TEARDOWN() is not invoked for a
-> > failure in FIXTURE_SETUP(), the test must install its own cleaning
-> > handler. Using conventional error handling with goto labels might also
-> > be tricky because the sysfs lib contains ASSERTs. Even if we do reset
-> > sriov_nrvfs and exit, since the failure is in FIXTURE_SETUP(), it's
-> > highly likely that it's going to fail again.
+> > Ack. I'll add a patch in the series to add these functions to the vfio
+> > library in v3.
 > >
-> > Since we need the VF creation only once, shall we simply do this setup
-> > in main()?
+> > >
+> > > > > > struct vfio_pci_device *kvm_vfio_device_init(const char *bdf)
+> > > > > > {
+> > > > > >   struct vfio_pci_device *device;
+> > > > > >   struct iommu *iommu;
+> > > > > >
+> > > > > >   iommu = iommu_init(default_iommu_mode);
+> > > > > >
+> > > > > >   device = vfio_pci_device_init(bdf, iommu);
+> > > > > >   if (!device) {
+> > > > > >           vfio_pci_device_print_drivers(stderr);
+> > > > > >           TEST_FAIL("No driver found for BDF '%s'", bdf);
+> > > > > >   }
+> > > > > >   return device;
+> > > > > > }
+> > > > > >
+> > > > > > Because as is, this requires way too much a priori knowledge and magic for
+> > > > > > upstream.  The user shouldn't have to dig through code just to understand what
+> > > > > > devices are supported.
+> > > > > >
+> > > > > > Ideally, VFIO selftests would also provide a script, utility, and/or helper to
+> > > > > > identify BDFs for devices it has drivers for.  In my experience, binding a device
+> > > > > > to VFIO is trivial.  Finding the device in the first place is more annoying.
+> > > > >
+> > > > > Agree this would be nice to have. Is this a blocker for this series?
+> > > >
+> > > > Yes.  As I mentioned to Josh off-list, I'm not willing to accept a "we pinky-swear
+> > > > we'll make this stuff user friendly".  It's not that I don't trust you and Josh
+> > > > (and others), it's that for me, this level of user-friendly behavior isn't nice
+> > > > to have, it's mandatory for these tests to be usable upstream.
+> > > >
+> > > > Internally we can squeak by with barebones, unhelpful tests, because the run
+> > > > commands are often hardcoded somewhere and there is piles of documentation elsewhere.
+> > > > But for upstream, none of that holds true.
+> > > >
+> > > > If it were weeks of effort, I would be more open to treating this as nice to have,
+> > > > but AFAICT writing the code should be less than a days worth of work.
+> > >
+> > > Yeah that's fine, I don't think it adds too much extra work, and it's
+> > > something I'd like to have anyway. I just wanted to confirm if it should
+> > > be part (or merged ahead of this series) or can be separate. Thanks!
 > >
-> > int main()
-> > {
-> >   pf_bdf =3D vfio_selftests_get_bdf(&argc, argv);
-> >   vf_bdf =3D setup_vf(pf_bdf); // Do all the sysfs stuff here
-> >   ret =3D test_harness_run(argc, argv);
-> >   destroy_vf();
+> > So I need to add kvm_vfio_device_init() and it will call
+> > vfio_pci_has_driver(). Then, kvm_vfio_device_init() will TEST_FAIL if
+> > vfio_pci_has_driver() returns false, correct?
 > >
-> >   return ret;
-> > }
-> >
-> > Another possible way is to expose the VF from setup.sh itself and pass
-> > it as an arg to the test.
-> >
-> > WDYT?
->
-> Creating and destroying VFs in main() outside of the test harness
-> sounds like a good solution to me.
+> > Should kvm_vfio_device_init() live in
+> > tools/testing/selftests/kvm/lib/kvm_util.c?
+> 
+> I was thinking the new test would do:
+> 
+>   TEST_REQUIRE(vfio_pci_has_driver_send_msi(device));
+> 
+> instead of:
+> 
+>   TEST_REQUIRE(device->driver.ops);
+> 
+> vfio_pci_has_driver_send_msi() would call vfio_pci_has_driver()
+> internally and also check that send_msi op is non-null. Both functions
+> would also log error messages if driver/send_msi is missing to help
+> the user, as Sean requested.
+> 
+> And you'll also need to a patch to add a helper script to print the
+> list of BDFs on the current host that have a VFIO selftests driver. It
+> might make sense to send that as a standalone patch if Sean is ok with
+> that.
 
-Gah.. thinking this through, since we use ASSERTs in sysfs setup, we'd
-still have problems with 'goto label' like error handling. If it's not
-getting too complicated, I can set up an exit handler (say via
-exitat()) and destroy VFs there.
+That makes sense for setup_msi(). But in Sean's implementation of
+kvm_vfio_device_init() above, it looks like he wants the test to fail if
+there's no VFIO selftest driver for the BDF passed into the test.
