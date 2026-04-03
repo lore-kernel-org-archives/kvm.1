@@ -1,49 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48C1B4244
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 16:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91C32F746D;
+	Fri,  3 Apr 2026 16:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775232252; cv=none; b=ECff6wLhLbj+e7Cb5CqE9LgigtUI56S6O30GQedhGONVX7gAWiJebgoiIh25+mAqpCjrQ6kvkcf1XqsIEZUo5mMxnRnKs7le0LnSBtlR1eRn9Yt9zpLNqt2DtbELp8z9uMizuw4eB3WehM8p9xdDX3ZW5xi0fC870inWw2GxNbI=
+	t=1775232440; cv=none; b=W1JEW1pTWQyQdVcu7gJepFnWaUzKb8wIgNISj2Anqb7YoJqZEanJQDwLRdRSODN45zV8dwOCIxumIVsZsdnDX6QnxB31QWvPFJ69V/MoZI+yBYdHCJp/PYO1rnEhpg2ssxOeHX4pB7/SjfA4LlyyfiulG55gRMhGSzb1ojq/vyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775232252; c=relaxed/simple;
-	bh=gq/kcoZSdx0TwVI7zhvsAC93ldRcVu+9V8YzLxYOzNY=;
+	s=arc-20240116; t=1775232440; c=relaxed/simple;
+	bh=TAKrM8bEm8GvtRiVDoPGOIQMLT+5sN70iaEplJMVP3E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tL+1v+KQuDXwPmP+i3BpFenBRyzq9kTh/IJs/Kv5hESKxfs78N+gPyHtas4LKjr6M7fCXok7q5U1l5qTg92cHZmDK9yOSDUcg+b6ssQEtKtiMSzRcnHswMqgF0L25XF/PPJRlghWWs0PBqdJlScFYGQerCngbTusREs59wwKxAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GdeZyQx0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=EYsr5ZgELuibbKvqSkFWON2OSi/uDzIsR61zSEpPTiAp0cmEgnlT8IC2BnvGHzYhay4egPBehSBY7NjEvDhU61rkRczPjbkzeE3jvZyMComHMX28tLOBc2GeYBkY6M6wSq1eRL1gueMWLNKuaZEWKenpwXUKUV5yw/Ok2CDAu+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kCVqflJ+; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GdeZyQx0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775232250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QmDOLbX7faryoK+4zAPbk4328xMyeX5JK8OrBNtSI4U=;
-	b=GdeZyQx09xQ+NErGRGvYpzMK/8gvYP1A93lD2J+suPisVHSADcD3n6cT6oFwpGdJtJ87lW
-	EJQWCKO5W2LPZHxM4pfOdcV6cbH3TSDoux972YKg4kfCQ7CAhz+XU2RZkJLfg+Lter58z+
-	dtf8pwm8Kk47PP4Io1HmG5g52L6c2nc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-W0TZIVc7MvSMyVkj2FRHng-1; Fri,
- 03 Apr 2026 12:04:06 -0400
-X-MC-Unique: W0TZIVc7MvSMyVkj2FRHng-1
-X-Mimecast-MFC-AGG-ID: W0TZIVc7MvSMyVkj2FRHng_1775232245
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E779B18002C8;
-	Fri,  3 Apr 2026 16:04:04 +0000 (UTC)
-Received: from [10.44.48.32] (unknown [10.44.48.32])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1DAFD1955D70;
-	Fri,  3 Apr 2026 16:04:01 +0000 (UTC)
-Message-ID: <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
-Date: Fri, 3 Apr 2026 18:03:59 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kCVqflJ+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775232439; x=1806768439;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=TAKrM8bEm8GvtRiVDoPGOIQMLT+5sN70iaEplJMVP3E=;
+  b=kCVqflJ+/5dQQR7CrSkExRiQPJy8SOzA2PL9kyoNhlmttynrBoPVRZkP
+   edWQ/7UGe0+ww4QVoZPwBLz4ci8engZevI9x8InTG1hLAFcctsJDaWH93
+   j8tMk6q9kr4qk0rBRccyQo147OUZ1eSvCHi6aeO4aR4Id8SRclQdF2pDc
+   jylBdjNa8Qky6Os1HCuCopPnX92B3wJIDhjJYiOLjmB8sa21fCtpHFX5C
+   AMu8BYuuqdfF5TOELnwY2ZGDPgPgbs7E114z9Cy//wpIMK9M7dM50BOor
+   H4UA24vp06sEhkBgkXdMvABXvqGnt7FUUa3GWAJsx57AXvVEWk8dv1y8o
+   A==;
+X-CSE-ConnectionGUID: sw6zCVJ2TGmR1p9gl9FcuQ==
+X-CSE-MsgGUID: GrHuTqqOQOecqyhjSyE/cA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76313555"
+X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
+   d="scan'208";a="76313555"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 09:07:18 -0700
+X-CSE-ConnectionGUID: WDUOg1eFQDS1Npr/Eqj83w==
+X-CSE-MsgGUID: 4NQIEbt6SNeyXyQJkXi7ag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
+   d="scan'208";a="227532494"
+Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.111.247]) ([10.125.111.247])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 09:07:18 -0700
+Message-ID: <fb9e61cc-20df-47cd-b324-1dd8d5985372@intel.com>
+Date: Fri, 3 Apr 2026 09:07:28 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,137 +53,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-To: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
 Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  "Chang S . Bae" <chang.seok.bae@intel.com>
 References: <20260311003346.2626238-1-seanjc@google.com>
  <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
  <ac75iuf9gHIhvm9u@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
 In-Reply-To: <ac75iuf9gHIhvm9u@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 4/3/26 01:19, Sean Christopherson wrote:
-> On Wed, Mar 11, 2026, Paolo Bonzini wrote:
->> On 3/11/26 01:33, Sean Christopherson wrote:
->>> Clean up KVM's register tracking and storage in preparation for landing APX,
->>> which expands the maximum number of GPRs from 16 to 32.
->>>
->>> This is kinda sorta an RFC, as there are some very opinionated changes.  I.e.
->>> if you dislike something, please speak up.
->>>
->>> My thought is to treat R16-R31 as much like other GPRs as possible (though
->>> maybe we don't need to expand regs[] as sketched out in the last patch?).
->>
->> The cleanups in patches 1-4 are nice.
->>
->> For APX specifically, in abstract it's nice to treat R16-R31 as much as
->> possible as regular GPRs.  On the other hand, the extra 16 regs[] entries
->> would be more or less unused, the ugly switch statements wouldn't go away.
-> 
-> Hmm, yeah, but only if XSAVE is the source of truth for guest R16-R31.
-> 
+On 4/2/26 16:19, Sean Christopherson wrote:
 > Do we know what the compiler and/or kernel rules for using R16-R31 will be?
-
-On the compiler side, they are enabling APX only with new enough -march, 
-or with -march=native if the host has APX. This, by the way, implies 
-CONFIG_X86_NATIVE_CPU is currently hosed on Diamond Rapids and newer 
-machines.
-
- From what I remember of Chang Seok Bae's presentation at Plumbers last 
-year, right now there's no plan to have the kernel use APX, except 
-possibly through the usual kernel_fpu_begin/end.
-
 > E.g. if C code is allowed to use R16-R31 at will, then KVM will either need to
 > swap R16-R31 in assembly, or annotate a pile of functions as "no_egpr" or
 > whatever.
 
-__attribute__((__target__("no-apxf")), yeah.  Perhaps it could be done 
-(kernel-wide) for all noinstr functions, but I think we agree that it's 
-not a great idea overall.
+My _assumption_ is that the speedup from using the new GPRs as GPRs in
+the kernel is going to be enough for us to support it. This is even
+though those kernel binaries won't run on old hardware.
 
-> At that point, my vote would be to use regs[] to track R16-R31 for KVM's purposes.
-> IIUC, we could largely ignore XSAVE state at runtime and just ensure R16-R31 are
-> copied to/from userspace as needed, same as we do for PKRU.
+If I'm right, then we're going to have to handle the new GPRs just like
+the existing ones and save them on kernel entry before we hit C code.
+I'm not sure I want to be messing with XSAVE there. XSAVE requires
+munging a header which means even if we used XSAVE we'd need to XSAVE
+and then copy things over to pt_regs (assuming we continue using pt_regs).
 
-If it can be done efficiently when APX is not available, I suppose 
-that's fine.  The KVM code is nicer for sure.
-
-But until the kernel starts using APX, I would do the save/restore near 
-kvm_load_xfeatures(), because __vmx_vcpu_run()/__svm_vcpu_run() would 
-have to check whether xcr0.apx is set or not.  This is much simpler:
-
-	// runs with host xcr0, so it can assume it includes APX
-	// alternatively it could be a static_call(), to only invoke
-	// the function if at least one guest enables APX in xcr0
-	if (static_cpu_has(X86_FEATURE_APX))
-		kvm_apx_save(vcpu);
-	kvm_load_xfeatures(vcpu, true);
-	...
-	kvm_load_xfeatures(vcpu, false);
-	// same as above
-	if (static_cpu_has(X86_FEATURE_APX))
-		kvm_apx_restore(vcpu);
-
-Writing kvm_apx_save() and kvm_apx_restore() already now in a .S file is 
-fine but I don't care too much.
-
-If the kernel starts using APX we would have to do the xcr0 changes in 
-two steps, one in kvm_load_xfeatures() and one (finalizing the APX bit) 
-right around the assembly code for world switching.  That xcr0 update 
-would have to be in kvm_apx_save/restore, which would have to 1) be 
-rewritten in assembly 2) be called from within 
-__vmx_vcpu_run/__svm_vcpu_run.
-
-But it would be premature to do now the two-step save/restore of xcr0.
-
-> If R16-R31 aren't generally available for C code, then how exactly is APX going
-> to be used?
-
-Only in userspace, at least for now.
-
-Paolo
-
-> Understanding the usage rules for R16-R31 seems fundamental to figuring what to
-> do in KVM...
-> 
-
+That doesn't seem like loads of fun because we'll also need to copy out
+to the XSAVE UABI spots, like PKRU times 32.
