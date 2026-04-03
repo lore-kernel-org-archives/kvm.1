@@ -1,90 +1,88 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D203BD64F
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 15:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2720314A9F
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 15:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775229250; cv=none; b=O1fsP6WfMHf0wyIgxKbRUaTScv2l084zWcZLIuydzb69PFwpvDU+Jy7emXpLlTdyG4jjruRQIAEcAytZtEr98CpIVPMebajq5HIkq3unKsgKe91ZGplLjx0mGjSFltBCD627n/qoi3AEFuRqgvhh+QlBmKr0rCmoPJcwsjyvrPQ=
+	t=1775229257; cv=none; b=mNU6B7IhVvi2Fuoc007Z24H7t3BcA8ewyBYUWkFZWlhw+Q5ASnRcfXmNRtZbJH/okYAaRm6CN/Jr8UHD53v7T6QFHPMXSwSwjnjha/0unQF0AQrO581ljjassnE/9WyWhvY3bFCAisYsLbrv5Z+G0q4l6r20uij96A+jGr65rJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775229250; c=relaxed/simple;
-	bh=pimQSmZxVPaRKhg4+NROSz8fmGTTL70/pz9J7w9m5JU=;
+	s=arc-20240116; t=1775229257; c=relaxed/simple;
+	bh=i0P1v935Ve7nlkCTImBk1u5ysw3KyJGT8qP476UqQFI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jxNA0UsdkW5ZB51wxq9EB4K3zJtYcRNZCmw8MikaPmNHRYdmuk1OaA1Kbz0U7DMUF7+GkBPgr7sJ19CehSmx9jrx7Ib5sB4qfDT5jx4xkpz0G3EV64xXzV/Mj/mVUobFbwK/zGhChWp4Wy8R8/qwzQt1sh91mS7/x023zpvWObM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bquHvIXE; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=nXGYbsbBPmAgE82sb9O+zIQZt9LfN7Y9GuLPj+UgUMG8hej98H4vyM2a87oC1BsIgb6bgXlVSxGPbHFSKpXZGtOzDzOOSVdXAMCvcTTU5MeE7EF2QTQrgZBIRnmekmEtOqmHBXNmYvUAaTnnMgPYm5wbMA1We/QMv6Kzd/Zfn04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SGBOZIxJ; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bquHvIXE"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354bc535546so2065214a91.3
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 08:14:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SGBOZIxJ"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cd9fa608bso3545560b3a.3
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 08:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775229248; x=1775834048; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775229255; x=1775834055; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SmGDNHUD2JGD7Cr/+zQDYzTq49jiZ6xutoZpxMk8fpU=;
-        b=bquHvIXEcANxAXcf4dPUayjXnc8R2IeGorqWLTduI6WZ5M2Bi8xYns2en9bBcMIMzY
-         4BCOPwdsqgyc84FQXUyrZPLTATSzg2GpYXKZ375hwEjtqRahaXrJy1mXmMcWGa1qXCHi
-         E2/43P2oMuR+rSd6Ksto7nBVMo2BLfH8MRawpikhKOq0BEsGLOfrsR1jqOtgQO1n4L2S
-         1Twb3cgNaowR72GiSqA7yjf9xJFwAic6tToWheGCPfErHb2ePeb70zVFDtxZDTsJacWB
-         VipQm8MBcHtRuYeUFHxAeeAc9vxq13BHJ52Q54oEgTBdGf7mI98y5vdTpr0UsGMRMPTz
-         nG0A==
+        bh=q26NlOID4Lyygee/Z6l7ft0YlAP75BxyxDFKlwVPiDM=;
+        b=SGBOZIxJpodOKViMieX+CdmK4du2XryFsrb2N593jO2HpCbLx/2+6LFDV7yeijpfmb
+         6DXc4S5gINpE35A3DaLQDQ2GRxFilOx1EuJwl+zdWVpY8qAsVjxTTe0xorugWX5TQPuN
+         1o3C5MEW8Cwu6rseLaeZxCszBL5GJ52YqZwp6fV5VYULbbYa1oiftmryD6doDeDuwpqj
+         vQNXmfw9lNN9KgxYvesLNSEA97NlyYDJ8B55+KsSLEX2d/n4ZQEbc+rHr7yZC6WNeQ9+
+         HA6jTaGAGj0YxVRzedncIU/1VOzpLeAhPtnWxh856XSGJ549XfuYyUYubACvVS/xJcnm
+         0Msw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775229248; x=1775834048;
+        d=1e100.net; s=20251104; t=1775229255; x=1775834055;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SmGDNHUD2JGD7Cr/+zQDYzTq49jiZ6xutoZpxMk8fpU=;
-        b=oio+8co61X7vdU+DeQWD9h1kaEfGsAMd1elQIOwq2rBe87lFFBQdjzkOK79bthFF/n
-         ip5CYLhPFdNP58onlprYNC5XRdt1PWrmzF2M9iu5hMlkX/ozmNniCLCMHdMwpqRwzlG1
-         pJyUpEGRl8gEGjzU9UOn0HJaP5y1zcN5/xs1n9JllV+Pc8FeBhvUSE9KTmbrPfWb+Gnf
-         xHRzzvP7kvseVS0su1Gb62uQQWS88ykhXysqaOU2uhrR2ZIoB6H+KiB1noq01Iy/QFuL
-         ALZgYw2ofASpyxfWRi4Su/d2M/0Z87LV+Ibj8eyGgxVP8gx4l/XAMKKBOTdUVcySbHxI
-         GvfQ==
-X-Gm-Message-State: AOJu0YwBei5OIZWyaJz8uWUa7q2uwRqb23aN0U/jgpSqvzp44imrQEy1
-	y7d4003kLW3o8N1LUHETGMbC2n6vZpjVi82Zmyo4RCcV6aibApAWyVbryGVbkmesK2k9K1UxKEE
-	A0uEwfg==
-X-Received: from pgnh19.prod.google.com ([2002:a63:3853:0:b0:c5e:38a3:151a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9145:b0:39f:21a8:1e1d
- with SMTP id adf61e73a8af0-39f2f046ab9mr3497586637.10.1775229247445; Fri, 03
- Apr 2026 08:14:07 -0700 (PDT)
-Date: Fri,  3 Apr 2026 08:13:44 -0700
-In-Reply-To: <tencent_7A9F1B4D75468C0CF5DE1B6902038C948B07@qq.com>
+        bh=q26NlOID4Lyygee/Z6l7ft0YlAP75BxyxDFKlwVPiDM=;
+        b=kr2OWPv84uR1j92Qaa+SG+788+ePIW3afni70fxhmoMCfHJmaZ2VFiA89lgDXiBaU/
+         MfdQvgjHBlTvEKbDYxC3UEZ6soYdHdfG1sxbvTgBezInM4CrnYTaXQKlSbOO5CHQZfzH
+         JajgVEGckTzt4oLLkeWcPZEn1YKuvphV1Vqbui4o+9wiGiagKkGUfmNPAVRH5EIR5EIk
+         oTvMdr1DQ5PcG2kzzell+z1fcgarmP+ieXO7p5h5W8l8ZxUUM9dm5DoRZyzSTxjWUU4Y
+         sRVxd8byhNVZ9zanJLG+ikPtgFCM86S9ziWQHjqdHQHJn1BNRr0pRNRo/boe+rDSDYFF
+         i04w==
+X-Forwarded-Encrypted: i=1; AJvYcCVwtxojnD017uBl2cCY+1mprQmqfBU2lkHf7IzjETVEi4+8dusZqtmscgEou0njlj+bW38=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz6tmKRWXN2KuK4G+oFbKimmp+VtzrdH7B/aruefHbrGhQ78sD
+	4T+SAgDLvMhYjaWX0LAgm/+Nnkhzzu+60rLVETtimnIux/oe4STEpbNJ025Im1NWjaBPHytviDf
+	upc6eMA==
+X-Received: from pfbca15.prod.google.com ([2002:a05:6a00:418f:b0:7b9:1e6:e516])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:845:b0:82c:ded1:260b
+ with SMTP id d2e1a72fcca58-82d0db7da3dmr3496918b3a.37.1775229254918; Fri, 03
+ Apr 2026 08:14:14 -0700 (PDT)
+Date: Fri,  3 Apr 2026 08:13:46 -0700
+In-Reply-To: <9d50fc3ca9e8e58f551d015f95d51a3c29ce6ccc.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <aamiMBRsSwn7yxu0@google.com> <tencent_7A9F1B4D75468C0CF5DE1B6902038C948B07@qq.com>
+References: <9d50fc3ca9e8e58f551d015f95d51a3c29ce6ccc.camel@infradead.org>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <177522885515.294316.11875518116992037404.b4-ty@google.com>
-Subject: Re: [PATCH v2] KVM: x86: Add LAPIC guard in kvm_apic_write_nodecode()
+Message-ID: <177522898009.295832.5140565994747415378.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: X86: Fix array_index_nospec protection in __pv_send_ipi
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, xuanqingshi <1356292400@qq.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, David Woodhouse <dwmw2@infradead.org>
+Cc: Jim Mattson <jmattson@google.com>, Thijs Raymakers <thijs@raymakers.nl>, kvm@vger.kernel.org, 
+	Anel Orazgaliyeva <anelkz@amazon.de>, stable <stable@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 06 Mar 2026 17:12:32 +0800, xuanqingshi wrote:
-> kvm_apic_write_nodecode() dereferences vcpu->arch.apic without first
-> checking whether the in-kernel LAPIC has been initialized.  If it has
-> not (e.g. the vCPU was created without an in-kernel LAPIC), the
-> dereference results in a NULL pointer access.
+On Fri, 06 Mar 2026 08:59:52 +0100, David Woodhouse wrote:
+> The __pv_send_ipi() function iterates over up to BITS_PER_LONG vCPUs
+> starting from the APIC ID specified in its 'min' argument, which is
+> provided by the guest.
 > 
-> While APIC-write VM-Exits are not expected to occur on a vCPU without
-> an in-kernel LAPIC, kvm_apic_write_nodecode() should be robust against
-> such a scenario as a defense-in-depth measure, e.g. to guard against
-> KVM bugs or CPU errata that could generate a spurious APIC-write
-> VM-Exit.
+> Commit c87bd4dd43a6 used array_index_nospec() to clamp the value of 'min'
+> but then the for_each_set_bit() loop dereferences higher indices without
+> further protection. Theoretically, a guest can trigger speculative access
+> to up to BITS_PER_LONG elements off the end of the phys_map[] array.
 > 
 > [...]
 
-Applied to kvm-x86 misc.  I still want to understand what "Found by a VMCS-targeted
-fuzzer based on syzkaller" means, but this is decent hardening regardless.
+Applied to kvm-x86 misc (also back on March 12th...), thanks!
 
-Thanks!
-
-[1/1] KVM: x86: Add LAPIC guard in kvm_apic_write_nodecode()
-      https://github.com/kvm-x86/linux/commit/26c9bfc0fac2
+[1/1] KVM: X86: Fix array_index_nospec protection in __pv_send_ipi
+      https://github.com/kvm-x86/linux/commit/00d572d4cd7d
 
 --
 https://github.com/kvm-x86/linux/tree/next
