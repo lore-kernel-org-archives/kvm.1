@@ -1,201 +1,188 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F8B3BE145
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 15:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48C1B4244
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 16:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775230740; cv=none; b=s2T+whuGUQQSUTNHtt+q6JhrrCkIo/TweFXIgu7FWk6jZETS5yioeFZhxneV5SRipbQlkq1D3e8mH5jtUBgFhc1ei7dsocQ7QUvIpm/RusZsNJphpoZb99bLuteE5bE2KYEye1EN4II1mEid7BtyLRfRxTYLCdF3HaQBmO3E6xY=
+	t=1775232252; cv=none; b=ECff6wLhLbj+e7Cb5CqE9LgigtUI56S6O30GQedhGONVX7gAWiJebgoiIh25+mAqpCjrQ6kvkcf1XqsIEZUo5mMxnRnKs7le0LnSBtlR1eRn9Yt9zpLNqt2DtbELp8z9uMizuw4eB3WehM8p9xdDX3ZW5xi0fC870inWw2GxNbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775230740; c=relaxed/simple;
-	bh=uifvDQfOfG6Nx5OMIIi4SWcxWNKgEOo2Tv8nkqqAhbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rkmWxz3A6HaZAD2si5gvDtO2z0Txoom5byeF813eFxX/eXFsygt1JYiM4kUzX3k3RrAwQp2Z1ngSf/XQF7/GxUcRBF7jY0rhgmoUCKzmNejeky1eKFgzThBgwPguV6LG/fxkxCwWug5JxBbYB6SDTclIwl3hThyboAN0sDd2N6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=f9YsfV+a; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OiQ5iJI0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1775232252; c=relaxed/simple;
+	bh=gq/kcoZSdx0TwVI7zhvsAC93ldRcVu+9V8YzLxYOzNY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tL+1v+KQuDXwPmP+i3BpFenBRyzq9kTh/IJs/Kv5hESKxfs78N+gPyHtas4LKjr6M7fCXok7q5U1l5qTg92cHZmDK9yOSDUcg+b6ssQEtKtiMSzRcnHswMqgF0L25XF/PPJRlghWWs0PBqdJlScFYGQerCngbTusREs59wwKxAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GdeZyQx0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="f9YsfV+a";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OiQ5iJI0"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 633C3d0P823112
-	for <kvm@vger.kernel.org>; Fri, 3 Apr 2026 15:38:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=dlQHizxSHnf89XQwG90apDFP
-	E1boyp7qYsxMDR+MAKc=; b=f9YsfV+ajdvocMSfQLYKAK2lumyoUM73YP0zzUm6
-	PfpAOWsaVN9ZI2RgMVhw7p/CXwKale7DGZW/s2moMVwBv5WAf65AxPuSb2yh6RyK
-	jY9aim51m6nzrDTUGtVryEr9IBS1kGgsvb4HjrGJ8+ZGWZ39vwi+pdOB+gZRxOvC
-	EbXnY5B4UKbcdMgqf360mbtrvwULkl2pL4mSB8RL98zKT7CyvgxhS4gP+KDWBr+n
-	eWIh7pQSgHHLalv+BDyPXdUCvQ+JcE+mE9UXFrI4FzAm4KbW6HibHJZg8fx3ShLH
-	UPU/jmIamyqu/R0jhIx+oCOYjIM2H50FrUEnQFqJMp7niQ==
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4da6739vr6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 15:38:58 +0000 (GMT)
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-12776bebeb3so3293470c88.1
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 08:38:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775230738; x=1775835538; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dlQHizxSHnf89XQwG90apDFPE1boyp7qYsxMDR+MAKc=;
-        b=OiQ5iJI0pe59jLIe5ZkmaPCABqfLe9As5b2DpeLLT2DeRbzhX6XHiHFbuyIZ4IOinq
-         BxqnWBjPIHrjRoGRL/72ciTDQrbkiKMHWko16kgshEPogRQIDdZajv+p/u/ES2rWhetI
-         MbCz/k/ybfH7UIqwiSDYzwxt7+deKOWShjInrldIw/y8JdhZabNBhx/BLcuAC7J05OdD
-         YnfVx0H9ly4rDKi3E0wyleupCZhhXwIUGNOIkYWrab+x9KgBItK6tAsF8NeifrJLmccR
-         Uc1Lv4FZVHUC5xye7aD9912dqUO8epwHisg60XCWSWzRRNfav+9j2DwuC0F7U7GVvxsI
-         CGTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775230738; x=1775835538;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dlQHizxSHnf89XQwG90apDFPE1boyp7qYsxMDR+MAKc=;
-        b=pQwUYSSVPXrlQtjpjbk7jkEGXDg6s5vPyMh5/ur2EsGM/+l/B1DsI2p4djS6vqAmOV
-         2ATBmxnlqgoTmAsSCRrEyj2d4ganIbjWoquPloExahY9qIAT3e2P/DjyiaW0fGVafyXZ
-         zUOC7rku7/x/UmBmdlOwAx6tVdOODb7B6xcb6T8ptjo54RPG7wvnI7zSKom2rXpAOVfV
-         /+pR38k4K/DO7dkAB+GbR8AzjZvy31dJg24Y5Ooxi1l3Y/X5+lOYwVJZTIOEnpBDHuqV
-         Z5nuFV/ZlVjq+1/5BAL2jvi+ElQopImPgRfamTIW3iAE3z6WD705x7Lrrgw9EzNGThJ8
-         MpSw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBtCzJFNLx98ETGWg/unw2jLsBKn0oFYaiw5O8nusqI2WhjEc5H3bJ18ukAaviRUGeceA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3rANKlHM5Y49Bce8xsG0fqG4XOmJ9RQuqLg6l5qy4omLShVoi
-	WKFDflwoSZ0tyhlop7TKj8odKJKnvDX1WAmiP+HlAJLj6LUCmXMZZZZEqEUNI1YukjiMJBVDsOL
-	kLnjJbiyuxjhefm92zyGtGGnJi1RqWq+HqJZ3yxTBUsn+TlBL6d4Fk9E=
-X-Gm-Gg: ATEYQzwY7Lox5jS7UOdKQMv2p20UYuc/2t4GE/dIl8oLYuMIb0nX3/fGMVq6cRSodrI
-	mEmMUa/XEqDsmsOUzZlDHFyQei6XmVATMUFLa9Pq8AXfBEZJMpTPF8LuyKjqIsNOyMOpJJsyvGc
-	nk2yjPjctviUIDB3KUGA8tdhdJn348luLw8yAGlFE4rgvIKq8GaRE/B0m7JkssISHP3sTvKCzl0
-	JgekrvvtTfGyTIJ79wJ2Jx4TDA8irox0rMLLstB2lMLEwBJ+YFxWtqA1WrcGQMONd3v3TqWDMy3
-	JE2OTVUS9v11TWCWa1D5CBH66tnayW4EduV1++g6k0m3J76fvUN0BMylo3boWEVYO51H3fnmgQ9
-	NLuKUaa3nWB/TzT1MFlCCYiI9pD0PSDw=
-X-Received: by 2002:a05:7022:6997:b0:11a:4016:44a5 with SMTP id a92af1059eb24-12bfb7455dcmr1659267c88.24.1775230737733;
-        Fri, 03 Apr 2026 08:38:57 -0700 (PDT)
-X-Received: by 2002:a05:7022:6997:b0:11a:4016:44a5 with SMTP id a92af1059eb24-12bfb7455dcmr1659243c88.24.1775230737154;
-        Fri, 03 Apr 2026 08:38:57 -0700 (PDT)
-Received: from localhost ([140.82.166.162])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12bedea9807sm4669086c88.15.2026.04.03.08.38.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 08:38:56 -0700 (PDT)
-Date: Fri, 3 Apr 2026 10:38:55 -0500
-From: Andrew Jones <andrew.jones@oss.qualcomm.com>
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-        Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix shift-out-of-bounds in
- make_xfence_request()
-Message-ID: <wneyyisnu6rtkzwpdantjfb6e3fzakkc4gbyfuanavunjoxaev@5niyyh64rdrb>
-References: <20260403061302.2203179-1-xujiakai2025@iscas.ac.cn>
- <hkbpiuquqvsseu7tkv5gtlfxlj7qvsjoj6rndntty2btpcmdpx@4dfgpwffld2k>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GdeZyQx0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775232250;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=QmDOLbX7faryoK+4zAPbk4328xMyeX5JK8OrBNtSI4U=;
+	b=GdeZyQx09xQ+NErGRGvYpzMK/8gvYP1A93lD2J+suPisVHSADcD3n6cT6oFwpGdJtJ87lW
+	EJQWCKO5W2LPZHxM4pfOdcV6cbH3TSDoux972YKg4kfCQ7CAhz+XU2RZkJLfg+Lter58z+
+	dtf8pwm8Kk47PP4Io1HmG5g52L6c2nc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-W0TZIVc7MvSMyVkj2FRHng-1; Fri,
+ 03 Apr 2026 12:04:06 -0400
+X-MC-Unique: W0TZIVc7MvSMyVkj2FRHng-1
+X-Mimecast-MFC-AGG-ID: W0TZIVc7MvSMyVkj2FRHng_1775232245
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E779B18002C8;
+	Fri,  3 Apr 2026 16:04:04 +0000 (UTC)
+Received: from [10.44.48.32] (unknown [10.44.48.32])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1DAFD1955D70;
+	Fri,  3 Apr 2026 16:04:01 +0000 (UTC)
+Message-ID: <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
+Date: Fri, 3 Apr 2026 18:03:59 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hkbpiuquqvsseu7tkv5gtlfxlj7qvsjoj6rndntty2btpcmdpx@4dfgpwffld2k>
-X-Authority-Analysis: v=2.4 cv=erjSD4pX c=1 sm=1 tr=0 ts=69cfdf12 cx=c_pps
- a=kVLUcbK0zfr7ocalXnG1qA==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=pGLkceISAAAA:8 a=MZhlcbl5PfivOvk-ML8A:9 a=CjuIK1q_8ugA:10
- a=vr4QvYf-bLy2KjpDp97w:22
-X-Proofpoint-ORIG-GUID: ecL-nw6BUt7F-MUdCGYE0ylCsgYEwrZW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAzMDEzOCBTYWx0ZWRfX7WUvE/Kk9/Fw
- r6+zeiIVCbqSbLVrugHNZhwEyhZJfjVN5IyoPYck7fy2BRE/cljZy1Jy3rG3mqGqlX4BU54OYSX
- 6oR1I4C9pIJczVSMncf5YMcVVXzP8p61+dX8M2wD0wEJuaoSBXHYle2XP1S0Bb8uPzOS0oGcyuT
- A+1pdv1pZzlEeRCwH/9XRHzgJHxuRHbgvxciY37ful42LuPJB8R1V8lZkW6TWVvNCJpESV0Q67j
- w66aY7rAmQVnkjW6WwYbrhdJP2ZW17qCP4R1yqXOQjjRSBJonRoXyLiiNFwKECOhdTrG2j7U1UP
- kbDIFyUO7qDhOuTZhP5X8xxZHJK5IfyQQ4pi6FFfYtQl9FqGVTK6gRhS5Lzyb3N2s+W9OKQxvkr
- VPzFHcQkQysJ3VM9xZnZVjqwDjauzr8zAQrEGhtS+u2XoXkTdmz3gVDCRv6LmaNlCL557Av62aG
- gN9/VP+vCnwPcJ6AiaA==
-X-Proofpoint-GUID: ecL-nw6BUt7F-MUdCGYE0ylCsgYEwrZW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-03_05,2026-04-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 bulkscore=0
- priorityscore=1501 suspectscore=0 impostorscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604030138
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
+To: Sean Christopherson <seanjc@google.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "Chang S . Bae" <chang.seok.bae@intel.com>
+References: <20260311003346.2626238-1-seanjc@google.com>
+ <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
+ <ac75iuf9gHIhvm9u@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <ac75iuf9gHIhvm9u@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, Apr 03, 2026 at 10:30:35AM -0500, Andrew Jones wrote:
-> On Fri, Apr 03, 2026 at 06:13:02AM +0000, Jiakai Xu wrote:
-> > The make_xfence_request() function uses a shift operation to check if a
-> > vCPU is in the hart mask:
-> > 
-> >   if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
-> > 
-> > However, when the difference between vcpu_id and hbase
-> > is >= BITS_PER_LONG, the shift operation causes undefined behavior.
-> > 
-> > This was detected by UBSAN:
-> >   UBSAN: shift-out-of-bounds in arch/riscv/kvm/tlb.c:343:23
-> >   shift exponent 256 is too large for 64-bit type 'long unsigned int'
-> > 
-> > Fix this by adding a bounds check before the shift operation.
-> > 
-> > This bug was found by fuzzing the KVM RISC-V interface.
-> > 
-> > Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
-> > Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-> > Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-> > ---
-> >  arch/riscv/kvm/tlb.c | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-> > index ff1aeac4eb8eb..500e001513a11 100644
-> > --- a/arch/riscv/kvm/tlb.c
-> > +++ b/arch/riscv/kvm/tlb.c
-> > @@ -333,14 +333,17 @@ static void make_xfence_request(struct kvm *kvm,
-> >  	unsigned long i;
-> >  	struct kvm_vcpu *vcpu;
-> >  	unsigned int actual_req = req;
-> > +	unsigned int idx;
-> >  	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
-> >  
-> >  	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
-> >  	kvm_for_each_vcpu(i, vcpu, kvm) {
-> >  		if (hbase != -1UL) {
-> > -			if (vcpu->vcpu_id < hbase)
-> > +			idx = vcpu->vcpu_id - hbase;
-> > +
-> > +			if (idx < 0 || idx >= BITS_PER_LONG)
+On 4/3/26 01:19, Sean Christopherson wrote:
+> On Wed, Mar 11, 2026, Paolo Bonzini wrote:
+>> On 3/11/26 01:33, Sean Christopherson wrote:
+>>> Clean up KVM's register tracking and storage in preparation for landing APX,
+>>> which expands the maximum number of GPRs from 16 to 32.
+>>>
+>>> This is kinda sorta an RFC, as there are some very opinionated changes.  I.e.
+>>> if you dislike something, please speak up.
+>>>
+>>> My thought is to treat R16-R31 as much like other GPRs as possible (though
+>>> maybe we don't need to expand regs[] as sketched out in the last patch?).
+>>
+>> The cleanups in patches 1-4 are nice.
+>>
+>> For APX specifically, in abstract it's nice to treat R16-R31 as much as
+>> possible as regular GPRs.  On the other hand, the extra 16 regs[] entries
+>> would be more or less unused, the ugly switch statements wouldn't go away.
 > 
-> idx is unsigned, so I would expect this 'idx < 0' to produce a warning
-> that it's always false.
+> Hmm, yeah, but only if XSAVE is the source of truth for guest R16-R31.
 > 
-> I wouldn't introduce idx and just change the current condition instead
-> 
->   if (vcpu->vcpu_id < hbase || vcpu->vcpu_id >= hbase + BITS_PER_LONG)
->      continue;
-> 
-> >  				continue;
-> > -			if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
-> > +			if (!(hmask & (1UL << idx)))
-> >  				continue;
-> >  		}
-> >  
-> > -- 
-> > 2.34.1
-> > 
-> 
-> unsigned arithmetic makes my head hurt. It would hurt less if we
-> guaranteed the ranges of all the components. vcpu_ids are
-> guaranteed to be [ 0, min(KVM_MAX_VCPU_IDS, INT_MAX) ), see
-> kvm_vm_ioctl_create_vcpu(). We should also test and reject hbase
-> and hmask in all the SBI calls to ensure that hbase is in the
-> same range as vcpu_ids and hmask is in the [0, BITS_PER_LONG)
-> range.
+> Do we know what the compiler and/or kernel rules for using R16-R31 will be?
 
-eh, scratch this last phrase. Of course hmask can be [0, ULONG_MAX], not
-just [0, BITS_PER_LONG) - so it doesn't need a range check. I guess my
-head hurt too much when I wrote that...
+On the compiler side, they are enabling APX only with new enough -march, 
+or with -march=native if the host has APX. This, by the way, implies 
+CONFIG_X86_NATIVE_CPU is currently hosed on Diamond Rapids and newer 
+machines.
 
-drew
+ From what I remember of Chang Seok Bae's presentation at Plumbers last 
+year, right now there's no plan to have the kernel use APX, except 
+possibly through the usual kernel_fpu_begin/end.
+
+> E.g. if C code is allowed to use R16-R31 at will, then KVM will either need to
+> swap R16-R31 in assembly, or annotate a pile of functions as "no_egpr" or
+> whatever.
+
+__attribute__((__target__("no-apxf")), yeah.  Perhaps it could be done 
+(kernel-wide) for all noinstr functions, but I think we agree that it's 
+not a great idea overall.
+
+> At that point, my vote would be to use regs[] to track R16-R31 for KVM's purposes.
+> IIUC, we could largely ignore XSAVE state at runtime and just ensure R16-R31 are
+> copied to/from userspace as needed, same as we do for PKRU.
+
+If it can be done efficiently when APX is not available, I suppose 
+that's fine.  The KVM code is nicer for sure.
+
+But until the kernel starts using APX, I would do the save/restore near 
+kvm_load_xfeatures(), because __vmx_vcpu_run()/__svm_vcpu_run() would 
+have to check whether xcr0.apx is set or not.  This is much simpler:
+
+	// runs with host xcr0, so it can assume it includes APX
+	// alternatively it could be a static_call(), to only invoke
+	// the function if at least one guest enables APX in xcr0
+	if (static_cpu_has(X86_FEATURE_APX))
+		kvm_apx_save(vcpu);
+	kvm_load_xfeatures(vcpu, true);
+	...
+	kvm_load_xfeatures(vcpu, false);
+	// same as above
+	if (static_cpu_has(X86_FEATURE_APX))
+		kvm_apx_restore(vcpu);
+
+Writing kvm_apx_save() and kvm_apx_restore() already now in a .S file is 
+fine but I don't care too much.
+
+If the kernel starts using APX we would have to do the xcr0 changes in 
+two steps, one in kvm_load_xfeatures() and one (finalizing the APX bit) 
+right around the assembly code for world switching.  That xcr0 update 
+would have to be in kvm_apx_save/restore, which would have to 1) be 
+rewritten in assembly 2) be called from within 
+__vmx_vcpu_run/__svm_vcpu_run.
+
+But it would be premature to do now the two-step save/restore of xcr0.
+
+> If R16-R31 aren't generally available for C code, then how exactly is APX going
+> to be used?
+
+Only in userspace, at least for now.
+
+Paolo
+
+> Understanding the usage rules for R16-R31 seems fundamental to figuring what to
+> do in KVM...
+> 
+
