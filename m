@@ -1,152 +1,208 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585AF22576E;
-	Fri,  3 Apr 2026 00:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357DD1C3BEB;
+	Fri,  3 Apr 2026 01:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775176389; cv=none; b=fY5wUk3yya28gW8CUJqLQnoAm+kvFGzu7aviNeu+FGj1Z3a4GFm5YkDSs6tpSoMqs88/LhfE1dco/OYAKfT1xDpFw0c9GA2RuYPyC+DO2QTkX5aoMnqlw0ODBVPviY0zH3JYm/xrUcRAyhJ69ZTGay+oUtbOpwLj5itrYIqTAfc=
+	t=1775179909; cv=none; b=UWcwNl+zJnBEBO5HQwxt6nxWL7fX5SK4dk+D1ng25+R6sTavpqRc3sma4RbJGr+4ItTo7GbyGGEcYu5vVjTl/nbvCXVF6OyyFZqUOXbFs9whTJveul2y9zAg6P40ZuZ5BgTk8NMAkcCn4MyNXmhdy8pq7lp+wnx0l4obrMnh0AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775176389; c=relaxed/simple;
-	bh=Mae+zoSeH0IjM7IPUjJkYQd/usJgG+IDTrU4CPhalhs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QbKSMqPc0bERTOjyY7ipEc2igYFu7ZEIJKOKSbSNi0VBPiK71ofCLe5SthioZBG74y/hk9ryX9Vs+YHAqTYsxQbCX8pJ1B+LRMXgxaheNoo3pZ6yzbQuYPMs09YY07tX1Llcj5ZTmJbD0FLsQLoCNff6pI7sUZwt9HLZJUC6ts8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g89uFOhs; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1775179909; c=relaxed/simple;
+	bh=ui1j+U/lVmdwLQ9xl//b5wqi5bLZ/9P0LsjV28O0GiI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C9fMmNV9uYC9dy7kdIX1Cn4/naTSgPJJJ/gYZWrNtOR3KWHTKinv4S6DT9r9XIHR7V3//etyF8o5ZX47Jqsn0CSJyfsQUTvgwxDiVEDGN/JMkJExUgI4ekm/PstinYR4BfrrzRljVpQgTxsrxioOmZMZnXmRzEHExMXtmwCT5z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=tKaFuDCC; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g89uFOhs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775176388; x=1806712388;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Mae+zoSeH0IjM7IPUjJkYQd/usJgG+IDTrU4CPhalhs=;
-  b=g89uFOhsbMoEaMZKQ47EKxKcRMpGo/KJalCTM+dR38ZDgVMuNISBNoVk
-   ZHVmrRs2bW80A/8m+v1P/zqPrr8JMD4abWUEYDtN6S9MzMxgqcojoeWYD
-   U/umEgE6Ym9be0+T8ydMooaP/t0J5duk5Uj8OogaFj9DC9K40FdJCszG1
-   JCiH9ScNIzvfRbqG++X5zg9ZH/RMb92aXcCZyCJ0ciBBp413t4FmJktxk
-   auOFjZxZJlrsz2KX219rNdESeqvTl55E11H7dWqmWhvcUocFouzpxlE63
-   vaWZ6O1FkU3vfyLtvXWfkS2OZJTlsRQwZkdx+TAT/+RYzl7P14/6BXQ6Y
-   g==;
-X-CSE-ConnectionGUID: JwtsF8gPQaKj4nvhlpqLZw==
-X-CSE-MsgGUID: jnJQhLDWTXaH8dgalsXfig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="86864447"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="86864447"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 17:33:07 -0700
-X-CSE-ConnectionGUID: Ytm8/RvNSsC9fG9EKTMx2w==
-X-CSE-MsgGUID: H2lsZQBZQdCDfFwjUor96A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="231511379"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 17:33:08 -0700
-Date: Thu, 2 Apr 2026 17:33:07 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v9 10/10] x86/vmscape: Add cmdline vmscape=on to override
- attack vector controls
-Message-ID: <20260402-vmscape-bhb-v9-10-94d16bc29774@linux.intel.com>
-X-Mailer: b4 0.15-dev
-References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="tKaFuDCC"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775179905; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=M+qCrzuXjzCg6dbRyJgE26YGs/aoiqwjPjQvm1evl3o=;
+	b=tKaFuDCCorMU3BGZN52g21QEE6zn6esi+nMFn47RDCqrjWEgIAUpdsQB3f+NiRllEROnTn5I8rl7WdnBxzAJgIoEg5iaCZMLhJ6lH9wdo5nxS98WKHFkQnNZZ3qm1Um3KSWa5Z72DDAacKbI+GLShJSoIa6XDCpGrp8zIt09+cQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X0IV4qf_1775179902;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X0IV4qf_1775179902 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Apr 2026 09:31:43 +0800
+From: fangyu.yu@linux.alibaba.com
+To: anup@brainfault.org
+Cc: alex@ghiti.fr,
+	andrew.jones@oss.qualcomm.com,
+	aou@eecs.berkeley.edu,
+	atish.patra@linux.dev,
+	corbet@lwn.net,
+	fangyu.yu@linux.alibaba.com,
+	guoren@kernel.org,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com,
+	pbonzini@redhat.com,
+	pjw@kernel.org,
+	radim.krcmar@oss.qualcomm.com,
+	skhan@linuxfoundation.org
+Subject: Re: Re: [PATCH v7 4/4] RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE
+Date: Fri,  3 Apr 2026 09:31:37 +0800
+Message-Id: <20260403013137.32604-1-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <CAAhSdy1dXxdF0pb_r+hS+rdZ21VVxezwaZ=MCMmDD+vRCyRUdA@mail.gmail.com>
+References: <CAAhSdy1dXxdF0pb_r+hS+rdZ21VVxezwaZ=MCMmDD+vRCyRUdA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-In general, individual mitigation knobs override the attack vector
-controls. For VMSCAPE, =ibpb exists but nothing to select BHB clearing
-mitigation. The =force option would select BHB clearing when supported, but
-with a side-effect of also forcing the bug, hence deploying the mitigation
-on unaffected parts too.
+>On Thu, Apr 2, 2026 at 6:53 PM <fangyu.yu@linux.alibaba.com> wrote:
+>>
+>> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+>>
+>> Add a VM capability that allows userspace to select the G-stage page table
+>> format by setting HGATP.MODE on a per-VM basis.
+>>
+>> Userspace enables the capability via KVM_ENABLE_CAP, passing the requested
+>> HGATP.MODE in args[0]. The request is rejected with -EINVAL if the mode is
+>> not supported by the host, and with -EBUSY if the VM has already been
+>> committed (e.g. vCPUs have been created or any memslot is populated).
+>>
+>> KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE) returns a bitmask of the
+>> HGATP.MODE formats supported by the host.
+>>
+>> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+>> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+>> Reviewed-by: Guo Ren <guoren@kernel.org>
+>> ---
+>>  Documentation/virt/kvm/api.rst | 27 +++++++++++++++++++++++++++
+>>  arch/riscv/kvm/vm.c            | 18 ++++++++++++++++--
+>>  include/uapi/linux/kvm.h       |  1 +
+>>  3 files changed, 44 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> index 032516783e96..9d7f6958fa81 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -8902,6 +8902,33 @@ helpful if user space wants to emulate instructions which are not
+>>  This capability can be enabled dynamically even if VCPUs were already
+>>  created and are running.
+>>
+>> +7.47 KVM_CAP_RISCV_SET_HGATP_MODE
+>> +---------------------------------
+>> +
+>> +:Architectures: riscv
+>> +:Type: VM
+>> +:Parameters: args[0] contains the requested HGATP mode
+>> +:Returns:
+>> +  - 0 on success.
+>> +  - -EINVAL if args[0] is outside the range of HGATP modes supported by the
+>> +    hardware.
+>> +  - -EBUSY if vCPUs have already been created for the VM, if the VM has any
+>> +    non-empty memslots.
+>> +
+>> +This capability allows userspace to explicitly select the HGATP mode for
+>> +the VM. The selected mode must be supported by both KVM and hardware. This
+>> +capability must be enabled before creating any vCPUs or memslots.
+>> +
+>> +If this capability is not enabled, KVM will select the default HGATP mode
+>> +automatically. The default is the highest HGATP.MODE value supported by
+>> +hardware.
+>> +
+>> +``KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE)`` returns a bitmask of
+>> +HGATP.MODE values supported by the host. A return value of 0 indicates that
+>> +the capability is not supported. Supported-mode bitmask use HGATP.MODE
+>> +encodings as defined by the RISC-V privileged specification, such as Sv39x4
+>> +corresponds to HGATP.MODE=8, so userspace should test bitmask & BIT(8).
+>> +
+>>  8. Other capabilities.
+>>  ======================
+>>
+>> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+>> index 4d82a886102c..5e82a3ad3ad0 100644
+>> --- a/arch/riscv/kvm/vm.c
+>> +++ b/arch/riscv/kvm/vm.c
+>> @@ -201,6 +201,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>>         case KVM_CAP_VM_GPA_BITS:
+>>                 r = kvm_riscv_gstage_gpa_bits(kvm->arch.pgd_levels);
+>>                 break;
+>> +       case KVM_CAP_RISCV_SET_HGATP_MODE:
+>> +               r = kvm_riscv_get_hgatp_mode_mask();
+>> +               break;
+>
+>Introducing a new RISC-V capability looks a bit complex.
+>Instead of KVM_CAP_RISCV_SET_HGATP_MODE, we can
+>simply re-use KVM_CAP_VM_GPA_BITS.
+>
+>The kvm_vm_ioctl_check_extension() for KVM_CAP_VM_GPA_BITS
+>return number of GPA bits which in-directly implies the underlying
+>hgatp.MODE. As we know, if it return 59 bits GPA then it means
+>Sv57x4 is the selected hgatp.MODE and Sv48x4 and Sv39x4 modes
+>are also supported as-per RISC-V privileged specification.
+>
+>The kvm_vm_ioctl_enable_cap() for KVM_CAP_VM_GPA_BITS
+>will take the desired number of GPA bits and downsize the selected
+>hgatp.MODE. For example, if user-space ask GPA bits <= 50 and
+>GPA bits > 41 then we select Sv48x4. If user-space ask GPA
+>bits <= 41 then we select Sv39x4. If user-space ask GPA bits <= 59
+>and GPA bits > 50 then we select Sv57x4.
+>
 
-Add a new cmdline option vmscape=on to enable the mitigation based on the
-VMSCAPE variant the CPU is affected by.
+Thanks, that makes sense.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Tested-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- Documentation/admin-guide/hw-vuln/vmscape.rst   | 4 ++++
- Documentation/admin-guide/kernel-parameters.txt | 2 ++
- arch/x86/kernel/cpu/bugs.c                      | 2 ++
- 3 files changed, 8 insertions(+)
+In v8 I’ll drop KVM_CAP_RISCV_SET_HGATP_MODE and re-use KVM_CAP_VM_GPA_BITS
+for both discovery and selection.
 
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-index 7c40cf70ad7a..2558a5c3d956 100644
---- a/Documentation/admin-guide/hw-vuln/vmscape.rst
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -117,3 +117,7 @@ The mitigation can be controlled via the ``vmscape=`` command line parameter:
- 
-    Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
-    (default when CONFIG_MITIGATION_VMSCAPE=y)
-+
-+ * ``vmscape=on``:
-+
-+   Same as ``auto``, except that it overrides attack vector controls.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3853c7109419..98204d464477 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -8383,6 +8383,8 @@ Kernel parameters
- 					  unaffected processors
- 			auto		- (default) use IBPB or BHB clear
- 					  mitigation based on CPU
-+			on		- same as "auto", but override attack
-+					  vector control
- 
- 	vsyscall=	[X86-64,EARLY]
- 			Controls the behavior of vsyscalls (i.e. calls to
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index ba8389df467a..366ebe1e1fb9 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -3087,6 +3087,8 @@ static int __init vmscape_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		setup_force_cpu_bug(X86_BUG_VMSCAPE);
- 		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
-+	} else if (!strcmp(str, "on")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
- 	} else if (!strcmp(str, "auto")) {
- 		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
- 	} else {
+Thanks,
+Fangyu
 
--- 
-2.34.1
-
-
+>>         default:
+>>                 r = 0;
+>>                 break;
+>> @@ -211,12 +214,23 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>>
+>>  int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>>  {
+>> +       if (cap->flags)
+>> +               return -EINVAL;
+>> +
+>>         switch (cap->cap) {
+>>         case KVM_CAP_RISCV_MP_STATE_RESET:
+>> -               if (cap->flags)
+>> -                       return -EINVAL;
+>>                 kvm->arch.mp_state_reset = true;
+>>                 return 0;
+>> +       case KVM_CAP_RISCV_SET_HGATP_MODE:
+>> +               if (!kvm_riscv_hgatp_mode_is_valid(cap->args[0]))
+>> +                       return -EINVAL;
+>> +
+>> +               if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
+>> +                       return -EBUSY;
+>> +#ifdef CONFIG_64BIT
+>> +               kvm->arch.pgd_levels = 3 + cap->args[0] - HGATP_MODE_SV39X4;
+>> +#endif
+>> +               return 0;
+>>         default:
+>>                 return -EINVAL;
+>>         }
+>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+>> index 80364d4dbebb..a74a80fd4046 100644
+>> --- a/include/uapi/linux/kvm.h
+>> +++ b/include/uapi/linux/kvm.h
+>> @@ -989,6 +989,7 @@ struct kvm_enable_cap {
+>>  #define KVM_CAP_ARM_SEA_TO_USER 245
+>>  #define KVM_CAP_S390_USER_OPEREXEC 246
+>>  #define KVM_CAP_S390_KEYOP 247
+>> +#define KVM_CAP_RISCV_SET_HGATP_MODE 248
+>>
+>>  struct kvm_irq_routing_irqchip {
+>>         __u32 irqchip;
+>> --
+>> 2.50.1
+>>
+>
+>Regards,
+>Anup
