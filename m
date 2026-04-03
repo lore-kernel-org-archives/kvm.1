@@ -1,130 +1,201 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91C32F746D;
-	Fri,  3 Apr 2026 16:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BE63CD8B1
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 16:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775232440; cv=none; b=W1JEW1pTWQyQdVcu7gJepFnWaUzKb8wIgNISj2Anqb7YoJqZEanJQDwLRdRSODN45zV8dwOCIxumIVsZsdnDX6QnxB31QWvPFJ69V/MoZI+yBYdHCJp/PYO1rnEhpg2ssxOeHX4pB7/SjfA4LlyyfiulG55gRMhGSzb1ojq/vyM=
+	t=1775233849; cv=none; b=FMAHzBKP+S0o0u6uRx/4Hu+g2q5mP8Qj9sJbNlP6HdapGJSO+pBNxZtlBCuigCBjPUAkDaCkDA74nc/ueHqi8Pe00TSUAo+liJpkfQ5WYjQr9mV2kz+NqNlHQY415r5wyMX4jkLPPCSFIRVyFtQCnfo7Y7eq7jMcsIsuZN4Du/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775232440; c=relaxed/simple;
-	bh=TAKrM8bEm8GvtRiVDoPGOIQMLT+5sN70iaEplJMVP3E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EYsr5ZgELuibbKvqSkFWON2OSi/uDzIsR61zSEpPTiAp0cmEgnlT8IC2BnvGHzYhay4egPBehSBY7NjEvDhU61rkRczPjbkzeE3jvZyMComHMX28tLOBc2GeYBkY6M6wSq1eRL1gueMWLNKuaZEWKenpwXUKUV5yw/Ok2CDAu+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kCVqflJ+; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775233849; c=relaxed/simple;
+	bh=rGZgWtwCCI3+eFvVKc+X88h43lrdjuX32gE4iywL6A4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HO7OfoJTGj4AIjTXLwq/Jyog6KW4E1R+OM8HeWzbQy/GC49HpPuORernaVyIjgBXYKSdGclK2yX5H4R062XXqTs7aQw1gDvvfiIikWfybzHeyPifpxUL4oSY/dGPm8njYw8PsojmNhK8zp8hVSh92PWP5hpJRKlxzULDxgZ4Dw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=syfRd8WS; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kCVqflJ+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775232439; x=1806768439;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TAKrM8bEm8GvtRiVDoPGOIQMLT+5sN70iaEplJMVP3E=;
-  b=kCVqflJ+/5dQQR7CrSkExRiQPJy8SOzA2PL9kyoNhlmttynrBoPVRZkP
-   edWQ/7UGe0+ww4QVoZPwBLz4ci8engZevI9x8InTG1hLAFcctsJDaWH93
-   j8tMk6q9kr4qk0rBRccyQo147OUZ1eSvCHi6aeO4aR4Id8SRclQdF2pDc
-   jylBdjNa8Qky6Os1HCuCopPnX92B3wJIDhjJYiOLjmB8sa21fCtpHFX5C
-   AMu8BYuuqdfF5TOELnwY2ZGDPgPgbs7E114z9Cy//wpIMK9M7dM50BOor
-   H4UA24vp06sEhkBgkXdMvABXvqGnt7FUUa3GWAJsx57AXvVEWk8dv1y8o
-   A==;
-X-CSE-ConnectionGUID: sw6zCVJ2TGmR1p9gl9FcuQ==
-X-CSE-MsgGUID: GrHuTqqOQOecqyhjSyE/cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76313555"
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="76313555"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 09:07:18 -0700
-X-CSE-ConnectionGUID: WDUOg1eFQDS1Npr/Eqj83w==
-X-CSE-MsgGUID: 4NQIEbt6SNeyXyQJkXi7ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="227532494"
-Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.111.247]) ([10.125.111.247])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 09:07:18 -0700
-Message-ID: <fb9e61cc-20df-47cd-b324-1dd8d5985372@intel.com>
-Date: Fri, 3 Apr 2026 09:07:28 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="syfRd8WS"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b242cbb97aso15037515ad.1
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 09:30:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775233847; x=1775838647; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2+Zt8Ye6QZDycK/H8I2xKI9t6Wy2CW5OkF+BQs3682Q=;
+        b=syfRd8WSLrPJ6apEQ604WeEvOF3fivRBdp2ojXHjExtESYQt1WMCLa4T9b30Y4I9py
+         XgjanW6SYEz+XHJD68+Y8bUOmx+q1SPlCvCKpxQXcrtisBeEJWJbP6B40Oy68kR1+Uar
+         7Y3Si/V2T87rPei7TT/cLo53tzCbWM4rFtyBWwSgRoWvDaCreO3eIjJrJtN8AmAUSOth
+         F9xj1r5UvYwxZN6RieSdw+cmjQLzY/LU7LXeI/vMAa2Hdtk6cBm202BUDPuy1fXMgFBI
+         Ia25KfciaS6UwE3Wf7UK7azc8LeVpJ7zVn8G7XTTxKVqzROZSj5jDFLdN1uAsBas6gyR
+         e8aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775233847; x=1775838647;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2+Zt8Ye6QZDycK/H8I2xKI9t6Wy2CW5OkF+BQs3682Q=;
+        b=Zjse3N1BAyKehzTlEb5eum61VUN5raP02R/Zx8LbHBsiVNaZz+MB/bOuePr5KJ3MUL
+         hZeIKEhWqnSILSJA9lDEd0TyI5BnBO/ZJ/hd++B2Ap+QlgQns8rzIcyb8lIRmacg78tG
+         53l6/mWn2SWl6uVjJTfixhjh0xC8oiW03E5RyTqEXtAkXJskwISLNMV3TJbkPjV7JJ5K
+         du534wWmNFg04jgolhw/fUcbU41yTBC14/SnZtdpWRQefO8iznihWT0Y81ptBUe1Zl7J
+         tokAFzkTi6MqhXGYWxzyn6t7lDnmvFjNT4IaD8i/gZvPbwgF9sFb+5z+wJhw3PnInqPN
+         7kEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVI/tWPxicpHs1Lqri79tIPzsU6Kxqe8WCbnZYWDC4ih4g4NzyIxm+OxOBN5qBzdyz0uc0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzKjGJks4XJWx06gsnZ0zpENYShuTfOJhaHYF+2OEXe2ORpHAU
+	wSffTULrdzTRl6mQpCKPd/pzouUuul4eNisVjI82QrWO0glKgOkVa5f5MiF7MiigvuhKdLJnc63
+	6Go+3jg==
+X-Received: from plrx13.prod.google.com ([2002:a17:902:b40d:b0:2ae:d0cb:5159])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54f:b0:2ae:5eab:132e
+ with SMTP id d9443c01a7336-2b28173fa9dmr36278905ad.12.1775233847240; Fri, 03
+ Apr 2026 09:30:47 -0700 (PDT)
+Date: Fri, 3 Apr 2026 09:30:45 -0700
+In-Reply-To: <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- "Chang S . Bae" <chang.seok.bae@intel.com>
-References: <20260311003346.2626238-1-seanjc@google.com>
- <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
- <ac75iuf9gHIhvm9u@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ac75iuf9gHIhvm9u@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260318190111.1041924-1-dmaluka@chromium.org>
+ <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com> <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
+ <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com> <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
+ <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
+Message-ID: <ac_rNT69TdocrMYc@google.com>
+Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "dmaluka@chromium.org" <dmaluka@chromium.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, Dave Hansen <dave.hansen@intel.com>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/2/26 16:19, Sean Christopherson wrote:
-> Do we know what the compiler and/or kernel rules for using R16-R31 will be?
-> E.g. if C code is allowed to use R16-R31 at will, then KVM will either need to
-> swap R16-R31 in assembly, or annotate a pile of functions as "no_egpr" or
-> whatever.
+On Thu, Mar 19, 2026, Rick P Edgecombe wrote:
+> On Thu, 2026-03-19 at 15:40 +0800, Binbin Wu wrote:
+> > tdx_has_emulated_msr() is used by KVM to decide whether to emulate a MS=
+R access from the
+> > TDVMCALL or just return the error code.
+> >=20
+> > During an off-list discussion, Rick noted that #VE reduction could chan=
+ge the behavior of
+> > accessing an MSR (e.g., from #VE to #GP or to be virtualized by the TDX=
+ module) without
+> > KVM knowing.Because KVM lacks the full context to perfectly decide if a=
+n MSR should be
+> > emulated, the question was raised: Can we just delete tdx_has_emulated_=
+msr() entirely?
+> >=20
+> > However, these native type x2apic MSRs are a special case. Since the TD=
+X module owns the
+> > APICv page, KVM cannot emulate these MSRs. If we remove tdx_has_emulate=
+d_msr(), a guest
+> > directly issuing TDVMCALLs for these native type x2apic MSRs will trigg=
+er a silent failure,
+> > even though this is the guest's fault.
+> >=20
+> > It comes down to a tradeoff. Should we prioritize code simplicity by dr=
+opping the function,
+> > or keep it to explicitly catch this misbehaving guest corner case?
+>=20
+> I think from KVM's perspective it doesn't want to help the guest behave
+> correctly.
 
-My _assumption_ is that the speedup from using the new GPRs as GPRs in
-the kernel is going to be enough for us to support it. This is even
-though those kernel binaries won't run on old hardware.
+Uh, yes KVM does does.  KVM is responsible for emulating the APIC timer, is=
+n't it?
 
-If I'm right, then we're going to have to handle the new GPRs just like
-the existing ones and save them on kernel entry before we hit C code.
-I'm not sure I want to be messing with XSAVE there. XSAVE requires
-munging a header which means even if we used XSAVE we'd need to XSAVE
-and then copy things over to pt_regs (assuming we continue using pt_regs).
+> So we can ignore that I think. But it does really care to not define
+> any specific guest ABI that it has to maintain. So tdx_has_emulated_msr()=
+ has
+> some value there.=C2=A0And even more, it wants to not allow the guest to =
+hurt the
+> host.
+>=20
+> On the latter point, another problem with deleting tdx_has_emulated_msr()=
+ is the
+> current code path skips the checks done in the other MSR paths. So we wou=
+ld need
+> to call some appropriate higher up MSR helper to protect the host? And th=
+at
+> wades into the CPUID bit consistency issues.
+>=20
+> So maybe... could we do a more limited version of the deletion where we a=
+llow
+> all the APIC MSRs through? We'd have to check that it won't cause problem=
+s.
 
-That doesn't seem like loads of fun because we'll also need to copy out
-to the XSAVE UABI spots, like PKRU times 32.
+What?  No.  KVM can't get actually read/write most (all?) MSRs, allowing ac=
+cess
+is far worse than returning an error, as for all intents and purposes KVM w=
+ill
+silently drop writes, and return garbage on reads.
+
+> Failing that, we should maybe just explicitly list the ones TDX supports =
+rather
+> than the current way we define the APIC ones. As you mention below, it's =
+not
+> correct in other ways too so it could be more robust.
+
+No?  Don't we just want to allow access to MSRs that aren't accelerated?  W=
+hat
+the TDX-Module supports is largely irrelevant, I think.
+
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 1e47c194af53..28e87630870b 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -2116,23 +2116,26 @@ bool tdx_has_emulated_msr(u32 index)
+        case MSR_IA32_MC0_CTL2 ... MSR_IA32_MCx_CTL2(KVM_MAX_MCE_BANKS) - 1=
+:
+                /* MSR_IA32_MCx_{CTL, STATUS, ADDR, MISC, CTL2} */
+        case MSR_KVM_POLL_CONTROL:
++       /*
++        * x2APIC registers that are virtualized by the CPU can't be
++        * emulated, KVM doesn't have access to the virtual APIC page.
++        */
++       case X2APIC_MSR(APIC_ID):
++       case X2APIC_MSR(APIC_LVR):
++       case X2APIC_MSR(APIC_LDR):
++       case X2APIC_MSR(APIC_SPIV):
++       case X2APIC_MSR(APIC_ESR):
++       case X2APIC_MSR(APIC_ICR):
++       case X2APIC_MSR(APIC_LVTT):
++       case X2APIC_MSR(APIC_LVTTHMR):
++       case X2APIC_MSR(APIC_LVTPC):
++       case X2APIC_MSR(APIC_LVT0):
++       case X2APIC_MSR(APIC_LVT1):
++       case X2APIC_MSR(APIC_LVTERR):
++       case X2APIC_MSR(APIC_TMICT):
++       case X2APIC_MSR(APIC_TMCCT):
++       case X2APIC_MSR(APIC_TDCR):
+                return true;
+-       case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
+-               /*
+-                * x2APIC registers that are virtualized by the CPU can't b=
+e
+-                * emulated, KVM doesn't have access to the virtual APIC pa=
+ge.
+-                */
+-               switch (index) {
+-               case X2APIC_MSR(APIC_TASKPRI):
+-               case X2APIC_MSR(APIC_PROCPRI):
+-               case X2APIC_MSR(APIC_EOI):
+-               case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_IS=
+R_NR):
+-               case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_IS=
+R_NR):
+-               case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_IS=
+R_NR):
+-                       return false;
+-               default:
+-                       return true;
+-               }
+        default:
+                return false;
+        }
