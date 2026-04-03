@@ -1,30 +1,30 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F82B30498E;
-	Fri,  3 Apr 2026 02:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E2B35AC32;
+	Fri,  3 Apr 2026 02:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775183524; cv=none; b=GylncQz6/LlNminql8OOIPDL0hOmqYubRBhEU9GAzSm88dF/sCRoO7mJAucncoC/yyiAPK/StBC1WfvJd4yaZbCrsLUPfPLs62vG+jLnBZse23K4VO+X/+AkaTJWIiX5e6iuFlIfkYDKt2xGcDN4RsoEKgcl/FFgUKkMcfVCBZY=
+	t=1775185193; cv=none; b=ds1KMUg2ErqMUvz7MtuOolZVbGIKX3VuiB80yS85PWkYBjAj/H3FtTNqcuCH24HTNdqB1pA3eI3BjUMK+DR4xjjvJRyYCIrl7OG66jHYGJex1TAHaHL1guBVmPk3Lds96FALpTEhkTqB21jkBcBGBDb+nyEuqOlNDNrXadicQmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775183524; c=relaxed/simple;
-	bh=K8UIoDM9Y79rXpP5AvK3R/ZZGKRIHdOw+0SbrTOmr+k=;
+	s=arc-20240116; t=1775185193; c=relaxed/simple;
+	bh=YBf7SatwQ9p/g+niFh8koBnIyM6E1gPeb0dkOeKrGb0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XnDhepc+QYpokKbUPGgEUpcZMnjEuZAI2QAYbWYelpkJ0rIVR5xINdOdIOnU5HBUu3AJglE6NCUH9RSCCzCVH6ZLGaL67j5r8XjIvpC/5xLqi+gJKE2KIA7zCPxWLgr2XGLgomVmRyRJneUctRUVhqTkzNDLCugw0B4myVKQ2eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nRYdxP7t; arc=none smtp.client-ip=115.124.30.99
+	 MIME-Version:Content-Type; b=FkXQBxn79CEl1vSJogTkPVKp8sFuLu+lPWGXssNcltTCBmGr7dI1Pt/71/zjF2Ph/yz1/qYF5WcTS0fJH3N8mkzBsqyWY+43FHohQzVu4u1JFDwDq84AFRwRqimP7PlxpwtZiNWjr8uKYnkmAxp7THMtgBe1xtbpK5H7OGapT0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=IiRTsUOV; arc=none smtp.client-ip=115.124.30.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nRYdxP7t"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="IiRTsUOV"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1775183518; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
-	bh=MwMGTOvDH+UUgg3XppNhDJ7Wm/kQtmd8riFK4rQdv6Y=;
-	b=nRYdxP7tb5xtGegSF2QiQHghgJfveD5QgeqcdNhhLk8ZTY3vwv6QtIaM589GZSkxLmJGuBug/VWhiJarNLx6m3ShKHmuu8oVLIYBTosb0knwEU/EhGz/a4lWIO2FXl5oeQj4lEnlXoqdWHWMckMsvATbkEgydnBt8cA+Q4jGx+w=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X0IegUK_1775183514;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X0IegUK_1775183514 cluster:ay36)
+	t=1775185184; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=hz8Xf0WjqAmv02QAnNq4g/lk3QXHFKGIGokcVeGTTF4=;
+	b=IiRTsUOVyCiDz8TVOyS3TvWLOL6yngAjFI0bP6tGAq3XNtrcqNZqeJwkGn6jwpj9H0axBrd/0TpYqXzMjNaic9yhRplP0TyGSEjtrAvsE5S15F6intz4jqfgczujzOiJ8j3pNhhEFKzRydAq7i/bYGmRTb656Bw0slYfkZGu85Y=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X0IpQik_1775185180;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X0IpQik_1775185180 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 03 Apr 2026 10:31:56 +0800
+          Fri, 03 Apr 2026 10:59:42 +0800
 From: fangyu.yu@linux.alibaba.com
 To: radim.krcmar@oss.qualcomm.com
 Cc: alex@ghiti.fr,
@@ -44,12 +44,12 @@ Cc: alex@ghiti.fr,
 	pbonzini@redhat.com,
 	pjw@kernel.org,
 	skhan@linuxfoundation.org
-Subject: Re: Re: [PATCH v7 3/4] RISC-V: KVM: Detect and expose supported HGATP G-stage modes 
-Date: Fri,  3 Apr 2026 10:31:49 +0800
-Message-Id: <20260403023149.40338-1-fangyu.yu@linux.alibaba.com>
+Subject: Re: Re: [PATCH v7 4/4] RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE 
+Date: Fri,  3 Apr 2026 10:59:39 +0800
+Message-Id: <20260403025939.43841-1-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <DHIVKK81LLM2.3VTYW1UXM6USQ@oss.qualcomm.com>
-References: <DHIVKK81LLM2.3VTYW1UXM6USQ@oss.qualcomm.com>
+In-Reply-To: <DHIVQI1DY4MK.27YZ2NPDXF5WM@oss.qualcomm.com>
+References: <DHIVQI1DY4MK.27YZ2NPDXF5WM@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,33 +61,41 @@ Content-Transfer-Encoding: 8bit
 
 >> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 >>
->> Extend kvm_riscv_gstage_mode_detect() to record HGATP.MODE values in a
->> bitmask. Keep tracking the maximum supported G-stage page table level
->> for existing internal users.
+>> Add a VM capability that allows userspace to select the G-stage page table
+>> format by setting HGATP.MODE on a per-VM basis.
 >>
->> Also provide lightweight helpers to retrieve the supported-mode bitmask
->> and validate a requested HGATP.MODE against it.
+>> Userspace enables the capability via KVM_ENABLE_CAP, passing the requested
+>> HGATP.MODE in args[0]. The request is rejected with -EINVAL if the mode is
+>> not supported by the host, and with -EBUSY if the VM has already been
+>> committed (e.g. vCPUs have been created or any memslot is populated).
+>>
+>> KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE) returns a bitmask of the
+>> HGATP.MODE formats supported by the host.
 >>
 >> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 >> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
 >> Reviewed-by: Guo Ren <guoren@kernel.org>
 >> ---
->> diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
->> @@ -102,4 +103,14 @@ static inline void kvm_riscv_gstage_init(struct kvm_gstage *gstage, struct kvm *
->> +static inline bool kvm_riscv_hgatp_mode_is_valid(unsigned long mode)
->> +{
->> +	return kvm_riscv_gstage_supported_mode_mask & BIT(mode);
+>> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+>> @@ -211,12 +214,23 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>>
+>>  int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>>  {
+>> +	case KVM_CAP_RISCV_SET_HGATP_MODE:
+>> +		if (!kvm_riscv_hgatp_mode_is_valid(cap->args[0]))
+>> +			return -EINVAL;
+>> +
+>> +		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
+>> +			return -EBUSY;
 >
->Shifting by more than the bit width is undefined behavior in C.
->RV64 effectively translates BIT(mode) to 1UL << (mode & 0x3f), so this
->could allow values larger than the mask.
+>Since multiple VM ioctls can execute concurrently, I would protect
+>created_vcpus by kvm->lock and kvm_are_all_memslots_empty by
+>kvm->slots_lock.
 >
 
-Thanks for catching this.
-
-You’re right: BIT(mode) is undefined for out-of-range shifts, and on RV64 it can
-effectively mask the shift amount, potentially making invalid MODE values appear
-valid. In v8 I’ll add an explicit bounds check before shifting.
+Agreed. I’ll protect created_vcpus with kvm->lock and call
+kvm_are_all_memslots_empty() under kvm->slots_lock, following the
+kvm->lock -> kvm->slots_lock ordering in v8.
 
 Thanks,
 Fangyu
