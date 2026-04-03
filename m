@@ -1,133 +1,228 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B044E3D5236
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 17:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775237991; cv=none; b=e07WxxGnIh+PDImhwkge+BN2LH2wu0ZcaY2mVOSULSRLUOBbmDp4qLYre9jMS9uQhAgMzsrQn/de7//WJYvSzTyjGIDpJEr8Lp1FTriOWrDjAsvjuIrWuZqcHFO3gNjuprdP+rVTvWxyYq9m7p+DKTZpxJwzBG8epipVWtgqhag=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775237991; c=relaxed/simple;
-	bh=Jy4rfj1/KxJ8LJwCt44iynD9eO2mSp4vklm/C58wTNs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qtPZyFWOD65mKoeftt3y88hnMkpr+cOIw3zimtYuigwo5zk9esfzhUqufuHiGAHq8eJHdvdhz4YtPfzVT4KTwQpQSUfHxkvjS4C5YBJW+UYT4RV1fuEcmwjJNJVWxvAZCME07toX7GGXbI9LPY2EuiqQqMCjEYYpcFARGZF9F3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=prUa61PS; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1343540DFC3
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 18:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775239825; cv=pass; b=cnqGUsMiyXe67BHgx3+7Q34oJ3/N9VO4sbpBkWbGtL3vVuBXOh7gfGBHQbYHlXU/QZaaMzw3BUQYFHmeFoVbqk6+t5q6hvmntS3xqsBEOn2V8oXVcHmvDtjnEQUxR744m7R/Bw+r1CLBIFKFEH/plJVY+OG+2F/3fEe8lOJRYOY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775239825; c=relaxed/simple;
+	bh=4wnkiw01drsb1mOeb4vmjM1GYWviZqJrvrwioV4gc0w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=okwsfGAUKIM6y+AfwrbIW5rO0pZFzV5xVXdshdIlQZ1hjUboaET9i3Lc/1gXMEW34Yc/oXQIebxphIGcEsfLrrIegT4grRdhQJpfx2jFRs/LrpnyxII33+HpI1i9LMrngAFSFRW9TZwb93sROV4A8jHCrzxxwk7HF7rzvNoEM8A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nEkp1iN2; arc=pass smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="prUa61PS"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82ce0a9e558so1480720b3a.1
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 10:39:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nEkp1iN2"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-509069a7a7fso650191cf.0
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 11:10:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775239823; cv=none;
+        d=google.com; s=arc-20240605;
+        b=l11OeLHOJa/3um4dLKRLjb2cWfTXsEP4MgtBHZOqNz9NI8uxnJy9RsYAHhrkIELB12
+         rRx2v0r3tTXXzuwnhabH6+EprsvvKVC+meYHQcax3eMUw0u07Rw18YQZK3pr1POH7FNH
+         /PSg1GErIwME93GwEEDTFnhnK5K4gqJ0gkZAcGmRtEZg7GflCpdpnq2RCNZJOIXKu4GO
+         7McC3hat0sw26NDwkS3qiSFcpEuYT77ai1mqNiF3U8AFP1kyYuhu76qlSuZfd1fwnd9s
+         I/l81X+WVMSaa3ALzIcALlQ6OHkWmhpV6IHWLKZRswOmT4SrTqcHuqXHKDlaImxqzbps
+         lB/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D3wHWIST+Psa9goPXbHlA48/ILBuz3wG5otAi6JiaL0=;
+        fh=Wh+4SUVcW1AjeuixI7nXlBdnBurCZTInrD3Iq9eVYOE=;
+        b=A5pqPzvflv203+VYrypCc9ehplEwjvmV75ECsgq6G1SMnsgiwMIIMk18WNqM8MQRzZ
+         6W9IFGeVTqHRselClSLi55UiXK0lkasZ33PQ8gLAzLIqSkH4OkiFQVHqOsww42Hvj9ds
+         3TiqI92UzuQGMn5N3+vn4hVxrlr2tNZfMBGuSFvbMtg0OXYF+JtjpHo+tfip7mChLlIW
+         8zm1LHba0RE0fUZ63/5WB4thnn5pQZ7uOzlQy7mUnAPdfXy8It7STBxNPVXXpE8E4I+e
+         3/GGvoztdk+vVSNYhaRGlWczz8xPA4LTiJkytCbG1GGU2R/Dqc4E7tGGQsOsmE677ZE9
+         PLaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775237988; x=1775842788; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YOEqOx7BmoFYS8gE1J9R8bgbNcRFQ8KaX5aD52jo+zc=;
-        b=prUa61PSGd5RzzFNERG3WfTmZkF+2x+1h/mYIwWq7yKU9G9/hfraTUWby8sGfd4n/x
-         i4Y7KX6wgFIKDe/E9HyYOY5rohRzCwKHQqsQKDVFa1hk2C3B4c6G1fNozxplamtr2zow
-         3rBdxcWmjgcVrBpBYgx0JA8yrzUOhA0lSPzDRLyLeluHeA+JFThRjNwbSwWIuf/NBa4D
-         W4wJYBSWC/aCS6czHJ1+dZLJWD7d8MxjjWe+uiv2Mtnxi2y5dVKgRa1BVqdsqgbtqHiG
-         zoapgQlyoxOKKb2AFevu754AkiS7vOlAXR6DNrENHbl2w6u2jolSunGH/zMHaczMIuEm
-         eYOQ==
+        d=google.com; s=20251104; t=1775239823; x=1775844623; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D3wHWIST+Psa9goPXbHlA48/ILBuz3wG5otAi6JiaL0=;
+        b=nEkp1iN2jyvw0DdQVmSe7j7ZXK37mB9ritAXbGlVoKn373Hph2yg3uVQpgw/kAv5jJ
+         QfqwJ0yAoPwN4aoHjuvxrhas9rm3bgGR8FtX5CRpF0PMcF5mjX53WBKzLCKp6E/K/tWO
+         pCENK0HP63nEta7+7Cu0f0FApSDOdCES8fRsJMVP73Xg+aJDuOkTzDyt70+f+aM2uuyg
+         MFCkgM/RZJBsfbYoLIQX36HHq+PsL6gbq31R9pNDbn+6jHXUMYaRyumxYhMyZxnN58AB
+         YQV200Wu2HfzoFSbxrj69c+B/9V/cl9pAejHgyFAlAAnrOBa9RrpYqZr/DH2FzJNvws6
+         uIcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775237988; x=1775842788;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YOEqOx7BmoFYS8gE1J9R8bgbNcRFQ8KaX5aD52jo+zc=;
-        b=SOrvOg/j49hcA/Jrn13LainM1Dxx/nVLJeuc5aiivIWwHsJlI7TL58R6j4FmxvHHZY
-         zR41KU9RR8p3GVthFsiCCntQR/S8O7ktd2DS7esAymUBu2YxucpfqNhxFf7a5yp0iCtC
-         JEQpJzf+Tap53IN1SR8R11lRpvad8Fu3nO6NxT4NLkAcnZ8EE3KPcDLUmLXx7VwKsGhW
-         adbwl9D4J2uYQ8BpQl/7rbEh4KuzbdSv++C+OElvpq+2zSVgIGWFXqgY/+RAuu964BDV
-         ixefXI2NfxRbqCcl5SanxNf4HPpRKxyGxgU9sL/3Tam2dUOIS4CQhh2/ZyvjIqsbq6BS
-         gWfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUaGp+5z/Mx6mP/hgOiuHa3dbFev7BxCpeKWUfkgNGs1cZc9NS0aYqd/+AkGzI33MYJqNY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLBmNv3+pHFb7sKGYpnJ8TlG3vrx7oR4pU7hW7qymX7Zbtqj0a
-	lEvOwLqZB7Ab/kY5PoGjfa/g3R3YJljAxvrSaVOSKtSf8eDcMJ6Eg5nZCYlUfxgXLSia/r8s9jB
-	FwE7MFA==
-X-Received: from pfqf9.prod.google.com ([2002:aa7:9d89:0:b0:82c:ed07:26b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d10:b0:829:9f46:280d
- with SMTP id d2e1a72fcca58-82d0da345b2mr3710999b3a.1.1775237987747; Fri, 03
- Apr 2026 10:39:47 -0700 (PDT)
-Date: Fri, 3 Apr 2026 10:39:46 -0700
-In-Reply-To: <20260316202732.3164936-4-yosry@kernel.org>
+        d=1e100.net; s=20251104; t=1775239823; x=1775844623;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D3wHWIST+Psa9goPXbHlA48/ILBuz3wG5otAi6JiaL0=;
+        b=a2cG2N+L6bB4r4NBwqUoWnhHj5pJKHmmPy818jCqKBnWBJsZbSIdgAwcchtD02cKA2
+         MYd3fcWqduz5grIOw0thRoeAv61eufS2XNoLhCc3BAdMt/NaekSfsTcQ4tL2AJbhMmc7
+         ywoUIOtCLFqqQLyVIlIafZqtDX2xdWU3eR/Y3d+/ijbDYF0Qr/M9gQNx/8L5abNcqOzF
+         fWaZdNtU7UhTfNBi9qBSSAFAOtApdZC8G+52Prs6yy84p3TKt9Cl0XkKFYyiOOFZTMjQ
+         9CMkMZzCSqSxLAQ2SzQkYiI8kUEixj/ugp3AQj4pZiDszXdQU5Gd71YFvaU58JemqpIb
+         mivQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaygITcNZIow1nAqlsHS77EEddj4AcEbOv37Q8XG3UOpOrDXIug3nR6H7NEzSTRFFGf8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEQpCp+GdywZwmRZslDu0xnpHMdzfb1WDa9lF20hrqe4h5AhtM
+	g1r2oY/vO/t61amDDHtU5mdU8WDgjjOZ+6U5MQ/JxspAubzBBsEIv61NKHwwGVvRqwtCeUW0269
+	QQOLYHMomXfTmZk9qir+1HMBRbq/NAKX1Y4aljwgH
+X-Gm-Gg: ATEYQzyNxbIlKfpUVluSbSsekufxNWYVR/mQiStbhRD5TrcPCyHQ0wzAWtTNe/2T+yC
+	tMYTZrvSpWg5NX7YWtOmrGNtQkDSIAlpYqZ8GKOEWtTRS+CBeDtZOcaq0D20CBOozEdaHts9gzv
+	diO/bsDDcwJ1nZ6VhWU4w8N4jsOt/EWNP5HPkhIg3xjiufmn/wlmaM5Zn1JI3x8I7lbld8G+wSJ
+	2B++s8t9FBrjWjc1MW/HSyGO+owRzSabAvksXkzPZtFqmJtQVFTPnLCDSiQS8Motz3mJk71os7y
+	LzMu0Kc=
+X-Received: by 2002:a05:622a:5c9b:b0:509:15b6:f69f with SMTP id
+ d75a77b69052e-50d63eb1e2amr16678631cf.2.1775239822510; Fri, 03 Apr 2026
+ 11:10:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260316202732.3164936-1-yosry@kernel.org> <20260316202732.3164936-4-yosry@kernel.org>
-Message-ID: <ac_7Yg-Ma4UR2nIz@google.com>
-Subject: Re: [PATCH v4 3/9] KVM: SVM: Properly check RAX on #GP intercept of
- SVM instructions
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com> <20260402-vmscape-bhb-v9-2-94d16bc29774@linux.intel.com>
+In-Reply-To: <20260402-vmscape-bhb-v9-2-94d16bc29774@linux.intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 3 Apr 2026 11:10:08 -0700
+X-Gm-Features: AQROBzCyrNR-vZ6JoZC9tdSShIePKIwW7s9m_Ym-DzdZtKevzbTyUKkIE4TY_-E
+Message-ID: <CALMp9eSLVvr00mJ0J2f2_SPeCW-VS58kxMcxHgUW6etML+_+QA@mail.gmail.com>
+Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 16, 2026, Yosry Ahmed wrote:
-> Replace the PAGE_MASK check with page_address_valid(), which checks both
-> page-alignment as well as the legality of the GPA based on the vCPU's
-> MAXPHYADDR. Use kvm_register_read() to read RAX to avoid
-> page_address_valid() failing on 32-bit due to garbage in the higher
-> bits.
-
-Nit, not "on" 32-bit, correct?  I think you actually mean "to avoid false positives
-when the vCPU is in 32-bit mode, in the unlikely case the vCPU transitioned from
-64-bit back to 32-bit, without writing EAX".  Because regs[] is an unsigned long,
-so the upper bits of save.rax will be cleared by svm_vcpu_run() on every VM-Entry,
-and it should be impossible for a purely 32-bit guest to get a non-zero value in
-RAX[63:32].
-
-And even for a 64-bit host with a 32-bit guest, the only way to get a non-zero
-value in RAX[63:32] while in 32-bit mode would be to transition from 64-bit mode,
-back to 32-bit mode, without writing EAX.
-
-> Note that this is currently only a problem if KVM is running an L2 guest
-> and ends up synthesizing a #VMEXIT to L1, as the RAX check takes
-> precedence over the intercept. Otherwise, if KVM emulates the
-> instruction, kvm_vcpu_map() should fail on illegal GPAs and inject a #GP
-> anyway. However, following patches will change the failure behavior of
-> kvm_vcpu_map(), so make sure the #GP interception handler does this
-> appropriately.
-> 
-> Opportunistically drop a teaser FIXME about the SVM instructions
-> handling on #GP belonging in the emulator.
-> 
-> Fixes: 82a11e9c6fa2 ("KVM: SVM: Add emulation support for #GP triggered by SVM instructions")
-> Fixes: d1cba6c92237 ("KVM: x86: nSVM: test eax for 4K alignment for GP errata workaround")
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+On Thu, Apr 2, 2026 at 5:32=E2=80=AFPM Pawan Gupta
+<pawan.kumar.gupta@linux.intel.com> wrote:
+>
+> As a mitigation for BHI, clear_bhb_loop() executes branches that overwrit=
+e
+> the Branch History Buffer (BHB). On Alder Lake and newer parts this
+> sequence is not sufficient because it doesn't clear enough entries. This
+> was not an issue because these CPUs use the BHI_DIS_S hardware mitigation
+> in the kernel.
+>
+> Now with VMSCAPE (BHI variant) it is also required to isolate branch
+> history between guests and userspace. Since BHI_DIS_S only protects the
+> kernel, the newer CPUs also use IBPB.
+>
+> A cheaper alternative to the current IBPB mitigation is clear_bhb_loop().
+> But it currently does not clear enough BHB entries to be effective on new=
+er
+> CPUs with larger BHB. At boot, dynamically set the loop count of
+> clear_bhb_loop() such that it is effective on newer CPUs too. Use the
+> X86_FEATURE_BHI_CTRL feature flag to select the appropriate loop count.
+>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 > ---
->  arch/x86/kvm/svm/svm.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 392a5088f20bf..3122a98745ab7 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -2277,10 +2277,12 @@ static int gp_interception(struct kvm_vcpu *vcpu)
->  	if (x86_decode_emulated_instruction(vcpu, 0, NULL, 0) != EMULATION_OK)
->  		goto reinject;
->  
-> +	/* FIXME: Handle SVM instructions through the emulator */
->  	svm_exit_code = svm_instr_exit_code(vcpu);
->  	if (svm_exit_code) {
-> -		/* All SVM instructions expect page aligned RAX */
-> -		if (svm->vmcb->save.rax & ~PAGE_MASK)
-> +		unsigned long rax = kvm_register_read(vcpu, VCPU_REGS_RAX);
+>  arch/x86/entry/entry_64.S            |  8 +++++---
+>  arch/x86/include/asm/nospec-branch.h |  2 ++
+>  arch/x86/kernel/cpu/bugs.c           | 13 +++++++++++++
+>  3 files changed, 20 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+> index 3a180a36ca0e..bbd4b1c7ec04 100644
+> --- a/arch/x86/entry/entry_64.S
+> +++ b/arch/x86/entry/entry_64.S
+> @@ -1536,7 +1536,9 @@ SYM_FUNC_START(clear_bhb_loop)
+>         ANNOTATE_NOENDBR
+>         push    %rbp
+>         mov     %rsp, %rbp
+> -       movl    $5, %ecx
 > +
-> +		if (!page_address_valid(vcpu, rax))
+> +       movzbl    bhb_seq_outer_loop(%rip), %ecx
+> +
+>         ANNOTATE_INTRA_FUNCTION_CALL
+>         call    1f
+>         jmp     5f
+> @@ -1556,8 +1558,8 @@ SYM_FUNC_START(clear_bhb_loop)
+>          * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
+>          * but some Clang versions (e.g. 18) don't like this.
+>          */
+> -       .skip 32 - 18, 0xcc
+> -2:     movl    $5, %eax
+> +       .skip 32 - 20, 0xcc
+> +2:     movzbl  bhb_seq_inner_loop(%rip), %eax
+>  3:     jmp     4f
+>         nop
+>  4:     sub     $1, %eax
+> diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/=
+nospec-branch.h
+> index 70b377fcbc1c..87b83ae7c97f 100644
+> --- a/arch/x86/include/asm/nospec-branch.h
+> +++ b/arch/x86/include/asm/nospec-branch.h
+> @@ -548,6 +548,8 @@ DECLARE_PER_CPU(u64, x86_spec_ctrl_current);
+>  extern void update_spec_ctrl_cond(u64 val);
+>  extern u64 spec_ctrl_current(void);
+>
+> +extern u8 bhb_seq_inner_loop, bhb_seq_outer_loop;
+> +
+>  /*
+>   * With retpoline, we must use IBRS to restrict branch prediction
+>   * before calling into firmware.
+> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> index 83f51cab0b1e..2cb4a96247d8 100644
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+> @@ -2047,6 +2047,10 @@ enum bhi_mitigations {
+>  static enum bhi_mitigations bhi_mitigation __ro_after_init =3D
+>         IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATION_AUTO :=
+ BHI_MITIGATION_OFF;
+>
+> +/* Default to short BHB sequence values */
+> +u8 bhb_seq_outer_loop __ro_after_init =3D 5;
+> +u8 bhb_seq_inner_loop __ro_after_init =3D 5;
+> +
+>  static int __init spectre_bhi_parse_cmdline(char *str)
+>  {
+>         if (!str)
+> @@ -3242,6 +3246,15 @@ void __init cpu_select_mitigations(void)
+>                 x86_spec_ctrl_base &=3D ~SPEC_CTRL_MITIGATIONS_MASK;
+>         }
+>
+> +       /*
+> +        * Switch to long BHB clear sequence on newer CPUs (with BHI_CTRL
+> +        * support), see Intel's BHI guidance.
+> +        */
+> +       if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
+> +               bhb_seq_outer_loop =3D 12;
+> +               bhb_seq_inner_loop =3D 7;
+> +       }
+> +
 
-Eh, let it poke out, i.e.
+How does this work for VMs in a heterogeneous migration pool that
+spans the Alder Lake boundary? They can't advertise BHI_CTRL, because
+it isn't available on all hosts in the migration pool, but they need
+the long sequence when running on Alder Lake or newer.
 
-		if (!page_address_valid(vcpu, kvm_register_read(vcpu, VCPU_REGS_RAX)))
-			goto reinject;
+Previously, I considered such a migration pool infeasible, because of
+the change in MAXPHYADDR, but I now predict that I will lose that
+battle.
 
->  			goto reinject;
->  
->  		if (is_guest_mode(vcpu)) {
-> -- 
-> 2.53.0.851.ga537e3e6e9-goog
-> 
+
+>         x86_arch_cap_msr =3D x86_read_arch_cap_msr();
+>
+>         cpu_print_attack_vectors();
+>
+> --
+> 2.34.1
+>
+>
+>
