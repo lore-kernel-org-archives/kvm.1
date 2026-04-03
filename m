@@ -1,106 +1,118 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817633D0917;
-	Fri,  3 Apr 2026 17:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EDF3368A2
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 17:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775236352; cv=none; b=O05HecDAgiTAqUOiETYqIgedaJJhGK6pdID4dh+cYm/3Gl9IFfdzVXmZ/UDt366tcoAtY4Uw9eqbu0l12iwS32cyxkIHZnqQYm8AGdWKx3bONracFghqqw6JKUYXHn73bdpmQnzrw5EH3l0btI9s0jaRzzDxN/nxU3/gc8tUwIA=
+	t=1775237087; cv=none; b=rHA5A50uAd9g8oriQR9lbCoEwvdSu5kDs15t46vfgioGytkJNpaBv1USlwlgFwQX7ykCtu/mnOxtcMj9mG1xf3ZtjwABkr6flXk+1aJ5eSJsuyqgcHYvxccIQ2vnPJcJLUcF9zzU5+WgVNpeDXKJ+z17FD+tvquvVI4Napu7N5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775236352; c=relaxed/simple;
-	bh=fVrIBw5Vas4Nlxh8fzTuiZw8BZ8DqhTsvxhfy1ry3WM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EXaFWnR93P4GfFFN7PAXOlVEUlhUHxue7XDmu5s9udnVQcRNFLY/b+6TTID1WhbMgwrpLe3Rat0CHevIzojFK48nRmA3DcW/KG+aH+ON6VeYmd3hx6RxXTw80pF+xdC+0XfmsI+YLNh4tP3LJr5CEuJ0dxrshOgob133X+bH10M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Z7yYun9k; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1775237087; c=relaxed/simple;
+	bh=E1bzUypaVS7w28CbARApxGc+uxb6NjOyzaisp3si/6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Bp85Q0NVvoyfR1YLM4LLH3psjJAMta1mIZZUawxIxrlFlA4HX99rAgd6/5rx8Ba4qfu4SkSfkZnIe4oc9xVPXeO2tVhKE92p7/oGvbW8k0qSy6DeIyzbbf+0uILMk+AlDVpBsZ1apixteQ1lbQOWKmbnwhxc4eo3TJwG9dXBgBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ri162ENa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Z7yYun9k"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9E94F40E00DE;
-	Fri,  3 Apr 2026 17:12:27 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id OGwgTnufKYB0; Fri,  3 Apr 2026 17:12:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1775236343; bh=fF/bH0YV6SXfwCkNBOegEFdryWWQdJAU3GXAygSoFQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z7yYun9kWI5p0Rzi7lwhMbJNjyZ/TZFO+3hY3DAiu0qBTfdUnfnpDJSPPpwPg6nKL
-	 vZAvKHuh7Eh9ozTwr15ZoqWlKAHtqH8n5W2SrSuJCzRkJ1GzSdboAelLXNkleX/CHP
-	 TooYm7X8R7M/Qgn6WlUgN4kBeXsY8fCsoqEGgQm+RT3Ew8DtYVChHj49WCqDTLLlf4
-	 kFaL1ND+7/S/bY31oHg24/WTylBSGyUsEJyXcLnPZUzeltH2ZH+PYTdEQPrZeQI9/w
-	 6aVrO6f5u4RAs8vbqj4Wa5HygKIaDZwz3IjFHDUjUzVTc9PefBJdPjt9MOACbc5E/8
-	 Ce+Yj+8/2gOkoUbtZNlJCPmvqvqKs5pNttKX7KdTX28O0wwxDUnW3ybS2e46ne+3H1
-	 MO+oOrjdU4Hr0Btgn+uOea2qt3aGUBehTS0hDX45VDCoC8kbS/U6c0UznIhrXFhU6t
-	 wa6XhWGoG1jKTp+BNTyDBwWfaB86GbncobZDq3kCVtgbvLn/k6kW69CabknkaM4bi+
-	 Tuto3kTKRL9NFAg3PPhGnbK5yZtF0dXYhpl4Am6ku6eK94Myr6I8bGX6umNPboPbn3
-	 pGSV8cmCb87dKQKoY22Ao3r3aUq8caqFRuGVP+nfZRLHIPYrhi8CSb7eYsDlLoeIPG
-	 TSxjtRvBN1vzIevSkedDBMcc=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4D0F240E0163;
-	Fri,  3 Apr 2026 17:11:46 +0000 (UTC)
-Date: Fri, 3 Apr 2026 19:11:45 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v9 01/10] x86/bhi: x86/vmscape: Move LFENCE out of
- clear_bhb_loop()
-Message-ID: <20260403171145.GFac_00XdoXprYJSM3@fat_crate.local>
-References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
- <20260402-vmscape-bhb-v9-1-94d16bc29774@linux.intel.com>
- <20260403151630.GWac_ZzhQZj5LUDlRf@fat_crate.local>
- <20260403164552.chdvvmdfaufcgxzo@desk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ri162ENa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D0CC2BCB5
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 17:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775237087;
+	bh=E1bzUypaVS7w28CbARApxGc+uxb6NjOyzaisp3si/6g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ri162ENaaXiSRPqBTShI8ahm36fA0yxapnpusRTreYOdDDMZ+niMHjj7xqXvZwXxR
+	 W4688wQ9cGxnGe+4MGiHfTAaMtuD2Con4gYFbAMxcYjgjIt93lCPasclWTi7ojO9Zc
+	 cazVdgRwAtkk89yPiJTWnIHMEFFN8LHV8glDBn0X8QcC5UvdP0JZaLMOMJXUx/iVXU
+	 J6GWfBEZdlJkOBVUvtov+m1djxfdByrpUr0rmKXjb+/NqCjkj+Qy2GYzHPm2Fr+5nb
+	 8/vPh720vR6+uCmdKhX7HYao8p87jfXTXfxJbR1k47IxMwREqsFF2kj0iRdD6uwC5X
+	 E/5FWDXI51lcQ==
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65009bfdcfdso2275603d50.2
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 10:24:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUPkyoZPO8Os8ttele0g5FVt3OUNyJbnO95IjGpI08Vo4kPsR4ZMlVBtSDBrkXqVv6jWwU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznOtvDvGESon9yv8AcHkOiNNs0PE/rgKqUVgNcYlSahqe0pmi/
+	KTeQvL8n/vTfev4/9SBCqP7HY1a7Czqh9RyrfP05wUGJjMAEpMJfNTQaFpC3nLoM0ezodzIBMkb
+	j009R7ZnwDXpj5niaGLmEBb20+axqQ52PTZyDejrw+A==
+X-Received: by 2002:a05:690e:d41:b0:64e:a765:ef82 with SMTP id
+ 956f58d0204a3-6504870ea48mr3180067d50.24.1775237086162; Fri, 03 Apr 2026
+ 10:24:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260403164552.chdvvmdfaufcgxzo@desk>
+References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-3-dmatlack@google.com>
+ <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
+In-Reply-To: <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 3 Apr 2026 10:24:35 -0700
+X-Gmail-Original-Message-ID: <CACePvbWrHCSzYmiKz0EuXE48MNk26+4j0njSP+1Vy83RMvvVrQ@mail.gmail.com>
+X-Gm-Features: AQROBzDLi9Fnv8_mDDwmklVKEby5KKVysrnsYTweXxYMFegWZQjyvtyGp9AI6Cw
+Message-ID: <CACePvbWrHCSzYmiKz0EuXE48MNk26+4j0njSP+1Vy83RMvvVrQ@mail.gmail.com>
+Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
+ across Live Update
+To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
+	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 03, 2026 at 09:45:52AM -0700, Pawan Gupta wrote:
-> Thanks.
+On Thu, Apr 2, 2026 at 2:29=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev> wr=
+ote:
+> > +config PCI_LIVEUPDATE
+> > +     bool "PCI Live Update Support (EXPERIMENTAL)"
+> > +     depends on PCI && LIVEUPDATE
+> > +     help
+> > +       Support for preserving PCI devices across a Live Update. This o=
+ption
+> > +       should only be enabled by developers working on implementing th=
+is
+> > +       support. Once enough support as landed in the kernel, this opti=
+on
+> > +       will no longer be marked EXPERIMENTAL.
+> > +
+> > +       If unsure, say N.
+>
+> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
+> (modular support)?
+>
+> This would allow the feature to be built as a kernel module. For
+> development
+>
+> purposes, modularization means we only need to recompile a single module
+>
+> for testing, rather than rebuilding the entire kernel. Compiling a
+> module should
+>
+> be significantly faster than a full kernel build.
 
-You don't have to say "thanks" to every review - we're one big family.
+Building as a module has extra complexity to handle, e.g. the callback
+can happen when the module hasn't been loaded. Then the user space can
+take an arbitrarily long time to load the module.
 
-:-)
+It needs more infrastructure to support the liveupdate as a module.
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Chris
