@@ -1,156 +1,274 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0106359A6B
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 21:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9236DA13
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 21:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775253527; cv=pass; b=cRAlpSNDJ0rVNvw7oYcZbYEISKiFNBtPaFVKUGsk63+2BzTnZ09+WSqBSA7yYECZK/D6qiM6nAATnPCB55bCa7dgwE7PyOnPRL4jkam7e1VRr/QjNn9Hbjm/aXcEXknNyoKBLHQXHFUAq4ni3YBP26XKVNPeioR8+Z1xdruRMRc=
+	t=1775253590; cv=pass; b=D9SQ6PRQkGdVLtaHnkPXvtKuy0xM39mf0kq6s3DERvCzonCRo2vlwT7Pbf+YTHTrhNw5DNVquPmSZLDVEYoLaOXexhdi/sLkKAl2Wbk6GaxRCkBJ6qOu2JQaHcSoYCWtF3eXg/KV5aK+eGomgku06Hnw40NHVtgpT/xxmSUVRco=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775253527; c=relaxed/simple;
-	bh=oCK+sZb08S6huM/V/s1J1l900Tg/cNM1yA6PbfEXFH0=;
+	s=arc-20240116; t=1775253590; c=relaxed/simple;
+	bh=OuHsJ0N8U4o8AF+Mf4uPjGJj7uKjFRFAftozElvC01g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KGn7pTxc49B2dsEH3FJTeQaeLt51PcAihXqRHKLInMIEQSgNtnm37/L2LB0YfjvpSEtfJAuEFo3XWBSw8xCxCmT5JhKoU4RBNCO1j7bUghDORh8cZArcVBNlOPRskfGg+zrBHLqAtcCEMeFBptt88FiZOxIZSvQ8kwbFCEbBEg0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sfVInFU0; arc=pass smtp.client-ip=209.85.167.42
+	 To:Cc:Content-Type; b=srhAPVzBhWjWllcnTUxdZ7Fjm1k2zyD41w5AsZ1vkEYh4pS3LBe3vXM5zI8Q2F1g5hGuBVOhVg28M+bIA+KgFBZhn43Xk/kJEh32JR2Q/w03jlz5y4+yTBhGFmKnXB08T+CQYlyxg2tXqxIjTqTQyXUUPb12QthMWsXzQBt9iCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iq99ap1I; arc=pass smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sfVInFU0"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a3d1561e38so98892e87.0
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 14:58:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775253522; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iq99ap1I"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66baa7fdfd3so11103a12.1
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 14:59:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775253586; cv=none;
         d=google.com; s=arc-20240605;
-        b=iUeRT1fuCBmstD3US8+EllUoeWsW2sQPcwhwnAEpfekaZexRlThDZlW6aJ3uxxUiMk
-         PieOFdi7+nRT0e/FEw7YvZRAvn3vaPaoX6IGsaGiJG3xeNavzsgIOyDrCwVXjlPBkejl
-         7aRX8Q9rSrRQ4rxHi6GlouUtB9+hiDd189+TWCNrDFO8/jvC/Jb/mJcLlNfeAlnU7PfH
-         22y86Mgcnqjhk+Cy996DDpttv+Ntx55xyKtbNH1T+AJrVpE7fAM7fC4d6iGlU3/1bgL7
-         MaYM0sh3qDHeLNkoGcJ7DZL8LxFBZKT4FvBNc+4pBQqRiFLn1PlncO3GhlDZIkEojQsR
-         NfSg==
+        b=bP9rDKQgPUVndZ3WA8uHi8KpJQOVdLHFGymUVq+MgdN/OESqumSc8R49MSQATF7NEW
+         6nS4QfFRaNRnJU1DcEWlbyqjqOxYHiUtUMv6szb5agWkAuL4LCE589dHgL6sa8dpzpNp
+         XkppLqiYQGuKW+s0GJf1RN1E5OyJ1dknMkVktQswGarfVbVva5SJXyuSsEMRLL9NhZGd
+         uas9GNdz2KS8lz5I11UAZK3/gJK6OwpNvGkRvzod0EPnc8W8094rckvtpFtvWGByzV7M
+         +YIGZwDJN9a32zxHnaLZ1AKL4rLnejfQ62VWs1EX1Id77j1fM1dk1ESjX21UVa1vpa7r
+         rdwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=n1x++2kh/JMrnSacQAY2WWd8oQD4emJiO8jgrYOFWkM=;
-        fh=LVqbv+rC4lEKBObltfUL5FW6PHSfDfszzJCQFY45XRc=;
-        b=G7nCav2t2ssQjWeGnRpZ2JuzSm4Vk0LLXgjSbG84w1orqvDXHbzW7dFzPqrJBhruTt
-         72J2TM3Vtfa7oD9meFMfEe9unhxch66MSV05x4qAWvh2isHsszPBJaqYpOHTlZGXMtOQ
-         NIiXjDM1dusiAikTxDqcigGyjai5XV9oEe+FxmCcvuAoBxDZfABWwYHzgyblYSO/JnG+
-         WXT8mgy3S+Mnga1MCXBrLiJvsIgbbgSQ/Zb2B5T9M2R0yBIT+bYtz9HtrCo+tcC6jBXW
-         XxCU01PirVU78HhZkT8jVFeg12d96OfVFs5/q4JQEIsNisZX+gM3UdkdOOWAn+QaR75X
-         5RdA==;
+        bh=4GkFSa2jrZzgbz/gqh1xwGH9rJ9K7aJcMA/+1N4wi5s=;
+        fh=BbS1EwULlX955O34vjB1VFjSLjuDBHHkbToVgJ58+vM=;
+        b=YnPU+JqKRTjnnVesdQb35PqvwyCE8OYhkI32mcv2AGbLLg9VLtlAjjfII+0jPJfH6n
+         FMQLVELCexLOIjfmUySlwuAgs9nUDOcgIHYWkyK8zT7GsryBhcfVciVmVY2mFXNP3Jfk
+         zIiMj1mjocDRXbVCwS7/RVEV4yiHQ3683qFgJCUWrBGswTwtt8ualRP/dAgjFLSSh0OO
+         dqXGXNB7l1m3Ft23W+CRaYowxW837vb9TeCVrRjQeJQQJzeOuPB0MjRU8qMjqh+Oe31k
+         i3r5PTOiq8IgT5f1H8QB3NlZAryR7R+2XwZuYwcXj4ihC55SCabRL8eRYFC/wq7poEpn
+         3W7w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775253522; x=1775858322; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775253586; x=1775858386; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n1x++2kh/JMrnSacQAY2WWd8oQD4emJiO8jgrYOFWkM=;
-        b=sfVInFU01E+LC/YL08p0ZrKy5EpCdGKddjzFyepyUv4or1nGuchn8jkj/IwiXItUrW
-         nFN6Eqf/js+yJG1Nuou/6OciQugdHpyDNCfbBaFQNxFv2mul2ZMJg3kGYxTEsEuiBjnZ
-         0SAwrWBs8MdwUdwpZOmdRLodQPwWfwrBrfXsRmNbctLQj/AXgQ38BzeZx2GBZR2SNT4f
-         RVq3gSCdWgwT73tc6U18cP9lvNsuFCc0H4Y5jo5lATYkVEybeYCOJueCv7GxvQJg39zi
-         vouHBiahkBZQ1l3DMVQsRBTbyEwZeOLhEH73PMkQmpcboD2alHYcF0E0Rml6mGYxEvWO
-         qoOw==
+        bh=4GkFSa2jrZzgbz/gqh1xwGH9rJ9K7aJcMA/+1N4wi5s=;
+        b=iq99ap1IMXDPS1mgKbCPe5XiHYCPZXJf+TtBVlLBYdvWS3eiAXdoD0tQh+depgRoHG
+         OLJ3R9z2Ci8iidTbXxWF3VDZdJsstT6s1rxVHUCw3/3/kbUZKFpePN7Vp6HGtB1aEp46
+         HoVojKeLTWzRVYkCYtYLqPE+tW7E+EdzExyi3yeJPBBdV8L0sQteHPdegf20/qYoNqEc
+         ZnwWetKO2guG6ik3613rRqO2pvoQ9Sl5AiP+cQt5ljvIhINXrmHDe61XPoHM/onVVovv
+         WeZ3JtqgWniozHV2YhJTTNZkMZYdnCz+1lJkBXzbdXtG3Raz19dKajak+cNA8C8qoTju
+         rCTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775253522; x=1775858322;
+        d=1e100.net; s=20251104; t=1775253586; x=1775858386;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=n1x++2kh/JMrnSacQAY2WWd8oQD4emJiO8jgrYOFWkM=;
-        b=YgW373JhRBNviFjIgsPC2Pv4XVQP4VDi/xnGSU0KHfgCXk2eC/5ZR3Od2mhQ0RF/+B
-         msCIJMaXtLSFVpTKrbHMt8wK1lsXw/ppW0HR8xriCdIl/2VeGLwnens9khS2QO0Odmo2
-         xbKlLoN9J0TW0hYM7RStHuB6bENq8ZpTHu//KpRqzDROW9AAMuSW+ucpKpDVETiOT88o
-         p/7F96gcf39s7H4ALbINRKqE+928BHUc4fElQ84DXeuLrmzeodFnygnovpjFaPowDHY7
-         Vuk4Usf3OPWschCxY4xSoYgi7ueA8ZYu31eUhaYY/M/oNiXP2n6uxoVsoSBUkhb+FXX8
-         swIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVRbqorc5o7f1xa7a1xr8ALLsdVaKUDi7P7cvmQjQ4HfgZIHxl+Lyl+N8G7iH/XdTf5lwI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7lUe+wgmaA/0qkKDIkMeAyW7skmzvnDKj85l5J44t0tz/HTFx
-	eJu6zLZffzO7HUJBSNkMHmtNlHJAUEWbBfrm5gw/zpnGPYSYgcr2BK4ddytuxzpEOYXyKdDGnzD
-	ABBWXdTSzfid9+KHNKTyl2y9RilKppXlWoa+GZpZq
-X-Gm-Gg: AeBDieu5RMkZ2GJVSIbdy6gMkkYeu/d1cTy+G7navQAsyBCHmaqNBnhGzKX8+g8L4Xu
-	bYuQTGyiL2bhurjESQaAwqF9YCAoj0OntvgMFmzh0129RX5hd1JiinaVcXT/wpfhddJm8JplgAh
-	hOJZ5wTYWMGyaurXNMG7k0jtgWoFcFi8MqCZ+iTrXRHTU6fJnh4MhaBLb4bwlJI0ejdapra22ia
-	oYaH76kHd7mvdWPXt+Dj2w2QHg2qSh47SX3rpUPIEYtgBl0C7XwMa0CALIpspZAt9noHjDbsPcg
-	0Q5Bu1z6
-X-Received: by 2002:a05:6512:1310:b0:5a2:a5dc:6111 with SMTP id
- 2adb3069b0e04-5a337563322mr1534908e87.18.1775253521414; Fri, 03 Apr 2026
- 14:58:41 -0700 (PDT)
+        bh=4GkFSa2jrZzgbz/gqh1xwGH9rJ9K7aJcMA/+1N4wi5s=;
+        b=sKTQQZmjqYoiQo6xxYPhqaQfNFd2BMHD0WucGW/drEWjO6D9tOrsvP7EsqZpGRd1ip
+         83E+CQJNcvu/8o9rCxKsi1btNvNyVDJC6xEZWTYHnOoukJcdVecRS6mm00UYFmSBoZUT
+         sm9znFFickLxFezqC/fo5LNMACoLPbxYF0rN8egyyUZAgzF8ZxcSCn3N/vTUd9Q0jLUi
+         k9RWs68+bXMWqpDMxz8vTG6/r1LN04Oto13hqb7DVyHJNPpeVcfYpcsRvQZ9pAKXdLJ7
+         +NimzYbMb3AyweLZMKk7VuNtkKHn4lJgSDLh2Ysk0VkVFjsvBVEm3buWwEVg755KUDX5
+         DfkA==
+X-Forwarded-Encrypted: i=1; AJvYcCUH/NmEN6eoproXeJO0060hZgq+BkVR6vnsGx+uAWJ37LENEmH9BPPl0tF3M3L6YO3mHFc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyutuBG10Td1IFB2qX2C0tb2MP8VLmfAi3UUYaWf3b1u83gnyBf
+	j/SjvEVC/ob3GJ1tobn57qLBuRzLZsH5dgcmxb7kj9DxQwAqSyam50RDhXKiv+JO1JSeD5DYXWB
+	lcyxo8dmc2UAxfhdccxyS5mAXZGpaMDNuVZaHQxpU
+X-Gm-Gg: AeBDievWi6hzyK0wsotT/zRrXfZ6zjZgYKe+JLPnaAXIckImtwe2Piy0mERoIvBYVfx
+	oE2sTuEYjoOtmFvtxXa2QM2pebjXPEg6QTYagCrq3y1J8gztymc8cs7TxniqZ+m+JLry6Gex2Ri
+	Ia+A7nKt7u4h2ErhrB2WI9wxGzkFuxHf/xFmThUIC+SsrDvT9MXPtBtgR3lkoSxkGizQ/5jmRhx
+	tXoDZUFhNLZJhyJMtyrPecnU3r9wsSyCBy9VnWLnSCs+cS6wpQJAcNasE1Tsuk1maZQBjMRmC7R
+	OnYkqI0=
+X-Received: by 2002:aa7:d44a:0:b0:66b:860f:3799 with SMTP id
+ 4fb4d7f45d1cf-66e43f30587mr33112a12.9.1775253585816; Fri, 03 Apr 2026
+ 14:59:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-3-dmatlack@google.com>
- <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
-In-Reply-To: <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 3 Apr 2026 14:58:11 -0700
-X-Gm-Features: AQROBzCufsJjSomX3fu7F7ptwK4HJAYNpi3kPBVsC_mFldZEseUJNvIFRhG6pcY
-Message-ID: <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
-	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+ <20260402-vmscape-bhb-v9-2-94d16bc29774@linux.intel.com> <CALMp9eSLVvr00mJ0J2f2_SPeCW-VS58kxMcxHgUW6etML+_+QA@mail.gmail.com>
+ <20260403185236.sjgetnkha3o3a4d3@desk> <CALMp9eSPkMpKQELTnsaj6=gXD+EyE0n2_p93n4maDc93bPFe+w@mail.gmail.com>
+ <20260403213445.xzb4rxbfbg5un7li@desk>
+In-Reply-To: <20260403213445.xzb4rxbfbg5un7li@desk>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 3 Apr 2026 14:59:33 -0700
+X-Gm-Features: AQROBzD0pWuUvo6f_qTeW8GqTUWeF8BA-rGgdoyaTcRNJP0Ubn7CVfR-kLNpTZ0
+Message-ID: <CALMp9eSXfJvR=PHtttbqm3q3nH436T1eH4YdpVqxQeP-cxEPsA@mail.gmail.com>
+Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 2, 2026 at 2:29=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev> wr=
-ote:
-> On 3/23/26 4:57 PM, David Matlack wrote:
-
-> > +config PCI_LIVEUPDATE
-> > +     bool "PCI Live Update Support (EXPERIMENTAL)"
-> > +     depends on PCI && LIVEUPDATE
-> > +     help
-> > +       Support for preserving PCI devices across a Live Update. This o=
-ption
-> > +       should only be enabled by developers working on implementing th=
+On Fri, Apr 3, 2026 at 2:34=E2=80=AFPM Pawan Gupta
+<pawan.kumar.gupta@linux.intel.com> wrote:
+>
+> On Fri, Apr 03, 2026 at 01:19:17PM -0700, Jim Mattson wrote:
+> > On Fri, Apr 3, 2026 at 11:52=E2=80=AFAM Pawan Gupta
+> > <pawan.kumar.gupta@linux.intel.com> wrote:
+> > >
+> > > On Fri, Apr 03, 2026 at 11:10:08AM -0700, Jim Mattson wrote:
+> > > > On Thu, Apr 2, 2026 at 5:32=E2=80=AFPM Pawan Gupta
+> > > > <pawan.kumar.gupta@linux.intel.com> wrote:
+> > > > >
+> > > > > As a mitigation for BHI, clear_bhb_loop() executes branches that =
+overwrite
+> > > > > the Branch History Buffer (BHB). On Alder Lake and newer parts th=
 is
-> > +       support. Once enough support as landed in the kernel, this opti=
-on
-> > +       will no longer be marked EXPERIMENTAL.
-> > +
-> > +       If unsure, say N.
+> > > > > sequence is not sufficient because it doesn't clear enough entrie=
+s. This
+> > > > > was not an issue because these CPUs use the BHI_DIS_S hardware mi=
+tigation
+> > > > > in the kernel.
+> > > > >
+> > > > > Now with VMSCAPE (BHI variant) it is also required to isolate bra=
+nch
+> > > > > history between guests and userspace. Since BHI_DIS_S only protec=
+ts the
+> > > > > kernel, the newer CPUs also use IBPB.
+> > > > >
+> > > > > A cheaper alternative to the current IBPB mitigation is clear_bhb=
+_loop().
+> > > > > But it currently does not clear enough BHB entries to be effectiv=
+e on newer
+> > > > > CPUs with larger BHB. At boot, dynamically set the loop count of
+> > > > > clear_bhb_loop() such that it is effective on newer CPUs too. Use=
+ the
+> > > > > X86_FEATURE_BHI_CTRL feature flag to select the appropriate loop =
+count.
+> > > > >
+> > > > > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > > > > ---
+> > > > >  arch/x86/entry/entry_64.S            |  8 +++++---
+> > > > >  arch/x86/include/asm/nospec-branch.h |  2 ++
+> > > > >  arch/x86/kernel/cpu/bugs.c           | 13 +++++++++++++
+> > > > >  3 files changed, 20 insertions(+), 3 deletions(-)
+> > > > >
+> > > > > diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.=
+S
+> > > > > index 3a180a36ca0e..bbd4b1c7ec04 100644
+> > > > > --- a/arch/x86/entry/entry_64.S
+> > > > > +++ b/arch/x86/entry/entry_64.S
+> > > > > @@ -1536,7 +1536,9 @@ SYM_FUNC_START(clear_bhb_loop)
+> > > > >         ANNOTATE_NOENDBR
+> > > > >         push    %rbp
+> > > > >         mov     %rsp, %rbp
+> > > > > -       movl    $5, %ecx
+> > > > > +
+> > > > > +       movzbl    bhb_seq_outer_loop(%rip), %ecx
+> > > > > +
+> > > > >         ANNOTATE_INTRA_FUNCTION_CALL
+> > > > >         call    1f
+> > > > >         jmp     5f
+> > > > > @@ -1556,8 +1558,8 @@ SYM_FUNC_START(clear_bhb_loop)
+> > > > >          * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0=
+xcc
+> > > > >          * but some Clang versions (e.g. 18) don't like this.
+> > > > >          */
+> > > > > -       .skip 32 - 18, 0xcc
+> > > > > -2:     movl    $5, %eax
+> > > > > +       .skip 32 - 20, 0xcc
+> > > > > +2:     movzbl  bhb_seq_inner_loop(%rip), %eax
+> > > > >  3:     jmp     4f
+> > > > >         nop
+> > > > >  4:     sub     $1, %eax
+> > > > > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/incl=
+ude/asm/nospec-branch.h
+> > > > > index 70b377fcbc1c..87b83ae7c97f 100644
+> > > > > --- a/arch/x86/include/asm/nospec-branch.h
+> > > > > +++ b/arch/x86/include/asm/nospec-branch.h
+> > > > > @@ -548,6 +548,8 @@ DECLARE_PER_CPU(u64, x86_spec_ctrl_current);
+> > > > >  extern void update_spec_ctrl_cond(u64 val);
+> > > > >  extern u64 spec_ctrl_current(void);
+> > > > >
+> > > > > +extern u8 bhb_seq_inner_loop, bhb_seq_outer_loop;
+> > > > > +
+> > > > >  /*
+> > > > >   * With retpoline, we must use IBRS to restrict branch predictio=
+n
+> > > > >   * before calling into firmware.
+> > > > > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bug=
+s.c
+> > > > > index 83f51cab0b1e..2cb4a96247d8 100644
+> > > > > --- a/arch/x86/kernel/cpu/bugs.c
+> > > > > +++ b/arch/x86/kernel/cpu/bugs.c
+> > > > > @@ -2047,6 +2047,10 @@ enum bhi_mitigations {
+> > > > >  static enum bhi_mitigations bhi_mitigation __ro_after_init =3D
+> > > > >         IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATIO=
+N_AUTO : BHI_MITIGATION_OFF;
+> > > > >
+> > > > > +/* Default to short BHB sequence values */
+> > > > > +u8 bhb_seq_outer_loop __ro_after_init =3D 5;
+> > > > > +u8 bhb_seq_inner_loop __ro_after_init =3D 5;
+> > > > > +
+> > > > >  static int __init spectre_bhi_parse_cmdline(char *str)
+> > > > >  {
+> > > > >         if (!str)
+> > > > > @@ -3242,6 +3246,15 @@ void __init cpu_select_mitigations(void)
+> > > > >                 x86_spec_ctrl_base &=3D ~SPEC_CTRL_MITIGATIONS_MA=
+SK;
+> > > > >         }
+> > > > >
+> > > > > +       /*
+> > > > > +        * Switch to long BHB clear sequence on newer CPUs (with =
+BHI_CTRL
+> > > > > +        * support), see Intel's BHI guidance.
+> > > > > +        */
+> > > > > +       if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
+> > > > > +               bhb_seq_outer_loop =3D 12;
+> > > > > +               bhb_seq_inner_loop =3D 7;
+> > > > > +       }
+> > > > > +
+> > > >
+> > > > How does this work for VMs in a heterogeneous migration pool that
+> > > > spans the Alder Lake boundary? They can't advertise BHI_CTRL, becau=
+se
+> > > > it isn't available on all hosts in the migration pool, but they nee=
+d
+> > > > the long sequence when running on Alder Lake or newer.
+> > >
+> > > As we discussed elsewhere, support for migration pool is much more
+> > > involved. It should be dealt in a separate QEMU/KVM focused series.
+> > >
+> > > A quickfix could be adding support for spectre_bhi=3Dlong that guests=
+ in a
+> > > migration pool can use?
+> >
+> > The simplest solution is to add "|
+> > cpu_feature_enabled(X86_FEATURE_HYPERVISOR)" to the condition above.
+> > If that is unacceptable for the performance of pre-Alder Lake
 >
-> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
-> (modular support)?
+> Yes, that would be unnecessary overhead.
 >
-> This would allow the feature to be built as a kernel module. For
-> development
+> > migration pools, you could define a CPUID or MSR bit that says
+> > explicitly, "long BHB flush sequence needed," rather than trying to
+> > intuit that property from the presence of BHI_CTRL. Like
+> > IA32_ARCH_CAPABILITIES.SKIP_L1DFL_VMENTRY, the bit would only be set
+> > by a hypervisor.
 >
-> purposes, modularization means we only need to recompile a single module
+> I will think about this more.
 >
-> for testing, rather than rebuilding the entire kernel. Compiling a
-> module should
+> > I am still skeptical of the need for MSR_VIRTUAL_ENUMERATION and
+> > friends, unless there is a major guest OS out there that relies on
+> > them.
 >
-> be significantly faster than a full kernel build.
+> If we forget about MSR_VIRTUAL_ENUMERATION for a moment, userspace VMM is
+> in the best position to decide whether a guest needs
+> virtual.SPEC_CTRL[BHI_DIS_S]. Via a KVM interface userspace VMM can get
+> BHI_DIS_S for the guests that are in migration pool?
 
-I don't think it is possible for CONFIG_PCI_LIVEUPDATE to support 'm'.
-pci_setup_device() (which is under CONFIG_PCI) needs to call
-pci_liveupdate_setup_device(), and CONFIG_PCI cannot be built as a
-module. This call is necessary so the PCI core knows whether a device
-being enumerated was preserved across a previous Live Update.
+That is not possible today, since KVM does not implement Intel's
+IA32_SPEC_CTRL virtualization, and cedes the hardware IA32_SPEC_CTRL
+to the guest after the first non-zero write to the guest's MSR.
