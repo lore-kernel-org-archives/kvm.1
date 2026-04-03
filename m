@@ -1,201 +1,199 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BE63CD8B1
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 16:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775233849; cv=none; b=FMAHzBKP+S0o0u6uRx/4Hu+g2q5mP8Qj9sJbNlP6HdapGJSO+pBNxZtlBCuigCBjPUAkDaCkDA74nc/ueHqi8Pe00TSUAo+liJpkfQ5WYjQr9mV2kz+NqNlHQY415r5wyMX4jkLPPCSFIRVyFtQCnfo7Y7eq7jMcsIsuZN4Du/E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775233849; c=relaxed/simple;
-	bh=rGZgWtwCCI3+eFvVKc+X88h43lrdjuX32gE4iywL6A4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HO7OfoJTGj4AIjTXLwq/Jyog6KW4E1R+OM8HeWzbQy/GC49HpPuORernaVyIjgBXYKSdGclK2yX5H4R062XXqTs7aQw1gDvvfiIikWfybzHeyPifpxUL4oSY/dGPm8njYw8PsojmNhK8zp8hVSh92PWP5hpJRKlxzULDxgZ4Dw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=syfRd8WS; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0FA1FE47B
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 16:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775234566; cv=pass; b=Y+JHMT7pXIyhLlhbcCGVlsSA9hTiy+OeyCkY21yZ0Xnd3/mB1wZj8TDdogQVxz/ZhTmqN40B0ztiJRHzEZf8hYIXLHei+pdSEk6OmrSGcCmnOnx7Ey70YsMHpMg/Lfm6XtD4RJDPFBaY4w0gYF5kfYns+V1mppow6m9IWiBS2Js=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775234566; c=relaxed/simple;
+	bh=qGU9Zxnzj7IbyFxskAzMgqpZJCRoHLKeXshL3Lo8O2Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jqe6B8lPelqd4VdkjmHJc+ex3naD4tlIfJKrHiwAlRGOr5pOEHarnwKCUlHYXQbWGulxMkWUvsEsJm+naiu9ewDmjTsN999mFCLsv6NoJ5S2/54dQkEsAnWx43KAe+PFuAf9UWNJbrsZxtDRdvtn9TQhAfmNC5tHthdrZm/D2Os=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=DZDOcZI6; arc=pass smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="syfRd8WS"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b242cbb97aso15037515ad.1
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 09:30:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="DZDOcZI6"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6836ab45d84so34287eaf.0
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 09:42:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775234563; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N1Ee4nV5Xi0VuB9moCtTLMgAhFQfnn10uMb5mvaStNxeJZq8UZjEx6rSqKFBaSdxSt
+         5MdJuAYh66eGmEfzNy2D2FMyiCk8cK92C9n8Uy2L4eJ1QXvwKEOAJeViJ+IZF7LY+JOM
+         80cO0aoctGFS1IhZ6wQrk6T7lXDEyqNDRvca7Notrwl17WPcsJ/Y64VXAid0qoh6+KH/
+         tTOjIyS2ypDwqzKPR+gTKXekS7P3xki7+rN1BHl4kSUP+2XHZEWdpmy/pIaexUVcctYn
+         mC6Ytk9xQZOAcew/57dsFCOdctOr5HZt1eN58LFEJoOCE2CZ+3yhVpvUD7zAO2pu7Dxl
+         ysIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=auZTnywYVktBT/CjhCUIdzd5mrQJL3jt4L8n/dbsyLw=;
+        fh=aBCNax7+hlSN/+OsJTzGByUwgGaro65kPMyNCTpPPZc=;
+        b=dz0AfQrZbWCISmfwetb38+3Hs0LrWDV/70SP4rSMHuuZhXniCudf1FXhRilSCVdcgC
+         Vrg2i/JFKBgsRZrAWJLCwk/MaOZ2p8WKYeDMnC4t74eLlNEJLnRkaXImccV4yZStHmSS
+         Vp8xMB/otqSybn8GyGeb7w/HrJ7zBkAoYsCkcDQzDpocJExaTZ3JLiaitP8qrbWKL8kq
+         pMSUBeYC+bJ4tcb+UFiNK1u9R0VoQ6f/19V1hFpCpDdz6TGqtzAIIgwNc1uaxKCE5WmV
+         DVBd6ngTtUwrc2B8pbFiF0rOL+RkJ0JwPNcdt1V09NxJQxEES8foUVaS1fSPP/8iuH/1
+         EDxA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775233847; x=1775838647; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2+Zt8Ye6QZDycK/H8I2xKI9t6Wy2CW5OkF+BQs3682Q=;
-        b=syfRd8WSLrPJ6apEQ604WeEvOF3fivRBdp2ojXHjExtESYQt1WMCLa4T9b30Y4I9py
-         XgjanW6SYEz+XHJD68+Y8bUOmx+q1SPlCvCKpxQXcrtisBeEJWJbP6B40Oy68kR1+Uar
-         7Y3Si/V2T87rPei7TT/cLo53tzCbWM4rFtyBWwSgRoWvDaCreO3eIjJrJtN8AmAUSOth
-         F9xj1r5UvYwxZN6RieSdw+cmjQLzY/LU7LXeI/vMAa2Hdtk6cBm202BUDPuy1fXMgFBI
-         Ia25KfciaS6UwE3Wf7UK7azc8LeVpJ7zVn8G7XTTxKVqzROZSj5jDFLdN1uAsBas6gyR
-         e8aA==
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1775234563; x=1775839363; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=auZTnywYVktBT/CjhCUIdzd5mrQJL3jt4L8n/dbsyLw=;
+        b=DZDOcZI6UKl03G5B/oUaab2SDROdBPqJfl5aJiy50iA2VZ18B9mN0E/iF66YvJMKiu
+         YAGfnegNPC3Ke6pM9exi2MHncB66fClQeRThnllhwxGqM9e8hiiZpZk8NVIHegKw2vDl
+         nWWImL1fnC7QbB3HEETOXq+XLu0cF2nFz+ltsFLOX1dizhDxagX0Ff/ED/N02x6wuRLu
+         cL4Jzh+eeiBPLWLAAqv7XhCTLIxMNvhrxHJGtqJPKy9ML7Qwc/WfwdSGjEVxGs55D6hC
+         EkplN8cuJ3RUoZ7ckwGSPK+P9TICyXQ0dafgVykXKqqsSzYLWYkkhBT8j7O3V6u5tO8d
+         6uMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775233847; x=1775838647;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2+Zt8Ye6QZDycK/H8I2xKI9t6Wy2CW5OkF+BQs3682Q=;
-        b=Zjse3N1BAyKehzTlEb5eum61VUN5raP02R/Zx8LbHBsiVNaZz+MB/bOuePr5KJ3MUL
-         hZeIKEhWqnSILSJA9lDEd0TyI5BnBO/ZJ/hd++B2Ap+QlgQns8rzIcyb8lIRmacg78tG
-         53l6/mWn2SWl6uVjJTfixhjh0xC8oiW03E5RyTqEXtAkXJskwISLNMV3TJbkPjV7JJ5K
-         du534wWmNFg04jgolhw/fUcbU41yTBC14/SnZtdpWRQefO8iznihWT0Y81ptBUe1Zl7J
-         tokAFzkTi6MqhXGYWxzyn6t7lDnmvFjNT4IaD8i/gZvPbwgF9sFb+5z+wJhw3PnInqPN
-         7kEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVI/tWPxicpHs1Lqri79tIPzsU6Kxqe8WCbnZYWDC4ih4g4NzyIxm+OxOBN5qBzdyz0uc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzKjGJks4XJWx06gsnZ0zpENYShuTfOJhaHYF+2OEXe2ORpHAU
-	wSffTULrdzTRl6mQpCKPd/pzouUuul4eNisVjI82QrWO0glKgOkVa5f5MiF7MiigvuhKdLJnc63
-	6Go+3jg==
-X-Received: from plrx13.prod.google.com ([2002:a17:902:b40d:b0:2ae:d0cb:5159])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54f:b0:2ae:5eab:132e
- with SMTP id d9443c01a7336-2b28173fa9dmr36278905ad.12.1775233847240; Fri, 03
- Apr 2026 09:30:47 -0700 (PDT)
-Date: Fri, 3 Apr 2026 09:30:45 -0700
-In-Reply-To: <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
+        d=1e100.net; s=20251104; t=1775234563; x=1775839363;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=auZTnywYVktBT/CjhCUIdzd5mrQJL3jt4L8n/dbsyLw=;
+        b=I2ZChsh9+telg3AvMsmLily+Y3ro85Gn/0terZvJu4cbLAco+eZDY4t58P9zZktfxU
+         TWNLvKT6xcYwE7n3ftT6xtPp6a9iUeZD7dSKKV9ehV+5jX1X0R/dNsh7YbMREtZbLb7l
+         1rGv6G+t6hVwEIp21CDxQGl+IWtBxE0ujnOkOgSCu7eJyCQmjrpf+An7S6ocdRMZz+KR
+         K6IZuuLBfMX1jHqgXAiGYR4jUu2FKa2oBIksurOtqAm0+TbkvnJh1QWvUgsZwZMRqrBr
+         hoPTTHhdz2gysT06ECa23LJh9hrtCHJqrGY6+BU+1j4meLHqp3ICeTne8hnboHq4dRuy
+         pjwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGK50X42vRv4s9Vhdu5LQZXZUJaNPpivSfMGFFyRdXwkGd1ghUqKF5CjGxZ9676Qcx2qE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfg5qoyQ/M2lUgTD3WNoZV6iuSF80/pCKKzjM1Fcrj0PQZ7KaA
+	57j/kxfrqByNDtrHqug+gC9j1EnFuukfegGbhnmIMgiVHOADn71dVqIzyCcHWK7JFbT4+6QhGwt
+	3s8kYpaJWJjcRiGdHNVjqx9KIFoYJc7mHU+2nnNDU/A==
+X-Gm-Gg: ATEYQzzlmUl45V5q6sk1feqjeUm7H7VS8HQv92crKNYZYjBAVxiMftTOmkVufZLfR/c
+	t93X8vK9aNgQ1Qzle9pWloPBr2FKS7F/vy+9N7Y4sH2GKk4H9rvupDSMHPVhZKanFV4/gAkJGki
+	v2LOHUdsqkMHjsCvsQ3bVnT61ojE8L/GVWfToRXee93E76R+7QDliqMF3Z2E98svAUhyGlezG0K
+	g/smZZmGNq7sQ+ywNAxbEpx26n3RdUmNfB25nFk97F0jkclIPUE4DcWlsi9aLm/VNaX62pUur+E
+	5bk26aLhPDBiyGydCG/Rwj6sBwxq4RNTP/dbgR3oMi3TEcDv5HIQLxpWJL++L8D2LoUTIl163Ha
+	v5jWNbK2/2NCvNCJGoBJZ4vDBsw==
+X-Received: by 2002:a05:6820:2215:b0:67e:42ca:bf1 with SMTP id
+ 006d021491bc7-6821fe62163mr1788720eaf.35.1775234562721; Fri, 03 Apr 2026
+ 09:42:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260318190111.1041924-1-dmaluka@chromium.org>
- <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com> <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
- <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com> <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
- <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
-Message-ID: <ac_rNT69TdocrMYc@google.com>
-Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "dmaluka@chromium.org" <dmaluka@chromium.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, Dave Hansen <dave.hansen@intel.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com> <20260403153019.9916-4-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260403153019.9916-4-fangyu.yu@linux.alibaba.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 3 Apr 2026 22:12:31 +0530
+X-Gm-Features: AQROBzCuQ5MlY1qXpbAGUgE7OvJH7RKCeYopTbo-0zq1mBL8wwRCkjds0LobFsM
+Message-ID: <CAAhSdy30Eg1GvnyfJyqABLEyP9_rV3Zb=Ts5TAxWWnv0frWRYA@mail.gmail.com>
+Subject: Re: [PATCH v8 3/3] RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
+To: fangyu.yu@linux.alibaba.com
+Cc: pbonzini@redhat.com, corbet@lwn.net, atish.patra@linux.dev, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	skhan@linuxfoundation.org, guoren@kernel.org, radim.krcmar@oss.qualcomm.com, 
+	andrew.jones@oss.qualcomm.com, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 19, 2026, Rick P Edgecombe wrote:
-> On Thu, 2026-03-19 at 15:40 +0800, Binbin Wu wrote:
-> > tdx_has_emulated_msr() is used by KVM to decide whether to emulate a MS=
-R access from the
-> > TDVMCALL or just return the error code.
-> >=20
-> > During an off-list discussion, Rick noted that #VE reduction could chan=
-ge the behavior of
-> > accessing an MSR (e.g., from #VE to #GP or to be virtualized by the TDX=
- module) without
-> > KVM knowing.Because KVM lacks the full context to perfectly decide if a=
-n MSR should be
-> > emulated, the question was raised: Can we just delete tdx_has_emulated_=
-msr() entirely?
-> >=20
-> > However, these native type x2apic MSRs are a special case. Since the TD=
-X module owns the
-> > APICv page, KVM cannot emulate these MSRs. If we remove tdx_has_emulate=
-d_msr(), a guest
-> > directly issuing TDVMCALLs for these native type x2apic MSRs will trigg=
-er a silent failure,
-> > even though this is the guest's fault.
-> >=20
-> > It comes down to a tradeoff. Should we prioritize code simplicity by dr=
-opping the function,
-> > or keep it to explicitly catch this misbehaving guest corner case?
->=20
-> I think from KVM's perspective it doesn't want to help the guest behave
-> correctly.
+On Fri, Apr 3, 2026 at 9:00=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote:
+>
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+>
+> Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective
+> G-stage GPA width for a VM.
+>
+> KVM_CHECK_EXTENSION(KVM_CAP_VM_GPA_BITS) returns the effective GPA
+> bits for a VM, KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) allows userspace
+> to downsize the effective GPA width by selecting a smaller G-stage
+> page table format:
+>   - gpa_bits <=3D 41 selects Sv39x4 (pgd_levels=3D3)
+>   - gpa_bits <=3D 50 selects Sv48x4 (pgd_levels=3D4)
+>   - gpa_bits <=3D 59 selects Sv57x4 (pgd_levels=3D5)
+>
+> Reject the request with -EINVAL for unsupported values and with -EBUSY
+> if vCPUs have been created or any memslot is populated.
+>
+> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+> Reviewed-by: Guo Ren <guoren@kernel.org>
 
-Uh, yes KVM does does.  KVM is responsible for emulating the APIC timer, is=
-n't it?
+LGTM.
 
-> So we can ignore that I think. But it does really care to not define
-> any specific guest ABI that it has to maintain. So tdx_has_emulated_msr()=
- has
-> some value there.=C2=A0And even more, it wants to not allow the guest to =
-hurt the
-> host.
->=20
-> On the latter point, another problem with deleting tdx_has_emulated_msr()=
- is the
-> current code path skips the checks done in the other MSR paths. So we wou=
-ld need
-> to call some appropriate higher up MSR helper to protect the host? And th=
-at
-> wades into the CPUID bit consistency issues.
->=20
-> So maybe... could we do a more limited version of the deletion where we a=
-llow
-> all the APIC MSRs through? We'd have to check that it won't cause problem=
-s.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-What?  No.  KVM can't get actually read/write most (all?) MSRs, allowing ac=
-cess
-is far worse than returning an error, as for all intents and purposes KVM w=
-ill
-silently drop writes, and return garbage on reads.
+Thanks,
+Anup
 
-> Failing that, we should maybe just explicitly list the ones TDX supports =
-rather
-> than the current way we define the APIC ones. As you mention below, it's =
-not
-> correct in other ways too so it could be more robust.
-
-No?  Don't we just want to allow access to MSRs that aren't accelerated?  W=
-hat
-the TDX-Module supports is largely irrelevant, I think.
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 1e47c194af53..28e87630870b 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2116,23 +2116,26 @@ bool tdx_has_emulated_msr(u32 index)
-        case MSR_IA32_MC0_CTL2 ... MSR_IA32_MCx_CTL2(KVM_MAX_MCE_BANKS) - 1=
-:
-                /* MSR_IA32_MCx_{CTL, STATUS, ADDR, MISC, CTL2} */
-        case MSR_KVM_POLL_CONTROL:
-+       /*
-+        * x2APIC registers that are virtualized by the CPU can't be
-+        * emulated, KVM doesn't have access to the virtual APIC page.
-+        */
-+       case X2APIC_MSR(APIC_ID):
-+       case X2APIC_MSR(APIC_LVR):
-+       case X2APIC_MSR(APIC_LDR):
-+       case X2APIC_MSR(APIC_SPIV):
-+       case X2APIC_MSR(APIC_ESR):
-+       case X2APIC_MSR(APIC_ICR):
-+       case X2APIC_MSR(APIC_LVTT):
-+       case X2APIC_MSR(APIC_LVTTHMR):
-+       case X2APIC_MSR(APIC_LVTPC):
-+       case X2APIC_MSR(APIC_LVT0):
-+       case X2APIC_MSR(APIC_LVT1):
-+       case X2APIC_MSR(APIC_LVTERR):
-+       case X2APIC_MSR(APIC_TMICT):
-+       case X2APIC_MSR(APIC_TMCCT):
-+       case X2APIC_MSR(APIC_TDCR):
-                return true;
--       case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
--               /*
--                * x2APIC registers that are virtualized by the CPU can't b=
-e
--                * emulated, KVM doesn't have access to the virtual APIC pa=
-ge.
--                */
--               switch (index) {
--               case X2APIC_MSR(APIC_TASKPRI):
--               case X2APIC_MSR(APIC_PROCPRI):
--               case X2APIC_MSR(APIC_EOI):
--               case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_IS=
-R_NR):
--               case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_IS=
-R_NR):
--               case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_IS=
-R_NR):
--                       return false;
--               default:
--                       return true;
--               }
-        default:
-                return false;
-        }
+> ---
+>  arch/riscv/kvm/vm.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 42 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+> index fb7c4e07961f..a9f083feeb76 100644
+> --- a/arch/riscv/kvm/vm.c
+> +++ b/arch/riscv/kvm/vm.c
+> @@ -214,12 +214,52 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
+ong ext)
+>
+>  int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>  {
+> +       if (cap->flags)
+> +               return -EINVAL;
+> +
+>         switch (cap->cap) {
+>         case KVM_CAP_RISCV_MP_STATE_RESET:
+> -               if (cap->flags)
+> -                       return -EINVAL;
+>                 kvm->arch.mp_state_reset =3D true;
+>                 return 0;
+> +       case KVM_CAP_VM_GPA_BITS: {
+> +               unsigned long gpa_bits =3D cap->args[0];
+> +               unsigned long new_levels;
+> +               int r =3D 0;
+> +
+> +               /* Decide target pgd levels from requested gpa_bits */
+> +#ifdef CONFIG_64BIT
+> +               if (gpa_bits <=3D 41)
+> +                       new_levels =3D 3;        /* Sv39x4 */
+> +               else if (gpa_bits <=3D 50)
+> +                       new_levels =3D 4;        /* Sv48x4 */
+> +               else if (gpa_bits <=3D 59)
+> +                       new_levels =3D 5;        /* Sv57x4 */
+> +               else
+> +                       return -EINVAL;
+> +#else
+> +               /* 32-bit: only Sv32x4*/
+> +               if (gpa_bits <=3D 34)
+> +                       new_levels =3D 2;
+> +               else
+> +                       return -EINVAL;
+> +#endif
+> +               if (new_levels > kvm_riscv_gstage_max_pgd_levels)
+> +                       return -EINVAL;
+> +
+> +               /* Follow KVM's lock ordering: kvm->lock -> kvm->slots_lo=
+ck. */
+> +               mutex_lock(&kvm->lock);
+> +               mutex_lock(&kvm->slots_lock);
+> +
+> +               if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm=
+))
+> +                       r =3D -EBUSY;
+> +               else
+> +                       kvm->arch.pgd_levels =3D new_levels;
+> +
+> +               mutex_unlock(&kvm->slots_lock);
+> +               mutex_unlock(&kvm->lock);
+> +
+> +               return r;
+> +       }
+>         default:
+>                 return -EINVAL;
+>         }
+> --
+> 2.50.1
+>
