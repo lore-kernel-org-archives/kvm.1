@@ -1,116 +1,157 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5B7371D15
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 19:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484163BD237
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 19:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775243127; cv=none; b=Me+Ww+g8MSo60ObNkcEqHztBzvG2Hhfxzu48ZmaacuSYl9Jd4bttBvwEsLJiwKqa0NivoMTKRlB59M2VEV7reesPzZTczJ4oS8AA+bHk+52tuu7TzoDiOgv24m/lPNC4Une7EOLM8S6aWd//GWCTEU6eKrbswHm5L1Y8zNeKbZI=
+	t=1775243277; cv=none; b=FUV5nuzD/9mTho6eqSM0vPEx+rpYZYGbJb4DyJCoEVLhp6fz75yhIdEVF1K6LWo2/LU1jLzW4Rnxm6slL7xni7m3WNh2v4XSXdeLvVMKLb8p30Bw3zDANt4XPDB5PKjhErBcEaT5VrtwGInc3PklpbmUhoQaIcHvSFpz17xzsog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775243127; c=relaxed/simple;
-	bh=sGqDEPXfXnm1lebxo2iz6rhXs+e7uK39tEIKz1prggE=;
+	s=arc-20240116; t=1775243277; c=relaxed/simple;
+	bh=1QsnQMON75YL7mEZvMtcGUpdWC8k2PnitFmIYIXQ4ao=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MnCikcXNVOjqpEQSM7gCDemzSjko/eqZHoQem8nD84l0XQtvcJ6v+a5Y2YxADnXCfUXfkV5c96PCwPQ/jufFYR7nTq4l8QcPZ9hNTgo64MQMfPpbCum4LpYuTCLsPVAUiwSCz08st51zYisoO/QagBDVaVFiByNDu1MKo7P2ueA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s7IZoHAP; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=aHIAI1p7siVk+1xLPvdz0Ysj5JwBxaaXP9stQoe9Ak5O1HToJ9MC2ZUnVP8OQ5jae9KBu2MmRMRFs587uefSyqCpH/g6agrfEgLeGD15U0Olcphlwf9RwTso3yKSUVf7UjaPdQYiMtc3SFDKqGxXgMZHQ/a4MOf8LJIRgzVnL1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rjlqomqx; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s7IZoHAP"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b24e45271cso19646925ad.2
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 12:05:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rjlqomqx"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2471321dcso59916605ad.1
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 12:07:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775243124; x=1775847924; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/6eQRebCNsIclPGP3JJlhkPn3oLsiAJTh9+m279u/A=;
-        b=s7IZoHAPcs6v7LZ2HqtP4ZazvOa9teogg9BbyojPhSVTblS/nT6HE9QZbwp5fnLcbf
-         ckcwCm8ZRtXPxZViOfOOOSYsxAq+b+oNHDQBBgaY46aYngnnfQpHWXGvjcvxQz5MPGG0
-         G6hsEIKg+yAXg05ZH7D5PfsG4PGT61dcshKgSTT50/vsXrEcYZ2s1dqrAdfMI6LsE7rN
-         RrZs8YI/tDpy4YvqGKN+5ss1MpNkHACRZl5e8LODufXy2wcNekOVkoFU1ddbtPPMShwQ
-         VGbcBT/oX+tP3BrTplcwukz43xYUhzSZc28Iqhsr3SZpJo/a8G3h/lYovtOuqDAx6exW
-         njzw==
+        d=google.com; s=20251104; t=1775243276; x=1775848076; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HgGRLe2N4RNPZGrafaVch3yXQwPK/GvM0Nk9j2ZEGBQ=;
+        b=rjlqomqxDW5JQyQCCJFr7fGRkSIXFo36tFHDrwyo4K3CpSBX5CAcWrAtGr9tFBThn0
+         sjO7Gzg7txQQ1Z4JtZ2WeVITSvfsaoaoMMPLXndbAW1Fyl1toWBCyIqE+YSlTVfxCI4h
+         SgYPgjrUdipyabHLhRo6lCSRQpmeyHAFZVISeIqfNy8RbPGRZ9hf3UCQzvNa9xGyOkKV
+         PjFzvPEhN29p33UiwJTPlDEcHDxkKvDcDWZPojauYdLmuL92guGJxbXEG7JBsE8JFNyE
+         rwxNgOBRljOSn7kPW+ZaFV3skmMKN/xjS3znZjse7P9z6eGC1PVV4lX877HYrWNL9BHB
+         2dYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775243124; x=1775847924;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/6eQRebCNsIclPGP3JJlhkPn3oLsiAJTh9+m279u/A=;
-        b=btKb7xLj8nx7718WBpl9LGKlMMQZ8QGD7pXvT/vrpaGXIrtaT9gWt4TQ4dL5AAmVca
-         /Wpl0McyeUfXJ58COa6uQYO23QLKJCkwT6aZnxL6pTSCaxZU+wIdKAVL78voqSF5LWAm
-         aylrUrmF0we4l7nglfm7NYFHj837ywLTfwRVE81M4qyoL1OeWMyOspD+Wd/bOH+1jacw
-         KLq4Sd1aYeGpbusyVX5v3qsYyxH8OvgO24C0a+lDX2Tzt5wy6tzVJN/2T5eBeoz6qXch
-         GZmBDiuBviJUC6hrZ0npFHGSsXKFZiIYaHDHKSNqwGpHrZS0D6WM3sCyUaDdKhNtaTlJ
-         bSfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3eZhLCpPKfoPkkJfKrtmpOuoGPqD6HwBt6ThSRjzZ/zR2MVLI8v2HeMTAhpLAVjVXR2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4SXJVue5KaagCvsLGdAVdGd/XOOaKrCQDvrbjGFklN9NjZllw
-	Y/zb1bDAxPRfKdmugtj2F3peWMdOeDNqj1cbOFZvSccJ3ZGPckx7jBVyEz1zheCGdDNXoKCaOc/
-	VhMjCrw==
-X-Received: from plbkf4.prod.google.com ([2002:a17:903:5c4:b0:2b2:7967:e6fc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b4c:b0:2b2:420a:b48a
- with SMTP id d9443c01a7336-2b28182c458mr41157365ad.32.1775243124400; Fri, 03
- Apr 2026 12:05:24 -0700 (PDT)
-Date: Fri, 3 Apr 2026 12:05:22 -0700
-In-Reply-To: <20260316202732.3164936-1-yosry@kernel.org>
+        d=1e100.net; s=20251104; t=1775243276; x=1775848076;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HgGRLe2N4RNPZGrafaVch3yXQwPK/GvM0Nk9j2ZEGBQ=;
+        b=RNguxdPdIQ9oN9Alc9mRcxgNcEKW1ik3stJniwcSb29jxmC6XLqCA5aVHkOit6MBUw
+         uF7kIx9M4EPi5o8sdg3DN1thJghybu2fk9eLEdMfsjUnowwMpDd5g0n4bK7x8qTmt7/x
+         GtThYdsPrDuQbrnr3lklPSDCtC39afDzE5h4z2MV+WVOP0S/9PZqulpeUygInhQqOre0
+         rEKSJbIeVezxwM0PGaB1a/WLETouim6HX6Ytm5QKwKokzVTxGmf+IIldXizq4IDyCG6H
+         4L2JTd3KBM4YLVxqlpUJvVTysLzDvvSl+HkTTO6Ocxw8ubA01WS+T1j1tti0uQufyyCc
+         t30w==
+X-Forwarded-Encrypted: i=1; AJvYcCUUSWXORi/K8I0iNEXSpsVS4Wdd7a588H/iCDm2p7D2GxLj/47Ui/4mVYDWIBJpRPEiU6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBrZ0SG6+RhwqlkY0S5hoxN5MhkckpnBdgytopS3vlvgwZKE42
+	gGaeC0vs+T/SzzW1Vzm6rBxI2KXjkFxwDi2IdlNv8mBZW7IHbYVB+dhGkwwgMJmjZhMsjzKAyFS
+	7ShUmSw==
+X-Received: from plnw11.prod.google.com ([2002:a17:902:da4b:b0:2b0:4958:718])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:388e:b0:2b2:6df1:1112
+ with SMTP id d9443c01a7336-2b281969a70mr39621565ad.40.1775243275489; Fri, 03
+ Apr 2026 12:07:55 -0700 (PDT)
+Date: Fri, 3 Apr 2026 12:07:53 -0700
+In-Reply-To: <401db97a254b356ad8539a5d637d68ee826179a5.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260316202732.3164936-1-yosry@kernel.org>
-Message-ID: <adAPcmksaq8Oq7V-@google.com>
-Subject: Re: [PATCH v4 0/9] KVM: SVM: Fixes for VMCB12 checks and mapping
+References: <20260318190111.1041924-1-dmaluka@chromium.org>
+ <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com> <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
+ <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com> <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
+ <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
+ <ac_rNT69TdocrMYc@google.com> <401db97a254b356ad8539a5d637d68ee826179a5.camel@intel.com>
+Message-ID: <adAQCXI-7Yj0wcKA@google.com>
+Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "tglx@kernel.org" <tglx@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "dmaluka@chromium.org" <dmaluka@chromium.org>, 
+	"x86@kernel.org" <x86@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 16, 2026, Yosry Ahmed wrote:
-> Jim pointed out that VMRUN/VMLOAD/VMSAVE injecting a #GP when the vmcb12
-> GPA is valid but not mappable is not architectural [1]. The series
-> handles them as emulation failures and (mostly) exits to userspace
-> instead. It also fixes the checks performed on the vmcb12 GPA (i.e. RAX)
-> in a few places.
-> 
-> Note that there's a few other bugs that this series leaves alone, mostly
-> to keep it focused on fixing the non-architectrual #GPs, this includes:
-> - KVM synthesizing #VMEXIT(VMLOAD/VMSAVE) to L1 when intercepting #GP
->   from L2 on VMLOAD/VMSAVE, even if L1 does not intercept VMLOAD/VMSAVE
->   (e.g. VLS enabled).
-> - KVM not respecting priority of #GP vs. #UD when EFER.SVME is disabled
->   by the guest.
-> 
-> However, the series documents these bugs with FIXMEs so that they can
-> hopefully be fixed up later.
-> 
-> v3 -> v4:
-> - Fix the RAX check in the emulator instead of dropping it [Paolo].
-> - Add refactoring of SVM instructions on #GP intercept to facilitate
->   following fixes.
-> - Use kvm_register_read() to handle 32-bit correctly and avoid false
->   negatives.
-> - Do #UD and #GP checks before synthesizing #VMEXIT to L1 when KVM
->   intercepts #GP on SVM instruction in L2.
-> - Update changelogs.
-> 
-> v3: https://lore.kernel.org/kvm/20260306210900.1933788-1-yosry@kernel.org/
-> 
-> [1]https://lore.kernel.org/kvm/CALMp9eSMtzDJn7tGtbj=zLYpcU7Tc7XjcWBRZH7Aa5YihSmN7g@mail.gmail.com/
-> 
-> Yosry Ahmed (9):
->   KVM: SVM: Properly check RAX in the emulator for SVM instructions
->   KVM: SVM: Refactor SVM instruction handling on #GP intercept
->   KVM: SVM: Properly check RAX on #GP intercept of SVM instructions
->   KVM: SVM: Move RAX legality check to SVM insn interception handlers
->   KVM: SVM: Check EFER.SVME and CPL on #GP intercept of SVM instructions
->   KVM: SVM: Treat mapping failures equally in VMLOAD/VMSAVE emulation
->   KVM: nSVM: Fail emulation of VMRUN/VMLOAD/VMSAVE if mapping vmcb12
->     fails
->   KVM: selftests: Rework svm_nested_invalid_vmcb12_gpa
->   KVM: selftests: Drop 'invalid' from svm_nested_invalid_vmcb12_gpa's
->     name
+On Fri, Apr 03, 2026, Rick P Edgecombe wrote:
+> On Fri, 2026-04-03 at 09:30 -0700, Sean Christopherson wrote:
+> > > > It comes down to a tradeoff. Should we prioritize code simplicity b=
+y dropping the function,
+> > > > or keep it to explicitly catch this misbehaving guest corner case?
+> > >=20
+> > > I think from KVM's perspective it doesn't want to help the guest beha=
+ve
+> > > correctly.
+> >=20
+> > Uh, yes KVM does does.  KVM is responsible for emulating the APIC timer=
+, isn't it?
+>=20
+> Yea totally. We need to emulate the interface accurately. But we are kind=
+ of
+> making up the contract after the fact. If the guest performs the wrong ty=
+pe of
+> MSR write, should we make the contract that the VMM should help it catch =
+it's
+> mistake?
+>=20
+> >=20
+> > > So we can ignore that I think. But it does really care to not define
+> > > any specific guest ABI that it has to maintain. So tdx_has_emulated_m=
+sr() has
+> > > some value there.=C2=A0And even more, it wants to not allow the guest=
+ to hurt the
+> > > host.
+> > >=20
+> > > On the latter point, another problem with deleting tdx_has_emulated_m=
+sr() is the
+> > > current code path skips the checks done in the other MSR paths. So we=
+ would need
+> > > to call some appropriate higher up MSR helper to protect the host? An=
+d that
+> > > wades into the CPUID bit consistency issues.
+> > >=20
+> > > So maybe... could we do a more limited version of the deletion where =
+we allow
+> > > all the APIC MSRs through? We'd have to check that it won't cause pro=
+blems.
+> >=20
+> > What?  No.  KVM can't get actually read/write most (all?) MSRs, allowin=
+g access
+> > is far worse than returning an error, as for all intents and purposes K=
+VM will
+> > silently drop writes, and return garbage on reads.
+> >=20
+> > > Failing that, we should maybe just explicitly list the ones TDX suppo=
+rts rather
+> > > than the current way we define the APIC ones. As you mention below, i=
+t's not
+> > > correct in other ways too so it could be more robust.
+> >=20
+> > No?  Don't we just want to allow access to MSRs that aren't accelerated=
+?  What
+> > the TDX-Module supports is largely irrelevant, I think.
+>=20
+> Not sure if I might be missing the point here. As above, we don't have en=
+ough
+> info to=C2=A0know which MSRs are accelerated. If the guest enabled #VE re=
+duction, it
+> changes which ones are accelerated and the VMM is not notified.
 
-Some nits and suggestsions, but I can clean them up when applying.  I'm leaning
-strongly toward applying this for 7.1 even though it's super late in the cycle,
-as there's very little risk (e.g. compared to the gPTA or host/guest PMU series),
-and getting the VCPU_REGS_RAX landed would make my life easier for 7.2.
+What does the "accleration" in that case?  Or does it reduce which ones are
+accelerated?
+
+> I think the below is a sane limitation, but doesn't lets KVM perfectly no=
+tify
+> the guest when it screws up.
+>=20
+> So the line would be to block MSRs that can never be emulated.
+>=20
+> BTW, I've been treating this secret contract change as an arch mistake to=
+ at
+> least not build on. It's a whole subject though... Let me know if you are
+> interested in the details.
