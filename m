@@ -1,118 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EDF3368A2
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 17:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5EA2248A5;
+	Fri,  3 Apr 2026 17:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775237087; cv=none; b=rHA5A50uAd9g8oriQR9lbCoEwvdSu5kDs15t46vfgioGytkJNpaBv1USlwlgFwQX7ykCtu/mnOxtcMj9mG1xf3ZtjwABkr6flXk+1aJ5eSJsuyqgcHYvxccIQ2vnPJcJLUcF9zzU5+WgVNpeDXKJ+z17FD+tvquvVI4Napu7N5I=
+	t=1775237211; cv=none; b=uQS5JYSZ9ecAeixR8HWmug9E0zNIdGu3YqXrTzBlNSH4hAMa3QEH5aFw+d0i2VQwxHVl1X9en1qTkQ0mOV0282+l+RfY+w9+6+3dsyJPIJBRI+ewNlPFtr9RgC+ERG+7jnQrD/k/Bu704i64KhafhnzDSCXNCvEW6+B+/Smm8Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775237087; c=relaxed/simple;
-	bh=E1bzUypaVS7w28CbARApxGc+uxb6NjOyzaisp3si/6g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bp85Q0NVvoyfR1YLM4LLH3psjJAMta1mIZZUawxIxrlFlA4HX99rAgd6/5rx8Ba4qfu4SkSfkZnIe4oc9xVPXeO2tVhKE92p7/oGvbW8k0qSy6DeIyzbbf+0uILMk+AlDVpBsZ1apixteQ1lbQOWKmbnwhxc4eo3TJwG9dXBgBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ri162ENa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775237211; c=relaxed/simple;
+	bh=M6p3JmmzQexUHfSoR1LIGJcF55doBeHtQAVLzRfQu3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o4LV5dUQ4OTSInssWc7zSt/OLYf9C9kxJToJe+uBorYHs9BV6POEjgdS6dgkt8dJj65rekHKlJc9y/z3B2yWboQH6+XqqpjILD4JN5U8hlWKRd1aUAv5gqlqqL9auXLkMCcYOGC45++tMqfmoBs7oJIGC/MzQwPT5emkQIDoCKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f+pEtDRk; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ri162ENa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D0CC2BCB5
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 17:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775237087;
-	bh=E1bzUypaVS7w28CbARApxGc+uxb6NjOyzaisp3si/6g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ri162ENaaXiSRPqBTShI8ahm36fA0yxapnpusRTreYOdDDMZ+niMHjj7xqXvZwXxR
-	 W4688wQ9cGxnGe+4MGiHfTAaMtuD2Con4gYFbAMxcYjgjIt93lCPasclWTi7ojO9Zc
-	 cazVdgRwAtkk89yPiJTWnIHMEFFN8LHV8glDBn0X8QcC5UvdP0JZaLMOMJXUx/iVXU
-	 J6GWfBEZdlJkOBVUvtov+m1djxfdByrpUr0rmKXjb+/NqCjkj+Qy2GYzHPm2Fr+5nb
-	 8/vPh720vR6+uCmdKhX7HYao8p87jfXTXfxJbR1k47IxMwREqsFF2kj0iRdD6uwC5X
-	 E/5FWDXI51lcQ==
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65009bfdcfdso2275603d50.2
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 10:24:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUPkyoZPO8Os8ttele0g5FVt3OUNyJbnO95IjGpI08Vo4kPsR4ZMlVBtSDBrkXqVv6jWwU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznOtvDvGESon9yv8AcHkOiNNs0PE/rgKqUVgNcYlSahqe0pmi/
-	KTeQvL8n/vTfev4/9SBCqP7HY1a7Czqh9RyrfP05wUGJjMAEpMJfNTQaFpC3nLoM0ezodzIBMkb
-	j009R7ZnwDXpj5niaGLmEBb20+axqQ52PTZyDejrw+A==
-X-Received: by 2002:a05:690e:d41:b0:64e:a765:ef82 with SMTP id
- 956f58d0204a3-6504870ea48mr3180067d50.24.1775237086162; Fri, 03 Apr 2026
- 10:24:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f+pEtDRk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775237210; x=1806773210;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M6p3JmmzQexUHfSoR1LIGJcF55doBeHtQAVLzRfQu3I=;
+  b=f+pEtDRkR/TJ/eJmCypB3iLE+2pnWMC8CkJ8RtyFaOr1NSz8iXNoB92c
+   kMaPgjWeiCq06QIQJdrP8n/XgKLXE9yCbWKUnFMjATPDzypCI9xEtXrKj
+   rIAzSrnFn8dm6oMNtAQM5KHOIipBAd2/cyASCWJSSrC+OHcLVO2KjRFVI
+   rv3ViW754DeDWfTTA2XtHl+a1VJLCRpA/qAFcoQDJNEndysY3NyWkONbE
+   KIqmwZlYi4rF7LAEkUBQ3gFY2y2mCQ5EdiNZNdpcHPShYFicev1nKREfb
+   5jlkBeGMKZS2Bz+rgOVQOcm1Crb7QkCvzpqS0QypyNf4+Tlh3BbPsFYM3
+   w==;
+X-CSE-ConnectionGUID: F9RSWatfTRi45C3ENY46uA==
+X-CSE-MsgGUID: WDZN+ZL2QG+S+DRiVQgSpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76192441"
+X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
+   d="scan'208";a="76192441"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 10:26:49 -0700
+X-CSE-ConnectionGUID: 8aLnb5V0QhqxJSY99LLsvw==
+X-CSE-MsgGUID: kWetgwjETliORgt530tEaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
+   d="scan'208";a="257775807"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 10:26:49 -0700
+Date: Fri, 3 Apr 2026 10:26:43 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v9 07/10] x86/vmscape: Use static_call() for predictor
+ flush
+Message-ID: <20260403172643.fs2voyiy2kk6yzcx@desk>
+References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+ <20260402-vmscape-bhb-v9-7-94d16bc29774@linux.intel.com>
+ <ac_UJx99kDJY8j3t@google.com>
+ <20260403164432.ltnr5oupddscwaqu@desk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-3-dmatlack@google.com>
- <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
-In-Reply-To: <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 3 Apr 2026 10:24:35 -0700
-X-Gmail-Original-Message-ID: <CACePvbWrHCSzYmiKz0EuXE48MNk26+4j0njSP+1Vy83RMvvVrQ@mail.gmail.com>
-X-Gm-Features: AQROBzDLi9Fnv8_mDDwmklVKEby5KKVysrnsYTweXxYMFegWZQjyvtyGp9AI6Cw
-Message-ID: <CACePvbWrHCSzYmiKz0EuXE48MNk26+4j0njSP+1Vy83RMvvVrQ@mail.gmail.com>
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
-	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260403164432.ltnr5oupddscwaqu@desk>
 
-On Thu, Apr 2, 2026 at 2:29=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev> wr=
-ote:
-> > +config PCI_LIVEUPDATE
-> > +     bool "PCI Live Update Support (EXPERIMENTAL)"
-> > +     depends on PCI && LIVEUPDATE
-> > +     help
-> > +       Support for preserving PCI devices across a Live Update. This o=
-ption
-> > +       should only be enabled by developers working on implementing th=
-is
-> > +       support. Once enough support as landed in the kernel, this opti=
-on
-> > +       will no longer be marked EXPERIMENTAL.
+On Fri, Apr 03, 2026 at 09:44:32AM -0700, Pawan Gupta wrote:
+> On Fri, Apr 03, 2026 at 07:52:23AM -0700, Sean Christopherson wrote:
+> > On Thu, Apr 02, 2026, Pawan Gupta wrote:
+> > > --- a/arch/x86/kvm/x86.c
+> > > +++ b/arch/x86/kvm/x86.c
+> > > @@ -11463,7 +11463,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+> > >  	 * set for the CPU that actually ran the guest, and not the CPU that it
+> > >  	 * may migrate to.
+> > >  	 */
+> > > -	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
+> > > +	if (vmscape_mitigation_enabled())
+> > 
+> > This is pretty lame.  It turns a statically patched MOV
+> 
+> Yes it is, this was done ...
+> 
+> >   11548		if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
+> >   11549			this_cpu_write(x86_ibpb_exit_to_user, true);
+> >      0x000000000003c57a <+858>:	movb   $0x1,%gs:0x0(%rip)        # 0x3c582 <vcpu_enter_guest+866>
+> > 
+> > into a function call and two sets of conditional branches.  And with mitigations
+> > enabled, that function call may trigger the wonderful unret insanity
+> > 
+> >   11548		if (vmscape_mitigation_enabled())
+> >      0x000000000003c575 <+853>:	call   0x3c57a <vcpu_enter_guest+858>
+> >      0x000000000003c57a <+858>:	test   %al,%al
+> >      0x000000000003c57c <+860>:	je     0x3c586 <vcpu_enter_guest+870>
+> > 
+> >   11549			this_cpu_write(x86_predictor_flush_exit_to_user, true);
+> >      0x000000000003c57e <+862>:	movb   $0x1,%gs:0x0(%rip)        # 0x3c586 <vcpu_enter_guest+870>
+> > 
+> > 
+> >   3166	{
+> >      0xffffffff81285320 <+0>:	endbr64
+> >      0xffffffff81285324 <+4>:	call   0xffffffff812aa5a0 <__fentry__>
+> > 
+> >   3167		return !!static_call_query(vmscape_predictor_flush);
+> >      0xffffffff81285329 <+9>:	mov    0x13a4f30(%rip),%rax        # 0xffffffff8262a260 <__SCK__vmscape_predictor_flush>
+> >      0xffffffff81285330 <+16>:	test   %rax,%rax
+> >      0xffffffff81285333 <+19>:	setne  %al
+> > 
+> >   3168	}
+> >      0xffffffff81285336 <+22>:	jmp    0xffffffff81db1e30 <__x86_return_thunk>
+> > 
+> > While this isn't KVM's super hot inner run loop, it's still very much a hot path.
+> > Even more annoying, KVM will eat the function call on kernels with CPU_MITIGATIONS=n.
+> > 
+> > I'd like to at least do something like the below to make the common case of
+> > multiple guest entry/exits more or less free, and to avoid the CALL+(UN)RET
+> > overhead, but trying to include linux/static_call.h in processor.h (or any other
+> > core x86 header) creates a cyclical dependency :-/
+> > 
+> > diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+> > index 20ab4dd588c6..0dc0680a80f8 100644
+> > --- a/arch/x86/include/asm/processor.h
+> > +++ b/arch/x86/include/asm/processor.h
+> > @@ -36,6 +36,7 @@ struct vm86;
+> >  #include <linux/err.h>
+> >  #include <linux/irqflags.h>
+> >  #include <linux/mem_encrypt.h>
+> > +#include <linux/static_call.h>
+> >  
+> >  /*
+> >   * We handle most unaligned accesses in hardware.  On the other hand
+> > @@ -753,7 +754,11 @@ enum mds_mitigations {
+> >  };
+> >  
+> >  extern bool gds_ucode_mitigated(void);
+> > -extern bool vmscape_mitigation_enabled(void);
 > > +
-> > +       If unsure, say N.
->
-> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
-> (modular support)?
->
-> This would allow the feature to be built as a kernel module. For
-> development
->
-> purposes, modularization means we only need to recompile a single module
->
-> for testing, rather than rebuilding the entire kernel. Compiling a
-> module should
->
-> be significantly faster than a full kernel build.
+> > +static inline bool vmscape_mitigation_enabled(void)
+> > +{
+> > +       return !!static_call_query(vmscape_predictor_flush);
+> > +}
+> >  
+> >  /*
+> >   * Make previous memory operations globally visible before
+> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> > index 366ebe1e1fb9..02bf626f0773 100644
+> > --- a/arch/x86/kernel/cpu/bugs.c
+> > +++ b/arch/x86/kernel/cpu/bugs.c
+> > @@ -148,6 +148,7 @@ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
+> >   * sequence. This defaults to no mitigation.
+> >   */
+> >  DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
+> > +EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
+> 
+> ... to avoid exporting the static key, so that modules (other than KVM)
+> cannot do static_call_update(vmscape_predictor_flush).
+> 
+> Peter suggested changes that allowed adding EXPORT_STATIC_CALL_FOR_KVM():
+> 
+>   https://lore.kernel.org/all/20260319214409.GL3738786@noisy.programming.kicks-ass.net/
 
-Building as a module has extra complexity to handle, e.g. the callback
-can happen when the module hasn't been loaded. Then the user space can
-take an arbitrarily long time to load the module.
+Sorry, this is the correct link for EXPORT_STATIC_CALL_FOR_KVM():
 
-It needs more infrastructure to support the liveupdate as a module.
+  https://lore.kernel.org/all/20260320062206.bdrnmnvho6lhmejw@desk/
 
-Chris
+> EXPORT_STATIC_CALL_FOR_KVM() seems to be a cleaner approach to me.
+> 
+> Boris, I know you didn't like exporting the static_key. But, as Sean said
+> this is a hot path, and avoiding the unnecessary call would benefit all
+> CPUs (affected or unaffected). Moreover, EXPORT_STATIC_CALL_FOR_KVM()
+> somewhat addresses your concern of exporting the static_key to the world.
+> Would you be okay with it?
