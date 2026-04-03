@@ -1,341 +1,155 @@
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFA0315D5D
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 08:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775203876; cv=pass; b=nWOfGzbrxgg+vXL/cCjBQi6Eq7yV7HCJYTYNSIJPjllNCLd7DUhj7elf5veRSEXxkHwiGuV02X2X+BV1ig9jSW32i3/TtCXh5D+rcxlizbtCzfJNyRc6J9+idjiy/Fn0awKBsiqd/grvwIggvg5TWjvxZrz+fBmdgaZPpU86O8I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775203876; c=relaxed/simple;
-	bh=jjT8Eqk9/A1dLd1SGkmbc4rZo4by3JCeuKdtmVbjXGg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HFTYZM/slsllBzk40SnngzLkXsN6mYVtXd9wLjcJnMvNhABuMi2W7mNsSpmbKm4pvuUoHqj16Zs1MD/cLK19iPFIQ3X/W43n+sFPujbWkqP80gUGW8QuenjKQMi0lc5sXucgqWNq/J8Z4yBCeFKC392oFPJIZ4p23Lu+B7bdED4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=G/NboVRa; arc=pass smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D258342524;
+	Fri,  3 Apr 2026 08:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775203925; cv=none; b=utyW2NKG/1qVRuzgnp8ZkvXOP+kivtGZ60cbC9vbdEf4RA7JzNrd4FlCYfT+dFes7BUU7iAx6QNoUewwbQ6jGjWVCYYWjlxRvRvaBBZ4hq3ErzauJMO07y6tvE0JQLrBQx6YAoKUIGH7OHDM3PdeanBKon/elmAtFjQeMksqpM4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775203925; c=relaxed/simple;
+	bh=2U9LJNEdT0s9fi6twSIhs2Cdqsg3vAMOyvG/uPWp5DI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ub7oiZpfHUmp2EnBnDXCFw3zJlJm5ePR2AFBeoHxSwqnKOXsxFNux+epBlu71vw6wbZVHx+9iJrGrjvuHgNHyDFBlq7mOAMiLZkFWS3h4r4/FGpt9xSi06ifRU2riBGZ9DCUUcWzyXW15MBw5HY5rLZmCITanvfEbBDBLxmVuXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=er6ORU+O; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="G/NboVRa"
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-4152698e745so716979fac.1
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 01:11:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775203873; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ONeEcXk21aKtpXm7Z38aDmgPV1RDO08Ybzp6JqXa0XKwPgYrTMe1sLXlykpTXm5Z6+
-         0p3SDgf7JhyasmRUbujSaR6o3c+BsLm3Kk+yQG91CHgrQZsmb3RKLCvZQxbpdVN1+gZM
-         NW9YRW9oAH72reSbtTGn7FP5R5xzRd9coY1YtvFF/GGwF791e8UvNf1qSNNUlUX2d2+y
-         ONfaRtpR4fRRaZsMWtiB58nBFxoSrqftZgH0br3SHORak9fejYlRrItGrtm+MaTigdmt
-         YlD9n+AuaUBPl4ghe6Wwm/tQFloBR6zex8gHTU8XGn40OiZqWDREJwyv0UQyyzS4dB/3
-         0NhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HRjWOMqK4PAlflmzYTeO4Htqmd6bJQ/bjreqx+Xjlfo=;
-        fh=OxzHXswcb7eE52V4KJadsO1NmUIAvCEs7ZGo8yZznsM=;
-        b=MG+69HrNgF4FJ+ztW3gnxPXeAygq6hLysxWBcMcRorGltz1VnRD3gjQCJ98tjdBz0o
-         BtYIwEInAG3eOWaUc5Zf4MLI//u9gc0VdQ6oIhjgaa+zLiYhJCjD5/ykWU+JJq1iWjuL
-         eI3t/cyyb2DBgx+A+e/AhvEOL5PGcrRkiEpJvHsk/yefbqmeMpVnEHMsxW7jo+uKi2q0
-         obYauoxn5YcPhlr91AmZBFMWSZsCH2l1B3fCsbDBcJdAGSPrdzmx+5qhcLh7csrSKTPk
-         LCziQoZYnQJVBZtVzmTS5O5KNuI1qt/XoPogWMdbzTnm/T96rD+yA4MASf0l8/DW3j/U
-         OlCw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1775203873; x=1775808673; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HRjWOMqK4PAlflmzYTeO4Htqmd6bJQ/bjreqx+Xjlfo=;
-        b=G/NboVRayJfPt/WGwRmdVp9+2XOqSjo0Gn/N6HIkK3iVQdRxBj9uRJwlbr1ue6m0j8
-         8+Ot0aKtYiAeHB0RC0odBTEq5UfGTpRB3c+p+/fTPeq2K13Owsi6u5rIWY07I8esDtQa
-         rq/qhjU5Ph1qmIWB0RzxJKpAC+63dtu/1/fnJ92RQsuAtSjDw0tffCmKuzOQhm93ZqH2
-         Ph/6uikSXcYpSFzuKiL/QVjsCndpbeCjsgOywbHkHJDJuSwXXCFFUR7zxzriB7CaZhJB
-         ghbqRYUKwCGitflXCB7knCbCuO8MZDT8anvPvK2JY+6jJH3TfBiL7ZODLAPNd1uEefmx
-         3CWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775203873; x=1775808673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HRjWOMqK4PAlflmzYTeO4Htqmd6bJQ/bjreqx+Xjlfo=;
-        b=gokDb6OkjVzA4SgK781KX/y0e7SfTFIsMrZLWemNNfahsupQhbZlEOl6+xAbEnTXm1
-         XUstDXvu1Z0LCbtSxwDhf3Nc0qgaxEeShoiUhnKqGT4ujdG88GqfH9Pi6Tq4F/5t5QQQ
-         aafGeHwJoyPf1cXVlMmmAzlrr+eInWLVicbZPC1FXeMQjNbdsyTs0PqnDLoGAcmfv52l
-         q4pJ98zpEw2c9xCdQRO5TXZvCuKq6o3RLjk11KXGcMjDRIbF80R/4Bm9xCfNAclVkedD
-         U/Re88ZHhhUCH9LqfIQezz6ok/zQddNV4VQMs254mfvIuoFLAGkYmGW4olAzMWhxvgVb
-         xx8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXh2YlvvXqjhBrdMJ2M3Xr2SkjnfIOOEJA3LUM9QEiwKHhxODj0QheFVEkfaxSzc0zOeD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5eUBC+iQpOPt975nWAu17IzlmUsF87DAOniIUVm8mHUlDZDvA
-	1QjXeTXf6lA9qaoCl+wVjlVByv11xqcB1xAgI0/BgI07LqS+1QDz4H3PA43LfEv/POmOYGRnxph
-	MZLby7IpXooNxEYDBBd1kYaCzQ3hHHS2x6FCYdxy8S3Ouan7YGcOlvwrTSg==
-X-Gm-Gg: ATEYQzx3/Aw5WT9RohX2KwlMwp03oq1mzxs39mMNeNZ/+yGMwnr6pa7kVNXRQgqvyHE
-	vPg7e248lCyHG20vrkDvbNlL78rScHHHATb8Szgf9pio5uWDP0ZKhj/xe+FCcmTmu1kvu3/fBT7
-	MtOOg7ARqBGSPi3i0Sbc6oD4EQ7dvD/sg0oEr4nCN1uxmc+0jRhORLDvmybXtnK2N6S5Rfpgu/m
-	wpMqHEThmJaHzKVKMY8RHjk3mDcHqXMBUgsbVwC+5lHUt2jPzJcECYNHA8RxoCK/Qsx//fPY8OA
-	RhJwMwhG/1ljNKENn7bRgwxBKghZbd3LtvzmGxXY8XhnmZ+ZVqaXt1i1Dl3dQNjY/kk45t9I04u
-	y20SrzxsmVUypdxJaMrylhqtdJA==
-X-Received: by 2002:a05:6820:1b0e:b0:67c:1fc7:daa6 with SMTP id
- 006d021491bc7-6821d23811emr1112989eaf.10.1775203873468; Fri, 03 Apr 2026
- 01:11:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="er6ORU+O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775203922; x=1806739922;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2U9LJNEdT0s9fi6twSIhs2Cdqsg3vAMOyvG/uPWp5DI=;
+  b=er6ORU+OTpQOmkZnglgbobt01BjgXwVNNKce+ug1D7zQdSGyoXyho+TO
+   cw1ETVqYtBWnkHAVjwTgLq1+qwGbnbCO38qbG8KvoHeKMODYFPgCdL3Wf
+   WS36SZIDlaJ8Qzs+1ZeCM/CuiT7GqFwIHG0CbkAR33gquWXVUDh5mWoD8
+   5Ewlt2m6zKJC9bsCJUcBmnbG+Q9q2UHVzpaT5vLW3K68r0oqalopygkDv
+   OWGV7C8/mNk7nLhlMeXuhmLkgDB7yFXI9n11UGyAaLiImydIIYYRcnOTJ
+   ZWOWwCgj5i9uAatJ0zsc8+m4BK6Fm+ChxVu2kSPJDWYTO2DCxvfI/JONc
+   g==;
+X-CSE-ConnectionGUID: Ef1rAyrPQwiEDBGZ+V6g6g==
+X-CSE-MsgGUID: LnWXPNpxQamJcdhim82gWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="87340011"
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
+   d="scan'208";a="87340011"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 01:12:01 -0700
+X-CSE-ConnectionGUID: 8iWg0SscTiO8sX++hpPtCQ==
+X-CSE-MsgGUID: upYqGi69T2eJdddNPmOnlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
+   d="scan'208";a="231597915"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.241.144]) ([10.124.241.144])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 01:11:58 -0700
+Message-ID: <3a4f4c0a-3ded-4064-9f58-48de6f72be08@intel.com>
+Date: Fri, 3 Apr 2026 16:11:55 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAhSdy2CibJNXJYxCvyofXC3CUpCT5KdricNt2aViRSYCOWrrA@mail.gmail.com>
- <20260403070719.64284-1-fangyu.yu@linux.alibaba.com>
-In-Reply-To: <20260403070719.64284-1-fangyu.yu@linux.alibaba.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 3 Apr 2026 13:41:02 +0530
-X-Gm-Features: AQROBzAD30X1MIqnPsVPFD2GQtGyaDXu1bXGTiOYV05dRH1-FhidSwuL0L0jieE
-Message-ID: <CAAhSdy08ZDHdXZJ0R6CpxGoKbMQ9c+FZrU0vW=iN6gq6A8BTBQ@mail.gmail.com>
-Subject: Re: Re: Re: Re: [PATCH v7 4/4] RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE
-To: fangyu.yu@linux.alibaba.com
-Cc: alex@ghiti.fr, andrew.jones@oss.qualcomm.com, aou@eecs.berkeley.edu, 
-	atish.patra@linux.dev, corbet@lwn.net, guoren@kernel.org, 
-	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	palmer@dabbelt.com, pbonzini@redhat.com, pjw@kernel.org, 
-	radim.krcmar@oss.qualcomm.com, skhan@linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: x86: Don't leave APF half-enabled on bad APF data
+ GPA
+To: Ethan Yang <ethan.yang.kernel@gmail.com>, kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com,
+ syzbot+bc0e18379a290e5edfe4@syzkaller.appspotmail.com,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+ x86@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, glider@google.com
+References: <6877331d.a00a0220.3af5df.000c.GAE@google.com>
+ <20260403031111.3171-1-ethan.yang.kernel@gmail.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260403031111.3171-1-ethan.yang.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 3, 2026 at 12:37=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote=
-:
->
-> >>
-> >> >>On Thu, Apr 2, 2026 at 6:53=E2=80=AFPM <fangyu.yu@linux.alibaba.com>=
- wrote:
-> >> >>>
-> >> >>> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-> >> >>>
-> >> >>> Add a VM capability that allows userspace to select the G-stage pa=
-ge table
-> >> >>> format by setting HGATP.MODE on a per-VM basis.
-> >> >>>
-> >> >>> Userspace enables the capability via KVM_ENABLE_CAP, passing the r=
-equested
-> >> >>> HGATP.MODE in args[0]. The request is rejected with -EINVAL if the=
- mode is
-> >> >>> not supported by the host, and with -EBUSY if the VM has already b=
-een
-> >> >>> committed (e.g. vCPUs have been created or any memslot is populate=
-d).
-> >> >>>
-> >> >>> KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE) returns a bitmas=
-k of the
-> >> >>> HGATP.MODE formats supported by the host.
-> >> >>>
-> >> >>> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-> >> >>> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-> >> >>> Reviewed-by: Guo Ren <guoren@kernel.org>
-> >> >>> ---
-> >> >>>  Documentation/virt/kvm/api.rst | 27 +++++++++++++++++++++++++++
-> >> >>>  arch/riscv/kvm/vm.c            | 18 ++++++++++++++++--
-> >> >>>  include/uapi/linux/kvm.h       |  1 +
-> >> >>>  3 files changed, 44 insertions(+), 2 deletions(-)
-> >> >>>
-> >> >>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/k=
-vm/api.rst
-> >> >>> index 032516783e96..9d7f6958fa81 100644
-> >> >>> --- a/Documentation/virt/kvm/api.rst
-> >> >>> +++ b/Documentation/virt/kvm/api.rst
-> >> >>> @@ -8902,6 +8902,33 @@ helpful if user space wants to emulate inst=
-ructions which are not
-> >> >>>  This capability can be enabled dynamically even if VCPUs were alr=
-eady
-> >> >>>  created and are running.
-> >> >>>
-> >> >>> +7.47 KVM_CAP_RISCV_SET_HGATP_MODE
-> >> >>> +---------------------------------
-> >> >>> +
-> >> >>> +:Architectures: riscv
-> >> >>> +:Type: VM
-> >> >>> +:Parameters: args[0] contains the requested HGATP mode
-> >> >>> +:Returns:
-> >> >>> +  - 0 on success.
-> >> >>> +  - -EINVAL if args[0] is outside the range of HGATP modes suppor=
-ted by the
-> >> >>> +    hardware.
-> >> >>> +  - -EBUSY if vCPUs have already been created for the VM, if the =
-VM has any
-> >> >>> +    non-empty memslots.
-> >> >>> +
-> >> >>> +This capability allows userspace to explicitly select the HGATP m=
-ode for
-> >> >>> +the VM. The selected mode must be supported by both KVM and hardw=
-are. This
-> >> >>> +capability must be enabled before creating any vCPUs or memslots.
-> >> >>> +
-> >> >>> +If this capability is not enabled, KVM will select the default HG=
-ATP mode
-> >> >>> +automatically. The default is the highest HGATP.MODE value suppor=
-ted by
-> >> >>> +hardware.
-> >> >>> +
-> >> >>> +``KVM_CHECK_EXTENSION(KVM_CAP_RISCV_SET_HGATP_MODE)`` returns a b=
-itmask of
-> >> >>> +HGATP.MODE values supported by the host. A return value of 0 indi=
-cates that
-> >> >>> +the capability is not supported. Supported-mode bitmask use HGATP=
-.MODE
-> >> >>> +encodings as defined by the RISC-V privileged specification, such=
- as Sv39x4
-> >> >>> +corresponds to HGATP.MODE=3D8, so userspace should test bitmask &=
- BIT(8).
-> >> >>> +
-> >> >>>  8. Other capabilities.
-> >> >>>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-> >> >>>
-> >> >>> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-> >> >>> index 4d82a886102c..5e82a3ad3ad0 100644
-> >> >>> --- a/arch/riscv/kvm/vm.c
-> >> >>> +++ b/arch/riscv/kvm/vm.c
-> >> >>> @@ -201,6 +201,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *k=
-vm, long ext)
-> >> >>>         case KVM_CAP_VM_GPA_BITS:
-> >> >>>                 r =3D kvm_riscv_gstage_gpa_bits(kvm->arch.pgd_leve=
-ls);
-> >> >>>                 break;
-> >> >>> +       case KVM_CAP_RISCV_SET_HGATP_MODE:
-> >> >>> +               r =3D kvm_riscv_get_hgatp_mode_mask();
-> >> >>> +               break;
-> >> >>
-> >> >>Introducing a new RISC-V capability looks a bit complex.
-> >> >>Instead of KVM_CAP_RISCV_SET_HGATP_MODE, we can
-> >> >>simply re-use KVM_CAP_VM_GPA_BITS.
-> >> >>
-> >> >>The kvm_vm_ioctl_check_extension() for KVM_CAP_VM_GPA_BITS
-> >> >>return number of GPA bits which in-directly implies the underlying
-> >> >>hgatp.MODE. As we know, if it return 59 bits GPA then it means
-> >> >>Sv57x4 is the selected hgatp.MODE and Sv48x4 and Sv39x4 modes
-> >> >>are also supported as-per RISC-V privileged specification.
-> >> >>
-> >> >>The kvm_vm_ioctl_enable_cap() for KVM_CAP_VM_GPA_BITS
-> >> >>will take the desired number of GPA bits and downsize the selected
-> >> >>hgatp.MODE. For example, if user-space ask GPA bits <=3D 50 and
-> >> >>GPA bits > 41 then we select Sv48x4. If user-space ask GPA
-> >> >>bits <=3D 41 then we select Sv39x4. If user-space ask GPA bits <=3D =
-59
-> >> >>and GPA bits > 50 then we select Sv57x4.
-> >> >>
-> >> >
-> >> >Thanks, that makes sense.
-> >> >
-> >> >In v8 I=E2=80=99ll drop KVM_CAP_RISCV_SET_HGATP_MODE and re-use KVM_C=
-AP_VM_GPA_BITS
-> >> >for both discovery and selection.
-> >> >
-> >>
-> >> Hi Anup,
-> >>
-> >> While working on the respin reusing KVM_CAP_VM_GPA_BITS, I realized
-> >> a potential ambiguity in CHECK_EXTENSION semantics and wanted to confi=
-rm the
-> >> intended ABI before posting v8.
-> >>
-> >> One concern about the semantics: today KVM_CHECK_EXTENSION(KVM_CAP_VM_=
-GPA_BITS)
-> >> on a VM fd may be interpreted as =E2=80=9Cthe GPA bits for this VM=E2=
-=80=9D (or at least what
-> >> this VM can use). If we also use KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) t=
-o downsize
-> >> the selected HGATP.MODE for a particular VM (e.g. to Sv48x4 =3D> 50 bi=
-ts), then a
-> >> subsequent CHECK_EXTENSION(KVM_CAP_VM_GPA_BITS) on the same VM fd woul=
-d return 50.
-> >> Userspace might then assume 50 is the maximum supported by that VM/hos=
-t and lose
-> >> the information that the host actually supports 59 (Sv57x4).
-> >
-> >I think there is no violation of the semantics because we are providing
-> >a way to allow KVM user space change "the GPA bits for this VM=E2=80=9D
-> >using KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) so subsequent
-> >CHECK_EXTENSION(KVM_CAP_VM_GPA_BITS) must return
-> >effective number of GPA bits visible to the VM.
->
-> Thanks, agreed.
->
-> >The only additional constraint I would enforce is that the
-> >KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) must
-> >return -EBUSY if any of the Guest VCPUs have
-> >ran_atleast_once set.
-> >
->
-> In my current implementation I already return -EBUSY if kvm->created_vcpu=
-s
-> is non-zero, i.e. the GPA bits can only be changed before any vCPU is cre=
-ated.
+On 4/3/2026 11:11 AM, Ethan Yang wrote:
+> kvm_pv_enable_async_pf() updates vcpu->arch.apf.msr_en_val before
+> initializing the APF data gfn_to_hva cache. If userspace provides an
+> invalid GPA, kvm_gfn_to_hva_cache_init() fails, but msr_en_val stays
+> enabled and leaves APF state half-initialized.
+> 
+> Later APF paths can then try to use the empty cache and trigger
+> WARN_ON() in kvm_read_guest_offset_cached().
+> 
+> Determine the new APF enabled state from the incoming MSR value, do cache
+> initialization first on the enable path, and commit msr_en_val only after
+> successful initialization. Keep the disable path behavior unchanged.
+> 
+> Reported-by: syzbot+bc0e18379a290e5edfe4@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=bc0e18379a290e5edfe4
+> Link: https://lore.kernel.org/r/aHfD3MczrDpzDX9O@google.com
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ethan Yang <ethan.yang.kernel@gmail.com>
 
-Checking kvm->created_vcpus is perfectly fine so no need to change this.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Regards,
-Anup
+though some nits below.
 
->
-> Thanks,
-> Fangyu
->
-> >Regards,
-> >Anup
-> >
-> >>
-> >> Thanks,
-> >> Fangyu
-> >>
-> >> >Thanks,
-> >> >Fangyu
-> >> >
-> >> >>>         default:
-> >> >>>                 r =3D 0;
-> >> >>>                 break;
-> >> >>> @@ -211,12 +214,23 @@ int kvm_vm_ioctl_check_extension(struct kvm =
-*kvm, long ext)
-> >> >>>
-> >> >>>  int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_ca=
-p *cap)
-> >> >>>  {
-> >> >>> +       if (cap->flags)
-> >> >>> +               return -EINVAL;
-> >> >>> +
-> >> >>>         switch (cap->cap) {
-> >> >>>         case KVM_CAP_RISCV_MP_STATE_RESET:
-> >> >>> -               if (cap->flags)
-> >> >>> -                       return -EINVAL;
-> >> >>>                 kvm->arch.mp_state_reset =3D true;
-> >> >>>                 return 0;
-> >> >>> +       case KVM_CAP_RISCV_SET_HGATP_MODE:
-> >> >>> +               if (!kvm_riscv_hgatp_mode_is_valid(cap->args[0]))
-> >> >>> +                       return -EINVAL;
-> >> >>> +
-> >> >>> +               if (kvm->created_vcpus || !kvm_are_all_memslots_em=
-pty(kvm))
-> >> >>> +                       return -EBUSY;
-> >> >>> +#ifdef CONFIG_64BIT
-> >> >>> +               kvm->arch.pgd_levels =3D 3 + cap->args[0] - HGATP_=
-MODE_SV39X4;
-> >> >>> +#endif
-> >> >>> +               return 0;
-> >> >>>         default:
-> >> >>>                 return -EINVAL;
-> >> >>>         }
-> >> >>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> >> >>> index 80364d4dbebb..a74a80fd4046 100644
-> >> >>> --- a/include/uapi/linux/kvm.h
-> >> >>> +++ b/include/uapi/linux/kvm.h
-> >> >>> @@ -989,6 +989,7 @@ struct kvm_enable_cap {
-> >> >>>  #define KVM_CAP_ARM_SEA_TO_USER 245
-> >> >>>  #define KVM_CAP_S390_USER_OPEREXEC 246
-> >> >>>  #define KVM_CAP_S390_KEYOP 247
-> >> >>> +#define KVM_CAP_RISCV_SET_HGATP_MODE 248
-> >> >>>
-> >> >>>  struct kvm_irq_routing_irqchip {
-> >> >>>         __u32 irqchip;
-> >> >>> --
-> >> >>> 2.50.1
-> >> >>>
-> >> >>
-> >> >>Regards,
-> >> >>Anup
-> >
+> ---
+>   arch/x86/kvm/x86.c | 19 +++++++++++++------
+>   1 file changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index fd1c4a36b59..c355bbd36c3 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -1041,11 +1041,15 @@ bool kvm_require_dr(struct kvm_vcpu *vcpu, int dr)
+>   }
+>   EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_require_dr);
+>   
+> -static bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
+> +static bool kvm_pv_async_pf_enabled_data(u64 data)
+
+I'm not sure if the name with "__" as __kvm_pv_async_pf_enabled() fits 
+better?
+
+>   {
+>   	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
+> +	return (data & mask) == mask;
+> +}
+>   
+> -	return (vcpu->arch.apf.msr_en_val & mask) == mask;
+> +static bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
+> +{
+> +	return kvm_pv_async_pf_enabled_data(vcpu->arch.apf.msr_en_val);
+>   }
+>   
+>   static inline u64 pdptr_rsvd_bits(struct kvm_vcpu *vcpu)
+> @@ -3645,17 +3649,20 @@ static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
+>   	if (!lapic_in_kernel(vcpu))
+>   		return data ? 1 : 0;
+>   
+> +	bool new_enabled = kvm_pv_async_pf_enabled_data(data);
+
+I would like just call it "enable"
+
+> +
+> +	if (new_enabled &&
+> +		kvm_gfn_to_hva_cache_init(vcpu->kvm, &vcpu->arch.apf.data, gpa,
+
+Please align the second line
+
+> +			sizeof(u64)))
+> +		return 1;
+>   	vcpu->arch.apf.msr_en_val = data;
+>   
+> -	if (!kvm_pv_async_pf_enabled(vcpu)) {
+> +	if (!new_enabled) {
+>   		kvm_clear_async_pf_completion_queue(vcpu);
+>   		kvm_async_pf_hash_reset(vcpu);
+>   		return 0;
+>   	}
+>   
+> -	if (kvm_gfn_to_hva_cache_init(vcpu->kvm, &vcpu->arch.apf.data, gpa,
+> -					sizeof(u64)))
+> -		return 1;
+>   
+>   	vcpu->arch.apf.send_always = (data & KVM_ASYNC_PF_SEND_ALWAYS);
+>   	vcpu->arch.apf.delivery_as_pf_vmexit = data & KVM_ASYNC_PF_DELIVERY_AS_PF_VMEXIT;
+
