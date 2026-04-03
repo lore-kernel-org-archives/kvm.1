@@ -1,75 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8AE18859B
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 21:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775252757; cv=none; b=cZ9+Ek50DIb8H1TIMe9YzbDd85GH8o6Ahex3m1FB1rDWzdsJnv8AZcchP0kOdy+elBhj8ipA5AZ+jXe0iZsoDCaPLzkbV+KI7pIOdxPL/63E5PSewyaNb3T7zMKGl0U3LDJXcutDfw7X9ESkcujJv50mh2S5oiXqPuTjaKm8fQ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775252757; c=relaxed/simple;
-	bh=JAPW13hsCQb9I7piJBbby0DYY8z3JKaOMpstE+JCq+Q=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0106359A6B
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 21:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775253527; cv=pass; b=cRAlpSNDJ0rVNvw7oYcZbYEISKiFNBtPaFVKUGsk63+2BzTnZ09+WSqBSA7yYECZK/D6qiM6nAATnPCB55bCa7dgwE7PyOnPRL4jkam7e1VRr/QjNn9Hbjm/aXcEXknNyoKBLHQXHFUAq4ni3YBP26XKVNPeioR8+Z1xdruRMRc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775253527; c=relaxed/simple;
+	bh=oCK+sZb08S6huM/V/s1J1l900Tg/cNM1yA6PbfEXFH0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YjoW5NxjKXVLSRGRWQM11w96BZvHIKyzb7k1xeO/9SCO3FeZ9qK7dQk+8Tf/NvFmSxZmBZj3onnSu+46UdeTTvFV/uDqNSn3wZdDHFa1ojpwWdPYevrZPoWlEBWDa2srGsAgcPe4GV+acagI7a7tJ6zUFDRL9LPxZB6jEBg7XSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJqZm29V; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=KGn7pTxc49B2dsEH3FJTeQaeLt51PcAihXqRHKLInMIEQSgNtnm37/L2LB0YfjvpSEtfJAuEFo3XWBSw8xCxCmT5JhKoU4RBNCO1j7bUghDORh8cZArcVBNlOPRskfGg+zrBHLqAtcCEMeFBptt88FiZOxIZSvQ8kwbFCEbBEg0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sfVInFU0; arc=pass smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJqZm29V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF14BC4CEF7
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 21:45:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775252756;
-	bh=JAPW13hsCQb9I7piJBbby0DYY8z3JKaOMpstE+JCq+Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jJqZm29Vvvecxq8XLNx//hAM7H3TxlvDMeHRtIpij1LE/EYrXYu5Ia1pSERAgvCO9
-	 AlM3yKUM3N1W1yH5hd0DvvVmoWlYwsS9WKBxn6amkSaLf/w5ewM7i30FSRS6rNaZ7U
-	 /AHDfkA5LAzsflJ2hCKDfZwIFIMkX0svQpYXJRwzSXt+pkeJYwbRrOIGHyU5ObaG/t
-	 xHkMJh5VIlHYYhVmbjoo5r1DrKm9KudQ2cOXlfp+X8H7CJq1sR18QI84+SEUYkuZmc
-	 P9YBxPyBRwSvGasJGkccv1Eu1CTCK8Ot/ZLvJpMEG2k6Tj7HyKqvk8tXNk8clqDQYP
-	 UPF0XpUD1cYKA==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b9c1da7ac63so388748366b.0
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 14:45:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWnzvdQklgG4Zi9VISPUvSepNsWA/oEar+F2eY2hrVlgrvTz7AZ/gAamjfoL6abpUMe5p0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9wJ0kzv+bHZvYfg2kRorJ6ENCcfOK7beHZXN0GQXZUgT34qzc
-	45iJolsUHKVC1uTuppSHWoSTei3DYBTIRHR3dNQCbnRgrISdr++jxTZuTy6/B1nKy9z70h62RsQ
-	fafM8NdK+rIXEATedibcKygWf6EvxewU=
-X-Received: by 2002:a17:907:3d4b:b0:b9c:513e:34db with SMTP id
- a640c23a62f3a-b9c676a2d7bmr252599166b.23.1775252755665; Fri, 03 Apr 2026
- 14:45:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sfVInFU0"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a3d1561e38so98892e87.0
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 14:58:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775253522; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iUeRT1fuCBmstD3US8+EllUoeWsW2sQPcwhwnAEpfekaZexRlThDZlW6aJ3uxxUiMk
+         PieOFdi7+nRT0e/FEw7YvZRAvn3vaPaoX6IGsaGiJG3xeNavzsgIOyDrCwVXjlPBkejl
+         7aRX8Q9rSrRQ4rxHi6GlouUtB9+hiDd189+TWCNrDFO8/jvC/Jb/mJcLlNfeAlnU7PfH
+         22y86Mgcnqjhk+Cy996DDpttv+Ntx55xyKtbNH1T+AJrVpE7fAM7fC4d6iGlU3/1bgL7
+         MaYM0sh3qDHeLNkoGcJ7DZL8LxFBZKT4FvBNc+4pBQqRiFLn1PlncO3GhlDZIkEojQsR
+         NfSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n1x++2kh/JMrnSacQAY2WWd8oQD4emJiO8jgrYOFWkM=;
+        fh=LVqbv+rC4lEKBObltfUL5FW6PHSfDfszzJCQFY45XRc=;
+        b=G7nCav2t2ssQjWeGnRpZ2JuzSm4Vk0LLXgjSbG84w1orqvDXHbzW7dFzPqrJBhruTt
+         72J2TM3Vtfa7oD9meFMfEe9unhxch66MSV05x4qAWvh2isHsszPBJaqYpOHTlZGXMtOQ
+         NIiXjDM1dusiAikTxDqcigGyjai5XV9oEe+FxmCcvuAoBxDZfABWwYHzgyblYSO/JnG+
+         WXT8mgy3S+Mnga1MCXBrLiJvsIgbbgSQ/Zb2B5T9M2R0yBIT+bYtz9HtrCo+tcC6jBXW
+         XxCU01PirVU78HhZkT8jVFeg12d96OfVFs5/q4JQEIsNisZX+gM3UdkdOOWAn+QaR75X
+         5RdA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775253522; x=1775858322; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n1x++2kh/JMrnSacQAY2WWd8oQD4emJiO8jgrYOFWkM=;
+        b=sfVInFU01E+LC/YL08p0ZrKy5EpCdGKddjzFyepyUv4or1nGuchn8jkj/IwiXItUrW
+         nFN6Eqf/js+yJG1Nuou/6OciQugdHpyDNCfbBaFQNxFv2mul2ZMJg3kGYxTEsEuiBjnZ
+         0SAwrWBs8MdwUdwpZOmdRLodQPwWfwrBrfXsRmNbctLQj/AXgQ38BzeZx2GBZR2SNT4f
+         RVq3gSCdWgwT73tc6U18cP9lvNsuFCc0H4Y5jo5lATYkVEybeYCOJueCv7GxvQJg39zi
+         vouHBiahkBZQ1l3DMVQsRBTbyEwZeOLhEH73PMkQmpcboD2alHYcF0E0Rml6mGYxEvWO
+         qoOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775253522; x=1775858322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=n1x++2kh/JMrnSacQAY2WWd8oQD4emJiO8jgrYOFWkM=;
+        b=YgW373JhRBNviFjIgsPC2Pv4XVQP4VDi/xnGSU0KHfgCXk2eC/5ZR3Od2mhQ0RF/+B
+         msCIJMaXtLSFVpTKrbHMt8wK1lsXw/ppW0HR8xriCdIl/2VeGLwnens9khS2QO0Odmo2
+         xbKlLoN9J0TW0hYM7RStHuB6bENq8ZpTHu//KpRqzDROW9AAMuSW+ucpKpDVETiOT88o
+         p/7F96gcf39s7H4ALbINRKqE+928BHUc4fElQ84DXeuLrmzeodFnygnovpjFaPowDHY7
+         Vuk4Usf3OPWschCxY4xSoYgi7ueA8ZYu31eUhaYY/M/oNiXP2n6uxoVsoSBUkhb+FXX8
+         swIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRbqorc5o7f1xa7a1xr8ALLsdVaKUDi7P7cvmQjQ4HfgZIHxl+Lyl+N8G7iH/XdTf5lwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7lUe+wgmaA/0qkKDIkMeAyW7skmzvnDKj85l5J44t0tz/HTFx
+	eJu6zLZffzO7HUJBSNkMHmtNlHJAUEWbBfrm5gw/zpnGPYSYgcr2BK4ddytuxzpEOYXyKdDGnzD
+	ABBWXdTSzfid9+KHNKTyl2y9RilKppXlWoa+GZpZq
+X-Gm-Gg: AeBDieu5RMkZ2GJVSIbdy6gMkkYeu/d1cTy+G7navQAsyBCHmaqNBnhGzKX8+g8L4Xu
+	bYuQTGyiL2bhurjESQaAwqF9YCAoj0OntvgMFmzh0129RX5hd1JiinaVcXT/wpfhddJm8JplgAh
+	hOJZ5wTYWMGyaurXNMG7k0jtgWoFcFi8MqCZ+iTrXRHTU6fJnh4MhaBLb4bwlJI0ejdapra22ia
+	oYaH76kHd7mvdWPXt+Dj2w2QHg2qSh47SX3rpUPIEYtgBl0C7XwMa0CALIpspZAt9noHjDbsPcg
+	0Q5Bu1z6
+X-Received: by 2002:a05:6512:1310:b0:5a2:a5dc:6111 with SMTP id
+ 2adb3069b0e04-5a337563322mr1534908e87.18.1775253521414; Fri, 03 Apr 2026
+ 14:58:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260316202732.3164936-1-yosry@kernel.org> <adAPcmksaq8Oq7V-@google.com>
-In-Reply-To: <adAPcmksaq8Oq7V-@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 3 Apr 2026 14:45:44 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOf2PppGcA+2Eiz1Eciy_1wJ+csCpC=fotQEcJDNE9Dyw@mail.gmail.com>
-X-Gm-Features: AQROBzA5tUjmwubIjH0tPqlpB3iCDlNL1gic9JwXtP1NGcDmPPUqhD2A7WOpXyI
-Message-ID: <CAO9r8zOf2PppGcA+2Eiz1Eciy_1wJ+csCpC=fotQEcJDNE9Dyw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/9] KVM: SVM: Fixes for VMCB12 checks and mapping
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-3-dmatlack@google.com>
+ <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
+In-Reply-To: <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
+From: David Matlack <dmatlack@google.com>
+Date: Fri, 3 Apr 2026 14:58:11 -0700
+X-Gm-Features: AQROBzCufsJjSomX3fu7F7ptwK4HJAYNpi3kPBVsC_mFldZEseUJNvIFRhG6pcY
+Message-ID: <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
+Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
+ across Live Update
+To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
+	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > Yosry Ahmed (9):
-> >   KVM: SVM: Properly check RAX in the emulator for SVM instructions
-> >   KVM: SVM: Refactor SVM instruction handling on #GP intercept
-> >   KVM: SVM: Properly check RAX on #GP intercept of SVM instructions
-> >   KVM: SVM: Move RAX legality check to SVM insn interception handlers
-> >   KVM: SVM: Check EFER.SVME and CPL on #GP intercept of SVM instructions
-> >   KVM: SVM: Treat mapping failures equally in VMLOAD/VMSAVE emulation
-> >   KVM: nSVM: Fail emulation of VMRUN/VMLOAD/VMSAVE if mapping vmcb12
-> >     fails
-> >   KVM: selftests: Rework svm_nested_invalid_vmcb12_gpa
-> >   KVM: selftests: Drop 'invalid' from svm_nested_invalid_vmcb12_gpa's
-> >     name
+On Thu, Apr 2, 2026 at 2:29=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev> wr=
+ote:
+> On 3/23/26 4:57 PM, David Matlack wrote:
+
+> > +config PCI_LIVEUPDATE
+> > +     bool "PCI Live Update Support (EXPERIMENTAL)"
+> > +     depends on PCI && LIVEUPDATE
+> > +     help
+> > +       Support for preserving PCI devices across a Live Update. This o=
+ption
+> > +       should only be enabled by developers working on implementing th=
+is
+> > +       support. Once enough support as landed in the kernel, this opti=
+on
+> > +       will no longer be marked EXPERIMENTAL.
+> > +
+> > +       If unsure, say N.
 >
-> Some nits and suggestsions, but I can clean them up when applying.  I'm leaning
-> strongly toward applying this for 7.1 even though it's super late in the cycle,
-> as there's very little risk (e.g. compared to the gPTA or host/guest PMU series),
-> and getting the VCPU_REGS_RAX landed would make my life easier for 7.2.
+> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
+> (modular support)?
+>
+> This would allow the feature to be built as a kernel module. For
+> development
+>
+> purposes, modularization means we only need to recompile a single module
+>
+> for testing, rather than rebuilding the entire kernel. Compiling a
+> module should
+>
+> be significantly faster than a full kernel build.
 
-Thank you!
+I don't think it is possible for CONFIG_PCI_LIVEUPDATE to support 'm'.
+pci_setup_device() (which is under CONFIG_PCI) needs to call
+pci_liveupdate_setup_device(), and CONFIG_PCI cannot be built as a
+module. This call is necessary so the PCI core knows whether a device
+being enumerated was preserved across a previous Live Update.
