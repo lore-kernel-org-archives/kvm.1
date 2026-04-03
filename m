@@ -1,225 +1,221 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAD03BC666
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 14:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775227820; cv=pass; b=ttUsHTnCAKrhLCZKxs9hqxGPGm3ib4O5pTYpfTM4CLnUFmLG5e29KGys/pg1jwRYd5M9EaEmIZhFCIIFGartoGRTnebSOA5d3zRBc+DdWMlIceQTjaPxn4aVhl2JOaJMZBuIqJIC3j2YbJMro5+khJ+eYV45v1fEkdvmxam8Cdg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775227820; c=relaxed/simple;
-	bh=I+MWzIcjsJY2NaaxS4ZYHOH26kmrsRv9LK+RJfKkIC8=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LkL3EEk8WZkjzIRwMZT+zMD/uNODGCyeJL79gT5TlegHc/kFBdFqTYJrT/+FmAZe7/FSJb8JC3EBlnPSdd4m0Yv1nRLQSMHGU1B+DvP7qeFvJADvh83XcrD8Lmqi49EVsY8SQN6SQflytBawezFRd6mHUfVGco+dJc7nXNUfJvc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NGK1DH3y; arc=pass smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0893D39FCD1
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 14:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775227947; cv=none; b=WFnO1/VwFYPmkLncUm1gAnkxvx26ze3aW3GZRH1+9LMwsWOySkuwtEtqWSv9kCs9wtmd1ngZaFGpYGOlHK5uNURjFDboNDo9IGalciaAsyjzU1NZvUzQ5hKsbQYz7ekxfx9lUCA1CIYK1jJf2GuWGHOErGra2e5yB43qk9d7V3I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775227947; c=relaxed/simple;
+	bh=CTRwpPkY5I/XQFDvpz3aZ16aVXK374cBhoFBuuzohBk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MKDipIQooAXJF94wFL3yHgm+P+sv5hYef5hPm/Ed8VFa7UDC2x7nYCU+sJpm1yVT5s7znm6fnnE7IWFpQmZ9B68E+vTKsZw2hLMrzrKQm6LEsI/32u6dSFv4A0keUQRdu/AvxW+plvLEXUtn+ldoIi1UWtyUVSz2uLd9iK0YiR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pb/E0rBe; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NGK1DH3y"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-953b0a7ee18so619763241.3
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 07:50:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775227818; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PusmghrFfv43UIJ+bUqBJHV9tx2zlOO+iuxENYN/Qd0m0Rs2SRZMEmPR4JKf/zaf76
-         4SPx5muEbqkqRxUnrUk7XiZNAGIYZ12bbsGMbP+DQDdEPnzFgXI915Q9NGQA6F/7MIbV
-         gkSu3Om4v9rhBIGSl/rIpktlqt1N4+DG1wSHYBwBqIny1Y93sJ5OtyX5sYDr7a32WXdK
-         WsFi0CbqGJKRsZOm+FLdCSnHKM2YRUT6Q4I0H1P4Vx1W8jwLdh9qiDm8dDpTm2iw3e+x
-         02tT3/BS08yP+f5lbymHrXWTbu6qoaYPSzjblgSnzgEgKHW2e10WDfOh6QVNYKWsO/hW
-         TdWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
-        fh=TLlqaxGQQylUx3mTxZam8mcTdNNa3EmrTVce7rYQzlA=;
-        b=DePWfMEjA/NItJfi4x2aOhnW21elhJG7DrwIUunMSDez5G6Nbt+XZUAeLCI5FgRfQF
-         4W+ypVLmZ65XXIWJnW7UiOyfykURxJ/WS3cCkdfXNe/6nwcTfec51paNDNIv/iNQTWiF
-         1Ug7fiNlnBwaFiB0TGHYnDH20r0pNDBr6dgK7UCzdZWBEeWbnh6RpDCkt3zvx9eFPXos
-         S6sikRuICcLdYFKCPFPuGkwLmTQdYcWaPNa26DA9DsOhh9gQdi4iOwQN6NHF5wE0jXte
-         KMGGwug9FcW9y+P3ipWqYRtm7HI0BaJft8Fv0noXr+zZZrZ1W6S4cCvPJ/x4IXfQ8zVW
-         H6tQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pb/E0rBe"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358e425c261so1994678a91.3
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 07:52:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775227818; x=1775832618; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
-        b=NGK1DH3yyn5nUejSMB0t9cy6aOLKsbYkj6IBg4L7FqZ3yr+oMSxT420e2LtcIR0DlA
-         By/DZyB05YL4mTfMOYOa6OoIIpRgTpGraEMBlr9hoDuF0EyUEibEdUK0DJG5cnSncINA
-         MIpweP3nBuVSyvKHWc/S30NLstZe9iqAgnOGq2obdA5dIWj9tU7IIV/9FVhuR72yh9Xd
-         TgNIFM1nZielDcKTROVl/BGJ1K7Q9N/9gQz4deGgtbn6FTiRIAd/cEIOYPDbBZD2EkPu
-         3GTfomPcbI5Op/tNJ/0JjEWkVbw3eJB4+Mbrmb1YxEcdYJQWUghr/EbW+A4G0DsL78F5
-         OM8Q==
+        d=google.com; s=20251104; t=1775227945; x=1775832745; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DiuRvpeeoOLs6ih2ypPx8qDY3zNqJzQtKD09MDbtleo=;
+        b=pb/E0rBe2VtJDHyiiYkaye+2q2uqM2fMcC9khj7OKTmr5qprdUk++Tut+pjMRLt58R
+         F1j36ZpLAIWzt5UGrKHpjMCtApP+pA1Rrxj/gNnDO4NGvswlLPXdB0M2JSfPqdHdrQla
+         tSdCpOhSCdnyNrxBkAysGyRY9TyS/1ohVDWbM1UHvCO2oQRLQ19THmeJVQFz9hDm2W/k
+         VnQwKp5SCVZrXNpfgdl25tY/Is9cQGsMk5Bx05GdKCp/3cxtt9OiWbqd+cKWQa8GLKpq
+         +vIn8GuWuFs6RWcBIBziKykrtBXXXnzkswWq3941XRcE2tMduMNmo5CP++qQ28eJxNK9
+         FpjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775227818; x=1775832618;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
-        b=V+m/Da5TZmUKlg6tdQs3AjcucLe4/j7TLjHRML15qsXsffYQhyeojdmq0VtOtHiAUv
-         Mv8eg9u2xoFDynoCTYI1wHoPQt2lTsWUPEcXeX7o/cOnf54rgx+1eXPleg62qRbeOgCM
-         uRosbEXQUFhAHyXn1oxp++Gb9caM0V8SRAZhVgqHF3sWxxu6h5J+ueOiyr6H7uRCdfoB
-         1iSa23w7XVwP7KkKfht/GfNlKqRTl5+TpjkhOR5lWK+JoEemARmVjrlMjx/gv2xv9UDH
-         FEpj1xGWM/u5uw9F0qaL6uc5IXA1UYSHduDUbR54Pou216tAAHo2OwQWInPJA1OnayfQ
-         POPA==
-X-Forwarded-Encrypted: i=1; AJvYcCW5KVYiiZmEjMLPpSbBfrVF6wZpmAsu8xxEZ3fN/stquDupE4HmM/e/B3fmwYsIgTDNVHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/m3ovUDBhd5GUGXTGwsGKJuBJ5O7Ebfkx7ltNd95Y8NJb4GZH
-	v1nb28ytsI61u/3EYomwGAYJxRe5A4awpoukxSWiYgBPZZGkxhhrqgpqNPZ9Rolqxpc7XS3hDFy
-	yBb3ldM7FFXaybF1kv5OODwRbJraVtUsfHW51Qja7
-X-Gm-Gg: AeBDietJf9TAwfZ+JIisSsXb5793s26mFrMr5nVTiTcGXx1NOptR2Z5k5piUFv2Ra8k
-	j8js/ss9D182Cb2mrsk8Ia/U3mO9Qhaq2KimDB006wvJGBZUC3oAcuBIRT0u7U/VC+YEI+MeG9b
-	SGvLr93VgZeqZ8PniWtzx+9myCXWwpYTWx64KlciEiq8Q2a9JvysvcAc9LO5gjNpFZgT9m+2vcP
-	fF/4WStu39SwbEulHBJfaWzr0Ft3lsDRI3x5A0k/YIag5ZR+7JYGJEHcHUtwcMcv8TC+rJjjtj/
-	oPcoU3fwG98hvJilXCuZVliGncg7n9DAzwt9Cw==
-X-Received: by 2002:a05:6102:5a92:b0:605:8280:5e68 with SMTP id
- ada2fe7eead31-605a50e2a2bmr1113935137.16.1775227817848; Fri, 03 Apr 2026
- 07:50:17 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 3 Apr 2026 07:50:17 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 3 Apr 2026 07:50:16 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com> <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775227945; x=1775832745;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DiuRvpeeoOLs6ih2ypPx8qDY3zNqJzQtKD09MDbtleo=;
+        b=Bxc1sKJ9urOFTRpdmn1lc1hlRRvGm/+Enmt9ZXree66BdUP4YoK9sQ39TlNpneUi7h
+         UHFg6PYpbsFCCWv0wx+pxutGw4v5QgT0wmieAoLewdLqT8h4CUGK3jr6wGQdPZ0QjIBY
+         DzPtg5o+vhWVeo0c1sGzX8iEK6jecBzuVEwmFpycqAkCu6/h2wMAK9LA8n3VyMmkUM32
+         zlAQ8O128oZDQRxXjaw4c/vUdnz5zrQBKauwOAbIfDY690XFAlEMvx0o12yhTHhxLQQk
+         W3q6fO13kmE8OUSByXfHZTLN82EHGc+gCxTCq+5b7YptxZmgMGaLTB4CtAlo67DLNWSy
+         wD7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV05PYa+0g34i2POl+ULnESA19Hqan1L8J4j2ScLl/dM4I2vbIueFefwVEGj+M/HV9BYC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwairbQ6/gy4+Px/Bin8SJTp6VVxBlLIb57Z4DzuRystONTh/BF
+	jPl4Y6e/DHykQf2Z69SWJqzP4ju6rSv1v5NRlWJLORTPplWWdJ9+UGAApWCsgKJAEsKKKN5GdKa
+	gSQlAJw==
+X-Received: from pjuf5.prod.google.com ([2002:a17:90a:ce05:b0:35c:2d1e:7123])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2fc3:b0:359:f825:5700
+ with SMTP id 98e67ed59e1d1-35de68688f0mr3098585a91.10.1775227945130; Fri, 03
+ Apr 2026 07:52:25 -0700 (PDT)
+Date: Fri, 3 Apr 2026 07:52:23 -0700
+In-Reply-To: <20260402-vmscape-bhb-v9-7-94d16bc29774@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Fri, 3 Apr 2026 07:50:16 -0700
-X-Gm-Features: AQROBzCC-hVilK2nAfJ3eE8zmQqqNa0fWthx2SZG4jgOFPeFQ_7rmzXurA8c2f4
-Message-ID: <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
-To: Michael Roth <michael.roth@amd.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com> <20260402-vmscape-bhb-v9-7-94d16bc29774@linux.intel.com>
+Message-ID: <ac_UJx99kDJY8j3t@google.com>
+Subject: Re: [PATCH v9 07/10] x86/vmscape: Use static_call() for predictor flush
+From: Sean Christopherson <seanjc@google.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, 
+	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	David Laight <david.laight.linux@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Ackerley Tng <ackerleytng@google.com> writes:
+On Thu, Apr 02, 2026, Pawan Gupta wrote:
+> Adding more mitigation options at exit-to-userspace for VMSCAPE would
+> usually require a series of checks to decide which mitigation to use. In
+> this case, the mitigation is done by calling a function, which is decided
+> at boot. So, adding more feature flags and multiple checks can be avoided
+> by using static_call() to the mitigating function.
+> 
+> Replace the flag-based mitigation selector with a static_call(). This also
+> frees the existing X86_FEATURE_IBPB_EXIT_TO_USER.
 
->
-> [...snip...]
->
-> guest_memfd's populate will first check that the memory is shared, then
-> also set the memory to private after the populate.
->
-> [...snip...]
->
-Looking at this again, the above basically means that the entire
-conversion process needs to be performed within populate.
+...
 
-In addition to setting the attributes in guest_memfd as private, for
-consistency, populate will also have to do all the associated
-operations, especially unmapping from the host, checking refcounts,
-and the list of work in conversion will only increase in future with
-direct map removal/restoration and huge page merging.
+> @@ -3133,8 +3139,14 @@ static void __init vmscape_update_mitigation(void)
+>  static void __init vmscape_apply_mitigation(void)
+>  {
+>  	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
+> -		setup_force_cpu_cap(X86_FEATURE_IBPB_EXIT_TO_USER);
+> +		static_call_update(vmscape_predictor_flush, write_ibpb);
+> +}
+> +
+> +bool vmscape_mitigation_enabled(void)
+> +{
+> +	return !!static_call_query(vmscape_predictor_flush);
+>  }
+> +EXPORT_SYMBOL_FOR_KVM(vmscape_mitigation_enabled);
+>  
+>  #undef pr_fmt
+>  #define pr_fmt(fmt) fmt
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 45d7cfedc507..e204482e64f3 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -11463,7 +11463,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  	 * set for the CPU that actually ran the guest, and not the CPU that it
+>  	 * may migrate to.
+>  	 */
+> -	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
+> +	if (vmscape_mitigation_enabled())
 
-The complexity of conversion also means possible errors (EAGAIN for
-elevated refcounts and ENOMEM when we're out of memory), and error
-information like the offset where the elevated refcount was.
+This is pretty lame.  It turns a statically patched MOV
 
-It doesn't look like there's room for this information to be plumbed out
-through the platform-specific ioctls, and even if we make space, it
-seems odd to have conversion-related error information returned through
-the platform-specific call.
+  11548		if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
+  11549			this_cpu_write(x86_ibpb_exit_to_user, true);
+     0x000000000003c57a <+858>:	movb   $0x1,%gs:0x0(%rip)        # 0x3c582 <vcpu_enter_guest+866>
 
+into a function call and two sets of conditional branches.  And with mitigations
+enabled, that function call may trigger the wonderful unret insanity
 
-I agree with the goal of not having KVM touch private memory contents as
-tracked by guest_memfd, so I'd like to propose that we distinguish:
+  11548		if (vmscape_mitigation_enabled())
+     0x000000000003c575 <+853>:	call   0x3c57a <vcpu_enter_guest+858>
+     0x000000000003c57a <+858>:	test   %al,%al
+     0x000000000003c57c <+860>:	je     0x3c586 <vcpu_enter_guest+870>
 
-1. private as tracked by KVM (guest_memfd/vm_memory_attributes)
-2. private as tracked by trusted entity
-
-
-Currently, in TDX's populate flow, KVM doesn't do any copying, it only
-instructs TDX to do the copying.
-
-"TDH.MEM.PAGE.ADD Operands Information Definition" in the TDX module
-ABI spec says the source is accessed as shared, the destination is
-accessed as private, and in the case that source and destination are
-the same, the "In-Place Add" section says the source will be converted
-to private.
-
-In SNP's populate flow, SNP-specific code in KVM does the copying from
-shared memory into the destination, then makes the destination address
-private in the RMP table before telling the firmware to do the
-in-place encryption.
+  11549			this_cpu_write(x86_predictor_flush_exit_to_user, true);
+     0x000000000003c57e <+862>:	movb   $0x1,%gs:0x0(%rip)        # 0x3c586 <vcpu_enter_guest+870>
 
 
-I think we should think of the populate ioctls as being
-platform-specific ioctls that, when called, accept
+  3166	{
+     0xffffffff81285320 <+0>:	endbr64
+     0xffffffff81285324 <+4>:	call   0xffffffff812aa5a0 <__fentry__>
 
-+ destination address: private (as tracked by guest_memfd)
-+ source address: shared (as tracked by guest_memfd) or NULL
+  3167		return !!static_call_query(vmscape_predictor_flush);
+     0xffffffff81285329 <+9>:	mov    0x13a4f30(%rip),%rax        # 0xffffffff8262a260 <__SCK__vmscape_predictor_flush>
+     0xffffffff81285330 <+16>:	test   %rax,%rax
+     0xffffffff81285333 <+19>:	setne  %al
 
-KVM doesn't touch private memory contents, even in this case, because
-it's really a platform-specific ioctl that handles loading, and the
-platform does expect the destination is private for both TDX and SNP
-at the firmware boundary.
+  3168	}
+     0xffffffff81285336 <+22>:	jmp    0xffffffff81db1e30 <__x86_return_thunk>
 
-Since SNP (platform-specific) only allows in-place launch update, and
-KVM had to provide an interface that allows a different source address
-for support before in-place conversion, then SNP has to continue
-supporting the to-be-deprecated path by doing the copying within
-platform-specific code.
+While this isn't KVM's super hot inner run loop, it's still very much a hot path.
+Even more annoying, KVM will eat the function call on kernels with CPU_MITIGATIONS=n.
 
-For consistency, guest_memfd can continue to check that it tracks the
-destination address as private, and sev_gmem_populate will then hide
-the copying code away just to support the legacy case.
+I'd like to at least do something like the below to make the common case of
+multiple guest entry/exits more or less free, and to avoid the CALL+(UN)RET
+overhead, but trying to include linux/static_call.h in processor.h (or any other
+core x86 header) creates a cyclical dependency :-/
 
-
-The flow before in-place conversion is
-
-1. Load memory (shared or non-guest_memfd memory)
-2. KVM_SEV_SNP_LAUNCH_UPDATE or KVM_TDX_INIT_MEM_REGION (destination:
-   gfn for separate private memory, source: shared memory)
-
-The proposed flow for in-place conversion is
-
-1. INIT_SHARED or convert to shared
-2. Load memory while it is shared
-3. Convert to private (PRESERVE, or new flag?)
-4. KVM_SEV_SNP_LAUNCH_UPDATE or KVM_TDX_INIT_MEM_REGION (destination:
-   gfn for converted private memory, source: NULL)
-
-
-TLDR:
-
-+ Think of populate ioctls not as KVM touching memory, but platform
-  handling population.
-+ KVM code (kvm_gmem_populate) still doesn't touch memory contents
-+ post_populate is platform-specific code that handles loading into
-  private destination memory just to support legacy non-in-place
-  conversion.
-+ Don't complicate populate ioctls by doing conversion just to support
-  legacy use-cases where platform-specific code has to do copying on
-  the host.
-
->>>
->>> [...snip...]
->>>
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 20ab4dd588c6..0dc0680a80f8 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -36,6 +36,7 @@ struct vm86;
+ #include <linux/err.h>
+ #include <linux/irqflags.h>
+ #include <linux/mem_encrypt.h>
++#include <linux/static_call.h>
+ 
+ /*
+  * We handle most unaligned accesses in hardware.  On the other hand
+@@ -753,7 +754,11 @@ enum mds_mitigations {
+ };
+ 
+ extern bool gds_ucode_mitigated(void);
+-extern bool vmscape_mitigation_enabled(void);
++
++static inline bool vmscape_mitigation_enabled(void)
++{
++       return !!static_call_query(vmscape_predictor_flush);
++}
+ 
+ /*
+  * Make previous memory operations globally visible before
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 366ebe1e1fb9..02bf626f0773 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -148,6 +148,7 @@ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
+  * sequence. This defaults to no mitigation.
+  */
+ DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
++EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt)    "mitigations: " fmt
+@@ -3162,12 +3163,6 @@ static void __init vmscape_apply_mitigation(void)
+                static_call_update(vmscape_predictor_flush, clear_bhb_loop_nofence);
+ }
+ 
+-bool vmscape_mitigation_enabled(void)
+-{
+-       return !!static_call_query(vmscape_predictor_flush);
+-}
+-EXPORT_SYMBOL_FOR_KVM(vmscape_mitigation_enabled);
+-
+ #undef pr_fmt
+ #define pr_fmt(fmt) fmt
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index a1fbbab08291..117c60d00758 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11545,7 +11545,9 @@ static noinline int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+         * set for the CPU that actually ran the guest, and not the CPU that it
+         * may migrate to.
+         */
+-       if (vmscape_mitigation_enabled())
++       if (IS_ENABLED(CONFIG_CPU_MITIGATIONS) &&
++           !this_cpu_read(x86_predictor_flush_exit_to_user) &&
++           vmscape_mitigation_enabled())
+                this_cpu_write(x86_predictor_flush_exit_to_user, true);
+ 
+        /*
