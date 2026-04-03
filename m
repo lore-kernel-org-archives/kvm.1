@@ -1,203 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03931359A9A;
-	Fri,  3 Apr 2026 18:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D45C20E334
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 19:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775242366; cv=none; b=C56q06fxO/to7rCMPmlpvifkSMU766QNFMGuHfWKw5i/LuVct8CfX7hKVpJigiBP2qhSWb4RKAU9rsvVgB36vCvmAoSfd3dkItOO9H1P5rtk6sjwuiidz3+CV6/IMTZDppPSmAAuUErdpybh79DOfaS3x2+U/ZSeV27D2HhjZfE=
+	t=1775242832; cv=none; b=IKzdS671HnUP6/CLdkYNltLh/nvmJor7SFmc3+cXtldNp1dDz1neNaXujXr9b/S5noXUq/pIkQnWed50jJW42Mkul9fvNFPL0nhwmDsrK9UKbqdx6rBjAgrRYXsZJ+UC5X8oG0555qqeVv2Vworl1uTXsza9OOL62XhnmgIatxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775242366; c=relaxed/simple;
-	bh=qCq+niiYs08OI/g1thV9NiGH1VzsltGEVREW4lf2xNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Unzi/JtuqTSzMW+MIhGwW/BhxHKWinGx9qBo08I/dE1LftQhV9EJj8Uz0E1ef9nGrEHMQ9qAjlotule56VExfKH6qyjvfe7Xl9aQdE531TRTDK+KI6t/EAoAognGcu1z+H6/5BF/r/w/Rhw0QzvF3R+zDi07h4M7loV5IlR6Onw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IDBjxuLt; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1775242832; c=relaxed/simple;
+	bh=l862pD+7NkjA7LQ+56wep4XBVYr2X6qzTRFTjQig/eA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Mk9yMoPFbsIy9EFRcC41SWSmziE1cS+TBEkPp/EGtHe4YmroNm8NZ2OJy2t9zRZfvh2dVK9KP78Gnxw6A8Be2rSkCcjrk/FnYSCRnaS1czrUgb9v//DCfbICdZpIOL+BpZs4hJa8XTpWYkzqF3J4QQOsiqcCzVF5NegEi2igOfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dL7qk/2r; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IDBjxuLt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775242364; x=1806778364;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=qCq+niiYs08OI/g1thV9NiGH1VzsltGEVREW4lf2xNw=;
-  b=IDBjxuLtnQ/5ypdqWTX/FgHZ2k/y2plERivV+GhDYIf1rRUyV/hMVTAm
-   KvdpdrbWp7mmnSeMeR+9eii+Dlw8N+PQ2APgYnBcEtt+PftqY2KMJRcdX
-   v6UelYTkJL8myJF8SoJ1ldHycaO9VVF3JWUu/ex9hgt02xT8f93pUWTci
-   WuqRLvJkZO4fZcAalvEvbPS9rqGc3VUr2U4AEJwEt8pSiTthPYNq13olH
-   FYO+1QyNUYCCvpJbJq0h8OQPaanrzwM/FKBCVvio/6neMERAl2cx16PvB
-   A29sNcdz8kIAEajccVosyJGARODCfmF8ep2lvd/8/IknQTjZM0muSPdoR
-   g==;
-X-CSE-ConnectionGUID: 0RUw0/y6QT2FMJgyNQM8aQ==
-X-CSE-MsgGUID: xmkRIYzzQhGAwZBbJ7OoLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76371834"
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="76371834"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 11:52:43 -0700
-X-CSE-ConnectionGUID: YCzJz3BCSyWVXjrE59tEEg==
-X-CSE-MsgGUID: k2NK7vkuS6+JFVShQqkkEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="222974791"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 11:52:42 -0700
-Date: Fri, 3 Apr 2026 11:52:36 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260403185236.sjgetnkha3o3a4d3@desk>
-References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
- <20260402-vmscape-bhb-v9-2-94d16bc29774@linux.intel.com>
- <CALMp9eSLVvr00mJ0J2f2_SPeCW-VS58kxMcxHgUW6etML+_+QA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dL7qk/2r"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35da86144daso1971850a91.3
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 12:00:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775242829; x=1775847629; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=knlN+W0CzK/CyNZz3pOxkwtQ+Qid0Ab36uDhW/RYs4c=;
+        b=dL7qk/2rtow6oOStcw5cvuByVezQh+8RYxNIdDT5vswclkBSR8/igoadByGK0OUAFV
+         hThqLmSCw2DaySj/rOjIkszccBRulzN+uzCyYRCSdAafxqXUfcGFucqYBweCbFsXiwAI
+         OV46AZWXkRbImvNXk5rPuwkuiTf6QxAyF0PXw5pPLHZNYer8RiAHGt6B65B0kHjvSad0
+         aoeUPdijMawS2V0i3SEdgODpVynB6/UXXuEf0iA8iEJz5UH/qMdbuUSCsVTA8iC/7uf4
+         XEt2O+waZ0Ytg4ca028zXlb1W6fULQ098XtlsWJFSSXsyy3dC5hcGPbbSsxxqHl8R7Lr
+         5Rcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775242829; x=1775847629;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=knlN+W0CzK/CyNZz3pOxkwtQ+Qid0Ab36uDhW/RYs4c=;
+        b=K6eaqE/6BqUZS1Abn+PB6yzZvgf9Wfdzv0qOMzGG7JKUXNDqz8xk41Pq2PlW7DY9qP
+         oWPeib3/cT3xfIuTsN6YtNd4ZuITEoG7sINc5lLX3r1pUGZOn7B8tfzYlEC7xu1y2Sqz
+         pTbewpShm+sA49nTVbci8HZonwbUm7F84cJ30EtkVtOZVJdNgzIhuulMl9WuEQDmKP3D
+         JNG+O5vADmMTOxRYU4chSkVpltpcJU2REhO1pMerBy9AVqv9HH4H4NfN1tXxSWZ8O5pY
+         SxYgd0ByxTKkeQtwSOXYCRgaSFNtzWB9bLTBhwXNvAX4+NYseLRsktqpJQ0SMw2/GEoN
+         HvSw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9q3WgqdsL3CSut+LPD9WGgt9+srFYVNPttV2UT4eInD6Mxj/oBgT6JyUthYJn1qIj8j8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznNEnEOTT8zfTcGQip/HEz8yatVe9kq/1hoBrjgSMg8+zxOT6H
+	0ofewlUJPy9/Tsx7A7e1k1TgpYlkqPLwh5ixnhTfynx+6C4y6RLZa/trMZJrc2GjKJG4zBlENMP
+	WmLmhlQ==
+X-Received: from pgea29.prod.google.com ([2002:a05:6a02:539d:b0:c73:fb05:a2e3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2447:b0:395:7fb:9362
+ with SMTP id adf61e73a8af0-39f2ee0183amr4000505637.19.1775242829259; Fri, 03
+ Apr 2026 12:00:29 -0700 (PDT)
+Date: Fri, 3 Apr 2026 12:00:27 -0700
+In-Reply-To: <ac_7Yg-Ma4UR2nIz@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMp9eSLVvr00mJ0J2f2_SPeCW-VS58kxMcxHgUW6etML+_+QA@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260316202732.3164936-1-yosry@kernel.org> <20260316202732.3164936-4-yosry@kernel.org>
+ <ac_7Yg-Ma4UR2nIz@google.com>
+Message-ID: <adAOS-dKq72VClS_@google.com>
+Subject: Re: [PATCH v4 3/9] KVM: SVM: Properly check RAX on #GP intercept of
+ SVM instructions
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Apr 03, 2026 at 11:10:08AM -0700, Jim Mattson wrote:
-> On Thu, Apr 2, 2026 at 5:32 PM Pawan Gupta
-> <pawan.kumar.gupta@linux.intel.com> wrote:
-> >
-> > As a mitigation for BHI, clear_bhb_loop() executes branches that overwrite
-> > the Branch History Buffer (BHB). On Alder Lake and newer parts this
-> > sequence is not sufficient because it doesn't clear enough entries. This
-> > was not an issue because these CPUs use the BHI_DIS_S hardware mitigation
-> > in the kernel.
-> >
-> > Now with VMSCAPE (BHI variant) it is also required to isolate branch
-> > history between guests and userspace. Since BHI_DIS_S only protects the
-> > kernel, the newer CPUs also use IBPB.
-> >
-> > A cheaper alternative to the current IBPB mitigation is clear_bhb_loop().
-> > But it currently does not clear enough BHB entries to be effective on newer
-> > CPUs with larger BHB. At boot, dynamically set the loop count of
-> > clear_bhb_loop() such that it is effective on newer CPUs too. Use the
-> > X86_FEATURE_BHI_CTRL feature flag to select the appropriate loop count.
-> >
-> > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> > ---
-> >  arch/x86/entry/entry_64.S            |  8 +++++---
-> >  arch/x86/include/asm/nospec-branch.h |  2 ++
-> >  arch/x86/kernel/cpu/bugs.c           | 13 +++++++++++++
-> >  3 files changed, 20 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-> > index 3a180a36ca0e..bbd4b1c7ec04 100644
-> > --- a/arch/x86/entry/entry_64.S
-> > +++ b/arch/x86/entry/entry_64.S
-> > @@ -1536,7 +1536,9 @@ SYM_FUNC_START(clear_bhb_loop)
-> >         ANNOTATE_NOENDBR
-> >         push    %rbp
-> >         mov     %rsp, %rbp
-> > -       movl    $5, %ecx
-> > +
-> > +       movzbl    bhb_seq_outer_loop(%rip), %ecx
-> > +
-> >         ANNOTATE_INTRA_FUNCTION_CALL
-> >         call    1f
-> >         jmp     5f
-> > @@ -1556,8 +1558,8 @@ SYM_FUNC_START(clear_bhb_loop)
-> >          * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
-> >          * but some Clang versions (e.g. 18) don't like this.
-> >          */
-> > -       .skip 32 - 18, 0xcc
-> > -2:     movl    $5, %eax
-> > +       .skip 32 - 20, 0xcc
-> > +2:     movzbl  bhb_seq_inner_loop(%rip), %eax
-> >  3:     jmp     4f
-> >         nop
-> >  4:     sub     $1, %eax
-> > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> > index 70b377fcbc1c..87b83ae7c97f 100644
-> > --- a/arch/x86/include/asm/nospec-branch.h
-> > +++ b/arch/x86/include/asm/nospec-branch.h
-> > @@ -548,6 +548,8 @@ DECLARE_PER_CPU(u64, x86_spec_ctrl_current);
-> >  extern void update_spec_ctrl_cond(u64 val);
-> >  extern u64 spec_ctrl_current(void);
-> >
-> > +extern u8 bhb_seq_inner_loop, bhb_seq_outer_loop;
-> > +
-> >  /*
-> >   * With retpoline, we must use IBRS to restrict branch prediction
-> >   * before calling into firmware.
-> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> > index 83f51cab0b1e..2cb4a96247d8 100644
-> > --- a/arch/x86/kernel/cpu/bugs.c
-> > +++ b/arch/x86/kernel/cpu/bugs.c
-> > @@ -2047,6 +2047,10 @@ enum bhi_mitigations {
-> >  static enum bhi_mitigations bhi_mitigation __ro_after_init =
-> >         IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATION_AUTO : BHI_MITIGATION_OFF;
-> >
-> > +/* Default to short BHB sequence values */
-> > +u8 bhb_seq_outer_loop __ro_after_init = 5;
-> > +u8 bhb_seq_inner_loop __ro_after_init = 5;
-> > +
-> >  static int __init spectre_bhi_parse_cmdline(char *str)
-> >  {
-> >         if (!str)
-> > @@ -3242,6 +3246,15 @@ void __init cpu_select_mitigations(void)
-> >                 x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
-> >         }
-> >
-> > +       /*
-> > +        * Switch to long BHB clear sequence on newer CPUs (with BHI_CTRL
-> > +        * support), see Intel's BHI guidance.
-> > +        */
-> > +       if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
-> > +               bhb_seq_outer_loop = 12;
-> > +               bhb_seq_inner_loop = 7;
-> > +       }
-> > +
+On Fri, Apr 03, 2026, Sean Christopherson wrote:
+> On Mon, Mar 16, 2026, Yosry Ahmed wrote:
+> > Replace the PAGE_MASK check with page_address_valid(), which checks both
+> > page-alignment as well as the legality of the GPA based on the vCPU's
+> > MAXPHYADDR. Use kvm_register_read() to read RAX to avoid
+> > page_address_valid() failing on 32-bit due to garbage in the higher
+> > bits.
 > 
-> How does this work for VMs in a heterogeneous migration pool that
-> spans the Alder Lake boundary? They can't advertise BHI_CTRL, because
-> it isn't available on all hosts in the migration pool, but they need
-> the long sequence when running on Alder Lake or newer.
+> Nit, not "on" 32-bit, correct?  I think you actually mean "to avoid false positives
+> when the vCPU is in 32-bit mode, in the unlikely case the vCPU transitioned from
+> 64-bit back to 32-bit, without writing EAX".  Because regs[] is an unsigned long,
+> so the upper bits of save.rax will be cleared by svm_vcpu_run() on every VM-Entry,
+> and it should be impossible for a purely 32-bit guest to get a non-zero value in
+> RAX[63:32].
+> 
+> And even for a 64-bit host with a 32-bit guest, the only way to get a non-zero
+> value in RAX[63:32] while in 32-bit mode would be to transition from 64-bit mode,
+> back to 32-bit mode, without writing EAX.
+> 
+> > Note that this is currently only a problem if KVM is running an L2 guest
+> > and ends up synthesizing a #VMEXIT to L1, as the RAX check takes
+> > precedence over the intercept. Otherwise, if KVM emulates the
+> > instruction, kvm_vcpu_map() should fail on illegal GPAs and inject a #GP
+> > anyway. However, following patches will change the failure behavior of
+> > kvm_vcpu_map(), so make sure the #GP interception handler does this
+> > appropriately.
+> > 
+> > Opportunistically drop a teaser FIXME about the SVM instructions
+> > handling on #GP belonging in the emulator.
+> > 
+> > Fixes: 82a11e9c6fa2 ("KVM: SVM: Add emulation support for #GP triggered by SVM instructions")
+> > Fixes: d1cba6c92237 ("KVM: x86: nSVM: test eax for 4K alignment for GP errata workaround")
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > ---
+> >  arch/x86/kvm/svm/svm.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > index 392a5088f20bf..3122a98745ab7 100644
+> > --- a/arch/x86/kvm/svm/svm.c
+> > +++ b/arch/x86/kvm/svm/svm.c
+> > @@ -2277,10 +2277,12 @@ static int gp_interception(struct kvm_vcpu *vcpu)
+> >  	if (x86_decode_emulated_instruction(vcpu, 0, NULL, 0) != EMULATION_OK)
+> >  		goto reinject;
+> >  
+> > +	/* FIXME: Handle SVM instructions through the emulator */
+> >  	svm_exit_code = svm_instr_exit_code(vcpu);
+> >  	if (svm_exit_code) {
+> > -		/* All SVM instructions expect page aligned RAX */
+> > -		if (svm->vmcb->save.rax & ~PAGE_MASK)
+> > +		unsigned long rax = kvm_register_read(vcpu, VCPU_REGS_RAX);
+> > +
+> > +		if (!page_address_valid(vcpu, rax))
+> 
+> Eh, let it poke out, i.e.
+> 
+> 		if (!page_address_valid(vcpu, kvm_register_read(vcpu, VCPU_REGS_RAX)))
 
-As we discussed elsewhere, support for migration pool is much more
-involved. It should be dealt in a separate QEMU/KVM focused series.
+Argh, looking at the rest of this series, and at KVM's existing code, having to
+use kvm_register_read() is awful.  This really should be able to use kvm_rax_read(),
+but that won't handle the truncation.
 
-A quickfix could be adding support for spectre_bhi=long that guests in a
-migration pool can use?
+There are only a handful of likely-benign goofs due to this mess, but there is a
+pile of manual truncation and casting going on.  In addition to _raw() variants,
+and mode-aware defaults, add "e" versions would be helpful, as many of the
+explicit truncation flows are cases where e.g. EAX, ECX, and EDX are architecturally
+accessed.
 
-> Previously, I considered such a migration pool infeasible, because of
-> the change in MAXPHYADDR, but I now predict that I will lose that
-> battle.
+I'll put together patches, and think more on how to handle this series (the
+dependencies aren't terrible, but they certainly are annoying).  I'm tempted
+to squeeze this into 7.1 to make future life easier...
+
+> 			goto reinject;
+> 
+> >  			goto reinject;
+> >  
+> >  		if (is_guest_mode(vcpu)) {
+> > -- 
+> > 2.53.0.851.ga537e3e6e9-goog
+> > 
