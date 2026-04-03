@@ -1,92 +1,93 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7F2155C82
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 15:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EFE3B6BFE
+	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 15:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775229278; cv=none; b=uKIqG3zcuCM0PZw2QghvBQuVgMK4a7v8BRKeNiHsT2kKYwx6B/n/mLcgBUujhvE1Z9VWqm/KUG3gcLKo4EBVRxGPyEwiKlBQN+KIFHvgyLgxFqtWPK5jiPmdMCIywzaalJpIUCCG9j3uW6g+wJY7ha/vh259Cys5mmejO6kH8gs=
+	t=1775229285; cv=none; b=o/QnaEqCpyvJLne8Gu99+zLsrgErdAzHPagyn27+DuqYNkuUp9zEO/40g7sz03gG7C9v1vonSTe9USMLxhYAjh4x0k4bmZam7jT9mjb3mvas5CuNQODa4UyDJ1QZPNIw0VkjZxHnpMDUN/PjEjnqrqw7rm8DaecxdL0m8t+lb7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775229278; c=relaxed/simple;
-	bh=VGcMGW7oKcgyZZ6x9bulluTgflMwqX0MxG2RYwtxwkA=;
+	s=arc-20240116; t=1775229285; c=relaxed/simple;
+	bh=p+ASDUdYz84jNx3iUfg4BSpMmcpuNqwANUP22/J2WOo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EBe3xG0zg9O8hs8fS9IIHqZ6bieWPSFqr0BRi2TORjTS8k++4pc1uEQAkB66fs0c4gjA0bisrB558ln8eh2h7sl3cqmaZGfj8YVWj6RaUOv9tlmbmwuo3fZb2QBdz/LXDe/Je5JR9t9Wg5cRHDtuIWp2wqWvMGqeohxHuE14cSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YLbVFxwg; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=mWczXKaLoRmRR+V8dJWu9u7mBWdqd0aAGA9VP+I6U/wDQoRmxfW8suroNiMxC1GfjT4LUKqtZPgJX502DadVvuxMGrB/2eIEPuIoT0XtFZgiUBWmwUHAdAFvq0UOBhT4D+HgB3ysV4whDenAdPSEbG0j1cM6ApKoDEIxNdOXpy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EFCkAc7B; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YLbVFxwg"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76b69fb9d6so1932980a12.1
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 08:14:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EFCkAc7B"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cf084fe58so1031992b3a.1
+        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 08:14:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775229277; x=1775834077; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775229284; x=1775834084; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bEAWgNTof2J2dVtuCYSmlMgRv/5iFSQ7fTuMjmecum0=;
-        b=YLbVFxwgLsSn9RbLYVabAf03viRr3YjVKH8JjkG/Rskv9e8mXbs1tHOBjJVD5LaP0G
-         WeniAiuWd6IPym7BnSXozYKEEchdwQ2sn6cEaagIuB2GYBUZb58tLZH6BVrdgHJT8t5h
-         Y1FTs/sJMH3n1+7ZzUw2Q8os9qjVsprtQ34/n7NYV6ShjWZEjK8a40GzsCON3vSJKL/p
-         1ayhR0tPsiVVbtO+5hAqFMp24wqY8EAgCJI0/ehCLnQD7b3vVFc7WOvMgoCNxPAXPExf
-         fCxd8u7McWlxaZoQSCxTCd6Skw2wNnVF2lveiulnpQ/6SB0YNAzwZeV1WKJvNxpxffrj
-         zBkw==
+        bh=vx3cX0Um4XbIxAKRYiUqFyiIniVc/uoy8TRTh+aipB0=;
+        b=EFCkAc7B4e4++rbuv3e5zAL+8FsHE72/ReW7M48IJQnSrhMSsGVZC15n0AQYZoKr5S
+         FussCS/aOje/s8GjzZ9bvIITQJ8wUuVxoP7biOhcbAGJI7oA0E6tg3anC8UXQZUfiH3i
+         8ZB0X4hJ/As6YvQdrIuhazEkv4erb4M4b+FVm5EwLZOrrhRk4o3o9YA5Iwq2lLFuq3Bq
+         mAUXZ87MlXFU3hIVcc+2yzk9QtgNnqM0LPfvF5X5Kd517wWOSmHyXNfvTT+CTV+koChF
+         cpJsLpM1YJ/NtMr7pQCd2kKbtRYeDqj5OAGlAfloRAIhvXaTrfyKgVRQohQDYeH6z/k0
+         uhaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775229277; x=1775834077;
+        d=1e100.net; s=20251104; t=1775229284; x=1775834084;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bEAWgNTof2J2dVtuCYSmlMgRv/5iFSQ7fTuMjmecum0=;
-        b=hoRqLF3qt3aRxgW5gXK6OMAqGkvzoifQntjDzV0/j6ruvUl+9nLHg1tnpGchdimup6
-         +Li/dspa0Tt6xeHDYlr3AxaVxvGpkToGm6/yvRkLbHXuDsfDkJPHWCPuk/Pd9GBIuLCC
-         35K9jZkgye5Nq+Aubw26TrhwjpDj2bFInadCmkldi2XeUlk6cDmo4GIRea0spAgNtEiR
-         uFhr7vRP82s5Z9W/HWLy0rmHs9tvWes6m7/DxVshPt6lGMWjDGFQ1fCcBz7TeRo2Uqcg
-         i9SVqghp78CBvI2Oc1LySRFPHLz/rpz8bAFRJdf+1vlNzqn7DsGlU5zwIcwhdtPsETRx
-         sCAw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4/TbAHAQhS5alqd8+DNPRLlIonFaPGpyFSFRyCIxafRHlR8cwrapm5fpPzUZg25CWnjs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJMkgdXGS30VIslsZ/C85UkmdYzUUcpOX2zyzRhV86oe2CszND
-	3Yt12VgH/qYiQ7nz2sENUPCjJvFoB2cXgXOU6ES6K84UI7OHVxRfeKMNs4tN5Din3ihHl3ZJqhU
-	JJznyVg==
-X-Received: from pgbbo4.prod.google.com ([2002:a05:6a02:384:b0:c74:0:159])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:1594:b0:394:505d:fcf8
- with SMTP id adf61e73a8af0-39f17144bfdmr6759557637.30.1775229276927; Fri, 03
- Apr 2026 08:14:36 -0700 (PDT)
-Date: Fri,  3 Apr 2026 08:13:52 -0700
-In-Reply-To: <20260307011619.2324234-1-yosry@kernel.org>
+        bh=vx3cX0Um4XbIxAKRYiUqFyiIniVc/uoy8TRTh+aipB0=;
+        b=kEksisMZkcnSkjUJCRf1IdhRl9T2OpVumr+ua0k+VKwmg2n2f8gOOp5yOanbdKydKD
+         x39dZ5nRyEzTDM5a+EmCEG4trfqXE9Nk7n6cZewk/u7kpx0DTSwEsUyfZfOx1bIbqBpQ
+         sSAMRX8I2Ody0LRAaTX93S3l7rQob0BijQBEi6tfYOj4IJ7wKMDmRfT2F1mz0/8z63xz
+         w6VGj1jMXWFifG7OT+WC53yxG+fHVIWR/LDsrMMn7IkAcxpWAyNPzNb4F4PPTgjhTzNs
+         Gg8cFC3l9+orQ0cEiHsSe1O0rnIgcgoda+LoTcampFHH0G4iTVrSSs4omUT9HUYzU2YT
+         UG4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCULp+4ZOGNKuOC3Uf01WKzykvZ7vanT2osclesfvqY9FGTMkqREmc02I77LkBYint2ddH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ7db28raZtGlmr2w5jA0f7r7QscvzW5Lp+uRn8ivEq4kD6Sw+
+	3wcAiTX3GLmGxsmZUn3+Mioz6k9CMLOlz4XGNodMxLloOeDnzrAo0CxvyjUDdHmNdqkaDY/opcD
+	Rp/MVPw==
+X-Received: from pfiv17.prod.google.com ([2002:aa7:99d1:0:b0:82c:67aa:804])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10c6:b0:81f:4a0c:c584
+ with SMTP id d2e1a72fcca58-82d0da44954mr3417884b3a.1.1775229284032; Fri, 03
+ Apr 2026 08:14:44 -0700 (PDT)
+Date: Fri,  3 Apr 2026 08:13:54 -0700
+In-Reply-To: <20260123090304.32286-1-jiangshanlai@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260307011619.2324234-1-yosry@kernel.org>
+References: <20260123090304.32286-1-jiangshanlai@gmail.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <177522804925.287216.14341788038408524935.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: SVM: Advertise TCE to userspace
+Message-ID: <177522907944.296735.10194559706279197463.b4-ty@google.com>
+Subject: Re: [PATCH 1/2] KVM: x86/mmu: Don't check old SPTE permissions when
+ trying to unsync
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Venkatesh Srinivas <venkateshs@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, 
+	Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, 07 Mar 2026 01:16:16 +0000, Yosry Ahmed wrote:
-> Advertise TCE to userspace, allowing guests to set EFER.TCE, potentially
-> gaining some performance. Patchees 1 & 2 are prep work suggested by
-> Sean.
+On Fri, 23 Jan 2026 17:03:02 +0800, Lai Jiangshan wrote:
+> Commit ecc5589f19a5 ("KVM: MMU: optimize set_spte for page sync") added
+> a writable permission check on the old SPTE to avoid unnecessary calls
+> to mmu_try_to_unsync_pages() when syncing SPTEs.
 > 
-> v1: https://lore.kernel.org/kvm/20260306002327.1225504-1-yosry@kernel.org/
-> 
-> Venkatesh Srinivas (1):
->   KVM: SVM: Advertise Translation Cache Extensions to userspace
+> Later, commit e6722d9211b2 ("KVM: x86/mmu: Reduce the update to the spte
+> in FNAME(sync_spte)") indirectly achieves it by avoiding some SPTE
+> updates altogether, which makes the writable permission check in
+> make_spte() much less useful.
 > 
 > [...]
 
-Applied 1-2 to kvm-x86 misc (several weeks ago, I forgot to send emails before
-disappearing).  Thanks!
+Applied patch 2 to kvm-x86 mmu, with my proposed tweaks.
 
-[1/2] KVM: x86: Move some EFER bits enablement to common code
-      https://github.com/kvm-x86/linux/commit/3b27c82ba2f3
-[2/2] KVM: x86: Use kvm_cpu_cap_has() for EFER bits enablement checks
-      https://github.com/kvm-x86/linux/commit/d216449f253c
-[3/3] KVM: SVM: Advertise Translation Cache Extensions to userspace
-      DROP
+[1/2] KVM: x86/mmu: Don't check old SPTE permissions when trying to unsync
+      SKIP, for now.
+[2/2] KVM: x86/mmu: KVM: x86/mmu: Skip unsync when large pages are allowed
+      https://github.com/kvm-x86/linux/commit/b3ae3ceb5569
 
 --
 https://github.com/kvm-x86/linux/tree/next
