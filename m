@@ -1,130 +1,82 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F982628D
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 23:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C3D282F1D;
+	Fri,  3 Apr 2026 23:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775257665; cv=none; b=niuCUzkJyR5wmLQKEZDVSsfYLuNvE1JZVL8OwpGOWuAJbxLzqRyi0rzfwERhN8mbpraY/vzH9blZn4Ke/Ms/1bXy5D3syA2Z3q5iFZl4NdgfaVoX0pxTNeKj9mcMt2LYMl+REuzob8/tcCxlyuiG2Xz2RSKoLU6O2zT9PrZ1sDc=
+	t=1775257709; cv=none; b=flri3ljPuMtGlcaZpZRTSzdK2Q3BvyslWYxuW392IlYqu2w04xIq3vcxkjmDIF+2nvlh7SSM2bH7K0A9c9EUetedwIY1wEHNb+amMYtuu88W8LBSHOL6/mJRu2mt9w8bG1Dcbo6p9EtE59m3u492c851YkVvcYgSPO66znzVxwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775257665; c=relaxed/simple;
-	bh=QFw0rrC9aSRV2WEJT8WSxFXaANoNrpSU9ltrBzCF5KU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Cm6V90kHjqPVwuR8fHu75SyK0BZByOdpvsHX6uXmhjomXBqti0sf+FHekvHTnPjsUGBbrpkuoTANueWJLK3/x9S9gV57ZD1s6MSoxhScby6si4EqRHI1zCRYlvo/ll3v7Gz0wv/b5USrqPrxjqzSZKtjLe6T6Ugy7jUVg+NtyWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PCGinfKA; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PCGinfKA"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cf084fe58so1155169b3a.1
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 16:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775257664; x=1775862464; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Hyvj5kBMSuNn+SZot72GWuwcDIHZb7QGlMIx1bfcdhA=;
-        b=PCGinfKAygOkkUXf+DY3y087qTEWqrFKxAXmXE6FLgGHVE30kP6BYJ2yCWv4wwKRC1
-         Zwqq8fhu/MtrCSuZM8FZI4fW1Rklj9zbKCOtM1zXpYMcAKpIjl2Ura1+lw+LYzdClvBP
-         Kuqj985YIhOxJ9DHA/peUFZE2F7aXQwo5mk7/0qOzen2Is6t8PY6OQj1DXPc80Rd+IBB
-         6VG1MdBC8/YCedky63Npj8Z9cAbhAuIQO+e/k0XhDd4d3xcFMDXmyuUlKJ02Y2xTF/Ft
-         cu7uQ4UpPG05TXHKX7sS13MUd3XGX8EXSgurJK/DqAszzZzmQIpwkE2I/AE3ie+8ugBi
-         lQ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775257664; x=1775862464;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Hyvj5kBMSuNn+SZot72GWuwcDIHZb7QGlMIx1bfcdhA=;
-        b=b3tOj3oFX9sVDI7W7HkSK+OlceCX7oJaZSL+kKKF0S9r+HZxCqW4lhO3peHEl+PxZd
-         CDLPEwJ8R+oAArwR1dUqqCR2uAWl3o3aYHwRubuUaLdizMsEZQnQubhgpcSrPqqp9XIa
-         iO7rcTmG6OUirRg3fRYHLOV43/VRMafauSf6I9elm5qH/wGGAqwjr5PSZIhjZWlu7NNi
-         YcX+h2+yrCuMF1QpSit9eqTazqydos22NTiiWeDVcRSMSpv4+EQDnzKMDPbBezy+L7ga
-         Cg54Y1hbtBrF9hgkJnH9rLhQnGP2nse4viDu5In8Nc2Y/lXmRhm87D5cA9bsG9hUonkN
-         Wljw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNSGLH4IY40UkMyXqslDwdiNEPxqWpDiwT5xzrCJ6aI65VBfhO2kTDl56k5sZb5RNYswU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyitfeep9LIeSNHVePRVzaNnz/NmafEJLhs1Hto51h1H/hZ3gTi
-	soU89YcA+MrBcKt60YwDxmz98/o+G7A2+pMSRuaz0PPfA/Lxlro4Eew0orP9Vu7IKro6yN9dxlY
-	FCIjL5w==
-X-Received: from pfra8.prod.google.com ([2002:aa7:8e88:0:b0:824:ada9:ae89])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1a89:b0:823:3079:7c7
- with SMTP id d2e1a72fcca58-82d0db6bb43mr4629830b3a.29.1775257663390; Fri, 03
- Apr 2026 16:07:43 -0700 (PDT)
-Date: Fri, 3 Apr 2026 16:07:41 -0700
-In-Reply-To: <ec581571ab4141ed77e6979b3e03773e301a62c1.camel@intel.com>
+	s=arc-20240116; t=1775257709; c=relaxed/simple;
+	bh=ivKf/zs4H4nXdmiccM2UX91Fx8VrEpOUNJHv725MlW4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=o7IAnqf5YqTVKwR5P4qkSjDK1TizrRgW07nj80QdG/D4hmtPiLpNNF3hg8SSN8/K4WVc9p0uRc7bAWcB1cQ2/YWf6G5pw5lfC9ZclcHasKTaXhNoxUdHo2mXpq8mpVEBJZf7qGKCKutyMjh7Nk1h2mioyeYSYhRRpm/pQ6nFE7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-01 (Coremail) with SMTP id qwCowABXAW05SNBprXYbDA--.6997S2;
+	Sat, 04 Apr 2026 07:07:38 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: andrew.jones@oss.qualcomm.com
+Cc: alex@ghiti.fr,
+	anup@brainfault.org,
+	aou@eecs.berkeley.edu,
+	atish.patra@linux.dev,
+	jiakaiPeanut@gmail.com,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com,
+	pjw@kernel.org,
+	xujiakai2025@iscas.ac.cn
+Subject: Re: [PATCH] RISC-V: KVM: Fix shift-out-of-bounds in make_xfence_request()
+Date: Fri,  3 Apr 2026 23:07:37 +0000
+Message-Id: <20260403230737.2388099-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <wneyyisnu6rtkzwpdantjfb6e3fzakkc4gbyfuanavunjoxaev@5niyyh64rdrb>
+References: <wneyyisnu6rtkzwpdantjfb6e3fzakkc4gbyfuanavunjoxaev@5niyyh64rdrb>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260318190111.1041924-1-dmaluka@chromium.org>
- <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com> <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
- <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com> <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
- <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
- <ac_rNT69TdocrMYc@google.com> <401db97a254b356ad8539a5d637d68ee826179a5.camel@intel.com>
- <adAQCXI-7Yj0wcKA@google.com> <ec581571ab4141ed77e6979b3e03773e301a62c1.camel@intel.com>
-Message-ID: <adBIPdBA-aJWcUrY@google.com>
-Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Dave Hansen <dave.hansen@intel.com>, 
-	"dmaluka@chromium.org" <dmaluka@chromium.org>, "bp@alien8.de" <bp@alien8.de>, "kas@kernel.org" <kas@kernel.org>, 
-	"x86@kernel.org" <x86@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowABXAW05SNBprXYbDA--.6997S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8I
+	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87
+	Iv6xkF7I0E14v26F4UJVW0owAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY
+	62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7V
+	C2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0
+	x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwI
+	xGrwCF54CYxVCY1x0262kKe7AKxVWUtVW8ZwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
+	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
+	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvE
+	c7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
+	v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x
+	0JUQZ23UUUUU=
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwwGCWnP11+mewAAs3
 
-On Fri, Apr 03, 2026, Rick P Edgecombe wrote:
-> On Fri, 2026-04-03 at 12:07 -0700, Sean Christopherson wrote:
-> > > > No?=C2=A0 Don't we just want to allow access to MSRs that aren't ac=
-celerated?=C2=A0
-> > > > What the TDX-Module supports is largely irrelevant, I think.
-> > >=20
-> > > Not sure if I might be missing the point here. As above, we don't hav=
-e
-> > > enough info to=C2=A0know which MSRs are accelerated. If the guest ena=
-bled #VE
-> > > reduction, it changes which ones are accelerated and the VMM is not
-> > > notified.
-> >=20
-> > What does the "accleration" in that case?=C2=A0 Or does it reduce which=
- ones are
-> > accelerated?
->=20
-> I mean ones where wrmsr is handled by the TDX module instead of generatin=
-g a #VE
-> that gets morphed into TDVMCALL by the guest. Actually usually called "na=
-tive",
-> but I just reused your "accelerated" term from the mail.
+> idx is unsigned, so I would expect this 'idx < 0' to produce a warning
+> that it's always false.
+> 
+> I wouldn't introduce idx and just change the current condition instead
+> 
+>   if (vcpu->vcpu_id < hbase || vcpu->vcpu_id >= hbase + BITS_PER_LONG)
+>      continue;
 
-It's neither.  Precision matters here, otherwise I can't follow along.  Acc=
-elerated
-means the CPU virtualizes it without software involvement.  Native would me=
-an the
-guest has direct access to bare metal hardware.  IIUC, what's happening her=
-e is
-that the TDX-Module is emulating x2APIC stuff.
+Thanks for the review!
 
-> So... "Reduced #VE" (also called "VE reduction") reduces which things cau=
-se a
-> #VE. The guest opts into it and the TDX module starts behaving differentl=
-y. It's
-> kind of grab bag of changes including changing CPUID behavior, which is a=
-nother
-> wrinkle. It was intended to fixup guest side TDX arch issues.
+You're right, the 'idx < 0' check is redundant since idx is unsigned.
+Will drop the idx variable and use your suggested condition directly.
 
-And KVM has no visilibity into which mode the guest has selected?  That's a=
-wful.
+Will send a v2 shortly.
 
-If KVM has no visiblity, then I don't see an option other than for KVM to a=
-dvertise
-and emulate what it can at all times, and it becomes the guest's responsibi=
-lity
-to not screw up.  I guess it's not really any different from not trying to =
-use
-MMIO accesses after switching to x2APIC mode.
+Thanks,
+Jiakai
+
