@@ -1,30 +1,29 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE2728C2BF;
-	Fri,  3 Apr 2026 15:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4346226B2DA;
+	Fri,  3 Apr 2026 15:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775230234; cv=none; b=WJMA6eo8NAzrJVYv9gpHztRcKuc317fi7+fyzjba7UIWEWKz2kqA9jk+D8Y1jVxvIx4UudAPlus71qFluOX7nDwDHZJJXOAzdhV4+f1XSbEF/DXMFo58hkrl84PaRc3Eh/5bw70QGBIbLZxCL5ARvmhtGw5jEtGvWZ/U0sqr838=
+	t=1775230235; cv=none; b=lzhxHBLuvNcCX55Q9hJfPM7AKjNdPlqMn3j5w9obdsUHrMSLWMuae9SC4j4w46Od+mQWViWMCA2dvXLkQYIkGSwfcS2NBQjGvJP0LjJhMRZwdqPxe4sfPh0qFBdO1CSwDRTXqipSHGKt1yOvzYvkE0rdJfeTvemqwrzImPkv8VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775230234; c=relaxed/simple;
-	bh=1JN9y2YP149Xaa8TAhsR1KGMxhicd7F0xJEbKmyzfVc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bnLi0g1ueabaNju9IauLCUZwluLPLbD2yxVRK+96hdzJBC/9OfDQ/NFWrLtFauJqzu/lv/Ju8VJYSpjYjC85Bqh+x9rN+8+iiPYzcnFLgiTucz2lAi4pvUKTkvtzQC075uW9Xt7a7OxJlPBegZWpQt/dOec09eYdB0y4QtQ2Jlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=pukBa6MR; arc=none smtp.client-ip=115.124.30.118
+	s=arc-20240116; t=1775230235; c=relaxed/simple;
+	bh=nYvUfd++y5DOIe4IR6nAO8wSfwXNqSBoWrNch8hgDS8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S90hgRJFd0Ofe3Mf+XDAYsfyezQKiyUKXHuLDhGPD/wZJVeV/JJaPo4SsbzTibWGh0llvSnKW4PLcAXcZc3S8LLRPhiYSQx2m6R2djtC3s24JW8uWSi+24oNif6EkcFi9GBPq5z5X4VxOYN03IJsroVZ2KJdFpOsDQmmk4NGelI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nihzHD1C; arc=none smtp.client-ip=115.124.30.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="pukBa6MR"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nihzHD1C"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1775230229; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=vAXnuXYy5CVxib+kdtLGkhTwGblq2YVJ173NjMXO3mM=;
-	b=pukBa6MR1g4xP7IoEZUsrNMg6Wn8aSRXXhP6V7liMI04Y0wsFRU74FnG+oQhOHexhyDyA5ZrTlchWob2fChjy1GiWoBctaqhXxxLiO7KuOMKHZgik7ixkJMfeaY8pd2aRT61nslhYhUvc5TC3Bfjr/TSfXg4U37lBCmfGQ/pT6k=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X0KbxUp_1775230226;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X0KbxUp_1775230226 cluster:ay36)
+	t=1775230225; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=pe6t8LzmwGI0uq4dXwZrBkDc+BEZT75JPPz4oWsgqjA=;
+	b=nihzHD1CsSca7Omqefj1cnxpueRSkwV4vWgPcy9HcC7NepRtxO81DmMzkRW3lAgHe2jD9jGk2r9OPHGfm5LWCqqjMKVqWhq0GGwJx3VJ6aW6pWu007IhFgyzTtky3lhBLPDEXSlzV4hlsdStzO+OevE2nLPNrw2aheVvXSvY70w=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R271e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X0KbxT5_1775230221;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X0KbxT5_1775230221 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 03 Apr 2026 23:30:27 +0800
+          Fri, 03 Apr 2026 23:30:23 +0800
 From: fangyu.yu@linux.alibaba.com
 To: pbonzini@redhat.com,
 	corbet@lwn.net,
@@ -44,12 +43,10 @@ Cc: guoren@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v8 3/3] RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
-Date: Fri,  3 Apr 2026 23:30:18 +0800
-Message-Id: <20260403153019.9916-4-fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v8 0/3] Support runtime configuration for per-VM's HGATP mode
+Date: Fri,  3 Apr 2026 23:30:15 +0800
+Message-Id: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
-References: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -60,86 +57,88 @@ Content-Transfer-Encoding: 8bit
 
 From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective
-G-stage GPA width for a VM.
+Currently, RISC-V KVM hardcodes the G-stage page table format (HGATP mode)
+to the maximum mode detected at boot time (e.g., SV57x4 if supported). but
+often such a wide GPA is unnecessary, just as a host sometimes doesn't need
+sv57.
 
-KVM_CHECK_EXTENSION(KVM_CAP_VM_GPA_BITS) returns the effective GPA
-bits for a VM, KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) allows userspace
-to downsize the effective GPA width by selecting a smaller G-stage
-page table format:
-  - gpa_bits <= 41 selects Sv39x4 (pgd_levels=3)
-  - gpa_bits <= 50 selects Sv48x4 (pgd_levels=4)
-  - gpa_bits <= 59 selects Sv57x4 (pgd_levels=5)
+This patch reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE. User-space can
+now explicitly request a specific HGATP mode (SV39x4, SV48x4, SV57x4 or
+SV32x4) during VM creation.
 
-Reject the request with -EINVAL for unsupported values and with -EBUSY
-if vCPUs have been created or any memslot is populated.
-
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
 ---
- arch/riscv/kvm/vm.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+Changes in v8:
+    - Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective GPA width
+      for a VM (Anup's suggestion).
+    - Handle the kvm == NULL case and task kvm->lock and kvm->slots_lock to serialize
+      against concurrent vCPU creation and memslot updates (Radim's suggestion).
+    - Link to v7:
+      https://lore.kernel.org/linux-riscv/20260402132303.6252-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v7 (Anup's suggestions):
+    - Keep the original HGATP mode probing logic.
+    - Link to v6:
+      https://lore.kernel.org/linux-riscv/20260330122601.22140-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v6 (Anup's suggestions):
+    - Reworked kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size() to
+      take "unsigned long pgd_levels" instead of "struct kvm_arch *".
+    - Moved kvm_riscv_gstage_mode() helper from kvm_host.h to kvm_gstage.h.
+    - Renamed kvm->arch.kvm_riscv_gstage_pgd_levels to kvm->arch.pgd_levels.
+    - Added pgd_levels to struct kvm_gstage to avoid repeated
+      gstage->kvm->arch pointer chasing.
+    - Link to v5:
+      https://lore.kernel.org/linux-riscv/20260204134507.33912-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v5:
+    - Use architectural HGATP.MODE encodings as the bit index for the supported-mode
+      bitmap and for the VM-mode selection UAPI; no new UAPI mode/bit defines are
+      introduced(per Radim).
+    - Allow KVM_CAP_RISCV_SET_HGATP_MODE on RV32 as well(per Drew).
+    - Link to v4:
+      https://lore.kernel.org/linux-riscv/20260202140716.34323-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v4:
+    - Extend kvm_riscv_gstage_mode_detect() to probe all HGATP.MODE values
+      supported by the host and record them in a bitmask.
+    - Treat unexpected pgd_levels in kvm_riscv_gstage_mode() as an internal error
+      (e.g. WARN_ON_ONCE())(per Radim).
+    - Move kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size() to header
+      as static inline helpers(per Radim).
+    - Drop gstage_mode_user_initialized and Remove the kvm_debug() message from
+      KVM_CAP_RISCV_SET_HGATP_MODE(per Radim).
+    - Link to v3:
+      https://lore.kernel.org/linux-riscv/20260125150450.27068-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v3:
+    - Reworked the patch formatting (per Drew).
+    - Dropped kvm->arch.kvm_riscv_gstage_mode and derive HGATP.MODE from
+      kvm_riscv_gstage_pgd_levels via a helper, avoiding redundant per-VM state(per Drew).
+    - Removed kvm_riscv_gstage_max_mode and keep only kvm_riscv_gstage_max_pgd_levels
+      for host capability detection(per Drew).
+    - Other initialization and return value issues(per Drew).
+    - Enforce that KVM_CAP_RISCV_SET_HGATP_MODE can only be enabled before any vCPUs
+      are created by rejecting the ioctl once kvm->created_vcpus is non-zero(per Radim).
+    - Add a memslot safety check and reject the capability unless
+      kvm_are_all_memslots_empty(kvm) is true, ensuring the G-stage format is not
+      changed after any memslots have been installed(per Radim).
+    - Link to v2:
+      https://lore.kernel.org/linux-riscv/20260105143232.76715-1-fangyu.yu@linux.alibaba.com/
 
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index fb7c4e07961f..a9f083feeb76 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -214,12 +214,52 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 
- int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- {
-+	if (cap->flags)
-+		return -EINVAL;
-+
- 	switch (cap->cap) {
- 	case KVM_CAP_RISCV_MP_STATE_RESET:
--		if (cap->flags)
--			return -EINVAL;
- 		kvm->arch.mp_state_reset = true;
- 		return 0;
-+	case KVM_CAP_VM_GPA_BITS: {
-+		unsigned long gpa_bits = cap->args[0];
-+		unsigned long new_levels;
-+		int r = 0;
-+
-+		/* Decide target pgd levels from requested gpa_bits */
-+#ifdef CONFIG_64BIT
-+		if (gpa_bits <= 41)
-+			new_levels = 3;        /* Sv39x4 */
-+		else if (gpa_bits <= 50)
-+			new_levels = 4;        /* Sv48x4 */
-+		else if (gpa_bits <= 59)
-+			new_levels = 5;        /* Sv57x4 */
-+		else
-+			return -EINVAL;
-+#else
-+		/* 32-bit: only Sv32x4*/
-+		if (gpa_bits <= 34)
-+			new_levels = 2;
-+		else
-+			return -EINVAL;
-+#endif
-+		if (new_levels > kvm_riscv_gstage_max_pgd_levels)
-+			return -EINVAL;
-+
-+		/* Follow KVM's lock ordering: kvm->lock -> kvm->slots_lock. */
-+		mutex_lock(&kvm->lock);
-+		mutex_lock(&kvm->slots_lock);
-+
-+		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
-+			r = -EBUSY;
-+		else
-+			kvm->arch.pgd_levels = new_levels;
-+
-+		mutex_unlock(&kvm->slots_lock);
-+		mutex_unlock(&kvm->lock);
-+
-+		return r;
-+	}
- 	default:
- 		return -EINVAL;
- 	}
+Fangyu Yu (3):
+  RISC-V: KVM: Support runtime configuration for per-VM's HGATP mode
+  RISC-V: KVM: Cache gstage pgd_levels in struct kvm_gstage
+  RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
+
+ arch/riscv/include/asm/kvm_gstage.h | 47 ++++++++++++++++---
+ arch/riscv/include/asm/kvm_host.h   |  1 +
+ arch/riscv/kvm/gstage.c             | 65 +++++++++++++--------------
+ arch/riscv/kvm/main.c               | 12 ++---
+ arch/riscv/kvm/mmu.c                | 70 +++++++++--------------------
+ arch/riscv/kvm/vm.c                 | 49 ++++++++++++++++++--
+ arch/riscv/kvm/vmid.c               |  3 +-
+ 7 files changed, 148 insertions(+), 99 deletions(-)
+
 -- 
 2.50.1
 
