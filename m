@@ -1,246 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349EA358399;
-	Fri,  3 Apr 2026 23:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4D3264F9;
+	Fri,  3 Apr 2026 23:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775258179; cv=none; b=eR7rrs9JsENHKUWuFvC8M0ZvF79sVqKOWcJb7ITautg6hSgsVeWSJnzUY7w/dTztqZGNjxyn1B4tW/a0xhED+jVgwiM5ZZosuROd3G4EZxe3yG6e7X4U5x2IJ+hTCbiuHSK8i0dSSrajL4w1lA4W0HbXXnhpkbCy5AcXeFM3SGg=
+	t=1775258426; cv=none; b=lBUIOObFLOpLYiQSQVaF4M4yDUvprBHnIP4UypKjukB3g57rHv9h1SSwK1ad+B22dH7HkmbxYC9f1/g43VTGacTYq7OTHxR4IVwCuxITO9n0m+holwmXc/pIK02y8LJojRvDwQ1urvfnSy/7vraWgS0TVqQ+KZjpDDI0bxjgGds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775258179; c=relaxed/simple;
-	bh=EHy9QxSViQcZhCLgN+aOsMYMH25suitkUYTNfE9PU18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eF7yEOgh/XXiTh/ZUTTwtgtpa6Srb+oNcu7P7VU+jKrSf04pkGJpnL8m0p/YDkWr/pdnNGYbZxhFH73JGSmPEVoNTMzCuZvA6T2RYQhZWuqwEVg8AeVxFZK1Crnv2KHnfv1oe4QpevXwpR7is0nVMleCsCwhcy4QQkSW1NC5tDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aqhoIoYw; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aqhoIoYw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775258177; x=1806794177;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=EHy9QxSViQcZhCLgN+aOsMYMH25suitkUYTNfE9PU18=;
-  b=aqhoIoYwBwzC0fUNdXe2r8IxupaGq8BzcVnGsiaVHwQ7dkO3VjrtNlqn
-   g7Hzx0MvG9QZcGSXS4PXh5FYdIxq6oj+U1dOhfYVANn+2wB2OgcvmlI8G
-   fpQX9jdqnFSSyyw8z18wCpalfXumP2YnmJim5UQUfGOR9u82iIE/RWxr9
-   FPUuBcydFMyVE14XY0n1W6VNIJArkV7GNu9IyWWGM97kyg47/IaYtIAru
-   5DX4VePb0fdgOmdkiyFaqFayLpUm9ldQdv/fD3jp7UOnRIoQleVmfLwAZ
-   Jhjd7EvMiTd0iCar7uKW5ycS4xl8Jdjjf1VtwfaAI3f8+shNAWaj5qPGs
-   w==;
-X-CSE-ConnectionGUID: wZTOm060QL6NQgAV3Qh8mw==
-X-CSE-MsgGUID: TSw6fX8vSSytdHavru1d2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76385873"
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="76385873"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 16:16:16 -0700
-X-CSE-ConnectionGUID: uQTi6Y1EQraWMGfyRqOYxg==
-X-CSE-MsgGUID: 19+LjM0GTjWYMq2dnjIdjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="250587794"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 16:16:15 -0700
-Date: Fri, 3 Apr 2026 16:16:08 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	chao.gao@intel.com
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260403231608.zopnhnypdclzqlx7@desk>
-References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
- <20260402-vmscape-bhb-v9-2-94d16bc29774@linux.intel.com>
- <CALMp9eSLVvr00mJ0J2f2_SPeCW-VS58kxMcxHgUW6etML+_+QA@mail.gmail.com>
- <20260403185236.sjgetnkha3o3a4d3@desk>
- <CALMp9eSPkMpKQELTnsaj6=gXD+EyE0n2_p93n4maDc93bPFe+w@mail.gmail.com>
- <20260403213445.xzb4rxbfbg5un7li@desk>
- <CALMp9eSXfJvR=PHtttbqm3q3nH436T1eH4YdpVqxQeP-cxEPsA@mail.gmail.com>
+	s=arc-20240116; t=1775258426; c=relaxed/simple;
+	bh=Re3Py+OOsHnqXfYI69sqfdtmhzoou8VimSghUjBf2JU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kJzCtcfhgGGOtjqkP6a4dz8FmXycAo8PlRYSLQucpf3FmaAbPe157KvPgL6yHxPCnYsW+n/gh58NK6zDtxC6sy11lkJ9UR/j5olsGpZADBNBmTuF5I6La3ift5OMknPSHRj0y6cB8QYSb6fCtetAmpZTHgj6PU3ace1e1jy4UjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-01 (Coremail) with SMTP id qwCowADHb2ssS9BpDqMbDA--.3154S2;
+	Sat, 04 Apr 2026 07:20:12 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH v2] RISC-V: KVM: Fix shift-out-of-bounds in make_xfence_request()
+Date: Fri,  3 Apr 2026 23:20:11 +0000
+Message-Id: <20260403232011.2394966-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMp9eSXfJvR=PHtttbqm3q3nH436T1eH4YdpVqxQeP-cxEPsA@mail.gmail.com>
+X-CM-TRANSID:qwCowADHb2ssS9BpDqMbDA--.3154S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFy7try3tw1UXF4rWr45Jrb_yoW8XryDpr
+	4kuFsa9Fs5GFnFya47ArZ5WF18Ar1kK34jvrW3uF48Jr4qqry8ArsY93s8Wry3JFsYqryF
+	krnIqFyfua1DAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
+	AK6FWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU0sqXDUUU
+	U
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwkGCWnP11+pggAAsE
 
-On Fri, Apr 03, 2026 at 02:59:33PM -0700, Jim Mattson wrote:
-> On Fri, Apr 3, 2026 at 2:34 PM Pawan Gupta
-> <pawan.kumar.gupta@linux.intel.com> wrote:
-> >
-> > On Fri, Apr 03, 2026 at 01:19:17PM -0700, Jim Mattson wrote:
-> > > On Fri, Apr 3, 2026 at 11:52 AM Pawan Gupta
-> > > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > > >
-> > > > On Fri, Apr 03, 2026 at 11:10:08AM -0700, Jim Mattson wrote:
-> > > > > On Thu, Apr 2, 2026 at 5:32 PM Pawan Gupta
-> > > > > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > > > > >
-> > > > > > As a mitigation for BHI, clear_bhb_loop() executes branches that overwrite
-> > > > > > the Branch History Buffer (BHB). On Alder Lake and newer parts this
-> > > > > > sequence is not sufficient because it doesn't clear enough entries. This
-> > > > > > was not an issue because these CPUs use the BHI_DIS_S hardware mitigation
-> > > > > > in the kernel.
-> > > > > >
-> > > > > > Now with VMSCAPE (BHI variant) it is also required to isolate branch
-> > > > > > history between guests and userspace. Since BHI_DIS_S only protects the
-> > > > > > kernel, the newer CPUs also use IBPB.
-> > > > > >
-> > > > > > A cheaper alternative to the current IBPB mitigation is clear_bhb_loop().
-> > > > > > But it currently does not clear enough BHB entries to be effective on newer
-> > > > > > CPUs with larger BHB. At boot, dynamically set the loop count of
-> > > > > > clear_bhb_loop() such that it is effective on newer CPUs too. Use the
-> > > > > > X86_FEATURE_BHI_CTRL feature flag to select the appropriate loop count.
-> > > > > >
-> > > > > > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > > > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> > > > > > ---
-> > > > > >  arch/x86/entry/entry_64.S            |  8 +++++---
-> > > > > >  arch/x86/include/asm/nospec-branch.h |  2 ++
-> > > > > >  arch/x86/kernel/cpu/bugs.c           | 13 +++++++++++++
-> > > > > >  3 files changed, 20 insertions(+), 3 deletions(-)
-> > > > > >
-> > > > > > diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-> > > > > > index 3a180a36ca0e..bbd4b1c7ec04 100644
-> > > > > > --- a/arch/x86/entry/entry_64.S
-> > > > > > +++ b/arch/x86/entry/entry_64.S
-> > > > > > @@ -1536,7 +1536,9 @@ SYM_FUNC_START(clear_bhb_loop)
-> > > > > >         ANNOTATE_NOENDBR
-> > > > > >         push    %rbp
-> > > > > >         mov     %rsp, %rbp
-> > > > > > -       movl    $5, %ecx
-> > > > > > +
-> > > > > > +       movzbl    bhb_seq_outer_loop(%rip), %ecx
-> > > > > > +
-> > > > > >         ANNOTATE_INTRA_FUNCTION_CALL
-> > > > > >         call    1f
-> > > > > >         jmp     5f
-> > > > > > @@ -1556,8 +1558,8 @@ SYM_FUNC_START(clear_bhb_loop)
-> > > > > >          * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
-> > > > > >          * but some Clang versions (e.g. 18) don't like this.
-> > > > > >          */
-> > > > > > -       .skip 32 - 18, 0xcc
-> > > > > > -2:     movl    $5, %eax
-> > > > > > +       .skip 32 - 20, 0xcc
-> > > > > > +2:     movzbl  bhb_seq_inner_loop(%rip), %eax
-> > > > > >  3:     jmp     4f
-> > > > > >         nop
-> > > > > >  4:     sub     $1, %eax
-> > > > > > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> > > > > > index 70b377fcbc1c..87b83ae7c97f 100644
-> > > > > > --- a/arch/x86/include/asm/nospec-branch.h
-> > > > > > +++ b/arch/x86/include/asm/nospec-branch.h
-> > > > > > @@ -548,6 +548,8 @@ DECLARE_PER_CPU(u64, x86_spec_ctrl_current);
-> > > > > >  extern void update_spec_ctrl_cond(u64 val);
-> > > > > >  extern u64 spec_ctrl_current(void);
-> > > > > >
-> > > > > > +extern u8 bhb_seq_inner_loop, bhb_seq_outer_loop;
-> > > > > > +
-> > > > > >  /*
-> > > > > >   * With retpoline, we must use IBRS to restrict branch prediction
-> > > > > >   * before calling into firmware.
-> > > > > > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> > > > > > index 83f51cab0b1e..2cb4a96247d8 100644
-> > > > > > --- a/arch/x86/kernel/cpu/bugs.c
-> > > > > > +++ b/arch/x86/kernel/cpu/bugs.c
-> > > > > > @@ -2047,6 +2047,10 @@ enum bhi_mitigations {
-> > > > > >  static enum bhi_mitigations bhi_mitigation __ro_after_init =
-> > > > > >         IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATION_AUTO : BHI_MITIGATION_OFF;
-> > > > > >
-> > > > > > +/* Default to short BHB sequence values */
-> > > > > > +u8 bhb_seq_outer_loop __ro_after_init = 5;
-> > > > > > +u8 bhb_seq_inner_loop __ro_after_init = 5;
-> > > > > > +
-> > > > > >  static int __init spectre_bhi_parse_cmdline(char *str)
-> > > > > >  {
-> > > > > >         if (!str)
-> > > > > > @@ -3242,6 +3246,15 @@ void __init cpu_select_mitigations(void)
-> > > > > >                 x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
-> > > > > >         }
-> > > > > >
-> > > > > > +       /*
-> > > > > > +        * Switch to long BHB clear sequence on newer CPUs (with BHI_CTRL
-> > > > > > +        * support), see Intel's BHI guidance.
-> > > > > > +        */
-> > > > > > +       if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
-> > > > > > +               bhb_seq_outer_loop = 12;
-> > > > > > +               bhb_seq_inner_loop = 7;
-> > > > > > +       }
-> > > > > > +
-> > > > >
-> > > > > How does this work for VMs in a heterogeneous migration pool that
-> > > > > spans the Alder Lake boundary? They can't advertise BHI_CTRL, because
-> > > > > it isn't available on all hosts in the migration pool, but they need
-> > > > > the long sequence when running on Alder Lake or newer.
-> > > >
-> > > > As we discussed elsewhere, support for migration pool is much more
-> > > > involved. It should be dealt in a separate QEMU/KVM focused series.
-> > > >
-> > > > A quickfix could be adding support for spectre_bhi=long that guests in a
-> > > > migration pool can use?
-> > >
-> > > The simplest solution is to add "|
-> > > cpu_feature_enabled(X86_FEATURE_HYPERVISOR)" to the condition above.
-> > > If that is unacceptable for the performance of pre-Alder Lake
-> >
-> > Yes, that would be unnecessary overhead.
-> >
-> > > migration pools, you could define a CPUID or MSR bit that says
-> > > explicitly, "long BHB flush sequence needed," rather than trying to
-> > > intuit that property from the presence of BHI_CTRL. Like
-> > > IA32_ARCH_CAPABILITIES.SKIP_L1DFL_VMENTRY, the bit would only be set
-> > > by a hypervisor.
-> >
-> > I will think about this more.
-> >
-> > > I am still skeptical of the need for MSR_VIRTUAL_ENUMERATION and
-> > > friends, unless there is a major guest OS out there that relies on
-> > > them.
-> >
-> > If we forget about MSR_VIRTUAL_ENUMERATION for a moment, userspace VMM is
-> > in the best position to decide whether a guest needs
-> > virtual.SPEC_CTRL[BHI_DIS_S]. Via a KVM interface userspace VMM can get
-> > BHI_DIS_S for the guests that are in migration pool?
-> 
-> That is not possible today, since KVM does not implement Intel's
-> IA32_SPEC_CTRL virtualization, and cedes the hardware IA32_SPEC_CTRL
-> to the guest after the first non-zero write to the guest's MSR.
+The make_xfence_request() function uses a shift operation to check if a
+vCPU is in the hart mask:
 
-Yes, KVM doesn't support it yet. But, adding that support to give more
-control to userspace VMM helps this case, and probably many other in
-the future.
+  if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
 
-I will check with Chao if he can prepare the next version of virtual
-SPEC_CTRL series (leaving out virtual mitigation MSRs).
+However, when the difference between vcpu_id and hbase
+is >= BITS_PER_LONG, the shift operation causes undefined behavior.
+
+This was detected by UBSAN:
+  UBSAN: shift-out-of-bounds in arch/riscv/kvm/tlb.c:343:23
+  shift exponent 256 is too large for 64-bit type 'long unsigned int'
+
+Fix this by adding a bounds check before the shift operation.
+
+This bug was found by fuzzing the KVM RISC-V interface.
+
+Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+---
+V1 -> V2:
+- Dropped 'idx' variable and compared vcpu_id against hbase directly,
+  as suggested by Andrew Jones.
+---
+ arch/riscv/kvm/tlb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+index ff1aeac4eb8eb..439c20c2775ab 100644
+--- a/arch/riscv/kvm/tlb.c
++++ b/arch/riscv/kvm/tlb.c
+@@ -338,7 +338,8 @@ static void make_xfence_request(struct kvm *kvm,
+ 	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		if (hbase != -1UL) {
+-			if (vcpu->vcpu_id < hbase)
++			if (vcpu->vcpu_id < hbase ||
++				vcpu->vcpu_id >= hbase + BITS_PER_LONG)
+ 				continue;
+ 			if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
+ 				continue;
+-- 
+2.34.1
+
