@@ -1,95 +1,145 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C1F361DB4
-	for <kvm@vger.kernel.org>; Fri,  3 Apr 2026 15:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE2728C2BF;
+	Fri,  3 Apr 2026 15:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775229748; cv=none; b=TiWx35Hgzp+6TdwLSGv1S6LbJtSnUyLk7tAna+KxTkaiPWp7kEecmhZ0ticEpd6EfAcY6M+MYa7eyDa9iCdZGAxlRIMhIpDEEq7gg7PhIvGeYbi8WOBZw7f7q1A7cHCtjmDFSetOi3XQ801driBnVRP82xOzNU1U0CL/AJk6tik=
+	t=1775230234; cv=none; b=WJMA6eo8NAzrJVYv9gpHztRcKuc317fi7+fyzjba7UIWEWKz2kqA9jk+D8Y1jVxvIx4UudAPlus71qFluOX7nDwDHZJJXOAzdhV4+f1XSbEF/DXMFo58hkrl84PaRc3Eh/5bw70QGBIbLZxCL5ARvmhtGw5jEtGvWZ/U0sqr838=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775229748; c=relaxed/simple;
-	bh=DFBq3w/+92JvVnCUbNwiX8XBReWt3DAvnjGNuqvEFVI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=Lc3EVg52cwYBsgJYut025N0aQ1m+lGVb2ZS1gn9Pdh3G1cuBJiBzf07+0bcjmZcfRaoEu7y7eHTHsyI47B8VH03xKQwJ34Japu7SiwwnDzCYgftWsozyqO/6RVxH89rYTsy6hOdrmWwk8HHeEAtc+9oiJM73pu07FmbyvxtJyJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V7U/ywbl; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775230234; c=relaxed/simple;
+	bh=1JN9y2YP149Xaa8TAhsR1KGMxhicd7F0xJEbKmyzfVc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bnLi0g1ueabaNju9IauLCUZwluLPLbD2yxVRK+96hdzJBC/9OfDQ/NFWrLtFauJqzu/lv/Ju8VJYSpjYjC85Bqh+x9rN+8+iiPYzcnFLgiTucz2lAi4pvUKTkvtzQC075uW9Xt7a7OxJlPBegZWpQt/dOec09eYdB0y4QtQ2Jlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=pukBa6MR; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V7U/ywbl"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c741c4cebf3so1297391a12.2
-        for <kvm@vger.kernel.org>; Fri, 03 Apr 2026 08:22:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775229746; x=1775834546; darn=vger.kernel.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rpqHqNyfK10lqPQLcRaczDLbjeG2pjSQT2XmZnmBEwU=;
-        b=V7U/ywblejifqP78l8dW7Ik8EudEIfcb6fj0hFD+oC+P4ugICyRU1+YSIwquX/jgKC
-         De7KoKpTZLTZPHciHBnXHt6AWJrQ5no2Ui9X02aRRXO/1YEfekH1f9nZuWiJ7VhiSsgr
-         ue1cNWL6tkY16knhsKbMBSu1vGqBW0sk95hvT5NaKq7+pdjnp4wjpOJRjSNL9gQoKAtH
-         RfHzQ6sYCulGV1FHs75ltgdjnrwlQjiKmZkpjfXZtQbI/lysgl7DbUlDm7IDSJkhrCSk
-         I1MkN7E6RqcrOT2Bb25ZeNz7YmFxHs/vzVTeF1Oq5eoW5XKy/4d3RpK10xL8AWhrv42j
-         d8Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775229746; x=1775834546;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rpqHqNyfK10lqPQLcRaczDLbjeG2pjSQT2XmZnmBEwU=;
-        b=HJIrXKvsfo3C7ueoMezOIDx+PiORPIxyJ5B1YSRM/lKJ4AL08FWbKaFSjo5kVbfpV+
-         lSk9gKMkxT9IGdQjPs5MaPWIr3rR1oMEJSjiEl8JjfPFRu/FDvPLDSOXJZWoFNdFqO8T
-         0F4hWi93onQ9C845izJ/aQ4zHfeqf3vzyKS/ICeXoryU9GWw5HtSIvDw0IjebMfGaRo8
-         Cqf1VndlqORLWfKuJktwjQiSUZO3N8kEqCTSOIjqVlisP5zTguMLjhEgDeaNjp9u/CwL
-         VtiMZErTmoLwMdLnKRPFG6n6TVvJiBB0XyKKuaqhJvSbEpgWuu1WUrx/lxKkUPN3DHi5
-         opbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUL13UiUdkQE73igRcMrHC0byTRhR2bpnVe1MBcOOP/qaIs4uM7psj7lUKz08aqlFMLMc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0KQ92TpfvTgx2gMbiD16hymaPriTKRI7d7ZsdSW3XvQRnYboT
-	Od4w4fXmH1nwoYPd9pou4kXDUFzLyaElWtqqIASlzAnUfA9mHoglwdzOD63TakMU5p2vprrQPag
-	Zgu9ExA==
-X-Received: from pfbfc19.prod.google.com ([2002:a05:6a00:2e13:b0:824:aec2:e5eb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1705:b0:828:d9a1:c5f9
- with SMTP id d2e1a72fcca58-82d0db53ec9mr3313449b3a.33.1775229745970; Fri, 03
- Apr 2026 08:22:25 -0700 (PDT)
-Date: Fri, 3 Apr 2026 08:22:24 -0700
-In-Reply-To: <20260120203937.1447592-1-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="pukBa6MR"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775230229; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=vAXnuXYy5CVxib+kdtLGkhTwGblq2YVJ173NjMXO3mM=;
+	b=pukBa6MR1g4xP7IoEZUsrNMg6Wn8aSRXXhP6V7liMI04Y0wsFRU74FnG+oQhOHexhyDyA5ZrTlchWob2fChjy1GiWoBctaqhXxxLiO7KuOMKHZgik7ixkJMfeaY8pd2aRT61nslhYhUvc5TC3Bfjr/TSfXg4U37lBCmfGQ/pT6k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X0KbxUp_1775230226;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X0KbxUp_1775230226 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Apr 2026 23:30:27 +0800
+From: fangyu.yu@linux.alibaba.com
+To: pbonzini@redhat.com,
+	corbet@lwn.net,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	skhan@linuxfoundation.org
+Cc: guoren@kernel.org,
+	radim.krcmar@oss.qualcomm.com,
+	andrew.jones@oss.qualcomm.com,
+	linux-doc@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v8 3/3] RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
+Date: Fri,  3 Apr 2026 23:30:18 +0800
+Message-Id: <20260403153019.9916-4-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
+References: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260120203937.1447592-1-seanjc@google.com>
-Message-ID: <ac_bMKD7YGhMwUCf@google.com>
-Subject: Re: [PATCH] x86/tdx: Use pg_level in TDX APIs, not the TDX-Module's
- 0-based level
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 20, 2026, Sean Christopherson wrote:
-> Rework the TDX APIs to take the kernel's 1-based pg_level enum, not the
-> TDX-Module's 0-based level.  The APIs are _kernel_ APIs, not TDX-Module
-> APIs, and the kernel (and KVM) uses "enum pg_level" literally everywhere.
-> 
-> Using "enum pg_level" eliminates ambiguity when looking at the APIs (it's
-> NOT clear that "int level" refers to the TDX-Module's level), and will
-> allow for using existing helpers like page_level_size() when support for
-> hugepages is added to the S-EPT APIs.
-> 
-> No functional change intended.
-> 
-> Cc: Kai Huang <kai.huang@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Cc: Yan Zhao <yan.y.zhao@intel.com>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-This still applies cleanly, any chance this can be picked up for 7.1 to avoid
-prototype conflicts in ongoing work?
+Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective
+G-stage GPA width for a VM.
+
+KVM_CHECK_EXTENSION(KVM_CAP_VM_GPA_BITS) returns the effective GPA
+bits for a VM, KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) allows userspace
+to downsize the effective GPA width by selecting a smaller G-stage
+page table format:
+  - gpa_bits <= 41 selects Sv39x4 (pgd_levels=3)
+  - gpa_bits <= 50 selects Sv48x4 (pgd_levels=4)
+  - gpa_bits <= 59 selects Sv57x4 (pgd_levels=5)
+
+Reject the request with -EINVAL for unsupported values and with -EBUSY
+if vCPUs have been created or any memslot is populated.
+
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+---
+ arch/riscv/kvm/vm.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
+
+diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+index fb7c4e07961f..a9f083feeb76 100644
+--- a/arch/riscv/kvm/vm.c
++++ b/arch/riscv/kvm/vm.c
+@@ -214,12 +214,52 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 
+ int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+ {
++	if (cap->flags)
++		return -EINVAL;
++
+ 	switch (cap->cap) {
+ 	case KVM_CAP_RISCV_MP_STATE_RESET:
+-		if (cap->flags)
+-			return -EINVAL;
+ 		kvm->arch.mp_state_reset = true;
+ 		return 0;
++	case KVM_CAP_VM_GPA_BITS: {
++		unsigned long gpa_bits = cap->args[0];
++		unsigned long new_levels;
++		int r = 0;
++
++		/* Decide target pgd levels from requested gpa_bits */
++#ifdef CONFIG_64BIT
++		if (gpa_bits <= 41)
++			new_levels = 3;        /* Sv39x4 */
++		else if (gpa_bits <= 50)
++			new_levels = 4;        /* Sv48x4 */
++		else if (gpa_bits <= 59)
++			new_levels = 5;        /* Sv57x4 */
++		else
++			return -EINVAL;
++#else
++		/* 32-bit: only Sv32x4*/
++		if (gpa_bits <= 34)
++			new_levels = 2;
++		else
++			return -EINVAL;
++#endif
++		if (new_levels > kvm_riscv_gstage_max_pgd_levels)
++			return -EINVAL;
++
++		/* Follow KVM's lock ordering: kvm->lock -> kvm->slots_lock. */
++		mutex_lock(&kvm->lock);
++		mutex_lock(&kvm->slots_lock);
++
++		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
++			r = -EBUSY;
++		else
++			kvm->arch.pgd_levels = new_levels;
++
++		mutex_unlock(&kvm->slots_lock);
++		mutex_unlock(&kvm->lock);
++
++		return r;
++	}
+ 	default:
+ 		return -EINVAL;
+ 	}
+-- 
+2.50.1
+
