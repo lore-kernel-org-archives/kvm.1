@@ -1,221 +1,221 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741EA1E9919
-	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 11:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775300566; cv=pass; b=np6CC68nQLYsyle/3COSqW2ENsXBp6XmQ0THIwvVTIj/K3pV9mgoJATR3j1Kx8YhcPMMKaTNWcgyyRl1dXv/qU8PwCDAy3cV8IdK2jC1nJc7LhtikBR35kpgOnZMfUfL4pQyXrhMvOKKu/DB+tr0mNPtnKbwzi8Pzbvrry3xkdg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775300566; c=relaxed/simple;
-	bh=qQm9tBltYls3k/v6mMzJ47hisi6iCeBEZTaaYj42jB4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XL+kOn+c5YQHDWMdNnPYst5hkj9DyQavZYp3gQ6D2PHzhHiTDC0uVZpT8x2fs6d8Czq7NDzBuvKvhIasIk6zvjhfsgTnybpTW/pQbxXTr8oKN/DuinEDS9zPNUc8CoMYXVZjshtqnUr+h0iPPwH7IW5QtimLhLfPJ2JMAnI/n0k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=NtTzD4UP; arc=pass smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238BA3B7A8;
+	Sat,  4 Apr 2026 15:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775314936; cv=none; b=hXy9wh6iRLHCgPLpwTcrMVazPACLWQ7Nh9iBsM8SymD9oawhjS87W3ieISdwGRqkxuPaO3agP6XPnj0eW8+V/n0gD+GqZAYcfzwKcbbTlbBR2BmRauKV9eOfq3mOPwl+K2JzC3zN0KUzvHiElzZrf0ypqZEr9Pfxj98ZpcnmBqk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775314936; c=relaxed/simple;
+	bh=yS1a8GmMxhd+gaXjsrUMOyEcZUcN2vLf71oRyrhAVkk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U7whb4p0v2gfusZtNmzpc2g52jEEGYJwWhUfkdYnueaq0aVlNCTCg7MAvWKVqc6K91kFLa9il1ZJMXRQaqmhCo8VXCUU2Zh9MSNm5PXOjGXQ57XJ+RRvOcZVNMk8DUx3DQ7OfD6Ei/IAH07RXc/ud58vcvc9rrLW1G5sjTxG6o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcd1WH1u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="NtTzD4UP"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dbba5076c8so636557a34.0
-        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 04:02:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775300564; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IlEOAaZwck/rhUDp0e0FBdvNyaUV6EPRPmfqpiF8p+k9T1v/z2yyr3gWYsJUiVg3nf
-         XVVV1P04ILNmnnAZjddjY0rpshYCJc5/wBf0H1EhfaBKtfbO9RNb6sSEKIvvSv4zj9lE
-         uWRTwtJaOhnrZqU/8bH+Ylln2KMDdy5eDWwxF+uzILba+TEEEKXF/26adZABSgxn0agu
-         kTc+YLggwHK9Acd9idgTtFN6RmevrVXv8NAaMm1FkEp6nlcvSVFyOQZSrAs2BtbDwFfT
-         m4GiMXh/st18elM/PPuMmlwCCoDDV5JGOhbxGNvQ4Vnn0CkNL7tUtE6Loh47Y2j+q5sr
-         kmxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Zfu5+ZoRr42kiqQcxjxD/Vr+HX1maiYTYcsoR4uKhiw=;
-        fh=IM2fHqQ9OnJxddxkK6KdlnmMrGBDbeyKeD+8XfePOdo=;
-        b=YiNYrYgm/jM8N0jGF8vKPUiPlBeDaNwapTirHBv1dgPa4SgTW93N5PQXaTeK87u+YG
-         w74oCt1Ob52rgA/JB8q2gGouKi/iTPB8zJbwMlSKJoNs2rHS1nfN65WYced0AguZ6dRP
-         Q2GReQ2THQHPsa2KegywjZKsAA4fq858iRkOwAuSuKKxOGm08ZyECZAihzwLromubheN
-         754SL7kCqiZ2aJNRumhJyCMaJxZ+lcWr0TQgiUTcuL07B2hEhhgY+rwNDnUkvFMfqqQZ
-         CwlalEOZJxy6ZBEfW/hm9mVA1Z2+Ld2dKIj8O9r+GpeJByT/Z21oQjQdKCyHZ16Sj09C
-         644g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1775300564; x=1775905364; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zfu5+ZoRr42kiqQcxjxD/Vr+HX1maiYTYcsoR4uKhiw=;
-        b=NtTzD4UP7F1K6s7YplG4hFImUSTvGMubxPMlOYMTwuEY9J204KPVwFfo+kvim9MV+j
-         5OUBAQPJe09/0XgQt33AeoU0G1g4HyooN9j5aJgpDBZRNp32ctCVqFopp9Kz986l9acF
-         PkBxuDCcVtv1E4cnvxssGYOmZeDahzMsz3RY5+zSMa9P4wNGawPOqj3NwEIrw7GMdDIk
-         zvTNtq6YDE2iB3n5O0h9D+D2YvxDHtZfqCI/eLQBBHZSMwuH3BCDLxnTb1JMW7osWZlu
-         /23Pu8CXa9/ZAVlglC3DIEuClTdvtBErJdVq2udloSgBq6hZU11nnerCapEPuFqssMbF
-         mWQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775300564; x=1775905364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Zfu5+ZoRr42kiqQcxjxD/Vr+HX1maiYTYcsoR4uKhiw=;
-        b=Mh/olSYDnaQFfDcMJnDTncHg3eSEKIi4KEJtC5t4z3FMonHHjd/7CDfFaMRfvN2TBi
-         Kc7WTqSKkFK7ve2F7aEVClzW80WIk67wk6mReFXJ+nlIPS2lK29fTuEr0lpu4RbQ/b/Q
-         D0Pe2JrkdiFOajwyv6tUN1SN5FWFir4AhmYAMxQNbEOmjDvssPWqmPo6MPcQ3LA/Wmaq
-         KHBs2VLwmm6Sbhjq1/EoSvQlm+vOSgFBCPP1alMHtihLkhB35Rh7Yu59y84w2+ZD6DEy
-         mGcDYGjOLyU/lP11Wr9TiHqcnfTq5GqKSmhUnFyXesqFzY2gHCfTm9dCVjxseAUe67Hs
-         x40w==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ5dvLWYsRrAm+qml65N2oRV1FAKsIM6aQCzH3vZhEyZHwVdAC8+tBOCHBNzUyTUXOyn4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrX4RvwDoJvi43XKjJ0nCUG+SAehpw2ZmcxEhDGwfNevuRmoAL
-	85ubEzKoyqJSRPHPwyecqgbaHrXPTPatXEa1YH+PlqhTYyiRDE96X9sVaajleR7xZ4yNgl/lF0W
-	1p0WsLpYiCMstTOAl/94ukG9wuPvNqoWoEXC3OJv/FA==
-X-Gm-Gg: AeBDieu4+ZwoFW7qgPTm2HWqNMb3nzP7GYzdvcBp7HW85CEXTNB2cntBK7YkruVGT+Z
-	dQdkNKCAusnXgj/mW7i2k729msZ46P/OuNL6y4bDHEX3WpB08R2IRWTFlSNeSpa3nMht8VNappf
-	eF4fiS+C7f8/ynoIz4N8qsmPagZP2Tm2KxiUujV8TU5EhzxLDy+UZNRCB6O8OuA7os1MbOJ/Vh+
-	lBA6euJh0z6CNEeZLNrDD0xdRJj4e+cyjEz/CdK+Qkgx+BSV/dhDqQKfQWKnyXFDs6OLX6ujbiz
-	w3XdYJXO9dbWTG1ZCFyhRKyGmyog7egkW8aPTj3yhtT97OsW16wsYR7uI5m2rXEi6/Y3hyA5sYR
-	hzHcGWXr6YyiK6tzQIxtAo7VNrQ==
-X-Received: by 2002:a05:6820:1ca8:b0:67e:3b11:89ed with SMTP id
- 006d021491bc7-6821e66a08bmr3527858eaf.10.1775300564107; Sat, 04 Apr 2026
- 04:02:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcd1WH1u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BB2C19421;
+	Sat,  4 Apr 2026 15:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775314935;
+	bh=yS1a8GmMxhd+gaXjsrUMOyEcZUcN2vLf71oRyrhAVkk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fcd1WH1uMPDFcW95A5bP6twrmSlGywxDbhV9K4GUdxmnw9OhLho72J9OlIZREDDfv
+	 Evf5eg+FhGKnEBZMEi0xrGzL0W0wBBPFC5ZbOalQpNWyhGwDm3HuLGvy/jgjYAq60X
+	 Jsa257f9xIzRC/LnmHpxdh9mv/JRHNm7utYMn96WoZP6ZRATrlwe1+3BmjlR9bxRPR
+	 tiA87cPHB5ojtZQJ2zSKPbtecnXGON24oyWbrZcP9XuN+XivvmLrVCQGu5orrMZe/a
+	 +xDtWMIwREbTcGNYdTKbgyxE7aDCuXqmHaashK055GEOETa+XQlaspyrGVn7GrwOhI
+	 UHZOaAkc+kiUA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-arm-kernel@lists.infradead.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Subject: [PATCH v2] Drivers: hv: vmbus: use generic driver_override infrastructure
+Date: Sat,  4 Apr 2026 17:01:49 +0200
+Message-ID: <20260404150155.3473682-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <BN7PR02MB414825D0532A1DFE16F3B671D449A@BN7PR02MB4148.namprd02.prod.outlook.com>
+References: <BN7PR02MB414825D0532A1DFE16F3B671D449A@BN7PR02MB4148.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
-In-Reply-To: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Sat, 4 Apr 2026 16:32:32 +0530
-X-Gm-Features: AQROBzDcUt7d2zmN-LgKMz3EEMCzhGSvhLBkGZy88YajEYGJjZyDS4lDfZXa79I
-Message-ID: <CAAhSdy2t2WukRG7mHckY5=+J4+vPU1jvkrG9vqXoDxcMPbiEJg@mail.gmail.com>
-Subject: Re: [PATCH v8 0/3] Support runtime configuration for per-VM's HGATP mode
-To: fangyu.yu@linux.alibaba.com
-Cc: pbonzini@redhat.com, corbet@lwn.net, atish.patra@linux.dev, pjw@kernel.org, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	skhan@linuxfoundation.org, guoren@kernel.org, radim.krcmar@oss.qualcomm.com, 
-	andrew.jones@oss.qualcomm.com, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 3, 2026 at 9:00=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote:
->
-> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->
-> Currently, RISC-V KVM hardcodes the G-stage page table format (HGATP mode=
-)
-> to the maximum mode detected at boot time (e.g., SV57x4 if supported). bu=
-t
-> often such a wide GPA is unnecessary, just as a host sometimes doesn't ne=
-ed
-> sv57.
->
-> This patch reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE. User-space can
-> now explicitly request a specific HGATP mode (SV39x4, SV48x4, SV57x4 or
-> SV32x4) during VM creation.
->
-> ---
-> Changes in v8:
->     - Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective GPA=
- width
->       for a VM (Anup's suggestion).
->     - Handle the kvm =3D=3D NULL case and task kvm->lock and kvm->slots_l=
-ock to serialize
->       against concurrent vCPU creation and memslot updates (Radim's sugge=
-stion).
->     - Link to v7:
->       https://lore.kernel.org/linux-riscv/20260402132303.6252-1-fangyu.yu=
-@linux.alibaba.com/
-> ---
-> Changes in v7 (Anup's suggestions):
->     - Keep the original HGATP mode probing logic.
->     - Link to v6:
->       https://lore.kernel.org/linux-riscv/20260330122601.22140-1-fangyu.y=
-u@linux.alibaba.com/
-> ---
-> Changes in v6 (Anup's suggestions):
->     - Reworked kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size(=
-) to
->       take "unsigned long pgd_levels" instead of "struct kvm_arch *".
->     - Moved kvm_riscv_gstage_mode() helper from kvm_host.h to kvm_gstage.=
-h.
->     - Renamed kvm->arch.kvm_riscv_gstage_pgd_levels to kvm->arch.pgd_leve=
-ls.
->     - Added pgd_levels to struct kvm_gstage to avoid repeated
->       gstage->kvm->arch pointer chasing.
->     - Link to v5:
->       https://lore.kernel.org/linux-riscv/20260204134507.33912-1-fangyu.y=
-u@linux.alibaba.com/
-> ---
-> Changes in v5:
->     - Use architectural HGATP.MODE encodings as the bit index for the sup=
-ported-mode
->       bitmap and for the VM-mode selection UAPI; no new UAPI mode/bit def=
-ines are
->       introduced(per Radim).
->     - Allow KVM_CAP_RISCV_SET_HGATP_MODE on RV32 as well(per Drew).
->     - Link to v4:
->       https://lore.kernel.org/linux-riscv/20260202140716.34323-1-fangyu.y=
-u@linux.alibaba.com/
-> ---
-> Changes in v4:
->     - Extend kvm_riscv_gstage_mode_detect() to probe all HGATP.MODE value=
-s
->       supported by the host and record them in a bitmask.
->     - Treat unexpected pgd_levels in kvm_riscv_gstage_mode() as an intern=
-al error
->       (e.g. WARN_ON_ONCE())(per Radim).
->     - Move kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size() to=
- header
->       as static inline helpers(per Radim).
->     - Drop gstage_mode_user_initialized and Remove the kvm_debug() messag=
-e from
->       KVM_CAP_RISCV_SET_HGATP_MODE(per Radim).
->     - Link to v3:
->       https://lore.kernel.org/linux-riscv/20260125150450.27068-1-fangyu.y=
-u@linux.alibaba.com/
-> ---
-> Changes in v3:
->     - Reworked the patch formatting (per Drew).
->     - Dropped kvm->arch.kvm_riscv_gstage_mode and derive HGATP.MODE from
->       kvm_riscv_gstage_pgd_levels via a helper, avoiding redundant per-VM=
- state(per Drew).
->     - Removed kvm_riscv_gstage_max_mode and keep only kvm_riscv_gstage_ma=
-x_pgd_levels
->       for host capability detection(per Drew).
->     - Other initialization and return value issues(per Drew).
->     - Enforce that KVM_CAP_RISCV_SET_HGATP_MODE can only be enabled befor=
-e any vCPUs
->       are created by rejecting the ioctl once kvm->created_vcpus is non-z=
-ero(per Radim).
->     - Add a memslot safety check and reject the capability unless
->       kvm_are_all_memslots_empty(kvm) is true, ensuring the G-stage forma=
-t is not
->       changed after any memslots have been installed(per Radim).
->     - Link to v2:
->       https://lore.kernel.org/linux-riscv/20260105143232.76715-1-fangyu.y=
-u@linux.alibaba.com/
->
-> Fangyu Yu (3):
->   RISC-V: KVM: Support runtime configuration for per-VM's HGATP mode
->   RISC-V: KVM: Cache gstage pgd_levels in struct kvm_gstage
->   RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
->
->  arch/riscv/include/asm/kvm_gstage.h | 47 ++++++++++++++++---
->  arch/riscv/include/asm/kvm_host.h   |  1 +
->  arch/riscv/kvm/gstage.c             | 65 +++++++++++++--------------
->  arch/riscv/kvm/main.c               | 12 ++---
->  arch/riscv/kvm/mmu.c                | 70 +++++++++--------------------
->  arch/riscv/kvm/vm.c                 | 49 ++++++++++++++++++--
->  arch/riscv/kvm/vmid.c               |  3 +-
->  7 files changed, 148 insertions(+), 99 deletions(-)
->
-> --
-> 2.50.1
->
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Queued this series for Linux-7.1
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
 
-Thanks,
-Anup
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: d765edbb301c ("vmbus: add driver_override support")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+Changes in v2:
+  - Change patch subject and comments according to Michael's suggestion.
+---
+ drivers/hv/vmbus_drv.c | 43 ++++++++++--------------------------------
+ include/linux/hyperv.h |  5 -----
+ 2 files changed, 10 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index bc4fc1951ae1..ba7326ec6add 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -541,34 +541,6 @@ static ssize_t device_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RO(device);
+ 
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct hv_device *hv_dev = device_to_hv_device(dev);
+-	int ret;
+-
+-	ret = driver_set_override(dev, &hv_dev->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct hv_device *hv_dev = device_to_hv_device(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", hv_dev->driver_override);
+-	device_unlock(dev);
+-
+-	return len;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ /* Set up per device attributes in /sys/bus/vmbus/devices/<bus device> */
+ static struct attribute *vmbus_dev_attrs[] = {
+ 	&dev_attr_id.attr,
+@@ -599,7 +571,6 @@ static struct attribute *vmbus_dev_attrs[] = {
+ 	&dev_attr_channel_vp_mapping.attr,
+ 	&dev_attr_vendor.attr,
+ 	&dev_attr_device.attr,
+-	&dev_attr_driver_override.attr,
+ 	NULL,
+ };
+ 
+@@ -711,9 +682,11 @@ static const struct hv_vmbus_device_id *hv_vmbus_get_id(const struct hv_driver *
+ {
+ 	const guid_t *guid = &dev->dev_type;
+ 	const struct hv_vmbus_device_id *id;
++	int ret;
+ 
+-	/* When driver_override is set, only bind to the matching driver */
+-	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
++	/* If a driver override is set, only bind to the matching driver */
++	ret = device_match_driver_override(&dev->device, &drv->driver);
++	if (ret == 0)
+ 		return NULL;
+ 
+ 	/* Look at the dynamic ids first, before the static ones */
+@@ -721,8 +694,11 @@ static const struct hv_vmbus_device_id *hv_vmbus_get_id(const struct hv_driver *
+ 	if (!id)
+ 		id = hv_vmbus_dev_match(drv->id_table, guid);
+ 
+-	/* driver_override will always match, send a dummy id */
+-	if (!id && dev->driver_override)
++	/*
++	 * If there's a matching driver override, this function should succeed,
++	 * thus return a dummy device ID if no matching ID is found.
++	 */
++	if (!id && ret > 0)
+ 		id = &vmbus_device_null;
+ 
+ 	return id;
+@@ -1024,6 +1000,7 @@ static const struct dev_pm_ops vmbus_pm = {
+ /* The one and only one */
+ static const struct bus_type  hv_bus = {
+ 	.name =		"vmbus",
++	.driver_override =	true,
+ 	.match =		vmbus_match,
+ 	.shutdown =		vmbus_shutdown,
+ 	.remove =		vmbus_remove,
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index dfc516c1c719..bf689d07d750 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1272,11 +1272,6 @@ struct hv_device {
+ 	u16 device_id;
+ 
+ 	struct device device;
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char *driver_override;
+ 
+ 	struct vmbus_channel *channel;
+ 	struct kset	     *channels_kset;
+-- 
+2.53.0
+
