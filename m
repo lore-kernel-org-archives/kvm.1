@@ -1,129 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5386341;
-	Sat,  4 Apr 2026 17:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5643E3368BE
+	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 18:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775322567; cv=none; b=c+DIP8f7lo4+dScQuqsDF7tEURBMHZTMVfjJWXQZar5TvrJhh9a4I2hmd4mQe8Ng7UtJ/XJrIGuFdLdOBkTH1yoGNzS25wWy5pgHqgvXtenfVMCgHmynejYatZg/nybHmmYycHsLBUVjfKLKDqKkGU5g0lz+a0VzeC6r56PFe5U=
+	t=1775326481; cv=none; b=ml5qvl5y6mOYJgRYlYptnqhbu08aP2Fgm4bxIhXePQkms50POH5wEu6mUzDb6YjVZ0KjBoRzf41KHjiC9Z4+ECU32sn216zQJ+cnotc5UnmBkK88f/YsxQnBUig3kplV/Ryd/A8ofClSc8NJr9l4uPUN92pFc2whUNnD2UL6ixE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775322567; c=relaxed/simple;
-	bh=u8kt7OrQ/vRwebR8QID4XnX8+JNDMp1i5iK/K6bdNDA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V5yVs8D+L635rIKbwam5DXkkF8SPfX2JABaAxaWPcmjeh4WVHD+IgKz/suHPRLNSAccd8uYsIINDe33xZ9l4vFYM8zbhGkwzGGMeBp38KUWe4G/HBhQxqet0piKNqoXmgJDSTPbYgTIajp4fLWE4rG6a32BbR8fPcIQjWRllPYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mur2l9g+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775326481; c=relaxed/simple;
+	bh=yzs5/uo2bliqohVmxP9Lp9DIGTiTCTBbD9819t+4Dlc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kUUqn5GeWdW6w54hOsYy09CZl+Jg0cpZDlt8No+9VcPlQVJ0g6F03UMbj+wmBD9KRp2ywKhNpVsafdnlip8QMWOecb9ZMyaexhuEmYTiANKli5YtrLqtXnztSCwgTogMwKG9b0os5wAw5xa8l3Xjh0PGJFwOn03saZBWQKg7nUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ikFB3JAD; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mur2l9g+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6956BC19421;
-	Sat,  4 Apr 2026 17:09:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775322567;
-	bh=u8kt7OrQ/vRwebR8QID4XnX8+JNDMp1i5iK/K6bdNDA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Mur2l9g+deVKWOVOfXlkgvgdKFA4eMN3VFsDjrp+nvoKeM3X3pstiyexcKEvOeD0a
-	 RbWpztozc0h4lQoSWYVOnXtkhFF+JRtMTTya2FNPQi3D7loBz93/IYN7Ge2fCwnYY6
-	 Re4J05NhHq8kCVMn7SJKTXcUdNw54AUQcOdwffM3zMjz7evbLjl/s54+7J+0y2RhZM
-	 +Mi+DO81POzfix85rvYo25MmliRWwTmiQ4w8GEjh3lU6Bg01dUBrobNBgfy2tPEGch
-	 AFl8Q1R0jHMSDedYpY3Yug+qqjGh5y0LuX4UV4lD2NPGO2GuUGdy7lPrJwFQklpETH
-	 wOUF3U6ODslbQ==
-Message-ID: <a8c85884-e2ba-4a3a-a660-9715f0de2704@kernel.org>
-Date: Sat, 4 Apr 2026 19:09:11 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ikFB3JAD"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d04fc3bf2so1567849f8f.3
+        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 11:14:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775326478; x=1775931278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yzs5/uo2bliqohVmxP9Lp9DIGTiTCTBbD9819t+4Dlc=;
+        b=ikFB3JADdVPeu83ss06I0lJjMPxoPmgkLp6X8FNtHCPqTy9oLRO6AjoDRcU3dyvDYy
+         fNJKfBmtL3p9cRbuVQMpPg33BpW+Ky2Wd0ZcJwMhTzGkLIfTWlVqu12UXJH/1uhc8mci
+         cTD3G0TajGmVlvC8mo2pwzYFz/o37xRi/q4LAU/7L/JRHwpkrwSuKTXD5C0+v1rwe2bH
+         elr1P06wbnnioRg2ojBEGinPOomF1HRwJn/JJsxIRdeO07wH6ish1IgbKlQjTQ7t2ypv
+         eQA96TEfZneEiVDkKcqPY2vSNm+6PJiVJVf97tNXQXAo3kat3yENNf/mQM6bcq0iR5YR
+         iBWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775326478; x=1775931278;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yzs5/uo2bliqohVmxP9Lp9DIGTiTCTBbD9819t+4Dlc=;
+        b=TUiMbTX2NuUteF+40rd/LvOGtQjwFr5SDZ4Zosy3bjy+e0sduQ9Z/XnQtwNcQmyw6p
+         FD/xfd4g7IX8cf0T8C+q9KVW9XX3jONuuEizbiJwUpTC8WgMvUc58dWnerZTj5XdyKWA
+         xx1lNr6FSWDbtUWjBf9Lag4E9suoAr1p+yn6dpo9ZgFXIBl3Tb8ua67XdNGBhNtCPyhR
+         1PAVbsMYyFv4beBs/PEQuZDQePj1ZiiZn2M88hrFq6sY+3G7mBBVCN1RR1H1o5do6Cg1
+         MkFW2s948Gd3rg6hsH1yt0ln6CGRG0p2YsUJYumTcvrQYSSqO1hS5SXPDF0U/Z6/DFcT
+         9AMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHG8hGyF/U9nXcj5Owtz6BX3OpfzrO/NdNoMSZQ4DVLhZ4mU39ADnBmhAHkbe6CPXTel8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRL7QItAREiZ/ReU47g8xSMG+upTKith81RFmC4fF4vvGCJ4xT
+	cPvPgOSs/mCbKXZBhz4iEGma272/69JcwF/LUEgavNi6KEruMabcW1tm
+X-Gm-Gg: AeBDietstqA5YBTl1yMEiQ6mp4vgpCNsIAeLkCGwqMOwJWTsd2uRyBanyHAndV8rXk9
+	jn6E88iaOk1sZDPqdgi0XvRtrLNTvIihVmDzljz+YlstmC9GK8i4oSVypaEeU6YQwwDp3dlIqsJ
+	zRjO9UI8s7idstvo7CMhrkloKXHm956hDDpFs4ftoM/MYTLy4Lu7Q3jjjQQ8AoPEr3JxDJA+arG
+	63KUqi0alKdB6VSjvvElappRFZe+4lolwc/tCxJzrurwxlR/GtE7W0mgKvQbobJaLPtQQSk+Qd1
+	HsIpQQJMPZBT7NbLsVrwK8J+rGVO105lmCauvY429kGBAtG5wJseb9vQ9mRDJ0Kc5kNawA5zrHm
+	VPjN+fmFiS+IjHjow1bdHxdJoIXYjcse125twXc5emBq/hCrRGhZz409hWuiBtcCUOFNtZm6F9Z
+	LUhV2zwtqGy5oEBYDkYltWvWy6uP2I3bHMPbWOwq2NrqDcdeqcB5jfrIcVmV64c6zQl8D3Oss0G
+	+3rTp0pRdmCgNtrSkfJ8KMgrXXN+1qSVokTlMmtxwq/NiPP5eiRRRnrWe3T0yRjjaJU4UDmpoBm
+	nYbi++YSN8gS0HjxHvMCkVj1W8jyjhEF7AQG2y7H9E/3NrTD2zK8kk5D+BU=
+X-Received: by 2002:a05:6000:208a:b0:43d:242:b9bb with SMTP id ffacd0b85a97d-43d2928f291mr10149634f8f.18.1775326478388;
+        Sat, 04 Apr 2026 11:14:38 -0700 (PDT)
+Received: from archlinux.kangaroo-newton.ts.net ([185.213.155.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e5890sm26047308f8f.31.2026.04.04.11.14.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Apr 2026 11:14:38 -0700 (PDT)
+From: Christos Longros <chris.longros@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Christos Longros <chris.longros@gmail.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vfio/pci: sanitize bogus INTx interrupt pin values
+Date: Sat,  4 Apr 2026 20:14:36 +0200
+Message-ID: <20260404181436.754390-1-chris.longros@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260401165920.373e7584@shazbot.org>
+References: <20260328230126.73230-1-chris.longros@gmail.com> <20260401165920.373e7584@shazbot.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH 00/12] treewide: Convert buses to use generic
- driver_override
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Nipun Gupta <nipun.gupta@amd.com>,
- Nikhil Agarwal <nikhil.agarwal@amd.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- Long Li <longli@microsoft.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Armin Wolf <W_Armin@gmx.de>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Vineeth Vijayan <vneethv@linux.ibm.com>,
- Peter Oberparleiter <oberpar@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Harald Freudenberger <freude@linux.ibm.com>,
- Holger Dengler <dengler@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
- linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-spi@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-arm-kernel@lists.infradead.org
-References: <20260324005919.2408620-1-dakr@kernel.org>
- <DHKGQN6D0ANO.2QYY3JTM5435O@kernel.org>
- <76355cb5-0b5d-4a29-9702-8d020a79f4c0@kernel.org>
- <DHKJ7VWI1CHO.3ETHUGQVPFFDE@kernel.org>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <DHKJ7VWI1CHO.3ETHUGQVPFFDE@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Hi Alex,
 
+The RTL8852CE reports a valid interrupt pin (INTA = 0x01) under
+normal operation. The 0xFF only appears after a VFIO bus reset
+bricks the device -- at that point the entire config space reads
+0xFFFFFFFF, not just the pin register.
 
-Le 04/04/2026 à 19:04, Danilo Krummrich a écrit :
-> On Sat Apr 4, 2026 at 6:58 PM CEST, Christophe Leroy (CS GROUP) wrote:
->>
->>
->> Le 04/04/2026 à 17:07, Danilo Krummrich a écrit :
->>> On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:
->>>> Danilo Krummrich (12):
->>>>     PCI: use generic driver_override infrastructure
->>>>     platform/wmi: use generic driver_override infrastructure
->>>>     vdpa: use generic driver_override infrastructure
->>>>     s390/cio: use generic driver_override infrastructure
->>>>     s390/ap: use generic driver_override infrastructure
->>>
->>> Applied to driver-core-testing, thanks!
->>>
->>>>     amba: use generic driver_override infrastructure
->>>>     cdx: use generic driver_override infrastructure
->>>>     hv: vmbus: use generic driver_override infrastructure
->>>>     rpmsg: use generic driver_override infrastructure
->>>
->>> I have not picked these up, as they have not received ACKs from the
->>> corresponding subsystem maintainers so far.
->>>
->>>>     bus: fsl-mc: use generic driver_override infrastructure
->>
->> I droped it from soc_fsl tree, some dependency must be missing.
->>
->> Feal free to take it if you can, it is acked-by Ioana.
-> 
-> It is based on v7.0-rc5; if you want I can pick it up.
+Since the root cause is the device bricking on bus reset, I think
+the right fix is a PCI quirk rather than the generic bounds check
+I proposed here. I have a quirk_no_bus_reset patch ready for
+10ec:c852 (RTL8852CE) -- I'll send that as a v3 instead.
 
-Yes please pick it up as my tree is based on rc1.
+Should I drop this VFIO patch entirely, or is there value in
+keeping a safety net for the pin register? The PCI spec limits it
+to 0x00-0x04, so anything outside that range is invalid, but I
+understand if you'd rather not add checks for scenarios that
+shouldn't happen with functioning hardware.
 
-Thanks
-Christophe
-
-
-> 
->>>>     spi: use generic driver_override infrastructure
->>>
->>> These have already been picked up via the respective subsystem trees -- thanks!
->>>
->>> Thanks,
->>> Danilo
-> 
-
+Christos
