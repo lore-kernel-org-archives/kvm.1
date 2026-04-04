@@ -1,94 +1,84 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1C2327C0D
-	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 18:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393B621638D
+	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 18:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775327419; cv=none; b=GVNWinO2+meJxYkLwYbZEkP0CPwf7mpYQZYRYi1jNZMTdiKIkWtKKzS2RVqg1xcBxsoaNzrzF/KpJqwYWuU2d9xnhA4ITGNiN59EHXAWxG8d0TJtTwlHOVl8dEplDvdtOWs1qurryEeDJ4ke+3TtdJwW8QwIcVvWoTBwdlzJujc=
+	t=1775328815; cv=none; b=ZAhe8JlOLXCgbCe1l6NbqAbi/uYLyj8eYkdXvzobxayaUQftcDUiMDj3JIub84bJ7V8Hs2mze8g28GWiTi596MnD1MlHU7zL3WC8VlHDZw4xFriqjg+iEjJ+5fH9K87TKKo0xL7SIazysPidgyBlAKrBcZ2NgQxC2TEKOmHJuuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775327419; c=relaxed/simple;
-	bh=g6+w/wwpCszeJvKPSgncbDQEiDvEx1KZXxQw0Gkkm3M=;
+	s=arc-20240116; t=1775328815; c=relaxed/simple;
+	bh=dtScXWXhuDldnt6Kvgogigjrvo1FHXnb9GiXekrXjiM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tHTtM8CdFv9YGpj9CDg27mSmnWaeXeuzoI5rp7hfDIB6IP3Oa0YxA7tr1gC7Wdq2x/jXhNkhI6kjL/QAoUQ5wYHepTWoHggMAPyXqZg/NdRqySC9sx7YnS1xTV4oa8ylrkXui9K3p7Wkboybt+/RD6xeuqRigd21P26X/VwS4TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AaTvDD/A; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FC8sysp0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=IKNvhgXtLVR61diOxfigkx3FimOddrv3l8cRTwaNqL6AKWzg7QjT+J6vGzzkcMr/oXCh9yEoIJ4LH1GH9rckh9qTSBp2nmNPrlu6boTbNOF5vcwmrqEOyEki17xRuJF2YVMWad8AY1GyHMPjb/zQUTzjNBYq4B+vn9zgukTzTQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ByDIMUKw; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AaTvDD/A";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FC8sysp0"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6344emHn2974021
-	for <kvm@vger.kernel.org>; Sat, 4 Apr 2026 18:30:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=xZAhnUMRLmcuKZOyI5wbt1Fs
-	LKvLY6ymjIDrFpm94Vo=; b=AaTvDD/AaECxzOw+j83T3cVf42tZqXUnRXqztmtq
-	wJaY6vJ2KBjBvOfLbJHaF1Ae24UmRJ1iSIqm+WJioy+YNJEJqlE9AXJRHCw5GjmL
-	bfaOSkfQscEj3GtG2r/PZt6iLu5PymAMA1ip4zTDuQKxqHNSq/sxFXrMLIWghFLf
-	daEtT1D8GYSiezX/btwQaUC6nzgB2CtEpTH3CthxUWZ+34YFUomghvBQVdO7bM7C
-	+GhSvcl4n3uX4w0W/hBLE6W0aCzSEZSgi+Y7Yq/MpbOl1qujcZckGAzynKsDC1jy
-	C/UkMC4375wTZLDfOrzqyGJG15avBFTt6U8m50jaA0ZUsg==
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dauth970r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 18:30:17 +0000 (GMT)
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7dbb97a2b6eso4145041a34.3
-        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 11:30:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ByDIMUKw"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8d4f78fc9f6so154135685a.3
+        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 11:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775327416; x=1775932216; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1775328813; x=1775933613; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZAhnUMRLmcuKZOyI5wbt1FsLKvLY6ymjIDrFpm94Vo=;
-        b=FC8sysp0wu1aMjan5eS2agifl4sdZ5XWkpXqSlLzFwEwqC8JwI/4xNB0DRRWPG57oD
-         c8moNu09HDuywy2rkJOwogaVV3cB/+6+cVMeqaFPwu3LieLPNRTCpv3OGbBOYMN8Foaf
-         XKkcsh3eADwng13FzOhH2PY/kFUZqCeroRi2fpr1hEsbxIH6GehGTZ4g/xLB594o3Svn
-         XeLln6C31WmxpXHq1gOyb4qR5MR17eF+ybGG4Pxy1SOVccptmox5ysGsqq96+3vULKFv
-         sLYi5zgC87RO2cuPz/931QRDC1+VFMjWHCTPd1IhEbTq/PA6Gr0N5Sk1x2JlWyQwY9iu
-         dBrg==
+        bh=Nck4cGiGZiXSzZzHQhsuUAn9cXTimQB//kh9QdWI6lU=;
+        b=ByDIMUKwmTdGCOxitwoHje2n/+PTeyBAv707lgF33j61xnMUcwkFFHQqg/RkbGFaHh
+         Zz6yMrfvfJnvp1flwz60AtMoXBTvUV4tbTb4YcH9CxdfZSk5kxULJ8Ifmacf+MQfqZqs
+         VWWcDBe9rURqQ9M7dosyV3nNTgCDXz222O6V/tHlKCwsbnzrIcB569Ghy8B6/p9i9nsW
+         5tJiNINRpJWSZe0MKlDI+X4ZcTXtdZZtosUT9ATanZKqQvVfbL7H1aJUiHQjy48Qa8OJ
+         4uG5XtFt90iMXBenMCAVNAUjfUy0eEjr2qLh2l431Rryhh7wXaNGNfAU/uH1jB8IQ79y
+         azmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775327416; x=1775932216;
+        d=1e100.net; s=20251104; t=1775328813; x=1775933613;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xZAhnUMRLmcuKZOyI5wbt1FsLKvLY6ymjIDrFpm94Vo=;
-        b=DgfOjVko3J8zNnpl0SLgx2UzWUGLH+ZY1VmrsP5djUmCgvvi+qHykdp6bg17FphdaY
-         XtMYS6tH9GdQQKvcjVq/SOaTTIugwJA0N+P5+N8ygjmzGTRlI53soJ0XA3iDxAuxRBse
-         Mjia1novnQUI9aFqqxcwZyLjeg1zTQTiEt25otS50aPMFnafTcAhdEWjC5uC/daGae5x
-         gP05JwjBkwGfqrmeD3JdwX6+WspVtIbQZWP9t1+YaSfEpk8askjG2fnQijHp7ybnNGYn
-         r4OPFTtQrWaGndAVJDdB6PFMq73SZpieQczyiikmbesEqhvpImsPWNO2G8jdijCYrYhN
-         Kwcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUneTKPuL67JsxFTRLTeGOueVX5X+tDO/AYwhWMPnXTICNeYalfXVcSeM15QgYA/hJx5Yg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAaIIbWMcl+9eVo78JHBB48fEjY8jdekjbJHeg8EFfCW2D0UlF
-	znwHzJI/MYNhhzSPW2l+gD9iKp4t7DvyuqkJ9x+T+O/XDy9OHNnyRnZSMrN4kONYOt7QHbakvup
-	UBivK1hbJrYsm6MlUGmLUHzOOTvJdVwjN27xHugrGhzKUHqpvEUVjWVI=
-X-Gm-Gg: AeBDiev16v5vlofW+4x1XQCrcByWIem8SY5ra3bMP9X5e0/cd0KzeRjw3NUsEOc764S
-	FCOb6LcyEcOKi3MYxOjFrBHKh+8zhSr/nY52xUPLW7IEMwMlQNTc8d6fEaiF6p3EInCA9SsGqFj
-	j3CWPBiPer3iC2GX5Q3m1MbKpMBDky4ZnDn9liVqzJoNZ4fTVFFzirNUjyj9JfUuWJAWNazyLQw
-	fdezkqYDh8TdBAEJ9OZ4X42JmjmpZT2WoXJjgZevawxMRYTveXu1SYiesDb5NCYvgQUa22ykO3C
-	Gc+hXOhrYyBZ+74XpK6uSgZNwi0OE8GHS27jqCVRRqWwFNLzHxRxIc+ceT4s1jFcZeXVZ2S48bR
-	yy3MyM+WQIIuCY2Jk7/kgfwFs0u3by4M=
-X-Received: by 2002:a05:6830:34a3:b0:7d7:fba1:f950 with SMTP id 46e09a7af769-7dbb7177bd4mr4168295a34.26.1775327416478;
-        Sat, 04 Apr 2026 11:30:16 -0700 (PDT)
-X-Received: by 2002:a05:6830:34a3:b0:7d7:fba1:f950 with SMTP id 46e09a7af769-7dbb7177bd4mr4168287a34.26.1775327416085;
-        Sat, 04 Apr 2026 11:30:16 -0700 (PDT)
-Received: from localhost ([140.82.166.162])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dbd663a4a5sm420968a34.25.2026.04.04.11.30.15
+        bh=Nck4cGiGZiXSzZzHQhsuUAn9cXTimQB//kh9QdWI6lU=;
+        b=F3INjrVu2VJ9HC3AdElxr5Q/ywFdcNZknT/Cgu1Fg0hzRJAQ5xrTJmTCJRfTgtoQa/
+         OXGSf+2fiTIpVFfo0tMbcpKcRmAbOsuRiCVnBQW1NQFD/Kr9jWGgO7pyCXWPVQ4lzFrM
+         i3DxgH5/hp8eW8QAlmVQPAEAQY4Xx0cKSpcJ+pfQX/7YJ2AiK02loynqS1d0I3psRFDe
+         vS3f/fAwJy16aPMK0uCjjE08Sf4TrfUEnXrC5lWkfOwVA7atKpKWZpWz9FQ3jbJqpm9q
+         qjwCnshIJSOLWAVCPKNWdq3PxXc5WtpTdAqTSCq+eaKGVe6QmJ0SBt13JvlWkEXmryf5
+         PRzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYEkFfHTMCdhNk0Aw9geH9kFNJ0g0fV9Xa3gAlmR30Sy7AI35S5/ui5gnJXfsCbWdoDbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzmhtlra8MMhNcdeErZcSKKGyM05DQuK6AcXiXEyjM7OdXm+V7K
+	tRJDbCwvOamUftDq0yGEmCipAi1g3iwjVpfHYDcTThOBQZJLCltfchC+IRNVFr5vZEM=
+X-Gm-Gg: AeBDiettRg0yIASRPhghEKJ19fyenNqVhEHof6a7KlQBvOAnO/uWVDHYJxXMguCQHBO
+	IZUreWk5PQ8mzGmZZ4B7ESz8mnf2N3JAV/24CsF64vcPCeN5sNeH2b4BXfT/b1HR2CApmX0OhRI
+	aBEbD9t8nwX9cpQBkT9c+TihkxzK8ItbY1kmQ89jgqo42WnMhyXggIjj2kcuIlpDuPAUplKnDPS
+	o5QHeHt5tw89vUuvnQrwSMp20LdV1Mp1ZKNuhqAwoNbaGv1taU4dWARW+tpZwTuZ1snI+QuvHRk
+	zqpMlggSeSFQg1DXdT1chl3cUpKR07lAOcXUNOch7ePvKkzILwZtCBw4+1R1EPfGY965uXmZBa9
+	bPYmE/CllURWKJXjKFuU6Mh+ERyiVp2b67ichI9vb6lND+WPp/Y/em0NQETSJLtGVVKrujvRLQO
+	RsQ3vn3fgF8LYf592+Pj35AXPwm4zUvQlh7UsnQIPxkTQPRNBHgXglz9W/mISaUpSLwvc4uw==
+X-Received: by 2002:a05:620a:4003:b0:8d6:bd01:a67a with SMTP id af79cd13be357-8d6bd01b3f5mr99323085a.26.1775328812984;
+        Sat, 04 Apr 2026 11:53:32 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a864b516sm733755685a.37.2026.04.04.11.53.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 11:30:15 -0700 (PDT)
-Date: Sat, 4 Apr 2026 13:30:15 -0500
-From: Andrew Jones <andrew.jones@oss.qualcomm.com>
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-        Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: Re: [PATCH v2] RISC-V: KVM: Fix shift-out-of-bounds in
- make_xfence_request()
-Message-ID: <uqj5bh45tsakyjwswvjb6mv3esvui4eq5tic65o3b7ljoev45e@s5rlgtdi5dlf>
-References: <20260403232011.2394966-1-xujiakai2025@iscas.ac.cn>
+        Sat, 04 Apr 2026 11:53:31 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w967e-0000000CyRZ-3Zuw;
+	Sat, 04 Apr 2026 15:53:30 -0300
+Date: Sat, 4 Apr 2026 15:53:30 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: mhonap@nvidia.com, alwilliamson@nvidia.com, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alejandro.lucero-palau@amd.com,
+	dave@stgolabs.net, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, dmatlack@google.com,
+	shuah@kernel.org, yishaih@nvidia.com, skolothumtho@nvidia.com,
+	kevin.tian@intel.com, ankita@nvidia.com, vsethi@nvidia.com,
+	cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com,
+	kjaju@nvidia.com, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 16/20] vfio/cxl: Register regions with VFIO layer
+Message-ID: <20260404185330.GD2551565@ziepe.ca>
+References: <20260401143917.108413-1-mhonap@nvidia.com>
+ <20260401143917.108413-17-mhonap@nvidia.com>
+ <69d0169115c06_1b0cc6100a5@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -97,77 +87,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260403232011.2394966-1-xujiakai2025@iscas.ac.cn>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA0MDE3NSBTYWx0ZWRfXwocKIiC95d+y
- 5oDGOwuoCnDCi8yyH5wH39pikgypOiEn5M/icGyaE1Wq/FqzI3+Pdtbx0s5kKaESQ9ihR0tYd7x
- y5tB+fgNpmSTretvfVQMEl90ZOvkK6+sa1MEhEnEbFE9KVw+Ny7dubl435ilJ9Yuc+fGzikqlui
- AK3jGpV6scgAIDZ95crrx/ZOj96UQdVKvNBxrMXwRZtF4seB/XiejvJPGFjnFgyE+0m6pQiczLd
- OFkcODTipA0xGucyWxR3aAcnYmakQu00Rir4g7XZouaYe3y+92yvhkMM855agOzIlyjp9Qsi8XY
- HSWwJhW8BPmAQoCQkMZxUFuXdA6I97InAZissZ0ctASoni6Jvmf3Ci6Q6L4HY+c+o+W2lNpguuV
- 7T66mRXlaMzePu0mV/uYkLZ4bo2DW7stq0fQM9Yk9tlIWD2AfO+VT0e4SzlfuNnrB0qM8KJ29om
- hXnr0LMrd48MCp0aJdg==
-X-Proofpoint-GUID: 1dVJLKKMgqRZLcietH25l8Kf0SZUfCCz
-X-Authority-Analysis: v=2.4 cv=MIptWcZl c=1 sm=1 tr=0 ts=69d158b9 cx=c_pps
- a=OI0sxtj7PyCX9F1bxD/puw==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=xswxI8Vr1sjf9FmkDDsA:9 a=CjuIK1q_8ugA:10
- a=Z1Yy7GAxqfX1iEi80vsk:22
-X-Proofpoint-ORIG-GUID: 1dVJLKKMgqRZLcietH25l8Kf0SZUfCCz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-04_03,2026-04-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2604040175
+In-Reply-To: <69d0169115c06_1b0cc6100a5@dwillia2-mobl4.notmuch>
 
-On Fri, Apr 03, 2026 at 11:20:11PM +0000, Jiakai Xu wrote:
-> The make_xfence_request() function uses a shift operation to check if a
-> vCPU is in the hart mask:
+On Fri, Apr 03, 2026 at 12:35:45PM -0700, Dan Williams wrote:
+> > +	/*
+> > +	 * CXL device memory is RAM, not MMIO.  Use memremap() rather than
 > 
->   if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
-> 
-> However, when the difference between vcpu_id and hbase
-> is >= BITS_PER_LONG, the shift operation causes undefined behavior.
-> 
-> This was detected by UBSAN:
->   UBSAN: shift-out-of-bounds in arch/riscv/kvm/tlb.c:343:23
->   shift exponent 256 is too large for 64-bit type 'long unsigned int'
-> 
-> Fix this by adding a bounds check before the shift operation.
-> 
-> This bug was found by fuzzing the KVM RISC-V interface.
-> 
-> Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
-> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-> ---
-> V1 -> V2:
-> - Dropped 'idx' variable and compared vcpu_id against hbase directly,
->   as suggested by Andrew Jones.
-> ---
->  arch/riscv/kvm/tlb.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-> index ff1aeac4eb8eb..439c20c2775ab 100644
-> --- a/arch/riscv/kvm/tlb.c
-> +++ b/arch/riscv/kvm/tlb.c
-> @@ -338,7 +338,8 @@ static void make_xfence_request(struct kvm *kvm,
->  	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
->  	kvm_for_each_vcpu(i, vcpu, kvm) {
->  		if (hbase != -1UL) {
-> -			if (vcpu->vcpu_id < hbase)
-> +			if (vcpu->vcpu_id < hbase ||
-> +				vcpu->vcpu_id >= hbase + BITS_PER_LONG)
->  				continue;
->  			if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
->  				continue;
-> -- 
-> 2.34.1
->
+> Right, CXL.mem is RAM, not MMIO, so I question why is this not being
+> mapped via a RAM mechanism? Can you explain a bit more about why reusing
+> vfio MMIO mapping mechanisms is suitable here and what happens when we
+> get to questions like guest_memfd integration, page conversions, and
+> large page mapping support? 
 
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+None of that is applicable to VFIO. VFIO owns the entire address space
+and does not share it with the mm or anything else.
+
+> Maybe this is the start of the conversation for something simple, but I
+> would actually prefer uncached ioremap() if only to avoid all the
+> coherence management and suitability of MMIO mechanisms questions.
+
+The entire thing needs to be mmapable in a cache coherent way since
+that is what the HW semantic is. If you try to do something else you
+will break KVM support since it follows the VMA.
+
+Jason
