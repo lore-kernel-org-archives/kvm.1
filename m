@@ -1,50 +1,50 @@
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013086.outbound.protection.outlook.com [52.103.43.86])
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazolkn19013083.outbound.protection.outlook.com [52.103.74.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AAE23909C;
-	Sat,  4 Apr 2026 03:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4E5283FCF;
+	Sat,  4 Apr 2026 03:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.74.83
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775273139; cv=fail; b=ZdYL90aQwm5zSYahdj0uShlKQYL5YtTVo8dbFI2gPHUD7lJCrWOqHaDgreEYhojxVZE9rFgXuyVuaEr4Tbw4ejHRN9NhUMAJ2O3BmmzGrlCwvHjnOtPxeuWJugv/Q1z+dcJ/xYltUqWqRpDk60HjT6L/QjZstLlTGVsYqCrRdzM=
+	t=1775273161; cv=fail; b=OEcDmSoGnrtOHsTJg986/KM3MCbbX3PM/b0XWClYnm/1ZEaB/FVerAzUFiSqLh+lC712jt4kcxMfetebG3ZdIZIo3Dpo9KnUmAB6WiR34dkEUaNtgzjJeZtfGWVJGedQYi7cK8temHvruCo04hR2slIoVieYKcs7RMb30M9teyE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775273139; c=relaxed/simple;
-	bh=5Hx7QRksEk8Pu0fl8uhILV/9LtLP3pSVy/Wm48fHxPc=;
+	s=arc-20240116; t=1775273161; c=relaxed/simple;
+	bh=l+valKhhwf0/q2Rk1183AnkKZU7bAtBddufiElwFep4=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GsMRPhikNq02OLmFfsfPJpeee/7KfgVpFcF9LB8bV0WUde+8sacB6a24n4B4C8YZ5id+agLDs2CQkIHoMRq8GQ/aN5x9WX4dKvuuTBx5VGPLqF1HRuc0OV3wVdnafck1XY5LOYucK2nJCiLl27/ppBTsWo0Icc/SI+KmAacjvd8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=ZU1hQsOF; arc=fail smtp.client-ip=52.103.43.86
+	 Content-Type:MIME-Version; b=Nlvx/Yih9DKnxucqq8a99YOsdap6DYIDKEIuuiBVvuywBKRgGujGoZDE0lMdlEWbi27smIreL6G9Z3hYGbk/6u0Nsh+UToqZ+9RqITHqfv5b5yfE0HCz8BwvGtIaCP0LfZuhTPjfEB1CUJQPvk1IJB/Z0uq8KevnYWeIvmqPS+A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=Vt066fa3; arc=fail smtp.client-ip=52.103.74.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="ZU1hQsOF"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="Vt066fa3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yhgkaW/EjraOQXn95PF37eV1zM0kcIYOuLbYO2AgefwWXuGGFkiaDTpbxpTZJj79GEb7+7iQvhuefTCmAp/tXEy2O8/dtOMknnL/KjqpEPdpsR7c18uVptFM+de0Ku/SAwVTuLaCEELdWNqxNLdjF62TTA7+ccisSEFzF9+LFQ7fzdz5RLmqAFvkkw8B0LI6fD9GgdxSn3J1HFgm25xl7p1LF7YTO+EvONXGGgGq3fG2lTG6U+5rX0VER7EbiInp8jy1pjLkFk18PCJK0jdHRgQq/CXIgxFXw0oZ+D2yb4i+L9B7lv0aKx0PLq9HUBZDienMVtDb3tkERQnj4JXFrw==
+ b=nKVl5wrNkGszdzmEjrGZv2awyxuzgMkqv1pHyh79ejFualjUn+hK5uKrr0OEFdRbl1tRrRZZhgCSWLTJBAWsj1jz7lD8zP3mP+6L9v8PiYcanqrLgTH6aJOwInU0jOz2G+mYF+mFdTIs1g0zJ7PsSEFLkvZjTVbMs5Rs0hX6sSRPPxFaOnt+9IH/RErSSHtvhdMyJtdqShb7nbcK/o5bbIg9aIb41S0jgOI19qMZf9hU31K89hW4bLNOSkRf+WbQqsm2bW7Bf5bswkih4gZpe7H3h9DXuDuhZtDJMJI1sTgG5Kr1NzKEeyf2CEnEQk7rtmgm6ntCrusyfNx+3YO5Nw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HrFIcKDpFoR7YyZHPbXBLvTmGe0ugEmr5TDUTobTuq4=;
- b=vPIFZWsal/j0c279fCCpGj/ecNrEeDzH7UbEbyrSUbyOq97Rd+D/rUMusSD2pRjkVLzYMpi6a9N2g/KLSG51A9UbFTg/vZYEOpdKomHkYDCxO54Eb/rveF+gwlk9z4iAGd1f2cfuuowM3DVVcHTDBUeo+yq3LUabmxwmgVkRIxJx/vVgzFXro2dtDUinpLdQxn/XAPJ4VE+VJdU0Xmy+kIB1ONrnNVY/Rem8rVeVmzGoJcQqc5miChj2T+0WmkNss35W7yhqnL/+wNoybOdkmgSEBGCFNDmWiwYX5Me2crRvkErkcAzBCYq4Z/tpHEUCvgJQIO2Tiyg3pmEYTtbcXg==
+ bh=UXkRKqNh8UFD+x3ZfS6A37hclc/i0TwEFARDWI10Shw=;
+ b=Fe4f0hjWGbfb/JWSCLCdTpGQFr5se79I0kXj7R95JyjWq4kLuHCMDtmJ9K4G6QRzTnBLWOVib4nKSO24pmz359Y8uMkVtOGC1JNgC/5nXlRbneXMujnldof01Io7NjufanP1qe0v3qi6BamosXcvPEoFTvihAnl9FAKC5UM7uOoe/C/OiD/HPNT6lmXW2D/p8RfpVmEZn8rsRY1cj+4i732ttGQzaok3yYF1MppSiizD9skHA7Gfa4omMoxo+JNqoSpLXVv89qAeVjKV5EzOh6EOWqe5HT3YlDmLL1QuHOXAahYZWeFtHaKWK/x62W44zdIT9UBS+fdHajzZZ71NFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HrFIcKDpFoR7YyZHPbXBLvTmGe0ugEmr5TDUTobTuq4=;
- b=ZU1hQsOFqfVnHdT+CS6SqvPwDXDPRNrxkLDg2DPNo/ag9MGFEQBoNKAhbANSBqQFNnytwS/yU7t9vextTD5ROGfVluzb7zCoI1P+bzpOGfA3lbY32GpNUXja8gQZ1SGewOdyYnRvKE1NVPN9aL9loigpk2xm/Uy0p0b/BjTh4LGKazPXfB4KyYXVKey91Boq6hqmA5dk14Vsa3wLbpM5ngX4EIPuunLRwm08u2rBGuJuyT07+Gu/VIBHap75C3E8950SMAdAFzGeLqmQSNp7zWW6HZt8R+nHSk2AsoX1vXlnsuKpI8rPczHoMHvejROzTq6xGiPqFWiAhOjoukwBUA==
+ bh=UXkRKqNh8UFD+x3ZfS6A37hclc/i0TwEFARDWI10Shw=;
+ b=Vt066fa384lMjOOM2Hh1ayv1fsdcXX5GtsfP+okKzuEFcuOOccW4oqHnauqHc1705hPCsG209QMq6Ra9TwRtP02rhZxTa2JWrAH1BFwbwfL7yYk371YvFnrdwIT385sopTkM7L9+RVCGz0EzyMV0c/qo+dXLMVFf4Gk4jGUNwfK1MG5tvN1sxNxpW9rHLVOuAONK6/Et0wU66kSCdiQNss62o/Ilr9gpcq6n4LFNrJ11cdNOloCm+u74btN7ch4pmJWA9vMLO4d5m8mKicQoEpzCUs3WhzJIdZYMbYJUGnvydmd6rtwp6d/AAoWK/zuGuVnPG6AbReqI/fQ5Vl6i1A==
 Received: from SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
  by JH0PR04MB7622.apcprd04.prod.outlook.com (2603:1096:990:5e::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Sat, 4 Apr
- 2026 03:25:32 +0000
+ 2026 03:25:53 +0000
 Received: from SE3PR04MB8922.apcprd04.prod.outlook.com
  ([fe80::3450:f139:5238:8f58]) by SE3PR04MB8922.apcprd04.prod.outlook.com
  ([fe80::3450:f139:5238:8f58%6]) with mapi id 15.20.9769.017; Sat, 4 Apr 2026
- 03:25:32 +0000
+ 03:25:53 +0000
 Message-ID:
- <SE3PR04MB8922EEE514B57D2D54BD7AA5F35FA@SE3PR04MB8922.apcprd04.prod.outlook.com>
-Date: Sat, 4 Apr 2026 11:25:22 +0800
+ <SE3PR04MB892204ECD2CB1D923631D931F35FA@SE3PR04MB8922.apcprd04.prod.outlook.com>
+Date: Sat, 4 Apr 2026 11:25:44 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/3] RISC-V: KVM: Cache gstage pgd_levels in struct
- kvm_gstage
+Subject: Re: [PATCH v8 3/3] RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select
+ HGATP.MODE
 To: fangyu.yu@linux.alibaba.com, pbonzini@redhat.com, corbet@lwn.net,
  anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org,
  palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
@@ -54,17 +54,17 @@ Cc: guoren@kernel.org, radim.krcmar@oss.qualcomm.com,
  kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
  linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
- <20260403153019.9916-3-fangyu.yu@linux.alibaba.com>
+ <20260403153019.9916-4-fangyu.yu@linux.alibaba.com>
 Content-Language: en-US
 From: "Nutty.Liu" <nutty.liu@hotmail.com>
-In-Reply-To: <20260403153019.9916-3-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260403153019.9916-4-fangyu.yu@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TY4PR01CA0043.jpnprd01.prod.outlook.com
- (2603:1096:405:2bd::16) To SE3PR04MB8922.apcprd04.prod.outlook.com
+X-ClientProxiedBy: TY4PR01CA0038.jpnprd01.prod.outlook.com
+ (2603:1096:405:2bd::11) To SE3PR04MB8922.apcprd04.prod.outlook.com
  (2603:1096:101:2e9::7)
 X-Microsoft-Original-Message-ID:
- <50c24bbb-d6c4-4775-beab-2ea42bd85741@hotmail.com>
+ <37f37e5e-fa3c-49cb-a509-1d14c05c4923@hotmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,76 +74,75 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SE3PR04MB8922:EE_|JH0PR04MB7622:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1be47d08-fb62-474b-903f-08de91f9d366
+X-MS-Office365-Filtering-Correlation-Id: cad1a44b-4253-4002-48fa-08de91f9e062
 X-MS-Exchange-SLBlob-MailProps:
-	obhAqMD0nT97+9kgwgO/mqEGtcymhevmECRKaMIBi/81O2VrwNjzpMYq5EZpkgoGMGv5ThI7lIuGug8TrgcZRiTH2VVAeN9uFRb/rHVoIChcMJo3jHJiBu8yslKz3roweEGr4rllAiXukCp9IKEZCz4f0BVeQfVdH5c7P+xNLWHp87hZlljgjWOG/weZo5/QP9F/s4d5uVVsz9gV/rz6R8ARJodGNtu2RkieZuKoA1xK0kzWBLOy340mZ07D73I3wTxnlUKEkwTXhOqPdY4usOAfA5ITG2OL3z6TkBdDPDslPXnIj0wbVhhQ/MNfgDPNWZ1fmsj1URz44U4ka18zybIHl9ioQgVZ4OTODIhhIkPt558lE7+1lAtSLNBLkrp+OV8w0kjX7hfeqbzvbgFpm2YiUyFy+k0xB4/E0sGFaNHNH/4VJXXeLQDOTTekfGiucRiWAuyCseucVe3OA4pXhzPvh5fpOdm+XJdXqe5lqKeVO+s0Hcxsoyr0FETxf8r6Kxwtw1J5FuVtFipulOB5oUA8xj2Y477qJ7cISVDtQF850L8JvsWjjldNJ/soztTCMe0fo7cMXbdd2fw/8198oCcCkSoJokMtTKT57ZsdspGBPQF7JvH87OQdA/jDMeSvNm4SaB77g1VEB9AQdTUQuVDZKqP754aXlM70FOMFNlyD4IuyekYrd5nTzN8s93Hlj854PgC75PhdE4D8BlEzdEimXDx8yniyqYCFuezF4GLYY+tFjqX50wFzgYFJiL1nBAdmOsBT+4oRoyIpj520p4Qnm72G01o1LpUQibOQmmu8GtSc/Halwm4ebvTpWOXA
+	vuaKsetfIZmcv7cN2CQdJd4XVKwegu/4uZqsT57xel9pkl4vqKhhE9AxmF2a76BUFbSMnKri9nrWT2FQ24PiNftjXCCPvGJQb40Nfe1TL7FQ3haDSK1/aXxdRcvJxr9bRCAUaWU9wxSBSsRWRYpUbLTy9/lZPiCRrtrbNaTg/w2ptmWxmQAGDwEI4t1JYM84pMZU49E3uN9HGtNMjvw6dl9ze1FmEl7VEi2adJyQjafyd3baxRMreKUxatR0sJLpkNGh7Df5pJFbJ6YuVFPHUIBvm8yMzlwtXpww3SDBcAaAmgQb9bFUwELNfpYlsmcJfHIK62iGqp5A1X3l6P0FQpasUFn92Cc1mOO19ekNqzHUXGBXUzLbqDlzl7ebJbU384hIC4ofWSafUxhEQ+0ZrmGwNzcevU66UhfrtLDGabfc/3u9Mmr0CvjRF5uhJBiJvn/PeAthVn+HzaOQAZBaFS11vqZrAE/32VWK51NZTio8aABTi8ThX3u9Ap50Xv654VeEufAYay0z6rf0uM7lnA7XLzsLYI6Gbjx65KnhTH1gzEdmcX+vdkrI/CcDMFOZTOUoSkEpSCCVxfq1utRTzsXD8US86wv4dILU5qKIHzmCsmkQCtYHhUsfXbx9hkcN6SHYFv7QD1iDqTxTraXFpt4Og4QpxsfKpTIyyjZF36pVZo0bYW34HsDUrSc8sZt+Z5igJHU4ma24Rm6jJR8+FrZX3ZayY0Ma4CrucNA1nRYdqM4rziItfMsUmdIO6wZfCbG0kFsw+sZ3tklWhRFlEh5UCF5DDF2Bnjf/svJooA4WN3oz8WUtYfo4lgdQ9FOM
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|51005399006|23021999003|19110799012|41001999006|5072599009|6090799003|461199028|8060799015|7042599007|15080799012|40105399003|3412199025|440099028|18061999006|12091999003|26121999003;
+	BCL:0;ARA:14566002|51005399006|12121999013|23021999003|19110799012|41001999006|5072599009|6090799003|461199028|8060799015|7042599007|15080799012|40105399003|3412199025|440099028|26121999003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aEZ5U1B0UU1xOUx2NFNCallBbXUwRU1yVjVVR0lLc01uLzd0V08zU0I3MFY4?=
- =?utf-8?B?MUhxdFY5ZVFSY3hMazI0bE9remk5SmczKzZMdHFZaDB1RW1lS3VkOGlXUDRx?=
- =?utf-8?B?amJCblpRc0haOEZCQ2Z1WkVhaTN2VGRscmpMbHZ6bXdVeWIwNlpNQUQ4aVN0?=
- =?utf-8?B?a0RyM20yYkgyeFl6SlJMN2JnUGQ5WW9UenhoOTJGUWVyZ1dIS1hBaG9Lb3Bl?=
- =?utf-8?B?VlBlRFdxSHRiWTAyWmdVMzBHejRXWmxuY1dGRWxON2pneDVXa2p0amRkYmpU?=
- =?utf-8?B?cUN6SXNaQ2V4YlRJNkljandHNytuMnRocmVpblgrSWg2enZkQlZHMEZTMlJG?=
- =?utf-8?B?ZEZWR2dYaDV3VTZLMlpPTFlHcy9MbjZHdnZFWWp3a1RVeUE5VjVkWWZ6Snpt?=
- =?utf-8?B?KzF4YWpYTnd3NHVVWnlzMXVpRnRhK2hod0oyM1U3ZzFzcVlhdEo1YXZxZWN1?=
- =?utf-8?B?YXU4TDNVUFE0Y0VEMFBhem5QaURNVGQ1MFpNS0dVL3NlSWFUbllkK2dMTXFG?=
- =?utf-8?B?dEdWc1dYaTNMYUpaYmZsYkptWTJlWkQ5NmduZ1pPNlVHaGFxSVUvN1JNbk1u?=
- =?utf-8?B?eUVWdWF6WTVJYU1VZkEzQWV4TVFiNmNSWVZCUHAzS0lzNlhxNWdMRERzdFpT?=
- =?utf-8?B?Q3d6SUIvUFlYM0ZLbHFqWm4xSVlSbXJqeHhzMElwMjU4eUI4Z3dJTUpiOFZ5?=
- =?utf-8?B?ZVpBeXFiekhRNkVrNm81eDdBRFlvRjVhaUJVM0lLM0pzTFlCMFpoL0xJeXNj?=
- =?utf-8?B?UGJENWN3SStMR1dlZnVMM2h3VHVYdU5rV2c5QUlIVXp3alhmVSs5aDA3RlZT?=
- =?utf-8?B?OFZ2LzQ1UHV1c2xwN1phRE9XN3RFOFVOQmJFQ0MvbG0yNmlwOUVWSE1DUDhw?=
- =?utf-8?B?aVZLSUVmVWplM3JRVDc3bU8zNEJ1K3pBNzVWU3U2ajg5SWkzQzdZU0hLdDg1?=
- =?utf-8?B?MllXc054Z2JSbkdpaDRpZTZia2ZMWS9HWVVnRXVnSWdFVy9ZODJ5RGxXMWp6?=
- =?utf-8?B?d05MRE5vaGhyYzZTU1NuYmg0WUJMS2RkVm5xUDFjY3g2ZlFBc3VvenVqUjBI?=
- =?utf-8?B?L09raHAzTUw4bVZBMzF5a2Q3RDFJaVIvSll1NEhyN1o4Z1lqenVrb1d6QU96?=
- =?utf-8?B?RVBoL1NEd1JDVXgxbTl2RllOMm5UNGtmRGFKR1Bha2RWM0hUcGtPVVQ4WlR5?=
- =?utf-8?B?ckhTSzZPZ0NRdENIcXVrSlAxRFBoSHNSUkNGL0JOdHd1S2tQUU1PeE9zQk02?=
- =?utf-8?B?dXZzRGVTVTN3bzFYZU5qQUNmbXBVV2pKdmJzaktKb2lla1hsVElJSmluSk9a?=
- =?utf-8?B?ekJRdStkYVBiUXJwL0d1RTY1VnE1QWRVbUN2aWY5WU0wZVpyeE0zWTJKUUtS?=
- =?utf-8?B?RkU5WXNERCtyTVZXbWp6bGQ2cFEzSUlLUks3MzVuS1JsYXRQLzlZSGk0TXJk?=
- =?utf-8?B?WThKNnAwZERUMnRUalkxejVyMnZNTjN2RHhyejJBPT0=?=
+	=?utf-8?B?Ui8rczJ5TjRrY3A4d09pZFpNeGlsbFMwNGhWM1ByZklxVXM5OVljYkhpRWxp?=
+ =?utf-8?B?K3BNRm5XRERyQVhkM3JWcS9vYjc2UTlycEYrZEhuNUZyamRyNGROVkJTTkYy?=
+ =?utf-8?B?Mzh4R0FjWCtuUDBPSjZtbkRNd2gzNTVpNEgvclllc1J3MURBUkJHczJjbFZN?=
+ =?utf-8?B?b1N6TnE0MHN6RzZnNnc1WU1iRERHSGI5OG1zbTlFWTZQcTNiNlkxb05DWjRz?=
+ =?utf-8?B?MUV2YVB0cnpCT0JSMmZuSFVadlQxVENFdWlWbTZMMXA4SEh5b3Ewa29zTlBo?=
+ =?utf-8?B?S0dQVmthNFdmMGhjUm5keGVhOVRLQ2ZNUWpodDFzdTF2RHZVWWRIdnk5RnRh?=
+ =?utf-8?B?VWxPSjJva0RHeWxYQkE5b2tVZGR2MFM2RUswUU50STVoK2d0ZHJRd3l4dW0y?=
+ =?utf-8?B?cEZXb1ltSnRSV1ZWU21JNXdWVlJncmVtQU5QTWZyYlRLaDlwdHNoTVRnQS91?=
+ =?utf-8?B?Q0pvaTNpYVlMQ1E2YVg4elY1aTNqSnhwZ2dVTGV1c01HYWJnakpQdkJmakww?=
+ =?utf-8?B?YUx1ZGdJVHZ3MGVEMjNyTzBlZ2FrZGlhazNwa0pVcHNsUGZZVnVFNTk5d1ZN?=
+ =?utf-8?B?Y0lSU1U3eDJQKzNqczBRSFFpSmNwUWxJNzk5aTczMzMyb08xT1NEUWE1L0VO?=
+ =?utf-8?B?WCtRbFk3VjE2Y0NiK2s1QWtqMERUSlBQdnBHR0JpNDEyNXdpSUg4ZmJWNVJr?=
+ =?utf-8?B?ZXRnWkRselVLR09JV2IrNmlhd0NZY3VjSkIvaTdaRU9zUDlkbFVwcU1GRytW?=
+ =?utf-8?B?MlBXVElBYnBWZHR6Q0l6cHNaUUkwbWdnQk5DVGZkS0ZCKzdjRUNkaFFHa2Vp?=
+ =?utf-8?B?Q2F1YUtUK3BGa25hOHh1REVXZDVYT1VHT2JwZldGS215bXM2cWxVd1dLOTFC?=
+ =?utf-8?B?amdpSnNXT1RkWjlqcjdyeHNWMVRDaDgybnNPS1NsaEVwb1FWSVhpdGhBQmE4?=
+ =?utf-8?B?RGxMbVNYOVRIazIzVmE4WVhBazhxTUhmVGlsZHJoUk9zTDhKaWVrTnZHNUxO?=
+ =?utf-8?B?cmgrY01hUGNaajdMc3hyVjhjdG5pdVhHbk54Nkdwdnh6Q1dEZHNnRm4wUnFS?=
+ =?utf-8?B?QmhJR1BWZ1MwczhpY2p3UDJCOXIrQUY4ODVuTW9IUW5leTZ0L3ZNVTIyNEU5?=
+ =?utf-8?B?Zk0vUnd1THVReCtBRGRQemZzT01PUzhoWVlRdld4MS9UcDl3TitZemFYclQz?=
+ =?utf-8?B?YU1NV3l3OFdyTDllc01BWnAzbEZFdHRpQ2QvMkdSRUg0aHU5cGFWYlRGZEFn?=
+ =?utf-8?B?RGRVenNZbE9jYk5xV3NibGNCa3Nta0hpWkxWeVRYOGxCbk12dkxZN1BndmNr?=
+ =?utf-8?B?TXFMRmpFL3dVTG1HR2V3aE1QZjlSZ2lVM3dtMktjeDJLN1J3YWhZQXN2dlJI?=
+ =?utf-8?Q?Tys4T9THH0U0k5u1iDRn6AMCpRn8Q3Jk=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VUhGNnRLQXlxNmV1U2dqUVhnT1ZMR2ZsY2d4anpGbHJVd1I3S2FTa0xlMlJN?=
- =?utf-8?B?LzNmcFErWGNxOVZzaEk0WW1UVGc4S2pLazRyUlFuaHJjd3VkYlFBU3IvZ3FC?=
- =?utf-8?B?bGltRVhSRW9tdmRnQUNmN29Mdi84U244SUQ5ZWVxV2ZvL2dSdVgya2t5UXNY?=
- =?utf-8?B?NnRDYmhDcTBEeUJPMzJ6c2dPSmhFQVlhQmJKdUxWYzdkY1FNazcreXlpam0v?=
- =?utf-8?B?ZFcrY0d1dXFEOHJxSGdtTWJDVlhLOTZMK1BiM2pxRHV2anJUMGFVeWhZdmNX?=
- =?utf-8?B?MUtSSDBTTlcwL0RWRXBZU0tpNU9DUmM2YTJoNXpaYlhaakFPc0ZsaTlpV2I0?=
- =?utf-8?B?Vk0zQ0x3SnNEbUVoZk9tN2VKeTZPSHRSQUE3cE1NVkRkNWkzTCttVFhBaDVW?=
- =?utf-8?B?ZGNIMUtSeGV3c2RrcEFsNjRMU2MvRFFIYkYxYkNaVWdmUzdxc2FJa2V5QzB3?=
- =?utf-8?B?cnRibUN3N2s5dzJnYWdhcFBEUmNsUEJSNXE5eGFLOEx2dXFpSjYybm1oUDV4?=
- =?utf-8?B?N2tYeHNwcE03TlpOVFM5UzkwR1ZxamdLQVk3Y1RiZEpIM29MUTFLeEdZWml2?=
- =?utf-8?B?K3NmaTJXZE1SSXVZTlQrSWJpS0tZMWlESkh5dlRoaTJCNlREV1BUeFJlZzZs?=
- =?utf-8?B?a3ljbzNFN0NlR1Z2eE5mN1krc0tIM0hsK3lqdHkrNU91QzRqbnowS3R2alh6?=
- =?utf-8?B?eWJDbFNNRVNrR3lFZWNJQXM2NnZYUTV2WWpJVlF5MXN4VUhhd1p1L2dDL3lQ?=
- =?utf-8?B?MmpPWVQzczBPRlBLdkF3M1NHOVllZDVwVmppRVVRYzBxMkFhM21NTEhxTXpC?=
- =?utf-8?B?TmtZWk4xTW9TTHA5bnRoZ2REclkzbXhyeEdybXlZMyszVDkxeksvdmsvMHJG?=
- =?utf-8?B?cTB5R1lnSEZRcXduaS96cE9nVFpTcWhLbFRJaDRWeGVhM21ZYjJnRTZxSXh1?=
- =?utf-8?B?NUdmMkpSb2pTTUY4cS93dCtZMEw1RngvS1ZPbkdsRHF2YU9ZNUU3Q3BMeGMr?=
- =?utf-8?B?c1AxVEhQQ0ZRc01PVmhMZ3FYTnp3M3NHNWZWcmZPM3BjR1RuY1dNZWpBeTZY?=
- =?utf-8?B?QnBHR050WWo5TWpTdFc0YzNuQ1NsTnJqOUhIOGFZU1Z6L2VmRFYyYnB0TE5u?=
- =?utf-8?B?K1d6Y1BNUExSZ1grQmFsbDR2d2pRUXZ3M0Q4S3k0cnR2bFNtdmlTeHpTZ29I?=
- =?utf-8?B?Q2tWQm9BREtTY1Fsd2FDR3JVdVFXOENZbU1rTGtuVVFOQmdBQnBVa2Q5aUQ5?=
- =?utf-8?B?dUN1RHBnSTRyZHRHb2c3MDhqbExML0hoZHRodzFZanVFT29BUkxKRmt5MytP?=
- =?utf-8?B?dTUyYVg1VDhRUDd4MHNUcmg0UVlMWUtuYWZlZGFHTVYvSmY0RXJnN2VQRHhz?=
- =?utf-8?B?NWVSczZtalplenQ0b3A2VWdSanhBTWdUT2QwL3dSUHcrRHlKc0hQTDlYYzJ0?=
- =?utf-8?B?SDltKzdwYzlEMVJ2NGlDMUJtTUJEWmNTdUE1MzhCUjVZclE1NXRXWEhNNndR?=
- =?utf-8?B?N2ZIT0tOYWphQ0pCYXB5U2tlSVVYQy9FUzM5OXdRUVRRZUx0YTBIU05TRG1I?=
- =?utf-8?B?RytiWlo5STRmbjNwUGN5LzY1UTZxakZEdWo5dFRGYUMzb3VUVyszdWV5NjZu?=
- =?utf-8?B?Sm9FQ2F2RXN1ZXdZQUxWMTE0cTM0alNidUplNXYxcythcnFXMXBDbm5RSnBL?=
- =?utf-8?B?TkM2d3ROcE1FMjZrWmpVd3ZOeHJtZXJmcUIwMFB0THhFL1dBUEVxVTVEVDY0?=
- =?utf-8?B?aEZnR2lzTVZPTGdNeUFiVUhsTjNJanVMOGJSY2FJMEVJR1NSdkNyaDRvbm9Z?=
- =?utf-8?B?TWdDKzNPYWk2T2czMTZ3UXErZy9DbE92dUpZdGl3bmdBKzkvZCtYSk5HUnBD?=
- =?utf-8?Q?txwHWET+2Kvdg?=
+	=?utf-8?B?SFVsZVd1WnU2ZmtyTXFsYkp3em9nWCtjY3FObGwxcTlvWFdyNmpXb1liK1pR?=
+ =?utf-8?B?SWNFMmVHNlZ4UHR4MUNTSUlJeUdqa1Z1c2NuZGZZeVJLNnkwZ1ZBTXh5ajhH?=
+ =?utf-8?B?dlFrcXZCc2lnQzVOakdDdnVSdnZtUlRMUUF0Mys0cmtBK1dlbThHbnJQS3JE?=
+ =?utf-8?B?RkswMzBvMElLU3E0L3FKQTJTRTRSeDI5ejd3cFFmSDdHYldESjRNcWx3Ly9M?=
+ =?utf-8?B?b0I3SXRmZUxYSjZHM21IY2JYd3BTZ2xuSGVWd2YzUUhVc0pOMHJTUFUwK1Zq?=
+ =?utf-8?B?VHMyV3lGdVNpYVQvbUdSR0lPNUxYYTl3c05jRVRjTURMQlVYY2crL3NpYzVF?=
+ =?utf-8?B?RXM5dnU2OWR2ajhtTGZoZVkwbmJrU0ZvNnRrZVdGY3M0SUs2U3RTdFZ0R0t4?=
+ =?utf-8?B?VlBub2dUclVZaSsva2Z6WVN3S3kvT1pCMXFLL2k5bVJwVGoweUhRa3gwbkdr?=
+ =?utf-8?B?UkJJQVdLWHEwbE9Ua2Q1OUhCbWlWYUgrK2xRZlhUeTZrT1lFS091M1ZBZllM?=
+ =?utf-8?B?TmJyQmo5bFhCK1RvWjEzb2pscHlseUhCVUk3UmRUNEtHc01iNzl6VXordTRL?=
+ =?utf-8?B?U3graHIzZUh5bE9wUFlnTUZDSHVIMTQxVVRoakx0WmZ4WndmaVNHWlEwcDNn?=
+ =?utf-8?B?Vzd5TWhCTENpb2ZVY2hVSTR0SnFMZ0RoZGJDaE1CdkZaM3dQbFNWSWt1WEJn?=
+ =?utf-8?B?RDJlQ2M1TUgvZC9RUW51WHZzc0pyb000QmdVNkFxYTI5cEZpVWUrQ1NhT05j?=
+ =?utf-8?B?ZWJJMGxOYTZQVm1FQVd2bDIyWXFCYlFubndkWTQzeTBsTnRMaHBGWERoUktI?=
+ =?utf-8?B?N01WVEYvcXk1QUVoWG52ZHZxQ1NpN0oxbGl3UzVqeEwvRE5RSExwZnVQb0o3?=
+ =?utf-8?B?T1FDZ0RjajRjT3FoUVNFWEdsSDVmdVhMUVE3L2dCVDhJZW5ST0R0UzRZQkxY?=
+ =?utf-8?B?M043eUJtcllibTVKQlJBWjI2Z1VqbTJERmxBVldBcHY4OEhjWGZram54bnRv?=
+ =?utf-8?B?Q1NaMU1Id3dDK1NaNDRFVWI3UHU5RXd4UWtZVTY1ejh3YkxHTjUrYmtrTUZW?=
+ =?utf-8?B?cjdKZm96dXNHWk9COFdOSThtcGliT3RTUG13ZEV3VUVCV3JtV2lsTGpncFBS?=
+ =?utf-8?B?QTlhdnQrWkFBWitsRGYydjJxeStFWDg2UWZxNEYzbWEwbVd3Wmd5V2JYL1Na?=
+ =?utf-8?B?TlhQQXdvR094eExpd2tEVlZKSXVjMG1KS3FvSkdXa3h5VFhZbWl0TTF0V3ZV?=
+ =?utf-8?B?Y1ducXdPOHk4M09WeHBVMzFQcm1tYmZoTW5ZZkpUTEc4N2RtYS8yZmoya2ZN?=
+ =?utf-8?B?cTA2MFd6WlVkZm03NkZTNWdQS0IwT291VXdNNjFzaHNhNzd0VXQvWTRVaUM5?=
+ =?utf-8?B?RmdLSnlJc2JST0ptcEZnVnFxQjJzTndSMVFqUnVwdkFnY2VqOVRVRVFxd3hG?=
+ =?utf-8?B?ejhXMGpBVUxienloOTJXK2FWb3BrekV4VnpBaFoyUE4waDVQRjZrK2gvcUtK?=
+ =?utf-8?B?cEFEb2hFWXhFdXZQZG53cU1UcWNWUWN6dFBUMjBPUGVJNUxBUjJtN1FlSHFN?=
+ =?utf-8?B?L3hZUElmUHpJQUdwMkx0OW1MSzZWbGVnMmhBcEFxU1A2aCtkdWtSZ2VQLzJk?=
+ =?utf-8?B?MDNPQmd3N3dyNUVaczVsVmkzeUZRb2FwUTNSOEhvTE5DajhJY0l2OThqUW9i?=
+ =?utf-8?B?S1AwUGczNjkzU2FjTnVnaHJYN2ZVcmFIRHpacEdyOXNaclFiL0lyU0lxU1pB?=
+ =?utf-8?B?WllmbjduRnllcWJtWWJwWERYb1JHYVUxalIvTkZraUlkYjZOVXZCWDdONkl1?=
+ =?utf-8?B?MUN4M05kb0RVZVVEL2RUSXltSmN4VjlnQy9DSjBxLzJZZXVSYUtwUkxER1kv?=
+ =?utf-8?Q?KJdOn/nd7dXoP?=
 X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1be47d08-fb62-474b-903f-08de91f9d366
+X-MS-Exchange-CrossTenant-Network-Message-Id: cad1a44b-4253-4002-48fa-08de91f9e062
 X-MS-Exchange-CrossTenant-AuthSource: SE3PR04MB8922.apcprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 03:25:31.7445
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 03:25:53.2936
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -155,224 +154,87 @@ X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR04MB7622
 On 4/3/2026 11:30 PM, fangyu.yu@linux.alibaba.com wrote:
 > From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 >
-> Gstage page-table helpers frequently chase gstage->kvm->arch to
-> fetch pgd_levels. This adds noise and repeats the same dereference
-> chain in hot paths.
+> Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective
+> G-stage GPA width for a VM.
 >
-> Add pgd_levels to struct kvm_gstage and initialize it from kvm->arch
-> when setting up a gstage instance. Introduce kvm_riscv_gstage_init()
-> to centralize initialization and switch gstage code to use
-> gstage->pgd_levels.
+> KVM_CHECK_EXTENSION(KVM_CAP_VM_GPA_BITS) returns the effective GPA
+> bits for a VM, KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) allows userspace
+> to downsize the effective GPA width by selecting a smaller G-stage
+> page table format:
+>    - gpa_bits <= 41 selects Sv39x4 (pgd_levels=3)
+>    - gpa_bits <= 50 selects Sv48x4 (pgd_levels=4)
+>    - gpa_bits <= 59 selects Sv57x4 (pgd_levels=5)
 >
-> Suggested-by: Anup Patel <anup@brainfault.org>
+> Reject the request with -EINVAL for unsupported values and with -EBUSY
+> if vCPUs have been created or any memslot is populated.
+>
 > Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-> Reviewed-by: Anup Patel <anup@brainfault.org>
+> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+> Reviewed-by: Guo Ren <guoren@kernel.org>
 Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
 
 Thanks,
 Nutty
 > ---
->   arch/riscv/include/asm/kvm_gstage.h | 10 ++++++
->   arch/riscv/kvm/gstage.c             | 10 +++---
->   arch/riscv/kvm/mmu.c                | 50 ++++++-----------------------
->   3 files changed, 25 insertions(+), 45 deletions(-)
+>   arch/riscv/kvm/vm.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 42 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-> index 5aa58d1f692a..70d9d483365e 100644
-> --- a/arch/riscv/include/asm/kvm_gstage.h
-> +++ b/arch/riscv/include/asm/kvm_gstage.h
-> @@ -15,6 +15,7 @@ struct kvm_gstage {
->   #define KVM_GSTAGE_FLAGS_LOCAL		BIT(0)
->   	unsigned long vmid;
->   	pgd_t *pgd;
-> +	unsigned long pgd_levels;
->   };
+> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+> index fb7c4e07961f..a9f083feeb76 100644
+> --- a/arch/riscv/kvm/vm.c
+> +++ b/arch/riscv/kvm/vm.c
+> @@ -214,12 +214,52 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 >   
->   struct kvm_gstage_mapping {
-> @@ -92,4 +93,13 @@ static inline unsigned long kvm_riscv_gstage_mode(unsigned long pgd_levels)
->   	}
->   }
->   
-> +static inline void kvm_riscv_gstage_init(struct kvm_gstage *gstage, struct kvm *kvm)
-> +{
-> +	gstage->kvm = kvm;
-> +	gstage->flags = 0;
-> +	gstage->vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> +	gstage->pgd = kvm->arch.pgd;
-> +	gstage->pgd_levels = kvm->arch.pgd_levels;
-> +}
+>   int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>   {
+> +	if (cap->flags)
+> +		return -EINVAL;
 > +
->   #endif
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index 4beb9322fe76..7c4c34bc191b 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-> @@ -26,7 +26,7 @@ static inline unsigned long gstage_pte_index(struct kvm_gstage *gstage,
->   	unsigned long mask;
->   	unsigned long shift = HGATP_PAGE_SHIFT + (kvm_riscv_gstage_index_bits * level);
->   
-> -	if (level == gstage->kvm->arch.pgd_levels - 1)
-> +	if (level == gstage->pgd_levels - 1)
->   		mask = (PTRS_PER_PTE * (1UL << kvm_riscv_gstage_pgd_xbits)) - 1;
->   	else
->   		mask = PTRS_PER_PTE - 1;
-> @@ -45,7 +45,7 @@ static int gstage_page_size_to_level(struct kvm_gstage *gstage, unsigned long pa
->   	u32 i;
->   	unsigned long psz = 1UL << 12;
->   
-> -	for (i = 0; i < gstage->kvm->arch.pgd_levels; i++) {
-> +	for (i = 0; i < gstage->pgd_levels; i++) {
->   		if (page_size == (psz << (i * kvm_riscv_gstage_index_bits))) {
->   			*out_level = i;
->   			return 0;
-> @@ -58,7 +58,7 @@ static int gstage_page_size_to_level(struct kvm_gstage *gstage, unsigned long pa
->   static int gstage_level_to_page_order(struct kvm_gstage *gstage, u32 level,
->   				      unsigned long *out_pgorder)
->   {
-> -	if (gstage->kvm->arch.pgd_levels < level)
-> +	if (gstage->pgd_levels < level)
+>   	switch (cap->cap) {
+>   	case KVM_CAP_RISCV_MP_STATE_RESET:
+> -		if (cap->flags)
+> -			return -EINVAL;
+>   		kvm->arch.mp_state_reset = true;
+>   		return 0;
+> +	case KVM_CAP_VM_GPA_BITS: {
+> +		unsigned long gpa_bits = cap->args[0];
+> +		unsigned long new_levels;
+> +		int r = 0;
+> +
+> +		/* Decide target pgd levels from requested gpa_bits */
+> +#ifdef CONFIG_64BIT
+> +		if (gpa_bits <= 41)
+> +			new_levels = 3;        /* Sv39x4 */
+> +		else if (gpa_bits <= 50)
+> +			new_levels = 4;        /* Sv48x4 */
+> +		else if (gpa_bits <= 59)
+> +			new_levels = 5;        /* Sv57x4 */
+> +		else
+> +			return -EINVAL;
+> +#else
+> +		/* 32-bit: only Sv32x4*/
+> +		if (gpa_bits <= 34)
+> +			new_levels = 2;
+> +		else
+> +			return -EINVAL;
+> +#endif
+> +		if (new_levels > kvm_riscv_gstage_max_pgd_levels)
+> +			return -EINVAL;
+> +
+> +		/* Follow KVM's lock ordering: kvm->lock -> kvm->slots_lock. */
+> +		mutex_lock(&kvm->lock);
+> +		mutex_lock(&kvm->slots_lock);
+> +
+> +		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
+> +			r = -EBUSY;
+> +		else
+> +			kvm->arch.pgd_levels = new_levels;
+> +
+> +		mutex_unlock(&kvm->slots_lock);
+> +		mutex_unlock(&kvm->lock);
+> +
+> +		return r;
+> +	}
+>   	default:
 >   		return -EINVAL;
->   
->   	*out_pgorder = 12 + (level * kvm_riscv_gstage_index_bits);
-> @@ -83,7 +83,7 @@ bool kvm_riscv_gstage_get_leaf(struct kvm_gstage *gstage, gpa_t addr,
->   			       pte_t **ptepp, u32 *ptep_level)
->   {
->   	pte_t *ptep;
-> -	u32 current_level = gstage->kvm->arch.pgd_levels - 1;
-> +	u32 current_level = gstage->pgd_levels - 1;
->   
->   	*ptep_level = current_level;
->   	ptep = (pte_t *)gstage->pgd;
-> @@ -127,7 +127,7 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
->   			     struct kvm_mmu_memory_cache *pcache,
->   			     const struct kvm_gstage_mapping *map)
->   {
-> -	u32 current_level = gstage->kvm->arch.pgd_levels - 1;
-> +	u32 current_level = gstage->pgd_levels - 1;
->   	pte_t *next_ptep = (pte_t *)gstage->pgd;
->   	pte_t *ptep = &next_ptep[gstage_pte_index(gstage, map->addr, current_level)];
->   
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index fbcdd75cb9af..2d3def024270 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -24,10 +24,7 @@ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
->   	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
->   	struct kvm_gstage gstage;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   
->   	spin_lock(&kvm->mmu_lock);
->   	kvm_riscv_gstage_wp_range(&gstage, start, end);
-> @@ -49,10 +46,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
->   	struct kvm_gstage_mapping map;
->   	struct kvm_gstage gstage;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   
->   	end = (gpa + size + PAGE_SIZE - 1) & PAGE_MASK;
->   	pfn = __phys_to_pfn(hpa);
-> @@ -89,10 +83,7 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long size)
->   {
->   	struct kvm_gstage gstage;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   
->   	spin_lock(&kvm->mmu_lock);
->   	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
-> @@ -109,10 +100,7 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
->   	phys_addr_t end = (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
->   	struct kvm_gstage gstage;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   
->   	kvm_riscv_gstage_wp_range(&gstage, start, end);
->   }
-> @@ -141,10 +129,7 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
->   	phys_addr_t size = slot->npages << PAGE_SHIFT;
->   	struct kvm_gstage gstage;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   
->   	spin_lock(&kvm->mmu_lock);
->   	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
-> @@ -250,10 +235,7 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
->   	if (!kvm->arch.pgd)
->   		return false;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   	mmu_locked = spin_trylock(&kvm->mmu_lock);
->   	kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SHIFT,
->   				     (range->end - range->start) << PAGE_SHIFT,
-> @@ -275,10 +257,7 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->   
->   	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
->   				       &ptep, &ptep_level))
->   		return false;
-> @@ -298,10 +277,7 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->   
->   	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
->   				       &ptep, &ptep_level))
->   		return false;
-> @@ -463,10 +439,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
->   	struct kvm_gstage gstage;
->   	struct page *page;
->   
-> -	gstage.kvm = kvm;
-> -	gstage.flags = 0;
-> -	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -	gstage.pgd = kvm->arch.pgd;
-> +	kvm_riscv_gstage_init(&gstage, kvm);
->   
->   	/* Setup initial state of output mapping */
->   	memset(out_map, 0, sizeof(*out_map));
-> @@ -587,10 +560,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
->   
->   	spin_lock(&kvm->mmu_lock);
->   	if (kvm->arch.pgd) {
-> -		gstage.kvm = kvm;
-> -		gstage.flags = 0;
-> -		gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
-> -		gstage.pgd = kvm->arch.pgd;
-> +		kvm_riscv_gstage_init(&gstage, kvm);
->   		kvm_riscv_gstage_unmap_range(&gstage, 0UL,
->   			kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels), false);
->   		pgd = READ_ONCE(kvm->arch.pgd);
+>   	}
