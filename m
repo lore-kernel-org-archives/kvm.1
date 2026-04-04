@@ -1,120 +1,148 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9FC285066
-	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 15:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AEA1E515;
+	Sat,  4 Apr 2026 16:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775316064; cv=none; b=genWihz3bepbJ9BApKCeffpEziYLQoIPtcdD00PLulJPGWHzqTDOZv+a3+ksC9B/aewTsBfvtPSEg+D8m2W7eX8MIZp66KLXfdALOAh9qjgfJ7voqA8p0c9B7iCppYvTXCcgOKkOENYZs2s4sBhGsVP40jB1cj8Hs9lTWD3AF0U=
+	t=1775321785; cv=none; b=YPNnJYdFs20DsfTQkg6WHGGOPvI1HAnvPTokJ/eH31mnrbI9I+AS9omqPrfWV5j5BGk8NHU7PcoQY7URjBrtgRUBLaxc1Gncjgyp5TrsrtW8hEpdUPRHnrT5KRzVPMA55mQhjMoTAXJ4y8jfPVAMhH55CQRQxVFaTqJ5TAC88w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775316064; c=relaxed/simple;
-	bh=bwi3fwqRL2gMkBWbXUNgaSztWecB9cnkr2OnSeMSIqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JqlenGHuW7rTgVv8kuxT1o0TpYPfd5nc5YxLCVNo3tRHWSNAXjO/Ja2dGd8U9cF+OfxN1zQyi4pnldZNmsox7Jtu+VMvROPxmIto1zYymEReZ3vDBbUt+2rvzmK4TfL1ZNkExbHGCXg5E1ltdRJ9G4hJJ9Yz3InX6iJbHuzMY/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGanoOHp; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775321785; c=relaxed/simple;
+	bh=z0EKK9uCRclvxyjrhd1+SN0RRq/OFfBzrXy9eOqqb1Y=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=j8rmXVfDsFTAyFGrkhr0F2czxvHmFU3BIqSGMyGvNZAvO+vcb/NywYLQGRFIbug0c7sSc4eQ7+C2qMblfeM1fgHOVhKCfV8umTaBF85VTPJGylfHayw2c1lhcrr5YJ5rPiNFUOC7BDFoDCNnJG/bHcdu4TRH7AkNmUFtOOg72h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pvkgz2VY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGanoOHp"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a041eae5so7407695e9.1
-        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 08:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775316061; x=1775920861; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ya15IHYt9XPwJn5C1FMw2sI/phhivTNLETw1ZpFU9KY=;
-        b=OGanoOHp1Zebwnc8FiqdpONklWtKx06Rr45qyxbCocloiS8fxa8iA2zxTmNm/Qu7Wf
-         VN8M6Pr7OfHLyuyvXYEZ4EZ68bhyGem1zY6KrDcE7g7S6r26KeAiwEZo9b06n9Jtp6Rv
-         BxxulVNC0YiKuI4s99+yQfYr2J7LNeSXHag3RDmeZlTJzrmp3L/ZfskOtQKnOr0mUmjP
-         mk3iras8E6HQWO5Yj4VkGJcvDk8Qc3Bm1dACNRiz6mw/BXRt07cv/hkWsv0Fo+XMUyaf
-         7u954wAEsv9AOISAchZoazK0ZpZI7/a939lfNU4++L4MkxWVyI7PFJ5OiaxNu7q+Mo8f
-         s19g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775316061; x=1775920861;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ya15IHYt9XPwJn5C1FMw2sI/phhivTNLETw1ZpFU9KY=;
-        b=Ay+GAH227MRQCwJfDVHx51eKfRp3B3KRzzqoug8S2BX8srC0RTTrnChY/DMKZGlgY0
-         8svcSum6aJX/rG6GxXIIjJmUpEX29MT28RCyWK+MkUKR3I3z0J6pfjXuQolMvtiOHhb8
-         chzZ0fVgOs2EAVPHLW2bM6vqv6xq9dM+bdLD+nsYKC73yNsgQzlu9fPWsWHzTeMtjKaJ
-         aT9Bz0BUSua9p25oqKbVwcWpDR1jxFSd7Q28lC6nEsHhJPecvBVjiVD8nlNNFfBIZ4nC
-         yH3HewzZ3mgDa/Qo4UDrMczZ8f1rYURiCh/1wJ/ajflYoCfy34kG1t6WxSmXKjXILzun
-         lGAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUiWMMQygihwFwAcMOzejrZQP0g7l6yL3X840UuFcDuIHa3UpgWYb7ntSxW9GBUGPEbpT8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh5BUVM0RTOvN+MX4XBLfXVB3Lexoi2zOb23ero5tSCdViqfIu
-	BRjgUC2arCJ7VtB+4Son5UrJdx5tuHgiFPCv5WS1Kkml0mtD9jtWi9MN
-X-Gm-Gg: AeBDieseK5gGFJCpN7tsYFpzgbr55mXZm7fcTOj1ehmegSAI1z8WcZ/917a7qDPZGy4
-	zCniUYMFCuhgHlj2Vgy0OB41tU+40QAWSOaztl8ndn0awHeKCd3ZZTU37TujcqoAq4KrO/ZtyzL
-	DGrjOoImvKyAyzqWy6SMmBo8WTJUxAj881L+DBOm87SKrh96N6mo8l8zrEy9/q/eRvp9+YPkY6/
-	ZVliSqLsbnUlI/O8n1YkdH9EfHhjyQzq+Sa44VnIs+uFRlpQYChyKlEWCdiK09sVIq3d6/c3mMI
-	vd5VxLEjGpdbDmpBbl+JuYwBkD4w6tMl54uwX92EiRSFtqCKKUZURgeBg5GMtxGH8zZPLld9NFM
-	cxue0j3bl7oCNI/lmY90zyF0hTaKorJt4vLbI4cIMEnOZYICXqTfyTCZrF2jW0uJVteIrY+TwIO
-	5WW4VWEbavGiZBFclHZGDbHqIgeKccPA==
-X-Received: by 2002:a05:600c:4650:b0:488:9e54:94c8 with SMTP id 5b1f17b1804b1-4889e5496acmr44565465e9.31.1775316061052;
-        Sat, 04 Apr 2026 08:21:01 -0700 (PDT)
-Received: from pumpkin ([31.55.121.85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e5890sm25182762f8f.31.2026.04.04.08.21.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 08:21:00 -0700 (PDT)
-Date: Sat, 4 Apr 2026 16:20:59 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov
- <nik.borisov@suse.com>, "H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf
- <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, Sean
- Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP
- Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern
- <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard
- Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Asit Mallick
- <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>,
- bpf@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v9 00/10] VMSCAPE optimization for BHI variant
-Message-ID: <20260404162059.34ca90df@pumpkin>
-In-Reply-To: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
-References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pvkgz2VY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A189EC19421;
+	Sat,  4 Apr 2026 16:56:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775321784;
+	bh=z0EKK9uCRclvxyjrhd1+SN0RRq/OFfBzrXy9eOqqb1Y=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Pvkgz2VYtss1MeKDd1hCnXOqFhZSJT7sCBgib4Ld40MuoHbsbTzaQtqEQlHI315/z
+	 sSsTrUhsdTJPdFsI6MsazCxIagVra3Yz7Nj6ieza8kV78SqaqqkR1jw4ERelqbogu8
+	 P2C5HKTLPE156wtoOmaEhBjNWmWs1/5XjIm7Pn+IztUEvzTxOWgE4ijDSgxwxt7sHW
+	 /z+by/VjXh6iXK4C6vfLmsq7Ld8muhOBjOIJmJuiMgdiDbMtkSfkPxjp0+PDXt64DF
+	 SAsEhipno3UJ1XHvp0XZyChIymjhWJhckqoZh6Dfi1SExI1b8SJikdcJieSIN27yIj
+	 n1QGwKpOYjS/A==
+Message-ID: <faa68f96-5b10-45d0-a5dc-fac4350a7dd7@kernel.org>
+Date: Sat, 4 Apr 2026 18:56:08 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/12] bus: fsl-mc: use generic driver_override
+ infrastructure
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>, Danilo Krummrich <dakr@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Nipun Gupta <nipun.gupta@amd.com>,
+ Nikhil Agarwal <nikhil.agarwal@amd.com>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+ Long Li <longli@microsoft.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Armin Wolf <W_Armin@gmx.de>, Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Vineeth Vijayan <vneethv@linux.ibm.com>,
+ Peter Oberparleiter <oberpar@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Harald Freudenberger <freude@linux.ibm.com>,
+ Holger Dengler <dengler@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C4=82=C2=A9rez?=
+ <eperezma@redhat.com>, Alex Williamson <alex@shazbot.org>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
+ linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-spi@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-arm-kernel@lists.infradead.org,
+ Gui-Dong Han <hanguidong02@gmail.com>
+References: <20260324005919.2408620-1-dakr@kernel.org>
+ <20260324005919.2408620-3-dakr@kernel.org>
+ <cvcetxkxjq2tz6n2vsofhyzove3qdi2e4r6rq6yxou3joejk2h@rmt5ygav7ssu>
+ <4c5e9bad-82f0-4714-99c2-8ccd79a45043@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <4c5e9bad-82f0-4714-99c2-8ccd79a45043@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2 Apr 2026 17:30:32 -0700
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com> wrote:
 
-> v9:
-> - Use global variables for BHB loop counters instead of ALTERNATIVE-based
->   approach. (Dave & others)
-> - Use 32-bit registers (%eax/%ecx) for loop counters, loaded via movzbl
->   from 8-bit globals. 8-bit registers (e.g. %ah in the inner loop) caused
->   performance regression on certain CPUs due to partial-register stalls. (David Laight)
-> - Let BPF save/restore %rax/%rcx as in the original implementation, since
->   it is the only caller that needs these registers preserved across the
->   BHB clearing sequence.
 
-That is as dangerous as hell...
-Does BPF even save %rcx - I'm sure I checked that a long time ago
-and found it didn't.
-(I'm mostly AFK over Easter and can't check.)
-A least there should be a blood great big comment that BPF calls this code
-and only saves specific registers.
-But given the number of mispredicted branches and other pipeline stalls
-in this code a couple of register saves to stack are unlikely to make
-any difference.
+Le 28/03/2026 à 13:10, Christophe Leroy (CS GROUP) a écrit :
+> 
+> 
+> Le 25/03/2026 à 13:01, Ioana Ciornei a écrit :
+>> On Tue, Mar 24, 2026 at 01:59:06AM +0100, Danilo Krummrich wrote:
+>>> When a driver is probed through __driver_attach(), the bus' match()
+>>> callback is called without the device lock held, thus accessing the
+>>> driver_override field without a lock, which can cause a UAF.
+>>>
+>>> Fix this by using the driver-core driver_override infrastructure taking
+>>> care of proper locking internally.
+>>>
+>>> Note that calling match() from __driver_attach() without the device lock
+>>> held is intentional. [1]
+>>>
+>>> Link: https://eur01.safelinks.protection.outlook.com/? 
+>>> url=https%3A%2F%2Flore.kernel.org%2Fdriver- 
+>>> core%2FDGRGTIRHA62X.3RY09D9SOK77P%40kernel.org%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b9262ddecdd4ce29f9808de8a66485e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639100369055903282%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2BRfjlUkq7oWV%2F0v2S2B%2BEuxCY%2FLRQv6qHiEWiupd6kc%3D&reserved=0 [1]
+>>> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+>>> Closes: https://eur01.safelinks.protection.outlook.com/? 
+>>> url=https%3A%2F%2Fbugzilla.kernel.org%2Fshow_bug.cgi%3Fid%3D220789&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b9262ddecdd4ce29f9808de8a66485e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639100369055936232%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=XL1K1ICiygOZnlvDUbQFe192KnLsBQms0HFNGCuyz%2Fw%3D&reserved=0
+>>> Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' 
+>>> in the mc-bus")
+>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>>
+>> Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+>> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+>>
+> 
+> 
+> Applied, thanks
 
-	David
+Have to drop it for now, build fails:
+
+   CALL    scripts/checksyscalls.sh
+   CC      drivers/bus/fsl-mc/fsl-mc-bus.o
+drivers/bus/fsl-mc/fsl-mc-bus.c: In function 'fsl_mc_bus_match':
+drivers/bus/fsl-mc/fsl-mc-bus.c:92:15: error: implicit declaration of 
+function 'device_match_driver_override' 
+[-Werror=implicit-function-declaration]
+    92 |         ret = device_match_driver_override(dev, drv);
+       |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/bus/fsl-mc/fsl-mc-bus.c: At top level:
+drivers/bus/fsl-mc/fsl-mc-bus.c:321:10: error: 'const struct bus_type' 
+has no member named 'driver_override'
+   321 |         .driver_override = true,
+       |          ^~~~~~~~~~~~~~~
+drivers/bus/fsl-mc/fsl-mc-bus.c:321:28: warning: initialization of 
+'const char *' from 'int' makes pointer from integer without a cast 
+[-Wint-conversion]
+   321 |         .driver_override = true,
+       |                            ^~~~
+drivers/bus/fsl-mc/fsl-mc-bus.c:321:28: note: (near initialization for 
+'fsl_mc_bus_type.dev_name')
+cc1: some warnings being treated as errors
+make[5]: *** [scripts/Makefile.build:289: 
+drivers/bus/fsl-mc/fsl-mc-bus.o] Error 1
+make[4]: *** [scripts/Makefile.build:546: drivers/bus/fsl-mc] Error 2
+make[3]: *** [scripts/Makefile.build:546: drivers/bus] Error 2
+make[2]: *** [scripts/Makefile.build:546: drivers] Error 2
+make[1]: *** [/home/chleroy/linux-powerpc/Makefile:2101: .] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+Christophe
 
