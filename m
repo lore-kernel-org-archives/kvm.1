@@ -1,99 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3942C234A;
-	Sat,  4 Apr 2026 15:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9FC285066
+	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 15:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775315279; cv=none; b=GF2sJlhRdLd0bJHbro8UNPWkxVWt9r5D2I+9PXhL5UQwPW2t7Vo4QsLX6bdTGQv1bKcnkXZX7MawL/MWGp0f0aGOPK4zIolK8HfgfcEFD3foNq/8bcxGEh21InhBW1rLRbOAWQMFBpa5iaykqYWHxTIgvekOebOHVq6ZEy5ceg0=
+	t=1775316064; cv=none; b=genWihz3bepbJ9BApKCeffpEziYLQoIPtcdD00PLulJPGWHzqTDOZv+a3+ksC9B/aewTsBfvtPSEg+D8m2W7eX8MIZp66KLXfdALOAh9qjgfJ7voqA8p0c9B7iCppYvTXCcgOKkOENYZs2s4sBhGsVP40jB1cj8Hs9lTWD3AF0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775315279; c=relaxed/simple;
-	bh=vsboea1jS0mbXrEN888C7vI6KSnNsfnadcjKrpMmAnY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=rVnMMD7W+X37uKdkrbcpiuNgv7xydu76PK4Hh5LCw1I+tyiEygThH2d3eVolJhjo0YruF1bacVCEd5VnZi7sbX2yn8k9EFyZCfkcsZNYz07mgVfE2BwChPxkL1MrgSikCEEC2gE85j60sQ9hJwwgv2Qb/ONCKVUErGGmSBn+lbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqFwLyJn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775316064; c=relaxed/simple;
+	bh=bwi3fwqRL2gMkBWbXUNgaSztWecB9cnkr2OnSeMSIqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JqlenGHuW7rTgVv8kuxT1o0TpYPfd5nc5YxLCVNo3tRHWSNAXjO/Ja2dGd8U9cF+OfxN1zQyi4pnldZNmsox7Jtu+VMvROPxmIto1zYymEReZ3vDBbUt+2rvzmK4TfL1ZNkExbHGCXg5E1ltdRJ9G4hJJ9Yz3InX6iJbHuzMY/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGanoOHp; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqFwLyJn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D01C19421;
-	Sat,  4 Apr 2026 15:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775315278;
-	bh=vsboea1jS0mbXrEN888C7vI6KSnNsfnadcjKrpMmAnY=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=BqFwLyJnTBhpomTB+sXRdwyVaWyzA1LM4x/jRCX0BFGrA8JpgKS8rfJ3LIpPDY9yk
-	 p+d1jqhJ1Mjf2wU0RpwYFVVUOlAbdMj9UlGnuClj9FmR1QC9ZSfTvrkB18QTB/RfaR
-	 3w4rXTh/VlmdJJ+A6SXPJawUID7A7XZSgzuHSGqEFu6Tbouz8uVWV9o1VaA1GFu7gI
-	 3NdNsOM8C1NHzuvTeKFcIyrqClEFUe0UqumonfV9MfwITs9dnEyWj08ERsdYv9WbWd
-	 01HVmLT594g3v4oxts7zZYAk6RxZP3qVHdO7PiI+5yTu0pvGRJP4QeyHxy5PzJrrxp
-	 3oxcw/dlirZ+g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGanoOHp"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a041eae5so7407695e9.1
+        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 08:21:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775316061; x=1775920861; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ya15IHYt9XPwJn5C1FMw2sI/phhivTNLETw1ZpFU9KY=;
+        b=OGanoOHp1Zebwnc8FiqdpONklWtKx06Rr45qyxbCocloiS8fxa8iA2zxTmNm/Qu7Wf
+         VN8M6Pr7OfHLyuyvXYEZ4EZ68bhyGem1zY6KrDcE7g7S6r26KeAiwEZo9b06n9Jtp6Rv
+         BxxulVNC0YiKuI4s99+yQfYr2J7LNeSXHag3RDmeZlTJzrmp3L/ZfskOtQKnOr0mUmjP
+         mk3iras8E6HQWO5Yj4VkGJcvDk8Qc3Bm1dACNRiz6mw/BXRt07cv/hkWsv0Fo+XMUyaf
+         7u954wAEsv9AOISAchZoazK0ZpZI7/a939lfNU4++L4MkxWVyI7PFJ5OiaxNu7q+Mo8f
+         s19g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775316061; x=1775920861;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ya15IHYt9XPwJn5C1FMw2sI/phhivTNLETw1ZpFU9KY=;
+        b=Ay+GAH227MRQCwJfDVHx51eKfRp3B3KRzzqoug8S2BX8srC0RTTrnChY/DMKZGlgY0
+         8svcSum6aJX/rG6GxXIIjJmUpEX29MT28RCyWK+MkUKR3I3z0J6pfjXuQolMvtiOHhb8
+         chzZ0fVgOs2EAVPHLW2bM6vqv6xq9dM+bdLD+nsYKC73yNsgQzlu9fPWsWHzTeMtjKaJ
+         aT9Bz0BUSua9p25oqKbVwcWpDR1jxFSd7Q28lC6nEsHhJPecvBVjiVD8nlNNFfBIZ4nC
+         yH3HewzZ3mgDa/Qo4UDrMczZ8f1rYURiCh/1wJ/ajflYoCfy34kG1t6WxSmXKjXILzun
+         lGAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUiWMMQygihwFwAcMOzejrZQP0g7l6yL3X840UuFcDuIHa3UpgWYb7ntSxW9GBUGPEbpT8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh5BUVM0RTOvN+MX4XBLfXVB3Lexoi2zOb23ero5tSCdViqfIu
+	BRjgUC2arCJ7VtB+4Son5UrJdx5tuHgiFPCv5WS1Kkml0mtD9jtWi9MN
+X-Gm-Gg: AeBDieseK5gGFJCpN7tsYFpzgbr55mXZm7fcTOj1ehmegSAI1z8WcZ/917a7qDPZGy4
+	zCniUYMFCuhgHlj2Vgy0OB41tU+40QAWSOaztl8ndn0awHeKCd3ZZTU37TujcqoAq4KrO/ZtyzL
+	DGrjOoImvKyAyzqWy6SMmBo8WTJUxAj881L+DBOm87SKrh96N6mo8l8zrEy9/q/eRvp9+YPkY6/
+	ZVliSqLsbnUlI/O8n1YkdH9EfHhjyQzq+Sa44VnIs+uFRlpQYChyKlEWCdiK09sVIq3d6/c3mMI
+	vd5VxLEjGpdbDmpBbl+JuYwBkD4w6tMl54uwX92EiRSFtqCKKUZURgeBg5GMtxGH8zZPLld9NFM
+	cxue0j3bl7oCNI/lmY90zyF0hTaKorJt4vLbI4cIMEnOZYICXqTfyTCZrF2jW0uJVteIrY+TwIO
+	5WW4VWEbavGiZBFclHZGDbHqIgeKccPA==
+X-Received: by 2002:a05:600c:4650:b0:488:9e54:94c8 with SMTP id 5b1f17b1804b1-4889e5496acmr44565465e9.31.1775316061052;
+        Sat, 04 Apr 2026 08:21:01 -0700 (PDT)
+Received: from pumpkin ([31.55.121.85])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e5890sm25182762f8f.31.2026.04.04.08.21.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Apr 2026 08:21:00 -0700 (PDT)
+Date: Sat, 4 Apr 2026 16:20:59 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov
+ <nik.borisov@suse.com>, "H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, Sean
+ Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
+ <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP
+ Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern
+ <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard
+ Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
+ <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Asit Mallick
+ <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v9 00/10] VMSCAPE optimization for BHI variant
+Message-ID: <20260404162059.34ca90df@pumpkin>
+In-Reply-To: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Apr 2026 17:07:48 +0200
-Message-Id: <DHKGQN6D0ANO.2QYY3JTM5435O@kernel.org>
-To: "Russell King" <linux@armlinux.org.uk>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Ioana Ciornei" <ioana.ciornei@nxp.com>, "Nipun Gupta"
- <nipun.gupta@amd.com>, "Nikhil Agarwal" <nikhil.agarwal@amd.com>, "K. Y.
- Srinivasan" <kys@microsoft.com>, "Haiyang Zhang" <haiyangz@microsoft.com>,
- "Wei Liu" <wei.liu@kernel.org>, "Dexuan Cui" <decui@microsoft.com>, "Long
- Li" <longli@microsoft.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Armin
- Wolf" <W_Armin@gmx.de>, "Bjorn Andersson" <andersson@kernel.org>, "Mathieu
- Poirier" <mathieu.poirier@linaro.org>, "Vineeth Vijayan"
- <vneethv@linux.ibm.com>, "Peter Oberparleiter" <oberpar@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger"
- <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Harald
- Freudenberger" <freude@linux.ibm.com>, "Holger Dengler"
- <dengler@linux.ibm.com>, "Mark Brown" <broonie@kernel.org>, "Michael S.
- Tsirkin" <mst@redhat.com>, "Jason Wang" <jasowang@redhat.com>, "Xuan Zhuo"
- <xuanzhuo@linux.alibaba.com>, =?utf-8?q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, "Alex Williamson" <alex@shazbot.org>, "Juergen
- Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>,
- "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Christophe Leroy
- (CS GROUP)" <chleroy@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: (subset) [PATCH 00/12] treewide: Convert buses to use generic
- driver_override
-Cc: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-hyperv@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
- <linux-s390@vger.kernel.org>, <linux-spi@vger.kernel.org>,
- <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
- <xen-devel@lists.xenproject.org>, <linux-arm-kernel@lists.infradead.org>,
- "Danilo Krummrich" <dakr@kernel.org>
-References: <20260324005919.2408620-1-dakr@kernel.org>
-In-Reply-To: <20260324005919.2408620-1-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue Mar 24, 2026 at 1:59 AM CET, Danilo Krummrich wrote:
-> Danilo Krummrich (12):
->   PCI: use generic driver_override infrastructure
->   platform/wmi: use generic driver_override infrastructure
->   vdpa: use generic driver_override infrastructure
->   s390/cio: use generic driver_override infrastructure
->   s390/ap: use generic driver_override infrastructure
+On Thu, 2 Apr 2026 17:30:32 -0700
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com> wrote:
 
-Applied to driver-core-testing, thanks!
+> v9:
+> - Use global variables for BHB loop counters instead of ALTERNATIVE-based
+>   approach. (Dave & others)
+> - Use 32-bit registers (%eax/%ecx) for loop counters, loaded via movzbl
+>   from 8-bit globals. 8-bit registers (e.g. %ah in the inner loop) caused
+>   performance regression on certain CPUs due to partial-register stalls. (David Laight)
+> - Let BPF save/restore %rax/%rcx as in the original implementation, since
+>   it is the only caller that needs these registers preserved across the
+>   BHB clearing sequence.
 
->   amba: use generic driver_override infrastructure
->   cdx: use generic driver_override infrastructure
->   hv: vmbus: use generic driver_override infrastructure
->   rpmsg: use generic driver_override infrastructure
+That is as dangerous as hell...
+Does BPF even save %rcx - I'm sure I checked that a long time ago
+and found it didn't.
+(I'm mostly AFK over Easter and can't check.)
+A least there should be a blood great big comment that BPF calls this code
+and only saves specific registers.
+But given the number of mispredicted branches and other pipeline stalls
+in this code a couple of register saves to stack are unlikely to make
+any difference.
 
-I have not picked these up, as they have not received ACKs from the
-corresponding subsystem maintainers so far.
+	David
 
->   bus: fsl-mc: use generic driver_override infrastructure
->   spi: use generic driver_override infrastructure
-
-These have already been picked up via the respective subsystem trees -- tha=
-nks!
-
-Thanks,
-Danilo
