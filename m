@@ -1,110 +1,221 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556E93A6B62
-	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775295622; cv=none; b=J+YkBVt+tvXF5v2buax6TAgvo4i2w1f62EXhuJqvjeLptbQQpRh4NjWDWgXIizwMfIoU5dHAnm8ojD7rg0vFZP6Vy37zZuSRg7LLgNwY4oDUXCGUdxHgcpfVm8DHzyC2z5hkK+261UB0NCwUnwK9C1coW7Cjtcw5gsOFkB+dc3Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775295622; c=relaxed/simple;
-	bh=XDXXCvBuP+BedXOB/xJSS7nMwuoIr0SIXDhnUXQY4kw=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=r0n9c4W5r/DD23jihsKcyNablEOo3uGPTMSyyb7q/5JRPJMviZYKkqrpEznSqX2clPmcN5nGpwG40S2AhbHL9FEB/oRHaobind5ClDtDqlP/JlvnY6AT1qshXFwXDBjlbdB2WuR+NkrgU50cC8nmN5yEkVGw60C+TkppceZEVgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MdjZEwjh; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741EA1E9919
+	for <kvm@vger.kernel.org>; Sat,  4 Apr 2026 11:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775300566; cv=pass; b=np6CC68nQLYsyle/3COSqW2ENsXBp6XmQ0THIwvVTIj/K3pV9mgoJATR3j1Kx8YhcPMMKaTNWcgyyRl1dXv/qU8PwCDAy3cV8IdK2jC1nJc7LhtikBR35kpgOnZMfUfL4pQyXrhMvOKKu/DB+tr0mNPtnKbwzi8Pzbvrry3xkdg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775300566; c=relaxed/simple;
+	bh=qQm9tBltYls3k/v6mMzJ47hisi6iCeBEZTaaYj42jB4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XL+kOn+c5YQHDWMdNnPYst5hkj9DyQavZYp3gQ6D2PHzhHiTDC0uVZpT8x2fs6d8Czq7NDzBuvKvhIasIk6zvjhfsgTnybpTW/pQbxXTr8oKN/DuinEDS9zPNUc8CoMYXVZjshtqnUr+h0iPPwH7IW5QtimLhLfPJ2JMAnI/n0k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=NtTzD4UP; arc=pass smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MdjZEwjh"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-824c9da9928so1662014b3a.3
-        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 02:40:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="NtTzD4UP"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dbba5076c8so636557a34.0
+        for <kvm@vger.kernel.org>; Sat, 04 Apr 2026 04:02:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775300564; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IlEOAaZwck/rhUDp0e0FBdvNyaUV6EPRPmfqpiF8p+k9T1v/z2yyr3gWYsJUiVg3nf
+         XVVV1P04ILNmnnAZjddjY0rpshYCJc5/wBf0H1EhfaBKtfbO9RNb6sSEKIvvSv4zj9lE
+         uWRTwtJaOhnrZqU/8bH+Ylln2KMDdy5eDWwxF+uzILba+TEEEKXF/26adZABSgxn0agu
+         kTc+YLggwHK9Acd9idgTtFN6RmevrVXv8NAaMm1FkEp6nlcvSVFyOQZSrAs2BtbDwFfT
+         m4GiMXh/st18elM/PPuMmlwCCoDDV5JGOhbxGNvQ4Vnn0CkNL7tUtE6Loh47Y2j+q5sr
+         kmxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Zfu5+ZoRr42kiqQcxjxD/Vr+HX1maiYTYcsoR4uKhiw=;
+        fh=IM2fHqQ9OnJxddxkK6KdlnmMrGBDbeyKeD+8XfePOdo=;
+        b=YiNYrYgm/jM8N0jGF8vKPUiPlBeDaNwapTirHBv1dgPa4SgTW93N5PQXaTeK87u+YG
+         w74oCt1Ob52rgA/JB8q2gGouKi/iTPB8zJbwMlSKJoNs2rHS1nfN65WYced0AguZ6dRP
+         Q2GReQ2THQHPsa2KegywjZKsAA4fq858iRkOwAuSuKKxOGm08ZyECZAihzwLromubheN
+         754SL7kCqiZ2aJNRumhJyCMaJxZ+lcWr0TQgiUTcuL07B2hEhhgY+rwNDnUkvFMfqqQZ
+         CwlalEOZJxy6ZBEfW/hm9mVA1Z2+Ld2dKIj8O9r+GpeJByT/Z21oQjQdKCyHZ16Sj09C
+         644g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775295619; x=1775900419; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rOaxQXfX6SiiuBlcP8X1nQXWObPEsgiGGDciqZtKDLA=;
-        b=MdjZEwjhhjDeVQBpJUdGFjryWTfkjawv2IsHZtPE3ccALMo/uiHRFPDbWtUKVIYSLY
-         Kb7cH5sTS14s7F9rr4IlTd4BEVnSUtv5JGApCn4c71Wqkq48f1x+sC3F4CfceiIAndWh
-         pLpxZ1AoDcYVhKSTBsM9tTnpHXdAwIMBaa3BMR1Kpn+XMhTtCXYg+7rCqUcWgvPR/4Ms
-         zYI+w4ZZFCO8mlJrVeNUAr42ZMnfSxH+fzLuJY37tBLFw+ufHyheYQsJ4pbnfUe6auHl
-         QIIRurGLmPpkmf0C8Mvx8fBq2N2tQJ+o71ImlVK2TYemsc+Y4U5gDLSiER2iJaSkWz/B
-         5G2g==
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1775300564; x=1775905364; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zfu5+ZoRr42kiqQcxjxD/Vr+HX1maiYTYcsoR4uKhiw=;
+        b=NtTzD4UP7F1K6s7YplG4hFImUSTvGMubxPMlOYMTwuEY9J204KPVwFfo+kvim9MV+j
+         5OUBAQPJe09/0XgQt33AeoU0G1g4HyooN9j5aJgpDBZRNp32ctCVqFopp9Kz986l9acF
+         PkBxuDCcVtv1E4cnvxssGYOmZeDahzMsz3RY5+zSMa9P4wNGawPOqj3NwEIrw7GMdDIk
+         zvTNtq6YDE2iB3n5O0h9D+D2YvxDHtZfqCI/eLQBBHZSMwuH3BCDLxnTb1JMW7osWZlu
+         /23Pu8CXa9/ZAVlglC3DIEuClTdvtBErJdVq2udloSgBq6hZU11nnerCapEPuFqssMbF
+         mWQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775295619; x=1775900419;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rOaxQXfX6SiiuBlcP8X1nQXWObPEsgiGGDciqZtKDLA=;
-        b=kKQhLi36CeC4mMFB786JyJSP/x1/OwmxuS9ud/ARjPBDn+RuG1TnSuEXPzo1zWl6HU
-         59VHMdHoTBDIuRd3EQQCvV6CSoVAHLpB94kv+4CSGRVigPXUiD0Cy19aFgzTby8uX2Zb
-         b91X3OXEbwfwuN35/z2r+rEygBT2Gac/vlG/JlYVBu8Z3RtSJNxFPT0q7FwGsrBh7WmN
-         G3Acy+ilflCW31TzbN3YJnz6CUeYkMZxgnTRdt8P8AW5IyqzEPMdLMMmktVV/A1ckTTu
-         65h6KT+go4GKAeitdK6lzVVpu7YIxJAASvVA4d8QYscIo74CK6UmuhXb2uf6OiQEi7YO
-         kasQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqZQ5gGHnVWhx22+xoyiAs2gER1VGmqNXTUgEQi68fPMu75MyWyZJf6A2VQ90MJ8+jnK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwW15wRIp5Cti5kfGlEES8oAeHY0BTwIh4GqEMBUhi/k/nVkg+v
-	OhcDXIKXwKGMe84Zczm6zW9zsscbcQpeKBjNJY/rlwRnqqJiRo0V1x3P
-X-Gm-Gg: AeBDieu3t4XLufnCWA5HWlrKYWtQ5dxMNDy0HBN5lQKWjrWbou/k6w7i/Z6pDNffQ9l
-	m1pWIpviK35RBJb/iX6z5i2/6IdMLz7bfP7q4+XV+rTLd9eniDyrDI6fUnjHsRjcQfvaRA9kPbI
-	XSSXmzM+I308M/uszXChDIIj25ZnrB8gManSWgnNNUUDvHpBBronm6RqfTOvxobaFLBOUzKwZ24
-	z/bQw+RV8Yhb6dwbvuaaih3xWdy36fd/sw8T0Es/EjA7bk3wRMvF5pVYgyLLFj64y+6OaoNAkon
-	HGUhLwfRWbRhQohhQ0xkJCQGtmaYaRGsV3Elv05fwqBDq7SNHoqY+xyRW+Ix4ZFGVaF2kzvV5lh
-	QzVeoH5RTBAdSdgVc0qifoGAsaWWVxFn/iH6BdOQI0l5Cw8cStMo/WzTYI6A9pBCBYBuvcRYGpj
-	BZsIzXgBtcKxZ+pLBkXXJGBQ==
-X-Received: by 2002:a05:6a20:430b:b0:398:6ea8:21d2 with SMTP id adf61e73a8af0-39f2ed8d9e7mr6111236637.19.1775295619301;
-        Sat, 04 Apr 2026 02:40:19 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c647792bsm7698445a12.6.2026.04.04.02.40.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 02:40:18 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Yosry Ahmed <yosry@kernel.org>, Peter Fang <peter.fang@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, KarimAllah Ahmed <karahmed@amazon.de>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH] KVM: Fix kvm_vcpu_map[_readonly]() function prototypes
-In-Reply-To: <acsvbxIdtlQzUw4q@google.com>
-Date: Sat, 04 Apr 2026 15:07:01 +0530
-Message-ID: <7bqnm5he.ritesh.list@gmail.com>
-References: <20260325092001.613025-1-peter.fang@intel.com> <acsvbxIdtlQzUw4q@google.com>
+        d=1e100.net; s=20251104; t=1775300564; x=1775905364;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Zfu5+ZoRr42kiqQcxjxD/Vr+HX1maiYTYcsoR4uKhiw=;
+        b=Mh/olSYDnaQFfDcMJnDTncHg3eSEKIi4KEJtC5t4z3FMonHHjd/7CDfFaMRfvN2TBi
+         Kc7WTqSKkFK7ve2F7aEVClzW80WIk67wk6mReFXJ+nlIPS2lK29fTuEr0lpu4RbQ/b/Q
+         D0Pe2JrkdiFOajwyv6tUN1SN5FWFir4AhmYAMxQNbEOmjDvssPWqmPo6MPcQ3LA/Wmaq
+         KHBs2VLwmm6Sbhjq1/EoSvQlm+vOSgFBCPP1alMHtihLkhB35Rh7Yu59y84w2+ZD6DEy
+         mGcDYGjOLyU/lP11Wr9TiHqcnfTq5GqKSmhUnFyXesqFzY2gHCfTm9dCVjxseAUe67Hs
+         x40w==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ5dvLWYsRrAm+qml65N2oRV1FAKsIM6aQCzH3vZhEyZHwVdAC8+tBOCHBNzUyTUXOyn4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrX4RvwDoJvi43XKjJ0nCUG+SAehpw2ZmcxEhDGwfNevuRmoAL
+	85ubEzKoyqJSRPHPwyecqgbaHrXPTPatXEa1YH+PlqhTYyiRDE96X9sVaajleR7xZ4yNgl/lF0W
+	1p0WsLpYiCMstTOAl/94ukG9wuPvNqoWoEXC3OJv/FA==
+X-Gm-Gg: AeBDieu4+ZwoFW7qgPTm2HWqNMb3nzP7GYzdvcBp7HW85CEXTNB2cntBK7YkruVGT+Z
+	dQdkNKCAusnXgj/mW7i2k729msZ46P/OuNL6y4bDHEX3WpB08R2IRWTFlSNeSpa3nMht8VNappf
+	eF4fiS+C7f8/ynoIz4N8qsmPagZP2Tm2KxiUujV8TU5EhzxLDy+UZNRCB6O8OuA7os1MbOJ/Vh+
+	lBA6euJh0z6CNEeZLNrDD0xdRJj4e+cyjEz/CdK+Qkgx+BSV/dhDqQKfQWKnyXFDs6OLX6ujbiz
+	w3XdYJXO9dbWTG1ZCFyhRKyGmyog7egkW8aPTj3yhtT97OsW16wsYR7uI5m2rXEi6/Y3hyA5sYR
+	hzHcGWXr6YyiK6tzQIxtAo7VNrQ==
+X-Received: by 2002:a05:6820:1ca8:b0:67e:3b11:89ed with SMTP id
+ 006d021491bc7-6821e66a08bmr3527858eaf.10.1775300564107; Sat, 04 Apr 2026
+ 04:02:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260403153019.9916-1-fangyu.yu@linux.alibaba.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Sat, 4 Apr 2026 16:32:32 +0530
+X-Gm-Features: AQROBzDcUt7d2zmN-LgKMz3EEMCzhGSvhLBkGZy88YajEYGJjZyDS4lDfZXa79I
+Message-ID: <CAAhSdy2t2WukRG7mHckY5=+J4+vPU1jvkrG9vqXoDxcMPbiEJg@mail.gmail.com>
+Subject: Re: [PATCH v8 0/3] Support runtime configuration for per-VM's HGATP mode
+To: fangyu.yu@linux.alibaba.com
+Cc: pbonzini@redhat.com, corbet@lwn.net, atish.patra@linux.dev, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	skhan@linuxfoundation.org, guoren@kernel.org, radim.krcmar@oss.qualcomm.com, 
+	andrew.jones@oss.qualcomm.com, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yosry Ahmed <yosry@kernel.org> writes:
-
-> On Wed, Mar 25, 2026 at 02:15:11AM -0700, Peter Fang wrote:
->> kvm_vcpu_map() and kvm_vcpu_map_readonly() should take a gfn instead of
->> a gpa. This appears to be a result of the original kvm_vcpu_map() being
->> declared with the wrong function prototype in kvm_host.h, even though
->> it was correct in the actual implementation in kvm_main.c.
->> 
->> No actual harm has been done yet as all of the call sites are correctly
->> passing in a gfn. Plus, both gfn_t and gpa_t are typedef'd to u64 so
->> this change shouldn't have any functional impact.
->> 
->> Compile-tested on x86 and ppc, which are the current users of these
->> interfaces.
-
-Mostly a mechanical change. I had looked at ppc call site and looks ok
-to me.
-
->> 
->> Fixes: e45adf665a53 ("KVM: Introduce a new guest mapping API")
->> Cc: KarimAllah Ahmed <karahmed@amazon.de>
->> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
->> Signed-off-by: Peter Fang <peter.fang@intel.com>
+On Fri, Apr 3, 2026 at 9:00=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote:
 >
-> Most callers are converting a GPA to a GFN, I wonder if we should make
-> the function take in a GPA instead? But then we'll need to the GPA not
-> being aligned to a page boundary (either do gpa_to_gfn() in
-> __kvm_vcpu_map() or fail if it's not aligned).
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 >
-> Not sure if that's a net improvement, mostly thinking out loud here.
+> Currently, RISC-V KVM hardcodes the G-stage page table format (HGATP mode=
+)
+> to the maximum mode detected at boot time (e.g., SV57x4 if supported). bu=
+t
+> often such a wide GPA is unnecessary, just as a host sometimes doesn't ne=
+ed
+> sv57.
+>
+> This patch reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE. User-space can
+> now explicitly request a specific HGATP mode (SV39x4, SV48x4, SV57x4 or
+> SV32x4) during VM creation.
+>
+> ---
+> Changes in v8:
+>     - Reuse KVM_CAP_VM_GPA_BITS to advertise and select the effective GPA=
+ width
+>       for a VM (Anup's suggestion).
+>     - Handle the kvm =3D=3D NULL case and task kvm->lock and kvm->slots_l=
+ock to serialize
+>       against concurrent vCPU creation and memslot updates (Radim's sugge=
+stion).
+>     - Link to v7:
+>       https://lore.kernel.org/linux-riscv/20260402132303.6252-1-fangyu.yu=
+@linux.alibaba.com/
+> ---
+> Changes in v7 (Anup's suggestions):
+>     - Keep the original HGATP mode probing logic.
+>     - Link to v6:
+>       https://lore.kernel.org/linux-riscv/20260330122601.22140-1-fangyu.y=
+u@linux.alibaba.com/
+> ---
+> Changes in v6 (Anup's suggestions):
+>     - Reworked kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size(=
+) to
+>       take "unsigned long pgd_levels" instead of "struct kvm_arch *".
+>     - Moved kvm_riscv_gstage_mode() helper from kvm_host.h to kvm_gstage.=
+h.
+>     - Renamed kvm->arch.kvm_riscv_gstage_pgd_levels to kvm->arch.pgd_leve=
+ls.
+>     - Added pgd_levels to struct kvm_gstage to avoid repeated
+>       gstage->kvm->arch pointer chasing.
+>     - Link to v5:
+>       https://lore.kernel.org/linux-riscv/20260204134507.33912-1-fangyu.y=
+u@linux.alibaba.com/
+> ---
+> Changes in v5:
+>     - Use architectural HGATP.MODE encodings as the bit index for the sup=
+ported-mode
+>       bitmap and for the VM-mode selection UAPI; no new UAPI mode/bit def=
+ines are
+>       introduced(per Radim).
+>     - Allow KVM_CAP_RISCV_SET_HGATP_MODE on RV32 as well(per Drew).
+>     - Link to v4:
+>       https://lore.kernel.org/linux-riscv/20260202140716.34323-1-fangyu.y=
+u@linux.alibaba.com/
+> ---
+> Changes in v4:
+>     - Extend kvm_riscv_gstage_mode_detect() to probe all HGATP.MODE value=
+s
+>       supported by the host and record them in a bitmask.
+>     - Treat unexpected pgd_levels in kvm_riscv_gstage_mode() as an intern=
+al error
+>       (e.g. WARN_ON_ONCE())(per Radim).
+>     - Move kvm_riscv_gstage_gpa_bits() and kvm_riscv_gstage_gpa_size() to=
+ header
+>       as static inline helpers(per Radim).
+>     - Drop gstage_mode_user_initialized and Remove the kvm_debug() messag=
+e from
+>       KVM_CAP_RISCV_SET_HGATP_MODE(per Radim).
+>     - Link to v3:
+>       https://lore.kernel.org/linux-riscv/20260125150450.27068-1-fangyu.y=
+u@linux.alibaba.com/
+> ---
+> Changes in v3:
+>     - Reworked the patch formatting (per Drew).
+>     - Dropped kvm->arch.kvm_riscv_gstage_mode and derive HGATP.MODE from
+>       kvm_riscv_gstage_pgd_levels via a helper, avoiding redundant per-VM=
+ state(per Drew).
+>     - Removed kvm_riscv_gstage_max_mode and keep only kvm_riscv_gstage_ma=
+x_pgd_levels
+>       for host capability detection(per Drew).
+>     - Other initialization and return value issues(per Drew).
+>     - Enforce that KVM_CAP_RISCV_SET_HGATP_MODE can only be enabled befor=
+e any vCPUs
+>       are created by rejecting the ioctl once kvm->created_vcpus is non-z=
+ero(per Radim).
+>     - Add a memslot safety check and reject the capability unless
+>       kvm_are_all_memslots_empty(kvm) is true, ensuring the G-stage forma=
+t is not
+>       changed after any memslots have been installed(per Radim).
+>     - Link to v2:
+>       https://lore.kernel.org/linux-riscv/20260105143232.76715-1-fangyu.y=
+u@linux.alibaba.com/
+>
+> Fangyu Yu (3):
+>   RISC-V: KVM: Support runtime configuration for per-VM's HGATP mode
+>   RISC-V: KVM: Cache gstage pgd_levels in struct kvm_gstage
+>   RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
+>
+>  arch/riscv/include/asm/kvm_gstage.h | 47 ++++++++++++++++---
+>  arch/riscv/include/asm/kvm_host.h   |  1 +
+>  arch/riscv/kvm/gstage.c             | 65 +++++++++++++--------------
+>  arch/riscv/kvm/main.c               | 12 ++---
+>  arch/riscv/kvm/mmu.c                | 70 +++++++++--------------------
+>  arch/riscv/kvm/vm.c                 | 49 ++++++++++++++++++--
+>  arch/riscv/kvm/vmid.c               |  3 +-
+>  7 files changed, 148 insertions(+), 99 deletions(-)
+>
+> --
+> 2.50.1
+>
 
-The suggestion from Yosry and Sean sounds good too. Instead of every
-caller of kvm_vcpu_map() doing gpa_to_gfn(), we may as well make
-kvm_vcpu_map() accept gpa_t instead and do the gpa_to_gfn() inside
-kvm_vcpu_map() in the call to __kvm_vcpu_map(vcpu, gpa_to_gfn(gpa),...),
-or within __kvm_vcpu_map() which is fine too, however, the former is a
-better approach, IMO.
+Queued this series for Linux-7.1
 
--ritesh
+Thanks,
+Anup
