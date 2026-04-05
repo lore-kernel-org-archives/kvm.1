@@ -1,121 +1,251 @@
-Received: from mx5.sberdevices.ru (mx5.sberdevices.ru [95.181.183.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD05B2F069D;
-	Sun,  5 Apr 2026 19:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.183.35
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775416937; cv=none; b=Zs/qX2d2nPy/9P5JElvS2wKd3bFcnWR0RvMxjYJV46W6qOAJnjuCSBhwnboqJA5eGdqOnxjmXVjevCSnQnriXC1dOmxuqrdfm/9NGooAymhwCUpMbbr1/otZnTwR+v4DkAmhccvFXuTG2rWkCY9WUWsz8m03uRbHnarfwYHMGMU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775416937; c=relaxed/simple;
-	bh=4FEK7G9FUJ2+gkgHqqFO4PYkr4bpAFXC7gWGdsYRC00=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hL+qrbaww4EWutY3nuetA3Nbm6f94A6XzG4pDAsfDv0fHG541zHqbCpFfO8lT+zPFNyJfvvt/CCz7pAQ885SVFDzsFubkWyxKZUIVHK4LBFrOkq4YcTjxTaxPOQLNqz/PGxgyNa1V0uJarZN12IuIelWXqGD4XLjJwkPZ6Tb0UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=oJnZ90iu; arc=none smtp.client-ip=95.181.183.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3CC382F0E
+	for <kvm@vger.kernel.org>; Sun,  5 Apr 2026 22:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775427020; cv=pass; b=VgVkiFdqoXEE6LKVYrlzLa77+tHvvaDkIcM7nmMdtvcRwZyR1zyzEYRKtBriebbULzTZPpSN86pD7OryD5abTd6oEa3ljXsmubf4xf2VQf1btZkpduYyMuVWvF5zbDc4AtDJM5RdOHCndW0H0PUnI24+v+JN+hix3pld8P+jEX8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775427020; c=relaxed/simple;
+	bh=ABUjEWGDZYHREqnQ0FoQ2NGfgCH18iC9mDSHCs7Bdws=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=cHLUHg5qErQbsZE1zFwAzP3R15/dTeDm+HUGbDmksQANMvoZFDGHO5fsU5FqqLjNgedWX42ZZTbHLi8YKaFq1nbe/cbVOyT6bj5f0I+VZ18hJh7AVlJVsTIJbRM+sPfCcUAvMvbovgeQ1HBR312lwuZGcSgXqMYMdhm+rE2I0y8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iP1YSvBt; arc=pass smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="oJnZ90iu"
-Received: from p-antispam-ksmg-gc-msk01.sberdevices.ru (localhost [127.0.0.1])
-	by mx5.sberdevices.ru (Postfix) with ESMTP id 1904A24000B;
-	Sun,  5 Apr 2026 22:22:10 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx5.sberdevices.ru 1904A24000B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=post; t=1775416930;
-	bh=6Sq7O88E3GPsooLdbHDQsH6D2/KBDMjazQjjB7hgd+M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=oJnZ90iu6tByApjRTo5oYcdLV99i4TCUbO75XEHSeeZ5NlradpeVikvUdOBw1JyqO
-	 xIAgbjEUBBuWZoTIpABOq76RYp/XDPUFp1j50fRiGHM/gLhWeS+/aQDObW6v7l8wpd
-	 nogXGgAUqymks0PZL60oFtijQD1xChFHoO842751U8Vy2ClgN9o4kleDq4UzkagRtl
-	 /vVHL7Vti3YmgxOg+JYAW5f7aDj7HSvw+7d3Axs5/5UkB5l2VRzMQn6UjxHFHdltJ6
-	 rt2BpuMiIBCjvcb1jF1r9kLJtgR6yPHGzL0MqqlW6sMz2Tp64CKs4h8asmQVtuPN7h
-	 guxhh/i/Pj9Wg==
-Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
-	by mx5.sberdevices.ru (Postfix) with ESMTPS;
-	Sun,  5 Apr 2026 22:22:09 +0300 (MSK)
-Message-ID: <ac71a69c-e45d-4767-b5c0-806708fff388@salutedevices.com>
-Date: Sun, 5 Apr 2026 22:22:08 +0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iP1YSvBt"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c76864f4e58so1235275a12.1
+        for <kvm@vger.kernel.org>; Sun, 05 Apr 2026 15:10:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775427018; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aeeoskY0mUMb7N7T8k1vMNDo+LgfAWj5GLkhmEiVOgM1MzOiziwlS2bkCKEZN/1fJv
+         g3kktbtaZ3fet2BVi3yARh/1D7K10NfBoercf1aMJf1fkBECvk8X6e6tmIv6OpQ/D6KX
+         VFL8x/Bpif4UJAfj4K5dSoqEGNtkIElwWG6ZfkVyc9uIPlqnI2QXcRAXrHJUe+ZuUpMY
+         UlqK8LS5myMyz83vsYklyDdpwW+lZx5sEnz1lhaY3aQ6YjHMa9hlDtBbcQ+dJ64Vb5l/
+         Orf+KnMcXcUj9ABesfihiWCsQ940WZNmb3cJ7XIhj7v0E3XaFGadwCmMOVpv0g9yqi1i
+         kgtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=e9u+QzC2aJqKtNe3/rtmBsCiYMsv2LB2s8cYUNUD6G0=;
+        fh=H3/KK8QBGjalGN85cXmwwbL+7Oiv0814hi0QK1apIZE=;
+        b=QQ+ahg3pjBzuK8qqNxH/8smPc4HtHO32Y7X2sB78V26WkAb9hw5G3E0rml812mKgeM
+         nwv1f91qcpW9ma0n1L6pvCo0oBIyUqw0CAEVKOyjBJ++Zo9whhdDZU658cI/yNkev4ro
+         dHh0pQbeNJve8Jsezs+9EY2jxNmRQpihPkJ+w89MtlDjT402gfNqh7dKaPvdFX0yuwxo
+         QsaoSPPXch9Clvfvu9z6fX8PsFCaZ4EimjmSVe39HoTUSv90Fh9WlGJHb57AHnfLwxf/
+         Aas2elyWNB+j2sjLKuaFdzh6R2xlERAOcAnhHgEtmysSmAbIjCL4Ai7fCc/U90p71c3+
+         2+Bg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775427018; x=1776031818; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=e9u+QzC2aJqKtNe3/rtmBsCiYMsv2LB2s8cYUNUD6G0=;
+        b=iP1YSvBtoOu9bqPRdP3j8rrFjtR46+1xrjNJyNNgsJK/ZaJ4Rnvf7uAciI35pHPhpE
+         1AyGVy/XOlndXLfMtKF9OC9TLQpcDE9w7MV5dnUbv8cdJ8dcQA6shl2S02uGwm4WwMdV
+         /aTpPh8WZDNfiIRxVhdzO3EUYUazWVE1MMrEUHvGI4KWU11GeDsVehSBlatcTUbzssMI
+         TvPgsW93MzJf/uD+ObD3lwYwC6NL2JgzPUtN6mBuXBoGzlOmyKdMfDL67wF1w8Ihh3/m
+         d98Pz89ldzmzE1cXw9jMtWKAOyatyXFwRGrn3UOMXFNvy+tBTftXmmTjnBEPZzrC8vL6
+         sMvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775427018; x=1776031818;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e9u+QzC2aJqKtNe3/rtmBsCiYMsv2LB2s8cYUNUD6G0=;
+        b=f4amEaX9tR8Nm8+dXgCNXerS4gdS+fE9TcR8hH3lxv4iX/dxxCIt7WmDCPHWdrNads
+         wrOGv7kqZOvoW/qsaYlP6ficAeKZ82YbpWvG8yIaDf4VmfYg8FeZZhW8vzCWAd6iI5Hx
+         NUyuzy+oLaPftyDIdXdotOkdRzzXCIQTBGcQ593gpvpuURMaUP+D2NJlWaWzj4AXRa9u
+         0R60UOnwmH1Y7qNlNvbyhKRQGquPvLJDZB0OPelWLydPlGDwQN8DiLSgnVv2HIIX92ci
+         NrCB/Irf0tv/lkWjziCyK419cq2+g7pG2TD0x3xYMwArYZY7drXFD2RoWCaHFIomh2I8
+         SrSw==
+X-Gm-Message-State: AOJu0Yx43YEnePE81Lwfmxv3nIrCfH0B7G7VixYZDtNTWOl8lpuGmiOe
+	7ahtUraA0mIfZKfOiaJfDbnc58p73tlB2i24ca5/qa/ToI7WdNT0GLkJ8KUxJ2RpmrT73S644gF
+	2tcRxae2IzI6HM6q49FaCqG1OAdbgP1c=
+X-Gm-Gg: AeBDiet6jYCJFsf1dV8h7QTihSpefEnsmO7tLdKKACfU3z5xegpk0ZGWSOn/Z4rhcBV
+	67tz95n+8AdAZQm7sqCW2GAEeHdXIboFyh9Nm5zavZiNyUfH+Bf8bXFSDVYOdhAa1m8miYg3Sbw
+	Wp5O76+CzvQ8QVdhHnFO7hizrs8ixa6uAyq2XzD36i4n4Il8qQ4hRt2goQLM+CRjpwjzSyOANEc
+	zXN4m6cYn3xACSNBNNl81dEpDmKcgPpV2Us1/X8VU4ffcOcaQ/ZG0p1yJUpj+HUUBowMN8JKX4I
+	AIMt/TceVXsTNaPLVKR4Xg/eqmh+Q/DjHp3JAzCY8/qwK7HbfxY=
+X-Received: by 2002:a05:6a20:12c5:b0:39c:4af6:4305 with SMTP id
+ adf61e73a8af0-39f2ef776f8mr10913190637.10.1775427018045; Sun, 05 Apr 2026
+ 15:10:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] vsock/virtio: fix MSG_PEEK ignoring skb offset
- when calculating bytes to copy
-Content-Language: ru
-To: Luigi Leonardi <leonardi@redhat.com>, Stefan Hajnoczi
-	<stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
-	<eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: <kvm@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
- <20260402-fix_peek-v1-1-ad274fcef77b@redhat.com>
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-In-Reply-To: <20260402-fix_peek-v1-1-ad274fcef77b@redhat.com>
+From: Thomas Lefebvre <thomas.lefebvre3@gmail.com>
+Date: Sun, 5 Apr 2026 15:10:07 -0700
+X-Gm-Features: AQROBzBRYTfs3R9pignNAUl0z7_W9YKD9Yw5QkOdj1ny5dpfRahj1Q-2xMfYdFA
+Message-ID: <CAKdXbaV1PTwetd4zs6+6Rp7h0dwHU1ygMoof5eAcfL6XYZF1xA@mail.gmail.com>
+Subject: [BUG] KVM: x86: kvmclock jumps ~253 years on Hyper-V nested virt due
+ to cross-CPU raw TSC inconsistency
+To: seanjc@google.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, vkuznets@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: p-exch-cas-a-m2.sberdevices.ru (172.24.201.210) To
- p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
-X-KSMG-AntiSpam-Info: LuaCore: 96 0.3.96 f0df504111d78c4fb91ce829559989c2d1ddd192, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 201980 [Apr 05 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/04/05 16:38:00 #28374316
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-KATA-Status: Not Scanned
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
 
+Hi,
 
+I'm seeing KVM_GET_CLOCK return values ~253 years in the future when
+running KVM inside a Hyper-V VM (nested virtualization).  I tracked
+it down to an unsigned wraparound in __get_kvmclock() and have
+bpftrace data showing the exact failure.
 
-02.04.2026 11:18, Luigi Leonardi wrote:
-> `virtio_transport_stream_do_peek()` does not account for the skb offset
-> when computing the number of bytes to copy.
-> 
-> This means that, after a partial recv() that advances the offset, a peek
-> requesting more bytes than are available in the sk_buff causes
-> `skb_copy_datagram_iter()` to go past the valid payload, resulting in a -EFAULT.
-> 
-> The dequeue path already handles this correctly.
-> Apply the same logic to the peek path.
-> 
-> Fixes: 0df7cd3c13e4 ("vsock/virtio/vhost: read data from non-linear skb")
-> Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 8a9fb23c6e853dfea0a24d3787f7d6eb351dd6c6..4b65bfe5d875111f115e0fc4c6727adb66f34830 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -547,9 +547,8 @@ virtio_transport_stream_do_peek(struct vsock_sock *vsk,
->  	skb_queue_walk(&vvs->rx_queue, skb) {
->  		size_t bytes;
->  
-> -		bytes = len - total;
-> -		if (bytes > skb->len)
-> -			bytes = skb->len;
-> +		bytes = min_t(size_t, len - total,
-> +			      skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset);
->  
->  		spin_unlock_bh(&vvs->rx_lock);
->  
-> 
+Setup:
+  - Intel i7-11800H laptop running Windows with Hyper-V
+  - L1 guest: Ubuntu 24.04, kernel 6.8.0, 4 vCPUs
+  - Clocksource: hyperv_clocksource_tsc_page (VDSO_CLOCKMODE_HVCLOCK)
+  - KVM running inside L1, hosting L2 guests
 
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Root cause:
+
+__get_kvmclock() does:
+
+    hv_clock.tsc_timestamp = ka->master_cycle_now;
+    hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
+    ...
+    data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
+
+and __pvclock_read_cycles() does:
+
+    delta = tsc - src->tsc_timestamp;    /* unsigned */
+
+master_cycle_now is a raw RDTSC captured by
+pvclock_update_vm_gtod_copy().  host_tsc is a raw RDTSC read by
+__get_kvmclock() on the current CPU.  Both go through the vgettsc()
+HVCLOCK path which calls hv_read_tsc_page_tsc() -- this computes a
+cross-CPU-consistent reference counter via scale/offset, but stores
+the *raw* RDTSC in tsc_timestamp as a side effect.
+
+Under Hyper-V, raw RDTSC values are not consistent across vCPUs.
+The hypervisor corrects them only through the TSC page scale/offset.
+If pvclock_update_vm_gtod_copy() runs on CPU 0 and __get_kvmclock()
+later runs on CPU 1 where the raw TSC is lower, the unsigned
+subtraction wraps.
+
+I wrote a bpftrace tracer (included below) to instrument both
+functions and captured two corruption events:
+
+  Event 1:
+
+    [GTOD_COPY] pid=2117649 cpu=0->0 use_master=1
+                mcn=598992030530137 mkn=259977082393200
+
+    [GET_CLOCK] pid=2117649 entry_cpu=1 exit_cpu=1 use_master=1
+      clock=8006399342167092479 host_tsc=598991848289183
+      master_cycle_now=598992030530137
+      system_time(mkn+off)=5175860260
+      TSC DEFICIT: 182240954 cycles
+
+    master_cycle_now captured on CPU 0, host_tsc read on CPU 1.
+    CPU 1's raw RDTSC was 182M cycles lower.
+
+      598991848289183 - 598992030530137 = 18446744073527310662 (u64)
+
+    Returned clock: 8,006,399,342,167,092,479 ns (~253.7 years)
+    Correct system_time: 5,175,860,260 ns (~5.2 seconds)
+
+  Event 2:
+
+    [GTOD_COPY] pid=2117953 cpu=0->0 use_master=1
+                mcn=599040238416510
+
+    [GET_CLOCK] pid=2117953 entry_cpu=3 exit_cpu=3 use_master=1
+      clock=8006399342464295526 host_tsc=599040211994220
+      master_cycle_now=599040238416510
+      TSC DEFICIT: 26422290 cycles
+
+    Same pattern, CPU 0 vs CPU 3, 26M cycle deficit.
+
+kvm_get_wall_clock_epoch() has the same pattern -- fresh host_tsc
+vs stale master_cycle_now passed to __pvclock_read_cycles().
+
+The simplest fix I can think of is guarding the __pvclock_read_cycles
+call in __get_kvmclock():
+
+    if (data->host_tsc >= hv_clock.tsc_timestamp)
+        data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
+    else
+        data->clock = hv_clock.system_time;
+
+system_time (= master_kernel_ns + kvmclock_offset) was computed from
+the TSC page's corrected reference counter and is accurate regardless
+of CPU.  The fallback loses sub-us interpolation but avoids a 253-year
+jump.  On systems with consistent cross-CPU TSC, the branch is never
+taken.
+
+One thing I wasn't sure about: when the fallback triggers,
+KVM_CLOCK_TSC_STABLE is still set in data->flags.  I left it alone
+since the returned value is still correct (just less precise), but
+I could see an argument for clearing it.
+
+Disabling master clock entirely for HVCLOCK would also work but
+seemed heavy -- it sacrifices PVCLOCK_TSC_STABLE_BIT, forces the
+guest pvclock read into the atomic64_cmpxchg monotonicity guard,
+and triggers KVM_REQ_GLOBAL_CLOCK_UPDATE on vCPU migration.
+
+Reproducer bpftrace script (run while exercising KVM on a Hyper-V
+host):
+
+  #!/usr/bin/env bpftrace
+  /*
+   * Detect host_tsc < master_cycle_now in __get_kvmclock.
+   *
+   * struct kvm_clock_data layout (for raw offset reads):
+   *   offset 0:  u64 clock
+   *   offset 24: u64 host_tsc
+   */
+
+  kprobe:__get_kvmclock
+  {
+      $kvm = (struct kvm *)arg0;
+      @get_data[tid] = (uint64)arg1;
+      @get_use_master[tid] = (uint64)$kvm->arch.use_master_clock;
+      @get_mcn[tid] = (uint64)$kvm->arch.master_cycle_now;
+      @get_cpu[tid] = cpu;
+  }
+
+  kretprobe:__get_kvmclock
+  {
+      $data_ptr = @get_data[tid];
+      if ($data_ptr != 0) {
+          $clock = *(uint64 *)($data_ptr);
+          $host_tsc = *(uint64 *)($data_ptr + 24);
+          $use_master = @get_use_master[tid];
+          $mcn = @get_mcn[tid];
+
+          if ($use_master && $host_tsc != 0 && $host_tsc < $mcn) {
+              printf("BUG: pid=%d cpu=%d->%d host_tsc=%lu mcn=%lu "
+                     "deficit=%lu clock=%lu\n",
+                     pid, @get_cpu[tid], cpu, $host_tsc,
+                     $mcn, $mcn - $host_tsc, $clock);
+          }
+      }
+      delete(@get_data[tid]);
+      delete(@get_use_master[tid]);
+      delete(@get_mcn[tid]);
+      delete(@get_cpu[tid]);
+  }
+
+  kprobe:pvclock_update_vm_gtod_copy {
+      @gtod_kvm[tid] = (uint64)arg0;
+      @gtod_cpu[tid] = cpu;
+  }
+  kretprobe:pvclock_update_vm_gtod_copy
+  {
+      $kvm = (struct kvm *)@gtod_kvm[tid];
+      if ($kvm != 0) {
+          printf("GTOD: pid=%d cpu=%d->%d mcn=%lu use_master=%d\n",
+                 pid, @gtod_cpu[tid], cpu,
+                 $kvm->arch.master_cycle_now,
+                 $kvm->arch.use_master_clock);
+      }
+      delete(@gtod_kvm[tid]);
+      delete(@gtod_cpu[tid]);
+  }
+
+Thanks,
+Thomas
