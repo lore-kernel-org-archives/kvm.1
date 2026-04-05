@@ -1,140 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F402628D;
-	Sat,  4 Apr 2026 19:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127D02874F8;
+	Sun,  5 Apr 2026 07:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775331417; cv=none; b=lkK9ccv1rYr8w78FbcIq6dIQE1e9z+lo0GCEWuBwO2Amf/Ih5kaCEk2tGvwnKiaB+vVrZgMwhrIFlu77WVSsG0h5aCyH9w940fI09g4wABYs5yqT7x+Br4A9YWY288hSH2JWb8+6G7UwzXJYA/c+xGY6zTSzFS/21w1FbqumNps=
+	t=1775373808; cv=none; b=FK/c/ybfF2ai1oMfvj5htK+prgGDH6lcpF0+lO3WbTJSEio4dZHUx1vFRS626383eOdAT2SZVBB8GFdBip4ia7k4StP+asqz12KAwSJpBgd5d+Ac5pExXflMkr3oS0ygoIzV519pSxSPSiBVimJ833NmxubNq5sDEKUqT+QBFmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775331417; c=relaxed/simple;
-	bh=7D8uiw+X/9kr5mLCuGlYTyk+5HuqluWCri0cZXArQME=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=qDsi1PppYEwOS/AksydxKd6N1DzhiYhYh+1kKocw4AhVU0I67IVXeOAmuxFo5/QxuNEnf/iO2MAaXu+b71fL2zNjK6isKx/SMb9VJ5TT1bTlv7jGLk+dFEhGdGMW0rXB9NT4GTQbaNu0rBF4X9+E74A8Djq0gHjJ57ojPs0YmzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7WMijw7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775373808; c=relaxed/simple;
+	bh=YOehHECOLT4QVYKSmrNIW5ZBtaHoNollM2pLLqjv4oM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hoscAqOiGBtZ+hSZEaFNB2zW9NgS8MEw1xd1eSsbtOKrD7jYEVnFs6jwfQM4W7UnQm92+D4S9arzEFxUVcTBSeRFn9RgyFoYnfX2W14RwRCxD1995R6FOfA7brnfnFxmpErFtHYVt/vt1mD11pSO0POPmLDjlC6aiolbmTFgI94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SYF2EUMf; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7WMijw7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35D7C19421;
-	Sat,  4 Apr 2026 19:36:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775331416;
-	bh=7D8uiw+X/9kr5mLCuGlYTyk+5HuqluWCri0cZXArQME=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=h7WMijw7hs5m2jIpFZnah7XpZID9cksm8+J4vMabf8H2X5dtOqTYeLqeNE0SOJdjI
-	 71QjWih1EOvJk2T5NpwF31qPWgunVihwuJzq+j61yd44ST8eZ6kym1ouucPHAGe7Qq
-	 SmrZg/qLD9RDzZNUzGTx7/A8fFm9qK/+0vJ6O1bHp5WLx58b5nWEEssLAEz3Agc7kZ
-	 zNjkTR0jbOHcCz+/lVM7J7hqRnH8sEKUz0oqoM6O7/RvU63BhlFkEsNzN9otB6zQaa
-	 6+X9Ao34GjNUXZzIEVtOC1besS4dG6U+/JApmclI5X5X8Yhe/r9vRB3b198eBA7K+T
-	 uACi1L+LbtfZA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CC267F4007C;
-	Sat,  4 Apr 2026 15:36:54 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Sat, 04 Apr 2026 15:36:54 -0400
-X-ME-Sender: <xms:VmjRacrPwKiJiuPjSNM0vr8UkmniMnbvqnnMU9yit36ZSJ0rU-DsFg>
-    <xme:VmjRaewjoidua2WX3sBAShnyKRGJTyakOtjNIh5tpejZAf7M7FXH1V8_X78kpTyST
-    gAhtLdLwMxvGF1BHb8vO4lkCl9kzkbHgryAoBJdr4nN6U7Q5_ttJ3M>
-X-ME-Received: <xmr:VmjRadCfKXrnjwKQzPMuVQxCPK07bdwRIqReOmbvavlfC4Itbi4bAgIaWayy-snrH4_Th18YOtNqfxNSD0sIiEsfeBn7eRpRasE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdejudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevkfgjfhfugggtgfesthejredttd
-    dtjeenucfhrhhomhepffgrnhcuhghilhhlihgrmhhsuceoughjsgifsehkvghrnhgvlhdr
-    ohhrgheqnecuggftrfgrthhtvghrnheplefhiedugfdvieejtdelledtudeukeffjeejvd
-    ejhfegveejfeeujeeltdelteejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
-    pehmrghilhhfrhhomhepughjsgifodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhith
-    ihqddujeejvdeftdegheehqdeffeefleegtdegjedqughjsgifpeepkhgvrhhnvghlrdho
-    rhhgsehfrghsthhmrghilhdrtghomhdpnhgspghrtghpthhtohepvdehpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehm
-    hhhonhgrphesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghlfihilhhlihgrmhhsoh
-    hnsehnvhhiughirgdrtghomhdprhgtphhtthhopehjohhnrghthhgrnhdrtggrmhgvrhho
-    nheshhhurgifvghirdgtohhmpdhrtghpthhtohepuggrvhgvrdhjihgrnhhgsehinhhtvg
-    hlrdgtohhmpdhrtghpthhtoheprghlvghjrghnughrohdrlhhutggvrhhoqdhprghlrghu
-    segrmhgurdgtohhmpdhrtghpthhtohepuggrvhgvsehsthhgohhlrggsshdrnhgvthdprh
-    gtphhtthhopegrlhhishhonhdrshgthhhofhhivghlugesihhnthgvlhdrtghomhdprhgt
-    phhtthhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:VmjRadOGarB_YiyvQTrsz1fV5q00rbIdYK-yTfS0vndjAVdlACNo0A>
-    <xmx:VmjRacCq_xOsAPVEK-H0gAgqrgAO2liGyb0G8N3jxC4I6qf0t5tgGg>
-    <xmx:VmjRaXkps3msLbcRB6lOw4dqtAP2esqrTEk4jAu5qRjfO8mThpV2CA>
-    <xmx:VmjRaYq7g_YnS6wlyLJHE7rIP9NCqCPq2vefwMTHeDKh1SFHH_oAHw>
-    <xmx:VmjRaehUrwAkKEoYbD5uQSBfmWbityjMSA4jhEicF4zlu1jv9qr9p3oB>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 4 Apr 2026 15:36:54 -0400 (EDT)
-Date: Sat, 04 Apr 2026 12:36:53 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: mhonap@nvidia.com, 
- alwilliamson@nvidia.com, 
- jonathan.cameron@huawei.com, 
- dave.jiang@intel.com, 
- alejandro.lucero-palau@amd.com, 
- dave@stgolabs.net, 
- alison.schofield@intel.com, 
- vishal.l.verma@intel.com, 
- ira.weiny@intel.com, 
- dmatlack@google.com, 
- shuah@kernel.org, 
- yishaih@nvidia.com, 
- skolothumtho@nvidia.com, 
- kevin.tian@intel.com, 
- ankita@nvidia.com, 
- vsethi@nvidia.com, 
- cjia@nvidia.com, 
- targupta@nvidia.com, 
- zhiw@nvidia.com, 
- kjaju@nvidia.com, 
- linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- linux-cxl@vger.kernel.org, 
- kvm@vger.kernel.org
-Message-ID: <69d1685538f45_556821002f@djbw-dev.notmuch>
-In-Reply-To: <20260404185330.GD2551565@ziepe.ca>
-References: <20260401143917.108413-1-mhonap@nvidia.com>
- <20260401143917.108413-17-mhonap@nvidia.com>
- <69d0169115c06_1b0cc6100a5@dwillia2-mobl4.notmuch>
- <20260404185330.GD2551565@ziepe.ca>
-Subject: Re: [PATCH v2 16/20] vfio/cxl: Register regions with VFIO layer
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SYF2EUMf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775373807; x=1806909807;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YOehHECOLT4QVYKSmrNIW5ZBtaHoNollM2pLLqjv4oM=;
+  b=SYF2EUMf6Geb678P9GN4XWDXD4zIZ446eFUqQqOzGFVS9qj71bjhx2r8
+   WdL5qi/HCeY2CsQpzespMLYz591t8hWJM5/5RGf0R33dRDJKM6sVe4joz
+   /t7t5JACIbUE5oNGM980mfByRHTlSZfeh9c5kVt23GfuDwxFqqIlAlU/C
+   LGYk3pojAjY/vJaGSAqvW6OPt0xIUUWDK4+AevqyFYEk8wK0OfrGhwwZa
+   xm6K5NliNxNcV8jFSzoB48/kK5559QiGqXMIGzxNyg7d1Uc5L2JE+8otc
+   eO1fpvUnjEW420FYm2mBEoDm+hJ22JbYyT2py5TDWyhBxticyw9OD4soO
+   Q==;
+X-CSE-ConnectionGUID: EpjGxigYQJ64rrcILJj/+A==
+X-CSE-MsgGUID: ovQzu9VgRs+hNEUHDzPgCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11749"; a="76263642"
+X-IronPort-AV: E=Sophos;i="6.23,161,1770624000"; 
+   d="scan'208";a="76263642"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2026 00:23:26 -0700
+X-CSE-ConnectionGUID: lhUKzm/xTra/O0GWfZed7g==
+X-CSE-MsgGUID: 1WQKvYV1RGmgelZEKv5qLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,161,1770624000"; 
+   d="scan'208";a="250714858"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2026 00:23:24 -0700
+Date: Sun, 5 Apr 2026 00:23:14 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v9 00/10] VMSCAPE optimization for BHI variant
+Message-ID: <20260405072314.efcaflw3oivjoikn@desk>
+References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
+ <20260404162059.34ca90df@pumpkin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260404162059.34ca90df@pumpkin>
 
-Jason Gunthorpe wrote:
-> On Fri, Apr 03, 2026 at 12:35:45PM -0700, Dan Williams wrote:
-> > > +	/*
-> > > +	 * CXL device memory is RAM, not MMIO.  Use memremap() rather than
-> > 
-> > Right, CXL.mem is RAM, not MMIO, so I question why is this not being
-> > mapped via a RAM mechanism? Can you explain a bit more about why reusing
-> > vfio MMIO mapping mechanisms is suitable here and what happens when we
-> > get to questions like guest_memfd integration, page conversions, and
-> > large page mapping support? 
+On Sat, Apr 04, 2026 at 04:20:59PM +0100, David Laight wrote:
+> On Thu, 2 Apr 2026 17:30:32 -0700
+> Pawan Gupta <pawan.kumar.gupta@linux.intel.com> wrote:
 > 
-> None of that is applicable to VFIO. VFIO owns the entire address space
-> and does not share it with the mm or anything else.
-
-I was worried less about sharing and more about how the map eventually
-gets used, but makes sense all of that is enabled through the VFIO VMA.
-I have more reading to do in this space.
-
-> > Maybe this is the start of the conversation for something simple, but I
-> > would actually prefer uncached ioremap() if only to avoid all the
-> > coherence management and suitability of MMIO mechanisms questions.
+> > v9:
+> > - Use global variables for BHB loop counters instead of ALTERNATIVE-based
+> >   approach. (Dave & others)
+> > - Use 32-bit registers (%eax/%ecx) for loop counters, loaded via movzbl
+> >   from 8-bit globals. 8-bit registers (e.g. %ah in the inner loop) caused
+> >   performance regression on certain CPUs due to partial-register stalls. (David Laight)
+> > - Let BPF save/restore %rax/%rcx as in the original implementation, since
+> >   it is the only caller that needs these registers preserved across the
+> >   BHB clearing sequence.
 > 
-> The entire thing needs to be mmapable in a cache coherent way since
-> that is what the HW semantic is. If you try to do something else you
-> will break KVM support since it follows the VMA.
+> That is as dangerous as hell...
+> Does BPF even save %rcx - I'm sure I checked that a long time ago
+> and found it didn't.
 
-Then I assume it matters that memremap() sometimes silently falls back
-to the direct map. The "VFIO owns" expectation needs to guard against
-some helpful platform firmware mapping accelerator memory as System RAM.
+Below code injects save/restore of %rax and %rcx to BPF programs:
 
-At a minimum having VFIO fail to map in that case helps with the
-argument I have been making that "no, EFI_CONVENTIONAL_MEMORY type +
-EFI_SPECIFIC_PURPOSE flag" is not suitable for accelerators with private
-CXL memory. Those want to be enforcing "EFI_RESERVED".
+arch/x86/net/bpf_jit_comp.c
+
+emit_spectre_bhb_barrier()
+{
+	u8 *prog = *pprog;
+	u8 *func;
+
+	if (cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_LOOP)) {
+		/* The clearing sequence clobbers eax and ecx. */
+		EMIT1(0x50); /* push rax */
+		EMIT1(0x51); /* push rcx */
+		ip += 2;
+
+		func = (u8 *)clear_bhb_loop_nofence;
+		ip += x86_call_depth_emit_accounting(&prog, func, ip);
+
+		if (emit_call(&prog, func, ip))
+			return -EINVAL;
+		/* Don't speculate past this until BHB is cleared */
+		EMIT_LFENCE();
+		EMIT1(0x59); /* pop rcx */
+		EMIT1(0x58); /* pop rax */
+	}
+	...
+
+> (I'm mostly AFK over Easter and can't check.)
+> A least there should be a blood great big comment that BPF calls this code
+> and only saves specific registers.
+
+Sure, will add.
+
+> But given the number of mispredicted branches and other pipeline stalls
+> in this code a couple of register saves to stack are unlikely to make
+> any difference.
+
+BPF programs have been saving/restoring the registers since long now. What
+problem are you anticipating?
