@@ -1,113 +1,154 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6F30EF86;
-	Mon,  6 Apr 2026 04:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775449536; cv=none; b=YIOqK/YRr1ojfBrPrfBsR/7NLPlKzxcERxabFcdQ2JXG+lnnD6i3zpS8FSmkl3bF/nqCiPwUlD67YFdwmnoyeDfMxtyZRCt+w8yjle6omR9xkXUe7g/wMPqmojfy4xV/qisio/BYGXeiIfUnSx/BWMWWDgROYicTsEZ5K0cEwpg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775449536; c=relaxed/simple;
-	bh=QTIo9VGHz2wxJFdeg6IU5XJtReN5xn5GrLbtzmLjYuw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nz+6EB8/skHhMAZDl0BApoZgqCfwv+ZLYyQsch6R3B6ESp5gwv+XCNH+pgjWPH3hdewchcge2Guzk7yvliBmKphJW9ImeencEWq7mSx7J+Huo9VsUJJ6EpJR79MXL0N1U1zstgxG2AZmIlziTR26nfgiBAVCYQl6bQwzdB91f7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gfg5nhOG; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A53349AF9
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 04:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775449574; cv=pass; b=b5Z4WPUAuHgkdaqkYwCnHsBCmOHAFTl7Z/YYkocqVC3aUAnIDZIvQbvTi9MH0y+4uTQRdgg0Yt8zqwzzE11KIz692W3VYun53XTX8vEEv7L/IlyByZiCk3Xr6gRZvCtvwrlZJH+jhr3FqKUvDxr7CENTbpBTxNcGvDaEdCkSJDw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775449574; c=relaxed/simple;
+	bh=UqdeIjdUn5YvYpvhmjrudTNBqmucMxgenBUhQip1r9M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LT3mI1MB92QzeP4xzmWy9NLEWZzUk3gLBvsejdd+/TDO8FU+eal9QI56YjeTYG83sRzttJ3a1+8senDslbJteyAM3QVNo7EvATIf2aoG1WIR5+l5qRJ7eArxfRWTAdKnhuOe9avJaz18YCkyj47kX2n5Zvr9EqdbRRFV11aKYH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=tZVfww0K; arc=pass smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gfg5nhOG"
-Received: from [192.168.0.9] (unknown [4.194.122.144])
-	by linux.microsoft.com (Postfix) with ESMTPSA id DD30820B710C;
-	Sun,  5 Apr 2026 21:18:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD30820B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1775449110;
-	bh=B3diYHHGFQ5W0wbem6CFVCqplPIswsX1zrqcobDFojs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gfg5nhOG3DXzUjyf5Mct9OtDkjEPW9J8TLfEbUwO+vgA/fksEievinNPSuF0jyHy/
-	 CHoRd8jJe2hICR2N/VnJAZJzV5IwY1NaKfwX+TmCP534GwZRYiDzSUGN074dKwweei
-	 pjpPVxrEzKgZp8NxiqxnrVZ1S506JsY64nJZT0CM=
-Message-ID: <3e8a38f3-d309-4bd6-8378-260079aa7024@linux.microsoft.com>
-Date: Mon, 6 Apr 2026 09:48:25 +0530
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="tZVfww0K"
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-66ee7b9af94so1185791eaf.0
+        for <kvm@vger.kernel.org>; Sun, 05 Apr 2026 21:26:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775449570; cv=none;
+        d=google.com; s=arc-20240605;
+        b=APMgZcGZ4Me8mMcfYLsOgQS2gBYEZmuAl84RqL76FCO/CleWPa5/XPTC/r2ism+5YC
+         1B604y+yKs8oFwD5QhmuApedAXreABNaAUTHe57DF8xQ2TYC1EhfhGWbWGUmic9meEME
+         NTKmhGQiMTq9PlCJ3EPyzEWkHkm2BJqEFEoBYZtR8VjP3v75Kd0XYAcgHhT89A7ee/yu
+         HunH/rsplqgSSCWOlBIsyrsHKuDDZ0zb31P6FJ+tT4Pz3aHc1HPNsenAte25FXEPns+U
+         AK9gG26K4HIEzqy7WHh2PrC0Yvpwd59iUZFyk/WduAVBX6I0Hs1nB6Pv/u77vexfcNJ8
+         MZcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=d2Eqcpz26fbgpoHxUOQO5t6bHgkVihQ+ivm0vWcl2To=;
+        fh=PygykwduqkonOy6K4bxmsX/asuFtDHbfowmNXw0g6Ks=;
+        b=GE6/GiO4Yf2xWfokNubTTKWh+9o9uvr1jfBzMp0qVI1q7cavqNigpKQ9ql+Jk3nkrn
+         0d/aS7Arfxxhvy+l3zLsuW//Q+fB0N/Elsgs1wJv+dS502AE9Yv60IZ0Bn3bN+eTOy+x
+         dsY1dxX5YYBtdAwPCGm9ObC02e+j3QTzTV08v+R3Q87AFFlBdRt/8ZjbokSgYM4V8b5g
+         lDK73XilMVyhpAs1tE8t6eVfFJtWZX4j7Stuh5kwG9U2IZ9+IS5SicLT0bIWtNYToFzL
+         nSEM3hwyi0n6a2ooVv1aGRpXEPCQmO/VdYW2x1qDekBFBndfDqueFvNwKnvp05KoZXSh
+         RqDQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1775449570; x=1776054370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d2Eqcpz26fbgpoHxUOQO5t6bHgkVihQ+ivm0vWcl2To=;
+        b=tZVfww0Kj7pmpn+ep9BdiCWc38M5FV6oChsriWNX+MZPWFMk3VSzYHjfHPPdkd/5ZD
+         aY+RWtYOO27qNH5xJjB3w/qrhBqqY1wdONlGvGHXWyfGHVe8psX16J19G71Dp+gjZYxS
+         z8hqOxWBH04BGOm7qHufbzVMl5hwyq14hdCa7NTtSaseMOgGdMhaquXZLdW1jK8wgnuT
+         n5z9cTt2HHE2XVIbaGHpPzmbbGsEUsLpagTp4EBaHUaB2hQ5RAl0ETeGTnqmcVN0OCdD
+         oMtX8044PA7zAgQXWACFruxocs/119Ro/W8jpaAMZcFizFe8AjC/wvOntQCBVdfMXAT3
+         JU2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775449570; x=1776054370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=d2Eqcpz26fbgpoHxUOQO5t6bHgkVihQ+ivm0vWcl2To=;
+        b=f7P9FUPOJyXQsp2UFAIBOaBVfYaFG3NEasGTSlnpaNTlleU08x4uK9LLpFFumzQSdD
+         OXldjvbvAZY9kY4Sf+pC+QBbkrpCQL2JzzcWBVrihh50h2v5DIa1hM1zp8JrlKJAWglR
+         YBZ4A2EBoBaVV1Y9Jc7xlJTjwhCPOFiY5sNi4uOggX+lpVy9kaUGBUJvj0vDYt4wDd8v
+         3OKSE/2OxcRqlB7DlYHmTqNtx2sTR0qJfsYB80J+GBfBfIBbRQOqi/r9rN13Y7wdjTw+
+         N33ZywbfPuYa90q7O/rfB1QYPaJL+wXKcZMEdxR78dNBT/lhrq20s7+GWDEOjD/0+CKV
+         jBcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZPc1f38pq/bDNh6Nl1g9L8x5fS1D1K69/dGc9hqTt+3nOMk+KWGJv090hGRmPd7jXCqo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy11VvpSrvVMqn0IWjeqwjrrqel2u/aG/OWQy2qBdkvLXmqU7y7
+	3yDjLQHFCLUP2Vll+/TRRlioRdgr1Lne2XFSx0Nbtn7scaJ/W6y19q5NvrAQ2idzHvAjMl5fIZG
+	xM4QoVp7HgeQ7mGBQb8oqxKk9jCkR4IqkPuhB3X1bgA==
+X-Gm-Gg: AeBDievuzz+fG+165n8ZhNpm2CuloJeXqYs23gW7yx84HDEFpht1EdDiHBkM5+JI7Dp
+	NRAwfsdrhh3P/UMmbnG2nB9iv1vAZlz3A2MFuPLIBL2i5xfXTTYR5UpwjA566J7WFLlIJ6nAe5y
+	AM+B3mfmdqW4T2oSy0B8kr/dHuBlANRJShO3N4O4SBW9r+n1cFbYizJZpxYcHrZywxndTmGA4Kw
+	4ynSyGx/LO/MoLixU2Wfzua/I02KseXw1rv422Z62x6Y4aZ60yqjjXpZsIq0vivpLRLWCCGCqAE
+	U6Lz+EYI4Dfn38DT3v/JenRuUZL4XYME9sCUx6Iy0WGEEDje9pP5h9qEYYqwihIdN/hKMNZwIMe
+	kE6unTXwM4qsAVyDBzTzP55+75w==
+X-Received: by 2002:a05:6820:169f:b0:67e:1063:37ff with SMTP id
+ 006d021491bc7-68220b4a1e7mr5624387eaf.36.1775449570255; Sun, 05 Apr 2026
+ 21:26:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
- trigger path
-To: Alex Williamson <alex@shazbot.org>
-Cc: "Gupta, Nipun" <nipun.gupta@amd.com>, nikhil.agarwal@amd.com,
- pieter.jansen-van-vuuren@amd.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
- <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
- <20260401122254.363d93c2@shazbot.org>
- <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
- <20260402081632.554fa467@shazbot.org>
-Content-Language: en-US
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-In-Reply-To: <20260402081632.554fa467@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260403232011.2394966-1-xujiakai2025@iscas.ac.cn>
+In-Reply-To: <20260403232011.2394966-1-xujiakai2025@iscas.ac.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Mon, 6 Apr 2026 09:55:59 +0530
+X-Gm-Features: AQROBzDGT78x3zHvCoTNFnS1VnkRVlKe4WFUmhyAI0q8NrLRsHtw1tX_S_VT1YI
+Message-ID: <CAAhSdy353CV6FYe7BzVFvvo6drhY5hHGcv4HnJDYo+3bfB4n5Q@mail.gmail.com>
+Subject: Re: [PATCH v2] RISC-V: KVM: Fix shift-out-of-bounds in make_xfence_request()
+To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Atish Patra <atish.patra@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <pjw@kernel.org>, Jiakai Xu <jiakaiPeanut@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Apr 4, 2026 at 4:50=E2=80=AFAM Jiakai Xu <xujiakai2025@iscas.ac.cn>=
+ wrote:
+>
+> The make_xfence_request() function uses a shift operation to check if a
+> vCPU is in the hart mask:
+>
+>   if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
+>
+> However, when the difference between vcpu_id and hbase
+> is >=3D BITS_PER_LONG, the shift operation causes undefined behavior.
+>
+> This was detected by UBSAN:
+>   UBSAN: shift-out-of-bounds in arch/riscv/kvm/tlb.c:343:23
+>   shift exponent 256 is too large for 64-bit type 'long unsigned int'
+>
+> Fix this by adding a bounds check before the shift operation.
+>
+> This bug was found by fuzzing the KVM RISC-V interface.
+>
+> Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on V=
+CPU requests")
+> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
 
-
-On 02-04-2026 19:46, Alex Williamson wrote:
-> On Thu, 2 Apr 2026 10:14:24 +0530
-> Prasanna Kumar T S M <ptsm@linux.microsoft.com> wrote:
-> 
->> On 01-04-2026 23:52, Alex Williamson wrote:
->>> On Wed, 1 Apr 2026 15:11:17 +0530
->>> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
->>>    
->>>> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
->>>>> Add validation to ensure MSI is configured before accessing cdx_irqs
->>>>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
->>>>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
->>>>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
->>>>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
->>>>>
->>>>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
->>>>> sets config_msi to 1 only when called through the EVENTFD path. The
->>>>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
->>>>> done, but there was no enforcement of this call ordering.
->>>>>
->>>>> This matches the protection used in the PCI VFIO driver where
->>>>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
->>>>>
->>>>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
->>>>
->>>> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
->>>
->>> It's an improvement, but I think it also highlights that interrupt
->>> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
->>> the vfio_cdx_device that is acquired with a guard in
->>> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
->>> test.  Thanks,
->>>
->>> Alex
->>
->> This patch is fixing a specific problem. User space can make VFIO_*
->> calls in a specific order to trigger NULL pointer access. This will not
->> get fixed with a mutex.
-> 
-> I'm not saying the fix is wrong, I'm saying it's incomplete.  This
-> fixes the specific case where config_msi is not set prior to the ioctl,
-> but it doesn't consider concurrency where config_msi may be set when
-> tested, but race with a call to vfio_cdx_msi_disable().  I think the fix
-> needs both the validation of config_msi and serialization via a mutex
-> such that the test remains valid through the whole ioctl path.  Thanks,
-> 
-> Alex
-
-Thanks for the suggestion. Yes, the concurrency issue exists. It exists 
-even before this patch and it has to be fixed.
-
-The CDX folks will be able to do this faster than me as they have deep 
-expertise on this.
+Queued this patch for Linux-7.1
 
 Thanks,
-Prasanna Kumar
+Anup
+
+> ---
+> V1 -> V2:
+> - Dropped 'idx' variable and compared vcpu_id against hbase directly,
+>   as suggested by Andrew Jones.
+> ---
+>  arch/riscv/kvm/tlb.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+> index ff1aeac4eb8eb..439c20c2775ab 100644
+> --- a/arch/riscv/kvm/tlb.c
+> +++ b/arch/riscv/kvm/tlb.c
+> @@ -338,7 +338,8 @@ static void make_xfence_request(struct kvm *kvm,
+>         bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
+>         kvm_for_each_vcpu(i, vcpu, kvm) {
+>                 if (hbase !=3D -1UL) {
+> -                       if (vcpu->vcpu_id < hbase)
+> +                       if (vcpu->vcpu_id < hbase ||
+> +                               vcpu->vcpu_id >=3D hbase + BITS_PER_LONG)
+>                                 continue;
+>                         if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
+>                                 continue;
+> --
+> 2.34.1
+>
