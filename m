@@ -1,145 +1,132 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D06F30EF7B
-	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 22:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380EA1E0DD8
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 22:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775512806; cv=none; b=dVidlnDTa7Ibhv1rRMSUMujJnskXnGMd0BOO8FuhDw+x2gZ8VLAOgqoxejIhQss9rh/hgy5jCAWGIuEBe69BA0pVA8qd+MEsQnuIT2B85Zd+Vy/pDbWAL2XbGeoTZ+dxvRPZa1vkmNlK+uhGNDh9WQ33Rdm2gYeZRkoS/JWTO7A=
+	t=1775513125; cv=none; b=KKjmimrI1JsKp9e+zpQ/fVAszxGy/CJXhowKEhtYdQuA1c+zoZx8iioXoRa3Lw2RMdb55OdIg6rh4JWl0KJOukN29sS+ms6fVOvPAECLg/mcr2KlEI0nfVW3R2uR8bmJOkAeJlnKlnkM4c3VzOVkVf/Sbs0V8OJt1sXjK9S4alY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775512806; c=relaxed/simple;
-	bh=I8WHx1Pkevx0nIQltAJP8POzcUzeekGHeKLYpatBhrI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RfJJtVMv+POHYR36eMgCouzdf0vetEWb46OkwyLuJUtToupdatR93K/FGekeByQty2sHePAc5nMnp5CJVF0mFSVMO5XkGViu+2toXuBzp+J0utlfkiXOP1f+SeRoQDpatoJ0oo3mI6/ZViwr8cs08+/RlGG5k2lqRpTl1Z5BqYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YF24ORbi; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775513125; c=relaxed/simple;
+	bh=oK9QofoXFukYbZ1c/cswd1bebDb7z9qu2bCtB6Eab70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BRsZJUGHCYVjJAOVrjXpPliAkPRL2z/B/eYICjV6gn8pRFwXcu25HVRHJLKUhODNu5Doz9dzwjpdys07JHq0krOPTxNKEMi6YnudRhHd1990VJiLMIHM0b9cmhiR87G7unFLuvafUz3/DcfSJFl2rNlQ+wSHWYGpg7loFeXaseQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=RVmy1JPg; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YF24ORbi"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c9364612fso6490677b3a.2
-        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 15:00:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="RVmy1JPg"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cfc2d1fdbfso349467985a.3
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 15:05:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775512803; x=1776117603; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9nky+GX6oW67ek6Zkv50pIvflG8tKm+1nG7p13qNMk=;
-        b=YF24ORbibymXeXosJnUbsepe7c8OMgNj7bJCYy1nzGwgHyr+/6MdhMvvcRNNHadg/8
-         IMLoPTfqN6rvccjBu4acTHB2WrkwqKbdzgBZvpRnMLl9wK1tZ6XRludqKOq6+Y5ZyxHW
-         lIHc+LtGvS23L7ZrTpT6oWmQ7gtsefeHHaNWrC4aj0iBYNv2pWO+4jQ8dGp2eanUrIpr
-         lQy9gEM4aQ8g1T/GwFTR+GfdGFbxYSLt6gorltQ3NUgXm0pTKKaNh5QVcOX6gcdXJP5j
-         Yiugu48z+w3LzOUFgbk5X6a8ChHHHG+pqpOx7Tm5uwnk5KD/GEkO1c4Ky9IAYkqgnYP4
-         scuA==
+        d=ziepe.ca; s=google; t=1775513123; x=1776117923; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EGZao/IIzct9FspuaHKhJftGREYwsc0pd1AtS7x/cpc=;
+        b=RVmy1JPga9OP1fAYlBdCYxO5p1+NGTZBvNC1KuBLpT466N7Isgs+iKH5WT+SI/ROzv
+         yoHVWTtoIRc5V8m6KHP9CHMbAWIv8a8mW5oiPlKd84adiK6/r+zv22SOEoHy3lafQN9e
+         Ppx6aw2Tizpatlz00J0wp50QbbpAMXE5wJ1/6wlJPNKKRO7AnnxaBi+Ai7IGup59P7zI
+         nHVBfP2wgxCfxbg/eANCqyPufMfBzyPEbilOwLOHXKCxDD195xeJB//VTM/Is34+sddx
+         /uRwDjVsWwAAm4oB4gT5XJ5Tl8T8mTwvtRrPo0NbGANms9By8Bxw2O9Si3DM6tHyHOWy
+         lowQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775512803; x=1776117603;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9nky+GX6oW67ek6Zkv50pIvflG8tKm+1nG7p13qNMk=;
-        b=V1Q5pK//o0mFwssZLurPDgkinOKL+3EAmE/MvW0PPWbieh3oDUqqfwmDloQfWHFrIG
-         K7YZyCMwxZs9q4LAi/NyMWEW7zJABUzs1NAPsVMRX1Oq89B2BEk5ytYgxWYdeSkJCSq9
-         DyM+jTN/ga2HYN/eLca1/Jx9iDnH2o8rOp5Jz/L8w70Fm2I2TiWgehdypz5Xjbw4MajQ
-         rH15SCRWKhxeLU2wIxpHvqSdeiY8v4rNhDlL77IL+DVoatkJlI1eVmFZeqxTfY26Kptp
-         BHAB54BleEbwQxIDRu3Iv5gS9GuaRmJrt0qm+VzoYLjyaaPle6Fc2Nx1ZF0Zju1R906T
-         D50A==
-X-Forwarded-Encrypted: i=1; AJvYcCWa49QSiA9nf+jQoG5NUG1KQv0b7e5swEATYSxFAAO7rC5Ymy9+hGrQbD1E8oBXvt4n1iU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6neXSbgIZidX1PwILUIexYxUFU6wJcZ9khACLEXrNeU7Ojn36
-	Ft/QPrExj0N+2Ecd+phkXqVulQjzwgDAkbAB3KF75z6LwBd33QUvVj4LfcXdTrW3fKSd5sUI3ms
-	/+pEc0w==
-X-Received: from pfar12.prod.google.com ([2002:a05:6a00:a90c:b0:823:b9a:9230])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4fd6:b0:82c:df25:fbc4
- with SMTP id d2e1a72fcca58-82d0dbcce73mr15006700b3a.52.1775512802481; Mon, 06
- Apr 2026 15:00:02 -0700 (PDT)
-Date: Mon, 6 Apr 2026 15:00:00 -0700
-In-Reply-To: <CABgObfbLm3FR4f_nv5EyYJx4jwfeBaVgTLhr7P++hmhCP98e3Q@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775513123; x=1776117923;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EGZao/IIzct9FspuaHKhJftGREYwsc0pd1AtS7x/cpc=;
+        b=ez30/CPd+VsccYokV6woQPBEaz1miGNGpossk6HUGrWUJJhMwdJmaWYLkDH+NqgCiJ
+         79OK39Ss0CeuuXf1xiMbA0NgrEqIs7LBI0vCqnWLqJzHkw40H3B6jyC/pTwmynBSzkzJ
+         VgtzN38WOdGN+vIZ+H+hL74DHhb8y9fGwWFZmNPbkPNOBfotXbNcSAMeq9CnlAwIK0LW
+         6dahBJmjIVRwP8U135udnqCQsBBaXXh+YomIDe1DGe8SRfPS46jgROM3O7n3kSBd4GEU
+         uz5+ZffIwp/fPv74LH/9YjA4cwuahzkguZT4iOd+1N5xdd0/MZni7zkoTQVAYrv5LULd
+         9GrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHjeP37xNq3HtXogiI/Uia8qKTYS4QBKXJ18mtRu8hsCCv9YSv21ejDeGBdYpKccnrr9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySYVOLW8S8K+7jMQpSmnhxSXVfUe5teK3jRQxh+A1gcKvw63RG
+	1NshBkLdXFfSrYNpOrCtyi7BM/cwSm81LL/ZHeZ73Ra5tHlsROycALDxDiAVuQyfd1I=
+X-Gm-Gg: AeBDieuTjeIz2WqfrO9F39EsgAoWLVbtXZBPr46vI+1aWJK7tQg88ffzE7sxh70iQSQ
+	g3PnrP0q/BsWBY2/PD8qZLfM4h53V/ZiNOcx2jKoBmrhoPnoZv3TSz0plRN33za/OykF/eEK2z0
+	mZUlIL/1uwLVXG4JwoAF6aW87p8ZaS9YHg4x3D73KJLTeHSJzDiSmgbsT6US6p+U9HFQlyF7zNr
+	d4Y7hDo2qy37JSGIltbHglzp1IJP8kdjzpfgq3XkR9lvNJlBloZ1q3EYV13JtEIlX2lTyZn7Rpw
+	pNcAFRH2NQg9f7yerjGBrqSB9aS4Caz1J0BeV24l51/yb+eB0SIr7maERSwRIVnjz85nOu7/7ZL
+	h/6wLTFo+F5fExKRUE0hDTksmzkYemsIYDGnZvLuM4QZoNeDlJZA00WX7GVSmAKubd6fdAIGMca
+	gIUM7rJA+Xxv8ooT5YxwFBA+9d9Ox5B3sGIVMRUebYnExNjxrWEEH1hXG76v0C2yIVWsnD2NyAr
+	1y6H8Xh
+X-Received: by 2002:a05:620a:294d:b0:8cf:bfcf:eb8f with SMTP id af79cd13be357-8d41bcd15d3mr1922226485a.65.1775513123076;
+        Mon, 06 Apr 2026 15:05:23 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5c5cb5csm1165614585a.15.2026.04.06.15.05.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 15:05:22 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w9s4P-0000000E4mE-3CKd;
+	Mon, 06 Apr 2026 19:05:21 -0300
+Date: Mon, 6 Apr 2026 19:05:21 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Gregory Price <gourry@gourry.net>
+Cc: Dan Williams <djbw@kernel.org>, mhonap@nvidia.com,
+	alwilliamson@nvidia.com, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alejandro.lucero-palau@amd.com,
+	dave@stgolabs.net, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, dmatlack@google.com,
+	shuah@kernel.org, yishaih@nvidia.com, skolothumtho@nvidia.com,
+	kevin.tian@intel.com, ankita@nvidia.com, vsethi@nvidia.com,
+	cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com,
+	kjaju@nvidia.com, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 16/20] vfio/cxl: Register regions with VFIO layer
+Message-ID: <20260406220521.GG2551565@ziepe.ca>
+References: <20260401143917.108413-1-mhonap@nvidia.com>
+ <20260401143917.108413-17-mhonap@nvidia.com>
+ <69d0169115c06_1b0cc6100a5@dwillia2-mobl4.notmuch>
+ <20260404185330.GD2551565@ziepe.ca>
+ <69d1685538f45_556821002f@djbw-dev.notmuch>
+ <adQj_gxSzjA51Q6n@gourry-fedora-PF4VCD3F>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
- <ac75iuf9gHIhvm9u@google.com> <88e9d7f0-35b8-4559-9f4d-c7daf1af6012@redhat.com>
- <aea176c8-35de-4042-bf98-e42ce05f93fb@intel.com> <CABgObfY05NU8DS82jkwpF89_p1nR7VJ30HBq_xaMg_u+-j=0Cw@mail.gmail.com>
- <adPRA4ZhnvbaXSn0@google.com> <CABgObfbLm3FR4f_nv5EyYJx4jwfeBaVgTLhr7P++hmhCP98e3Q@mail.gmail.com>
-Message-ID: <adQs4LQgy3mS2t89@google.com>
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Kiryl Shutsemau <kas@kernel.org>, kvm <kvm@vger.kernel.org>, 
-	"the arch/x86 maintainers" <x86@kernel.org>, linux-coco@lists.linux.dev, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, Andrew Cooper <andrew.cooper3@citrix.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adQj_gxSzjA51Q6n@gourry-fedora-PF4VCD3F>
 
-On Mon, Apr 06, 2026, Paolo Bonzini wrote:
-> Il lun 6 apr 2026, 17:28 Sean Christopherson <seanjc@google.com> ha scritto:
-> > > You're right about fast paths...
-> >
-> > Ya, potential fastpath usage is why I wanted to just context switch around
-> > entry/exit.
-> >
-> > > so something like the attached patch.
-> > > It is not too bad to translate into assembly, where it could use
-> > > alternatives (in the same way as
-> > > RESTORE_GUEST_SPEC_CTRL/RESTORE_GUEST_SPEC_CTRL_BODY) in place of
-> > > static_cpu_has(). Maybe it's best to bite the bullet and do it
-> > > already...
-> >
-> > My strong vote is to context switch in assembly, but _conditionally_ context
-> > switch R16-R31.
-> >
-> > But that second paragraph isn't quite correct, at least not for KVM.  Specifically,
-> > "need a branch prior to regaining speculative safety" isn't correct, as that holds
-> > true if and only if "regaining speculative safety" requires executing code that
-> > might access R16-R31.  If we massage __vmx_vcpu_run() to restore SPEC_CTRL in
-> > assembly, same as __svm_vcpu_run(), then __{svm,vmx}_vcpu_run() can simply context
-> > switch R16-R31 if and only if APX is enabled in XCR0.
+On Mon, Apr 06, 2026 at 05:22:06PM -0400, Gregory Price wrote:
+> On Sat, Apr 04, 2026 at 12:36:53PM -0700, Dan Williams wrote:
+> > Jason Gunthorpe wrote:
+> > > 
+> > > The entire thing needs to be mmapable in a cache coherent way since
+> > > that is what the HW semantic is. If you try to do something else you
+> > > will break KVM support since it follows the VMA.
+> > 
+> > Then I assume it matters that memremap() sometimes silently falls back
+> > to the direct map. The "VFIO owns" expectation needs to guard against
+> > some helpful platform firmware mapping accelerator memory as System RAM.
+> > 
+> > At a minimum having VFIO fail to map in that case helps with the
+> > argument I have been making that "no, EFI_CONVENTIONAL_MEMORY type +
+> > EFI_SPECIFIC_PURPOSE flag" is not suitable for accelerators with private
+> > CXL memory. Those want to be enforcing "EFI_RESERVED".
 > 
-> I might even have patches for that lying around (the SPEC_CTRL part).
-> 
-> > KVM always intercepts XCR0 writes (when XCR0 isn't context switched by "hardware",
-> > i.e. ignoring SEV-ES+ and TDX guests), and IIUC all access to R16-R31 is gated on
-> > XCR0.APX=1
-> 
-> Right, fortunately.
-> 
-> > .  So unless I'm missing something (or hardware is flawed and lets the
-> > guest speculative consume R16-R31, which would be sad), it's perfectly safe to
-> > run the guest with host state in R16-R31.
-> >
-> > That would avoid pointlessly context switching 16 registers when APX is not being
-> > used by the guest, and would avoid having to write XCR0 in the fastpath.
-> 
-> For now yes, but once/if the kernel starts using the registers there's
-> no way out of writing XCR0 for APX-disabled guests in the fast path.
+> Agree - in fact I would argue any potential user of private nodes should
+> have some kind of splat saying the memory should be marked reserved in
+> the first place, otherwise it's a firmware bug.
 
-Why's that?  So long as KVM uses vcpu->arch.regs[R16-R31] as the source of truth
-when emulating anything, there's no danger of taking a #UD in the host due to
-accessing R16-R31 with XCR0.APX=0.  There's not even any danger of consuming stale
-guest state, e.g. in case KVM screws up accesses R16-R31 instead of generating #UD,
-as the value in regs[] will still be the guest's last written value.
+I would expect this to happen via the request_resource mechanism, if
+MM is using the CXL range it should be locked in the resource tree and
+vfio should request it and then fail during the initial startup
+phases.
 
-If we wanted be paranoid, we could add sanity checks to ensure R16-R31 don't show
-up in hardware-provided informational fields, but to some extent that's orthogonal
-to how KVM maintains guest values.
+> I need to read up a little bit on this area, but i don't see the "needs
+> to be mmap'able in a cache coherent way" to be an argument for one
+> particular method or another (hotplug, private node, memremap, etc).
 
-> If we ignore that, we can keep guest XCR0 all the time for now, and
-> that would be:
-> - move SPEC_CTRL to assembly
-> - not changing XCR0 handling at all
-> - use XCR0 in addition to just static_cpu_has(X86_FEATURE_APX) to make
-> r16-r31 swap conditional
-> 
-> > > -     if (vcpu->arch.xcr0 != kvm_host.xcr0)
-> > > +     /*
-> > > +      * Do not load the definitive XCR0 yet; vcpu->arch.early_xcr0 keeps
-> > > +      * APX enabled so that the kernel can move to and from r16...r31.
-> > > +      */
-> > > +     if (vcpu->arch.early_xcr0 != kvm_host.xcr0)
-> > >               xsetbv(XCR_XFEATURE_ENABLED_MASK,
-> > > -                    load_guest ? vcpu->arch.xcr0 : kvm_host.xcr0);
-> > > +                    load_guest ? vcpu->arch.early_xcr0 : kvm_host.xcr0);
-> >
-> > Even _if_ we want to play XCR0 games,
-> 
-> (which depends on whether we want to be ready for kernel usage of APX, right?)
+It is speaking to what VFIO has to do. It is the exclusive owner of
+the physical range, it does not have struct pages, it must be cachable
+for VFIO and KVM to work - not alot of choices here. Turn the
+phys_addr_t's into large cachable special PTEs inside a VMA.
 
-No?
+Jason
