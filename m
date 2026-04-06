@@ -1,164 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1681DED40;
-	Mon,  6 Apr 2026 01:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6F30EF86;
+	Mon,  6 Apr 2026 04:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775440463; cv=none; b=JO/RZDDsprS0Im2XPttMjnSe86G2MRcGU+aE+oVbOIApB27RXXH+hDGzRXsAXYEjc2NWCx/Z1YIhFAYa/vrwxdzoTjVk4LbyM82YxU+RkWxENIeULeWXr0+JNm0jm6S1Ur+/SFIjr0gTlKS7ZeJPH/XcSfIkqP0zPfNDNgvxyIk=
+	t=1775449536; cv=none; b=YIOqK/YRr1ojfBrPrfBsR/7NLPlKzxcERxabFcdQ2JXG+lnnD6i3zpS8FSmkl3bF/nqCiPwUlD67YFdwmnoyeDfMxtyZRCt+w8yjle6omR9xkXUe7g/wMPqmojfy4xV/qisio/BYGXeiIfUnSx/BWMWWDgROYicTsEZ5K0cEwpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775440463; c=relaxed/simple;
-	bh=i3tkyONMstJd7/bB4kFhKh47p0J+DD4A0sqUFsz1AKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DkyDgNhUu78Ia+/6Oc7wnAB5YGG7HVSDVZvtGt/FHI49LQoWWH+ONQJUbKBZgkAsuekGOm1cAlH3ZUPrLcRXx+XUvHmEjRozkypm3BrvhG6P4OkePnAqwWgKzxREcRQgFWizyh/aCv2rAD9nm8O6TQG6FNRgSuRQSwkl86LnXNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pCp/eFA1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775449536; c=relaxed/simple;
+	bh=QTIo9VGHz2wxJFdeg6IU5XJtReN5xn5GrLbtzmLjYuw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nz+6EB8/skHhMAZDl0BApoZgqCfwv+ZLYyQsch6R3B6ESp5gwv+XCNH+pgjWPH3hdewchcge2Guzk7yvliBmKphJW9ImeencEWq7mSx7J+Huo9VsUJJ6EpJR79MXL0N1U1zstgxG2AZmIlziTR26nfgiBAVCYQl6bQwzdB91f7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gfg5nhOG; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pCp/eFA1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73543C116C6;
-	Mon,  6 Apr 2026 01:54:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775440462;
-	bh=i3tkyONMstJd7/bB4kFhKh47p0J+DD4A0sqUFsz1AKg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pCp/eFA19HIS+NAFw7U11vCNfNTYBCc+LISNDwQwpselRC0UaA21FrMIuos8xo9cV
-	 4kfOJuZ8biK/kakJnm2xHEos8e0XArbBzRUKqQZ8+/KhYZwFUa185NiHdCyMTWggum
-	 e/yvAZzxSkAD6BLjhaLU2RzvoybgovlPurAQeMR1qUFNSaS/Fc7fBsWdceSk9rWIC6
-	 4tKWCWRh16r8TAS1dKdtnd7ZjreW8tCsgDYjcP4PEYkXtO3fsM+NGB8a3Og/llrpjE
-	 CmxfE1GwW0Inqg4Lmz1ynYR3Hl13kLFkBlTLJR11PNm0oWfYxBHj2ieORA8GqYDakE
-	 h1Kmk6mfhBaag==
-Date: Mon, 6 Apr 2026 10:54:20 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 05/15] userfaultfd: retry copying with locks dropped
- in mfill_atomic_pte_copy()
-Message-ID: <adMSTB35f-ki15fj@hyeyoo>
-References: <20260402041156.1377214-1-rppt@kernel.org>
- <20260402041156.1377214-6-rppt@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gfg5nhOG"
+Received: from [192.168.0.9] (unknown [4.194.122.144])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DD30820B710C;
+	Sun,  5 Apr 2026 21:18:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD30820B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1775449110;
+	bh=B3diYHHGFQ5W0wbem6CFVCqplPIswsX1zrqcobDFojs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gfg5nhOG3DXzUjyf5Mct9OtDkjEPW9J8TLfEbUwO+vgA/fksEievinNPSuF0jyHy/
+	 CHoRd8jJe2hICR2N/VnJAZJzV5IwY1NaKfwX+TmCP534GwZRYiDzSUGN074dKwweei
+	 pjpPVxrEzKgZp8NxiqxnrVZ1S506JsY64nJZT0CM=
+Message-ID: <3e8a38f3-d309-4bd6-8378-260079aa7024@linux.microsoft.com>
+Date: Mon, 6 Apr 2026 09:48:25 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402041156.1377214-6-rppt@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
+ trigger path
+To: Alex Williamson <alex@shazbot.org>
+Cc: "Gupta, Nipun" <nipun.gupta@amd.com>, nikhil.agarwal@amd.com,
+ pieter.jansen-van-vuuren@amd.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+ <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+ <20260401122254.363d93c2@shazbot.org>
+ <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
+ <20260402081632.554fa467@shazbot.org>
+Content-Language: en-US
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+In-Reply-To: <20260402081632.554fa467@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 02, 2026 at 07:11:46AM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Implementation of UFFDIO_COPY for anonymous memory might fail to copy data
-> from userspace buffer when the destination VMA is locked (either with
-> mm_lock or with per-VMA lock).
-> 
-> In that case, mfill_atomic() releases the locks, retries copying the data
-> with locks dropped and then re-locks the destination VMA and
-> re-establishes PMD.
-> 
-> Since this retry-reget dance is only relevant for UFFDIO_COPY and it never
-> happens for other UFFDIO_ operations, make it a part of
-> mfill_atomic_pte_copy() that actually implements UFFDIO_COPY for anonymous
-> memory.
-> 
-> As a temporal safety measure to avoid breaking biscection
-> mfill_atomic_pte_copy() makes sure to never return -ENOENT so that the
-> loop in mfill_atomic() won't retry copiyng outside of mmap_lock.  This is
-> removed later when shmem implementation will be updated later and the loop
-> in mfill_atomic() will be adjusted.
-> 
-> [akpm@linux-foundation.org: update mfill_copy_folio_retry()]
->   Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
-> Link: https://lkml.kernel.org/r/20260306171815.3160826-6-rppt@kernel.org
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
->  mm/userfaultfd.c | 75 ++++++++++++++++++++++++++++++++----------------
->  1 file changed, 51 insertions(+), 24 deletions(-)
+On 02-04-2026 19:46, Alex Williamson wrote:
+> On Thu, 2 Apr 2026 10:14:24 +0530
+> Prasanna Kumar T S M <ptsm@linux.microsoft.com> wrote:
 > 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index c6a38db45343..82e1a3255e1e 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -405,35 +405,63 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
->  static int mfill_atomic_pte_copy(struct mfill_state *state)
->  {
-> -	struct vm_area_struct *dst_vma = state->vma;
->  	unsigned long dst_addr = state->dst_addr;
->  	unsigned long src_addr = state->src_addr;
->  	uffd_flags_t flags = state->flags;
-> -	pmd_t *dst_pmd = state->pmd;
->  	struct folio *folio;
->  	int ret;
->  
-> -	if (!state->folio) {
-> -		ret = -ENOMEM;
-> -		folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, dst_vma,
-> -					dst_addr);
-> -		if (!folio)
-> -			goto out;
-> +	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, dst_addr);
-> +	if (!folio)
-> +		return -ENOMEM;
->  
-> -		ret = mfill_copy_folio_locked(folio, src_addr);
-> +	ret = -ENOMEM;
-> +	if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
-> +		goto out_release;
->  
-> -		/* fallback to copy_from_user outside mmap_lock */
-> -		if (unlikely(ret)) {
-> -			ret = -ENOENT;
-> -			state->folio = folio;
-> -			/* don't free the page */
-> -			goto out;
-> -		}
-> -	} else {
-> -		folio = state->folio;
-> -		state->folio = NULL;
-> +	ret = mfill_copy_folio_locked(folio, src_addr);
-> +	if (unlikely(ret)) {
-> +		/*
-> +		 * Fallback to copy_from_user outside mmap_lock.
-> +		 * If retry is successful, mfill_copy_folio_locked() returns
-> +		 * with locks retaken by mfill_get_vma().
+>> On 01-04-2026 23:52, Alex Williamson wrote:
+>>> On Wed, 1 Apr 2026 15:11:17 +0530
+>>> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
+>>>    
+>>>> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
+>>>>> Add validation to ensure MSI is configured before accessing cdx_irqs
+>>>>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+>>>>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+>>>>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+>>>>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+>>>>>
+>>>>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+>>>>> sets config_msi to 1 only when called through the EVENTFD path. The
+>>>>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+>>>>> done, but there was no enforcement of this call ordering.
+>>>>>
+>>>>> This matches the protection used in the PCI VFIO driver where
+>>>>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
+>>>>>
+>>>>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+>>>>
+>>>> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
+>>>
+>>> It's an improvement, but I think it also highlights that interrupt
+>>> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
+>>> the vfio_cdx_device that is acquired with a guard in
+>>> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
+>>> test.  Thanks,
+>>>
+>>> Alex
+>>
+>> This patch is fixing a specific problem. User space can make VFIO_*
+>> calls in a specific order to trigger NULL pointer access. This will not
+>> get fixed with a mutex.
+> 
+> I'm not saying the fix is wrong, I'm saying it's incomplete.  This
+> fixes the specific case where config_msi is not set prior to the ioctl,
+> but it doesn't consider concurrency where config_msi may be set when
+> tested, but race with a call to vfio_cdx_msi_disable().  I think the fix
+> needs both the validation of config_msi and serialization via a mutex
+> such that the test remains valid through the whole ioctl path.  Thanks,
+> 
+> Alex
 
-nit: mfill_copy_folio_locked() -> mfill_copy_folio_retry();
+Thanks for the suggestion. Yes, the concurrency issue exists. It exists 
+even before this patch and it has to be fixed.
 
-> +		 * If there was an error, we must mfill_put_vma() anyway and it
-> +		 * will take care of unlocking if needed.
-> +		 */
-> +		ret = mfill_copy_folio_retry(state, folio);
-> +		if (ret)
-> +			goto out_release;
->  	}
->  
->  	/*
+The CDX folks will be able to do this faster than me as they have deep 
+expertise on this.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Thanks,
+Prasanna Kumar
