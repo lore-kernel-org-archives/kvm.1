@@ -1,126 +1,213 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05DAC8EB;
-	Mon,  6 Apr 2026 18:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE01538E5E6
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 19:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775499872; cv=none; b=feP06JBqL91V+lCXrjgJSgS+kV269XLIRm1DnFzX1QoCmZ5EFajxq2ST5lolZlXXacDdZQANjENY51C+AqkYzO/1DcliGNkwcfLCmrHQWMwV1Hn8dWmkrFJrXmD2Ov9KNGITo9hH7rLvqvWFYTc1N1Msc0HGQ2apHQC9qAbGhvQ=
+	t=1775505207; cv=none; b=Nzsx05ndWN5mo3KNHZuqlkbJhLhFIJlQe9fWyoU8WVJLtRFjB+NxInZrtKwNhnLexuRqUG5ZikQoGCIab6FRhppQRPANkvNVwYLnFHoe4yqQUxZYDeATAHl7jKpUJDYJIblBOyJHwMUW25rDhFFHxTdmAu5x6tWFnpLtbbiJ/k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775499872; c=relaxed/simple;
-	bh=1/Zblc5efXwHMCKKa+kFcdEekZ+kpKn0jAYf50iiRKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XV2/yd0pWlMXswxsvi5H6RzGsX+WE6Goy1o3AR6haqPukqeYQhYfgMt3kYYBnB+Y0GESv1SZro5RIxfPWNu6tPuiEQCbHBgKqzk5arJzhphdluFl6LkbjYqe23cKXby9edjHp7Boqfq+NkO/+9fmJ2OSrpfxrMLCox+1LhfOPvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CLgP7GpE; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CLgP7GpE"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6362tbG64143886;
-	Mon, 6 Apr 2026 18:24:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EswHya
-	loRJc5ViJVdEKJfq174Jji60jPGk9L6YZq2wo=; b=CLgP7GpELO+em+DTkAAi81
-	WhFIcqMyNQ0dMVnpzpCU9bY3EyhNOVb4ajMKg5b7pWDqzn8iyL+rwYQekbpEvAmC
-	WASHlrRJoRaqbBFK5HklSmbwLPKmBvzVdiA90UATKZbyyWnU6mlXSK5PdLWNCzy4
-	/O8LFx8OPGDLYqJe5d6cPENgK/M/VK4wK7j42i9tH4RTukBV6pwHC1ak+NLrOhvo
-	2vp8dFxLJkcyuGpAzbzBeEdhsvI+k/iikWLpaZt2WZUjbWQsDbPRstIp+2IIIcew
-	405xBpIxQx6tTWWfjna9qAyoqADm/DpMyYqqxVv/keiWrX7BZa13gFah4EdVRONA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4das2bycax-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Apr 2026 18:24:26 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 636FDdVw018517;
-	Mon, 6 Apr 2026 18:24:25 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dbcyswubs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Apr 2026 18:24:25 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 636IOOVk28181026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Apr 2026 18:24:24 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CE0458058;
-	Mon,  6 Apr 2026 18:24:24 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 795FF58057;
-	Mon,  6 Apr 2026 18:24:23 +0000 (GMT)
-Received: from [9.61.9.165] (unknown [9.61.9.165])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Apr 2026 18:24:23 +0000 (GMT)
-Message-ID: <20708f8c-546d-44bf-ab3a-b9bd59614031@linux.ibm.com>
-Date: Mon, 6 Apr 2026 14:24:23 -0400
+	s=arc-20240116; t=1775505207; c=relaxed/simple;
+	bh=JtpGouAhZnkTfaEnmUSfDDU/EVBuuPIz4a2KSs34Be8=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=jDJ4vdGblPcBNgBD8Y4Pdw+di3eju6b/Jxri4WMza8Jpf12/LwGEUAc46e1Nz7y206Lf8bLxSyZmxSddaZyOLLA0hFRlZK09UO7/sROAvGXO3iNO8kUY1Q9zAAIaBGR7ogMo0FKfxq3JT1D6SjEa7VHKjsJcAaf0nx9vZW2ATEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-67a1e063795so12608787eaf.1
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 12:53:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775505204; x=1776110004;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=72oHUd3+51SuZRl4o5JICdRgp5ZBw+p0R8TfWR8xAAs=;
+        b=fDP2LU7enIKbUr2H9tP2v4cWPfUpQQxYR/aRCJo3aifKNoYSX4wUhB9tCNnbpzaGwZ
+         HFpszTbJDj1VkeNqTPkETP1cN5cp2pj0c6IcAz+bzWw6qQdkOpJurfLSJmZEwOwbYZTI
+         4et8eneglLAzIvHHXv4DJ4WWdSBT/AqBWdyQA6EIontzb2dNf/UTX5f2chLMY3YLikVo
+         1vWpDeXf4bDcT+MPgTalifkci7Ffh8s6E2moohVFKQXWKKuMQuXOM9rJosVPujf4gpOx
+         TPXiB2n493oebKDlmV+yd239VsT3/Ax9fVVz8PpyXctSJSLA38tVVUiFlHsg1/PoSMfb
+         M5TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXk7eurTsWpTaWihD1WAUWPGtp66SudCcKrfOQLXZcw4MiePhQXA0FH6lMgAxve+kZfGLs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmhO28LUWgMTD0ZmfOay789Mes2jBetcU+zfMpFCj3D1Daxsv3
+	pHd1Bh9cudPx2TZOH2vEE06NBj3l5v+EJp/4Ll4f10JFNWVDQlVGGuxEyPb8ZpDRRST8g6iLUyE
+	hN6eYjGk8aQwBpl8Amy4Qf3VxzoUZPi6cESsLzcRdc0tdOuMPLb7IdihAveY=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
- fast inject
-To: Sean Christopherson <seanjc@google.com>
-Cc: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260406064419.14384-1-freimuth@linux.ibm.com>
- <20260406064419.14384-4-freimuth@linux.ibm.com>
- <0b9c451f-0167-4f1b-a38e-6413cf089c18@linux.ibm.com>
- <adP0eA7dBlS4B6gl@google.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <adP0eA7dBlS4B6gl@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: ay5hpSrBLkPLAdA4ftpOybxlk2k3k-ok
-X-Proofpoint-GUID: 7eTo9i71uvBZk6hUU6FuuhGHyR5QCI5l
-X-Authority-Analysis: v=2.4 cv=U9qfzOru c=1 sm=1 tr=0 ts=69d3fa5a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=a9-v2Dun1yPnsuJwnBcA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDE3OSBTYWx0ZWRfX5RrI0qIhe1/R
- Rb/iSbPt2j8w9HTGFGu2ylS+PSOXAkfcbQnhDxko4j2f5bzJENGIXIlLroVOG3Gf+xqF7JAU5Vk
- MFUNRFVmOU5qqXvPHBf6aBUUdjBwTd7haDhowrjZWwF/CMJTzxI8JF2rPbp4zcPn3DXm5QyRtP/
- c81wP3ZQ7NegJSYvbQ11mee7cUd6nECl/G32jXwxfUo3AXnv6ELo5t+U4lFIVu0i7FSSmJXrUoq
- ORnTLs8mx4l200C/ErGyPShSiClY3aE3c04zIwK9i3IBcqCQTcwMiTI7IFZXyfqCPu/JyxDqxA8
- zlqvpf2o4eayG58apqTqGFtT59DoW4piVTRL3yzwJwoOnWInGzdLWSZwhpWxTNEenFSu+I44Nnk
- iSrL/2ihdhv3zwuw58hTCEUF9XuXs5Yd2XXUl3h7dVeYhYzjFMTu6LMKDA6bEwu/802LhXpQfJu
- ufVd8u8pliU5f8yuX7g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-06_03,2026-04-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0 suspectscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2604060179
+X-Received: by 2002:a05:6820:400b:b0:684:2ed4:2c21 with SMTP id
+ 006d021491bc7-6842ed42e86mr4725126eaf.7.1775505204669; Mon, 06 Apr 2026
+ 12:53:24 -0700 (PDT)
+Date: Mon, 06 Apr 2026 12:53:24 -0700
+In-Reply-To: <691afc89.a70a0220.3124cb.009a.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69d40f34.050a0220.2dbe29.0032.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] INFO: task hung in kvm_swap_active_memslots (2)
+From: syzbot <syzbot+5c566b850d6ab6f0427a@syzkaller.appspotmail.com>
+To: glider@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+syzbot has found a reproducer for the following issue on:
+
+HEAD commit:    591cd656a1bf Linux 7.0-rc7
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1480b3da580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=64e78d99d9bf8b4c
+dashboard link: https://syzkaller.appspot.com/bug?extid=5c566b850d6ab6f0427a
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15a9a302580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=131136ba580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/bf0f027c93ec/disk-591cd656.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/60d829be17f4/vmlinux-591cd656.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/673c009c7550/bzImage-591cd656.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5c566b850d6ab6f0427a@syzkaller.appspotmail.com
+
+INFO: task syz.0.17:6023 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz.0.17        state:D stack:25752 pid:6023  tgid:6023  ppid:5958   task_flags:0x400140 flags:0x00080002
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5298 [inline]
+ __schedule+0xfee/0x6120 kernel/sched/core.c:6911
+ __schedule_loop kernel/sched/core.c:6993 [inline]
+ schedule+0xdd/0x390 kernel/sched/core.c:7008
+ kvm_swap_active_memslots+0x2e0/0x7c0 virt/kvm/kvm_main.c:1627
+ kvm_activate_memslot virt/kvm/kvm_main.c:1786 [inline]
+ kvm_create_memslot virt/kvm/kvm_main.c:1852 [inline]
+ kvm_set_memslot+0xbde/0x1740 virt/kvm/kvm_main.c:1964
+ kvm_set_memory_region+0xe1c/0x1570 virt/kvm/kvm_main.c:2120
+ kvm_set_internal_memslot+0x9f/0xf0 virt/kvm/kvm_main.c:2143
+ __x86_set_memory_region+0x2f6/0x730 arch/x86/kvm/x86.c:13355
+ kvm_alloc_apic_access_page+0xc5/0x140 arch/x86/kvm/lapic.c:2861
+ vmx_vcpu_create+0x79b/0xb90 arch/x86/kvm/vmx/vmx.c:7830
+ kvm_arch_vcpu_create+0x683/0xac0 arch/x86/kvm/x86.c:12803
+ kvm_vm_ioctl_create_vcpu virt/kvm/kvm_main.c:4207 [inline]
+ kvm_vm_ioctl+0x756/0x4080 virt/kvm/kvm_main.c:5165
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbd53f9c819
+RSP: 002b:00007fffae0c01c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fbd54215fa0 RCX: 00007fbd53f9c819
+RDX: 0000000000000004 RSI: 000000000000ae41 RDI: 0000000000000003
+RBP: 00007fbd54032c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fbd54215fac R14: 00007fbd54215fa0 R15: 00007fbd54215fa0
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by khungtaskd/31:
+ #0: ffffffff8e7e7760 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:312 [inline]
+ #0: ffffffff8e7e7760 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:850 [inline]
+ #0: ffffffff8e7e7760 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x3d/0x184 kernel/locking/lockdep.c:6775
+2 locks held by getty/5584:
+ #0: ffff8880394da0a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x24/0x80 drivers/tty/tty_ldisc.c:243
+ #1: ffffc9000332b2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x419/0x1500 drivers/tty/n_tty.c:2211
+2 locks held by syz.0.17/6023:
+ #0: ffff8880785f00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff8880785f00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff8880785f0138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.1.18/6062:
+ #0: ffff88807cae00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff88807cae00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff88807cae0138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.2.19/6085:
+ #0: ffff8880790a00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff8880790a00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff8880790a0138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.3.20/6109:
+ #0: ffff88807b3340a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff88807b3340a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff88807b334138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.4.21/6138:
+ #0: ffff8880343100a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff8880343100a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff888034310138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.5.22/6172:
+ #0: ffff88802b0e40a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff88802b0e40a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff88802b0e4138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.6.23/6201:
+ #0: ffff88805ead00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff88805ead00a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff88805ead0138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.7.24/6230:
+ #0: ffff8880582a40a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff8880582a40a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff8880582a4138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+2 locks held by syz.8.25/6259:
+ #0: ffff8880556000a8 (&kvm->slots_lock){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
+ #0: ffff8880556000a8 (&kvm->slots_lock){+.+.}-{4:4}, at: kvm_alloc_apic_access_page+0x27/0x140 arch/x86/kvm/lapic.c:2855
+ #1: ffff888055600138 (&kvm->slots_arch_lock){+.+.}-{4:4}, at: kvm_set_memslot+0x34/0x1740 virt/kvm/kvm_main.c:1915
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ nmi_cpu_backtrace.cold+0x12d/0x151 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x1d7/0x230 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:161 [inline]
+ __sys_info lib/sys_info.c:157 [inline]
+ sys_info+0x141/0x190 lib/sys_info.c:165
+ check_hung_uninterruptible_tasks kernel/hung_task.c:346 [inline]
+ watchdog+0xd25/0x1050 kernel/hung_task.c:515
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 175 Comm: kworker/u8:6 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+Workqueue: events_unbound nsim_dev_trap_report_work
+RIP: 0010:chacha_block_generic+0x102/0x360 lib/crypto/chacha-block-generic.c:80
+Code: df 48 89 44 24 38 49 8b 45 08 48 89 44 24 40 49 8b 45 10 48 89 44 24 48 49 8b 45 18 48 89 44 24 50 49 8b 45 20 48 89 44 24 58 <49> 8b 45 28 48 89 44 24 60 49 8b 45 30 48 89 44 24 68 49 8b 45 38
+RSP: 0018:ffffc90003067820 EFLAGS: 00000046
+RAX: 21eb668f03ac7932 RBX: ffffc90003067940 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: 0000000000000014 RDI: ffffc90003067a70
+RBP: ffffc90003067a70 R08: 0000000000000001 R09: 0000000000000000
+R10: ffffc90003067aa0 R11: 3a60345ebc2c5805 R12: dffffc0000000000
+R13: ffffc90003067a70 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff888124340000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000563c2aaa9660 CR3: 000000000e598000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ chacha20_block include/crypto/chacha.h:45 [inline]
+ crng_fast_key_erasure+0x1a5/0x260 drivers/char/random.c:319
+ crng_make_state+0x1c2/0x6c0 drivers/char/random.c:385
+ _get_random_bytes+0x11c/0x220 drivers/char/random.c:399
+ nsim_dev_trap_skb_build drivers/net/netdevsim/dev.c:846 [inline]
+ nsim_dev_trap_report drivers/net/netdevsim/dev.c:876 [inline]
+ nsim_dev_trap_report_work+0x79b/0xd10 drivers/net/netdevsim/dev.c:922
+ process_one_work+0xa23/0x19a0 kernel/workqueue.c:3276
+ process_scheduled_works kernel/workqueue.c:3359 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3440
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
->>
->> Sashiko complains about PREEMPT_RT kernels and spinlocks being sleepable
->> in this case which would break the whole point of kvm_arch_set_irq_inatomic.
-> 
-> Just make it a raw spinlock so that it stays an actual spinlock.
-
-[...]
-
-> 
-> s390 should use a raw spinlock, same as arm64 and RISC-V.
-
-
-Ahh, I missed that subtlety.
-
-Thanks for the explanation!
-
-
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
