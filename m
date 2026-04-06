@@ -1,127 +1,126 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E6F3909A2
-	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 18:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05DAC8EB;
+	Mon,  6 Apr 2026 18:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775498994; cv=none; b=RgX89OX5vpZn4VftsElyqFKyJr4WkqzZ+kNEuqzS83zh2cU+ycJgIgVHGqwNxVLN0MAK3ciWUvRKn+nDdTZtHmeqKigQcicwvV4gmSWNoh8yWoCOiMIm4PbZLOk/0vZxQ1nCrcrqaLYO+kkHKmJxZZOr4uml5UmL9W5vNVztBrM=
+	t=1775499872; cv=none; b=feP06JBqL91V+lCXrjgJSgS+kV269XLIRm1DnFzX1QoCmZ5EFajxq2ST5lolZlXXacDdZQANjENY51C+AqkYzO/1DcliGNkwcfLCmrHQWMwV1Hn8dWmkrFJrXmD2Ov9KNGITo9hH7rLvqvWFYTc1N1Msc0HGQ2apHQC9qAbGhvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775498994; c=relaxed/simple;
-	bh=lACdRiktp8MRpKGUYxGcgD19C0bqmXpZNFtvU5fyNw8=;
+	s=arc-20240116; t=1775499872; c=relaxed/simple;
+	bh=1/Zblc5efXwHMCKKa+kFcdEekZ+kpKn0jAYf50iiRKA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ejaO5Bgq6bNHjFaNW1Nq0fxTtQnkCi/q7gW9IHP8C2YwbS1X1Pq66ur91Pd0XQRGNOSOWcrq/8+hzXv+jzHMa901tCoUo4SbyDCNoRZ7d7H3llnTsur2wB/mP5gdHDQu0mSEj7qhpNex6TsYT/5jf5AUEQC5H/Ns9eFvwZwxlKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HrKy4i01; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=XV2/yd0pWlMXswxsvi5H6RzGsX+WE6Goy1o3AR6haqPukqeYQhYfgMt3kYYBnB+Y0GESv1SZro5RIxfPWNu6tPuiEQCbHBgKqzk5arJzhphdluFl6LkbjYqe23cKXby9edjHp7Boqfq+NkO/+9fmJ2OSrpfxrMLCox+1LhfOPvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CLgP7GpE; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HrKy4i01"
-Message-ID: <1c5fd907-f610-48e4-89cc-4040aaef2674@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775498991;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=85/sv/Jd+nnLebgu7yOJ82/6JMUXxVcSgRKO3WW/KJM=;
-	b=HrKy4i01v27KUFcXt/1w2kf+yZsl5MXCFBmMdpuBla2c4B2kFG8UdHSH93UsEojRTPjWIJ
-	RVbUZS7qtBOUTvf1Fe92L2hJ6/CpkB4KYvevqVhozqjWCBottlm/LzMr5DomESqDJznrrj
-	NsvzlhYZFx9aBwmc2y/0M9aHDJw9o8k=
-Date: Mon, 6 Apr 2026 11:09:37 -0700
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CLgP7GpE"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6362tbG64143886;
+	Mon, 6 Apr 2026 18:24:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EswHya
+	loRJc5ViJVdEKJfq174Jji60jPGk9L6YZq2wo=; b=CLgP7GpELO+em+DTkAAi81
+	WhFIcqMyNQ0dMVnpzpCU9bY3EyhNOVb4ajMKg5b7pWDqzn8iyL+rwYQekbpEvAmC
+	WASHlrRJoRaqbBFK5HklSmbwLPKmBvzVdiA90UATKZbyyWnU6mlXSK5PdLWNCzy4
+	/O8LFx8OPGDLYqJe5d6cPENgK/M/VK4wK7j42i9tH4RTukBV6pwHC1ak+NLrOhvo
+	2vp8dFxLJkcyuGpAzbzBeEdhsvI+k/iikWLpaZt2WZUjbWQsDbPRstIp+2IIIcew
+	405xBpIxQx6tTWWfjna9qAyoqADm/DpMyYqqxVv/keiWrX7BZa13gFah4EdVRONA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4das2bycax-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Apr 2026 18:24:26 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 636FDdVw018517;
+	Mon, 6 Apr 2026 18:24:25 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dbcyswubs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Apr 2026 18:24:25 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 636IOOVk28181026
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Apr 2026 18:24:24 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5CE0458058;
+	Mon,  6 Apr 2026 18:24:24 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 795FF58057;
+	Mon,  6 Apr 2026 18:24:23 +0000 (GMT)
+Received: from [9.61.9.165] (unknown [9.61.9.165])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Apr 2026 18:24:23 +0000 (GMT)
+Message-ID: <20708f8c-546d-44bf-ab3a-b9bd59614031@linux.ibm.com>
+Date: Mon, 6 Apr 2026 14:24:23 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-To: David Matlack <dmatlack@google.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal
- <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
- Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Feng Tang
- <feng.tang@linux.alibaba.com>, Jacob Pan <jacob.pan@linux.microsoft.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
- kexec@lists.infradead.org, kvm@vger.kernel.org,
- Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>,
- Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>,
- =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
- <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
- Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
- Yi Liu <yi.l.liu@intel.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-3-dmatlack@google.com>
- <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
- <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
- <c4138f66-edf2-4689-b5fe-16dc4839e9c3@linux.dev>
- <CALzav=ei_xSfM0MTdPFhGDjNwe3EQ0vHPiEk=vszFX-Xi_KjQw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
+ fast inject
+To: Sean Christopherson <seanjc@google.com>
+Cc: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
+        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260406064419.14384-1-freimuth@linux.ibm.com>
+ <20260406064419.14384-4-freimuth@linux.ibm.com>
+ <0b9c451f-0167-4f1b-a38e-6413cf089c18@linux.ibm.com>
+ <adP0eA7dBlS4B6gl@google.com>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <CALzav=ei_xSfM0MTdPFhGDjNwe3EQ0vHPiEk=vszFX-Xi_KjQw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <adP0eA7dBlS4B6gl@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: ay5hpSrBLkPLAdA4ftpOybxlk2k3k-ok
+X-Proofpoint-GUID: 7eTo9i71uvBZk6hUU6FuuhGHyR5QCI5l
+X-Authority-Analysis: v=2.4 cv=U9qfzOru c=1 sm=1 tr=0 ts=69d3fa5a cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=a9-v2Dun1yPnsuJwnBcA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDE3OSBTYWx0ZWRfX5RrI0qIhe1/R
+ Rb/iSbPt2j8w9HTGFGu2ylS+PSOXAkfcbQnhDxko4j2f5bzJENGIXIlLroVOG3Gf+xqF7JAU5Vk
+ MFUNRFVmOU5qqXvPHBf6aBUUdjBwTd7haDhowrjZWwF/CMJTzxI8JF2rPbp4zcPn3DXm5QyRtP/
+ c81wP3ZQ7NegJSYvbQ11mee7cUd6nECl/G32jXwxfUo3AXnv6ELo5t+U4lFIVu0i7FSSmJXrUoq
+ ORnTLs8mx4l200C/ErGyPShSiClY3aE3c04zIwK9i3IBcqCQTcwMiTI7IFZXyfqCPu/JyxDqxA8
+ zlqvpf2o4eayG58apqTqGFtT59DoW4piVTRL3yzwJwoOnWInGzdLWSZwhpWxTNEenFSu+I44Nnk
+ iSrL/2ihdhv3zwuw58hTCEUF9XuXs5Yd2XXUl3h7dVeYhYzjFMTu6LMKDA6bEwu/802LhXpQfJu
+ ufVd8u8pliU5f8yuX7g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-06_03,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2604060179
 
 
-On 4/6/26 9:06 AM, David Matlack wrote:
-> On Sun, Apr 5, 2026 at 9:56 AM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
->> 在 2026/4/3 14:58, David Matlack 写道:
->>> On Thu, Apr 2, 2026 at 2:29 PM Yanjun.Zhu <yanjun.zhu@linux.dev> wrote:
->>>> On 3/23/26 4:57 PM, David Matlack wrote:
->>>>> +config PCI_LIVEUPDATE
->>>>> +     bool "PCI Live Update Support (EXPERIMENTAL)"
->>>>> +     depends on PCI && LIVEUPDATE
->>>>> +     help
->>>>> +       Support for preserving PCI devices across a Live Update. This option
->>>>> +       should only be enabled by developers working on implementing this
->>>>> +       support. Once enough support as landed in the kernel, this option
->>>>> +       will no longer be marked EXPERIMENTAL.
->>>>> +
->>>>> +       If unsure, say N.
->>>> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
->>>> (modular support)?
->>>>
->>>> This would allow the feature to be built as a kernel module. For
->>>> development
->>>>
->>>> purposes, modularization means we only need to recompile a single module
->>>>
->>>> for testing, rather than rebuilding the entire kernel. Compiling a
->>>> module should
->>>>
->>>> be significantly faster than a full kernel build.
->>> I don't think it is possible for CONFIG_PCI_LIVEUPDATE to support 'm'.
->>> pci_setup_device() (which is under CONFIG_PCI) needs to call
->>> pci_liveupdate_setup_device(), and CONFIG_PCI cannot be built as a
->>> module. This call is necessary so the PCI core knows whether a device
->>> being enumerated was preserved across a previous Live Update.
->> After the following changes, the liveupdate.ko can be generated
->> successfully.
-> Sure but you've broken the feature. Now devices can be probed before
-> liveupdate.ko is loaded and the PCI core will have an incorrect view
+>>
+>> Sashiko complains about PREEMPT_RT kernels and spinlocks being sleepable
+>> in this case which would break the whole point of kvm_arch_set_irq_inatomic.
+> 
+> Just make it a raw spinlock so that it stays an actual spinlock.
 
- From this perspective, I think it makes sense.
+[...]
 
-Zhu Yanjun
+> 
+> s390 should use a raw spinlock, same as arm64 and RISC-V.
 
-> of which devices were preserved by the previous kernel.
+
+Ahh, I missed that subtlety.
+
+Thanks for the explanation!
+
+
