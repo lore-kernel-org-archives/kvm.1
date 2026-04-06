@@ -1,302 +1,189 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D483859DD
-	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 14:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775485263; cv=none; b=RZzvUAhaa59nFnDBAJfkXy9MBL1ya8Kvlc+IuFZo47EeieWfZ4PbSm1ON1vzOFwd13ngJVxu327vybo25A5mpL9k5AG5Cvx3YReF11pxJdnOwNCdcRG11JnI54mZu00mp7vr02TJblSuUHRGftpe38uN6AcSVACDXPJazXQ250E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775485263; c=relaxed/simple;
-	bh=NlPY1wmoPDuqLyfrc221Y74GT+l5hGPZx3VoBnKHRIs=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=IPlwWp+nxEZ5IdYLoiN0/FMjhMu497L9UTccEB+ybDy6yuWTzQ8RdfIABp6ywMhGXliVJh+HGg+V0xbVCvbuXp6z7iqDvuL1ZqwnYdqDCRUwqougo418yUeeDfEDdYS96SJUTYqYCoXRUQ29PfQjk5BC2f49IQxkquT4XuDhppU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VEr4Lfml; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40493806C7
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 14:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775485425; cv=pass; b=a/CcVF21vSR/+gTtI8QBPRuqaQRPO3sUPWoZOtKJRX/RNp+MF9S6LA8y6jgXjEJHPIBNoHKtEU19di508syE8h2a0SdV2iyNYaS72eTUyZ2pv1d9j5gEY+JD1uLcEqwXor2y3dYAKs3j2Ckc6JgDohYGapG8jQqTSPR1bFRcAX0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775485425; c=relaxed/simple;
+	bh=0oshv46xLuQzPLIPdH9A0EvaVpAKTWV20KUKhaXBiSk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TEm7Crs8KWtPY9dA00angU+TsGzFBB+9llrTOve4WvFV9Lqsxg0UXTJHHpgP2Cm44kGIQYsM/MARKmHZgLR+G05erADeWI1sAGthPyRlmCAFDHW4oYxlfYg2A1M7/vwHFbxCOEQEKjz7tWr9PMJ2r0o21WjVCOHTTT+WZ2q8+OI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XeoTYTd5; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VEr4Lfml"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XeoTYTd5"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66b0dc690bcso21596a12.1
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 07:23:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775485422; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N8gzqRC2nsW7AyJrSGTQbgZq/ILNOiFB97aL18Blv5WnGQbw3yMnmM1YvGDNfdJblM
+         Wd91dceyCqN8eWFqii7jt/ev4IBQIcEO+zVJ4odH3GqPYhiGcdp/g4cBKlRd/D+FBu0z
+         uViGrpxjLeSoZb3CoBRGxlOzy/ZOhbruHF/b4kSLUpOZR+8KIye6bZpI/mDdJqP6jDrc
+         AStCcE6b6FD51r+Fxw5I8ujogyp+48sJ8KAgjbsDOkggame/PFNBnu84vLUFcBjZ9wKr
+         TqwumRK1VApWOByHPURtkzz0otQRa2N2fxnhXzHFj1xpEMTmhxqsoztCcAcSLLnyfQHw
+         LYZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4foAE2z+Q/MQv2J0mPBdcU98fqKB0vyTweCETb8dfag=;
+        fh=2sbKZxCHWDTaSnw21S9ZiI4e/DC0mpRW0WFQdkR5ESE=;
+        b=XB4nWLpCzZk/M45ZAMFPTPhux3BktgJ9uGQc9DV7YlY9xGuyRe5eMivadZBIhazO/s
+         vkxfeF50Tw/UvJmIKYOsBl7288nMnJcS7uWKgtd2PFVs5htABI98uJ3OZTSI7HfoUdld
+         wANbglhfvpOLKitPWYBI3pOZ5BUxegZJp8XNZp1zLoiwfUNS34tOcKaVM8izABaLEyo4
+         JNPaQ/UBX1egd6OyqalfwfcM014qtZi1YskG65x28Uvc1Ic34B7WL2eypPdWfTKrEtn7
+         OG7CN3BALlVC+87KSe/qxciTCvbz76/JPCdztZEgtY/J+azMQcfKqjbJmqdkiQbm8H/x
+         Zc/w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775485422; x=1776090222; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4foAE2z+Q/MQv2J0mPBdcU98fqKB0vyTweCETb8dfag=;
+        b=XeoTYTd5wSE48JW8kaM0qv3ycrSE9eyeuCIskQwqlA84Ij2A9Xf6y3+NEG1J8FRvIQ
+         t6bHLyFisYQzufw6dVUDCO8+C3SQMB2M3WjdVqRea1tMTT1qZ12ijqURJCW5YdMxgO/U
+         0iX1FKr+yUwYvrYESOPuxPlwn8N0qKaPS2HrSIaYdfALRFDkTWB6DFUsYj2vLBsIzzdt
+         uxeS2dppQQhcpnblsFY4Z4BNYMbYJ5yQSZk4VljRhDO6MTvR1NaxLYhYgKToGQoccHBJ
+         uk0Miz7PmU3O0o3kStbFvFjYl8NPwzt9LvF2y0FdSXBEcd20f/V0vddkkgTmfWnI5ZQF
+         agZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775485422; x=1776090222;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4foAE2z+Q/MQv2J0mPBdcU98fqKB0vyTweCETb8dfag=;
+        b=rbS4wurcHWff5FgrSX79ZSCH22qAdD3sHdRGSofJGDR6xodO16zK4zwY0aO2P3Pnn1
+         Rq1rH2MD6u39Bm4ak/0mn927Oq47SRlZd4pAM6o2CIfNSoTHEcw6s58k71kn1n1FgWK0
+         oNPUQwFTsCn2IwyIcG5RZ5nzEHRBiuQo3iBqZQT5tRyQg6sK4d8R/CEsVvn8j2n1bhTW
+         zDYka3X69C6QWIrSiEHX1ZXUEqSrblWeKA7Cb8oBqXxz+mPzhSwo/0n5/1zEg1EdW0aj
+         ByiFBKwgzkEEAmV6IvfAYAIU6ZXB6rwnqnv8QbKi5PqG2mXebqeCqcqHEea4Xd5Iz0Q0
+         G6JA==
+X-Forwarded-Encrypted: i=1; AJvYcCXuwHVhF+tvpfs65YZBiWACdCNag/wG2VxSK9gHFRKYb4jbDSU6k/irREX2hADbXuXqrVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8EcOQBKl4A9+bjaPSr73SY1lSXaXLhrImT2G3X/Vq37Ylh4E9
+	oQNIdJR7VeCRBsi9N1GO5/pA5lfQWN3H+8SIIgHiG607EslKy7uJjlH5iabpd/knFT1+0whHhXL
+	ABmz5pNBKHNSdfYZb1UAsUG7ktEvdiSauK2r0jVTH
+X-Gm-Gg: AeBDietvr+XG9KJ6wNIQ4TrqdT4sMZx06H6G6wkaIdyTwqZCo/EfRWfWvksFVt2oVtg
+	I1QsvWVEVyghuIB1gy8fuCzDPilfRipFP/VQPxMEYOlgDueKTO4QVpJw+fU0IXyZ9Gs+DGKWjKW
+	ldjvd9YY739zG2CrejvuF+gzlh03qs3gxnw4F/vurQPMW4aQpmITZK7seYo+cNeB9Yo8WbOf9l3
+	ugEjGAo9Sawn1W6heiHhPpqVfKheYDB3tjIEq8LnrS7CbokzS68s7aCMgdu2dvD2W8l60VcNwo2
+	m2la6t0xRGqkXnxbDg==
+X-Received: by 2002:aa7:c383:0:b0:66a:7b3d:f43a with SMTP id
+ 4fb4d7f45d1cf-66e43cdc3d3mr75635a12.1.1775485421479; Mon, 06 Apr 2026
+ 07:23:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775485258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ufb+OfzZx201xbCL46vcsGz1STGMVK6+6YxNEx4s/o8=;
-	b=VEr4LfmlWLJGB+HAjT454gCj+fsy9nWNIP8caTukTcS7k8lwrp5OnZlMEJki9wFB9BhUr3
-	n/9eiCvIswjDqIeEAQVFNKx7JF2Hyl7vQv9rAz7emqDMeJzFHeYZicqtSAmAlHtM08a+lJ
-	bsf1Uij37QnQFukoppcEt79nUgC1hqY=
-Date: Mon, 06 Apr 2026 14:20:56 +0000
-Content-Type: text/plain; charset="utf-8"
+References: <20260403185236.sjgetnkha3o3a4d3@desk> <CALMp9eSPkMpKQELTnsaj6=gXD+EyE0n2_p93n4maDc93bPFe+w@mail.gmail.com>
+ <20260403213445.xzb4rxbfbg5un7li@desk> <CALMp9eSXfJvR=PHtttbqm3q3nH436T1eH4YdpVqxQeP-cxEPsA@mail.gmail.com>
+ <20260403231608.zopnhnypdclzqlx7@desk> <CALMp9eT2vJBdLPY2uBYrPgVrhS_aYmfGfdXe6MZXG_gyryLHVA@mail.gmail.com>
+ <20260403233329.fb2ppifgwm3um6ny@desk> <CALMp9eTpsenqsWjzmpXLEubn9uNjgZgzgrMwtZ72HDuV_2xgfg@mail.gmail.com>
+ <20260404002149.wtayv6a64vzuppgp@desk> <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
+ <20260404034954.t7iapenzvhdpagxp@desk>
+In-Reply-To: <20260404034954.t7iapenzvhdpagxp@desk>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 6 Apr 2026 07:23:25 -0700
+X-Gm-Features: AQROBzBKIPcP_H1GwuJoXUrRRJVPGk443GCqm_WEh0Cd97H-YqzPVn5MR8nDNUU
+Message-ID: <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
+Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org, chao.gao@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <87add1dc9bb95dc50bc20ce5c8fbfe2999185dd3@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu 
- out of resampler_lock
-To: "Sonam Sanju" <sonam.sanju@intel.corp-partner.google.com>, "Sean 
- Christopherson" <seanjc@google.com>, "Paul E . McKenney"
- <paulmck@kernel.org>
-Cc: "Paolo Bonzini" <pbonzini@redhat.com>, "Vineeth Pillai"
- <vineeth@bitbyteword.org>, "Dmitry Maluka" <dmaluka@chromium.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, rcu@vger.kernel.org, "Sonam Sanju"
- <sonam.sanju@intel.com>
-In-Reply-To: <20260401142456.2632730-1-sonam.sanju@intel.corp-partner.google.com>
-References: <5194cf52-f8a8-4479-a95e-233104272839@linux.dev>
- <20260401142456.2632730-1-sonam.sanju@intel.corp-partner.google.com>
-X-Migadu-Flow: FLOW_OUT
 
-April 1, 2026 at 10:24 PM, "Sonam Sanju" <sonam.sanju@intel.corp-partner.=
-google.com mailto:sonam.sanju@intel.corp-partner.google.com?to=3D%22Sonam=
-%20Sanju%22%20%3Csonam.sanju%40intel.corp-partner.google.com%3E > wrote:
-
-
->=20
->=20From: Sonam Sanju <sonam.sanju@intel.com>
->=20
->=20On Wed, Apr 01, 2026 at 05:34:58PM +0800, Kunwu Chan wrote:
->=20
->=20>=20
->=20> Building on the discussion so far, it would be helpful from the SRC=
-U
-> >  side to gather a bit more evidence to classify the issue.
-> >=20
->=20>  Calling synchronize_srcu_expedited() while holding a mutex is gene=
-rally
-> >  valid, so the observed behavior may be workload-dependent.
-> >=20
->=20>  The reported deadlock seems to rely on the assumption that SRCU gr=
-ace
-> >  period progress is indirectly blocked by irqfd workqueue saturation.
-> >  It would be good to confirm whether that assumption actually holds.
-> >=20
->=20I went back through our logs from two independent crash instances and
-> can now provide data for each of your questions.
->=20
->=20>=20
->=20> 1) Are SRCU GP kthreads/workers still making forward progress when
-> >  the system is stuck?
-> >=20
->=20No. In both crash instances, process_srcu work items remain permanent=
-ly
-> "pending" (never "in-flight") throughout the entire hang.
->=20
->=20Instance 1 =E2=80=94 kernel 6.18.8, pool 14 (cpus=3D3):
->=20
->=20 [ 62.712760] workqueue rcu_gp: flags=3D0x108
->  [ 62.717801] pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D2=
- refcnt=3D3
->  [ 62.717801] pending: 2*process_srcu
->=20
->=20 [ 187.735092] workqueue rcu_gp: flags=3D0x108 (125 seconds later)
->  [ 187.735093] pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D=
-2 refcnt=3D3
->  [ 187.735093] pending: 2*process_srcu (still pending)
->=20
->=20 9 consecutive dumps from t=3D62s to t=3D312s =E2=80=94 process_srcu =
-never runs.
->=20
->=20Instance 2 =E2=80=94 kernel 6.18.2, pool 22 (cpus=3D5):
->=20
->=20 [ 93.280711] workqueue rcu_gp: flags=3D0x108
->  [ 93.280713] pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D1=
- refcnt=3D2
->  [ 93.280716] pending: process_srcu
->=20
->=20 [ 309.040801] workqueue rcu_gp: flags=3D0x108 (216 seconds later)
->  [ 309.040806] pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D=
-1 refcnt=3D2
->  [ 309.040806] pending: process_srcu (still pending)
->=20
->=20 8 consecutive dumps from t=3D93s to t=3D341s =E2=80=94 process_srcu =
-never runs.
->=20
->=20In both cases, rcu_gp's process_srcu is bound to the SAME per-CPU poo=
-l
-> where the kvm-irqfd-cleanup workers are blocked. Both pools have idle
-> workers but are marked as hung/stalled:
->=20
->=20 Instance 1: pool 14: cpus=3D3 hung=3D174s workers=3D11 idle: 4046 40=
-38 4045 4039 4043 156 77 (7 idle)
->  Instance 2: pool 22: cpus=3D5 hung=3D297s workers=3D12 idle: 4242 51 4=
-248 4247 4245 435 4244 4239 (8 idle)
->=20
->=20>=20
->=20> 2) How many irqfd workers are active in the reported scenario, and
-> >  can they saturate CPU or worker pools?
-> >=20
->=204 kvm-irqfd-cleanup workers in both instances, consistently across al=
-l
-> dumps:
->=20
->=20Instance 1 ( pool 14 / cpus=3D3):
->=20
->=20 [ 62.831877] workqueue kvm-irqfd-cleanup: flags=3D0x0
->  [ 62.837838] pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D4=
- refcnt=3D5
->  [ 62.837838] in-flight: 157:irqfd_shutdown ,4044:irqfd_shutdown ,
->  102:irqfd_shutdown ,39:irqfd_shutdown
->=20
->=20Instance 2 ( pool 22 / cpus=3D5):
->=20
->=20 [ 93.280894] workqueue kvm-irqfd-cleanup: flags=3D0x0
->  [ 93.280896] pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D4=
- refcnt=3D5
->  [ 93.280900] in-flight: 151:irqfd_shutdown ,4246:irqfd_shutdown ,
->  4241:irqfd_shutdown ,4243:irqfd_shutdown
->=20
->=20These are from crosvm instances with multiple virtio devices
-> (virtio-blk, virtio-net, virtio-input, etc.), each registering an irqfd
-> with a resampler. During VM shutdown, all irqfds are detached
-> concurrently, queueing that many irqfd_shutdown work items.
->=20
->=20The 4 workers are not saturating CPU =E2=80=94 they're all in D state=
-. But they
-> ARE all bound to the same per-CPU pool as rcu_gp's process_srcu work.
->=20
->=20>=20
->=20> 3) Do we have a concrete wait-for cycle showing that tasks blocked
-> >  on resampler_lock are in turn preventing SRCU GP completion?
-> >=20
->=20Yes, in both instances the hung task dump identifies the mutex holder
-> stuck in synchronize_srcu, with the other workers waiting on the mutex.
->=20
->=20Instance 1 (t=3D314s):
->=20
->=20 Worker pid 4044 =E2=80=94 MUTEX HOLDER, stuck in synchronize_srcu:
->=20
->=20 [ 315.963979] task:kworker/3:8 state:D pid:4044
->  [ 315.977125] Workqueue: kvm-irqfd-cleanup irqfd_shutdown
->  [ 316.012504] __synchronize_srcu+0x100/0x130
->  [ 316.023157] irqfd_resampler_shutdown+0xf0/0x150 <-- offset 0xf0 (syn=
-chronize_srcu)
->=20
->=20 Workers pid 39, 102, 157 =E2=80=94 MUTEX WAITERS:
->=20
->=20 [ 314.793025] task:kworker/3:4 state:D pid:157
->  [ 314.837472] __mutex_lock+0x409/0xd90
->  [ 314.843100] irqfd_resampler_shutdown+0x23/0x150 <-- offset 0x23 (mut=
-ex_lock)
->=20
->=20Instance 2 (t=3D343s):
->=20
->=20 Worker pid 4241 =E2=80=94 MUTEX HOLDER, stuck in synchronize_srcu:
->=20
->=20 [ 343.193294] task:kworker/5:4 state:D pid:4241
->  [ 343.193299] Workqueue: kvm-irqfd-cleanup irqfd_shutdown
->  [ 343.193328] __synchronize_srcu+0x100/0x130
->  [ 343.193335] irqfd_resampler_shutdown+0xf0/0x150 <-- offset 0xf0 (syn=
-chronize_srcu)
->=20
->=20 Workers pid 151, 4243, 4246 =E2=80=94 MUTEX WAITERS:
->=20
->=20 [ 343.193369] task:kworker/5:6 state:D pid:4243
->  [ 343.193397] __mutex_lock+0x37d/0xbb0
->  [ 343.193397] irqfd_resampler_shutdown+0x23/0x150 <-- offset 0x23 (mut=
-ex_lock)
->=20
->=20Both instances show the identical wait-for cycle:
->=20
->=20 1. One worker holds resampler_lock, blocks in __synchronize_srcu
->  (waiting for SRCU grace period)
->  2. SRCU GP needs process_srcu to run =E2=80=94 but it stays "pending"
->  on the same pool
->  3. Other irqfd workers block on __mutex_lock in the same pool
->  4. The pool is marked "hung" and no pending work makes progress
->  for 250-300 seconds until kernel panic
->=20
->=20>=20
->=20> 4) Is the behavior reproducible in both irqfd_resampler_shutdown()
-> >  and kvm_irqfd_assign() paths?
-> >=20
->=20In our 4 crash instances the stuck mutex holder is always in=20
->=20irqfd_resampler_shutdown() at offset 0xf0 (synchronize_srcu). This=20
->=20is consistent =E2=80=94 these are all VM shutdown scenarios where onl=
-y=20
->=20irqfd_shutdown workqueue items run.
->=20
->=20The kvm_irqfd_assign() path was identified by Vineeth Pillai (Google)
-> during a VM create/destroy stress test where assign and shutdown race.
-> His traces showed kvm_irqfd (the assign path) stuck in
-> synchronize_srcu_expedited with irqfd_resampler_shutdown blocked on
-> the mutex, and workqueue pwq 46 at active=3D1024 refcnt=3D2062.
->=20
->=20>=20
->=20> If SRCU GP remains independent, it would help distinguish whether
-> >  this is a strict deadlock or a form of workqueue starvation / lock
-> >  contention.
-> >=20
->=20Based on the data from both instances, SRCU GP is NOT remaining
-> independent. process_srcu stays permanently pending on the affected
-> per-CPU pool for 250-300 seconds. But it's not just process_srcu =E2=80=
-=94
-> ALL pending work on the pool is stuck, including items from events,
-> cgroup, mm, slub, and other workqueues.
->=20
->=20>=20
->=20> A timestamp-correlated dump (blocked stacks + workqueue state +
-> >  SRCU GP activity) would likely be sufficient to classify this.
-> >=20
->=20I hope the correlated dumps above from both instances are helpful.
-> To summarize the timeline (consistent across both):
->=20
->=20 t=3D0: VM shutdown begins, crosvm detaches irqfds
->  t=3D~14: 4 irqfd_shutdown work items queued on WQ_PERCPU pool
->  One worker acquires resampler_lock, enters synchronize_srcu
->  Other 3 workers block on __mutex_lock
->  t=3D~43: First "BUG: workqueue lockup" =E2=80=94 pool detected stuck
->  rcu_gp: process_srcu shown as "pending" on same pool
->  t=3D~93 Through t=3D~312: Repeated dumps every ~30s
->  process_srcu remains permanently "pending"
->  Pool has idle workers but no pending work executes
->  t=3D~314: Hung task dump confirms mutex holder in __synchronize_srcu
->  t=3D~316: init triggers sysrq crash =E2=86=92 kernel panic
->=20
-
-Thanks,=20this is useful and much clearer.
-
-One thing that is still unclear is dispatch behavior:
-`process_srcu` stays pending for a long time, while the same pwq dump sho=
-ws idle workers.
-
-So the key question is: what prevents pending work from being dispatched =
-on that pwq?
-Is it=20due to:
-  1) pwq stalled/hung state,
-  2) worker availability/affinity constraints,
-  3) or another dispatch-side condition?
-
-Also, for scope:
-- your crash instances consistently show the shutdown path
-  (irqfd_resampler_shutdown + synchronize_srcu),
-- while assign-path evidence, per current thread data, appears to come
-  from a separate stress case.
-
-A time-aligned dump with pwq state, pending/in-flight lists, and worker s=
-tates
-should help clarify this.
-
-
-> >=20
->=20> Happy to help look at traces if available.
-> >=20
->=20I can share the full console-ramoops-0 and dmesg-ramoops-0 from both
-> instances. Shall I post them or send them off-list?
->=20
-
-If=20possible, please post sanitized ramoops/dmesg logs on-list so others=
- can validate.
-
-Thanx, Kunwu
-
-> Thanks,
-> Sonam
+On Fri, Apr 3, 2026 at 8:50=E2=80=AFPM Pawan Gupta
+<pawan.kumar.gupta@linux.intel.com> wrote:
 >
+> On Fri, Apr 03, 2026 at 07:21:02PM -0700, Jim Mattson wrote:
+> > On Fri, Apr 3, 2026 at 5:22=E2=80=AFPM Pawan Gupta
+> > <pawan.kumar.gupta@linux.intel.com> wrote:
+> > >
+> > > On Fri, Apr 03, 2026 at 04:39:54PM -0700, Jim Mattson wrote:
+> > > > > Since cloud providers have greater control over userspace, the de=
+cision to
+> > > > > use BHI_DIS_S or not can be left to them. KVM would simply follow=
+ what it
+> > > > > is asked to do by the userspace.
+> > > >
+> > > > I feel like we've gone over this before, but if userspace tells KVM
+> > > > not to enable BHI_DIS_S, how do we inform Windows that it needs to =
+do
+> > > > the longer clearing sequence, despite the fact that the virtual CPU=
+ is
+> > > > masquerading as Ice Lake?
+> > >
+> > > IMO, if an OS is allergic to a hardware mitigation, and is also aware=
+ that
+> > > it is virtualized, it should default to a sw mitigation that works ev=
+erywhere.
+> >
+> > Agreed. So, without any information to the contrary, VMs should assume
+> > the long BHB clearing sequence is required.
+> >
+> > Returning to my earlier comment, the test should be:
+> >
+> > +       if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL) ||
+> > cpu_feature_enabled(X86_FEATURE_HYPERVISOR)) {
+> > +               bhb_seq_outer_loop =3D 12;
+> > +               bhb_seq_inner_loop =3D 7;
+> > +       }
+>
+> To be clear, my comment was for an OS that doesn't want BHI_DIS_S
+> under-the-hood with virtual-SPEC_CTRL. Linux doesn't have that problem,
+> hardware mitigation on Linux is perfectly okay.
+
+Today, BHI_DIS_S under-the-hood isn't offered. If the hypervisor
+doesn't offer the paravirtual mitigation MSRs, the guest must assume
+that the hypervisor will not set BHI_DIS_S on its behalf.
+
+> Without virtual-SPEC_CTRL, the problem set is limited to guests that
+> migrate accross Alder Lake generation CPUs. As you mentioned the change i=
+n
+> MAXPHYADDR makes it unlikely.
+
+I have been unable to make a compelling argument for not crossing this
+boundary. The only applications I can point to that are broken by the
+missing reserved bits are (nested) hypervisors using shadow-paging.
+Since both nVMX and nSVM support TDP, the niche cache isn't a concern.
+There are compelling business reasons to support seamless migration
+from pre-Alder Lake to post-Alder Lake. If you know of any other
+applications that will fail with a mis-emulated smaller MAXPHYADDR,
+please let me know.
+
+> With virtual-SPEC_CTRL support, guests that fall into the subset that
+> migrate inspite of MAXPHYADDR change would also be mitigated. Then, on to=
+p
+> of hardware mitigation, deploying the long sequence in the guest would
+> incur a significant performance penalty for no good reason.
+
+Yes, but the guest needs a way to determine whether the hypervisor
+will do what's necessary to make the short sequence effective. And, in
+particular, no KVM hypervisor today is prepared to do that.
+
+When running under a hypervisor, without BHI_CTRL and without any
+evidence to the contrary, the guest must assume that the longer
+sequence is necessary. At the very least, we need a CPUID or MSR bit
+that says, "the short BHB clearing sequence is adequate for this
+vCPU."
