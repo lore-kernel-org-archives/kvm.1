@@ -1,73 +1,73 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270CB32692B
-	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 23:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6EB30FF32
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 23:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775517153; cv=none; b=P7vSbC6RHkW4nx+aKFLCGrRWtSWHFY8L86iKI6gBEkaO4yOG3DZndxdqvGpRkp5KIcq/Wv+1AnIrPrcxMlvAx3mFuQhT4jqMvwSZ54pGqW85ilIuvWHCM+tThY2MxBEfi580Cxk13XZ+Oqril4cwRVBcV/9hO4n3aVmzIT+PEsg=
+	t=1775517599; cv=none; b=qIzowGl5J7rO2tigsJIE6g75V5UBB3a7SWPcmxSg+eUywXmNq0DEzcqO1ZcrxL7yWaLI+34JTru8cAS8dqVEn/hb05t9ww+CuqfdK3Xyk7jkoMO5F9saZB27MyiRMafHsDyAVNleoZFKlys8BysEaoV/FikB4f1YMRyduhIU1zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775517153; c=relaxed/simple;
-	bh=WOp6SYYDY8immBhGTtDhVqEF4aEQt0yrJ7yko/SLIyg=;
+	s=arc-20240116; t=1775517599; c=relaxed/simple;
+	bh=JSi5LjkR76txsPyakVLmmA8nchrLec+P9BgBPbcaXhU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPjpmC6RterubXgfVKby8kllUJloFb+2LsQGq6PIkstX+tzKBsoLxlDKcgQmDGV8OpEK4/QxRZKjSYoEM5KQ44z1hxjRY1pD5+lWEV9/44kir4FLlLDV6nLOVzW+G7bHV7udif9OUIIiMHs1I3aK+WAjHgJOTtK0sli76QoMS/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F8PI96Vx; arc=none smtp.client-ip=209.85.216.41
+	 Content-Type:Content-Disposition:In-Reply-To; b=pknSroKOfEli0fMiajvesYv/1ybWxr1JDA441q/qoX/LO+73M0agEFEpzaQlkpbPpwQbb96k2px43u7WMFTI1U74aMfWr3GNnOc5BpueEHDF/6DJR45oopiq0dQlx6b/ID4yYD228q3qAFa1Tzvr0wiZmGBMiRITiN6NSRVX2Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tQkRCLyg; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F8PI96Vx"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-356337f058aso2380290a91.2
-        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 16:12:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tQkRCLyg"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c70c112cb61so2611233a12.0
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 16:19:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775517151; x=1776121951; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775517598; x=1776122398; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=siCrx32nh2+8OpasRtqXmP8hQkcGaPp8sX8b0aEt65g=;
-        b=F8PI96VxV0MdhHMf/JpPWXiHG3i6g9t0cmSCQjPCmz6ZRRpeejsIejzhoTSKabup8Z
-         H1O+mrWUE5t/8NWtN1mevUjXyK99kJRARZSmnC0j2XTW7srMn0ci97svt9SAYu2m+U+U
-         DU0i3kleqXAcI741duSGSymNXoD0B1qUWtb8CyhGPabVTfF+Hu+HgKu9XSh6FfNWoMht
-         0mrlnQNRH3y+MdysdP4pmLKCyUgt65i6YCCyZRiAxlzUjIjb/kHv16YCon+KxoH5tXar
-         lYeTsiSq+vTDlq9mZfNM9KE28LRUjdbNqaAt5jR6WC+cYn57hjoe/agifoMQHj8bSy3t
-         UWmQ==
+        bh=8HzzZacCRYi94tMXMTYIuvOMhPahDnXa/u6r4ttErhk=;
+        b=tQkRCLygTCtWTb+9tw0dYYw74XmjIe2kXWwUHQd9+KRVy3vTBeUOqCmHp79OYDPZiJ
+         zgugG5bH2dcOKz4W55Cc4+/i73O/VcOx7wLrWa8ITWr8TKp3JwA6ZhXv+U7ehXIE+4yN
+         qDdAkiiFLLPgdBBg+c6c5c684RDb/BRLp/B9TOlKzWhpzS10H7cV3DWiDu5bu3pOtovg
+         EBSZT9qZgQVr9un9UkPtpjkihAbFPydQXxilwf491YbZYqGBhtVFL+QSIKfvQDjX7nby
+         aL+qQ/HPUs03/n9Qd25J0X6v1nLddloqLzOyU2CC+h7dpjZVaQK1VN3N1DXsTvFXs0Bq
+         RZkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775517151; x=1776121951;
+        d=1e100.net; s=20251104; t=1775517598; x=1776122398;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=siCrx32nh2+8OpasRtqXmP8hQkcGaPp8sX8b0aEt65g=;
-        b=EPezKY4EckN/rcigYuMpIeBbiTxodSGPtJhJOCplwi0sA2rm5FW+okCgfAWJaA6mwo
-         iRAoSWdqlw0Lhka8Z1fV+CgjyvnS2ZLAfy51jL8AmxtrXxarC2JDLRD+gp7O7Wo9dpzY
-         +7hkn3T/jvpW/GlTV5y9U7rx1hlHtRoB39PXJeIm/mJO/DPI8VHrV8cyTxhTLMfuPWtt
-         9u+8QIayy4sp9hUc3sEbxZix12LIKHMiTNU9gQ7nj5fMNCL99a5585HQeuNBTCDUNbEV
-         g8R6J3boj0ypa+VPobN7FPKp/tDKEAoTtp2gvN7ONwukOyyAE2thA1RoIiaXxp/GnLaF
-         b2Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKesZSGSSMjdkwzpB4FUX5x0tsV1w2r/mEdpaYCcfIYxlB0zB7js5eNDqGGoY4rNVJDxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxai7PJZMFz/SjtPITxgRiNr5OWzYNQtq83YsHdMkDLotYYjSgt
-	A4J6vIHp6N0DnPC/1Gwge9gtK67zwF7nxpOdkkhCJHzWN1nm2sF7zfJYns+wSIgkdQ==
-X-Gm-Gg: AeBDieuIcPOEFh1tLHN6Rb1J3Rm2FwAuoeEGlxTOdWtSTo30nruX5EgPPjdcRqtN+km
-	MstiWzvIWGr1xviKeisy8A/zDTUIi7hWxNe2Tdrrnji9rJ1uHXbYPCO5gJ6tTWdcmOUnnFqLqTk
-	co8LWvwuX1z6uZ3Q0ax8Mjse0E2FHxgAC4FGxe9/uhMg50iE2Jq5KgWmQcilNi/3dovNLxQqTnx
-	PDck89NV9D0pbyNJaBGezcC7Csowy8xNgpMK8G6XcvL8O9Z9/VJsaKe1u2fCjugDl2azYQk+SJh
-	rIM1/fWyBUuFTLGmGCR9r4qsuEoR2WL9ChIksDqqrHr3U7uhHFzRdhRmHfbx4X9CEU9gVauEPPb
-	rxPaI3TV83eJZ/xfgZ8Pc3xDITeLgofwmS0RAVPJBaveLu9AgINIRvJCakGZpPz6VX3Pk1EOSiG
-	qBCOmqGX3vZsHCGxXqF3nbomidvFhnShc+IXqPh/ekxCLYcZLLFm6s7EAq1g4lUw==
-X-Received: by 2002:a17:90b:4ecc:b0:35c:30a8:32a with SMTP id 98e67ed59e1d1-35de67e8aa9mr13334095a91.9.1775517151102;
-        Mon, 06 Apr 2026 16:12:31 -0700 (PDT)
+        bh=8HzzZacCRYi94tMXMTYIuvOMhPahDnXa/u6r4ttErhk=;
+        b=bsUh/QorJvyJF3RZcQJa/y6ZBoUwybbY+LrvmA2KkvM/bOo0qjKa4FhjSICwQwacED
+         PRvwO9f7ijP/TJRQYDsPDNM3N/Ej6Pc+Ybyj/5pzn/5NBCUcWUD4g1dI3jjfI505UIK/
+         yplTyual/QfmhR+ypzpC4jNLguCzLuSaPUoGXaSVLF+xOYpYzhP6HlcjgTE2krHlrgd9
+         jJOGQK0QDPYNYFtR2YEkRpO+zJoRZgxW6G/SSVmt5b1OO0+lvvcSCAG+4ho8BFHtUWmC
+         9+skid5fDV9B8UDHFHBNKfuqF4MYfoyrJ+CRuvtvWLX3DSnqgIfUDRvkyLK83pUjrk7b
+         v+hw==
+X-Forwarded-Encrypted: i=1; AJvYcCWq3makwgkEGwad6+R/NJ2V1KcbCyvfvLl+JSOhSwh6ccaUJVBSYljVL6IHQnRQ9lpk44k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ2OONz4hCXmseBIRoDqGJEuKr+U7hJH47FN6Czbp4RpAaHa+G
+	/hClgjXJxDoMvlSCxBPrTlRF3MFiXlbwH2510ZV2TJJKVC25Juanmqw2bTzgQiiTZQ==
+X-Gm-Gg: AeBDietICOIJZRUCmbdzasE9BD6yaJvt8dpGmznhFRiU9Uq7WkHAdHeaMFh0mB59ciG
+	6aGYNIM1VRvfCQr3tev1QTCONwH4JbVl31Z1JzX7CqCDHyvFxCkyb3YYbiwCb11i75OIUpRGR+s
+	ItdspeqrQ6vuT2CEhEe4scmZQhaRAQi59k/H0Zn2N6DbwhTOnfTtbS3KGtF+k5ixf8xZMhnoMFB
+	VY/kq1s722OpFfa8w/itPjIfrXu8+UMJjfbtg/P0n58Quk5peAkE1eONthNy4ugVX34DXIGwwXU
+	zcVW4DjJmpEJjknDHRcNm9Y/h7V1IXeVJCaDgMsrSvCVslMyP+Ur8wHs3U65WBG51wU/5WSUdBQ
+	YOtsViCVGcvH0FomhbFSqkqTYAdj+oZkMEVXWDrC/Z4zzHq5FN5QzwJUDE8zQNikG78bvdi9a8r
+	hKx6FR2LL/nbAyQVJJHp0KwWpk+zQwfL36u/A9y9TDAwLvon5yrU0RYn28/VQfBQ==
+X-Received: by 2002:a05:6a20:12d1:b0:39b:8ed1:eb4f with SMTP id adf61e73a8af0-39f2eec3ca8mr14985907637.24.1775517597360;
+        Mon, 06 Apr 2026 16:19:57 -0700 (PDT)
 Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe9379f3sm20116802a91.9.2026.04.06.16.12.30
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c65995a9sm12981866a12.27.2026.04.06.16.19.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 16:12:30 -0700 (PDT)
-Date: Mon, 6 Apr 2026 23:12:26 +0000
+        Mon, 06 Apr 2026 16:19:56 -0700 (PDT)
+Date: Mon, 6 Apr 2026 23:19:52 +0000
 From: David Matlack <dmatlack@google.com>
 To: Rubin Du <rubind@nvidia.com>
 Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
 	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 3/4] selftests/vfio: Allow drivers without send_msi()
- support
-Message-ID: <adQ92tHGZVGKG0t5@google.com>
+Subject: Re: [PATCH v12 2/4] selftests/vfio: Add generic PCI command register
+ helpers
+Message-ID: <adQ_mA6bJI03CagI@google.com>
 References: <20260403234444.350867-1-rubind@nvidia.com>
- <20260403234444.350867-4-rubind@nvidia.com>
+ <20260403234444.350867-3-rubind@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,15 +76,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260403234444.350867-4-rubind@nvidia.com>
+In-Reply-To: <20260403234444.350867-3-rubind@nvidia.com>
 
 On 2026-04-03 04:44 PM, Rubin Du wrote:
-> Allow drivers that cannot trigger MSI interrupts to leave the send_msi
-> callback NULL. Add an fcntl_set_msi_nonblock() wrapper that only sets
-> nonblocking mode when send_msi is available, and update ASSERT_NO_MSI()
-> to skip when the driver lacks MSI support. The send_msi test SKIPs and
-> mix_and_match skips the MSI portion per iteration.
-> 
-> Signed-off-by: Rubin Du <rubind@nvidia.com>
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+> index 2858885a89bb..e5e290eed510 100644
+> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+> @@ -65,6 +65,16 @@ void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
+>  #define vfio_pci_config_writew(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u16)
+>  #define vfio_pci_config_writel(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u32)
+>  
+> +#define vfio_pci_cmd_set(_device, _bits) do {				\
+> +	u16 __cmd = vfio_pci_config_readw((_device), PCI_COMMAND);	\
+> +	vfio_pci_config_writew((_device), PCI_COMMAND, __cmd | (_bits));\
+> +} while (0)
+> +
+> +#define vfio_pci_cmd_clear(_device, _bits) do {				\
+> +	u16 __cmd = vfio_pci_config_readw((_device), PCI_COMMAND);	\
+> +	vfio_pci_config_writew((_device), PCI_COMMAND, __cmd & ~(_bits));\
+> +} while (0)
+
+Whoops, missed this in my previous email.
+
+These should be static inline instead of macros.
