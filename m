@@ -1,114 +1,121 @@
 Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4365194C95
-	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 23:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D993A0B01
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 23:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775516500; cv=none; b=bDgbhlFC27vLRo0zgJFvL3tQGzXdxI3gvqcB4hByvM8lOHQgE+D87euER6dA2EXW9VkNl87t/Q59X5cZqLSKafsoKGA5Y0vJYCO9agKTwNA3QZ5vtHYpoCrkNgHxKVC/sG72T71Zt0TOZY82YRmVOPZRDyZWFcB+BYCZX+h8Ms8=
+	t=1775516839; cv=none; b=qTUZhSM4FNJggKkPV3MeESWblIcOrjeUNqaz0MwpNxLwZ60cVEeMmBmZI+/3QLVonWsRoWIif0cc0DbOGbc8cuG3hHUzvRSEzytHTRuwES8bphj+DAFm/SlL5Q4IECw8hXqy4ZnT6ABtOv9H/Fb8eAvrDGM3cYx2X8nIisl/hjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775516500; c=relaxed/simple;
-	bh=siPND8xsPU9mCLpW0Z7T5dAsRBXpqLvnj7P4viTj0J4=;
+	s=arc-20240116; t=1775516839; c=relaxed/simple;
+	bh=FdaAfUF++iEK12cCowkIbtrFVQfugukfeRU3XOEBdOs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jitnKBgoVTzNrtJGw25ZUbCswHQAULaYq47BPk+KKvUWBbePixdEB6D95kXKaXjzUT/HEh0yV7zVWoC5oYs0Tt+qfX5OoZVpuBHQ4KG8HkGzb+m69zUPLfFi84ZgG5tlAMLJeWqvvcHhWz8BiE9DwPJzteW1HcNKPYcIxb0FENs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KCFEAloM; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=KMyuF00UX7x6UChzTVy6gE6aV94mHGmk8z4Gt0XeHjvHX+BZW//kz47GXk8pIaQw0PpJBiImXHe5O6ZU1POZc3B1HI4QMaLd+uGyd7HodhsgWWeM7ct6H5Dy2wF0iNLB5DgbWOcTefuvPqIElqm4uzEyHnLMoUoydiB14GB4mXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i/j2KQru; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KCFEAloM"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76ad3b732eso6848378a12.1
-        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 16:01:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i/j2KQru"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76b6db8bb2so1889491a12.3
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 16:07:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775516499; x=1776121299; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bw8FCdgjwfmWI+4R84SR3mMUmNsra0uKKt+trGCHhkc=;
-        b=KCFEAloMgGp7S9z9cDk1BWy8TgmKxNL4uE9txD9DgSIVzIAyyICe1rLQfo0oFFqmHE
-         OmphMY1lR6vwJXn2OKByjtwMZHfmm1h7zLfVGHJRsGHLoKH4o816x5INlzTZTORRzkRC
-         6ggYdvpMfZ4eQdkzFFuZijRa3TpM5ahxX4tLBDjBUWX1NSMpxDr+KWPW6lVpIG/tX2tC
-         ZCVarER6ok98j6xndWw2rzSYZ16c7uxg6gmXXyd1J3vfDZls6bKwDJRf2D5Od/YLUUmz
-         lii0gLVMu2SdMsbLuCI5X9Yq2nIvMNDLsGaLg+y/vOmLvh3F8sHpqzjSYLT29ywStgDw
-         i6Pw==
+        d=google.com; s=20251104; t=1775516837; x=1776121637; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FdaAfUF++iEK12cCowkIbtrFVQfugukfeRU3XOEBdOs=;
+        b=i/j2KQru3IbpvdKfXpoRhNV72M18lVg06bY0qlSHphiMMI/jbCADJ8QapSCHj6bccO
+         UeISLDz5HDer0C29L2B22Mg5ERbE3ch/hHgU3hBv1ELb3Po7iopJ8PYnh8cHGRklLlft
+         HGD1XOzJ9TXkDrUiWNuh4wfUlKVvEl9jL63gOo6FmOaaO+BSyI2vfwh7G7Xr1gyxhqe/
+         OTffrxJhJu36MIrC1PcFJ9NpXxAJTOmV+xLriPzQG3G3XKd16ztp0GYGY580UR8Oc8Mi
+         2xmydRSuMEA/Jqsl8f52uqHIBeGM6737BK2Voq9GAdOner0MA0nWsfw7au1bJFpKgrmP
+         aj8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775516499; x=1776121299;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bw8FCdgjwfmWI+4R84SR3mMUmNsra0uKKt+trGCHhkc=;
-        b=rkfTJTo7p7NtQ+Zwk8INXm776iu2e2+G/6NCGLkEcXX5/EKEU5iNuJk7T7y8bm/gFW
-         ygcQyAPLJmEh+teey9kNRl6Fl/5JxKsz/P1xmke/uL58PrYYAv3ohX9nEE8XmSBP58/h
-         Dsw/a5oYZ/fsJy62Rx1ur0vKvcZ/cas52E8N0WfgjUWT76wIDG0bYhpotmrKyDU23m+b
-         9A+Cr2euygmUJNkwyB3WG6nO8x/xAr1s4j/Io2GDxqBPO2P9Tqguy3wEukwym625cQp3
-         arBTDebd/CgLIwNWcIRzMsWS6I9H+vX4DFul/EBHr+bZ2RMKcLSeaz1xtiTTFH2BOu0Q
-         e9Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5xXo/G0eHBTHymYFqFhpTW/UvKUHq+cWjQBZciCtYtn6ezqq2etsVU06HcyZYck9Kq80=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv3yqVd26fS0HRt6T59O5FxnXVbYDMcMc6cTdUZZu1SELhZbCE
-	BrRofjijNtuS1yePDScdRGR1+NK0BRazQvufVCwIn3CXgmBHiRO/xI7BoLZaX4M+wv1Rb1u4d21
-	FfVDs0g==
-X-Received: from pfble6.prod.google.com ([2002:a05:6a00:4fc6:b0:829:6cf2:95da])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1816:b0:81f:3f03:6838
- with SMTP id d2e1a72fcca58-82d0da7be19mr15069758b3a.15.1775516499004; Mon, 06
- Apr 2026 16:01:39 -0700 (PDT)
-Date: Mon, 6 Apr 2026 16:01:37 -0700
-In-Reply-To: <20260402102953.2984284-1-mayuresh.chitale@oss.qualcomm.com>
+        d=1e100.net; s=20251104; t=1775516837; x=1776121637;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FdaAfUF++iEK12cCowkIbtrFVQfugukfeRU3XOEBdOs=;
+        b=sV3WXvw7C/Cs0UGUKirKlaKLpz6SybTC6VGvqUEYV24gFanp7zkzALbuCX9G99jJ72
+         6l8iI/iVJg6pES02cnlhPtnYa2cP39h85Ccs6DvXq7OO5pD9QDajMzah1IwPk1yPmXGi
+         RIjrchnPOpsrb3lK7Ty46x0/aN6MNDO5in8c1zf5gs9pk4hDvKcptwq4u2kC8ExeNtr4
+         X0GfUZehbq9hUZuQHEHLMYQ91w8vkqYgGcD4eGM1pFo0I8733udWzu/A1wpa/09U77Eh
+         SLA3Q20DUv7TLNXgxwqXivryhRHjBzXqtyA4T7cdpNtZ0OyS241ygBK3wTHA+l6dVvkx
+         JCnA==
+X-Gm-Message-State: AOJu0Yy/HAvrSYgmedbyCAbYRdGT7IKKZrGsaVmk0zoMviscAmrvdRAX
+	9Y5HSuWs2Q4DfUIGPvmu5XaoTWznBEMFu8bmCM0hVxxc7rWguwS1umn4N/ygjeOpheW1kfGZjzU
+	Xuc/mgQ==
+X-Received: from pfbk27.prod.google.com ([2002:a05:6a00:b01b:b0:82a:f09:7a6a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:338e:b0:82a:8163:4bf4
+ with SMTP id d2e1a72fcca58-82d0db9c30amr13345230b3a.46.1775516837154; Mon, 06
+ Apr 2026 16:07:17 -0700 (PDT)
+Date: Mon, 6 Apr 2026 16:07:15 -0700
+In-Reply-To: <faac37c7ba9e3a2e8d996e18c74301d9cefad3dc.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260402102953.2984284-1-mayuresh.chitale@oss.qualcomm.com>
-Message-ID: <adQ7UZVG9rQ1mOTI@google.com>
-Subject: Re: [PATCH] KVM: selftests: memslot_perf_test: make host wait timeout configurable
+References: <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
+ <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com> <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
+ <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
+ <ac_rNT69TdocrMYc@google.com> <401db97a254b356ad8539a5d637d68ee826179a5.camel@intel.com>
+ <adAQCXI-7Yj0wcKA@google.com> <ec581571ab4141ed77e6979b3e03773e301a62c1.camel@intel.com>
+ <adBIPdBA-aJWcUrY@google.com> <faac37c7ba9e3a2e8d996e18c74301d9cefad3dc.camel@intel.com>
+Message-ID: <adQ8o2U4ChisMEjS@google.com>
+Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
 From: Sean Christopherson <seanjc@google.com>
-To: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, "dmaluka@chromium.org" <dmaluka@chromium.org>, 
+	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 02, 2026, Mayuresh Chitale wrote:
-> When memslot_perf_test is run on qemu, sometimes the RW subtest fails
+On Sat, Apr 04, 2026, Rick P Edgecombe wrote:
+> On Fri, 2026-04-03 at 16:07 -0700, Sean Christopherson wrote:
+> > > So... "Reduced #VE" (also called "VE reduction") reduces which things=
+ cause
+> > > a #VE. The guest opts into it and the TDX module starts behaving
+> > > differently. It's kind of grab bag of changes including changing CPUI=
+D
+> > > behavior, which is another wrinkle. It was intended to fixup guest si=
+de TDX
+> > > arch issues.
+> >=20
+> > And KVM has no visilibity into which mode the guest has selected?=C2=A0=
+ That's
+> > awful.
+>=20
+> Yea, on both accounts. So where we are at with this is, starting to rejec=
+t
+> changes that build on the pattern. We haven't gone so far as to ask for a
+> feature to notify the host of the guest opt-ins. But I wouldn't say we ha=
+ve a
+> grand design in mind either. If you have any clarity, please feel free to=
+ drop a
+> quotable.
 
-For posterity, can you elaborate on exactly what "is run on qemu" means?
+I got nothing, probably best to just deal with things on a case-by-case bas=
+is
+unless we end up with a recurring theme.
 
-> @@ -900,7 +901,7 @@ static void help(char *name, struct test_args *targs)
->  {
->  	int ctr;
->  
-> -	pr_info("usage: %s [-h] [-v] [-d] [-s slots] [-f first_test] [-e last_test] [-l test_length] [-r run_count]\n",
-> +	pr_info("usage: %s [-h] [-v] [-d] [-s slots] [-f first_test] [-e last_test] [-l test_length] [-r run_count] [-a wait_timeout]\n",
->  		name);
->  	pr_info(" -h: print this help screen.\n");
->  	pr_info(" -v: enable verbose mode (not for benchmarking).\n");
-> @@ -916,6 +917,8 @@ static void help(char *name, struct test_args *targs)
->  		targs->seconds);
->  	pr_info(" -r: specify the number of runs per test (currently: %i)\n",
->  		targs->runs);
-> +	pr_info(" -a: specify the number of seconds for host wait timeout (currently: %i)\n",
-> +		wait_timeout);
+> > If KVM has no visiblity, then I don't see an option other than for KVM =
+to
+> > advertise and emulate what it can at all times, and it becomes the gues=
+t's
+> > responsibility to not screw up.=C2=A0 I guess it's not really any diffe=
+rent from
+> > not trying to use MMIO accesses after switching to x2APIC mode.
+>=20
+> Like your diff? Expose any MSRs that might be emulated in the TDX paradig=
+m. But
+> don't expose all MSRs that KVM supports.
 
-Why '-a'?  '-t' is available, and seems more intuitive for --timeout.
-
->  	pr_info("\nAvailable tests:\n");
->  	for (ctr = 0; ctr < NTESTS; ctr++)
-> @@ -964,7 +967,7 @@ static bool parse_args(int argc, char *argv[],
->  	uint32_t max_mem_slots;
->  	int opt;
->  
-> -	while ((opt = getopt(argc, argv, "hvdqs:f:e:l:r:")) != -1) {
-> +	while ((opt = getopt(argc, argv, "hvdqs:f:e:l:r:a:")) != -1) {
->  		switch (opt) {
->  		case 'h':
->  		default:
-> @@ -1007,6 +1010,9 @@ static bool parse_args(int argc, char *argv[],
->  		case 'r':
->  			targs->runs = atoi_positive("Runs per test", optarg);
->  			break;
-> +		case 'a':
-> +			wait_timeout = atoi_positive("Host wait timeout", optarg);
-> +			break;
->  		}
->  	}
->  
-> -- 
-> 2.43.0
-> 
+Yep.
