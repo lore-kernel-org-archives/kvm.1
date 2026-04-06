@@ -1,121 +1,93 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D993A0B01
-	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 23:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D2A392C5D
+	for <kvm@vger.kernel.org>; Mon,  6 Apr 2026 23:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775516839; cv=none; b=qTUZhSM4FNJggKkPV3MeESWblIcOrjeUNqaz0MwpNxLwZ60cVEeMmBmZI+/3QLVonWsRoWIif0cc0DbOGbc8cuG3hHUzvRSEzytHTRuwES8bphj+DAFm/SlL5Q4IECw8hXqy4ZnT6ABtOv9H/Fb8eAvrDGM3cYx2X8nIisl/hjs=
+	t=1775516906; cv=none; b=Pm4+SkiiOS7Y2i612nR1sHeKk1RHIDckqNPgzWEW7cXfxFl3A1rnKxtImRAKMDE5xxG2IB1x770dkcSDUsFLtJnvCtECaRceYQi2x8OT5F7+QmpHrMSQzC2InYeRI3Wp++/Nm+0YfR0YOWAyxFsGHhKTwHQJE26B5bjoXmu5CAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775516839; c=relaxed/simple;
-	bh=FdaAfUF++iEK12cCowkIbtrFVQfugukfeRU3XOEBdOs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KMyuF00UX7x6UChzTVy6gE6aV94mHGmk8z4Gt0XeHjvHX+BZW//kz47GXk8pIaQw0PpJBiImXHe5O6ZU1POZc3B1HI4QMaLd+uGyd7HodhsgWWeM7ct6H5Dy2wF0iNLB5DgbWOcTefuvPqIElqm4uzEyHnLMoUoydiB14GB4mXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i/j2KQru; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1775516906; c=relaxed/simple;
+	bh=/a5Dkh8WNMLKekzLba+ss6TDeVCSPsEl9pPWQ8V9rkg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncsX99VyTdMPbzrwaVpkcvC7TljQ6HB4LcNPGIeZTR7dACA1kNG8dDT6D1FX5NL7XLNImx7rw6E2gs9eJLaGjBsYz5pjQYOxCUJ+zihAsan+PdNLH+i/VunQUePorjizX8KGlsLNC9a5suTk8D5DGd/vUcBrvkuQpVQIIdI2Gf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PImEbw3d; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i/j2KQru"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76b6db8bb2so1889491a12.3
-        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 16:07:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PImEbw3d"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2adff872068so20180835ad.1
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 16:08:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775516837; x=1776121637; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FdaAfUF++iEK12cCowkIbtrFVQfugukfeRU3XOEBdOs=;
-        b=i/j2KQru3IbpvdKfXpoRhNV72M18lVg06bY0qlSHphiMMI/jbCADJ8QapSCHj6bccO
-         UeISLDz5HDer0C29L2B22Mg5ERbE3ch/hHgU3hBv1ELb3Po7iopJ8PYnh8cHGRklLlft
-         HGD1XOzJ9TXkDrUiWNuh4wfUlKVvEl9jL63gOo6FmOaaO+BSyI2vfwh7G7Xr1gyxhqe/
-         OTffrxJhJu36MIrC1PcFJ9NpXxAJTOmV+xLriPzQG3G3XKd16ztp0GYGY580UR8Oc8Mi
-         2xmydRSuMEA/Jqsl8f52uqHIBeGM6737BK2Voq9GAdOner0MA0nWsfw7au1bJFpKgrmP
-         aj8w==
+        d=google.com; s=20251104; t=1775516904; x=1776121704; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qQ5dWOM3uIstb5rK1L33RqJcuXkE4TKVzPfj3K/JoaA=;
+        b=PImEbw3dbdtaCxZ9WQFMVDStl6vrLfB3lZhdZb3v72q4TB1UjYraIBXWBCRji+O/sH
+         RxQIHEJ7CL0BKPm4Gkpkl/IX/XmREssjyJDSpD8ZN1+GNZOnYY+FTi8Bs/Px2TtAYTVj
+         s3vhj58KiOXQP08yj4bwrqsMgo5gVonI4e0s03Bn3FRo1f7tl86t6bWKV4wpj5/qJl2F
+         29Ev66+DXlCAgA5GV6LvkhnVwP0afSZ6tSIrNgC1nT5iCwhu8pN0DeQ7FDGQRpQQKv2p
+         4uXOC4Cy6toBhm3NJUL3w+fdNtSs+Nv8Dp+e5isGNs5NAiYWDNmn6UAXL5FYNWpLs5Lf
+         PPOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775516837; x=1776121637;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FdaAfUF++iEK12cCowkIbtrFVQfugukfeRU3XOEBdOs=;
-        b=sV3WXvw7C/Cs0UGUKirKlaKLpz6SybTC6VGvqUEYV24gFanp7zkzALbuCX9G99jJ72
-         6l8iI/iVJg6pES02cnlhPtnYa2cP39h85Ccs6DvXq7OO5pD9QDajMzah1IwPk1yPmXGi
-         RIjrchnPOpsrb3lK7Ty46x0/aN6MNDO5in8c1zf5gs9pk4hDvKcptwq4u2kC8ExeNtr4
-         X0GfUZehbq9hUZuQHEHLMYQ91w8vkqYgGcD4eGM1pFo0I8733udWzu/A1wpa/09U77Eh
-         SLA3Q20DUv7TLNXgxwqXivryhRHjBzXqtyA4T7cdpNtZ0OyS241ygBK3wTHA+l6dVvkx
-         JCnA==
-X-Gm-Message-State: AOJu0Yy/HAvrSYgmedbyCAbYRdGT7IKKZrGsaVmk0zoMviscAmrvdRAX
-	9Y5HSuWs2Q4DfUIGPvmu5XaoTWznBEMFu8bmCM0hVxxc7rWguwS1umn4N/ygjeOpheW1kfGZjzU
-	Xuc/mgQ==
-X-Received: from pfbk27.prod.google.com ([2002:a05:6a00:b01b:b0:82a:f09:7a6a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:338e:b0:82a:8163:4bf4
- with SMTP id d2e1a72fcca58-82d0db9c30amr13345230b3a.46.1775516837154; Mon, 06
- Apr 2026 16:07:17 -0700 (PDT)
-Date: Mon, 6 Apr 2026 16:07:15 -0700
-In-Reply-To: <faac37c7ba9e3a2e8d996e18c74301d9cefad3dc.camel@intel.com>
+        d=1e100.net; s=20251104; t=1775516904; x=1776121704;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qQ5dWOM3uIstb5rK1L33RqJcuXkE4TKVzPfj3K/JoaA=;
+        b=TX/bjm5g3FE/qoXCVTHg6PVBDKR+2NqOr4kqNIs+NeTWpkNgdCgIVt/HKjLntc0FVL
+         4qCcDollDXE7VMrb4qKYmgTXsf8f1gCkOtb8uwuboq1h6vNoPdNXpnakKU7E567MIeTy
+         YGJpX92W/5j9f4NptugIfCLcgq5OPQwqeVRJ8TUOAOd3a3iAKIQVZE1875cEj6q8GbMi
+         6v0SLKQEJWT7NuSxS0+nlemRMYrKc20y4hF3S4UZzj3svKsSX6Lp0OIb5+BuH9Y/e+Ny
+         9qOrqf/iyMLaboo8DmEayUMc1kSavGiltiIrfdCYSqQ5DquKIs7KWCkp7kmVeF0eiIX/
+         u5FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCLWqpnkWMmKa2/JDEQSCMXY4fQbfP3vMCrtKZx6CsPhQNIg17HbfGKFOnB+Grt235CHs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMJZLZK+r4y2NFAH+JVFuolBod7+/znWwCi3kNKfFJhvSYXRWX
+	9/wpsAglA1pHWa/E8Z3WCCqKzY3af6lw1webX0AbxtGWYgSWScJGYi5gDcLyMJHzXQ==
+X-Gm-Gg: AeBDieu8zhiCUKkVRwRwDrmwx9mP0WYyhOY71bOJq4qyLkLL/pNJfaRPGtWwlW8zkO1
+	Nifl3SwjqzGVN6KeqYgykv5OacAjkK9YjI0xJhc0xmJD34USgvQ/eDebC3HGybEjPYEq7uVNDaS
+	cJQrL+/p9JNo+A9tZBGOk5IbQEGPULKUXX8VDHXAI4ATjn4+a11BbjRBuagK/4ixC9O/Sp2KpDE
+	+klQgf4NNZDHl8BeIPQm8sdgwEaXcOoEtyZvuipi1kYTLBZLo1TxaBrUKSo3UZS+J5vEqydK5uE
+	HQ40R0EI/ExI51J5VzyhzxnAHjyi8pjOW6aJIfzo3FAio6tNo04UdpPAW+ePb3ZSPBi3jg7Aq5x
+	ZBcNtW/UkM6UMpNiczqmQQdSdiKGBiyNJqSU4c7Jy3aoGxfEXAYETMo/IcMtDqkXIj/RrN/8bI9
+	pMPGtUvpx7OFNP9XPL02dZL5wY9zGbpnsNxlvge/mDzJp2qdrcwygRDLIdcgE1OIgtjw4p8V5t
+X-Received: by 2002:a17:902:ccc9:b0:2b2:4a31:235 with SMTP id d9443c01a7336-2b2818b006fmr141475565ad.26.1775516903557;
+        Mon, 06 Apr 2026 16:08:23 -0700 (PDT)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749a348esm162239185ad.57.2026.04.06.16.08.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 16:08:22 -0700 (PDT)
+Date: Mon, 6 Apr 2026 23:08:18 +0000
+From: David Matlack <dmatlack@google.com>
+To: Rubin Du <rubind@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 1/4] selftests/vfio: Add memcpy chunking to
+ vfio_pci_driver_memcpy()
+Message-ID: <adQ84lY4fLs_MCsU@google.com>
+References: <20260403234444.350867-1-rubind@nvidia.com>
+ <20260403234444.350867-2-rubind@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <cb99e44c-8bc9-4bab-b485-9f63a4d0b262@linux.intel.com>
- <93358559-5ed1-4574-8951-24d7ea9354e4@intel.com> <ee8d7ea3-0ece-43cf-ab07-6954df4c01ad@linux.intel.com>
- <f67179d7050ae28ac261bb6227b1c045c10579c9.camel@intel.com>
- <ac_rNT69TdocrMYc@google.com> <401db97a254b356ad8539a5d637d68ee826179a5.camel@intel.com>
- <adAQCXI-7Yj0wcKA@google.com> <ec581571ab4141ed77e6979b3e03773e301a62c1.camel@intel.com>
- <adBIPdBA-aJWcUrY@google.com> <faac37c7ba9e3a2e8d996e18c74301d9cefad3dc.camel@intel.com>
-Message-ID: <adQ8o2U4ChisMEjS@google.com>
-Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, "dmaluka@chromium.org" <dmaluka@chromium.org>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260403234444.350867-2-rubind@nvidia.com>
 
-On Sat, Apr 04, 2026, Rick P Edgecombe wrote:
-> On Fri, 2026-04-03 at 16:07 -0700, Sean Christopherson wrote:
-> > > So... "Reduced #VE" (also called "VE reduction") reduces which things=
- cause
-> > > a #VE. The guest opts into it and the TDX module starts behaving
-> > > differently. It's kind of grab bag of changes including changing CPUI=
-D
-> > > behavior, which is another wrinkle. It was intended to fixup guest si=
-de TDX
-> > > arch issues.
-> >=20
-> > And KVM has no visilibity into which mode the guest has selected?=C2=A0=
- That's
-> > awful.
->=20
-> Yea, on both accounts. So where we are at with this is, starting to rejec=
-t
-> changes that build on the pattern. We haven't gone so far as to ask for a
-> feature to notify the host of the guest opt-ins. But I wouldn't say we ha=
-ve a
-> grand design in mind either. If you have any clarity, please feel free to=
- drop a
-> quotable.
+On 2026-04-03 04:44 PM, Rubin Du wrote:
+> Add a chunking loop to vfio_pci_driver_memcpy() so that it breaks up
+> large memcpy requests into max_memcpy_size-sized chunks. This allows
+> callers to request any size without worrying about per-driver limits.
+> The memcpy_start()/memcpy_wait() semantics are unchanged.
+> 
+> Update the test to use 4x max_memcpy_size so it exercises the new
+> chunking path (4 iterations) while keeping execution fast for drivers
+> with small DMA transfer sizes.
+> 
+> Signed-off-by: Rubin Du <rubind@nvidia.com>
 
-I got nothing, probably best to just deal with things on a case-by-case bas=
-is
-unless we end up with a recurring theme.
-
-> > If KVM has no visiblity, then I don't see an option other than for KVM =
-to
-> > advertise and emulate what it can at all times, and it becomes the gues=
-t's
-> > responsibility to not screw up.=C2=A0 I guess it's not really any diffe=
-rent from
-> > not trying to use MMIO accesses after switching to x2APIC mode.
->=20
-> Like your diff? Expose any MSRs that might be emulated in the TDX paradig=
-m. But
-> don't expose all MSRs that KVM supports.
-
-Yep.
+Reviewed-by: David Matlack <dmatlack@google.com>
