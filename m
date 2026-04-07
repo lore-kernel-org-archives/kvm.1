@@ -1,241 +1,180 @@
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D98010F2;
-	Tue,  7 Apr 2026 18:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775585773; cv=none; b=bY8IkBH1YSFCP14nkcR7uvmKpHGgbp7R8noTX1NwlX3AjCRB4+jcVH5yewogrQqHSY4eecYt/EiujYdMhKJeavsPQ2q49jnG5DJRDcWX3m1Hf9orf/Cfw4atNhC1lB/UbU0jqARUuJrom6WFxSOplb5np/P0jb5CK3/ioYakXbU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775585773; c=relaxed/simple;
-	bh=+6rOZ8TVbem9Jlhsmqeh/hIbDTtTmVLWdtBqANXvFjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DgoHnC6D1C6nniiAtqt8EaAec6i+p7yCdPUvZsVHCBA8Bf/EiPFnT+esBYCl8NK61ZN2o6uzyorUVZWJ63yfe1tdZxIJoCtxpYQ9zrRO8qMLL7Yf5tCfNjlMGIEOJKMQ2ANq9SREPZQgoDFYnVTmgn6PPAJ601Jiqnotg/+EraM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=qoCboFho; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oyLlmDXh; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E5D21D3F5
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 18:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775585791; cv=pass; b=Pf3OzJaYCWHkpGFa9xOk10dIy0W11VgHi15Cl2o+8KvZ5C3IQPvm5mu9lD8vK0aHJ7aoRJrUk3e15rKx4LNQaLjzEwDgIpVzMDWDJRQ4Z0RckU6Y9Jx1MfOTN611MBUWV6xh82yT/J914R4NCKIIgZkcE7EBeT8aJY3Vl+lVlrI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775585791; c=relaxed/simple;
+	bh=W6jscBzEMJbJO/XmLXghl25PWfvdo5CVM/yBumOnlxs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SMU/HoxPF/iXTKH4Pz8t4m5FEv4bPg/55mI/28O6nEaw0Q1BNXEFWZ2Yk10XwXuSkhexJ8gZt3c+3VLIsDqrElC3awUm6IYPS23PnDNgkTLvYqC7Hs7xNveaCULhMLx4lJR7gX+sEKcSxp6iiSffPfG6a+OFf6y/CoJdsUEILTM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jydYI3un; arc=pass smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="qoCboFho";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oyLlmDXh"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 800411400034;
-	Tue,  7 Apr 2026 14:16:09 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 07 Apr 2026 14:16:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1775585769;
-	 x=1775672169; bh=dQm6z7f6ASrTfFmzqfBj+lCDd4lKJ0iBzg4xh57Zsvw=; b=
-	qoCboFhoPSbbrL5PrJHkkQ0QTtIvC5erP8IN1/kFA5nydWdHEqbYz4ESxO9S1xhF
-	X+DYBIUEycY5vFrhY/OllhNyOPZEllFhUSV8WDmGMYsY3S1PUct+YYFUS+tEtea3
-	dLxH3AE0CRmgrmSDNQEgkrjAq0w50PG4kDiviO2TtI3LsKETjmmhjD4x3PPm10dA
-	YoTb4wMRk8KLz9Ro3OHWXRf0EQDSgfrxjF4HQL/lC23khEEjVrSFJm/jpCiBWQkY
-	pJF6HSBYdx5YX/2ph6UbZ+MsT0E0OVstRshzlfU9dqShYxS6gdt0P7eGV1zP8Gl1
-	vZv6SrJhbUP53aCvoIk+EA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775585769; x=
-	1775672169; bh=dQm6z7f6ASrTfFmzqfBj+lCDd4lKJ0iBzg4xh57Zsvw=; b=o
-	yLlmDXhiDlFxhEX8zMKRFHbCVKD6ImWX+1TDPNnlvwnruYhzPaLNqJMnSYh2qZ5Q
-	tP28XS2QYGBt2IUJ1YmeZ0eYDIwSZkiTFZf26wxNoMtMMtTj5B7g7a/KWN6kF+7x
-	cONfD/ABR/Fu0H+yWHQVdSPn4erxhak95iGoOocu0qXz0+o1HOwHGt/1TrCM/tyf
-	iKC59Jm9ni+2tRztgtZEqipBnGzy/qMUL4i+8LkqmN6RmJEwA8t+8fKs+h1XiG/u
-	Vh/Phi9SaY6j1drkTXzisRode5lChUOp9IvKlLLHAHlWiZxk0jFbchoEvXnyYPgc
-	wwtnCkUYyDUZimmS4F6qA==
-X-ME-Sender: <xms:6EnVacNhsj77xNJa01LxbWyb-lv_sz7D9IjuHaDXWp8_vFwZmXCB-Q>
-    <xme:6EnVadqqMlJduwlbdHhLwYRdt3F_ZhQcG-HIHaiIyP8Ek1O9kBPHChB_jv9s2yHV8
-    SgDkoyEu2w7TCcPx0P0Zn-8tPMg6vTvWYXqjx2LmLICWYne2RZY5A>
-X-ME-Received: <xmr:6EnVaZ5Nyh6IMOzBYAMX-xdDk4_bzgBTZ03J_k1o9T9IztNfrqPFgK24TI0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvudefhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecufghrlhcuvffnffculddquddtmdenucfjughrpeffhffvve
-    fukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomheptehlvgigucghihhllhhirghm
-    shhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepgf
-    ejhfejleekjeefudffleeiuefhkedvieeiffehtedvveeuueevtdefgedtveeknecuffho
-    mhgrihhnpehkvghrnhgvlhdrohhrghdpnhhishhtrdhgohhvnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdho
-    rhhgpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epthhughhruhhlrdhkuhhkuhhlsegvshhtrdhtvggthhdprhgtphhtthhopehgrhgvghhk
-    hheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehsrghshhgrlh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpd
-    hrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheplhhorhgvnhiiohdr
-    shhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepuggrvhhiugesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihho
-    nhdrohhrgh
-X-ME-Proxy: <xmx:6EnVafqbrwxPmz_K9KFA-Rf3hPh4554QqCfw-ZgTaSNFL4bitoIZGQ>
-    <xmx:6EnVafIk_w0HD9Rh1xce5yK4fVUNQJ2AthlOe5Akjqmz60MgPLtzaQ>
-    <xmx:6EnVaUi-Bn7Sp_w85zysHPy1oGtGeOEVIPOzj0lGPwIFN7I4F-Ei2A>
-    <xmx:6EnVaQ906i3Bx-kZixtf6gcc97Ts5clWAECItTWdbcunkgN4-zPEsA>
-    <xmx:6UnVaYYtmE4Hi9_16emLw8Sfi-4OM8dwVOQ04ls8_ig1BWlVWhaQnhVj>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 7 Apr 2026 14:16:07 -0400 (EDT)
-Date: Tue, 7 Apr 2026 12:16:05 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: tugrul.kukul@est.tech
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
- kevin.tian@intel.com, jgg@ziepe.ca, lorenzo.stoakes@oracle.com,
- david@redhat.com, akpm@linux-foundation.org, mike.kravetz@oracle.com,
- linmiaohe@huawei.com, yi.l.liu@intel.com, axelrasmussen@google.com,
- leah.rumancik@gmail.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- david.nystrom@est.tech, alex@shazbot.org
-Subject: Re: [PATCH 6.6.y 0/4] Fix CVE-2024-27022: fork/hugetlb race with
- vfio prerequisites
-Message-ID: <20260407121605.17eb56d1@shazbot.org>
-In-Reply-To: <20260402161311.63484-1-tugrul.kukul@est.tech>
-References: <20260402161311.63484-1-tugrul.kukul@est.tech>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jydYI3un"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a283c44478so5969472e87.3
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 11:16:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775585787; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YBVCYeWsC4ZZ3J+JIABHz0tupG7hVmIzotFNkha7LcVF4wir68DT2ao85bwT2RV79l
+         x3VJELNYVATm4+e7r3IG3IlEkogYgC2TOEGp0UeMKLtmS3RyqdI92CmOh2JInxPYtM/N
+         bSipsnD+MqVUSkQNIc3wQ/FDr3eFoEoJMvmq6bJoEJTwsWSbPR7aqmys+w+ACxsqx+C0
+         ufZHqOPddJjrgj936Q6yKJ6wRdBBB5Xi4ElDVME4MB+QLBh/ieAWEqUgvsUoLMRzXRpw
+         MpPf1DEiLA05YlUg1yp5d+NbQ1FogAr6/1VrCNFk6/M3OsNG85fSjhJA7iN2TeIqaqmB
+         /59w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yRsBgBmzp23y8ZAP8I/cBBmEnn+NnIzhpJUPzQOsQ6E=;
+        fh=HLGelAaYpWNqdXjluQgBtL8CYD1QPkyCoZy6MNeDnds=;
+        b=Czgh1Qt0Oe8ua7hz/y1VDdcWCmgm8EzGDu6QJdMAngiLh6/DjfcOCmGCkeXc59JB39
+         FokkzZJwmDG6jMy9pHHpRmEy+tBBKlhxuqADqQhu3TpvCzSevY8b8UPx5ceR3AdwECTB
+         TIz1xbFvBzsmFSFd4TKQSGe5Rbfb6uJrKxABO30QkaJwdzmHy2n9Ndsg8cFXYum0xizX
+         veuS/NPlgMv53lmQN5jRu4wGeBPXyV82lQt5XOSrHDZcJDUMBbzxEozydDk3g9+2kVwC
+         RTNyhOJVYVXLrCwCc9+q+XQEn5FDUezknkq2miwl8FuhVhYXMwRQxWFqUERu9eZa4RdK
+         Rf5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775585787; x=1776190587; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yRsBgBmzp23y8ZAP8I/cBBmEnn+NnIzhpJUPzQOsQ6E=;
+        b=jydYI3und1jEzGNu13y56kc2Lbxpuk83U9kprFZ/A0rFbKFZcHcnJS6Cc8r2h1JSbX
+         Ch3ixFT+sk9VwjGqQ/n8Lnb3N93TjIJlQtLesl6AgJ72IUHPE24gBpIGEioLHMAxlHYU
+         rrVxQCaQbnzDjQQTjCfu3uJJQ/OTtv5AQog99NhYOZK3oCf0TzZ4JlBCsVkPRpqSvdfA
+         +zhkp2Ty+HcxTpfTZSB8Sr8qR5qBkcBH9uzDEael4tzzzu+T2h+KpCDjpruP3uSMRFsR
+         ZveEG6BFs+7jo9e82dNWNRUwG3Zmenw2q+sdzrtsqz5/OXVMQE5juki8875V2TbrWwQQ
+         FWjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775585787; x=1776190587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yRsBgBmzp23y8ZAP8I/cBBmEnn+NnIzhpJUPzQOsQ6E=;
+        b=k88UzizYT/irObCa7SgMWdWkXsaQKr5UlE/YcNMcTdnRzW54T/p947OVFN0/QIejLG
+         okz8FvLNj0sBnVVqyi/XApjhvDI3Cvhh0gieQDCdnZlGlEzQAg+A6KMepyw0IUNYStqa
+         kPjZpKZHSXrPkSLSr9FHYqVc+wvOfQGauLfCujwMWNjgioZW1wmiaEdPE8DMyMjZdmUM
+         mdGhRgXpr00kSvOFk2Pgakt79eWY3gtU+WA3sczw8M1AnPe2Z23ltSogguvWNeGSoGdv
+         dDRauiE88nYHSz1GwBluBxAhMRKnAXGTYGkxJPAIvNvxpr8/BEmaZB9a3aqEVMirlLSc
+         T4nA==
+X-Gm-Message-State: AOJu0YwIRF3JLivz4zXVnICv4KcWLvr1vctPwiQkWh8Ab1uDreNEPvKv
+	neh/+tUDD1PmyiaUr8T1eEUr1eLLot/miLOz9asqOtu/Oty5H2p1BxXeXdMzBFyTI6GdJmDbWI/
+	/D57NX1+cw8FKD+vC5iXV5Ww1tj8bvVDTJZGiqEI/
+X-Gm-Gg: AeBDies+dOF5ckBalBtJW1dNmhSfOlA5ojrkapaXLoCGucJSEZGiuiw6ZJQGwQY7PwN
+	iKam6FsB/VEEV3xlUan29VUEOFCewNaIQN1JlHDTs9OM4tUD2LY5x5GTDjXERcrd2PKXiEINn/o
+	Fxx8tuj04ji0ME02MVPEJBxJqd1mbSE5ysf0scph3AM37Ds/K6/t99sObzH+vHiL/05IdLSHgPV
+	+skkj5w+enl+kj8IXodQwiWqpeZKdMDKJomybboQW+Ve7IZKoGuJShjEVlUM3VRuROF8cdKXaO9
+	G/nBewFFyrFg4fjrWLZIWNXLh3KJxg7ndEaa7dPB
+X-Received: by 2002:a05:6512:110d:b0:5a1:2e0c:86f0 with SMTP id
+ 2adb3069b0e04-5a33758f31emr4771796e87.37.1775585786712; Tue, 07 Apr 2026
+ 11:16:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260316224349.2360482-1-jingzhangos@google.com> <20260324114312.GA438107@e124191.cambridge.arm.com>
+In-Reply-To: <20260324114312.GA438107@e124191.cambridge.arm.com>
+From: Jing Zhang <jingzhangos@google.com>
+Date: Tue, 7 Apr 2026 11:16:15 -0700
+X-Gm-Features: AQROBzDArVOPc6ncoqbb__YZYRwX1sNbl8uVFaZ9pSAZu9OJrkYhbAp3gMqUG8o
+Message-ID: <CAAdAUtjeYJ5sOQVB-t7U=KJ9JuCCmO9b2dwJsas7mkzNLu8WqA@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v1 0/3] arm64: Add Stage-2 MMU and Nested
+ Guest Framework
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
+	Marc Zyngier <maz@kernel.org>, Andrew Jones <andrew.jones@linux.dev>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Oliver Upton <oliver.upton@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu,  2 Apr 2026 18:13:07 +0200
-tugrul.kukul@est.tech wrote:
+On Tue, Mar 24, 2026 at 4:43=E2=80=AFAM Joey Gouly <joey.gouly@arm.com> wro=
+te:
+>
+> On Mon, Mar 16, 2026 at 03:43:46PM -0700, Jing Zhang wrote:
+> > This patch series introduces a lightweight infrastructure for managing =
+ARM64
+> > Stage-2 translation tables and executing nested guests. These component=
+s are
+> > essential for testing advanced virtualization features such as nested
+> > virtualization (NV) and GICv4 direct interrupt injection.
+> >
+> > The series provides a generic Stage-2 MMU library supporting multiple
+> > translation granules (4K, 16K, 64K) and dynamic page table management.
+> > Building on this, it adds a guest execution framework that handles gues=
+t
+> > lifecycle management, context switching and guest exit routing. A new t=
+est
+> > case for Stage-2 MMU demand paging to verify fault handling.
+> >
+> > Please note that this is a very preliminary implementation intended as =
+a
+> > startup baseline for future work in virtualization testing. Users shoul=
+d be
+> > aware that because this is an early-stage baseline, some portions of th=
+e code
+> > may just happen to work in its current state. There might be critical
+> > architectural elements or edge-case handling missing that will need to =
+be
+> > addressed as the framework matures.
+> >
+>
+> Hi,
+>
+> I'm interested in this, I had a much more barebones (aka no stage2) guest
+> framework thing that I sent out [1], but it seems more useful to try get =
+this
+> series merged.
+>
+> I will try get my tests working with this new framework, one thing missin=
+g for
+> me is support for executing at EL0.
+>
+> Thanks,
+> Joey
+>
+> [1] https://lore.kernel.org/kvmarm/20260306142656.2775185-1-joey.gouly@ar=
+m.com/#t
+>
 
-> From: Tugrul Kukul <tugrul.kukul@est.tech>
->=20
-> This series fixes CVE-2024-27022 on 6.6 stable by first backporting the
-> necessary vfio refactoring, then applying the fork fix.
->=20
-> =3D=3D Background =3D=3D
->=20
-> CVE-2024-27022 is a race condition in dup_mmap() during fork() where a
-> file-backed VMA becomes visible through the i_mmap tree before it is
-> fully initialized. A concurrent hugetlbfs operation (fallocate/punch_hole)
-> can access the VMA with a NULL or inconsistent vma_lock, causing a kernel
-> deadlock or WARNING.
->=20
-> The mainline fix (35e351780fa9, v6.9-rc5) defers linking the file VMA
-> into the i_mmap tree until the VMA is fully initialized.
->=20
-> =3D=3D Why this hasn't been fixed in 6.6 until now =3D=3D
->=20
-> This CVE has had a troubled backport history on 6.6 stable:
->=20
-> 1. cec11fa2eb51 - Incomplete backport to 6.6, only moved
->    hugetlb_dup_vma_private() and vm_ops->open() but left
->    vma_iter_bulk_store() and mm->map_count++ in place.
->    Caused xfstests failures.
->=20
-> 2. dd782da47076 - Sam James reverted the incomplete backport. [1]
->=20
-> 3. Leah Rumancik attempted a correct backport but discovered it
->    introduced a vfio-pci ordering issue: vm_ops->open() being called
->    before copy_page_range() breaks vfio-pci's zap-then-fault mechanism.
->    Leah withdrew the patch. [2]
->=20
-> 4. Axel Rasmussen backported Alex Williamson's 3 vfio refactor
->    commits to both 6.9 and 6.6 stable [3][4]. The 6.9 backport was
->    accepted [5], but for 6.6 Alex Williamson pointed out that the
->    fork fix was still reverted =E2=80=94 without it, the vfio patches alo=
-ne
->    are unnecessary. Axel withdrew the 6.6 series.
->=20
-> 5. 6.6 stable has remained unfixed since July 2024.
->=20
-> =3D=3D This series =3D=3D
->=20
-> This series picks up Axel's withdrawn 6.6 backport of the vfio
-> refactor patches [4] and adds the missing fork fix on top, completing
-> the work that was left unfinished. Patches 1-3 are Alex Williamson's
-> vfio refactor (backported by Axel Rasmussen), patch 4 is the CVE fix
-> adapted for 6.6 stable.
->=20
->   1/4 vfio: Create vfio_fs_type with inode per device
->   2/4 vfio/pci: Use unmap_mapping_range()
->   3/4 vfio/pci: Insert full vma on mmap'd MMIO fault
->   4/4 fork: defer linking file vma until vma is fully initialized
->=20
-> =3D=3D 6.6 stable adaptations =3D=3D
->=20
-> Patch 4/4 (fork: defer linking file vma):
->  - 6.6 uses vma_iter_bulk_store() which can fail, unlike mainline's
->    __mt_dup(). Error handling via goto fail_nomem_vmi_store is preserved.
->=20
-> =3D=3D Testing =3D=3D
->=20
-> CVE reproducer (custom fork/punch_hole stress test, 60s):
->  - Unpatched: deadlock in hugetlb_fault within seconds
->  - Patched: 2174 forks completed, zero warnings (KASAN+LOCKDEP enabled)
->=20
-> xfstests quick group (672 tests, ext4, virtme-ng):
->  - 65 failures, all pre-existing or KASAN-overhead timeouts
->  - Zero patch-attributable regressions
->  - Leah's 4 specific tests that caused the original revert
->    (ext4/303, generic/051, generic/054, generic/069) all pass
->=20
-> VFIO + fork stress test (CONFIG_VFIO=3Dy, hugetlbfs):
->  - CVE reproducer with vfio modules active: zero warnings
->=20
-> Yocto CI integration (~87,900 tests per build, LTP+ptest+runtime):
->  - No known regressions
->=20
-> dmesg analysis (KASAN, LOCKDEP, PROVE_LOCKING, DEBUG_VM, DEBUG_LIST):
->  - Zero memory safety, locking, or VMA state issues across ~38 hours
->    of testing
->=20
-> =3D=3D References =3D=3D
->=20
-> [1] Revert discussion:
->     https://lore.kernel.org/stable/20240604004751.3883227-1-leah.rumancik=
-@gmail.com/
->=20
-> [2] Leah's backport attempt and vfio discovery:
->     https://lore.kernel.org/stable/CACzhbgRjDNkpaQOYsUN+v+jn3E2DVxX0Q4WuQ=
-WNjfwEx4Fps6g@mail.gmail.com/T/#u
->=20
-> [3] Axel's vfio series and Alex's feedback:
->     https://lore.kernel.org/stable/20240716112530.2562c41b.alex.williamso=
-n@redhat.com/T/#u
->=20
-> [4] Axel's 6.6 vfio series (withdrawn):
->     https://lore.kernel.org/stable/20240717222429.2011540-1-axelrasmussen=
-@google.com/T/#u
->=20
-> [5] Axel's 6.9 vfio series (accepted):
->     https://lore.kernel.org/stable/20240717213339.1921530-1-axelrasmussen=
-@google.com/T/#u
->=20
-> [6] CVE details:
->     https://nvd.nist.gov/vuln/detail/CVE-2024-27022
->=20
-> [7] Original report:
->     https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revo=
-lver/T/
->=20
-> [8] Mainline fix:
->     https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
-mmit/?id=3D35e351780fa9d8240dd6f7e4f245f9ea37e96c19
->=20
->=20
-> Alex Williamson (3):
->   vfio: Create vfio_fs_type with inode per device
->   vfio/pci: Use unmap_mapping_range()
->   vfio/pci: Insert full vma on mmap'd MMIO fault
->=20
-> Miaohe Lin (1):
->   fork: defer linking file vma until vma is fully initialized
->=20
->  drivers/vfio/device_cdev.c       |   7 +
->  drivers/vfio/group.c             |   7 +
->  drivers/vfio/pci/vfio_pci_core.c | 271 ++++++++-----------------------
->  drivers/vfio/vfio_main.c         |  44 +++++
->  include/linux/vfio.h             |   1 +
->  include/linux/vfio_pci_core.h    |   2 -
->  kernel/fork.c                    |  29 ++--
->  7 files changed, 140 insertions(+), 221 deletions(-)
->=20
+Hi Joey,
 
-For vfio bits:
+Will you add support for executing at EL0?
 
-Acked-by: Alex Williamson <alex@shazbot.org>
+Thanks,
+Jing
+
+> > ---
+> >
+> > Jing Zhang (3):
+> >   lib: arm64: Add stage2 page table management library
+> >   lib: arm64: Add bare-metal guest execution framework
+> >   arm64: Add Stage-2 MMU demand paging test
+> >
+> >  arm/Makefile.arm64         |   4 +
+> >  arm/stage2-mmu-test.c      | 100 +++++++++
+> >  lib/arm64/asm/guest.h      | 156 ++++++++++++++
+> >  lib/arm64/asm/stage2_mmu.h |  74 +++++++
+> >  lib/arm64/guest.c          | 197 ++++++++++++++++++
+> >  lib/arm64/guest_arch.S     | 263 ++++++++++++++++++++++++
+> >  lib/arm64/stage2_mmu.c     | 402 +++++++++++++++++++++++++++++++++++++
+> >  7 files changed, 1196 insertions(+)
+> >  create mode 100644 arm/stage2-mmu-test.c
+> >  create mode 100644 lib/arm64/asm/guest.h
+> >  create mode 100644 lib/arm64/asm/stage2_mmu.h
+> >  create mode 100644 lib/arm64/guest.c
+> >  create mode 100644 lib/arm64/guest_arch.S
+> >  create mode 100644 lib/arm64/stage2_mmu.c
+> >
+> >
+> > base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
+> > --
+> > 2.53.0.851.ga537e3e6e9-goog
+> >
