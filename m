@@ -1,138 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5135839150B;
-	Tue,  7 Apr 2026 17:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313B833C192
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 17:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775584351; cv=none; b=u49Dno5e4HNa/CdVGWDXkNIlLD/MamlrF6gRRONBgJ/oMx+zJ954I2JAckSpJhc3t4ox0wSmBVBTyGVxwHc5Jk+oStkarTeGyrZ5kymGcuivK+6pp2C6E60wykMvmvNITGf6tyAA34DhrGIh00pIdiqjrkU39i456FDgS7DPjIg=
+	t=1775584374; cv=none; b=rPtZTp/hJUH9zZ6tBm6aD7DpTWfJO5JSwJNNISBqV+6yGcAr4UZKsUIl71+cj9MFN4DKw38MG2mBT1JzWjyN7Zjwufm3x/0xBvMsWzF56JYShYXxNRALDmlW8wYzg19Vj+1KHypOH17gA/Om4MP6njlEmn7uPI0c9+EAB2gmRwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775584351; c=relaxed/simple;
-	bh=3fkEJFFrgqy6MjrcRSqfdHOdo4sUYO6cXLb/hD4bbJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rrKKhq6liAke1NdTqKdOvlJ3hlU8OEZXMW9I0PRZqw0W08zo5MqVCdct7foQF+wQsFW2LhExAU5NQE05uH/K6X048K29rQmUjw7pFZLcJh/tanLuw1n+R0qjo/wQh+5Nz8mJlsMV5v7Yos6UoQYXpFKK2CrHHi4hrZLx82WCLH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZfZGZ9RS; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1775584374; c=relaxed/simple;
+	bh=SFi+MQ6VGcPjgdgikIOtIRVkkflB5tN7WyaTIpXX2RU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=S39YTZJ6eMzqVJnEPr5ZPR4adkWGOohx57cRmU6yNX7wNb18Paxb8cLC29RP066fiZOzCqOhlWIsUFIyziPbvgfgwpf8nYvxDXTcyV02++HANGeoqWvvbFHaWacwlsqAuS2xD1PweKngLcOOyzrEKF3WAZUk+ERJuFzaTI/UD6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I4Bo4FbS; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZfZGZ9RS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775584348; x=1807120348;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=3fkEJFFrgqy6MjrcRSqfdHOdo4sUYO6cXLb/hD4bbJE=;
-  b=ZfZGZ9RSVVUWvofDn0gKvRDaUUQ8GNjaIIP+Zv/nDR14Rp8EA7BnvcLh
-   oCEMm0jdMyheZm4oJhI+taByO5ZCylCTMp0YhELOIuGjmwzY7mxTPb5fw
-   tm0wkBCDzj2S34Yshe1ZbkVdl9I9U5+lbzw0H5B7FY3/S7tyqjH3WEygq
-   K1S4Ivmk1TWnnNbdpupzH8VdfW96pq3iV6wGPbMr3RGLdK253Xl4qEl+Q
-   gRdRzr2B0ri7iGHO8fFgQJcZ9Q/m1lHPxllxBzTFbRT6Ig2EqI976ASXO
-   MHImjAhdngG+O/BVuGNlrG7765s9FerPCrr0o/tSDkuzUM7q0dQFcHK/b
-   w==;
-X-CSE-ConnectionGUID: e+snA+APRoiD1jp68msHpA==
-X-CSE-MsgGUID: tW/ZJIB+Tn6tD/tnnr0IGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="86849748"
-X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
-   d="scan'208";a="86849748"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 10:52:27 -0700
-X-CSE-ConnectionGUID: U0nsAuVHTcSOdZVcP9udKA==
-X-CSE-MsgGUID: pG8Pe/rGRBK4wc6fe0pTxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
-   d="scan'208";a="233114723"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 10:52:23 -0700
-Date: Tue, 7 Apr 2026 10:52:07 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Jon Kohler <jon@nutanix.com>
-Cc: Jim Mattson <jmattson@google.com>, "x86@kernel.org" <x86@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"chao.gao@intel.com" <chao.gao@intel.com>
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260407175207.j5atzf772mkdezgg@desk>
-References: <CALMp9eT2vJBdLPY2uBYrPgVrhS_aYmfGfdXe6MZXG_gyryLHVA@mail.gmail.com>
- <20260403233329.fb2ppifgwm3um6ny@desk>
- <CALMp9eTpsenqsWjzmpXLEubn9uNjgZgzgrMwtZ72HDuV_2xgfg@mail.gmail.com>
- <20260404002149.wtayv6a64vzuppgp@desk>
- <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
- <20260404034954.t7iapenzvhdpagxp@desk>
- <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
- <20260407163943.y6tkh26z2rfktn3y@desk>
- <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
- <FAA31092-E1CA-4D79-8CEC-3DB0F6F1C792@nutanix.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I4Bo4FbS"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3594620fe97so12613546a91.1
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 10:52:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775584372; x=1776189172; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X/MSOJp/AJlf7hUTMD/NXnVkTNNfR/Z7vvW8KkUYbLI=;
+        b=I4Bo4FbSttL88AXhPH6u8HhjhPmKz2qac1+xxSJ5a6EhZK2/KRxwsAWODPyfvzC+zh
+         99PY4dstQUDSlp0grg7wPlSHeaKr0xKrod+cG9apSsloXe/5pa+eCV5fjbFVS4mBSlN1
+         7W4FiU2RkK6wSIiglUblm+jk4/ICA0M+NMhxn33zNbBUst2g6O0naWMoQ5ztomj+NfLm
+         sS2e0M+dZ5/E2nr0HOKH4gwBKlgAGgZiU2MHhXApuQbfC2RKO8bEO/ViGP4A4URyb+NO
+         okmvk/Z6IdyLJFD9KsGr97DRYcZFbraPId+hxI9mdMX2NWMPEidcvLtS04fzliIMiQlV
+         imfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775584372; x=1776189172;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X/MSOJp/AJlf7hUTMD/NXnVkTNNfR/Z7vvW8KkUYbLI=;
+        b=DnZ4Zarcy3+FPpJv6lYGnq0CoALkOGxhM6QImRgnllGUccfjJ0lftrqM8yhn9X6Nm8
+         PSw3ApRRnjtoAcYI6mePGMzg1NF+D+bmNucY6i81LmjZSxZasabgBeoS80/ggyJ+5hdS
+         33iYwOY0RsS6yIfDFfV7XBjVpS13fjoE3CB7ResOpOQDGzcEOM5Qt9HfRCYv5H0RhdHG
+         DLFl+/KFzr3FCzqSoO0iP2v+IOTm6+YdW7sZWVXU8Lr4DJob/7d/olXcj2E6c6X7AMIX
+         LXM6Qz+lz39Qczsvg3us+ru+tH19ClVKdONwAScUJcZ+6TBsxv9lSWsWZP9EW07E+E7B
+         MycQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1p4POC7ov/WnI3Eh2korKgzqzczvayA58SGjFxOxkcguSGiVmOQl8R1by7Pgexz13vq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwR1Q5DPIByTimStOCxR4+AIS9w6GLH0jOQoehm521qpiGCMgw7
+	CT79efi7eWIo7NftBWTHbiDfXafgSkT8E/gLLSslqAZHP7Nn3FEFsbLju1dQYeFFtFSlatboBNg
+	I9f/u2w==
+X-Received: from pjps16.prod.google.com ([2002:a17:90a:a110:b0:35d:94b3:bd6b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2885:b0:35d:974d:8f7
+ with SMTP id 98e67ed59e1d1-35de679c8ecmr16179304a91.1.1775584372473; Tue, 07
+ Apr 2026 10:52:52 -0700 (PDT)
+Date: Tue, 7 Apr 2026 10:52:51 -0700
+In-Reply-To: <2a216ee2-aebb-42ba-b2aa-826488448bbe@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <FAA31092-E1CA-4D79-8CEC-3DB0F6F1C792@nutanix.com>
+Mime-Version: 1.0
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
+ <545847c132da5d957cfc74ab19e849b16127aa8f.1773890510.git.baolin.wang@linux.alibaba.com>
+ <67c670e2-c98f-490b-bbb9-2960f8175b5a@lucifer.local> <66e78b59-f96c-4277-b7d7-473b68ed413f@linux.alibaba.com>
+ <adBJTXeE6G2vQNKX@google.com> <2a216ee2-aebb-42ba-b2aa-826488448bbe@linux.alibaba.com>
+Message-ID: <adVEc4zUVVxRiEJG@google.com>
+Subject: Re: [PATCH 6/6] mm: change to return bool for the MMU notifier's
+ young flag check
+From: Sean Christopherson <seanjc@google.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, akpm@linux-foundation.org, david@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, linux-arm-kernel@lists.infradead.org, 
+	x86@kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Apr 07, 2026 at 05:12:06PM +0000, Jon Kohler wrote:
-> 
-> 
-> > On Apr 7, 2026, at 11:46 AM, Jim Mattson <jmattson@google.com> wrote:
+On Tue, Apr 07, 2026, Baolin Wang wrote:
+> On 4/4/26 7:12 AM, Sean Christopherson wrote:
+> > On Fri, Mar 20, 2026, Baolin Wang wrote:
+> > > > > -static __always_inline int kvm_age_hva_range(struct mmu_notifier *mn,
+> > > > > -						unsigned long start,
+> > > > > -						unsigned long end,
+> > > > > -						gfn_handler_t handler,
+> > > > > -						bool flush_on_ret)
+> > > > > +static __always_inline bool kvm_age_hva_range(struct mmu_notifier *mn,
+> > > > > +					      unsigned long start,
+> > > > > +					      unsigned long end,
+> > > > > +					      gfn_handler_t handler,
+> > > > > +					      bool flush_on_ret)
+> > > > 
+> > > > Can we please fix this terrrible indentation while we're here :)?
+> > > > 
+> > > > static __always_inline bool kvm_age_hva_range(struct mmu_notifier *mn,
+> > > > 		unsigned long start, unsigned long end, gfn_handler_t handler,
+> > > > 		bool flush_on_ret)
+> > > > 
+> > > > Would be nicer, thanks!
 > > 
-> > On Tue, Apr 7, 2026 at 9:40 AM Pawan Gupta
-> > <pawan.kumar.gupta@linux.intel.com> wrote:
-> >> 
-> >> On Mon, Apr 06, 2026 at 07:23:25AM -0700, Jim Mattson wrote:
-> >>> Yes, but the guest needs a way to determine whether the hypervisor
-> >>> will do what's necessary to make the short sequence effective. And, in
-> >>> particular, no KVM hypervisor today is prepared to do that.
-> >>> 
-> >>> When running under a hypervisor, without BHI_CTRL and without any
-> >>> evidence to the contrary, the guest must assume that the longer
-> >>> sequence is necessary. At the very least, we need a CPUID or MSR bit
-> >>> that says, "the short BHB clearing sequence is adequate for this
-> >>> vCPU."
-> >> 
-> >> After discussing this internally, the consensus is that the best path
-> >> forward is to add virtual SPEC_CTRL support to KVM, which also aligns with
-> >> Intel's guidance. In the long term, virtual SPEC_CTRL can benefit future
-> >> mitigations as well. As with many other mitigations (e.g. microcode), the
-> >> guest would rely on the host to enforce the appropriate protections.
+> > No, please keep this as-is.  KVM's preferred style is exactly this (and I personally
+> > find mm's style much harder to parse).
 > 
-> Would we have to wait for virtual SPEC_CTRL to get this optimization?
+> Um, Andrew has already queued v2[1] into the mm-stable branch. Do you want
+> me to send a follow-up patch to restore the original KVM coding style?
 
-The optimization works with or without virtual-SPEC_CTRL.
-
-> Or would that be a future enhancement to make this more prescriptive?
-
-Virtual-SPEC_CTRL enables safer guest migrations between pre and post Alder
-Lake CPUs w.r.t. Native BHI mitigation. It is not related to VMSCAPE.
+Nah, not worth the churn.  Thanks though!
