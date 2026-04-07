@@ -1,195 +1,447 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from iad-out-001.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-001.esa.us-east-1.outbound.mail-perimeter.amazon.com [107.22.191.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFCA3368AD
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 14:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50248359A75;
+	Tue,  7 Apr 2026 15:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=107.22.191.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775573378; cv=none; b=WKEgnXJT+M9Px4q90iGYjiBdbRv7SmQZDxLKWjI4djPpSMBej8dtQebM5BuKSDDg+5TKAsWzlBl6pWPQBDr6+81w2J4zm/W2IVmoLYp8FPQd8j+8eHEkFLNiUluI7b2NdAPMxcQ/XdtcWfWITIoqn74Dl48HatVf5tnOR6EnXGA=
+	t=1775574081; cv=none; b=O+cHrRK3ykRV+PQ3fu89cfBoVFpS5m0Twdd8qnJcMNK1ODboOmo67oEnQAC8I8/YZxf+jNVGTWedU+cPo5qse4Q1nW9UOq1Hu7kiyz+qrtgkH4VhWNIS2ep5t3sVsBA+Fq3V5VOaHWby1gHLKZQXwtcluZ0hThizMh7kPWeWkG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775573378; c=relaxed/simple;
-	bh=XtIgdoH19ndIvGeCEmpFzfQqB5+kwXIGq8zRQkAd4/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YNA/bozi9c024xYd2q30uFz623uMn/Iwaow6iHtOfDfedzk7Akx70A/Y2x6uHiT/trZACbSwYPPwJmix2TziFAUSvPB6814kLCr0G0HPI0zz07p8ilPTYgqq6ateCo6aONxUHigKmvmR5y9/e0I9/e1J00Cs1gm0V5rtDvOFLyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kmqyem/t; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jE/HwXuZ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1775574081; c=relaxed/simple;
+	bh=nzWlQxHZUnuX5mfsLsc9wu+m1fuHwemrpZexVQ2dhk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VvQ5kvA8qfs9TneYMG2wkK+zew0y+YQoZSIIwT/VwAy7q159Jl9gX92ZIkGpdEjDnKfq9zL8cc2T3dH8bwNEBREsqJEEh5xoira2kXJKijSRi34knfPcDBun/o62y9sudmG/d4Jpeg0Pm2fF4NmGRuN1zB9OMi7mRYaY4JQCVq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=sVx9tjGg; arc=none smtp.client-ip=107.22.191.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kmqyem/t";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jE/HwXuZ"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637DIBgB1584872
-	for <kvm@vger.kernel.org>; Tue, 7 Apr 2026 14:49:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=jDMD46+vU9O7fXNFW5V6F3aRAp7klbVqL8u
-	xr/vs318=; b=kmqyem/tg6XzlqkH1Kgt31zT0rxtwScPdhlxLZc0EEZ9jyd1Vkx
-	lxzp2L9f0FkfhrBYXZE+XrKHNcLVez/WIMSqgmWWXgH510CZp3G9HMV8KMQXncPZ
-	bZGBKe6C5y8N6iCtHwO41wDkrrkbYkrwUkYSd8joz6o7m83u1qkgJRpoauvdylZU
-	4HBc8eZfLldUD1H3H0tZGNHShXHTCszH6p43TSQBDg/hIuleJIsby4k9w4UruCFa
-	dP67wIju7U+Ges3a+JoHXUuECEA+ruFJ7yEbqIMM2Mn/kk4JQAtLUmtNQuPJBB5R
-	/Id21XrNi7c0yOv3F2FzAsqLwIsjfgkwOTA==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dcmr9u7yj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 14:49:32 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b630753cc38so9703679a12.1
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 07:49:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="sVx9tjGg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775573372; x=1776178172; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jDMD46+vU9O7fXNFW5V6F3aRAp7klbVqL8uxr/vs318=;
-        b=jE/HwXuZxEDBSTUys/G0mFkAR4uZvHkZIcEefdcFbVGOi4YDI6gYeBv+GgCFL6fH0e
-         qXG1l2rhBaBZuBMCV1tHifyRvsy/asJ9mHapE5keIDPWAjERkjVbv53D9H+JFtjDABik
-         H1h223622BNAMOjjky6pfMHTtZvqwF3O6XeHci0uQEMSaMal5z4g5wlzoBdXAksVCDxo
-         wa1c/GGDPmFQqSCvfo9GXeBwigYIVhiLaTH3lQdyD68liiA5Aztk9E668DIJjMT94Y32
-         TIyhQIEpovjXfWLHrmdQgWw6MDw4xll93CqNJgYnZCFl/Y+yz4DZDAF8SAOJb+hBJ6OC
-         QKwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775573372; x=1776178172;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jDMD46+vU9O7fXNFW5V6F3aRAp7klbVqL8uxr/vs318=;
-        b=F5KSgGtZU1GaelIKLbtloXcw5ndjQEhtgxv2hJy+JCEB+sPvVtvleVaKjwabBFWeIy
-         ro+vqWWNEn6q8UbRZmRffiywe4Lm23gCwyKP0omdZxGtnjnm//YwPRyXFqJoEYNP8j+m
-         gbF84CFqy8uYtRkxjv3LHqZFeVwTHsWex7lyBt7kFSbXz6pLaoywqgs9CPFhBFvJ0nxa
-         p8X+i1Q9icA1JeTFl7qavkcWtJwNdUnhnma/x0LdCZetOh1+0JdID7RXa68vi1Dk8kWi
-         fLRdExfgw4hhyZwVji+odWXHKsbFnbmmShMY88a0oLEEKlGL55zqfHGyWtO1kVWtQfu/
-         rS6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCURftIM3NcIeUcW+fYPQO+iTEH5PddVIBjjeBzUk2quji/BSQDT17F5OpGlSpseJXa0f8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzj6XWoUFcoxKOlZ2XWPY14Psam/4DxcdUOKMLVxekKJtgnM8Cs
-	4p4lT/9JQjNoipzUV+GVj5pZ+q38n4FyYeiX169CmKEu73BljkASADgoA6KXhUt4JIDT84sH5Yg
-	aGXPRZo47yto6Wr+ASsBfHQOlALyx2tSE1XAl7UOzSgyirRVxwff1klc=
-X-Gm-Gg: AeBDies36ULohkuyMy17fVpExYkNemTWaO+POYPo/+Jh35snBsWeD9kPF4iE2TG51yL
-	eCPhZo9qDOrZwu2CwQGRYu8PTOuADF89MyyAKlLW6l0KmPwVXVanmR1pp+KdrK0UDqmilL518Fo
-	4X5YZ+YYH9MDV9VVBJUCWrf5zfnrriTgZBFy0nxZjbMARtw0Srtuc4FbehAiCqv10XYsyEcNnyx
-	rjIQCq8rKsdw+Bs52ceCdnmhAbk8qN+KUeJc9Rp6AxzQyxJlvLADwzbM2Od3o0yi2ABf9r+qGgt
-	LKu3WIPIHabpnbmMQ5PTAdAbdtrTewH4bbOQJd/LuI++xh4z1OjHIClPvbN9cAGl9ToPmlnIajP
-	z5JyTs4KtW+IqztPNScsHEr6AnQmcwf/yipkFwBTMPqIrEoT1RNB25iXjtYo=
-X-Received: by 2002:a05:6a20:7494:b0:398:8d38:c5ef with SMTP id adf61e73a8af0-39f2f05052cmr17137270637.34.1775573371322;
-        Tue, 07 Apr 2026 07:49:31 -0700 (PDT)
-X-Received: by 2002:a05:6a20:7494:b0:398:8d38:c5ef with SMTP id adf61e73a8af0-39f2f05052cmr17137237637.34.1775573370783;
-        Tue, 07 Apr 2026 07:49:30 -0700 (PDT)
-Received: from hu-mchitale-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c76c65935cbsm16116998a12.26.2026.04.07.07.49.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 07:49:30 -0700 (PDT)
-From: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>, kvm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] KVM: selftests: memslot_perf_test: make host wait timeout configurable
-Date: Tue,  7 Apr 2026 20:19:12 +0530
-Message-ID: <20260407144914.2621843-1-mayuresh.chitale@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1775574079; x=1807110079;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=bXFue4CzneVNAUS4v5FS5sS8xN9kUhj+uU79zotALlE=;
+  b=sVx9tjGg82s5hBz94nTJnw3LTaLPFvdWrm0sWOKaxOJeuJBHmR/sejtS
+   3UVzrZ49OslLApNTL2nHqjkN6XGj/2K2Y+/uMFjLf1H0SiYEJUhB/NDbC
+   LBSnNOesVJkMgeINIXSfNN2n+ZVRjQspZtNurc8dwgTUaFmFJfB3hyMxl
+   4G+zVWCiDMgGtDpxNWzBPQYiocF4MnK2R2GLbgxMERvDOW/fdNRXiWyDK
+   GgvtUUSWGnB5FfC5h6gaIe+aBqLydfaEF5MyaFs9/WNVoDSL5QWOaQYZE
+   va73V6FBZgM1wpWmRNhQ63Mrf4N/cw3b+vMZxENrQhUEjMb/skNSfewPs
+   w==;
+X-CSE-ConnectionGUID: xZCsw8LsSsy0L2k2ntCVFA==
+X-CSE-MsgGUID: HTpfa+OORmacjwkQSIHjEQ==
+X-IronPort-AV: E=Sophos;i="6.23,165,1770595200"; 
+   d="scan'208";a="15250780"
+Received: from ip-10-4-17-41.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.17.41])
+  by internal-iad-out-001.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 15:01:15 +0000
+Received: from EX19MTAUEC001.ant.amazon.com [52.94.133.134:5670]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.46.155:2525] with esmtp (Farcaster)
+ id 4afc94d5-1501-4b30-9870-7a2c9f5a830c; Tue, 7 Apr 2026 15:01:15 +0000 (UTC)
+X-Farcaster-Flow-ID: 4afc94d5-1501-4b30-9870-7a2c9f5a830c
+Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
+ EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 7 Apr 2026 15:01:13 +0000
+Received: from [192.168.5.214] (10.106.82.17) by EX19D027UEC003.ant.amazon.com
+ (10.252.137.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Tue, 7 Apr 2026
+ 15:01:10 +0000
+Message-ID: <8c563ffe-531d-4cb7-b445-813bb93766f1@amazon.com>
+Date: Tue, 7 Apr 2026 16:01:03 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=SMdykuvH c=1 sm=1 tr=0 ts=69d5197c cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8
- a=Q6LddUHKALiUaiREB9sA:9 a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDEzNSBTYWx0ZWRfXxNdB3BVx4oHM
- 5J5UmNJGyHhuWeOI4zWy1Lf4OBF1zl1HwJxu4cLQfJ+Se/ILT1nZdmisrvpOJy7Xt68LPfpVt/j
- ZXj9umr+Lj/xzTWT3FymiRoicdsn2NYCWMNaTYSiUj5hP2P+9upjgKBDxwCAVjWUjb5qRDwsdKp
- vyP6Fm53M7ObRnP1VO7RGIWzJXBJeQseBf+hRs3O8wekLhwcGiCzMbOsd9yUdcGZ9kPlkTARAyt
- C2qCfjrzBagl9JMY7acG/wc8bJMo5EWEptZCIowQeHlCfVKmv0dRU1FtFYWfHNwNQCa+wqtPJvc
- QHVRpImRyG4AkEiagPIfaRsBE9y/NWcW/bJhSL2D+W4bcCW2BCF0tuHF4Go7cAGT4tR5ofBFsnR
- RNUV6/V/ssDOK5XMdw0UnASYzq7JsyybT0wS08q8S7IqlDl6n9/T5tUmES5pKeBlY6TOb/g+DBw
- 4HEhEqqor+AAIMLZbEA==
-X-Proofpoint-GUID: Wm5ewJj-Fx9bWl8s1HvFFJ3pIM61G8My
-X-Proofpoint-ORIG-GUID: Wm5ewJj-Fx9bWl8s1HvFFJ3pIM61G8My
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_03,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070135
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v4 13/15] KVM: guest_memfd: implement userfaultfd
+ operations
+To: Sean Christopherson <seanjc@google.com>, Mike Rapoport <rppt@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Andrea Arcangeli
+	<aarcange@redhat.com>, Andrei Vagin <avagin@google.com>, Axel Rasmussen
+	<axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, "Hugh
+ Dickins" <hughd@google.com>, James Houghton <jthoughton@google.com>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Lorenzo Stoakes (Oracle)"
+	<ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, "Michal
+ Hocko" <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+	<osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
+	<peterx@redhat.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
+	<surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, <kvm@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20260402041156.1377214-1-rppt@kernel.org>
+ <20260402041156.1377214-14-rppt@kernel.org> <ac7oE_1j6gxf8OKT@google.com>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+In-Reply-To: <ac7oE_1j6gxf8OKT@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D006EUC001.ant.amazon.com (10.252.51.203) To
+ EX19D027UEC003.ant.amazon.com (10.252.137.250)
 
-When memslot_perf_test is run on the Qemu Risc-V Virt machine,
-sometimes the RW subtest fails due to sigalarm, indicating that the
-guest sync did not finish within the expected duration of 10 seconds.
-Since the current timeout value is itself a bump up from the original
-2s, making the host timeout value configurable via a new command line
-parameter. The test can be invoked with '-t' option to set a suitable
-timeout value for the host.
 
-Signed-off-by: Mayuresh Chitale <mayuresh.chitale@oss.qualcomm.com>
----
 
-Changes in v2:
-  - Change the timeout option flag from 'a' to 't'
-  - Specify the test platform (Qemu Risc-V Virt) in the commit message
+On 02/04/2026 23:05, Sean Christopherson wrote:
+> On Thu, Apr 02, 2026, Mike Rapoport wrote:
+>> From: Nikita Kalyazin <kalyazin@amazon.com>
+>> 
+>> userfaultfd notifications about page faults used for live
+>> migration and snapshotting of VMs.
+>> 
+>> MISSING mode allows post-copy live migration and MINOR mode allows 
+>> optimization for post-copy live migration for VMs backed with
+>> shared hugetlbfs or tmpfs mappings as described in detail in
+>> commit 7677f7fd8be7 ("userfaultfd: add minor fault registration
+>> mode").
+>> 
+>> To use the same mechanisms for VMs that use guest_memfd to map
+>> their memory, guest_memfd should support userfaultfd operations.
+>> 
+>> Add implementation of vm_uffd_ops to guest_memfd.
+>> 
+>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com> Co-developed-
+>> by: Mike Rapoport (Microsoft) <rppt@kernel.org> Signed-off-by:
+>> Mike Rapoport (Microsoft) <rppt@kernel.org> --- mm/
+>> filemap.c           |  1 + virt/kvm/guest_memfd.c | 84 ++++++++++++
+>> +++++++++++++++++++++++++++++- 2 files changed, 83 insertions(+),
+>> 2 deletions(-)
+>> 
+>> diff --git a/mm/filemap.c b/mm/filemap.c index
+>> 406cef06b684..a91582293118 100644 --- a/mm/filemap.c +++ b/mm/
+>> filemap.c @@ -262,6 +262,7 @@ void filemap_remove_folio(struct
+>> folio *folio)
+>> 
+>> filemap_free_folio(mapping, folio); } 
+>> +EXPORT_SYMBOL_FOR_MODULES(filemap_remove_folio, "kvm");
+> 
+> This can be EXPORT_SYMBOL_FOR_KVM so that the symbol is exported if
+> and only if KVM is built as a module.
+> 
+>> /* * page_cache_delete_batch - delete several folios from page
+>> cache diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c 
+>> index 017d84a7adf3..46582feeed75 100644 --- a/virt/kvm/
+>> guest_memfd.c +++ b/virt/kvm/guest_memfd.c @@ -7,6 +7,7 @@ 
+>> #include <linux/mempolicy.h> #include <linux/pseudo_fs.h> #include
+>> <linux/pagemap.h> +#include <linux/userfaultfd_k.h>
+>> 
+>> #include "kvm_mm.h"
+>> 
+>> @@ -107,6 +108,12 @@ static int kvm_gmem_prepare_folio(struct kvm
+>> *kvm, struct kvm_memory_slot *slot, return
+>> __kvm_gmem_prepare_folio(kvm, slot, index, folio); }
+>> 
+>> +static struct folio *kvm_gmem_get_folio_noalloc(struct inode
+>> *inode, pgoff_t pgoff) +{ +     return __filemap_get_folio(inode-
+>> >i_mapping, pgoff, +                                FGP_LOCK |
+>> FGP_ACCESSED, 0);
+> 
+> Note, this will conflict with commit 6dad5447c7bf ("KVM:
+> guest_memfd: Don't set FGP_ACCESSED when getting folios") sitting in
+> 
+> https://github.com/kvm-x86/linux.git gmem
+> 
+> I think the resolution is to just end up with:
+> 
+> static struct folio *kvm_gmem_get_folio_noalloc(struct inode *inode,
+> pgoff_t pgoff) { return filemap_lock_folio(inode->i_mapping, pgoff); 
+> }
+> 
+> However, I think that'll be a moot point in the end (the conflict
+> will be avoided). More below.
+> 
+>> +} + /* * Returns a locked folio on success.  The caller is
+>> responsible for * setting the up-to-date flag before the memory is
+>> mapped into the guest. @@ -126,8 +133,7 @@ static struct folio
+>> *kvm_gmem_get_folio(struct inode *inode, pgoff_t index) * Fast-
+>> path: See if folio is already present in mapping to avoid *
+>> policy_lookup. */ -     folio = __filemap_get_folio(inode-
+>> >i_mapping, index, -                                 FGP_LOCK |
+>> FGP_ACCESSED, 0); +     folio = kvm_gmem_get_folio_noalloc(inode,
+>> index); if (!IS_ERR(folio)) return folio;
+>> 
+>> @@ -457,12 +463,86 @@ static struct mempolicy
+>> *kvm_gmem_get_policy(struct vm_area_struct *vma, } #endif /*
+>> CONFIG_NUMA */
+>> 
+>> +#ifdef CONFIG_USERFAULTFD +static bool
+>> kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t
+>> vm_flags) +{ +     struct inode *inode = file_inode(vma->vm_file); 
+>> + +     /* +      * Only support userfaultfd for guest_memfd with
+>> INIT_SHARED flag. +      * This ensures the memory can be mapped
+>> to userspace. +      */ +     if (!(GMEM_I(inode)->flags &
+>> GUEST_MEMFD_FLAG_INIT_SHARED)) +             return false;
+> 
+> I'm not comfortable with this change.  It works for now, but it's
+> going to be wildly wrong when in-place conversion comes along.
+> While I agree with the "Let's solve each problem in it's
+> time :)"[*], the time for in-place conversion is now. In-place
+> conversion isn't landing this cycle or next, but it's been in
+> development for longer than UFFD support, and I'm not willing to
+> punt solvable problems to that series, because it's plenty fat as
+> is.
+> 
+> Happily, IIUC, this is an easy problem to solve, and will have a
+> nice side effect for the common UFFD code.
+> 
+> My objection to an early, global "can_userfault()" check is that
+> it's guaranteed to cause TOCTOU issues.  E.g. for VM_UFFD_MISSING
+> and VM_UFFD_MINOR, the check on whether or not a given address can
+> be faulted in needs to happen in __do_userfault(), not broadly when
+> VM_UFFD_MINOR is added to a VMA.  Conceptually, that also better 
+> aligns the code with the "normal" user fault path in
+> kvm_gmem_fault_user_mapping().
+> 
+> I'm definitely not asking to fully prep for in-place conversion, I
+> just want to set us up for success and also to not have to churn a
+> pile of code.  Concretely, again IIUC, I think we just need to move
+> the INIT_SHARED check to ->alloc_folio() and ->get_folio_noalloc().
+> And if we extract kvm_gmem_is_shared_mem() now instead of waiting
+> for in-place conversion, then we'll avoid a small amount of churn
+> when in-place conversion comes along.
+> 
+> The bonus side effect is that dropping guest_memfd's more "complex" 
+> can_userfault means the only remaining check is constant based on
+> the backing memory vs. the UFFD flags.  If we want, the indirect
+> call to a function can be replace with a constant vm_flags_t
+> variable that enumerates the supported (or unsupported if we're
+> feeling negative) flags, e.g.
 
- tools/testing/selftests/kvm/memslot_perf_test.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Thanks Sean.  Checking for GUEST_MEMFD_FLAG_INIT_SHARED at the time of
+use and adding uffd_ prefixes to the callbacks make sense to me.  I
+tested your changes in my local setup and they are functional with minor 
+tweaks:
+  - remove the no-longer-used anon_can_userfault
+  - fix for the vm_flags check
 
-diff --git a/tools/testing/selftests/kvm/memslot_perf_test.c b/tools/testing/selftests/kvm/memslot_perf_test.c
-index 5087d082c4b0..567474168c1c 100644
---- a/tools/testing/selftests/kvm/memslot_perf_test.c
-+++ b/tools/testing/selftests/kvm/memslot_perf_test.c
-@@ -111,6 +111,7 @@ struct sync_area {
-  */
- static_assert(ATOMIC_BOOL_LOCK_FREE == 2, "atomic bool is not lockless");
- 
-+static int wait_timeout = 10;
- static sem_t vcpu_ready;
- 
- static bool map_unmap_verify;
-@@ -418,7 +419,7 @@ static bool _guest_should_exit(void)
-  */
- static noinline void host_perform_sync(struct sync_area *sync)
- {
--	alarm(10);
-+	alarm(wait_timeout);
- 
- 	atomic_store_explicit(&sync->sync_flag, true, memory_order_release);
- 	while (atomic_load_explicit(&sync->sync_flag, memory_order_acquire))
-@@ -900,7 +901,7 @@ static void help(char *name, struct test_args *targs)
- {
- 	int ctr;
- 
--	pr_info("usage: %s [-h] [-v] [-d] [-s slots] [-f first_test] [-e last_test] [-l test_length] [-r run_count]\n",
-+	pr_info("usage: %s [-h] [-v] [-d] [-s slots] [-f first_test] [-e last_test] [-l test_length] [-r run_count] [-t wait_timeout]\n",
- 		name);
- 	pr_info(" -h: print this help screen.\n");
- 	pr_info(" -v: enable verbose mode (not for benchmarking).\n");
-@@ -916,6 +917,8 @@ static void help(char *name, struct test_args *targs)
- 		targs->seconds);
- 	pr_info(" -r: specify the number of runs per test (currently: %i)\n",
- 		targs->runs);
-+	pr_info(" -t: specify the number of seconds for host wait timeout (currently: %i)\n",
-+		wait_timeout);
- 
- 	pr_info("\nAvailable tests:\n");
- 	for (ctr = 0; ctr < NTESTS; ctr++)
-@@ -964,7 +967,7 @@ static bool parse_args(int argc, char *argv[],
- 	uint32_t max_mem_slots;
- 	int opt;
- 
--	while ((opt = getopt(argc, argv, "hvdqs:f:e:l:r:")) != -1) {
-+	while ((opt = getopt(argc, argv, "hvdqs:f:e:l:r:t:")) != -1) {
- 		switch (opt) {
- 		case 'h':
- 		default:
-@@ -1007,6 +1010,9 @@ static bool parse_args(int argc, char *argv[],
- 		case 'r':
- 			targs->runs = atoi_positive("Runs per test", optarg);
- 			break;
-+		case 't':
-+			wait_timeout = atoi_positive("Host wait timeout", optarg);
-+			break;
- 		}
- 	}
- 
--- 
-2.43.0
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 100aeadd7180..df91c40c6281 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -32,14 +32,6 @@ struct mfill_state {
+  	pmd_t *pmd;
+  };
+
+-static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t 
+vm_flags)
+-{
+-	/* anonymous memory does not support MINOR mode */
+-	if (vm_flags & VM_UFFD_MINOR)
+-		return false;
+-	return true;
+-}
+-
+  static struct folio *anon_alloc_folio(struct vm_area_struct *vma,
+  				      unsigned long addr)
+  {
+@@ -2051,7 +2043,7 @@ bool vma_can_userfault(struct vm_area_struct *vma, 
+vm_flags_t vm_flags,
+  	    !ops->get_folio_noalloc)
+  		return false;
+
+-	return ops->supported_uffd_flags & vm_flags;
++	return (ops->supported_uffd_flags & vm_flags) == vm_flags;
+  }
+
+  static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
+
+> 
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/
+> userfaultfd_k.h index 6f33307c2780..8a2d0625ffa3 100644 --- a/
+> include/linux/userfaultfd_k.h +++ b/include/linux/userfaultfd_k.h @@
+> -82,8 +82,8 @@ extern vm_fault_t handle_userfault(struct vm_fault
+> *vmf, unsigned long reason);
+> 
+> /* VMA userfaultfd operations */ struct vm_uffd_ops { -       /*
+> Checks if a VMA can support userfaultfd */ -       bool
+> (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags); 
+> +       /* What UFFD flags/modes are supported. */ +       const
+> vm_flags_t supported_uffd_flags; /* * Called to resolve
+> UFFDIO_CONTINUE request. * Should return the folio found at pgoff in
+> the VMA's pagecache if it
+> 
+> with usage like:
+> 
+> static const struct vm_uffd_ops shmem_uffd_ops = { 
+> .supported_uffd_flags   = __VM_UFFD_FLAGS, .get_folio_noalloc      =
+> shmem_get_folio_noalloc, .alloc_folio            =
+> shmem_mfill_folio_alloc, .filemap_add            =
+> shmem_mfill_filemap_add, .filemap_remove         =
+> shmem_mfill_filemap_remove, };
+> 
+> [*] https://lore.kernel.org/all/acZuW7_7yBdVsJqK@kernel.org
+> 
+>> +     return true; +}
+> 
+> ...
+> 
+>> +static const struct vm_uffd_ops kvm_gmem_uffd_ops = { 
+>> +     .can_userfault     = kvm_gmem_can_userfault, 
+>> +     .get_folio_noalloc = kvm_gmem_get_folio_noalloc, 
+>> +     .alloc_folio       = kvm_gmem_folio_alloc, 
+>> +     .filemap_add       = kvm_gmem_filemap_add, 
+>> +     .filemap_remove    = kvm_gmem_filemap_remove,
+> 
+> Please use kvm_gmem_uffd_xxx().  The names are a bit verbose, but
+> these are waaay to generic of names as-is, e.g.
+> kvm_gmem_folio_alloc() has implications and restrictions far beyond
+> just allocating a folio.
+> 
+> All in all, somelike like so (completely untested):
+> 
+> --- include/linux/userfaultfd_k.h |  4 +- mm/
+> filemap.c                  |  1 + mm/hugetlb.c                  |  8
+> +--- mm/shmem.c                    |  7 +-- mm/
+> userfaultfd.c              |  6 +-- virt/kvm/guest_memfd.c        |
+> 80 ++++++++++++++++++++++++++++++++++- 6 files changed, 87
+> insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/
+> userfaultfd_k.h index 6f33307c2780..8a2d0625ffa3 100644 --- a/
+> include/linux/userfaultfd_k.h +++ b/include/linux/userfaultfd_k.h @@
+> -82,8 +82,8 @@ extern vm_fault_t handle_userfault(struct vm_fault
+> *vmf, unsigned long reason);
+> 
+> /* VMA userfaultfd operations */ struct vm_uffd_ops { -       /*
+> Checks if a VMA can support userfaultfd */ -       bool
+> (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags); 
+> +       /* What UFFD flags/modes are supported. */ +       const
+> vm_flags_t supported_uffd_flags; /* * Called to resolve
+> UFFDIO_CONTINUE request. * Should return the folio found at pgoff in
+> the VMA's pagecache if it diff --git a/mm/filemap.c b/mm/filemap.c 
+> index 6cd7974d4ada..19dfcebcd23f 100644 --- a/mm/filemap.c +++ b/mm/
+> filemap.c @@ -262,6 +262,7 @@ void filemap_remove_folio(struct folio
+> *folio)
+> 
+> filemap_free_folio(mapping, folio); } 
+> +EXPORT_SYMBOL_FOR_MODULES(filemap_remove_folio, "kvm");
+> 
+> /* * page_cache_delete_batch - delete several folios from page cache 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c index
+> 077968a8a69a..f55857961adb 100644 --- a/mm/hugetlb.c +++ b/mm/
+> hugetlb.c @@ -4819,14 +4819,8 @@ static vm_fault_t
+> hugetlb_vm_op_fault(struct vm_fault *vmf) }
+> 
+> #ifdef CONFIG_USERFAULTFD -static bool hugetlb_can_userfault(struct
+> vm_area_struct *vma, -                                 vm_flags_t
+> vm_flags) -{ -       return true; -} - static const struct
+> vm_uffd_ops hugetlb_uffd_ops = { -       .can_userfault =
+> hugetlb_can_userfault, +       .supported_uffd_flags =
+> __VM_UFFD_FLAGS, }; #endif
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c index
+> 239545352cd2..76d8488b9450 100644 --- a/mm/shmem.c +++ b/mm/shmem.c 
+> @@ -3250,13 +3250,8 @@ static struct folio
+> *shmem_get_folio_noalloc(struct inode *inode, pgoff_t pgoff) return
+> folio; }
+> 
+> -static bool shmem_can_userfault(struct vm_area_struct *vma,
+> vm_flags_t vm_flags) -{ -       return true; -} - static const
+> struct vm_uffd_ops shmem_uffd_ops = { 
+> -       .can_userfault          = shmem_can_userfault, 
+> +       .supported_uffd_flags   = __VM_UFFD_FLAGS, 
+> .get_folio_noalloc      = shmem_get_folio_noalloc, 
+> .alloc_folio            = shmem_mfill_folio_alloc, 
+> .filemap_add            = shmem_mfill_filemap_add, diff --git a/mm/
+> userfaultfd.c b/mm/userfaultfd.c index 9ba6ec8c0781..ccbd7bb334c2
+> 100644 --- a/mm/userfaultfd.c +++ b/mm/userfaultfd.c @@ -58,8 +58,8
+> @@ static struct folio *anon_alloc_folio(struct vm_area_struct *vma, 
+> }
+> 
+> static const struct vm_uffd_ops anon_uffd_ops = { 
+> -       .can_userfault  = anon_can_userfault, 
+> -       .alloc_folio    = anon_alloc_folio, 
+> +       .supported_uffd_flags   = __VM_UFFD_FLAGS & ~VM_UFFD_MINOR, 
+> +       .alloc_folio            = anon_alloc_folio, };
+> 
+> static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct
+> *vma) @@ -2055,7 +2055,7 @@ bool vma_can_userfault(struct
+> vm_area_struct *vma, vm_flags_t vm_flags, !ops->get_folio_noalloc) 
+> return false;
+> 
+> -       return ops->can_userfault(vma, vm_flags); +       return ops-
+> >supported_uffd_flags & vm_flags; }
+> 
+> static void userfaultfd_set_vm_flags(struct vm_area_struct *vma, 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c index
+> 462c5c5cb602..e634bf671d12 100644 --- a/virt/kvm/guest_memfd.c +++ b/
+> virt/kvm/guest_memfd.c @@ -7,6 +7,7 @@ #include <linux/mempolicy.h> 
+> #include <linux/pseudo_fs.h> #include <linux/pagemap.h> +#include
+> <linux/userfaultfd_k.h>
+> 
+> #include "kvm_mm.h"
+> 
+> @@ -59,6 +60,11 @@ static pgoff_t kvm_gmem_get_index(struct
+> kvm_memory_slot *slot, gfn_t gfn) return gfn - slot->base_gfn + slot-
+> >gmem.pgoff; }
+> 
+> +static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t
+> index) +{ +       return GMEM_I(inode)->flags &
+> GUEST_MEMFD_FLAG_INIT_SHARED; +} + static int
+> __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot
+> *slot, pgoff_t index, struct folio *folio) { @@ -396,7 +402,7 @@
+> static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf) 
+> if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode)) return
+> VM_FAULT_SIGBUS;
+> 
+> -       if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)) 
+> +       if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff)) return
+> VM_FAULT_SIGBUS;
+> 
+> folio = kvm_gmem_get_folio(inode, vmf->pgoff); @@ -456,12 +462,84 @@
+> static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct
+> *vma, } #endif /* CONFIG_NUMA */
+> 
+> +#ifdef CONFIG_USERFAULTFD +static struct folio
+> *kvm_gmem_uffd_get_folio_noalloc(struct inode *inode, 
+> +                                                    pgoff_t pgoff) 
+> +{ +       if (!kvm_gmem_is_shared_mem(inode, pgoff)) 
+> +               return NULL; + +       return
+> filemap_lock_folio(inode->i_mapping, pgoff); +} + +static struct
+> folio *kvm_gmem_uffd_folio_alloc(struct vm_area_struct *vma, 
+> +                                              unsigned long addr) 
+> +{ +       struct inode *inode = file_inode(vma->vm_file); +
+> pgoff_t pgoff = linear_page_index(vma, addr); +       struct
+> mempolicy *mpol; +       struct folio *folio; +       gfp_t gfp; + 
+> +       if (unlikely(pgoff >= (i_size_read(inode) >> PAGE_SHIFT))) 
+> +               return NULL; + +       if (!
+> kvm_gmem_is_shared_mem(inode, pgoff)) +               return NULL; + 
+> +       gfp = mapping_gfp_mask(inode->i_mapping); +       mpol =
+> mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff); +
+> mpol = mpol ?: get_task_policy(current); +       folio =
+> filemap_alloc_folio(gfp, 0, mpol); +       mpol_cond_put(mpol); + 
+> +       return folio; +} + +static int
+> kvm_gmem_uffd_filemap_add(struct folio *folio, 
+> +                                    struct vm_area_struct *vma, 
+> +                                    unsigned long addr) +{ +
+> struct inode *inode = file_inode(vma->vm_file); +       struct
+> address_space *mapping = inode->i_mapping; +       pgoff_t pgoff =
+> linear_page_index(vma, addr); +       int err; + +
+> __folio_set_locked(folio); +       err = filemap_add_folio(mapping,
+> folio, pgoff, GFP_KERNEL); +       if (err) { +
+> folio_unlock(folio); +               return err; +       } + +
+> return 0; +} + +static void kvm_gmem_uffd_filemap_remove(struct
+> folio *folio, +                                        struct
+> vm_area_struct *vma) +{ +       filemap_remove_folio(folio); +
+> folio_unlock(folio); +} + +static const struct vm_uffd_ops
+> kvm_gmem_uffd_ops = { +       .supported_uffd_flags   =
+> __VM_UFFD_FLAGS, +       .get_folio_noalloc      =
+> kvm_gmem_uffd_get_folio_noalloc, +       .alloc_folio            =
+> kvm_gmem_uffd_folio_alloc, +       .filemap_add            =
+> kvm_gmem_uffd_filemap_add, +       .filemap_remove         =
+> kvm_gmem_uffd_filemap_remove, +}; +#endif /* CONFIG_USERFAULTFD */ + 
+> static const struct vm_operations_struct kvm_gmem_vm_ops = { 
+> .fault          = kvm_gmem_fault_user_mapping, #ifdef CONFIG_NUMA 
+> .get_policy     = kvm_gmem_get_policy, .set_policy     =
+> kvm_gmem_set_policy, #endif +#ifdef CONFIG_USERFAULTFD 
+> +       .uffd_ops       = &kvm_gmem_uffd_ops, +#endif };
+> 
+> static int kvm_gmem_mmap(struct file *file, struct vm_area_struct
+> *vma)
+> 
+> base-commit: d63beb006dba56d5fa219f106c7a97eb128c356f --
 
