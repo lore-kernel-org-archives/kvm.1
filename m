@@ -1,346 +1,241 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010032.outbound.protection.outlook.com [52.101.61.32])
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF813CE4BB;
-	Tue,  7 Apr 2026 18:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775585491; cv=fail; b=SqClK/X9LnAjScASIHK/s9mCGg/f0QUMeMQ7yYdBAianlxt1HPCY18PKovq+oY+HP0EcpuTGw/3papTBXE388NNaqXp9ZbU5Id7xeXcHjbnzc6lbnHrbj7F2KRds835t4nzRrYcm2Uzyjm5Gw7IgIRT3HncXfu94WyI7Z0vT8x0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775585491; c=relaxed/simple;
-	bh=DQBhhQqN/+KR0dc/ke+iOjbjnajUyCfr9e3SsTsMIgQ=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lSiLiO1z1VmU29qqNwhbFLbVfAZCkIf1AKF6oZOA0s44tljIL0QG3xmwx1R20eOKGuzBrd62Fepuq16iJs3n+0GHszEW6myou/sga4SMIcFoDvZYmViZwjD9UJsdNizTzEO8Hppb7wmGmuQ5S/vfQTscvu9oH6mN1PHW53JbxEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UAJeHAdA; arc=fail smtp.client-ip=52.101.61.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D98010F2;
+	Tue,  7 Apr 2026 18:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775585773; cv=none; b=bY8IkBH1YSFCP14nkcR7uvmKpHGgbp7R8noTX1NwlX3AjCRB4+jcVH5yewogrQqHSY4eecYt/EiujYdMhKJeavsPQ2q49jnG5DJRDcWX3m1Hf9orf/Cfw4atNhC1lB/UbU0jqARUuJrom6WFxSOplb5np/P0jb5CK3/ioYakXbU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775585773; c=relaxed/simple;
+	bh=+6rOZ8TVbem9Jlhsmqeh/hIbDTtTmVLWdtBqANXvFjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DgoHnC6D1C6nniiAtqt8EaAec6i+p7yCdPUvZsVHCBA8Bf/EiPFnT+esBYCl8NK61ZN2o6uzyorUVZWJ63yfe1tdZxIJoCtxpYQ9zrRO8qMLL7Yf5tCfNjlMGIEOJKMQ2ANq9SREPZQgoDFYnVTmgn6PPAJ601Jiqnotg/+EraM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=qoCboFho; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oyLlmDXh; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UAJeHAdA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YBSC/5AKDR/5URz01VEE7Xdf9PTmBFWIDm/vnntnQhhBx2ObGoXezTp5vdcMvQ4oUr+taiX4INyuAQmT23kH5lDSLr2xJE8uHLSbmJz8Q1Mr4wi1y9jqd+9MYFau5i0Nm89aeL71867j7FcCYCDUGQexSRHDu6bdYA5O5hoZktrOyQsFV8C2+xZmwBT1kAFuU/Z9/6XDTpXvFpAfrOpGZWu5gVkGlhWzDIMALlawsMi/0Tc4dN6Uoqe/5LziNFTfBwXerYfVb4ZPz5RkZOI8aOSX0T8XPSjwcvZXCleGlvevdx0UG3q3YNgKjXG6eiCgvxi5voZ7cYDhgiRpmqismA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NjxfC2z9L6LRZcn9aqmUE7kaopnFBbXB0eDR0VovKmE=;
- b=OcrcM4URo8VL6EZbEuHCgyRX4BrpcPW1NwSAIrENfG2Zfm6jP4dJe4IuJlC1I+Mh7Xt/bCJKqfNsG3yReIay5tl8QvGfMKV95AMztfj2k8RBsxSpQguclSbm1mNuwjWEt5i1E/aTTP9PdwrOjjLKY+mh+MO50mptF4AtkMkvY5isrRr6rU/C7Apu0WNtmwdijOzsYqouKMgbnQuuQiDRw5IKHdh66HNWYSLTuS8rWJtieetB+wJRj48qHEA8zObg8Dd/h1+hHpKLMtxRViqvb1Fm4TFGSTKhRVnqxII4TyA5J/WrqNQS9KWxt2q36MIyn8DYvu9KCKcdhDrPzl4FbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NjxfC2z9L6LRZcn9aqmUE7kaopnFBbXB0eDR0VovKmE=;
- b=UAJeHAdA04yPM0C6VlCf2KIXwc0EKJs2Y2FLCAzJd56trZfp8llmJAnC4Jhw0iqCbopQo30HKfyI0uQqkJ96RkKVwrLrPDrChjecOUIxfL3zVRM4vy23CJAzUxEJCGxHOH20u6urmO0aVLaxo/ttqlL0q0snFc0ssn7sIpDU6EI=
-Received: from DS7PR12MB8201.namprd12.prod.outlook.com (2603:10b6:8:ef::13) by
- CHXPR12MB999245.namprd12.prod.outlook.com (2603:10b6:610:2fc::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Tue, 7 Apr
- 2026 18:11:28 +0000
-Received: from DS7PR12MB8201.namprd12.prod.outlook.com
- ([fe80::e5d:5f41:954d:be38]) by DS7PR12MB8201.namprd12.prod.outlook.com
- ([fe80::e5d:5f41:954d:be38%2]) with mapi id 15.20.9769.018; Tue, 7 Apr 2026
- 18:11:27 +0000
-From: "Kaplan, David" <David.Kaplan@amd.com>
-To: kvm list <kvm@vger.kernel.org>
-CC: LKML <linux-kernel@vger.kernel.org>, Andrew Cooper
-	<andrew.cooper3@citrix.com>, "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Bug with nested PAUSE intercept on SVM
-Thread-Topic: Bug with nested PAUSE intercept on SVM
-Thread-Index: AdzGtpiRjeqXsvC5QHu6t6J5p0N2hw==
-Date: Tue, 7 Apr 2026 18:11:27 +0000
-Message-ID:
- <DS7PR12MB820101CABFA34E85442EA256945AA@DS7PR12MB8201.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_ActionId=6b777731-8b2e-48e2-95b5-b6d5f10566d4;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_ContentBits=0;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Enabled=true;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Method=Privileged;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Name=Third
- Party_New;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_SetDate=2026-04-07T17:46:03Z;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Tag=10,
- 0, 1, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS7PR12MB8201:EE_|CHXPR12MB999245:EE_
-x-ms-office365-filtering-correlation-id: 152ccfdd-f8ab-40ae-6f2a-08de94d11666
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|38070700021|18002099003|56012099003;
-x-microsoft-antispam-message-info:
- SuzzK23/7y7ynA4u7//U5bSeztfF8+M96t1vnrpnGbZJF5ExMef6stV0YojVVqbQQ1INtU/s6xt/+Os4/Bz6bK55wzOu2RCbEq/KKPIwDg8JnrTvNhoZxy+ZVF1uC1ANJQlqJ/FU0qoUaQ99pY7WhNfDqjiqqhD3f9BPMbI1jNzV1FGJiwuUWLg1sufy4cjeqxR1EB8ajscrXr1eG8u0h675LLzL+V8CRaWojpAhI2xqavHsL6IK3adSDudGIhQtuorYLXbFWTNZ928TczMAdaAspa1hVdSv3qKwgwX+umfD+yk+SJYQeKmaVwtnO9IU6iRTC8894DmBxDCASxuXBG0DOUnt9o8hoaaXnmdKVP3c4rHRXcdjWCRrumJwwYDRTwJFlo2RzoECBjdj8d4ZL3dcDmtyBOHFXKksh9EEBHFcjjh45+tMqktZBPHd2zzYpONpc2lPk8MnJJqLn3qnlPwEij3KbdECk0tta9f/s4J3eEYNnElBQxEqgOsouaeIzo+8EN1zcx7eWVoL+mhWXcQ/+ZyejnYLiE8IgVQcGUkWskH3x+zmHDENUw33Pxo1Ca5OKOHxTMGacPe4SNYEewLsuQnKOFKUJ7546xXtf/rs7ntK/KCviRWSKNlHIFLfsdsHDu/UiuuyWGY4JRvsPjzodO9jM7xVQv3J21ZW1wW0LEkl6FUsFZhL/yWlR7HkDhXE4YjSPecU8idQmQBZcbF2QrnIcPwjfmxDa/um6NKMQ6yiDv/F3Y21qi+oXjTmQf0WaVibocTE7PEKnpHqobAX+E5P6xZ4XKoWbRC6f6c=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8201.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?2cP+3nmw2wLCNz0S7gEB19/xMUH2G07he6zskrw+v7A0J+HUNfUJSq3gSOCj?=
- =?us-ascii?Q?qQAiLtHGfRKQEpxzj//i0riZRH6UJZSAUANhomzNtd5yl5ftU1QeE9vxi/wJ?=
- =?us-ascii?Q?xe2zvahS+t/10ru51kgpo/CIJBRV/GEp7dA53WUXqnkEBkzvRWqDRCZU6mGB?=
- =?us-ascii?Q?rQ+zbhhCJvnSUYoXRrghtcMvPK5VpyNy/NqIcXVuFDiJEr/ptNanaF+K6Ax4?=
- =?us-ascii?Q?tq93wtlUENsLnFAAlSu6Mi/NX9od50yDue4vSrtr+8wsnsgMHnuh5gZSkLXz?=
- =?us-ascii?Q?qbkdtJfn7LxhKCTIw53EzNXnvmwfTudjMFL+5G7yKEmBJvQtoCQln0guq9YT?=
- =?us-ascii?Q?ogf6t2yxsbdnVF8SnsF+krOI1Sz7vnc9+9orGIb5vNd8UuXUS/3AhxYWWRtN?=
- =?us-ascii?Q?BeDLyQWv9iRzpzROUsYrXIuq/75T9UzmRA4a6ndOm8ObjFj+02WM91vVBhwg?=
- =?us-ascii?Q?xiJ8utfrBtbGHYChSvONl9R4M8UV2j2oJkPsvdkrRKxffeZWMYibLj+m2DdH?=
- =?us-ascii?Q?dI2SdwQDpwHjmKoRxFEBhetgv8jLbbH+6oBujLTqLpYNy8l12HqQP6AwbyG4?=
- =?us-ascii?Q?3AfSlhwhRm/OP2t5U1C3SkwWyPMxKq9XqzK3H2r//LSFBH9h/47JNj7U1sEu?=
- =?us-ascii?Q?rTJPI6zO9/f/RE+MsCR/VSvsZXhUiHUf4oKdlcRuJ5D8Djtydix9Lw7Lpq2M?=
- =?us-ascii?Q?w7S3z0n9oa6RGEgz7xRO9qbBQVOfPO/XPZXfRAHgYWiL/Zvz6m1xfL2E/6HM?=
- =?us-ascii?Q?54DZN/PhZK8G2iHgdG2/bvO6XLOiWFxCVNJRNSkUuzotUlqGJqA6wSOcBeu8?=
- =?us-ascii?Q?mO+kufZEfPuZVMtMSmX5OMtPgUdEvEjyLnre4Y3hPRS716IjdTzTMIEVlVqc?=
- =?us-ascii?Q?c5HHjeXtM5OP2AKzuFFwDYEmG1z9Ymo8lPEW/LVyWpxpGr4uP0xF27GlC6ma?=
- =?us-ascii?Q?4nK9ixiu4g8Gt6hF/GB+ns6G9beSOhKW86eAhASm5NKxVdHyCeDBEklsqmST?=
- =?us-ascii?Q?8lN2RqI46z+mPnnFlDXAEZq1X7PRbJsnT2ln7Yz4lim2mHD3s5AiDZVKtBSl?=
- =?us-ascii?Q?Q/QPkY4iUqb/H7DrMkQ33NULQxvnG792GsHYAotFIgC9lljD/GlgEfuKN7v7?=
- =?us-ascii?Q?AOhATwA8o65HDejcXuTFAeRhWUPkWsA4qhVsHwCs9br0Hgt68RYrzImpFTvd?=
- =?us-ascii?Q?5miF2tDeYTS4XMxvDiQIs9m3fqgKv4TA3VhIExcFsG7z0RVtPIs1DPnMO3wv?=
- =?us-ascii?Q?ctbB0D1dOw3qjzS3tn6wZcuxeVh31f+/KPFKyfSJUHM1bwkCpAPcrx4MS+po?=
- =?us-ascii?Q?vnG8adUT0ZYqoUYUjfs6mOaaoMjoBWe5iAxYsPMRBa7J4n+2WvPM92AjQ0J9?=
- =?us-ascii?Q?SvkI+oh8cvoJc9kCxPe1QzETP7SjBXpBvE0/vShH2A9FAMGid2B3YLB7Qm2Z?=
- =?us-ascii?Q?fwkzlcNFx+4slo5VAunxnZe0vykYsJVzIqAgNJiKDiX+vVJBR8ju/uSFnGZi?=
- =?us-ascii?Q?NHDwofpsrGxKdBgEAd7owBPBX4MtyRio2CsfbXNWl0bpqfYFJ0lvFSend2rg?=
- =?us-ascii?Q?Bw9d0mEldo+zOmH0Vt26BnuoLE1+GG2/vWq+etke0i4Ur2+fS/fV/VrvqKGf?=
- =?us-ascii?Q?t1arE840GVM92SF025GE0XKQCG3CAOzJJEfxuNaioB6JHBunZYc8PQqiIghr?=
- =?us-ascii?Q?hq+X1qlVZ2RzpkRs5D3lvp+vQNMKGA6W8jMTeHs/pkbJlcxB?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="qoCboFho";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oyLlmDXh"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 800411400034;
+	Tue,  7 Apr 2026 14:16:09 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 07 Apr 2026 14:16:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775585769;
+	 x=1775672169; bh=dQm6z7f6ASrTfFmzqfBj+lCDd4lKJ0iBzg4xh57Zsvw=; b=
+	qoCboFhoPSbbrL5PrJHkkQ0QTtIvC5erP8IN1/kFA5nydWdHEqbYz4ESxO9S1xhF
+	X+DYBIUEycY5vFrhY/OllhNyOPZEllFhUSV8WDmGMYsY3S1PUct+YYFUS+tEtea3
+	dLxH3AE0CRmgrmSDNQEgkrjAq0w50PG4kDiviO2TtI3LsKETjmmhjD4x3PPm10dA
+	YoTb4wMRk8KLz9Ro3OHWXRf0EQDSgfrxjF4HQL/lC23khEEjVrSFJm/jpCiBWQkY
+	pJF6HSBYdx5YX/2ph6UbZ+MsT0E0OVstRshzlfU9dqShYxS6gdt0P7eGV1zP8Gl1
+	vZv6SrJhbUP53aCvoIk+EA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775585769; x=
+	1775672169; bh=dQm6z7f6ASrTfFmzqfBj+lCDd4lKJ0iBzg4xh57Zsvw=; b=o
+	yLlmDXhiDlFxhEX8zMKRFHbCVKD6ImWX+1TDPNnlvwnruYhzPaLNqJMnSYh2qZ5Q
+	tP28XS2QYGBt2IUJ1YmeZ0eYDIwSZkiTFZf26wxNoMtMMtTj5B7g7a/KWN6kF+7x
+	cONfD/ABR/Fu0H+yWHQVdSPn4erxhak95iGoOocu0qXz0+o1HOwHGt/1TrCM/tyf
+	iKC59Jm9ni+2tRztgtZEqipBnGzy/qMUL4i+8LkqmN6RmJEwA8t+8fKs+h1XiG/u
+	Vh/Phi9SaY6j1drkTXzisRode5lChUOp9IvKlLLHAHlWiZxk0jFbchoEvXnyYPgc
+	wwtnCkUYyDUZimmS4F6qA==
+X-ME-Sender: <xms:6EnVacNhsj77xNJa01LxbWyb-lv_sz7D9IjuHaDXWp8_vFwZmXCB-Q>
+    <xme:6EnVadqqMlJduwlbdHhLwYRdt3F_ZhQcG-HIHaiIyP8Ek1O9kBPHChB_jv9s2yHV8
+    SgDkoyEu2w7TCcPx0P0Zn-8tPMg6vTvWYXqjx2LmLICWYne2RZY5A>
+X-ME-Received: <xmr:6EnVaZ5Nyh6IMOzBYAMX-xdDk4_bzgBTZ03J_k1o9T9IztNfrqPFgK24TI0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvudefhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecufghrlhcuvffnffculddquddtmdenucfjughrpeffhffvve
+    fukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomheptehlvgigucghihhllhhirghm
+    shhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepgf
+    ejhfejleekjeefudffleeiuefhkedvieeiffehtedvveeuueevtdefgedtveeknecuffho
+    mhgrihhnpehkvghrnhgvlhdrohhrghdpnhhishhtrdhgohhvnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdho
+    rhhgpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epthhughhruhhlrdhkuhhkuhhlsegvshhtrdhtvggthhdprhgtphhtthhopehgrhgvghhk
+    hheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehsrghshhgrlh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpd
+    hrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheplhhorhgvnhiiohdr
+    shhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepuggrvhhiugesrhgvug
+    hhrghtrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihho
+    nhdrohhrgh
+X-ME-Proxy: <xmx:6EnVafqbrwxPmz_K9KFA-Rf3hPh4554QqCfw-ZgTaSNFL4bitoIZGQ>
+    <xmx:6EnVafIk_w0HD9Rh1xce5yK4fVUNQJ2AthlOe5Akjqmz60MgPLtzaQ>
+    <xmx:6EnVaUi-Bn7Sp_w85zysHPy1oGtGeOEVIPOzj0lGPwIFN7I4F-Ei2A>
+    <xmx:6EnVaQ906i3Bx-kZixtf6gcc97Ts5clWAECItTWdbcunkgN4-zPEsA>
+    <xmx:6UnVaYYtmE4Hi9_16emLw8Sfi-4OM8dwVOQ04ls8_ig1BWlVWhaQnhVj>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Apr 2026 14:16:07 -0400 (EDT)
+Date: Tue, 7 Apr 2026 12:16:05 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: tugrul.kukul@est.tech
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
+ kevin.tian@intel.com, jgg@ziepe.ca, lorenzo.stoakes@oracle.com,
+ david@redhat.com, akpm@linux-foundation.org, mike.kravetz@oracle.com,
+ linmiaohe@huawei.com, yi.l.liu@intel.com, axelrasmussen@google.com,
+ leah.rumancik@gmail.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ david.nystrom@est.tech, alex@shazbot.org
+Subject: Re: [PATCH 6.6.y 0/4] Fix CVE-2024-27022: fork/hugetlb race with
+ vfio prerequisites
+Message-ID: <20260407121605.17eb56d1@shazbot.org>
+In-Reply-To: <20260402161311.63484-1-tugrul.kukul@est.tech>
+References: <20260402161311.63484-1-tugrul.kukul@est.tech>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8201.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 152ccfdd-f8ab-40ae-6f2a-08de94d11666
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2026 18:11:27.7660
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RH98qo7Doc46vqQ4Xzd7PDbNXuueRNFZqB3Hp+c0OReM3YGN/itrxRmKPyVQBfnd
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHXPR12MB999245
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu,  2 Apr 2026 18:13:07 +0200
+tugrul.kukul@est.tech wrote:
 
-On AMD SVM when the L1 guest is trying to intercept every PAUSE instruction=
- in an L2 guest, the PAUSE intercept sometimes fails to fire.  I have a the=
-ory on the source of the bug and also included a short reproducer below.
+> From: Tugrul Kukul <tugrul.kukul@est.tech>
+>=20
+> This series fixes CVE-2024-27022 on 6.6 stable by first backporting the
+> necessary vfio refactoring, then applying the fork fix.
+>=20
+> =3D=3D Background =3D=3D
+>=20
+> CVE-2024-27022 is a race condition in dup_mmap() during fork() where a
+> file-backed VMA becomes visible through the i_mmap tree before it is
+> fully initialized. A concurrent hugetlbfs operation (fallocate/punch_hole)
+> can access the VMA with a NULL or inconsistent vma_lock, causing a kernel
+> deadlock or WARNING.
+>=20
+> The mainline fix (35e351780fa9, v6.9-rc5) defers linking the file VMA
+> into the i_mmap tree until the VMA is fully initialized.
+>=20
+> =3D=3D Why this hasn't been fixed in 6.6 until now =3D=3D
+>=20
+> This CVE has had a troubled backport history on 6.6 stable:
+>=20
+> 1. cec11fa2eb51 - Incomplete backport to 6.6, only moved
+>    hugetlb_dup_vma_private() and vm_ops->open() but left
+>    vma_iter_bulk_store() and mm->map_count++ in place.
+>    Caused xfstests failures.
+>=20
+> 2. dd782da47076 - Sam James reverted the incomplete backport. [1]
+>=20
+> 3. Leah Rumancik attempted a correct backport but discovered it
+>    introduced a vfio-pci ordering issue: vm_ops->open() being called
+>    before copy_page_range() breaks vfio-pci's zap-then-fault mechanism.
+>    Leah withdrew the patch. [2]
+>=20
+> 4. Axel Rasmussen backported Alex Williamson's 3 vfio refactor
+>    commits to both 6.9 and 6.6 stable [3][4]. The 6.9 backport was
+>    accepted [5], but for 6.6 Alex Williamson pointed out that the
+>    fork fix was still reverted =E2=80=94 without it, the vfio patches alo=
+ne
+>    are unnecessary. Axel withdrew the 6.6 series.
+>=20
+> 5. 6.6 stable has remained unfixed since July 2024.
+>=20
+> =3D=3D This series =3D=3D
+>=20
+> This series picks up Axel's withdrawn 6.6 backport of the vfio
+> refactor patches [4] and adds the missing fork fix on top, completing
+> the work that was left unfinished. Patches 1-3 are Alex Williamson's
+> vfio refactor (backported by Axel Rasmussen), patch 4 is the CVE fix
+> adapted for 6.6 stable.
+>=20
+>   1/4 vfio: Create vfio_fs_type with inode per device
+>   2/4 vfio/pci: Use unmap_mapping_range()
+>   3/4 vfio/pci: Insert full vma on mmap'd MMIO fault
+>   4/4 fork: defer linking file vma until vma is fully initialized
+>=20
+> =3D=3D 6.6 stable adaptations =3D=3D
+>=20
+> Patch 4/4 (fork: defer linking file vma):
+>  - 6.6 uses vma_iter_bulk_store() which can fail, unlike mainline's
+>    __mt_dup(). Error handling via goto fail_nomem_vmi_store is preserved.
+>=20
+> =3D=3D Testing =3D=3D
+>=20
+> CVE reproducer (custom fork/punch_hole stress test, 60s):
+>  - Unpatched: deadlock in hugetlb_fault within seconds
+>  - Patched: 2174 forks completed, zero warnings (KASAN+LOCKDEP enabled)
+>=20
+> xfstests quick group (672 tests, ext4, virtme-ng):
+>  - 65 failures, all pre-existing or KASAN-overhead timeouts
+>  - Zero patch-attributable regressions
+>  - Leah's 4 specific tests that caused the original revert
+>    (ext4/303, generic/051, generic/054, generic/069) all pass
+>=20
+> VFIO + fork stress test (CONFIG_VFIO=3Dy, hugetlbfs):
+>  - CVE reproducer with vfio modules active: zero warnings
+>=20
+> Yocto CI integration (~87,900 tests per build, LTP+ptest+runtime):
+>  - No known regressions
+>=20
+> dmesg analysis (KASAN, LOCKDEP, PROVE_LOCKING, DEBUG_VM, DEBUG_LIST):
+>  - Zero memory safety, locking, or VMA state issues across ~38 hours
+>    of testing
+>=20
+> =3D=3D References =3D=3D
+>=20
+> [1] Revert discussion:
+>     https://lore.kernel.org/stable/20240604004751.3883227-1-leah.rumancik=
+@gmail.com/
+>=20
+> [2] Leah's backport attempt and vfio discovery:
+>     https://lore.kernel.org/stable/CACzhbgRjDNkpaQOYsUN+v+jn3E2DVxX0Q4WuQ=
+WNjfwEx4Fps6g@mail.gmail.com/T/#u
+>=20
+> [3] Axel's vfio series and Alex's feedback:
+>     https://lore.kernel.org/stable/20240716112530.2562c41b.alex.williamso=
+n@redhat.com/T/#u
+>=20
+> [4] Axel's 6.6 vfio series (withdrawn):
+>     https://lore.kernel.org/stable/20240717222429.2011540-1-axelrasmussen=
+@google.com/T/#u
+>=20
+> [5] Axel's 6.9 vfio series (accepted):
+>     https://lore.kernel.org/stable/20240717213339.1921530-1-axelrasmussen=
+@google.com/T/#u
+>=20
+> [6] CVE details:
+>     https://nvd.nist.gov/vuln/detail/CVE-2024-27022
+>=20
+> [7] Original report:
+>     https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revo=
+lver/T/
+>=20
+> [8] Mainline fix:
+>     https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
+mmit/?id=3D35e351780fa9d8240dd6f7e4f245f9ea37e96c19
+>=20
+>=20
+> Alex Williamson (3):
+>   vfio: Create vfio_fs_type with inode per device
+>   vfio/pci: Use unmap_mapping_range()
+>   vfio/pci: Insert full vma on mmap'd MMIO fault
+>=20
+> Miaohe Lin (1):
+>   fork: defer linking file vma until vma is fully initialized
+>=20
+>  drivers/vfio/device_cdev.c       |   7 +
+>  drivers/vfio/group.c             |   7 +
+>  drivers/vfio/pci/vfio_pci_core.c | 271 ++++++++-----------------------
+>  drivers/vfio/vfio_main.c         |  44 +++++
+>  include/linux/vfio.h             |   1 +
+>  include/linux/vfio_pci_core.h    |   2 -
+>  kernel/fork.c                    |  29 ++--
+>  7 files changed, 140 insertions(+), 221 deletions(-)
+>=20
 
-In this scenario, L1 has created a guest with the pause count and threshold=
- set to 0, and the PAUSE intercept bit set.  I *think* the bug is that if t=
-he vCPU gets scheduled out on L0 while we're in the L2 guest, then upon res=
-uming the vCPU KVM calls shrink_ple_window() which doesn't appear to take i=
-nto account the fact that svm->vmcb might be for the L2 guest and not the L=
-1.  As a result, it looks like it sets the pause count to the default (3000=
-) causing many PAUSE instructions in L2 to not be intercepted.
+For vfio bits:
 
-The code below (compiled as an out-of-tree module) can reproduce this.  The=
- code runs a trivial VM which does INC EAX/PAUSE in a loop and compares the=
- final guest value of EAX vs how many times the host saw a PAUSE intercept.=
-  When run on bare-metal (meaning I loaded this module on a bare-metal kern=
-el) the values always match.  But when running inside a VM, I see mismatche=
-s like so:
-
-[  854.354997] pause_svm_test: completed 100000 PAUSE exits
-[  854.355002] pause_svm_test: guest EAX=3D112000 (expected 100000)
-[  854.355003] pause_svm_test: EAX mismatch, possible PAUSE intercept bug
-[  854.369108] pause_svm_test: module unloaded
-[  855.189293] pause_svm_test: completed 100000 PAUSE exits
-[  855.189299] pause_svm_test: guest EAX=3D109000 (expected 100000)
-[  855.189300] pause_svm_test: EAX mismatch, possible PAUSE intercept bug
-[  855.203689] pause_svm_test: module unloaded
-[  856.042187] pause_svm_test: completed 100000 PAUSE exits
-[  856.042193] pause_svm_test: guest EAX=3D106000 (expected 100000)
-[  856.042194] pause_svm_test: EAX mismatch, possible PAUSE intercept bug
-
-The fact that the deltas are always a multiple of 3000 (KVM_SVM_DEFAULT_PLE=
-_WINDOW) seems suspicious, but consistent with the above theory.
-
-Reproduction code below (written with AI help).  Compile against desired ke=
-rnel version and load it to run the test.
-
-Tested on AMD Zen5 CPU running Fedora 6.19.10-200.fc43.x86_64 with no speci=
-al kvm module parameters.
-
-Thanks --David Kaplan
-
----
-// SPDX-License-Identifier: GPL-2.0
-#include <linux/module.h>
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/mm.h>
-#include <linux/slab.h>
-#include <linux/preempt.h>
-#include <linux/uaccess.h>
-#include <linux/bitops.h>
-#include <asm/msr.h>
-#include <asm/msr-index.h>
-#include <asm/processor.h>
-#include <asm/processor-flags.h>
-#include <asm/svm.h>
-#include <uapi/asm/svm.h>
-
-#define TEST_MAX_PAUSES 100000
-
-#define NPT_PRESENT 0x1ULL
-#define NPT_RW      0x2ULL
-#define NPT_USER    0x4ULL
-
-static __always_inline void stgi(void)
-{
-	asm volatile("stgi" ::: "memory");
-}
-
-static inline void svm_vmrun(u64 vmcb_pa)
-{
-	asm volatile("vmrun %0" : : "a"(vmcb_pa) : "memory");
-	stgi();
-}
-
-static void vmcb_set_seg(struct vmcb_seg *seg, u16 selector, u32 attrib)
-{
-	seg->selector =3D selector;
-	seg->attrib =3D attrib;
-	seg->limit =3D 0xFFFFF;
-	seg->base =3D 0;
-}
-
-static int __init pause_svm_test_init(void)
-{
-	struct vmcb *vmcb =3D NULL;
-	void *guest_page =3D NULL;
-	u64 vmcb_pa =3D 0;
-	u64 npt_cr3 =3D 0;
-	u64 *pml4 =3D NULL;
-	u64 *pml5 =3D NULL;
-	u64 *pdpt =3D NULL;
-	u64 *pd =3D NULL;
-	u64 *pt =3D NULL;
-	u32 exit_code;
-	u32 pause_count =3D 0;
-
-	if (!boot_cpu_has(X86_FEATURE_SVM)) {
-		pr_err("pause_svm_test: CPU does not support SVM\n");
-		return -ENODEV;
-	}
-
-	guest_page =3D (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	if (!guest_page)
-		return -ENOMEM;
-
-	vmcb =3D (struct vmcb *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	if (!vmcb) {
-		free_page((unsigned long)guest_page);
-		return -ENOMEM;
-	}
-
-	pml4 =3D (u64 *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	if (boot_cpu_has(X86_FEATURE_LA57))
-		pml5 =3D (u64 *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	pdpt =3D (u64 *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	pd =3D (u64 *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	pt =3D (u64 *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-	if (!pml4 || (boot_cpu_has(X86_FEATURE_LA57) && !pml5) || !pdpt || !pd || =
-!pt) {
-		free_page((unsigned long)pt);
-		free_page((unsigned long)pd);
-		free_page((unsigned long)pdpt);
-		free_page((unsigned long)pml5);
-		free_page((unsigned long)pml4);
-		free_page((unsigned long)vmcb);
-		free_page((unsigned long)guest_page);
-		return -ENOMEM;
-	}
-
-	/* Guest code: inc %eax; pause; jmp 1b */
-	((u8 *)guest_page)[0] =3D 0x40; /* inc %eax */
-	((u8 *)guest_page)[1] =3D 0xF3; /* pause */
-	((u8 *)guest_page)[2] =3D 0x90;
-	((u8 *)guest_page)[3] =3D 0xEB; /* jmp short -5 */
-	((u8 *)guest_page)[4] =3D 0xFB;
-
-	/* Build a minimal NPT mapping for GPA 0 -> guest_page */
-	pt[0] =3D (u64)__pa(guest_page) | NPT_PRESENT | NPT_RW | NPT_USER;
-	pd[0] =3D (u64)__pa(pt) | NPT_PRESENT | NPT_RW | NPT_USER;
-	pdpt[0] =3D (u64)__pa(pd) | NPT_PRESENT | NPT_RW | NPT_USER;
-	pml4[0] =3D (u64)__pa(pdpt) | NPT_PRESENT | NPT_RW | NPT_USER;
-	if (pml5)
-		pml5[0] =3D (u64)__pa(pml4) | NPT_PRESENT | NPT_RW | NPT_USER;
-=09
-	npt_cr3 =3D (u64)__pa(pml5 ? pml5 : pml4);
-	vmcb_pa =3D (u64)__pa(vmcb);
-
-	set_bit(INTERCEPT_INTR, (unsigned long *)vmcb->control.intercepts);
-	set_bit(INTERCEPT_NMI, (unsigned long *)vmcb->control.intercepts);
-	set_bit(INTERCEPT_SMI, (unsigned long *)vmcb->control.intercepts);
-	set_bit(INTERCEPT_SHUTDOWN, (unsigned long *)vmcb->control.intercepts);
-	set_bit(INTERCEPT_VMRUN, (unsigned long *)vmcb->control.intercepts);
-	set_bit(INTERCEPT_PAUSE, (unsigned long *)vmcb->control.intercepts);
-
-	vmcb->control.asid =3D 1;
-	vmcb->control.tlb_ctl =3D TLB_CONTROL_FLUSH_ALL_ASID;
-	vmcb->control.nested_ctl =3D SVM_NESTED_CTL_NP_ENABLE;
-	vmcb->control.nested_cr3 =3D npt_cr3;
-	vmcb->control.int_ctl =3D V_INTR_MASKING_MASK;
-
-	/* 32-bit protected mode, no paging */
-	vmcb->save.cr0 =3D X86_CR0_PE | X86_CR0_NE | X86_CR0_ET | X86_CR0_MP;
-	vmcb->save.efer =3D EFER_SVME;
-	vmcb->save.dr7 =3D 0x400;
-	vmcb->save.rflags =3D 0x2;
-
-	/* Flat 32-bit segment */
-	vmcb_set_seg(&vmcb->save.cs, 0x8, 0xC9B);
-
-	while (pause_count < TEST_MAX_PAUSES) {
-		svm_vmrun(vmcb_pa);
-		exit_code =3D vmcb->control.exit_code;
-
-		switch (exit_code) {
-		case SVM_EXIT_INTR:
-		case SVM_EXIT_NMI:
-		case SVM_EXIT_SMI:
-			break;
-		case SVM_EXIT_PAUSE:
-			pause_count++;
-			vmcb->save.rip +=3D 2;
-			break;
-		default:
-			pr_err("pause_svm_test: unexpected exit 0x%x info1=3D0x%llx info2=3D0x%l=
-lx",
-			       exit_code, vmcb->control.exit_info_1,
-			       vmcb->control.exit_info_2);
-			goto out_restore;
-		}
-	}
-
-	pr_info("pause_svm_test: completed %u PAUSE exits\n", pause_count);
-	pr_info("pause_svm_test: guest EAX=3D%llu (expected %u)\n",
-		vmcb->save.rax, pause_count);
-	if ((u32)vmcb->save.rax !=3D pause_count)
-		pr_err("pause_svm_test: EAX mismatch, possible PAUSE intercept bug\n");
-
-out_restore:
-	free_page((unsigned long)pt);
-	free_page((unsigned long)pd);
-	free_page((unsigned long)pdpt);
-	free_page((unsigned long)pml5);
-	free_page((unsigned long)pml4);
-	free_page((unsigned long)vmcb);
-	free_page((unsigned long)guest_page);
-	return 0;
-}
-
-static void __exit pause_svm_test_exit(void)
-{
-	pr_info("pause_svm_test: module unloaded\n");
-}
-
-module_init(pause_svm_test_init);
-module_exit(pause_svm_test_exit);
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Codex");
-MODULE_DESCRIPTION("Out-of-tree SVM PAUSE intercept test");
+Acked-by: Alex Williamson <alex@shazbot.org>
