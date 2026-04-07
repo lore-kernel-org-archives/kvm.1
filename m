@@ -1,84 +1,85 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72A83A0B20
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 09:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB97B39B49C
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 09:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775553249; cv=none; b=Jkt0X9XWqDpkR2qp94AyUZWGt6PA8coY3ioAPgXvKCf5M31T9108pVw++KO2OauC3PH2re8qSUe5OddsG1tVNHTNsxqSuZe4s0/VvtSqase3EplqKOpAie+dfeoh3/oCG1ZhPPWAg8Sivou0HkvhD6Ngn2nGolvCdNxKYfXo+/k=
+	t=1775553251; cv=none; b=TPkXZtWEue54mtYO7RNexuKKUCD/N/VTdmwdja7Izj9c6JUTbzq1uEs67r1TzUtiFTmJBgZoyPy/mlrfqaI/zotmJCh/QrdO5rcAUd1Kgnp/Pna7AlMYo7WgvQcn8NWjsvNYIpZONu4RCa7IkhMOepbc+v9cGE31bqoLexhSHdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775553249; c=relaxed/simple;
-	bh=TPyeaXldjZ/vNi3cTj7MlzLbGl/Ixp9Pbj/uTFr2sk4=;
+	s=arc-20240116; t=1775553251; c=relaxed/simple;
+	bh=ip2wtGgcP4DvQiglidvGP+GnoassWfKVZlJvs+MlGRs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AXq3ex3FBQDJ6XKZw1Eym2Nyj32bXVSSMbH0cIZQzdeGWwSg28w5EHyNwASMuwDGmmX5PpaG8LHn2qihs1cxjrHEma3HjJKzDx+z4XbcEakX2Z6kCqOivykXRN/VPzytXhjIVpdvG+9p/rbzXXE3Ny/2zPQZh9Rpua3MqZPINhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KkbVsg/B; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=X7rymZQj; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:To:Cc; b=iCCUEB7/z7Sw9ThefHcKp0lJHKj9VrT6VlXF2YdjRMHRLWl4gI91ICl+39C0CEe47PXFhXI5Gj4XbjzjBS7PHkkLFDW8DJZZxOs2DLIrxPIdTseMLHL83XDSCfUcjoYrrvTqdoQMHCoMLocwpD08nqu0m6mjdhkz9NfBq7IwbRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LLPtMeTu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fY9eb6h4; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KkbVsg/B";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="X7rymZQj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LLPtMeTu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fY9eb6h4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775553246;
+	s=mimecast20190719; t=1775553247;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5MvBSgtjWIPj7YtiYQ1QdgeAu7KbULO0Duu0OFbmnZU=;
-	b=KkbVsg/BGk866pUFTw9KdxzP4cD33xxofsxI9lrn/ZVUajcXinvur++vXHX/juRUjYVK0+
-	qgklgVujHGH7+HbkWq43bxDoSNMiwoHXY14gLZGJHxyVz8JNAz/D8E5bAb4N2gU0/LMzif
-	fOez/lc2kGYV9QY8JjS4k8ldLZDID0o=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5pofFwwc6ykPOXmyxDteFf7vraGRelyLMlwG/8lag20=;
+	b=LLPtMeTuXMYge2Ih2sWYokgktWb0V+8YYjR7yKlEBPSCNIY3F+BsDXyNgu5zL6LMYrSusO
+	QmwVZ7MpE4Cr1jXy1gGv+aaI459ogErnu1u+4LfIGbBPBdVxYBur835s0J7j4PxDGEiY2U
+	+2IPZbdvkOj6SNWseBafjHFJ6vzr6II=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-p0VyO-FqOPOF9AsQ2xsT_Q-1; Tue, 07 Apr 2026 05:14:05 -0400
-X-MC-Unique: p0VyO-FqOPOF9AsQ2xsT_Q-1
-X-Mimecast-MFC-AGG-ID: p0VyO-FqOPOF9AsQ2xsT_Q_1775553244
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43cfbe041b2so4029196f8f.1
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 02:14:05 -0700 (PDT)
+ us-mta-344-_0Suu2D6PMe_4mFlyN6Gvw-1; Tue, 07 Apr 2026 05:14:06 -0400
+X-MC-Unique: _0Suu2D6PMe_4mFlyN6Gvw-1
+X-Mimecast-MFC-AGG-ID: _0Suu2D6PMe_4mFlyN6Gvw_1775553245
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d0de4bfb7so6497015f8f.3
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 02:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775553244; x=1776158044; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1775553245; x=1776158045; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5MvBSgtjWIPj7YtiYQ1QdgeAu7KbULO0Duu0OFbmnZU=;
-        b=X7rymZQjmzMh+azmi4F5vc6e4635bgO7zxenf3Ts58RlzGBol7OgBILGGoGrjqWLlV
-         m903/w/68zYOC4RU8j0lfYgqPUnGCIybxmdsKZY1bl4qLK3chXEAqdk2/X477IZnS+Og
-         ExaLcvO8n5dzBabvo/YAZO5lj3/KFjnmwvHd7qTEfu/cr16WjQSbSz3F+W6z8iE8znVE
-         64MCoKWscpO5W7836p7DMMLMu0IttuCKCkJXAfm6zbhB2WJF2AsQezJf+KigvvfOqKY5
-         HE2Gj3yjMByuEn9O6Q0Bd0kP5yruq1NW5FSHtOhx4McPfcupv9akLzXQyG0HGYJKf92C
-         ROVg==
+        bh=5pofFwwc6ykPOXmyxDteFf7vraGRelyLMlwG/8lag20=;
+        b=fY9eb6h4x/t00R4VcEiVmNVRumeGOI0SoU4s9EV4GpkrcPUVzgfmnZyvvf/xarfwPY
+         Re3s/68iclRT9X7q+EygTPq0taKK3LJUDGtUCI98kSZJbRkJZyENQ87/PhQs/log/ZMZ
+         x9XPE1PN2bVfPj557zNQfdWUnzaAnEzBjqb/B7ddEofhGA3604TL2yFc84x81bcqmukd
+         G10wtsZPUsS5JV5qKKIqGhF+mtpmJvJs1see7enSLTkt1qouqx+8HFMAf+Axg+osAO9K
+         QnBQz/k7uGVxPvfbzO8UVsO+0AwbItgm2b7qxMIhFYzT8qGoKRBohNXntqsuv0pHBrr9
+         oWfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775553244; x=1776158044;
+        d=1e100.net; s=20251104; t=1775553245; x=1776158045;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=5MvBSgtjWIPj7YtiYQ1QdgeAu7KbULO0Duu0OFbmnZU=;
-        b=USEvLpxOUMVUaao1WFwVeB6id8dZatL4i7v54aA0Mzfua4t84nrLKBGCloUwTc3toX
-         8D4cThLdOGFupgtBzwYIrgaS+51FHhpbKHrHIa93dzSo3k92APU9BZ3CcKKxNj1kco0H
-         Zw5idjHV0QO617p6tabu17/5fCa3mN1GupABraeigjno0mr8Xr4eHs//r2jM3q7qgcky
-         hr0diWO+v+Oc4pv42Oy4hrVfqJWhHGLnVCMMKi1TWvqFs68x2kD45u10StMSF2KYiMx/
-         3HUKBo8l2jdMPD8abzePGKSkjGWUN2jJyGQnnaJowxVmUJrfAzNszbys1YSyIq74nIfD
-         oqqw==
-X-Gm-Message-State: AOJu0Yy1ZHNJKsa/2TtMsk/ORdZnDNLRm1tQCa5OhkT2cgIKhFp/GLHv
-	n+bwS1PuRILDappqOT8QKKDjg+MytqopYVbSITQIhwfO+X2AdMK4VsinHZcy+shvIj/DK7NcHg2
-	MYm+35X8vqT8lHErx6S7efOhCpKrrG68A730Hbvha0sS0Gjkq4RU42Q==
-X-Gm-Gg: AeBDietucAe/KkB7Lya6HoXrU7UP22sulCcg+/Y2WZ5grfE5pAViCt35R7yvssg1NXN
-	9Jzat8PoSRfvuz/zXeZsnMH+tPUwvbWQFje5Sw12Ke9QhQxl6Ydsb1peUNth8i80WX1EmpEhI68
-	hRt8QkNIAPEUBA0IZBXjmIqo54WM09pTzg2ZQTUBdhSMfGy8L6kHnnKbH0CCyJJeEpGSdfYm5yU
-	Td1BMjXFylWi0Sw4LjvAmEHdMIcRbP/gPlFAk48k8PHOvMKEav2a5BHRrangpYKNjxzVyb23bPT
-	bI7TtgzXrCqp6mRKh5jz1q5CLB8NzcKn+zKv1UoYsrjoD6Z+XkcTaCzQXhYqlIo6ORVRBmS18ag
-	OjXlbYc6H/3Tglx7GGy9MnCN48OEkf4RG8o2D28q4oCxKkYLzmdfE/k3s66Cm
-X-Received: by 2002:a05:600c:620d:b0:485:fbd2:f72 with SMTP id 5b1f17b1804b1-4889945faa5mr212240075e9.1.1775553244225;
+        bh=5pofFwwc6ykPOXmyxDteFf7vraGRelyLMlwG/8lag20=;
+        b=QyF2DqKFQwoUDzlIjy6uw/T0lvZ58AGvaI/vJtBtOwGoNi7gtV0o/PPBpEtRQ/uXW1
+         kvaID+UbdU4HAKfqhfd3WTFqlG5UlVi0xUcHD9TBtbg1TkYgQ/Buxv0D10wf7iHTDij8
+         PIuUq9mRPnjvugzbC2uZWxtKp9SIlSb1kj5rSLspiUlhIGaINA+I/03F/k+rqslu+2h7
+         prMG9ktzBh/gCiaZY500RbP3U1wh9UTVzpz8CxXyP0So96Ryi4kLwwEpdaa43p+wiqvn
+         Y/ptd+Zsjm8CESU2pjyFoAAWjtjCO/6Yd4FmptTQJVnKB3WWoUT5Pw8Qnr55ksWSfoFp
+         sIiA==
+X-Gm-Message-State: AOJu0YzbGsposmMQIiwMlPKvokI7vWnNgyJS15NyWsTQhclVzqb1OdUu
+	F6B4McBRzuru18zwh+Nf/25iWDzZQqs82vxl+PGcxNeEwmVTGMQZ2LF3pATz4zEHwHZG8rsRTH1
+	aKlwzXnEh32XteSA+Jo/26IhHxwxOLOJRbg0DtjM6qps4bILtoQc1Tg==
+X-Gm-Gg: AeBDietInwiZ8epUJPLCRQGFJYwFbKzrVrxMXz6aV6KqKMjZmDfRX1iCG6pBoqKu3G5
+	+nURuTtj8go6Q9Ikwb1e/52LItqgwEj6aziJerAcHO+TTKdKZqaJdVeZZ4SYtiB4aKyGLbwQRo2
+	mPf46SJ87fuKDWb3BD5Ahb2xba30NDw1uUq4B8XYpKMjZ5vKjVG7qHpnTclvc34lAnPBe8TlVei
+	g4DRiu3ieqz4hV032BR4DkHxV64Ae5/Frx8OAJUMF0EUuRK1ESw7Du7P2unaAfIGptN9O1Z5PK8
+	YOpMm0Zv7itw9Y9mS62pTBTQoYU8LM6qJzql6MZGQgYGXifwSyspIRg67sy1ysL9bIefOKCh+js
+	wTGrGhN4zMQqiSTajZWSoggs3QfwT1v3h9Lanki+hDtyZV9iZgWyRW47ueSTK
+X-Received: by 2002:a05:600c:1d86:b0:485:4388:3492 with SMTP id 5b1f17b1804b1-4889970d844mr239703635e9.11.1775553245330;
+        Tue, 07 Apr 2026 02:14:05 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d86:b0:485:4388:3492 with SMTP id 5b1f17b1804b1-4889970d844mr239703185e9.11.1775553244880;
         Tue, 07 Apr 2026 02:14:04 -0700 (PDT)
-X-Received: by 2002:a05:600c:620d:b0:485:fbd2:f72 with SMTP id 5b1f17b1804b1-4889945faa5mr212239435e9.1.1775553243640;
-        Tue, 07 Apr 2026 02:14:03 -0700 (PDT)
 Received: from lleonard-thinkpadx1carbongen13.rmtit.csb ([176.206.19.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48895e19c10sm342892015e9.8.2026.04.07.02.14.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48895e19c10sm342892015e9.8.2026.04.07.02.14.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 02:14:03 -0700 (PDT)
+        Tue, 07 Apr 2026 02:14:04 -0700 (PDT)
 From: Luigi Leonardi <leonardi@redhat.com>
-Date: Tue, 07 Apr 2026 11:13:56 +0200
-Subject: [PATCH net v2 2/3] vsock/test: handle MSG_PEEK in `recv_buf`
+Date: Tue, 07 Apr 2026 11:13:57 +0200
+Subject: [PATCH net v2 3/3] vsock/test: add MSG_PEEK after partial recv
+ test
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,7 +88,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-fix_peek-v2-2-2e2581dc8b7c@redhat.com>
+Message-Id: <20260407-fix_peek-v2-3-2e2581dc8b7c@redhat.com>
 References: <20260407-fix_peek-v2-0-2e2581dc8b7c@redhat.com>
 In-Reply-To: <20260407-fix_peek-v2-0-2e2581dc8b7c@redhat.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>, 
@@ -104,74 +105,84 @@ Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
  Luigi Leonardi <leonardi@redhat.com>
 X-Mailer: b4 0.14.3
 
-`recv_buf` does not handle the MSG_PEEK flag correctly: it keeps calling
-`recv` until all requested bytes are available or an error occurs.
+Add a test that verifies MSG_PEEK works correctly after a partial
+recv().
 
-The problem is how it calculates the amount of bytes read: MSG_PEEK
-doesn't consume any bytes, will re-read the same bytes from the buffer
-head, so, summing the return value every time is wrong.
+This is to test a bug that was present in the
+`virtio_transport_stream_do_peek()` when computing the number of bytes to
+copy: After a partial read, the peek function didn't take into
+consideration the number of bytes that were already read. So peeking the
+whole buffer would cause a out-of-bounds read, that resulted in a -EFAULT.
 
-Moreover, MSG_PEEK doesn't consume the bytes in the buffer, so if the
-requested amount is more than the bytes available, the loop will never
-terminate, because `recv` will never return EOF. For this reason we need
-to compare the amount of read bytes with the number of bytes expected.
+This test does exactly this: do a partial recv on a buffer, then try to
+peek the whole buffer content.
 
-Add a check, and if the MSG_PEEK flag is present, update the counter of
-read bytes differently, and break if we read the expected amount.
-
-This allows us to simplify the `test_stream_credit_update_test`, by
-reusing `recv_buf`.
-
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
 ---
- tools/testing/vsock/util.c       |  8 ++++++++
- tools/testing/vsock/vsock_test.c | 13 +------------
- 2 files changed, 9 insertions(+), 12 deletions(-)
+ tools/testing/vsock/vsock_test.c | 43 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-index 9430ef5b8bc3..f12425ca99ed 100644
---- a/tools/testing/vsock/util.c
-+++ b/tools/testing/vsock/util.c
-@@ -399,6 +399,14 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
- 		if (ret == 0 || (ret < 0 && errno != EINTR))
- 			break;
- 
-+		if (flags & MSG_PEEK) {
-+			if (ret == expected_ret) {
-+				nread = ret;
-+				break;
-+			}
-+			continue;
-+		}
-+
- 		nread += ret;
- 	} while (nread < len);
- 	timeout_end();
 diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 5bd20ccd9335..bdb0754965df 100644
+index bdb0754965df..d38a90a86f34 100644
 --- a/tools/testing/vsock/vsock_test.c
 +++ b/tools/testing/vsock/vsock_test.c
-@@ -1500,18 +1500,7 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
- 	}
+@@ -346,6 +346,44 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
+ 	return test_msg_peek_server(opts, false);
+ }
  
- 	/* Wait until there will be 128KB of data in rx queue. */
--	while (1) {
--		ssize_t res;
--
--		res = recv(fd, buf, buf_size, MSG_PEEK);
--		if (res == buf_size)
--			break;
--
--		if (res <= 0) {
--			fprintf(stderr, "unexpected 'recv()' return: %zi\n", res);
--			exit(EXIT_FAILURE);
--		}
--	}
-+	recv_buf(fd, buf, buf_size, MSG_PEEK, buf_size);
++static void test_stream_peek_after_recv_client(const struct test_opts *opts)
++{
++	unsigned char buf[MSG_PEEK_BUF_LEN];
++	int fd;
++
++	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
++	if (fd < 0) {
++		perror("connect");
++		exit(EXIT_FAILURE);
++	}
++
++	memset(buf, 0, sizeof(buf));
++
++	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
++
++	close(fd);
++}
++
++static void test_stream_peek_after_recv_server(const struct test_opts *opts)
++{
++	unsigned char buf[MSG_PEEK_BUF_LEN];
++	int fd;
++
++	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
++	if (fd < 0) {
++		perror("accept");
++		exit(EXIT_FAILURE);
++	}
++
++	/* Partial recv to advance offset within the skb */
++	recv_buf(fd, buf, 1, 0, 1);
++
++	/* Ask more bytes than available */
++	recv_buf(fd, buf, sizeof(buf), MSG_PEEK, sizeof(buf) - 1);
++
++	close(fd);
++}
++
+ #define SOCK_BUF_SIZE (2 * 1024 * 1024)
+ #define SOCK_BUF_SIZE_SMALL (64 * 1024)
+ #define MAX_MSG_PAGES 4
+@@ -2509,6 +2547,11 @@ static struct test_case test_cases[] = {
+ 		.run_client = test_stream_tx_credit_bounds_client,
+ 		.run_server = test_stream_tx_credit_bounds_server,
+ 	},
++	{
++		.name = "SOCK_STREAM MSG_PEEK after partial recv",
++		.run_client = test_stream_peek_after_recv_client,
++		.run_server = test_stream_peek_after_recv_server,
++	},
+ 	{},
+ };
  
- 	/* There is 128KB of data in the socket's rx queue, dequeue first
- 	 * 64KB, credit update is sent if 'low_rx_bytes_test' == true.
 
 -- 
 2.53.0
