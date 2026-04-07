@@ -1,153 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B303B4E85
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5510D3B38A8
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775565243; cv=none; b=htlIXg+IY5NoCbFtbQWKKZZklCx0kJmyOFVU9zwPCOz9jpm/aJHWrrFFhA7ho2SUj+o0cloukGJoGHHLvK2toaQ+n+ITM3aNhwQq5Az1BbVTi2O4lVrICy8DWw103hd/zHG0jypJ7LV28jxSN9zJU/5m9xi9Jey8lyJKSFBU2p8=
+	t=1775565704; cv=none; b=FKBM5LUeijGpgrnFmqvZtKynKjz8FSbjR0W5KW+YppFYNZB71yNwdSb5IAU6BcZRsdipFGOnfHy7B/1LFGqtTPLOFauUoA4oJw5ri/dear1bUzREImVM1eaeWxTaTF97gjv5XSArPDhr17ny3IOGYWM1WvadHu2Ofr0PoQvxdmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775565243; c=relaxed/simple;
-	bh=VEMlzOGb1a/HxHduVMiUFvzh5xYiP4iFFkRq1PGdLTQ=;
+	s=arc-20240116; t=1775565704; c=relaxed/simple;
+	bh=h+Q+4GDMZ0Hnfe+YIBStnMoQmrnrXoWxr2IqRHz2y98=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EB4wQ9EcPzogegjbYDbqX3ogxXqixfhRdio+G2r4ZO8BOIOzU9fRtSia/EZ+8OPZmzIJRPxGxCwpF/BBEJD8QTEFa5xY/UXIJ2ZLWpkg+DLcUiHse52qOVRTCqejiw7HvLV8gpX59GnuxORha2zmVahc+Gz7MrLLVMOkNk9eV6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3/TpGYi; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=hxA5VySEFqzuJNF2KYKn+uhhtp3pb3oxKrWusBoj1u1vBRPNjiAN+LkZhxqoCrviHEVOt7x8hLbLnsMteAyS398Bt0o3kz+M30PVXuSde+B5XeRHhJV5BbAn92kyY0T+e6VaQexxgJ8FYY/YMt0MHBC43zE235V21QMF0h++mwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE1Q7GD4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3/TpGYi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86235C2BCB4
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:34:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE1Q7GD4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1090DC116C6
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775565243;
-	bh=VEMlzOGb1a/HxHduVMiUFvzh5xYiP4iFFkRq1PGdLTQ=;
+	s=k20201202; t=1775565704;
+	bh=h+Q+4GDMZ0Hnfe+YIBStnMoQmrnrXoWxr2IqRHz2y98=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=k3/TpGYiFf5GCJGMwz7Vd7/GPmXqUSxHxdBYcSi+9pB4phmHA2uc8X+ODktOt2elm
-	 CWPPeeafakspYSGJKyHFTIorSR6KR7bRV/7HkbIK/MXLfWSRMj9Hi2v4xofWnCKo3q
-	 W/e5qKm8Sb8zLMpY0ZFnV3Bc22DaJYG+j199hfc6ybPk39BneK6XixcJa4gvUBAd7x
-	 RH6teZjoEA93Xzkq6A/cmJq6HNSTapWWpCyiI3hSojbSAsorl7d5mQcySYp5Fbg51x
-	 axnlMoLN4WaZKLfJxLb4qjMWgI3WCgdeT697FDbyb7+rF/t5UvG+iDU5eg/Ur2wh/j
-	 n2vXlb+/uFIbQ==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-66d24c6963bso8866484a12.1
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 05:34:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVyk16Ld1bQyvzgdMAbT48H3Ip65tDX9NTJbkMlURlXt/iAPzmMlsVvoGpLwA593wA/ILU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqrXUmsCYP86M3ZpvYM9VelVItX5NCcEr9OaPgEJzjUx2h7g8D
-	dZsdXOu2o/mW2LseCgdvTKbJPfIG9sC2Gu4HUEFvrCbgKX4k1RBNamsL7XtwTMwzuy8DTWWTw4S
-	ORjbPL/eryjhr2ZiFlVKaosJnIXWzpS8=
-X-Received: by 2002:a17:907:2d08:b0:b9c:bc08:7a9a with SMTP id
- a640c23a62f3a-b9cbc087b43mr467336366b.10.1775565242030; Tue, 07 Apr 2026
- 05:34:02 -0700 (PDT)
+	b=mE1Q7GD4xGJey5SQiMcJ6aaFcJiur97WGv9vGxDyWbbOdWuGGoMH0t2aITY+TnMI+
+	 rkT20C5tMQmhnpd3chyN2aTtQtOoKZl7glFQ77+WDFkBPqZus5Y4eK7frrZDt7yAv/
+	 hedsFrtInnvj3fu9Yce8Rzk5IddwdFXp8QOfpmLLk10xVruzZqHf94KoEzqi1xjyIf
+	 QIwZD7oxN//yF2QWpbsveLBbI56h7roboPPBXz8ytQOkC4meY++pFtHAIWEW7HvdQF
+	 LoDQUyJdF2raV6AwGRZ/fB2/t3dvb5GT++AywPNApM74wGh5tZp4Q5qzLviE2zg88S
+	 qj5mmfnh/g62Q==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66f3093a9c7so1978418a12.0
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 05:41:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUjdnNu8BnGyedaR2W/cBmVMPX/nXSq8DfR51scEecfPF/sB623xdJfYsd69A74F1ZoG0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylC2Tba48CYzoUHlZ66aZFLYBfu9KEGnATw2S2pZjoVcqPJ5DU
+	Xkmk5/pd6vJUrGWBFH6wbQsH52LP+y86Opx6ds6u2vxTBrJE/dp+T/KP9sKyJu2ff2OLHpbLAuB
+	m8Aptvvn1r5MgYJUhPhJQ0+mXYbO/CCg=
+X-Received: by 2002:a17:906:2092:b0:b9c:578c:50a8 with SMTP id
+ a640c23a62f3a-b9c67b51d8bmr454940766b.51.1775565702525; Tue, 07 Apr 2026
+ 05:41:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260402124237.4174550-1-gaosong@loongson.cn>
-In-Reply-To: <20260402124237.4174550-1-gaosong@loongson.cn>
+References: <20260330035832.2204720-1-maobibo@loongson.cn> <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
+In-Reply-To: <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 7 Apr 2026 20:34:07 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7K8ayLGFMhPwp8uqr3JHdpL1dWOvo2zuVj_3fB2CWPeA@mail.gmail.com>
-X-Gm-Features: AQROBzCDTq69_5d4U4HXwKjMWiUAKrYN4_1kN5HH5qhNbW4mJm1Ti6IjNhRyEMQ
-Message-ID: <CAAhV-H7K8ayLGFMhPwp8uqr3JHdpL1dWOvo2zuVj_3fB2CWPeA@mail.gmail.com>
-Subject: Re: [PATCH v9 0/2] LoongArch: KVM: Add DMSINTC support irqchip in kernel
-To: Song Gao <gaosong@loongson.cn>
-Cc: maobibo@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	kernel@xen0n.name, linux-kernel@vger.kernel.org, lixianglai@loongson.cn
+Date: Tue, 7 Apr 2026 20:41:48 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
+X-Gm-Features: AQROBzCBBI_saF5lD1_UiUpPEskuaOdGRbMYtW9Y6QETl82j9p9eWRoziBEvZHw
+Message-ID: <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] LoongArch: KVM: Set max VM supported FPU type with
+ FPU exception
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Song,
-
-On Thu, Apr 2, 2026 at 9:08=E2=80=AFPM Song Gao <gaosong@loongson.cn> wrote=
-:
+On Mon, Mar 30, 2026 at 6:00=E2=80=AFPM Huacai Chen <chenhuacai@kernel.org>=
+ wrote:
 >
-> Hi,
+> Hi, Bibo,
 >
-> This series  implements the DMSINTC in-kernel irqchip device,
-> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI inter=
-rupts
-> to the target vCPU.
-> applied this series.  use netperf test.
-> VM with one CPU and start netserver, host run netperf.
-> disable dmsintc
-> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
-> Local /Remote
-> Socket Size   Request  Resp.   Elapsed  Trans.
-> Send   Recv   Size     Size    Time     Rate
-> bytes  Bytes  bytes    bytes   secs.    per sec
 >
-> 212992 212992 1        1       36000.00   27107.36
+> On Mon, Mar 30, 2026 at 11:58=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> w=
+rote:
+> >
+> > With FPU save and restore flow, the cost is the same with different
+> > FPU width 8/16/32 bytes, whatever from CPU cycle and cache line impacti=
+on.
+> >
+> > Here is to enable FPU with max VM supported type, for example if
+> > VM supports LASX instrction, enable FPU with LASX type even with FPU
+> > exeception. So it can avoid possible LSX/LASX exception in future.
+> >
+> > With context switch microbench which may touch FPU and LASX, there is 9=
+%
+> > improvement when halt_poll_ns is disabled. The command is
+> > "./context --test=3Dpipe" and source code located at:
+> >   https://github.com/bibo-mao/context_switch/blob/main/context.c
+> >
+> > Original     Wih patch      improvement
+> > 75232        82440          9%
+> >
+> > Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> > ---
+> > v1 ... v2:
+> >   1. Enable FPU with max VM supported FPU type, rather than max used ty=
+pe.
+> >   2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
+> >   3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+> >   3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
+> >   4. Remove middle FPU state handling in kvm_own_lsx() and kvm_own_lasx=
+(),
+> >      directly enable LSX or LASX from FPU none state.
+> > ---
+> > Bibo Mao (6):
+> >   LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
+> >   LoongArch: KVM: Enable FPU with max VM supported FPU type
+> >   LoongArch: KVM: Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+> Patch-1 add KVM_REQ_LBT_LOAD, then KVM_REQ_AUX_LOAD is only for FPU,
+> so I think Patch-3 should be squashed into Patch-1.
 >
-> enable dmsintc
-> Local /Remote
-> Socket Size   Request  Resp.   Elapsed  Trans.
-> Send   Recv   Size     Size    Time     Rate
-> bytes  Bytes  bytes    bytes   secs.    per sec
->
-> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
->
-> v9:
->  *Correct the incorrect parameter type and remove the function prefix;
->  *Fix a boundary value check.
-It seems your V9 is changed from V7 rather than V8, why?
+> >   LoongArch: KVM: Remove some middle FPU states
+> >   LoongArch: KVM: Use vm_guest_has_fpu API in kvm_lose_fpu()
+> >   LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
+> Patch-5 remove the consumer side of KVM_LARCH_LASX / KVM_LARCH_LSX and
+> Patch-6 remove the provider side of KVM_LARCH_LASX / KVM_LARCH_LSX, so
+> I think Patch-6 should be squashed into Patch-5, too.
+And could you please test the power consumption where there are many
+VMs that only use FPU rather than LSX/LASX? As far as I know, the
+power consumption of LASX is significantly more than FPU, which is a
+little similar to AVX512 (Linus said it is a power virus).
 
 Huacai
 
 >
-> v8:
->   *Move dmsintc_inject_irq(),dmsintc_deliver_msi_to_vcpu()and
-> dmsintc_set_msi_irq to dmsintc.c.
->   *Rebase.
 >
-> v7:
->   *Rebase;
->   *Fix a typo error;
->   *Drop an extra space;
->   *Move some code from patch2 to patch1.
->   *Rename loongarch_dmsintc_inject_irq() to dmsintc_inject_irq() and move
-> it to interrupt.c;
->   *Rename kvm_loongarch_deliver_msi_to_vcpu() to
-> dmsintc_deliver_msi_to_vcpu() and move it to irqfd.c;
->   *Drop loongarch_set_msi() and dispatch the dmsintc/eiointc
-> paths in pch_msi_set_irq().
+> Huacai
 >
-> v6:
->   Fix kvm_device leak in kvm_dmsintc_destroy().
->
-> v5:
->   Combine patch2 and patch3
->   Add check msgint feature when register DMSINT device.
->
-> V4: Rebase and R-b;
->    replace DINTC to DMSINTC.
->
-> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
->
-> V2:
-> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
->
-> Thanks.
-> Song Gao
->
->
-> Song Gao (2):
->   LoongArch: KVM: Add DMSINTC device support
->   LoongArch: KVM: Add dmsintc inject msi to the dest vcpu
->
->  arch/loongarch/include/asm/kvm_dmsintc.h |  23 +++++
->  arch/loongarch/include/asm/kvm_host.h    |   3 +
->  arch/loongarch/include/asm/kvm_pch_pic.h |   4 +-
->  arch/loongarch/include/uapi/asm/kvm.h    |   4 +
->  arch/loongarch/kvm/Makefile              |   1 +
->  arch/loongarch/kvm/intc/dmsintc.c        | 117 +++++++++++++++++++++++
->  arch/loongarch/kvm/intc/pch_pic.c        |  15 ++-
->  arch/loongarch/kvm/interrupt.c           |  37 +++++++
->  arch/loongarch/kvm/irqfd.c               |  48 ++++++++--
->  arch/loongarch/kvm/main.c                |   6 ++
->  include/uapi/linux/kvm.h                 |   2 +
->  11 files changed, 251 insertions(+), 9 deletions(-)
->  create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
->  create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
->
-> --
-> 2.39.3
->
+> >
+> >  arch/loongarch/include/asm/kvm_host.h |  6 +--
+> >  arch/loongarch/kvm/exit.c             | 21 +++-----
+> >  arch/loongarch/kvm/vcpu.c             | 78 ++++++++-------------------
+> >  3 files changed, 30 insertions(+), 75 deletions(-)
+> >
+> >
+> > base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+> > --
+> > 2.39.3
+> >
+> >
