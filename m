@@ -1,93 +1,140 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1529352F87
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 19:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286F3126C17;
+	Tue,  7 Apr 2026 20:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775589875; cv=none; b=PFQ4diiOvClGI0pYwZbe3e3OWyRfGNEPyHfdiElWskxVxwLuoTD7yfdEguOBDZzPwxa9jMquKF8ljIiNRjl9myuobkN4Sxd3pzch9dK0ZJLAP7gwd+bih01nFj7g+SsCWit+LOjqh3DNvj0xMr1qIzdDEeP+wcR/fI2+JpetF1U=
+	t=1775592999; cv=none; b=uOdL/oHusYWcTcxNyv2twr5jsGNZ0LKc8MkH1itxCPJE5Ip/vKzZ5IpBWW0F9SdvzEriHo+xZkGM+l0XGmwUvDOTLAjQxILBj7DMkdZGpgX6AQNLqEOPhndQWKrYMKg85hLaLVwVJ6SLP8ZGLESk0FS9vn388VzfcQURPixlugU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775589875; c=relaxed/simple;
-	bh=dE58CN+5pXsLJfZ7un3dRhyZAs4NnQnCZRafu7/oZ+A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OAIO7odJRwdYTz8YN3bENFIHTOAs9Kh3k7S/+Uzmin2vrtf84uby9ZGnaUC0melJtsd1tC90bcKS4tnMeMXNHQsL1l/hhOY2BbONDgrPyY9YWFCFz54duspK+Z9GPJy7nF+Jy/D3t92hu6m2EqawIv0cCV+4pEF0EEZoX6Zukn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u04P3Yjf; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775592999; c=relaxed/simple;
+	bh=LwFY1mVQ24/KusfYZIAhDC7WKNarVcmcLrCFoKLCSKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XhGh/jdA37KONx/0UPRxdN+8k7Gws5T6NzOcfWCCyc8PS72tYmR4xEBp0uaO8IAUYWfV2dE+7nsumyXX6xscda06Qtgl/xkqJ6qp+o6j2RkDsh4C3NpK7EosiIbniTrRPv1DpgGmn2mp2uSgtJlmCqVanOE4Y9bydV2NfKoujcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dtlKI2Tj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VQ+TpB8k; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u04P3Yjf"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76c60c74f3so2726745a12.2
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 12:24:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775589873; x=1776194673; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7wtvvz53Lt7PgkZRoHfUIRVyXND3bHhDv8n3Lk1Ll8Q=;
-        b=u04P3Yjf8H1IW9ka1QTHanRsghO0/EckAAmNRH1/lTjmLXL7HRhSoX4Tge3KKqdoKH
-         LhEX5Mj2XvqDs9oiH7jMb3RmRojpN8clCPOFanXhKsSj/72iFC9SUSmqiqZ3LY8us0I8
-         8OPEt+2nxQ8WuDy2Ac8EHCIoKt4lIx2gNZuguJRFr1WkxGW8zftUmAQFZXI02jNIp6hr
-         41hVR9hVS9HAhii0MZmi4E8gToEVLovSEcY8dkoi4egwLgFyx2Jy30AKxQPIa9lP/9iP
-         I8j/KIV0/J1rT9SV5HaLrclMbJLBOW4NYqZnCoJJfH+l8RHE9+R+HoGlpiT4A8tUpgu9
-         jXhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775589873; x=1776194673;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7wtvvz53Lt7PgkZRoHfUIRVyXND3bHhDv8n3Lk1Ll8Q=;
-        b=YO2Wjvq23eP58vbpkK5Q4TEKvU1inMudTBQI2RollY8n4H2+PYn6lLl0IrIwhZJRJt
-         D2IfzUL+u15MwaseW3jH8EJCdEPwrwSJ7wNAmU1QkSUMRzx1p3mwAhhu9tgfIuAykEmJ
-         kWCzV/7wK6RcKX9MMj6VPDPHJQDLSi42cMzSsS1eb117MQ67/zaMcvY9RnO9nDpR3lOB
-         2/Nlvxa0HF/vusuRYUEdgkLOsgCu8KFNP0rt4UA/UAND5tMxWZI4pURdkEAim7rPX6ut
-         803wzKtZR5dKeZ2UImsfD2npuvfx2nVvzvjm40BY8THS0er1Nd9opxVCYWQ5otEet/3h
-         0c8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUGnBP4TwffYj00D+O/X8bwY8FjEEN2HXYFtNtlef0x5RnXNIH3hREtgo39HUuxgMPSEXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwQHMBElJsTaGQm5mVLT3XBfqTUQB2aLc8nUPkIIMar66YkTYx
-	5JeVQY94RSRr6gBrVs1k/7w3HzCzBSsSgfGgTF8H+fBXdUx9bjrOkWt2d5lImHIR3nVVV2DNFW9
-	qEFbLvA==
-X-Received: from pfqf9.prod.google.com ([2002:aa7:9d89:0:b0:82c:ed07:26b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:88cd:0:b0:827:2ee0:411f
- with SMTP id d2e1a72fcca58-82d0da46a75mr16920069b3a.4.1775589873116; Tue, 07
- Apr 2026 12:24:33 -0700 (PDT)
-Date: Tue, 7 Apr 2026 12:24:31 -0700
-In-Reply-To: <20260407190343.325299-6-jmattson@google.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dtlKI2Tj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VQ+TpB8k"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 400EC1400220;
+	Tue,  7 Apr 2026 16:16:35 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 07 Apr 2026 16:16:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775592995;
+	 x=1775679395; bh=oof9miOzpJB+K+GJeE52JxyJ49VY2FQD+2dPrLz3gcc=; b=
+	dtlKI2TjCvcVPqaNA3/qYH7T+ILNhxq4f0JhKIbWs0mi0eluTFLCbXX9d+KWNNyO
+	mw9DgzKww/MnJDbOIAEnotOM+WRppdPM2QkBwd/iRm5esHWtT3E+B0UtsBYnWneJ
+	k1x3mimVCyyAsfaA39ZiSwCiV0V5rnX+HxuL+4poUqKIzf0qzQQWvqFC4I/+NIPU
+	RO/vtjTaAyHWe/Hwu1igGhCBN0g6aDM4MUJIhaCzyPJrA5JTYNqZ5YaIKc7X2DdT
+	qAzLevcRphwDCC2IpUjpj0iJkNNntUZE7AeV5mudtA+M2T1DMcRr96pw1AEkb25P
+	wGVABUcg3CwcvCLNQYCl2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775592995; x=
+	1775679395; bh=oof9miOzpJB+K+GJeE52JxyJ49VY2FQD+2dPrLz3gcc=; b=V
+	Q+TpB8kBCdnRiMimc/aXiDBNDg58prSqDRuV4fwy01iu8OGJcfcbacp8cnjQgkgG
+	0WAJ704wMxxcQHdxH3o0lAmWz0FHxnNfPMpgSBjVm7z0ULC4Uz/Omel+gXcysubu
+	iJfoSjF2UVvx+K3d5vtEwTpywZDv54DfeHkp6h2knKhid/rfUvpWjnb9h42kMmaj
+	1SFb/U2VvDTkoHGmkAFGk0gpMn2xN1fxnmxLdxkPsYbeuI5ZZ74d5hyPh5fm0In7
+	QoFsdB/dZVGjszEf/f4UzjUW9WtYnM7ddqim3oMipIiJRGTnp7vcsvFyKoYTkhIH
+	pKUSyEWAB4BueBbqAsOgA==
+X-ME-Sender: <xms:ImbVaRW-90TSJI6Hmp6zhtdy8AAPo4vRJUySuCyE40RigJSUOWBYuA>
+    <xme:ImbVaagmm2dfzFUVaenm9A2-5TJ2Suo35AvbThJk7eEASKMSbhgSW50tHxCIp-qkb
+    aRf6AI8qztmo6DCogN7PwFa1u7kbXAAR8idniVF_Pbw6u6n84_c2N8>
+X-ME-Received: <xmr:ImbVaY-t4yrDtRf15-q8MPP8YrvtjwE-jKBtpgRYtNcZ--prkk-JkW6ZqwQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvudeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
+    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeehpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrghdprhgtphhtth
+    hopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidq
+    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhvmhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsvghiuggvnheslhhinhhugidr
+    ihgsmhdrtghomh
+X-ME-Proxy: <xmx:ImbVaUahJMrcSBgLtGAB6GIfUzEYmc49N0q_PYJQP2WuKDQQn-HRqA>
+    <xmx:ImbVaX3pyKNcPkXh2et-OPLoXR1ePj7tddksJWeBobNfO9OnSAPSrA>
+    <xmx:ImbVafYne8dUcS1GA94GS5hgQVmVJsF0NWtlDKoiZKpDMp4L7S8Jkg>
+    <xmx:ImbVafLWlCYw7Zcv_PWS8C013BTylmEQwTP2ZJrtc4Jy461SK9q1Iw>
+    <xmx:I2bVaUGj4M9kb6Us5rg22LdRLgwXCZBhEo558AujNoje_bUkWobkTW5D>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Apr 2026 16:16:34 -0400 (EDT)
+Date: Tue, 7 Apr 2026 14:16:32 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: alex@shazbot.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Steffen Eiden <seiden@linux.ibm.com>
+Subject: Re: [PATCH 0/3] KVM, vfio: remove exported KVM symbols
+Message-ID: <20260407141632.39ba9d59@shazbot.org>
+In-Reply-To: <20260407180107.1603697-1-pbonzini@redhat.com>
+References: <20260407180107.1603697-1-pbonzini@redhat.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260407190343.325299-1-jmattson@google.com> <20260407190343.325299-6-jmattson@google.com>
-Message-ID: <adVZ7-EiekghvDMD@google.com>
-Subject: Re: [PATCH] KVM: x86: nSVM: Redirect IA32_PAT accesses to either hPAT
- or gPAT
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 07, 2026, Jim Mattson wrote:
-> When KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT is disabled and the vCPU is in
-> guest mode with nested NPT enabled, guest accesses to IA32_PAT are
-> redirected to the gPAT register, which is stored in VMCB02's g_pat field.
-> 
-> Non-guest accesses (e.g. from userspace) to IA32_PAT are always redirected
-> to hPAT, which is stored in vcpu->arch.pat.
-> 
-> Directing host-initiated accesses to hPAT ensures that KVM_GET/SET_MSRS and
-> KVM_GET/SET_NESTED_STATE are independent of each other and can be ordered
-> arbitrarily during save and restore. gPAT is saved and restored separately
-> via KVM_GET/SET_NESTED_STATE.
-> 
-> Use WARN_ON_ONCE to flag any host-initiated accesses originating from KVM
-> itself rather than userspace.
-> 
-> Use pr_warn_once to flag any use of the common MSR-handling code (now
-> shared by VMX and TDX) for IA32_PAT by a vCPU that is SVM-capable.
+On Tue,  7 Apr 2026 20:01:04 +0200
+Paolo Bonzini <pbonzini@redhat.com> wrote:
 
-Changelog is stale, but otherwise this LGTM.  I'll fixup the changelog when
-applying (in a few weeks).
+> KVM right now exports three symbols for the whole kernel to manage
+> the reference count of "struct kvm"; these are used by VFIO just to
+> keep the "struct kvm" alive.  This can mostly be replaced
+> by inlines, and in fact the entire definition of struct kvm can be
+> made opaque to VFIO.
+> 
+> Besides the cleanup of removing the sort-of-deprecated symbol_get() and
+> the bidirectional dependency between KVM and VFIO, this is useful for
+> the recently posted support for Arm VMs on s390.  In that scenario each
+> KVM implementation module wants to have its own copy of kvm_put_kvm()
+> in order to call the "right" kvm_destroy_vm().  With multiple modules,
+> VFIO has no way to do a symbol_get() from the right module.
+> 
+> With this series, that problem is gone because kvm_put_kvm dispatches
+> through a function pointer, set by whichever implementation creates the VM.
+> The main issue is that symbol_get() was implicitly taking a reference
+> to the KVM module, and that has to be preserved.  This is the purpose
+> of patch 1.
+> 
+> Thanks,
+> 
+> Paolo
+> 
+> Paolo Bonzini (3):
+>   VFIO: take reference to the KVM module
+>   KVM, vfio: remove symbol_get(kvm_get_kvm_safe) from vfio
+>   KVM, vfio: remove symbol_get(kvm_put_kvm) from vfio
+> 
+>  arch/x86/kvm/mmu/tdp_mmu.c |  2 +-
+>  arch/x86/kvm/vmx/nested.h  |  4 +--
+>  drivers/vfio/device_cdev.c |  2 +-
+>  drivers/vfio/group.c       |  5 ++--
+>  drivers/vfio/vfio.h        | 15 +++++++----
+>  drivers/vfio/vfio_main.c   | 51 ++++++++++++++------------------------
+>  include/linux/kvm_host.h   |  9 +++----
+>  include/linux/kvm_types.h  | 30 ++++++++++++++++++++++
+>  include/linux/vfio.h       |  4 +--
+>  virt/kvm/kvm_main.c        | 34 ++++++-------------------
+>  virt/kvm/vfio.c            |  4 +--
+>  11 files changed, 80 insertions(+), 80 deletions(-)
+> 
+
+Looks clean.
+
+Acked-by: Alex Williamson <alex@shazbot.org>
