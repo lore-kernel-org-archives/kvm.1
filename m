@@ -1,195 +1,141 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72F43CD8C3
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 15:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775576881; cv=pass; b=kvCpEZYTuIx7Y42LDvwoMNmOcuUK9uI5qFuIhtEqGdTFbOWnCCpU6MJ7GeS1BHFJbpEs71wRnd6dbFJ3nBFKsg/IdEmda4k4Y0gDGOPaN/5En12/2qzDzQj77ic/ICyVchIAtPplzHwkfkKGfcbRQjGdIYiWxq33X/h9hAKvyBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775576881; c=relaxed/simple;
-	bh=T2uG1PHZ2DZKJc4V1Fkt5QBNKproLnPf5esVaJ56cdU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pVDoHc9Jks0xe6tO/4TLd99Hac7UE/hNVz0n9il1nDsrJs8Uyk7RExNXjiPiwNekBNHmrPQqC/mujJ9TIe3vtg70ULdlCbC8L/DDepd5Gmz4DiHErUJkWYxygHKDRKHw/uGp5ThQHahOY3EJ98xwXMNvHwCDq4Wngmey8fw9dFg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GZEhTf10; arc=pass smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC903C73EA;
+	Tue,  7 Apr 2026 15:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775577230; cv=none; b=dbCKz3VnoX1dhALFBbcQs4i5LAIPN3GQ6Mfgvop3U0FndMMM+bqsoyCfemCYU5BNTl7DnT6eImVuv7e2TIX/Wu5S8YiUjjgrGXPQd9Zon+W0F+MQZ/tgQJUy0xfy20FhnV0cZvNl74iNCOepH4OiWQ0wD3uEFEO9jabw60ImFeE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775577230; c=relaxed/simple;
+	bh=gBboB7jILXBFr9ffJFnBzf1ojSwiF96vUM3rbWEfdwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hfm/KvyrMfvNrUH+Jjx5a5U6k+dWObZiZIzWjiG3TeddPIhGBqHbUuzLJE2LT01uqrKFNH64q+CY+PsmNxC1aPcZnOfNz0IcmdWMMPGso5Wneqyv7uiibOORa2K3rFXC1ImVok88Cc02mk03Bhx1CibYukym9QVtTTrH1mZ8AJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lQzkBrGf; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GZEhTf10"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-66bb7118c96so40866a12.0
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 08:47:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775576862; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hbbpA1/1OUc4FoGRxIWcM/qmtDenN7EOkebyHh1UrW2vXxeCQoxm41/xru4NRu1NQp
-         fzXg8Z+Wv8jMzcKckoJTbO7Ugkev9dDLa4HCKUD/cq3Lcdzx+G3iUvsGskeHIruuVVVx
-         xDq42GYckzWOe4lgHvrXuwJ26qaQhU+G2J5kk+H6rdJjr/1g1V8D6aJXTUwOzTlkFXlC
-         bzPxgmM7KoROG2JEObhLCEG8Kn27T8ACZTXnvf3Gc+fDbQds7ifnINR0usF1yv/b3moH
-         ZRxJKA1kNexZcz/NEZ4zrObdI3MX9Y3D30GZgIpxixyL/Lzu8DkDAOTa5Tg2qVj+XTPn
-         78gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OW0PL7Trk5Nbi8kfx4y+iqIlG6zAN+Q5XpqbwQzl6Ao=;
-        fh=pW/oq1nKETcyCWC471rvYnn8zokJNQXGuBhSIqWmbtI=;
-        b=aJcP4OJ73FIyVXsqNHiRPpHkJixYUUYveb8BHteQ6lZC4VNQVPVjtsQNf6OapACFEC
-         mHw8YOK1ZFXm1ssJEmn0bgNlrXgbfw33rsh3G27wu2LJ7RnRp+gnUCCZ4uxzqIcWtOq7
-         6OkswiQvHH/ZHhBhg5YWxFNBSPccJuiymaFU29j7w6SCvCJUbjNxfLYZ/M72Blt6Myl4
-         JGFvHu1uHqOTb7i5PaYylQic2/jM5mcvpLqurlbMePhJ3nq5ycXIajd9Yajm1sfn9Ld6
-         ravA/dFoe5eYxXs8k6RxqXRXUpW0zb69jiSESopqmBkTdaA8WxoeXS+TMQge6hbA2Jau
-         i6FA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775576862; x=1776181662; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OW0PL7Trk5Nbi8kfx4y+iqIlG6zAN+Q5XpqbwQzl6Ao=;
-        b=GZEhTf10cluMSMlPZxugEczYelJ8qkSlDVDCxhNasE8hHjXOUVNPL7lr5C9XgmpuIF
-         i/Ma+TUcfxVoOVZAKFwcpOm1EeL1oFIOCMAVbG9bQcTMNhiLOYcmvV/s8qUOzkcA7kE5
-         P6VTNiAQIqpr3Sz6hNDzJMe8dd0dhnTViQaBx4hlW3R72NOaYjIJvHnKCX8SbjJpTYIK
-         IxoOQlk2tAL+7Ohq74mMuXtjXKFq2zNRMMgaqmliF59TztI8mWEE/0lvNeUDAwrtehpU
-         XdyHuXghUlaAonzG9NpjlX9JPAHLp77O0fIglV7ZfBZfivJIE9NiWjWcZs63/cXKIMea
-         9LTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775576862; x=1776181662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OW0PL7Trk5Nbi8kfx4y+iqIlG6zAN+Q5XpqbwQzl6Ao=;
-        b=TciSM0m0yTxF5eMpQe4iU/b45u4e/P0/REyinjmn5dr2LhbyFVm2e6EM1eIfvD0+hJ
-         UYCiOR5l70IZ5+0DdlfS1GEY3nDQEk45q5h7QVPi6mMyrPONOiyZ0RpyGUMpfcpDscrX
-         F3Dzd0r/J+MkWe6rVEfwh6/TlaPgx+3s7Z0kgIgapVDe7IGivfY7MLlSx3I/icVs81KF
-         WZuh+8DXMJaMg6TXvhQIPKyJm3tcfeC7YfVVELFjsC7tQT7/gidcS7F15KXkPDxxZ339
-         HBBGn7yuWlns/SF3ad/6mOs3AzzlmIuAQy5y97Q94y8y9vfh/kTfynSzcd8AqvdLz0YL
-         PlhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUk9DsWVj13cvLozQhQ0+zoGijXEj3xgjhtb2iJn51951Tdd7VvJy7Gu20JF4Wida9mbfw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiPlzSvwc9//zKEV/JHaYaQv6uP9t52Y7qURjEX3pTFsf80WuY
-	z2uh9QcmAu5PIgopfs4tjzyhLE00sjBuAQxxw0LdQgSSPSgmiHwGG/ywWDqkXGGXzr6vswf7d6C
-	OBp9cM7b9HuLjDrG0weATZzT4/GHYulxZcVRWmRJ5
-X-Gm-Gg: AeBDietJ+/NXbCkF78Rw5wuKwxo1AM6HhjZX+9NDxk9QGMkx+a+yyNlNDm5gi/gFk7x
-	1fBk2VopO2jRXwc9JoB0mDO0pJd0DSsAcsE2ZfnOu+tK1hKa93juqNUS4zBCPlDvQL9Ly+cfaaE
-	zz6+9LcJPS3DLDuqrsHTmALyRJ4ZPljMyimp4CnZZpbqrpW47qVXT6mZeJiMKhJsLQILqYD/Bnv
-	5Jif5KlTXqkj1hnwIDZjA78NAEo4c1oiFmsBggMV3u8DXsvymyIahV4V3a9FgEjQ2PO5M7K2fnd
-	eqyl+xA=
-X-Received: by 2002:aa7:d1c5:0:b0:66b:99df:42e2 with SMTP id
- 4fb4d7f45d1cf-66e4136b6admr159703a12.10.1775576861215; Tue, 07 Apr 2026
- 08:47:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lQzkBrGf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775577224; x=1807113224;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gBboB7jILXBFr9ffJFnBzf1ojSwiF96vUM3rbWEfdwQ=;
+  b=lQzkBrGfRqSECy85KwO9OgEQNVyW+5G4iJYO3L+1FIdrohUempA5WOM0
+   7u4ZFLWTAsyS/1KSV7cKXBygL281EwG54J+04AvMZDyti6PTxiPHZ31lZ
+   l/2QzWKZ+WkeuEl9oJZFOSdEOPAYhxpA9aZEunntz2Jdsqj6DuvvWxtUq
+   RBWAe7mA9uUpG29Kd5oMxwMGKQy3a5pDlqXx8MHODemAPgOYsD+RC5+5I
+   yGVdbMabl/h5IQyyy0Ypo2oPs2xhtP134gYHDX3bf6el2IHr+kP2g+XD1
+   NresgvzcYXWR1USqxnXaCvfgXbrbuyeIAu0Cm0ePSdk2yWa3aDU5oz50F
+   g==;
+X-CSE-ConnectionGUID: AYyGr4DUQWeHR4VetISFPA==
+X-CSE-MsgGUID: +/7ZlG9aRqqEaDwLfdtvNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="64087874"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="64087874"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:53:38 -0700
+X-CSE-ConnectionGUID: 2VkMVn+MQzaJOjLPxhUNcg==
+X-CSE-MsgGUID: pLjvmznoSbWWzixy269y6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="232601295"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.118]) ([10.125.108.118])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 08:53:36 -0700
+Message-ID: <8b9d7fa7-6534-48e7-a4fa-c21260b1c762@intel.com>
+Date: Tue, 7 Apr 2026 08:53:47 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260327234023.2659476-1-jmattson@google.com> <20260327234023.2659476-9-jmattson@google.com>
- <adRGLPrmBpX-3DdX@google.com> <CALMp9eQsd0fRuDE_R57Mn6-N6jCtbmoPAh7Y7CBdMEZJaNSUGQ@mail.gmail.com>
- <adURPZJEDs50NPkB@google.com>
-In-Reply-To: <adURPZJEDs50NPkB@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 7 Apr 2026 08:47:28 -0700
-X-Gm-Features: AQROBzB9-2Y6jBk2OjVBHpaQ7SDFWjJWA4zzLhVGVcrjOpWk0jyI179MFPhotc8
-Message-ID: <CALMp9eSysKOVGF_xakbT59tVsgER6oEYpJuK9=hQutjY=ZpM-A@mail.gmail.com>
-Subject: Re: [PATCH v7 8/9] KVM: x86: nSVM: Save/restore gPAT with KVM_{GET,SET}_NESTED_STATE
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 16/22] x86/virt/tdx: Update tdx_sysinfo and check
+ features post-update
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, dan.j.williams@intel.com,
+ dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org,
+ pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
+ sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
+ vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com,
+ xiaoyao.li@intel.com, yan.y.zhao@intel.com, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260331124214.117808-1-chao.gao@intel.com>
+ <20260331124214.117808-17-chao.gao@intel.com> <adT1Tkz+/ysSZ1Ua@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <adT1Tkz+/ysSZ1Ua@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 7, 2026 at 7:14=E2=80=AFAM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> On Mon, Apr 06, 2026, Jim Mattson wrote:
-> > On Mon, Apr 6, 2026 at 4:47=E2=80=AFPM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> > >
-> > > On Fri, Mar 27, 2026, Jim Mattson wrote:
-> > > > @@ -1918,6 +1921,7 @@ static int svm_set_nested_state(struct kvm_vc=
-pu *vcpu,
-> > > >       struct vmcb_save_area_cached save_cached;
-> > > >       struct vmcb_ctrl_area_cached ctl_cached;
-> > > >       unsigned long cr0;
-> > > > +     bool use_separate_l2_pat;
-> > >
-> > > Land this above "cr0" to preserve the inverted fir tree.
-> > >
-> > > >       int ret;
-> > > >
-> > > >       BUILD_BUG_ON(sizeof(struct vmcb_control_area) + sizeof(struct=
- vmcb_save_area) >
-> > > > @@ -1993,6 +1997,18 @@ static int svm_set_nested_state(struct kvm_v=
-cpu *vcpu,
-> > > >           !nested_vmcb_check_save(vcpu, &save_cached, false))
-> > > >               goto out_free;
-> > > >
-> > > > +     /*
-> > > > +      * Validate gPAT when the shared PAT quirk is disabled (i.e. =
-L2
-> > > > +      * has its own gPAT). This is done separately from the
-> > > > +      * vmcb_save_area_cached validation above, because gPAT is L2
-> > > > +      * state, but the vmcb_save_area_cached is populated with L1 =
-state.
-> > > > +      */
-> > > > +     use_separate_l2_pat =3D
-> > > > +             (ctl_cached.misc_ctl & SVM_MISC_ENABLE_NP) &&
-> > > > +             !kvm_check_has_quirk(vcpu->kvm,
-> > > > +                                  KVM_X86_QUIRK_NESTED_SVM_SHARED_=
-PAT);
-> > >
-> > > I vote for either:
-> > >
-> > >         use_separate_l2_pat =3D (ctl_cached.misc_ctl & SVM_MISC_ENABL=
-E_NP) &&
-> > >                               !kvm_check_has_quirk(vcpu->kvm,
-> > >                                                    KVM_X86_QUIRK_NEST=
-ED_SVM_SHARED_PAT);
-> > >
-> > LOL! Aren't you the one who keeps complaining that my indentation
-> > doesn't line up? Are you schizophrenic?
->
-> Huh?  That is aligned.  Perhaps it's whitespace damaged by your MUA?
+On 4/7/26 05:15, Chao Gao wrote:
+> Dave's comment on another patch applies here too: don't preemptively handle
+> errors that never occur. The custom error message is unnecessary, and
+> propagating the error isn't worth it. Will simplify it to:
+> 
+> 	/* Shouldn't fail as the update has succeeded. */
+> 	WARN_ON_ONCE(get_tdx_sys_info(info));
 
-Indeed. It was.
+This is nit territory, but I don't like that either.
 
-> > > or
-> > >
-> > >         use_separate_l2_pat =3D (ctl_cached.misc_ctl & SVM_MISC_ENABL=
-E_NP);
-> > >         if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_NESTED_SVM_S=
-HARED_PAT))
-> > >                 use_separate_l2_pat =3D false;
-> >
-> > Wow. I really have no idea how to predict what you're going to want
-> > the code to look like. How is this better than the original?!?
->
-> It doesn't immediately wrap after the "=3D".  Similar to my view on wrapp=
-ing before
-> function names[*], I find wrapping immediately after an assignment operat=
-or to be
-> unnecessarily difficult to read as it doesn't provide any context for sin=
-gle-line
-> searches.
+Actual, important, normal-program-flow logic should stand on its own,
+separate from warnings.
 
-That's actually a good argument to *never* wrap a line. If a line is
-broken at all, the interesting context might follow the line break.
+OK:
+	ret = foo()
+	WARN_ON(ret);
 
-> I'm pretty darn consistent in my dislike for that style: I count 26 insta=
-nces in
-> arch/x86/kvm that match "\s=3D\n", and only two of those carry my SoB or =
-R-b.  I
-> simply missed the wrap in kvm_vcpu_apicv_activated() that was added by co=
-mmit
-> 896046474f8d ("KVM: x86: Introduce kvm_x86_call() to simplify static call=
-s of
-> kvm_x86_ops"), and I'll give myself a pass for commit 8764ed55c970 ("KVM:=
- x86:
-> Whitelist port 0x7e for pre-incrementing %rip") as that predates treating
-> checkpatch's 80 char limit as a soft limit.
+Not OK:
+	WARN_ON(foo());
 
-Might I suggest that you should provide a tool=E2=80=94something like
-checkpatch.pl=E2=80=94that flags style violations?
+
+
