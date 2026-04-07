@@ -1,109 +1,153 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F113AF67C;
-	Tue,  7 Apr 2026 12:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B303B4E85
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775565208; cv=none; b=lPBJSNR6pYzsdBGHWvSZZtKIhnbpP/qT5jyL2C+n2i0uyk/qQRo4EuBrOfnC7qW2aYankG5W9rctkGmzt0GWZ0WFHluAIJWs178QVJnaeBOKWvWy3ElyJMHG1W29BaWkTogXJB/xslhw+Z6WPfRqzJ2FUAbcITyUZWx4yuW1PcQ=
+	t=1775565243; cv=none; b=htlIXg+IY5NoCbFtbQWKKZZklCx0kJmyOFVU9zwPCOz9jpm/aJHWrrFFhA7ho2SUj+o0cloukGJoGHHLvK2toaQ+n+ITM3aNhwQq5Az1BbVTi2O4lVrICy8DWw103hd/zHG0jypJ7LV28jxSN9zJU/5m9xi9Jey8lyJKSFBU2p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775565208; c=relaxed/simple;
-	bh=8+jRyO/upQoHbAYSQ7RqRtZtJOgaXFMUklJ8wiX1xew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JjF2LxWqTPAKQy+mFUSDQQ6GIkMF2hBI7DyMQgkU3YCiEZO/ovNM/gOcfoWIlGatvVeb7BBPaZua6FjDuaZ/wHPexTqzf6DLyyWQ5lKJ3rD8S2j0WqUqp/snty/qkIPaRD3ASQHV43QBjxBh1t1gmWYP2cAtvSOTD0Wada4pxTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o9ev6qm8; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775565243; c=relaxed/simple;
+	bh=VEMlzOGb1a/HxHduVMiUFvzh5xYiP4iFFkRq1PGdLTQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EB4wQ9EcPzogegjbYDbqX3ogxXqixfhRdio+G2r4ZO8BOIOzU9fRtSia/EZ+8OPZmzIJRPxGxCwpF/BBEJD8QTEFa5xY/UXIJ2ZLWpkg+DLcUiHse52qOVRTCqejiw7HvLV8gpX59GnuxORha2zmVahc+Gz7MrLLVMOkNk9eV6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3/TpGYi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o9ev6qm8"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636LmCUa2326198;
-	Tue, 7 Apr 2026 12:33:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=4qRjhP19SknR98BpGsnHIiIbsE3tGx
-	3CRT6J375itDU=; b=o9ev6qm8zVmA8HclMx8eTey9FZ05KJdJFN15sEIJv3QiJl
-	MMAC/R/3GTEdgdgNvQPl0LjGuyyex2yJ+0S8/t9gnr3nEUFETDP5jvTcLR2GR23e
-	fxmPUQmYTkjjaY6T6LDMJqzwyCbyMylA3u8WScuaIYTgp2VWGWuxPwkHhxC5+zOz
-	H2xePhNfRmdA6VzIxOc9s5UmK2iCVRCcm2FtuOz+98VALv6j5JPQTzU71EQzpEal
-	l04/0IYOnFZR1s2M/bxVYea9i0Wj3+l51OgtrYwOPTEZIWndXWUp1UTbnlJstt9e
-	X12mbzdVcwoZBAUPWSSNOWICzfszUQs3W66pf+AQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2kamrf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 12:33:23 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637BNSeS026655;
-	Tue, 7 Apr 2026 12:33:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg7u2y9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 12:33:22 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637CXIIL55771626
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Apr 2026 12:33:18 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5276A2004D;
-	Tue,  7 Apr 2026 12:33:18 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1BAC32004B;
-	Tue,  7 Apr 2026 12:33:18 +0000 (GMT)
-Received: from osiris (unknown [9.52.216.133])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  7 Apr 2026 12:33:18 +0000 (GMT)
-Date: Tue, 7 Apr 2026 14:33:16 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com, david@kernel.org
-Subject: Re: [PATCH v3 3/6] KVM: s390: Allow 4k granularity for memslots
-Message-ID: <20260407123316.296205-C-seiden@linux.ibm.com>
-References: <20260402150135.196943-1-imbrenda@linux.ibm.com>
- <20260402150135.196943-4-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3/TpGYi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86235C2BCB4
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:34:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775565243;
+	bh=VEMlzOGb1a/HxHduVMiUFvzh5xYiP4iFFkRq1PGdLTQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=k3/TpGYiFf5GCJGMwz7Vd7/GPmXqUSxHxdBYcSi+9pB4phmHA2uc8X+ODktOt2elm
+	 CWPPeeafakspYSGJKyHFTIorSR6KR7bRV/7HkbIK/MXLfWSRMj9Hi2v4xofWnCKo3q
+	 W/e5qKm8Sb8zLMpY0ZFnV3Bc22DaJYG+j199hfc6ybPk39BneK6XixcJa4gvUBAd7x
+	 RH6teZjoEA93Xzkq6A/cmJq6HNSTapWWpCyiI3hSojbSAsorl7d5mQcySYp5Fbg51x
+	 axnlMoLN4WaZKLfJxLb4qjMWgI3WCgdeT697FDbyb7+rF/t5UvG+iDU5eg/Ur2wh/j
+	 n2vXlb+/uFIbQ==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-66d24c6963bso8866484a12.1
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 05:34:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVyk16Ld1bQyvzgdMAbT48H3Ip65tDX9NTJbkMlURlXt/iAPzmMlsVvoGpLwA593wA/ILU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqrXUmsCYP86M3ZpvYM9VelVItX5NCcEr9OaPgEJzjUx2h7g8D
+	dZsdXOu2o/mW2LseCgdvTKbJPfIG9sC2Gu4HUEFvrCbgKX4k1RBNamsL7XtwTMwzuy8DTWWTw4S
+	ORjbPL/eryjhr2ZiFlVKaosJnIXWzpS8=
+X-Received: by 2002:a17:907:2d08:b0:b9c:bc08:7a9a with SMTP id
+ a640c23a62f3a-b9cbc087b43mr467336366b.10.1775565242030; Tue, 07 Apr 2026
+ 05:34:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402150135.196943-4-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDExNSBTYWx0ZWRfX0TU0v5iuOnce
- GQFg1wnRq5Gy2IdRL+JBnjrwkWFh4WB9hkDM75V6WOgA0fvKXMy30YM2U6QYqqgTJmX+eUJ9Bmc
- Vea/WaUvJVX5ghPn8b6u1eNF5Rn0dFzjGH5RLaKARRHsbHhlPp606GCfNDmmVCM6QxPD7OwiFWe
- kxtDm4DpPXltRG0DrN4DLZYzwrw55SbKRTI/N+ZqssHwPxZHogbCNbUgkfpKC871zTg1JzCPxZi
- wE6w6MMgsCQmMZXRXsvbG+w4ovu5K8oLNl6zh566Nx9YvDxXuAghvEPzSVW4NJX4oWcpmIyI683
- 3gPpgbihRYfY4FHg9oDBSA2p7DgKiE4jJHQ0lgfayQlm0ExUZM2sri4q7odfpBt9We9u4krOZ8g
- dOgQDPRwbaUfiZ0N8f3lL/YH2LI0ulZA+ruyz75XyAROsilOWeYotTYY+Gb4jFV+3rqzCjweBiA
- u1zaOLuIQzVxeVf3KgQ==
-X-Proofpoint-ORIG-GUID: hZgU798jWR3OISQNgoWeQP8gYpvhB-YF
-X-Authority-Analysis: v=2.4 cv=e9k2j6p/ c=1 sm=1 tr=0 ts=69d4f993 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=qCOx4D0ofwUGgT_s5KUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: hZgU798jWR3OISQNgoWeQP8gYpvhB-YF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070115
+References: <20260402124237.4174550-1-gaosong@loongson.cn>
+In-Reply-To: <20260402124237.4174550-1-gaosong@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 7 Apr 2026 20:34:07 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7K8ayLGFMhPwp8uqr3JHdpL1dWOvo2zuVj_3fB2CWPeA@mail.gmail.com>
+X-Gm-Features: AQROBzCDTq69_5d4U4HXwKjMWiUAKrYN4_1kN5HH5qhNbW4mJm1Ti6IjNhRyEMQ
+Message-ID: <CAAhV-H7K8ayLGFMhPwp8uqr3JHdpL1dWOvo2zuVj_3fB2CWPeA@mail.gmail.com>
+Subject: Re: [PATCH v9 0/2] LoongArch: KVM: Add DMSINTC support irqchip in kernel
+To: Song Gao <gaosong@loongson.cn>
+Cc: maobibo@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	kernel@xen0n.name, linux-kernel@vger.kernel.org, lixianglai@loongson.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 02, 2026 at 05:01:32PM +0200, Claudio Imbrenda wrote:
-> Until now memslots on s390 needed to have 1M granularity and be 1M
-> aligned. Since the new gmap code can handle memslots with 4k
-> granularity and alignment, remove the restrictions.
-> 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Hi, Song,
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+On Thu, Apr 2, 2026 at 9:08=E2=80=AFPM Song Gao <gaosong@loongson.cn> wrote=
+:
+>
+> Hi,
+>
+> This series  implements the DMSINTC in-kernel irqchip device,
+> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI inter=
+rupts
+> to the target vCPU.
+> applied this series.  use netperf test.
+> VM with one CPU and start netserver, host run netperf.
+> disable dmsintc
+> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
+> Local /Remote
+> Socket Size   Request  Resp.   Elapsed  Trans.
+> Send   Recv   Size     Size    Time     Rate
+> bytes  Bytes  bytes    bytes   secs.    per sec
+>
+> 212992 212992 1        1       36000.00   27107.36
+>
+> enable dmsintc
+> Local /Remote
+> Socket Size   Request  Resp.   Elapsed  Trans.
+> Send   Recv   Size     Size    Time     Rate
+> bytes  Bytes  bytes    bytes   secs.    per sec
+>
+> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
+>
+> v9:
+>  *Correct the incorrect parameter type and remove the function prefix;
+>  *Fix a boundary value check.
+It seems your V9 is changed from V7 rather than V8, why?
 
+Huacai
+
+>
+> v8:
+>   *Move dmsintc_inject_irq(),dmsintc_deliver_msi_to_vcpu()and
+> dmsintc_set_msi_irq to dmsintc.c.
+>   *Rebase.
+>
+> v7:
+>   *Rebase;
+>   *Fix a typo error;
+>   *Drop an extra space;
+>   *Move some code from patch2 to patch1.
+>   *Rename loongarch_dmsintc_inject_irq() to dmsintc_inject_irq() and move
+> it to interrupt.c;
+>   *Rename kvm_loongarch_deliver_msi_to_vcpu() to
+> dmsintc_deliver_msi_to_vcpu() and move it to irqfd.c;
+>   *Drop loongarch_set_msi() and dispatch the dmsintc/eiointc
+> paths in pch_msi_set_irq().
+>
+> v6:
+>   Fix kvm_device leak in kvm_dmsintc_destroy().
+>
+> v5:
+>   Combine patch2 and patch3
+>   Add check msgint feature when register DMSINT device.
+>
+> V4: Rebase and R-b;
+>    replace DINTC to DMSINTC.
+>
+> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
+>
+> V2:
+> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
+>
+> Thanks.
+> Song Gao
+>
+>
+> Song Gao (2):
+>   LoongArch: KVM: Add DMSINTC device support
+>   LoongArch: KVM: Add dmsintc inject msi to the dest vcpu
+>
+>  arch/loongarch/include/asm/kvm_dmsintc.h |  23 +++++
+>  arch/loongarch/include/asm/kvm_host.h    |   3 +
+>  arch/loongarch/include/asm/kvm_pch_pic.h |   4 +-
+>  arch/loongarch/include/uapi/asm/kvm.h    |   4 +
+>  arch/loongarch/kvm/Makefile              |   1 +
+>  arch/loongarch/kvm/intc/dmsintc.c        | 117 +++++++++++++++++++++++
+>  arch/loongarch/kvm/intc/pch_pic.c        |  15 ++-
+>  arch/loongarch/kvm/interrupt.c           |  37 +++++++
+>  arch/loongarch/kvm/irqfd.c               |  48 ++++++++--
+>  arch/loongarch/kvm/main.c                |   6 ++
+>  include/uapi/linux/kvm.h                 |   2 +
+>  11 files changed, 251 insertions(+), 9 deletions(-)
+>  create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
+>  create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
+>
+> --
+> 2.39.3
+>
