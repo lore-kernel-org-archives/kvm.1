@@ -1,199 +1,122 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF61235F8D1;
-	Tue,  7 Apr 2026 16:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF253BE165
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 16:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775578660; cv=none; b=piuqRY2HFchci09IxkOH/VmOYTHuMjRVSgfoCPilZRLD01l4xhh4f0MtkD4Ie27YcmFaJaj5mPx3bp32juLItRcKad9COoDGTB9HwSVgG1Hg7E/QY+XiCBUy0jh0JGeZhgN4ju3XqmRP3dSnKLnAUcMI588lQq+p7MOPAg6RVEQ=
+	t=1775578987; cv=none; b=tTkzOgJWXmqow38YrXuWocFRwvHWn7A6cU4VbSrztJM4BzbaLhLlvf/8k1SYib/7n3vHva9xgFn5ScCdqFrZz8JABBDfYuEcD20UXp7mlvFqEADZ+bXudTx31F2Be0ZyqqJJWAkWnrBDt8LW9gfSrsd8lUFdLdrQ1+hH51VJds4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775578660; c=relaxed/simple;
-	bh=5k/h7oW7UpWno9nkbdE8z7QzFwr54wYIqPgdqnvqr5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hrPD4swC5XHGgORuYEjrNp4izh3r5AIs1+BwiWur/Lqepf8EB7W85F4cEbICU4MjiESs0wW6033zsnnAYHju6nW6d2mW9f4EMFngAas/lYInwe0pBsiA5ALpq7hSjMN3uvjxSINyHVriGjrhHBThrKfCpxESpcwzV1AZVPjvjyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZoekPp59; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775578987; c=relaxed/simple;
+	bh=npcNeRLpBOM6AzePvk8du8CWXMtHoBqLRVHefaNpStI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ODq0AbH+2GdthfXeihgEkQ5B3g37sYdPZ04+VX3RXTeY0zknjqkS8L1Ma/xpIF9c2E7MXRTHiaT7wyREHEbZ0IxZgEqAJF1O7OycCoY7FSxajayiyYI4We4Me3aLMyOR3nb/Z7msNHGgzCjycQHAtXCMZfF7AyWWaYQ5130j5bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1MpukBy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rkhyfNt0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZoekPp59"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637E9hVr2210127;
-	Tue, 7 Apr 2026 16:17:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=VLx6P9EZiJAILV7jTLobvDdD30pFMbIvOCiwaZFPD
-	To=; b=ZoekPp599EHWXAicGW3yl+9y/f2Mvt4+lDh8irMvpI+4x9zFIwe59C4kQ
-	IHtgdjrZE406Ktv0MZbR39r70OgxAF2pJttOcPnfE0Vc6vIuwc5tuPE4CauNuqXb
-	PU1VFGJYYMb1ihRfxbVg1416r23wkRkPUi3ViUumlXXJbcYnU1qX/h47qxJP+YOv
-	J2o5w7i+jdL6qBURz1nkbCiOYme8hhlBn2ViPGNgap75lIyETvEBm30tNCgRgPj3
-	VlgDQSrw2DmdW7EzQv/qH6Dvfhy+/d73YqKqur2Zv1q+hP5PTnrTRjw5+QeTys+f
-	+0kRzeQDfkD9EviDGo4CjR2Qwx0Nw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2hbnft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 16:17:29 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637EWETU030062;
-	Tue, 7 Apr 2026 16:17:29 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcme7bx83-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 16:17:29 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637GHMVh19202442
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Apr 2026 16:17:22 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98CC82004B;
-	Tue,  7 Apr 2026 16:17:22 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC1D220043;
-	Tue,  7 Apr 2026 16:17:21 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.4.78])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Apr 2026 16:17:21 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: [PATCH v2 1/1] KVM: s390: vsie: Fix races with partial gmap invalidations
-Date: Tue,  7 Apr 2026 18:17:21 +0200
-Message-ID: <20260407161721.247044-1-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1MpukBy";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rkhyfNt0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775578985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=npcNeRLpBOM6AzePvk8du8CWXMtHoBqLRVHefaNpStI=;
+	b=L1MpukByvkXfaFCbyJt/KafU9FypzxPVkq8ukYAGjzBBPiQrEQYD/p3Hu1t2wlv64TUnZa
+	oGN12hvxXR+FDePTBB47RA2XNQKT3s/Bc/yVqj+6obagKLMdApvdEZsN38h/yo1fg+ujfQ
+	PO/iRdPsTBn5Fxjc/IlQsJed6ZWEUis=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-495-R1ClQWIVOMiZfr3a0ezPYg-1; Tue, 07 Apr 2026 12:23:02 -0400
+X-MC-Unique: R1ClQWIVOMiZfr3a0ezPYg-1
+X-Mimecast-MFC-AGG-ID: R1ClQWIVOMiZfr3a0ezPYg_1775578981
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4887d32788bso42029825e9.0
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 09:23:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775578981; x=1776183781; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=npcNeRLpBOM6AzePvk8du8CWXMtHoBqLRVHefaNpStI=;
+        b=rkhyfNt0DhhexR1fdlfDmdC9vdkAvvXrdHngl9fGv7ESfGJoaoWtC+ixm4G/UCWpkJ
+         zwW2k5V87Qyu2ujp20BE+Pu9oEx9wxOM/5T8ecZxOxn/oa33eoqH2NUfYilRB5cIoN/N
+         IXVsHhV1bgj8AjZow9120Fmr1ZDS3E4JvO6G8EgepeyRjLpqYvH8gIONBUeJKuuK+SLs
+         ev8vdQ4DN8dj1QkB73muNyOWvS/ctfzlVf5QKcKxlGkXjvTtU4l9REG9nc5G3zX1zbfo
+         iaKKHLxMuNwfIAMN22CPnI/2SQH83gD4f+87oXdOszaJzIIevoCpswL4x+OBhVpV9VPi
+         /bkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775578981; x=1776183781;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=npcNeRLpBOM6AzePvk8du8CWXMtHoBqLRVHefaNpStI=;
+        b=iakKQjyJgJb3INjOfZbKv3o+l5Yv6IYsaABD+YpBJgAnadvH3t73qw9Wc556mhPkvB
+         JnYTFPAW4CmFuvpT+wdRws8s7TqYaN0GhHIuUYreX+YQOWIRyt5HKdHldD5ydxeX9iHA
+         vGvz5BAjlCi99X1i0X0qjGmvM5Y9S0dAqjM8Nh20vphqrQgNrhQK1OI+UisRdVkv+TQN
+         8Zxos2DbTBnavgvCNL2OJjgM/4iSsIaX7MMcCUCP0oOc9hxM3DlfGfHAZ+obZh8Rjk0z
+         9F01Jt7Y3IBc2wnvX51jM1/FWOKdsdIDvmoiPvrt1aVHwYGSd6Oc0TYP+Yw/49BoCjI+
+         +WEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXT4krTSSHtyrkO5wklM5kZbFmoaJy+8SzY3NDhu+/StJBA7A7AiARbcdWJYj+QmQd1gT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybLjXMFraVcUjsQFCJRCNJLz764mfhJHBPeQdU/+TA+Ub5OYkX
+	XvUlCsMI+IirFpZPl17Cl3Co8Dy6IFV1BHuhImeF9GsOvY5zRAaTZxlpsvXsNJy3W5vLmb5rky0
+	PKCfTciGIFybDUCahQcvcugg8s0lqFz4cOBAcglFmz/3kF2pw9ZbQBw==
+X-Gm-Gg: AeBDieu/Yz9zRMf3uzYeMxEE7SNM1tv64VNdRyPK1RKSxqPy8IF3lZsbJ58IK2v1fqw
+	IJdfF92PECLFwuES+shcQEduueMB7jlK+GQZ2gU9zeQuGALrQC7Bm+MyP4ZPYmiF0RnCdDLYTsd
+	pqyJ1TUSAVd2TtjHMIlAmOr9Unmcb37pQijnJW27hA78WAeDxJng+yqwMrSHOrGL2AQYlBRG3v9
+	HX9W73QC4I7YCHg0WVyLfUKsNGbGNgaMvyNlSmtfd9zZSyLdimYNrsTigDbyNJbzjfM+9wL5kO3
+	swFAOHpERQtnRe+/23FtIPwcG2pzK+BE59+0wPaEs4M6CYHSJGZ9Lumvowgn2OfpjUs4moUZSS4
+	FGrvLgWMUOPkaBfKUQeJXTNNZqPo=
+X-Received: by 2002:a05:600c:c8f:b0:485:3cf3:1010 with SMTP id 5b1f17b1804b1-488996d23femr226451135e9.2.1775578980907;
+        Tue, 07 Apr 2026 09:23:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:c8f:b0:485:3cf3:1010 with SMTP id 5b1f17b1804b1-488996d23femr226450755e9.2.1775578980501;
+        Tue, 07 Apr 2026 09:23:00 -0700 (PDT)
+Received: from leonardi-redhat ([176.206.19.176])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2c5419sm60518000f8f.11.2026.04.07.09.22.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 09:23:00 -0700 (PDT)
+Date: Tue, 7 Apr 2026 18:22:57 +0200
+From: Luigi Leonardi <leonardi@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] vsock/virtio: remove unnecessary call to
+ `virtio_transport_get_ops`
+Message-ID: <adUvRegULccN0hiL@leonardi-redhat>
+References: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
+ <20260407121515-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDE0MyBTYWx0ZWRfX1GPv+0uqSmvK
- ctMg8HT2elJHyedl1ffdxjp6axGDn5dtvSaVlPfgC4c07tK7egewJ1qTCRSNBuvNxQ0xZi4Ij5U
- IFt5P24ksBFLJf33lL1rbbS+sj6wtlbGSH+RY0jcWb3VKn53gObRS/z9RSiMUnEX2wDanrSr9fj
- HCD6SM09PhK0Z2sLXqVOKcUQZZu46tZ9jKXOq5oArO8RjI5rFIBX8Nm/jvkYADct3ifRrEPVAmp
- qb3HIPQqPIMdKhD41I9FMY2EOgyhIS3O6NRiVTp7KGEIQKlfECJi1ykJ+hEJjg8hZqiI0msu7pY
- aL+1PBPuLWAm5IKkW8CWeXQE+4BUvw3eYEysM17JcQirL7qAYUkx5UO5WjELwIQMkQUiAVoLd+K
- wmP7WN58g7U6asxUlFmTbqvrweaDZiwmedf/aKvRQesbZMSZjrSXnA2mx7hhEE55GtrFmoPYLwk
- dr4lfgR42jXHcqyCc2Q==
-X-Proofpoint-GUID: m0KE56X3TkRM_SKN-W6kMOed18U8rHyv
-X-Authority-Analysis: v=2.4 cv=a/wAM0SF c=1 sm=1 tr=0 ts=69d52e19 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=-C8uiT5To9FaDu-4sb4A:9
-X-Proofpoint-ORIG-GUID: m0KE56X3TkRM_SKN-W6kMOed18U8rHyv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_03,2026-04-07_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070143
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260407121515-mutt-send-email-mst@kernel.org>
 
-Introduce a new boolean flag, used for shadow gmaps, to keep track of
-whether the gmap has been invalidated, either partially or totally.
+On Tue, Apr 07, 2026 at 12:16:27PM -0400, Michael S. Tsirkin wrote:
+>On Tue, Apr 07, 2026 at 04:31:56PM +0200, Luigi Leonardi wrote:
+>> `virtio_transport_send_pkt_info` gets all the transport information
+>> from the parameter `t_ops`. There is no need to call
+>> `virtio_transport_get_ops()`.
+>>
+>> Remove it.
+>>
+>> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+>> Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>
+>Acked-by: Michael S. Tsirkin <mst@redhat.com>
+>
+>but I think we should drop the Fixes tag.
 
-Use the new flag to check whether shadow gmap invalidations happened
-during shadowing. In such cases, abort whatever was going on, return
--EAGAIN and let the caller try again.
+ok, should I send a v2 without the tag?
 
-Fixes: 19d6c5b80443 ("KVM: s390: vsie: Fix unshadowing while shadowing")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/gaccess.c | 9 +++++----
- arch/s390/kvm/gmap.c    | 3 +++
- arch/s390/kvm/gmap.h    | 1 +
- 3 files changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 53a8550e7102..290e03a13a95 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -1449,7 +1449,7 @@ static int _do_shadow_pte(struct gmap *sg, gpa_t raddr, union pte *ptep_h, union
- 	pgste_set_unlock(ptep_h, pgste);
- 	if (rc)
- 		return rc;
--	if (!sg->parent)
-+	if (sg->invalidated)
- 		return -EAGAIN;
- 
- 	newpte = _pte(f->pfn, 0, !p, 0);
-@@ -1479,7 +1479,7 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, uni
- 
- 	do {
- 		/* _gmap_crstep_xchg_atomic() could have unshadowed this shadow gmap */
--		if (!sg->parent)
-+		if (sg->invalidated)
- 			return -EAGAIN;
- 		oldcrste = READ_ONCE(*host);
- 		newcrste = _crste_fc1(f->pfn, oldcrste.h.tt, f->writable, !p);
-@@ -1492,7 +1492,7 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, uni
- 		if (!newcrste.h.p && !f->writable)
- 			return -EOPNOTSUPP;
- 	} while (!_gmap_crstep_xchg_atomic(sg->parent, host, oldcrste, newcrste, f->gfn, false));
--	if (!sg->parent)
-+	if (sg->invalidated)
- 		return -EAGAIN;
- 
- 	newcrste = _crste_fc1(f->pfn, oldcrste.h.tt, 0, !p);
-@@ -1545,7 +1545,7 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_cache *mc, struct gmap *sg,
- 				       entries[i].pfn, i + 1, entries[i].writable);
- 		if (rc)
- 			return rc;
--		if (!sg->parent)
-+		if (sg->invalidated)
- 			return -EAGAIN;
- 	}
- 
-@@ -1601,6 +1601,7 @@ static inline int _gaccess_shadow_fault(struct kvm_vcpu *vcpu, struct gmap *sg,
- 		scoped_guard(spinlock, &parent->children_lock) {
- 			if (READ_ONCE(sg->parent) != parent)
- 				return -EAGAIN;
-+			sg->invalidated = false;
- 			rc = _gaccess_do_shadow(vcpu->arch.mc, sg, saddr, walk);
- 		}
- 		if (rc == -ENOMEM)
-diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-index 645c32c767d2..0111d31e0386 100644
---- a/arch/s390/kvm/gmap.c
-+++ b/arch/s390/kvm/gmap.c
-@@ -181,6 +181,7 @@ void gmap_remove_child(struct gmap *child)
- 
- 	list_del(&child->list);
- 	child->parent = NULL;
-+	child->invalidated = true;
- }
- 
- /**
-@@ -1069,6 +1070,7 @@ static void gmap_unshadow_level(struct gmap *sg, gfn_t r_gfn, int level)
- 	if (level > TABLE_TYPE_PAGE_TABLE)
- 		align = 1UL << (11 * level + _SEGMENT_SHIFT);
- 	kvm_s390_vsie_gmap_notifier(sg, ALIGN_DOWN(gaddr, align), ALIGN(gaddr + 1, align));
-+	sg->invalidated = true;
- 	if (dat_entry_walk(NULL, r_gfn, sg->asce, 0, level, &crstep, &ptep))
- 		return;
- 	if (ptep) {
-@@ -1174,6 +1176,7 @@ static inline int __gmap_protect_asce_top_level(struct kvm_s390_mmu_cache *mc, s
- 	scoped_guard(spinlock, &parent->children_lock) {
- 		if (READ_ONCE(sg->parent) != parent)
- 			return -EAGAIN;
-+		sg->invalidated = false;
- 		for (i = 0; i < CRST_TABLE_PAGES; i++) {
- 			if (!context->f[i].valid)
- 				continue;
-diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
-index 579399ef5480..31ea13fda142 100644
---- a/arch/s390/kvm/gmap.h
-+++ b/arch/s390/kvm/gmap.h
-@@ -60,6 +60,7 @@ enum gmap_flags {
- struct gmap {
- 	unsigned long flags;
- 	unsigned char edat_level;
-+	bool invalidated;
- 	struct kvm *kvm;
- 	union asce asce;
- 	struct list_head list;
--- 
-2.53.0
+Thanks,
+Luigi
 
