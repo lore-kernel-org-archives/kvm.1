@@ -1,179 +1,143 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24433CE4BD
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 16:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775580295; cv=none; b=RWXWTFPo/dh1Qq/spvYB2GN60G1TOLj8xiQ76upqfQCi3QBUgTSX+4YiljJycVFMJaPGGGzVQl+EEockabNuXNGDKbTk3FxJGjTs9+GrwRmlskXWUQpnU0RWyzKd2a7XzG9Ey5a0PSHRmxpIjyRaNm4zSJy6g3jhfqWzm7fwAVc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775580295; c=relaxed/simple;
-	bh=J5Ndik0IlpSvfGEsulbwE+9Z1hXXElUUZ73I/FJe8LU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MrMl7NtAFdRUplxqz8UBR9GiSQvn2kTXtvqyB0SnyhRE8QoM72J3rJLT8J8hJL7Y7ZTpCKVCtD7Bea3M/PpDRaLSDg4nH/qCRV8ZlsMMq0wkyoUBS/r4F47d48wqBO+92iblbIxHj1hxu9VhNWBWtSaGjOgLBhORbwCq0KLadvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QElWm9F1; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B4D3CFF5E
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 16:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775580383; cv=pass; b=XVstqinypCBw/bAS8wcnWt59no5sCM5LYXWWJafqAENLTi20f70xGN4eHVOrAJstPIloINmfXHlDHeNvqcQQVX1VGRomnC80Asq863++w/ssJPmeg8I3POPytBNpvFDRP4nyCmjfgVxMEtRAxCUp+ceHqmXdSp0w24n80BlHdPg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775580383; c=relaxed/simple;
+	bh=7agD+s2GVFy+3GJ+9lu9MNOej8X0LlPEbU6wsUyTSxI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BANBRUfNj/rZ32reNSbEr8VB2Ju+VIqdP4Bw+gA+3v/PxiOed/S4E2t3yEIn5tr4oY0aCcrNbDixLm4WWO+v/fKigsu2KVEAXzZIClt9Pm2myzhiRoEaMo02FxVMu3OZz7syqZJagvRlB1vglTmvqrn41Alj1q5kMw0QUlbRkb4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k1iwIll7; arc=pass smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QElWm9F1"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76b06f37a7so1984168a12.0
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 09:44:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k1iwIll7"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-66bb7118c96so214a12.0
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 09:46:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775580380; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Zi2AyCg1tRkQK5+xcCcMW43Xiiw/MTlQO2OCnWHj0jdCoTuWcjqRPqG0dQtE2X2xjV
+         JBX1NFak1HLPHxE69QdG1ltM5ftQ/Y7QahNJqurv7o74CNvUxMl6tiEXUcTC2SbNaYEw
+         n+ILYymqhuwSGtf/PDdWHcEssHhR+NjeY+14xU3opfCIq7LUl7Yzb7mk0GxXb9JKiJeN
+         /9eBr3wvxZOrLsaPXZvcajvwZwnroLCfrJ8tc0epXwqrblp7P2D0wJLxNOla5p/vCRDd
+         +avacsqtZ42EvOkl3+JKMWO5neiCe3ov9RRoO1z20NX6GxhrZP9nbyUNv6rsHWfNUJ7U
+         c8BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7agD+s2GVFy+3GJ+9lu9MNOej8X0LlPEbU6wsUyTSxI=;
+        fh=147frtCcveW+l7jtmhyMCAoNmFqgwHK4/TY8EturMl8=;
+        b=iPjX/JUoiAo1bmQ1ceoIcfgAhTgPNv6V/zb6SAS8+XvhkqxFdlLGW5tTt9SNfR5KhV
+         cX4iJ3IEOR/HvMyxP/cE1mOaHWLKXArzcuAm0zToMBFLzLUxff2YWzuQ9O2OVKNJhpIS
+         JkQcutN2EU68DpwX1+uWPgzX6abtO+bvC0NMEFjsB+4TBczjq+4XqqFF3IQw8M6nhlQA
+         mFFxwRgkVO18tbqbNspeaKIm2je6iGpQULWZxMrEIjcu+V72lftOyYLxd+KszCp0Gq2q
+         zwrxZTxcnkBzl0EP3snVVzMlZxw7YLlYT5Q7xRlGgPbuM9+phCjmaoJaKSXJHEWTAr0m
+         uuag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775580293; x=1776185093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zuTv9ErC5B25TtXR4Ofe9PkbgeAKBehAyF2Qi4T6fa4=;
-        b=QElWm9F15J41ZoI5xfSuhqKyuAH1thi0BYBYVvDP1+x8FcO7JDjpTKNOAtiQjWQwCq
-         y+BR/NdMYWgP2v/y1byOGEnv4wP9aDdIh8N8uIpfPusuQFaC8/hpOVMemiDYoOQg56wZ
-         rKaf2k/MzZsg2gVsbKqpkufinIDYZdjg8kUsbdjeRQctpLdB9Czu7pPLWDIEY5ADur6s
-         JC67KGA6gc4s0302pS/Rv8O8N0TuzfByacqZnEH8alb34uEEcGG+Hln146TAs/pJ+sdD
-         Xtspnf+lAODgxgHWpdgfEWswkuvlgN29GKO/yYnruDvNdpavBOJwPSvi2DlFumN7Ip+/
-         5YRw==
+        d=google.com; s=20251104; t=1775580380; x=1776185180; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7agD+s2GVFy+3GJ+9lu9MNOej8X0LlPEbU6wsUyTSxI=;
+        b=k1iwIll7s7MWVnBwB6US1VssQV1y+kSgffte48gmfDi5eZeYqjvlrktIkZzFmn4vW1
+         0POU5UEc79j/+z1pTIa04fFcsvezE+kq+DpUhlpWqMqB6LTAkRUhRufM0HVNtNi/qMLN
+         ZV6YXLnGTxGgGUw6MwnGgcQLVoWJA7Hc4VyOpaY5nA4XIw0O8R4A6KgAnsgpBB0IcPTZ
+         nbyc6z+qfNORRG2MIUH4MSKNWyFdcOFQ1wMQpRpq5LouT+5MONKcisR7ErOeRaoDzFCX
+         5IaXTu5B+OrQBK8TsGfZPUKIozyrnK8HEp97ZrUs9AP5TXbYajcDf3t23Jfjmva+61qM
+         zZIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775580293; x=1776185093;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zuTv9ErC5B25TtXR4Ofe9PkbgeAKBehAyF2Qi4T6fa4=;
-        b=W9To02QNWChQDaBdvtw+NOit9ne2rDhXNMDPgo+HsBPEA2cnGiB86UZTpSn+9KkvY7
-         7lRwyAJQLsostpR2zwxiLB/3Dp92tN9xH1c3fkbilvDF/4XArOei4MVUBzPqRDKBZlaq
-         XcME79zXsgWVVdITTdUzcxcsEzxoeziaEOoglLjHp/GTHm+dCP4629AKU62MmTskaer8
-         uX/PWJtHyEdgNCiTwmmBvHlg73smbDqEG9ryYIdP9l4ISqwgj8yAEy7os3SlZ75ZeN/9
-         8dHPiHN5PA/JfUm52l3O6TZb5TXedyW0D9sNz7D4AW0MI+pLl9yXGbsMf5Q/P5xIbn8n
-         Ma3A==
-X-Forwarded-Encrypted: i=1; AJvYcCX+3G1hIE6u5aQrOdKng+AgStlF2nr8Fkp91i64gOCpHRY+zUazk3u4oDa/a1pu+GuP0l4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm/GM0q1v4cbqFS8IobsD1QnuU3W+Mrh9Ukerv7YAePihfk6p0
-	r3DbnA/rfnayxvyUS91DyDYZQWqma/r3bgqpVtnKPPWj+qOXiztlPHYB1/oZ0Ss+9qGfOYI/Km+
-	7RAMtNQ==
-X-Received: from pgbct4.prod.google.com ([2002:a05:6a02:2104:b0:c76:40b0:72ef])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7351:b0:39f:a42:9243
- with SMTP id adf61e73a8af0-39f2ed0efffmr18775803637.3.1775580293092; Tue, 07
- Apr 2026 09:44:53 -0700 (PDT)
-Date: Tue, 7 Apr 2026 09:44:51 -0700
-In-Reply-To: <adU0LAW1h8q9HsGu@google.com>
+        d=1e100.net; s=20251104; t=1775580380; x=1776185180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7agD+s2GVFy+3GJ+9lu9MNOej8X0LlPEbU6wsUyTSxI=;
+        b=f6iGLxrpNatd0UFKGcxFDdfrROyCPqYfHNW21V+bzJQ4vHaU8vu5q//N1rgzRyNv1N
+         H5Rfd9gSt0uWSyjplQDB+sdsfvRBeg/SE+9FDS4SCrDZpE8P7z3uAeypzFz7aSaZ0Uss
+         S51o1q+nN57Tzk0C9YrM7oBXzLYMG0utpAm4hfeu3Ip1Ys5MiT1uZ7mrDwm1sic6zXZj
+         en5AmeyCLEpWaiYwY8P0dRhHqrDAkKOEy80m7xEdKmCIAVDVUVWZVkoghlovKDB06gvB
+         CKrocTOa35LuoojZeoz8SYNoGJb0I45lAe57bwvuhyoN6+FpnDayk6/w0qrIry2QEWqV
+         imJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUe8gpnYKlL8fvZ6CrhsYsavU5iksSaXrURm9xfikbrjUQPW4+uaSzQ3OzM60/VqMti/i4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxSGk86+fnW7aRjFFFkeAXDmpw+METM6EJcGpLHIvi3aiTtlI8
+	DJUpKmi+snaFLv/frQHMY3RlDdIPoA9EDPEyi/SpaeiRaJEit0NhlN3c3vpZke/Brdeh8LFxFvK
+	o5eP68odx1hWzGpbi0GoFCnQd9+11pIr2FxWlvpbt
+X-Gm-Gg: AeBDiesfPMbD9Y+H7A8Wvo31WWxsT6aGlus02ivdsBr3RebbmA60uOkX7SR5PkI0Ylu
+	S9FRR1VP+g1247CmPUC26xMDceQ7GispRe0QCWsOWbKZ1fIxGMfrPxiDuXcxNH8Q2YtXhnpi3WR
+	xG0vce4mUsy0e5SyO5deu6AL8zFiHHO49oLQngV3tlO4bo3BNu3536C6gv9ugUn2qO5xAFcgfCC
+	D3wh844iTvwyNpOwUCD9x9XmaPNlZfKDE1zIxbUbzr8MHRyMTWHB7fGk8ntGZ4NpRD1eUn6bGNt
+	mS9y2Cs=
+X-Received: by 2002:a50:fa85:0:b0:66b:b4da:a8b0 with SMTP id
+ 4fb4d7f45d1cf-66e4136b3b3mr175238a12.8.1775580380060; Tue, 07 Apr 2026
+ 09:46:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAKdXbaV1PTwetd4zs6+6Rp7h0dwHU1ygMoof5eAcfL6XYZF1xA@mail.gmail.com>
- <87v7e3mbgj.fsf@redhat.com> <adU0LAW1h8q9HsGu@google.com>
-Message-ID: <adU0g-trGz8CRjeM@google.com>
-Subject: Re: [BUG] KVM: x86: kvmclock jumps ~253 years on Hyper-V nested virt
- due to cross-CPU raw TSC inconsistency
-From: Sean Christopherson <seanjc@google.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Thomas Lefebvre <thomas.lefebvre3@gmail.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	Michael Kelley <mhklinux@outlook.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260403213445.xzb4rxbfbg5un7li@desk> <CALMp9eSXfJvR=PHtttbqm3q3nH436T1eH4YdpVqxQeP-cxEPsA@mail.gmail.com>
+ <20260403231608.zopnhnypdclzqlx7@desk> <CALMp9eT2vJBdLPY2uBYrPgVrhS_aYmfGfdXe6MZXG_gyryLHVA@mail.gmail.com>
+ <20260403233329.fb2ppifgwm3um6ny@desk> <CALMp9eTpsenqsWjzmpXLEubn9uNjgZgzgrMwtZ72HDuV_2xgfg@mail.gmail.com>
+ <20260404002149.wtayv6a64vzuppgp@desk> <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
+ <20260404034954.t7iapenzvhdpagxp@desk> <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
+ <20260407163943.y6tkh26z2rfktn3y@desk>
+In-Reply-To: <20260407163943.y6tkh26z2rfktn3y@desk>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 7 Apr 2026 09:46:07 -0700
+X-Gm-Features: AQROBzDrMOkL8K_5s_beeAF8mzcDjUMut0mXG4FWeqy0pjkeXMr6K1KiSjqSI94
+Message-ID: <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
+Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org, chao.gao@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 07, 2026, Sean Christopherson wrote:
-> +Michael
+On Tue, Apr 7, 2026 at 9:40=E2=80=AFAM Pawan Gupta
+<pawan.kumar.gupta@linux.intel.com> wrote:
+>
+> On Mon, Apr 06, 2026 at 07:23:25AM -0700, Jim Mattson wrote:
+> > Yes, but the guest needs a way to determine whether the hypervisor
+> > will do what's necessary to make the short sequence effective. And, in
+> > particular, no KVM hypervisor today is prepared to do that.
+> >
+> > When running under a hypervisor, without BHI_CTRL and without any
+> > evidence to the contrary, the guest must assume that the longer
+> > sequence is necessary. At the very least, we need a CPUID or MSR bit
+> > that says, "the short BHB clearing sequence is adequate for this
+> > vCPU."
+>
+> After discussing this internally, the consensus is that the best path
+> forward is to add virtual SPEC_CTRL support to KVM, which also aligns wit=
+h
+> Intel's guidance. In the long term, virtual SPEC_CTRL can benefit future
+> mitigations as well. As with many other mitigations (e.g. microcode), the
+> guest would rely on the host to enforce the appropriate protections.
 
-Let's try that again.  Email address #1 bounced.
+I don't think it's reasonable for the guest to rely on a future
+implementation to enforce the appropriate protections.
 
-> On Tue, Apr 07, 2026, Vitaly Kuznetsov wrote:
-> > Thomas Lefebvre <thomas.lefebvre3@gmail.com> writes:
-> > > Under Hyper-V, raw RDTSC values are not consistent across vCPUs.
-> > > The hypervisor corrects them only through the TSC page scale/offset.
-> > > If pvclock_update_vm_gtod_copy() runs on CPU 0 and __get_kvmclock()
-> > > later runs on CPU 1 where the raw TSC is lower, the unsigned
-> > > subtraction wraps.
-> > >
-> >=20
-> > According to the TLFS, reference TSC page is partition wide:
-> >=20
-> > "The hypervisor provides a partition-wide virtual reference TSC page
-> > which is overlaid on the partition=E2=80=99s GPA space. A partition=E2=
-=80=99s reference
-> > time stamp counter page is accessed through the Reference TSC MSR."
-> >=20
-> > so if as you say RAW rdtsc value is inconsistent across vCPUs, I can
-> > hardly see how we can use this time source at all, even without
-> > KVM. scale/offset are the same for all vCPUs.
-> >=20
-> > I think the fix here is to avoid setting up Hyper-V TSC page clocksourc=
-e
-> > in L1. Unfortunately, with unsynchronized TSCs this will leave us the
-> > only choice for a sane clocksource: raw HV_X64_MSR_TIME_REF_COUNT MSR
-> > reads.
->=20
-> This feels like either a Hyper-V bug or a Linux-as-a-guest bug.  For "Ref=
-erence
-> Counter"[1]:
->=20
->   The hypervisor maintains a per-partition reference time counter. It has=
- the
->   characteristic that successive accesses to it return strictly monotonic=
-ally
->   increasing (time) values as seen by any and all virtual processors of a
->   partition. Furthermore, the reference counter is rate constant and unaf=
-fected
->   by processor or bus speed transitions or deep processor power savings s=
-tates. A
->   partition=E2=80=99s reference time counter is initialized to zero when =
-the partition is
->   created. The reference counter for all partitions count at the same rat=
-e, but
->   at any time, their absolute values will typically differ because partit=
-ions
->   will have different creation times.
->  =20
->   The reference counter continues to count up as long as at least one vir=
-tual
->   processor is not explicitly suspended.
->=20
->=20
-> And then "Partition Reference Time Enlightenment"[2]:
->=20
->   The partition reference time enlightenment presents a reference time so=
-urce to
->   a partition which does not require an intercept into the hypervisor. Th=
-is
->   enlightenment is available only when the underlying platform provides s=
-upport
->   of an invariant processor Time Stamp Counter (TSC), or iTSC. In such pl=
-atforms,
->   the processor TSC frequency remains constant irrespective of changes in=
- the
->   processor=E2=80=99s clock frequency due to the use of power management =
-states such as
->   ACPI processor performance states, processor idle sleep states (ACPI C-=
-states),
->   etc.
->=20
->   The partition reference time enlightenment uses a virtual TSC value, an=
- offset
->   and a multiplier to enable a guest partition to compute the normalized
->   reference time since partition creation, in 100nS units. The mechanism =
-also
->   allows a guest partition to atomically compute the reference time when =
-the
->   guest partition is migrated to a platform with a different TSC rate, an=
-d
->   provides a fallback mechanism to support migration to platforms without=
- the
->   constant rate TSC feature.
->=20
-> My read of "Partition Reference Time Enlightenment" is that it should onl=
-y be
-> advertised if the TSC is synchronized and constant.  I can't figure out w=
-here
-> that feature is actually advertised though, because IIUC it's not the sam=
-e as
-> HV_ACCESS_TSC_INVARIANT, which says that the virtual TSC is guaranteed to=
- be
-> invariant even across live migration.  And it's not HV_MSR_REFERENCE_TSC_=
-AVAILABLE,
-> because I'm pretty sure that just says HV_MSR_REFERENCE_TSC is available.
->=20
-> Michael, help?
->=20
-> [1] https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/t=
-lfs/timers#reference-counter
-> [2] https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/t=
-lfs/timers#partition-reference-time-enlightenment
+This is already a problem today. If a guest sees that BHI_CTRL is
+unavailable, it will deploy the short BHB clearing sequence and
+declare that the vulnerability is mitigated. That isn't true if the
+guest is running on Alder Lake or newer.
