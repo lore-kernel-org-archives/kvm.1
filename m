@@ -1,127 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5E1A682F;
-	Tue,  7 Apr 2026 22:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775600878; cv=none; b=n/S0PmwFij0JEFojwbFNbS5uN2/l1Yy2+rLly/xbmOGWJDo0gOTk1zhZtbQMG0Op8V3d7x8Oy4snorm5bcEDDDzbHxNOY8225mVUACOmbKeIC27QFKFgEN775ZgRwhtrzAUYUaIB6SGjv8i8zalP2DPjeAEW7i0lBZVt0d39dI4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775600878; c=relaxed/simple;
-	bh=uK2so+449fVDewAkzhkLGh5pYpxj0JI8+AxRt8nkkc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DMRSVAUrulTQbeSGwJ81TY6dA+kIRJ7ap1KEmHjPzN7nqObcaIR+1+sxjYl8PSW/dKzLHc/L1xqpM1hGB6G+Kb/HtOepp/5EQWkKmjqDYp0bZzYMn6xW4m5ubjmLs78+iq8N/brlfREvttBzvns2TPS4/YifWUokiWRusKZlWMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQWHy4OB; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B7F30EF7C
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 22:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775601989; cv=pass; b=OkIo6+AFSvlePKh1DVkbipxXl7E7KCwlPO0uBuO80p//bk4UYU9mJLqVtRVIKHTvI7JvUIQxHqXp0nxvkHkhXDZ2wStYb0Hq9R2QdN1dQSBkk+fnwFDItchBRZ4S6dNz4zWBx2YzU8fso6AaSC48EptsWyj75ZpHjhkMXZ+KhNM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775601989; c=relaxed/simple;
+	bh=f3DVo0ZXZA06UkDRfENVdLuwU3uVfDRBKslnEbdqT1o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dIhETlawdimnDqZjse/SYl8LQzTfzwYjIkpxNbJomAVOXQkx+7R1wjWKwClF2tjdKSVB/zBI3Rp7XUWxaBapXgtJrqzd2Cb7bhfxE3HuX0CrleTj881YT9Usd4DJjrjkO4haPlZ2BlPHSradCqGBlMk6/3Zw8XAmSXOVmzSotJ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i9Nwn6wP; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQWHy4OB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775600876; x=1807136876;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=uK2so+449fVDewAkzhkLGh5pYpxj0JI8+AxRt8nkkc4=;
-  b=FQWHy4OB+ha1vvzz4XFTmswpUMB9MtiRjBNY+gVyRJfDajyd00LoWGeY
-   oYUvObvMdnEm/vCNUZU5Ps1rWG1LbQuBdBfPPqMZNYgueEa4QeLUnYKOy
-   AZ8/jH9o7Oh3quOGwFvUEP8J/efXXSP27grH+nevABvSVj/a7HdV1K/Tk
-   Es/AynSdW9RAJzHxSEUW8+WroIKQafOIHkHIddhzvHifMPLARwnt730Rr
-   QVOlAMMgl4Ol9/byWB3A/yQ7FBSi2/5EdaO7hMuG+ksokwCWVTfbRPpMm
-   XUDYLWwJjNPxGq6ePX8VhZjel6bDl2pSXQXJGhtiV6WMQampqXmopKKAz
-   Q==;
-X-CSE-ConnectionGUID: 52crIjU+SFCtuSue1K2n6w==
-X-CSE-MsgGUID: s4h5QCiwS+i8KGLUUcQrmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="99202728"
-X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
-   d="scan'208";a="99202728"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 15:27:55 -0700
-X-CSE-ConnectionGUID: wKZVC/j2R2W5foBwbNucVw==
-X-CSE-MsgGUID: GW5EjqQCTQO1e/H8lgmmAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
-   d="scan'208";a="258719236"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 15:27:54 -0700
-Date: Tue, 7 Apr 2026 15:27:38 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	chao.gao@intel.com
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260407222738.lrartp6evfp7yhti@desk>
-References: <20260404002149.wtayv6a64vzuppgp@desk>
- <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
- <20260404034954.t7iapenzvhdpagxp@desk>
- <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
- <20260407163943.y6tkh26z2rfktn3y@desk>
- <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
- <20260407171151.2gf2idjbmph35ypb@desk>
- <CALMp9eRNVGFpzk_-ajQTuXadMtoY9H-ndUaz78wTT1zDYbTrPQ@mail.gmail.com>
- <20260407191128.b2hr2ttkdpyunhrr@desk>
- <CALMp9eTK0o7Z7-oTB8ohvmoh-vy-Y2qjdUvbqD6HaEhOEPZmhw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i9Nwn6wP"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50d864c23bdso123801cf.1
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 15:46:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775601987; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K6Adj8+55fPD5dih0pZCI61jngQfQ/kKdAJwFeXCj7w/rgyeyscSihJjAac3AewXHT
+         5JYqMzyRNANe2HF+Btf9AveFWsinxwW9R0G3WItibhZ9I/oKj/oERO5kiaGJwQKOdvLV
+         YNGbpLc2VT4a9M596Or+FYPrQArMaXmKJ3cdzN+9LAruYrwOHgh6pNKPd57hKuacG1HQ
+         nNH+zRxCQlEvsbeLuRoo8qL51VOuu0OWs5m7FB3kKBkO/CGBXo6f/rf/fe4xtUhLE3um
+         kFMll7W4n3K5v0P7UOprYq2mKp937CV1OkgyXp0PHaPlu4YQQ158iEULJDYlNvMqDhei
+         h+7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8Iz8LE1UTh/b7QSOxn5c6slKUQmiooem4WNvWDC7eLE=;
+        fh=/QdHbnLb6j8vclbQdfv1m0mSSe7DV7bMEIIt9obxYeg=;
+        b=M5BwhaEnXW+71t/ZSPglhcyENp7lRL735GWjg7vY8MccrI3KzAp0H8pctfVLFoFyQ6
+         1AFP4Ac41ytaHNm4z1TXgioPH7XWXpOOUyoGElwkfCBi9OCqtMXjf9+iYsGj++Tlpqhu
+         ZIU+AbL5GFmEqqh3eNY6R6bHr7kO18a57Znzj4/DXlag99cCkcifuhleCDiLfP6hEcCa
+         6ZLSPgGQH5oeV0bTUggIypYWIAuAIFZUjCiK1Lb3bG1hbGXvF9EaaFbSsVoUogboxEQl
+         p1kEgL41s2TrVr2H77zCrpbgheZAiTejeGOl4pPc5+QDVcTg71UCt4r8cf8XvdBIMKrc
+         4U1w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775601987; x=1776206787; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Iz8LE1UTh/b7QSOxn5c6slKUQmiooem4WNvWDC7eLE=;
+        b=i9Nwn6wPWvIXtkNO/Zt0+8TryDYUaI042rc4ctrIvd/twhyojzpFC7sDpqlLoeNWbq
+         aHkK2RbfNibj8jLN4Z3NoAKKof1sOBi8Z9eocoJJXswpeNOUolwPJ0Z7vX/uj+rm9mLm
+         9sOReCm+K9Nffyg1+Na32gVzVWwZrFCiWLg6eC+EURSKdREljI56FyGCpiH/a05cz3kl
+         Ra6pBrc8nSYmyWNWVmlh0j85dBlnEg/6XC8GpXGc0+AXoRtEQaKC12JbCgGNjHT2Pi6y
+         kd8oZXUujNhxDVN6B+AOjIkQqu2IsufJ/2g3HS+HmViyjI11GOwSDpvXluiVs+QbJPtt
+         rpLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775601987; x=1776206787;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8Iz8LE1UTh/b7QSOxn5c6slKUQmiooem4WNvWDC7eLE=;
+        b=seI+2cu5MFZuozoF0FHnQELcSDzwXcWxsQ7xXe1Vxfi8VUvkuyj3hDnnwAH4QjEY2P
+         ykJGVkIvJXLSofV2SN3icgNjgeZ7rTFDeQRyC3RDATgnwIF5dHFsKAdcC+AJBJQtKlnd
+         djC+C9eeEBx8oeRdpkoCzC9JfWLbd2LnNjEUxgK09T1VEvzILexaTmwtrvU/lPaQDWPC
+         AAyUHv1KtTBh4GYHMPyrkPkhJbXcU9XbT8gyVJHaBWb9dMB1aDwfMm1Z9TuTXe5NT2Dp
+         tv4noaIkC/6Jtr7xpNUNyrWOOIUq7tKhCw+u1LVuC4P9oBaQAbSPmgqUo4KEJbvCsJ+O
+         JcxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxdPom+RaE090ceuJAvhbZYmzu/tsaLWpAzBOuNHsiwMlFnC3W0VRdQ7ZiFQ1b4fD1Upg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvXvFoAM9WCpnpOjQN1vLcBZOS3G1XbnSUOuH+VvmNW3yfDT4/
+	yejfn3K/09cBZ4NraEr843K12GkhlQkKyF859LHsX5zrVSyzHushlu/oo3XME3zYvbHmm5Zk9eU
+	lHs3VCpzbprX1WgEXCfsCaT/+gj9dafJSA7lZZvPq
+X-Gm-Gg: AeBDievFM8aAt9oIYV4vjwnC5m8mR/OPoMPwiihXyNBsp1FoWfJi/pGCvb4EIbOnRgt
+	Csgz1afOZdOdMOUfP7I96UgTBC0tcLIyizr155RatGxuQ1AcahtKKtF0h0IXC6+GyZWxNiNAooG
+	vzA2jdujlDB+KIBDlhCrUrts6qIZl/plZfrsbe5XlQO6Ne3utmspt+Leqzxw66ENRPjtUyhi5LU
+	5cxetHG863blwoZIscXfwywJXE3t+z5sqC2OfMpbfycYYmnt0QY+oSvuvfmVhJNLLMkfi26kcYh
+	qJXd2LfS
+X-Received: by 2002:ac8:6907:0:b0:50d:440e:2e5f with SMTP id
+ d75a77b69052e-50db3f5196cmr1731601cf.13.1775601986467; Tue, 07 Apr 2026
+ 15:46:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMp9eTK0o7Z7-oTB8ohvmoh-vy-Y2qjdUvbqD6HaEhOEPZmhw@mail.gmail.com>
+References: <20260402173059.1018805-1-rananta@google.com> <20260402173059.1018805-4-rananta@google.com>
+ <20260406151234.7bbca348@shazbot.org>
+In-Reply-To: <20260406151234.7bbca348@shazbot.org>
+From: Raghavendra Rao Ananta <rananta@google.com>
+Date: Tue, 7 Apr 2026 15:46:15 -0700
+X-Gm-Features: AQROBzCsEKktHNyaa3IrcPgIhUcWkHbTPn-1Qfq71xz8mXiPhEKuLJIJ7gbJ46o
+Message-ID: <CAJHc60wPckr0rhx2OpBdPizZNbG9hjuQ9j0QNR4YMJK12QWPvw@mail.gmail.com>
+Subject: Re: [PATCH v7 3/8] vfio: selftests: Introduce a sysfs lib
+To: Alex Williamson <alex@shazbot.org>
+Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 07, 2026 at 01:53:24PM -0700, Jim Mattson wrote:
-> On Tue, Apr 7, 2026 at 12:11 PM Pawan Gupta
-> <pawan.kumar.gupta@linux.intel.com> wrote:
-> >
-> > On Tue, Apr 07, 2026 at 11:40:57AM -0700, Jim Mattson wrote:
-> > > My proposal is as follows:
-> > >
-> > > 1. The (advanced) hypervisor can advertise to the guest (via CPUID bit
-> > > or MSR bit) that the short BHB clearing sequence is adequate. This may
-> > > mean either that the VM will only be hosted on pre-Alder Lake hardware
-> > > or that the hypervisor will set BHI_DIS_S behind the back of the
-> > > guest. Presumably, this bit would not be reported if BHI_CTRL is
-> > > advertised to the guest.
-> > > 2. If the guest sees this bit, then it can use the short sequence. If
-> > > it doesn't see this bit, it must use the long sequence.
-> >
-> > Thats a good middle ground. Let me check with folks internally what they
-> > think about defining a new software-only bit.
-> >
-> > Third case, for a guest that doesn't want BHI_DIS_S, userspace should be
-> > allowed to override setting BHI_DIS_S. Then this proposed bit can indicate
-> > that long sequence is required.
-> 
-> That case can be handled by the paravirtual mitigation MSRs, right?
+On Mon, Apr 6, 2026 at 2:12=E2=80=AFPM Alex Williamson <alex@shazbot.org> w=
+rote:
+>
+> On Thu,  2 Apr 2026 17:30:54 +0000
+> Raghavendra Rao Ananta <rananta@google.com> wrote:
+> > diff --git a/tools/testing/selftests/vfio/lib/sysfs.c b/tools/testing/s=
+elftests/vfio/lib/sysfs.c
+> > new file mode 100644
+> > index 0000000000000..f1e6889556527
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/vfio/lib/sysfs.c
+> > @@ -0,0 +1,150 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +#include <fcntl.h>
+> > +#include <unistd.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <linux/limits.h>
+> > +
+> > +#include <libvfio.h>
+> > +
+> > +/* Enough to hold MODULE_NAME_LEN */
+> > +#define DRIVER_NAME_SZ 64
+> > +
+> > +#define readlink_safe(_path, _buf) ({                                \
+> > +     int __ret =3D readlink(_path, _buf, sizeof(_buf) - 1);    \
+> > +     if (__ret !=3D -1)                                        \
+> > +             _buf[__ret] =3D 0;                                \
+> > +     __ret;                                                  \
+> > +})
+>
+> Not a current issue, but the use of sizeof() here is a danger for
+> future users that might pass something other than a stack array.  We
+> could avoid this by adding a build time test (untested):
+>
+>     _Static_assert(!__builtin_types_compatible_p(                       \
+>                        __typeof__(_buf), char *),                       \
+>                    "readlink_safe: _buf must be an array, not a pointer")=
+; \
+>
+> Maybe overkill for an internal helper, but we could avoid the hazard.
+>
+Good point! It makes sense to have a build-time check for this. I will
+incorporate the _Static_assert to avoid the hazard.
 
-Yes. But, that was the part that received the most pushback.
+> ...
+> > +char *sysfs_driver_get(const char *bdf)
+> > +{
+> > +     char driver_path[PATH_MAX];
+> > +     char path[PATH_MAX];
+> > +     char *out_driver;
+> > +     int ret;
+> > +
+> > +     out_driver =3D calloc(DRIVER_NAME_SZ, sizeof(char));
+> > +     VFIO_ASSERT_NOT_NULL(out_driver);
+> > +
+> > +     snprintf_assert(path, PATH_MAX, "/sys/bus/pci/devices/%s/driver",=
+ bdf);
+> > +     ret =3D readlink_safe(path, driver_path);
+> > +     if (ret =3D=3D -1) {
+> > +             free(out_driver);
+> > +
+> > +             if (errno =3D=3D ENOENT)
+> > +                     return NULL;
+> > +
+> > +             VFIO_FAIL("Failed to read %s\n", path);
+> > +     }
+> > +
+> > +     strncpy(out_driver, basename(driver_path), DRIVER_NAME_SZ - 1);
+>
+> Nit, I'm not really sure what DRIVER_NAME_SZ buys us other than an
+> artificial limit.  We're already bound by PATH_MAX and could just do a
+> strdup() for the return.  Neither are blockers.  Thanks,
+>
+Ah, why didn't I think of strdup(). It's a better approach. I'll
+update this in v8.
+
+Thank you.
+Raghavendra
