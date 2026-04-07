@@ -1,171 +1,883 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0A73368B2
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 18:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6858B2989B5
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 18:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775587273; cv=pass; b=KcazPh2SjPBwdWdOIJC+y0MLHH+gsn4g6eEfcKFhJR+Mj1bHYN7V5ZKhr52UE01MxpzpzWq8OqYDXyRpYbLX1YFdyLmoq3gyUYi19ESrcXAPmcbPOEvkVKnl30n8MaGLLj2WE/VLe4IJ8w1e4JgTpt3zaqS0T7mTGBemCJjnOuI=
+	t=1775588213; cv=pass; b=dShJjVrtgcPoZ2tZ40FzylA3iS/M6SBn4BYcY/bLtGhzn7X5udUXXNJeoJRvmaYK2YIX8Jnw4KVWICSAsXxVEpbw7ugWvoRgf8LRw73mKgkYrGslQAEfsXZMEGXsvzTDwgeSAnUmo/RHdsJigek+xv/b2qM5qPVMJH2RSvLeO08=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775587273; c=relaxed/simple;
-	bh=KZCDfzIeZ9MXyD9zphyFKr1/BkcZ0XXimcy7WGnXtA8=;
+	s=arc-20240116; t=1775588213; c=relaxed/simple;
+	bh=i5RQMcV396b63nA42SUmQRpwNcFVD/M4pkvCRG+nx/Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=noVNSTZrsn09VEYWd7poN9eamDXtqqB7LnwiQU+33EYEo+mEFlLFbbs0NEyTQN+Qu8tWM8v8VSb6H6xCtC+ZrYoehP5x7DcEvCFW+mdwbaE3JKUjxpFwarJrejZczngWmb3f2UrzQ3fmKH5Smf8j6cqB9etb1CkxNvs2iOVNg0E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DUAaRPdB; arc=pass smtp.client-ip=209.85.208.46
+	 To:Cc:Content-Type; b=YtXyl8hgXecVvJxzV6RTK6xDvWYoCf54HEHlxlSHsN9ggAvKmT820AFASAPY7BbAp0PRqRbjITILb2LcLEyR9z5Y5tZ+dBEdmhBUyCk+959Hgzkks2d6uqOHqG6IArysLCqml/JJWisKRfEWduIJhlrMEWHRa/vU98w/2nKh1P4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bCvbJE6Q; arc=pass smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DUAaRPdB"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66baa7fdfd3so1815a12.1
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 11:41:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775587270; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bCvbJE6Q"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38dd575bca3so2208911fa.1
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 11:56:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775588209; cv=none;
         d=google.com; s=arc-20240605;
-        b=dGwyHv03XOsq+VbSGKwbnsBX7LxKfziM2XaOMg8clxMpsqIJV3mhqrgyqFeKE6Y/4R
-         d0JfieUVaqJXi/ifudqBVb7xJLehOpSmEG54TlRvhitJX/+i/Qkj1X59YXUL/a4zo9H1
-         bhjsw5gt7j8UFlOCqCgjcGlx6EFRt9nEBAg9wQzIJTPrdse6zakywbJAJkbfnjuUZ8QH
-         V3DkWbSw2eXAVihcPGpz98fP+muutGujmUcm70bCZQS4cTa/UV0DIpmLoO2HtZXKoQb/
-         4T2ww9L+/bREU9exU+LSnlv5PPnx1pBniyag+6CaT32NxCEN5f4vm9oaZE5LdMHLnpXb
-         0xmw==
+        b=EHFX14YKEFPUF8qBnAVpzvQmjuxImhAUApAIfoEAFhmVOKT5OqwWF7ZjhvzvoWeDCC
+         HFgfz0RefAruR4P+vGXWtuJu8GBqnSN6UOEWpP8fiI9C4UROWXWFocByqsO4JGDXzNLD
+         PWQXClLCCRwjhsW3sYkdsvl1oF7U8J1zTJKZdgNiAZpcaJMnQWT1y9sU95BkR1TcmIPh
+         sWau1MtemsUP3amA2INBKY+GQnFeKOcZiCI3Ma8x918sMxYImInnbDisoBQbzXSipK0W
+         miTr+0W2OU5O5f7jjt45Liw24UI+2/Or1tmeCGc7j6LegEp7tOY2dr+qZ+0D27QKDDTH
+         wFgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=KZCDfzIeZ9MXyD9zphyFKr1/BkcZ0XXimcy7WGnXtA8=;
-        fh=1HBN4lfTDRR/NLetCAo7DB4XaY874vvqrt4lal+wjxU=;
-        b=OqO4mz6ihjWdJtphNv5F0EyjMuGMJXIPQYqIdWHUGAhKoK5FTRWBV3FwXfQBQGLBz8
-         NxegCyBmi/a3nrH6ZJApvCG8kJLxPPlXENriAsnTCFMSFLNDS4RJKJQxOb0QSb4bhmod
-         a127g2I2owF9kk+DAGv/BVcKkIwuYttpZT8k1NtIHmH6gx8BLMNDEWbnSn2WwedJ/8CD
-         tU7eaeVPPAd6O0UlJNOBa9rlxBFmzxUjTF7BoBF+n1AnW4oRvlp5zuWLcnJWe2D6jrCA
-         smhYXzfoUZ+0V2OgBHebYal4OYVFa1ywSbdjS2XxLtaYhq3eZ83jaoiuVwPKr89rbZv4
-         G0Zg==;
+        bh=li6eJRq571VbkAQY3SCY76KP+ZDhJq6m6xXIOEYY8mE=;
+        fh=HLGelAaYpWNqdXjluQgBtL8CYD1QPkyCoZy6MNeDnds=;
+        b=Bd/Je3PMg42RP9BV3xrXHW+TvJvcOrrEwfSFY+RlCfVAr6N//5c7PGmqesD23Ezx1u
+         8B6qofxgPOlp52mRARoDa7p7Ig47h8z8QIYhbAj6rU59izctvmzlX2MjG4Z76KSSXeEn
+         fqWPbxHK3XPB7bIY+DEcWZVE0Wlt7xBOhWlL+Bc9Cgb5z8XX49hd2dtIxV8CGxZ2ERCM
+         yBqe6dDXPtw+gFZlIoasNeoNLz21VoDm6rqreKCoF7su4I0Mg2VZFGP4rAM2bn4RGq/c
+         dV/p8u1cKIzXRIClOyyB8/hV0El/fe3VKU2rydmzprrVVu47O8G/lWILLWZJ5dTZw5hU
+         KA2g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775587270; x=1776192070; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775588209; x=1776193009; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KZCDfzIeZ9MXyD9zphyFKr1/BkcZ0XXimcy7WGnXtA8=;
-        b=DUAaRPdBnrNLOhCS9+edF+j0ec+XQt3UzjdvTP3IF2wUtvnWewBDIfOG8A4asaM+gh
-         Dp41Ia2yX8jvR1laMzMOzJE892sj0Si+EBIxA7qXW9mxytxolpmTAi7Yc7kuE9/kyQue
-         GkUynP1fUve4u+LXuM0vIRnANGjEXgQKUOKqlLv1q+ei2VNbmDYA+vj6dz/b3S2y9cVZ
-         5VCPpV4WzeVuK0R0iVsFKuDpV+LUgS8XU9jIjUQYdzIgAUneynnF8O2zqj0Ki0eDusAe
-         eQR/gHaAWMNOSwT5ZB1YwCqDvn/njJ1a67122OHZfb+kQnrgN9vdaQyvy8oVcvgiqqST
-         t9Rg==
+        bh=li6eJRq571VbkAQY3SCY76KP+ZDhJq6m6xXIOEYY8mE=;
+        b=bCvbJE6QN1KsP36oONUm8thyzS3FH2kozjl0z1vECMski4Cm6MysFHlHIfTNwfCDDc
+         ihps6wdflRry90AQrKokuvUdAUqqgwS+j2Bzf8AzsidtauZuBl6CVFU6JSa+kW5wF6XV
+         qRlBHIAO1PICAAIQm5Uw8sGByWXSYrx/dsZAezFN9WG5Hb1OIXKH8AoPo44+vws7gLaN
+         yZ+zb93v9x7bLT3poUffodFNqxJw9n03cqMnCOc1u74uFDJ3fmZIREk5cMXlXxd0HYO6
+         dKxGIzNl3i3kyG3m7VwrjlL13xDHwx1oHs1wfcsmTaK3jcd0eiJBx8xtm/BRRQqMzOGF
+         siZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775587270; x=1776192070;
+        d=1e100.net; s=20251104; t=1775588209; x=1776193009;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KZCDfzIeZ9MXyD9zphyFKr1/BkcZ0XXimcy7WGnXtA8=;
-        b=ErZv6AqVkr+NFdaUW12YgWbGtL5swt4b4JEy/lUpCSxKroTdiTje7aaCYNSUAap8lq
-         TS+u8oS/wcWgYG2KWQBOnBfiHd/YL3qq6i4NLjANFNpBgFHkGcr0MrNoL8L6CA//hVoX
-         XNav6D+KtMIMdBfuJf/Ok5c/dXd2MLgMnAUil3Pb89P4UCzbyKEhMvrm7wNqoyp5ZvMR
-         ymuvJ6+EUmgRMgAHn5DDmpQjXpwZBpg1g+2z8CJtvWbstJWLnQc1hgDvxcy1pVV9FAx1
-         pqLk+PgjdRq08VaE/x7yuyna3WpMldhRERolKRHmRBl6y+PhuiCvHSdbTA3NBCVnoeHG
-         336A==
-X-Forwarded-Encrypted: i=1; AJvYcCVbEn0HVsH2L2qGoOXjvZUcqivJdVIcPD8WykIY7r+R7BCFZYmc0R2LQZqfXVnYdj/Lbm8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYoqYfQ6W4uDAY1BSMU843z4v4rYiRalu37gsFALmqvofYTrc8
-	gcFiyYlO4Njne772CbnxhFq7sPRa19arQ3CZkWx3KxbzqTqobf3TfUJcNbHxCEGRsbbO+wv9bD6
-	GLY3nO5cKFfAIXrb1uyYvnBmTQxITK+Jsi25eSBuT
-X-Gm-Gg: AeBDies1q7XkIDt7UXz4gtHRfrPR9ZY4PLgNXrp3fVtVhNkT7+usW0kgT2I5Hll2R0G
-	fDJVSsaX5KFoCgzzDLQxCh6ehapnj8igtqp7iJ7ROl5bbz4ACexGkQA+L3DXe0qfDT/KdOfBKKB
-	xCyf2YwfybUhdORXgusuARTB1tmHPVfCtQF0+mSC2KGF1ZxZOmoqA1YB5JzsPyMFe9aSJBhiJB5
-	IJQkicAI9T7yKUZ9Fkmshp8c15Tewrsq7wMFNvolV3Fsek7ljGysuYjphNdBNhlH6JGoI9fS/nu
-	3tucCck=
-X-Received: by 2002:a05:6402:a0da:10b0:661:f987:357b with SMTP id
- 4fb4d7f45d1cf-66e415a1e4bmr147625a12.14.1775587269433; Tue, 07 Apr 2026
- 11:41:09 -0700 (PDT)
+        bh=li6eJRq571VbkAQY3SCY76KP+ZDhJq6m6xXIOEYY8mE=;
+        b=liV1uSDmTMLJXCTaD2INAGmxmnhh9mcGs1rSa3uahM5tKUipISv4AGnLTPohyEHKJP
+         6aSX5Ifbb4toOprjzabkJlfgNbuTIwMmUX7w2KoxAWq/hStzXmQ9gQHoDf6rcBcOQc75
+         TprcyKZ9PWlewkO3eZ4O/An2gE7480KwTTZA8oAp1EgVxuQCYPnM1/I3h9YD7be15tmQ
+         /A0smV2Lt6h9oFGpGwUDLYkw6Yo9Ab1D6J/7QloDfK4GmJGoLlxpHcHV2HvUbswMy+nE
+         pLgb76k54f/TnD2OR26czoDU4NWT/nLsf+cnS5nrxNCt5S5lWv6tyNafxLalupnXRnC2
+         86wA==
+X-Gm-Message-State: AOJu0Yw6GZbFFUfw7jrAhAg67wifgIn/JdWyFZnyG3kAuI9OorkFVEzS
+	fvcOJJcIH13DZIDCAOG4PfsT5xs3jqBAtMRBJGLpwkjXqNoM9tYxo+FFVsAY7iKJEoqzzs0XRca
+	x+pyX/+DTi4rXcTW+FYNrIKCa/YHFgeoZD7jWh+qy
+X-Gm-Gg: AeBDieteX49dxNcta3Lms4lFW6NTLC0dcpbBI5pihjP78CyHBx3rtuP5pXGkJ7ZW/nR
+	Y8IvOTeKxUzTQfkdH0B26Zo5k9M/MSjttpbH6U9kmRu2zBqyu4qm6eEMeXQnGpjOOw5bC5tZpnN
+	DTdYg+cEbj23KiZ/QZTTF/VpN6q/Qz5SFwAHRNThrm9+4kGSb8U6wTeTTi2+d1ZSIdA+3Tdcc2r
+	hNE1uJ3p22GJ8uthyjZbxBY8iqNd6bGR8dyK6526YS575rfLnUo2Gud9MRjvsYdlMZHj5422cyZ
+	+fbVS5WrIuTDZogPI8UhI4t5Sw9vTi9s0XrK19Ct
+X-Received: by 2002:a05:6512:23a1:b0:5a1:182e:1fdd with SMTP id
+ 2adb3069b0e04-5a32f69149bmr5992701e87.0.1775588208992; Tue, 07 Apr 2026
+ 11:56:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260403231608.zopnhnypdclzqlx7@desk> <CALMp9eT2vJBdLPY2uBYrPgVrhS_aYmfGfdXe6MZXG_gyryLHVA@mail.gmail.com>
- <20260403233329.fb2ppifgwm3um6ny@desk> <CALMp9eTpsenqsWjzmpXLEubn9uNjgZgzgrMwtZ72HDuV_2xgfg@mail.gmail.com>
- <20260404002149.wtayv6a64vzuppgp@desk> <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
- <20260404034954.t7iapenzvhdpagxp@desk> <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
- <20260407163943.y6tkh26z2rfktn3y@desk> <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
- <20260407171151.2gf2idjbmph35ypb@desk>
-In-Reply-To: <20260407171151.2gf2idjbmph35ypb@desk>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 7 Apr 2026 11:40:57 -0700
-X-Gm-Features: AQROBzCt9Ys4MdyKd8Tqk8kV948jbOd6itImLNrx4CMkmInZ0JBSW_3PRIdD-Y8
-Message-ID: <CALMp9eRNVGFpzk_-ajQTuXadMtoY9H-ndUaz78wTT1zDYbTrPQ@mail.gmail.com>
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org, chao.gao@intel.com
+References: <20260316224349.2360482-1-jingzhangos@google.com>
+ <20260316224349.2360482-3-jingzhangos@google.com> <20260324150441.GA456067@e124191.cambridge.arm.com>
+In-Reply-To: <20260324150441.GA456067@e124191.cambridge.arm.com>
+From: Jing Zhang <jingzhangos@google.com>
+Date: Tue, 7 Apr 2026 11:56:36 -0700
+X-Gm-Features: AQROBzCgzrPGp_qS7-15deV5V29ZGuIZ171C--Z3cgkW7LdmL5RkW2sXJjmeSvE
+Message-ID: <CAAdAUtgZLm5=i6iLcV+FC_zTzf9sB6uA_s8xJHuskyoDVV1Ciw@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v1 2/3] lib: arm64: Add bare-metal guest
+ execution framework
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
+	Marc Zyngier <maz@kernel.org>, Andrew Jones <andrew.jones@linux.dev>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Oliver Upton <oliver.upton@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 7, 2026 at 10:12=E2=80=AFAM Pawan Gupta
-<pawan.kumar.gupta@linux.intel.com> wrote:
+On Tue, Mar 24, 2026 at 8:04=E2=80=AFAM Joey Gouly <joey.gouly@arm.com> wro=
+te:
 >
-> On Tue, Apr 07, 2026 at 09:46:07AM -0700, Jim Mattson wrote:
-> > On Tue, Apr 7, 2026 at 9:40=E2=80=AFAM Pawan Gupta
-> > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > >
-> > > On Mon, Apr 06, 2026 at 07:23:25AM -0700, Jim Mattson wrote:
-> > > > Yes, but the guest needs a way to determine whether the hypervisor
-> > > > will do what's necessary to make the short sequence effective. And,=
- in
-> > > > particular, no KVM hypervisor today is prepared to do that.
-> > > >
-> > > > When running under a hypervisor, without BHI_CTRL and without any
-> > > > evidence to the contrary, the guest must assume that the longer
-> > > > sequence is necessary. At the very least, we need a CPUID or MSR bi=
-t
-> > > > that says, "the short BHB clearing sequence is adequate for this
-> > > > vCPU."
-> > >
-> > > After discussing this internally, the consensus is that the best path
-> > > forward is to add virtual SPEC_CTRL support to KVM, which also aligns=
- with
-> > > Intel's guidance. In the long term, virtual SPEC_CTRL can benefit fut=
-ure
-> > > mitigations as well. As with many other mitigations (e.g. microcode),=
- the
-> > > guest would rely on the host to enforce the appropriate protections.
-> >
-> > I don't think it's reasonable for the guest to rely on a future
-> > implementation to enforce the appropriate protections.
-> >
-> > This is already a problem today. If a guest sees that BHI_CTRL is
-> > unavailable, it will deploy the short BHB clearing sequence and
-> > declare that the vulnerability is mitigated. That isn't true if the
-> > guest is running on Alder Lake or newer.
+> Hi,
 >
-> In any case, there is a change required in the kernel either for the gues=
-t
-> or the host, they both are future implementations. Why not implement the
-> one that is more future proof.
+> Just some preliminary comments.
+>
+> On Mon, Mar 16, 2026 at 03:43:48PM -0700, Jing Zhang wrote:
+> > To test advanced KVM features such as nested virtualization (NV) and
+> > GICv4 direct interrupt injection, kvm-unit-tests needs the ability to
+> > act as an L1 hypervisor running at EL2 and manage its own L2 guests.
+> >
+> > Introduce a lightweight guest management library that provides the
+> > infrastructure to create, configure, and execute nested guests.
+> >
+> > This framework includes:
+> > - Guest lifecycle management: `guest_create()` and `guest_destroy()`
+> >   APIs to allocate guest context and setup Stage-2 identity mappings
+> >   for code and stack using the s2mmu library.
+> > - Context switching: The `guest_run()` assembly routine handles
+> >   saving the host (L1) callee-saved registers and loading the guest
+> >   (L2) GPRs and EL1 system registers.
+> > - VM-Exit handling: Installs an EL2 trap handler (`guest_hyp_vectors`)
+> >   to intercept guest exits and route them to `guest_c_exception_handler=
+`
+> >   to determine whether to return to the host test logic or resume.
+> > - Guest-internal exceptions: Provides `guest_el1_vectors` to catch
+> >   Sync, IRQ, FIQ, and SError exceptions occurring entirely within the
+> >   guest (EL1) without trapping to the host.
+>
+> Might be helpful if this patch could be split into 2-3 commits.
+>
 
-There will always be old hypervisors. True future-proofing requires
-that the guest be able to distinguish an old hypervisor from a new
-one.
+Sure, will do.
 
-My proposal is as follows:
+> >
+> > Signed-off-by: Jing Zhang <jingzhangos@google.com>
+> > ---
+> >  arm/Makefile.arm64     |   2 +
+> >  lib/arm64/asm/guest.h  | 156 ++++++++++++++++++++++++
+> >  lib/arm64/guest.c      | 197 ++++++++++++++++++++++++++++++
+> >  lib/arm64/guest_arch.S | 263 +++++++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 618 insertions(+)
+> >  create mode 100644 lib/arm64/asm/guest.h
+> >  create mode 100644 lib/arm64/guest.c
+> >  create mode 100644 lib/arm64/guest_arch.S
+> >
+> > diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+> > index 5e50f5ba..9026fd71 100644
+> > --- a/arm/Makefile.arm64
+> > +++ b/arm/Makefile.arm64
+> > @@ -41,6 +41,8 @@ cflatobjs +=3D lib/arm64/processor.o
+> >  cflatobjs +=3D lib/arm64/spinlock.o
+> >  cflatobjs +=3D lib/arm64/gic-v3-its.o lib/arm64/gic-v3-its-cmd.o
+> >  cflatobjs +=3D lib/arm64/stage2_mmu.o
+> > +cflatobjs +=3D lib/arm64/guest.o
+> > +cflatobjs +=3D lib/arm64/guest_arch.o
+> >
+> >  ifeq ($(CONFIG_EFI),y)
+> >  cflatobjs +=3D lib/acpi.o
+> > diff --git a/lib/arm64/asm/guest.h b/lib/arm64/asm/guest.h
+> > new file mode 100644
+> > index 00000000..1d70873d
+> > --- /dev/null
+> > +++ b/lib/arm64/asm/guest.h
+> > @@ -0,0 +1,156 @@
+> > +/*
+> > + * Copyright (C) 2026, Google LLC.
+> > + * Author: Jing Zhang <jingzhangos@google.com>
+> > + *
+> > + * SPDX-License-Identifier: LGPL-2.0-or-later
+> > + */
+> > +#ifndef _ASMARM64_GUEST_H_
+> > +#define _ASMARM64_GUEST_H_
+> > +
+> > +/* Offsets for assembly (Must match struct guest) */
+> > +#define GUEST_X_OFFSET                       0
+> > +#define GUEST_ELR_OFFSET             248
+> > +#define GUEST_SPSR_OFFSET            256
+> > +#define GUEST_HCR_OFFSET             264
+> > +#define GUEST_VTTBR_OFFSET           272
+> > +#define GUEST_SCTLR_OFFSET           280
+> > +#define GUEST_VBAR_OFFSET            288
+> > +#define GUEST_SP_EL1_OFFSET          296
+> > +#define GUEST_ESR_OFFSET             304
+> > +#define GUEST_FAR_OFFSET             312
+> > +#define GUEST_HPFAR_OFFSET           320
+> > +#define GUEST_EXIT_CODE_OFFSET               328
+> > +#define GUEST_TPIDR_EL1_OFFSET               336
+> > +#define GUEST_ICH_VMCR_EL2_OFFSET    344
+>
+> Look at lib/arm64/asm-offsets.c for how to generate theses.
+>
 
-1. The (advanced) hypervisor can advertise to the guest (via CPUID bit
-or MSR bit) that the short BHB clearing sequence is adequate. This may
-mean either that the VM will only be hosted on pre-Alder Lake hardware
-or that the hypervisor will set BHI_DIS_S behind the back of the
-guest. Presumably, this bit would not be reported if BHI_CTRL is
-advertised to the guest.
-2. If the guest sees this bit, then it can use the short sequence. If
-it doesn't see this bit, it must use the long sequence.
+Thanks. I'll refine this.
+
+> > +
+> > +#ifndef __ASSEMBLY__
+> > +
+> > +#include <libcflat.h>
+> > +#include <asm/stage2_mmu.h>
+> > +
+> > +/* HCR_EL2 Definitions */
+> > +#define HCR_VM               (1UL << 0)      /* Virtualization Enable =
+*/
+> > +#define HCR_FMO              (1UL << 3)      /* Physical FIQ Routing *=
+/
+> > +#define HCR_IMO              (1UL << 4)      /* Physical IRQ Routing *=
+/
+> > +#define HCR_AMO              (1UL << 5)      /* Physical SError Interr=
+upt Routing */
+> > +#define HCR_RW               (1UL << 31)     /* Execution State: AArch=
+64 */
+> > +#define HCR_DC               (1UL << 12)     /* Default Cacheable */
+> > +#define HCR_E2H              (1UL << 34)     /* EL2 Host */
+> > +
+>
+> Should be in lib/arm64/asm/sysreg.h
+>
+
+I'll clean up all the register and offset definitions.
+
+> > +#define HCR_GUEST_FLAGS (HCR_VM | HCR_FMO | HCR_IMO | HCR_AMO | HCR_RW=
+ | \
+> > +                      HCR_DC | HCR_E2H)
+> > +
+> > +/* ICH_VMCR_EL2 bit definition */
+> > +#define ICH_VMCR_PMR_SHIFT   24
+> > +#define ICH_VMCR_PMR_MASK    (0xffUL << ICH_VMCR_PMR_SHIFT)
+> > +#define ICH_VMCR_ENG0_SHIFT  0
+> > +#define ICH_VMCR_ENG0_MASK   (1 << ICH_VMCR_ENG0_SHIFT)
+> > +#define ICH_VMCR_ENG1_SHIFT  1
+> > +#define ICH_VMCR_ENG1_MASK   (1 << ICH_VMCR_ENG1_SHIFT)
+> > +
+> > +/* Guest stack size */
+> > +#define GUEST_STACK_SIZE             SZ_64K
+> > +
+> > +/*
+> > + * Result from Handler:
+> > + * RESUME: Keep guest running (ERET immediately)
+> > + * EXIT:   Return to Host C caller
+> > + */
+> > +enum guest_handler_result {
+> > +     GUEST_ACTION_RESUME,
+> > +     GUEST_ACTION_EXIT
+> > +};
+> > +
+> > +struct guest;
+> > +typedef enum guest_handler_result (*guest_handler_t)(struct guest *gue=
+st);
+> > +
+> > +/* EL1 (Guest-internal) Exception Vector */
+> > +enum guest_el1_vector {
+> > +     GUEST_EL1_SYNC,
+> > +     GUEST_EL1_IRQ,
+> > +     GUEST_EL1_FIQ,
+> > +     GUEST_EL1_SERROR,
+> > +     GUEST_EL1_MAX
+> > +};
+> > +
+>
+> There's a similar vector enum in lib/arm64/asm/processor.h, is there a sp=
+ecific
+> need to have a separate guest_el1 version?
+>
+
+Not really. I'll try to reuse those.
+
+> > +/*
+> > + * Guest EL1 Exception Frame (pushed to guest stack by asm stub)
+> > + * We use a simplified frame: x0-x30, elr, spsr. size =3D 33*8
+> > + */
+> > +struct guest_el1_regs {
+> > +     unsigned long regs[31];
+> > +     unsigned long elr;
+> > +     unsigned long spsr;
+> > +};
+>
+> What about SP?
+>
+
+It is in the guest->sp_el1.
+
+> > +
+> > +typedef void (*guest_el1_handler_t)(struct guest_el1_regs *regs, unsig=
+ned int esr);
+> > +
+> > +/* Exceptions from the Guest (Lower EL using AArch64) */
+> > +enum guest_vector {
+> > +     GUEST_VECTOR_SYNC,
+> > +     GUEST_VECTOR_IRQ,
+> > +     GUEST_VECTOR_FIQ,
+> > +     GUEST_VECTOR_SERROR,
+> > +     GUEST_VECTOR_MAX
+> > +};
+>
+> Same comment about vector.
+>
+> > +
+> > +/*
+> > + * Guest Context Structure
+> > + * This will be pointed to by TPIDR_EL1 while the guest is running.
+> > + */
+> > +struct guest_context {
+> > +     guest_el1_handler_t handlers[GUEST_EL1_MAX];
+> > +};
+> > +
+> > +struct guest {
+> > +     /* 0x000: General Purpose Registers */
+> > +     unsigned long x[31]; /* x0..x30 */
+> > +
+> > +     /* 0x0F8: Execution State */
+> > +     unsigned long elr_el2;
+> > +     unsigned long spsr_el2;
+> > +
+> > +     /* 0x108: Control Registers */
+> > +     unsigned long hcr_el2;
+> > +     unsigned long vttbr_el2;
+> > +     unsigned long sctlr_el1;
+> > +     unsigned long vbar_el1;
+> > +     unsigned long sp_el1;
+> > +
+> > +     /* 0x130: Exit Information */
+> > +     unsigned long esr_el2;
+> > +     unsigned long far_el2;
+> > +     unsigned long hpfar_el2;
+> > +     unsigned long exit_code; /* enum guest_vector */
+> > +     unsigned long tpidr_el1;
+> > +
+> > +     /* 0x158: GIC Registers */
+> > +     unsigned long ich_vmcr_el2;
+> > +
+> > +     /* 0x160: Exception Handlers */
+> > +     guest_handler_t handlers[GUEST_VECTOR_MAX];
+> > +     struct guest_context *guest_context;
+> > +
+> > +     struct s2_mmu *s2mmu;
+> > +};
+> > +
+> > +/* API */
+> > +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2=
+_granule granule);
+> > +void guest_destroy(struct guest *guest);
+> > +
+> > +/* Configuration */
+> > +void guest_set_vector(struct guest *guest, void *vector_table);
+> > +void guest_set_stack(struct guest *guest, void *stack_top);
+> > +void guest_install_handler(struct guest *guest, enum guest_vector v, g=
+uest_handler_t handler);
+> > +
+> > +/* Install handler for exceptions INSIDE EL1 */
+> > +void guest_install_el1_handler(struct guest *guest, enum guest_el1_vec=
+tor v, guest_el1_handler_t handler);
+> > +
+> > +unsigned long guest_c_exception_handler(struct guest *guest, unsigned =
+long vector_offset);
+> > +void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vec=
+tor);
+> > +
+> > +/* Core Run Loop */
+> > +void guest_run(struct guest *guest);
+> > +
+> > +#endif /* __ASSEMBLY__ */
+> > +#endif /* _ASMARM64_GUEST_H_ */
+> > diff --git a/lib/arm64/guest.c b/lib/arm64/guest.c
+> > new file mode 100644
+> > index 00000000..6c256c11
+> > --- /dev/null
+> > +++ b/lib/arm64/guest.c
+> > @@ -0,0 +1,197 @@
+> > +/*
+> > + * Copyright (C) 2026, Google LLC.
+> > + * Author: Jing Zhang <jingzhangos@google.com>
+> > + *
+> > + * SPDX-License-Identifier: LGPL-2.0-or-later
+> > + */
+> > +#include <libcflat.h>
+> > +#include <asm/guest.h>
+> > +#include <asm/io.h>
+> > +#include <asm/sysreg.h>
+> > +#include <asm/barrier.h>
+> > +#include <alloc_page.h>
+> > +#include <alloc.h>
+> > +
+> > +/* Compile-time checks to ensure Assembly macros match C Struct */
+> > +_Static_assert(offsetof(struct guest, x) =3D=3D GUEST_X_OFFSET,
+> > +            "GUEST_X_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, elr_el2) =3D=3D GUEST_ELR_OFFSET=
+,
+> > +            "GUEST_ELR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, spsr_el2) =3D=3D GUEST_SPSR_OFFS=
+ET,
+> > +            "GUEST_SPSR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, hcr_el2) =3D=3D GUEST_HCR_OFFSET=
+,
+> > +            "GUEST_HCR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, vttbr_el2) =3D=3D GUEST_VTTBR_OF=
+FSET,
+> > +            "GUEST_VTTBR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, sctlr_el1) =3D=3D GUEST_SCTLR_OF=
+FSET,
+> > +            "GUEST_SCTLR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, vbar_el1) =3D=3D GUEST_VBAR_OFFS=
+ET,
+> > +            "GUEST_VBAR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, sp_el1) =3D=3D GUEST_SP_EL1_OFFS=
+ET,
+> > +            "GUEST_SP_EL1_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, esr_el2) =3D=3D GUEST_ESR_OFFSET=
+,
+> > +            "GUEST_ESR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, far_el2) =3D=3D GUEST_FAR_OFFSET=
+,
+> > +            "GUEST_FAR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, hpfar_el2) =3D=3D GUEST_HPFAR_OF=
+FSET,
+> > +            "GUEST_HPFAR_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, exit_code) =3D=3D GUEST_EXIT_COD=
+E_OFFSET,
+> > +            "GUEST_EXIT_CODE_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, tpidr_el1) =3D=3D GUEST_TPIDR_EL=
+1_OFFSET,
+> > +             "GUEST_TPIDR_EL1_OFFSET mismatch");
+> > +_Static_assert(offsetof(struct guest, ich_vmcr_el2) =3D=3D GUEST_ICH_V=
+MCR_EL2_OFFSET,
+> > +             "GUEST_ICH_VMCR_EL2_OFFSET mismatch");
+> > +
+> > +/*
+> > + * C-Entry for Exception Handling
+> > + * Returns 0 to Resume Guest, 1 to Exit to Host Caller
+> > + */
+> > +unsigned long guest_c_exception_handler(struct guest *guest, unsigned =
+long vector_offset)
+> > +{
+> > +     enum guest_vector vector =3D (enum guest_vector)guest->exit_code;
+> > +
+> > +     /* Save Trap Info */
+> > +     guest->esr_el2 =3D read_sysreg(esr_el2);
+> > +     guest->far_el2 =3D read_sysreg(far_el2);
+> > +     guest->hpfar_el2 =3D read_sysreg(hpfar_el2);
+> > +
+> > +     /* Invoke Handler if registered */
+> > +     if (guest->handlers[vector]) {
+> > +             if (guest->handlers[vector](guest) =3D=3D GUEST_ACTION_RE=
+SUME) {
+> > +                     return 0; /* ASM stub will restore and ERET */
+> > +             }
+> > +     }
+> > +
+> > +     /* Default: Exit to caller */
+> > +     return 1;
+> > +}
+> > +
+> > +/* --- EL1 (Guest-Internal) Vector Handling --- */
+> > +
+> > +void guest_install_el1_handler(struct guest *guest, enum guest_el1_vec=
+tor v, guest_el1_handler_t handler)
+> > +{
+> > +     if (guest && guest->guest_context && v < GUEST_EL1_MAX)
+> > +             guest->guest_context->handlers[v] =3D handler;
+> > +}
+> > +
+> > +void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vec=
+tor)
+> > +{
+> > +     struct guest_context *ctx =3D (struct guest_context *)read_sysreg=
+(tpidr_el1);
+> > +     unsigned int esr =3D read_sysreg(esr_el1);
+> > +
+> > +     if (ctx && vector < GUEST_EL1_MAX && ctx->handlers[vector]) {
+> > +             ctx->handlers[vector](regs, esr);
+> > +     } else {
+> > +             printf("Guest: Unhandled Exception Vector %d, ESR=3D0x%x\=
+n", vector, esr);
+> > +             asm volatile("hvc #0xFFFF");
+> > +     }
+> > +}
+> > +
+> > +extern void guest_el1_vectors(void);
+> > +
+> > +static struct guest *__guest_create(struct s2_mmu *s2_ctx, void *entry=
+_point)
+> > +{
+> > +     struct guest *guest =3D calloc(1, sizeof(struct guest));
+> > +     struct guest_context *guest_ctx;
+> > +     unsigned long guest_ctx_pa;
+> > +
+> > +     /* Allocate the internal context table */
+> > +     guest_ctx =3D (void *)alloc_page();
+> > +     memset(guest_ctx, 0, PAGE_SIZE);
+> > +     guest->guest_context =3D guest_ctx;
+> > +
+> > +     guest_ctx_pa =3D virt_to_phys(guest_ctx);
+> > +     if (s2_ctx)
+> > +             s2mmu_map(s2_ctx, guest_ctx_pa, guest_ctx_pa, PAGE_SIZE, =
+S2_MAP_RW);
+> > +
+> > +     guest->tpidr_el1 =3D guest_ctx_pa;;
+> > +
+> > +     guest->elr_el2 =3D (unsigned long)entry_point;
+> > +     guest->spsr_el2 =3D 0x3C5; /* M=3DEL1h, DAIF=3DMasked */
+> > +     guest->hcr_el2 =3D HCR_GUEST_FLAGS;
+> > +
+> > +     if (s2_ctx) {
+> > +             guest->vttbr_el2 =3D virt_to_phys(s2_ctx->pgd);
+> > +             guest->vttbr_el2 |=3D ((unsigned long)s2_ctx->vmid << 48)=
+;
+> > +     }
+> > +
+> > +     guest->sctlr_el1 =3D read_sysreg(sctlr_el1);
+> > +     guest->sctlr_el1 |=3D SCTLR_EL1_C | SCTLR_EL1_I | SCTLR_EL1_M;
+> > +
+> > +     guest->ich_vmcr_el2 =3D read_sysreg(ich_vmcr_el2);
+> > +     guest->ich_vmcr_el2 |=3D (0xFFUL << ICH_VMCR_PMR_SHIFT) | (1UL <<=
+ ICH_VMCR_ENG1_SHIFT);
+> > +
+> > +     guest->vbar_el1 =3D (unsigned long)guest_el1_vectors;
+> > +     guest->s2mmu =3D s2_ctx;
+> > +
+> > +     return guest;
+> > +}
+> > +
+> > +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2=
+_granule granule)
+> > +{
+> > +     unsigned long guest_pa, code_base, stack_pa;
+> > +     unsigned long *stack_page;
+> > +     struct guest *guest;
+> > +     struct s2_mmu *ctx;
+> > +
+> > +     ctx =3D s2mmu_init(vmid, granule, true);
+> > +     /*
+> > +      * Map the Host's code segment Identity Mapped (IPA=3DPA).
+> > +      * To be safe, we map a large chunk (e.g., 2MB) around the functi=
+on
+> > +      * to capture any helper functions the compiler might generate ca=
+lls to.
+> > +      */
+> > +     guest_pa =3D virt_to_phys((void *)guest_func);
+> > +     code_base =3D guest_pa & ~(SZ_2M - 1);
+> > +     s2mmu_map(ctx, code_base, code_base, SZ_2M, S2_MAP_RW);
+> > +
+> > +     /*
+> > +      * Map Stack
+> > +      * Allocate 16 pages (64K) in Host, get its PA, and map it for Gu=
+est.
+> > +      */
+> > +     stack_page =3D alloc_pages(get_order(GUEST_STACK_SIZE >> PAGE_SHI=
+FT));
+> > +     stack_pa =3D virt_to_phys(stack_page);
+> > +     /* Identity Map it (IPA =3D PA) */
+> > +     s2mmu_map(ctx, stack_pa, stack_pa, GUEST_STACK_SIZE, S2_MAP_RW);
+> > +
+> > +     s2mmu_enable(ctx);
+> > +
+> > +     /* Create Guest */
+> > +     /* Entry point is the PA of the function (Identity Mapped) */
+> > +     guest =3D __guest_create(ctx, (void *)guest_pa);
+> > +
+> > +     /*
+> > +      * Setup Guest Stack Pointer
+> > +      * Must match where we mapped the stack + Offset
+> > +      */
+> > +     guest_set_stack(guest, (void *)(stack_pa + GUEST_STACK_SIZE));
+> > +
+> > +     /* Map UART identity mapped, printf() available to guest */
+> > +     s2mmu_map(ctx, 0x09000000, 0x09000000, PAGE_SIZE, S2_MAP_DEVICE);
+> > +
+> > +     return guest;
+> > +}
+> > +
+> > +void guest_destroy(struct guest *guest)
+> > +{
+> > +     s2mmu_disable(guest->s2mmu);
+> > +     s2mmu_destroy(guest->s2mmu);
+> > +     if (guest->guest_context)
+> > +             free_page(guest->guest_context);
+> > +     free(guest);
+> > +}
+> > +
+> > +void guest_set_vector(struct guest *guest, void *vector_table)
+> > +{
+> > +     guest->vbar_el1 =3D (unsigned long)vector_table;
+> > +}
+> > +
+> > +void guest_set_stack(struct guest *guest, void *stack_top)
+> > +{
+> > +     guest->sp_el1 =3D (unsigned long)stack_top;
+> > +}
+> > +
+> > +void guest_install_handler(struct guest *guest, enum guest_vector v, g=
+uest_handler_t handler)
+> > +{
+> > +     if (v < GUEST_VECTOR_MAX)
+> > +             guest->handlers[v] =3D handler;
+> > +}
+> > diff --git a/lib/arm64/guest_arch.S b/lib/arm64/guest_arch.S
+> > new file mode 100644
+> > index 00000000..cb7074d7
+> > --- /dev/null
+> > +++ b/lib/arm64/guest_arch.S
+> > @@ -0,0 +1,263 @@
+> > +/*
+> > + * Copyright (C) 2026, Google LLC.
+> > + * Author: Jing Zhang <jingzhangos@google.com>
+> > + *
+> > + * SPDX-License-Identifier: LGPL-2.0-or-later
+> > + */
+> > +#define __ASSEMBLY__
+> > +#include <asm/guest.h>
+> > +
+> > +.global guest_run
+> > +guest_run:
+> > +     /* x0 =3D struct guest pointer */
+> > +
+> > +     /* Save Host Callee-Saved Regs */
+> > +     stp     x29, x30, [sp, #-16]!
+> > +     stp     x27, x28, [sp, #-16]!
+> > +     stp     x25, x26, [sp, #-16]!
+> > +     stp     x23, x24, [sp, #-16]!
+> > +     stp     x21, x22, [sp, #-16]!
+> > +     stp     x19, x20, [sp, #-16]!
+> > +
+> > +     /* Cache Guest Pointer in TPIDR_EL2 */
+> > +     msr     tpidr_el2, x0
+> > +
+> > +     /* Configure ICC_SRE_EL2 to allow EL1 access to SysRegs */
+> > +     /* Bit 3 (Enable) =3D 1, Bit 0 (SRE) =3D 1 */
+> > +     mrs     x1, icc_sre_el2
+> > +     orr     x1, x1, #1
+> > +     orr     x1, x1, #(1 << 3)
+> > +     msr     icc_sre_el2, x1
+> > +     isb
+> > +
+> > +     /* Enable virtual CPU interface */
+> > +     mrs     x1, ich_hcr_el2
+> > +     orr     x1, x1, #1
+> > +     msr     ich_hcr_el2, x1
+> > +
+> > +     /* Load Guest System Registers */
+> > +     ldr     x1, [x0, #GUEST_ELR_OFFSET]
+> > +     msr     elr_el2, x1
+> > +     ldr     x1, [x0, #GUEST_SPSR_OFFSET]
+> > +     msr     spsr_el2, x1
+> > +     ldr     x1, [x0, #GUEST_HCR_OFFSET]
+> > +     msr     hcr_el2, x1
+> > +     ldr     x1, [x0, #GUEST_VTTBR_OFFSET]
+> > +     msr     vttbr_el2, x1
+> > +     ldr     x1, [x0, #GUEST_SCTLR_OFFSET]
+> > +     msr     S3_5_c1_c0_0, x1
+> > +     ldr     x1, [x0, #GUEST_VBAR_OFFSET]
+> > +     msr     S3_5_c12_c0_0, x1
+>
+> Need to add these registers to the sysreg.h file, so don't need the raw e=
+ncoding.
+>
+
+Sure, will refine it.
+
+> > +     ldr     x1, [x0, #GUEST_SP_EL1_OFFSET]
+> > +     msr     sp_el1, x1
+> > +     ldr     x1, [x0, #GUEST_TPIDR_EL1_OFFSET]
+> > +     msr     tpidr_el1, x1
+> > +     ldr     x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
+> > +     msr     ich_vmcr_el2, x1
+> > +
+> > +     /* Load Guest GPRs */
+> > +     ldp     x1, x2, [x0, #8]
+> > +     ldp     x3, x4, [x0, #24]
+> > +     ldp     x5, x6, [x0, #40]
+> > +     ldp     x7, x8, [x0, #56]
+> > +     ldp     x9, x10, [x0, #72]
+> > +     ldp     x11, x12, [x0, #88]
+> > +     ldp     x13, x14, [x0, #104]
+> > +     ldp     x15, x16, [x0, #120]
+> > +     ldp     x17, x18, [x0, #136]
+> > +     ldp     x19, x20, [x0, #152]
+> > +     ldp     x21, x22, [x0, #168]
+> > +     ldp     x23, x24, [x0, #184]
+> > +     ldp     x25, x26, [x0, #200]
+> > +     ldp     x27, x28, [x0, #216]
+> > +     ldp     x29, x30, [x0, #232]
+> > +     ldr     x0, [x0, #0]
+> > +
+> > +     /* Install Trap Handler */
+> > +     adrp    x29, guest_hyp_vectors
+> > +     add     x29, x29, :lo12:guest_hyp_vectors
+> > +     msr     vbar_el2, x29
+> > +
+> > +     /* Restore x29 from struct (via tpidr_el2) */
+> > +     mrs     x29, tpidr_el2
+> > +     ldr     x29, [x29, #232]
+> > +
+> > +     isb
+> > +     eret
+> > +
+> > +     .align 11
+> > +guest_hyp_vectors:
+> > +     .skip 0x400
+> > +
+> > +guest_exit_sync:
+> > +     stp     x0, x1, [sp, #-16]!
+> > +     mrs     x0, tpidr_el2
+> > +     mov     x1, #0
+> > +     str     x1, [x0, #GUEST_EXIT_CODE_OFFSET]
+> > +     b       guest_common_exit
+> > +
+> > +     .balign 0x80
+> > +
+> > +guest_exit_irq:
+> > +     stp     x0, x1, [sp, #-16]!
+> > +     mrs     x0, tpidr_el2
+> > +     mov     x1, #1
+> > +     str     x1, [x0, #GUEST_EXIT_CODE_OFFSET]
+> > +     b       guest_common_exit
+> > +
+> > +guest_common_exit:
+> > +     stp     x2, x3, [x0, #16]
+> > +     stp     x4, x5, [x0, #32]
+> > +     stp     x6, x7, [x0, #48]
+> > +     stp     x8, x9, [x0, #64]
+> > +     stp     x10, x11, [x0, #80]
+> > +     stp     x12, x13, [x0, #96]
+> > +     stp     x14, x15, [x0, #112]
+> > +     stp     x16, x17, [x0, #128]
+> > +     stp     x18, x19, [x0, #144]
+> > +     stp     x20, x21, [x0, #160]
+> > +     stp     x22, x23, [x0, #176]
+> > +     stp     x24, x25, [x0, #192]
+> > +     stp     x26, x27, [x0, #208]
+> > +     stp     x28, x29, [x0, #224]
+> > +     str     x30, [x0, #240]
+> > +
+> > +     ldp     x2, x3, [sp], #16
+> > +     stp     x2, x3, [x0, #0]
+> > +
+> > +     mrs     x1, elr_el2
+> > +     str     x1, [x0, #GUEST_ELR_OFFSET]
+> > +     mrs     x1, spsr_el2
+> > +     str     x1, [x0, #GUEST_SPSR_OFFSET]
+> > +     mrs     x1, esr_el2
+> > +     str     x1, [x0, #GUEST_ESR_OFFSET]
+> > +     mrs     x1, far_el2
+> > +     str     x1, [x0, #GUEST_FAR_OFFSET]
+> > +     mrs     x1, hpfar_el2
+> > +     str     x1, [x0, #GUEST_HPFAR_OFFSET]
+> > +     mrs     x1, sp_el1
+> > +     str     x1, [x0, #GUEST_SP_EL1_OFFSET]
+>
+> Missing VBAR_EL1?
+>
+
+Thanks, will fix it.
+
+> > +     mrs     x1, ich_vmcr_el2
+> > +     str     x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
+> > +
+> > +     /* x29 contains vector offset from entry */
+> > +     mov     x1, x29
+> > +     bl      guest_c_exception_handler
+> > +     cbz     x0, guest_resume_guest
+> > +
+> > +     /* EXIT */
+> > +     /* Restore Host Callee-Saved Regs */
+> > +     ldp     x19, x20, [sp], #16
+> > +     ldp     x21, x22, [sp], #16
+> > +     ldp     x23, x24, [sp], #16
+> > +     ldp     x25, x26, [sp], #16
+> > +     ldp     x27, x28, [sp], #16
+> > +     ldp     x29, x30, [sp], #16
+> > +     ret
+> > +
+> > +     /* RESUME */
+> > +guest_resume_guest:
+> > +     mrs     x0, tpidr_el2
+> > +     ldr     x1, [x0, #GUEST_ELR_OFFSET]
+> > +     msr     elr_el2, x1
+> > +     ldr     x1, [x0, #GUEST_SPSR_OFFSET]
+> > +     msr     spsr_el2, x1
+> > +     ldr     x1, [x0, #GUEST_SP_EL1_OFFSET]
+> > +     msr     sp_el1, x1
+> > +
+> > +     ldp     x1, x2, [x0, #8]
+> > +     ldp     x3, x4, [x0, #24]
+> > +     ldp     x5, x6, [x0, #40]
+> > +     ldp     x7, x8, [x0, #56]
+> > +     ldp     x9, x10, [x0, #72]
+> > +     ldp     x11, x12, [x0, #88]
+> > +     ldp     x13, x14, [x0, #104]
+> > +     ldp     x15, x16, [x0, #120]
+> > +     ldp     x17, x18, [x0, #136]
+> > +     ldp     x19, x20, [x0, #152]
+> > +     ldp     x21, x22, [x0, #168]
+> > +     ldp     x23, x24, [x0, #184]
+> > +     ldp     x25, x26, [x0, #200]
+> > +     ldp     x27, x28, [x0, #216]
+> > +     ldp     x29, x30, [x0, #232]
+> > +     ldr     x0, [x0, #0]
+> > +     eret
+> > +
+> > +/* EL1 Vector Table */
+> > +.align 11
+> > +.global guest_el1_vectors
+> > +guest_el1_vectors:
+> > +     /* Sync (0x000) */
+> > +     .skip 0x200
+> > +     /* Sync (0x200) */
+> > +     stp     x29, x30, [sp, #-16]!
+> > +     mov     x29, #0
+> > +     b       guest_el1_common
+> > +     .skip 0x80 - 12
+> > +     /* IRQ (0x280) */
+> > +     stp     x29, x30, [sp, #-16]!
+> > +     mov     x29, #1
+> > +     b       guest_el1_common
+> > +     .skip 0x80 - 12
+> > +     /* FIQ (0x300) */
+> > +     stp     x29, x30, [sp, #-16]!
+> > +     mov     x29, #2
+> > +     b       guest_el1_common
+> > +     .skip 0x80 - 12
+> > +     /* SError (0x380) */
+> > +     stp     x29, x30, [sp, #-16]!
+> > +     mov     x29, #3
+> > +     b       guest_el1_common
+> > +     .skip 0x400
+> > +
+> > +guest_el1_common:
+> > +     sub     sp, sp, #264
+> > +     stp     x0, x1, [sp, #0]
+> > +     stp     x2, x3, [sp, #16]
+> > +     stp     x4, x5, [sp, #32]
+> > +     stp     x6, x7, [sp, #48]
+> > +     stp     x8, x9, [sp, #64]
+> > +     stp     x10, x11, [sp, #80]
+> > +     stp     x12, x13, [sp, #96]
+> > +     stp     x14, x15, [sp, #112]
+> > +     stp     x16, x17, [sp, #128]
+> > +     stp     x18, x19, [sp, #144]
+> > +     stp     x20, x21, [sp, #160]
+> > +     stp     x22, x23, [sp, #176]
+> > +     stp     x24, x25, [sp, #192]
+> > +     stp     x26, x27, [sp, #208]
+> > +     stp     x28, x30, [sp, #224]
+> > +
+> > +     mrs     x0, elr_el1
+> > +     str     x0, [sp, #248]
+> > +     mrs     x0, spsr_el1
+> > +     str     x0, [sp, #256]
+> > +
+> > +     mov     x0, sp
+> > +     mov     x1, x29
+> > +     bl      guest_el1_c_handler
+> > +
+> > +     ldr     x0, [sp, #248]
+> > +     msr     elr_el1, x0
+> > +     ldr     x0, [sp, #256]
+> > +     msr     spsr_el1, x0
+> > +
+> > +     ldp     x0, x1, [sp, #0]
+> > +     ldp     x2, x3, [sp, #16]
+> > +     ldp     x4, x5, [sp, #32]
+> > +     ldp     x6, x7, [sp, #48]
+> > +     ldp     x8, x9, [sp, #64]
+> > +     ldp     x10, x11, [sp, #80]
+> > +     ldp     x12, x13, [sp, #96]
+> > +     ldp     x14, x15, [sp, #112]
+> > +     ldp     x16, x17, [sp, #128]
+> > +     ldp     x18, x19, [sp, #144]
+> > +     ldp     x20, x21, [sp, #160]
+> > +     ldp     x22, x23, [sp, #176]
+> > +     ldp     x24, x25, [sp, #192]
+> > +     ldp     x26, x27, [sp, #208]
+> > +     ldp     x28, x30, [sp, #224]
+> > +
+> > +     add     sp, sp, #264
+> > +     ldp     x29, x30, [sp], #16
+> > +     eret
+> > --
+>
+> Thanks,
+> Joey
+
+Thanks,
+Jing
