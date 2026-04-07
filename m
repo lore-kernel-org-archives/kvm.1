@@ -1,202 +1,153 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F0E3C457A;
-	Tue,  7 Apr 2026 16:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775579258; cv=none; b=SJtp+w5lor4hvI8jWlOV7oMdECeHtnQM3Mzrbv2VsjOXza/E4EkSzks6zFoZ0vUfYNZ1yuCS/0bIUKfFAKBBPYtMrzXjjBGG0VLgHrwglFoq77VebfVYTfpOuyOuWEXKJ2Enwnb5kaaze0S1ooj8kkKycF7uvgeTe2fkNzS9L+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775579258; c=relaxed/simple;
-	bh=Bvl0Z0mJvZ/ZDGwEJTG07XT+RhEp+CTt+icr5RTAxO8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAAmnfqZpibIvsx674xT/MVA4nJA6852CPSAA7OuavOan72q5d+o606Ws5ZFFgqrVelZ2iD+ZhU4hx7hoFb8mbD5tnGXg6mcZ6PnHzEgutTwG7GXMnBdgm/2WBumBHnJqySvIMaozl47S2VmNdhZk4YcWtq0XvOXTBz2lQGJwK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lrF+LN1r; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0586D3A4F3B
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 16:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775579284; cv=pass; b=ELz0v550TpoabrgOhakGoaOyrKKR6fqlkmLDNhh7NslMhy8Rfs7rx+1J6+NSf0ygw1yFQKw6j7t/dVgSbFvl0GXiwhkaqfoS8pHY/AraS6XW4FqA0lQ4TSEKV7wR51bqZFfeSh0i9gZ00d4PRubVxDaLo74c9ZOBGXAQM+7Y+2Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775579284; c=relaxed/simple;
+	bh=mfSDevp9b8hpUHFiMKkR6R4RMAK3vtsH4zOSKGhaxkM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c+qsKBEdK+aVFX6cia7zY36Aq2Y9f33YF6u96Dp9xD3qu3H2ZBGuYG/P606GyalH/rrzOSdGFpzlOPghMQrrWCz27o5/dSI/oVT0WlYjYLtvxcu8X4++njlnoGdaBcMeZ8hNYBDKYkEez6PauJuGx+pzxxafCShnzaoJPZAIkRE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A4Z06B+W; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lrF+LN1r"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637EEZbl2213123;
-	Tue, 7 Apr 2026 16:27:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=hqTLffEHUA/cHgOln
-	ZDyaAx4UvpIycqi7E+CSnPZw5I=; b=lrF+LN1rVavZUf9cBUUitr/lkSZ7LF7mQ
-	q17OsR2XpiE0Sq3H2PK9L4/+lQ3Od1xYkXgo0kjncS55B2N81nIK6RAilgFcYLSG
-	K934QUJ125dwoMAnWwkPfy1F56vsHJEYAA1SUjC4tmuxFDoXJaPl+OE0RQMUCLGe
-	NSIERewZwN4oKfH/Bsl/Fhp/R4fjMrgVc50A04vkA/TYgMUXklrjQibkAaIWEWJf
-	AQV7ToCxCLhc1VA4UBY7RboPs2qPGUtOzfdNDuBS2wIgOCOINWn9UI78G1SiUWRh
-	2dY9f20jBsoiAUioFzXgsCb6V4jQL5TtYpUH+T/OfeXVmgfrMt6Sw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2hbpnr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 16:27:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637Edrl7007881;
-	Tue, 7 Apr 2026 16:27:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmg2bxyt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 16:27:34 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637GRRQa28574252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Apr 2026 16:27:27 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADFD020043;
-	Tue,  7 Apr 2026 16:27:27 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4941020040;
-	Tue,  7 Apr 2026 16:27:27 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.4.78])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Apr 2026 16:27:27 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
-        borntraeger@de.ibm.com
-Subject: [GIT PULL v1 1/1] KVM: s390: vsie: Fix races with partial gmap invalidations
-Date: Tue,  7 Apr 2026 18:27:26 +0200
-Message-ID: <20260407162726.252141-2-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260407162726.252141-1-imbrenda@linux.ibm.com>
-References: <20260407162726.252141-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A4Z06B+W"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-66bb7118c96so41579a12.0
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 09:28:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775579280; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eRBkgKMMHrs3gGH2raMAaqP8+0Br8VsA9J81WGDA6C9vJEn6NvtCroGG/iNvZZcsBe
+         ST30iO6G8qpS2AmsL8PJzAhMAkq9HWII1Cexw/vPJ/HY8IrcsUHTppnYqUXCd1ItL8hv
+         UyuHynemcemRxS2KXMpkJYbOcB7DsuVnVNnr9CnrUbeb7Qu6Q6fksJxaYNd1dZFnI94U
+         SxXbfUqQ4E1bDwmD0EsCblTDPeuvwk9Jz6WXGCnhoNsWSLy5DTpq33g6gqA1g6o4T9wU
+         QiSN0+SRbpDhh1ijqZaWtNcbXl5a8wmEQ76yH0/2ZYJBM3Hk4txhuoF6XGR2PCX5zeCc
+         cAyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yKg8r1WBmg20sHVEHfmhLlIhIakG5vXzHNYYZRS5Q9E=;
+        fh=aX2Yd35b23Df8xi/Uq/MQBFWFgH9tzLA4QdrdPDdBDs=;
+        b=fbTWad9On6clivISJ9QpWbrpoCZXtst6E0FVBD8ZlwpcH99/nfhSwnwOaYDriXJhr6
+         VJSXpMpi2zQk/IegIxeqXn0JgDBZAmr9Z6xG02qiTSoOO2eg+j/1vfal0qd4ta2JUQpD
+         eMRGJzG7m52GZwRN9Zn6PQa2e+vAGHBqvxX6CMCF4pgPQ6frnLm/X3V25V8wxa4qu9cs
+         8rnjpeFizs99OAuzsYoG3lqtpPm87Mri2fH2S2JlHo5YQsI3TEW5cTNppuZc/CeU6zJa
+         +4SzBcpcD1zBxUT98sWdy79gvMuY6vVV2W3THpFqJ3/xSHRTRliLqbnDLXZ62SFGQHDI
+         +HuQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775579280; x=1776184080; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yKg8r1WBmg20sHVEHfmhLlIhIakG5vXzHNYYZRS5Q9E=;
+        b=A4Z06B+WfljDsz3Y3MnqR5tH92eU8jRlUBHvvr/DQRI4JIPythmJxKvzbCpTaluEcO
+         Y0zvpsOIPeNywjQ7ouvyBYKeddXF9vi6gPZvtkav0N6uDf7hf2Q/31HrL2HnKuTdzvTJ
+         2O4dqmpJ+zSMjkzAe+a4v7yq2iYxmA5bHqHD/xqLbzu3sWybSOOxjSj/2GfCANSkbvsM
+         juv7p9h0l0uBR6A8BN+ViF31zH3LLVtnQaO5DkzvaO0jZAo5iOQ8h5TO1/IG9HBbyJ/q
+         118Uk0lpXbpAOsVmmCkhC17GRj+iwSOGQh5CES5bLuOfB/4EB5dOTN8YMoQV+TuCYBY9
+         nP8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775579280; x=1776184080;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yKg8r1WBmg20sHVEHfmhLlIhIakG5vXzHNYYZRS5Q9E=;
+        b=fdlp397C9s4sRzuLlUl4n0fkeK6q7s5CBSqRWHEQSqaIb/ojpOCyTexVe97dbBurA9
+         EJMKADH2p1NQJufyDKVHfG7yc34fM8YBPTuaM1VS4FhgpQ2hX8EKISPNGFlII7/2VrBZ
+         KcYtg2Is+g6dDux2a/sqFyNDO2ONy+q/4S5uW9ycrgH2ARMWsNMh2dpdm2KtrdZJzRbd
+         loK/inI0zO2LbKNV5tTQlo4zphmvQuLKmUi2oCTK4S3vhVo8ZHDY2pCyGIdEU+Ylk5q8
+         UEAh2qTvLYEj+gId9+TnkvhxvapkOP57e2AQQLHXIDHsz8Sh9J5oJ/y/bfGAeB81lzeJ
+         OoIA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Uk66q70rQeFVga20OaKjWIOLkqAvJoAJlEar6Ig0ayvIRWB3Z5wE15F0s0VVlYO1wiw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHK6xHYYmoJ22ELTLvQUgoGrvBNgUpPlH3dEavX7Q/nr+moZuE
+	KCMtFZhSmaZp5OfpXuE0Z1CW+wx0X+e7pTvhKmBNUd00Llqpxv/cFuLaWB9o4IOK/Ewcl1q8+Pu
+	kpWj6y9bEBsEg0XYnqNaxwUndZY64DAwbcqggS/0R
+X-Gm-Gg: AeBDietwTuMcjOwxPnmxr67n7dKwwFwemuidOQOVJTs4yi045fB1RFboAOtsXsMykz6
+	drLOW+k9VLGAPKW/3RP8MQRTbE3twClWMwA2xrYUUms9tS4VrHiq4j/ttFEimM6R62UWmKM/Fgq
+	eOO1XaVMvwuREzEArbUpTzLXntKzLZBrKbjNzZiD+JXmMPDzllXxuWRXzXqBmkm5Ki0VXeUKSf+
+	B55pEVrHJMxVb5I8MLpJ0ErgT/Ag/GiLtu0lu0RMqB2WD2u1GlTs8xvVbszSsqeNR7O/wMYKveK
+	0pkdU/cfl2QCW2ZSBEpmNbsGcGF6JV/LqzQ=
+X-Received: by 2002:aa7:d14b:0:b0:66b:e078:5934 with SMTP id
+ 4fb4d7f45d1cf-66e4181ffcamr155534a12.12.1775579279867; Tue, 07 Apr 2026
+ 09:27:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDE0NiBTYWx0ZWRfX7vtFEjV9uhSn
- qXNNi1WFsFkh8eFZekWB18jYTBt4VQaoX4iyMCi9NiEPJZUIC0aFfJPpjSnarMZRzciLXr/BBTD
- 5fD5SSV4pCqw7DQ+DUDVAe0ZrKN9Y1i1++XOoVi6TVnQt4sVfQLwHOlmUIBZr9nY9c44xSkGGED
- JuIE/9H1by6jel3aSsmOjvz0HDbfbyJH9zVbbg2C54QlkaS0r6ynKgd4N7gb0GBrXNy78RHfXd7
- KZXYDv1Xmm6CvJeZ5ENzN6EHm3PcCuYP3XFs+UyVP8qHP4ZD5q41QuFUFKtJgSyDYqKoWotgN+t
- MI38tSsDZht0KKA72+7CNUkVb6C8A1M3v8ZMAYEyWUY5ESLp0ODNLFRvxknd1NDcyN8+c7n+ixj
- nlcTm+WIRbNYqh+YmujdI7EjDNDJR2IeATOBKFtslohOhKtXymRwAXvuu/Ol3XFRIaauKHn16Dn
- 2eAZFRFnihg+KG/+4/A==
-X-Proofpoint-GUID: pLoEZrNw9JY6fwqWvvXp1Ybn4_9NnAWO
-X-Authority-Analysis: v=2.4 cv=a/wAM0SF c=1 sm=1 tr=0 ts=69d53076 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=-C8uiT5To9FaDu-4sb4A:9
-X-Proofpoint-ORIG-GUID: pLoEZrNw9JY6fwqWvvXp1Ybn4_9NnAWO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_03,2026-04-07_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070146
+References: <20260327234023.2659476-1-jmattson@google.com> <20260327234023.2659476-2-jmattson@google.com>
+ <adRBZuqNlBozaDrK@google.com>
+In-Reply-To: <adRBZuqNlBozaDrK@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 7 Apr 2026 09:27:47 -0700
+X-Gm-Features: AQROBzDfpgRU66Y-o07i73DU_xVQhhMm8EOnCI-usfps8N1_AZv5hiiifJSUv6Y
+Message-ID: <CALMp9eQR_ZivpcARLyvDK3w+frpwU8bj2Z+ZvA_fLdCtTq3Vhg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/9] KVM: x86: Define KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Introduce a new boolean flag, used for shadow gmaps, to keep track of
-whether the gmap has been invalidated, either partially or totally.
+On Mon, Apr 6, 2026 at 4:27=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Fri, Mar 27, 2026, Jim Mattson wrote:
+> > diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> > index ff1e4b4dc998..74014110b550 100644
+> > --- a/arch/x86/kvm/svm/svm.h
+> > +++ b/arch/x86/kvm/svm/svm.h
+> > @@ -616,6 +616,17 @@ static inline bool nested_npt_enabled(struct vcpu_=
+svm *svm)
+> >       return svm->nested.ctl.misc_ctl & SVM_MISC_ENABLE_NP;
+> >  }
+> >
+> > +static inline bool l2_has_separate_pat(struct vcpu_svm *svm)
+>
+> Take @vcpu instead of @svm.  All of the callers have a "vcpu", but not al=
+l have
+> a local "svm".  That will shorten the quirk check far enough to let it po=
+ke out.
 
-Use the new flag to check whether shadow gmap invalidations happened
-during shadowing. In such cases, abort whatever was going on, return
--EAGAIN and let the caller try again.
+What is the actual line length limit?
 
-Fixes: 19d6c5b80443 ("KVM: s390: vsie: Fix unshadowing while shadowing")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-ID: <20260407161721.247044-1-imbrenda@linux.ibm.com>
----
- arch/s390/kvm/gaccess.c | 9 +++++----
- arch/s390/kvm/gmap.c    | 3 +++
- arch/s390/kvm/gmap.h    | 1 +
- 3 files changed, 9 insertions(+), 4 deletions(-)
+> > +{
+> > +     /*
+> > +      * If KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT is disabled while a vCP=
+U
+> > +      * is running, the L2 IA32_PAT semantics for that vCPU are undefi=
+ned.
+> > +      */
+> > +     return nested_npt_enabled(svm) &&
+> > +             !kvm_check_has_quirk(svm->vcpu.kvm,
+> > +                                  KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT)=
+;
+>
+> Align indentation.  With the @svm =3D> @vcpu change, this becomes:
+>
+>         return nested_npt_enabled(to_svm(vcpu)) &&
+>                !kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_NESTED_SVM_S=
+HARED_PAT);
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 53a8550e7102..290e03a13a95 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -1449,7 +1449,7 @@ static int _do_shadow_pte(struct gmap *sg, gpa_t raddr, union pte *ptep_h, union
- 	pgste_set_unlock(ptep_h, pgste);
- 	if (rc)
- 		return rc;
--	if (!sg->parent)
-+	if (sg->invalidated)
- 		return -EAGAIN;
- 
- 	newpte = _pte(f->pfn, 0, !p, 0);
-@@ -1479,7 +1479,7 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, uni
- 
- 	do {
- 		/* _gmap_crstep_xchg_atomic() could have unshadowed this shadow gmap */
--		if (!sg->parent)
-+		if (sg->invalidated)
- 			return -EAGAIN;
- 		oldcrste = READ_ONCE(*host);
- 		newcrste = _crste_fc1(f->pfn, oldcrste.h.tt, f->writable, !p);
-@@ -1492,7 +1492,7 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, uni
- 		if (!newcrste.h.p && !f->writable)
- 			return -EOPNOTSUPP;
- 	} while (!_gmap_crstep_xchg_atomic(sg->parent, host, oldcrste, newcrste, f->gfn, false));
--	if (!sg->parent)
-+	if (sg->invalidated)
- 		return -EAGAIN;
- 
- 	newcrste = _crste_fc1(f->pfn, oldcrste.h.tt, 0, !p);
-@@ -1545,7 +1545,7 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_cache *mc, struct gmap *sg,
- 				       entries[i].pfn, i + 1, entries[i].writable);
- 		if (rc)
- 			return rc;
--		if (!sg->parent)
-+		if (sg->invalidated)
- 			return -EAGAIN;
- 	}
- 
-@@ -1601,6 +1601,7 @@ static inline int _gaccess_shadow_fault(struct kvm_vcpu *vcpu, struct gmap *sg,
- 		scoped_guard(spinlock, &parent->children_lock) {
- 			if (READ_ONCE(sg->parent) != parent)
- 				return -EAGAIN;
-+			sg->invalidated = false;
- 			rc = _gaccess_do_shadow(vcpu->arch.mc, sg, saddr, walk);
- 		}
- 		if (rc == -ENOMEM)
-diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-index 645c32c767d2..0111d31e0386 100644
---- a/arch/s390/kvm/gmap.c
-+++ b/arch/s390/kvm/gmap.c
-@@ -181,6 +181,7 @@ void gmap_remove_child(struct gmap *child)
- 
- 	list_del(&child->list);
- 	child->parent = NULL;
-+	child->invalidated = true;
- }
- 
- /**
-@@ -1069,6 +1070,7 @@ static void gmap_unshadow_level(struct gmap *sg, gfn_t r_gfn, int level)
- 	if (level > TABLE_TYPE_PAGE_TABLE)
- 		align = 1UL << (11 * level + _SEGMENT_SHIFT);
- 	kvm_s390_vsie_gmap_notifier(sg, ALIGN_DOWN(gaddr, align), ALIGN(gaddr + 1, align));
-+	sg->invalidated = true;
- 	if (dat_entry_walk(NULL, r_gfn, sg->asce, 0, level, &crstep, &ptep))
- 		return;
- 	if (ptep) {
-@@ -1174,6 +1176,7 @@ static inline int __gmap_protect_asce_top_level(struct kvm_s390_mmu_cache *mc, s
- 	scoped_guard(spinlock, &parent->children_lock) {
- 		if (READ_ONCE(sg->parent) != parent)
- 			return -EAGAIN;
-+		sg->invalidated = false;
- 		for (i = 0; i < CRST_TABLE_PAGES; i++) {
- 			if (!context->f[i].valid)
- 				continue;
-diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
-index 579399ef5480..31ea13fda142 100644
---- a/arch/s390/kvm/gmap.h
-+++ b/arch/s390/kvm/gmap.h
-@@ -60,6 +60,7 @@ enum gmap_flags {
- struct gmap {
- 	unsigned long flags;
- 	unsigned char edat_level;
-+	bool invalidated;
- 	struct kvm *kvm;
- 	union asce asce;
- 	struct list_head list;
--- 
-2.53.0
+You wouldn't happen to know the Emacs configuration for the alignment
+you like, would you? I asked Gemini, but it lied to me.
 
+> > +}
+> > +
+> >  static inline bool nested_vnmi_enabled(struct vcpu_svm *svm)
+> >  {
+> >       return guest_cpu_cap_has(&svm->vcpu, X86_FEATURE_VNMI) &&
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
+> >
