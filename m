@@ -1,65 +1,65 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7652236EE
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 01:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631CE22083
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 01:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775525756; cv=none; b=WI0o9F1FoPydA9SFJ3A9/7+hV079JS78+QWtJGgsVnr2M/+Bsp6jeSQOWODn9LYsSYmynNvGKd13BBBatoGukFYa6I9cJ54P1umbSHo0na0V1FgAQy5jhe1A0RtQvrBIpe32ER19l//S7EkVQZtnSJkgnBaBXey3DaGSf7z0PpI=
+	t=1775525945; cv=none; b=TzT2ByZLFjMioAFvwIsvZv+/gi/XsN2P/ujJzsCI0AyyiUCiaL19rZZvI2UGxSjwP9rcQlJRQfwwVSMDI4iG33P2JBIecDWYDB/6pONM+FFub1DCGW9jmS9dnaxdX6PXPgI+9kFSjH7XnxqDfF8s+u5Dfg+7+eAyXU6EkC7CvNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775525756; c=relaxed/simple;
-	bh=NvXwkZs1Eb67W4/dx1XlUmax3q+B1Go9SNeOYPYBG2I=;
+	s=arc-20240116; t=1775525945; c=relaxed/simple;
+	bh=J7z7mdVgiH4VlzTWnGP1MFTGe4qvqdZ46gBfBOPOKj4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CT+idvyuSN/hswBIddvxXgonm8fT8xZLrsj3N3qDlSBfzvoQgP2TmgooWyqnYtN6SCwzxezh6k21UbnrIgOxhj5K8/XndbyxwfoT9C9Wc0urbqkvb5kodsqRI6q7NxRJDyKXwoL+81mOBFemVx9ms0Wz+uD4CdC6jzGtmGEGlsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mJBywtWf; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=gjPARpuwPSdpAAY26jYHWpmBpb/FYnBrbWHjbd0smvv+zJcoTaFk1hoFGPDeU/htwXt4cPWMrbtiyhkJlKrDOjjLAlCKWVZBg/VA+Ar3MuPngzIlPS8LeIqPrwupJ1l8eccBtA75EdFxh41eSGoK1jqBIrCNYydVuG9Ka7UGY0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lsaCgFc8; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mJBywtWf"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c741c4cebf3so2868764a12.2
-        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 18:35:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lsaCgFc8"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76bd4feb9fso1706773a12.0
+        for <kvm@vger.kernel.org>; Mon, 06 Apr 2026 18:39:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775525753; x=1776130553; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775525944; x=1776130744; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dTZU3VLvQ7mZRxrIcUNKCVncTp1ttiyd0/q3RqIiJzk=;
-        b=mJBywtWfP3d6scaKEE9hVUJPLkk+wcRn+JnsSLqrEtW+XcSepbd+4JC9nllYHpX/Yx
-         q1HhPeacr8HJvXnBrTTvn70Vi7EUbbRnV8B7GT4mm0+l5FOX0dfQqfSmCTvPIDkr07qx
-         S/6kpJHUho1fdIwdzEqZ40XwQly8FVlsKKJIeSqoJORuSU6TQBrQFTFV9QdPa6RZ5xXP
-         +jvnZZsiQnND8e4as7FO1kT+JQ1PvQR4tINliohrw1yjcg+/ED2d6dI8Mo2fufr1o+/A
-         kOvEuWpuOxWfTeCqOXXARASDAlIYC5C4BafU/0b46JHqZ98IvHXt+GSW4vAeEf/aRgLW
-         n/mQ==
+        bh=p8JGCunGyefHsKQtmWXK1+xazxkkoaVbzvvZew5RTic=;
+        b=lsaCgFc8Lu7TWxtI0ucP0qLaUT5Un16RDcyZJUQgMCxBQ3Nd84lsSiZT63wFIeRZ5o
+         ZhlQBSz1DgVNVZsw+in7jwROVmLdxPXt1NQ6NMsYfKjOsTzOd5xZalADkh5Td6pt5OFl
+         l8MKYuBedw6mnLiObIR4AGeyRaidxhkjl17BEmaF2LbO2F0RHJj8jnO30y3atNbs39PL
+         WTBkfFdXpKhH1rIwIvcVTGE8YdAJ1Th7Kw/Z4bQ4MdS6agI7RDsKDHb5uRMYkQII2caA
+         ga6GYivwUV1zDAHCJmdguJhfjn7ZrtmSGJRldEO9Nqzp7yK832a8JXBJuXhNg7emxZNb
+         UhdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775525753; x=1776130553;
+        d=1e100.net; s=20251104; t=1775525944; x=1776130744;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dTZU3VLvQ7mZRxrIcUNKCVncTp1ttiyd0/q3RqIiJzk=;
-        b=Ut1C3NwdV+t3r5KeWueOs1f88CgYdw8NBJ9Zy6V3GY+nv8rOMaMdCF7gNuQSaWomBy
-         V/vq3jeI2O1hTa610W4Zv0rm9D3Np6voXJGYWEXVF29mqw8jxp5hW+5xLpr4wquKwn8R
-         2EJ9VoklsgVfNYxbDixpPGt8ZhA5hZj32d4ALIe2ePCt3nX9gFZP4JCwbwDK4aV47qzw
-         qa/Qq+/FAlDUfJ9hkDs/onydWw53K7cmNYjKnNe4QDdZY5IvHYslrUrrT8Ts5RJu/uHf
-         HSgdKXSrLtTRyVj+x472YllhIHn4jLpmoDs+glh6hf50BQ2Hmpcwi9czRvTiBg1KY0FQ
-         rxaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUThq8OeTYRfhqLgOl5It2szuU1MHo4gogXTFGoMQFKQGVgZHnKVWKj+4Y1bvXU4HhujI4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeJEWpLI5RxiDJe88jMDUz1H3CLF+HFc0hjK7BH/W4TW3FiOQM
-	rLmfQW2gfzx7fXlZERBGQ/jI9ZVHBBxEtHdJKYxtGeN70jeT2qW7OPJOrUEIRD+o4OGBOUVPMmv
-	zr3DfzA==
-X-Received: from pfnx19.prod.google.com ([2002:aa7:84d3:0:b0:824:9c5c:98f3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:301f:b0:82c:9fe1:aa4e
- with SMTP id d2e1a72fcca58-82d0da8f68amr14780861b3a.21.1775525753151; Mon, 06
- Apr 2026 18:35:53 -0700 (PDT)
-Date: Mon, 6 Apr 2026 18:35:51 -0700
-In-Reply-To: <20260326031150.3774017-5-yosry@kernel.org>
+        bh=p8JGCunGyefHsKQtmWXK1+xazxkkoaVbzvvZew5RTic=;
+        b=WoYXAgFcjQxG2MQ6l9dPuvVFfJoPZb26dfO4oyAXbYQZx+M6Yv8svsAAjsh/9yZzTr
+         h45EYxNnpCdNm3i4dNVlxxsqT2HxE9+C8S306eT/Yl1AOJdf2wdw7aJuagx5L9ApQa8M
+         FYUIvwbN3h/GRuVQZ/jk1zbdJHqAHKgqNL9f+eGBYsLeH6rAFCQkIzvBPw9w7PVJqw0m
+         eCJOe91HxP8+yFqyZ5pDlFONgWzwUe7ku265Pud8JjbQmGQpfw2QrwJ/J6jDecLBvvUm
+         UJUjSR/PSn1LRx3R5p4XoJpOkw15Dr1m+Lw6xUTmpWAlqe8ONrLQKD1fYr+Kjk1aTpD7
+         9IAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/sQesKqF9/HB+gGvb70gAJAh0CxwHdQXqRTYjV8LWY7GdEzpzJiwZ298boVgMcSWl5Ok=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqRAArczgBzSqrverLWxlbYiVUtPJjPzgP1RrCUhcWPu0Ilc7j
+	C7ooOjQJYYtDtPzvDbX6jKoW2kQrEc9pHixbxpYzewFboEbyfIOOWr3IEWnKZdcT7SM8WnmNC7E
+	8cs62Yw==
+X-Received: from pfbhx8.prod.google.com ([2002:a05:6a00:8988:b0:82c:99fb:e874])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6d8f:b0:39b:d9f1:6d05
+ with SMTP id adf61e73a8af0-39f2f2b0043mr14551527637.53.1775525943569; Mon, 06
+ Apr 2026 18:39:03 -0700 (PDT)
+Date: Mon, 6 Apr 2026 18:39:02 -0700
+In-Reply-To: <20260326031150.3774017-7-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-5-yosry@kernel.org>
-Message-ID: <adRfdw5jpvibQkOq@google.com>
-Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
- nested SVM transitions
+References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-7-yosry@kernel.org>
+Message-ID: <adRgNinmj0V0h6nH@google.com>
+Subject: Re: [PATCH v4 6/6] KVM: selftests: Add svm_pmu_host_guest_test for
+ Host-Only/Guest-Only bits
 From: Sean Christopherson <seanjc@google.com>
 To: Yosry Ahmed <yosry@kernel.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
@@ -67,83 +67,78 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Mar 26, 2026, Yosry Ahmed wrote:
-> Reprogram all counters on nested transitions for the mediated PMU, to
-> re-evaluate Host-Only and Guest-Only bits and enable/disable the PMU
-> counters accordingly. For example, if Host-Only is set and Guest-Only is
-> cleared, a counter should be disabled when entering guest mode and
-> enabled when exiting guest mode.
+> From: Jim Mattson <jmattson@google.com>
 > 
-> Having one of Host-Only and Guest-Only set is only effective when
-> EFER.SVME is set, so also trigger counter reprogramming when EFER.SVME
-> is toggled.
+> Add a selftest to verify KVM correctly virtualizes the AMD PMU Host-Only
+> (bit 41) and Guest-Only (bit 40) event selector bits across all relevant
+> SVM state transitions.
 > 
-> Track counters with one of Host-Only and Guest-Only set as counters
-> requiring reprogramming on nested transitions in a bitmap. Use the
-> bitmap to only request KVM_PMU_REQ if some counters need reprogramming,
-> and only reprogram the counters that actually need it.
+> The test programs 4 PMCs simultaneously with all combinations of the
+> Host-Only and Guest-Only bits, then verifies correct counting behavior:
+>   1. SVME=0: all counters count (Host-Only/Guest-Only bits ignored)
+>   2. Set SVME=1: Host-Only and neither/both count; Guest-Only stops
+>   3. VMRUN to L2: Guest-Only and neither/both count; Host-Only stops
+>   4. VMEXIT to L1: Host-Only and neither/both count; Guest-Only stops
+>   5. Clear SVME=0: all counters count (bits ignored again)
 > 
-> Track such counters even if EFER.SVME is cleared, such that if/when
-> EFER.SVME is set, KVM can reprogram those counters and enable/disable
-> them appropriately. Otherwise, toggling EFER.SVME would need to
-> reprogram all counters and use a different code path than
-> kvm_pmu_handle_nested_transition().
-> 
+> Signed-off-by: Jim Mattson <jmattson@google.com>
 > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 > ---
->  arch/x86/include/asm/kvm_host.h |  6 ++++++
->  arch/x86/kvm/pmu.c              |  1 +
->  arch/x86/kvm/pmu.h              | 13 +++++++++++++
->  arch/x86/kvm/svm/pmu.c          | 13 ++++++++++++-
->  arch/x86/kvm/svm/svm.c          |  1 +
->  arch/x86/kvm/x86.h              |  5 +++++
->  6 files changed, 38 insertions(+), 1 deletion(-)
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
+>  .../selftests/kvm/include/x86/processor.h     |   2 +
+>  .../kvm/x86/svm_pmu_host_guest_test.c         | 199 ++++++++++++++++++
+>  4 files changed, 208 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
 > 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index d3bdc98281339..b2f8710838372 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -594,6 +594,12 @@ struct kvm_pmu {
->  	DECLARE_BITMAP(pmc_counting_instructions, X86_PMC_IDX_MAX);
->  	DECLARE_BITMAP(pmc_counting_branches, X86_PMC_IDX_MAX);
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 3d372d78a2756..9418c45291231 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -116,6 +116,7 @@ TEST_GEN_PROGS_x86 += x86/svm_nested_invalid_vmcb12_gpa
+>  TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
+>  TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
+>  TEST_GEN_PROGS_x86 += x86/svm_lbr_nested_state
+> +TEST_GEN_PROGS_x86 += x86/svm_pmu_host_guest_test
+>  TEST_GEN_PROGS_x86 += x86/tsc_scaling_sync
+>  TEST_GEN_PROGS_x86 += x86/sync_regs_test
+>  TEST_GEN_PROGS_x86 += x86/ucna_injection_test
+> diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
+> index 72575eadb63a0..af9b279c78df4 100644
+> --- a/tools/testing/selftests/kvm/include/x86/pmu.h
+> +++ b/tools/testing/selftests/kvm/include/x86/pmu.h
+> @@ -38,6 +38,12 @@
+>  #define ARCH_PERFMON_EVENTSEL_INV		BIT_ULL(23)
+>  #define ARCH_PERFMON_EVENTSEL_CMASK		GENMASK_ULL(31, 24)
 >  
-> +	/*
-> +	 * Whether or not PMU counters need to be reprogrammed on transitions
-> +	 * between L1 and L2 (or when nesting enablement is toggled).
-> +	 */
-> +	DECLARE_BITMAP(pmc_needs_nested_reprogram, X86_PMC_IDX_MAX);
-
-Hmm, I think this should be reprogram_pmc_on_nested_transition, or something like
-that.  I don't like using "needs" because KVM tends to use "needs" for one-shot
-things, e.g. "xyz needs to be sync'd on the next whatever".  And while the code
-kinda-sorta takes that approach, in practice it doesn't; clearing the bits and
-then setting them again is really just an implementation quirk to keep things
-simple.
-
-Conceptually, these flags are much "stickier" in that they are kept set across
-all nested transitions, and only cleared when the event selector itself is
-changed in some way.
-
-> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-> index bdbe0456049d0..fb73806d3bfa0 100644
-> --- a/arch/x86/kvm/pmu.h
-> +++ b/arch/x86/kvm/pmu.h
-> @@ -248,6 +248,19 @@ static inline bool kvm_pmu_is_fastpath_emulation_allowed(struct kvm_vcpu *vcpu)
->  				  X86_PMC_IDX_MAX);
->  }
+> +/*
+> + * These are AMD-specific bits.
+> + */
+> +#define AMD64_EVENTSEL_GUESTONLY		BIT_ULL(40)
+> +#define AMD64_EVENTSEL_HOSTONLY			BIT_ULL(41)
+> +
+>  /* RDPMC control flags, Intel only. */
+>  #define INTEL_RDPMC_METRICS			BIT_ULL(29)
+>  #define INTEL_RDPMC_FIXED			BIT_ULL(30)
+> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+> index d8634a760a609..4cc1ba8752347 100644
+> --- a/tools/testing/selftests/kvm/include/x86/processor.h
+> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+> @@ -19,6 +19,8 @@
+>  #include "kvm_util.h"
+>  #include "ucall_common.h"
 >  
-> +static inline void kvm_pmu_handle_nested_transition(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-> +
-> +	if (bitmap_empty(pmu->pmc_needs_nested_reprogram, X86_PMC_IDX_MAX))
-> +		return;
-> +
-> +	BUILD_BUG_ON(sizeof(pmu->pmc_needs_nested_reprogram) != sizeof(atomic64_t));
-> +	atomic64_or(*(s64 *)pmu->pmc_needs_nested_reprogram,
-> +		    &vcpu_to_pmu(vcpu)->__reprogram_pmi);
+> +#define __stack_aligned__	__aligned(16)
 
-And here especially I think reprogram_pmc_on_nested_transition works better,
-e.g. it's a bit more obvious that leaving reprogram_pmc_on_nested_transition
-as-is is intentional.
+I would much prefer to provide a macro helper to declare the stack in a prep patch,
+and update the bajillion instances of "unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE]"
+through KVM selftests.
 
-> +	kvm_make_request(KVM_REQ_PMU, vcpu);
+A blurb in the changelog explaining why _this_ test needs to honor alignment
+while we've managed to squeak by without problems in other tests would also be
+helpful
+
+> +
+>  extern bool host_cpu_is_intel;
+>  extern bool host_cpu_is_amd;
+>  extern bool host_cpu_is_hygon;
