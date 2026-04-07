@@ -1,160 +1,119 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BC03B8954
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 14:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1CA3B7B61
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 14:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775571265; cv=none; b=Iap2oZyw3j4X7g9NrtkSI0hMn3QiD8v9jGOzZ9wK5peaqVS90jHhAmULxrCz1kM6yA2tUEO8R2UUTMAbYmjMstkMtnPvRjj+tkr5q693xTgLGAttyn5F73chIN37FH8m/F903F38rr+tpaToJQdUjTVzgnW9Cow/ysb0jif201E=
+	t=1775571332; cv=none; b=cGeoEtyfvugtTo3FPswgntLQIVYaaRl+M1j8lZZy0E4OKwKcYzRi/7hyt9126LjAujYo62vKdgnhAMiEqI21Odjh4zde2xfBjzxlJkoSjp50Mo/el/H/lJV7pmlquEmLbZgS0PWPFzjafjGLhGJd7tLhnGdPrHz4vs0klvGNnbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775571265; c=relaxed/simple;
-	bh=x1X6Et09LdVmwK4AwqUKUpjcDLoVxP1vs1Syj2oayko=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ctSJXaODxrPNa3rsMiZie5wydk2Jv0ZLpTPdne3gX8RwmChQyCHYjhkEeY/DyVD++/3sYtjaS+AJNKSCxWmMYDXy3kv3wEhg7gyghvS3p2u01jspIaVVIX3NEo1RGh/lUqau5VJZ1FJOPqucGfxs9qyiuiU5bBs+tQ7HiQ3Qhi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nFD+BeSG; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775571332; c=relaxed/simple;
+	bh=FnSsZuPnGyxPDhNZRLYQ6JCnZWuSSmTUwVpsXpmU4SY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HRxUk9IGwBhoQTRcZqe7/hhrRntgC+ipILt21+ZVx+NaKLDsb8cEg+6BjUEAfTuQmSXTkb1UVTd8ORDy3a7TUl0MT4edCqi/KtjnHvfEf5/5dbh4pnyAJud2wug8PP15+o0Tsn/FODW74RiWP1DKpaU70PNABk/mO7BuAxj/HMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=MtaqTtWC; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nFD+BeSG"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c6929bd26so6409203b3a.3
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 07:14:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="MtaqTtWC"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8d560ede296so386569285a.0
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 07:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775571263; x=1776176063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Oh0Qcy7NAcZjboyYi+P+h2qLdGnuUSHfUg4cTPCdmsU=;
-        b=nFD+BeSGicoCBbQCAhStO53LmgxVirn2DMVioSEswFtgCE7cmvjE+v21TcTRvlfERa
-         aR88hHbyjPXSEtt+FJ0RNTfXQfz68cBBDkXFz7jI3gFX/7ZDYlDMkuWd5rwJ1IYFOvHf
-         zIlyT3E/TaEPO31BQYsMauaLOYCU/i+/hj7CvlPIiimCmnYph+SF1h1Br5TjqYThinZ2
-         OO9gOvXRlswAgPcta83UPHIwxZD/b4Wp2VglbLv1EoD+fbYgIBl6ypRMPPsbpVVz++ac
-         ok5tgyKN4JBMkvxAIINvts8zAyR8X76a2+h/JLG9lWK37dBw4NlXBkU0pSu9gtKZApnZ
-         Md4g==
+        d=gourry.net; s=google; t=1775571330; x=1776176130; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qrXvcr862UuyP9u64puUV6+vM1HuF+WgVzFiTHYkxJA=;
+        b=MtaqTtWCayCARWnIfAPjHP9sgccrUonJRIK8Swc2gcl2f8lHjGClpqtv2R1df2NZJA
+         A/ifVD2S55jf7AngdY6uUPhI5nGMeX3IDKA5mLsic7GDGQfBqGDiEYdH0Id7wupSketU
+         L+t1ngjlUlmMA2O7DBM6sOkr5RN9K/U73cJnwu0bmcraxzr+QusBAmyxAEDPSNw/nsZD
+         UmHVpz2jeyyLXRvEnFOgEQgslBrrkNbqzhWuYgzgT3jcHOdfPeM/CjgXFMvbr6PXuTrF
+         57hq7ZDVXjZTNxHPoTCBcNiEWHmYPBkvt9yGZNEe6tIy2Vgt1h/ZaSs1VYK/FUHdxpPq
+         Qjdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775571263; x=1776176063;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Oh0Qcy7NAcZjboyYi+P+h2qLdGnuUSHfUg4cTPCdmsU=;
-        b=s//odccgFGv4n7cU4+P/EUtD68mQe7IM4gudr2/qm91E9Kz+ctduJ3qlo94YpnNpKe
-         S4BBDUaQcTprALB2QGKAi3GfPaXt2+PzUpqJftjbM+vhDmD62Aoitjql+RJopu66x6Y/
-         +wruB+nLiRtR/THcXBSmkSEvw4CCIGgqmPwMSyLgdzyMY4iYpvRYR+4Yx9Nj07ZToglR
-         mbizZ99gF1OUq8VNAjpbpe6bVIz7gVB6OCJNSHJ9admzpjUYLdTDlju6wrzV+ozfaEvW
-         eE3YumUVyqdEkK3T2FiliG7lfzgDW+6T/U5SrlQhEqXiK+I4HvPkTRSWwy7DvLpA0X/S
-         5gTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUx5YOyg0RRb1r4NkE/R/O36+12/drx8+aEo1+RslpBk6z1FXUXgHv8G8j8QUcXimoSX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNdQJa4dPxTbO9ETg/a58miIHTG3VTWOgfQCuYEm8niaxxcRK7
-	WqVOiIQjrrOGtFdgvkvZ+d/PY+6jo+XSk14rivq35icvRb4wbIarzmPOlgfVwaAMHV+yvPQrOHi
-	Ou/ceFA==
-X-Received: from pfaz1.prod.google.com ([2002:aa7:91c1:0:b0:829:894b:618b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21d6:b0:82c:d7e7:2f8a
- with SMTP id d2e1a72fcca58-82d0db96cd4mr17107604b3a.39.1775571263189; Tue, 07
- Apr 2026 07:14:23 -0700 (PDT)
-Date: Tue, 7 Apr 2026 07:14:21 -0700
-In-Reply-To: <CALMp9eQsd0fRuDE_R57Mn6-N6jCtbmoPAh7Y7CBdMEZJaNSUGQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775571330; x=1776176130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qrXvcr862UuyP9u64puUV6+vM1HuF+WgVzFiTHYkxJA=;
+        b=C7LVPQB7ECdA9WXkOCqntXxrZiaXMvgtb8/XH5Pt9PZ8uFk5JjxhyZuX38WS+pcQIJ
+         c5HXudQP1RVY6k8A8d96N3B39/6LY4l9yfCV1CrftHhAuv7z/bP1jKf6mf+b4ah3ogIC
+         j40GJJFSS4oRKKIsBzg7yTHsiHpawmc8BcefHiqcUe9EHElADIxDHgnoxrltEYk4MQf3
+         ZZsz+ZHTvGthy9QIIaOQQP1UpwflU8EkNZxv2GI6WERs+n5lZWXtAeT50mWSv5xAiLu5
+         T4DZJ70Vcyyzumr+N499Lu/1kNyGC1kq/6zuLfMjMZhzGwyvW9lZHVe8rTE56TPEm8wD
+         x3Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZQwdl5Kut3fjyu1kInTg5LjrB6payDGvkaMtyFwU8aQ0aeLHOMjgPWBHTNNty1yhzvq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy850Qie4NJTA7r3dLH9LUvZ9DngCp/JznYHCwCct5pKYsd1P1B
+	FqN/9/PvqeXkOLs312sZpOqoaGnMV9zr96epdlR+mX5JpknRdKwCPLrJe+kFag/HJyY=
+X-Gm-Gg: AeBDiesTCmqj3zMUHXOUuq4FU8vrvFQYsAmKMNU73HfKzlIlrMJG9gID7fh3+IVd3Mz
+	pyUwEnAmo7ngvkId/rZ70hV2wfUW0KFa/G+yNY+3Rjtk6rPSrda/aqEFb0l7YzyHhyDhEMZqDD4
+	uDGv31G+HJ6LpOO1I6KTheBaCGGBRtqeziOOaW7ah/hBpbdTa9tsb5QY/ZwiRyx/PS1+qQZygPz
+	Uv1UNGzUsM/rWcMmSfDjREVi7QRDJc5gCEh1LpW37kSnwZ0qcKj5OVJugL9+I3uJW88kF5XC5QB
+	VPLP+r9+F92EuOUrrMPlg3g2gna4NuSINqKavgWsWj+niC7qbt6rpiRiyk5DF2l32lsdYDXOnct
+	XZ9CI25TiTgy7V9f8esLejfOs0Xcr9BF3tTobQI6gptCT6olj+zaJ2IVr1SOyZQ8hPwaMHC53CN
+	azh7XeA5w/0Pf8K/T7tbTgNCqsDtdS/f8vo/KtBor+bpBzl/XX+EKKyWsQdp3w/f2qznrmc2sPS
+	eLVO2IndSFz
+X-Received: by 2002:a05:6214:400a:b0:89a:f92:b09f with SMTP id 6a1803df08f44-8a7022bb7a7mr282281776d6.4.1775571329335;
+        Tue, 07 Apr 2026 07:15:29 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8a596ff619asm183100226d6.37.2026.04.07.07.15.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 07:15:28 -0700 (PDT)
+Date: Tue, 7 Apr 2026 10:15:26 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Dan Williams <djbw@kernel.org>, mhonap@nvidia.com,
+	alwilliamson@nvidia.com, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alejandro.lucero-palau@amd.com,
+	dave@stgolabs.net, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, dmatlack@google.com,
+	shuah@kernel.org, yishaih@nvidia.com, skolothumtho@nvidia.com,
+	kevin.tian@intel.com, ankita@nvidia.com, vsethi@nvidia.com,
+	cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com,
+	kjaju@nvidia.com, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 16/20] vfio/cxl: Register regions with VFIO layer
+Message-ID: <adURfscEwBuT3utz@gourry-fedora-PF4VCD3F>
+References: <20260401143917.108413-1-mhonap@nvidia.com>
+ <20260401143917.108413-17-mhonap@nvidia.com>
+ <69d0169115c06_1b0cc6100a5@dwillia2-mobl4.notmuch>
+ <20260404185330.GD2551565@ziepe.ca>
+ <69d1685538f45_556821002f@djbw-dev.notmuch>
+ <adQj_gxSzjA51Q6n@gourry-fedora-PF4VCD3F>
+ <20260406220521.GG2551565@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260327234023.2659476-1-jmattson@google.com> <20260327234023.2659476-9-jmattson@google.com>
- <adRGLPrmBpX-3DdX@google.com> <CALMp9eQsd0fRuDE_R57Mn6-N6jCtbmoPAh7Y7CBdMEZJaNSUGQ@mail.gmail.com>
-Message-ID: <adURPZJEDs50NPkB@google.com>
-Subject: Re: [PATCH v7 8/9] KVM: x86: nSVM: Save/restore gPAT with KVM_{GET,SET}_NESTED_STATE
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260406220521.GG2551565@ziepe.ca>
 
-On Mon, Apr 06, 2026, Jim Mattson wrote:
-> On Mon, Apr 6, 2026 at 4:47=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> > On Fri, Mar 27, 2026, Jim Mattson wrote:
-> > > @@ -1918,6 +1921,7 @@ static int svm_set_nested_state(struct kvm_vcpu=
- *vcpu,
-> > >       struct vmcb_save_area_cached save_cached;
-> > >       struct vmcb_ctrl_area_cached ctl_cached;
-> > >       unsigned long cr0;
-> > > +     bool use_separate_l2_pat;
-> >
-> > Land this above "cr0" to preserve the inverted fir tree.
-> >
-> > >       int ret;
-> > >
-> > >       BUILD_BUG_ON(sizeof(struct vmcb_control_area) + sizeof(struct v=
-mcb_save_area) >
-> > > @@ -1993,6 +1997,18 @@ static int svm_set_nested_state(struct kvm_vcp=
-u *vcpu,
-> > >           !nested_vmcb_check_save(vcpu, &save_cached, false))
-> > >               goto out_free;
-> > >
-> > > +     /*
-> > > +      * Validate gPAT when the shared PAT quirk is disabled (i.e. L2
-> > > +      * has its own gPAT). This is done separately from the
-> > > +      * vmcb_save_area_cached validation above, because gPAT is L2
-> > > +      * state, but the vmcb_save_area_cached is populated with L1 st=
-ate.
-> > > +      */
-> > > +     use_separate_l2_pat =3D
-> > > +             (ctl_cached.misc_ctl & SVM_MISC_ENABLE_NP) &&
-> > > +             !kvm_check_has_quirk(vcpu->kvm,
-> > > +                                  KVM_X86_QUIRK_NESTED_SVM_SHARED_PA=
-T);
-> >
-> > I vote for either:
-> >
-> >         use_separate_l2_pat =3D (ctl_cached.misc_ctl & SVM_MISC_ENABLE_=
-NP) &&
-> >                               !kvm_check_has_quirk(vcpu->kvm,
-> >                                                    KVM_X86_QUIRK_NESTED=
-_SVM_SHARED_PAT);
-> >
-> LOL! Aren't you the one who keeps complaining that my indentation
-> doesn't line up? Are you schizophrenic?
+On Mon, Apr 06, 2026 at 07:05:21PM -0300, Jason Gunthorpe wrote:
+> On Mon, Apr 06, 2026 at 05:22:06PM -0400, Gregory Price wrote:
+> > On Sat, Apr 04, 2026 at 12:36:53PM -0700, Dan Williams wrote:
+> > > Jason Gunthorpe wrote:
+> 
+> I would expect this to happen via the request_resource mechanism, if
+> MM is using the CXL range it should be locked in the resource tree and
+> vfio should request it and then fail during the initial startup
+> phases.
+> 
+> > I need to read up a little bit on this area, but i don't see the "needs
+> > to be mmap'able in a cache coherent way" to be an argument for one
+> > particular method or another (hotplug, private node, memremap, etc).
+> 
+> It is speaking to what VFIO has to do. It is the exclusive owner of
+> the physical range, it does not have struct pages, it must be cachable
+> for VFIO and KVM to work - not alot of choices here. Turn the
+> phys_addr_t's into large cachable special PTEs inside a VMA.
+> 
 
-Huh?  That is aligned.  Perhaps it's whitespace damaged by your MUA?
+Right - the observation here is essentially "if you need struct page and
+need to get fancy with them...".   But if you just need to plonk a
+region into one set of page tables and move on - then this is fine and
+arguable preferable.
 
-> > or
-> >
-> >         use_separate_l2_pat =3D (ctl_cached.misc_ctl & SVM_MISC_ENABLE_=
-NP);
-> >         if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_NESTED_SVM_SHA=
-RED_PAT))
-> >                 use_separate_l2_pat =3D false;
->=20
-> Wow. I really have no idea how to predict what you're going to want
-> the code to look like. How is this better than the original?!?
-
-It doesn't immediately wrap after the "=3D".  Similar to my view on wrappin=
-g before
-function names[*], I find wrapping immediately after an assignment operator=
- to be
-unnecessarily difficult to read as it doesn't provide any context for singl=
-e-line
-searches.
-
-I'm pretty darn consistent in my dislike for that style: I count 26 instanc=
-es in
-arch/x86/kvm that match "\s=3D\n", and only two of those carry my SoB or R-=
-b.  I
-simply missed the wrap in kvm_vcpu_apicv_activated() that was added by comm=
-it=20
-896046474f8d ("KVM: x86: Introduce kvm_x86_call() to simplify static calls =
-of
-kvm_x86_ops"), and I'll give myself a pass for commit 8764ed55c970 ("KVM: x=
-86:
-Whitelist port 0x7e for pre-incrementing %rip") as that predates treating
-checkpatch's 80 char limit as a soft limit.
-
-[*] https://lore.kernel.org/all/CAHk-=3DwjoLAYG446ZNHfg=3DGhjSY6nFmuB_wA8fY=
-d5iLBNXjo9Bw@mail.gmail.com
-
+~Gregory
