@@ -1,120 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832553AC0E9
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 16:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170635BDBB;
+	Tue,  7 Apr 2026 16:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775579060; cv=none; b=lr4uzirSe8sxWWy5oFxCeG7VZfxSIBWwLsAicTLuiE+aqfFA1lpUGO+5jyHadegx2A3W+/MtkxkC8GE1ZwWGBbc5a6xhX0CB/BFXyfM7d2zBm0XYItlS2qpd6t1FN3FH441VRrai3tR1tTrYoFAeHJOlFuQjjrpj41CV82hPhwk=
+	t=1775579257; cv=none; b=qJheqU2NfhIyp4tN0BF7dQLulU/gzgzcv3dvkfuUwEP2JFytQ826+g0+XxgZDMiBod7d1mOZ1esn0pkXKTIOPTTM3/Tfbn/VOf76ep7ZmXbj5BlGg3W2KnthJsDp9nOf6T0HZUJAlSC21jVGOTIXkDKhlYGaDXrwd7DGXxqPACU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775579060; c=relaxed/simple;
-	bh=s+B0zQq1Nw9f5HnC7IN8XejNsibwFPs8kWwZliQ5+0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bixG7V0GlFKiFvkcT1MplLkyRAzIHpi9zSN7SRNC+jUAF1wzpWGM+KdiOdBVNhO95Zrx4gDgE5E/uhyHF/6BVU/Zv3S/ic1pokw4lpcqCMwabsvJIEZiO0sr1wEKlEnTygGfr12z4N+erJZzHelxRnReNaQrJPu2/flcW/tXRyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eYdFIy24; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F0dOqWa6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775579257; c=relaxed/simple;
+	bh=rqq5OWdEXYxnqSPU6S5oMsGbpyu/0MwWSo7BmzpXSIk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kVfjDwDzeSUawLoqMjBxSRN5Xr89SAfZDIuE++YOKZLvwW71Is7rEBMFn3seaf5Z/8Zc8X2xb0kNAxGDKoi5rmagWZmpJAqAFD8UJGtHIxIiHO0sGkmIR3DSVeAFWJ6m4rHES7njtzg2dlqI8qCI3e9Dk62QutitX4fsy7g1ZSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tLvjGQOn; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eYdFIy24";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F0dOqWa6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775579058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+B0zQq1Nw9f5HnC7IN8XejNsibwFPs8kWwZliQ5+0Q=;
-	b=eYdFIy24/D3FtkWPAceEji9riLNJgNtUqhVHpdE/4E4MCWlW8cfWLQG86/k93SeD9VTjSq
-	qoRTuO1Rbu0Dr4ZA7yY8f70IixtTeJ0lNVBWgJjrecM9RiES2pHJHmlDpKj+IlTSZli8iP
-	t0/axC7lyp+ilOvKxQufzSNKdQ9NKz8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663-ViAqDYCrNE238_QTbfFGfw-1; Tue, 07 Apr 2026 12:24:16 -0400
-X-MC-Unique: ViAqDYCrNE238_QTbfFGfw-1
-X-Mimecast-MFC-AGG-ID: ViAqDYCrNE238_QTbfFGfw_1775579055
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488a8738d96so12113845e9.2
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 09:24:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775579054; x=1776183854; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s+B0zQq1Nw9f5HnC7IN8XejNsibwFPs8kWwZliQ5+0Q=;
-        b=F0dOqWa68hvq1b6GqGUJspT/UnsoKX2qPPWMDnrnlgDu5G0klSecMReVPwXzUKOPlh
-         dB2Zdg0wkFXPXnLUTxxNleX5afsLmfgxBHOvvzEEIaOAhJYfDY5zbgkUyoWy2sqD7b0M
-         DMXegUSEM6tWtQiUe4EMmww68irm3gy8TRrTXgFLwNkeaW/9idBSEtHOQW6Ou5oosG9x
-         rJcApJH3OiEjaSb8MfPREadtKNNOpnTLYTrX6qXuvKJF1cCj4VB2wOU9zlcc0rs7o+qe
-         48DwO1fgjw26eqvN3Nvs4D/5OYFCWBvlvZnf7SRSvqrGQaCKSZQr5tImRegA6gE+YN2H
-         3Tog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775579054; x=1776183854;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s+B0zQq1Nw9f5HnC7IN8XejNsibwFPs8kWwZliQ5+0Q=;
-        b=YE1IbpZ6zMwVZnL1vMse00GpHo5n9DGWUHabzAmLY5rCHZPbZp0XSM/nvuX7Ha/vsj
-         RR1r9HsjlpvX8t23DPEpfMshOmRKDMHpJNo+qVwfrN7wfJngIjit4bv0XKywrJpvkEPw
-         tH0A0jj1UFcLJ3P9PAe9iePtl+KTFDM8x7H4KCQ/fm0WzYERZdiiD0EQSm994u/+9nvA
-         3Irzt2+JexnwYmGviDVTCrAuPyMN+GZMQ/RSOdgVvNfsqbpknBb8kkYpECjJpnKh+rIZ
-         c25EPJh6b6k3XVitZjhEkOaDdvPEF3U1UHkmJPZfKbeHUqAfMKIiB+EcY2z81t5r/lqk
-         pYUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV2ELJ3axO+F3LsmaiOXvPEHVdOKWpZ0OuXixxjkz5Cuhs8iDsHHxcaIn20i50Ou8es5dk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOSzj26I/A3J8IOkBKVYzO9uSWTKVyeT/5b9xgfkFe7vs+VwRP
-	lyab8oDHOWs2ywXPDxVUdw1ZuvgnUM+jbJinjiMgWMK+L44OUIUvuDFdFUag5a91r7uSj+k9ACM
-	g3N9ZSIxCcKSpl7cBvJlTAib2PeTxLPB5rOSh6Wp3iGWbCMkqU3k17RlEPRCHpw==
-X-Gm-Gg: AeBDietKUNn0M0HDZQ7Ix5DjBskSTuDNOzC9aNgU6wEJtqZdQV4VQXDMVzD7cDRrK2z
-	1tdaaxLcr0UvIGalM1J4nCiZVcO6rU/4DZVUaxkdVzfAkcdtug/vyAAj9pQEOVyE8NLzK/os0BQ
-	DFYGgOFqCA32+O+7Xxbrw/2y2aJuLUtyessxJ560syFVlWhb86upTm9mg7nfnKwDVVcciXye4Ki
-	fomFfMp4hPV3DJ3Mscm9XCEzhlWJBgjJZn2/dmykoxs6nf0Zy92IMVUlq77qMLlQSp1k6cBzJ5j
-	oPCtNLqaJs/2wzw80E+5UtzviQwRPi2nHqU7eBU+k5tGvhMvHtZO9GfvpwEwlAfxSqye0E9PIFq
-	cJRN6bBqf+hoq906hC0JT9C7EDQU=
-X-Received: by 2002:a05:600c:1e1c:b0:487:1fc:14f9 with SMTP id 5b1f17b1804b1-4889978da83mr251016185e9.15.1775579054549;
-        Tue, 07 Apr 2026 09:24:14 -0700 (PDT)
-X-Received: by 2002:a05:600c:1e1c:b0:487:1fc:14f9 with SMTP id 5b1f17b1804b1-4889978da83mr251015655e9.15.1775579054035;
-        Tue, 07 Apr 2026 09:24:14 -0700 (PDT)
-Received: from leonardi-redhat ([176.206.19.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e80a616sm1043018385e9.2.2026.04.07.09.24.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 09:24:13 -0700 (PDT)
-Date: Tue, 7 Apr 2026 18:24:09 +0200
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Stefano Garzarella <sgarzare@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] vsock/virtio: remove unnecessary call to
- `virtio_transport_get_ops`
-Message-ID: <adUvaIOLFcmC7tgt@leonardi-redhat>
-References: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
- <a236c546-3a0f-4690-8ff7-ff8934db0539@salutedevices.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tLvjGQOn"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637DeQfZ2211626;
+	Tue, 7 Apr 2026 16:27:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ZZkC75U1+Oz09mfD7VnIfvw22QldeNfLMZm9xQgjl
+	4w=; b=tLvjGQOnbe6fsN5GKnQid/Uviq+KYEBzuttQBf+uYUhLeKhMRJNDqdB32
+	FyzLW9S19OvE7+ETn4JuhddPxMjR5eQCHVwE91ntj3sV4ew051VjIAgu5gCI78Bv
+	PEH3tIfDoPK/Z8coGNoDK0fSdywZQj7De7fqnj/T9Xucq8pORJ9NlujrbUuCdtU7
+	QtEomIpn4pPs8zbv4wDFhmN8pNYMs1Re2chOUmIyXZjNYENjFdQ2BJNbvnl3jdEI
+	YcFTzBeNTg7v6WAg2QU4tRLBIoJKjVBmpLMArMR2b3ynTfMsULLBaWvH0++Kq2kB
+	INRYTVrPocwk5QsoqqjAFY91SkdCQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2hbpnp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 16:27:34 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637Eap8J014356;
+	Tue, 7 Apr 2026 16:27:33 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg4kxmu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 16:27:33 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637GRRdJ28574250
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Apr 2026 16:27:27 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F4E120043;
+	Tue,  7 Apr 2026 16:27:27 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B567420040;
+	Tue,  7 Apr 2026 16:27:26 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.4.78])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  7 Apr 2026 16:27:26 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com
+Subject: [GIT PULL v1 0/1] Subject: [GIT PULL v1 0/1] KVM: s390: One very last second fix
+Date: Tue,  7 Apr 2026 18:27:25 +0200
+Message-ID: <20260407162726.252141-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <a236c546-3a0f-4690-8ff7-ff8934db0539@salutedevices.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDE0NiBTYWx0ZWRfX3dX/edcmH9RO
+ hQyblZQT2U5e6SW6jgqv3BgueoFRtKdWbUGVaTAO48f1cNStXa5R6RmBSWSv2T4vL8UnOGOMbZf
+ TgOoi/Qu9xkwzWevEiC3p1Y5PAnF0PTelxKMsi4f2FT/2Gi/CmepqxiwlZhWHzxVe2vc7AFbla+
+ uhCdfFQUDTH61c7v6CSMvmw+mSIWd/rX/F9TzLA+ES6irgKHeqdPMC95AhRLZeXItPoQxSour3o
+ /9zCUoPDSgQ1QwBI2Ry1Z4/a76JHExT2IKU9OUakJTQYY1hMt3jIF+quw57uimiqH11ribqwL1d
+ 7ohCpECK7768jsyvG7dxKYcRkMhZmahwmMMCXQ4haqcXbWeFt4/BZrjoM295ZgyokSb/4IRdpR2
+ XBvV4zeS74NwxeNS+hCc22aL15c+Sz9Zp0ftu2n9hH6sOHQd37laTkViaqZYrV/FXTzNCwxW7Ev
+ t4MBSzElxt7iMvde9vw==
+X-Proofpoint-GUID: DQrSJ-CMMjOG11QgAg7YJ_cl4-hd2EM6
+X-Authority-Analysis: v=2.4 cv=a/wAM0SF c=1 sm=1 tr=0 ts=69d53076 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=EMiGlfBOy1kJDbtlQGgA:9
+X-Proofpoint-ORIG-GUID: DQrSJ-CMMjOG11QgAg7YJ_cl4-hd2EM6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_03,2026-04-07_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501
+ phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070146
 
-On Tue, Apr 07, 2026 at 07:16:24PM +0300, Arseniy Krasnov wrote:
->
->
->07.04.2026 17:31, Luigi Leonardi wrote:
->
->> `virtio_transport_send_pkt_info` gets all the transport information
->> from the parameter `t_ops`. There is no need to call
->> `virtio_transport_get_ops()`.
->
->Hm, one more suggestion, but not in this patch: may be we can also remove 'struct vsock_sock *vsk' argument
->from 'virtio_transport_send_pkt_info()', because it is also included in 'virtio_vsock_pkt_info *info' ?
->
+Ciao Paolo,
 
-Yep, good catch!
+here is one very last moment fix for the gmap rewrite. It fixes an
+issue that can happen when a partial invalidation happens during a
+shadowing operation.
 
-Thanks,
-Luigi
 
+The following changes since commit bfe62a454542cfad3379f6ef5680b125f41e20f4:
+
+  Merge tag 'soc-fixes-7.0-2' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc (2026-04-06 09:03:19 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/kvm-s390-master-7.0-4
+
+for you to fetch changes up to 3ffe5eb4a5f248c0d4b849f050af973396656f85:
+
+  KVM: s390: vsie: Fix races with partial gmap invalidations (2026-04-07 18:20:58 +0200)
+
+----------------------------------------------------------------
+KVM: s390: One very last second fix
+
+Fix one more gmap-rewrite issue: races with partial gmap invalidations.
+
+----------------------------------------------------------------
+Claudio Imbrenda (1):
+      KVM: s390: vsie: Fix races with partial gmap invalidations
+
+ arch/s390/kvm/gaccess.c | 9 +++++----
+ arch/s390/kvm/gmap.c    | 3 +++
+ arch/s390/kvm/gmap.h    | 1 +
+ 3 files changed, 9 insertions(+), 4 deletions(-)
