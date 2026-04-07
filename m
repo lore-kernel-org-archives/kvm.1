@@ -1,219 +1,127 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010004.outbound.protection.outlook.com [52.101.193.4])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A59837F002;
-	Tue,  7 Apr 2026 22:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775599784; cv=fail; b=XEDn1cp92lvWYaFA7Rb5eSGG+/84UTJCARHgQDI/IfnNyatxtG5+ABnDTr2cTdJidCGAR3CqZtD659D1Ia/5cWDlA6upmFn//vt9BaRLKJiiE0ZAXPKaicUU9lrM6vDgIxPxdIHebLWafYGSOQxmR1qYIH7FPFaU5xY0ALxNIZU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775599784; c=relaxed/simple;
-	bh=hIbazfkvhKkMN7eK0sFTNpvvIz7zKMuWZfuEoetloqo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fv8RYbY+y9RdFk1kqqqlxAtHSlSSkKHIAhb9fwirjMi4DkQWnTQYDaYpK89Y1KBLtx2rPNaKOPurih68Y/NnEsp9tYUZZVNSo86kVp/l/DkcuTjMxKV35plya9AO7vmKMNy/6DkUnml7fo1e5xP+IlBrLVHucQwC/XZyo50vrW8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Z8sBslOR; arc=fail smtp.client-ip=52.101.193.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5E1A682F;
+	Tue,  7 Apr 2026 22:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775600878; cv=none; b=n/S0PmwFij0JEFojwbFNbS5uN2/l1Yy2+rLly/xbmOGWJDo0gOTk1zhZtbQMG0Op8V3d7x8Oy4snorm5bcEDDDzbHxNOY8225mVUACOmbKeIC27QFKFgEN775ZgRwhtrzAUYUaIB6SGjv8i8zalP2DPjeAEW7i0lBZVt0d39dI4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775600878; c=relaxed/simple;
+	bh=uK2so+449fVDewAkzhkLGh5pYpxj0JI8+AxRt8nkkc4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DMRSVAUrulTQbeSGwJ81TY6dA+kIRJ7ap1KEmHjPzN7nqObcaIR+1+sxjYl8PSW/dKzLHc/L1xqpM1hGB6G+Kb/HtOepp/5EQWkKmjqDYp0bZzYMn6xW4m5ubjmLs78+iq8N/brlfREvttBzvns2TPS4/YifWUokiWRusKZlWMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQWHy4OB; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Z8sBslOR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WKscgOwy772QYrptJ7Q56qeoC/OoSk6L4ARUvcaLrZI4mPnxa9lGixXkfsfOrkRvqWr4kzUrj2UNyTp+DJdV1nJIbf4PlhH7qMLwqVa+7RYv6F2Ssz/yt+hiomqk8lEh7fwwD+GI3rqhT42X1sCT2IiguA9bwZHXydAl0bh8schjF5ug92lXzMJgU82e2MHenXga86UDuu9JEptxEEHCBMKYTTKmTInJkIRCuOhuuVdqx2GWYOq/ap14E+enaSZGkvhjRcFOppfwgMpktO2P7Ty1PwcTlUZqt7z4CUsgVZL6A0uEeID5xYW25Cnjg5N9F980XQnwQk6G+DdunT3Qzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BpwgURsGif++NwlmwmcFVsRDZj4yvtebz13zoDCSkF0=;
- b=UPIrvliZ6QIzKdh5ZzkJB0rXXqGi23ICIXj7WCZ/Ijbv1dup+j8RxQxyDot9+erimpFVr7j8I1AYcLW3ao+AHGcyYy/xwarhsZ5s5CYSXEjX7pz89aTIrqInpgzKYWSTS+66TVHOCxTJOO8XyzT48oj+LZ71aAUmR6/lav0Oz5HkbTkrssDTOL6RAWHaxdjLjWbpKyT/UdRh1dSqSiFRVllARmCCBXz8exsEBnnpgFCDzl1pmmCrrsuajxGeYLH6xUvlzWwvXxLIWElsWgxVv6bxIkmkeCBK6FRwnEiVPl+pdiSATQFQoI5Xk//V4B1j0hPkWU9zBlpKY+3OQ16zbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BpwgURsGif++NwlmwmcFVsRDZj4yvtebz13zoDCSkF0=;
- b=Z8sBslORORBQmKGw4CUGxISTEXXciCdIc4WqyYgw5bBazD0fFwaAHQQPQKOakk0NPREPBdSIsQgsMarTyVgQx1zx0NKs3mml2YnWCdl5cg6UguWkLS0ssn+92aoh9JwuzUGQxCHt2n4FWByh7Fr/gOBXHPz0leacpN9SI6vY3g4=
-Received: from BL1PR13CA0265.namprd13.prod.outlook.com (2603:10b6:208:2ba::30)
- by CH3PR12MB7523.namprd12.prod.outlook.com (2603:10b6:610:148::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Tue, 7 Apr
- 2026 22:09:35 +0000
-Received: from BL6PEPF0001AB58.namprd02.prod.outlook.com
- (2603:10b6:208:2ba:cafe::db) by BL1PR13CA0265.outlook.office365.com
- (2603:10b6:208:2ba::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.33 via Frontend Transport; Tue,
- 7 Apr 2026 22:09:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB58.mail.protection.outlook.com (10.167.241.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Tue, 7 Apr 2026 22:09:33 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 7 Apr
- 2026 17:09:33 -0500
-Received: from localhost (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 7 Apr
- 2026 15:09:33 -0700
-Date: Tue, 7 Apr 2026 17:09:19 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Vishal Annapurve <vannapurve@google.com>
-CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
-	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ira.weiny@intel.com>,
-	<jmattson@google.com>, <jthoughton@google.com>, <oupton@kernel.org>,
-	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
-	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
-	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
-	<yan.y.zhao@intel.com>, <forkloop@google.com>, <pratyush@kernel.org>,
-	<suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
- Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, "Kairui
- Song" <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
-	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for
- KVM_SET_MEMORY_ATTRIBUTES2
-Message-ID: <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
- <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
- <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
- <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQWHy4OB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775600876; x=1807136876;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=uK2so+449fVDewAkzhkLGh5pYpxj0JI8+AxRt8nkkc4=;
+  b=FQWHy4OB+ha1vvzz4XFTmswpUMB9MtiRjBNY+gVyRJfDajyd00LoWGeY
+   oYUvObvMdnEm/vCNUZU5Ps1rWG1LbQuBdBfPPqMZNYgueEa4QeLUnYKOy
+   AZ8/jH9o7Oh3quOGwFvUEP8J/efXXSP27grH+nevABvSVj/a7HdV1K/Tk
+   Es/AynSdW9RAJzHxSEUW8+WroIKQafOIHkHIddhzvHifMPLARwnt730Rr
+   QVOlAMMgl4Ol9/byWB3A/yQ7FBSi2/5EdaO7hMuG+ksokwCWVTfbRPpMm
+   XUDYLWwJjNPxGq6ePX8VhZjel6bDl2pSXQXJGhtiV6WMQampqXmopKKAz
+   Q==;
+X-CSE-ConnectionGUID: 52crIjU+SFCtuSue1K2n6w==
+X-CSE-MsgGUID: s4h5QCiwS+i8KGLUUcQrmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="99202728"
+X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
+   d="scan'208";a="99202728"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 15:27:55 -0700
+X-CSE-ConnectionGUID: wKZVC/j2R2W5foBwbNucVw==
+X-CSE-MsgGUID: GW5EjqQCTQO1e/H8lgmmAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
+   d="scan'208";a="258719236"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 15:27:54 -0700
+Date: Tue, 7 Apr 2026 15:27:38 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	chao.gao@intel.com
+Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+Message-ID: <20260407222738.lrartp6evfp7yhti@desk>
+References: <20260404002149.wtayv6a64vzuppgp@desk>
+ <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
+ <20260404034954.t7iapenzvhdpagxp@desk>
+ <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
+ <20260407163943.y6tkh26z2rfktn3y@desk>
+ <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
+ <20260407171151.2gf2idjbmph35ypb@desk>
+ <CALMp9eRNVGFpzk_-ajQTuXadMtoY9H-ndUaz78wTT1zDYbTrPQ@mail.gmail.com>
+ <20260407191128.b2hr2ttkdpyunhrr@desk>
+ <CALMp9eTK0o7Z7-oTB8ohvmoh-vy-Y2qjdUvbqD6HaEhOEPZmhw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB58:EE_|CH3PR12MB7523:EE_
-X-MS-Office365-Filtering-Correlation-Id: c805bb39-ec17-465d-7d67-08de94f25999
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|376014|7416014|82310400026|13003099007|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	y7YGok+I3ne24oRYskjhQPCS/R2zq7pxofdIRXtkrsTnuByTuZumfRQwsvWOnMdldga1wUWQpWWHmAiiCLCn332M3d1uoOQ8eDrQdUaoIIJ7Knpi1Cf+mxj4uq4PCb8qBDEYBbHCFkvCUqfRUqcCHXnwKa1vW3eClCszf/a+z7kSgsEFxg7s1boP9ky/J3AR1y0syc6cciqBWLYcP+knLo2w3i3hFvcDCnFVMpFC66/CAl6l+FfJgY4Yxsx+BX2w7wZYyriTpSLRV8DoJ2HgLSJMTh0kKKp2HrAxH2r0rzGzZht8MilbDabOqWMzuFBr5YYDD7Z/ElNHKeGBUlUpp/jmunPOOZJjkbdTO8tDsWXKqQvNPQx3ZJFL9naWDZSW8UgEZGZn6LlbMNiDRYAMIhOQRM5DpGjVEQjtqRloAfC7l0MtR7d3LtGNcBicmMpKZhYJa/QUbEEXIalrm4c1uu0xmNu8/t+bz1Mv77FqBeXRHS7J9RRKl4xL4VHEFD4GMVnPF1iac7Y8TdvhtyZyfztM2yFUFzWfVhgxUiXf94lJI+o580Rf9ZW21T9+ZWjE//jbPh8NgfEHH48so9qznm2VeRThpBjX5eB4cQTKAZohLZ1LYChZAsQja0Y/9jghpAzQ2BQRsW8R+5zb48fTJJNZhKzzMThJE+raR6nPBuIy4R7qfnBnURft6EFSyB3Xi2+04x9up/hYD5zeD0AHfcTVS8Mtp94FLsVvPNHdoF8cROfscqry4FVmvNKOULxSVIGxQeP17rE6pI3yqzXt3A==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(7416014)(82310400026)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ds55EE6KOzPK9lpPKGcYt6rLreFqyZuoSQEk9wcvkpfAVjuPpds8Q5iuvNmtb0On04kfAZkGz27wYyLUjLYVze4eCufG3KJtmoWdTezqu0Utk2V6E3KZhHuIElwwc+PgqTrDQr57iDAU6mxQM1H5iot2CKwKGHukPGUYdfZIjMbdG7XFusRCbzAwM+CqELQB1w2H3v6nuHcOKAMaJdhIT3b0VcEBFNeGuE/PA9/ELMjulvAEjG8C+/t2Li1ueOPnD79vV5vOmAWbt4U/e0zf3J9O5+11dovnv6+k2zBf2FvHBP2138rZWxZdgPjhWAqbeerudb4/DqHXvNSZdFASAWzsKN4wadLFmReezmv/dVjjHwHPGoaDtl4UMReAuFd1kYVMOeMmAfDAc5e8M9AN2tLYJHkWNBVjlNYzrmjDZywPrcmAmpMrxsXSTGW/JKaf
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 22:09:33.8969
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c805bb39-ec17-465d-7d67-08de94f25999
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB58.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7523
+In-Reply-To: <CALMp9eTK0o7Z7-oTB8ohvmoh-vy-Y2qjdUvbqD6HaEhOEPZmhw@mail.gmail.com>
 
-On Tue, Apr 07, 2026 at 02:50:58PM -0700, Vishal Annapurve wrote:
-> On Tue, Apr 7, 2026 at 2:09 PM Michael Roth <michael.roth@amd.com> wrote:
+On Tue, Apr 07, 2026 at 01:53:24PM -0700, Jim Mattson wrote:
+> On Tue, Apr 7, 2026 at 12:11 PM Pawan Gupta
+> <pawan.kumar.gupta@linux.intel.com> wrote:
 > >
-> > > TLDR:
+> > On Tue, Apr 07, 2026 at 11:40:57AM -0700, Jim Mattson wrote:
+> > > My proposal is as follows:
 > > >
-> > > + Think of populate ioctls not as KVM touching memory, but platform
-> > >   handling population.
-> > > + KVM code (kvm_gmem_populate) still doesn't touch memory contents
-> > > + post_populate is platform-specific code that handles loading into
-> > >   private destination memory just to support legacy non-in-place
-> > >   conversion.
-> > > + Don't complicate populate ioctls by doing conversion just to support
-> > >   legacy use-cases where platform-specific code has to do copying on
-> > >   the host.
+> > > 1. The (advanced) hypervisor can advertise to the guest (via CPUID bit
+> > > or MSR bit) that the short BHB clearing sequence is adequate. This may
+> > > mean either that the VM will only be hosted on pre-Alder Lake hardware
+> > > or that the hypervisor will set BHI_DIS_S behind the back of the
+> > > guest. Presumably, this bit would not be reported if BHI_CTRL is
+> > > advertised to the guest.
+> > > 2. If the guest sees this bit, then it can use the short sequence. If
+> > > it doesn't see this bit, it must use the long sequence.
 > >
-> > That's a good point: these are only considerations in the context of
-> > actually copying from src->dst, but with in-place conversion the
-> > primary/more-performant approach will be for userspace to initial
-> > directly. I.e. if we enforced that, then gmem could right ascertain that
-> > it isn't even writing to private pages via these hooks and any
-> > manipulation of that memory is purely on the part of the trusted entity
-> > handling initial encryption/etc.
+> > Thats a good middle ground. Let me check with folks internally what they
+> > think about defining a new software-only bit.
 > >
-> > I understand that we decided to keep the option of allowing separate
-> > src/dst even with in-place conversion, but it doesn't seem worthwhile if
-> > that necessarily means we need to glue population+conversion together in
-> > 1 clumsy interface that needs to handle partial return/error responses to
-> > userspace (or potentially get stuck forever in the conversion path).
+> > Third case, for a guest that doesn't want BHI_DIS_S, userspace should be
+> > allowed to override setting BHI_DIS_S. Then this proposed bit can indicate
+> > that long sequence is required.
 > 
-> I think ARM needs userspace to specify separate source and destination
-> memory ranges for initial population as ARM doesn't support in-place
-> memory encryption. [1]
-> 
-> [1] https://lore.kernel.org/kvm/20260318155413.793430-25-steven.price@arm.com/
-> 
-> >
-> > So I agree with Ackerley's proposal (which I guess is the same as what's
-> > in this series).
-> >
-> > However, 1 other alternative would be to do what was suggested on the
-> > call, but require userspace to subsequently handle the shared->private
-> > conversion. I think that would be workable too.
-> 
-> IIUC, Converting memory ranges to private after it essentially is
-> treated as private by the KVM CC backend will expose the
-> implementation to the same risk of userspace being able to access
-> private memory and compromise host safety which guest_memfd was
-> invented to address.
+> That case can be handled by the paravirtual mitigation MSRs, right?
 
-Doh, fair point. Doing conversion as part of the populate call would allow
-us to use the filemap write-lock to avoid userspace being able to fault
-in private (as tracked by trusted entity) pages before they are
-transitioned to private (as tracked by KVM), so it's safer than having
-userspace drive it.
-
-But obviously I still think Ackerley's original proposal has more
-upsides than the alternatives mentioned so far.
-
--Mike
-
-> 
-> >
-> > One other benefit to Ackerley's/current approach however is that it allows
-> > us to potentially keep hugepages intact in the populate path, since
-> > prep'ing/encrypting everything while it's in a shared state means gmem will
-> > split the hugepage and all the firmware/RMP/etc. data structures will only
-> > be able to handle individual 4K pages. I still suspect doing things like
-> > encoding the initial 2MB OVMF image as a single hugepage might yield
-> > enough benefit to explore this (at some point). So there's some niceness
-> > in knowing that Ackerley's approach would allow for that eventually and
-> > not require a complete rethink on these same topics.
-> >
-> > Thanks,
-> >
-> > Mike
-> >
-> > >
-> > > >>>
-> > > >>> [...snip...]
-> > > >>>
+Yes. But, that was the part that received the most pushback.
