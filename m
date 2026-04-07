@@ -1,139 +1,201 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C92346E70
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 20:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109EB22083
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 21:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775595224; cv=pass; b=cjFp7lgKGKKKSarT7zDAdHgywzWkqVj9pBdr4FSPbL32HIeDt3ihfJxtbTL07yPF0sRFTKYxlFHbn6TUo6QDKhnxtymbaHk4u/UfWfFN04Qh0T28tH6rfNkDDlUk3gfjqCJLmwN+gQhtnJ6v9aS79783PRxJwI7Ghrhj7vVfPlM=
+	t=1775595711; cv=pass; b=USZ7vNyHAa1WC4i0gD6NQB1dDCrOHpEscpgkzgeTwRau3yN6YLKPUg9HtPAn6RnebJIBMEzkwO6KHGLstvg3w6vffmPVgqaE2F4+I+CxAdBtR/CcimQ5FT9qzc3KRAp5u3azKoPOwcPGsNKQ8G1Oy+2apcyzV/Y9veLYzK7z7As=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775595224; c=relaxed/simple;
-	bh=hAYL3ZhdW2F5eHwp+Hfkeql6tYPYXzmgecrqyASwpsk=;
+	s=arc-20240116; t=1775595711; c=relaxed/simple;
+	bh=y4xv4w+N7zOPLMXYJuqB7mLCfl6jABA8lNgVdCJduso=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ld/4/INuA4R5Ip0g09n7WZVch4FNiDg3RCcvKi81Nyi6qImXpGnXBhi4HZJjOF7yrUxSqzSGjQrGdV/pblkWyLC5dLx4Yb+fjrQMFP44gmLSAEuq+bWei+ZHffHBtEr6WgcLJ772c+5dKQ8xx+41goigx5X59CCe7fY2gbnSgTY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k4y/I/8V; arc=pass smtp.client-ip=209.85.208.44
+	 To:Cc:Content-Type; b=DU9d/XJCYrVNc/hIJMiPd7uKODcnV+uSbepKFggEt6RA3QU0wiD6f1m4Kru3q0rJQwS44wsL0D34EqP7bX+h6T66RwVGB4rxZRLNoQgdMeMecfAIyWJfWhtoCcdDxoQtSKAmu7F2ciLVeF9RgT2oxoUubhao85XneOz/xDonKEw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BS8tt2qi; arc=pass smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k4y/I/8V"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-66ba6d3dab3so3425a12.0
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 13:53:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775595222; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BS8tt2qi"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a3cf308c54so3181629e87.2
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 14:01:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775595708; cv=none;
         d=google.com; s=arc-20240605;
-        b=il11v4i+slOVAEWud16hyIZBVLNkaq7uLa11XP4rG2G347zlFgR7b6d+G7MwXf2MLz
-         gWzpWcv8haHyIoxnjVa02CcQYQgR0TZ4GbMcXJmUiOyDh7J4C/9gNCg2uhrfeyhPDaIp
-         BQHIAIFmNbRyLlEjcSTLNTQiMzimoQadnDgZo1Ty0UT/LTOB+izJ/4iHPo2HwNTfw7il
-         7gkKa7/AQJejzMHyFfIXkkQv8BYYsbXeOp9CrYgvevJmytA+tydV/adUAwOqkfZ3W9N+
-         tmbYKpEfbwbtXUI2e0V0NLEHNPXVTbwvGRX2DZXe2Amm5pDZ/f4H1wmjqMYMBNqZadKx
-         Ia3A==
+        b=UVV3h7BOy7GgD56D9zn1YE0WmeuIPALHBvtnkQY/7iiryUBVk5vKU3qqxYMJrVqzf7
+         yThkTUgK8nXCOJhWnHNXfT6607+pNVqkFyMM922Hh1pDBcEOkyqTiLYWy4cg5dhG6NMd
+         rZA71dYJgGspmD1cexYUpjQQNoj7DvAJQLKJ9EcEwPle96WOSwrKyvJXjgjRod8meq+p
+         Dlpn3X3vmNOxwnu3/R4wsBHgt+XIh5JapAF9zveM/xUqB6EG/xB3SdBSi8egn2ZX7O0V
+         GSr9gDz/jT3aigfw5AHLrP0yQXse3T5CDqNRUj2N+aY8P9SgNEJg1O5wTV9PQgbE/DD+
+         Dp/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=hAYL3ZhdW2F5eHwp+Hfkeql6tYPYXzmgecrqyASwpsk=;
-        fh=y/Ii4MZ9mQuNToBgdCgsu0oiatj1iCFnQQuzOrHzvEY=;
-        b=BpTyP4wOnReK+GS79fXj6aJL3ntB4iNyVEcOaMd9iZKlNPctbnUnTvQw1zu/A35X9u
-         58YWAo9n4K5W+uwY8JcHLxCGjizlBBQQ6jrRF0XVjUArM86fLzefRicSuxbV183TkIBQ
-         VqIHWD3t/AWtamDAu9ZMezIiQZ5IyuH72UcqVKAUvzvZQVfii9qq+Q6lZ07lGg5oxlqQ
-         Ekn6B29gDOOhAFq7p6B7d/5dR/og1wgi2R1r+gegjBLogA7djiXLnoNJlWTHl10a26cT
-         0sQilfMuynds+CI/C+336O1eE1WPHF0Ii66HBIwkfRIPSKMRfu1Ca7IJ5E0P1e9Jo6ud
-         KnJw==;
+        bh=n6nceFR4FTDCl1rL3f3sxSEVv90p1m635ufXlAu9TY8=;
+        fh=n9cHQ7kWPdGAakBxoAeD/OnyjDQOjfNKAtqzN5BbC4c=;
+        b=PGfLy5t/d+cY2PLAuZznJmS9CTYx7HzV/MiFobMTGm+M6il9tYmKjehz58VMWy4HbZ
+         b3zQ8Da3bHoDaouG7GUripVBk0d5tompNhoRjXDhRv5ODM/D/2QeIt+soZbWuiv/Vpnv
+         dxuY7+F2mxoN4kBFBa1Z1abc3cg1UB1VKyr+CQD2bCs/+TGwdW0JqMqT2Tr7I3AHkZFr
+         h09M2Lc58+NFGjiBcFz5jYoO5EPs0sHEz99aiH0Q7WidoJSS6D4H1De3neNJatxIwK1O
+         OgXWVo54S98cPKbyp7bgNbOViUj9OtwIgBbAcMR92cQLbR0ZDuVqz5uOhGTPYGgJTKwX
+         H6ZA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775595222; x=1776200022; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775595708; x=1776200508; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hAYL3ZhdW2F5eHwp+Hfkeql6tYPYXzmgecrqyASwpsk=;
-        b=k4y/I/8V5zgfQhXndP3mWx4YnmDYDu6ou/59VoGIYXXs2IBQ+h8CshdHAniJdJPXMN
-         1w8q3lbA9SqF5FPPJFiAapFx5N+8JVxH1DET1hrLHy/B4rkJZqADEOClFmhk+vb6MWGm
-         2+3k1enRL9AxIMsZsREEWQbUkeY4gzAVKz6p/aUlF0nUpZ0UNvnG+f56ak+9X8Ku5Z2i
-         xEs69JLh9QMHFbg3VIWRzNRZlhQMtABwv+bbj3aSQWvE7Zjaaa9adHy7VKqhiKNYlgBo
-         eE98y7Wr1O3tMHDhNHSk2XdvSdXrGfX/pDeUSo6u6gzWe60JN9fraaBwNYmUnrm1+Ilt
-         lx/g==
+        bh=n6nceFR4FTDCl1rL3f3sxSEVv90p1m635ufXlAu9TY8=;
+        b=BS8tt2qiOQiaJYz34CrcA7ovPWR1xrtV/Zki2jLtzBuR86crZvibxfiaoUPf9j85ux
+         gdLKgoyEdxibrGVkdXqFB8+ylbthpS/1I4fHG4bg2zDAkD7t1Qm0dgfOzGMz5EC66YHJ
+         qVAIP/37piyfZGaPu8eSeew+OrmW4qdHm07NjLc5cvSKeJDBsaOFTQi7+VLevnnMiaSA
+         LUCeELb/44Z6vgfN5Xrd2RlIjMt0bBgA49KN9MwdlsEWW9eJiKmgf1gshUDRBB8y2J4t
+         pNJxoILmjw+lJQdjQO0425mMCp7B9aSXLepi035PvFKro19jxLGRvlwfPbiu9HfW41D5
+         7BcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775595222; x=1776200022;
+        d=1e100.net; s=20251104; t=1775595708; x=1776200508;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hAYL3ZhdW2F5eHwp+Hfkeql6tYPYXzmgecrqyASwpsk=;
-        b=tI78+YldkU6ObefLQtMMuNrJluOxd3o4eAFwt+8qw90r2RcybXMaGreNbk8PLEwq96
-         Et0ji1wOAHz72DWkRCZ927vxHRfJVHZMSaUe528qWBzi0W7yH2Jgun6eDc8ZCvPylana
-         n74zC4tCocN7Qwgb1kKtlJUSMHxdJn1qwxcPPvCbum5HQHAq5jslnlmaHbxtLlF3Qijz
-         JP7zczyse/r2Gc5MeWoQV20lbKIRqmRvCXafNKTrQgvSAnQQpKP+qA3X9Q+pVNJ16oQv
-         HUIQKST9kR59KDFEH/zZNU9xBJ8ue3OFSaeNhNJt2Maz6L5VA1TyxjQV7jVFIK5hSKUj
-         +d/A==
-X-Forwarded-Encrypted: i=1; AJvYcCX47EmfeiJk9At3Jt40MMkQO/qOJU+rSbtCwsPi/qgptGKnCLQrD/1S6TlAt2bbNrJbDj0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzM5pG9iCXTbAzyWvvnBMnArlUDyu29IcdzXs3RrYFQSJ5PN02/
-	FlzYUFsfBwifnimbRotRdN6Jfvomksngnbdhh4r6QCzeMjJpKmWd9N/o3cs8fL5afuOTBcx0C2x
-	BbYabUBnfCMw7F7b0jNcMI9HyN9UXtNF64jtNrTa9
-X-Gm-Gg: AeBDietOqoqjOB5/g6qmOLoP4t/1OIwggTDiu5SpBWPQ28Xj108GCwJZVxWXINq1bw7
-	RGIwJYQcyF9IJsmWmh3uskv8lv5IASgidfCxjObwPkayjH1haspozDM/Nv8biuOu+RECd8jvCbx
-	VdlEEG81y83LW+agecJD4xHW+ozmcI9Qa50buIUpySlLlOTALdJh+SSiLtWW+hW2DLl/9LpoT1t
-	9DPyc7uOsD98VcBTfvS8rPSM4uzNbzY6Jm7Yvxfv14dZ6c860nhbKcePPPOldb5/0MWezTN9jVY
-	r3Y2TJg=
-X-Received: by 2002:a05:6402:5192:b0:66b:b6d8:c0f7 with SMTP id
- 4fb4d7f45d1cf-66f9e8a747amr784a12.0.1775595221201; Tue, 07 Apr 2026 13:53:41
- -0700 (PDT)
+        bh=n6nceFR4FTDCl1rL3f3sxSEVv90p1m635ufXlAu9TY8=;
+        b=Q6TsbfTZLZMG6Kf7maqrTgrs0Ww8Ql5DWm7lP/lreuWQRc7IPsioFA+524JWeMbkBv
+         +DvfRYXxEAxCbFDK/cJ4UCnb2lSwJ/gmcNZIBo5aZy7BDsgXJXQO8zNS7Il8yQ8IUiFH
+         80NoAmX7rCYaeJhzrgemiXTMuvs9crgarA9wO37RfDSs1JkjQckolIDdG9Y7EUgxZ/gN
+         pZrDZ1PW/7rYX1cSWyRTdELma1yz1mQwoahwW7Z7oOY0mzg2fixpSEago9+YWi0h0Nlo
+         1W98iN6FF0vfYUztLCjPXoX9CBPD/fV/c55Pb3KnUy7vpU4WlP+3GIYp47aevO0Odg2h
+         b3Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVuqNgu8X2hc6ATmhGUA2o/vZ6ynqH57n+Ho++u5/Cqi7vg+BBC/Mdel1/W1k5J3gtQwnQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEaYGPKIh39J2FO2Xd2EMWmTkMSEUynS7Jfm7c6O1kiHoya2h4
+	9sWiGhYW44DZTCodlnlcFHB9DV2JLIZUfbV9/btIbJFqWC85FR54+NGn8u2xU9FltHfSuFIZw6g
+	FWCRwJGLDYP5Z9ymWn6ox67t41a89UMqU/i5cX4Cu
+X-Gm-Gg: AeBDiet6Fgu/UdPsZnpBfGg2jeUPoQRANiAqXtIkLXlNUdUaJoWK2TaqM5Lnyt/Mrwz
+	lY9W4XY5gAAZhau81kDYVEYtQTvLj13zWysYqviZm3Ie2e0Wob6w4+oIi2T8yfKbVxnFRuwTBNJ
+	Pc4SZkLsu8bebp+Grx8GuW2vKtGSu5qfBMSn3KE7rSyE3593CNVMCE4FXDoq0YfeknYFcaCszGt
+	wsefAB1yYp7dwZYnZHwp1l6cTc5Ue3+Jh+PHRiE3pe67R3LGQvg/JNUx00bZy1uwqVqJGNxmXd4
+	chOSB5Hk
+X-Received: by 2002:ac2:558b:0:b0:5a3:d100:3c82 with SMTP id
+ 2adb3069b0e04-5a3d1003da8mr3456929e87.23.1775595707775; Tue, 07 Apr 2026
+ 14:01:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260403233329.fb2ppifgwm3um6ny@desk> <CALMp9eTpsenqsWjzmpXLEubn9uNjgZgzgrMwtZ72HDuV_2xgfg@mail.gmail.com>
- <20260404002149.wtayv6a64vzuppgp@desk> <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
- <20260404034954.t7iapenzvhdpagxp@desk> <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
- <20260407163943.y6tkh26z2rfktn3y@desk> <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
- <20260407171151.2gf2idjbmph35ypb@desk> <CALMp9eRNVGFpzk_-ajQTuXadMtoY9H-ndUaz78wTT1zDYbTrPQ@mail.gmail.com>
- <20260407191128.b2hr2ttkdpyunhrr@desk>
-In-Reply-To: <20260407191128.b2hr2ttkdpyunhrr@desk>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 7 Apr 2026 13:53:24 -0700
-X-Gm-Features: AQROBzDTwGQS7R5PAsEU3h53Sr6ks4a8QPBLHblMF9o5FM5amaSGtHZz6ABr9Kk
-Message-ID: <CALMp9eTK0o7Z7-oTB8ohvmoh-vy-Y2qjdUvbqD6HaEhOEPZmhw@mail.gmail.com>
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org, chao.gao@intel.com
+References: <20260402173059.1018805-1-rananta@google.com> <20260402173059.1018805-9-rananta@google.com>
+ <adQyhegJdEWuUIi4@google.com> <CAJHc60z3gPyGHbL+HuXrCc8OiGBKfAh1MX8rqYrjeaXrrmy7pQ@mail.gmail.com>
+In-Reply-To: <CAJHc60z3gPyGHbL+HuXrCc8OiGBKfAh1MX8rqYrjeaXrrmy7pQ@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Tue, 7 Apr 2026 14:01:19 -0700
+X-Gm-Features: AQROBzD_vAHAtHU-pFANoy52RUqW_d8wARaAwY6DrCK-Jz_kX-EnCFIMtqZ-v9M
+Message-ID: <CALzav=eM8AMEAn9YAa-eqcCV-EiaE6yz1abHjtXsnk5KX35L8g@mail.gmail.com>
+Subject: Re: [PATCH v7 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Vipin Sharma <vipinsh@google.com>, 
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 7, 2026 at 12:11=E2=80=AFPM Pawan Gupta
-<pawan.kumar.gupta@linux.intel.com> wrote:
+On Tue, Apr 7, 2026 at 1:51=E2=80=AFPM Raghavendra Rao Ananta
+<rananta@google.com> wrote:
 >
-> On Tue, Apr 07, 2026 at 11:40:57AM -0700, Jim Mattson wrote:
-> > My proposal is as follows:
+> On Mon, Apr 6, 2026 at 3:24=E2=80=AFPM David Matlack <dmatlack@google.com=
+> wrote:
 > >
-> > 1. The (advanced) hypervisor can advertise to the guest (via CPUID bit
-> > or MSR bit) that the short BHB clearing sequence is adequate. This may
-> > mean either that the VM will only be hosted on pre-Alder Lake hardware
-> > or that the hypervisor will set BHI_DIS_S behind the back of the
-> > guest. Presumably, this bit would not be reported if BHI_CTRL is
-> > advertised to the guest.
-> > 2. If the guest sees this bit, then it can use the short sequence. If
-> > it doesn't see this bit, it must use the long sequence.
+> > On 2026-04-02 05:30 PM, Raghavendra Rao Ananta wrote:
+> >
+> > > +/* clang-format off */
+> > > +FIXTURE(vfio_pci_sriov_uapi_test) {};
+> > > +/* clang-format on */
+> > > +
+> > > +FIXTURE_SETUP(vfio_pci_sriov_uapi_test)
+> > > +{
+> > > +}
+> > > +
+> > > +FIXTURE_TEARDOWN(vfio_pci_sriov_uapi_test)
+> > > +{
+> > > +}
+> >
+> > Please do iommu_init() iommu_cleanup() here to reduce code duplication
+> > and as an added bonus you can drop the clang-format comments above.
+> >
+> I think even Vipin suggested this. Last time I tried this, IIRC got a
+> build error that 'variant' was inaccessible. But I guess I just had to
+> re-org my code to make it work.
+> I'll do this in v8.
 >
-> Thats a good middle ground. Let me check with folks internally what they
-> think about defining a new software-only bit.
+> > > +static void vf_teardown(void)
+> > > +{
+> > > +     /* Destroy the VF only when the main/parent process exits. */
+> > > +     if (getpid() !=3D main_pid)
+> > > +             return;
+> >
+> > Is this because the child processes created by test_harness_run() to ru=
+n
+> > the TEST_F()s inherit the atexit() call? If so please clarify that in
+> > the comment in more detail.
+> >
+> Yes, that's the reason, and I assumed the comment made that clear.
+> I'll re-write it if required.
 >
-> Third case, for a guest that doesn't want BHI_DIS_S, userspace should be
-> allowed to override setting BHI_DIS_S. Then this proposed bit can indicat=
-e
-> that long sequence is required.
+> > > +
+> > > +     free(vf_bdf);
+> > > +     sysfs_sriov_numvfs_set(pf_bdf, 0);
+> > > +}
+> > > +
+> > > +static void vf_setup(void)
+> > > +{
+> > > +     char *vf_driver;
+> > > +     int nr_vfs;
+> > > +
+> > > +     nr_vfs =3D sysfs_sriov_totalvfs_get(pf_bdf);
+> > > +     if (nr_vfs <=3D 0)
+> > > +             ksft_exit_skip("SR-IOV may not be supported by the PF: =
+%s\n", pf_bdf);
+> > > +
+> > > +     nr_vfs =3D sysfs_sriov_numvfs_get(pf_bdf);
+> > > +     if (nr_vfs !=3D 0)
+> > > +             ksft_exit_skip("SR-IOV already configured for the PF: %=
+s\n", pf_bdf);
+> > > +
+> > > +     /* Create only one VF for testing */
+> > > +     sysfs_sriov_numvfs_set(pf_bdf, 1);
+> > > +
+> > > +     /*
+> > > +      * Setup an exit handler to destroy the VF in case of failures
+> > > +      * during further setup at the end of the test run.
+> > > +      */
+> > > +     main_pid =3D getpid();
+> > > +     VFIO_ASSERT_EQ(atexit(vf_teardown), 0);
+> > > +
+> > > +     vf_bdf =3D sysfs_sriov_vf_bdf_get(pf_bdf, 0);
+> > > +
+> > > +     /*
+> > > +      * The VF inherits the driver from the PF.
+> > > +      * Ensure this is 'vfio-pci' before proceeding.
+> > > +      */
+> > > +     vf_driver =3D sysfs_driver_get(vf_bdf);
+> > > +     VFIO_ASSERT_NE(vf_driver, NULL);
+> > > +     VFIO_ASSERT_EQ(strcmp(vf_driver, "vfio-pci"), 0);
+> > > +     free(vf_driver);
+> > > +
+> > > +     printf("Created 1 VF (%s) under the PF: %s\n", vf_bdf, pf_bdf);
+> >
+> > Do we actually need atexit()? This code can go into main and we can do
+> > the VF cleanup before returning from main after test_harness_run()
+> > returns. I don't think you even need to check the VF driver. If the VF
+> > is not bound to vfio-pci then that will be caught by the test cases whe=
+n
+> > they call device_init(vf_bdf, ...).
+> >
+> Other than the asserts on 'vf_driver', the calls to
+> `sysfs_sriov_vf_bdf_get()` and `sysfs_driver_get()` themselves have a
+> potential chance of triggering asserts, although this is unlikely.
+> But the bigger reason is that test_harness_run() unconditionally calls
+> ksft_exit() at the end, forcing it to be the last function called from
+> main(), regardless of the tests' outcome. Hence, the exit handler.
+>
+> I see atexit() used in some selftests, so I thought it was normal and
+> acceptable.
 
-That case can be handled by the paravirtual mitigation MSRs, right?
+Ah ok if test_harness_run() exits instead of returning then I agree
+with using atexit(). Thanks for the explanation!
