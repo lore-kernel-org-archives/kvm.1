@@ -1,79 +1,79 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6858B2989B5
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 18:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31F419CCF7
+	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 18:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775588213; cv=pass; b=dShJjVrtgcPoZ2tZ40FzylA3iS/M6SBn4BYcY/bLtGhzn7X5udUXXNJeoJRvmaYK2YIX8Jnw4KVWICSAsXxVEpbw7ugWvoRgf8LRw73mKgkYrGslQAEfsXZMEGXsvzTDwgeSAnUmo/RHdsJigek+xv/b2qM5qPVMJH2RSvLeO08=
+	t=1775588244; cv=pass; b=kgFQjnpSzCoc0eoOvxxz/o8+GxPNTS0APxx/OKMIrMGoQKzoFru1p13cLwusqaYJ3M6vQ+fwBd2L7/2HArNlvuWJ0++PdtKITCCSbRb2NJu6KvCBs43nDVV2mEAiivaEF2GW7+8GYaZ/6qmWwvRpdUxIJHxkQDbM8JcKwHErve4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775588213; c=relaxed/simple;
-	bh=i5RQMcV396b63nA42SUmQRpwNcFVD/M4pkvCRG+nx/Y=;
+	s=arc-20240116; t=1775588244; c=relaxed/simple;
+	bh=j7/hW+84pFIK9s1PhsCkYMG9iK2gQijh8NutiyitsgU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YtXyl8hgXecVvJxzV6RTK6xDvWYoCf54HEHlxlSHsN9ggAvKmT820AFASAPY7BbAp0PRqRbjITILb2LcLEyR9z5Y5tZ+dBEdmhBUyCk+959Hgzkks2d6uqOHqG6IArysLCqml/JJWisKRfEWduIJhlrMEWHRa/vU98w/2nKh1P4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bCvbJE6Q; arc=pass smtp.client-ip=209.85.208.175
+	 To:Cc:Content-Type; b=YazgcSTevlYLUeqHxFhpOT4h32i4UiU2O8LIw8ceLhD2nkxqH5qHY7DXBbmLfLWQgRu4B0kHssXNvjIQjiTU+8jCpGIMRO0LMB9r3DO+8yTDc1CRGe3w9L7xWwymyp5rQWCsjyfOssyuYHmqffNAeoH/dekOVhVJaHfw6ejDDDU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=II2d3Zbj; arc=pass smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bCvbJE6Q"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38dd575bca3so2208911fa.1
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 11:56:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775588209; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="II2d3Zbj"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a2c9c5ff87so5620640e87.0
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 11:57:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775588240; cv=none;
         d=google.com; s=arc-20240605;
-        b=EHFX14YKEFPUF8qBnAVpzvQmjuxImhAUApAIfoEAFhmVOKT5OqwWF7ZjhvzvoWeDCC
-         HFgfz0RefAruR4P+vGXWtuJu8GBqnSN6UOEWpP8fiI9C4UROWXWFocByqsO4JGDXzNLD
-         PWQXClLCCRwjhsW3sYkdsvl1oF7U8J1zTJKZdgNiAZpcaJMnQWT1y9sU95BkR1TcmIPh
-         sWau1MtemsUP3amA2INBKY+GQnFeKOcZiCI3Ma8x918sMxYImInnbDisoBQbzXSipK0W
-         miTr+0W2OU5O5f7jjt45Liw24UI+2/Or1tmeCGc7j6LegEp7tOY2dr+qZ+0D27QKDDTH
-         wFgg==
+        b=BgMG+NjNKCAixfpiQKJs+/7CpCkdGnegEzsFX8lFs3xAB8CxGcHh9SkumZRd7e+x9p
+         N6RxIEXIiqLe7oDU6dbk+72/Zch6qS4vn2F5ZsjglZxa+EJ015xewywahN2E4M6bdTol
+         //0JdP+LH8ALDTp4brTk8inRD7OQM8+lRj+T8ajuy5SKuInQJPB+puO82+7chlBLJQxs
+         doK6TruxvMYkT6DCl3Sdq4MNn5mXzP6NOWlxHoZpkdJDSsX2jopnnsv647t5Bzs4EDsa
+         RMbqxhqXECn3nzyObA/HqKnCVZZRAxxI6fjxG9okIdkpG2lgtZ1vdoQfTGGy+aUYZ/nI
+         EI4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=li6eJRq571VbkAQY3SCY76KP+ZDhJq6m6xXIOEYY8mE=;
-        fh=HLGelAaYpWNqdXjluQgBtL8CYD1QPkyCoZy6MNeDnds=;
-        b=Bd/Je3PMg42RP9BV3xrXHW+TvJvcOrrEwfSFY+RlCfVAr6N//5c7PGmqesD23Ezx1u
-         8B6qofxgPOlp52mRARoDa7p7Ig47h8z8QIYhbAj6rU59izctvmzlX2MjG4Z76KSSXeEn
-         fqWPbxHK3XPB7bIY+DEcWZVE0Wlt7xBOhWlL+Bc9Cgb5z8XX49hd2dtIxV8CGxZ2ERCM
-         yBqe6dDXPtw+gFZlIoasNeoNLz21VoDm6rqreKCoF7su4I0Mg2VZFGP4rAM2bn4RGq/c
-         dV/p8u1cKIzXRIClOyyB8/hV0El/fe3VKU2rydmzprrVVu47O8G/lWILLWZJ5dTZw5hU
-         KA2g==;
+        bh=j1OQX7nG3QSX4/S3iYtGGx2ssiFvfml99odN1o0wnB0=;
+        fh=6xKs66hwCjEtTQSgE8lPO1VxF6ABreQX6kwrlZZ3UNc=;
+        b=U/XMMndc1plYz7PHVS2N/Jq/WsOHM27TpgRpLLhu5aqr4l76ZJHJMGWOIccdduaS+K
+         g8F+2i/WtGsK+S1tzxba3p4g1+M8OmBDNY4jBcVPLxvkAL9dM6NxEjrCyHjeetq8lg+h
+         Q4lZ3GDoeCEFEDSEYP8E8oatlGEHR/KY04EjvTF2loDtTUgiMhun8zuJjFtNX+8sLLVW
+         vwtTyLKGfv6HGivG1jZ7kbuaF6+hnLett/5zxqsIMSsaNS08AxzCO6kOewbh31gtu3Cl
+         ihB+UYrgXbwCvkLIOY4G7AHPQZtGDgj9KnY4kBe0Dx3/yYOHvS+tg+ZQsWAL7Zm+gXCx
+         DVxQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775588209; x=1776193009; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775588240; x=1776193040; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=li6eJRq571VbkAQY3SCY76KP+ZDhJq6m6xXIOEYY8mE=;
-        b=bCvbJE6QN1KsP36oONUm8thyzS3FH2kozjl0z1vECMski4Cm6MysFHlHIfTNwfCDDc
-         ihps6wdflRry90AQrKokuvUdAUqqgwS+j2Bzf8AzsidtauZuBl6CVFU6JSa+kW5wF6XV
-         qRlBHIAO1PICAAIQm5Uw8sGByWXSYrx/dsZAezFN9WG5Hb1OIXKH8AoPo44+vws7gLaN
-         yZ+zb93v9x7bLT3poUffodFNqxJw9n03cqMnCOc1u74uFDJ3fmZIREk5cMXlXxd0HYO6
-         dKxGIzNl3i3kyG3m7VwrjlL13xDHwx1oHs1wfcsmTaK3jcd0eiJBx8xtm/BRRQqMzOGF
-         siZA==
+        bh=j1OQX7nG3QSX4/S3iYtGGx2ssiFvfml99odN1o0wnB0=;
+        b=II2d3ZbjHgN59BvDIFQ66JYrYN49gu31p0AV+3mjROFKG5uQqMRBsLYcX2QkAckHIs
+         430IjBfynvDcZEhKtGL4N0C7cquGwOGJSLMELUrokks5iIzEq/gidesSJYDdL1SxfnsC
+         ZXg271HRKW4Ip5cMZTAkuRocpuEJ3/qo2EryJkCK9fnnMlZWQ3JFtYDm+4WAH9jdnXgi
+         ahhemwDucv89IjN/57bo9MdZjElAHKJfzToTGkt9qVpUIrHLEVgk3llbexCjfmL/pTzb
+         nqWBmdZ182FoGg8z8fk65oFmBteMidMF+Oeh5YJAcs5HfVSzQTW9DTZqppuuygSiSslb
+         H5Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775588209; x=1776193009;
+        d=1e100.net; s=20251104; t=1775588240; x=1776193040;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=li6eJRq571VbkAQY3SCY76KP+ZDhJq6m6xXIOEYY8mE=;
-        b=liV1uSDmTMLJXCTaD2INAGmxmnhh9mcGs1rSa3uahM5tKUipISv4AGnLTPohyEHKJP
-         6aSX5Ifbb4toOprjzabkJlfgNbuTIwMmUX7w2KoxAWq/hStzXmQ9gQHoDf6rcBcOQc75
-         TprcyKZ9PWlewkO3eZ4O/An2gE7480KwTTZA8oAp1EgVxuQCYPnM1/I3h9YD7be15tmQ
-         /A0smV2Lt6h9oFGpGwUDLYkw6Yo9Ab1D6J/7QloDfK4GmJGoLlxpHcHV2HvUbswMy+nE
-         pLgb76k54f/TnD2OR26czoDU4NWT/nLsf+cnS5nrxNCt5S5lWv6tyNafxLalupnXRnC2
-         86wA==
-X-Gm-Message-State: AOJu0Yw6GZbFFUfw7jrAhAg67wifgIn/JdWyFZnyG3kAuI9OorkFVEzS
-	fvcOJJcIH13DZIDCAOG4PfsT5xs3jqBAtMRBJGLpwkjXqNoM9tYxo+FFVsAY7iKJEoqzzs0XRca
-	x+pyX/+DTi4rXcTW+FYNrIKCa/YHFgeoZD7jWh+qy
-X-Gm-Gg: AeBDieteX49dxNcta3Lms4lFW6NTLC0dcpbBI5pihjP78CyHBx3rtuP5pXGkJ7ZW/nR
-	Y8IvOTeKxUzTQfkdH0B26Zo5k9M/MSjttpbH6U9kmRu2zBqyu4qm6eEMeXQnGpjOOw5bC5tZpnN
-	DTdYg+cEbj23KiZ/QZTTF/VpN6q/Qz5SFwAHRNThrm9+4kGSb8U6wTeTTi2+d1ZSIdA+3Tdcc2r
-	hNE1uJ3p22GJ8uthyjZbxBY8iqNd6bGR8dyK6526YS575rfLnUo2Gud9MRjvsYdlMZHj5422cyZ
-	+fbVS5WrIuTDZogPI8UhI4t5Sw9vTi9s0XrK19Ct
-X-Received: by 2002:a05:6512:23a1:b0:5a1:182e:1fdd with SMTP id
- 2adb3069b0e04-5a32f69149bmr5992701e87.0.1775588208992; Tue, 07 Apr 2026
- 11:56:48 -0700 (PDT)
+        bh=j1OQX7nG3QSX4/S3iYtGGx2ssiFvfml99odN1o0wnB0=;
+        b=lMwOe2yHgRYYulIyti7XjHtwF58BMK3zlrk6taUBu0YDD4VGU/7H7nxFIZSY9ikdI2
+         W5CIVyEjUjJk5NXzEW8PZ5GgWorxAUpc1JXr72iSiU3TLj5Uo8gVd2mZfL+pUiBsiKzR
+         1ijJw5vEq+RCo7C196Iejh/ZNlV9kjGusTeoJmQOeOMfY/tL0m4x/QsvY3hgFoOGA3r5
+         +obtwmYiNpr8UdFc72RToRoqkb4Vk9bPvxd66Es1yXBbchmWcjPp6nFynjJEilFAAAXQ
+         knRRnuh6E7zMY4ZHaQaEpdx9J7zQKJzWPKS5suzU2/Sind8C4dbV1M2+jLlDn85eDtnI
+         0U0A==
+X-Gm-Message-State: AOJu0Yzt671vHZKb5tcVVIcVN7c0TGHbgkK9XAdzGiwJt6vFJOvFqnGP
+	x+KdXxh3m9joq/Vs77Aal/gwAY5weLLoU7VBKZ0x4QrYmyn720WBcNf0JAp8x+9c1DyUCslvkw4
+	xIgAfcNFLsDV02DcRblMlDfx1kSMKJ9s/dDfUPxf6
+X-Gm-Gg: AeBDietApX3X08PlAplGDs5NGNLh/8YQLTHnf9iuhQcG364Jj3y1jYFayLfYcSqXtzj
+	vtCDfn4TJ7jvtgg24uSr+gwYtHSzqqJIu9pIFaYpwNjvz4u9FMKUeuujQmhszznOLE1eR0/a/td
+	fkmE8HMxR7uJd0J+rH84FcOU1Ijbg17+Qy79p9i102vWTXoMcfatQp4YJA87xs8MKbMdtEG7ZaQ
+	+NcVHyvoeNpXG/d3rYAXUFRl7kV6tVh5D/6T42S3VWYBNpIFpRaLxMLOKoUCVxJBd6urbTClsrW
+	f+k+g4Rfex5z6ssjK9DhWJibO4ZOzYWZB9fXxWKC
+X-Received: by 2002:a05:6512:3405:b0:5a2:cac3:5271 with SMTP id
+ 2adb3069b0e04-5a33758cb87mr5574875e87.42.1775588239495; Tue, 07 Apr 2026
+ 11:57:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,27 +81,26 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260316224349.2360482-1-jingzhangos@google.com>
- <20260316224349.2360482-3-jingzhangos@google.com> <20260324150441.GA456067@e124191.cambridge.arm.com>
-In-Reply-To: <20260324150441.GA456067@e124191.cambridge.arm.com>
+ <20260316224349.2360482-3-jingzhangos@google.com> <fvs5jjvtwbr4dysdflvsdyjuir5ytjt24wpu6fg3cacdnxs7qj@zzsb3jbyaia7>
+In-Reply-To: <fvs5jjvtwbr4dysdflvsdyjuir5ytjt24wpu6fg3cacdnxs7qj@zzsb3jbyaia7>
 From: Jing Zhang <jingzhangos@google.com>
-Date: Tue, 7 Apr 2026 11:56:36 -0700
-X-Gm-Features: AQROBzCgzrPGp_qS7-15deV5V29ZGuIZ171C--Z3cgkW7LdmL5RkW2sXJjmeSvE
-Message-ID: <CAAdAUtgZLm5=i6iLcV+FC_zTzf9sB6uA_s8xJHuskyoDVV1Ciw@mail.gmail.com>
+Date: Tue, 7 Apr 2026 11:57:07 -0700
+X-Gm-Features: AQROBzAPudZoxu_nv7hEWO_6KCl0ghqDD4zAp8xF0MLmuihCv-GpmV4rRgy-EBE
+Message-ID: <CAAdAUthq58L2k1rMgJqTzYQwa4kZqPiXVBe4Sk7eqg_QogMUsA@mail.gmail.com>
 Subject: Re: [kvm-unit-tests PATCH v1 2/3] lib: arm64: Add bare-metal guest
  execution framework
-To: Joey Gouly <joey.gouly@arm.com>
+To: Wei-Lin Chang <weilin.chang@arm.com>
 Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
-	Marc Zyngier <maz@kernel.org>, Andrew Jones <andrew.jones@linux.dev>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Oliver Upton <oliver.upton@linux.dev>
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Andrew Jones <andrew.jones@linux.dev>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 8:04=E2=80=AFAM Joey Gouly <joey.gouly@arm.com> wro=
-te:
+On Tue, Mar 24, 2026 at 8:44=E2=80=AFAM Wei-Lin Chang <weilin.chang@arm.com=
+> wrote:
 >
 > Hi,
->
-> Just some preliminary comments.
 >
 > On Mon, Mar 16, 2026 at 03:43:48PM -0700, Jing Zhang wrote:
 > > To test advanced KVM features such as nested virtualization (NV) and
@@ -125,14 +124,18 @@ te:
 > > - Guest-internal exceptions: Provides `guest_el1_vectors` to catch
 > >   Sync, IRQ, FIQ, and SError exceptions occurring entirely within the
 > >   guest (EL1) without trapping to the host.
->
-> Might be helpful if this patch could be split into 2-3 commits.
->
-
-Sure, will do.
-
 > >
 > > Signed-off-by: Jing Zhang <jingzhangos@google.com>
+>
+> Thank you for the effort.
+>
+> To me this feels too much trying to add all these in one go. I think at
+> least guest-internal exceptions, and usage of stage-2 (start from no
+> stage-2 for L2), can probably be split into its separate commits.
+>
+
+Sure, will refine it.
+
 > > ---
 > >  arm/Makefile.arm64     |   2 +
 > >  lib/arm64/asm/guest.h  | 156 ++++++++++++++++++++++++
@@ -186,12 +189,6 @@ Sure, will do.
 > > +#define GUEST_EXIT_CODE_OFFSET               328
 > > +#define GUEST_TPIDR_EL1_OFFSET               336
 > > +#define GUEST_ICH_VMCR_EL2_OFFSET    344
->
-> Look at lib/arm64/asm-offsets.c for how to generate theses.
->
-
-Thanks. I'll refine this.
-
 > > +
 > > +#ifndef __ASSEMBLY__
 > > +
@@ -212,12 +209,6 @@ upt Routing */
 > > +#define HCR_DC               (1UL << 12)     /* Default Cacheable */
 > > +#define HCR_E2H              (1UL << 34)     /* EL2 Host */
 > > +
->
-> Should be in lib/arm64/asm/sysreg.h
->
-
-I'll clean up all the register and offset definitions.
-
 > > +#define HCR_GUEST_FLAGS (HCR_VM | HCR_FMO | HCR_IMO | HCR_AMO | HCR_RW=
  | \
 > > +                      HCR_DC | HCR_E2H)
@@ -256,14 +247,6 @@ st);
 > > +     GUEST_EL1_MAX
 > > +};
 > > +
->
-> There's a similar vector enum in lib/arm64/asm/processor.h, is there a sp=
-ecific
-> need to have a separate guest_el1 version?
->
-
-Not really. I'll try to reuse those.
-
 > > +/*
 > > + * Guest EL1 Exception Frame (pushed to guest stack by asm stub)
 > > + * We use a simplified frame: x0-x30, elr, spsr. size =3D 33*8
@@ -273,12 +256,6 @@ Not really. I'll try to reuse those.
 > > +     unsigned long elr;
 > > +     unsigned long spsr;
 > > +};
->
-> What about SP?
->
-
-It is in the guest->sp_el1.
-
 > > +
 > > +typedef void (*guest_el1_handler_t)(struct guest_el1_regs *regs, unsig=
 ned int esr);
@@ -291,9 +268,6 @@ ned int esr);
 > > +     GUEST_VECTOR_SERROR,
 > > +     GUEST_VECTOR_MAX
 > > +};
->
-> Same comment about vector.
->
 > > +
 > > +/*
 > > + * Guest Context Structure
@@ -494,6 +468,19 @@ _point)
 S2_MAP_RW);
 > > +
 > > +     guest->tpidr_el1 =3D guest_ctx_pa;;
+>
+> nit: extra semicolon
+>
+> Thanks,
+> Wei-Lin Chang
+>
+
+Will fix it.
+
+Thanks,
+Jing
+
+
 > > +
 > > +     guest->elr_el2 =3D (unsigned long)entry_point;
 > > +     guest->spsr_el2 =3D 0x3C5; /* M=3DEL1h, DAIF=3DMasked */
@@ -648,13 +635,6 @@ uest_handler_t handler)
 > > +     msr     S3_5_c1_c0_0, x1
 > > +     ldr     x1, [x0, #GUEST_VBAR_OFFSET]
 > > +     msr     S3_5_c12_c0_0, x1
->
-> Need to add these registers to the sysreg.h file, so don't need the raw e=
-ncoding.
->
-
-Sure, will refine it.
-
 > > +     ldr     x1, [x0, #GUEST_SP_EL1_OFFSET]
 > > +     msr     sp_el1, x1
 > > +     ldr     x1, [x0, #GUEST_TPIDR_EL1_OFFSET]
@@ -744,12 +724,6 @@ Sure, will refine it.
 > > +     str     x1, [x0, #GUEST_HPFAR_OFFSET]
 > > +     mrs     x1, sp_el1
 > > +     str     x1, [x0, #GUEST_SP_EL1_OFFSET]
->
-> Missing VBAR_EL1?
->
-
-Thanks, will fix it.
-
 > > +     mrs     x1, ich_vmcr_el2
 > > +     str     x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
 > > +
@@ -875,9 +849,5 @@ Thanks, will fix it.
 > > +     ldp     x29, x30, [sp], #16
 > > +     eret
 > > --
->
-> Thanks,
-> Joey
-
-Thanks,
-Jing
+> > 2.53.0.851.ga537e3e6e9-goog
+> >
