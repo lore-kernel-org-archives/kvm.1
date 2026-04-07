@@ -1,132 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5510D3B38A8
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E057D2EF67A;
+	Tue,  7 Apr 2026 12:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775565704; cv=none; b=FKBM5LUeijGpgrnFmqvZtKynKjz8FSbjR0W5KW+YppFYNZB71yNwdSb5IAU6BcZRsdipFGOnfHy7B/1LFGqtTPLOFauUoA4oJw5ri/dear1bUzREImVM1eaeWxTaTF97gjv5XSArPDhr17ny3IOGYWM1WvadHu2Ofr0PoQvxdmU=
+	t=1775565893; cv=none; b=JoCJV9nAb9bBX+B8ecalDDsjh/nsvAMesjqQL4q/sZY9frElb4Q3VDgzgG6J8ZC2whbx1+BL3miO1kFK3RPqbOXWdheAfY9IVDDzjwugBVpXIRzDQ+R8vcT3J48HWWtgRvW6rb0x6FZ+WtUK/71H9oAsD+Nylioat3cZUsup9Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775565704; c=relaxed/simple;
-	bh=h+Q+4GDMZ0Hnfe+YIBStnMoQmrnrXoWxr2IqRHz2y98=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hxA5VySEFqzuJNF2KYKn+uhhtp3pb3oxKrWusBoj1u1vBRPNjiAN+LkZhxqoCrviHEVOt7x8hLbLnsMteAyS398Bt0o3kz+M30PVXuSde+B5XeRHhJV5BbAn92kyY0T+e6VaQexxgJ8FYY/YMt0MHBC43zE235V21QMF0h++mwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE1Q7GD4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775565893; c=relaxed/simple;
+	bh=NipojrGlT+ECd+QfB2wH0LiET/bTP0kbLWQSU+eFAdk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eER1FD10X4wpX5URcG+hhlM041WXPQRP13UTrkR2kR563uYMHD38p710FLC9IBGF0XMShYTfDr8zTMw9whWqJITFpV72uzVy/6kC/zVaQYIkxaeIsWbNrDZ2E6cLGjd76U3ayvWXKhrIur+craRuc4Z/zM7E2l8/v8K+rJ84UpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ci8812JH; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE1Q7GD4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1090DC116C6
-	for <kvm@vger.kernel.org>; Tue,  7 Apr 2026 12:41:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775565704;
-	bh=h+Q+4GDMZ0Hnfe+YIBStnMoQmrnrXoWxr2IqRHz2y98=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mE1Q7GD4xGJey5SQiMcJ6aaFcJiur97WGv9vGxDyWbbOdWuGGoMH0t2aITY+TnMI+
-	 rkT20C5tMQmhnpd3chyN2aTtQtOoKZl7glFQ77+WDFkBPqZus5Y4eK7frrZDt7yAv/
-	 hedsFrtInnvj3fu9Yce8Rzk5IddwdFXp8QOfpmLLk10xVruzZqHf94KoEzqi1xjyIf
-	 QIwZD7oxN//yF2QWpbsveLBbI56h7roboPPBXz8ytQOkC4meY++pFtHAIWEW7HvdQF
-	 LoDQUyJdF2raV6AwGRZ/fB2/t3dvb5GT++AywPNApM74wGh5tZp4Q5qzLviE2zg88S
-	 qj5mmfnh/g62Q==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66f3093a9c7so1978418a12.0
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 05:41:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUjdnNu8BnGyedaR2W/cBmVMPX/nXSq8DfR51scEecfPF/sB623xdJfYsd69A74F1ZoG0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylC2Tba48CYzoUHlZ66aZFLYBfu9KEGnATw2S2pZjoVcqPJ5DU
-	Xkmk5/pd6vJUrGWBFH6wbQsH52LP+y86Opx6ds6u2vxTBrJE/dp+T/KP9sKyJu2ff2OLHpbLAuB
-	m8Aptvvn1r5MgYJUhPhJQ0+mXYbO/CCg=
-X-Received: by 2002:a17:906:2092:b0:b9c:578c:50a8 with SMTP id
- a640c23a62f3a-b9c67b51d8bmr454940766b.51.1775565702525; Tue, 07 Apr 2026
- 05:41:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ci8812JH"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636LmiQZ2326709;
+	Tue, 7 Apr 2026 12:44:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=slLMxJHkzIJNxe6W8sGyNjOthXEDKX
+	Smx/x4rNCz3g0=; b=Ci8812JHSrqiNDlx8OVPGgQiIbxT3xiHEbdUxMN/fj3hzw
+	VaCAsGcrCnunPsDEzmd0y63BMKcKpEG4HpBClA6QQ13ioyY+2QqbuhXA4staX/GN
+	IfHs7lpMVR2remFenJKx6/PM3QyjOiSXuvgXz3CEyGsoYmrVpsoUbwHISKN2LJeM
+	IfNuWoj5ppo/4a5TpRx1e7EYRBZfxpp9JTcAi1BnzX+XNt0F6zXF9YPz0if4XLaz
+	PkMvqGXNURhkgMR1rEmD2vrSAXKiT9ILTfBlgR5+SaTx5RDTd9ZLAvCCXABI96iR
+	1fHLXbfNI3xaAkZjIBBFcFOIZ08LHUgd4bCE9T5g==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2kapee-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 12:44:46 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637BO6BP013827;
+	Tue, 7 Apr 2026 12:44:46 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmf4350m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 12:44:46 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637CigRu14877066
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Apr 2026 12:44:42 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F07AB2004D;
+	Tue,  7 Apr 2026 12:44:41 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BB2802004E;
+	Tue,  7 Apr 2026 12:44:41 +0000 (GMT)
+Received: from osiris (unknown [9.52.216.133])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  7 Apr 2026 12:44:41 +0000 (GMT)
+Date: Tue, 7 Apr 2026 14:44:40 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com, david@kernel.org
+Subject: Re: [PATCH v3 4/6] KVM: selftests: Remove 1M alignment requirement
+ for s390
+Message-ID: <20260407124440.296205-D-seiden@linux.ibm.com>
+References: <20260402150135.196943-1-imbrenda@linux.ibm.com>
+ <20260402150135.196943-5-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330035832.2204720-1-maobibo@loongson.cn> <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
-In-Reply-To: <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 7 Apr 2026 20:41:48 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
-X-Gm-Features: AQROBzCBBI_saF5lD1_UiUpPEskuaOdGRbMYtW9Y6QETl82j9p9eWRoziBEvZHw
-Message-ID: <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] LoongArch: KVM: Set max VM supported FPU type with
- FPU exception
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260402150135.196943-5-imbrenda@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDExNSBTYWx0ZWRfX9l4c8hGg/rqB
+ ea+bfvpC5whqdw2UxdnoJwWgiMTYE6pJP8ZVjanBOA0Aq2/msiUqsgoc0io2afm3dobTLLiDIKg
+ 5F8FvjYRWsLVg07mpldJ6E0Hwnhy/HdQjtHOwKJyUOpjdCP/9wGA9Amnw8a059CWxZMQm+bmSaN
+ 9PppNMS761mpt+KYhp6nX/TDFmrq2cIgu53fsSD9RdDd+Rp5Q/rjlRZweE+zJkTVrbnGCHJku5X
+ mzthPc9QhrGst1ZQOHTGRoruhlEH22M3gutcFPoJdYzhrYozC/x/uZFSWC4VTbXeF6s6jLf7onx
+ v+w+RrOZgP3aV3/IH9fznT6GZ6SW6ccFdIkL2IEzQEXL5ou6dlYxkdazUn1U+9bQA+BRp1uzolT
+ Mr+C8vMfQbnQay1vqMwNete8ASB8cYYRndUjgdWRsTJpe6O7oSZuqQyfLd8LpWHOHG0Gjjeyl0q
+ xf/yrAxCWhDQagcOAvg==
+X-Proofpoint-ORIG-GUID: jCftGa8LuqYKoA3pNIC6yIgb1LqYkw3A
+X-Authority-Analysis: v=2.4 cv=e9k2j6p/ c=1 sm=1 tr=0 ts=69d4fc3e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=Gvd_ICUHSL6OjFKqTyAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: jCftGa8LuqYKoA3pNIC6yIgb1LqYkw3A
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070115
 
-On Mon, Mar 30, 2026 at 6:00=E2=80=AFPM Huacai Chen <chenhuacai@kernel.org>=
- wrote:
->
-> Hi, Bibo,
->
->
-> On Mon, Mar 30, 2026 at 11:58=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> w=
-rote:
-> >
-> > With FPU save and restore flow, the cost is the same with different
-> > FPU width 8/16/32 bytes, whatever from CPU cycle and cache line impacti=
-on.
-> >
-> > Here is to enable FPU with max VM supported type, for example if
-> > VM supports LASX instrction, enable FPU with LASX type even with FPU
-> > exeception. So it can avoid possible LSX/LASX exception in future.
-> >
-> > With context switch microbench which may touch FPU and LASX, there is 9=
-%
-> > improvement when halt_poll_ns is disabled. The command is
-> > "./context --test=3Dpipe" and source code located at:
-> >   https://github.com/bibo-mao/context_switch/blob/main/context.c
-> >
-> > Original     Wih patch      improvement
-> > 75232        82440          9%
-> >
-> > Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> > ---
-> > v1 ... v2:
-> >   1. Enable FPU with max VM supported FPU type, rather than max used ty=
-pe.
-> >   2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
-> >   3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
-> >   3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
-> >   4. Remove middle FPU state handling in kvm_own_lsx() and kvm_own_lasx=
-(),
-> >      directly enable LSX or LASX from FPU none state.
-> > ---
-> > Bibo Mao (6):
-> >   LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
-> >   LoongArch: KVM: Enable FPU with max VM supported FPU type
-> >   LoongArch: KVM: Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
-> Patch-1 add KVM_REQ_LBT_LOAD, then KVM_REQ_AUX_LOAD is only for FPU,
-> so I think Patch-3 should be squashed into Patch-1.
->
-> >   LoongArch: KVM: Remove some middle FPU states
-> >   LoongArch: KVM: Use vm_guest_has_fpu API in kvm_lose_fpu()
-> >   LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
-> Patch-5 remove the consumer side of KVM_LARCH_LASX / KVM_LARCH_LSX and
-> Patch-6 remove the provider side of KVM_LARCH_LASX / KVM_LARCH_LSX, so
-> I think Patch-6 should be squashed into Patch-5, too.
-And could you please test the power consumption where there are many
-VMs that only use FPU rather than LSX/LASX? As far as I know, the
-power consumption of LASX is significantly more than FPU, which is a
-little similar to AVX512 (Linus said it is a power virus).
+On Thu, Apr 02, 2026 at 05:01:33PM +0200, Claudio Imbrenda wrote:
+> Remove the 1M memslot alignment requirement for s390, since it is not
+> needed anymore.
+> 
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Huacai
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
 
->
->
-> Huacai
->
-> >
-> >  arch/loongarch/include/asm/kvm_host.h |  6 +--
-> >  arch/loongarch/kvm/exit.c             | 21 +++-----
-> >  arch/loongarch/kvm/vcpu.c             | 78 ++++++++-------------------
-> >  3 files changed, 30 insertions(+), 75 deletions(-)
-> >
-> >
-> > base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-> > --
-> > 2.39.3
-> >
-> >
+You may want to add a testcase that deliberately wants to create a non-1M
+aligned memslot. 
+
+	Steffen
