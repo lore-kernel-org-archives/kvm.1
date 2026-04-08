@@ -1,204 +1,126 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4068D3B27FF
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 10:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FCA3B4EB6
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 10:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775643496; cv=none; b=jNkx5Bzj8Bu0ii2tY9I29+JrGzw5SnBZtZyi3gX15Z1rSFKBQs1MKv5+K2HeNzN3BYSSpTca1TVYnLcA7wIpGFZpQweLhC9mzx9Ze2y0KXo1FkQe8uirAo582gql5t0uz8XTkca8KqiO5qSc2jUIdjhvkJ5AMp7YAJaqTuH+Ocg=
+	t=1775644150; cv=none; b=jzDcqXooCHk3HMdzSqNK5TIBnbSXbqhHXDokoBcrQRjxb/krcnWXH/eUaGOA2YjCzKhg3TMug1jNPPkO5Oj0LWL1rhmRJzH5DtQ6RR/cqnrbA2gFd8hcEKZMyuH9pRkTPK0eBV115QHx4s2nlo5hmAnfkdJoozub8vb7iB1UKGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775643496; c=relaxed/simple;
-	bh=6xSUwHLjkibUmQWK2HeD5Idw7sBp7VhBE/kVSPW3QPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=esFtqjs/gwko1oV0dslyUd3Ygk9M/Vnf8f6jiIFzfzKIenRZtfl8al7I71DVvYxRKMHjyIOzjJUyVAaIonGBHxY7U9tECBryff+yTkppHVNLo9sqwmUJ3Qhu7iBiZEaMq4kdnPw+0Qxo3ZS76nl+TFaXk6F/qkYV8Yy93CgIy/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HPw6BsiC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rXAAA3bs; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775644150; c=relaxed/simple;
+	bh=Ztei+DEPacjSiPahV0NkjODCzWT73hFcISLm5/ZnSJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9aKTFMqIr7d2nrVWoC+qyBqkt6u4Kt9DlRWjZVIwlfrjue/TykngHVlxVJrKs0QWJSpQ7sSQYz52zTldK0OrPz5m/fO+mix5Kqblbzwn46sez0I9qh5OwVEyvs5SgpLGU7kiLgiY+zqonmiM5e6cYVAJHgyjbA+lUZLigJRtsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BPR/IeaA; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HPw6BsiC";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rXAAA3bs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775643489;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kfb2nFt+DWPOPwjJLlcYgP+BepPoSw8wC9wFBQagHJw=;
-	b=HPw6BsiCL3JuCDoNCEKyxxqaZUNF6TEOKP0b4TbfVAE3ciHgma2AfRtQSXxCE56UwlyVB3
-	g7m8nFndJ2B4izprEmLBM+QSA3BK02EKCfaSj8WjeXBnGhBtq4inzWsiUTp/Zv1xx6mtRN
-	8Qy9UeUWa1i4p+aY2xDELqIeQjRP2Mc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-96-HPiSWiB0PW2KP2H2tzwkGg-1; Wed, 08 Apr 2026 06:18:08 -0400
-X-MC-Unique: HPiSWiB0PW2KP2H2tzwkGg-1
-X-Mimecast-MFC-AGG-ID: HPiSWiB0PW2KP2H2tzwkGg_1775643487
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-488ac1434f0so20388435e9.2
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 03:18:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BPR/IeaA"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso57095115e9.1
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 03:29:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775643487; x=1776248287; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kfb2nFt+DWPOPwjJLlcYgP+BepPoSw8wC9wFBQagHJw=;
-        b=rXAAA3bsiaRt3mvZCAWgOOBUKm+GB8C3WGb+FIQ/AG9adI50ax4uxohvRk/ymY28rW
-         8uxXjISrwJqJS/gGcgtvwbwQJ1P5mG/nFNc9dcUsUSYNlzMjRVeZtuosR4auS1KgjZiL
-         9mvZVDyAZ0OHqqElGF5qUo3W++2XU3au95NjPIC4yUW164q8hr5YyJZlPfU4VYI/XMJp
-         bu0fjNJWEQtUdwCaWkvJJKfD2OstpTfj4ZNe0jphzk0kcDmkLPuDQJChQBDKXiGS14Fb
-         7URjXpV7oBIbZM2vTI2+mUe0mxhvTc1010viXRuB9Qrp4Z3uJSRIgp20eN0PyCVhzCn+
-         Le+w==
+        d=gmail.com; s=20251104; t=1775644145; x=1776248945; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwgNYOWoiOTGXIEkzvCQ0Ysk7UeafU5/fZrAl+QBeQ4=;
+        b=BPR/IeaA/rqgIbL1aIdZHHnEdSZ/OD+Cd2d+B6lEKnzF8Ol2hOS8hZldf6sPCcBKmL
+         SRDyPw3k5Z4PYImEaUM0N1BJro+U1No9cNOObUT65zMDb/GdOHLc+7RAgPlmT9WpzOuY
+         7UUp1/5Kp+9niVejwky6Z35umJ+aNXs2KSXbTgDnhLoChngVYunOyC8W3GTEXkwTXEPq
+         JEPi0Neqp6Ec1g7hdc6zvN8hQDKwOmL+pcaub33Zqir2UbccfJjkX58/qRHGe+LSuOEH
+         zTaUrblIzmpzBLC9grsm0KXAKktblpQgSHW036p4CvOu2ITkTDrW5/J0nZf4hJwPI0qp
+         g9Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775643487; x=1776248287;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kfb2nFt+DWPOPwjJLlcYgP+BepPoSw8wC9wFBQagHJw=;
-        b=NPzGHodex2gfv9CcWm08qNEDx7FwL7+cGihDXUaTUnc7jaF6EdSSi6pliBL4vcIQc4
-         KJ9MEAg430FSgH04fka9DP9pQMr/7F7WlW0C+J4cC5bFwpOdGDh6izbZ1xTvtWKKs2mP
-         2iWjTWHdK2we2kla6dpl3VnLrTYNbBuXUjSY13ZICOojlrqrW5zyH/8CIf4qlZ9SST6i
-         iijFD3yeXNsxVH6UtMEdtlgM8PK/CjCqnOyIb41M1ydtw8F0MygSHFpgi+/MK31i45xv
-         GiuMgxP/YkMBMYVebEGUQY1MCfizIvO1eFiwBjs1x4Xy10kbdSyG2KixPR0IxpNeCvc9
-         0yZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlb/s2VmYxPIHLFzkn7UVOS6OupHbBhV1dqWOHC8v+4yb3+WX47NOuLgsBaGNl6E0oqaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzczGXzaVV0AvfBNQ89fMu/a51zCodNYeaIs537qTemMHVgHfBc
-	fHIsUOWDJmgUYJ8w2GHtxjQEB/Z40PjjATJJHgOJP7kVaei2XKbrPsqLUeLgSQbPAiJi8jl8qsB
-	NWru0xafU1f0LFfWJPDcLc06B2FP31Fiwul7bOpEAGX2zzP7XGs2DdA==
-X-Gm-Gg: AeBDietZMENi6jhb1c1+aD070semqoEYCUTKLebJ/eGtrHDbzj0q90sYrNvuaFqdhLQ
-	qt1UidnFdx8WH+vTdzNjNS4I38F0fhP6o2c+uhkWE7yrgBIR6n7GYNjXhzYSwutSKPUuT6WEqsC
-	xaGceuiQ1BD1e1MbsceovqYG9dLI76I+/xUJnN8M1Qf9aNFyF3J4SxGbZpG4QZI4o0+4aCb8Akb
-	bPyCQyvJCtlEt5bGtTqXIsV0fEsBn4TteLSpgB2W9iMAMgeFvMFh1g+89teHPe7a3r0QNwoADiD
-	9xo7G/FZbFDLWN0Entac26ux1Ppmd+j+vYwvX68e747kEieWqqtpXnuJ41rCPLLFHID/mm4afPw
-	OuVqhI66wvAd+eTSI8z1wyVVMqx9do5fm/aKYOJofQnca+LiNI8NbHEbiZTbnDKEfRrEaAsEyUg
-	==
-X-Received: by 2002:a05:600c:1da1:b0:488:78f2:6b0 with SMTP id 5b1f17b1804b1-488998f488cmr282885345e9.29.1775643487280;
-        Wed, 08 Apr 2026 03:18:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:1da1:b0:488:78f2:6b0 with SMTP id 5b1f17b1804b1-488998f488cmr282884915e9.29.1775643486788;
-        Wed, 08 Apr 2026 03:18:06 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-45-205-236.retail.telecomitalia.it. [79.45.205.236])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c76d9ed4sm34393955e9.2.2026.04.08.03.18.05
+        d=1e100.net; s=20251104; t=1775644145; x=1776248945;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lwgNYOWoiOTGXIEkzvCQ0Ysk7UeafU5/fZrAl+QBeQ4=;
+        b=KWS5FLd0bwBwiCkX72TPkq4R0jk33G/puYo5ugA2yTrnh2m+g++tARjHYPkUAbot31
+         p7MIsl7aXHxJeuj4Esh5T9uSsqqgQuBWN/xvMS+KAQH3ZNnGkR6KnyjiOeyfGkCKCl5i
+         6yd+uUGjIuvCBoI2i3PIGnNlz+OtUxyoMbQpAE7k7T3pzwvsyWLlBop2eJltTOOLLTF0
+         stNhXmS1vcEmguVeV1BY3v4iYVFBHzzGFAZOyOurbhhhMSnBO5DYIj+QMMRvODoYMTQi
+         0b5dH6lWPoGNfpr4JYckyNJCwDC4qhfdIMUjtUqZlBXLoIRRN+LqTq+JyzMS9moCEmDQ
+         JHxw==
+X-Gm-Message-State: AOJu0Yzjg70F5MI7WO4qIsSdDEnLKwURyfPtIRZKAVZpmSwJuyH+0Ofj
+	xWhpvoaGrOljkvitSd/Q3uTcmbputE6VehxmGCsi7FDFOGwDag9NJsyD
+X-Gm-Gg: AeBDies/Y2WEeN0wTClbboOqdGgz886Edhi7H5rnBlBf5khGgZWpM8iCcDPBO2LBUwR
+	i9GhAAdFVS7eR+smsB9VixMkGPApcKzXLz2ghcZknPY3K2mRYyEs9yyhTewkoZkHNJGIfcQdpSP
+	jmuX0VXREDDYGmeD1XymaOePjw5Gb666oyuFxFaztfWFviSGe5UqwXY1JhHYoPsg2uWwhnfGkc9
+	LYA9esHONEq//KtGjydEZXPKIGbhHn4t8qWPKzLSKgthp1WvuYsDH5eqv3HZBjJzaWjEDly9Nvr
+	P5+DiEA0N3s7I7GptaR9DuSi99cUxRWc0gJE5NKBTK4l554Q35yrTThqN8WF4Vvv2pLvOkOXcFE
+	92Sxtv2ZkJGqqU74PbRXAl9hYEtL6m09D2TLPMFH+ZeDlSMO0PqNi6Zjl4QPG7Dz7qP0WQoxuVR
+	1ZzOvGrqUBWGtcUmYJDg==
+X-Received: by 2002:a05:600c:6986:b0:487:2671:fb8f with SMTP id 5b1f17b1804b1-488996ecbf3mr262105655e9.8.1775644145263;
+        Wed, 08 Apr 2026 03:29:05 -0700 (PDT)
+Received: from nuna ([154.160.21.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c5dd63d6sm15616275e9.34.2026.04.08.03.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 03:18:06 -0700 (PDT)
-Date: Wed, 8 Apr 2026 12:18:01 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 3/3] vsock/test: add MSG_PEEK after partial recv
- test
-Message-ID: <adYoNtv8-fQLts1V@sgarzare-redhat>
-References: <20260407-fix_peek-v2-0-2e2581dc8b7c@redhat.com>
- <20260407-fix_peek-v2-3-2e2581dc8b7c@redhat.com>
+        Wed, 08 Apr 2026 03:29:04 -0700 (PDT)
+From: punixcorn <ohyunwoods663@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	punixcorn <ohyunwoods663@gmail.com>
+Subject: [BUG] KVM: NULL pointer dereference in kvm_tdp_mmu_map under memory pressure
+Date: Wed,  8 Apr 2026 10:29:14 +0000
+Message-ID: <20260408102914.106838-1-ohyunwoods663@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260407-fix_peek-v2-3-2e2581dc8b7c@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 07, 2026 at 11:13:57AM +0200, Luigi Leonardi wrote:
->Add a test that verifies MSG_PEEK works correctly after a partial
->recv().
->
->This is to test a bug that was present in the
->`virtio_transport_stream_do_peek()` when computing the number of bytes to
->copy: After a partial read, the peek function didn't take into
->consideration the number of bytes that were already read. So peeking the
->whole buffer would cause a out-of-bounds read, that resulted in a -EFAULT.
->
->This test does exactly this: do a partial recv on a buffer, then try to
->peek the whole buffer content.
->
->Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->---
-> tools/testing/vsock/vsock_test.c | 43 ++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 43 insertions(+)
->
->diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
->index bdb0754965df..d38a90a86f34 100644
->--- a/tools/testing/vsock/vsock_test.c
->+++ b/tools/testing/vsock/vsock_test.c
->@@ -346,6 +346,44 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
-> 	return test_msg_peek_server(opts, false);
-> }
->
->+static void test_stream_peek_after_recv_client(const struct test_opts *opts)
->+{
->+	unsigned char buf[MSG_PEEK_BUF_LEN];
+Under host memory pressure, a NULL pointer dereference occurs in
+kvm_tdp_mmu_map() at offset 0x24. The exact root cause is unclear --
+it may be an unhandled NULL return from tdp_mmu_alloc_sp(), or a
+violated invariant elsewhere in the map path.
 
-What about:
+Crash log:
 
-	unsigned char buf[MSG_PEEK_BUF_LEN] = { 0 };
+  BUG: kernel NULL pointer dereference, address: 0000000000000024
+  #PF: supervisor read access in kernel mode
+  Oops: 0000 [#1] SMP NOPTI
+  CPU: 2 PID: 1110212 Comm: MainLoopThread Tainted: G U OE 6.19.10-arch1-1
+  Hardware name: Default Default/NLXB, BIOS BQ141 06/27/2024
+  RIP: 0010:kvm_tdp_mmu_map+0x471/0x880 [kvm]
+  Code: 00 00 00 80 48 2b 35 76 72 5c c8 48 c7 44 24 20 00 00 00 00 48 01 f1 48 c1 e9 0c 48 c1 e1 06 48 03 0d 4b 72 5c c8 48 8b 71 28 <0f> b6 4e 24 83 e1 0f 39 ca 0f 85 a7 02 00 00 f6 c4 08 74 26 80 7b
+  RSP: 0018:ffffce128333f790 EFLAGS: 00010286
 
-so we can remove the memset() call?
+Reproduction:
 
->+	int fd;
->+
->+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
->+	if (fd < 0) {
->+		perror("connect");
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	memset(buf, 0, sizeof(buf));
->+
->+	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
->+
->+	close(fd);
->+}
->+
->+static void test_stream_peek_after_recv_server(const struct test_opts *opts)
->+{
->+	unsigned char buf[MSG_PEEK_BUF_LEN];
->+	int fd;
->+
->+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
->+	if (fd < 0) {
->+		perror("accept");
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	/* Partial recv to advance offset within the skb */
->+	recv_buf(fd, buf, 1, 0, 1);
->+
->+	/* Ask more bytes than available */
->+	recv_buf(fd, buf, sizeof(buf), MSG_PEEK, sizeof(buf) - 1);
+The issue was observed under heavy host memory pressure while running
+a KVM guest (Android emulator via QEMU).
 
-What about checking also what we read like we do in 
-test_msg_peek_server() ?
+The crash is not reliably reproducible and appears to be
+timing-dependent. Fault injection targeting tdp_mmu_alloc_sp()
+increases the frequency of hitting the same code path without
+triggering a panic, suggesting the retry path may be a viable
+recovery, though the exact failure condition is still unclear.
 
-Not a strong opinion, but if we go in that direction, maybe we can just 
-reuse test_stream_msg_peek_client() also for this test case.
+Fault injection used:
 
-Thanks,
-Stefano
+  sp = tdp_mmu_alloc_sp(vcpu);
+  if (!sp || (atomic_inc_return(&fail_counter) % 100 == 0)) {
+      if (sp) tdp_mmu_free_sp(sp);
+      goto retry;
+  }
 
->+
->+	close(fd);
->+}
->+
-> #define SOCK_BUF_SIZE (2 * 1024 * 1024)
-> #define SOCK_BUF_SIZE_SMALL (64 * 1024)
-> #define MAX_MSG_PAGES 4
->@@ -2509,6 +2547,11 @@ static struct test_case test_cases[] = {
-> 		.run_client = test_stream_tx_credit_bounds_client,
-> 		.run_server = test_stream_tx_credit_bounds_server,
-> 	},
->+	{
->+		.name = "SOCK_STREAM MSG_PEEK after partial recv",
->+		.run_client = test_stream_peek_after_recv_client,
->+		.run_server = test_stream_peek_after_recv_server,
->+	},
-> 	{},
-> };
->
->
->-- 
->2.53.0
->
+With this injection the guest continues running normally initially,
+but eventually terminates after sustained injection pressure. This is
+expected behavior given the repeated forced failures.
 
+A speculative fix:
+  if (!sp)
+      goto retry;
+
+This has not been fully verified. Sending for maintainer review.
+
+Environment:
+  Linux 6.19.10-arch1-1 x86_64
+  GNU C 15.2.1
+  Binutils 2.46
+
+Signed-off-by: punixcorn <ohyunwoods663@gmail.com>
