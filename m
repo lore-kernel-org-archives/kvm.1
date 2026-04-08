@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445C63D7D8C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6764F3D8106
 	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 15:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775662953; cv=none; b=jD96A7Govj/YXmCriHKkzBpipc+PSmSLQ9l6BC4sTu9Y35/A7DM9RvrFgwNvKRK4zmCTUspTDAqwqi5hH9af2Qr/pNecKAhE/2f2aJZPBrDqVZ4SYS3P+5MgdIkxYxiZfUTqdhW/g9yn0I4ieQbrp0uo2fzsot7dDsQMrX+SQhI=
+	t=1775662953; cv=none; b=B74KHo6aRPSOKIMDnmO80ZmTm1H2zKUU1l++ZFaJm0T6pgo18rVAoC2qOTmabmvGsWIGIXePIm55pkSbBl+QW3wQhoCuRwug1WmEV2CoZtGEe/vmFWAtwrwAcUE5sE7sIWtUXtrGRaOKtfSROCu0Hf0qRNX/VrcMUN3/u2BY9wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775662953; c=relaxed/simple;
-	bh=xEYy5dAYYS2A2/VZh1lSZF372/3b8XaObXPJLU+7krk=;
+	bh=lcSCQhvgV13mrQnwNDpyMIm8Qtw3Tg7NXo9VIB4oKEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bajPAgiVbWe9D2LHOKVYl2I77MGNpQ9T7hu36DF1fRLIYz5GisbMamytPgeLrY/xHcMkQVhFMqENBhF9rzQue0MlS7ylEGpjza+YtbbKJ+Gos7X+7qxysw9j8a2624rJcnlKfBF7NallRrCMvLiSOtMzEDF0Ubp4vC5o+efVQYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P8+ePmET; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=LGxXpwT4h9bRNMToL5cf8U3xdaGXeLdbeDJM0hfSKihDJ6lNGsJZbtqqdWejqVG9HSI8ghBc5u2fEsnCtpjTOQnED9T47m+zu7Rgm19zANvBBe+p1b+Ed8d19stJK/FGnuZ/M39Ur7WWPUulESxwDIduM3J/uxmY8K6Fs2/MVig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cBqz548k; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P8+ePmET"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cBqz548k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1775662950;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T6bknSVJlYMJRJsVKlIB214gfQ9ySZOyYvJd1kpHdpY=;
-	b=P8+ePmETh1FIPI7bf3iDx19ZA2DJz3LEhh+OyHB3xYP7neuMz7wmMHhwEGUNyDyTZmeVTG
-	1VRKTTzri9Oe9n3IOxnGscZ0mv1eE7Z4RJNQ0F2M3XIIKyOBbPcP3ljX4KZl68cO+VCXSF
-	GbLm93lFBAi9ISc+soI7Mqx0BQeYsCA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=ggsR5mD/t7F3g58B8WA467weQ2q8K4Vnkyfxm48B1Nc=;
+	b=cBqz548kQetS95PWFvXWz/Xhzpes/HrMAngSKNQlp8mU3Z73Ef+pfVJX1CnXBeXxGeIHnT
+	htV5Ka3v1QK4nfWcS2aFq+NnUkr8IHcWarllw6PRx0CqVS3iahTwyJ3Xrc7aw+JyV0RLDZ
+	SFAXmAibT97mtIhIfi1IRyT8TAq9EQ0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-wCIx5at7P1iuQs8UeNZZqw-1; Wed,
- 08 Apr 2026 11:42:27 -0400
-X-MC-Unique: wCIx5at7P1iuQs8UeNZZqw-1
-X-Mimecast-MFC-AGG-ID: wCIx5at7P1iuQs8UeNZZqw_1775662946
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-Ue7Hg-A_ONeDM9LL52CRjw-1; Wed,
+ 08 Apr 2026 11:42:24 -0400
+X-MC-Unique: Ue7Hg-A_ONeDM9LL52CRjw-1
+X-Mimecast-MFC-AGG-ID: Ue7Hg-A_ONeDM9LL52CRjw_1775662943
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0633D19560B2;
-	Wed,  8 Apr 2026 15:42:26 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EB7791956053;
+	Wed,  8 Apr 2026 15:42:22 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 25F5E1800764;
-	Wed,  8 Apr 2026 15:42:25 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1FE61180036E;
+	Wed,  8 Apr 2026 15:42:22 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -50,9 +50,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 07/27] KVM: x86/mmu: rename and clarify BYTE_MASK
-Date: Wed,  8 Apr 2026 11:41:57 -0400
-Message-ID: <20260408154217.458420-8-pbonzini@redhat.com>
+Subject: [PATCH 04/27] KVM: x86/mmu: shuffle high bits of SPTEs in preparation for MBEC
+Date: Wed,  8 Apr 2026 11:41:54 -0400
+Message-ID: <20260408154217.458420-5-pbonzini@redhat.com>
 In-Reply-To: <20260408154217.458420-1-pbonzini@redhat.com>
 References: <20260408154217.458420-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -65,106 +65,73 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-The BYTE_MASK macro is the central point of the black magic
-in update_permission_bitmask().  Rename it to something
-that relates to how it is used, and add a comment explaining
-how it works.
-
-Using shifts instead of powers of two was actually suggested by
-David Hildenbrand back in 2017 for clarity[1] but I evidently
-forgot his suggestion when applying to kvm.git.
-
-[1] https://lore.kernel.org/kvm/e4b5df86-31ae-2f4e-0666-393753e256df@redhat.com/
+Access tracking will need to save bit 10 when MBEC is enabled.
+Right now it is simply shifting the R and X bits into bits 54 and 56,
+but bit 10 would not fit with the same scheme.  Reorganize the
+high bits so that access tracking will use bits 52, 54 and 62.
+As a side effect, the free bits are compacted slightly, with
+56-59 still unused.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 55 ++++++++++++++++++++++++++++++------------
- 1 file changed, 39 insertions(+), 16 deletions(-)
+ arch/x86/kvm/mmu/spte.h | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index dd06453d5b72..d4bb693b3555 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5520,29 +5520,53 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
- 				    max_huge_page_level);
- }
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 4283cea3e66c..317b9cd1537c 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -17,10 +17,20 @@
+  */
+ #define SPTE_MMU_PRESENT_MASK		BIT_ULL(11)
  
--#define BYTE_MASK(access) \
--	((1 & (access) ? 2 : 0) | \
--	 (2 & (access) ? 4 : 0) | \
--	 (3 & (access) ? 8 : 0) | \
--	 (4 & (access) ? 16 : 0) | \
--	 (5 & (access) ? 32 : 0) | \
--	 (6 & (access) ? 64 : 0) | \
--	 (7 & (access) ? 128 : 0))
--
 +/*
-+ * Build a mask with all combinations of PTE access rights that
-+ * include the given access bit.  The mask can be queried with
-+ * "mask & (1 << access)", where access is a combination of
-+ * ACC_* bits.
-+ *
-+ * By mixing and matching multiple masks returned by ACC_BITS_MASK,
-+ * update_permission_bitmask() builds what is effectively a
-+ * two-dimensional array of bools.  The second dimension is
-+ * provided by individual bits of permissions[pfec >> 1], and
-+ * logical &, | and ~ operations operate on all the 8 possible
-+ * combinations of ACC_* bits.
++ * The ignored high bits are allocated as follows:
++ * - bits 52, 54: saved X-R bits for access tracking when EPT does not have A/D
++ * - bits 53 (EPT only): host writable
++ * - bits 55 (EPT only): MMU-writable
++ * - bits 56-59: unused
++ * - bits 60-61: type of A/D tracking
++ * - bits 62: unused
 + */
-+#define ACC_BITS_MASK(access) \
-+	((1 & (access) ? 1 << 1 : 0) | \
-+	 (2 & (access) ? 1 << 2 : 0) | \
-+	 (3 & (access) ? 1 << 3 : 0) | \
-+	 (4 & (access) ? 1 << 4 : 0) | \
-+	 (5 & (access) ? 1 << 5 : 0) | \
-+	 (6 & (access) ? 1 << 6 : 0) | \
-+	 (7 & (access) ? 1 << 7 : 0))
++
+ /*
+  * TDP SPTES (more specifically, EPT SPTEs) may not have A/D bits, and may also
+  * be restricted to using write-protection (for L2 when CPU dirty logging, i.e.
+- * PML, is enabled).  Use bits 52 and 53 to hold the type of A/D tracking that
++ * PML, is enabled).  Use bits 60 and 61 to hold the type of A/D tracking that
+  * is must be employed for a given TDP SPTE.
+  *
+  * Note, the "enabled" mask must be '0', as bits 62:52 are _reserved_ for PAE
+@@ -29,7 +39,7 @@
+  * TDP with CPU dirty logging (PML).  If NPT ever gains PML-like support, it
+  * must be restricted to 64-bit KVM.
+  */
+-#define SPTE_TDP_AD_SHIFT		52
++#define SPTE_TDP_AD_SHIFT		60
+ #define SPTE_TDP_AD_MASK		(3ULL << SPTE_TDP_AD_SHIFT)
+ #define SPTE_TDP_AD_ENABLED		(0ULL << SPTE_TDP_AD_SHIFT)
+ #define SPTE_TDP_AD_DISABLED		(1ULL << SPTE_TDP_AD_SHIFT)
+@@ -65,7 +75,7 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+  */
+ #define SHADOW_ACC_TRACK_SAVED_BITS_MASK (SPTE_EPT_READABLE_MASK | \
+ 					  SPTE_EPT_EXECUTABLE_MASK)
+-#define SHADOW_ACC_TRACK_SAVED_BITS_SHIFT 54
++#define SHADOW_ACC_TRACK_SAVED_BITS_SHIFT 52
+ #define SHADOW_ACC_TRACK_SAVED_MASK	(SHADOW_ACC_TRACK_SAVED_BITS_MASK << \
+ 					 SHADOW_ACC_TRACK_SAVED_BITS_SHIFT)
+ static_assert(!(SPTE_TDP_AD_MASK & SHADOW_ACC_TRACK_SAVED_MASK));
+@@ -84,8 +94,8 @@ static_assert(!(SPTE_TDP_AD_MASK & SHADOW_ACC_TRACK_SAVED_MASK));
+  * to not overlap the A/D type mask or the saved access bits of access-tracked
+  * SPTEs when A/D bits are disabled.
+  */
+-#define EPT_SPTE_HOST_WRITABLE		BIT_ULL(57)
+-#define EPT_SPTE_MMU_WRITABLE		BIT_ULL(58)
++#define EPT_SPTE_HOST_WRITABLE		BIT_ULL(53)
++#define EPT_SPTE_MMU_WRITABLE		BIT_ULL(55)
  
- static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
- {
- 	unsigned byte;
- 
--	const u8 x = BYTE_MASK(ACC_EXEC_MASK);
--	const u8 w = BYTE_MASK(ACC_WRITE_MASK);
--	const u8 u = BYTE_MASK(ACC_USER_MASK);
-+	const u8 x = ACC_BITS_MASK(ACC_EXEC_MASK);
-+	const u8 w = ACC_BITS_MASK(ACC_WRITE_MASK);
-+	const u8 u = ACC_BITS_MASK(ACC_USER_MASK);
- 
- 	bool cr4_smep = is_cr4_smep(mmu);
- 	bool cr4_smap = is_cr4_smap(mmu);
- 	bool cr0_wp = is_cr0_wp(mmu);
- 	bool efer_nx = is_efer_nx(mmu);
- 
-+	/*
-+	 * In hardware, page fault error codes are generated (as the name
-+	 * suggests) on any kind of page fault.  permission_fault() and
-+	 * paging_tmpl.h already use the same bits after a successful page
-+	 * table walk, to indicate the kind of access being performed.
-+	 *
-+	 * However, PFERR_PRESENT_MASK and PFERR_RSVD_MASK are never set here,
-+	 * exactly because the page walk is successful.  PFERR_PRESENT_MASK is
-+	 * removed by the shift, while PFERR_RSVD_MASK is repurposed in
-+	 * permission_fault() to indicate accesses that are *not* subject to
-+	 * SMAP restrictions.
-+	 */
- 	for (byte = 0; byte < ARRAY_SIZE(mmu->permissions); ++byte) {
- 		unsigned pfec = byte << 1;
- 
-@@ -5589,10 +5613,9 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
- 			 *   - The access is supervisor mode
- 			 *   - If implicit supervisor access or X86_EFLAGS_AC is clear
- 			 *
--			 * Here, we cover the first four conditions.
--			 * The fifth is computed dynamically in permission_fault();
--			 * PFERR_RSVD_MASK bit will be set in PFEC if the access is
--			 * *not* subject to SMAP restrictions.
-+			 * Here, we cover the first four conditions.  The fifth
-+			 * is computed dynamically in permission_fault() and
-+			 * communicated by setting PFERR_RSVD_MASK.
- 			 */
- 			if (cr4_smap)
- 				smapf = (pfec & (PFERR_RSVD_MASK|PFERR_FETCH_MASK)) ? 0 : kf;
+ static_assert(!(EPT_SPTE_HOST_WRITABLE & SPTE_TDP_AD_MASK));
+ static_assert(!(EPT_SPTE_MMU_WRITABLE & SPTE_TDP_AD_MASK));
 -- 
 2.52.0
 
