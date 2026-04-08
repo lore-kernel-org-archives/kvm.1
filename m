@@ -1,253 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8381930C61B;
-	Wed,  8 Apr 2026 07:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F363538E5CE
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 08:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775634861; cv=none; b=euaC2Yqot96bRdT5Jxfg/bTbg8/JRzOV9bwQdhwcYD9u2zLFZ/QJy616Xzb0VlZTQbpulI+7EKGVNuBQfKsspH2OV5EIY/hWWALX8017IGW6e0gKhR/wOT7xlvZAsxumBhCwcC4s9/51Or9KmTCCNjf+374uV+3H29d8bsQyG7w=
+	t=1775635967; cv=none; b=GYY2DVeNiQm/4belaleLwWfQahvR3EeuJsMCP+PNL6tNvAMY23iSmQ6E918YrLqoCefQGFJX5RhBeUTZIFzHstGy65k+9eqHQqegT6r5o9BDfRZEmcJVJ00LVmPjE2wix8UzRw9+kxow58m9qpKZ7IzvZu+SlkDSnohUXUnPN2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775634861; c=relaxed/simple;
-	bh=VBIGF5AN9ebmM6kyFi+XFeTVPotW9wSqJLoFDMY7mQQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hq0wI12Z7vpLVfU5ZIZOAyO3s5mgOI88AeFgeOE0z86VN9aCvtqjpswhnfB69RBZinMUtRz6BN2xdj3qQN/eUbdcJvnxUSFuxYzNxnHhRk7BxAX9K/E5tWJ1gt7GiOIM3YKUlPvhIjCZ3oLSSGfeBTDdvYhp+1Ue/sKGt+Ghx9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YW+P323B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775635967; c=relaxed/simple;
+	bh=RiCBBjqJ6U8+nG7CHcXztQnXvaUlmfGwoy/fj7EupJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nFA2bIfZvSgF25RdxPS7lBLKvQY9v0E38G9RMsFce+AhCLrEhmTPtPBAbEETUL9/SktTN6LdyTMx1xVkDyx3DfwzHEieJnfYWM7fNiEXKg/u1NlIxWEKv4Jo3XXvGL9tcXppa2zFNFYf2GFSXQP/RthpRbCo0qClqnP/IFMqYoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iZekJZRM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LYAyfwzY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YW+P323B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F6FC19424;
-	Wed,  8 Apr 2026 07:54:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775634861;
-	bh=VBIGF5AN9ebmM6kyFi+XFeTVPotW9wSqJLoFDMY7mQQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YW+P323Bi1dBRcDBdB+yn4AdVRrM0FFHP9wyEb4ajhbSCpJXYBHtUm78uhrSp9BD0
-	 qaOWDYMr+Yvj7UxnWQ4bJEpk1jHF6fUWgLWaKAEY9U7PttUQLzEKNbYfFHEq5bhPvs
-	 wIrqzs295oD9fp/XP6jEiP2FkQhZCzxVuZIGcFIx+A5GSmFDn97dJQmLe79dFXq3M0
-	 6l7FsCeEAOToZpiSSS/IUqWIng8seUXLWMIlzhWcate0KmaKd1SuGv4LYq8MmjYYrN
-	 0cgA45yPkn8BsNSDjuqSiW3JQXmuqdEZY1UpJxG4l7QC2k5RvWa+tUBB+yreTcQB6Q
-	 ubpXegf08jb4w==
-Received: from 82-132-239-13.dab.02.net ([82.132.239.13] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wANjr-00000009ohr-1WG1;
-	Wed, 08 Apr 2026 07:54:18 +0000
-Date: Wed, 08 Apr 2026 08:54:03 +0100
-Message-ID: <87wlyhc2g4.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/3] KVM: arm64: vgic: Allow userspace to set IIDR revision 1
-In-Reply-To: <20260407210949.2076251-3-dwmw2@infradead.org>
-References: <20260407210949.2076251-1-dwmw2@infradead.org>
-	<20260407210949.2076251-3-dwmw2@infradead.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iZekJZRM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LYAyfwzY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775635963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J3Abwh6EeEcrZMTQmkJv8CKYZpVXeikipJN0c4fSKWE=;
+	b=iZekJZRM3zKNAIIaSBRoy376AIUXEWZToNvK8/doUu8Q+TNZWNFgu2jflWbgtfqi8C1/DN
+	QVQxf7MNwz9rzutsF8gSkcI8GqdyjD99Q7TeWoc7w1kAk7oSZmaXnsSqHHomhsqjNGXe4j
+	p4ym3uI7FHj1/j/nirrk3TC54vRT+jU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-551-snsyaYeUM1iKyyXHqscUpg-1; Wed, 08 Apr 2026 04:12:42 -0400
+X-MC-Unique: snsyaYeUM1iKyyXHqscUpg-1
+X-Mimecast-MFC-AGG-ID: snsyaYeUM1iKyyXHqscUpg_1775635961
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43cfbe041b2so388271f8f.1
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 01:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775635961; x=1776240761; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J3Abwh6EeEcrZMTQmkJv8CKYZpVXeikipJN0c4fSKWE=;
+        b=LYAyfwzYzM4jrthJZ/lY7ufkbH5zV9GFY2vZ4YcPwwy6Pd7qfBP6gt/sbkZ5FlDMvD
+         unULd31vEeE+nSPhaamL5XiN1mIVnKQYpdNOpLmQtI/qdC1ptA2RxY97bxVCHvj9h3uf
+         jC/dDfE+Y1tBaPpkH/pl7cmFvv8dOH20uzptHKcqAIu3DtR2RP4bkZpE9WwX6+h431m8
+         kr6Jq3lVE7Z/0wV2R1H/15yhzRQXHNswl/ymF05c2V7RgV2/dS9H2WJ0VRMtb7nCniO7
+         c33NOftGYvVmJy09enFLeODEuAvl0jkif6DEsK0pyrA+79wEIvjhJu2Eo6OQFJPAVkjd
+         B1tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775635961; x=1776240761;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J3Abwh6EeEcrZMTQmkJv8CKYZpVXeikipJN0c4fSKWE=;
+        b=dsMK3FNrqaDNDhueLJLW/kwZdPp1OHxLqz4ufkeF/4j7hwQcaqm+meQUMRauJD+0fA
+         v/XOBbIeDLf1ZWroV7AkDhh/9RUfCmAqX1cLowcjHN5i3UR/EQsJbmdu8NPxJdRl+/4P
+         3peZ9NwYVAVoNIs6hZDStDhANZdoP1yL4vQfJm5tNcxilYHPoE5rkEsFvx0j0brQEigH
+         nyyT2inBWbwE4jiQc4JInRatfyaydJXM7AAXps5fIPL41nBi+/JFNWJ78GszpCBKlTmU
+         QEcWCYqxd0pPjXC4/iIImMWO7/yChyy0xFqDeGHWnyIlTx84anKY4AKH3QoN8atTIFke
+         Hxng==
+X-Forwarded-Encrypted: i=1; AJvYcCUrBr/wRSr1P2AwfhFzbDpBQz+viDGh9jrAMqoeZRGA7MhsCbed3lHrBMwVLIJBTaZtKfA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZac3R4oWLHxJqRSJU7jfYNDAWZ6f8HD6em/QBl4DwEqP5sea7
+	bSrCqvDJjUjUJSICJkJomJow+gVqoztASh6nURmIJa2ldndRetvuCXOCegASfjbgdUHAc0p9Nie
+	8vEgtl8rmbKtIeUIHm01jTotLne19vCNsMqQUb7h8dDaLuwGCiCBc0A==
+X-Gm-Gg: AeBDiev6jW+CwbC+1jjE9SShFyBYq8S28RYJevqOaS+FsbRq0NsIr7psA1VQjUg72qi
+	pS/3zbDvZr+5T5Y5vDhhHLaXDWoRrSUg5htV6hrzYjsmR1N4H57+iIXnVmSTTpqvJeOxGm/6KTX
+	xgSaBZEKza1L4cGXAIy71MrYb2kNdPM/phtL4PuDXA0HGjEGwTldIdp6vpCrUhNPCm9D6G4gmzK
+	eXpal/1Dxg7eeoThUSnDIZSZCz2IWXCz6+jQttcfQEL1tHdlOcDiUOX1oF3fnVHIVJiIqWkUxz9
+	/kS37ySt9lV1j04zvunuVtXmFZy4IWgJxpKykSlqpzU4nJ+Zl1RBNd6GPL35MXG8hYlc3/wWXEN
+	Edaew84wDCi1CS9nteJzDpWdi3oCmsHypTeZ8ECg5JPw8GjR0uEldfM0ypQFfY0PXrgZiQZQ1ZQ
+	==
+X-Received: by 2002:a05:6000:41f6:b0:43b:a16b:ee69 with SMTP id ffacd0b85a97d-43d2124e1f5mr31165874f8f.24.1775635961043;
+        Wed, 08 Apr 2026 01:12:41 -0700 (PDT)
+X-Received: by 2002:a05:6000:41f6:b0:43b:a16b:ee69 with SMTP id ffacd0b85a97d-43d2124e1f5mr31165826f8f.24.1775635960583;
+        Wed, 08 Apr 2026 01:12:40 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-236.retail.telecomitalia.it. [79.45.205.236])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d214f2b63sm50930205f8f.28.2026.04.08.01.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 01:12:39 -0700 (PDT)
+Date: Wed, 8 Apr 2026 10:11:59 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] vsock/virtio: remove unnecessary call to
+ `virtio_transport_get_ops`
+Message-ID: <adYNUs3pmVmQe7pk@sgarzare-redhat>
+References: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 82.132.239.13
-X-SA-Exim-Rcpt-To: dwmw2@infradead.org, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, pbonzini@redhat.com, shuah@kernel.org, dwmw@amazon.co.uk, rananta@google.com, eric.auger@redhat.com, kees@kernel.org, arnd@arndb.de, nathan@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
 
-On Tue, 07 Apr 2026 21:27:03 +0100,
-David Woodhouse <dwmw2@infradead.org> wrote:
-> 
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> Allow userspace to select GICD_IIDR revision 1, which restores the
-> original pre-d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow configuration
-> of interrupt groups") behaviour where interrupt groups are not
-> guest-configurable.
+On Tue, Apr 07, 2026 at 04:31:56PM +0200, Luigi Leonardi wrote:
+>`virtio_transport_send_pkt_info` gets all the transport information
+>from the parameter `t_ops`. There is no need to call
+>`virtio_transport_get_ops()`.
+>
+>Remove it.
+>
+>Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+>I marked this as net-next material, but honsetly I'm not sure if I
+>should have targeted net. It's not a bug after all, it's just a cleanup.
 
-I'm a bit surprised by this.
-
-Either your guest knows that the group registers are not writable and
-already deals with the buggy behaviour by not configuring the groups
-(or configuring them in a way that matches what the implementation
-does). Or it configures them differently and totally fails to handle
-the interrupts as they are delivered using the wrong exception type,
-if at all.
-
-I'd expect that your guests fall in the former category and not the
-latter, as we'd be discussing a very different problem. And my vague
-recollection of this issue is that we had established that as long as
-the reset values were unchanged, there was no harm in letting things
-rip.
-
-So what is this *really* fixing?
-
-> 
-> When revision 1 is selected:
->  - GICv2: IGROUPR reads as zero (group 0), writes are ignored
->  - GICv3: IGROUPR reads as all-ones (group 1), writes are ignored
->  - v2_groups_user_writable is not set
-> 
-> This is implemented by checking the implementation revision in
-> vgic_mmio_read_group() and vgic_mmio_write_group() and returning
-> the fixed values when the revision is below 2.
-> 
-> Fixes: d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow configuration of interrupt groups")
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->  arch/arm64/kvm/vgic/vgic-mmio-v2.c |  5 +++++
->  arch/arm64/kvm/vgic/vgic-mmio-v3.c |  4 ++++
->  arch/arm64/kvm/vgic/vgic-mmio.c    | 15 +++++++++++++++
->  include/kvm/arm_vgic.h             |  1 +
->  4 files changed, 25 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v2.c b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-> index 0643e333db35..14aa49f86f60 100644
-> --- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-> +++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-> @@ -20,6 +20,8 @@
->   * Revision 1: Report GICv2 interrupts as group 0 instead of group 1
->   * Revision 2: Interrupt groups are guest-configurable and signaled using
->   * 	       their configured groups.
-> + * Revision 3: GICv2 behaviour is unchanged from revision 2.
-> + * 	       (GICv3 gains GICR_CTLR.{IR,CES}; see vgic-mmio-v3.c)
-
-nit: I don't think we need cross-version documentation, so just drop
-the second line.
-
->   */
->  
->  static unsigned long vgic_mmio_read_v2_misc(struct kvm_vcpu *vcpu,
-> @@ -93,6 +95,9 @@ static int vgic_mmio_uaccess_write_v2_misc(struct kvm_vcpu *vcpu,
->  		 */
->  		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
->  		switch (reg) {
-> +		case KVM_VGIC_IMP_REV_1:
-> +			dist->implementation_rev = reg;
-> +			return 0;
->  		case KVM_VGIC_IMP_REV_2:
->  		case KVM_VGIC_IMP_REV_3:
->  			vcpu->kvm->arch.vgic.v2_groups_user_writable = true;
-
-nit: move the v1 handling down with a fallthrough in v2/v3 so that we
-don't duplicate the basic handling:
-
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v2.c b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-index 406845b3117cf..34f8b2b615fc5 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-@@ -96,6 +96,8 @@ static int vgic_mmio_uaccess_write_v2_misc(struct kvm_vcpu *vcpu,
- 		case KVM_VGIC_IMP_REV_2:
- 		case KVM_VGIC_IMP_REV_3:
- 			vcpu->kvm->arch.vgic.v2_groups_user_writable = true;
-+			fallthrough;
-+		case KVM_VGIC_IMP_REV_1:
- 			dist->implementation_rev = reg;
- 			return 0;
- 		default:
-
-> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> index 5913a20d8301..0130db71cfc9 100644
-> --- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> +++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> @@ -74,8 +74,11 @@ bool vgic_supports_direct_sgis(struct kvm *kvm)
->  /*
->   * The Revision field in the IIDR have the following meanings:
->   *
-> + * Revision 1: Interrupt groups are not guest-configurable.
-> + * 	       IGROUPR reads as all-ones (group 1), writes ignored.
->   * Revision 2: Interrupt groups are guest-configurable and signaled using
->   * 	       their configured groups.
-> + * Revision 3: GICR_CTLR.{IR,CES} are advertised.
->   */
->  
->  static unsigned long vgic_mmio_read_v3_misc(struct kvm_vcpu *vcpu,
-> @@ -196,6 +199,7 @@ static int vgic_mmio_uaccess_write_v3_misc(struct kvm_vcpu *vcpu,
->  
->  		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
->  		switch (reg) {
-> +		case KVM_VGIC_IMP_REV_1:
->  		case KVM_VGIC_IMP_REV_2:
->  		case KVM_VGIC_IMP_REV_3:
->  			dist->implementation_rev = reg;
-> diff --git a/arch/arm64/kvm/vgic/vgic-mmio.c b/arch/arm64/kvm/vgic/vgic-mmio.c
-> index a573b1f0c6cb..9eb95f13b9b6 100644
-> --- a/arch/arm64/kvm/vgic/vgic-mmio.c
-> +++ b/arch/arm64/kvm/vgic/vgic-mmio.c
-> @@ -48,6 +48,17 @@ unsigned long vgic_mmio_read_group(struct kvm_vcpu *vcpu,
->  	u32 value = 0;
->  	int i;
->  
-> +	/*
-> +	 * Revision 1 and below: groups are not guest-configurable.
-> +	 * GICv2 reports all interrupts as group 0 (RAZ).
-> +	 * GICv3 reports all interrupts as group 1 (RAO).
-> +	 */
-> +	if (vgic_get_implementation_rev(vcpu) < KVM_VGIC_IMP_REV_2) {
-> +		if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3)
-> +			return -1UL;
-
-Hmmm... This can only be a 32bit access, so returning non-zero bits in
-the top half is weird. It will be narrowed down before hitting the
-guest, but still. Anyway, see below.
-
-> +		return 0;
-> +	}
-> +
-
-Why is this needed at all? The group reset values are already the
-expected ones for v1, and as long as we prevent writes, the reported
-group configuration will be as expected.
-
->  	/* Loop over all IRQs affected by this read */
->  	for (i = 0; i < len * 8; i++) {
->  		struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, intid + i);
-> @@ -73,6 +84,10 @@ void vgic_mmio_write_group(struct kvm_vcpu *vcpu, gpa_t addr,
->  	int i;
->  	unsigned long flags;
->  
-> +	/* Revision 1 and below: groups are not guest-configurable. */
-> +	if (vgic_get_implementation_rev(vcpu) < KVM_VGIC_IMP_REV_2)
-> +		return;
-> +
->  	for (i = 0; i < len * 8; i++) {
->  		struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, intid + i);
->  
-> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-> index f2eafc65bbf4..90fb6cd3c91c 100644
-> --- a/include/kvm/arm_vgic.h
-> +++ b/include/kvm/arm_vgic.h
-> @@ -248,6 +248,7 @@ struct vgic_dist {
->  
->  	/* Implementation revision as reported in the GICD_IIDR */
->  	u32			implementation_rev;
-> +#define KVM_VGIC_IMP_REV_1	1 /* GICv2 interrupts as group 0 */
->  #define KVM_VGIC_IMP_REV_2	2 /* GICv2 restorable groups */
->  #define KVM_VGIC_IMP_REV_3	3 /* GICv3 GICR_CTLR.{IW,CES,RWP} */
->  #define KVM_VGIC_IMP_REV_LATEST	KVM_VGIC_IMP_REV_3
+The patch LGTM, but as Michael and Jakub pointed out, better to remove 
+Fixes tag if this is not a bug fix.
 
 Thanks,
+Stefano
 
-	M.
+>---
+> net/vmw_vsock/virtio_transport_common.c | 2 --
+> 1 file changed, 2 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 8a9fb23c6e85..a152a9e208d0 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -60,8 +60,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+> 		return false;
+>
+> 	/* Check that transport can send data in zerocopy mode. */
+>-	t_ops = virtio_transport_get_ops(info->vsk);
+>-
+> 	if (t_ops->can_msgzerocopy) {
+> 		int pages_to_send = iov_iter_npages(iov_iter, MAX_SKB_FRAGS);
+>
+>
+>---
+>base-commit: bfe62a454542cfad3379f6ef5680b125f41e20f4
+>change-id: 20260407-remove_parameter-f61a3e40cf90
+>
+>Best regards,
+>-- 
+>Luigi Leonardi <leonardi@redhat.com>
+>
 
--- 
-Jazz isn't dead. It just smells funny.
