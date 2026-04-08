@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124CB355F2B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B3835A39D;
 	Wed,  8 Apr 2026 04:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775623597; cv=none; b=BSxIj6UGcNgRs6MpUCjwyf+rWloEKs2wwVCEmNUi/EtwZTX/vq2jFPUi7Ph3JRYpi7CJfPuU3kRiiJwk+FGtoG6sKjJz0Ey3Ll9oxtjdUSF62TnoXx+vyro/5XQeZbsPWnigUzWMIY6pzkYgOs0kvrEBcQDBJYOaoQF0jt1lUrI=
+	t=1775623597; cv=none; b=QMWWD46MxZkgNk7J0LkDmMRgw8gK5OcPW63xQQSXjmHwNnbA9tfuxUMYJckKLn4j0K2XwhJwt0EWrNKScf0zKT1XHw7P1oi9f6rCqERcQKOhbbbw8PyJNzx3hIBoU+9Y4PpFsaIJlMRg6mYY+Zc/PyN/Ky5EUkRCukYNm5gYJQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775623597; c=relaxed/simple;
-	bh=oUL9asvy+zE2dNrRAwplrqDe/MHJwCo7NgVB5/FNQwQ=;
+	bh=XY0ZstHXqfYfgtA1S8AQ7RSIe13mnUYY82OL/zH4KU0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IFQ20SNf8ui47ZTWNYmTrHJLiVWlewjd/eDYlvSCl/cYdnJB0ab8Y63nSX/5aNBYwavtlRFRH+K0pTLuvbSqQCujacJt/MtF6mhB3W6d+SSXRdCvcCie/f8w66Z5+k1seSIGUAidtK4jA0gUzrxbyLW885/hFmYk4erb4EBW94M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATfScWCf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=iEZONYNwJZ4J5q/0d1j8lhvWMPFcPJ+reGmzDkhvy9XdsaCMUpKYnQuPe9xGRTJqa7WxsWdOn4sOjHOgZWFFLvWprhKROhAjgpPhcyLsDcGzba6Q21o/CeP358dm/vhpYVj7RCXI4qH7es/C78SUv38fulIRIdNJ9ZAbrDn8ies=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tx3nmzri; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATfScWCf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E1DD7C19425;
-	Wed,  8 Apr 2026 04:46:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tx3nmzri"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62BC1C2BCF6;
+	Wed,  8 Apr 2026 04:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775623597;
-	bh=oUL9asvy+zE2dNrRAwplrqDe/MHJwCo7NgVB5/FNQwQ=;
+	bh=XY0ZstHXqfYfgtA1S8AQ7RSIe13mnUYY82OL/zH4KU0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ATfScWCfZefHXUaxmesU7O0ved1t35WQwwofWUoyc0MizRGKps5XpEf+GPv9ZpmgE
-	 FrRJYtkiALxTnZB29AjMrsseEcXnpIBBuD+3agEsL5KZfzkBpy1WhAPLUIPWslaa/V
-	 h6mVcsuaCTpwaQmRnS5dde8xMtC0z9PgIjpfT86sziXq+EhzWons1zb/B50MNPGSOT
-	 ZHaJoerqzzeyOHlACK+vi5/CULTx0Eui/Ldv85C9snoiBwRnHm/KnLNkP6qCKZI1QI
-	 bZCLCxI/aEr5nCmOyLwlS31/stpmafiwTEMaThYG0MNsXBmkIaGEt/VT2LqYxTI310
-	 acY3cIpTD3zSA==
+	b=Tx3nmzri4AzMghvX4Tm1yaViqV7AaZlI8e24U5eM8Yi+4AVA16JvjXkE5fL83gycY
+	 9cYxp20pmsJlu30GuoPEZkC2e8HU+Xv5HHLcWmV0M0j8HVj51YqPM2KHTD++gG/2tb
+	 seD9vkX4Slqx51IFuXLFOWLc4ijchvVjr2ekgHgaB7gdq/hXEEn0J/WkEN8cn9ffh3
+	 FvH+fFOpk8yDW8A05cqWO2vpUj+S7qUitGgxrzNfDG2iXeDkwHoSSnrf+s+yq0ZeJE
+	 tneOnIBvr1ZR8E8wyI1lyH/UPDIBROxBAqgs5Hog7je8IuRYPaOVwmjjAbABIE2qBj
+	 yHrO7kRKFpJTQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA34FFD5F76;
-	Wed,  8 Apr 2026 04:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 596C7FD5F73;
+	Wed,  8 Apr 2026 04:46:37 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Tue, 07 Apr 2026 21:45:55 -0700
-Subject: [PATCH 07/16] riscv: kvm: Use generated instruction headers for
- csr code
+Date: Tue, 07 Apr 2026 21:45:59 -0700
+Subject: [PATCH 11/16] riscv: kvm: Use generated instruction headers for
+ mmio emulation
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-riscv_insn_table-v1-7-54b4736a1e77@gmail.com>
+Message-Id: <20260407-riscv_insn_table-v1-11-54b4736a1e77@gmail.com>
 References: <20260407-riscv_insn_table-v1-0-54b4736a1e77@gmail.com>
 In-Reply-To: <20260407-riscv_insn_table-v1-0-54b4736a1e77@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -54,11 +54,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775623594; l=2903;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775623594; l=8840;
  i=thecharlesjenkins@gmail.com; s=2026030; h=from:subject:message-id;
- bh=zjTRDc41ANyFedf3cbSbk5JAhE4813R8ZlVWeNgHH4k=;
- b=cFumLVLBW7/FLTqc8/qslS5/l43/knn4JqcHGnwby/U3awqE5WHPDYMVQa4US319I3Fc8+sSE
- zm0gqE8af27AxhLcN+beDIDk2Pe48rb+bCg8mJDVSRseygG8Qjv0eCI
+ bh=/UVDQrQUvbZ5aOgH8m1pSV2EuBX5B263I5vQY5SYago=;
+ b=2HmEIVg9U6gaVnKq9aREtjrfTpOCkBdKmi1N5IKel6R8t3TNnM+d2/vvewRkS4i8HeULN99mu
+ wc5BI2x2Y1TCxqBWTYmdg0F5JUiOA23t3o9g8BVjZVg1FxEghmBY89a
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=vpF2USrG+aB6CTbSt34rzJKsAVe/l+GAXo1IomCMETk=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/2026030
@@ -68,91 +68,271 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Migrate the csr parsing code to use the generated instruction headers
+Migrate the mmio emulation code to use the generated instruction headers
 instead of the hand-written instruction composition functions.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
-
 ---
+ arch/riscv/include/asm/kvm_vcpu_insn.h |   2 +-
+ arch/riscv/kvm/vcpu_insn.c             | 127 ++++++++++++++-------------------
+ 2 files changed, 55 insertions(+), 74 deletions(-)
 
-This is a simple transformation that I have again validated through
-brute force.
----
- arch/riscv/kvm/vcpu_insn.c | 47 +++++++++++++++++++++++-----------------------
- 1 file changed, 24 insertions(+), 23 deletions(-)
-
+diff --git a/arch/riscv/include/asm/kvm_vcpu_insn.h b/arch/riscv/include/asm/kvm_vcpu_insn.h
+index 350011c83581..106fb4c45108 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_insn.h
++++ b/arch/riscv/include/asm/kvm_vcpu_insn.h
+@@ -11,7 +11,7 @@ struct kvm_run;
+ struct kvm_cpu_trap;
+ 
+ struct kvm_mmio_decode {
+-	unsigned long insn;
++	unsigned long rd;
+ 	int insn_len;
+ 	int len;
+ 	int shift;
 diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-index 4d89b94128ae..62c4510a40af 100644
+index 311e2530f888..1d8741d02242 100644
 --- a/arch/riscv/kvm/vcpu_insn.c
 +++ b/arch/riscv/kvm/vcpu_insn.c
-@@ -146,43 +146,44 @@ int kvm_riscv_vcpu_csr_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 
- static int csr_insn(struct kvm_vcpu *vcpu, struct kvm_run *run, ulong insn)
+@@ -376,7 +376,7 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 			     unsigned long htinst)
  {
-+	#define GET_REG(_rd) (*((unsigned long *)(&vcpu->arch.guest_context) + _rd))
-+
- 	int i, rc = KVM_INSN_ILLEGAL_TRAP;
--	unsigned int csr_num = insn >> SH_RS2;
--	unsigned int rs1_num = (insn >> SH_RS1) & MASK_RX;
--	ulong rs1_val = GET_RS1(insn, &vcpu->arch.guest_context);
-+	unsigned int csr_num;
- 	const struct csr_func *tcfn, *cfn = NULL;
- 	ulong val = 0, wr_mask = 0, new_val = 0;
- 
- 	/* Decode the CSR instruction */
--	switch (GET_FUNCT3(insn)) {
--	case GET_FUNCT3(INSN_MATCH_CSRRW):
-+	if (riscv_insn_is_csrrw(insn)) {
- 		wr_mask = -1UL;
--		new_val = rs1_val;
--		break;
--	case GET_FUNCT3(INSN_MATCH_CSRRS):
--		wr_mask = rs1_val;
-+		new_val = GET_REG(riscv_insn_csrrw_extract_xs1(insn));
-+		csr_num = riscv_insn_csrrw_extract_csr(insn);
-+	} else if (riscv_insn_is_csrrs(insn)) {
-+		wr_mask = GET_REG(riscv_insn_csrrs_extract_xs1(insn));
- 		new_val = -1UL;
--		break;
--	case GET_FUNCT3(INSN_MATCH_CSRRC):
--		wr_mask = rs1_val;
-+		csr_num = riscv_insn_csrrs_extract_csr(insn);
-+	} else if (riscv_insn_is_csrrc(insn)) {
-+		wr_mask = GET_REG(riscv_insn_csrrs_extract_xs1(insn));
- 		new_val = 0;
--		break;
--	case GET_FUNCT3(INSN_MATCH_CSRRWI):
-+		csr_num = riscv_insn_csrrc_extract_csr(insn);
-+	} else if (riscv_insn_is_csrrwi(insn)) {
- 		wr_mask = -1UL;
--		new_val = rs1_num;
--		break;
--	case GET_FUNCT3(INSN_MATCH_CSRRSI):
--		wr_mask = rs1_num;
-+		new_val = riscv_insn_csrrwi_extract_imm(insn);
-+		csr_num = riscv_insn_csrrwi_extract_csr(insn);
-+	} else if (riscv_insn_is_csrrsi(insn)) {
-+		wr_mask = riscv_insn_csrrwi_extract_imm(insn);
- 		new_val = -1UL;
--		break;
--	case GET_FUNCT3(INSN_MATCH_CSRRCI):
--		wr_mask = rs1_num;
-+		csr_num = riscv_insn_csrrsi_extract_csr(insn);
-+	} else if (riscv_insn_is_csrrci(insn)) {
-+		wr_mask = GET_REG(riscv_insn_csrrwi_extract_imm(insn));
- 		new_val = 0;
--		break;
--	default:
-+		csr_num = riscv_insn_csrrwi_extract_csr(insn);
-+	} else {
- 		return rc;
+ 	u8 data_buf[8];
+-	unsigned long insn;
++	unsigned long insn, rd;
+ 	int shift = 0, len = 0, insn_len = 0;
+ 	struct kvm_cpu_trap utrap = { 0 };
+ 	struct kvm_cpu_context *ct = &vcpu->arch.guest_context;
+@@ -408,44 +408,47 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
  	}
  
-+	#undef GET_REG
-+
+ 	/* Decode length of MMIO and shift */
+-	if ((insn & INSN_MASK_LW) == INSN_MATCH_LW) {
++	if (riscv_insn_is_lw(insn)) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LB) == INSN_MATCH_LB) {
++		rd = riscv_insn_lw_extract_xd(insn);
++	} else if (riscv_insn_is_lb(insn)) {
+ 		len = 1;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LBU) == INSN_MATCH_LBU) {
++		rd = riscv_insn_lb_extract_xd(insn);
++	} else if (riscv_insn_is_lbu(insn)) {
+ 		len = 1;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_LD) == INSN_MATCH_LD) {
++		rd = riscv_insn_lbu_extract_xd(insn);
++	} else if (riscv_insn_is_ld(insn)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LWU) == INSN_MATCH_LWU) {
++		rd = riscv_insn_ld_extract_xd(insn);
++	} else if (riscv_insn_is_lwu(insn)) {
+ 		len = 4;
+-#endif
+-	} else if ((insn & INSN_MASK_LH) == INSN_MATCH_LH) {
++		rd = riscv_insn_lwu_extract_xd(insn);
++	} else if (riscv_insn_is_lh(insn)) {
+ 		len = 2;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LHU) == INSN_MATCH_LHU) {
++		rd = riscv_insn_lh_extract_xd(insn);
++	} else if (riscv_insn_is_lhu(insn)) {
+ 		len = 2;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_C_LD) == INSN_MATCH_C_LD) {
++		rd = riscv_insn_lhu_extract_xd(insn);
++	} else if (riscv_insn_is_c_ld(insn)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-		insn = RVC_RS2S(insn) << SH_RD;
+-	} else if ((insn & INSN_MASK_C_LDSP) == INSN_MATCH_C_LDSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rd = riscv_insn_c_ld_extract_xd(insn);
++	} else if (riscv_insn_is_c_ldsp(insn)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-#endif
+-	} else if ((insn & INSN_MASK_C_LW) == INSN_MATCH_C_LW) {
++		rd = riscv_insn_c_ldsp_extract_xd(insn);
++	} else if (riscv_insn_is_c_lw(insn)) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
+-		insn = RVC_RS2S(insn) << SH_RD;
+-	} else if ((insn & INSN_MASK_C_LWSP) == INSN_MATCH_C_LWSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rd = riscv_insn_c_lw_extract_xd(insn);
++	} else if (riscv_insn_is_c_lwsp(insn)) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
++		rd = riscv_insn_c_lwsp_extract_xd(insn);
+ 	} else {
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -455,7 +458,7 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		return -EIO;
+ 
  	/* Save instruction decode info */
- 	vcpu->arch.csr_decode.insn = insn;
- 	vcpu->arch.csr_decode.return_handled = 0;
+-	vcpu->arch.mmio_decode.insn = insn;
++	vcpu->arch.mmio_decode.rd = rd;
+ 	vcpu->arch.mmio_decode.insn_len = insn_len;
+ 	vcpu->arch.mmio_decode.shift = shift;
+ 	vcpu->arch.mmio_decode.len = len;
+@@ -498,11 +501,7 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 			      unsigned long fault_addr,
+ 			      unsigned long htinst)
+ {
+-	u8 data8;
+-	u16 data16;
+-	u32 data32;
+-	u64 data64;
+-	ulong data;
++	ulong data, rs2;
+ 	unsigned long insn;
+ 	int len = 0, insn_len = 0;
+ 	struct kvm_cpu_trap utrap = { 0 };
+@@ -534,35 +533,30 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		insn_len = INSN_LEN(insn);
+ 	}
+ 
+-	data = GET_RS2(insn, &vcpu->arch.guest_context);
+-	data8 = data16 = data32 = data64 = data;
+-
+-	if ((insn & INSN_MASK_SW) == INSN_MATCH_SW) {
++	if (riscv_insn_is_sw(insn)) {
+ 		len = 4;
+-	} else if ((insn & INSN_MASK_SB) == INSN_MATCH_SB) {
++		rs2 = riscv_insn_sw_extract_xs2(insn);
++	} else if (riscv_insn_is_sb(insn)) {
+ 		len = 1;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_SD) == INSN_MATCH_SD) {
++		rs2 = riscv_insn_sb_extract_xs2(insn);
++	} else if (riscv_insn_is_sd(insn)) {
+ 		len = 8;
+-#endif
+-	} else if ((insn & INSN_MASK_SH) == INSN_MATCH_SH) {
++		rs2 = riscv_insn_sd_extract_xs2(insn);
++	} else if (riscv_insn_is_sh(insn)) {
+ 		len = 2;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
++		rs2 = riscv_insn_sh_extract_xs2(insn);
++	} else if (riscv_insn_is_c_sd(insn)) {
+ 		len = 8;
+-		data64 = GET_RS2S(insn, &vcpu->arch.guest_context);
+-	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rs2 = riscv_insn_c_sd_extract_xs2(insn);
++	} else if (riscv_insn_is_c_sdsp(insn)) {
+ 		len = 8;
+-		data64 = GET_RS2C(insn, &vcpu->arch.guest_context);
+-#endif
+-	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
++		rs2 = riscv_insn_c_sdsp_extract_xs2(insn);
++	} else if (riscv_insn_is_c_sw(insn)) {
+ 		len = 4;
+-		data32 = GET_RS2S(insn, &vcpu->arch.guest_context);
+-	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rs2 = riscv_insn_c_sw_extract_xs2(insn);
++	} else if (riscv_insn_is_c_swsp(insn)) {
+ 		len = 4;
+-		data32 = GET_RS2C(insn, &vcpu->arch.guest_context);
++		rs2 = riscv_insn_c_swsp_extract_xs2(insn);
+ 	} else {
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -571,26 +565,24 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	if (fault_addr & (len - 1))
+ 		return -EIO;
+ 
+-	/* Save instruction decode info */
+-	vcpu->arch.mmio_decode.insn = insn;
+ 	vcpu->arch.mmio_decode.insn_len = insn_len;
+-	vcpu->arch.mmio_decode.shift = 0;
+-	vcpu->arch.mmio_decode.len = len;
+ 	vcpu->arch.mmio_decode.return_handled = 0;
+ 
++	data = *((ulong *)(&vcpu->arch.guest_context) + rs2);
++
+ 	/* Copy data to kvm_run instance */
+ 	switch (len) {
+ 	case 1:
+-		*((u8 *)run->mmio.data) = data8;
++		*((u8 *)run->mmio.data) = data;
+ 		break;
+ 	case 2:
+-		*((u16 *)run->mmio.data) = data16;
++		*((u16 *)run->mmio.data) = data;
+ 		break;
+ 	case 4:
+-		*((u32 *)run->mmio.data) = data32;
++		*((u32 *)run->mmio.data) = data;
+ 		break;
+ 	case 8:
+-		*((u64 *)run->mmio.data) = data64;
++		*((u64 *)run->mmio.data) = data;
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -626,18 +618,13 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+  */
+ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ {
+-	u8 data8;
+-	u16 data16;
+-	u32 data32;
+-	u64 data64;
+-	ulong insn;
+ 	int len, shift;
++	unsigned long data;
+ 
+ 	if (vcpu->arch.mmio_decode.return_handled)
+ 		return 0;
+ 
+ 	vcpu->arch.mmio_decode.return_handled = 1;
+-	insn = vcpu->arch.mmio_decode.insn;
+ 
+ 	if (run->mmio.is_write)
+ 		goto done;
+@@ -647,29 +634,23 @@ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 
+ 	switch (len) {
+ 	case 1:
+-		data8 = *((u8 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)data8 << shift >> shift);
++		data = *((u8 *)run->mmio.data);
+ 		break;
+ 	case 2:
+-		data16 = *((u16 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)data16 << shift >> shift);
++		data = *((u16 *)run->mmio.data);
+ 		break;
+ 	case 4:
+-		data32 = *((u32 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)data32 << shift >> shift);
++		data = *((u32 *)run->mmio.data);
+ 		break;
+ 	case 8:
+-		data64 = *((u64 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)data64 << shift >> shift);
++		data = *((u64 *)run->mmio.data);
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	*((ulong *)(&vcpu->arch.guest_context) + vcpu->arch.mmio_decode.rd) =
++		(long)data << shift >> shift;
+ done:
+ 	/* Move to next instruction */
+ 	vcpu->arch.guest_context.sepc += vcpu->arch.mmio_decode.insn_len;
 
 -- 
 2.52.0
