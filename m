@@ -1,162 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39863947A5
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 07:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6BF31355C;
+	Wed,  8 Apr 2026 07:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775634446; cv=none; b=lDNLEJTyM7fUSpQaLRUQhzPe1tM6jrtnrHmPUR2cxU5R8OIjIWpNBXhXphOvUbKFqx5LofITtf5YvY2psO1jT5gKuVZAaYnCn2lpuENE9nHBMoP44IdJgyrAQ5b2gariWXJbga6/aQQlQLZspz49IXu7B6ASylaCo3PEdIo/FpM=
+	t=1775634588; cv=none; b=ogx0yj5O35+NKx8mnqa4TL+TJYark3jwGsh8sPIe8nZmxBAa5ow2SKG0UOy3Ep3uCQ2CmhUyzn/zBRYBHX5NThmpZJ9/ZzkdC+z0/p91APws0xyF+xGIwvukYgf/Lhs29Yn1iFTM++51pbOLFl9UNC2CDLQ2qlQ97OrdTHY3HAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775634446; c=relaxed/simple;
-	bh=f1aGC2+c5jz12rmqttFu31vbeJclnJIJ3Fw26Vwh6Lw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SJN8qz5sIxorNCeWuVE8OiOCrUzPCF0PfUD1WoePQmqUKafHRsGKXEB/6m7Qxjyfv50qyBfoRZjrCXRn5eBfnmaUNuS175VY2SLxkOfGEgd8V7mj967oLtdg42CgXHCsHSQtjF3rYBCFJqTEQgM1Qtu/RsbTpHjxFldGdRHRiUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMEpzw/+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775634588; c=relaxed/simple;
+	bh=TZ8vAjBEh8SJSxBZo9/DJgG2nIYFLp8l9WUkHVDXk2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dmsf+g2pLJ6+x9RWfWNgVOC2mGsAhtJT3/Ci3ncGHFZ5eclkY9f/sC4SPBl8ijIOt0U9niznpZwxGUG+oIh+3NHHOcS8a77eJmsKVuDWDGSf3e2Bd8N8k1zm+NFINYrWZKgRPrxdrwS07CkJYHC65+A2xkpwqdZj5flUn6j7vcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SylTvEXa; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMEpzw/+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0ED8C2BCAF
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 07:47:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775634446;
-	bh=f1aGC2+c5jz12rmqttFu31vbeJclnJIJ3Fw26Vwh6Lw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iMEpzw/+ZB+K3oWmTQjLRU3yNPtpj2PxCgVA6O7ccUnirVIePMoma94cUV3Ita8Ax
-	 sW9yD40silRGQ300bJ7t6z6Bxb3sLQ0odcpiLBhshewNl+Bx5go/u9aR0dFXlDZQ0O
-	 zsYQKfC2kjtVyFENnLuhWPcmEKHCQObxo2gQ/9ttXODU0TPj1KUEjIeh1/V44SCd5r
-	 gcKA9RjAEgliYdmKE9h2QlsXxPbD8mr49ZSyaN0ECJXsFODrMD6LiI8rqGXtXgb5mS
-	 CDhGgiHjoK7PToD/P24R9jT9OsDDLyp2ESoSvxAlN2PnQFczPu0AbkdWUeA2zv9VDR
-	 fpg2jShy5SoXQ==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66e8cc714fbso6447089a12.0
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 00:47:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVg1MhJOddDnVz37hA/8M0YX3tzbnwaxVByoQOQTYmW2v478Of3lHupo8TAMOk/Rac257s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2m/Ukqk2rw19d6WN0iScsWByReFzUOOrx5rv/sZ15BWJVsSEK
-	RLCEg7j0RAl5dYYEJKNG746taVDJ6/UacgvzXy7J09jrbPlShujJOpUciO9hKFeU8FwzVjBFqWq
-	GgWxnJKAU1lvGzhWPKs9TVvDcZno8pI0=
-X-Received: by 2002:a17:907:ea8:b0:b98:695:ec53 with SMTP id
- a640c23a62f3a-b9c676881bemr1020033866b.18.1775634445108; Wed, 08 Apr 2026
- 00:47:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SylTvEXa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775634587; x=1807170587;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TZ8vAjBEh8SJSxBZo9/DJgG2nIYFLp8l9WUkHVDXk2E=;
+  b=SylTvEXarqXeISKlnlxzQGog4L7jM04gWBNq6Y0TRSfJgOeTZVqwck8C
+   N8SYFmpd6w6wHLUt+CLHLXlZ9Kdr3pdCtKIRiVU9itHJlswEzqhHsZRWR
+   ZfpnpuGKwTKJxpkI9x4KSB0xXSNtQe68NqjvVEq80BwP/BrRbMEWWhGSN
+   OqJD/nLvoabt9GQ4HqKAaQAbucF4V87yNaEqRT2uaA29J+sSJTObNZx9r
+   BZEHbqwg08KojSLnY+fbfN+vS8VBeV8ooUgDhH9WWS6dYmMHdOUqikdm2
+   FgGyH6ooOkP5wJchA0shzZ0MEZfHjj3WEPGx6QL/Om1x1z78NVh27S4LN
+   g==;
+X-CSE-ConnectionGUID: Fgb8c1MQS5Wk897ytyBNxA==
+X-CSE-MsgGUID: FXJ/FtuYR76FfrnlfHNK+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="86901697"
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
+   d="scan'208";a="86901697"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 00:49:46 -0700
+X-CSE-ConnectionGUID: LQFNHdM2S+icJZVek/TuOQ==
+X-CSE-MsgGUID: iPTdPX9gSOeIsZFEVM9X2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
+   d="scan'208";a="251725022"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 08 Apr 2026 00:49:43 -0700
+Date: Wed, 8 Apr 2026 15:28:11 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module
+ for Extensions
+Message-ID: <adYDiw2BkdzajBHD@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-11-yilun.xu@linux.intel.com>
+ <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330035832.2204720-1-maobibo@loongson.cn> <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
- <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com> <61d0efa7-a15a-be48-3bca-5be5efd99acf@loongson.cn>
-In-Reply-To: <61d0efa7-a15a-be48-3bca-5be5efd99acf@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 8 Apr 2026 15:47:32 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
-X-Gm-Features: AQROBzA28K1m8zlIxxkJUyCejsYe9Z6_RBp9qxpvPmb7Ma_0xO7zqtxyHDgRyKg
-Message-ID: <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] LoongArch: KVM: Set max VM supported FPU type with
- FPU exception
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
 
-On Wed, Apr 8, 2026 at 9:04=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrote=
-:
->
->
->
-> On 2026/4/7 =E4=B8=8B=E5=8D=888:41, Huacai Chen wrote:
-> > On Mon, Mar 30, 2026 at 6:00=E2=80=AFPM Huacai Chen <chenhuacai@kernel.=
-org> wrote:
-> >>
-> >> Hi, Bibo,
-> >>
-> >>
-> >> On Mon, Mar 30, 2026 at 11:58=E2=80=AFAM Bibo Mao <maobibo@loongson.cn=
-> wrote:
-> >>>
-> >>> With FPU save and restore flow, the cost is the same with different
-> >>> FPU width 8/16/32 bytes, whatever from CPU cycle and cache line impac=
-tion.
-> >>>
-> >>> Here is to enable FPU with max VM supported type, for example if
-> >>> VM supports LASX instrction, enable FPU with LASX type even with FPU
-> >>> exeception. So it can avoid possible LSX/LASX exception in future.
-> >>>
-> >>> With context switch microbench which may touch FPU and LASX, there is=
- 9%
-> >>> improvement when halt_poll_ns is disabled. The command is
-> >>> "./context --test=3Dpipe" and source code located at:
-> >>>    https://github.com/bibo-mao/context_switch/blob/main/context.c
-> >>>
-> >>> Original     Wih patch      improvement
-> >>> 75232        82440          9%
-> >>>
-> >>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> >>> ---
-> >>> v1 ... v2:
-> >>>    1. Enable FPU with max VM supported FPU type, rather than max used=
- type.
-> >>>    2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
-> >>>    3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
-> >>>    3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
-> >>>    4. Remove middle FPU state handling in kvm_own_lsx() and kvm_own_l=
-asx(),
-> >>>       directly enable LSX or LASX from FPU none state.
-> >>> ---
-> >>> Bibo Mao (6):
-> >>>    LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
-> >>>    LoongArch: KVM: Enable FPU with max VM supported FPU type
-> >>>    LoongArch: KVM: Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
-> >> Patch-1 add KVM_REQ_LBT_LOAD, then KVM_REQ_AUX_LOAD is only for FPU,
-> >> so I think Patch-3 should be squashed into Patch-1.
-> >>
-> >>>    LoongArch: KVM: Remove some middle FPU states
-> >>>    LoongArch: KVM: Use vm_guest_has_fpu API in kvm_lose_fpu()
-> >>>    LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
-> >> Patch-5 remove the consumer side of KVM_LARCH_LASX / KVM_LARCH_LSX and
-> >> Patch-6 remove the provider side of KVM_LARCH_LASX / KVM_LARCH_LSX, so
-> >> I think Patch-6 should be squashed into Patch-5, too.
-> > And could you please test the power consumption where there are many
-> > VMs that only use FPU rather than LSX/LASX? As far as I know, the
-> Hi Huacai,
->
-> Thanks for reviewing this patch
-> Could you help me to test the power consumption with this patch?
-> > power consumption of LASX is significantly more than FPU, which is a
-> Could the describe the detail scenery wheree LASX instruction is
-> frequently used by application or LASX  EUEN enabled?
-The purpose is to evaluate power consumption before and after this series.
+> > @@ -643,7 +643,7 @@ EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
+> >   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+> >   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+> > -static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
+> > +static u64 hpa_list_info_assign_raw(struct tdx_page_array *array)
+> >   {
+> >   	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
+> >   	       FIELD_PREP(HPA_LIST_INFO_PFN,
+> > @@ -1513,6 +1513,94 @@ static void tdx_clflush_page(struct page *page)
+> >   	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
+> >   }
+> > +static void tdx_clflush_page_array(struct tdx_page_array *array)
+> > +{
+> > +	for (int i = 0; i < array->nents; i++)
+> 
+> shouldn't the actual number of entries be adjusted as per offset, similarly
+> to how 'nents' in tdx_page_array_validate_release is calculated?
 
-So we can run 10 VMs (suppose there are 4 cores), and there is a
-workload run in every VM, the workload only uses FPU, no LSX and LASX.
-Before this series, KVM only save/restore FPU context; after this
-series, KVM will save/restore LASX context.
+Actually array->nents is calculated the same way:
 
-If the power consumptions are similar, then this series is perfect.
+  static int tdx_page_array_populate(struct tdx_page_array *array,
+				   unsigned int offset)
+  {
+	...
 
-Huacai
+	array->offset = offset;
+	array->nents = umin(array->nr_pages - offset,
+			    TDX_PAGE_ARRAY_MAX_NENTS);
+	...
+  }
 
->
-> Regards
-> Bibo Mao
-> > little similar to AVX512 (Linus said it is a power virus).
-> >
-> > Huacai
-> >
-> >>
-> >>
-> >> Huacai
-> >>
-> >>>
-> >>>   arch/loongarch/include/asm/kvm_host.h |  6 +--
-> >>>   arch/loongarch/kvm/exit.c             | 21 +++-----
-> >>>   arch/loongarch/kvm/vcpu.c             | 78 ++++++++----------------=
----
-> >>>   3 files changed, 30 insertions(+), 75 deletions(-)
-> >>>
-> >>>
-> >>> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-> >>> --
-> >>> 2.39.3
-> >>>
-> >>>
->
->
+so IIUC we are good here.
