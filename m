@@ -1,186 +1,95 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7CD264A65;
-	Wed,  8 Apr 2026 11:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D0237C0F2
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 11:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775646135; cv=none; b=bNm8BSMGBiOWUnvS57UGmfVCWNDFDMy3u+WPTYlL9WmXOhzgWZ544ko1gfBvd0T036ZSgd6uwjy6GyO4tIlh9tpEYlo8B7E1J7HSRZgRUnJcxMzUR2ndoVee/ngVijB7bf6yQFGb7BRV2E9EWqnQZ6IHbKvoa/Kkgb5dvjDRhJc=
+	t=1775647265; cv=none; b=SeV46Bg0TGh0BS9cpmaUdxK8tLv73YcsIDrssNUvlITTY5qQcScJBaICxgB6JzVXtPU5r4go9BHGUWEq0p+gnxkN0CVjzY9EERYEtDhxeuoMH3U8FfJGTwlk7bAww2gACl2sMj/e9N8M4HGAUENE++6FZWbuQUpJIOnM3k4pkbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775646135; c=relaxed/simple;
-	bh=BcjAsJfFFdxOuFJG+yx8h9dEcchCwv67qshCeNpQzVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HcVYniisuoRS9K/E72987FwyQpBA+2pzwMrgQu8ZPejBd+dr/hmbbz0atnle7whcuoAuYaf7nYGA3L8hz+w0lyEtt8SsVTR3cqIaNrJBdvjk1cW/Y6VcGKgITm5iF/AQ3dm7kusxK26Zq1qGePNI/4t2qA7cRzb/1b4KoG0xPH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=j0m/Wl5D; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1775647265; c=relaxed/simple;
+	bh=ssoFD0Svsq3mcDAn43BH2AH7Gt9nmgW3KWmnj9RyYNc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nFj0hrTMRLeef7bID5OM5U6It06Qq4c4QOklZ0dwEnKSGLU7bgh+VB+1A8CqKn5hutNbdJpTNF8QKNRTdoMCzyX+QluFVi6abifcIs9morbWaeifO9a7Zf9wmrPg3fhDYv+efsfWhNyqkPBCpxf5BxqbWwPnHf4mC34VerUVWdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PSK2Nfzm; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="j0m/Wl5D"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0959832E3;
-	Wed,  8 Apr 2026 04:02:07 -0700 (PDT)
-Received: from [10.57.32.88] (unknown [10.57.32.88])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DE403F632;
-	Wed,  8 Apr 2026 04:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775646132; bh=BcjAsJfFFdxOuFJG+yx8h9dEcchCwv67qshCeNpQzVY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j0m/Wl5DLNS3bb0LPJygmxr64zm8k47jOHhnUdaH8o4hEg7UUONrE66mssRlJ7NT2
-	 6bzBCKlVrr+w2+XGl2eztRQqDLePKhvx7aHRms/5lUbXVIvqBABzatYJU+Jw6NrJnn
-	 B0h8Vu2G1rPcddUOVHZq+00sZ9LGtr5cxfhIEmOY=
-Message-ID: <9c8ddc37-a236-446b-a85a-261f370d644e@arm.com>
-Date: Wed, 8 Apr 2026 12:01:59 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PSK2Nfzm"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488b150559bso24605115e9.1
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 04:21:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775647263; x=1776252063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SdtS7V5NfnlJHyyAgLZSovPCgalgrvuuXizG5J0NjSU=;
+        b=PSK2Nfzm/1h1W3TC2nfFwLVvB70Yp13XWlv/VRBsT/iQ7NlTJQR3rJG3qmbkMB2pCf
+         5kLeu0i7CnTFfpREH6LAS+y6eiveRYq085LM0AHgQHmvcRJ3GqSb5SBRmAdddJ1KI422
+         WfWU9U5oFRYZqhUnjMiCHBpcNigR0g6stxrdOE2cq7BUgQFetpUGS2oqYutKSXclZPh0
+         dDfL53lKOCp6eFiVVezAefkWn5z6MmcRUCssiHllMnIVRS/RBrh7m4JyvUEe1/NgcQoj
+         PD4OUSXIsIAUxb2oKN2EhCPaYvIKOeEWR7FcM61pWjH3q5F+HEVt7Gq9L15xK3SRAOcd
+         RwTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775647263; x=1776252063;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SdtS7V5NfnlJHyyAgLZSovPCgalgrvuuXizG5J0NjSU=;
+        b=YZbA/PPM9oH9afU9ixREHRNCxb8qesFwfhKTa6YOBLhlpLw4tdnoysw607cHi2RZiy
+         yreq7i9rDSXK3hcq9NLBNcegeNIFxufnSxGxlnGe7E+JNLsVB23EFmQ16hxlB4bPkw2e
+         CNz8+MHJCDfFGtaFTpqxbTb8BJ/yYIj+3viPVirzCxlpX5saDtFgX82J1l98svxGtXkt
+         29x/Jx36tLndyggJttaQHDWEZ4XpBBBnNa4fw5U0aYM8zUJlfuQPpZY1wMpvAZ8ezhYO
+         vWwUmBUSsDxgDCqCgea94WU29tBPo78g7xWKhslJrmtY1jUyOAQGItv27zRb8ls4Kwk/
+         r+iA==
+X-Gm-Message-State: AOJu0YzqWVswsa4FpKHhvIc3TENgPAQFXabw4n0wkEClaebVJedqZcoO
+	Bhp5dMf240/PUukl3QwPG+gow1e8qmtyUzZp1GUUN1kmexBffHaAGhEb
+X-Gm-Gg: AeBDieu7ZSM8jLwK2Aig8ffUO4LfR7TrWeZyxnFcnrb21PhvbpNvn54UGa55C5hJMLr
+	gOxYOBHIL9waVjdcjwRnvZsLO/AJDcad3mdJlBQokm3LJsi+FW1WmMrj6VLBuzUSivKr/wD/KoV
+	NqLcspOEpC1QHRjWfFGos3XWpcPyevR5K/eVdSdTg0LAsoZPXeXQfEno+NPO3Tkajh0gwAxntst
+	ngGnbUyGq6w5BkrYn4eyxF28G3E5zBMwk97pfD7vaDIP6F3LgHv/f9dkuNRaH6HGoHSfpwFiZuj
+	lzB7drNvagT9eIQsY2NQJwA+exbGIY/AUp7geKe95c5GzkrCO3EndLjRuOmZdSxKJJyA7A0E0H3
+	yndknaZR6D0cad32DbCOyNK5xyiI0XQsiquLhZJc1eWyRmDKkFIfZ3sH8vbTVCD4ZLTDyixDnsH
+	TLydN1GODbtQfmlDXrFg==
+X-Received: by 2002:a05:600c:5251:b0:488:c257:a73b with SMTP id 5b1f17b1804b1-488c257a952mr62046045e9.9.1775647262545;
+        Wed, 08 Apr 2026 04:21:02 -0700 (PDT)
+Received: from nuna ([154.160.21.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4889cb46adcsm397011625e9.4.2026.04.08.04.21.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 04:21:02 -0700 (PDT)
+From: punixcorn <ohyunwoods663@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] KVM: NULL pointer dereference in kvm_tdp_mmu_map under memory pressure
+Date: Wed,  8 Apr 2026 11:21:13 +0000
+Message-ID: <20260408112113.183989-1-ohyunwoods663@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260408102914.106838-1-ohyunwoods663@gmail.com>
+References: <20260408102914.106838-1-ohyunwoods663@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for
- KVM_SET_MEMORY_ATTRIBUTES2
-To: Vishal Annapurve <vannapurve@google.com>,
- Michael Roth <michael.roth@amd.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
- jmattson@google.com, jthoughton@google.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
- <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
- <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
- <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
-Content-Language: en-GB
-From: Steven Price <steven.price@arm.com>
-In-Reply-To: <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 07/04/2026 22:50, Vishal Annapurve wrote:
-> On Tue, Apr 7, 2026 at 2:09 PM Michael Roth <michael.roth@amd.com> wrote:
->>
->>> TLDR:
->>>
->>> + Think of populate ioctls not as KVM touching memory, but platform
->>>   handling population.
->>> + KVM code (kvm_gmem_populate) still doesn't touch memory contents
->>> + post_populate is platform-specific code that handles loading into
->>>   private destination memory just to support legacy non-in-place
->>>   conversion.
->>> + Don't complicate populate ioctls by doing conversion just to support
->>>   legacy use-cases where platform-specific code has to do copying on
->>>   the host.
->>
->> That's a good point: these are only considerations in the context of
->> actually copying from src->dst, but with in-place conversion the
->> primary/more-performant approach will be for userspace to initial
->> directly. I.e. if we enforced that, then gmem could right ascertain that
->> it isn't even writing to private pages via these hooks and any
->> manipulation of that memory is purely on the part of the trusted entity
->> handling initial encryption/etc.
->>
->> I understand that we decided to keep the option of allowing separate
->> src/dst even with in-place conversion, but it doesn't seem worthwhile if
->> that necessarily means we need to glue population+conversion together in
->> 1 clumsy interface that needs to handle partial return/error responses to
->> userspace (or potentially get stuck forever in the conversion path).
-> 
-> I think ARM needs userspace to specify separate source and destination
-> memory ranges for initial population as ARM doesn't support in-place
-> memory encryption. [1]
+Following up with additional analysis from gdb.
 
-Indeed - CCA requires KVM to first "delegate" the page (effectively the
-shared->private conversion) which will destroy the contents. Then we can
-populate the data (but that obviously has to come from elsewhere).
+The crash is at spte.h:263 in to_shadow_page(), not at the
+tdp_mmu_alloc_sp() path as initially suspected.
 
-The closest CCA can do to an in-place conversion is for the kernel to
-copy the data to another temporary buffer and then the firmware can copy
-it back after the delegation. An early version of the CCA Linux patches
-did this (long before guest_memfd). However this is slower than it needs
-to be (two copies) and difficult to size the temporary buffer. Too small
-and you round-trip to the firmware more than you need to, too large and
-you waste memory. And, with increasing support for huge pages in
-guest_memfd and the CCA firmware (aka RMM), it's also challenging to
-preserve huge pages while doing this dance so I want to avoid it if
-possible.
+  (gdb) list *(kvm_tdp_mmu_map+0x471)
+  0x79451 is in kvm_tdp_mmu_map (mmu/spte.h:263)
+  return (struct kvm_mmu_page *)page_private(page);
 
-> [1] https://lore.kernel.org/kvm/20260318155413.793430-25-steven.price@arm.com/
-> 
->>
->> So I agree with Ackerley's proposal (which I guess is the same as what's
->> in this series).
->>
->> However, 1 other alternative would be to do what was suggested on the
->> call, but require userspace to subsequently handle the shared->private
->> conversion. I think that would be workable too.
-> 
-> IIUC, Converting memory ranges to private after it essentially is
-> treated as private by the KVM CC backend will expose the
-> implementation to the same risk of userspace being able to access
-> private memory and compromise host safety which guest_memfd was
-> invented to address.
+The crash location suggests page_private() is returning 0 for the
+parent shadow page in tdp_mmu_init_child_sp(). The exact cause is
+unclear. Sharing for maintainer review.
 
-At least in the Arm CCA case the "exposure" of the private memory is
-only in terms of allowing population - and only before the guest has
-run. The host isn't able to access the memory in any direct way after
-the memory has been delegated. But the RMM provides this populate method
-to copy data into memory (in a measured/controlled manner).
-
-From a CCA perspective the logical flow is to mark the memory as private
-and then call the platform-specific function to populate the memory. But
-obviously we can fit in a KVM API which is different.
-
-Note that CCA has a specific VM property called 'RIPAS' (Realm IPA
-State). This is the guest's view of whether memory exists at a
-particular physical address. My current series takes the view that all
-guest_memfd memory is private RAM and the guest will have to
-specifically request that it is converted to shared. I'm hoping this
-series might provide a way for the VMM to configure this (before the
-guest starts executing).
-
-Thanks,
-Steve
-
->>
->> One other benefit to Ackerley's/current approach however is that it allows
->> us to potentially keep hugepages intact in the populate path, since
->> prep'ing/encrypting everything while it's in a shared state means gmem will
->> split the hugepage and all the firmware/RMP/etc. data structures will only
->> be able to handle individual 4K pages. I still suspect doing things like
->> encoding the initial 2MB OVMF image as a single hugepage might yield
->> enough benefit to explore this (at some point). So there's some niceness
->> in knowing that Ackerley's approach would allow for that eventually and
->> not require a complete rethink on these same topics.
->>
->> Thanks,
->>
->> Mike
->>
->>>
->>>>>>
->>>>>> [...snip...]
->>>>>>
-
+My earlier speculative fix (checking sp == NULL) was incorrect.
+I am not familiar enough with the KVM MMU internals to propose a
+correct fix. Sharing this in case it helps maintainers narrow down
+the root cause.
