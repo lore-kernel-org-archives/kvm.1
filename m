@@ -1,71 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA3336D50D
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 08:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394043AC0FF;
+	Wed,  8 Apr 2026 08:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775637642; cv=none; b=X/qxRaEhK9KjSKzMwptCOLd5ZU4/CB6V/Jz6Wyg9bmAaP48e0DMs2a0DGWAB0Ko+bHurSoLa9ezzvqGSdsGB7bW+bbNIq2qPXU1T6C/3yv4j+ydymnFQ0w20rGdIyJMj4/mfDD+D8tN59K6B5SV5WnmCl2zKlZVHEiSFPfL5boQ=
+	t=1775637988; cv=none; b=pWg+XjwFTjzBQyZGi02mAsZbB4m/BiLhuUdM2k7BKlZEc20XmHAoVqVpX/EXRGnzFv2yaJzyr5tEkAieAmcJwKkjePFWYaxNYUWTObilyG/PAtnuXFuzo2Ne/7A5fgHTcQF2LGYiUxsZkt2F8cZGB87T/AIY0u1AL+1/L++01xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775637642; c=relaxed/simple;
-	bh=COxtpClv/wSqaNLIL/cO79S7D2VBKbRtlkLryQzvYVw=;
+	s=arc-20240116; t=1775637988; c=relaxed/simple;
+	bh=91maVxZNEzGhFKlBZ9qtc86KCdBoWXk2N2q/VDGazBk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=stYQMYCz21Z9i/SgpXgh/zPeJx7wmpoGhAw7U1cHuuSnHy3WTz7ndLJUTUW8qDI4GkuxyGD4Fkh2+6A8H42NjIebN/PkcmE77j5YDZeqAyTsqp2KhH4J1w+QfRT8uX8uVOpOeGfqa39J7vANso21LgDzfRNMyJlgvGaTEiZKj70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WsbvSP6p; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=n7XRZ1wwGBCrq50rO2JxU8MPPqa0i0Z+pjTKlUawjLebU3pcakiEkSs7ytRhdCCl0Kv7GHrxsduQ1/erdOL5iKZqX1zVCYaqeEwlrQ3okRuW/IOYplzb4IX//NS88GJEwkPYPo4wSor7QRaatC3QGP9bLOp6ny2ZNB0rRn51fmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GVI2Pk0e; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WsbvSP6p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775637639;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=vNzURTCjft3pnt4tIwyfboVA0t93gFW+FEnBhvEAE3A=;
-	b=WsbvSP6pM88/Wyl+0RG+ekmci280s7q05psRcTMbDqH1wCUj9bV6ogyXMATQAppcW6qZJ9
-	M9Vwi+I0JeJTG6wZJeUp3rvIWdkaux7Ei8PdYh4mI6lzi9Elm7kuUUHCpwG/EUDW8C9qoY
-	6bEWHznZXgyu4WrwYQdienfhMvS8dBw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-nDRVTIecPha0KzhJ2AdGjQ-1; Wed,
- 08 Apr 2026 04:40:35 -0400
-X-MC-Unique: nDRVTIecPha0KzhJ2AdGjQ-1
-X-Mimecast-MFC-AGG-ID: nDRVTIecPha0KzhJ2AdGjQ_1775637630
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC2A81955F41;
-	Wed,  8 Apr 2026 08:40:29 +0000 (UTC)
-Received: from redhat.com (headnet01.pony-001.prod.iad2.dc.redhat.com [10.2.32.101])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D84FC1955F2B;
-	Wed,  8 Apr 2026 08:40:21 +0000 (UTC)
-Date: Wed, 8 Apr 2026 09:40:18 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Matthew Penney <matt@matthewpenney.net>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
-	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Joel Stanley <joel@jms.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Samuel Tardieu <sam@rfc1149.net>, Cornelia Huck <cohuck@redhat.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	"Collin L. Walling" <walling@linux.ibm.com>,
-	Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
-	qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
-	Jason Wang <jasowang@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 0/8] tree-wide: use g_clear_handle_id() for GSource
- cleanup
-Message-ID: <adYUcqM4py9e_Q-B@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260408010026.4611-1-matt@matthewpenney.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GVI2Pk0e"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775637982; x=1807173982;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=91maVxZNEzGhFKlBZ9qtc86KCdBoWXk2N2q/VDGazBk=;
+  b=GVI2Pk0erUGQgulbh8nBVPC7cjYXkS3whjB8nB7d2EKO8LCPNn3mgKYy
+   HnsCmETHRAw0TP5QQjBJurDyD2PBqWSUviQjmKbvZUwSGZMZgcqTveggP
+   7uqIg80fukIWRQc2rx2n/skFZgak5X9ATCTAdfPZq/g/XMPqZ3EJoE+B5
+   JPPa6hITbJqKRov0phQ6ygnZKoiWaZX84S1WkAAwj9zcSnzdC7RqKGHmT
+   hQ8qP7MPuICKNAbV29qdDichdW0lJCYGTqHD1ptHuilXAZND6dU3GiB8H
+   isqTB0g0HFlBiQXVacMV87MWoZD5A+rCbwS+1mR8FhqfTijwXwz0lZ8bY
+   g==;
+X-CSE-ConnectionGUID: qKHZvD5NRlGrpZYLOnxblg==
+X-CSE-MsgGUID: hzxuAiuKQ1m79MOFhS+uCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="75784554"
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
+   d="scan'208";a="75784554"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 01:46:15 -0700
+X-CSE-ConnectionGUID: jcf3ZyLxSs+YjirYcm6NNw==
+X-CSE-MsgGUID: LzCr/hS7QuCjRxFbYMUGJQ==
+X-ExtLoop1: 1
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa003.fm.intel.com with ESMTP; 08 Apr 2026 01:46:12 -0700
+Date: Wed, 8 Apr 2026 16:24:39 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 11/31] x86/virt/tdx: Make TDX Module initialize
+ Extensions
+Message-ID: <adYQx+6LcO/s2nyn@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-12-yilun.xu@linux.intel.com>
+ <5cbed31cdfcc7e43f283abc275848370239a3d40.camel@intel.com>
+ <acvhD/XeCbB4ea0C@yilunxu-OptiPlex-7050>
+ <124b776006fee36e4a242f58bd4e128eae97c505.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,43 +75,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260408010026.4611-1-matt@matthewpenney.net>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <124b776006fee36e4a242f58bd4e128eae97c505.camel@intel.com>
 
-On Wed, Apr 08, 2026 at 01:01:42AM +0000, Matthew Penney wrote:
-> This series replaces open-coded uses of g_source_remove() with
-> g_clear_handle_id() across the tree.
+On Wed, Apr 01, 2026 at 11:42:36AM +0000, Huang, Kai wrote:
+> On Tue, 2026-03-31 at 22:58 +0800, Xu Yilun wrote:
+> > > > +	/*
+> > > > +	 * ext_required == 0 means no need to call TDH.EXT.INIT, the Extensions
+> > > > +	 * are already working.
+> > > 
+> > > How does this scenario happen exactly? And why not check it above at the
+> > > beginning? Before the allocation, so it doesn't need to free.
+> > > 
+> > > Is there a scenario where the memory needs to be given, but the extension is
+> > > already inited?
+> > 
+> > mm.. you are right. It leads to something absurd.
+> > 
+> > I checked with TDX Module team again. The correct understanding is:
+> > 
+> >  - TDX_FEATURES0_EXT bit shows Extensions is supported.
+> >  - optional feature bits are selected on TDH_SYS_CONFIG
+> >  - If one of the optional feature (e.g. TDX CONNECT) requires Extention,
+> >    memory_pool_required_pages > 0 && ext_required == 1. Otherwise no
+> >    need to initialize Extension.
+> > 
+> > So yes, I should check memory_pool_required_pages && ext_required at the
+> > beginning.
 > 
-> This is a more modern (GLib >= 2.56) approach than directly calling
-> g_source_remove().
+> My understanding is different:
 > 
-> g_clear_handle_id() simplifies cleanup of GSource IDs since it
-> checks the ID is valid, calls the cleanup function and zeros the ID.
-> 
-> This reduces boilerplate and avoids open-coded calls to
-> g_source_remove().
-> 
-> This series follows an earlier fix that removed a dangling GSource tag
-> and replaced an explicit call to g_source_remove() with
-> g_clear_handle_id().
-> 
-> No functional changes.
-> 
-> Link: https://gitlab.com/qemu-project/qemu/-/commit/34aad589019c8687fb3b19ba79d64d97071a7205
+> Per spec, the 'EXT_REQUIRED' global metadata just means "Return true if the
+> TDH.EXT.INIT is required to be called", so I think, architecturally, it's
 
-Looking at your git repo fork, while the commits are creditted under
-your name, all the activity on the repo appears to have done by a bot
-account:
+Maybe these text should be improved. They just literally tell how, so leads
+to our disagreement.
 
-  https://gitlab.com/mj-penney/qemu/activity
+> possible that one particular feature only requires additional memory pool
+> but doesn't explicitly need to call TDH.EXT.INIT.  Or some feature may not
+> require any additional memory pool but needs TDH.EXT.INIT.
 
-What's the situation here with authorship ? 
+This is different from what I've been told by TDX Module team. Do you
+have a real setup like that?
 
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+My gut feeling also tells me there is little chance that:
 
+ 1. The Extensions is already working (cause no need to call
+    TDH.EXT.INIT) while we are still adding memory.
+ 2. The Extensions could enable long running / hard-irq preemptible
+    flows with no memory consumption.
