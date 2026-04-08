@@ -1,382 +1,247 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EAA3D9034
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921BF1A285
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672555; cv=none; b=siZwOuatHcWNF1BqgAdcOKgV16d+8lO9Y4N31Lgqhxjjs1otnEYAM5VDXwH0Er2/fOgBCBUrAJGGv+VbhSPNX1w2AbzcQI7nGGD+erD6kQgf4xQwIrPZlVI7A2gKtZcJmoknUMo653J3gS5W3xYUtsMeR8RWqXAczQm5IC9JjTk=
+	t=1775673774; cv=none; b=iCSh1+Ta5fYRp30PgLUER+eSdYkWlJ0iJjyz1C/XuqbI4N0fsdmM6R5KfeLaRPITemum3eSqBJxsUHSLCoW1D9XjDgRO6obpA4FzfnUNOE9v0qE3Hp4XBnM6QDDk+5I2GUA67mM1G7HKERr4uFbmpbXZcUiWEAtq0NgfWWnOJ8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672555; c=relaxed/simple;
-	bh=XAXsoS89VcrRSkgM4uTrvlppPDRWHMLFH/06oqTfBF0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lncmWlsj8nwc5tEzcixm1wimRTX5T1akGrNx4+Nbujk7c/GqqWKkdHG6znKcavDVbeVWyPw7I+Hah+Xh4XJN0Tv46b6odcDPl5dLPXEA01a/Zak9sJmu3gxzED9BeCrfG1HHZti2AVLOWpJc7jUG1xBVyt9LvIMqLSzKWCOX6Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VBLaM5Rp; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775673774; c=relaxed/simple;
+	bh=jx7AcgbvCU056YRKgIHGpeR0qsbQUXRmXso8TPkM0uY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XIoSK0tphffUEjS7L/475qb6Rc3MBnn05VIL7a7TbFi/TNazLikjy8t/WjOHe3dO6x8qhOLRYdFcuH1GJzcwHRvh8uWhg4Ctqr0L4jxWxeUpMsPoPILBu19N4deIYfBo4Ci7P3cdXRf3I3/CqcWF4sx/vOgtAgEdj8NBJP2+XII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UfuPLwCB; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VBLaM5Rp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775672552;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/JsFVBcKynKpBm3OxqTNh9hV/BVX0i5eBbcHwpUj5DE=;
-	b=VBLaM5Rp211uzMvKbRALnBywUdwjSMysA3+QgJ12Zbt0gsXUqBhAuHL19nWuXoo6A214CM
-	vtS21MdguPf019UApq1BG2NGcyg6f8miBKDED8apjyZUe2RYSQfFa4GexYE5LGXE2zlaRN
-	yyi3Fc1UTPfNwF4e+dyCEAbCfX2L1i0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-Nj265khYN8KmPMXXItxuxA-1; Wed,
- 08 Apr 2026 14:22:22 -0400
-X-MC-Unique: Nj265khYN8KmPMXXItxuxA-1
-X-Mimecast-MFC-AGG-ID: Nj265khYN8KmPMXXItxuxA_1775672538
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5C3D81956096;
-	Wed,  8 Apr 2026 18:22:18 +0000 (UTC)
-Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AF0361955F2B;
-	Wed,  8 Apr 2026 18:22:17 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	chang.seok.bae@intel.com
-Subject: [PATCH 4/7] KVM: SVM: adopt the same VMX_RUN_* flags as VMX
-Date: Wed,  8 Apr 2026 14:22:10 -0400
-Message-ID: <20260408182213.522713-5-pbonzini@redhat.com>
-In-Reply-To: <20260408182213.522713-1-pbonzini@redhat.com>
-References: <20260408182213.522713-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UfuPLwCB"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35da97f6a6dso170681a91.0
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 11:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775673772; x=1776278572; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XLWDdn2roHjZrnP49XeGQ3Vpz77A2z8sgq/bNU9KFWk=;
+        b=UfuPLwCB1NQRhJtiPAyeR1qLfAoxm2FgcgtvKWHHNIB7DCwpbst+EfmhUAB+VBPZWB
+         Jieje4XYaIUqWzP57iNxXbQqtbXMPaleU8rhcRbTWiZweZa/QniyrRyX/ahSXU5+dTGf
+         aec4CepvRbI7aZWGOsDy6H9OzH1b42s5/KPJF1PKIp34ii7FkH8e8cndaMc5+bu77fHv
+         jKx3eyBrtBvv1J4EDy4qdROA/ewVRcqpOmnQa+Wfhl4QX+9Fd9XuVScZ0lJTMBHUzZhm
+         vuC3OpQa4gMlA8ZLkaEMvH/h0RqYrTfSY8qRHSTlg0eMRFPOfeKxpbH42mli/inDoA3R
+         4XLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775673772; x=1776278572;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XLWDdn2roHjZrnP49XeGQ3Vpz77A2z8sgq/bNU9KFWk=;
+        b=VDDH4V9QY1AY2R3v4d2t3AkTSTJ8B2cgzqgXsP02Jet0tSCKcDLrpypeCKo1q1OdRJ
+         XYgTzqdEN5QQPytc6X7iQd17ihSBb2nsjC/RBucuHG8+go0hu7jSYJZtbyCEDGNDoAFn
+         1cCLHAlYQsX/7U61hE83B9q0zOaAW288cu7/Ye26Q+bawEtxblN0vjyVcBTcfs51Wuvj
+         Cir8/7NbaLj7wW//d6QV+JvMxHypOKboXEaHeMYQXzYcsJ3ZGIQbfETBVvjbEZ7U2NuQ
+         b7mBtSHEnRZFlZzw5mmvYPeTcf0bfOn1gWN6vAtgqjIv+qLFbpEtF7JLFHsy5oZXSYCo
+         IfBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjPnYdMIYPhipwsaFqCBWqFiPKV9KhFizyIvMr3NrmwbD2XwzkUd7LMbX0L57sIfyTgA0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9Rs1ltia0xmRTH9ILsX0daU36go45VEhqyROJFJxWps5Abt2s
+	yPgemfB+Jpzuq9vwQfxJshxXMobt7BmTLGHOYJNtHCJZLyEIHWf/l2M1Kc3awtAgpgNYFJNoo7v
+	ov3E0cA==
+X-Received: from pjg13.prod.google.com ([2002:a17:90b:3f4d:b0:35d:a732:d4e9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:6cd:b0:35d:9560:3f09
+ with SMTP id 98e67ed59e1d1-35de69a5c3fmr19996330a91.24.1775673771793; Wed, 08
+ Apr 2026 11:42:51 -0700 (PDT)
+Date: Wed, 8 Apr 2026 11:42:50 -0700
+In-Reply-To: <177b405e-87f7-400f-a783-adc7c20bef89@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0
+References: <20260310234829.2608037-1-seanjc@google.com> <20260310234829.2608037-6-seanjc@google.com>
+ <177b405e-87f7-400f-a783-adc7c20bef89@amd.com>
+Message-ID: <adahqilc9IrIpIvr@google.com>
+Subject: Re: [PATCH 05/21] KVM: SEV: Lock all vCPUs when synchronzing VMSAs
+ for SNP launch finish
+From: Sean Christopherson <seanjc@google.com>
+To: Srikanth Aithal <sraithal@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jethro Beekman <jethro@fortanix.com>, Alexander Potapenko <glider@google.com>, 
+	"Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>, Thomas Lendacky <Thomas.Lendacky@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Rename VMX_RUN_* to KVM_ENTER_* (to not confuse with KVM_RUN_* that
-already exists) and replace SVM's spec_ctrl_intercepted with that
-same bitmask.
+On Wed, Apr 08, 2026, Srikanth Aithal wrote:
+> On 3/11/2026 5:18 AM, Sean Christopherson wrote:
+> > Lock all vCPUs when synchronizing and encrypting VMSAs for SNP guests, as
+> > allowing userspace to manipulate and/or run a vCPU while its state is being
+> > synchronized would at best corrupt vCPU state, and at worst crash the host
+> > kernel.
+> > 
+> > Opportunistically assert that vcpu->mutex is held when synchronizing its
+> > VMSA (the SEV-ES path already locks vCPUs).
+> > 
+> > Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >   arch/x86/kvm/svm/sev.c | 16 +++++++++++++---
+> >   1 file changed, 13 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index 5de36bbc4c53..c10c71608208 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> > @@ -882,6 +882,8 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+> >   	u8 *d;
+> >   	int i;
+> > +	lockdep_assert_held(&vcpu->mutex);
+> > +
+> >   	if (vcpu->arch.guest_state_protected)
+> >   		return -EINVAL;
+> > @@ -2456,6 +2458,10 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> >   	if (kvm_is_vcpu_creation_in_progress(kvm))
+> >   		return -EBUSY;
+> > +	ret = kvm_lock_all_vcpus(kvm);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> >   	data.gctx_paddr = __psp_pa(sev->snp_context);
+> >   	data.page_type = SNP_PAGE_TYPE_VMSA;
+> > @@ -2465,12 +2471,12 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> >   		ret = sev_es_sync_vmsa(svm);
+> >   		if (ret)
+> > -			return ret;
+> > +			goto err;
+> >   		/* Transition the VMSA page to a firmware state. */
+> >   		ret = rmp_make_private(pfn, INITIAL_VMSA_GPA, PG_LEVEL_4K, sev->asid, true);
+> >   		if (ret)
+> > -			return ret;
+> > +			goto err;
+> >   		/* Issue the SNP command to encrypt the VMSA */
+> >   		data.address = __sme_pa(svm->sev_es.vmsa);
+> > @@ -2479,7 +2485,7 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> >   		if (ret) {
+> >   			snp_page_reclaim(kvm, pfn);
+> > -			return ret;
+> > +			goto err;
+> >   		}
+> >   		svm->vcpu.arch.guest_state_protected = true;
+> > @@ -2494,6 +2500,10 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> >   	}
+> >   	return 0;
+> > +
+> > +err:
+> > +	kvm_unlock_all_vcpus(kvm);
+> > +	return ret;
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/svm.c       | 14 +++++++++-----
- arch/x86/kvm/svm/vmenter.S   | 21 +++++++++++----------
- arch/x86/kvm/vmenter.h       |  9 +++++++++
- arch/x86/kvm/vmx/run_flags.h |  9 ---------
- arch/x86/kvm/vmx/vmenter.S   | 12 ++++++------
- arch/x86/kvm/vmx/vmx.c       | 13 +++++++------
- arch/x86/kvm/vmx/vmx.h       |  3 +--
- 7 files changed, 43 insertions(+), 38 deletions(-)
- create mode 100644 arch/x86/kvm/vmenter.h
- delete mode 100644 arch/x86/kvm/vmx/run_flags.h
+/facepalm
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e6477affac9a..19808eee43de 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -49,6 +49,7 @@
+With an assist from lockdep (see below), I forgot to actually unlock in the
+*success* path.  The failure manifested as a "guest" hang instead of a deadlock
+by pure dumb luck: kvm_vcpu_ioctl() uses mutex_lock_killable() so killing QEMU
+still works.
+
+I'll squash this (assuming it fixes the problem you're seeing), and omit this
+entire series from the initial 7.1 pull requests.  If everything looks good, I'll
+plan on sending a second pull request for this series after it's had more time to
+soak in -next.
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 2010b157e288..770f7dfc0e5c 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2512,12 +2512,12 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
  
- #include "trace.h"
+                ret = sev_es_sync_vmsa(svm);
+                if (ret)
+-                       goto err;
++                       goto out;
  
-+#include "vmenter.h"
- #include "svm.h"
- #include "svm_ops.h"
+                /* Transition the VMSA page to a firmware state. */
+                ret = rmp_make_private(pfn, INITIAL_VMSA_GPA, PG_LEVEL_4K, sev->asid, true);
+                if (ret)
+-                       goto err;
++                       goto out;
  
-@@ -4253,7 +4254,7 @@ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
- 	return EXIT_FASTPATH_NONE;
- }
+                /* Issue the SNP command to encrypt the VMSA */
+                data.address = __sme_pa(svm->sev_es.vmsa);
+@@ -2526,7 +2526,7 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+                if (ret) {
+                        snp_page_reclaim(kvm, pfn);
  
--static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_intercepted)
-+static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, unsigned enter_flags)
- {
- 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, vcpu->cpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
-@@ -4275,10 +4276,10 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
- 	amd_clear_divider();
+-                       goto err;
++                       goto out;
+                }
  
- 	if (sev_es_guest(vcpu->kvm))
--		__svm_sev_es_vcpu_run(svm, spec_ctrl_intercepted,
-+		__svm_sev_es_vcpu_run(svm, enter_flags,
- 				      sev_es_host_save_area(sd));
- 	else
--		__svm_vcpu_run(svm, spec_ctrl_intercepted);
-+		__svm_vcpu_run(svm, enter_flags);
+                svm->vcpu.arch.guest_state_protected = true;
+@@ -2540,9 +2540,7 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+                svm_enable_lbrv(vcpu);
+        }
  
- 	raw_local_irq_disable();
- 
-@@ -4289,7 +4290,10 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- {
- 	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	bool spec_ctrl_intercepted = msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL);
-+	unsigned enter_flags = 0;
-+
-+	if (msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL))
-+		enter_flags |= KVM_ENTER_SAVE_SPEC_CTRL;
- 
- 	trace_kvm_entry(vcpu, force_immediate_exit);
- 
-@@ -4370,7 +4374,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	if (!static_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 		x86_spec_ctrl_set_guest(svm->virt_spec_ctrl);
- 
--	svm_vcpu_enter_exit(vcpu, spec_ctrl_intercepted);
-+	svm_vcpu_enter_exit(vcpu, enter_flags);
- 
- 	if (!static_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 		x86_spec_ctrl_restore_host(svm->virt_spec_ctrl);
-diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
-index f4ea862652d8..545dc55582bf 100644
---- a/arch/x86/kvm/svm/vmenter.S
-+++ b/arch/x86/kvm/svm/vmenter.S
-@@ -7,6 +7,7 @@
- #include <asm/kvm_vcpu_regs.h>
- #include <asm/nospec-branch.h>
- #include "kvm-asm-offsets.h"
-+#include "vmenter.h"
- 
- #define WORD_SIZE (BITS_PER_LONG / 8)
- 
-@@ -76,7 +77,7 @@
- 		"jmp 900f", X86_FEATURE_MSR_SPEC_CTRL, \
- 		"", X86_FEATURE_V_SPEC_CTRL
- .endm
--.macro RESTORE_HOST_SPEC_CTRL_BODY guest_spec_ctrl:req, spec_ctrl_intercepted:req, label:req
-+.macro RESTORE_HOST_SPEC_CTRL_BODY guest_spec_ctrl:req, enter_flags:req, label:req
- 	/* Same for after vmexit.  */
- 	mov $MSR_IA32_SPEC_CTRL, %ecx
- 
-@@ -84,7 +85,7 @@
- 	 * Load the value that the guest had written into MSR_IA32_SPEC_CTRL,
- 	 * if it was not intercepted during guest execution.
- 	 */
--	cmpb $0, \spec_ctrl_intercepted
-+	testl $KVM_ENTER_SAVE_SPEC_CTRL, \enter_flags
- 	jnz 998f
- 	rdmsr
- 	movl %eax, \guest_spec_ctrl
-@@ -115,8 +116,8 @@
- 
- /**
-  * __svm_vcpu_run - Run a vCPU via a transition to SVM guest mode
-- * @svm:	struct vcpu_svm *
-- * @spec_ctrl_intercepted: bool
-+ * @svm:	 struct vcpu_svm *
-+ * @enter_flags: u32
-  */
- SYM_FUNC_START(__svm_vcpu_run)
- 	push %_ASM_BP
-@@ -274,7 +275,7 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	xor %r15d, %r15d
- #endif
- 
--	/* "Pop" @spec_ctrl_intercepted.  */
-+	/* "Pop" @enter_flags.  */
- 	pop %_ASM_BX
- 
- 	pop %_ASM_BX
-@@ -335,8 +336,8 @@ SYM_FUNC_END(__svm_vcpu_run)
- 
- /**
-  * __svm_sev_es_vcpu_run - Run a SEV-ES vCPU via a transition to SVM guest mode
-- * @svm:	struct vcpu_svm *
-- * @spec_ctrl_intercepted: bool
-+ * @svm:	 struct vcpu_svm *
-+ * @enter_flags: u32
-  */
- SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 	FRAME_BEGIN
-@@ -355,7 +356,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 
- 	/*
- 	 * Save volatile registers that hold arguments that are needed after
--	 * #VMEXIT (RDI=@svm and RSI=@spec_ctrl_intercepted).
-+	 * #VMEXIT (RDI=@svm and RSI=@enter_flags).
- 	 */
- 	mov %rdi, SEV_ES_RDI (%rdx)
- 	mov %rsi, SEV_ES_RSI (%rdx)
-@@ -377,7 +378,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 	/* IMPORTANT: Stuff the RSB immediately after VM-Exit, before RET! */
- 	FILL_RETURN_BUFFER %rax, RSB_CLEAR_LOOPS, X86_FEATURE_RSB_VMEXIT
- 
--	/* Clobbers RAX, RCX, RDX, consumes RDI (@svm) and RSI (@spec_ctrl_intercepted). */
-+	/* Clobbers RAX, RCX, RDX, consumes RDI (@svm) and RSI (@enter_flags). */
- 	RESTORE_HOST_SPEC_CTRL
- 901:
- 
-@@ -397,7 +398,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 	RESTORE_GUEST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), 801b
- 	jmp 801b
- 900:
--	RESTORE_HOST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), %sil, 901b
-+	RESTORE_HOST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), %esi, 901b
- 	jmp 901b
- 
- 3:	cmpb $0, kvm_rebooting(%rip)
-diff --git a/arch/x86/kvm/vmenter.h b/arch/x86/kvm/vmenter.h
-new file mode 100644
-index 000000000000..29cdae650069
---- /dev/null
-+++ b/arch/x86/kvm/vmenter.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __KVM_X86_VMENTER_H
-+#define __KVM_X86_VMENTER_H
-+
-+#define KVM_ENTER_VMRESUME			BIT(0)
-+#define KVM_ENTER_SAVE_SPEC_CTRL		BIT(1)
-+#define KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO	BIT(2)
-+
-+#endif /* __KVM_X86_VMENTER_H */
-diff --git a/arch/x86/kvm/vmx/run_flags.h b/arch/x86/kvm/vmx/run_flags.h
-deleted file mode 100644
-index 6a87a12135fb..000000000000
---- a/arch/x86/kvm/vmx/run_flags.h
-+++ /dev/null
-@@ -1,9 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __KVM_X86_VMX_RUN_FLAGS_H
--#define __KVM_X86_VMX_RUN_FLAGS_H
+-       return 0;
 -
--#define VMX_RUN_VMRESUME			BIT(0)
--#define VMX_RUN_SAVE_SPEC_CTRL			BIT(1)
--#define VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO	BIT(2)
--
--#endif /* __KVM_X86_VMX_RUN_FLAGS_H */
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index babafd7dfa5b..bed5a753166b 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -7,7 +7,7 @@
- #include <asm/percpu.h>
- #include <asm/segment.h>
- #include "kvm-asm-offsets.h"
--#include "run_flags.h"
-+#include "vmenter.h"
- 
- #define WORD_SIZE (BITS_PER_LONG / 8)
- 
-@@ -68,9 +68,9 @@
- /**
-  * __vmx_vcpu_run - Run a vCPU via a transition to VMX guest mode
-  * @vmx:	struct vcpu_vmx *
-- * @flags:	VMX_RUN_VMRESUME:	use VMRESUME instead of VMLAUNCH
-- *		VMX_RUN_SAVE_SPEC_CTRL: save guest SPEC_CTRL into vmx->spec_ctrl
-- *		VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO: vCPU can access host MMIO
-+ * @flags:	KVM_ENTER_RUN_VMRESUME:	use VMRESUME instead of VMLAUNCH
-+ *		KVM_ENTER_RUN_SAVE_SPEC_CTRL: save guest SPEC_CTRL into vmx->spec_ctrl
-+ *		KVM_ENTER_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO: vCPU can access host MMIO
-  *
-  * Returns:
-  *	0 on VM-Exit, 1 on VM-Fail
-@@ -164,7 +164,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * do VERW.  Else, do nothing (no mitigations needed/enabled).
- 	 */
- 	ALTERNATIVE_2 "",									  \
--		      __stringify(testl $VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO, (%_ASM_SP);	  \
-+		      __stringify(testl $KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO, (%_ASM_SP);	  \
- 				  jz .Lskip_mmio_verw;						  \
- 				  VERW;								  \
- 				  .Lskip_mmio_verw:),					  	  \
-@@ -172,7 +172,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 		      __stringify(VERW), X86_FEATURE_CLEAR_CPU_BUF_VM
- 
- 	/* Check @flags to see if VMLAUNCH or VMRESUME is needed. */
--	testl $VMX_RUN_VMRESUME, (%_ASM_SP)
-+	testl $KVM_ENTER_VMRESUME, (%_ASM_SP)
- 	jz .Lvmlaunch
- 
- 	/*
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 054542ff0d02..ef0de3cc0bc2 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -72,6 +72,7 @@
- #include "x86_ops.h"
- #include "smm.h"
- #include "vmx_onhyperv.h"
-+#include "vmenter.h"
- #include "posted_intr.h"
- 
- #include "mmu/spte.h"
-@@ -1000,12 +1001,12 @@ static bool msr_write_intercepted(struct vcpu_vmx *vmx, u32 msr)
- 	return vmx_test_msr_bitmap_write(vmx->loaded_vmcs->msr_bitmap, msr);
+-err:
++out:
+        kvm_unlock_all_vcpus(kvm);
+        return ret;
  }
- 
--unsigned int __vmx_vcpu_run_flags(struct vcpu_vmx *vmx)
-+unsigned int __vmx_vcpu_enter_flags(struct vcpu_vmx *vmx)
- {
- 	unsigned int flags = 0;
- 
- 	if (vmx->loaded_vmcs->launched)
--		flags |= VMX_RUN_VMRESUME;
-+		flags |= KVM_ENTER_VMRESUME;
- 
- 	/*
- 	 * If writes to the SPEC_CTRL MSR aren't intercepted, the guest is free
-@@ -1013,11 +1014,11 @@ unsigned int __vmx_vcpu_run_flags(struct vcpu_vmx *vmx)
- 	 * it after vmexit and store it in vmx->spec_ctrl.
- 	 */
- 	if (!msr_write_intercepted(vmx, MSR_IA32_SPEC_CTRL))
--		flags |= VMX_RUN_SAVE_SPEC_CTRL;
-+		flags |= KVM_ENTER_SAVE_SPEC_CTRL;
- 
- 	if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF_VM_MMIO) &&
- 	    kvm_vcpu_can_access_host_mmio(&vmx->vcpu))
--		flags |= VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO;
-+		flags |= KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO;
- 
- 	return flags;
- }
-@@ -7504,7 +7505,7 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
- 	if (!cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL))
- 		return;
- 
--	if (flags & VMX_RUN_SAVE_SPEC_CTRL)
-+	if (flags & KVM_ENTER_SAVE_SPEC_CTRL)
- 		vmx->spec_ctrl = native_rdmsrq(MSR_IA32_SPEC_CTRL);
- 
- 	/*
-@@ -7695,7 +7696,7 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	kvm_wait_lapic_expire(vcpu);
- 
- 	/* The actual VMENTER/EXIT is in the .noinstr.text section. */
--	vmx_vcpu_enter_exit(vcpu, __vmx_vcpu_run_flags(vmx));
-+	vmx_vcpu_enter_exit(vcpu, __vmx_vcpu_enter_flags(vmx));
- 
- 	/* All fields are clean at this point */
- 	if (kvm_is_using_evmcs()) {
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index f963cb2982c9..9cb5a205f19d 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -15,7 +15,6 @@
- #include "vmcs.h"
- #include "vmx_ops.h"
- #include "../cpuid.h"
--#include "run_flags.h"
- #include "../mmu.h"
- #include "common.h"
- 
-@@ -372,7 +371,7 @@ struct vmx_uret_msr *vmx_find_uret_msr(struct vcpu_vmx *vmx, u32 msr);
- void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu);
- void vmx_update_host_rsp(struct vcpu_vmx *vmx, unsigned long host_rsp);
- void vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx, unsigned int flags);
--unsigned int __vmx_vcpu_run_flags(struct vcpu_vmx *vmx);
-+unsigned int __vmx_vcpu_enter_flags(struct vcpu_vmx *vmx);
- bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned int flags);
- void vmx_ept_load_pdptrs(struct kvm_vcpu *vcpu);
- 
--- 
-2.52.0
 
+> >   }
+> >   static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> 
+> 
+> I am seeing an SNP guest boot failure starting with linux-next tag
+> next-20260406 [1].
+>
+> The SNP guest hangs during boot.
 
+...
+
+> There are no error messages on either the host or guest serial console when
+> this happens.
+
+ WARNING: Nested lock was not taken
+ 7.0.0-smp--36ad607330fb-snp #112 Tainted: G     U  W  O       
+ ----------------------------------
+ qemu/39235 is trying to lock:
+ ffff8d0e590c00b0 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_lock_all_vcpus+0xab/0x180 [kvm]
+ 
+              but this task is not holding:
+ &kvm->lock
+ 
+              stack backtrace:
+ CPU: 123 UID: 0 PID: 39235 Comm: qemu Tainted: G     U  W  O        7.0.0-smp--36ad607330fb-snp #112 PREEMPTLAZY 
+ Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
+ Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.86.0-102 01/25/2026
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x54/0x70
+  __lock_acquire+0x7b9/0x2900
+  reacquire_held_locks+0x107/0x160
+  lock_release+0x177/0x360
+  __mutex_unlock_slowpath+0x3c/0x2b0
+  sev_mem_enc_ioctl+0x3c9/0x400 [kvm_amd]
+  kvm_vm_ioctl+0x57c/0x5d0 [kvm]
+  __se_sys_ioctl+0x6d/0xb0
+  do_syscall_64+0xe8/0x920
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  </TASK>
+ 
+              other info that might help us debug this:
+ no locks held by qemu/39235.
+ 
+              stack backtrace:
+ CPU: 123 UID: 0 PID: 39235 Comm: qemu Tainted: G     U  W  O        7.0.0-smp--36ad607330fb-snp #112 PREEMPTLAZY 
+ Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
+ Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.86.0-102 01/25/2026
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x54/0x70
+  __lock_acquire+0x7de/0x2900
+  reacquire_held_locks+0x107/0x160
+  lock_release+0x177/0x360
+  __mutex_unlock_slowpath+0x3c/0x2b0
+  sev_mem_enc_ioctl+0x3c9/0x400 [kvm_amd]
+  kvm_vm_ioctl+0x57c/0x5d0 [kvm]
+  __se_sys_ioctl+0x6d/0xb0
+  do_syscall_64+0xe8/0x920
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  </TASK>
