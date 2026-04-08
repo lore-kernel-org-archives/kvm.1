@@ -1,226 +1,195 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D332D77E6;
-	Wed,  8 Apr 2026 09:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410383B38BB
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 10:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775640969; cv=none; b=ZQQ639A9xMamO/S5adq4XldaLxqbqrq1N03zdqINAlRfcCfCiP2P5GnNsh4BIKBbSs2RELhRDm7IY/kTgYACBsuXghNHdKeLqsy9q/FDNRDhClYFxTNBrzCTuikpCj8GSUEdqF0qPBw3efBn2gZiCQnM0J0+dyVn6PcNUO1g7OE=
+	t=1775642631; cv=none; b=HrnAQi3MMb2eld2LVwQBC9Jq3bN8m7h5BnO59Q0dUiYan8hL+3YOq4HxJAmaj7g/GPWOM4oNYFILGf7Zcv473dQnwz3kVXUn2NlfAG24wjkWYzF2kjKybYt9PpUVth3k31tw2H+RYii3ZbU/FsR0zfSQ/UfJ1mGSGqSHICgjTXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775640969; c=relaxed/simple;
-	bh=tLmtEqT3nQJkerWwT/2xKCwohdoa/FWXOxDdyOmlKVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n5Zxgsvm3kKHfG/AEGVev8OMuQW8jCtHCZSPPD+HtMJs/htcifg+OZyq4HBDqDtxwzT7Len74ksKLTXVKmMKH38SEhI2pxd6eZMjBijclEGSJYYKZ6vzjBck8QV3QVvgLQsBLwt85i2fQxx7YystvyqmXQ15/VP7bOyDDhxiAwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EqOi91cy; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775642631; c=relaxed/simple;
+	bh=o4+1SC+5gK72xbVuKMA8stLflF08ngrXS2p6EHL26qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qTY+QTldhXTh05mc+lbLl5H3cLgPQkVi+pYH0ZTB8TARyPRQrQiYdJ04pEw39Jds8xVa/o3Sx3MWN54n8SkN3OhGBvTEZfTuVRfNpiDpI5CQhWeq3UuGuzsfC9lMLLHtdFb2geVnfBA94jtiEI3yppbTYfQv9GwchhDx3nCkywE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gDfDZ6VE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dW37Um0y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EqOi91cy"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63841D4X2302396;
-	Wed, 8 Apr 2026 09:35:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=CHMnB6
-	UBLSoY+nvWPQMjI8ztiE+YcuX6XyZnJvMfn94=; b=EqOi91cyrSMJc5fxramC0u
-	DN7dcZs1Xnwz0Qd3XGnVwr2e3SUj/XKwniFVoZ3XYKBBaEgPRL2zwfc0r3NJEShz
-	GBWxgEbi9A81v2wCnVEsxYevHBLX2PeOGXYtVr+eyFw+vlrGGsjjEge0Xzzg7H8/
-	YsaZf8twzoUfV5JQqTJuPjUC8jSHdqDMCj5s/G6/jI/Lbd1K6HZqXRet2lfUes4f
-	OTJ0aW7yGxuBrScTxW4gXhYgqwPdIV5Cu5j7mIPfD3K5Rq6yorTHnWcnpOpYSy84
-	lU9CrS5DEibCa27ZH2Uocp3wNOUJcVKeI2hFpcHl74Yc4kmSMWhnwZ/rp3Ua5Z/A
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gDfDZ6VE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dW37Um0y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775642622;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GvW8ppuKlGxLvKsyNaJZSa2eFAuH1JA79Zx9MBFdNuc=;
+	b=gDfDZ6VEH4OgGWkxTxJwPZ2wMYOH0Zi5oTHPONIFST2YbBD5Q8ZtRiLLpyI0GHYNsR1QUb
+	5/Iy+fGWlHEg7cAoyjaeGn13rRQXbyW0gvJ6E2LDUAKimgUAXm/8Fsze/SF+lyWC8kDEnp
+	A+ugLuY4rZEa7xBaYLzR3AI2pFNiew0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-253-YSwSYg3_OMaAA4xSWYpS2Q-1; Wed, 08 Apr 2026 06:03:41 -0400
+X-MC-Unique: YSwSYg3_OMaAA4xSWYpS2Q-1
+X-Mimecast-MFC-AGG-ID: YSwSYg3_OMaAA4xSWYpS2Q_1775642620
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488b966e9dbso16000405e9.3
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 03:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775642620; x=1776247420; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GvW8ppuKlGxLvKsyNaJZSa2eFAuH1JA79Zx9MBFdNuc=;
+        b=dW37Um0yJUwUNhEWHFvWOPzxRIKwRzMfQpEfBAq6y6MxUk9oq2bjDjM132CtYH5OfC
+         gDrphBEEtfCVA3wVX62QsAj47st6CF876JooMhBisLtCYKb9A8aEG22BHQH5Et3XmTrm
+         5magswqJI0GV3z5gbtTSgAe1J9KlQm4tEEDENi1q32lKSeisnghGD3q+UD6SNxiKuVX9
+         uOuNehhXKWXPs23jEop/hjgaBmfYGJO35FFOuCNQV/g5mg89L3PJS7hdi8Nm6ciNFIYV
+         PKxysaVtIiANmpHcG74MrJfGFB0LW0nMTOTQV3FiHZIR0X8d+x6lYUvjhU2TEVMRzAIW
+         V/ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775642620; x=1776247420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GvW8ppuKlGxLvKsyNaJZSa2eFAuH1JA79Zx9MBFdNuc=;
+        b=ThdWzlwjxXSnYS5fmOuoHRGD5B1MU54WXYcTqqXciL6lzM2oZzrg2V9CIvhwCcr0Nu
+         eSUbK3w6ZiGix7nLO16dM0bS9F5LVhoDSFs1MDnAEjo5pHdJXmDa26xcL4ypwhMF00sO
+         jNcdEbOpJop7EN8+XtILlPLVO68YDRq7pTeI31ZFp5Rwe8sD06qcVNKNfjGvVC7IRUlM
+         3l8VJlVs3o6ezMXFNQ21OAjfPLX6WpjOdEt4HglTW+K1Ok9lGBpViedrFcpWAk0aEnkI
+         XTKDgpYfEHBnfpdHg7+FhKx4zeAjrD21sJo/brEbtGXMwcFEZPN/BqYwsACCtiVyPL8o
+         hR7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVU60FVAQYs+8BTn9QSVY2zmcexbcVlU596krEOKTNx1gVSL6cGgg0jBwfhz1whvc5//Kk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxFgDoNrv4JZRo60NmLnh91QHZQuSSr/f2G8vKz03g+vTjKBFO
+	T1QMqDljbHhobCfcXAQdZWvNoNpCMRxxNb5p5nX5OfenWi7Y+zOd1RrDxd943qGt5dbez3hEglw
+	V3E9T9IVQFb3rGwEpjywXEbpdFG++7v6292bjmb7NorJ468d8jPJddg==
+X-Gm-Gg: AeBDiesMo+o1N1eyxVxORL6OAAueYWPH583pMqAnazCkNHrsR9o4dtwEqrsY7KeBGD2
+	+HIlWAz4skHMYHGyrEc0OP/qd5+ea3UWB9pUzl2VawPp6Vv7PRELvyw69hWGLpRoo4a/adLVbzZ
+	jVDrPfi4TCdqvauT+C4EDIh3ienN7s3hW6RzmrUAUnhxK7mMvlJ7mquJfhMBrwTcaAOouLcFUS4
+	zwurgX7fihWBH24PIVMMp3cd299PUUBWOGsuyA0/Y1VX5QW0KuYzOsZNEq2r/xdEo86VGg3ikJq
+	8eiYtCEMH0N9Gr1J8AFB403pjg9Rrp6TlggyLydGcT0DYkwyPzQVAZBbSzMPHKrH1PDFL9bOAjQ
+	QP+UfJ/RGkv9wCMGZ9XjPML+jTAQRCBXr73+Rk2pIzBdOW/t9tHI6bT8z+Jr6Dcab+UVL8g46DQ
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2ff8uh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Apr 2026 09:35:33 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6386Icpc014423;
-	Wed, 8 Apr 2026 09:35:32 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg4pt88-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Apr 2026 09:35:32 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6389ZUoF46268786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Apr 2026 09:35:30 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90A9A20043;
-	Wed,  8 Apr 2026 09:35:30 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8F6420040;
-	Wed,  8 Apr 2026 09:35:29 +0000 (GMT)
-Received: from [9.111.5.142] (unknown [9.111.5.142])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 Apr 2026 09:35:29 +0000 (GMT)
-Message-ID: <d5bb7e5d-94d3-4b6c-b1a6-e11d13db38f3@linux.ibm.com>
-Date: Wed, 8 Apr 2026 10:35:29 +0100
+X-Received: by 2002:a05:600c:8b03:b0:488:81b1:ae36 with SMTP id 5b1f17b1804b1-488997d3188mr291773255e9.23.1775642620055;
+        Wed, 08 Apr 2026 03:03:40 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b03:b0:488:81b1:ae36 with SMTP id 5b1f17b1804b1-488997d3188mr291772635e9.23.1775642619553;
+        Wed, 08 Apr 2026 03:03:39 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-236.retail.telecomitalia.it. [79.45.205.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488b0c53a27sm229454385e9.7.2026.04.08.03.03.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 03:03:38 -0700 (PDT)
+Date: Wed, 8 Apr 2026 12:03:31 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/3] vsock/test: handle MSG_PEEK in `recv_buf`
+Message-ID: <adYkNiNL18aOv74T@sgarzare-redhat>
+References: <20260407-fix_peek-v2-0-2e2581dc8b7c@redhat.com>
+ <20260407-fix_peek-v2-2-2e2581dc8b7c@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/9] sched/kvm: Semantics-aware vCPU scheduling for
- oversubscribed KVM
-To: Wanpeng Li <kernellwp@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Juri Lelli <juri.lelli@redhat.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, Wanpeng Li <wanpengli@tencent.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20251219035334.39790-1-kernellwp@gmail.com>
- <9a8c1bd7-5d95-4d79-aae2-fc06c448b9a3@linux.ibm.com>
- <CANRm+Cz8Lh+AdsLSSy-u-KQhOpOqBOOAfC1-N7eTO_UM46f6Uw@mail.gmail.com>
-Content-Language: en-US
-From: Richie Buturla <richie@linux.ibm.com>
-In-Reply-To: <CANRm+Cz8Lh+AdsLSSy-u-KQhOpOqBOOAfC1-N7eTO_UM46f6Uw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDA4NCBTYWx0ZWRfXz6Z2JXieLIFo
- qbbbI2CHqBXDoQnZzGdvjOG5RErkKL0HAWqi1HOuu+IXIStNkqqsEVrh3CEZlm36tzNo+99uTb8
- FbZDzqsUjknh/nPXHBsmcESjdXFWAu76EcuN1JS/J99RYxAqk7Ob+kLymdr+OO/++sfBXbn8MuN
- UtOkeuvTrnG1xuuovJ/BihnUTL+Sf3VNMkpUF1VQyge8NHWZzdP0azUtvWzG42Ow7tQi5v/BSYu
- auH6fOCwSlaxScyoBu+aWgGozqdDK4KGiC0H6NLxjtxxdd4Enoh8ZNbi9fhn61PT7yxMlctPYf2
- YOonpWHHNsQ1ed89stqfbsWm5t0UIrhd4NRVYzEyxhyVY5WhwjK9FgO6Mbf5gq349j6NbiWWNU6
- jUXRrdy8uwwIjNVm9qxqLzii+06YnjQe3Gt7NTEikE8Z89pLfZG6wvpkpoLk3KXFCzq6NiKPNF+
- 6BXPjNCVcHLn1nhENsg==
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d62165 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=GvQkQWPkAAAA:8 a=89r_iloUKzSEZtGOBo4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: T62McCncB8BQkPEOARNpNWIoQoyAcZep
-X-Proofpoint-GUID: SypGKFRbrMhVXZaqIkxEoAVQskLka_A5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-08_03,2026-04-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1011 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080084
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260407-fix_peek-v2-2-2e2581dc8b7c@redhat.com>
 
+On Tue, Apr 07, 2026 at 11:13:56AM +0200, Luigi Leonardi wrote:
+>`recv_buf` does not handle the MSG_PEEK flag correctly: it keeps calling
+>`recv` until all requested bytes are available or an error occurs.
+>
+>The problem is how it calculates the amount of bytes read: MSG_PEEK
+>doesn't consume any bytes, will re-read the same bytes from the buffer
+>head, so, summing the return value every time is wrong.
+>
+>Moreover, MSG_PEEK doesn't consume the bytes in the buffer, so if the
+>requested amount is more than the bytes available, the loop will never
+>terminate, because `recv` will never return EOF. For this reason we need
+>to compare the amount of read bytes with the number of bytes expected.
+>
+>Add a check, and if the MSG_PEEK flag is present, update the counter of
+>read bytes differently, and break if we read the expected amount.
+>
+>This allows us to simplify the `test_stream_credit_update_test`, by
+>reusing `recv_buf`.
+>
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+> tools/testing/vsock/util.c       |  8 ++++++++
+> tools/testing/vsock/vsock_test.c | 13 +------------
+> 2 files changed, 9 insertions(+), 12 deletions(-)
+>
+>diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+>index 9430ef5b8bc3..f12425ca99ed 100644
+>--- a/tools/testing/vsock/util.c
+>+++ b/tools/testing/vsock/util.c
+>@@ -399,6 +399,14 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
+> 		if (ret == 0 || (ret < 0 && errno != EINTR))
+> 			break;
+>
 
-On 01/04/2026 10:34, Wanpeng Li wrote:
-> Hi Christian,
-> On Thu, 26 Mar 2026 at 22:42, Christian Borntraeger
-> <borntraeger@linux.ibm.com> wrote:
->> Am 19.12.25 um 04:53 schrieb Wanpeng Li:
->>> From: Wanpeng Li <wanpengli@tencent.com>
->>>
->>> This series addresses long-standing yield_to() inefficiencies in
->>> virtualized environments through two complementary mechanisms: a vCPU
->>> debooster in the scheduler and IPI-aware directed yield in KVM.
->>>
->>> Problem Statement
->>> -----------------
->>>
->>> In overcommitted virtualization scenarios, vCPUs frequently spin on locks
->>> held by other vCPUs that are not currently running. The kernel's
->>> paravirtual spinlock support detects these situations and calls yield_to()
->>> to boost the lock holder, allowing it to run and release the lock.
->>>
->>> However, the current implementation has two critical limitations:
->>>
->>> 1. Scheduler-side limitation:
->>>
->>>      yield_to_task_fair() relies solely on set_next_buddy() to provide
->>>      preference to the target vCPU. This buddy mechanism only offers
->>>      immediate, transient preference. Once the buddy hint expires (typically
->>>      after one scheduling decision), the yielding vCPU may preempt the target
->>>      again, especially in nested cgroup hierarchies where vruntime domains
->>>      differ.
->>>
->>>      This creates a ping-pong effect: the lock holder runs briefly, gets
->>>      preempted before completing critical sections, and the yielding vCPU
->>>      spins again, triggering another futile yield_to() cycle. The overhead
->>>      accumulates rapidly in workloads with high lock contention.
->> Wanpeng,
->>
->> late but not forgotten.
->>
->> So Richie Buturla gave this a try on s390 with some variations but still
->> without cgroup support (next step).
->> The numbers look very promising (diag 9c is our yieldto hypercall). With
->> super high overcommitment the benefit shrinks again, but results are still
->> positive. We are probably running into other limits.
->>
->> 2:1 Overcommit Ratio:
->> diag9c calls:                       225,804,073 →  213,913,266  (-5.3%)
->> Dbench thrpt (per-run mean):        +1.3%
->> Dbench thrpt (per-run median):      +0.8%
->> Dbench thrpt (total across runs):   +1.3%
->> Dbench thrpt (avg/VM):              +1.3%
->>
->> 4:1:
->> diag9c calls:                       833,455,152 →  556,597,627 (-33.2%)
->> Dbench thrpt (per-run mean):        +7.2%
->> Dbench thrpt (per-run median):      +8.5%
->> Dbench thrpt (total across runs):   +7.2%
->> Dbench thrpt (avg/VM):              +7.2%
->>
->>
->> 6:1:
->> diag9c calls:                       967,501,378 →  737,178,419 (-23.8%)
->> Dbench thrpt (per-run mean):        +5.1%
->> Dbench thrpt (per-run median):      +4.8%
->> Dbench thrpt (total across runs):   +5.1%
->> Dbench thrpt (avg/VM):              +5.1%
->>
->>
->>
->> 8:1:
->> diag9c calls:                       872,165,596 → 653,481,530 (-25.1%)
->> Dbench thrpt (per-run mean):        +11.5%
->> Dbench thrpt (per-run median):      +11.4%
->> Dbench thrpt (total across runs):   +11.5%
->> Dbench thrpt (avg/VM):              +11.5%
->>
->> 9:1:
->> diag9c calls:                       809,384,976  → 587,597,163 (-27.4%)
->> Dbench thrpt (per-run mean):        +4.5%
->> Dbench thrpt (per-run median):      +4.0%
->> Dbench thrpt (total across runs):   +4.5%
->> Dbench thrpt (avg/VM):              +4.5%
->>
->>
->> 10:1:
->> diag9c calls:                       711,772,971 → 477,448,374 (-32.9%)
->> Dbench thrpt (per-run mean):        +3.6%
->> Dbench thrpt (per-run median):      +1.6%
->> Dbench thrpt (total across runs):   +3.6%
->> Dbench thrpt (avg/VM):              +3.6%
-> Thanks Christian, and thanks to Richie for running this on s390. :)
->
-> This is very valuable independent data. A few things stand out to me:
->
-> - The consistent reduction in diag9c calls across all overcommit
-> ratios (up to -33.2% at 4:1) confirms that the directed yield
-> improvements are effective at reducing unnecessary yield-to
-> hypercalls, not just on x86 but across architectures.
-> - The fact that these results are without cgroup support is actually
-> informative: it tells us the core yield improvement carries its weight
-> on its own, which helps me scope the next revision more tightly.
-> - The diminishing-but-still-positive returns at very high overcommit
-> (9:1, 10:1) match what I see on x86 as well — other bottlenecks start
-> dominating but the mechanism does not regress.
->
-> Btw, which kernel version were these results collected on?
->
-> Regards,
-> Wanpeng
->
-Hi Wanpeng,
+We should add a comment here or even better in the documentation on top 
+of the function to explain better this behaviour for future reference.
 
-I collected these results on a 6.19 kernel - which should also include 
-the existing fixes for yielding and forfeiting vruntime on yield that K 
-Prateek mentioned.
+>+		if (flags & MSG_PEEK) {
+>+			if (ret == expected_ret) {
+>+				nread = ret;
+>+				break;
+>+			}
+
+Not that I expect this to happen often, but I wonder if it would be 
+better to add a `timeout_usleep()` here to avoid using up too many CPU 
+cycles.
+
+>+			continue;
+>+		}
+>+
+> 		nread += ret;
+> 	} while (nread < len);
+> 	timeout_end();
+>diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+>index 5bd20ccd9335..bdb0754965df 100644
+>--- a/tools/testing/vsock/vsock_test.c
+>+++ b/tools/testing/vsock/vsock_test.c
+>@@ -1500,18 +1500,7 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+> 	}
+>
+> 	/* Wait until there will be 128KB of data in rx queue. */
+>-	while (1) {
+>-		ssize_t res;
+>-
+>-		res = recv(fd, buf, buf_size, MSG_PEEK);
+>-		if (res == buf_size)
+>-			break;
+>-
+>-		if (res <= 0) {
+>-			fprintf(stderr, "unexpected 'recv()' return: %zi\n", res);
+>-			exit(EXIT_FAILURE);
+>-		}
+>-	}
+>+	recv_buf(fd, buf, buf_size, MSG_PEEK, buf_size);
+
+Not sure about this change in this patch, but since they are just tests 
+it could be fine.
+
+mmm, on a second thought, we already used recv_buf() with MSG_PEEK in 
+several other tests, so yep, better to add this change, but I'd make 
+more clear in the commit title/description that this is at the end a fix 
+for other tests using MSG_PEEK with recv_buf(), I mean something like 
+this:
+
+     vsock/test: fix MSG_PEEK handling in recv_buf()
+
+And also pointing out that other tests already used MSG_PEEK with 
+recv_buf(), but it can be broken in some cases.
+
+Thanks,
+Stefano
+
