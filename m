@@ -1,198 +1,222 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E54A30171C
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 14:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732CC3D333E;
+	Wed,  8 Apr 2026 14:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775657910; cv=none; b=UYs+QXRVxBLX+m2/x8TxlRpbbCQEl4vTL+0apWxEjd+ElpZIU8Nd6mM74jz1LjD5n2zMMzqZK+/PUO4+3QvknCCS4QTPwJgRYXwXowkT0cnlfoZzEpgM1SBKduJJYLM5adsGVA2TsHiabSqlSFhjJ71Upr7Xc9FGIMkpiLGXiZc=
+	t=1775658901; cv=none; b=bka1kGIF3Oxcr3+8CifrN4bK2rMzjMrF1ZwR9iGM1OfgXSTA8YswvpX4tsVg8tI6mvMA4WKHsfv+QcGlup82G6P9uvD5Wj2LE22dmMZOnbJch1mZ1PzJR9gMd3HZ0ycyz7El3NT6F3oYLVu/Huz73jFlWYGmWgWJl/Tyswvx8Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775657910; c=relaxed/simple;
-	bh=MWhMukfJz5Px4rYHy5pvHORnGRSVNxeb2facl4Is87c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sLz6j85Tsc+YjWhERZ53D8uXW6usZRnBmvyGQ1CLB+OnixooFcs94BChdbRksmEQnUOtDSv5J56H+yM93V4GHnvQ5PobeJBUT5LGF5E/KwlW1+C5NKpHtlqqm8h08CvIDeGGaRgJzPdNZugcu5PA4nTFFj/j6Z2DuM3Wb2AjeXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MPGQAKOc; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775658901; c=relaxed/simple;
+	bh=cGn3mWczE8KwdzRV6yr8IYFSQyCLRqP+Kc7TFM2zr+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gMBAnW/U46KjC0t6dQ1OnEB/YRe6ijqblOhdyLI5qg6Il/JEfcu2Rg643ZTcPToRX/j83dd0C1KWvUpB8UnqjEZhIyW7zd/OF7w4y2gtARRveDSclpopqRuRQSUliot1jwR9hO3Ap66sCGc7/VMORuxO6Q8eVk4VouOmdsZjW00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bvnCDav6; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MPGQAKOc"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b630753cc38so11925474a12.1
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 07:18:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775657908; x=1776262708; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z+5kCXW5E1B9PDwN4F1scGUFr+1JeNSFb6V10/HvRu4=;
-        b=MPGQAKOcmHta2ncvW89fAurGzZ2orXomdYRwsoiE3HUf70BakHI4If8jYWhKe4Z8os
-         6toP1k+sAhoguXukBessCT3ZWv6U2BtWsY186DEP/m8GIfuAtaqgzsiDsukCAud2HdQ9
-         Ou9adzV+y2jYxTFqBHHmFyjxo2zG9fNpz7+zBJz2GLsWdfGu7w4YAsr3R12V6EJutxor
-         5+v2fG2sIzaoRzYc8Wm8Uk6lhQp3pxP+SnjIXt6w9Q3G62pxVWAWBel+DLqrZXxmQncH
-         vvYqkAXOKZr5ZuG117xzPGr394+zLD4zSppNE2WvTFvHnnFODBm2IqpTOvBOvBDPUgEs
-         rRYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775657908; x=1776262708;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z+5kCXW5E1B9PDwN4F1scGUFr+1JeNSFb6V10/HvRu4=;
-        b=hvw2TAIbB+RR+oEiadoBhskb040By8He4XoVuFtwSgQC7xf//8WKkXkF3RjAPDuLqI
-         5He9ZQQBXNLVlIltYckJ4nGwp/Ht0O8OgFphoHqUPUcBI5noTFGbDSd7KTDe40p+hCYk
-         JjrEacmBg05oNgjqMb5mPiWb0FX0I5FxxNT6i9J5SdqRgcB0ZaSU2G8OoM4bCogM3tg0
-         ZqKouPRgWGw0E0H6rDcy8uvlZSfmQ4fRDXl7eJx8DV1hGj9HbBqKlrVpo+y5v75IdNK4
-         b2iUzni1aoNhzCw43M1YgiVrCQ5Zz0M0wFinbqwhxo+Fwov+pGd3DobOTEZhPOT+fGdQ
-         NzHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ4d4u18NbDFWT4nbqigO/8mNxXvY1dXJBDhq6/zAbcuWLsZ1I/77Ih0czeofmRhV2C+A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9oHuOA2491mBz4YJHI2Z6Y6IFrcIRX66awDzznUabw8X7kl5R
-	l5a0H67JCHiUcUoQk+Vz+B7u8rG63yy1SVNoB5LELnwscXLCTxQ3Bcp6CQChXWunpjeMBeU252D
-	hbO32eQ==
-X-Received: from pgbdo11.prod.google.com ([2002:a05:6a02:e8b:b0:c76:b722:cc2c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a28:b0:398:a060:a967
- with SMTP id adf61e73a8af0-39f2ed92c72mr21884732637.11.1775657908449; Wed, 08
- Apr 2026 07:18:28 -0700 (PDT)
-Date: Wed, 8 Apr 2026 07:18:27 -0700
-In-Reply-To: <20260408102914.106838-1-ohyunwoods663@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bvnCDav6"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6385CQO52302379;
+	Wed, 8 Apr 2026 14:34:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FE3y9T
+	frXiNDTc2jKKxIVUutVtsW/XQ9PDAxoq0O3jU=; b=bvnCDav60MHawM7ILCgQzN
+	dblq+43q8W6gpW4o6iC0LHzYTtd67cT4hN5er7F9gy+1eM8B1qGSG8yHErCt2Gwe
+	CN52vu7CHW+evidcgr/ku+ZkKPnLb8AzU0BkbdBUTY7UWTfpHa4d3EwDy9X0BJle
+	jLrwAM66eCvJGzVNSIEs1UJ1IUeESYrwVtt15o1mimbHePTtD3YmiRVSqGaRiVt1
+	mLXnoOGdUp+u9CUZJSQULr9UKyGALnPqDChgiS90pzFgqz3Uy4szykxZ4+9kYe9c
+	bf8LshGGtT+KcRTU/7UjYUMyHFNofBwnj6y8IGW3NIUNGf/N4QXFtsEdZGZf3byg
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fgfng-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Apr 2026 14:34:54 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 638AuiD4013821;
+	Wed, 8 Apr 2026 14:34:53 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmf47rm9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Apr 2026 14:34:53 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 638EYqSn62783986
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Apr 2026 14:34:52 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A393158055;
+	Wed,  8 Apr 2026 14:34:52 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F7B25804B;
+	Wed,  8 Apr 2026 14:34:52 +0000 (GMT)
+Received: from [9.61.9.193] (unknown [9.61.9.193])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Apr 2026 14:34:52 +0000 (GMT)
+Message-ID: <6569b8b8-7654-4dbe-a4a6-f1e565451672@linux.ibm.com>
+Date: Wed, 8 Apr 2026 10:34:51 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260408102914.106838-1-ohyunwoods663@gmail.com>
-Message-ID: <adZjswAhbcQmekxZ@google.com>
-Subject: Re: [BUG] KVM: NULL pointer dereference in kvm_tdp_mmu_map under
- memory pressure
-From: Sean Christopherson <seanjc@google.com>
-To: punixcorn <ohyunwoods663@gmail.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-
-On Wed, Apr 08, 2026, punixcorn wrote:
-> Under host memory pressure, a NULL pointer dereference occurs in
-> kvm_tdp_mmu_map() at offset 0x24. The exact root cause is unclear --
-> it may be an unhandled NULL return from tdp_mmu_alloc_sp(), or a
-> violated invariant elsewhere in the map path.
-
-It's pretty much guaranteed to be the latter.
-
-tdp_mmu_alloc_sp() can't fail, as KVM ensures vcpu->arch.mmu_page_header_cache
-holds enough pre-allocated entries to service the page fault.  Even if that
-invariant fails and KVM exhausts the cache, it should still be impossible for
-kvm_mmu_memory_cache_alloc() to return NULL because it will either use a fallback
-allocation (after WARNing) and succeed, or BUG_ON() and prevent hitting the NULL
-pointer deref.
-
-  void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
-  {
-	void *p;
-
-	if (WARN_ON(!mc->nobjs))
-		p = mmu_memory_cache_alloc_obj(mc, GFP_ATOMIC | __GFP_ACCOUNT);
-	else
-		p = mc->objects[--mc->nobjs];
-	BUG_ON(!p);
-	return p;
-  }
-
-And even if _that_ didn't suffice, tdp_mmu_alloc_sp() itself deferences the
-return sp, so the NULL pointer deref would happen earlier.
-
-  static struct kvm_mmu_page *tdp_mmu_alloc_sp(struct kvm_vcpu *vcpu)
-  {
-	struct kvm_mmu_page *sp;
-
-	sp = kvm_mmu_memory_cache_alloc(&vcpu->arch.mmu_page_header_cache);
-	sp->spt = kvm_mmu_memory_cache_alloc(&vcpu->arch.mmu_shadow_page_cache);
-
-	return sp;
-  }
-
-> 
-> Crash log:
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000024
->   #PF: supervisor read access in kernel mode
->   Oops: 0000 [#1] SMP NOPTI
->   CPU: 2 PID: 1110212 Comm: MainLoopThread Tainted: G U OE 6.19.10-arch1-1
->   Hardware name: Default Default/NLXB, BIOS BQ141 06/27/2024
->   RIP: 0010:kvm_tdp_mmu_map+0x471/0x880 [kvm]
->   Code: 00 00 00 80 48 2b 35 76 72 5c c8 48 c7 44 24 20 00 00 00 00 48 01 f1 48 c1 e9 0c 48 c1 e1 06 48 03 0d 4b 72 5c c8 48 8b 71 28 <0f> b6 4e 24 83 e1 0f 39 ca 0f 85 a7 02 00 00 f6 c4 08 74 26 80 7b
->   RSP: 0018:ffffce128333f790 EFLAGS: 00010286
-
-As noted in your response, I'm 99% certain this is the first derefence of the
-shadow page in tdp_mmu_map_handle_target_level():
-
-  static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
- 					  struct kvm_page_fault *fault,
-					  struct tdp_iter *iter)
-  {
-	struct kvm_mmu_page *sp = sptep_to_sp(rcu_dereference(iter->sptep));
-	u64 new_spte;
-	int ret = RET_PF_FIXED;
-	bool wrprot = false;
-
-	if (WARN_ON_ONCE(sp->role.level != fault->goal_level))  <============= "sp" is NULL
-		return RET_PF_RETRY;
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] VFIO: remove dead notifier code
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: alex@shazbot.org, linux-s390@vger.kernel.org
+References: <20260407175934.1602711-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260407175934.1602711-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDEzMiBTYWx0ZWRfXz042Nhu4tz1H
+ iquZh414eaxVlrA+hlXH/hqXBjA+7I8GXju4jhmmp7JsCKOmA31+9SB+afdIibtfBturx4BkxE7
+ RGZXA4qoB2qCefnYnx6n8ZqSV7dt+i2mOIrbIsuk+0mGTN1gq3RDr5edvTFDIlgPXg2jKQOmO0L
+ AL37rqMODiqqrunM7cOMH9d1sUaQXzjDKVpgoezSFbI9R172E8YwBth0FQxBRJtEUf/kPVTdH5/
+ LB+eNB9VKzepBHrD7Sp8AahPxwSEbHhyPgGTtLRKexdIZkIZ/VYmhy9C4ELv2jUu8V0tgDNN1JX
+ IRm918sNugNk3miaqmZ9Rm5K8r4rg3DsAduc/tYgy+Uo+AVYgQKEADvewYLyRVCSa56VDQpyt8a
+ M5HiZFvb2lGObFQJNxBHP9wDOj2dFDvrTLcNhpWoPEi7xjWGE+FkA4ln9o2tpj5seEn5BuCclj7
+ by0dlb52KYCNcEcLyng==
+X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d6678e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=20KFwNOVAAAA:8
+ a=VnNF1IyMAAAA:8 a=6L0n8PvidacnQo0FCSkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: P5wH4-URjmXRQ-XYhtN5Z6xTTj1VIZMz
+X-Proofpoint-GUID: P5wH4-URjmXRQ-XYhtN5Z6xTTj1VIZMz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-08_04,2026-04-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080132
 
 
-The code stream lines up with that on my builds, and "role" is at offset 0x24.
 
-I can think of three possible sources of failure:
+On 4/7/26 1:59 PM, Paolo Bonzini wrote:
+> group->notifier is dead code. VFIO initializes it and checks it for emptiness on
+> teardown, but nobody ever registers on it or triggers it.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-  1. KVM installed a non-leaf SPTE without doing set_page_private().
-  2. iter->sptep is corrupted/garbage.
-  3. iter->sptep points at a freed shadow page, i.e. page->private was nullified
-     due to the page being freed and/or re-allocated.
+There are two minor review comments about capitalization at the 
+beginning of
+sentences in the vfio-ap.rst document in the Documentation/arch/s390
+directory. Other than that:
 
-#1 seems unlikely as I wouldn't expect such a bug to manifest intermittently; the
-code is pretty fixed/straightforward.
+Acked-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-#2 isn't very likely either, given that it's dereferencing the shadow page that
-fails.  I.e. KVM did _not_ fail grabbing the shadow page from iter->sptep, then
-iter->sptep isn't complete garbage.  But it's still a possibility, e.g. if sptep
-is garbage but happens to still point at a valid struct page.
+> ---
+>   Documentation/arch/s390/vfio-ap.rst | 18 ++++++------------
+>   drivers/vfio/group.c                |  3 ---
+>   drivers/vfio/vfio.h                 |  1 -
+>   drivers/vfio/vfio_iommu_type1.c     |  1 -
+>   4 files changed, 6 insertions(+), 17 deletions(-)
+>
+> diff --git a/Documentation/arch/s390/vfio-ap.rst b/Documentation/arch/s390/vfio-ap.rst
+> index eba1991fbdba..2de0560bd70c 100644
+> --- a/Documentation/arch/s390/vfio-ap.rst
+> +++ b/Documentation/arch/s390/vfio-ap.rst
+> @@ -431,17 +431,14 @@ matrix device.
+>   * callback interfaces
+>   
+>     open_device:
+> -    The vfio_ap driver uses this callback to register a
+> -    VFIO_GROUP_NOTIFY_SET_KVM notifier callback function for the matrix mdev
+> -    devices. The open_device callback is invoked by userspace to connect the
+> -    VFIO iommu group for the matrix mdev device to the MDEV bus. Access to the
+> -    KVM structure used to configure the KVM guest is provided via this callback.
+> -    The KVM structure, is used to configure the guest's access to the AP matrix
+> -    defined via the vfio_ap mediated device's sysfs attribute files.
+> +    the open_device callback is invoked by userspace to connect the
 
-#3 is the most likely option; as it would "just" require a violation of RCU
-protection somewhere.
+Capitalization:
+s/the open_device callback/The open device callback/
 
-Can you run with this as a debug patch?  With luck, the output will provide some
-hint as to what's going wrong.
+> +    VFIO iommu group for the matrix mdev device to the MDEV bus.  The
+> +    callback retrieves the KVM structure used to configure the KVM guest
+> +    and configures the guest's access to the AP matrix defined via the
+> +    vfio_ap mediated device's sysfs attribute files.
+>   
+>     close_device:
+> -    unregisters the VFIO_GROUP_NOTIFY_SET_KVM notifier callback function for the
+> -    matrix mdev device and deconfigures the guest's AP matrix.
+> +    this callback deconfigures the guest's AP matrix.
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 7b1102d26f9c..0332faf8ef9a 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1174,6 +1174,17 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
-        int ret = RET_PF_FIXED;
-        bool wrprot = false;
- 
-+       if (WARN_ON_ONCE(!sp)) {
-+               pr_warn("NULL sp.  sptep = %lx, spte = %llx, pt[0] = %lx, pt[1] = %lx, pt[2] = %lx, pt[3] = %lx, pt[4] = %lx\n",
-+                       (unsigned long)iter->sptep, iter->old_spte,
-+                       (unsigned long)iter->pt_path[0],
-+                       (unsigned long)iter->pt_path[1],
-+                       (unsigned long)iter->pt_path[2],
-+                       (unsigned long)iter->pt_path[3],
-+                       (unsigned long)iter->pt_path[4]);
-+               return RET_PF_RETRY;
-+       }
-+
-        if (WARN_ON_ONCE(sp->role.level != fault->goal_level))
-                return RET_PF_RETRY;
- 
+Capitalization:
+s/this callback/This callback/
 
+>   
+>     ioctl:
+>       this callback handles the VFIO_DEVICE_GET_INFO and VFIO_DEVICE_RESET ioctls
+> @@ -449,9 +444,8 @@ matrix device.
+>   
+>   Configure the guest's AP resources
+>   ----------------------------------
+> -Configuring the AP resources for a KVM guest will be performed when the
+> -VFIO_GROUP_NOTIFY_SET_KVM notifier callback is invoked. The notifier
+> -function is called when userspace connects to KVM. The guest's AP resources are
+> +Configuring the AP resources for a KVM guest will be performed at the
+> +time of ``open_device`` and ``close_device``. The guest's AP resources are
+>   configured via its APCB by:
+>   
+>   * Setting the bits in the APM corresponding to the APIDs assigned to the
+> diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
+> index 4f15016d2a5f..731dd0dead0d 100644
+> --- a/drivers/vfio/group.c
+> +++ b/drivers/vfio/group.c
+> @@ -456,7 +456,6 @@ static int vfio_group_fops_release(struct inode *inode, struct file *filep)
+>   	 * Device FDs hold a group file reference, therefore the group release
+>   	 * is only called when there are no open devices.
+>   	 */
+> -	WARN_ON(group->notifier.head);
+>   	if (group->container)
+>   		vfio_group_detach_container(group);
+>   	if (group->iommufd) {
+> @@ -541,7 +540,6 @@ static struct vfio_group *vfio_group_alloc(struct iommu_group *iommu_group,
+>   	/* put in vfio_group_release() */
+>   	iommu_group_ref_get(iommu_group);
+>   	group->type = type;
+> -	BLOCKING_INIT_NOTIFIER_HEAD(&group->notifier);
+>   
+>   	return group;
+>   }
+> @@ -720,7 +718,6 @@ void vfio_device_remove_group(struct vfio_device *device)
+>   	 * properly hold the group reference.
+>   	 */
+>   	WARN_ON(!list_empty(&group->device_list));
+> -	WARN_ON(group->notifier.head);
+>   
+>   	/*
+>   	 * Revoke all users of group->iommu_group. At this point we know there
+> diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
+> index 50128da18bca..0854f3fa1a22 100644
+> --- a/drivers/vfio/vfio.h
+> +++ b/drivers/vfio/vfio.h
+> @@ -90,7 +90,6 @@ struct vfio_group {
+>   	struct mutex			group_lock;
+>   	struct kvm			*kvm;
+>   	struct file			*opened_file;
+> -	struct blocking_notifier_head	notifier;
+>   	struct iommufd_ctx		*iommufd;
+>   	spinlock_t			kvm_ref_lock;
+>   	unsigned int			cdev_device_open_cnt;
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index 03cefdf99a4a..c8151ba54de3 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -36,7 +36,6 @@
+>   #include <linux/uaccess.h>
+>   #include <linux/vfio.h>
+>   #include <linux/workqueue.h>
+> -#include <linux/notifier.h>
+>   #include <linux/mm_inline.h>
+>   #include <linux/overflow.h>
+>   #include "vfio.h"
 
-> Reproduction:
-> 
-> The issue was observed under heavy host memory pressure while running
-> a KVM guest (Android emulator via QEMU).
-
-Can you elaborate on the environment?  Specifically, what is your host setup?
-E.g. CPU and platform info, and your .config.
-
-> This has not been fully verified. Sending for maintainer review.
-> 
-> Environment:
->   Linux 6.19.10-arch1-1 x86_64
->   GNU C 15.2.1
->   Binutils 2.46
-> 
-> Signed-off-by: punixcorn <ohyunwoods663@gmail.com>
