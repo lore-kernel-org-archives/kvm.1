@@ -1,55 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7C53B19A1
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 18:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3833D522C
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 18:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672543; cv=none; b=Yobv/PLq0hB4IzDDqkEQPngpIXF/krEi36fVbY1tYuX/q2Yy163iZmSLLu5QAlcLwQbvFK2SUGvoRzPXVT8/Pd8loMPreFyD5IZhTc0L5i0vXajEquvg3QProK5FQk1QI/qgKXFkfekr1dBizoq93U/0ON6CXnQ9IB9bx6j4T/8=
+	t=1775672546; cv=none; b=fr/3SJmhqHPa7cLqP65JV8FUZ56yGqk7tKXUigda6z/O/canb0hS5Gj+RV8/XiH91UbArADIIgQtVGgDwNgOWQUKKSJrAV51mX16KnzUrn4Ez1UL76QhmshxcyZBJaeHCFdc65CFHJNo6vBPGmLTahzLujwiH27jVhrMRmmyE8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672543; c=relaxed/simple;
-	bh=+B6uJp30XVb4QtEZB1/s2I2efJW9ubVPLc9UdlwT1eY=;
+	s=arc-20240116; t=1775672546; c=relaxed/simple;
+	bh=nUqrBWeXfG9HLCddqvAosufgQMY5yXV/dnUFQRz3KUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=owRrIhEsXSRKGEeVEV0owlLhZomj7YFzFmeBRZ6Y39OnaGfWcy6/ey3/fZ3PJpRtrtpQk5FPnAP55jZnZaynQ25aPHM7a9gXRHq5llShlMOCgInFQiRPVvCKsBIYohow9HRIxTZbn0q2La82tC0EPMzZb7EKRvuUiO38FFQVcsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gVkVNxF9; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=hg7OReMBHtPJsg77xPOvKEbw/isS+3GgIV/AeGps1f8yfIru0YKjpITNHVcJ1tEjwAQ69QUE31wVnMtyMqXow9t16AE7dfNGanXZG0czheA2hcMuVQ1L+m145fU8vzH/LnrfII/udWvdPLi5CkJ4zJW+q57sEtHsWtRe5OYjsa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=adbeuhfL; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gVkVNxF9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="adbeuhfL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775672540;
+	s=mimecast20190719; t=1775672544;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Xleidnph+NUshh5pvUls0SU0uJehr12XDnRVHezXhPQ=;
-	b=gVkVNxF9f6tIeSmUvM0cnvPfdimsFgM8adTURHHuhRE1WidHcTRBkDQZkhVaB9Ty8VeDqG
-	GkvYLO+WRCvAlGP+ezD193Q9+sh8PRazlH0aAjHChQR7kIA9NU/3TFmJK3aDYtA9GxjL1V
-	FVmUPzdCv0xq6LnaPSXJ8n0IgG1V4Sk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=utRJDEDUt40XYoA1dmLdZdoz1BpbTCbac6tFrHskUNg=;
+	b=adbeuhfL15MwURRMeu9bOeTxPZqfR6hsAp8/fp5ZLyIXUt6jEubPgsdW9qw4dJ+M+TDw7w
+	Caw6SlMbZYo0P6e2URGXVrmne4jKsWi9RZmSRAxIxRas6ZXygbGHafwqvpUJXbAsY+Phqu
+	scj+dYYafUePPwu9xyLG1CyjiYP2em4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-afIGGmNnN8u446X6GB901A-1; Wed,
- 08 Apr 2026 14:22:17 -0400
-X-MC-Unique: afIGGmNnN8u446X6GB901A-1
-X-Mimecast-MFC-AGG-ID: afIGGmNnN8u446X6GB901A_1775672536
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-1_wbkni1PXm0sS_WpeI5bw-1; Wed,
+ 08 Apr 2026 14:22:21 -0400
+X-MC-Unique: 1_wbkni1PXm0sS_WpeI5bw-1
+X-Mimecast-MFC-AGG-ID: 1_wbkni1PXm0sS_WpeI5bw_1775672539
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D9C121956058;
-	Wed,  8 Apr 2026 18:22:15 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F04EA1955DE3;
+	Wed,  8 Apr 2026 18:22:18 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4F74E19560A6;
-	Wed,  8 Apr 2026 18:22:15 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 697231955D6C;
+	Wed,  8 Apr 2026 18:22:18 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH 1/7] KVM: VMX: remove regs argument of __vmx_vcpu_run
-Date: Wed,  8 Apr 2026 14:22:07 -0400
-Message-ID: <20260408182213.522713-2-pbonzini@redhat.com>
+Subject: [PATCH 5/7] KVM: SVM: extract RESTORE_*_SPEC_CTRL_BODY out of svm/vmenter.S
+Date: Wed,  8 Apr 2026 14:22:11 -0400
+Message-ID: <20260408182213.522713-6-pbonzini@redhat.com>
 In-Reply-To: <20260408182213.522713-1-pbonzini@redhat.com>
 References: <20260408182213.522713-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,201 +62,171 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Registers are reachable through vcpu_vmx, no need to pass
-a separate pointer to the regs[] array.
-
-No functional change intended.
+Pure code movement, in preparation for using these macros for
+VMX as well.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/kvm-asm-offsets.c |  1 +
- arch/x86/kvm/vmx/vmenter.S     | 58 +++++++++++++++-------------------
- arch/x86/kvm/vmx/vmx.c         |  3 +-
- arch/x86/kvm/vmx/vmx.h         |  3 +-
- 4 files changed, 28 insertions(+), 37 deletions(-)
+ arch/x86/kvm/svm/vmenter.S | 62 ----------------------------------
+ arch/x86/kvm/vmenter.h     | 68 +++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 67 insertions(+), 63 deletions(-)
 
-diff --git a/arch/x86/kvm/kvm-asm-offsets.c b/arch/x86/kvm/kvm-asm-offsets.c
-index 24a710d37323..36ac61724dd7 100644
---- a/arch/x86/kvm/kvm-asm-offsets.c
-+++ b/arch/x86/kvm/kvm-asm-offsets.c
-@@ -24,6 +24,7 @@ static void __used common(void)
+diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
+index 545dc55582bf..67a05fe9827e 100644
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -41,35 +41,6 @@
+ 		"jmp 800f", X86_FEATURE_MSR_SPEC_CTRL, \
+ 		"", X86_FEATURE_V_SPEC_CTRL
+ .endm
+-.macro RESTORE_GUEST_SPEC_CTRL_BODY guest_spec_ctrl:req, label:req
+-	/*
+-	 * SPEC_CTRL handling: if the guest's SPEC_CTRL value differs from the
+-	 * host's, write the MSR.  This is kept out-of-line so that the common
+-	 * case does not have to jump.
+-	 *
+-	 * IMPORTANT: To avoid RSB underflow attacks and any other nastiness,
+-	 * there must not be any returns or indirect branches between this code
+-	 * and vmentry.
+-	 */
+-#ifdef CONFIG_X86_64
+-	mov \guest_spec_ctrl, %rdx
+-	cmp PER_CPU_VAR(x86_spec_ctrl_current), %rdx
+-	je \label
+-	movl %edx, %eax
+-	shr $32, %rdx
+-#else
+-	mov \guest_spec_ctrl, %eax
+-	mov PER_CPU_VAR(x86_spec_ctrl_current), %ecx
+-	xor %eax, %ecx
+-	mov 4 + \guest_spec_ctrl, %edx
+-	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %esi
+-	xor %edx, %esi
+-	or %esi, %ecx
+-	je \label
+-#endif
+-	mov $MSR_IA32_SPEC_CTRL, %ecx
+-	wrmsr
+-.endm
  
- 	if (IS_ENABLED(CONFIG_KVM_INTEL)) {
- 		BLANK();
-+		OFFSET(VMX_vcpu_arch_regs, vcpu_vmx, vcpu.arch.regs);
- 		OFFSET(VMX_spec_ctrl, vcpu_vmx, spec_ctrl);
- 	}
- }
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 4426d34811fc..3530c5b7b729 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -11,24 +11,24 @@
- 
- #define WORD_SIZE (BITS_PER_LONG / 8)
- 
--#define VCPU_RAX	__VCPU_REGS_RAX * WORD_SIZE
--#define VCPU_RCX	__VCPU_REGS_RCX * WORD_SIZE
--#define VCPU_RDX	__VCPU_REGS_RDX * WORD_SIZE
--#define VCPU_RBX	__VCPU_REGS_RBX * WORD_SIZE
-+#define VCPU_RAX	(VMX_vcpu_arch_regs + __VCPU_REGS_RAX * WORD_SIZE)
-+#define VCPU_RCX	(VMX_vcpu_arch_regs + __VCPU_REGS_RCX * WORD_SIZE)
-+#define VCPU_RDX	(VMX_vcpu_arch_regs + __VCPU_REGS_RDX * WORD_SIZE)
-+#define VCPU_RBX	(VMX_vcpu_arch_regs + __VCPU_REGS_RBX * WORD_SIZE)
- /* Intentionally omit RSP as it's context switched by hardware */
--#define VCPU_RBP	__VCPU_REGS_RBP * WORD_SIZE
--#define VCPU_RSI	__VCPU_REGS_RSI * WORD_SIZE
--#define VCPU_RDI	__VCPU_REGS_RDI * WORD_SIZE
-+#define VCPU_RBP	(VMX_vcpu_arch_regs + __VCPU_REGS_RBP * WORD_SIZE)
-+#define VCPU_RSI	(VMX_vcpu_arch_regs + __VCPU_REGS_RSI * WORD_SIZE)
-+#define VCPU_RDI	(VMX_vcpu_arch_regs + __VCPU_REGS_RDI * WORD_SIZE)
- 
- #ifdef CONFIG_X86_64
--#define VCPU_R8		__VCPU_REGS_R8  * WORD_SIZE
--#define VCPU_R9		__VCPU_REGS_R9  * WORD_SIZE
--#define VCPU_R10	__VCPU_REGS_R10 * WORD_SIZE
--#define VCPU_R11	__VCPU_REGS_R11 * WORD_SIZE
--#define VCPU_R12	__VCPU_REGS_R12 * WORD_SIZE
--#define VCPU_R13	__VCPU_REGS_R13 * WORD_SIZE
--#define VCPU_R14	__VCPU_REGS_R14 * WORD_SIZE
--#define VCPU_R15	__VCPU_REGS_R15 * WORD_SIZE
-+#define VCPU_R8		(VMX_vcpu_arch_regs + __VCPU_REGS_R8  * WORD_SIZE)
-+#define VCPU_R9		(VMX_vcpu_arch_regs + __VCPU_REGS_R9  * WORD_SIZE)
-+#define VCPU_R10	(VMX_vcpu_arch_regs + __VCPU_REGS_R10 * WORD_SIZE)
-+#define VCPU_R11	(VMX_vcpu_arch_regs + __VCPU_REGS_R11 * WORD_SIZE)
-+#define VCPU_R12	(VMX_vcpu_arch_regs + __VCPU_REGS_R12 * WORD_SIZE)
-+#define VCPU_R13	(VMX_vcpu_arch_regs + __VCPU_REGS_R13 * WORD_SIZE)
-+#define VCPU_R14	(VMX_vcpu_arch_regs + __VCPU_REGS_R14 * WORD_SIZE)
-+#define VCPU_R15	(VMX_vcpu_arch_regs + __VCPU_REGS_R15 * WORD_SIZE)
- #endif
- 
- .macro VMX_DO_EVENT_IRQOFF call_insn call_target
-@@ -68,7 +68,6 @@
- /**
-  * __vmx_vcpu_run - Run a vCPU via a transition to VMX guest mode
-  * @vmx:	struct vcpu_vmx *
-- * @regs:	unsigned long * (to guest registers)
-  * @flags:	VMX_RUN_VMRESUME:	use VMRESUME instead of VMLAUNCH
-  *		VMX_RUN_SAVE_SPEC_CTRL: save guest SPEC_CTRL into vmx->spec_ctrl
-  *		VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO: vCPU can access host MMIO
-@@ -94,12 +93,6 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	push %_ASM_ARG1
- 
- 	/* Save @flags (used for VMLAUNCH vs. VMRESUME and mitigations). */
--	push %_ASM_ARG3
+ .macro RESTORE_HOST_SPEC_CTRL
+ 	/* No need to do anything if SPEC_CTRL is unset or V_SPEC_CTRL is set */
+@@ -77,39 +48,6 @@
+ 		"jmp 900f", X86_FEATURE_MSR_SPEC_CTRL, \
+ 		"", X86_FEATURE_V_SPEC_CTRL
+ .endm
+-.macro RESTORE_HOST_SPEC_CTRL_BODY guest_spec_ctrl:req, enter_flags:req, label:req
+-	/* Same for after vmexit.  */
+-	mov $MSR_IA32_SPEC_CTRL, %ecx
 -
 -	/*
--	 * Save @regs, _ASM_ARG2 may be modified by vmx_update_host_rsp() and
--	 * @regs is needed after VM-Exit to save the guest's register values.
+-	 * Load the value that the guest had written into MSR_IA32_SPEC_CTRL,
+-	 * if it was not intercepted during guest execution.
 -	 */
- 	push %_ASM_ARG2
+-	testl $KVM_ENTER_SAVE_SPEC_CTRL, \enter_flags
+-	jnz 998f
+-	rdmsr
+-	movl %eax, \guest_spec_ctrl
+-	movl %edx, 4 + \guest_spec_ctrl
+-998:
+-	/* Now restore the host value of the MSR if different from the guest's.  */
+-#ifdef CONFIG_X86_64
+-	mov PER_CPU_VAR(x86_spec_ctrl_current), %rdx
+-	cmp \guest_spec_ctrl, %rdx
+-	je \label
+-	movl %edx, %eax
+-	shr $32, %rdx
+-#else
+-	mov PER_CPU_VAR(x86_spec_ctrl_current), %eax
+-	mov \guest_spec_ctrl, %esi
+-	xor %eax, %esi
+-	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %edx
+-	mov 4 + \guest_spec_ctrl, %edi
+-	xor %edx, %edi
+-	or %edi, %esi
+-	je \label
+-#endif
+-	wrmsr
+-.endm
  
- 	lea (%_ASM_SP), %_ASM_ARG2
-@@ -107,6 +100,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ #define SVM_CLEAR_CPU_BUFFERS \
+ 	ALTERNATIVE "", __CLEAR_CPU_BUFFERS, X86_FEATURE_CLEAR_CPU_BUF_VM
+diff --git a/arch/x86/kvm/vmenter.h b/arch/x86/kvm/vmenter.h
+index 29cdae650069..e746e1328d3f 100644
+--- a/arch/x86/kvm/vmenter.h
++++ b/arch/x86/kvm/vmenter.h
+@@ -6,4 +6,70 @@
+ #define KVM_ENTER_SAVE_SPEC_CTRL		BIT(1)
+ #define KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO	BIT(2)
  
- 	ALTERNATIVE "jmp .Lspec_ctrl_done", "", X86_FEATURE_MSR_SPEC_CTRL
- 
-+	/* Reload @vmx, _ASM_ARG1 may be modified by vmx_update_host_rsp().  */
-+	mov WORD_SIZE(%_ASM_SP), %_ASM_DI
+-#endif /* __KVM_X86_VMENTER_H */
++#ifdef __ASSEMBLER__
++.macro RESTORE_GUEST_SPEC_CTRL_BODY guest_spec_ctrl:req, label:req
++	/*
++	 * SPEC_CTRL handling: if the guest's SPEC_CTRL value differs from the
++	 * host's, write the MSR.  This is kept out-of-line so that the common
++	 * case does not have to jump.
++	 *
++	 * IMPORTANT: To avoid RSB underflow attacks and any other nastiness,
++	 * there must not be any returns or indirect branches between this code
++	 * and vmentry.
++	 */
++#ifdef CONFIG_X86_64
++	mov \guest_spec_ctrl, %rdx
++	cmp PER_CPU_VAR(x86_spec_ctrl_current), %rdx
++	je \label
++	movl %edx, %eax
++	shr $32, %rdx
++#else
++	mov \guest_spec_ctrl, %eax
++	mov PER_CPU_VAR(x86_spec_ctrl_current), %ecx
++	xor %eax, %ecx
++	mov 4 + \guest_spec_ctrl, %edx
++	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %esi
++	xor %edx, %esi
++	or %esi, %ecx
++	je \label
++#endif
++	mov $MSR_IA32_SPEC_CTRL, %ecx
++	wrmsr
++.endm
 +
- 	/*
- 	 * SPEC_CTRL handling: if the guest's SPEC_CTRL value differs from the
- 	 * host's, write the MSR.
-@@ -115,7 +111,6 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * there must not be any returns or indirect branches between this code
- 	 * and vmentry.
- 	 */
--	mov 2*WORD_SIZE(%_ASM_SP), %_ASM_DI
- #ifdef CONFIG_X86_64
- 	mov VMX_spec_ctrl(%rdi), %rdx
- 	cmp PER_CPU_VAR(x86_spec_ctrl_current), %rdx
-@@ -142,8 +137,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * an LFENCE to stop speculation from skipping the wrmsr.
- 	 */
- 
--	/* Load @regs to RAX. */
--	mov (%_ASM_SP), %_ASM_AX
-+	/* Load @vmx to RAX. */
-+	mov WORD_SIZE(%_ASM_SP), %_ASM_AX
- 
- 	/* Load guest registers.  Don't clobber flags. */
- 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
-@@ -162,7 +157,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	mov VCPU_R14(%_ASM_AX), %r14
- 	mov VCPU_R15(%_ASM_AX), %r15
- #endif
--	/* Load guest RAX.  This kills the @regs pointer! */
-+	/* Load guest RAX.  This kills the @vmx pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
- 
- 	/*
-@@ -172,7 +167,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * do VERW.  Else, do nothing (no mitigations needed/enabled).
- 	 */
- 	ALTERNATIVE_2 "",									  \
--		      __stringify(testl $VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO, WORD_SIZE(%_ASM_SP); \
-+		      __stringify(testl $VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO, (%_ASM_SP);	  \
- 				  jz .Lskip_mmio_verw;						  \
- 				  VERW;								  \
- 				  .Lskip_mmio_verw:),					  	  \
-@@ -180,7 +175,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 		      __stringify(VERW), X86_FEATURE_CLEAR_CPU_BUF_VM
- 
- 	/* Check @flags to see if VMLAUNCH or VMRESUME is needed. */
--	testl $VMX_RUN_VMRESUME, WORD_SIZE(%_ASM_SP)
-+	testl $VMX_RUN_VMRESUME, (%_ASM_SP)
- 	jz .Lvmlaunch
- 
- 	/*
-@@ -215,8 +210,8 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	/* Temporarily save guest's RAX. */
- 	push %_ASM_AX
- 
--	/* Reload @regs to RAX. */
--	mov WORD_SIZE(%_ASM_SP), %_ASM_AX
-+	/* Reload @vmx to RAX. */
-+	mov 2*WORD_SIZE(%_ASM_SP), %_ASM_AX
- 
- 	/* Save all guest registers, including RAX from the stack */
- 	pop           VCPU_RAX(%_ASM_AX)
-@@ -241,9 +236,6 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	xor %ebx, %ebx
- 
- .Lclear_regs:
--	/* Discard @regs.  The register is irrelevant, it just can't be RBX. */
--	pop %_ASM_AX
--
- 	/*
- 	 * Clear all general purpose registers except RSP and RBX to prevent
- 	 * speculative use of the guest's values, even those that are reloaded
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 8b24e682535b..054542ff0d02 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7577,8 +7577,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	if (vcpu->arch.cr2 != native_read_cr2())
- 		native_write_cr2(vcpu->arch.cr2);
- 
--	vmx->fail = __vmx_vcpu_run(vmx, (unsigned long *)&vcpu->arch.regs,
--				   flags);
-+	vmx->fail = __vmx_vcpu_run(vmx, flags);
- 
- 	vcpu->arch.cr2 = native_read_cr2();
- 	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 70bfe81dea54..f963cb2982c9 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -373,8 +373,7 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu);
- void vmx_update_host_rsp(struct vcpu_vmx *vmx, unsigned long host_rsp);
- void vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx, unsigned int flags);
- unsigned int __vmx_vcpu_run_flags(struct vcpu_vmx *vmx);
--bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned long *regs,
--		    unsigned int flags);
-+bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned int flags);
- void vmx_ept_load_pdptrs(struct kvm_vcpu *vcpu);
- 
- void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool set);
++.macro RESTORE_HOST_SPEC_CTRL_BODY guest_spec_ctrl:req, enter_flags:req, label:req
++	/* Same for after vmexit.  */
++	mov $MSR_IA32_SPEC_CTRL, %ecx
++
++	/*
++	 * Load the value that the guest had written into MSR_IA32_SPEC_CTRL,
++	 * if it was not intercepted during guest execution.
++	 */
++	testl $KVM_ENTER_SAVE_SPEC_CTRL, \enter_flags
++	jnz 998f
++	rdmsr
++	movl %eax, \guest_spec_ctrl
++	movl %edx, 4 + \guest_spec_ctrl
++998:
++	/* Now restore the host value of the MSR if different from the guest's.  */
++#ifdef CONFIG_X86_64
++	mov PER_CPU_VAR(x86_spec_ctrl_current), %rdx
++	cmp \guest_spec_ctrl, %rdx
++	je \label
++	movl %edx, %eax
++	shr $32, %rdx
++#else
++	mov PER_CPU_VAR(x86_spec_ctrl_current), %eax
++	mov \guest_spec_ctrl, %esi
++	xor %eax, %esi
++	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %edx
++	mov 4 + \guest_spec_ctrl, %edi
++	xor %edx, %edi
++	or %edi, %esi
++	je \label
++#endif
++	wrmsr
++.endm
++
++#endif /* __ASSEMBLER__ */
++#endif /* __KVM_X86_ENTER_FLAGS_H */
 -- 
 2.52.0
 
