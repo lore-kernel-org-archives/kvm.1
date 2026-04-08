@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2643D9DD2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9C63D75C3
 	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 18:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672548; cv=none; b=AP5QKTRpMcjKOzckza/H0fwX95FCvHCXRpSsMUz7UGcRW3b1bV1+Us91BdpdunD6RMjJv35Y4nPDAyCuPn+DFZaaeE/+SGFuHeO24Iz7ZvGv80VtwDmXTo6iUdljYzju41PzveaLCVtJK+Ph93u5wSspNMAIdcxOC8QHAl2UCoE=
+	t=1775672548; cv=none; b=YyKbYxqG0WHyk/Je1fRcynaLwmzl5Z+Ev5+CHPkmkNKxkzSbKkIYlr9GRh8f6Gt6PdoKhdrRoiiUnJh9EtgsiF2U2gFtsTCC5yuQG+JdSD3+5/1TNdrDDAsKU7UeQxQTZIzNG8C07uSRol70D/QjfnIgDryDx8SvLmEyFqFXc8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775672548; c=relaxed/simple;
-	bh=sxVvvF7VVW9sDO+Z1b5JFHKhHYt0RWjuEL+Xbt386Z4=;
+	bh=SMWaakQdG8v8qnJYS8hgA/X3zjMLR3elSRIZKhk76d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jnk3E1GsV912WIIWC7PLD5eJmujO0fVx4dra9BCN4B7HO4bKl4WtzgJ3lz8YjRwwwSJKZcQd+WRo1WW+YzinbwpSahqSxEUWto6X4rdz6jhh/WQQK9FZ5soczyONQwU20U1XCCxn5O92wDY8VpkSFV2eR/PnX4qEhszNRDSaXZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X7UIX0Iw; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=nZApjcIIGUv8Q+wBn3B5FI0PowyE92BSm1yCQQ+w939TrBKgX3DHCpTvxBhyUgTBnpfTdso/UXoTJG7Cbq4P2leuoy7VYTdGabi12Vc4rMMnOOA8wMz21iZRH5XFk7RFPQ8fwyvBq1PA5ZeUbnFKBFk2CiJkreHucRQU/lPw8fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S3A1QVVf; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X7UIX0Iw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S3A1QVVf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1775672546;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MNO0/3n9B+Qzk4y+UjdgKHduanoKZMiB6XbuLsFUjGE=;
-	b=X7UIX0IwhgaQ0KT5ZvA7+2ISeEIXHIwzoWw4gioZPTuPiPUINmYyl2LWOmu5erGG9Y2ud0
-	1QLvbBl9gGYJkPi616SEgUGV4IxlrwuGyGHL3hQTcpwkiKxAOu1cSb/Ah+TCTem3yh/vUd
-	MuC1No71EbPjarbh+9vor7oX2uC6dYk=
+	bh=XpD7XUIH/aJ98uDRklM9NUpHLaSPhnqbG4dNKJV4vrg=;
+	b=S3A1QVVfuG6k9CqXO1hpgosA5qAU8+Eh5499e9f7zxvmfTNsCdl27LjvstDx+3lIRqWeJb
+	nAIVdM5iES+8bId6Romh0JB4DTf/jlLbya0kVExxSu72G8hIjDxY96vhJMzX166w41s7hc
+	Twtu0Txf0NPpQW5pY8grDgMr2RTBWEg=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-153-c1w--ndnNoKa66J4vo2v3w-1; Wed,
- 08 Apr 2026 14:22:23 -0400
-X-MC-Unique: c1w--ndnNoKa66J4vo2v3w-1
-X-Mimecast-MFC-AGG-ID: c1w--ndnNoKa66J4vo2v3w_1775672539
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-7hNTWQXcMziEp-qCKzMdKg-1; Wed,
+ 08 Apr 2026 14:22:22 -0400
+X-MC-Unique: 7hNTWQXcMziEp-qCKzMdKg-1
+X-Mimecast-MFC-AGG-ID: 7hNTWQXcMziEp-qCKzMdKg_1775672537
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B497319560B0;
-	Wed,  8 Apr 2026 18:22:19 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 916D31955F35;
+	Wed,  8 Apr 2026 18:22:17 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 234F819560A6;
-	Wed,  8 Apr 2026 18:22:19 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 011941955F2B;
+	Wed,  8 Apr 2026 18:22:16 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH 6/7] KVM: VMX: switch to RESTORE_GUEST_SPEC_CTRL_BODY
-Date: Wed,  8 Apr 2026 14:22:12 -0400
-Message-ID: <20260408182213.522713-7-pbonzini@redhat.com>
+Subject: [PATCH 3/7] KVM: SVM: prepare for making SPEC_CTRL switch common with VMX
+Date: Wed,  8 Apr 2026 14:22:09 -0400
+Message-ID: <20260408182213.522713-4-pbonzini@redhat.com>
 In-Reply-To: <20260408182213.522713-1-pbonzini@redhat.com>
 References: <20260408182213.522713-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,57 +62,172 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-This has exactly the same expansion, so there is no change.
+Remove the local labels and restrict RESTORE_*_BODY to just
+the restore code itself.  Since the alternatives are different
+between VMX and SVM, having labels in the per-vendor file and
+jumps in another would be too confusing.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/vmx/vmenter.S | 31 ++++---------------------------
- 1 file changed, 4 insertions(+), 27 deletions(-)
+ arch/x86/kvm/svm/vmenter.S | 54 +++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index bed5a753166b..f3240a3ff8f5 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -101,35 +101,12 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	/* Reload @vmx, _ASM_ARG1 may be modified by vmx_update_host_rsp().  */
- 	mov WORD_SIZE(%_ASM_SP), %_ASM_DI
- 
--	ALTERNATIVE "jmp .Lspec_ctrl_done", "", X86_FEATURE_MSR_SPEC_CTRL
--
+diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
+index 3392bcadfb89..f4ea862652d8 100644
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -39,10 +39,8 @@
+ 	ALTERNATIVE_2 "", \
+ 		"jmp 800f", X86_FEATURE_MSR_SPEC_CTRL, \
+ 		"", X86_FEATURE_V_SPEC_CTRL
+-801:
+ .endm
+-.macro RESTORE_GUEST_SPEC_CTRL_BODY
+-800:
++.macro RESTORE_GUEST_SPEC_CTRL_BODY guest_spec_ctrl:req, label:req
  	/*
--	 * SPEC_CTRL handling: if the guest's SPEC_CTRL value differs from the
--	 * host's, write the MSR.
--	 *
--	 * IMPORTANT: To avoid RSB underflow attacks and any other nastiness,
--	 * there must not be any returns or indirect branches between this code
--	 * and vmentry.
-+	 * Unlike AMD there's no V_SPEC_CTRL here, so do not leave the body
-+	 * out of line.  Clobbers RAX, RCX, RDX, RSI.
+ 	 * SPEC_CTRL handling: if the guest's SPEC_CTRL value differs from the
+ 	 * host's, write the MSR.  This is kept out-of-line so that the common
+@@ -53,24 +51,23 @@
+ 	 * and vmentry.
  	 */
--#ifdef CONFIG_X86_64
--	mov VMX_spec_ctrl(%rdi), %rdx
--	cmp PER_CPU_VAR(x86_spec_ctrl_current), %rdx
--	je .Lspec_ctrl_done
--	movl %edx, %eax
--	shr $32, %rdx
--#else
--	mov VMX_spec_ctrl(%edi), %eax
--	mov PER_CPU_VAR(x86_spec_ctrl_current), %ecx
--	xor %eax, %ecx
--	mov VMX_spec_ctrl + 4(%edi), %edx
--	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %esi
--	xor %edx, %esi
--	or %esi, %ecx
--	je .Lspec_ctrl_done
--#endif
--	mov $MSR_IA32_SPEC_CTRL, %ecx
--	wrmsr
--
-+	ALTERNATIVE "jmp .Lspec_ctrl_done", "", X86_FEATURE_MSR_SPEC_CTRL
-+	RESTORE_GUEST_SPEC_CTRL_BODY VMX_spec_ctrl(%_ASM_DI), .Lspec_ctrl_done
- .Lspec_ctrl_done:
+ #ifdef CONFIG_X86_64
+-	mov SVM_spec_ctrl(%rdi), %rdx
++	mov \guest_spec_ctrl, %rdx
+ 	cmp PER_CPU_VAR(x86_spec_ctrl_current), %rdx
+-	je 801b
++	je \label
+ 	movl %edx, %eax
+ 	shr $32, %rdx
+ #else
+-	mov SVM_spec_ctrl(%edi), %eax
++	mov \guest_spec_ctrl, %eax
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current), %ecx
+ 	xor %eax, %ecx
+-	mov SVM_spec_ctrl + 4(%edi), %edx
++	mov 4 + \guest_spec_ctrl, %edx
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %esi
+ 	xor %edx, %esi
+ 	or %esi, %ecx
+-	je 801b
++	je \label
+ #endif
+ 	mov $MSR_IA32_SPEC_CTRL, %ecx
+ 	wrmsr
+-	jmp 801b
+ .endm
+ 
+ .macro RESTORE_HOST_SPEC_CTRL
+@@ -78,10 +75,8 @@
+ 	ALTERNATIVE_2 "", \
+ 		"jmp 900f", X86_FEATURE_MSR_SPEC_CTRL, \
+ 		"", X86_FEATURE_V_SPEC_CTRL
+-901:
+ .endm
+-.macro RESTORE_HOST_SPEC_CTRL_BODY spec_ctrl_intercepted:req
+-900:
++.macro RESTORE_HOST_SPEC_CTRL_BODY guest_spec_ctrl:req, spec_ctrl_intercepted:req, label:req
+ 	/* Same for after vmexit.  */
+ 	mov $MSR_IA32_SPEC_CTRL, %ecx
+ 
+@@ -92,28 +87,27 @@
+ 	cmpb $0, \spec_ctrl_intercepted
+ 	jnz 998f
+ 	rdmsr
+-	movl %eax, SVM_spec_ctrl(%_ASM_DI)
+-	movl %edx, SVM_spec_ctrl + 4(%_ASM_DI)
++	movl %eax, \guest_spec_ctrl
++	movl %edx, 4 + \guest_spec_ctrl
+ 998:
+ 	/* Now restore the host value of the MSR if different from the guest's.  */
+ #ifdef CONFIG_X86_64
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current), %rdx
+-	cmp SVM_spec_ctrl(%rdi), %rdx
+-	je 901b
++	cmp \guest_spec_ctrl, %rdx
++	je \label
+ 	movl %edx, %eax
+ 	shr $32, %rdx
+ #else
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current), %eax
+-	mov SVM_spec_ctrl(%edi), %esi
++	mov \guest_spec_ctrl, %esi
+ 	xor %eax, %esi
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %edx
+-	mov SVM_spec_ctrl + 4(%edi), %edi
++	mov 4 + \guest_spec_ctrl, %edi
+ 	xor %edx, %edi
+ 	or %edi, %esi
+-	je 901b
++	je \label
+ #endif
+ 	wrmsr
+-	jmp 901b
+ .endm
+ 
+ #define SVM_CLEAR_CPU_BUFFERS \
+@@ -162,6 +156,7 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 
+ 	/* Clobbers RAX, RCX, RDX (and ESI on 32-bit), consumes RDI (@svm). */
+ 	RESTORE_GUEST_SPEC_CTRL
++801:
  
  	/*
+ 	 * Use a single vmcb (vmcb01 because it's always valid) for
+@@ -242,6 +237,7 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	 * and RSP (pointer to @spec_ctrl_intercepted).
+ 	 */
+ 	RESTORE_HOST_SPEC_CTRL
++901:
+ 
+ 	/*
+ 	 * Mitigate RETBleed for AMD/Hygon Zen uarch. RET should be
+@@ -295,8 +291,12 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	pop %_ASM_BP
+ 	RET
+ 
+-	RESTORE_GUEST_SPEC_CTRL_BODY
+-	RESTORE_HOST_SPEC_CTRL_BODY (%_ASM_SP)
++800:
++	RESTORE_GUEST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), 801b
++	jmp 801b
++900:
++	RESTORE_HOST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), (%_ASM_SP), 901b
++	jmp 901b
+ 
+ 10:	cmpb $0, _ASM_RIP(kvm_rebooting)
+ 	jne 2b
+@@ -362,6 +362,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 
+ 	/* Clobbers RAX, RCX, and RDX (@hostsa), consumes RDI (@svm). */
+ 	RESTORE_GUEST_SPEC_CTRL
++801:
+ 
+ 	/* Get svm->current_vmcb->pa into RAX. */
+ 	mov SVM_current_vmcb(%rdi), %rax
+@@ -378,6 +379,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 
+ 	/* Clobbers RAX, RCX, RDX, consumes RDI (@svm) and RSI (@spec_ctrl_intercepted). */
+ 	RESTORE_HOST_SPEC_CTRL
++901:
+ 
+ 	/*
+ 	 * Mitigate RETBleed for AMD/Hygon Zen uarch. RET should be
+@@ -391,8 +393,12 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	FRAME_END
+ 	RET
+ 
+-	RESTORE_GUEST_SPEC_CTRL_BODY
+-	RESTORE_HOST_SPEC_CTRL_BODY %sil
++800:
++	RESTORE_GUEST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), 801b
++	jmp 801b
++900:
++	RESTORE_HOST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), %sil, 901b
++	jmp 901b
+ 
+ 3:	cmpb $0, kvm_rebooting(%rip)
+ 	jne 2b
 -- 
 2.52.0
 
