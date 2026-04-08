@@ -1,96 +1,107 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C553187346
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63B5258EE1
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775607345; cv=none; b=gakSE5z4DQ3NcJbf0wXqADdJnRv6hgTPngAXLUL9GfGmTz6nZVl5Dz3kVyxPfdrvkijATdKGrn0XwULYv2eefn7zD1PDeEICXswWqFDEEa/sQskGKsFBaBps1M5RT0gJcEaYf/IMZawAGODn9Dx6y3YV9W2BQXL7XjY6aHsdiRU=
+	t=1775608257; cv=none; b=FfUAWSYrbZB9oRmcVXHmua+rKSEXbDFmDq9ac6Jda6oGJaFIzQAjmgKBk9hn6SPJe30waDimCfwateeyC9Fqw6OZABHujKpgbuf+rnkN2Q1ftKFzQ/FyL136dl0FyRM1pcs17LP8/PtYhgFRbdFfsUlp8dUTyXYsN6C98nMBHdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775607345; c=relaxed/simple;
-	bh=0znJrYjvCQG1pTkK1jGXLvlNAbNa2nYLKo91Wtn6lyM=;
+	s=arc-20240116; t=1775608257; c=relaxed/simple;
+	bh=G4jHI2eapDTczs0oy4UnD8MZCHy7EzO8BQVLhWUdebk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lINz1CWNtM/NyL9Q0dXP/w0QbjqCnJ5XV2MQ+IgXm/1Q442UAfJ0H88RO7C6GxGgHlAYQdgW3TpEkxXzlkUC7sg2WLmrkz5ZmyHWC+zZ+RFiQ/5RLN3E2r9VfoPh+Ehy8HPhhnW5qdbLsSkGYndw83LI4p3uQEHxvfOX/55hQn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f7205h9g; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=u1X1seZDTCPCflkJnTstFbxw79bH3KblXhswcSU8aRiEWm0g+Q6DyYRAo5A7kx8G55c7m3AnY9IlyKuxIC6hLkY1KB0EOggZc1syI7F2wn+5KfNVAvH+5nq77G8LwP7TY6DR6eoH3MihmPYMWkdzqIADIqgN+wMRaiJz/eIMOnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M+9UEBLT; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f7205h9g"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b6097ca315bso9030769a12.3
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:15:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M+9UEBLT"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82cdf02bce5so3460322b3a.2
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:30:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775607343; x=1776212143; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775608256; x=1776213056; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hgIJb1V3vT7GN0oyHj5tFQZZtxJZbHWkMCgOqejkkVU=;
-        b=f7205h9g+7HmpA//Ol2Ao/QVkqxaeaY712Iq6aqL3oElcB9f9Y926urx3tOwGH6ib0
-         hylyy9aaaD0ymG1wdHLgeougTgcsHjfArabb4HzzbAg0e5Kr/UNW2siMvwpoa5sf54ay
-         9WhSy7R1x33iqFuRD2HZSmTGR1MmnfgwfmthM24Qs48dNjDiDXa62AZC22l1fJxRiDtu
-         ylLCfoSZ4JXa8wW8qH0wX9bMOgSF6jkLRt99vci3E6jGsKqu5h/V8y7Gx0buvJ6/GMxP
-         Cd/O42emtY3vD5qXEBYtCywhUBkvqNHEsQLEyrWaS6GWu3l20zW6vlB3cWRmxUnMiyZL
-         Pqtg==
+        bh=yxNq84u8TlwsmIxTYoSXMB/rB8U2PkuGcR9W+hscQl8=;
+        b=M+9UEBLTFlYEUKoqvJaLys8+SPGVPSVk57e221VjdN9CiA2//cxnI+jg9hTr4at1Ok
+         mEUNRTBZZWjnVuPBE67h1M0ac5Mopzmfr/j7Q0Oyvx4FmmnXlaNVXu+LzyveqgAq+6YP
+         leFErRzaJXezg9RxSMb1qH7+yelHVoJeCCYDNckPm3STyJ1+gYPLEv7PlD7wbdap9N54
+         HqZnbusC1wc9KgHTk5635Lgqyb0cPNX5+XWnkO4gxLjGV0/nzWr4Cf7NWK+HyvvMg8Pk
+         pPQ48AkvOGDFdyHJqbL7dA6rk8sL2zerzbd+kYd40/k3JLAw5kNDFD+JeQMLMW1Wmdpe
+         TF8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775607343; x=1776212143;
+        d=1e100.net; s=20251104; t=1775608256; x=1776213056;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hgIJb1V3vT7GN0oyHj5tFQZZtxJZbHWkMCgOqejkkVU=;
-        b=nXulzjE/WCSO8gZ/2QYqf3mTajf0LXFRnTb/BO2f4BI6zYgI5C0Bw/ZkzM0cTgD/HF
-         HrhJpMH655i1Oq4/nDZJqXe/OghKodph1s7lhzWEXDDKk8yjVjhabiNgSGZZkAngIbh+
-         iv77k1zwyz2AfKZOytg3M2Zixoj7YNONTs9cAZ+Gz8hL/B4WZdwoSSWbz1h1e7St/hGO
-         yaEE9m0oqqsBBGbXUd98PrJQlW+lGxUae6PV2K+TCEpGz4znnPkhXQJMq0t0yUq0hskn
-         Y7emO4ggveaGgY1ew043RbtDWCX9FjgA4ogtrL0qK0HbFEGzbVUKDsGu5HRKVXq9HPvB
-         D+Cw==
-X-Gm-Message-State: AOJu0Yx9qvej8iQTkjFDWapZuUZfsw/BuTKNEuzmF+13DsIE0cw/GARy
-	K1W7QNVNrbboiqw8j3BBwUueWapv59nt3geMp6A2bBqkTPROAGK7zIh539kHnu0SOORYJ6zymSn
-	aLQEWSQ==
-X-Received: from pfx26.prod.google.com ([2002:a05:6a00:a45a:b0:82c:6a93:7b28])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e85:b0:82c:6aee:b21a
- with SMTP id d2e1a72fcca58-82d0dba215cmr18974021b3a.45.1775607343141; Tue, 07
- Apr 2026 17:15:43 -0700 (PDT)
-Date: Tue,  7 Apr 2026 17:14:42 -0700
-In-Reply-To: <20260313003302.3136111-1-seanjc@google.com>
+        bh=yxNq84u8TlwsmIxTYoSXMB/rB8U2PkuGcR9W+hscQl8=;
+        b=oBgdPoc2JT9Z9bu+EgU0vq+6dEJvI9nXF6cJzeGywhs9qllt+RvuFE5Je4JFkS0YGy
+         o8DOGBhBkD4OhNrZoQeWO95GkjWiRSvwHABNGez7b5rH2cqoCBzXZr0od/12bvCz53fW
+         obuYrUj3eyqeVeEXxr8DC8n8V1cod9k/sSRQNizmJcgKMqpUXtLycBJi9aFu1efubl+1
+         wDW2/T3Edkzt9f0L2jza9A7fwzFk6tt1aicJafTGuI7FCW47BXGSkgP4SWi/CGOArEY9
+         KJIt8Ui208MBs6+DSHq/y3K6tfqTdVIrP6KyZ2K3OcmLpLB7q3mq5+tFJ3fGfgp4Lb4C
+         8MLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEmZXFsiDkffDhMBag9wTUpq7pXJuUkKF7MkbjuOnB2hLUq5XmoJLgC2sCAf74XhPnJb8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2FvIK4TKF9vQThT8yQCfb6R4Kvc7nmHPFvwW9aMQ65vENeUQL
+	cFPLUxbYK9ccSf00EFEHKi9NUFZLWHiZjvu9TwgHhpNQEw/y/2lVXFwKCci+C/6eUF2iNGsQ0mu
+	1lsjvvg==
+X-Received: from pfff14.prod.google.com ([2002:a05:6a00:bd0e:b0:829:7f86:623])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:348e:b0:827:28ba:ff00
+ with SMTP id d2e1a72fcca58-82d0da68e4amr19209230b3a.18.1775608255720; Tue, 07
+ Apr 2026 17:30:55 -0700 (PDT)
+Date: Tue, 7 Apr 2026 17:30:54 -0700
+In-Reply-To: <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260313003302.3136111-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <177560710937.1573084.15200109469710775935.b4-ty@google.com>
-Subject: Re: [PATCH 0/5] KVM: SEV: Drop user-triggerable WARN clean up REG_REGION
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
+ <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+ <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
+ <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com> <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
+Message-ID: <adWhvts20eePFo1p@google.com>
+Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Liam Merwick <liam.merwick@oracle.com>
-Content-Type: text/plain; charset="utf-8"
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
+	jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 12 Mar 2026 17:32:57 -0700, Sean Christopherson wrote:
-> Drop a WARN in sev_pin_memory() that is comically easy to trigger, and then
-> clean up the code a bit.
-> 
-> *** WARNING ***
-> 
-> The last patch impacts KVM's ABI due to a size restriction that's applied to
-> kvmalloc() but not vmalloc().  If my math is correct (definitely a big "if),
-> it will only impact VMMs that attempt to do KVM_MEMORY_ENCRYPT_REG_REGION with
-> a single region of ~1TiB+.
-> 
-> [...]
+On Fri, Apr 03, 2026, Ackerley Tng wrote:
+> Currently, in TDX's populate flow, KVM doesn't do any copying, it only
+> instructs TDX to do the copying.
 
-Applied to kvm-x86 svm.  Like the other large set of SEV fixes, I'll omit this
-from the pull request if there are any problems.
+I disagree with this statement.  For all intents and purposes, the TDX-Module is
+firmware.  If Intel had elected to implement TDX via XuCode, and presented it to
+software as ISA (see SGX), then under the hood "firmware" would still be doing the
+actual copy, but KVM would be execute some form of "copy" instruction.
 
-[1/5] KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
-      https://github.com/kvm-x86/linux/commit/8acffeef5ef7
-[2/5] KVM: SEV: Drop useless sanity checks in sev_mem_enc_register_region()
-      https://github.com/kvm-x86/linux/commit/12a8ff869ddc
-[3/5] KVM: SEV: Disallow pinning more pages than exist in the system
-      https://github.com/kvm-x86/linux/commit/6d71f9349d9b
-[4/5] KVM: SEV: Use PFN_DOWN() to simplify "number of pages" math when pinning memory
-      https://github.com/kvm-x86/linux/commit/7ad02ff1e4a4
-[5/5] KVM: SEV: Use kvzalloc_objs() when pinning userpages
-      https://github.com/kvm-x86/linux/commit/a7f53694d591
+Saying "KVM doesn't do any copying" is (very loosely) analogous to saying that
+KVM doesn't copy anything when it does REP MOVSQ.  It wasn't me your honor, Intel's
+string engine did it!
 
---
-https://github.com/kvm-x86/linux/tree/next
+I don't think it changes anything in practice, but I don't want to treat TDX
+SEAMCALLs (or SNP PSP commands) as something completely different than what we
+usually think of as "hardware".
