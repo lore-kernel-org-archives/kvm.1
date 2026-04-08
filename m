@@ -1,161 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217233D3D14
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 14:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775659018; cv=pass; b=HR+pGIBBdCoHDjtjfi/k6+fSS0zv2PzycjDDY57KcGKq6Ynj1/7b8NGp0VH0yU+EhAOgAJCqZtK5vihwaNVvR2WbrtrHaEMxr3+JMqlkaKej63/SvN92hUcO2HsVDAv0xtqbhCjC5OlXbaTu67Tj5odkJQVHbxHWAdug7kPCsc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775659018; c=relaxed/simple;
-	bh=qT1zHZCSFMPJrwZKDQHbbpFFBhz3FsCccEZdVXIfmuY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YxJ7UKKj/E5zqbRi8VM/Er0CvxAifbUtVZvomXeyxqhpyC4/C9nuIceeKR5B7gvIRZgqLgTdOC2Yi94k0mH7AMD9RYDip2DErRNZIBOlgJCSVAF1A4EgqmjMM6WprPkYOh1bPyHTvhcBg2AMOaiY+27HPbEH6WwJHjg0oUyr7OE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GqgwwfuS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rYVXSAWS; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5033B6C07
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 15:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775660635; cv=none; b=FOApbiYUYdLbc26lVaernI8291EGdxNs9pRRf6FqQZ3qkjEpBpyQOrBpI13QJGzt7Ubf5jDE1CazOtiQSCZ9bC/QkjjLKgKAmhACGoPmjUcveXAyQDETgNvebRvYjKembW2L+6LwoAN9ZUkyx1fKhI63WU1bLncfSxHkkLaop0U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775660635; c=relaxed/simple;
+	bh=EGlj1BPEhtMUGytA0o2KFuAClFgXoP8MOx9WWQPnaSM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F8dtgL5N5wykDf5LhunmpJ42zJFyIdWJKXGuwEZ4g0fvLqWr0U/IWWudgJ+p/r4AqqM8OLwJUKTRALLAgoMty3xBUnjJ9NOTokVf40d2BfnXvH3BBiXiBjwGxjULHTur+oZShG3VUSs5ZBb40ix9mRkqpLN0urQakuPQt9GlvzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SsmuUK1b; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GqgwwfuS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rYVXSAWS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775659016;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a7nrQttg0XaH4EfgeMJpijdBLoyZ1TdLNy6iZIsWY9k=;
-	b=GqgwwfuS+zaBtvu0ePOvKT9twRSPq0OWkxmxr4nxhve/CEDmXSN4Mgd68SILkLqRqlc4QG
-	CPnBhlQq3rs9BkklPaWij7Ht4Yfpx2GJiFDG72eAGZUCdUsloOUKfjnuoxISurAAeVdOi5
-	2lrPq6OHktYoSwDshDvRJMPXn1Hj974=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-BJYrIsB7P4O-tIhgulbAcg-1; Wed, 08 Apr 2026 10:36:54 -0400
-X-MC-Unique: BJYrIsB7P4O-tIhgulbAcg-1
-X-Mimecast-MFC-AGG-ID: BJYrIsB7P4O-tIhgulbAcg_1775659014
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43cfb72377bso4280738f8f.2
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 07:36:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775659013; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N1790/Bp0lgbsmvkYpQy25rORzZk+8MNlKp9IFyF8Ema43tS+FAFzARSrLKuDbjFNt
-         m8tsrxx2jQefv9x+Y7OtiB1FJTw/D22phejWg7uApO64s0W+x62hGovtZ2BeFei65m+h
-         G88AEjACzEd620NzMqXuJtMZrehwnMndJ/o+r1G/tYOreaGY3CqVFej78DF/chiW0ZyZ
-         wbxmcegjXZT02RHmVkNs+2rgawcVYUXdDvI8rR991zHwUF8K4Ax6lbLKyCwxBFGfwpUw
-         EQYTZLqIeDJyJo6Vd8awZBfP+hZJM7lIr60xDv98zbKkQ60pTBB5dtgzs4lXdsQJ8MCu
-         GPHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=a7nrQttg0XaH4EfgeMJpijdBLoyZ1TdLNy6iZIsWY9k=;
-        fh=HMwOLwv6Al04GY8bVAzkZzxEmJulCUOjHFRTW6s/O/w=;
-        b=KymdrTxPGL8eYecdhxNPX5KALTBp+CYJgFxd3h/DQq4m89iYoztAMDpGq4kDhpyCPf
-         5m7c0q+Lutibvqx+1Sx2bYe1sJnoT/7cYQZAkJ1L74QOoCG41+z/m1/nE5oMgXmaSl9S
-         GmSIbQDll0skdAcU5Vt/7HKxE6HyY5jeQ6uOUyhCfXY4TZ2sgZaZyZJgRj4SkPMva4Q3
-         MnQYFt488dXev8JHDoeXanoGx0Lk2OFBKN6kTtiAfwToPdb2/TkIikHK/t10UtT6D2mS
-         v851XeBsvyGHnPOLrgsu2mPkyme/8gnjU3SmZQPH9c3IiPWfOJXkWKFgpdQQ7VeWegv7
-         UI4Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775659013; x=1776263813; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a7nrQttg0XaH4EfgeMJpijdBLoyZ1TdLNy6iZIsWY9k=;
-        b=rYVXSAWSh4L0928kkHyBwsKIfWxI3ErIlb1y1Xx9rwtlnbhFLOSC4HnEJuJTODNORZ
-         caCp4R+IEuteQpTK+E5oosQGLzsPq9qRna8r876j1dlT5bT/ZlCJJTGDOD2xAef03fVo
-         GzBJMK1qv9+lZ5N3A2gKBXzlenMUR5Um6hEwQCl7BSMJ+hfg4Nm2UG+uEkwWt06K6wdT
-         Zb5LU1F2QsYom2U1Vo+mdiX6YonI30tunXbuezTx9Ih55BJhelPMGoxE77ePbaSHPVxQ
-         ZgDd6JY2LoNuWDayFM+TF++klQr0uM4hPLsOYdM2b+gSXMWHjWB9OqUey3wowLCzlSCp
-         u1Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775659013; x=1776263813;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a7nrQttg0XaH4EfgeMJpijdBLoyZ1TdLNy6iZIsWY9k=;
-        b=Nsrz3vF7iy7GiYQMaGBRYa7XUpEY7tlu2NcuF/FCK7N1fadNNrL/OmZ0GfDTDnmA87
-         M5yDQeh7EBYpOaIq8JsLHdjBenHtVyAOlcCfFAp0wgokPtbXbNm7G2x7DQ/ZiVJqGHeF
-         kMw2d2INzBTXRyR2Zyz7ZDkBjjEEQo4lcnnx5cfns2Iaa2GOy4Nz6+lDjnLWiZmVQ0Wj
-         GvuLahHGGHzc6aZj6FRSCnui7609bpFiSDyAImnYAMC1egHoC1DJxi5bqf1ccCw+uKH7
-         vdBbgo2TW4NJ3pPUrZLv7JL3JH4z4Ay076oGe3nUkrSlZsOzocxjAAC6wqzDMfQrKmF2
-         kU9A==
-X-Forwarded-Encrypted: i=1; AJvYcCXzY5Ey7B4LYjyuGjxZq93pByY7PbCVp1LxbJwsQl+MvSGWxSkzmBhgogukVaMbNSJBCGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwidR/rEOijXEuR8ANZ2qWcgyOidApuaIWUpb1wMy+Vtc9AfZEv
-	h/giy5gCDpqRWXNEv0NrQd+db1ccaNz3/6sZO1CsOcQyEZ+0AROUKqzMDIkCRGKeL/x0vtCxqwy
-	1yqkHOcty/cHgKklJKNC7+5l/yUJqYGNtaZrykgwPUA0PUSPxngUITm+HGsjNxN2PQkn2ai3NnL
-	UO5+kCxC2yns/ZqXih7wjsYmYfd1L1
-X-Gm-Gg: AeBDieulEQv+CVJayqNPrDO12GLkLwdQASf7+3v3svTcgbnNg/2Ddt1wWYmSKAZO4AC
-	ZtWzoWPr9Pf/cFVOnhlh6tXkv6ISZ8kl1p+e8Gt1P74dPgorG/F6QjFWuHSA9rjLNZa6I5B2WzT
-	ob/JvpTcwfKsqppvvBS6pdEWAmd40tPK4khioVkITjZMtbqgvQnOd/Ri1sFku/aXgQOGT/B79iH
-	JZ2qQyJbLMJy5/AQkv3gw3XRBUmeMySTIR0HcI8sJC6WFIf+klv3frssCwNmd5icuY7EV3Ab4Ss
-	YT3J
-X-Received: by 2002:a05:6000:230c:b0:43b:48d3:2a46 with SMTP id ffacd0b85a97d-43d292fc2bbmr31500618f8f.33.1775659013513;
-        Wed, 08 Apr 2026 07:36:53 -0700 (PDT)
-X-Received: by 2002:a05:6000:230c:b0:43b:48d3:2a46 with SMTP id
- ffacd0b85a97d-43d292fc2bbmr31500576f8f.33.1775659013061; Wed, 08 Apr 2026
- 07:36:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SsmuUK1b"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 665542BC4;
+	Wed,  8 Apr 2026 08:03:47 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F00073F641;
+	Wed,  8 Apr 2026 08:03:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775660633; bh=EGlj1BPEhtMUGytA0o2KFuAClFgXoP8MOx9WWQPnaSM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SsmuUK1bUr2gKodHu5F5yl4cPgqqRVx4vc57dDsmM9MuIrnZWGyBBS+6q/0ZUb8yd
+	 dfJXzAUV3Jz9i4824j83KB7/GHm6ANDFTvL9P7zOXUu47ZnQGutGYBfdlLV8vcuKgB
+	 1Ul9cIsHQq1UrQgFOi/HaqkJ1NLTPoNiUUVAKEDA=
+Date: Wed, 8 Apr 2026 16:03:45 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Jing Zhang <jingzhangos@google.com>
+Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	Andrew Jones <andrew.jones@linux.dev>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [kvm-unit-tests PATCH v1 0/3] arm64: Add Stage-2 MMU and Nested
+ Guest Framework
+Message-ID: <20260408150345.GA2316230@e124191.cambridge.arm.com>
+References: <20260316224349.2360482-1-jingzhangos@google.com>
+ <20260324114312.GA438107@e124191.cambridge.arm.com>
+ <CAAdAUtjeYJ5sOQVB-t7U=KJ9JuCCmO9b2dwJsas7mkzNLu8WqA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260407175934.1602711-1-pbonzini@redhat.com> <6569b8b8-7654-4dbe-a4a6-f1e565451672@linux.ibm.com>
-In-Reply-To: <6569b8b8-7654-4dbe-a4a6-f1e565451672@linux.ibm.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 8 Apr 2026 16:36:35 +0200
-X-Gm-Features: AQROBzB5omoJWYrrMqaSBonwZlBQM8vJiaSjlVlseeyW58fQ54aszgrPriv5Sfk
-Message-ID: <CABgObfbiNRfNGvhDFO=h-E27KONh80fkB1y1rOGpazTB2Eigzw@mail.gmail.com>
-Subject: Re: [PATCH] VFIO: remove dead notifier code
-To: Anthony Krowiak <akrowiak@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, alex@shazbot.org, 
-	linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAdAUtjeYJ5sOQVB-t7U=KJ9JuCCmO9b2dwJsas7mkzNLu8WqA@mail.gmail.com>
 
-On Wed, Apr 8, 2026 at 4:35=E2=80=AFPM Anthony Krowiak <akrowiak@linux.ibm.=
-com> wrote:
->
->
-> >     open_device:
-> > -    The vfio_ap driver uses this callback to register a
-> > -    VFIO_GROUP_NOTIFY_SET_KVM notifier callback function for the matri=
-x mdev
-> > -    devices. The open_device callback is invoked by userspace to conne=
-ct the
-> > -    VFIO iommu group for the matrix mdev device to the MDEV bus. Acces=
-s to the
-> > -    KVM structure used to configure the KVM guest is provided via this=
- callback.
-> > -    The KVM structure, is used to configure the guest's access to the =
-AP matrix
-> > -    defined via the vfio_ap mediated device's sysfs attribute files.
-> > +    the open_device callback is invoked by userspace to connect the
->
-> Capitalization:
-> s/the open_device callback/The open device callback/
->
-> > +    VFIO iommu group for the matrix mdev device to the MDEV bus.  The
-> > +    callback retrieves the KVM structure used to configure the KVM gue=
-st
-> > +    and configures the guest's access to the AP matrix defined via the
-> > +    vfio_ap mediated device's sysfs attribute files.
+On Tue, Apr 07, 2026 at 11:16:15AM -0700, Jing Zhang wrote:
+> On Tue, Mar 24, 2026 at 4:43 AM Joey Gouly <joey.gouly@arm.com> wrote:
 > >
-> >     close_device:
-> > -    unregisters the VFIO_GROUP_NOTIFY_SET_KVM notifier callback functi=
-on for the
-> > -    matrix mdev device and deconfigures the guest's AP matrix.
-> > +    this callback deconfigures the guest's AP matrix.
->
-> Capitalization:
-> s/this callback/This callback/
+> > On Mon, Mar 16, 2026 at 03:43:46PM -0700, Jing Zhang wrote:
+> > > This patch series introduces a lightweight infrastructure for managing ARM64
+> > > Stage-2 translation tables and executing nested guests. These components are
+> > > essential for testing advanced virtualization features such as nested
+> > > virtualization (NV) and GICv4 direct interrupt injection.
+> > >
+> > > The series provides a generic Stage-2 MMU library supporting multiple
+> > > translation granules (4K, 16K, 64K) and dynamic page table management.
+> > > Building on this, it adds a guest execution framework that handles guest
+> > > lifecycle management, context switching and guest exit routing. A new test
+> > > case for Stage-2 MMU demand paging to verify fault handling.
+> > >
+> > > Please note that this is a very preliminary implementation intended as a
+> > > startup baseline for future work in virtualization testing. Users should be
+> > > aware that because this is an early-stage baseline, some portions of the code
+> > > may just happen to work in its current state. There might be critical
+> > > architectural elements or edge-case handling missing that will need to be
+> > > addressed as the framework matures.
+> > >
+> >
+> > Hi,
+> >
+> > I'm interested in this, I had a much more barebones (aka no stage2) guest
+> > framework thing that I sent out [1], but it seems more useful to try get this
+> > series merged.
+> >
+> > I will try get my tests working with this new framework, one thing missing for
+> > me is support for executing at EL0.
+> >
+> > Thanks,
+> > Joey
+> >
+> > [1] https://lore.kernel.org/kvmarm/20260306142656.2775185-1-joey.gouly@arm.com/#t
+> >
+> 
+> Hi Joey,
 
-Heh, I had to pick one or the other (close_device previously used
-lowercase) and chose the wrong one. :)
+Hi Jing,
 
-Thanks for reviewing the s390 docs, I wasn't sure about the new text was en=
-ough.
+I had a bit of a play with the code and ended up with a few questions/thoughts
+about the guest/EL1/EL0 model.
 
-Paolo
+Two major things EL1 needs are allocating memory and eventually page tables.
 
+For EL1 isolation, I can see a few possible approaches (maybe there's others?):
+1. EL1 reuses the usual kvm-unit-tests infrastructure (allocators, helpers, etc.).
+2. EL1 is treated more like a real guest/VM, and has to provide its own
+   allocators and other basic support.
+3. The host (EL2) provides all memory up front and can create EL1 page tables,
+   like kselftest.
+4. A small hyp-service interface is provided for things like page donation,
+   printing, etc.
+
+Option 1 feels like the best pragmatically, the tests will look like a normal C
+file, just that parts of it are run at different ELs. However sharing
+functionality could be complex. For example, I tried calling printf() from EL1
+and then also from the EL2 abort handler, and hit a deadlock because both paths
+ended up taking the same spinlock.
+
+Option 2 feels the least hacky, but maybe has the most complexity since EL1
+needs its own alloactors and general support functionality. It's also not
+obvious how to map in the EL1 code. Perhaps there would need to be a separate
+test_foo_el1.c file that was built and bundled into test_foo.c
+
+Option 3 looks to be the most simple, is quite flexible, but less dynamic.
+
+Option 4 might be quite simple to have a small hyp interface, a bit like option
+3 but more dynamic.
+
+> Will you add support for executing at EL0?
+
+I tried to enter EL0 using `start_usr()` from the EL1 guest. I tried to
+allocate a stack using alloc_page(). However this leads to some issues due to
+the following code:
+
+    phys_addr_t __virt_to_phys(unsigned long addr)
+    {
+            if (mmu_enabled()) {
+                    pgd_t *pgtable = current_thread_info()->pgtable;
+                    return virt_to_pte_phys(pgtable, (void *)addr);
+            }
+            return addr;
+    }
+
+In this series, EL1 is not set up as a "thread" (see new_thread() [1]), so
+current_thread_info()->pgtable ends up being NULL.  That is what led me to
+think about the options above.
+
+Thanks,
+Joey
+
+[1] https://lore.kernel.org/kvmarm/20260306142656.2775185-5-joey.gouly@arm.com/
+
+> 
+> Thanks,
+> Jing
+> 
+> > > ---
+> > >
+> > > Jing Zhang (3):
+> > >   lib: arm64: Add stage2 page table management library
+> > >   lib: arm64: Add bare-metal guest execution framework
+> > >   arm64: Add Stage-2 MMU demand paging test
+> > >
+> > >  arm/Makefile.arm64         |   4 +
+> > >  arm/stage2-mmu-test.c      | 100 +++++++++
+> > >  lib/arm64/asm/guest.h      | 156 ++++++++++++++
+> > >  lib/arm64/asm/stage2_mmu.h |  74 +++++++
+> > >  lib/arm64/guest.c          | 197 ++++++++++++++++++
+> > >  lib/arm64/guest_arch.S     | 263 ++++++++++++++++++++++++
+> > >  lib/arm64/stage2_mmu.c     | 402 +++++++++++++++++++++++++++++++++++++
+> > >  7 files changed, 1196 insertions(+)
+> > >  create mode 100644 arm/stage2-mmu-test.c
+> > >  create mode 100644 lib/arm64/asm/guest.h
+> > >  create mode 100644 lib/arm64/asm/stage2_mmu.h
+> > >  create mode 100644 lib/arm64/guest.c
+> > >  create mode 100644 lib/arm64/guest_arch.S
+> > >  create mode 100644 lib/arm64/stage2_mmu.c
+> > >
+> > >
+> > > base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
+> > > --
+> > > 2.53.0.851.ga537e3e6e9-goog
+> > >
