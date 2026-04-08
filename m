@@ -1,474 +1,189 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E52640DFDB;
-	Wed,  8 Apr 2026 01:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775611601; cv=none; b=b5+BT5OZUDi7fHdrI/yedHb3aArBRYGKrr2V/NH+fJiklIZztXbBZHbNO2rnIgqmoNMEvpfjqJdwBi8Ejjo4S1ZD8HYeZo6lRjMz3yBe90S2UvE7BltoavqCyDZh2gkA6knFk/HBdfmsUh3gQTXJfUjDUXj9T+2nFjyNM1jVaRg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775611601; c=relaxed/simple;
-	bh=BBOEnDTh8UBPSeoPJHdJK81L5ozToIIeVBNtWjuE1vs=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=hYQxHZrBxqm9D3ca2LeebyiQ2je4R44Rm4zZjps4+jH0vrtb+xl5CdkJ05Kvq2iNiNOq7pNL3NS/rTjKwaIyUpZ6j/p72WYFf9gW77LIQPI0ypWMqCKzDBDyUbFpYSbBtWX2JIG9oZQLSmfvBQ0T8TNHGt+3aQz3lt3Tnn/qgJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxEMDLrtVpz_siAA--.38621S3;
-	Wed, 08 Apr 2026 09:26:35 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxquDErtVpGQVoAA--.1332S3;
-	Wed, 08 Apr 2026 09:26:30 +0800 (CST)
-Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: Jinyang He <hejinyang@loongson.cn>, lixianglai <lixianglai@loongson.cn>,
- Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, stable@vger.kernel.org,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Tianrui Zhao <zhaotianrui@loongson.cn>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
-References: <20251227012712.2921408-1-lixianglai@loongson.cn>
- <20251227012712.2921408-3-lixianglai@loongson.cn>
- <08143343-cb10-9376-e7df-68ad854b9275@loongson.cn>
- <9e1a8d4f-251f-f78e-01a3-5c483249fac8@loongson.cn>
- <dec5cb06-6858-20f2-facb-d5e7f44f5d16@loongson.cn>
- <df8f52e3-fea5-763a-d5fd-629308dc6fcc@loongson.cn>
- <a1009e1e-34de-68b4-7680-d2a99a06a71c@loongson.cn>
- <efa4ef2d-aef7-0f64-07bc-55d0c4d1d6d2@loongson.cn>
- <ebd5a137-1bee-8fab-71bf-5f359dabe5d8@loongson.cn>
- <4ad5180d-cb4d-b916-3872-b24c5a2cd1d8@loongson.cn>
- <aeb75309-61eb-a3fa-fdaa-544978d2534a@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <f6d9b67f-451f-6881-cfc0-c37df96de087@loongson.cn>
-Date: Wed, 8 Apr 2026 09:23:41 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C511F1537;
+	Wed,  8 Apr 2026 02:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775613794; cv=fail; b=lGEZAHWmf/f3DFbMC+ERlwd3QFFYlI9gbXITr9Gc6hujFR3sU67+dsMuPXdLMnkyBftxRn2KW8rauyTbYKPeMyvpLEPCKB1mKjqN0Efs9uLHNlgn7nrkGLrWlVYqf7APh8OMoG4Vuft3iSObMzz+Mrm7mSMj0RE5FHrRbRUYCQI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775613794; c=relaxed/simple;
+	bh=vGrwfnCEJ/0KGBpePx23AWcOqs2qNGzAS1VzLeczUlY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=B/E+pa59kShezpp7E0ZL1NgOrPpSp7kXEvgI9VA4ogh+riWXD0PE7Ay9VdacKBC47VcLhs/zn7Fgp0W6YSQWR8klFGhkvGzZ4LL+WVgmn4Sqp41bkNfY8nAtlWNgEhtSd9EgU6UdyndatOfogOgaep1GFULo6ASuFwkuPeEOwCE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D0oF1OX8; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D0oF1OX8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775613792; x=1807149792;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=vGrwfnCEJ/0KGBpePx23AWcOqs2qNGzAS1VzLeczUlY=;
+  b=D0oF1OX8MPbUZ5V/QD7u9Rh93PESBwB48en8JOrBHXzCVr4pzQuIpNQL
+   o0G+rCckCrGcudSlZ97NgMYsI0attdxaTPKriI47r33L7sUO5MeJY317M
+   byHSvHUfuGL55RBh9R4Y7ZCQENAi50cHvekyqEuKqSXfsEcdWbMrfnv2y
+   Q/cRK1V0xclJNn5N1BG7YIAIgNlQAHG0iCgHeV8jS+1v3QuJxiu9F5vBj
+   GzGEdiq2eqUoOjYC7/yrg1m/4xr0cbnPUDmZa7IuQdK//vJhdxFDozfNj
+   rEjOmq1bm+tGuKBJ4693jfvTd2KzhNEHNkwhHZOEsQY/6xiCol5wJuOui
+   Q==;
+X-CSE-ConnectionGUID: grtKeIUHSZmQI0AUy30/rA==
+X-CSE-MsgGUID: JDLGoxJpQqWfmebUzNCfxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="93977822"
+X-IronPort-AV: E=Sophos;i="6.23,166,1770624000"; 
+   d="scan'208";a="93977822"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 19:03:12 -0700
+X-CSE-ConnectionGUID: TawRSm3eRo6LGonN5UoEqw==
+X-CSE-MsgGUID: yJBoBex2ThuKcfi0kF1WOw==
+X-ExtLoop1: 1
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 19:03:11 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 7 Apr 2026 19:03:11 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 7 Apr 2026 19:03:11 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.30) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 7 Apr 2026 19:03:09 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h345iEzacleus5KPIRWKC8oBYfBDMj+N6jkvkynLnWQz3RNcEhdG2/A6YyjERYDAS4NMCXcYbbqUHpOJYopLojmJk3HOoGIC8NhslVxr9MdIr7q9IyyhqDsWQCKlyj+ThfJRJHoLImdKIPBWdppuQAR+Ug5xAZ78ddBnvuJnpRUNprYeWtHmI7/RCz90G/xWEwZdpWAHRrWzky7HJwBEULlEswuHQgmnVj2S6BVQ7U1axxukTuedRZAnVNK2mZCQtZ9f4AwhErGJVYBAsbPa94p8jnm4PWDDUP5zfvvhdrv8p0m1jgi8Lk5kB+iLzMeaFnME0fNCw84OS2ICmeilxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1O9Zm0p12kkNeGFdrBXIvDi9xbfYsxryTODAi8II9g4=;
+ b=WSp0ikdhXKEQ16bRlA+mYGq4QeP8usOZhUfYoEbeEAeNpTAqjvXAyiXhWew0NWZ9yaFzQaeDyCpvG9amfBo3kkEPqtEkktS2jQ2v6sXcYB8zUSNoOhLAlFsaiwPlJrJ3aUA2x+aywls5D2rbq9oP2XvyeUXSGRDr2K0kUUrET8lprVc5n859zJNa4bxZ3qtQCODgP7D4tbdkDxxqPGQ1SGcJ+qcQwQAINGxxtbPIoV6Fnn5B0/vNovJl40K5v27QByMxCNqRF8md+qNtB39QhOpdt0rqsuDLyGsTa+cKn1YZXYYEHmBRJ6DurrX5DzLyp5lEEA2Y1+EOKYh/msd4EA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by PH0PR11MB4885.namprd11.prod.outlook.com (2603:10b6:510:35::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
+ 2026 02:03:08 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%3]) with mapi id 15.20.9769.017; Wed, 8 Apr 2026
+ 02:03:08 +0000
+Date: Wed, 8 Apr 2026 09:23:30 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "Hansen, Dave" <dave.hansen@intel.com>, "seanjc@google.com"
+	<seanjc@google.com>, "x86@kernel.org" <x86@kernel.org>, "Huang, Kai"
+	<kai.huang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>
+Subject: Re: [PATCH 07/17] KVM: x86/tdp_mmu: Centralize updates to present
+ external PTEs
+Message-ID: <adWuEkW329lcbaeL@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260327201421.2824383-8-rick.p.edgecombe@intel.com>
+ <acoUt9vy8OPU1SW9@yzhao56-desk.sh.intel.com>
+ <8a107d4da92d4cf910f9a70991a0e67b42e04d4f.camel@intel.com>
+ <ac3Ng7IZpzJczZ2x@yzhao56-desk.sh.intel.com>
+ <4dfb4c106c834cd13da78872bfb262e98581fa55.camel@intel.com>
+ <ac77oSNltyE6vkVD@google.com>
+ <ac+C9FdF34JRNLWH@yzhao56-desk.sh.intel.com>
+ <d4319635e971e38534509b7424c6c08fa729209c.camel@intel.com>
+ <adTBiKPanE15vtjS@yzhao56-desk.sh.intel.com>
+ <10949597e3e49a0e59ecb2345be9e06554646d96.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <10949597e3e49a0e59ecb2345be9e06554646d96.camel@intel.com>
+X-ClientProxiedBy: TP0P295CA0013.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:2::18) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aeb75309-61eb-a3fa-fdaa-544978d2534a@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxquDErtVpGQVoAA--.1332S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9fXoW3uw17ur4kZFWkWF1DCw13Jrc_yoW8AF1fGo
-	Wq9w12yr1rJr1UGr1UJw4Dtr15Jw18JrnrtryUJr13Gr18t3WUX3y8JryUKay5tr1kGr1U
-	Jry7Xr1jyFyUJr18l-sFpf9Il3svdjkaLaAFLSUrUUUU8b8apTn2vfkv8UJUUUU8wcxFpf
-	9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
-	UjIYCTnIWjp_UUUYG7kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
-	8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
-	Y2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
-	WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
-	CYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8EeHDUUUUU==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|PH0PR11MB4885:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d2a84aa-1ebf-4a26-1120-08de9512fa60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info: ZTuc1iziK6UVOFY8TFBFD+b8nSdQqmzJt5wtXZumRhPMey/6flKOKLuzfj5ThA3328wk0IiHYId5j/wz/fsVlS+l9ZAEr2SYaPiaKthFLOO9Ov+6ShSIptVEmVyhRCFLxqPhm+vzk7KhSKq9/i+htnPLVCQWf13Cjo1+fEpPPjEMBJYZObyXmagi3EZSk3YLzs6gr6axX6gLyq+yNr7cnlCEwbdboZrdH/dwSgxtdV9CMjD9R+fSJaVlct9R3P6QAb2utZeB/eLae8XlOLGaUhqyBYXlH+HYTEYO0g+d7EDecleZ2ZVdND1eGRMuUTVv4DK5sSaLcbQ0lY2AJOOVvmiaAPCr8rW6YTZreDI9Wn50ctFu10x+Qsm2j5O+4TPnK+g07DgqvUWgx9aMiJjKpO0hEBhwDm1iIXH+7wlCi4iDqCe9XKqCqCjjsJW4k7RcooCy0uplNPm3lPnydPkdleVNbzDQHf7pmRAIhKOkTuF7kRL9gy56WoHyOxM0m2Nv5u2miuF8YBFCoRpBRdx/ymKC5m0pjPtg50YxXAf21avsdcsEeNMfBQh5gageeGi/JI7N7YSGzKKmSqSospocJxp8ykZCPIujUMaN5nzeYq0PRX/SOAbnfqYDdIpPr2u7auC3+BZHsidy6Pd963utJCFA2bCVIiezeWOlsRRWywfX0m75aLEpqCvPYWs3WSaa7hx0dKvSRsgYfFcvob3HrP1aaGkokdF9vpaQFKXU6N0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?6WjPOm/7Y/UXSjlsB8EgJf+1pLsXtAua6VIVXiH1/z2H8aLaE0MuydifUi?=
+ =?iso-8859-1?Q?r1WP3M149zDAKzUFNdg/SGZ4rnYUeEVtyFIwnkY/2zcROrBQe6KRn4BNY+?=
+ =?iso-8859-1?Q?Fo6uyIAGc/Gz3R3hO/Y1Ia8aXN0XcIBZ/8LWo5L6Zs2+bMz5/M9k0bY1cq?=
+ =?iso-8859-1?Q?6tgxPTrO3ihMk2UZI76LfRaErzf3SWMxdv+2AF0+g4eO6PoE6es89EggZZ?=
+ =?iso-8859-1?Q?uqDMlDEyrGvG0dipXttIlekVUCquhp9ufcVV+68KFeBuzHwIuqpQC1HvGF?=
+ =?iso-8859-1?Q?lwq2STFV1HvCHAuN215mGYZbE98SZXezrOPWbfvcq+Q9zU8kN9lWFLYoR0?=
+ =?iso-8859-1?Q?tekAqexwPHSUnrhC/01vfblKhvcI2P+DXTQDUv3tetJjgFVSsLnGpqUTW+?=
+ =?iso-8859-1?Q?YyUN3ctyypNdimM6W0HXrc5aIxULA1gvL39XCL238sSaX0JWMM+eJPyvVi?=
+ =?iso-8859-1?Q?qqzixLBpyR1odKKg8RcZNOaZAmod8KhCKO61pkvtNwyTmYz3olbj3CKmSl?=
+ =?iso-8859-1?Q?2GCwAS8+8W2XzSVw6PKIe7CiX9ctdQZXeJGIcNqdl0839hRF5loP/SZ0VE?=
+ =?iso-8859-1?Q?nQfYr5qqXLM4UP2KvjHZvvwclx2ShPFhJmt95FeOLi6sVkyMzkynQgZzyi?=
+ =?iso-8859-1?Q?QperYTc71VfGN9GaPDgcHxuwnqJIa/m0aCEqXZ5sUjpSd16soazQBq92Lm?=
+ =?iso-8859-1?Q?St5a5zYnVaqUBee5qF/+UYvoBGiaQbRhy1lS4A5g6NaVD+1bBxKS9PtiKR?=
+ =?iso-8859-1?Q?aYskB9PTknaFDN0DS3TXvEZ5l9ui3X7fr5POHkU8bHtKGJEBGEM90xyzl3?=
+ =?iso-8859-1?Q?y/rGUpQLt2+D2dZTSQG4DGUX+IsQGwCWb1vYT6D3vPV5L76CiWy7viq09+?=
+ =?iso-8859-1?Q?DvgxY1PsWM/K0ySvd7oAH2P5zS/6lwM4gfuYedo+SCDyNguWt3EZo1pF+P?=
+ =?iso-8859-1?Q?F1ZMsPtuCHBugrnXoiwvwea2ezmnzTfT8y//vOibQuNwk7Th6Ze6S/fHLd?=
+ =?iso-8859-1?Q?5HORyAIdV11oIV05tNOtB6QD4GNVyJ4P8RumPjsKQJog1EYxlvn8KToGxV?=
+ =?iso-8859-1?Q?29+nHmKgCFZzkUToS9zGUYOTk7Ji9XFhBnJKrChGCSxYPeLmWdZ/uL+ss6?=
+ =?iso-8859-1?Q?ogGmTiY8EjuFGB4h0Gwo3VTP4bCrvJ9nQOTRfAQMpL9BFvwqWDwgHYdES+?=
+ =?iso-8859-1?Q?npZf3byqzY+jkEX49YQDp3GykxjoFBllb7ldrXljeCLqhvvbJW95Xgrowj?=
+ =?iso-8859-1?Q?6x/VLguueVkO3EUCWbRvBmyFCtILVsa4wJvqqrGxo/sokQWugqNeZTHonq?=
+ =?iso-8859-1?Q?agTMEqyi0/LJgKfkkog/GX6LUAgZWyCLEYYtRD+p0qqBili+ASj/WjiAhZ?=
+ =?iso-8859-1?Q?ijflAMxp3fLEpg7dgrXIyVQ/eCvsY68wizbHPHhS0KD8aJBvA4Ed0/awM6?=
+ =?iso-8859-1?Q?C+GeeVfFeI71y5FRpr4leVeeraD27HkGHf0RzceLI/35diqoLdLsHDkm96?=
+ =?iso-8859-1?Q?HelOhKeI/T3nUv4j2OPvdMNaII8Y2EInmh7e2ZGapvVMkwxd2TPHBraYCQ?=
+ =?iso-8859-1?Q?mBP5rEkEEm4lMvMi8daReYXBqpyxJYREYs064tgBNmE+OqugkR0LRF+P7e?=
+ =?iso-8859-1?Q?gvACqIEkn5efXUj3zZ7hh5V7oiW3GLu17lQCkNdPgrsMTcYuL9ercYNshp?=
+ =?iso-8859-1?Q?sAgRE3n7qhp4/o2yp8M4m6wWYBBWHYQ5SM45vQXJRjOiAPKyKakYfwL8Cm?=
+ =?iso-8859-1?Q?dD9+odhhSv7iYmaDGc0/NczdSszniGwIkyfNNnEv526x1Gy+WhZgbhE5Se?=
+ =?iso-8859-1?Q?XLeICzy2Mg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: peJ7EOlpdt4aM1xgnFtE56h37KJjv41Z3G7dbWZXARIdAI0YkoEnxCx0Wlad6b6Ha/kfn6JyX965hyLLjK8mmQQ1Ov2aBrhNNhbn8V9cUr62Otdg5IFkcU6fnk5JORNsCaKGq7bzs4WedNN+Wj8JXBbYMm3hdnPpjsotuIZ/pD6vSS+ciHsSDpyzxJgcmikQk5VbXOq2HrS4dnZYwVz1iAMY8DhpSORb9jYlfSc16EohZPFP6/Oy7BepQlgRqEszGvHyFSj+AMs/2P2KXX/T0oTZTrzLKHb9m4qpMdTCnAnIH2stKnUTVlE0TCwia0PnSlsR/0uzbS1iCNgYEHEPfw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d2a84aa-1ebf-4a26-1120-08de9512fa60
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 02:03:07.8350
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gblBg6Yv3wprIr+PeDOKKz63BZYloWoaiAbG90IBQfh1xQGIlqBlGw5dED5auYH96nGSFaMB6yu9kaDUJiYR8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4885
+X-OriginatorOrg: intel.com
 
-
-
-On 2025/12/30 下午1:53, Jinyang He wrote:
-> On 2025-12-30 12:03, Bibo Mao wrote:
+On Wed, Apr 08, 2026 at 01:21:26AM +0800, Edgecombe, Rick P wrote:
+> On Tue, 2026-04-07 at 16:34 +0800, Yan Zhao wrote:
+> > (a1)(a2) May hit KVM_BUG_ON() in handle_changed_spte() if
+> > �������� tdx_sept_set_private_spte() fails due to contentions. e.g.,
+> > �������� tdh_mem_sept_add(), tdx_mem_page_aug(), or tdx_mem_page_add() may
+> > �������� contend with tdh_vp_enter() due to zero-step mitigation or may
+> > �������� potentially contend with TDCALLs.
+> > (b) Promotion case. Currently unreachable in mirror root.
+> > ��� Need more complex changes in TDP MMU if we want to support it in the future.
+> > (c) Will not hit KVM_BUG_ON() in TDP MMU, but will trigger warnings in
+> > ��� tdx_sept_remove_private_spte() due to lockdep_assert_held_write() or
+> > ��� TDX_BUG_ON() caused by concurrent BLOCK, TRACK, REMOVE.
+> > (d) May hit the KVM_BUG_ON() in handle_changed_spte() due to failure to remove
+> > ��� child S-EPT entries and will trigger warnings in
+> > ��� tdx_sept_remove_private_spte() due to lockdep_assert_held_write() or
+> > ��� TDX_BUG_ON() caused by concurrent BLOCK, TRACK, REMOVE.
+> > ��� May also trigger TDX_BUG_ON() in tdx_sept_reclaim_private_spt().
 > 
->>
->>
->> On 2025/12/30 上午11:36, Jinyang He wrote:
->>> On 2025-12-30 10:24, Bibo Mao wrote:
->>>
->>>>
->>>>
->>>> On 2025/12/29 下午6:41, Jinyang He wrote:
->>>>> On 2025-12-29 18:11, lixianglai wrote:
->>>>>
->>>>>> Hi Jinyang:
->>>>>>>
->>>>>>> On 2025-12-29 11:53, lixianglai wrote:
->>>>>>>> Hi Jinyang:
->>>>>>>>> On 2025-12-27 09:27, Xianglai Li wrote:
->>>>>>>>>
->>>>>>>>>> Insert the appropriate UNWIND macro definition into the 
->>>>>>>>>> kvm_exc_entry in
->>>>>>>>>> the assembly function to guide the generation of correct ORC 
->>>>>>>>>> table entries,
->>>>>>>>>> thereby solving the timeout problem of loading the 
->>>>>>>>>> livepatch-sample module
->>>>>>>>>> on a physical machine running multiple vcpus virtual machines.
->>>>>>>>>>
->>>>>>>>>> While solving the above problems, we have gained an additional 
->>>>>>>>>> benefit,
->>>>>>>>>> that is, we can obtain more call stack information
->>>>>>>>>>
->>>>>>>>>> Stack information that can be obtained before the problem is 
->>>>>>>>>> fixed:
->>>>>>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>>>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>>>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>>>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>>>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>>>>>>> [<0>] kvm_exc_entry+0x100/0x1e0
->>>>>>>>>>
->>>>>>>>>> Stack information that can be obtained after the problem is 
->>>>>>>>>> fixed:
->>>>>>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>>>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>>>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>>>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>>>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>>>>>>> [<0>] kvm_exc_entry+0x104/0x1e4
->>>>>>>>>> [<0>] kvm_enter_guest+0x38/0x11c
->>>>>>>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>>>>>>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>>>>>>>>> [<0>] sys_ioctl+0x498/0xf00
->>>>>>>>>> [<0>] do_syscall+0x98/0x1d0
->>>>>>>>>> [<0>] handle_syscall+0xb8/0x158
->>>>>>>>>>
->>>>>>>>>> Cc: stable@vger.kernel.org
->>>>>>>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
->>>>>>>>>> ---
->>>>>>>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
->>>>>>>>>> Cc: WANG Xuerui <kernel@xen0n.name>
->>>>>>>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
->>>>>>>>>> Cc: Bibo Mao <maobibo@loongson.cn>
->>>>>>>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
->>>>>>>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
->>>>>>>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>>>>>>>>> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
->>>>>>>>>>
->>>>>>>>>>   arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
->>>>>>>>>>   1 file changed, 19 insertions(+), 9 deletions(-)
->>>>>>>>>>
->>>>>>>>>> diff --git a/arch/loongarch/kvm/switch.S 
->>>>>>>>>> b/arch/loongarch/kvm/switch.S
->>>>>>>>>> index 93845ce53651..a3ea9567dbe5 100644
->>>>>>>>>> --- a/arch/loongarch/kvm/switch.S
->>>>>>>>>> +++ b/arch/loongarch/kvm/switch.S
->>>>>>>>>> @@ -10,6 +10,7 @@
->>>>>>>>>>   #include <asm/loongarch.h>
->>>>>>>>>>   #include <asm/regdef.h>
->>>>>>>>>>   #include <asm/unwind_hints.h>
->>>>>>>>>> +#include <linux/kvm_types.h>
->>>>>>>>>>     #define HGPR_OFFSET(x)        (PT_R0 + 8*x)
->>>>>>>>>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
->>>>>>>>>> @@ -110,9 +111,9 @@
->>>>>>>>>>        * need to copy world switch code to DMW area.
->>>>>>>>>>        */
->>>>>>>>>>       .text
->>>>>>>>>> +    .p2align PAGE_SHIFT
->>>>>>>>>>       .cfi_sections    .debug_frame
->>>>>>>>>>   SYM_CODE_START(kvm_exc_entry)
->>>>>>>>>> -    .p2align PAGE_SHIFT
->>>>>>>>>>       UNWIND_HINT_UNDEFINED
->>>>>>>>>>       csrwr    a2,   KVM_TEMP_KS
->>>>>>>>>>       csrrd    a2,   KVM_VCPU_KS
->>>>>>>>>> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
->>>>>>>>>>       /* restore per cpu register */
->>>>>>>>>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
->>>>>>>>>>       addi.d    sp, sp, -PT_SIZE
->>>>>>>>>> +    UNWIND_HINT_REGS
->>>>>>>>>>         /* Prepare handle exception */
->>>>>>>>>>       or    a0, s0, zero
->>>>>>>>>> @@ -200,7 +202,7 @@ ret_to_host:
->>>>>>>>>>       jr      ra
->>>>>>>>>>     SYM_CODE_END(kvm_exc_entry)
->>>>>>>>>> -EXPORT_SYMBOL(kvm_exc_entry)
->>>>>>>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
->>>>>>>>>>     /*
->>>>>>>>>>    * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu 
->>>>>>>>>> *vcpu)
->>>>>>>>>> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
->>>>>>>>>>       /* Save host GPRs */
->>>>>>>>>>       kvm_save_host_gpr a2
->>>>>>>>>>   +    /*
->>>>>>>>>> +     * The csr_era member variable of the pt_regs structure 
->>>>>>>>>> is required
->>>>>>>>>> +     * for unwinding orc to perform stack traceback, so we 
->>>>>>>>>> need to put
->>>>>>>>>> +     * pc into csr_era member variable here.
->>>>>>>>>> +     */
->>>>>>>>>> +    pcaddi    t0, 0
->>>>>>>>>> +    st.d    t0, a2, PT_ERA
->>>>>>>>> Hi, Xianglai,
->>>>>>>>>
->>>>>>>>> It should use `SYM_CODE_START` to mark the `kvm_enter_guest` 
->>>>>>>>> rather than
->>>>>>>>> `SYM_FUNC_START`, since the `SYM_FUNC_START` is used to mark 
->>>>>>>>> "C-likely"
->>>>>>>>> asm functionw. 
->>>>>>>>
->>>>>>>> Ok, I will use SYM_CODE_START to mark kvm_enter_guest in the 
->>>>>>>> next version.
->>>>>>>>
->>>>>>>>> I guess the kvm_enter_guest is something like exception
->>>>>>>>> handler becuase the last instruction is "ertn". So usually it 
->>>>>>>>> should
->>>>>>>>> mark UNWIND_HINT_REGS where can find last frame info by "$sp".
->>>>>>>>> However, all info is store to "$a2", this mark should be
->>>>>>>>>   `UNWIND_HINT sp_reg=ORC_REG_A2(???) type=UNWIND_HINT_TYPE_REGS`.
->>>>>>>>> I don't konw why save this function internal PC here by `pcaddi 
->>>>>>>>> t0, 0`,
->>>>>>>>> and I think it is no meaning(, for exception handler, they save 
->>>>>>>>> last PC
->>>>>>>>> by read CSR.ERA). The `kvm_enter_guest` saves registers by
->>>>>>>>> "$a2"("$sp" - PT_REGS) beyond stack ("$sp"), it is dangerous if IE
->>>>>>>>> is enable. So I wonder if there is really a stacktrace through 
->>>>>>>>> this function?
->>>>>>>>>
->>>>>>>> The stack backtracking issue in switch.S is rather complex 
->>>>>>>> because it involves the switching between cpu root-mode and 
->>>>>>>> guest-mode:
->>>>>>>> Real stack backtracking should be divided into two parts:
->>>>>>>> part 1:
->>>>>>>>     [<0>] kvm_enter_guest+0x38/0x11c
->>>>>>>>     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>>>>>>>     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>>>>>>>     [<0>] sys_ioctl+0x498/0xf00
->>>>>>>>     [<0>] do_syscall+0x98/0x1d0
->>>>>>>>     [<0>] handle_syscall+0xb8/0x158
->>>>>>>>
->>>>>>>> part 2:
->>>>>>>>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>>>>>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>>>>>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>>>>>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>>>>>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>>>>>     [<0>] kvm_exc_entry+0x104/0x1e4
->>>>>>>>
->>>>>>>>
->>>>>>>> In "part 1", after executing kvm_enter_guest, the cpu switches 
->>>>>>>> from root-mode to guest-mode.
->>>>>>>> In this case, stack backtracking is indeed very rare.
->>>>>>>>
->>>>>>>> In "part 2", the cpu switches from the guest-mode to the root-mode,
->>>>>>>> and most of the stack backtracking occurs during this phase.
->>>>>>>>
->>>>>>>> To obtain the longest call chain, we save pc in kvm_enter_guest 
->>>>>>>> to pt_regs.csr_era,
->>>>>>>> and after restoring the sp of the root-mode cpu in kvm_exc_entry,
->>>>>>>> The ORC entry was re-established using "UNWIND_HINT_REGS",
->>>>>>>>  and then we obtained the following stack backtrace as we wanted:
->>>>>>>>
->>>>>>>>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>>>>>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>>>>>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>>>>>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>>>>>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>>>>>     [<0>] kvm_exc_entry+0x104/0x1e4
->>>>>>> I found this might be a coincidence—correct behavior due to the 
->>>>>>> incorrect
->>>>>>> UNWIND_HINT_REGS mark and unusual stack adjustment.
->>>>>>>
->>>>>>> First, the kvm_enter_guest contains only a single branch 
->>>>>>> instruction, ertn.
->>>>>>> It hardware-jump to the CSR.ERA address directly, jump into 
->>>>>>> kvm_exc_entry.
->>>>>>>
->>>>>>> At this point, the stack layout looks like this:
->>>>>>> -------------------------------
->>>>>>>   frame from call to `kvm_enter_guest`
->>>>>>> -------------------------------  <- $sp
->>>>>>>   PT_REGS
->>>>>>> -------------------------------  <- $a2
->>>>>>>
->>>>>>> Then kvm_exc_entry adjust stack without save any register (e.g. 
->>>>>>> $ra, $sp)
->>>>>>> but still marked UNWIND_HINT_REGS.
->>>>>>> After the adjustment:
->>>>>>> -------------------------------
->>>>>>>   frame from call to `kvm_enter_guest`
->>>>>>> -------------------------------
->>>>>>>   PT_REGS
->>>>>>> -------------------------------  <- $a2, new $sp
->>>>>>>
->>>>>>> During unwinding, when the unwinder reaches kvm_exc_entry,
->>>>>>> it meets the mark of PT_REGS and correctly recovers
->>>>>>>  pc = regs.csr_era, sp = regs.sp, ra = regs.ra
->>>>>>>
->>>>>> Yes, here unwinder does work as you say.
->>>>>>
->>>>>>> a) Can we avoid "ertn" rather than `jr reg (or jirl ra, reg, 0)`
->>>>>>> instead, like call?
->>>>>> No,  we need to rely on the 'ertn instruction return PIE to CRMD IE,
->>>>>> at the same time to ensure that its atomic,
->>>>>> there should be no other instruction than' ertn 'more appropriate 
->>>>>> here.
->>>>> You are right! I got it.
->>>>>>
->>>>>>> The kvm_exc_entry cannot back to kvm_enter_guest
->>>>>>> if we use "ertn", so should the kvm_enter_guest appear on the 
->>>>>>> stacktrace?
->>>>>>>
->>>>>>
->>>>>> It is flexible. As I mentioned above, the cpu completes the switch 
->>>>>> from host-mode to guest mode through kvm_enter_guest,
->>>>>> and then the switch from guest mode to host-mode through 
->>>>>> kvm_exc_entry. When we ignore the details of the host-mode
->>>>>> and guest-mode switching in the middle, we can understand that the 
->>>>>> host cpu has completed kvm_enter_guest->kvm_exc_entry.
->>>>>> From this perspective, I think it can exist in the call stack, and 
->>>>>> at the same time, we have obtained the maximum call stack 
->>>>>> information.
->>>>>>
->>>>>>
->>>>>>> b) Can we adjust $sp before entering kvm_exc_entry? Then we can mark
->>>>>>> UNWIND_HINT_REGS at the beginning of kvm_exc_entry, which something
->>>>>>> like ret_from_kernel_thread_asm.
->>>>>>>
->>>>>> The following command can be used to dump the orc entries of the 
->>>>>> kernel:
->>>>>> ./tools/objtool/objtool --dump vmlinux
->>>>>>
->>>>>> You can observe that not all orc entries are generated at the 
->>>>>> beginning of the function.
->>>>>> For example:
->>>>>> handle_tlb_protect
->>>>>> ftrace_stub
->>>>>> handle_reserved
->>>>>>
->>>>>> So, is it unnecessary for us to modify UNWIND_HINT_REGS in order 
->>>>>> to place it at the beginning of the function.
->>>>>>
->>>>>> If you have a better solution, could you provide an example of the 
->>>>>> modification?
->>>>>> I can test the feasibility of the solution.
->>>>>>
->>>>> The expression at the beginning of the function is incorrect 
->>>>> (feeling sorry).
->>>>> It should be marked where have all stacktrace info.
->>>>> Thanks for all the explaining, since I'm unfamiliar with kvm, I 
->>>>> need these to help my understanding.
->>>>>
->>>>> Can you try with follows, with save regs by $sp, set more precise 
->>>>> era to pt_regs, and more unwind hint.
->>>>>
->>>>>
->>>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
->>>>> index f1768b7a6194..8ed1d7b72c54 100644
->>>>> --- a/arch/loongarch/kvm/switch.S
->>>>> +++ b/arch/loongarch/kvm/switch.S
->>>>> @@ -14,13 +14,13 @@
->>>>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
->>>>>
->>>>>   .macro kvm_save_host_gpr base
->>>>> -    .irp n,1,2,3,22,23,24,25,26,27,28,29,30,31
->>>>> +    .irp n,1,2,22,23,24,25,26,27,28,29,30,31
->>>>>       st.d    $r\n, \base, HGPR_OFFSET(\n)
->>>>>       .endr
->>>>>   .endm
->>>>>
->>>>>   .macro kvm_restore_host_gpr base
->>>>> -    .irp n,1,2,3,22,23,24,25,26,27,28,29,30,31
->>>>> +    .irp n,1,2,22,23,24,25,26,27,28,29,30,31
->>>>>       ld.d    $r\n, \base, HGPR_OFFSET(\n)
->>>>>       .endr
->>>>>   .endm
->>>>> @@ -88,6 +88,7 @@
->>>>>       /* Load KVM_ARCH register */
->>>>>       ld.d    a2, a2,    (KVM_ARCH_GGPR + 8 * REG_A2)
->>>>>
->>>>> +111:
->>>>>       ertn /* Switch to guest: GSTAT.PGM = 1, ERRCTL.ISERR = 0, 
->>>>> TLBRPRMD.ISTLBR = 0 */
->>>>>   .endm
->>>>>
->>>>> @@ -158,9 +159,10 @@ SYM_CODE_START(kvm_exc_entry)
->>>>>       csrwr    t0, LOONGARCH_CSR_GTLBC
->>>>>       ld.d    tp, a2, KVM_ARCH_HTP
->>>>>       ld.d    sp, a2, KVM_ARCH_HSP
->>>>> +    UNWIND_HINT_REGS
->>>>> +
->>>>>       /* restore per cpu register */
->>>>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
->>>>> -    addi.d    sp, sp, -PT_SIZE
->>>>>
->>>>>       /* Prepare handle exception */
->>>>>       or    a0, s0, zero
->>>>> @@ -184,10 +186,11 @@ SYM_CODE_START(kvm_exc_entry)
->>>>>       csrwr    s1, KVM_VCPU_KS
->>>>>       kvm_switch_to_guest
->>>>>
->>>>> +    UNWIND_HINT_UNDEFINED
->>>>>   ret_to_host:
->>>>> -    ld.d    a2, a2, KVM_ARCH_HSP
->>>>> -    addi.d  a2, a2, -PT_SIZE
->>>>> -    kvm_restore_host_gpr    a2
->>>>> +    ld.d    sp, a2, KVM_ARCH_HSP
->>>>> +    kvm_restore_host_gpr    sp
->>>>> +    addi.d    sp, sp, PT_SIZE
->>>>>       jr      ra
->>>>>
->>>>>   SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
->>>>> @@ -200,11 +203,15 @@ SYM_CODE_END(kvm_exc_entry)
->>>>>    *  a0: kvm_run* run
->>>>>    *  a1: kvm_vcpu* vcpu
->>>>>    */
->>>>> -SYM_FUNC_START(kvm_enter_guest)
->>>>> +SYM_CODE_START(kvm_enter_guest)
->>>>> +    UNWIND_HINT_UNDEFINED
->>>>>       /* Allocate space in stack bottom */
->>>>> -    addi.d    a2, sp, -PT_SIZE
->>>>> +    addi.d    sp, sp, -PT_SIZE
->>>>>       /* Save host GPRs */
->>>>> -    kvm_save_host_gpr a2
->>>>> +    kvm_save_host_gpr sp
->>>>> +    la.pcrel a2, 111f
->>>>> +    st.d     a2, sp, PT_ERA
->>>>> +    UNWIND_HINT_REGS
->>>>>
->>>> why the label 111f is more accurate?  Supposing there is hw 
->>>> breakpoint here and backtrace is called, what is the call trace 
->>>> stack then? obvious label 111f is not executed instead.
->>> Xianglai said marking it as regs can get more stack infos, so I use
->>> UNWIND_HINT_REGS marked here, though it not called. Remove
->>> UNWIND_HINT_REGS thenforbid unwind from here.
->>> This function is called and should usually be marked as "call",
->>> but it is complex by switching the stack and use `ertn` calls
->>> another function.
->>>
->>>
->>>>
->>>> UNWIND_HINT_REGS is used for nested kernel stack, is that right?
->>>> With nested interrupt and exception handlers on LoongArch kernel, is 
->>>> UNWIND_HINT_REGS used?
->>>>
->>>> SYM_CODE_START(ret_from_fork_asm)
->>>>         UNWIND_HINT_REGS
->>>>         move            a1, sp
->>>>         bl              ret_from_fork
->>>>         STACKLEAK_ERASE
->>>>         RESTORE_STATIC
->>>>         RESTORE_SOME
->>>>         RESTORE_SP_AND_RET
->>>> SYM_CODE_END(ret_from_fork_asm)
->>>> With this piece of code, what is contents of pt_regs? In generic it 
->>>> is called from sys_clone, era is user PC address, is that right? If so,
->>>> what is detailed usage in the beginning of ret_from_fork_asm?
->>> The stacktrace shows the control flow where the PC will go back, so
->>> it is right because when PC is in ret_from_fork_asm, it is already
->>> another thread. The era means it will go back user mode.
->> The problem is that user mode era shows unwind with error, and 
->> user_mode(regs) is not accurate. here is piece of code.
->>                 pc = regs->csr_era;
->>                 if (!__kernel_text_address(pc))
->>                         goto err;
->> will UNWIND_HINT_END_OF_STACK be better than UNWIND_HINT_REGS?
-> 
-> You are right. And the reason why current the unwinder does not cause
-> error is in case ORC_TYPE_REGS we process it by user_mode(regs).
-Any process about UNWIND_HINT_REGS usage, is nested exception unwind 
-supported now?
-
-Talking without any actions seems not be style of Loongson :)
-
-Regards
-Bibo Mao
-> 
-> Jinyang
-> 
+> Ok! I wonder if we could (not for this series) encode this information into some
+> centralized helper on the TDX side. It's nice to see it all together. Not sure
+> on the idea.
+Maybe some code comments to tdx_sept_set_private_spte() and
+tdx_sept_free_private_spt()?
 
