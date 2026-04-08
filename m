@@ -1,108 +1,129 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18107B67E
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72579187346
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775607291; cv=none; b=kav7yr98u6oRtEib9WZpCVM7/NTaoteTjBQXRvohW61ksDd/b0A3HiJHCzc1efmOs095IWDeZNUH//b+dP7hi9a3Gl3Tan+xbBUXuCRye1VGqgKok7p5GVs7ay/BuHlBLra6zrhYjZacTAxz9gn4KWEy58rpSNHm8N5vk/CtaY8=
+	t=1775607338; cv=none; b=g0HWF9y3I6HNMgSYv2KGbyNJTKs3fwNQ+5eOteS6Xh8x+QfQodw+wCwn0l9R4g5+Fl4JF37qpydSB6RF19L2wgEdxxk3GQLqhSGWn2juF8oUSK5GtoOQsCdsirHn9nE9FugWgTJGYqbl16lBxtN1otZKkwWYRgAuXAnsr4PGV/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775607291; c=relaxed/simple;
-	bh=5KxGGM+4+4sQsw/wZ1SfrWjwNPm6IlgjcJlez989a+o=;
+	s=arc-20240116; t=1775607338; c=relaxed/simple;
+	bh=IO3jyP6uJtPh3KBU+q57zeJd3LHy+JhKKQSOMTDa0aU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KeR/+UYSMGdXgvF2+0Bm3BBHe9pdG4X/+xjiTo26oqnDITRh/uZrkKb0cP4ar4fKyEyQA9RvphmSOEyyjiQZlY2jqWmrNlKKLqQhjskdrWKJhX2ZmaPm0m2Mc9X8jzgdjAqGx/xeMdQCEefvpSH5bT6tZ520ZJJJfYN7Pvq0mCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v9OngwPn; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=HvckSL+gK4u6GByxUP6QlGPHG2bhO4mIR6uTmZyJ9cfxHlqIUFNxlY0xKqQnhtxNJbmQLUuK5k/fhMX99/3kYTta9TvLxMzYZwP0dvWAyspEqyGuFEZgvt/Vc6frqYc2h6BWIlUuT4Sb334E0EWWp4+udCHQc6wXVh5t6qN9rVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TLxYQAxR; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v9OngwPn"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76b15a3ccfso2929100a12.3
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:14:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TLxYQAxR"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cf8dcd079so3954501b3a.1
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:15:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775607289; x=1776212089; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775607337; x=1776212137; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/6c/3aNAgdBfmE3uCVOikIv8jDS0Gj3+AoFK1vTn9w4=;
-        b=v9OngwPnE7v7Ljkors5hICLxHEtXeAsKGKfUZOaQ2BQE/Be0wTcti+d9c1tPIVpWji
-         i/4UjQhUEI+R7lUaXTVCuQz9D1xQbI5ttDrt/RloCzoGjpTQCovFBM+5ZjQh1mzg3kLq
-         jMD7x6c8q27NJsJV9/F84/ZUIUm4zEFvnq41CuNwWX0BspEmsv8glIwxiYy/0CHDd8/K
-         M7qE6Q7z5xfwEhK3VuzYnC7kmmu1o5qIg3/YcfCAyd7tGzdg/kmY9mmBpKonuClLowI4
-         6gDjFr1Q3lGUArF8HMDLlIi/Et/XKPYu5p2PZNRVSBSpELHvqEndRfoSBpVL1kEhWTfH
-         MI9Q==
+        bh=u9BybqCgYyk1HVoZQ2mKhgNsFaENlS+bUgH/8dNDAGg=;
+        b=TLxYQAxRfe5yntQPSy3yK7kJnXqwVKBsoIn4Ex6gHq6O5UhUxBln1kyvYCDhzzErU5
+         aAB29ECd328ccB60dUeHxJ106MYdyb6Rjw7ogFVFLcKmJ535XCbW65J54X3ZBpf0tfS2
+         BJChFEaOYJT07mDWJOBAPl3LbufJCvH6uGYYGXPT8hptsbBaoBwODoHfYLtW5kZ32pLE
+         Zo5DVoNEvrJkfqgdIoNmePUWK2mhXknmY6gUUNWhuaJEmx/XbJs9hNc3F1m5rdNz3Xi/
+         gbE/+9L1mIMWvbjqZhTPH2UL2wN3bKLHm9rgartzDKaeUPseBsHNaU3XQPVbkV1dCUTI
+         xgFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775607289; x=1776212089;
+        d=1e100.net; s=20251104; t=1775607337; x=1776212137;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/6c/3aNAgdBfmE3uCVOikIv8jDS0Gj3+AoFK1vTn9w4=;
-        b=Ilg/qmfoBaY9wiO8qs64S0MtMzbpsgA+AArVr0sH3wfagUXAQCriDBIBSfjhKpP+iV
-         HnAWxJav4ZrQuToM8749jjnd398pxZ6jQEXn71qiT7e4DLykNR528SGl9CIZLOpf15h4
-         9udYJRbK2zDN4Bwn9xmnw56k5Pzr9q07XiHniXQRY/vjLxlOfwtdRwKb7jrgfWvJ95CX
-         DdoscZ7je2P02Wp6Hjr02CzmlNMjOPa8HMvy2IF8tgHItwCMeCOQ/Kcs9b9po8QZBHZF
-         j2pDoMDLYFntfLwibRsIuj833WVI9WMmucRWozS4BtaG7Gt8bacHoFpqgBLg3c+Ek+xJ
-         tgYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHo+Y39IwB/orkOJoOYjbBMZa0C92z/bjS5+NdD5ZoYUy6UZQ3Aa0YZgx257T7ujYBxok=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzamIYSP1ADtgkNUuoyAGrYQ1ZD26th25JodTJpT7/WzqFjkncv
-	VM/6t3AeH4c/whsXmM874ihjltdfpHWr3HuPpVG9kvsfFifXvVoc64/0p0NhkWOzppdcgdA2h0j
-	fn5qtBQ==
-X-Received: from pghu8.prod.google.com ([2002:a63:ef08:0:b0:c76:6b03:96ea])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:918a:b0:398:80a4:d6ba
- with SMTP id adf61e73a8af0-39f2f01ec8dmr18831199637.38.1775607289290; Tue, 07
- Apr 2026 17:14:49 -0700 (PDT)
-Date: Tue,  7 Apr 2026 17:14:38 -0700
-In-Reply-To: <20260316202732.3164936-1-yosry@kernel.org>
+        bh=u9BybqCgYyk1HVoZQ2mKhgNsFaENlS+bUgH/8dNDAGg=;
+        b=MqqVKaR1mXbKEBDlwaXBVGGKq+xa4l2vWgIfimlm5ceJ6u8Z+iV5vVcPNDoBhLdCSN
+         89CRA+b13Rwo2xwFLf+cUhjgmowvap/gNbfUOgxlcSk5bzWE4pAPYP5QbBPoRuDqrp3z
+         vp08bA+tCrjJGLxg/Zl5A2ZXlwxXyXi9sD99lJRvLEWAgtjqZ6DHmo14OqgQ1VG5AP8H
+         E+SwCq6nDNsULusNTU5iWLnXlSikhEjDbdA2WZfrUDkwNUvxpX6gvl8KGGSeYydefhtV
+         vIvQ/xUqmtBSU6i13Oz8UCayHARrMnxeuaSNtjF/q+P1FCZE7DAERZMvZSq+gfWgF87J
+         Jk6g==
+X-Gm-Message-State: AOJu0YwA9Bn/eZ2s1k5o34O1VyGBdncBL8I7JGCi7EH5ydrX1v8LwSp9
+	aNgmAQCJ2HBNfzxn0uXAjNyiMsnS9odIV2N77uDqxG70hXwI2R9P2nJxSX6GrRs7uu5qjOfak80
+	GG3Qtzw==
+X-Received: from pfaf9.prod.google.com ([2002:a05:6a00:a119:b0:82c:d86b:4a7d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:238c:b0:829:924c:348a
+ with SMTP id d2e1a72fcca58-82d0dbac84dmr18889391b3a.45.1775607336179; Tue, 07
+ Apr 2026 17:15:36 -0700 (PDT)
+Date: Tue,  7 Apr 2026 17:14:40 -0700
+In-Reply-To: <20260310234829.2608037-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260316202732.3164936-1-yosry@kernel.org>
+References: <20260310234829.2608037-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <177560710241.1572937.2964119730170259262.b4-ty@google.com>
-Subject: Re: [PATCH v4 0/9] KVM: SVM: Fixes for VMCB12 checks and mapping
+Message-ID: <177560712732.1573391.728227401302821305.b4-ty@google.com>
+Subject: Re: [PATCH 00/21] Fixes and lock cleanup+hardening
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jethro Beekman <jethro@fortanix.com>, Alexander Potapenko <glider@google.com>, 
+	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 16 Mar 2026 20:27:23 +0000, Yosry Ahmed wrote:
-> Jim pointed out that VMRUN/VMLOAD/VMSAVE injecting a #GP when the vmcb12
-> GPA is valid but not mappable is not architectural [1]. The series
-> handles them as emulation failures and (mostly) exits to userspace
-> instead. It also fixes the checks performed on the vmcb12 GPA (i.e. RAX)
-> in a few places.
+On Tue, 10 Mar 2026 16:48:08 -0700, Sean Christopherson wrote:
+> Fix several fatal SEV bugs, then clean up the SEV+ APIs to either document
+> that they are safe to query outside of kvm->lock, or to use lockdep-protected
+> version.  The sev_mem_enc_register_region() goof is at least the second bug
+> we've had related to checking for an SEV guest outside of kvm->lock, and in
+> general it's nearly impossible to just "eyeball" the safety of KVM's usage.
 > 
-> Note that there's a few other bugs that this series leaves alone, mostly
-> to keep it focused on fixing the non-architectrual #GPs, this includes:
-> - KVM synthesizing #VMEXIT(VMLOAD/VMSAVE) to L1 when intercepting #GP
->   from L2 on VMLOAD/VMSAVE, even if L1 does not intercept VMLOAD/VMSAVE
->   (e.g. VLS enabled).
-> - KVM not respecting priority of #GP vs. #UD when EFER.SVME is disabled
->   by the guest.
+> I included Carlos' guard() cleanups here to avoid annoying conflicts (well,
+> to solve them now instead of when applying).
 > 
 > [...]
 
-Applied to kvm-x86 nested, thanks!
+Applied to kvm-x86 svm, even though it's very late in the cycle and this is
+a chonker.  If there are any problems, I'll just omit this from the pull
+request (it's been in -next for a few days, so /knock-wood it's all good...).
 
-[1/9] KVM: SVM: Properly check RAX in the emulator for SVM instructions
-      https://github.com/kvm-x86/linux/commit/c85aaff26d55
-[2/9] KVM: SVM: Refactor SVM instruction handling on #GP intercept
-      https://github.com/kvm-x86/linux/commit/27f70eaa8661
-[3/9] KVM: SVM: Properly check RAX on #GP intercept of SVM instructions
-      https://github.com/kvm-x86/linux/commit/435741a4e766
-[4/9] KVM: SVM: Move RAX legality check to SVM insn interception handlers
-      https://github.com/kvm-x86/linux/commit/d2fbeb61e145
-[5/9] KVM: SVM: Check EFER.SVME and CPL on #GP intercept of SVM instructions
-      https://github.com/kvm-x86/linux/commit/783cf7d01fb8
-[6/9] KVM: SVM: Treat mapping failures equally in VMLOAD/VMSAVE emulation
-      https://github.com/kvm-x86/linux/commit/878b8efa2adb
-[7/9] KVM: nSVM: Fail emulation of VMRUN/VMLOAD/VMSAVE if mapping vmcb12 fails
-      https://github.com/kvm-x86/linux/commit/2daf71bfd77d
-[8/9] KVM: selftests: Rework svm_nested_invalid_vmcb12_gpa
-      https://github.com/kvm-x86/linux/commit/428543fbf06c
-[9/9] KVM: selftests: Drop 'invalid' from svm_nested_invalid_vmcb12_gpa's name
-      https://github.com/kvm-x86/linux/commit/052ca584bd7c
+[01/21] KVM: selftests: Remove duplicate LAUNCH_UPDATE_VMSA call in SEV-ES migrate test
+        https://github.com/kvm-x86/linux/commit/25a642b6abc9
+[02/21] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
+        https://github.com/kvm-x86/linux/commit/9b9f7962e3e8
+[03/21] KVM: SEV: Protect *all* of sev_mem_enc_register_region() with kvm->lock
+        https://github.com/kvm-x86/linux/commit/b6408b6cec5d
+[04/21] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
+        https://github.com/kvm-x86/linux/commit/624bf3440d72
+[05/21] KVM: SEV: Lock all vCPUs when synchronzing VMSAs for SNP launch finish
+        https://github.com/kvm-x86/linux/commit/88b16bf7bdc5
+[06/21] KVM: SEV: Lock all vCPUs for the duration of SEV-ES VMSA synchronization
+        https://github.com/kvm-x86/linux/commit/c9ebe8648ef7
+[07/21] KVM: SEV: Provide vCPU-scoped accessors for detecting SEV+ guests
+        https://github.com/kvm-x86/linux/commit/6d0d4cc7befc
+[08/21] KVM: SEV: Add quad-underscore version of VM-scoped APIs to detect SEV+ guests
+        https://github.com/kvm-x86/linux/commit/8e7172f2f799
+[09/21] KVM: SEV: Document the SEV-ES check when querying SMM support as "safe"
+        https://github.com/kvm-x86/linux/commit/4d61fc63ba87
+[10/21] KVM: SEV: Move standard VM-scoped helpers to detect SEV+ guests to sev.c
+        https://github.com/kvm-x86/linux/commit/3fae1e8e1fdf
+[11/21] KVM: SEV: Move SEV-specific VM initialization to sev.c
+        https://github.com/kvm-x86/linux/commit/18951f21c676
+[12/21] KVM: SEV: WARN on unhandled VM type when initializing VM
+        https://github.com/kvm-x86/linux/commit/61d7f912b344
+[13/21] KVM: SEV: Hide "struct kvm_sev_info" behind CONFIG_KVM_AMD_SEV=y
+        https://github.com/kvm-x86/linux/commit/332e201873c4
+[14/21] KVM: SEV: Document that checking for SEV+ guests when reclaiming memory is "safe"
+        https://github.com/kvm-x86/linux/commit/0689ee7ace6b
+[15/21] KVM: SEV: Assert that kvm->lock is held when querying SEV+ support
+        https://github.com/kvm-x86/linux/commit/c34c81e08d7f
+[16/21] KVM: SEV: use mutex guard in snp_launch_update()
+        https://github.com/kvm-x86/linux/commit/b69560d32aa8
+[17/21] KVM: SEV: use mutex guard in sev_mem_enc_ioctl()
+        https://github.com/kvm-x86/linux/commit/fa4e5564204f
+[18/21] KVM: SEV: use mutex guard in sev_mem_enc_unregister_region()
+        https://github.com/kvm-x86/linux/commit/ec6d08c5a71c
+[19/21] KVM: SEV: use mutex guard in snp_handle_guest_req()
+        https://github.com/kvm-x86/linux/commit/612b2ce45d98
+[20/21] KVM: SVM: Move lock-protected allocation of SEV ASID into a separate helper
+        https://github.com/kvm-x86/linux/commit/af0cd8d7f455
+[21/21] KVM: SEV: Goto an existing error label if charging misc_cg for an ASID fails
+        https://github.com/kvm-x86/linux/commit/11acc5d0cfb7
 
 --
 https://github.com/kvm-x86/linux/tree/next
