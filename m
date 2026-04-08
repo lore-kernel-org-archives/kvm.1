@@ -1,103 +1,253 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6BF31355C;
-	Wed,  8 Apr 2026 07:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8381930C61B;
+	Wed,  8 Apr 2026 07:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775634588; cv=none; b=ogx0yj5O35+NKx8mnqa4TL+TJYark3jwGsh8sPIe8nZmxBAa5ow2SKG0UOy3Ep3uCQ2CmhUyzn/zBRYBHX5NThmpZJ9/ZzkdC+z0/p91APws0xyF+xGIwvukYgf/Lhs29Yn1iFTM++51pbOLFl9UNC2CDLQ2qlQ97OrdTHY3HAE=
+	t=1775634861; cv=none; b=euaC2Yqot96bRdT5Jxfg/bTbg8/JRzOV9bwQdhwcYD9u2zLFZ/QJy616Xzb0VlZTQbpulI+7EKGVNuBQfKsspH2OV5EIY/hWWALX8017IGW6e0gKhR/wOT7xlvZAsxumBhCwcC4s9/51Or9KmTCCNjf+374uV+3H29d8bsQyG7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775634588; c=relaxed/simple;
-	bh=TZ8vAjBEh8SJSxBZo9/DJgG2nIYFLp8l9WUkHVDXk2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dmsf+g2pLJ6+x9RWfWNgVOC2mGsAhtJT3/Ci3ncGHFZ5eclkY9f/sC4SPBl8ijIOt0U9niznpZwxGUG+oIh+3NHHOcS8a77eJmsKVuDWDGSf3e2Bd8N8k1zm+NFINYrWZKgRPrxdrwS07CkJYHC65+A2xkpwqdZj5flUn6j7vcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SylTvEXa; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1775634861; c=relaxed/simple;
+	bh=VBIGF5AN9ebmM6kyFi+XFeTVPotW9wSqJLoFDMY7mQQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hq0wI12Z7vpLVfU5ZIZOAyO3s5mgOI88AeFgeOE0z86VN9aCvtqjpswhnfB69RBZinMUtRz6BN2xdj3qQN/eUbdcJvnxUSFuxYzNxnHhRk7BxAX9K/E5tWJ1gt7GiOIM3YKUlPvhIjCZ3oLSSGfeBTDdvYhp+1Ue/sKGt+Ghx9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YW+P323B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SylTvEXa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775634587; x=1807170587;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TZ8vAjBEh8SJSxBZo9/DJgG2nIYFLp8l9WUkHVDXk2E=;
-  b=SylTvEXarqXeISKlnlxzQGog4L7jM04gWBNq6Y0TRSfJgOeTZVqwck8C
-   N8SYFmpd6w6wHLUt+CLHLXlZ9Kdr3pdCtKIRiVU9itHJlswEzqhHsZRWR
-   ZfpnpuGKwTKJxpkI9x4KSB0xXSNtQe68NqjvVEq80BwP/BrRbMEWWhGSN
-   OqJD/nLvoabt9GQ4HqKAaQAbucF4V87yNaEqRT2uaA29J+sSJTObNZx9r
-   BZEHbqwg08KojSLnY+fbfN+vS8VBeV8ooUgDhH9WWS6dYmMHdOUqikdm2
-   FgGyH6ooOkP5wJchA0shzZ0MEZfHjj3WEPGx6QL/Om1x1z78NVh27S4LN
-   g==;
-X-CSE-ConnectionGUID: Fgb8c1MQS5Wk897ytyBNxA==
-X-CSE-MsgGUID: FXJ/FtuYR76FfrnlfHNK+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="86901697"
-X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="86901697"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 00:49:46 -0700
-X-CSE-ConnectionGUID: LQFNHdM2S+icJZVek/TuOQ==
-X-CSE-MsgGUID: iPTdPX9gSOeIsZFEVM9X2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="251725022"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Apr 2026 00:49:43 -0700
-Date: Wed, 8 Apr 2026 15:28:11 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
-	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
-	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module
- for Extensions
-Message-ID: <adYDiw2BkdzajBHD@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-11-yilun.xu@linux.intel.com>
- <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YW+P323B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F6FC19424;
+	Wed,  8 Apr 2026 07:54:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775634861;
+	bh=VBIGF5AN9ebmM6kyFi+XFeTVPotW9wSqJLoFDMY7mQQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YW+P323Bi1dBRcDBdB+yn4AdVRrM0FFHP9wyEb4ajhbSCpJXYBHtUm78uhrSp9BD0
+	 qaOWDYMr+Yvj7UxnWQ4bJEpk1jHF6fUWgLWaKAEY9U7PttUQLzEKNbYfFHEq5bhPvs
+	 wIrqzs295oD9fp/XP6jEiP2FkQhZCzxVuZIGcFIx+A5GSmFDn97dJQmLe79dFXq3M0
+	 6l7FsCeEAOToZpiSSS/IUqWIng8seUXLWMIlzhWcate0KmaKd1SuGv4LYq8MmjYYrN
+	 0cgA45yPkn8BsNSDjuqSiW3JQXmuqdEZY1UpJxG4l7QC2k5RvWa+tUBB+yreTcQB6Q
+	 ubpXegf08jb4w==
+Received: from 82-132-239-13.dab.02.net ([82.132.239.13] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wANjr-00000009ohr-1WG1;
+	Wed, 08 Apr 2026 07:54:18 +0000
+Date: Wed, 08 Apr 2026 08:54:03 +0100
+Message-ID: <87wlyhc2g4.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 2/3] KVM: arm64: vgic: Allow userspace to set IIDR revision 1
+In-Reply-To: <20260407210949.2076251-3-dwmw2@infradead.org>
+References: <20260407210949.2076251-1-dwmw2@infradead.org>
+	<20260407210949.2076251-3-dwmw2@infradead.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d9f09a41-9d10-4778-b49a-d54504020636@suse.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 82.132.239.13
+X-SA-Exim-Rcpt-To: dwmw2@infradead.org, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, pbonzini@redhat.com, shuah@kernel.org, dwmw@amazon.co.uk, rananta@google.com, eric.auger@redhat.com, kees@kernel.org, arnd@arndb.de, nathan@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-> > @@ -643,7 +643,7 @@ EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
-> >   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
-> >   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
-> > -static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
-> > +static u64 hpa_list_info_assign_raw(struct tdx_page_array *array)
-> >   {
-> >   	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
-> >   	       FIELD_PREP(HPA_LIST_INFO_PFN,
-> > @@ -1513,6 +1513,94 @@ static void tdx_clflush_page(struct page *page)
-> >   	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
-> >   }
-> > +static void tdx_clflush_page_array(struct tdx_page_array *array)
-> > +{
-> > +	for (int i = 0; i < array->nents; i++)
+On Tue, 07 Apr 2026 21:27:03 +0100,
+David Woodhouse <dwmw2@infradead.org> wrote:
 > 
-> shouldn't the actual number of entries be adjusted as per offset, similarly
-> to how 'nents' in tdx_page_array_validate_release is calculated?
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Allow userspace to select GICD_IIDR revision 1, which restores the
+> original pre-d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow configuration
+> of interrupt groups") behaviour where interrupt groups are not
+> guest-configurable.
 
-Actually array->nents is calculated the same way:
+I'm a bit surprised by this.
 
-  static int tdx_page_array_populate(struct tdx_page_array *array,
-				   unsigned int offset)
-  {
-	...
+Either your guest knows that the group registers are not writable and
+already deals with the buggy behaviour by not configuring the groups
+(or configuring them in a way that matches what the implementation
+does). Or it configures them differently and totally fails to handle
+the interrupts as they are delivered using the wrong exception type,
+if at all.
 
-	array->offset = offset;
-	array->nents = umin(array->nr_pages - offset,
-			    TDX_PAGE_ARRAY_MAX_NENTS);
-	...
-  }
+I'd expect that your guests fall in the former category and not the
+latter, as we'd be discussing a very different problem. And my vague
+recollection of this issue is that we had established that as long as
+the reset values were unchanged, there was no harm in letting things
+rip.
 
-so IIUC we are good here.
+So what is this *really* fixing?
+
+> 
+> When revision 1 is selected:
+>  - GICv2: IGROUPR reads as zero (group 0), writes are ignored
+>  - GICv3: IGROUPR reads as all-ones (group 1), writes are ignored
+>  - v2_groups_user_writable is not set
+> 
+> This is implemented by checking the implementation revision in
+> vgic_mmio_read_group() and vgic_mmio_write_group() and returning
+> the fixed values when the revision is below 2.
+> 
+> Fixes: d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow configuration of interrupt groups")
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  arch/arm64/kvm/vgic/vgic-mmio-v2.c |  5 +++++
+>  arch/arm64/kvm/vgic/vgic-mmio-v3.c |  4 ++++
+>  arch/arm64/kvm/vgic/vgic-mmio.c    | 15 +++++++++++++++
+>  include/kvm/arm_vgic.h             |  1 +
+>  4 files changed, 25 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v2.c b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+> index 0643e333db35..14aa49f86f60 100644
+> --- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+> +++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+> @@ -20,6 +20,8 @@
+>   * Revision 1: Report GICv2 interrupts as group 0 instead of group 1
+>   * Revision 2: Interrupt groups are guest-configurable and signaled using
+>   * 	       their configured groups.
+> + * Revision 3: GICv2 behaviour is unchanged from revision 2.
+> + * 	       (GICv3 gains GICR_CTLR.{IR,CES}; see vgic-mmio-v3.c)
+
+nit: I don't think we need cross-version documentation, so just drop
+the second line.
+
+>   */
+>  
+>  static unsigned long vgic_mmio_read_v2_misc(struct kvm_vcpu *vcpu,
+> @@ -93,6 +95,9 @@ static int vgic_mmio_uaccess_write_v2_misc(struct kvm_vcpu *vcpu,
+>  		 */
+>  		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
+>  		switch (reg) {
+> +		case KVM_VGIC_IMP_REV_1:
+> +			dist->implementation_rev = reg;
+> +			return 0;
+>  		case KVM_VGIC_IMP_REV_2:
+>  		case KVM_VGIC_IMP_REV_3:
+>  			vcpu->kvm->arch.vgic.v2_groups_user_writable = true;
+
+nit: move the v1 handling down with a fallthrough in v2/v3 so that we
+don't duplicate the basic handling:
+
+diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v2.c b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+index 406845b3117cf..34f8b2b615fc5 100644
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+@@ -96,6 +96,8 @@ static int vgic_mmio_uaccess_write_v2_misc(struct kvm_vcpu *vcpu,
+ 		case KVM_VGIC_IMP_REV_2:
+ 		case KVM_VGIC_IMP_REV_3:
+ 			vcpu->kvm->arch.vgic.v2_groups_user_writable = true;
++			fallthrough;
++		case KVM_VGIC_IMP_REV_1:
+ 			dist->implementation_rev = reg;
+ 			return 0;
+ 		default:
+
+> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+> index 5913a20d8301..0130db71cfc9 100644
+> --- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+> +++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+> @@ -74,8 +74,11 @@ bool vgic_supports_direct_sgis(struct kvm *kvm)
+>  /*
+>   * The Revision field in the IIDR have the following meanings:
+>   *
+> + * Revision 1: Interrupt groups are not guest-configurable.
+> + * 	       IGROUPR reads as all-ones (group 1), writes ignored.
+>   * Revision 2: Interrupt groups are guest-configurable and signaled using
+>   * 	       their configured groups.
+> + * Revision 3: GICR_CTLR.{IR,CES} are advertised.
+>   */
+>  
+>  static unsigned long vgic_mmio_read_v3_misc(struct kvm_vcpu *vcpu,
+> @@ -196,6 +199,7 @@ static int vgic_mmio_uaccess_write_v3_misc(struct kvm_vcpu *vcpu,
+>  
+>  		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
+>  		switch (reg) {
+> +		case KVM_VGIC_IMP_REV_1:
+>  		case KVM_VGIC_IMP_REV_2:
+>  		case KVM_VGIC_IMP_REV_3:
+>  			dist->implementation_rev = reg;
+> diff --git a/arch/arm64/kvm/vgic/vgic-mmio.c b/arch/arm64/kvm/vgic/vgic-mmio.c
+> index a573b1f0c6cb..9eb95f13b9b6 100644
+> --- a/arch/arm64/kvm/vgic/vgic-mmio.c
+> +++ b/arch/arm64/kvm/vgic/vgic-mmio.c
+> @@ -48,6 +48,17 @@ unsigned long vgic_mmio_read_group(struct kvm_vcpu *vcpu,
+>  	u32 value = 0;
+>  	int i;
+>  
+> +	/*
+> +	 * Revision 1 and below: groups are not guest-configurable.
+> +	 * GICv2 reports all interrupts as group 0 (RAZ).
+> +	 * GICv3 reports all interrupts as group 1 (RAO).
+> +	 */
+> +	if (vgic_get_implementation_rev(vcpu) < KVM_VGIC_IMP_REV_2) {
+> +		if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3)
+> +			return -1UL;
+
+Hmmm... This can only be a 32bit access, so returning non-zero bits in
+the top half is weird. It will be narrowed down before hitting the
+guest, but still. Anyway, see below.
+
+> +		return 0;
+> +	}
+> +
+
+Why is this needed at all? The group reset values are already the
+expected ones for v1, and as long as we prevent writes, the reported
+group configuration will be as expected.
+
+>  	/* Loop over all IRQs affected by this read */
+>  	for (i = 0; i < len * 8; i++) {
+>  		struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, intid + i);
+> @@ -73,6 +84,10 @@ void vgic_mmio_write_group(struct kvm_vcpu *vcpu, gpa_t addr,
+>  	int i;
+>  	unsigned long flags;
+>  
+> +	/* Revision 1 and below: groups are not guest-configurable. */
+> +	if (vgic_get_implementation_rev(vcpu) < KVM_VGIC_IMP_REV_2)
+> +		return;
+> +
+>  	for (i = 0; i < len * 8; i++) {
+>  		struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, intid + i);
+>  
+> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+> index f2eafc65bbf4..90fb6cd3c91c 100644
+> --- a/include/kvm/arm_vgic.h
+> +++ b/include/kvm/arm_vgic.h
+> @@ -248,6 +248,7 @@ struct vgic_dist {
+>  
+>  	/* Implementation revision as reported in the GICD_IIDR */
+>  	u32			implementation_rev;
+> +#define KVM_VGIC_IMP_REV_1	1 /* GICv2 interrupts as group 0 */
+>  #define KVM_VGIC_IMP_REV_2	2 /* GICv2 restorable groups */
+>  #define KVM_VGIC_IMP_REV_3	3 /* GICv3 GICR_CTLR.{IW,CES,RWP} */
+>  #define KVM_VGIC_IMP_REV_LATEST	KVM_VGIC_IMP_REV_3
+
+Thanks,
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
