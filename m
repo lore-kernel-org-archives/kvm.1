@@ -1,91 +1,108 @@
 Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD1F40DFD1
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18107B67E
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775607285; cv=none; b=C0dj2V0m/kYqwer870FSLIL0gGvM1mowBpY9lcpaejpNyqPMCPTdc3P7jRu4SCVIXquuPvOcWoSs7CQKz63Q9G1TlCSU5+fHvLvvNMutvHPasnr1GDmbM24UeB12J5kR/PVDRUZugXFgz2yPM7w6Vo7nmp/P25h1MCRsN9O+Rmw=
+	t=1775607291; cv=none; b=kav7yr98u6oRtEib9WZpCVM7/NTaoteTjBQXRvohW61ksDd/b0A3HiJHCzc1efmOs095IWDeZNUH//b+dP7hi9a3Gl3Tan+xbBUXuCRye1VGqgKok7p5GVs7ay/BuHlBLra6zrhYjZacTAxz9gn4KWEy58rpSNHm8N5vk/CtaY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775607285; c=relaxed/simple;
-	bh=myshdu0wUsQa43X+Mru0as+d76NbzjD6qLvfjjN9vz4=;
+	s=arc-20240116; t=1775607291; c=relaxed/simple;
+	bh=5KxGGM+4+4sQsw/wZ1SfrWjwNPm6IlgjcJlez989a+o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rxH8HaX0if8NTRA7MswdzIpo9KsgwREoxbX2vAm0Q/MOgQmpI5i8IXNrd2SUWEJKaSG8FJWMphfyc0AqxuyWdXYLksUFG804uBk6NOv+ZXSnR07DLivh3yVMN/P+eAcU6O3X4nxQEHEd4AGCdrZQme3AzMZbt7rWdbZihCVIRwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K9C73GAa; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=KeR/+UYSMGdXgvF2+0Bm3BBHe9pdG4X/+xjiTo26oqnDITRh/uZrkKb0cP4ar4fKyEyQA9RvphmSOEyyjiQZlY2jqWmrNlKKLqQhjskdrWKJhX2ZmaPm0m2Mc9X8jzgdjAqGx/xeMdQCEefvpSH5bT6tZ520ZJJJfYN7Pvq0mCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v9OngwPn; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K9C73GAa"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76b6d4337bso2956853a12.2
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:14:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v9OngwPn"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76b15a3ccfso2929100a12.3
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775607283; x=1776212083; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775607289; x=1776212089; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tgTCX/ofbDOTHq/UdV0rpq2HLJ8Mx4LSdkKD0Ovj9BY=;
-        b=K9C73GAaqJIbqJg+FgDyESOby6IA0WzKVZg9UruFfcjdTgteVCJY8Il2gJFbLKz0S2
-         Gm5EOmh/bewVpsqVSAW88gFO6VgRkwgv1t2fZgqpEDh+8VCyguNQuPV9961DkYWZtpsm
-         JyMC7ouH9+gKM4Mhto2s/q9q6PcKe5d2xjMTbYT22SJGQTf26nGG4VtXDOFvlNo6AD9C
-         ooSSTPzVwNDFDosox6dEQdCoZTS50lcZiRiWtll9+li260sV2UFUGfA9SLOwWCOXFm6s
-         KnwcrlF8pqshebYRc1jIulg3ErX4lRPZdQb8+7BSQS2XslWNeSwxGgc4sqayBI1lUBBv
-         qqug==
+        bh=/6c/3aNAgdBfmE3uCVOikIv8jDS0Gj3+AoFK1vTn9w4=;
+        b=v9OngwPnE7v7Ljkors5hICLxHEtXeAsKGKfUZOaQ2BQE/Be0wTcti+d9c1tPIVpWji
+         i/4UjQhUEI+R7lUaXTVCuQz9D1xQbI5ttDrt/RloCzoGjpTQCovFBM+5ZjQh1mzg3kLq
+         jMD7x6c8q27NJsJV9/F84/ZUIUm4zEFvnq41CuNwWX0BspEmsv8glIwxiYy/0CHDd8/K
+         M7qE6Q7z5xfwEhK3VuzYnC7kmmu1o5qIg3/YcfCAyd7tGzdg/kmY9mmBpKonuClLowI4
+         6gDjFr1Q3lGUArF8HMDLlIi/Et/XKPYu5p2PZNRVSBSpELHvqEndRfoSBpVL1kEhWTfH
+         MI9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775607283; x=1776212083;
+        d=1e100.net; s=20251104; t=1775607289; x=1776212089;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tgTCX/ofbDOTHq/UdV0rpq2HLJ8Mx4LSdkKD0Ovj9BY=;
-        b=k9NRLxWa37FbyfAAe3tHyz3hctYYL21SERWMjwJT5LTxK5H3V7bhu/4kBmy3usY93/
-         UCEkNlkloWe5dT7Xyd8iLVN++FydobCoA7EYdjjJzgYa9y6oyWp9YCQWHpUNCutiO8op
-         uYp/a88lou/DQrvYidgfobaNuNfSvIcBwVvKOuFt5ykgQq0I5DRnhwhP2rDXMt/IBZz0
-         +7nmL/Q7m0drIqtDrAOOjvxZdTqRZ9mwGDU3qVfJ1zZaBGtaebA3wT6230P2MoGFSUpC
-         9hhbqwMjT6G3YtCluu1vP+WgxjoDtHBRzFt6uckTLcU8PlKssdj5RpDRs05rjwsgdfCY
-         BEWw==
-X-Gm-Message-State: AOJu0YyqDY01mNRfBzsofj5+ebD+n+ok03tJV+3FHJLiu89tBOk0Uaox
-	BTntEWwTOijBAXprGCkQEv/ldsmRV//f3/JIM2FnZY94w6lxNvFnP7e3aQBsw0ZVNMjDSpaqnxF
-	YDvv0RA==
-X-Received: from pfbic2.prod.google.com ([2002:a05:6a00:8a02:b0:82c:efb6:4087])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2393:b0:82c:dd31:b83d
- with SMTP id d2e1a72fcca58-82d0dba0775mr18933513b3a.38.1775607283332; Tue, 07
- Apr 2026 17:14:43 -0700 (PDT)
-Date: Tue,  7 Apr 2026 17:14:36 -0700
-In-Reply-To: <20260312234823.3120658-1-seanjc@google.com>
+        bh=/6c/3aNAgdBfmE3uCVOikIv8jDS0Gj3+AoFK1vTn9w4=;
+        b=Ilg/qmfoBaY9wiO8qs64S0MtMzbpsgA+AArVr0sH3wfagUXAQCriDBIBSfjhKpP+iV
+         HnAWxJav4ZrQuToM8749jjnd398pxZ6jQEXn71qiT7e4DLykNR528SGl9CIZLOpf15h4
+         9udYJRbK2zDN4Bwn9xmnw56k5Pzr9q07XiHniXQRY/vjLxlOfwtdRwKb7jrgfWvJ95CX
+         DdoscZ7je2P02Wp6Hjr02CzmlNMjOPa8HMvy2IF8tgHItwCMeCOQ/Kcs9b9po8QZBHZF
+         j2pDoMDLYFntfLwibRsIuj833WVI9WMmucRWozS4BtaG7Gt8bacHoFpqgBLg3c+Ek+xJ
+         tgYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHo+Y39IwB/orkOJoOYjbBMZa0C92z/bjS5+NdD5ZoYUy6UZQ3Aa0YZgx257T7ujYBxok=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzamIYSP1ADtgkNUuoyAGrYQ1ZD26th25JodTJpT7/WzqFjkncv
+	VM/6t3AeH4c/whsXmM874ihjltdfpHWr3HuPpVG9kvsfFifXvVoc64/0p0NhkWOzppdcgdA2h0j
+	fn5qtBQ==
+X-Received: from pghu8.prod.google.com ([2002:a63:ef08:0:b0:c76:6b03:96ea])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:918a:b0:398:80a4:d6ba
+ with SMTP id adf61e73a8af0-39f2f01ec8dmr18831199637.38.1775607289290; Tue, 07
+ Apr 2026 17:14:49 -0700 (PDT)
+Date: Tue,  7 Apr 2026 17:14:38 -0700
+In-Reply-To: <20260316202732.3164936-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260312234823.3120658-1-seanjc@google.com>
+References: <20260316202732.3164936-1-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <177560706203.1572452.5325835766446538096.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/2] KVM: x86: Syzkaller nested_run_pending defense
+Message-ID: <177560710241.1572937.2964119730170259262.b4-ty@google.com>
+Subject: Re: [PATCH v4 0/9] KVM: SVM: Fixes for VMCB12 checks and mapping
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 12 Mar 2026 16:48:21 -0700, Sean Christopherson wrote:
-> Stop playing a losing game of whack-a-mole with syzkaller over
-> nested_run_pending, and simply treat the flag as "untrusted" if userspace gains
-> control of the vCPU.  I.e. don't WARN if userspace _may_ have stuffed vCPU
-> state to force an impossible VM-Exit.
+On Mon, 16 Mar 2026 20:27:23 +0000, Yosry Ahmed wrote:
+> Jim pointed out that VMRUN/VMLOAD/VMSAVE injecting a #GP when the vmcb12
+> GPA is valid but not mappable is not architectural [1]. The series
+> handles them as emulation failures and (mostly) exits to userspace
+> instead. It also fixes the checks performed on the vmcb12 GPA (i.e. RAX)
+> in a few places.
 > 
-> The signal:noise ratio for nested_run_pending WARNs when syzkaller is fuzzing
-> nVMX/nSVM is awful, and playing whack-a-mole with syzkaller is doing more harm
-> that good at this point.  While it's possible syzkaller could find an actual
-> KVM bug by stuffing vCPU state, if the _only_ symptom is the nested_run_pending
-> WARN, then in theory the bug should also be hittable by stuffing L2 state prior
-> to nested VM-Enter.
+> Note that there's a few other bugs that this series leaves alone, mostly
+> to keep it focused on fixing the non-architectrual #GPs, this includes:
+> - KVM synthesizing #VMEXIT(VMLOAD/VMSAVE) to L1 when intercepting #GP
+>   from L2 on VMLOAD/VMSAVE, even if L1 does not intercept VMLOAD/VMSAVE
+>   (e.g. VLS enabled).
+> - KVM not respecting priority of #GP vs. #UD when EFER.SVME is disabled
+>   by the guest.
 > 
 > [...]
 
-Applied to kvm-x86 nested.
+Applied to kvm-x86 nested, thanks!
 
-[1/2] KVM: x86: Move nested_run_pending to kvm_vcpu_arch
-      https://github.com/kvm-x86/linux/commit/3d4470d71fbf
-[2/2] KVM: x86: Suppress WARNs on nested_run_pending after userspace exit
-      https://github.com/kvm-x86/linux/commit/7212094baef5
+[1/9] KVM: SVM: Properly check RAX in the emulator for SVM instructions
+      https://github.com/kvm-x86/linux/commit/c85aaff26d55
+[2/9] KVM: SVM: Refactor SVM instruction handling on #GP intercept
+      https://github.com/kvm-x86/linux/commit/27f70eaa8661
+[3/9] KVM: SVM: Properly check RAX on #GP intercept of SVM instructions
+      https://github.com/kvm-x86/linux/commit/435741a4e766
+[4/9] KVM: SVM: Move RAX legality check to SVM insn interception handlers
+      https://github.com/kvm-x86/linux/commit/d2fbeb61e145
+[5/9] KVM: SVM: Check EFER.SVME and CPL on #GP intercept of SVM instructions
+      https://github.com/kvm-x86/linux/commit/783cf7d01fb8
+[6/9] KVM: SVM: Treat mapping failures equally in VMLOAD/VMSAVE emulation
+      https://github.com/kvm-x86/linux/commit/878b8efa2adb
+[7/9] KVM: nSVM: Fail emulation of VMRUN/VMLOAD/VMSAVE if mapping vmcb12 fails
+      https://github.com/kvm-x86/linux/commit/2daf71bfd77d
+[8/9] KVM: selftests: Rework svm_nested_invalid_vmcb12_gpa
+      https://github.com/kvm-x86/linux/commit/428543fbf06c
+[9/9] KVM: selftests: Drop 'invalid' from svm_nested_invalid_vmcb12_gpa's name
+      https://github.com/kvm-x86/linux/commit/052ca584bd7c
 
 --
 https://github.com/kvm-x86/linux/tree/next
