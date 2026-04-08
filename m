@@ -1,174 +1,137 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C645826158B
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775608441; cv=none; b=OVY5LtTm/v3QDgOVB384GPxq0ZjaGRvOpjgG5NLemolH0AlkMMlRAh/Faw2Z8KvyLBLiC3P6ktBGzkGRQW3DBD/seclDCjIuuivFe92WsVRNiQa77MwhwWEh89HMC3g4bSAwjIRG4tOuBLgYxhumB6RyKyHuty9CSG/o4mAFdT0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775608441; c=relaxed/simple;
-	bh=J8lObzK2Uu3gpSZOZmzqAZdfXNnRkzBYDt7uUjpmnZM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XhMKSWwvY2WZkrsN0xLAIjda9hNiLXIk8kITA7iZUfUMEPNmPVLRh8IZXffGn4g+yx8+eL8E78fSzRKpFXSSbVuhsal6/2Am/j9dQehg8NK20j02k/uiJbg5O9tBVYt/2xMfUIan/4Cv/zC6zkYwha2e4101grTDgxmMpU0RDZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cu84yI5u; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4241A2E6CB3
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 00:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775609238; cv=pass; b=b8lDNL3qAXNgQ49cvS5n09pSYelzl8q/3p9YLpOmt/GLW9pJBDZxpXWIMvIi58mtIYWtTRmf0USeczz5X8+GUZ+dFSeEgqvJmFGiAFyuUf0n0VcP9fQnbmG9BlCD9sIOPlgLI188qD4HtP0YCelwYVUNmQP60U8IIwoP6E1hGnw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775609238; c=relaxed/simple;
+	bh=DEsI0BgmtgLBAsle4MGY7bLXYBY4CxWUL4evHL89W7w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TMjsrrRhLJny+RFoknlN7RrzMMwzCpPqOO2YlWr6pYaiSdZL9nwUPoUtZPrg62Sqj/tfKI5ZZwdwGqu6Z3cgYBszs3zcbVg4PHjGiOqwtbCgfxczahNv/MyjKeky7zPca68braAKHL1VMjLnwUG6PZ6gYaJiWuzIf6t9nbziKB0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MHWFugAH; arc=pass smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cu84yI5u"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76b6d4337bso2965847a12.2
-        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:33:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MHWFugAH"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66b0dc690bcso3003a12.1
+        for <kvm@vger.kernel.org>; Tue, 07 Apr 2026 17:47:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775609236; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jh/B/x2nXzdatkOykBDRyGyxZHMXrIyfcQz1AmUOgSEAh3EeXpX1rwKjVWmunMoGkm
+         0ijTc4PY/KzkNfoLB9RDQYjaICHvSO/S5iUC2+FSRicA3D8DUyQO83nu37QrQc8/E+5k
+         /SMENrMY6e/4Ct/8UonSGyqbequUg4jcyrq2h59ECeie8y97HVrEfOYl/QkP/jwLM1mZ
+         0cNTvoY77cgmSn27Lnw+Y/PJNqsft/+kcrB5HtT0L766tq01eylzfh5THUIXxfstLU5m
+         2/Xy8tSNzwDFBpOusd89TJ3RUQklNiWyRktymPOC2n3aPLOn4OFeEnpY0QFKrs4X4e8N
+         obEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VhUSt7ISpVg4Y3MHFKzYjd0CV4ZCvpoOMj+LKGHtSi4=;
+        fh=SjYYzwilHy9D/mZs2MQQSXBaOm8kwBYClmOfwra0BeQ=;
+        b=F8rRv+eL1rEIpD6EaBgZTCpRx1Xp8SlWyUtROeVeRF9e0tL4NaXMf1hqbEgpgUMrvA
+         pW6eWguc7SJyMOoV9wm9QcbJ+D2PDlCURVzPVyX9fA1QAEsfT3+CL6gp9QWxn0qG/pSl
+         FnixP71MpbK/HQ3GW0bz+LVCchBDECqtMmANHN2FixPfxzpn89X+3EB98YwJVsbiPVs5
+         Mm6R9df9k1fdOhH7KBgsyM0gyJcXlg03goZP76CaDlIaWMNC7rGAf4tlPyDj00RHvGye
+         pTesMemdFlaJcic4e7TeIijzIL6/AEg1orY7hCy/SPMM2dqEx6MxSsp5XJ9/dX3m3Ng8
+         YBXg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775608439; x=1776213239; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aDLo9VPnGDiQNlFQzI1xTSPzRXpWtFJbtAFYR59HS10=;
-        b=cu84yI5uGATzgiiPJMHlB2b0nhG2G745ru0KXCVeLcnRULppZ2atz/7LGlUVA1T6ge
-         Xlz8DVcTJ5y1RcNb9A820K3AcKvpEoEpMr6pGTSvoPJv6s945P+GvNM6MWt7woSitMXp
-         T8tCCYunhRtgjd/46Vx4uYK58GWIV2G23Mh2Bau9hZqX8eC6sSL7+2+5TVGhFLtb9/PV
-         MdNvmlUUvIRZ8lHEmztn8tuURuQdJCRarztpoMq2KGvXcg4aPaSzgycxcE6CE4o2ZY3F
-         FzSpn81daFM0nkUBc53ApcCjOE79XVBGcSzWJNegoU1LVQH+lfOWjLq+szrVicNjpxlx
-         I//A==
+        d=google.com; s=20251104; t=1775609236; x=1776214036; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VhUSt7ISpVg4Y3MHFKzYjd0CV4ZCvpoOMj+LKGHtSi4=;
+        b=MHWFugAHP62a2G5dU/rhtZkCvpGvhteOzbQjCY/KIvcU3X6mnn0Huvsjuc1AL15H3c
+         xNJtygcKQq8Uw8vOCrDN4Ca+34/YMGepbiMZi7BLlwkX8Rt7H47xYFo8qh+pDg7Fbyvt
+         y0tQY0sOG7KXgFx2IQUzSiUe3ESIftbr7dGI1Y5inSG9BKnwowryFpMdfAweCzGs6Thh
+         IftCkwowYp32wuxZKW7/PVLwOSGMsLStqLu7br7Plw6vWppxduVwvbEJVEn+HbSBkdzC
+         yEHhiNTu/SclAKs03EY2TwE5SCr9KS3/0h+vqK+/rXZowTak59BUFnDfKGWt3bOwb/BS
+         zY7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775608439; x=1776213239;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aDLo9VPnGDiQNlFQzI1xTSPzRXpWtFJbtAFYR59HS10=;
-        b=TNL3RUamDnuux6JiB/KmwX9toZjtKOkhRePihTuwIOJxkTg9OXOynBNgeXlPshTbud
-         zoikPF2Skgr+FFJ+Mf8VA8Iubsk1hT+blRIpkzLX2CgoHwZL+aDooGf0jH/3yvk/LNBj
-         zIL+VwIIZUIocOxHjDscywjb3Mps7vGihR5w97IZVg28Ds7D+EFCFFOMQ2kR/4FEHl65
-         LvwChrtJur5GA+lEosRBi3bSOqefUZSs7/6U1lmvUVMRmP+aEQARANRoN5IkRqbyDSwk
-         xGUaGXfoBmjt7z/czWHN4TE7TCxNwjp6EecpYEUDe6oJ3At06chz16gnQVUxsE5qCo8z
-         9NOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9ybnWErK0BMfb+m81wWz8Szd7iTd6M//eNXGPpgj/ix2+evhuOxG09omdwJB6rIXww1I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA3/+kXQvNeB/X5Hdiyzi6PtSQ02VsxxTwQNvF7x9vQgNqdPDT
-	NSCeq/vEb3e0I1fk8vASjmMKThJv/gVnYVX6vGBd8FcwxHm9ZQ8qQhkudFRayGhuiF8gEtCGiT5
-	e0Qi5hQ==
-X-Received: from pfbmt5.prod.google.com ([2002:a05:6a00:6e65:b0:82c:6e7c:ac61])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3011:b0:801:eee2:45b6
- with SMTP id d2e1a72fcca58-82d0dac592amr17920681b3a.24.1775608438815; Tue, 07
- Apr 2026 17:33:58 -0700 (PDT)
-Date: Tue, 7 Apr 2026 17:33:57 -0700
-In-Reply-To: <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
+        d=1e100.net; s=20251104; t=1775609236; x=1776214036;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VhUSt7ISpVg4Y3MHFKzYjd0CV4ZCvpoOMj+LKGHtSi4=;
+        b=YdTnJE/VBY9k1gpQoA2ALqMsYcO8J0ynfpMFcpdcbFXEh/wn9Dr04PPAXMOe/DyQZ7
+         ipy5rJv7fJtE6nKqMx29Og18mXl+GPAIuiOy2VtgSi/JdU9Auhz2lXS/B8xqdTrYVlMS
+         wiDtRI8B6HX7mCS1v2cYp9N4xW8eDvPfI+RJim569S/J+qQuHyd4C9/7x2c1yeBdLlXg
+         Io8ryMApKZxNWN8+w8HLLxsJ+7Oza6Aq40m537uVaOh6+nt6FRyPPkvDjQz1KyVgH4f2
+         p69u/nGI3UH5FIb5OxIhfqoS7W/6hlDG6X6PLu/OLpXeRnfYpp/xVOk0hQ1UvKXituiV
+         7IOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtV6e7uAlH2bi+pjCX72pRWoVt2QRwx2TA7v46rrLYgOI4OcPY+wYwbAFObzePfa2WaDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS1tdhL4fSRN5CW/8e0+LnY5FiFJdqCgsA+3MVuBzZpofmMv2a
+	ThJmSJeva7mZOiLpTgaAPtp2zIFvKoM6rlvQ0/yENwkrK0mN0v0+Ncy0ahWYVampYeDnZp9GkgC
+	NMqyTMUkHDlZAHykf/MxMH0oKYue2bn9EN8PTYWHs
+X-Gm-Gg: AeBDievCg6OWUBle4qPHKo7KA4tST74iZul0gFA+yaYnqS2nmtRis+lipwwrmxpYcv4
+	Il86RoDJtGkZbkRmbujCwvUl6aRCjX0dPaHWaYwUPpItAnp4i1bo3065OHxLzA3JI12b4b8tJvY
+	bihk7S+a20Bj20UvYmVDafNfSjSviZahgrBjuDXFwY8pgwUDt/NUzX5xNaDNCBx7SiMLRSs+Z0T
+	vexAF4U8zJS1cX1WxB4vLrbhzce1m3+noH4+sd6ulH39OgbzWnVlDILiFYbQBGMFhPrzIw1L4L0
+	6WGZsMI=
+X-Received: by 2002:a05:6402:400e:b0:66e:e3f9:ebb6 with SMTP id
+ 4fb4d7f45d1cf-66f9eb0e641mr16529a12.4.1775609235225; Tue, 07 Apr 2026
+ 17:47:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
- <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
- <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
- <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com> <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
-Message-ID: <adWidf8UgZeYctr1@google.com>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260404002149.wtayv6a64vzuppgp@desk> <CALMp9eSqgL5q-MY1xpjqR5oRn5_cb=mfEhNFWusNneS=Mx8UMg@mail.gmail.com>
+ <20260404034954.t7iapenzvhdpagxp@desk> <CALMp9eR70eE2U63gzNzTiic0PqJVGv3CBBuVUOVbi3nqbWKZkQ@mail.gmail.com>
+ <20260407163943.y6tkh26z2rfktn3y@desk> <CALMp9eTA3cXxuOT4dq=6y1hx52gPH1ywwTEmPQ5-fA-vz6r3VQ@mail.gmail.com>
+ <20260407171151.2gf2idjbmph35ypb@desk> <CALMp9eRNVGFpzk_-ajQTuXadMtoY9H-ndUaz78wTT1zDYbTrPQ@mail.gmail.com>
+ <20260407191128.b2hr2ttkdpyunhrr@desk> <CALMp9eTK0o7Z7-oTB8ohvmoh-vy-Y2qjdUvbqD6HaEhOEPZmhw@mail.gmail.com>
+ <20260407222738.lrartp6evfp7yhti@desk> <CALMp9eQjSqwnvJz4JVzYpMkkTiucSJtW48zC4Hj9GBiUhOH-Eg@mail.gmail.com>
+ <a605fb45-f8e3-45ad-8924-1da43b9a9e05@intel.com>
+In-Reply-To: <a605fb45-f8e3-45ad-8924-1da43b9a9e05@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 7 Apr 2026 17:47:03 -0700
+X-Gm-Features: AQROBzDwO89X4_V9WtLHsu6z2_UbVoDRV4IxmA1X-n2IZi_rt3P0Mq9B7UxbbGE
+Message-ID: <CALMp9eRfNsghM_RnDXOs=SJYObfPa5A1aOVDZno_zJ=XotfmRw@mail.gmail.com>
+Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
+ newer CPUs
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org, 
+	Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org, chao.gao@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 07, 2026, Michael Roth wrote:
-> On Tue, Apr 07, 2026 at 02:50:58PM -0700, Vishal Annapurve wrote:
-> > On Tue, Apr 7, 2026 at 2:09=E2=80=AFPM Michael Roth <michael.roth@amd.c=
-om> wrote:
-> > >
-> > > > TLDR:
-> > > >
-> > > > + Think of populate ioctls not as KVM touching memory, but platform
-> > > >   handling population.
-> > > > + KVM code (kvm_gmem_populate) still doesn't touch memory contents
-> > > > + post_populate is platform-specific code that handles loading into
-> > > >   private destination memory just to support legacy non-in-place
-> > > >   conversion.
-> > > > + Don't complicate populate ioctls by doing conversion just to supp=
-ort
-> > > >   legacy use-cases where platform-specific code has to do copying o=
-n
-> > > >   the host.
-> > >
-> > > That's a good point: these are only considerations in the context of
-> > > actually copying from src->dst, but with in-place conversion the
-> > > primary/more-performant approach will be for userspace to initial
-> > > directly. I.e. if we enforced that, then gmem could right ascertain t=
-hat
-> > > it isn't even writing to private pages via these hooks and any
-> > > manipulation of that memory is purely on the part of the trusted enti=
-ty
-> > > handling initial encryption/etc.
-> > >
-> > > I understand that we decided to keep the option of allowing separate
-> > > src/dst even with in-place conversion, but it doesn't seem worthwhile=
- if
-> > > that necessarily means we need to glue population+conversion together=
- in
-> > > 1 clumsy interface that needs to handle partial return/error response=
-s to
-> > > userspace (or potentially get stuck forever in the conversion path).
-> >=20
-> > I think ARM needs userspace to specify separate source and destination
-> > memory ranges for initial population as ARM doesn't support in-place
-> > memory encryption. [1]
-> >=20
-> > [1] https://lore.kernel.org/kvm/20260318155413.793430-25-steven.price@a=
-rm.com/
-> >=20
-> > >
-> > > So I agree with Ackerley's proposal (which I guess is the same as wha=
-t's
-> > > in this series).
-> > >
-> > > However, 1 other alternative would be to do what was suggested on the
-> > > call, but require userspace to subsequently handle the shared->privat=
-e
-> > > conversion. I think that would be workable too.
-> >=20
-> > IIUC, Converting memory ranges to private after it essentially is
-> > treated as private by the KVM CC backend will expose the
-> > implementation to the same risk of userspace being able to access
-> > private memory and compromise host safety which guest_memfd was
-> > invented to address.
->=20
-> Doh, fair point. Doing conversion as part of the populate call would allo=
-w
-> us to use the filemap write-lock to avoid userspace being able to fault
-> in private (as tracked by trusted entity) pages before they are
-> transitioned to private (as tracked by KVM), so it's safer than having
-> userspace drive it.
->=20
-> But obviously I still think Ackerley's original proposal has more
-> upsides than the alternatives mentioned so far.
+On Tue, Apr 7, 2026 at 4:41=E2=80=AFPM Dave Hansen <dave.hansen@intel.com> =
+wrote:
+>
+> On 4/7/26 16:27, Jim Mattson wrote:
+> > What is your proposed BHI_DIS_S override mechanism, then?
+>
+> Let me make sure I get this right. The desire is to:
+>
+> 1. Have hypervisors lie to guests about the CPU they are running on (for
+>    the benefit of large/diverse migration pools)
+> 2. Have guests be allowed to boot with BHI_DIS_S for performance
+> 3. Have apps in those guests that care about security to opt back in to
+>    BHI_DIS_S for themselves?
 
-I'm a bit lost.  What exactly is/was Ackerley's original proposal?  If the =
-answer
-is "convert pages from shared=3D>private when populating via in-place conve=
-rsion",
-then I agree, because AFAICT, that's the only sane option.
+I just want guests on heterogeneous migration pools to properly
+protect themselves from native BHI when running on host kernels at
+least as far back as Linux v6.6.
+
+To that end, I would be satisfied with using the longer BHB clearing
+sequence when HYPERVISOR is true and BHI_CTRL is false.
