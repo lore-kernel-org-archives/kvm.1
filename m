@@ -1,133 +1,104 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011028.outbound.protection.outlook.com [52.101.62.28])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ACA352F9D
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 05:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775624981; cv=fail; b=EhW+hBuFBzQcPiH/rBHn8CM8REf60sD5cxGjmAeG+/ZbjRFWeBshlcwE7nDIAYJuCey0czfXo3+pLd7jZ/aTkkSdIIYZyFzyG6UmIsvTJc4/ClqSBwhuFgpuetqfLvV7R9s6jGY1scEYzVWLdyz1tdaQ5RpXKX3Lq/ZsBfIQ5Lc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775624981; c=relaxed/simple;
-	bh=jjpRlkpJQVs+p6uSlpuniQH6XxgPhuHdyRFL8mcmso8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ryGlJZ6begaUROsv9kBuBl7V7MxFVmXJ+/Z156gMUJs7Q75pbCfi+VQ8+VzVCTDzhrI80S1ZVCKj5GfHdeKZ0S5icqdPZMJodgJE3mW+0wWUpsK4etYOvVNzgwSor7yS2HTChPO/X7haH5wnyVit8c6OTAOC7drHKS6YdGtVKt4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qMhfI/w9; arc=fail smtp.client-ip=52.101.62.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB4535B64E;
+	Wed,  8 Apr 2026 06:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775630292; cv=none; b=hWYSiTr44jAY3T9DA6jTflcMjM0probirlmHtxksv4NkEL8vlCvkbZRTKLhYsjNVJrDBifuupgSHCq60RJSygW8jhzfWwm66nOPrypZJxR+lhQbUUIEJCBldRSFm1vK/M0Mk5ahXp9j4UtdiDcEbj83VCK3yFHVnQmbn9JV3t3k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775630292; c=relaxed/simple;
+	bh=r7Zou7qBpk7/ogc3+xg37FtskbYfl/ga0t5KuLEhvgM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERqSe4MfBCgdycBPJWX5vqQrFHfaW7Zj7QVZnKGyi+JOnbzyjPYD6Y/NnorLOLRLVAF1KURBym2PmhjCJR47qg7YFCQEHMXr8lew6EoG1HCG6/BZ8m58PM0aIUbdHVhuECv2b8oRPG1NU/WJsjzyiGbdvlOfxz5Uf93C5opeFs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GpWzWrFl; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qMhfI/w9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nUDju3BBTG044GedShJSnhlmba7uuJIrtWfd/D56Q4OH6EGKUJZC3zRabnEWmAQRXJMVskuRQkcvxUIVMqkeXrX+LjqD6140tIKz0Y71dI5uvebPQOYM7sxFdiWNkA61PK9i0WwpCmFNyDiueMI7vZiUEfXVdJ+osQLk3ze7Jibc6x4IROXAQDTjmiIdUWPO8mrRYP0bvtz0HAA0TM+wwogX51jWzRiE2cgaWArh3aRxHRUYqFEhDcVrOHBWDHD8gbxstf7X36kbsJeMX/aXmFQSqpDCZ+xkziZ2ixG5CrQF2ho3lp0ABZLNy2jNYF22CXVGKA/bmT2RCYgq0qVIjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=He/UOx5vAOWg9+GXn0pX9V8tKefqOTlqEMl+6DiJK4g=;
- b=SGkNRx9W7GAELDMRRo7uoIvOTnB9AOaDfg0Y/juUQGoqZ219tunntHLHoFfDATuCZzThGiNmN/fYpmBfD9gu5g0KjQ1iITToU9bbabYcTl6zF86QsFOrtzhNumJpnLOpwfGIGqoKgQ+gHOrhyZhJ+SSAIJS13Ql2E91g67AL/wcIh/lqI0y9IDGz/Ad3ZWWEPfoF2VGV5kPeqePXiOS1PO/uYZJrAbZ4JGWYjIRTsf67mj/pP0SXOROf/tfLX1vyIQqox9CzfvyMzDL4DOPwdHfj5/mOt3loiHp2vtTrZaqORhHlQhJBOHmrsEzkuszs/XHlQdLCSvSSFIRxX5DuRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=He/UOx5vAOWg9+GXn0pX9V8tKefqOTlqEMl+6DiJK4g=;
- b=qMhfI/w9bryga6xSxvTHWf9Y10Gomi/ZF8LTzIy8ntsh2rhV4K8bnlpuBu66S7zsEFQLYb0t1SCNo6f8Jyrrt8ctTW1+TmnCGo4UZh9UKICssPBEx0sL4hoOdmS1wJ/VXzUgDxm/03yl+5oVpLOobrLfICwfgfmSQOheZufSG8g=
-Received: from LV3P220CA0002.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:234::15)
- by PH7PR12MB9104.namprd12.prod.outlook.com (2603:10b6:510:2f3::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Wed, 8 Apr
- 2026 05:09:32 +0000
-Received: from BN1PEPF0000468A.namprd05.prod.outlook.com
- (2603:10b6:408:234:cafe::78) by LV3P220CA0002.outlook.office365.com
- (2603:10b6:408:234::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.33 via Frontend Transport; Wed,
- 8 Apr 2026 05:09:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN1PEPF0000468A.mail.protection.outlook.com (10.167.243.135) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Wed, 8 Apr 2026 05:09:31 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 8 Apr
- 2026 00:09:31 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 8 Apr
- 2026 00:09:31 -0500
-Received: from [10.252.219.255] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 8 Apr 2026 00:09:27 -0500
-Message-ID: <04a522a6-fbbe-42e0-8395-a9b74968b8be@amd.com>
-Date: Wed, 8 Apr 2026 10:39:26 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GpWzWrFl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775630292; x=1807166292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r7Zou7qBpk7/ogc3+xg37FtskbYfl/ga0t5KuLEhvgM=;
+  b=GpWzWrFlSE0koHPz2mRJEwRTsFjo+pOABAtchHK6x9jfl8Q+N/ylELo8
+   nqVe8XgDopDtCrMxyHM6eZBGiFvsMVRZTENaprOoBE0qhVW1prHiFNekH
+   0EcMcmJsfIlFCxVrYuqT3J7jlzgiEpHiOt4RXYaLumuHI0aRr4ZsnIfGn
+   Y8Arinpa3YnRfWKn5PBCRQ1gECO7EitmFSkdfrkaXFMsR0HA+wnuAk7Zn
+   3RNqpIqQU/jyex5BEGgZ9/ETPBG0ItACNlwSrmjOGEyCDAffpQ0YORQVX
+   Ue3Tn94hw3NZ6UYkd49xd8ZpHLqHWqFh07H8l6zjWX66xID2s/Lns8Lk7
+   A==;
+X-CSE-ConnectionGUID: Ot1Ku8ZpTFqExzd5f1NTHA==
+X-CSE-MsgGUID: bozWrQYySHKWzWSxzDHfhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="94188558"
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
+   d="scan'208";a="94188558"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 23:38:11 -0700
+X-CSE-ConnectionGUID: aBA/9jzKS/++5ZnqqSF2cQ==
+X-CSE-MsgGUID: eXarkgTMS92K4tFqc3IkYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
+   d="scan'208";a="228323197"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa008.jf.intel.com with ESMTP; 07 Apr 2026 23:38:07 -0700
+Date: Wed, 8 Apr 2026 14:16:35 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "Williams, Dan J" <dan.j.williams@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 05/31] x86/virt/tdx: Extend tdx_page_array to support
+ IOMMU_MT
+Message-ID: <adXywwSAThfE5lgK@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-6-yilun.xu@linux.intel.com>
+ <e290bd999c5cec93bf0b611f5506ba1e8a23c81e.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1] x86/split_lock: Provide KVM helper to log guest
- bus lock exits
-To: Sean Christopherson <seanjc@google.com>
-CC: <pbonzini@redhat.com>, <mingo@redhat.com>, <bp@alien8.de>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>, <nikunj.dadhania@amd.com>,
-	<Naveen.Rao@amd.com>, <ravi.bangoria@amd.com>, <peterz@infradead.org>,
-	<dave.hansen@linux.intel.com>, <tglx@kernel.org>
-References: <20260324124002.7670-1-manali.shukla@amd.com>
- <acwFolDAoqlY2ok8@google.com>
-Content-Language: en-US
-From: Manali Shukla <manali.shukla@amd.com>
-In-Reply-To: <acwFolDAoqlY2ok8@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB04.amd.com: manali.shukla@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468A:EE_|PH7PR12MB9104:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4279e5b8-5920-4717-e227-08de952d04c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	23XKJqcc7+WNUcOqDOFHklc+GD+wu1I8PWv0M1gHhhWO9biPjqVWCVjPihoC+bnLqZk2stdZlvE/oZ2ZdjilHrTF4Amt302RgFuzPy37ntTTorjSfjJmX9gdMagAs9G1zp87gbXqmPwpeUQ9qx7FJGaUkx+zgljU7PpAy4OLu/spD/v6X0dlo/jytssK55xBWfCQXH1OWxQ3RYdSadDW4eF/WAF0W3gPhll/4sXaoBWn0LXqv9RX4uEwZd/1mYBwPEuvI/MUK6kR7Ry987+paDAm/IXffbe7bbPOTpYG1wqeq6Rbp/ppRXuAFzXYGTxg33jYSefwCTgCFnnVd6sDjock7A7cVCvYWlfYLMeaYkXw8QpN1jhsCDJF/FC8NsEghHn6B1TxniNvhiPcKgZMYsd2yHLSi0vmt5b8iGT9iLaHBUoTAqaTxOuEmpGGYc4VplZET2sS+CkalFO589vK8auizUfTI1Pl/VoXBVV5bn/iaCvbWkaKD/s6p7g7orkCUySjumnI7a0H4V+R2xAqEmykW8XA9wSZ6v8SEhlvP7F7Gw76FxhflIFbA0pfzC2PekssU900W9DS5mnH9gUt9YM9ei60roduOraDef9l0C4lSC5xWc0a/USR24dITQefUG1mHU/D7N/azzCsuRLxnyIrqKpySorT6AXRnxTY1+7yYqha9D8lTNWx1dtctoy5YhQDYI5474o6oeEww9E1M9wtY91SP/uyX2iCRaH3JC3IV6oK32UXu0oFkfmCESU70YuSIHIHTbkAXzH6jtbajA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	R2WA+Y223XxCySX/5g0sDiJIYpMzSy51Z+GWkeqqyOuIYPhb+KAy5FHjHFQp9QcxDOALFvqQYrx8G6PKdgpYUF4msaIlrjdGgOyjKTFn9vDgJnqUi86RFdWx6dlu6odqN8Qi+fwClYrLcV1D4KCZiWcVrUEQIpx5DErFXklttbbjJ1eSvz99RzJ5tT3+6enOmWOZFeQHXDBjlWgBsu4ELOiOIVcxndreph1h55zyHxdaWfiptrvglbSV0S3F1/MNyRnWBeVOXvnWJmpvrlP8LH0tP0z1/IaCKjqhO2Y6Iaiv6fyQpMcCC/ToDt9/Oqi4QSFcLuiTDLapsJIQJ9+RW+l0PpKmr2v8rCyvQ/El4aNJK/MJ/ShF5ogF+Ki3LjVsplwx3x2YftIaZsoOkb1eLlG/67V0exmjdNYq5od0Ytq4ps5Sx0VuRiY24E32nxnY
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 05:09:31.8860
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4279e5b8-5920-4717-e227-08de952d04c4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468A.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9104
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e290bd999c5cec93bf0b611f5506ba1e8a23c81e.camel@intel.com>
 
-On 3/31/2026 11:04 PM, Sean Christopherson wrote:
-> On Tue, Mar 24, 2026, Manali Shukla wrote:
->> The intent is purely observational — give hypervisor owners
->> visibility into which guest is generating bus locks so they can act
->> accordingly. No policy enforcement is done in the kernel. Suggestions
->> on the approach are welcome.
+On Thu, Apr 02, 2026 at 12:05:43AM +0000, Huang, Kai wrote:
+> On Sat, 2026-03-28 at 00:01 +0800, Xu Yilun wrote:
+> > IOMMU_MT is another TDX Module defined structure similar to HPA_ARRAY_T
+> > and HPA_LIST_INFO. The difference is it requires multi-order contiguous
+> > pages for some entries. It adds an additional NUM_PAGES field for every
+> > multi-order page entry.
+> > 
+> > Add a dedicated allocation helper for IOMMU_MT. Fortunately put_page()
+> > works well for both single pages and multi-order folios, simplifying the
+> > cleanup logic for all allocation methods.
 > 
-> This makes no sense.  KVM is exiting to userspace, the hypervisor owner doesn't
-> need to grep dmesg to understand *exactly* what vCPU is generating bus locks.
+> Well I guess you can have a 'free_fn' to free the pages you allocated via
+> 'alloc_fn'?  Will this simplify the code and at least keep tdx_page_array
+> implementation cleaner?
 
-I agree that the VMM receives KVM_EXIT_X86_BUS_LOCK and knows which vCPU
-caused it, and I am fine with that approach. However, this request came
-from a customer who wanted to know which guest is causing bus locks at
-which RIP in dmesg, similar to how split lock detection on Intel does
-it. I am trying to address that use case.
+mm.. I think code would be simplified with less callbacks.
 
--Manali
+But anyway, the need for the alloc_fn becomes a sign for me to think
+about separating the memory allocation and struct tdx_page_array
+construction. Especially that the IOMMU_MT needs specialized memory
+layout so better managed by the kernel driver who really uses IOMMU_MT.
+
+> 
+> It's strange that you only have a 'alloc_fn' but doesn't have a 'free_fn'
+> anyway.
