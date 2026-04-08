@@ -1,95 +1,114 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D0237C0F2
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 11:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBBF388E5D;
+	Wed,  8 Apr 2026 11:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775647265; cv=none; b=SeV46Bg0TGh0BS9cpmaUdxK8tLv73YcsIDrssNUvlITTY5qQcScJBaICxgB6JzVXtPU5r4go9BHGUWEq0p+gnxkN0CVjzY9EERYEtDhxeuoMH3U8FfJGTwlk7bAww2gACl2sMj/e9N8M4HGAUENE++6FZWbuQUpJIOnM3k4pkbQ=
+	t=1775647991; cv=none; b=EMARhABevKkjHOCjkskW1qtdb1xcJJrmnm4kQHVxX7ESDH3UpbWsJO2beecOLZbDI1RaSQ0QvcmYX6OEAuxyrQzJtaW6tsKKyvXK3cPQ9doutf1R6hhtKCz5+MbTDXdGhPzFCD3PANaL9Kcb3FbS7hOt26UEoSjsXM/eMMl4NPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775647265; c=relaxed/simple;
-	bh=ssoFD0Svsq3mcDAn43BH2AH7Gt9nmgW3KWmnj9RyYNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFj0hrTMRLeef7bID5OM5U6It06Qq4c4QOklZ0dwEnKSGLU7bgh+VB+1A8CqKn5hutNbdJpTNF8QKNRTdoMCzyX+QluFVi6abifcIs9morbWaeifO9a7Zf9wmrPg3fhDYv+efsfWhNyqkPBCpxf5BxqbWwPnHf4mC34VerUVWdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PSK2Nfzm; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775647991; c=relaxed/simple;
+	bh=ez1JFxYvFppo+ug92qQkCyhnr0IkQ5IjpypalI2Io9c=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b+1+/rFYMNvXs2ktBZQ6A7mhkiBX+v9U/gpF7vxeBJUBds7OXddqhFtTUN5heTlAwTv2XygZsyyWtHDYM1tS2CmXWsGI9AOSjabGm/GZYo6MW/bZm7TW8aKSMvAbfL+GiERiY/A4JpUD6nMhvx92wBYdv4QeGFk/QfplhYwayi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gSwmlzvy; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PSK2Nfzm"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488b150559bso24605115e9.1
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 04:21:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775647263; x=1776252063; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SdtS7V5NfnlJHyyAgLZSovPCgalgrvuuXizG5J0NjSU=;
-        b=PSK2Nfzm/1h1W3TC2nfFwLVvB70Yp13XWlv/VRBsT/iQ7NlTJQR3rJG3qmbkMB2pCf
-         5kLeu0i7CnTFfpREH6LAS+y6eiveRYq085LM0AHgQHmvcRJ3GqSb5SBRmAdddJ1KI422
-         WfWU9U5oFRYZqhUnjMiCHBpcNigR0g6stxrdOE2cq7BUgQFetpUGS2oqYutKSXclZPh0
-         dDfL53lKOCp6eFiVVezAefkWn5z6MmcRUCssiHllMnIVRS/RBrh7m4JyvUEe1/NgcQoj
-         PD4OUSXIsIAUxb2oKN2EhCPaYvIKOeEWR7FcM61pWjH3q5F+HEVt7Gq9L15xK3SRAOcd
-         RwTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775647263; x=1776252063;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SdtS7V5NfnlJHyyAgLZSovPCgalgrvuuXizG5J0NjSU=;
-        b=YZbA/PPM9oH9afU9ixREHRNCxb8qesFwfhKTa6YOBLhlpLw4tdnoysw607cHi2RZiy
-         yreq7i9rDSXK3hcq9NLBNcegeNIFxufnSxGxlnGe7E+JNLsVB23EFmQ16hxlB4bPkw2e
-         CNz8+MHJCDfFGtaFTpqxbTb8BJ/yYIj+3viPVirzCxlpX5saDtFgX82J1l98svxGtXkt
-         29x/Jx36tLndyggJttaQHDWEZ4XpBBBnNa4fw5U0aYM8zUJlfuQPpZY1wMpvAZ8ezhYO
-         vWwUmBUSsDxgDCqCgea94WU29tBPo78g7xWKhslJrmtY1jUyOAQGItv27zRb8ls4Kwk/
-         r+iA==
-X-Gm-Message-State: AOJu0YzqWVswsa4FpKHhvIc3TENgPAQFXabw4n0wkEClaebVJedqZcoO
-	Bhp5dMf240/PUukl3QwPG+gow1e8qmtyUzZp1GUUN1kmexBffHaAGhEb
-X-Gm-Gg: AeBDieu7ZSM8jLwK2Aig8ffUO4LfR7TrWeZyxnFcnrb21PhvbpNvn54UGa55C5hJMLr
-	gOxYOBHIL9waVjdcjwRnvZsLO/AJDcad3mdJlBQokm3LJsi+FW1WmMrj6VLBuzUSivKr/wD/KoV
-	NqLcspOEpC1QHRjWfFGos3XWpcPyevR5K/eVdSdTg0LAsoZPXeXQfEno+NPO3Tkajh0gwAxntst
-	ngGnbUyGq6w5BkrYn4eyxF28G3E5zBMwk97pfD7vaDIP6F3LgHv/f9dkuNRaH6HGoHSfpwFiZuj
-	lzB7drNvagT9eIQsY2NQJwA+exbGIY/AUp7geKe95c5GzkrCO3EndLjRuOmZdSxKJJyA7A0E0H3
-	yndknaZR6D0cad32DbCOyNK5xyiI0XQsiquLhZJc1eWyRmDKkFIfZ3sH8vbTVCD4ZLTDyixDnsH
-	TLydN1GODbtQfmlDXrFg==
-X-Received: by 2002:a05:600c:5251:b0:488:c257:a73b with SMTP id 5b1f17b1804b1-488c257a952mr62046045e9.9.1775647262545;
-        Wed, 08 Apr 2026 04:21:02 -0700 (PDT)
-Received: from nuna ([154.160.21.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4889cb46adcsm397011625e9.4.2026.04.08.04.21.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 04:21:02 -0700 (PDT)
-From: punixcorn <ohyunwoods663@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] KVM: NULL pointer dereference in kvm_tdp_mmu_map under memory pressure
-Date: Wed,  8 Apr 2026 11:21:13 +0000
-Message-ID: <20260408112113.183989-1-ohyunwoods663@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408102914.106838-1-ohyunwoods663@gmail.com>
-References: <20260408102914.106838-1-ohyunwoods663@gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gSwmlzvy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=6TzX40mZ42Ra39otAJCKSTIeu0P/Czs5MfsYtFj7/fo=; b=gSwmlzvySp4I9bHhapW2U8Puw6
+	uo3jm5afYRluhqtMwvZ9J52kY8F8p/mVCtDV1z1aia/iUUbITmUAp6O9Fs0x4FJFm/0mHGWyGx3qs
+	f/UnZOJZWu3DE+5Hogsb3qtdcr/z55k64TgjzJ5DGqRIrd2B546+3TmzzznNtixaffyp3uaaUnt63
+	4nJG1oU+hpbKpMs6uiK+z39WyX4S1aVAkM1hPZ65PYBxR8/Ef8caMcndZgOCQx97yuv0kQ5UojHtJ
+	jfsQufYmR25whddmpm1iyU/O/Js85gtQTpsGW9Nu1z3iQH+/M5vHIuBetjEmVVPPwbrGxT79ow8xJ
+	W1AucIZA==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wAR9V-00000005Ier-2k1t;
+	Wed, 08 Apr 2026 11:32:57 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wAR9V-00000008n9x-0nmU;
+	Wed, 08 Apr 2026 12:32:57 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2 0/5] KVM: arm64: vgic: Fix IIDR revision handling and add revision 1
+Date: Wed,  8 Apr 2026 12:30:31 +0100
+Message-ID: <20260408113256.2095505-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Following up with additional analysis from gdb.
+The uaccess write handlers for GICD_IIDR extract the revision field
+from the wrong variable, making it impossible for userspace to actually
+change the implementation revision. Fix that.
 
-The crash is at spte.h:263 in to_shadow_page(), not at the
-tdp_mmu_alloc_sp() path as initially suspected.
+Additionally, allow userspace to select IIDR revision 1, restoring the
+behaviour from before commit d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow
+configuration of interrupt groups") where interrupt groups are not
+guest-configurable. This is needed by hypervisors that were reverting
+that commit to preserve the original guest-visible semantics, and to
+allow for a safely controlled deployment of the new behaviour.
 
-  (gdb) list *(kvm_tdp_mmu_map+0x471)
-  0x79451 is in kvm_tdp_mmu_map (mmu/spte.h:263)
-  return (struct kvm_mmu_page *)page_private(page);
+For GICv2, kill the v2_groups_user_writable flag and make the behaviour 
+depend directly on the IIDR. The existing default behaviour of setting 
+the IIDR to revision 3 and allowing the groups to be writable by the 
+*guest* but just not by userspace was just weird, and almost certainly
+not intentional. (New in v2 posting).
 
-The crash location suggests page_private() is returning 0 for the
-parent shadow page in tdp_mmu_init_child_sp(). The exact cause is
-unclear. Sharing for maintainer review.
+Tested on Graviton 3 (Neoverse-V1) metal for GICv3 selftests, and
+under QEMU TCG with GICv2 emulation for GICv2 selftests.
 
-My earlier speculative fix (checking sp == NULL) was incorrect.
-I am not familiar enough with the KVM MMU internals to propose a
-correct fix. Sharing this in case it helps maintainers narrow down
-the root cause.
+v2:
+ • Fixed -Wdiscarded-qualifiers warning from 0-day bot.
+ • Remove GICv2 v2_groups_user_writable flag and just use IIDR.
+ • Address Marc's review feedback (no special cases in read_group,
+   other minor cleanups).
+
+v1: https://lore.kernel.org/all/20260407210949.2076251-1-dwmw2@infradead.org/
+
+David Woodhouse (5):
+      KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
+      KVM: arm64: vgic: Allow userspace to set IIDR revision 1
+      KVM: arm64: selftests: Add vgic IIDR revision test
+      KVM: arm64: vgic: Remove v2_groups_user_writable and use IIDR revision directly
+      KVM: arm64: selftests: Add GICv2 IGROUPR writability test
+
+ arch/arm64/kvm/vgic/vgic-mmio-v2.c                 |  18 +--
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c                 |   6 +-
+ arch/arm64/kvm/vgic/vgic-mmio.c                    |   4 +
+ include/kvm/arm_vgic.h                             |   4 +-
+ tools/testing/selftests/kvm/Makefile.kvm           |   2 +
+ .../testing/selftests/kvm/arm64/vgic_group_iidr.c  | 118 +++++++++++++++
+ tools/testing/selftests/kvm/arm64/vgic_group_v2.c  | 168 +++++++++++++++++++++
+ 7 files changed, 306 insertions(+), 14 deletions(-)
+
