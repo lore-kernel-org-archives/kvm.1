@@ -1,130 +1,197 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B83388E65;
-	Wed,  8 Apr 2026 19:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE8A37FF57
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 19:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775677495; cv=none; b=dIccUnSjbXX+z1wzuBQ7CKzc+Oz4rEv/LXHR/MAYOvkUNeWpjhc83+NXRtxjYa9HZVoRQ6dv9hBI6QymlJl9Yv56L3HoSW+5Nfex7VFZW+WsOCDwmS8YmVVB8emNgdxpXotI7g2YQSm8xl7SpmTEmn71U73p+2SxXlGrs/Z9euk=
+	t=1775677699; cv=none; b=KVx7M4j9PUVCeCR6RRuuBfds/udOTheSCOTfJZrS9cuB22ggF7R0PS4jey1lScPq7VbDPmr1Mwl1BFayH4o4tTnx+ETYFf38PVRcf9pMLBIde6aYzTBpJTgxk4pHo61STq57vSvsIKxQz1aKesIAQOi6SkygPkcpn3DtNEtnaV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775677495; c=relaxed/simple;
-	bh=lcVUF9NdcgHIwhDLmEoGh3PX5wOnl5WY4UWmvatBRRw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pTm+I964JGaJ08Ja53MRM2imdFlzstCCMnMrkrsMD+6pyLgyjHqRuxg/HjWXyGCih5uXwT4lFTfdbQrOFE/Y0gsfCWt9mRDYjIvekclq9mvPj7UKGkOwNri4hFmg4lGJesJ+/x6i0YCDNj7zJgfB2mibfFb8tHLUCwn80xGJI3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ib+U6841; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775677699; c=relaxed/simple;
+	bh=kcuf93EFkNLoVKl0b48bT1ldw0GbupHrhO89sqFB9nY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=s3NB088qDdVcF9kSQqhBC03RL3BTUyzF0LW7fFdICcYJek81mbOn5FlVHG6uy7Bd+um9YVKWil6Wb3pEYywTfZqA4mzuuyJLvwzm/busqxvmv0a8TV37kMKnkbD9tbVAn5V9hKIYhS9gVOeo2hbycEaPlGjFmU099MrpAShvVLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=recFrce+; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ib+U6841"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775677493; x=1807213493;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lcVUF9NdcgHIwhDLmEoGh3PX5wOnl5WY4UWmvatBRRw=;
-  b=ib+U6841iOKzMkbElrjX3KGOW11kDh8vSu0VUKVWbMJ0lEeDbUxp9i5y
-   lGAK1JTw/XaAtEArB843pFo62c2tU1H0UXs+tsK7urilWIzSUjWHo1SlW
-   +aHsl/aAOuTosx2I91BAjEMrg520AC/7FZLI7tmTG4GRPjit0dPRfakt5
-   +cvfoeMi3yVvpDEyGFtCU5yTs1MmlGfwrqxS6Ysp9hPTV80nPI3uGksFQ
-   o+xHjP2YvM6zqDVqZHxzCdze7IOJKaJtZiTiHF7syAWjS3wgsubx1YJ2F
-   I1z1nfHo5U3BEQ9xs+h6B6Vz3E2+jBbf5ikLSQ4aESiPsvwHS1uy9NRvk
-   w==;
-X-CSE-ConnectionGUID: DEAXJrDmT0iuVCMnQbLOzw==
-X-CSE-MsgGUID: 1UnS+UoBQk+1dio0LwJEaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="80561119"
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="80561119"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 12:44:51 -0700
-X-CSE-ConnectionGUID: ax3oSkwjSs++VWp59REsjA==
-X-CSE-MsgGUID: NO5sqPJYQbK7OqEO+fYvQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="233445739"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.173]) ([10.125.108.173])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 12:44:50 -0700
-Message-ID: <b0f8f07d-1360-466e-acad-e0662625c227@intel.com>
-Date: Wed, 8 Apr 2026 12:45:02 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="recFrce+"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cec239147so85059b3a.1
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 12:48:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775677695; x=1776282495; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aSE638E7Oo0EzKCt6KnXRAv3sjqReWn6aOHcZy7PyI8=;
+        b=recFrce+i2jQ/FoOARWx7hoEhPww5jXypTMW5CKphuzwz+hGmzrvrQ+a2CVhQGQVB+
+         lCCay/8ihho7txYqNZAS77hUNiRmBN6+hKC+/h+VHUr/5m8+orEZyCyJadQfIee0LtZY
+         r6SrifZDBev9PrT49NkMYNvocGxMQBsouLP/keYPdr7Em6fLPmKOyQp2JNTc4O0BkkIX
+         am8HoXX7gvpYduz0lIzFR2/5qOcFh8LrOoJ1jaMWcMK4n4bSkE1VSV8l1LEO94+h7V4d
+         Duqn492xMrhJL6dmk8f4kC0T+ryg/jBQPc5bo13D8fAlUs97GR9KccUYectX45GbeovJ
+         Rv6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775677695; x=1776282495;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aSE638E7Oo0EzKCt6KnXRAv3sjqReWn6aOHcZy7PyI8=;
+        b=VorK3d8MblNIkGqBDqv4SX+ePAJ6aa2eUPPc8pUc2Xsxu8NVbiQSyzYvp5Mx/x5vlU
+         BXpWAlPi7VCIig1WqG6bR1VnEnFKq7W0PaHVBRut0H9maSFIL8Ai5MYYaIbBLDjY+7Ur
+         q/QOiSFY58/4AlADL2132HVKg0+edzBu5djGhPvaUf1oqy+VOfLDtpVW0MQsIKaSeRx6
+         iNj/16utTQ/DELY1bnqaAeNhVbSaw8GNtX/N5v5qT4kV702/t6mLGhrl9hSRkcONq2Xv
+         3fgGFK+tfxv5q7QBUbZnXX7O9TeShvs04CPfJbm/9Pjtgba5WYb5GnshWsEPvbdFe7Fr
+         vWLg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtaUqdMxaGTvXxR5ofBC3NgbzxXV++5LWzAwF4vWdJx85rzis9ni2R4pCfb1LzbFY3eM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyJ/bRZR/d4u7YsgxzyAH48jqRJyi1da/Eifa5T1GumC0xtN9T
+	PXccCA88t1rWAvlweI7LD92JPrt5bVj86Uoq80ipI6ObN/Azj2zQI72q+IDNGmVg3r/w4a3Tni2
+	VJTADYQ==
+X-Received: from pfbea13.prod.google.com ([2002:a05:6a00:4c0d:b0:823:b9a:9230])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a01:b0:827:2ee7:baaf
+ with SMTP id d2e1a72fcca58-82dd8aba4afmr575225b3a.12.1775677694713; Wed, 08
+ Apr 2026 12:48:14 -0700 (PDT)
+Date: Wed, 8 Apr 2026 12:48:13 -0700
+In-Reply-To: <CAEvNRgEcKnHkgC2iK8hRMybruY5LrxWH+RK94M7MddUqgGChHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/6] x86/sev: Add interface to re-enable RMP
- optimizations.
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1774755884.git.ashish.kalra@amd.com>
- <a30809d43368d6ddeb82e6717be83327282ee52e.1774755884.git.ashish.kalra@amd.com>
- <23267200-9fed-43a9-a28b-a6daa701159b@intel.com>
- <2ef6cf92-3c84-43f6-a17e-cf9d5a026167@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <2ef6cf92-3c84-43f6-a17e-cf9d5a026167@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
+ <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+ <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
+ <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
+ <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
+ <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
+ <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
+ <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
+ <adWidf8UgZeYctr1@google.com> <CAEvNRgEcKnHkgC2iK8hRMybruY5LrxWH+RK94M7MddUqgGChHQ@mail.gmail.com>
+Message-ID: <adaw_aEJYTLgJcEw@google.com>
+Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
+	jmattson@google.com, jthoughton@google.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 4/8/26 12:32, Kalra, Ashish wrote:
-> It is much more straightforward to check for both
-> CC_ATTR_HOST_SEV_SNP and MSR_AMD64_SEG_RMP_ENABLED in this API
-> function itself.
+On Wed, Apr 08, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > On Tue, Apr 07, 2026, Michael Roth wrote:
+> >> On Tue, Apr 07, 2026 at 02:50:58PM -0700, Vishal Annapurve wrote:
+> >> > > So I agree with Ackerley's proposal (which I guess is the same as what's
+> >> > > in this series).
+> >> > >
+> >> > > However, 1 other alternative would be to do what was suggested on the
+> >> > > call, but require userspace to subsequently handle the shared->private
+> >> > > conversion. I think that would be workable too.
+> >> >
+> >> > IIUC, Converting memory ranges to private after it essentially is
+> >> > treated as private by the KVM CC backend will expose the
+> >> > implementation to the same risk of userspace being able to access
+> >> > private memory and compromise host safety which guest_memfd was
+> >> > invented to address.
+> >>
+> >> Doh, fair point. Doing conversion as part of the populate call would allow
+> >> us to use the filemap write-lock to avoid userspace being able to fault
+> >> in private (as tracked by trusted entity) pages before they are
+> >> transitioned to private (as tracked by KVM), so it's safer than having
+> >> userspace drive it.
+> >>
+> >> But obviously I still think Ackerley's original proposal has more
+> >> upsides than the alternatives mentioned so far.
+> >
+> > I'm a bit lost.  What exactly is/was Ackerley's original proposal?  If the answer
+> > is "convert pages from shared=>private when populating via in-place conversion",
+> > then I agree, because AFAICT, that's the only sane option.
+> 
+> Discussed this at PUCK today 2026-04-08.
+> 
+> The update is that the KVM_SET_MEMORY_ATTRIBUTES2 guest_memfd ioctl will
+> now support the PRESERVE flag for TDX and SNP only if the setup for the
+> VM in question hasn't yet been completed (KVM_TDX_FINALIZE_VM or
+> KVM_SEV_SNP_LAUNCH_FINISH hasn't completed yet).
+> 
+> The populate flow will be
+> 
+> 1a. Get contents to be loaded in guest_memfd (src_addr: NULL) as shared
+> OR
+> 1b. Provide contents from some other userspace address (src_addr:
+>     userspace address)
+> 
+> 2.  KVM_SET_MEMORY_ATTRIBUTES2(attribute: PRIVATE and flags: PRESERVE)
+> 3.  KVM_SEV_SNP_LAUNCH_UPDATE() or KVM_TDX_INIT_MEM_REGION()
+> ...
+> 4.  KVM_SEV_SNP_LAUNCH_FINISH() or KVM_TDX_FINALIZE_VM()
+> 
+> This applies whether src_addr is some userspace address that is shared
+> or NULL, so the non-in-place loading flow is not considered legacy. ARM
+> CCA can still use that flow :)
+> 
+> Other than supporting PRESERVE only if the setup for the VM in question
+> hasn't yet been completed, KVM's fault path will also not permit faults
+> if the setup hasn't been completed. (Some exception setup will be used
+> for TDX to be able to perform the required fault.)
 
-I kinda think it's not straightforward. That's why I'd like to see the
-checks consolidated.
+Nit: as Mike (or Rick?) called out in PUCK, TDX's flow is now a separate path
+thanks to commit 3ab3283dbb2c ("KVM: x86/mmu: Add dedicated API to map guest_memfd
+pfn into TDP MMU").  I.e. it is NOT a fault in any way, shape, or form.
 
-It's may take a wee bit of refactoring, but I think it's totally doable.
+tdx_mem_page_add() already asserts pre_fault_allowed=false:
+
+	if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm) ||
+	    KVM_BUG_ON(!kvm_tdx->page_add_src, kvm))
+		return -EIO;
+
+so I think we just to add similar checks in SEV and the MMU.  This can even be
+done today as a hardening measure, as the rules aren't changing, we're just
+doubling down on disallowing (pre-)faulting during pre-boot.
+
+E.g.
+
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index 73cdcbccc89e..99f070cf2480 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -363,6 +363,9 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+        };
+        int r;
+ 
++       if (KVM_BUG_ON(!vcpu->kvm->arch.pre_fault_allowed, vcpu->kvm))
++               return -EIO;
++
+        if (vcpu->arch.mmu->root_role.direct) {
+                /*
+                 * Things like memslots don't understand the concept of a shared
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 2010b157e288..f0bbbda6e9c4 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2419,6 +2419,9 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+        if (!sev_snp_guest(kvm) || !sev->snp_context)
+                return -EINVAL;
+ 
++       if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm)
++               return -EIO;
++
+        if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
+                return -EFAULT;
