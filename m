@@ -1,180 +1,148 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5033B6C07
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 15:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE1E3CD8AA
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 15:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775660635; cv=none; b=FOApbiYUYdLbc26lVaernI8291EGdxNs9pRRf6FqQZ3qkjEpBpyQOrBpI13QJGzt7Ubf5jDE1CazOtiQSCZ9bC/QkjjLKgKAmhACGoPmjUcveXAyQDETgNvebRvYjKembW2L+6LwoAN9ZUkyx1fKhI63WU1bLncfSxHkkLaop0U=
+	t=1775661671; cv=none; b=uc8ZRF9DnXMj9YdbCr0edNCf1yS/AczxHSDE2qYDsnX2CTmJJ+Cs4I1g5AGLQXhGAIK+yPeJyeWeca1Vs8mIAewsiiRje20Q9YBlPU0w55hWL3dUd/i+X06SFCn8ZosjftcRv0w4Y7x9VJ0MeSJzgzestUuCrBEdiJyLsgsuHHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775660635; c=relaxed/simple;
-	bh=EGlj1BPEhtMUGytA0o2KFuAClFgXoP8MOx9WWQPnaSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F8dtgL5N5wykDf5LhunmpJ42zJFyIdWJKXGuwEZ4g0fvLqWr0U/IWWudgJ+p/r4AqqM8OLwJUKTRALLAgoMty3xBUnjJ9NOTokVf40d2BfnXvH3BBiXiBjwGxjULHTur+oZShG3VUSs5ZBb40ix9mRkqpLN0urQakuPQt9GlvzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SsmuUK1b; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1775661671; c=relaxed/simple;
+	bh=JWryo19XSS+EbbXgCTnUDuve7zD+psGcWk4bJFoTzeQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L6X7r0YgCIf2FktuK+h2zcxapsYTKghA54gjuA7BXdYYhwcs0lIcBzExse2J1xYK85Ugh0/ROTyy/Kj6MUJxY+JSeTfWXFBaErYdpMDSXbdwV9bu9JKfF++WwYGPFXQzXXbFFfRgNRY0NfNlK3rkWKLsgpX/oVoCmU/af2qo1o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HzIKz+QW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TJ1yLHIM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SsmuUK1b"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 665542BC4;
-	Wed,  8 Apr 2026 08:03:47 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F00073F641;
-	Wed,  8 Apr 2026 08:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775660633; bh=EGlj1BPEhtMUGytA0o2KFuAClFgXoP8MOx9WWQPnaSM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SsmuUK1bUr2gKodHu5F5yl4cPgqqRVx4vc57dDsmM9MuIrnZWGyBBS+6q/0ZUb8yd
-	 dfJXzAUV3Jz9i4824j83KB7/GHm6ANDFTvL9P7zOXUu47ZnQGutGYBfdlLV8vcuKgB
-	 1Ul9cIsHQq1UrQgFOi/HaqkJ1NLTPoNiUUVAKEDA=
-Date: Wed, 8 Apr 2026 16:03:45 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Jing Zhang <jingzhangos@google.com>
-Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [kvm-unit-tests PATCH v1 0/3] arm64: Add Stage-2 MMU and Nested
- Guest Framework
-Message-ID: <20260408150345.GA2316230@e124191.cambridge.arm.com>
-References: <20260316224349.2360482-1-jingzhangos@google.com>
- <20260324114312.GA438107@e124191.cambridge.arm.com>
- <CAAdAUtjeYJ5sOQVB-t7U=KJ9JuCCmO9b2dwJsas7mkzNLu8WqA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HzIKz+QW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TJ1yLHIM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775661669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Bxgs/94flkc5gzjvGkdrpP39nvy7O6M4eR7c4f7iyik=;
+	b=HzIKz+QWBdxilopFnr1QrpaVCWSqPDa4MCap4iekECc5TMbIcU13B984iKn7mmqjO+xYl7
+	B0FpJHPCJcftVj8vk20OG7jbdJw6gJF6f4eXzcS2f3NN98FvCPidG3QSE0GBvQkC91i/zf
+	kl3dbhQZhF2ZjqxqwI10KKACg/v+zSA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-42-mEjFA0pIOW6A2j5M5BeAbg-1; Wed, 08 Apr 2026 11:21:08 -0400
+X-MC-Unique: mEjFA0pIOW6A2j5M5BeAbg-1
+X-Mimecast-MFC-AGG-ID: mEjFA0pIOW6A2j5M5BeAbg_1775661667
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d103e46c3so4488811f8f.3
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 08:21:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775661667; x=1776266467; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bxgs/94flkc5gzjvGkdrpP39nvy7O6M4eR7c4f7iyik=;
+        b=TJ1yLHIMsDk1c48l1PvegTK7Jq3jTSgnOT9ssJdYUCXor1Kz6NDUcW8+0dHu6iCPJp
+         7uFOIR82ecfIHG5czVgLxNo/ub/cihg9pqVxnb0oZS9hdE5ft1mlbtNIIgrR31xrJgXc
+         zERdmheMC36wzhLBixaqrj6Hz7ov2auhCzEAj3u7eKh5SsWlkUg5rVFP1ouEnehJVPHp
+         FvMX6BiY6gIFfx5ETTywZrCvR+RlYDhAE8dTu3JDJqsFiQzKiK11jOtfCTrMjWGc7U6m
+         0x3yBCAyGrZH87XYfDpxBs3iVbU8cuscSAW9l+492/0OR+JT5hNz0pHRMnlt4jKio404
+         MHYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775661667; x=1776266467;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bxgs/94flkc5gzjvGkdrpP39nvy7O6M4eR7c4f7iyik=;
+        b=A0RHWD6ioNNY7sgQyvBHSLRmtthJjeTd9DZIinRvJmn0w47SBJgv7ee4Hl9rjobqlm
+         DVW28qwwgeTOMwt+UH97kEm0m8HtiuOkzQasyVIreguqapCDVmS4J/4xQNykazhK3CHG
+         VILcwhMhkrZyiFrN3wlobyOwRlc3gCnQhD9uznHZdyHi7fNPXBePgnGDCqjiByd56pgU
+         Z5tg/cXV4U1sV3QdskrrzLi1XDzK6ngN5zELVFyrltlgFozJI+ptnhN14afWNZmb63Sv
+         dG2IjP9qDtM0vrFeIeuvf+YlIJCuzowjADVQKVzHRWC15qlwndnpwlymC6zzRM+s0r5Z
+         WV4g==
+X-Gm-Message-State: AOJu0YyjbwRcSMpvYm7nZRh7lyBJC/o8m61k598W5lDTU/aqcXMLR6Ae
+	8lPKkc+fxMTNDMQA9LKJy51FSY4Gp6HGJ20jk8FlV3vB4KMJAKsIACS9XQfMRgOL1LrwelsTY4g
+	eWLPK1t2PqCVG7paaAeNZBIySd7XGyDbOxvbKDlG8eumAfFGl6Ctdyw==
+X-Gm-Gg: AeBDieuW4pkYDrlkc8wZK2GvMO42lPGnGXfRdzf3dWlrYK/dLs7jziI1MOukflhdRmm
+	jLoxFkAMwtjv94hLfNHAQ9Vgv0CXsz7ERyBee/L5epB6XRGWdIYdxUdp/5VNQ6OJVJ3bq4aJJaa
+	aGVaSGSJOIfQVEVILEILeGA+nDcH58F/u8Zie4tCMVzYoyMOggMVaT4jY7MZtBfUEbKUP7Xxa/2
+	AcFw6JWeAIiPbh6qPU7ZDfjDH31ww/XuLLHUnau5jhOAuAfgFy6iYpUJRSIstrtZZJI3jYVsZB/
+	/vc+4Q3iQw4l0ZnWoBxApB9jfX9Gx//Cr838gEhS9XGu2Yp+akIHxz4sdI+ER0izfOzz3OSCwJO
+	L/cG+Y8AwppW6/zBvFefsmsFc8+0DlRm485gQra12O7VHHgTkKlRBK1B+e3ZU
+X-Received: by 2002:a05:6000:1842:b0:43c:f3c9:3815 with SMTP id ffacd0b85a97d-43d29277055mr30965424f8f.3.1775661666621;
+        Wed, 08 Apr 2026 08:21:06 -0700 (PDT)
+X-Received: by 2002:a05:6000:1842:b0:43c:f3c9:3815 with SMTP id ffacd0b85a97d-43d29277055mr30965363f8f.3.1775661666078;
+        Wed, 08 Apr 2026 08:21:06 -0700 (PDT)
+Received: from lleonard-thinkpadx1carbongen13.rmtit.csb ([176.206.19.176])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4d29bbsm60446899f8f.21.2026.04.08.08.21.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 08:21:04 -0700 (PDT)
+From: Luigi Leonardi <leonardi@redhat.com>
+Date: Wed, 08 Apr 2026 17:21:02 +0200
+Subject: [PATCH net-next v2] vsock/virtio: remove unnecessary call to
+ `virtio_transport_get_ops`
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAdAUtjeYJ5sOQVB-t7U=KJ9JuCCmO9b2dwJsas7mkzNLu8WqA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260408-remove_parameter-v2-1-e00f31cf7a17@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQqDMBQFryJ/3ZQkimJXvYdISfVZszCRnxAsk
+ rs3uO9yGN68kwLYItCjOomRbLDeFdC3iqbVuA+EnQuTlrqVjewEY/MJr92w2RDBYmmVqdHIaek
+ lldnOWOxxJQdyiMLhiDQWs9oQPX+vr6Qu/z+blFACfaf7upVGv/FkzKuJ98lvNOacfz4Fg2q7A
+ AAA
+X-Change-ID: 20260407-remove_parameter-f61a3e40cf90
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Arseniy Krasnov <avkrasnov@salutedevices.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luigi Leonardi <leonardi@redhat.com>
+X-Mailer: b4 0.14.3
 
-On Tue, Apr 07, 2026 at 11:16:15AM -0700, Jing Zhang wrote:
-> On Tue, Mar 24, 2026 at 4:43 AM Joey Gouly <joey.gouly@arm.com> wrote:
-> >
-> > On Mon, Mar 16, 2026 at 03:43:46PM -0700, Jing Zhang wrote:
-> > > This patch series introduces a lightweight infrastructure for managing ARM64
-> > > Stage-2 translation tables and executing nested guests. These components are
-> > > essential for testing advanced virtualization features such as nested
-> > > virtualization (NV) and GICv4 direct interrupt injection.
-> > >
-> > > The series provides a generic Stage-2 MMU library supporting multiple
-> > > translation granules (4K, 16K, 64K) and dynamic page table management.
-> > > Building on this, it adds a guest execution framework that handles guest
-> > > lifecycle management, context switching and guest exit routing. A new test
-> > > case for Stage-2 MMU demand paging to verify fault handling.
-> > >
-> > > Please note that this is a very preliminary implementation intended as a
-> > > startup baseline for future work in virtualization testing. Users should be
-> > > aware that because this is an early-stage baseline, some portions of the code
-> > > may just happen to work in its current state. There might be critical
-> > > architectural elements or edge-case handling missing that will need to be
-> > > addressed as the framework matures.
-> > >
-> >
-> > Hi,
-> >
-> > I'm interested in this, I had a much more barebones (aka no stage2) guest
-> > framework thing that I sent out [1], but it seems more useful to try get this
-> > series merged.
-> >
-> > I will try get my tests working with this new framework, one thing missing for
-> > me is support for executing at EL0.
-> >
-> > Thanks,
-> > Joey
-> >
-> > [1] https://lore.kernel.org/kvmarm/20260306142656.2775185-1-joey.gouly@arm.com/#t
-> >
-> 
-> Hi Joey,
+`virtio_transport_send_pkt_info` gets all the transport information
+from the parameter `t_ops`. There is no need to call
+`virtio_transport_get_ops()`.
 
-Hi Jing,
+Remove it.
 
-I had a bit of a play with the code and ended up with a few questions/thoughts
-about the guest/EL1/EL0 model.
+Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+---
+Changes in v2:
+- Removed Fixes tag.
+- Picked up RoBs
+- Rebased to latest net-next
+- Link to v1: https://lore.kernel.org/r/20260407-remove_parameter-v1-1-e9729360a2be@redhat.com
+---
+ net/vmw_vsock/virtio_transport_common.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Two major things EL1 needs are allocating memory and eventually page tables.
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 8a9fb23c6e85..a152a9e208d0 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -60,8 +60,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+ 		return false;
+ 
+ 	/* Check that transport can send data in zerocopy mode. */
+-	t_ops = virtio_transport_get_ops(info->vsk);
+-
+ 	if (t_ops->can_msgzerocopy) {
+ 		int pages_to_send = iov_iter_npages(iov_iter, MAX_SKB_FRAGS);
+ 
 
-For EL1 isolation, I can see a few possible approaches (maybe there's others?):
-1. EL1 reuses the usual kvm-unit-tests infrastructure (allocators, helpers, etc.).
-2. EL1 is treated more like a real guest/VM, and has to provide its own
-   allocators and other basic support.
-3. The host (EL2) provides all memory up front and can create EL1 page tables,
-   like kselftest.
-4. A small hyp-service interface is provided for things like page donation,
-   printing, etc.
+---
+base-commit: 4c2ffb3ea8a601bb3730754cfaa433e673037cda
+change-id: 20260407-remove_parameter-f61a3e40cf90
 
-Option 1 feels like the best pragmatically, the tests will look like a normal C
-file, just that parts of it are run at different ELs. However sharing
-functionality could be complex. For example, I tried calling printf() from EL1
-and then also from the EL2 abort handler, and hit a deadlock because both paths
-ended up taking the same spinlock.
+Best regards,
+-- 
+Luigi Leonardi <leonardi@redhat.com>
 
-Option 2 feels the least hacky, but maybe has the most complexity since EL1
-needs its own alloactors and general support functionality. It's also not
-obvious how to map in the EL1 code. Perhaps there would need to be a separate
-test_foo_el1.c file that was built and bundled into test_foo.c
-
-Option 3 looks to be the most simple, is quite flexible, but less dynamic.
-
-Option 4 might be quite simple to have a small hyp interface, a bit like option
-3 but more dynamic.
-
-> Will you add support for executing at EL0?
-
-I tried to enter EL0 using `start_usr()` from the EL1 guest. I tried to
-allocate a stack using alloc_page(). However this leads to some issues due to
-the following code:
-
-    phys_addr_t __virt_to_phys(unsigned long addr)
-    {
-            if (mmu_enabled()) {
-                    pgd_t *pgtable = current_thread_info()->pgtable;
-                    return virt_to_pte_phys(pgtable, (void *)addr);
-            }
-            return addr;
-    }
-
-In this series, EL1 is not set up as a "thread" (see new_thread() [1]), so
-current_thread_info()->pgtable ends up being NULL.  That is what led me to
-think about the options above.
-
-Thanks,
-Joey
-
-[1] https://lore.kernel.org/kvmarm/20260306142656.2775185-5-joey.gouly@arm.com/
-
-> 
-> Thanks,
-> Jing
-> 
-> > > ---
-> > >
-> > > Jing Zhang (3):
-> > >   lib: arm64: Add stage2 page table management library
-> > >   lib: arm64: Add bare-metal guest execution framework
-> > >   arm64: Add Stage-2 MMU demand paging test
-> > >
-> > >  arm/Makefile.arm64         |   4 +
-> > >  arm/stage2-mmu-test.c      | 100 +++++++++
-> > >  lib/arm64/asm/guest.h      | 156 ++++++++++++++
-> > >  lib/arm64/asm/stage2_mmu.h |  74 +++++++
-> > >  lib/arm64/guest.c          | 197 ++++++++++++++++++
-> > >  lib/arm64/guest_arch.S     | 263 ++++++++++++++++++++++++
-> > >  lib/arm64/stage2_mmu.c     | 402 +++++++++++++++++++++++++++++++++++++
-> > >  7 files changed, 1196 insertions(+)
-> > >  create mode 100644 arm/stage2-mmu-test.c
-> > >  create mode 100644 lib/arm64/asm/guest.h
-> > >  create mode 100644 lib/arm64/asm/stage2_mmu.h
-> > >  create mode 100644 lib/arm64/guest.c
-> > >  create mode 100644 lib/arm64/guest_arch.S
-> > >  create mode 100644 lib/arm64/stage2_mmu.c
-> > >
-> > >
-> > > base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
-> > > --
-> > > 2.53.0.851.ga537e3e6e9-goog
-> > >
