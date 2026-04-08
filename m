@@ -1,124 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A2B25CC79
-	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 15:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380503AE71C
+	for <kvm@vger.kernel.org>; Wed,  8 Apr 2026 15:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775662282; cv=none; b=APol40ktcb4gIP7ZAnMSeKVxugrBY0cNMi+QJOXsKjIc7qnSzb2E/aFz975/N/0F6gq8u//cFLu/sUfLOUoAFTKSNxnC6BvCBDpb/IHL28WsXR5Qw+sS/YwGm25s9O1PrTQhLYFy/g2Teph17l3IHIBYrvfXxSxIXXMmyhvhIYQ=
+	t=1775662608; cv=none; b=GRxFM6bQ6BsYdT2i8/FYUArFQZGJz3s8vsZddOArjQlld63mQMkiFCm7CJj5Mbx2KP+T+qVY1jIEVhTqNvRhHTu7TfI+QsS79gArIUP9a83t46PnRiyYvjF7+fZfMfcHqA0iLixNMzLbcxbjSVguyT5lnGfMAYi2aB1ROvs7YF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775662282; c=relaxed/simple;
-	bh=QMz7w9UlDj+LjzgtxcZGpJSP55mlyq1h/m3lZi4NBQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ml3DZvlmKWObDZPBlKULPLn5vht2RLyBw3Wyys7vKkCId/0KfvJqEnJMzMYpsbkALpQkTkTMb37oMxo2xMVWSVYAMYvVjklcjmz+dDsugFz/aSqFqNBc3uAo9A9c9Lu59mFbHaOIHM5cPtN0xrUfzT4f66r5Zd0zpGGrI6XOYFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZdeccWlF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fzecFXX8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775662608; c=relaxed/simple;
+	bh=aqhil9we3JUp3ItbzJCqovQ0GaIdQRgbBTssmIXfeD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JKnM1ZYSBz2Da+pOFOmAFZ2qIgFz35JpGhp1GRFUJf76tU7EViu6BXa2AnC7hcMiALkHyGDmlYrpwuMcywtrGWX3/r1PKSmoqBHpibeDxKKtf90F0mul1HvTfc528bR0DFenloFxpW65sA+nNH4A6/ao1OmFUlVBUSS2fPCJQP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KA+LsyCc; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZdeccWlF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fzecFXX8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775662280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMz7w9UlDj+LjzgtxcZGpJSP55mlyq1h/m3lZi4NBQM=;
-	b=ZdeccWlFOYPzlgysN8/yHc0mUjgWZ2JCB44fmyRHH+K1n8trkzi0uPjhdPVv2aW+U1vfK8
-	jfdtg3dUM3oq0CuNN3iSFWsUGHw6OEXDabWfaft4LIetXcEJSA9EtFCwz91J0wwLzf/0vw
-	rV9ar+jJwr7ntRtSvhZ/y25dRherb94=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-bQGMfjp8N6W4Pb6pWdAitw-1; Wed, 08 Apr 2026 11:31:19 -0400
-X-MC-Unique: bQGMfjp8N6W4Pb6pWdAitw-1
-X-Mimecast-MFC-AGG-ID: bQGMfjp8N6W4Pb6pWdAitw_1775662278
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7aa1e8734d4so2273997b3.0
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 08:31:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KA+LsyCc"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b9c603ec2dfso706808666b.1
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 08:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775662278; x=1776267078; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QMz7w9UlDj+LjzgtxcZGpJSP55mlyq1h/m3lZi4NBQM=;
-        b=fzecFXX8y2zXugQR58HXuLHk7rt8X5YIO5l1AC2T2PpWhAcVKohNVX9/BqC4jZpGee
-         qV7EIBJVbxzKRVN7HvEdG9UQWTOGqRIx6K5CPwBMTF3OyM1gqtiSCanusZW/Td458Pzd
-         KTG2EYfXrsz0qfxXpldFRv1rhFLbk9oxkzYKkuyZuydfHe0OOZ41Vj5/HvbH9bU2fi8D
-         XiCaFk4TorO8+U7lhSP71dMkDCO8VfRgTw31ZqvF3GxC6yZGP/1LyFRCdz7EC0I8mNvO
-         JWNVPLuAmfTNumklVqbxzCoR+02yOG+Ag5dJgPpEzT2CgzeIoaZnSMmHp2XAmwhcDTeB
-         RzoQ==
+        d=gmail.com; s=20251104; t=1775662603; x=1776267403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aqhil9we3JUp3ItbzJCqovQ0GaIdQRgbBTssmIXfeD4=;
+        b=KA+LsyCcnSMVA0NtieFeMO6cFIeeUtIv5LqanAssSzGSQxmeiWc/7DC9GMQ6MxRV5q
+         SUn5W8RnSFieWn+QNMSvMMA44DhlB+8lxHEYm7U5MQ6A+I77pn+WHtXcnRwZDbuA6jFu
+         xsQOWVkyzYRw1H70IdaY+pqAgQoA47/VZVRPNNxmmqVwNsI7F2GgeV8xtHKTReKLfvMA
+         28TWfGWANMIcWYfC+ZKfBGW98i6/zvH4hjGVMDch7WTLdjV1FlI3DghM3lbnlvvLrFIu
+         4XCHt7tU1jViuwAoxs6J3ZLoDgFTJDKS9v6bgSVqkbRAU1IKICVw8BBr/PFu300f37mF
+         045Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775662278; x=1776267078;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QMz7w9UlDj+LjzgtxcZGpJSP55mlyq1h/m3lZi4NBQM=;
-        b=DgFsHm/CMoQJbwJoaWjY0jWD7VIZgxo3JLp+0fU8xjKYjumwfn3VGcu0LHwVon1IuO
-         bDoEl+l9kfJODRp5oyvCbYpt4QPl6hWYDrR758yueZMKrU/EsT3C17QLFy00rZmuhpK2
-         5/pF+prWxijhXn2zIzyelLh7820U86XZI60UKwyjPUQf39ECDWS/UM25hfgtJ27d33bs
-         MChoYISOcpGGYhjV0hngP6Ao8pIZyYDzS4pKO97GwB5br5djZ+QfCPMh/RtyyHANsnhX
-         WcfHzYemBwXCytbPdCKAnLsaBqBDrSjnKD/X+lCyzuTg11+LcbPy9MJOBeLuUPSf6IAF
-         OOYw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJzGOcdC4pve4zK3QpbSoPVegracoCd1RQws/fTK8hUJ2Ry0vI62PyLIjy1M1hGEeQtxM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyNj0n4B6NrM3zJLjFQFkRWL81i6uOFjsP5WpkYLaMIZlQIlD/
-	rXPAVNaWxiW0Uku6nNPZAWVgABlxRurSLlM2V8+Z+Ufcr+sdIwUzvuBl41+5ytbJMsg+IalvZtv
-	CtGWLMtQ0kdfCIJxh63SkVxFclxWpWuvf7jR1Y+SH1pVILyMhPuH60g==
-X-Gm-Gg: AeBDiesc73Upl3tS2LRPkCAt9B8gJGb+hHWj/TkviIyruxNxA7ROLlfJ7BxhlenhrUG
-	HFo9yRKWd/0Rsr1dL12B93X0tayBlep82YqvDwuIJHaNAlTSmjz9E+HKMoX30HPsjZGGziAcWNQ
-	g5V2j1vxY5rWlF05jSdkPcQ6ZbZoa6a3OAwIBFvBX6X3Y4Ejt2/Ky9clwqgg+e6dRaVNNSbTY0g
-	jS341YdHsKI7yb+Sw2crO7BZrfiSC4DLhm3modYURJ4SpLBHM7gW277F5exxpjWP6sHNmVRiYSt
-	KgLlAlCxn15NOhgcKhCNrbxT56nVP6UKEjB13kBIYOPkTypv2bEuIF9zZIpE9lfNSUl0CyvkYyY
-	24BuFZl3nfv+8XWvBqlDLc+4zIHdgbaSQqcoknaUHrP02ce7aPlXNw9VS3To+VSRrAQE/bReaXw
-	==
-X-Received: by 2002:a05:690c:338f:b0:79a:b0c8:da98 with SMTP id 00721157ae682-7a4d32e4846mr194747427b3.8.1775662278392;
-        Wed, 08 Apr 2026 08:31:18 -0700 (PDT)
-X-Received: by 2002:a05:690c:338f:b0:79a:b0c8:da98 with SMTP id 00721157ae682-7a4d32e4846mr194746647b3.8.1775662277684;
-        Wed, 08 Apr 2026 08:31:17 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-45-205-236.retail.telecomitalia.it. [79.45.205.236])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac4c10cb96sm49299076d6.39.2026.04.08.08.31.12
+        d=1e100.net; s=20251104; t=1775662603; x=1776267403;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aqhil9we3JUp3ItbzJCqovQ0GaIdQRgbBTssmIXfeD4=;
+        b=agsSB/ytxA+p7k4GCzBivlcSdCiPqFUX4wPI03vG4XcxH7cWOUYwTptSonH6vj7rku
+         8I/V+eoioDSCanXm6K+lRBzkbvQeM9ZgWiojG3tWgPYPBr7rZ+Q5SSofFKiuSrXugSJI
+         vMwbd9DO5/wFHnUPX6ffJudTs1+RU3HObt2Znt2YVqPjTcxfkqgqJ+VcmguygBN9ytTg
+         3nkDnYSIRjMFBbl5C3oLWidBJAJrj54VePhfbC53o8i+qTFRhuHTL5j/tzzS0deWF/F9
+         f+GxPtHKr6tyDCivqEJHod1cLHM6CONqvYWn0pRBLT31Z9c0XxSK+PgAbYP5acaJki8p
+         lZ7w==
+X-Gm-Message-State: AOJu0Yxbg5vRrYNeI3pwMRnvUbRvh//O/G+tYsFy8rghjAZpPOEW4AFi
+	7PlAPiIUAI0VEXTVW+Qcr0dITDiPWb4sGs5mLx24Rwr+ox1a/OkqnCZC
+X-Gm-Gg: AeBDievcxiulPeSrO6BZfZgRNehOp8nVpsJUQ3Yjjm+T83JSkP3r+MzS+6/YTzT2zsP
+	3qhdNwerHHUzhNUlV7UmSBmNfYMcFe468TIMz3mtyMv4T3jtXUL8zz7vkb1XqxGH4Py1gJRM7Hv
+	7rqtajEIGvNXll9g6OOEEyl5gXDe1zwSIDIuVJIQApYVbEa9KWQvwGnWZraPAH+Js/HnQAyr+N5
+	wbpnUkDEKYts0mn2qaDxCzeUGMkiFrteKpYV4KD/F18tcMtneVjSaIEJEN1PI4vIuxa10/HhmPC
+	M/46ppyvUbSZhUtg/mDEwTQ1gZoBsXPbi3tchM9BXG92agznOxJFOLgeQowwLHlUxtrqf1uET/B
+	ipQCIZRgIuQo7bTGaGa0m3+KrZDphNKavnmGk9LhnqwnY23tNSntJLsw66LL5Nzce2L4Fj0PrwH
+	ZpybgXDsUC3hC3NPgNYZQjNyo1cP1g
+X-Received: by 2002:a17:906:c156:b0:b9c:2f1d:7157 with SMTP id a640c23a62f3a-b9c67b7ea40mr1143330766b.39.1775662602651;
+        Wed, 08 Apr 2026 08:36:42 -0700 (PDT)
+Received: from nuna ([154.160.21.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3c972293sm657782466b.11.2026.04.08.08.36.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 08:31:16 -0700 (PDT)
-Date: Wed, 8 Apr 2026 17:31:07 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] vsock/virtio: remove unnecessary call to
- `virtio_transport_get_ops`
-Message-ID: <adZ0pWsWQcbTAPEw@sgarzare-redhat>
-References: <20260408-remove_parameter-v2-1-e00f31cf7a17@redhat.com>
+        Wed, 08 Apr 2026 08:36:42 -0700 (PDT)
+From: punixcorn <ohyunwoods663@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	punixcorn <ohyunwoods663@gmail.com>
+Subject: Re: [BUG] KVM: NULL pointer dereference in kvm_tdp_mmu_map under memory pressure
+Date: Wed,  8 Apr 2026 15:36:50 +0000
+Message-ID: <20260408153650.34484-1-ohyunwoods663@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <202604081418.sean.christopherson@intel.com>
+References: <202604081418.sean.christopherson@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260408-remove_parameter-v2-1-e00f31cf7a17@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 08, 2026 at 05:21:02PM +0200, Luigi Leonardi wrote:
->`virtio_transport_send_pkt_info` gets all the transport information
->from the parameter `t_ops`. There is no need to call
->`virtio_transport_get_ops()`.
->
->Remove it.
->
->Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
->Acked-by: Michael S. Tsirkin <mst@redhat.com>
->Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->---
->Changes in v2:
->- Removed Fixes tag.
->- Picked up RoBs
->- Rebased to latest net-next
->- Link to v1: https://lore.kernel.org/r/20260407-remove_parameter-v1-1-e9729360a2be@redhat.com
->---
-> net/vmw_vsock/virtio_transport_common.c | 2 --
-> 1 file changed, 2 deletions(-)
+Hi Sean,
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+I attempted to trigger your debug patch via fault injection (zeroing
+page_private on the allocated sp before it's linked), but the resulting
+logs aren't meaningful -- every captured entry shows spte =
+8000000000000000, a non-present SPTE, which doesn't reflect the real
+crash scenario where the SPTE is present but page_private returns 0.
+So I'm not sending those.
 
+Natural reproduction is rare and I haven't caught it yet
+with your patch applied.
+
+Given that, what would you recommend as a next step? Would lockdep,
+KASAN, or RCU debugging (CONFIG_PROVE_RCU) be worth enabling to catch
+the violation when it happens naturally?
+
+Environment:
+- CPU: 13th Gen Intel(R) Core(TM) i5-13420H (12) @ 4.60 GHz
+- RAM: 16GB (15Gi usable, 16Gi swap)
+- OS: Arch Linux
+- Kernel: 6.19.10-dirty #1 SMP PREEMPT_DYNAMIC Wed Apr 8 06:08:08 GMT 2026 x86_64
+- /proc/cpuinfo: https://pastebin.com/pwvNYsCu
+- .config: https://pastebin.com/z4fVZENs
+
+The crash occurs while running an Android emulator (QEMU) under host
+memory pressure.
+
+Signed-off-by: punixcorn <ohyunwoods663@gmail.com>
