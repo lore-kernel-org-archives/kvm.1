@@ -1,146 +1,177 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCFA3C3439;
-	Thu,  9 Apr 2026 11:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667DD3C2761;
+	Thu,  9 Apr 2026 12:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775735736; cv=none; b=ittsOSadP1Kxdr8cvH4EX87MSSK06Kv9CIsIdzSyRNNpxmxNdL/v6ycwNJzk1zaFvLLYgnTFijH57SbCQVSMpNzeeExNHRINOUWf8bcco9j9DK4ZS5sMt5yOmv6u70R6cUk4QttyEKxucv/GwztG7GyPisweIzm8bsB4StT5GRQ=
+	t=1775736847; cv=none; b=FUt4b6vdu9JBco8ZvwLDd8513v3Z4mQfs1gvIU9eaJOFRx6HP9CVP6nOfrMVh0t1oNrrFuHXnHThqom5fx0grunjQy4kFNVpr9lrv0/FPCktG3APUiMSg+vbfYcV2mD7yWv6Hgej0ts/67a3FeRA6UGybl3tp4KT8LwI83sMPb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775735736; c=relaxed/simple;
-	bh=fxg976uJfnmF/J6X3F9mJwi1HtIAa4JH+0C1fCMUOCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cpuwYtRsf8dc3UyrI1/pMfY7ac8HdgnycpZ3ieRx4xmLcWC0/PjTPpeYUN6sbJozl/6CzWSCxGSbLoCWyNUn34humM9qb0HW4+o5mskObIEVCy87nxFfCPs1aAqqZMjD08vtbBJi+aOY0tdW/pnMfuDYD8uE/uk3EyObPVqXKPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SshkWPRn; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SshkWPRn"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638KLUil2302533;
-	Thu, 9 Apr 2026 11:55:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=KHjlDs
-	NDT1/j+2pqczxZdN1W0eeN3GHFiLJpCVLjVXE=; b=SshkWPRnndSjg3iCiyV70G
-	9pM3LPFWSFOnDCOuReRP9eJJS4Ff4d0/FcyEEUHDjnshSnErEZkHeTGIofs4vVQ2
-	EQHVsde33SseWwvxppFlAzPhBwNt5HQIBcnZjxP51ZTOqU2CfAup9uwxEiL960Mb
-	Vw2jziYBd6mvTcBZFOrTxr+q24JCSobaYnZMxQGhuTG/a8pQN3tPwZFOxw5TbrYa
-	76e9/vLfKrSFo3ZMqCUOlPBApSr4iRhrMtoHYwansJRkC9ON0P1N66IUxmX8s41L
-	MUcCpE+GqYSQM5WVvyyfaNfvTQO8beqDmqL/Azz4ghWFbEFLzjMqVY8nYz5gs/nA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fmrv7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 11:55:30 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6397aYXd014356;
-	Thu, 9 Apr 2026 11:55:29 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg4ue8d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 11:55:29 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639BtSiB15598328
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Apr 2026 11:55:29 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B049D58059;
-	Thu,  9 Apr 2026 11:55:28 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 252CA58043;
-	Thu,  9 Apr 2026 11:55:28 +0000 (GMT)
-Received: from [9.61.93.104] (unknown [9.61.93.104])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Apr 2026 11:55:28 +0000 (GMT)
-Message-ID: <3b982df9-e470-4cfb-9c4a-3a1b7a1a231a@linux.ibm.com>
-Date: Thu, 9 Apr 2026 07:55:27 -0400
+	s=arc-20240116; t=1775736847; c=relaxed/simple;
+	bh=Nmds5nZ/SRW3m84a7R7nBu692/QNNcN/ovp6k/4beGQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=VvWoBet+zD1WMzITX8EDAaMBuRB6Vxz5H/APkNUpK4FgBM5ol4oUknMCHk+C/r4WgXuiN+OzgCZrELkKLbSTpU/b9RL90c26NGJFrgaS9njYivMSIwjkCRCpBSdIYKt2UiqaY5nYFn3L3Z+AJltH3OYdB7m04thCPy/JJZOxLoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxBMEImNdpNosjAA--.434S3;
+	Thu, 09 Apr 2026 20:14:00 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCx98AHmNdpqH1pAA--.55711S3;
+	Thu, 09 Apr 2026 20:14:00 +0800 (CST)
+Subject: Re: [PATCH v2 0/6] LoongArch: KVM: Set max VM supported FPU type with
+ FPU exception
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260330035832.2204720-1-maobibo@loongson.cn>
+ <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
+ <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
+ <61d0efa7-a15a-be48-3bca-5be5efd99acf@loongson.cn>
+ <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <74e8fa9e-90f6-175e-fb98-2e4504d5f15d@loongson.cn>
+Date: Thu, 9 Apr 2026 20:11:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] VFIO: remove dead notifier code
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, alex@shazbot.org,
-        linux-s390@vger.kernel.org
-References: <20260407175934.1602711-1-pbonzini@redhat.com>
- <6569b8b8-7654-4dbe-a4a6-f1e565451672@linux.ibm.com>
- <CABgObfbiNRfNGvhDFO=h-E27KONh80fkB1y1rOGpazTB2Eigzw@mail.gmail.com>
- <CABgObfZg7HTX=N3cjHCeiZ2KuKSxnbr9Q7-5ciy8WgMPwBhU5g@mail.gmail.com>
+In-Reply-To: <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <CABgObfZg7HTX=N3cjHCeiZ2KuKSxnbr9Q7-5ciy8WgMPwBhU5g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDEwNiBTYWx0ZWRfX/lWs16yvAb1H
- qJKPQEca/QWhdsYUitJ/g2c+JEy5b/hiHenzUiYdUE3IJjXM4NDJmZ5I/5NWlIH5ztbQDXiYB4/
- vP8RE3tLjTMAlK6uvoZd6TNyHVhTKIYVJeMrbU0xBIFcprEEI3nYgAJBHCu553k7cYFKQKMLgvh
- zf7/HmW34zSLbq8aK/RcWy8SApYPYT9nCJPDp7LWVsmPoQrquE6u2Ads3HPommycuQOseAWlbra
- /R3+x+hn1psa6USdowDI7jb6L4EM172+acA+0I2+jOqRLaFRc3qIYkOniWkB3ykodylLO7Fasca
- L7smNP0cww6YydjyTaOwGW/H4XuJnbGL0kAH0KRbmMDzS2lcSDUQf7pVjPDfutw1SGzg3OGx0XS
- 4mAbjnChJZly7oFiSPpyS07M+kqAjIokZveYCnWYjee0MvvXnGWAiQl4TeXw6Yu/nitHrrjteyI
- 86XLMESbAYTV7IQWxfg==
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d793b2 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=CQqoXkB98VF-c3EF6hIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: UjFlKUyRcqAl_prkIgeBQsiVEMv9Yrvy
-X-Proofpoint-GUID: UjFlKUyRcqAl_prkIgeBQsiVEMv9Yrvy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_03,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090106
+X-CM-TRANSID:qMiowJCx98AHmNdpqH1pAA--.55711S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJFW5AFykAr4kuw1fJw4DZFc_yoWrCr1Dpr
+	ZxJF1akF4DJr1fZrnFvw1UWF1Yvr1xJry0q3sIqryjvr90vryrJr4xtFsY9FyUG34rJF1j
+	vrW0yF97Xa45ZrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8j-
+	e5UUUUU==
 
 
 
-On 4/8/26 6:00 PM, Paolo Bonzini wrote:
-> On Wed, Apr 8, 2026 at 4:36 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
->> On Wed, Apr 8, 2026 at 4:35 PM Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
+On 2026/4/8 下午3:47, Huacai Chen wrote:
+> On Wed, Apr 8, 2026 at 9:04 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2026/4/7 下午8:41, Huacai Chen wrote:
+>>> On Mon, Mar 30, 2026 at 6:00 PM Huacai Chen <chenhuacai@kernel.org> wrote:
+>>>>
+>>>> Hi, Bibo,
+>>>>
+>>>>
+>>>> On Mon, Mar 30, 2026 at 11:58 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>>
+>>>>> With FPU save and restore flow, the cost is the same with different
+>>>>> FPU width 8/16/32 bytes, whatever from CPU cycle and cache line impaction.
+>>>>>
+>>>>> Here is to enable FPU with max VM supported type, for example if
+>>>>> VM supports LASX instrction, enable FPU with LASX type even with FPU
+>>>>> exeception. So it can avoid possible LSX/LASX exception in future.
+>>>>>
+>>>>> With context switch microbench which may touch FPU and LASX, there is 9%
+>>>>> improvement when halt_poll_ns is disabled. The command is
+>>>>> "./context --test=pipe" and source code located at:
+>>>>>     https://github.com/bibo-mao/context_switch/blob/main/context.c
+>>>>>
+>>>>> Original     Wih patch      improvement
+>>>>> 75232        82440          9%
+>>>>>
+>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>>> ---
+>>>>> v1 ... v2:
+>>>>>     1. Enable FPU with max VM supported FPU type, rather than max used type.
+>>>>>     2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
+>>>>>     3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+>>>>>     3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
+>>>>>     4. Remove middle FPU state handling in kvm_own_lsx() and kvm_own_lasx(),
+>>>>>        directly enable LSX or LASX from FPU none state.
+>>>>> ---
+>>>>> Bibo Mao (6):
+>>>>>     LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
+>>>>>     LoongArch: KVM: Enable FPU with max VM supported FPU type
+>>>>>     LoongArch: KVM: Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+>>>> Patch-1 add KVM_REQ_LBT_LOAD, then KVM_REQ_AUX_LOAD is only for FPU,
+>>>> so I think Patch-3 should be squashed into Patch-1.
+>>>>
+>>>>>     LoongArch: KVM: Remove some middle FPU states
+>>>>>     LoongArch: KVM: Use vm_guest_has_fpu API in kvm_lose_fpu()
+>>>>>     LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
+>>>> Patch-5 remove the consumer side of KVM_LARCH_LASX / KVM_LARCH_LSX and
+>>>> Patch-6 remove the provider side of KVM_LARCH_LASX / KVM_LARCH_LSX, so
+>>>> I think Patch-6 should be squashed into Patch-5, too.
+>>> And could you please test the power consumption where there are many
+>>> VMs that only use FPU rather than LSX/LASX? As far as I know, the
+>> Hi Huacai,
+>>
+>> Thanks for reviewing this patch
+>> Could you help me to test the power consumption with this patch?
+>>> power consumption of LASX is significantly more than FPU, which is a
+>> Could the describe the detail scenery wheree LASX instruction is
+>> frequently used by application or LASX  EUEN enabled?
+> The purpose is to evaluate power consumption before and after this series.
+> 
+> So we can run 10 VMs (suppose there are 4 cores), and there is a
+> workload run in every VM, the workload only uses FPU, no LSX and LASX.
+> Before this series, KVM only save/restore FPU context; after this
+> series, KVM will save/restore LASX context.
+In theory there should be such test, only that it requires special Power 
+Management team and testbed. Even if there is such team, maybe they care 
+power consumption about DDR and screen, do not want do such experiments 
+for this patch.
+
+If someone is volunteer to do this, I do not object, also I want to get 
+the result. Just from my guess, there should be no much difference since 
+FPU context switch is much smaller than the whole workload, else the 
+workload is just FPU context switch.
+
+Regards
+Bibo Mao
+
+> 
+> If the power consumptions are similar, then this series is perfect.
+> 
+> Huacai
+> 
+>>
+>> Regards
+>> Bibo Mao
+>>> little similar to AVX512 (Linus said it is a power virus).
 >>>
->>>>      open_device:
->>>> -    The vfio_ap driver uses this callback to register a
->>>> -    VFIO_GROUP_NOTIFY_SET_KVM notifier callback function for the matrix mdev
->>>> -    devices. The open_device callback is invoked by userspace to connect the
->>>> -    VFIO iommu group for the matrix mdev device to the MDEV bus. Access to the
->>>> -    KVM structure used to configure the KVM guest is provided via this callback.
->>>> -    The KVM structure, is used to configure the guest's access to the AP matrix
->>>> -    defined via the vfio_ap mediated device's sysfs attribute files.
->>>> +    the open_device callback is invoked by userspace to connect the
->>> Capitalization:
->>> s/the open_device callback/The open device callback/
+>>> Huacai
 >>>
->>> Capitalization:
->>> s/this callback/This callback/
->> Heh, I had to pick one or the other (close_device previously used
->> lowercase) and chose the wrong one. :)
-> I was going to make the change, but then noticed that lowercase is
-> more common in the file:
->
->    create:
->      allocates the ap_matrix_mdev structure used by the vfio_ap driver to:
->
->    remove:
->      deallocates the vfio_ap mediated device's ap_matrix_mdev structure.
->      This will be allowed only if a running guest is not using the mdev.
->
->    ioctl:
->      this callback handles the VFIO_DEVICE_GET_INFO and VFIO_DEVICE_RESET
->      ioctls defined by the vfio framework.
->
-> What do you think?
-
-It's not critical. If that's the case, leave it lower case
-
->
-> Paolo
->
+>>>>
+>>>>
+>>>> Huacai
+>>>>
+>>>>>
+>>>>>    arch/loongarch/include/asm/kvm_host.h |  6 +--
+>>>>>    arch/loongarch/kvm/exit.c             | 21 +++-----
+>>>>>    arch/loongarch/kvm/vcpu.c             | 78 ++++++++-------------------
+>>>>>    3 files changed, 30 insertions(+), 75 deletions(-)
+>>>>>
+>>>>>
+>>>>> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+>>>>> --
+>>>>> 2.39.3
+>>>>>
+>>>>>
+>>
+>>
 
