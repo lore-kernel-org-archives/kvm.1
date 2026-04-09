@@ -1,152 +1,210 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568413603FA
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 01:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D00C35836E;
+	Thu,  9 Apr 2026 02:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775699533; cv=none; b=PW2nLscz5SnTzH7YptHHcvmKzTgjLAkidU7AqspCY/SqJw6sVcMyTlPe3nxe3kvGuX+L903WV0m0o5OGVycQdx5qw/RcBNp13tijcrbON+/mNEJxlG3gsFDOwCG0pGAftJ0ItybNg/WyyU3PZx4Kh0vUd+pd76L0oKeUF7Fao7Y=
+	t=1775700504; cv=none; b=lMrVmC21x2retz4tOPWbrviPqfhqOmlpd2InL79ZKZc0K6Upaxec6Xw7N/eJ9wCunE2kj9K6eZ/k+Uk/ZqXiBIhgqCU1oUT1ZAFUT0RYT8F+S6NW1nLN6vT86Fz70citsrYRFQJHUbyiY1m8FDRqGnFKZRe/7o6v2QsXD71aAoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775699533; c=relaxed/simple;
-	bh=kYhQPDbaUkfA3PCtDBBPaUGp80LdI+jnzTzjI1ZaiQ4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hPykMs7CfipDrjUhSjwFR+muUQNJ1xCq3M2J/sTAHOXZuZtEWpEdoDFFv8y1xUzBTAG/MZLg3O+TaFNVGtvWSgQnxMimInen90iG7UXEC6yafbLV+c4POmwPIn6ouc4nHF8D/OpK3KdCKJQJMQx0MRSrO1lweYEwbL5ljlOIZpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wcJB8rZR; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+	s=arc-20240116; t=1775700504; c=relaxed/simple;
+	bh=tsXt5NW0QXfcT/VEBRGx41rpG0v38RhIs7ZLIVmWGmA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RDomFQalzddD1NkKe8Ouom6aNHL/PV71aYnlC+7B7QnwAmEu8Ut3f/3VOqJPKOXXFkmXtvGD+Ly0Tw8gSuKOp5w/ui2hbV8o7C4pfr6WG4M99rzH8Xkmuyb0DK4XL0IobmlCuA4f4QAeCNSVd41HOSZsS0H3lvHzkBYClI1FEIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nGrILvtt; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wcJB8rZR"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35d93a8149bso415300a91.0
-        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 18:52:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775699532; x=1776304332; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sJJMEh70XMZMR8QUFX5nqErnEJA2I6kW94NqDFWP/AE=;
-        b=wcJB8rZRpYmxySsY1KKbPSr53InPkNGY0Fj1HZJwnFgxoVf+UHWU7rkpJat04p9pBi
-         LxzCywHhkx2o6DO/M+lzY649yyvm3IORR7B4J2W13qESHM4ASNvDiWkVeha3Lhl3JBwu
-         bsI+cfl0vItbL3iSvAERoQgDyO9w8DN6mJtZk5vN4d1yUov2vFGerOcEyW76XU6cYAy6
-         wk58Ctx9uApofQucBh6nKbeXjLJJUqwplhFelVz+aOg0rsFFnpKzai3+HdmV4I6FaipZ
-         MtSbUvR2l3TDd2hmNAuDb/gATktKVv920rjZCUpX6z5XwVX8fs4zsT7z/p9259YuW1on
-         /HjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775699532; x=1776304332;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sJJMEh70XMZMR8QUFX5nqErnEJA2I6kW94NqDFWP/AE=;
-        b=DC379+oXCyrCWTuuSAQmu+4JP9FbWFuGAyr2jdjfQ2RGX6xNFdjlGemjuCE9DxrJaV
-         YB1/6XFQw4b9y2MdZ4enXvB+N+81jsiGoNQ51ddINot/sw0VSTAWc9RBIgTFQMzxkxSv
-         wpeToD3/GLmdDpYvX1EUvUhf4fw4qCIThUtpgPShpd4Dx9DR1mY5x3EJm9Q2Ko67eEVa
-         /TmdbHL7TfUM2p2nCkm4FCCUgkID8/604uRdduUWs8b1sC9MBgTHVAhrk+zoqJmUxAON
-         csY3KM5s0PwSy3xqZhjo3kzXEh0nPtNq+Kkuc0jZLOZ/2PZY6lEQ+v7JxSqGp2w3Lbnc
-         1flw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSATqjPbbu/HbuBKsbYKPMhjtki0dWgclHkCoiWdCni7rTx3c7baGeNrqGdowysziFrUU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmTjgyDnlAwjGMfpTYp8aXl7qj9h2MuTp4dfjnpYGjWFyNLMcA
-	GKZyUMDyZEr4xZnd3QtX6sM3O4kadVSarR6LJHHcwamntaj1FIVqj4XhJ2SIV33ZfQF5lH3Woqe
-	Y3RFK0wio
-X-Received: from pjvc17.prod.google.com ([2002:a17:90a:d911:b0:35d:9ed4:368c])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b89:b0:35b:a44f:b80
- with SMTP id 98e67ed59e1d1-35e3539c9abmr1358627a91.1.1775699531508; Wed, 08
- Apr 2026 18:52:11 -0700 (PDT)
-Date: Thu,  9 Apr 2026 01:51:39 +0000
-In-Reply-To: <20260409015139.2800185-1-jrhilke@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nGrILvtt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775700502; x=1807236502;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tsXt5NW0QXfcT/VEBRGx41rpG0v38RhIs7ZLIVmWGmA=;
+  b=nGrILvtt0zoXZMcgK5xP97Qgjz60rZk3F2Df3JMegMeWTDhPDzX91s4q
+   yEdbfsVFTd4lFBfAbiXMNL8W+V6o/9W3fnVs6/hMP3wZT+oplYnze2qoS
+   96m6MAjbnFqDSb5N0lG5WWV61xrSTBR+oRn/lFGVOMgc7qKS6UF/ANu6X
+   b7nqDaek+q4yhzoZUq+ZVkVOjyLAzvGwttVgUlQiA3AOXcaW1WYuwx2Z2
+   /PHoW3OOTJzuhlEFp6A1xv+ex9+SMn2zs2JiCUMPFRiplxhaBpM8zaMZ1
+   4wF/0VclQNGG7ZH5erY+0oBFb1FJl94GF6Rwa0bdG5Z2u/RQrMP5Io17J
+   Q==;
+X-CSE-ConnectionGUID: EfA4wIsJTHq3fNDqxxrihg==
+X-CSE-MsgGUID: y1x6FgpASe2QKr6b7+JEKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76583842"
+X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
+   d="scan'208";a="76583842"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 19:08:21 -0700
+X-CSE-ConnectionGUID: v62/nuwaQI2mVOPwioZhXQ==
+X-CSE-MsgGUID: grIbnCEGQ8yPKpKbCdnsDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
+   d="scan'208";a="228565181"
+Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 19:08:18 -0700
+Message-ID: <5da1feaa-a376-4586-9593-12eff82e0b3d@linux.intel.com>
+Date: Thu, 9 Apr 2026 10:08:15 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409015139.2800185-1-jrhilke@google.com>
-X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260409015139.2800185-3-jrhilke@google.com>
-Subject: [PATCH 2/2] vfio: selftests: Automate setting up devices for testing
-From: Josh Hilke <jrhilke@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Josh Hilke <jrhilke@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 16/17] KVM: x86: Move error handling inside
+ free_external_spt()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, yan.y.zhao@intel.com,
+ kai.huang@intel.com, kvm@vger.kernel.org, kas@kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, dave.hansen@intel.com
+References: <20260327201421.2824383-1-rick.p.edgecombe@intel.com>
+ <20260327201421.2824383-17-rick.p.edgecombe@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260327201421.2824383-17-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Update the VFIO selftest setup script to find a device that has a VFIO selftest
-driver on the system, and set it up (i.e unbind that device from its driver, and
-then bind that device to VFIO).
 
-This makes the process of setting up a device to VFIO selftests much easier, as
-users don't have to manually figure out which device to use.  Though, users can
-still manually setup a device by passing the -d argument with a
-segment:bus:device.function number.
 
-Example of automated device setup:
+On 3/28/2026 4:14 AM, Rick Edgecombe wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Move the logic for TDX’s specific need to leak pages when reclaim
+> fails inside the free_external_spt() op, so this can be done in TDX
+> specific code and not the generic MMU.
+> 
+> Do this by passing the SP in instead of the external page table
+> pointer. This way TDX code can set sp->external_spt to NULL. Since the
+> error is now handled internally, change the op to return void. This way
+> it also operated like a normal free in that success is guaranteed from
 
-	$  ./tools/testing/selftests/vfio/scripts/setup.sh./setup.sh
-	+ echo "0000:6a:01.0" > /sys/bus/pci/drivers/idxd/unbind
-	+ echo "vfio-pci" > /sys/bus/pci/devices/0000:6a:01.0/driver_override
-	+ echo "0000:6a:01.0" > /sys/bus/pci/drivers/vfio-pci/bind
-	Successfully set up 0000:6a:01.0
+operated -> operates ?
 
-Example of automated device setup where no compatible devices exist:
+> the callers perspective.
+> 
+> Opportunistically, drop the unused level arg while adjusting the sp arg.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [re-wrote log and massaged op name]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+> Notable changes since last discussion
+>  - Since free_external_sp() is dropped in the latter DPAMT patches, don't
+>    bother renaming free_external_spt().
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  2 +-
+>  arch/x86/include/asm/kvm_host.h    |  3 +--
+>  arch/x86/kvm/mmu/tdp_mmu.c         | 13 ++-----------
+>  arch/x86/kvm/vmx/tdx.c             | 25 +++++++++++--------------
+>  4 files changed, 15 insertions(+), 28 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index ed348c6dd445..10ccf6ea9d9a 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -96,7 +96,7 @@ KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
+>  KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
+>  KVM_X86_OP(load_mmu_pgd)
+>  KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
+> -KVM_X86_OP_OPTIONAL_RET0(free_external_spt)
+> +KVM_X86_OP_OPTIONAL(free_external_spt)
+>  KVM_X86_OP(has_wbinvd_exit)
+>  KVM_X86_OP(get_l2_tsc_offset)
+>  KVM_X86_OP(get_l2_tsc_multiplier)
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 09588e797e4b..fbc39f0bb491 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1881,8 +1881,7 @@ struct kvm_x86_ops {
+>  				 u64 new_spte, enum pg_level level);
+>  
+>  	/* Update external page tables for page table about to be freed. */
+> -	int (*free_external_spt)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+> -				 void *external_spt);
+> +	void (*free_external_spt)(struct kvm *kvm, gfn_t gfn, struct kvm_mmu_page *sp);
+>  
+>  
+>  	bool (*has_wbinvd_exit)(void);
+> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+> index 806788bdecce..575033cc7fe4 100644
+> --- a/arch/x86/kvm/mmu/tdp_mmu.c
+> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
+> @@ -455,17 +455,8 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+>  		handle_changed_spte(kvm, sp, gfn, old_spte, FROZEN_SPTE, level, shared);
+>  	}
+>  
+> -	if (is_mirror_sp(sp) &&
+> -	    WARN_ON(kvm_x86_call(free_external_spt)(kvm, base_gfn, sp->role.level,
+> -						    sp->external_spt))) {
 
-	$ . ./tools/testing/selftests/vfio/scripts/setup.sh/setup.sh
-	No available supported devices found on the system.
+Nit:
+One thing might be worth to mention in the cover letter is that before the change,
+if tdx_reclaim_page() return an error code, the warning will be triggered. After
+the change, the warning is covered by the TDX_BUG_ON_3(), which is deeper in the
+stack. So it's clearer that tdx_reclaim_page() failure is not handled silently.
 
-Example of manual device setup:
+> -		/*
+> -		 * Failed to free page table page in mirror page table and
+> -		 * there is nothing to do further.
+> -		 * Intentionally leak the page to prevent the kernel from
+> -		 * accessing the encrypted page.
+> -		 */
+> -		sp->external_spt = NULL;
+> -	}
+> +	if (is_mirror_sp(sp))
+> +		kvm_x86_call(free_external_spt)(kvm, base_gfn, sp);
+>  
+>  	call_rcu(&sp->rcu_head, tdp_mmu_free_sp_rcu_callback);
+>  }
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index bfbadba8bc08..d064b40a6b31 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -1765,27 +1765,24 @@ static void tdx_track(struct kvm *kvm)
+>  	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
+>  }
+>  
+> -static int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
+> -				     enum pg_level level, void *private_spt)
+> +static void tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
 
-	$  ./tools/testing/selftests/vfio/scripts/setup.sh -d 0000:6a:01.0
-	+ echo "0000:6a:01.0" > /sys/bus/pci/drivers/idxd/unbind
-	+ echo "vfio-pci" > /sys/bus/pci/devices/0000:6a:01.0/driver_override
-	+ echo "0000:6a:01.0" > /sys/bus/pci/drivers/vfio-pci/bind
-	Successfully set up 0000:6a:01.0
+gfn is also not used in the function right now.
+Also, since sp is passed now, the gfn can be got from sp->gfn, should gfn
+also be dropped?
 
-Signed-off-by: Josh Hilke <jrhilke@google.com>
----
- tools/testing/selftests/vfio/scripts/setup.sh | 22 +++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/scripts/setup.sh b/tools/testing/selftests/vfio/scripts/setup.sh
-index 2cde07eb9c8b..6d4492b211ea 100755
---- a/tools/testing/selftests/vfio/scripts/setup.sh
-+++ b/tools/testing/selftests/vfio/scripts/setup.sh
-@@ -19,11 +19,30 @@ function print_supported_devices() {
- 	done
- }
- 
-+function pick_device() {
-+	local bdf
-+
-+	while read -r bdf; do
-+		if [ -n "${bdf}" ]; then
-+			if [ -d "${DEVICES_DIR}/${bdf}" ]; then
-+				echo "${bdf} has already been set up, exiting." >&2
-+				exit 0
-+			fi
-+			echo "${bdf}"
-+			return 0
-+		fi
-+	done <<< "$(print_supported_devices)"
-+
-+	echo "No available supported devices found on the system." >&2
-+	exit 1
-+}
-+
- function usage() {
- 	echo "usage: $0 [-l] [-d <segment:bus:device.function>]" >&2
- 	echo "" >&2
- 	echo "  -l  List segment:bus:device.function numbers of supported devices." >&2
- 	echo "  -d  segment:bus:device.function to set up." >&2
-+	echo "      If -d is not specified, a device will be automatically picked." >&2
- }
- 
- function main() {
-@@ -46,8 +65,7 @@ function main() {
- 	done
- 
- 	if [ ${#bdf_list[@]} -eq 0 ]; then
--		usage
--		exit 1
-+		bdf_list=($(pick_device))
- 	fi
- 
- 	for device_bdf in "${bdf_list[@]}"; do
--- 
-2.53.0.1213.gd9a14994de-goog
+> +					struct kvm_mmu_page *sp)
+>  {
+> -	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> -
+>  	/*
+> -	 * free_external_spt() is only called after hkid is freed when TD is
+> -	 * tearing down.
+>  	 * KVM doesn't (yet) zap page table pages in mirror page table while
+>  	 * TD is active, though guest pages mapped in mirror page table could be
+>  	 * zapped during TD is active, e.g. for shared <-> private conversion
+>  	 * and slot move/deletion.
+> +	 *
+> +	 * In other words, KVM should only free mirror page tables after the
+> +	 * TD's hkid is freed, when the TD is being torn down.
+> +	 *
+> +	 * If the S-EPT PTE can't be removed for any reason, intentionally leak
+> +	 * the page to prevent the kernel from accessing the encrypted page.
+>  	 */
+> -	if (KVM_BUG_ON(is_hkid_assigned(kvm_tdx), kvm))
+> -		return -EIO;
+> -
+> -	/*
+> -	 * The HKID assigned to this TD was already freed and cache was
+> -	 * already flushed. We don't have to flush again.
+> -	 */
+> -	return tdx_reclaim_page(virt_to_page(private_spt));
+> +	if (KVM_BUG_ON(is_hkid_assigned(to_kvm_tdx(kvm)), kvm) ||
+> +	    tdx_reclaim_page(virt_to_page(sp->external_spt)))
+> +		sp->external_spt = NULL;
+>  }
+>  
+>  static int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
 
