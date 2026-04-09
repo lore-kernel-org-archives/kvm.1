@@ -1,55 +1,55 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9003A759C
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 23:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EB43A7829
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 23:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775779000; cv=none; b=cqlDmmC015GuXZ220QM7kyeljY1IntsCajzGY3S3qV4CjNAo56NayCxNtRmjQ13jx2KUWrHGIU7wj7tTav8ZRNl+2M+KatVvYWnJ4Kx6Mi5+PlDkYI2ZynWNVESOH7/+vt5ab5K/aZGTl0YV8WUhWP/oVdP96RafYEU+wVnpU40=
+	t=1775779001; cv=none; b=HgN2h7DVGNMgcI4cJB5h4hetKBNG8+3VQkFcjLb6YN7wNSBpP582jYszTwaqOPbEY1EBsglkSDGoM0GV/TYZT1eiW8sMZ47XCPZtTG2chljZaFChGD85dz2c4G1Ma1rClenJxtgb7XCtYqYhCqR3OZYZtVr/Qs0MwJjNS+N9Lnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775779000; c=relaxed/simple;
-	bh=DYr12vLfExXRMWPWKvGZY5DxUYvnsl8thA9aDxIwhL8=;
+	s=arc-20240116; t=1775779001; c=relaxed/simple;
+	bh=+5QpnxTBwVInguL/nhjo7yXwCMf5DULJkbko4IIc/+M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aSovvkt1uWLfefCuRbk3PqWtf4AvVvs4D7ddtlq951mrfPLdNX9D2tIQJro89R07PCAk4Frfdt1lhFjHG9IOmXT6vDxpKXH5yH8TpMzE+ga8dvzjPArdfzMycsym24IFWq1Qx4LQS93MNHZwnjYVur9BF+9oY6hR5AU1HgBNOMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iQ6DS6pq; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=gdGMjGfI+JaSoh9Vl/7d9loft65aKctfB2KpOuLTcOx9mp73KryF9sKHQHdU3VF0brDwB9dI8KM2ezESiXFf1hK1PfC2jA+zUVh4zU8+lTxjF97BFyqW7HEZ6XfYSbnKlOlGcdrtvuQmzfNGQ30z29ie9ILPAMkuPQWGCHejbK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EU/Qg8bl; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iQ6DS6pq"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-bce224720d8so950892a12.1
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 16:56:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EU/Qg8bl"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35da4795b3cso3072648a91.2
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 16:56:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775778998; x=1776383798; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775778999; x=1776383799; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=MY6cHx08IW2xR2d+249NoYIhXN7g9YeiGpAZRuys1QY=;
-        b=iQ6DS6pqNMi2wT0RffS9dMEpGBB87lAhyKIOOhA+GXc1sYEeY4aui1KmauVxD+pNqz
-         ylpqWHS/xhrsdcGMSe6z56YSrTElZk5w53WawsZj7RZt//UoYHBT8WbuHzAH09epzc/l
-         B1Roi//ad69m2A9oE3vOI7C3sudUkavPTJs993EcY2vZj5dO/8cPXfYd3Ar7l5kwsBcY
-         +RlOYBQZftkmD9loIgqfbJSpcncoo6vU01Bcd6+6Nwxkw4gdt9qCFT6v69143qsNnPQ4
-         1FvHw+h0Rx/ctqOfxhxcnN+zGGB4wAEcwSuWf5O56xYVSXomCRoeUKO39q+CrJkPfsKC
-         xhJQ==
+        bh=ttUh2KhN7CXmhSvaYMBsDwgZt2H2PSQukJWLI3+IG4M=;
+        b=EU/Qg8blGtuDkWISxbWwlkKfmaFYCJtvzkCi9Um9h7R+XtAgu00CN6V9ifkQ7VD9Df
+         pe/SIpOUlN9dqali0kg10MnvGFz8d1qOCuC9yltkUqVCLYx5S3PmclJ2mZG5kiDYqwdd
+         T6TqjoR93rPA9VL4yNpzZt4NeKELPCedMODPNSU8aUHFB2btwUDL1gJ60qfZpcjwTrdY
+         OIx4KYUbkYiwm/wJEBGY/Tdjg26Ia0y8dVp6T+GbipEEiiSn+sBBEsmsko8lD1Ccku1V
+         2UmIe94HedfogRj1WRMxvuv5m0dHz3Z01creYwSbY4nV8T4V5H1j+7p2QFChh+YweUEf
+         Q8AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775778998; x=1776383798;
+        d=1e100.net; s=20251104; t=1775778999; x=1776383799;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MY6cHx08IW2xR2d+249NoYIhXN7g9YeiGpAZRuys1QY=;
-        b=gujnS4vBg8JfO7ystwkJa7vnS7EU/4RnKioZSmB64xZuf1tnvat0A2H8foTH3yxxE4
-         32/h9weAjEVIVYzFyorF6a2ZmrvTg7yn/68YodXN4jDc5MNbqNvG7Zmg8AOq8xNcTAul
-         ZtDCce3wP2LS058bu+iYVE2h9C6BL4H/CVYZlnh7SRpC4HADMEeVIhanrbBG2MdspdET
-         zAFZ+VJF4i3WXpd0HItQ/47snG6a9nyZZsZEcyxegArHckkkEgeHlguv/189sWgnBQZP
-         ViDjmR9NBcqB2V3q5QUdrr679Eylc3pEDwflZc94xC/I0KFnz40jbVTLHh0eb4nMpoPH
-         rDhg==
-X-Gm-Message-State: AOJu0YywT93lyCKs4Oyv4P/nz3J8qqPt6geqd8ZURujFyxmMEOxeR1vb
-	z8qOhVrgfHMadCVHliIEP7MA/2DVxjzkTY/lBXQ5iJAASs5idOxg8vl8LirmAXqTZJhzADyluHG
-	yWkmFQg==
-X-Received: from pfbfe20.prod.google.com ([2002:a05:6a00:2f14:b0:82c:6ce1:4e6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f0a:b0:81f:4884:4fed
- with SMTP id d2e1a72fcca58-82f0c24e21emr1046257b3a.7.1775778997441; Thu, 09
- Apr 2026 16:56:37 -0700 (PDT)
+        bh=ttUh2KhN7CXmhSvaYMBsDwgZt2H2PSQukJWLI3+IG4M=;
+        b=HehOT9zf6rkHtQSbO7shC4oHS4P3IN+gln8UhZyycvt87RkI7aoHhLaISEKU0x6uFe
+         KGH5Ihe2f8PKZ69gQxKDdigav2ZTQaDlMsgyqaoYF5oHT5gSvCF6mL0r/8EeVsEAQGyb
+         YDrIDUojMbufkL8+GGxt6aWzhuW+ebCDmVzeH/2pFZ08+QZPvglua5yiBxnYhwy0hptP
+         V7HExpRT7L2uP4/vxu5RM/zjU2aBH1yUAx0PQw04Jj/j9wSnV0hNHJN5eIf99AcRrZcJ
+         b8eWOJ/x1GrrpUe8Qk244wUvz3sqo4RYUSJTc5xHJtFb0wmF78lqLRqDXFvv1SjWfaFh
+         0M1w==
+X-Gm-Message-State: AOJu0Yyeky8sZqHsJK69sJ/M+i8iYbAggau8gy8nC6xfDwWTkuMd2t0D
+	W7FAM5Q7UDO8+QhS7YRnLyFUwomv3luP3Th7nifjDZI2hXMZEge0sM7koHkhcqZCvn+3uW26UXb
+	AD33d+g==
+X-Received: from pjbgo13.prod.google.com ([2002:a17:90b:3cd:b0:35c:2ccd:436b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c0e:b0:35d:974d:8f7
+ with SMTP id 98e67ed59e1d1-35e4274696bmr932062a91.1.1775778999175; Thu, 09
+ Apr 2026 16:56:39 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Apr 2026 16:56:16 -0700
+Date: Thu,  9 Apr 2026 16:56:17 -0700
 In-Reply-To: <20260409235622.2052730-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260409235622.2052730-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260409235622.2052730-6-seanjc@google.com>
-Subject: [PATCH 05/11] KVM: x86: Trace hypercall register *after* truncating
- values for 32-bit
+Message-ID: <20260409235622.2052730-7-seanjc@google.com>
+Subject: [PATCH 06/11] KVM: x86: Move kvm_<reg>_{read,write}() definitions to x86.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,39 +68,114 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-When tracing hypercalls, invoke the tracepoint *after* truncating the
-register values for 32-bit guests so as not to record unused garbage (in
-the extremely unlikely scenario that the guest left garbage in a register
-after transitioning from 64-bit mode to 32-bit mode).
+Move the direct GPR accessors to x86.h so that they can use
+is_64_bit_mode().
 
-Fixes: 229456fc34b1 ("KVM: convert custom marker based tracing to event traces")
+No functional change intended.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/kvm_cache_regs.h | 34 ----------------------------------
+ arch/x86/kvm/x86.h            | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0a1b63c63d1a..34ee79c1cbf3 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10438,8 +10438,6 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
+index 8ddb01191d6f..efa23ed5b5d4 100644
+--- a/arch/x86/kvm/kvm_cache_regs.h
++++ b/arch/x86/kvm/kvm_cache_regs.h
+@@ -16,34 +16,6 @@
  
- 	++vcpu->stat.hypercalls;
+ static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
  
--	trace_kvm_hypercall(nr, a0, a1, a2, a3);
+-#define BUILD_KVM_GPR_ACCESSORS(lname, uname)				      \
+-static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu *vcpu)\
+-{									      \
+-	return vcpu->arch.regs[VCPU_REGS_##uname];			      \
+-}									      \
+-static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,	      \
+-						unsigned long val)	      \
+-{									      \
+-	vcpu->arch.regs[VCPU_REGS_##uname] = val;			      \
+-}
+-BUILD_KVM_GPR_ACCESSORS(rax, RAX)
+-BUILD_KVM_GPR_ACCESSORS(rbx, RBX)
+-BUILD_KVM_GPR_ACCESSORS(rcx, RCX)
+-BUILD_KVM_GPR_ACCESSORS(rdx, RDX)
+-BUILD_KVM_GPR_ACCESSORS(rbp, RBP)
+-BUILD_KVM_GPR_ACCESSORS(rsi, RSI)
+-BUILD_KVM_GPR_ACCESSORS(rdi, RDI)
+-#ifdef CONFIG_X86_64
+-BUILD_KVM_GPR_ACCESSORS(r8,  R8)
+-BUILD_KVM_GPR_ACCESSORS(r9,  R9)
+-BUILD_KVM_GPR_ACCESSORS(r10, R10)
+-BUILD_KVM_GPR_ACCESSORS(r11, R11)
+-BUILD_KVM_GPR_ACCESSORS(r12, R12)
+-BUILD_KVM_GPR_ACCESSORS(r13, R13)
+-BUILD_KVM_GPR_ACCESSORS(r14, R14)
+-BUILD_KVM_GPR_ACCESSORS(r15, R15)
+-#endif
 -
- 	if (!op_64_bit) {
- 		nr &= 0xFFFFFFFF;
- 		a0 &= 0xFFFFFFFF;
-@@ -10448,6 +10446,8 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 		a3 &= 0xFFFFFFFF;
- 	}
+ /*
+  * Using the register cache from interrupt context is generally not allowed, as
+  * caching a register and marking it available/dirty can't be done atomically,
+@@ -217,12 +189,6 @@ static inline ulong kvm_read_cr4(struct kvm_vcpu *vcpu)
+ 	return kvm_read_cr4_bits(vcpu, ~0UL);
+ }
  
-+	trace_kvm_hypercall(nr, a0, a1, a2, a3);
+-static inline u64 kvm_read_edx_eax(struct kvm_vcpu *vcpu)
+-{
+-	return (kvm_rax_read(vcpu) & -1u)
+-		| ((u64)(kvm_rdx_read(vcpu) & -1u) << 32);
+-}
+-
+ static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
+ {
+ 	vcpu->arch.hflags |= HF_GUEST_MASK;
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 38a905fa86de..c44154ed3f26 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -421,6 +421,40 @@ static inline bool vcpu_match_mmio_gpa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	return false;
+ }
+ 
++#define BUILD_KVM_GPR_ACCESSORS(lname, uname)				      \
++static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu *vcpu)\
++{									      \
++	return vcpu->arch.regs[VCPU_REGS_##uname];			      \
++}									      \
++static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,	      \
++						unsigned long val)	      \
++{									      \
++	vcpu->arch.regs[VCPU_REGS_##uname] = val;			      \
++}
++BUILD_KVM_GPR_ACCESSORS(rax, RAX)
++BUILD_KVM_GPR_ACCESSORS(rbx, RBX)
++BUILD_KVM_GPR_ACCESSORS(rcx, RCX)
++BUILD_KVM_GPR_ACCESSORS(rdx, RDX)
++BUILD_KVM_GPR_ACCESSORS(rbp, RBP)
++BUILD_KVM_GPR_ACCESSORS(rsi, RSI)
++BUILD_KVM_GPR_ACCESSORS(rdi, RDI)
++#ifdef CONFIG_X86_64
++BUILD_KVM_GPR_ACCESSORS(r8,  R8)
++BUILD_KVM_GPR_ACCESSORS(r9,  R9)
++BUILD_KVM_GPR_ACCESSORS(r10, R10)
++BUILD_KVM_GPR_ACCESSORS(r11, R11)
++BUILD_KVM_GPR_ACCESSORS(r12, R12)
++BUILD_KVM_GPR_ACCESSORS(r13, R13)
++BUILD_KVM_GPR_ACCESSORS(r14, R14)
++BUILD_KVM_GPR_ACCESSORS(r15, R15)
++#endif
 +
- 	if (cpl) {
- 		ret = -KVM_EPERM;
- 		goto out;
++static inline u64 kvm_read_edx_eax(struct kvm_vcpu *vcpu)
++{
++	return (kvm_rax_read(vcpu) & -1u)
++		| ((u64)(kvm_rdx_read(vcpu) & -1u) << 32);
++}
++
+ static inline unsigned long kvm_register_read(struct kvm_vcpu *vcpu, int reg)
+ {
+ 	unsigned long val = kvm_register_read_raw(vcpu, reg);
 -- 
 2.53.0.1213.gd9a14994de-goog
 
