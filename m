@@ -1,100 +1,129 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C26E38F65F
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 22:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B864E38F940
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 22:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775773494; cv=none; b=JH2XnKvAyYVG3Xc8z2TUX3sbxhCZlLJ8fZdYa+qMfgqUqpS6VUoGAKVPDIFzuUng4X9DH3HTMMqo87NtkCVvdFsGnDmM9lslbP//Qo2cjtsOOsrtn0cb6/n2HtISy64Vv1eu6aDt5s6MzzojaXWO7R3cy/lvlnHPGp0crd4BGX8=
+	t=1775773495; cv=none; b=bpEl9Q1z+X04zJQMQewdnYVoRN4uV8U/r21SsZ1hOinX14/+FknSuPFtyc/wk/3BBqo7D6wqIFZWVXgEb39a0YHgI9ZT+Wz6d4oh+CKNE74flECt+H7dX6W0rSk92dlc6KQjKxTolDAFLm67jhlKddADHCAk1GTfZixHDNiHsUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775773494; c=relaxed/simple;
-	bh=k51SJdHivpA9JZtPOeZrMlyKCdSiPU2JEKzUtnTp7Yg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HLOGrVmvC2Od0zCRNqZO1AgDoLAdMT9skfsC/wremnLgywKKY0gpqE61XrigRQnLSBhQZ2Q/GbgLiunoLXWMmg6lKCutCg3VT0jLoia0A+gPFMSX7JZmy1qG1ugN/q95McekY+OkQ8dYFZThnaRMzUmfQBE2GtEN3+JnvljXCas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cEfNBwkw; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1775773495; c=relaxed/simple;
+	bh=aDwH+MMYXaOvmnW6sjqONolO2mDyDJseqaYwCrZzXCc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PbGGWz2aZtNdIHab1W5Ram2lIUX9Zp2qjulmmASVB929zVmL8rdrTzHFgEZDFdavrqzB+DrNbSFj5WZJPFV+f1zTjchJ6Fe/dP6KITdM4E7Agwz4UfRfKNFNT6QquRpXn6HHRM7xSnx1jDafFNjHHZlT3c/emXoNWfLQu+ndJ4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M48zMlM9; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cEfNBwkw"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82a77f807e4so1624343b3a.3
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 15:24:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M48zMlM9"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35da4795b3cso2984965a91.2
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 15:24:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775773492; x=1776378292; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=60TinkdCqjMvZHewxqPRZkqNrIgayknOG6h/lFThNIY=;
-        b=cEfNBwkwbOiWLNuNbZBc3uALxyMd7y/iSA7eVZWj/jw6H9gnrc26ubKNoJy7OLixz4
-         l/LY5Mj1RNE3TCY4xmQU5NOPuprQtL65RX3RIfYD38o5Simj7MVuJJJejVKQw7ixnwrw
-         uwnZohU01u7ZujKZS8J7Ga41N32iFpkEQIj9BFXqx2U+Mg+eyoR5G8fQHIP2lUV9/6So
-         HeReT473fl8U1Q4qrUcfVs+TVd0UmflzdV/Xo5OZxwZTSpkgXfKT9t2ZvaWpK9ohQXDW
-         FWSoPqkz5M3fHrRcroa159nr+NCb2ni/ej9/MGzsmu3MzK1RY5vOdZ1t9E7AXfNEdW+6
-         1hhA==
+        d=google.com; s=20251104; t=1775773494; x=1776378294; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=voCuk6N+Zbgqw6oi0f6cUzYlY+mVhATQs0grs8oy33k=;
+        b=M48zMlM94N3uorFv8a6RoQHAR2vjrNO+4h34ssYOisJv+COAdeETCetGUew0o5Yp3X
+         Jp2NgDGMQZbGtbxCQudfaw6NIHROTYVF38P4C6cnzb73vpj9ub1BI+/IhaBgpmv1TR7j
+         dYOhViZeoohCvOqvxQE0ioNSsCuPJGVV9RFJDnO8MK4S+UKnNDPvpsHRn3VBzIerrsFE
+         eGcKhnv9KF8amcEoZDlT/BSZJD70fmxuBBnL0OrjsrwbcWS4vE+nbvi16hLCitb5jMAw
+         9BP3KzCx5l4rqlaiODql61aggHa5CAyzrJsormipspIk41Swr6TE8HAIHP3osJeK3pOP
+         SxlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775773492; x=1776378292;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=60TinkdCqjMvZHewxqPRZkqNrIgayknOG6h/lFThNIY=;
-        b=a7OHFoR8tbh/iYQaERXzq1sZdPyxlUdEwzJWpP79gGvjC6AgKBsrS5MSualqodFakg
-         7Nan0n8CLecEgGBa19NfkGJEBIs3KikWcKdBpua5Om4hw46JfWGQ5XJpsiKO2IdT9JWk
-         WqapNYaJ/lEK7Zww3KOm1JNXCtiQCcfqbPxKuavqSUsQcLRHRyow1a8AcBmlg5fl2kUj
-         h7iiUv0PlGC+tM9wFDFTP24S0LbPlXf8VqVeoiYuYMeq1+xhN6iv6zpIzsad7fWNkwNi
-         LUSyxRPk3BH6pyst/fhbjF42TDL5QamEBQ/KNoO8MDdjM7P0Vfrzu5cYHW35PwgWpKhs
-         KAew==
-X-Gm-Message-State: AOJu0YzBYYMmNEx+jJHErwEV00eAHOUaWMrpa76yBuDIFZ7WICn+Tr06
-	+b8DkQ1HySCMssnE8QtgAqIr+FOn13sO0tjT25rm5llPnLWy9fIw4H60LrYG4xghbxzr8860yDg
-	CmB2l6w==
-X-Received: from pfaw3.prod.google.com ([2002:a05:6a00:ab83:b0:82a:128b:1d95])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:238b:b0:82c:2445:bd52
- with SMTP id d2e1a72fcca58-82f0c210935mr915292b3a.14.1775773492171; Thu, 09
- Apr 2026 15:24:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775773494; x=1776378294;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=voCuk6N+Zbgqw6oi0f6cUzYlY+mVhATQs0grs8oy33k=;
+        b=PqXitaskSsOSBHP6k+Zf1n4Q9t1NRB8GhUCt8bcaQGc7w5wZ+z9Kh4wSnRC/9M938q
+         U5zh6/Wjzl6U5RrPYRW+fLbkbDWaQlWWm06c4MKSDR5J2a3PK/dM58bJyyK5CJ+ZV5Hr
+         Ry+oKFMvhB8/4Rf5vO1NDlSaOEEGtkRVmYMhv2qtuPgS1riAIsMDAPx2h1ZBNT3dd/AX
+         XcgTVNFFCBVlya13/R333Owk+yOV8l0yI0c38zIg4eBx00uYjxR9RIquSny9/Vej6n5Y
+         H5M9zVMhwMyHpllM4XCVpnL/cuhP0d67JYnpGatknuXlS0YYj+PvdbaRFcU08UzYaBZY
+         ffWg==
+X-Gm-Message-State: AOJu0YzaA0N71QK5D10kmfBTWejno28voLCjFOGf6nBTmj76Rt+83D0x
+	rXlXNvyncAhz9itJfeH4j1y3WUjdr+GzEheMqiM01dHNEr49ukCTkDhEcQi75GximljSyNsreOf
+	Yvsd8OQ==
+X-Received: from pjbcp1.prod.google.com ([2002:a17:90a:fb81:b0:35d:972a:7f6a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3b49:b0:35b:ea35:c3ce
+ with SMTP id 98e67ed59e1d1-35e42867ce0mr710269a91.27.1775773493865; Thu, 09
+ Apr 2026 15:24:53 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Apr 2026 15:24:46 -0700
+Date: Thu,  9 Apr 2026 15:24:47 -0700
+In-Reply-To: <20260409222449.2013847-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260409222449.2013847-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260409222449.2013847-1-seanjc@google.com>
-Subject: [PATCH 0/3] KVM: SVM: Fix x2AVIC MSR interception mess
+Message-ID: <20260409222449.2013847-2-seanjc@google.com>
+Subject: [PATCH 1/3] KVM: SVM: Disable x2AVIC RDMSR interception for MSRs KVM
+ actually supports
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Naveen N Rao <naveen@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix a variety of bugs in SVM's handling of x2APIC MSR passthrough for x2AVIC,
-where KVM disables interception for MSR accesses that aren't accelerated by
-hardware (pointless and suboptimal), and also does NOT disable interception
-for practically any of the "range of vectors" MSRs, i.e. IRR, ISR, and TMR.
+Fix multiple (classes of) bugs with one stone by using KVM's mask of
+readable local APIC registers to determine which x2APIC MSRs to pass
+through (or not) when toggling x2AVIC on/off.  The existing hand-coded
+list of MSRs is wrong on multiple fronts:
 
-Lightly tested.  Functionally, I'm pretty confident it's correct, but I
-haven't done due diligence to verify accesses are being accelerated/intercepted
-as expected.
+ - ARBPRI, DFR, and ICR2 aren't supported by x2APIC; disabling
+   interception is nonsensical and suboptimal (the access generates a
+   #VMEXIT that requires decoding the instruction).
 
-Found by inspection when reviewing a TDX patch to fix a bug where KVM botched
-the "range of vectors"[*] (I was curious how other KVM code handled the ranges;
-wasn't expecting this...).
+ - RRR is completely unsupported.
 
-I tagged all of this for stable, mainly because handling the
-AVIC_UNACCELERATED_ACCESS faults (unlike traps) #VMEXITs requires blind
-emulation of the code stream.  Which is "fine", but obviously unnecessary.
-I.e. I could be convinced these fixes shouldn't be sent to LTS trees.
+ - AVIC currently fails to pass through the "range of vectors" registers,
+   IRR, ISR, and TMR, as e.g. X2APIC_MSR(APIC_IRR) only affects IRR0, and
+   thus only disables intercept for vectors 31:0 (which are the *least*
+   interesting registers).
 
-[*] https://lore.kernel.org/all/20260318190111.1041924-1-dmaluka@chromium.org
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+Cc: stable@vger.kernel.org
+Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/avic.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Sean Christopherson (3):
-  KVM: SVM: Disable x2AVIC RDMSR interception for MSRs KVM actually
-    supports
-  KVM: SVM: Always intercept RDMSR for TMCCT (current APIC timer count)
-  KVM: SVM: Only disable x2AVIC WRMSR interception for MSRs that are
-    accelerated
-
- arch/x86/kvm/svm/avic.c | 50 +++++++++++++----------------------------
- 1 file changed, 15 insertions(+), 35 deletions(-)
-
-
-base-commit: b89df297a47e641581ee67793592e5c6ae0428f4
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index adf211860949..df974ee290d0 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -122,6 +122,9 @@ static u32 x2avic_max_physical_id;
+ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+ 					     bool intercept)
+ {
++	struct kvm_vcpu *vcpu = &svm->vcpu;
++	u64 x2apic_readable_mask;
++
+ 	static const u32 x2avic_passthrough_msrs[] = {
+ 		X2APIC_MSR(APIC_ID),
+ 		X2APIC_MSR(APIC_LVR),
+@@ -162,9 +165,15 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+ 	if (!x2avic_enabled)
+ 		return;
+ 
++	x2apic_readable_mask = kvm_lapic_readable_reg_mask(vcpu->arch.apic);
++
++	for (i = 0; i < BITS_PER_TYPE(typeof(x2apic_readable_mask)); i++)
++		svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
++					  MSR_TYPE_R, intercept);
++
+ 	for (i = 0; i < ARRAY_SIZE(x2avic_passthrough_msrs); i++)
+-		svm_set_intercept_for_msr(&svm->vcpu, x2avic_passthrough_msrs[i],
+-					  MSR_TYPE_RW, intercept);
++		svm_set_intercept_for_msr(vcpu, x2avic_passthrough_msrs[i],
++					  MSR_TYPE_W, intercept);
+ 
+ 	svm->x2avic_msrs_intercepted = intercept;
+ }
 -- 
 2.53.0.1213.gd9a14994de-goog
 
