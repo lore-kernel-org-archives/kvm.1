@@ -1,55 +1,55 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9413A5E91
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 23:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8873A5E93
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 23:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775779007; cv=none; b=Z9JApvaxVGgeS3Mkxd10iyXDK87sjiTOYMRf/B0ZpigM2vl64DM5TkBclk2ABxqfBBazKiouqaKWpPfVaFJoK58TIVHvgjNQkWiPwuSRbwAkcfUyOOuIab5iMSPzZUGdJ7dcSk0bAoJ/3UKulLO7Gt2GCqSj41jI9e6GoCqJHYQ=
+	t=1775779008; cv=none; b=fB7XGgHFhVyyKqThRI+QE3jgBJaN1xkpLTBu05Lum/VJnbdyejweAkwAnnBPjz99HZ2aMoibRUW9mJuj9LbcVh/fQTX1u84z0k4AgqNm1hGMj8ca6YqcUXb23m0QySWZCWbDqyu9rvCTZGvIdG14m9T5cYhBexBndUo/xP27KGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775779007; c=relaxed/simple;
-	bh=FzKu0OplO/x9QZxtsn2/t8O/sWHDPaNkNqVuS6SOMm8=;
+	s=arc-20240116; t=1775779008; c=relaxed/simple;
+	bh=4VSiwzk65MALSPIh6+qTgVvk/o5YZM/uQIkuW0RxpUA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fjEeUGpkYctGfUP0hHS72g/7FggIogD2rvgyxOazx4dv/VHuJxwyJ/CkYRgAl6GVhLWfQmOoz7cftE/u4d9GACNpig4uCAGu7oV0BHQ+WJ89qYUKguwYNzLLBYiRulP6hu3PChg6AhAsH84SpGRjjq91J4Fk/02M+1iwWHxxBpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NCWtRs7s; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=JU2kJvl4vzfZJTngs4+9eRas7bc5P8dvXdIiMLudPCgCuVYPuyDV+IHyIVlJm6yip47qI2eGzgBjOJD97AmT1hMHrKru0V5ZdK29m7xpX0TL5Vj8aqXc0Zbeft55afqW2h+yLSpTn1Jh2ir8yMAULNp1qh70Zw6Ja/1zy623TJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LVESAgFO; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NCWtRs7s"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c76b06f37a7so904923a12.0
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 16:56:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LVESAgFO"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35842aa350fso3133003a91.0
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 16:56:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775779005; x=1776383805; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775779007; x=1776383807; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=6pa7uOXW0iVK999jHvqL3WwweCQCgdlv9Jsr1DM564M=;
-        b=NCWtRs7shMyEWDsWcnnSIaiJ9jZN/RkTmm2GzeS7ueFLURYjMR8r9m6k84EdqsUkeJ
-         fgmxZT0Ou1CXGCk6H9C8bq5N/XeW+5rklo28lN81/+NfrLkkARNBV73uDdt7G2wa2Gwm
-         hx7YVdVOM80qSRJ+rT79qzXwtJ/tGK6S9x4fljv8DyYgqh1mI7Li0Ek9jStbVP2Qbw6H
-         ii7rifCu8kfZ99KKqE+DbjTKeMYuqI/37s3b4o7G4iS3if7OMUqZivp8qPE+nC1C3D/t
-         oh/maTiw/uOHP4LQR2PtZ/JMtwg+I8dYLUzW9AUx7bs0wZrNjnZe81OUm4qtXZJp9FPU
-         tPbA==
+        bh=7CIhqJpO1II+dflKt7LF6AvVPHOYrkF3a/Du1JRh6EY=;
+        b=LVESAgFOEdyAdkexc4diLa5a8DoZDkJxqODjhAj3n4eNqp2UXr2AV1cKx+rt0uGDbS
+         KiCVCwbfHhGDAWEJTRG/lUtcu3D+6a2RFh64fCwFjcmQAy7IVflJBKQZDgU/EDU89eF/
+         btRlN9+kC8F1zrYDgi7kCy7yL0Wz5FNf+dCf1m46zaQCyF+jMVsCtLq5JPoJKkVsaSh5
+         YRQ6ZoXREClNsqRj6d0x9u6eearSLrDYDISXkauL7fI9UiFDmww/MzU997ALYzeKH27t
+         o+8ns4UvmPjAL/ZnkFqnlOcBjGRWGxDWfsgl+FDKSbWxCzdfCzLgWTa5OhuxvgdV9rLY
+         a+EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775779005; x=1776383805;
+        d=1e100.net; s=20251104; t=1775779007; x=1776383807;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6pa7uOXW0iVK999jHvqL3WwweCQCgdlv9Jsr1DM564M=;
-        b=FgZmQ4IJKg6hTphRvW95V3D5YUNe5vd0KQ7ef3+ijmMAiq5lzIUH1XVnyvwNAH96Ti
-         ask4q+OeYkbXv75cgSccH352XSyMcxQxwDMwCvT74kYgb5esOLSlVw5O1kp0b/YWlIvp
-         1yXaL/y+knYoQra9Ad/tW93TyxfoFil6uLqfwm/SoDuK67U1dm0lceqt9utuhPHXSEt7
-         9BrtVESpw56z+tVIXjp73vcqzG36MgKPVTJ52pJB9V0lyVmK0Bo9450un22yYOhXOsRY
-         C0fPwxWRTp9oSyKM5T5l1WiPRJTWsoP2Cw7soAOFNLzzIki+GDIDS5HnknXrapbnK/2B
-         eMBw==
-X-Gm-Message-State: AOJu0Yyq8DbN1+sdccnzp4ydwvH2UVPayGwYHApGDHtfPNR+ed03Omlb
-	dW1b5AVPmkcAHZymnVjekOkHNxsbxRiL5gohwzrehMp4u7eJNY4uaqzymQdL0mFreCQrvPKyWjw
-	X06np4A==
-X-Received: from pfbhc13.prod.google.com ([2002:a05:6a00:650d:b0:82f:3b6:9332])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2290:b0:827:4bca:f1a2
- with SMTP id d2e1a72fcca58-82f0c12f440mr1133195b3a.10.1775779005043; Thu, 09
- Apr 2026 16:56:45 -0700 (PDT)
+        bh=7CIhqJpO1II+dflKt7LF6AvVPHOYrkF3a/Du1JRh6EY=;
+        b=jp0Vuau/7F5v71WPnLgEspprZ/cj12WHKU/ZJi3+zwQNtFozuD18tCEuuKs1ENagCB
+         edm/E7RNBNmXP1ZIXNQKP+IUoSxnMq2Q7tWcKxsMkQe2bP1Hl2sn/NiMyMzUAcKHrulp
+         44ll16shEV3oS2c4Ay+9RW71uZGmATe5mKRFnkjoMWb+xxyIGljWE2YBx7WAyeAXW4fZ
+         DwQ3iWheQVgBOKa2Bbh9eEdWI1sRC8p6qp7mCsq5QBTREiiCzk7RucNP4kkgvCAn4XX/
+         DAoDdSvZUgHWp6Kj8UZz0UZdbnfdVI1lVY41wNASl4pNRtMZDUOHb6S3ajYypZo3wHv2
+         LyKA==
+X-Gm-Message-State: AOJu0Yx2A3MdbvlZTWixnEIMCWAOzYwScPB6Z23pa+CIipakkH8dGgeA
+	X9g/WRtIHsW8/+422hJo76DnTqaaQT0VyXL9AVS3ombs6zvxH8QL2Z0hZ0DAxFWcsS5+/gFuInB
+	UXsxU9g==
+X-Received: from pjbmg17.prod.google.com ([2002:a17:90b:3711:b0:35d:a66b:b3eb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:48c1:b0:356:1db4:8fe5
+ with SMTP id 98e67ed59e1d1-35e42869741mr970386a91.29.1775779006701; Thu, 09
+ Apr 2026 16:56:46 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Apr 2026 16:56:20 -0700
+Date: Thu,  9 Apr 2026 16:56:21 -0700
 In-Reply-To: <20260409235622.2052730-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260409235622.2052730-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260409235622.2052730-10-seanjc@google.com>
-Subject: [PATCH 09/11] KVM: nSVM: Use kvm_rax_read() now that it's mode-aware
+Message-ID: <20260409235622.2052730-11-seanjc@google.com>
+Subject: [PATCH 10/11] Revert "KVM: VMX: Read 32-bit GPR values for ENCLS
+ instructions outside of 64-bit mode"
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -68,61 +69,46 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that kvm_rax_read() truncates the output value to 32 bits if the
-vCPU isn't in 64-bit mode, use it instead of the more verbose (and very
-technically slower) kvm_register_read().
-
-Note!  VMLOAD, VMSAVE, and VMRUN emulation are still technically buggy,
-as they can use EAX (versus RAX) in 64-bit mode via an operand size
-prefix.  Don't bother trying to handle that case, as it would require
-decoding the code stream, which would open an entirely different can of
-worms, and in practice no sane guest would shove garbage into RAX[63:32]
-and then execute VMLOAD/VMSAVE/VMRUN with just EAX.
+Now that kvm_<reg>_read() are mode aware, i.e. are functionally equivalent
+to kvm_register_read(), revert aback to the less verbose versions.
 
 No functional change intended.
 
-Cc: Yosry Ahmed <yosry@kernel.org>
+This reverts commit 60919eccf6764c71cef31a1afeaa1a36b8e5ab85.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 2 +-
- arch/x86/kvm/svm/svm.c    | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/sgx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 00de9375c836..7bea5ad02805 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1113,7 +1113,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (WARN_ON_ONCE(!svm->nested.initialized))
- 		return -EINVAL;
+diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+index 4ca11e5ff4eb..5476743b66e7 100644
+--- a/arch/x86/kvm/vmx/sgx.c
++++ b/arch/x86/kvm/vmx/sgx.c
+@@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
+ 	struct x86_exception ex;
+ 	int r;
  
--	vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
-+	vmcb12_gpa = kvm_rax_read(vcpu);
- 	if (!page_address_valid(vcpu, vmcb12_gpa)) {
- 		kvm_inject_gp(vcpu, 0);
+-	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
++	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
  		return 1;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 0e2e7a803d64..79d5982cf294 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2187,7 +2187,7 @@ static int intr_interception(struct kvm_vcpu *vcpu)
  
- static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
- {
--	u64 vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
-+	u64 vmcb12_gpa = kvm_rax_read(vcpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb12;
- 	struct kvm_host_map map;
-@@ -2295,7 +2295,7 @@ static int gp_interception(struct kvm_vcpu *vcpu)
- 		if (nested_svm_check_permissions(vcpu))
- 			return 1;
+ 	/*
+@@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
+ 	gpa_t sig_gpa, secs_gpa, token_gpa;
+ 	int ret, trapnr;
  
--		if (!page_address_valid(vcpu, kvm_register_read(vcpu, VCPU_REGS_RAX)))
-+		if (!page_address_valid(vcpu, kvm_rax_read(vcpu)))
- 			goto reinject;
+-	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
+-	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
++	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
++	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
+ 		return 1;
  
- 		/*
+ 	/*
 -- 
 2.53.0.1213.gd9a14994de-goog
 
