@@ -1,81 +1,81 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667F040DFA6
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 13:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7713382D3
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 13:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775739797; cv=pass; b=sntAYAdg2dNy1zCYM1J1WfylYzZWa3UXdnhz2G9LbCkn9s9wF78W8VV2UIxsmS7/+mDSPBkZcl5finDHgDbrDlQDpG9wf3m69qtc24zUkapSRXC+ZZsKwWtOVpQ6FfvJhPqguXZWlRqwCi0FWvyEv8uhyPALZLaT5tzZKuAN42E=
+	t=1775741788; cv=pass; b=LArWPNAAkjQ4rlLqNUXCrIfkNtlqm9lVlfOka8Wpm0QwgZLIrK+tj1EKlQ0Rrz/xu0O+g0qYPNkPKvVLBW0pOKV6hQ538BF19hshP+i1BYWW6eggAzC6Vtt8ooZoRq4snExAKV6juJV9oxslRRZuMxKE/dth7C23zuGOuz6Jk5Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775739797; c=relaxed/simple;
-	bh=TjdgwJDItfvcfsdrQxd0cKLXZLD34AImbnFsN1pOsC8=;
+	s=arc-20240116; t=1775741788; c=relaxed/simple;
+	bh=Hg0IGiR/RhlgUXgydoCNMh1ivwrksQBZtIXbHnkz6Wg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJA2tmpbjf4c782/tvHa2HS4MwJG1Zcv795ydFEt/dDAVVk2h4v5Lm/ERFQ7UI1UihrImfTLGlG4VBTBzSlTAgwaerlYnJyC55tluJ/lpD2+jZ5iDFe3OvVDS43yz22G/AV7a4fVtvHczmNHQrGb6Im0MyHmUvIreCr2pKMmK18=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=uFnu4ezb; arc=pass smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
+	 To:Cc:Content-Type; b=ZHaKyXLI0RRmtXAqvCj5xFzNcp10MBD3cfjICmmbd4z1b9zMRaupPIW2o0tE4VNBbSml7+eRBAn/RKvVNqFUdvKxZ8iiyIoX3iXWBlEM1bysYNIfbLRukrintvCcKlJsv9F87CdlJPGqCdH0s6fGpAaAjdIS++ZE6d4fR3vDFnw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=x433Tfv4; arc=pass smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="uFnu4ezb"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-38ce8a5bc20so8461361fa.1
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 06:03:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775739793; cv=none;
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="x433Tfv4"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38cc0b91b01so7174951fa.1
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 06:36:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775741783; cv=none;
         d=google.com; s=arc-20240605;
-        b=EDomsRW5+OKXGDdAxtRgYEY2f7CJIgl2SrZBVwv2IKv+19e3EX3XnYqTW48QDMRQFA
-         E0gjqLmays6UjRytjN7qq10yG1Qk9jT7D8CVBKDwDMSGwpt8I+TJNP1q37b12b0cD/8f
-         aRvFnPh+ZFKrtpvsql4vEOjpGvvPdhb/sHTw1h6CW62xnqsYe0Uz9BNvb40fdskuPsUm
-         o+NefcsqiPPM7NbINb62jXT5ocCELRCftKBRmPby4ITlVQeUNAVlD4A5/LaKRDYqi5ab
-         ZZRskayYGghj5zG3tlrIIZ3zVSVJX0fhvQzfxq5vUCpwV1Ks94RPOSxZTVUkSNSZjcaW
-         W4ew==
+        b=d0IdP9gXKQwTBznXIg3rJxhc1c5EEASvgk8sgRyWvKa0ZBXG+G+jS37t6fqhelKILB
+         jX9hcozFGOfyvFF3tlNpl/DJF7pqD2KpmB+z/2G2Q7SmlAnBcatUtBLH0BHHkWSmNZ1F
+         H/cDhhi+M8XvmvQu5mJ3fXMRh/okI/Oj6H8p019eZglVdjNI1s1MF6OLuHtgu3fbRu05
+         3Whc2OJ7jH4snow2t7x54y6YE+d6LSdWW+knqTYuFQDcC3brjZ0Kk8X/iVc1bL1k8B7w
+         u1x1WCKwGGJesmL2+HlE/gog2IcJXtmhQ3SS4RAEAMmSwC3ba1c7xCk1d4deMmzmaEC3
+         koWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kHcyxl3C7uupMaUDTKWdH58eLzuFIe6+lDrkFmlLNMA=;
-        fh=5NvXV3K09d6bYRpPBNb9SEClIjZjpYnG2ELbxqhBR4I=;
-        b=Je+Uj0BbHq4HxPcJ1gBoJ1WgXicIx4aZIYqERAOqItVXU4YzJlXOmrRvmxvDqItOHt
-         PTRmG6kFMtrrr9iSQVFUadGdHsFyLpMa6bsCjJ7PNtdPRHgIAli/v+jUNcQo0tEodTJB
-         GxWeNxIeflLjKdD+qNztcMR4tnUpDNYJiTiYhwz98odNdu8AIV/ssit84kZkVZVVVwvf
-         9re3ze0aF2cHz7IWWPu421CPC1KdXBKu13Qb3RiQDWphLuWdWpsqTlW3ak5xsWzpVa8U
-         h6F3kJoe2CowLnvkGEGp+tDmsEjGDw4iHTqyFe4qUB9wudWuoswD5GPTbcW8Xvw8x3wD
-         GDRg==;
+        bh=LGhq5Wuonmxw4tuNdv4409R6BjDNCijJVo8Tfj3nif4=;
+        fh=8mVXm06i+3vz2kg8RTAbO5CsJFCAd3+TO4XtcJ3wIw8=;
+        b=iHjIWFLPBme51ujbamw8QQH3iVcmtFohZ/Ra6TPZwwW6A35m9+yOYc/kgS3zjeu50G
+         +bink16FEK0fjIKDNgQzNoQ4Tf//Nj/JlHOefyxDuaG+wfLWoTwmd8mB47fPWtPFjaVJ
+         MmQJNyCkCdsoMNpvmb+Qxot87TOiC7lqXbsYDw/kLsruv548f0/ucfOtpr6rrPc3/YMO
+         txJzPQaGVZFIs3FIvP4hGYIu0Z+yQvkWfUDlGl4vLwldeY0J9Dz7/KUXbJtuo+SV2OAJ
+         5xEk9GeFs4jibzsR+S1jX+qW4ueVi4HuDuTxRRx5/kAFRTJVqKB0LA40lyv0GV79Gph1
+         LT0w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1775739793; x=1776344593; darn=vger.kernel.org;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1775741783; x=1776346583; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kHcyxl3C7uupMaUDTKWdH58eLzuFIe6+lDrkFmlLNMA=;
-        b=uFnu4ezb52kdaCwltMSlTYrxVF0s9mV4o6JGW3QThMtZssqganbnJZmpdZZt6x/xIF
-         FgWalIarvjfTV+uebQaYt3mKJB2kkExdajXBpq94ZtFZLmaSnY9nvzmi864yCTHH73A/
-         mSwji94yX4tguEDl3rO6Pl9Q7uzGYdbyRXg1wgm0adIzDziNpRwCGjnVJ2jSEpLBmFUF
-         h8jm3/0DyTxQ2JcHBKH+fBue6ZJpmcQbtSRqu44f94i9PzvwjtJzqlYuq7PqYuWBWk1A
-         PbLA5NBLPHQCLk7DeCZlh4Kg9GZeFlIQtauSvFsaWYqRD9IZnzSWmCPRWYeNsaetW8mP
-         9Jzg==
+        bh=LGhq5Wuonmxw4tuNdv4409R6BjDNCijJVo8Tfj3nif4=;
+        b=x433Tfv4MyI6+UVlPl2+8wa497GgJGpg0y9nkXfP+cwvBwzSmwHR2tzdQaANkEkodc
+         KbQZ6V2oKJU71yPfkRcelZnLz84GO5LURsJguajnmNSOAD0vCkEeLipRVpmpDU6SAzZ7
+         87U25jlKAjIx502RCNtuN5VPySNsF5t8OFWz55zu8s9zEvs0zxsacltEz3fTGZqDhHR4
+         Oh0Py/ml+08RmhPNc06dbklbP19/4s4CdbG6zoGZ/Rk7X0qFKah2YFoPK204Cqtv4WAr
+         g9xGvRiKf1+czACF8Ousaf9mLYK/nT3mLkqWFWZHRlzYDygQmBt6gavpgdb7fQqS+nO7
+         FevA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775739793; x=1776344593;
+        d=1e100.net; s=20251104; t=1775741783; x=1776346583;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kHcyxl3C7uupMaUDTKWdH58eLzuFIe6+lDrkFmlLNMA=;
-        b=R/Om8OefDZNR8JipSQ6mN+kEcdlmG2hUAsATtQWhRhCVZ3BOWkHukBI4wV4y/hZui9
-         EUo1SoQo+MS4KEwyZNr8hd5I8CXAkTBcMeg3ImpbaME6OYTTifZiBWboLLuYs/garUAB
-         lDCu7hCWoJ37W/+ZkFX9b4kucMuzyTZTDXOuig/x8afuqx3Rf98xhoPAbPcn4DB766NR
-         1LTAagx4QeRWFEeLIq96qMqArAXYIMdEucvQ9rI9g8KM+RiKjY+rIatPkq/40nW+R2tW
-         /zfwZSaFgb5Whvmv0dRzT+gUmnXUJevqPB/eVV3SwNrFQLIvycMxRiRDpSdCkSdE0knS
-         G/iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJrBvkAfSS1Ryg/C+YjV1M2S0Ttm48V9bhsYwKF3CYxH1Ve7OJhUXSrCNG3ZYWus5ophI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx29doxSAbObqII3V3f8s5nFGsfr+WJrhJu5yQNfYsJ9lAfczH2
-	IfbNVlA1T0uRQTSmnuvsH/bz7ppkI6a01PGSVvKN4NrMvuxfx7f1souHVjzoJPbb5T3QyjZCxdi
-	0/nbT9Q9/Q0gGbd1aiNxfHEgnhAvoHDcVftPsamDfc01+4rDzfSM/cWJrGfr+nRzlQuAasr/8bw
-	asuwmnqI27Ns6pLwwDzbO2qg==
-X-Gm-Gg: AeBDiev5c4f2m7X7+35ENLjE7jaK5iudUbH4rehLuUPcn+Q8NiXYaI6XyzkInNnKWUk
-	LWsaYpAjtFXNWnUlIn2hRjbwlbNsPl6gxnt9zx1JDc9YktZo3ssSuchZjxrF8guv0EV9KPpF3EU
-	vQ7gRgC/9sfp6BhMbVqjtQr3+8ht0dOpo/791tGgM26ptXmqc39W6kgENuJZAv6+nD9UKZuglM2
-	vsqYRaCuF3HrQdtG6BnQ224rZt3NdjGJyaObrvRSUdeNKv8kuySBDgWRLyRJ1SbfYI2n2zjxG5i
-	+rL/q7CQD7jn
-X-Received: by 2002:a2e:a5c3:0:b0:38a:a77a:b15a with SMTP id
- 38308e7fff4ca-38d8d368e51mr72169241fa.4.1775739793404; Thu, 09 Apr 2026
- 06:03:13 -0700 (PDT)
+        bh=LGhq5Wuonmxw4tuNdv4409R6BjDNCijJVo8Tfj3nif4=;
+        b=LayhvhfdN3r2Fdun1die3rQEyKEheQA2qg0E5qZGuOaXjBoe95vjZLUC2szE1h5w/g
+         Eib+xUp2x/sPp2sq04bM1xA4FWROLksCAXNQWJY84i/AftRVsF8yBJB2XpqZ/1ra4bZ5
+         Pi9xa/6JGlj8R+oXmJQ6ix+GW8EPdJRSK4bXtkshVLnTqwJK/k4FyCk/23ddrbM1gF57
+         MTOXpvGmTObhDm3kdspqoxeg8ZbstePJSG7C1GGfzdw2VtVg+q8K1lpzoxzVcHtQN6co
+         dsfJmK/y3FDTppj183p++RwGlElAro4KPlF6KyzHB1BNd5DScSzkgTAT3p/29+WToCD0
+         9n0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUZWlQ1ZkTCq2wUFs/aw9u0D73V/kwDMgRJiX85gKCNNk6O48o+VGRi1hClrue4XitZoes=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjIhh+CekHIeOx2Nof2PgrESi66ImZ+bigLjM+zkmuO+qNfloX
+	4qFhoj4YPxwzmRfyiI01JQZ5yvqYD0pn5ypJb1aZ5FxWONLvWYZ0cj1l23Xm41F4qfY5JZMm2d3
+	Ov2eT1jX3V7hLDwiVVO4j6McJLdn3ug2i3IteRikg4k61fVxs5KT+AISaJOeNjmL+FVLvBivPnE
+	kDg4tCWn3emW3T7sefq/AcWQ==
+X-Gm-Gg: AeBDietjYw8690HjcgBwiPd6UfaHCEKSVm5WuHHZ2paZST+WzRFAZxwRfACkT6Re4Mj
+	RL89RX6jnv4yGWSseofzlpHwESrKivl0a7DG7MakI6cAba/O6vpDV+SJ2ImjIMlY5BynPCTc7OR
+	XMX6rlNDURjWkDn4XVdYMmWnQ1FrmtVTcslhqPwu65L043uCq/NeFYg/5zlmDxyprltp5NCMF7o
+	RDoLFo3nrE6iMTEalUUGtCX/1WhaqC7iJyD5f26zOM3myLXO6Ni+1znrsmCMnufvlrWd9i2kQew
+	EgD6S+Ohq/o2
+X-Received: by 2002:a05:6512:3b1f:b0:5a1:1e49:66 with SMTP id
+ 2adb3069b0e04-5a3375848demr7946518e87.29.1775741782414; Thu, 09 Apr 2026
+ 06:36:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -86,15 +86,19 @@ References: <ac2LI_UPPrf45vmp@google.com> <20260407070046.2336-1-lei.chen@smartx
  <adVGrJaRlRooO4su@google.com>
 In-Reply-To: <adVGrJaRlRooO4su@google.com>
 From: Lei Chen <lei.chen@smartx.com>
-Date: Thu, 9 Apr 2026 21:03:00 +0800
-X-Gm-Features: AQROBzALB5WazLJj7tAQWemn868yqkRTG4XgzHMyYepmgpeNNXtleF3TECjgFnw
-Message-ID: <CAKcXpBwhv2LR8Ym3XT5FrR7fqR7GYhkKE-J9RkhQkxL_iCZ4GA@mail.gmail.com>
+Date: Thu, 9 Apr 2026 21:36:10 +0800
+X-Gm-Features: AQROBzBj6za5GsnXQBTuRUGwmnNIFKrPbfDUsS2ZGkIANliyUgUh7VnKADEJUek
+Message-ID: <CAKcXpBw8YVNJxdQA22U-c-2pfB5O2e8T1sJNiomzjwJNmMH63A@mail.gmail.com>
 Subject: Re: [PATCH v1] KVM: x86: Rate-limit global clock updates on vCPU load
 To: Sean Christopherson <seanjc@google.com>
 Cc: igor@gooddata.com, jan.cipa@gooddata.com, jaroslav.pulchart@gooddata.com, 
 	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+
+Hi Sean,
+
+Thanks for your review.
 
 On Wed, Apr 8, 2026 at 2:02=E2=80=AFAM Sean Christopherson <seanjc@google.c=
 om> wrote:
@@ -142,6 +146,8 @@ _host.h
 > the function comment above kvm_gen_kvmclock_update() is the best place fo=
 r it.
 >
+OK, I'll remove this comment in the next patch.
+
 > > +     struct ratelimit_state kvmclock_update_rs;
 > >
 > >  #ifdef CONFIG_KVM_HYPERV
@@ -176,10 +182,13 @@ but KVM
 the
 > immediate update goes through.
 >
+Yes, this is a mistake, I'll fix it in the next patch.
+
 > That will also apply the ratelimiting to kvm_write_system_time(), though =
 if a
 > guest is changing system time that fast, it probably has other issues :-)
 >
+
 This patch does not impact kvm_write_system_time, which works as follows:
 
 kvm_write_system_time
@@ -197,63 +206,5 @@ d.
 
 Maybe I missed something?
 
-> Completely untested, but this?
->
-> ---
->  arch/x86/include/asm/kvm_host.h |  1 +
->  arch/x86/kvm/x86.c              | 13 +++++--------
->  2 files changed, 6 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index c470e40a00aa..f14009f25a3b 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1504,6 +1504,7 @@ struct kvm_arch {
->         bool use_master_clock;
->         u64 master_kernel_ns;
->         u64 master_cycle_now;
-> +       struct ratelimit_state kvmclock_update_rs;
->
->  #ifdef CONFIG_KVM_HYPERV
->         struct kvm_hv hyperv;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0a1b63c63d1a..5dc33f207a83 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -3522,16 +3522,12 @@ uint64_t kvm_get_wall_clock_epoch(struct kvm *kvm=
-)
->   * The worst case for a remote vcpu to update its kvmclock
->   * is then bounded by maximum nohz sleep latency.
->   */
-> -static void kvm_gen_kvmclock_update(struct kvm_vcpu *v)
-> +static void kvm_gen_kvmclock_update(struct kvm_vcpu *vcpu)
->  {
-> -       unsigned long i;
-> -       struct kvm_vcpu *vcpu;
-> -       struct kvm *kvm =3D v->kvm;
-> -
-> -       kvm_for_each_vcpu(i, vcpu, kvm) {
-> +       if (__ratelimit(&vcpu->kvm->arch.kvmclock_update_rs))
->                 kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
-> -               kvm_vcpu_kick(vcpu);
-> -       }
-> +       else
-> +               kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_CLOCK_UPDATE=
-);
->  }
->
->  /* These helpers are safe iff @msr is known to be an MCx bank MSR. */
-> @@ -13366,6 +13362,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned lo=
-ng type)
->         raw_spin_lock_init(&kvm->arch.tsc_write_lock);
->         mutex_init(&kvm->arch.apic_map_lock);
->         seqcount_raw_spinlock_init(&kvm->arch.pvclock_sc, &kvm->arch.tsc_=
-write_lock);
-> +       ratelimit_state_init(&kvm->arch.kvmclock_update_rs, HZ, 10);
->         kvm->arch.kvmclock_offset =3D -get_kvmclock_base_ns();
->
->         raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
->
-> base-commit: b89df297a47e641581ee67793592e5c6ae0428f4
-> --
+Best Regards,
+Lei Chen
