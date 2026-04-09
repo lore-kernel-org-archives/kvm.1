@@ -1,117 +1,159 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CB2337BA6;
-	Thu,  9 Apr 2026 13:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1523C276E;
+	Thu,  9 Apr 2026 13:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775742122; cv=none; b=iotns5SEqQGvNVuwx7oCByDQZleJ992sRIedYmBRgSIeY52DzEGuU/Fke+RA4a5/JBaBz1DtfqPBkwYrCyz/TyFHr7FDBaQ3GvBTtQcCJ9+pLAhf5RruElHTHKfNZuQpJseSXAoatYI1IQ4a2Bu83sLL1DkdRvOp2JsITp1lzdk=
+	t=1775742313; cv=none; b=o+5sUy6PUm5fTC5I5Kpv5rEuLWCWEDznK9RA69fw/UI0KoXLEU+SWKuyuZ7CqBhL1g0lcgsZlaQSFafYxt2wkW6Rg0I5fD6tX8b7GauwOrbCp8lX30qD2gI5sEoyuCoi84suZkJYSVwQKV9vQH9D2g0xlnLbL5ZDVYKD5I8QB7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775742122; c=relaxed/simple;
-	bh=npuzu5k4rLfFUFlfrZ0kqWcRCSC4ifjCJBl9lJesS4I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:Subject:From:
-	 References:In-Reply-To; b=OG1aDXEFr63kcAhD4CKwFOoqcqWY4UXe9WVzFgmAo3Ts9EoD+vOxnUfsOM7lx4qcrq5UDO6b+3pdPz/3OImEbPfi8AS+FbvONa2x+PX43ka27FtzhGBbZfAgjh2Ic9mqLiRJrahMPQbBDxCT16nX9oaob1hQxB32b8yBQPA2qrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LrsNMClI; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775742313; c=relaxed/simple;
+	bh=eq8if797wFl6ufcGFq/diuqKdbrPEilao+Lf3/c2Jaw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hr4QGXURHWiMYNnPTM9SVhOoZIXwzb23SmIMzFFaTUhsbmgmdU5WogOY4UWiozu4UvODpOSvmllsTSLIkKdvZiVuy834EmTbhFZQ1vfI66SVsFHtWm/etcXvSagBpKRUn1TGROShfphOwYC2cfgHRjm553FqdWdwele5IJIgjLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbJEneOG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LrsNMClI"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639BweOQ2325942;
-	Thu, 9 Apr 2026 13:41:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=GhCFHx
-	evcN1EulnNMWEpaBv/BTT0Mwbz5NYh83QfENY=; b=LrsNMClIv+lfxYPCMH2xpa
-	2baYtyFZbaUPoNm8ESwErqVpOPZeFeaZPi33yQTzHLW7Jfv/FfFgi+7AT+laSFmM
-	TaeGGH25ySIAZyoayRMVVNKuoH8QIb10cMdMEK7aRjS/lHZXYureohGeVxOw6Rmq
-	OJ6whFUqwUtaOvZs8BGKNJnlo4KdojRU9GG9whZe0XGwGwHVmllFPpsrs1xUuo8q
-	34Vuk8pAQ4uYtuKr/3tACwqNEy598KpAwb/4F2JK1rGLt2hTdX0urY+vLHxuPwzz
-	MTQDt2OIJdzoL8OreXl5okVPfBLX6lUa3zfMYJ37UsYJIX73hPjgTglg20Fbx19Q
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2kmay0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 13:41:58 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 639CtiCu030025;
-	Thu, 9 Apr 2026 13:41:57 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcme7ks0v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 13:41:57 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639Dfr5i30999000
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Apr 2026 13:41:53 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A3B42004B;
-	Thu,  9 Apr 2026 13:41:53 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 32C9B20040;
-	Thu,  9 Apr 2026 13:41:53 +0000 (GMT)
-Received: from darkmoore (unknown [9.52.198.32])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Apr 2026 13:41:53 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbJEneOG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6EFC4CEF7;
+	Thu,  9 Apr 2026 13:45:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775742312;
+	bh=eq8if797wFl6ufcGFq/diuqKdbrPEilao+Lf3/c2Jaw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EbJEneOG7FTCc3lWUwOtZr9eysP74IJKxUgTvtOM0rsjRRUbCBE1ARNjGHIQ9/40h
+	 M4Y8T03KS8vyz2tlMsE1BrfuD3TN3/wPU1YQGOzOQPKvkIzpHre84BerUHsFDsYRUy
+	 PiDoiyBfflr2JF5f+Q1GEEKjJ4VZM6MNYJ3HxQOXf9ojT8vKXeXWWPjxJdDwZ2BIHI
+	 HN9ls3H14GV/0ricbKGpXcFkbB7LxS6IFuygZYuSUvABSw1wCYz6Y/VzJq/CERGn41
+	 pj1u+gmXGlaS+xqzcIoumcZ4p+1fR+iv1x+AKJtY8GmAl0vXK4nNUgXoe1yFrRrL4r
+	 JYAsgy3RZgCyQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wAph0-0000000AGYy-1SET;
+	Thu, 09 Apr 2026 13:45:10 +0000
+Date: Thu, 09 Apr 2026 14:45:09 +0100
+Message-ID: <86v7e02qoq.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: "Woodhouse, David" <dwmw@amazon.co.uk>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"shuah@kernel.org"
+	<shuah@kernel.org>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+	"catalin.marinas@arm.com"
+	<catalin.marinas@arm.com>,
+	"nathan@kernel.org" <nathan@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"arnd@arndb.de" <arnd@arndb.de>,
+	"kees@kernel.org"
+	<kees@kernel.org>,
+	"will@kernel.org" <will@kernel.org>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"oupton@kernel.org"
+	<oupton@kernel.org>,
+	"rananta@google.com" <rananta@google.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>,
+	"eric.auger@redhat.com"
+	<eric.auger@redhat.com>
+Subject: Re: [PATCH 2/3] KVM: arm64: vgic: Allow userspace to set IIDR revision 1
+In-Reply-To: <ffe9de5106d999365389c3ab17f357409dac1047.camel@amazon.co.uk>
+References: <20260407210949.2076251-1-dwmw2@infradead.org>
+	<20260407210949.2076251-3-dwmw2@infradead.org>
+	<87wlyhc2g4.wl-maz@kernel.org>
+	<ffe9de5106d999365389c3ab17f357409dac1047.camel@amazon.co.uk>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Apr 2026 15:41:48 +0200
-Message-Id: <DHOO1IO9TJ05.VP8TRR0IC58W@linux.ibm.com>
-Cc: <kvm@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <nrb@linux.ibm.com>,
-        <seiden@linux.ibm.com>, <schlameuss@linux.ibm.com>,
-        <gra@linux.ibm.com>, <david@kernel.org>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/6] KVM: s390: Add some useful mask macros
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-X-Mailer: aerc 0.21.0
-References: <20260402150135.196943-1-imbrenda@linux.ibm.com>
- <20260402150135.196943-2-imbrenda@linux.ibm.com>
-In-Reply-To: <20260402150135.196943-2-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDEyMCBTYWx0ZWRfXz4PBRDX4MxrH
- GnWQHaoS0u3umQH0HC6jENQljWMdD8dJFM88ERy0NDEsx17ddm0dtk48ncENfAdjXGhatw1npio
- 2oXoQU9XDcLy2iOYZ8CRvpTaAb+kU+XuBGTmzyaxZ/k0sysDtoGLzE7V364z3FlMLLVjv2TwQdB
- 633XyEC71/IF9jmHKIYl9O+JTz0Y6RVM05uHFxrQbzX6uH4Wj0VOqyjWXGrRtMWsg/Pm+1AKcmu
- Ou7kEA50SK6EOqHX/6yQkTiavC+ftjL9TmDQRBOhbq51jYEDZK4LfKjQCjJ4kWm5t0vRa7w5Oyk
- jsLGkDbRYl/pkBepGXELNQcuHrkEp8uCfZmAJ5MzgpDuyX4je8qgajoIX6JvvXV1+mGDBWlcai4
- gSm805GK2XNm1lExp0uNlNayzoiiL2wIiNWXU0a2MT/Wct5uBoBhsb1D018/TitrYBI8B0M2scl
- 1k6Z6e1bmufcmc8QiUA==
-X-Proofpoint-ORIG-GUID: 9ItTmtwYld4Eb5CgUcYdA7YLVSnO-CG6
-X-Authority-Analysis: v=2.4 cv=e9k2j6p/ c=1 sm=1 tr=0 ts=69d7aca6 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=vf6NJk7m3_Ogz1M4-hAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 9ItTmtwYld4Eb5CgUcYdA7YLVSnO-CG6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_03,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090120
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: dwmw@amazon.co.uk, kvm@vger.kernel.org, shuah@kernel.org, yuzenghui@huawei.com, joey.gouly@arm.com, linux-kernel@vger.kernel.org, catalin.marinas@arm.com, nathan@kernel.org, pbonzini@redhat.com, kvmarm@lists.linux.dev, arnd@arndb.de, kees@kernel.org, will@kernel.org, suzuki.poulose@arm.com, oupton@kernel.org, rananta@google.com, linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org, eric.auger@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu Apr 2, 2026 at 5:01 PM CEST, Claudio Imbrenda wrote:
-> Add _{SEGMENT,REGION3}_FR_MASK, similar to _{SEGMENT,REGION3}_MASK, but
-> working on gfn/pfn instead of addresses. Use them in gaccess.c instead
-> of using the normal masks plus gpa_to_gfn().
->
-> Also add _PAGES_PER_{SEGMENT,REGION3} to make future code more readable.
->
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On Wed, 08 Apr 2026 09:39:15 +0100,
+"Woodhouse, David" <dwmw@amazon.co.uk> wrote:
+>=20
+> [1  <multipart/signed (en-US) (7bit)>]
+> [1.1  <text/plain; UTF-8 (quoted-printable)>]
+> On Wed, 2026-04-08 at 08:54 +0100, Marc Zyngier wrote:
+> > On Tue, 07 Apr 2026 21:27:03 +0100,
+> > David Woodhouse <dwmw2@infradead.org> wrote:
+> > >=20
+> > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > >=20
+> > > Allow userspace to select GICD_IIDR revision 1, which restores the
+> > > original pre-d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow configuration
+> > > of interrupt groups") behaviour where interrupt groups are not
+> > > guest-configurable.
+> >=20
+> > I'm a bit surprised by this.
+> >=20
+> > Either your guest knows that the group registers are not writable and
+> > already deals with the buggy behaviour by not configuring the groups
+> > (or configuring them in a way that matches what the implementation
+> > does). Or it configures them differently and totally fails to handle
+> > the interrupts as they are delivered using the wrong exception type,
+> > if at all.
+> >=20
+> > I'd expect that your guests fall in the former category and not the
+> > latter, as we'd be discussing a very different problem. And my vague
+> > recollection of this issue is that we had established that as long as
+> > the reset values were unchanged, there was no harm in letting things
+> > rip.
+>=20
+> What if the guest boots under a new host kernel and finds the group
+> registers are writable, and then is live migrated to an old host kernel
+> on which they are not?
 
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+That's your problem. KVM/arm64 never supported downgrading.
 
-> ---
->  arch/s390/kvm/dat.h     | 5 +++++
->  arch/s390/kvm/gaccess.c | 2 +-
->  2 files changed, 6 insertions(+), 1 deletion(-)
+Not to mention that there is no valid GIC implementation that has RO
+group registers. All you are doing is to inflict a hypervisor bug on
+unsuspecting guests, for no good reason.
+
+> What about hibernation, if the *boot* kernel in the guest configures
+> the groups, but then transfers control back to the resumed guest kernel
+> which had not?
+
+A guest that doesn't configures the groups cannot expect anything to
+work. You'd have the exact same problem on bare-metal.
+
+>=20
+> > So what is this *really* fixing?
+>=20
+> I look at that question the other way round.
+>=20
+> KVM has an established procedure for allowing userspace to control
+> guest-visible changes, using the IIDR. First the host kernel which
+> *supports* the change is rolled out, and only then does the VMM start
+> to enable it for new launches.
+>=20
+> Even if we can address the questions above, and even if we can convince
+> ourselves that those are the *only* questions to ask... why not follow
+> the normal, safe, procedure?=C2=A0Especially given that there is already =
+an
+> IIDR value which corresponds to it.
+>=20
+> We don't *have* to YOLO it... and I don't want to :)
+
+That's hardly an argument, is it?
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
