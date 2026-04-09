@@ -1,234 +1,485 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE0B2F49FD;
-	Thu,  9 Apr 2026 05:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503B51F30A9
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 06:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775713909; cv=fail; b=PGlymQbvQknm5RU9APpFph5u5Tmo/dTOnHkTIZZL9xac91819hNNx+QPGWcdWq7RAR89sg1yPuXAf2p+LOnR8Xiw6yOgrFTBus1hYUa7HGJ58lQPExiRrMKACNlAC9y/SUbosY9WjmrF/Nkh2U70GzfAVA8Zcw5UHLM2PN0eJMU=
+	t=1775714599; cv=pass; b=OvD8220cmineKN5ls1s0OKpt+VibRkQDmLfF0JuSwVExTRpfz8ca0nMc3Ka22VI3CqromJVjOI+q91Rgo48WGOn0VurHrOULSdHn+X+C5U4JfVrrJRxlEB3KikDOXtagaVCsaWntEBGEXgs/EEIjVs3/vrvhvcznym2PrKJBWJY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775713909; c=relaxed/simple;
-	bh=vlaN6XS4DHCM7zGsS3enNBywR051FloIWdLUr9fKlzA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sFcZqROfZOVCmqkqHMtRfciiHMkzPtZ9H3SX43CHL5mK0JY2Fr1sa0BF84RsrUr9Xynmi/7Zabp/sgCGWcecdrqmqNvZoKnpF9+NGQ6rGoOlN2PTEvJIob5hz3VdrkWZmsD6B0QRviWvSXtRURKBhaTCITUEsgnUnMKePSluRcg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FaRcQ8La; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775714599; c=relaxed/simple;
+	bh=AmeUVSI9xp7BBsOGi0wZvND1u7Vdcf+GEptHOvZa6AU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gkbIjXvspv4aKbhm7PHjDI2THbrtvMjOPyBxCa5NCUGUvuh1fi97GHDSl6BP9Roo7mXaA3sTx9lOGixk8ciPXiIQBOrzLKDKvxXQ2T2wW/f0NLUf5CYbs8rw1zPCdqCEBWOTrgYboQ0G/cgfMWjzCgHE+ACR05mBJtN5ZEyfQmw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=BKOs1wGh; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FaRcQ8La"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775713907; x=1807249907;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=vlaN6XS4DHCM7zGsS3enNBywR051FloIWdLUr9fKlzA=;
-  b=FaRcQ8Lau0GlqkTx9nXWPMUbUE8n/ndwzbyKE/Vx7cG2AG1Hz45zj/Z3
-   N2vhu3sj7HMGLYM0j/Pj5MpRnvpho9O6gcltFVJuaadQbz0tlgFzljV2z
-   QhqQzzaEE1PmJRb651ale3+OTMGSbZhbcLN28LrBelyDSQdO4IqTDKYfy
-   a2GL5zdAz3QZB+x+TJrrO/QJz1w1z70bs8tpa83k8YSdHZlsKGOwsSxYx
-   GUyUjwWA6/WBWd8rm/L1PI7NNvP0zSnwUuMHX+PkaT8OgMjC94VSsZkyB
-   YZ3B6Nn9BixDaKFBf83bxlsmP/22GFgtpIiCdN4zfMyin2UnMr8krOvdu
-   Q==;
-X-CSE-ConnectionGUID: rVt+XYBZT4C1gmhjsRbauA==
-X-CSE-MsgGUID: Aw9zDoDwTpCOb8CQobYlCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76831712"
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="76831712"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 22:51:47 -0700
-X-CSE-ConnectionGUID: Kc/I0M/pQMq+L8NOaV1TZA==
-X-CSE-MsgGUID: EBJzAFgOSBGam9YN8tvQGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="228558427"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 22:51:46 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 8 Apr 2026 22:51:45 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 8 Apr 2026 22:51:45 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.65) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 8 Apr 2026 22:51:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X0gQzBytzTrRQ07acF5AQtc/39lFUU/edklmqi3/4d7RTB+j1uAR503WZtnw0ep7IKkRJrFUG0UsB2xT5e51IQkw05uxyeLjdLuAr9QFD6wzYcLyjOvy12Sr0sejMsJmUNQacJAlh2iypYDu28LROcmhxSDpP9QvDLeWOv/RHh0ASZNP9RcnP2q1+rgINRSclm3KSOFY2I+kAjc6ecQ+4X/og8bmMeAwE5/Zjs8Hy6kBlOj4zk3GEG/1VPcd9kZoFaKoX3hzuRTQcfzsSqi7pANNbn61rm7UMsUoSZCybt1hygAa8RK+WsXA7b6hBMpd+/Hg1vY8AttS97d8+cUj3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7aUm8Fs2Nw8oI8FzxvOdFQg2kKkfDezIWZ5bZM+bRMI=;
- b=HVv0OSdnYJxdyUyItjWEPZ4SR/wtLQ31O7cvI9eWhpb3t+0+jqIL74+1sWTkGon4vri49z69qaM9Z6Uj0lPPMfU+5BEABLyEGxc+Pqbny6LzVXT53aMyUEThrUns34Jz+vgR1jRu+ExSi8YSkEuj5viacCfya7B2s7bGY6oNAjekTzMWfxSGdTb59Mz50Ct0FBlkFnNN8rRGfezByBP2slSRrOsRcEnN2TPmTrumotfHlxvcZE961yqjxga6/PA2dVn9gcDYW6LFpzmmohKMjIh2JzZkTF4nxPKCW8mMQXfFNczcYCkflgBBctC4BmA0+jpmy9tmAVZEIKCrREj2uQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by SN7PR11MB8112.namprd11.prod.outlook.com (2603:10b6:806:2ea::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Thu, 9 Apr
- 2026 05:51:42 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%3]) with mapi id 15.20.9769.017; Thu, 9 Apr 2026
- 05:51:42 +0000
-Date: Thu, 9 Apr 2026 13:12:02 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Jethro Beekman <jethro@fortanix.com>,
-	Alexander Potapenko <glider@google.com>, Carlos =?iso-8859-1?Q?L=F3pez?=
-	<clopez@suse.de>
-Subject: Re: [PATCH 12/21] KVM: SEV: WARN on unhandled VM type when
- initializing VM
-Message-ID: <adc1IrD8uqWdaOKv@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260310234829.2608037-1-seanjc@google.com>
- <20260310234829.2608037-13-seanjc@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260310234829.2608037-13-seanjc@google.com>
-X-ClientProxiedBy: KL1PR01CA0149.apcprd01.prod.exchangelabs.com
- (2603:1096:820:149::15) To PH0PR11MB7472.namprd11.prod.outlook.com
- (2603:10b6:510:28c::12)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="BKOs1wGh"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a3d2824e4bso644100e87.3
+        for <kvm@vger.kernel.org>; Wed, 08 Apr 2026 23:03:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775714595; cv=none;
+        d=google.com; s=arc-20240605;
+        b=frpWVzqhTUig6brWrwzdsEnaNUcaNyx+Wig2fFURwSQ2UOAlzFhW2roRbTEOZDXSUR
+         Ayx91Zqit8Kr1mVtO5PUJ4nuhQlpUwqM+2qefUwdgnmKpXtI8CXVHnLzCvm7EfTPdB6o
+         2gWfVZrvcxzvj3vZtygCzHClU3oKO5OKMQhg7wiyWCRbezPm1BUFjBlSP/H1sJ4kmXNq
+         Qt8TCKYRaFpxuZ6N3p43toXRbpIzEZcAKG2d2z5TDWE3DYmyBNPjABhjvIavCCQteExH
+         VJTpxeKe/kkGoHwVNMVEKgq6S474ZlGP3g+VkH9/6bj+T6XcZVr7Vdkyjh67Y/2R+TS8
+         MSqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QgfMIwmza3zBePWSEjft/5gjBqA0GmY5rVKRgLC/y4g=;
+        fh=f4dz+FL9ua7dHPEvBoUblya+IwClEe29eJ/K24c8nqQ=;
+        b=MKLsc0tBgv6A6ZJQJrVISj5ThRACNqyFjvZTlol2yxCGLJHfg/Qri6xTVj8jZ578jj
+         JF1KTRD7H4SPC0y70dxXpDFzd4WpEq0e5/2j1jpJA4DZeu9fV2shQaW3/e0BOHGsEufF
+         9zHPs+6RrBIAFTQ6CWyR+fKcMUdBBKPwhzrTikffwRgIs8V3oKuXPwJDNIQdYbqsTR+g
+         WrHnybmZa9ff0GGRbvjTEMBoOX2TC5+2szm1E8u1WmSv20uQ8PJmhvGg9SfLYPz5nedm
+         LjuXGoJJW/AVVrrXaUHjMCRY4qM4szZwBwURZha3NBEeYCv/qImVnAndcIDoxqo0b3pU
+         3mng==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1775714595; x=1776319395; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QgfMIwmza3zBePWSEjft/5gjBqA0GmY5rVKRgLC/y4g=;
+        b=BKOs1wGhOHLK4nnh53Ffdj79avyfTUDotWbcbDwX6QauI8rpXoaRPvPBjIM0QJW7jc
+         mvpBfUNNl9E35DKPiy477QH/yhxLgtnge3EkUFldhcTaf9RL7Puyu20Z4mCU6sjJdFeO
+         OYaV/FctqRae9QH4D7wG7B1tNMgr3VBzpcNxsKbc2wrIX7KmWvFjgot3OP9n90rhJo3G
+         xSCumST1wnMMSy0OqekLnVDG6TsozJYPt5XizT3thM8wsHXQbvX61Xshbe4Py1rZyx04
+         JD+hop8fmMyDcvXmjaB77OAdKrnFDPrU478dRYkhz3zOlWjX53jDfyT/d2lvBkUeFcro
+         qhgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775714595; x=1776319395;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QgfMIwmza3zBePWSEjft/5gjBqA0GmY5rVKRgLC/y4g=;
+        b=KiOS4cG2Q7XFY3kUJljOT7xZT/I7dVGwY39n0xrITmfHPM6lp/riCVGb95OEE/WAKT
+         HoPeRGscpEWfZxqZcdzgtcR/tjU7ddFO1zLnUD6T/G/LHk2op1NKM+merBS1YzqJ6pF4
+         KNG6qvUkY5JFrGOmrlUKBDEnunsYOCGMcDqcr5eatWZ9MrC+crLwPWiQB68TCWHfkKW3
+         cPg973CrqnmpCt3MOXTi7ZGNLXFQkO0tHNTxVlzxSI/5W6m+I+Omz/0TVyERvMjN2+7B
+         HNwv+k/SsoH7w5D9Bzj6DpNPwNt44qsWaifJ2L6jEsoLaO/eDkI70jgZZa2oPbSSeez2
+         pIng==
+X-Forwarded-Encrypted: i=1; AJvYcCXcTrPKz890gqxQN3IkD1k7xqoB1z/s/ofKTNCAi2HmE3ZvmKo+gXzWq1/DgyD+QbODme8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdZuuLcZiXpbUngpLTJTX9vtu5bomRycl4xH9n6gPL9pcYOU/5
+	gdG+VUX2G9PvKcNNVwhloZ/tYKo/PkbqtuVYxE7TrJqornnhWfbD5E9gE+wa5ovn69yO2Y4d6nz
+	wkZBaO/Tjo74mIv61abRKcl4v+PJxCagRAVCJvfV2jg==
+X-Gm-Gg: AeBDievS2wFqBU6yaWFk7tX7E7T+IWeGi9HvZLuCis4UrXlJ/+cHMtWmBKiGY5MuDaJ
+	CwoG/t1nrghMw9oHteO9NrQ3iC+KZJdhDkq7qeGOhmPTcBsMKqlSnVys2aiJ+jBKJ87Dnwi6j0t
+	45RSgLmuAAVLsg1RIjebMvemVwa9K3FhiloGFM2VrrLpN3KTu7UohT5iPOSg9B0q4r2jHYhWhjI
+	I41IpKsXsuzwNaloUfUkT27JnYZ6B4R21UZtsQEbaxHDZjcur5PKdMVZ/6qsBZNyyUg9Eyohva0
+	NbBZJ0HqPcHGSqv8ZP7Ib2MAbwLvuUwv+uyZm7XP
+X-Received: by 2002:a05:6512:ad4:b0:5a2:c1b5:f70d with SMTP id
+ 2adb3069b0e04-5a3e7a16afcmr652273e87.6.1775714595238; Wed, 08 Apr 2026
+ 23:03:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|SN7PR11MB8112:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e80b563-69d9-410c-814d-08de95fc133e
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: GLd4jPKb7EBUlMX1iLl2Ky1SqJyu/LLwnIsJvHwddDJcasnXRSCTtd9+9+kQx/9vogMIh1zEFqnVF6teZUAf/hMl2OpmvF6Qm3YaZGH4eieoV0RCDqhOvO46c/jdBVy7DDDev9hKc/MNJ02cnPWkT20lZQ/oKecQs/ykaKzalFyDEss5NbzvVQ5ubaz6vpkzLf5QsGleQSG/Cck4IatVdEXt/Kos32OFUr1GFJ5O0QChDAgKdjCuJmA/n48RqUi0uANs7X7uAm0UKvKEZYc1VCIZrhKydes6ojQBubEK46pauJDkRZZE3dly5Mhdu2HAVT6lP2ubp5GsrHW2REKpllMssA3bG/q7Nk8EHR3V8+U4h53ZQV3vZLWlPTAJz+YQ/+FjamfpphyCbaeD0921a22yCRPrKkgcwgUYQUqTJqlUeH4KOpGWDUj4xfxhVaRL2oJo/uEzJRmt9P4D2NHFz+0bntHKNZ+wnzb5FZTniSkBc9J66QB9Jv2jA6P+DgYVntTjHrHcyVzeHN8ze7tdvdXzvlUd7Q0UE8tLTQLL6fA6mIq2A1+VsWH2k3uOL6sZTJf5wwRa+kE701vfrgDzW7z/UheDz+3dws7MbUZMZBCz+GH73xH4IjzOE53yvOhAGHKD3JLH44DCINHaD955MWmg3R9NRgT0R7H6jw/wpEZTmIgwu+XN75f7ffMq5+iD+miAUiTXcHFvVlGJeKWp9tanvF4WzRskkLOlkNmryg4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?m2h7kQFSB3RkrKDXBPCkwENjoziXtbwhe46upW0tJEzn9hoKncJ5OH3ASnkO?=
- =?us-ascii?Q?Mia46uOfw1WMVfA5kR1mLrAi5/6AqtW+2//BNxvS0/RGenX396SJ4//7JqXG?=
- =?us-ascii?Q?3hJDQs+iiXxeTJxA9pSRLh2lPXAV1UH3m2vNsiT2S2JUcQgXp/YZRtL6aMsl?=
- =?us-ascii?Q?Id8O8hHfSucfTsky68iB9fnbogLOYB45W4J70jP/dYt6Z3KvXYLhfo2N1c6c?=
- =?us-ascii?Q?dl6mhwGme1GYRKLt6ThUYxrjMAr1Ncx+i0P6QtWH1RUc3vfXCPl2MMVNxZ7f?=
- =?us-ascii?Q?eQssU+v+VtrGJDpKLtoh+48wytM4rP75DX6Apdgpjn8ftk6KtSkapdDGmhaG?=
- =?us-ascii?Q?PdPUdOhhw/tzQmzsWELBvh2l9ARtgwcHXVedGUOU168rouCZOdtgFelkEuHP?=
- =?us-ascii?Q?JISsxtSUUMHwj0ldjC+j1VNdetmXmvZjmVSmAqrQIDTWzqkJc8L5r3NFp5EW?=
- =?us-ascii?Q?J4HsAeMDno3IZbuyHtUdU99F/hGUVffwiIf5f0Q+FfWCWElOzk07Rno1pFQM?=
- =?us-ascii?Q?nyh/Kjrrg0VqRxgCpsn5zItn/3rO2oACb3/Ph5jx32cTB2MK510XUUi7W+OA?=
- =?us-ascii?Q?hmxqjhKh5K0dyogmBQLzgfK5QqcLsBswrz8aVYCyNBUEnwvXk48wlIAbLGK5?=
- =?us-ascii?Q?kXA7ZkbaYlwU9LAh6REEF5vqtmshRR2axsZWlKVHSw8JuobPhl64R88wNdNp?=
- =?us-ascii?Q?mdbBfEhgiEItHlyE4SkyJ0CeXgQXxQ1ZoakB9ImSYbjRyggvoPY98Vy+QuaK?=
- =?us-ascii?Q?M3Nf8W7yUT7ilyix4UCn28LjodoidiXPx75PHFOddE59DGxuQ70LGxXxCBWz?=
- =?us-ascii?Q?8xxI6VgTK9Z9n9AnTzYZMqi/N+IaCFMmFaecYgHEiybIk2GHz5DTzi3r6IQD?=
- =?us-ascii?Q?pKQRnPspL9CiIasI1C/m84Oz44OVNIB+fh1Z2CHEy/DHsUqQKglwiA0Zhq/R?=
- =?us-ascii?Q?cyTB96yHzjbvCZ3/MghTY4ud4OWkB2ixEMUNG0r6zAmjBEsSxOXvnHtGoVZV?=
- =?us-ascii?Q?9nT0ezF73HNaF7qAiF1lRoToe51rEaLUzUl60P9HUBSogEy5+JuLYA5ad9NN?=
- =?us-ascii?Q?GCsVTfIPz9Wu8M5j745kqkWrIU7Kk9UwokVps49hzLNDNcSmk3uCDdugKcFQ?=
- =?us-ascii?Q?/SEQ3QSjR247MQwRlvjWL+EXvN1yZub129tsYZk2f90NOzxQrbaa9Q+F01tF?=
- =?us-ascii?Q?Qg9xgZsaST99oQnbCwY/0iq+CL1ltcHtHXt89RqYgsiXXddcq3MJQHbxdtpG?=
- =?us-ascii?Q?QZmKOMPixHnOLNSEh80nqeM2mu/Bl1/8Z06hmeUplxlEP2kwkCMdzxIpwZE6?=
- =?us-ascii?Q?xuJTQPsPbH7uVy7xYGi0WfrH/ghxdcjjwK+VEIAKMVyHDk5Zca1hohfS6gVD?=
- =?us-ascii?Q?hdBPn4EX51VG/CafzacEvaDCdCatjhdiUdUKFc8ioMyidvkw8STKFJuhyNG+?=
- =?us-ascii?Q?kB3EW2PmxwxpBhWvNq3Ycaf2IVwdLYL3xOEk0BbK1NEs2Jmtt4pxhL4UTtxY?=
- =?us-ascii?Q?icrJNj4y5bbXkQnxEY/M8ie+LOy0bxg397vUIJ7mcG9bGjsnk6QBrjb4VGD7?=
- =?us-ascii?Q?VLfiyHQptOOsZKLphWYJl9MlZgV6YLKT/eEGFtrAyihlQ0m+1Q26IowsqSTY?=
- =?us-ascii?Q?hlfCvHMzQ9SNB44OEAcsLvxGKL4UVLW2lbMWFSlDTgsg+7USDPBibVtR4U0U?=
- =?us-ascii?Q?iozdHqF7iBsd5U32hGeKR4kP+KcSWEw6A1ZfxbfgaANw9yzvxhBwn4FjlxUo?=
- =?us-ascii?Q?/AV+Svr4Cw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: oXeQWYZKNhJaCrd/tn8fCcrq71u/TLvz1TAy+LJ4wC+zw83z+1bMv82wcWHpbJ/QVzBsyLHJ2AGWlvVImfamdvW4K56deUlOfCDNrhzEHzlxz6AJ+m9haDm81lC5V8lNJM2CEC6dmmJL9DB0DIm8LOd8Y7vdEiZ9UgOxQ89W5ouTqzUIO9N+rxobh9EwtXtMGTp8PCbcXePOYp4M0EvgLjOCp9rp+ak1UoySLELfZZGNHCwsElOoLn6UR6j0/5QapgYVaIEEaw1q505DJgIP2Vi3MV1OfchlBnKp7xaSh78h3jbKbUh8Y+u0W6fnftLpa+/qN6C8P4SLr6Jz2om/Xw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e80b563-69d9-410c-814d-08de95fc133e
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 05:51:42.1514
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ig0U2f1WA/gCvNsJHbxOecI7UlU94XhXKTXxdCGprfscfmQCPaKslAsbwNp4erBTyASrydpSfLvJ2ecEsVU9aQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8112
-X-OriginatorOrg: intel.com
+References: <20260408161133.244669-1-tjytimi@163.com>
+In-Reply-To: <20260408161133.244669-1-tjytimi@163.com>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Thu, 9 Apr 2026 11:33:02 +0530
+X-Gm-Features: AQROBzCd0e5Nq8zWa95qDN95DDLMnatiDUmUrq6-JgL3DTMKQgJeQ2iYycRLjEo
+Message-ID: <CAK9=C2Wjr-N8H+xnXAw5RFRsgiDqp=hoB2y2RuzGX079Y_RLCQ@mail.gmail.com>
+Subject: Re: [PATCH v3] RISC-V: KVM: Batch stage-2 remote TLB flushes
+To: Jinyu Tang <tjytimi@163.com>
+Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+	Paul Walmsley <pjw@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>, Nutty Liu <nutty.liu@hotmail.com>, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 04:48:20PM -0700, Sean Christopherson wrote:
-> WARN if KVM encounters an unhandled VM type when setting up flags for SEV+
-> VMs, e.g. to guard against adding a new flavor of SEV without adding proper
-> recognition in sev_vm_init().
-> 
-> Practically speaking, no functional change intended (the new "default" case
-> should be unreachable).
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Wed, Apr 8, 2026 at 9:43=E2=80=AFPM Jinyu Tang <tjytimi@163.com> wrote:
+>
+> KVM RISC-V triggers a TLB flush for every single stage-2 PTE
+> modification (unmap or write-protect) now. Although KVM coalesces the
+> hardware IPIs, the software overhead of executing the flush work
+> for every 4K page is large, especially during dirty page tracking.
+>
+> Following the approach used in x86 and arm64, this patch optimizes
+> the MMU logic by making the PTE manipulation functions return a boolean
+> indicating if a leaf PTE was actually changed. The outer MMU functions
+> bubble up this flag to batch the remote TLB flushes.
+>
+> Consequently, the flush operation is executed only once per batch.
+> Moving it outside of the `mmu_lock` also reduces lock contention.
+>
+> Tested with tools/testing/selftests/kvm on a 4-vCPU guest (Host
+> environment: QEMU 10.2.1 RISC-V)
+> 1. demand_paging_test (1GB memory)
+>         # time ./demand_paging_test -b 1G -v 4
+>    - Total execution time reduced from ~2m33s to ~2m25s
+> 2. dirty_log_perf_test (1GB memory)
+>         # ./dirty_log_perf_test -b 1G -v 4
+>         - "Clear dirty log time" per iteration dropped significantly from
+>      ~3.02s to ~0.19s
+>
+> Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+> Signed-off-by: Jinyu Tang <tjytimi@163.com>
 > ---
->  arch/x86/kvm/svm/sev.c | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index e5dae76d2986..9a907bc057d0 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2930,17 +2930,24 @@ static int snp_decommission_context(struct kvm *kvm)
->  
->  void sev_vm_init(struct kvm *kvm)
->  {
-> -	int type = kvm->arch.vm_type;
-> -
-> -	if (type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM)
-> -		return;
-> -
-> -	kvm->arch.has_protected_state = (type == KVM_X86_SEV_ES_VM ||
-> -					 type == KVM_X86_SNP_VM);
-> -	to_kvm_sev_info(kvm)->need_init = true;
-> -
-> -	kvm->arch.has_private_mem = (type == KVM_X86_SNP_VM);
-> -	kvm->arch.pre_fault_allowed = !kvm->arch.has_private_mem;
-> +	switch (kvm->arch.vm_type) {
-> +	case KVM_X86_DEFAULT_VM:
-> +	case KVM_X86_SW_PROTECTED_VM:
-> +		break;
-> +	case KVM_X86_SNP_VM:
-> +		kvm->arch.has_private_mem = true;
-> +		fallthrough;
-> +	case KVM_X86_SEV_ES_VM:
-> +		kvm->arch.has_protected_state = true;
-> +		fallthrough;
-> +	case KVM_X86_SEV_VM:
-> +		kvm->arch.pre_fault_allowed = !kvm->arch.has_private_mem;
-> +		to_kvm_sev_info(kvm)->need_init = true;
-> +		break;
-> +	default:
-> +		WARN_ONCE(1, "Unsupported VM type %lu", kvm->arch.vm_type);
-After pulling the latest kvm-x86/next, I encountered this compilation warning:
-"arch/x86/kvm/svm/sev.c:2954:30: error: format %lu expects argument of type long
-unsigned int, but argument 2 has type int [-Werror=format=]",
+> v2 -> v3:
+> Addressed review comments from Anup Patel:
+> - Removed gstage_tlb_flush() for non-leaf PTEs only set flush flag
+> - Removed KVM_GSTAGE_FLAGS_LOCAL check
+> - Used kvm_flush_remote_tlbs_range() instead of full flushes in
+>   kvm_arch_flush_shadow_memslot() and kvm_unmap_gfn_range() to avoid
+>   unnecessary global TLB flush.
+>
+> v1 -> v2:
+> - Fixed alignment issues in multi-line function calls supported by
+>   Nutty Liu.
+>
+>  arch/riscv/include/asm/kvm_gstage.h |  6 ++---
+>  arch/riscv/kvm/gstage.c             | 35 +++++++++++++++----------
+>  arch/riscv/kvm/mmu.c                | 40 ++++++++++++++++++++++-------
+>  3 files changed, 56 insertions(+), 25 deletions(-)
 
-So,
+This patch conflicts with other patches in the riscv_kvm_next
+branch at https://github.com/kvm-riscv/linux.git
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 75d0c03d69bc..ca09c06d1e80 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2951,7 +2951,7 @@ void sev_vm_init(struct kvm *kvm)
-                to_kvm_sev_info(kvm)->need_init = true;
-                break;
-        default:
--               WARN_ONCE(1, "Unsupported VM type %lu", kvm->arch.vm_type);
-+               WARN_ONCE(1, "Unsupported VM type %u", kvm->arch.vm_type);
-                break;
-        }
- }
+Please rebase on latest riscv_kvm_next and send v4 ?
 
+Regards,
+Anup
 
-> +		break;
-> +	}
+>
+> diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm=
+/kvm_gstage.h
+> index 595e21831..b003a07f1 100644
+> --- a/arch/riscv/include/asm/kvm_gstage.h
+> +++ b/arch/riscv/include/asm/kvm_gstage.h
+> @@ -59,13 +59,13 @@ enum kvm_riscv_gstage_op {
+>         GSTAGE_OP_WP,           /* Write-protect */
+>  };
+>
+> -void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+> +bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+>                              pte_t *ptep, u32 ptep_level, enum kvm_riscv_=
+gstage_op op);
+>
+> -void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
+> +bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
+>                                   gpa_t start, gpa_t size, bool may_block=
+);
+>
+> -void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, g=
+pa_t end);
+> +bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, g=
+pa_t end);
+>
+>  void kvm_riscv_gstage_mode_detect(void);
+>
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index b67d60d72..f008ccf1d 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+> @@ -209,35 +209,36 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gs=
+tage,
+>         return kvm_riscv_gstage_set_pte(gstage, pcache, out_map);
 >  }
->  
->  void sev_vm_destroy(struct kvm *kvm)
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
-> 
+>
+> -void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+> +bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+>                              pte_t *ptep, u32 ptep_level, enum kvm_riscv_=
+gstage_op op)
+>  {
+>         int i, ret;
+>         pte_t old_pte, *next_ptep;
+>         u32 next_ptep_level;
+>         unsigned long next_page_size, page_size;
+> +       bool flush =3D false;
+>
+>         ret =3D gstage_level_to_page_size(ptep_level, &page_size);
+>         if (ret)
+> -               return;
+> +               return false;
+>
+>         WARN_ON(addr & (page_size - 1));
+>
+>         if (!pte_val(ptep_get(ptep)))
+> -               return;
+> +               return false;
+>
+>         if (ptep_level && !gstage_pte_leaf(ptep)) {
+>                 next_ptep =3D (pte_t *)gstage_pte_page_vaddr(ptep_get(pte=
+p));
+>                 next_ptep_level =3D ptep_level - 1;
+>                 ret =3D gstage_level_to_page_size(next_ptep_level, &next_=
+page_size);
+>                 if (ret)
+> -                       return;
+> +                       return false;
+>
+>                 if (op =3D=3D GSTAGE_OP_CLEAR)
+>                         set_pte(ptep, __pte(0));
+>                 for (i =3D 0; i < PTRS_PER_PTE; i++)
+> -                       kvm_riscv_gstage_op_pte(gstage, addr + i * next_p=
+age_size,
+> -                                               &next_ptep[i], next_ptep_=
+level, op);
+> +                       flush |=3D kvm_riscv_gstage_op_pte(gstage, addr +=
+ i * next_page_size,
+> +                                                        &next_ptep[i], n=
+ext_ptep_level, op);
+>                 if (op =3D=3D GSTAGE_OP_CLEAR)
+>                         put_page(virt_to_page(next_ptep));
+>         } else {
+> @@ -247,11 +248,13 @@ void kvm_riscv_gstage_op_pte(struct kvm_gstage *gst=
+age, gpa_t addr,
+>                 else if (op =3D=3D GSTAGE_OP_WP)
+>                         set_pte(ptep, __pte(pte_val(ptep_get(ptep)) & ~_P=
+AGE_WRITE));
+>                 if (pte_val(*ptep) !=3D pte_val(old_pte))
+> -                       gstage_tlb_flush(gstage, ptep_level, addr);
+> +                       flush =3D true;
+>         }
+> +
+> +       return flush;
+>  }
+>
+> -void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
+> +bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
+>                                   gpa_t start, gpa_t size, bool may_block=
+)
+>  {
+>         int ret;
+> @@ -260,6 +263,7 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *=
+gstage,
+>         bool found_leaf;
+>         unsigned long page_size;
+>         gpa_t addr =3D start, end =3D start + size;
+> +       bool flush =3D false;
+>
+>         while (addr < end) {
+>                 found_leaf =3D kvm_riscv_gstage_get_leaf(gstage, addr, &p=
+tep, &ptep_level);
+> @@ -271,8 +275,8 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *=
+gstage,
+>                         goto next;
+>
+>                 if (!(addr & (page_size - 1)) && ((end - addr) >=3D page_=
+size))
+> -                       kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+> -                                               ptep_level, GSTAGE_OP_CLE=
+AR);
+> +                       flush |=3D kvm_riscv_gstage_op_pte(gstage, addr, =
+ptep,
+> +                                                        ptep_level, GSTA=
+GE_OP_CLEAR);
+>
+>  next:
+>                 addr +=3D page_size;
+> @@ -284,9 +288,11 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage =
+*gstage,
+>                 if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_bloc=
+k && addr < end)
+>                         cond_resched_lock(&gstage->kvm->mmu_lock);
+>         }
+> +
+> +       return flush;
+>  }
+>
+> -void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, g=
+pa_t end)
+> +bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, g=
+pa_t end)
+>  {
+>         int ret;
+>         pte_t *ptep;
+> @@ -294,6 +300,7 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gst=
+age, gpa_t start, gpa_t end
+>         bool found_leaf;
+>         gpa_t addr =3D start;
+>         unsigned long page_size;
+> +       bool flush =3D false;
+>
+>         while (addr < end) {
+>                 found_leaf =3D kvm_riscv_gstage_get_leaf(gstage, addr, &p=
+tep, &ptep_level);
+> @@ -305,12 +312,14 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *g=
+stage, gpa_t start, gpa_t end
+>                         goto next;
+>
+>                 if (!(addr & (page_size - 1)) && ((end - addr) >=3D page_=
+size))
+> -                       kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+> -                                               ptep_level, GSTAGE_OP_WP)=
+;
+> +                       flush |=3D kvm_riscv_gstage_op_pte(gstage, addr, =
+ptep,
+> +                                                        ptep_level, GSTA=
+GE_OP_WP);
+>
+>  next:
+>                 addr +=3D page_size;
+>         }
+> +
+> +       return flush;
+>  }
+>
+>  void __init kvm_riscv_gstage_mode_detect(void)
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 0b75eb2a1..b9a57f0a9 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -23,6 +23,7 @@ static void mmu_wp_memory_region(struct kvm *kvm, int s=
+lot)
+>         phys_addr_t start =3D memslot->base_gfn << PAGE_SHIFT;
+>         phys_addr_t end =3D (memslot->base_gfn + memslot->npages) << PAGE=
+_SHIFT;
+>         struct kvm_gstage gstage;
+> +       bool flush;
+>
+>         gstage.kvm =3D kvm;
+>         gstage.flags =3D 0;
+> @@ -30,9 +31,10 @@ static void mmu_wp_memory_region(struct kvm *kvm, int =
+slot)
+>         gstage.pgd =3D kvm->arch.pgd;
+>
+>         spin_lock(&kvm->mmu_lock);
+> -       kvm_riscv_gstage_wp_range(&gstage, start, end);
+> +       flush =3D kvm_riscv_gstage_wp_range(&gstage, start, end);
+>         spin_unlock(&kvm->mmu_lock);
+> -       kvm_flush_remote_tlbs_memslot(kvm, memslot);
+> +       if (flush)
+> +               kvm_flush_remote_tlbs_memslot(kvm, memslot);
+>  }
+>
+>  int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
+> @@ -88,6 +90,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, p=
+hys_addr_t hpa,
+>  void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long siz=
+e)
+>  {
+>         struct kvm_gstage gstage;
+> +       bool flush;
+>
+>         gstage.kvm =3D kvm;
+>         gstage.flags =3D 0;
+> @@ -95,8 +98,12 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa,=
+ unsigned long size)
+>         gstage.pgd =3D kvm->arch.pgd;
+>
+>         spin_lock(&kvm->mmu_lock);
+> -       kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
+> +       flush =3D kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false)=
+;
+>         spin_unlock(&kvm->mmu_lock);
+> +
+> +       if (flush)
+> +               kvm_flush_remote_tlbs_range(kvm, gpa >> PAGE_SHIFT,
+> +                                           size >> PAGE_SHIFT);
+>  }
+>
+>  void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
+> @@ -108,13 +115,17 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct=
+ kvm *kvm,
+>         phys_addr_t start =3D (base_gfn +  __ffs(mask)) << PAGE_SHIFT;
+>         phys_addr_t end =3D (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
+>         struct kvm_gstage gstage;
+> +       bool flush;
+>
+>         gstage.kvm =3D kvm;
+>         gstage.flags =3D 0;
+>         gstage.vmid =3D READ_ONCE(kvm->arch.vmid.vmid);
+>         gstage.pgd =3D kvm->arch.pgd;
+>
+> -       kvm_riscv_gstage_wp_range(&gstage, start, end);
+> +       flush =3D kvm_riscv_gstage_wp_range(&gstage, start, end);
+> +       if (flush)
+> +               kvm_flush_remote_tlbs_range(kvm, start >> PAGE_SHIFT,
+> +                                           (end - start) >> PAGE_SHIFT);
+>  }
+>
+>  void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *me=
+mslot)
+> @@ -140,6 +151,7 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+>         gpa_t gpa =3D slot->base_gfn << PAGE_SHIFT;
+>         phys_addr_t size =3D slot->npages << PAGE_SHIFT;
+>         struct kvm_gstage gstage;
+> +       bool flush;
+>
+>         gstage.kvm =3D kvm;
+>         gstage.flags =3D 0;
+> @@ -147,8 +159,11 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+>         gstage.pgd =3D kvm->arch.pgd;
+>
+>         spin_lock(&kvm->mmu_lock);
+> -       kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
+> +       flush =3D kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false)=
+;
+>         spin_unlock(&kvm->mmu_lock);
+> +       if (flush)
+> +               kvm_flush_remote_tlbs_range(kvm, gpa >> PAGE_SHIFT,
+> +                                           size >> PAGE_SHIFT);
+>  }
+>
+>  void kvm_arch_commit_memory_region(struct kvm *kvm,
+> @@ -253,9 +268,11 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm=
+_gfn_range *range)
+>         gstage.flags =3D 0;
+>         gstage.vmid =3D READ_ONCE(kvm->arch.vmid.vmid);
+>         gstage.pgd =3D kvm->arch.pgd;
+> -       kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SHIFT,
+> -                                    (range->end - range->start) << PAGE_=
+SHIFT,
+> -                                    range->may_block);
+> +       if (kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SH=
+IFT,
+> +                                        (range->end - range->start) << P=
+AGE_SHIFT,
+> +                                        range->may_block))
+> +               kvm_flush_remote_tlbs_range(kvm, range->start,
+> +                                           range->end - range->start);
+>         return false;
+>  }
+>
+> @@ -579,6 +596,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
+>  {
+>         struct kvm_gstage gstage;
+>         void *pgd =3D NULL;
+> +       bool flush =3D false;
+>
+>         spin_lock(&kvm->mmu_lock);
+>         if (kvm->arch.pgd) {
+> @@ -586,13 +604,17 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
+>                 gstage.flags =3D 0;
+>                 gstage.vmid =3D READ_ONCE(kvm->arch.vmid.vmid);
+>                 gstage.pgd =3D kvm->arch.pgd;
+> -               kvm_riscv_gstage_unmap_range(&gstage, 0UL, kvm_riscv_gsta=
+ge_gpa_size, false);
+> +               flush =3D kvm_riscv_gstage_unmap_range(&gstage, 0UL,
+> +                                                    kvm_riscv_gstage_gpa=
+_size, false);
+>                 pgd =3D READ_ONCE(kvm->arch.pgd);
+>                 kvm->arch.pgd =3D NULL;
+>                 kvm->arch.pgd_phys =3D 0;
+>         }
+>         spin_unlock(&kvm->mmu_lock);
+>
+> +       if (flush)
+> +               kvm_flush_remote_tlbs(kvm);
+> +
+>         if (pgd)
+>                 free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage=
+_pgd_size));
+>  }
+> --
+> 2.43.0
+>
+>
+> --
+> kvm-riscv mailing list
+> kvm-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kvm-riscv
