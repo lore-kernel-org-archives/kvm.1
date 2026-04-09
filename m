@@ -1,158 +1,229 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C233DA7C0
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 14:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF39C3CCFA5;
+	Thu,  9 Apr 2026 14:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775744559; cv=none; b=f/eMkrC4UIfQa4/E3lPTrifUI52xEmPp7+b4YBJQWuzhk8W6kIvhE0FfuAMJhQaqffHSsmmRFPsdSRN0SaYclIvhJfFz0a4GDShIK6cVm9uGDp8IRzLJHfCJwYmfWXgE+WbYU3mjjznjLCSLjYVHLIGNG/X6Kq5V0kCNGzTE260=
+	t=1775744593; cv=none; b=VYTmT3k2Lnvi3cezDBIQNeXTOQMNIC4HgafvWHUlhfM6S+Mw04DR1wvnOugnM3hvSMpwUvGVWWL8rqOHGq3hr+8EUTkgq0+u15gDpauVNq3LufaZ/CLfLz0FSrxqxffp0+7jA6QXWZj4nRm+ePKFuzA8udr+epwzmj4kvchUpSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775744559; c=relaxed/simple;
-	bh=Nv0LZ8ENNMjKtXEw/sa3+pR/wKA4qhD15enU3i1bbwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POhR5Uxt7X/bwsjdSbB7w9IS6/ytNsTO3PFQKFcyMyOVnkvLudR1flM347ATTV57xykj84Pxnmbg1RxCz0/cn5d0XW2tTdGti5rgPh36Alm5sPGkM5PosB8WuG4aqjyiBlg5uvD5m2VGqPzd7e49dfEJX9iqGkUQ210rmgnePEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=NXMF5gjb; arc=none smtp.client-ip=209.85.216.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1775744593; c=relaxed/simple;
+	bh=oGD/9ZVmzzLu5MijekPKbi5ia9AHxZHxrB3rOMRMbdU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=drbFxzv2afurrRTye6EX1LBYgldgnyQOXTQHUPWabWpxykRmJYdbb40bskBzNAxjVgR+w9j2B8J1oJnn1o5zxJjL9LzKIw+fklFlBpVi/ljxZ+BZP2W4A1HCkg96kj6BtWl/zDQq+HXJ/IXk5juRNsBjkif5FL3RnNNoHQvfSxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=c/DtjUtV; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="NXMF5gjb"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-35da1af3e10so1057200a91.3
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 07:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1775744557; x=1776349357; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uKq0BhPwqLsy8JSNCzPJOdtUcEVYRgcelll+xkoETzs=;
-        b=NXMF5gjbotf2O1t/5At4nL6pBYOyXebDPiieVBy/xc7pfIbQMrM4IPa7QH+TbXnKhm
-         Xm9aPkYhJUnelizVgf2FfJKpQWLhXWAWkqNiBc3ZmeTjscO4YdUKK6SnwLMQ2CbN+DaE
-         qvX6D32Kp81ol82ZzXTqs6hL/Vo/phFHFF/vEoe+MPTbqNN7LePOKntxX1Zb0UbefN9Y
-         eW+ZtC0M+2LW/XppUL3H0m9jIWVIOG6OBb7/Nk+i9uoQawmPiIfX5f4PDRHHI5g/HZww
-         6qPlS4vJpFf8MYk+I+whIvBUs+UCLTxPsDniFu27TSwSQCgm8aUfQ9KUIAm+xwUSoDcb
-         fu2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775744557; x=1776349357;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uKq0BhPwqLsy8JSNCzPJOdtUcEVYRgcelll+xkoETzs=;
-        b=m6Rqyggu2KRyZVQV5hP8dnZA79PyHmd6s9q9OA5OnIfab49MJdygP23q3NsO6QYM3S
-         hcTZ3mi/oQ6d6dxIPmdWHkMDwqRSoFYlS2FPSi4dSXROP2QfeHSOpP4DAmiBxXia+2Tt
-         zlDQ5UHNVwBTczdKpQBk0i+byBGynofzn5L3R2glao7vVWaN8UEBivkO/kY79WQgb9LQ
-         8x5ZIIanQCIfnn2sB4Mr02Gw7rRLIqgxOs9+uxhp7QCAkyg0d7dTd4k4zOKMdUOPS3gH
-         v/V0M7/u4iTCqbwpeEQSQ0a3k05/5z9zc2xQQ8DBuF2CYG2x2XExPLgvgxuWW+SzM2ld
-         wlXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXRcX9wrq2Fkeh1wqHnufOwT9I+olR5ITJ8Jnpw5cffJpcMsuVcxf+k1NYD4kt44ku4Ruo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLxldpQKqYQdDkpgLGvNvnIPN/TNwVyhsajKGSCPpnV/0S1/q6
-	BoFx+YrVbTaaAWO65edm/kSv5o51zMxGvdezb8078TBzmBfkCmKz1kY8DtSvHtRSYae7QhPLymP
-	FHvqVSVmwCC7PnI3Sx5gq6GbZnrFAx3LeYn/HkQhjGxeCYno=
-X-Gm-Gg: AeBDievUXXNuKQ/iezLST9dTT7SOLTfxtY0RUCSjlaz/UjnNoz7qHtXeRPVki1KMKIt
-	Vm8Fg5FDcg3sHGtlOXa1UzhUjdIHpYATytABz6ala7wWPr2fzxEZ5MfxBE1Eu+NoOwTuh0PnExX
-	DngMThB6QddH3x9flT42mrC/eVkoD3+rHuYZjdjvEQ72B6Tjj4vTnijlNs3Le/JklRW0Oo6gdCm
-	bvNO7EhIYkmVPmHuT+K3LIEbGXbBrGkPqaPkmHE9balb//UiizXzGtfKIuDt5DZGJLp2I0v5eO4
-	XjLV/lBEOR0zrhBUJo1m376LWSTjFdtPMAGr/otWpXjTKHdH4UGxx294wnrpVPT8vzDD7jBgaK7
-	md1cinm0wOgHQduLMal3elVXorcEw8Z26dFpn8Z5x/L/3dNIpUTkPI1KKhau1XfMFrjnY97vSoK
-	h71TCinNszQo+z104C4A==
-X-Received: by 2002:a17:90b:2f8f:b0:359:fd9a:c513 with SMTP id 98e67ed59e1d1-35e359a62c0mr3492121a91.24.1775744556676;
-        Thu, 09 Apr 2026 07:22:36 -0700 (PDT)
-Received: from DESKTOP-AMNC9SI.localdomain ([2407:cdc0:d00b::4])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-35e34ff0c58sm3662676a91.10.2026.04.09.07.22.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 07:22:36 -0700 (PDT)
-From: Lei Chen <lei.chen@smartx.com>
-To: seanjc@google.com
-Cc: igor@gooddata.com,
-	jan.cipa@gooddata.com,
-	jaroslav.pulchart@gooddata.com,
-	kvm@vger.kernel.org,
-	lei.chen@smartx.com,
-	linux-kernel@vger.kernel.org,
-	pbonzini@redhat.com
-Subject: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
-Date: Thu,  9 Apr 2026 22:22:26 +0800
-Message-ID: <20260409142226.2581-1-lei.chen@smartx.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <adVGrJaRlRooO4su@google.com>
-References: <adVGrJaRlRooO4su@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="c/DtjUtV"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639BTVVk2318761;
+	Thu, 9 Apr 2026 14:23:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+SADfR
+	JtZpHq00wR1lgbVohFDaEDS6/zHI4cEd1P+94=; b=c/DtjUtVHCebyGademx6WF
+	xAmBXUG7yNDEHSwI5hQpZJvpP5AkUoXqz4OcDCjLHu2V7fsSSfMdK10pT6T42pE1
+	ClhRAuzIAopfIwB/DqvAKv5yUxTC+mcdxDIzwXWJ2hfmU4KemiUYN70Zmb8RqgFc
+	Q4G52apXQxQxd8HkmWsJOYOmJEfnlZ1eAzZGqAoGH8EvlWrmKuJPLYM0VnK/zd9R
+	hC8HH/24EXZGiQLBQVJoiIlk5VWQpLXqINqS0GLylfclXCBJU3IXEt91fW0ttflt
+	g2u/Caxu6++SqTW+y1BaZqQ6GY8QblUDzJl9O4xMEwsHb7OMYxX4OgONQA9C1qNg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2g5d91-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 14:23:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 639D1qr9007898;
+	Thu, 9 Apr 2026 14:23:04 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmg2kwqv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 14:23:04 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639EN2Bg52494766
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Apr 2026 14:23:03 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D77625805D;
+	Thu,  9 Apr 2026 14:23:02 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E0FC58053;
+	Thu,  9 Apr 2026 14:23:01 +0000 (GMT)
+Received: from [9.61.93.104] (unknown [9.61.93.104])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Apr 2026 14:23:01 +0000 (GMT)
+Message-ID: <1a43bf88-a2d0-49b8-9f2d-ac01c7b0e7c2@linux.ibm.com>
+Date: Thu, 9 Apr 2026 10:23:00 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/16] s390/vfio-ap: Add live guest migration support
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+References: <20260407205100.331150-1-akrowiak@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260407205100.331150-1-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=FKArAeos c=1 sm=1 tr=0 ts=69d7b649 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=mDV3o1hIAAAA:8
+ a=BeJFQei6KuwYuYFmKvkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: njrn64jVn4_ZrnRhwRzfzLHwOMkkYUD0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDEzMCBTYWx0ZWRfX8Y4XMPWZUUOx
+ jLy0SXiqp3EvvFX2Cqh7mIbTBBxAwxRrbjpYNdZ+rUQ3buHkWor9pZlr73SqRlSug2yYzG6O5zK
+ +0qUYAnwGvnqy4cvIXANWwd4/QZwvkwyMcNOHgSZpshvBlu3Yq3wc683caX3T28uJfDmmeB0LiP
+ uKTjb9c7WF5d6ei1e8fyvkPV4tR6xnn2CjhYGAwwLfiWOPrwghcsaa+LJh0CZAdJG3sf6bZgfSw
+ N6cKgFts5IbV0KDG+s8Er0RfXUrRWU+jzTktW1ZMEofgjWeLUNDRSBThYnbgzhyT95KNkE2s/ep
+ ABcXJ1ky/TG92+sI1AQEVALQrkP3990tLUFXkKQV7tzc5woB8D8rF7C7Q3u3NE9ooBW0j/jYl8F
+ 7XtunFFGLqK2Uya8X8v55D+GVDWdSC+oV6kIaK9RNFDD46a6JWtYeWiFOvRCDUegXJSybq01bb7
+ xJ3ukwnN5wWrQ7VmwfQ==
+X-Proofpoint-GUID: njrn64jVn4_ZrnRhwRzfzLHwOMkkYUD0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090130
 
-commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
-dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
 
-As a result, kvm_arch_vcpu_load() can queue global clock update requests
-every time a vCPU is scheduled when the master clock is disabled or when
-the vCPU is loaded for the first time.
 
-Restore the throttling with a per-VM ratelimit state and gate
-KVM_REQ_GLOBAL_CLOCK_UPDATE through __ratelimit(), so frequent vCPU
-scheduling does not generate a steady stream of redundant clock update
-requests.
+On 4/7/26 4:50 PM, Anthony Krowiak wrote:
 
-Fixes: 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
-Signed-off-by: Lei Chen <lei.chen@smartx.com>
-Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Closes: https://lore.kernel.org/all/CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com/
----
-CHANGELOG:
-v2:
-- remove comment of kvmclock_update_rs
-- make sure kvm_arch_vcpu_load make KVM_REQ_CLOCK_UPDATE for this vcpu
-- add RATELIMIT_MSG_ON_RELEASE to kvmclock_update_rs
+The corresponding QEMU 2-patch series that orchestrates live migration
+of vfio-ap devices can be viewed here:
 
-v1:
-- initial version(https://lore.kernel.org/all/20260407070046.2336-1-lei.chen@smartx.com/)
----
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/x86.c              | 11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+https://mail.gnu.org/archive/html/qemu-devel/2026-04/msg01421.html
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 5a3bfa293e8b..5e750c49d21e 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1453,6 +1453,7 @@ struct kvm_arch {
- 	bool use_master_clock;
- 	u64 master_kernel_ns;
- 	u64 master_cycle_now;
-+	struct ratelimit_state kvmclock_update_rs;
- 
- #ifdef CONFIG_KVM_HYPERV
- 	struct kvm_hv hyperv;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 63afdb6bb078..a534e8391611 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5210,8 +5210,13 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 		 * On a host with synchronized TSC, there is no need to update
- 		 * kvmclock on vcpu->cpu migration
- 		 */
--		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu == -1)
--			kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
-+		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu == -1) {
-+			if (__ratelimit(&vcpu->kvm->arch.kvmclock_update_rs))
-+				kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
-+			else
-+				kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
-+		}
-+
- 		if (vcpu->cpu != cpu)
- 			kvm_make_request(KVM_REQ_MIGRATE_TIMER, vcpu);
- 		vcpu->cpu = cpu;
-@@ -13189,6 +13194,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 	raw_spin_lock_init(&kvm->arch.tsc_write_lock);
- 	mutex_init(&kvm->arch.apic_map_lock);
- 	seqcount_raw_spinlock_init(&kvm->arch.pvclock_sc, &kvm->arch.tsc_write_lock);
-+	ratelimit_state_init(&kvm->arch.kvmclock_update_rs, HZ, 10);
-+	ratelimit_set_flags(&kvm->arch.kvmclock_update_rs, RATELIMIT_MSG_ON_RELEASE);
- 	kvm->arch.kvmclock_offset = -get_kvmclock_base_ns();
- 
- 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
--- 
-2.51.0
+> This patch series implements live guest migration support for KVM guests
+> with s390 AP (Adjunct Processor) devices passed through via the VFIO
+> mediated device framework.
+>
+> Background
+> ----------
+>
+> The vfio-ap device driver differs from typical VFIO device drivers in that
+> it does not virtualize a physical device. Instead, it manages AP
+> configuration metadata identifying the AP adapters, domains, and control
+> domains to which a guest will be granted access. These AP resources are
+> configured by assigning them to a vfio-ap mediated device via its sysfs
+> assignment interfaces. When the fd for the VFIO device is opened by
+> userspace, the vfio_ap device driver sets the guest's AP configuration
+> from the metadata stored with the mediated device. As such, the AP devices
+> are not accessed directly through the vfio_ap driver, so the driver has no
+> internal device state to migrate. It's sole purpose during migration is to
+> ensure that the AP configurations of the source and destination guests are
+> compatible.
+>
+> Implementation Approach
+> -----------------------
+>
+> This series implements the VFIO migration protocol using the STOP_COPY
+> migration flow. The key aspects are:
+>
+> 1. Hardware Information Capture (Patches 1-2)
+>     - Store AP queue hardware characteristics at probe time
+>     - Provide access to queue objects for validation
+>
+> 2. Migration Infrastructure (Patches 3-5)
+>     - Define migration data structures
+>     - Initialize/release migration data on device open/close
+>
+> 3. State Machine Implementation (Patches 6-13)
+>     - Implement required VFIO migration callbacks
+>     - Handle state transitions: STOP → STOP_COPY → STOP (source)
+>                                 STOP → RESUMING → STOP (destination)
+>     - Use file streams for AP configuration data transfer
+>
+> 4. Validation and Callbacks (Patches 14-15)
+>     - Implement migration state and data size callbacks
+>     - Required for VFIO_DEVICE_FEATURE_MIGRATION support
+>
+> 5. Documentation (Patch 16)
+>     - Add live guest migration chapter to vfio-ap.rst
+>
+> Compatibility Validation
+> ------------------------
+>
+> The series includes comprehensive validation to ensure source and
+> destination AP configurations are compatible. For each queue, the following
+> characteristics must match:
+>
+> - AP type (target must be same or newer than source)
+> - Installed facilities (APSC, APQKM, AP4KC, SLCF)
+> - Operating mode (CCA, Accelerator, XCP)
+> - APXA facility setting
+> - Classification (native vs stateless functions)
+> - Queue usability (binding/associated state)
+>
+> When incompatibilities are detected, migration fails with detailed error
+> messages identifying the specific queue and characteristic that caused
+> the failure.
+>
+> Configuration Management
+> ------------------------
+>
+> This implementation does not prevent configuration changes during
+> migration. Configuration stability is an orchestration-layer
+> responsibility, consistent with other VFIO device types. The driver's
+> role is to validate configurations and provide clear diagnostics when
+> incompatibilities are detected, enabling orchestration tools to implement
+> appropriate policies.
+>
+> Change log v1 to v2
+> -------------------
+>
+> - Removed patches that attempted to block configuration changes during
+>    migration due to inherent race conditions and incomplete protection
+> - Simplified approach focuses on validation and error reporting
+> - Reduced series from 18 to 16 patches
+> - Rewrote the description in the cover letter to better describe the
+>    patch series, remove confusing comments as well as references to
+>    function provided by the patches that were removed.
+>
+> Anthony Krowiak (16):
+>    s390/vfio-ap: Store queue hardware info when probed
+>    s390/vfio-ap: Provide access to queue objects and related info
+>    s390/vfio-ap: Data structures for facilitating vfio device migration
+>    s390/vfio-ap: Initialize/release vfio device migration data
+>    s390-vfio-ap: Callback to set vfio device mig state during guest
+>      migration
+>    s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
+>    s390/vfio-ap: File ops called to save the vfio device migration state
+>    s390/vfio-ap: Transition device migration state from STOP to RESUMING
+>    s390/vfio-ap: File ops called to resume the vfio device migration
+>    s390/vfio-ap: Transition device migration state from RESUMING to STOP
+>    s390/vfio-ap: Transition device migration state from STOP_COPY to STOP
+>    s390/vfio-ap: Transition device migration state from STOP to RUNNING
+>      and vice versa
+>    s390-vfio-ap: Callback to get the current vfio device migration state
+>    s390/vfio-ap: Callback to get the size of data to be migrated during
+>      guest migration
+>    s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
+>    s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
+>
+>   Documentation/arch/s390/vfio-ap.rst     |  325 +++++--
+>   drivers/s390/crypto/Makefile            |    2 +-
+>   drivers/s390/crypto/vfio_ap_drv.c       |    4 +-
+>   drivers/s390/crypto/vfio_ap_migration.c | 1095 +++++++++++++++++++++++
+>   drivers/s390/crypto/vfio_ap_ops.c       |   66 +-
+>   drivers/s390/crypto/vfio_ap_private.h   |   10 +
+>   6 files changed, 1395 insertions(+), 107 deletions(-)
+>   create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
+>
 
