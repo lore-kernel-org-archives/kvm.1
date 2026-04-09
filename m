@@ -1,55 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4222B397E77
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 22:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530D7399364
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 22:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775774576; cv=none; b=u8X6PwFRmM2fqh7kWcDKqekJabe8QZG+U8+6kAr2QoJ3d+IwKmbLvpnriEhFZYN1WyeA2YbgwgWD6vAPyy7LWFTL5R8wxcIXGbMjh1i14or4lKEq7t1dn1kXipRfjaCqOYnmsgUW8eB9BW3jzDUXiJnnz0AsxreZ6K2xmHElWpE=
+	t=1775774579; cv=none; b=SUuRLh16n4Ee1NX7VUqRfL+HIcYbD4XbfUS3n0nBsIsAGyCHIj3lv4nTNR7PLCgZm23FO0kKJI47wd8h7vr/tLYbja8uBevJOheNVhCtOwxirlrhpMr++lbnmy8+W0ec4nqG4AjvzjSXuUp8UBBwHgvXD4lNiytaQY8Km1Z1YLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775774576; c=relaxed/simple;
-	bh=Bdr/VKS2Xm+/pYaSrVzYfwfoth1+7klUYzIyzSDdgrQ=;
+	s=arc-20240116; t=1775774579; c=relaxed/simple;
+	bh=60Q/zHtyyGDIBP/ak7485shWUHxtFzoB9QyfDmyCpMc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uc0zPkg4yYwvA1KJ/DVSgiWdCPEpI62hsuxOUtR0K9SNii2gZPBXWjDmU0V2gtFVEeV4VfmB1nqGmK1+0SBqZDTg56nlIRcBTVI0KqDjtIt8gI0Anx+79ZDYA5aSwo/L8oAt86ubUWYzC60gmg3CTROYnf5plX7kIY7SEGzomvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QcTk9axb; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=Vluz+n27VJ578J86Z4Ym1YjLf2L8yEMp0b84NRlzN1EGVxDIC/Xramw2i2zwoeYUZClSntqHePa1oo6pgm25bzv2JFpijqJ5i80By9ZM344jritDx/OizRlVdDwJd7aKzp0IkKzt9TfylOzEmI0d5AZEN0YfSCol6tITa2LFVnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fiVQyvVz; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QcTk9axb"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f07078ff0so402302b3a.1
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 15:42:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fiVQyvVz"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c6929bd26so1455196b3a.3
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 15:42:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775774575; x=1776379375; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775774577; x=1776379377; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=b6+4lUswVTvjDCVcs/ZLq4/1sWKR4eUi2Zroo4Ie2qI=;
-        b=QcTk9axbmbDBMoY8vQbzv1tx3OAoWXt92fwy1JoabNJkAXcj043OtuxOKCDnPeNPtZ
-         zUVktoJP/7wVb09s6+hbGNXNwy29P3zUQ18e0JtN7TdQTk5UjoaatQY9SHmhBvIZRqRj
-         LIOfqiVNMuei9oxzVa6Q5YiG9+vMI0sqZiHuDU+nTKEtekwFkJfwhyBVvfynGzTtjmA0
-         tALDblHmrsW8mEnbR0LM4Aqu4V1DSyhXdh5jBpsyf9O+t33yi1dWDDnEMNdlnFSZpDcz
-         C0tLFIBSkCAFzjh6EsbAbUOCzMc8aAVamACHX541Tz1Y8H3+Jy3Wt5US6uxx+CcqFsJd
-         zS9g==
+        bh=7rpQhjNm3mTGjbc05HVtkw07FHdO4o+YZx1lMSvn+bc=;
+        b=fiVQyvVz2bhZQHA87I5g+R/Xxvnvl3jw+A5EwEIveFUBSbD0Au/julNDq1LlLuPhiF
+         a2oqMSvTLaou8FD++Vcz4uv0N/XOtT/zytdENxtTMJccafSk/c67eOPuty+QAFA5fcQI
+         FDoxSXvmBpRXlmMbkD1YRtRo2peqNFdsuxH56FfwV9oY3EXkX5SEJVW3G5TLY3pIcFK6
+         5UGdB/CcOoJij2JPsEMr5hEwAOb/cBb6lPk1iYIHjunM0w7KtMmlLJcbLqKZ84zZMQZi
+         TsQoUfY5JK9q6LRRWeJH4P9f8+D5Gn7qDw9wQ3waeA7nRCHHFgMmIgMuk0ysc5/Z1+Kf
+         dtlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775774575; x=1776379375;
+        d=1e100.net; s=20251104; t=1775774577; x=1776379377;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b6+4lUswVTvjDCVcs/ZLq4/1sWKR4eUi2Zroo4Ie2qI=;
-        b=ah2nGwvMXFpmq3YZWJ3h1KEawSuLLYmg+1D21GJFGzeUOPR3/9u0p1ohH+sYn6Xs63
-         /CAw+hAHLEUt98g5DHdQJqSAyF5zcjSamt0Ef0P9LEqPyzSG5RggupWe+8njlWQwBcNR
-         RZDB/yJToEFac4ixvuP8TJ59oRIIwvDf/Lykunt90pwXAOaU9aDQfrsFb8tNl/ojUR8p
-         8yaOdy8Ud5u3z8I8nRsDV9gsbz0+MAvuFNsxLyHV4BLO4g11hEKPLpsk7OJZulHvXAII
-         1T6zsBvamRo43ka2szenRNtwXBVMrHViQ0/mRGfdXFzIG6qOHOK8HkWYmDJQxh8KW35e
-         TXxQ==
-X-Gm-Message-State: AOJu0YzTVoQlIAA/ISmjcbuzAQc4Kta6+/0pUKk8vK5y1ZxecIAPySsM
-	Fw04GYjezN2RpApEf3A5JYJGHcVRvqfjVodECN8nQKQFfcXVzhGnmvq/dbjkFtkxDEUx5YygMmX
-	iqFY7FA==
-X-Received: from pfwz16.prod.google.com ([2002:a05:6a00:1d90:b0:824:a65c:adf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:12cc:b0:82c:eafa:8875
- with SMTP id d2e1a72fcca58-82f0c26b33bmr964653b3a.2.1775774574526; Thu, 09
- Apr 2026 15:42:54 -0700 (PDT)
+        bh=7rpQhjNm3mTGjbc05HVtkw07FHdO4o+YZx1lMSvn+bc=;
+        b=SgXvvVYCe8d4021i1Mc3YxtiQF3NPQHfMx9j3Tah9vSBia3X+rU2tPCtm79Ux77CsH
+         Nwnsfy4eBj2uB5qvr02/Dfy1uJbzOEKwrI2SOtberKyK0Hj0XsP/bz2RP5yRrvmMa/OC
+         T6eKvXIfjf3w3CWXXJo1IEIaodq5Q8+c1G6YxXHh8UwVehvCNhazdb6hD+UAlYRtZfA4
+         giTkBNu/tML/vJx7OtRwenCh66NLYS4dtE5/0VtMNfnaxfvIdX7poLPUr8LtNXNLZT0o
+         rPCvpqB6oqus9kN5jn6+0fqo8+qcYofehUzU1qNhIeu0BP8y+/urKMCqSESEWjYp07/y
+         Fxmg==
+X-Gm-Message-State: AOJu0YwBNo8bCMs3iD+BQd5lnihEp6gFeyW0riLFiQrwKVOj+USrAjE6
+	d2rjctY0vULErngHlGCvJ1FfgY17b2KK1zEWQK3lSnmaCOArkrMo21D2VuED0qvXQuhDIWp2Cyj
+	ynjxT6A==
+X-Received: from pfbdh4.prod.google.com ([2002:a05:6a00:4784:b0:829:94bc:6c15])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c98:b0:82c:ec1b:9e15
+ with SMTP id d2e1a72fcca58-82f0c1e99bbmr915561b3a.1.1775774576585; Thu, 09
+ Apr 2026 15:42:56 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Apr 2026 15:42:33 -0700
+Date: Thu,  9 Apr 2026 15:42:34 -0700
 In-Reply-To: <20260409224236.2021562-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260409224236.2021562-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260409224236.2021562-5-seanjc@google.com>
-Subject: [PATCH v2 4/6] KVM: x86: Add wrapper APIs to reset dirty/available
- register masks
+Message-ID: <20260409224236.2021562-6-seanjc@google.com>
+Subject: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
+ "unsigned long" values
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -69,131 +69,151 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add wrappers for setting regs_{avail,dirty} in anticipation of turning the
-fields into proper bitmaps, at which point direct writes won't work so
-well.
+Convert regs_{avail,dirty} and all related masks to "unsigned long" values
+as an intermediate step towards declaring the fields as actual bitmaps, and
+as a step toward support APX, which will push the total number of registers
+beyond 32 on 64-bit kernels.
 
-Deliberately leave the initialization in kvm_arch_vcpu_create() as-is,
-because the regs_avail logic in particular is special in that it's the one
-and only place where KVM marks eagerly synchronized registers as available.
+Opportunistically convert TDX's ULL bitmask to a UL to match everything
+else (TDX is 64-bit only, so it's a nop in the end).
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/kvm_cache_regs.h | 18 ++++++++++++++++++
- arch/x86/kvm/svm/svm.c        |  4 ++--
- arch/x86/kvm/vmx/nested.c     |  4 ++--
- arch/x86/kvm/vmx/tdx.c        |  2 +-
- arch/x86/kvm/vmx/vmx.c        |  4 ++--
- 5 files changed, 25 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  4 ++--
+ arch/x86/kvm/kvm_cache_regs.h   |  2 +-
+ arch/x86/kvm/svm/svm.h          |  2 +-
+ arch/x86/kvm/vmx/tdx.c          | 36 ++++++++++++++++-----------------
+ arch/x86/kvm/vmx/vmx.h          | 20 +++++++++---------
+ 5 files changed, 32 insertions(+), 32 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index b1eae1e7b04f..c47eb294c066 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -802,8 +802,8 @@ struct kvm_vcpu_arch {
+ 	 */
+ 	unsigned long regs[NR_VCPU_GENERAL_PURPOSE_REGS];
+ 	unsigned long rip;
+-	u32 regs_avail;
+-	u32 regs_dirty;
++	unsigned long regs_avail;
++	unsigned long regs_dirty;
+ 
+ 	unsigned long cr0;
+ 	unsigned long cr0_guest_owned_bits;
 diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
-index ac1f9867a234..7f71d468178c 100644
+index 7f71d468178c..171e6bc2e169 100644
 --- a/arch/x86/kvm/kvm_cache_regs.h
 +++ b/arch/x86/kvm/kvm_cache_regs.h
-@@ -105,6 +105,24 @@ static __always_inline bool kvm_register_test_and_mark_available(struct kvm_vcpu
- 	return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
+@@ -106,7 +106,7 @@ static __always_inline bool kvm_register_test_and_mark_available(struct kvm_vcpu
  }
  
-+static __always_inline void kvm_clear_available_registers(struct kvm_vcpu *vcpu,
-+							  u32 clear_mask)
-+{
-+	/*
-+	 * Note the bitwise-AND!  In practice, a straight write would also work
-+	 * as KVM initializes the mask to all ones and never clears registers
-+	 * that are eagerly synchronized.  Using a bitwise-AND adds a bit of
-+	 * sanity checking as incorrectly marking an eagerly sync'd register
-+	 * unavailable will generate a WARN due to an unexpected cache request.
-+	 */
-+	vcpu->arch.regs_avail &= ~clear_mask;
-+}
-+
-+static __always_inline void kvm_reset_dirty_registers(struct kvm_vcpu *vcpu)
-+{
-+	vcpu->arch.regs_dirty = 0;
-+}
-+
- /*
-  * The "raw" register helpers are only for cases where the full 64 bits of a
-  * register are read/written irrespective of current vCPU mode.  In other words,
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ee5749d8b3e8..2b73d2650155 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4508,7 +4508,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vcpu->arch.regs[VCPU_REGS_RSP] = svm->vmcb->save.rsp;
- 		vcpu->arch.rip = svm->vmcb->save.rip;
- 	}
--	vcpu->arch.regs_dirty = 0;
-+	kvm_reset_dirty_registers(vcpu);
- 
- 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
- 		kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
-@@ -4554,7 +4554,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vcpu->arch.apf.host_apf_flags =
- 			kvm_read_and_reset_apf_flags();
- 
--	vcpu->arch.regs_avail &= ~SVM_REGS_LAZY_LOAD_SET;
-+	kvm_clear_available_registers(vcpu, SVM_REGS_LAZY_LOAD_SET);
- 
- 	if (!msr_write_intercepted(vcpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL))
- 		rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_CTL, vcpu_to_pmu(vcpu)->global_ctrl);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 63c4ca8c97d5..c4d2bc080add 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -310,13 +310,13 @@ static void vmx_switch_vmcs(struct kvm_vcpu *vcpu, struct loaded_vmcs *vmcs)
- 	vmx_sync_vmcs_host_state(vmx, prev);
- 	put_cpu();
- 
--	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
-+	kvm_clear_available_registers(vcpu, VMX_REGS_LAZY_LOAD_SET);
- 
+ static __always_inline void kvm_clear_available_registers(struct kvm_vcpu *vcpu,
+-							  u32 clear_mask)
++							  unsigned long clear_mask)
+ {
  	/*
- 	 * All lazily updated registers will be reloaded from VMCS12 on both
- 	 * vmentry and vmexit.
- 	 */
--	vcpu->arch.regs_dirty = 0;
-+	kvm_reset_dirty_registers(vcpu);
- }
+ 	 * Note the bitwise-AND!  In practice, a straight write would also work
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 677d268ae9c7..7b46a3f13de1 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -474,7 +474,7 @@ static inline bool svm_is_vmrun_failure(u64 exit_code)
+  * KVM_REQ_LOAD_MMU_PGD is always requested when the cached vcpu->arch.cr3
+  * is changed.  svm_load_mmu_pgd() then syncs the new CR3 value into the VMCB.
+  */
+-#define SVM_REGS_LAZY_LOAD_SET	(1 << VCPU_REG_PDPTR)
++#define SVM_REGS_LAZY_LOAD_SET	(BIT(VCPU_REG_PDPTR))
  
- static void nested_put_vmcs12_pages(struct kvm_vcpu *vcpu)
+ static inline void __vmcb_set_intercept(unsigned long *intercepts, u32 bit)
+ {
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c23ec4ac8bc8..c9ab7902151f 100644
+index c9ab7902151f..85f28363e4cc 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1013,23 +1013,23 @@ static fastpath_t tdx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ 	return EXIT_FASTPATH_NONE;
+ }
+ 
+-#define TDX_REGS_AVAIL_SET	(BIT_ULL(VCPU_REG_EXIT_INFO_1) | \
+-				 BIT_ULL(VCPU_REG_EXIT_INFO_2) | \
+-				 BIT_ULL(VCPU_REGS_RAX) | \
+-				 BIT_ULL(VCPU_REGS_RBX) | \
+-				 BIT_ULL(VCPU_REGS_RCX) | \
+-				 BIT_ULL(VCPU_REGS_RDX) | \
+-				 BIT_ULL(VCPU_REGS_RBP) | \
+-				 BIT_ULL(VCPU_REGS_RSI) | \
+-				 BIT_ULL(VCPU_REGS_RDI) | \
+-				 BIT_ULL(VCPU_REGS_R8) | \
+-				 BIT_ULL(VCPU_REGS_R9) | \
+-				 BIT_ULL(VCPU_REGS_R10) | \
+-				 BIT_ULL(VCPU_REGS_R11) | \
+-				 BIT_ULL(VCPU_REGS_R12) | \
+-				 BIT_ULL(VCPU_REGS_R13) | \
+-				 BIT_ULL(VCPU_REGS_R14) | \
+-				 BIT_ULL(VCPU_REGS_R15))
++#define TDX_REGS_AVAIL_SET	(BIT(VCPU_REG_EXIT_INFO_1) | \
++				 BIT(VCPU_REG_EXIT_INFO_2) | \
++				 BIT(VCPU_REGS_RAX) | \
++				 BIT(VCPU_REGS_RBX) | \
++				 BIT(VCPU_REGS_RCX) | \
++				 BIT(VCPU_REGS_RDX) | \
++				 BIT(VCPU_REGS_RBP) | \
++				 BIT(VCPU_REGS_RSI) | \
++				 BIT(VCPU_REGS_RDI) | \
++				 BIT(VCPU_REGS_R8) | \
++				 BIT(VCPU_REGS_R9) | \
++				 BIT(VCPU_REGS_R10) | \
++				 BIT(VCPU_REGS_R11) | \
++				 BIT(VCPU_REGS_R12) | \
++				 BIT(VCPU_REGS_R13) | \
++				 BIT(VCPU_REGS_R14) | \
++				 BIT(VCPU_REGS_R15))
+ 
+ static void tdx_load_host_xsave_state(struct kvm_vcpu *vcpu)
+ {
 @@ -1098,7 +1098,7 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
  
  	tdx_load_host_xsave_state(vcpu);
  
--	vcpu->arch.regs_avail &= TDX_REGS_AVAIL_SET;
-+	kvm_clear_available_registers(vcpu, ~(u32)TDX_REGS_AVAIL_SET);
+-	kvm_clear_available_registers(vcpu, ~(u32)TDX_REGS_AVAIL_SET);
++	kvm_clear_available_registers(vcpu, ~TDX_REGS_AVAIL_SET);
  
  	if (unlikely(tdx->vp_enter_ret == EXIT_REASON_EPT_MISCONFIG))
  		return EXIT_FASTPATH_NONE;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index aa1c26018439..61eeafcd70f1 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7472,7 +7472,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 				   flags);
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 9fb76ea48caf..48447fa983f4 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -620,16 +620,16 @@ BUILD_CONTROLS_SHADOW(tertiary_exec, TERTIARY_VM_EXEC_CONTROL, 64)
+  * cache on demand.  Other registers not listed here are synced to
+  * the cache immediately after VM-Exit.
+  */
+-#define VMX_REGS_LAZY_LOAD_SET	((1 << VCPU_REG_RIP) |         \
+-				(1 << VCPU_REGS_RSP) |          \
+-				(1 << VCPU_REG_RFLAGS) |      \
+-				(1 << VCPU_REG_PDPTR) |       \
+-				(1 << VCPU_REG_SEGMENTS) |    \
+-				(1 << VCPU_REG_CR0) |         \
+-				(1 << VCPU_REG_CR3) |         \
+-				(1 << VCPU_REG_CR4) |         \
+-				(1 << VCPU_REG_EXIT_INFO_1) | \
+-				(1 << VCPU_REG_EXIT_INFO_2))
++#define VMX_REGS_LAZY_LOAD_SET	(BIT(VCPU_REGS_RSP) |		\
++				 BIT(VCPU_REG_RIP) |		\
++				 BIT(VCPU_REG_RFLAGS) |		\
++				 BIT(VCPU_REG_PDPTR) |		\
++				 BIT(VCPU_REG_SEGMENTS) |	\
++				 BIT(VCPU_REG_CR0) |		\
++				 BIT(VCPU_REG_CR3) |		\
++				 BIT(VCPU_REG_CR4) |		\
++				 BIT(VCPU_REG_EXIT_INFO_1) |	\
++				 BIT(VCPU_REG_EXIT_INFO_2))
  
- 	vcpu->arch.cr2 = native_read_cr2();
--	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
-+	kvm_clear_available_registers(vcpu, VMX_REGS_LAZY_LOAD_SET);
- 
- 	vmx->idt_vectoring_info = 0;
- 
-@@ -7538,7 +7538,7 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vmcs_writel(GUEST_RSP, vcpu->arch.regs[VCPU_REGS_RSP]);
- 	if (kvm_register_is_dirty(vcpu, VCPU_REG_RIP))
- 		vmcs_writel(GUEST_RIP, vcpu->arch.rip);
--	vcpu->arch.regs_dirty = 0;
-+	kvm_reset_dirty_registers(vcpu);
- 
- 	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
- 		set_debugreg(vcpu->arch.dr6, 6);
+ static inline unsigned long vmx_l1_guest_owned_cr0_bits(void)
+ {
 -- 
 2.53.0.1213.gd9a14994de-goog
 
