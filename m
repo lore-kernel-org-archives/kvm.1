@@ -1,177 +1,162 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667DD3C2761;
-	Thu,  9 Apr 2026 12:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627FE40DFCC
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 12:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736847; cv=none; b=FUt4b6vdu9JBco8ZvwLDd8513v3Z4mQfs1gvIU9eaJOFRx6HP9CVP6nOfrMVh0t1oNrrFuHXnHThqom5fx0grunjQy4kFNVpr9lrv0/FPCktG3APUiMSg+vbfYcV2mD7yWv6Hgej0ts/67a3FeRA6UGybl3tp4KT8LwI83sMPb0=
+	t=1775738365; cv=none; b=MFQN8RqcbPpGz+kIAGtqnwksohT+wjB2Ip8YSwJQDmU3b/dWKLXKNU3CFCEJjyhyYzev8oV1NsVMOnwc9vvtZY4bOxtyo+RkoiI4GjvQrWL0ycGtj0mP5PD0L+rpEQipPxVhQJ2Ji/S2SZ7SmGdCLFumvIyTeRRvrixgB5Z3zZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775736847; c=relaxed/simple;
-	bh=Nmds5nZ/SRW3m84a7R7nBu692/QNNcN/ovp6k/4beGQ=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=VvWoBet+zD1WMzITX8EDAaMBuRB6Vxz5H/APkNUpK4FgBM5ol4oUknMCHk+C/r4WgXuiN+OzgCZrELkKLbSTpU/b9RL90c26NGJFrgaS9njYivMSIwjkCRCpBSdIYKt2UiqaY5nYFn3L3Z+AJltH3OYdB7m04thCPy/JJZOxLoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxBMEImNdpNosjAA--.434S3;
-	Thu, 09 Apr 2026 20:14:00 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCx98AHmNdpqH1pAA--.55711S3;
-	Thu, 09 Apr 2026 20:14:00 +0800 (CST)
-Subject: Re: [PATCH v2 0/6] LoongArch: KVM: Set max VM supported FPU type with
- FPU exception
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260330035832.2204720-1-maobibo@loongson.cn>
- <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
- <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
- <61d0efa7-a15a-be48-3bca-5be5efd99acf@loongson.cn>
- <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <74e8fa9e-90f6-175e-fb98-2e4504d5f15d@loongson.cn>
-Date: Thu, 9 Apr 2026 20:11:12 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1775738365; c=relaxed/simple;
+	bh=UwUhPjfmMZI9iLFHnFNzoObxJb+TzTAtGkD9V574OcI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f6XeZ+ObWhsFYBL/3wr+mbDFf/OhlUAw2aCv/xm6e/WwuKSy4E3apW/NPaukDElWlSmKQ+/IkmG/NRqPEQ+rljaoszk890EXOgdfapOWFdfUt6LbGA0ZpmICbmzND/BrMhIrKVUilxDiyN3b37y35CwzKNZb/jU8MQgAlTr5+M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7HN2ea1; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7HN2ea1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F848C2BCB2
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 12:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775738365;
+	bh=UwUhPjfmMZI9iLFHnFNzoObxJb+TzTAtGkD9V574OcI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=l7HN2ea1MLuNdXDAht+TXgBfL7JSSUQEmfcGOnX8gRVN7H2Rh+jQEYfNYJ57f87ya
+	 q6jFodHCNuQ1lF5QHCvQHkQaGFs1MBzcjvUkKuYk7zPTa2huB208s3x6PH6C0qHfMK
+	 UtMqD2wkpTZ1Vx84FkQhLB/sinFahrhJ8P310DCOwAZBbgFjKU3nA3WVxG26cvVR9n
+	 NBXFHfxA+VhNBvihiGKGRuiccUAmG1zF+8y3OUTmueoKYao823beba9it8qRJxY1iB
+	 llJ2ogWlHc4FoYrRPPXMshQGEx9scdSKrLMf88WEQ9kmYnXBzsSLSErZaeXaOzvJQB
+	 9RAr6BNUjuB3w==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b9358bc9c50so117777666b.1
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 05:39:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWcdCB/nEpN68MOFokMnnz6XnYyVPrwm7k4pLVdd5jsBW+sklMgauugannG4wD16R/eSDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoAUMNY8VFKFcas23BY8wjFqZYey6Ka/RXEpVHa8VKJjzEKvRl
+	U8YSRO+X+zQhWZNZxbbxa2OSMhEI5D2tj242131IFdgyPnqR/hbZrrz922PcInsmeXwN9msmwdr
+	GJYKZhFqdqGScfs0g9i83jG41aqYIF2g=
+X-Received: by 2002:a17:907:9496:b0:b9c:cdd7:c8a8 with SMTP id
+ a640c23a62f3a-b9ccdd7c8b1mr830640066b.48.1775738363718; Thu, 09 Apr 2026
+ 05:39:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCx98AHmNdpqH1pAA--.55711S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJFW5AFykAr4kuw1fJw4DZFc_yoWrCr1Dpr
-	ZxJF1akF4DJr1fZrnFvw1UWF1Yvr1xJry0q3sIqryjvr90vryrJr4xtFsY9FyUG34rJF1j
-	vrW0yF97Xa45ZrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
-	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
-	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
-	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
-	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
-	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
-	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8j-
-	e5UUUUU==
+References: <20260409024215.136932-1-gaosong@loongson.cn>
+In-Reply-To: <20260409024215.136932-1-gaosong@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 9 Apr 2026 20:39:30 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7JcTV9aBChaYnR4irFt8O3C_9cOu_q4Krc6Q1c7Xwquw@mail.gmail.com>
+X-Gm-Features: AQROBzDTnYABuAC0gEs8s3rtk0L7CCCibPKg-MVoYAIBuFH7Xuoc13TO2pNT7Bk
+Message-ID: <CAAhV-H7JcTV9aBChaYnR4irFt8O3C_9cOu_q4Krc6Q1c7Xwquw@mail.gmail.com>
+Subject: Re: [PATCH v10 0/2] LoongArch: KVM: Add DMSINTC support irqchip in kernel
+To: Song Gao <gaosong@loongson.cn>
+Cc: maobibo@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	kernel@xen0n.name, linux-kernel@vger.kernel.org, lixianglai@loongson.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Applied with small modifications, thanks.
+
+Now all KVM patches for 7.1 are applied here:
+https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.g=
+it/log/?h=3Dloongarch-kvm
+
+Please ensure that everything works well.
 
 
+Huacai
 
-On 2026/4/8 下午3:47, Huacai Chen wrote:
-> On Wed, Apr 8, 2026 at 9:04 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->>
->>
->> On 2026/4/7 下午8:41, Huacai Chen wrote:
->>> On Mon, Mar 30, 2026 at 6:00 PM Huacai Chen <chenhuacai@kernel.org> wrote:
->>>>
->>>> Hi, Bibo,
->>>>
->>>>
->>>> On Mon, Mar 30, 2026 at 11:58 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>>>>
->>>>> With FPU save and restore flow, the cost is the same with different
->>>>> FPU width 8/16/32 bytes, whatever from CPU cycle and cache line impaction.
->>>>>
->>>>> Here is to enable FPU with max VM supported type, for example if
->>>>> VM supports LASX instrction, enable FPU with LASX type even with FPU
->>>>> exeception. So it can avoid possible LSX/LASX exception in future.
->>>>>
->>>>> With context switch microbench which may touch FPU and LASX, there is 9%
->>>>> improvement when halt_poll_ns is disabled. The command is
->>>>> "./context --test=pipe" and source code located at:
->>>>>     https://github.com/bibo-mao/context_switch/blob/main/context.c
->>>>>
->>>>> Original     Wih patch      improvement
->>>>> 75232        82440          9%
->>>>>
->>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>>>> ---
->>>>> v1 ... v2:
->>>>>     1. Enable FPU with max VM supported FPU type, rather than max used type.
->>>>>     2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
->>>>>     3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
->>>>>     3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
->>>>>     4. Remove middle FPU state handling in kvm_own_lsx() and kvm_own_lasx(),
->>>>>        directly enable LSX or LASX from FPU none state.
->>>>> ---
->>>>> Bibo Mao (6):
->>>>>     LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
->>>>>     LoongArch: KVM: Enable FPU with max VM supported FPU type
->>>>>     LoongArch: KVM: Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
->>>> Patch-1 add KVM_REQ_LBT_LOAD, then KVM_REQ_AUX_LOAD is only for FPU,
->>>> so I think Patch-3 should be squashed into Patch-1.
->>>>
->>>>>     LoongArch: KVM: Remove some middle FPU states
->>>>>     LoongArch: KVM: Use vm_guest_has_fpu API in kvm_lose_fpu()
->>>>>     LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
->>>> Patch-5 remove the consumer side of KVM_LARCH_LASX / KVM_LARCH_LSX and
->>>> Patch-6 remove the provider side of KVM_LARCH_LASX / KVM_LARCH_LSX, so
->>>> I think Patch-6 should be squashed into Patch-5, too.
->>> And could you please test the power consumption where there are many
->>> VMs that only use FPU rather than LSX/LASX? As far as I know, the
->> Hi Huacai,
->>
->> Thanks for reviewing this patch
->> Could you help me to test the power consumption with this patch?
->>> power consumption of LASX is significantly more than FPU, which is a
->> Could the describe the detail scenery wheree LASX instruction is
->> frequently used by application or LASX  EUEN enabled?
-> The purpose is to evaluate power consumption before and after this series.
-> 
-> So we can run 10 VMs (suppose there are 4 cores), and there is a
-> workload run in every VM, the workload only uses FPU, no LSX and LASX.
-> Before this series, KVM only save/restore FPU context; after this
-> series, KVM will save/restore LASX context.
-In theory there should be such test, only that it requires special Power 
-Management team and testbed. Even if there is such team, maybe they care 
-power consumption about DDR and screen, do not want do such experiments 
-for this patch.
-
-If someone is volunteer to do this, I do not object, also I want to get 
-the result. Just from my guess, there should be no much difference since 
-FPU context switch is much smaller than the whole workload, else the 
-workload is just FPU context switch.
-
-Regards
-Bibo Mao
-
-> 
-> If the power consumptions are similar, then this series is perfect.
-> 
-> Huacai
-> 
->>
->> Regards
->> Bibo Mao
->>> little similar to AVX512 (Linus said it is a power virus).
->>>
->>> Huacai
->>>
->>>>
->>>>
->>>> Huacai
->>>>
->>>>>
->>>>>    arch/loongarch/include/asm/kvm_host.h |  6 +--
->>>>>    arch/loongarch/kvm/exit.c             | 21 +++-----
->>>>>    arch/loongarch/kvm/vcpu.c             | 78 ++++++++-------------------
->>>>>    3 files changed, 30 insertions(+), 75 deletions(-)
->>>>>
->>>>>
->>>>> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
->>>>> --
->>>>> 2.39.3
->>>>>
->>>>>
->>
->>
-
+On Thu, Apr 9, 2026 at 11:08=E2=80=AFAM Song Gao <gaosong@loongson.cn> wrot=
+e:
+>
+> Hi,
+>
+> This series  implements the DMSINTC in-kernel irqchip device,
+> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI inter=
+rupts
+> to the target vCPU.
+> applied this series.  use netperf test.
+> VM with one CPU and start netserver, host run netperf.
+> disable dmsintc
+> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
+> Local /Remote
+> Socket Size   Request  Resp.   Elapsed  Trans.
+> Send   Recv   Size     Size    Time     Rate
+> bytes  Bytes  bytes    bytes   secs.    per sec
+>
+> 212992 212992 1        1       36000.00   27107.36
+>
+> enable dmsintc
+> Local /Remote
+> Socket Size   Request  Resp.   Elapsed  Trans.
+> Send   Recv   Size     Size    Time     Rate
+> bytes  Bytes  bytes    bytes   secs.    per sec
+>
+> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
+>
+> v10:
+>   *Changed from v8;
+>   *Rebase.
+>
+> v9:
+>  *Correct the incorrect parameter type and remove the function prefix;
+>  *Fix a boundary value check.
+>
+> v8:
+>   *Move dmsintc_inject_irq(),dmsintc_deliver_msi_to_vcpu()and
+> dmsintc_set_msi_irq to dmsintc.c.
+>   *Rebase.
+>
+> v7:
+>   *Rebase;
+>   *Fix a typo error;
+>   *Drop an extra space;
+>   *Move some code from patch2 to patch1.
+>   *Rename loongarch_dmsintc_inject_irq() to dmsintc_inject_irq() and move
+> it to interrupt.c;
+>   *Rename kvm_loongarch_deliver_msi_to_vcpu() to
+> dmsintc_deliver_msi_to_vcpu() and move it to irqfd.c;
+>   *Drop loongarch_set_msi() and dispatch the dmsintc/eiointc
+> paths in pch_msi_set_irq().
+>
+> v6:
+>   Fix kvm_device leak in kvm_dmsintc_destroy().
+>
+> v5:
+>   Combine patch2 and patch3
+>   Add check msgint feature when register DMSINT device.
+>
+> V4: Rebase and R-b;
+>    replace DINTC to DMSINTC.
+>
+> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
+>
+> V2:
+> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
+>
+> Thanks.
+> Song Gao
+>
+>
+> Song Gao (2):
+>   LoongArch: KVM: Add DMSINTC device support
+>   LoongArch: KVM: Add dmsintc inject msi to the dest vcpu
+>
+>  arch/loongarch/include/asm/kvm_dmsintc.h |  26 ++++
+>  arch/loongarch/include/asm/kvm_host.h    |   3 +
+>  arch/loongarch/include/asm/kvm_pch_pic.h |   4 +-
+>  arch/loongarch/include/uapi/asm/kvm.h    |   4 +
+>  arch/loongarch/kvm/Makefile              |   1 +
+>  arch/loongarch/kvm/intc/dmsintc.c        | 190 +++++++++++++++++++++++
+>  arch/loongarch/kvm/intc/pch_pic.c        |  15 +-
+>  arch/loongarch/kvm/interrupt.c           |   2 +
+>  arch/loongarch/kvm/irqfd.c               |  11 +-
+>  arch/loongarch/kvm/main.c                |   6 +
+>  include/uapi/linux/kvm.h                 |   2 +
+>  11 files changed, 255 insertions(+), 9 deletions(-)
+>  create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
+>  create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
+>
+> --
+> 2.39.3
+>
