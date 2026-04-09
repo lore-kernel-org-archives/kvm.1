@@ -1,65 +1,60 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A203C276F
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 11:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCFA3C3439;
+	Thu,  9 Apr 2026 11:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775735603; cv=none; b=tVMHThFO9AW/OfHICXIxH5zngqoK96u9fYrt1QIaGaj95gUsenDkZsuT5D4AGXwQVFbIx8u4Vz36AWcDH/X+w2qfWNZNZyDXgZEcaHKqRiWwfKrgXMvJ7/iDZMMeiuu7TtZA2UoGRXoImzG2QgmFqPuJoz/a5XQX/8aUhL/bo6Y=
+	t=1775735736; cv=none; b=ittsOSadP1Kxdr8cvH4EX87MSSK06Kv9CIsIdzSyRNNpxmxNdL/v6ycwNJzk1zaFvLLYgnTFijH57SbCQVSMpNzeeExNHRINOUWf8bcco9j9DK4ZS5sMt5yOmv6u70R6cUk4QttyEKxucv/GwztG7GyPisweIzm8bsB4StT5GRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775735603; c=relaxed/simple;
-	bh=wzTBF1EzB7+KMBjDU0jDqnZ3WCqA2gwJaJmjZat73Nk=;
+	s=arc-20240116; t=1775735736; c=relaxed/simple;
+	bh=fxg976uJfnmF/J6X3F9mJwi1HtIAa4JH+0C1fCMUOCk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LO4tzC9WNvJ7RzD2wxHXlarGHI8Iu0dA42ZpcmuQWx5n6JB5Nd8sz5kLKyhysyWA7s835M7g4CBNr8uoCqS5+eV9UzZF7IG1cfDt0vhCVCDvDh6m8wMXeyGGsEx9M0SHG9NGBHJKUj4v8C5Py92F0wNeGQVYh0Y5AUaKAaV5QKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImXFJ26B; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=cpuwYtRsf8dc3UyrI1/pMfY7ac8HdgnycpZ3ieRx4xmLcWC0/PjTPpeYUN6sbJozl/6CzWSCxGSbLoCWyNUn34humM9qb0HW4+o5mskObIEVCy87nxFfCPs1aAqqZMjD08vtbBJi+aOY0tdW/pnMfuDYD8uE/uk3EyObPVqXKPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SshkWPRn; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImXFJ26B"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c06cb8004e8so405222a12.0
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 04:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775735601; x=1776340401; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SR0E+cafF0XtqSHjIkqxPcUXF9aNBWr75PUx5G6N8/k=;
-        b=ImXFJ26BjdrUFg3+8ayJEx9lDyHlmtU5p6w6N5OOtV2HN+zn0rLPAS7Dc7cqSxFWTM
-         UHJAxx481zz+tOFOI+Z9OblJbX3pNclzGkBHGbTwUet2cnU/B/QC5sZ6jBcKhYMVRYkw
-         Ee2q+06zvsvQeOEeKwW6M05BwQ0H8epNWSQ0rU4IJUTysoNlPHdORIlbG2XENcEkv743
-         tN+CZ0G00GhNAYLwN83jOIcm0KB3jWyxzP/TGLsLZl/aXaErB4uKJpgUxCu8Vj0fVEHg
-         AXZ/RRrG3Rs47KqloRojpW0W2qN+SK/RyMZ9ULHKAU+C6Zaf2ihlRwXjQHGNLDhIL3QF
-         RmIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775735601; x=1776340401;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SR0E+cafF0XtqSHjIkqxPcUXF9aNBWr75PUx5G6N8/k=;
-        b=dtLLme268G6S8UET+VJju0t9n9B85CzDHZ7jujROL2h8L3dk+wLfYtCa+4Z/kspvAe
-         ClGFIweVxUIbh2f+EJyjsBgn83zsOkg0K+slHVM21OD1AcCvbm6DhGB6YWgrkWOw0Bn2
-         XIGl7rjYKfkhPWCPUr2zVFEjXjXJafKMb+w1fAEj+zxBpyBVSDyC0uHtUwuQ5ln3wWdP
-         LKRb6X8rVtKMFc8WjBf5mj3ZnnFN4Uw1aN211htdZnFvG20v/ipDmJeOgAjlniLcCw1r
-         GX9XoJA8vWArNPmQwO+uLWCn3MznfsmWUsr+nyR8P5BXRBixpzEJq5oV4olkhp+0llAo
-         Lc1g==
-X-Gm-Message-State: AOJu0Yz9uNEA7rqqxVjpI4UZsndi6OzqFPVi8e5ObsU5bZ7nkyw6l4KA
-	8FZoxvvchyiWSzM8p9riCElN1ztHmemILIV7m5YQ3aOkK0/m4FptpK8u
-X-Gm-Gg: AeBDietMFMpvyFiyZm3TAd2OhK3iwEiaoMD5rL7UO3zveyYkO+vPDCyDow/cVFEnbOD
-	mDBSXNACVis1k6VgjRcOf7pIyd+PWATXOIDO4BUzBgXBHwchTzLSYWrQ1uen0m448nZlf2ASAkR
-	iZJAaWzVTiemdEnwSU450w1UEL/3MFFyaczpM8JkIEEAgk08B/BPtH5rbrMdTYULkg/PDhEE7ac
-	C0IU3ExkQz9U+Y/MdRaCwu2NOOJi+VuT9qxoY1OcnIUQA/2yy0PgQMgFMpr8AnGvDy0entbI8dv
-	Xq7JVKouXXgb9exoB91va6SUfjv6EFGWICuE0I7jtXOu4AINOnPSTCCOd0q+w4VwNjB6ghV6PFe
-	QJoDz3RozqWdUBFZNftVAiNcYMajQuFG83J0Ghy6TSb8sRvIaHDfbaGDTDJK4D/OwmQNm/VGSMV
-	dc1dHtzfjGK/QUQRWt1jG9/qxNaJx5DaZZyzP0GEylMncGtzbMiw3Sdt0LCojdj2TP
-X-Received: by 2002:a17:902:e78b:b0:2b2:4d36:7ba with SMTP id d9443c01a7336-2b2815b522dmr266926835ad.0.1775735600684;
-        Thu, 09 Apr 2026 04:53:20 -0700 (PDT)
-Received: from [192.168.161.51] (mbl-65-153-179.dsl.net.pk. [58.65.153.179])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749a3a0fsm309911735ad.59.2026.04.09.04.53.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 04:53:20 -0700 (PDT)
-Message-ID: <8262fe0c-cbec-4c85-b5ee-2f6cc20cf57a@gmail.com>
-Date: Thu, 9 Apr 2026 16:53:09 +0500
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SshkWPRn"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638KLUil2302533;
+	Thu, 9 Apr 2026 11:55:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KHjlDs
+	NDT1/j+2pqczxZdN1W0eeN3GHFiLJpCVLjVXE=; b=SshkWPRnndSjg3iCiyV70G
+	9pM3LPFWSFOnDCOuReRP9eJJS4Ff4d0/FcyEEUHDjnshSnErEZkHeTGIofs4vVQ2
+	EQHVsde33SseWwvxppFlAzPhBwNt5HQIBcnZjxP51ZTOqU2CfAup9uwxEiL960Mb
+	Vw2jziYBd6mvTcBZFOrTxr+q24JCSobaYnZMxQGhuTG/a8pQN3tPwZFOxw5TbrYa
+	76e9/vLfKrSFo3ZMqCUOlPBApSr4iRhrMtoHYwansJRkC9ON0P1N66IUxmX8s41L
+	MUcCpE+GqYSQM5WVvyyfaNfvTQO8beqDmqL/Azz4ghWFbEFLzjMqVY8nYz5gs/nA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fmrv7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 11:55:30 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6397aYXd014356;
+	Thu, 9 Apr 2026 11:55:29 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg4ue8d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 11:55:29 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639BtSiB15598328
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Apr 2026 11:55:29 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B049D58059;
+	Thu,  9 Apr 2026 11:55:28 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 252CA58043;
+	Thu,  9 Apr 2026 11:55:28 +0000 (GMT)
+Received: from [9.61.93.104] (unknown [9.61.93.104])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Apr 2026 11:55:28 +0000 (GMT)
+Message-ID: <3b982df9-e470-4cfb-9c4a-3a1b7a1a231a@linux.ibm.com>
+Date: Thu, 9 Apr 2026 07:55:27 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,123 +62,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: selftests: Guard execinfo.h inclusion for non-glibc
- builds
-To: Sean Christopherson <seanjc@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Aqib Faruqui <aqibaf@amazon.com>,
- shuah@kernel.org, pbonzini@redhat.com
-References: <20260319000842.1213426-2-hisamshar@gmail.com>
- <091f264f-21f1-464d-913a-1500643728c7@linuxfoundation.org>
- <137f63af-a993-4b1c-a9e9-931718a47343@linuxfoundation.org>
- <f044f31d-740d-4cdb-834c-59de7691203d@gmail.com>
- <4334432d-982e-4450-9281-de739c25ebfd@linuxfoundation.org>
- <ac0lGVlg4cJSNCGl@google.com>
+Subject: Re: [PATCH] VFIO: remove dead notifier code
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, alex@shazbot.org,
+        linux-s390@vger.kernel.org
+References: <20260407175934.1602711-1-pbonzini@redhat.com>
+ <6569b8b8-7654-4dbe-a4a6-f1e565451672@linux.ibm.com>
+ <CABgObfbiNRfNGvhDFO=h-E27KONh80fkB1y1rOGpazTB2Eigzw@mail.gmail.com>
+ <CABgObfZg7HTX=N3cjHCeiZ2KuKSxnbr9Q7-5ciy8WgMPwBhU5g@mail.gmail.com>
 Content-Language: en-US
-From: Hisam Mehboob <hisamshar@gmail.com>
-In-Reply-To: <ac0lGVlg4cJSNCGl@google.com>
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <CABgObfZg7HTX=N3cjHCeiZ2KuKSxnbr9Q7-5ciy8WgMPwBhU5g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDEwNiBTYWx0ZWRfX/lWs16yvAb1H
+ qJKPQEca/QWhdsYUitJ/g2c+JEy5b/hiHenzUiYdUE3IJjXM4NDJmZ5I/5NWlIH5ztbQDXiYB4/
+ vP8RE3tLjTMAlK6uvoZd6TNyHVhTKIYVJeMrbU0xBIFcprEEI3nYgAJBHCu553k7cYFKQKMLgvh
+ zf7/HmW34zSLbq8aK/RcWy8SApYPYT9nCJPDp7LWVsmPoQrquE6u2Ads3HPommycuQOseAWlbra
+ /R3+x+hn1psa6USdowDI7jb6L4EM172+acA+0I2+jOqRLaFRc3qIYkOniWkB3ykodylLO7Fasca
+ L7smNP0cww6YydjyTaOwGW/H4XuJnbGL0kAH0KRbmMDzS2lcSDUQf7pVjPDfutw1SGzg3OGx0XS
+ 4mAbjnChJZly7oFiSPpyS07M+kqAjIokZveYCnWYjee0MvvXnGWAiQl4TeXw6Yu/nitHrrjteyI
+ 86XLMESbAYTV7IQWxfg==
+X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d793b2 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=20KFwNOVAAAA:8
+ a=VnNF1IyMAAAA:8 a=CQqoXkB98VF-c3EF6hIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: UjFlKUyRcqAl_prkIgeBQsiVEMv9Yrvy
+X-Proofpoint-GUID: UjFlKUyRcqAl_prkIgeBQsiVEMv9Yrvy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_03,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090106
 
-On 4/1/26 19:01, Sean Christopherson wrote:
-> On Tue, Mar 31, 2026, Shuah Khan wrote:
->> On 3/25/26 12:47, Hisam Mehboob wrote:
->>> On 3/25/26 23:03, Shuah Khan wrote:
->>>> On 3/24/26 12:02, Shuah Khan wrote:
->>>>> On 3/18/26 18:08, Hisam Mehboob wrote:
->>>>>> The backtrace() function and execinfo.h are GNU extensions available
->>>>>> in glibc but not in non-glibc C libraries such as musl. Building KVM
->>>>>> selftests with musl-gcc fails with:
->>>>>>
->>>>>>     lib/assert.c:9:10: fatal error: execinfo.h: No such file or directory
->>>>>>
->>>>>> Guard the inclusion of execinfo.h under #ifdef __GLIBC__, and wrap
->>>>>> all backtrace() usage under the same guard with a fallback message
->>>>>> for non-glibc builds indicating that stack traces are not available.
->>>>>>
->>>>>> Unlike the approach of adding a weak stub for backtrace(), this
->>>>>> explicitly handles the non-glibc case rather than silently providing
->>>>>> an empty implementation.
->>>>>>
->>>>>> Link: https://lore.kernel.org/kvm/20250829142556.72577-7- aqibaf@amazon.com/
->>>>>>
->>>>>> Suggested-by: Aqib Faruqui <aqibaf@amazon.com>
->>>>>> Signed-off-by: Hisam Mehboob <hisamshar@gmail.com>
->>>>>> ---
->>>>>>    tools/testing/selftests/kvm/lib/assert.c | 7 +++++++
->>>>>>    1 file changed, 7 insertions(+)
->>>>>>
->>>>>> diff --git a/tools/testing/selftests/kvm/lib/assert.c b/tools/ testing/selftests/kvm/lib/assert.c
->>>>>> index b49690658c60..3442b80c37c1 100644
->>>>>> --- a/tools/testing/selftests/kvm/lib/assert.c
->>>>>> +++ b/tools/testing/selftests/kvm/lib/assert.c
->>>>>> @@ -6,7 +6,9 @@
->>>>>>     */
->>>>>>    #include "test_util.h"
->>>>>> +#ifdef __GLIBC__
->>>>>>    #include <execinfo.h>
->>>>>> +#endif
->>>>>> Is __GLIBC__ defined in musl-gcc? Looks like that is the case with the
->>>>> error?
->>>>
->>>> If __GLIBC__ isn't there you shouldn't see this error because the include
->>>> is in - this error doesn't make sense if __GLIBC__ isn't defined. What
->>>> am I missing?
->>>>
->>>
->>> To clarify the compiler error you mentioned: the error log in the commit
->>> message shows the failure that occurs before this patch is applied. Because
->>> musl-gcc doesn't define __GLIBC__, the original unconditional <execinfo.h>
->>> inclusion causes the build to fail. The #ifdef in my patch was intended to
->>> fix that exact failure.
->>>
->>>> +#ifdef __GLIBC__
->>>>    #include <execinfo.h>
->>>> +#endif
->>>>
->>>> Also check tools/testing/selftests/bpf/test_progs.c - I think backtrace()
->>>> stub needs be defined only for the !__GLIBC__ case
->>>>
->>>
->>> Looking at how bpf/test_progs.c handles it, I agree the weak stub approach
->>> is much cleaner. I will implement it so that it still prints an explicit
->>> warning message when a trace is unavailable.
-> 
-> I disagree.  _If_ we didn't need the __GLIBC__ #ifdef, then I would be in favor
-> of __weak, but since the #ifdeffery is needed, using an #ifdef and a __weak symbol
-> is double the ugliness.
-> 
-> IMO, the way to make this less ugly is to using a single #ifdef and a local stub.
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/assert.c b/tools/testing/selftests/kvm/lib/assert.c
-> index b49690658c60..315175ca49f1 100644
-> --- a/tools/testing/selftests/kvm/lib/assert.c
-> +++ b/tools/testing/selftests/kvm/lib/assert.c
-> @@ -6,11 +6,13 @@
->    */
->   #include "test_util.h"
->   
-> -#include <execinfo.h>
->   #include <sys/syscall.h>
->   
->   #include "kselftest.h"
->   
-> +#ifdef __GLIBC__
-> +#include <execinfo.h>
-> +
->   /* Dumps the current stack trace to stderr. */
->   static void __attribute__((noinline)) test_dump_stack(void);
->   static void test_dump_stack(void)
-> @@ -57,6 +59,9 @@ static void test_dump_stack(void)
->          system(cmd);
->   #pragma GCC diagnostic pop
->   }
-> +#else
-> +static void test_dump_stack(void) {}
-> +#endif
->   
->   static pid_t _gettid(void)
->   {
 
-Thanks for the suggestion. I will send a v2 implementing this approach.
+
+On 4/8/26 6:00 PM, Paolo Bonzini wrote:
+> On Wed, Apr 8, 2026 at 4:36 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>> On Wed, Apr 8, 2026 at 4:35 PM Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
+>>>
+>>>>      open_device:
+>>>> -    The vfio_ap driver uses this callback to register a
+>>>> -    VFIO_GROUP_NOTIFY_SET_KVM notifier callback function for the matrix mdev
+>>>> -    devices. The open_device callback is invoked by userspace to connect the
+>>>> -    VFIO iommu group for the matrix mdev device to the MDEV bus. Access to the
+>>>> -    KVM structure used to configure the KVM guest is provided via this callback.
+>>>> -    The KVM structure, is used to configure the guest's access to the AP matrix
+>>>> -    defined via the vfio_ap mediated device's sysfs attribute files.
+>>>> +    the open_device callback is invoked by userspace to connect the
+>>> Capitalization:
+>>> s/the open_device callback/The open device callback/
+>>>
+>>> Capitalization:
+>>> s/this callback/This callback/
+>> Heh, I had to pick one or the other (close_device previously used
+>> lowercase) and chose the wrong one. :)
+> I was going to make the change, but then noticed that lowercase is
+> more common in the file:
+>
+>    create:
+>      allocates the ap_matrix_mdev structure used by the vfio_ap driver to:
+>
+>    remove:
+>      deallocates the vfio_ap mediated device's ap_matrix_mdev structure.
+>      This will be allowed only if a running guest is not using the mdev.
+>
+>    ioctl:
+>      this callback handles the VFIO_DEVICE_GET_INFO and VFIO_DEVICE_RESET
+>      ioctls defined by the vfio framework.
+>
+> What do you think?
+
+It's not critical. If that's the case, leave it lower case
+
+>
+> Paolo
+>
+
