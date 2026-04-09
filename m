@@ -1,146 +1,197 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA42FFF81;
-	Thu,  9 Apr 2026 07:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775720530; cv=none; b=icbK8htL63ktUbh39Nvb3vW9PHnUE2Ilc4VVF6pMfSLP1APdvtbJ4KV9jBR/y8TsaFNaDMvLGuI0IZANV+s6HKjPWIMHTaGg5NllDxRV+y5Yjwcgh8i4J5K0Ie9rzvp4ZfiYk6rqMWr/h+FNXDEP4c20XmsyTlOUJN4K2f9chYE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775720530; c=relaxed/simple;
-	bh=J1ckw4CF/MXLrDiD+G3x+zo/BIbaic+0yXRNNalwVGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XFvqm28/QMnr1JlzhKUYPObIMedf9F9xnD616GPtkxsdUGUZfsmTscSoUQjUP6TKZTI0HpQlHBb+I4fGLrBzwcw0Cfu5LZrf34VQVMvDL9SuJnNPNXFZQmPAyCRGQaSJEtthGUAmbuoWbeHc0A9ti4Qiz48uKxTnoAeLIcIl8Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F30b0HJQ; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D0A3859FE;
+	Thu,  9 Apr 2026 07:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775720993; cv=fail; b=lixHO1NDkmgWWnpoFm82+vchcKgvQ3m/aChgg8NcIrh3qWOoL3OYK3XHO8v2kXjud+RhPMGBYYnGQ9B3tjJCSWGW0YRJXn3p+oaYDLG7eBjkYZarhUYiuAiLeb0MNdyD2YzgSnQt5tlwHlRWKstfKONfxn29E+pXwpAs0okg3aU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775720993; c=relaxed/simple;
+	bh=8hfgOhcvXQTenW4N8xF4rukXdcUrbtpbf3FihZQGCsM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ap//vQsyPuXwejTCZhsrnptWftpqVaQH/Lxdy6FMMFeEXkEPTDeYJbX1cUrswUz4bkyrsprH7veWfyBiP4gJACUQQ1npOzClJRd3QBBIuwyrgXrs48mA1lgIA0h3UqF9JnBTllwWiWHDsf6qmkaoZOQD8lmndGjSJ2geIAy17Ek=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JwA6nmnr; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F30b0HJQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JwA6nmnr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775720529; x=1807256529;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=J1ckw4CF/MXLrDiD+G3x+zo/BIbaic+0yXRNNalwVGA=;
-  b=F30b0HJQA49teHXZkaRgRQaqRobfxwlgV7ahCBM8twwQH/4SYN92Vxdq
-   8FHWIefmhamRK30yQZ+HETP7Psyi1DMrk2FOmM4zGe9auEcnXKFXTbbEW
-   FVLDxZ5gb++96X1we/c8W8ZdaU6aqPMa+lsViYJDhV4W3Zb27/5LYlyWk
-   hFhNW/dt3MbNx05+HV1IbbPfZFm5cvxcCZa2fkUcvaKokh1Jd2HTxTPUN
-   dyfGrTlqZRkQmWXOA3GoC8l7UqfAghpAj/Ljhr/q3mMzEnIdxTev9x8oJ
-   Be6newur3420dAoU+yu/AqTD0aXqE29Yu/ZRyLPQ1p1Mmn8wp1FyTjYlV
-   g==;
-X-CSE-ConnectionGUID: /HvKpnE7Sg6IRHW8M6edsQ==
-X-CSE-MsgGUID: BbPLoDQJR1ujrDVNZw+jQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76605910"
+  t=1775720993; x=1807256993;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=8hfgOhcvXQTenW4N8xF4rukXdcUrbtpbf3FihZQGCsM=;
+  b=JwA6nmnr5lixm3Zg4a2zbBZPqCjZs3oRnsfAJ8vp4h67tEsSDiQEkePE
+   h4VBfs377uQlBSVWmNp/kCYNzsSgrRj5FP4Se/JNjWSySiyoChayKFcYd
+   spOZSM6bvx0Ky2oz79KSrvJS4FteTrsy4dqPnD5cx8i98I8BTrDuAi5Sf
+   zkQ4xkBUjHUIhU3W/5dD9YBqI14oS4lCjISTyTj32JRf4gvUtQU4vyM91
+   mNx2pOZuw6KLVNDiDWA3y7ybJrB8fDaJvf1vNdRy+2vUByOS/RXsXqSzJ
+   0BjzaAo25AXWL0W2APH10uris2cG5PItz8LyMmktCxtUkPz4Aq2kMSKEY
+   A==;
+X-CSE-ConnectionGUID: YmC38q7aQMu4+UW1dPuECg==
+X-CSE-MsgGUID: JXl5tL6ZQ3KdAT/1zZb8/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="99345626"
 X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="76605910"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 00:42:08 -0700
-X-CSE-ConnectionGUID: pK5iVEyBQBe77WajEr2fGg==
-X-CSE-MsgGUID: YJyac0D6SmuG+gsc84M7Qg==
+   d="scan'208";a="99345626"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 00:49:51 -0700
+X-CSE-ConnectionGUID: z+mXfX2jRSSV6u37Efk8/A==
+X-CSE-MsgGUID: Mf5Re69eSpmYpoOPg5qtSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="223946398"
-Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 00:42:06 -0700
-Message-ID: <129bdda8-a75c-4899-a671-0b553947cff4@linux.intel.com>
-Date: Thu, 9 Apr 2026 15:42:04 +0800
+   d="scan'208";a="227702178"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 00:49:51 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 9 Apr 2026 00:49:50 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 9 Apr 2026 00:49:50 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.13) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 9 Apr 2026 00:49:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PJ9EYPqfPjbhoNrPZO80mAkauNbtfMmYyoxMQwPz8kQDWorMsJrm1R/0DS9p1sRWGY7C+6U/fXjHNi9z12MlpIc2vJ1Y+7GnMkDJaadqFmLZw7yzIiFigH46iOnijd5ZqqAkITR1vZv8zIjOCz6b4uyNI0lmFWh4d40cQBimi05D8syibqLEqqH3KLzHm0xXmxySOPP7u7ROoh/KkvAiFZXap+sYk0TkbXGUErSLctSHwsUEMJzuHCGBV9fztar4UwbqCYR/ClhFUeM1eI3Vb+CLXOlq9JnAu69meSH4pi/arsCpDtuQMm8DaSXoesIlytgtk1F6gWQA2OPcFPjnhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HZ4SgQf2+SSPZrqrFrpQVzIZhxYdWjhVuROJyzgman0=;
+ b=Ci+KLVTWuJyD7ldsBx3skt1yG/sR1VnPVPP7uN56fJCFnmiY3QLeLO6DhxAg/ZmaKrUovoWBwIRkBnKz+25dQZ4XyNRXlDWuFIIUc2ywd45mQ8eCQwZk3vTkz9+puXLP7LR61LkhQdhuYXmEHiyLtdFPffGcJUVXlHzsbx5Lpza5xoo3khPrZczAlmgvohQngGoxdTbjRN/ry8mNevCxICqtHinRRAJotBbXJfOCqmjTLKmiTdN++mGMnh+aHAkSzIMQkX3tt8woKs7+d1k3lH4N2NO4BnyPSNkls849sDz1IaQOOIfnbnKiJILeHXBY5dlXHPF1qCbJQIp9K94fOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by DS0PR11MB6541.namprd11.prod.outlook.com (2603:10b6:8:d3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Thu, 9 Apr
+ 2026 07:49:47 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f%5]) with mapi id 15.20.9769.020; Thu, 9 Apr 2026
+ 07:49:46 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+CC: "Gao, Chao" <chao.gao@intel.com>, "Jiang, Dave" <dave.jiang@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Xu, Yilun"
+	<yilun.xu@intel.com>, "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, "Li,
+ Xiaoyao" <xiaoyao.li@intel.com>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 22/31] iommu/vt-d: Export a helper to do function for
+ each dmar_drhd_unit
+Thread-Topic: [PATCH v2 22/31] iommu/vt-d: Export a helper to do function for
+ each dmar_drhd_unit
+Thread-Index: AQHcvggs09uKit4yCEiNnCeya4YOCrXWaZFg
+Date: Thu, 9 Apr 2026 07:49:46 +0000
+Message-ID: <BN9PR11MB527698CD6C350B371C47540F8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-23-yilun.xu@linux.intel.com>
+In-Reply-To: <20260327160132.2946114-23-yilun.xu@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|DS0PR11MB6541:EE_
+x-ms-office365-filtering-correlation-id: 8c6a1121-ad38-4bd8-e54e-08de960c9212
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021|18002099003|22082099003|56012099003;
+x-microsoft-antispam-message-info: EAqXVWQlFvTy0hn1oA08DRbEF0w4+2+UiVGEVM+F5gQJu+0n6r/Zwc+EM+Cp90efD4KDdWEwRwquBFa9si/p5ViXfr67yJcihzQmywdaNsZGj9/KvM8cEt0xqOEwNcZ4RIWL2e+2KFL/r3Gf/W5jkqq8ZeJUzzjk5FEUDzzJpOcQ+oNfZPULA/qoeYLjcjPsbdBt0j6OGsxWIEeR3L8fbVfeGlzD7ECCGEevImF4egBtljTcW4FaEMOQa90QzKqhFKjiDMGTzb8Ev2OslzRpElWJinSNn4EgsyODAQ7BzphCOxsm8tUXxZzn/0vL2pJR/b2phD6cGWWokz3ZTE2OPlG/6rguRfrtdm4yd5YUC3HuTCLgS0wckrmvxHVNs5wtOWNcrr2OwHbDSRuw9K0Ggi2QcXAoP4hxTPDrusm88NDg0d4yboi3ZC62Ros9D07+2JpXTqRnYR0QyLjUWoop8FMKk6YUMWhNnmdnK5GRiLDs1eUDDVt9vVh/z7FJAuVydykY9kM1YWNpDGaLUmsM8KFgnGsw7MnLwtPYsbcCuLEm9U10fxYxem2/OlRS9CtdZycBEdlZCvTfL/2PvO9O4BluxAG+jOg5VV7E6EH6MLh82z4osYj7quWLvVQQxt0TjwDou1xGe7mfa1y7wjAV7CgLRI17d752Pa/NovyXvq1MFwHHISL+Y+AZOoAN18Odca+uqF2T0jm2+WP6fkw1rWf0NuG4B6GeDILOA8iyqhuh3+AAtjpGs/wTcmOSd2DJUAssGkJ/HLR3QyWCAZvKaPgcWRXI1GSc/zIod6lY1t8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?PSs7N2THvjBfN6sSinjxxHxZ+QrHsWKXjPn4twT/dBgk7QSD7qZEkaFDr/Re?=
+ =?us-ascii?Q?E55Y5m/dU1rx/5bBp1/5D7nmoYoQ2XqF9y4EMH88awvCfC5aiS9p8nRyaNV3?=
+ =?us-ascii?Q?rQ+A68YR+4PqV9zmXvRhSFOTgztrbaZ67ABHxztDKUtPGEKk8mMFo/tLPydj?=
+ =?us-ascii?Q?iK8cGWhBE95sV2zOpwHkjGLbzTbs5LYfH9UrUrxdc6F6AYK0v2+937K6Wscv?=
+ =?us-ascii?Q?OuKEZMtFbUKIPoCbWiYHrM1feuaJeOO2xnQ4JlaBNgd0fafGC/h3odlvdF1p?=
+ =?us-ascii?Q?dUXx5ogOcpcPBw/2PfUBAQwIHkcDhLORBA98Irdf0ugh4LV2IdChH24kLLhE?=
+ =?us-ascii?Q?cF+yRqMtOKvHX9gjfJftz0MM8PAsYens98YlzV6DGgIg91gQBc/AiKl12LWo?=
+ =?us-ascii?Q?88XlrujNd9elu/N2mOG//ysOi1NbhZU52JGpXn7rV5oC1oWKD7QNVTaY8ULt?=
+ =?us-ascii?Q?WPPBUO9d+SPPS+p1hUTL0s8dTSFkk4mg8Eg6v41M+wHCgC46fgY8zjlmkIeH?=
+ =?us-ascii?Q?Hf/UiwWtD73D4sbMf/nAVlyhE86akZDbVqVUFFdMQd9jJYlRv1aPHddGX3sM?=
+ =?us-ascii?Q?JM0S0nQ0Bwnady3vef5LXIyNzt3J6dAEL+lIxPNiSd9zbyQBjFBe3jI46ZsS?=
+ =?us-ascii?Q?GpEeH3IIef5AnPxOrdd5g9Gq1rxOxHCTeSKU4PQWohaMpcOHTHDXxq1bEQEm?=
+ =?us-ascii?Q?Lk5QhLmw6Wshnxjj3eHqGlTSEPYk/1ZhjT5zK5SxHS13LjGlTGJzASdk8rLW?=
+ =?us-ascii?Q?SSKaWhPmwBKoF3dLuPmUtTehtwC0ylJRYvhGZfwXdu+SSzRIJnwl8EbxvlSb?=
+ =?us-ascii?Q?eDCOVLumyGCxitJv08AVmRWf2qbVw7W2O4L9etJiZqnq7KbncLrFPmAoWHyn?=
+ =?us-ascii?Q?KQMfi98WVJAc2ndGYUfSX5KU5NwA2+ZrlgbhP8iOKFLFZey58LakVUfFdnIE?=
+ =?us-ascii?Q?/oC1/wiyys9mmxQcgrRkmLfbZUYZG0nrCReWRbSSciRN2uJUJw6BzLIwQej0?=
+ =?us-ascii?Q?E4QXYBC0LS7HnhfX/LlSyeRZxd1fIVSLl9/XxhuodpyzgKs0REstfXQ2WPNC?=
+ =?us-ascii?Q?VCIe2oIj6ItU9OUDPUGHk/uhl+9B1VuSREH/tMgqAlsDGMs2rmlF9MADBmzC?=
+ =?us-ascii?Q?BFssUf4LPJ0vXGbCgfqUXyRCivEFNpK31RPetnKzTnKHlMKR/6AddPipp8XX?=
+ =?us-ascii?Q?p+h0QP3U4qpgb8ujJ3QUI5TzMUW7yXnDr/jw7QlsvYl1l75mGlqOI2PnTjis?=
+ =?us-ascii?Q?ejHGGJUBe7rjQPYWV+XnNCqwoWskKw6sq2fXYze4YwvYDR3OBhvUmepsS3gw?=
+ =?us-ascii?Q?OnysVYnWb1Mc6gEaInJo72bZvFKSh6Ap1eZbzDZrX/qipzF+LwyS6yauor0n?=
+ =?us-ascii?Q?I743ZE52rms02QPyIk8DMmZ9KW+oRFi2WJ/BGjW26teWhPnbKPRjd3uS5cHo?=
+ =?us-ascii?Q?TUV5Io/AyupLIubvueyP8jEn70YgUD+zAIZ06Swedh8D7MsLXqy1UETtGbGu?=
+ =?us-ascii?Q?pKxmgZfvCczx27fypMFrFOki3gzw+ppYA0vaOL2nhDfWf2Adfh7Ac4nYQWwo?=
+ =?us-ascii?Q?djisHTr6wbHh6M5Znv3Sc0vbsu8xO6ldkrYg5rvrpuhA+cYJCKg3kqyrXDd0?=
+ =?us-ascii?Q?MpAQbUfIqIK4e7BZ4M4yFuuuvmG2d3lvYDIU03maJjk2YLyajokWj90IkIoK?=
+ =?us-ascii?Q?WQBsUyQ6Z3g1Xj4tE5lFrog1BTCJymk9ec1rmUPqcA0nuGiz8CP459wGYbE7?=
+ =?us-ascii?Q?Mk9+02fRnw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] KVM: x86: Drop superfluous caching of
- KVM_ASYNC_PF_SEND_ALWAYS
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+bc0e18379a290e5edfe4@syzkaller.appspotmail.com,
- Xiaoyao Li <xiaoyao.li@intel.com>, Ethan Yang <ethan.yang.kernel@gmail.com>
-References: <20260406225359.1245490-1-seanjc@google.com>
- <20260406225359.1245490-4-seanjc@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260406225359.1245490-4-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: KaUzNwzYBtFuCxlSqpysnPTxv6VMtOHnrWRz06wEtuSRuA/1a+WBuRZd8yagVvMJCziFtxS4N8AQXZ8tNs30SL5Ey575duYjJfXwRTSOOB2g/VlvmbRnvLG15L0LIjtxKwh+VwR83kyUXyr3wf4iNqY1nKF6Bgnhshvmu6YqG8gswPxIPJCshILrdgz5tokoz5cvY8LomXGRY9s4PNfx2Pa2/v0xGdzjmdBcowUxi1ymPoPoeXQhk+Sl4L+NHtPtCxe5HEil+odkWg/2au5vaAEtMiiO4/8g8LaXwyVONMZ9nyXTQcNki153+qZ+hAsBqNOY7aIRExvtFc2xDexopg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c6a1121-ad38-4bd8-e54e-08de960c9212
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2026 07:49:46.7516
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gDmRzjPQNsDUnwLazQgjn9+IzN/LwY5DkfXa7Dyd6JO2MZZsSGFr3bIirrMpvzg/sbOmUI4W650yZXwi2BHPwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6541
+X-OriginatorOrg: intel.com
 
+> From: Xu Yilun <yilun.xu@linux.intel.com>
+> Sent: Saturday, March 28, 2026 12:01 AM
+>=20
+> @@ -86,6 +86,8 @@ extern struct list_head dmar_drhd_units;
+>  				dmar_rcu_check())			\
+>  		if (i=3Ddrhd->iommu, 0) {} else
+>=20
+> +int do_for_each_drhd_unit(int (*fn)(struct dmar_drhd_unit *));
+> +
+>  static inline bool dmar_rcu_check(void)
 
+It's a bit weird to insert it here. Move it to follow for_each_iommu().
 
-On 4/7/2026 6:53 AM, Sean Christopherson wrote:
-> Drop kvm_vcpu_arch.send_always and instead use msr_en_val as the source of
-> truth to reduce the probability of operating on stale data.  This fixes
-> flaws where KVM fails to update send_always when APF is explicitly
-> disabled by the guest or implicitly disabled by KVM on INIT.  Absent other
-> bugs, the flaws are benign as KVM *shouldn't* consume send_always when PV
-> APF support is disabled.
-> 
-> Simply delete the field, as there's zero benefit to maintaining a separate
-> "cache" of the state.
-> 
-> Opportunistically turn the enabled vs. disabled logic at the end of
-> kvm_pv_enable_async_pf() into an if-else instead of using an early return,
-> e.g. so that it's more obvious that both paths are "success" paths.
+> +
+> +int do_for_each_drhd_unit(int (*fn)(struct dmar_drhd_unit *))
+> +{
+> +	struct dmar_drhd_unit *drhd;
+> +	int ret;
+> +
+> +	guard(rwsem_read)(&dmar_global_lock);
+> +
+> +	for_each_drhd_unit(drhd) {
+> +		ret =3D fn(drhd);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	return 0;
+> +}
 
-Nit:
-Drop "e.g." ?
-
-> 
-> Fixes: 6adba5274206 ("KVM: Let host know whether the guest can handle async PF in non-userspace context.")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
-> ---
->  arch/x86/include/asm/kvm_host.h |  1 -
->  arch/x86/kvm/x86.c              | 12 ++++--------
->  2 files changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index fae1f4aeca5a..2a6906597637 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1038,7 +1038,6 @@ struct kvm_vcpu_arch {
->  		u16 vec;
->  		u32 id;
->  		u32 host_apf_flags;
-> -		bool send_always;
->  		bool pageready_pending;
->  	} apf;
->  
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 4632222a5d1c..e24877353f17 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -3659,16 +3659,12 @@ static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
->  
->  	vcpu->arch.apf.msr_en_val = data;
->  
-> -	if (!__kvm_pv_async_pf_enabled(data)) {
-> +	if (__kvm_pv_async_pf_enabled(data)) {
-> +		kvm_async_pf_wakeup_all(vcpu);
-> +	} else {
->  		kvm_clear_async_pf_completion_queue(vcpu);
->  		kvm_async_pf_hash_reset(vcpu);
-> -		return 0;
->  	}
-> -
-> -	vcpu->arch.apf.send_always = (data & KVM_ASYNC_PF_SEND_ALWAYS);
-> -
-> -	kvm_async_pf_wakeup_all(vcpu);
-> -
->  	return 0;
->  }
->  
-> @@ -14025,7 +14021,7 @@ static bool kvm_can_deliver_async_pf(struct kvm_vcpu *vcpu)
->  	if (!kvm_pv_async_pf_enabled(vcpu))
->  		return false;
->  
-> -	if (!vcpu->arch.apf.send_always &&
-> +	if (!(vcpu->arch.apf.msr_en_val & KVM_ASYNC_PF_SEND_ALWAYS) &&
->  	    (vcpu->arch.guest_state_protected || !kvm_x86_call(get_cpl)(vcpu)))
->  		return false;
->  
-
+use for_each_active_drhd_unit(). or is there need to setup the trusted
+configuration even on ignored iommu?
