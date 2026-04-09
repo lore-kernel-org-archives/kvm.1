@@ -1,159 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1523C276E;
-	Thu,  9 Apr 2026 13:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C233DA7C0
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 14:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775742313; cv=none; b=o+5sUy6PUm5fTC5I5Kpv5rEuLWCWEDznK9RA69fw/UI0KoXLEU+SWKuyuZ7CqBhL1g0lcgsZlaQSFafYxt2wkW6Rg0I5fD6tX8b7GauwOrbCp8lX30qD2gI5sEoyuCoi84suZkJYSVwQKV9vQH9D2g0xlnLbL5ZDVYKD5I8QB7E=
+	t=1775744559; cv=none; b=f/eMkrC4UIfQa4/E3lPTrifUI52xEmPp7+b4YBJQWuzhk8W6kIvhE0FfuAMJhQaqffHSsmmRFPsdSRN0SaYclIvhJfFz0a4GDShIK6cVm9uGDp8IRzLJHfCJwYmfWXgE+WbYU3mjjznjLCSLjYVHLIGNG/X6Kq5V0kCNGzTE260=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775742313; c=relaxed/simple;
-	bh=eq8if797wFl6ufcGFq/diuqKdbrPEilao+Lf3/c2Jaw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hr4QGXURHWiMYNnPTM9SVhOoZIXwzb23SmIMzFFaTUhsbmgmdU5WogOY4UWiozu4UvODpOSvmllsTSLIkKdvZiVuy834EmTbhFZQ1vfI66SVsFHtWm/etcXvSagBpKRUn1TGROShfphOwYC2cfgHRjm553FqdWdwele5IJIgjLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbJEneOG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775744559; c=relaxed/simple;
+	bh=Nv0LZ8ENNMjKtXEw/sa3+pR/wKA4qhD15enU3i1bbwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=POhR5Uxt7X/bwsjdSbB7w9IS6/ytNsTO3PFQKFcyMyOVnkvLudR1flM347ATTV57xykj84Pxnmbg1RxCz0/cn5d0XW2tTdGti5rgPh36Alm5sPGkM5PosB8WuG4aqjyiBlg5uvD5m2VGqPzd7e49dfEJX9iqGkUQ210rmgnePEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=NXMF5gjb; arc=none smtp.client-ip=209.85.216.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbJEneOG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6EFC4CEF7;
-	Thu,  9 Apr 2026 13:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775742312;
-	bh=eq8if797wFl6ufcGFq/diuqKdbrPEilao+Lf3/c2Jaw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EbJEneOG7FTCc3lWUwOtZr9eysP74IJKxUgTvtOM0rsjRRUbCBE1ARNjGHIQ9/40h
-	 M4Y8T03KS8vyz2tlMsE1BrfuD3TN3/wPU1YQGOzOQPKvkIzpHre84BerUHsFDsYRUy
-	 PiDoiyBfflr2JF5f+Q1GEEKjJ4VZM6MNYJ3HxQOXf9ojT8vKXeXWWPjxJdDwZ2BIHI
-	 HN9ls3H14GV/0ricbKGpXcFkbB7LxS6IFuygZYuSUvABSw1wCYz6Y/VzJq/CERGn41
-	 pj1u+gmXGlaS+xqzcIoumcZ4p+1fR+iv1x+AKJtY8GmAl0vXK4nNUgXoe1yFrRrL4r
-	 JYAsgy3RZgCyQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wAph0-0000000AGYy-1SET;
-	Thu, 09 Apr 2026 13:45:10 +0000
-Date: Thu, 09 Apr 2026 14:45:09 +0100
-Message-ID: <86v7e02qoq.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: "Woodhouse, David" <dwmw@amazon.co.uk>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"shuah@kernel.org"
-	<shuah@kernel.org>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-	"catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>,
-	"nathan@kernel.org" <nathan@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"arnd@arndb.de" <arnd@arndb.de>,
-	"kees@kernel.org"
-	<kees@kernel.org>,
-	"will@kernel.org" <will@kernel.org>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"oupton@kernel.org"
-	<oupton@kernel.org>,
-	"rananta@google.com" <rananta@google.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>,
-	"eric.auger@redhat.com"
-	<eric.auger@redhat.com>
-Subject: Re: [PATCH 2/3] KVM: arm64: vgic: Allow userspace to set IIDR revision 1
-In-Reply-To: <ffe9de5106d999365389c3ab17f357409dac1047.camel@amazon.co.uk>
-References: <20260407210949.2076251-1-dwmw2@infradead.org>
-	<20260407210949.2076251-3-dwmw2@infradead.org>
-	<87wlyhc2g4.wl-maz@kernel.org>
-	<ffe9de5106d999365389c3ab17f357409dac1047.camel@amazon.co.uk>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="NXMF5gjb"
+Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-35da1af3e10so1057200a91.3
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 07:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1775744557; x=1776349357; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uKq0BhPwqLsy8JSNCzPJOdtUcEVYRgcelll+xkoETzs=;
+        b=NXMF5gjbotf2O1t/5At4nL6pBYOyXebDPiieVBy/xc7pfIbQMrM4IPa7QH+TbXnKhm
+         Xm9aPkYhJUnelizVgf2FfJKpQWLhXWAWkqNiBc3ZmeTjscO4YdUKK6SnwLMQ2CbN+DaE
+         qvX6D32Kp81ol82ZzXTqs6hL/Vo/phFHFF/vEoe+MPTbqNN7LePOKntxX1Zb0UbefN9Y
+         eW+ZtC0M+2LW/XppUL3H0m9jIWVIOG6OBb7/Nk+i9uoQawmPiIfX5f4PDRHHI5g/HZww
+         6qPlS4vJpFf8MYk+I+whIvBUs+UCLTxPsDniFu27TSwSQCgm8aUfQ9KUIAm+xwUSoDcb
+         fu2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775744557; x=1776349357;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uKq0BhPwqLsy8JSNCzPJOdtUcEVYRgcelll+xkoETzs=;
+        b=m6Rqyggu2KRyZVQV5hP8dnZA79PyHmd6s9q9OA5OnIfab49MJdygP23q3NsO6QYM3S
+         hcTZ3mi/oQ6d6dxIPmdWHkMDwqRSoFYlS2FPSi4dSXROP2QfeHSOpP4DAmiBxXia+2Tt
+         zlDQ5UHNVwBTczdKpQBk0i+byBGynofzn5L3R2glao7vVWaN8UEBivkO/kY79WQgb9LQ
+         8x5ZIIanQCIfnn2sB4Mr02Gw7rRLIqgxOs9+uxhp7QCAkyg0d7dTd4k4zOKMdUOPS3gH
+         v/V0M7/u4iTCqbwpeEQSQ0a3k05/5z9zc2xQQ8DBuF2CYG2x2XExPLgvgxuWW+SzM2ld
+         wlXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRcX9wrq2Fkeh1wqHnufOwT9I+olR5ITJ8Jnpw5cffJpcMsuVcxf+k1NYD4kt44ku4Ruo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLxldpQKqYQdDkpgLGvNvnIPN/TNwVyhsajKGSCPpnV/0S1/q6
+	BoFx+YrVbTaaAWO65edm/kSv5o51zMxGvdezb8078TBzmBfkCmKz1kY8DtSvHtRSYae7QhPLymP
+	FHvqVSVmwCC7PnI3Sx5gq6GbZnrFAx3LeYn/HkQhjGxeCYno=
+X-Gm-Gg: AeBDievUXXNuKQ/iezLST9dTT7SOLTfxtY0RUCSjlaz/UjnNoz7qHtXeRPVki1KMKIt
+	Vm8Fg5FDcg3sHGtlOXa1UzhUjdIHpYATytABz6ala7wWPr2fzxEZ5MfxBE1Eu+NoOwTuh0PnExX
+	DngMThB6QddH3x9flT42mrC/eVkoD3+rHuYZjdjvEQ72B6Tjj4vTnijlNs3Le/JklRW0Oo6gdCm
+	bvNO7EhIYkmVPmHuT+K3LIEbGXbBrGkPqaPkmHE9balb//UiizXzGtfKIuDt5DZGJLp2I0v5eO4
+	XjLV/lBEOR0zrhBUJo1m376LWSTjFdtPMAGr/otWpXjTKHdH4UGxx294wnrpVPT8vzDD7jBgaK7
+	md1cinm0wOgHQduLMal3elVXorcEw8Z26dFpn8Z5x/L/3dNIpUTkPI1KKhau1XfMFrjnY97vSoK
+	h71TCinNszQo+z104C4A==
+X-Received: by 2002:a17:90b:2f8f:b0:359:fd9a:c513 with SMTP id 98e67ed59e1d1-35e359a62c0mr3492121a91.24.1775744556676;
+        Thu, 09 Apr 2026 07:22:36 -0700 (PDT)
+Received: from DESKTOP-AMNC9SI.localdomain ([2407:cdc0:d00b::4])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-35e34ff0c58sm3662676a91.10.2026.04.09.07.22.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 07:22:36 -0700 (PDT)
+From: Lei Chen <lei.chen@smartx.com>
+To: seanjc@google.com
+Cc: igor@gooddata.com,
+	jan.cipa@gooddata.com,
+	jaroslav.pulchart@gooddata.com,
+	kvm@vger.kernel.org,
+	lei.chen@smartx.com,
+	linux-kernel@vger.kernel.org,
+	pbonzini@redhat.com
+Subject: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
+Date: Thu,  9 Apr 2026 22:22:26 +0800
+Message-ID: <20260409142226.2581-1-lei.chen@smartx.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <adVGrJaRlRooO4su@google.com>
+References: <adVGrJaRlRooO4su@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: dwmw@amazon.co.uk, kvm@vger.kernel.org, shuah@kernel.org, yuzenghui@huawei.com, joey.gouly@arm.com, linux-kernel@vger.kernel.org, catalin.marinas@arm.com, nathan@kernel.org, pbonzini@redhat.com, kvmarm@lists.linux.dev, arnd@arndb.de, kees@kernel.org, will@kernel.org, suzuki.poulose@arm.com, oupton@kernel.org, rananta@google.com, linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org, eric.auger@redhat.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 08 Apr 2026 09:39:15 +0100,
-"Woodhouse, David" <dwmw@amazon.co.uk> wrote:
->=20
-> [1  <multipart/signed (en-US) (7bit)>]
-> [1.1  <text/plain; UTF-8 (quoted-printable)>]
-> On Wed, 2026-04-08 at 08:54 +0100, Marc Zyngier wrote:
-> > On Tue, 07 Apr 2026 21:27:03 +0100,
-> > David Woodhouse <dwmw2@infradead.org> wrote:
-> > >=20
-> > > From: David Woodhouse <dwmw@amazon.co.uk>
-> > >=20
-> > > Allow userspace to select GICD_IIDR revision 1, which restores the
-> > > original pre-d53c2c29ae0d ("KVM: arm/arm64: vgic: Allow configuration
-> > > of interrupt groups") behaviour where interrupt groups are not
-> > > guest-configurable.
-> >=20
-> > I'm a bit surprised by this.
-> >=20
-> > Either your guest knows that the group registers are not writable and
-> > already deals with the buggy behaviour by not configuring the groups
-> > (or configuring them in a way that matches what the implementation
-> > does). Or it configures them differently and totally fails to handle
-> > the interrupts as they are delivered using the wrong exception type,
-> > if at all.
-> >=20
-> > I'd expect that your guests fall in the former category and not the
-> > latter, as we'd be discussing a very different problem. And my vague
-> > recollection of this issue is that we had established that as long as
-> > the reset values were unchanged, there was no harm in letting things
-> > rip.
->=20
-> What if the guest boots under a new host kernel and finds the group
-> registers are writable, and then is live migrated to an old host kernel
-> on which they are not?
+commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
 
-That's your problem. KVM/arm64 never supported downgrading.
+As a result, kvm_arch_vcpu_load() can queue global clock update requests
+every time a vCPU is scheduled when the master clock is disabled or when
+the vCPU is loaded for the first time.
 
-Not to mention that there is no valid GIC implementation that has RO
-group registers. All you are doing is to inflict a hypervisor bug on
-unsuspecting guests, for no good reason.
+Restore the throttling with a per-VM ratelimit state and gate
+KVM_REQ_GLOBAL_CLOCK_UPDATE through __ratelimit(), so frequent vCPU
+scheduling does not generate a steady stream of redundant clock update
+requests.
 
-> What about hibernation, if the *boot* kernel in the guest configures
-> the groups, but then transfers control back to the resumed guest kernel
-> which had not?
+Fixes: 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+Signed-off-by: Lei Chen <lei.chen@smartx.com>
+Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Closes: https://lore.kernel.org/all/CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com/
+---
+CHANGELOG:
+v2:
+- remove comment of kvmclock_update_rs
+- make sure kvm_arch_vcpu_load make KVM_REQ_CLOCK_UPDATE for this vcpu
+- add RATELIMIT_MSG_ON_RELEASE to kvmclock_update_rs
 
-A guest that doesn't configures the groups cannot expect anything to
-work. You'd have the exact same problem on bare-metal.
+v1:
+- initial version(https://lore.kernel.org/all/20260407070046.2336-1-lei.chen@smartx.com/)
+---
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/x86.c              | 11 +++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
->=20
-> > So what is this *really* fixing?
->=20
-> I look at that question the other way round.
->=20
-> KVM has an established procedure for allowing userspace to control
-> guest-visible changes, using the IIDR. First the host kernel which
-> *supports* the change is rolled out, and only then does the VMM start
-> to enable it for new launches.
->=20
-> Even if we can address the questions above, and even if we can convince
-> ourselves that those are the *only* questions to ask... why not follow
-> the normal, safe, procedure?=C2=A0Especially given that there is already =
-an
-> IIDR value which corresponds to it.
->=20
-> We don't *have* to YOLO it... and I don't want to :)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 5a3bfa293e8b..5e750c49d21e 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1453,6 +1453,7 @@ struct kvm_arch {
+ 	bool use_master_clock;
+ 	u64 master_kernel_ns;
+ 	u64 master_cycle_now;
++	struct ratelimit_state kvmclock_update_rs;
+ 
+ #ifdef CONFIG_KVM_HYPERV
+ 	struct kvm_hv hyperv;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 63afdb6bb078..a534e8391611 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5210,8 +5210,13 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 		 * On a host with synchronized TSC, there is no need to update
+ 		 * kvmclock on vcpu->cpu migration
+ 		 */
+-		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu == -1)
+-			kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
++		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu == -1) {
++			if (__ratelimit(&vcpu->kvm->arch.kvmclock_update_rs))
++				kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
++			else
++				kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
++		}
++
+ 		if (vcpu->cpu != cpu)
+ 			kvm_make_request(KVM_REQ_MIGRATE_TIMER, vcpu);
+ 		vcpu->cpu = cpu;
+@@ -13189,6 +13194,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	raw_spin_lock_init(&kvm->arch.tsc_write_lock);
+ 	mutex_init(&kvm->arch.apic_map_lock);
+ 	seqcount_raw_spinlock_init(&kvm->arch.pvclock_sc, &kvm->arch.tsc_write_lock);
++	ratelimit_state_init(&kvm->arch.kvmclock_update_rs, HZ, 10);
++	ratelimit_set_flags(&kvm->arch.kvmclock_update_rs, RATELIMIT_MSG_ON_RELEASE);
+ 	kvm->arch.kvmclock_offset = -get_kvmclock_base_ns();
+ 
+ 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
+-- 
+2.51.0
 
-That's hardly an argument, is it?
-
-	M.
-
---=20
-Without deviation from the norm, progress is not possible.
