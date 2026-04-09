@@ -1,147 +1,150 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647152DCBF8
-	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 17:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4398BE9
+	for <kvm@vger.kernel.org>; Thu,  9 Apr 2026 17:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775756199; cv=none; b=sqPZcJamnuhB0z/1xOVecvTNB8Oir3WUhGY7ETp/jTSTTBLS/Tb8iwv8fWj4thTAJk3thlWKIoZy7KCApUgQv6Et6Et9+TQ1IuuzqNPLQZNSM8pWqNLaj+v3VYrMTRXFJYO5UzGLmtgwgffhq7WOnnyNXrnVLSIqD1II0+N7y4A=
+	t=1775756890; cv=none; b=LSavgTOm2sdH3jPqX0CExQMoGsJ8GtBZJsjXSME3wdHwLtBttGCMVyf1FuvB0W+e9fSxXma2OFTBgWpNjsYBH30IuCFq5uZM90b4dRYGWpmx5CBjuZGlAcVdjI22DufS9lUwNQIMoHenp0aO4ymJkmYjvDLwOAeByoWKoe44SQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775756199; c=relaxed/simple;
-	bh=/nFp3H1jvzcz3wzZQIK+M0rRkKvkk739gDNT6ihiLsA=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=Jm3Q2SjNOuO6760nmZ+E/TMB3W3HxEHGU3YqUH7R+OpT5Pr5ax8lVOuUTvScPJ4OMSxQ8mZWu22WRz5vv+hcrzzuJ3EJI9kb9yjYnrckIq8t8gqE18KM+5o6VsU7RE+UZsaCnU4DZPhsi0Bgji/P/jTQal+JnQOtH6CGnoIH+6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LSVMjyHI; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775756890; c=relaxed/simple;
+	bh=aIAfMrSA8cUJIyUiAkRbPYFZeiE3TInt/dDEE4o2+nk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Vxr4Afd1NudzSXxRO0VUAIm9hJCVPw18Ke5TBT+jOOpic7nCkCMAuOy6oj1erwLrF24Ci9KYK9Jz7Wxdt+ywEQCQBH9iedIAIOEjzzzRXC8xDAGH7MuuXKNxz9yzCxhE1zEJP0Qidc6ZBowXsjgXXreUCipihSCAmOR27KgZAp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WalItd6m; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LSVMjyHI"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488c21c636dso7018065e9.2
-        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 10:36:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WalItd6m"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c7424d91b2dso875478a12.1
+        for <kvm@vger.kernel.org>; Thu, 09 Apr 2026 10:48:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775756197; x=1776360997; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VikJJNd5VhOwaHnCnCCu6joDVLiO8EzhNeusI2Ghpa8=;
-        b=LSVMjyHIR8G+niZA8P9b2AMes/mYV3bebY8+Lfkze0SKT9zvt7ZbVDgiNNNPvXE4JC
-         jtptQgc6tDB9pRma1QE/0nA7MEr1+DZAydQSkrOakHB2zdp8l1/0Avvx9YT5ZgEtxK8p
-         68FH7awfLKypUe29Z7vf297WrNQNsAblbJNK9zDK/lCEbnJcgZmrWu8bT3P8/B1KwDoD
-         a6KUdbRUTfTqlDsEviYgZcyR+8s65MTLfXruz68VVr8aTLLrfnb07A3TsSyS8lN1L6RS
-         1KfvGFnhV0VYXMw2REFQR1stUhkz7Nvr+c0FeUqz8g3Zf1WuIBRmvaGbF4gSlUFmg/aY
-         TE5Q==
+        d=google.com; s=20251104; t=1775756889; x=1776361689; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ACR+kdrs5Iw2VxQZkb2RkoTFQ3C4xCdBdInTN5Gc/ZE=;
+        b=WalItd6mH1nFFid5c/SA+NKPcQqok96YvavJjhZ8Sl6rXDvkqNsGm8V/5KUIZkJ5cb
+         33C8FuHcU2FpVzBH7g5h3rm+dRo8iasA8uF8xK4Ez3RLfX9PivmttSpIninX3NsHO1bx
+         IP/Dc470ybE1Xw7AWsU4F/j+Ujyhvdsu+O66SPfBzgQHTJ8GKsr/7yxChkT8uTFtHdv0
+         AHYn4N5x5vB9eCvitLWPRp5f2Cl9ZQUpyh1L1pEI6qbEzkybD3NALLr+oujaqKqHevuF
+         lYQWlUu1s+MNOWwasvqHwUwZi9BxeRNfTLWyk1D2Xjpzzd6RFs1twFVQBquuI0sY53kM
+         Milw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775756197; x=1776360997;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VikJJNd5VhOwaHnCnCCu6joDVLiO8EzhNeusI2Ghpa8=;
-        b=m2bNgQFrAO+rw0Ya2rG72VpePr105+lOXC+5N04nTovPNQG2OTp3WYMaZ3hmodroTB
-         6uIqlfJtpF7QbrB6JLMHBd5PPlZ/wIXwgpMloZlQ+U8avDglj53H3F3Oh3A1Nll4BrOQ
-         clqzl2OTedH2WqIuNLcU2fYHQFhtImGPP72hY8/FhpqVYc504WiVEGmtCnxIPcS8wTU+
-         NHScDmj6UhG8C7AvBxeswy+QFYFoUokSnCJ4bzBmUZqknEsnHd/122UP7KxubTN6BiQP
-         sRbMmblpaE8rqnwuBMVXoh7eu21G/azgsAoJhu5dByzKtoDfYyDviUyKD6C+2/xTKjbx
-         dL5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWBOzYuQcFpxxMFkymIcCWNQpktLvgdops5ro4eM2HraM2i5Rb7AuKExVnswvjqAMGsaLQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB7NI2vbJPZqzoIDWziwZTCZU4qzrKy33c/CqsR9ZJRo41D/Hp
-	x6IN7QjSSlGEPgTgY264IkIzHf5yuz2RLubHyIMWPBxkUeoRkGwDnTFZ
-X-Gm-Gg: AeBDieuBqo8q7jdeLWZyPr3P8M/b+kBtzvLiLbuFKtnC9xZr39gTC3gOmKEwWqMPdFV
-	BBpwwFn1kAe+sd+nAOucopv6IF6rmpXHXD1CqPB+bqrSAMaWu/IG10YDdxKTjhqoW/ISQn9QyCt
-	9fRnDumzXOkUvGbTkWexEyMdyht6JcFyQwyZz6Cdu1vqeCOMhGi+VOgRFoSO/MWXkxGgNSFSMy4
-	uTfWkYYnufYmTy3JdnumrLjtRXezTddMRRNSdyQ5LZwvSqIH05kaOvWiYmpF3VE4dWj6c9pewP3
-	iEyYkQ3GwbGTNecA4RUMrgrEUThs6gNsMsadSUS4/dWLcmnfBrZYTGsmJ4UHTYgem/eVHN7v+kc
-	uGOTrebxafMSDpPwexEF/hQPfCDXTZy2nliawY6KG2cpUQ2hm+mapjj1dRpIRim8rwfBl3aZ/wT
-	UnOiKy6pq3My9KE+O/cYlPlqdQt5JI80YF68gROYMBWAcAy9N1nr/K9ayvcqvwq9sKUC/VNVxpB
-	JY4nZ+bHbsNGtYYZwXI6xeWkRYQheDXYVV+PESSkR7etRsZ92UyWqtW
-X-Received: by 2002:a05:600c:3f0a:b0:487:2439:b7c8 with SMTP id 5b1f17b1804b1-488996a206dmr383393495e9.1.1775756196592;
-        Thu, 09 Apr 2026 10:36:36 -0700 (PDT)
-Received: from [192.168.1.100] ([46.248.82.114])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d58a414bsm6710175e9.4.2026.04.09.10.36.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 10:36:35 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------REQjjt0ep03aOgQcIyxRW5f2"
-Message-ID: <57796f12-53f7-426b-be4c-abf0b2ce2061@gmail.com>
-Date: Thu, 9 Apr 2026 19:36:34 +0200
+        d=1e100.net; s=20251104; t=1775756889; x=1776361689;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ACR+kdrs5Iw2VxQZkb2RkoTFQ3C4xCdBdInTN5Gc/ZE=;
+        b=HjSiPK2D8lz4vXakU7Uh72OPBoFYtzWLjiEDUECombj7TnjuHTV8UsgvIJjj6nkCuK
+         62xX59sNW4jqJZxblgvTgMTTNEQsgjtdhxqiCrBRxrGE2CrSzuiKJnv9f7Fhajl2bIqU
+         UyCgCM6vhEY8Ywt7Ph+DGiMdDDSA9hqbW0Da4WO8RssN6NCqimzoN6YdO0kfs02lJfIU
+         +r2AUBD0x7yxLluwy8ZIwj7deWJriQ3VJdHId+IdGb4nw0mZQfvneYwLe2F9EneL3LZz
+         azYjy10k+aUcxRFTGKQzL5zPwJnzMaNo2nJqT6WzP1z0b94wIfJDda358yAYUUypZsf1
+         io5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXSNmFrjzQrAwOegUK1cEY8q8HQL0H9IE6eDQfJYvUT03LEuILqLUCOIEtzDcsv1dZTPP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn8pL68O5nFmsc5Gso0Dt29w86N3ssdh/LNj7/jxktVnf2e4wv
+	T7oN6QnO8PGEl9cJxN1lI5fAXquX5ffFE0lgindfBt8V7x4hbg3OZuhBes6fz+n08VnfKfgxIkq
+	8T8m8rA==
+X-Received: from pfbjr29.prod.google.com ([2002:a05:6a00:915d:b0:82c:63f8:59dd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3987:b0:81f:3afe:281e
+ with SMTP id d2e1a72fcca58-82f0c12fbd5mr185066b3a.3.1775756888433; Thu, 09
+ Apr 2026 10:48:08 -0700 (PDT)
+Date: Thu, 9 Apr 2026 10:48:05 -0700
+In-Reply-To: <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] KVM: VMX: replace vmx_spec_ctrl_restore_host with
- RESTORE_HOST_SPEC_CTRL_BODY
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: seanjc@google.com, chang.seok.bae@intel.com
-References: <20260408182213.522713-1-pbonzini@redhat.com>
- <20260408182213.522713-8-pbonzini@redhat.com>
-Content-Language: en-US
-From: Uros Bizjak <ubizjak@gmail.com>
-In-Reply-To: <20260408182213.522713-8-pbonzini@redhat.com>
+Mime-Version: 1.0
+References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-5-yosry@kernel.org>
+ <CALMp9eRk8O-kGixdXC0Lb0=PgSVE5eFnLLXOZYqMsb=FTczZTA@mail.gmail.com>
+ <adfgPwgXz1iQHpVS@google.com> <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
+Message-ID: <adfmVXRwzZkvRSnj@google.com>
+Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
+ nested SVM transitions
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a multi-part message in MIME format.
---------------REQjjt0ep03aOgQcIyxRW5f2
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Thu, Apr 09, 2026, Jim Mattson wrote:
+> On Thu, Apr 9, 2026 at 10:22=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Wed, Apr 08, 2026, Jim Mattson wrote:
+> > > On Wed, Mar 25, 2026 at 8:12=E2=80=AFPM Yosry Ahmed <yosry@kernel.org=
+> wrote:
+> > > > diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+> > > > index bdbe0456049d0..fb73806d3bfa0 100644
+> > > > --- a/arch/x86/kvm/pmu.h
+> > > > +++ b/arch/x86/kvm/pmu.h
+> > > > @@ -248,6 +248,19 @@ static inline bool kvm_pmu_is_fastpath_emulati=
+on_allowed(struct kvm_vcpu *vcpu)
+> > > >                                   X86_PMC_IDX_MAX);
+> > > >  }
+> > > >
+> > > > +static inline void kvm_pmu_handle_nested_transition(struct kvm_vcp=
+u *vcpu)
+> > > > +{
+> > > > +       struct kvm_pmu *pmu =3D vcpu_to_pmu(vcpu);
+> > > > +
+> > > > +       if (bitmap_empty(pmu->pmc_needs_nested_reprogram, X86_PMC_I=
+DX_MAX))
+> > > > +               return;
+> > > > +
+> > > > +       BUILD_BUG_ON(sizeof(pmu->pmc_needs_nested_reprogram) !=3D s=
+izeof(atomic64_t));
+> > > > +       atomic64_or(*(s64 *)pmu->pmc_needs_nested_reprogram,
+> > > > +                   &vcpu_to_pmu(vcpu)->__reprogram_pmi);
+> > > > +       kvm_make_request(KVM_REQ_PMU, vcpu);
+> > > > +}
+> > >
+> > > In general, this deferral is misguided. The G/H bits should be
+> > > re-evaluated before we call kvm_pmu_instruction_retired() for an
+> > > emulated instruction.
+> > >
+> > > > ...
+> > > > diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+> > > > index f1c29ac306917..966e4138308f6 100644
+> > > > --- a/arch/x86/kvm/x86.h
+> > > > +++ b/arch/x86/kvm/x86.h
+> > > > @@ -9,6 +9,7 @@
+> > > >  #include "kvm_cache_regs.h"
+> > > >  #include "kvm_emulate.h"
+> > > >  #include "cpuid.h"
+> > > > +#include "pmu.h"
+> > > >
+> > > >  #define KVM_MAX_MCE_BANKS 32
+> > > >
+> > > > @@ -152,6 +153,8 @@ static inline void enter_guest_mode(struct kvm_=
+vcpu *vcpu)
+> > > >  {
+> > > >         vcpu->arch.hflags |=3D HF_GUEST_MASK;
+> > > >         vcpu->stat.guest_mode =3D 1;
+> > > > +
+> > > > +       kvm_pmu_handle_nested_transition(vcpu);
+> > > >  }
+> > >
+> > > This happens too late for VMRUN, since we have already called
+> > > kvm_pmu_instruction_retired() via kvm_skip_emulated_instruction(), an=
+d
+> > > VMRUN counts as a *guest* instruction.
+> >
+> > It's just VMRUN that's problematic though, correct?  I.e. the scheme as=
+ a whole
+> > is fine, we just need to special case VMRUN due to SVM's erratum^Warchi=
+tecture.
+> > Alternatively, maybe we could get AMD to document the silly VMRUN behav=
+ior as an
+> > erratum, then we could claim KVM is architecturally superior. :-D
+>=20
+> Here, it's just VMRUN. Above, it's WRMSR(EFER).
 
-
-
-On 4/8/26 20:22, Paolo Bonzini wrote:
-> Reuse the same assembly as SVM, just with alternatives instead
-> of cpu_feature_enabled(X86_FEATURE_KERNEL_IBRS).
-> 
-> Due to the dearth of registers in 32-bit x86, save/restore %eax
-> across the restoring sequence, keeping it simple; the main alternative
-> would be to leave vmx and flags on the stack, avoiding the need to read
-> flags from %ebx.  It's not really measurable difference.
-
-You don't need to save/restore %eax. Considering that
-RESTORE_HOST_SPEC_CTRL_BODY doesn't touch %ebx, and that
-
-testl $KVM_ENTER_SAVE_SPEC_CTRL, \enter_flags
-
-is placed at the beginning of the macro, you can put @flags into %eax:
-
-+ pop %_ASM_AX /* @flags */
-+ pop %_ASM_DI /* @vmx */
-+
-+        /* Clobbers RAX, RCX, RDX, RSI.  */
-+ ALTERNATIVE "jmp .Lspec_ctrl_host_done", "", X86_FEATURE_MSR_SPEC_CTRL
-+ RESTORE_HOST_SPEC_CTRL_BODY VMX_spec_ctrl(%_ASM_DI), %eax,
-.Lspec_ctrl_host_done
-+.Lspec_ctrl_host_done:
-+
-+ CLEAR_BRANCH_HISTORY_VMEXIT
-
-The above macro will clobber %eax via clear_bhb_loop(), so you should leave:
-
-   /* Put return value in AX */
-   mov %_ASM_BX, %_ASM_AX
-
-after it, like in the attached (partial) patch.
-
-BR,
-Uros.
---------------REQjjt0ep03aOgQcIyxRW5f2
-Content-Type: text/plain; charset=UTF-8; name="vmx.diff.txt"
-Content-Disposition: attachment; filename="vmx.diff.txt"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2FyY2gveDg2L2t2bS92bXgvdm1lbnRlci5TIGIvYXJjaC94ODYva3Zt
-L3ZteC92bWVudGVyLlMKaW5kZXggNDQyNmQzNDgxMWZjLi5iNzA3ZWJmNmU3YTUgMTAwNjQ0
-Ci0tLSBhL2FyY2gveDg2L2t2bS92bXgvdm1lbnRlci5TCisrKyBiL2FyY2gveDg2L2t2bS92
-bXgvdm1lbnRlci5TCkBAIC0yODYsMTAgKzI4NiwxMyBAQCBTWU1fSU5ORVJfTEFCRUxfQUxJ
-R04odm14X3ZtZXhpdCwgU1lNX0xfR0xPQkFMKQogCUZJTExfUkVUVVJOX0JVRkZFUiAlX0FT
-TV9DWCwgUlNCX0NMRUFSX0xPT1BTLCBYODZfRkVBVFVSRV9SU0JfVk1FWElULFwKIAkJCSAg
-IFg4Nl9GRUFUVVJFX1JTQl9WTUVYSVRfTElURQogCi0JcG9wICVfQVNNX0FSRzIJLyogQGZs
-YWdzICovCi0JcG9wICVfQVNNX0FSRzEJLyogQHZteCAqLworCXBvcCAlX0FTTV9BWAkvKiBA
-ZmxhZ3MgKi8KKwlwb3AgJV9BU01fREkJLyogQHZteCAqLwogCi0JY2FsbCB2bXhfc3BlY19j
-dHJsX3Jlc3RvcmVfaG9zdAorCS8qIENsb2JiZXJzIFJBWCwgUkNYLCBSRFgsIFJTSS4gICov
-CisJQUxURVJOQVRJVkUgImptcCAuTHNwZWNfY3RybF9ob3N0X2RvbmUiLCAiIiwgWDg2X0ZF
-QVRVUkVfTVNSX1NQRUNfQ1RSTAorCVJFU1RPUkVfSE9TVF9TUEVDX0NUUkxfQk9EWSBWTVhf
-c3BlY19jdHJsKCVfQVNNX0RJKSwgJWVheCwgLkxzcGVjX2N0cmxfaG9zdF9kb25lCisuTHNw
-ZWNfY3RybF9ob3N0X2RvbmU6CiAKIAlDTEVBUl9CUkFOQ0hfSElTVE9SWV9WTUVYSVQKIAo=
-
-
---------------REQjjt0ep03aOgQcIyxRW5f2--
+But clearing EFER.SVME while in the guest generates architecturally undefin=
+ed
+behavior.  I don't see any reason to complicate PMU virtualization for that
+scenario, especially now that KVM synthesizes triple fault for L1.
