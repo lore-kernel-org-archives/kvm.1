@@ -1,94 +1,253 @@
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from iad-out-009.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-009.esa.us-east-1.outbound.mail-perimeter.amazon.com [34.198.94.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399E53DD51B
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 15:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B64F3E6DCE;
+	Fri, 10 Apr 2026 15:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.198.94.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775834423; cv=none; b=Br1/mxqBURjYDrpLY2Y8rznIM0f+vdwmbpZ3uoloe2AykxueGM6SqTjDC+yBukYI5oH2S37V8WXKhreGR3NkulvQyKfMFcCk7Zj5Xq+8jtP4nTMy6VbIJrPfo+OK1kSXEQacTjFuGOcBOmNzuzd2LDB/Knzk9GqCGH1gY0hipUU=
+	t=1775834435; cv=none; b=JjC1DY7ngNiBU7Z4ltOI8r/tySLsUEY3ZUFJa409jgbsBPwLFSLvEfM8J/lsA+WxNpBNRXpCMkvB7x0cIC0o/pOSLrdTy4H2mKyCOUhi9+o6FZBYfqQjXPVxLG8p5H4zS4Bz2489MZF/Bzc+UezcECE8qyEbcqMEEbdYEh2FM7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775834423; c=relaxed/simple;
-	bh=2PJcapuxUWWHQgHKuYh+AB0Bg9+uWPE8WWtuj/kl/pY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CpBSDxHagA+HVNvK7JS6kE+KtFdeQcSmf9aV2fFyuwSiwTdMYWtWkJVM9JsB6zADGVgV0yd+CY5j/zbE8ES8wOIGtl996zP/Abw1EOadwy84B47YsuEKOoShewIyggqWrbtBp2oAr1daltR0Ks0sqS4x2AjbLxRR4v/AwXrmwKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=VM9pR3FU; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+	s=arc-20240116; t=1775834435; c=relaxed/simple;
+	bh=OJip3okg3kXqvGnKdFVccvKwKLLjePXxrDcRGXP/KqU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LScq1+LiTGY0h09VNE3IXaHBaYbnwgnU3ZIEVew7JxqKy0Y/pPgKXZ7unsjqVjj1sBij7xxkUsmerIJfJQqt6Tsnke1o415Kw/39owQNQB3VcMw5MWl9asCCrGy7X5sfmm6NGL0J2cp3koc0P2Rxc0MDadWPoxZJbNGBShEJYeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=pZIhbPsM; arc=none smtp.client-ip=34.198.94.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="VM9pR3FU"
-Received: from trampoline.thunk.org (pool-173-48-116-90.bstnma.fios.verizon.net [173.48.116.90])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 63AFIonm015842
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Apr 2026 11:18:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1775834338; bh=eTlXD+fEi5OyNbu4TxRTwpDmEzFd2ThBwniicSqJG9M=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=VM9pR3FUqiyu4dGQLYjxtn5fwtIzfU7ySZMp0abbH18xV6/gDABRi9uB743lXz8hh
-	 DLg+D58JGiw6cmfTe96qrNZsfI1LrX8CH4Z4SZsryjUI4LnJNSYnME68kmTAWN0bac
-	 +APmObxjmRctPfSGmHJbriSXfrkN55pWYIbiVRfu2y0ECqpOPHSJun6K+BHM+LkVI2
-	 DM7T+QYmlRWbU/sqPlO03FdXluf2F9iRmmuiDmCsbPLwL4U9izV2zs90P/AyWnNi7/
-	 WJE2W3FtW9KojAgen2wKI5w3YJJGh4CS8IuF5T47bMgUta6WPQzUW9F7QaunmIRgXz
-	 enYXQQPwNnobw==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id 0D7462E00E1; Fri, 10 Apr 2026 11:18:48 -0400 (EDT)
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
-        bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
-        dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-        gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-        sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
-        Philipp Hahn <phahn-oss@avm.de>
-Cc: "Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>
-Subject: Re: [PATCH 04/61] ext4: Prefer IS_ERR_OR_NULL over manual NULL check
-Date: Fri, 10 Apr 2026 11:18:40 -0400
-Message-ID: <177583430870.2758959.6171961359325912353.b4-ty@b4>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260310-b4-is_err_or_null-v1-4-bd63b656022d@avm.de>
-References: <20260310-b4-is_err_or_null-v1-4-bd63b656022d@avm.de>
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="pZIhbPsM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1775834433; x=1807370433;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=NHNyxo6lK538rZvH+ZUQOvKgRKdbb287cmITx90Ul5Q=;
+  b=pZIhbPsMlxRRtPzVZVz5FTyMUtX/yyrNVMb0SByPWuqWhGYOr/i6Jrf/
+   yt/Q0sRzT4Ga9nHPun6vPrzVn1Kz1zEHgDSKcYdykuf5JXA7+PX38kYHL
+   Sbx5iI6jKSZhc6g8xhsC9AU+WBcTM2EIFuSoV+9p70Rlo1cKUjcjdICIU
+   H+73vwS/F/NN6sSTRfLEP0dr5sVO3lmfnY5pJtrQlj/xQPJvpxSNJtadW
+   8YSEM3cf4ENstNxHfRHQVkCmjWgxTbBrnaY2JEMke9jk5j7Oq+8SQehd3
+   iUuPpChDQCTaxsm3evWexC9gzyHiLDa+D5lFyzeAzJCSUhbVx3LPrRrir
+   w==;
+X-CSE-ConnectionGUID: iw90bHcsQUaQgft/vtkGvg==
+X-CSE-MsgGUID: d2eksJxdSDqLxhYGZWEq8w==
+X-IronPort-AV: E=Sophos;i="6.23,171,1770595200"; 
+   d="scan'208";a="15898263"
+Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
+  by internal-iad-out-009.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:20:31 +0000
+Received: from EX19MTAUEB002.ant.amazon.com [52.94.133.143:10986]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.46.155:2525] with esmtp (Farcaster)
+ id 0453025f-dd7e-4f44-b092-288f031108b2; Fri, 10 Apr 2026 15:20:30 +0000 (UTC)
+X-Farcaster-Flow-ID: 0453025f-dd7e-4f44-b092-288f031108b2
+Received: from EX19D027UEC002.ant.amazon.com (10.252.137.166) by
+ EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 10 Apr 2026 15:20:30 +0000
+Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
+ EX19D027UEC002.ant.amazon.com (10.252.137.166) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 10 Apr 2026 15:20:29 +0000
+Received: from EX19D027UEC003.ant.amazon.com ([fe80::887f:519b:ba73:21d]) by
+ EX19D027UEC003.ant.amazon.com ([fe80::887f:519b:ba73:21d%3]) with mapi id
+ 15.02.2562.037; Fri, 10 Apr 2026 15:20:29 +0000
+From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
+	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
+	<loongarch@lists.linux.dev>, "linux-pm@vger.kernel.org"
+	<linux-pm@vger.kernel.org>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
+	<willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
+	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
+	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com"
+	<riel@surriel.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
+	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
+	<coxu@redhat.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com"
+	<ajones@ventanamicro.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+	"tabba@google.com" <tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
+	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com"
+	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
+	<agordeev@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
+	<borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "dev.jain@arm.com"
+	<dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>,
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com"
+	<palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>,
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
+	"svens@linux.ibm.com" <svens@linux.ibm.com>, "thuth@redhat.com"
+	<thuth@redhat.com>, "yang@os.amperecomputing.com"
+	<yang@os.amperecomputing.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>,
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org"
+	<lenb@kernel.org>, "pavel@kernel.org" <pavel@kernel.org>, "rafael@kernel.org"
+	<rafael@kernel.org>, "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
+	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
+	<jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro"
+	<itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin,
+ Nikita" <kalyazin@amazon.co.uk>
+Subject: [PATCH v12 15/16] KVM: selftests: stuff vm_mem_backing_src_type into
+ vm_shape
+Thread-Topic: [PATCH v12 15/16] KVM: selftests: stuff vm_mem_backing_src_type
+ into vm_shape
+Thread-Index: AQHcyP2QWDh/MhRCeUqIh6e0vNa5zQ==
+Date: Fri, 10 Apr 2026 15:20:29 +0000
+Message-ID: <20260410151746.61150-16-kalyazin@amazon.com>
+References: <20260410151746.61150-1-kalyazin@amazon.com>
+In-Reply-To: <20260410151746.61150-1-kalyazin@amazon.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-
-On Tue, 10 Mar 2026 12:48:30 +0100, Philipp Hahn wrote:
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
-> 
-> Change generated with coccinelle.
-
-Applied, thanks!
-
-[04/61] ext4: Prefer IS_ERR_OR_NULL over manual NULL check
-        commit: 1d749e110277ce4103f27bd60d6181e52c0cc1e3
-
-Best regards,
--- 
-Theodore Ts'o <tytso@mit.edu>
+From: Patrick Roy <patrick.roy@linux.dev>=0A=
+=0A=
+Use one of the padding fields in struct vm_shape to carry an enum=0A=
+vm_mem_backing_src_type value, to give the option to overwrite the=0A=
+default of VM_MEM_SRC_ANONYMOUS in __vm_create().=0A=
+=0A=
+Overwriting this default will allow tests to create VMs where the test=0A=
+code is backed by mmap'd guest_memfd instead of anonymous memory.=0A=
+=0A=
+Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
+Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>=0A=
+---=0A=
+ .../testing/selftests/kvm/include/kvm_util.h  | 19 ++++++++++---------=0A=
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  2 +-=0A=
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +=0A=
+ .../selftests/kvm/pre_fault_memory_test.c     |  1 +=0A=
+ 4 files changed, 13 insertions(+), 10 deletions(-)=0A=
+=0A=
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing=
+/selftests/kvm/include/kvm_util.h=0A=
+index 056a003a63c0..48b6ee8223aa 100644=0A=
+--- a/tools/testing/selftests/kvm/include/kvm_util.h=0A=
++++ b/tools/testing/selftests/kvm/include/kvm_util.h=0A=
+@@ -215,7 +215,7 @@ enum vm_guest_mode {=0A=
+ struct vm_shape {=0A=
+ 	uint32_t type;=0A=
+ 	uint8_t  mode;=0A=
+-	uint8_t  pad0;=0A=
++	uint8_t  src_type;=0A=
+ 	uint16_t pad1;=0A=
+ };=0A=
+ =0A=
+@@ -223,14 +223,15 @@ kvm_static_assert(sizeof(struct vm_shape) =3D=3D size=
+of(uint64_t));=0A=
+ =0A=
+ #define VM_TYPE_DEFAULT			0=0A=
+ =0A=
+-#define VM_SHAPE(__mode)			\=0A=
+-({						\=0A=
+-	struct vm_shape shape =3D {		\=0A=
+-		.mode =3D (__mode),		\=0A=
+-		.type =3D VM_TYPE_DEFAULT		\=0A=
+-	};					\=0A=
+-						\=0A=
+-	shape;					\=0A=
++#define VM_SHAPE(__mode)				\=0A=
++({							\=0A=
++	struct vm_shape shape =3D {			\=0A=
++		.mode	  =3D (__mode),			\=0A=
++		.type	  =3D VM_TYPE_DEFAULT,		\=0A=
++		.src_type =3D VM_MEM_SRC_ANONYMOUS	\=0A=
++	};						\=0A=
++							\=0A=
++	shape;						\=0A=
+ })=0A=
+ =0A=
+ extern enum vm_guest_mode vm_mode_default;=0A=
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/sel=
+ftests/kvm/lib/kvm_util.c=0A=
+index fa4a2fc236fe..824c94c64864 100644=0A=
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
+@@ -500,7 +500,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint3=
+2_t nr_runnable_vcpus,=0A=
+ 	if (is_guest_memfd_required(shape))=0A=
+ 		flags |=3D KVM_MEM_GUEST_MEMFD;=0A=
+ =0A=
+-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, fla=
+gs);=0A=
++	vm_userspace_mem_region_add(vm, shape.src_type, 0, 0, nr_pages, flags);=
+=0A=
+ 	for (i =3D 0; i < NR_MEM_REGIONS; i++)=0A=
+ 		vm->memslots[i] =3D 0;=0A=
+ =0A=
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/self=
+tests/kvm/lib/x86/sev.c=0A=
+index c3a9838f4806..d920880e4fc0 100644=0A=
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c=0A=
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c=0A=
+@@ -164,6 +164,7 @@ struct kvm_vm *vm_sev_create_with_one_vcpu(uint32_t typ=
+e, void *guest_code,=0A=
+ 	struct vm_shape shape =3D {=0A=
+ 		.mode =3D VM_MODE_DEFAULT,=0A=
+ 		.type =3D type,=0A=
++		.src_type =3D VM_MEM_SRC_ANONYMOUS,=0A=
+ 	};=0A=
+ 	struct kvm_vm *vm;=0A=
+ 	struct kvm_vcpu *cpus[1];=0A=
+diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/te=
+sting/selftests/kvm/pre_fault_memory_test.c=0A=
+index 93e603d91311..8a4d5af53fab 100644=0A=
+--- a/tools/testing/selftests/kvm/pre_fault_memory_test.c=0A=
++++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c=0A=
+@@ -165,6 +165,7 @@ static void __test_pre_fault_memory(unsigned long vm_ty=
+pe, bool private)=0A=
+ 	const struct vm_shape shape =3D {=0A=
+ 		.mode =3D VM_MODE_DEFAULT,=0A=
+ 		.type =3D vm_type,=0A=
++		.src_type =3D VM_MEM_SRC_ANONYMOUS,=0A=
+ 	};=0A=
+ 	struct kvm_vcpu *vcpu;=0A=
+ 	struct kvm_run *run;=0A=
+-- =0A=
+2.50.1=0A=
+=0A=
