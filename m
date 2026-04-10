@@ -1,115 +1,123 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EA12D7D27;
-	Fri, 10 Apr 2026 10:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE2737B3F9;
+	Fri, 10 Apr 2026 10:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775815377; cv=none; b=f14Zom9RUWVXsSXtPzFpSHGxH4Q+HvHzyBgIDSs+PxuuqRkH+JrwMNE+Yf6n2jccVlXwic+XSuwW2EJEmX9U4TrDWQyrbALMOuXeumdOyW1ts42HdfR9GQqik2crqmvCbwgGCgGez/kp9jxm3I4WETv3N98F9PGIlRYxlbiLFzU=
+	t=1775816604; cv=none; b=hk+lm7j+x2r/lPZhiBcwGQct0uMe9DpxIVmmHHWaUiLH7NRuT91Vdnan2Uc5LhZRigjr6EGdFEb/zVj90x93zUlKxqY9N0GE4TXI1ApyINWIJlucUBTDg8qnWa8nZ69iT9QE7old5guNgt41hsTctPcUl39eLwDfNe6kmwT4S1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775815377; c=relaxed/simple;
-	bh=RzEhhD9HxoNtqmJP0WHAjow2JcI8Bsr8pPAGcU9rHIQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:Subject:From:
-	 References:In-Reply-To; b=oYdF3QczNDdy7r57u0iNGG5AcIeWW46xL0TYHvee0YSplVdRst6iXsO6k5enPU7nbPSGxkLwYCtLjrbn02ZaZtaKIkshgG7ZS041ADoT6PdI6kBK8Ntx7R7a/ibQlAX8MKwa+tK01+20nLvGEXeAOYOZXoPvcNSmWcwV8WhrEhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eq51B/9L; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eq51B/9L"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63A3UZwF3829159;
-	Fri, 10 Apr 2026 10:02:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IVx4RP
-	xbNkBJdGITKHK6ZxboGWEEC0G53OvLIE1vd3E=; b=eq51B/9LKULzQlbte8Gbx/
-	Ryp74zqkScxnNq/3eF34yvT5+43+IGZabJohvWI4C7xIxvj7ZiRVezZnEUts/6+T
-	g3hJ15quhh/w8pgdiVrt1NzWSXZKV66YIeVaMhv5LqWzj+BozmJAhW+o2RUTHhU8
-	lT4geVZzC2Dn6pBiucJyDX8Utbs/TwgqDdpnYHMomkpFNxy/YidZZYru6oCKySgd
-	KUnthebpCM5evirTHZ5QgO1GV3Yt/Izu6SUW/joobHCFSjMvchf5hgofZxiTo6cU
-	ZNChu+rjPIAeHRXSokdp66h7ChPdrRtLcESNvTTcMH6mG7zWEigDejmpGgGQxDmQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fsb6w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Apr 2026 10:02:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63A83Z2H013827;
-	Fri, 10 Apr 2026 10:02:52 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmf4ffus-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Apr 2026 10:02:52 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63AA2l6344630508
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Apr 2026 10:02:47 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A7B7C2004D;
-	Fri, 10 Apr 2026 10:02:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 857382004F;
-	Fri, 10 Apr 2026 10:02:47 +0000 (GMT)
-Received: from darkmoore (unknown [9.111.44.245])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Apr 2026 10:02:47 +0000 (GMT)
+	s=arc-20240116; t=1775816604; c=relaxed/simple;
+	bh=yBZaykq8NceUyGXJ09ciRntxCq5vrz2Gky5gYr1KgLY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yd2ysVfgyV/1aakHG1CePMhgwbsZuD5SjaH47saF/KUofWIB6klo6PJ+51vdLWuVvOckYGMTsQKpI8IAnAYW9ObPtJKy1IzK55mZrLtU2WPeLIWLe6GQcpaT9mZM4xGQioI1+36zq3p9+XjzSAE0gudc4iUtxvS6SETsyJ8LlLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.17])
+	by gateway (Coremail) with SMTP id _____8Cx_6qRz9hpIfYjAA--.1171S3;
+	Fri, 10 Apr 2026 18:23:13 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.17])
+	by front1 (Coremail) with SMTP id qMiowJCxdcCEz9hpUkpqAA--.37300S2;
+	Fri, 10 Apr 2026 18:23:10 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [GIT PULL] LoongArch KVM changes for v7.1
+Date: Fri, 10 Apr 2026 18:22:45 +0800
+Message-ID: <20260410102245.2749691-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Apr 2026 12:02:42 +0200
-Message-Id: <DHPE0B76OC4W.SXWJMC17U0ND@linux.ibm.com>
-Cc: <kvm@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <nrb@linux.ibm.com>,
-        <seiden@linux.ibm.com>, <schlameuss@linux.ibm.com>,
-        <gra@linux.ibm.com>, <david@kernel.org>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 3/6] KVM: s390: Allow 4k granularity for memslots
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-X-Mailer: aerc 0.21.0
-References: <20260402150135.196943-1-imbrenda@linux.ibm.com>
- <20260402150135.196943-4-imbrenda@linux.ibm.com>
-In-Reply-To: <20260402150135.196943-4-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEwMDA5MSBTYWx0ZWRfX5FeDzJo0AGbB
- KGUBbfnR/fTaeYf1/Oc6+UvWz+KVjPhDe8AtIzpULNVAgF34TO0XPI14IBTZYveg5+PEBbwibSn
- y0KKLY7kBQKQM7czpCBLVoE1+uDgRM+HbFkNo6E/tJ2dLOAbVFOl1eI1GBb3VPMZX4Ic4x3Cq+G
- JRMjIT6lgig34BPOZq7nfu7gXWGDWOKZQKyq2sR45yI8FFFXZTnqAhBG4SZCQsCcsobvSLb9GfH
- gU2Mc7VLmZj49RqQvo+bkRPxA01xR2BcjoYjFm5WBblq+c0/F+7nk/XEU1v1NFrQ3Ap/6b6rt8u
- Zl9akb/jg3oC/38G2jd/TadAAjSRhTWkBPHoRI3ySRPrrDoYBPwvCE2t5GZV/IXG+jM8TlCwqCH
- BxWLN6xCEKyPNH008KAVECC+nsyiwVFZO0s7GD3BeITR/XakUzsbkQmfsnEQ6EWAWS0SqzTE+tK
- 5Etvk8arBufjTkO182w==
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d8cacd cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=qCOx4D0ofwUGgT_s5KUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: e7bHPMEH0SGrtGfuqnaz_mkK3BjzMcIs
-X-Proofpoint-GUID: e7bHPMEH0SGrtGfuqnaz_mkK3BjzMcIs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-10_03,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604100091
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxdcCEz9hpUkpqAA--.37300S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGw1DArWDXr4DCFWxtFyfKrX_yoW5WF4kpF
+	W3urn3Gr48GFyfJrn7Ka4DurnrJF1xGr1IqF1ayFy8Ar42vF18Xry8GrykXFy5Gay8Jr1F
+	vr1fG3WYgF1UJacCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+	Ja73UjIFyTuYvjxUc0eHDUUUU
 
-On Thu Apr 2, 2026 at 5:01 PM CEST, Claudio Imbrenda wrote:
-> Until now memslots on s390 needed to have 1M granularity and be 1M
-> aligned. Since the new gmap code can handle memslots with 4k
-> granularity and alignment, remove the restrictions.
->
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+The following changes since commit 591cd656a1bf5ea94a222af5ef2ee76df029c1d2:
 
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+  Linux 7.0-rc7 (2026-04-05 15:26:23 -0700)
 
-> ---
->  arch/s390/kvm/kvm-s390.c | 20 ++++++--------------
->  1 file changed, 6 insertions(+), 14 deletions(-)
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git tags/loongarch-kvm-7.1
+
+for you to fetch changes up to e47b8e1db9a9bbef6765e85b11e87f48e6b56846:
+
+  KVM: LoongArch: selftests: Add PMU overflow interrupt test (2026-04-09 18:56:38 +0800)
+
+----------------------------------------------------------------
+LoongArch KVM changes for v7.1
+
+1. Use CSR_CRMD_PLV in kvm_arch_vcpu_in_kernel().
+2. Let vcpu_is_preempted() a macro & some enhanments.
+3. Add DMSINTC irqchip in kernel support.
+4. Add KVM PMU test cases for tools/selftests.
+
+----------------------------------------------------------------
+Bibo Mao (4):
+      LoongArch: KVM: Check kvm_request_pending() in kvm_late_check_requests()
+      LoongArch: KVM: Move host CSR_EENTRY save and restore in context switch
+      LoongArch: KVM: Move host CSR_GSTAT save and restore in context switch
+      LoongArch: KVM: Make vcpu_is_preempted() as a macro rather than function
+
+Song Gao (5):
+      LoongArch: KVM: Add DMSINTC device support
+      LoongArch: KVM: Add DMSINTC inject msi to vCPU
+      KVM: LoongArch: selftests: Add cpucfg read/write helpers
+      KVM: LoongArch: selftests: Add basic PMU event counting test
+      KVM: LoongArch: selftests: Add PMU overflow interrupt test
+
+Tao Cui (1):
+      LoongArch: KVM: Use CSR_CRMD_PLV in kvm_arch_vcpu_in_kernel()
+
+ arch/loongarch/include/asm/kvm_dmsintc.h           |  27 +++
+ arch/loongarch/include/asm/kvm_host.h              |   3 +
+ arch/loongarch/include/asm/kvm_pch_pic.h           |   3 +-
+ arch/loongarch/include/asm/qspinlock.h             |  26 ++-
+ arch/loongarch/include/uapi/asm/kvm.h              |   4 +
+ arch/loongarch/kernel/paravirt.c                   |  16 +-
+ arch/loongarch/kvm/Makefile                        |   1 +
+ arch/loongarch/kvm/intc/dmsintc.c                  | 182 ++++++++++++++++++
+ arch/loongarch/kvm/intc/pch_pic.c                  |  15 +-
+ arch/loongarch/kvm/interrupt.c                     |   2 +
+ arch/loongarch/kvm/irqfd.c                         |  10 +-
+ arch/loongarch/kvm/main.c                          |  14 +-
+ arch/loongarch/kvm/vcpu.c                          |  29 +--
+ include/uapi/linux/kvm.h                           |   2 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   3 +-
+ .../testing/selftests/kvm/include/loongarch/pmu.h  |  66 +++++++
+ .../selftests/kvm/include/loongarch/processor.h    |  15 ++
+ .../selftests/kvm/lib/loongarch/processor.c        |  15 +-
+ tools/testing/selftests/kvm/loongarch/pmu_test.c   | 205 +++++++++++++++++++++
+ 19 files changed, 593 insertions(+), 45 deletions(-)
+ create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
+ create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
+ create mode 100644 tools/testing/selftests/kvm/include/loongarch/pmu.h
+ create mode 100644 tools/testing/selftests/kvm/loongarch/pmu_test.c
+
