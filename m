@@ -1,144 +1,105 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB33D8903
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 15:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A362C1A3172
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 15:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775835906; cv=none; b=syphviSmZEvfdvnWx8c/nhJVZRODtpVipirapxKn+FiMG1JkK3b0VrwQ7iioqkFYVZ6KmTllcMdBjgYSdya63Lqp3ZXcyc73XnSSV06BJY2bHXwwax5vbvUaLfap5fKJqdOs6ksCsevGTd3MD/dLo2vRovn1mmOm1vm2ECttn8U=
+	t=1775836146; cv=none; b=bIfAhm6ASxxmPokdGWGsNDKIICUJyOd5LNzjPBn2A0aeWKiyoUePXDA+DV6abLohpsW7N/MOx+yPgRyR7yYeYSk5j+n+A1mPjnZZ5kkiL9+oRHrFdHIRtxBWpR2JELowTccLlwhH+L9GQg1zmfMMuOUFRDZSsaNNmY13d8ZKssk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775835906; c=relaxed/simple;
-	bh=Ra4A1uA4orckwYMKGyuuBdPCAu/OQSIbSy8OXzWm2u8=;
+	s=arc-20240116; t=1775836146; c=relaxed/simple;
+	bh=xmi2+Ys7yjCGVp3E9lCJ58hS3LUvnrIEni0UY3q/vLY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kq1ROVa4T7b3iWkISQZz93POs3ej287hLyHlfryyRp1hJkw9IQ2M4217OC+XUCgBuWe+sxrvNAfnBIbpyfquWXp2GluBdVjTZhvlnA8NaLwrFAJQMVU4P8sru0Fg4Kj/LL1bphJqFEMNBUMc1oVUuq1V9xvMIAmrROydUkHLC7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sblZZ9da; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=BDAg4X9ARQTOQwJgLGyChbcPmCAkeFCf+dRMndtKtBuULyBPxp3ERh8v9diZQrNHS4oSuKCOTuQuIr6yF7b4+vEySCbP+sYcBP+NrOF3AtWbsVrjVwdSBXzylYPIEoJcT6eKX1cXERXVm0EvhUGWPGXhPsFRUI7scePmB5FAmms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gFnqaRtV; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sblZZ9da"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2471321dcso53240205ad.1
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 08:45:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gFnqaRtV"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b62da7602a0so1577189a12.2
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 08:49:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775835903; x=1776440703; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5TswAppJsEI2l6fMCBwuMFg1b8zYj2e7a0LADz2whr0=;
-        b=sblZZ9daYQrCgj56mnDH4wZMf7lwSDgDP15HYBYAJwca/YWMCFOiWFPh+kXSjpM767
-         E/byqM+8EzGbGXIMo41cDV5r8RBEBwFhsmwAltuAkY9prkpvYUegL67ZqMssL5GJondB
-         uizg4UksrjZG8wFcbCHHGp2V9XKVYboZe2RdKgsuBRXD8OVnSNzRRKjbHBgxIPmh8fu2
-         sBUOiPfwsAJ7A74kAjDL6tsKEjl0abnv1Gqzkj2Iz5IXec3tPwFJxHgLMbmHcuiebLqU
-         MvCetdP0exXhGsObm2N+pTxW31CcVz4uj6Yuh01DdIhanx/7dFW6DNDStOHCGpEv3NOO
-         0Mrg==
+        d=google.com; s=20251104; t=1775836145; x=1776440945; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=faJrPe5E1iOOz0a/gpgWm74oLvXOv4P7sGEqr654TnI=;
+        b=gFnqaRtVRhvTfGC+AtpfuDC7lb9rmgcbo17FW4PMLQH8KW0M8jrWxnTys1V1/vxjWc
+         +YpdAhtYtcS5up22H7svjB8FUkxfjEHzsricWes9EjCQ9Uc2hX3GVSsbKKN4BG3n8PLC
+         JekFAUU25E/BoWU8OWtIQrTGzXQ8I5BoqjEzGCsnUiHGCcbvnkIZ00UkqgD2xG4j7xUm
+         iieBaCIo+3qUAavIaCvxvmWSN29s2/7Um8/omE+VLFya/RP/4g46dpWYYQR12J1qEAeF
+         lu05I+W98oPZTrst7zpZiwjf8aUR/h06L0NK5G4pT8ivdJa22PLYs9Ne5313jh90OkhH
+         X/RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775835903; x=1776440703;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5TswAppJsEI2l6fMCBwuMFg1b8zYj2e7a0LADz2whr0=;
-        b=FVlcFCHFXNiFjGKCNSdiACDrGg+yKm4ZrS1cndQ/yY25PZS+2ZZvbCzKJS8mQmiosw
-         qlb3tIuzhQ806o+6pGTw2gAHXzTYqfkx6zpiG7ZGbxsbxd4z0lYkfHVZ4n+se/ttbGrM
-         VtXcX5e8HVIu+SGQ1mJ9Z1xpEKDhMJAN/gqvULcB0O24lrF/HerjO1WqFQMmX0/HjVym
-         UoCZIohuECzS0LvBHCEPIBGdhDAqf8hlCDlj9qiaHVlKIyxoHhlGRZCo9ZUbqzRl8RgU
-         mi+9AKCzdOB3m/EuRtpE32UYhZ9DXLZ3TaAkKZNQGzMk/osDYjpE7xNpVMqp9nsAuIjs
-         yXSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWO3F6DiK3OTVfKX3VRkvCNjcZMKpPnbwy53/mGrxTQZ+wlctcWkfwfESnqJETLfDSEvTA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa0KaOCH18TO+5YtFXY8f5mntwWIESIu4XgJWPiDhlj+UbMO8S
-	iPn0554uXdKaOlpqpgjc7QgARlEVXynHX9Hcd8UdSSSvS37KhaD6ZvltvSQmOM3kAoGUQ3NR4MZ
-	uIccobA==
-X-Received: from plox8.prod.google.com ([2002:a17:902:8ec8:b0:2b0:4f4f:fe19])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:38cc:b0:2b0:60f1:de58
- with SMTP id d9443c01a7336-2b2d5a95893mr41105345ad.45.1775835902936; Fri, 10
- Apr 2026 08:45:02 -0700 (PDT)
-Date: Fri, 10 Apr 2026 08:45:00 -0700
-In-Reply-To: <CABgObfaE2g30D789zK1N8xMfcAzPG8gz8MPERQ+DYxd7Soi-Gw@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775836145; x=1776440945;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=faJrPe5E1iOOz0a/gpgWm74oLvXOv4P7sGEqr654TnI=;
+        b=FhOQPFISvYX4crEtpjR0HINdlBP6FCYxMRXc0NP+Jh+wmQkuRs4YaEK0coCqa+UA9x
+         LE1Vcs6kgZx4cxBMU7Jl2RGiQjr8Yn391m+W5H9EYSYBOooLf3dOqxa+ALQ0qetGQswZ
+         UCFaMmroSNNqbREogdpg8GsCNBKVz0re3CwrUyScVYaYESl7UxpoJSE/jyJzvYbRjZg5
+         DvRRNMrh4ZgwsidoeC0VGQPU0W4vN7uEqxa5C2n+pz4m0NGdKtO6M46j9mMJphEZiBsi
+         o5NhjSJnWnMOnXavQtlXqyE90sIrOC10fl/trLEjjVnGubIAo96JrSPNk8VISA4q+DNK
+         UIDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqynzohaKwuL8+6eXDAABMx+hJfP8LBJ4sFmJ0OfRsP4snJNOtfDxdkR/i71BVSvCDho8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlBVysvYuOCVOmp2CAMsgjJPx6cxaaKbuon5cp7gLLax9lVJ/K
+	FUpbJ1bvoqEZAVT3IFbEVUFqUNry08UC3SxXP8mbFzuJ96V0DYuxX1OK1tw9asYi02SnLAxeZfp
+	t+8hAUQ==
+X-Received: from pgct16.prod.google.com ([2002:a05:6a02:5290:b0:c76:6b2a:2e00])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e210:b0:398:8546:c3fc
+ with SMTP id adf61e73a8af0-39fe3c62aeamr4154102637.7.1775836144846; Fri, 10
+ Apr 2026 08:49:04 -0700 (PDT)
+Date: Fri, 10 Apr 2026 08:49:03 -0700
+In-Reply-To: <adiq6GTAhbVubEg/@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260407180107.1603697-1-pbonzini@redhat.com> <20260407180107.1603697-2-pbonzini@redhat.com>
- <adf29Rn7q9Db0hxc@google.com> <CABgObfZQ8kcdfiaUyGi6AcZErJztEmcdTcLwo946qtXfUwDM4g@mail.gmail.com>
- <adkFk3ZN4HJtpLA3@google.com> <CABgObfaE2g30D789zK1N8xMfcAzPG8gz8MPERQ+DYxd7Soi-Gw@mail.gmail.com>
-Message-ID: <adka_L18z24zsQpc@google.com>
-Subject: Re: [PATCH 1/3] VFIO: take reference to the KVM module
+References: <20260310234829.2608037-1-seanjc@google.com> <20260310234829.2608037-13-seanjc@google.com>
+ <adc1IrD8uqWdaOKv@yzhao56-desk.sh.intel.com> <adf0fHP8sSk6j9G4@google.com> <adiq6GTAhbVubEg/@yzhao56-desk.sh.intel.com>
+Message-ID: <adkb77KphASc9uwa@google.com>
+Subject: Re: [PATCH 12/21] KVM: SEV: WARN on unhandled VM type when
+ initializing VM
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Alex Williamson <alex.williamson@nvidia.com>, 
-	Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jethro Beekman <jethro@fortanix.com>, Alexander Potapenko <glider@google.com>, 
+	"Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Apr 10, 2026, Paolo Bonzini wrote:
-> On Fri, Apr 10, 2026 at 4:13=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > +Dan
-> > > We could get rid of the reference count completely (get_file() as a
-> > > replacement for kvm_get_kvm(), get_file_active() as a replacement for
-> > > kvm_get_kvm_safe()). struct kvm would need to add a back pointer from
-> > > struct kvm to struct file,
-> >
-> > I wasn't thinking of dropping kvm_get_kvm() entirely, rather just not e=
-xporting
-> > it.  Forcing internal KVM usage to grab a reference to the file doesn't=
- add a
-> > whole lot value.
->=20
-> It adds not doing things in two different ways. The kvm_file is not
-> always available (and if we need to add it, it should be added in
-> struct kvm not struct kvm_device).
+On Fri, Apr 10, 2026, Yan Zhao wrote:
+> On Thu, Apr 09, 2026 at 11:48:28AM -0700, Sean Christopherson wrote:
+> > On Thu, Apr 09, 2026, Yan Zhao wrote:
+> > > On Tue, Mar 10, 2026 at 04:48:20PM -0700, Sean Christopherson wrote:
+> > > > +	default:
+> > > > +		WARN_ONCE(1, "Unsupported VM type %lu", kvm->arch.vm_type);
+> > > After pulling the latest kvm-x86/next, I encountered this compilation warning:
+> > > "arch/x86/kvm/svm/sev.c:2954:30: error: format %lu expects argument of type long
+> > > unsigned int, but argument 2 has type int [-Werror=format=]",
+> > > 
+> > > So,
+> > > 
+> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > > index 75d0c03d69bc..ca09c06d1e80 100644
+> > > --- a/arch/x86/kvm/svm/sev.c
+> > > +++ b/arch/x86/kvm/svm/sev.c
+> > > @@ -2951,7 +2951,7 @@ void sev_vm_init(struct kvm *kvm)
+> > >                 to_kvm_sev_info(kvm)->need_init = true;
+> > >                 break;
+> > >         default:
+> > > -               WARN_ONCE(1, "Unsupported VM type %lu", kvm->arch.vm_type);
+> > > +               WARN_ONCE(1, "Unsupported VM type %u", kvm->arch.vm_type);
+> > >                 break;
+> > >         }
+> > >  }
+> > 
+> > I'll squash the above.
+> > 
+> > How did you find this?  E.g. did you cherry pick the commits into a different
+> I just pulled the tag kvm-x86-next-2026.04.04, and compiled it with
+> "CONFIG_KVM_WERROR=y && CONFIG_BUG=n".
 
-My thought was to deliberately avoid putting it in "kvm", because as you're
-effectively pointing out, the file really shouldn't be passed around within=
- KVM.
+Huh.  TIL it's possible to compile out WARN() and BUG().
 
-Aha!  What if we bury it in kvm_vfio?  As an acknowledgement that passing a=
-round
-a kvm_file is only intended for cases where an external, non-KVM entity nee=
-ds to
-to propagate the VM reference.
-
-diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
-index 9f9acb66cc1e..2d9bce646136 100644
---- a/virt/kvm/vfio.c
-+++ b/virt/kvm/vfio.c
-@@ -30,14 +30,15 @@ struct kvm_vfio_file {
- };
-=20
- struct kvm_vfio {
-+       struct file *kvm_file;
-        struct list_head file_list;
-        struct mutex lock;
-        bool noncoherent;
- };
-=20
--static void kvm_vfio_file_set_kvm(struct file *file, struct kvm *kvm)
-+static void kvm_vfio_file_set_kvm(struct file *file, struct file *kvm)
- {
--       void (*fn)(struct file *file, struct kvm *kvm);
-+       void (*fn)(struct file *file, struct file *kvm);
-=20
-        fn =3D symbol_get(vfio_file_set_kvm);
-        if (!fn)
-@@ -175,7 +176,7 @@ static int kvm_vfio_file_add(struct kvm_device *dev, un=
-signed int fd)
-        kvf->file =3D get_file(filp);
-        list_add_tail(&kvf->node, &kv->file_list);
-=20
--       kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
-+       kvm_vfio_file_set_kvm(kvf->file, kv->kvm_file);
-        kvm_vfio_update_coherency(dev);
-=20
- out_unlock:
-@@ -372,6 +373,7 @@ static int kvm_vfio_create(struct kvm_device *dev, u32 =
-type)
-        mutex_init(&kv->lock);
-=20
-        dev->private =3D kv;
-+       kv->kvm_file =3D file;
-=20
-        return 0;
- }
+Thanks!
