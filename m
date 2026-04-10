@@ -1,188 +1,275 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F3B3D1713;
-	Fri, 10 Apr 2026 16:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775839423; cv=none; b=SVr4kxCGcZF8vyLPPF08cOyLR4A/nOQtfJalD4P+sBi30/V7LK90CcSgY7oaDCQ5llF8G7tAv0LOhhQ7t1EjX+KEZOLMyFFhgj723V9oxOIrG8BX5YWZp9lvkSv/InIPVnEytpHLmCXZ+gHQreK8REPTkAB6KyCeteKHW47HVi0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775839423; c=relaxed/simple;
-	bh=q2gcLhT+Qj3dNQFbdKg6lxbocNhFEHy/sYFcU4FEeBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sj2Q4WMqPmZLEgpA+abT9BxdTDRSGepcZOwnEA3NEFYJGtJXHmHZ6L5vh3PXwtdsJc4vev4HVUp28KF7DtP4LhZU2ikUeXwkf8Rg5bfInkfq2mvpn8R523kYVLWjW9gwqmQjg9idIu9H7wi7NUllS2vUvCLhBPm+6pgW31Yjd9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ovDvbWKR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=REO5Lvli; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310AC3DB657
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 16:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775839477; cv=pass; b=Pu59+46xqHuEFHQGGIWsGdqih+EUunx37qqbZKdDZ0bXJz6PFMvn7/rJzGN/NOOaN2FmDmLdI3ylnPtp+zY0FjMdch0R+zQ0kJ2kl7F4iZj/i4yPhpXho+RjIJM/eyRFz9pfqwwPc9NWKpgTjD/LbMRjl76ri0XB9geMlcthGAA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775839477; c=relaxed/simple;
+	bh=gnf5NPxuSAFSVzPdp7lnXic9XSxNa7id9N4QGb7x2ew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SkgitdV9jJg36JP1AO/PJsAdgfqXE53DZIy748ju5iNL+uSpa6oIF9ViAh4JjOvHUmkT7d4Tpsd9NUHjxWakcfA3wmkDjzWfHX7J4e02d7/O5XF8kfeWY7QLduF42HeTpr/OPeBT02TJPu3xN9HOydldZYnuA/RAag4oU1GQ9m4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XS0zXqRP; arc=pass smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ovDvbWKR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="REO5Lvli"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4E4551400164;
-	Fri, 10 Apr 2026 12:43:39 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 10 Apr 2026 12:43:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1775839419;
-	 x=1775925819; bh=uXCca2TKucPBQBgDxEEHcFuIsd7g74Zut3zzG7h2A1M=; b=
-	ovDvbWKRzKYzt9S2AWVuK9VVWe62Pdh5YjW89HtoWBt5BQGS0tlM0qyhRrE/pjAW
-	/lLuSUhWlplKaWmGMQqakagULsQ8hClWh41k0pSStysKDANOBR8+Ga8heoT5ysMG
-	gc8gvjYDR3hMVrIC3p0/ffF5dSpMaMoG3mGm2uEyRS4SGgETXHeHErMpXh7nTyM8
-	rEgjQcut0h3IQk0HKt9QFKPj0nF59l0yJUREZQdy03WuJuSr77HrwkC8EKUxd3pl
-	S95Uo1HWbqqFy98rxZhyrAF7qAAmoVa791m9AqIEQfThktt6spGw8ZZxSDxcJjyv
-	u+SW6keg2ZDK9RaiyMWmcA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775839419; x=
-	1775925819; bh=uXCca2TKucPBQBgDxEEHcFuIsd7g74Zut3zzG7h2A1M=; b=R
-	EO5Lvli5EqUzEbtImahKUSe9TVZds7fBCXA5cn5T1wQL7YZeNbXpG/vZuSFZjJ4J
-	4AzE4bAm1hahYAZ9k82FFXcucwHsqooZcanZQf06vEsGUUjnF//M6waBmtp+FJfF
-	Zsm2AQk2umK6BS/2K5QbTkVEm3olAATtW+frFTwhjkv5dnz9yRMKqK642HYMavQm
-	Vz+VWgM6tZziCRgRguaZeBtlI0WM28+/mQRLnuAPcwuWPFneElvX9OAu+PDFSL4y
-	cB+/RQTSd+30EjkwuZUUbJXBJY3LUx2KyGOyBy5PvjksPeba45uIT0Y/O6juxdtJ
-	oIdB+5j7WEs+xFW/VahCg==
-X-ME-Sender: <xms:uijZaajjk-Wtuf0XOBObkiZOzza2OX53_K8L8rHwErYWb-sVzl4oBQ>
-    <xme:uijZaVD8SaJLognvNf4sABd-pG2vJcwe6PO2FRy4dHJdwjNv5SwY4caHAXveIQD6C
-    4S2GUM9AGy9Ml2yz5lpA9YEvK5Jrrp2I54qiXa--uzdPIH3EfHT>
-X-ME-Received: <xmr:uijZaYvcLrRCCrMwnn6iKc6Mpyg9FtircK8sGdFHzQXKcatLHl6dKW-7jzA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvleelvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepgeduvefhjeeufeevudeiueeuieeftedtkeevkefhgfdvteefleeuhefgtdeh
-    fffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeekpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehrrghnrghnthgrsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopegumhgrthhlrggtkhesghho
-    ohhglhgvrdgtohhmpdhrtghpthhtohepvhhiphhinhhshhesghhoohhglhgvrdgtohhmpd
-    hrtghpthhtohepjhhrhhhilhhkvgesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhi
-    nhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkh
-    hvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrgii
-    sghothdrohhrgh
-X-ME-Proxy: <xmx:uijZaRfH9IyQuR2xEAPpF9gGOEqmmvNfeHe8ni0jB9-F_em0gTUoCA>
-    <xmx:uijZaV-_Du3qOMUqYdEOMgC-f1HyyJcH6UTLGHaTjw062r_fZl5yEQ>
-    <xmx:uijZacS1fi_byPbuFpSlRTDOs6k_TnM8CI09t_qb72y3NgqdkpIeBg>
-    <xmx:uijZaWpRDyDw-V8XR7RGMzq-a5hnPXm2pvK7hsW1-f9nUhs2vyqdhQ>
-    <xmx:uyjZaWLyrgVx-rYL-Y_9Gs4vOLWlqvX1ex-GextkjDEtZsmU7o8zqM6d>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Apr 2026 12:43:37 -0400 (EDT)
-Date: Fri, 10 Apr 2026 10:43:36 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, David Matlack <dmatlack@google.com>,
- Vipin Sharma <vipinsh@google.com>, Josh Hilke <jrhilke@google.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, alex@shazbot.org
-Subject: Re: [RFC] Observed lockdep circular dependency in SR-IOV paths
-Message-ID: <20260410104336.0159cfb6@shazbot.org>
-In-Reply-To: <CAJHc60yiJEfKxyv=to+QWXxuGNyzMW9h7gqhOrC_tnT6M_D6nQ@mail.gmail.com>
-References: <CAJHc60zTBn9xMksi-_UBK=W07rp2vGVZ9ToYhFyadNz4zCVHAA@mail.gmail.com>
-	<20260406223428.GK2551565@ziepe.ca>
-	<9eea53cd-77a7-474c-a552-92f3531f13b3@app.fastmail.com>
-	<CAJHc60yiJEfKxyv=to+QWXxuGNyzMW9h7gqhOrC_tnT6M_D6nQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XS0zXqRP"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a1307438ddso2298706e87.1
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 09:44:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775839474; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SpUusR6CtMRzaFDpMYaf6ufSrRWqW+og5uxUikWcl34jtmIIeSChCnd+fZQc+MU0P6
+         M7CqycBo+BJFsIWrlowhgpvKZuFr4rJrfXmIM1vx50uXztzZgo/zS1pVczWu+BSSMh/4
+         EopXHPyF679JLvzt9myy9mNWCOOzSWT+mrIgcx5A6vOZFiXyopAh9/KYJCgy74CE91oA
+         +Q+wEqU/w0SwR5qby8yaeZWNcXfZoEfach9o11IpbeKg+IwbzYvUNRYBsRCyp+zW9qUV
+         3mX2BJ6WveU54Wc29/isuZ8nHjZO8TP0lITxYQ1uc5c5BK/k2qG9zCKyE3OcpW3N0L+y
+         Jxjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WcTLAwAR7HgTYbmWEjTt5Ig3K5spnM3eEDD+cYxVPDA=;
+        fh=HLGelAaYpWNqdXjluQgBtL8CYD1QPkyCoZy6MNeDnds=;
+        b=NMOVWBY6i8WiCfhfm4lJBOBqAKhDh4+FEYGQnlJyxBYkMGblrA4m1ZAgbLaQPymoFv
+         OKvs/TyC6b1+0lmIzW/QY5m8/wiEMhXYr4eaGv/AK3FPDhd4hhrU6Vuvs/Puos98O/LM
+         cthJuYBiONZIdr44KZK3YpW+3zTOC+PiVb0Ic2rYChiUy5zIkFSt6zH80VZxUp9FgXrh
+         U5qZjaZYgOJs8DLnIDDwaIqQaXPav9N950Lo8nWe3Koqiwdx9+krpjo6ERMqqsvnk5JY
+         wsHerZY7Cj1VXdolKa4eEaFWG/TJc5+dh/180WuA6wOmaXlMe3MW40onKGJ+M1RMcBez
+         Uy8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775839474; x=1776444274; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WcTLAwAR7HgTYbmWEjTt5Ig3K5spnM3eEDD+cYxVPDA=;
+        b=XS0zXqRPo1OnhCO0JDExhHOH2Yy7ELhiRVm2ajQd0tXKT7pmTWXZfjQSqIYl5ZojgD
+         nIyGalMpgvfrOfgToPo/+VCjBW0IQXP63y2j651psSUbj70EZR85bJS/cqgl+ExTyRLy
+         J7Q9ZjveVfBCtf4pPDXsJFvnZr6whOMXpDluh6zT0rhaHRf3QwXn6ojZZ+9Bu6vDPFkm
+         hGE1VkeEW1u+7k96P+Bmr5CRIPC7wqvivpNzspIJhZQMlaU5ZuuHW9RDtoWSUfgh7RVF
+         I0I3ylP4kaVUlOsx+wgqQvMQdZ9IRBMjfMSAzHh7TCqIOIJvFyWy8anB63jzCKkFDkH5
+         SWvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775839474; x=1776444274;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WcTLAwAR7HgTYbmWEjTt5Ig3K5spnM3eEDD+cYxVPDA=;
+        b=ZiVlM6xJBfIIuZpKZxr4bB9LhzFIMrEERmydCFDiqRKcwH7QXwIQjbXlr8lSiJgNgb
+         hTL1NPlw+BMlgUZm4PTjh11Xzs8B2hBDtTz7zGTO5q0VeTF65fG1nCVCPidwp30V2IxK
+         psuzNIGxhhmWqG0tFA5h5fveib300g1GtPt+PNlFcpkSVJ5VKdWhIckIQLgUz+WvL9Vx
+         vmNHGpiqQgagR+LydNJaL1UgQKyTNAJuFn+Nh3yaMv0VvVZ3xv2nopu7U1Kvp5391q+8
+         CdKzxJgFq6pzM3Zq2QyhzgGzKyoHwAYkkm2t3g1eIgSHeC0aaxcq8H5Rz5Tmc0f4ZwnT
+         6aiQ==
+X-Gm-Message-State: AOJu0YxSCT9jyJehey0eHDVseMYR1BIahipGcXRm8zOnC60gl2hLhHbE
+	sMATk2DeULAsmYVmxxC4IvSQdApWREiqjo4LTU1XJj0g/MFJ0DWl4l211xFv4c5qxCMrAE1kuYB
+	Wd9HmSsQXg2hDftGFf/vgvLge50X4spQcko0/C4oH
+X-Gm-Gg: AeBDieu07mQTlUzCfxM8d1NE44hoXThH/OI939qLMPiV+wtWv+fF61H6kwvVCPtpgCt
+	9jBiu7faD/a7pJ780/QZNm7a/G78jfmb95WEn5DMkoEvTEVdWLx0vqRBzKWhcVndspzhLRkaxCp
+	hgXpQXXSGXE4Q39S8kwGbOK+YrcWtVh5+QAUSq2FcKyhuPgYp67G+lsi9c73sD6xHpmqkW3XEgH
+	NZDSmR9wmo6/w1qTE+9fXdjkwRaMx8RMs/GEgMtaiwnKiGi81ATCJiLmIVVSjKPIZvsMa4SmLOk
+	CCRcBoOvcq8azJqt9PE08NqWDJqmUqtw4MPObVyeab+yc6B/rh4=
+X-Received: by 2002:a05:6512:39c6:b0:5a3:cc81:efdb with SMTP id
+ 2adb3069b0e04-5a3efb8ba02mr1104456e87.21.1775839473752; Fri, 10 Apr 2026
+ 09:44:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260316224349.2360482-1-jingzhangos@google.com>
+ <20260324114312.GA438107@e124191.cambridge.arm.com> <CAAdAUtjeYJ5sOQVB-t7U=KJ9JuCCmO9b2dwJsas7mkzNLu8WqA@mail.gmail.com>
+ <20260408150345.GA2316230@e124191.cambridge.arm.com>
+In-Reply-To: <20260408150345.GA2316230@e124191.cambridge.arm.com>
+From: Jing Zhang <jingzhangos@google.com>
+Date: Fri, 10 Apr 2026 09:44:21 -0700
+X-Gm-Features: AQROBzBLjpcQ1gxXXkYLmcBPLslK-9SLQukU2c2RIA94WmMI7RqyYdesMiWxLck
+Message-ID: <CAAdAUtgNEuuSJ7vwxC7DgL1VcstW+JVZx1HuqMWDxF=EGX+0BQ@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v1 0/3] arm64: Add Stage-2 MMU and Nested
+ Guest Framework
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
+	Marc Zyngier <maz@kernel.org>, Andrew Jones <andrew.jones@linux.dev>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Oliver Upton <oliver.upton@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 8 Apr 2026 08:46:30 -0700
-Raghavendra Rao Ananta <rananta@google.com> wrote:
-
-> On Mon, Apr 6, 2026 at 9:00=E2=80=AFPM Alex Williamson <alex@shazbot.org>=
+On Wed, Apr 8, 2026 at 8:03=E2=80=AFAM Joey Gouly <joey.gouly@arm.com> wrot=
+e:
+>
+> On Tue, Apr 07, 2026 at 11:16:15AM -0700, Jing Zhang wrote:
+> > On Tue, Mar 24, 2026 at 4:43=E2=80=AFAM Joey Gouly <joey.gouly@arm.com>=
  wrote:
+> > >
+> > > On Mon, Mar 16, 2026 at 03:43:46PM -0700, Jing Zhang wrote:
+> > > > This patch series introduces a lightweight infrastructure for manag=
+ing ARM64
+> > > > Stage-2 translation tables and executing nested guests. These compo=
+nents are
+> > > > essential for testing advanced virtualization features such as nest=
+ed
+> > > > virtualization (NV) and GICv4 direct interrupt injection.
+> > > >
+> > > > The series provides a generic Stage-2 MMU library supporting multip=
+le
+> > > > translation granules (4K, 16K, 64K) and dynamic page table manageme=
+nt.
+> > > > Building on this, it adds a guest execution framework that handles =
+guest
+> > > > lifecycle management, context switching and guest exit routing. A n=
+ew test
+> > > > case for Stage-2 MMU demand paging to verify fault handling.
+> > > >
+> > > > Please note that this is a very preliminary implementation intended=
+ as a
+> > > > startup baseline for future work in virtualization testing. Users s=
+hould be
+> > > > aware that because this is an early-stage baseline, some portions o=
+f the code
+> > > > may just happen to work in its current state. There might be critic=
+al
+> > > > architectural elements or edge-case handling missing that will need=
+ to be
+> > > > addressed as the framework matures.
+> > > >
+> > >
+> > > Hi,
+> > >
+> > > I'm interested in this, I had a much more barebones (aka no stage2) g=
+uest
+> > > framework thing that I sent out [1], but it seems more useful to try =
+get this
+> > > series merged.
+> > >
+> > > I will try get my tests working with this new framework, one thing mi=
+ssing for
+> > > me is support for executing at EL0.
+> > >
+> > > Thanks,
+> > > Joey
+> > >
+> > > [1] https://lore.kernel.org/kvmarm/20260306142656.2775185-1-joey.goul=
+y@arm.com/#t
+> > >
 > >
-> > On Mon, Apr 6, 2026, at 4:34 PM, Jason Gunthorpe wrote: =20
-> > > On Tue, Mar 31, 2026 at 10:23:06AM -0700, Raghavendra Rao Ananta wrot=
-e: =20
-> > >> Hi Alex,
-> > >>
-> > >> While running the vfio_pci_sriov_uapi_test [1] on a CONFIG_LOCKDEP
-> > >> enabled kernel (7.0-rc1), we observed the following lockdep circular
-> > >> locking dependency warning: =20
-> > >
-> > > This loos more like a class issue, the locks used by the VF driver are
-> > > different than the locks used by the PF driver, and even though the
-> > > devsets are shared a devset should never have both the PF and VF.
-> > >
-> > > Maybe shifting memory_lock into a different lock class for VFs is
-> > > enough.
-> > >
-> > > However, I think it is a bad idea to hold the memory_lock while
-> > > probing a device, I'd prefer to revisit f4162eb1e2fc ("vfio/pci:
-> > > Change the PF power state to D0 before enabling VFs") and change it's
-> > > logic to rely on a private flag instead of pci_num_vf()
-> > >
-> > > Then we don't need to hold the lock any longer than just setting the
-> > > flag. =20
-> >
-> > I agree, that's cleaner, only hold the write-lock on memory_lock in
-> > vfio_pci_core_sriov_configure() to bring the device to D0 and to
-> > set a flag on the PF vdev.  That flag would replace the
-> > pci_num_vfs() test in vfio_pci_set_power_state().  The flag is
-> > cleared without memory_lock if pci_enable_sriov() fails or after
-> > pci_disable_sriov().
-> >
-> > It's a nice compartmentalized fix.  The lockdep splat is a false
-> > positive, but this would eliminate the memory_lock ->
-> > work_completion arc of the detection. =20
->=20
-> Thanks for the suggestion. The pointer to f4162eb1e2fc helped provide
-> context. Based on the suggestion, I tried this diff and we no longer
-> see the lockdep warning:
->=20
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c
-> b/drivers/vfio/pci/vfio_pci_core.c index d43745fe4c843..f857a23c034a4
-> 100644 --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -271,7 +271,7 @@ int vfio_pci_set_power_state(struct
-> vfio_pci_core_device *vdev, pci_power_t stat
->         int ret;
->=20
->         /* Prevent changing power state for PFs with VFs enabled */
-> -       if (pci_num_vf(pdev) && state > PCI_D0)
-> +       if (vdev->sriov_pwr_active && state > PCI_D0)
->                 return -EBUSY;
->=20
->         if (vdev->needs_pm_restore) {
-> @@ -2294,8 +2294,9 @@ int vfio_pci_core_sriov_configure(struct
-> vfio_pci_core_device *vdev,
->=20
->                 down_write(&vdev->memory_lock);
->                 vfio_pci_set_power_state(vdev, PCI_D0);
-> -               ret =3D pci_enable_sriov(pdev, nr_virtfn);
-> +               vdev->sriov_pwr_active =3D true;
->                 up_write(&vdev->memory_lock);
-> +               ret =3D pci_enable_sriov(pdev, nr_virtfn);
->                 if (ret) {
->                         pm_runtime_put(&pdev->dev);
->                         goto out_del;
-> @@ -2309,6 +2310,7 @@ int vfio_pci_core_sriov_configure(struct
-> vfio_pci_core_device *vdev,
->         }
->=20
->  out_del:
-> +       vdev->sriov_pwr_active =3D false;
->         mutex_lock(&vfio_pci_sriov_pfs_mutex);
->         list_del_init(&vdev->sriov_pfs_item);
->  out_unlock:
->=20
-> My only concern was clearing 'sriov_pwr_active' after disabling sriov,
-> since the PF would still remain in D0. But from the f4162eb1e2fc 's
-> commit description, it seems like that was intentional?
+> > Hi Joey,
+>
+> Hi Jing,
+>
+> I had a bit of a play with the code and ended up with a few questions/tho=
+ughts
+> about the guest/EL1/EL0 model.
+>
+> Two major things EL1 needs are allocating memory and eventually page tabl=
+es.
+>
+> For EL1 isolation, I can see a few possible approaches (maybe there's oth=
+ers?):
+> 1. EL1 reuses the usual kvm-unit-tests infrastructure (allocators, helper=
+s, etc.).
+> 2. EL1 is treated more like a real guest/VM, and has to provide its own
+>    allocators and other basic support.
+> 3. The host (EL2) provides all memory up front and can create EL1 page ta=
+bles,
+>    like kselftest.
+> 4. A small hyp-service interface is provided for things like page donatio=
+n,
+>    printing, etc.
+>
+> Option 1 feels like the best pragmatically, the tests will look like a no=
+rmal C
+> file, just that parts of it are run at different ELs. However sharing
+> functionality could be complex. For example, I tried calling printf() fro=
+m EL1
+> and then also from the EL2 abort handler, and hit a deadlock because both=
+ paths
+> ended up taking the same spinlock.
+>
+> Option 2 feels the least hacky, but maybe has the most complexity since E=
+L1
+> needs its own alloactors and general support functionality. It's also not
+> obvious how to map in the EL1 code. Perhaps there would need to be a sepa=
+rate
+> test_foo_el1.c file that was built and bundled into test_foo.c
+>
+> Option 3 looks to be the most simple, is quite flexible, but less dynamic=
+.
+>
+> Option 4 might be quite simple to have a small hyp interface, a bit like =
+option
+> 3 but more dynamic.
+>
+> > Will you add support for executing at EL0?
+>
+> I tried to enter EL0 using `start_usr()` from the EL1 guest. I tried to
+> allocate a stack using alloc_page(). However this leads to some issues du=
+e to
+> the following code:
+>
+>     phys_addr_t __virt_to_phys(unsigned long addr)
+>     {
+>             if (mmu_enabled()) {
+>                     pgd_t *pgtable =3D current_thread_info()->pgtable;
+>                     return virt_to_pte_phys(pgtable, (void *)addr);
+>             }
+>             return addr;
+>     }
+>
+> In this series, EL1 is not set up as a "thread" (see new_thread() [1]), s=
+o
+> current_thread_info()->pgtable ends up being NULL.  That is what led me t=
+o
+> think about the options above.
+>
+> Thanks,
+> Joey
+>
+> [1] https://lore.kernel.org/kvmarm/20260306142656.2775185-5-joey.gouly@ar=
+m.com/
+>
 
-I don't see any obvious problem with that ordering, once SR-IOV is
-disabled the PF is again subject to both PM and directed power
-control.  Thanks,
+Hi Joey,
 
-Alex
+Thanks for looking into this. Your ideas for EL0 support and the guest
+execution model look solid. I=E2=80=99ll leave the infrastructure and EL0
+improvements to you for now, as I am currently working on adding GICv4
+support and vLPI tests.
+
+Thanks,
+Jing
+
+> >
+> > Thanks,
+> > Jing
+> >
+> > > > ---
+> > > >
+> > > > Jing Zhang (3):
+> > > >   lib: arm64: Add stage2 page table management library
+> > > >   lib: arm64: Add bare-metal guest execution framework
+> > > >   arm64: Add Stage-2 MMU demand paging test
+> > > >
+> > > >  arm/Makefile.arm64         |   4 +
+> > > >  arm/stage2-mmu-test.c      | 100 +++++++++
+> > > >  lib/arm64/asm/guest.h      | 156 ++++++++++++++
+> > > >  lib/arm64/asm/stage2_mmu.h |  74 +++++++
+> > > >  lib/arm64/guest.c          | 197 ++++++++++++++++++
+> > > >  lib/arm64/guest_arch.S     | 263 ++++++++++++++++++++++++
+> > > >  lib/arm64/stage2_mmu.c     | 402 +++++++++++++++++++++++++++++++++=
+++++
+> > > >  7 files changed, 1196 insertions(+)
+> > > >  create mode 100644 arm/stage2-mmu-test.c
+> > > >  create mode 100644 lib/arm64/asm/guest.h
+> > > >  create mode 100644 lib/arm64/asm/stage2_mmu.h
+> > > >  create mode 100644 lib/arm64/guest.c
+> > > >  create mode 100644 lib/arm64/guest_arch.S
+> > > >  create mode 100644 lib/arm64/stage2_mmu.c
+> > > >
+> > > >
+> > > > base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
+> > > > --
+> > > > 2.53.0.851.ga537e3e6e9-goog
+> > > >
