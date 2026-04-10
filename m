@@ -1,63 +1,63 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6C237F723
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C50037D10B
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775850888; cv=none; b=UunFw2YcpzXci66+b3W4fq3DOxdn+8HOBIgPjZ0OHe/cPOHYVqz6zBF9r9bqyl2kFCiK17CG+RKkEdY0V0HuK9waK/9pUntX7yTVpyeioF44iuR4kfQQEWDWPOgEdOG7ZV0Xj2oS01VviFgIAM/0dgYldLCxAauOcAaBn4/nWO4=
+	t=1775850896; cv=none; b=Mx0aA5ExYsnyUrRMOEIMyMVtM9tEe3Ow65V+wMyteeVPaTXmFKl1R7pT8puanN/QNBuUWTlFqaehUTk5kiloaQ5wwBwxbE6F2rz5NNUTrsl3VluftdDBrnsa+ad1g0wRJqP7C6Kg5wm6MEeo39eRCTyUWfxmPxHTHxinMXD0DEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775850888; c=relaxed/simple;
-	bh=Y3MzIFEmpDL+pfmtjGC+SXdgom8qJcHAqyzPTtP0pFM=;
+	s=arc-20240116; t=1775850896; c=relaxed/simple;
+	bh=ieIcChIgPJa8E/kGBhK+yBWyyvoC+wr7+QdoyOSGSR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UfoznTAK8UsuQaMMensIYw50SpuDNteO1en0r9xEbRZyhrY/t8HA3Bi1dh1vs706i9gDre6e/SEyakRzlBeosTtUTuyOt3hC469osFi6vcY3+jL9vUieB6Hs+6n4GA3tq+6BzQS5un2WVcB5yw87D0u167ouw1ggFFGWKjWXJDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gv7KiK0W; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version:Content-Type; b=ReBCK25rde5kvRYqNNo0tcZcRtWiXmzZOlflRGmsFP2gYUR01fuKbb2e5Lv3YoS/8owi3sLL7yxBZSa0alxUcczg1rJxv8LfjAWSq3sBz7z6LFaSNH6sk/aL+Ksh8rcEhSugd1NRFxbeK5HTPaGw+PFYYDsmXQ6dVSacoU+nONI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XDQXURIS; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gv7KiK0W"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4887ca8e529so15687215e9.0
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:54:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XDQXURIS"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso28744765e9.2
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:54:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775850886; x=1776455686; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1775850893; x=1776455693; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m5TS34D7gzjspZxEtF9wQrQfCaZf1oD4hCg5mbcwpKM=;
-        b=gv7KiK0W2zeqy5AxQqYQ4Sae0h0euxyiyLM1/EIaQrvnwTMtx0qqKOco92XxoNjVI+
-         TS8tTtdoUMR7oFWmusIzov0zQxTaxsxl8fb7pTMEzZ89wNskFQPHbDKSSLufy0ljSbJP
-         mMQXxUIJdu6GwE8w6z1tud5hvnrPX5mvHSenxxQjC+yYGa2ZNR4P9YIuU+M4+/0wjVzZ
-         G66M0uVLIOvqrEn9qvW/FRFLdhFdO0Mgb0MW/e6NLSOghY9BLUVzl9WeJ1nLhYFJSDgB
-         Ql7QP+PR5Av6xA9nf6AxDD55a5CfRylk9n+sgcDrejsJS0XMqOtiJ1rE+H+K7n4WhkMc
-         wbRQ==
+        bh=Fh21TaJ8ypSq1QYVzVlTyt3qC9Wy73HL07UKYAF+YwI=;
+        b=XDQXURIS5DUCeCfmaIjOG14mlcbEFjc/7HGmuVGHCRsGWcwpi8pFWwXaE6SP+lFwls
+         J2JKPuLELwNeWAFA1dtdBJwHZerG4fUr4ZP5iN4O/dtu2nUduW1J5owUFslTnf9hWl6A
+         lQG1oSxh89GC/W9N5jz/681gwE+hrjGiSUXwq9suTHzdRCsfGiQ7k4ZuyHc875ZKwr7/
+         k09hY+xPDLnYlB7Vg2sZW62mQKCAVeFJj99r9V5n7xjaKunU8mkOgGmYB32b1uCUwPYL
+         8IgsYT3ZZUbqe5t0iKCbrKZ2f6I0xbkeJzMvftqgoNH1OIOULLiUQQJShflIA/dXGe82
+         4nng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775850886; x=1776455686;
+        d=1e100.net; s=20251104; t=1775850893; x=1776455693;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=m5TS34D7gzjspZxEtF9wQrQfCaZf1oD4hCg5mbcwpKM=;
-        b=DUHrUCJq5maEcy4uTdOaEbw/jyL/Jp9JWkS1UWD73kiMyEfeUzJ+MZ7FL+4KG3ghZ+
-         ocRfQa80zZ/79y96MkzPBZCBPwkBspL7ZaXqPrgO+AgGUolycltfqawfPt7X39HWTjMZ
-         Fr84LcPWnvF31H+o+dXiBzzzU9D5Ms+dVxIhsy2HMP2gqaXEAEE257vv38/lbyZQYuR3
-         pV6midmmLZmedH4d5eAdeMBWb9QQPQnNV4tdscpTVn3xdEHn+8ZtiuXKH6cunRhaTH0t
-         k0GlQutL+C7+MCMyEWbaSgBNXdYawilv4W74gEIIaQkr5GldMocNBACQ+zv1IB6+Htv4
-         QEjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWU9R7IEJH7pLmp12h5NCwc5lrqDnhd7c3/Lpq0v+bajA2Csq+TFu8mkWp8h1P1qCWVIlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0I4YEnO6zQwt4TyVC7Gc/Y+mPc3t/OT/svkW+sHZX1teSvwOy
-	0QM2CF8Fy7Jq66+FXT1rClUYNjn41JrogwEiiLP00Yn1wKL/UBonR9x+S5Xq6tvkRSY=
-X-Gm-Gg: AeBDies17VNPUqdeLlFgAjevmywzO1t7TBaMCAHFEFFJCthJ93Do8DmnktmLGTZIWLt
-	pvnJtX0GI4YouwGw5T1AdICjZV6bve0wXbQMGKrFJ0+MztJv8uoQJglCNVsCleRVANTEbAPiH8q
-	lN+p2SCjdIVjS142/9XEiEI09CA62yd3jmYShRARvpe0UTlCInWkZzqFdlPamqGOytNiaHpFSGM
-	8AeytVL6pBddtD7pSiz2hEvAe3bIOCnMI2u6/UQFFgS1qrGtuYiRbV/tQoz+u4eRBP8OIInWSRD
-	ejji+gLyOd2iScEcbcbVK+6PHoPf2qUQt0X3wSri0ce2ZhqDtK/PBy1jpZCBKEj0E93xm6qcZ3T
-	hVS/2L7k99s02jYz4b10EzQA77ISQv7sVgNQzarJTGob7jkp0tVIt+D0ZEJnftiqk/BKVC6CDyU
-	nslkB4Wj1kH540t5SkMRC2ak3sDfeWhvJJ3Bh+66hqLScIsbPNMvBxhKQgzoCFtpko8zHCS9Xw
-X-Received: by 2002:a05:600c:3ba4:b0:488:c6e9:1e0c with SMTP id 5b1f17b1804b1-488d6847de9mr53887245e9.5.1775850885735;
-        Fri, 10 Apr 2026 12:54:45 -0700 (PDT)
+        bh=Fh21TaJ8ypSq1QYVzVlTyt3qC9Wy73HL07UKYAF+YwI=;
+        b=fYbHJ1B0lSgcnLqBK9mM0QEJYTrKoCwBYNX580TlDeQzg0X31EYKt9EVChqRx54ogX
+         jxV7Pbj6yDgPH0Mr+ykoLxBa5MYu3debQ/dtUuiCkRy7wC9ngV0modc44JYIGKPRbeoV
+         RWy+vwVNRDcNF/LyU0q4yp1kcxDbOFyb6aybIKk/5K43s7lXdOiBKLTfI79hSvFuviTo
+         /RQok486w3DhX7txzRSfNXQPiPqnRGk7VXIP6DP9eXG5wN/vcspcOLkIgkJeTvmT5zgn
+         /GWAdIilTfyekA4c+fk6zlTveFXUwL1hjkpoigL1S0TXrvygAU98Ud5a0jVsVNIWqO3R
+         Qh6w==
+X-Forwarded-Encrypted: i=1; AJvYcCX6dl55DKEvCcDtOKRHvEWA3UH7G4zs1dyC6slrJ4uQJ5ZY7bfoCBafwgfVPAfWYvCXbDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+9YaPuLRDj6Q26PlZYstgVfNFdddk/OEX3Q9/kvFQOu9Mqc4u
+	nVT9wEGerdsnLCGf12jSJhWAVr7SRqfso1KKmoQaiTAf0nLBa1w6Mi4v8moDq10XFGI=
+X-Gm-Gg: AeBDietXoe+qpWJC3QGiixtILv2HuFjUDjeeuCyBBpL8+hC6RIfINat/yLpobNAR6SX
+	a0m8Dxqc3dZCRZRR0D82Wit3ad+yAWpCOzWq2Pvbkjw2MYymgowJ+kblRMU27/xQ1f/unLVK52M
+	M4RqxLpRfUjJgqmWBjqMCnaBleBdFhhgmNddcnkWAAx/ANcHpuY2EN7yLGsCLbRDx9HmvRTAnRq
+	BzFmar53+TZHz8J9K+LGMZoPIUg+U4+bULpxGLhWSVNFv8G21tE7NM0yCno13jtbCgjQRfjnzfE
+	Y4+Z3C0/6hjF+vG1FoKKDLh0gBqoRoX2IhjWvF1yyxt0aHniQMYPEjwByqf9x4OyUxml11up0rc
+	v6oy2XE1jUeUWva8RZMVu++Cs73BddZVKo/6aL78OagS7saHOID7OK/eNm2CzpjQW576kd8EP8a
+	D43GUyArSa4Yqg6eD4TwAjlnBJn1t/IMzDLyBRuBYNohwjvmVfgiAHTYgIQGIcfT+7WbrGp5WG
+X-Received: by 2002:a05:600c:3b24:b0:488:c078:bfda with SMTP id 5b1f17b1804b1-488d688d2a1mr56635425e9.26.1775850892918;
+        Fri, 10 Apr 2026 12:54:52 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d533e596sm100071985e9.6.2026.04.10.12.54.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5396293sm84794825e9.15.2026.04.10.12.54.51
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 10 Apr 2026 12:54:44 -0700 (PDT)
+        Fri, 10 Apr 2026 12:54:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,10 +68,16 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-s390x@nongnu.org,
 	kvm@vger.kernel.org,
 	qemu-ppc@nongnu.org,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 11/27] cpus: Introduce SysemuCPUOps::monitor_get_register() hook
-Date: Fri, 10 Apr 2026 21:53:05 +0200
-Message-ID: <20260410195323.17937-12-philmd@linaro.org>
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Chao Liu <chao.liu.zevorn@gmail.com>
+Subject: [PATCH v2 12/27] target/riscv: Register target_get_monitor_def in SysemuCPUOps
+Date: Fri, 10 Apr 2026 21:53:06 +0200
+Message-ID: <20260410195323.17937-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260410195323.17937-1-philmd@linaro.org>
 References: <20260410195323.17937-1-philmd@linaro.org>
@@ -84,57 +90,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow targets to register their legacy target_get_monitor_def()
-in SysemuCPUOps; check it first in get_monitor_def() otherwise
-fall back to previous per-target helper.
+Rename target_get_monitor_def() as riscv_monitor_get_register_legacy()
+and register it as SysemuCPUOps::monitor_get_register() handler.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/sysemu-cpu-ops.h | 8 ++++++++
- monitor/hmp.c                    | 6 +++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ target/riscv/internals.h | 3 +++
+ target/riscv/cpu.c       | 1 +
+ target/riscv/monitor.c   | 4 +++-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
-index a96f4907d05..a9200ec5737 100644
---- a/include/hw/core/sysemu-cpu-ops.h
-+++ b/include/hw/core/sysemu-cpu-ops.h
-@@ -85,11 +85,19 @@ typedef struct SysemuCPUOps {
-      */
-     bool (*internal_is_big_endian)(CPUState *cpu);
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index 35b923c4bf5..7c91f1872b6 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -233,4 +233,7 @@ static inline int insn_len(uint16_t first_word)
+     return (first_word & 3) == 3 ? 4 : 2;
+ }
  
-+    /**
-+     * @monitor_get_register: Callback to fill @pval with register @name.
-+     *                        This field is legacy, use @gdb_core_xml_file
-+     *                        to dump registers instead.
-+     */
-+    int (*monitor_get_register)(CPUState *cs, const char *name, uint64_t *pval);
++int riscv_monitor_get_register_legacy(CPUState *cs, const char *name,
++                                      uint64_t *pval);
 +
-     /**
-      * @monitor_defs: Array of MonitorDef entries. This field is legacy,
-      *                use @gdb_core_xml_file to dump registers instead.
-      */
-     const MonitorDef *monitor_defs;
-+
-     /**
-      * @legacy_vmsd: Legacy state for migration.
-      *               Do not use in new targets, use #DeviceClass::vmsd instead.
-diff --git a/monitor/hmp.c b/monitor/hmp.c
-index 3d812ea3068..799855f3f68 100644
---- a/monitor/hmp.c
-+++ b/monitor/hmp.c
-@@ -1632,7 +1632,11 @@ static int get_monitor_def(Monitor *mon, int64_t *pval, const char *name)
-         }
-     }
+ #endif
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8ac935ac06e..dbd88fa6655 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2720,6 +2720,7 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
+     .get_phys_page_debug = riscv_cpu_get_phys_page_debug,
+     .write_elf64_note = riscv_cpu_write_elf64_note,
+     .write_elf32_note = riscv_cpu_write_elf32_note,
++    .monitor_get_register = riscv_monitor_get_register_legacy,
+     .legacy_vmsd = &vmstate_riscv_cpu,
+ };
+ #endif
+diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
+index 3f206b9fca5..1c90c779534 100644
+--- a/target/riscv/monitor.c
++++ b/target/riscv/monitor.c
+@@ -26,6 +26,7 @@
+ #include "monitor/monitor.h"
+ #include "monitor/hmp.h"
+ #include "system/memory.h"
++#include "internals.h"
  
--    ret = target_get_monitor_def(cs, name, &tmp);
-+    if (cs->cc->sysemu_ops->monitor_get_register) {
-+        ret = cs->cc->sysemu_ops->monitor_get_register(cs, name, &tmp);
-+    } else {
-+        ret = target_get_monitor_def(cs, name, &tmp);
-+    }
-     if (!ret) {
-         *pval = target_long_bits() == 32 ? (int32_t)tmp : tmp;
-     }
+ #ifdef TARGET_RISCV64
+ #define PTE_HEADER_FIELDS       "vaddr            paddr            "\
+@@ -310,7 +311,8 @@ static bool reg_is_vreg(const char *name)
+     return false;
+ }
+ 
+-int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval)
++int riscv_monitor_get_register_legacy(CPUState *cs, const char *name,
++                                      uint64_t *pval)
+ {
+     CPURISCVState *env = &RISCV_CPU(cs)->env;
+     target_ulong val = 0;
 -- 
 2.53.0
 
