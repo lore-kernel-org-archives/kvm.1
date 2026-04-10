@@ -1,167 +1,151 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE2478F4F
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 23:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE60388364;
+	Fri, 10 Apr 2026 23:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775863014; cv=none; b=QwlRrrYoOLsoRXQWZSbhVJ7ZzJg2qWWd6Tb+CaksubIGrgB6SJ6WN4jX1nN7rWDTyMgEs5fBRbD8Br5exLr7keG24M2H7Huo9voQmSso/8luOSUtpnFtfYkBFS2sqwS1rXbh1ZcRRc2742JoaZ2rmT7J2ZDxVNVce/tLa4o7vSY=
+	t=1775863623; cv=none; b=Oo3pJB8ag8PdeMcd0tEsMqL/HLfMN2KchZQkrikxUooItBNPbyhJfdDpwZUhOhsqZv2kBw+NyhuwDP89gWgfYvNaEp2CBhZb9bqBCQnmPxeDMGc0qdIgUwIWCoxOQ+jdO54Gl2pgh1XICfWlY16iqnxHT63PWTJMZXwO3cunW04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775863014; c=relaxed/simple;
-	bh=uuKi1X0TZzBYQCH/+D+igtqxtVeYjyboC6Wv2+XouX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=alrPBkYdxg1S2QwIozJuYxSxKv5GqakgmYMMD5nyk8XyNx1OlWiXIJu3ryrBoMJakJk6vSHFc13wTwfDqrYLJUMA/p6mXyFAuroFiSJJYSGGdmTo0tje/UzvlZOxi9Hbq3OofDpPeEPh6/abltwrarjQka/jKPix3EvKYCBKEtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=cqPJLr8y; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1775863623; c=relaxed/simple;
+	bh=UGP5izu4nnpiCHFMCNeJx2oAVUkflwDSrC1V1t4b8vE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MloSMYTU2hZ2W8dVGR2Rm0wBjE0CzLva7aFxlPQaG9YWpmDWsREQQLSRXztSC6pZ08P8QvCc6/0231LaoLtRSjdcQDqaDRRu4hIH9uk5qCyHv2nHD2mWmhV/t59IKFNBjvuhNjGiBSQsWPKA2jrdVQ9eRaH7dF8FrUfWZf+zqgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bYxaTz6b; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="cqPJLr8y"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8cfc085395fso242328485a.2
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 16:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1775863012; x=1776467812; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+cd4+5YI3Ts2enNXoZMTCszEKCVLBE3ELOgKW1U5A4o=;
-        b=cqPJLr8yVXPROM6EfXG8H1Ts6hFdodrVBQYkn54U2TVYYIExlXx8H/5Zecmhkax4yg
-         HEI9+2HH873oGZm6CK0PGWURXhZMYJCMLuZfYyxbPVH/hzyVAkftuv4OTte3skqf6NXL
-         CZBYq7GYM6ysbexaiQ0aYGMm1ty5R42V90wBY9Ns7j0iXvxuo78h+EHn6aqThBgjn1MD
-         9fooam2LZMg+1DNE7doDEFS4CBLys3BO/2pQfGu3r+mI4RJ3udA433HzRE7bgGt38bMn
-         pcd2X4p0D+UUXkvGsZuhN4PGQG3O1zjI/M14w6Yl7qRQp+/LOcBZtvSjnkB2/COpT48q
-         zt+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775863012; x=1776467812;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+cd4+5YI3Ts2enNXoZMTCszEKCVLBE3ELOgKW1U5A4o=;
-        b=YwwC+U5sQm+fLKiH+rwtw2sc0D1X4u0dhj1gZVuvVbfdxLeP90Wl8XNdhVO9T0AWK0
-         nn5Bq2xl+4VuTuZ5LiL06qj7XsPnuX2O2As28Ipd4fW4QRT2lvQLeuQt23DRpLe8IHIU
-         edjnpVfQ5P+PwWD5Lk6bjPti5LWLPuA3sJozYST0v1kdQ6i8BMxAIL9oS+VyPIgx4NhU
-         3+uKuGAjeznKeQLzOIGMf65PjguKL38fGf2dE3SptbkNN1mRQEqmu0uGRlFEYojjLqnN
-         Rk5I1eVo3JHhel+dN/aidN2gIWIh8gyp++Rk0Qb9D9NVuBV2qfvtUtn5nQXhcQCDC7br
-         gOHg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrqL51PRAG4nRND2uV6TCapPxJpR6W8Ghmb14J8G5aRjdnZhCS4tSc45JZCKB3QXCBoYo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLc9+zqEgByxmZwqV4hsfdgk/8YeKWMBGN01iP37D9x3gYAxfq
-	H4037IpS7arFrqGIeOL0f/HObo8jx9CudNlzqDxek4a+25bg0axBcrUU78PX836p9B0=
-X-Gm-Gg: AeBDievACiWtAxgaTWdiTQfGTMVHFnSmCodEsy0lfkuklwcLrvr6Kk373A6CNs2a+a9
-	QCr9TgSIUSsOxT/N/zfStc8oaY9CJLT37qyt7lxJQyiDdupl2fQ98ZReLAUUCKBzRNwcRA86yQH
-	fP1C1VzCW4k1pkVVlUmNA/U4s2AEeUg+j4YFECFZJ8GkaVw/bv0yc3UqYchqlT9Vct5Q6Yc6WJc
-	BUqXT0cKpDYpC0ddb6HLPal3e1blYpCHk0wZxvkCs1Y36ddNWry6zE3awqENbNV+2b9CJWeZItt
-	a2rO9jwWofdLTmYQ2WBrsSfN0H+jc3SsH/GsqIIoyJYh9qsQKlEMKdijilUQ+dHrrNmhmA8aQ5S
-	gchttX33DWNdrQhM2io2/LLZV4yminb1zpIo+LC4ylZcjacIt/46wPQouDftLjYrPjYpua5y6W7
-	C5a1luZoeqUNgu+zykMlFsdGFQA2m9jk76B8s3osylusSY7sI6IHS7UvXCVUm4sKHcl4psTA==
-X-Received: by 2002:a05:620a:1a24:b0:8cd:b626:cdf1 with SMTP id af79cd13be357-8ddcfcb2c39mr749957785a.46.1775863011618;
-        Fri, 10 Apr 2026 16:16:51 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb934dcd3sm342518785a.34.2026.04.10.16.16.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 16:16:50 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wBL5m-0000000Gks1-1hx8;
-	Fri, 10 Apr 2026 20:16:50 -0300
-Date: Fri, 10 Apr 2026 20:16:50 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Pranjal Shrivastava <praan@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 05/14] iommupt: Implement preserve/unpreserve/restore
- callbacks
-Message-ID: <20260410231650.GD3694781@ziepe.ca>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-6-skhawaja@google.com>
- <ab3CtC0vN6J975V5@google.com>
- <20260410141652.GV2551565@ziepe.ca>
- <adl2QX6gra99bkOV@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bYxaTz6b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775863622; x=1807399622;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UGP5izu4nnpiCHFMCNeJx2oAVUkflwDSrC1V1t4b8vE=;
+  b=bYxaTz6b6rxrSO0Go/en6ZC9mVShu/jcooLjxZWzhIlTyGelNC0c5OD1
+   HieyXt9EEXBYgLZ8DGoSfmDTpBCWZbjodHH79BxGrT3loKvCwflz6r7WS
+   U94y6yg2cLoyp49bvhiJy/60025kNL8hacWNWBya/8aMRAtzYdRj0MA7k
+   pN/giqxVRSq+mtNiiQkjKKcNJ2dsYiOtBml409AMauTIV+Y/AU9Gk76Su
+   8YaD5YfM2j/W5hHcxW5aGAYUZYN446/AtPpKH+i2nYvGKzV9fRSmjM/S9
+   THuqOlEMcfS3tgy6a/fu7v4bgu8ckrjAeotrUhMb+MtCaybX76eJYrVAJ
+   A==;
+X-CSE-ConnectionGUID: wiJhFqnOSE2DpQSkwZe8uA==
+X-CSE-MsgGUID: WJ/lJML5QzStDc36QRMcVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11755"; a="77005966"
+X-IronPort-AV: E=Sophos;i="6.23,172,1770624000"; 
+   d="scan'208";a="77005966"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 16:27:01 -0700
+X-CSE-ConnectionGUID: mPgZWE5TRaGPzaO/bKZqIQ==
+X-CSE-MsgGUID: XpMsfk3mQ12kIUpJfZy2Kw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,172,1770624000"; 
+   d="scan'208";a="234155065"
+Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 16:27:01 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: kas@kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	binbin.wu@linux.intel.com,
+	dmaluka@chromium.org
+Cc: rick.p.edgecombe@intel.com
+Subject: [PATCH v2] KVM: TDX: Fix x2APIC MSR handling in tdx_has_emulated_msr()
+Date: Fri, 10 Apr 2026 16:26:54 -0700
+Message-ID: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adl2QX6gra99bkOV@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 10, 2026 at 11:02:52PM +0000, Samiullah Khawaja wrote:
-> On Fri, Apr 10, 2026 at 11:16:52AM -0300, Jason Gunthorpe wrote:
-> > On Fri, Mar 20, 2026 at 09:57:08PM +0000, Pranjal Shrivastava wrote:
-> > > > +static int __restore_tables(struct pt_range *range, void *arg,
-> > > > +			    unsigned int level, struct pt_table_p *table)
-> > > > +{
-> > > > +	struct pt_state pts = pt_init(range, level, table);
-> > > > +	int ret;
-> > > > +
-> > > > +	for_each_pt_level_entry(&pts) {
-> > > > +		if (pts.type == PT_ENTRY_TABLE) {
-> > > > +			iommu_restore_page(virt_to_phys(pts.table_lower));
-> > > > +			ret = pt_descend(&pts, arg, __restore_tables);
-> > > > +			if (ret)
-> > > > +				return ret;
-> > > 
-> > > If pt_descend() returns an error, we immediately return ret. However, we
-> > > have already successfully called iommu_restore_page() on pts.table_lower
-> > > and potentially many other tables earlier in the loop or higher up in
-> > > the tree..
-> > 
-> > It doesn't return an error, it just propogates errors from the
-> > callbacks which this one never errors. So this is just dead code.
-> > 
-> > > > +int DOMAIN_NS(restore)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
-> > > > +{
-> > > > +	struct pt_iommu *iommu_table =
-> > > > +		container_of(domain, struct pt_iommu, domain);
-> > > > +	struct pt_common *common = common_from_iommu(iommu_table);
-> > > > +	struct pt_range range = pt_all_range(common);
-> > > > +
-> > > > +	iommu_restore_page(ser->top_table);
-> > > > +
-> > > > +	/* Free new table */
-> > > > +	iommu_free_pages(range.top_table);
-> > > > +
-> > > > +	/* Set the restored top table */
-> > > > +	pt_top_set(common, phys_to_virt(ser->top_table), ser->top_level);
-> > > > +
-> > > > +	/* Restore all pages*/
-> > > > +	range = pt_all_range(common);
-> > > > +	return pt_walk_range(&range, __restore_tables, NULL);
-> > 
-> > This should probably be doing something with the FEAT flags and
-> > ias/oas too or do you imagine the calling driver has to deal with
-> > that?
-> 
-> During boot the iommu_domain is recreated in driver and it sets up the
-> FEAT flags and ias/oas properly. Then this generic callback is used to
-> restore the page tables.
-> 
-> Currently the FEAT flags of a domain are not explicitly preserved, I
-> will preserve them and error out here if there is a mismatch.
+Rework tdx_has_emulated_msr() to explicitly enumerate the x2APIC MSRs
+that KVM can emulate, instead of trying to enumerate the MSRs that KVM
+cannot emulate. Drop the inner switch and list the emulatable x2APIC
+registers directly in the outer switch's "return true" block.
 
-Hrm, that expands the ABI a bit though
+The old code had multiple bugs in the x2APIC range handling.
+X2APIC_MSR(APIC_ISR + APIC_ISR_NR) was incorrect because APIC_ISR_NR is
+0x8, not 0x80, so the X2APIC_MSR() shift lost the lower bits, collapsing
+each range to a single MSR. IA32_X2APIC_SELF_IPI was also missing from
+the non-emulatable list.
 
-If the only operation on the restored table is free then I suppose it
-can be simplified quite a bit, you just need the minimal things that
-the collect walker in free touches.
+KVM has no visibility into whether or not a guest has enabled #VE 
+reduction, which changes which MSRs the TDX-Module handles itself versus 
+triggering a #VE for the guest to make a TDVMCALL. So maintaining a list 
+of non-emulatable MSRs is fragile. Listing only the MSRs KVM can always 
+emulate sidesteps the problem.
 
-Is that the intention, free only?
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Reported-by: Dmytro Maluka <dmaluka@chromium.org>
+Fixes: dd50294f3e3c ("KVM: TDX: Implement callbacks for MSR operations")
+Assisted-by: Claude:claude-opus-4-6
+[based on a diff from Sean, but added missed LVTCMCI case, log]
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+---
 
-If so then the restored iommu_domain should be some special free only
-domain too.
+Thanks to Dmytro for finding this. They said to feel free to take this 
+over, so here is another version with Sean's suggestions. Tested in the 
+TDX CI.
 
-Jason
+In Sean's suggestion LVTCMCI was missed, so it's added here.
+
+ arch/x86/kvm/vmx/tdx.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 1e47c194af53..76ab6805ab29 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -2116,23 +2116,27 @@ bool tdx_has_emulated_msr(u32 index)
+ 	case MSR_IA32_MC0_CTL2 ... MSR_IA32_MCx_CTL2(KVM_MAX_MCE_BANKS) - 1:
+ 		/* MSR_IA32_MCx_{CTL, STATUS, ADDR, MISC, CTL2} */
+ 	case MSR_KVM_POLL_CONTROL:
++	/*
++	 * x2APIC registers that are virtualized by the CPU can't be
++	 * emulated, KVM doesn't have access to the virtual APIC page.
++	 */
++	case X2APIC_MSR(APIC_ID):
++	case X2APIC_MSR(APIC_LVR):
++	case X2APIC_MSR(APIC_LDR):
++	case X2APIC_MSR(APIC_SPIV):
++	case X2APIC_MSR(APIC_ESR):
++	case X2APIC_MSR(APIC_LVTCMCI):
++	case X2APIC_MSR(APIC_ICR):
++	case X2APIC_MSR(APIC_LVTT):
++	case X2APIC_MSR(APIC_LVTTHMR):
++	case X2APIC_MSR(APIC_LVTPC):
++	case X2APIC_MSR(APIC_LVT0):
++	case X2APIC_MSR(APIC_LVT1):
++	case X2APIC_MSR(APIC_LVTERR):
++	case X2APIC_MSR(APIC_TMICT):
++	case X2APIC_MSR(APIC_TMCCT):
++	case X2APIC_MSR(APIC_TDCR):
+ 		return true;
+-	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
+-		/*
+-		 * x2APIC registers that are virtualized by the CPU can't be
+-		 * emulated, KVM doesn't have access to the virtual APIC page.
+-		 */
+-		switch (index) {
+-		case X2APIC_MSR(APIC_TASKPRI):
+-		case X2APIC_MSR(APIC_PROCPRI):
+-		case X2APIC_MSR(APIC_EOI):
+-		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_ISR_NR):
+-		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_ISR_NR):
+-		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_ISR_NR):
+-			return false;
+-		default:
+-			return true;
+-		}
+ 	default:
+ 		return false;
+ 	}
+-- 
+2.53.0
+
