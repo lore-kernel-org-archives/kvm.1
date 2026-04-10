@@ -1,139 +1,230 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AEB3DA7C4
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 22:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775859767; cv=pass; b=imhSwhrXIGg0WLYVavFl/O0IaXpgRzjCIN3gj46aew3X4FVoAV9e8QpKyn8eY50Rb8Hh0tKUZgV2JBBIi+ud/pE+U+Gv54lflGY9Ij4VvE6pcuF2+TkyE3NuqXmv7VNI9R2dr+FdOR6IjSxf6t3t11O9Cryry6hXuXj6Dh7DNMI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775859767; c=relaxed/simple;
-	bh=5sV0fyoVLne5Qen+WKeWpPoq7Y7uIPbrOFrfTyCf4W0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VrPNJuS1efiR64aKqN1Gni+5y9zKPjy0Lg5/a7RNBM1LJ6QUaHJR1RPAhLm/nisUarH25qshuNk1DV2l/rhBC9xluY/h9QnpFqpriLS4SNnrKHjZkWJIgSegP7XHXXUT1RV2dvqJYDQ9CW7LDJx1hExmC7C56xxlrG/tux0CNmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WDZlEuRK; arc=pass smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D93E0C65
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 22:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775860848; cv=none; b=qfo01hLzmtqW18WB822K9P/c2z3i0+yaJcPsQzSIl5xBPUeQIdzhtrXnroLnK+WOztiYpzsWa9CEHoL7xknK9OSwYeZxsJ9PWxjLmRC14DvPXNFAL7jwAWmGs8x00RM5DB3pO+bsaoHzL61rTvknxbfNrsE8p+1AJx5CwTbqbJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775860848; c=relaxed/simple;
+	bh=tzOUR/LjuCfGJr/mVgqXlCaulTU4vWiEidNGpq4dce0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zk28ilqsgNnEYibBggQTwCoe8zEBAM7pPCZOe2tW0ttt3eg/oIwytBR+nswyu7JCB+vhR9lD69NAtbb2I0z2KnlePvOZcVZNXOwxVU90YvQpv7zVfSxrb6JBXgSErznQRvtHHl8U+q3wm62ggzJTZXqW93ZBEa2s6WvEUq67FCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fdlL5Ev7; arc=none smtp.client-ip=74.125.82.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WDZlEuRK"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-67070d9ba4dso14736a12.0
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 15:22:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775859764; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Gh/K7Y8eV9G+ERoAykPMSEn8ZTwBhj1O+YYFlYaZ+kaNsjW179/xQG2+fmXitO/O6b
-         XY41n6iwF09hYsIjDp/8+PddNbErCbx5APH9s8nIoHUw4Q+bE4pTm93rveMaH0YwGGtC
-         tgTwThMKlNjh5ijVDyuaaYAIkD6B3xhZkl/Q1HVdo4PtE7hbwsw+c6/RMQj6l8mcNzx7
-         feZzL0NmBAuEOjsP4s9q2pxC9gdnNfhT0rGwbfsZ8n9TAT8Jrk9U6uS/VNEdoPOq5Lgt
-         c9/U9gwQTdNRGEj4LPZUfDCIqEEG02uru07zgewNILgKfLo8N/esiWq/2YZxHY7OW/+d
-         t9Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dWxTs0UhFEVADlU47jI4rZxNB6bESY/XZWZ4wgzYH7A=;
-        fh=crxF0BYBwzjLSjSSKnMXXUUTRuEyf/m+YJHGZs684Fc=;
-        b=c9q2XhrShGvkBrJNGagbNz54uJhVVn46jL+6WJkvuZ4sB1Po8k1eBZlS0udoYl2gdr
-         j0ISeV5vnQjxz3lDxEuu2dK/HfhBhkOEud/UhdQHkeYbZ4ebHnnkkVJE/sCM8qp+Gjtn
-         a5i5z4oyw6Nhm//ndx78cG9JnmJqbahr0NcJHjzfn/ZlphoH8UzyRt4bAMP6mGxmnQCv
-         NlD/sw7778WsvOO3sGPXBBUhp2bihysmHYfAWgIXZhFmX241BZI29p+hMUMP+QWI+ri1
-         G9b9nyZ3+3JvTvjAcUPz/zR6CKQ2eZtqtaDnrmaebtsleagKAKL6vm/aGxD4Gk5hkoL6
-         96Xg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fdlL5Ev7"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2bdcf5970cdso1430443eec.0
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 15:40:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775859764; x=1776464564; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dWxTs0UhFEVADlU47jI4rZxNB6bESY/XZWZ4wgzYH7A=;
-        b=WDZlEuRKCHWZtApJFqjbxrC5o1Z6gtEfmcKS9bWKmoEZ6s8QBl2PNoWLMQA6o0ExVj
-         aM0pZBMb8eaVbyIQmnAeVs8ba6fEqbgQe+Tj4C18+bIQnKGiY+OpyzZFkB/v78jJzjgh
-         Wy285Ia7JTM3qHHUdyNNWneBnlssoB4EwtyK3b0VWHOv5qej4yFfZUVEB412iyxT/WkB
-         k4EAGwbFpbpCxISURPAchBBgkLfu2+7Kp6qSbGld5Lv/ZJitzbsF/HzqyIcHyk+/magO
-         GRHvWWS8D5mxeXdED6I00iIf6oqmWfaWmdki++2NFAzWTHXSquyG4aFsIHPLHBKFnCv+
-         UH0Q==
+        d=google.com; s=20251104; t=1775860844; x=1776465644; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8slB+3H8dMazOpqXNIOvI2WoIOKP4mrqv8umSrDoEpw=;
+        b=fdlL5Ev7i81anTLA6eZa20w8wwt/JCbMjoPAZ3/1pTwE9vL4VV72IF7ZqMKTK6mmqA
+         3ElnzZXjV/BBpkuoIEkyGqAo7ATqX2q4ut9C7+AJFufewWQJrlvWd1CtBF/RHducb9aa
+         4qNw4WrOS8nRhkkKiT7XFwMISwITVxG+5Fgd6ORCb5O34fhb5ZYEIxNCuVeVGm5rqC4R
+         3Tp3Psg4uQEq0t53pUUxul9zSBPCGRqlQaJt31NXxTl9KbhRJwcOwKNLV7rEW0zfaSDe
+         WwM3FTaJU+42RB+Tk7PtF+ENC874GWi1BzVE97S5f/GKQGiGiu3Psr4xt4CCHRCUpzEq
+         96iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775859764; x=1776464564;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dWxTs0UhFEVADlU47jI4rZxNB6bESY/XZWZ4wgzYH7A=;
-        b=glSD61IofJW4WOJsslbGBGRo+osv4dDoJpHg28xiixGJ9NCin4H4uDwnpQMfhVnulP
-         Wf/6OKn3mH96i3jB+0GvNin0xtqLSbHjEEEcMjekhogdhZPprX1pq1TgOpty92yMTQhe
-         v/7NMWrKblY7jDOkKp3P/NsUvaPSsUbowfuQT3iJcc6kUodxbls7YeGT8kCSktG/Cktc
-         rJknNWcbDtq812E2YQz0uJuaK16N7ydZmwT4a3/TSoEu3hNmmSvKtJFza7x5lo/IiNGY
-         RZNwCTiD9/joPvB5brZiCeNrwT/CPSZ24r1qTwv3brWpfzSzfIHNFJ4wFvkp65VaK2EP
-         diXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCuDONXC0p0YuU2En3Aiy+HM88tEn++hH0+wZtSpAfpMJDJcFi6TiSgf5VyE4cytJ4gHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySz4FEdlRuZ+KToZiwt3xoAvy2q/Pz+zOnpbECdfQOB/8NpgMs
-	6co/UobF6XwLw9M81L5pBcabyTDe3yDbkGjh45XNW5wD+4FSH96+6Si3fTL6xGnXfxvM1YIwhUL
-	hvvdj1tF3GdYhpIhobCKoX9AaXP+ILnUbCjFVz5ln
-X-Gm-Gg: AeBDiesXnsgp8LT9lr2klbV59QTVAfvkq7dhRfCu4WiaOsfxgSRFC8ouFPQQYjmoekP
-	9oKx77Rr9NYGis7MmEcFzeY2b0XhtID2f8kcSLBc+0DR2zY6spS1+lCoUpbL1orqZcJqFMfVbfD
-	zMiZ4Sq8sjQFqnS1/6+U75LPceyjYFV0+kCs+62s2V6Zi0CuJ6gqHQkyK+ft4wRj/XtjqCiIejc
-	CgjBV27kouqfy5iO9axvYE3uTCxgo07+r0cLyPtmp//gmO5G3HDyJFzm7pja60GJQy4zkyB3sTc
-	MWzc6tGTzFjmWVRV7yU8LGX4Y6dP
-X-Received: by 2002:a05:6402:26cc:b0:664:eadc:7262 with SMTP id
- 4fb4d7f45d1cf-6701e2ad1e6mr149856a12.13.1775859763640; Fri, 10 Apr 2026
- 15:22:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775860844; x=1776465644;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8slB+3H8dMazOpqXNIOvI2WoIOKP4mrqv8umSrDoEpw=;
+        b=YNf6oEX3SYkmY1nNo/uLqFapRJPqwFlH7BfwUeSVrHs6uMPJh5kwogRtXyJqB+AFuk
+         W4x139E9aIgNIQCL1/NxDZb/VEVuQWdWUBSTYuQ7ROPe/kpSt2mxxvZwStICNQAeeLTV
+         IYkQNlAeYRaqbaq3ykuIWsVroPKI4b7rntuz/JeojyJIiXU8h1JGzon/o0zvydii2XdG
+         a7h7+YqTeHvHFStw501kXM/dAelwM73YrI9appfO9q72w5381VjtPt/t0g2LS5gAe3ZB
+         LzkMG1+Cv955xohUWcbFeYcBFLdCznaLURwtra6vMnVJqkMD7FPutlK6ooqxfvJncuik
+         R00w==
+X-Forwarded-Encrypted: i=1; AJvYcCXGUkckYj+jaWEUJp9DeV5cUFYa0oLuABpxIv9l0La4oG+edZovCcl90oKugvb4n0pNAMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQWZYqchIVtIahCEF6SxBRahGpFuGfHeTYZXbggVLehtlyG7lu
+	XrEwJ5tjlsnbjQrUYNGK0TpKENISAKbLezbmJKhHbyWAiOSaGMG1DgfFVLexxaH2tQ==
+X-Gm-Gg: AeBDievmSBjZI56eLpja6Z6IV/GqFKCrKcgql27mRrFg9/5YeDSK0nO6HWmSJX5zU2A
+	J9OoAvbTBTmOQmXRheg5GKiTAah+EPMtLozjtMeaaSZT75hLAt18qQY4Cljd1c3L2I2+AWtKb1s
+	2rm2aM3kDpTRlAacKb6AvAClGZ+hcbZww3QCDBEwpZ7+d4sGNAg43ryCjHkYX4mjE9D484nlkjq
+	MSOSAGCaKfqLJJofgn/dtgOZFj5cmBTGsfRUNx1Q3As61EPpVUHguSLSeYFjMBvK9nMFd0xDUSN
+	ZrLPdyH/2VbWx5YxTGfLRX3EsmWIxivTPqSDDgTDUCJSRnfoVOF622uYdBy8ZO3GxSETvFgVRB5
+	8UaE0eUnqnaQF405VKQHnLT/nxiBwWw5rI5cU6SmPHoiyYcsR/5LYLe9g0rxDPB+YfPARIBb17B
+	i4KFL7sq1LY8RNFC1OoefrKd6HpmVi7Y/qmFtby7iRK+ZyoRJKgNSNpBakuFnWqdvx4pAv8xFLX
+	+pbLg==
+X-Received: by 2002:a05:7300:a90b:b0:2c7:6218:9830 with SMTP id 5a478bee46e88-2d59b5b3b34mr2205147eec.11.1775860843901;
+        Fri, 10 Apr 2026 15:40:43 -0700 (PDT)
+Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55f5c69b3sm6302440eec.1.2026.04.10.15.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 15:40:42 -0700 (PDT)
+Date: Fri, 10 Apr 2026 22:40:38 +0000
+From: David Matlack <dmatlack@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Vipin Sharma <vipinsh@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] vfio: selftests: Find devices that are compatible
+ with VFIO selftests
+Message-ID: <adl8ZlgM9JEtV_Vx@google.com>
+References: <20260409015139.2800185-1-jrhilke@google.com>
+ <20260409015139.2800185-2-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260402223108.650572-1-jmattson@google.com> <20260402223108.650572-2-jmattson@google.com>
- <adl30JQXxxQGmHvj@google.com>
-In-Reply-To: <adl30JQXxxQGmHvj@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 10 Apr 2026 15:22:29 -0700
-X-Gm-Features: AQROBzBPJqBkmwQWBKn_x66e1ny7Ah7maxTYcpMJflkeizG3bpZTClRBQ8ejwG4
-Message-ID: <CALMp9eRgF7+99P+-jjROastwJyfHEQE60pa=guFvC0KsDoHeEg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] KVM: x86: Rename supports_cpuid_fault to supports_intel_cpuid_fault
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Clayton Pence <ctpence@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409015139.2800185-2-jrhilke@google.com>
 
-On Fri, Apr 10, 2026 at 3:21=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Thu, Apr 02, 2026, Jim Mattson wrote:
-> > The function, supports_cpuid_fault(), tests for guest support of Intel'=
-s
-> > CPUID faulting feature. Rename the function to supports_intel_cpuid_fau=
-lt()
-> > for clarity.
-> >
-> > Signed-off-by: Jim Mattson <jmattson@google.com>
-> > ---
-> >  arch/x86/kvm/cpuid.h | 2 +-
-> >  arch/x86/kvm/x86.c   | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-> > index 039b8e6f40ba..51cbe67c992a 100644
-> > --- a/arch/x86/kvm/cpuid.h
-> > +++ b/arch/x86/kvm/cpuid.h
-> > @@ -181,7 +181,7 @@ static inline int guest_cpuid_stepping(struct kvm_v=
-cpu *vcpu)
-> >       return x86_stepping(best->eax);
-> >  }
-> >
-> > -static inline bool supports_cpuid_fault(struct kvm_vcpu *vcpu)
-> > +static inline bool supports_intel_cpuid_fault(struct kvm_vcpu *vcpu)
->
-> *sigh*
->
-> I was going to suggest supports_misc_enables_cpuid_fault(), since KVM emu=
-lates
-> the MSR for all CPU vendors, but the enable is in MISC_FEATURE_ENABLES, n=
-ot
-> IA32_MISC_ENABLES.
->
-> What if we just drop the helper?  There's only one user.  I.e.
+On 2026-04-09 01:51 AM, Josh Hilke wrote:
+> Update the VFIO selftest setup script to print the segment:bus:device.function
+> numbers of devices on the user's system that have VFIO selftest drivers (i.e.
+> are compatible with the VFIO selftest infrastructure). This makes it easy for
+> users to quickly find devices that are compatible with VFIO selftests.
+> 
+> Example of how to list compatible devices on the system:
+> 
+> $ ./tools/testing/selftests/vfio/scripts/setup.sh -l
+> Supported devices:
+> 0000:6a:01.0
+> 0000:6f:01.0
+> 0000:74:01.0
+> 0000:79:01.0
+> 0000:e7:01.0
+> 0000:ec:01.0
+> 0000:f1:01.0
+> 0000:f6:01.0
+> 
+> Example of setting up a device:
+> 
+> $ ./tools/testing/selftests/vfio/scripts/setup.sh -d 0000:6a:01.0
+> + echo "0000:6a:01.0" > /sys/bus/pci/drivers/idxd/unbind
+> + echo "vfio-pci" > /sys/bus/pci/devices/0000:6a:01.0/driver_override
+> + echo "0000:6a:01.0" > /sys/bus/pci/drivers/vfio-pci/bind
+> Successfully set up 0000:6a:01.0
+> 
+> This makes the script much more user friendly so that no one has to dig
+> around in the VFIO selftest libraries to figure out which devices can
+> run the selftests.
+> 
+> Signed-off-by: Josh Hilke <jrhilke@google.com>
+> ---
+>  tools/testing/selftests/vfio/scripts/setup.sh | 43 +++++++++++++++++--
+>  1 file changed, 40 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/vfio/scripts/setup.sh b/tools/testing/selftests/vfio/scripts/setup.sh
+> index 49a499e51cbe..2cde07eb9c8b 100755
+> --- a/tools/testing/selftests/vfio/scripts/setup.sh
+> +++ b/tools/testing/selftests/vfio/scripts/setup.sh
+> @@ -3,18 +3,54 @@ set -e
+>  
+>  source $(dirname -- "${BASH_SOURCE[0]}")/lib.sh
+>  
+> +# List of devices which have a VFIO selftest driver
+> +DEVICES=(
+> +	"8086:0b25" # Intel Data Streaming Accelerator
 
-My thoughts exactly. :)
+Please also add the new DMR and GNR-D DSA devices that were added
+recently:
+
+  https://github.com/awilliam/linux-vfio/commit/c82cfe15916d33e89c2d2efeeb624e8c9c2c4ca8
+
+> +	"8086:0cf8" # Intel CBDMA
+> +)
+> +
+> +function print_supported_devices() {
+> +	local vendor_device_id
+> +	local id
+> +
+> +	for vendor_device_id in "${DEVICES[@]}"; do
+> +		read -r id <<< "${vendor_device_id}"
+
+Sashiko seems to think the read here is unecessary.
+
+  https://sashiko.dev/#/patchset/20260409015139.2800185-1-jrhilke%40google.com?part=1
+
+> +		lspci -D -d "${id}" | awk '{ print $1 }'
+
+Let's print the whole line and let the user parse out the BDF with awk.
+That will let the user see which type of device it its rather than just
+raw BDFs.
+
+> +	done
+> +}
+> +
+> +function usage() {
+> +	echo "usage: $0 [-l] [-d <segment:bus:device.function>]" >&2
+> +	echo "" >&2
+> +	echo "  -l  List segment:bus:device.function numbers of supported devices." >&2
+> +	echo "  -d  segment:bus:device.function to set up." >&2
+> +}
+> +
+>  function main() {
+>  	local device_bdf
+>  	local device_dir
+>  	local numvfs
+>  	local driver
+> +	local bdf_list=()
+> +
+> +	while getopts "ld:" opt; do
+> +		case ${opt} in
+> +			l)
+> +			 	echo "Supported devices: "
+> +				print_supported_devices
+> +				exit 0
+> +				;;
+
+nit: Put the echo in print_supported_devices and this can be a one-liner
+like the rest of the options.
+
+	while getopts "ld:" opt; do
+		case ${opt} in
+			l) print_supported_devices; exit 0 ;;
+			d) bdf_list+=("${OPTARG}") ;;
+			*) usage; exit 1 ;;
+		esac
+	done
+
+> +			d) bdf_list+=("${OPTARG}") ;;
+
+Let's keep the current semantics where the list of BDFs is passed as
+positional arguments. The next commit would just pick a device if there
+are no positional arguments.
+
+This will keep the script backwards compatible with current usage and
+also keep it simple (no need to pass extra -d flag for every BDF):
+
+  ./setup.sh BDF1 BDF2 BDF3
+  vs.
+  ./setup.sh -d BDF1 -d BDF2 -d BDF3
+
+> +			*) usage; exit 1 ;;
+> +		esac
+> +	done
+>  
+> -	if [ $# = 0 ]; then
+> -		echo "usage: $0 segment:bus:device.function ..." >&2
+> +	if [ ${#bdf_list[@]} -eq 0 ]; then
+> +		usage
+>  		exit 1
+>  	fi
+>  
+> -	for device_bdf in "$@"; do
+> +	for device_bdf in "${bdf_list[@]}"; do
+>  		test -d /sys/bus/pci/devices/${device_bdf}
+>  
+>  		device_dir=${DEVICES_DIR}/${device_bdf}
+> @@ -42,6 +78,7 @@ function main() {
+>  
+>  		bind ${device_bdf} vfio-pci
+>  		touch ${device_dir}/vfio-pci
+> +		echo "Successfully set up ${device_bdf}"
+>  	done
+>  }
+>  
+> -- 
+> 2.53.0.1213.gd9a14994de-goog
+> 
