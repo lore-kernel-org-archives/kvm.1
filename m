@@ -1,56 +1,55 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07276399010
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 23:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5179A39A7E1
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 23:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775865535; cv=none; b=arVu3Xeii/KwSHd9Qz5PYeXciRFgvuUoEqioQVp0I39ooLO+T48MNQ+STBPjYh6ZyNH9+R3QcxiRjiKIiNwQKY5J0e8TPyFbJu+mp2cl2TZG9ODIHkcW001oU5gBDGYsoRwfh2VAfCggpbRpHTy3k+Q3k1ccv1pXwygVWOzsoXw=
+	t=1775865537; cv=none; b=eDektoB7r3hWpYUOgRRQ41HTqTH4uEGzWuTgqFlkTH2nrNGHwhu4RZ8O3mB8HGlXWagtJbFHQxvWoIL4khRlg05ow5FOlJbHTkE7Mug0ifIcawv5YdkjfM/zVv594yCdjNLKehSlit9DQUyYrlfdomxRBodzATxVrfcrdUlbAHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775865535; c=relaxed/simple;
-	bh=ZUwRgoFmWNBFtx8dDggkvelicrkVSbCb2lcdTK9KKiI=;
+	s=arc-20240116; t=1775865537; c=relaxed/simple;
+	bh=n53sTQFuaKkPn7LgxmZfFIhgvTw2UGzZsf99/9tK8Ao=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qwx/YDM6nJbTApHBNvefj1UWIzk6skkXWmc2KiAkiO+0ZGn+3A3nQE2zDP7HGf0OsSWHKn8zZVb1YJ7iOtciv/hqClTCavf9ZN+UDbMsenYHsyImbNqMek7bPRRy97/IW16eEvIGiWbWNfmHA+wRqZvFeFADkVpu+RpZQuQPd+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tL5EIxzo; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=ZsZItCRGJOLUCzWhssspcYWHMieMgWoOc5u9oKUKbp8Ess/k2Peo1UKWldsI/44TgS4KBndmOaP1MBDmX4cMBsVRFPrE+KkLFb9JCvkcm3AO03z5sZbKn7D4e+x7XLxPuVMilbQaXkVyl4BRjz68WnoHm+ipUd7ePdeEiXMphFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QiDbVsQ2; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tL5EIxzo"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c79281bd14cso475433a12.3
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 16:58:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QiDbVsQ2"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2523e0299so64342095ad.3
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 16:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775865532; x=1776470332; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ICyultdb977ZiEIpqh/ujxzZYvaC8ohmSfOnlbVLO98=;
-        b=tL5EIxzowIWfhQxsDhX35bxlterZvvnzmkg5K6Fd9LG5ma4b0uRmdZp7oP1BZwFW8w
-         cdD/dwrKueVXEqpNA5yH+gY9JQwW9hnTTJswaW4L+FScC7279zp9V3CA5Sf1alADkOcL
-         359RrcI9lkM3s9qamIsn0aAmxRSvpfmcnSprne0sc1m9FwSMpKAXvXZfXKqNlz/yu0bT
-         ZZg7uehkNkcrGQ7IcRvBRzlniczVAoofoTkyksCPPAELwZ7HYISvm830nnGWKI98CFpO
-         KEDB0kFt26NnNR/F32kUu+UA2P9fPnn6xCXEIeEz/p0TVzF7h12MAFJspKttg9OJPJp0
-         PxjQ==
+        d=google.com; s=20251104; t=1775865536; x=1776470336; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=qts7/CRLTnbH8sAI2gtWB18MaVwGG3b//bnp/wNIqFs=;
+        b=QiDbVsQ2iCyYQfI18FmCaU8t9fc27DzCI2p0TxF8UyTBHgmMInshr9E5FQ3VtQd5va
+         UDvbFyg2QRjsJ9vbMV6sdYVM2Y/H94iThnRaNvFFJ/FqzlqfpTIh+jeaak8U4xWe0J4W
+         ZphMij3JtjE/9NVGdUuvEF8MGkDHrjaP4gYMQG/vK+aDUXvIgG3bQ2rqsOCHcAU0GyT0
+         CU5zFAXAVaHmPtFk0uksU72BucxIseWucHcj7/ZLYg4JMRdRY0dlAugARfIdvLZkFnlq
+         wyrUY4mMgPrbMYA3VMbDkQWwME6eoojoRy3DmwzCMU730xFjdyX9ZXMfF4qHuPqIvcP9
+         8Gzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775865532; x=1776470332;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ICyultdb977ZiEIpqh/ujxzZYvaC8ohmSfOnlbVLO98=;
-        b=jaypQG4JHoK4VCJtzD4ossYIl0qY4hZhMuWZ0YkAFtZN2nZoWorpKIv9QD73BoQ/KR
-         tQZV3q1AemJvx+z55WOyNPe7vRA6zeMxu5UlCLTRcdTCININod0MTGyEyjvAw1mTSD/5
-         RkIbHmmfDj6mMLdIQI9DXOji94O6JV6KpIvUf79hdq+K9Qfvf/4O9ODjh8nLNbfATeYK
-         5o9BBeg57nxgR5ra0MHFqPv1QjLlLlwf77PvfuHyoPmxu8ffAX/w9JlgZzeGeIigqCzZ
-         hEriOUfjlAtSVYpZYlD+2jJU8nDwsqEes+0IiDBySP14r6T2WblgPDfbgbE4rcwQizBx
-         Ky/A==
-X-Gm-Message-State: AOJu0Yz98nFpcJGbICyYESo6EfR1Cg1RQgiUZw32yH/MSCUmV1KdvwOS
-	m9l7uJi2l74TjeG4waxT2Vn1OVwUvP3oFUYBq2nHEKmLIo65nE52p94l+nF3TDjMRVwKHP68QD0
-	68DIxJQ==
-X-Received: from pfbfb3.prod.google.com ([2002:a05:6a00:2d83:b0:82c:dc99:788c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f0b:b0:827:37ef:7322
- with SMTP id d2e1a72fcca58-82f0c132253mr5651025b3a.2.1775865532032; Fri, 10
- Apr 2026 16:58:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775865536; x=1776470336;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qts7/CRLTnbH8sAI2gtWB18MaVwGG3b//bnp/wNIqFs=;
+        b=JFbCeGAIaBJv4tobyn6Yd009W8yIoIOdPgJ29UznsDxT/id7wnoRYmKTTIhgygvRFT
+         hAA3exHE6EyAWUPjlP1c8eEtBR3iyQab+m0KAW+ji3X+CkhRZX0k+fkBvBx8ENOsqiF6
+         Ajx3L646nJ96rp6yQMzWGF2DO8xE1Ya4FHqcnelwuH3ffX4wFqQx6BoeKcHYP7WgMPxo
+         GVteB8e6UiDM3f9L5SI5tpbLjJOVO6NJrVAu5w/zorWOqgtOGDRCGBRl+hgGVmozaQnV
+         2OnBxg1ZyI3J9HC8pG4dwU6qQbNrmVewDcPvX3edkF0mi1tQy+SxHjeJIMrYmdHau5UT
+         WSrw==
+X-Gm-Message-State: AOJu0YyCpIU2d7dqNWb3Pdo5bkbko3XAM+wEHaNcErL2NlZbsmmRE1Z6
+	MRiMBT9/XB8gHxJoXwsLNkOXULRXp419j9Te39Rpp8BBuZS0/zEAazlGd2L6hcRm+6eteVW25zu
+	1Sfu+CA==
+X-Received: from pfbhu21.prod.google.com ([2002:a05:6a00:6995:b0:82a:69ed:da7f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9188:b0:399:196:1430
+ with SMTP id adf61e73a8af0-39fe3d82535mr5913893637.20.1775865535473; Fri, 10
+ Apr 2026 16:58:55 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 10 Apr 2026 16:58:27 -0700
+Date: Fri, 10 Apr 2026 16:58:28 -0700
 In-Reply-To: <20260410235832.2312342-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,192 +59,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260410235832.2312342-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260410235832.2312342-9-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: SVM+SEV changes
+Message-ID: <20260410235832.2312342-10-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86: SVM changes for 7.1 (short version)
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-This is the full set of SVM+SEV changes.  The end goal of the SEV changes, =
-after
-fixing a few fatal bugs, is to add a lockdep assertion to ensure that kvm->=
-lock
-is held when checking if the VM is an SEV+ guest.  This is at least the sec=
-ond
-fatal bug we've had due to SEV+ state being unwound on failure, and lack of
-formal-ish rules makes it hard to reason about the safety of any related co=
-de,
-e.g. when reviewing new code.
+This is (obviously) the partial version of the SVM changes.
 
-This has a superficial (I can't even figure out why git treats it as a conf=
-lict,
-I think it's both deleting white space or something?) syntactic conflict wi=
-th the
-"vmxon" PULL request; just take this one.
+The highlight is here is the AVIC IRQ window fixes and optimizations.  The OSVW
+changes aren't motivated by anything beyond a "someone is wrong on the internet!"
+type reaction.
 
-There's a syntactic conflict with the "nested" PULL request (this is what I
-see when merging the "nested" one first):
-
-@@@ -870,8 -881,8 +886,8 @@@ void svm_enable_lbrv(struct kvm_vcpu *v
- =20
-  static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
-  {
--       KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
-+       KVM_BUG_ON(is_sev_es_guest(vcpu), vcpu->kvm);
- -      to_svm(vcpu)->vmcb->control.virt_ext &=3D ~LBR_CTL_ENABLE_MASK;
- +      to_svm(vcpu)->vmcb->control.misc_ctl2 &=3D ~SVM_MISC2_ENABLE_V_LBR;
-  }
-
-and a semantic conflict with kvm/master due to the CR8 interception fix:
-
-diff --cc arch/x86/kvm/svm/avic.c
-index 2885c5993ebc,7056c4891f93..adf211860949
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@@ -226,9 -237,6 +237,9 @@@ static void avic_deactivate_vmcb(struc
-        vmcb->control.int_ctl &=3D ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
-        vmcb->control.avic_physical_id &=3D ~AVIC_PHYSICAL_MAX_INDEX_MASK;
- =20
--       if (!sev_es_guest(svm->vcpu.kvm))
-++      if (!is_sev_es_guest(&svm->vcpu))
- +              svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
- +
-        /*
-         * If running nested and the guest uses its own MSR bitmap, there
-         * is no need to update L0's msr bitmap
-
-
-The following changes since commit 11439c4635edd669ae435eec308f4ab8a0804808=
-:
+The following changes since commit 11439c4635edd669ae435eec308f4ab8a0804808:
 
   Linux 7.0-rc2 (2026-03-01 15:39:31 -0800)
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-svm-7.1
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-svm-partial-7.1
 
-for you to fetch changes up to bc0932cf9b9917e826871db947398aa2b62789b2:
+for you to fetch changes up to a56444d5e7387effbc61d6b98fe5d68897017fc9:
 
-  KVM: SEV: Goto an existing error label if charging misc_cg for an ASID fa=
-ils (2026-04-09 12:00:24 -0700)
+  KVM: SVM: Skip OSVW MSR reads if current CPU doesn't support the feature (2026-03-03 12:23:26 -0800)
 
 ----------------------------------------------------------------
-KVM SVM changes for 7.1
+KVM SVM changes for 7.1 (short version)
 
- - Fix and optimize IRQ window inhibit handling for AVIC (the tracking need=
-s to
-   be per-vCPU, e.g. so that KVM doesn't prematurely re-enable AVIC if mult=
-iple
+ - Fix and optimize IRQ window inhibit handling for AVIC (the tracking needs to
+   be per-vCPU, e.g. so that KVM doesn't prematurely re-enable AVIC if multiple
    vCPUs have to-be-injected IRQs).
 
  - Fix an undefined behavior warning where a crafty userspace can read the
    "avic" module param before it's fully initialized.
 
- - Fix a (likely benign) bug in the "OS-visible workarounds" handling, wher=
-e
+ - Fix a (likely benign) bug in the "OS-visible workarounds" handling, where
    KVM could clobber state when enabling virtualization on multiple CPUs in
    parallel, and clean up and optimize the code.
 
- - Drop a WARN in KVM_MEMORY_ENCRYPT_REG_REGION where KVM complains about a
-   "too large" size based purely on user input, and clean up and harden the
-   related pinning code.
-
- - Disallow synchronizing a VMSA of an already-launched/encrypted vCPU, as
-   doing so for an SNP guest will trigger an RMP violation #PF and crash th=
-e
-   host.
-
- - Protect all of sev_mem_enc_register_region() with kvm->lock to ensure
-   sev_guest() is stable for the entire of the function.
-
- - Lock all vCPUs when synchronizing VMSAs for SNP guests to ensure the VMS=
-A
-   page isn't actively being used.
-
- - Overhaul KVM's APIs for detecting SEV+ guests so that VM-scoped queries =
-are
-   required to hold kvm->lock (KVM has had multiple bugs due "is SEV?" chec=
-ks
-   becoming stale), enforced by lockdep.  Add and use vCPU-scoped APIs when
-   possible/appropriate, as all checks that originate from a vCPU are
-   guaranteed to be stable.
-
- - Convert a pile of kvm->lock SEV code to guard().
-
 ----------------------------------------------------------------
-Carlos L=C3=B3pez (5):
-      KVM: SEV: use mutex guard in snp_launch_update()
-      KVM: SEV: use mutex guard in sev_mem_enc_ioctl()
-      KVM: SEV: use mutex guard in sev_mem_enc_unregister_region()
-      KVM: SEV: use mutex guard in snp_handle_guest_req()
-      KVM: SVM: Move lock-protected allocation of SEV ASID into a separate =
-helper
-
 Gal Pressman (1):
       KVM: SVM: Fix UBSAN warning when reading avic parameter
 
 Li RongQing (1):
-      KVM: SVM: Mark module parameters as __ro_after_init for security and =
-performance
+      KVM: SVM: Mark module parameters as __ro_after_init for security and performance
 
-Sean Christopherson (30):
+Sean Christopherson (9):
       KVM: SVM: Fix clearing IRQ window inhibit with nested guests
       KVM: SVM: Fix IRQ window inhibit handling across multiple vCPUs
       KVM: SVM: Optimize IRQ window inhibit handling
-      KVM: Isolate apicv_update_lock and apicv_nr_irq_window_req in a cache=
-line
-      KVM: SVM: Serialize updates to global OS-Visible Workarounds variable=
-s
-      KVM: SVM: Skip OSVW MSR reads if KVM is treating all errata as presen=
-t
+      KVM: Isolate apicv_update_lock and apicv_nr_irq_window_req in a cacheline
+      KVM: SVM: Serialize updates to global OS-Visible Workarounds variables
+      KVM: SVM: Skip OSVW MSR reads if KVM is treating all errata as present
       KVM: SVM: Extract OS-visible workarounds setup to helper function
-      KVM: SVM: Skip OSVW variable updates if current CPU's errata are a su=
-bset
-      KVM: SVM: Skip OSVW MSR reads if current CPU doesn't support the feat=
-ure
-      KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
-      KVM: SEV: Drop useless sanity checks in sev_mem_enc_register_region()
-      KVM: SEV: Disallow pinning more pages than exist in the system
-      KVM: SEV: Use PFN_DOWN() to simplify "number of pages" math when pinn=
-ing memory
-      KVM: SEV: Use kvzalloc_objs() when pinning userpages
-      KVM: selftests: Remove duplicate LAUNCH_UPDATE_VMSA call in SEV-ES mi=
-grate test
-      KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypt=
-ed vCPU
-      KVM: SEV: Protect *all* of sev_mem_enc_register_region() with kvm->lo=
-ck
-      KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
-      KVM: SEV: Lock all vCPUs when synchronzing VMSAs for SNP launch finis=
-h
-      KVM: SEV: Lock all vCPUs for the duration of SEV-ES VMSA synchronizat=
-ion
-      KVM: SEV: Provide vCPU-scoped accessors for detecting SEV+ guests
-      KVM: SEV: Add quad-underscore version of VM-scoped APIs to detect SEV=
-+ guests
-      KVM: SEV: Document the SEV-ES check when querying SMM support as "saf=
-e"
-      KVM: SEV: Move standard VM-scoped helpers to detect SEV+ guests to se=
-v.c
-      KVM: SEV: Move SEV-specific VM initialization to sev.c
-      KVM: SEV: WARN on unhandled VM type when initializing VM
-      KVM: SEV: Hide "struct kvm_sev_info" behind CONFIG_KVM_AMD_SEV=3Dy
-      KVM: SEV: Document that checking for SEV+ guests when reclaiming memo=
-ry is "safe"
-      KVM: SEV: Assert that kvm->lock is held when querying SEV+ support
-      KVM: SEV: Goto an existing error label if charging misc_cg for an ASI=
-D fails
+      KVM: SVM: Skip OSVW variable updates if current CPU's errata are a subset
+      KVM: SVM: Skip OSVW MSR reads if current CPU doesn't support the feature
 
- arch/x86/include/asm/kvm_host.h                    |  29 +-
- arch/x86/kvm/svm/avic.c                            |  17 +-
- arch/x86/kvm/svm/sev.c                             | 374 ++++++++++++-----=
-----
- arch/x86/kvm/svm/svm.c                             | 270 ++++++++-------
- arch/x86/kvm/svm/svm.h                             |  37 +-
- arch/x86/kvm/x86.c                                 |  45 ++-
- include/linux/kvm_host.h                           |   7 +
- .../testing/selftests/kvm/x86/sev_migrate_tests.c  |   2 -
- 8 files changed, 487 insertions(+), 294 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  29 ++++++-
+ arch/x86/kvm/svm/avic.c         |  17 ++++-
+ arch/x86/kvm/svm/sev.c          |   8 +-
+ arch/x86/kvm/svm/svm.c          | 164 ++++++++++++++++++++++++----------------
+ arch/x86/kvm/svm/svm.h          |   1 +
+ arch/x86/kvm/x86.c              |  45 ++++++++++-
+ 6 files changed, 188 insertions(+), 76 deletions(-)
