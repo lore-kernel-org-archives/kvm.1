@@ -1,63 +1,63 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FC53845D4
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5020237F8AB
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775850845; cv=none; b=LZokTwIKcmVKcvHSKr0mH0r1KNG2xDSo6N2dAks2VS75Nb6aYAwWvSJXcHXWPBn1PVMxIyGBLtsYbNBmkfYpBDFGuj0Y2ZzsRts6UhycIV2ea0IYa6N0sd6dtcN6LAQuuO/hnfmTEn7S9nSM0MjGj+cfMkVRA4mCctVdEnEf064=
+	t=1775850852; cv=none; b=IyAVNpkvdyhluxSbs2c4v+8du4k49k/j+WK7rLS4b6pwqiLylvXos2c7zCHSgRn/M2aX9jhprgsugzTyKt9+o+XA9z3RxYBo7zoL7mME1WE0r+qIx/kzDA943vTIGE7c+bX+BHqlHIl5M5n1ATSxAwKFk870RdQq0EIUEayUhrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775850845; c=relaxed/simple;
-	bh=saQYI+zYfPlL6M8bkNDlhGNCe6LAExNbihcrH8/r0vU=;
+	s=arc-20240116; t=1775850852; c=relaxed/simple;
+	bh=HAxn6eQ0dnLHFSpCYOCb8hzzro1Pd1U2eycH08Fv9dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bum/xBRepgjMNZO/qjCBN1P60a1D4VdwWo/z/E08oH+qNb7Ka11g/xWWxAFI8i82EeF6MWbV+gk+0ZlyWa/NSnhizK5iPF7GYgzQuv+54aj59q3DoYJGIKKwWpZiRGoWNuvqc1MvYOCx1hvLOfpYSQALn95heYIYWci0NKu+gXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RbmWLgP0; arc=none smtp.client-ip=209.85.221.47
+	 MIME-Version:Content-Type; b=RV5YI9xBQC0KHfv8Dm1k1Mp46vcFpYKa1UwYyluIEAwCTI1cAsNw1xweZF6D2pQv3RnQhJ/vZQiYB4gymUuBusSlvRGZ6zeayfAwZ9C2DWl+Az8gV48xlEBM89uPp59BU6CoveW3pNueQdaUQjzi069/dW+ALabhTtYTTI7NNXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o6ea3eXE; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RbmWLgP0"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so2360041f8f.3
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:54:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o6ea3eXE"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43cf8fe9c2aso1606241f8f.2
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775850843; x=1776455643; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1775850850; x=1776455650; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MpWqUPwhfS1fPWpJ/GJCnH26mtliLzp4q5CtM+NZCuc=;
-        b=RbmWLgP0lvmgMfaIJTFjGqscO+f1b5v6U9vvgIIJr8O2xstUL7Dtl4L32C+R/cVQ3P
-         G3db289tIxgEDo1Tx8i2uNjWZFzwEjN16Wmy5b58HJu1e7UX87tew/8ZyykcJk2Wemv3
-         lK1p8lFwJwZY3hf6gLJMYI7Ho6ygb8I9wWg0b7lxXFpo0b1i6IG6YPVnWN7pyolgx0Ml
-         KPosgySP+iQQ/vMN1dJsDp7SRgRWzI551g4pd/YRdsixxYSi7OloCLiIcYfgzlc/YyMQ
-         +3urHzJRCcr1+luc1IqFU8FW1RiljYSHH03qWiGaN1RqXT7D84G9ThMp0iLTk8XIIWXV
-         1reA==
+        bh=1eA3XKlB2Issg1dkYmP2jSa4cjzBFSxxUi2nhDXWoMo=;
+        b=o6ea3eXEu9T6kQO6SBfMd1brSshMUzwjuyj+MReKXY5IyIGApHYm/kB2OrJUdFNWUd
+         Utl4zcPKyNAy4TAP63vPsRjK2kweMrggSbJAXrcfBSmBqSJVw4hu/HRMZw8TQUl+SbcH
+         vxPH7y1mDvcavv1xInHMJMnO2W9JcO/rqw5QbTCdeZpcnI6Lx9F9/zjWt27dXYwn+cJC
+         Rd7TIEMgKlBRNnA9Xufc2++IfJiWBjNW4RfK+jGKpy16OnsmnAVdFNKnppQBsOwkOw0M
+         7S2G/R893cNExnmi6WUC3R8Yxds6yL2n0FGOjetOWS2kYht/OE9w03brjetGsbDnmIyN
+         04ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775850843; x=1776455643;
+        d=1e100.net; s=20251104; t=1775850850; x=1776455650;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MpWqUPwhfS1fPWpJ/GJCnH26mtliLzp4q5CtM+NZCuc=;
-        b=Sk/m9Yto4+bbhv06KmAJG3B3NzetfopvLqRBcN4/n/TuppDFFqkXIrGPz6fR+4LsTz
-         XdEBL8JI/qe/KbjrPGVWAae4okg726FNQnc/dI3YMm8gCzunioNG0ClQZSD/oIoNzVNz
-         9FELI5r5+bmk/YkHZzk9DJbAjYktffSpoQoyTZLcrDw55hDUwTQyBenDJVn50dVe7uE1
-         2fo7sV3BSHxgUEjg6xmNWmsQu42O8kQ8KEUlufksxw+YIbYYZ2lqDN2NSxCak+RuodbF
-         Ag5Iyde1v4CfPfOZMZjQd4xzM1uPaleaMC8bE3sc+5B6N7Y5TPAzt/QXHif4FTXsvhlX
-         Gadg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQSuvZ84tnpY0VUN5pxGxW21JPIx7aGa2okKCRXBVhmedVRNtbQhoU4tYh3joahSwM3RQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQi/SFIkkLG0L5NOQXwqzNSzZlqHSRtMCP/Q++0HJMWL17y08d
-	U5aPWaF2NsgZaUS03VG6KS/YhogFyDTe2hmAOxHmG0pizMZ5JDXLavOZ3jQNUtm/snI=
-X-Gm-Gg: AeBDietTUHajYyECC6B7WWjTSfOUe4qY6cHs7N6PIrlze6OQqZBetb0e5dATKm0i1Km
-	blw2NvFhx+gXQF0cx/bbGrK3ErIkC6DYuvTa0oxyCseK75MBgMD7iIx27offW3qhZo8KLInKWD8
-	ZWaRZnaW+V6My3aSlXx2elOveXGd5xeGU3gkWdR7x+GzUuR94gQgYAcS6x4u2XM0DojQfHiXdho
-	wuUKLxpwMrCZSnXXt20FBmlP9I/Dt3nCmxzVWIFkFJerq7SYC1AxeEsQfm2JVdPbK+/31NOe/Rr
-	jPP5Ft5BQPL1+6dTy1aFjmYxxqAjf8wShf49N5nhlHfxAOZe6rh9EAQDj1gWLWa/Pmes4Z31aC6
-	mMCPUT3ZfMVgSFPC68Rrdc2Ywe/crLJ6pCzyhAx9jK56GgJPdgXH4jbkHpSmdVmViID1WZLhr8X
-	rziRgW5ODJHpySunGvmTM7/LFRr4lprvATQg+fS38hgg8Q9+B8dwo1ycvbYSRvp+fF7pcXqdeY
-X-Received: by 2002:a05:6000:2886:b0:43b:7ff5:fdf7 with SMTP id ffacd0b85a97d-43d642c8664mr6778189f8f.29.1775850842547;
-        Fri, 10 Apr 2026 12:54:02 -0700 (PDT)
+        bh=1eA3XKlB2Issg1dkYmP2jSa4cjzBFSxxUi2nhDXWoMo=;
+        b=YkXtjF6lXLqQQ/ZKTllwvrxHNq5KNWfglXVGgW5Kc8p22ovufwW/rXqQAlntCQQP8y
+         bEDChu3S1j1R9pleXVx0xxkjg1xVZ+AUbkRbkhWWdxrfxBoD4G+zIhYj3YHBmvbhMzRa
+         vSBiJaoM1VCb3VAzghLbk3ITfFL61B4VpgQWKyqAyiB4nAYa6fnJ8YB3linOO1XYpufB
+         JNe/PmH6mUFVwcMHRBHTXVoYGDZW8F8FgjaMiSNl3VzpWjRnxQjkCZ+SHsFCssKYP4H0
+         eX/P/sHZqW/0iapk43UW5VwK7NxydETmc5HBp7AWQDqFzACnz+DhvO8CejQ8HJUZfygt
+         khXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVl3l7rwLuiaHJhzxgGEE6DeU5B9kaO7TkC0plHd/c9bmohJmsIywJtAUQLc1rI8N829cQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvCmKQvN6s4+HvCenqdjsTPzrAgF5zFogBk+X97VgYrt4AMpqt
+	hvKEFfYczJl9jIVIS13bu5BRFdjX/47mjFIVf1cZ9ANCq4ft9JH5nGTADiRNkEfr7us=
+X-Gm-Gg: AeBDievia1Nl9eXM8H2DzWHCWDIah3l6yF9fcbilK3EoAXE43s85jrniNf1xEIOhNwz
+	aBZ+ru6YRxnowAa2YOLHPAEczKtyYyPNhZRMSjT0T3H8iTPMA4zABONmCYuk1nfkAtI8MvHgvIh
+	iyVxyjrzUm60BHuIUGiBK0eCne2zjput+764OhYkfwb5/2d2/cpvYJp1gEzdXMRXhJ0arV85tz/
+	vrbZ/8c4n7UIEcI1nZHlrshT7cDJPbtAtdxfFlUjYVotXbrgdfT5Dk7Y9BNJvuVtSM/lBM5odjQ
+	igle9mWY/vhWURf8ett8K846jriI/vXnp8US5OaH3FZUa9ZZavyZ9iQA6NdyvENhnvt0tAE2/Ck
+	omZPziezbLzNlUGxnPwuPbtmpEMM0P8daUi+lhwsyIMgm1k3HvTLglH/yaBmHOwqPttm7x2MnmA
+	l9pGSSdFhbX5A7Rp74OtUy+lwjoLsTCjHYN1G6XOA9vJRKNyjQkJ2V+ah4MKyNM9cA2AsbYtjq
+X-Received: by 2002:a05:6000:220b:b0:43c:fdd:ea96 with SMTP id ffacd0b85a97d-43d642b6e75mr6383617f8f.26.1775850849621;
+        Fri, 10 Apr 2026 12:54:09 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5d85fsm8599729f8f.36.2026.04.10.12.54.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63dec28asm10125307f8f.15.2026.04.10.12.54.08
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 10 Apr 2026 12:54:01 -0700 (PDT)
+        Fri, 10 Apr 2026 12:54:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -69,9 +69,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	kvm@vger.kernel.org,
 	qemu-ppc@nongnu.org,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 05/27] monitor: Forward-declare the MonitorDef type
-Date: Fri, 10 Apr 2026 21:52:59 +0200
-Message-ID: <20260410195323.17937-6-philmd@linaro.org>
+Subject: [PATCH v2 06/27] cpus: Introduce SysemuCPUOps::monitor_defs hook
+Date: Fri, 10 Apr 2026 21:53:00 +0200
+Message-ID: <20260410195323.17937-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260410195323.17937-1-philmd@linaro.org>
 References: <20260410195323.17937-1-philmd@linaro.org>
@@ -84,47 +84,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Rather than having core header forced to include "monitor/hmp.h"
-to get the MonitorDef type declaration, forward-declare it in
-"qemu/typedefs.h".
+Allow targets to register their legacy target_monitor_defs()
+in SysemuCPUOps; check it first in get_monitor_def() otherwise
+fall back to previous per-target helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/monitor/hmp.h   | 6 +++---
- include/qemu/typedefs.h | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ include/hw/core/sysemu-cpu-ops.h | 5 +++++
+ monitor/hmp.c                    | 9 +++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index f17a50a3fed..516089eb5c6 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -17,11 +17,11 @@
- #include "qemu/readline.h"
- #include "qapi/qapi-types-common.h"
+diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
+index 7b2d2d2610f..a96f4907d05 100644
+--- a/include/hw/core/sysemu-cpu-ops.h
++++ b/include/hw/core/sysemu-cpu-ops.h
+@@ -85,6 +85,11 @@ typedef struct SysemuCPUOps {
+      */
+     bool (*internal_is_big_endian)(CPUState *cpu);
  
--typedef struct MonitorDef {
-+struct MonitorDef {
-     const char *name;
-     int offset;
--    int64_t (*get_value)(Monitor *mon, const struct MonitorDef *md, int offset);
--} MonitorDef;
-+    int64_t (*get_value)(Monitor *mon, const MonitorDef *md, int offset);
-+};
++    /**
++     * @monitor_defs: Array of MonitorDef entries. This field is legacy,
++     *                use @gdb_core_xml_file to dump registers instead.
++     */
++    const MonitorDef *monitor_defs;
+     /**
+      * @legacy_vmsd: Legacy state for migration.
+      *               Do not use in new targets, use #DeviceClass::vmsd instead.
+diff --git a/monitor/hmp.c b/monitor/hmp.c
+index 983048db1b9..6cf2f3e65ff 100644
+--- a/monitor/hmp.c
++++ b/monitor/hmp.c
+@@ -25,6 +25,7 @@
+ #include "qemu/osdep.h"
+ #include <dirent.h>
+ #include "hw/core/qdev.h"
++#include "hw/core/sysemu-cpu-ops.h"
+ #include "monitor-internal.h"
+ #include "monitor/hmp.h"
+ #include "qobject/qdict.h"
+@@ -1603,13 +1604,17 @@ void monitor_register_hmp_info_hrt(const char *name,
+  */
+ static int get_monitor_def(Monitor *mon, int64_t *pval, const char *name)
+ {
+-    const MonitorDef *md = target_monitor_defs();
+     CPUState *cs = mon_get_cpu(mon);
++    const MonitorDef *md;
+     void *ptr;
+     uint64_t tmp = 0;
+     int ret;
  
- const MonitorDef *target_monitor_defs(void);
- int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval);
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 416a8c9acea..07f2ae7c9f1 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -72,6 +72,7 @@ typedef struct MemoryRegionSection MemoryRegionSection;
- typedef struct MigrationIncomingState MigrationIncomingState;
- typedef struct MigrationState MigrationState;
- typedef struct Monitor Monitor;
-+typedef struct MonitorDef MonitorDef;
- typedef struct MSIMessage MSIMessage;
- typedef struct NetClientState NetClientState;
- typedef struct NetFilterState NetFilterState;
+-    if (cs == NULL || md == NULL) {
++    if (cs == NULL) {
++        return -1;
++    }
++    md = cs->cc->sysemu_ops->monitor_defs ?: target_monitor_defs();
++    if (md == NULL) {
+         return -1;
+     }
+ 
 -- 
 2.53.0
 
