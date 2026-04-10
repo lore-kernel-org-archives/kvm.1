@@ -1,63 +1,64 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE495345750
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF173803C3
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775850917; cv=none; b=J1P27f6HT7tXBJyhZxDUOCrOkyr4tmltRZ4vypjgKEF/l0i3Rb1T30gFBg911Xv5Hry100O24JGO1lQA25Hm/yO1C+cftU2YkcDf/NApQQwczAcB8rmMqoGvpOmrQWivfRJzdaqc28K6HTgHGGYeaUqn/It59dskQ+Fsv4eQBWs=
+	t=1775850924; cv=none; b=PrA92nlNJB0VKSgMU+DUCvyddiu2Gqt11zQdlZSeKhbeA7+l9lvAUGcIqsxRBPOItDBWQD3pNtqwfNmDB7ma8sagzCJbf1RIipXyFYpCtLek/xS3TuIfvj23owXLCDmmC02WTTzE9uSenMnRetyg6BJPNLXk6i2RL8E0O8IrsII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775850917; c=relaxed/simple;
-	bh=3C9yRjGxxIEZlZcT9l0nQcEszIgjisLm1Yr6NYIQ3Co=;
+	s=arc-20240116; t=1775850924; c=relaxed/simple;
+	bh=kINEKYdz+oEtFKJ8apyaZXC0gA9C1vP6F/mUUMOidb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jdfAjPAJAqa4W+6UtJPcnq99c/X0bEMMK/5bsGqeAvofIHdSUTq9k3Q/hw8dGB4ZGlLWAFGxXdLdLGXamOYniFSY8xvhiC2cmw7eX+E0UDh5lgSOV4joipKIFZUKon0th50KTdGu7MAfLDDUoi6qJGOMR2fna+Figf7WX4pcT8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K8WJkrsR; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version:Content-Type; b=Vk2w/p6gUF+nv1dsm8ghHydWGdhSFhHg2gyGdpu1NFF4NOyJMZXU0EUaxwsZUxfIg8s3PmAkSmfsOMXLfFtK1X6xUWUocQtiat0g7PRKYeI8FkSyYjZOPExXw7GRedLn1BFzR5v0lUGZjxUt+R1mqaCXva+xpAVS1VWRNr4OoL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Uw4EZqgm; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K8WJkrsR"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488ad135063so22812865e9.0
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:55:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Uw4EZqgm"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so17414155e9.3
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:55:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775850914; x=1776455714; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1775850921; x=1776455721; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6HAEsPfskfREToikV46U/wzGFh7dU/0uRJHIvrZhc2k=;
-        b=K8WJkrsRPHW1G6mhBhHUMBpDFADpuOwuOlu75o8zRIkJRV3Rg8QHSEfeRvK987AFDZ
-         TFOaAX3Iyzh95YAvAt3nB4NqQavofgniT1yU9ntNqHROWGrzQ4EA1W3wip+XQRhujNDx
-         /hLUh/RrVlDK/HMiwzQxmVeBy//ucvl6vg/qxw3VlcRI02pc+CJBOBDxpzUfc+GIJ+zZ
-         v6StQRKGAPY+rMx0JQPyRezYJpBygqQwxTmpEXixnY2UlRaUuDs2P/FquXHtIJ9FOqdK
-         MMWMXsNGz5xNap61pfd15qpcoYI+MhNu68eXaL8L9WjRC3hjL61M2bI5qcHsoxW8KSvK
-         fgeA==
+        bh=P7DYNcbBqYRxENhIeovRDLogIedruZzNw+qepAaR4ak=;
+        b=Uw4EZqgmGI3PwPp2+Y2PwXb6bVZYHzEBPa93OWDzu7fdsJdQIdEv+m6zvwU74otKuI
+         28xTh7zI6kPZsRK0KQ5hYwXA7ybPmQNZ5bhL5WbVrBx58zwoo8sddhhL1AREuMbkdSRl
+         VtNAOMknkDRVaFr2M70Xcj7qdkl4MWiTMZhh2rVA5Fy0narHEbz6aZx9YVgyCSRDhguv
+         a9FJFyi/PMrU4z5RndH6dj3WYw8AAtT91HF4XOLoGnH83LRJZFKNySKkXKNqRXVLRfn4
+         N3N59G4qAs3eYBqd2qVvd3BBfZxji9JOgrA11WQGYy0dufqhEBd5EINyiK12BtxGngQU
+         kvcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775850914; x=1776455714;
+        d=1e100.net; s=20251104; t=1775850921; x=1776455721;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=6HAEsPfskfREToikV46U/wzGFh7dU/0uRJHIvrZhc2k=;
-        b=e81CoyUL+sTc48AXiNibuqIDSSepOh31lZA0NL2Y+bg7hR6UBrXvBH/qRb8VVe8Lav
-         /yvfq/5zYCfRZbwePzSmAaMF6ZG6iTakkvSYEMoPQojpvFkcKqNoCFFfUT9b+ZFNwZHE
-         GLM+m1C+5mYDosAaSUyuDhWCTFrWLNUyAG4w5g7WoH5YaAffZszzjDY3n1bXNrOXX4at
-         7S6OioUPp6LUen0oX+PAbocDVwt59uL/Rx/eUSS9AUT+oDOD0b1rf/79FFueTqCHWLy8
-         AQA0yqMMZf9df15e4GFkocP0EQUo4NEHZnOtioXJT0/JNYv807EAhT1IwrU1Nys5i5ZV
-         2VIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUqowdocL2rjFOpgisGaJNtNXmQzyTXfNh2J7dMlKF7Y6kzaFy1HcctoF73GthDY0RNjMs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwohyZUBgTZ2O9k14jy0ACpiqyL4Ys4cnrF09WLo6YlAb1q0Vv4
-	iQZ6E3sCQD5uomGtg4dFw0//OZ3ZP+4DYHCOivxkWYgFBTT/I+eAwSsMYIcsotjapcc=
-X-Gm-Gg: AeBDiesPc2DNhm7bT4ENhWEIeV7IZhBLyyDW1wF2m+kXc9xLFxOVtthGQeZaYqRqskw
-	RSdLM+9b1+tyJR/ceA3q2gC7WK3ur/ykpW2cwc2JNbTNsjxyShP7an63jUjC2w1H07snlyEj2TI
-	cx80vXBs7aReyoy5VB74p9nOgWfPsEx8LVlZmbv5kbErpOAyrUzFtRYySFzEOmQbLtwxepFGiQs
-	AGHVSoFBXhC8CkysjggpAlHriEfRs9u7q8pb62DvHkNgIgi910+GniGHvwb3v+/rQWgZ+bUfVBX
-	djOOSVTHy5UvHwi6RJCGdhk9cOex7cB8QXsokBYw0i00buidtRLkiO8r/LJHobR+0QAa8EMZkZk
-	7tlaM33lz6WdyCtyQG5lLQ5nERm3LaJC5+T+Ufy3ebhOmyR0QXaj5btDN/yvc3DzQnpBeFLngiU
-	qr2C6/bgAo0cbP7VPSqo6UU/TrjOsCu22Q0bOjgaRIZPWbtzRQfBVQZXdSWTk7TkJBZGSYq0na
-X-Received: by 2002:a05:600c:5397:b0:488:b8bc:6a32 with SMTP id 5b1f17b1804b1-488d68a4765mr64730165e9.23.1775850913981;
-        Fri, 10 Apr 2026 12:55:13 -0700 (PDT)
+        bh=P7DYNcbBqYRxENhIeovRDLogIedruZzNw+qepAaR4ak=;
+        b=ZFUMfFQ+6h3p9sfMtkuTWu5rojdW/tTO4+k4w62L4KCpJnA+dNY6YdaXa37dQJuhIV
+         eVJg7F1+K+AQ8ugsImsCLlM4KYmsAxhgWZ/2k2n5L7mU/+/EC3PUF0t8GG4QjhknAECW
+         8GlP5Z8NRBKdzAZT4tYHjpl2LbOGz6FHxIAOASJPlxiIwba0WajcsdVbq6xY1L65lLah
+         CCko1CLR4G3jexKEt864iDY/wW8eiB9iFSVToUj3ypRk4iLR740FQnK4mJYl6D446JEq
+         jB3AvUh3enk+uwDyuxGWYq5cCBYOQn1Zr3mQ5q7w7JzY4H1D2kry30pkQI6TjU1KttE3
+         D3AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWJx9xNVgzJtOJvHRswonesSWQp4gjKb+ynV4wuo1mjkJ9BepLkiY0KjANrbpjDKjdzSM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMBHLv1Vgl+4fVkA9B3GbKfln1ddUNP7wxc7O0j118jQ5VNhdP
+	htqh0ISQ1HMSpCwBGeP3Vf849BFRdIJYtBkVblspJMX0qNC7RGFFYQ9nZ3qG+IrJw/0=
+X-Gm-Gg: AeBDietONeVasyt/IFV9EeSVu5eI0Dt37ZQc/DEKGLIh6szPDkHPakxghQ9lSS7Ngv1
+	2vH8WWROiK8LemHOrl0J4Ht0e4FAZj7BSICfHq///f1/QDgf9qrFShJx55jDrctpWrjJS1zfshr
+	FxxlZBFmc3TahgWFLwGpoHp8R68QGeR9C7748pAKP8D7f8pnBQoDucVvvq/LW1+eOQiYnEfsmwR
+	RmLEILOV0IvUX5T6WGwSBGQ2vbsHAyVUCX+5lAIPWv768gAoi9RDSf4jiXOs6apzFv/XXwOuEM/
+	7R3wIGSPHz6AUGUzPeduvf3DIFDVA1dlxSl+GUbuW88FXE7cX3+twPC/TwyoIdWIc3526ZzEo0M
+	bXss7duBRD9NssCWrBaukt7HMtgX8MjwzDexWM8xjqEeZMgq8h668Pc6YzPuAiDuH27o5YeCY2e
+	Zax5mxv3mw0ieMmxgbjzfrXQ8qm9e81lFNBWPqzdmp9qgD8ZCFUzhaHRJBl6SQPtNzQAcesWww1
+	F2zdnehfgg=
+X-Received: by 2002:a05:600c:4e4d:b0:485:3193:6ddb with SMTP id 5b1f17b1804b1-488d6808507mr60392295e9.3.1775850921143;
+        Fri, 10 Apr 2026 12:55:21 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5d80bafsm29702685e9.5.2026.04.10.12.55.12
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5d80bafsm29705155e9.5.2026.04.10.12.55.20
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 10 Apr 2026 12:55:13 -0700 (PDT)
+        Fri, 10 Apr 2026 12:55:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -69,10 +70,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	kvm@vger.kernel.org,
 	qemu-ppc@nongnu.org,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 15/27] stubs: Rename monitor* -> qmp* files
-Date: Fri, 10 Apr 2026 21:53:09 +0200
-Message-ID: <20260410195323.17937-16-philmd@linaro.org>
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PATCH v2 16/27] monitor: Make 'info via' a generic command
+Date: Fri, 10 Apr 2026 21:53:10 +0200
+Message-ID: <20260410195323.17937-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260410195323.17937-1-philmd@linaro.org>
 References: <20260410195323.17937-1-philmd@linaro.org>
@@ -85,136 +86,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-We use 'HMP' for Human monitor and 'QMP' for 'Machine protocol'.
-These files aren't about human monitor but QMP, so rename them
-for clarity using the 'qmp-' prefix instead of 'monitor-'.
+In order to build hmp-commands-info.hx once we need to stop
+using device target-specific check. Use the generic pattern
+to make the command available on all targets, providing a
+stub with kind error message when the device is not available.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                                      |  6 ++++++
- stubs/{monitor-arm-gic.c => qmp-arm-gic.c}       |  0
- ...nitor-cpu-s390x-kvm.c => qmp-cpu-s390x-kvm.c} |  0
- stubs/{monitor-cpu-s390x.c => qmp-cpu-s390x.c}   |  0
- stubs/{monitor-cpu.c => qmp-cpu.c}               |  0
- stubs/{monitor-i386-rtc.c => qmp-i386-rtc.c}     |  0
- stubs/{monitor-i386-sev.c => qmp-i386-sev.c}     |  0
- stubs/{monitor-i386-sgx.c => qmp-i386-sgx.c}     |  0
- stubs/{monitor-i386-xen.c => qmp-i386-xen.c}     |  0
- stubs/meson.build                                | 16 ++++++++--------
- 10 files changed, 14 insertions(+), 8 deletions(-)
- rename stubs/{monitor-arm-gic.c => qmp-arm-gic.c} (100%)
- rename stubs/{monitor-cpu-s390x-kvm.c => qmp-cpu-s390x-kvm.c} (100%)
- rename stubs/{monitor-cpu-s390x.c => qmp-cpu-s390x.c} (100%)
- rename stubs/{monitor-cpu.c => qmp-cpu.c} (100%)
- rename stubs/{monitor-i386-rtc.c => qmp-i386-rtc.c} (100%)
- rename stubs/{monitor-i386-sev.c => qmp-i386-sev.c} (100%)
- rename stubs/{monitor-i386-sgx.c => qmp-i386-sgx.c} (100%)
- rename stubs/{monitor-i386-xen.c => qmp-i386-xen.c} (100%)
+ MAINTAINERS            |  2 +-
+ hw/misc/mos6522-stub.c | 16 ++++++++++++++++
+ hmp-commands-info.hx   |  2 --
+ hw/misc/meson.build    |  1 +
+ 4 files changed, 18 insertions(+), 3 deletions(-)
+ create mode 100644 hw/misc/mos6522-stub.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index edbbd544d62..932d6aee507 100644
+index 932d6aee507..1810625eb1e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -121,6 +121,7 @@ F: include/hw/s390x/
- F: include/hw/watchdog/wdt_diag288.h
- F: pc-bios/s390-ccw/
- F: pc-bios/s390-ccw.img
-+F: stubs/qmp-cpu-s390x.c
- F: target/s390x/
- F: docs/system/target-s390x.rst
- F: docs/system/s390x/
-@@ -496,6 +497,7 @@ M: Christian Borntraeger <borntraeger@linux.ibm.com>
- R: Eric Farman <farman@linux.ibm.com>
- R: Matthew Rosato <mjrosato@linux.ibm.com>
- S: Supported
-+F: stubs/qmp-cpu-s390x-kvm.c
- F: target/s390x/kvm/
- F: target/s390x/machine.c
- F: target/s390x/sigp.c
-@@ -510,6 +512,8 @@ L: kvm@vger.kernel.org
- S: Supported
- F: docs/system/i386/amd-memory-encryption.rst
- F: docs/system/i386/sgx.rst
-+F: stubs/qmp-i386-sev.c
-+F: stubs/qmp-i386-sgx.c
- F: target/i386/kvm/
- F: target/i386/sev*
- F: scripts/kvm/vmxcap
-@@ -522,6 +526,7 @@ S: Supported
- F: include/system/kvm_xen.h
- F: target/i386/kvm/xen*
- F: hw/i386/kvm/xen*
-+F: stubs/qmp-i386-xen.c
- F: tests/functional/x86_64/test_kvm_xen.py
+@@ -1558,7 +1558,7 @@ F: hw/ppc/mac_newworld.c
+ F: hw/pci-host/uninorth.c
+ F: hw/pci-bridge/dec.[hc]
+ F: hw/misc/macio/
+-F: hw/misc/mos6522.c
++F: hw/misc/mos6522*.c
+ F: hw/nvram/mac_nvram.c
+ F: hw/ppc/fw_cfg.c
+ F: hw/input/adb*
+diff --git a/hw/misc/mos6522-stub.c b/hw/misc/mos6522-stub.c
+new file mode 100644
+index 00000000000..85eb0ee36ee
+--- /dev/null
++++ b/hw/misc/mos6522-stub.c
+@@ -0,0 +1,16 @@
++/*
++ * QEMU MOS6522 VIA stubs
++ *
++ * Copyright (c) Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "monitor/monitor.h"
++#include "monitor/hmp.h"
++
++void hmp_info_via(Monitor *mon, const QDict *qdict)
++{
++    monitor_printf(mon, "MOS6522 VIA is not available in this QEMU\n");
++}
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index 74c741f80e2..463038c302a 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -885,7 +885,6 @@ SRST
+     Show intel SGX information.
+ ERST
  
- Guest CPU Cores (other accelerators)
-@@ -800,6 +805,7 @@ F: include/hw/timer/a9gtimer.h
- F: include/hw/timer/arm_mptimer.h
- F: include/hw/timer/armv7m_systick.h
- F: include/hw/misc/armv7m_ras.h
-+F: stubs/qmp-arm-gic.c
- F: tests/qtest/test-arm-mptimer.c
+-#if defined(CONFIG_MOS6522)
+     {
+         .name         = "via",
+         .args_type    = "",
+@@ -893,7 +892,6 @@ ERST
+         .help         = "show guest mos6522 VIA devices",
+         .cmd          = hmp_info_via,
+     },
+-#endif
  
- Bananapi M2U
-diff --git a/stubs/monitor-arm-gic.c b/stubs/qmp-arm-gic.c
-similarity index 100%
-rename from stubs/monitor-arm-gic.c
-rename to stubs/qmp-arm-gic.c
-diff --git a/stubs/monitor-cpu-s390x-kvm.c b/stubs/qmp-cpu-s390x-kvm.c
-similarity index 100%
-rename from stubs/monitor-cpu-s390x-kvm.c
-rename to stubs/qmp-cpu-s390x-kvm.c
-diff --git a/stubs/monitor-cpu-s390x.c b/stubs/qmp-cpu-s390x.c
-similarity index 100%
-rename from stubs/monitor-cpu-s390x.c
-rename to stubs/qmp-cpu-s390x.c
-diff --git a/stubs/monitor-cpu.c b/stubs/qmp-cpu.c
-similarity index 100%
-rename from stubs/monitor-cpu.c
-rename to stubs/qmp-cpu.c
-diff --git a/stubs/monitor-i386-rtc.c b/stubs/qmp-i386-rtc.c
-similarity index 100%
-rename from stubs/monitor-i386-rtc.c
-rename to stubs/qmp-i386-rtc.c
-diff --git a/stubs/monitor-i386-sev.c b/stubs/qmp-i386-sev.c
-similarity index 100%
-rename from stubs/monitor-i386-sev.c
-rename to stubs/qmp-i386-sev.c
-diff --git a/stubs/monitor-i386-sgx.c b/stubs/qmp-i386-sgx.c
-similarity index 100%
-rename from stubs/monitor-i386-sgx.c
-rename to stubs/qmp-i386-sgx.c
-diff --git a/stubs/monitor-i386-xen.c b/stubs/qmp-i386-xen.c
-similarity index 100%
-rename from stubs/monitor-i386-xen.c
-rename to stubs/qmp-i386-xen.c
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 85f9e3a4f23..356d7800760 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -76,14 +76,14 @@ if have_system
-   stub_ss.add(files('kvm.c'))
-   stub_ss.add(files('win32-kbd-hook.c'))
-   stub_ss.add(files('xen-hw-stub.c'))
--  stub_ss.add(files('monitor-arm-gic.c'))
--  stub_ss.add(files('monitor-i386-rtc.c'))
--  stub_ss.add(files('monitor-i386-sev.c'))
--  stub_ss.add(files('monitor-i386-sgx.c'))
--  stub_ss.add(files('monitor-i386-xen.c'))
--  stub_ss.add(files('monitor-cpu.c'))
--  stub_ss.add(files('monitor-cpu-s390x.c'))
--  stub_ss.add(files('monitor-cpu-s390x-kvm.c'))
-+  stub_ss.add(files('qmp-arm-gic.c'))
-+  stub_ss.add(files('qmp-i386-rtc.c'))
-+  stub_ss.add(files('qmp-i386-sev.c'))
-+  stub_ss.add(files('qmp-i386-sgx.c'))
-+  stub_ss.add(files('qmp-i386-xen.c'))
-+  stub_ss.add(files('qmp-cpu.c'))
-+  stub_ss.add(files('qmp-cpu-s390x.c'))
-+  stub_ss.add(files('qmp-cpu-s390x-kvm.c'))
- endif
+ SRST
+   ``info via``
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 245ab9b98cc..d7e97a4a32f 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -20,6 +20,7 @@ system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('armv7m_ras.c'))
  
- if have_system or have_user
+ # Mac devices
+ system_ss.add(when: 'CONFIG_MOS6522', if_true: files('mos6522.c'))
++stub_ss.add(files('mos6522-stub.c'))
+ system_ss.add(when: 'CONFIG_DJMEMC', if_true: files('djmemc.c'))
+ system_ss.add(when: 'CONFIG_IOSB', if_true: files('iosb.c'))
+ 
 -- 
 2.53.0
 
