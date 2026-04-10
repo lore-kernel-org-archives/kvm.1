@@ -1,191 +1,118 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3305288AD
-	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 19:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E1F317150;
+	Fri, 10 Apr 2026 19:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775848848; cv=none; b=HYM1JhkPuRb3Rc0WensNjDZJ35Fs8QRn2NjgdqzQYrsQ65kybJ+rd7gzztqx/eiSMntd08kmc5ioHS9+YOGHA1zDFxOcX1mJf3N9p0ZmANh5bqmGYCpJpjTnApOOGIJcURND12LEfESSMFqjetReKGizBvH+UfxvcArwVh39jew=
+	t=1775849529; cv=none; b=Tu2rxHClmzQxPmmrtjNPJtvpKCRM2jm77VJszun0xtiAoKMqvHp8dxn3aqEywQmYrj0xJxwQeB6NQWM2K8PeqnMR9DEdX6rJpfbwuP1uHPR4XBdfKJfVLLDprx/sA/S7Ww1fGkd6W+stw01cvj0BIxKOtTSsjZLx8PU3FNCD/B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775848848; c=relaxed/simple;
-	bh=dDSoe18ZPa5o6UYbbuBc3OWeA+HX14GM64n9Py9kxDQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ebdb8yyQbVSDTs+OQOxy3Daoj0RQr7ZppcVylh+kNUK42S3MRnKq8o0TIIP/ui7IT993t+LTQ8CT6tBCF6uIktVXPx7a3Tw/07jHVSf3yrPX4V3WKOGC138jVlYsE9SrrE4AoZE0epWUTjQKq0/7uARLIO9+XFJnfiiwKk24KOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Np6fcX/E; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1775849529; c=relaxed/simple;
+	bh=pgp8mgrd+ZNMUB/UohEgTN/efHobm4seJjbSlnLex3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sBOP7Va+qRlI2mbOyCr7ngZPEY5x+fmcFsiPY40iBdGARCwrSsD9B5K1Zc0xbgBIvvFm1eSxXsmgIuVoNpXL7Kg7MEfdKUu8PyiKPeYv9vB9oZM8o0SxytooAWYhuzr6TbQr9KFV+eakhsmDQATfnpmDu+4OEsDtPNNXaGquvc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=rGMxSCqO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gnadNQyF; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Np6fcX/E"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35da99b90f6so2915687a91.1
-        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 12:20:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775848846; x=1776453646; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ODcx3kPkAa7pQlpWAI3ymYf3+ivHVM6fe1fHRRDycvI=;
-        b=Np6fcX/ETNbG/9Suy0vbedowzqV3SYVgrTO0jg7mlfvzSvhpAA4HvNxWBlyPJCjRkN
-         rEcvFMu7DDxdyN/V0ymn5jKvUESUWNiJjOJZGoax3WYT//QSxUBdJZAYll/7PVoQZ2hx
-         ++6lu+ReJS1yaCr+Caz+m3bNT8/X6H8C0v4YStVAnzXElO3648t1DOktOUhqldKwuX74
-         2Ojx1tY0HndB6iCivtDHp14X069ARxcgcyxSO8dV//omWuGI7GYbal9ngs6gNP7r2df8
-         57U/pFoT8xBNvqUKtNmuNq8c4isB5zrhC0Jaj7nTocEt4DN52HXErcKZFnvn48Fq50lR
-         hdTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775848846; x=1776453646;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ODcx3kPkAa7pQlpWAI3ymYf3+ivHVM6fe1fHRRDycvI=;
-        b=FGV24iQKOwFUv9vsHXmNyafcF/TInO+MB9PTc/KoLYYMq5C6PC4ns6D5GjBH/WOSW8
-         uYboOPiYB/LkTKjwjNCDzegEalHq3an80o1k0cd8O+xPKlSRL1XMJqIsf+L7jV4iQvJs
-         MBijuzfT9pcPJ3I9eK81kDAEeNc4Fl0pPQ8+Q5y/8zc7TrEKu0HBpghxWkxfpSNmir3f
-         eVZo5EHE8xKjsed4emVydoiKzl38pjTX08ou2juq0SiW60EH+ZT+C5SYo8KHRCCH4cfy
-         YOsuyR+ycKpbS2IlADsJnxDfRxaEJJItfnkGsAl/e/fnjwVPbmyVK4JRmNfl8FZue7ie
-         toZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUE4OCNef8An7pdSUlE8rc+2O+6iol5JkJbnIKFLbwanYsg/f8X9o7Yb4speUkok5cxZaw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdEE9U54rxI+lzFBYQ7JqzPBX3Ol+QXd68tRrxeio+BY7wKPl7
-	EjEcpYVFEbZ9GWmm0VY+IKvK7o4cs5sBPDLHPDj68KteLl+Zld3+sn6BTSc29eRWO+3A4KNvOZm
-	cLHcm/Q==
-X-Received: from pjbqx15.prod.google.com ([2002:a17:90b:3e4f:b0:35d:9b4c:48fa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c50:b0:35d:8ea1:62df
- with SMTP id 98e67ed59e1d1-35e42838d40mr4878307a91.21.1775848845914; Fri, 10
- Apr 2026 12:20:45 -0700 (PDT)
-Date: Fri, 10 Apr 2026 12:20:44 -0700
-In-Reply-To: <adkl4wFdk4JrM3T-@blrnaveerao1>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="rGMxSCqO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gnadNQyF"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 76FEF7A014A;
+	Fri, 10 Apr 2026 15:32:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 10 Apr 2026 15:32:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775849524;
+	 x=1775935924; bh=XVC68HMX7Y/P9CImkugPNyRhCID76nQcrpXLDDdfJ30=; b=
+	rGMxSCqO6oQtAFIVpw8SUiCqUYwGUUMOXwGbkiAjM6nlgng0a1mfcVPacSAhxq8B
+	eNQXaiHtMrXwhsOM45FxYd69UgvMZWYyautI+NNvQco6+8NYjmFMGiyg0SwJ4HJy
+	8fnAy3/DCBkvZUCLEZ5slAFCcVLSmC1vkZ6okAHOl50oTjm7+ToRm2xwjMirUoOu
+	lXW14Nx1ptsAhIYZMtPCnvJnR16YMEl3wHe9xcfybB2sgG09ngAzPOgXzTKu/Ua3
+	JOix5MgJQ9w9G4NN3Kb68Sx+25DDRrLm3qS9doFcvHhktLDgpeVLjY+bLFd5GL8C
+	swWBEKq/cZPmhh6MitHhfQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775849524; x=
+	1775935924; bh=XVC68HMX7Y/P9CImkugPNyRhCID76nQcrpXLDDdfJ30=; b=g
+	nadNQyFX29oXGjbeuBsJ0hSZ3nPA33ISGiU2smFJY69uSCBUxwyencYFrqRkhU4p
+	b9t0smWzqweYwKgCiUjWJt7CJp8Ha1VGzUqgLLg1iM+nzN/8fxndkUi08ef0UWPJ
+	BQN4G4YI5WI5PbvFEK011XIFxNeR6xKKd1fqR9xoOyEEZd0Td8fpPKlUyV3pbP4j
+	1YbENzbZIBDBX6zW5F5c0cuVtZbaWQZIwD0rmvCqmVor3TlCpvJ2K+W+vAtfSgMt
+	bRmZDr4a4bQ5ilxRgJ7k6ymZkDAQipLojXDzNK3datk5rXXs5qX8dx7YtDYP35BP
+	bBxrsj3ZxdI0L1SyMEWHg==
+X-ME-Sender: <xms:M1DZaeX4813aYOp3uBpMpdz6KrRF4YfNLtwMm2akdQbB0QplfH631A>
+    <xme:M1DZaZqyA8oJvT5iLegzGy6vJ9w1XzVzuGuKis-XQ1J2aAOoI29U3lSRjNLbwK9Ks
+    pDhRWvmzKLt8JCWpOX4YceDRieIeyjADNpIXWNeTPM2uAJ7qBSC9A>
+X-ME-Received: <xmr:M1DZaYkljht4ffjut8OTuv2joTeaTET31gISYXUCQY26TKgWG5Lq35f2Thk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeftddvhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
+    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeejpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehpsg
+    honhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhvmhesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhrohifihgrkheslhhinhhugidrihgs
+    mhdrtghomhdprhgtphhtthhopehlihhnuhigqdhsfeeltdesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
+X-ME-Proxy: <xmx:M1DZaR0vdE4Y3ZKUPThI9VFNv0ackEd5TJZCGA1ueaLaNoX0rNN9Bw>
+    <xmx:M1DZadSrxoZ2tz9JjrR0idXavY4-YOhEz4ZW6aloRbeKw1vhwegEQw>
+    <xmx:M1DZaSyfHwGnjfPFItrfp434VuRULnhaMhMScv6YvGa_ia9gGPLKzg>
+    <xmx:M1DZaVCey0pP_nJ2GRndtFP6EtEj9gw53jDVEpS-Ms9H3tDNp1N1_g>
+    <xmx:NFDZaVCw_V97rLVfaAInuHjXNqo_WsDXsqHHFQ94ig_zu7V9ksJyW2-h>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Apr 2026 15:32:03 -0400 (EDT)
+Date: Fri, 10 Apr 2026 13:32:00 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, akrowiak@linux.ibm.com, linux-s390@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [PATCH] VFIO: remove dead notifier code
+Message-ID: <20260410133200.7010cf27@shazbot.org>
+In-Reply-To: <20260410181006.GF2551565@ziepe.ca>
+References: <20260407175934.1602711-1-pbonzini@redhat.com>
+	<20260410181006.GF2551565@ziepe.ca>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409222449.2013847-1-seanjc@google.com> <20260409222449.2013847-2-seanjc@google.com>
- <adkl4wFdk4JrM3T-@blrnaveerao1>
-Message-ID: <adlNjCRRCur8mjCA@google.com>
-Subject: Re: [PATCH 1/3] KVM: SVM: Disable x2AVIC RDMSR interception for MSRs
- KVM actually supports
-From: Sean Christopherson <seanjc@google.com>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 10, 2026, Naveen N Rao wrote:
-> On Thu, Apr 09, 2026 at 03:24:47PM -0700, Sean Christopherson wrote:
-> > Fix multiple (classes of) bugs with one stone by using KVM's mask of
-> > readable local APIC registers to determine which x2APIC MSRs to pass
-> > through (or not) when toggling x2AVIC on/off.  The existing hand-coded
-> > list of MSRs is wrong on multiple fronts:
+On Fri, 10 Apr 2026 15:10:06 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
+
+> On Tue, Apr 07, 2026 at 07:59:34PM +0200, Paolo Bonzini wrote:
+> > group->notifier is dead code. VFIO initializes it and checks it for emptiness on
+> > teardown, but nobody ever registers on it or triggers it.
 > > 
-> >  - ARBPRI, DFR, and ICR2 aren't supported by x2APIC; disabling
-> >    interception is nonsensical and suboptimal (the access generates a
-> >    #VMEXIT that requires decoding the instruction).
-> > 
-> >  - RRR is completely unsupported.
-> > 
-> >  - AVIC currently fails to pass through the "range of vectors" registers,
-> >    IRR, ISR, and TMR, as e.g. X2APIC_MSR(APIC_IRR) only affects IRR0, and
-> >    thus only disables intercept for vectors 31:0 (which are the *least*
-> >    interesting registers).
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >  Documentation/arch/s390/vfio-ap.rst | 18 ++++++------------
+> >  drivers/vfio/group.c                |  3 ---
+> >  drivers/vfio/vfio.h                 |  1 -
+> >  drivers/vfio/vfio_iommu_type1.c     |  1 -
+> >  4 files changed, 6 insertions(+), 17 deletions(-)  
 > 
-> :facepalm:
+>  Fixes: 421cfe6596f6 ("vfio: remove VFIO_GROUP_NOTIFY_SET_KVM")
 > 
-> We seriously need better selftests for these.
+> ?
 
-+1000.  In general, we need a way to validate "this should exit, this should not".
+Technically yes, but is it really worth having stable pick this up?
+Seems not.  Thanks,
 
-> Also on my list has been to cook up something for your other fix where AVIC
-> gets inhibited for non-zero vCPU IDs (with x2AVIC disabled):
-> http://lore.kernel.org/r/20260112232805.1512361-1-seanjc@google.com
-> 
-> I started looking at Alejandro's series adding AVIC-related binary 
-> stats, but had to switch to other things. Last I looked, I felt that 
-> your suggestion to add an "exits" array accounting individual #VMEXITs 
-> would in particular be helpful:
-> https://lore.kernel.org/kvm/ZmMjHwavCLk0lRd7@google.com/
-
-We have per-exit stats (and more!) internally, and it's ugly.   For simplicity,
-and/or perhaps to reduce out-of-tree maintenance costs, we did the easy thing of
-tracking hardware exit reasons as is.  Which is *extremely* useful, but also
-quite wasteful with respect to memory consumption, as a large percentage of exit
-counts are unintresting and/or completely unused, especially on SVM due to SVM
-having high granularity exit reasons.
-
-> Though I'm not sure how standardizing this across VMX and SVM looks 
-> like, and/or if it will be truly helpful
-
-Probably even uglier :-)   The one case I'm confident would benefit from some
-amount of standardization is exceptions.  If we simply regurgitate hardware exits,
-Intel/VMX will only capture "did an exception occur", whereas AMD/SVM will
-capture exactly which exception occurred.  If we *strictly* regurgitated exits,
-it would be even worse than that, because NMIs get lumped in with exceptions on
-VMX.
-
-There are more cases like that, where VMX and SVM have slightly different exit
-granularity.  We'd want to standardize on what gets presented to userspace so
-that userspace doesn't have to effectively do the standardization (or worse, can
-only implement certain checks for one vendor or the other).
-
-> -- we may be interested in specific exits, such as AVIC-related exits for
-> some of the tests...
-> Thoughts?
-
-I don't think we should plan on leveraging per-exit stats for testing purposes,
-as they may never land upstream, and if they do, it will take some time.  E.g.
-even though we find them valuable, I'm far from convinced that what we've got
-implemented internally is suitable for upstream.
-
-However!  Idea.  For many testcases, we don't actually care about *what* exit
-occurred, only if *an* exit occurred (or not).  I.e. tests really just need a
-binary yes/no signal.  Which we _almost_ have today, except stat.exits is polluted
-with exits that are host-induced/owned (e.g. IRQs and NMIs) and/or asynchronous
-in nature, e.g. the VMX preemption timer (which is arguably host-owned as well).
-
-If KVM provides a stat that increments only on exits that are the direct result
-of a guest action, then we can use that in selftests to detect unexpected (or
-missed) exits, without having to worry about false failures due to noise from
-host IRQs/NMIs/SMIs, etc.
-
-The hardest part is probably figuring out a name :-)
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 3f3290d5a0a6..a8530a3d0545 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4256,6 +4256,9 @@ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
-        struct vcpu_svm *svm = to_svm(vcpu);
-        struct vmcb_control_area *control = &svm->vmcb->control;
- 
-+       if (is_guest_induced_exit(control->exit_code))
-+               ++vcpu->stat.guest_induced_exits;
-+
-        /*
-         * Next RIP must be provided as IRQs are disabled, and accessing guest
-         * memory to decode the instruction might fault, i.e. might sleep.
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 967b58a8ab9d..cd7769c412ab 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7524,6 +7524,9 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
- static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu,
-                                             bool force_immediate_exit)
- {
-+       if (is_guest_induced_exit(vmx_get_exit_reason(vcpu).basic))
-+               ++vcpu->stat.guest_induced_exits;
-+
-        /*
-         * If L2 is active, some VMX preemption timer exits can be handled in
-         * the fastpath even, all other exits must use the slow path.
-
-> > @@ -162,9 +165,15 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
-> >  	if (!x2avic_enabled)
-> >  		return;
-> >  
-> > +	x2apic_readable_mask = kvm_lapic_readable_reg_mask(vcpu->arch.apic);
-> > +
-> > +	for (i = 0; i < BITS_PER_TYPE(typeof(x2apic_readable_mask)); i++)
-> > +		svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
-> > +					  MSR_TYPE_R, intercept);
-> > +
-> 
-> Yet to test this series (will get to it next week in more detail), but I 
-> suppose you meant to use `for_each_set_bit()` or such?
-
-Heh, my turn for a /facepalm.  I'm glad I admitted I didn't test this very well :-)
+Alex
