@@ -1,119 +1,122 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCA339D6DA;
-	Fri, 10 Apr 2026 12:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9C03C554B
+	for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 13:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775822559; cv=none; b=DWcVzCJ85n2P5LqpT//XRMbRecx63cQB4rRnC6SiAk8IWCPYMNPE1J7yt494vaxopEKgBPIHZcVCj/qQkan9ZdK38NOXQd6IJ9sW90f5PSdga9GcBSZ08arpT0Fo9h/ShxH+49DSZHBJYui4awKX0Oeab5mfBygbaUGWCojTZDc=
+	t=1775829098; cv=none; b=gqGiiPsFyShZ8LJeSeFUvI7OBGvjUxFi8zQRm317I9bpBMfbxyOdfEzT1hpBsmagiDD2YgG+pvC+wn6iKa5KhkkwNRrdGDdfkdN/6mZtvj/7OMyQ0ceC/e4a7JXk0Cuu30T7MccOGjoHRX2uoWeYvUqL4HOVMZQJX80JPhe0Wy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775822559; c=relaxed/simple;
-	bh=g1kmFEDWtBFjsNJ3wS60GqZgBbgDZmvxLxOccNJoMIs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
-	 References:In-Reply-To; b=mLWdhpIm5H1cwpYE/9CIhRaDbpfvDAYn8UuVIOjjalVKqTlVK8uc/u2TxUjX31pP38VP8n2VSwQX3+lE4jVCCtEz/U05yZ4z1kpEIAWKx62v46ONBA4VPoPIbTgqjUWnktnMJLjKRxgEFmR+ENrhFuFU71otTviN6ENXbfsypZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SUNIfv1D; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775829098; c=relaxed/simple;
+	bh=O1/1iGPeFxkiNwtNKXgPqUazZGcSIykQmiesHZQPz8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTu92Aoz0EImGY3CixM9DoqfTEGZTsunYtzNDSIEJiPOyKyepXeLNtRjOzyNkjhClZaT3e7kt1xAmuBoKJV85657bnLfR605Z08WIskkhsTE9+FLMGnJTkVogybWkGL8IQgByantrlpZ+35A/nBVLamUum6wxx8fVCdh+fE6oBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=pR6Q3OKt; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SUNIfv1D"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63A4lX6V3885072;
-	Fri, 10 Apr 2026 12:02:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5CZpGO
-	y3VbFy3zQrUNCgF0ant6Mr0auZRaqyqZqV15A=; b=SUNIfv1DnPVHacrZ40x1Rb
-	66fOq+0pIZDC7Gdvw5ZUxddFaJ33wwEL8W1ouG0/FGre8C0sc+omiT3lbF08UAml
-	zfxCFpAuP3DJoJ2KZchCuX48rZoxattTu2XMZamfTzkc9Pndo3iToJ7enbs1eXkU
-	bVsvI/InsQ68S+Zt/xYBmjbdjIAOA+0LmQtp/+drhFP2WGYKGCBn8tBBnJb+Aod2
-	8VowPZdBm1qTQh39UQpz8YD9Qg9do5hNjfqW5c+1DBxLca+NaAdLRXMKo35t5KnK
-	2M2Y3kUHEcr5ViPify/193vjXTP+8OUriae3FxxSah0gQVr4pnOY8ytf6y4GJo2A
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2hrmy3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Apr 2026 12:02:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63A86F8d007881;
-	Fri, 10 Apr 2026 12:02:33 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmg2qumb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Apr 2026 12:02:33 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63AC2ThS45154772
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Apr 2026 12:02:29 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 80BC920040;
-	Fri, 10 Apr 2026 12:02:29 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5EE752004D;
-	Fri, 10 Apr 2026 12:02:29 +0000 (GMT)
-Received: from darkmoore (unknown [9.111.44.245])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Apr 2026 12:02:29 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="pR6Q3OKt"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a032383008so23896826d6.1
+        for <kvm@vger.kernel.org>; Fri, 10 Apr 2026 06:51:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1775829096; x=1776433896; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3rjHMd7udH2co2NdrO+T+4XZB1IgcQV0KCt3Z2nuK+g=;
+        b=pR6Q3OKtlc2dxes7+WnpA6JgJzqosd0FXFa8q/rx8YmQIKHNgRc2VkEXAgY4xMMBTb
+         Eb9Kaoo/k6a/QFpxj3N7vIaDHknA1T/mrr4UjTRNl59z/4m9cr4g3qCcxWmueqefd7ai
+         RPh/9LxVzwnYWg0+5S4U9h9RaDX51rRLhM0iz2ymepKhQ6Q2wT34FpGyqAA8YyHz4MVr
+         mx1ZZHhRu11mknfSgk61WNhikPuvNLXN6Fru9x2n2gGHkGqYWo9azUedaQW9gro/WLsG
+         QCtYEsraLhUv/a8NXfp4qU8Vy3hQBoyZV+re7s5PtpZrKEsnLXYo1Tbr/cnujlE+UsFL
+         aI7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775829096; x=1776433896;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3rjHMd7udH2co2NdrO+T+4XZB1IgcQV0KCt3Z2nuK+g=;
+        b=P2theMogHuUD7mQECBi+qci77fXjENRk90x9zV/IC4urjChcOGwYkKXfTp93NeUzWK
+         EyAtf58FERJc4oZOeN6E0Mxkak0hYwgHpRtK7DUIZQ8R4vFSO2QixTP+vfZhptIb7mya
+         ZeRHqte07j7QvWKIIX2EIOfnUNFmiLt675f5aizFbG2NXAJ86HfLau6KcUGvYEIo0nxb
+         pEDaWpjrzeXLIW8hVAy6f2dul4WG1QzdU/HbBCQTEgP9rW2/IaT9I1MHaI61sLHHe7o8
+         6UWjANiQAXsg6UH2xls+tjkqHbwuHLrw7ydQ3Qqcr7xSazmQBMn3VIN4qvWii8J/jjpa
+         Ka8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUTNMCQSf+me+XJydKJoeaun1e0hAfLINJzBKzfGSvoGJ8kvXhZAYMxap1J6vApTEpPMf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOl8dblwwwJU5gMXhmWnD+VNZCJuCdomBRuAt/gjCgu7sxlRA/
+	pkHDeL9y42tDUIl5Ax5sB0H4Q9Q6MqL8b1cBGZf+fwzq++PpcPLNcu/a8QmE3gqYH8g=
+X-Gm-Gg: AeBDieuU1lKdO5c1CR1erja+pOg3ckxnnh3rajTGn7UtwEnAwXWQufpfOb95Xoer1AO
+	ixN3iyjlQOgI+VH/yCVphznXnXv+9LYrz8FFs6HWRiAGJxuGsJAl7g2SgK34rXxcDxFPERXpjLB
+	t+YKUjyYsWyXLSxFrMWpsihex7W+5R/g+jb2NNfqKIjD2dhxiCMyeRfcBxfSt5xrOZz1eZ+Ez3n
+	kCh2D8N4cBmW1JFQibaA0JdRRy0BHyFbBRnUBYZkkGZR4lSJf+jbe6gdDIwcWxEoNUaNnZDTUyy
+	yl7eS0tWw3aTV9y9BUPo8PZVoposnmX1D6yzzciyqhZEr10m6ljveV5s9nfv2uYxrUoObvh/Zum
+	t+NEKuKYb9h8NskOsXz4eDpLkmthqrgyki7xk2/3T4JW3MXe1bTQaLWlrSjbUjOQlSlRHo+WHsx
+	Bfn8pegWLCmeVZgljtqVV55+JpqrFrL0ZYRNoeg17RbsB/jea73smoDdExESsTAMezUwY8SQ==
+X-Received: by 2002:a05:6214:20a1:b0:895:498e:e9dd with SMTP id 6a1803df08f44-8ac86155e92mr44076496d6.2.1775829095763;
+        Fri, 10 Apr 2026 06:51:35 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84cc9b8esm22948046d6.41.2026.04.10.06.51.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 06:51:34 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wBCGj-0000000EEOS-49Ri;
+	Fri, 10 Apr 2026 10:51:33 -0300
+Date: Fri, 10 Apr 2026 10:51:33 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Message-ID: <20260410135133.GT2551565@ziepe.ca>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-2-skhawaja@google.com>
+ <abHZdOKyLmmmHADz@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Apr 2026 14:02:24 +0200
-Message-Id: <DHPGJYGZJ28Y.15Z0CAJ6HVYIA@linux.ibm.com>
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: <kvm@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <nrb@linux.ibm.com>,
-        <seiden@linux.ibm.com>, <schlameuss@linux.ibm.com>,
-        <gra@linux.ibm.com>, <david@kernel.org>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 5/6] KVM: s390: selftests: enable some common
- memory-related tests
-X-Mailer: aerc 0.21.0
-References: <20260402150135.196943-1-imbrenda@linux.ibm.com>
- <20260402150135.196943-6-imbrenda@linux.ibm.com>
-In-Reply-To: <20260402150135.196943-6-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEwMDExMCBTYWx0ZWRfX1YkyI0T0fSpH
- DxQaqGdGA0SjCAKdVPS3+ae5TSp0Q2vijK9LutKRNoXm3mDIGYFcwcZGY2pqQbKJ7gO3phjYiOm
- ZmCy9qfMsEg9CvzkOFCcJooIZSKND26naApmNC5F1svivwtWes4PyNf21avIogMtAAXKvq5butZ
- HXSMvuGH0hr8+60PHrgmTEpVuujuJDa0gAW/OVxDqp9xT3Q+PqbmyMDTEHn0d62UCDSDPj/CjB+
- smE4q56m/IAu80El42C59DoVXpFILyMksnremaQFZ/bY/UBSaTMjaGSg3tPup6klRSEl86U4T2A
- bn2MHiGBGixYlZDEqMR4jQBEfwLfV/I4G6Tq0MlfrK/WrA5wDKgbWw+Hnfa0KRlMitEKt4BVZpz
- kJswzdYGzMgMP07AeYMcs2Oo+KVpVf06ozR+/NH/Y8rt6DvkU4B9c6SAfTExaqHiEx9Ux7iL1Tp
- EITNUi5fyzUJzLHXNbA==
-X-Proofpoint-GUID: 1KkEXrUDVmaYSwPBhqkLsZwEAo47PnsS
-X-Authority-Analysis: v=2.4 cv=a/wAM0SF c=1 sm=1 tr=0 ts=69d8e6da cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=zBtu8v2KzdITmXKmy5wA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 1KkEXrUDVmaYSwPBhqkLsZwEAo47PnsS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-10_03,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604100110
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abHZdOKyLmmmHADz@google.com>
 
-On Thu Apr 2, 2026 at 5:01 PM CEST, Claudio Imbrenda wrote:
-> Enable the following tests on s390:
-> * memslot_modification_stress_test
-> * memslot_perf_test
-> * mmu_stress_test
->
-> Since the first two tests are now supported on all architectures, move
-> them into TEST_GEN_PROGS_COMMON and out of the indiviual architectures.
->
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On Wed, Mar 11, 2026 at 09:07:00PM +0000, Pranjal Shrivastava wrote:
+> > +	if (!obj)
+> > +		return -ENOMEM;
+> > +
+> > +	mutex_init(&obj->lock);
+> > +	BUG_ON(!kho_restore_folio(argp->data));
+> 
+> The use of BUG_ON in new code is heavily discouraged [1].
+> If KHO can't restore the folio for whatever reason, we can be treat it
+> as a corruption of the handover data. I believe crashing the kernel for
+> it would be an overkill? 
 
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+There should not be any new BUG_ON's added at least they need some
+better wrapper function or design so they are not in end-users like
+this.
 
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+But these cases need to fail by preventing the kernel from leaving the
+initial safe boot memory space (ie it is going to crash anyhow). If we
+can't recover things then we can't guarentee memory is not being
+scribbled on and we can't use it.
+
+This is the general logic why these are made very fatal.
+
+Jason
