@@ -1,132 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12B82264D3
-	for <kvm@vger.kernel.org>; Sat, 11 Apr 2026 12:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82423446C0;
+	Sat, 11 Apr 2026 12:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775910305; cv=none; b=WlLPIQ77U6Uobv33mavCFqfTLDOk0DT6LQNK8JaFaCEFiegHsbLFN6l1PR4xjnuiTRCxYge7ADmSUYDAHEQtzWnj3Y/C3PBB3JC59Y4d3fTQbNT3xmhGRrNWfiCvwVP1vNu0ArKuu+2Qa77CxCjFn2NyH9OTRNtP6+gBpD/MQd8=
+	t=1775910442; cv=none; b=TIKam6gtVs6rdb7Af1gui4BL9Y7TTJJhtoCktXO3nDnarruCsu/6/WCZEz7FiWOV3v2+FowSX2ypmpFG9VW4PXQz5KJfnEiZwfUeUk7FrEsc/frG04ghqup+oVIPRbaTY7w+UrRfh9Ql+arNTpU6qyjKBOZ4vfJWII19BL62Bv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775910305; c=relaxed/simple;
-	bh=IH23IsYEfMnLl0vOqVuFFPauou7jx8fKybZDJE8/nUc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V0UMbYRQCn8IByhkyi1xw3qsPReTOQMb2QHdfJjyIJxLKgA6uqEeFhdWmDhLG86RuyHZC5DlBpTDKB8kL75zYAms25pRVC0JkmjHiHAtuTy2odP6vRam2ePkNs4S/r6BhXX+Q0RIYABCHFLSLOwJTBX0eUZpdTc8wpuZ1GfS3gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=is2NMae2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ivN5nVos; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775910442; c=relaxed/simple;
+	bh=qmTG0sPt0gGADnHCwpgCA4OgO6l5QwLO2uOUdGQmqhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qqfqM1au0aoEoYlL2Eu+FXuMkjg/+1VZwATXdXLhGvxDSb20M+8cscFrE72/gVhh9WfzdPnmLlnmNpkj/iDCj0c/tITawyiQmdRiB20U3/0ROZY7PJ8sVng6EDF+oVnqY3MU1S3CQk0kFoaVg9o0t8+zm/CGSEcj9LStLZlvnRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iD+ydLmx; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="is2NMae2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ivN5nVos"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775910303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=iv0cx31QAfhWWU8jGatWTNoayFtnubvT7XcItOfbo/U=;
-	b=is2NMae2oxxckhT+2DrXJys0aE4lNYqsQh8kp2Koy5EYUb/FLzXdw+WrytTb1rh0lT0ABm
-	o1yWMK18dypZ2wUxdCVMq6eKzEGGuWt+bgGdg2v2FhFui7e60Wk0IPhd1ma6w2cWIprk/J
-	S6tZPQoZHzALuaY5pTscT6U4IOUKp98=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-lrWswaQYMZG-8SWIcTAUog-1; Sat, 11 Apr 2026 08:25:02 -0400
-X-MC-Unique: lrWswaQYMZG-8SWIcTAUog-1
-X-Mimecast-MFC-AGG-ID: lrWswaQYMZG-8SWIcTAUog_1775910301
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-483786a09b1so30230115e9.3
-        for <kvm@vger.kernel.org>; Sat, 11 Apr 2026 05:25:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775910301; x=1776515101; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iv0cx31QAfhWWU8jGatWTNoayFtnubvT7XcItOfbo/U=;
-        b=ivN5nVosH0Z5uXAfkhNDPMBHE6BA4uk671FDNGofbdnaGEV3bObijPa1lh6pklog+Q
-         U5WcG5S3/C/fiP5pJ0u/xXEgaRLHEZ72+vylpu3ayoT5+trc8CHYGq5TMkjLIhEHSHvU
-         EPuEsRLt19paz2At93Ck9NJLQhmVMyEx00Dv6HydBhfjjEBih2QV2kX/sIG1/eKzUc1T
-         jstvv2SJJa1Yfg1I/zg/MlqFkKt9bWYhlVnNmRu3Qvi1rhNB6+k/sjnnJoZjFnaGGiAH
-         JeyaiNIqFTK5odQIcOp47TJhc10UvuOZUuK4pKumK9Xl4KlTC2CoidUtmsSLEU/Qsj2j
-         ob2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775910301; x=1776515101;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iv0cx31QAfhWWU8jGatWTNoayFtnubvT7XcItOfbo/U=;
-        b=D7B+76Ys/dX8A+AAxDaUO5el1EDCVq9gZ/NsI47H/66H0ybhAEtEJzBsEd7xluppYN
-         /gCNPmR0zlwcce/FO9AylCMLLpNxyn5ZczmQjVHrpX7FlbY4WdxRydqpWsiru/lgE/dg
-         RNmy68NdEp7GiRzVqHtMNg8dpLtcVkz55RX/r9H3DDGSzUzHZPExc8S4g8FyoN1DSuKC
-         /MRJnWiSyFrSPxAOmO6eMtZwThu1XIwRh+xVHsCSExlY5hxn6KIroN4sPRKD1ygorRyI
-         nU0a1VOvwRecTtmTYVZY+XeHfqf+npvytoUdDemKmI6BP9Njr0Szr1Fft9ehXn9qsX58
-         pHow==
-X-Forwarded-Encrypted: i=1; AJvYcCV769vRqc9OeNKbXtPZ0pjp9vYtYXFRUDPHVf9pUfJhmIUUBm5URKExBT0hVwjsPZNTTd4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWRBXz6r36YwzUWLUdPTRhhcEz86y/LJ2i/Yy/+tT3VUu+TPjI
-	B3XRVT005teGPLlKYf48Rr2lHIKs0y3qAWwEULOPbEjDGQoGVXipbNEWYSI5mYGADqbyERgMtcI
-	WKiKaMatosVbPcI11RS3g4olV5Gh+laj6DbtDevnBJxCMKzEkJo8U9g==
-X-Gm-Gg: AeBDievVX8rETYIT/HfYdTgNk9yV6U07n2kBv0TeZIr1orYqemnqK4TQCwDy+/4953i
-	4ZYhO6/PsrP80Yn6Y5bq9+e72E+47sadh5WmUmdSd/h/bddPyVr2FLNQ4Z08VfpPmBY0wVCJWRf
-	GAV0Ouckr41kQgAadQ8g5obnBs59K5fQO88mZQF/DyVjwaOMLkS/sBbBQPrFbCyghLr9qaBJthN
-	4kCR8bM/ip2Oz1soA4GFAgiY9WZRFLUptEj7mK/gUdP+U7jGfCNF7B3H7VK2nYP04KZBK9m5Gwg
-	2rbISS7DDOcMcyMAU+MEhEBM5Nmqg4lp6SFnSfJs8ak1Oii3ACXM/8rqhYSBnCbNM7z6Lzo05iS
-	Q/02Vws9sgvuJbTKeeZ8G7YGVDs4ul5nCXTIhwRdFv94hBcLDdUo78Pba62rMSJ80EVVo0AmhZ+
-	PwRcP23XeSAkfz9+DPwZwPeTnZYev5LXSJ5YXQVU3HkgcbydVomTsCRl63pnYhyg==
-X-Received: by 2002:a05:600d:d:b0:488:c14b:201b with SMTP id 5b1f17b1804b1-488d67e737amr69454005e9.10.1775910301012;
-        Sat, 11 Apr 2026 05:25:01 -0700 (PDT)
-X-Received: by 2002:a05:600d:d:b0:488:c14b:201b with SMTP id 5b1f17b1804b1-488d67e737amr69453765e9.10.1775910300552;
-        Sat, 11 Apr 2026 05:25:00 -0700 (PDT)
-Received: from [10.251.239.123] (93-38-178-167.ip71.fastwebnet.it. [93.38.178.167])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d532ed4dsm138908275e9.4.2026.04.11.05.24.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 05:24:59 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iD+ydLmx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775910441; x=1807446441;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qmTG0sPt0gGADnHCwpgCA4OgO6l5QwLO2uOUdGQmqhQ=;
+  b=iD+ydLmxUeEnuI3sz6PPaVm0+CmOcSci9XpHcPE/zUCm+ww3tFZ9VBJM
+   iKvs/1jQn5euT/Flk8OsSStb/NjCQufI3rupPybPtd52hzS0fZ1oKI5Q3
+   hvF+y3ScsTp6kTuURucDmX69F9HjDk35BPnI+ibwqKScUL/U2B4y7LOsa
+   aIRk7/asGfV2Jh/HNEB0RkiAg2eMMLPy2KzuWNLndpTgD5X9Vujb1qojM
+   Qp9HZrpwIKbMq8u3E6ScXmScdb3r4Nk0zCXHVtwLnPD3p3nqooM0mW/uC
+   rYDGcfrrGqjwU3sizNx9ROKR3uEm3vnw+EuYC3CfdVOZCnOZYbOXAGbu1
+   w==;
+X-CSE-ConnectionGUID: gyyuNbzmTumUd0VqhYRh+Q==
+X-CSE-MsgGUID: lf9PmdxbSmuTiR8KoEYHkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11755"; a="77027404"
+X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
+   d="scan'208";a="77027404"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2026 05:27:20 -0700
+X-CSE-ConnectionGUID: ntWZk1AxR0OVmCiWxzGylw==
+X-CSE-MsgGUID: TKt1l8TtQgyU/6IITjirJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
+   d="scan'208";a="224610713"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 11 Apr 2026 05:27:19 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wBXQj-00000000B4b-0IMg;
+	Sat, 11 Apr 2026 12:27:17 +0000
+Date: Sat, 11 Apr 2026 14:26:28 +0200
+From: kernel test robot <lkp@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM fixes for Linux 7.0 final
-Date: Sat, 11 Apr 2026 14:24:55 +0200
-Message-ID: <20260411122455.87172-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.53.0
+Cc: oe-kbuild-all@lists.linux.dev, Steffen Eiden <seiden@linux.ibm.com>,
+	Alex Williamson <alex.williamson@nvidia.com>
+Subject: Re: [PATCH 3/3] KVM, vfio: remove symbol_get(kvm_put_kvm) from vfio
+Message-ID: <202604111413.JR4rqpIv-lkp@intel.com>
+References: <20260407180107.1603697-4-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260407180107.1603697-4-pbonzini@redhat.com>
 
-Linus,
+Hi Paolo,
 
-The following changes since commit bfe62a454542cfad3379f6ef5680b125f41e20f4:
+kernel test robot noticed the following build warnings:
 
-  Merge tag 'soc-fixes-7.0-2' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc (2026-04-06 09:03:19 -0700)
+[auto build test WARNING on awilliam-vfio/for-linus]
+[also build test WARNING on kvm/queue kvm/next linus/master v7.0-rc7 next-20260410]
+[cannot apply to awilliam-vfio/next kvm/linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-are available in the Git repository at:
+url:    https://github.com/intel-lab-lkp/linux/commits/Paolo-Bonzini/VFIO-take-reference-to-the-KVM-module/20260411-044838
+base:   https://github.com/awilliam/linux-vfio.git for-linus
+patch link:    https://lore.kernel.org/r/20260407180107.1603697-4-pbonzini%40redhat.com
+patch subject: [PATCH 3/3] KVM, vfio: remove symbol_get(kvm_put_kvm) from vfio
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260411/202604111413.JR4rqpIv-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260411/202604111413.JR4rqpIv-lkp@intel.com/reproduce)
 
-  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604111413.JR4rqpIv-lkp@intel.com/
 
-for you to fetch changes up to 1fe7294dfb7d26f70bc8f6d7aff26bf76ed32214:
+All warnings (new ones prefixed by >>):
 
-  Merge tag 'kvm-s390-master-7.0-4' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD (2026-04-11 14:11:23 +0200)
+>> Warning: drivers/vfio/vfio_main.c:1517 function parameter 'kvm_module' not described in 'vfio_file_set_kvm'
+>> Warning: drivers/vfio/vfio_main.c:1517 function parameter 'kvm_module' not described in 'vfio_file_set_kvm'
 
-----------------------------------------------------------------
-s390:
-* KVM: s390: vsie: Fix races with partial gmap invalidations
-
-x86:
-* KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
-
-----------------------------------------------------------------
-Claudio Imbrenda (1):
-      KVM: s390: vsie: Fix races with partial gmap invalidations
-
-David Woodhouse (1):
-      KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
-
-Paolo Bonzini (2):
-      Merge tag 'kvm-x86-fixes-7.1' of https://github.com/kvm-x86/linux into HEAD
-      Merge tag 'kvm-s390-master-7.0-4' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
-
- arch/s390/kvm/gaccess.c         |  9 +++++----
- arch/s390/kvm/gmap.c            |  3 +++
- arch/s390/kvm/gmap.h            |  1 +
- arch/x86/include/uapi/asm/kvm.h | 12 ++++++------
- include/uapi/linux/kvm.h        | 11 ++++++-----
- 5 files changed, 21 insertions(+), 15 deletions(-)
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
