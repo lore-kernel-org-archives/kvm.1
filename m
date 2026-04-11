@@ -1,49 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A00534D384
-	for <kvm@vger.kernel.org>; Sat, 11 Apr 2026 12:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F95352C51
+	for <kvm@vger.kernel.org>; Sat, 11 Apr 2026 12:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775909270; cv=none; b=imC//ngea6bJdMhenyjFwb5FnhYXI94ck6qpxaww6SY222rRDPd8umS1XHHTqb1z6N/Kch31k2PXqs3zKerFaN9IQU73kG7U/TKmvRO0A5V79oL3CRyUpp9CiNf3CV0rPsTxo6IJRk6SxPPpc7Okk3e4iZ06AXMmZgj3S3r95f0=
+	t=1775909373; cv=none; b=lA5t39DnYsZjxcqYit80JUdBLa1RCsPJ97fNk6JB6GFMStp1ps13FuU23Z+mQLycPTi/Qz3VaMzRCeiIzycSrHmZQAiLPcYT/hPYjRt7oYfoJGE70sNhAGqVCf4zGtBtFEN4wGDEr1D7nWo+3XYor0AsOcR0K0RDAn+GjKoX8+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775909270; c=relaxed/simple;
-	bh=MK4AbCd6YR/aj5290Vp+ITxSQiHuW73ZB28CoPKJlRY=;
+	s=arc-20240116; t=1775909373; c=relaxed/simple;
+	bh=YFYdcc5yXVcQI1ui18ea6YrgG25tVhrsTPWazJ/BZeA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c6dJPHHLZgpj1bHgk2A0wDyJ8/jqMItSV3vwYeffN0DmMatgMz//FK4BgG3UEn4AaHFZAA262je0gtZjoZm21pRJ0FPOI9fmR5PLwBYN+DmQFfbS6AttiGIeNx3T5OpEinZTGZzb0Jn6Qzb0voyXO6vagXPMNXEa9lkX4I7fmqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SEd2T1il; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=uu/GzoBnbRA2Gkb4QgG+na0dR4TeMajictrllMnn8qWkT1uGFGAtpormTsvyRrpzwgEDCnn7x+SAFdnJQ2jwWzWbBWuVn/CdLyy0IJM0gR+5B9iJ+vTeh/NR+RA2c4IIjxWdkb6W4Q6KyW9XBuPXC7j8KQzIRDU69NmWS+fFkMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VyGZJmA+; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SEd2T1il"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VyGZJmA+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775909268;
+	s=mimecast20190719; t=1775909370;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bg3f1c0t+KwX2+fEW8D6eCZ6Ugb+/1DmTewvSxBtr70=;
-	b=SEd2T1ilYgjbJtGsGSGWrmikmLRSLc9cvumpJTWFRTnCTy93iurSVjijIRlr69VnD+HdHR
-	5kNSgar4cL9lt6k2dktcpsvSP0ZIi2dKLiJ74DEOQ+ncBuzaCt0L2pkFTozQ18GZ/T0ndr
-	AaEOELvw6jV7XODunRKodJ11RYdRs+c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=3QWIBWIzo6zL/tSoo7WUV1CHuvA3hN/ol8Rd7Rq6xRc=;
+	b=VyGZJmA+ySqo6eSxujOeVRnpnnUElkW7biaD/WuqJBXqG8x2FAj6zrr1/jqdhoLIVR4Dnw
+	7YJtsKrmHZBJjG4GLnuO61eDnhjCNEqQum97nuS64WXeBXcyWJTl1rpPZKq1qZLfTtin89
+	uTUZfvCjmA9EsP1Hsed3SSL51kMk0pE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-Od5tSsISNnu0OUIreRCWaA-1; Sat,
- 11 Apr 2026 08:07:43 -0400
-X-MC-Unique: Od5tSsISNnu0OUIreRCWaA-1
-X-Mimecast-MFC-AGG-ID: Od5tSsISNnu0OUIreRCWaA_1775909262
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-256-hM6UDCZEPgSUHb--9I7NdA-1; Sat,
+ 11 Apr 2026 08:09:28 -0400
+X-MC-Unique: hM6UDCZEPgSUHb--9I7NdA-1
+X-Mimecast-MFC-AGG-ID: hM6UDCZEPgSUHb--9I7NdA_1775909366
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B39D19560B2;
-	Sat, 11 Apr 2026 12:07:42 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 62DCE1956089;
+	Sat, 11 Apr 2026 12:09:26 +0000 (UTC)
 Received: from [10.44.48.52] (unknown [10.44.48.52])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9752E180049F;
-	Sat, 11 Apr 2026 12:07:40 +0000 (UTC)
-Message-ID: <ce39a525-57e4-4ffd-b2d5-44ea4529a803@redhat.com>
-Date: Sat, 11 Apr 2026 14:07:38 +0200
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C3223195608E;
+	Sat, 11 Apr 2026 12:09:23 +0000 (UTC)
+Message-ID: <549ab51a-3f54-4b54-b78a-7ead3c043092@redhat.com>
+Date: Sat, 11 Apr 2026 14:09:21 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,11 +51,12 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] KVM: x86: A lonely fix for 7.1
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260410235832.2312342-1-seanjc@google.com>
- <20260410235832.2312342-2-seanjc@google.com>
+Subject: Re: [GIT PULL v1 0/1] Subject: [GIT PULL v1 0/1] KVM: s390: One very
+ last second fix
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+ borntraeger@de.ibm.com
+References: <20260407162726.252141-1-imbrenda@linux.ibm.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -93,43 +94,47 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20260410235832.2312342-2-seanjc@google.com>
+In-Reply-To: <20260407162726.252141-1-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 4/11/26 01:58, Sean Christopherson wrote:
-> Please pull a single fix for 7.1 that I tossed in a "fixes" branch with the
-> intent of sending it along for 7.0, and then promptly forgot about.
+On 4/7/26 18:27, Claudio Imbrenda wrote:
+> Ciao Paolo,
 > 
-> The following changes since commit d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf:
+> here is one very last moment fix for the gmap rewrite. It fixes an
+> issue that can happen when a partial invalidation happens during a
+> shadowing operation.
+
+Pulled, thanks.
+
+Paolo
+
 > 
->    KVM: selftests: Verify SEV+ guests can read and write EFER, CR0, CR4, and CR8 (2026-03-12 17:31:53 +0100)
+> The following changes since commit bfe62a454542cfad3379f6ef5680b125f41e20f4:
+> 
+>    Merge tag 'soc-fixes-7.0-2' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc (2026-04-06 09:03:19 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.1
+>    https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/kvm-s390-master-7.0-4
 > 
-> for you to fetch changes up to 2619da73bb2f10d88f7e1087125c40144fdf0987:
+> for you to fetch changes up to 3ffe5eb4a5f248c0d4b849f050af973396656f85:
 > 
->    KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs (2026-03-12 10:56:10 -0700)
-> 
-> ----------------------------------------------------------------
-> KVM x86 fixes for 7.1
-> 
-> Declare flexible arrays in uAPI structures using __DECLARE_FLEX_ARRAY() so
-> that KVM's uAPI headers can be included in C++ projects.
+>    KVM: s390: vsie: Fix races with partial gmap invalidations (2026-04-07 18:20:58 +0200)
 > 
 > ----------------------------------------------------------------
-> David Woodhouse (1):
->        KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
+> KVM: s390: One very last second fix
 > 
->   arch/x86/include/uapi/asm/kvm.h | 12 ++++++------
->   include/uapi/linux/kvm.h        | 11 ++++++-----
->   2 files changed, 12 insertions(+), 11 deletions(-)
+> Fix one more gmap-rewrite issue: races with partial gmap invalidations.
 > 
-
-Pulled for 7.0, thanks.
-
-Paolo
+> ----------------------------------------------------------------
+> Claudio Imbrenda (1):
+>        KVM: s390: vsie: Fix races with partial gmap invalidations
+> 
+>   arch/s390/kvm/gaccess.c | 9 +++++----
+>   arch/s390/kvm/gmap.c    | 3 +++
+>   arch/s390/kvm/gmap.h    | 1 +
+>   3 files changed, 9 insertions(+), 4 deletions(-)
+> 
 
