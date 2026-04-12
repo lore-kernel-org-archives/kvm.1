@@ -1,30 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18332373C1D;
-	Sun, 12 Apr 2026 14:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EE4377541;
+	Sun, 12 Apr 2026 14:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776003774; cv=none; b=L0n/Qj3eFNYEZ9E8BkcD9aum8xnIlPwxhzbqRUpuJKA4sF2+p26QhgfXksdlNX4g168rvsty4oGCN2zrWHEfRveZEfEl10DAodq4C4gQBf48xfAn3N/YE2mNOmUPsBFTWMJuC3e12hyWOhuMv7zA3qK9DhA5O7/krKC8Td/EZGs=
+	t=1776003776; cv=none; b=IjSYG9koqpzcfWou5P6IMtwGqd+HIYtuDWCpP3WVWayx8k/QCGhq0aNp5IeZcqrGxzlutCCbzSQqnnTuV5iJ376Z4b2DNl366bF6Eqn2fBsIvyrF3FgQgVF++QUiWhPq4KbDV2FP51jR1Npu499xnDBNhhzxTXHQbEWakG2EngQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776003774; c=relaxed/simple;
-	bh=x5b6a2lnu4dYKEG9M/n+bLgsEZhpt2lX5ouBIpHYT7E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DLqM0+nCYtrEd8YydSAS/CZ6sVDnfw4oYcw/Mc4MiPE9o1S30T9Z8CSUJO/B7Pu4pVSR2Zka2ZAZ4HfZ0QcKBG/a2UaknPUXAyIDOJ2N49onbhLOSF1dkJIo0JOcHEp1viIJgFBymnP7IlxD+hXu1YgL+bxQfweuFm45TMs/Ggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Q4w/sVDe; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1776003776; c=relaxed/simple;
+	bh=0EDfWpsdxsjcAtIRZvKranYR1gx5ZSTX9J79iq1ThbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mVFP+g9IiSC3BfoqRP7aVJh40O6INCTDC5TFcrWUFyiHVuFdAWOc3Ju76sV63puGw6+msaJK51Kx+pC0EIFU/C3JM3J036EE7lLnyJafyQ1I20oVCHO6Fcp1jlSqH7dcOn4JKNEKYKBRCVp63JwFW9F29eCmBuCUP3sdgoHA7KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vgOJEwq1; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Q4w/sVDe"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vgOJEwq1"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A98523555;
-	Sun, 12 Apr 2026 07:22:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F0114CE3;
+	Sun, 12 Apr 2026 07:22:47 -0700 (PDT)
 Received: from workstation-e142269.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B0CE3F641;
-	Sun, 12 Apr 2026 07:22:43 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 909CD3F641;
+	Sun, 12 Apr 2026 07:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776003765; bh=x5b6a2lnu4dYKEG9M/n+bLgsEZhpt2lX5ouBIpHYT7E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Q4w/sVDeLN62hSuLNCnXhATJ2i/gfeOMvOG5WNLbhewr1EplLMWXzA1GqhytEX2k8
-	 AdtE9x/iT/pZ3CTmEjXx8xhJDdHNP4XYgr2mBlZhnTvaMBcAY1WxPwOuPzmpNJmDa0
-	 ywOcA5dEIqotsHAmui1HLFUb6j0GnTWm+8FGi4Ak=
+	t=1776003772; bh=0EDfWpsdxsjcAtIRZvKranYR1gx5ZSTX9J79iq1ThbA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vgOJEwq15vuopE2NISS68i27oULnGZI5qAuOmpX6QefCKW2e1lnw98pbJrfFLRPPl
+	 HzYviLaS6/XWRXPLCfeL9Yw9TfOqDCbMI2m+q9aMDeLnkcFJdvzKIsHBja6EWMp0yL
+	 /qrlxa4RE5LPcAY0QElLGMAQSOLB3ZDtQBGdukQE=
 From: Wei-Lin Chang <weilin.chang@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	kvmarm@lists.linux.dev,
@@ -41,10 +42,12 @@ Cc: Marc Zyngier <maz@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Shuah Khan <shuah@kernel.org>,
 	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: [PATCH v2 0/4] KVM: arm64: selftests: Basic nested guest support
-Date: Sun, 12 Apr 2026 15:22:12 +0100
-Message-ID: <20260412142216.3806482-1-weilin.chang@arm.com>
+Subject: [PATCH v2 3/4] KVM: arm64: sefltests: Add basic NV selftest
+Date: Sun, 12 Apr 2026 15:22:15 +0100
+Message-ID: <20260412142216.3806482-4-weilin.chang@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260412142216.3806482-1-weilin.chang@arm.com>
+References: <20260412142216.3806482-1-weilin.chang@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -53,62 +56,138 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+This selftest simply starts an L1, which starts its own guest (L2). L2
+runs without stage-1 and 2 translations, it calls an HVC to jump back
+to L1.
 
-This is v2 of adding basic support for running nested guests (L2) in
-kselftest. After getting feedback from v1 [1], I mostly started over
-from scratch. Therefore you won't lose any context if you start here.
-Nonetheless, I still compiled the broad changes.
-
-Patch 1 adds GPR save/restore code for guest, and vEL2 exception
-vectors.
-
-Patch 2 adds other hypervisor helpers.
-
-Patch 3 adds the hello_nested selftest to jump from vEL2 -> EL1 -> vEL2.
-
-Patch 4 enhances the hello_nested selftest so that vEL1 handles a
-hypercall from EL1.
-
-* Changes from v1 [1]:
-
-  - Set HCR_EL2.E2H for the guest.
-
-  - Pivoted from "userspace setting up everything" to "make L1 more like
-    a proper hypervisor". Guest EL2 exception vectors, and GPR
-    save/restore are added. There is also some infrastructure to
-    save/restore system registers, right now only SP_EL1 is
-    saved/restored to give L2 a stack. More system registers can be
-    added in the future.
-
-  - Removed the stage-2 page table generator. The stage-2 page table
-    generator was bad, and the changes needed for the previous point
-    alone is already making the series larger, so I decided to not add
-    any guest stage-2 code in this iteration.
-
-Thanks!
-
-[1]: https://lore.kernel.org/kvmarm/20260325003620.2214766-1-weilin.chang@arm.com/
-
-Wei-Lin Chang (4):
-  KVM: arm64: selftests: Add GPR save/restore functions for NV
-  KVM: arm64: sefltests: Add helpers for guest hypervisors
-  KVM: arm64: sefltests: Add basic NV selftest
-  KVM: arm64: selftests: Enhance hello_nested test
-
- tools/testing/selftests/kvm/Makefile.kvm      |   4 +
- .../selftests/kvm/arm64/hello_nested.c        | 132 +++++++++++++++++
- .../selftests/kvm/include/arm64/nested.h      |  62 ++++++++
- tools/testing/selftests/kvm/lib/arm64/entry.S | 137 ++++++++++++++++++
- .../selftests/kvm/lib/arm64/hyp-entry.S       |  77 ++++++++++
- .../testing/selftests/kvm/lib/arm64/nested.c  |  58 ++++++++
- 6 files changed, 470 insertions(+)
+Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+---
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/arm64/hello_nested.c        | 103 ++++++++++++++++++
+ 2 files changed, 104 insertions(+)
  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
- create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
- create mode 100644 tools/testing/selftests/kvm/lib/arm64/entry.S
- create mode 100644 tools/testing/selftests/kvm/lib/arm64/hyp-entry.S
- create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
 
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 3dc3e39f7025..e8c108e0c487 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -168,6 +168,7 @@ TEST_GEN_PROGS_arm64 += arm64/arch_timer_edge_cases
+ TEST_GEN_PROGS_arm64 += arm64/at
+ TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
+ TEST_GEN_PROGS_arm64 += arm64/hello_el2
++TEST_GEN_PROGS_arm64 += arm64/hello_nested
+ TEST_GEN_PROGS_arm64 += arm64/host_sve
+ TEST_GEN_PROGS_arm64 += arm64/hypercalls
+ TEST_GEN_PROGS_arm64 += arm64/external_aborts
+diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
+new file mode 100644
+index 000000000000..97387e4697b3
+--- /dev/null
++++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * hello_nested - Go from vEL2 to EL1 then back
++ */
++
++#include "nested.h"
++#include "processor.h"
++#include "test_util.h"
++#include "ucall.h"
++
++#define XLATE2GPA	(0xABCD)
++#define L2STACKSZ	(0x100)
++
++/*
++ * TPIDR_EL2 is used to store vcpu id, so save and restore it.
++ */
++static vm_paddr_t ucall_translate_to_gpa(void *gva)
++{
++	vm_paddr_t gpa;
++	u64 vcpu_id = read_sysreg(tpidr_el2);
++
++	GUEST_SYNC2(XLATE2GPA, gva);
++
++	/* get the result from userspace */
++	gpa = read_sysreg(tpidr_el2);
++
++	write_sysreg(vcpu_id, tpidr_el2);
++
++	return gpa;
++}
++
++static void l2_guest_code(void)
++{
++	do_hvc();
++}
++
++static void guest_code(void)
++{
++	struct vcpu vcpu;
++	struct hyp_data hyp_data;
++	int ret;
++	vm_paddr_t l2_pc, l2_stack_top;
++	/* force 16-byte alignment for the stack pointer */
++	u8 l2_stack[L2STACKSZ] __attribute__((aligned(16)));
++
++	GUEST_ASSERT_EQ(get_current_el(), 2);
++	GUEST_PRINTF("vEL2 entry\n");
++
++	l2_pc = ucall_translate_to_gpa(l2_guest_code);
++	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
++
++	init_vcpu(&vcpu, l2_pc, l2_stack_top);
++	prepare_hyp();
++
++	ret = run_l2(&vcpu, &hyp_data);
++	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
++	GUEST_DONE();
++}
++
++int main(void)
++{
++	struct kvm_vcpu_init init;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	vm_paddr_t gpa;
++
++	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
++	vm = vm_create(1);
++
++	kvm_get_default_vcpu_target(vm, &init);
++	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
++	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
++	kvm_arch_vm_finalize_vcpus(vm);
++
++	while (true) {
++		vcpu_run(vcpu);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			if (uc.args[0] == XLATE2GPA) {
++				gpa = addr_gva2gpa(vm, (vm_vaddr_t)uc.args[1]);
++				vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), gpa);
++			}
++			break;
++		case UCALL_PRINTF:
++			pr_info("%s", uc.buffer);
++			break;
++		case UCALL_DONE:
++			pr_info("DONE!\n");
++			goto end;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			fallthrough;
++		default:
++			TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
++		}
++	}
++
++end:
++	kvm_vm_free(vm);
++	return 0;
++}
 -- 
 2.43.0
 
