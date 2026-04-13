@@ -1,110 +1,208 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047703AF65C
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 09:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5361D37C92D;
+	Mon, 13 Apr 2026 09:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776071133; cv=none; b=C+jQqdQHSG59fl9RjtRFIS/LWsVDEtN2qbZqhR+jEWPZXvm6f0FH7kg3Jk/cWtZJ5ORIC3tFPFSQ0ymhpGWmo/he1Q2IISbuvRtRFyvp1yJBjM+lTEGPDewedTC8jq0FmpzYw7LSgDC6K7JuQVDUM4uyM2btiZC7+jWUPkO2IaM=
+	t=1776071940; cv=none; b=a0NYRBTuSSfGUm6AEZP/MUuIg+VBf9BNNdM+LlZhu7jmIAyeXK+vcvgXkTn7f6FQYW3c/kVRUyoRWkiGNfndlq48RjZUhPcUB1g0yHD0+30XhN0lcsONGfucWUjptO6aJ4tt54BfzjJ/+IY3lJhC9N5Wv/YoFgowJ9CRqKN5Quw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776071133; c=relaxed/simple;
-	bh=3wAOmCEB6xmmFNvsqIUiyITnqZOU3fojvHPM3MMcEOc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kasiOcgJwxXoPaJNqY6JuR0YxIUaQFcgsx33jnNbZYPVP2fpFE9Og2pP8mc8R3ZNX6uxvzVGP6ptgC/nT8UMQl4S9tDKFTUc+oJ6BHQG1VyWs3JYFlC0gCot4+pfNU9sGFC+qa1mSn4Edx450GaY08d0psVWRQ2kYeDY1I//wfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gkYLaHCr; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776071940; c=relaxed/simple;
+	bh=g0ESrCViHyCxKf3iu65baEykiub0+SeZDWwUl391xKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sek56Xgr3lyzvV7VIwyU0e9Eago9urz9IKli4JZACx8lP9nA/jE18fyc/pXmZgzl0PRdrSwyVdWW6vu8Uv74PhEaJNAgMaPYfFikIxkXWGHeP3XCArb6/IkORyfvBtqedWvxhtosITAk5pTTX3ONgrZXwmm0RlELQW4tXFU1Ivo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OFSjKH6+; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gkYLaHCr"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35fb0bb27e7so611322a91.1
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 02:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776071131; x=1776675931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4rWbsiBNxWsuEFoJoM14TUA11TPEejjWbsfveSsSAA8=;
-        b=gkYLaHCrYST0pNJPg5FYd4JbMnXgfLxR/B8s7+9CRv0NHYEdwHyemhOR2kIawmgSRu
-         ErW0fB7sVaS8YWIqdR+6uSov2TYhinVMNf6njXXWqtRi/syDXgzldf4XKrYaLnHXsfvp
-         /zHmo7IDV8AHIuaSCZqVmDZBO+wlcvqbHgx1hkm3gETJFfcrMXzPRR95VM55E0CEwAd5
-         FWmXyiKv75xVO9qonWZj7mWhIqT7d5PWlJa/DMItzXtuY/8jlPkjZZERWacYZz/jJMmJ
-         QWn7tpl46G5fDT7sl43OK2TjLsOyho+f92MSmCAWwX6IIr67yqOdBm9Msoisy3WQsKv1
-         STSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776071131; x=1776675931;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4rWbsiBNxWsuEFoJoM14TUA11TPEejjWbsfveSsSAA8=;
-        b=HSiLlVZaSqCW5NyZPCgJR0fKhPSLIQY3aZSwaajn0yVFz1CgeugIo/i3ZDHZki0qf4
-         3gXp+L1k5xf2o16zxk3Oy1rPETp0nFb6FZ3DGdc/mj97HCoTGc8Ds7nU0X0FGdPJQzsN
-         UCKQtV3oVQ5wuYxcWrfPfIOL6Xp6d3vX0BnkRcCKYG6LbijS3PNQ5ekHPpFenSUHJRHd
-         rngDRUhXFbC9H0whwR8w0YSmn0MS+LlzhMExEj9mbyuMr81UQOkCXYxV4E1qruPs+xMr
-         cw8O2mf/lKHcok/Qg+trNMA1Js2TkZa3OPgWvgNIBkfZcbyMXe5vyHS6Xoh8OkUBZAGN
-         0DcQ==
-X-Gm-Message-State: AOJu0YwTLn7lQajKWVxbbtDsFsUGscSrbRpF+uoeshZUnmGoXCzB9UIC
-	H0xkb3Mygtw9IGvx1U08PrkxbReI95dh4RKse0gMhv3fBa+mlcMkWpNYLofa2g==
-X-Gm-Gg: AeBDietnFKAOvhkEVm/gzsldc09jtAiF8VlaeiwL8zt06QWegNle59My53Ih98lo/+y
-	FDH6DpMFqL5HgVGxTfqMtcx2GqBmiPTSxf/UpVbphGJJyObFVqdzLZ3bUjXlcJ5BgWxkfkqUl2r
-	G/oO7PXeL0WdGnryZFnBwHf02ggx6fjeU3Bb6kGPkRe5sOmbrPuHuw2jiZc2lpGKw3Gx/fScIq7
-	GdIoFcvgwIA7oOHPRA/9tlPlEBoglSvOOo0hGRqbw1qrYiJp6GXbGyicL72/DizGoYK74PWNnWu
-	TqvkeFEQOJ8LSY3X+Ba1AHYv0rkXwCfeAybZSr++T4PTUEBD/WgDVI0EIMArlT53YWYKid6J0Ej
-	6gkZNTeq5oEMqt5KuwosWbCWf1E+qQHOyfMeCxxb4dpi9QRyp+GwFyVNJCke/GCcKwjHdEwi1Uk
-	9ZCES1us2L6LlJi/ugDLSy9J8io7DdC2Y+jTRC9kLVHTleSRYm2JkCc1b0BZ6edSG5
-X-Received: by 2002:a17:90b:35d0:b0:35c:cba:344f with SMTP id 98e67ed59e1d1-35e42814b32mr12084494a91.13.1776071131141;
-        Mon, 13 Apr 2026 02:05:31 -0700 (PDT)
-Received: from gmail.com (69-172-89-235.static.imsbiz.com. [69.172.89.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e5a725b2bsm4274931a91.16.2026.04.13.02.05.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Apr 2026 02:05:30 -0700 (PDT)
-From: Dudu Lu <phx0fer@gmail.com>
-To: kvm@vger.kernel.org
-Cc: mst@redhat.com,
-	jasowang@redhat.com,
-	Dudu Lu <phx0fer@gmail.com>
-Subject: [PATCH] vhost/vringh: Fix IOTLB permission in putu16_iotlb()
-Date: Mon, 13 Apr 2026 17:05:26 +0800
-Message-Id: <20260413090526.80563-1-phx0fer@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OFSjKH6+"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22AC132E0;
+	Mon, 13 Apr 2026 02:18:52 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 984D53F93E;
+	Mon, 13 Apr 2026 02:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776071937; bh=g0ESrCViHyCxKf3iu65baEykiub0+SeZDWwUl391xKM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OFSjKH6+MOZGPpPhNp2SfF7rSHgMFE3bKQUfqbKUL42XZwtXTwqeq2Id2dfuQDLJF
+	 0JUw61Nds3kLespdZfnvipzqo5o3idh1vCJxMgVxw0gKxLHmCUWdLgRkLbsix0Hwoc
+	 zSyBawg5/azVBHRjL5M/dy2fbzFpp0yiQEOuyUpU=
+Date: Mon, 13 Apr 2026 10:18:42 +0100
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v2 3/4] KVM: arm64: sefltests: Add basic NV selftest
+Message-ID: <ddr6exocupk6mzshjwvu6sqt57aeqiyxqss3rpgcxxyh54cw4g@rxvm5zh3ybrw>
+References: <20260412142216.3806482-1-weilin.chang@arm.com>
+ <20260412142216.3806482-4-weilin.chang@arm.com>
+ <adwofV7yf71OdMFk@sm-arm-grace07>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adwofV7yf71OdMFk@sm-arm-grace07>
 
-putu16_iotlb() performs a write operation (__put_user / WRITE_ONCE)
-but requests IOTLB translation with VHOST_MAP_RO (read-only
-permission).  This means the IOTLB lookup succeeds only if the page
-has read permission, ignoring write permission entirely.  A page
-mapped read-only in the IOTLB would incorrectly allow the write,
-while a page mapped write-only would incorrectly deny it.
+Hi Itaru,
 
-The neighbouring getu16_iotlb() correctly uses VHOST_MAP_RO for its
-read operation, and the copydesc write path (putdesc_iotlb) correctly
-uses VHOST_MAP_WO, confirming this is a copy-paste error.
+On Mon, Apr 13, 2026 at 08:19:25AM +0900, Itaru Kitayama wrote:
+> On Sun, Apr 12, 2026 at 03:22:15PM +0100, Wei-Lin Chang wrote:
+> > This selftest simply starts an L1, which starts its own guest (L2). L2
+> > runs without stage-1 and 2 translations, it calls an HVC to jump back
+> > to L1.
+> 
+> How do you disable both the nested guest (L2)'s MMU and stage 2
+> translations?
 
-Fix by changing VHOST_MAP_RO to VHOST_MAP_WO to match the write
-semantics of putu16_iotlb().
+Guest stage-2 is disabled by not setting HCR_EL2.VM in prepare_hyp(),
+and stage-1 is disabled by not writing to SCTLR_EL12 in init_vcpu(),
+effectively using the default value set by L0. However since SCTLR_EL1
+has many architecturally UNKNOWN bits (including SCTLR_EL1.M), it should
+be better to write a value before running L2 I suppose...
 
-Fixes: 0ea9ee430111 ("vhost/vringh: add IOTLB support")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
----
- drivers/vhost/vringh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Wei-Lin Chang
 
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 9066f9f12ba1..e6ca7e0824f9 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -1244,7 +1244,7 @@ static inline int putu16_iotlb(const struct vringh *vrh,
- 
- 	/* Atomic write is needed for putu16 */
- 	ret = iotlb_translate(vrh, (u64)(uintptr_t)p, sizeof(*p),
--			      NULL, &ivec, VHOST_MAP_RO);
-+			      NULL, &ivec, VHOST_MAP_WO);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.39.3 (Apple Git-145)
-
+> 
+> Itaru.
+> 
+> > 
+> > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> > ---
+> >  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+> >  .../selftests/kvm/arm64/hello_nested.c        | 103 ++++++++++++++++++
+> >  2 files changed, 104 insertions(+)
+> >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+> > 
+> > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> > index 3dc3e39f7025..e8c108e0c487 100644
+> > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > @@ -168,6 +168,7 @@ TEST_GEN_PROGS_arm64 += arm64/arch_timer_edge_cases
+> >  TEST_GEN_PROGS_arm64 += arm64/at
+> >  TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
+> >  TEST_GEN_PROGS_arm64 += arm64/hello_el2
+> > +TEST_GEN_PROGS_arm64 += arm64/hello_nested
+> >  TEST_GEN_PROGS_arm64 += arm64/host_sve
+> >  TEST_GEN_PROGS_arm64 += arm64/hypercalls
+> >  TEST_GEN_PROGS_arm64 += arm64/external_aborts
+> > diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > new file mode 100644
+> > index 000000000000..97387e4697b3
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > @@ -0,0 +1,103 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * hello_nested - Go from vEL2 to EL1 then back
+> > + */
+> > +
+> > +#include "nested.h"
+> > +#include "processor.h"
+> > +#include "test_util.h"
+> > +#include "ucall.h"
+> > +
+> > +#define XLATE2GPA	(0xABCD)
+> > +#define L2STACKSZ	(0x100)
+> > +
+> > +/*
+> > + * TPIDR_EL2 is used to store vcpu id, so save and restore it.
+> > + */
+> > +static vm_paddr_t ucall_translate_to_gpa(void *gva)
+> > +{
+> > +	vm_paddr_t gpa;
+> > +	u64 vcpu_id = read_sysreg(tpidr_el2);
+> > +
+> > +	GUEST_SYNC2(XLATE2GPA, gva);
+> > +
+> > +	/* get the result from userspace */
+> > +	gpa = read_sysreg(tpidr_el2);
+> > +
+> > +	write_sysreg(vcpu_id, tpidr_el2);
+> > +
+> > +	return gpa;
+> > +}
+> > +
+> > +static void l2_guest_code(void)
+> > +{
+> > +	do_hvc();
+> > +}
+> > +
+> > +static void guest_code(void)
+> > +{
+> > +	struct vcpu vcpu;
+> > +	struct hyp_data hyp_data;
+> > +	int ret;
+> > +	vm_paddr_t l2_pc, l2_stack_top;
+> > +	/* force 16-byte alignment for the stack pointer */
+> > +	u8 l2_stack[L2STACKSZ] __attribute__((aligned(16)));
+> > +
+> > +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> > +	GUEST_PRINTF("vEL2 entry\n");
+> > +
+> > +	l2_pc = ucall_translate_to_gpa(l2_guest_code);
+> > +	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
+> > +
+> > +	init_vcpu(&vcpu, l2_pc, l2_stack_top);
+> > +	prepare_hyp();
+> > +
+> > +	ret = run_l2(&vcpu, &hyp_data);
+> > +	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
+> > +	GUEST_DONE();
+> > +}
+> > +
+> > +int main(void)
+> > +{
+> > +	struct kvm_vcpu_init init;
+> > +	struct kvm_vcpu *vcpu;
+> > +	struct kvm_vm *vm;
+> > +	struct ucall uc;
+> > +	vm_paddr_t gpa;
+> > +
+> > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+> > +	vm = vm_create(1);
+> > +
+> > +	kvm_get_default_vcpu_target(vm, &init);
+> > +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> > +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
+> > +	kvm_arch_vm_finalize_vcpus(vm);
+> > +
+> > +	while (true) {
+> > +		vcpu_run(vcpu);
+> > +
+> > +		switch (get_ucall(vcpu, &uc)) {
+> > +		case UCALL_SYNC:
+> > +			if (uc.args[0] == XLATE2GPA) {
+> > +				gpa = addr_gva2gpa(vm, (vm_vaddr_t)uc.args[1]);
+> > +				vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), gpa);
+> > +			}
+> > +			break;
+> > +		case UCALL_PRINTF:
+> > +			pr_info("%s", uc.buffer);
+> > +			break;
+> > +		case UCALL_DONE:
+> > +			pr_info("DONE!\n");
+> > +			goto end;
+> > +		case UCALL_ABORT:
+> > +			REPORT_GUEST_ASSERT(uc);
+> > +			fallthrough;
+> > +		default:
+> > +			TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
+> > +		}
+> > +	}
+> > +
+> > +end:
+> > +	kvm_vm_free(vm);
+> > +	return 0;
+> > +}
+> > -- 
+> > 2.43.0
+> > 
