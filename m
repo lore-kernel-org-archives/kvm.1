@@ -1,301 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA75133BBC0
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 15:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77342303CAB
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 15:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776092698; cv=none; b=KcThJsmEyFNe7TsNrXksqJiiuY1oVfh0WH+Ua4+pb6kSuP/cXAgoWltLYpPPKsDxIdD8waLfC2lEro7Y9vMD7SYJGECL8KjleDr4V7j5/AzpT1xPGH+uWYdz/ONTXmZuaWXw0P51N5FtQy/9/qvcBy5Gwj+5hZdsyqcq/t8B44U=
+	t=1776092843; cv=none; b=ebhCdQyG1A26lYxXvdmN9KTyeUSezWVI1OpW/1zNb5jt1DUEY7vIgefd8a76D83pHPQeG3FKS3ExypYOOzW5VTEdf7KOv0s1HVEfJQQeh6vowE/NVVB0C5P8Y4CVe5lKkAvY9cgvGGkkKP89QJ3PLSVstpOnt1WEj5J5DqdHIf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776092698; c=relaxed/simple;
-	bh=bNqGJy+RgoN/rIyGkSUFKsV62U8Y52qB5T5kGMowXX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h0LQdaJJI936Nco9r7T6xTeD1mhQK9D8JfV0jUj/g9C7v9cXDQSOJ30hVCXuV52UMojwHUPZeK2N25YpifittO0anHuIUePrO6ApDZG9cnHBKtB8W/eCqvENAPL5eBXhrmL/BDT/0hK+HeIHvGnQnL/9XYT2722e2bF/7UCJA40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=byNANFdb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776092843; c=relaxed/simple;
+	bh=NewV9KVkNqeJ2QeuN3kw9Xl+IcU9micw1j7rae/XdQo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZztrUaddEzf8PCKH3sXxKXkEWyiSMGAQlZENHELU3yE5kC3kCBzyPn90E3pRTX+nJ41NF6b44bakjuKGp9ceb4UcAGn48/NxUuyv/jZWTMcRc8d3AXwd4HIxUaaYVX/HXBv5keuQFcQU6o5DG0ONp8wI6C0WJyXJ/DzUZ3dorS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sT1WZBLp; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="byNANFdb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776092695;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=EtqSo8BZOV4BrbnYeN0DtB3CEdnovYlYOjbVxFX4Qzs=;
-	b=byNANFdbse41yre8I2EL6T7Cyv7tmYiQqWOQB59vUG1YDwZqSp42BFVwqe2LR5/4ZhGo2o
-	9gN0TAdq0YVKzq3U8l7b+3RH0Jr48hxMqcvaowJ+PRqbog1svoD/c0r0zPpobPsfsnjqkK
-	2Ap0qQ25Zgzwy2ZTIA2/l2/NTSVNSTg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-87A7zPKvORav5fEtLZJl9A-1; Mon,
- 13 Apr 2026 11:04:49 -0400
-X-MC-Unique: 87A7zPKvORav5fEtLZJl9A-1
-X-Mimecast-MFC-AGG-ID: 87A7zPKvORav5fEtLZJl9A_1776092688
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6E5A6195608B;
-	Mon, 13 Apr 2026 15:04:48 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.44.32.124])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DD4B819560B1;
-	Mon, 13 Apr 2026 15:04:46 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: kvm@vger.kernel.org
-Cc: Andrew Jones <andrew.jones@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [kvm-unit-tests PATCH] Update gitlab-CI jobs to Fedora 43
-Date: Mon, 13 Apr 2026 17:04:44 +0200
-Message-ID: <20260413150444.28501-1-thuth@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sT1WZBLp"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82ce50e6e28so2612098b3a.2
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 08:07:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776092842; x=1776697642; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BTPPnII55fTl2cCLZlpyrHfIkwQJqSFZt8g3ORfSnBw=;
+        b=sT1WZBLpYlH3HQ6WwOz13h336wC3v3K5eBtiu62+e/UTjZOwrVOYJH4oFadNjeY2H/
+         Ko5YP+6RhGflMdsbheoL7RC2/VGY5cD0TU2XJvBbKe/KKhqKYFCdsJrjlm0fcheOw24+
+         aoqfJeUbYAU6Vs7lYQr6LBchQWrW3z+6tPIM6p7isFrWBSAdchGn/6LNMoDXzCLQUAt/
+         Is40PUkJsnY9B2UUvNdQCB70y0P44V3CR721j+WP02nILX7LTjAlcgmAiWsisIiOnsqO
+         7AH/zGmq0vMvx9d3sFl/pRfqyIQ2EZkQprSVC04Dn0knyeCIj/Jb1j4j1hBjR/+gwkKH
+         EspA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776092842; x=1776697642;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BTPPnII55fTl2cCLZlpyrHfIkwQJqSFZt8g3ORfSnBw=;
+        b=pCRxvCQGBEA2NpBS7JlY572zrpbI6gUtzvZpzaFTvxK1+aymTUq0+KCE6rykxs62Iq
+         Rh0L0MK8Kygscn+pa0phT5f0cjwwyMDhVU7tLNNqEv4VNm3wn8y1wY8GZJV0hTC6WMFU
+         EUEIrna+xMd33FgL1h6qMgZ9vUUYa/VN4JzMoWTAGzmBHNNjGV0wGC4PoXdIqDYriObF
+         gMNFutHdrXdsE3nd/Rkpaux1QgEwOgjlV/5G5s9bUde9uneLnfzroe6D+sj15NPSJ0Id
+         IsgFK+xGuNycqST0vsIMGNmNVRQzgkgMXWlD4UPyLVw7DlzoJYiEg5weONjsn3c1455R
+         X2fg==
+X-Forwarded-Encrypted: i=1; AFNElJ/3ZDZ5256T8sMKhzDYAlf9zaTdC2Zm+9Pk/JaX76q3m0ohGQZ2eoRf3JTTdhd/sywyXFE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAZecF9+0KVXs92HM2uDLDj1Aeo9tiB3UzWFK3eVDEHlxFNhxL
+	EH1aPCEJVgksDffNSdKISpxBGojb2pKweUS+6rclgj+Ytia8KQph4qV6Da1Jyq2QUMid0VMXLDs
+	A2dLBog==
+X-Received: from pfbdw7.prod.google.com ([2002:a05:6a00:3687:b0:82f:4afa:eef2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e9d:b0:82f:48e:2421
+ with SMTP id d2e1a72fcca58-82f0c29c84amr13850092b3a.24.1776092841533; Mon, 13
+ Apr 2026 08:07:21 -0700 (PDT)
+Date: Mon, 13 Apr 2026 08:07:20 -0700
+In-Reply-To: <adl_nGI5IEc815fb@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0
+References: <20260409015139.2800185-1-jrhilke@google.com> <20260409015139.2800185-3-jrhilke@google.com>
+ <adl_nGI5IEc815fb@google.com>
+Message-ID: <ad0GqAsFpAgA6g5u@google.com>
+Subject: Re: [PATCH 2/2] vfio: selftests: Automate setting up devices for testing
+From: Sean Christopherson <seanjc@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Josh Hilke <jrhilke@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Vipin Sharma <vipinsh@google.com>, Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Thomas Huth <thuth@redhat.com>
+On Fri, Apr 10, 2026, David Matlack wrote:
+> On 2026-04-09 01:51 AM, Josh Hilke wrote:
+> > Update the VFIO selftest setup script to find a device that has a VFIO selftest
+> > driver on the system, and set it up (i.e unbind that device from its driver, and
+> > then bind that device to VFIO).
+> 
+> I am leaning toward putting this behind an explicit flag (maybe -p for
+> pick_device or -a for automatic device setup?) that way we are sure the
+> user is ok with letting the script start messing with devices on their
+> system.
 
-Fedora 40 is EOL since a while already, so let's update to a more
-recent version of Fedora here now. While we're at it, also refresh
-the lists of tests according to what we can run with TCG of the
-latest version of QEMU.
+In the spirit of "do one thing and do it well", I would rather put "discovery" in
+a separate script entirely, and then tweak setup.sh as necessary to allow piping
+in a BDF from the discovery script.
 
-Something also has changed in the package dependencies in Fedora 43:
-The "ps" program is not available by default anymore in some of the
-jobs, so make sure to install it first via the "procps-ng" package now.
+The mechanics of configuring a device for VFIO (setup.sh) are largely generic,
+i.e. not unique to the selftests, whereas print_supported_devices() is very much
+tightly coupled to selftests.
 
-Additionallyly, the *-efi jobs don't seem to work right with the QEMU
-or EDK2 firmware from Fedora 43 yet, so keep those pinned to an older
-version for now until somebody tackled that problem.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- .gitlab-ci.yml | 70 ++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 56 insertions(+), 14 deletions(-)
-
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 2dffc050..daccdfef 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -1,8 +1,8 @@
--image: fedora:40
-+image: fedora:43
- 
- before_script:
-  - dnf update -y
-- - dnf install -y make python
-+ - dnf install -y make python procps-ng
- 
- # By default artifacts are only saved on success. This uses when:always
- # because the test logs are important to help diagnose failures.
-@@ -40,6 +40,9 @@ build-aarch64:
-       gicv3-ipi
-       its-introspection
-       its-trigger
-+      mte-asymm
-+      mte-async
-+      mte-sync
-       pci-test
-       pmu-cycle-counter
-       pmu-event-counter-config
-@@ -54,6 +57,7 @@ build-aarch64:
- 
- build-aarch64-efi:
-  extends: .intree_template
-+ image: fedora:41
-  script:
-  - dnf install -y qemu-system-aarch64 gcc-aarch64-linux-gnu edk2-aarch64
-  - ./configure --arch=aarch64 --cross-prefix=aarch64-linux-gnu- --enable-efi --enable-efi-direct
-@@ -68,6 +72,7 @@ build-aarch64-efi:
- 
- build-aarch64-efi-acpi:
-  extends: .intree_template
-+ image: fedora:41
-  script:
-  - dnf install -y qemu-system-aarch64 gcc-aarch64-linux-gnu edk2-aarch64
-  - ./configure --arch=aarch64 --cross-prefix=aarch64-linux-gnu- --enable-efi --enable-efi-direct
-@@ -100,6 +105,9 @@ build-aarch64-clang:
-       gicv3-ipi
-       its-introspection
-       its-trigger
-+      mte-asymm
-+      mte-async
-+      mte-sync
-       pci-test
-       pmu-cycle-counter
-       pmu-event-counter-config
-@@ -114,6 +122,7 @@ build-aarch64-clang:
- 
- build-aarch64-clang-efi:
-  extends: .intree_template
-+ image: fedora:41
-  script:
-  - dnf install -y edk2-aarch64 qemu-system-aarch64 gcc-aarch64-linux-gnu clang
-  - ./configure --arch=arm64 --cc=clang --cflags='--target=aarch64' --cross-prefix=aarch64-linux-gnu- --enable-efi --enable-efi-direct
-@@ -128,6 +137,7 @@ build-aarch64-clang-efi:
- 
- build-aarch64-el2:
-  extends: .intree_template
-+ image: fedora:41
-  script:
-  - dnf install -y qemu-system-aarch64 gcc-aarch64-linux-gnu
-  - ./configure --arch=aarch64 --cross-prefix=aarch64-linux-gnu-
-@@ -144,6 +154,9 @@ build-aarch64-el2:
-       gicv3-ipi
-       its-introspection
-       its-trigger
-+      mte-asymm
-+      mte-async
-+      mte-sync
-       pci-test
-       pmu-cycle-counter
-       pmu-event-counter-config
-@@ -152,6 +165,7 @@ build-aarch64-el2:
-       selftest-smp
-       selftest-vectors-kernel
-       selftest-vectors-user
-+      timer
-       | tee results.txt
-  - grep -q PASS results.txt && ! grep -q FAIL results.txt
- 
-@@ -179,14 +193,24 @@ build-ppc64be:
-  - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
-  - make -j2
-  - ACCEL=tcg ./run_tests.sh
--      selftest-setup
--      selftest-migration
--      selftest-migration-skip
--      spapr_hcall
-+      atomics
-+      emulator
-+      interrupts
-+      mmu
-       rtas-get-time-of-day
-       rtas-get-time-of-day-base
-       rtas-set-time-of-day
--      emulator
-+      selftest-migration
-+      selftest-migration-skip
-+      selftest-setup
-+      sieve
-+      smp
-+      smp-smt
-+      spapr_hcall
-+      spapr_vpa
-+      sprs
-+      timebase
-+      timebase-icount
-       | tee results.txt
-  - if grep -q FAIL results.txt ; then exit 1 ; fi
- 
-@@ -197,14 +221,24 @@ build-ppc64le:
-  - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
-  - make -j2
-  - ACCEL=tcg ./run_tests.sh
--      selftest-setup
--      selftest-migration
--      selftest-migration-skip
--      spapr_hcall
-+      atomics
-+      emulator
-+      interrupts
-+      mmu
-       rtas-get-time-of-day
-       rtas-get-time-of-day-base
-       rtas-set-time-of-day
--      emulator
-+      selftest-migration
-+      selftest-migration-skip
-+      selftest-setup
-+      sieve
-+      smp
-+      smp-smt
-+      spapr_hcall
-+      spapr_vpa
-+      sprs
-+      timebase
-+      timebase-icount
-       | tee results.txt
-  - if grep -q FAIL results.txt ; then exit 1 ; fi
- 
-@@ -238,6 +272,7 @@ build-riscv64:
- 
- build-riscv64-efi:
-  extends: .intree_template
-+ image: fedora:41
-  script:
-  - dnf install -y edk2-riscv64 qemu-system-riscv gcc-riscv64-linux-gnu
-  - cp /usr/share/edk2/riscv/RISCV_VIRT_CODE.fd .
-@@ -281,6 +316,7 @@ build-riscv64-clang:
- 
- build-riscv64-clang-efi:
-  extends: .intree_template
-+ image: fedora:41
-  script:
-  - dnf install -y edk2-riscv64 qemu-system-riscv gcc-riscv64-linux-gnu clang
-  - cp /usr/share/edk2/riscv/RISCV_VIRT_CODE.fd .
-@@ -313,6 +349,7 @@ build-s390x:
-       edat
-       emulator
-       epsw
-+      execute
-       exittime
-       firq-linear-cpu-ids-tcg
-       firq-nonlinear-cpu-ids-tcg
-@@ -325,6 +362,7 @@ build-s390x:
-       selftest-setup
-       sieve
-       smp
-+      spec_ex
-       stsi
-       tprot
-       vector
-@@ -340,13 +378,14 @@ build-x86_64:
-  - ACCEL=tcg ./run_tests.sh
-       eventinj
-       intel_iommu
--      ioapic-split
-+      ioapic
-       memory
-       pks
-       pku
-       rdpru
-       realmode
-       rmap_chain
-+      s3
-       setjmp
-       sieve
-       smap
-@@ -366,6 +405,7 @@ build-x86_64:
-       vmexit_ple_round_robin
-       vmexit_tscdeadline
-       vmexit_tscdeadline_immed
-+      xsave
-       | tee results.txt
-  - if grep -q FAIL results.txt ; then exit 1 ; fi
- 
-@@ -380,7 +420,9 @@ build-i386:
-  - ACCEL=tcg ./run_tests.sh
-       cmpxchg8b
-       eventinj
-+      la57
-       realmode
-+      s3
-       setjmp
-       sieve
-       smap
-@@ -412,7 +454,7 @@ build-clang:
-  - ACCEL=tcg ./run_tests.sh
-       eventinj
-       intel_iommu
--      ioapic-split
-+      ioapic
-       memory
-       pks
-       pku
--- 
-2.53.0
-
+And with respect to making sure the user actually wants the script to mess with
+their system, the permissions required for each script can and should be different.
+`lspci`, and discovery in general, typically doesn't require root, whereas most
+systems will be configured to have things like "sriov_numvfs" writable only from
+root.
