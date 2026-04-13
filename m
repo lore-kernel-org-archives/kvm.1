@@ -1,265 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FF819AD5C
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 12:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F5231E85D;
+	Mon, 13 Apr 2026 12:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776083269; cv=none; b=FTMGwerWaHXI0ohArfWhLniiG7sZ80uzM5f0MdyDODOONuhovCZPw+4hSaz/mCgXPkA8/vaWuZe60qTYVtVO9BMj8AiuP/UWZlpJ0PkLS6fMTVkjDFWPOB76t8TByvAbVEkqCqJDRrsbWYlJhLm4TAydQJP9K0EYO7XM4r4wIuQ=
+	t=1776083314; cv=none; b=qBY8meaDS6PNpd6sC1gb0m1HXMHz3zVudE5Js1vx0ddCVqEhKCnxvwUcod+KJheYY+ayFnGeZc11afu+c1TMNdZmdY6d4qxS07yIF8ItLpCDA+k13p45A4S0hLD8mlpA12SjXMAzau9zdku1HCPLx66GM3k4sk1DWASdIubbZFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776083269; c=relaxed/simple;
-	bh=5Fvy5bXzPmyDn7Gs+GMiOaztw4vmp9AtsxpmjVbm/1M=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=tG2cTrRAhHJ4YlMeVnI37kAzvO7rL9nyGRYyzR5wiLDOZSoFApPO4QdyCc4UrUL5obMKmtnzVihIFIU5V4NwhTHy5s52YLGG5u9ofOwSc03OSKWiwNUZy4TyZ2cl49CvZG/eQ8W81OhQlo7/wGNUBX4F69AxseEPbQkJXBeBlJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aOsgosS5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CzatiM1O; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776083314; c=relaxed/simple;
+	bh=KyO8N3JLZNTjJwCdP6JYudh2qkkIj3/eiiuu0ydMkfk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=roezP/XR5eClwtgVVAyGwPBZTmcDUAttuXV7KVarastI49tyzOP3FWPSv1L7ltK6gMFdYRnt4CSEpHrhH+bvH9jfs1nd8iHh/CoDE1dyOGi9Uy3Bo7Ed1Fxl5i2oRjbHbz8aMt+NLWOue05Pc8uQVm3n+tHJS5PUNcvAeq3FMZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U2wHaZML; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aOsgosS5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CzatiM1O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776083267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bRKspQPq8OXUc15a9NtnUtQGzjqGHbd9RQrfqxefTaQ=;
-	b=aOsgosS5lOFu6M0uJdd9Ejj3Hbganipf+TlZu4JYdIeMni9Y2jOLB3zcHJi++gugc4eyJ+
-	KTn7tHTgOO3k8V6ZMpKyVYWnNX+Zcy1az3vCuadQIoT0CvMbCkV8LEpptFBL2NcitNvtJ6
-	x7EoxwBJ9Iwh5cWwkrISXL2ZMtZ7p7g=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-Oh9U9pK9MTyU_OPqAjXMxA-1; Mon, 13 Apr 2026 08:27:46 -0400
-X-MC-Unique: Oh9U9pK9MTyU_OPqAjXMxA-1
-X-Mimecast-MFC-AGG-ID: Oh9U9pK9MTyU_OPqAjXMxA_1776083265
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-35fbaada2f3so1507724a91.0
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 05:27:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776083265; x=1776688065; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bRKspQPq8OXUc15a9NtnUtQGzjqGHbd9RQrfqxefTaQ=;
-        b=CzatiM1O34eUI8tls/RMlqyyoWOQiJm8OZ+T6LohjfilWSRw28zffJcmyAMobYjfuf
-         QIjOFgoTkRis2lRH6f+x3lpw7J52QDVkoa4e7x5WC2344stJYUAXIcZ8Wp5Jn7HELFUj
-         vSTOeZcDCkGbk7lS4J+qYLNiu9zzlcX8kQwON6e4DCOawv5qem7jkIeKwB6JSHZFuh9j
-         3gqY32Ei78MdleYLEE9/UvY6nYD6N1IgOzuVjg2ZlqrQV8/mJ221gQbn5mBBIh9kP5PB
-         M8g14BIAAmIvz7RDra3gGQZJTXlx0SGwT/l8Wz2MxV6xruB/UqfCbArOMKHDcwReG6AT
-         mbhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776083265; x=1776688065;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bRKspQPq8OXUc15a9NtnUtQGzjqGHbd9RQrfqxefTaQ=;
-        b=L3LbX34BGgJLae5b61kLAtKbEbgLC6CTBqLWlM/dJRCVC/kuSWVYtNzK11S1wuh+tS
-         63qiXvTn4dfx4+gosv4u2QRE6TjfumPBop308CFa1imQJ7WAXwSTgHbU+oRACxlj917o
-         gaJ0EwcWR0kLP7CxPnlL3VGsaVrz3yFmA0bbw6UMqOiXb66DhAb6cA+Pfs9+msxp3CWC
-         VmTBti2EW1P3MUQicX0idT+tSHEguvsepJFwrnM1FCrjtRlucRy1jZYtUa8+ANNz4Sww
-         bq/Q32P6b4YgbYQHTFAN0nooAfkyg1x6vh5iXYJ2ayzvUuIlqDM6ozPOY5iWeiu0xRSV
-         xXlA==
-X-Forwarded-Encrypted: i=1; AFNElJ82PA/4gxk0uGsEGC+FjXm47Hp/hUIh10Uw09xzW5dDrffVZyuZKVQCXgca6C448jKkgSo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyzwyF/fVO4eNC4Z44iZyQVJ3KYasv4FFOznAvOgIHRlFK/3eT
-	tJ29nq58NXZ+q0J7w3UCcVktJYwPzseXX82jfAfAifoMUtxZGjMujO9BYsHPAsHhSyQM1+R8wSa
-	7EVMON8QshaHKp5ZuSI1yyRqFhUdAknreYC8qJyXssEkd83EQhP6ueg==
-X-Gm-Gg: AeBDiesK5B86sFXwnbSNOAPA07Nyv54hh99I3pDRLiWNi79R0rJDAC1/EF+K3vOE3mq
-	wJZWrFu9xkv3JRbKFAHaFsNJneVa3m1ynVa7sAxn806GmOrhKyQ0EZnwwTmV2iXjprIW9GDz8Rw
-	mv5ORi/t9w+kzjXvzEIz/J26kTJbpVJSY1MQdV8Pb6aLRvQGHXf+HSHApYoqMTVvuSeVCcGuGKB
-	N4RKWYhgK7ftF+xZE7z8wQDLxUEk3qq8U8AqA2Iax0wc3CjtikoqZ/TFU/q6NW9aOjSDhch95qY
-	Q9cjsEUn0lJEJuPwlVD2rBCetSgVjUknU/pzHo3PLT/SxWoBYF6drFysa/0cewU5EpdzRiaBnY8
-	R/c+EQUFTcCKpCzUISp45agJdVjZmn0F4Q1/ZhBU1WaE1wMDjpSNi3Bhd9gc6CnypdEvKWNTxcK
-	k=
-X-Received: by 2002:a05:6a20:2455:b0:394:56ae:8a7f with SMTP id adf61e73a8af0-39fe40027cemr14040395637.42.1776083264980;
-        Mon, 13 Apr 2026 05:27:44 -0700 (PDT)
-X-Received: by 2002:a05:6a20:2455:b0:394:56ae:8a7f with SMTP id adf61e73a8af0-39fe40027cemr14040359637.42.1776083264478;
-        Mon, 13 Apr 2026 05:27:44 -0700 (PDT)
-Received: from smtpclient.apple ([122.163.114.34])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c79219c618asm10117963a12.18.2026.04.13.05.27.41
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 Apr 2026 05:27:44 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U2wHaZML"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63D8IW3H1623674;
+	Mon, 13 Apr 2026 12:28:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KyO8N3
+	JLZNTjJwCdP6JYudh2qkkIj3/eiiuu0ydMkfk=; b=U2wHaZMLlibBJIv+SwUqau
+	kkEa9D/Nqt+q3JJ+ePweOf0Siq/94B27y72y+G2qhumZWEQzlIamYx/rrQvGHQlD
+	GtQGNKo2PJa7Vn8YWt5sQe9PUkW/sIfPygF3fyBgLsFNMHw2xyby5U+23fbH2xwO
+	65zXUkqlCc0QhUsEIlQaTsNd6bloIHM5aPGsAid5Zw4YavdlUXH0yd/cuXPmDCv0
+	8ZGkA88c0ou67HyQ19C8bZeVqjjxS4uzqQUJRgqoqyqEP8QqbY3qr+tr1idASj1A
+	c0Io7a0bCW715fqF70XTiGNjHCScTSEGjAJCjZfcwDU2Yg0Soj3+XjMp3IzY9GmA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfcqeya3m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 12:28:28 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63D8vfkT003557;
+	Mon, 13 Apr 2026 12:28:28 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg1mn534e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 12:28:28 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63DCSO6E41615850
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Apr 2026 12:28:24 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3CB8C20040;
+	Mon, 13 Apr 2026 12:28:24 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA63F20043;
+	Mon, 13 Apr 2026 12:28:23 +0000 (GMT)
+Received: from [9.111.7.85] (unknown [9.111.7.85])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Apr 2026 12:28:23 +0000 (GMT)
+Message-ID: <3eec3725-91ae-48e4-a370-9c1bdd7693a2@linux.ibm.com>
+Date: Mon, 13 Apr 2026 14:28:23 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH V2 for-11.0] accel/kvm: return early from
- kvm_irqchip_create if kvm does not support irqchip
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <980AC83F-DD93-4924-8935-11CBFD624ACE@redhat.com>
-Date: Mon, 13 Apr 2026 17:57:29 +0530
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Misbah Anjum N <misanjum@linux.ibm.com>,
- Gautam Menghani <gautam@linux.ibm.com>,
- Fabiano Rosas <farosas@suse.de>,
- kvm@vger.kernel.org,
- qemu-devel <qemu-devel@nongnu.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F0A82F77-6F25-4193-88D0-01B24B1459AE@redhat.com>
-References: <20260413112151.61261-1-anisinha@redhat.com>
- <0954ef7e-b04e-4542-89fb-796acc452068@linux.ibm.com>
- <980AC83F-DD93-4924-8935-11CBFD624ACE@redhat.com>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-X-Mailer: Apple Mail (2.3864.500.181)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL 00/12] KVM: s390: Changes for 7.1
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, david@kernel.org, borntraeger@linux.ibm.com,
+        cohuck@redhat.com, linux-s390@vger.kernel.org, imbrenda@linux.ibm.com
+References: <20260413104721.203024-1-frankja@linux.ibm.com>
+ <CABgObfaWO3J89sFmu3ZBPTztXcKgXPZu3FyiRcasejS=0tgJYQ@mail.gmail.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <CABgObfaWO3J89sFmu3ZBPTztXcKgXPZu3FyiRcasejS=0tgJYQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDEyMSBTYWx0ZWRfX+vwPABGRtIP2
+ /CfeHjR/t9HWs5JfA1Z6JhC+YFBzGj/iSQ3FPNzHlblYSsHcgkikEZVJ9qASTs4gTr2wkZvKm8i
+ phS2lHvTLA7hN+NsFVUFP5yfsnxdnjXakishPt+jJLarlbVyv2fIPi57QNT3RrOcA2iLUbt4135
+ nWTbhNbs3s9R8ymtFjtceQOrMq/Gg7szj9uw6jAELR+k3rSI/umCK2xfWhC6C7hLAPeImZHwDt8
+ He+bmqOm5MqKAd1m5m/yYTFpXiZ0kXTI+nloCt2VuhKbzC2Rn3mWezjSYantbuofbTR5PlO1ZXt
+ XctUYPJwuKRfOV3VzP85caJv+d9yUaQdwuDPPnZfdSvBMeWqoUYaPQZwtsSnevCUQM8/UpeIq3V
+ mt91EUfy20cCcCFiGLBL2s+3EryXBb+MPS8+uiXVYKbvZ1lhmtknrTedsClr6ttD7Dh4n7syFIf
+ wpiMnE7pI8vRmBwNgnw==
+X-Proofpoint-GUID: GnGnfWcgFanRzSUIFtUQ60tPSvebn8-8
+X-Proofpoint-ORIG-GUID: GnGnfWcgFanRzSUIFtUQ60tPSvebn8-8
+X-Authority-Analysis: v=2.4 cv=YemNIQRf c=1 sm=1 tr=0 ts=69dce16c cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=EuZqkWixEsUEt_BPA98A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-13_03,2026-04-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130121
 
-
-
-> On 13 Apr 2026, at 5:45=E2=80=AFPM, Ani Sinha <anisinha@redhat.com> =
-wrote:
->=20
->=20
->=20
->> On 13 Apr 2026, at 5:06=E2=80=AFPM, Harsh Prateek Bora =
-<harshpb@linux.ibm.com> wrote:
->>=20
->>=20
->>=20
->> On 13/04/26 4:51 pm, Ani Sinha wrote:
->>> During refactoring of kvm_irqchip_create(), the refactored code was =
-returning
->>> early from do_kvm_irqchip_create() function if the required =
-capabilities were
->>> not present in KVM. This was not translating to an early return from
->>> kvm_irqchip_create() as was the case before refactoring. This is =
-because,
->>> do_kvm_irqchip_create() did not have a means to notify the caller of =
-the lack
->>> of kvm capabilities. Fix this by making do_notify_irqchip_create() =
-return
->>> EOPNOTSUPP error when required capabilities are absent and then the =
-caller
->>> can check the return code and return early.
->>> Converted some calls to exit() to assertion checks in order to make =
-it cleaner.
->>> Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM =
-VM file descriptor change")
->>> Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
->>> Reported-by: Gautam Menghani <gautam@linux.ibm.com>
->>> Suggested-by: Fabiano Rosas <farosas@suse.de>
->>> Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>> ---
->>> accel/kvm/kvm-all.c | 29 ++++++++++++++++-------------
->>> 1 file changed, 16 insertions(+), 13 deletions(-)
->>> changelog:
->>> v2: converted some exit() calls to assertions.
->>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
->>> index 774499d34f..c78bf6a56f 100644
->>> --- a/accel/kvm/kvm-all.c
->>> +++ b/accel/kvm/kvm-all.c
->>> @@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, =
-qemu_irq irq, int gsi)
->>>     g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
->>> }
->>> -static void do_kvm_irqchip_create(KVMState *s)
->>> +static int do_kvm_irqchip_create(KVMState *s)
->>> {
->>>     int ret;
->>>     if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
->>> @@ -2587,36 +2587,38 @@ static void do_kvm_irqchip_create(KVMState =
-*s)
->>>             exit(1);
->>>         }
->>>     } else {
->>> -        return;
->>> +        /*
->>> +         * neither KVM_CAP_IRQCHIP nor KVM_CAP_S390_IRQCHIP =
-capabilities are
->>> +         * present. Bail.
->>> +         */
->>> +        return -EOPNOTSUPP;
->>>     }
->>> -    if (kvm_check_extension(s, KVM_CAP_IRQFD) <=3D 0) {
->>> -        fprintf(stderr, "kvm: irqfd not implemented\n");
->>> -        exit(1);
->>> -    }
->>> +    assert(kvm_check_extension(s, KVM_CAP_IRQFD));
->>=20
->> again changing behaviour ?
->> previously it was doing exit(1) on returning non-zero.
->=20
-> Non-zero is the success case. It was doing exit() for returning <=3D0  =
-case
->=20
->> if (kvm_check_extension(s, KVM_CAP_IRQFD) <=3D 0)
-
-Actually maybe I should make this clearer
-
-int kvm_check_extension(KVMState *s, unsaigned int extension)            =
-                                                            =20
-{                                                                        =
-                                                           =20
-    int ret;                                                             =
-                                                           =20
-                                                                         =
-                                                           =20
-    ret =3D kvm_ioctl(s, KVM_CHECK_EXTENSION, extension);                =
-                                                             =20
-    if (ret < 0) {                                                       =
-                                                           =20
-        ret =3D 0;                                                       =
-                                                             =20
-    }                                                                    =
-                                                           =20
-                                                                         =
-                                                           =20
-    return ret;                                                          =
-                                                           =20
-}                      =20
-
-So non-zero positive value is success. 0 is unsupported. Also see =
-https://docs.kernel.org/virt/kvm/api.html#kvm-check-extension
-So asserting on non-zero is fine.
-
->=20
->=20
->> Now, it will assert on returning zero ?
->> May be split the patch to keep the exit -> assert changes separate ?
->>=20
->>>       /* First probe and see if there's a arch-specific hook to =
-create the
->>>      * in-kernel irqchip for us */
->>>     ret =3D kvm_arch_irqchip_create(s);
->>>     if (ret =3D=3D 0) {
->>> -        if (s->kernel_irqchip_split =3D=3D ON_OFF_AUTO_ON) {
->>> -            error_report("Split IRQ chip mode not supported.");
->>> -            exit(1);
->>> -        } else {
->>> -            ret =3D kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
->>> -        }
->>> +        /* assert that split IRQ chip mode is supported. */
->>> +        assert(s->kernel_irqchip_split !=3D ON_OFF_AUTO_ON);
->>> +        ret =3D kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
->>>     }
->>>     if (ret < 0) {
->>>         fprintf(stderr, "Create kernel irqchip failed: %s\n", =
-strerror(-ret));
->>>         exit(1);
->>>     }
->>> +
->>> +    return 0;
->>> }
->>>   static void kvm_irqchip_create(KVMState *s)
->>> {
->>>     assert(s->kernel_irqchip_split !=3D ON_OFF_AUTO_AUTO);
->>> -    do_kvm_irqchip_create(s);
->>> +    if (do_kvm_irqchip_create(s) < 0) {
->>> +        return;
->>> +    }
->>>     kvm_kernel_irqchip =3D true;
->>>     /* If we have an in-kernel IRQ chip then we must have =
-asynchronous
->>>      * interrupt delivery (though the reverse is not necessarily =
-true)
->>> @@ -2835,6 +2837,7 @@ static int kvm_reset_vmfd(MachineState *ms)
->>>     }
->>>       if (s->kernel_irqchip_allowed) {
->>> +        /* ignore return from this function */
->>>         do_kvm_irqchip_create(s);
->>>     }
-
-
+T24gNC8xMy8yNiAxMzoyMywgUGFvbG8gQm9uemluaSB3cm90ZToNCj4gT24gTW9uLCBBcHIg
+MTMsIDIwMjYgYXQgMTI6NDfigK9QTSBKYW5vc2NoIEZyYW5rIDxmcmFua2phQGxpbnV4Lmli
+bS5jb20+IHdyb3RlOg0KPj4NCj4+IEhleSBQYW9sbywNCj4+DQo+PiBoZXJlIGFyZSBvdXIg
+Y2hhbmdlcyBmb3IgNy4xOg0KPj4gLSBDbGF1ZGlvIGlzIGZpbmlzaGluZyB1cCBnbWFwIHdv
+cmsgYnkgYWxsb3dpbmcgNGsgbWVtc2xvdHMNCj4+IC0gRXJpYyBhbmQgSGVuZHJpayBhZGRl
+ZCBuZXN0aW5nIEVTQSBzdXBwb3J0DQo+PiAtIEkndmUgZml4ZWQgdXAgTFBTVy9FIGVtdWxh
+dGlvbiwgZ29pbmcgdGhyb3VnaCBuZXh0IGFzIEkgZG9uJ3QgZXhwZWN0DQo+PiAgICB1cyB0
+byBldmVyIGhpdCB0aGlzDQo+Pg0KPj4gVGhlcmUncyBiZWVuIHR3byBjb25mbGljdHMgYmVj
+YXVzZSA3LjAgcmVjZWl2ZWQgYSBudW1iZXIgb2YgZ21hcCBmaXhlcy4NCj4gDQo+IFRoaXMg
+aXMganVzdCBuZWFyYnkgbGluZXMgYmVpbmcgdG91Y2hlZCwgSSB0aGluaz8gTm8gcmVhbCBj
+b25mbGljdC4NCkl0J3MgY29kZSB0aGF0J3MgbWlzc2luZyBpbiBuZXh0IHNpbmNlIHdlIGhh
+ZCBhIGxvdCBvZiBjaGFuZ2VzIGluIA0KbWFzdGVyLiBPbmUgaXMgYSBjb25mbGljdCB3aGVy
+ZSB0aGUgbmV4dCBsaXN0IG9mIHNlbGZ0ZXN0cyBkb2VzIG5vdCANCmluY2x1ZGUgdGhlIGly
+cSByb3V0aW5nIHRlc3QgdGhhdCBJIGFkZGVkIGluIGt2bS1zMzkwLW1hc3Rlci03LjAtMS4g
+SS5lLiANCnRyaXZpYWwuDQoNClRoZSBvdGhlciBpcyBfX2dtYXBfbGluaygpIHRoYXQncyBp
+bnRyb2R1Y2VkIGluIGEgZml4IGJ1dCBpcyBub3QgYXJvdW5kIA0KeWV0IGZvciA0MjA0MDY3
+Zjk5ODIwIGluIG5leHQuDQo=
