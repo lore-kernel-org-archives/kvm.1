@@ -1,62 +1,66 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F981355F44
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 20:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A19337DEB5
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 20:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776113198; cv=none; b=UdvdY1UITHbu5Wh+3W7FrJPAePclw+UUtPbG0yxoLx2BMqxitpWCuCUFMzKNIsdYozi3+MhaAmgcIO6FSxU0UeQzCPtLNbJITfRU2PayYGUejMFEGEIqf6ag5GeQbE52DktXX+q1e31Od6sqQ1a0GSiG4hpE2jKpsKtBWZN1Boc=
+	t=1776113199; cv=none; b=YdmwJbE8LQYv8N0rJDZq4ntU67bCCEyu83Xc0QPKcOfYELMnIA7eZVPTJVO5r/88X/N7V0PDNFLPQiVMDtYDfxnRqDRC3e7Mj10AgKyjGbxvHpIkIzJSuPuYVuCWTPz3QvAJbbGnJbXDUq0dh/Qd/kG+QHeSc1iawLBLyh6FpWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776113198; c=relaxed/simple;
-	bh=uprHKwXObO+AE6bDi/TNr7PFtVJVYS3qu7Pa4B009Uk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l7x7Tr36mv0UvtfFGYpaZhMz2sol/9Gz3D6LZW3iAjJKbOlta0R7hLvbg7xBRFSjsAsrRw1QOz/0z25LO4RoB3Q0vmdNsGCo0ilGm9Oj12I+qJmU+1tRRnru0gMYDwhVq7OsF8Z894S9kWmeRNXssWNXyjBB1VtFl5Ga7Ple9fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AYm92YZp; arc=none smtp.client-ip=209.85.215.201
+	s=arc-20240116; t=1776113199; c=relaxed/simple;
+	bh=nytkPeuVuYF1gSa2DYENLLMelJJmdQX/9/AB1+RPdwE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hmvmy4Y2HRsEUdn1fVhwomETMwLX0IdR6EIQrjzFH38+3TxxnYctxKAnPqAbM2R1CfMmzn+gql/teMApzqws8Lq4AGX56f0CJYhiqE2a83h6XO5ZfXSvVI4O7dNHNcJAazHCFNBOXjkHZv0UkaroTKi4btl6GokFtJ1DGJn9d+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xkr24gNo; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AYm92YZp"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76c6280732so5459933a12.0
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 13:46:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xkr24gNo"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2ed279eedso11689565ad.0
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 13:46:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776113196; x=1776717996; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=I7eiz8y/l7lCP2hNqNsnkSrKMhwpC7fnrESdccwzjeo=;
-        b=AYm92YZprp0peNBd1evXYeYVvBplp/092zxzexTdziwIcGAUH/WzmSz6/j+mlmPxUO
-         XqmMJsef86uCS0RkvIhfzOPrJuESq7dpVROgME0NAQwuEHHuj/GbZY+kvF8Jz1L0RFfS
-         wXZNJ6a0FU/GxT41nGx7fsWS/WwmGOtXhfHF2J3HDI14IqEw1ULmb+0CXM3l+GMDsBGK
-         9yhHyhdDqA/1ZMRsMk+Qo7O+hA3vX+nhYaOE1DoCsfeHDAZfX1ogFhWzz38vIGCVPXfc
-         khkE1Wh9bKzrbxb8p9c5yft/SXy2DOf3FgREMQYeLq2pCvrt+LzXS1VgrijleXEDjEoR
-         QYSg==
+        d=google.com; s=20251104; t=1776113198; x=1776717998; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=a217Abiua2nkP0DrXjLTU5nPmKdcak+GOPBQlaV8zNE=;
+        b=Xkr24gNoqpwmKfkjGADf14TfHgdBruC30ZSdzEnOGvzmYNJBT3p/PO0iiutWaHTXpc
+         /VdTXlElwVopW6TT6jfeDJpVEmwa7fL+jey/V+X1yqZX2vxsvVsEqlt8yu5YslYSDivb
+         5JrtlHtiFshQVvN8ZFRmgM8Xr1KQ6yLyEsi/kFiwCMFeH38QENivsapWOm2Tag+PjpvV
+         Vlwr2lKPvqgNxa9lj7tSIaOs3Eve8o5AL6wAvSungtubVcd+AGfODt9UAwwHZMn6Q14d
+         RXtIfH5FDcQdwYrxTgXwFQtB6AwsGH+I6Y8On75qmSphnLIckbh0zN3SEA5cLxlJ1DkZ
+         hXlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776113196; x=1776717996;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I7eiz8y/l7lCP2hNqNsnkSrKMhwpC7fnrESdccwzjeo=;
-        b=bK0g7Xd77MaxhkTbb/6b13yI0weRbBz9D9K4/fiB0GkqDki/cGDwgvdGQ2bja7dZR1
-         ihpuNLfTltTgWVv/GthEBJcrlcn2tIK6q1xVPo/+qQAQGA5TcocAxEW6naE+R2i0VaP/
-         KWXo2h9wK+O18mg8XQL0/FLIM1QXelmwZpbni/IaY2IJOK5oiLrx7hMEIMQ8bWlAHker
-         eUz3f+GwSoewYThbUZO8LdsxRnp1ya+GnBFq4o5zs8WZctfuJIzg7TpcOw3ylca2pATu
-         njWQCcU+ZDHInTWW0Tps5o5ZUCxL//6zwUS1eco3yg10aL+/Xkq5gqXYAJtMZNucxhmw
-         iYNQ==
-X-Gm-Message-State: AOJu0Yxrf1Kbhpe8TUUhwnyhIb6RmdcE8igvN+xESnLn2TJrwUp5ESi0
-	p4ZTOiyhTyRFjjMFJ0/9SWLsbZ9QQiKiujZ+DSv8y6aNc3j25tFMx0MxVOZOyMqMtbuzUQh4oAO
-	rz7GVcTrvmjmU0LL+Lmwwl5zJ70xRmQDCbNfQvApEUbVRyUwC0eXtL7IgmkPkD8zSbdvI5PziNR
-	jqQ0u5vlXihH3UA5r8aBNnwQ8UR7oFNaOjqxJYeyYfwEOFJlqFMsUUHoTSujo=
-X-Received: from pfbfb22.prod.google.com ([2002:a05:6a00:2d96:b0:827:1713:6de8])
+        d=1e100.net; s=20251104; t=1776113198; x=1776717998;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a217Abiua2nkP0DrXjLTU5nPmKdcak+GOPBQlaV8zNE=;
+        b=qqk8zCsjy52oOFNps3fDQd4QJWEEnVQwanvNcfeQ8oCPNKwgnFo5l6biwKMeFa/f7w
+         041ZXqNL6K5F9IK0evtJJoKTzY3eYA3aeK03BvOwfFQRRnKyYjd0/oAzflJT3lHOlfuk
+         ihrVk6pTSa6VWQXjBUdjaMyE4quM5MOBG75ul94eizIBig6j5oK0cot6bZ45CbRO2T4O
+         bmYvdWML7EkkozcrV57AiL+Gk9XFQkgEIW6aeKt3zo8e43jUaJTHeBY30uABTacmKHZK
+         +Ed4jDMjW+wQ2bsLQqLFKeDC/Isau3fJT6cWlT21r75FFxIPGIDTPjFAitFcUoSJiN4a
+         l0Mw==
+X-Gm-Message-State: AOJu0YyyPLLUmrQKpJgYd80Q23pzFmahNEPWhU+pa4IcWOjWHhj5lbo1
+	P7y/bTt5SjxCOiSlz7j8YTmY6WiZBKLLWzS07YgrOXUbHvO5DvpYko0P44XTTikMPX06QXLZIZZ
+	LoU3hkCJakTOjXMkTxWgma81d2qHF3wqtLYMovdcSWpy27/HlB/r0QUrDJ7Vt7NzOVH2+pdbMvy
+	qdioVA01pdZgSmQirxSv0SJp+L0lG9d5eKAKgGy7WX8t8qU6PAAdSBEhaCLSc=
+X-Received: from plbl2.prod.google.com ([2002:a17:902:eb02:b0:2ae:c871:d739])
  (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:1a8e:b0:82f:3828:a00a with SMTP id d2e1a72fcca58-82f3828b18dmr6883092b3a.41.1776113195294;
- Mon, 13 Apr 2026 13:46:35 -0700 (PDT)
-Date: Mon, 13 Apr 2026 13:46:23 -0700
+ 2002:a17:903:27c5:b0:2ae:8253:1452 with SMTP id d9443c01a7336-2b2d593e9a0mr94369735ad.11.1776113197204;
+ Mon, 13 Apr 2026 13:46:37 -0700 (PDT)
+Date: Mon, 13 Apr 2026 13:46:24 -0700
+In-Reply-To: <20260413204630.1149038-1-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260413204630.1149038-1-jingzhangos@google.com>
 X-Mailer: git-send-email 2.54.0.rc0.605.g598a273b03-goog
-Message-ID: <20260413204630.1149038-1-jingzhangos@google.com>
-Subject: [kvm-unit-tests PATCH v2 0/7] arm64: Add Stage-2 MMU and Nested Guest Framework
+Message-ID: <20260413204630.1149038-2-jingzhangos@google.com>
+Subject: [kvm-unit-tests PATCH v2 1/7] lib: arm64: Generalize ESR exception
+ class definitions for EL2 support
 From: Jing Zhang <jingzhangos@google.com>
 To: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
 	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
@@ -67,77 +71,94 @@ Cc: Oliver Upton <oliver.upton@linux.dev>, Andrew Jones <andrew.jones@linux.dev>
 	Jing Zhang <jingzhangos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This patch series introduces a lightweight infrastructure for managing ARM64
-Stage-2 translation tables and executing nested guests. These components are
-essential for testing advanced virtualization features such as nested
-virtualization (NV) and GICv4 direct interrupt injection.
+Generalize some Exception Syndrome Register (ESR) definitions by
+renaming EL1-specific macros to ELx equivalents. This allows these
+constants to be shared between EL1 and EL2, supporting the upcoming
+S2MMU library implementation.
 
-The series provides a generic Stage-2 MMU library supporting multiple
-translation granules (4K, 16K, 64K) and dynamic page table management.
-Building on this, it adds a guest execution framework that handles guest
-lifecycle management, context switching and guest exit routing. A new test
-case for Stage-2 MMU demand paging to verify fault handling.
-
-Please note that this is a very preliminary implementation intended as a
-startup baseline for future work in virtualization testing. Users should be
-aware that because this is an early-stage baseline, some portions of the code
-may just happen to work in its current state. There might be critical
-architectural elements or edge-case handling missing that will need to be
-addressed as the framework matures.
-
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
 ---
+ lib/arm64/asm/esr.h   |  5 +++--
+ lib/arm64/processor.c | 10 +++++-----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-* v1 -> v2
-  - Used generated `struct guest` offset instead of hardcoding.
-  - Cleaned up register definitions.
-  - Refined EL1/EL2 exception vector tables.
-  - Split monolithic patches into a series of granular commits.
-  - Addressed other review feedbacks.
-
-[1] https://lore.kernel.org/kvmarm/20260316224349.2360482-1-jingzhangos@google.com/
-
----
-
-Jing Zhang (7):
-  lib: arm64: Generalize ESR exception class definitions for EL2 support
-  lib: arm64: Add stage2 page table management library
-  lib: arm64: Generalize exception vector definitions for EL2 support
-  lib: arm64: Add foundational guest execution framework
-  lib: arm64: Add support for guest exit exception handling
-  lib: arm64: Add guest-internal exception handling (EL1)
-  arm64: Add Stage-2 MMU demand paging test
-
- arm/Makefile.arm64         |   4 +
- arm/debug.c                |   6 +-
- arm/gic.c                  |   2 +-
- arm/micro-bench.c          |   4 +-
- arm/mte.c                  |   6 +-
- arm/pl031.c                |   2 +-
- arm/pmu.c                  |   2 +-
- arm/psci.c                 |   2 +-
- arm/selftest.c             |   6 +-
- arm/stage2-mmu-test.c      | 107 ++++++++++
- arm/timer.c                |   6 +-
- lib/arm64/asm-offsets.c    |  15 ++
- lib/arm64/asm/esr.h        |   5 +-
- lib/arm64/asm/guest.h      |  91 +++++++++
- lib/arm64/asm/processor.h  |  32 +--
- lib/arm64/asm/stage2_mmu.h |  70 +++++++
- lib/arm64/asm/sysreg.h     |   7 +
- lib/arm64/guest.c          | 158 +++++++++++++++
- lib/arm64/guest_arch.S     | 248 +++++++++++++++++++++++
- lib/arm64/processor.c      |  18 +-
- lib/arm64/stage2_mmu.c     | 403 +++++++++++++++++++++++++++++++++++++
- 21 files changed, 1149 insertions(+), 45 deletions(-)
- create mode 100644 arm/stage2-mmu-test.c
- create mode 100644 lib/arm64/asm/guest.h
- create mode 100644 lib/arm64/asm/stage2_mmu.h
- create mode 100644 lib/arm64/guest.c
- create mode 100644 lib/arm64/guest_arch.S
- create mode 100644 lib/arm64/stage2_mmu.c
-
-
-base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
+diff --git a/lib/arm64/asm/esr.h b/lib/arm64/asm/esr.h
+index 335343c5..8437916f 100644
+--- a/lib/arm64/asm/esr.h
++++ b/lib/arm64/asm/esr.h
+@@ -12,7 +12,7 @@
+ #define ESR_EL1_CM		(1 << 8)
+ #define ESR_EL1_IL		(1 << 25)
+ 
+-#define ESR_EL1_EC_SHIFT	(26)
++#define ESR_ELx_EC_SHIFT	(26)
+ #define ESR_EL1_EC_UNKNOWN	(0x00)
+ #define ESR_EL1_EC_WFI		(0x01)
+ #define ESR_EL1_EC_CP15_32	(0x03)
+@@ -25,12 +25,13 @@
+ #define ESR_EL1_EC_ILL_ISS	(0x0E)
+ #define ESR_EL1_EC_SVC32	(0x11)
+ #define ESR_EL1_EC_SVC64	(0x15)
++#define ESR_ELx_EC_HVC64	(0x16)
+ #define ESR_EL1_EC_SYS64	(0x18)
+ #define ESR_EL1_EC_SVE		(0x19)
+ #define ESR_EL1_EC_IABT_EL0	(0x20)
+ #define ESR_EL1_EC_IABT_EL1	(0x21)
+ #define ESR_EL1_EC_PC_ALIGN	(0x22)
+-#define ESR_EL1_EC_DABT_EL0	(0x24)
++#define ESR_ELx_EC_DABT_LOW	(0x24)
+ #define ESR_EL1_EC_DABT_EL1	(0x25)
+ #define ESR_EL1_EC_SP_ALIGN	(0x26)
+ #define ESR_EL1_EC_FP_EXC32	(0x28)
+diff --git a/lib/arm64/processor.c b/lib/arm64/processor.c
+index f9fea519..bde3caa5 100644
+--- a/lib/arm64/processor.c
++++ b/lib/arm64/processor.c
+@@ -48,7 +48,7 @@ static const char *ec_names[EC_MAX] = {
+ 	[ESR_EL1_EC_IABT_EL0]		= "IABT_EL0",
+ 	[ESR_EL1_EC_IABT_EL1]		= "IABT_EL1",
+ 	[ESR_EL1_EC_PC_ALIGN]		= "PC_ALIGN",
+-	[ESR_EL1_EC_DABT_EL0]		= "DABT_EL0",
++	[ESR_ELx_EC_DABT_LOW]		= "DABT_EL0",
+ 	[ESR_EL1_EC_DABT_EL1]		= "DABT_EL1",
+ 	[ESR_EL1_EC_SP_ALIGN]		= "SP_ALIGN",
+ 	[ESR_EL1_EC_FP_EXC32]		= "FP_EXC32",
+@@ -82,7 +82,7 @@ void show_regs(struct pt_regs *regs)
+ 
+ bool get_far(unsigned int esr, unsigned long *far)
+ {
+-	unsigned int ec = esr >> ESR_EL1_EC_SHIFT;
++	unsigned int ec = esr >> ESR_ELx_EC_SHIFT;
+ 
+ 	asm volatile("mrs %0, far_el1": "=r" (*far));
+ 
+@@ -90,7 +90,7 @@ bool get_far(unsigned int esr, unsigned long *far)
+ 	case ESR_EL1_EC_IABT_EL0:
+ 	case ESR_EL1_EC_IABT_EL1:
+ 	case ESR_EL1_EC_PC_ALIGN:
+-	case ESR_EL1_EC_DABT_EL0:
++	case ESR_ELx_EC_DABT_LOW:
+ 	case ESR_EL1_EC_DABT_EL1:
+ 	case ESR_EL1_EC_WATCHPT_EL0:
+ 	case ESR_EL1_EC_WATCHPT_EL1:
+@@ -108,7 +108,7 @@ static void bad_exception(enum vector v, struct pt_regs *regs,
+ {
+ 	unsigned long far;
+ 	bool far_valid = get_far(esr, &far);
+-	unsigned int ec = esr >> ESR_EL1_EC_SHIFT;
++	unsigned int ec = esr >> ESR_ELx_EC_SHIFT;
+ 	uintptr_t text = (uintptr_t)&_text;
+ 
+ 	printf("Load address: %" PRIxPTR "\n", text);
+@@ -158,7 +158,7 @@ void default_vector_sync_handler(enum vector v, struct pt_regs *regs,
+ 				 unsigned int esr)
+ {
+ 	struct thread_info *ti = thread_info_sp(regs->sp);
+-	unsigned int ec = esr >> ESR_EL1_EC_SHIFT;
++	unsigned int ec = esr >> ESR_ELx_EC_SHIFT;
+ 
+ 	if (ti->flags & TIF_USER_MODE) {
+ 		if (ec < EC_MAX && ti->exception_handlers[v][ec]) {
 -- 
 2.53.0.1213.gd9a14994de-goog
 
