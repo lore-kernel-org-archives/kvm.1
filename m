@@ -1,50 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DEE1CFBA;
-	Mon, 13 Apr 2026 02:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8E540DFD5
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 02:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776046391; cv=none; b=A6bLquo5zoj6gwPVZSh+JK1WLwI9EqQN9jgG9CU+tYd4YuD6BBvkB8WLHYmTZl3fz5ZO46S22WhPZ5wnTvvba4C8by77ywRx8DSU6oamcRt0WOK2vpDE/biujThWmRKo7nMysVCFCzR4emiYWq/dpq2c6P93Nrdw5yJ6c8P3bw8=
+	t=1776048138; cv=none; b=YfewKctp1vQajF5Be2swXL6VnthHh7AbkY6K74k9q+jzMQhSg6yuRcBg9QfyeBXyVQICxkK948zZt2AZTLoV/5bX/imq/Awh9WKD39JZCggAKIlofW9/GHGhYIxFgNrPZn5AN1bZVXhP0IlUVqNNCy8dyqAWaR7j0zFOc8G92kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776046391; c=relaxed/simple;
-	bh=er6MCQomEGTUvijVJbiOjpZfculnqBmMYI/3gcoJr3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=amotEhMCtQZbqLL/MR1M+fPAMdiqL+TYuRJTzM0eoC2QEV+M7vjPUkLTWQv9csO9meVJth7g/iwru7hmCVVr99NFksJ779enyraQzOP+GKpOWm9hp/LFXclz/lTmnFBlN2kb6ZAz3s7CzPCslb43kbdRxe+Wr7NTnWP8L22F/Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d6KUZGO5; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776048138; c=relaxed/simple;
+	bh=7mPeZcxTsw7BMGjK9qqcgPlEozZpHb9tCmKMYKhFP2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aKTF/fdnx9f+Oa/RF43+3dzGBRgsKWBh/avzQLReyL3U56SlAgSJNUP108hw5juY4frSdhN9oRONLhyMzpwVvft6g+rDHqRdWkD9xGT9QnIEzCWenG7g/1uwlFJ9wkSvPpNnI7bt/VtzPyr9Tqxbh7bn6P9YKIMkQIwrBdOZdGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=omGQybX6; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d6KUZGO5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776046389; x=1807582389;
-  h=message-id:date:mime-version:subject:to:references:cc:
-   from:in-reply-to:content-transfer-encoding;
-  bh=er6MCQomEGTUvijVJbiOjpZfculnqBmMYI/3gcoJr3w=;
-  b=d6KUZGO5WjBNFycm0rbqoZvW65mWzFdaJ1XSQCKdfKukMCMozzYq+d9t
-   mogoxHb9/B4iQOWs3jqma3HvH3cTboo04FSd8B5g6DDJo706LsYawKelI
-   yYhHY7+pXb6+8TauU7yQ7s235gmo4Lh9g3uORjBykJ8zP6dIrMb3XXxGz
-   SOll5vcdjNVbdQr7RGuOLn/zQyTvAnq4OZoTSDbh1j/Cz9wGaUa6N1Rpy
-   MmuZovVdN87Zo5p7CU+t0EN7rOutdPIRh6jLIjX6E+wQc1UEJV+Sao2Aw
-   BrqN9uMzL/j+SAMZwP1cgOGMDaQ6guXnIXvqZ51b8doN2cy5OY+UnPxz/
-   A==;
-X-CSE-ConnectionGUID: Kx5VFR5yQHyEGPhUjdY4Wg==
-X-CSE-MsgGUID: 5G1BaKMhSU+iAb1X9nCBjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="94368125"
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
-   d="scan'208";a="94368125"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 19:13:09 -0700
-X-CSE-ConnectionGUID: gGh8P2VkTJWN0/AMeoUvog==
-X-CSE-MsgGUID: J2PtEXbfTPuTFwcpq3vgTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
-   d="scan'208";a="226952508"
-Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 19:13:06 -0700
-Message-ID: <0e7a02c6-3d54-468e-92f4-4954d4644d4b@linux.intel.com>
-Date: Mon, 13 Apr 2026 10:13:04 +0800
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="omGQybX6"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a9296b3926so19880565ad.1
+        for <kvm@vger.kernel.org>; Sun, 12 Apr 2026 19:42:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776048137; x=1776652937; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VtC7wLtD2z/N/B3RGXLA8q4qYbR4arCwIYuTZlXfiw8=;
+        b=omGQybX62HIJFdz8Td/lGU7sCa+qqGYLa56n/JOtuhAAKZx2TaEhSrdwxiNXEdOVUc
+         KBe2flg6lzmA0tbGsFo4/DZiq5SzsbD5+w/fdrkssR2TOVVGNJ4XkkO/S6YImxRP2ZBp
+         h/ni70QO02B2VGeFHGBZ4+MQGLlNWc4ymm3OgnAjQd8qKu9gGB3Fp6YvtsHiI+45holz
+         lDERYA3MN2tISiEENeWi41Z67u0yDswRLlSDmOpfNOV29nanntIpUSYPoUQkSsoNygQW
+         sQJIZ5RryybZXLD9mtHKfhMrL79uHvb7FtsDbjL19A0ah9rIuIHnuov6T1PQsPoR6PEg
+         zu0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776048137; x=1776652937;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VtC7wLtD2z/N/B3RGXLA8q4qYbR4arCwIYuTZlXfiw8=;
+        b=YcdTjxpbIdSjG7MEPeSq68oWwRGlf3Cb0h003vpNvXfLxHFxQRQSJ9S/p6CjuSjSuU
+         8ZWlTplTiAoWJsvBnI8tWbOmLicA0/50rIV6lS4GECAltxDcXr06U04ypHNSriNNayoV
+         QrPeFLtoSjtCptA88LJmofr39polQwgQ+5yaKuG3FRAFPJJjorRKXN7St8s2UlLILElV
+         kIeRR5GdWMpMUD5OJPzYvNTNsI/GVpqHbFm3129zW6ItBVus+rQ1F+8652UP/mV0ef5y
+         V1cI+vPxDc328LdOgv1tVEfmPkW50e22LLY/vt8PQfyAAdfgsxmipzdw0Dx0zKkBEmUb
+         aCFA==
+X-Forwarded-Encrypted: i=1; AFNElJ/4xcRoWFoRWa0gZFB5FGwtCyQoFF/VEuFYIWM+GKARAO0xCBA7MbYlPxvaHhdA4dnprRM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT54Z1Yuf9LY0Tx3JJstKLVz5q30IRT9DwLlVJJlBZdIcfO05i
+	BUTuPATlV0hqe98cvCDbc6E5LpnwzNFfttSiiAnfJ6Km4GuBQeLIxa4VZJSCF2SVCwQ=
+X-Gm-Gg: AeBDies4rka50+IY+KAjp4JMnVJKaqgf9fbtX57mhESqgplWdTWHtNPeKMNg/fdIXve
+	J+ITRwerYZAjrVGYwnlettdvIXova6EMY186twcK1IGtbZBGqwHX2uMfYZnyMvP9hj+M2mYSfO6
+	MVkhAEUvHwEt5VdsCRa01dgxHF1N/lsPi8ckDTVK8U4nFxbrJR3aP0camVfnxkGRCl2tTLWMeRE
+	e8mEL3mJ3xmw/cPw7/Qb7APlXigeyHQZ7ghyEkwWlwzV7iXVMSmmMvR3mkB9yqbb1rZOy1UGgkH
+	X4SpIUwu3giFOk2K+XsYeA5CG9MLKK9/6QLd0+alyn77aHDOMj9KF5+dVlv42He5SirnebUFfB9
+	9Ec1o0wL9ddrgQ/o7hE0if6ZCPsiYTq3PyNeMdui5/48MievIXeOThihO+Ku3T4oa0NkILV0HFW
+	JCmAv9KREQ2MMWX/tim9t0PvC9+p34phYC5WWVoOeySrTWJd7Lia/mr+Ls7mNipl6CG1XjCuLKi
+	XIcCYC/9eQsnw==
+X-Received: by 2002:a17:903:2c07:b0:2b2:4fc1:f657 with SMTP id d9443c01a7336-2b2d5941193mr110907025ad.6.1776048136836;
+        Sun, 12 Apr 2026 19:42:16 -0700 (PDT)
+Received: from ?IPV6:2401:d002:dc0f:2100:a7b4:d4f1:5b23:321f? ([2401:d002:dc0f:2100:a7b4:d4f1:5b23:321f])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b45f192203sm13209245ad.23.2026.04.12.19.42.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Apr 2026 19:42:16 -0700 (PDT)
+Message-ID: <9d6a644b-5aaf-4ecc-b529-85f8884ad548@linaro.org>
+Date: Mon, 13 Apr 2026 12:42:06 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,120 +69,51 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: TDX: Fix x2APIC MSR handling in
- tdx_has_emulated_msr()
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v2 01/27] monitor: Have MonitorDef::get_value() always
+ return int64_t type
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>, qemu-s390x@nongnu.org,
+ kvm@vger.kernel.org, qemu-ppc@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20260410195323.17937-1-philmd@linaro.org>
+ <20260410195323.17937-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-Cc: kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
- dmaluka@chromium.org
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260410232654.3864196-1-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260410195323.17937-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On 4/11/2026 7:26 AM, Rick Edgecombe wrote:
-> Rework tdx_has_emulated_msr() to explicitly enumerate the x2APIC MSRs
-> that KVM can emulate, instead of trying to enumerate the MSRs that KVM
-> cannot emulate. Drop the inner switch and list the emulatable x2APIC
-> registers directly in the outer switch's "return true" block.
+On 4/11/26 05:52, Philippe Mathieu-Daudé wrote:
+> Simplify MonitorDef::get_value() handler by having it always
+> return a int64_t type. Truncate to 32-bit in the single caller.
 > 
-> The old code had multiple bugs in the x2APIC range handling.
-> X2APIC_MSR(APIC_ISR + APIC_ISR_NR) was incorrect because APIC_ISR_NR is
-> 0x8, not 0x80, so the X2APIC_MSR() shift lost the lower bits, collapsing
-> each range to a single MSR. IA32_X2APIC_SELF_IPI was also missing from
-> the non-emulatable list.
-
-Is it better to describe that the bug is benign for a sane guest?
-
+> Note, this handler is only implemented once for the x86 targets.
 > 
-> KVM has no visibility into whether or not a guest has enabled #VE 
-> reduction, which changes which MSRs the TDX-Module handles itself versus 
-> triggering a #VE for the guest to make a TDVMCALL. So maintaining a list 
-> of non-emulatable MSRs is fragile. Listing only the MSRs KVM can always 
-> emulate sidesteps the problem.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Reported-by: Dmytro Maluka <dmaluka@chromium.org>
-> Fixes: dd50294f3e3c ("KVM: TDX: Implement callbacks for MSR operations")
-> Assisted-by: Claude:claude-opus-4-6
-> [based on a diff from Sean, but added missed LVTCMCI case, log]
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
-One nit below.
-
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-> 
-> Thanks to Dmytro for finding this. They said to feel free to take this 
-> over, so here is another version with Sean's suggestions. Tested in the 
-> TDX CI.
-> 
-> In Sean's suggestion LVTCMCI was missed, so it's added here.
-> 
->  arch/x86/kvm/vmx/tdx.c | 36 ++++++++++++++++++++----------------
->  1 file changed, 20 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 1e47c194af53..76ab6805ab29 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -2116,23 +2116,27 @@ bool tdx_has_emulated_msr(u32 index)
->  	case MSR_IA32_MC0_CTL2 ... MSR_IA32_MCx_CTL2(KVM_MAX_MCE_BANKS) - 1:
->  		/* MSR_IA32_MCx_{CTL, STATUS, ADDR, MISC, CTL2} */
->  	case MSR_KVM_POLL_CONTROL:
-> +	/*
-> +	 * x2APIC registers that are virtualized by the CPU can't be
-> +	 * emulated, KVM doesn't have access to the virtual APIC page.
-> +	 */
+>   include/monitor/hmp-target.h | 6 +-----
+>   monitor/hmp-target.c         | 4 +++-
+>   target/i386/monitor.c        | 4 ++--
+>   3 files changed, 6 insertions(+), 8 deletions(-)
 
-Nit:
-The original comment explains why certain MSRs are not emulated due to
-its implementation. After the change, it lists the allowed emulated MSRs,
-a quick read might give the false impression that the listed MSRs are the
-ones that cannot be emulated. Maybe slightly tweak the comment to clarify
-that the cases listed below are the MSRs that KVM is responsible for
-emulating.
+Given there's only one use, we could just define that the hook itself extends.
+
+> +static int64_t monitor_get_pc(Monitor *mon, const struct MonitorDef *md,
+> +                              int offset)
+>   {
+>       CPUArchState *env = mon_get_cpu_env(mon);
+>       return env->eip + env->segs[R_CS].base;
+
+     ret = env->eip + env->segs[R_CS].base;
+     if (!(env->hflags & HF_CS64_MASK)) {
+         ret = (int32_t)ret;
+     }
+
+The test will always be true for i386, but will also apply when the cpu is in 32-bit or 
+16-bit mode.
 
 
-> +	case X2APIC_MSR(APIC_ID):
-> +	case X2APIC_MSR(APIC_LVR):
-> +	case X2APIC_MSR(APIC_LDR):
-> +	case X2APIC_MSR(APIC_SPIV):
-> +	case X2APIC_MSR(APIC_ESR):
-> +	case X2APIC_MSR(APIC_LVTCMCI):
-> +	case X2APIC_MSR(APIC_ICR):
-> +	case X2APIC_MSR(APIC_LVTT):
-> +	case X2APIC_MSR(APIC_LVTTHMR):
-> +	case X2APIC_MSR(APIC_LVTPC):
-> +	case X2APIC_MSR(APIC_LVT0):
-> +	case X2APIC_MSR(APIC_LVT1):
-> +	case X2APIC_MSR(APIC_LVTERR):
-> +	case X2APIC_MSR(APIC_TMICT):
-> +	case X2APIC_MSR(APIC_TMCCT):
-> +	case X2APIC_MSR(APIC_TDCR):
->  		return true;
-> -	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
-> -		/*
-> -		 * x2APIC registers that are virtualized by the CPU can't be
-> -		 * emulated, KVM doesn't have access to the virtual APIC page.
-> -		 */
-> -		switch (index) {
-> -		case X2APIC_MSR(APIC_TASKPRI):
-> -		case X2APIC_MSR(APIC_PROCPRI):
-> -		case X2APIC_MSR(APIC_EOI):
-> -		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_ISR_NR):
-> -		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_ISR_NR):
-> -		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_ISR_NR):
-> -			return false;
-> -		default:
-> -			return true;
-> -		}
->  	default:
->  		return false;
->  	}
-
+r~
