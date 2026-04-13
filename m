@@ -1,93 +1,118 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77342303CAB
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 15:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC445274B5F
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 16:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776092843; cv=none; b=ebhCdQyG1A26lYxXvdmN9KTyeUSezWVI1OpW/1zNb5jt1DUEY7vIgefd8a76D83pHPQeG3FKS3ExypYOOzW5VTEdf7KOv0s1HVEfJQQeh6vowE/NVVB0C5P8Y4CVe5lKkAvY9cgvGGkkKP89QJ3PLSVstpOnt1WEj5J5DqdHIf0=
+	t=1776096890; cv=none; b=dOCh8HJqwqiL/BZvHG/FmZGJ01iCRLcGooZ1coi4LNAG1eafnGwe6JlDfDbvmcp10JGtiFvLvSgm3YWBuHJlIXJuDTRYryxEnspbiWz4X0XuVIM0QtUZugShhN2n5J/NSoVKjTSuhegNQl9rAflBFcZEBgS6PjBU4VWDyqaeHEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776092843; c=relaxed/simple;
-	bh=NewV9KVkNqeJ2QeuN3kw9Xl+IcU9micw1j7rae/XdQo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZztrUaddEzf8PCKH3sXxKXkEWyiSMGAQlZENHELU3yE5kC3kCBzyPn90E3pRTX+nJ41NF6b44bakjuKGp9ceb4UcAGn48/NxUuyv/jZWTMcRc8d3AXwd4HIxUaaYVX/HXBv5keuQFcQU6o5DG0ONp8wI6C0WJyXJ/DzUZ3dorS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sT1WZBLp; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776096890; c=relaxed/simple;
+	bh=KwJnsfDVINndOM5bFo6JPKjv/O2GkMXCR1zpxYqr/xw=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Uah7kF9m+ug4KIlVb9mOSf3Xub0Vkgq+FNuxZlwyiuwLiUyvjJYwRtugLMI5ZY2dtccSw/1kNlEMqTmMi88VVfVNhJDmSdcMDS8KWjhigZ5VLAwPDKZZj11KdkofS8P+6/QVJrEMVWh4jxZhSQnNMnNcJCqPqDUZ4yci+/v/CMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W95j+dbT; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sT1WZBLp"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82ce50e6e28so2612098b3a.2
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 08:07:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776092842; x=1776697642; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BTPPnII55fTl2cCLZlpyrHfIkwQJqSFZt8g3ORfSnBw=;
-        b=sT1WZBLpYlH3HQ6WwOz13h336wC3v3K5eBtiu62+e/UTjZOwrVOYJH4oFadNjeY2H/
-         Ko5YP+6RhGflMdsbheoL7RC2/VGY5cD0TU2XJvBbKe/KKhqKYFCdsJrjlm0fcheOw24+
-         aoqfJeUbYAU6Vs7lYQr6LBchQWrW3z+6tPIM6p7isFrWBSAdchGn/6LNMoDXzCLQUAt/
-         Is40PUkJsnY9B2UUvNdQCB70y0P44V3CR721j+WP02nILX7LTjAlcgmAiWsisIiOnsqO
-         7AH/zGmq0vMvx9d3sFl/pRfqyIQ2EZkQprSVC04Dn0knyeCIj/Jb1j4j1hBjR/+gwkKH
-         EspA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776092842; x=1776697642;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BTPPnII55fTl2cCLZlpyrHfIkwQJqSFZt8g3ORfSnBw=;
-        b=pCRxvCQGBEA2NpBS7JlY572zrpbI6gUtzvZpzaFTvxK1+aymTUq0+KCE6rykxs62Iq
-         Rh0L0MK8Kygscn+pa0phT5f0cjwwyMDhVU7tLNNqEv4VNm3wn8y1wY8GZJV0hTC6WMFU
-         EUEIrna+xMd33FgL1h6qMgZ9vUUYa/VN4JzMoWTAGzmBHNNjGV0wGC4PoXdIqDYriObF
-         gMNFutHdrXdsE3nd/Rkpaux1QgEwOgjlV/5G5s9bUde9uneLnfzroe6D+sj15NPSJ0Id
-         IsgFK+xGuNycqST0vsIMGNmNVRQzgkgMXWlD4UPyLVw7DlzoJYiEg5weONjsn3c1455R
-         X2fg==
-X-Forwarded-Encrypted: i=1; AFNElJ/3ZDZ5256T8sMKhzDYAlf9zaTdC2Zm+9Pk/JaX76q3m0ohGQZ2eoRf3JTTdhd/sywyXFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAZecF9+0KVXs92HM2uDLDj1Aeo9tiB3UzWFK3eVDEHlxFNhxL
-	EH1aPCEJVgksDffNSdKISpxBGojb2pKweUS+6rclgj+Ytia8KQph4qV6Da1Jyq2QUMid0VMXLDs
-	A2dLBog==
-X-Received: from pfbdw7.prod.google.com ([2002:a05:6a00:3687:b0:82f:4afa:eef2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e9d:b0:82f:48e:2421
- with SMTP id d2e1a72fcca58-82f0c29c84amr13850092b3a.24.1776092841533; Mon, 13
- Apr 2026 08:07:21 -0700 (PDT)
-Date: Mon, 13 Apr 2026 08:07:20 -0700
-In-Reply-To: <adl_nGI5IEc815fb@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W95j+dbT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776096889; x=1807632889;
+  h=date:from:to:cc:subject:message-id;
+  bh=KwJnsfDVINndOM5bFo6JPKjv/O2GkMXCR1zpxYqr/xw=;
+  b=W95j+dbTBnIi3ybjdIXkcVL73uq0mYoIj2jinbMlu8P000ayrZLIULt/
+   8fM5bUJQMnQHBWz2Zn2Dh4SpW6WLAkEgFqnkH4UCnLSx9T9Q1tXuSCm75
+   TL7qsaW4M09ZeRhJsWQ+vxR3TZiQfjFUVg9OGnBF4GqSUI0qAMLANxNTN
+   eTU04Yx8+/+k2Volg7ICo1wdW5O8Kt/P/kCQ3XXptSiBykrjfwn6ezHbR
+   5iu4Rd4QC/GmfuAfydDe4VDdHdEQZSeJTA/p/NCQ9mTg5Fh+skxPWp9PE
+   mMUew27zS2yuiod5DFJQnQYvynLOHcvjqUWkUHzlLW/ABdHS/uVKqfrgZ
+   Q==;
+X-CSE-ConnectionGUID: DhvezloFR5KNBQIWkjYBWA==
+X-CSE-MsgGUID: wTm4lFOHTzmMYFSzuwwJPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="76913366"
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
+   d="scan'208";a="76913366"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 09:14:49 -0700
+X-CSE-ConnectionGUID: ER17XR+MRUWK4srW4M4f1Q==
+X-CSE-MsgGUID: JYwRxmELTAaUsoeObt0Aag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,177,1770624000"; 
+   d="scan'208";a="230073802"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by orviesa007.jf.intel.com with ESMTP; 13 Apr 2026 09:14:47 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wCJvw-0000000006f-1jAo;
+	Mon, 13 Apr 2026 16:14:44 +0000
+Date: Mon, 13 Apr 2026 18:13:46 +0200
+From: kernel test robot <lkp@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
+ Farrah Chen <farrah.chen@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [kvm:queue 12/12] arch/x86/kvm/svm/avic.c:240:39: error:
+ passing argument 1 of 'is_sev_es_guest' from incompatible pointer type
+Message-ID: <202604131813.Sp3bcsFp-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409015139.2800185-1-jrhilke@google.com> <20260409015139.2800185-3-jrhilke@google.com>
- <adl_nGI5IEc815fb@google.com>
-Message-ID: <ad0GqAsFpAgA6g5u@google.com>
-Subject: Re: [PATCH 2/2] vfio: selftests: Automate setting up devices for testing
-From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Josh Hilke <jrhilke@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Vipin Sharma <vipinsh@google.com>, Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Apr 10, 2026, David Matlack wrote:
-> On 2026-04-09 01:51 AM, Josh Hilke wrote:
-> > Update the VFIO selftest setup script to find a device that has a VFIO selftest
-> > driver on the system, and set it up (i.e unbind that device from its driver, and
-> > then bind that device to VFIO).
-> 
-> I am leaning toward putting this behind an explicit flag (maybe -p for
-> pick_device or -a for automatic device setup?) that way we are sure the
-> user is ok with letting the script start messing with devices on their
-> system.
+tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+head:   8f65c76d62f1f07d68b8a14829a59049311547b1
+commit: 8f65c76d62f1f07d68b8a14829a59049311547b1 [12/12] Merge tag 'kvm-x86-svm-7.1' of https://github.com/kvm-x86/linux into HEAD
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260413/202604131813.Sp3bcsFp-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260413/202604131813.Sp3bcsFp-lkp@intel.com/reproduce)
 
-In the spirit of "do one thing and do it well", I would rather put "discovery" in
-a separate script entirely, and then tweak setup.sh as necessary to allow piping
-in a BDF from the discovery script.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604131813.Sp3bcsFp-lkp@intel.com/
 
-The mechanics of configuring a device for VFIO (setup.sh) are largely generic,
-i.e. not unique to the selftests, whereas print_supported_devices() is very much
-tightly coupled to selftests.
+All errors (new ones prefixed by >>):
 
-And with respect to making sure the user actually wants the script to mess with
-their system, the permissions required for each script can and should be different.
-`lspci`, and discovery in general, typically doesn't require root, whereas most
-systems will be configured to have things like "sriov_numvfs" writable only from
-root.
+   arch/x86/kvm/svm/avic.c: In function 'avic_deactivate_vmcb':
+>> arch/x86/kvm/svm/avic.c:240:39: error: passing argument 1 of 'is_sev_es_guest' from incompatible pointer type [-Wincompatible-pointer-types]
+     240 |         if (!is_sev_es_guest(svm->vcpu.kvm))
+         |                              ~~~~~~~~~^~~~
+         |                                       |
+         |                                       struct kvm *
+   In file included from arch/x86/kvm/svm/avic.c:31:
+   arch/x86/kvm/svm/svm.h:415:62: note: expected 'struct kvm_vcpu *' but argument is of type 'struct kvm *'
+     415 | static __always_inline bool is_sev_es_guest(struct kvm_vcpu *vcpu)
+         |                                             ~~~~~~~~~~~~~~~~~^~~~
+
+
+vim +/is_sev_es_guest +240 arch/x86/kvm/svm/avic.c
+
+   232	
+   233	static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+   234	{
+   235		struct vmcb *vmcb = svm->vmcb01.ptr;
+   236	
+   237		vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
+   238		vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+   239	
+ > 240		if (!is_sev_es_guest(svm->vcpu.kvm))
+   241			svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+   242	
+   243		/*
+   244		 * If running nested and the guest uses its own MSR bitmap, there
+   245		 * is no need to update L0's msr bitmap
+   246		 */
+   247		if (is_guest_mode(&svm->vcpu) &&
+   248		    vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_MSR_PROT))
+   249			return;
+   250	
+   251		/* Enabling MSR intercept for x2APIC registers */
+   252		avic_set_x2apic_msr_interception(svm, true);
+   253	}
+   254	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
