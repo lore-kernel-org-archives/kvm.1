@@ -1,93 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB77383C61
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 09:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047703AF65C
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 09:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776070849; cv=none; b=LNsEEEpolCaxgv4MRq+ugIHlOEhyji4EN5wG8rc5dprlDw9ni13oA1UtphXcKw4XvuhVXN4I5vaxu4tU3++9+MRy1S3upBQ8JYYuganIo12pm7Uj34Wkp2topYmcZRIDPs3qdHAnuizH1ILwmtUNbn5guDv40IPIHSHiIezp+bM=
+	t=1776071133; cv=none; b=C+jQqdQHSG59fl9RjtRFIS/LWsVDEtN2qbZqhR+jEWPZXvm6f0FH7kg3Jk/cWtZJ5ORIC3tFPFSQ0ymhpGWmo/he1Q2IISbuvRtRFyvp1yJBjM+lTEGPDewedTC8jq0FmpzYw7LSgDC6K7JuQVDUM4uyM2btiZC7+jWUPkO2IaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776070849; c=relaxed/simple;
-	bh=FS56CWMUaP/LbCIUYlfoFrzZcgOF3moqvUj7n73Hd7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lGbEgLzpJkTyFhhauJZNctuNOYiGhE5HNUdeqd05b7MpQ8gzUvIpAmxyE1Bc30FSrm0BtifUZ9NC6soQn+MjK2ldGRrWttgouT3SlzfMXKbGIMM2WauDEZW65b7+xQrCorOsA9C5Kqj7V/nCvjuHpEFjD+nPMLWJxSTje7R62uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U4/JzuaX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IXMHGYqR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776071133; c=relaxed/simple;
+	bh=3wAOmCEB6xmmFNvsqIUiyITnqZOU3fojvHPM3MMcEOc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kasiOcgJwxXoPaJNqY6JuR0YxIUaQFcgsx33jnNbZYPVP2fpFE9Og2pP8mc8R3ZNX6uxvzVGP6ptgC/nT8UMQl4S9tDKFTUc+oJ6BHQG1VyWs3JYFlC0gCot4+pfNU9sGFC+qa1mSn4Edx450GaY08d0psVWRQ2kYeDY1I//wfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gkYLaHCr; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U4/JzuaX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IXMHGYqR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776070847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tLnbVIMW0pl4KY5Dao3ueAu8GiBy46W1IL2uR3rJhjE=;
-	b=U4/JzuaX6+ykYr0fTXvOQ2Auuk4jJ4mAUTeYvxYJ6GHsJW3yXCrA7QkmwID3C7mBwe7JY7
-	u08e2gqj5+zYop761/bIkLuBFBgLeTVGdQ78og3q1Z7VXHtFPxFQ/nMfZEhsEHfX6ojgLu
-	iI44OUKrCOB/28Ufptt9FDCyv7c2/Mw=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-brH-ZwiQPjCcEwu_r59-Dw-1; Mon, 13 Apr 2026 05:00:45 -0400
-X-MC-Unique: brH-ZwiQPjCcEwu_r59-Dw-1
-X-Mimecast-MFC-AGG-ID: brH-ZwiQPjCcEwu_r59-Dw_1776070845
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-35e5791871fso2378479a91.3
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 02:00:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gkYLaHCr"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35fb0bb27e7so611322a91.1
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 02:05:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776070844; x=1776675644; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776071131; x=1776675931; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tLnbVIMW0pl4KY5Dao3ueAu8GiBy46W1IL2uR3rJhjE=;
-        b=IXMHGYqR0sfALzgVXuDWL0FiHv+uipJpnAUE15Ulfw9iC9CXsnaazngsbOE7/Fmu/2
-         +C8VGxURmnfFo/QLwlzwEMbg9EhGEuPMW3mIWuEgpzH6+iv46tXCo6Dwu8KbpvpBEYqV
-         BEMvTBjOqpDsLWAWRcVMNvvJgtp1OjRVofbPRx7GCLP4300efk0mi+EneHXSky+oHkVc
-         uLy2THdaMdRSV9lX3gMSHKUZq2FnGHoxHGn4tBA75xYy7GSMyzQvVN2mwTuKWF5yAm5u
-         IldtaLPEcr8m7l9YtS1AX9QtWSqSI1JVU0bjvYFCgTJVLRxsl/A9/5s4kZmkacJ4rAnd
-         qmXA==
+        bh=4rWbsiBNxWsuEFoJoM14TUA11TPEejjWbsfveSsSAA8=;
+        b=gkYLaHCrYST0pNJPg5FYd4JbMnXgfLxR/B8s7+9CRv0NHYEdwHyemhOR2kIawmgSRu
+         ErW0fB7sVaS8YWIqdR+6uSov2TYhinVMNf6njXXWqtRi/syDXgzldf4XKrYaLnHXsfvp
+         /zHmo7IDV8AHIuaSCZqVmDZBO+wlcvqbHgx1hkm3gETJFfcrMXzPRR95VM55E0CEwAd5
+         FWmXyiKv75xVO9qonWZj7mWhIqT7d5PWlJa/DMItzXtuY/8jlPkjZZERWacYZz/jJMmJ
+         QWn7tpl46G5fDT7sl43OK2TjLsOyho+f92MSmCAWwX6IIr67yqOdBm9Msoisy3WQsKv1
+         STSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776070844; x=1776675644;
+        d=1e100.net; s=20251104; t=1776071131; x=1776675931;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tLnbVIMW0pl4KY5Dao3ueAu8GiBy46W1IL2uR3rJhjE=;
-        b=JYFS+K7yL5rIGmPndsRZ44/n4625rKa1WWKdqiFuvBIamjJJpdpU3QBfqK4uJQLETh
-         04j6J40nFEVgkxxpVaTSNd5i44tHIZ+PvgVIaNYJxKhwWe3Aj70z04trv61wzkJCWswI
-         fwKPNCnV1Lzf95+T8x2chkV3Xa+cLXmVcovMEkE91zewu7+cBgGhAcnq0ckOIMQswU7/
-         zsJt3F1bAs1sOq3mD2nMoM3i1uNZlATb+VYEUgOko6B89PMjkErU/EpMecFig8bAYtmp
-         vRDIB+DYNlNrG3l4wJMY4rNPlaMg9q6Gv9T/LGhcCbvOYGLffYsyzju0MTRZblCNDiRt
-         afNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8KWkgMPLQJmhUMDZ/C8DTreph5NZYt/w1zRc0JZTWQvSTlfuNqg5Fsh1YZRsweN4k3s4o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXVB9DEL1fDIDOg1VNo/b7ym39sUG6c093faNMCsITQuGu2uFO
-	NZps9htJFayqjeGfhp97n86HvvEIB7jFqrwA2ba8P2i6hsQaqcpMIppMa+RQlhande6wDOOdQpE
-	zzSANF6i33qUoZdt8QOUd1lTEzn/DnMkS7QiKqtDDETlLZIU7K5j4Ng==
-X-Gm-Gg: AeBDietcQ0rzmPVPPmn/FQbD/srj1XXpW3lA1PbhpQsGgDw+Ayik5nYd30eyDMUrgab
-	EBmv7G6TbfLq1fLMQ77BvqAqednZlB8UV2xQlMWbqKDfEFgU1ogxdGiKjAUOeVdKin7VA2shUF5
-	ITuuz0W28lb1FYnCPKQGMh7CgTt8gUM5QRE2nbOzDGwuLK0V/SwpHGALojq6hVKjoIfC8OC1iHo
-	Iz0pUhIr5dY16yS/FkH5Feh/+GuR8G9yChypaeWoBW645x/KLT2nFreP72XMgnOuRuk5H+itV63
-	NUaITe+xsreiIfQUTqmCC3G0v7+nRq9o0Kxv4/soBTZAna2H7cpWcH486N8CW88vOpnjIDXDjeU
-	b1R5WK3xPtanmxJnB1XthZOtTSR4HdDB4R/JEGq+CBI3pDrjHmFzEKwiLa2z36ZnIZolHDRcmfJ
-	KD6ehMCw==
-X-Received: by 2002:a17:90b:28cc:b0:35d:aeb2:25b2 with SMTP id 98e67ed59e1d1-35e428cda1bmr13170709a91.27.1776070839654;
-        Mon, 13 Apr 2026 02:00:39 -0700 (PDT)
-X-Received: by 2002:a17:90b:28cc:b0:35d:aeb2:25b2 with SMTP id 98e67ed59e1d1-35e428cda1bmr13170663a91.27.1776070839003;
-        Mon, 13 Apr 2026 02:00:39 -0700 (PDT)
-Received: from localhost.localdomain ([122.163.114.34])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-35fb38eb48bsm3560588a91.2.2026.04.13.02.00.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 02:00:38 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	kvm@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH for-11.0] accel/kvm: return early from kvm_irqchip_create if kvm does not support irqchip
-Date: Mon, 13 Apr 2026 14:30:10 +0530
-Message-ID: <20260413090010.60339-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.49.0
+        bh=4rWbsiBNxWsuEFoJoM14TUA11TPEejjWbsfveSsSAA8=;
+        b=HSiLlVZaSqCW5NyZPCgJR0fKhPSLIQY3aZSwaajn0yVFz1CgeugIo/i3ZDHZki0qf4
+         3gXp+L1k5xf2o16zxk3Oy1rPETp0nFb6FZ3DGdc/mj97HCoTGc8Ds7nU0X0FGdPJQzsN
+         UCKQtV3oVQ5wuYxcWrfPfIOL6Xp6d3vX0BnkRcCKYG6LbijS3PNQ5ekHPpFenSUHJRHd
+         rngDRUhXFbC9H0whwR8w0YSmn0MS+LlzhMExEj9mbyuMr81UQOkCXYxV4E1qruPs+xMr
+         cw8O2mf/lKHcok/Qg+trNMA1Js2TkZa3OPgWvgNIBkfZcbyMXe5vyHS6Xoh8OkUBZAGN
+         0DcQ==
+X-Gm-Message-State: AOJu0YwTLn7lQajKWVxbbtDsFsUGscSrbRpF+uoeshZUnmGoXCzB9UIC
+	H0xkb3Mygtw9IGvx1U08PrkxbReI95dh4RKse0gMhv3fBa+mlcMkWpNYLofa2g==
+X-Gm-Gg: AeBDietnFKAOvhkEVm/gzsldc09jtAiF8VlaeiwL8zt06QWegNle59My53Ih98lo/+y
+	FDH6DpMFqL5HgVGxTfqMtcx2GqBmiPTSxf/UpVbphGJJyObFVqdzLZ3bUjXlcJ5BgWxkfkqUl2r
+	G/oO7PXeL0WdGnryZFnBwHf02ggx6fjeU3Bb6kGPkRe5sOmbrPuHuw2jiZc2lpGKw3Gx/fScIq7
+	GdIoFcvgwIA7oOHPRA/9tlPlEBoglSvOOo0hGRqbw1qrYiJp6GXbGyicL72/DizGoYK74PWNnWu
+	TqvkeFEQOJ8LSY3X+Ba1AHYv0rkXwCfeAybZSr++T4PTUEBD/WgDVI0EIMArlT53YWYKid6J0Ej
+	6gkZNTeq5oEMqt5KuwosWbCWf1E+qQHOyfMeCxxb4dpi9QRyp+GwFyVNJCke/GCcKwjHdEwi1Uk
+	9ZCES1us2L6LlJi/ugDLSy9J8io7DdC2Y+jTRC9kLVHTleSRYm2JkCc1b0BZ6edSG5
+X-Received: by 2002:a17:90b:35d0:b0:35c:cba:344f with SMTP id 98e67ed59e1d1-35e42814b32mr12084494a91.13.1776071131141;
+        Mon, 13 Apr 2026 02:05:31 -0700 (PDT)
+Received: from gmail.com (69-172-89-235.static.imsbiz.com. [69.172.89.235])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e5a725b2bsm4274931a91.16.2026.04.13.02.05.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 13 Apr 2026 02:05:30 -0700 (PDT)
+From: Dudu Lu <phx0fer@gmail.com>
+To: kvm@vger.kernel.org
+Cc: mst@redhat.com,
+	jasowang@redhat.com,
+	Dudu Lu <phx0fer@gmail.com>
+Subject: [PATCH] vhost/vringh: Fix IOTLB permission in putu16_iotlb()
+Date: Mon, 13 Apr 2026 17:05:26 +0800
+Message-Id: <20260413090526.80563-1-phx0fer@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -96,74 +72,39 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-During refactoring of kvm_irqchip_create(), the refactored code was returning
-early from do_kvm_irqchip_create() function if the required capabilities were
-not present in KVM. This was not translating to an early return from
-kvm_irqchip_create() as was the case before refactoring. This is because,
-do_kvm_irqchip_create() did not have a means to notify the caller of the lack
-of kvm capabilities. Fix this by making do_notify_irqchip_create() return
-EOPNOTSUPP error when required capabilities are absent and then the caller
-can check the return code and return early.
+putu16_iotlb() performs a write operation (__put_user / WRITE_ONCE)
+but requests IOTLB translation with VHOST_MAP_RO (read-only
+permission).  This means the IOTLB lookup succeeds only if the page
+has read permission, ignoring write permission entirely.  A page
+mapped read-only in the IOTLB would incorrectly allow the write,
+while a page mapped write-only would incorrectly deny it.
 
-Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM VM file descriptor change")
-Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-Reported-by: Gautam Menghani <gautam@linux.ibm.com>
-Suggested-by: Fabiano Rosas <farosas@suse.de>
-Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
+The neighbouring getu16_iotlb() correctly uses VHOST_MAP_RO for its
+read operation, and the copydesc write path (putdesc_iotlb) correctly
+uses VHOST_MAP_WO, confirming this is a copy-paste error.
+
+Fix by changing VHOST_MAP_RO to VHOST_MAP_WO to match the write
+semantics of putu16_iotlb().
+
+Fixes: 0ea9ee430111 ("vhost/vringh: add IOTLB support")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
- accel/kvm/kvm-all.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/vhost/vringh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 774499d34f..92af42503b 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi)
-     g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
- }
+diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+index 9066f9f12ba1..e6ca7e0824f9 100644
+--- a/drivers/vhost/vringh.c
++++ b/drivers/vhost/vringh.c
+@@ -1244,7 +1244,7 @@ static inline int putu16_iotlb(const struct vringh *vrh,
  
--static void do_kvm_irqchip_create(KVMState *s)
-+static int do_kvm_irqchip_create(KVMState *s)
- {
-     int ret;
-     if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
-@@ -2587,7 +2587,7 @@ static void do_kvm_irqchip_create(KVMState *s)
-             exit(1);
-         }
-     } else {
--        return;
-+        return -EOPNOTSUPP;
-     }
- 
-     if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
-@@ -2610,13 +2610,17 @@ static void do_kvm_irqchip_create(KVMState *s)
-         fprintf(stderr, "Create kernel irqchip failed: %s\n", strerror(-ret));
-         exit(1);
-     }
-+
-+    return 0;
- }
- 
- static void kvm_irqchip_create(KVMState *s)
- {
-     assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
- 
--    do_kvm_irqchip_create(s);
-+    if (do_kvm_irqchip_create(s) < 0) {
-+        return;
-+    }
-     kvm_kernel_irqchip = true;
-     /* If we have an in-kernel IRQ chip then we must have asynchronous
-      * interrupt delivery (though the reverse is not necessarily true)
-@@ -2835,6 +2839,7 @@ static int kvm_reset_vmfd(MachineState *ms)
-     }
- 
-     if (s->kernel_irqchip_allowed) {
-+        /* ignore return from this function */
-         do_kvm_irqchip_create(s);
-     }
+ 	/* Atomic write is needed for putu16 */
+ 	ret = iotlb_translate(vrh, (u64)(uintptr_t)p, sizeof(*p),
+-			      NULL, &ivec, VHOST_MAP_RO);
++			      NULL, &ivec, VHOST_MAP_WO);
+ 	if (ret < 0)
+ 		return ret;
  
 -- 
-2.49.0
+2.39.3 (Apple Git-145)
 
