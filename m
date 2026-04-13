@@ -1,110 +1,139 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5F8399348;
-	Mon, 13 Apr 2026 21:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161133A0E80
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 22:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776117521; cv=none; b=asNoaATrCxk9nqYTEoGrfa181sILmb55d+AhHG2yG+sNVfo25BBZizh6FI/5ZpXW8jpCpSalOsiJWCRwim0LnUE0dr/qbLHoPZStKOrR+cty2rB4VEJZ7HcNgl+DnR9GloObNhrdtqe3sXGiCDMYZqqiugo11TE1vFifnfecv6Q=
+	t=1776119602; cv=none; b=W1OYk6Oya2SQv11nzFBdPhHhGRE3c5ddke83aBKEZYaXx/r4gFHLZ3M4b2NsCdznZzl9txZM3BC8/IqhlH2VTp3leH6Wqh9vdqNVXJ8L5lx7kwbU/l7gl615Z//WG64sBAHoLMePvzdDeRIVZ7T0X4y2KElptxmOuA2Uk9l/GeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776117521; c=relaxed/simple;
-	bh=2XYfBvfT+UEFna0kWORcHWLGNbscFLCwfHt1ltc/pCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rhebfNKvMtw85RG4HXpUJJrerTk6WBCNITQzwg3dvE19hYXejqQSaAhZSMA3Wvdn/4TEZVYtf7kP+ZQEPcrFj9UoyCk0EZN/dqu+2czFTCqqmhHOtquamhqxDkF9hrgO4SAJCFPiefpQXHE1J9tM4Ewq+z5WEqHB/+sFjAvum1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ezkrbNAW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LuH2Xwn0; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1776119602; c=relaxed/simple;
+	bh=UwW/1XbIw/u2ktOpP85VLCvfvyEmOP4GLErArAy8gGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rgkNIfTmwJ66XRWGpiFYwQPWzvM1umXfBHHGtonZ95gm8MPVLA+zrZn6TlEG7+kSxJDfX4tEWfGUD4I4p0LDXNNtqo2rtngrcArzjmBkhHI7MyWvhD+Xy0xBo6pbPeszMUKWfEPvreQUiPnB/QqIYt2eHM1Rc4EAaG6xpsHhhHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UhfLOUiP; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ezkrbNAW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LuH2Xwn0"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 36676EC0516;
-	Mon, 13 Apr 2026 17:58:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 13 Apr 2026 17:58:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776117518;
-	 x=1776203918; bh=oKY21MPppCmjWn+4vtpziBqU7RYeyA9kdQSFsUQQEYY=; b=
-	ezkrbNAW928HESHLxUzyaYl2iUjwXhJUitgfcXn4G4WBuFOjWO/W3PqqF6squecv
-	L0oxVtcm/zYSicWQape5PDLq2Rur7nM2Mih7oSgvD9TMskTmtnC2LrKNUcWcweeF
-	hkWDmX2plXlVUj6jMkAIPS7ZP/s4BhNx9Ksocu1tD9udXmO7JujJDfWmEPt8rXem
-	U8CYanmWqE45Lb5OSDX0188G0WSI8ZZ5hh0OzwPSLSe+Il/F48GEBfS6GClowWlj
-	laezdnHikfFt9DoKZ1egVVvnCUlqi7E/2W55SvsF/yUAPb6o5WAfOe2dZ9TGm5FV
-	d4kL4tdCmZz23NK2/ltxlw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776117518; x=
-	1776203918; bh=oKY21MPppCmjWn+4vtpziBqU7RYeyA9kdQSFsUQQEYY=; b=L
-	uH2Xwn0fsyqNGec03jDXScLrOvjkiKd6WJ1QjPiQFXeDZ2AiwVPbbilj8PFkvxaD
-	tMSuVpXkd7Z4hSn4JRiWuObsSd17WYHfWq7Z0miKBdxGEzorVJQCLemhPPL1aDkw
-	E35fdyCgjUc7TKOBUwa/GdWgfuQ5tkzmtJzq41xityHMvQc2gbN96VqqTa6efOHX
-	0405yqT4hR4vvaqxtMETH23mwi+W2ty+34QEVmLjI2aZKkJ5oQwwN0L/rZfnmsj1
-	hXoMJ1RJk9hsSZUZAtm2CcsHbtKg2B193e1pS3F1eJkI7F1YM5ch2erFe+xjiQ7p
-	BZ/ZiWHBSDyImHXgFQUlg==
-X-ME-Sender: <xms:DWfdaabNy25oZ3VtQdULWoeUdpzLgLQfsgE9cHGQRlCY4h-ex9ZHtQ>
-    <xme:DWfdafq3X8-ryGA6AiqQYkRHJ9PRTmQnvrSGIrncrEeOxWaCaDehjCMObzLgR3zIh
-    NC8PJZhX_EI3qUsCxRoiCt3XPoCrrILG59Wxsuo4m71zsGm-3nTMms>
-X-ME-Received: <xmr:DWfdaXPNx5xQ_Fn1ROOcGe6bCVCVNuL6fwr0-4dwO68ZQWSKZPiqAhUTGPs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefleefkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
-    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeeipdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtg
-    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkh
-    hrohifihgrkheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehlihhnuhigqdhs
-    feeltdesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrg
-    iisghothdrohhrgh
-X-ME-Proxy: <xmx:DWfdaSo6W_L_frs5t4vHiqfTl3sx1MVIIadYw47I0O4C4eSeW4lXTQ>
-    <xmx:DWfdaUdUhnk_5ads610rO-L16UjJaXQG9BkBRWUifmH-BeOYZo7oTA>
-    <xmx:DWfdaQQMqwN8caRRsIwtxDisOJbN0j6u6EVdwEEPE8QKom2VnE7VUQ>
-    <xmx:DWfdaVYRKjzo8Cs5YuqzsJ3Tk9WJ8kuT14rwNi8RG-QYvOiizI65lw>
-    <xmx:DmfdaRjZPTr-Ji--DxwuRwso2wEKucvkRvR1RwSGsAjRcDoFWoK0euE6>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Apr 2026 17:58:37 -0400 (EDT)
-Date: Mon, 13 Apr 2026 15:58:36 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- akrowiak@linux.ibm.com, linux-s390@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] VFIO: remove dead notifier code
-Message-ID: <20260413155836.124aae47@shazbot.org>
-In-Reply-To: <20260407175934.1602711-1-pbonzini@redhat.com>
-References: <20260407175934.1602711-1-pbonzini@redhat.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UhfLOUiP"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a3342d301aso50633176d6.2
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 15:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1776119600; x=1776724400; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UwW/1XbIw/u2ktOpP85VLCvfvyEmOP4GLErArAy8gGw=;
+        b=UhfLOUiPlRQqY06loItczVdfGR2eN7c719ZP1dIr7H/8jBbyRNPuVFGfJlCpNzIpCk
+         5XEAAS43++frG2nP6VS4l3S/iBS43a5puDK0gLoCvxVQVbJpl2cOq2a4Crx61Iq1jQFi
+         SJHVIXrpJgSarHKwQUbNyPrM39YuLStKvOzmsKEmcGWIwyE1p8efZvxzc+FYGisjO7gs
+         KLaqL8HY3gXA6GbFSIZKJwODbT29QV6m9+71SE6eUHY4EdwTKrg707WwCkP67nzIoz00
+         FYc9TvhOEz+s43eaRsoXPWl4I9kKl/M/amS9ns7tEnzxMbuKXBlOwIobSTzXtTVwScef
+         YHhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776119600; x=1776724400;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UwW/1XbIw/u2ktOpP85VLCvfvyEmOP4GLErArAy8gGw=;
+        b=XySMY+K8xP2RAV5qYXL2DDmeyby87SIvojOOrUzmeqhlj9m/jO4th/MNkIJROON5Hr
+         ku/uFpcVZJs7nwc6B9/QP8neTDX04PbLjI4V7DIhZaizWViJQwD5pYsUmxmzexMxgwRb
+         wtYpCj7FM6hRFef8O3fK5fzhIF0NeN2UEqme5barP0obBQAAelwcUR7Ge53PJ2rWJiv3
+         DqyxLLMb4Ikmxd8Ci4DRWtbU4tVkgw5JLBha3Ee2rhJfRa2eGRNX3jbM1lyV5BXkMl1f
+         5zulPzC99V/9HLQLchfU+ch7eFyk19mpGmGKb5s12JkEPFjZ9lkbDfVgVord/lgAUcLY
+         Yfiw==
+X-Forwarded-Encrypted: i=1; AFNElJ9g8DQcYNL3EQ/qBOIXeKOsY3Ms3NA0iZyNAvNwjLrIoC3x3VCaXOsj0Z92VzGd+QtNQEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi5qC0ATPoWKAs79CDGRKG3bLtBVSUa74rR8XqHxgIDErzRs6H
+	yovOcPpL41rNvv12Tmi3neGCf7gEFYjc/GAC0adJxo6uJp/UPAWpPVRk1reNk40/OBI=
+X-Gm-Gg: AeBDietMN5zivbfgL9ygtqnLQcm0OgEWAsEArWzHw4KVyGv4/Pct2PmUQuhDcwf79vO
+	BnuU53wAS4wxqDGLrjgp+0oRgoMorHvLb8+a6ngw0diEiTdonT3dGOguhEC59wJoVKy/dC1M4S1
+	Ys3+o+gjnxL0f0ckg8qOdZGRZh86v6vzbr0ztwEERqtZr/t46D8lgLuVHHNs9TIPMaIn7cVUAaW
+	l1EWUS29Ug7BA4OQB1HC6rCtz4cChXPkiIv02AbGmFDgMRUPpGiX48M1FiR/M1Ejd5Hxf8EeTLH
+	UrBmdnSUamJcinO1AE9UsQYvwGFCPthRzcvVHhMJKrBmy/WveUopeqSlqAvtw5T/hFziaFkirCe
+	PomfRMbX0boajNhh2qxOmjNsW9f55rHUvHHDjeowlBU2How76HqRcurAFABTpfD/AQ74zoa8JV2
+	G0/7Kn1aRbitsEUwMTRZk7q3iJzQRoq/t+WLAcYYazS/XoCzvrnDFoEnLb5pQomvM8nJKsaHFHa
+	jeEhA==
+X-Received: by 2002:a05:6214:e88:b0:8ac:8cbb:49bd with SMTP id 6a1803df08f44-8ac8cbb4d73mr219764146d6.38.1776119599895;
+        Mon, 13 Apr 2026 15:33:19 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a45552sm105040816d6.20.2026.04.13.15.33.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 15:33:19 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wCPqI-000000075qq-3S8b;
+	Mon, 13 Apr 2026 19:33:18 -0300
+Date: Mon, 13 Apr 2026 19:33:18 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Pranjal Shrivastava <praan@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 05/14] iommupt: Implement preserve/unpreserve/restore
+ callbacks
+Message-ID: <20260413223318.GR3694781@ziepe.ca>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-6-skhawaja@google.com>
+ <ab3CtC0vN6J975V5@google.com>
+ <20260410141652.GV2551565@ziepe.ca>
+ <adl2QX6gra99bkOV@google.com>
+ <20260410231650.GD3694781@ziepe.ca>
+ <ad0b-5aRU172-Od8@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad0b-5aRU172-Od8@google.com>
 
-On Tue,  7 Apr 2026 19:59:34 +0200
-Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Mon, Apr 13, 2026 at 07:31:22PM +0000, Samiullah Khawaja wrote:
+> Yes, we use the collect walker during KHO restore of the preserved pages
+> and also during free. But if I understand correctly, the collect walker
+> behaviour changes based on some FEAT_ flags (like SIGN_EXTEND). So we
+> have to be careful if the previous kernel was using different FEAT flags
+> that affect the collect walker. To handle this, we can just preserve the
+> u32 features from struct pt_common and deduce everything using that.
 
-> group->notifier is dead code. VFIO initializes it and checks it for emptiness on
-> teardown, but nobody ever registers on it or triggers it.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  Documentation/arch/s390/vfio-ap.rst | 18 ++++++------------
->  drivers/vfio/group.c                |  3 ---
->  drivers/vfio/vfio.h                 |  1 -
->  drivers/vfio/vfio_iommu_type1.c     |  1 -
->  4 files changed, 6 insertions(+), 17 deletions(-)
+It is agressively not stable, and even new kernels might not support
+the features old ones were using, so this is a bit dicy.
 
-Applied to vfio next branch for v7.1.  Thanks,
+You probably need some, but I think I'd be very choosey about which
+some I preserve and which come from the new driver.
 
-Alex
+> Thinking about it more, we do preserve the top_level, so that could
+> potentially be used to walk over the page tables of these free-only
+> domains if we just set up the pts->index and pts->end_index properly by
+> initializing the range based on the top_level. Are you thinking of a
+> similar approach to walk these free-only domains?
+
+Hmm, even the free walker requires computing the end_index, and that
+requires at least vasz. eg ARM will compute the number of items in the
+top level based on vasz to support concatenated pages.
+
+I don't think sign_extend is used in the free path though.
+
+So if that is the only purpose then yes you can probably get away with
+nothing, but you have to be very careful to contain the restored
+domain to only execute free and nothing else by removing the
+map/unmap/etc ops.
+
+And add some dedicated self tests (zero pt features and test free) to
+simulate it.
+
+Jason
