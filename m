@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D27390231;
-	Mon, 13 Apr 2026 19:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D97638F227;
+	Mon, 13 Apr 2026 19:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776107905; cv=none; b=S+sXKkQG5YWKnPZ27AxcB76lJu4+sZJxN4+Tgkfl0bwqNmIQyh34FERVNeApZe084AnnbGEY7QYq0g1wi+UizahLMj6MPLXXyJigQoOqRidz3PQEb6UQ6VdvrqSJjYmvYmBxFHXitgW8P0WSn+QVSY7vxNZJTseuF+Cwzoij0Zg=
+	t=1776107928; cv=none; b=RJ1pSwno0Jtee6+x8IZXRkIOjsAKu8FqLQ092Rc/qUZ5aFC9w3Pv7tubumo7eP2wiNj7nMiiHb7ZiPJ+ZjoN5MX1qyDT4awELTkepdV5mo6mrF9xFkkc3kqn8daFhhytyvtEHWcmNbXVlx8V1URuWG8LCk2ZknHONww76M82U/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776107905; c=relaxed/simple;
-	bh=cDopfrHKIY5CWvgWtMsDFhixhLYI1yjKSO6ar8V8IMk=;
+	s=arc-20240116; t=1776107928; c=relaxed/simple;
+	bh=AcZH5y/sksxfUnjFv2/7/AY+KkFJTJM+xr4WzntFVR4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UH0kimzizRSCZ4UEVAVXOpvhkasXmOiUzbXHUglOrRN/C/VI6VCnVYstI4wILZuMEqioeC7cq4tlGOu86X89l4LioAA3kZ6naPkSj6yayCuxp9xPgNcwm7mpGpgFZYk29pcpbakg6L1HpYwZI22zPs3OtniIIMwS1d7JEIZR3Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y51oSv5F; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=KL1HZ66bJRda7Nd0FLbDp4ASQ/VrMx4ItYU9hyOfW3JNvTPJXVaH4DnHy3z+/bQ4IN/YAw0/B76/BbJWe6tXglvODx3MfaQtAwsRFqKICcAKlrRhMBRqEzFQYGOffW3fIBlsd9J81+wKbjsn/PZde+ykFqmFrsXJITncTtQ03dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g37SLZ0d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y51oSv5F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E51C2BCAF;
-	Mon, 13 Apr 2026 19:18:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g37SLZ0d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A59C2BCB0;
+	Mon, 13 Apr 2026 19:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776107904;
-	bh=cDopfrHKIY5CWvgWtMsDFhixhLYI1yjKSO6ar8V8IMk=;
+	s=k20201202; t=1776107928;
+	bh=AcZH5y/sksxfUnjFv2/7/AY+KkFJTJM+xr4WzntFVR4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y51oSv5Fn7/3bMuNcw5NT9B7MhAPp346CPj5F1js+nM9h9lbdObXV/AlLREPX3ZZa
-	 x3SVN6+cIYe1wuEIY1o+CFKY44d9u/2/qfgsfEDE8BM0VHZRnae3DdLqV6azMsbGox
-	 3GHMMz1nZW6mCQhQylwiNWZVSrjaDTx8s/wrDbWUoAHtYHYTshaDFxHQD9vMH3ct9W
-	 3E+Awc/K0L+Br8emV94yXJopfPXn7RdF8wmJaxpBbPYdKeJF1Rpsph8oX7nb+0Y4Bv
-	 xRtZE6TJ79pVP7u7ACNQ+2xHFY6yaW/MPzybwyKRELPR62hLrEVr4kg4w4DLhqCSoS
-	 NF8Kh2ThS9X3Q==
-Message-ID: <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
-Date: Mon, 13 Apr 2026 21:18:13 +0200
+	b=g37SLZ0dd5wJ9W9WB+ULAMRBgiYRuHKKy5ZZHMO2KlCtIfk9/PlL+95LjkW6D4YWb
+	 SFOM9wikoNG78Z9IgQ7FF3sxX/REtFYNeVKHulN9mslS8BIDPAvQgF43JlxefN9HdX
+	 YMwozu+vWdYGX7IK8soLAOjKAooqLKTll4laE/seKTvNKvSIuGlEALCwQt3t0C/zy1
+	 AGIOD3SkQLT9WujGNEWD5rTHsax/Uf6o6g9nOur+EQSEMPy5wwmBhG2t1UzabFV8dU
+	 Hkyd8ixDo67Osd9c3J7g8biTLeAJauSkWTL0vsImyTnaXI0yfZ19h+Rimd+u6/VxJr
+	 4dUEAzVvLkrSw==
+Message-ID: <4ecb45e4-0501-4e12-9a1d-ad1218f5910b@kernel.org>
+Date: Mon, 13 Apr 2026 21:18:36 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,12 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 2/7] mm: memory_failure: Allow truncate_error_folio
- to return MF_DELAYED
-To: Miaohe Lin <linmiaohe@huawei.com>, Lisa Wang <wyihan@google.com>
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
- vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
- tabba@google.com, dave.hansen@linux.intel.com,
+Subject: Re: [PATCH RFC v2 0/7] mm: Fix MF_DELAYED handling on memory failure
+To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
@@ -51,11 +47,10 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
+ vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
+ tabba@google.com, dave.hansen@linux.intel.com
 References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-2-92c596402a7a@google.com>
- <2f177e0f-2eb0-48d0-b48c-7a0a340caf5d@huawei.com>
- <adA_1zXLUBqmSHFl@google.com>
- <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -102,34 +97,28 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
+In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/7/26 05:55, Miaohe Lin wrote:
-> On 2026/4/4 6:31, Lisa Wang wrote:
->> [...snip...]
->>>
->>> Will it be better to add a pr_info here to provide some information for users?
->>>
->>> Thanks.
->>> .
->> I think we don't need to add pr_info here; truncate_error_folio() always
->> leads to action_result, which already logs the recovery status.
+On 3/20/26 00:30, Lisa Wang wrote:
+> Here's a second revision to fix MF_DELAYED handling on memory failure.
 > 
-> No strong opinion but I want to make code style more consistent with sth. like below:
+> This patch series addresses an issue in the memory failure handling path
+> where MF_DELAYED is incorrectly treated as an error. This issue was
+> discovered while testing memory failure handling for guest_memfd.
 > 
+> The proposed solution involves -
+> 1. Clarifying the definition of MF_DELAYED to mean that memory failure
+>    handling is only partially completed, and that the metadata for the
+>    memory that failed (as in struct page/folio) is still referenced.
+> 2. Updating shmem’s handling to align with the clarified definition.
+> 3. Updating how the result of .error_remove_folio() is interpreted.
+> 
+> RFC v2 is a more complete solution that includes parts 1 and 2 above to
+> address David’s comment [1]. Selftests are included for all the above.
 
-Yeah, would be cleaner.
-
-> if (err == MF_DELAYED)
-> 	pr_info xxx
-> else if (err != 0)
-> 	pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
-> else if (!filemap_release_folio(folio, GFP_NOIO))
-> 	pr_info("%#lx: failed to release buffers\n", pfn);
-
-Maybe we can even make the failed here a "Failed" ;)
+Skimmed over 2 -> 4 and they LGTM.
 
 -- 
 Cheers,
