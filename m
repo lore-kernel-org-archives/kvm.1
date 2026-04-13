@@ -1,179 +1,301 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEEB3DEAC5
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 14:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA75133BBC0
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 15:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776092079; cv=none; b=faJmnkOQKYNazYZccWrHR3Vvwmjy2O42Luhzsc2X375LhQ5S9WjCl/8Q47pLBRtV2+It38d/GJA4hEK+wXpSltgDBgjIv2iVsVskaebtS2tY3vlgw6/mMmTb6stLS4uNFiHuKFLkpZshAz6vbbOTQBzO/Ssfp2ntd+BvyqP+wHA=
+	t=1776092698; cv=none; b=KcThJsmEyFNe7TsNrXksqJiiuY1oVfh0WH+Ua4+pb6kSuP/cXAgoWltLYpPPKsDxIdD8waLfC2lEro7Y9vMD7SYJGECL8KjleDr4V7j5/AzpT1xPGH+uWYdz/ONTXmZuaWXw0P51N5FtQy/9/qvcBy5Gwj+5hZdsyqcq/t8B44U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776092079; c=relaxed/simple;
-	bh=e/yA9zOTW+FJSb+90hJJfffdxthT5LbM6b1XvxBUtWU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GDDsPlkZAWrvTLhD/wvZQGMxQL/EGEeBKR0tATLtPoQCZMypM2VIcu1PbXS3iPudN0twrFipWoX7AfClM3KUAHd7J5+lsS+vHSwbruaOPOUzC7sHt9ui60ItNf3b27ey08eGgUAtF96Nb2rtUAqvjbOK7Bga9GAC3O3zd79VqSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqlWq01e; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776092698; c=relaxed/simple;
+	bh=bNqGJy+RgoN/rIyGkSUFKsV62U8Y52qB5T5kGMowXX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h0LQdaJJI936Nco9r7T6xTeD1mhQK9D8JfV0jUj/g9C7v9cXDQSOJ30hVCXuV52UMojwHUPZeK2N25YpifittO0anHuIUePrO6ApDZG9cnHBKtB8W/eCqvENAPL5eBXhrmL/BDT/0hK+HeIHvGnQnL/9XYT2722e2bF/7UCJA40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=byNANFdb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqlWq01e"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f07078ff0so2425420b3a.1
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 07:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776092077; x=1776696877; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eJcPRN3ndueDSdYwxtdP8lEQ3v1K2ekmMZi16tT5qsI=;
-        b=CqlWq01en00IR8nMkMcD3NxbnOT1q7oaQ+z9xCe1YWzLxzh2gxWmXouAsIMTvRHVNA
-         z3Ur90fV+fNpOx519EH9fHyxd47hx+QJNY0Vivbg/z0XmTyvFYgVVkXkQTsc7by/6duV
-         AyN+5EMoI0zF5HhFDkn9QFv/vqQBTS0qSHM9HINeYPN0PpxOI4TfZYQDcTgiX/7EoDKG
-         efjRa6kTTZwRGZMvHjBNqdWd+MgnK8WZ1dEuECPfA+XIWPuJ5wzWaGHaSBSkCTv82Put
-         NUguVO7a2Xwv3QZfej22iMaWvpBBSrBAGk25oajFa6TbRWfBwnYa2VWBftGD9S/dNYDH
-         CeRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776092077; x=1776696877;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eJcPRN3ndueDSdYwxtdP8lEQ3v1K2ekmMZi16tT5qsI=;
-        b=FiL3/xLolIqj0PCDQ3tLjauSOjmZctzOj8FC7s5uvhjNPgT212fKDDvgh6jGF5jkwj
-         ujVLBQ71e5+5uaREOrYcSBu8ntlUoTR7tRIo4YUrbpgm/qCj0FLsszSPeL7Q1SyF7yTA
-         AM6SF9IMy1hN3SIIIQe+MUbFxssKb9TQh0ii5Gg0j3CLNCqSOED+t57MI30EIIQ5g83S
-         chEWQ0KejRAfZHx+SAV9/xy5h8b9ImcBI5ZqW/ASiiNY1Qvj0VhEWhNI04ksCI6tzm+5
-         5Dn2oNfVHDfsmBqQR93cYKHJNua/M7nEglMzj6JJcXV6XXfcoJfso4XyaoMZJ1juObrL
-         6vuw==
-X-Forwarded-Encrypted: i=1; AFNElJ8jKx1h7U5AgBLRKz4sYdp/mS8D7fpuC1ppYfwG06Hi3kVivbkmDUIA1A9n4u5X7upA+Ks=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzffWyMwMBxyyfttR3p18Y9rUNgnpmF8jRpZNHPJ+tnyU/EKsQA
-	9HZVDFp/VRprMMQPCXQBXaw10DajrliumZOG3MZ/mxOHZxge+GnexiRwKUbQnNyOlchUMb6s2ih
-	q7vs+Ug==
-X-Received: from pfmm8.prod.google.com ([2002:a05:6a00:2488:b0:82f:3774:4736])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e13:b0:82f:24e:6a50
- with SMTP id d2e1a72fcca58-82f0c26b7a9mr14410321b3a.10.1776092077368; Mon, 13
- Apr 2026 07:54:37 -0700 (PDT)
-Date: Mon, 13 Apr 2026 07:54:36 -0700
-In-Reply-To: <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="byNANFdb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776092695;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EtqSo8BZOV4BrbnYeN0DtB3CEdnovYlYOjbVxFX4Qzs=;
+	b=byNANFdbse41yre8I2EL6T7Cyv7tmYiQqWOQB59vUG1YDwZqSp42BFVwqe2LR5/4ZhGo2o
+	9gN0TAdq0YVKzq3U8l7b+3RH0Jr48hxMqcvaowJ+PRqbog1svoD/c0r0zPpobPsfsnjqkK
+	2Ap0qQ25Zgzwy2ZTIA2/l2/NTSVNSTg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-87A7zPKvORav5fEtLZJl9A-1; Mon,
+ 13 Apr 2026 11:04:49 -0400
+X-MC-Unique: 87A7zPKvORav5fEtLZJl9A-1
+X-Mimecast-MFC-AGG-ID: 87A7zPKvORav5fEtLZJl9A_1776092688
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6E5A6195608B;
+	Mon, 13 Apr 2026 15:04:48 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.32.124])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DD4B819560B1;
+	Mon, 13 Apr 2026 15:04:46 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: kvm@vger.kernel.org
+Cc: Andrew Jones <andrew.jones@linux.dev>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [kvm-unit-tests PATCH] Update gitlab-CI jobs to Fedora 43
+Date: Mon, 13 Apr 2026 17:04:44 +0200
+Message-ID: <20260413150444.28501-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409224236.2021562-1-seanjc@google.com> <20260409224236.2021562-6-seanjc@google.com>
- <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
-Message-ID: <ad0DrDUsUKTMfrDW@google.com>
-Subject: Re: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
- "unsigned long" values
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Chang Seok Bae <chang.seok.bae@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Mon, Apr 13, 2026, Kai Huang wrote:
-> On Thu, 2026-04-09 at 15:42 -0700, Sean Christopherson wrote:
-> > -#define TDX_REGS_AVAIL_SET	(BIT_ULL(VCPU_REG_EXIT_INFO_1) | \
-> > -				 BIT_ULL(VCPU_REG_EXIT_INFO_2) | \
-> > -				 BIT_ULL(VCPU_REGS_RAX) | \
-> > -				 BIT_ULL(VCPU_REGS_RBX) | \
-> > -				 BIT_ULL(VCPU_REGS_RCX) | \
-> > -				 BIT_ULL(VCPU_REGS_RDX) | \
-> > -				 BIT_ULL(VCPU_REGS_RBP) | \
-> > -				 BIT_ULL(VCPU_REGS_RSI) | \
-> > -				 BIT_ULL(VCPU_REGS_RDI) | \
-> > -				 BIT_ULL(VCPU_REGS_R8) | \
-> > -				 BIT_ULL(VCPU_REGS_R9) | \
-> > -				 BIT_ULL(VCPU_REGS_R10) | \
-> > -				 BIT_ULL(VCPU_REGS_R11) | \
-> > -				 BIT_ULL(VCPU_REGS_R12) | \
-> > -				 BIT_ULL(VCPU_REGS_R13) | \
-> > -				 BIT_ULL(VCPU_REGS_R14) | \
-> > -				 BIT_ULL(VCPU_REGS_R15))
-> > +#define TDX_REGS_AVAIL_SET	(BIT(VCPU_REG_EXIT_INFO_1) | \
-> > +				 BIT(VCPU_REG_EXIT_INFO_2) | \
-> > +				 BIT(VCPU_REGS_RAX) | \
-> > +				 BIT(VCPU_REGS_RBX) | \
-> > +				 BIT(VCPU_REGS_RCX) | \
-> > +				 BIT(VCPU_REGS_RDX) | \
-> > +				 BIT(VCPU_REGS_RBP) | \
-> > +				 BIT(VCPU_REGS_RSI) | \
-> > +				 BIT(VCPU_REGS_RDI) | \
-> > +				 BIT(VCPU_REGS_R8) | \
-> > +				 BIT(VCPU_REGS_R9) | \
-> > +				 BIT(VCPU_REGS_R10) | \
-> > +				 BIT(VCPU_REGS_R11) | \
-> > +				 BIT(VCPU_REGS_R12) | \
-> > +				 BIT(VCPU_REGS_R13) | \
-> > +				 BIT(VCPU_REGS_R14) | \
-> > +				 BIT(VCPU_REGS_R15))
-> > =C2=A0
->=20
-> Not related to this series, but this made me look into whether these
-> registers are truly needed to be set as available for TDX.
->=20
-> Firstly, all the listed registers are marked as available immediately aft=
-er
-> exiting from tdh_vp_enter(), but except VCPU_REG_EXIT_INFO_1 and
-> VCPU_REG_EXIT_INFO_2 are immediately saved to the common 'struct vcpu_vt'=
-,
-> all other GPRs are not saved to vcpu->arch.regs[], which means marking GP=
-Rs
-> available immediately doesn't quite make sense.
->=20
-> In fact, IIUC other than when the TD exits with TDVMCALL on which TD shar=
-es
-> couple of GPRs with KVM, KVM has no way to get TD's GPRs.  So perhaps it
-> makes more sense is to mark the shared GPRs available upon TDVMCALL.
->=20
-> But even that does not make sense from KVM's "GPR available" perspective,
-> because TDVMCALL has a different ABI from KVM's existing infrastructure f=
-or
-> e.g., CPUID/MSR emulation.  E.g.,  KVM uses RCX/RAX/RDX for MSR emulation=
-,
-> but TDVMCALL<MSR.WRITE> uses R12 and R13 to convey MSR index/value:
->=20
->         case EXIT_REASON_MSR_WRITE:                =20
->                 kvm_rcx_write(vcpu, tdx->vp_enter_args.r12);        =20
->                 kvm_rax_write(vcpu, tdx->vp_enter_args.r13 & -1u);  =20
->                 kvm_rdx_write(vcpu, tdx->vp_enter_args.r13 >> 32);
->=20
-> So I think the most accurate way is to explicitly mark the relevant GPRs
-> available for each type of TDVMCALL. I am not sure whether it's worth to =
-do
-> though, because AFAICT there's no real bug in the existing code, other th=
-an
-> "marking GPRs not in vcpu->arch.regs[] as available looks wrong".
->=20
-> A less invasive way is to mark all possible GPRs that can be used in
-> TDVMCALL emulation available once after TD exits.  AFAICT the KVM hyperca=
-ll
-> uses most GPRs (RAX/RBX/RCX/RDX/RSI) and all other TDVMCALLs only use a
-> subset, so maybe we can remove other GPRs from the available list (the di=
-ff
-> in [*] passed my test of booting/destroying TD).
->=20
-> Bug again, not sure whether it's worth doing.
+From: Thomas Huth <thuth@redhat.com>
 
-Not worth doing.  Because VMX and SVM make all GRPs available immediately, =
-except
-for RSP, KVM ignores avail/dirty for GPRs.  I.e. "fixing" TDX will just shi=
-ft the
-"bugs" elsewhere.
+Fedora 40 is EOL since a while already, so let's update to a more
+recent version of Fedora here now. While we're at it, also refresh
+the lists of tests according to what we can run with TCG of the
+latest version of QEMU.
 
-More importantly, because the TDX-Module *requires* RCX (the GPR that holds=
- the
-mask of registers to expose to the VMM) to be hidden on TDVMCALL, KVM *can'=
-t*
-do any kind of meaningful "available" tracking.  Versus sev_es_validate_vmg=
-exit(),
-which can at least sanity check that the registers needed to service a hype=
-rcall
-have valid data.
+Something also has changed in the package dependencies in Fedora 43:
+The "ps" program is not available by default anymore in some of the
+jobs, so make sure to install it first via the "procps-ng" package now.
 
-So unfortunately, since we need to rely on testing to verify KVM's implemen=
-tation
-no matter what, I don't think it'd be a net positive to overhaul KVM's hand=
-ling
-of GPRs to support SEV-ES+'s and TDX's "sometimes available" GPR set.
+Additionallyly, the *-efi jobs don't seem to work right with the QEMU
+or EDK2 firmware from Fedora 43 yet, so keep those pinned to an older
+version for now until somebody tackled that problem.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ .gitlab-ci.yml | 70 ++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 56 insertions(+), 14 deletions(-)
+
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 2dffc050..daccdfef 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -1,8 +1,8 @@
+-image: fedora:40
++image: fedora:43
+ 
+ before_script:
+  - dnf update -y
+- - dnf install -y make python
++ - dnf install -y make python procps-ng
+ 
+ # By default artifacts are only saved on success. This uses when:always
+ # because the test logs are important to help diagnose failures.
+@@ -40,6 +40,9 @@ build-aarch64:
+       gicv3-ipi
+       its-introspection
+       its-trigger
++      mte-asymm
++      mte-async
++      mte-sync
+       pci-test
+       pmu-cycle-counter
+       pmu-event-counter-config
+@@ -54,6 +57,7 @@ build-aarch64:
+ 
+ build-aarch64-efi:
+  extends: .intree_template
++ image: fedora:41
+  script:
+  - dnf install -y qemu-system-aarch64 gcc-aarch64-linux-gnu edk2-aarch64
+  - ./configure --arch=aarch64 --cross-prefix=aarch64-linux-gnu- --enable-efi --enable-efi-direct
+@@ -68,6 +72,7 @@ build-aarch64-efi:
+ 
+ build-aarch64-efi-acpi:
+  extends: .intree_template
++ image: fedora:41
+  script:
+  - dnf install -y qemu-system-aarch64 gcc-aarch64-linux-gnu edk2-aarch64
+  - ./configure --arch=aarch64 --cross-prefix=aarch64-linux-gnu- --enable-efi --enable-efi-direct
+@@ -100,6 +105,9 @@ build-aarch64-clang:
+       gicv3-ipi
+       its-introspection
+       its-trigger
++      mte-asymm
++      mte-async
++      mte-sync
+       pci-test
+       pmu-cycle-counter
+       pmu-event-counter-config
+@@ -114,6 +122,7 @@ build-aarch64-clang:
+ 
+ build-aarch64-clang-efi:
+  extends: .intree_template
++ image: fedora:41
+  script:
+  - dnf install -y edk2-aarch64 qemu-system-aarch64 gcc-aarch64-linux-gnu clang
+  - ./configure --arch=arm64 --cc=clang --cflags='--target=aarch64' --cross-prefix=aarch64-linux-gnu- --enable-efi --enable-efi-direct
+@@ -128,6 +137,7 @@ build-aarch64-clang-efi:
+ 
+ build-aarch64-el2:
+  extends: .intree_template
++ image: fedora:41
+  script:
+  - dnf install -y qemu-system-aarch64 gcc-aarch64-linux-gnu
+  - ./configure --arch=aarch64 --cross-prefix=aarch64-linux-gnu-
+@@ -144,6 +154,9 @@ build-aarch64-el2:
+       gicv3-ipi
+       its-introspection
+       its-trigger
++      mte-asymm
++      mte-async
++      mte-sync
+       pci-test
+       pmu-cycle-counter
+       pmu-event-counter-config
+@@ -152,6 +165,7 @@ build-aarch64-el2:
+       selftest-smp
+       selftest-vectors-kernel
+       selftest-vectors-user
++      timer
+       | tee results.txt
+  - grep -q PASS results.txt && ! grep -q FAIL results.txt
+ 
+@@ -179,14 +193,24 @@ build-ppc64be:
+  - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
+  - make -j2
+  - ACCEL=tcg ./run_tests.sh
+-      selftest-setup
+-      selftest-migration
+-      selftest-migration-skip
+-      spapr_hcall
++      atomics
++      emulator
++      interrupts
++      mmu
+       rtas-get-time-of-day
+       rtas-get-time-of-day-base
+       rtas-set-time-of-day
+-      emulator
++      selftest-migration
++      selftest-migration-skip
++      selftest-setup
++      sieve
++      smp
++      smp-smt
++      spapr_hcall
++      spapr_vpa
++      sprs
++      timebase
++      timebase-icount
+       | tee results.txt
+  - if grep -q FAIL results.txt ; then exit 1 ; fi
+ 
+@@ -197,14 +221,24 @@ build-ppc64le:
+  - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
+  - make -j2
+  - ACCEL=tcg ./run_tests.sh
+-      selftest-setup
+-      selftest-migration
+-      selftest-migration-skip
+-      spapr_hcall
++      atomics
++      emulator
++      interrupts
++      mmu
+       rtas-get-time-of-day
+       rtas-get-time-of-day-base
+       rtas-set-time-of-day
+-      emulator
++      selftest-migration
++      selftest-migration-skip
++      selftest-setup
++      sieve
++      smp
++      smp-smt
++      spapr_hcall
++      spapr_vpa
++      sprs
++      timebase
++      timebase-icount
+       | tee results.txt
+  - if grep -q FAIL results.txt ; then exit 1 ; fi
+ 
+@@ -238,6 +272,7 @@ build-riscv64:
+ 
+ build-riscv64-efi:
+  extends: .intree_template
++ image: fedora:41
+  script:
+  - dnf install -y edk2-riscv64 qemu-system-riscv gcc-riscv64-linux-gnu
+  - cp /usr/share/edk2/riscv/RISCV_VIRT_CODE.fd .
+@@ -281,6 +316,7 @@ build-riscv64-clang:
+ 
+ build-riscv64-clang-efi:
+  extends: .intree_template
++ image: fedora:41
+  script:
+  - dnf install -y edk2-riscv64 qemu-system-riscv gcc-riscv64-linux-gnu clang
+  - cp /usr/share/edk2/riscv/RISCV_VIRT_CODE.fd .
+@@ -313,6 +349,7 @@ build-s390x:
+       edat
+       emulator
+       epsw
++      execute
+       exittime
+       firq-linear-cpu-ids-tcg
+       firq-nonlinear-cpu-ids-tcg
+@@ -325,6 +362,7 @@ build-s390x:
+       selftest-setup
+       sieve
+       smp
++      spec_ex
+       stsi
+       tprot
+       vector
+@@ -340,13 +378,14 @@ build-x86_64:
+  - ACCEL=tcg ./run_tests.sh
+       eventinj
+       intel_iommu
+-      ioapic-split
++      ioapic
+       memory
+       pks
+       pku
+       rdpru
+       realmode
+       rmap_chain
++      s3
+       setjmp
+       sieve
+       smap
+@@ -366,6 +405,7 @@ build-x86_64:
+       vmexit_ple_round_robin
+       vmexit_tscdeadline
+       vmexit_tscdeadline_immed
++      xsave
+       | tee results.txt
+  - if grep -q FAIL results.txt ; then exit 1 ; fi
+ 
+@@ -380,7 +420,9 @@ build-i386:
+  - ACCEL=tcg ./run_tests.sh
+       cmpxchg8b
+       eventinj
++      la57
+       realmode
++      s3
+       setjmp
+       sieve
+       smap
+@@ -412,7 +454,7 @@ build-clang:
+  - ACCEL=tcg ./run_tests.sh
+       eventinj
+       intel_iommu
+-      ioapic-split
++      ioapic
+       memory
+       pks
+       pku
+-- 
+2.53.0
+
