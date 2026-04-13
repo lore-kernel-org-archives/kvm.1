@@ -1,208 +1,108 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E693BC67E
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 11:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AE03BED17;
+	Mon, 13 Apr 2026 11:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776080240; cv=none; b=uxtraOUbcIK3EKbQcsuFSoHykF3y7pkp6DfTC+E70XjF7yw7VuYgrJ30i1OTiDUukopPbbfijRII2YiKfJ43zxNmbIAgXN+8gqd14xI8xOfBWCoU1Kwj3N30GLsM0MR1BpkZRKS0PW7Q1P3trcWnpzS8av4oorX4LSD9CB9AmUk=
+	t=1776080920; cv=none; b=ZiGw933jGTtyrai/6D270oR6zBPBBW13yRPbBKnNnCxpuFpKNmo6Jkae4tr4V7VYy9eGIF5KYIsbYqN0n6A/OhaT8YfBJfR3vNop641PylNcJSIdqiB1kkO22IZTNoJtdJZB1lTljs60I/BGLIWJLSD62J3g0aiccnaWSfYyNIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776080240; c=relaxed/simple;
-	bh=iiNmqTLrTVhIhjHWA3iAL5APsYYcoeEBZG72zgEjIzw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ePsX1mG0OzxVle4jW404HxETq3VWcgktrkEUpd6MkLnHFGLg6xdbrRnwCBQsnwPvfckRlAe33QVitW5iqgkh6LPUvbfiaPgNZZiMeiksiKanGqhVgfx3LiaxNXW2oJUMStlL/l6f9rjHs0pyhZsfC6YT7cx9754KdLsXTknDnQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ICxS+Txa; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776080920; c=relaxed/simple;
+	bh=J/V7imGqwxMANwXYE8o5+Cwio01SLhKfcCJvKYu0050=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=h25M2Ubbb3mHFbzifqzZqbcKl4ykrTUOVDZsj7cS5QEmjOzvNcFly9AwFkoyPDsIwOLRYGlzDFU+t/Z8CneJQvko1lBPqk6MY0N1ROyNUut4hecz9hxQCMifqDeMA11EosPEeFSGMu1isfenJR6wZycjFTR0d2FeMVd0SVXop0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=yYd4zdpn; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ICxS+Txa"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63CLtcHV3213180;
-	Mon, 13 Apr 2026 11:37:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=jHepOC
-	uTklpTDiLS/v6IL9l8lsKTi9amvT8oND3QWcU=; b=ICxS+TxaQFa3D4Koypv2c2
-	IIevRjPQNyI2YsmAJptoyzLV85Hi5LpUyn0ED2vlYkuoA8OcFxrk9zrTJzvsBYsy
-	X/YvSeYzWu9xUNqYDQlBDnyUxufqfP5TMRNiCv/adD+Q7cq9S7UzDRgLVBoagXkt
-	6nTRGQjCJGv6/ppov4dXtez8ohbgzWWoSNiyvvV5Oe+bRAEM0+D7TSSrREso6M1N
-	t6xGNGImQwszfxyyPk63W5JhayIqttmM4Ut3vbOuOGvLsBUdDtaHEN4KHGukrCX3
-	OUYIUtgrgQyjqZ2N8+2AnpQS/0McadiOWhX9mDzY/nII9BUefSK6QzXK6Eu2upjg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfbqkf950-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 11:37:02 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63D8vPb6003581;
-	Mon, 13 Apr 2026 11:37:01 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg1mn4xf4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 11:37:01 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63DBb0jf29360806
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Apr 2026 11:37:00 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FCFA58043;
-	Mon, 13 Apr 2026 11:37:00 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 586EF58053;
-	Mon, 13 Apr 2026 11:36:57 +0000 (GMT)
-Received: from [9.123.0.169] (unknown [9.123.0.169])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Apr 2026 11:36:57 +0000 (GMT)
-Message-ID: <0954ef7e-b04e-4542-89fb-796acc452068@linux.ibm.com>
-Date: Mon, 13 Apr 2026 17:06:55 +0530
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="yYd4zdpn"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5bIyFtZevOlWJJtQOYjmineyJGabrQz1O42l7hIuFeE=;
+	b=yYd4zdpnu7pyUMZhMTOR3q9BYpmDqiI1jW6R3cMAOPr75xQxxN0yXtI1mf/S6uXhpEFkEnDjd
+	Nei5m8aQGEjGSYJYPdSu7Bhu8hDfVbTvPZLEVsdC2uF15mtEy1v3ss6FUrQhL5I5ZodNzfzTIDf
+	7qivL0kLem8Lltx7ZMCqTjQ=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fvQWJ4D2Mz1T4Gh;
+	Mon, 13 Apr 2026 19:42:36 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8ECA240576;
+	Mon, 13 Apr 2026 19:48:34 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 13 Apr 2026 19:48:34 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 13 Apr 2026 19:48:33 +0800
+Subject: Re: [PATCH RFC v3 0/7] mm: Fix MF_DELAYED handling on memory failure
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>
+References: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <c308144f-e240-153c-d6d4-bf4ef4db0457@huawei.com>
+Date: Mon, 13 Apr 2026 19:48:32 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 for-11.0] accel/kvm: return early from
- kvm_irqchip_create if kvm does not support irqchip
-Content-Language: en-GB
-To: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: peter.maydell@linaro.org, Misbah Anjum N <misanjum@linux.ibm.com>,
-        Gautam Menghani <gautam@linux.ibm.com>,
-        Fabiano Rosas <farosas@suse.de>, kvm@vger.kernel.org,
-        qemu-devel@nongnu.org
-References: <20260413112151.61261-1-anisinha@redhat.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20260413112151.61261-1-anisinha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I+9Vgtgg c=1 sm=1 tr=0 ts=69dcd55e cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22
- a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=Y_7XUuprIgRBB3N_oLcA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: HoeGeDP2Q7PnjKqx4jI4OcKS71H9Iwb6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDExMSBTYWx0ZWRfX96E9rF2Rp7dT
- P/j9riur638eRzmE1J0m68oG0HcIVlSAU9Tu5wudCBwrgim9IvpnRokqdUmJGKJtptQU8yBQJOp
- A6nwrV5NDojqy9DIwkyo0soes1vkF0IClysmOoh07woSBgCPrggjxlByeqMGdkY03fuNiGbDlx/
- 3D2jrniiD2e0G8c+BOWQuMcN23xia8oBk3/S7awzc8/1v+XEik4TIFkn/rxlMyUTgCf1n//1Vfi
- Ya7dFz+PNQF9fihkWYmwXChb//H7B78EYRFlwtiQIxiAnb5COrwRscZ3J224hwRMB2SmZnwIbbz
- Ozon63WiEfYrdA+QMywbv7oKO1KW0OxKjTv3bfeDyni70eL0ZRG9xhIezUEl0yMRcC1Lf+Wypxm
- k+f2bgObK8Q897WT3H6zFLSJF+L9oNaqEhemOcPumZhS3Ym5srgU+gDd7LWUACIWNE1NPdlQJFq
- 47JHZlnXY1X25MYzARQ==
-X-Proofpoint-ORIG-GUID: HoeGeDP2Q7PnjKqx4jI4OcKS71H9Iwb6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-13_03,2026-04-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1011 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130111
+In-Reply-To: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 
-
-
-On 13/04/26 4:51 pm, Ani Sinha wrote:
-> During refactoring of kvm_irqchip_create(), the refactored code was returning
-> early from do_kvm_irqchip_create() function if the required capabilities were
-> not present in KVM. This was not translating to an early return from
-> kvm_irqchip_create() as was the case before refactoring. This is because,
-> do_kvm_irqchip_create() did not have a means to notify the caller of the lack
-> of kvm capabilities. Fix this by making do_notify_irqchip_create() return
-> EOPNOTSUPP error when required capabilities are absent and then the caller
-> can check the return code and return early.
+On 2026/4/9 1:24, Lisa Wang wrote:
+> Here's a third revision to fix MF_DELAYED handling on memory failure.
 > 
-> Converted some calls to exit() to assertion checks in order to make it cleaner.
+> This patch series addresses an issue in the memory failure handling path
+> where MF_DELAYED is incorrectly treated as an error. This issue was
+> discovered while testing memory failure handling for guest_memfd.
 > 
-> Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM VM file descriptor change")
-> Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-> Reported-by: Gautam Menghani <gautam@linux.ibm.com>
-> Suggested-by: Fabiano Rosas <farosas@suse.de>
-> Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->   accel/kvm/kvm-all.c | 29 ++++++++++++++++-------------
->   1 file changed, 16 insertions(+), 13 deletions(-)
+> The proposed solution involves -
+> 1. Clarifying the definition of MF_DELAYED to mean that memory failure
+>    handling is only partially completed, and that the metadata for the
+>    memory that failed (as in struct page/folio) is still referenced.
+> 2. Updating shmem’s handling to align with the clarified definition.
+> 3. Updating how the result of .error_remove_folio() is interpreted.
 > 
-> changelog:
-> v2: converted some exit() calls to assertions.
+> Changes from v2:
+> + Address the comment about fixing the typos and clarifying the
+>   'unmapped' status from Jiaqi
+> + Address the comment about merging shmem memory failure selftest into
+>   memory failure selftest from Baolin
+> + Align the consistent style in truncate_error_folio suggested by Miaohe
+> + Fix some bugs found out by Sashiko. e.g. set vcpu register when VM is
+>   running.
+> Thanks!
 > 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 774499d34f..c78bf6a56f 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi)
->       g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
->   }
->   
-> -static void do_kvm_irqchip_create(KVMState *s)
-> +static int do_kvm_irqchip_create(KVMState *s)
->   {
->       int ret;
->       if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
-> @@ -2587,36 +2587,38 @@ static void do_kvm_irqchip_create(KVMState *s)
->               exit(1);
->           }
->       } else {
-> -        return;
-> +        /*
-> +         * neither KVM_CAP_IRQCHIP nor KVM_CAP_S390_IRQCHIP capabilities are
-> +         * present. Bail.
-> +         */
-> +        return -EOPNOTSUPP;
->       }
->   
-> -    if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
-> -        fprintf(stderr, "kvm: irqfd not implemented\n");
-> -        exit(1);
-> -    }
-> +    assert(kvm_check_extension(s, KVM_CAP_IRQFD));
+> Would like to request reviews from Miaohe and Baolin regarding the
+> selftests:
+> + Is adding more TEST_F()s suitable?
+> + Are you expecting refactoring to reduce code duplication in
+>   selftests?
 
-again changing behaviour ?
-previously it was doing exit(1) on returning non-zero.
-Now, it will assert on returning zero ?
-May be split the patch to keep the exit -> assert changes separate ?
+IMHO, when there are more and more memory failure testcases, we will inevitably
+have to refactor the code. But for now, it probably isn't necessary yet.
 
->   
->       /* First probe and see if there's a arch-specific hook to create the
->        * in-kernel irqchip for us */
->       ret = kvm_arch_irqchip_create(s);
->       if (ret == 0) {
-> -        if (s->kernel_irqchip_split == ON_OFF_AUTO_ON) {
-> -            error_report("Split IRQ chip mode not supported.");
-> -            exit(1);
-> -        } else {
-> -            ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
-> -        }
-> +        /* assert that split IRQ chip mode is supported. */
-> +        assert(s->kernel_irqchip_split != ON_OFF_AUTO_ON);
-> +        ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
->       }
->       if (ret < 0) {
->           fprintf(stderr, "Create kernel irqchip failed: %s\n", strerror(-ret));
->           exit(1);
->       }
-> +
-> +    return 0;
->   }
->   
->   static void kvm_irqchip_create(KVMState *s)
->   {
->       assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
->   
-> -    do_kvm_irqchip_create(s);
-> +    if (do_kvm_irqchip_create(s) < 0) {
-> +        return;
-> +    }
->       kvm_kernel_irqchip = true;
->       /* If we have an in-kernel IRQ chip then we must have asynchronous
->        * interrupt delivery (though the reverse is not necessarily true)
-> @@ -2835,6 +2837,7 @@ static int kvm_reset_vmfd(MachineState *ms)
->       }
->   
->       if (s->kernel_irqchip_allowed) {
-> +        /* ignore return from this function */
->           do_kvm_irqchip_create(s);
->       }
->   
-
+Thanks.
+.
