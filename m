@@ -1,49 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD3829E11A
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 11:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E693BC67E
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 11:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776079946; cv=none; b=Pz2h95GOnhbTs5MwBWG/B46AlLS3iOYhm4TGIcd+C0Rtn99k7sYI6PF+F/17XfJkJho7d7QXTCbU6apoYSxP2crThtrz6wYdPjgXH9q55wZ6uiKeNU66gXeNTU1pTVSdA3WRFMSwAdJDTZwOlVB12uzUCwD4rUm5EQ/ZUXdGVw4=
+	t=1776080240; cv=none; b=uxtraOUbcIK3EKbQcsuFSoHykF3y7pkp6DfTC+E70XjF7yw7VuYgrJ30i1OTiDUukopPbbfijRII2YiKfJ43zxNmbIAgXN+8gqd14xI8xOfBWCoU1Kwj3N30GLsM0MR1BpkZRKS0PW7Q1P3trcWnpzS8av4oorX4LSD9CB9AmUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776079946; c=relaxed/simple;
-	bh=PHP0Q/hn3C9fZ+SGZsOcZ8JhCBeR1GddGJlsDIvOGX4=;
+	s=arc-20240116; t=1776080240; c=relaxed/simple;
+	bh=iiNmqTLrTVhIhjHWA3iAL5APsYYcoeEBZG72zgEjIzw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aa8fFUTwAebrhOn0M2jRcibVcFyHFtkfSmFx4Fqm0pzjAzsO7sgPF/XGJjrqeHSAxB7uRdDhaV/F4EATcxuOlbmJVxZmvaPIL4dlQn3OWRoMajkpKggxaCg1zuwKj5MRA21K/Gpn0UHL2e7qmzwwMXsGNTWX76trxWYmJJxJcEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jHTWzhpJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=ePsX1mG0OzxVle4jW404HxETq3VWcgktrkEUpd6MkLnHFGLg6xdbrRnwCBQsnwPvfckRlAe33QVitW5iqgkh6LPUvbfiaPgNZZiMeiksiKanGqhVgfx3LiaxNXW2oJUMStlL/l6f9rjHs0pyhZsfC6YT7cx9754KdLsXTknDnQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ICxS+Txa; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jHTWzhpJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776079944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZiiuLKPMghlNGFyXtqChN8Tx7/OQ7e3cZ6Zzt9Y5S5E=;
-	b=jHTWzhpJTg02k+obqwdV6xLYoDw4s46DYXE1Od/VZAnXN+6Ps598lUgs1GXIUJxgcgF7Ut
-	cxxGzxa7C15K7eVt1HRIW7HWiRgIXLTZ+vRby8F2L2LHys+/IQvdiYv/3gtxW5NbWWybyh
-	HRQsQgGHXDYUoIQu7cyKH6qCm+az5Dk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-AokT6skCNsCXAvkUMmmLdQ-1; Mon,
- 13 Apr 2026 07:32:18 -0400
-X-MC-Unique: AokT6skCNsCXAvkUMmmLdQ-1
-X-Mimecast-MFC-AGG-ID: AokT6skCNsCXAvkUMmmLdQ_1776079937
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85078195609F;
-	Mon, 13 Apr 2026 11:32:17 +0000 (UTC)
-Received: from [10.44.50.126] (unknown [10.44.50.126])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ACE6C180049F;
-	Mon, 13 Apr 2026 11:32:15 +0000 (UTC)
-Message-ID: <279763ec-438a-46a2-b2fd-e5b445ab0160@redhat.com>
-Date: Mon, 13 Apr 2026 13:32:12 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ICxS+Txa"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63CLtcHV3213180;
+	Mon, 13 Apr 2026 11:37:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jHepOC
+	uTklpTDiLS/v6IL9l8lsKTi9amvT8oND3QWcU=; b=ICxS+TxaQFa3D4Koypv2c2
+	IIevRjPQNyI2YsmAJptoyzLV85Hi5LpUyn0ED2vlYkuoA8OcFxrk9zrTJzvsBYsy
+	X/YvSeYzWu9xUNqYDQlBDnyUxufqfP5TMRNiCv/adD+Q7cq9S7UzDRgLVBoagXkt
+	6nTRGQjCJGv6/ppov4dXtez8ohbgzWWoSNiyvvV5Oe+bRAEM0+D7TSSrREso6M1N
+	t6xGNGImQwszfxyyPk63W5JhayIqttmM4Ut3vbOuOGvLsBUdDtaHEN4KHGukrCX3
+	OUYIUtgrgQyjqZ2N8+2AnpQS/0McadiOWhX9mDzY/nII9BUefSK6QzXK6Eu2upjg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfbqkf950-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 11:37:02 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63D8vPb6003581;
+	Mon, 13 Apr 2026 11:37:01 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg1mn4xf4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 11:37:01 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63DBb0jf29360806
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Apr 2026 11:37:00 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3FCFA58043;
+	Mon, 13 Apr 2026 11:37:00 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 586EF58053;
+	Mon, 13 Apr 2026 11:36:57 +0000 (GMT)
+Received: from [9.123.0.169] (unknown [9.123.0.169])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Apr 2026 11:36:57 +0000 (GMT)
+Message-ID: <0954ef7e-b04e-4542-89fb-796acc452068@linux.ibm.com>
+Date: Mon, 13 Apr 2026 17:06:55 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,90 +62,147 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] VFIO: take reference to the KVM module
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
- kvm <kvm@vger.kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
- Alex Williamson <alex.williamson@nvidia.com>,
- Dan Williams <dan.j.williams@intel.com>
-References: <20260407180107.1603697-1-pbonzini@redhat.com>
- <20260407180107.1603697-2-pbonzini@redhat.com> <adf29Rn7q9Db0hxc@google.com>
- <CABgObfZQ8kcdfiaUyGi6AcZErJztEmcdTcLwo946qtXfUwDM4g@mail.gmail.com>
- <adkFk3ZN4HJtpLA3@google.com>
- <CABgObfaE2g30D789zK1N8xMfcAzPG8gz8MPERQ+DYxd7Soi-Gw@mail.gmail.com>
- <adka_L18z24zsQpc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <adka_L18z24zsQpc@google.com>
+Subject: Re: [PATCH V2 for-11.0] accel/kvm: return early from
+ kvm_irqchip_create if kvm does not support irqchip
+Content-Language: en-GB
+To: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: peter.maydell@linaro.org, Misbah Anjum N <misanjum@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>,
+        Fabiano Rosas <farosas@suse.de>, kvm@vger.kernel.org,
+        qemu-devel@nongnu.org
+References: <20260413112151.61261-1-anisinha@redhat.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20260413112151.61261-1-anisinha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=I+9Vgtgg c=1 sm=1 tr=0 ts=69dcd55e cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=Y_7XUuprIgRBB3N_oLcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: HoeGeDP2Q7PnjKqx4jI4OcKS71H9Iwb6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDExMSBTYWx0ZWRfX96E9rF2Rp7dT
+ P/j9riur638eRzmE1J0m68oG0HcIVlSAU9Tu5wudCBwrgim9IvpnRokqdUmJGKJtptQU8yBQJOp
+ A6nwrV5NDojqy9DIwkyo0soes1vkF0IClysmOoh07woSBgCPrggjxlByeqMGdkY03fuNiGbDlx/
+ 3D2jrniiD2e0G8c+BOWQuMcN23xia8oBk3/S7awzc8/1v+XEik4TIFkn/rxlMyUTgCf1n//1Vfi
+ Ya7dFz+PNQF9fihkWYmwXChb//H7B78EYRFlwtiQIxiAnb5COrwRscZ3J224hwRMB2SmZnwIbbz
+ Ozon63WiEfYrdA+QMywbv7oKO1KW0OxKjTv3bfeDyni70eL0ZRG9xhIezUEl0yMRcC1Lf+Wypxm
+ k+f2bgObK8Q897WT3H6zFLSJF+L9oNaqEhemOcPumZhS3Ym5srgU+gDd7LWUACIWNE1NPdlQJFq
+ 47JHZlnXY1X25MYzARQ==
+X-Proofpoint-ORIG-GUID: HoeGeDP2Q7PnjKqx4jI4OcKS71H9Iwb6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-13_03,2026-04-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1011 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130111
 
-On 4/10/26 17:45, Sean Christopherson wrote:
-> On Fri, Apr 10, 2026, Paolo Bonzini wrote:
->> On Fri, Apr 10, 2026 at 4:13 PM Sean Christopherson <seanjc@google.com> wrote:
->>>
->>> +Dan
->>>> We could get rid of the reference count completely (get_file() as a
->>>> replacement for kvm_get_kvm(), get_file_active() as a replacement for
->>>> kvm_get_kvm_safe()). struct kvm would need to add a back pointer from
->>>> struct kvm to struct file,
->>>
->>> I wasn't thinking of dropping kvm_get_kvm() entirely, rather just not exporting
->>> it.  Forcing internal KVM usage to grab a reference to the file doesn't add a
->>> whole lot value.
->>
->> It adds not doing things in two different ways. The kvm_file is not
->> always available (and if we need to add it, it should be added in
->> struct kvm not struct kvm_device).
+
+
+On 13/04/26 4:51 pm, Ani Sinha wrote:
+> During refactoring of kvm_irqchip_create(), the refactored code was returning
+> early from do_kvm_irqchip_create() function if the required capabilities were
+> not present in KVM. This was not translating to an early return from
+> kvm_irqchip_create() as was the case before refactoring. This is because,
+> do_kvm_irqchip_create() did not have a means to notify the caller of the lack
+> of kvm capabilities. Fix this by making do_notify_irqchip_create() return
+> EOPNOTSUPP error when required capabilities are absent and then the caller
+> can check the return code and return early.
 > 
-> My thought was to deliberately avoid putting it in "kvm", because as you're
-> effectively pointing out, the file really shouldn't be passed around within KVM.
+> Converted some calls to exit() to assertion checks in order to make it cleaner.
 > 
-> Aha!  What if we bury it in kvm_vfio?  As an acknowledgement that passing around
-> a kvm_file is only intended for cases where an external, non-KVM entity needs to
-> to propagate the VM reference.
+> Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM VM file descriptor change")
+> Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
+> Reported-by: Gautam Menghani <gautam@linux.ibm.com>
+> Suggested-by: Fabiano Rosas <farosas@suse.de>
+> Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>   accel/kvm/kvm-all.c | 29 ++++++++++++++++-------------
+>   1 file changed, 16 insertions(+), 13 deletions(-)
+> 
+> changelog:
+> v2: converted some exit() calls to assertions.
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 774499d34f..c78bf6a56f 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi)
+>       g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
+>   }
+>   
+> -static void do_kvm_irqchip_create(KVMState *s)
+> +static int do_kvm_irqchip_create(KVMState *s)
+>   {
+>       int ret;
+>       if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
+> @@ -2587,36 +2587,38 @@ static void do_kvm_irqchip_create(KVMState *s)
+>               exit(1);
+>           }
+>       } else {
+> -        return;
+> +        /*
+> +         * neither KVM_CAP_IRQCHIP nor KVM_CAP_S390_IRQCHIP capabilities are
+> +         * present. Bail.
+> +         */
+> +        return -EOPNOTSUPP;
+>       }
+>   
+> -    if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
+> -        fprintf(stderr, "kvm: irqfd not implemented\n");
+> -        exit(1);
+> -    }
+> +    assert(kvm_check_extension(s, KVM_CAP_IRQFD));
 
-That would indeed be best but it doesn't compile as there's no file 
-argument to device_ops.create.  And adding it to device_ops is ugly as well.
+again changing behaviour ?
+previously it was doing exit(1) on returning non-zero.
+Now, it will assert on returning zero ?
+May be split the patch to keep the exit -> assert changes separate ?
 
-Putting the backpointer in "struct kvm" seems the least bad.  I'll get a 
-look again after finishing testing for the merge window.
-
-Paolo
+>   
+>       /* First probe and see if there's a arch-specific hook to create the
+>        * in-kernel irqchip for us */
+>       ret = kvm_arch_irqchip_create(s);
+>       if (ret == 0) {
+> -        if (s->kernel_irqchip_split == ON_OFF_AUTO_ON) {
+> -            error_report("Split IRQ chip mode not supported.");
+> -            exit(1);
+> -        } else {
+> -            ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
+> -        }
+> +        /* assert that split IRQ chip mode is supported. */
+> +        assert(s->kernel_irqchip_split != ON_OFF_AUTO_ON);
+> +        ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
+>       }
+>       if (ret < 0) {
+>           fprintf(stderr, "Create kernel irqchip failed: %s\n", strerror(-ret));
+>           exit(1);
+>       }
+> +
+> +    return 0;
+>   }
+>   
+>   static void kvm_irqchip_create(KVMState *s)
+>   {
+>       assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
+>   
+> -    do_kvm_irqchip_create(s);
+> +    if (do_kvm_irqchip_create(s) < 0) {
+> +        return;
+> +    }
+>       kvm_kernel_irqchip = true;
+>       /* If we have an in-kernel IRQ chip then we must have asynchronous
+>        * interrupt delivery (though the reverse is not necessarily true)
+> @@ -2835,6 +2837,7 @@ static int kvm_reset_vmfd(MachineState *ms)
+>       }
+>   
+>       if (s->kernel_irqchip_allowed) {
+> +        /* ignore return from this function */
+>           do_kvm_irqchip_create(s);
+>       }
+>   
 
