@@ -1,154 +1,264 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5921D95A3
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 09:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C39221B185
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 09:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776072812; cv=pass; b=j0H/1kY7345CbsqZMseLVitI4dmcW8vOQQAoYqEFOdI2oZtkNXrF8BkuNIY69aXgx2UiWAcp8MPoBj3j6OS+1+DElQ9r2QjxKq5UaKjOI0Ne/fcPsZnzXA2usZVBEUlFlKRsj7gOy3ykRCBmmfroRwDa6yCVt66zc9u7SQuWrqM=
+	t=1776073411; cv=pass; b=GfJOULMbvIw8r8YxvejvCsNEw49RsCUYBBc8OXEcxb0mN0eM5RAOwtLIKFfUoyRCU7XM3/eNyLYgeILoRVw8XNQKqeYhlmSnGEcxR2Q9iyCrURWmJffoubf3O90CKDv0Ns6XQitOnyFdbbfy9DKCfp+GR1iwcN4FWx3PqfBRsNk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776072812; c=relaxed/simple;
-	bh=wF92QO/P9Lb2mmjnPcR4RkDbubCXKAc2bu/es6uLsnM=;
+	s=arc-20240116; t=1776073411; c=relaxed/simple;
+	bh=nSNXOglq4wwn9niamyNI7V0aMFP09HfF61aqrZK8QCA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jL0FGvFrJior94Px3kImqDNGQ0Nly+JOIyar9fiUZqxXwAzZvoogowHv1Zd2/B+qjrsF9Nsc6qGmSMBvU9tvjsK+XOxw/zOSZk94Zr2fjMfTdmQ9eGmkFkIUfRlSYEBzI8L6c3EbwhYvUj6hNeFr7oMDWJF+jqTw7ljmY2CZhos=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SV+jwDAF; arc=pass smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=Q7HODm+nG5XSdwah9R+HqziY6MYWYlF+f4PQBTy9QaLV7wQI6nV3YVP78f0cesyvNkOWQYRTJ4tBwvSMvvY21SRzZGrfj2DSDRmNWbiBMyA5Ux1R0e5s/BiK/vg6SokBq+DUBBgaZrrZC9JkpIY5hTCPuHQUVmGCxm8HhVQocKM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AMAzglfB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YFyXQDqA; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SV+jwDAF"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79db5e18ac6so36243287b3.1
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 02:33:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776072810; cv=none;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AMAzglfB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YFyXQDqA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776073409;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=up0W45gtoNI4pHs0kRq4cu9I3A/mCEQzypUKR4wYWZA=;
+	b=AMAzglfBHUG5qZOGhQLNX3nj+p+xhjeKeALJIyDax2gVXq49w/90BJsgTvEH50SIH471Of
+	Ja2g13ODBdrt7TtDwn88LKPCtZoiVmQfzKJddszFroimakKlnZC3H7Yq7+mFhmub5smzY8
+	BSHkxuU/j1/xes+ISrbu8ynS46+tCPA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-K-H3fgHJNcqbN0Ooie66Kw-1; Mon, 13 Apr 2026 05:43:28 -0400
+X-MC-Unique: K-H3fgHJNcqbN0Ooie66Kw-1
+X-Mimecast-MFC-AGG-ID: K-H3fgHJNcqbN0Ooie66Kw_1776073407
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d780601b7so417499f8f.2
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 02:43:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776073407; cv=none;
         d=google.com; s=arc-20240605;
-        b=bx0hKAZhPPr83WqIxSUI9nMyX//S1f4FvdBBNZIqprfeZmtSUhoxSM+CVX6XQBET30
-         QmHPQLXuCV7i9zLf0mS2FP1CdndbEHo/nBBa8kMcixnHZjU6bWAfM9GjYwTDf7+t28nZ
-         W/mZOcgZVxgDUoQ+jRnj2QFe1d/ZhKF7tdMQB6btDnZPDZUik3IcXLQXF17z+DAFO+RR
-         oe1m3eyuJu7FXeUe6eErpVcRfDjIO3TYxtTRbNi2BA7Nwgr0Xr41TrTSRuGcXWyWFiZ9
-         UBtu6j7qmRHndRzUQBTQH1JmK27Av2coNbjLG8U4bpSWOz7aqBwg0APsibnxPTSd37jI
-         tdsA==
+        b=Krmt0qwus38q9Er2l/4L8A089XaltThT8qXsGZU5ELKWev0+P/aCbPqgZkLoTbHo6G
+         s9lpvssJ/EQm8g3BOZPswFVNX+PoOZv3s6Vaxbuo8rQBSG2VfHpIzEh3YDLkhegbs/+e
+         fLa7GaEgpz7HLvJ2jRQHqxF/8QQB6yMWIHLIcl9qQOBvaBcr4Fmqs27WUgxIZE/VeUGe
+         d2ZSv/8UVrIybP3n9XJKa/iFidyy+yg35hKY0eBJoX/YdnswcXXZ0gnR6l6B2Q8bYawP
+         wWCvcKQOKSXpPHwRg7OjtJl3mI1O5hD6aOuDPVVqO7W1Yd2pl8jfGdeUZRDxhzXqsus0
+         nXAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0XI9DbHYUkGehlX0OcWQ888vFtJXew82enKuyuQHRk0=;
-        fh=2r7Q7DygPBYf+gp1XzLlA/1NL+AT0rKEyD/L+rmd1/A=;
-        b=JdLZUZ+AJndwXzjfDUEYJMft6Y19OwJV2L418hLk9TMiye/mHLJTdqMoA64eQZOVOQ
-         t4Zf7ON7nEEA8dJ8dSbGPd1A4QgBpQpG1MmD0xaV6+h7sFSTeBrUFc3XXfQgg27bzXoh
-         9P0jFH8+V5QHuVdVYc/Y58RA+FKjVuDhG08Kf9MiVj9f0Twhwmg6QTXE6x/gSFN9OQLw
-         YctNlsoSfCY19pvia9IFv9B+OkVZIjVXHnHaDYn3tkYiENm51cEG9cdCMUj2fwIILsVT
-         k69ELutkAGoVL5KDRXGwIlJLmCDLXCXofI0738vATPd/wVlu3a5ofgvsIfeWq5MkPwoV
-         DzPw==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=up0W45gtoNI4pHs0kRq4cu9I3A/mCEQzypUKR4wYWZA=;
+        fh=TnuaC39qp6CH7+nZ/OKQrIQTvTXIqnQoKKB2Uqp0OFo=;
+        b=UCJYIUANi/eUIuCoZb6cvRzOU4JodPu8j/qWBxozew7bOcCpQVfiBMbiCXmMN/8nTn
+         +clwzKU5lxluBC4d208DNI6da0ct2GqG1udH+i5RoFN9m/Ld6xho7KsTaVjMSQbg4PLX
+         fXJrHL67a/7Zm/OBCTxjej8LPOOlcP4yVY9Pns6RNYL6pY+5LweL6+JhbpvoUKPU5F16
+         Zje/w2958DI+pWKR4CNC39VvNdXq+IFKnd9OKGiDuAiR9l8AlTPJuKuOa3XYJg0dBB/8
+         DqRhZiksXf52gB+Q81boJ+XXa1vD+ZO44mnNN+zTc9c8PVm/LmNH4DKJzjt9uArSSobd
+         l4uQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776072810; x=1776677610; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0XI9DbHYUkGehlX0OcWQ888vFtJXew82enKuyuQHRk0=;
-        b=SV+jwDAFtIVwlYY+wT7GpjGNEu86b3BlpI5cgWMVfw/Xmw0yyD/Ag7vz8muo6lJ4te
-         AqRxPYoqxA7Q4zKh7OsVl9Y5DYtlCn9VM9mK0JkkBwH7RkndZCVSQoiGvQ5kRCmPmVS4
-         WqJ1V15+4agj0waOqwf+EDZouDR8kVmZK6HeRA76pxQzaCf5pVDp+B1rJTR6Sh71PV90
-         EUflXLVIjLEGDvPtz8oIiALQPMSydMD7YxwfH+Kg6dGsIELjz2pHoX5MvurS8UnKdIwo
-         vVJFNIhoGnSD/+1KZ/jUCr7uDVJ9tX8KHaXw8Tv1JtH7Iv7RgjH8SctGB39m5WNa8R3/
-         b7FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776072810; x=1776677610;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1776073407; x=1776678207; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0XI9DbHYUkGehlX0OcWQ888vFtJXew82enKuyuQHRk0=;
-        b=qHYfpOM+G3yP9eRD9oM8ByHrhSiyt5O+5L85wN0UsQyAWoHIosJN1vqdQVp2t93XhP
-         qbigrZO3JxPqKK5DAMAy0qh/bMCHMX5ZuASSk19QEqs+M3PasRqirUhFH6VZ4pjnYrgn
-         FJ/DdyKC7edRC3MaVIinJLA2ObQJkxW6B2xG5EmyvaToqroaB3BIIUdyE1DyCcIPi/S4
-         KF2di9BuDX4Mn+ENdHpVm+lSnpYgYHqtTpPqP+BoHHLkl1kn/80QI/epH9TzvCzDlfWD
-         S1eSFefYCBjBGNkpXZZA5FxAixT6qdNTg12gzTc30YMaKtTMyY0Ibmt+6IlheRxuLus0
-         YtiA==
-X-Forwarded-Encrypted: i=1; AFNElJ8SHuArR73zgQGp6/o92YWhbjURqRTAWe4oK2y5Z5VBbs9d6/N3ezikqWdY4rBPJEqfDRY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCVNfgrfqG82JPwQjtiVCmdfoDHBuCdMyfom6W0EzmX0Yp3Xzn
-	4TamaOsoNn0bB+LUyqWPoNre+3UAL9LDAhTgssAfEFu/D96xvqoyUZ7rmb0lpQARr4kqzArBUVB
-	selqpGKMPEYB641CE8l/sy90s+7uhmtfmumHq5ltwUQ==
-X-Gm-Gg: AeBDietNXNj3rGnQLmMryJliUyfw3scFf1xHvSG8KG5j7y+xc6AVenvw547yMBk21Uw
-	FLESXpmCHavRy0Z/wke0yI+00liEY+FZvIQsmRf063YVom3y8GLaHD6m2ErkHkHsWBJrC/6sA1c
-	xoMKlup501mf2hHcXm5+VgK29/DxYgfVWotiha2MKxZC8g+jPp6y0vTw2xa1epSmOVBcBGPnSmF
-	bydsxMGnJWFNg6Mf9bk6nq0D7TEDnOb/ZfkQI0iXfaL4hfD020fThHjv1rbiYdbtmgJ/wFXhIgn
-	88vUjUbgGGhMeLDnVlQCt6LK4+fKeiPdD+w+4xDBmlXgWZcGko9gErYwVvpuIVAOsFfnpw/7/O4
-	g7w==
-X-Received: by 2002:a05:690e:1341:b0:650:ece:89fd with SMTP id
- 956f58d0204a3-6518721b5b9mr12869286d50.27.1776072809671; Mon, 13 Apr 2026
- 02:33:29 -0700 (PDT)
+        bh=up0W45gtoNI4pHs0kRq4cu9I3A/mCEQzypUKR4wYWZA=;
+        b=YFyXQDqAvaYmzUJlHiY9/+TMpco8UULfl/BNhuvQq1aj4hwdYSvO69q+r1PYFDmMQ0
+         NphA5FcZm16kw/fj71Utjoe9PphUTDTVKxmb3/w8uF9MAqT8X/CIZz+h9iS/Ip/Kr/Ud
+         3tHah0FenCOKQes1tmDrBVpLigiCRztncCTBQTp3+f6RwYXRXCFM4t8p0y8n8ElBkXiP
+         s6tHA/qgp9xLXLyilY89pvG2m9J1hPav3OZw3TK8+JKrjq0LdjMQ8bMMJinRk1xE5+db
+         0kIZ6/ysxJxNu+u8r+C7OAkfUYJxOpHkfFIIBoxvwaMuJL/UUT4kCxKHrcXMpu+JPy9h
+         PMDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776073407; x=1776678207;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=up0W45gtoNI4pHs0kRq4cu9I3A/mCEQzypUKR4wYWZA=;
+        b=pv/+yE7ZnUDuZ8KrQVike1cP/c7Z8WD2TQOtJvxQEgl5dJRqcwRVZA/fWZe8N72g/h
+         QIwQUYk//J2yrTRNWD1MyO+o7/B7VKt9t2fHQOpWF6VkTIrtksTD/royq7qCfkyHH3AM
+         bo3ruduUlqibicQoSfM3wUjqaTpf4fxg/2GTCSm4JsSl6NcEYMqfTLA1o8O1hB+9rvQp
+         uYWRnXe/nBzdMao4//m7AsCmoZIXkk7rOapJzsQTqCXi6Xh0ueR5s5Chen5bFTz69Q9u
+         X9EHsUtHYMYLxyT2r9TxFOq2KoFZjJJ170ZJA1tUw6BQFjtev6IlC9d2QTU3g7lXqGu4
+         x/XQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8VZu8o2lucjq1OFiUs5zrbJ+jBFpHVIhqfbq3nEJNzS8u96LyP2lMJzzC01oW+oKVEsVw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/B9omebGUSk46lKUxj3GC6bJVB0tpeho4O1fji8AvjVs7oOXU
+	7BLN5dlZ+lEnaTiQY+XmlGkEaWgKwBe8tOuAopaIQ1u3xn0XDl/9Sq7WK4yB/g6XImb2HvgAJ8J
+	GVokIYmeQvjKpmLeAhiTv5k1EEb85SYWMTrT1/9myBZ5ArsH8xsMxvfdLOe0yx48sdI2f4CUyd5
+	X2RESXiWkRmaYCGfLJj2vuPkHbwXuD
+X-Gm-Gg: AeBDies6EpH47mWNKptmjKM74k6OetF+n0urV5cokAsWEzAyIi+ZFj3LS4EeC6BtUt2
+	tPZN0Qs9PKDblP1jZNclb8Utu0mXMTWbl2c7w+TbYVwlZW00I09WXwdQI6w0NwpmE7VP2tRp7vt
+	9HO27WeOMy3WrD7BTeMaJbNc1cnB3d4vNdEEHf1Rr6q0nRE5K1DKzpZeim/JBgYI+ZRgKfFWxGn
+	BJw7xlyIu3RWi8H3sPvx7JNvl+Do6AW+jSczBwuk22t3HvENbtJAsBm9eiMGdApAJT9KrEmvNFa
+	e4py
+X-Received: by 2002:a05:6000:2dc1:b0:43d:7af0:3a83 with SMTP id ffacd0b85a97d-43d7af03e3emr2720427f8f.41.1776073406827;
+        Mon, 13 Apr 2026 02:43:26 -0700 (PDT)
+X-Received: by 2002:a05:6000:2dc1:b0:43d:7af0:3a83 with SMTP id
+ ffacd0b85a97d-43d7af03e3emr2720372f8f.41.1776073406289; Mon, 13 Apr 2026
+ 02:43:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413090010.60339-1-anisinha@redhat.com>
-In-Reply-To: <20260413090010.60339-1-anisinha@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 13 Apr 2026 10:33:17 +0100
-X-Gm-Features: AQROBzCPNQstYoD5bOM-E3AUU_4dEQnR2dcVMuHGo-eva1X-zovzQPwiUKgqIfo
-Message-ID: <CAFEAcA__kgxb-9FEsBu_3cmv3UZMMy3kuqk9Bf1NqoQpnEmmSw@mail.gmail.com>
-Subject: Re: [PATCH for-11.0] accel/kvm: return early from kvm_irqchip_create
- if kvm does not support irqchip
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Misbah Anjum N <misanjum@linux.ibm.com>, 
-	Gautam Menghani <gautam@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>, 
-	Harsh Prateek Bora <harshpb@linux.ibm.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org
+References: <CAAhSdy0sU997x67zZe00ZVPVrOT-=X8zOUk3OxWXeDcn-rHeXA@mail.gmail.com>
+In-Reply-To: <CAAhSdy0sU997x67zZe00ZVPVrOT-=X8zOUk3OxWXeDcn-rHeXA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 13 Apr 2026 11:43:14 +0200
+X-Gm-Features: AQROBzBQfjt3xV4dcP8Nj1D_N7gw5YuFZWv1XYE0RCatLaN8XwSCpf4fd4AGGbo
+Message-ID: <CABgObfYosYD=xmLgxyDhL44yPvw06bB3ApaD6D4BRxte3tnPGQ@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/riscv changes for 7.1
+To: Anup Patel <anup@brainfault.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Atish Patra <atish.patra@linux.dev>, 
+	"open list:KERNEL VIRTUAL MACHINE FOR RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 13 Apr 2026 at 10:01, Ani Sinha <anisinha@redhat.com> wrote:
+On Sun, Apr 12, 2026 at 3:14=E2=80=AFPM Anup Patel <anup@brainfault.org> wr=
+ote:
 >
-> During refactoring of kvm_irqchip_create(), the refactored code was returning
-> early from do_kvm_irqchip_create() function if the required capabilities were
-> not present in KVM. This was not translating to an early return from
-> kvm_irqchip_create() as was the case before refactoring. This is because,
-> do_kvm_irqchip_create() did not have a means to notify the caller of the lack
-> of kvm capabilities. Fix this by making do_notify_irqchip_create() return
-> EOPNOTSUPP error when required capabilities are absent and then the caller
-> can check the return code and return early.
+> Hi Paolo,
 >
-> Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM VM file descriptor change")
-> Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-> Reported-by: Gautam Menghani <gautam@linux.ibm.com>
-> Suggested-by: Fabiano Rosas <farosas@suse.de>
-> Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->  accel/kvm/kvm-all.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 774499d34f..92af42503b 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi)
->      g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
->  }
->
-> -static void do_kvm_irqchip_create(KVMState *s)
-> +static int do_kvm_irqchip_create(KVMState *s)
->  {
->      int ret;
->      if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
-> @@ -2587,7 +2587,7 @@ static void do_kvm_irqchip_create(KVMState *s)
->              exit(1);
->          }
->      } else {
-> -        return;
-> +        return -EOPNOTSUPP;
->      }
->
->      if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
+> We have the following KVM RISC-V changes for 7.1:
+> 1) Fixes for issues in steal time accounting, vector and
+>     PMU which were discovered by KVM API fuzzing
+> 2) Split huge pages during fault handling for dirty logging
+>     so that write permission is restored for smaller pages
+> 3) Improve kvm_arch_vcpu_load() performance by skipping
+>     CSR restore if VCPU is reloaded on the same core
+> 4) Implement kvm_arch_has_default_irqchip() for KVM selftests
+> 5) Support configuration of per-VM HGATP mode from KVM
+>     user space
+> 6) Some more preparatory changes for nested virtualization
+>     such as:
+>     6.1) Factored-out ISA checks into separate sources
+>     6.2) Added hideleg to struct kvm_vcpu_config
+>     6.3) Factored-out VCPU config into separate sources
 
-This function confuses me. With this patch it can do three things:
- * report an error and exit(1)
- * return success
- * return a failure code
+Done, thanks.
 
-What is the difference between the cases where we exit and
-where we return the error code? The commit message says we
-return an error "when required capabilities are absent", but
-we do the error-exit for e.g. "KVM_CAP_IRQFD not present", which
-sounds like "required capabilities are absent" to me...
+Paolo
 
-thanks
--- PMM
+> Please pull.
+>
+> Regards,
+> Anup
+>
+> The following changes since commit c369299895a591d96745d6492d4888259b004a=
+9e:
+>
+>   Linux 7.0-rc5 (2026-03-22 14:42:17 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/kvm-riscv/linux.git tags/kvm-riscv-7.1-1
+>
+> for you to fetch changes up to ddbf9c76c4020bf63a0799b00faad40caa3de6c2:
+>
+>   RISC-V: KVM: Fix shift-out-of-bounds in make_xfence_request()
+> (2026-04-06 09:43:02 +0530)
+>
+> ----------------------------------------------------------------
+> KVM/riscv changes for 7.1
+>
+>  - Fix steal time shared memory alignment checks
+>  - Fix vector context allocation leak
+>  - Fix array out-of-bounds in pmu_ctr_read() and pmu_fw_ctr_read_hi()
+>  - Fix double-free of sdata in kvm_pmu_clear_snapshot_area()
+>  - Fix integer overflow in kvm_pmu_validate_counter_mask()
+>  - Fix shift-out-of-bounds in make_xfence_request()
+>  - Fix lost write protection on huge pages during dirty logging
+>  - Split huge pages during fault handling for dirty logging
+>  - Skip CSR restore if VCPU is reloaded on the same core
+>  - Implement kvm_arch_has_default_irqchip() for KVM selftests
+>  - Factored-out ISA checks into separate sources
+>  - Added hideleg to struct kvm_vcpu_config
+>  - Factored-out VCPU config into separate sources
+>  - Support configuration of per-VM HGATP mode from KVM user space
+>
+> ----------------------------------------------------------------
+> Anup Patel (6):
+>       RISC-V: KVM: Introduce common kvm_riscv_isa_check_host()
+>       RISC-V: KVM: Factor-out ISA checks into separate sources
+>       RISC-V: KVM: Move timer state defines closer to struct in UAPI head=
+er
+>       RISC-V: KVM: Add hideleg to struct kvm_vcpu_config
+>       RISC-V: KVM: Factor-out VCPU config into separate sources
+>       RISC-V: KVM: Don't check hstateen0 when updating sstateen0 CSR
+>
+> Fangyu Yu (3):
+>       RISC-V: KVM: Support runtime configuration for per-VM's HGATP mode
+>       RISC-V: KVM: Cache gstage pgd_levels in struct kvm_gstage
+>       RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE
+>
+> Jiakai Xu (8):
+>       RISC-V: KVM: Validate SBI STA shmem alignment in kvm_sbi_ext_sta_se=
+t_reg()
+>       KVM: selftests: Refactor UAPI tests into dedicated function
+>       RISC-V: KVM: selftests: Add RISC-V SBI STA shmem alignment tests
+>       RISC-V: KVM: Fix array out-of-bounds in pmu_ctr_read() and
+> pmu_fw_ctr_read_hi()
+>       RISC-V: KVM: selftests: Fix firmware counter read in sbi_pmu_test
+>       RISC-V: KVM: Fix double-free of sdata in kvm_pmu_clear_snapshot_are=
+a()
+>       RISC-V: KVM: Fix integer overflow in kvm_pmu_validate_counter_mask(=
+)
+>       RISC-V: KVM: Fix shift-out-of-bounds in make_xfence_request()
+>
+> Jinyu Tang (1):
+>       KVM: riscv: Skip CSR restore if VCPU is reloaded on the same core
+>
+> Mayuresh Chitale (1):
+>       KVM: riscv: selftests: Implement kvm_arch_has_default_irqchip
+>
+> Osama Abdelkader (2):
+>       RISC-V: KVM: fix PMU snapshot_set_shmem on 32-bit hosts
+>       riscv: kvm: fix vector context allocation leak
+>
+> Wang Yechao (2):
+>       RISC-V: KVM: Fix lost write protection on huge pages during dirty l=
+ogging
+>       RISC-V: KVM: Split huge pages during fault handling for dirty loggi=
+ng
+>
+> Yufeng Wang (1):
+>       riscv: kvm: add null pointer check for vector datap
+>
+>  arch/riscv/include/asm/kvm_gstage.h                |  51 +++-
+>  arch/riscv/include/asm/kvm_host.h                  |  23 +-
+>  arch/riscv/include/asm/kvm_isa.h                   |  20 ++
+>  arch/riscv/include/asm/kvm_vcpu_config.h           |  25 ++
+>  arch/riscv/include/uapi/asm/kvm.h                  |   8 +-
+>  arch/riscv/kvm/Makefile                            |   2 +
+>  arch/riscv/kvm/aia_device.c                        |   4 +-
+>  arch/riscv/kvm/gstage.c                            | 198 +++++++++++---
+>  arch/riscv/kvm/isa.c                               | 253 +++++++++++++++=
++++
+>  arch/riscv/kvm/main.c                              |  16 +-
+>  arch/riscv/kvm/mmu.c                               |  70 ++---
+>  arch/riscv/kvm/tlb.c                               |   3 +-
+>  arch/riscv/kvm/vcpu.c                              | 111 +++-----
+>  arch/riscv/kvm/vcpu_config.c                       | 103 ++++++++
+>  arch/riscv/kvm/vcpu_fp.c                           |   9 +-
+>  arch/riscv/kvm/vcpu_onereg.c                       | 284 ++-------------=
+------
+>  arch/riscv/kvm/vcpu_pmu.c                          |  33 ++-
+>  arch/riscv/kvm/vcpu_sbi_sta.c                      |  16 +-
+>  arch/riscv/kvm/vcpu_timer.c                        |   3 +-
+>  arch/riscv/kvm/vcpu_vector.c                       |  11 +-
+>  arch/riscv/kvm/vm.c                                |  49 +++-
+>  arch/riscv/kvm/vmid.c                              |   3 +-
+>  .../testing/selftests/kvm/include/kvm_util_types.h |   2 +
+>  tools/testing/selftests/kvm/include/riscv/sbi.h    |  37 +++
+>  tools/testing/selftests/kvm/lib/riscv/processor.c  |   5 +
+>  tools/testing/selftests/kvm/riscv/sbi_pmu_test.c   |  20 +-
+>  tools/testing/selftests/kvm/steal_time.c           |  98 +++++--
+>  27 files changed, 956 insertions(+), 501 deletions(-)
+>  create mode 100644 arch/riscv/include/asm/kvm_isa.h
+>  create mode 100644 arch/riscv/include/asm/kvm_vcpu_config.h
+>  create mode 100644 arch/riscv/kvm/isa.c
+>  create mode 100644 arch/riscv/kvm/vcpu_config.c
+>
+
