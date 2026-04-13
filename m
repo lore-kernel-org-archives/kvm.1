@@ -1,167 +1,191 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F211EA7DB
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 06:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB46D2288CB;
+	Mon, 13 Apr 2026 06:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776062117; cv=pass; b=VCKqAfs1c0W3KNgery/puYxBLliRZ38cetXs6Eo0yfNIW5XbWi2ocJs5CMpMnqoij+eVKMRePo4EjxE2KsySnwj3/D54/nFIfnhC+UFH1i5P5JCI3FQvF0j5Sm5v4Fvwk/K7k53taTV0Nkf1SoFJppUgpiUOjegkx0ZAHqDYHaU=
+	t=1776062506; cv=fail; b=HVEoQ13M4PZ1XRssxJm+acgmiFPFh1ak/3aM3UCmyidd6oxY7gYvI92jSqexpdiNrzROyNION5GYedESG8NY0D9Mr8B7coVkr33/eHZ/dbMH8GdBISv6Ze67VdI9P2F4n5ioG9sqmlSaST6i4D8n1/aWV5zU/oCCD7H66JSobKk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776062117; c=relaxed/simple;
-	bh=qwGi9qS1BY2SEMgjzwDaeYHyN+nv7dANGBkDPxu3jnI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gY3WPhMTXni678IugcXt0UO0cFanTZA1HT4Myp1vVjxmHe8ycWkuKwjdx54fwWYol8zVGfFFOE5vREmOF8I15ouMhP7MPehkEke7maRM0dVYG5kUqVLuKevcJ/Rtf18od/TiNEqFr9Iqt6awKz65wE7CjR6BjYdruvMhPmRp9/c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=zZTAHdsO; arc=pass smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	s=arc-20240116; t=1776062506; c=relaxed/simple;
+	bh=7j9QTZa3zclUTf+AlLB3RlIyMXfYPdNMp7XtSjzZUGo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oCHHLFu0FeTkWkmR0PTMnXvKVElnIwIUHVCbh/PZrlkCwR4Zr1Znng0PG/V5iKTF3P19VO+kO7i0sCRIrtOVa3aXoKDZ3eZkcuxlyKhI05bMDPee+r1rR+z2ZBiDkgpVdDnTouSQiTdwLZizy7PTKlzlRX3cooM6oobIE9VMJls=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHLQB96t; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="zZTAHdsO"
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6830f4f34f3so1401716eaf.2
-        for <kvm@vger.kernel.org>; Sun, 12 Apr 2026 23:35:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776062115; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MaVph4ZUsTwUWaxrSeU7O+fd6vF1GIZNlNBjvn1AneOtD5bMjK+KAKUzRoIvFP9vLP
-         +au5W9lgjLy7IEfJNd7yBnyAqHa+1ieSQfF2Tkted2f8ILl4xW+q9QL8tZetKI9zZrqQ
-         VFHEnnpa00KimhLVj6ipTwNQpMY+f1yWGhEYkWmo4rP1WbRp/N321SCNdf/e50G8rU79
-         Ktq55o97Hq7XuDcDJPfaUvFYPGRMIECaUH6molVqN7HY1ACP5kwgyegG+LxUZORu9zf/
-         /49jsPFFMKMiNBSzLJzTL1udJsnftetMS6SJxS/9lgw0m7aS0fjzkR/5Vx+kWqK77MGK
-         PREw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IhmEYjR6/quzdnxRuC7TxxzEx+eEg6dd48C0268iWf4=;
-        fh=w2vBcacVkCkTPamCF8cfzkSYRi6hcJa8nAG+OjoqN9Y=;
-        b=S4gQGu7Jvphly7JYvQsP6JChTyrCwvr7xwaPJUVaOqH98NJSd2W55m4nH4upoWJ36s
-         TNtWq8k1RBKXWLuH1emY9xzcN1JhhcVqGK1vv3gGK4HzmUkwMF2Se4o5JU2JHFfILMdY
-         Xa/8e1nAckc5It77RmOjPIenzgBi/U+Jwd9DYvLg/3sPs+QVtiOse6WQ5w2gQa84Cz6i
-         C+HDhErJPAqdOCt5L40ZQfXT33YFKj4q5EH/rhSeEgmSbYU3VUROmhEEEALwHX1beaMm
-         ocOdwnhCCkD98PFErWMKlJnijTbTP9wnoA3X8nlWzSMQG4sNCBP2IC8PE/Tgj95AAq5U
-         Tckw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1776062115; x=1776666915; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IhmEYjR6/quzdnxRuC7TxxzEx+eEg6dd48C0268iWf4=;
-        b=zZTAHdsOQnkm3Sqlmv/bs1jb2qTGHqsGHYED19zClke46E/vluibeU3MlVirr36Hk0
-         rUoRFXdoZtz+vnO7LKNxZe9mq4LIKT8JKl6fMATfGmE67p0tUEgjA3rZhYPIlTRXZDDS
-         hicE9ni1DHw4qMfN7JxK3xJiCF15wEDvcaAKW1dLyxX8yAvwAwfYGrViR3uBPshSCCsP
-         zVuw5I7vaqCh+82+GMdfetz8aanKOUqgA6ghTNh50gwuCbnHjakf4mTkdUpykQtybvTG
-         BEyN6hREh8MtTkVUJIuGsrafvB1BS6fJGhd8Sm22Re9MgmPxo9eAcaSrbOcvP6h1wvAu
-         LnPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776062115; x=1776666915;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IhmEYjR6/quzdnxRuC7TxxzEx+eEg6dd48C0268iWf4=;
-        b=gr8YTuRPBy/GDQhij++OYg2Nl1Qp2hnsxDkCiE/x+oFfHDEdJJvtXQHr7Q2oY6YyGd
-         6Fi5RwXB2ydRT2JNMmB4kwqdV+1VoggP7cFQDbAGTUPmmbuLhFb49zt0SuHvwd9XVkpO
-         rw/FfnMHulGVLmMLH7I3zOutRYvc0nCKlcS0IkeWcUc9bqr1v6cmuaq4+3tKTey6q+Bx
-         WpKPH8uJOMvv5lsVwYqsoueNI6ZS7zUCjv/L1Pk4Z0eucYBJySKxQYq5ngiARtqWnfMg
-         F13HLNadTfPdwZeg8dj//C8RqLLrdOAKc45Le7s9hXzAxUi56IHA47NQMMNkMtqrb2qO
-         Wq1A==
-X-Forwarded-Encrypted: i=1; AJvYcCU4xg9UxaP3uo8oC5kb25KXko2UOGHJOLkEwY4vmx2rQK9VwHK8BeXWPko+3LHEIxVMiCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOsdRhudNyRKirwcTaDZ4EBsSwkt55M/jTxYrOOO2LZEdyW/cX
-	JT2wpPxdpXLibxDxqdHZESf6UjlLiAbJQAN+QhSQEM0SIf3Pj7ZsdZblAy83mKkdbOE1OjI51qg
-	OjCLPiB5kjRbzhQvj7tdI/MofwCaYXveYlC70QDsBnA==
-X-Gm-Gg: AeBDievJ73mdcMXq8wLKER2M92/y1S0cw5zzMeT8redTwdOgTnU3h8dyOND+H2iN1gg
-	5gWY+KBVZFoGrZLedaso2ub1JM+EsIA1I8AnSs65qpDD7W2ifu9AuBarY23QJcaTALxZcBp1Ph7
-	JJdWpPPA7ccnvQzhiRRhQ4P/WMNhPfoI5Peq4Og+9ai3cLb3M9wsDyNwTi20B/C5oiMczz8CZao
-	GXow/6UnwfrJclen9e/bw6eKRxCatP6+mpqK5HSV8OU+/Gr3WodNsOwbp1S3PgMszol/U+N4Wy0
-	nxkm/wRq8uTjnkJJY56QhyEAKzsDay47gwX/TW2pVhfKk5KCBpk/oHySenni8l+m2qUSFxw3qT+
-	euHc+SbD4OHkaKgY9MudVnlW3uR3Z7GnPu71U
-X-Received: by 2002:a05:6820:1843:b0:67e:aa1:8825 with SMTP id
- 006d021491bc7-68be7ee694fmr5678237eaf.35.1776062114774; Sun, 12 Apr 2026
- 23:35:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHLQB96t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776062505; x=1807598505;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=7j9QTZa3zclUTf+AlLB3RlIyMXfYPdNMp7XtSjzZUGo=;
+  b=MHLQB96tkfDaDh1Zi6fzjhPizuyKNViC1n2+U/T1t+BbwjAOoT3pzKAa
+   wAJTEXgrHGcotXbQQbcWvyBHAPbkaLe1i5Wkq1VlcrwXPdB+HPXr9SGZh
+   C+4P+ecs0flaT/vqI63et8AiLMmnuoWg1bGqcpRcQTctQOpJ6rU2jcfiT
+   I+JzPpciEo4o4GuYsx/6FptgGluBeT1s1/lvq70+x+QON7kT7JVmy2yl7
+   wSw09QiVnurTMbrR1z450nmZcaiGBq1GP7KWe1SfKCCqpWL9Q26ISxskr
+   MkgfdENtPJGf21OFt9iXkA7Rm+eBNobB3AOTWnxxYJoYmHoKEcHWi6d8b
+   A==;
+X-CSE-ConnectionGUID: dS4Ffb9aSwa2G0WYBDzs7A==
+X-CSE-MsgGUID: kcH6I804Tnu/oz4lVzssow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="87617212"
+X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
+   d="scan'208";a="87617212"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 23:41:44 -0700
+X-CSE-ConnectionGUID: 24NUjJi8SKCtgeST+mN3Hg==
+X-CSE-MsgGUID: +seO3gRdQWe4We7PlbWbdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
+   d="scan'208";a="223213600"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 23:41:43 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 12 Apr 2026 23:41:43 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Sun, 12 Apr 2026 23:41:43 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.70) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 12 Apr 2026 23:41:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ReF28SJ2etg3sqQFa56febspwbBux99l06vz/cuDClpNUF+QmyBrT44LelW7qvJuNCbdUAMmA9WXMxvJp/U6MeF/EW+j1Gs9VNUT9Pj5bKDIQ1mjLexF0RrmKaJHEn3PhrQ4OF46Y53/rArFCPzjDKRv+KfqLsGoGRaPjGfgKjF/G4sKDY7bDMnw7bMclB2/l0BT2+6oJhj3AzrP8+Kap3MMZf3/dRr/g4hyc3/RdFMOpYsugWcpWvvfLdr8NI/0oc2A2xrtXoZ7nR+4hCsUeo6HDAcp34TTxc6dYnI+hoxgk/GDaEyClv4YHXBWJKBpp5LFXi8ccvgzFx6Z38lIEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=apHw4HeUPkGXG7mmWcpmoj2G5uFyaOYPbmp7yhbKmWk=;
+ b=VkAP23Ov9VfEy4H/548gfjDMnNEgvQ59crnhdHPtQ1li38DDeUkT5jrU4G/VsRN+ocIbpWemLl4FcZjr93SJSU7GviK9Rxz+cyOd81uWDUOq4C/lGoM41/XxPs9gTDdJmkN1yAgOjNVnzgus04IWw22ZJWs2igsE94/CBqNY0Se7BewdYBw4b8uTvYZCSh3Mtk9oh7K0JcyGdgAcvUtzwvG5coFl8RjwHQr2dhn/9m+NmeeGU9j8wUP3wzDmlb9S45IvxAhogY2o3gB7Tj70iErCfp5k3qtcY+ihGzK5pN89+9II0TIAcXlnLBlCvFh4NhwZ5I07pyS4AjMqmh846g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by IA4PR11MB8889.namprd11.prod.outlook.com (2603:10b6:208:565::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Mon, 13 Apr
+ 2026 06:41:40 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::f997:762f:f079:134f%5]) with mapi id 15.20.9818.017; Mon, 13 Apr 2026
+ 06:41:40 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Pranjal Shrivastava <praan@google.com>
+CC: Samiullah Khawaja <skhawaja@google.com>, David Woodhouse
+	<dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel
+	<joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
+	<robin.murphy@arm.com>, Alex Williamson <alex@shazbot.org>, Shuah Khan
+	<shuah@kernel.org>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Saeed Mahameed
+	<saeedm@nvidia.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, "Parav
+ Pandit" <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, William Tu
+	<witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, "Vipin
+ Sharma" <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
+Subject: RE: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Thread-Topic: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Thread-Index: AQHclVnbT7a0V7DOZEGfF3XM1LmFrLWqC00AgC6sR4CABD6b0A==
+Date: Mon, 13 Apr 2026 06:41:40 +0000
+Message-ID: <BN9PR11MB5276C5EBBEB80311B65648138C242@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-2-skhawaja@google.com> <abHZdOKyLmmmHADz@google.com>
+ <20260410135133.GT2551565@ziepe.ca>
+In-Reply-To: <20260410135133.GT2551565@ziepe.ca>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|IA4PR11MB8889:EE_
+x-ms-office365-filtering-correlation-id: 4df1e933-288c-4c15-6d50-08de9927b80c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700021|18002099003|56012099003|22082099003;
+x-microsoft-antispam-message-info: o5tnt8UozZFIVSrwRNoSSSeHS6I9h1ok21MhbhVaVKZeXC9TT7ZEYMS12E5cNWXkXrQKy1vMXB/Uwt49b9i9zmy1YXuXc0IIPFeV7c1P9SZWIjLI06D9JjsBgU+6cp34DJVyW8mN5f8Dn0M34ErEufPH4DNr16i3G+yCWBMdEB86MRd+cRu64wAV2k2rdR2Z719fJvlelPhMhy6T/PMOqkaE+lR92bb6Tpgn5Yj1WPYHEi29yQvUrI7tPFdh7vJAOwGzVQZ/gi8V2V6oUXA5pnXKRaKrMuGkcOaGoHa9x/1/V57QZ3eQ9svUexl1dEAmswq89FYUOCzBfr8M3l85UWkB0NOpHv9TCwBFK7QclZUAR3gs68jw5+I6l1y2RA442xM+2a8vYlgd8/wjAsoGnLbC8baqsmJkDR0fz/CFGy1Vzp5N1lxPXYqmckKGvpyvHyE1CamR+zywWzbDZssym0KVtFKQeNFoDC0h8vqFBITC4LLtIktQtg8m3ymSK4qj5aye8Fz3m6aydCXyCwFSUwLoCetTWaMfp7QhJl1f16qQCuVrq4BOeGM6LNloERiHAaIuiGpO+OiOn92RkClgBa5pDnsbbHFLnA50IhdSAx5mFiiRq0O2VaJkaNOdzzE0bNJibIwqOcRakZYoCT8RkC9+oeiH8JtMHbPm//9XV8aC60pdneXMYb53Be0J+Jb8AyI+vkQEe/b+I8klko7K8V1pCwN5qPoyZ+9S9xXWXVst+IYEUP6SOEl1ttELK4KN4Jnjut/8feQ5STUK60DSXCulj6FHnDjKxxVOWMkOt4g=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?wt108He5kZnLwcgll8n01wzwlTnZfGKyCuMjEFyLFIrZe88zkkkaeGJzFmi5?=
+ =?us-ascii?Q?VSsw8vZXJJsMkVAolz+/SsYpdGRVS8FJ0mwZqhaaXm+dvCk09K58M1RtIs36?=
+ =?us-ascii?Q?w+HGAkQ+xOCbp0iGowx64AC0nwrjPyc8JD/Bp4XhvsXpgTbMKHOfh7ILKWtk?=
+ =?us-ascii?Q?M5mBwH4mDgrxZ+ivwVAvFc+1HLkMnGdGNWUUK8JqSCnr5k4bAFp5GGvMO0Qv?=
+ =?us-ascii?Q?EyfyUGVWl0C8y2dfieHGfic9SilsXEJ0JSoFQo4b9A5g29KnXL5qn2oASU0x?=
+ =?us-ascii?Q?iGqBz7cloVfdYp7AeWxbw66s/ehZSklE8I/Oi8QgJQH6mgjIjCPQM4KxjGDL?=
+ =?us-ascii?Q?t3MlD9kD+NADKaGKbZIVvBmZ9Fw2Y3hEC3SLJv4KEZeP06mymnTfsF5a1WDy?=
+ =?us-ascii?Q?w8zMFyoQLR9jh9ONpzGqeFNHNH4Kg+ZRnb3Ub3q7wMW21reqx1gH9lLtmHB2?=
+ =?us-ascii?Q?VXVvvlCTnPuUdBcdv8MQ4NrSBv2SR+y+N6kn0sxlBPfFU0lQ6LU4EP1Tpsle?=
+ =?us-ascii?Q?LhfAnzIbYhaI/XiT8xCWE+jujy5C+2nTUJzg2D16vsolxMjfbzNEWaN0QwQ/?=
+ =?us-ascii?Q?R4qGmNqCOOLLYeAvLqhqCY7CyF45NfD0RZexrDIMfpY9ylBHpWdFu38On+s9?=
+ =?us-ascii?Q?lzbtnkKBFWvGtepbNKLZsbKeg7/Eb3P+w5zK8R5drVS6tBRbnRzUPXrOoOSZ?=
+ =?us-ascii?Q?XRMsoPkQwUl+vTb7HocYH3mUWkYjYj47kJ3mKQiifJftbRpNhCf2gHQU03J6?=
+ =?us-ascii?Q?xE8oZLFBy39/e3kbiAXC0UGwjqRB3zvmXdmY15phM+41viUeIPnYFhIKylTJ?=
+ =?us-ascii?Q?KqGDWPcgsql5YB2PXDrEF0pJCM3tgOGDuGtZUllX04hlBjymzkPRKpSj9jKu?=
+ =?us-ascii?Q?1ZqeIjp+xfVG2wROY64AVGRRGvtKZNtKDLiXGXCu54SYlE0J/t8ffscBjL2d?=
+ =?us-ascii?Q?V11VRgWK0Zl1xykxF5GNkon9EPB/Lb/fR23X8tvENu5H5LMuswSTxA6C5Sle?=
+ =?us-ascii?Q?uDm5Un36MEOLvSVx+f5hIV2txJXki2V6FpPkUOa2u/CxcoDkDcrXHMMtBxd3?=
+ =?us-ascii?Q?Oi6hVCJ2C1gS8koQ6lqrBqOmPgRwJxWI9BmFLK5wgb4k/uo43Z9oaMlxv0Ii?=
+ =?us-ascii?Q?q+PA9CAnwypvHVvO9Q/dQMbD2KQz2iRty2QMTD7WLgDPGKAoMjy4ANXT0OMF?=
+ =?us-ascii?Q?z0e9ypspnF5pypYY3KnLx0P6XL8+zpKSqNIQEQOzpkd9TIdztHumPZyGQw+d?=
+ =?us-ascii?Q?pLF9JKJL6vYIlAnvORyk8ZobKrRpu92VYjFIc5okqInHMWddJuuxvYfeNQ1D?=
+ =?us-ascii?Q?S8yi4K6+84LpYyRxe/7Hx0zQkMkkEvDyAhjUrhFRR26uFTSYvWCGgI3otce7?=
+ =?us-ascii?Q?mBFIiTe4GpozxLwDykmbbgjgZ8mMEVw30mzJeXYg+YaamOLoDijw3QzBE/F0?=
+ =?us-ascii?Q?RUk+u+evDzu2yjW7LMVUXDGnTxXqCv1bew6EQBugWYmS0X+2PJYaR3htJtny?=
+ =?us-ascii?Q?Csxx5LiXY5olbf1esFFCsrvlEb4x7HESsgcAdkbdqpwNhOIaS9t2Yd6PVUO9?=
+ =?us-ascii?Q?6B8rNkAbl0xhm/+anO6OlwbukTpKrxspswDKYFu2J1h84W8mXTLlXkVFzWyC?=
+ =?us-ascii?Q?RXWVyhbVs0MIk+9B52hmFb8iOpyeR1GKwulOtWMruXQrUV6Z+HXhWih0mnkd?=
+ =?us-ascii?Q?zQytslaJhTC2LaFV4lIqUQISs9mW9jP8G5kEYDFTA/sEsu2t?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413054439.1715082-1-mikey@neuling.org>
-In-Reply-To: <20260413054439.1715082-1-mikey@neuling.org>
-From: Anup Patel <anup@brainfault.org>
-Date: Mon, 13 Apr 2026 12:05:03 +0530
-X-Gm-Features: AQROBzCcl-LJ0nMVT4pylFo0k7IEEc2v2cILLcr4BVOVjWfJLHs-ruU1CPsIK8A
-Message-ID: <CAAhSdy1AG8N3iGJ9FLK+JPurnDv24ABP0LNhvx19ig1WHo8FxQ@mail.gmail.com>
-Subject: Re: [PATCH] riscv: KVM: Fix memory leak in vector context allocation
-To: Michael Neuling <mikey@neuling.org>
-Cc: atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, 
-	vincent.chen@sifive.com, greentime.hu@sifive.com, andy.chiu@sifive.com, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked: hqnvCUBsdoingIGpdKZYQpFX8ZFlR0VYdBRdTRmRMDs8l9+IUHr11KLfhV+cN0NK5NSh0pCZ/26ykBLjFSbv9bN0G3Pfp0IClgaShkY5X2zcgfOfO3BmMfXrf9OyPMhC1iI8x6FHJz4ptGBjA+VBWbYRceCsJW2Mb/u9OZvEHGuRXN74HWY/dDHoF3RopWAXX7wiuZa0FOpSXyLYf5aguTDcWs9f8P2g0Qx89NTyUQOMJzdVerHp7PUTOWaoJc2rSSFEyLUkyZMF2TcWE+FZ6jIaxJsdB/sNuKIIJZ3grY/YG1teZKnme5JmWE0tzgocame9lVexwmqbbNAZ32Bv+w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4df1e933-288c-4c15-6d50-08de9927b80c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2026 06:41:40.3591
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 76W/eLcypKNp15/99cetrqM80PmLgr2xUIJ2T4AGyUab0ncHV/TKs+qveLZTfpb+E+sWUi3620f0/3AyjCNb9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB8889
+X-OriginatorOrg: intel.com
 
-On Mon, Apr 13, 2026 at 11:14=E2=80=AFAM Michael Neuling <mikey@neuling.org=
-> wrote:
->
-> When the second kzalloc() for host_context vector data fails,
-> the already-allocated guest_context vector data is not freed,
-> causing a memory leak. This is triggerable from userspace via:
->
->   ioctl(vm_fd, KVM_CREATE_VCPU)
->     =E2=86=92 kvm_vm_ioctl_create_vcpu()
->       =E2=86=92 kvm_arch_vcpu_create()
->         =E2=86=92 kvm_riscv_vcpu_alloc_vector_context()
->
-> Note also that kvm_vm_ioctl_create_vcpu() does not call
-> kvm_arch_vcpu_destroy() on kvm_arch_vcpu_create() failure:
->
->   kvm_arch_vcpu_create()           =E2=86=90 fails, returns error
->       goto vcpu_free_run_page;     =E2=86=90 line 4209
->
->   ...
->   arch_vcpu_destroy:               =E2=86=90 SKIPPED
->       kvm_arch_vcpu_destroy(vcpu); =E2=86=90 which would call free_vector=
-_context
->   vcpu_free_run_page:              =E2=86=90 lands HERE, below arch_vcpu_=
-destroy
->       free_page(vcpu->run);
->   vcpu_free:
->       kmem_cache_free(vcpu);
->
-> so kvm_riscv_vcpu_free_vector_context() is never called to
-> clean up the partial allocation.
->
-> Fixes: 0f4b82579716 ("RISC-V: KVM: Add vector lazy save/restore support")
-> Assisted-By: Claude Opus 4.6 (1M context)
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
+> From: Jason Gunthorpe <jgg@ziepe.ca>
+> Sent: Friday, April 10, 2026 9:52 PM
+>=20
+> On Wed, Mar 11, 2026 at 09:07:00PM +0000, Pranjal Shrivastava wrote:
+> > > +	if (!obj)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	mutex_init(&obj->lock);
+> > > +	BUG_ON(!kho_restore_folio(argp->data));
+> >
+> > The use of BUG_ON in new code is heavily discouraged [1].
+> > If KHO can't restore the folio for whatever reason, we can be treat it
+> > as a corruption of the handover data. I believe crashing the kernel for
+> > it would be an overkill?
+>=20
+> There should not be any new BUG_ON's added at least they need some
+> better wrapper function or design so they are not in end-users like
+> this.
+>=20
+> But these cases need to fail by preventing the kernel from leaving the
+> initial safe boot memory space (ie it is going to crash anyhow). If we
+> can't recover things then we can't guarentee memory is not being
+> scribbled on and we can't use it.
+>=20
 
-A similar fix is already merged for Linux-7.1
-(Refer, https://lore.kernel.org/all/20260316151612.13305-1-osama.abdelkader=
-@gmail.com/)
-
-Regards,
-Anup
-
-> ---
->  arch/riscv/kvm/vcpu_vector.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
-> index 05f3cc2d8e..46fbf48f25 100644
-> --- a/arch/riscv/kvm/vcpu_vector.c
-> +++ b/arch/riscv/kvm/vcpu_vector.c
-> @@ -80,8 +80,10 @@ int kvm_riscv_vcpu_alloc_vector_context(struct kvm_vcp=
-u *vcpu)
->                 return -ENOMEM;
->
->         vcpu->arch.host_context.vector.datap =3D kzalloc(riscv_v_vsize, G=
-FP_KERNEL);
-> -       if (!vcpu->arch.host_context.vector.datap)
-> +       if (!vcpu->arch.host_context.vector.datap) {
-> +               kfree(vcpu->arch.guest_context.vector.datap);
->                 return -ENOMEM;
-> +       }
->
->         return 0;
->  }
-> --
-> 2.43.0
->
+sounds in a constrained context similar to kdump...=20
