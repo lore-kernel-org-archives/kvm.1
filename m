@@ -1,147 +1,131 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB94B318ED2
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 16:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CD0333745
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 17:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776099304; cv=none; b=cUGvByYgbOOLII+Kv+J8Au9vpg34Hr/AYBF8sALaFIRfJATOqdd3JeSnKVmRyspoQeLES+K2iIlRHpzXVxsN8kIy5KSpp8+A4X/vAPDafD6zVLiBHlcz7Y6k0cUDK7NwLTv8dM0t8lfyUQBBW5kgFlZi7cZUtTxcjsJ2NTM7IdI=
+	t=1776099616; cv=none; b=IzQMY1t0xs84Jp9hxzA2WCzGRfI2bj2QT9DmGK7SX6pJ4kxoCVLCfInr6MQ6iMB7vGchMJyk4lp6oQVFEdbRe9DB6vkqP1p3//bHCJCs1MpiE2QVmp6YL/ZpXl2bbwBjIhatdTutFg2wBeLs5VV/Wss0QZ5gI4I5e93ikcwI+TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776099304; c=relaxed/simple;
-	bh=ClzR7UQzXTe3HzyCT4OZzGbXNT6kioWjGLs7pHzfNTU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZiBJmNDQzavqljmMYqzlSorNUFCj6uwIi2xSDs0teWH0WO8as8IAaGRSuCmFaUWAD8+DJggi22VhFSrMe0dydKy5vivKpUOUhCo5gtwlxBktQNd84QoZ8zPWGWPIE0dDy8g/trS49rUMN2k+X2nruFkLkCj4S5/lb+D8elEJVC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eR/noyel; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776099616; c=relaxed/simple;
+	bh=1xEDXnOwtoc08m6CY5KQcDEvUc8PssGPm53i+rhKRCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Onh+3Q1PRPSZnLgZn7pDrogJm1mQcM3KOGqByDXVrZsF6ERWQDCWJdG/mGhQPPQBkb8wb9Dh6aEhLpYHKiQBu4YFkgFSU2Cq0BKMaH4GsQtOEasQFK9Li+2XZ5eCGXTxS7q40sMoJXpGqTMXzXU+Jg6PurJRNNTOkFVQbZAj17s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VzNhizq8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uE//lr91; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eR/noyel"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c1e1a6cfbso3340667b3a.0
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 09:55:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VzNhizq8";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uE//lr91"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776099614;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NGe3it6Xaz/9PfNFm2RNw8/yb6f7tozExOEz32v1TvI=;
+	b=VzNhizq8t+dqwcm3LSsyOrElN4jHAuqNK56TYO87imOwEVJHcmJ17IrTcNaLcWeu+/eUpq
+	QfAOMMGFtuOupy3/EpgZJ5duVMKrLtkhCR5BSCev7PYTBst4F0Afl/PmOMgldw3GDD92x4
+	v7WiGwSvQkHe81P1kHsCfrnDiY1DXnA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-p6sbeAovNdKWgJ1T2PBbvQ-1; Mon, 13 Apr 2026 13:00:13 -0400
+X-MC-Unique: p6sbeAovNdKWgJ1T2PBbvQ-1
+X-Mimecast-MFC-AGG-ID: p6sbeAovNdKWgJ1T2PBbvQ_1776099612
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43d76eeb303so1329383f8f.3
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 10:00:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776099302; x=1776704102; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j5j4sXGBcxPPwUarrcuWs3/BHde3gD/Q8o6gGTTOXhQ=;
-        b=eR/noyelvPKY4t4gNo0X8WpmWr1v4bP0pFA+JOsmZZybQ9ymJMYyaL4cxqiwFsMBZm
-         aFVJzk0ooc92ftS8wCatx+q9Z/HEglQfhvwimdnFgApkw21ik0xIgTWvZgGtxuKU1Gwp
-         Qz4TX6U8efTk8nDO0zKpFGj06KPTU3a8RAfkxoSI10yjJbMsA6ZpmQncCCEAhjkswr8k
-         2QP3WB73Uz0WQ8Jbmq/H87wi+AOonnR3DpVzVWs9laZKh0cK23bhlxRnHhA7TQSnFKLq
-         vuZXBLfCZGnChVA2NHNr3lq+H1ZKVN182hrdDZyO0pBHP2szH2Ic8oxa7KwTNHLM+70r
-         6Z6A==
+        d=redhat.com; s=google; t=1776099611; x=1776704411; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NGe3it6Xaz/9PfNFm2RNw8/yb6f7tozExOEz32v1TvI=;
+        b=uE//lr912SByo0pI09QH1YfMfXbIPo27z7OZVTu1l+dRqYsDOABMhv2BP7Rj1j96fR
+         cKECM1Oss4Rs7hxotmWW5byW022+IUef/xuiAYu5M1K1oQ8AvJMSSgIg9J3w94anQVnA
+         e8ty+aDPRvnqwcAu46fyH1EYcqqJioq8cuhyTR/nlKc2xFRpH1am+PcH4iaG4yDlXB6a
+         XRzqCQlpEN0WnWwL+thzfLme7PECckXYF08D05abo9hie76im1Gi071hi4nPhp6+VD0i
+         9y1EH+7EpK59KPR1efKbNZYDpT5KIO/fNm0Q2hVj2EIkAqe1WFPLZuoJQftGQgZf8ULC
+         ePTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776099302; x=1776704102;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=j5j4sXGBcxPPwUarrcuWs3/BHde3gD/Q8o6gGTTOXhQ=;
-        b=ZrVTnbRCY8sUeHRH15BShjzzrwiFrY8qV5+TFznnfN1zvBXM7fY40lnn43tsNO1QWN
-         RovyZdQ80T4vmSOliwGBfbkMwhRIyEWvpxpX2G/0l93830fB13cpXvNF8OvrGyE3tqHs
-         itVhFZqOMiD0U30KfouXjR47Qdi116yC6Ur0IQSoY2iKFtyItRDnpqxpo/XeRVQCtffD
-         f44g7PMkUNpbr5++yzCYLLpbRwMhepNXXhsLAR189M3nZJ35bN9EF1NJlaISWw5Me05u
-         SPc6pO+RgAebRHO4DPil1Qe2N+QRLGBEjtMpX/wELyJQIyBbP5iXRHNo6tVY1xFOzVBc
-         ZJyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/wmwCxPsEef/Krtpdkd8zEOWdbX5Sj1WScq6RqrW8OmEVWPnqLPdAI0GIJNSoiMi4xyCc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1+ltgHkjjt9O7sFgwnIRniydzVE7tktDnWnxGWSl3staPaWjN
-	+9z45E+/7Lx8/cK1WDs3GyGDFCKF842W33ckAferxaABDHqOmqAwykeIVVA3bqSW1ga4PcozSMW
-	FtJ78vw==
-X-Received: from pfgu29.prod.google.com ([2002:a05:6a00:99d:b0:82f:4d28:b8c5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:aa09:b0:829:88e7:c88b
- with SMTP id d2e1a72fcca58-82f0c2ad4a8mr14168457b3a.19.1776099302146; Mon, 13
- Apr 2026 09:55:02 -0700 (PDT)
-Date: Mon, 13 Apr 2026 09:55:00 -0700
-In-Reply-To: <CABgObfbv1VwPYB3N5P+bxkxBgvPTU5cUN5eF3jCQHMe+vA0qVA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1776099611; x=1776704411;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NGe3it6Xaz/9PfNFm2RNw8/yb6f7tozExOEz32v1TvI=;
+        b=WD4i/vTOjhKEmvT9+NP1+dsvc9pnV1sNHs23u1XzYj75BbXKGyFxCQY9yKJ+ZOwWd+
+         GtTh5Qs1V7Lv1Lim/qcCv1ksBBRFBzrkm+eLwEes+7teWPX+9GO+bsqBMW9lYsgnHYtN
+         jV1+EqNRb/LWMo6b4nSKzf+Y71clYQR/AZ0W1mixWbDyjLH5QkTQxMHATj+ND4MIMN/A
+         +TkBNJHWtaa0blMvPCJclifxojYMQ428fBVc/WJ3Db9CRC3pnB21m9vgEQFfUjAq/r4u
+         lTr6U8tMWx6p/0p/ryWj9NOkqeDYIc060WXpuR6GgcY0ptFm8lCgtpBd4rPnmCE1pkTo
+         R2Bw==
+X-Forwarded-Encrypted: i=1; AFNElJ90kCzc/+twMqwQYWTDATA+kTfA3KVeQLGjFPko8H4kxj5VnujrYQy3DrgAbZ9BIT6TLsk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6aE1JaC7t9mHiE9knqUJdLqc9UVyU31QNQXRHqYT7E+K4Wv+L
+	12JKboHQkTJ96w0SUron69uPMUBVCJrZStnE1Tfsk1zPICpBGh1P9U+M8dFyl6JzQBQAYvtgojI
+	Hab49cVmdwxHscPToBmDs55oIx5PEcTsMnOVjdykeyuO1i2DzsncHH5Vm439EHQ==
+X-Gm-Gg: AeBDieuq3HFu5fnqFSLvGq12ArWQoA1Df4ODmKlawRTs+Wz2mlVWWMvm/qk6je+CKfY
+	02dQZ44OJpO6L8UPmhXZdm7prHPMLwXvjw+JZPlEdk6UCmyjgN/jbJe589rT8z1L7xhbKgu/0NQ
+	IZZvvuTDSUEYA6x131E1BX8ZoKLi3I+34wwgMrYkeBb80cUpHQctZum6CT77BBIbLKYSRNpPpuC
+	D4fd7lvfNLQWjy36hqU8E6lI1+gSGUcqsVsXIMDIDy4n4nkBdwGr8RHaEuJvsP4sOjHGY7hjZCi
+	dh/GI7szXPo4dTooaDIakRkRFE4OmoxZ3C8OVcwxZecNtGpI+7wLNM+vEp0YPXjXUk7H/2m9TN2
+	MSx14evxfN8kDag4jvpgXdqOxgXFvlVWMcikfKcphlC8d/GOHtoM1ub8lT/6jUoxvjfVT6vU2tl
+	CmM8332ZtFE8ybUdw0C+Enq2b2
+X-Received: by 2002:a05:6000:240b:b0:43d:7633:2649 with SMTP id ffacd0b85a97d-43d76332872mr8869232f8f.45.1776099611175;
+        Mon, 13 Apr 2026 10:00:11 -0700 (PDT)
+X-Received: by 2002:a05:6000:240b:b0:43d:7633:2649 with SMTP id ffacd0b85a97d-43d76332872mr8869175f8f.45.1776099610668;
+        Mon, 13 Apr 2026 10:00:10 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.85.67])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d7a6054dfsm8417483f8f.17.2026.04.13.10.00.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 10:00:10 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com
+Subject: [PATCH] KVM: x86: use inlines instead of macros for is_sev_*guest
+Date: Mon, 13 Apr 2026 19:00:09 +0200
+Message-ID: <20260413170009.380778-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <202604131813.Sp3bcsFp-lkp@intel.com> <ad0c8lNL5ZoSRZI6@google.com>
- <CABgObfbv1VwPYB3N5P+bxkxBgvPTU5cUN5eF3jCQHMe+vA0qVA@mail.gmail.com>
-Message-ID: <ad0f5AH-KotxXeYD@google.com>
-Subject: Re: [kvm:queue 12/12] arch/x86/kvm/svm/avic.c:240:39: error: passing
- argument 1 of 'is_sev_es_guest' from incompatible pointer type
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org, 
-	Farrah Chen <farrah.chen@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 13, 2026, Paolo Bonzini wrote:
-> On Mon, Apr 13, 2026 at 6:42=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Mon, Apr 13, 2026, kernel test robot wrote:
-> > > tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-> > > head:   8f65c76d62f1f07d68b8a14829a59049311547b1
-> > > commit: 8f65c76d62f1f07d68b8a14829a59049311547b1 [12/12] Merge tag 'k=
-vm-x86-svm-7.1' of https://github.com/kvm-x86/linux into HEAD
-> > > config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/=
-20260413/202604131813.Sp3bcsFp-lkp@intel.com/config)
-> > > compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> > > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/a=
-rchive/20260413/202604131813.Sp3bcsFp-lkp@intel.com/reproduce)
-> > >
-> > > If you fix the issue in a separate patch/commit (i.e. not just a new =
-version of
-> > > the same patch/commit), kindly add following tags
-> > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202604131813.Sp3bcsFp=
--lkp@intel.com/
-> > >
-> > > All errors (new ones prefixed by >>):
-> > >
-> > >    arch/x86/kvm/svm/avic.c: In function 'avic_deactivate_vmcb':
-> > > >> arch/x86/kvm/svm/avic.c:240:39: error: passing argument 1 of 'is_s=
-ev_es_guest' from incompatible pointer type [-Wincompatible-pointer-types]
-> > >      240 |         if (!is_sev_es_guest(svm->vcpu.kvm))
-> > >          |                              ~~~~~~~~~^~~~
-> > >          |                                       |
-> > >          |                                       struct kvm *
-> > >    In file included from arch/x86/kvm/svm/avic.c:31:
-> > >    arch/x86/kvm/svm/svm.h:415:62: note: expected 'struct kvm_vcpu *' =
-but argument is of type 'struct kvm *'
-> > >      415 | static __always_inline bool is_sev_es_guest(struct kvm_vcp=
-u *vcpu)
-> > >          |                                             ~~~~~~~~~~~~~~=
-~~~^~~~
-> > >
-> > >
-> > > vim +/is_sev_es_guest +240 arch/x86/kvm/svm/avic.c
-> > >
-> > >    232
-> > >    233        static void avic_deactivate_vmcb(struct vcpu_svm *svm)
-> > >    234        {
-> > >    235                struct vmcb *vmcb =3D svm->vmcb01.ptr;
-> > >    236
-> > >    237                vmcb->control.int_ctl &=3D ~(AVIC_ENABLE_MASK |=
- X2APIC_MODE_MASK);
-> > >    238                vmcb->control.avic_physical_id &=3D ~AVIC_PHYSI=
-CAL_MAX_INDEX_MASK;
-> > >    239
-> > >  > 240                if (!is_sev_es_guest(svm->vcpu.kvm))
-> > >    241                        svm_set_intercept(svm, INTERCEPT_CR8_WR=
-ITE);
-> >
-> > Ha!  Not my fault :-)
->=20
-> Yes, I have already pushed the right one.
+This helps avoiding more embarrassment to this maintainer, but also
+will catch mistakes more easily for others.
 
-Heh, nope :-)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/svm/svm.h | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 56f38a851c1b..adf211860949 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -237,7 +237,7 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
-        vmcb->control.int_ctl &=3D ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
-        vmcb->control.avic_physical_id &=3D ~AVIC_PHYSICAL_MAX_INDEX_MASK;
-=20
--       if (!is_sev_es_guest(svm->vcpu))
-+       if (!is_sev_es_guest(&svm->vcpu))
-                svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-=20
-        /*
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index fd0652b32c81..a10668d17a16 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -422,9 +422,19 @@ static __always_inline bool is_sev_snp_guest(struct kvm_vcpu *vcpu)
+ 	return ____sev_snp_guest(vcpu->kvm);
+ }
+ #else
+-#define is_sev_guest(vcpu) false
+-#define is_sev_es_guest(vcpu) false
+-#define is_sev_snp_guest(vcpu) false
++static __always_inline bool is_sev_guest(struct kvm_vcpu *vcpu)
++{
++	return false;
++}
++static __always_inline bool is_sev_es_guest(struct kvm_vcpu *vcpu)
++{
++	return false;
++}
++
++static __always_inline bool is_sev_snp_guest(struct kvm_vcpu *vcpu)
++{
++	return false;
++}
+ #endif
+ 
+ static inline bool ghcb_gpa_is_registered(struct vcpu_svm *svm, u64 val)
+-- 
+2.53.0
+
