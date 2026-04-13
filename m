@@ -1,144 +1,185 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48783BED33;
-	Mon, 13 Apr 2026 10:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776077282; cv=none; b=L5rhmvow4a0ozdnlHbiPTmWSFDaUXRt0lczw5DTZRuoCuk8YBjROrgRqAuXs+E+yNtyw8MW/841Ap7uFZJDBSEFLckSufuvBQSqnaLHRa1jHWrV89jWNYGxBc5Y+7rKNk9j9IxiwkHuRrSrFZNpO66QSBGEETaXWqfR8XF8H+yU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776077282; c=relaxed/simple;
-	bh=aZSx7YQmE1Z978uWyh44sfmDm1hxUv65WZDkSBnuMUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKmC3338STwVvkw9H67OR7qAriyVXX8EWxH/rG3u6iUZj2kzluAxPHGXau3Jkm2XtXFnsBGT1WEzC9uoaZUKp8s4dXtKH3trfoVWmLO+XXq+hM3suL2n4MX7upIMYCpSvZHa4q2cHh9LT/Thj/LlnFTVs5d8aBD043VgKI7VE0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sQaAG562; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580121DF75A
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 10:48:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776077328; cv=pass; b=hxuPY/JKHL53BjHRfW4FRhMHKZ0JFo3aC47vR8ysAGaQCY1ksjf/P/VesxUAMY2aFtxAJIZ3BzlK2vFXkCCntJW25Kb9i0wO0HYJ++FkZv1WeqlbfTbRmYSZT1ptOACL9bNmiC+3fyGgpX/7BnafFkKmPxL7VLbHLfXn8luKxBg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776077328; c=relaxed/simple;
+	bh=DLrmXFsfnl46Cy2LBeh3ttWHw52IskeSuCm02y85cXM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fWSapyA+LaPZgav2pQO0wVWiomwU0WukAjeq/ggUjgxugqjTJvBxm5E2UoS0kYVm2rV0E5cjmTPrnlmIk0jVy+MCYT7rX6oWVEqy6c6y7DKH5eZsj/A7TSedunpENeDCmYvWLAkRkKFFQ7bc7s82WOGADeYAOKMoADR3L7JAeyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZduuJCAm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9rcctP8; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sQaAG562"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DAGk672176145;
-	Mon, 13 Apr 2026 10:47:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=uI7mu0IysYnhS00TW
-	hjwcknJZWwatJSHkWTb0suDkN4=; b=sQaAG5622pkX5i4HCbw4hbbDHICsBiran
-	eHxhsKJXIThXVyZjNED/kzz6s2BfsBE5ypmaTRpO58MSbQnma7Nb9HGYf7/Ps0+L
-	/6wui5FhWOigyVK2SPglC/uTCJauE8zENMK8n2My0Emt8+qUNeH3+wHprm8hGdSK
-	RgsfwlBghMwniMiHgdQc7Zz3FV7jYViF5guYGH/6GGos+xmcNlXdJTxueda5yuZp
-	Ets5ibsAQjFuF2T5WwTLcpAW0VFRjSEmAkZbWQsgvHF1CTwEGwd0c5Llkpe2khs+
-	w0xd7HDZIColGZ5FPfyJydYzAGROqlZJVJSU0YbG9zfy1Vx8ju1tg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfbqkf42r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 10:47:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63DAL6Qn025803;
-	Mon, 13 Apr 2026 10:47:52 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg3b1chk3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 10:47:52 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63DAlnhZ42926390
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Apr 2026 10:47:49 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 194872004B;
-	Mon, 13 Apr 2026 10:47:49 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A1D7320040;
-	Mon, 13 Apr 2026 10:47:48 +0000 (GMT)
-Received: from li-9fd7f64c-3205-11b2-a85c-df942b00d78d.ibm.com.com (unknown [9.111.7.85])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Apr 2026 10:47:48 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, david@kernel.org,
-        borntraeger@linux.ibm.com, cohuck@redhat.com,
-        linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
-        Steffen Eiden <seiden@linux.ibm.com>
-Subject: [GIT PULL 07/12] KVM: s390: Add some useful mask macros
-Date: Mon, 13 Apr 2026 12:46:35 +0200
-Message-ID: <20260413104721.203024-8-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413104721.203024-1-frankja@linux.ibm.com>
-References: <20260413104721.203024-1-frankja@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZduuJCAm";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9rcctP8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776077326;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
+	b=ZduuJCAmyb7Qh4lkH6ljNrm8L/2kaed4yfFx49wJnPSRCMAS4UxT60QUfrMZkKRN41Ge7/
+	70Vn+UIr385rjBeGOn8u9ghzuQjrRRxi9frh5+xFdXb8Jnv2LGOY4wj+Lta9JvnBb4vbAY
+	OJKv4JodqlngX9QgN+bL6GB/Lz4Dt84=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-u4K3GBY_Po6dZTxBUfYCQw-1; Mon, 13 Apr 2026 06:48:45 -0400
+X-MC-Unique: u4K3GBY_Po6dZTxBUfYCQw-1
+X-Mimecast-MFC-AGG-ID: u4K3GBY_Po6dZTxBUfYCQw_1776077324
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d1fec59c9so2330201f8f.0
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 03:48:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776077323; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DROvSN24iJVViLklNvPR9T2N5S1OHLCJMniCJc4oHiM/Oke29Xfxd45jDQpOzmjUAk
+         n5c+SCl+wsxvLLfV8qzaq1f9Ss+Q0XGNq8G9KLfcCAsGCSGTwyfE8+tsqQvalJ2Fw6Gb
+         /z2Yku5PmiSn4dgLhnn5ApsfuYQL4QH+nZgYq59+PSCXFkI90Z7thxX0UxDCB/U1VvNM
+         xT9e1SQr8iNa6us/+L3lOjMsmvbRrzbbtAR5VoTPhWC9vtOTHDogK6W/VfMfOExu0UBz
+         gDSU2GY/YU1QhXdo2nwPQgVVcS+Tck/R0HS1ZU7TsBUD/jPm714ZQgnzC7uFU9yIASPB
+         Q7Zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
+        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
+        b=elnMzyzMpxVgddHcKkL/z6eTlcFZTX+oLYRsAeJuDj5cctQXtJ4G9G4V2wsKUwpVsh
+         F7pGTdxkdv9SG+qRjw8Lr0jkPKeGMHIddeZ/Oc3ANOaWd/4EM6pf1dzqYGU4mpjY+gxW
+         fJZ+8N8E67rftpyQsm3/JQH8BCUmywpZCEcj258AD3KLRMgczvbT9aXnw5ohpYjw3TCE
+         zQ6Y4O/xm8Xq+pnlDgJv171I0b9+W9Y8jNTmYblxJznwmoTK5Vn0RQlSDSQdysEJXufb
+         KO/TdtaBwgh8sE3oPq7znZuc/IcR1U8saSBvDXHlMhCZubBZZY+lLIBLRpVH9w5dnfgh
+         JX+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776077323; x=1776682123; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
+        b=L9rcctP8pz6rvbQwfMHze45i/O05stSJrjuhyRggCX68z6dnqSGcvjbl903wlV1O87
+         Ue4W35SqmBUtwXh86vVy/jmmp0zQ7Hg8dFD1WTB5YHKFbwGr1ofiFl3+u91SXNVI0MxW
+         IsS6M7g7sET7epWs6oxkX4QZNtFFTVd+p0iIT+P+3mfmkMehMlD3DO3dYwUsc5fiqxw8
+         CPlON0p00FK7atugn3f9uAQ6pAPzRWSGAD+nqhVPIqqWASTTevQhdEqlUph5pUSO9V27
+         3YaWZqxLM8UpceC60Yll99NLg/SiVyHHE2Z2Gabzn/S8QCz0vO8osjFhLWkfA4rrLMN2
+         Qrig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776077323; x=1776682123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
+        b=mH/k/wd1DNOJ+vMKSNF68YosrHWdjvEnTVZVNOY3Zx3KGD76tsI9mUnCPfqiZllWtU
+         p02FtqdXplCrMkOQInXkw6v/cPs/qTD0cOiGf64+Y/YTR3beod+QqDTNyQlJvMqKDWRx
+         B50Af1pyKScfltLOjTjNCaegkn1l6sU28W1hZwM2n2THGMu7AX9uv8RT2FQ/qduAFFM3
+         M33YTuBs6pYOJnyZCIjf+U8M3jTIici94vkbCuB/LTbQQF6z+OG7XjsTEDUq700GR2A5
+         29vwICdeTtJ6KwIH3HB/XtMyFY369nd2HqMviAEYJ1vCH6m6BNt+dYHbyfibm/IH1Z7F
+         FOiQ==
+X-Gm-Message-State: AOJu0YxAZwW+7YsPuaB4whkdae5OC4v86MJWawR3vO1aDXXEeZr4N96H
+	0nlAEkY6px+jVINCbgaE25AinS5XTdH86um7bpIFS9kF4QQU3AdmiDfToh/XRrvfijLnyKFTYvc
+	FBEbXlWuySLyntprJs36BicdbvrO4yK1OhaUUj7fRr1ZC1GhVEq0mMhDhrtd4h/DUNCDdQr6tkP
+	4cMvNzChXtOEJMflngQgQ5JJTYCZH2GpxzIQQD
+X-Gm-Gg: AeBDieuPkNSwWJycGMTZ7432eSn2S/tKWgGTwIayakqKEQmQpuMjvySHrrYbKPVwFsB
+	xCE+1ijeISRVsaZZshUZPKUL9LT1llT9/rZfeURmNwOEMJrqYr8Icv645jQjcX3LygFZ9dLcdp5
+	T6ut/S1j/JWvqpQwflitJnMswvSgwW2G3nktxLoDfFj3eoJekCWiHVbzwjrWytnLButjOpvpcZ+
+	DzhLc6sEDIpcT35aD7AGctL+K5YsMhA4B1Ry4Cwn18s4P0wjBgsr7JyIM0XUgxg3MQ4xfWRm61I
+	Criu
+X-Received: by 2002:a05:6000:2803:b0:439:ccd7:cdcc with SMTP id ffacd0b85a97d-43d595c4d23mr16059589f8f.18.1776077323073;
+        Mon, 13 Apr 2026 03:48:43 -0700 (PDT)
+X-Received: by 2002:a05:6000:2803:b0:439:ccd7:cdcc with SMTP id
+ ffacd0b85a97d-43d595c4d23mr16059568f8f.18.1776077322616; Mon, 13 Apr 2026
+ 03:48:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I+9Vgtgg c=1 sm=1 tr=0 ts=69dcc9dc cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=Oh1pnlNaMCSVx7q4Av0A:9
-X-Proofpoint-GUID: 5rMs71k5OJotesH1AhyIucofOdg1A18C
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDEwNiBTYWx0ZWRfX1giSm/TVgpN0
- cFHoNe00t0iu8fYWZSaYwI4XZPWBhQp2XAwjRD271AubU1FyiKqOy3a1bQVXIEtw8U8HRcJVfGU
- PBcAOQcRNDsBcHD8L/YEkqiAfr/D/yZ/h/PZ5uSMd3uWNU1j2qIPkSAM5Sy7AC0kgatVvNTjETl
- vsn0i5cyeRmAs+MYfhgUuHYfRKnW2nJwVeeq0itgld8raNxgda16qqV4srY7x1A+4raD9lTy1hS
- wK/9n4jkmiNdxmve8w/Do6hhewwj2+WQpTcvvo9lRCwJZ0c0LKvHTKhkHMcv9cmTnT2QhJuCW1H
- iJ8CTmXurp16RFoWMlNnlNl9Fpw7dkk9LCQ46mM55wa5/BSBuSJkkO4wGP0hUY36ytkm3DKHZW6
- XdADQujLLCEn/4iG1ibRtaqWpT0Opx0Fw0kdEYBEeDTlHBoyWkC3VDbvMTpjIGVpux+C7eLp/hW
- beA45aTN05fMYZn51eg==
-X-Proofpoint-ORIG-GUID: 5rMs71k5OJotesH1AhyIucofOdg1A18C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-13_03,2026-04-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130106
+References: <20260410235832.2312342-1-seanjc@google.com> <20260410235832.2312342-8-seanjc@google.com>
+In-Reply-To: <20260410235832.2312342-8-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 13 Apr 2026 12:48:31 +0200
+X-Gm-Features: AQROBzAtHZ6dNpQ0Qo1grutxKAhlX1_VxSSUrtRh93zuGPbpdPIdcYXOGt12CqY
+Message-ID: <CABgObfaBWkUgtBWd8TDpHsU29XtmWheiBucDD8yNkCNJ5Jn_Dw@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: Selftests changes for 7.1
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On Sat, Apr 11, 2026 at 1:58=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Add Hygon support, fix a related bug in the MSR test, and add MADV_COLLAP=
+SE
+> regression test for guest_memfd.
+>
+> I'm also going to post patches and send a pull request to convert selftes=
+ts to
+> kernel-style u{8,16,32,64} types after you merge all initial arch pulls.
+> Please yell at me if you don't see anything on that front by ~Wednesday.
+>
+> The following changes since commit 11439c4635edd669ae435eec308f4ab8a08048=
+08:
+>
+>   Linux 7.0-rc2 (2026-03-01 15:39:31 -0800)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/kvm-x86/linux.git tags/kvm-x86-selftests-7.1
+>
+> for you to fetch changes up to 9830209b4ae8c8eecae7e6af271cebf1e1285142:
+>
+>   KVM: selftests: Test MADV_COLLAPSE on guest_memfd (2026-03-04 14:57:27 =
+-0800)
 
-Add _{SEGMENT,REGION3}_FR_MASK, similar to _{SEGMENT,REGION3}_MASK, but
-working on gfn/pfn instead of addresses. Use them in gaccess.c instead
-of using the normal masks plus gpa_to_gfn().
+Pulled, thanks.
 
-Also add _PAGES_PER_{SEGMENT,REGION3} to make future code more readable.
+Paolo
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/dat.h     | 5 +++++
- arch/s390/kvm/gaccess.c | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/arch/s390/kvm/dat.h b/arch/s390/kvm/dat.h
-index 123e11dcd70d..809cd7a8adb7 100644
---- a/arch/s390/kvm/dat.h
-+++ b/arch/s390/kvm/dat.h
-@@ -104,6 +104,11 @@ union pte {
- 	} tok;
- };
- 
-+#define _SEGMENT_FR_MASK	(_SEGMENT_MASK >> PAGE_SHIFT)
-+#define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
-+#define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
-+#define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
-+
- /* Soft dirty, needed as macro for atomic operations on ptes */
- #define _PAGE_SD 0x002
- 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 4630b2a067ea..a2ad11e2bf61 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -1461,7 +1461,7 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, uni
- 	lockdep_assert_held(&sg->kvm->mmu_lock);
- 	lockdep_assert_held(&sg->parent->children_lock);
- 
--	gfn = f->gfn & gpa_to_gfn(is_pmd(*table) ? _SEGMENT_MASK : _REGION3_MASK);
-+	gfn = f->gfn & (is_pmd(*table) ? _SEGMENT_FR_MASK : _REGION3_FR_MASK);
- 	scoped_guard(spinlock, &sg->host_to_rmap_lock)
- 		rc = gmap_insert_rmap(sg, gfn, gpa_to_gfn(raddr), host->h.tt);
- 	if (rc)
--- 
-2.53.0
+> ----------------------------------------------------------------
+> KVM selftests changes for 7.1
+>
+>  - Add support for Hygon CPUs in KVM selftests.
+>
+>  - Fix a bug in the MSR test where it would get false failures on AMD/Hyg=
+on
+>    CPUs with exactly one of RDPID or RDTSCP.
+>
+>  - Add an MADV_COLLAPSE testcase for guest_memfd as a regression test for=
+ a
+>    bug where the kernel would attempt to collapse guest_memfd folios agai=
+nst
+>    KVM's will.
+>
+> ----------------------------------------------------------------
+> Ackerley Tng (2):
+>       KVM: selftests: Wrap madvise() to assert success
+>       KVM: selftests: Test MADV_COLLAPSE on guest_memfd
+>
+> Sean Christopherson (1):
+>       KVM: selftests: Fix reserved value WRMSR testcase for multi-feature=
+ MSRs
+>
+> Zhiquan Li (3):
+>       KVM: selftests: Add CPU vendor detection for Hygon
+>       KVM: selftests: Add a flag to identify AMD compatible test cases
+>       KVM: selftests: Allow the PMU event filter test for Hygon
+>
+>  tools/testing/selftests/kvm/guest_memfd_test.c     | 70 ++++++++++++++++=
++++++-
+>  tools/testing/selftests/kvm/include/kvm_syscalls.h |  1 +
+>  .../testing/selftests/kvm/include/x86/processor.h  |  7 +++
+>  tools/testing/selftests/kvm/lib/x86/processor.c    | 15 +++--
+>  .../testing/selftests/kvm/x86/fix_hypercall_test.c |  2 +-
+>  tools/testing/selftests/kvm/x86/msrs_test.c        |  4 +-
+>  .../selftests/kvm/x86/pmu_event_filter_test.c      |  3 +-
+>  tools/testing/selftests/kvm/x86/xapic_state_test.c |  2 +-
+>  8 files changed, 92 insertions(+), 12 deletions(-)
+>
 
