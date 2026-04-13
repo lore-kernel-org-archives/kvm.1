@@ -1,124 +1,139 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3801624C0
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 04:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8070330B533
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 05:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776055299; cv=none; b=l5df+8UuXHpWbpgwmyIC3Bp4RPAGZW6tfM+3HBbPBgJXY773F4Jmb+A9ljwlDauq2PD7/qSfMm55unq8NYMGsX2l3rYpS13Mp3BaJ1eR44HLsT1kepQEQ4IcLahbu+8LrMcmfC0m6kq+hk0P79plhuiENDDhUEIN6D9fZsvxC5w=
+	t=1776059087; cv=none; b=QR5RYYg+5HRzHcTgswTM+nfOJ/iyiH7zt5oMc76KxtN717AIDRSg/KvgmJ9ZKkl1Qm44gISs5nm/QeuxjuqWKVGHN9REvjLpzYDnGqWpwUujswd3bMKNhi2kJLpSGRX7bUd1LIBGsHR7jeEskH5eMgY8QagnbpiSZ0DgVrrTOn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776055299; c=relaxed/simple;
-	bh=9QMcwr3K9a1rUC6dPSs4TB5F2gYSDrTYe4Yx0qG4YjA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R6Z9kS6ZtMzVHBdOzRYLWWRNR9hnSL3mx+dTU6eFpBZh7KLAu49Oh4eJnyZNU1bsJjSWaHHXl4+ftq0PfOnpiC1aDzLCUcYhFi72gmDMGqwQW5sSEJiKDtP7qNqlV6s8kC9L9iiDlGAfyzehO3Ea9mjMiYtklpCfjPUsi4ku9Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dTRP3eW7; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1776059087; c=relaxed/simple;
+	bh=DF3MzSny1Am7eKIwk79qee/angPaE8IKQJ94fvbsu28=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UkINrlnu+w8h/sDd+xcV4UcGx0buFozBFeatR7dLu2CPuWrfa1mczWJLN8sHnSNxcuSxoLblJG9C4Dodln07aNk9eHzMLMdExfsoVWHnXika+KAmZpF1vK/ddyvunpARqiqOFUTDh2HxO22vlPeTF6QOqpGy4pCMrWZWeZ4Vkj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=neuling.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACXBKVy3; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dTRP3eW7"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2aaed195901so17670695ad.0
-        for <kvm@vger.kernel.org>; Sun, 12 Apr 2026 21:41:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACXBKVy3"
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-40438e0cba6so2356632fac.1
+        for <kvm@vger.kernel.org>; Sun, 12 Apr 2026 22:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776055297; x=1776660097; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QszutIL7wDTHLCDNTzcTvkrv//j2mQDdIveZtbTBtCI=;
-        b=dTRP3eW76afdEEl5Q9Q0Tb+ZmxDBy9IrDMI8GR64fHKwD+yfZJV0bI1Ts+NpXCgvme
-         OC999HFax2exYUS09Qs4LPRtyEIPco8fRdDgXU4kaoeV3qsDN5mb0bQJxxkljJQw9wgi
-         Se4n4R6/bxkB3iNMiU3ZmseuTLBKSnO66VaLI7vBz7i2r8p8eeux8fbQJMIYYK4LM4xO
-         +vDUxk8Xgpu7+vpnfcYS1cM8paFnRvVCZQyra273AOF6PzHd2zh5IfuQZCEIoDQOZmn4
-         ZSP+uBsDk0MdSvwlULCL+46Qu8jS68mPev2jvKzXwq3uLjmwVHcOt/yJyNJotStyT+iN
-         n/YQ==
+        d=gmail.com; s=20251104; t=1776059084; x=1776663884; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=5VXrjV443bibQOd/tYM5XouxdJe5ZhAegjzCEygNJdw=;
+        b=ACXBKVy3vjkzD+3XnN5t/Odyt9XDnX9YcOzCXQDg4ET3UTntw1tJ5e8JkcnHEcf5w4
+         /85YNflNNoy16orqtF/vvKuI+TfC5bCCK7Kbg65IaCg/afP+iKoRCl7GR9Q2LhxLC6a2
+         rc0TG+c76YuJrlgQuH4b1P1ZzuPT9JP2heKj6i8tSlyzxJuFW9fMLLFNHkasLJ45advD
+         059iHbCVPpEBhkp4rexbB4F5tyU4GePF5ufxFuX9nBtQ9CJNCqly7rJObwQO2F7FS0sZ
+         u+tkRcLSEvJ+imKBSYgbI17b8NkbbzL+rurHxFEnQwNaZ3+W7vh0YOBd02abHujyGXHA
+         RGiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776055297; x=1776660097;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QszutIL7wDTHLCDNTzcTvkrv//j2mQDdIveZtbTBtCI=;
-        b=QL2bX55LTdLC+UFBL6y6fCm+/pD8KsY8XoYkcwXD6ymYFlzwO/GOM+gTur9h23yT1J
-         TnU4v/qFS8jAPXWj2nTfyU9xRj2yPi4uFT1Fj6i20WFNFpYoPH0Nu3GMyeCyFEBXHeRh
-         IPJZ8o2YuF2j/kadqGYea85L4VYbc4Wu9HI8vDWT5imNuUOw4ijrsAuisii+rh7dd1Bt
-         GDJlyXmhDKICYFBAii1DMCcUw5fEk0kPAtydbN2yKKlWN9hvD11UdMGhAGDXmbih94zH
-         vopiDvhh+bcoZKv5CLmnazr+E5O7dwAQvCkwII5TW5y4jN+ona219WpPhh/2ZaxV7yjx
-         3YYA==
-X-Forwarded-Encrypted: i=1; AFNElJ/RQ3qbCrRkUYNBYCahNArrukyReYkmdczE8BbZWoGxkGuXNAUO8bbtNotDZIM3Pt+6Uis=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqgizK1zowiXrVRgYslL0mr2qr/syvelvtWMebFutKCnNSoute
-	nop3GFDuYuwQL8MgSS20W/VHo6lriTNSTGn+bwcUnPOAyhs0lVv9Ew++rjtz29D9A5w=
-X-Gm-Gg: AeBDievxzk7WvrOnTlhdW+o0pmHAyeNNsONZfJPOSMoa+E1k3QgsCDg1BXV027MXZkb
-	cpgQd629uLHC3xJma45hCaQ5fzJv7CQCscGrercR4LALvDQC/NTqP3KLK/5oY5MSc8DXD91AVxA
-	hMqBaKcxMlxWGfki7ObSShE+0+15sjbnJeJiB88/Ou//Ixe7VW6RcYsI3S2jVD1q5O5/pDSoHfw
-	eCVbSL++mhmRxvh9WAIucj5DeuqQJHaRBq32ESQObjofbc3Gn4J0CszhAAtZCIEvtY87GUd8RLD
-	OtZ/btDGkGzXKknF5WjyBEra3ixIl2wr32Uku2vpxGkOjNOGraAbm1CGuPHrThH/h/gK5GeQPSk
-	7ejIiDmtcVQ5aU/OvUs8cpqKyXSBqhvD3jNFJ6GBe/4pideRu+UTRMoKrdsDRrInD2u5XH3PArf
-	9EGYT1lVRhioWfu4heMc4BTPLzUq389PHeTPTsdrQ+AtlXzmblvGnseUlsdTTpLf2nWe5DFl78B
-	bAVxss/h+tpmOiOT9IbMa5z9hTCSHu3sOPA9+4LHcoZRSl6/cic6hg=
-X-Received: by 2002:a17:903:2c50:b0:2b4:5cb8:99eb with SMTP id d9443c01a7336-2b45cb89e2emr30003155ad.27.1776055297031;
-        Sun, 12 Apr 2026 21:41:37 -0700 (PDT)
-Received: from ?IPV6:2401:d002:dc0f:2100:a7b4:d4f1:5b23:321f? (bg30dj032xp6rdh0yngy.ip6.superloop.au. [2401:d002:dc0f:2100:a7b4:d4f1:5b23:321f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f3a8f7sm101698425ad.71.2026.04.12.21.41.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Apr 2026 21:41:36 -0700 (PDT)
-Message-ID: <cc224b46-c705-46c7-94b7-b5638bbe3a0f@linaro.org>
-Date: Mon, 13 Apr 2026 14:41:30 +1000
+        d=1e100.net; s=20251104; t=1776059084; x=1776663884;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5VXrjV443bibQOd/tYM5XouxdJe5ZhAegjzCEygNJdw=;
+        b=swnodYA46fsffUZ3pH6elItHODp6ZkgCRIlwWrO4Bj1inWjSt6TU/zDLIP4bm7BAt8
+         yXtK9DjcrjJFH3mAsSdQkNuoEplSnt8qdmhrx1fmqgIpm+Mqu4KkS3ilifkm0oAZh+Jg
+         XimmuT0jDHZx4seEy9cTzWKMhNFvtxSSO1kDac+hlQog9wKJHQD2gPsT1YcSIPlkvU0H
+         RU3x27kxe+yP3tw1a09ovYeIFSLYcKUbXouL/XRobVgN5tL6pc61PEfcsdxTpUli5SgB
+         Tk6P29RkeDoLRPOZQ/f13qCejSbLCnHF7aDwuITgTzvBVjGJnUs9BBKuRBDe/rrJD9sW
+         AkPw==
+X-Forwarded-Encrypted: i=1; AFNElJ8RyKlVqJs9phVSIMhKm+ADGHXMo2VA7q46ka42sKBY3BzG0i+jEwSr/wHf0lV7v0kzfyM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpqALusl7ZkzAP8PFeIEmfdeC6w+VM1xMukARAf9Sdj25VgDe+
+	w3XWlEzXQ98BWzg4mMEThKka+sLDZP1s67omjMIjV16ZBAN67NYnankg
+X-Gm-Gg: AeBDietCoGXFi/ijnayEvmVTIMNJtRj1+hfQEx+0aWKqjXW6CMujLzH5X7A0vCs0yBW
+	9KuwtITK6AUF9INWQE/lXzing0PqM+D0iIsR3qoMOq4DX1J57gPvke7cvpgWdFrLdu36Jlg8VLJ
+	buhfdprVqWhmE5wtjiGSW+7EZzyZgrdE8dtS6dYhicS6k3BG65BfVU3XQqxpsJg1ntNMx5X6UNX
+	/IC49m5x/7Rpl9c4zEqQ9WdphE+ad6fo2yyjYF05j4GLgYdcAGOLHHo+VlvVTy/AiLxCEb1OA0s
+	1lro59gFDq3kbw/gR3apgxJ3MvUNaT9eG641X5IK+El0nzHDGklcKAkxRjVk8To6mc+F/f8PBi9
+	GujKeSIkiRDv8nShvO44X9uSOA3DHQ26C9N6gUzOleJyevpRHklN2SSzEaht554sfv9XQzpoAys
+	a9aS4JchOGYB8dSNJxTx7Ra4yu/W3jjM2L+fD8p7kiUWWb
+X-Received: by 2002:a05:6871:8a5:b0:422:ba93:2150 with SMTP id 586e51a60fabf-423e0dcd14cmr6537796fac.4.1776059084209;
+        Sun, 12 Apr 2026 22:44:44 -0700 (PDT)
+Received: from ird-aus2.tenstorrent.com ([38.104.49.66])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-423dcf9726fsm8520703fac.0.2026.04.12.22.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Apr 2026 22:44:43 -0700 (PDT)
+Sender: Michael Neuling <michael.neuling@gmail.com>
+From: Michael Neuling <mikey@neuling.org>
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	kvm@vger.kernel.org,
+	vincent.chen@sifive.com,
+	greentime.hu@sifive.com,
+	andy.chiu@sifive.com,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Michael Neuling <mikey@neuling.org>
+Subject: [PATCH] riscv: KVM: Fix memory leak in vector context allocation
+Date: Mon, 13 Apr 2026 05:44:39 +0000
+Message-ID: <20260413054439.1715082-1-mikey@neuling.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 19/27] monitor: Introduce HMPCommand::arch_bitmask
- field
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
- Markus Armbruster <armbru@redhat.com>, qemu-s390x@nongnu.org,
- kvm@vger.kernel.org, qemu-ppc@nongnu.org
-References: <20260410195323.17937-1-philmd@linaro.org>
- <20260410195323.17937-20-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20260410195323.17937-20-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 4/11/26 05:53, Philippe Mathieu-Daudé wrote:
-> Add the @arch_bitmask field to the HMPCommand structure,
-> allowing to restrict a command to a set of target
-> architectures (represented by the QEMU_ARCH_* enum constants).
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   monitor/monitor-internal.h | 6 ++++++
->   monitor/hmp-target.c       | 1 +
->   monitor/hmp.c              | 4 ++++
->   3 files changed, 11 insertions(+)
-> 
-> diff --git a/monitor/monitor-internal.h b/monitor/monitor-internal.h
-> index 3ecd394ecf6..78281928e7a 100644
-> --- a/monitor/monitor-internal.h
-> +++ b/monitor/monitor-internal.h
-> @@ -74,6 +74,12 @@ typedef struct HMPCommand {
->       const char *params;
->       const char *help;
->       const char *flags; /* p=preconfig */
-> +    /**
-> +     * @arch_bitmask: bitmask of QEMU_ARCH_* constants
-> +     *     Allow to restrict the command for a particular set of
-> +     *     target architectures.
-> +     */
-> +    uint32_t arch_bitmask;
->       void (*cmd)(Monitor *mon, const QDict *qdict);
->       /*
->        * If implementing a command that takes no arguments and simply
+When the second kzalloc() for host_context vector data fails,
+the already-allocated guest_context vector data is not freed,
+causing a memory leak. This is triggerable from userspace via:
 
-This and coroutine could be placed better to avoid two holes.
+  ioctl(vm_fd, KVM_CREATE_VCPU)
+    → kvm_vm_ioctl_create_vcpu()
+      → kvm_arch_vcpu_create()
+        → kvm_riscv_vcpu_alloc_vector_context()
 
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Note also that kvm_vm_ioctl_create_vcpu() does not call
+kvm_arch_vcpu_destroy() on kvm_arch_vcpu_create() failure:
 
-r~
+  kvm_arch_vcpu_create()           ← fails, returns error
+      goto vcpu_free_run_page;     ← line 4209
+
+  ...
+  arch_vcpu_destroy:               ← SKIPPED
+      kvm_arch_vcpu_destroy(vcpu); ← which would call free_vector_context
+  vcpu_free_run_page:              ← lands HERE, below arch_vcpu_destroy
+      free_page(vcpu->run);
+  vcpu_free:
+      kmem_cache_free(vcpu);
+
+so kvm_riscv_vcpu_free_vector_context() is never called to
+clean up the partial allocation.
+
+Fixes: 0f4b82579716 ("RISC-V: KVM: Add vector lazy save/restore support")
+Assisted-By: Claude Opus 4.6 (1M context)
+Signed-off-by: Michael Neuling <mikey@neuling.org>
+---
+ arch/riscv/kvm/vcpu_vector.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
+index 05f3cc2d8e..46fbf48f25 100644
+--- a/arch/riscv/kvm/vcpu_vector.c
++++ b/arch/riscv/kvm/vcpu_vector.c
+@@ -80,8 +80,10 @@ int kvm_riscv_vcpu_alloc_vector_context(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
+ 
+ 	vcpu->arch.host_context.vector.datap = kzalloc(riscv_v_vsize, GFP_KERNEL);
+-	if (!vcpu->arch.host_context.vector.datap)
++	if (!vcpu->arch.host_context.vector.datap) {
++		kfree(vcpu->arch.guest_context.vector.datap);
+ 		return -ENOMEM;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
 
