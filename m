@@ -1,54 +1,54 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0439150D
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 20:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D9337C92E
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 20:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776113208; cv=none; b=gmf6y1zcAwIPQEUNapEYP7CLUcB5FyFIQRtFgVi7dZgLEe/xdla/nBrH1nX2VstqjxgsYeaQy2n4EGg9FbAbjRXRty2N+mlKOK3hg5f8scWviWTLglf8jA5yjsKgGeYRwQ2yyBiCMc6ZeNai+tKxvaCn+++WiTXuEWpIT7Y4hlc=
+	t=1776113209; cv=none; b=u9j57Re/Mgk9aUnPQjEix8I223Mf/h8FP/zwxDwckgbLriEtiJZpIQGvEItex+68SgT5w9zaX348MYLDSplfIq5hlwm5ahai5mR8POXMggesmTvp6KS7Vy2PHowNJXYogTz3ElCD0BArywtz7qqYEeJxoZqTn67UmX8mhI0YJhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776113208; c=relaxed/simple;
-	bh=d1hpiMRFdZxpuyMBateAzzMrtZDgNqqBolAYJJFqEkY=;
+	s=arc-20240116; t=1776113209; c=relaxed/simple;
+	bh=1JhpdHjs4nhsKu12NN8RJ/F7gAo6s0Kly6krui3KfCU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XXUUjZsJCQ2hZnReO9/ZtDe0HJBGEpNr6ih+P10tJ9+3HHj94/854fQh4l30tyNEAo2hkylBsZxKSb5qb6EhZviGwn9dO6+1tzCv60eSRaudbAFHy9pEFenOwQieB9hOBLL7S3CD13LBOK2BSy0W9oovEgOjYcmiFc2xNLysuGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YeZDoR1f; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=o/8GQvKS2Cc8O1FGQeTSH+3Hbqj/oSxwplH4Io/nb5cSpMa9OO7rv8EfuunqppcjSzZH1DvVw04Dqa/XUTYZfN5w/emnV2Fe/1E8clhPZZUdHh6WPZNmDbE8gPL9wdBR2uAEXKcuRpvcrFhZSXQTk1lB+hTvWBSV07pf2vW+KJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LLt7Uh/s; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YeZDoR1f"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso4191823a91.2
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 13:46:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LLt7Uh/s"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2d83e7461so57727355ad.3
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 13:46:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776113206; x=1776718006; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776113208; x=1776718008; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hDtbVk3LBocL0OBzLHiNFhK4Hxgjw9y2iVyvWfAweOc=;
-        b=YeZDoR1fVWEswagy1gTULv04juTWntkgmORFWeQHbVRhHN1fIp29eERjo7tVLU+tfL
-         j3c0aRfGkfhp8Fg9hXZmb1+ZvpFC0XS8sZTC6HcERDVAsMiwYPP+5hf8gHxCcAcNrX//
-         pVDj/8pWJWa9wewF0UP1mL1QLv5XFkaaWCe6NrbFDv9vemU+TLjrtcvY8OJHVTfZq6st
-         2Ko1whh/Bni3S3hXpJq3k4lUN6ROPVDTg7hr5s+0KVa5gjYyOIxbveMQ3GR2qOylKFM6
-         AL/UgCT5hmI6v5f+Yu8Y2e3T9pzydpO20CDuEbgu3SK+zKZOHUXQK6Uwmcn1ft3v5vEJ
-         3lXA==
+        bh=7sl1KtXC/+tuHHiZ0wl9PU8IScEDOzQEqTGCZa1m8Xg=;
+        b=LLt7Uh/s3RaY+4IpFEGnuvaBnbUpQnRjiDtz6vyhRarYTVzXJGhtuNdL/6zkFveD0P
+         Ve915ni3YN1pyyezJWuAyvJACFv6FXLIcgkgKUuhgtQyAiNKEPvuiZAXGK0rxIBlwAne
+         ziCIvuRz8C/wDVyUlddEZmAqzqG4LV0pV8vi8tw6JBO+N+7uZpLjE6EYiMc30ua8mich
+         nY/3NuyITyScKt20dGel+30764nRWTH1L1U1p7DBHgP4MAzlV713cHNYwuxPald0o+yt
+         tHHlNOH4V/TYa2tN0AlIa2gHMyYVyv6HnHm/bVlVZwZbVMQ6jgJ6MFGRJngQGNv134AE
+         nidg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776113206; x=1776718006;
+        d=1e100.net; s=20251104; t=1776113208; x=1776718008;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hDtbVk3LBocL0OBzLHiNFhK4Hxgjw9y2iVyvWfAweOc=;
-        b=GJPKKqMG0gTADbcTlEhk9/FAM3otCr1L1HfOeTh5PyAD1RHi7Qf6w+OeRtcUnk5ZwG
-         siiIHptszTTSu9bWfBunR2pI0TOMEK8jGYH/6pcDZ1lNuxc0hrji3OOmDdcseShHp1EK
-         pf1ZxU8iKmn8+giIcwCxaBfBlXA0VXXCT+kxXVpmEyWT++qIWG0TUv63Od5BMeHhEOne
-         aMi54up/8fpJLkq3FzBJ9LdBLBwkSz0U3SA/Mc+k67AUtEerbrXK0fJ+Rm8r4sATl9++
-         cpucbzHtUzChXC+QYJYHr63op+YJVwh0Z7eHFo+8jJEwjDBhtL21eUj4M5WrAxgyIYMK
-         Qgag==
-X-Gm-Message-State: AOJu0YyS+Xe1/9Ruld1ZxgvKCsreLIM9NXC6NBhf1yCkk4E6fEgJFrOM
-	UkLGdgZAoPNlXLO/iOa5vhi///k3TGNeja2vXM+uxgeAO5AWg4U9FDw1pbprfNTEVFUbSWneMYg
-	Lx/+Xv1I38UPu2jh4+ZdB+FUh7Fj6vcnbSpXvTsUkLYGkK0ZyKp6mPjyDJFevbR+Tp02np7gC5e
-	GumvDLuQFhAtEVlpRL2x5+3rW4hWgnUIlY8j3XXbzx9TWX5kuHkSBzBr0dq/M=
-X-Received: from pjbpq10.prod.google.com ([2002:a17:90b:3d8a:b0:35f:b90b:85d7])
+        bh=7sl1KtXC/+tuHHiZ0wl9PU8IScEDOzQEqTGCZa1m8Xg=;
+        b=GUuqKr1dma2nJarprzRi8IZ8XD4Z5+GwOHWSPQwoTDrznaEKZWRCqB4DUVZOFLFtGB
+         3nn33xgLtaeeL/mG2m9MoBgbvHFmm9WtN+NOLUcO7fg6+n+jrCEPM9plPVs9+/pUjwac
+         xWXKLSLJB16d0tK8YE6EibzHL0ZrFwFGMuIJHyzHN4UA12S8RKPtL8hcgI7W0lxKv4r8
+         dWbfpNCVJMlh8LE0gr9C5AVy1ybEmal4XRAX9UkEhxeora+7zbuSQFQwAkWELQdhw270
+         NHl7juvGC66TETinrqP12CkWJ0CPxg1AtpSYGhuhgKlmZsQe1d4bPhFS9lKVWEQkKUPR
+         VTPw==
+X-Gm-Message-State: AOJu0Yybswf/xu4YqelBxFNU8qKHQm6EysOYW3lI9qIznfbr9aNWw5wZ
+	/2gtUlLzgoG3jRfp6pW+KQuaiC6cMonlPX5fo1vHuzP7TsLOlKXEZLLOVsOAdBeRpLK60LbDApS
+	yftAeZ1Tdf+jrT/kj2MK5wzg5XHBWz9FR3liMpPWldiYVzB5o5bYcKXEJbnL7Et3ncuXsd/pvSa
+	i+ethiGOfELXNA1KhHAAm18xUwJjq4mT84POgvGFcJOXFH3+lq4YXRurNpXUk=
+X-Received: from plv10.prod.google.com ([2002:a17:903:bca:b0:2b2:a715:a848])
  (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4d88:b0:35f:ba3f:e04e with SMTP id 98e67ed59e1d1-35fba3fe3ddmr4189553a91.11.1776113205851;
- Mon, 13 Apr 2026 13:46:45 -0700 (PDT)
-Date: Mon, 13 Apr 2026 13:46:29 -0700
+ 2002:a17:902:aa4a:b0:2b0:c451:ae8a with SMTP id d9443c01a7336-2b2d597d32dmr109567715ad.13.1776113207637;
+ Mon, 13 Apr 2026 13:46:47 -0700 (PDT)
+Date: Mon, 13 Apr 2026 13:46:30 -0700
 In-Reply-To: <20260413204630.1149038-1-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,9 +58,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260413204630.1149038-1-jingzhangos@google.com>
 X-Mailer: git-send-email 2.54.0.rc0.605.g598a273b03-goog
-Message-ID: <20260413204630.1149038-7-jingzhangos@google.com>
-Subject: [kvm-unit-tests PATCH v2 6/7] lib: arm64: Add guest-internal
- exception handling (EL1)
+Message-ID: <20260413204630.1149038-8-jingzhangos@google.com>
+Subject: [kvm-unit-tests PATCH v2 7/7] arm64: Add Stage-2 MMU demand paging test
 From: Jing Zhang <jingzhangos@google.com>
 To: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
 	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
@@ -71,288 +70,151 @@ Cc: Oliver Upton <oliver.upton@linux.dev>, Andrew Jones <andrew.jones@linux.dev>
 	Jing Zhang <jingzhangos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Implement the infrastructure for managed guests to handle their own
-exceptions at EL1. This allows guests to manage internal traps
-independently of the EL2 host.
+Introduce a new test case to validate Stage-2 MMU fault handling. The
+test verifies that the hypervisor correctly identifies and handles
+Stage-2 data aborts triggered by a guest accessing unmapped memory.
 
-Changes include:
-- 'guest_el1_vectors': A dedicated EL1 vector table for guests,
-  supporting synchronous exceptions, IRQs, FIQs, and SErrors.
-- 'guest_context': A per-guest metadata structure tracked via
-  TPIDR_EL1, containing a dispatch table for guest-internal handlers.
-- 'guest_el1_c_handler': C-level dispatcher that executes registered
-  guest handlers or triggers an HVC trap back to the host for unhandled
-  exceptions.
-- Integrated setup: guest_create() now allocates and maps the guest
-  context, while the context switch logic ensures VBAR_EL1 and
-  TPIDR_EL1 are correctly saved and restored.
+The test performs the following:
+- Sets up a guest with Stage-1 disabled, using identity-mapped host
+   code and shared data in the Stage-2 page tables.
+- Triggers a Stage-2 data abort by accessing a specific unmapped IPA.
+- Catches the exception in the host, verifies the fault address,
+   and dynamically maps a new page to resolve the fault.
+- Resumes the guest to confirm the memory access completes successfully
+   and the fault handler functioned as expected.
 
 Signed-off-by: Jing Zhang <jingzhangos@google.com>
 ---
- lib/arm64/asm-offsets.c |  2 ++
- lib/arm64/asm/guest.h   | 26 ++++++++++++++
- lib/arm64/asm/sysreg.h  |  1 +
- lib/arm64/guest.c       | 39 +++++++++++++++++++++
- lib/arm64/guest_arch.S  | 78 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 146 insertions(+)
+ arm/Makefile.arm64    |   1 +
+ arm/stage2-mmu-test.c | 107 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 108 insertions(+)
+ create mode 100644 arm/stage2-mmu-test.c
 
-diff --git a/lib/arm64/asm-offsets.c b/lib/arm64/asm-offsets.c
-index ceeecce5..fc9f28fb 100644
---- a/lib/arm64/asm-offsets.c
-+++ b/lib/arm64/asm-offsets.c
-@@ -37,11 +37,13 @@ int main(void)
- 	OFFSET(GUEST_HCR_OFFSET, guest, hcr_el2);
- 	OFFSET(GUEST_VTTBR_OFFSET, guest, vttbr_el2);
- 	OFFSET(GUEST_SCTLR_OFFSET, guest, sctlr_el1);
-+	OFFSET(GUEST_VBAR_OFFSET, guest, vbar_el1);
- 	OFFSET(GUEST_SP_EL1_OFFSET, guest, sp_el1);
- 	OFFSET(GUEST_ESR_OFFSET, guest, esr_el2);
- 	OFFSET(GUEST_FAR_OFFSET, guest, far_el2);
- 	OFFSET(GUEST_HPFAR_OFFSET, guest, hpfar_el2);
- 	OFFSET(GUEST_EXIT_CODE_OFFSET, guest, exit_code);
-+	OFFSET(GUEST_TPIDR_EL1_OFFSET, guest, tpidr_el1);
+diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+index 9026fd71..e547f92d 100644
+--- a/arm/Makefile.arm64
++++ b/arm/Makefile.arm64
+@@ -67,6 +67,7 @@ tests += $(TEST_DIR)/cache.$(exe)
+ tests += $(TEST_DIR)/debug.$(exe)
+ tests += $(TEST_DIR)/fpu.$(exe)
+ tests += $(TEST_DIR)/mte.$(exe)
++tests += $(TEST_DIR)/stage2-mmu-test.$(exe)
  
- 	return 0;
- }
-diff --git a/lib/arm64/asm/guest.h b/lib/arm64/asm/guest.h
-index b99641ef..8b40f3a5 100644
---- a/lib/arm64/asm/guest.h
-+++ b/lib/arm64/asm/guest.h
-@@ -29,6 +29,26 @@ enum guest_handler_result {
- struct guest;
- typedef enum guest_handler_result (*guest_handler_t)(struct guest *guest);
+ include $(SRCDIR)/$(TEST_DIR)/Makefile.common
  
+diff --git a/arm/stage2-mmu-test.c b/arm/stage2-mmu-test.c
+new file mode 100644
+index 00000000..0df4704b
+--- /dev/null
++++ b/arm/stage2-mmu-test.c
+@@ -0,0 +1,107 @@
 +/*
-+ * Guest EL1 Exception Frame (pushed to guest stack by asm stub)
-+ * We use a simplified frame: x0-x30, elr, spsr. size = 33*8
++ * ARM64 Stage-2 MMU Demand Paging Test
++ *
++ * This test validates stage-2 data abort handling by purposefully
++ * accessing unmapped memory in the guest and verifying that the
++ * host correctly handles the fault by mapping the page.
++ *
++ * Copyright (C) 2026 Google LLC.
++ * Author: Jing Zhang <jingzhangos@google.com>
++ *
++ * SPDX-License-Identifier: LGPL-2.0-or-later
 + */
-+struct guest_el1_regs {
-+	unsigned long regs[31];
-+	unsigned long elr;
-+	unsigned long spsr;
-+};
++#include <libcflat.h>
++#include <alloc_page.h>
++#include <asm/io.h>
++#include <asm/smp.h>
++#include <asm/guest.h>
++#include <asm/stage2_mmu.h>
 +
-+typedef void (*guest_el1_handler_t)(struct guest_el1_regs *regs, unsigned int esr);
++#define TEST_PAGE_IPA		0x40000000UL
++#define FAULT_ADDR_IPA		0x50000000UL
++#define TEST_DATA		0xBEEFCAFEUL
 +
-+/*
-+ * Guest Context Structure
-+ * This will be pointed to by TPIDR_EL1 while the guest is running.
-+ */
-+struct guest_context {
-+	guest_el1_handler_t handlers[VECTOR_MAX];
-+};
++static volatile bool handled = false;
 +
- struct guest {
- 	/* General Purpose Registers */
- 	unsigned long x[31]; /* x0..x30 */
-@@ -42,15 +62,18 @@ struct guest {
- 	unsigned long vttbr_el2;
- 	unsigned long sctlr_el1;
- 	unsigned long sp_el1;
-+	unsigned long vbar_el1;
- 
- 	/* Exit Information */
- 	unsigned long esr_el2;
- 	unsigned long far_el2;
- 	unsigned long hpfar_el2;
- 	unsigned long exit_code;
-+	unsigned long tpidr_el1;
- 
- 	/* Exception Handlers in EL2 */
- 	guest_handler_t handlers[VECTOR_MAX];
-+	struct guest_context *guest_context;
- 
- 	struct s2_mmu *s2mmu;
- };
-@@ -62,4 +85,7 @@ void guest_run(struct guest *guest);
- unsigned long guest_c_exception_handler(struct guest *guest, unsigned long vector_offset);
- void guest_install_handler(struct guest *guest, enum vector v, guest_handler_t handler);
- 
-+void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vector);
-+void guest_install_el1_handler(struct guest *guest, enum vector v, guest_el1_handler_t handler);
-+
- #endif /* _ASMARM64_GUEST_H_ */
-diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
-index 857bee98..a298ceff 100644
---- a/lib/arm64/asm/sysreg.h
-+++ b/lib/arm64/asm/sysreg.h
-@@ -137,6 +137,7 @@ asm(
- #define SYS_HFGITR2_EL2		sys_reg(3, 4, 3, 1, 7)
- 
- #define SYS_SCTLR_EL1		sys_reg(3, 5, 1, 0, 0)
-+#define SYS_VBAR_EL1		sys_reg(3, 5, 12, 0, 0)
- 
- #define INIT_SCTLR_EL1_MMU_OFF	\
- 			(SCTLR_EL1_ITD | SCTLR_EL1_SED | SCTLR_EL1_EOS | \
-diff --git a/lib/arm64/guest.c b/lib/arm64/guest.c
-index dd42ccd6..54c8b429 100644
---- a/lib/arm64/guest.c
-+++ b/lib/arm64/guest.c
-@@ -36,9 +36,45 @@ unsigned long guest_c_exception_handler(struct guest *guest, unsigned long vecto
- 	return 1;
- }
- 
-+/* --- EL1 (Guest-Internal) Vector Handling --- */
-+
-+void guest_install_el1_handler(struct guest *guest, enum vector v, guest_el1_handler_t handler)
++static void guest_code(void)
 +{
-+	if (guest && guest->guest_context && v < VECTOR_MAX)
-+		guest->guest_context->handlers[v] = handler;
++	volatile unsigned long *test_va = (void *)TEST_PAGE_IPA;
++	volatile unsigned long *fault_va = (void *)FAULT_ADDR_IPA;
++
++	*fault_va = *test_va;
++
++	if (*fault_va == *test_va)
++		handled = true;
++
++	asm("hvc #0");
 +}
 +
-+void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vector)
++static enum guest_handler_result guest_exception_handler(struct guest *guest)
 +{
-+	struct guest_context *ctx = (struct guest_context *)read_sysreg(tpidr_el1);
-+	unsigned int esr = read_sysreg(esr_el1);
++	unsigned long far, ec;
++	unsigned long *fixup_page;
 +
-+	if (ctx && vector < VECTOR_MAX && ctx->handlers[vector]) {
-+		ctx->handlers[vector](regs, esr);
-+	} else {
-+		printf("Guest: Unhandled Exception Vector %d, ESR=0x%x\n", vector, esr);
-+		asm volatile("hvc #0xFFFF");
++	ec = guest->esr_el2 >> ESR_ELx_EC_SHIFT;
++
++	if (ec == ESR_ELx_EC_HVC64) {
++		report_info("CPU%d: Guest exited via HVC.", smp_processor_id());
++		return GUEST_ACTION_EXIT;
 +	}
++
++	if (ec == ESR_ELx_EC_DABT_LOW) {
++		far = guest->far_el2;
++		if (far == FAULT_ADDR_IPA) {
++			fixup_page = alloc_page();
++			s2mmu_map(guest->s2mmu, FAULT_ADDR_IPA,
++				  virt_to_phys(fixup_page), PAGE_SIZE, S2_MAP_RW);
++			report(true, "Caught stage-2 fault at 0x%lx", far);
++		} else {
++			report(false, "Unexpected fault address: 0x%lx", far);
++		}
++	} else {
++		report(false, "Unexpected exception class: 0x%lx", ec);
++	}
++
++	return GUEST_ACTION_RESUME;
 +}
 +
-+extern void guest_el1_vectors(void);
++int main(int argc, char **argv)
++{
++	struct guest *guest;
++	unsigned long *test_page;
++	unsigned long code_va_base, code_pa_base, data_base;
 +
- static struct guest *__guest_create(struct s2_mmu *s2_ctx, void *entry_point)
- {
- 	struct guest *guest = calloc(1, sizeof(struct guest));
-+	struct guest_context *guest_ctx;
-+	unsigned long guest_ctx_pa;
++	report_prefix_push("stage2-mmu");
 +
-+	/* Allocate the internal context table */
-+	guest_ctx = (void *)alloc_page();
-+	memset(guest_ctx, 0, PAGE_SIZE);
-+	guest->guest_context = guest_ctx;
++	guest = guest_create(smp_processor_id(), guest_code, S2_PAGE_4K);
 +
-+	guest_ctx_pa = virt_to_phys(guest_ctx);
-+	if (s2_ctx)
-+		s2mmu_map(s2_ctx, guest_ctx_pa, guest_ctx_pa, PAGE_SIZE, S2_MAP_RW);
++	/* Map host code: IPA(VA) -> PA */
++	/* We use the host VA as the Guest IPA because guest stage 1 is disabled. */
++	code_va_base = (unsigned long)guest_code;
++	code_pa_base = virt_to_phys((void *)guest_code);
 +
-+	guest->tpidr_el1 = guest_ctx_pa;
- 
- 	guest->elr_el2 = (unsigned long)entry_point;
- 	guest->spsr_el2 = 0x3C5; /* M=EL1h, DAIF=Masked */
-@@ -56,6 +92,7 @@ static struct guest *__guest_create(struct s2_mmu *s2_ctx, void *entry_point)
- 	guest->sctlr_el1 &= ~(SCTLR_EL1_M | SCTLR_EL1_C);
- 	guest->sctlr_el1 |= SCTLR_EL1_I;
- 
-+	guest->vbar_el1 = (unsigned long)guest_el1_vectors;
- 	guest->s2mmu = s2_ctx;
- 
- 	return guest;
-@@ -109,6 +146,8 @@ void guest_destroy(struct guest *guest)
- {
- 	s2mmu_disable(guest->s2mmu);
- 	s2mmu_destroy(guest->s2mmu);
-+	if (guest->guest_context)
-+		free_page(guest->guest_context);
- 	free(guest);
- }
- 
-diff --git a/lib/arm64/guest_arch.S b/lib/arm64/guest_arch.S
-index 81874fd0..32d640e6 100644
---- a/lib/arm64/guest_arch.S
-+++ b/lib/arm64/guest_arch.S
-@@ -34,8 +34,12 @@ guest_run:
- 	msr	vttbr_el2, x1
- 	ldr	x1, [x0, #GUEST_SCTLR_OFFSET]
- 	msr_s	SYS_SCTLR_EL1, x1
-+	ldr	x1, [x0, #GUEST_VBAR_OFFSET]
-+	msr_s	SYS_VBAR_EL1, x1
- 	ldr	x1, [x0, #GUEST_SP_EL1_OFFSET]
- 	msr	sp_el1, x1
-+	ldr	x1, [x0, #GUEST_TPIDR_EL1_OFFSET]
-+	msr	tpidr_el1, x1
- 
- 	/* Load Guest GPRs */
- 	ldp	x1, x2, [x0, #8]
-@@ -125,6 +129,8 @@ guest_common_exit:
- 	str	x1, [x0, #GUEST_HPFAR_OFFSET]
- 	mrs	x1, sp_el1
- 	str	x1, [x0, #GUEST_SP_EL1_OFFSET]
-+	mrs_s	x1, SYS_VBAR_EL1
-+	str	x1, [x0, #GUEST_VBAR_OFFSET]
- 
- 	/* x29 contains vector offset from entry */
- 	mov	x1, x29
-@@ -168,3 +174,75 @@ guest_resume_guest:
- 	ldp	x29, x30, [x0, #232]
- 	ldr	x0, [x0, #0]
- 	eret
++	/* Align to 2MB to use block descriptors where possible */
++	code_va_base = code_va_base & ~(SZ_2M - 1);
++	code_pa_base = code_pa_base & ~(SZ_2M - 1);
++	s2mmu_map(guest->s2mmu, code_va_base, code_pa_base, SZ_2M, S2_MAP_RW);
 +
-+/* EL1 Vector Table */
-+.macro guest_el1_vector, vector_num
-+	.align 7
-+	stp     x29, x30, [sp, #-16]!
-+	mov	x29, \vector_num
-+	b       guest_el1_common
-+.endm
++	/* Identity map the shared variable */
++	data_base = virt_to_phys((void *)&handled) & PAGE_MASK;
++	s2mmu_map(guest->s2mmu, data_base, data_base, PAGE_SIZE, S2_MAP_RW);
 +
-+.align 11
-+.global guest_el1_vectors
-+guest_el1_vectors:
-+	.skip 0x200
++	/* Map test data page */
++	test_page = alloc_page();
++	*test_page = TEST_DATA;
++	s2mmu_map(guest->s2mmu, TEST_PAGE_IPA, virt_to_phys(test_page), PAGE_SIZE, S2_MAP_RW);
 +
-+	guest_el1_vector #4	/* Sync */
-+	guest_el1_vector #5	/* IRQ */
-+	guest_el1_vector #6	/* FIQ */
-+	guest_el1_vector #7	/* SError */
++	guest_install_handler(guest, ELx_LOW_SYNC_64, guest_exception_handler);
 +
-+	.align 11
++	report_info("CPU%d: entering guest...", smp_processor_id());
 +
-+guest_el1_common:
-+	sub	sp, sp, #264
-+	stp	x0, x1, [sp, #0]
-+	stp	x2, x3, [sp, #16]
-+	stp	x4, x5, [sp, #32]
-+	stp	x6, x7, [sp, #48]
-+	stp	x8, x9, [sp, #64]
-+	stp	x10, x11, [sp, #80]
-+	stp	x12, x13, [sp, #96]
-+	stp	x14, x15, [sp, #112]
-+	stp	x16, x17, [sp, #128]
-+	stp	x18, x19, [sp, #144]
-+	stp	x20, x21, [sp, #160]
-+	stp	x22, x23, [sp, #176]
-+	stp	x24, x25, [sp, #192]
-+	stp	x26, x27, [sp, #208]
-+	stp	x28, x30, [sp, #224]
++	guest_run(guest);
 +
-+	mrs	x0, elr_el1
-+	str	x0, [sp, #248]
-+	mrs	x0, spsr_el1
-+	str	x0, [sp, #256]
++	report(handled, "Stage-2 fault handling test completed");
++	guest_destroy(guest);
 +
-+	mov	x0, sp
-+	mov	x1, x29
-+	bl	guest_el1_c_handler
-+
-+	ldr	x0, [sp, #248]
-+	msr	elr_el1, x0
-+	ldr	x0, [sp, #256]
-+	msr	spsr_el1, x0
-+
-+	ldp	x0, x1, [sp, #0]
-+	ldp	x2, x3, [sp, #16]
-+	ldp	x4, x5, [sp, #32]
-+	ldp	x6, x7, [sp, #48]
-+	ldp	x8, x9, [sp, #64]
-+	ldp	x10, x11, [sp, #80]
-+	ldp	x12, x13, [sp, #96]
-+	ldp	x14, x15, [sp, #112]
-+	ldp	x16, x17, [sp, #128]
-+	ldp	x18, x19, [sp, #144]
-+	ldp	x20, x21, [sp, #160]
-+	ldp	x22, x23, [sp, #176]
-+	ldp	x24, x25, [sp, #192]
-+	ldp	x26, x27, [sp, #208]
-+	ldp	x28, x30, [sp, #224]
-+
-+	add	sp, sp, #264
-+	ldp	x29, x30, [sp], #16
-+	eret
++	return report_summary();
++}
 -- 
 2.53.0.1213.gd9a14994de-goog
 
