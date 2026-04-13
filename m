@@ -1,112 +1,112 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580121DF75A
-	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 10:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A8F3A1697
+	for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 10:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776077328; cv=pass; b=hxuPY/JKHL53BjHRfW4FRhMHKZ0JFo3aC47vR8ysAGaQCY1ksjf/P/VesxUAMY2aFtxAJIZ3BzlK2vFXkCCntJW25Kb9i0wO0HYJ++FkZv1WeqlbfTbRmYSZT1ptOACL9bNmiC+3fyGgpX/7BnafFkKmPxL7VLbHLfXn8luKxBg=
+	t=1776077443; cv=pass; b=gEVrmQNz+1J+C5TcFFHcz2LYdbCZEoviwFak3ef8n7fl9Qo1ELoakdXRDJuaknmVUP9YAnoHfT+YI50mZRTJtlg5vtPQLY++l1dMWjOJvGtFNYlMOeClImztPd03dkjODj9NXvhoRLtwRwS+L5kuZ/YUVsfWOxZt5Kfr8eWzwqk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776077328; c=relaxed/simple;
-	bh=DLrmXFsfnl46Cy2LBeh3ttWHw52IskeSuCm02y85cXM=;
+	s=arc-20240116; t=1776077443; c=relaxed/simple;
+	bh=qsB/wtE9zbhGMgjlY0bWTxFbPf4h92ifHVI9b23DI9s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fWSapyA+LaPZgav2pQO0wVWiomwU0WukAjeq/ggUjgxugqjTJvBxm5E2UoS0kYVm2rV0E5cjmTPrnlmIk0jVy+MCYT7rX6oWVEqy6c6y7DKH5eZsj/A7TSedunpENeDCmYvWLAkRkKFFQ7bc7s82WOGADeYAOKMoADR3L7JAeyk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZduuJCAm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9rcctP8; arc=pass smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=N3d5Tzicu6nFikm6fA20C4M9DbrdsSNtbNwklYUibAwnzsJX2+OBEvqUPnaZ7liiFPV1b8TSgwL3fN0s0LvQlZ+2B//3p3/ZnoKqiofDtXwNPeGeCwuzW5y+TSX6IcxQljWHTJH1RcbAx/QmwfX88S+qDbb8kRUM7C2fFFJj9v8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T/yLRpak; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pST50b9+; arc=pass smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZduuJCAm";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9rcctP8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T/yLRpak";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pST50b9+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776077326;
+	s=mimecast20190719; t=1776077440;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
-	b=ZduuJCAmyb7Qh4lkH6ljNrm8L/2kaed4yfFx49wJnPSRCMAS4UxT60QUfrMZkKRN41Ge7/
-	70Vn+UIr385rjBeGOn8u9ghzuQjrRRxi9frh5+xFdXb8Jnv2LGOY4wj+Lta9JvnBb4vbAY
-	OJKv4JodqlngX9QgN+bL6GB/Lz4Dt84=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=wps14MsIqDtbGwsw6OFKuQKKc+LdEBWxsYvni/OeGe4=;
+	b=T/yLRpakOa8cSFb3e0YtDjfu6NhF4+NKPqzxmCAVAd+w96jLsY2ZFKIZlc3x946bOBIL5s
+	v9SXrzGjzr6+vThNee9E4k5A8zqD57pR4WCIh6niHJQilFNdKKg1RlHXf7ulvyarwceld5
+	ndD+FnplagkaDWeQmUghqRuH4wmXwfc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-u4K3GBY_Po6dZTxBUfYCQw-1; Mon, 13 Apr 2026 06:48:45 -0400
-X-MC-Unique: u4K3GBY_Po6dZTxBUfYCQw-1
-X-Mimecast-MFC-AGG-ID: u4K3GBY_Po6dZTxBUfYCQw_1776077324
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d1fec59c9so2330201f8f.0
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 03:48:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776077323; cv=none;
+ us-mta-651-Y0gBsDN-N1OjmathEY-v6w-1; Mon, 13 Apr 2026 06:50:39 -0400
+X-MC-Unique: Y0gBsDN-N1OjmathEY-v6w-1
+X-Mimecast-MFC-AGG-ID: Y0gBsDN-N1OjmathEY-v6w_1776077438
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488e097a270so9724155e9.1
+        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 03:50:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776077437; cv=none;
         d=google.com; s=arc-20240605;
-        b=DROvSN24iJVViLklNvPR9T2N5S1OHLCJMniCJc4oHiM/Oke29Xfxd45jDQpOzmjUAk
-         n5c+SCl+wsxvLLfV8qzaq1f9Ss+Q0XGNq8G9KLfcCAsGCSGTwyfE8+tsqQvalJ2Fw6Gb
-         /z2Yku5PmiSn4dgLhnn5ApsfuYQL4QH+nZgYq59+PSCXFkI90Z7thxX0UxDCB/U1VvNM
-         xT9e1SQr8iNa6us/+L3lOjMsmvbRrzbbtAR5VoTPhWC9vtOTHDogK6W/VfMfOExu0UBz
-         gDSU2GY/YU1QhXdo2nwPQgVVcS+Tck/R0HS1ZU7TsBUD/jPm714ZQgnzC7uFU9yIASPB
-         Q7Zg==
+        b=KG1n74rIH+TKPsUSs9J03D0m7vCH9s+rdBgo7OG/J+QTJgk334KK+/EzcndU3P3jWE
+         u/AcEhhOi83TFzKixdQx4kdSBNFBuhvfy4Wd16qS9TQCHbDfuTAfoZlYLK7+GaAJvwv/
+         H6eQVxsr92a2TZP/Zh3YsNOveFA0e4F1jt1qt9e3P56CytWMCnSPXlmQPaqd9hK+APIA
+         WQ2kyypOJRkSGlwijPyXbOcad4fIAIN8MvWIFl+XpIs/9PZANHShxXyrUgT4yLGPNhWS
+         E5G4fF5OWNE3vP4X9KQzncDOoybzV9X3Z9tIaViatufpGVRLXPLywBd9+qbb8WzA9niZ
+         fgNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
+        bh=wps14MsIqDtbGwsw6OFKuQKKc+LdEBWxsYvni/OeGe4=;
         fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=elnMzyzMpxVgddHcKkL/z6eTlcFZTX+oLYRsAeJuDj5cctQXtJ4G9G4V2wsKUwpVsh
-         F7pGTdxkdv9SG+qRjw8Lr0jkPKeGMHIddeZ/Oc3ANOaWd/4EM6pf1dzqYGU4mpjY+gxW
-         fJZ+8N8E67rftpyQsm3/JQH8BCUmywpZCEcj258AD3KLRMgczvbT9aXnw5ohpYjw3TCE
-         zQ6Y4O/xm8Xq+pnlDgJv171I0b9+W9Y8jNTmYblxJznwmoTK5Vn0RQlSDSQdysEJXufb
-         KO/TdtaBwgh8sE3oPq7znZuc/IcR1U8saSBvDXHlMhCZubBZZY+lLIBLRpVH9w5dnfgh
-         JX+Q==;
+        b=YSFU6io3+oOHBHB5QgWL56qBWbYo1u8tO7TcjmHRdit8gKYpAU1vdXUMxiTOuROEOv
+         eZCM5SbpuyNmXr1WPpJCMPcBlA0v2t4LDiQ2IJpS76i2Atb2W7f5lAHMOwBjLA96gkEC
+         6UDD3Pnl1TthNECge9upBkC/nWDZd8rfPvm2KngNreDa+EqJONk+amit3WKHmTRWivzB
+         fKy1rQuJBEoktzxri4Bf7BfoEhZApEXTYc894OO8RyUgUB7t05Bo0WMyiLnLbhhR7nf2
+         w/T1Qi4VeQiyP8HBOIW9vXZyoQReuXZ9L0saQpaNR4XveMzDlNTZ47/40uKdOsw8AlQ5
+         xQ5g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776077323; x=1776682123; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1776077437; x=1776682237; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
-        b=L9rcctP8pz6rvbQwfMHze45i/O05stSJrjuhyRggCX68z6dnqSGcvjbl903wlV1O87
-         Ue4W35SqmBUtwXh86vVy/jmmp0zQ7Hg8dFD1WTB5YHKFbwGr1ofiFl3+u91SXNVI0MxW
-         IsS6M7g7sET7epWs6oxkX4QZNtFFTVd+p0iIT+P+3mfmkMehMlD3DO3dYwUsc5fiqxw8
-         CPlON0p00FK7atugn3f9uAQ6pAPzRWSGAD+nqhVPIqqWASTTevQhdEqlUph5pUSO9V27
-         3YaWZqxLM8UpceC60Yll99NLg/SiVyHHE2Z2Gabzn/S8QCz0vO8osjFhLWkfA4rrLMN2
-         Qrig==
+        bh=wps14MsIqDtbGwsw6OFKuQKKc+LdEBWxsYvni/OeGe4=;
+        b=pST50b9+EMe/NRbWKLKbhzwfMwVGysdoY0YW7L7zXKLBJT95u5TSJZYJ3F8LW+0rvP
+         g1mlARgoq8hsmr3cEl+DAz5QKN5cDghaiIPWzpp5L6VFZTjldi2w0TqK4I9l3HoAi/oh
+         9IyY7UzdfPJqVlKddoTS2fUNOMVzKFgcTmta1LcEL9AFsAug0J5SklWC424XPjwfQivt
+         tcjWbjAvl2qBDclXO9FcQAo0pLcKWHAFb/HS6+Krbz6Lvb/tVV4NDlTB3HArk37q9rpp
+         V99As+bILxWdXDsK162PwG5+yi1odNn7nUApCg3B0DeqzKIk2EFW39kQlruMEjolsc3o
+         /ROQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776077323; x=1776682123;
+        d=1e100.net; s=20251104; t=1776077437; x=1776682237;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qBE0qqxijYzt/5yrCnQTHVEZ7B2dtqLRE2l6crnji1s=;
-        b=mH/k/wd1DNOJ+vMKSNF68YosrHWdjvEnTVZVNOY3Zx3KGD76tsI9mUnCPfqiZllWtU
-         p02FtqdXplCrMkOQInXkw6v/cPs/qTD0cOiGf64+Y/YTR3beod+QqDTNyQlJvMqKDWRx
-         B50Af1pyKScfltLOjTjNCaegkn1l6sU28W1hZwM2n2THGMu7AX9uv8RT2FQ/qduAFFM3
-         M33YTuBs6pYOJnyZCIjf+U8M3jTIici94vkbCuB/LTbQQF6z+OG7XjsTEDUq700GR2A5
-         29vwICdeTtJ6KwIH3HB/XtMyFY369nd2HqMviAEYJ1vCH6m6BNt+dYHbyfibm/IH1Z7F
-         FOiQ==
-X-Gm-Message-State: AOJu0YxAZwW+7YsPuaB4whkdae5OC4v86MJWawR3vO1aDXXEeZr4N96H
-	0nlAEkY6px+jVINCbgaE25AinS5XTdH86um7bpIFS9kF4QQU3AdmiDfToh/XRrvfijLnyKFTYvc
-	FBEbXlWuySLyntprJs36BicdbvrO4yK1OhaUUj7fRr1ZC1GhVEq0mMhDhrtd4h/DUNCDdQr6tkP
-	4cMvNzChXtOEJMflngQgQ5JJTYCZH2GpxzIQQD
-X-Gm-Gg: AeBDieuPkNSwWJycGMTZ7432eSn2S/tKWgGTwIayakqKEQmQpuMjvySHrrYbKPVwFsB
-	xCE+1ijeISRVsaZZshUZPKUL9LT1llT9/rZfeURmNwOEMJrqYr8Icv645jQjcX3LygFZ9dLcdp5
-	T6ut/S1j/JWvqpQwflitJnMswvSgwW2G3nktxLoDfFj3eoJekCWiHVbzwjrWytnLButjOpvpcZ+
-	DzhLc6sEDIpcT35aD7AGctL+K5YsMhA4B1Ry4Cwn18s4P0wjBgsr7JyIM0XUgxg3MQ4xfWRm61I
-	Criu
-X-Received: by 2002:a05:6000:2803:b0:439:ccd7:cdcc with SMTP id ffacd0b85a97d-43d595c4d23mr16059589f8f.18.1776077323073;
-        Mon, 13 Apr 2026 03:48:43 -0700 (PDT)
-X-Received: by 2002:a05:6000:2803:b0:439:ccd7:cdcc with SMTP id
- ffacd0b85a97d-43d595c4d23mr16059568f8f.18.1776077322616; Mon, 13 Apr 2026
- 03:48:42 -0700 (PDT)
+        bh=wps14MsIqDtbGwsw6OFKuQKKc+LdEBWxsYvni/OeGe4=;
+        b=JZlC+m+YUy5abj9skzva6czkOvEmBI1nRylWDViRlb5gUb/PBmiRtpAHb681ufSUBE
+         BtRd8nQ3w5HwBD+UZVzA8ODvXIDiJGeeU58kE6AjrQ1m2jjQxr0FgOmwlk0GNUbHjxMb
+         5zzWd2w0O8TBABLTRhFWoFBtRDfbPmiywgPgo8MotuQ1tYFw17EW0z9Op7ZwNtL032BF
+         ukxbSKY1G/Jqld6lf5lqCnHscD1x3msm46lKNl7IT3O5i8U43rLicSrEcxTMpVn/7LKc
+         lL1qucByY7/sPU3rVnDaZhoe3bc57AXMUvnHd8I/3ViKMuKt/rZwsLkPoYdTknlm5JVk
+         BlUA==
+X-Gm-Message-State: AOJu0YwBjWQOiSo2dZYooi81JlAm4vDNcoqB6kBuj/aKbkBariQXu36u
+	qxfy1qUKWvqPBPRD6qT66CZrrRpY3NZVU8P6D826QhvsuZ+GIOZ+0ZVx4HiZfI481iPUDFH/8DL
+	3F+MtsUpVAijVUJILoihFKQymu0eu8XoJb/7bmvm1n8UtlOY0UdW3khRHTn8LUEUPejFsGcDtqk
+	CqJucOolJ9YQuTK8ILBcwl/duWYkp8RVFbg4Pz
+X-Gm-Gg: AeBDievcCl/4nTB+tkyGHndgcPjMWFSqdz9RtbnxxhN5T6+C4cIyxCt4BDW1ufG8Cg0
+	trV5z06k1NxWJOjdW2vjQqU32ZVNbMYjagDL51HZ9vUoYAiTC3MII8ffI/aNrn8USawDiD5qfh6
+	Maed5XroLviZk2yz71affb3KPMjUA1xp5gxkboAK9ZOgMov+3/7t0MO0cUQ2BPkndRXmITPKmyH
+	uRjyFyAAG7ZvBX2jB88RtjPr+Z2qv8UfeoJmFR4l3siHYzMmcBuITccf85K7RzoiS16eAW0YdMq
+	T8sy
+X-Received: by 2002:a05:600c:45cd:b0:488:a82f:bb96 with SMTP id 5b1f17b1804b1-488d68c7fc2mr154273295e9.29.1776077437354;
+        Mon, 13 Apr 2026 03:50:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:45cd:b0:488:a82f:bb96 with SMTP id
+ 5b1f17b1804b1-488d68c7fc2mr154272965e9.29.1776077436903; Mon, 13 Apr 2026
+ 03:50:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260410235832.2312342-1-seanjc@google.com> <20260410235832.2312342-8-seanjc@google.com>
-In-Reply-To: <20260410235832.2312342-8-seanjc@google.com>
+References: <20260410235832.2312342-1-seanjc@google.com> <20260410235832.2312342-6-seanjc@google.com>
+In-Reply-To: <20260410235832.2312342-6-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 13 Apr 2026 12:48:31 +0200
-X-Gm-Features: AQROBzAtHZ6dNpQ0Qo1grutxKAhlX1_VxSSUrtRh93zuGPbpdPIdcYXOGt12CqY
-Message-ID: <CABgObfaBWkUgtBWd8TDpHsU29XtmWheiBucDD8yNkCNJ5Jn_Dw@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: Selftests changes for 7.1
+Date: Mon, 13 Apr 2026 12:50:24 +0200
+X-Gm-Features: AQROBzCPGNI4cbYdzBZxSXzS68-wLgVu51f1Mfk5SK0kAX2MWjUrIrqBjS71sEg
+Message-ID: <CABgObfZqvwa7ZWzDkb8m_SdpXwPRg+NCdnQZqPVKYjJ0PuHAxg@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: x86: MMU changes for 7.1
 To: Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -115,14 +115,11 @@ Content-Transfer-Encoding: quoted-printable
 On Sat, Apr 11, 2026 at 1:58=E2=80=AFAM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Add Hygon support, fix a related bug in the MSR test, and add MADV_COLLAP=
-SE
-> regression test for guest_memfd.
->
-> I'm also going to post patches and send a pull request to convert selftes=
-ts to
-> kernel-style u{8,16,32,64} types after you merge all initial arch pulls.
-> Please yell at me if you don't see anything on that front by ~Wednesday.
+> Fix an amusing UBSAN warning where nx_huge_pages can be read before KVM i=
+s
+> fully loaded, optimize the unsync flow, and micro-optimize hugepage split=
+ting
+> in the TDP MMU.
 >
 > The following changes since commit 11439c4635edd669ae435eec308f4ab8a08048=
 08:
@@ -131,55 +128,48 @@ ts to
 >
 > are available in the Git repository at:
 >
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-selftests-7.1
+>   https://github.com/kvm-x86/linux.git tags/kvm-x86-mmu-7.1
 >
-> for you to fetch changes up to 9830209b4ae8c8eecae7e6af271cebf1e1285142:
+> for you to fetch changes up to b3ae3ceb556945724d0c046ddb4ea0cf492a0ce6:
 >
->   KVM: selftests: Test MADV_COLLAPSE on guest_memfd (2026-03-04 14:57:27 =
--0800)
+>   KVM: x86/mmu: KVM: x86/mmu: Skip unsync when large pages are allowed (2=
+026-03-12 10:36:01 -0700)
+>
+> ----------------------------------------------------------------
+> KVM x86 MMU changes for 7.1
+>
+>  - Fix an undefined behavior warning where a crafty userspace can read kv=
+m.ko's
+>    nx_huge_pages before it's fully initialized.
+>
+>  - Don't zero-allocate page tables that are used for splitting hugepages =
+in the
+>    TDP MMU, as KVM is guaranteed to set all SPTEs in the page table and t=
+hus
+>    write all bytes.
+>
+>  - Bail early when trying to unsync 4KiB mappings if the target gfn can b=
+e
+>    mapped with a 2MiB hugepage, to avoid the gfn hash lookup.
+>
+> ----------------------------------------------------------------
 
 Pulled, thanks.
 
-Paolo
-
-> ----------------------------------------------------------------
-> KVM selftests changes for 7.1
+> Gal Pressman (1):
+>       KVM: x86/mmu: Fix UBSAN warning when reading nx_huge_pages paramete=
+r
 >
->  - Add support for Hygon CPUs in KVM selftests.
->
->  - Fix a bug in the MSR test where it would get false failures on AMD/Hyg=
-on
->    CPUs with exactly one of RDPID or RDTSCP.
->
->  - Add an MADV_COLLAPSE testcase for guest_memfd as a regression test for=
- a
->    bug where the kernel would attempt to collapse guest_memfd folios agai=
-nst
->    KVM's will.
->
-> ----------------------------------------------------------------
-> Ackerley Tng (2):
->       KVM: selftests: Wrap madvise() to assert success
->       KVM: selftests: Test MADV_COLLAPSE on guest_memfd
+> Lai Jiangshan (1):
+>       KVM: x86/mmu: KVM: x86/mmu: Skip unsync when large pages are allowe=
+d
 >
 > Sean Christopherson (1):
->       KVM: selftests: Fix reserved value WRMSR testcase for multi-feature=
- MSRs
+>       KVM: x86/mmu: Don't zero-allocate page table used for splitting a h=
+ugepage
 >
-> Zhiquan Li (3):
->       KVM: selftests: Add CPU vendor detection for Hygon
->       KVM: selftests: Add a flag to identify AMD compatible test cases
->       KVM: selftests: Allow the PMU event filter test for Hygon
->
->  tools/testing/selftests/kvm/guest_memfd_test.c     | 70 ++++++++++++++++=
-+++++-
->  tools/testing/selftests/kvm/include/kvm_syscalls.h |  1 +
->  .../testing/selftests/kvm/include/x86/processor.h  |  7 +++
->  tools/testing/selftests/kvm/lib/x86/processor.c    | 15 +++--
->  .../testing/selftests/kvm/x86/fix_hypercall_test.c |  2 +-
->  tools/testing/selftests/kvm/x86/msrs_test.c        |  4 +-
->  .../selftests/kvm/x86/pmu_event_filter_test.c      |  3 +-
->  tools/testing/selftests/kvm/x86/xapic_state_test.c |  2 +-
->  8 files changed, 92 insertions(+), 12 deletions(-)
+>  arch/x86/kvm/mmu/mmu.c     | 14 ++++++++++++++
+>  arch/x86/kvm/mmu/tdp_mmu.c |  2 +-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
 >
 
