@@ -1,200 +1,221 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB65A38644D
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 21:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776202858; cv=pass; b=X+njQ8MvzzVfY5qqREDFfv5mb4x/JWflt3Z86n4azIOyW8Lhic+1rKl6IMBqbnsCjkWtAXhuGJgIljGbAj1uf9vYlZaBIW3UzAOPi/9nJ59IeiwrlliVSawWydLCuG/Lq1zlaA8PctkOBJSOukr4GG8HdklhvFCDmCdCl6dnzQk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776202858; c=relaxed/simple;
-	bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b87WAbg0p79DRq08fTMXbVQ1QEhKAsGIiOcKXAuhyqpMFd11tWq7jY84pSfzckYQpBkTWqNCp8NpW2RdZsbtbOywfrIvrTzYBY8VdklykuTDz18pnXSz9ynwyT3Cy6QyxSnbAjnWX/1+wWy4JtRWXra0YJK9ovNw48AUb056AI4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A+bz1mwC; arc=pass smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C2A386C34
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 21:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776203015; cv=none; b=BcOY7d3RY7B3EJRF6OIz6obYiCzUojWvBzSv5gzc9ffu2Pq1azCGZr0GjSRT2D3a4mSH8TMfwrN9JTWkH8gBUqb6YIc8PCN8mZM1LZ6isJ2EWvHnejnd71bbniZhgZ6FAL0BJbMOjghCRbsb7aalkF+VajyP4xoERoSYo6tfiH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776203015; c=relaxed/simple;
+	bh=bFm/ov3R15AfIu4qKy3h759hr/wjIxU+uB+kiMovwe4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Zrbu0bRy3Vny/ZAnmc7XNC73sHhRJBeg4KGc6f4RPOSDe3xiqLbQb3TAKozyvGYcrhH7Vcs6MqiomTWNYXn48xS2f7t27NDpIiIDuqMvPrBEjj9sD5DePh8ow5CSJVd/B0tG3a4RTsqvNL3kUMDC4Z4rbRjBi5CTxzcn0aTpf0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DpGULMuT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A+bz1mwC"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8a1e1817db6so52563336d6.2
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:40:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776202856; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OAfYSE1E9FaoFC1f/pAw/jt6Pxq+4alXtHNz3NCgK1/2YxlMz80Jb4pXXkNmX/9nMy
-         p0z3dXbxRRkpCbhNNjz1b7//Dh8JKMKom6JYNV5R3l8IL6efryOrAfxZwzIoteK8niKY
-         8TLzQ9JXunQjsIRFwQ8PUrfkl59tBhBIRJQa6hepZpnl+FKPiym30P7xqdibdl5HkCxZ
-         ibOHB8PC8ExLzCZymRM6duTm80T2dAZ7Lnpm2nLIJLk3DgK897uykq8O4zZrEvIEJcdn
-         a74/avTDwJ+DElqIhw1l9hCmPHYknTH2UN/75hT6lXksQDlLA6S5avSraMBOsRxnzXRq
-         VQuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
-        fh=t4wjTIcRo2x/La+yqZ14sHjG2lTsq49eV6sOT6MXGd4=;
-        b=Cw1g3MYg9DVQPLWzRINB9V02BMYcpTsbbMt+IJ7k3mMyJnSY7wwggpGFQqWCOQX8iV
-         AzeNtQAukwpQhmfEohSfX0CGIs5w1C2fSYOF06RA965ezgeWOGKXwiyDVw0QSPBanjse
-         3ftFgO6Xvb64m94WV/ujd6x8s3jdx2ZRpD1yPf8rjU3Yh/bn4usjV73W2ZHlbKfunvTt
-         /0XTObdqfmXvZ692wB4wKCkJXz897OcG0yrUHha2PbpoYvhoJ31A8jC5IPoyx3Evqhxw
-         BJwRJCvWXtFV6mAaZjiSKE677/W/4YMNKDls6bDkkkEoSrEfZfO+RN038rIc9THsIZZ3
-         xMGQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776202856; x=1776807656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
-        b=A+bz1mwChXv+LUvb7Dv3hMxLJElpqZhxxEWBSJiap08pDjL3lYmWdhqqWKxbd0/Y84
-         o/APzVRFnqPfrIX/mhrAdoxKNWLKw085CrZUW534BW/1EzTeInRkA5PGN1pYbT/dT1V/
-         Onxw27s2HHt9BnhyUZYcfmbj9KpSJXAqhCkd87hD32kQu8lROKhkDY/hqqK5GmRNhYnP
-         gU8UnmXHqZp8TBLxhrF4OqtXqg08VrH/d5175Vv8cm82zyIcapjQAZnj1EvWN8J9t5ZC
-         3NjgoRU+Gd6XUjdaiQJ7olB1XwqbzbTviIuqLV5IDn36xgjLRp1eE7RRRuwwjfK1AbAM
-         rLPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776202856; x=1776807656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
-        b=E5BGrREa/NY7h95I8q6+6A4zAPxcQEXMR80Em0RV/tGFm5CupL9GMiY7OFXhtC2XKK
-         HSOeoh5uPEh9cmDc0tci/gp9D7660CdybFuGOMDk2msSIWi1lHX6cj/xyvVaE8uOEkl2
-         ogfBoiOo27SvJ5mxOo1EVP61SgrzyEkZ7OTbKGAdLj6eOhrUJ6WH55Zbey+5H5rPQRn7
-         /ZxEMt9Q+APiFMav/bnM2NzXnGJuemijMOD0hOLXzfep/angaXGWd95LuMe73awuaPH5
-         7F7p6cDHSJ+5eFX2VkiR7K0YQj66UVa1apuvp4WhobJRHspbyAWkjvaxBI44E3dizCIL
-         nTHg==
-X-Gm-Message-State: AOJu0Yz2VX8StAEgkIgyr7kcdmf1Ewu/5oSQ3PIJH9ZGU++apmXeSRgU
-	JRMBbCwai+AQRJGGZpIB7TicnBQClZuTgp40zPc7+imGGPOOMZRyRHVZSFlF7B5/wH5rXgTW5aD
-	ORLlFmaj+HY73SI3Y7A3iXgGzvjqQnTMzNlEun0w1
-X-Gm-Gg: AeBDievPYHtpG9u5pVcgaC3W4sTLjpVkPd3Y36f8yiGnOCRFYni8zwkEJkW2nt4IXw7
-	pYNz3Uhx5RozCdx+I1o03kxy8+184jtwK5ULJTXsrb60gBqqZNuNX65GwyUPXAZz/c1eOyOegL8
-	gdmgSYb37RLfIXP27vkyr8XcBqlhSlLzO5avkxk7v46dBHQ3zkjMh7eOSMlO9U31vNaFrmjGHQd
-	UtkPgDfaas5NikeKFqRa+md0nvHEK67WvvqnuC2NYMaMGfKSWbVo/xUVWyTmlCQXd9w20rQxK5x
-	YqTytWiJI8pKOVVf554lnt1GjyM=
-X-Received: by 2002:a05:6214:c21:b0:8ac:7e8d:859b with SMTP id
- 6a1803df08f44-8ac861b77f6mr303189226d6.16.1776202855012; Tue, 14 Apr 2026
- 14:40:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DpGULMuT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25696C4AF0B;
+	Tue, 14 Apr 2026 21:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776203015;
+	bh=bFm/ov3R15AfIu4qKy3h759hr/wjIxU+uB+kiMovwe4=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=DpGULMuT862bekajv3xLPPMmie7nbY3QdmZMLhcy0cjLVwjW+7BnmH4oSidPSjMfn
+	 cxXy0dE30G6n3PRp1WiRQNhsOuejI5AQfnQj0bEAtWft2+Bdl6r+lFswLXlLTuKh6A
+	 76BHiYMVgGPOWyrF1imGdnYvoo7dIyKNa9bGGyMvcrn7Pr0N0MpIA4CymCchbR6xTC
+	 R1XVoPTmpMYXhRawuKlKL+xFtHBKiSmV3h5TpynJ80fKQsbqNL4H+k1RwLT1mjAGxj
+	 9Q5ycBSBd37sJzygOy8/LevC6dQ82njJNuS0b26tYN9PLn/tfy76hW/sfDStf49WFi
+	 yWkey5it7sQZA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 29A99F40068;
+	Tue, 14 Apr 2026 17:43:33 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 14 Apr 2026 17:43:33 -0400
+X-ME-Sender: <xms:BbXeaQF4woxDeSyu1QIdwz58OOOZmDg98umspas_oe5Iq4fe8H7ozg>
+    <xme:BbXeaS-C1aEkLf_XYp4Sce5_BLnBfhfmGim_blwYacmkTfJLpHOe5u3_m7PbbKOHz
+    TvABtSb6Csa-rxB7Mk2qdHh5R_xQT1-fp4ysKisXSXziNMdYKgwS9E>
+X-ME-Received: <xmr:BbXeadkPmKx92lHtvEzpsjdgnnK6PEVqVfufoksS7Xz_XliGEbEUDd08MxSVyHRaVE0fO65MjuPrAFIpmt2xp6x8JmhuNJFr3Cs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegvddvlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
+    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
+    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
+    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
+    hnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhi
+    tghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtohes
+    lhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegthhgrohdrghgrohesihhn
+    thgvlhdrtghomhdprhgtphhtthhopeigihgrohihrghordhlihesihhnthgvlhdrtghomh
+    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohep
+    higrnhdrhidriihhrghosehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrg
+    hnshgvnheslhhinhhugidrihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:BbXeaY-VD1M-aRpy1ZpS_Mi_-6NFUZul5T6B6PWV7AI9jqug8dFqjQ>
+    <xmx:BbXeaReGqzq-wZEWh0JCp7LynCfKEQhE-CBxKJqL12HSpo0r2aaUwQ>
+    <xmx:BbXeaR0BqjiuLbGOU0Qw-sTo0-DXJCzApyG5YeTvw-IAvVD2unswKg>
+    <xmx:BbXeaaA1OGTLpUIJ9x6A2jVvp7XlPMdnHyFVa14TQJocCthx3xlMGg>
+    <xmx:BbXeacSIIgvAbdlcVi6891WVRgfkf2tJsTxlYT5QYO5X1ooObmCcCko0>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Apr 2026 17:43:32 -0400 (EDT)
+Date: Tue, 14 Apr 2026 14:43:31 -0700
+From: Dan Williams <djbw@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "Gao, Chao" <chao.gao@intel.com>
+Cc: "Li, Xiaoyao" <xiaoyao.li@intel.com>,  "Huang,
+ Kai" <kai.huang@intel.com>,  "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+  "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+  "kas@kernel.org" <kas@kernel.org>,  "Chatre,
+ Reinette" <reinette.chatre@intel.com>,
+  "seanjc@google.com" <seanjc@google.com>,
+  "pbonzini@redhat.com" <pbonzini@redhat.com>,
+  "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,  "Verma,
+ Vishal L" <vishal.l.verma@intel.com>,
+  "nik.borisov@suse.com" <nik.borisov@suse.com>,
+  "mingo@redhat.com" <mingo@redhat.com>,  "Weiny,
+ Ira" <ira.weiny@intel.com>,
+  "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+  "Annapurve, Vishal" <vannapurve@google.com>,
+  "sagis@google.com" <sagis@google.com>,
+  "djbw@kernel.org" <djbw@kernel.org>,
+  "tglx@kernel.org" <tglx@kernel.org>,
+  "paulmck@kernel.org" <paulmck@kernel.org>,
+  "hpa@zytor.com" <hpa@zytor.com>,  "bp@alien8.de" <bp@alien8.de>,
+  "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+  "x86@kernel.org" <x86@kernel.org>
+Message-ID: <69deb5032ff01_147c801004c@djbw-dev.notmuch>
+In-Reply-To: <af7732a08fcce4a21ff14b2038acbb85200c6f34.camel@intel.com>
+References: <20260331124214.117808-1-chao.gao@intel.com>
+ <20260331124214.117808-18-chao.gao@intel.com>
+ <af7732a08fcce4a21ff14b2038acbb85200c6f34.camel@intel.com>
+Subject: Re: [PATCH v7 17/22] x86/virt/tdx: Avoid updates during
+ update-sensitive operations
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260318155413.793430-1-steven.price@arm.com>
-In-Reply-To: <20260318155413.793430-1-steven.price@arm.com>
-From: Alper Gun <alpergun@google.com>
-Date: Tue, 14 Apr 2026 14:40:43 -0700
-X-Gm-Features: AQROBzAobYGs6qZALJkhuUvP32YWYfFdjJZKqlEWIdyyyT7N50O82BunKYW5J_Y
-Message-ID: <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
-Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
-	Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 18, 2026 at 8:54=E2=80=AFAM Steven Price <steven.price@arm.com>=
- wrote:
->
-> This series adds support for running protected VMs using KVM under the
-> Arm Confidential Compute Architecture (CCA).
->
-> New major version number! This now targets RMM v2.0-bet0[1]. And unlike
-> for Linux this represents a significant change.
->
-> RMM v2.0 brings with it the ability to configure the RMM to have the
-> same page size as the host (so no more RMM_PAGE_SIZE and dealing with
-> granules being different from host pages). It also introduces range
-> based APIs for many operations which should be more efficient and
-> simplifies the code in places.
->
-> The handling of the GIC has changed, so the system registers are used to
-> pass the GIC state rather than memory. This means fewer changes to the
-> KVM code as it looks much like a normal VM in this respect.
->
-> And of course the new uAPI introduced in the previous v12 posting is
-> retained so that also remains simplified compared to earlier postings.
->
-> The RMM support for v2.0 is still early and so this series includes a
-> few hacks to ease the integration. Of note are that there are some RMM
-> v1.0 SMCs added to paper over areas where the RMM implementation isn't
-> quite ready for v2.0, and "SROs" (see below) are deferred to the final
-> patch in the series.
->
-> The PMU in RMM v2.0 requires more handling on the RMM-side (and
-> therefore simplifies the implementation on Linux), but this isn't quite
-> ready yet. The Linux side is implemented (but untested).
->
-> PSCI still requires the VMM to provide the "target" REC for operations
-> that affect another vCPU. This is likely to change in a future version
-> of the specification. There's also a desire to force PSCI to be handled
-> in the VMM for realm guests - this isn't implemented yet as I'm waiting
-> for the dust to settle on the RMM interface first.
->
-> Stateful RMI Operations
-> -----------------------
->
-> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (SROs)
-> which allow the RMM to complete an operation over several SMC calls and
-> requesting/returning memory to the host. This has the benefit of
-> allowing interrupts to be handled in the middle of an operation (by
-> returning to the host to handle the interrupt without completing the
-> operation) and enables the RMM to dynamically allocate memory for
-> internal tracking purposes. One example of this is RMI_REC_CREATE no
-> longer needs "auxiliary granules" provided upfront but can request the
-> memory needed during the RMI_REC_CREATE operation.
->
-> There are a fairly large number of operations that are defined as SROs
-> in the specification, but current both Linux and RMM only have support
-> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXMEs
-> in the code where support is missing.
->
-> Given the early stage support for this, the SRO handling is all confined
-> to the final patch. This patch can be dropped to return to a pre-SRO
-> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purposes.
->
-> A future posting will reorder the series to move the generic SRO support
-> to an early patch and will implement the proper support for this in all
-> RMI SMCs.
->
-> One aspect of SROs which is not yet well captured is that in some
-> circumstances the Linux kernel will need to call an SRO call in a
-> context where memory allocation is restricted (e.g. because a spinlock
-> is held). In this case the intention is that the SRO will be cancelled,
-> the spinlock dropped so the memory allocation can be completed, and then
-> the SRO restarted (obviously after rechecking the state that the
-> spinlock was protecting). For this reason the code stores the memory
-> allocations within a struct rmi_sro_state object - see the final patch
-> for more details.
->
-> This series is based on v7.0-rc1. It is also available as a git
-> repository:
->
-> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
->
->
+Edgecombe, Rick P wrote:
+[..]
+> > If an update races TD build, for example, TD measurement can become
+> > incorrect and attestation can fail.
+> > 
+> > The TDX architecture exposes two approaches:
+> > 
+> > 1) Avoid updates during update-sensitive operations.
+> > 2) Detect incompatibility after update and recover.
+> > 
+> > Post-update detection (option #2) is not a good fit: as discussed in [1],
+> > future module behavior may expand update-sensitive operations in ways that
+> > make KVM ABIs unstable and will break userspace.
+> > 
+> > "Do nothing" is also not preferred: while it keeps kernel code simple, it
+> > lets the issue leak into the broader stack, where both detection and
+> > recovery require significantly more effort.
+> 
+> This subject has had a lot of debate (as linked below in the log), but the way
+> this is written leaves a lot of questions. "do nothing" is not an option it
+> says, but the code does just that when UPDATE_COMPAT_SENSITIVE is not supported.
 
-Hi Steven,
+Right, but that is not the kernel's problem. If you run updates on
+a module that does not support conflict detection, you get to keep the
+pieces.
 
-I have a question regarding host kexec and kdump scenarios, and
-whether there is any plan to make them work in this initial series.
+Like other cases of Linux not wanting to deal with the eccentricities of
+early modules, just have userspace know about a minimum module version
+where this protocol exists and accept the risk otherwise. No pressing
+need to burden the kernel with carrying worry for early modules.
 
-Intel TDX and AMD SEV-SNP both have a firmware shutdown command that
-is invoked during the kexec or panic code paths to safely bypass
-hardware memory protections and boot into the new kernel. As far as
-I know, there is no similar global teardown command available for
-the RMM.
+> > So, use option #1. Specifically, request "avoid update-sensitive" behavior
+> > during TDX module shutdown and map the resulting failure to -EBUSY so
+> > userspace can distinguish an update race from other failures.
+> > 
+> > When the "avoid update-sensitive" feature isn't supported, proceed with
+> > updates. If a race occurs between module update and update-sensitive
+> > operations, failures happen at a later stage (e.g., incorrect TD
+> > measurements in attestation reports for TD build). Effectively, this
+> > means "let userspace update at their own risk".
+> > 
+> 
+> Above it says we can't just do nothing, we need the flag. And then this argues
+> that we can do nothing because we can rely on userspace to deal with the
+> issue... This log is maybe just trying to put a brave face on an imperfect
+> compromise?
 
-What is the roadmap for supporting both general kexec and
-more specifically kdump (panic) scenarios with CCA?
+Not really, the log could be simplified to just say "module versions < X
+are not safe for runtime update". In general if the kernel had a minimum
+supported module version concept it could collect all of these early
+deprecation conditions under one check.
 
-Thanks,
-Alper
+> So, while I don't want to re-open the debate, I'm not sure the patch
+> justification is going to pass scrutiny as is.
+> 
+> In the link [2], Dan says "Do not make Linux carry short lived one-off
+> complexity", and also "Do not include logic to disable updates, document the
+> expectation in the tool."
+> 
+> It seems this does not exclude the option to just to always pass the compat
+> flag. Basically assume that the TDX module will always support
+> UPDATE_COMPAT_SENSITIVE if it supports TDX module updates. Which I guess we
+> should expect should eventually be true.
+
+Right, assume a minimum module version.
+
+> In [2] Dan was also against checking the UPDATE_COMPAT_SENSITIVE feature0 bit to
+> gate the feature.
+
+...because if it must be supported, why check?
+
+> For the record, I don't like allowing the update without the compat bit set, and
+> my concern has nothing to do with userspace roles and responsibilities. Instead
+> it's because we are over budget on complexity for handling SEAMCALL errors
+> within KVM and this makes things worse to keep track of.
+> 
+> tdh_mem_page_add() does a KVM_BUG_ON() if it sees a non-busy error. Imagine
+> working on this code and considering if it is a valid KVM_BUG_ON()? After this
+> patch, the answer is...well sometimes. It depends on the previous modules
+> specific feature0 bits, an understanding on admins expectations, and the
+> behavior of some far away code in arch/x86. Gah.
+
+Why would it be variable? The user tried update on a module that the
+kernel deemed unfit for update. "Doctor, it KVM_BUG_ON()s when I run
+update".
+
+> Actually, the diff Dan objected to was checking and printing a specific helpful
+> error. Maybe he does not mind much more simply checking an extra bit in
+> tdx_supports_runtime_update()? Otherwise, I'd think to just unconditionally pass
+> UPDATE_COMPAT_SENSITIVE without checking for support. Essentially mandate that
+> it is always supported if TDX module update is supported.
+
+In the end all of the hand wringing we are doing is misplaced. The root
+of the problem is the TDX Module claiming "runtime update supported" to
+include these corner cases of "but we corrupt things if the update tries
+to replace the crypto library at the wrong time".
+
+That problem is also solvable by not classifying those updates as
+runtime compatible, or defining a protocol to mitigate the collisions.
+
+Neither of those was chosen. Instead the module implemented 2 additional
+complications Linux chose one that fails update, other VMMs chose one
+that maximizes updates at the cost of needing to restart TD
+construction.
+
+I think the changelog is a bit non-commital trying to be diplomatic
+about the mess. Simply, Linux wanted the easy button, all runtime
+updates are safe. Instead, module exported complexity and optionality.
+KVM voted for one flavor of that optionality to accommodate the module
+complexity.
+
+The solution, make modules with the option KVM wants the min requirement
+and move on.
