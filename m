@@ -1,223 +1,238 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F23C3DBD59;
-	Tue, 14 Apr 2026 14:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15493D9DBD
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776175765; cv=none; b=lX0SZBdzY73UD+RwAyMUYhZY8ZVKjv82GyMvddHuAHWmk8Rsc5wFgn+AjknWsZo5VAewtdnbOinssqzhNQGIbfu8crXeky1lNLEJzSZRz0C0ZocU3Dv6fTD+M++eO3bnTDpFNoWtdxNeu2bVk2hMC4lwImV9lrWFqBnB2mYLxf4=
+	t=1776176638; cv=none; b=c2a7skFvBlIZ8LqIlheNYUwfbI437PpHDUwn1R23/2rfFFzEM6WxW9OAHvTLBETEV1RaTaETHrbZXHDSN6k45QRhchMzVLLj1JsLNstYQc9a0kIT17lMtiAV/7xIbfU/5pkltju5Xg7/3odfsBc/VJevi/JcrYZTcwHxGUwNoRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776175765; c=relaxed/simple;
-	bh=FC6Wkxbbst57Y5XcZOl8gezbYkCIWVatKXhNcU0I1xk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=faiIGTLzHQNJWywj7bl77xq/mGw06PwCKxAXxhB54udIQLtmEOwcjc5UrV3hdtsxCIiTjY4GkzNPmm99LkJ2SrcA3yJR01lova+ZOlZnC/3iwjOr5R727n+M1QlTLOani2bet1cDXvoQgpmNIVkCJy26B8m964VtHbmJxTeQ7Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KJBg/26O; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776176638; c=relaxed/simple;
+	bh=/fCVxa0eMyMWklv2E9q9GFJdXVtpfKD77F6QKI/nFIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BKHy16D+ko886590W/VnagkV4CfK7Seo/XfkHRRyNpKr1/kkXFUn7rSzR1gTOvWu/BCHtt7I3e7RPLzEUzyDVddB0qLDaqX/45hNqOTIVrCwFjIEtnxAWv9JZU4CEFoHV+TtSEuDNQIBD524xNvQ0Ji17kdGyGtZjJp6yGlk7WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUMgG7US; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KJBg/26O"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63EDUuQc1805230;
-	Tue, 14 Apr 2026 14:09:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Dzjv3g
-	OdxZg/qy/ibAPB0hyId1JXFg7fjfcqXZpWbUY=; b=KJBg/26OxUp93sDT/mVnHv
-	abp2h/D5mL3nj3XsikKFoH9IY1xr369fd3CiXfE2yHPWpTqzCd4OOr2/HuMOYK0l
-	USeaKQLMjBoXI28HCD10gaW56ZAlwdFXB2W26yn/lTY5QTlBrcike0mCT9xadA1Q
-	VYGcGapJQK83nYevRZWHguqsYIz7iuJJYS+6dmtEWlnODGNPQoGz0mB7rLMg4bTT
-	B3GIXCfHGB9CN4z6ww0f0LHmSFhYMp7F9yoer8VK2Ur9uCqj3oY1Ourn4MpLYpbe
-	rUwGwUAtvDU0DaX9HvZSy/pUAq1pQ0tBq273I+0/VaBVlDQxf++drvN5uZFTUa6g
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89k2y5d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 14:09:18 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63E9rVgB004179;
-	Tue, 14 Apr 2026 14:09:17 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24k9p7b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 14:09:17 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63EE9G4v26542632
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Apr 2026 14:09:16 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1CB5E58059;
-	Tue, 14 Apr 2026 14:09:16 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7CAF55805B;
-	Tue, 14 Apr 2026 14:09:14 +0000 (GMT)
-Received: from [9.61.29.199] (unknown [9.61.29.199])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Apr 2026 14:09:14 +0000 (GMT)
-Message-ID: <256d54de-759e-4855-b4c5-c955d0b63cc3@linux.ibm.com>
-Date: Tue, 14 Apr 2026 10:09:13 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUMgG7US"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0429EC19425;
+	Tue, 14 Apr 2026 14:23:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776176638;
+	bh=/fCVxa0eMyMWklv2E9q9GFJdXVtpfKD77F6QKI/nFIQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CUMgG7USGrHWNOhxeLwWd/mwPJHpMj3QUt4q9oHTRQdLna0K9mfo2uXiVDMQ4hKpc
+	 uqrM/kI+CMLi/YxeXP3Uj623dK4aKke80UIjoAkHX6M43RqZ9INfja18DHQc7R/S2+
+	 pW4MsWKJLn0WAhQd7L7Bnq2qe9L/yhS012c69IM4E8TCzpKVthZEBVCnW8ufu9TC95
+	 4DEGxxDjc8+U+4jNcXTmaTYPTexLDZ2jImIEi8IukiOLl4yyK7zsCk9aJdFfpN8eBS
+	 VYO4GHxm5TEZYZGz0+e6qMSjf4rzl5yQgj3E4hw6+5bIWpkdYJqXbqzw6K8qRMJ6CJ
+	 2qGv8yv3OQZ6A==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 28BECF4006B;
+	Tue, 14 Apr 2026 10:23:57 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Tue, 14 Apr 2026 10:23:57 -0400
+X-ME-Sender: <xms:_U3eaQCvx35FDPWnL6sBweeurEOIpI1LijIehBqkLQ-bQHEONKlxzA>
+    <xme:_U3eaT_VLmjwZOt1WWXNz-43IGClnMVgKQG_vmW9Zpt3C0HbfQIow8sRSqkzPvv-R
+    D_TrBXUamNa9V1MsdCGIbUQMkUdXgaIPtCBTAxjlvnrjaXezzIrkyw>
+X-ME-Received: <xmr:_U3eae-dUcx-b5B52N4dZw92O_l69d7jJWMEWbFPEPP9sCzpLlTml1QK-rznEA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhepfdfmihhrhihlucfu
+    hhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqeenuc
+    ggtffrrghtthgvrhhnpedvleevheejjeevveetgfejvdfhtdfftefhhfettefgkeejfefg
+    keduhfdthfehhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudei
+    udduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshh
+    huthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphho
+    uhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
+    dprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggr
+    vhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhr
+    vghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhm
+    pdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:_U3eaT3tV0clRDLau64h_TF2174YK72e9bO6MIuYmNiAAB_3GGKYmw>
+    <xmx:_U3eaW-oonZ89wLF8NBRjooF_IQKHfLzthUEv49mYfz9vXflpFxGFw>
+    <xmx:_U3eace5NWItR9K6l05oht3kgIeUcBoOkY2SSpv5ilJbt-QDeiPC9Q>
+    <xmx:_U3eaaEyQMfeSO-25SexlC6pwViL_nRKottkT37wtZNO6LAucKdryw>
+    <xmx:_U3eaZAbUtd7_zzDnzhJQDQYpwcvp63VCCSURN19-3KzfM-2D_ehBgmi>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Apr 2026 10:23:56 -0400 (EDT)
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest memory
+Date: Tue, 14 Apr 2026 15:23:34 +0100
+Message-ID: <20260414142354.1465950-1-kas@kernel.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/16] s390/vfio-ap: Add live guest migration support
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
-        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com
-References: <20260407205100.331150-1-akrowiak@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260407205100.331150-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aBk2v-xuzVCRYusMM2TSVY9e34UcDHEl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDEzMCBTYWx0ZWRfXy/jxozXlQo+/
- +yCaUgv8G9ftDwJoOh8jPYcR6GmbEiiiyludfSepgCxlP1x3cL2rNZjyOBMdH4ILcA8XU5Nr0Fc
- OE0xHM9QYLPGoyhbt3oKjZsh56tV5VXLkdXhBRYMIEl/4k3z0HyE3IqzxBMqUQdC+ngsG8zACqw
- GVCjz4fusTgvNgH5pJlwJcXtrdglD1frLDUlIAbWYgygqztWd0kEkO1GezBS6BSWOxXJwGTzeN5
- QEdLTeTpsmvFxXdo7Hj+AfS9uBgwHQ+6GBKKJqwtdU7Pi1D1FSuFl6+LmG+iiK94E17qYruFjlt
- TLivVRwzYd++1VlFHxhezjUOfzAY7kziXAgT7BgrxVgSTO1846Rd1pKAZxxRKVEWEAJ1wqXp/wM
- McbMIzllSkDPDvorSyGR/ive3BiHUOJRXcp2yELj6lxrR+yn2UWOyaTQqrpsw84yeabA3gWNw3x
- qgSNd752257wGbqH8RQ==
-X-Proofpoint-ORIG-GUID: aBk2v-xuzVCRYusMM2TSVY9e34UcDHEl
-X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69de4a8e cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=BeJFQei6KuwYuYFmKvkA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_03,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140130
 
-PING ....
+This series adds userfaultfd support for tracking the working set of
+VM guest memory, enabling VMMs to identify cold pages and evict them
+to tiered or remote storage.
 
-On 4/7/26 4:50 PM, Anthony Krowiak wrote:
-> This patch series implements live guest migration support for KVM guests
-> with s390 AP (Adjunct Processor) devices passed through via the VFIO
-> mediated device framework.
->
-> Background
-> ----------
->
-> The vfio-ap device driver differs from typical VFIO device drivers in that
-> it does not virtualize a physical device. Instead, it manages AP
-> configuration metadata identifying the AP adapters, domains, and control
-> domains to which a guest will be granted access. These AP resources are
-> configured by assigning them to a vfio-ap mediated device via its sysfs
-> assignment interfaces. When the fd for the VFIO device is opened by
-> userspace, the vfio_ap device driver sets the guest's AP configuration
-> from the metadata stored with the mediated device. As such, the AP devices
-> are not accessed directly through the vfio_ap driver, so the driver has no
-> internal device state to migrate. It's sole purpose during migration is to
-> ensure that the AP configurations of the source and destination guests are
-> compatible.
->
-> Implementation Approach
-> -----------------------
->
-> This series implements the VFIO migration protocol using the STOP_COPY
-> migration flow. The key aspects are:
->
-> 1. Hardware Information Capture (Patches 1-2)
->     - Store AP queue hardware characteristics at probe time
->     - Provide access to queue objects for validation
->
-> 2. Migration Infrastructure (Patches 3-5)
->     - Define migration data structures
->     - Initialize/release migration data on device open/close
->
-> 3. State Machine Implementation (Patches 6-13)
->     - Implement required VFIO migration callbacks
->     - Handle state transitions: STOP → STOP_COPY → STOP (source)
->                                 STOP → RESUMING → STOP (destination)
->     - Use file streams for AP configuration data transfer
->
-> 4. Validation and Callbacks (Patches 14-15)
->     - Implement migration state and data size callbacks
->     - Required for VFIO_DEVICE_FEATURE_MIGRATION support
->
-> 5. Documentation (Patch 16)
->     - Add live guest migration chapter to vfio-ap.rst
->
-> Compatibility Validation
-> ------------------------
->
-> The series includes comprehensive validation to ensure source and
-> destination AP configurations are compatible. For each queue, the following
-> characteristics must match:
->
-> - AP type (target must be same or newer than source)
-> - Installed facilities (APSC, APQKM, AP4KC, SLCF)
-> - Operating mode (CCA, Accelerator, XCP)
-> - APXA facility setting
-> - Classification (native vs stateless functions)
-> - Queue usability (binding/associated state)
->
-> When incompatibilities are detected, migration fails with detailed error
-> messages identifying the specific queue and characteristic that caused
-> the failure.
->
-> Configuration Management
-> ------------------------
->
-> This implementation does not prevent configuration changes during
-> migration. Configuration stability is an orchestration-layer
-> responsibility, consistent with other VFIO device types. The driver's
-> role is to validate configurations and provide clear diagnostics when
-> incompatibilities are detected, enabling orchestration tools to implement
-> appropriate policies.
->
-> Change log v1 to v2
-> -------------------
->
-> - Removed patches that attempted to block configuration changes during
->    migration due to inherent race conditions and incomplete protection
-> - Simplified approach focuses on validation and error reporting
-> - Reduced series from 18 to 16 patches
-> - Rewrote the description in the cover letter to better describe the
->    patch series, remove confusing comments as well as references to
->    function provided by the patches that were removed.
->
-> Anthony Krowiak (16):
->    s390/vfio-ap: Store queue hardware info when probed
->    s390/vfio-ap: Provide access to queue objects and related info
->    s390/vfio-ap: Data structures for facilitating vfio device migration
->    s390/vfio-ap: Initialize/release vfio device migration data
->    s390-vfio-ap: Callback to set vfio device mig state during guest
->      migration
->    s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
->    s390/vfio-ap: File ops called to save the vfio device migration state
->    s390/vfio-ap: Transition device migration state from STOP to RESUMING
->    s390/vfio-ap: File ops called to resume the vfio device migration
->    s390/vfio-ap: Transition device migration state from RESUMING to STOP
->    s390/vfio-ap: Transition device migration state from STOP_COPY to STOP
->    s390/vfio-ap: Transition device migration state from STOP to RUNNING
->      and vice versa
->    s390-vfio-ap: Callback to get the current vfio device migration state
->    s390/vfio-ap: Callback to get the size of data to be migrated during
->      guest migration
->    s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
->    s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
->
->   Documentation/arch/s390/vfio-ap.rst     |  325 +++++--
->   drivers/s390/crypto/Makefile            |    2 +-
->   drivers/s390/crypto/vfio_ap_drv.c       |    4 +-
->   drivers/s390/crypto/vfio_ap_migration.c | 1095 +++++++++++++++++++++++
->   drivers/s390/crypto/vfio_ap_ops.c       |   66 +-
->   drivers/s390/crypto/vfio_ap_private.h   |   10 +
->   6 files changed, 1395 insertions(+), 107 deletions(-)
->   create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
->
+== Problem ==
+
+VMMs managing guest memory need to:
+1. Track which pages are actively used (working set detection)
+2. Safely evict cold pages to slower storage
+3. Fetch pages back on demand when accessed again
+
+For shmem-backed guest memory, working set tracking partially works
+today: MADV_DONTNEED zaps PTEs while pages stay in page cache, and
+re-access auto-resolves from cache. But safe eviction still requires
+synchronous fault interception to prevent data loss races.
+
+For anonymous guest memory (needed for KSM cross-VM deduplication),
+there is no mechanism at all — clearing a PTE loses the page.
+
+== Solution ==
+
+The series introduces a unified userfaultfd interface that works
+across both anonymous and shmem-backed memory:
+
+UFFD_FEATURE_MINOR_ANON: extends MODE_MINOR registration to anonymous
+private memory. Uses the PROT_NONE hinting mechanism (same as NUMA
+balancing) to make pages inaccessible without freeing them.
+
+UFFD_FEATURE_MINOR_ASYNC: auto-resolves minor faults without handler
+involvement. The kernel restores PTE permissions immediately and the
+faulting thread continues. Works for anonymous, shmem, and hugetlbfs.
+
+UFFDIO_DEACTIVATE: marks pages as deactivated. For anonymous memory,
+sets PROT_NONE on PTEs (pages stay resident). For shmem/hugetlbfs,
+zaps PTEs (pages stay in page cache).
+
+UFFDIO_SET_MODE: toggles MINOR_ASYNC at runtime, synchronized via
+mmap_write_lock. Enables the VMM workflow: async mode for lightweight
+detection, sync mode for race-free eviction.
+
+PAGE_IS_UFFD_DEACTIVATED: PAGEMAP_SCAN category flag for efficient
+batch detection of cold (still-deactivated) anonymous pages.
+
+== VMM Workflow ==
+
+    UFFDIO_DEACTIVATE(all)            -- async, no vCPU stalls
+    sleep(interval)
+    PAGEMAP_SCAN                      -- find cold pages
+    UFFDIO_SET_MODE(sync)             -- block faults for eviction
+    pwrite + MADV_DONTNEED cold pages -- safe, faults block
+    UFFDIO_SET_MODE(async)            -- resume tracking
+
+The same workflow applies to shmem, with a different PAGEMAP_SCAN mask
+(!PAGE_IS_PRESENT instead of PAGE_IS_UFFD_DEACTIVATED).
+
+== NUMA Balancing ==
+
+NUMA balancing scanning is skipped on anonymous VM_UFFD_MINOR VMAs to
+avoid protnone conflicts. NUMA locality stats are fed from the uffd
+fault path via task_numa_fault() so the scheduler retains placement
+data. Shmem VMAs are unaffected (UFFDIO_DEACTIVATE zaps PTEs there,
+no protnone involved).
+
+== Testing ==
+
+The series includes 6 new selftests covering async/sync modes,
+PAGEMAP_SCAN cold detection, GUP through protnone, UFFDIO_SET_MODE
+toggling, and cleanup on close. All 73 uffd unit tests pass
+(including hugetlb) across defconfig, allnoconfig, allmodconfig,
+and randomized configs.
+
+Kiryl Shutsemau (Meta) (12):
+  userfaultfd: define UAPI constants for anonymous minor faults
+  userfaultfd: add UFFD_FEATURE_MINOR_ANON registration support
+  userfaultfd: implement UFFDIO_DEACTIVATE ioctl
+  userfaultfd: UFFDIO_CONTINUE for anonymous memory
+  mm: intercept protnone faults on VM_UFFD_MINOR anonymous VMAs
+  userfaultfd: auto-resolve shmem and hugetlbfs minor faults in async
+    mode
+  sched/numa: skip scanning anonymous VM_UFFD_MINOR VMAs
+  userfaultfd: enable UFFD_FEATURE_MINOR_ANON
+  mm/pagemap: add PAGE_IS_UFFD_DEACTIVATED to PAGEMAP_SCAN
+  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+  selftests/mm: add userfaultfd anonymous minor fault tests
+  Documentation/userfaultfd: document working set tracking
+
+ Documentation/admin-guide/mm/userfaultfd.rst | 141 ++++-
+ fs/proc/task_mmu.c                           |  11 +-
+ fs/userfaultfd.c                             | 184 +++++-
+ include/linux/huge_mm.h                      |   6 +
+ include/linux/mm.h                           |   2 +
+ include/linux/sched/numa_balancing.h         |   1 +
+ include/linux/userfaultfd_k.h                |  21 +-
+ include/trace/events/sched.h                 |   3 +-
+ include/uapi/linux/fs.h                      |   1 +
+ include/uapi/linux/userfaultfd.h             |  40 +-
+ kernel/sched/fair.c                          |  13 +
+ mm/huge_memory.c                             |  33 +-
+ mm/hugetlb.c                                 |   3 +-
+ mm/memory.c                                  |  51 +-
+ mm/mprotect.c                                |   9 +-
+ mm/shmem.c                                   |   3 +-
+ mm/userfaultfd.c                             | 164 +++++-
+ tools/testing/selftests/mm/uffd-unit-tests.c | 458 +++++++++++++++
+ 18 files changed, 1096 insertions(+), 48 deletions(-)
+
+Kiryl Shutsemau (Meta) (12):
+  userfaultfd: define UAPI constants for anonymous minor faults
+  userfaultfd: add UFFD_FEATURE_MINOR_ANON registration support
+  userfaultfd: implement UFFDIO_DEACTIVATE ioctl
+  userfaultfd: UFFDIO_CONTINUE for anonymous memory
+  mm: intercept protnone faults on VM_UFFD_MINOR anonymous VMAs
+  userfaultfd: auto-resolve shmem and hugetlbfs minor faults in async
+    mode
+  sched/numa: skip scanning anonymous VM_UFFD_MINOR VMAs
+  userfaultfd: enable UFFD_FEATURE_MINOR_ANON
+  mm/pagemap: add PAGE_IS_UFFD_DEACTIVATED to PAGEMAP_SCAN
+  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+  selftests/mm: add userfaultfd anonymous minor fault tests
+  Documentation/userfaultfd: document working set tracking
+
+ Documentation/admin-guide/mm/userfaultfd.rst | 141 +++++-
+ fs/proc/task_mmu.c                           |  11 +-
+ fs/userfaultfd.c                             | 184 +++++++-
+ include/linux/huge_mm.h                      |   6 +
+ include/linux/mm.h                           |   2 +
+ include/linux/sched/numa_balancing.h         |   1 +
+ include/linux/userfaultfd_k.h                |  21 +-
+ include/trace/events/sched.h                 |   3 +-
+ include/uapi/linux/fs.h                      |   1 +
+ include/uapi/linux/userfaultfd.h             |  40 +-
+ kernel/sched/fair.c                          |  13 +
+ mm/huge_memory.c                             |  33 +-
+ mm/hugetlb.c                                 |   3 +-
+ mm/memory.c                                  |  51 ++-
+ mm/mprotect.c                                |   9 +-
+ mm/shmem.c                                   |   3 +-
+ mm/userfaultfd.c                             | 164 ++++++-
+ tools/testing/selftests/mm/uffd-unit-tests.c | 458 +++++++++++++++++++
+ 18 files changed, 1096 insertions(+), 48 deletions(-)
+
+-- 
+2.51.2
 
