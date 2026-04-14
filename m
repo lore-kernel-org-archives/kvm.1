@@ -1,65 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F103E8C79;
-	Tue, 14 Apr 2026 14:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6657D3E6DF9;
+	Tue, 14 Apr 2026 14:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776176650; cv=none; b=a2EBBWkNEGiMmQQsNbaHeq2CoEIqAWRkENphpkQGyIim4Mt1mMnTm1TvkyVJNkAM+R5009eRmIfSuOwMpgalbO+CYGKxQbobOIjnGa53zXxll5qZjwFQZrnbbBGrp8FFiiQSGU9Er6QisC72LjAc7YJhoHnOibLiZ9w5GrnkNjg=
+	t=1776176652; cv=none; b=XPTd2nZgbkPxxVXiRaY3XAMa43da/yQWcwU/jP+41A7FGsLVWAt9be/C9rq8HBpE5lb0uL7sPqVYL6qtP9qH6HmG0wUK49JblqV67T5dzFjlc2LqtzuWrVUr6CgAytoL32g/fZvY5do56h1cjqWvgMsV4neT9OcHjuBC/iuIX0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776176650; c=relaxed/simple;
-	bh=m+QZFSoN1KHyBpdT/lFOUcMBNfMoQG8FWyZoa+3hWE8=;
+	s=arc-20240116; t=1776176652; c=relaxed/simple;
+	bh=bdNn47+Nx91eslEieZ286KWtw/tnSdy4Rxa/tQlVFSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gi68ncTM/ozwGxPiHD3/3DGslFf4r4qL1WA654Bjh5jTlQ9azh492QeUKbLDz2FcI9LxfHM6/qCgctjvCgOuJLjp4LRut3DYmUEPYMqYhGyAdvb0nXhNkGMrF3keW0U0ep2L8e7GZ+D+MPZW5J1MjC4RPqHZJaBZn7kZpjgkMJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3N3FcF8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Oe4cdFDKxc1DvX3rvy/3JTdMj/YT7EhgRVyWZ+ksgZ89fRBuTWQkZK5m2nbNv1OGn4Q3xBDjf0tmQXJzoAwVpZPou/xv4yOWt+24Goc4D9T+pPNKQmM7GKxUaMJf/NMcWhy4ffTeGy2kxjKahQirS+jCiyGH2kykLSHeTuoSuf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smzIiwzk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3N3FcF8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC1DC19425;
-	Tue, 14 Apr 2026 14:24:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smzIiwzk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE429C4AF0B;
+	Tue, 14 Apr 2026 14:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776176650;
-	bh=m+QZFSoN1KHyBpdT/lFOUcMBNfMoQG8FWyZoa+3hWE8=;
+	s=k20201202; t=1776176652;
+	bh=bdNn47+Nx91eslEieZ286KWtw/tnSdy4Rxa/tQlVFSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3N3FcF8j1cl9QhM0roD5U+FQK/bk8whCC91NDffJsKAn3I3Dw1WAuV8QnPA4vvzh
-	 w/bpTNK1D8emkJd9Bi57CcDL5Dc0nOQAbp+YRFl7H9td2UAyNFQr33yAmzaEZaISQh
-	 hKPvJgpgmEotVPP2ntvhnnOc9M4iI9s+NJ9X8UqgH8agfD9REyRoiyUJi2yZ8UlFPr
-	 C5TokRgk3GrjlbbAj0KNvs3sMevo6jWrIPm7wcBdsUImKv9yl5q8zmJtjZTyvCTNEn
-	 gByarjgJ8H6Hf84kivOVCxAd4ch3Vx0kdt6ka8iOcIR+lvPdaTS9TT7WBZh5bqmwbu
-	 lG3/9vOAT1i3A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2D52AF40068;
-	Tue, 14 Apr 2026 10:24:09 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 14 Apr 2026 10:24:09 -0400
-X-ME-Sender: <xms:CU7eabIpxTPG45onsRcikDQxMRXerezZzHYli_8nk_CTT1BhP-t9Uw>
-    <xme:CU7eaWEKZA9px65WkVS8_nbZSiQhowTvJ2erLXFIEJMFZhZnTl6yrvME6v8qeN7b9
-    soP1tMegTqA-Yy6BGrgcvniiS8fmqQR2UlrP4a-98LtpPM6hH_hLtU>
-X-ME-Received: <xmr:CU7eaYzjRtC2l3_b1TUA5PmMEWbkR1ZOSVZ7gPb2KfkrpnlxpwcBN5wPp0XS-w>
+	b=smzIiwzkviWVR7lnj73JVWnCQ+zBpvJCTqLUI3rfAoHi80IfNutFZUb982WabLJdp
+	 RV1EHtoV0XM8U5Lvh6R6BERnAHbxeaIWOyOTq1r1cgtn4s17TLEIXC4Czy1xUKl5/N
+	 zmzLM2Ig+HUpqpMApLtLHsYyinprvvb5thjin3NmUf4IqX94OWT09zuu8KXP9bmTPB
+	 0h3kNPAZ2HcYJCbuRfx63vGGdEnfLqOOYWavV5a2qtXHfA7mYS1UxHoDAbRR9ZLYLw
+	 D0I5zhRWXTgJDj0qq2R7C5PShhH88aEmokXZzPaoA1H0sftf5qJ2BSXT5I4nA8ZBZJ
+	 LNaGsT5Zhu3Ng==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DF7A6F40068;
+	Tue, 14 Apr 2026 10:24:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 14 Apr 2026 10:24:10 -0400
+X-ME-Sender: <xms:Ck7eaVIlxL6gOMHnrotiu1Aq2wA_g2vVcrpAXkPVT6yYDcz0V3RS5w>
+    <xme:Ck7eaYHthgumh1dkOCOzDnRilG70A9ktdRrDr3hP5Sd3rh2AUmzhloqbv9NAe3GQ1
+    hqceh6DORm9RS_eebYzCXgUboVCRIXfsO7vxbuP_Fgh5d0aVhfLHvU>
+X-ME-Received: <xmr:Ck7eaSxYsKTSd-N2Uvwi9HwB9SGKN-1eMU-nLf7guVhKn0slOdMJQm5IE5PF0Q>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepfdfmihhrhihl
-    ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
-    enucggtffrrghtthgvrhhnpefhvdefvdevjeevhefhhfevudefudejfeduvdekheeludfh
-    iefhhedujeffffeigfenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
-    udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
-    hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhht
-    phhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
-    hrghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
-    uggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehs
-    uhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgt
-    ohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:CU7eabjiZLALMUNh56rbUI0YOZY01Gh7ZIfSB8kVV0GuL2UFl7PB0Q>
-    <xmx:CU7eadLMpGoLRW0PkjUsjA-ww25wco0zTFQ7E0mKOZ6gY9t0TO0eHg>
-    <xmx:CU7eaeC4meJ0gyd_L6D8X5Fc71Mb8yuIMJ0p8iNmxm07QLi_J2ZrWQ>
-    <xmx:CU7eaeQ_WXkewkruAKXcO7rZSYkx3YczRIJ6JOc54XpCC0XBsx23gg>
-    <xmx:CU7eafpamlT3pfumAqUGcRCV3xHiBgfzrn2luZ8stq86Z4dwMnYNs7lw>
+    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcu
+    ufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqne
+    cuggftrfgrthhtvghrnhephfdujeefvdegkefffedvkeehkeekueevfedtleehgeetlefg
+    feevveeukefhtdetnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilh
+    hfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqddu
+    ieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghessh
+    hhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
+    hgpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegu
+    rghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhu
+    rhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtgho
+    mhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:Ck7eadhKkyMSHzEZVrk8qVizVP-x_HMDg3Ml2GcB9nOmIqgN2x1tAw>
+    <xmx:Ck7eaXLic-Q5TKN6jkpmkLTrh_zTVGW9-0YwrimJQp29TkHP6kjeAw>
+    <xmx:Ck7eaQCus3xC9UxalN-U84MZRkTX50MHGVg9Pyo5DkPAYMTJQSEZWA>
+    <xmx:Ck7eaYReISLLG7mEHLpRZRqQ5XjeqE4JrodK7dWh4MhDS6RYM6V6Fw>
+    <xmx:Ck7eaRol0_iVa8IN7w3Vs3Gzyv1QZl9rkUikTVZnrTUcVY9I-PSC24Fs>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 10:24:08 -0400 (EDT)
+ 14 Apr 2026 10:24:10 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Peter Xu <peterx@redhat.com>,
@@ -80,9 +80,9 @@ Cc: Peter Xu <peterx@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC, PATCH 07/12] sched/numa: skip scanning anonymous VM_UFFD_MINOR VMAs
-Date: Tue, 14 Apr 2026 15:23:41 +0100
-Message-ID: <20260414142354.1465950-8-kas@kernel.org>
+Subject: [RFC, PATCH 08/12] userfaultfd: enable UFFD_FEATURE_MINOR_ANON
+Date: Tue, 14 Apr 2026 15:23:42 +0100
+Message-ID: <20260414142354.1465950-9-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
 References: <20260414142354.1465950-1-kas@kernel.org>
@@ -92,78 +92,51 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Avoid protnone conflict on anonymous VMAs. Shmem unaffected.
-NUMA stats fed from uffd fault path instead.
-Add NUMAB_SKIP_UFFD_MINOR trace reason.
+Add UFFD_FEATURE_MINOR_ANON, UFFD_FEATURE_MINOR_ASYNC to
+UFFD_API_FEATURES and UFFDIO_DEACTIVATE to UFFD_API_RANGE_IOCTLS.
+The feature is now available to userspace.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 ---
- include/linux/sched/numa_balancing.h |  1 +
- include/trace/events/sched.h         |  3 ++-
- kernel/sched/fair.c                  | 13 +++++++++++++
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ include/uapi/linux/userfaultfd.h | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-index 52b22c5c396d..5668074a4271 100644
---- a/include/linux/sched/numa_balancing.h
-+++ b/include/linux/sched/numa_balancing.h
-@@ -23,6 +23,7 @@ enum numa_vmaskip_reason {
- 	NUMAB_SKIP_PID_INACTIVE,
- 	NUMAB_SKIP_IGNORE_PID,
- 	NUMAB_SKIP_SEQ_COMPLETED,
-+	NUMAB_SKIP_UFFD_MINOR,
- };
+diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
+index 336d07e1b6de..775825da2596 100644
+--- a/include/uapi/linux/userfaultfd.h
++++ b/include/uapi/linux/userfaultfd.h
+@@ -42,7 +42,9 @@
+ 			   UFFD_FEATURE_WP_UNPOPULATED |	\
+ 			   UFFD_FEATURE_POISON |		\
+ 			   UFFD_FEATURE_WP_ASYNC |		\
+-			   UFFD_FEATURE_MOVE)
++			   UFFD_FEATURE_MOVE |			\
++			   UFFD_FEATURE_MINOR_ANON |		\
++			   UFFD_FEATURE_MINOR_ASYNC)
+ #define UFFD_API_IOCTLS				\
+ 	((__u64)1 << _UFFDIO_REGISTER |		\
+ 	 (__u64)1 << _UFFDIO_UNREGISTER |	\
+@@ -54,13 +56,15 @@
+ 	 (__u64)1 << _UFFDIO_MOVE |		\
+ 	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
+ 	 (__u64)1 << _UFFDIO_CONTINUE |		\
+-	 (__u64)1 << _UFFDIO_POISON)
++	 (__u64)1 << _UFFDIO_POISON |		\
++	 (__u64)1 << _UFFDIO_DEACTIVATE)
+ #define UFFD_API_RANGE_IOCTLS_BASIC		\
+ 	((__u64)1 << _UFFDIO_WAKE |		\
+ 	 (__u64)1 << _UFFDIO_COPY |		\
+ 	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
+ 	 (__u64)1 << _UFFDIO_CONTINUE |		\
+-	 (__u64)1 << _UFFDIO_POISON)
++	 (__u64)1 << _UFFDIO_POISON |		\
++	 (__u64)1 << _UFFDIO_DEACTIVATE)
  
- #ifdef CONFIG_NUMA_BALANCING
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 7b2645b50e78..02e79b56db28 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -728,7 +728,8 @@ DEFINE_EVENT(sched_numa_pair_template, sched_swap_numa,
- 	EM( NUMAB_SKIP_SCAN_DELAY,		"scan_delay" )	\
- 	EM( NUMAB_SKIP_PID_INACTIVE,		"pid_inactive" )	\
- 	EM( NUMAB_SKIP_IGNORE_PID,		"ignore_pid_inactive" )		\
--	EMe(NUMAB_SKIP_SEQ_COMPLETED,		"seq_completed" )
-+	EM( NUMAB_SKIP_SEQ_COMPLETED,		"seq_completed" )	\
-+	EMe(NUMAB_SKIP_UFFD_MINOR,		"uffd_minor" )
- 
- /* Redefine for export. */
- #undef EM
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index ab4114712be7..57beb04562cf 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -25,6 +25,7 @@
- #include <linux/hugetlb_inline.h>
- #include <linux/jiffies.h>
- #include <linux/mm_api.h>
-+#include <linux/userfaultfd_k.h>
- #include <linux/highmem.h>
- #include <linux/spinlock_api.h>
- #include <linux/cpumask_api.h>
-@@ -3459,6 +3460,18 @@ static void task_numa_work(struct callback_head *work)
- 			continue;
- 		}
- 
-+		/*
-+		 * Skip anonymous VMAs registered for userfaultfd minor faults.
-+		 * Both NUMA balancing and uffd use protnone PTEs on anonymous
-+		 * memory — let uffd own the hinting. For shmem, UFFDIO_DEACTIVATE
-+		 * zaps PTEs entirely (no protnone conflict), so NUMA scanning
-+		 * can proceed normally.
-+		 */
-+		if (vma_is_anonymous(vma) && userfaultfd_minor(vma)) {
-+			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_UFFD_MINOR);
-+			continue;
-+		}
-+
- 		/*
- 		 * Shared library pages mapped by multiple processes are not
- 		 * migrated as it is expected they are cache replicated. Avoid
+ /*
+  * Valid ioctl command number range with this API is from 0x00 to
 -- 
 2.51.2
 
