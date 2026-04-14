@@ -1,193 +1,171 @@
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7876E330D2A;
-	Tue, 14 Apr 2026 09:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EA92798F8
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 09:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776157766; cv=none; b=Y3rNugi7N5q4K7+CuNTjvgAirFSJmo/jx5Qlxe+4GlXYe5TWNRfQzWBp9CHY5E/206NXTgmGU8vuw71v25/0qwx4Pj56G82eg6yQi+gIVKzrJDfJMsMwCUoJFDa2dKNGDJj8hKF9bF+gmaEXaufGem5G0VqlXK37fBTRNhGSKSw=
+	t=1776158146; cv=none; b=h0Xn6gbhDphSE21e0QZOiBhDYz/7WQ3l80VPOpckirw52HtX5kJN91RFn0Xb6KF4gP3nA/7I/QlIMxGqz8n5C/OwdgwvZarbGSxLsr/BWbgraUDn3Xkz7pkiQBNJCZxNUyowNL+/4oHhBiu92Bwmx62qJmnbSI8hBTev9noYpzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776157766; c=relaxed/simple;
-	bh=H6ZB4ISzMjy4AQ0CTXwJtxaNh2ljpRY/3zyh2r8sGgY=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pQ2uIZ/VuobOtXMNRAXgNdzBMFWupYrWns2odtyETygzPr688Yse83p9qTK9Bo/WPjCKCQrW7J4k+wdeCE8Sq0+BrXvVmGmaeEmO6eW6nLR3Agh+Wz2ePsIBNUzRajMmjWdljDtAZBxZFv6h9xSK3+G7K/m7kPfQ02NYi0CuDDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=BT9AeUwq; arc=none smtp.client-ip=162.62.58.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1776158146; c=relaxed/simple;
+	bh=y5ZFOgUkzzgRbDidAMBukcviSU6qnrq1ANla800OYa0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gc7qyrRsJHtZ034uBSs3iv2aSvkwQ9Fh0ohrLpSGiPwL9a+mYRMBLXreFZgbUgOGnu79e959QJvACo8TQIfxkDif5jUFghPDlvc89d+T8jQc1Yn1Eqpjol6/axN6iPiOed8TxWdndqyATanlBIPlOtWO7YZVch5hLZlbfE7WRWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EGDTp5ly; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="BT9AeUwq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1776157757; bh=TLBHUotRa57QkBGDFQ2cZImxoNpNFGzsAJhMazifhn8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BT9AeUwqjQx7ozUsi0LsVOnTImj9JtOUAiEiRmxpXQ4fQqmhkKOP0NHFPaSpxFtUB
-	 qHCjgJy5F4ZRMdeMZG3yXkQ79vmWoPkRYFFBloLKgKRPMfQsm62kKTr5BTBUu5Z08b
-	 9QIEt4jf9Afoo0MmMc19EjjoSho/bxKLKefQqxMY=
-Received: from zh-pc ([116.128.244.169])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 24EA4C1E; Tue, 14 Apr 2026 17:09:14 +0800
-X-QQ-mid: xmsmtpt1776157754t7x5i9k22
-Message-ID: <tencent_510B7687999B510DE0D00238024766980C06@qq.com>
-X-QQ-XMAILINFO: NGZp1yYNf7Y+2SjFAIPKE1oPuS1/Y7Mag3/IGvDERPNeX3Ox+kL7Tne2P8UXON
-	 9UuiT499WQ8xq78QmcPh4R/JfQ6579JR6v0X6l6dBFVRPRxxaXd2xHs5gdmzOhetFmNHV04a3rGz
-	 sTDMtNXWpvwe/M2bzKpxbdiJh8SmnNZrztj1dz9yPkY6IM9P2psrHVMpm4I8L87ie+kj+rVRt3Dp
-	 Wu7X0g/wE7U4OSONMHjVE+2SoTvg7On74pVER6BGhoIm2Jg/POB8pYWR4xRHyP/59b653G75ZBcK
-	 NoC+HriD0aCRBPvLmkDekGdR9seLEl2HbtTLeNtkfZepHRWPC3ThyDMmGJG7D1smwaEkLUyatEUv
-	 dMKgtlHGktvxiVAfOAH8Jt7Bes4Qg4dS3jMHZ+KoITM+HW4YZTV5G5WNQ/T9AVNaVsAk2ZcVEIzk
-	 DxfA3SUDc5vMpvJpYhhNN3omwLggSvMmq5tXi9hyrc7XLkeQ6QTEDx01lfKKq3VSnjRRC+78+0a3
-	 jGdsjUTUr9+4YapBnSC0TMw3zRFovxmsLdGaI/MSa9dt3mzpDFRZO8wi0nfqd86JOXIJDwv7hRx+
-	 8JI0wyHQhYarvQ1UREolPe5Z8ElRJYhconXspWqHR+jUB/mUfjoPYy/a1Na3nsZAjXvMgtTxmlBd
-	 GkYon7AIZLLCPcE4mL94H5v9NZdBn/86475amIWBwc2pMBEECvar3+LleVJv1P6iJCnN0nDvRr1r
-	 juZUmAbGgNMYoyE6iJQ+r2z97DhHMB6ibPAlnK7vuEDK7cNJ+km4p/IydYos5GfdJG+xnxyb20bn
-	 eW0eFzoIbdbxetUhSEA3Uoqccw9qYdyvdsua3CxRi60BoiYc2iu6AzWsUiSz0zOKAnjY7DuNsUxi
-	 1zzAbsemsrIrk6hGzGSQ1pttRCNXopBasS6uP9+dQy8MGKEJ7s1zWhLio7zU/NkKT7AU9PGFjRW1
-	 uOSs+F8lTHyhaHBX8EbjLsWWErDjAlgnPynS2eSVoBAc9z8EifRo0NwCHj8//dVVbjOEFbFV5orv
-	 SNCaUIklieajAZzZwdDoXMhW21OhZRBdJ8/s7q08Yo6lUEOHLTRxZKjApNheXlhfBba41Pvg==
-X-QQ-XMRINFO: MYTJVxP1dBxwtiABCNfZE0rVJLV6TFYRrQ==
-Date: Tue, 14 Apr 2026 17:09:14 +0800
-From: zhanghao <76824143@qq.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, zhanghao <zhanghao1@kylinos.cn>,
-	Wanpeng Li <kernellwp@gmail.com>
-Subject: Re: [PATCH] KVM: Drop kvm_vcpu.ready to squash race where "ready"
- can get stuck "true"
-X-OQ-MSGID: <20260414090914.GA148269@zh-pc>
-References: <20260409213333.1995382-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EGDTp5ly"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cf5ad500fso4557389f8f.0
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 02:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776158143; x=1776762943; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XCk4HcphTywuTMhaSHp2v2iLapMiZxwN1A2t9mpTSko=;
+        b=EGDTp5lygxcdWZDct+yPzGOTA3TQxxJU3ptaUrK+hI/yTtNvxCQH48rkTNz+sn6Vnl
+         5vDDLjQNDMILRPyd8BjhLtqLPmzVp66UpRYROdrXaZP+QHzGn4Fd9IcL84gfT3UYXmBk
+         KH9BrP62vAngqXCSf7cT7HIt8QJujiZ1eggQUUKgYrAOdtVk07TqE2YtdYe+hrJdutRh
+         F6qZPA0yZ6XwwRdlZZuhzDN0n7vA+scCkn/kJ85RYqmYTjXAPrNmu48KiCyE+lr5Z7kt
+         SQbWz4I5QrM54+6eGi002Ez8V8RxWvxQmd0nPi20OfJPmAd7pSiDudAbNEGjwfevz9Ep
+         jLtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776158143; x=1776762943;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XCk4HcphTywuTMhaSHp2v2iLapMiZxwN1A2t9mpTSko=;
+        b=lAgPnBNhZn6Y+/n7mRjoDQ+2oIfzIjRW/AB3B4KriQ4i4LXlpJn+Wz8EwHU00mXlcX
+         9wWnWlDdP3PBfh0ZZSnDQWY6wii2GLBfW4gAy9To80H2lQZisUDOzCDhv7M4IrxtpFR0
+         Ve+8GHMqP5qP4ncGz146P77hKljkdugDB0w2N6oD7gR19mAVD6E2tqOr8tkU03Q4OgLq
+         t6eMp/q+zerua8WhsE69F11/0dMmXmRGhfb7eMeWAV88xTwFRZFtBCdpSqxFSPs5y3st
+         SmvOQEgvVM7lYPqKhXegqsm9HSLbiw6HlWhMCC6zNb81/Ap/85DAmGAZZXYmtYLB4inf
+         Lr3Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8I8Seh+cgnrXrIYg+w3N/gf+llf8gyBcqUGYXC/7Gqzlw9Co90AL507KKCRxSSmdpl0Lk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMMS5lsuE87t9VbDI6mgz1pyGwZ9yWDEZgH05A+oiZO1QStHuc
+	vNUa2c9qd7igyC2hb0pKSONYj6S2F2b7tf9dWB3SmONXGa0HadMhTB7uml1w412sbpa6BKAbG5s
+	ufk/78hg=
+X-Gm-Gg: AeBDieubvAwoPgenRrbZdUnnvJrWIZJDAoB0hOHuuwOuPD5AlUrfFKNzvdg4MnTN8Zn
+	MA5qVQqiNjvKvRFr1APcF6byKiUvHypfz68llHhfg+9PMX7i+GlR2bCKZGIFArwQEpRWPclKCwF
+	soMk91o7zii+dCvf6cIWl6O0uMGb51/5PL4Hnhbv5cM+qYfE8mNJU5rPd39TQK8gbeHu+bMrOuw
+	ku9r2/R/fNBgROMGiKQ5Q7ClUmUy/nRbV2xLdaN8VUUFcMYeUn9GV0qGRvr8Hg5axKZQX3sOW0B
+	4vAUdbccQYg61lXqDU68PoFJ2KpKBT+PN2vEVoMr1HnXHttzi3ymsOocptO90KuTg44CEOspyNj
+	K89aCG/7irj5iLUc01l2d+AKCS8PBQqeAxG+6kMsXRgmmtxhtouQNxKWJ5Hjkps3fTpqe+F33Bh
+	uHvVJlfF+4Q4EY+/dmm4eVTs5rd4FWRZJWzaD4Sli+36OGTP7LrhAVoSAmr8ZXvMfmYg==
+X-Received: by 2002:a05:6000:2383:b0:43d:7946:bae6 with SMTP id ffacd0b85a97d-43d7946bbc0mr9283257f8f.43.1776158143218;
+        Tue, 14 Apr 2026 02:15:43 -0700 (PDT)
+Received: from [192.168.69.228] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm38868373f8f.5.2026.04.14.02.15.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Apr 2026 02:15:42 -0700 (PDT)
+Message-ID: <825cb787-b782-447d-90cf-d950d78e1cbb@linaro.org>
+Date: Tue, 14 Apr 2026 11:15:41 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260409213333.1995382-1-seanjc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-11.0 v3] accel/kvm: return early from
+ kvm_irqchip_create if kvm does not support irqchip
+Content-Language: en-US
+To: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-ppc@nongnu.org, Misbah Anjum N <misanjum@linux.ibm.com>,
+ Gautam Menghani <gautam@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+References: <20260414045911.63662-1-anisinha@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260414045911.63662-1-anisinha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 09, 2026, Sean Christopherson wrote:
-> Drop kvm_vcpu.ready and instead detect the case where a recently awakened
-> vCPU is runnable but not yet scheduled in by explicitly, manually checking
-> for a target vCPU that is (a) scheduled out, (b) wants to run, (c) is
-> marked as blocking in its stat, but (d) not actually flagged as blocking.
-> I.e. treat a runnable vCPU that's in the blocking sequence but not truly
-> blocking as a candidate for directed yield.
+On 14/4/26 06:59, Ani Sinha wrote:
+> During refactoring of kvm_irqchip_create(), the refactored code was returning
+> early from do_kvm_irqchip_create() function if the required essential
+> capabilities were not present in KVM. This was not translating to an early
+> return from kvm_irqchip_create() as was the case before refactoring.
+> This is because, do_kvm_irqchip_create() did not have a means to notify the
+> caller of the lack of required kvm capabilities. Fix this by making
+> do_notify_irqchip_create() return EOPNOTSUPP error when  capabilities
+> are absent and then the caller can check the return code and return early.
 > 
-> Keying off vcpu->stat.generic.blocking will yield some number of false
-> positives, e.g. if the vCPU is preempted _before_ blocking, but the rate of
-> false positives should be roughly the same as the existing approach, as
-> kvm_sched_out() would previously mark the vCPU as ready when it's scheduled
-> out and runnable.
+> Due to this regression during refactoring, all KVM guests on ppc64le hang
+> immediately during startup and this completely breaks all functionality on
+> that platform.
 > 
-> Eliminating the write to vcpu->ready in kvm_vcpu_wake_up() fixes a race
-> where vcpu->ready could be set *after* the target vCPU is scheduled in,
-> e.g. if the task waking the target vCPU is preempted (or otherwise delayed)
-> after waking the vCPU, but before setting vcpu->ready.  Hitting the race
-> leads to a very degraded state as KVM will constantly attempt to schedule
-> in a vCPU that is already running.
-> 
-> Fixes: d73eb57b80b9 ("KVM: Boost vCPUs that are delivering interrupts")
-> Reported-by: zhanghao <zhanghao1@kylinos.cn>
-> Closes: https://lore.kernel.org/all/tencent_AE2873502605DBDD4CD1E810F06C410F0105@qq.com
-> Cc: stable@vger.kernel.org
-> Cc: Wanpeng Li <kernellwp@gmail.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM VM file descriptor change")
+> Message-ID: <20260413090010.60339-1-anisinha@redhat.com>
+> Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
+> Reported-by: Gautam Menghani <gautam@linux.ibm.com>
+> Suggested-by: Fabiano Rosas <farosas@suse.de>
+> Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Tested-by: Misbah Anjum N <misanjum@linux.ibm.com>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
 > ---
->  arch/x86/kvm/x86.c       |  2 +-
->  include/linux/kvm_host.h |  9 +++++++++
->  virt/kvm/kvm_main.c      | 10 +++-------
->  3 files changed, 13 insertions(+), 8 deletions(-)
+>   accel/kvm/kvm-all.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0a1b63c63d1a..eebb2eb39ec0 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10399,7 +10399,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
->  
->  	rcu_read_unlock();
->  
-> -	if (!target || !READ_ONCE(target->ready))
-> +	if (!target || !kvm_vcpu_is_runnable_and_scheduled_out(target))
->  		goto no_yield;
->  
->  	/* Ignore requests to yield to self */
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 7981e9cab2eb..241a976e3410 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -1753,6 +1753,15 @@ static inline bool kvm_vcpu_is_blocking(struct kvm_vcpu *vcpu)
->  	return rcuwait_active(kvm_arch_vcpu_get_wait(vcpu));
->  }
->  
-> +static inline bool kvm_vcpu_is_runnable_and_scheduled_out(struct kvm_vcpu *vcpu)
-> +{
-> +	return READ_ONCE(vcpu->preempted) ||
-> +	       (READ_ONCE(vcpu->scheduled_out) &&
-> +		READ_ONCE(vcpu->wants_to_run) &&
-> +		READ_ONCE(vcpu->stat.generic.blocking) &&
-> +		!kvm_vcpu_is_blocking(vcpu));
-> +}
-> +
->  #ifdef __KVM_HAVE_ARCH_INTC_INITIALIZED
->  /*
->   * returns true if the virtual interrupt controller is initialized and
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 9faf70ccae7a..9f71e32daac5 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -455,7 +455,6 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
->  	kvm_vcpu_set_in_spin_loop(vcpu, false);
->  	kvm_vcpu_set_dy_eligible(vcpu, false);
->  	vcpu->preempted = false;
-> -	vcpu->ready = false;
->  	preempt_notifier_init(&vcpu->preempt_notifier, &kvm_preempt_ops);
->  	vcpu->last_used_slot = NULL;
->  
-> @@ -3803,7 +3802,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_halt);
->  bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu)
->  {
->  	if (__kvm_vcpu_wake_up(vcpu)) {
-> -		WRITE_ONCE(vcpu->ready, true);
->  		++vcpu->stat.generic.halt_wakeup;
->  		return true;
->  	}
-> @@ -4008,7 +4006,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
->  			continue;
->  
->  		vcpu = xa_load(&kvm->vcpu_array, idx);
-> -		if (!READ_ONCE(vcpu->ready))
-> +		if (!kvm_vcpu_is_runnable_and_scheduled_out(vcpu))
->  			continue;
->  		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
->  			continue;
-> @@ -6393,7 +6391,6 @@ static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
->  	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
->  
->  	WRITE_ONCE(vcpu->preempted, false);
-> -	WRITE_ONCE(vcpu->ready, false);
->  
->  	__this_cpu_write(kvm_running_vcpu, vcpu);
->  	kvm_arch_vcpu_load(vcpu, cpu);
-> @@ -6408,10 +6405,9 @@ static void kvm_sched_out(struct preempt_notifier *pn,
->  
->  	WRITE_ONCE(vcpu->scheduled_out, true);
->  
-> -	if (task_is_runnable(current) && vcpu->wants_to_run) {
-> +	if (task_is_runnable(current) && vcpu->wants_to_run)
->  		WRITE_ONCE(vcpu->preempted, true);
-> -		WRITE_ONCE(vcpu->ready, true);
-> -	}
-> +
->  	kvm_arch_vcpu_put(vcpu);
->  	__this_cpu_write(kvm_running_vcpu, NULL);
->  }
+> changelogs:
+> v2: refactoring included which will resubmitted again for 11.1
+> v3: basically v1 with tags added.
 > 
-> base-commit: b89df297a47e641581ee67793592e5c6ae0428f4
-> -- 
-> 2.53.0.1213.gd9a14994de-goog
->
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 774499d34f..92af42503b 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi)
+>       g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
+>   }
+>   
+> -static void do_kvm_irqchip_create(KVMState *s)
+> +static int do_kvm_irqchip_create(KVMState *s)
+>   {
+>       int ret;
+>       if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
+> @@ -2587,7 +2587,7 @@ static void do_kvm_irqchip_create(KVMState *s)
+>               exit(1);
+>           }
+>       } else {
+> -        return;
+> +        return -EOPNOTSUPP;
+>       }
+>   
+>       if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
+> @@ -2610,13 +2610,17 @@ static void do_kvm_irqchip_create(KVMState *s)
+>           fprintf(stderr, "Create kernel irqchip failed: %s\n", strerror(-ret));
+>           exit(1);
+>       }
+> +
+> +    return 0;
+>   }
+>   
+>   static void kvm_irqchip_create(KVMState *s)
+>   {
+>       assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
+>   
+> -    do_kvm_irqchip_create(s);
+> +    if (do_kvm_irqchip_create(s) < 0) {
+> +        return;
+> +    }
+>       kvm_kernel_irqchip = true;
+>       /* If we have an in-kernel IRQ chip then we must have asynchronous
+>        * interrupt delivery (though the reverse is not necessarily true)
+> @@ -2835,6 +2839,7 @@ static int kvm_reset_vmfd(MachineState *ms)
+>       }
+>   
+>       if (s->kernel_irqchip_allowed) {
+> +        /* ignore return from this function */
 
-kvm_vcpu.ready still exists in struct kvm_vcpu, but there are no remaining 
-users after this patch, so it looks like a leftover cleanup item.
+No need to explain the code. If you want to add a comment, explain
+the "why".
 
-Best regards,
-zhanghao
+>           do_kvm_irqchip_create(s);
+>       }
+>   
 
