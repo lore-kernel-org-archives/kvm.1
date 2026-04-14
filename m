@@ -1,178 +1,223 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F5B3E714F
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F23C3DBD59;
+	Tue, 14 Apr 2026 14:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776175494; cv=none; b=U3ZzckJuPFPz6EPQser0dyRTApscFCxFSJdS8QaHTz5A+tcAYgoK8nTv77l3sSB3XVFmVyHfEmLw3ce9XFQp2BksE92VjMnpROKLsyrqvHs5FQPOo9nFWgnLPEKfpoNurUzGNIo7bjszrqx5v4SvTcXDkC1gN/W8LXzhL9xT8uk=
+	t=1776175765; cv=none; b=lX0SZBdzY73UD+RwAyMUYhZY8ZVKjv82GyMvddHuAHWmk8Rsc5wFgn+AjknWsZo5VAewtdnbOinssqzhNQGIbfu8crXeky1lNLEJzSZRz0C0ZocU3Dv6fTD+M++eO3bnTDpFNoWtdxNeu2bVk2hMC4lwImV9lrWFqBnB2mYLxf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776175494; c=relaxed/simple;
-	bh=oOJuBLVg0LbJ5Yjj3+NLnlKO7wSc3PyQABq2OvL3kmo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ifeS8lZGFPpx7dHgnqU7gTgwYKFmyypUSci2N6kzjJNXR9hiMSEGu3Vvwvn4Ftgvc5Y5Oh9wyPotA9zOK8ca6LRPkU0Z1gHSKKRfk35ppo7hBJl91Jc3BcUYZ408CfNWtHsA5MagDVUztmWTlkh5H1dUQn+jZrvCKux/pdhJY7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qXl5mz1w; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776175765; c=relaxed/simple;
+	bh=FC6Wkxbbst57Y5XcZOl8gezbYkCIWVatKXhNcU0I1xk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=faiIGTLzHQNJWywj7bl77xq/mGw06PwCKxAXxhB54udIQLtmEOwcjc5UrV3hdtsxCIiTjY4GkzNPmm99LkJ2SrcA3yJR01lova+ZOlZnC/3iwjOr5R727n+M1QlTLOani2bet1cDXvoQgpmNIVkCJy26B8m964VtHbmJxTeQ7Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KJBg/26O; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qXl5mz1w"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b249975139so112766475ad.0
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 07:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776175492; x=1776780292; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SLVFIIfT15k6UIzADbNAbLyz/lB2RvlpR4+To74x7Kc=;
-        b=qXl5mz1wUXJ+lczbexmUNVMbO/9PtpFoFT807vyQMBXGZEAKNjWzi/Bvclj+q7VJyV
-         7jgLKOLngsNP12Ajo8XoZeMGwDJxVmy9Re1WoFuvOxAgVljaE2jX/lI9TCzfyQtWl+GJ
-         jzb8CqcLhqsk4mZiXsKsNBqQrhVtYv66PF96NeJIFpgzYNMopMMEigeY7qGah4EILSaK
-         az35JBTV6fDYfXibCKwyDN+RN/FSGt1ODG76oPPQh4pJaR8KcakCNtrzQdN46PCV3+/S
-         i5r0f6DBkGfVa65Q6UGvJbNHV62AGJXV78cpk7eKpQci0OVlp2h4C6dhmeoMRLzpxmOH
-         OrJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776175492; x=1776780292;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SLVFIIfT15k6UIzADbNAbLyz/lB2RvlpR4+To74x7Kc=;
-        b=EUfMhmgk2lv2onYnh7OGnpVM/D7/akwg7JhvlS1r60jZM4buDqSI4iJqxraHvKPBIL
-         aCgMXC2tnUhWQ+kILeRcf33Ukjqfu17wGCYLMIiDMDWkzrDWF5Cue8SP8CqifwNDtWMM
-         rnUv6JAylvxTqf8S9K65GFE2yd2qv7R2FitvEZURvThyKZN1uEbx8UmojlKtQAMSgUOZ
-         DgPCEfmu2kWgQ5peHBuSoOjYCOIJb6LrBs++HsPVZ6n4dNWn5RPUhIDCdQXdlYkAYg1k
-         hj63MedlrscEouS9Pplm58iYApRzSy0NCT1sZzDMUDD2ZyqIYaoXl0jCGUH6kjPPGbL6
-         DiTA==
-X-Forwarded-Encrypted: i=1; AFNElJ/pEDUuym9DsSe/54o/8rR2xEyJGoUuNe1vE9v5PqePA/WQZKogGKHbOL8psPamiArEUKM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSX+8DReYbRzxnG6Mztx4DKkkTVcZReGR4TGzzbXJGnQB6/5m/
-	AjV2NKMuzuDp394LMfhSxmGtOYGhuZUfgoEkY0vWXUxbCmhOixNbAozT/FkS8XQ/fXwqnqPkgtZ
-	2dhYVNg==
-X-Received: from plek1.prod.google.com ([2002:a17:903:4501:b0:2b0:b0c0:43b1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:9341:b0:2b0:4fb6:85ce
- with SMTP id d9443c01a7336-2b2d5a45a0bmr139996805ad.21.1776175492138; Tue, 14
- Apr 2026 07:04:52 -0700 (PDT)
-Date: Tue, 14 Apr 2026 07:04:41 -0700
-In-Reply-To: <95a931f8-42cc-4834-953c-30c9167bfdc1@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KJBg/26O"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63EDUuQc1805230;
+	Tue, 14 Apr 2026 14:09:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Dzjv3g
+	OdxZg/qy/ibAPB0hyId1JXFg7fjfcqXZpWbUY=; b=KJBg/26OxUp93sDT/mVnHv
+	abp2h/D5mL3nj3XsikKFoH9IY1xr369fd3CiXfE2yHPWpTqzCd4OOr2/HuMOYK0l
+	USeaKQLMjBoXI28HCD10gaW56ZAlwdFXB2W26yn/lTY5QTlBrcike0mCT9xadA1Q
+	VYGcGapJQK83nYevRZWHguqsYIz7iuJJYS+6dmtEWlnODGNPQoGz0mB7rLMg4bTT
+	B3GIXCfHGB9CN4z6ww0f0LHmSFhYMp7F9yoer8VK2Ur9uCqj3oY1Ourn4MpLYpbe
+	rUwGwUAtvDU0DaX9HvZSy/pUAq1pQ0tBq273I+0/VaBVlDQxf++drvN5uZFTUa6g
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89k2y5d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Apr 2026 14:09:18 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63E9rVgB004179;
+	Tue, 14 Apr 2026 14:09:17 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24k9p7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Apr 2026 14:09:17 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63EE9G4v26542632
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Apr 2026 14:09:16 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CB5E58059;
+	Tue, 14 Apr 2026 14:09:16 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7CAF55805B;
+	Tue, 14 Apr 2026 14:09:14 +0000 (GMT)
+Received: from [9.61.29.199] (unknown [9.61.29.199])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Apr 2026 14:09:14 +0000 (GMT)
+Message-ID: <256d54de-759e-4855-b4c5-c955d0b63cc3@linux.ibm.com>
+Date: Tue, 14 Apr 2026 10:09:13 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409224236.2021562-1-seanjc@google.com> <20260409224236.2021562-6-seanjc@google.com>
- <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
- <ad0DrDUsUKTMfrDW@google.com> <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
- <95a931f8-42cc-4834-953c-30c9167bfdc1@intel.com>
-Message-ID: <ad5JeT7UuiQI9Tqo@google.com>
-Subject: Re: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
- "unsigned long" values
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Kai Huang <kai.huang@intel.com>, Chang Seok Bae <chang.seok.bae@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kas@kernel.org" <kas@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/16] s390/vfio-ap: Add live guest migration support
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+References: <20260407205100.331150-1-akrowiak@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260407205100.331150-1-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aBk2v-xuzVCRYusMM2TSVY9e34UcDHEl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDEzMCBTYWx0ZWRfXy/jxozXlQo+/
+ +yCaUgv8G9ftDwJoOh8jPYcR6GmbEiiiyludfSepgCxlP1x3cL2rNZjyOBMdH4ILcA8XU5Nr0Fc
+ OE0xHM9QYLPGoyhbt3oKjZsh56tV5VXLkdXhBRYMIEl/4k3z0HyE3IqzxBMqUQdC+ngsG8zACqw
+ GVCjz4fusTgvNgH5pJlwJcXtrdglD1frLDUlIAbWYgygqztWd0kEkO1GezBS6BSWOxXJwGTzeN5
+ QEdLTeTpsmvFxXdo7Hj+AfS9uBgwHQ+6GBKKJqwtdU7Pi1D1FSuFl6+LmG+iiK94E17qYruFjlt
+ TLivVRwzYd++1VlFHxhezjUOfzAY7kziXAgT7BgrxVgSTO1846Rd1pKAZxxRKVEWEAJ1wqXp/wM
+ McbMIzllSkDPDvorSyGR/ive3BiHUOJRXcp2yELj6lxrR+yn2UWOyaTQqrpsw84yeabA3gWNw3x
+ qgSNd752257wGbqH8RQ==
+X-Proofpoint-ORIG-GUID: aBk2v-xuzVCRYusMM2TSVY9e34UcDHEl
+X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69de4a8e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=BeJFQei6KuwYuYFmKvkA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_03,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140130
 
-On Tue, Apr 14, 2026, Xiaoyao Li wrote:
-> On 4/14/2026 7:03 AM, Huang, Kai wrote:
-> > > Because VMX and SVM make all GRPs available immediately, except
-> > > for RSP, KVM ignores avail/dirty for GPRs.  I.e. "fixing" TDX will just shift the
-> > > "bugs" elsewhere.
-> > Just want to understand:
-> > 
-> > I thought the fix could be we simply remove the wrong GPRs from the list.
-> > Not sure how fixing TDX will shift bugs elsewhere?
-> 
-> I'm curious too.
+PING ....
 
-What I'm saying is that, _if_ there are bugs where KVM uses a register that isn't
-available, then modifying TDX's list won't actually fix anything (without more
-changes), it will just change which code is technically buggy (hence all the quotes
-above).
+On 4/7/26 4:50 PM, Anthony Krowiak wrote:
+> This patch series implements live guest migration support for KVM guests
+> with s390 AP (Adjunct Processor) devices passed through via the VFIO
+> mediated device framework.
+>
+> Background
+> ----------
+>
+> The vfio-ap device driver differs from typical VFIO device drivers in that
+> it does not virtualize a physical device. Instead, it manages AP
+> configuration metadata identifying the AP adapters, domains, and control
+> domains to which a guest will be granted access. These AP resources are
+> configured by assigning them to a vfio-ap mediated device via its sysfs
+> assignment interfaces. When the fd for the VFIO device is opened by
+> userspace, the vfio_ap device driver sets the guest's AP configuration
+> from the metadata stored with the mediated device. As such, the AP devices
+> are not accessed directly through the vfio_ap driver, so the driver has no
+> internal device state to migrate. It's sole purpose during migration is to
+> ensure that the AP configurations of the source and destination guests are
+> compatible.
+>
+> Implementation Approach
+> -----------------------
+>
+> This series implements the VFIO migration protocol using the STOP_COPY
+> migration flow. The key aspects are:
+>
+> 1. Hardware Information Capture (Patches 1-2)
+>     - Store AP queue hardware characteristics at probe time
+>     - Provide access to queue objects for validation
+>
+> 2. Migration Infrastructure (Patches 3-5)
+>     - Define migration data structures
+>     - Initialize/release migration data on device open/close
+>
+> 3. State Machine Implementation (Patches 6-13)
+>     - Implement required VFIO migration callbacks
+>     - Handle state transitions: STOP → STOP_COPY → STOP (source)
+>                                 STOP → RESUMING → STOP (destination)
+>     - Use file streams for AP configuration data transfer
+>
+> 4. Validation and Callbacks (Patches 14-15)
+>     - Implement migration state and data size callbacks
+>     - Required for VFIO_DEVICE_FEATURE_MIGRATION support
+>
+> 5. Documentation (Patch 16)
+>     - Add live guest migration chapter to vfio-ap.rst
+>
+> Compatibility Validation
+> ------------------------
+>
+> The series includes comprehensive validation to ensure source and
+> destination AP configurations are compatible. For each queue, the following
+> characteristics must match:
+>
+> - AP type (target must be same or newer than source)
+> - Installed facilities (APSC, APQKM, AP4KC, SLCF)
+> - Operating mode (CCA, Accelerator, XCP)
+> - APXA facility setting
+> - Classification (native vs stateless functions)
+> - Queue usability (binding/associated state)
+>
+> When incompatibilities are detected, migration fails with detailed error
+> messages identifying the specific queue and characteristic that caused
+> the failure.
+>
+> Configuration Management
+> ------------------------
+>
+> This implementation does not prevent configuration changes during
+> migration. Configuration stability is an orchestration-layer
+> responsibility, consistent with other VFIO device types. The driver's
+> role is to validate configurations and provide clear diagnostics when
+> incompatibilities are detected, enabling orchestration tools to implement
+> appropriate policies.
+>
+> Change log v1 to v2
+> -------------------
+>
+> - Removed patches that attempted to block configuration changes during
+>    migration due to inherent race conditions and incomplete protection
+> - Simplified approach focuses on validation and error reporting
+> - Reduced series from 18 to 16 patches
+> - Rewrote the description in the cover letter to better describe the
+>    patch series, remove confusing comments as well as references to
+>    function provided by the patches that were removed.
+>
+> Anthony Krowiak (16):
+>    s390/vfio-ap: Store queue hardware info when probed
+>    s390/vfio-ap: Provide access to queue objects and related info
+>    s390/vfio-ap: Data structures for facilitating vfio device migration
+>    s390/vfio-ap: Initialize/release vfio device migration data
+>    s390-vfio-ap: Callback to set vfio device mig state during guest
+>      migration
+>    s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
+>    s390/vfio-ap: File ops called to save the vfio device migration state
+>    s390/vfio-ap: Transition device migration state from STOP to RESUMING
+>    s390/vfio-ap: File ops called to resume the vfio device migration
+>    s390/vfio-ap: Transition device migration state from RESUMING to STOP
+>    s390/vfio-ap: Transition device migration state from STOP_COPY to STOP
+>    s390/vfio-ap: Transition device migration state from STOP to RUNNING
+>      and vice versa
+>    s390-vfio-ap: Callback to get the current vfio device migration state
+>    s390/vfio-ap: Callback to get the size of data to be migrated during
+>      guest migration
+>    s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
+>    s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
+>
+>   Documentation/arch/s390/vfio-ap.rst     |  325 +++++--
+>   drivers/s390/crypto/Makefile            |    2 +-
+>   drivers/s390/crypto/vfio_ap_drv.c       |    4 +-
+>   drivers/s390/crypto/vfio_ap_migration.c | 1095 +++++++++++++++++++++++
+>   drivers/s390/crypto/vfio_ap_ops.c       |   66 +-
+>   drivers/s390/crypto/vfio_ap_private.h   |   10 +
+>   6 files changed, 1395 insertions(+), 107 deletions(-)
+>   create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
+>
 
-> > > More importantly, because the TDX-Module*requires* RCX (the GPR that holds the
-> > > mask of registers to expose to the VMM) to be hidden on TDVMCALL, KVM*can't*
-> > > do any kind of meaningful "available" tracking.
-> > > 
-> > Hmm I think RCX conveys the shared GPRs and VMM can read.  Per "Table 5.323:
-> > TDH.VP.ENTER Output Operands Format #5 Definition: On TDCALL(TDG.VP.VMCALL)
-> > Following a TD Entry":
-> > 
-> >    RCX   ...
-> > 	Bit(s) Name         Description
-> > 
-> > 	31:0   PARAMS_MASK  Value as passed into TDCALL(TDG.VP.VMCALL) by
-> > 			    the guest TD: indicates which part of the guest
-> > 			    TD GPR and XMM state is passed as-is to the
-> > VMM
-> > 			    and back. For details, see the description of
-> > 			    TDG.VP.VMCALL in 5.5.26.
-> > 
-> > I think the problem is, as said previously, currently KVM TDX code uses
-> > KVM's existing infrastructure to emulate MSR, KVM hypercall etc,  but
-> > TDVMCALL has a different ABI, thus there's a mismatch here.
-> 
-> I once had patch for it internally.
-> 
-> It adds back the available check for GPRs when accessing instead of assuming
-> they are always available. For normal VMX and SVM, all the GPRs are still
-> always available. But for TDX, only EXIT_INFO_1 and EXIT_INFO_2 are always
-> marked available, while others need to be explicitly set case by case.
-> 
-> The good thing is it makes TDX safer that KVM won't consume invalid data
-> silently for TDX. But it adds additional overhead of checking the
-> unnecessary register availability for VMX and SVM case.
-> 
-> -----------------------------&<-------------------------------------
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Date: Tue, 11 Mar 2025 07:13:29 -0400
-> Subject: [PATCH] KVM: x86: Add available check for GPRs
-> 
-> Since commit de3cd117ed2f ("KVM: x86: Omit caching logic for
-> always-available GPRs"), KVM doesn't check the availability of GPRs
-> except RSP and RIP when accessing them, because they are always
-> available.
-> 
-> However, it's not true when it comes to TDX. The GPRs are not available
-> after TD vcpu exits actually.
-
-> And it relies on KVM manually sets the
-> GPRs value when needed, e.g.
-> 
->  - setting rax, rbx, rcx, rdx, rsi, for hypercall emulation in
->    tdx_emulate_tdvmall();
-> 
->  - setting rax, rcx and rdx before MSR write emulation;
-> 
-> Add the available check of GPRs read, and WARN_ON_ONCE() when unavailable.
-> It can help capture the cases of undesired GPRs consumption by TDX.
-
-Sorry, but NAK.  I am strongly against adding any code to the GPR accessors/mutators
-just for TDX.  It's a _lot_ of code.  From commit de3cd117ed2f ("KVM: x86: Omit
-caching logic for always-available GPRs"):
-
-    E.g. on x86_64, kvm_emulate_cpuid() is reduced from 342 to 182 bytes and
-    kvm_emulate_hypercall() from 1362 to 1143, with the total size of KVM
-    dropping by ~1000 bytes.  With CONFIG_RETPOLINE=y, the numbers are even
-    more pronounced, e.g.: 353->182, 1418->1172 and well over 2000 bytes.
-
-Note that updating only the "available" masks is wrong, as TDX needs to marshall
-written registers back to their correct location.
-
-In the end, the available/dirty tracking isn't about hardening against bugs, it's
-about deferring expensive VMREAD and VMWRITE (and guest memory) operations until
-action is required.
-
-We could bury sanity checks behind a Kconfig of some kind, but I genuinely don't
-see much value in doing so.  These emulation flows are very static (all register
-usage is hardcoded), and so it's very much a "get it right once" sort of thing,
-i.e. the odds of a runtime check finding a bug after initial development are
-basically zero.
-
-An alternative for TDX would be to avoid bouncing through GPRs in the first place,
-e.g. by reworking __kvm_emulate_rdmsr() to not access any registers.  But I'm
-probably opposed to even that, because I doubt the end result would be an overall
-net positive for KVM.  We'd end up with duplicate code, harder to read common
-code (because of the new abstractions), and likely without meaningfully moving
-the needle in terms of finding/preventing bugs.  KVM still needs to get operands
-to/from the right parameters, though only difference is that for TDX, the parameters
-would be very "direct".
