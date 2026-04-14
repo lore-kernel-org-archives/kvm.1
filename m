@@ -1,48 +1,73 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02586399344;
-	Tue, 14 Apr 2026 10:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF7B39A04A;
+	Tue, 14 Apr 2026 10:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776161825; cv=none; b=OXMJM3zS3lNcVIDzLWzrA6lRA09TI/+gLViVvFosTGQcrx51QzY328cld773TdLeXP0dJO/eb5ITKlYG5pFmT/GLbFz5IEhboLrdsFs01ugWcosrejvdJIPzQHCNz2I72CGYWb/mShWGNHB1cOtokQJhJI9Qcz7nyzBPVeMtc80=
+	t=1776161971; cv=none; b=oG86ZRIlBlDA65WPRM1jumrEzC9C83OZzG469NnytmUIMkik9O7eyzoQgi5MyOou/CkFcT4XJAomMDxiF6msUHEoXEw6cufsGlQyMiZ8qNU+1rxrMvO+a2T+adqWy75wb+QVSi0DgmjXPDSCdzVBNfwIywRVLajbQZDZUnAtWBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776161825; c=relaxed/simple;
-	bh=oRWO6Lo2WmEtu7qNFiuBDthh+Y1C1/KwDqss8kDou9o=;
+	s=arc-20240116; t=1776161971; c=relaxed/simple;
+	bh=B2hp8pIzpur9QpDNjownUQWL2JU+z/TQTreC0jcUJco=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=reQa4/gTLIP9qggWod+q5sAuTIAt9rAMPyKwmqY5El0LDpeJnSFm7rxKZsWC1KQS9FWwHs9lgYWlwmyyIqoZuPtIiwmDAYpkjn2OzQTSpUqbxnfM2QQNujS/4QqM4/FzXVZFuIAfrgy+dU9HaYZmly9opCPZAVDSBoTsfI67UBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=pP0EKI30; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQBJ1RuMz9hw7Ky+SmH8wxfvTGd0ZZ1hLnhyKRXYDaupUfAk8TtBA9lnvlvFB1LX66bNRA6jghZV9DdEOhp79biGY34Egg9czikBGL159Y8qrdOtmuWlImcyCEBOqhlqa0m1SzExboCZzqP1ZnQeq6M4fuSoC6GVgk+E6JXFvCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gio7eHT4; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="pP0EKI30"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 92BBF4ECD;
-	Tue, 14 Apr 2026 03:16:55 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D79593F641;
-	Tue, 14 Apr 2026 03:16:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776161821; bh=oRWO6Lo2WmEtu7qNFiuBDthh+Y1C1/KwDqss8kDou9o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pP0EKI30IOaOKAhgEdOfCZqlzEWecgcx61lIFuNyhPz4kVX+QTa6Ke2pOo/xlGO77
-	 lISB8906WejbDkHf64sBQVS4TV8VFOT7JsqjCcd4SERWReBsrY5ZlX0648tnI4BVya
-	 zvkxh8jtmW4z2ZxbF+qkZijD0wSd12JIdH4GDGiQ=
-Date: Tue, 14 Apr 2026 11:16:47 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v2 3/4] KVM: arm64: sefltests: Add basic NV selftest
-Message-ID: <xsdf2k2u4g6n7nmxcgwhiraqodwtteuxqqtnj2dx5sxgu74a7j@yjijkyohkq4i>
-References: <20260412142216.3806482-1-weilin.chang@arm.com>
- <20260412142216.3806482-4-weilin.chang@arm.com>
- <adwofV7yf71OdMFk@sm-arm-grace07>
- <ddr6exocupk6mzshjwvu6sqt57aeqiyxqss3rpgcxxyh54cw4g@rxvm5zh3ybrw>
- <ad1gqsqqOXyYmJoG@sm-arm-grace07>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gio7eHT4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776161970; x=1807697970;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B2hp8pIzpur9QpDNjownUQWL2JU+z/TQTreC0jcUJco=;
+  b=Gio7eHT4JQ2VTFi2lLq1rHZitFG+felbAwXT6yp5GPky+/hEq+pA1gew
+   Cj8tvBvHn06d9zLdgWOc5xHwIovjcBhO3Zk151wkjt1glmlP9JbNpOVAb
+   zgUEBJIU3W9e/iG57alh90Ogi+BV6nAYhABOGiWw/HI+Y9DWwKrVKMKZo
+   T5gnbFqKSWdzCH3uBO/KW0S1jMGxYxly1E5a776G97CNcTrk/tQ8RtksG
+   Xe77ckfPax3WC3uYn/tVDVanQ0mS/nHSDcrrwsXcRoNkzMwaJ3Gy+3EcS
+   qcJ3sDpVdxiXJ+65SfsJFg/PzGNMI3VWMZ32zuiMIr7q27OaG0WGqjp1j
+   g==;
+X-CSE-ConnectionGUID: D2BA/wRSSMSxmtsDosMmsw==
+X-CSE-MsgGUID: c4gCkvBhT5ajludrtEqkhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="77020018"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="77020018"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 03:19:30 -0700
+X-CSE-ConnectionGUID: DaMgaSwARGiiqBWrF6ndNA==
+X-CSE-MsgGUID: 02DLoXeXSRSlGZYhrOMZtQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="234451599"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa004.jf.intel.com with ESMTP; 14 Apr 2026 03:19:26 -0700
+Date: Tue, 14 Apr 2026 17:57:35 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 05/31] x86/virt/tdx: Extend tdx_page_array to support
+ IOMMU_MT
+Message-ID: <ad4Pj0cqlprvNUSj@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-6-yilun.xu@linux.intel.com>
+ <828f174d49a1ecaec65ba1179e08c6b22e249297.camel@intel.com>
+ <acvX1x5nDdGtZWyI@yilunxu-OptiPlex-7050>
+ <f38d0a080aee052937cb6721683d55155c657717.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,184 +76,88 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ad1gqsqqOXyYmJoG@sm-arm-grace07>
+In-Reply-To: <f38d0a080aee052937cb6721683d55155c657717.camel@intel.com>
 
-On Tue, Apr 14, 2026 at 06:31:22AM +0900, Itaru Kitayama wrote:
-> On Mon, Apr 13, 2026 at 10:18:42AM +0100, Wei-Lin Chang wrote:
-> > Hi Itaru,
+On Wed, Apr 01, 2026 at 12:17:45AM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-03-31 at 22:19 +0800, Xu Yilun wrote:
+> > > Consider the amount of tricks that are needed to coax the tdx_page_array to
+> > > populate the handoff page as needed. It adds 2 pages here, then subtracts
+> > > them
+> > > later in the callback. Then tweaks the pa in tdx_page_array_populate() to
+> > > add
+> > > the length...
 > > 
-> > On Mon, Apr 13, 2026 at 08:19:25AM +0900, Itaru Kitayama wrote:
-> > > On Sun, Apr 12, 2026 at 03:22:15PM +0100, Wei-Lin Chang wrote:
-> > > > This selftest simply starts an L1, which starts its own guest (L2). L2
-> > > > runs without stage-1 and 2 translations, it calls an HVC to jump back
-> > > > to L1.
-> > > 
-> > > How do you disable both the nested guest (L2)'s MMU and stage 2
-> > > translations?
-> > 
-> > Guest stage-2 is disabled by not setting HCR_EL2.VM in prepare_hyp(),
-> > and stage-1 is disabled by not writing to SCTLR_EL12 in init_vcpu(),
-> > effectively using the default value set by L0. However since SCTLR_EL1
-> > has many architecturally UNKNOWN bits (including SCTLR_EL1.M), it should
-> > be better to write a value before running L2 I suppose...
+> > mm.. The tricky part is the specific memory requirement/allocation, the
+> > common part is the pa list contained in a root page. Maybe we only model
+> > the later, let the specific user does the memory allocation. Is that
+> > closer to your "break concepts apart" idea?
 > 
-> Thanks. What do you think of using copy_el2_to_el1() macro in at.c, so we
-> can prepare in guest_code() to manipulate the SCTLR_EL12 System register 
-> with the sensible programmed values?
-
-Yes, using copy_el2_to_el1() can give us an L2 stage-1 that is identical
-to the L1's stage-1. But what I was considering was if guest stage-2 is
-enabled (which we plan to implement), then those stage-1 page tables
-will have to be mapped for L2, and its base address translated to L2IPA.
-It's doable but seems like extra complexity when stage-1 is not so
-interesting for KVM (except for AT?), it lets the guest do whatever it
-likes and let the hardware do the translation.
-
-Let me know if you have reasons to want stage-1 for L2, there could be
-something I should consider but did not.
-
-Thanks,
-Wei-Lin Chang
-
+> I haven't wrapped my head around this enough to suggest anything is definitely
+> the right approach.
 > 
-> Itaru.
+> But yes, the idea would be that the allocation of the list of pages to give to
+> the TDX module would be a separate allocation and set of management functions.
+> And the the allocation of the pages that are used to communicate the list of
+> pages (and in this case other args) with the module would be another set. So
+> each type of TDX module arg page format (IOMMU_MT, etc) would be separable, but
+> share the page list allocation part only. It looks like Nikolay was probing
+> along the same path. Not sure if he had the same solution in mind.
 > 
-> > 
-> > Thanks,
-> > Wei-Lin Chang
-> > 
-> > > 
-> > > Itaru.
-> > > 
-> > > > 
-> > > > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
-> > > > ---
-> > > >  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
-> > > >  .../selftests/kvm/arm64/hello_nested.c        | 103 ++++++++++++++++++
-> > > >  2 files changed, 104 insertions(+)
-> > > >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
-> > > > 
-> > > > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> > > > index 3dc3e39f7025..e8c108e0c487 100644
-> > > > --- a/tools/testing/selftests/kvm/Makefile.kvm
-> > > > +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> > > > @@ -168,6 +168,7 @@ TEST_GEN_PROGS_arm64 += arm64/arch_timer_edge_cases
-> > > >  TEST_GEN_PROGS_arm64 += arm64/at
-> > > >  TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
-> > > >  TEST_GEN_PROGS_arm64 += arm64/hello_el2
-> > > > +TEST_GEN_PROGS_arm64 += arm64/hello_nested
-> > > >  TEST_GEN_PROGS_arm64 += arm64/host_sve
-> > > >  TEST_GEN_PROGS_arm64 += arm64/hypercalls
-> > > >  TEST_GEN_PROGS_arm64 += arm64/external_aborts
-> > > > diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
-> > > > new file mode 100644
-> > > > index 000000000000..97387e4697b3
-> > > > --- /dev/null
-> > > > +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
-> > > > @@ -0,0 +1,103 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > +/*
-> > > > + * hello_nested - Go from vEL2 to EL1 then back
-> > > > + */
-> > > > +
-> > > > +#include "nested.h"
-> > > > +#include "processor.h"
-> > > > +#include "test_util.h"
-> > > > +#include "ucall.h"
-> > > > +
-> > > > +#define XLATE2GPA	(0xABCD)
-> > > > +#define L2STACKSZ	(0x100)
-> > > > +
-> > > > +/*
-> > > > + * TPIDR_EL2 is used to store vcpu id, so save and restore it.
-> > > > + */
-> > > > +static vm_paddr_t ucall_translate_to_gpa(void *gva)
-> > > > +{
-> > > > +	vm_paddr_t gpa;
-> > > > +	u64 vcpu_id = read_sysreg(tpidr_el2);
-> > > > +
-> > > > +	GUEST_SYNC2(XLATE2GPA, gva);
-> > > > +
-> > > > +	/* get the result from userspace */
-> > > > +	gpa = read_sysreg(tpidr_el2);
-> > > > +
-> > > > +	write_sysreg(vcpu_id, tpidr_el2);
-> > > > +
-> > > > +	return gpa;
-> > > > +}
-> > > > +
-> > > > +static void l2_guest_code(void)
-> > > > +{
-> > > > +	do_hvc();
-> > > > +}
-> > > > +
-> > > > +static void guest_code(void)
-> > > > +{
-> > > > +	struct vcpu vcpu;
-> > > > +	struct hyp_data hyp_data;
-> > > > +	int ret;
-> > > > +	vm_paddr_t l2_pc, l2_stack_top;
-> > > > +	/* force 16-byte alignment for the stack pointer */
-> > > > +	u8 l2_stack[L2STACKSZ] __attribute__((aligned(16)));
-> > > > +
-> > > > +	GUEST_ASSERT_EQ(get_current_el(), 2);
-> > > > +	GUEST_PRINTF("vEL2 entry\n");
-> > > > +
-> > > > +	l2_pc = ucall_translate_to_gpa(l2_guest_code);
-> > > > +	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
-> > > > +
-> > > > +	init_vcpu(&vcpu, l2_pc, l2_stack_top);
-> > > > +	prepare_hyp();
-> > > > +
-> > > > +	ret = run_l2(&vcpu, &hyp_data);
-> > > > +	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
-> > > > +	GUEST_DONE();
-> > > > +}
-> > > > +
-> > > > +int main(void)
-> > > > +{
-> > > > +	struct kvm_vcpu_init init;
-> > > > +	struct kvm_vcpu *vcpu;
-> > > > +	struct kvm_vm *vm;
-> > > > +	struct ucall uc;
-> > > > +	vm_paddr_t gpa;
-> > > > +
-> > > > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
-> > > > +	vm = vm_create(1);
-> > > > +
-> > > > +	kvm_get_default_vcpu_target(vm, &init);
-> > > > +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
-> > > > +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
-> > > > +	kvm_arch_vm_finalize_vcpus(vm);
-> > > > +
-> > > > +	while (true) {
-> > > > +		vcpu_run(vcpu);
-> > > > +
-> > > > +		switch (get_ucall(vcpu, &uc)) {
-> > > > +		case UCALL_SYNC:
-> > > > +			if (uc.args[0] == XLATE2GPA) {
-> > > > +				gpa = addr_gva2gpa(vm, (vm_vaddr_t)uc.args[1]);
-> > > > +				vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), gpa);
-> > > > +			}
-> > > > +			break;
-> > > > +		case UCALL_PRINTF:
-> > > > +			pr_info("%s", uc.buffer);
-> > > > +			break;
-> > > > +		case UCALL_DONE:
-> > > > +			pr_info("DONE!\n");
-> > > > +			goto end;
-> > > > +		case UCALL_ABORT:
-> > > > +			REPORT_GUEST_ASSERT(uc);
-> > > > +			fallthrough;
-> > > > +		default:
-> > > > +			TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > > +end:
-> > > > +	kvm_vm_free(vm);
-> > > > +	return 0;
-> > > > +}
-> > > > -- 
-> > > > 2.43.0
-> > > > 
+> So for this:
+> 1. Allocate a list or array of pages using a generic method.
+> 2. Allocate these two IOMMU special pages.
+> 3. Allocate memory needed for the seamcall (root pages)
+> 
+> Hand all three to the wrapper and have it shove them all through in the special
+> way it prefers.
+
+I'm drafting some changes and make the tdx_page_array look like:
+
+  struct tdx_page_array {
+	/* public: */
+	unsigned int nr_pages;
+	struct page **pages;
+
+	/* private: */
+	u64 *root;
+	bool flush_on_free;
+  };
+
+  - I removed the page allocations for tdx_page_array kAPIs. Now the
+    caller needs to allocate the struct page **pages and the page list,
+    then create the tdx_page_array by providing these pages.
+
+    struct tdx_page_array *tdx_page_array_create(struct page **pages,
+						 unsigned int nr_pages)
+
+    This also means tdx_page_array doesn't have to hold more than 512
+    pages anymore, it now an exact descriptor for the TDX Module's
+    definitions rather than a manager. It's a chunk of the required
+    memory when we need more than 512 pages. This eliminates the need
+    for 'offset' field and the slide window operations so make the
+    helpers simpler.
+
+  - I still keep the generic struct tdx_page_array to represent all
+    kinds of object types (HPA_ARRAY_T, HPA_LIST_INFO, IOMMU_MT), and
+    provide the tdx_page_array to SEAMCALL helpers as parameters. I
+    think this structure is generally good enough to represent a list of
+    pages, keeps type safety compared to a list of HPAs.
+
+  - I still record both the page list (struct page **pages) and the HPA
+    list (in u64 *root). struct page **pages works with kernel memory
+    management (e.g. vmap) well while the populated root works with
+    SEAMCALLs.
+
+  - I'm not introducing more structures each for an object type, like 
+    struct hpa_array, struct hpa_list_info, struct iommu_metadata. They
+    are conceptually the same thing. The iommu_mt supports multi-order
+    pages, hpa_array_t & hpa_list_info don't support. But their bit
+    definitions don't conflict. I can use the same piece of code to
+    populate their root page content.
+
+  - Add a flush_on_free field to mark if a cache write back is needed on
+    tdx_page_array_free(), then we don't need 2 free APIs.
+
+I want to clean up my code, then post an incremental patch for preview.
+
+Thanks.
