@@ -1,212 +1,200 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B889535F162
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 21:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB65A38644D
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 21:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776202325; cv=pass; b=cKXZfvRU2kUpo9ThNgF/mrjws2uOsXfCUQKXBzHgZpQDDKmGXufDZh/k6LIX6BtyTkQGGlStyzi1eImZZQieHkAmlEUrMIQK8TlDJNyTNRDBCUw2asYawf1IjSflcPhN+IAgQOnHiEdisv+/Xx4SxNQOCK5GIyYENlbg0Naps6k=
+	t=1776202858; cv=pass; b=X+njQ8MvzzVfY5qqREDFfv5mb4x/JWflt3Z86n4azIOyW8Lhic+1rKl6IMBqbnsCjkWtAXhuGJgIljGbAj1uf9vYlZaBIW3UzAOPi/9nJ59IeiwrlliVSawWydLCuG/Lq1zlaA8PctkOBJSOukr4GG8HdklhvFCDmCdCl6dnzQk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776202325; c=relaxed/simple;
-	bh=0bMWbNNPknOMlnrZ9ePIa3JmJ4zSpsHKBv9BnylTqfU=;
+	s=arc-20240116; t=1776202858; c=relaxed/simple;
+	bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fEhHoUA2ZGLLHtqx07dbSPnfjhDM9+bIdm9CX82GObKur5SqM4twEhfxkHXXObveMWtVeW6dJNA4CM0D4ybIYHMJHEmN4ufcZ4j/b8yNbVaOkGUks77KvQsO81aL0gauDDglpXj99ggqttXU8uFFcJ+Ip1bx5uLUoWdGbLBeT7A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jwbc9VEB; arc=pass smtp.client-ip=209.85.208.49
+	 To:Cc:Content-Type; b=b87WAbg0p79DRq08fTMXbVQ1QEhKAsGIiOcKXAuhyqpMFd11tWq7jY84pSfzckYQpBkTWqNCp8NpW2RdZsbtbOywfrIvrTzYBY8VdklykuTDz18pnXSz9ynwyT3Cy6QyxSnbAjnWX/1+wWy4JtRWXra0YJK9ovNw48AUb056AI4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A+bz1mwC; arc=pass smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jwbc9VEB"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-671f1a0d0c5so11726a12.0
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:32:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776202322; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A+bz1mwC"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8a1e1817db6so52563336d6.2
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:40:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776202856; cv=none;
         d=google.com; s=arc-20240605;
-        b=dNmOubpSKMztPkMnhaJdm1bDcAIy2233IC2aoloWJc0/QISwrwuVDxI/sjJvbd293m
-         49TTp8BLe87nFGq5F2DKJTqrZ5zntcY6a+4hrsUlle1Bm7oR7PV0EACsAIVRu9g9T/9/
-         8QbhuH71bu6Of0SQQVQFzNorSvP93p8cSDeVb67AVMQFLAdCl3AvJ4785hgJw9de6O8B
-         EfWpbSdRN+2rF9dnUWFfdz9559xqcoYt6q4MpJJ/w0B313cjnkO07evwBi1+69xb3YnE
-         lXYqFl/LPFolMzFo/34jKeqJQbtraIFOQRk6C01txJHlQ5P0ztLBmgq1MBH64lfRfYBd
-         c+4w==
+        b=OAfYSE1E9FaoFC1f/pAw/jt6Pxq+4alXtHNz3NCgK1/2YxlMz80Jb4pXXkNmX/9nMy
+         p0z3dXbxRRkpCbhNNjz1b7//Dh8JKMKom6JYNV5R3l8IL6efryOrAfxZwzIoteK8niKY
+         8TLzQ9JXunQjsIRFwQ8PUrfkl59tBhBIRJQa6hepZpnl+FKPiym30P7xqdibdl5HkCxZ
+         ibOHB8PC8ExLzCZymRM6duTm80T2dAZ7Lnpm2nLIJLk3DgK897uykq8O4zZrEvIEJcdn
+         a74/avTDwJ+DElqIhw1l9hCmPHYknTH2UN/75hT6lXksQDlLA6S5avSraMBOsRxnzXRq
+         VQuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8c04rmjwJCz23olx6KFxvIUrFknICuWDtkhXScF2mj8=;
-        fh=jxSl4FPDWY38E2qO6MELWm8fOr7BP+gob8faIacYTcM=;
-        b=K1n17eDB368E6rOLl9KyNPkw7YnhAwk2oCbKu6nWuvNb5FlrmtmgCgwrEULrrOs+Wp
-         m60GqaXcAnaDHGHGY605GAScPb5CvfMalRcZCLFvxw8J8JbAHnzvmV66R7L4U7qFrFry
-         b7ywhjNhApfWaXt2VBD9CztTocrDQFwboCEc3ZjZ1AuEyMLaDIwz7cIcE7wh7gN1Ouoc
-         XjkD02xQ54zKe4DLQlcsyNGW/8iDyNmyvWTd8n1F8NbwBVD8olgIG2zlzg2h8fpMdQEx
-         gqMlBCRYxxjodV2fJqEkHd9J5sXGBOnT6vtzUOSMxxHNJ38NG1vYnwA7cGOvLEgMoldD
-         Waww==;
+        bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
+        fh=t4wjTIcRo2x/La+yqZ14sHjG2lTsq49eV6sOT6MXGd4=;
+        b=Cw1g3MYg9DVQPLWzRINB9V02BMYcpTsbbMt+IJ7k3mMyJnSY7wwggpGFQqWCOQX8iV
+         AzeNtQAukwpQhmfEohSfX0CGIs5w1C2fSYOF06RA965ezgeWOGKXwiyDVw0QSPBanjse
+         3ftFgO6Xvb64m94WV/ujd6x8s3jdx2ZRpD1yPf8rjU3Yh/bn4usjV73W2ZHlbKfunvTt
+         /0XTObdqfmXvZ692wB4wKCkJXz897OcG0yrUHha2PbpoYvhoJ31A8jC5IPoyx3Evqhxw
+         BJwRJCvWXtFV6mAaZjiSKE677/W/4YMNKDls6bDkkkEoSrEfZfO+RN038rIc9THsIZZ3
+         xMGQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776202322; x=1776807122; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776202856; x=1776807656; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8c04rmjwJCz23olx6KFxvIUrFknICuWDtkhXScF2mj8=;
-        b=jwbc9VEBKCnomLMpeCxBRsw6NmouLBmlWuI5cSdVmx67mzKZp4aiM7bzagcizwZ88K
-         NKN5VdYXTmu9Nclvc0ZloL6ylPvOjmT8/6ZhjDnu1FF7VWdKYeD8Mrb77+6uwryAC8c+
-         g9qkuqRcWousstSvXSWd6nrocQKXXEqrx9JIGInZCghwEyY2DE5Wv9gANVmZ7yfOfMGG
-         n01tCZ04X3F91tqkM1kqCebOOWinMy8+ChsFf8Kiop8cgHaa7QhDy8JjSrbF+vpKmKQp
-         E3rN4JkR908NDE61fbTQ1dHRrqGYm9oa+vXkTZk7dyYqY0B+H3OOS+zLmvsGfNWwXZQL
-         HJTA==
+        bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
+        b=A+bz1mwChXv+LUvb7Dv3hMxLJElpqZhxxEWBSJiap08pDjL3lYmWdhqqWKxbd0/Y84
+         o/APzVRFnqPfrIX/mhrAdoxKNWLKw085CrZUW534BW/1EzTeInRkA5PGN1pYbT/dT1V/
+         Onxw27s2HHt9BnhyUZYcfmbj9KpSJXAqhCkd87hD32kQu8lROKhkDY/hqqK5GmRNhYnP
+         gU8UnmXHqZp8TBLxhrF4OqtXqg08VrH/d5175Vv8cm82zyIcapjQAZnj1EvWN8J9t5ZC
+         3NjgoRU+Gd6XUjdaiQJ7olB1XwqbzbTviIuqLV5IDn36xgjLRp1eE7RRRuwwjfK1AbAM
+         rLPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776202322; x=1776807122;
+        d=1e100.net; s=20251104; t=1776202856; x=1776807656;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8c04rmjwJCz23olx6KFxvIUrFknICuWDtkhXScF2mj8=;
-        b=kn2ibOH0zJEdsCc4DoX6PGOfDhBwx5HluPlmXWI+uO3ZUvHX8FZSuTeSdmsykFzCFM
-         JXnZqTJd4Tm/LafA+TeYQwXPGhI40t3efXSLQwWN14aWDkR0dyHp7ieY7jSoICq7tN/s
-         ZSwC0gWhj4Brom+1g6hcbJ3xUBhxx28Y6lUX3peCUzt35+Tavo1HY1rgsKsGxr7rk+7R
-         mkVp0F8IEsDnR0kfHpH1Mh3fbZw6jTh58b92otEMr8dOKZZXD0IXcPIzLcLwJ/TwHhqI
-         4bEHUmIzyLW9AtV88/M18sC3hIItsFyP595tb5sowq42rrq+eHVSOAZPiYeK38zE8xFM
-         0GHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ93GspmDbPVGIGpk5g/AUDAZ6OapdnNbBiW1LFdClA7m+74kVvvhNlnkBWoNwMBqdOOOnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMslRuYPGqCpVWDRQ/XV4BTLSA2qd2OGDXjvyDkKa60X1qnhkK
-	0Rb5d5oG1+pLFYjvVdusIDyUwo8m4/duzPVJQjiT/xR0PintaifqR5l9gB7U5Vhp1czcU5/0qA9
-	AxN0ZZsDL/ZQ2pOwHCJSkvfjzkCfwcUqDd4/Mf1GD
-X-Gm-Gg: AeBDietcCJ8IluoStU3TCqYwmjAkSKbM/yDembBr6WwyUqZ43y4KugA30+a8DLtZXLM
-	MONggteo7XK0GF+dNcp+JvdUuZc54Zk4kYuj+l5MLixqf3fImgzlHGsaSnNXg1Oyw284CZl+Z5a
-	Z7zKSNd0/Db7Q96kM5Cd29wbMikq9ynr9y5MP6mmkFuYY0/MkqhhCi5+i5l5So8I/hc0Pn5gNrZ
-	zERiFx924hPqIBY20e0UATrq5XFj0S6n8QcVgacZFX4pmQ3qO/cCqwSme9x1Z4XFlQJkfTjF38e
-	KzTcycWndbQK3JwTZWI8Hy1verlg
-X-Received: by 2002:aa7:c606:0:b0:66b:99df:42e2 with SMTP id
- 4fb4d7f45d1cf-67229aa19e2mr13192a12.10.1776202321602; Tue, 14 Apr 2026
- 14:32:01 -0700 (PDT)
+        bh=kbQceU69YI8zlRogIjlJ0Jefj/2QvndFBDUyO3J/F8k=;
+        b=E5BGrREa/NY7h95I8q6+6A4zAPxcQEXMR80Em0RV/tGFm5CupL9GMiY7OFXhtC2XKK
+         HSOeoh5uPEh9cmDc0tci/gp9D7660CdybFuGOMDk2msSIWi1lHX6cj/xyvVaE8uOEkl2
+         ogfBoiOo27SvJ5mxOo1EVP61SgrzyEkZ7OTbKGAdLj6eOhrUJ6WH55Zbey+5H5rPQRn7
+         /ZxEMt9Q+APiFMav/bnM2NzXnGJuemijMOD0hOLXzfep/angaXGWd95LuMe73awuaPH5
+         7F7p6cDHSJ+5eFX2VkiR7K0YQj66UVa1apuvp4WhobJRHspbyAWkjvaxBI44E3dizCIL
+         nTHg==
+X-Gm-Message-State: AOJu0Yz2VX8StAEgkIgyr7kcdmf1Ewu/5oSQ3PIJH9ZGU++apmXeSRgU
+	JRMBbCwai+AQRJGGZpIB7TicnBQClZuTgp40zPc7+imGGPOOMZRyRHVZSFlF7B5/wH5rXgTW5aD
+	ORLlFmaj+HY73SI3Y7A3iXgGzvjqQnTMzNlEun0w1
+X-Gm-Gg: AeBDievPYHtpG9u5pVcgaC3W4sTLjpVkPd3Y36f8yiGnOCRFYni8zwkEJkW2nt4IXw7
+	pYNz3Uhx5RozCdx+I1o03kxy8+184jtwK5ULJTXsrb60gBqqZNuNX65GwyUPXAZz/c1eOyOegL8
+	gdmgSYb37RLfIXP27vkyr8XcBqlhSlLzO5avkxk7v46dBHQ3zkjMh7eOSMlO9U31vNaFrmjGHQd
+	UtkPgDfaas5NikeKFqRa+md0nvHEK67WvvqnuC2NYMaMGfKSWbVo/xUVWyTmlCQXd9w20rQxK5x
+	YqTytWiJI8pKOVVf554lnt1GjyM=
+X-Received: by 2002:a05:6214:c21:b0:8ac:7e8d:859b with SMTP id
+ 6a1803df08f44-8ac861b77f6mr303189226d6.16.1776202855012; Tue, 14 Apr 2026
+ 14:40:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260414191425.2697918-1-seanjc@google.com> <20260414191425.2697918-3-seanjc@google.com>
-In-Reply-To: <20260414191425.2697918-3-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 14 Apr 2026 14:31:49 -0700
-X-Gm-Features: AQROBzAC-9qtV_u0_YI9YPgxTE2VIB9LQd99hMrKGKTMLu_9aTuwTBwGQJttTtI
-Message-ID: <CALMp9eRxd=-xotnr9rLYhHtVK6G5oGAbXByXgpt078G8mWQEqg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] perf/x86/intel: Don't context switch DS_AREA (and
- PEBS config) if PEBS is unused
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
+References: <20260318155413.793430-1-steven.price@arm.com>
+In-Reply-To: <20260318155413.793430-1-steven.price@arm.com>
+From: Alper Gun <alpergun@google.com>
+Date: Tue, 14 Apr 2026 14:40:43 -0700
+X-Gm-Features: AQROBzAobYGs6qZALJkhuUvP32YWYfFdjJZKqlEWIdyyyT7N50O82BunKYW5J_Y
+Message-ID: <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
+Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
+	Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 14, 2026 at 12:14=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
+On Wed, Mar 18, 2026 at 8:54=E2=80=AFAM Steven Price <steven.price@arm.com>=
+ wrote:
 >
-> When filling the list of MSRs to be loaded by KVM on VM-Enter and VM-Exit=
-,
-> insert DS_AREA and (conditionally) MSR_PEBS_DATA_CFG into the list if and
-> only if PEBS will be active in the guest, i.e. only if a PEBS record may =
-be
-> generated while running the guest.  As shown by the !x86_pmu.pebs_ept pat=
-h,
-> it's perfectly safe to run with the host's DS_AREA, so long as PEBS-enabl=
-ed
-> counters are disabled via PERF_GLOBAL_CTRL.
+> This series adds support for running protected VMs using KVM under the
+> Arm Confidential Compute Architecture (CCA).
 >
-> Omitting DS_AREA and MSR_PEBS_DATA_CFG when PEBS is unused saves two MSR
-> writes per MSR on each VMX transition, i.e. eliminates two/four pointless
-> MSR writes on each VMX roundtrip when PEBS isn't being used by the guest.
+> New major version number! This now targets RMM v2.0-bet0[1]. And unlike
+> for Linux this represents a significant change.
 >
-> Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation fo=
-r extended PEBS")
-> Cc: Jim Mattson <jmattson@google.com>
-> Cc: Mingwei Zhang <mizhang@google.com>
-> Cc: Stephane Eranian <eranian@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/events/intel/core.c | 41 ++++++++++++++++++++++++------------
->  1 file changed, 27 insertions(+), 14 deletions(-)
+> RMM v2.0 brings with it the ability to configure the RMM to have the
+> same page size as the host (so no more RMM_PAGE_SIZE and dealing with
+> granules being different from host pages). It also introduces range
+> based APIs for many operations which should be more efficient and
+> simplifies the code in places.
 >
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 002d809f82ef..20a153aa33cb 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -5037,23 +5037,14 @@ static struct perf_guest_switch_msr *intel_guest_=
-get_msrs(int *nr, void *data)
->                 return arr;
->         }
+> The handling of the GIC has changed, so the system registers are used to
+> pass the GIC state rather than memory. This means fewer changes to the
+> KVM code as it looks much like a normal VM in this respect.
 >
-> +       /*
-> +        * If the guest won't use PEBS or the CPU doesn't support PEBS in=
- the
-> +        * guest, then there's nothing more to do as disabling PMCs via
-> +        * PERF_GLOBAL_CTRL is sufficient on CPUs with guest/host isolati=
-on.
-> +        */
->         if (!kvm_pmu || !x86_pmu.pebs_ept)
->                 return arr;
+> And of course the new uAPI introduced in the previous v12 posting is
+> retained so that also remains simplified compared to earlier postings.
 >
-> -       arr[(*nr)++] =3D (struct perf_guest_switch_msr){
-> -               .msr =3D MSR_IA32_DS_AREA,
-> -               .host =3D (unsigned long)cpuc->ds,
-> -               .guest =3D kvm_pmu->ds_area,
-> -       };
-> -
-> -       if (x86_pmu.intel_cap.pebs_baseline) {
-> -               arr[(*nr)++] =3D (struct perf_guest_switch_msr){
-> -                       .msr =3D MSR_PEBS_DATA_CFG,
-> -                       .host =3D cpuc->active_pebs_data_cfg,
-> -                       .guest =3D kvm_pmu->pebs_data_cfg,
-> -               };
-> -       }
-> -
->         /*
->          * Disable counters where the guest PMC is different than the hos=
-t PMC
->          * being used on behalf of the guest, as the PEBS record includes
-> @@ -5065,6 +5056,28 @@ static struct perf_guest_switch_msr *intel_guest_g=
-et_msrs(int *nr, void *data)
->         if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
->                 guest_pebs_mask =3D 0;
+> The RMM support for v2.0 is still early and so this series includes a
+> few hacks to ease the integration. Of note are that there are some RMM
+> v1.0 SMCs added to paper over areas where the RMM implementation isn't
+> quite ready for v2.0, and "SROs" (see below) are deferred to the final
+> patch in the series.
 >
-> +       /*
-> +        * Context switch DS_AREA and PEBS_DATA_CFG if and only if PEBS w=
-ill be
-> +        * active in the guest; if no records will be generated while the=
- guest
-> +        * is running, then running with host values is safe (see above).
-> +        */
-> +       if (!guest_pebs_mask)
-> +               return arr;
+> The PMU in RMM v2.0 requires more handling on the RMM-side (and
+> therefore simplifies the implementation on Linux), but this isn't quite
+> ready yet. The Linux side is implemented (but untested).
+>
+> PSCI still requires the VMM to provide the "target" REC for operations
+> that affect another vCPU. This is likely to change in a future version
+> of the specification. There's also a desire to force PSCI to be handled
+> in the VMM for realm guests - this isn't implemented yet as I'm waiting
+> for the dust to settle on the RMM interface first.
+>
+> Stateful RMI Operations
+> -----------------------
+>
+> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (SROs)
+> which allow the RMM to complete an operation over several SMC calls and
+> requesting/returning memory to the host. This has the benefit of
+> allowing interrupts to be handled in the middle of an operation (by
+> returning to the host to handle the interrupt without completing the
+> operation) and enables the RMM to dynamically allocate memory for
+> internal tracking purposes. One example of this is RMI_REC_CREATE no
+> longer needs "auxiliary granules" provided upfront but can request the
+> memory needed during the RMI_REC_CREATE operation.
+>
+> There are a fairly large number of operations that are defined as SROs
+> in the specification, but current both Linux and RMM only have support
+> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXMEs
+> in the code where support is missing.
+>
+> Given the early stage support for this, the SRO handling is all confined
+> to the final patch. This patch can be dropped to return to a pre-SRO
+> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purposes.
+>
+> A future posting will reorder the series to move the generic SRO support
+> to an early patch and will implement the proper support for this in all
+> RMI SMCs.
+>
+> One aspect of SROs which is not yet well captured is that in some
+> circumstances the Linux kernel will need to call an SRO call in a
+> context where memory allocation is restricted (e.g. because a spinlock
+> is held). In this case the intention is that the SRO will be cancelled,
+> the spinlock dropped so the memory allocation can be completed, and then
+> the SRO restarted (obviously after rechecking the state that the
+> spinlock was protecting). For this reason the code stores the memory
+> allocations within a struct rmi_sro_state object - see the final patch
+> for more details.
+>
+> This series is based on v7.0-rc1. It is also available as a git
+> repository:
+>
+> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
+>
+>
 
-I think this has an unintended side effect. If DS_AREA and
-PEBS_DATA_CFG were previously listed (because pebs_guest_mask was
-previously non-zero), KVM will leave the stale entries in the MSR-load
-lists.
+Hi Steven,
 
-KVM only clears MSR-load list entries for enumerated MSRs with
-matching guest and host values.
+I have a question regarding host kexec and kdump scenarios, and
+whether there is any plan to make them work in this initial series.
 
-> +       arr[(*nr)++] =3D (struct perf_guest_switch_msr){
-> +               .msr =3D MSR_IA32_DS_AREA,
-> +               .host =3D (unsigned long)cpuc->ds,
-> +               .guest =3D kvm_pmu->ds_area,
-> +       };
-> +
-> +       if (x86_pmu.intel_cap.pebs_baseline) {
-> +               arr[(*nr)++] =3D (struct perf_guest_switch_msr){
-> +                       .msr =3D MSR_PEBS_DATA_CFG,
-> +                       .host =3D cpuc->active_pebs_data_cfg,
-> +                       .guest =3D kvm_pmu->pebs_data_cfg,
-> +               };
-> +       }
-> +
->         /*
->          * Do NOT mess with PEBS_ENABLED.  As above, disabling counters v=
-ia
->          * PERF_GLOBAL_CTRL is sufficient, and loading a stale PEBS_ENABL=
-ED,
-> --
-> 2.54.0.rc0.605.g598a273b03-goog
->
+Intel TDX and AMD SEV-SNP both have a firmware shutdown command that
+is invoked during the kexec or panic code paths to safely bypass
+hardware memory protections and boot into the new kernel. As far as
+I know, there is no similar global teardown command available for
+the RMM.
+
+What is the roadmap for supporting both general kexec and
+more specifically kdump (panic) scenarios with CCA?
+
+Thanks,
+Alper
