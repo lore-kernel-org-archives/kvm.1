@@ -1,207 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567DE22423A;
-	Tue, 14 Apr 2026 10:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776161412; cv=fail; b=OdnhTB1b8/+LyF9TpSkY0zdRc+t6WelXvbqtJvLx6/iCiZpghHzbTMPxQTQMJ5LLhB28EiMZSZe8+nXDfx2b7JLSvibN93EFKNYJyAwLkhFovnEX8R1HbyaCLKoyP6lh23Q+Jt8HzBuL7Jis2nHUpRNXcO5knaR6zF7QwegXrFQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776161412; c=relaxed/simple;
-	bh=JKmwCGxR9kZQM0/l16gQdsRQyDehYHt0b9LZs4uZejA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VON338UJQNo9zv3Sx0YO5B4rNUI3NWX7Th415ul6Q8R6JC4N+7/OOPmyH5T14q4jIDP/eS7iW7uTmFwjAiGiZ1b4veLDGSPILlP8dxJoBTym2Y183j6IA0AWITkUC181AZhDIV5OXL/yX6iu+w9tVM+0bS/4pP6P9DPo5qlO2Po=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fW8V6a08; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02586399344;
+	Tue, 14 Apr 2026 10:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776161825; cv=none; b=OXMJM3zS3lNcVIDzLWzrA6lRA09TI/+gLViVvFosTGQcrx51QzY328cld773TdLeXP0dJO/eb5ITKlYG5pFmT/GLbFz5IEhboLrdsFs01ugWcosrejvdJIPzQHCNz2I72CGYWb/mShWGNHB1cOtokQJhJI9Qcz7nyzBPVeMtc80=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776161825; c=relaxed/simple;
+	bh=oRWO6Lo2WmEtu7qNFiuBDthh+Y1C1/KwDqss8kDou9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=reQa4/gTLIP9qggWod+q5sAuTIAt9rAMPyKwmqY5El0LDpeJnSFm7rxKZsWC1KQS9FWwHs9lgYWlwmyyIqoZuPtIiwmDAYpkjn2OzQTSpUqbxnfM2QQNujS/4QqM4/FzXVZFuIAfrgy+dU9HaYZmly9opCPZAVDSBoTsfI67UBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=pP0EKI30; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fW8V6a08"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776161411; x=1807697411;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=JKmwCGxR9kZQM0/l16gQdsRQyDehYHt0b9LZs4uZejA=;
-  b=fW8V6a087R2Ay/uJ+tkai3+rqA0Dr3LcXCguH/z0KIVwBC5ajxt5QWor
-   ROlaaeqYDyV2TbQ0twx2ZKkkjwVAIAukRIvqtbXHx0eCmvphySvCe4EHi
-   vILBmfcnNcYmgyB19loXBkDA9cl92awRdSjeHkAFqHdY+CHH475yHayTf
-   lKNjMuiTOEqM+79/xjdp3wCXREzbnkgghs41e1hJ+1BxIKwfwMYsbG9fg
-   kq+3f59YTfA7nxTxXqBel71xk1qBrUtdrxyQ3XVg+iJ9qX5mX+sMke26r
-   +gKfn+1iIpW4ndt1oRlTci09ZhTkmePg3j6AZdvzWbQq95O80V1QkVQ+/
-   A==;
-X-CSE-ConnectionGUID: HDv4qY7sQZmRB5/kaNTLVA==
-X-CSE-MsgGUID: usoTdMTnQ6m6madSFK/SKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="94513913"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="94513913"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 03:10:11 -0700
-X-CSE-ConnectionGUID: PJGxOxqjTDmaq3/s0NoNPA==
-X-CSE-MsgGUID: 50KgqsxmT/2UB1by7P3fMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="227393549"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 03:10:05 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 14 Apr 2026 03:10:04 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 14 Apr 2026 03:10:04 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.30) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 14 Apr 2026 03:10:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U5JEAJZSQXdoI7YChpSLKlgIBTkKU0U3blQHFvoJUuffoV6a/gW8Z5MZT7s3qE4NKGtUrCA/4uj4HZh4EDpiiKWKBU+ZxBKY/vAsQQaWVElRd2wx9FUmTwTDD5Eo1MnhRhaOTB6fBodripDYlmruqtxc4uCtBtmycDPlYhMkP+pOkFwqI5ODe7hCMVB8CQPBySpNSqq2mbR2IrLcX9TM74ycpqRrP4tX1fngP7SVo0UmDN0uH72EUN3QxaIiJ8bYjpYbB8yNpYP9S2n/rF2xJ2b/dNe40dG8zCyA8pzMbhd+N2H45w8KSJ+l8SPVuzkkS28IRjlSbkazRvTs+Fsf7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P5h8S3f25OF7WOmD9VbVVnTeCMUWrNxgfzcuwKxVV18=;
- b=TXJhjgdJMm66hF34IcJ0GLeIaPqWVZE/dtKOXCPzboidGycqwauRQ2EgG0iuqTmVA3IUkyMBfqNJZdHldtL/9+h+EoMpXXEpYigjmPbiDH6Cw5lsnuxfS/Bf4JMaS8NqQbuwZl8OC3hDYbatrLcmeDRKWmTFt8oky1v9gfc2ilSvxT0kixbNSyBii3DOHXOkoiKPYBYOYlMzdp8jZqydFJYeAccSlJXJ+QQHCue50yHkDAwjonMuho9sUIuGdFMvq00DSKXplayw6K3qIq71aM+53dsK3E9gMn1PHrReYCM68zNPh3ARbpcpPQAvgFQ+4X27GdQ+lxFLtvY8bV1DPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by MW6PR11MB8412.namprd11.prod.outlook.com (2603:10b6:303:23a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Tue, 14 Apr
- 2026 10:09:55 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
- 10:09:55 +0000
-Date: Tue, 14 Apr 2026 18:09:41 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang,
- Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
-	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, "Annapurve,
- Vishal" <vannapurve@google.com>, "sagis@google.com" <sagis@google.com>,
-	"hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
-	"paulmck@kernel.org" <paulmck@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "x86@kernel.org"
-	<x86@kernel.org>
-Subject: Re: [PATCH v7 11/22] x86/virt/seamldr: Shut down the current TDX
- module
-Message-ID: <ad4SZdlybWkLtLEm@intel.com>
-References: <20260331124214.117808-1-chao.gao@intel.com>
- <20260331124214.117808-12-chao.gao@intel.com>
- <a50bb8a4d8c2bdcb0795eca4551567fb5a577215.camel@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a50bb8a4d8c2bdcb0795eca4551567fb5a577215.camel@intel.com>
-X-ClientProxiedBy: SI2PR01CA0003.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::16) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="pP0EKI30"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 92BBF4ECD;
+	Tue, 14 Apr 2026 03:16:55 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D79593F641;
+	Tue, 14 Apr 2026 03:16:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776161821; bh=oRWO6Lo2WmEtu7qNFiuBDthh+Y1C1/KwDqss8kDou9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pP0EKI30IOaOKAhgEdOfCZqlzEWecgcx61lIFuNyhPz4kVX+QTa6Ke2pOo/xlGO77
+	 lISB8906WejbDkHf64sBQVS4TV8VFOT7JsqjCcd4SERWReBsrY5ZlX0648tnI4BVya
+	 zvkxh8jtmW4z2ZxbF+qkZijD0wSd12JIdH4GDGiQ=
+Date: Tue, 14 Apr 2026 11:16:47 +0100
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v2 3/4] KVM: arm64: sefltests: Add basic NV selftest
+Message-ID: <xsdf2k2u4g6n7nmxcgwhiraqodwtteuxqqtnj2dx5sxgu74a7j@yjijkyohkq4i>
+References: <20260412142216.3806482-1-weilin.chang@arm.com>
+ <20260412142216.3806482-4-weilin.chang@arm.com>
+ <adwofV7yf71OdMFk@sm-arm-grace07>
+ <ddr6exocupk6mzshjwvu6sqt57aeqiyxqss3rpgcxxyh54cw4g@rxvm5zh3ybrw>
+ <ad1gqsqqOXyYmJoG@sm-arm-grace07>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|MW6PR11MB8412:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5d50a9d9-ce08-443f-056d-08de9a0df9ae
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|22082099003|56012099003|18096099003;
-X-Microsoft-Antispam-Message-Info: jFT89e5AuggFFL6XBEZ8VZ0iAYQIZcLs/EKteEmUPnb6Ob0uspe8yKC8LGsjhTKtSTOXy6rGrD5qg66d7g42IkeqejGddMOFD2isaNJaAcuYzYYUSTDI3Pem9FDO019LPcsOTfiHmm+oJzWUTauRkvePX1LOKkv9lS/yQiFB/5vVXvaMOMDyzV8FGgH4xzwP0Gygqiw2jsBWshRVhaxTvZpBTEHvOLSgvM4RvINzF+F11lakj3RU5NhYLd1ouINlhIusGdP3xoMFiHXsk0zTlt4Lu0mEXw/fQ0N7+vRS9a98A4AP/dN14AG4IURvsth6miP7ILB3bcSS4Wltbt8L8CNLd/GdqjFdbxeDiqwaXk2L0j6vhPkp5JjCFzaSnHRlWx+vc+FYBOK2z1sCcawYmjt20t1FvJQLFtxHOj9BB0JKjtwPpwrFbEKALoiuYtxgVl/R/alrly9omtQFCSmt6f2CF+AH8KxGMwgI07OktJ6i92PSmmQ6J0HchaPfoGD9oPHUjiv3z8Ubz0dqGtU4LWLmaTbJnxGNQlt5vQnexc0sXaDQX/l9j3w88ug7cXZSXguYTAguHJJJnikhmg8Ojehoid45kRiSxt6vPDU2iul6ZhX7Xs+3DZlXuvL+GWUSpVMEYa+PoZ78IVQlMU09jJCwqd248St2FL4piCVxZxc6APgCFEHUsZXQwZ8tt5Ip6jRUrb82VKXo1K4Jbj9dTyRJjVO1evViSKMLkXhgq6Q=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099003)(18096099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?lb6L1tdYSYWBl8l72dQHY5xPOmOyWsm8HHeyxGx1h85z7C6uJRMbvZogQ5?=
- =?iso-8859-1?Q?64/+vbjdYLS1TW9wLO32/Y3Jvpqbb717+GNdlK35ET5/MrgfE3z+kc8kmm?=
- =?iso-8859-1?Q?NIQrG6iWdLLG3ApZn5Cn4LBDOfQzTUDcGnpohFlMCXwqWdQbHe4ntVE8zb?=
- =?iso-8859-1?Q?W22TtdsnMmD86gnyM/ckLljHCtQQZkV9ZADBmbTs4Lb0+JhxTPkynJ3+Zp?=
- =?iso-8859-1?Q?DJyBLmHquurVEqulZT52TqT3i3uNue6MNINvKZrMk9Bp5g3k2dlEzzAhTx?=
- =?iso-8859-1?Q?8hRLUfTmvf0g242qcW/CVwHfGC1u/WpNukt9zPXe23T91ttOv12S89//pa?=
- =?iso-8859-1?Q?Ps1s9TpNCYTU/Bfyxn0MEQ9PVKx15woWa/5nSG3ka1ENv7haMu4d/VlwDL?=
- =?iso-8859-1?Q?HGL4E2IGQ5BQfeAZzHSfnu3KxBc6o7BpzFiE5+a62tSp0uxtVrNE4zA614?=
- =?iso-8859-1?Q?Wu7DWAH/T30tk8ocl8fU62WSATXVd1gzqpprfJbq9qav3QBj8OXeD1HmHB?=
- =?iso-8859-1?Q?ZZGdSk1V30H4p4rmA+D4edefMosPnOL8pG2WLE/ZxG4pSpeodUJp/NfVMw?=
- =?iso-8859-1?Q?F9QvMtA49MPCaiyHIFRLI7EZ6aGzMKp0TiHTGhGKmsJrUYh9xWEQypgThp?=
- =?iso-8859-1?Q?QSKcEjwi7/iCz8O+xFLtCegJNpzTIwNnmphteJH2T8jepBgstr/+l/RUUr?=
- =?iso-8859-1?Q?BuhHHfHvoYMbLPcLJo8lQ5BcXXp+X/9hj+DglvblTK7Sc64I5HZ14ByKoW?=
- =?iso-8859-1?Q?BFGftKBIjACh2oqQTtyLpCHeJZ5JGeDRhbtZYRqu2XhJ24wGywTobLrz+s?=
- =?iso-8859-1?Q?70B55z9RI1dkp8Y4MU3eK2D/GYJ2kaTsY2VAZJrrpOMMob8JoRCExt8/gO?=
- =?iso-8859-1?Q?+TBIe4a+DUboTRcmMPqlr3Lr/lKNgy03MQyhI/xMtzCbecxX4Vb3PLJU4R?=
- =?iso-8859-1?Q?ATY3oDCZhMq7t2JGGrY+RY5sZY9bh6VJXmoMOsv5Bu/MYIMqBT+E8TVMtr?=
- =?iso-8859-1?Q?6xEt/xEVEt5WaC/A39N/T4WGq+UCA/y9M5/3UcB3YHTcZ0AUDrSuUWC0qs?=
- =?iso-8859-1?Q?sSr92DAclr5+PgbruC5FWReqS8LiZVHBpjZ9hEyKcKQqTDGOpqsivG0gB3?=
- =?iso-8859-1?Q?EnNySXH9alwcROYMLC1hoBzEsZ98i94f3JkYdVEe4V3NM4TrE9++ohiu8u?=
- =?iso-8859-1?Q?AGZ3t1ykaXy17fz/cUqZapParOvoDiJ5qYdLUrryqXMol643aED6V/HREj?=
- =?iso-8859-1?Q?0wF0k+pj9vJZ+8sn7KXf7ndIq9hYQvmh7u/hNkS7IEiz9spBLvm115D2+y?=
- =?iso-8859-1?Q?ydanWsj9WKfbyeGnALR9bJWOkCBnoOiCxZd9aNAZNhXWR77i7rzSj04gen?=
- =?iso-8859-1?Q?rOaQzbOws2IWI4T2FwoJ599/d34KF7KVMNT1qp8QCw7FduaVADVcJv7+X0?=
- =?iso-8859-1?Q?T5xFi4PDo/QMXHM/yLggsSwzxOKrqwI9s9KyY/Y+alYct4oBA86CjaSKY+?=
- =?iso-8859-1?Q?UvO3mZMQPgI71Ub7Qp8VwsGjwHbK6nSgo+TXuHKn46lttl+GhrwgL7XPwo?=
- =?iso-8859-1?Q?Flpy8SBLW84rcF0ICdxvQ0DCXlpO2zZSS2aosdJ8WkmRQvjFwjJEXQ4RzZ?=
- =?iso-8859-1?Q?NWNiDMsRy8pFY5gD5pGAblAldZENgREf2+Aj0p2DDS0erpRSO7w3GVAesG?=
- =?iso-8859-1?Q?qzHDSckRmdycOiQplUQK/loVdv7kfpMIztlYoS0ABuBzkRMQ9hcR6PMsXG?=
- =?iso-8859-1?Q?E0Muu57pWQHHbeCAbTYywyMurnLiy3I1y6S/qr80Z07/8OqY4RtjzAWNSL?=
- =?iso-8859-1?Q?NpmfDpfpuA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: plzR2Qmfo70LSide6YVA1ZorT8C+Q4dl3xYXcNuldrRVQcMvYxleVF7O1F+eeKOPGL5cqZkxqQy6o7GQt2FWbbF4iyj2S3bD4ry0ejDO/lgTW3jS9f5LPDOQYgFEHYUDdfof39EA7gd4uiwoPzljdZFXGCW3ZfjLQZQ8ObBgHRpGwr72sjA+Ov4WOqYi/GFgKtRZ7MZ+aI1749I4g8dUwxkSq68tSbL7aPaTs0WYB+O+omub0Me0XTQAAKYf9uwdtQC0IKXfg5fOqqAw2NFHVa0socCiGb0WgyChKobnYcLh99N3N1IdRqQ9mhlXFxl2BH2YLLBIOHzR3O04eyoc9Q==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d50a9d9-ce08-443f-056d-08de9a0df9ae
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 10:09:54.9129
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sMMOd+nbVQPs6uaCl/NNnR4k1biKaFarLDI6Ps03574VZttVus1BvsYT6Ljruc+ZHgzxrVMn5wOlZ+hr0eo7gg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8412
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad1gqsqqOXyYmJoG@sm-arm-grace07>
 
-On Sat, Apr 11, 2026 at 09:35:32AM +0800, Edgecombe, Rick P wrote:
->On Tue, 2026-03-31 at 05:41 -0700, Chao Gao wrote:
->> The first step of TDX module updates is shutting down the current TDX
->> Module. This step also packs state information that needs to be
->> preserved across updates as handoff data, which will be consumed by the
->> updated module. The handoff data is stored internally in the SEAM range
->> and is hidden from the kernel.
->> 
->> To ensure a successful update, the new module must be able to consume
->> the handoff data generated by the old module. Since handoff data layout
->> may change between modules, the handoff data is versioned. Each module
->> has a native handoff version and provides backward support for several
->> older versions.
->> 
->> The complete handoff versioning protocol is complex as it supports both
->> module upgrades and downgrades. See details in Intel® Trust Domain
->> Extensions (Intel® TDX) Module Base Architecture Specification, Chapter
->> "Handoff Versioning".
->> 
->> Ideally, the kernel needs to retrieve the handoff versions supported by
->> the current module and the new module and select a version supported by
->> both. But, since this implementation chooses to only support module
->> upgrades, simply request the current module to generate handoff data
->> using its highest supported version, expecting that the new module will
->> likely support it.
->
->I feel like somewhere it's missing what this patch does. It explains the
->reasoning for the handoff version selection, but nothing about implement
->"MODULE_UPDATE_SHUTDOWN" or anything like that.
+On Tue, Apr 14, 2026 at 06:31:22AM +0900, Itaru Kitayama wrote:
+> On Mon, Apr 13, 2026 at 10:18:42AM +0100, Wei-Lin Chang wrote:
+> > Hi Itaru,
+> > 
+> > On Mon, Apr 13, 2026 at 08:19:25AM +0900, Itaru Kitayama wrote:
+> > > On Sun, Apr 12, 2026 at 03:22:15PM +0100, Wei-Lin Chang wrote:
+> > > > This selftest simply starts an L1, which starts its own guest (L2). L2
+> > > > runs without stage-1 and 2 translations, it calls an HVC to jump back
+> > > > to L1.
+> > > 
+> > > How do you disable both the nested guest (L2)'s MMU and stage 2
+> > > translations?
+> > 
+> > Guest stage-2 is disabled by not setting HCR_EL2.VM in prepare_hyp(),
+> > and stage-1 is disabled by not writing to SCTLR_EL12 in init_vcpu(),
+> > effectively using the default value set by L0. However since SCTLR_EL1
+> > has many architecturally UNKNOWN bits (including SCTLR_EL1.M), it should
+> > be better to write a value before running L2 I suppose...
+> 
+> Thanks. What do you think of using copy_el2_to_el1() macro in at.c, so we
+> can prepare in guest_code() to manipulate the SCTLR_EL12 System register 
+> with the sensible programmed values?
 
-Yes. How about:
+Yes, using copy_el2_to_el1() can give us an L2 stage-1 that is identical
+to the L1's stage-1. But what I was considering was if guest stage-2 is
+enabled (which we plan to implement), then those stage-1 page tables
+will have to be mapped for L2, and its base address translated to L2IPA.
+It's doable but seems like extra complexity when stage-1 is not so
+interesting for KVM (except for AT?), it lets the guest do whatever it
+likes and let the hardware do the translation.
 
-Retrieve the module's handoff version from TDX global metadata and add an
-update step to shut down the module. Module shutdown has global effect, so
-it only needs to run on one CPU.
+Let me know if you have reasons to want stage-1 for L2, there could be
+something I should consider but did not.
+
+Thanks,
+Wei-Lin Chang
+
+> 
+> Itaru.
+> 
+> > 
+> > Thanks,
+> > Wei-Lin Chang
+> > 
+> > > 
+> > > Itaru.
+> > > 
+> > > > 
+> > > > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> > > > ---
+> > > >  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+> > > >  .../selftests/kvm/arm64/hello_nested.c        | 103 ++++++++++++++++++
+> > > >  2 files changed, 104 insertions(+)
+> > > >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > 
+> > > > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> > > > index 3dc3e39f7025..e8c108e0c487 100644
+> > > > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > > > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > > > @@ -168,6 +168,7 @@ TEST_GEN_PROGS_arm64 += arm64/arch_timer_edge_cases
+> > > >  TEST_GEN_PROGS_arm64 += arm64/at
+> > > >  TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
+> > > >  TEST_GEN_PROGS_arm64 += arm64/hello_el2
+> > > > +TEST_GEN_PROGS_arm64 += arm64/hello_nested
+> > > >  TEST_GEN_PROGS_arm64 += arm64/host_sve
+> > > >  TEST_GEN_PROGS_arm64 += arm64/hypercalls
+> > > >  TEST_GEN_PROGS_arm64 += arm64/external_aborts
+> > > > diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > new file mode 100644
+> > > > index 000000000000..97387e4697b3
+> > > > --- /dev/null
+> > > > +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > @@ -0,0 +1,103 @@
+> > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > +/*
+> > > > + * hello_nested - Go from vEL2 to EL1 then back
+> > > > + */
+> > > > +
+> > > > +#include "nested.h"
+> > > > +#include "processor.h"
+> > > > +#include "test_util.h"
+> > > > +#include "ucall.h"
+> > > > +
+> > > > +#define XLATE2GPA	(0xABCD)
+> > > > +#define L2STACKSZ	(0x100)
+> > > > +
+> > > > +/*
+> > > > + * TPIDR_EL2 is used to store vcpu id, so save and restore it.
+> > > > + */
+> > > > +static vm_paddr_t ucall_translate_to_gpa(void *gva)
+> > > > +{
+> > > > +	vm_paddr_t gpa;
+> > > > +	u64 vcpu_id = read_sysreg(tpidr_el2);
+> > > > +
+> > > > +	GUEST_SYNC2(XLATE2GPA, gva);
+> > > > +
+> > > > +	/* get the result from userspace */
+> > > > +	gpa = read_sysreg(tpidr_el2);
+> > > > +
+> > > > +	write_sysreg(vcpu_id, tpidr_el2);
+> > > > +
+> > > > +	return gpa;
+> > > > +}
+> > > > +
+> > > > +static void l2_guest_code(void)
+> > > > +{
+> > > > +	do_hvc();
+> > > > +}
+> > > > +
+> > > > +static void guest_code(void)
+> > > > +{
+> > > > +	struct vcpu vcpu;
+> > > > +	struct hyp_data hyp_data;
+> > > > +	int ret;
+> > > > +	vm_paddr_t l2_pc, l2_stack_top;
+> > > > +	/* force 16-byte alignment for the stack pointer */
+> > > > +	u8 l2_stack[L2STACKSZ] __attribute__((aligned(16)));
+> > > > +
+> > > > +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> > > > +	GUEST_PRINTF("vEL2 entry\n");
+> > > > +
+> > > > +	l2_pc = ucall_translate_to_gpa(l2_guest_code);
+> > > > +	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
+> > > > +
+> > > > +	init_vcpu(&vcpu, l2_pc, l2_stack_top);
+> > > > +	prepare_hyp();
+> > > > +
+> > > > +	ret = run_l2(&vcpu, &hyp_data);
+> > > > +	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
+> > > > +	GUEST_DONE();
+> > > > +}
+> > > > +
+> > > > +int main(void)
+> > > > +{
+> > > > +	struct kvm_vcpu_init init;
+> > > > +	struct kvm_vcpu *vcpu;
+> > > > +	struct kvm_vm *vm;
+> > > > +	struct ucall uc;
+> > > > +	vm_paddr_t gpa;
+> > > > +
+> > > > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+> > > > +	vm = vm_create(1);
+> > > > +
+> > > > +	kvm_get_default_vcpu_target(vm, &init);
+> > > > +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> > > > +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
+> > > > +	kvm_arch_vm_finalize_vcpus(vm);
+> > > > +
+> > > > +	while (true) {
+> > > > +		vcpu_run(vcpu);
+> > > > +
+> > > > +		switch (get_ucall(vcpu, &uc)) {
+> > > > +		case UCALL_SYNC:
+> > > > +			if (uc.args[0] == XLATE2GPA) {
+> > > > +				gpa = addr_gva2gpa(vm, (vm_vaddr_t)uc.args[1]);
+> > > > +				vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), gpa);
+> > > > +			}
+> > > > +			break;
+> > > > +		case UCALL_PRINTF:
+> > > > +			pr_info("%s", uc.buffer);
+> > > > +			break;
+> > > > +		case UCALL_DONE:
+> > > > +			pr_info("DONE!\n");
+> > > > +			goto end;
+> > > > +		case UCALL_ABORT:
+> > > > +			REPORT_GUEST_ASSERT(uc);
+> > > > +			fallthrough;
+> > > > +		default:
+> > > > +			TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
+> > > > +		}
+> > > > +	}
+> > > > +
+> > > > +end:
+> > > > +	kvm_vm_free(vm);
+> > > > +	return 0;
+> > > > +}
+> > > > -- 
+> > > > 2.43.0
+> > > > 
