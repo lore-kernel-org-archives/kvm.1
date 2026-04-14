@@ -1,107 +1,96 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E675225775
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 13:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7DE189B84
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 13:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776172644; cv=none; b=pU8ifqerPaCDbdqQKThAWBojchKkgg6WUKopoL4x8WJND9lxBA2ND8M0SOBOOVGv5EQ+fxGo1QJ5BjVjvT811eWTfguKANXLUg2PaNIs5TJrJga8PssZRfaAYflbiMV//eO7brU+TtX2o32GUruPARTi/oMGOAvJj+TS2+4W97Q=
+	t=1776174256; cv=none; b=otfABCM+s9r+q7Mm+S3PUrUlATAd6x346gx066IcoL5Pg8EiETLQYeHvH//qZJog72xmMQ7WwN2A8UstjQVtJHoEqIqqPvV1Ak4803G0oxchYnfjVTpnYrQ74K99XQ4F4S4CkpM+0TnuQPRddL4Xmo+tQvoYS90fgfYQevPICUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776172644; c=relaxed/simple;
-	bh=BW47gQ1a861/LVIZYtjee6NzyilyIn4FYoiWHyHOcZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B7f8ncfnAUpcPqiJX2JPxusevfryGhcAgGBMJj3Jmn2gECkYtdvOuxP4bP3AVqCzddtqkK+Z8kPY7CFfS1Sau3DB8FMwsg9y1VE/QrpMoFRn6FzVu8xnGb5vD7Cjb7xS1ctjk+W2dOuxfsp3pp5J4wnVigiUqAorx1PUqnuGPOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RbIA+ccf; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776174256; c=relaxed/simple;
+	bh=FXyzhVd45QAGHhKvQiC316veEoapczrLxFSiWOE0fjs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pv8AyFtDa2DXxkcOGRfAD3t1GM4pbt7vShZ0nvrGlT8nAk0n3q8b1paW+jg1DeevBNobc0bp22WyrSzEh00XX6Zx0tKPQh1d1X3yf8fFOmQfUz2x1QIXqSb5I49cjdw2SECOvu53CACghOrM8lSeSB1Bn0EwA5GIh0xPiMrKrpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OPg1Xs+L; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RbIA+ccf"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c76b0cda2aeso2307572a12.2
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 06:17:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OPg1Xs+L"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b24af7ca99so78458345ad.1
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 06:44:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776172643; x=1776777443; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oCHGC2J+0M4MEamdm0EPkr7TMn9yURLgTFw2Rwgt3lQ=;
-        b=RbIA+ccf8nvmQ3cZ7y7Jf4/1il5mPZJHS2Fyha5VTfxJxVp63Ho9EJWeSZ3hqJEovB
-         23pdiLKEe1D18mpCRFmoZwSxg6Cet7xizqQI5NnqLfSqsYLDcRO7HJlMR2ztTHInYB0W
-         EGRrazKcXa2XzxDgs4TqoCtL6MRHem1FyWNtKRtpfT8z1MTf7WdbLAEbgVZUpLvaWNJi
-         zwxITvnyY1pcYqnLbBGXW9Eoe1A66wpMQXLtjkDTvyxCEeGw6lqmOc+3BKo42FJX5UNP
-         /7qCATseQMK5Iju6LYCTAORjRynQSakAkb933lLe45YVXtnb4IffZ1gWlFTsAV+3sFlg
-         /QfA==
+        d=google.com; s=20251104; t=1776174254; x=1776779054; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xk10vdZMvoF35vo2wryi4gcppRXNySBYTaE8DIavMRY=;
+        b=OPg1Xs+LSxfX9JyBYrhrinHGucEcl6+761cOpmdXeBM4TM6ngdjSkxwaxrYtWKP2Mf
+         CQPkcRlZ8BUfkLNtZkGE0dBtqZ+2gJfuae+0Rp4S8pOKurBGiHLq9O+acEa/03nbU7te
+         c0Rlpv1xzqv3/T5TNW3AIXxZbiwKa2vrtxSTApgwXsHa/knSN+iwA7jqRM9sUtTWKa1E
+         pQV+CPOJV9gh0FA0EdMonFHygZ/8PhDigDEm6wTz4WLOBlAX0butiS2HLavu2zw0sc7X
+         4g8GLZvXFCN1loBEBRfBUL0afLkPhWhUW2hrraV6TzVxmWNZz76gmKdb2nitAaHR9Sj3
+         btmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776172643; x=1776777443;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oCHGC2J+0M4MEamdm0EPkr7TMn9yURLgTFw2Rwgt3lQ=;
-        b=c4JaPbVms2a32RDNeX4TMaXHfFcR/+7Gbl/HInRbK1eZTAAPevvzKFjKthh2gPLDIG
-         /nbNBpP2V64ZnBkMMgtWdnZ16GpHvH4es9BjklLk7Ae0CxhZBasxa2PRTFVPhjCB6hUO
-         9vfsbol9Rg6T8cvAxszFmCJ+t9y2MGoci3fR/7aWS/aOypZYY3Jhao3Xk/W9AeWKb4V3
-         HrvpcMhv0TDfaf8JgD4ceq4xIeO9MplCdRNtthxCjhVw+VqEI4Eo3ozbTcXaBbOZPMge
-         9wqqkPVzP0r8u5l7r1T/AEYi8IObvOpwVklcY1+3Z8tAptjXXKMDdjM2Qb/Ynua7M2dB
-         rjwA==
-X-Gm-Message-State: AOJu0YzPM2/ssl4LD7UFwr60IJI8JD0jw+0ZM7fuBltLBKQOM69jqeS4
-	uxH3wtU+yVKq1Pxx4Z6pOXxAD/Z5jBrI4v1aiOkKeBDV9Zg82Z3smhUAs9aw5Q==
-X-Gm-Gg: AeBDieu22oAM/SSkqmb5nM7ZLi5e6diJEeGbgWtdKalMii3AU8X8QR7XE0TzE4drp64
-	1c5jWxfdyjozufXtNLTkm+lYjlS0Z6RdBtdyK4JGAG6smjj7rmd4p9amF6vE0MiOLcDUkC5ZWtV
-	H0/unxeZewWn2almedvJ75JyJBjNteQ+m3IIzO/B7V7iYWytCa4UWLY9oaWur0u61ss+vgi+73Z
-	ZubYJnJFJsmRYp/kr39kBl1jrHrjDq0swzLYsyWGoKX5f6ximMyszuZ8onZBIONss2i1yNKmLxN
-	u3zhETdE+lPCuMCJXB8bstFJSGJKTYfK5a6SWXjKtqkGCsHI5OWU7JUGF0V6YyfE+VNh9/NU6F9
-	sndRUB3k26qWFfBavzcNcObC9iwmN8UL6h7/PK1r60QRxVIWv0iuFjICQJNEdL1GqsIA38UyVKk
-	G5PRNB8cA+1JdXqUTCfegvlefg/727dRu+
-X-Received: by 2002:a05:6a20:a11d:b0:39f:27ab:2447 with SMTP id adf61e73a8af0-39fe400264amr19452049637.47.1776172642571;
-        Tue, 14 Apr 2026 06:17:22 -0700 (PDT)
-Received: from ubuntu.. ([89.222.116.199])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7947fd2457sm2306382a12.4.2026.04.14.06.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 06:17:22 -0700 (PDT)
-From: "jk.hong" <ryan.jk.hong@gmail.com>
-To: kvm@vger.kernel.org,
-	will@kernel.org,
-	julien.thierry.kdev@gmail.com
-Cc: zaiguang.hong@riscv-computing.com,
-	"jk.hong" <ryan.jk.hong@gmail.com>
-Subject: [PATCH kvmtool] plic: Fix lock/unlock mismatch in plic__irq_trig()
-Date: Tue, 14 Apr 2026 21:06:36 +0800
-Message-ID: <20260414131714.538976-1-ryan.jk.hong@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        d=1e100.net; s=20251104; t=1776174254; x=1776779054;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xk10vdZMvoF35vo2wryi4gcppRXNySBYTaE8DIavMRY=;
+        b=gbA7Mo+5CivxdizqwcjoweP2F5AnZ2UHjLqIogL9TSL8qnPJOpdgRGr3PWA6fLMS9j
+         z/Jtm2cyHUVHvSc6IFxFeLfZhNChh033wLYTERs6FC/Uns4G9getPaosg7H32XKjICBV
+         Z2PgHLa2sIQgb+tX+999esJ0M3wCVgmCfbGnrIDRv2OmQOBlywm1SF/7+SZinmpnGK9P
+         8+kjrxoV3B1fAOU37owl7xN6sFG1i5gOZnRD/9cBHBf1FXsHMIoNbrLImuvuQL1QIP6+
+         gC0Jp34maKY96ff8zrnX/c/hwAPwTD2/n3to9/QDnV86YmuU74FL3QjmQD6/JAZGez6g
+         J/lg==
+X-Forwarded-Encrypted: i=1; AFNElJ8JfyGZGFy/DUddEiLrKriGoCSEhGjuoPZaEaGX2G3LPKWJP5xvbgG9X4fxMsXErC/6oMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+FB5716mF2JhEw6twn8znGnJBBgBUH2Gdlui2ZMgllL2EU/4D
+	401GHDqK8rXx8icE7F4t+tdJryboGLQScFTrH5WozbQce5+eQ7qbDNkgpqOwsxNy8xjdl6b0LEw
+	kI6ADPQ==
+X-Received: from pfbdi7.prod.google.com ([2002:a05:6a00:4807:b0:82a:ff5:27d5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7486:b0:398:b346:b13
+ with SMTP id adf61e73a8af0-39fe3d0dfafmr19709277637.16.1776174254172; Tue, 14
+ Apr 2026 06:44:14 -0700 (PDT)
+Date: Tue, 14 Apr 2026 06:44:02 -0700
+In-Reply-To: <tencent_510B7687999B510DE0D00238024766980C06@qq.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260409213333.1995382-1-seanjc@google.com> <tencent_510B7687999B510DE0D00238024766980C06@qq.com>
+Message-ID: <ad5BsDdZ9FGpMIhH@google.com>
+Subject: Re: [PATCH] KVM: Drop kvm_vcpu.ready to squash race where "ready" can
+ get stuck "true"
+From: Sean Christopherson <seanjc@google.com>
+To: zhanghao <76824143@qq.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zhanghao <zhanghao1@kylinos.cn>, Wanpeng Li <kernellwp@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 
-plic__irq_trig() may call mutex_unlock(&s->irq_lock) without having acquired the lock first.
-In some condition, the function jumps to the done label and s->irq_lock is unlocked without lock first.
+On Tue, Apr 14, 2026, zhanghao wrote:
+> On Thu, Apr 09, 2026, Sean Christopherson wrote:
+> > Drop kvm_vcpu.ready and instead detect the case where a recently awakened
+> > vCPU is runnable but not yet scheduled in by explicitly, manually checking
+> > for a target vCPU that is (a) scheduled out, (b) wants to run, (c) is
+> > marked as blocking in its stat, but (d) not actually flagged as blocking.
+> > I.e. treat a runnable vCPU that's in the blocking sequence but not truly
+> > blocking as a candidate for directed yield.
+> > 
+> > Keying off vcpu->stat.generic.blocking will yield some number of false
+> > positives, e.g. if the vCPU is preempted _before_ blocking, but the rate of
+> > false positives should be roughly the same as the existing approach, as
+> > kvm_sched_out() would previously mark the vCPU as ready when it's scheduled
+> > out and runnable.
+> > 
+> > Eliminating the write to vcpu->ready in kvm_vcpu_wake_up() fixes a race
+> > where vcpu->ready could be set *after* the target vCPU is scheduled in,
+> > e.g. if the task waking the target vCPU is preempted (or otherwise delayed)
+> > after waking the vCPU, but before setting vcpu->ready.  Hitting the race
+> > leads to a very degraded state as KVM will constantly attempt to schedule
+> > in a vCPU that is already running.
 
-Signed-off-by: jk.hong <ryan.jk.hong@gmail.com>
----
- riscv/plic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+...
 
-diff --git a/riscv/plic.c b/riscv/plic.c
-index 6bd13ac..a622005 100644
---- a/riscv/plic.c
-+++ b/riscv/plic.c
-@@ -217,7 +217,7 @@ static void plic__irq_trig(struct kvm *kvm, int irq, int level, bool edge)
- 		return;
- 
- 	if (irq <= 0 || s->num_irq <= (u32)irq)
--		goto done;
-+		return;
- 
- 	mutex_lock(&s->irq_lock);
- 
-@@ -261,7 +261,6 @@ static void plic__irq_trig(struct kvm *kvm, int irq, int level, bool edge)
- 			break;
- 	}
- 
--done:
- 	mutex_unlock(&s->irq_lock);
- }
- 
--- 
-2.48.1
+> kvm_vcpu.ready still exists in struct kvm_vcpu, but there are no remaining 
+> users after this patch, so it looks like a leftover cleanup item.
 
+Gah, I intended to remove kvm_vcpu.ready, not sure how I didn't.  Thanks!
