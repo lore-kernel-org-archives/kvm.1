@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6657D3E6DF9;
-	Tue, 14 Apr 2026 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CA53E9292
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776176652; cv=none; b=XPTd2nZgbkPxxVXiRaY3XAMa43da/yQWcwU/jP+41A7FGsLVWAt9be/C9rq8HBpE5lb0uL7sPqVYL6qtP9qH6HmG0wUK49JblqV67T5dzFjlc2LqtzuWrVUr6CgAytoL32g/fZvY5do56h1cjqWvgMsV4neT9OcHjuBC/iuIX0Y=
+	t=1776176654; cv=none; b=GBfkTL7Lz1DE7/6Fnf4vNtrTQpRfVfmWTR0zvXDM5qaQkikB6Sx/qVkrAZQVSnyZZiW3KCNhJDEmeoZ+sjmwXNZwrfLZ71vynHbTtuoQZEqRBMPgTDq2xQwoRSGXoYNq3AQkq1sw70P2Fqzh3WLRCYkS4CiDQRZyAqpn3y4lsHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776176652; c=relaxed/simple;
-	bh=bdNn47+Nx91eslEieZ286KWtw/tnSdy4Rxa/tQlVFSk=;
+	s=arc-20240116; t=1776176654; c=relaxed/simple;
+	bh=oOUfU0VXNyHpbUZg2Wz9Ad/eUIXrqX/a1NFbEQbuFDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oe4cdFDKxc1DvX3rvy/3JTdMj/YT7EhgRVyWZ+ksgZ89fRBuTWQkZK5m2nbNv1OGn4Q3xBDjf0tmQXJzoAwVpZPou/xv4yOWt+24Goc4D9T+pPNKQmM7GKxUaMJf/NMcWhy4ffTeGy2kxjKahQirS+jCiyGH2kykLSHeTuoSuf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smzIiwzk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OwlddiS9kqLK4XQKxLFWFE+2R5URqxZDz+w3unrW9Q+THs+ZyT+x4xbt+gQFghrPcy/H3NkroGIN+PLxbvyQKnt4KPBoHOuf/IQtBU9jm5OD28LFKd6wfkDYu8+tZenhyGopTdgZc6zUXVI6jHGMTX/+unUF43Cl3EqtwBFL3Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGCPFRti; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smzIiwzk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE429C4AF0B;
-	Tue, 14 Apr 2026 14:24:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGCPFRti"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B1BC4AF0B;
+	Tue, 14 Apr 2026 14:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776176652;
-	bh=bdNn47+Nx91eslEieZ286KWtw/tnSdy4Rxa/tQlVFSk=;
+	s=k20201202; t=1776176653;
+	bh=oOUfU0VXNyHpbUZg2Wz9Ad/eUIXrqX/a1NFbEQbuFDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smzIiwzkviWVR7lnj73JVWnCQ+zBpvJCTqLUI3rfAoHi80IfNutFZUb982WabLJdp
-	 RV1EHtoV0XM8U5Lvh6R6BERnAHbxeaIWOyOTq1r1cgtn4s17TLEIXC4Czy1xUKl5/N
-	 zmzLM2Ig+HUpqpMApLtLHsYyinprvvb5thjin3NmUf4IqX94OWT09zuu8KXP9bmTPB
-	 0h3kNPAZ2HcYJCbuRfx63vGGdEnfLqOOYWavV5a2qtXHfA7mYS1UxHoDAbRR9ZLYLw
-	 D0I5zhRWXTgJDj0qq2R7C5PShhH88aEmokXZzPaoA1H0sftf5qJ2BSXT5I4nA8ZBZJ
-	 LNaGsT5Zhu3Ng==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DF7A6F40068;
-	Tue, 14 Apr 2026 10:24:10 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 14 Apr 2026 10:24:10 -0400
-X-ME-Sender: <xms:Ck7eaVIlxL6gOMHnrotiu1Aq2wA_g2vVcrpAXkPVT6yYDcz0V3RS5w>
-    <xme:Ck7eaYHthgumh1dkOCOzDnRilG70A9ktdRrDr3hP5Sd3rh2AUmzhloqbv9NAe3GQ1
-    hqceh6DORm9RS_eebYzCXgUboVCRIXfsO7vxbuP_Fgh5d0aVhfLHvU>
-X-ME-Received: <xmr:Ck7eaSxYsKTSd-N2Uvwi9HwB9SGKN-1eMU-nLf7guVhKn0slOdMJQm5IE5PF0Q>
+	b=cGCPFRtijZvEvu1HXnZmA/JE+X1We8vOVr6IiVlOdHpVjH88vQEJbD9DlqBaTXQ1a
+	 79oW7Ww9Rx6Fwm+7BbASpPRXsIMjxev/3PjmWHKBflqHcuTaBT4e3sIi76vmYj9hsq
+	 2Y170gaGDn2IFT2Xf8F3Fsd5Kd1VDaTZ+zZ2AdYyObc9/E/s3YWIlr0SeeMLPp/H/O
+	 kaS89/m6unbSicheEjUdxo/sbaUN48PDWOHfW1Qf07miVgZciaHoNzKCIklO2N5M9w
+	 XP258VvGz9r3sl1W+wTtqETUUUTLZFelL5kTyT7xSf/yjIWbE2Q+a0odF5TGnDfNjN
+	 y4lwvjyks/H2A==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9EB9DF40068;
+	Tue, 14 Apr 2026 10:24:12 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 14 Apr 2026 10:24:12 -0400
+X-ME-Sender: <xms:DE7eaRJsSqUyKkUujdh5oHCEMfuxxrA3QXSu1wgzsKfCgI-Eos2C9w>
+    <xme:DE7eaUGNQ48Rum9mswU4fXgpqLXR9t405IKOfZTwhdrv7zxHM_XYRUR5bOgatmHgC
+    d56XNG-aEKeWKaU214rNTRJYe7eC4bS0sIK6YSdrxtc_7nnljnHgow>
+X-ME-Received: <xmr:DE7eaezchvjcbOyJ1q4PWG9cqTm81Yy52V3WStDVsCWYLJI2g0bVzLdPMPuvfA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcu
     ufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqne
     cuggftrfgrthhtvghrnhephfdujeefvdegkefffedvkeehkeekueevfedtleehgeetlefg
-    feevveeukefhtdetnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilh
+    feevveeukefhtdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
     hfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqddu
     ieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghessh
     hhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhp
@@ -52,14 +52,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetgg
     rhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvg
     hlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtgho
     mhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:Ck7eadhKkyMSHzEZVrk8qVizVP-x_HMDg3Ml2GcB9nOmIqgN2x1tAw>
-    <xmx:Ck7eaXLic-Q5TKN6jkpmkLTrh_zTVGW9-0YwrimJQp29TkHP6kjeAw>
-    <xmx:Ck7eaQCus3xC9UxalN-U84MZRkTX50MHGVg9Pyo5DkPAYMTJQSEZWA>
-    <xmx:Ck7eaYReISLLG7mEHLpRZRqQ5XjeqE4JrodK7dWh4MhDS6RYM6V6Fw>
-    <xmx:Ck7eaRol0_iVa8IN7w3Vs3Gzyv1QZl9rkUikTVZnrTUcVY9I-PSC24Fs>
+X-ME-Proxy: <xmx:DE7eaZhQLnLO_Dfm3ta6I_-g5-mBiDi4wTk_x7AjSAdFMbBNPWcAMg>
+    <xmx:DE7eaTLVn3Bs7uGdfEReC3Z-pcEkaKgVWbLYijLzN5Ugl1SwZOh9Rw>
+    <xmx:DE7eacCJgvBPdnrwIvAKoGdRB8WFzSTLoIolIzXckarWkkbTRINl5A>
+    <xmx:DE7eaURvo18OjfXDw6oxglQ3Z9k1BiyqjAQd2XIoLYMkJTgrQbudnQ>
+    <xmx:DE7eadrGQPUzV8QZvZNj92j1e6CsQA118JxIR7FwKdyEVEj7q4NDyOTB>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 10:24:10 -0400 (EDT)
+ 14 Apr 2026 10:24:11 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Peter Xu <peterx@redhat.com>,
@@ -80,9 +80,9 @@ Cc: Peter Xu <peterx@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC, PATCH 08/12] userfaultfd: enable UFFD_FEATURE_MINOR_ANON
-Date: Tue, 14 Apr 2026 15:23:42 +0100
-Message-ID: <20260414142354.1465950-9-kas@kernel.org>
+Subject: [RFC, PATCH 09/12] mm/pagemap: add PAGE_IS_UFFD_DEACTIVATED to PAGEMAP_SCAN
+Date: Tue, 14 Apr 2026 15:23:43 +0100
+Message-ID: <20260414142354.1465950-10-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
 References: <20260414142354.1465950-1-kas@kernel.org>
@@ -94,49 +94,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add UFFD_FEATURE_MINOR_ANON, UFFD_FEATURE_MINOR_ASYNC to
-UFFD_API_FEATURES and UFFDIO_DEACTIVATE to UFFD_API_RANGE_IOCTLS.
-The feature is now available to userspace.
+Report deactivated anonymous pages in PAGEMAP_SCAN results.
+Only set on anonymous VMAs (shmem cold = !PAGE_IS_PRESENT).
+Both PTE and PMD (THP) levels handled.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 ---
- include/uapi/linux/userfaultfd.h | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/proc/task_mmu.c      | 11 ++++++++++-
+ include/uapi/linux/fs.h |  1 +
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
-index 336d07e1b6de..775825da2596 100644
---- a/include/uapi/linux/userfaultfd.h
-+++ b/include/uapi/linux/userfaultfd.h
-@@ -42,7 +42,9 @@
- 			   UFFD_FEATURE_WP_UNPOPULATED |	\
- 			   UFFD_FEATURE_POISON |		\
- 			   UFFD_FEATURE_WP_ASYNC |		\
--			   UFFD_FEATURE_MOVE)
-+			   UFFD_FEATURE_MOVE |			\
-+			   UFFD_FEATURE_MINOR_ANON |		\
-+			   UFFD_FEATURE_MINOR_ASYNC)
- #define UFFD_API_IOCTLS				\
- 	((__u64)1 << _UFFDIO_REGISTER |		\
- 	 (__u64)1 << _UFFDIO_UNREGISTER |	\
-@@ -54,13 +56,15 @@
- 	 (__u64)1 << _UFFDIO_MOVE |		\
- 	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
- 	 (__u64)1 << _UFFDIO_CONTINUE |		\
--	 (__u64)1 << _UFFDIO_POISON)
-+	 (__u64)1 << _UFFDIO_POISON |		\
-+	 (__u64)1 << _UFFDIO_DEACTIVATE)
- #define UFFD_API_RANGE_IOCTLS_BASIC		\
- 	((__u64)1 << _UFFDIO_WAKE |		\
- 	 (__u64)1 << _UFFDIO_COPY |		\
- 	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
- 	 (__u64)1 << _UFFDIO_CONTINUE |		\
--	 (__u64)1 << _UFFDIO_POISON)
-+	 (__u64)1 << _UFFDIO_POISON |		\
-+	 (__u64)1 << _UFFDIO_DEACTIVATE)
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index e091931d7ca1..fc42cfd5720a 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2329,7 +2329,7 @@ static int pagemap_release(struct inode *inode, struct file *file)
+ 				 PAGE_IS_FILE |	PAGE_IS_PRESENT |	\
+ 				 PAGE_IS_SWAPPED | PAGE_IS_PFNZERO |	\
+ 				 PAGE_IS_HUGE | PAGE_IS_SOFT_DIRTY |	\
+-				 PAGE_IS_GUARD)
++				 PAGE_IS_GUARD | PAGE_IS_UFFD_DEACTIVATED)
+ #define PM_SCAN_FLAGS		(PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC)
+ 
+ struct pagemap_scan_private {
+@@ -2354,6 +2354,10 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
+ 
+ 		categories = PAGE_IS_PRESENT;
+ 
++		if (pte_protnone(pte) && vma_is_accessible(vma) &&
++		    vma_is_anonymous(vma) && userfaultfd_minor(vma))
++			categories |= PAGE_IS_UFFD_DEACTIVATED;
++
+ 		if (!pte_uffd_wp(pte))
+ 			categories |= PAGE_IS_WRITTEN;
+ 
+@@ -2422,6 +2426,11 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
+ 		struct page *page;
+ 
+ 		categories |= PAGE_IS_PRESENT;
++
++		if (pmd_protnone(pmd) && vma_is_accessible(vma) &&
++		    vma_is_anonymous(vma) && userfaultfd_minor(vma))
++			categories |= PAGE_IS_UFFD_DEACTIVATED;
++
+ 		if (!pmd_uffd_wp(pmd))
+ 			categories |= PAGE_IS_WRITTEN;
+ 
+diff --git a/include/uapi/linux/fs.h b/include/uapi/linux/fs.h
+index 70b2b661f42c..af5b28901800 100644
+--- a/include/uapi/linux/fs.h
++++ b/include/uapi/linux/fs.h
+@@ -455,6 +455,7 @@ typedef int __bitwise __kernel_rwf_t;
+ #define PAGE_IS_HUGE		(1 << 6)
+ #define PAGE_IS_SOFT_DIRTY	(1 << 7)
+ #define PAGE_IS_GUARD		(1 << 8)
++#define PAGE_IS_UFFD_DEACTIVATED (1 << 9)
  
  /*
-  * Valid ioctl command number range with this API is from 0x00 to
+  * struct page_region - Page region with flags
 -- 
 2.51.2
 
