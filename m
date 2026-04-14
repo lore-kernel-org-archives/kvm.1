@@ -1,54 +1,54 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E0F31326C
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 18:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E8231A065
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 18:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776190079; cv=none; b=liXzUqtxBNqy7XSYG+Se5wzXFt4w6eHHMd0iBhvODxdrMjkUN0b/kLvsVsHrzV9XmY/gtLqaxtR+KmYwZ/RQJuL1/uILTln/m7X5hSVoBCD0uTS+jnT3pz5agirxSV35FnZix5uXWX3Lay7IByCEs9+bPdGk2faEWyQFjVlXKjc=
+	t=1776190081; cv=none; b=oXMIDs0uLVCB715dclSIA88Xmc8tiwaKhdp1rwValE/5fvE/rGNC1iqdEK9wWEzHH/4WEW/hMpliQpt9PJP/+N3gcZPr0fP51ZeTvhimYuoLEWKoZyp9ZWZzMLYLLzK35kIBcsPdKBlnklCFF2jh55LcTrPYhO5RKeMOqtftSg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776190079; c=relaxed/simple;
-	bh=Hd5qZDur7V+h51FM8gRRisATrFOW5S+Ps63Zhu3wHr8=;
+	s=arc-20240116; t=1776190081; c=relaxed/simple;
+	bh=ALJBMYWS1x2rKXT/63YRmr7XiBihTr+8ZXwVGpCSyyI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=miNsuEXZeNqtdpoywwUZ2E2pzK54eDzerf3/S3YZBHCnSaUhp5x4mIMerUWmUR6QJjLmTxi6phq2naNaM/PN8dySLCVv0kJ9RdjZR8ZO3F6X91nlBMqSZu4aWfvqAzPKkqu0axmr2FscWEx9jkC+SjU/KD0gCU5FTcmWY1M5ZU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kFrFibRm; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=XhqQnTi2Lwa4cBs9wc9i66wtSOsUXwfedZmNO7q6qsFreg2PDx8GMCGH3w8k3QT3QVMrZz43V4mIzqR0Ud2Ceqe/uUL1gbMsjqNgSDHhiagrmBtAs4xxKDrGh4iuG19AhJH2eUV7SdLiZn22GG7dPoIy2g2yIOjU5Pt5TRrSViQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wE96A4aB; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kFrFibRm"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2adef9d486bso54022145ad.2
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 11:07:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wE96A4aB"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fbaada0caso2554386a91.3
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 11:07:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776190078; x=1776794878; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776190079; x=1776794879; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WM5/xC3pViZfhGQrHlucwZXjKqE1LBX1FZovj8hMxDs=;
-        b=kFrFibRmm75p21YyVHJx4k/ezNq2uglv0HRIMPeasUtt8RdFwPnQILa9y3xUI8wbVb
-         AYw4aQfyFM2eMAW3+L13hqf6ythHyJlPwe/24CK8o12zb8cPS8MBnHBl7plXiYKzQPua
-         K+y1h8yNWcyWWNUVi2eDOGwbN4xwLC3MAf9AeKkFSAPc7YabN8jn5bHlXhS7V9Bcf/tW
-         RbWQePdtgEbzICVkoUMua25tnwUzefKc0uT16h7yGzP9LDX2SF+/5PDRcYKqc9pNacIu
-         voqAySEas2ogB0kv6aMpibyG5pglJXLx68s31E1jmBcxfEYGMGqW1KCGrgD4RGeyyRld
-         te2A==
+        bh=1L9bOnm0LoR07RId6eCuMgAP1rY2SX02HCtv6g1t/NE=;
+        b=wE96A4aBVTKN6bkmX5d2KKt8+3Uc3/uX853cDp5N6UcpPqXJwyNtvg+wiZ3Vz4utNB
+         kOhIqmDYut+qrUwOKA02Jixhm7QZvaHnmeRoyOFWm9tzX+I3PUrkdiO35xETr7MsO7k/
+         tK3PQPEyV6zCZOxl7MG7598U4Sqlwm3sJXwROdup4uDgucehY3iFt+7Mf3rL8Ka94zG8
+         7GncMgft239dAgROstempjHDLFPbgGUFU0FISaxxQ+XTB1JEsOiak6TEffsAa2Uq2EDP
+         qJs9ejtirSdv7ZWRtCQiDrseJ3biEMHIiMYT64BEu7md6mND8s7cJMPIxgDgfVQTSmGM
+         UHZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776190078; x=1776794878;
+        d=1e100.net; s=20251104; t=1776190079; x=1776794879;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WM5/xC3pViZfhGQrHlucwZXjKqE1LBX1FZovj8hMxDs=;
-        b=VdZR2P/Ap2CO7TtKGYmyM3CqY7T7nsJEsai2B9agfL0y8ME1e121eUsA5T10cQ5szf
-         Xcl8HHs66Wqzx1Mg6PqpFCp0aXwwHmOqFidbVB6VRLXEJjYs9cr2n6LDHuyjNCKoRM59
-         JiOwmB36wa9CPhQI9A1f0/8M112vLKJxkd9ehTDC24ZsZbPJyYRpBHqCS1fAXnEPlCXV
-         JT9k7nlYxB5gsl3HWVxagCHhfyk63OolJaQ9TE1ezNuy7kl4Glga7ro8B5LgHrOQ/Acb
-         8ikpYBc701ZGKiguUUPzs3SvMbbh2v5daGfEKbOETVEveRTlieiPp4/4+3E6TaUDBbpP
-         C6MA==
-X-Forwarded-Encrypted: i=1; AFNElJ+p2lgCssOuSx/2u51hKYHGT2716UvgqD91TaN1/5kijH+LfoK1AKVGTrYjkpvyFNJ/+g8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPROvHu6nnTZkgwUJkl6M4Wvxf7ucF4LTiqxpZFMyE4+2gqTzy
-	xMlU6kN39fStzGbhoVQyuaCmOXBIqmsmh03JtX0YW5YAbkZEW9vIheP8Ug7W/CUz4DdLuWPHgK+
-	XlTGKPGmH3fkYmo+o9YEAMgxoug==
-X-Received: from plht6.prod.google.com ([2002:a17:903:2f06:b0:2b2:beb7:883e])
+        bh=1L9bOnm0LoR07RId6eCuMgAP1rY2SX02HCtv6g1t/NE=;
+        b=Lz19eZhea+f1PiNrPQIJhn0w9a9rb86hf6cuKBqD1Zm/z3a1jJn4wTU7I8hVAenj5S
+         dgJY+bjQh/Fy+bV0icBalkm2QMM5OE5ebM87YtmBPo9+yVU4n2GluFsdurrFZa2caPQm
+         datWP/voejYkVkRY6mzitzIznkJR2EuiSjRxKCRKysZbMGeZWCU0s7ECd2GQFjwyn/pK
+         aFOB9k3sB0+nnMzw6E6pDBNECSYQA095JiuKMqhLRI7Gfk4XDyQ244lk/4w+BeQb6O3s
+         HyuBYgD4CabDLKepZSeK8H+wojTf7lmiVbszRPELTetE7efh7+Y+6yIZb+hvteFl94KU
+         fxFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9pYCMpYRZ8eXfh3naunq9NZ7oQTePtxhGt0l8cuZShRkSqJnu2gK3g4x2A8lIJZn6LOVE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMtbkLfDi2p9roIB5y6kvmDu3CvJNsFztY7hYdfNLvuwlKztmG
+	CafrqwpIvYj3Znf3QWHa7519zrsZUGBXZSe5LFfAWpSCYrUERDB4vGbadQUB6rZh0foLDidv/rc
+	hIbC/94F/6THXt1UkbyuQDvEQ2w==
+X-Received: from plii9.prod.google.com ([2002:a17:902:eb49:b0:2b2:6ee9:466c])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:9a4b:b0:2b0:70c8:ccea with SMTP id d9443c01a7336-2b2d5967d7dmr123297865ad.13.1776190077309;
- Tue, 14 Apr 2026 11:07:57 -0700 (PDT)
-Date: Tue, 14 Apr 2026 11:07:48 -0700
+ 2002:a17:90b:4c50:b0:35d:8ea1:62df with SMTP id 98e67ed59e1d1-35e42838d40mr19277911a91.21.1776190079138;
+ Tue, 14 Apr 2026 11:07:59 -0700 (PDT)
+Date: Tue, 14 Apr 2026 11:07:49 -0700
 In-Reply-To: <20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,14 +58,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776190073; l=5152;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776190073; l=1498;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=Hd5qZDur7V+h51FM8gRRisATrFOW5S+Ps63Zhu3wHr8=; b=y5FWOXefLy8anzMgGZDI+mr0TcpKgI3LdYzb5kMUkeHxWgjqCQI0nc35/Yk9qUxIepPgAoJvR
- tZRrtnX8rYgAJ+6+B6vJS61XLQHvLswBjKAIjBy0US/D69dygXWgVUC
+ bh=ALJBMYWS1x2rKXT/63YRmr7XiBihTr+8ZXwVGpCSyyI=; b=FfRgVZaFM+g1a1sLY5U/nQrRiYSCOF6Jgw9QEH9uV4HeDMf/FykQ40BD262ioNmWKZ8QPOhlc
+ 3eqTBu+6HU+DSHB5OQwHKzlRQk88mwEmVErdbYW9Oy05e+xqIg9CXzz
 X-Mailer: b4 0.14.3
-Message-ID: <20260414-selftest-global-metadata-v1-1-fd223922bc57@google.com>
-Subject: [PATCH RFC 1/4] selftests: harness: Move metadata structs to separate
- header file
+Message-ID: <20260414-selftest-global-metadata-v1-2-fd223922bc57@google.com>
+Subject: [PATCH RFC 2/4] selftests: harness: Set global current_test_metadata
+ for each test run
 From: Ackerley Tng <ackerleytng@google.com>
 To: Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>, 
 	Shuah Khan <shuah@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -74,158 +74,44 @@ Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Move metadata structs to separate header file so that the structs can be
-referenced without importing all the static functions, such as
-test_harness_run.
+Set global current_test_metadata for each test run so other test frameworks
+can choose to access fields for the current test.
+
+This avoids having to pass _metadata down through functions so that
+code defined other functions can still use fields in _metadata.
+
+Test functions t->fn() are executed in series, so during the runtime of the
+test function, the function can count on current_test_metadata accurately
+being the metadata for the running test.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kselftest_harness.h        | 47 +------------------
- .../testing/selftests/kselftest_harness_structs.h  | 53 ++++++++++++++++++++++
- 2 files changed, 55 insertions(+), 45 deletions(-)
+ tools/testing/selftests/kselftest_harness.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index 4afaef01c22e9..68cde1556ac41 100644
+index 68cde1556ac41..85d9b4527fca6 100644
 --- a/tools/testing/selftests/kselftest_harness.h
 +++ b/tools/testing/selftests/kselftest_harness.h
-@@ -68,6 +68,7 @@
- #include <sys/wait.h>
- #include <unistd.h>
- 
-+#include "kselftest_harness_structs.h"
- #include "kselftest.h"
- 
- static inline void __kselftest_memset_safe(void *s, int c, size_t n)
-@@ -845,27 +846,11 @@ struct __test_results {
- 	char reason[1024];	/* Reason for test result */
- };
- 
--struct __test_metadata;
--struct __fixture_variant_metadata;
--
--/* Contains all the information about a fixture. */
--struct __fixture_metadata {
--	const char *name;
--	struct __test_metadata *tests;
--	struct __fixture_variant_metadata *variant;
--	struct __fixture_metadata *prev, *next;
--} _fixture_global __attribute__((unused)) = {
-+struct __fixture_metadata _fixture_global __attribute__((unused)) = {
- 	.name = "global",
- 	.prev = &_fixture_global,
- };
- 
--struct __test_xfail {
--	struct __fixture_metadata *fixture;
--	struct __fixture_variant_metadata *variant;
--	struct __test_metadata *test;
--	struct __test_xfail *prev, *next;
--};
--
- /**
-  * XFAIL_ADD() - mark variant + test case combination as expected to fail
-  * @fixture_name: name of the fixture
-@@ -899,13 +884,6 @@ static inline void __register_fixture(struct __fixture_metadata *f)
- 	__LIST_APPEND(__fixture_list, f);
+@@ -1151,6 +1151,8 @@ static bool test_enabled(int argc, char **argv,
+ 	return !has_positive;
  }
  
--struct __fixture_variant_metadata {
--	const char *name;
--	const void *data;
--	struct __test_xfail *xfails;
--	struct __fixture_variant_metadata *prev, *next;
--};
--
- static inline void
- __register_fixture_variant(struct __fixture_metadata *f,
- 			   struct __fixture_variant_metadata *variant)
-@@ -913,27 +891,6 @@ __register_fixture_variant(struct __fixture_metadata *f,
- 	__LIST_APPEND(f->variant, variant);
- }
- 
--/* Contains all the information for test execution and status checking. */
--struct __test_metadata {
--	const char *name;
--	void (*fn)(struct __test_metadata *,
--		   struct __fixture_variant_metadata *);
--	pid_t pid;	/* pid of test when being run */
--	struct __fixture_metadata *fixture;
--	void (*teardown_fn)(bool in_parent, struct __test_metadata *_metadata,
--			    void *self, const void *variant);
--	int termsig;
--	int exit_code;
--	int trigger; /* extra handler after the evaluation */
--	int timeout;	/* seconds to wait for test timeout */
--	bool aborted;	/* stopped test due to failed ASSERT */
--	bool *no_teardown; /* fixture needs teardown */
--	void *self;
--	const void *variant;
--	struct __test_results *results;
--	struct __test_metadata *prev, *next;
--};
--
- static inline bool __test_passed(struct __test_metadata *metadata)
- {
- 	return metadata->exit_code != KSFT_FAIL &&
-diff --git a/tools/testing/selftests/kselftest_harness_structs.h b/tools/testing/selftests/kselftest_harness_structs.h
-new file mode 100644
-index 0000000000000..cf9d15ad3de0c
---- /dev/null
-+++ b/tools/testing/selftests/kselftest_harness_structs.h
-@@ -0,0 +1,53 @@
-+#ifndef __KSELFTEST_HARNESS_STRUCTS_H
-+#define __KSELFTEST_HARNESS_STRUCTS_H
++struct __test_metadata *current_test_metadata;
 +
-+#include <stdbool.h>
-+#include <sys/types.h>
-+
-+struct __test_metadata;
-+struct __fixture_variant_metadata;
-+
-+/* Contains all the information about a fixture. */
-+struct __fixture_metadata {
-+	const char *name;
-+	struct __test_metadata *tests;
-+	struct __fixture_variant_metadata *variant;
-+	struct __fixture_metadata *prev, *next;
-+};
-+
-+struct __test_xfail {
-+	struct __fixture_metadata *fixture;
-+	struct __fixture_variant_metadata *variant;
-+	struct __test_metadata *test;
-+	struct __test_xfail *prev, *next;
-+};
-+
-+struct __fixture_variant_metadata {
-+	const char *name;
-+	const void *data;
-+	struct __test_xfail *xfails;
-+	struct __fixture_variant_metadata *prev, *next;
-+};
-+
-+/* Contains all the information for test execution and status checking. */
-+struct __test_metadata {
-+	const char *name;
-+	void (*fn)(struct __test_metadata *,
-+		   struct __fixture_variant_metadata *);
-+	pid_t pid;	/* pid of test when being run */
-+	struct __fixture_metadata *fixture;
-+	void (*teardown_fn)(bool in_parent, struct __test_metadata *_metadata,
-+			    void *self, const void *variant);
-+	int termsig;
-+	int exit_code;
-+	int trigger; /* extra handler after the evaluation */
-+	int timeout;	/* seconds to wait for test timeout */
-+	bool aborted;	/* stopped test due to failed ASSERT */
-+	bool *no_teardown; /* fixture needs teardown */
-+	void *self;
-+	const void *variant;
-+	struct __test_results *results;
-+	struct __test_metadata *prev, *next;
-+};
-+
-+#endif
+ static void __run_test(struct __fixture_metadata *f,
+ 		       struct __fixture_variant_metadata *variant,
+ 		       struct __test_metadata *t)
+@@ -1182,7 +1184,9 @@ static void __run_test(struct __fixture_metadata *f,
+ 		t->exit_code = KSFT_FAIL;
+ 	} else if (child == 0) {
+ 		setpgrp();
++		current_test_metadata = t;
+ 		t->fn(t, variant);
++		current_test_metadata = NULL;
+ 		_exit(t->exit_code);
+ 	} else {
+ 		t->pid = child;
 
 -- 
 2.54.0.rc0.605.g598a273b03-goog
