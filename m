@@ -1,221 +1,274 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C2A386C34
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 21:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFFB18AFE;
+	Tue, 14 Apr 2026 22:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776203015; cv=none; b=BcOY7d3RY7B3EJRF6OIz6obYiCzUojWvBzSv5gzc9ffu2Pq1azCGZr0GjSRT2D3a4mSH8TMfwrN9JTWkH8gBUqb6YIc8PCN8mZM1LZ6isJ2EWvHnejnd71bbniZhgZ6FAL0BJbMOjghCRbsb7aalkF+VajyP4xoERoSYo6tfiH8=
+	t=1776204400; cv=none; b=Va/vRwrrgCeN4RYDITeJqEoEvICthLFhpaIESAfu2C9JTUcyE4R/vU2yCyE0n0Lm+0+qE+ubGAt4/3RAlMtPuxqSXBOlrEMwJDb9FEOOU9gKNKtofMTrWvmZsSvzFWkhn1gAAhJBrFF7ycZeGi9A1XgbiGQg2jxXGGvxUevLyf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776203015; c=relaxed/simple;
-	bh=bFm/ov3R15AfIu4qKy3h759hr/wjIxU+uB+kiMovwe4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Zrbu0bRy3Vny/ZAnmc7XNC73sHhRJBeg4KGc6f4RPOSDe3xiqLbQb3TAKozyvGYcrhH7Vcs6MqiomTWNYXn48xS2f7t27NDpIiIDuqMvPrBEjj9sD5DePh8ow5CSJVd/B0tG3a4RTsqvNL3kUMDC4Z4rbRjBi5CTxzcn0aTpf0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DpGULMuT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776204400; c=relaxed/simple;
+	bh=HxWGAfBXvCwu/JrM4wgJOC5/Am3iL5DWNbwqy3PHKCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RG4tl03dhlaD8/7ExAW24nYQ33OEFIm3mQMxxKRakuBg//pTQibFrwyJkt8mG3HFRhLEyurkH+7B3GPWSJbTS+TeDtauX7HmN0137jSQ4+qktq0KaCcWMX7KxDqC5WclU+nA6QzfbFGHURukUCUhDYp8lobIuBJIDPh7YHASk8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=U4/3SeAA; arc=none smtp.client-ip=68.232.139.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DpGULMuT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25696C4AF0B;
-	Tue, 14 Apr 2026 21:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776203015;
-	bh=bFm/ov3R15AfIu4qKy3h759hr/wjIxU+uB+kiMovwe4=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=DpGULMuT862bekajv3xLPPMmie7nbY3QdmZMLhcy0cjLVwjW+7BnmH4oSidPSjMfn
-	 cxXy0dE30G6n3PRp1WiRQNhsOuejI5AQfnQj0bEAtWft2+Bdl6r+lFswLXlLTuKh6A
-	 76BHiYMVgGPOWyrF1imGdnYvoo7dIyKNa9bGGyMvcrn7Pr0N0MpIA4CymCchbR6xTC
-	 R1XVoPTmpMYXhRawuKlKL+xFtHBKiSmV3h5TpynJ80fKQsbqNL4H+k1RwLT1mjAGxj
-	 9Q5ycBSBd37sJzygOy8/LevC6dQ82njJNuS0b26tYN9PLn/tfy76hW/sfDStf49WFi
-	 yWkey5it7sQZA==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 29A99F40068;
-	Tue, 14 Apr 2026 17:43:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 14 Apr 2026 17:43:33 -0400
-X-ME-Sender: <xms:BbXeaQF4woxDeSyu1QIdwz58OOOZmDg98umspas_oe5Iq4fe8H7ozg>
-    <xme:BbXeaS-C1aEkLf_XYp4Sce5_BLnBfhfmGim_blwYacmkTfJLpHOe5u3_m7PbbKOHz
-    TvABtSb6Csa-rxB7Mk2qdHh5R_xQT1-fp4ysKisXSXziNMdYKgwS9E>
-X-ME-Received: <xmr:BbXeadkPmKx92lHtvEzpsjdgnnK6PEVqVfufoksS7Xz_XliGEbEUDd08MxSVyHRaVE0fO65MjuPrAFIpmt2xp6x8JmhuNJFr3Cs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegvddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
-    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
-    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
-    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
-    hnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhi
-    tghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmh
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtohes
-    lhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegthhgrohdrghgrohesihhn
-    thgvlhdrtghomhdprhgtphhtthhopeigihgrohihrghordhlihesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohep
-    higrnhdrhidriihhrghosehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrg
-    hnshgvnheslhhinhhugidrihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:BbXeaY-VD1M-aRpy1ZpS_Mi_-6NFUZul5T6B6PWV7AI9jqug8dFqjQ>
-    <xmx:BbXeaReGqzq-wZEWh0JCp7LynCfKEQhE-CBxKJqL12HSpo0r2aaUwQ>
-    <xmx:BbXeaR0BqjiuLbGOU0Qw-sTo0-DXJCzApyG5YeTvw-IAvVD2unswKg>
-    <xmx:BbXeaaA1OGTLpUIJ9x6A2jVvp7XlPMdnHyFVa14TQJocCthx3xlMGg>
-    <xmx:BbXeacSIIgvAbdlcVi6891WVRgfkf2tJsTxlYT5QYO5X1ooObmCcCko0>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 17:43:32 -0400 (EDT)
-Date: Tue, 14 Apr 2026 14:43:31 -0700
-From: Dan Williams <djbw@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "Gao, Chao" <chao.gao@intel.com>
-Cc: "Li, Xiaoyao" <xiaoyao.li@intel.com>,  "Huang,
- Kai" <kai.huang@intel.com>,  "Zhao, Yan Y" <yan.y.zhao@intel.com>,
-  "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-  "kas@kernel.org" <kas@kernel.org>,  "Chatre,
- Reinette" <reinette.chatre@intel.com>,
-  "seanjc@google.com" <seanjc@google.com>,
-  "pbonzini@redhat.com" <pbonzini@redhat.com>,
-  "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,  "Verma,
- Vishal L" <vishal.l.verma@intel.com>,
-  "nik.borisov@suse.com" <nik.borisov@suse.com>,
-  "mingo@redhat.com" <mingo@redhat.com>,  "Weiny,
- Ira" <ira.weiny@intel.com>,
-  "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-  "Annapurve, Vishal" <vannapurve@google.com>,
-  "sagis@google.com" <sagis@google.com>,
-  "djbw@kernel.org" <djbw@kernel.org>,
-  "tglx@kernel.org" <tglx@kernel.org>,
-  "paulmck@kernel.org" <paulmck@kernel.org>,
-  "hpa@zytor.com" <hpa@zytor.com>,  "bp@alien8.de" <bp@alien8.de>,
-  "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
-  "x86@kernel.org" <x86@kernel.org>
-Message-ID: <69deb5032ff01_147c801004c@djbw-dev.notmuch>
-In-Reply-To: <af7732a08fcce4a21ff14b2038acbb85200c6f34.camel@intel.com>
-References: <20260331124214.117808-1-chao.gao@intel.com>
- <20260331124214.117808-18-chao.gao@intel.com>
- <af7732a08fcce4a21ff14b2038acbb85200c6f34.camel@intel.com>
-Subject: Re: [PATCH v7 17/22] x86/virt/tdx: Avoid updates during
- update-sensitive operations
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="U4/3SeAA"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1776204397; x=1807740397;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HxWGAfBXvCwu/JrM4wgJOC5/Am3iL5DWNbwqy3PHKCE=;
+  b=U4/3SeAA4sTqXZk9tCYNQvDLEMCruUHuHp+NN5KTZdQtgYj+fdz328db
+   qNxgb6sTsHswI6lGveZCJbfxK5s+upxpy4BvHQR/dCK7Ce+Fjc0VIdFy+
+   ldp/7Bj6j7hVl0nYfG27DNZFLZT7M6T+imhBgilm+zAMxyAQUpT0m9+3r
+   VDwGPt3g3vEw/c0XuOCe0cC7yWB6WjFgKUF2+Pbib0VM0ed++3oES9SB4
+   5QukbF1E4hR3fjn7qebtgHv2mjEt+MouHlSJbwIT1mUByOChZkbboyUZd
+   ycH/hrswRtFxCZDC/9g4RFbWCSTslx2voP9DKBM7mmL6c+yJCNaH1AVqT
+   Q==;
+X-CSE-ConnectionGUID: pBqeu3HwS8yeP8dYQhF7UA==
+X-CSE-MsgGUID: ovzmEEGPTRqcodNteykeDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="237662186"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770562800"; 
+   d="scan'208";a="237662186"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 07:05:26 +0900
+Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 2D3A642A325;
+	Tue, 14 Apr 2026 22:05:27 +0000 (UTC)
+Received: from az2uksmom4.o.css.fujitsu.com (az2uksmom4.o.css.fujitsu.com [10.151.22.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id CF151100152B;
+	Tue, 14 Apr 2026 22:05:26 +0000 (UTC)
+Received: from sm-arm-grace07 (sm-x86-stp01.soft.fujitsu.com [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmom4.o.css.fujitsu.com (Postfix) with ESMTPS id 407924045EE;
+	Tue, 14 Apr 2026 22:05:21 +0000 (UTC)
+Date: Wed, 15 Apr 2026 07:05:17 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v2 3/4] KVM: arm64: sefltests: Add basic NV selftest
+Message-ID: <ad66HasXI2AkEjgK@sm-arm-grace07>
+References: <20260412142216.3806482-1-weilin.chang@arm.com>
+ <20260412142216.3806482-4-weilin.chang@arm.com>
+ <adwofV7yf71OdMFk@sm-arm-grace07>
+ <ddr6exocupk6mzshjwvu6sqt57aeqiyxqss3rpgcxxyh54cw4g@rxvm5zh3ybrw>
+ <ad1gqsqqOXyYmJoG@sm-arm-grace07>
+ <xsdf2k2u4g6n7nmxcgwhiraqodwtteuxqqtnj2dx5sxgu74a7j@yjijkyohkq4i>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <xsdf2k2u4g6n7nmxcgwhiraqodwtteuxqqtnj2dx5sxgu74a7j@yjijkyohkq4i>
 
-Edgecombe, Rick P wrote:
-[..]
-> > If an update races TD build, for example, TD measurement can become
-> > incorrect and attestation can fail.
+On Tue, Apr 14, 2026 at 11:16:47AM +0100, Wei-Lin Chang wrote:
+> On Tue, Apr 14, 2026 at 06:31:22AM +0900, Itaru Kitayama wrote:
+> > On Mon, Apr 13, 2026 at 10:18:42AM +0100, Wei-Lin Chang wrote:
+> > > Hi Itaru,
+> > > 
+> > > On Mon, Apr 13, 2026 at 08:19:25AM +0900, Itaru Kitayama wrote:
+> > > > On Sun, Apr 12, 2026 at 03:22:15PM +0100, Wei-Lin Chang wrote:
+> > > > > This selftest simply starts an L1, which starts its own guest (L2). L2
+> > > > > runs without stage-1 and 2 translations, it calls an HVC to jump back
+> > > > > to L1.
+> > > > 
+> > > > How do you disable both the nested guest (L2)'s MMU and stage 2
+> > > > translations?
+> > > 
+> > > Guest stage-2 is disabled by not setting HCR_EL2.VM in prepare_hyp(),
+> > > and stage-1 is disabled by not writing to SCTLR_EL12 in init_vcpu(),
+> > > effectively using the default value set by L0. However since SCTLR_EL1
+> > > has many architecturally UNKNOWN bits (including SCTLR_EL1.M), it should
+> > > be better to write a value before running L2 I suppose...
 > > 
-> > The TDX architecture exposes two approaches:
-> > 
-> > 1) Avoid updates during update-sensitive operations.
-> > 2) Detect incompatibility after update and recover.
-> > 
-> > Post-update detection (option #2) is not a good fit: as discussed in [1],
-> > future module behavior may expand update-sensitive operations in ways that
-> > make KVM ABIs unstable and will break userspace.
-> > 
-> > "Do nothing" is also not preferred: while it keeps kernel code simple, it
-> > lets the issue leak into the broader stack, where both detection and
-> > recovery require significantly more effort.
+> > Thanks. What do you think of using copy_el2_to_el1() macro in at.c, so we
+> > can prepare in guest_code() to manipulate the SCTLR_EL12 System register 
+> > with the sensible programmed values?
 > 
-> This subject has had a lot of debate (as linked below in the log), but the way
-> this is written leaves a lot of questions. "do nothing" is not an option it
-> says, but the code does just that when UPDATE_COMPAT_SENSITIVE is not supported.
+> Yes, using copy_el2_to_el1() can give us an L2 stage-1 that is identical
+> to the L1's stage-1. But what I was considering was if guest stage-2 is
+> enabled (which we plan to implement), then those stage-1 page tables
+> will have to be mapped for L2, and its base address translated to L2IPA.
+> It's doable but seems like extra complexity when stage-1 is not so
+> interesting for KVM (except for AT?), it lets the guest do whatever it
+> likes and let the hardware do the translation.
+> 
+> Let me know if you have reasons to want stage-1 for L2, there could be
+> something I should consider but did not.
 
-Right, but that is not the kernel's problem. If you run updates on
-a module that does not support conflict detection, you get to keep the
-pieces.
+By keeping nested guest's MMU enabled, we can exercise the shadow stage
+2 on the host. But I am fine with you starting nested guest's IPA and I
+hope Marc and Oliver approve this seris and merge upstream.
 
-Like other cases of Linux not wanting to deal with the eccentricities of
-early modules, just have userspace know about a minimum module version
-where this protocol exists and accept the risk otherwise. No pressing
-need to burden the kernel with carrying worry for early modules.
+Thanks,
+Itaru.
 
-> > So, use option #1. Specifically, request "avoid update-sensitive" behavior
-> > during TDX module shutdown and map the resulting failure to -EBUSY so
-> > userspace can distinguish an update race from other failures.
+> 
+> Thanks,
+> Wei-Lin Chang
+> 
 > > 
-> > When the "avoid update-sensitive" feature isn't supported, proceed with
-> > updates. If a race occurs between module update and update-sensitive
-> > operations, failures happen at a later stage (e.g., incorrect TD
-> > measurements in attestation reports for TD build). Effectively, this
-> > means "let userspace update at their own risk".
+> > Itaru.
 > > 
-> 
-> Above it says we can't just do nothing, we need the flag. And then this argues
-> that we can do nothing because we can rely on userspace to deal with the
-> issue... This log is maybe just trying to put a brave face on an imperfect
-> compromise?
-
-Not really, the log could be simplified to just say "module versions < X
-are not safe for runtime update". In general if the kernel had a minimum
-supported module version concept it could collect all of these early
-deprecation conditions under one check.
-
-> So, while I don't want to re-open the debate, I'm not sure the patch
-> justification is going to pass scrutiny as is.
-> 
-> In the link [2], Dan says "Do not make Linux carry short lived one-off
-> complexity", and also "Do not include logic to disable updates, document the
-> expectation in the tool."
-> 
-> It seems this does not exclude the option to just to always pass the compat
-> flag. Basically assume that the TDX module will always support
-> UPDATE_COMPAT_SENSITIVE if it supports TDX module updates. Which I guess we
-> should expect should eventually be true.
-
-Right, assume a minimum module version.
-
-> In [2] Dan was also against checking the UPDATE_COMPAT_SENSITIVE feature0 bit to
-> gate the feature.
-
-...because if it must be supported, why check?
-
-> For the record, I don't like allowing the update without the compat bit set, and
-> my concern has nothing to do with userspace roles and responsibilities. Instead
-> it's because we are over budget on complexity for handling SEAMCALL errors
-> within KVM and this makes things worse to keep track of.
-> 
-> tdh_mem_page_add() does a KVM_BUG_ON() if it sees a non-busy error. Imagine
-> working on this code and considering if it is a valid KVM_BUG_ON()? After this
-> patch, the answer is...well sometimes. It depends on the previous modules
-> specific feature0 bits, an understanding on admins expectations, and the
-> behavior of some far away code in arch/x86. Gah.
-
-Why would it be variable? The user tried update on a module that the
-kernel deemed unfit for update. "Doctor, it KVM_BUG_ON()s when I run
-update".
-
-> Actually, the diff Dan objected to was checking and printing a specific helpful
-> error. Maybe he does not mind much more simply checking an extra bit in
-> tdx_supports_runtime_update()? Otherwise, I'd think to just unconditionally pass
-> UPDATE_COMPAT_SENSITIVE without checking for support. Essentially mandate that
-> it is always supported if TDX module update is supported.
-
-In the end all of the hand wringing we are doing is misplaced. The root
-of the problem is the TDX Module claiming "runtime update supported" to
-include these corner cases of "but we corrupt things if the update tries
-to replace the crypto library at the wrong time".
-
-That problem is also solvable by not classifying those updates as
-runtime compatible, or defining a protocol to mitigate the collisions.
-
-Neither of those was chosen. Instead the module implemented 2 additional
-complications Linux chose one that fails update, other VMMs chose one
-that maximizes updates at the cost of needing to restart TD
-construction.
-
-I think the changelog is a bit non-commital trying to be diplomatic
-about the mess. Simply, Linux wanted the easy button, all runtime
-updates are safe. Instead, module exported complexity and optionality.
-KVM voted for one flavor of that optionality to accommodate the module
-complexity.
-
-The solution, make modules with the option KVM wants the min requirement
-and move on.
+> > > 
+> > > Thanks,
+> > > Wei-Lin Chang
+> > > 
+> > > > 
+> > > > Itaru.
+> > > > 
+> > > > > 
+> > > > > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> > > > > ---
+> > > > >  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+> > > > >  .../selftests/kvm/arm64/hello_nested.c        | 103 ++++++++++++++++++
+> > > > >  2 files changed, 104 insertions(+)
+> > > > >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > > 
+> > > > > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> > > > > index 3dc3e39f7025..e8c108e0c487 100644
+> > > > > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > > > > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > > > > @@ -168,6 +168,7 @@ TEST_GEN_PROGS_arm64 += arm64/arch_timer_edge_cases
+> > > > >  TEST_GEN_PROGS_arm64 += arm64/at
+> > > > >  TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
+> > > > >  TEST_GEN_PROGS_arm64 += arm64/hello_el2
+> > > > > +TEST_GEN_PROGS_arm64 += arm64/hello_nested
+> > > > >  TEST_GEN_PROGS_arm64 += arm64/host_sve
+> > > > >  TEST_GEN_PROGS_arm64 += arm64/hypercalls
+> > > > >  TEST_GEN_PROGS_arm64 += arm64/external_aborts
+> > > > > diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..97387e4697b3
+> > > > > --- /dev/null
+> > > > > +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > > @@ -0,0 +1,103 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > > +/*
+> > > > > + * hello_nested - Go from vEL2 to EL1 then back
+> > > > > + */
+> > > > > +
+> > > > > +#include "nested.h"
+> > > > > +#include "processor.h"
+> > > > > +#include "test_util.h"
+> > > > > +#include "ucall.h"
+> > > > > +
+> > > > > +#define XLATE2GPA	(0xABCD)
+> > > > > +#define L2STACKSZ	(0x100)
+> > > > > +
+> > > > > +/*
+> > > > > + * TPIDR_EL2 is used to store vcpu id, so save and restore it.
+> > > > > + */
+> > > > > +static vm_paddr_t ucall_translate_to_gpa(void *gva)
+> > > > > +{
+> > > > > +	vm_paddr_t gpa;
+> > > > > +	u64 vcpu_id = read_sysreg(tpidr_el2);
+> > > > > +
+> > > > > +	GUEST_SYNC2(XLATE2GPA, gva);
+> > > > > +
+> > > > > +	/* get the result from userspace */
+> > > > > +	gpa = read_sysreg(tpidr_el2);
+> > > > > +
+> > > > > +	write_sysreg(vcpu_id, tpidr_el2);
+> > > > > +
+> > > > > +	return gpa;
+> > > > > +}
+> > > > > +
+> > > > > +static void l2_guest_code(void)
+> > > > > +{
+> > > > > +	do_hvc();
+> > > > > +}
+> > > > > +
+> > > > > +static void guest_code(void)
+> > > > > +{
+> > > > > +	struct vcpu vcpu;
+> > > > > +	struct hyp_data hyp_data;
+> > > > > +	int ret;
+> > > > > +	vm_paddr_t l2_pc, l2_stack_top;
+> > > > > +	/* force 16-byte alignment for the stack pointer */
+> > > > > +	u8 l2_stack[L2STACKSZ] __attribute__((aligned(16)));
+> > > > > +
+> > > > > +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> > > > > +	GUEST_PRINTF("vEL2 entry\n");
+> > > > > +
+> > > > > +	l2_pc = ucall_translate_to_gpa(l2_guest_code);
+> > > > > +	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
+> > > > > +
+> > > > > +	init_vcpu(&vcpu, l2_pc, l2_stack_top);
+> > > > > +	prepare_hyp();
+> > > > > +
+> > > > > +	ret = run_l2(&vcpu, &hyp_data);
+> > > > > +	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
+> > > > > +	GUEST_DONE();
+> > > > > +}
+> > > > > +
+> > > > > +int main(void)
+> > > > > +{
+> > > > > +	struct kvm_vcpu_init init;
+> > > > > +	struct kvm_vcpu *vcpu;
+> > > > > +	struct kvm_vm *vm;
+> > > > > +	struct ucall uc;
+> > > > > +	vm_paddr_t gpa;
+> > > > > +
+> > > > > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+> > > > > +	vm = vm_create(1);
+> > > > > +
+> > > > > +	kvm_get_default_vcpu_target(vm, &init);
+> > > > > +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> > > > > +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
+> > > > > +	kvm_arch_vm_finalize_vcpus(vm);
+> > > > > +
+> > > > > +	while (true) {
+> > > > > +		vcpu_run(vcpu);
+> > > > > +
+> > > > > +		switch (get_ucall(vcpu, &uc)) {
+> > > > > +		case UCALL_SYNC:
+> > > > > +			if (uc.args[0] == XLATE2GPA) {
+> > > > > +				gpa = addr_gva2gpa(vm, (vm_vaddr_t)uc.args[1]);
+> > > > > +				vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), gpa);
+> > > > > +			}
+> > > > > +			break;
+> > > > > +		case UCALL_PRINTF:
+> > > > > +			pr_info("%s", uc.buffer);
+> > > > > +			break;
+> > > > > +		case UCALL_DONE:
+> > > > > +			pr_info("DONE!\n");
+> > > > > +			goto end;
+> > > > > +		case UCALL_ABORT:
+> > > > > +			REPORT_GUEST_ASSERT(uc);
+> > > > > +			fallthrough;
+> > > > > +		default:
+> > > > > +			TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
+> > > > > +		}
+> > > > > +	}
+> > > > > +
+> > > > > +end:
+> > > > > +	kvm_vm_free(vm);
+> > > > > +	return 0;
+> > > > > +}
+> > > > > -- 
+> > > > > 2.43.0
+> > > > > 
