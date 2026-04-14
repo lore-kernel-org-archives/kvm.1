@@ -1,147 +1,200 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF883E1CE2
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 15:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1793E63AD
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 16:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776181746; cv=none; b=S7p7HJK6EULIcJQTTOsJ88EmNv+zvjDXhiI0q76Gfk4IHf9I7jUcL0xKxSgpmB0JikzMjQ21hKe3dk6Rq2Ok3jJ3ryXbEy0vTmqfwhHHkQsH0IHgBSX70akCGMLCgjkWlI+7SmdxGuC25cgI5Deif2KoF+zeHysl8znfB9Pdm84=
+	t=1776182825; cv=none; b=pF1AkXnsP5/bEHSG7ZkRBiRnqMEiCzEX8M6Gd+WuzUXCyI8dwXYvtMwrSuaW5dfXc+g7Rdj+k5p6oStpCnwcy9Vs21RRSCnHs9Cd8YOM70slHjwoSC90bbyzV33PkKflmu/gTpZLXWD3yIfoaJqNPK6OSwqzFqEVWjGf3JNpHtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776181746; c=relaxed/simple;
-	bh=rxsydUejMarkrwk2AKdIKIxkz0zcXI9Bv6gWvm2199o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UtG68660pTdR6KvY6AzS+ZHLCAhBN+EC13dSUmqVrXDHzlaubEEYveVFLGX8gMh9nlBdJl2AeLGV1YRCRvd6+vz93OGQPH9vcHJtC4bNX5GIhQOLC/rgnfS0JoOStjqenUtXBHXyhd+1wwkU4fpIb4em5XBdMI+5HcihF2W1Ric=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W2M699qe; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776182825; c=relaxed/simple;
+	bh=lEQK7JWYV4WicYmNZU2oREZDVMl7GM6283KVoRfLyJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M2DNBGVoyT0ZT8KsvsT9OCGCf+9lJKW9rJwGhy1K1pwoUUsn7ByJDH4K21kPtOPpNDMn5KblOiDL85w5XZnTCEj0SqPbuOwdEqTQeHnGpgrpI48Cn0iffQTiJhi8/jDuWzOaBg2k1TPuxdaAgscP3D8aigG9zwYLln/7G5FT/xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XtQgltgD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W2M699qe"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358e95e81aeso12513499a91.0
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 08:49:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776181745; x=1776786545; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h84POdD1fK3F4sl6KYnP0DuC/1y1hwWZ8DgthysiBOo=;
-        b=W2M699qep7UANJQXJWG4yM7ghYZqzTJH+Je/rSjFJpDF8V4hWWz/lAnZz1FpLOGTee
-         FTwR6wrfAwXWSKnPbXKX9GQbo/B/w+MGcibQkrMFpUUaZ0tDS3qdSnTOYJkbxgFYcf6y
-         3ukd4tlkLa1Tx0Mc3jpb1uFIOSIoj+BHM33/DGY5lqQKk2Hpf4WZZ73Mb7kg3uCHbmzU
-         oGXbnonfKvfiO/Nl7ZCKG7Y3DFgKGOiF709uvoZ35/pGnldSJBt/3sFYyhU4E1EU/liw
-         OPfV06zv28ag2O7UNNaGYdUgMDwirIdrwct9m3HbHvRKCWgNdiGAL2bq91HmqBvs/wdq
-         XyGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776181745; x=1776786545;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h84POdD1fK3F4sl6KYnP0DuC/1y1hwWZ8DgthysiBOo=;
-        b=W3BEbzgr2O2jkFKi1ROxUUrLghhMTdhHHEPtGlBYzcYdRjBTX025voMaRfhT3oZ+w5
-         nyLyL3T6w1D3is3ijsir6FZO22+INchpgynd4fabSMtQc8tn27p0BuagK5nobXeZZixY
-         uWM+aHhIzd16CHj5sRhM27aeWRqAT4b2JzOYlpymkrhD2QW/QfzHtzxpozMkBrL1HH3q
-         ySsZRNqUaLL7f2Oan2YzHKcBagngi0QGX9CjNhx22OGmtJ5PlbhdN8IZc28FGO2z3RBU
-         i2FFevX+PjDBVrKh7UdUbqfX8HjTSEpckbV/NFVejIDO7Oj3eJDzairq3AQ6d6YY3rYA
-         OLMw==
-X-Forwarded-Encrypted: i=1; AFNElJ8w//6aehmcBy7INd88pkSFoWq4wu6LVSnb5dJDs7VbBc1l/mrnui09Q7Fw+QxCFnKF7io=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmLjmq8alj9HR7gzc0Ei7QXh2Nw2Az8VCeosz22P7RvyPkYJS+
-	Fo77baEg/gMfD5QSnv90CxnQzDlTyTvFyCCahE6ukuirV15124VfmiCmml02dGLZpguDq885Reu
-	0Cm2LYw==
-X-Received: from pjsv9.prod.google.com ([2002:a17:90a:6349:b0:35c:101b:e59e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d410:b0:35f:b784:d3bf
- with SMTP id 98e67ed59e1d1-35fb784ddb9mr7468639a91.1.1776181744906; Tue, 14
- Apr 2026 08:49:04 -0700 (PDT)
-Date: Tue, 14 Apr 2026 08:48:54 -0700
-In-Reply-To: <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XtQgltgD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776182823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uK7gbMpl8AIqPCO4mRMWf6l0t7YnH/JZl4dGQhVD03M=;
+	b=XtQgltgDDAZULUDFHfb/plBJq2CcHUKuVdJwHp6etx+YINRcj5VRIz8letduv9bxy4XjBq
+	7U6izAin484/MFaZsBxLXZ/ZrkMqSnS15kOQ3iarbiJSYjuHDkXbLQ+cKkjZ6qETJpcGj+
+	XdDmZsh1PEwCPOhmpSWLcsWljk6Ta4w=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-512-DNZyHChtOES9cj6LRiUoxA-1; Tue,
+ 14 Apr 2026 12:07:01 -0400
+X-MC-Unique: DNZyHChtOES9cj6LRiUoxA-1
+X-Mimecast-MFC-AGG-ID: DNZyHChtOES9cj6LRiUoxA_1776182819
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0983B1801323;
+	Tue, 14 Apr 2026 16:06:59 +0000 (UTC)
+Received: from [10.32.181.49] (unknown [10.32.181.49])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A1EC195608E;
+	Tue, 14 Apr 2026 16:06:56 +0000 (UTC)
+Message-ID: <cb458ee1-e0c7-43e2-83a0-9effd9a723af@redhat.com>
+Date: Tue, 14 Apr 2026 18:06:54 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409224236.2021562-1-seanjc@google.com> <20260409224236.2021562-6-seanjc@google.com>
- <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
- <ad0DrDUsUKTMfrDW@google.com> <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
-Message-ID: <ad5h5hO7_QmJlOVk@google.com>
-Subject: Re: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
- "unsigned long" values
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: Chang Seok Bae <chang.seok.bae@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: Drop kvm_vcpu.ready to squash race where "ready" can
+ get stuck "true"
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ zhanghao <zhanghao1@kylinos.cn>, Wanpeng Li <kernellwp@gmail.com>
+References: <20260409213333.1995382-1-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260409213333.1995382-1-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Apr 13, 2026, Kai Huang wrote:
-> On Mon, 2026-04-13 at 07:54 -0700, Sean Christopherson wrote:
-> > More importantly, because the TDX-Module *requires* RCX (the GPR that h=
-olds the
-> > mask of registers to expose to the VMM) to be hidden on TDVMCALL, KVM *=
-can't*
-> > do any kind of meaningful "available" tracking. =C2=A0
-> >=20
->=20
-> Hmm I think RCX conveys the shared GPRs and VMM can read.  Per "Table 5.3=
-23:
-> TDH.VP.ENTER Output Operands Format #5 Definition: On TDCALL(TDG.VP.VMCAL=
-L)
-> Following a TD Entry":
->=20
->   RCX   ...
-> 	Bit(s) Name         Description
->=20
-> 	31:0   PARAMS_MASK  Value as passed into TDCALL(TDG.VP.VMCALL) by
-> 			    the guest TD: indicates which part of the guest
-> 			    TD GPR and XMM state is passed as-is to the
-> VMM=C2=A0
-> 			    and back. For details, see the description of
-> 			    TDG.VP.VMCALL in 5.5.26.
+On 4/9/26 23:33, Sean Christopherson wrote:
+> +static inline bool kvm_vcpu_is_runnable_and_scheduled_out(struct kvm_vcpu *vcpu)
+> +{
+> +	return READ_ONCE(vcpu->preempted) ||
+> +	       (READ_ONCE(vcpu->scheduled_out) &&
+> +		READ_ONCE(vcpu->wants_to_run) &&
 
-The problem is that bit 1 in RCX is required to be '0'.  I.e. the guest *ca=
-n't*
-expose RCX to the VMM.  From the spec:
+wants_to_run doesn't seem important here, because blocking will never be 
+set outside KVM_RUN (unlike scheduled_out which can be set within any 
+vcpu_load/vcpu_put pair, if you're unlucky enough).
 
-  15:0    GPR Mask Controls the transfer of GPR values:
-  Bit 0:  RAX (must be 0)
-  Bit 1:  RCX (must be 0)
+> +		READ_ONCE(vcpu->stat.generic.blocking) &&
+> +		!kvm_vcpu_is_blocking(vcpu));
 
-And the code:
+If you get here you have done the finish_rcuwait() in kvm_vcpu_block(), 
+meaning that you've been already scheduled in, haven't you?  So, you 
+would need something like this:
 
-  api_error_type tdg_vp_vmcall(uint64_t controller_value)
-  {
-    api_error_type retval =3D TDX_OPERAND_INVALID;
-    tdx_module_local_t* tdx_local_data_ptr =3D get_local_data();
+static inline bool kvm_vcpu_is_runnable_and_scheduled_out(struct 
+kvm_vcpu *vcpu)
+{
+	if (READ_ONCE(vcpu->preempted))
+		return true;
 
-    tdvmcall_control_t control =3D { .raw =3D controller_value };
+	if (!READ_ONCE(vcpu->scheduled_out))
+		return false;
+	if (!READ_ONCE(vcpu->stat.generic.blocking))
+		return false;
+	return rcuwait_was_woken(kvm_arch_vcpu_get_wait(vcpu));
+}
 
-    // Bits 0, 1 and 4 and 63:32 of RCX must be 0
-    if (((control.gpr_select & (uint16_t)(BIT(0) | BIT(1) | BIT(4))) !=3D 0=
-) ||  <=3D=3D=3D=3D sadness
-         (control.reserved !=3D 0))
-    {
-        retval =3D api_error_with_operand_id(TDX_OPERAND_INVALID, OPERAND_I=
-D_RCX);
-        TDX_ERROR("Unsupported bits in GPR_SELECT field =3D 0x%x\n", contro=
-l.gpr_select)
-        goto EXIT_FAILURE;
-    }
+// in rcuwait.h
+static inline bool rcuwait_was_woken(struct rcuwait *w)
+{
+	guard(rcu)();
+	struct task_struct *t = rcu_access_pointer(w->task);
+	return t && !task_is_runnable(t);
+}
 
-Oh, dagnabbit.  The spec also says:
+Paolo
 
-  The value of RCX itself is always passed to the host VMM.
+> +}
+> +
+>   #ifdef __KVM_HAVE_ARCH_INTC_INITIALIZED
+>   /*
+>    * returns true if the virtual interrupt controller is initialized and
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 9faf70ccae7a..9f71e32daac5 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -455,7 +455,6 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+>   	kvm_vcpu_set_in_spin_loop(vcpu, false);
+>   	kvm_vcpu_set_dy_eligible(vcpu, false);
+>   	vcpu->preempted = false;
+> -	vcpu->ready = false;
+>   	preempt_notifier_init(&vcpu->preempt_notifier, &kvm_preempt_ops);
+>   	vcpu->last_used_slot = NULL;
+>   
+> @@ -3803,7 +3802,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_halt);
+>   bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu)
+>   {
+>   	if (__kvm_vcpu_wake_up(vcpu)) {
+> -		WRITE_ONCE(vcpu->ready, true);
+>   		++vcpu->stat.generic.halt_wakeup;
+>   		return true;
+>   	}
+> @@ -4008,7 +4006,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+>   			continue;
+>   
+>   		vcpu = xa_load(&kvm->vcpu_array, idx);
+> -		if (!READ_ONCE(vcpu->ready))
+> +		if (!kvm_vcpu_is_runnable_and_scheduled_out(vcpu))
+>   			continue;
+>   		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
+>   			continue;
+> @@ -6393,7 +6391,6 @@ static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
+>   	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
+>   
+>   	WRITE_ONCE(vcpu->preempted, false);
+> -	WRITE_ONCE(vcpu->ready, false);
+>   
+>   	__this_cpu_write(kvm_running_vcpu, vcpu);
+>   	kvm_arch_vcpu_load(vcpu, cpu);
+> @@ -6408,10 +6405,9 @@ static void kvm_sched_out(struct preempt_notifier *pn,
+>   
+>   	WRITE_ONCE(vcpu->scheduled_out, true);
+>   
+> -	if (task_is_runnable(current) && vcpu->wants_to_run) {
+> +	if (task_is_runnable(current) && vcpu->wants_to_run)
+>   		WRITE_ONCE(vcpu->preempted, true);
+> -		WRITE_ONCE(vcpu->ready, true);
+> -	}
+> +
+>   	kvm_arch_vcpu_put(vcpu);
+>   	__this_cpu_write(kvm_running_vcpu, NULL);
+>   }
+> 
+> base-commit: b89df297a47e641581ee67793592e5c6ae0428f4
 
-and then in code:
-
-    td_exit_qual.gpr_select =3D control.gpr_select;
-    td_exit_qual.xmm_select =3D control.xmm_select;
-
-    tdx_local_data_ptr->vmm_regs.rcx =3D td_exit_qual.raw;
-
-    // RAX is not copied, RCX filled above, start from RDX
-
-I don't get why TDX requires bit 1 to be 0, but whatever.
-
-So I was wrong, KVM can (and should!) validate the registers coming from th=
-e
-guest.  If we want to harden TDX, that's the obvious first step.
