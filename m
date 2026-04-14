@@ -1,140 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1541190473;
-	Tue, 14 Apr 2026 15:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2453D8135
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 15:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776181078; cv=none; b=CJ2gKxgtC7VhxIVnAmSXTlcld852v5gN5OFrjiwRsUtTl7rvaiVZ/YdJNDMCHxc4N6vZIIp7JuUCkXsboxKL/ciJkQY6macSyKuxufG5MKb7XT+F2+NtCaP39WTtZTkde2UKU6cgkASjW3rgIOxGXl3kj3On2cnytHqSI2rpIQ0=
+	t=1776181087; cv=none; b=N2wx9/dpja525QM2QWF2CkSDgMp4GV/fm3NTs6pvcFJfj5ZDATj413FH0sRM7hKiZavVnDF+iQWxT4V8JkMVwVR1LPb4V4DWYjMhuev15Rr9wCroKF0kciIgif4v8WUS6AhJ+GiQLSsOU3r2iOOUE3pf9CE8Jo8cqAtYwiaMQDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776181078; c=relaxed/simple;
-	bh=vLt1zIsK1rIcZO3TGQDorDFsNmmezc0A83+t9iQrN+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ur21lBNQlyaO1cBghC7G11EP/5PIRy/Eee9bTsv87vG/0LvpZbHcjh709wL/YiNw/CeA4mND1NVSg/IybU+QkX/p2Io+BEuAI6YXAJT2BeS4Q3NS6Vqz+Mmjtyl4gHeXg00kFfh3oqDir93LgZswYi9q0eIhvRmwsYMvqjiUbB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjdxK0h2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776181087; c=relaxed/simple;
+	bh=pDXF8QRt7ZGKEq0AdjebnFgpWu1BsXgK6gD+2dgsUZo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rz0Jt0I1EuGVzDYHd2HlkLPV2FGVIouth+BulIUUrOVGENjyx6FpGmGyqGnxBEr/nH6Yc4WTF8bBxBJFEjYto4TTCk/oo+o/rDfkCUAohAOgH/K2b6sVui/oZxZD2Vkg5/slTNv3eHrCj4EgZLhbasxSdRHbzwnWYDk7Ls3cgGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kiFTcO/p; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjdxK0h2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E91AC19425;
-	Tue, 14 Apr 2026 15:37:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776181077;
-	bh=vLt1zIsK1rIcZO3TGQDorDFsNmmezc0A83+t9iQrN+k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NjdxK0h2GlaLeB2t7hArNWCRSqIDWcr2FCJVvMvkYdIxeOUoHWUm6aU7MhJs3gNKJ
-	 FypuwAHi2hMrXIc+l1an1CDDfivVpNt3PY4pT08Q3K6e54kreCwdbViRtNdtlQ0Efl
-	 HhJ7XbrsOkzRKkr11b1F0kC/SM4p+8VNc49XaTj12yQFL8rdupj0JBa2P+C8Jvt6Qv
-	 rvkA6/+pPJvk1QsfcB2eOgjvWNzL1PMJqkn4K95cb8JxYMxdfD/mdkgqzoKAGljVae
-	 pkA6KH1CRimrpkUlpvNirlN9XHIyNfbtgr4zdhbyFhwE17ncHUFz5dMqwLNcvOaZg7
-	 +0KeKpVCjDscA==
-Message-ID: <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
-Date: Tue, 14 Apr 2026 17:37:50 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kiFTcO/p"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35da99b90f6so7284526a91.1
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 08:38:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776181086; x=1776785886; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fTzayLah8spuwGg86ncm2630WsNZvV7i/NqWUT/CAWQ=;
+        b=kiFTcO/p2NN7MKSMo0LPdKwYjLAC9Kf0g0xDWdOuoOUxEa6f9ySfMGyiLyWBwku64Y
+         TyJlyPy8c6DJRHCMy9kemNYtap08OEuAURFioDhXESAT87lJ7kaf02gsUQpPyJNBWOgQ
+         1QbTAtItgod1GBNRn4Hgfog691In/p0QqvipQHaozpX7R/FUhIJ1KSH1GVcELl1BJlnE
+         3785vKc2bjLWhKaGLmvW1Vcvw8dnwy506wdrfJ187mu56CxLjBdgx1gDLpPRNyNSwMLR
+         ZzYyKWZu1gH5y8acTO6MwMl7pXMKhc9netxlw0doiXGNngKyqs+rCt7c/PhiClLr7xyk
+         FPMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776181086; x=1776785886;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fTzayLah8spuwGg86ncm2630WsNZvV7i/NqWUT/CAWQ=;
+        b=J3zPchgmLVPeE58lK6PkPu7UrQBldidWv24IfEABO4y4byk3cwacxUXfVKacFoYL19
+         dmH1WWr/LowKl1Xwahs3G217aP1se2MUeJpHIJz5If5gHVhCc/OU3sHAFn+W9I4fVRRo
+         FSL24dv+qw0HuTS8o3bLeSh4VBEKLrdAE2FQi/2UnYw1Scgd+qDJrLBmO7gQ+sCU7DCR
+         +pyQqoCb+G9TTH2PkkRIKovGsdbMBmdKdngsUmgsLtPmYuTzisBrDWEzaLBdKOQJgCyI
+         JkOKyxCyvuuq8QI7fvl1NyZ8gsCd5RSF/ftATkiSFQhtleXc3djy4USHHpneubwrM6DH
+         ww8w==
+X-Forwarded-Encrypted: i=1; AFNElJ/uQFnLY7LTB5FteyUOTI8UnXsccL96MKanMWi4IIUgZNvCYj8VRUTNFJzdx7P17O7QXQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu5/QoJG+5WovzKlbNMDF8DMUi9ves6Z5ry08JIzvTjQiwd4QU
+	83DVKeoukYfqA3TbxCvoF1cFkxar5o87LCQ5aJ3YGgykXdLVSHgUL7x2mW5D/3f/7Dx5igLsEWj
+	eA8UYgg==
+X-Received: from pjyd3.prod.google.com ([2002:a17:90a:dfc3:b0:35c:e6e:959])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1802:b0:35b:e566:15a6
+ with SMTP id 98e67ed59e1d1-35e4286354bmr18000661a91.28.1776181085761; Tue, 14
+ Apr 2026 08:38:05 -0700 (PDT)
+Date: Tue, 14 Apr 2026 08:37:55 -0700
+In-Reply-To: <87e767b6-0324-44e6-92cb-f933002dec43@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
- memory
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <20260414142354.1465950-1-kas@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260409224236.2021562-1-seanjc@google.com> <20260409224236.2021562-2-seanjc@google.com>
+ <20b82b65-b156-4a2c-8094-b86dccfb3025@intel.com> <87e767b6-0324-44e6-92cb-f933002dec43@intel.com>
+Message-ID: <ad5fUya3W9BKO_iA@google.com>
+Subject: Re: [PATCH v2 1/6] KVM: x86: Add dedicated storage for guest RIP
+From: Sean Christopherson <seanjc@google.com>
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 4/14/26 16:23, Kiryl Shutsemau (Meta) wrote:
-> This series adds userfaultfd support for tracking the working set of
-> VM guest memory, enabling VMMs to identify cold pages and evict them
-> to tiered or remote storage.
+On Tue, Apr 14, 2026, Chang S. Bae wrote:
+> On 4/14/2026 5:31 AM, Xiaoyao Li wrote:
+> > Even leave RIP in regs[], what is the problem by just allocating the
+> > index 16-31 to R16-R31 and making RIP the index 32?
 > 
-> == Problem ==
+> But why?
 > 
-> VMMs managing guest memory need to:
-> 1. Track which pages are actively used (working set detection)
-> 2. Safely evict cold pages to slower storage
-> 3. Fetch pages back on demand when accessed again
+> Even though the array isn't explicitly labeled as GPRs, that's effectively
+> how it's being used, and RIP isn't part of that set.
 > 
-> For shmem-backed guest memory, working set tracking partially works
-> today: MADV_DONTNEED zaps PTEs while pages stay in page cache, and
-> re-access auto-resolves from cache. But safe eviction still requires
-> synchronous fault interception to prevent data loss races.
-> 
-> For anonymous guest memory (needed for KSM cross-VM deduplication),
-> there is no mechanism at all — clearing a PTE loses the page.
-> 
-> == Solution ==
-> 
-> The series introduces a unified userfaultfd interface that works
-> across both anonymous and shmem-backed memory:
-> 
-> UFFD_FEATURE_MINOR_ANON: extends MODE_MINOR registration to anonymous
-> private memory. Uses the PROT_NONE hinting mechanism (same as NUMA
-> balancing) to make pages inaccessible without freeing them.
+> I don't think there is any benefit of leaving it in regs[]. 
 
-I would rather tackle this from the other direction: it's another form
-of protection (like WP), not really a "minor" mode.
++1.  Chang's earlier argument that RIP isn't a proper GPR swayed me over, e.g. RIP
+doesn't have an architectural index.
 
-Could we add a UFFDIO_REGISTER_MODE_RWP (or however we would call it)
-and support it for anon+shmem, avoiding the zapping for shmem completely?
-
--- 
-Cheers,
-
-David
+Keeping RIP in regs[] saves one line of code in arch/x86/include/asm/kvm_host.h,
+at the cost of making the code less readable (IMO) and incorrectly suggesting that
+RIP can be accessed like other regs[].
