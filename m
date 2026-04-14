@@ -1,182 +1,275 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8280282F1B
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 04:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C77B2D8364;
+	Tue, 14 Apr 2026 07:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776142789; cv=none; b=f7tblMDco+77uOLy9uWPe3mqeCzFhwhFBiv8QJ5mPblZqnDzGeR8FLyri7G/GSVw/JkuoWB3c+AhYmUaIHPLUo6qWrmu3yMq1eKbIjuujo5xCVPBRnlED5TSZYZ9Q3fVmTzQUprkfxQHQCJTLCEegcZxL/wM5qB8qWxUQtoFnj4=
+	t=1776150321; cv=none; b=QODWjjlb7biLGcrogGgi955aEpiYumbA9jZ4qcRQHSgR2SkM4+ZSI59s6G7P99NCHuIlBj3OXR7ZbtHJFcri9w9ROTwUoFPpYOY1AR6xDtBZLWGGwCPln9ARx0DuV9eT5mXXzu0F/y/gGXy91VCbF3gTG6S5QupEYsSr2duWkNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776142789; c=relaxed/simple;
-	bh=F7ocbsKoGAoXnrCmPwVy4zydqMNA8ZOuBBT18oKZJrs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XwJ0w1umqlgWEaG8EhTL6LZKAnc/FjEvUFWWNNnCzsVan9TW26XHjPfL4+zKeZ7Zvag2wsZliZDPA9zZdulCsby5DaiAIIrZmsQ0WRMDNF9TuIqh6R8Dg3lGdbrq5oVCUrLXcEsBZElYsq+CHEznydA8JvqNW0MTSZuD4pC/ZgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaJUwt5Y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qeiqql+o; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776150321; c=relaxed/simple;
+	bh=eiK/74tfdqHKat9y+xuL2tR+KmBCHs426kLj5QskTbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=FlVb9OTZfl/eQCeF+Mu560PDCkACbA74sB+SAh0z1lFMIcPKrZm7V7v6onuftw8XXEigDKnW1egzJODBlqVwdbKlpOAxTYayMbAvDGIz6JB9eCPOiYPD5bBO0PwixaGgqBVmW0KiAN/boij8TWtXQGPMdEuU4KtH/4s1lXmiqRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fn2fTE3v; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaJUwt5Y";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qeiqql+o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776142786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hJZy2UscdG/YlP+O1GnZDMkC3Cg3TXz5lN5hulBLqC0=;
-	b=JaJUwt5YsYxmU39HYZEty+Kg7pwK7MDp9t2vFKnMo0eaQW303XQeDxdgvPlsS//l7dRvId
-	rfEkkffXzIEH1k+cGJVZQxMrIqcD9QNL6fA/GsHXPMGT5ux6KzK8KxS4QpVYih3NLReCdn
-	Gn/eYeAdyIOa1/nFCG9Nxq4KYc5s2FE=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-wO3a3-qfNYOTCnqDQjzt5Q-1; Tue, 14 Apr 2026 00:59:45 -0400
-X-MC-Unique: wO3a3-qfNYOTCnqDQjzt5Q-1
-X-Mimecast-MFC-AGG-ID: wO3a3-qfNYOTCnqDQjzt5Q_1776142784
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2b2d0c1ead1so79862475ad.0
-        for <kvm@vger.kernel.org>; Mon, 13 Apr 2026 21:59:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776142784; x=1776747584; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hJZy2UscdG/YlP+O1GnZDMkC3Cg3TXz5lN5hulBLqC0=;
-        b=Qeiqql+oqXGDg8IetqAlGyMMQI5kY/vsS8wKsbKrt/lbaJo2kqiP4vqGzE3ylVqVrJ
-         yrkdNYgAQw2PCQpZTEKzlMGTlAux2c5irn3r9A1IkWMWibc+WzRLSc19UPzJc/mIMFpV
-         pvj2ne2eTzrNmxQXQuGXxQtZqeX3NEowxzMSmWplQ5jpXR5OPc0CRF1M9yeWWd3/h2O4
-         nWBCb58VAK/C73be1fMvLXB7ZRSeqa1N7Sk22SwPmRhSBEBUL2j6KJlH2UPJvM0Ycxh9
-         Jm5z0XpSrJtNoOE1A9MCWV/rD+7bDoYRa0mkfajkP3uL9sp6/p0Vz72lDUH/bK78wmzr
-         FmcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776142784; x=1776747584;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hJZy2UscdG/YlP+O1GnZDMkC3Cg3TXz5lN5hulBLqC0=;
-        b=dwpZO3WJdcKBHSTMoAcZt7IUyM4lnMDZ4Dix2upRgX0Nxky0uDejtVQipTy0igjqZn
-         I3d5boKYQAEQ8E1UwPXDpi8aDVkKZT6IocBjvOQrFk9elCc9scdYhjAqkrYikK5pjdHk
-         3ndF8hMeZI+b3n6nYdRadJeRD7+wrZMhb8bTeAulbtQ0DHkGs3ICgr8ZhZa62X5HKUa8
-         oCqQahbnATOSmjWsTNzm6YpTb0M9vd9BgiIFn4HFNRhaPLmownB2/jaZhtoht8dAyg7h
-         3NAwJCD/L6DL2oZVk7E5zmWZxfAMOonQjUmfr3iDpqCIbo0+kn1x0tUz3Vmj8HUw/sNe
-         dd3Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+5U5u9y/mJRlFAO+A7geW1oMrhCLZnXz+wBHv+2PtxK5PXvZAEdMtLszqzpi7MeU/vGNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ0aSsAja247MfltdkDcS73zeRHYUbeHOLHwoNrdu1rGoU9zFu
-	v39jzACrnk5wHegyG+eKd34ToYzzb8gq8qFiZU7HQ+SMCK7Bi+XE0DDzN1BaamEW28vIyaV9G2U
-	UZXWT25ayjm1SMLghWl8BKAZApqQt+sUu3LWGz68oQh/DJQ9KfF95TQ==
-X-Gm-Gg: AeBDievCwkRZEzOUCjYx0/2uZsX6zN6/kmQCovSXU/LDtPAs0OVEeahYkAU3AF1ZDNh
-	vf26+ZXU2R1Adj5IGxrRFfsNBWabMTK3Z2Rok5Jw9Wb11GdOS3vsR1odtJ2g6W30H7aiF36eK5c
-	DhlYakUUyqtNLxLnmwl8o5hPO1qigMUQ8+851cgOTnacux8llWiby06OyzxL/GuE+5wX6HcTKNO
-	YdhOpj5a21GYGootD8S2qh3161VLo4ecvF5ePImP64APbC2U37S72VOVod+RFvGb00ksUFLyXs5
-	nN640FuAJqMMMhV5VAh49WVQgCEXJLTPMg9/rOBRCinLyEn5ONh4knoa/zgYIVP0TVzO1FaZB5X
-	fMcG6KhL1RzWLyQHPdbOiBtdVL5RF/beUcln+1bI2pAbFeGHuxYlMuHQ8YkbELj31I4FS23AHEV
-	uLbn++Ew==
-X-Received: by 2002:a17:903:38cc:b0:2b0:60f1:de58 with SMTP id d9443c01a7336-2b2d5a95893mr166867815ad.45.1776142784281;
-        Mon, 13 Apr 2026 21:59:44 -0700 (PDT)
-X-Received: by 2002:a17:903:38cc:b0:2b0:60f1:de58 with SMTP id d9443c01a7336-2b2d5a95893mr166867635ad.45.1776142783844;
-        Mon, 13 Apr 2026 21:59:43 -0700 (PDT)
-Received: from localhost.localdomain ([122.163.114.34])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b2d4f25df6sm137413715ad.56.2026.04.13.21.59.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 21:59:43 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-ppc@nongnu.org,
-	Ani Sinha <anisinha@redhat.com>,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	kvm@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH for-11.0 v3] accel/kvm: return early from kvm_irqchip_create if kvm does not support irqchip
-Date: Tue, 14 Apr 2026 10:29:11 +0530
-Message-ID: <20260414045911.63662-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fn2fTE3v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776150318; x=1807686318;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=eiK/74tfdqHKat9y+xuL2tR+KmBCHs426kLj5QskTbI=;
+  b=Fn2fTE3vVvfUdIADVRAKn4TPpHbzUg16IHXJ3ZAZ+aoAi32OOL2TMolU
+   djMjclKSSyoBJLXrXVA31CUtMAC5ANppQa9yyjfU+nhTOHQ2srsTlv/cn
+   TmxUnr2AQFkf+mS1BCyt1tjAJJ9sX9Ptvz1/URQBg7HBrowEEySp2yQll
+   rh4u+shvrXhNh7S3UUwEoX24i2naL3W1O1jIDBfV49yCuD1jMy1JU6i7w
+   jdqpw436O0OmwJim6PcXd0mCt2UXqzFAWfWbQonCJFsfaSOJE90D28YHu
+   IzoIQ627/Lsc8e/xA8Ry+QBveKdotFR4mUNzGGyE9IKKvrza0lwrRrVr2
+   g==;
+X-CSE-ConnectionGUID: jyphCPPcQyCTKwthCGYGNA==
+X-CSE-MsgGUID: 1qsQrYCTRUKEHjuVxxT6MQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="99742428"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="99742428"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 00:05:16 -0700
+X-CSE-ConnectionGUID: iKbeaX9HTBuu2VDH9NVUcg==
+X-CSE-MsgGUID: hlP3smgrTDWFTsEeAX0Teg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="231744498"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 00:05:12 -0700
+Date: Tue, 14 Apr 2026 00:05:12 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v10 00/12] VMSCAPE optimization for BHI variant
+Message-ID: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAJzm3WkC/23SzWrDMAwH8FcpPi/Fkr+infYeYwfbclZDm5SkC
+ x2l7z6nbGtTfJRAP/hLuogpjTlN4nVzEWOa85SHvhQgXzYi7nz/mZrMpSFQopEEtpkPU/TH1IR
+ daNixtkTOddiJMnEcU5fPN+79o9S7PJ2G8fumz7B0fx3UK2eGRjbsDXQyASnNb/vcf523uT+l/
+ TYOB7FoM/4LIMGsBSwCQQzMFJUnWxfUg4BuLagiGEcqolE6kaoL+i4A0FrQRQDPnnWyxBzrgnk
+ QcL3P2TQlB7K1SaMKUtYFexdQwlqwyyYtSGYDxoGuC+5PsFI9p3BFCM5655yn1nd1oX0Qnq/ZF
+ sG2IRjUQflAdYHugpa4Fmi5pmawIWJ5r0qK6/X6A+rjXXW9AgAA
+X-Change-ID: 20250916-vmscape-bhb-d7d469977f2f
+X-Mailer: b4 0.16-dev
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-During refactoring of kvm_irqchip_create(), the refactored code was returning
-early from do_kvm_irqchip_create() function if the required essential
-capabilities were not present in KVM. This was not translating to an early
-return from kvm_irqchip_create() as was the case before refactoring.
-This is because, do_kvm_irqchip_create() did not have a means to notify the
-caller of the lack of required kvm capabilities. Fix this by making
-do_notify_irqchip_create() return EOPNOTSUPP error when  capabilities
-are absent and then the caller can check the return code and return early.
+v10:
+- Add patches to define EXPORT_STATIC_CALL_FOR_MODULES() and
+  EXPORT_STATIC_CALL_FOR_KVM(), so that vmscape_predictor_flush static key
+  is only accessible to KVM and not to other kernel modules. (PeterZ)
+  (Borisov earlier objected to exporting the static key to all modules, but
+  now the static key is only exported to KVM. I guess that resolves the
+  concern.)
+- Avoid an explicit call to vmscape_mitigation_enabled() and instead use
+  static_call_query() in VMexit hot path. (Sean)
+- Drop vmscape_mitigation_enabled(), as it is no longer needed.
+- Rebased to v7.0
 
-Due to this regression during refactoring, all KVM guests on ppc64le hang
-immediately during startup and this completely breaks all functionality on
-that platform.
+v9: https://lore.kernel.org/r/20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com
+- Use global variables for BHB loop counters instead of ALTERNATIVE-based
+  approach. (Dave & others)
+- Use 32-bit registers (%eax/%ecx) for loop counters, loaded via movzbl
+  from 8-bit globals. 8-bit registers (e.g. %ah in the inner loop) caused
+  performance regression on certain CPUs due to partial-register stalls. (David Laight)
+- Let BPF save/restore %rax/%rcx as in the original implementation, since
+  it is the only caller that needs these registers preserved across the
+  BHB clearing sequence.
+- Drop Reviewed-by from patch 2/10 as the implementation changed significantly.
+- Apply Tested-by from Jon Kohler to the series (except patch 2/10).
+- Fix commit message grammar. (Borislav)
+- Rebased to v7.0-rc6.
 
-Fixes: 98884e0cc1 ("accel/kvm: add changes required to support KVM VM file descriptor change")
-Message-ID: <20260413090010.60339-1-anisinha@redhat.com>
-Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-Reported-by: Gautam Menghani <gautam@linux.ibm.com>
-Suggested-by: Fabiano Rosas <farosas@suse.de>
-Suggested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Tested-by: Misbah Anjum N <misanjum@linux.ibm.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
+v8: https://lore.kernel.org/r/20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com
+- Use helper in KVM to convey the mitigation status. (PeterZ/Borisov)
+- Fix the documentation for default vmscape mitigation. (BPF bot)
+- Remove the stray lines in bug.c (BPF bot).
+- Updated commit messages and comments.
+- Rebased to v7.0-rc5.
+
+v7: https://lore.kernel.org/r/20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com
+- s/This allows/Allow/ and s/This does adds/This adds/ in patch 1/10 commit
+  message (Borislav).
+- Minimize register usage in BHB clearing seq. (David Laight)
+  - Instead of separate ecx/eax counters, use al/ah.
+  - Adjust the alignment of RET due to register size change.
+  - save/restore rax in the seq itself.
+  - Remove the save/restore of rax/rcx for BPF callers.
+- Rename clear_bhb_loop() to clear_bhb_loop_nofence() to make it
+  obvious that the LFENCE is not part of the sequence (Borislav).
+- Fix Kconfig: s/select/depends on/ HAVE_STATIC_CALL (PeterZ).
+- Rebased to v7.0-rc4.
+
+v6: https://lore.kernel.org/r/20251201-vmscape-bhb-v6-0-d610dd515714@linux.intel.com
+- Remove semicolon at the end of asm in ALTERNATIVE (Uros).
+- Fix build warning in vmscape_select_mitigation() (LKP).
+- Rebased to v6.18.
+
+v5: https://lore.kernel.org/r/20251126-vmscape-bhb-v5-2-02d66e423b00@linux.intel.com
+- For BHI seq, limit runtime-patching to loop counts only (Dave).
+  Dropped 2 patches that moved the BHB seq to a macro.
+- Remove redundant switch cases in vmscape_select_mitigation() (Nikolay).
+- Improve commit message (Nikolay).
+- Collected tags.
+
+v4: https://lore.kernel.org/r/20251119-vmscape-bhb-v4-0-1adad4e69ddc@linux.intel.com
+- Move LFENCE to the callsite, out of clear_bhb_loop(). (Dave)
+- Make clear_bhb_loop() work for larger BHB. (Dave)
+  This now uses hardware enumeration to determine the BHB size to clear.
+- Use write_ibpb() instead of indirect_branch_prediction_barrier() when
+  IBPB is known to be available. (Dave)
+- Use static_call() to simplify mitigation at exit-to-userspace. (Dave)
+- Refactor vmscape_select_mitigation(). (Dave)
+- Fix vmscape=on which was wrongly behaving as AUTO. (Dave)
+- Split the patches. (Dave)
+  - Patch 1-4 prepares for making the sequence flexible for VMSCAPE use.
+  - Patch 5 trivial rename of variable.
+  - Patch 6-8 prepares for deploying BHB mitigation for VMSCAPE.
+  - Patch 9 deploys the mitigation.
+  - Patch 10-11 fixes ON Vs AUTO mode.
+
+v3: https://lore.kernel.org/r/20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com
+- s/x86_pred_flush_pending/x86_predictor_flush_exit_to_user/ (Sean).
+- Removed IBPB & BHB-clear mutual exclusion at exit-to-userspace.
+- Collected tags.
+
+v2: https://lore.kernel.org/r/20251015-vmscape-bhb-v2-0-91cbdd9c3a96@linux.intel.com
+- Added check for IBPB feature in vmscape_select_mitigation(). (David)
+- s/vmscape=auto/vmscape=on/ (David)
+- Added patch to remove LFENCE from VMSCAPE BHB-clear sequence.
+- Rebased to v6.18-rc1.
+
+v1: https://lore.kernel.org/r/20250924-vmscape-bhb-v1-0-da51f0e1934d@linux.intel.com
+
+Hi All,
+
+These patches aim to improve the performance of a recent mitigation for
+VMSCAPE[1] vulnerability. This improvement is relevant for BHI variant of
+VMSCAPE that affect Alder Lake and newer processors.
+
+The current mitigation approach uses IBPB on kvm-exit-to-userspace for all
+affected range of CPUs. This is an overkill for CPUs that are only affected
+by the BHI variant. On such CPUs clearing the branch history is sufficient
+for VMSCAPE, and also more apt as the underlying issue is due to poisoned
+branch history.
+
+Below is the iPerf data for transfer between guest and host, comparing IBPB
+and BHB-clear mitigation. BHB-clear shows performance improvement over IBPB
+in most cases.
+
+Platform: Emerald Rapids
+Baseline: vmscape=off
+Target: IBPB at VMexit-to-userspace Vs the new BHB-clear at
+	VMexit-to-userspace mitigation (both compared against baseline).
+
+(pN = N parallel connections)
+
+| iPerf user-net | IBPB    | BHB Clear |
+|----------------|---------|-----------|
+| UDP 1-vCPU_p1  | -12.5%  |   1.3%    |
+| TCP 1-vCPU_p1  | -10.4%  |  -1.5%    |
+| TCP 1-vCPU_p1  | -7.5%   |  -3.0%    |
+| UDP 4-vCPU_p16 | -3.7%   |  -3.7%    |
+| TCP 4-vCPU_p4  | -2.9%   |  -1.4%    |
+| UDP 4-vCPU_p4  | -0.6%   |   0.0%    |
+| TCP 4-vCPU_p4  |  3.5%   |   0.0%    |
+
+| iPerf bridge-net | IBPB    | BHB Clear |
+|------------------|---------|-----------|
+| UDP 1-vCPU_p1    | -9.4%   |  -0.4%    |
+| TCP 1-vCPU_p1    | -3.9%   |  -0.5%    |
+| UDP 4-vCPU_p16   | -2.2%   |  -3.8%    |
+| TCP 4-vCPU_p4    | -1.0%   |  -1.0%    |
+| TCP 4-vCPU_p4    |  0.5%   |   0.5%    |
+| UDP 4-vCPU_p4    |  0.0%   |   0.9%    |
+| TCP 1-vCPU_p1    |  0.0%   |   0.9%    |
+
+| iPerf vhost-net | IBPB    | BHB Clear |
+|-----------------|---------|-----------|
+| UDP 1-vCPU_p1   | -4.3%   |   1.0%    |
+| TCP 1-vCPU_p1   | -3.8%   |  -0.5%    |
+| TCP 1-vCPU_p1   | -2.7%   |  -0.7%    |
+| UDP 4-vCPU_p16  | -0.7%   |  -2.2%    |
+| TCP 4-vCPU_p4   | -0.4%   |   0.8%    |
+| UDP 4-vCPU_p4   |  0.4%   |  -0.7%    |
+| TCP 4-vCPU_p4   |  0.0%   |   0.6%    |
+
+[1] https://comsec.ethz.ch/research/microarch/vmscape-exposing-and-exploiting-incomplete-branch-predictor-isolation-in-cloud-environments/
+
 ---
- accel/kvm/kvm-all.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Pawan Gupta (12):
+      x86/bhi: x86/vmscape: Move LFENCE out of clear_bhb_loop()
+      x86/bhi: Make clear_bhb_loop() effective on newer CPUs
+      x86/bhi: Rename clear_bhb_loop() to clear_bhb_loop_nofence()
+      x86/vmscape: Rename x86_ibpb_exit_to_user to x86_predictor_flush_exit_to_user
+      x86/vmscape: Move mitigation selection to a switch()
+      x86/vmscape: Use write_ibpb() instead of indirect_branch_prediction_barrier()
+      static_call: Add EXPORT_STATIC_CALL_FOR_MODULES()
+      kvm: Define EXPORT_STATIC_CALL_FOR_KVM()
+      x86/vmscape: Use static_call() for predictor flush
+      x86/vmscape: Deploy BHB clearing mitigation
+      x86/vmscape: Resolve conflict between attack-vectors and vmscape=force
+      x86/vmscape: Add cmdline vmscape=on to override attack vector controls
 
-changelogs:
-v2: refactoring included which will resubmitted again for 11.1
-v3: basically v1 with tags added.
+ Documentation/admin-guide/hw-vuln/vmscape.rst   | 15 ++++-
+ Documentation/admin-guide/kernel-parameters.txt |  6 +-
+ arch/x86/Kconfig                                |  1 +
+ arch/x86/entry/entry_64.S                       | 21 ++++---
+ arch/x86/include/asm/cpufeatures.h              |  2 +-
+ arch/x86/include/asm/entry-common.h             | 13 ++--
+ arch/x86/include/asm/kvm_types.h                |  1 +
+ arch/x86/include/asm/nospec-branch.h            | 15 +++--
+ arch/x86/kernel/cpu/bugs.c                      | 84 +++++++++++++++++++++----
+ arch/x86/kvm/x86.c                              |  4 +-
+ arch/x86/net/bpf_jit_comp.c                     |  4 +-
+ include/linux/kvm_types.h                       | 13 +++-
+ include/linux/static_call.h                     |  8 +++
+ 13 files changed, 150 insertions(+), 37 deletions(-)
+---
+base-commit: 028ef9c96e96197026887c0f092424679298aae8
+change-id: 20250916-vmscape-bhb-d7d469977f2f
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 774499d34f..92af42503b 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2575,7 +2575,7 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi)
-     g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
- }
- 
--static void do_kvm_irqchip_create(KVMState *s)
-+static int do_kvm_irqchip_create(KVMState *s)
- {
-     int ret;
-     if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
-@@ -2587,7 +2587,7 @@ static void do_kvm_irqchip_create(KVMState *s)
-             exit(1);
-         }
-     } else {
--        return;
-+        return -EOPNOTSUPP;
-     }
- 
-     if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
-@@ -2610,13 +2610,17 @@ static void do_kvm_irqchip_create(KVMState *s)
-         fprintf(stderr, "Create kernel irqchip failed: %s\n", strerror(-ret));
-         exit(1);
-     }
-+
-+    return 0;
- }
- 
- static void kvm_irqchip_create(KVMState *s)
- {
-     assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
- 
--    do_kvm_irqchip_create(s);
-+    if (do_kvm_irqchip_create(s) < 0) {
-+        return;
-+    }
-     kvm_kernel_irqchip = true;
-     /* If we have an in-kernel IRQ chip then we must have asynchronous
-      * interrupt delivery (though the reverse is not necessarily true)
-@@ -2835,6 +2839,7 @@ static int kvm_reset_vmfd(MachineState *ms)
-     }
- 
-     if (s->kernel_irqchip_allowed) {
-+        /* ignore return from this function */
-         do_kvm_irqchip_create(s);
-     }
- 
--- 
-2.49.0
+Best regards,
+--  
+Thanks,
+Pawan
+
 
