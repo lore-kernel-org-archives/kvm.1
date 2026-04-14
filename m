@@ -1,65 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6983E8C5D;
-	Tue, 14 Apr 2026 14:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F379D3E8C4B
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 14:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776176641; cv=none; b=DKAN/c+MZl9egacnVx4Q+Wnh5oaEPUDpvY3SAFF4XoOWPiSRehJRC8tQskHE532G2v+r6nUL3XPtG/D6uZ3E4udBtIJvfvORLk30OtNwY8RGpFT6SF5clpREL/YHkOTOGEL65+CHqDl6YtKo3+fyVDLkVFoRCFDXFDKDryMI/yY=
+	t=1776176644; cv=none; b=lG53MG3vyKh7wjcHasJt2crWq2/jkfbPLnTzvrz3osXyxy04L9KbIqE8KLFXDBY7oPkB82KFKyBDkkFZIYdzlk7cK+o5og6Nvg/yNE2J/0sl01Xa/eVpJJJu/CCH0NJA4g4yCTNnJd5Q07cNc1CpjF183f04RkrdIZ7QuFHRDLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776176641; c=relaxed/simple;
-	bh=bxAJ7DEU0c8W9EDIeCuV7eYhdJmY4/plj4fpznSsaWc=;
+	s=arc-20240116; t=1776176644; c=relaxed/simple;
+	bh=Bf327wT/aGKA5T+U97BuB/g1VkBHVQ9CP0E9lDgK+RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyeLAsWzGQZUbNyb4dLqsZ0VErDkVFPbFmLiV+fD5RPrE34pIEzlQVIEmsYIWx4PxgZe/6QWwcnTyiMYU9fkQmWlQfPjNS4j/xsbHKBiPYQihP05yQDInKz4BZVwMv9IQw71/XA7vvhipxMApm7KBtd3yFNersMcf0TD0n5gUsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNC07lkp; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=aBk7B9gj7wD/1DNL2PrJNAwu7oxfde9VCjd/M7c8TZ5puldCCFNlD9/ObxBPEKgoUSzWRp3YiKWzCPqVH/cDcGRLIgaj5c7EDizewL+Dlboi13FnmKIINtaeUMcVG+MalpU97XtFXDU2qIwTB32MghzyS7jvOd1eT2fsi/ni/4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZ7QSVBi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNC07lkp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DE6C19425;
-	Tue, 14 Apr 2026 14:24:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZ7QSVBi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A20EC4AF09;
+	Tue, 14 Apr 2026 14:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776176641;
-	bh=bxAJ7DEU0c8W9EDIeCuV7eYhdJmY4/plj4fpznSsaWc=;
+	s=k20201202; t=1776176643;
+	bh=Bf327wT/aGKA5T+U97BuB/g1VkBHVQ9CP0E9lDgK+RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNC07lkpEWnmGuIw4RQ3p0swT7wwprKfoNCH9q69rZMjPQEKg3bcH8z7leYqtnN9d
-	 3FOVETsOWs8tBhSFUGsMty3w/mVyjpNF7pVCos4JsK29ZyO1S1xkkF/Dat45eMwbxq
-	 OqOKqLDJAgoW/ilWIGQYDgu6Y9VhoDtcUwfvh4sldyUWm+XxBJTfiDe0qqs4dwN7D5
-	 Xeo4vangahMPI1WZe1mc2KIPNnhlhLEVGzBRv/q283kkG6QhllAK3H1Ha2hLjGmOSA
-	 1XVpynGj5DA1N0daVxjFVdwuIR985L6LCvLG9or9hMvZ3q6K7oJldWl7znkvB9ZvRq
-	 d0u2XfwJpNbZQ==
+	b=PZ7QSVBii/NDuHYMQkacZ1Y8KCdDWZxXO3ZL2KMgu8YzHBKb/nGeZkSuY/kDHTHOk
+	 jnQ4kklXRd1ZTfeydzu3wd3q1mp4DtbrSAr6OthEjEEnEyqOyulLnriZQlD2m4tNGS
+	 p8IfdmLgeUWhQfxgDNwXEFwHYD+Ul1RMU5t/MBSYpy8lqYmwAAoHkbchLrUXVB7/2q
+	 SFUgrx9K2fe8cZTdeP7xcB8WcVELf98aRsfIGmjmdGRUqcnsS5AfcQNBSD54/Zx/kZ
+	 Z7W2FX8BF5R7zNb0ZZoWtcBoi3zag6tUNMmHeaAGG9huPPFOPX/NB7oJ2FKMjwoeUW
+	 RB9Xu3y0PrTCA==
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 54360F4006E;
-	Tue, 14 Apr 2026 10:24:00 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 14 Apr 2026 10:24:00 -0400
-X-ME-Sender: <xms:AE7eaRshi_3Xgp-KKwM0WVCjinEUJLFI9P0yzvzeKjpx3E70oKvzlw>
-    <xme:AE7eaRa4wvcvnHZPs5PmTfa-9qi1YkIFsIZ8RqeChSkI05zdiy3sWAPwB8zU12qFJ
-    ALinR10FGGGeSKPomuO38sBdPKY-h0lncDuWjwVm18T7igE8uy6Iw>
-X-ME-Received: <xmr:AE7eaZ13g-mmJY-DC2zF7I8FMTPwu2pg8yWGhYY8W6XXcWKD2fFG574TOs8xJw>
+	by mailfauth.phl.internal (Postfix) with ESMTP id A0E78F40068;
+	Tue, 14 Apr 2026 10:24:02 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 14 Apr 2026 10:24:02 -0400
+X-ME-Sender: <xms:Ak7eaRCwQ-joqBPzJ8W6eWkkuuqy8UYBZO6D-bHNDqYwO3qFC0e-QQ>
+    <xme:Ak7eaWe0o_g7Ocn3LAAoNecCeR-SstrOEh7ZkOG16GP2f7SrNx2FI1991fRNqObo-
+    jBFH4aTs0QyuGs0qet6i-UnM7-tLkAcXcJeYM-LLf4A0MyPmqY4OsE>
+X-ME-Received: <xmr:Ak7eaRqsq0SJLE8IxlNyaKgWrjH91s_CSku_VUhsiUXL71dwuPyjADYv_dmrTg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcu
-    ufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqne
-    cuggftrfgrthhtvghrnhephfdujeefvdegkefffedvkeehkeekueevfedtleehgeetlefg
-    feevveeukefhtdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqddu
-    ieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghessh
-    hhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegu
-    rghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhu
-    rhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtgho
-    mhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:AE7eafUz4xl-vmdYY-DSgxJMVdjn4ayzF65pPsCEbuQOBaO3UHUjKQ>
-    <xmx:AE7eacsxppwmZvDp95qZ-xkSon5s1fKlMsUUfo_lCqSdhu64nnUUKg>
-    <xmx:AE7eaeVsdXFTi-LB9a7H9mCGzjF-uXx3eVGxNFtPm7PjAaIcmRzYmw>
-    <xmx:AE7eaQVkPfvJsckKKXTsh2oRO5BGETrZJlANDLUWN3H7zwt0ZIU2zw>
-    <xmx:AE7eaQdjn4f27NUHCVkeiDBJeFvctgSQghUzDumC8SKJm3KHHIAxEqCj>
+    hrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepfdfmihhrhihl
+    ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
+    enucggtffrrghtthgvrhhnpefhvdefvdevjeevhefhhfevudefudejfeduvdekheeludfh
+    iefhhedujeffffeigfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
+    udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
+    hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
+    hrghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
+    uggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehs
+    uhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgt
+    ohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:Ak7eaS7bZdKL63upiVCwVw4ytNMGRxQPJz7C6Gkj66CLzvTubpES1Q>
+    <xmx:Ak7eaRCbECUjD1_aKfvL_r4egFaSSYWAK2WQPXpY0QR9H0jyeQ1VAQ>
+    <xmx:Ak7eaUY99ALMXYv4Z7Ar3HkdJnTLoOSCmSNXThxPGj3pL8YK1jzuhg>
+    <xmx:Ak7eaVJD3xRvosivUO_hEm4IXa987qHwVYlmNi95N5vxN_p5859sLA>
+    <xmx:Ak7eadCkJoEtWUN7xqwG2Rmzi3STa4Z_TjKM0yzi-MmnVG-MdGfN9fne>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 10:23:59 -0400 (EDT)
+ 14 Apr 2026 10:24:01 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Peter Xu <peterx@redhat.com>,
@@ -80,9 +80,9 @@ Cc: Peter Xu <peterx@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC, PATCH 02/12] userfaultfd: add UFFD_FEATURE_MINOR_ANON registration support
-Date: Tue, 14 Apr 2026 15:23:36 +0100
-Message-ID: <20260414142354.1465950-3-kas@kernel.org>
+Subject: [RFC, PATCH 03/12] userfaultfd: implement UFFDIO_DEACTIVATE ioctl
+Date: Tue, 14 Apr 2026 15:23:37 +0100
+Message-ID: <20260414142354.1465950-4-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
 References: <20260414142354.1465950-1-kas@kernel.org>
@@ -92,241 +92,313 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow UFFDIO_REGISTER_MODE_MINOR on anonymous VMAs when the
-UFFD_FEATURE_MINOR_ANON feature is enabled.
+UFFDIO_DEACTIVATE marks pages as deactivated within a VM_UFFD_MINOR
+range:
 
-Replace the bool wp_async parameter in vma_can_userfault() and
-userfaultfd_register_range() with an extensible ctx_flags bitmap.
-Add UFFD_CTX_WP_ASYNC and UFFD_CTX_MINOR_ANON flags, and
-userfaultfd_ctx_flags() to build the bitmap from ctx->features.
+- Anonymous memory: set protnone via change_protection(MM_CP_UFFD_DEACTIVATE).
+  Pages stay resident with PFNs preserved, only permissions removed.
+  MM_CP_UFFD_DEACTIVATE is handled independently from MM_CP_PROT_NUMA,
+  bypassing folio_can_map_prot_numa() and CONFIG_NUMA_BALANCING guards.
 
-Add userfaultfd_minor_async() helper for checking async minor mode
-from the fault path.
+- Shared shmem/hugetlbfs: zap PTEs via zap_page_range_single().
+  Pages stay in page cache.
 
-Gate UFFD_FEATURE_MINOR_ANON and UFFD_FEATURE_MINOR_ASYNC on
-CONFIG_HAVE_ARCH_USERFAULTFD_MINOR. Validate that MINOR_ASYNC
-requires at least one minor feature.
+- Private hugetlb: rejected with -EINVAL (zapping would destroy content).
 
-Not yet visible to userspace (not in UFFD_API_FEATURES).
+Cleanup on unregister/close: restore protnone PTEs to normal permissions
+in userfaultfd_clear_vma(), preventing permanently inaccessible pages.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 ---
- fs/userfaultfd.c              | 49 ++++++++++++++++++++++++++++++-----
- include/linux/userfaultfd_k.h | 19 +++++++++++---
- mm/userfaultfd.c              |  4 +--
- 3 files changed, 59 insertions(+), 13 deletions(-)
+ fs/userfaultfd.c              | 35 ++++++++++++++++
+ include/linux/mm.h            |  2 +
+ include/linux/userfaultfd_k.h |  2 +
+ mm/huge_memory.c              |  9 ++--
+ mm/mprotect.c                 |  9 +++-
+ mm/userfaultfd.c              | 78 +++++++++++++++++++++++++++++++++--
+ 6 files changed, 127 insertions(+), 8 deletions(-)
 
 diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index bdc84e5219cd..8d508ad19e89 100644
+index 8d508ad19e89..b317c9854b86 100644
 --- a/fs/userfaultfd.c
 +++ b/fs/userfaultfd.c
-@@ -89,6 +89,27 @@ static bool userfaultfd_wp_async_ctx(struct userfaultfd_ctx *ctx)
- 	return ctx && (ctx->features & UFFD_FEATURE_WP_ASYNC);
- }
+@@ -1441,6 +1441,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		if (!(uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR))
+ 			ioctls_out &= ~((__u64)1 << _UFFDIO_CONTINUE);
  
-+static bool userfaultfd_minor_anon_ctx(struct userfaultfd_ctx *ctx)
-+{
-+	return ctx && (ctx->features & UFFD_FEATURE_MINOR_ANON);
-+}
++		/* DEACTIVATE is only supported for MINOR ranges. */
++		if (!(uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR))
++			ioctls_out &= ~((__u64)1 << _UFFDIO_DEACTIVATE);
 +
-+static bool userfaultfd_minor_async_ctx(struct userfaultfd_ctx *ctx)
-+{
-+	return ctx && (ctx->features & UFFD_FEATURE_MINOR_ASYNC);
-+}
-+
-+static unsigned int userfaultfd_ctx_flags(struct userfaultfd_ctx *ctx)
-+{
-+	unsigned int flags = 0;
-+
-+	if (userfaultfd_wp_async_ctx(ctx))
-+		flags |= UFFD_CTX_WP_ASYNC;
-+	if (userfaultfd_minor_anon_ctx(ctx))
-+		flags |= UFFD_CTX_MINOR_ANON;
-+	return flags;
-+}
-+
- /*
-  * Whether WP_UNPOPULATED is enabled on the uffd context.  It is only
-  * meaningful when userfaultfd_wp()==true on the vma and when it's
-@@ -1271,7 +1292,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 	bool basic_ioctls;
- 	unsigned long start, end;
- 	struct vma_iterator vmi;
--	bool wp_async = userfaultfd_wp_async_ctx(ctx);
-+	unsigned int ctx_flags = userfaultfd_ctx_flags(ctx);
- 
- 	user_uffdio_register = (struct uffdio_register __user *) arg;
- 
-@@ -1345,7 +1366,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 
- 		/* check not compatible vmas */
- 		ret = -EINVAL;
--		if (!vma_can_userfault(cur, vm_flags, wp_async))
-+		if (!vma_can_userfault(cur, vm_flags, ctx_flags))
- 			goto out_unlock;
- 
  		/*
-@@ -1398,7 +1419,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 	VM_WARN_ON_ONCE(!found);
- 
- 	ret = userfaultfd_register_range(ctx, vma, vm_flags, start, end,
--					 wp_async);
-+					 ctx_flags);
- 
- out_unlock:
- 	mmap_write_unlock(mm);
-@@ -1443,7 +1464,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 	unsigned long start, end, vma_end;
- 	const void __user *buf = (void __user *)arg;
- 	struct vma_iterator vmi;
--	bool wp_async = userfaultfd_wp_async_ctx(ctx);
-+	unsigned int ctx_flags = userfaultfd_ctx_flags(ctx);
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_unregister, buf, sizeof(uffdio_unregister)))
-@@ -1505,7 +1526,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 		 * provides for more strict behavior to notice
- 		 * unregistration errors.
- 		 */
--		if (!vma_can_userfault(cur, cur->vm_flags, wp_async))
-+		if (!vma_can_userfault(cur, cur->vm_flags, ctx_flags))
- 			goto out_unlock;
- 
- 		found = true;
-@@ -1526,7 +1547,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 			goto skip;
- 
- 		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx != ctx);
--		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vma->vm_flags, wp_async));
-+		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vma->vm_flags, ctx_flags));
- 		VM_WARN_ON_ONCE(!(vma->vm_flags & VM_MAYWRITE));
- 
- 		if (vma->vm_start > start)
-@@ -1890,6 +1911,11 @@ bool userfaultfd_wp_async(struct vm_area_struct *vma)
- 	return userfaultfd_wp_async_ctx(vma->vm_userfaultfd_ctx.ctx);
+ 		 * Now that we scanned all vmas we can already tell
+ 		 * userland which ioctls methods are guaranteed to
+@@ -1788,6 +1792,34 @@ static int userfaultfd_writeprotect(struct userfaultfd_ctx *ctx,
+ 	return ret;
  }
  
-+bool userfaultfd_minor_async(struct vm_area_struct *vma)
++static int userfaultfd_deactivate(struct userfaultfd_ctx *ctx,
++				  unsigned long arg)
 +{
-+	return userfaultfd_minor_async_ctx(vma->vm_userfaultfd_ctx.ctx);
++	int ret;
++	struct uffdio_range uffdio_range;
++
++	if (atomic_read(&ctx->mmap_changing))
++		return -EAGAIN;
++
++	if (copy_from_user(&uffdio_range, (void __user *)arg,
++			   sizeof(uffdio_range)))
++		return -EFAULT;
++
++	ret = validate_range(ctx->mm, uffdio_range.start, uffdio_range.len);
++	if (ret)
++		return ret;
++
++	if (mmget_not_zero(ctx->mm)) {
++		ret = mdeactivate_range(ctx, uffdio_range.start,
++					uffdio_range.len);
++		mmput(ctx->mm);
++	} else {
++		return -ESRCH;
++	}
++
++	return ret;
 +}
 +
- static inline unsigned int uffd_ctx_features(__u64 user_features)
+ static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
  {
- 	/*
-@@ -1993,11 +2019,20 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 	if (features & UFFD_FEATURE_WP_ASYNC)
- 		features |= UFFD_FEATURE_WP_UNPOPULATED;
+ 	__s64 ret;
+@@ -2108,6 +2140,9 @@ static long userfaultfd_ioctl(struct file *file, unsigned cmd,
+ 	case UFFDIO_POISON:
+ 		ret = userfaultfd_poison(ctx, arg);
+ 		break;
++	case UFFDIO_DEACTIVATE:
++		ret = userfaultfd_deactivate(ctx, arg);
++		break;
+ 	}
+ 	return ret;
+ }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index abb4963c1f06..fc2841264d56 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3036,6 +3036,8 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+ #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+ #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+ 					    MM_CP_UFFD_WP_RESOLVE)
++/* Whether this change is for uffd deactivation */
++#define  MM_CP_UFFD_DEACTIVATE             (1UL << 4)
  
-+	ret = -EINVAL;
-+	/* MINOR_ASYNC requires at least one minor feature */
-+	if ((features & UFFD_FEATURE_MINOR_ASYNC) &&
-+	    !(features & (UFFD_FEATURE_MINOR_ANON |
-+			  UFFD_FEATURE_MINOR_HUGETLBFS |
-+			  UFFD_FEATURE_MINOR_SHMEM)))
-+		goto err_out;
-+
- 	/* report all available features and ioctls to userland */
- 	uffdio_api.features = UFFD_API_FEATURES;
- #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
- 	uffdio_api.features &=
--		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
-+		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM |
-+		  UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC);
- #endif
- 	if (!pgtable_supports_uffd_wp())
- 		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
+ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+ 			     pte_t pte);
 diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index fd5f42765497..d1d4ed4a08b0 100644
+index d1d4ed4a08b0..c94b5c5b5f24 100644
 --- a/include/linux/userfaultfd_k.h
 +++ b/include/linux/userfaultfd_k.h
-@@ -208,9 +208,13 @@ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
- 	return vma->vm_flags & __VM_UFFD_FLAGS;
- }
+@@ -130,6 +130,8 @@ extern int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
+ 			       unsigned long len, bool enable_wp);
+ extern long uffd_wp_range(struct vm_area_struct *vma,
+ 			  unsigned long start, unsigned long len, bool enable_wp);
++extern int mdeactivate_range(struct userfaultfd_ctx *ctx, unsigned long start,
++			     unsigned long len);
  
-+/* Flags for vma_can_userfault() describing uffd context capabilities */
-+#define UFFD_CTX_WP_ASYNC	(1 << 0)
-+#define UFFD_CTX_MINOR_ANON	(1 << 1)
+ /* move_pages */
+ void double_pt_lock(spinlock_t *ptl1, spinlock_t *ptl2);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b298cba853ab..2ad736ff007c 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2563,6 +2563,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	spinlock_t *ptl;
+ 	pmd_t oldpmd, entry;
+ 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
++	bool uffd_deactivate = cp_flags & MM_CP_UFFD_DEACTIVATE;
+ 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+ 	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+ 	int ret = 1;
+@@ -2582,8 +2583,11 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		goto unlock;
+ 	}
+ 
+-	if (prot_numa) {
++	/* Already protnone — nothing to do for either NUMA or uffd */
++	if ((prot_numa || uffd_deactivate) && pmd_protnone(*pmd))
++		goto unlock;
+ 
++	if (prot_numa) {
+ 		/*
+ 		 * Avoid trapping faults against the zero page. The read-only
+ 		 * data is likely to be read-cached on the local CPU and
+@@ -2592,9 +2596,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		if (is_huge_zero_pmd(*pmd))
+ 			goto unlock;
+ 
+-		if (pmd_protnone(*pmd))
+-			goto unlock;
+-
+ 		if (!folio_can_map_prot_numa(pmd_folio(*pmd), vma,
+ 					     vma_is_single_threaded_private(vma)))
+ 			goto unlock;
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index c0571445bef7..7c612a680014 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -220,6 +220,7 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 	long pages = 0;
+ 	bool is_private_single_threaded;
+ 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
++	bool uffd_deactivate = cp_flags & MM_CP_UFFD_DEACTIVATE;
+ 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+ 	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+ 	int nr_ptes;
+@@ -245,7 +246,8 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			pte_t ptent;
+ 
+ 			/* Already in the desired state. */
+-			if (prot_numa && pte_protnone(oldpte))
++			if ((prot_numa || uffd_deactivate) &&
++			    pte_protnone(oldpte))
+ 				continue;
+ 
+ 			page = vm_normal_page(vma, addr, oldpte);
+@@ -255,6 +257,8 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			/*
+ 			 * Avoid trapping faults against the zero or KSM
+ 			 * pages. See similar comment in change_huge_pmd.
++			 * Skip this filter for uffd deactivation which
++			 * must set protnone regardless of NUMA placement.
+ 			 */
+ 			if (prot_numa &&
+ 			    !folio_can_map_prot_numa(folio, vma,
+@@ -651,6 +655,9 @@ long change_protection(struct mmu_gather *tlb,
+ 	WARN_ON_ONCE(cp_flags & MM_CP_PROT_NUMA);
+ #endif
+ 
++	if (cp_flags & MM_CP_UFFD_DEACTIVATE)
++		newprot = PAGE_NONE;
 +
- static inline bool vma_can_userfault(struct vm_area_struct *vma,
- 				     vm_flags_t vm_flags,
--				     bool wp_async)
-+				     unsigned int ctx_flags)
- {
- 	vm_flags &= __VM_UFFD_FLAGS;
- 
-@@ -218,14 +222,15 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
- 		return false;
- 
- 	if ((vm_flags & VM_UFFD_MINOR) &&
--	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
-+	    !is_vm_hugetlb_page(vma) && !vma_is_shmem(vma) &&
-+	    !(vma_is_anonymous(vma) && (ctx_flags & UFFD_CTX_MINOR_ANON)))
- 		return false;
- 
- 	/*
- 	 * If wp async enabled, and WP is the only mode enabled, allow any
- 	 * memory type.
- 	 */
--	if (wp_async && (vm_flags == VM_UFFD_WP))
-+	if ((ctx_flags & UFFD_CTX_WP_ASYNC) && (vm_flags == VM_UFFD_WP))
- 		return true;
- 
- 	/*
-@@ -270,6 +275,7 @@ extern void userfaultfd_unmap_complete(struct mm_struct *mm,
- 				       struct list_head *uf);
- extern bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma);
- extern bool userfaultfd_wp_async(struct vm_area_struct *vma);
-+extern bool userfaultfd_minor_async(struct vm_area_struct *vma);
- 
- void userfaultfd_reset_ctx(struct vm_area_struct *vma);
- 
-@@ -283,7 +289,7 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 			       struct vm_area_struct *vma,
- 			       vm_flags_t vm_flags,
- 			       unsigned long start, unsigned long end,
--			       bool wp_async);
-+			       unsigned int ctx_flags);
- 
- void userfaultfd_release_new(struct userfaultfd_ctx *ctx);
- 
-@@ -446,6 +452,11 @@ static inline bool userfaultfd_wp_async(struct vm_area_struct *vma)
- 	return false;
- }
- 
-+static inline bool userfaultfd_minor_async(struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
- static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
- {
- 	return false;
+ 	if (is_vm_hugetlb_page(vma))
+ 		pages = hugetlb_change_protection(vma, start, end, newprot,
+ 						  cp_flags);
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 927086bb4a3c..dba1ea26fdfe 100644
+index dba1ea26fdfe..3373b11b9d83 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -2008,7 +2008,7 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 			       struct vm_area_struct *vma,
- 			       vm_flags_t vm_flags,
- 			       unsigned long start, unsigned long end,
--			       bool wp_async)
-+			       unsigned int ctx_flags)
- {
- 	VMA_ITERATOR(vmi, ctx->mm, start);
- 	struct vm_area_struct *prev = vma_prev(&vmi);
-@@ -2021,7 +2021,7 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 	for_each_vma_range(vmi, vma, end) {
- 		cond_resched();
+@@ -775,7 +775,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
  
--		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
-+		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, ctx_flags));
- 		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx &&
- 				vma->vm_userfaultfd_ctx.ctx != ctx);
- 		VM_WARN_ON_ONCE(!(vma->vm_flags & VM_MAYWRITE));
+ 	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
+ 		goto out_unlock;
+-	if (!vma_is_shmem(dst_vma) &&
++	if (!vma_is_shmem(dst_vma) && !vma_is_anonymous(dst_vma) &&
+ 	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+ 		goto out_unlock;
+ 
+@@ -797,13 +797,16 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 			break;
+ 		}
+ 		dst_pmdval = pmdp_get_lockless(dst_pmd);
++		if (unlikely(!pmd_present(dst_pmdval))) {
++			err = -EEXIST;
++			break;
++		}
+ 		/*
+ 		 * If the dst_pmd is THP don't override it and just be strict.
+ 		 * (This includes the case where the PMD used to be THP and
+ 		 * changed back to none after __pte_alloc().)
+ 		 */
+-		if (unlikely(!pmd_present(dst_pmdval) ||
+-				pmd_trans_huge(dst_pmdval))) {
++		if (unlikely(pmd_trans_huge(dst_pmdval))) {
+ 			err = -EEXIST;
+ 			break;
+ 		}
+@@ -996,6 +999,65 @@ int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
+ 	return err;
+ }
+ 
++int mdeactivate_range(struct userfaultfd_ctx *ctx, unsigned long start,
++		      unsigned long len)
++{
++	struct mm_struct *dst_mm = ctx->mm;
++	unsigned long end = start + len;
++	struct vm_area_struct *dst_vma;
++	long err;
++	VMA_ITERATOR(vmi, dst_mm, start);
++
++	VM_WARN_ON_ONCE(start & ~PAGE_MASK);
++	VM_WARN_ON_ONCE(len & ~PAGE_MASK);
++	VM_WARN_ON_ONCE(start + len <= start);
++
++	guard(mmap_read_lock)(dst_mm);
++	guard(rwsem_read)(&ctx->map_changing_lock);
++
++	if (atomic_read(&ctx->mmap_changing))
++		return -EAGAIN;
++
++	err = -ENOENT;
++	for_each_vma_range(vmi, dst_vma, end) {
++		unsigned long vma_start = max(dst_vma->vm_start, start);
++		unsigned long vma_end = min(dst_vma->vm_end, end);
++
++		if (!userfaultfd_minor(dst_vma)) {
++			err = -ENOENT;
++			break;
++		}
++
++		/*
++		 * Private hugetlb has no page cache to fall back on —
++		 * zapping PTEs would destroy page content.
++		 */
++		if (is_vm_hugetlb_page(dst_vma) &&
++		    !(dst_vma->vm_flags & VM_SHARED)) {
++			err = -EINVAL;
++			break;
++		}
++
++		if (vma_is_anonymous(dst_vma)) {
++			/* Anonymous: set protnone, pages stay resident */
++			struct mmu_gather tlb;
++
++			tlb_gather_mmu(&tlb, dst_mm);
++			err = change_protection(&tlb, dst_vma, vma_start,
++						vma_end,
++						MM_CP_UFFD_DEACTIVATE);
++			tlb_finish_mmu(&tlb);
++			if (err < 0)
++				break;
++		} else {
++			/* Shared shmem/hugetlb: zap PTEs, pages stay in page cache */
++			zap_page_range_single(dst_vma, vma_start,
++					      vma_end - vma_start, NULL);
++		}
++		err = 0;
++	}
++	return err;
++}
+ 
+ void double_pt_lock(spinlock_t *ptl1,
+ 		    spinlock_t *ptl2)
+@@ -1988,6 +2050,16 @@ struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
+ 	if (userfaultfd_wp(vma))
+ 		uffd_wp_range(vma, start, end - start, false);
+ 
++	/* Restore protnone PTEs to normal permissions */
++	if (userfaultfd_minor(vma) && vma_is_anonymous(vma)) {
++		struct mmu_gather tlb;
++
++		tlb_gather_mmu(&tlb, vma->vm_mm);
++		change_protection(&tlb, vma, start, end,
++				  MM_CP_TRY_CHANGE_WRITABLE);
++		tlb_finish_mmu(&tlb);
++	}
++
+ 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
+ 				    vma->vm_flags & ~__VM_UFFD_FLAGS,
+ 				    NULL_VM_UFFD_CTX, give_up_on_oom);
 -- 
 2.51.2
 
