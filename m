@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B299E3EC2E7;
-	Tue, 14 Apr 2026 14:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4DE3E92AF;
+	Tue, 14 Apr 2026 14:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776176657; cv=none; b=BbbXvf5jvlN86jtK7roFgE9XKKeQFNgR4Bql5h2cSEA6lWYScsE2OT5nEoICNYrclE+J/FmJ3zTT3hoGcG6NZTcw7+EHjtX+qkj/Zi+ohVLde1tzawDEQZn+g+h0k9OqVGVbIsVtMgK7WnC8UI8Te3OrESNBYueOs3nx4jEzwCQ=
+	t=1776176659; cv=none; b=rZxTSDBIgTksKe1vVqLCe89MsY+L5wVXrPz93fYJzQ3ohCMT5AhwWPmPQwY5xgQLfG9hKauS+Ct8+u0ab6X2CGhRWHMVhiZ1dNud43O7t+gkL4og8swN7PI6EI9LpjTazMcpwErfE9mAZfcYspk6JCAgvBF6EC+NgqnmDMesbEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776176657; c=relaxed/simple;
-	bh=E9uRJ76OlqqumyeaXsGedT7SJ1A+HCyjfEbuV1tzZtY=;
+	s=arc-20240116; t=1776176659; c=relaxed/simple;
+	bh=ib6BF6sXb1GJqhq34QbrG0+ehgQcsgDUzfrc0LMzV2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XpPCUI4QnERPbyxicjLpaRpfcHitFsAdoZ7Hbie+59LdC+ywX+RYvG7iIlmiAyNXMsRMXEHAESPtIynrh3I4sV8FQukw8OABp/i1uuw7OJAlGOfkflx5dzykYFrC+4Qgs4qV3XT5x3lrTtep9z8NWDq77MlZ8E6ZO3wK/0uPRX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyHCKV0q; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=VTTaMypGvyq7ZNRfTHvEyK8a3w8TJ4bR183pXknUDHgtnVDrcSl7SK7plVSmetlDzRriDcbLtzb4XWRXTkXaf76x3PLzZCSH+ClI90Gba/6UCzdxWnw6/tqlqeLS3gb8F1MWr2CqvD2C94k++W0g3w7SON758HfiiTWT/i/Tn0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boRW0RtZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyHCKV0q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F160FC4AF0B;
-	Tue, 14 Apr 2026 14:24:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boRW0RtZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EE7C4AF09;
+	Tue, 14 Apr 2026 14:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776176657;
-	bh=E9uRJ76OlqqumyeaXsGedT7SJ1A+HCyjfEbuV1tzZtY=;
+	s=k20201202; t=1776176659;
+	bh=ib6BF6sXb1GJqhq34QbrG0+ehgQcsgDUzfrc0LMzV2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyHCKV0qo2zi1d5qDNF0EFTOh65ruVcvJwrkWK09JRKej+PuspN0jJyyq+hMeK2XY
-	 6kqj9CyGRyPhtkYcB0CQI1za8guadvwkwtRxER1KMYvWORC+Ftpv/DD403IFW8QWiO
-	 Du2BqowmVBsUI8K65kyRndVfovOLR9nBr3mv2fIKaZMshj/WoK1/X4t+N5+dBb3Rkz
-	 /3cLEzaNOtHWmMcODRsmVhIilS2kUnXnEubjkVFDMKnmxeXastmM7CyK4fTuTBD8aR
-	 WpypYWf9xvZ9m5Js35lXLWyvhlIYkuykSufIvha7PO51cPFFrtz/OlgfKE9nOwjQ4K
-	 UBebfEQybzITg==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2F1CEF40068;
-	Tue, 14 Apr 2026 10:24:16 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 14 Apr 2026 10:24:16 -0400
-X-ME-Sender: <xms:EE7eaZ1arCxTLhH-pdlnYPAd7oAiyY7De5r9AsVV3DIgfhzxCWU7TQ>
-    <xme:EE7eaRj1dj9v6uvhEitOTI9kmtCHfvIAhLJxcBULo4b5AB4L05QfoDwzJ25S4MafS
-    -I6q-D8OvW8yXuPKSv3p1bjPCtOlxdVgsIuWLk5m1Uzaj7G3UVfAZsT>
-X-ME-Received: <xmr:EE7eaVQjsMwFWfrsnMKYrmuLdVPmmg33eDC80U2wbfmqV-wCLRFLs4weMkbx6w>
+	b=boRW0RtZhQ77L3Q7DgfzHaUcZY9LjSod0vEHXhfpdeexnRMRfbyR9x7kb+KU1xo79
+	 zvpFov8b/PWMjWMRGKuJqjpUx5U6cfcYn8Ad7FGFhRtBo+xkd/i4OzP1nwXTk0Mz3Q
+	 fVbSAR/EVeyT0hlrh8QkPGL0SDoY2lmSSdH1d3Yw0dUX/KZn6GvSHGxwQin3icGb2n
+	 8ZlLVAchxGWECobr2/qz+2IXGfNuLTjj7lR3VRJrDNnYN85Q3v1Ws+ib/2bRBPQ07A
+	 4fRBPUHyDyufxyGwaY6knbf3R4dt3wp0fgfialPCZnY3L5Q2zIU8ZYAp6pS8NplKUI
+	 Oqw0YcW+fbsXA==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 94FCFF40068;
+	Tue, 14 Apr 2026 10:24:18 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Tue, 14 Apr 2026 10:24:18 -0400
+X-ME-Sender: <xms:Ek7eaSq22qZaKbpO86six6OpUmf-pnTIdn1lgVRbbCCI9AntKjn2wQ>
+    <xme:Ek7eaXmpZPoD_hpYk-2g1fw6teoGJFqU0GmC4CtLLwiEYfa1cg50TsVk6trIYX5Iy
+    oml-Balu5PyYN-y7eSSjs52fPq3cs6gofAHXJhYnf7SdasYzE8zZkU>
+X-ME-Received: <xmr:Ek7eacQwmuhyW8LTitgVKaE4q9ufsyof1wBeFJ1aVYUNTFtPbFNi0mGPzT212g>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
@@ -52,14 +52,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetgg
     uhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnh
     gvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgt
     ohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:EE7eaT53i-q_nSVLHE6aO2yPo6jnMnyxjKLBIGarDLGupbX4UKLxLQ>
-    <xmx:EE7eadxQfVgCiJUhBce235PkAGNWhyhND1ubjZ8ohSYEmx1Qpojbww>
-    <xmx:EE7eaTBeHcol6HQcMzLP5HW-i-95PeSXirXIKslXm7nk7HYoYMAyjQ>
-    <xmx:EE7eaVaJY8FE6jcXjxK7f-drP21WXBs7hKSktiOhvG1jGKWnV_j16A>
-    <xmx:EE7eaaGkIP36RqFDMfJgJ67vjLVSSMZXg9qQo31ZKawi6w36DGJd0QlY>
+X-ME-Proxy: <xmx:Ek7eaZAT3aJQaPi5S8rWub9GJgZn-6Bbob-82C-6AEDGuyu3yv5Y3w>
+    <xmx:Ek7eacqo0_pbYaSNq88MVS_N3hQRcnzzT7ee3ax7PDY8tof9yw-kcw>
+    <xmx:Ek7eaXgxzjhPjFxRFAsbk_G90LQZkRqUarqbvzzyIG4_S9mJS1lu3g>
+    <xmx:Ek7eaZwoKU7MfjkdtO4VE0RIbvEpsUEFkeP5ln40aYPZM_1L4bmUhA>
+    <xmx:Ek7eaVLB1dXZ4vI8U4Fyb_CTPszURIDRhcRXLtS9rRZ-WDicAsBcqV2j>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 10:24:15 -0400 (EDT)
+ 14 Apr 2026 10:24:17 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Peter Xu <peterx@redhat.com>,
@@ -80,9 +80,9 @@ Cc: Peter Xu <peterx@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC, PATCH 11/12] selftests/mm: add userfaultfd anonymous minor fault tests
-Date: Tue, 14 Apr 2026 15:23:45 +0100
-Message-ID: <20260414142354.1465950-12-kas@kernel.org>
+Subject: [RFC, PATCH 12/12] Documentation/userfaultfd: document working set tracking
+Date: Tue, 14 Apr 2026 15:23:46 +0100
+Message-ID: <20260414142354.1465950-13-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
 References: <20260414142354.1465950-1-kas@kernel.org>
@@ -95,520 +95,188 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add tests for UFFD_FEATURE_MINOR_ANON, UFFD_FEATURE_MINOR_ASYNC,
-UFFDIO_DEACTIVATE, UFFDIO_SET_MODE, and PAGE_IS_UFFD_DEACTIVATED:
+Document the new userfaultfd capabilities for VM working set tracking:
 
-- minor-anon-async: populate pages, register MODE_MINOR with
-  MINOR_ASYNC, deactivate via UFFDIO_DEACTIVATE, re-access and verify
-  content is preserved with no faults delivered to the handler.
+- UFFD_FEATURE_MINOR_ANON and UFFD_FEATURE_MINOR_ASYNC for anonymous
+  minor fault interception using the PROT_NONE hinting mechanism.
+- UFFDIO_DEACTIVATE for marking pages as inaccessible while keeping
+  them resident.
+- Sync and async fault resolution modes, and UFFDIO_SET_MODE for
+  runtime toggling between them.
+- PAGEMAP_SCAN with PAGE_IS_UFFD_DEACTIVATED for cold page detection.
+- Cleanup semantics on unregister and close.
+- NUMA balancing interaction on anonymous VMAs.
+- Complete VMM workflow example for the cold page eviction lifecycle,
+  with a note on shmem applicability.
 
-- minor-anon-sync: same setup but without MINOR_ASYNC. Verify that
-  each deactivated page access delivers a MINOR fault to the handler,
-  and UFFDIO_CONTINUE resolves it. Exercises both PTE and THP paths.
-
-- minor-anon-pagemap: deactivate a range, touch first half, use
-  PAGEMAP_SCAN with PAGE_IS_UFFD_DEACTIVATED to verify the untouched
-  second half is reported as cold.
-
-- minor-anon-gup: write() from a deactivated page into a pipe to
-  exercise GUP resolution through protnone PTEs via async auto-restore.
-
-- minor-anon-async-toggle: full detection-to-eviction cycle using
-  UFFDIO_SET_MODE. Start async (detection), flip to sync (eviction
-  of cold pages), flip back to async.
-
-- minor-anon-close: deactivate pages, close the uffd fd, verify all
-  pages are accessible again (protnone PTEs restored on cleanup).
+Update the feature flag descriptions at the top of the guide to
+reference the new section.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 ---
- tools/testing/selftests/mm/uffd-unit-tests.c | 458 +++++++++++++++++++
- 1 file changed, 458 insertions(+)
+ Documentation/admin-guide/mm/userfaultfd.rst | 141 ++++++++++++++++++-
+ 1 file changed, 140 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 6f5e404a446c..8bd5a642bd5a 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -7,6 +7,7 @@
+diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
+index e5cc8848dcb3..fc89e029060c 100644
+--- a/Documentation/admin-guide/mm/userfaultfd.rst
++++ b/Documentation/admin-guide/mm/userfaultfd.rst
+@@ -111,7 +111,11 @@ events, except page fault notifications, may be generated:
+ - ``UFFD_FEATURE_MINOR_HUGETLBFS`` indicates that the kernel supports
+   ``UFFDIO_REGISTER_MODE_MINOR`` registration for hugetlbfs virtual memory
+   areas. ``UFFD_FEATURE_MINOR_SHMEM`` is the analogous feature indicating
+-  support for shmem virtual memory areas.
++  support for shmem virtual memory areas. ``UFFD_FEATURE_MINOR_ANON``
++  extends minor fault support to anonymous private memory using
++  PROT_NONE hinting; see the `Anonymous Minor Faults`_ section.
++  ``UFFD_FEATURE_MINOR_ASYNC`` enables asynchronous auto-resolution for
++  anonymous minor faults (requires ``UFFD_FEATURE_MINOR_ANON``).
  
- #include "uffd-common.h"
+ - ``UFFD_FEATURE_MOVE`` indicates that the kernel supports moving an
+   existing page contents from userspace.
+@@ -297,6 +301,141 @@ transparent to the guest, we want that same address range to act as if it was
+ still poisoned, even though it's on a new physical host which ostensibly
+ doesn't have a memory error in the exact same spot.
  
-+#include <linux/fs.h>
- #include "../../../../mm/gup_test.h"
++Anonymous Minor Faults
++----------------------
++
++``UFFD_FEATURE_MINOR_ANON`` enables ``UFFDIO_REGISTER_MODE_MINOR`` on
++anonymous private memory. Unlike shmem/hugetlbfs minor faults (where a page
++exists in the page cache but has no PTE), anonymous minor faults use the
++PROT_NONE hinting mechanism: pages remain resident in memory with their PFNs
++preserved in the PTEs, but access permissions are removed so the next access
++triggers a fault.
++
++This is designed for VM memory managers that need to track the working set of
++anonymous guest memory for cold page eviction to tiered or remote storage.
++
++**Setup:**
++
++1. Open a userfaultfd and enable ``UFFD_FEATURE_MINOR_ANON`` (and optionally
++   ``UFFD_FEATURE_MINOR_ASYNC``) via ``UFFDIO_API``.
++
++2. Register the guest memory range with ``UFFDIO_REGISTER_MODE_MINOR``
++   (and ``UFFDIO_REGISTER_MODE_MISSING`` if evicted pages will need to be
++   fetched back from storage).
++
++**Deactivation:**
++
++Use ``UFFDIO_DEACTIVATE`` to mark pages as inaccessible. This ioctl takes a
++``struct uffdio_range`` and sets PROT_NONE on all present PTEs in the range,
++using the same mechanism as NUMA balancing. Pages stay resident and their
++physical frames are preserved — only access permissions are removed.
++
++**Fault Handling:**
++
++When a deactivated page is accessed:
++
++- **Sync mode** (default): The faulting thread blocks and a
++  ``UFFD_PAGEFAULT_FLAG_MINOR`` message is delivered to the userfaultfd
++  handler. The handler resolves the fault with ``UFFDIO_CONTINUE``, which
++  restores the PTE permissions and wakes the faulting thread.
++
++- **Async mode** (``UFFD_FEATURE_MINOR_ASYNC``): The kernel automatically
++  restores PTE permissions and the thread continues without blocking. No
++  message is delivered to the handler.
++
++**Cold Page Detection with PAGEMAP_SCAN:**
++
++After deactivating a range and letting the application run, use the
++``PAGEMAP_SCAN`` ioctl on ``/proc/pid/pagemap`` with the
++``PAGE_IS_UFFD_DEACTIVATED`` category flag to efficiently find pages that were
++never re-accessed (cold pages)::
++
++    struct pm_scan_arg arg = {
++        .size = sizeof(arg),
++        .start = guest_mem_start,
++        .end = guest_mem_end,
++        .vec = (uint64_t)regions,
++        .vec_len = regions_len,
++        .category_mask = PAGE_IS_UFFD_DEACTIVATED,
++        .return_mask = PAGE_IS_UFFD_DEACTIVATED,
++    };
++    long n = ioctl(pagemap_fd, PAGEMAP_SCAN, &arg);
++
++The returned ``page_region`` array contains contiguous cold ranges that can
++then be evicted.
++
++**Cleanup:**
++
++When the userfaultfd is closed or the range is unregistered, all protnone
++PTEs are automatically restored to their normal VMA permissions. This
++prevents pages from becoming permanently inaccessible.
++
++**Interaction with NUMA Balancing:**
++
++NUMA balancing is automatically disabled on anonymous VMAs registered with
++``UFFDIO_REGISTER_MODE_MINOR``, since both mechanisms use PROT_NONE PTEs
++as access hints and would interfere with each other. Shmem VMAs are not
++affected since ``UFFDIO_DEACTIVATE`` zaps PTEs there instead of using
++PROT_NONE.
++
++**VMM Working Set Tracking Workflow:**
++
++A typical VMM lifecycle for cold page eviction to tiered storage::
++
++    /* One-time setup */
++    uffd = userfaultfd(O_CLOEXEC | O_NONBLOCK);
++    ioctl(uffd, UFFDIO_API, &(struct uffdio_api){
++        .api = UFFD_API,
++        .features = UFFD_FEATURE_MINOR_ANON |
++                    UFFD_FEATURE_MINOR_ASYNC,
++    });
++    ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
++        .range = { guest_mem, guest_size },
++        .mode = UFFDIO_REGISTER_MODE_MINOR |
++                UFFDIO_REGISTER_MODE_MISSING,
++    });
++
++    /* Tracking loop */
++    while (vm_running) {
++        /* 1. Detection phase (async — no vCPU stalls) */
++        ioctl(uffd, UFFDIO_DEACTIVATE, &full_range);
++        sleep(tracking_interval);
++
++        /* 2. Find cold pages */
++        ioctl(pagemap_fd, PAGEMAP_SCAN, &(struct pm_scan_arg){
++            .category_mask = PAGE_IS_UFFD_DEACTIVATED,
++            ...
++        });
++
++        /* 3. Switch to sync for safe eviction */
++        ioctl(uffd, UFFDIO_SET_MODE,
++              &(struct uffdio_set_mode){
++                  .disable = UFFD_FEATURE_MINOR_ASYNC });
++
++        /* 4. Evict cold pages (vCPU faults block in handler) */
++        for each cold range:
++            pwrite(storage_fd, cold_addr, len, offset);
++            madvise(cold_addr, len, MADV_DONTNEED);
++
++        /* 5. Resume async tracking */
++        ioctl(uffd, UFFDIO_SET_MODE,
++              &(struct uffdio_set_mode){
++                  .enable = UFFD_FEATURE_MINOR_ASYNC });
++    }
++
++During step 4, if a vCPU accesses a cold page being evicted, it blocks
++with a ``UFFD_PAGEFAULT_FLAG_MINOR`` fault. The handler can either let it
++wait (the eviction completes, ``MADV_DONTNEED`` fires, the fault retries as
++``MISSING`` and is resolved with ``UFFDIO_COPY`` from storage) or resolve
++it immediately with ``UFFDIO_CONTINUE``.
++
++The same workflow applies to shmem-backed guest memory
++(``UFFD_FEATURE_MINOR_SHMEM``). The only difference is the
++``PAGEMAP_SCAN`` mask for cold page detection: use
++``!PAGE_IS_PRESENT`` instead of ``PAGE_IS_UFFD_DEACTIVATED``, since
++``UFFDIO_DEACTIVATE`` zaps PTEs on shmem (pages stay in page cache)
++rather than setting PROT_NONE.
++
+ QEMU/KVM
+ ========
  
- #ifdef __NR_userfaultfd
-@@ -623,6 +624,423 @@ void uffd_minor_collapse_test(uffd_global_test_opts_t *gopts, uffd_test_args_t *
- 	uffd_minor_test_common(gopts, true, false);
- }
- 
-+static void deactivate_range(int uffd, __u64 start, __u64 len)
-+{
-+	struct uffdio_range range = { .start = start, .len = len };
-+
-+	if (ioctl(uffd, UFFDIO_DEACTIVATE, &range))
-+		err("UFFDIO_DEACTIVATE failed");
-+}
-+
-+static void set_async_mode(int uffd, bool enable)
-+{
-+	struct uffdio_set_mode mode = { };
-+
-+	if (enable)
-+		mode.enable = UFFD_FEATURE_MINOR_ASYNC;
-+	else
-+		mode.disable = UFFD_FEATURE_MINOR_ASYNC;
-+
-+	if (ioctl(uffd, UFFDIO_SET_MODE, &mode))
-+		err("UFFDIO_SET_MODE failed");
-+}
-+
-+/*
-+ * Test async minor faults on anonymous memory.
-+ * Populate pages, register MODE_MINOR with MINOR_ASYNC,
-+ * deactivate, re-access, verify content preserved and no faults delivered.
-+ */
-+static void uffd_minor_anon_async_test(uffd_global_test_opts_t *gopts,
-+				       uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+
-+	/* Populate all pages with known content */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	/* Register MODE_MINOR (uffd was opened with MINOR_ANON | MINOR_ASYNC) */
-+	if (uffd_register(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size,
-+			  false, false, true))
-+		err("register failure");
-+
-+	/* Deactivate all pages — sets protnone */
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size);
-+
-+	/* Access all pages — should auto-resolve, no faults */
-+	for (p = 0; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+		unsigned char expected = p % 255 + 1;
-+
-+		if (page[0] != expected) {
-+			uffd_test_fail("page %lu content mismatch: %u != %u",
-+				       p, page[0], expected);
-+			return;
-+		}
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * Custom fault handler for anon minor — just UFFDIO_CONTINUE, no content
-+ * modification (the page is protnone so we can't access it from here).
-+ */
-+static void uffd_handle_minor_anon(uffd_global_test_opts_t *gopts,
-+				   struct uffd_msg *msg,
-+				   struct uffd_args *uargs)
-+{
-+	struct uffdio_continue req;
-+
-+	if (!(msg->arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_MINOR))
-+		err("expected minor fault, got 0x%llx",
-+		    msg->arg.pagefault.flags);
-+
-+	req.range.start = msg->arg.pagefault.address;
-+	req.range.len = gopts->page_size;
-+	req.mode = 0;
-+	if (ioctl(gopts->uffd, UFFDIO_CONTINUE, &req)) {
-+		/*
-+		 * THP races with khugepaged collapse/split:
-+		 * EAGAIN: PMD changed under us
-+		 * EEXIST: THP present but already resolved
-+		 * In both cases the page is accessible — the faulting
-+		 * thread retries and succeeds.
-+		 */
-+		if (errno != EEXIST && errno != EAGAIN)
-+			err("UFFDIO_CONTINUE failed");
-+	}
-+
-+	uargs->minor_faults++;
-+}
-+
-+/*
-+ * Test sync minor faults on anonymous memory.
-+ * Populate pages, register MODE_MINOR (sync), deactivate,
-+ * access from worker thread, verify fault delivered, UFFDIO_CONTINUE resolves.
-+ */
-+static void uffd_minor_anon_sync_test(uffd_global_test_opts_t *gopts,
-+				      uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	pthread_t uffd_mon;
-+	struct uffd_args uargs = { };
-+	char c = '\0';
-+	unsigned long p;
-+
-+	uargs.gopts = gopts;
-+	uargs.handle_fault = uffd_handle_minor_anon;
-+
-+	/* Populate all pages */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	/* Register MODE_MINOR (uffd opened with MINOR_ANON, no MINOR_ASYNC) */
-+	if (uffd_register(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size,
-+			  false, false, true))
-+		err("register failure");
-+
-+	/* Deactivate all pages */
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size);
-+
-+	/* Start fault handler thread */
-+	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
-+		err("uffd_poll_thread create");
-+
-+	/* Access all pages — triggers sync minor faults, handler does CONTINUE */
-+	for (p = 0; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+
-+		if (page[0] != (p % 255 + 1)) {
-+			uffd_test_fail("page %lu content mismatch", p);
-+			goto out;
-+		}
-+	}
-+
-+	if (uargs.minor_faults == 0) {
-+		uffd_test_fail("expected minor faults, got 0");
-+		goto out;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
-+		err("pipe write");
-+	if (pthread_join(uffd_mon, NULL))
-+		err("join() failed");
-+}
-+
-+/*
-+ * Test PAGEMAP_SCAN detection of deactivated (cold) pages.
-+ */
-+static void uffd_minor_anon_pagemap_test(uffd_global_test_opts_t *gopts,
-+					  uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+	struct page_region regions[16];
-+	struct pm_scan_arg pm_arg;
-+	int pagemap_fd;
-+	long ret;
-+
-+	/* Need at least 4 pages */
-+	if (nr_pages < 4) {
-+		uffd_test_skip("need at least 4 pages");
-+		return;
-+	}
-+
-+	/* Populate all pages */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, 0xab, page_size);
-+
-+	/* Register and deactivate */
-+	if (uffd_register(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size,
-+			  false, false, true))
-+		err("register failure");
-+
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size);
-+
-+	/* Touch first half of pages to re-activate them (async auto-resolve) */
-+	for (p = 0; p < nr_pages / 2; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;
-+	}
-+
-+	/* Scan for cold (still deactivated) pages */
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		err("open pagemap");
-+
-+	memset(&pm_arg, 0, sizeof(pm_arg));
-+	pm_arg.size = sizeof(pm_arg);
-+	pm_arg.start = (uint64_t)gopts->area_dst;
-+	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
-+	pm_arg.vec = (uint64_t)regions;
-+	pm_arg.vec_len = 16;
-+	pm_arg.category_mask = PAGE_IS_UFFD_DEACTIVATED;
-+	pm_arg.return_mask = PAGE_IS_UFFD_DEACTIVATED;
-+
-+	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
-+	close(pagemap_fd);
-+
-+	if (ret < 0) {
-+		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
-+		return;
-+	}
-+
-+	/*
-+	 * The second half of pages should be reported as deactivated.
-+	 * They may be coalesced into one region.
-+	 */
-+	if (ret < 1) {
-+		uffd_test_fail("expected cold pages, got %ld regions", ret);
-+		return;
-+	}
-+
-+	/* Verify the cold region covers the second half */
-+	uint64_t cold_start = regions[0].start;
-+	uint64_t expected_start = (uint64_t)gopts->area_dst +
-+				  (nr_pages / 2) * page_size;
-+
-+	if (cold_start != expected_start) {
-+		uffd_test_fail("cold region starts at 0x%lx, expected 0x%lx",
-+			       (unsigned long)cold_start,
-+			       (unsigned long)expected_start);
-+		return;
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * Test that GUP resolves through protnone PTEs (async mode).
-+ * Deactivate pages, then use a pipe to exercise GUP on the deactivated
-+ * memory. write() from deactivated pages triggers GUP which must fault
-+ * through the protnone PTE.
-+ */
-+static void uffd_minor_anon_gup_test(uffd_global_test_opts_t *gopts,
-+				     uffd_test_args_t *args)
-+{
-+	unsigned long page_size = gopts->page_size;
-+	char *buf;
-+	int pipefd[2];
-+
-+	buf = malloc(page_size);
-+	if (!buf)
-+		err("malloc");
-+
-+	/* Populate first page with known content */
-+	memset(gopts->area_dst, 0xCD, page_size);
-+
-+	if (uffd_register(gopts->uffd, gopts->area_dst, page_size,
-+			  false, false, true))
-+		err("register failure");
-+
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size);
-+
-+	if (pipe(pipefd))
-+		err("pipe");
-+
-+	/*
-+	 * write() from the deactivated page into the pipe.
-+	 * This triggers GUP on the protnone PTE. In async mode the
-+	 * kernel auto-restores permissions and GUP succeeds.
-+	 */
-+	if (write(pipefd[1], gopts->area_dst, page_size) != page_size) {
-+		uffd_test_fail("write from deactivated page failed: %s",
-+			       strerror(errno));
-+		goto out;
-+	}
-+
-+	if (read(pipefd[0], buf, page_size) != page_size) {
-+		uffd_test_fail("read from pipe failed");
-+		goto out;
-+	}
-+
-+	if (memcmp(buf, "\xCD", 1) != 0) {
-+		uffd_test_fail("content mismatch: got 0x%02x, expected 0xCD",
-+			       (unsigned char)buf[0]);
-+		goto out;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	close(pipefd[0]);
-+	close(pipefd[1]);
-+	free(buf);
-+}
-+
-+/*
-+ * Test runtime toggle between async and sync modes.
-+ * Start in async mode (detection), flip to sync (eviction), verify faults
-+ * block, resolve them, flip back to async.
-+ */
-+static void uffd_minor_anon_async_toggle_test(uffd_global_test_opts_t *gopts,
-+					      uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	struct uffd_args uargs = { };
-+	pthread_t uffd_mon;
-+	char c = '\0';
-+	unsigned long p;
-+
-+	uargs.gopts = gopts;
-+	uargs.handle_fault = uffd_handle_minor_anon;
-+
-+	/* Populate */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	if (uffd_register(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size,
-+			  false, false, true))
-+		err("register failure");
-+
-+	/* Phase 1: async detection — deactivate, access first half */
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size);
-+
-+	for (p = 0; p < nr_pages / 2; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;  /* auto-resolves in async mode */
-+	}
-+
-+	/* Phase 2: flip to sync for eviction */
-+	set_async_mode(gopts->uffd, false);
-+
-+	/* Start handler — will receive faults for cold pages */
-+	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
-+		err("uffd_poll_thread create");
-+
-+	/* Access second half (cold pages) — should trigger sync faults */
-+	for (p = nr_pages / 2; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+		if (page[0] != (p % 255 + 1)) {
-+			uffd_test_fail("page %lu content mismatch", p);
-+			goto out;
-+		}
-+	}
-+
-+	if (uargs.minor_faults == 0) {
-+		uffd_test_fail("expected sync faults, got 0");
-+		goto out;
-+	}
-+
-+	/* Phase 3: flip back to async */
-+	set_async_mode(gopts->uffd, true);
-+
-+	/* Deactivate and access again — should auto-resolve */
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size);
-+
-+	for (p = 0; p < nr_pages; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
-+		err("pipe write");
-+	if (pthread_join(uffd_mon, NULL))
-+		err("join() failed");
-+}
-+
-+/*
-+ * Test that deactivated pages become accessible after closing uffd.
-+ */
-+static void uffd_minor_anon_close_test(uffd_global_test_opts_t *gopts,
-+				       uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+
-+	/* Populate */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	if (uffd_register(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size,
-+			  false, false, true))
-+		err("register failure");
-+
-+	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size);
-+
-+	/* Close uffd — should restore protnone PTEs */
-+	close(gopts->uffd);
-+	gopts->uffd = -1;
-+
-+	/* All pages should be accessible with original content */
-+	for (p = 0; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+		unsigned char expected = p % 255 + 1;
-+
-+		if (page[0] != expected) {
-+			uffd_test_fail("page %lu not accessible after close", p);
-+			return;
-+		}
-+	}
-+
-+	uffd_test_pass();
-+}
-+
- static sigjmp_buf jbuf, *sigbuf;
- 
- static void sighndl(int sig, siginfo_t *siginfo, void *ptr)
-@@ -1625,6 +2043,46 @@ uffd_test_case_t uffd_tests[] = {
- 		/* We can't test MADV_COLLAPSE, so try our luck */
- 		.uffd_feature_required = UFFD_FEATURE_MINOR_SHMEM,
- 	},
-+	{
-+		.name = "minor-anon-async",
-+		.uffd_fn = uffd_minor_anon_async_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
-+	},
-+	{
-+		.name = "minor-anon-sync",
-+		.uffd_fn = uffd_minor_anon_sync_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required = UFFD_FEATURE_MINOR_ANON,
-+	},
-+	{
-+		.name = "minor-anon-pagemap",
-+		.uffd_fn = uffd_minor_anon_pagemap_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
-+	},
-+	{
-+		.name = "minor-anon-gup",
-+		.uffd_fn = uffd_minor_anon_gup_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
-+	},
-+	{
-+		.name = "minor-anon-async-toggle",
-+		.uffd_fn = uffd_minor_anon_async_toggle_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
-+	},
-+	{
-+		.name = "minor-anon-close",
-+		.uffd_fn = uffd_minor_anon_close_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required = UFFD_FEATURE_MINOR_ANON,
-+	},
- 	{
- 		.name = "sigbus",
- 		.uffd_fn = uffd_sigbus_test,
 -- 
 2.51.2
 
