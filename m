@@ -1,118 +1,124 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF92244684
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 22:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776205786; cv=pass; b=OCoTXkmsW2aQvtRDP/VJoByD0UJksRCDa2YHvtSEVWXoD83mdhvJ5pxTzAx6TWLB2wigcDUNVJG1kmAVAkoCsgxd4cb5YIvz/5nBWCoYaAwtwuzYSlWPEF3wPqTmaflJ8i4OhDrlhjVgBR3JwtEzGeGFz2vZURBYDBRAI7NxCG0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776205786; c=relaxed/simple;
-	bh=fBbjf16osq2lmBsm3qe27/2B7qTE2ZnTyCx45QXf1GY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JZ0WBzGkRuFIQIiJsA5xSs+i5GvSJ9qXAmJ1n5xUggjrRmbnRz9tCaYgJ/6l2jMskoodeiqTrO8Mn+kXV5w/cqTYmVhlDKU0R97lvio3e0gUpqxn1q7nPmaqUgfEotVceR0rEjEvq/ndiCRfV5DRRVnJqt7tQae+UQUIF9p6n2I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YqgvuZjB; arc=pass smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D32C08DC
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 22:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776206341; cv=none; b=paxC3bSENwdB5wRtlx53XgH8EpTG64Ho7wEdMK+XqREEJK2/dJ6Pw/XcAbRC8iBmeGxmbPV6TZAFgzS3Ts18cRCGHx8nYX0VjVyJdHfN6hqpiYYO6BmPdBC0IA6YztAYWvlLHFuB6YcCVqyzHaqyGOuBX2vOjjVX8xxLjyUXOi4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776206341; c=relaxed/simple;
+	bh=jyNNu6CF3tM975V6PcONy5U9p2ftLc0N1pfgPHoAIaY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=X8BCZE2xudGez0PN7pr9EZ19/hs1DLI7Y9pNmm5B3MLseoQEKzIvrckUSvqfOxhHgYqAsMNu6FKeE+Wdjrxr1XCc2QVp/zfRVh++N+b3qFtyY8JDoMQZuSt71uE4V8qEKG7FLGB8eo+bsqAuvjVjrHJmm/BVvxJ+6ZOnAqzWpTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MUFnMN4A; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YqgvuZjB"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-67148a70f8aso28934a12.1
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 15:29:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776205782; cv=none;
-        d=google.com; s=arc-20240605;
-        b=glLNR5HR3VaHfkJnt80RONR15T4pT5dytb92Akg8xsmKpGrldl/PiJ0j1H4ViHEI7M
-         xCWgVFDpO5txQvIC9hXBA854g1CEvS7s1WAmT1LBuDqBcH62FkLMmIqgc3k52ahnU2KM
-         YV5kPp2Ui0jMRZaUuxiLvcBqB/tYkD+tnNm3f3blP12KP3xh+rxTri+U0vYZOK0pR3LN
-         4yAq+gQd0MbIG9M/hzMRB61q4MC1fuXAzbL71/QqRPCMcRVsZ6RLnwjMVroTXoQDhlCp
-         E2pCQcFcbFurXdXv/i1cL3oon2oLgqWvPpvp4nxz6HVkcViu1y8oTIoBtbHSpFHcxJxA
-         x8Qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1stwh6IzFVN5ADaOr/0ZpBdvHW9a8MLzS14mBjhnkQw=;
-        fh=DY5c+Q4V73LKqa+t6yX66iElfhtyj064uTlHSVs8j+M=;
-        b=Cul3VL3evMuDf3jF/3/inWw1rzqXaSTcQqbgvSMaJotFqef7rV46Z3jzgMb3q8XDB/
-         DHgA7OcNtECU1C9AOIZ7ncRTk/jdh8+9Ge+i01RzMCVEIXYAfjfj5TrN1Gfr4wBalEV9
-         wSKGAIChk2XhseY9s+MCQwh4b4wVacX0uwI2j5ruTSqcGpDG6svRC7TVU5nOcryaYt1i
-         wXOm3ZEFSMFyLgEmph4p0pPxHdGg6bFJHtdgAUp1MU/mn671Jc/K4Vc0hTkrmiqxYh+C
-         cfeki4DODmh5t9umt5G4ObukArMexouBeysiybr/wPR6/AJQLilUhrH5oVsUQgMQnHnl
-         7Ivg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MUFnMN4A"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f0f2b2641so3159934b3a.3
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 15:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776205782; x=1776810582; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1stwh6IzFVN5ADaOr/0ZpBdvHW9a8MLzS14mBjhnkQw=;
-        b=YqgvuZjB/qVnsTU9DkIQHn6ZV2NlU+KNKbxGmJqPgQj80bj4ypVt2eJnrKhNHc8ecE
-         YafRVzfJKWPkXztsKZQDIHh6I8LaLqijjJZbU+fzODuAdMhEeeVDiuuRjzbuoBhJXucZ
-         k0zX/vHC9p65fZIWsJufdZKE9qR17gA61pTNoQlydOR56UYogERy6cP0MibGbUvuYqeG
-         mZdJWvxB5Wnf7NZ+TbonGf5j9fFGK0Bhf2jDZlVRaiaxvCj1c08Zpo/B+D7QiaHS4X0a
-         JpF7rDthUOu+/LmLDblznc5pyP6uyRR9FBHE0HoH2NOAiUdWwSfpCV8jyrVmKCyMLAPx
-         +EPg==
+        d=google.com; s=20251104; t=1776206340; x=1776811140; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=stm35/IY3TODjr+mpw9XhLFzvYJAzwSOp9T5zlC+DrI=;
+        b=MUFnMN4ANRzgFqwRky9PFVLn0BcMAc4H+eWZJrGAf2FtSaYixTAgBT4TRwo4NTgCMt
+         3wkgLvO+JzlJVI4WKydzkoC/6uygWr8Yh+AlYbzUd0QqtcmCXXSDYZDwj0S/v0rvavUd
+         o45/bHnLAz8ZM6vSpYolFTZL4JFWGcgSQzfQ3RPIyC0oJ0JnVM1Z2ut6VAM+Nim/iE/j
+         xLvoXLVIWBO0zx/cDSju+9y/YGbCAiIP4MVHLSTcHP9SIghk9pqZqKh0rd04sjeOhgki
+         rpZ1FyzhoAKNnn0FsPW5Qi9konRYk8I0hz0XcKPbYU5gUphNMcTlmOD9D3lDdM05kQHN
+         jdvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776205782; x=1776810582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1stwh6IzFVN5ADaOr/0ZpBdvHW9a8MLzS14mBjhnkQw=;
-        b=Zas1yft+yQYh/rGAZOLyJ8Fs09eBtMO9wF8Cu1Qs2jV9Ju0hbFOpYLJQQ3/ClojG+u
-         14rHCVBiRNqI61Ub1ZKN139FZCW4a6tr2lHYMhCbdLmCD7LH6Wiyds3K3MbPb1NCzhGh
-         Ckx2vpKGbt9jdAxZDBJBK6+8kNYgA25mmUHIvpVRZN5T1rLsVbboXJ5DV/s9W/96dgxf
-         1TlilNmw39jc+e7DjPf2hcF8gpkzqJJNKcfmo2E1OYEOqxIGiEZOxh83Z7aYR4plzSLr
-         8KoF72+aFg7p8FRW86XZqpExlrF/oHhw4r/9p2bmho8qlPEDRV0qZtxLs+ERILIkjnyp
-         K6cw==
-X-Forwarded-Encrypted: i=1; AFNElJ8e63va1BusVluR9WmvYjWK80kIQLAU70VE63vXeQkbrJgOeNwtKqx1CnL84b91XrgXHS4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyY6JH4PbJc1CzmndZFmEQFUHMHcSUXOGVaOL4ch7S3luzPWphj
-	0FJOmksgW6eeyjOt50UGovqUmT1ikvHmp5IinQQIXb119bxxHgRY7CXtm456IBOg2TvgnJBSpfa
-	yBE72p5hCefhMtTDOvYkr10/0DkW541zPLa5V4pv8
-X-Gm-Gg: AeBDieu1HkkziFN/hIJxkWZx9Qs02QdVjsXTw9RWKgPdKPxTQ/CYOQVCumiBFakkp6p
-	FqV91IPfgrPA0RdHeAw7EMO/yUkwUwrqJhFLVk3E2w6GWCPOio91IAtVbuNAKts5t1IH3VAtoPc
-	Kp9mde6nFxvSOzdII15L/uA5eEeJZU3iB5HeCd4jSm3UiBqx/EUXHDkbM0mk64MBss/lKSz0hKD
-	Epf1EUPzE8JzHqrukzXWNdnsibrGZq0qX4CBLcMIvbj4XjPum5AxW4UQ/L5G24/qHIKOXGgHiBm
-	5+nFtPhJYzLjuTFb+YM0JqigzeMg
-X-Received: by 2002:a50:fa90:0:b0:670:3723:70ad with SMTP id
- 4fb4d7f45d1cf-672315817b3mr5119a12.3.1776205781431; Tue, 14 Apr 2026 15:29:41
- -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776206340; x=1776811140;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=stm35/IY3TODjr+mpw9XhLFzvYJAzwSOp9T5zlC+DrI=;
+        b=Jq16TxA98Y3jW2lRS7tlV3HIrf+UfFXtzI8W+UIGHjoRDUYUf9knV4W0/hOTG8JKOh
+         caTqRtkTo/ZQTukefNwjSRLk4urZSXWYC+zhG95ZMeXTsU1zXw+YIbfeSOtXEXAaqTtK
+         wO5ptQvg8+SILf67H2wTP4JauoATsbuyfnzsHEq5s2JyQQ6eW7+tNp4FnO/PFIuZc2Ge
+         FCkVyXTMIIKySKUNJG5eGmZycReoFx1OBuJu2rtmVrkQstzvFygbhbHXC3EFjubXRpN5
+         JjtmbUz7GSwbTXGbYqReBLJC/FqHzP2aI/qmQFQiHRuoyq+r88iFHpQDv2q+3PjSYWnd
+         MaoQ==
+X-Gm-Message-State: AOJu0YzSnybWxBXKctCRx8w+lxsmgy52gZI0fSH2e/oTs/lcds+/zPuH
+	NgfMwWIc1areMJHxrfAqYMc/Q/CW2iNm/8neDN6lasHf8abc4yDO5tkzkHmifUTZ98cYCXN0k4M
+	fp8Mbtw==
+X-Received: from pfbdh21.prod.google.com ([2002:a05:6a00:4795:b0:829:f706:70e4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a223:b0:82a:7471:eb90
+ with SMTP id d2e1a72fcca58-82f0c299062mr19287033b3a.30.1776206339773; Tue, 14
+ Apr 2026 15:38:59 -0700 (PDT)
+Date: Tue, 14 Apr 2026 15:38:58 -0700
+In-Reply-To: <cb458ee1-e0c7-43e2-83a0-9effd9a723af@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260414191425.2697918-1-seanjc@google.com> <20260414191425.2697918-4-seanjc@google.com>
-In-Reply-To: <20260414191425.2697918-4-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 14 Apr 2026 15:29:29 -0700
-X-Gm-Features: AQROBzDk78p-yC_-TyPp-cyL-cS1J8qrJKkTJuwtTmxDA43bY6KLY86NJfmlLZI
-Message-ID: <CALMp9eTFi+9HrxfjiqLGw5BbdJiZsO4DxzhxN5-tCSbZAPY5aw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] perf/x86/intel: Make @data a mandatory param for intel_guest_get_msrs()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260409213333.1995382-1-seanjc@google.com> <cb458ee1-e0c7-43e2-83a0-9effd9a723af@redhat.com>
+Message-ID: <ad7CAgFO53yNrT_L@google.com>
+Subject: Re: [PATCH] KVM: Drop kvm_vcpu.ready to squash race where "ready" can
+ get stuck "true"
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zhanghao <zhanghao1@kylinos.cn>, Wanpeng Li <kernellwp@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Apr 14, 2026 at 12:14=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> Drop "support" for passing a NULL @data/@kvm_pmu param when getting guest
-> MSRs.  KVM, the only in-tree user, unconditionally passes a non-NULL
-> pointer, and carrying code that suggests @data may be NULL is confusing,
-> e.g. incorrectly implies that there are scenarios where KVM doesn't pass
-> a PMU context.
->
-> Fixes: 8183a538cd95 ("KVM: x86/pmu: Add IA32_DS_AREA MSR emulation to sup=
-port guest DS")
-> Cc: Jim Mattson <jmattson@google.com>
-> Cc: Mingwei Zhang <mizhang@google.com>
-> Cc: Stephane Eranian <eranian@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Tue, Apr 14, 2026, Paolo Bonzini wrote:
+> On 4/9/26 23:33, Sean Christopherson wrote:
+> > +static inline bool kvm_vcpu_is_runnable_and_scheduled_out(struct kvm_vcpu *vcpu)
+> > +{
+> > +	return READ_ONCE(vcpu->preempted) ||
+> > +	       (READ_ONCE(vcpu->scheduled_out) &&
+> > +		READ_ONCE(vcpu->wants_to_run) &&
+> 
+> wants_to_run doesn't seem important here, because blocking will never be set
+> outside KVM_RUN (unlike scheduled_out which can be set within any
+> vcpu_load/vcpu_put pair, if you're unlucky enough).
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Oh, good point.
+
+> > +		READ_ONCE(vcpu->stat.generic.blocking) &&
+> > +		!kvm_vcpu_is_blocking(vcpu));
+> 
+> If you get here you have done the finish_rcuwait() in kvm_vcpu_block(),
+> meaning that you've been already scheduled in, haven't you?
+
+Gah, yes.  I didn't realize finish_rcuwait() is what actually completes the
+wakeup from KVM's perspective.
+
+> So, you would need something like this:
+> 
+> static inline bool kvm_vcpu_is_runnable_and_scheduled_out(struct kvm_vcpu *vcpu)
+> {
+> 	if (READ_ONCE(vcpu->preempted))
+> 		return true;
+> 
+> 	if (!READ_ONCE(vcpu->scheduled_out))
+> 		return false;
+> 	if (!READ_ONCE(vcpu->stat.generic.blocking))
+
+Hmm, I think this could actually be:
+
+	if (!kvm_vcpu_is_blocking(vcpu))
+		return false;
+
+Because my use of vcpu->stat.generic.blocking was purely due to missing that
+finish_rcuwait() is effectively what clears "blocking".  That would narrow the
+window for false positives a little, e.g. would at least wait until after the
+kvm_arch_vcpu_blocking() call to treat the vCPU as blocking.
+
+> 		return false;
+> 	return rcuwait_was_woken(kvm_arch_vcpu_get_wait(vcpu));
+> }
+> 
+> // in rcuwait.h
+> static inline bool rcuwait_was_woken(struct rcuwait *w)
+> {
+> 	guard(rcu)();
+> 	struct task_struct *t = rcu_access_pointer(w->task);
+> 	return t && !task_is_runnable(t);
+
+Ah, and I missed the task_is_runnable() check guarding vcpu->ready.  I suspect I
+assumed kvm_vcpu_on_spin() would do that check.
