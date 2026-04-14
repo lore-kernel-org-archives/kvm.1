@@ -1,148 +1,132 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763533AD53D
-	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 22:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024BB383C9D
+	for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 23:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776206990; cv=none; b=i7DL24z+VS/XBjqU/O9ajcwrL1BHP8M6VpvUV/QwFMNLE1kJNZgT/DzqCtwbE0kXHns/e6VzSoYf9NH2z/k54MuSpoDvxeKibgNpidj2JUxdexiHqc4raO2Mf7WUtsBt6+76LhU0veVbeYk5P+fTZ3soEHEUBriNyDCR4VrIb6M=
+	t=1776207758; cv=none; b=Qq3x6JjI4mOnHftSVgIwZPm6f9HUjkRyw7kQ+1EfCwqXgmLrHoCczEe9BHaGsLGuxFEum6Gk+yI9xlAwIwiR+LH5fumWqEcYB3ybjW08YkIElgt4TED12lF5Tuj/rz9JsauYwBcH0WdtONs82lv+dhcLdzCUsqQDSyvp/XsGKG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776206990; c=relaxed/simple;
-	bh=2w8FCsUeUvgD6onjKxIhyqqgoHp1gSabAVxysWnlmzQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tcg2GJxy4PXiTGP6k5vwk8fZLqoCMD4692QOhBtCerUHU5/DVqnt99KXL9P6GYPYiivWgYxtkyqPqwkS7gjhtaZXJnWGYHu9vAbclyOnAaAs1Zu+MJUbDP9Q/OfzEGxnelwmma3XouSWWqUTwK76VPcI4xIHm8n3YG0pXzyYKTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rTjeqcz5; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1776207758; c=relaxed/simple;
+	bh=yIHnxxQ55FAQ5ev7rSPpWImHD239J4P9vUUfERsxhN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EBlEnKIaUejnnPeKRm8PNGO8Fi7kcDg2OlzlndxLX15qASvV5NOyLnDMAOCs3BU87Kk3bNXlRHKjlll6MFCJ/NiN9f9aedbdYLxKJ6gqplo8QAvab8mjuNwMaETH1zVxa7ZO/T2wkNJUPefbBOeG4oWcsAJ2RqiyOTwn1Hki9hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V+eE4PA6; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rTjeqcz5"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c7939ac69edso3626811a12.3
-        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 15:49:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V+eE4PA6"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b243198058so546025ad.1
+        for <kvm@vger.kernel.org>; Tue, 14 Apr 2026 16:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776206989; x=1776811789; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XRasnSp3LeKygs+54FOeXokg/h9FwjkuSVLECbKoWoE=;
-        b=rTjeqcz5+N7mwf7X1G8vnZe0S5fWNDYdSJcw2MjKf0Q9bm0UdBP6Dn4AiiixtR6FFl
-         yyeF0JmKTKHUHEAv2tyVrHwxm9C/5c4SDbtP7Tw1TXAy/AEaBXh2768Rh5AwYKeXatyO
-         CSQBeeOoKv1bWQYl/j1oPkxQxWUh/kg9g9LTeUGym+hL7+nkG6plQ8WJp0XJnRU7ABHK
-         UeOtb7VSCHtfqt2C98ofAM34O3rjsQiHpSgiWnM/+JJUOusMsHJPoI6l61BOcuYWDLej
-         uj/QqCd0L3KiiyIHIRlNEfEwXAGvUUYDi0QnBM0/gzUbZhV5tIthyK4VerSWlhD5tdjm
-         SE0w==
+        d=google.com; s=20251104; t=1776207756; x=1776812556; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hYhIIDY1BBnC9l/Uqt+TOwqFCFA2hfXSopa3Cxt9ADI=;
+        b=V+eE4PA6vhgdpXm2kvI1s2vhqs1bRyy6Al7EmiMt0DyHQtMHp0MpfvaSlEGUEMAYut
+         ZxPdYgwxO+S4FSEjO4zcIe/C2RmCUIPtv/ULaFNi9qbQ+c0bKcNTc8OnawBIHJEY3DDh
+         d4L5ojfOuuEftI8nTbl1hD68HehHHwSgqTuT4+KKQgE8Fzvf960/NU27FjEoZHjc5Lwz
+         d6mSKXjcWoZA6yBi5cCiiFvZQLJx/4l67Yy23Jn7eCUy5O/ZpM1HrnbfMUsA8qeUiqBn
+         15239XgoTBfRTuOJwiWbb5kfhY2BJUdd0UNWg3AT9Zi3K0PC2PCqH06cUpDUoDGie3pP
+         CS/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776206989; x=1776811789;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XRasnSp3LeKygs+54FOeXokg/h9FwjkuSVLECbKoWoE=;
-        b=Zfd8U+i3yYTnGiyRoK6h+PNypsgFmZREU0xTqUwDwEz4g9rLxqQd6ArfF7F2bLTNtA
-         VRraAuc3cvwB6T1b4uBXT5BH6ROZrZpbchU4IagG4zfBffQtLpAUNxLaCcl6dHkwYiry
-         iLXH65I3VyPraoSjSLm2V3SViPAS/MhGwEPEwiwnS9UaeLhYHGVfR2//BdJlrP7ayQ23
-         AHzRQzojkbpWU1Q/5GSt0lTZKbpIulGFPHkaIOoUMbLMYCnVkhcYWpYykdm9Q0G8Uiul
-         iaVokq145Ibwi71LHUxUU7/dKmBT5i4pBz+yaitW3IHNFbqUTAUT1z9wrzYR/hi/PDDp
-         nqlg==
-X-Forwarded-Encrypted: i=1; AFNElJ/M+m29PaEjW82K5lnf/Lj5JN579bXxOFcyJ9+BOeTJjfAf3Al7vCmHwb0vvFJwKQK/jRI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4bnLF1bgTFO0xNxGpphmUPz4PR53F2ob7NupVdrLLHchWjfO/
-	g1V5rVPEyeG3Bq9DDo+d3bnqjiLGOKs+yKVbN0Fdw9wi2/Nwv4zp+SKqXGDY6y8hImzUGZh2UcY
-	jX25pXQ==
-X-Received: from pfbde16.prod.google.com ([2002:a05:6a00:4690:b0:82f:5aef:db75])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9083:b0:82c:b808:4c59
- with SMTP id d2e1a72fcca58-82f0c2e6c46mr19583002b3a.46.1776206988555; Tue, 14
- Apr 2026 15:49:48 -0700 (PDT)
-Date: Tue, 14 Apr 2026 15:49:47 -0700
-In-Reply-To: <CALMp9eRxd=-xotnr9rLYhHtVK6G5oGAbXByXgpt078G8mWQEqg@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1776207756; x=1776812556;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hYhIIDY1BBnC9l/Uqt+TOwqFCFA2hfXSopa3Cxt9ADI=;
+        b=ipa/32eVLdJlmCqCQ9OQ1I+rPHh6cF9JcU4JByOQyj0SAQXA7YTq2nwuTXkUKo8c5Y
+         o1ZaQ/4BXn1/v1IDS0E8Tpf6uu2u8NZIcrXqbcNTwlFGoUigxwIf+v9Urw7lxxnSd9tr
+         Vu3RRyj+9EJbzeKHPTWn6WKJCLhCN6+4eaxg+2zLC+TMF4aA+Fy5Ew+XXr7nwm31mMUg
+         TeSG6nmhE7uFl2+Kc+2N4xf/ma3joQEQntuf0BXDiaUpvDyt9OxFneQJ17ha7VMUBKyF
+         uN00pWnUhqBGBee+V8yVC4fOWsPEcWdFb5GTSlEfVjeVHZtmaVjxtwmzCwYVy7CZbxmo
+         iHMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+cUyIcB4TabmAUhRTpmb4WYo76bFc07/5PKn/YlP5WONQaWOVd7htBqlTgbbqC+ghLEzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOqyRgKJcTfDqd2RwHe4ziYOyUBh4km/10EP2FMwcn0jJXx7y+
+	mYW2qPGmEViXvUHzKAKl+SDAXtOLHxmUKoDqMuCpoyQgZmj/rYw62feMMut7B3x9Eg==
+X-Gm-Gg: AeBDietiw4vPCA8u2iPCwewU8lK+/qdslfg9qDW1nUZioZqVfjGAzO+D4Z+WV353Wf2
+	tlAqfO5/USHW51mvhXPutLaZ2qyjpt789ujGCESeXXhiJhLKFQTVnIHRDQzq4NAIlZxITtJWUI9
+	ZzlTeYJCbFWSdqCN9dmb6vgeBzYA1Ab5vG+poMGZ3RJOEs3j5+nejEA6NxsQzgMOqq1F6MO8fGh
+	mt/LDqDWfFKRHE/K6tM1WVMyVcqPu6ZP1PunJFQuSmKqq/8XDDQh6EZxaQXHGLjf3OhAHMp4PkC
+	7717rgbmIekG7dN8lJIyAZ9CxrRSvsMZsHVxn8pKjq4eAJgzCYfPgje6zyAA0zSGRaRKnMC5XA3
+	t3JJonvJG4fK84V87ZtUjiZseSvTRLWsHTqIDslBmRfXzDqQadhkMSfmLJvszqjfTvac/Wnc3Iy
+	vDwf+c59J4wYJDhoeQsy+awJPPFZxBM5K2O8+88J8LC8pglIPpv/T8dJFPsFhnuApfNYJvulhhn
+	CHs+EYFzcl5rA==
+X-Received: by 2002:a17:902:d50d:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2b476bcdeb8mr642005ad.19.1776207755684;
+        Tue, 14 Apr 2026 16:02:35 -0700 (PDT)
+Received: from google.com (115.112.199.104.bc.googleusercontent.com. [104.199.112.115])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f673e38ccsm64574b3a.33.2026.04.14.16.02.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 16:02:34 -0700 (PDT)
+Date: Tue, 14 Apr 2026 23:02:31 +0000
+From: Lisa Wang <wyihan@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, rientjes@google.com,
+	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
+	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
+	dave.hansen@linux.intel.com,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v2 2/7] mm: memory_failure: Allow
+ truncate_error_folio to return MF_DELAYED
+Message-ID: <ad7Hh_kz2aIOeZFI@google.com>
+References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+ <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-2-92c596402a7a@google.com>
+ <2f177e0f-2eb0-48d0-b48c-7a0a340caf5d@huawei.com>
+ <adA_1zXLUBqmSHFl@google.com>
+ <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
+ <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260414191425.2697918-1-seanjc@google.com> <20260414191425.2697918-3-seanjc@google.com>
- <CALMp9eRxd=-xotnr9rLYhHtVK6G5oGAbXByXgpt078G8mWQEqg@mail.gmail.com>
-Message-ID: <ad7Ei3FsFSm8C8he@google.com>
-Subject: Re: [PATCH 2/4] perf/x86/intel: Don't context switch DS_AREA (and
- PEBS config) if PEBS is unused
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
 
-On Tue, Apr 14, 2026, Jim Mattson wrote:
-> On Tue, Apr 14, 2026 at 12:14=E2=80=AFPM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> > @@ -5065,6 +5056,28 @@ static struct perf_guest_switch_msr *intel_guest=
-_get_msrs(int *nr, void *data)
-> >         if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
-> >                 guest_pebs_mask =3D 0;
-> >
-> > +       /*
-> > +        * Context switch DS_AREA and PEBS_DATA_CFG if and only if PEBS=
- will be
-> > +        * active in the guest; if no records will be generated while t=
-he guest
-> > +        * is running, then running with host values is safe (see above=
-).
-> > +        */
-> > +       if (!guest_pebs_mask)
-> > +               return arr;
->=20
-> I think this has an unintended side effect. If DS_AREA and
-> PEBS_DATA_CFG were previously listed (because pebs_guest_mask was
-> previously non-zero), KVM will leave the stale entries in the MSR-load
-> lists.
->=20
-> KVM only clears MSR-load list entries for enumerated MSRs with
-> matching guest and host values.
+On Mon, Apr 13, 2026 at 09:18:13PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/7/26 05:55, Miaohe Lin wrote:
+> > On 2026/4/4 6:31, Lisa Wang wrote:
+> >> [...snip...]
+> >>>
+> >>> Will it be better to add a pr_info here to provide some information for users?
+> >>>
+> >>> Thanks.
+> >>> .
+> >> I think we don't need to add pr_info here; truncate_error_folio() always
+> >> leads to action_result, which already logs the recovery status.
+> > 
+> > No strong opinion but I want to make code style more consistent with sth. like below:
+> > 
+> 
+> Yeah, would be cleaner.
+> 
+> > if (err == MF_DELAYED)
+> > 	pr_info xxx
+> > else if (err != 0)
+> > 	pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
+> > else if (!filemap_release_folio(folio, GFP_NOIO))
+> > 	pr_info("%#lx: failed to release buffers\n", pfn);
+> 
+> Maybe we can even make the failed here a "Failed" ;)
 
-Argh, right.  This as a delta change I guess?  I'd love to overhaul the int=
-erface,
-but reworking KVM to play nice with core_guest_get_msrs() would be much mor=
-e
-difficult.
+Noted. Will update in V4.
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 20a153aa33cb..3244d5589981 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -5059,22 +5059,20 @@ static struct perf_guest_switch_msr *intel_guest_ge=
-t_msrs(int *nr, void *data)
-        /*
-         * Context switch DS_AREA and PEBS_DATA_CFG if and only if PEBS wil=
-l be
-         * active in the guest; if no records will be generated while the g=
-uest
--        * is running, then running with host values is safe (see above).
-+        * is running, then simply keep the host values resident in hardwar=
-e.
-         */
--       if (!guest_pebs_mask)
--               return arr;
--
-        arr[(*nr)++] =3D (struct perf_guest_switch_msr){
-                .msr =3D MSR_IA32_DS_AREA,
-                .host =3D (unsigned long)cpuc->ds,
--               .guest =3D kvm_pmu->ds_area,
-+               .guest =3D guest_pebs_mask ? kvm_pmu->ds_area : (unsigned l=
-ong)cpuc->ds,
-        };
-=20
-        if (x86_pmu.intel_cap.pebs_baseline) {
-                arr[(*nr)++] =3D (struct perf_guest_switch_msr){
-                        .msr =3D MSR_PEBS_DATA_CFG,
-                        .host =3D cpuc->active_pebs_data_cfg,
--                       .guest =3D kvm_pmu->pebs_data_cfg,
-+                       .guest =3D guest_pebs_mask ? kvm_pmu->data_cfg :
-+                                                  cpuc->active_pebs_data_c=
-fg,
-                };
-        }
-=20
-
+Lisa
+> -- 
+> Cheers,
+> 
+> David
