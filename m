@@ -1,65 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDD63EBF37;
-	Tue, 14 Apr 2026 14:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B299E3EC2E7;
+	Tue, 14 Apr 2026 14:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776176655; cv=none; b=jh99smQ9GslYtEfB6LveHcvd+gHeockDlK4gbDLdHvGUZm89FGu6dY+fXECgpi4xgl3AUgB/cWzhtOxAFJ5BPFCbT/vE0H3mPBgrNDFC4I3VwMXCSZw9jCBRJaWHEPi0QxVztpl3QRHT5k9NJnEZmcG2D6xS09iBX9xW7AC7Mtc=
+	t=1776176657; cv=none; b=BbbXvf5jvlN86jtK7roFgE9XKKeQFNgR4Bql5h2cSEA6lWYScsE2OT5nEoICNYrclE+J/FmJ3zTT3hoGcG6NZTcw7+EHjtX+qkj/Zi+ohVLde1tzawDEQZn+g+h0k9OqVGVbIsVtMgK7WnC8UI8Te3OrESNBYueOs3nx4jEzwCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776176655; c=relaxed/simple;
-	bh=wU9XhAWdOkm2epOMZqX4k9UHuR2i8O/RDnn4cDbflLk=;
+	s=arc-20240116; t=1776176657; c=relaxed/simple;
+	bh=E9uRJ76OlqqumyeaXsGedT7SJ1A+HCyjfEbuV1tzZtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAsZuw29gd3g4CP8D4VU3ciIYLw74ELWrzfVTVGWRG9QZ0vBL13SH+4uVgV3oWcHKleu6LfJI4OqWSR1Lb7dmG1SSQ/adAea6wYPEOxiXOtJS+snf3T75pogbpmXqBC9ws1s1kdf2YE48W7YseljwKCjvfX/DnAdDIXe8E7dCOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1DIGAsn; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=XpPCUI4QnERPbyxicjLpaRpfcHitFsAdoZ7Hbie+59LdC+ywX+RYvG7iIlmiAyNXMsRMXEHAESPtIynrh3I4sV8FQukw8OABp/i1uuw7OJAlGOfkflx5dzykYFrC+4Qgs4qV3XT5x3lrTtep9z8NWDq77MlZ8E6ZO3wK/0uPRX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyHCKV0q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1DIGAsn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8A7C4AF09;
-	Tue, 14 Apr 2026 14:24:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyHCKV0q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F160FC4AF0B;
+	Tue, 14 Apr 2026 14:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776176655;
-	bh=wU9XhAWdOkm2epOMZqX4k9UHuR2i8O/RDnn4cDbflLk=;
+	s=k20201202; t=1776176657;
+	bh=E9uRJ76OlqqumyeaXsGedT7SJ1A+HCyjfEbuV1tzZtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1DIGAsniyY8vj4+mAakxpkv9iBsInZPGyST0/WXXjMQGAuCTtS8/cmieVr3Ye5Ul
-	 rF6mcAKzF684kHK2IctebHCD8ljK9Tv2VFCyG7oSLj1PAGSJbN/gvuIWuE/aYe8iJP
-	 P7fUpR+L9IXRzv16wGuwtf7IFh5r6lQCx6AMmIlgF8Q0Lj8c2hdTI3/q4tfckAqL4i
-	 p2K6ICCBx6Rri0H/Uk8AhigoALkVc4ZBFRbIqXB2Tw23ajt2XK3+sGk4QQFD7BXWS4
-	 PPHbcFBvo3JNfaj7Wku9j0LGRhHmnF3e8aH55BCFY4Qg0TGVUfKVBB8wyn3g9c6zu8
-	 i6nJt/in9MD6w==
+	b=dyHCKV0qo2zi1d5qDNF0EFTOh65ruVcvJwrkWK09JRKej+PuspN0jJyyq+hMeK2XY
+	 6kqj9CyGRyPhtkYcB0CQI1za8guadvwkwtRxER1KMYvWORC+Ftpv/DD403IFW8QWiO
+	 Du2BqowmVBsUI8K65kyRndVfovOLR9nBr3mv2fIKaZMshj/WoK1/X4t+N5+dBb3Rkz
+	 /3cLEzaNOtHWmMcODRsmVhIilS2kUnXnEubjkVFDMKnmxeXastmM7CyK4fTuTBD8aR
+	 WpypYWf9xvZ9m5Js35lXLWyvhlIYkuykSufIvha7PO51cPFFrtz/OlgfKE9nOwjQ4K
+	 UBebfEQybzITg==
 Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 421D8F4006F;
-	Tue, 14 Apr 2026 10:24:14 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 14 Apr 2026 10:24:14 -0400
-X-ME-Sender: <xms:Dk7eaYqI27hsNvix2EPZxKVuvcYdoPuEppH7El0A6dfwJ6sLPvumYw>
-    <xme:Dk7eaVl8QJKm5Gg4FHtOxm7VUZUoqBRHyGs-eG00kdOTPUoadqPBBaz84ExolXrpS
-    ybwi5Xla3zUi57zYAgsah3tun21RAmEJrF1Eh8tloIa_-L7GO244gs>
-X-ME-Received: <xmr:Dk7eaSQ6KLe9DBEXvv7zUze0hStzZpwuck1YZOzwuCgewegYvcM-QRB3RsXVww>
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2F1CEF40068;
+	Tue, 14 Apr 2026 10:24:16 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 14 Apr 2026 10:24:16 -0400
+X-ME-Sender: <xms:EE7eaZ1arCxTLhH-pdlnYPAd7oAiyY7De5r9AsVV3DIgfhzxCWU7TQ>
+    <xme:EE7eaRj1dj9v6uvhEitOTI9kmtCHfvIAhLJxcBULo4b5AB4L05QfoDwzJ25S4MafS
+    -I6q-D8OvW8yXuPKSv3p1bjPCtOlxdVgsIuWLk5m1Uzaj7G3UVfAZsT>
+X-ME-Received: <xmr:EE7eaVQjsMwFWfrsnMKYrmuLdVPmmg33eDC80U2wbfmqV-wCLRFLs4weMkbx6w>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcu
-    ufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqne
-    cuggftrfgrthhtvghrnhephfdujeefvdegkefffedvkeehkeekueevfedtleehgeetlefg
-    feevveeukefhtdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqddu
-    ieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghessh
-    hhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegu
-    rghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhu
-    rhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtgho
-    mhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:Dk7eaXBRQxby81eJQ09tIpX5wnaqAWdYU9yTBINeIx-4Voth2bS4Cg>
-    <xmx:Dk7eaSpBc0PsFsAeRHo6gQptwun0PvtIEjUBNtK1NHywsoSAgsZoHQ>
-    <xmx:Dk7eaVhSKEC35Fqwid3zGuX0_-Sy0RNp_Xl-uhts-r_xtg74dNxszQ>
-    <xmx:Dk7eafxnkvdJQBYXnFFycV1qd9HnMMH6h18AfVl4GDhb-NEUs3Brmw>
-    <xmx:Dk7eaTL9FTMXqSC84SYr7DyvLsWGLK9jQdMCbnVbmbk5lOdtXjAk1YMp>
+    hrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepfdfmihhrhihl
+    ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
+    enucggtffrrghtthgvrhhnpefhvdefvdevjeevhefhhfevudefudejfeduvdekheeludfh
+    iefhhedujeffffeigfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
+    udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
+    hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
+    hrghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
+    uggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehs
+    uhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgt
+    ohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:EE7eaT53i-q_nSVLHE6aO2yPo6jnMnyxjKLBIGarDLGupbX4UKLxLQ>
+    <xmx:EE7eadxQfVgCiJUhBce235PkAGNWhyhND1ubjZ8ohSYEmx1Qpojbww>
+    <xmx:EE7eaTBeHcol6HQcMzLP5HW-i-95PeSXirXIKslXm7nk7HYoYMAyjQ>
+    <xmx:EE7eaVaJY8FE6jcXjxK7f-drP21WXBs7hKSktiOhvG1jGKWnV_j16A>
+    <xmx:EE7eaaGkIP36RqFDMfJgJ67vjLVSSMZXg9qQo31ZKawi6w36DGJd0QlY>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 10:24:13 -0400 (EDT)
+ 14 Apr 2026 10:24:15 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Peter Xu <peterx@redhat.com>,
@@ -80,9 +80,9 @@ Cc: Peter Xu <peterx@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC, PATCH 10/12] userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
-Date: Tue, 14 Apr 2026 15:23:44 +0100
-Message-ID: <20260414142354.1465950-11-kas@kernel.org>
+Subject: [RFC, PATCH 11/12] selftests/mm: add userfaultfd anonymous minor fault tests
+Date: Tue, 14 Apr 2026 15:23:45 +0100
+Message-ID: <20260414142354.1465950-12-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
 References: <20260414142354.1465950-1-kas@kernel.org>
@@ -92,252 +92,523 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add UFFDIO_SET_MODE ioctl to toggle UFFD_FEATURE_MINOR_ASYNC at
-runtime. Takes mmap_write_lock for serialization against all in-flight
-faults. On sync-to-async transition, wake threads blocked in
-handle_userfault() so they retry and auto-resolve.
+Add tests for UFFD_FEATURE_MINOR_ANON, UFFD_FEATURE_MINOR_ASYNC,
+UFFDIO_DEACTIVATE, UFFDIO_SET_MODE, and PAGE_IS_UFFD_DEACTIVATED:
 
-Since ctx->features can now be modified concurrently, add
-userfaultfd_features() helper that wraps READ_ONCE() and convert
-all ctx->features reads to use it.
+- minor-anon-async: populate pages, register MODE_MINOR with
+  MINOR_ASYNC, deactivate via UFFDIO_DEACTIVATE, re-access and verify
+  content is preserved with no faults delivered to the handler.
+
+- minor-anon-sync: same setup but without MINOR_ASYNC. Verify that
+  each deactivated page access delivers a MINOR fault to the handler,
+  and UFFDIO_CONTINUE resolves it. Exercises both PTE and THP paths.
+
+- minor-anon-pagemap: deactivate a range, touch first half, use
+  PAGEMAP_SCAN with PAGE_IS_UFFD_DEACTIVATED to verify the untouched
+  second half is reported as cold.
+
+- minor-anon-gup: write() from a deactivated page into a pipe to
+  exercise GUP resolution through protnone PTEs via async auto-restore.
+
+- minor-anon-async-toggle: full detection-to-eviction cycle using
+  UFFDIO_SET_MODE. Start async (detection), flip to sync (eviction
+  of cold pages), flip back to async.
+
+- minor-anon-close: deactivate pages, close the uffd fd, verify all
+  pages are accessible again (protnone PTEs restored on cleanup).
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 ---
- fs/userfaultfd.c                 | 95 ++++++++++++++++++++++++++++----
- include/uapi/linux/userfaultfd.h | 13 +++++
- 2 files changed, 96 insertions(+), 12 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c | 458 +++++++++++++++++++
+ 1 file changed, 458 insertions(+)
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 43064238fd8d..0edb33599491 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -79,24 +79,33 @@ struct userfaultfd_wake_range {
- /* internal indication that UFFD_API ioctl was successfully executed */
- #define UFFD_FEATURE_INITIALIZED		(1u << 31)
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 6f5e404a446c..8bd5a642bd5a 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -7,6 +7,7 @@
  
-+/*
-+ * Read ctx->features with READ_ONCE() since UFFDIO_SET_MODE can
-+ * modify it concurrently.
-+ */
-+static unsigned int userfaultfd_features(struct userfaultfd_ctx *ctx)
+ #include "uffd-common.h"
+ 
++#include <linux/fs.h>
+ #include "../../../../mm/gup_test.h"
+ 
+ #ifdef __NR_userfaultfd
+@@ -623,6 +624,423 @@ void uffd_minor_collapse_test(uffd_global_test_opts_t *gopts, uffd_test_args_t *
+ 	uffd_minor_test_common(gopts, true, false);
+ }
+ 
++static void deactivate_range(int uffd, __u64 start, __u64 len)
 +{
-+	return READ_ONCE(ctx->features);
++	struct uffdio_range range = { .start = start, .len = len };
++
++	if (ioctl(uffd, UFFDIO_DEACTIVATE, &range))
++		err("UFFDIO_DEACTIVATE failed");
 +}
 +
- static bool userfaultfd_is_initialized(struct userfaultfd_ctx *ctx)
- {
--	return ctx->features & UFFD_FEATURE_INITIALIZED;
-+	return userfaultfd_features(ctx) & UFFD_FEATURE_INITIALIZED;
- }
- 
- static bool userfaultfd_wp_async_ctx(struct userfaultfd_ctx *ctx)
- {
--	return ctx && (ctx->features & UFFD_FEATURE_WP_ASYNC);
-+	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_WP_ASYNC);
- }
- 
- static bool userfaultfd_minor_anon_ctx(struct userfaultfd_ctx *ctx)
- {
--	return ctx && (ctx->features & UFFD_FEATURE_MINOR_ANON);
-+	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_MINOR_ANON);
- }
- 
- static bool userfaultfd_minor_async_ctx(struct userfaultfd_ctx *ctx)
- {
--	return ctx && (ctx->features & UFFD_FEATURE_MINOR_ASYNC);
-+	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_MINOR_ASYNC);
- }
- 
- static unsigned int userfaultfd_ctx_flags(struct userfaultfd_ctx *ctx)
-@@ -122,7 +131,7 @@ bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma)
- 	if (!ctx)
- 		return false;
- 
--	return ctx->features & UFFD_FEATURE_WP_UNPOPULATED;
-+	return userfaultfd_features(ctx) & UFFD_FEATURE_WP_UNPOPULATED;
- }
- 
- static int userfaultfd_wake_function(wait_queue_entry_t *wq, unsigned mode,
-@@ -435,7 +444,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
- 	/* 0 or > 1 flags set is a bug; we expect exactly 1. */
- 	VM_WARN_ON_ONCE(!reason || (reason & (reason - 1)));
- 
--	if (ctx->features & UFFD_FEATURE_SIGBUS)
-+	if (userfaultfd_features(ctx) & UFFD_FEATURE_SIGBUS)
- 		goto out;
- 	if (!(vmf->flags & FAULT_FLAG_USER) && (ctx->flags & UFFD_USER_MODE_ONLY))
- 		goto out;
-@@ -506,7 +515,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
- 	init_waitqueue_func_entry(&uwq.wq, userfaultfd_wake_function);
- 	uwq.wq.private = current;
- 	uwq.msg = userfault_msg(vmf->address, vmf->real_address, vmf->flags,
--				reason, ctx->features);
-+				reason, userfaultfd_features(ctx));
- 	uwq.ctx = ctx;
- 	uwq.waken = false;
- 
-@@ -668,7 +677,7 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
- 	if (!octx)
- 		return 0;
- 
--	if (!(octx->features & UFFD_FEATURE_EVENT_FORK)) {
-+	if (!(userfaultfd_features(octx) & UFFD_FEATURE_EVENT_FORK)) {
- 		userfaultfd_reset_ctx(vma);
- 		return 0;
- 	}
-@@ -774,7 +783,7 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
- 	if (!ctx)
- 		return;
- 
--	if (ctx->features & UFFD_FEATURE_EVENT_REMAP) {
-+	if (userfaultfd_features(ctx) & UFFD_FEATURE_EVENT_REMAP) {
- 		vm_ctx->ctx = ctx;
- 		userfaultfd_ctx_get(ctx);
- 		down_write(&ctx->map_changing_lock);
-@@ -824,7 +833,7 @@ bool userfaultfd_remove(struct vm_area_struct *vma,
- 	struct userfaultfd_wait_queue ewq;
- 
- 	ctx = vma->vm_userfaultfd_ctx.ctx;
--	if (!ctx || !(ctx->features & UFFD_FEATURE_EVENT_REMOVE))
-+	if (!ctx || !(userfaultfd_features(ctx) & UFFD_FEATURE_EVENT_REMOVE))
- 		return true;
- 
- 	userfaultfd_ctx_get(ctx);
-@@ -863,7 +872,7 @@ int userfaultfd_unmap_prep(struct vm_area_struct *vma, unsigned long start,
- 	struct userfaultfd_unmap_ctx *unmap_ctx;
- 	struct userfaultfd_ctx *ctx = vma->vm_userfaultfd_ctx.ctx;
- 
--	if (!ctx || !(ctx->features & UFFD_FEATURE_EVENT_UNMAP) ||
-+	if (!ctx || !(userfaultfd_features(ctx) & UFFD_FEATURE_EVENT_UNMAP) ||
- 	    has_unmap_ctx(ctx, unmaps, start, end))
- 		return 0;
- 
-@@ -1826,6 +1835,65 @@ static int userfaultfd_deactivate(struct userfaultfd_ctx *ctx,
- 	return ret;
- }
- 
-+/*
-+ * Features that can be toggled at runtime via UFFDIO_SET_MODE.
-+ * Only async features that were enabled at UFFDIO_API time may be toggled.
-+ */
-+#define UFFD_FEATURE_TOGGLEABLE	(UFFD_FEATURE_MINOR_ASYNC)
-+
-+static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
-+				  unsigned long arg)
++static void set_async_mode(int uffd, bool enable)
 +{
-+	struct uffdio_set_mode mode;
-+	struct mm_struct *mm = ctx->mm;
++	struct uffdio_set_mode mode = { };
 +
-+	if (copy_from_user(&mode, (void __user *)arg, sizeof(mode)))
-+		return -EFAULT;
++	if (enable)
++		mode.enable = UFFD_FEATURE_MINOR_ASYNC;
++	else
++		mode.disable = UFFD_FEATURE_MINOR_ASYNC;
 +
-+	/* enable and disable must not overlap */
-+	if (mode.enable & mode.disable)
-+		return -EINVAL;
++	if (ioctl(uffd, UFFDIO_SET_MODE, &mode))
++		err("UFFDIO_SET_MODE failed");
++}
 +
-+	/* only toggleable features are allowed */
-+	if ((mode.enable | mode.disable) & ~UFFD_FEATURE_TOGGLEABLE)
-+		return -EINVAL;
++/*
++ * Test async minor faults on anonymous memory.
++ * Populate pages, register MODE_MINOR with MINOR_ASYNC,
++ * deactivate, re-access, verify content preserved and no faults delivered.
++ */
++static void uffd_minor_anon_async_test(uffd_global_test_opts_t *gopts,
++				       uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
 +
-+	if (!mmget_not_zero(mm))
-+		return -ESRCH;
++	/* Populate all pages with known content */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	/* Register MODE_MINOR (uffd was opened with MINOR_ANON | MINOR_ASYNC) */
++	if (uffd_register(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size,
++			  false, false, true))
++		err("register failure");
++
++	/* Deactivate all pages — sets protnone */
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size);
++
++	/* Access all pages — should auto-resolve, no faults */
++	for (p = 0; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++		unsigned char expected = p % 255 + 1;
++
++		if (page[0] != expected) {
++			uffd_test_fail("page %lu content mismatch: %u != %u",
++				       p, page[0], expected);
++			return;
++		}
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Custom fault handler for anon minor — just UFFDIO_CONTINUE, no content
++ * modification (the page is protnone so we can't access it from here).
++ */
++static void uffd_handle_minor_anon(uffd_global_test_opts_t *gopts,
++				   struct uffd_msg *msg,
++				   struct uffd_args *uargs)
++{
++	struct uffdio_continue req;
++
++	if (!(msg->arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_MINOR))
++		err("expected minor fault, got 0x%llx",
++		    msg->arg.pagefault.flags);
++
++	req.range.start = msg->arg.pagefault.address;
++	req.range.len = gopts->page_size;
++	req.mode = 0;
++	if (ioctl(gopts->uffd, UFFDIO_CONTINUE, &req)) {
++		/*
++		 * THP races with khugepaged collapse/split:
++		 * EAGAIN: PMD changed under us
++		 * EEXIST: THP present but already resolved
++		 * In both cases the page is accessible — the faulting
++		 * thread retries and succeeds.
++		 */
++		if (errno != EEXIST && errno != EAGAIN)
++			err("UFFDIO_CONTINUE failed");
++	}
++
++	uargs->minor_faults++;
++}
++
++/*
++ * Test sync minor faults on anonymous memory.
++ * Populate pages, register MODE_MINOR (sync), deactivate,
++ * access from worker thread, verify fault delivered, UFFDIO_CONTINUE resolves.
++ */
++static void uffd_minor_anon_sync_test(uffd_global_test_opts_t *gopts,
++				      uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	pthread_t uffd_mon;
++	struct uffd_args uargs = { };
++	char c = '\0';
++	unsigned long p;
++
++	uargs.gopts = gopts;
++	uargs.handle_fault = uffd_handle_minor_anon;
++
++	/* Populate all pages */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	/* Register MODE_MINOR (uffd opened with MINOR_ANON, no MINOR_ASYNC) */
++	if (uffd_register(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size,
++			  false, false, true))
++		err("register failure");
++
++	/* Deactivate all pages */
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size);
++
++	/* Start fault handler thread */
++	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
++		err("uffd_poll_thread create");
++
++	/* Access all pages — triggers sync minor faults, handler does CONTINUE */
++	for (p = 0; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++
++		if (page[0] != (p % 255 + 1)) {
++			uffd_test_fail("page %lu content mismatch", p);
++			goto out;
++		}
++	}
++
++	if (uargs.minor_faults == 0) {
++		uffd_test_fail("expected minor faults, got 0");
++		goto out;
++	}
++
++	uffd_test_pass();
++out:
++	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
++		err("pipe write");
++	if (pthread_join(uffd_mon, NULL))
++		err("join() failed");
++}
++
++/*
++ * Test PAGEMAP_SCAN detection of deactivated (cold) pages.
++ */
++static void uffd_minor_anon_pagemap_test(uffd_global_test_opts_t *gopts,
++					  uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
++	struct page_region regions[16];
++	struct pm_scan_arg pm_arg;
++	int pagemap_fd;
++	long ret;
++
++	/* Need at least 4 pages */
++	if (nr_pages < 4) {
++		uffd_test_skip("need at least 4 pages");
++		return;
++	}
++
++	/* Populate all pages */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, 0xab, page_size);
++
++	/* Register and deactivate */
++	if (uffd_register(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size,
++			  false, false, true))
++		err("register failure");
++
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size);
++
++	/* Touch first half of pages to re-activate them (async auto-resolve) */
++	for (p = 0; p < nr_pages / 2; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;
++	}
++
++	/* Scan for cold (still deactivated) pages */
++	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++	if (pagemap_fd < 0)
++		err("open pagemap");
++
++	memset(&pm_arg, 0, sizeof(pm_arg));
++	pm_arg.size = sizeof(pm_arg);
++	pm_arg.start = (uint64_t)gopts->area_dst;
++	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
++	pm_arg.vec = (uint64_t)regions;
++	pm_arg.vec_len = 16;
++	pm_arg.category_mask = PAGE_IS_UFFD_DEACTIVATED;
++	pm_arg.return_mask = PAGE_IS_UFFD_DEACTIVATED;
++
++	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
++	close(pagemap_fd);
++
++	if (ret < 0) {
++		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
++		return;
++	}
 +
 +	/*
-+	 * mmap_write_lock serializes against all page faults.
-+	 * After we release, no in-flight faults from the old mode exist.
++	 * The second half of pages should be reported as deactivated.
++	 * They may be coalesced into one region.
 +	 */
++	if (ret < 1) {
++		uffd_test_fail("expected cold pages, got %ld regions", ret);
++		return;
++	}
++
++	/* Verify the cold region covers the second half */
++	uint64_t cold_start = regions[0].start;
++	uint64_t expected_start = (uint64_t)gopts->area_dst +
++				  (nr_pages / 2) * page_size;
++
++	if (cold_start != expected_start) {
++		uffd_test_fail("cold region starts at 0x%lx, expected 0x%lx",
++			       (unsigned long)cold_start,
++			       (unsigned long)expected_start);
++		return;
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Test that GUP resolves through protnone PTEs (async mode).
++ * Deactivate pages, then use a pipe to exercise GUP on the deactivated
++ * memory. write() from deactivated pages triggers GUP which must fault
++ * through the protnone PTE.
++ */
++static void uffd_minor_anon_gup_test(uffd_global_test_opts_t *gopts,
++				     uffd_test_args_t *args)
++{
++	unsigned long page_size = gopts->page_size;
++	char *buf;
++	int pipefd[2];
++
++	buf = malloc(page_size);
++	if (!buf)
++		err("malloc");
++
++	/* Populate first page with known content */
++	memset(gopts->area_dst, 0xCD, page_size);
++
++	if (uffd_register(gopts->uffd, gopts->area_dst, page_size,
++			  false, false, true))
++		err("register failure");
++
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size);
++
++	if (pipe(pipefd))
++		err("pipe");
++
++	/*
++	 * write() from the deactivated page into the pipe.
++	 * This triggers GUP on the protnone PTE. In async mode the
++	 * kernel auto-restores permissions and GUP succeeds.
++	 */
++	if (write(pipefd[1], gopts->area_dst, page_size) != page_size) {
++		uffd_test_fail("write from deactivated page failed: %s",
++			       strerror(errno));
++		goto out;
++	}
++
++	if (read(pipefd[0], buf, page_size) != page_size) {
++		uffd_test_fail("read from pipe failed");
++		goto out;
++	}
++
++	if (memcmp(buf, "\xCD", 1) != 0) {
++		uffd_test_fail("content mismatch: got 0x%02x, expected 0xCD",
++			       (unsigned char)buf[0]);
++		goto out;
++	}
++
++	uffd_test_pass();
++out:
++	close(pipefd[0]);
++	close(pipefd[1]);
++	free(buf);
++}
++
++/*
++ * Test runtime toggle between async and sync modes.
++ * Start in async mode (detection), flip to sync (eviction), verify faults
++ * block, resolve them, flip back to async.
++ */
++static void uffd_minor_anon_async_toggle_test(uffd_global_test_opts_t *gopts,
++					      uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	struct uffd_args uargs = { };
++	pthread_t uffd_mon;
++	char c = '\0';
++	unsigned long p;
++
++	uargs.gopts = gopts;
++	uargs.handle_fault = uffd_handle_minor_anon;
++
++	/* Populate */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	if (uffd_register(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size,
++			  false, false, true))
++		err("register failure");
++
++	/* Phase 1: async detection — deactivate, access first half */
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size);
++
++	for (p = 0; p < nr_pages / 2; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;  /* auto-resolves in async mode */
++	}
++
++	/* Phase 2: flip to sync for eviction */
++	set_async_mode(gopts->uffd, false);
++
++	/* Start handler — will receive faults for cold pages */
++	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
++		err("uffd_poll_thread create");
++
++	/* Access second half (cold pages) — should trigger sync faults */
++	for (p = nr_pages / 2; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++		if (page[0] != (p % 255 + 1)) {
++			uffd_test_fail("page %lu content mismatch", p);
++			goto out;
++		}
++	}
++
++	if (uargs.minor_faults == 0) {
++		uffd_test_fail("expected sync faults, got 0");
++		goto out;
++	}
++
++	/* Phase 3: flip back to async */
++	set_async_mode(gopts->uffd, true);
++
++	/* Deactivate and access again — should auto-resolve */
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size);
++
++	for (p = 0; p < nr_pages; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;
++	}
++
++	uffd_test_pass();
++out:
++	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
++		err("pipe write");
++	if (pthread_join(uffd_mon, NULL))
++		err("join() failed");
++}
++
++/*
++ * Test that deactivated pages become accessible after closing uffd.
++ */
++static void uffd_minor_anon_close_test(uffd_global_test_opts_t *gopts,
++				       uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
++
++	/* Populate */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	if (uffd_register(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size,
++			  false, false, true))
++		err("register failure");
++
++	deactivate_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size);
++
++	/* Close uffd — should restore protnone PTEs */
++	close(gopts->uffd);
++	gopts->uffd = -1;
++
++	/* All pages should be accessible with original content */
++	for (p = 0; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++		unsigned char expected = p % 255 + 1;
++
++		if (page[0] != expected) {
++			uffd_test_fail("page %lu not accessible after close", p);
++			return;
++		}
++	}
++
++	uffd_test_pass();
++}
++
+ static sigjmp_buf jbuf, *sigbuf;
+ 
+ static void sighndl(int sig, siginfo_t *siginfo, void *ptr)
+@@ -1625,6 +2043,46 @@ uffd_test_case_t uffd_tests[] = {
+ 		/* We can't test MADV_COLLAPSE, so try our luck */
+ 		.uffd_feature_required = UFFD_FEATURE_MINOR_SHMEM,
+ 	},
 +	{
-+		unsigned int new_features;
-+
-+		mmap_write_lock(mm);
-+		new_features = userfaultfd_features(ctx);
-+		new_features |= mode.enable;
-+		new_features &= ~mode.disable;
-+		WRITE_ONCE(ctx->features, new_features);
-+		mmap_write_unlock(mm);
-+	}
-+
-+	/*
-+	 * If switching to async, wake threads blocked in handle_userfault().
-+	 * They will retry the fault and auto-resolve under the new mode.
-+	 * len=0 means wake all pending faults on this context.
-+	 */
-+	if (mode.enable & UFFD_FEATURE_MINOR_ASYNC) {
-+		struct userfaultfd_wake_range range = { .len = 0 };
-+
-+		spin_lock_irq(&ctx->fault_pending_wqh.lock);
-+		__wake_up_locked_key(&ctx->fault_pending_wqh, TASK_NORMAL,
-+				     &range);
-+		__wake_up(&ctx->fault_wqh, TASK_NORMAL, 1, &range);
-+		spin_unlock_irq(&ctx->fault_pending_wqh.lock);
-+	}
-+
-+	mmput(mm);
-+	return 0;
-+}
- 
- static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
- {
-@@ -2150,6 +2218,9 @@ static long userfaultfd_ioctl(struct file *file, unsigned cmd,
- 	case UFFDIO_DEACTIVATE:
- 		ret = userfaultfd_deactivate(ctx, arg);
- 		break;
-+	case UFFDIO_SET_MODE:
-+		ret = userfaultfd_set_mode(ctx, arg);
-+		break;
- 	}
- 	return ret;
- }
-@@ -2177,7 +2248,7 @@ static void userfaultfd_show_fdinfo(struct seq_file *m, struct file *f)
- 	 *	protocols: aa:... bb:...
- 	 */
- 	seq_printf(m, "pending:\t%lu\ntotal:\t%lu\nAPI:\t%Lx:%x:%Lx\n",
--		   pending, total, UFFD_API, ctx->features,
-+		   pending, total, UFFD_API, userfaultfd_features(ctx),
- 		   UFFD_API_IOCTLS|UFFD_API_RANGE_IOCTLS);
- }
- #endif
-diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
-index 775825da2596..f0f14f9db06c 100644
---- a/include/uapi/linux/userfaultfd.h
-+++ b/include/uapi/linux/userfaultfd.h
-@@ -84,6 +84,7 @@
- #define _UFFDIO_CONTINUE		(0x07)
- #define _UFFDIO_POISON			(0x08)
- #define _UFFDIO_DEACTIVATE		(0x09)
-+#define _UFFDIO_SET_MODE		(0x0A)
- #define _UFFDIO_API			(0x3F)
- 
- /* userfaultfd ioctl ids */
-@@ -110,6 +111,8 @@
- 				      struct uffdio_poison)
- #define UFFDIO_DEACTIVATE	_IOR(UFFDIO, _UFFDIO_DEACTIVATE,	\
- 				     struct uffdio_range)
-+#define UFFDIO_SET_MODE		_IOW(UFFDIO, _UFFDIO_SET_MODE,	\
-+				     struct uffdio_set_mode)
- 
- /* read() structure */
- struct uffd_msg {
-@@ -395,6 +398,16 @@ struct uffdio_move {
- 	__s64 move;
- };
- 
-+struct uffdio_set_mode {
-+	/*
-+	 * Toggle async mode for features at runtime.
-+	 * Supported: UFFD_FEATURE_MINOR_ASYNC.
-+	 * Setting a bit in both enable and disable is invalid.
-+	 */
-+	__u64 enable;
-+	__u64 disable;
-+};
-+
- /*
-  * Flags for the userfaultfd(2) system call itself.
-  */
++		.name = "minor-anon-async",
++		.uffd_fn = uffd_minor_anon_async_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required =
++		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
++	},
++	{
++		.name = "minor-anon-sync",
++		.uffd_fn = uffd_minor_anon_sync_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required = UFFD_FEATURE_MINOR_ANON,
++	},
++	{
++		.name = "minor-anon-pagemap",
++		.uffd_fn = uffd_minor_anon_pagemap_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required =
++		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
++	},
++	{
++		.name = "minor-anon-gup",
++		.uffd_fn = uffd_minor_anon_gup_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required =
++		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
++	},
++	{
++		.name = "minor-anon-async-toggle",
++		.uffd_fn = uffd_minor_anon_async_toggle_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required =
++		UFFD_FEATURE_MINOR_ANON | UFFD_FEATURE_MINOR_ASYNC,
++	},
++	{
++		.name = "minor-anon-close",
++		.uffd_fn = uffd_minor_anon_close_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required = UFFD_FEATURE_MINOR_ANON,
++	},
+ 	{
+ 		.name = "sigbus",
+ 		.uffd_fn = uffd_sigbus_test,
 -- 
 2.51.2
 
