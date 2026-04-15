@@ -1,187 +1,193 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407E521FF2A
-	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 11:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D65E33F37A;
+	Wed, 15 Apr 2026 11:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776253243; cv=none; b=RrleW00nyRpxH91JfGm/s2CNXHlUpI8dZzRbVDG4kcAxxZdWjkb3j8CAW8nITuBARmjBQAXHd6qfU3tQ/ishFFdN3SBI/SFdVfoKC6zTJtFchUlvkVNtU1Yf2jtGUhFRWSYPdml9MrPo3R6mpW0lmEYxDM2vYdPHh3N8OVpSL5Q=
+	t=1776253541; cv=none; b=ra0N0LknOYUhl8IFuPQRLy5yKfeZXZJCxn7qkxawutfP9UhaY0eHYEymhVt/lK40OzqeGl+5Ji4DAp9lAdGs4G1aL1QXpu++9FTZBXsdRgPF9/7deQQYfO3jRI70hA/c2TGkvHmsijnCLKA+kTyaqCmvG1A+StjxtAKY92MVleI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776253243; c=relaxed/simple;
-	bh=PembD3LExuC+fspVh61O0I7G8DlT5QWiK4JovfG/VAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CigSuWDz4HOf9cWWnHuxlvXgKI72rDmZfUqyXUl0gBFCrci56gRTX9FB6efc0XtLesuKJ+7Rv1UIG9sXKEeD+oRgEeMJdo3naAO82BEdkJ9B0wIJht8/hGGxEjwdgGzOdkotZfYaqJAdcE0d3oqT4nq61ZZUn/CmXeT/RgmSwp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U0j1Rx2z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FM4bjPBd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776253541; c=relaxed/simple;
+	bh=/hce7AEsE6Dd+EMW5lLCu5KR/ju7tpARdd7z1+JdM1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s4JewHbx58V6vtBX8rkcNxP61ZmVbJSnhTtAoRHjvIXw8soNQ/iuUkp11A6kn6XemfsY+TtoEXr8Cikcei0u50CUA92itPbKNlRlEfbDtO6k4T9UIbtrS90BBX3R8WZYwGnZdEfxWNQTCIs//PZqBde4D/fkDXDUxJeIqIxF7YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qy3e3Hc7; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U0j1Rx2z";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FM4bjPBd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776253241;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IJVw6SswfwNiSg/u5NKKpPiwjKwfGIHglemFq4Sz4Hw=;
-	b=U0j1Rx2zwz4YEelTJsyt6c7qVktzKBNJGZAUgJoNfMrtSaTowUwQ0jxe00XTEoykjgDgK3
-	RFOM1+PFGOVVVK69IASgtKcNxO9jTDwj64/1oT9TlkIg4a2ADcgr05DjWcL8e1Qh82cdMC
-	kHyZhasrw/BMzeVR2XWH0wpchFyII3w=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-384-E7hiev4kOVqUyEsoNoFXFQ-1; Wed, 15 Apr 2026 07:40:40 -0400
-X-MC-Unique: E7hiev4kOVqUyEsoNoFXFQ-1
-X-Mimecast-MFC-AGG-ID: E7hiev4kOVqUyEsoNoFXFQ_1776253239
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488d9e1e61aso35644065e9.0
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 04:40:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776253239; x=1776858039; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IJVw6SswfwNiSg/u5NKKpPiwjKwfGIHglemFq4Sz4Hw=;
-        b=FM4bjPBdY7annbvYYJMaV8bk/REHZuOuMXFbFhd0jtgARmYo8KZXJLHk8V3yldqeqf
-         fXk4CFI4VVwsPF7oJVsjU4SkSa8d01iORTdftPXn+1AXjoPfTON0oIcDjVhuWO+dTLBT
-         YyYh5eIQJtfuVtTVKaQai6aX7mju4K59zfXj/ihLZ2ttwJ6+YnZQx2SK2yJMvrifRRtV
-         OzQ3EUcUul454gFp3p+peFs9BW5K21gO8rcPNWJdrlHTs6k8B9M1Y3q7QJwzI8/iRYjb
-         TbgptynIDXVa+b7SJs941GjnlvvZuDJ40poT0JwMLXqLhoZ/OhGt7u416fwFyrcGZk/p
-         DsKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776253239; x=1776858039;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IJVw6SswfwNiSg/u5NKKpPiwjKwfGIHglemFq4Sz4Hw=;
-        b=lqOwcEjPgDjAL1tvxI6sztEm0Zeib+EDTDb6qhlfP7zqfzg4E0RcN9RCQzak2fKPOq
-         OHtOOsuiWJmg33aFHuc41v2j1PC92ru6WV8WbeWc7cEq8NcrrpUpGbdgSapVtgkXOndC
-         erQsnAsclY7P2NX++zTOVwle8ohzX1NN73z2S1tA1DOzZTpe512e1gsQPM8mBDU3IdiX
-         fQBCH8peFfag9udcySN1leouIlI6V5v/gY8pfTy88j0vV6pWZuS5XUYOyuZQen/QO4PA
-         9Y7ok2LzTP0VDB6U5WV9mevPyAUFUOGfrRME/VEtB9Ve7J+NaM7zzarsxBgvOWYgL282
-         a3SA==
-X-Forwarded-Encrypted: i=1; AFNElJ91xeZzD2jZz7YrqkIbxMpHGtbCeP/3o0CU8/+pcrXA8FggLORJvuiEJ8HKqbSX3K7AqPA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBKFoGBjGqC5sBqk8wS1KJ7qBaNO35yYAqTP15BI4iqLQ73lwK
-	AYSBEXqcVSPM2l2jsLCjG62Bag4UaW5RL4XZ9zu2MmPl5Fxigm4XVb3r/mN6M90quN+na/8S65l
-	wYB1ATGmZAKmJvkCxyVvEyJYxWRrC+yz+99e//QhYApH4KL/qfF4zYg==
-X-Gm-Gg: AeBDieuVrFlB4nPnsyQkZxAEVh9MZuiUC7D84nk/nmpIZoiSgJYdm/rXxdLpVt2QwmM
-	APl8odrYK0RJHbPEp/dTYUb5T+QqOEjOKClEdDgh272/eLD4ohNPVHb1ggGyAxYsUiBf69Cus50
-	EVJe810CJ5iKNXsWTMm3SS1r3J6R0/EzeNua9P4j704yt4y9xMeWkysepka7wJfUaPKvb5IEYoR
-	iC/sYScEt7fiNDlNqThWjVTo8xvViSYXYPMhP3u6LxUlzPjew5SxEul0QakXYLQGvQLwf+0hklp
-	og8ft0T8n+tdDIXAfRG7JAE1pSxJBHS4/6yWXFTYTqep2y0W8kc8s6q/MFUFVADYznyclRBBrfE
-	TRwGWgZv/S6iS9RXUCPkFtMTvAeSYiEYl7Y82eMNgbEUJo9G+ckt2xvJgS8tAyorw2gLEvyzTPc
-	mTOBWa7Q==
-X-Received: by 2002:a05:600c:8218:b0:488:a14d:3d81 with SMTP id 5b1f17b1804b1-488d67c7034mr353013555e9.2.1776253238748;
-        Wed, 15 Apr 2026 04:40:38 -0700 (PDT)
-X-Received: by 2002:a05:600c:8218:b0:488:a14d:3d81 with SMTP id 5b1f17b1804b1-488d67c7034mr353012825e9.2.1776253238219;
-        Wed, 15 Apr 2026 04:40:38 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3d5eb4sm4762846f8f.20.2026.04.15.04.40.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 04:40:37 -0700 (PDT)
-Date: Wed, 15 Apr 2026 13:40:16 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 3/3] vsock/test: add MSG_PEEK after partial recv
- test
-Message-ID: <ad93HtBWQqz980Ym@sgarzare-redhat>
-References: <20260414-fix_peek-v3-0-e7daead49f83@redhat.com>
- <20260414-fix_peek-v3-3-e7daead49f83@redhat.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qy3e3Hc7"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F50IaM1833223;
+	Wed, 15 Apr 2026 11:45:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZNdLtV
+	Z/jemo3cFAAx7t28VzY/k2Mm8Gd9recp0TKNA=; b=qy3e3Hc7VX/BJ1/0mKa9xk
+	fh+HbCnfAv93P3gBluy1X6VFofOcmDWGXizc6Z4vn4cRZcH7Fjq7033jUF8FIpyK
+	9nnVKOkRFDJy34Ufq9DXilFwNg6EUhs9dCT+xFOel8eGiyRG6BC+MDElhce6LnSo
+	sdiS/u00cA9lSH8ta7H4RVtfmJDr3mWnkHdA7qT4aug/yW4fV/APHsugH4KqzViv
+	Lx31cq0TYiLk2OHE3sJkuTDn9jIItRwSb+klAl0BiUhNRWw9Kdl7dlBtrduvy4g4
+	rRsE36L4Mb8xfNNeo3Mty4XSgLg0J5GBSp9NlhJ7z+0/AgbRSn3YH9QMWJxk30HA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89rfu5x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 11:45:39 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63F8uYMf004569;
+	Wed, 15 Apr 2026 11:45:38 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24kdy44-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 11:45:37 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63FBjXiD49217802
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Apr 2026 11:45:33 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C40D92004D;
+	Wed, 15 Apr 2026 11:45:33 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 84EF420040;
+	Wed, 15 Apr 2026 11:45:33 +0000 (GMT)
+Received: from [9.111.60.89] (unknown [9.111.60.89])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Apr 2026 11:45:33 +0000 (GMT)
+Message-ID: <b284ea20-f663-4d3c-87bc-22c6fc147134@linux.ibm.com>
+Date: Wed, 15 Apr 2026 13:45:33 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260414-fix_peek-v3-3-e7daead49f83@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] KVM: s390: Fix lpsw/e breaking event handling
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
+        borntraeger@linux.ibm.com
+References: <20260323153637.3683-1-frankja@linux.ibm.com>
+ <20260323153637.3683-2-frankja@linux.ibm.com>
+ <20260415105925.10321B18-hca@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260415105925.10321B18-hca@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDEwNCBTYWx0ZWRfX+blWt3t4EB5W
+ kBnDkbpij0dcUA0mn6p5dzM4SA4FXbfdLVAdXkLqLYbZHmin7fvEOiZyBw+UYW0ucov4pKpfwa/
+ zD1RIRO3Kdg7UPdJmQq6Xm7z0vsaU4T2p/jrRIOmRjhCWRDJjQqdsecqNVcV2aEyrzNKh7Immq4
+ +8QocnRx0pCuLag/7jpymS6WiB36EfIm/g8LdNiqsj0bxwlRYxBserGEwbTPXicUZ6hLPppWaVw
+ mZUeq6D7FVuWgREZ2cleVTqZRXZ9aHQKph8vtt90C1Xjl98U5IhNb/5/KbRb1UT5hBO1Y9I4NQz
+ pqurUsZFU2faJM3D8f0zzpFLDvSx8ctakNk/96sXaxsd1TH1OOocv4C673jmTbILn/jzFqprX9l
+ 2Av6+TiTmWz/wnqySrMEoffyiMqXIRgZavzLue/0ty2SiX97MiR7x2y0N9WuFPo9sXKtK/w+F82
+ zBvE17i7vQ/GNE+XOXQ==
+X-Proofpoint-ORIG-GUID: Mn0wBowuQ5PqQKvgoKWfnniW6Ct7kXn-
+X-Proofpoint-GUID: Mn0wBowuQ5PqQKvgoKWfnniW6Ct7kXn-
+X-Authority-Analysis: v=2.4 cv=fYidDUQF c=1 sm=1 tr=0 ts=69df7a63 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=4Rwbd3wxp51vNf_aTKoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150104
 
-On Tue, Apr 14, 2026 at 06:10:23PM +0200, Luigi Leonardi wrote:
->Add a test that verifies MSG_PEEK works correctly after a partial
->recv().
->
->This is to test a bug that was present in the
->`virtio_transport_stream_do_peek()` when computing the number of bytes to
->copy: After a partial read, the peek function didn't take into
->consideration the number of bytes that were already read. So peeking the
->whole buffer would cause an out-of-bounds read, that resulted in a -EFAULT.
->
->This test does exactly this: do a partial recv on a buffer, then try to
->peek the whole buffer content.
+On 4/15/26 12:59, Heiko Carstens wrote:
+> On Mon, Mar 23, 2026 at 03:35:22PM +0000, Janosch Frank wrote:
+>> LPSW and LPSWE need to set the gbea on completion but currently don't.
+>> Time to fix this up.
+>>
+>> LPSWEY was designed to not set the bear.
+>>
+>> Fixes: 48a3e950f4cee ("KVM: s390: Add support for machine checks.")
+>> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+>> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+>> ---
+>>   arch/s390/kvm/priv.c | 8 ++++++--
+>>   1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
+>> index a3250ad83a8e..cc0553da14cb 100644
+>> --- a/arch/s390/kvm/priv.c
+>> +++ b/arch/s390/kvm/priv.c
+>> @@ -714,12 +714,13 @@ int kvm_s390_handle_lpsw(struct kvm_vcpu *vcpu)
+>>   {
+>>   	psw_t *gpsw = &vcpu->arch.sie_block->gpsw;
+>>   	psw32_t new_psw;
+>> -	u64 addr;
+>> +	u64 addr, iaddr;
+>>   	int rc;
+>>   	u8 ar;
+>>   
+>>   	vcpu->stat.instruction_lpsw++;
+>>   
+>> +	iaddr = gpsw->addr - kvm_s390_get_ilen(vcpu);
+>>   	if (gpsw->mask & PSW_MASK_PSTATE)
+>>   		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
+>>   
+>> @@ -737,18 +738,20 @@ int kvm_s390_handle_lpsw(struct kvm_vcpu *vcpu)
+>>   	gpsw->addr = new_psw.addr & ~PSW32_ADDR_AMODE;
+>>   	if (!is_valid_psw(gpsw))
+>>   		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+>> +	vcpu->arch.sie_block->gbea = iaddr;
+>>   	return 0;
+> 
+> This doesn't look correct to me: even if there is an early specification
+> exception the PSW is still replaced, and hence the breaking event address
+> needs to be updated. Read: the gbea assignment should be moved before
+> the is_valid_psw() check.
 
-nit: I think it's better to mention also that we are re-using
-test_stream_msg_peek_client() also for this test.
+Right, LPSW(E) completes even when we get the early specs and bear is 
+set when completing LPSW(E).
 
->
->Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->---
-> tools/testing/vsock/vsock_test.c | 37 +++++++++++++++++++++++++++++++++++++
-> 1 file changed, 37 insertions(+)
->
->diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
->index bdb0754965df..ab387a13f0ae 100644
->--- a/tools/testing/vsock/vsock_test.c
->+++ b/tools/testing/vsock/vsock_test.c
->@@ -346,6 +346,38 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
-> 	return test_msg_peek_server(opts, false);
-> }
->
->+static void test_stream_peek_after_recv_server(const struct test_opts *opts)
->+{
->+	unsigned char buf_normal[MSG_PEEK_BUF_LEN];
->+	unsigned char buf_peek[MSG_PEEK_BUF_LEN];
->+	int fd;
->+
->+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
->+	if (fd < 0) {
->+		perror("accept");
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	control_writeln("SRVREADY");
->+
->+	/* Partial recv to advance offset within the skb */
->+	recv_buf(fd, buf_normal, 1, 0, 1);
->+
->+	/* Ask more bytes than available */
-
-nit:	/* Peek with a buffer larger than the remaining data */
-
->+	recv_buf(fd, buf_peek, sizeof(buf_peek), MSG_PEEK, sizeof(buf_peek) - 1);
->+
->+	/* Recv rest of the data */
-
-nit:	/* Consume the remaining data */
-
->+	recv_buf(fd, buf_normal, sizeof(buf_normal) - 1, 0, sizeof(buf_normal) - 1);
->+
->+	/* Compare full peek and normal read. */
->+	if (memcmp(buf_peek, buf_normal, sizeof(buf_peek) - 1)) {
->+		fprintf(stderr, "Full peek data mismatch\n");
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	close(fd);
->+}
->+
-> #define SOCK_BUF_SIZE (2 * 1024 * 1024)
-> #define SOCK_BUF_SIZE_SMALL (64 * 1024)
-> #define MAX_MSG_PAGES 4
->@@ -2509,6 +2541,11 @@ static struct test_case test_cases[] = {
-> 		.run_client = test_stream_tx_credit_bounds_client,
-> 		.run_server = test_stream_tx_credit_bounds_server,
-> 	},
->+	{
->+		.name = "SOCK_STREAM MSG_PEEK after partial recv",
->+		.run_client = test_stream_msg_peek_client,
->+		.run_server = test_stream_peek_after_recv_server,
-
-I left just minor comments, the test LGTM:
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
+We might also be missing setting ilc to 0 on early specs.
+I need to look into that.
