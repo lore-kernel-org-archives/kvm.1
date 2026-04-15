@@ -1,39 +1,64 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81097327204;
-	Wed, 15 Apr 2026 07:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF32F3D5255;
+	Wed, 15 Apr 2026 08:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776239561; cv=none; b=H+lfoLKdb3xpITyvmHuFhS+Xzh7T26XMrMXvLX7vRVZ3WfTH+XWnP68F9mWCEz5qfQOYuzsO8yXTZw4CNNH2tlXnfCCMMXe0mYrSZxkavLPMf8BOz9BmnppFW0VGPtj2CqdTwqJ+f8ZPKOi6sj5W4rRNsCtdTy7AGfxCeIXZ8eo=
+	t=1776243158; cv=none; b=bc24MWR9CCDCjdxxPF2yfkObbTvHAtzuI9jvnf72/5yAu4oEvqWqdKO56ia1Wr0HavrJ4u9Fm1D38yulAJPE80ircZ2zgra1M3KLBLa1XHpTy1LAhFE4Pzcx01enHT/z1loB6638KbDyMcfBwQfs+DeiYyD0GreJRngnbZK66Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776239561; c=relaxed/simple;
-	bh=gFoOTBhVj8qR/+DdeqVXZpUeBTgfnien4z8tg8KjX1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pUVeFWnhKaIydZ042ZdiIMMt5IGV70te3+IPoaXy5pDhj6FUz3IOKTbIQ6CTh7pFo+Er9MbH5LIvl1sdzoxeKGuYVmPrWLO7PO2RDTQsYMZg5TLeCN6+vhI9Ykzy/3VZWd0Q2NEoMO0LvwqXnmAh4mGc2Ebh2qUfEJujGmBmt0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowABH1QiyQ99pSIKTDQ--.36677S2;
-	Wed, 15 Apr 2026 15:52:18 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
-	Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: [PATCH] RISC-V: KVM: Fix invalid HVA warning in steal-time recording
-Date: Wed, 15 Apr 2026 07:52:16 +0000
-Message-Id: <20260415075216.2757427-1-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776243158; c=relaxed/simple;
+	bh=EP6RMEMUmeVOV0ELjMYb6YkkvrsZU73iDPQT8+6WJDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y2PAqeWuPpQ3nptDPmaMObj2p94PHXv9VUgcobuhij3IAjztrM9h4TGWcUDV5tHLJxlBGVLH84r1KgNmrPYorOcGJt1s6VlvAu+/c+qtAsivoLV6h9El62ujWdiuxwTRkI6H521GuQjAi4g7WcnAqpyq6nD/7ZhIjqfxJPbwTVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IA1MgCQW; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IA1MgCQW"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F2x99j1804500;
+	Wed, 15 Apr 2026 08:52:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ywUBwE7pWttTkKrHMSVm3b2a1AQX/dT9c3TncdcSd
+	KE=; b=IA1MgCQWz8lorDnQNSg2zRgAUEQe92ZIEteVEONNlXiMz8O04q+6cioPb
+	fncjtG91yTQGLRNFTSGfjmYYuuHrfptLntE78t+uhxnnEaE9qkqv4YeCiFuCORXn
+	VQVnjBCorDaZRypfFYqtj7NF3r+cXQUl2HFnNU4JCJSqITUh0e9wLpuH0SYKqn6F
+	q1XFCZQN2zHrPZfQzyDgDARwXSHI587gWbrSPIzEqAzD/zKY6jE5q9i7sBjdMPTn
+	bCxSTAMrPak1WFG1kFipCIwTY6pqs2diAnFqPVDEsv+FDkGKK5iNspSTffwrziu3
+	/AzfojGoyQlNCNUGt+ZnU9Uutek+w==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89k6q5c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 08:52:35 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63F3ZEel004569;
+	Wed, 15 Apr 2026 08:52:35 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24kdb51-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 08:52:35 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63F8qVst50332030
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Apr 2026 08:52:31 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 682622004B;
+	Wed, 15 Apr 2026 08:52:31 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 40E8220040;
+	Wed, 15 Apr 2026 08:52:31 +0000 (GMT)
+Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Apr 2026 08:52:31 +0000 (GMT)
+From: Janosch Frank <frankja@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
+        borntraeger@linux.ibm.com, nrb@linux.ibm.com
+Subject: [kvm-unit-tests 0/5] s390x: Cleanup virtualization library
+Date: Wed, 15 Apr 2026 08:45:40 +0000
+Message-ID: <20260415085145.91197-1-frankja@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,66 +66,57 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABH1QiyQ99pSIKTDQ--.36677S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF15Kr48ur1UKw13Jr4fXwb_yoW8AF15pF
-	ZrCr98Ww1rtry2gasrAr4kWa1jg3yvgF1qgr9I9F90yrs0kFyYyrsYk34IvFyUJry0qF1r
-	ZF1YqF1Duan8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBg0SCWnfJvJ8DgAAsA
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zrL1m-cD_kpcQTbhBDKnBIjUlJS3rPuz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDA4MCBTYWx0ZWRfX7ueHxLxge3kr
+ CisOiJ/ujAFl2uaeFhJvqvHlM1Lwv9naGGBGGy14Z8TIv41CwjuN7gLlUbEaKxSBWJpbnuUtVL5
+ zEKNKLSB/Xl5n22D3OoXyse5XMr6P70tDmPdI4NArYRpNeN10/7+XdX2Ng0Qfy9H/coxGzVEHxL
+ cvRqfyDGGl2kcRo9+G70YIdpnST5IvsdxsqU2R+TCTOstX7qdjXJ0ZIE3ONcYAa4zWuCXeBpCei
+ YACZ0bOcRWLldDNbOKEzgeiFdJ3HpFcPPXXsHIIN/pXqjo018olFCgF9f0+fwcVa1PddA2rhe/g
+ TyEPb1Ol8cE7dR2AK8QrUXH04UTDbZX7qz2zcS0nH6eFXo+bdmBjLQA9+85/YOMxPVTjaYWD8VR
+ r++rIBfFGQq/MZAXqSHN0eDRFDRVmF5w0y6kKgHBXDWtb2IKqew3qhN5PLdXsoycxTD6NED2AaE
+ u3ETebbVsfBehrFr20Q==
+X-Proofpoint-ORIG-GUID: zrL1m-cD_kpcQTbhBDKnBIjUlJS3rPuz
+X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69df51d3 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=z0a_xg6OEB49L0uGEeoA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150080
 
-kvm_riscv_vcpu_record_steal_time() assumes that the steal-time shared
-memory GPA (vcpu->arch.sta.shmem) is always backed by a valid guest
-memory slot. However, this assumption is not guaranteed by the KVM
-userspace ABI.
+In order to support sae virtualization we need to cleanup the library
+a bit and make it more flexible when it comes to guest creation and
+allocation.
 
-A malicious or buggy userspace can set the STA shared memory GPA via
-KVM_SET_ONE_REG without establishing a corresponding memory region via
-KVM_SET_USER_MEMORY_REGION. In such cases, the GPA cannot be translated
-to a valid HVA and kvm_vcpu_gfn_to_hva() returns an error address.
+Janosch Frank (5):
+  lib: s390x: Add function to get page root
+  lib: s390x: sie: Allocate physical guest memory via memalign
+  lib: s390x: sie: Free guest memory on destroy
+  lib: s390x: snippet: Add function to create a guest of specific length
+  lib: s390x: Remove kvm s390 prefix from sie control block
 
-The current implementation incorrectly treats this as a kernel warning
-using WARN_ON(), which may escalate to a kernel panic when panic_on_warn
-is enabled.
+ lib/s390x/asm/sie-arch.h |  2 +-
+ lib/s390x/interrupt.c    |  4 ++--
+ lib/s390x/mmu.h          |  7 +++++++
+ lib/s390x/sie-icpt.c     |  2 +-
+ lib/s390x/sie-icpt.h     |  2 +-
+ lib/s390x/sie.c          |  7 +++++--
+ lib/s390x/sie.h          |  4 ++--
+ lib/s390x/snippet.h      | 18 ++++++++++++++----
+ s390x/diag258.c          |  4 ++--
+ s390x/edat.c             |  5 +++--
+ s390x/mvpg-sie.c         |  2 +-
+ s390x/pv-edat1.c         |  4 ++--
+ s390x/sie-dat.c          |  2 +-
+ s390x/skey.c             |  7 +++----
+ 14 files changed, 45 insertions(+), 25 deletions(-)
 
-This is not a kernel bug condition but a normal invalid configuration
-from userspace, and should be handled gracefully.
-
-Fix it by removing WARN_ON() and treating invalid HVA as a normal
-failure case, resetting the STA shared memory state.
-
-Fixes: e9f12b5fff8ad0 ("RISC-V: KVM: Implement SBI STA extension")
-Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-Assisted-by: OpenClaw:DeepSeek-V3.2
----
- arch/riscv/kvm/vcpu_sbi_sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/riscv/kvm/vcpu_sbi_sta.c b/arch/riscv/kvm/vcpu_sbi_sta.c
-index 3b834709b429f..60e50296a0085 100644
---- a/arch/riscv/kvm/vcpu_sbi_sta.c
-+++ b/arch/riscv/kvm/vcpu_sbi_sta.c
-@@ -46,7 +46,7 @@ void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu)
- 	gfn = shmem >> PAGE_SHIFT;
- 	hva = kvm_vcpu_gfn_to_hva(vcpu, gfn);
- 
--	if (WARN_ON(kvm_is_error_hva(hva))) {
-+	if (kvm_is_error_hva(hva)) {
- 		vcpu->arch.sta.shmem = INVALID_GPA;
- 		return;
- 	}
 -- 
-2.34.1
+2.51.0
 
