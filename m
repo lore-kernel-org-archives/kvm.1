@@ -1,137 +1,150 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B9386549
-	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 21:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A094030FC33
+	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 21:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776288573; cv=none; b=aNhg/pJ8MDnvhpKIUdQg0tPIMb9C1uzXIpsLP9FTNf9geV+x947bLp4TRcdfP7jJP46tQmt0QQohZx9gbSlzboY5UCDaEE397p747mXH7pdVC0+ugTKM7D/i309hCkYY6VL+vaJuTrr+D4lHvYpF3T5tPE9tMG5UeqRVf5JgvR8=
+	t=1776289079; cv=none; b=DG/X+LM3hZFyQem3yBmlVjmoSOJ71+thCb2+ph0xm4ENERuLAltgPjHsNr8CXB717VEiAStH40X9W22DoWyDb3QxVP5eBzDt7K8USHjgmfXRFr+mo2olw05htaLi7I1NBDTeGGnf8MC5m2mxgIPDz/Z8XaUgFAoIHHCnouoj6vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776288573; c=relaxed/simple;
-	bh=0siSUL2S+nppBa0pJAIjFc6g+7R2A/K2TGCSE59/BVI=;
+	s=arc-20240116; t=1776289079; c=relaxed/simple;
+	bh=32bm9Xxg1TOci3XYz23eS/DTvTlmmzdftVOx7xsiBe0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MLUpTZ9Dr4A3Bgjsf2cdNkjygvQ2aoQEHtNjLGoVZRj8ttwVlKiI1adKL7eQLOZykhQlNSIrkyMzXXv5hwnT6MIIjM8rrzQuLTjvZDXv1aNyXsv837r29o0gT+4ddY38al2XitG76YgJ1mj70/QD4oYcACHnoF4lIdVDjoQADyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HCrALy/M; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=U3ueT5iYJXKRQPhkkT6O4R9yMhGwPiNH24MlvuFk2BIWQdGyyaiBvd4M+JtL0z0g0cVR+gy3FiIvLJoi/mzODQx5GOOW2s9I6USw4MGJqL5BAjDpJg55HMnrjCSU7oZqppFiUWZataz2TKpmixx+abSOC8eaevwp0if3XZIs03g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KA/cdZLs; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HCrALy/M"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354bc535546so6947221a91.3
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 14:29:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KA/cdZLs"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b458add85aso43940955ad.2
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 14:37:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776288572; x=1776893372; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776289077; x=1776893877; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qLuVSKe13krUDt0Wi3UZVnEMWUJ1LNX2IauqW3oAG14=;
-        b=HCrALy/MD5B5uXgH1cbtiNP+9VgrCpGawlO89670QCPn28QzxkXYVvMlCUmmDkXa+/
-         IVT0Sie312gB7DRlhXySczWYoq+tSBNx3c5+eSoFKPHEj+gxz/VPkctO6RwroUDWtfru
-         nUJO+BrudE/A/unORFQGaJ9v+c6gRwaIzFOAMLH6L2FuJkOOEEHBJfvO7sY0nYMtZ4v9
-         uxvSx3ZtfoXWY/Z8LjmXMQBwjvpKpG7bjhV5ahQIrvPETQ5YwOn4WC7cRUOPUE+KkiFh
-         iZo663YYRQr51z6MNSZ7Sb704ZoeHxei2QlDm1GUt2Cl1eeibokgP7Jy76iA7A5JyGL6
-         m8ZA==
+        bh=6yj8SN9UKwtYWyKH0a4I661ApOIb3FsNFx//CycZLRI=;
+        b=KA/cdZLswGOx7bPwAiq7hEVIc/qvfZyaueBkQHZ4ZKixgK+8IGslRbIBR4oorDdrD1
+         zMnxJPLzXZARNcLJFJO0H3xw7qO0P5triGK7jJlGS1O6aby+3ZJ5Nq6JiAOdZaZpYCs1
+         lMpKr/2x+PzlVdihJaeopBhxV6AeM1kjllVpapaaNYC0g6rQPdvxgi7oUsXwHm8683tQ
+         4NTLm0Pdd/PhvJIn/iMKtGkRtEbJbuhLoOEFgpT0fNs0Q0vY8MeCJlauHUCCdKhjzhXQ
+         lfs3YpgiE1nfHYn0vmtjo4/1kFa3/K2wWuwNFYUjbzBhdDzYapiZBdOw6bOiJm2C+ws5
+         Do+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776288572; x=1776893372;
+        d=1e100.net; s=20251104; t=1776289077; x=1776893877;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qLuVSKe13krUDt0Wi3UZVnEMWUJ1LNX2IauqW3oAG14=;
-        b=FpKmf/uQtdoWAFUpDQlgu4KnesL5gkbWc+qWXUrYhSTR2n9ZyPodyQaHcuCI9r3T18
-         ZAv0nI8d3LuhyySbcFPjyroZJTfnlFUAGNWNI20XoxbEejQwPw8j53KkUVrLVOUxBhiB
-         UB4lALsGYEuxVbLGSGYr1HfZra+pMRSn2J4tKAJXxojMd2PmFgx/0xbOj3otVoo1vJE8
-         p4MwDhgV8I4+7ufkxNp8p7Rfgj6NZgen2cHeB+6CeLHBP9wLlS9H3c9mzQTyw86wxq7T
-         YPuj3XlHO1zXBge9tMz2ZdscOSkJ3BiqIHREhCWEw7ZBdyLjPdFEqgMnDYZIJhl56ErL
-         FUUA==
-X-Forwarded-Encrypted: i=1; AFNElJ9WcmEDzmDP85KNOYCQVcGZgtfubZgXsNeaXuyARbtSAI0PFVJ/kBI0ndRJHuk1n2+O86Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRn773lnTHFhQM8O1cH/zvhE5Gl6Y893C66FI9/+0lbVDbbet9
-	icDq9DUlO/eclXdl0Wi1KDvRDuZ/HafAVEY/2zjrggf8SQi1VuZnef3BPb8vi5MukNbX9LQnk0S
-	HvF4aKQ==
-X-Received: from pllo16.prod.google.com ([2002:a17:902:7790:b0:2b2:4331:5552])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d403:b0:35d:9560:3efc
- with SMTP id 98e67ed59e1d1-35e427e6277mr21438024a91.14.1776288571754; Wed, 15
- Apr 2026 14:29:31 -0700 (PDT)
-Date: Wed, 15 Apr 2026 14:29:30 -0700
-In-Reply-To: <38309411-b86c-43cc-8451-cfdf43d84302@linux.intel.com>
+        bh=6yj8SN9UKwtYWyKH0a4I661ApOIb3FsNFx//CycZLRI=;
+        b=T0L74eMEn5IblMNUOw22vVrQsPcVZ8zdPywmhJu3+otJ7bGTWlqYZQcHFcVNbyLlKo
+         mU9VE8Hpg1XyhSJ/CGCnoYP8+fU/W9W2lMgMGQmDBhP1SCX4mgnx2EoI2i6KMLRjLJUF
+         xgjt3pJU6tOtTYjpLvFb/YzpPbukWxriWikfFy+Rt1CjvmDt66ONk+OFRcFwvZWJFT/2
+         n+aV6ajq/AT/bxeHL9DRsOjwgDTUVHtfB/XnFspjbRz5z6CWqPfe5lKS4DmbnQs32Gsi
+         eRKy32HwJNIK4manIMyWaQsIS40wMhpAy0pDSxjlQVLuNGs70cc1SB9q6yWPBbBXVMYM
+         O/qQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+aAk8prP2Yupj6Gp1tALWnXnaEYbSskZvVR9Qz7cqnC2RB6MUavQQO1AOCqIShbOiFnbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz58bd8wXLY9OycUTMMvYKvWPLYRdR95X/55F6IPP95dLYbi1R
+	qh40qwqbymmC3I0GfTDtTNx3UaPlclJWIghR91nnhCubAAmCmMZLNYx1O3cTt8bO1uPISIahMG5
+	Wj3o9PQ==
+X-Received: from plop2.prod.google.com ([2002:a17:902:8a82:b0:2ae:66c7:db93])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:ac6:b0:2b0:60db:7927
+ with SMTP id d9443c01a7336-2b2d5a168bcmr239560035ad.28.1776289076795; Wed, 15
+ Apr 2026 14:37:56 -0700 (PDT)
+Date: Wed, 15 Apr 2026 14:37:55 -0700
+In-Reply-To: <dea50f27311d88dcb09ea98261ca280853396a42.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260409235622.2052730-1-seanjc@google.com> <20260409235622.2052730-4-seanjc@google.com>
- <38309411-b86c-43cc-8451-cfdf43d84302@linux.intel.com>
-Message-ID: <aeADOo9f-wW4opEH@google.com>
-Subject: Re: [PATCH 03/11] KVM: x86/xen: Don't truncate RAX when handling
- hypercall from protected guest
+References: <20260409235622.2052730-1-seanjc@google.com> <20260409235622.2052730-5-seanjc@google.com>
+ <dea50f27311d88dcb09ea98261ca280853396a42.camel@intel.com>
+Message-ID: <aeAFMwBTUCdeq1JS@google.com>
+Subject: Re: [PATCH 04/11] KVM: VMX: Read 32-bit GPR values for ENCLS
+ instructions outside of 64-bit mode
 From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"dwmw2@infradead.org" <dwmw2@infradead.org>, "paul@xen.org" <paul@xen.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yosry@kernel.org" <yosry@kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Apr 13, 2026, Binbin Wu wrote:
-> 
-> 
-> On 4/10/2026 7:56 AM, Sean Christopherson wrote:
-> > Don't truncate RAX when handling a Xen hypercall for a guest with protected
-> > state, 
-> 
-> It sounds like KVM supports Xen hypercalls from a guest with protected state
-
-"supports" is a strong word.  It's theoretically possible.  I highly doubt anyone
-has evern actually tried to smush the two together.
-
-> normally, but it seems that a warning would still be triggered by
-> kvm_rax_read() for checking whether it's a Hyper-V hypercall even after the
-> whole patch set when the userspace enables KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL
-> for the guest.
-
-Ooh, fun.
-
-> > as KVM's ABI is to assume the guest is in 64-bit for such cases
-> > (the guest leaving garbage in 63:32 after a transition to 32-bit mode is
-> > far less likely than 63:32 being necessary to complete the hypercall).
+On Mon, Apr 13, 2026, Kai Huang wrote:
+> On Thu, 2026-04-09 at 16:56 -0700, Sean Christopherson wrote:
+> > When getting register values for ENCLS emulation, use kvm_register_read()
+> > instead of kvm_<reg>_read() so that bits 63:32 of the register are dropped
+> > if the guest is in 32-bit mode.
 > > 
-> > Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
+> > Note, the misleading/surprising behavior of kvm_<reg>_read() being "raw"
+> > variants under the hood will be addressed once all non-benign bugs are
+> > fixed.
+> > 
+> > Fixes: 70210c044b4e ("KVM: VMX: Add SGX ENCLS[ECREATE] handler to enforce CPUID restrictions")
+> > Fixes: b6f084ca5538 ("KVM: VMX: Add ENCLS[EINIT] handler to support SGX Launch Control (LC)")
 > > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > > ---
-> >  arch/x86/kvm/xen.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >  arch/x86/kvm/vmx/sgx.c | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
 > > 
-> > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> > index 6d9be74bb673..895095dc684e 100644
-> > --- a/arch/x86/kvm/xen.c
-> > +++ b/arch/x86/kvm/xen.c
-> > @@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
-> >  	bool handled = false;
-> >  	u8 cpl;
+> > diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+> > index df1d0cf76947..4c61fc33f764 100644
+> > --- a/arch/x86/kvm/vmx/sgx.c
+> > +++ b/arch/x86/kvm/vmx/sgx.c
+> > @@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
+> >  	struct x86_exception ex;
+> >  	int r;
 > >  
-> > -	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
-> > -
-> >  	/* Hyper-V hypercalls get bit 31 set in EAX */
-> > -	if ((input & 0x80000000) &&
-> > +	if ((kvm_rax_read(vcpu) & 0x80000000) &&
-> 
-> Should this function call be replaced with kvm_rax_read_raw() in patch 7/11
-> if KVM allows the Xen hypercalls from a guest with protected state to avoid
-> triggering the warning?
-
-Yeah, that does seem like the correct behavior.
-
-> >  	    kvm_hv_hypercall_enabled(vcpu))
-> >  		return kvm_hv_hypercall(vcpu);
+> > -	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
+> > -	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
+> > +	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
+> > +	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
+> >  		return 1;
 > >  
-> >  	longmode = is_64_bit_hypercall(vcpu);
-> >  	if (!longmode) {
-> > +		input = (u32)kvm_rax_read(vcpu);
-> >  		params[0] = (u32)kvm_rbx_read(vcpu);
-> >  		params[1] = (u32)kvm_rcx_read(vcpu);
-> >  		params[2] = (u32)kvm_rdx_read(vcpu);
-> > @@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
-> >  	}
-> >  	else {
-> >  #ifdef CONFIG_X86_64
-> > +		input = (u64)kvm_rax_read(vcpu);
-> >  		params[0] = (u64)kvm_rdi_read(vcpu);
-> >  		params[1] = (u64)kvm_rsi_read(vcpu);
-> >  		params[2] = (u64)kvm_rdx_read(vcpu);
+> >  	/*
+> > @@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
+> >  	gpa_t sig_gpa, secs_gpa, token_gpa;
+> >  	int ret, trapnr;
+> >  
+> > -	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
+> > -	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
+> > -	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
+> > +	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
+> > +	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
+> > +	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
+> >  		return 1;
+> > 
 > 
+> Is there any case where bits 63:32 can have non-zero value?
+
+Yes, GPR values aren't modified on transitions to/from 64-bit mode.  E.g. if
+software loads 64-bit values in 64-bit mode, under the hood those values will
+still be there while the CPU is in 32-bit/compat mode.
+
+Well, that's not strictly true, per the SDM.  Values are only preseverd for R8-R15
+on compat<=>64-bit transitions:
+
+  Registers only available in 64-bit mode (R8-R15 and XMM8-XMM15) are preserved
+  across transitions from 64-bit mode into compatibility mode then back into
+  64-bit mode. However, values of R8-R15 and XMM8-XMM15 are unde- fined after
+  transitions from 64-bit mode through compatibility mode to legacy or real mode
+  and then back through compatibility mode to 64-bit mode.
+
+And "legacy" GPRs are never preserved:
+
+  Because the upper 32 bits of 64-bit general-purpose registers are undefined in
+  32-bit modes, the upper 32 bits of any general-purpose register are not preserved
+  when switching from 64-bit mode to a 32-bit mode (to protected mode or
+  compatibility mode). Software must not depend on these bits to maintain a value
+  after a 64-bit to 32-bit mode switch.
+
+But IIRC, that's "just" the architectural behavior.  Hardware implementations may
+choose to preserve values.
+
+> If vCPU is in 32-bit mode then it should not be able to access 64-bit GPR?
+
+Yes and no.  Mostly no.  Architecturally, they're all off limits.  But, again
+going from memory that's ~15 years old at this point, IIRC the behavior is that
+writes in 32-bit modes zero bits 63:32, same as 32-bit writes in 64-bit mode.
+
+Take all of my memory with a huge grain of salt, it's very possible I'm
+mis-remembering hallway discussions from a long time ago.
