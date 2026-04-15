@@ -1,116 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD2E2C11DF;
-	Wed, 15 Apr 2026 19:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4B03161AB
+	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 20:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776280746; cv=none; b=vCYNxd6REMbUxQsmG7tPZpV2DT8WroXpxbC+Knf1zYCLYMNUNvGyhKwblOoVM8rbM0hv4pMq6w1HurqKRPqJ9rBXMciAdoJWp4SVfJei/EZJopDwtScpkHX0QkvMxWw3d7xcXc7IWCzK2h0drinocNsqFLNZUlD9FXj/Z8tuTnQ=
+	t=1776284636; cv=none; b=qLRsXxInkCgoFEfxS2Q/OM0MRH7+0TA3qn33QpYh65VT6/1FuBPd85rV5av28cJkuxndEb1iTK+zXTr3ZufPQw+8PCzJZfDlVU9cX5kVhVDUu7pz80g2/DFyFOWKi/JFMcwuxbsYtdsLYmMdTvpKV4ckXbFlFU5R4OhFNWR3qAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776280746; c=relaxed/simple;
-	bh=scCdsYjFYYmIPYeVxOiQhweu4J8pahVfH00BNvONAWE=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=MyXJWWYSuj6B8hdoYsBj3sv5IBRsnd211KctXSfSph8rC0zLq9Linsjd705CGKhjqe7eJmViqaQmjdN++wlXgXc/B4UJk70LQZ+nmDIlsDYLuzxmRhq5kziSGbOOo8j/FrJTLoQVkLbx14+MQl4P6ci2Cmd9mncH00GiZ6bfMvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VLLShjcI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776284636; c=relaxed/simple;
+	bh=XimFzuE+iTs8LG5ejhPwammpQ1xzR6hFJK1e/FsQtQk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mhLioiW/8bbPcBtoHN5lC2xxDHIB+dhNlsY+6NnifCC8pTJrjo4rw13JJpV4hMRVyUQmFlfcp5df1Y/55/tF7nGGaof5Gudz+zNblsS0E4BuIT642cgdpsWWMfsNomNyBz3h4uhIE+VH9tgeGAHfyik+V/QQyF9PfvNS5V6gbcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sqXgH7tR; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VLLShjcI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB66C19424;
-	Wed, 15 Apr 2026 19:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776280746;
-	bh=scCdsYjFYYmIPYeVxOiQhweu4J8pahVfH00BNvONAWE=;
-	h=Date:From:To:Subject:From;
-	b=VLLShjcITeVLMl0t21iWavTeH/Fjdj0ryl+MX3nw4Oyu+bJH66MioEi+LTLgJiHA7
-	 kyBghLnt+ajQ2vd3IIsOB5iFG+9A3Q7BiGieCEl7u05MMmUPxKWWmXlr+XV/4Qt3/r
-	 xt4iZjWwzmVbd/WMuTVWdpVJOdWd5zoKWApF6SRdnNMRhcM//9DxjdYNXNiISn0bqM
-	 iBz19yQu4py2MpFPHW8Rp3cSiwljC8YsoEKeW6QvhVaWyohPtWy3VJkdlghACiyBJJ
-	 rOGP1x/wBIYBYSvC4QwudOWnQxRJS3BikX/jGhBRuUtOM+XNsro90OKqfYexwz5DWa
-	 KwCkogwqTjglg==
-Message-ID: <dd0902ff-f132-4e07-96cd-2425af99ca55@kernel.org>
-Date: Wed, 15 Apr 2026 21:18:51 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sqXgH7tR"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a90510a6d1so58387785ad.0
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 13:23:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776284635; x=1776889435; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BibiKlMJ4/ODuW2X15QmQ8ureNdaaXO0AYMX9/zZ9s0=;
+        b=sqXgH7tRy4RlOKp/WIHUwBnywmridE6OFWVMdkXxga6lhdqYqsr93Wwwt69Hg3fhRo
+         kJ9KjEwW+JQDHwm5lkT2/vXUqdaPYVeRKrks8qaSJFNhJEypVONjUhJzAPS8vGFWQh64
+         VbgZfMX6SQJUvrGqJAU1gEyOsQ4FsiEVD4c/2yABiCGcf4UWzNVYOhra87qvqg6L0CTJ
+         SOBy1QzOAOSqrwnNqZfAD+YyjfU1DKZ1NnI1rgCzeBq1e2guscS8HmxAzlGoSlTU6VcH
+         pceK9dr3B3jbj9IUqRKqoqW2Dua7oOHLKII+g9yhSUHBzlfX/klQhMOzYzCr4IrRF30C
+         5NJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776284635; x=1776889435;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BibiKlMJ4/ODuW2X15QmQ8ureNdaaXO0AYMX9/zZ9s0=;
+        b=DGboiVkeVlS47+4Q8ROEg00NHqzUbAuJCsiDzt12UCMEVQYg02QBgfIxUUgVP/bTF+
+         b4a0896I/LaFZY/6w0hSy4FYZHrn/tY8kvH9A4XT3v62p6dcQAEBrHCtQfBZrQyWlNq9
+         37UgKBb9bw+wuwd6uDTx2Eb+WaSBivAXuJogHyIW9nKQr1xAG+p8HZO6R5wgkzBvitEb
+         yfg6kjGuA7G/cAGVe0KlPkgKmcfna4rOB0147lCa0Be5PBFSkg8kLZr2eJGcvPJjPoXx
+         vfaoqCNLsti0f3sNjJfclIINXTOk+Ky3oaTAPjOshPql3comoqr5amyfTJWx5I2BowqX
+         u7Zw==
+X-Gm-Message-State: AOJu0YzmdjzpRobNiVZ9mef7dD7BQfFDACIG/6ictT9CyvHOMWmoH0/N
+	FX3/n19Q7q8nPgwGXNA10If+oq4VhylEegdl7uu6Ts66eUhjgukCb1ASMWZsMLbqIg51ukzrOq6
+	n/G9IWQ==
+X-Received: from ploc13.prod.google.com ([2002:a17:902:848d:b0:2b2:3d4a:16db])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:76c8:b0:2b4:64cf:e8f8
+ with SMTP id d9443c01a7336-2b5eaa22628mr5434185ad.2.1776284634536; Wed, 15
+ Apr 2026 13:23:54 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 15 Apr 2026 13:23:46 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: KVM <kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: bi-weekly guest_memfd upstream call on 2026-04-16
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260415202346.3026288-1-seanjc@google.com>
+Subject: [PATCH 6.6] KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()
+From: Sean Christopherson <seanjc@google.com>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sean Christopherson <seanjc@google.com>, Taeyang Lee <0wn@theori.io>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+[ Upstream commit 321ef62b0c5f6f57bb8500a2ca5986052675abbf ]
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-04-016 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+Check for a Requested Virtual Interrupt, i.e. a virtual interrupt that is
+pending delivery, in vmx_has_nested_events() and drop the one-off
+kvm_x86_ops.guest_apic_has_interrupt() hook.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+In addition to dropping a superfluous hook, this fixes a bug where KVM
+would incorrectly treat virtual interrupts _for L2_ as always enabled due
+to kvm_arch_interrupt_allowed(), by way of vmx_interrupt_blocked(),
+treating IRQs as enabled if L2 is active and vmcs12 is configured to exit
+on IRQs, i.e. KVM would treat a virtual interrupt for L2 as a valid wake
+event based on L1's IRQ blocking status.
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240607172609.3205077-6-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: Taeyang Lee <0wn@theori.io>
+[sean: deal with lack of vmx/main.c and vmx/x86_ops.h]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  1 -
+ arch/x86/kvm/vmx/nested.c          |  4 ++++
+ arch/x86/kvm/vmx/vmx.c             | 21 ---------------------
+ arch/x86/kvm/x86.c                 | 10 +---------
+ 5 files changed, 5 insertions(+), 32 deletions(-)
 
-In this meeting, Mike wants to talk about IOMMU considerations for
-in-place conversion/hugetlb with pass-through devices. And I'm sure
-other things will pop up :)
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index a0a4fc684e63..3d00c2444a75 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -83,7 +83,6 @@ KVM_X86_OP_OPTIONAL(update_cr8_intercept)
+ KVM_X86_OP(refresh_apicv_exec_ctrl)
+ KVM_X86_OP_OPTIONAL(hwapic_irr_update)
+ KVM_X86_OP_OPTIONAL(hwapic_isr_update)
+-KVM_X86_OP_OPTIONAL_RET0(guest_apic_has_interrupt)
+ KVM_X86_OP_OPTIONAL(load_eoi_exitmap)
+ KVM_X86_OP_OPTIONAL(set_virtual_apic_mode)
+ KVM_X86_OP_OPTIONAL(set_apic_access_page_addr)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index df950c184c59..d79b8f7a3991 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1671,7 +1671,6 @@ struct kvm_x86_ops {
+ 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
+ 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
+ 	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
+-	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
+ 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+ 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
+ 	void (*set_apic_access_page_addr)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index fb274bae41e2..377b30212c19 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4007,6 +4007,10 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
+ 
+ 	vppr = *((u32 *)(vapic + APIC_PROCPRI));
+ 
++	max_irr = vmx_get_rvi();
++	if ((max_irr & 0xf0) > (vppr & 0xf0))
++		return true;
++
+ 	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
+ 	    pi_test_on(vmx->nested.pi_desc)) {
+ 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b68fb5329a13..4a45e86c5e2f 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4127,26 +4127,6 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
+-static bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
+-{
+-	struct vcpu_vmx *vmx = to_vmx(vcpu);
+-	void *vapic_page;
+-	u32 vppr;
+-	int rvi;
+-
+-	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) ||
+-		!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
+-		WARN_ON_ONCE(!vmx->nested.virtual_apic_map.gfn))
+-		return false;
+-
+-	rvi = vmx_get_rvi();
+-
+-	vapic_page = vmx->nested.virtual_apic_map.hva;
+-	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
+-
+-	return ((rvi & 0xf0) > (vppr & 0xf0));
+-}
+-
+ static void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -8390,7 +8370,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
+ 	.hwapic_irr_update = vmx_hwapic_irr_update,
+ 	.hwapic_isr_update = vmx_hwapic_isr_update,
+-	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
+ 	.sync_pir_to_irr = vmx_sync_pir_to_irr,
+ 	.deliver_interrupt = vmx_deliver_interrupt,
+ 	.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index ac0b458582c3..485c1820e65a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12906,12 +12906,6 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+ 		kvm_arch_free_memslot(kvm, old);
+ }
+ 
+-static inline bool kvm_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
+-{
+-	return (is_guest_mode(vcpu) &&
+-		static_call(kvm_x86_guest_apic_has_interrupt)(vcpu));
+-}
+-
+ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+ {
+ 	if (!list_empty_careful(&vcpu->async_pf.done))
+@@ -12942,9 +12936,7 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+ 	if (kvm_test_request(KVM_REQ_PMI, vcpu))
+ 		return true;
+ 
+-	if (kvm_arch_interrupt_allowed(vcpu) &&
+-	    (kvm_cpu_has_interrupt(vcpu) ||
+-	    kvm_guest_apic_has_interrupt(vcpu)))
++	if (kvm_arch_interrupt_allowed(vcpu) && kvm_cpu_has_interrupt(vcpu))
+ 		return true;
+ 
+ 	if (kvm_hv_has_stimer_pending(vcpu))
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the meeting notes.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
+base-commit: 8cee53b8eaeb5d1f7c97b7f2381653ed00ffc26b
 -- 
-Cheers,
-
-David
+2.54.0.rc1.513.gad8abe7a5a-goog
 
