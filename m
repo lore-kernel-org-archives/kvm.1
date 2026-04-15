@@ -1,156 +1,137 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E3C353EC1
-	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 21:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B9386549
+	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 21:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776288406; cv=none; b=td/wXRs9QDZOa2SAAdSAgUg1VcY8LrrNg6BVmp1CwIgYIoVi9ZQ2jPLCnWoV7RW52D9NrIfkZuGWipsyLD56uZZT7eVhh6DsF0X/PrN5dg9lvgutKkwPp5KqLE/AOK02Hf5B1ERkjHvtAX3TR1i+qkUF4cC7LzREfC3CUp2OmRY=
+	t=1776288573; cv=none; b=aNhg/pJ8MDnvhpKIUdQg0tPIMb9C1uzXIpsLP9FTNf9geV+x947bLp4TRcdfP7jJP46tQmt0QQohZx9gbSlzboY5UCDaEE397p747mXH7pdVC0+ugTKM7D/i309hCkYY6VL+vaJuTrr+D4lHvYpF3T5tPE9tMG5UeqRVf5JgvR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776288406; c=relaxed/simple;
-	bh=poo8ZWGyPtL9bPOwD2YYZ+K6FlCiV0M+Ouoir/qKB9Q=;
+	s=arc-20240116; t=1776288573; c=relaxed/simple;
+	bh=0siSUL2S+nppBa0pJAIjFc6g+7R2A/K2TGCSE59/BVI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MdpStP9PLMuND2XlSWwWOaKgzeWhJRGuFQD5LgrFrrCs8m3rq8xkNYZKgpTfLq7J4F0Ijg33w9ePmC8dwsDPhuJY7xD6DW+6UgBKGUcp4XXtvZlrBdpqRDzl1unYFQd1kVW+EWEL5+Vqm1+IxZem9PTFMSdNrdq3x4TOjTXenOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LIFzl59D; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=MLUpTZ9Dr4A3Bgjsf2cdNkjygvQ2aoQEHtNjLGoVZRj8ttwVlKiI1adKL7eQLOZykhQlNSIrkyMzXXv5hwnT6MIIjM8rrzQuLTjvZDXv1aNyXsv837r29o0gT+4ddY38al2XitG76YgJ1mj70/QD4oYcACHnoF4lIdVDjoQADyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HCrALy/M; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LIFzl59D"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7962325ba0so953194a12.0
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 14:26:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HCrALy/M"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354bc535546so6947221a91.3
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 14:29:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776288405; x=1776893205; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/OZugw+DMuXri7+qNzOt6/To0VRy8T4/wgnBP9O3Kws=;
-        b=LIFzl59DJIBX/pEKSjTCTGkB5zJ8bNlOJQNePXXlzB/oGfAZVC6dT6jORsMRn1aVHB
-         KBPD4hWM4czoYZu5Qhr2NefJCXKzzxcdqDaAU+Hju89xsv1fLYkTbaPx2Xz5g99MARXE
-         mg4nOTfzHKnt9Ld9R4eAdkpfEf9JbR4i1Xtff4KcodVNBh2SHmn05qv38Kov5vmh93dR
-         UqafcjdPkZZ65EfVER5Kdy915203iL/B+xqDEIgJYyIj1bVLW9yIY8yAsc/aK7DGKSXr
-         lTlS7fwuLwK6rI2lPoiUdv4KVdkOiieKBjy2ZRpLFO61y2hXw9buFzPdotxSWUjb0Hna
-         KrjA==
+        d=google.com; s=20251104; t=1776288572; x=1776893372; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLuVSKe13krUDt0Wi3UZVnEMWUJ1LNX2IauqW3oAG14=;
+        b=HCrALy/MD5B5uXgH1cbtiNP+9VgrCpGawlO89670QCPn28QzxkXYVvMlCUmmDkXa+/
+         IVT0Sie312gB7DRlhXySczWYoq+tSBNx3c5+eSoFKPHEj+gxz/VPkctO6RwroUDWtfru
+         nUJO+BrudE/A/unORFQGaJ9v+c6gRwaIzFOAMLH6L2FuJkOOEEHBJfvO7sY0nYMtZ4v9
+         uxvSx3ZtfoXWY/Z8LjmXMQBwjvpKpG7bjhV5ahQIrvPETQ5YwOn4WC7cRUOPUE+KkiFh
+         iZo663YYRQr51z6MNSZ7Sb704ZoeHxei2QlDm1GUt2Cl1eeibokgP7Jy76iA7A5JyGL6
+         m8ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776288405; x=1776893205;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/OZugw+DMuXri7+qNzOt6/To0VRy8T4/wgnBP9O3Kws=;
-        b=BAyRf+DbcrnQ/vuBURVuMMydfZlRr0w+kh2hdAF8ETxNx84tigwZR98juyAVM2Rris
-         HPn4pCSRshp7cZbcjZrsHDRYzFsFtNJ3DzkUpFqo1/yYA3kdGDYZFeAjWN0CtD6uSfs4
-         Xm0AVHIjuHWivjx0ncSrp7CdD8I/pJB6RvtfaDLdncYSd5UtBZHnXIgFmclWXP7G0hlk
-         CazFzL5h7fl49LYowEaFN/+w+gf8+FT5xPpaT+s5PaECYyhb3HakP3q1Ev20yjTuw116
-         Jv0yaXMEyO5f+vOpU0b7DbIa6TCpGu9MLR+d9PD/sVFzkX8phvOFyabFgjIuaBJcVL78
-         6DxA==
-X-Forwarded-Encrypted: i=1; AFNElJ816JVUsEzU4r15WS6sUs7GVBVw+EqpqaItaDR6UNXIc6YKnwzBp28gdS1dY9LbuylOsQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDErBV36udiQRmaGhd2IP1sn4wt7xtlJOz8SGJpma6r89U4Sxv
-	rVjgZGSnRSBvZSMlB+YO3xGqgS13Hq6S18qVXLvkmUFAOpkghf0IWDbvAX8vFqsVuONB2pSRuPd
-	2g8q0EQ==
-X-Received: from pfbmt9.prod.google.com ([2002:a05:6a00:6e69:b0:82f:559d:ece6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bf5:b0:82f:7076:cf2b
- with SMTP id d2e1a72fcca58-82f7076d224mr1839413b3a.40.1776288404629; Wed, 15
- Apr 2026 14:26:44 -0700 (PDT)
-Date: Wed, 15 Apr 2026 14:26:43 -0700
-In-Reply-To: <CALMp9eSjAoVYk2f_j=b_X=EngJ935J=W7YS-C0nDS7b1j2Y4Og@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1776288572; x=1776893372;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLuVSKe13krUDt0Wi3UZVnEMWUJ1LNX2IauqW3oAG14=;
+        b=FpKmf/uQtdoWAFUpDQlgu4KnesL5gkbWc+qWXUrYhSTR2n9ZyPodyQaHcuCI9r3T18
+         ZAv0nI8d3LuhyySbcFPjyroZJTfnlFUAGNWNI20XoxbEejQwPw8j53KkUVrLVOUxBhiB
+         UB4lALsGYEuxVbLGSGYr1HfZra+pMRSn2J4tKAJXxojMd2PmFgx/0xbOj3otVoo1vJE8
+         p4MwDhgV8I4+7ufkxNp8p7Rfgj6NZgen2cHeB+6CeLHBP9wLlS9H3c9mzQTyw86wxq7T
+         YPuj3XlHO1zXBge9tMz2ZdscOSkJ3BiqIHREhCWEw7ZBdyLjPdFEqgMnDYZIJhl56ErL
+         FUUA==
+X-Forwarded-Encrypted: i=1; AFNElJ9WcmEDzmDP85KNOYCQVcGZgtfubZgXsNeaXuyARbtSAI0PFVJ/kBI0ndRJHuk1n2+O86Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRn773lnTHFhQM8O1cH/zvhE5Gl6Y893C66FI9/+0lbVDbbet9
+	icDq9DUlO/eclXdl0Wi1KDvRDuZ/HafAVEY/2zjrggf8SQi1VuZnef3BPb8vi5MukNbX9LQnk0S
+	HvF4aKQ==
+X-Received: from pllo16.prod.google.com ([2002:a17:902:7790:b0:2b2:4331:5552])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d403:b0:35d:9560:3efc
+ with SMTP id 98e67ed59e1d1-35e427e6277mr21438024a91.14.1776288571754; Wed, 15
+ Apr 2026 14:29:31 -0700 (PDT)
+Date: Wed, 15 Apr 2026 14:29:30 -0700
+In-Reply-To: <38309411-b86c-43cc-8451-cfdf43d84302@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-5-yosry@kernel.org>
- <CALMp9eRk8O-kGixdXC0Lb0=PgSVE5eFnLLXOZYqMsb=FTczZTA@mail.gmail.com>
- <adfgPwgXz1iQHpVS@google.com> <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
- <adfmVXRwzZkvRSnj@google.com> <CALMp9eTvH1Pg0Eb-KCcX7LLJPFgS1xTSR0DzeA8xo4Re7=p=7w@mail.gmail.com>
- <adfyKU5WUiW4OnUg@google.com> <adgYSnE-I1Z19fCY@google.com> <CALMp9eSjAoVYk2f_j=b_X=EngJ935J=W7YS-C0nDS7b1j2Y4Og@mail.gmail.com>
-Message-ID: <aeACk7T5Q4TxtRMF@google.com>
-Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
- nested SVM transitions
+References: <20260409235622.2052730-1-seanjc@google.com> <20260409235622.2052730-4-seanjc@google.com>
+ <38309411-b86c-43cc-8451-cfdf43d84302@linux.intel.com>
+Message-ID: <aeADOo9f-wW4opEH@google.com>
+Subject: Re: [PATCH 03/11] KVM: x86/xen: Don't truncate RAX when handling
+ hypercall from protected guest
 From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Apr 09, 2026, Jim Mattson wrote:
-> On Thu, Apr 9, 2026 at 2:21=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> > On Thu, Apr 09, 2026, Sean Christopherson wrote:
-> > > On Thu, Apr 09, 2026, Jim Mattson wrote:
-> > > > On Thu, Apr 9, 2026 at 10:48=E2=80=AFAM Sean Christopherson <seanjc=
-@google.com> wrote:
-> > > > > On Thu, Apr 09, 2026, Jim Mattson wrote:
-> > > > > > > > In general, this deferral is misguided. The G/H bits should=
- be
-> > > > > > > > re-evaluated before we call kvm_pmu_instruction_retired() f=
-or an
-> > > > > > > > emulated instruction.
-> > > > > > > >
-> > > > > > > > > ...
-> > > > > > > > > diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-> > > > > > > > > index f1c29ac306917..966e4138308f6 100644
-> > > > > > > > > --- a/arch/x86/kvm/x86.h
-> > > > > > > > > +++ b/arch/x86/kvm/x86.h
-> > > > > > > > > @@ -9,6 +9,7 @@
-> > > > > > > > >  #include "kvm_cache_regs.h"
-> > > > > > > > >  #include "kvm_emulate.h"
-> > > > > > > > >  #include "cpuid.h"
-> > > > > > > > > +#include "pmu.h"
-> > > > > > > > >
-> > > > > > > > >  #define KVM_MAX_MCE_BANKS 32
-> > > > > > > > >
-> > > > > > > > > @@ -152,6 +153,8 @@ static inline void enter_guest_mode(s=
-truct kvm_vcpu *vcpu)
-> > > > > > > > >  {
-> > > > > > > > >         vcpu->arch.hflags |=3D HF_GUEST_MASK;
-> > > > > > > > >         vcpu->stat.guest_mode =3D 1;
-> > > > > > > > > +
-> > > > > > > > > +       kvm_pmu_handle_nested_transition(vcpu);
-> > > > > > > > >  }
-> > > > > > > >
-> > > > > > > > This happens too late for VMRUN, since we have already call=
-ed
-> > > > > > > > kvm_pmu_instruction_retired() via kvm_skip_emulated_instruc=
-tion(), and
-> > > > > > > > VMRUN counts as a *guest* instruction.
-> > > > > > >
-> > > > > > > It's just VMRUN that's problematic though, correct?  I.e. the=
- scheme as a whole
-> > > > > > > is fine, we just need to special case VMRUN due to SVM's erra=
-tum^Warchitecture.
-> > > > > > > Alternatively, maybe we could get AMD to document the silly V=
-MRUN behavior as an
-> > > > > > > erratum, then we could claim KVM is architecturally superior.=
- :-D
-> > > > > >
-> > > > > > Here, it's just VMRUN. Above, it's WRMSR(EFER).
-> > > > >
-> > > > > But clearing EFER.SVME while in the guest generates architectural=
-ly undefined
-> > > > > behavior.  I don't see any reason to complicate PMU virtualizatio=
-n for that
-> > > > > scenario, especially now that KVM synthesizes triple fault for L1=
-.
-> > > >
-> > > > L1 can clear the virtual EFER.SVME. That is well-defined.
-> > >
-> > > Gah, I forgot that the H/G bits are ignored when EFER.SVME=3D0.  That=
-'s really
-> > > annoying.
-> >
-> > What do you think about having two flavors of kvm_pmu_handle_nested_tra=
-nsition()?
-> > One that defers via a request, and a "special" (SVM-only?) version that=
- does
-> > direct updates.
->=20
-> When would we use the deferred version? As far as the Intel PMU is
-> concerned. there's nothing special about a nested transition.
+On Mon, Apr 13, 2026, Binbin Wu wrote:
+> 
+> 
+> On 4/10/2026 7:56 AM, Sean Christopherson wrote:
+> > Don't truncate RAX when handling a Xen hypercall for a guest with protected
+> > state, 
+> 
+> It sounds like KVM supports Xen hypercalls from a guest with protected state
 
-Actually, outside of VMRUN=3D>#VMEXIT, isn't the deferred version correct? =
- E.g.
-when counting instructions, shouldn't WRMSR(EFER) be accounted based on the=
- *old*
-EFER value, not the new EFER value?
+"supports" is a strong word.  It's theoretically possible.  I highly doubt anyone
+has evern actually tried to smush the two together.
+
+> normally, but it seems that a warning would still be triggered by
+> kvm_rax_read() for checking whether it's a Hyper-V hypercall even after the
+> whole patch set when the userspace enables KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL
+> for the guest.
+
+Ooh, fun.
+
+> > as KVM's ABI is to assume the guest is in 64-bit for such cases
+> > (the guest leaving garbage in 63:32 after a transition to 32-bit mode is
+> > far less likely than 63:32 being necessary to complete the hypercall).
+> > 
+> > Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/xen.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> > index 6d9be74bb673..895095dc684e 100644
+> > --- a/arch/x86/kvm/xen.c
+> > +++ b/arch/x86/kvm/xen.c
+> > @@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+> >  	bool handled = false;
+> >  	u8 cpl;
+> >  
+> > -	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
+> > -
+> >  	/* Hyper-V hypercalls get bit 31 set in EAX */
+> > -	if ((input & 0x80000000) &&
+> > +	if ((kvm_rax_read(vcpu) & 0x80000000) &&
+> 
+> Should this function call be replaced with kvm_rax_read_raw() in patch 7/11
+> if KVM allows the Xen hypercalls from a guest with protected state to avoid
+> triggering the warning?
+
+Yeah, that does seem like the correct behavior.
+
+> >  	    kvm_hv_hypercall_enabled(vcpu))
+> >  		return kvm_hv_hypercall(vcpu);
+> >  
+> >  	longmode = is_64_bit_hypercall(vcpu);
+> >  	if (!longmode) {
+> > +		input = (u32)kvm_rax_read(vcpu);
+> >  		params[0] = (u32)kvm_rbx_read(vcpu);
+> >  		params[1] = (u32)kvm_rcx_read(vcpu);
+> >  		params[2] = (u32)kvm_rdx_read(vcpu);
+> > @@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+> >  	}
+> >  	else {
+> >  #ifdef CONFIG_X86_64
+> > +		input = (u64)kvm_rax_read(vcpu);
+> >  		params[0] = (u64)kvm_rdi_read(vcpu);
+> >  		params[1] = (u64)kvm_rsi_read(vcpu);
+> >  		params[2] = (u64)kvm_rdx_read(vcpu);
+> 
