@@ -1,117 +1,176 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEB32E7165;
-	Wed, 15 Apr 2026 11:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD8E2E7165;
+	Wed, 15 Apr 2026 11:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776250874; cv=none; b=PjuKkzlJJORrPnf9GVN3OVdByBe1vv0MkCKx7Au/MHSz5QDB7wP6B9a1Xd8KQTC7ve4gUEiEb2xfrh12pSGxV+gSH/UPX5QX6NwSRi7gOb8IYxeJL++aoSXkxhvYpLRZyIYvYqgwbYztflt0RtXEk6Fk9GYUozq7xqnwNU+wtm0=
+	t=1776250878; cv=none; b=QrdtqXyreFocOmaOuhKIwo2cDfNaJn7Js362eGwkNrFFl60wDnym19n/qEtybwFcFsP0JVq1Z4JuFALjIPg9KwsABXvgGxNU1XB6/nNdmODBoax1Uy5olHgftdTqhAghwJbmPi285t2tQKEeH2Aa00RTjaW94TiAQeE5mYHOnn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776250874; c=relaxed/simple;
-	bh=gY7usLiZwYcEu4uG7lvPT7zlwVf/AAV+bMA+/3plgMk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=GkwmwyM3ky21VDkZTzc+GTimHIQ3A+6DpAiBMWEBDkjHzIA3dvRqkQIrIgYOfo6Q79+qXAWzM5yttdUFXYOKSCk/D5vasSQvvy6CRePIhshl94P3jM7LpiX/2sqyZpa9UCqoyfzHNABDhnMKGqzopOqEYotexFBwvE3CW0PVOd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=R75rzn6t; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776250878; c=relaxed/simple;
+	bh=NzEKcgytpfU97DicbGiWl3bAhmdduI6FBslfTibPQpA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t4n1xOb/SoGKyQEFveNn4KN+2nOuYT6zjm3q5lmEMwA3lv1gFGKPxCmf5vZLpsAcnw6M75g91yscFnEQMM62cooH5kH0Ewm5MI2I3EqfkUtvHaTIws9KVy5gE3sNsam/yje/T2hc3Wulm+IyXicfJlTxpoYQauHBVk7P9VzlAaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RQI2AU3/; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="R75rzn6t"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F2Yj571733184;
-	Wed, 15 Apr 2026 11:01:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gY7usL
-	iZwYcEu4uG7lvPT7zlwVf/AAV+bMA+/3plgMk=; b=R75rzn6tr6Myefve2uGIW7
-	hWeiKfLlKfD4MZ3weUI+/hoOJv1OL6ol1c6GXtCfUNxAa/2v7U8sCypGFQMFLMTY
-	BaOh8gD2gtINIUP0ikaWPIipwWduj5WUYEbga8XB10Ll4WQmQGXrz8r18pG+0r+X
-	X32NoSYlnTqJFCEai25wfb2iiEbsbwckeve5gGVi1frMjimEhq78/FAxTnfCAXrc
-	QWK9crjDKto4fHYKW0pDGB8Q8/c58e93To6NTFBRNk+PA3qnYVbucmUVr7ILGGab
-	UD7Q/PkIkP/AxaZjM27CzG6LH1UR9wLNqSoHTy18Jc3PWLdmdqz+F/PMh7wjdO2Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89m77cw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 11:01:08 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63F77a1l015666;
-	Wed, 15 Apr 2026 11:01:07 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0msp28r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 11:01:07 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63FB14ZD31850888
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Apr 2026 11:01:04 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6941620063;
-	Wed, 15 Apr 2026 11:01:04 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44B4C20040;
-	Wed, 15 Apr 2026 11:01:04 +0000 (GMT)
-Received: from t14-nrb (unknown [9.111.91.157])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Apr 2026 11:01:04 +0000 (GMT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RQI2AU3/"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C28B44FD5;
+	Wed, 15 Apr 2026 04:01:09 -0700 (PDT)
+Received: from [10.57.61.136] (unknown [10.57.61.136])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB8F53F86F;
+	Wed, 15 Apr 2026 04:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776250875; bh=NzEKcgytpfU97DicbGiWl3bAhmdduI6FBslfTibPQpA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RQI2AU3/9HJQ3DCygIxuFntue21kAtZGjYmq2oeYxB5funNDUWj27KuLS6+o8P6EW
+	 ywh6dckswaimSu/YRjs5FId01ljwKyU73eG067hQCEkQDWa8EO4hxfYl7SefgZQodi
+	 +mwRKU/aoeiFRzW7Ai3tgQj+Q0Q3fcGWbd8mYtY0=
+Message-ID: <d661a24c-6619-4734-96bd-075d3416e809@arm.com>
+Date: Wed, 15 Apr 2026 12:01:08 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
+To: Alper Gun <alpergun@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Apr 2026 13:00:34 +0200
-Message-Id: <DHTODC9X9PPG.26C1S6BQARFAD@linux.ibm.com>
-Cc: "Janosch Frank" <frankja@linux.ibm.com>,
-        "Claudio Imbrenda"
- <imbrenda@linux.ibm.com>,
-        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
-        "David Hildenbrand" <david@kernel.org>,
-        "Thomas Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>,
-        "Nina Schoetterl-Glausch" <nsg@linux.ibm.com>
-Subject: Re: [kvm-unit-tests PATCH v2 1/5] s390x: snippets: Add
- reset_guest() to lib
-From: "Nico Boehr" <nrb@linux.ibm.com>
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>,
-        <linux-s390@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260324-vsie-stfle-fac-v2-0-5e52be2e4081@linux.ibm.com>
- <20260324-vsie-stfle-fac-v2-1-5e52be2e4081@linux.ibm.com>
-In-Reply-To: <20260324-vsie-stfle-fac-v2-1-5e52be2e4081@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69df6ff4 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=iVhpHZk9LX-LbS02p1EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: MlJNlsclYkPznWTXWQp9KFLgqBZfIWhU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDA5OSBTYWx0ZWRfX0u4GzF6s82jv
- IZgyAOI6lpSH0CnR0WOJDfj7JSaTWbW6ykY4IB2/IjIdrmQVngomtuOndhafD/6wXp0etszPujX
- yhBQWW7k/pbcuHoVRih4v6curXKJ2/Is2H3Akeka9XIbfhmhGCdC4R0DTRq5eGrSdnYSEIqBGnI
- ZtKb4eOGuabNnqEhDJooi1apoqTNASoNW7vQFVT26lBIkWt2UKAVlTvVNXFFtD4iJwTbeZ3GQso
- Kktgvglq4tpH1nZqzoADTIEVILic/BwfeDE4vjuU45fXmIoAa5IGeMlJDN9Wg2gEH/13B4xEBJA
- eT4x3Pk9U83EJUh3AiYN2NHrmBgWc5rCb/DZxJskYoPnO+1Ivf+9M8cf8bW+VGKcJB4DVgE+y4L
- mKlRdV7BUn7g0nLg6jbh3ey3OZlDmZqcCZLiholvcZGaJ76MTagqJZZUZeKHa8/jvAYmHFD6W55
- TducQp7TX947uuoXC6A==
-X-Proofpoint-ORIG-GUID: MlJNlsclYkPznWTXWQp9KFLgqBZfIWhU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 clxscore=1011 adultscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150099
+Content-Transfer-Encoding: 8bit
 
-On Tue Mar 24, 2026 at 4:28 PM CET, Christoph Schlameuss wrote:
-> From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
->
-> Extract reset_guest from spec_ex-sie into the lib.
-> After reset_guest() the snippet can be executed again.
->
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+On 14/04/2026 22:40, Alper Gun wrote:
+> On Wed, Mar 18, 2026 at 8:54 AM Steven Price <steven.price@arm.com> wrote:
+>>
+>> This series adds support for running protected VMs using KVM under the
+>> Arm Confidential Compute Architecture (CCA).
+>>
+>> New major version number! This now targets RMM v2.0-bet0[1]. And unlike
+>> for Linux this represents a significant change.
+>>
+>> RMM v2.0 brings with it the ability to configure the RMM to have the
+>> same page size as the host (so no more RMM_PAGE_SIZE and dealing with
+>> granules being different from host pages). It also introduces range
+>> based APIs for many operations which should be more efficient and
+>> simplifies the code in places.
+>>
+>> The handling of the GIC has changed, so the system registers are used to
+>> pass the GIC state rather than memory. This means fewer changes to the
+>> KVM code as it looks much like a normal VM in this respect.
+>>
+>> And of course the new uAPI introduced in the previous v12 posting is
+>> retained so that also remains simplified compared to earlier postings.
+>>
+>> The RMM support for v2.0 is still early and so this series includes a
+>> few hacks to ease the integration. Of note are that there are some RMM
+>> v1.0 SMCs added to paper over areas where the RMM implementation isn't
+>> quite ready for v2.0, and "SROs" (see below) are deferred to the final
+>> patch in the series.
+>>
+>> The PMU in RMM v2.0 requires more handling on the RMM-side (and
+>> therefore simplifies the implementation on Linux), but this isn't quite
+>> ready yet. The Linux side is implemented (but untested).
+>>
+>> PSCI still requires the VMM to provide the "target" REC for operations
+>> that affect another vCPU. This is likely to change in a future version
+>> of the specification. There's also a desire to force PSCI to be handled
+>> in the VMM for realm guests - this isn't implemented yet as I'm waiting
+>> for the dust to settle on the RMM interface first.
+>>
+>> Stateful RMI Operations
+>> -----------------------
+>>
+>> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (SROs)
+>> which allow the RMM to complete an operation over several SMC calls and
+>> requesting/returning memory to the host. This has the benefit of
+>> allowing interrupts to be handled in the middle of an operation (by
+>> returning to the host to handle the interrupt without completing the
+>> operation) and enables the RMM to dynamically allocate memory for
+>> internal tracking purposes. One example of this is RMI_REC_CREATE no
+>> longer needs "auxiliary granules" provided upfront but can request the
+>> memory needed during the RMI_REC_CREATE operation.
+>>
+>> There are a fairly large number of operations that are defined as SROs
+>> in the specification, but current both Linux and RMM only have support
+>> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXMEs
+>> in the code where support is missing.
+>>
+>> Given the early stage support for this, the SRO handling is all confined
+>> to the final patch. This patch can be dropped to return to a pre-SRO
+>> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purposes.
+>>
+>> A future posting will reorder the series to move the generic SRO support
+>> to an early patch and will implement the proper support for this in all
+>> RMI SMCs.
+>>
+>> One aspect of SROs which is not yet well captured is that in some
+>> circumstances the Linux kernel will need to call an SRO call in a
+>> context where memory allocation is restricted (e.g. because a spinlock
+>> is held). In this case the intention is that the SRO will be cancelled,
+>> the spinlock dropped so the memory allocation can be completed, and then
+>> the SRO restarted (obviously after rechecking the state that the
+>> spinlock was protecting). For this reason the code stores the memory
+>> allocations within a struct rmi_sro_state object - see the final patch
+>> for more details.
+>>
+>> This series is based on v7.0-rc1. It is also available as a git
+>> repository:
+>>
+>> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
+>>
+>>
+> 
+> Hi Steven,
+> 
+> I have a question regarding host kexec and kdump scenarios, and
+> whether there is any plan to make them work in this initial series.
+> 
+> Intel TDX and AMD SEV-SNP both have a firmware shutdown command that
+> is invoked during the kexec or panic code paths to safely bypass
+> hardware memory protections and boot into the new kernel. As far as
+> I know, there is no similar global teardown command available for
+> the RMM.
 
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
+Correct, the RMM specification as it stands doesn't provide a mechanism
+for the host to do this. The host would have to identify all the realm
+guests in the system: specifically the address of the RDs (Realm
+Descriptors) and RECs (Realm Execution Contexts). It needs this to tear
+down the guests and be able to undelegate the memory.
+
+It's an interesting point and I'll raise the idea of a "firmware
+shutdown command" to make this more possible.
+
+> What is the roadmap for supporting both general kexec and
+> more specifically kdump (panic) scenarios with CCA?
+
+I don't have a roadmap I'm afraid for these. kexec in theory would be
+possible with KVM gracefully terminating all realms. For kdump/panic
+that sort of graceful shutdown isn't really appropriate (or likely to
+succeed).
+
+There is also some RMM configuration which cannot be repeated (see
+RMI_RMM_CONFIG_SET) - which implies that the kexec kernel must be
+similar to the first kernel (i.e. same page size).
+
+Thanks,
+Steve
