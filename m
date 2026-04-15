@@ -1,217 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A152F1FE4
-	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 11:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F88328B7B;
+	Wed, 15 Apr 2026 11:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776252700; cv=none; b=FqZKujmLkk+gO91/dUFWlcFSLseWbg7NdL+qiWy7PAgc4OWvpgjn71bzK9wGXWeffaSeNNPaT4+NuLOJSOGB45zXt15M6MPJM4wYya2tFNR0ZNWDE7YLdjz8VVptPhbsFsUSfr+UM1aQNCV5dni0WZEI/ifrrjrlo5UzPG7x4hU=
+	t=1776252856; cv=none; b=J3ZCOSy7dKDA6rwPMCm+YNWH51hBdR/cL+iHtf+B1w01WsYfeDn/1rHGTq72fwpAsnXwi1vC5oMm16dIKzF0mrqtZXxkQj8zu51+1NVmLL7Y0iw5PQm4fFE019UHEQVity289yd0YeTlmnWYLPQt6pYyiPPdTz8oPzd6NAdnCbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776252700; c=relaxed/simple;
-	bh=QLX1J418M4jWHF/CD6zKmlQZG8fsqg6qyHarNz+l24E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cc9F+TNof/ZBfBXdIRxCWUtMpgw9V1RlVrB5OeBg7QJ2daPU9XR6iUu2TXivsd8lxpzPgYm0w6N7Pd0NjGQg3AbyopnIlrL2oS7njyN7OJcw7RAIwEp1a72ihji/Ldk6qPwXLdroUKUl+RMXMrkSfFFx3n5SedKFqhDc2xtpddA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f2nf7olA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SqqrRiIa; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776252856; c=relaxed/simple;
+	bh=OqnJBpLkNisGBd7AlCmpdJsQFg/quukx3UDEp7tJO4I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=M94e9EJdfCf3kYjHm89ZVVE7bViyss0BRNREjgtOA7wcsaFTUSSz29BjtV2VXO5megdmQeftTc+UuDpvOcoufHYF2ibozCqCas6M1jIYDWMDocfvVwOyVRXzDsV6fjgNvA41j181OYXKKLAsCLfKR/o5pmUqsoPY22IJfzdrXxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XE77ZTXP; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f2nf7olA";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SqqrRiIa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776252697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VGpVm/oGR94wogmAdWmA8vqPEnCDIzFyVWrXuXhdJ4U=;
-	b=f2nf7olAztvNmNsEpMWPTH46rdxshFlVR/Y+o5kEmDhoyLX72y4zAboS9xTnrvmmIskzXs
-	oM32zm2lX/AIIlK8BWqOhyw8dile2uMX12GmC5mmZ/beBYxct4U8wybF2cPRcPur/42LuV
-	Xc9PEypVSLKw5lxPyLsdMqhNFPHr+nI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-jM8adtNFP6ur5uetSWyn7A-1; Wed, 15 Apr 2026 07:31:36 -0400
-X-MC-Unique: jM8adtNFP6ur5uetSWyn7A-1
-X-Mimecast-MFC-AGG-ID: jM8adtNFP6ur5uetSWyn7A_1776252695
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43e52dc8a04so1437451f8f.3
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 04:31:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776252695; x=1776857495; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VGpVm/oGR94wogmAdWmA8vqPEnCDIzFyVWrXuXhdJ4U=;
-        b=SqqrRiIacLIukQom1KZIcaycjKkh7czuM0KNoRgdqGyPlnHjHey0xkFNWmXOmv+oyo
-         A3HliPYbKwFzgEe13rCbRJ20acG1J5uXPGcbE0TyQrFU2qKSE6QqG5Pq4TwLq4Yomge7
-         Uuweg396a31kLXW9otPZgMY8+QKfusn1tVNV7zfld229r+ZUZ6adp0RpROUn6RuG/q90
-         5FI02Jh1aq8qqGWA6zZjT7SBf3mJXTWunZj9D66vexZPunNcMlQngSuk0UCX+9qOJGry
-         MeQbVNCwRD+5sA5NKbwskeLreRF2KINYiYRcTY60rG1IWqT5KuSnJiQ6H91qxhd2qAGJ
-         GeOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776252695; x=1776857495;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VGpVm/oGR94wogmAdWmA8vqPEnCDIzFyVWrXuXhdJ4U=;
-        b=RB4eVAJrZr0l2uu9UZkoN6gqZZ07+vdL6AErKyWm/EHwBbXh+EvqnCDawVyv/K52Sh
-         VsAfksq0U2HlvTshktYlYgXDTZ0q3myTXr6kXMo+DYfvZCn2LpEtdCAacl2kMm4nk3v1
-         M9VTwNPePW2e+c8+CWfD/0odu9xhZg8oqR7rGvNNt46fWXCkXwp245/qRihee2GoMKu8
-         Gf4b4RbA8DCtOyFJM5zeRQUoAlSs2ztpdTSi0Y6x+oXgTzNXeVenzj+cXOG420z/EXaO
-         ad89nGK2Yid+cuE72YgiTgzBMWkjE/fyvLpxbBVx0jpiSC1Xm1zgNa4WTImJEnfgQtaX
-         rL4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8wTFr98XZ4Rxm9kQaTiDyUUYXE98L5uz8n3FrUfAge3QLnuIJBEw7rZo6mxXF7HHnQGwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwsktwWcoJDy8CA6GUpq2VFA/DDpnW1adk6R37SePtxDt7ppZC
-	dkJUEhUkJkt+mD7OzWOAv8nUmkWrqEsLZWy8QcYgZbglOGLzeC3OqRmvw5yehPZZti/5S+rigV+
-	Y158bZo2Uit/5M1K85cq8yz2gyt2jGG1rWeCliwhZLfkp08ToXtcg4A==
-X-Gm-Gg: AeBDieuUZpB6ufsn7y40YrkyvcDNUvgxJ+w6dVgiOqNky7JeHieSugQ07JJQPVT9E6x
-	9U24JIzBXAqY1mrjAzwqiLTneXDFrebAW6i8SsFxIjjShbG6JnRtwnA6XZNruRddn2UWCmgHgUb
-	nnlpdXlLq/Q/cd9pUR5ylAbHjpWa/+oP1wYcc0BpuH2JaqkAxX04CuzG48/H51oXUlWzSM2RY3W
-	p/jOlNfQIUIsLEC6+wcJ4tLOAnQFU6H0T00fRE7sWWLdFOThxfor75zELiKG8WE4cibe0u0RvAU
-	rPJEjYmahKhWYe/6TuBRnalr0DDR4PtuV95i7GJp3KL/uRB7JopxVA5opwPqagCATrd4UV2MbVf
-	bFb2GTbsQk7wVnOqlHDMnnulY80aJ5j0blXTQ+83l9sMf5EvLnbW8IHwuMH/gv9iEmctI4t51Zr
-	ZpK4ihqg==
-X-Received: by 2002:a05:600c:c108:b0:488:c282:e78c with SMTP id 5b1f17b1804b1-488d684bd3amr202998285e9.19.1776252695205;
-        Wed, 15 Apr 2026 04:31:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:c108:b0:488:c282:e78c with SMTP id 5b1f17b1804b1-488d684bd3amr202997745e9.19.1776252694669;
-        Wed, 15 Apr 2026 04:31:34 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead33d6e9sm4680580f8f.1.2026.04.15.04.31.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 04:31:34 -0700 (PDT)
-Date: Wed, 15 Apr 2026 13:31:11 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 2/3] vsock/test: fix MSG_PEEK handling in
- recv_buf()
-Message-ID: <ad9uYrUjgCkW1D_k@sgarzare-redhat>
-References: <20260414-fix_peek-v3-0-e7daead49f83@redhat.com>
- <20260414-fix_peek-v3-2-e7daead49f83@redhat.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XE77ZTXP"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63ELOqpX1859859;
+	Wed, 15 Apr 2026 11:34:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=dbKsVQ
+	SkiG/5f35I7+pe/0b7aszjCDlyT6sBaWxqhWw=; b=XE77ZTXPyWIMNMSaNHjv9n
+	Q5+at0sAz7ASV1EpHIQG/0Cf2KNtTdIJBpHUFqMAzXtJhiEZLFevRS7v4pikxnod
+	1lHU4RaGh1jKqXxEiUdDRX0MEKqlifkJhVIg5Bfhnj7/PHkx4V0F5MWfpxJ/PMJn
+	QjNtzjXLJCqGGaUqYkXiNccKfG4cB85KFXOGxw1zAvmwSWzEU1tVrXYV3x8rt9Pe
+	7uxIf11m7y/Eue9ShOQQpJwTSiS0gvQHEtswljGhdq1zho8qnUwzvuSwG6aFHFTX
+	uvAe3pvIgviBroSc6CLYFyiW9JAJsAms96nBM2LzgzmEhD6khfIO6PGs2VqBv48Q
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89pfb76-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 11:34:10 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63F8PnhS003557;
+	Wed, 15 Apr 2026 11:34:09 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg1mne0tj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 11:34:09 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63FBY6cq30998976
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Apr 2026 11:34:06 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E550720043;
+	Wed, 15 Apr 2026 11:34:05 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A186E20040;
+	Wed, 15 Apr 2026 11:34:05 +0000 (GMT)
+Received: from t14-nrb (unknown [9.111.91.157])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Apr 2026 11:34:05 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260414-fix_peek-v3-2-e7daead49f83@redhat.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Apr 2026 13:34:05 +0200
+Message-Id: <DHTP3011DZ4W.3HVEWE0UNIYTY@linux.ibm.com>
+Subject: Re: [kvm-unit-tests PATCH v2 4/5] s390x: sclp: Add detection of
+ alternate STFLE facilities
+From: "Nico Boehr" <nrb@linux.ibm.com>
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>,
+        <linux-s390@vger.kernel.org>
+Cc: "Janosch Frank" <frankja@linux.ibm.com>,
+        "Claudio Imbrenda"
+ <imbrenda@linux.ibm.com>,
+        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
+        "David Hildenbrand" <david@kernel.org>,
+        "Thomas Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>,
+        "Nina Schoetterl-Glausch" <nsg@linux.ibm.com>
+X-Mailer: aerc 0.21.0
+References: <20260324-vsie-stfle-fac-v2-0-5e52be2e4081@linux.ibm.com>
+ <20260324-vsie-stfle-fac-v2-4-5e52be2e4081@linux.ibm.com>
+In-Reply-To: <20260324-vsie-stfle-fac-v2-4-5e52be2e4081@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: LCNCFU7FaMS7eVjd3aYDCAR44d9IM2MT
+X-Proofpoint-ORIG-GUID: LCNCFU7FaMS7eVjd3aYDCAR44d9IM2MT
+X-Authority-Analysis: v=2.4 cv=WbE8rUhX c=1 sm=1 tr=0 ts=69df77b2 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=8cb4Q7LiNy3J1eJDIjsA:9
+ a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDEwNCBTYWx0ZWRfX68nloXCgObir
+ c6vMWF7VbonEM0gefSugOb0hUjwvb2QLV7kqlkMc5C821t1WzUxxuVW7dBlBdwE7eyQB+Y6lzsm
+ tSH/Ne52Kp08UG3gsfgN2Km0kfKEOxXGEJg+RQgL47Zoy8rdwNiDaBsMqet3WzjRzqOBHGHZ/PM
+ 6HXn1bT77lbbysXCofBaeV5Tg39JRUiDL3U6NIoOExvDUGC4SWHn1TPDecf5DjrHJWQu/ZUI+QY
+ 1xjjN89ItC7c+eEh740YdIB/2pBZxltN8w/64di/XwpFhmP+MiRySaI01CMYAHYVt6KgtB9S1ej
+ 2tcZwiNyvbcVhokUXqWLgIEWrp08+aProahokMMv1rdmvY57Yl4zFr5g7Xyn0dXM+XTrg7GD8fk
+ nyqeI1boayYFPQ/RPs3XXvt5Tznp/v/7FSsQsc/PFOY4G77vuPS83uuoCqTuOpLh3V6VRZ7SF+P
+ VMZ/DJLDw4I6D2JOC4g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 clxscore=1015
+ phishscore=0 impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150104
 
-On Tue, Apr 14, 2026 at 06:10:22PM +0200, Luigi Leonardi wrote:
->`recv_buf` does not handle the MSG_PEEK flag correctly: it keeps calling
->`recv` until all requested bytes are available or an error occurs.
->
->The problem is how it calculates the amount of bytes read: MSG_PEEK
->doesn't consume any bytes, will re-read the same bytes from the buffer
->head, so, summing the return value every time is wrong.
->
->Moreover, MSG_PEEK doesn't consume the bytes in the buffer, so if the
->requested amount is more than the bytes available, the loop will never
->terminate, because `recv` will never return EOF. For this reason we need
->to compare the amount of read bytes with the number of bytes expected.
->
->Add a check, and if the MSG_PEEK flag is present, update the counter of
->read bytes differently, and break if we read the expected amount.
+On Tue Mar 24, 2026 at 4:28 PM CET, Christoph Schlameuss wrote:
+[...]
+> diff --git a/lib/s390x/sclp.c b/lib/s390x/sclp.c
+> index d624872cba608fcbbd0c482a25f091fe19475a43..77b2a5ec00d68ec7ee82da295=
+f2f31c539b5c00c 100644
+> --- a/lib/s390x/sclp.c
+> +++ b/lib/s390x/sclp.c
+[...]
+>  	if (read_info->offset_cpu <=3D 134)
+>  		return;
+>  	sclp_facilities.has_diag318 =3D read_info->byte_134_diag318;
+> +
+> +	if (read_info->offset_cpu <=3D 139)
+> +		return;
+> +	sclp_facilities.has_astfleie2 =3D sclp_feat_check(139, SCLP_FEAT_139_BI=
+T_ASTFLEIE2);
 
-nit: "..., update the counter for bytes read only after all expected
-bytes have been read and break out of the loop; otherwise, try again
-after a short delay to avoid consuming too many CPU cycles."
+Help me understand which case is the odd one, the diag318 one where we acce=
+ss
+read_info directly or this one where we use sclp_feat_check()?
 
->
->This allows us to simplify the `test_stream_credit_update_test`, by
->reusing `recv_buf`, like some other tests already do.
->
->This also fixes callers that pass MSG_PEEK to recv_buf().
-
-nit: this is implicit from the first part of the description.
-
->
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->---
-> tools/testing/vsock/util.c       | 15 +++++++++++++++
-> tools/testing/vsock/vsock_test.c | 13 +------------
-> 2 files changed, 16 insertions(+), 12 deletions(-)
->
->diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
->index 1fe1338c79cd..2c9ee3210090 100644
->--- a/tools/testing/vsock/util.c
->+++ b/tools/testing/vsock/util.c
->@@ -381,7 +381,13 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
-> 	}
-> }
->
->+#define RECV_PEEK_RETRY_USEC 10
-
-10 usec IMO are a bit low, it could be the same order of the syscalls 
-involved in the loop, I'd go to some milliseconds like we do for 
-SEND_SLEEP_USEC.
-
->+
-> /* Receive bytes in a buffer and check the return value.
->+ *
->+ * MSG_PEEK note: MSG_PEEK doesn't consume bytes from the buffer, so partial
->+ * reads cannot be summed. Instead, the function retries until recv() returns
->+ * exactly expected_ret bytes in a single call.
-
-I'd replace with something like this:
-
-    * When MSG_PEEK is set, recv() is retried until it returns exactly
-    * expected_ret bytes. The function returns on error, EOF, or timeout
-    * as usual.
-
-Thanks,
-Stefano
-
->  *
->  * expected_ret:
->  *  <0 Negative errno (for testing errors)
->@@ -403,6 +409,15 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
-> 		if (ret <= 0)
-> 			break;
->
->+		if (flags & MSG_PEEK) {
->+			if (ret == expected_ret) {
->+				nread = ret;
->+				break;
->+			}
->+			timeout_usleep(RECV_PEEK_RETRY_USEC);
->+			continue;
->+		}
->+
-> 		nread += ret;
-> 	} while (nread < len);
-> 	timeout_end();
->diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
->index 5bd20ccd9335..bdb0754965df 100644
->--- a/tools/testing/vsock/vsock_test.c
->+++ b/tools/testing/vsock/vsock_test.c
->@@ -1500,18 +1500,7 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
-> 	}
->
-> 	/* Wait until there will be 128KB of data in rx queue. */
->-	while (1) {
->-		ssize_t res;
->-
->-		res = recv(fd, buf, buf_size, MSG_PEEK);
->-		if (res == buf_size)
->-			break;
->-
->-		if (res <= 0) {
->-			fprintf(stderr, "unexpected 'recv()' return: %zi\n", res);
->-			exit(EXIT_FAILURE);
->-		}
->-	}
->+	recv_buf(fd, buf, buf_size, MSG_PEEK, buf_size);
->
-> 	/* There is 128KB of data in the socket's rx queue, dequeue first
-> 	 * 64KB, credit update is sent if 'low_rx_bytes_test' == true.
->
->-- 
->2.53.0
->
-
+Or is there a particular reason to do it this way that I didn't see?
