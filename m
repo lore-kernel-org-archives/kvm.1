@@ -1,190 +1,264 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5C134751E
-	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 23:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8895C2FF657
+	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 23:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776294479; cv=pass; b=saDJFIZdU9Ef5y64rU9CxOuOfo4rX8sx9M+8fJvyQz8/YyBBQHocATmQh23rFld2F2kwHhzZDebjjhhPcmJ/2M5q9maoKVWEdCvQV8I58E28YUWmr/0Pf0UpAzx97vjLVeh94FDhFD9uQfAC+YxLiNOH2Iw5le32rfFQ0mgkgyI=
+	t=1776295644; cv=pass; b=HOKnM+FXK6KBT0+WY2/EIw4lvkuOFZr9kOaDe5JTXiL8vejoj87xcUPIfQbJDazqDceM+TU0T4R/ONp9Qv7gFFFfUkEkDoGND6eKm3FRJ586/V6I7Xx8soRgIliChOwStgt5q8NwlMEhIRwPZHhttFNTWJISXwF9TXyq4bIOfDc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776294479; c=relaxed/simple;
-	bh=kEqi5hf3UpVu5TD5lubNm0uyJxJG9imiyN9JSO4VCDA=;
+	s=arc-20240116; t=1776295644; c=relaxed/simple;
+	bh=x+QG3xhCQwRR1qC6hXy7NcWy7080+KY3YK+kXqaECJ0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EJ9aDWRr/6ibE6wF2hWU8TY4qGmxFFGBUQsT4NR1WZ1lQ9heTCs1WOqwGajgXY+C/KjDuPau1bF1x9vVSafRut8cEbPBg37whXQnEgq53xfJdPrtlW7CGJuszgOXms4A6pVD/tK4IuUxPLYIZ0WLwj9RewHqecvMPh5/rhnU0Ac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ry46rJH3; arc=pass smtp.client-ip=209.85.208.54
+	 To:Cc:Content-Type; b=NMOHoS0dx6M54MY+3VpdjW8ST0yJdEmmTRDCKYHctwy2bExlVzIXnY4ha+JrQNdlxBBklrBrHwDgY8TMoNNmZEM38+OD5UsLKIdH+Gk/FEffL7YDRz6w1H3nZmFT7AHVqwLcDIknajb8QN6yb+HxW62cDrU/pdat1YLQnL/LC7A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dL+d9MfN; arc=pass smtp.client-ip=209.85.219.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ry46rJH3"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-67148a70f8aso1128a12.1
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 16:07:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776294476; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dL+d9MfN"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8a3342d301aso73696966d6.2
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 16:27:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776295641; cv=none;
         d=google.com; s=arc-20240605;
-        b=QIfO4td9QNi2d5X4sU95R7qcHGnL1vVi9LQ5ANCkpz/ukoD6kMIyFeuxpzCQ/8vnJ+
-         YQmrgqB4CBEZl7hZGWnNo5sor2H/ZkZkbFc5GGCr2MDNlJKaHQ4Yww2Tc05UTSlxmdLz
-         BssRghawcjV28YKE6obo5XMnJxoJ9JKGwOKzoaYsfdZ+fTqb3VQae1JHrjjjz38k0fj8
-         7i4wRarJZyb+H0B29ZLdNgis7syMYm6E9wj+i+IzMSRQ6FjbqvyRxd3AEIPJwYedjsWj
-         3ok4cL772mVvtGCkohqigoMU31gCleoYzTY142GrDfZbS5kuIFrr+evjhqXKL4GC3deJ
-         ZwSg==
+        b=BLdOM6Y4QjQk1em+yDg3x43GWnHhDPfL9UQojp6j8eWi+YBjY7wmjNWi50unOdxwUJ
+         zdwUZH69ZFeIK5lW2lWdAPqgnb/Xv7RUHdfJRBNBHkUsKVhmlqzKKSlWdfn9egclCG49
+         4lxZf5SNc/GoBBaVplK/RXwxYmuWlMXRjnhGnCFCJFRlwz/A9jM0pdvQa0pU/Vj7cKLo
+         FTtDnfq6ZmuQMNMRcdZFVgorVWLWs7wzP2xbCV6T7uNEwCuhnm3awdLeTj8c2XhO4cl+
+         33ll/Mm/u9JEPtvy7nBKu+B2ls20rcoXepwlASi0DG7rFxCMmLdf3ahHuaAUOgAeMCRM
+         BP1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=dTs1a+Fw1OjQau0Kc8OaroZUOGSnD6osHJosJQkeXlY=;
-        fh=mALt64XcZQw4WbC/gAI31Ru5XnbBfiJYipQ4XN4whbM=;
-        b=bQBymC0wnnR0sHwdqaqixgTJfGLheISRKhwFA0ddvMFrdI1hElDYmclz5PlCLXAfA9
-         16z0IYdpz+k5jDBUhGrZfdGT/b0PRWl3MvWdZNvq5PRHK8Nl66BPlcloGrA9D9SPHTuK
-         eoLFiV4yWFw1IwcpE7yMSpu3CQ8wQ+L1CCG+zPcj0ld6l5qntxaNHxiWpWYbC1wRLLDR
-         uhtZKsYY868MldR7QimVUVDyn8k7hg8qOOMzxDeCjInja/x/RFgU01hAM0dneBMAC25Q
-         935sdCPvlh5bFn2c2IFQGZkTI7Cl/IgPhpNjd76RkX2BVrMdKQlCBALLymPAOZBPANLm
-         Rxgw==;
+        bh=x+QG3xhCQwRR1qC6hXy7NcWy7080+KY3YK+kXqaECJ0=;
+        fh=t4wjTIcRo2x/La+yqZ14sHjG2lTsq49eV6sOT6MXGd4=;
+        b=D5dxfvbzFz5giyeecyfcJXvrhWFUKSJS5gbY4/LL8McsDn8vxobwKeuV9FGO3sNJ9C
+         beZmJqEButp3rzrlpUBeTAPeTXatWG6oub/JCNwZLoIBfGiBnIQ28z0ySthKJHu6kqug
+         J/4+QVJK8rQRaH8COwI5O522A3kt5mcilJt0MvNQXa8KUcdj4xC8OgXCFNl1+fK932CR
+         gDxPFPVYjQnIF4VMN+IwtU+n2o7D6dKrJcZDxlGIvtw+oeUf7ogQz94RUjYP9MviRITG
+         W9sKavil0aXlp6LmghCb5vnJ2XlXCOC0yl+KIREefXbe2mp4g7Mf3c4Qg9yFe99ykQ7g
+         5wxw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776294476; x=1776899276; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776295641; x=1776900441; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dTs1a+Fw1OjQau0Kc8OaroZUOGSnD6osHJosJQkeXlY=;
-        b=ry46rJH34vCCjswsl49FcloGmCCPYPbc6GjWoLyI5XOVPhvtAqHDM0rBpZBsoAQk39
-         LrRt0g45lAZa1HDA8LEmSe54ThNS60OK8eJ5jx2Vt7UzCdV6YsHzu2xbAK6RddIe0eHe
-         l8P/jIHaVoXBM7ymVPRYc5C9G/DOZR5/o3oDctQg1F0BquuN1EIhdfBLcpYZVC/h3LoP
-         opxmPledICICilmQGoT8svN0l9fe+L64kj9lgx3G5U7ZaizmoyxwFrfcLNY+/r+erU4d
-         o6ig6yvdqzLuqhGy6zhQU6+zIh7JdP+Rn5bEggo5hiKSH7wP24b4iVRnHvn3aA9ACRhu
-         2xpw==
+        bh=x+QG3xhCQwRR1qC6hXy7NcWy7080+KY3YK+kXqaECJ0=;
+        b=dL+d9MfNdURvdvkphCHpYVxv0litJXnk611BN0/udn9aq+wqz1hZ9KL8XmvE8Yrbrs
+         QjZein2swuHU8KgO8rkbQpZhZmuZzhcxSV5Zr3joFvuZD6eHSOf0xB7yF9kiAgf21EtD
+         GmhUgpM0MosFlw8iAJzjUMTSzHV27KdDExCEEQ1iz04lFohDkLNvuLVOOvTaqxRPC7lb
+         qb0kDN38oMLc0L6uf58EDwMz/W09u/WZ53MWUFn3dhEY3e4PBAlkF8XQCbMo1fcxI2d0
+         El0Umg9/rkNArY4GCUiIXxWHKUy8HBv5Z0gWbGXBNlGKgtD/em9I0iERhQpuRI+c3i4x
+         cwOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776294476; x=1776899276;
+        d=1e100.net; s=20251104; t=1776295641; x=1776900441;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dTs1a+Fw1OjQau0Kc8OaroZUOGSnD6osHJosJQkeXlY=;
-        b=jn/R3xeM2kBdu35sBeUOshb09LJeBQuMu/615RzdAbLMWiH/epziMUc0IwB/HY/mKY
-         LegAb+GRg3pSqU+4A5zvxkw/DptKIZMEQ2z+mthXFW5BujJXT38KCvnM+6bpHCQL/TbT
-         hPdjoIjJQWbyaWFsq+Vho/6+/iMwRBPrYHYPvB+WLNhxWeNPn93WoRbEdZl5rJayC9Q+
-         Uvo39nSeh4Z28thBEKJrnA9mWMP48/WQybJRsFVTEcqGpeS24kwn2KeQKmYXKOQ1sBu7
-         nKb15+a/R9rjZ2y7MprK/xnhBOQAPNmAXPGRlWzGOlzuRhxnpn5ThqKgTafMaqfsEOFw
-         CucQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+8xyPlMKhPfPg6y2R1ifW9lNpQGsAr7GILXOyRtU/tWoGO7dI/CqzjCsLDxBDjeEOU5eM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtg0dsQv0JLfbB+h9oXq351EKQVFzg4mr4p6vsK3NBd/enOR2x
-	5cm65OtuUMNF+8d7q3la41snLKJNCSb4CfMyAw1C5dj5Y45NiixzPlV1Kys/KkasVHNmPnSVqkl
-	d5T3T5G0Wpm5Yl75qtT3Zc8rA65YO1VBO52CZPujgFTQjWM9Jb/slkUTK
-X-Gm-Gg: AeBDies12Pg58vfENWLYVH6nHKOhbG3dxhWAubsG1WnrDPGG4pvA6vhmeso0iwhJGBk
-	G73LSTK+26pBQfsrSLIU+xNaYdDx19b95VMHE7Za63gMh8aYb3tuOlG630wTRUR8s3f8BvVu0Tn
-	SCC95kar1duy8kfFwbnSH/Alqtc8scBUaW10/7cA6quBZDqklaaqLSSIh+C4/QvnY9n2nAwR5n5
-	YILsRX8GVz2LMER6i2PFdg9JI1c5nqlU+LHgHaFeqR6vKeajeRS4Kg/LpqOjPM3FH6WV1LTU3DD
-	xobdJhMTpNCHYNNOj5M+zKNW5qRy
-X-Received: by 2002:a05:6402:318e:b0:66b:99df:42e2 with SMTP id
- 4fb4d7f45d1cf-6727177d235mr19810a12.10.1776294476058; Wed, 15 Apr 2026
- 16:07:56 -0700 (PDT)
+        bh=x+QG3xhCQwRR1qC6hXy7NcWy7080+KY3YK+kXqaECJ0=;
+        b=Rv2y7acLNyYd2PtqCjyASVTD/9r7nlzr+mOk9+YUwlLqyBrpGiOuTmfCJKO+VqzrQH
+         H+9R/ZbN+tJC1zZvPzjSTa3qbMstOxNBxYKFkM6KDdoDgTQgvGaevH9GwW1ITn8PYG8C
+         Jz0ad6tE7pDlOZFl9etcqj0K/Hk8uyhBPu8V5t0OFFEZm631zC03+N9KMhxsShExPRpi
+         qixkW5GR46SkU4sHdHtd1PHTLeu5yyy6kvpQFcv8BjnAkWFVD9w7rGkPGpHbCSk1NRij
+         x/X3IUzelROpPA3gj1ApKSa9uhrJ6dXX0R2dOaI95RV1Z5QBISHRR1H5QMsoebEefjng
+         eF/A==
+X-Gm-Message-State: AOJu0YwqBevj48U2tTcteYIot7zmaPP/NI1R7zqCJEtWIfs4uGj4rklJ
+	rz10rqqNs6D5YxN9jn0W64doswMjfO6wMTC0araP3GmWxWYY7is20j3UUKsga4FuMUA/IY5CDqI
+	FTcDaKr7ZZSwltuMEIU4h5nq1YwDR6i9CA8xJtNGaq5J8ToxsgvttZI5F0FAQfA==
+X-Gm-Gg: AeBDieuxwowSACjOq5ivkEMwR7eHgsp+fd7yAWoGu91X3krbRSg/4kUmwnB6/hpZLsv
+	HtI3+vzLL9fUCfaVVMs7zedAu/oSnbObrIji37mhcvNOMDgA0FPUdtmIc2eUliwGeNBN1MCgWaF
+	P2cy+63JrgxnKJdYFm0UuUx1NC2KwfmWXgmZ/i3C0iwaVBfuO0AthEcMxOfxZz6CoXkPbJIGif1
+	eeUl6YYbfEzExBxlTCQYqVTCgopbQ6UAE3rLD1muCR3pMmXvEBG7F+G1fvqC3JKQ/mwOgxJECmh
+	mOLkeOTCAS6dARuhzLO0xsZlHr4Fu3R/SG4kH6l4Ln/UV16i77vTrjFbSpE=
+X-Received: by 2002:ad4:5baf:0:b0:8ac:ab13:8f15 with SMTP id
+ 6a1803df08f44-8acab1391c9mr232004096d6.7.1776295640870; Wed, 15 Apr 2026
+ 16:27:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-5-yosry@kernel.org>
- <CALMp9eRk8O-kGixdXC0Lb0=PgSVE5eFnLLXOZYqMsb=FTczZTA@mail.gmail.com>
- <adfgPwgXz1iQHpVS@google.com> <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
- <adfmVXRwzZkvRSnj@google.com> <CALMp9eTvH1Pg0Eb-KCcX7LLJPFgS1xTSR0DzeA8xo4Re7=p=7w@mail.gmail.com>
- <adfyKU5WUiW4OnUg@google.com> <adgYSnE-I1Z19fCY@google.com>
- <CALMp9eSjAoVYk2f_j=b_X=EngJ935J=W7YS-C0nDS7b1j2Y4Og@mail.gmail.com> <aeACk7T5Q4TxtRMF@google.com>
-In-Reply-To: <aeACk7T5Q4TxtRMF@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 15 Apr 2026 16:07:43 -0700
-X-Gm-Features: AQROBzDlod_VGha0XUDQgqq_4FPeUuHT1CEK2by_j4C7-vUd8amvbGVs_1SCNOo
-Message-ID: <CALMp9eSHJmLLAQAvbvRmq99v568PGkJduoQn1djnXGb-yED_5g@mail.gmail.com>
-Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
- nested SVM transitions
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260318155413.793430-1-steven.price@arm.com> <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
+ <d661a24c-6619-4734-96bd-075d3416e809@arm.com>
+In-Reply-To: <d661a24c-6619-4734-96bd-075d3416e809@arm.com>
+From: Alper Gun <alpergun@google.com>
+Date: Wed, 15 Apr 2026 16:27:08 -0700
+X-Gm-Features: AQROBzCS-xITaK7ztBjux37Usj-fD7VQebkqcRVamG9jxnrdFdKeF2d2D3KViso
+Message-ID: <CABpDEumAVf02uOS5Bj07EDyuU=z9FV-iocQU1j7gFM5z0BeV_w@mail.gmail.com>
+Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
+	Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 15, 2026 at 2:26=E2=80=AFPM Sean Christopherson <seanjc@google.=
+On Wed, Apr 15, 2026 at 4:01=E2=80=AFAM Steven Price <steven.price@arm.com>=
+ wrote:
+>
+> On 14/04/2026 22:40, Alper Gun wrote:
+> > On Wed, Mar 18, 2026 at 8:54=E2=80=AFAM Steven Price <steven.price@arm.=
 com> wrote:
->
-> On Thu, Apr 09, 2026, Jim Mattson wrote:
-> > On Thu, Apr 9, 2026 at 2:21=E2=80=AFPM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> > >
-> > > On Thu, Apr 09, 2026, Sean Christopherson wrote:
-> > > > On Thu, Apr 09, 2026, Jim Mattson wrote:
-> > > > > On Thu, Apr 9, 2026 at 10:48=E2=80=AFAM Sean Christopherson <sean=
-jc@google.com> wrote:
-> > > > > > On Thu, Apr 09, 2026, Jim Mattson wrote:
-> > > > > > > > > In general, this deferral is misguided. The G/H bits shou=
-ld be
-> > > > > > > > > re-evaluated before we call kvm_pmu_instruction_retired()=
- for an
-> > > > > > > > > emulated instruction.
-> > > > > > > > >
-> > > > > > > > > > ...
-> > > > > > > > > > diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-> > > > > > > > > > index f1c29ac306917..966e4138308f6 100644
-> > > > > > > > > > --- a/arch/x86/kvm/x86.h
-> > > > > > > > > > +++ b/arch/x86/kvm/x86.h
-> > > > > > > > > > @@ -9,6 +9,7 @@
-> > > > > > > > > >  #include "kvm_cache_regs.h"
-> > > > > > > > > >  #include "kvm_emulate.h"
-> > > > > > > > > >  #include "cpuid.h"
-> > > > > > > > > > +#include "pmu.h"
-> > > > > > > > > >
-> > > > > > > > > >  #define KVM_MAX_MCE_BANKS 32
-> > > > > > > > > >
-> > > > > > > > > > @@ -152,6 +153,8 @@ static inline void enter_guest_mode=
-(struct kvm_vcpu *vcpu)
-> > > > > > > > > >  {
-> > > > > > > > > >         vcpu->arch.hflags |=3D HF_GUEST_MASK;
-> > > > > > > > > >         vcpu->stat.guest_mode =3D 1;
-> > > > > > > > > > +
-> > > > > > > > > > +       kvm_pmu_handle_nested_transition(vcpu);
-> > > > > > > > > >  }
-> > > > > > > > >
-> > > > > > > > > This happens too late for VMRUN, since we have already ca=
-lled
-> > > > > > > > > kvm_pmu_instruction_retired() via kvm_skip_emulated_instr=
-uction(), and
-> > > > > > > > > VMRUN counts as a *guest* instruction.
-> > > > > > > >
-> > > > > > > > It's just VMRUN that's problematic though, correct?  I.e. t=
-he scheme as a whole
-> > > > > > > > is fine, we just need to special case VMRUN due to SVM's er=
-ratum^Warchitecture.
-> > > > > > > > Alternatively, maybe we could get AMD to document the silly=
- VMRUN behavior as an
-> > > > > > > > erratum, then we could claim KVM is architecturally superio=
-r. :-D
-> > > > > > >
-> > > > > > > Here, it's just VMRUN. Above, it's WRMSR(EFER).
-> > > > > >
-> > > > > > But clearing EFER.SVME while in the guest generates architectur=
-ally undefined
-> > > > > > behavior.  I don't see any reason to complicate PMU virtualizat=
-ion for that
-> > > > > > scenario, especially now that KVM synthesizes triple fault for =
-L1.
-> > > > >
-> > > > > L1 can clear the virtual EFER.SVME. That is well-defined.
-> > > >
-> > > > Gah, I forgot that the H/G bits are ignored when EFER.SVME=3D0.  Th=
-at's really
-> > > > annoying.
-> > >
-> > > What do you think about having two flavors of kvm_pmu_handle_nested_t=
-ransition()?
-> > > One that defers via a request, and a "special" (SVM-only?) version th=
-at does
-> > > direct updates.
+> >>
+> >> This series adds support for running protected VMs using KVM under the
+> >> Arm Confidential Compute Architecture (CCA).
+> >>
+> >> New major version number! This now targets RMM v2.0-bet0[1]. And unlik=
+e
+> >> for Linux this represents a significant change.
+> >>
+> >> RMM v2.0 brings with it the ability to configure the RMM to have the
+> >> same page size as the host (so no more RMM_PAGE_SIZE and dealing with
+> >> granules being different from host pages). It also introduces range
+> >> based APIs for many operations which should be more efficient and
+> >> simplifies the code in places.
+> >>
+> >> The handling of the GIC has changed, so the system registers are used =
+to
+> >> pass the GIC state rather than memory. This means fewer changes to the
+> >> KVM code as it looks much like a normal VM in this respect.
+> >>
+> >> And of course the new uAPI introduced in the previous v12 posting is
+> >> retained so that also remains simplified compared to earlier postings.
+> >>
+> >> The RMM support for v2.0 is still early and so this series includes a
+> >> few hacks to ease the integration. Of note are that there are some RMM
+> >> v1.0 SMCs added to paper over areas where the RMM implementation isn't
+> >> quite ready for v2.0, and "SROs" (see below) are deferred to the final
+> >> patch in the series.
+> >>
+> >> The PMU in RMM v2.0 requires more handling on the RMM-side (and
+> >> therefore simplifies the implementation on Linux), but this isn't quit=
+e
+> >> ready yet. The Linux side is implemented (but untested).
+> >>
+> >> PSCI still requires the VMM to provide the "target" REC for operations
+> >> that affect another vCPU. This is likely to change in a future version
+> >> of the specification. There's also a desire to force PSCI to be handle=
+d
+> >> in the VMM for realm guests - this isn't implemented yet as I'm waitin=
+g
+> >> for the dust to settle on the RMM interface first.
+> >>
+> >> Stateful RMI Operations
+> >> -----------------------
+> >>
+> >> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (SRO=
+s)
+> >> which allow the RMM to complete an operation over several SMC calls an=
+d
+> >> requesting/returning memory to the host. This has the benefit of
+> >> allowing interrupts to be handled in the middle of an operation (by
+> >> returning to the host to handle the interrupt without completing the
+> >> operation) and enables the RMM to dynamically allocate memory for
+> >> internal tracking purposes. One example of this is RMI_REC_CREATE no
+> >> longer needs "auxiliary granules" provided upfront but can request the
+> >> memory needed during the RMI_REC_CREATE operation.
+> >>
+> >> There are a fairly large number of operations that are defined as SROs
+> >> in the specification, but current both Linux and RMM only have support
+> >> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXMEs
+> >> in the code where support is missing.
+> >>
+> >> Given the early stage support for this, the SRO handling is all confin=
+ed
+> >> to the final patch. This patch can be dropped to return to a pre-SRO
+> >> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purpose=
+s.
+> >>
+> >> A future posting will reorder the series to move the generic SRO suppo=
+rt
+> >> to an early patch and will implement the proper support for this in al=
+l
+> >> RMI SMCs.
+> >>
+> >> One aspect of SROs which is not yet well captured is that in some
+> >> circumstances the Linux kernel will need to call an SRO call in a
+> >> context where memory allocation is restricted (e.g. because a spinlock
+> >> is held). In this case the intention is that the SRO will be cancelled=
+,
+> >> the spinlock dropped so the memory allocation can be completed, and th=
+en
+> >> the SRO restarted (obviously after rechecking the state that the
+> >> spinlock was protecting). For this reason the code stores the memory
+> >> allocations within a struct rmi_sro_state object - see the final patch
+> >> for more details.
+> >>
+> >> This series is based on v7.0-rc1. It is also available as a git
+> >> repository:
+> >>
+> >> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
+> >>
+> >>
 > >
-> > When would we use the deferred version? As far as the Intel PMU is
-> > concerned. there's nothing special about a nested transition.
+> > Hi Steven,
+> >
+> > I have a question regarding host kexec and kdump scenarios, and
+> > whether there is any plan to make them work in this initial series.
+> >
+> > Intel TDX and AMD SEV-SNP both have a firmware shutdown command that
+> > is invoked during the kexec or panic code paths to safely bypass
+> > hardware memory protections and boot into the new kernel. As far as
+> > I know, there is no similar global teardown command available for
+> > the RMM.
 >
-> Actually, outside of VMRUN=3D>#VMEXIT, isn't the deferred version correct=
-?  E.g.
-> when counting instructions, shouldn't WRMSR(EFER) be accounted based on t=
-he *old*
-> EFER value, not the new EFER value?
+> Correct, the RMM specification as it stands doesn't provide a mechanism
+> for the host to do this. The host would have to identify all the realm
+> guests in the system: specifically the address of the RDs (Realm
+> Descriptors) and RECs (Realm Execution Contexts). It needs this to tear
+> down the guests and be able to undelegate the memory.
+>
+> It's an interesting point and I'll raise the idea of a "firmware
+> shutdown command" to make this more possible.
+>
+> > What is the roadmap for supporting both general kexec and
+> > more specifically kdump (panic) scenarios with CCA?
+>
+> I don't have a roadmap I'm afraid for these. kexec in theory would be
+> possible with KVM gracefully terminating all realms. For kdump/panic
+> that sort of graceful shutdown isn't really appropriate (or likely to
+> succeed).
+>
 
-Unless you can point to documentation stating otherwise, I think this
-needs testing. By analogy with VMRUN and #VMEXIT, accounting should be
-based on the CPU state at instruction retirement.
+Thanks Steven for the clarification.
+
+For us, kdump is highly critical as it is our primary diagnostic tool
+for host crashes. Without it, monitoring and debugging at fleet scale
+would become unmanageable.
+
+To confirm my understanding of the current architecture: if a host
+panics while no Realms are actively running (and therefore no pages
+are currently in the delegated state), the standard kdump extraction
+should work perfectly fine without any modifications, correct?
+
+Regarding the KVM tracking structures (RDs, RECs, RTTs, etc.) when VMs
+are running, perhaps we could use `vmcoreinfo` to export the physical
+addresses of these delegated pages. This would allow tools like
+`makedumpfile` to explicitly filter them out. I assume these pages must
+remain hardware-locked while the VMs are active.
+
+Long-term, having an architectural shutdown command - similar to the
+TDH.SYS.DISABLE command in Intel TDX - would be incredibly useful. It
+would allow the kdump kernel to safely bypass these hardware security
+checks, especially when extracting host-side KVM state.
+
+As for the protected realm memory, I assume that is an easier problem.
+We naturally want to exclude guest pages from a host dump regardless
+of whether they are Realm pages or not. However, accidental touches
+are still fatal.
+
+> There is also some RMM configuration which cannot be repeated (see
+> RMI_RMM_CONFIG_SET) - which implies that the kexec kernel must be
+> similar to the first kernel (i.e. same page size).
+>
+> Thanks,
+> Steve
