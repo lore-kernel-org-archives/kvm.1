@@ -1,179 +1,206 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DE1382361
-	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 13:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776258018; cv=pass; b=WT7OoeSknkM+tPGVcQH+lyjklo2vlyUJUUFNn3ocFJ+sKuexKu9f83Rv0JY/u/mjdgYoTv9AbQtO9uWGf1nviKsME9GGtla9YZ/lZxPSqcRvHqjh7sm/K5E11gpRGqzJRvU90d0udHfMz9xvpVSQlDx4vUQtM884own0xWHBg6Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776258018; c=relaxed/simple;
-	bh=LW+9VRqZobJwP0PeOeVYPcYO6+HdVBVvV4EobpgdWFs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=COjYDzUoDpIj3rNwXlNI3g1m0bAArxpljTzFTsZOQ2mC1bpXMU+dEgDuIW1Tp3JetUBNV2sIlEpT0MJBviSvvgD+Q83SETDqCP17brIe0VHKr6MGDWMcyKl0NgiD9kBFlr10x9/LwoM6QrxfH3qKwkEajwcfxyXThKI3I46xFbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZnU3xGDB; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631223932C9
+	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 13:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776258687; cv=none; b=NqWZPkX3qrT7o1Z0irHrJnQ3GTerNfAywl0GiZcM3BU+RANMz27P3rUCfjBwLK2/eG5OmJaOXsAVgj2fg0DfwgrTCcTy1DFlD7Tf+wgc8yi4GODzzeigT4g08PUuwfEtbYXeMc1wfz5mVaOsWxUjHshAa0nhsMXN+an/mOTM8Ak=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776258687; c=relaxed/simple;
+	bh=HOy4QBTiHtu5pZJktO361ZlyF5xmQN/JVgQvXBzyBow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JROUkijni8ZsZITsv1sDonx+l+jfKmNnoHSMf6RucmwpwAdSen0HA01Sdi/aMo6S2CmCRhL1p5FFzK4fzA7TTiRRyqhEbpovgBYW4iYPO9qfRBAGm67ZA+Mtu8K9+Pqo+eWTXQ5KfWV6E4nHSE0GsWQVp+1rOB0bmsakfVT8vow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bpsfhyl0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JiVkzgEh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZnU3xGDB"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-67148a70f8aso34952a12.1
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 06:00:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776258014; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KyKYAkCpIW6PSW5Lw69dGIUgHALyY0fEpBN/KxVcPUOFvX3WV72eSdpSsC8m4HiWj6
-         tfL/qs++OamyRvoPh0ST910+YMBNYh8LIZ1J2yphIn77MXb4/B166vtSRH7YIoxyWZ+B
-         /SQQ8QGl1qqDR6LgX/KHYM/hqZm5zOMcdgHGvY9XPd6fJEEPr3YsKXyH5q00lhZPjx3P
-         xHCb2C8t2cUSGqA/v9I8G3ZgqFff0ZtCK3GqbR4E8D3tvd5N8G/3lQEowS5n5kTDMYL+
-         zx/r6YSlOZSJ3G8CIS5W5IcMO1WkArVptOJUsxzRIVdBRzdImahuzBko6llx66CfxcoX
-         XA2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JCNaaeYnrpr4S5ml/FPDiY0iZEzrTwHWX5KjR7Kb5uo=;
-        fh=MI2/yP7bvNILK4yinox2Zm78/VeOH6BiRR8vieWdiAU=;
-        b=EvGCp0vcvlbwcByFG4137SkUlyctGIF1VUuH9ublguGvcVkAUglCEvAKq6NaWe1LS9
-         H4qfNJ1jzKKp9Vh25lOm54j+lKxSLm/CGJrs6VQ3F/XICryS3hbgQialaW+N64gLOc9L
-         kcpBYwDlMWPn4UtQ22zBC6GL8m16sfhrYBisPQSt503C3jJZrHPe319ctHrfzyp2diS5
-         h4lWCT0Y5+oLoNZSdPo9PVruITCXmTn2OyBgxLnnJ6hcsndqFcP5Pjh8W4J4tcCEj5Oj
-         JW6R/0LS0OF3ab2byNlwTHnMfcPQpiA2SA4wvsWaoWUGceEvMWwzbN6npM+WSrrYkNk5
-         WO7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bpsfhyl0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JiVkzgEh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776258684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WL2SJseQynMpG1hsJR3ThfhQkhlDiJgfMk9Ad5tgV64=;
+	b=Bpsfhyl00H10Nbvl2+Kr7CxH3ppFNPH3pUvQ/4QmCM8Zu1ILs+UBZbH5S0A82+l9HtJIsX
+	4pX1VRNdDo00WOt81uCgx3sz3sLR0Z3Zw2Jw4ZCKbXpGIW+x2QMcd/QbNR83fX4q9b9R6a
+	4W7reLxn0M6G/96AOQAPmbvDOZrxZzQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-5Zb7BPgfN0WkTxf4mL05OA-1; Wed, 15 Apr 2026 09:11:22 -0400
+X-MC-Unique: 5Zb7BPgfN0WkTxf4mL05OA-1
+X-Mimecast-MFC-AGG-ID: 5Zb7BPgfN0WkTxf4mL05OA_1776258680
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-488e1757205so23453035e9.0
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 06:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776258014; x=1776862814; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JCNaaeYnrpr4S5ml/FPDiY0iZEzrTwHWX5KjR7Kb5uo=;
-        b=ZnU3xGDBb4awF4H9RFL/K8PP8PNvFNsS4KYC2UYZHqTHELlbmnmVauNcX4Q1v03POL
-         OIMVDuRmH2lWV6cTyp+pjgHMtJnUPDmcX2SLSAayGdwJGoI2bgfJR8l2wRrKpn7HzTgp
-         isduyzsywd7xfuYjfdMA8XVenO5BkrmLDnrl6w4i+vhd5Z9cRLuqcKwIFsbPDXzU6QkX
-         kVg2dRI9nKy+9l63DZksDZfKOrilJEkTJHD/iaV+c6jmK/FrUtaP4a7H+vFTgo6kh3wQ
-         wdp3qHLRehzjZ8D4C2iLAL1f5OOYkUAon+DAyyOBBrHCpSQNHbgMWM/kD+bwMrAiKbUe
-         aQGg==
+        d=redhat.com; s=google; t=1776258680; x=1776863480; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WL2SJseQynMpG1hsJR3ThfhQkhlDiJgfMk9Ad5tgV64=;
+        b=JiVkzgEhI6X8b57/5qjR5GSOPXmt8b1+OGR2WfB17Qk52YvSoFegvw+RkAj99YZ5f+
+         l8FBlgRsuUrYvZk9I+lQ5+YE8Hy4mgFHsO+lKgN4g5s9Q2z+yilDdhiOIiLQ5nV3+FAl
+         SPhRy9sCbwtQcNcbmS2l0Nn7tZHQC/oDc6byC1b1CrJke9TaXVPxZRVh+/HzPfg5YAiN
+         lK+Av3csqa3+J1oCkNmUAbusKQd2cKbigVazmCQwS0eX02vioVtGeIP/8bOaUoYZ2IHY
+         XXIPeDIFvTpXjn40t0+k3iQfAqVdYwhNls4h4/4ZuhUBJPWpXFzVs07TlutBhy3ElfZS
+         WmTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776258014; x=1776862814;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JCNaaeYnrpr4S5ml/FPDiY0iZEzrTwHWX5KjR7Kb5uo=;
-        b=XRDg9BCYMNiOW/t5Y5rBTsLxo44z64EY3CuQJtQ7GdRBShNbdMEuOEw4PvDWJfTwex
-         rJa/0ILRMN4ND2hs1vP06jgFuD4jdeU56c15+YvhwNkNY/iqtxkovEfyOeTX4ePv+K83
-         OI98OnxnvqIRoqwS4gt8Ies8yXKywqSk8N1jrKdJ1JXszpDAa9mt7ahiODPM3BOlzRJz
-         0Z4PkgsbntMa/HoI8io7nd9gbNI6onS0MX+o6FVbwPs26aL7Gyk4DwzoFUgslnkqKzuT
-         gUnWdN9XnHOQujiorlLXQnN80+YkhkDGibmdw4SV+LrhIAana74EKMMs/JL+Kb5hcYl3
-         dlWg==
-X-Forwarded-Encrypted: i=1; AFNElJ+bIr4RVnUhAu/iS+2KvQYQSVWkn08HZOeqhfP8N7yFpg1KiszaQbIo/I3JDV4/asw7Dg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNfVzrCWjzPzkJU0bx/ZpVMmhLdpx1z7DiOmWDl4MUA9KXlRYk
-	TT0fDfs7XbYFCMMsJlfMVvT5ucVFBBMyNc3BMAUjswsU1sSSQOhFKNAf9XZ0VS9nmm9U+vvAolY
-	ldeq/27QQXX/wON+o5VwvVOAjz+zqwHRIa8U4k9jz
-X-Gm-Gg: AeBDietIZRhP43LncVLPIh9pstV6mWtTxmBXkkj7Ey1/Y0usg1LExzWRkMr8JJpZD7z
-	YdjBFaFmkGrbyfpicDxLGtNosU7uk5dtIsnRCwq5ZBfZ1GRNWdKAtSF+gi8N2UVOURwNFGURw+7
-	cjLl08eAj8YJ/z1RmxGojqubLJv+tWjRZa4p33JLViuapaOErpJVRa4+5PuQMTJikvSZmK9VG8S
-	i7eFXvg4MpigBwxQ9hMK0+4gp0SvyCL8TF7dyCF7UvN1UZ4iq9rmUWyvcpRxhBJCOAPUkFtxWD4
-	59dHx8C94YwMlATAHkxwZ57XkFOkLz2CDod+MPY=
-X-Received: by 2002:aa7:d79a:0:b0:66f:d653:92c0 with SMTP id
- 4fb4d7f45d1cf-67230d8b373mr28560a12.1.1776258013088; Wed, 15 Apr 2026
- 06:00:13 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776258680; x=1776863480;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WL2SJseQynMpG1hsJR3ThfhQkhlDiJgfMk9Ad5tgV64=;
+        b=m8a2rM/cl6Wmnh/O+RL5NfJkFN0G3WTUH1y9Fxx1ZxS26V1CsRxdXONaQt6IWU6DdH
+         iGY3QaeBPdQLeleZ821mjq1zZfGmq+ninusorYgGRtmmnH/VE4sVlXCBDWD6JK4RXDEZ
+         zdRl4iQYh/PMoEEi3PLCmrGdB39xkPaIkhGE64PZ/PKw3QKiyHhzJeFiFg/qF2wK7W89
+         F1FWwopMbIEVYWw7Q5HM8v4V720cUbRve2iCeFmAoaviyp6BSIfy+dp0pOmATyy9AbnB
+         vMCE2pZhMlZ+yYhUf7cUxcFw2y8nVMg0sjqo4qUEWqbAq6oAv8rtOiiy9HER4LbJ+dbQ
+         IXFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+CJ6mCSP6PxpTitOpeFPIL9AkWR0+vzdJc268b5y/Zz0bLiQkrM9BbUFsUl8UugSWyVCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywupawpcz6Vr8Rsx3RQcP4epA6wCmzwjSA2amKidl2xuiDFDN3d
+	Bda8sj/04wJ/2iZWHxK8Y5e4fkd0iDkpz1cRs1ZDtEe9Mp6EOXZVo/WDwwMuFPH/SLc5OGS2G+w
+	10e2C6kkUwBz1a4LSs6if4XJSHh20vy+e99XaKh2qK4mMuC5jwC5Tkw==
+X-Gm-Gg: AeBDiev5GR9tNdf8mSiZWPZU1VJAR3YDMh8b3Y3k6l0mg8N3djVM3CorYyJpT0zu+AK
+	RzJBbx8SvwOd9I9t4JNd5vB7mraWpa+bGX7iwVRoxX7jN05gdOQfiQfGA26VvFEJvt8CjAtMMuF
+	c0dvYguWdpAvhPvBqJ5ye6fudGAfBkvkb6SHSaE+hryX7QDEtKNu6XAvIZI+BXShz5WNrZ06Gll
+	q4SXCiLN6e+/cAG+oc0Nu6A/WcDAXJZ9/e1+CfvYz8thTH4cds9JiqIu2/N6Q0k73Lc7GxfOLCo
+	qILdz43TTeGwt6ioJsK2Y8IPfPId7UUnclSlqDXQLGpKnSkotOtEnsqEmiTjbVOJ+4wI4CV36Me
+	i4uT382Wu1mR+zPVYo5gEgcGmzMk=
+X-Received: by 2002:a05:600c:6994:b0:485:3eba:ab96 with SMTP id 5b1f17b1804b1-488d67bbcbamr306254105e9.3.1776258680472;
+        Wed, 15 Apr 2026 06:11:20 -0700 (PDT)
+X-Received: by 2002:a05:600c:6994:b0:485:3eba:ab96 with SMTP id 5b1f17b1804b1-488d67bbcbamr306253665e9.3.1776258679964;
+        Wed, 15 Apr 2026 06:11:19 -0700 (PDT)
+Received: from leonardi-redhat ([176.206.19.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0ebd0e1sm20362525e9.28.2026.04.15.06.11.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 06:11:19 -0700 (PDT)
+Date: Wed, 15 Apr 2026 15:11:16 +0200
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 2/3] vsock/test: fix MSG_PEEK handling in
+ recv_buf()
+Message-ID: <ad-OSiCXGAXKgxrx@leonardi-redhat>
+References: <20260414-fix_peek-v3-0-e7daead49f83@redhat.com>
+ <20260414-fix_peek-v3-2-e7daead49f83@redhat.com>
+ <ad9uYrUjgCkW1D_k@sgarzare-redhat>
+ <ad96TgXHW_jKitls@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260414191425.2697918-1-seanjc@google.com> <20260414191425.2697918-3-seanjc@google.com>
- <CALMp9eRxd=-xotnr9rLYhHtVK6G5oGAbXByXgpt078G8mWQEqg@mail.gmail.com> <ad7Ei3FsFSm8C8he@google.com>
-In-Reply-To: <ad7Ei3FsFSm8C8he@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 15 Apr 2026 06:00:00 -0700
-X-Gm-Features: AQROBzA_EzQ3euCNq8tdeVNjJ7rCBtxF_H_9qgmPaOzI01_Fog9ihiTjReTuZnc
-Message-ID: <CALMp9eQW-3cd29yduDmFzo+HyKZB951jSxf0bV85zLT+x9iF+g@mail.gmail.com>
-Subject: Re: [PATCH 2/4] perf/x86/intel: Don't context switch DS_AREA (and
- PEBS config) if PEBS is unused
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ad96TgXHW_jKitls@sgarzare-redhat>
 
-On Tue, Apr 14, 2026 at 3:49=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Wed, Apr 15, 2026 at 01:54:43PM +0200, Stefano Garzarella wrote:
+>On Wed, Apr 15, 2026 at 01:31:11PM +0200, Stefano Garzarella wrote:
+>>On Tue, Apr 14, 2026 at 06:10:22PM +0200, Luigi Leonardi wrote:
+>>>`recv_buf` does not handle the MSG_PEEK flag correctly: it keeps calling
+>>>`recv` until all requested bytes are available or an error occurs.
+>>>
+>>>The problem is how it calculates the amount of bytes read: MSG_PEEK
+>>>doesn't consume any bytes, will re-read the same bytes from the buffer
+>>>head, so, summing the return value every time is wrong.
+>>>
+>>>Moreover, MSG_PEEK doesn't consume the bytes in the buffer, so if the
+>>>requested amount is more than the bytes available, the loop will never
+>>>terminate, because `recv` will never return EOF. For this reason we need
+>>>to compare the amount of read bytes with the number of bytes expected.
+>>>
+>>>Add a check, and if the MSG_PEEK flag is present, update the counter of
+>>>read bytes differently, and break if we read the expected amount.
+>>
+>>nit: "..., update the counter for bytes read only after all expected
+>>bytes have been read and break out of the loop; otherwise, try again
+>>after a short delay to avoid consuming too many CPU cycles."
+>>
+>>>
+>>>This allows us to simplify the `test_stream_credit_update_test`, by
+>>>reusing `recv_buf`, like some other tests already do.
+>>>
+>>>This also fixes callers that pass MSG_PEEK to recv_buf().
+>>
+>>nit: this is implicit from the first part of the description.
+>>
+>>>
+>>>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>>>---
+>>>tools/testing/vsock/util.c       | 15 +++++++++++++++
+>>>tools/testing/vsock/vsock_test.c | 13 +------------
+>>>2 files changed, 16 insertions(+), 12 deletions(-)
+>>>
+>>>diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+>>>index 1fe1338c79cd..2c9ee3210090 100644
+>>>--- a/tools/testing/vsock/util.c
+>>>+++ b/tools/testing/vsock/util.c
+>>>@@ -381,7 +381,13 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
+>>>	}
+>>>}
+>>>
+>>>+#define RECV_PEEK_RETRY_USEC 10
+>>
+>>10 usec IMO are a bit low, it could be the same order of the 
+>>syscalls involved in the loop, I'd go to some milliseconds like we 
+>>do for SEND_SLEEP_USEC.
+>>
+>>>+
+>>>/* Receive bytes in a buffer and check the return value.
+>>>+ *
+>>>+ * MSG_PEEK note: MSG_PEEK doesn't consume bytes from the buffer, so partial
+>>>+ * reads cannot be summed. Instead, the function retries until recv() returns
+>>>+ * exactly expected_ret bytes in a single call.
+>>
+>>I'd replace with something like this:
+>>
+>>  * When MSG_PEEK is set, recv() is retried until it returns exactly
+>>  * expected_ret bytes. The function returns on error, EOF, or timeout
+>>  * as usual.
+>>
+>>Thanks,
+>>Stefano
+>>
+>>>*
+>>>* expected_ret:
+>>>*  <0 Negative errno (for testing errors)
+>>>@@ -403,6 +409,15 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
+>>>		if (ret <= 0)
+>>>			break;
+>>>
+>>>+		if (flags & MSG_PEEK) {
+>>>+			if (ret == expected_ret) {
 >
-> On Tue, Apr 14, 2026, Jim Mattson wrote:
-> > On Tue, Apr 14, 2026 at 12:14=E2=80=AFPM Sean Christopherson <seanjc@go=
-ogle.com> wrote:
-> > > @@ -5065,6 +5056,28 @@ static struct perf_guest_switch_msr *intel_gue=
-st_get_msrs(int *nr, void *data)
-> > >         if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
-> > >                 guest_pebs_mask =3D 0;
-> > >
-> > > +       /*
-> > > +        * Context switch DS_AREA and PEBS_DATA_CFG if and only if PE=
-BS will be
-> > > +        * active in the guest; if no records will be generated while=
- the guest
-> > > +        * is running, then running with host values is safe (see abo=
-ve).
-> > > +        */
-> > > +       if (!guest_pebs_mask)
-> > > +               return arr;
-> >
-> > I think this has an unintended side effect. If DS_AREA and
-> > PEBS_DATA_CFG were previously listed (because pebs_guest_mask was
-> > previously non-zero), KVM will leave the stale entries in the MSR-load
-> > lists.
-> >
-> > KVM only clears MSR-load list entries for enumerated MSRs with
-> > matching guest and host values.
+>On second thought, I think it would be more appropriate to check for
+>`ret >= expected_ret` here, because all subsequent recv() will
+>definitely return more bytes, so there’s no point in continuing the
+>loop... and anyway, we’ll check the result later, so just that change
+>should be fine.
 >
-> Argh, right.  This as a delta change I guess?  I'd love to overhaul the i=
-nterface,
-> but reworking KVM to play nice with core_guest_get_msrs() would be much m=
-ore
-> difficult.
+>And of course I'd update the comment on top in this way:
 >
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 20a153aa33cb..3244d5589981 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -5059,22 +5059,20 @@ static struct perf_guest_switch_msr *intel_guest_=
-get_msrs(int *nr, void *data)
->         /*
->          * Context switch DS_AREA and PEBS_DATA_CFG if and only if PEBS w=
-ill be
->          * active in the guest; if no records will be generated while the=
- guest
-> -        * is running, then running with host values is safe (see above).
-> +        * is running, then simply keep the host values resident in hardw=
-are.
->          */
-> -       if (!guest_pebs_mask)
-> -               return arr;
-> -
->         arr[(*nr)++] =3D (struct perf_guest_switch_msr){
->                 .msr =3D MSR_IA32_DS_AREA,
->                 .host =3D (unsigned long)cpuc->ds,
-> -               .guest =3D kvm_pmu->ds_area,
-> +               .guest =3D guest_pebs_mask ? kvm_pmu->ds_area : (unsigned=
- long)cpuc->ds,
->         };
+>   * When MSG_PEEK is set, recv() is retried until it returns at least
+>   * expected_ret bytes. The function returns on error, EOF, or timeout
+>   * as usual.
 >
->         if (x86_pmu.intel_cap.pebs_baseline) {
->                 arr[(*nr)++] =3D (struct perf_guest_switch_msr){
->                         .msr =3D MSR_PEBS_DATA_CFG,
->                         .host =3D cpuc->active_pebs_data_cfg,
-> -                       .guest =3D kvm_pmu->pebs_data_cfg,
-> +                       .guest =3D guest_pebs_mask ? kvm_pmu->data_cfg :
-> +                                                  cpuc->active_pebs_data=
-_cfg,
->                 };
->         }
+>Thanks,
+>Stefano
 >
-That looks reasonable, if a bit obtuse.
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Good idea, will do.
+
+Thanks!
+Luigi
+
