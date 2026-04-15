@@ -1,195 +1,217 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65759367F51;
-	Wed, 15 Apr 2026 11:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A152F1FE4
+	for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 11:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776252609; cv=none; b=JfZj5RVoqUuoI5DFCQqnJA0sHBM+V4bVBbC4moG4B05QJn4L/3YS7qeRpbZkb0Fd7VZaMFLaVqNhaggo8Oov2Ixc4IPP0xs10KdxsLS+CO3cHpfCu1qACFi2Hubf2r6vsBTc32+xxL79H4inEpp0Y5ghuBPDn6sbvLof2GfFzNA=
+	t=1776252700; cv=none; b=FqZKujmLkk+gO91/dUFWlcFSLseWbg7NdL+qiWy7PAgc4OWvpgjn71bzK9wGXWeffaSeNNPaT4+NuLOJSOGB45zXt15M6MPJM4wYya2tFNR0ZNWDE7YLdjz8VVptPhbsFsUSfr+UM1aQNCV5dni0WZEI/ifrrjrlo5UzPG7x4hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776252609; c=relaxed/simple;
-	bh=SHbLV4o2bms70SFEMNyzHlJqt/x7sG95A1eoY9qoSzE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y5VR1O+annBzvJZX2FLIkK8Vd4aur5lWffBuZ4EgBcLk3SudGS2q9AKc3T8GU0pYJc1hIE+uMvfvyZ9xY+4RmaWClktEUqXXFSDE2Vf6Ad5SHG6NJSH7gZA9hFGzWlCERoB/1tvc9Mx4DPtg/EutXlEaudNVZWrCwrPqrCnsRIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VIWkkw9N; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776252700; c=relaxed/simple;
+	bh=QLX1J418M4jWHF/CD6zKmlQZG8fsqg6qyHarNz+l24E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cc9F+TNof/ZBfBXdIRxCWUtMpgw9V1RlVrB5OeBg7QJ2daPU9XR6iUu2TXivsd8lxpzPgYm0w6N7Pd0NjGQg3AbyopnIlrL2oS7njyN7OJcw7RAIwEp1a72ihji/Ldk6qPwXLdroUKUl+RMXMrkSfFFx3n5SedKFqhDc2xtpddA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f2nf7olA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SqqrRiIa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VIWkkw9N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776252607; x=1807788607;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SHbLV4o2bms70SFEMNyzHlJqt/x7sG95A1eoY9qoSzE=;
-  b=VIWkkw9NpD1scyMGGPm7HkWIMbLLUdugrFRw1ytleXTbnkmKDhW6eP3H
-   7nhRqxWYbK0foBTpYSkE9KdjyEXZq0kGNaz9jBnahG/r7CT0yzx+++k8p
-   GtnkfgrjWOtLcOfG8sx0dubnVKJ49JMBMLmOkqfe5sK0mOk3nXRp1mJWp
-   S3e+gS/k91G7J8SWxy7uFbSLB73fr8/eJ14NUFTv7f+NUvninhLDwennB
-   rUojmuyzRzu9xQegCWpO85aWM10+XFYyXi47f8v9yaO7jU5EeTZXLhTcd
-   zAmKTdJTSFQM9WohuSrGTtCJwtqY9Xuc8poJzZsv2YQZgVeHKBv0KpPeQ
-   g==;
-X-CSE-ConnectionGUID: nSwNCz+ITaqO8kFXzG0fGA==
-X-CSE-MsgGUID: Fr9s1c1RSSWp85crzpg43w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="64770849"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="64770849"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 04:30:07 -0700
-X-CSE-ConnectionGUID: /aC0R6AySzGkP7+DLsrVYw==
-X-CSE-MsgGUID: HrKM+OTXSk2Jahqmrvo58g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="268393029"
-Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 04:30:05 -0700
-Message-ID: <c40b5057-4df5-44ba-93c9-5c46696de765@intel.com>
-Date: Wed, 15 Apr 2026 19:29:31 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f2nf7olA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SqqrRiIa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776252697;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VGpVm/oGR94wogmAdWmA8vqPEnCDIzFyVWrXuXhdJ4U=;
+	b=f2nf7olAztvNmNsEpMWPTH46rdxshFlVR/Y+o5kEmDhoyLX72y4zAboS9xTnrvmmIskzXs
+	oM32zm2lX/AIIlK8BWqOhyw8dile2uMX12GmC5mmZ/beBYxct4U8wybF2cPRcPur/42LuV
+	Xc9PEypVSLKw5lxPyLsdMqhNFPHr+nI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-36-jM8adtNFP6ur5uetSWyn7A-1; Wed, 15 Apr 2026 07:31:36 -0400
+X-MC-Unique: jM8adtNFP6ur5uetSWyn7A-1
+X-Mimecast-MFC-AGG-ID: jM8adtNFP6ur5uetSWyn7A_1776252695
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43e52dc8a04so1437451f8f.3
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 04:31:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776252695; x=1776857495; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VGpVm/oGR94wogmAdWmA8vqPEnCDIzFyVWrXuXhdJ4U=;
+        b=SqqrRiIacLIukQom1KZIcaycjKkh7czuM0KNoRgdqGyPlnHjHey0xkFNWmXOmv+oyo
+         A3HliPYbKwFzgEe13rCbRJ20acG1J5uXPGcbE0TyQrFU2qKSE6QqG5Pq4TwLq4Yomge7
+         Uuweg396a31kLXW9otPZgMY8+QKfusn1tVNV7zfld229r+ZUZ6adp0RpROUn6RuG/q90
+         5FI02Jh1aq8qqGWA6zZjT7SBf3mJXTWunZj9D66vexZPunNcMlQngSuk0UCX+9qOJGry
+         MeQbVNCwRD+5sA5NKbwskeLreRF2KINYiYRcTY60rG1IWqT5KuSnJiQ6H91qxhd2qAGJ
+         GeOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776252695; x=1776857495;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VGpVm/oGR94wogmAdWmA8vqPEnCDIzFyVWrXuXhdJ4U=;
+        b=RB4eVAJrZr0l2uu9UZkoN6gqZZ07+vdL6AErKyWm/EHwBbXh+EvqnCDawVyv/K52Sh
+         VsAfksq0U2HlvTshktYlYgXDTZ0q3myTXr6kXMo+DYfvZCn2LpEtdCAacl2kMm4nk3v1
+         M9VTwNPePW2e+c8+CWfD/0odu9xhZg8oqR7rGvNNt46fWXCkXwp245/qRihee2GoMKu8
+         Gf4b4RbA8DCtOyFJM5zeRQUoAlSs2ztpdTSi0Y6x+oXgTzNXeVenzj+cXOG420z/EXaO
+         ad89nGK2Yid+cuE72YgiTgzBMWkjE/fyvLpxbBVx0jpiSC1Xm1zgNa4WTImJEnfgQtaX
+         rL4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8wTFr98XZ4Rxm9kQaTiDyUUYXE98L5uz8n3FrUfAge3QLnuIJBEw7rZo6mxXF7HHnQGwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwsktwWcoJDy8CA6GUpq2VFA/DDpnW1adk6R37SePtxDt7ppZC
+	dkJUEhUkJkt+mD7OzWOAv8nUmkWrqEsLZWy8QcYgZbglOGLzeC3OqRmvw5yehPZZti/5S+rigV+
+	Y158bZo2Uit/5M1K85cq8yz2gyt2jGG1rWeCliwhZLfkp08ToXtcg4A==
+X-Gm-Gg: AeBDieuUZpB6ufsn7y40YrkyvcDNUvgxJ+w6dVgiOqNky7JeHieSugQ07JJQPVT9E6x
+	9U24JIzBXAqY1mrjAzwqiLTneXDFrebAW6i8SsFxIjjShbG6JnRtwnA6XZNruRddn2UWCmgHgUb
+	nnlpdXlLq/Q/cd9pUR5ylAbHjpWa/+oP1wYcc0BpuH2JaqkAxX04CuzG48/H51oXUlWzSM2RY3W
+	p/jOlNfQIUIsLEC6+wcJ4tLOAnQFU6H0T00fRE7sWWLdFOThxfor75zELiKG8WE4cibe0u0RvAU
+	rPJEjYmahKhWYe/6TuBRnalr0DDR4PtuV95i7GJp3KL/uRB7JopxVA5opwPqagCATrd4UV2MbVf
+	bFb2GTbsQk7wVnOqlHDMnnulY80aJ5j0blXTQ+83l9sMf5EvLnbW8IHwuMH/gv9iEmctI4t51Zr
+	ZpK4ihqg==
+X-Received: by 2002:a05:600c:c108:b0:488:c282:e78c with SMTP id 5b1f17b1804b1-488d684bd3amr202998285e9.19.1776252695205;
+        Wed, 15 Apr 2026 04:31:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:c108:b0:488:c282:e78c with SMTP id 5b1f17b1804b1-488d684bd3amr202997745e9.19.1776252694669;
+        Wed, 15 Apr 2026 04:31:34 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead33d6e9sm4680580f8f.1.2026.04.15.04.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 04:31:34 -0700 (PDT)
+Date: Wed, 15 Apr 2026 13:31:11 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 2/3] vsock/test: fix MSG_PEEK handling in
+ recv_buf()
+Message-ID: <ad9uYrUjgCkW1D_k@sgarzare-redhat>
+References: <20260414-fix_peek-v3-0-e7daead49f83@redhat.com>
+ <20260414-fix_peek-v3-2-e7daead49f83@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
- "unsigned long" values
-To: Sean Christopherson <seanjc@google.com>
-Cc: Kai Huang <kai.huang@intel.com>, Chang Seok Bae
- <chang.seok.bae@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org"
- <kas@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260409224236.2021562-1-seanjc@google.com>
- <20260409224236.2021562-6-seanjc@google.com>
- <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
- <ad0DrDUsUKTMfrDW@google.com>
- <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
- <95a931f8-42cc-4834-953c-30c9167bfdc1@intel.com>
- <ad5JeT7UuiQI9Tqo@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ad5JeT7UuiQI9Tqo@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260414-fix_peek-v3-2-e7daead49f83@redhat.com>
 
-On 4/14/2026 10:04 PM, Sean Christopherson wrote:
-> On Tue, Apr 14, 2026, Xiaoyao Li wrote:
->> On 4/14/2026 7:03 AM, Huang, Kai wrote:
->>>> Because VMX and SVM make all GRPs available immediately, except
->>>> for RSP, KVM ignores avail/dirty for GPRs.  I.e. "fixing" TDX will just shift the
->>>> "bugs" elsewhere.
->>> Just want to understand:
->>>
->>> I thought the fix could be we simply remove the wrong GPRs from the list.
->>> Not sure how fixing TDX will shift bugs elsewhere?
->>
->> I'm curious too.
-> 
-> What I'm saying is that, _if_ there are bugs where KVM uses a register that isn't
-> available, then modifying TDX's list won't actually fix anything (without more
-> changes), it will just change which code is technically buggy (hence all the quotes
-> above).
-> 
->>>> More importantly, because the TDX-Module*requires* RCX (the GPR that holds the
->>>> mask of registers to expose to the VMM) to be hidden on TDVMCALL, KVM*can't*
->>>> do any kind of meaningful "available" tracking.
->>>>
->>> Hmm I think RCX conveys the shared GPRs and VMM can read.  Per "Table 5.323:
->>> TDH.VP.ENTER Output Operands Format #5 Definition: On TDCALL(TDG.VP.VMCALL)
->>> Following a TD Entry":
->>>
->>>     RCX   ...
->>> 	Bit(s) Name         Description
->>>
->>> 	31:0   PARAMS_MASK  Value as passed into TDCALL(TDG.VP.VMCALL) by
->>> 			    the guest TD: indicates which part of the guest
->>> 			    TD GPR and XMM state is passed as-is to the
->>> VMM
->>> 			    and back. For details, see the description of
->>> 			    TDG.VP.VMCALL in 5.5.26.
->>>
->>> I think the problem is, as said previously, currently KVM TDX code uses
->>> KVM's existing infrastructure to emulate MSR, KVM hypercall etc,  but
->>> TDVMCALL has a different ABI, thus there's a mismatch here.
->>
->> I once had patch for it internally.
->>
->> It adds back the available check for GPRs when accessing instead of assuming
->> they are always available. For normal VMX and SVM, all the GPRs are still
->> always available. But for TDX, only EXIT_INFO_1 and EXIT_INFO_2 are always
->> marked available, while others need to be explicitly set case by case.
->>
->> The good thing is it makes TDX safer that KVM won't consume invalid data
->> silently for TDX. But it adds additional overhead of checking the
->> unnecessary register availability for VMX and SVM case.
->>
->> -----------------------------&<-------------------------------------
->> From: Xiaoyao Li <xiaoyao.li@intel.com>
->> Date: Tue, 11 Mar 2025 07:13:29 -0400
->> Subject: [PATCH] KVM: x86: Add available check for GPRs
->>
->> Since commit de3cd117ed2f ("KVM: x86: Omit caching logic for
->> always-available GPRs"), KVM doesn't check the availability of GPRs
->> except RSP and RIP when accessing them, because they are always
->> available.
->>
->> However, it's not true when it comes to TDX. The GPRs are not available
->> after TD vcpu exits actually.
-> 
->> And it relies on KVM manually sets the
->> GPRs value when needed, e.g.
->>
->>   - setting rax, rbx, rcx, rdx, rsi, for hypercall emulation in
->>     tdx_emulate_tdvmall();
->>
->>   - setting rax, rcx and rdx before MSR write emulation;
->>
->> Add the available check of GPRs read, and WARN_ON_ONCE() when unavailable.
->> It can help capture the cases of undesired GPRs consumption by TDX.
-> 
-> Sorry, but NAK.  I am strongly against adding any code to the GPR accessors/mutators
-> just for TDX.  It's a _lot_ of code.  From commit de3cd117ed2f ("KVM: x86: Omit
-> caching logic for always-available GPRs"):
-> 
->      E.g. on x86_64, kvm_emulate_cpuid() is reduced from 342 to 182 bytes and
->      kvm_emulate_hypercall() from 1362 to 1143, with the total size of KVM
->      dropping by ~1000 bytes.  With CONFIG_RETPOLINE=y, the numbers are even
->      more pronounced, e.g.: 353->182, 1418->1172 and well over 2000 bytes.
+On Tue, Apr 14, 2026 at 06:10:22PM +0200, Luigi Leonardi wrote:
+>`recv_buf` does not handle the MSG_PEEK flag correctly: it keeps calling
+>`recv` until all requested bytes are available or an error occurs.
+>
+>The problem is how it calculates the amount of bytes read: MSG_PEEK
+>doesn't consume any bytes, will re-read the same bytes from the buffer
+>head, so, summing the return value every time is wrong.
+>
+>Moreover, MSG_PEEK doesn't consume the bytes in the buffer, so if the
+>requested amount is more than the bytes available, the loop will never
+>terminate, because `recv` will never return EOF. For this reason we need
+>to compare the amount of read bytes with the number of bytes expected.
+>
+>Add a check, and if the MSG_PEEK flag is present, update the counter of
+>read bytes differently, and break if we read the expected amount.
 
-yeah. I had the same feeling that bring up the reduced overhead is not 
-acceptable.
+nit: "..., update the counter for bytes read only after all expected
+bytes have been read and break out of the loop; otherwise, try again
+after a short delay to avoid consuming too many CPU cycles."
 
-> Note that updating only the "available" masks is wrong, as TDX needs to marshall
-> written registers back to their correct location.
+>
+>This allows us to simplify the `test_stream_credit_update_test`, by
+>reusing `recv_buf`, like some other tests already do.
+>
+>This also fixes callers that pass MSG_PEEK to recv_buf().
 
-In what case it needs to marshall written registers back? Can you elaborate?
+nit: this is implicit from the first part of the description.
 
-> In the end, the available/dirty tracking isn't about hardening against bugs, it's
-> about deferring expensive VMREAD and VMWRITE (and guest memory) operations until
-> action is required.
-> 
-> We could bury sanity checks behind a Kconfig of some kind, but I genuinely don't
-> see much value in doing so.  These emulation flows are very static (all register
-> usage is hardcoded), and so it's very much a "get it right once" sort of thing,
-> i.e. the odds of a runtime check finding a bug after initial development are
-> basically zero.
+>
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+> tools/testing/vsock/util.c       | 15 +++++++++++++++
+> tools/testing/vsock/vsock_test.c | 13 +------------
+> 2 files changed, 16 insertions(+), 12 deletions(-)
+>
+>diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+>index 1fe1338c79cd..2c9ee3210090 100644
+>--- a/tools/testing/vsock/util.c
+>+++ b/tools/testing/vsock/util.c
+>@@ -381,7 +381,13 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
+> 	}
+> }
+>
+>+#define RECV_PEEK_RETRY_USEC 10
 
-The initial purpose of writing the code was to find if any case/path in 
-KVM that consumes the GPRs for TDX unexpectedly. Not only for the 
-hypercall/MSR emulation paths. There are lots of paths in KVM consuming 
-the GPRs. It's difficult to aduit every path to ensure either a) it 
-won't be reachable by TDX or b) KVM syncs the valid data to the GPRs 
-before accessed by TDX.
+10 usec IMO are a bit low, it could be the same order of the syscalls 
+involved in the loop, I'd go to some milliseconds like we do for 
+SEND_SLEEP_USEC.
 
-> An alternative for TDX would be to avoid bouncing through GPRs in the first place,
-> e.g. by reworking __kvm_emulate_rdmsr() to not access any registers.  But I'm
-> probably opposed to even that, because I doubt the end result would be an overall
-> net positive for KVM.  We'd end up with duplicate code, harder to read common
-> code (because of the new abstractions), and likely without meaningfully moving
-> the needle in terms of finding/preventing bugs.  KVM still needs to get operands
-> to/from the right parameters, though only difference is that for TDX, the parameters
-> would be very "direct".
+>+
+> /* Receive bytes in a buffer and check the return value.
+>+ *
+>+ * MSG_PEEK note: MSG_PEEK doesn't consume bytes from the buffer, so partial
+>+ * reads cannot be summed. Instead, the function retries until recv() returns
+>+ * exactly expected_ret bytes in a single call.
+
+I'd replace with something like this:
+
+    * When MSG_PEEK is set, recv() is retried until it returns exactly
+    * expected_ret bytes. The function returns on error, EOF, or timeout
+    * as usual.
+
+Thanks,
+Stefano
+
+>  *
+>  * expected_ret:
+>  *  <0 Negative errno (for testing errors)
+>@@ -403,6 +409,15 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
+> 		if (ret <= 0)
+> 			break;
+>
+>+		if (flags & MSG_PEEK) {
+>+			if (ret == expected_ret) {
+>+				nread = ret;
+>+				break;
+>+			}
+>+			timeout_usleep(RECV_PEEK_RETRY_USEC);
+>+			continue;
+>+		}
+>+
+> 		nread += ret;
+> 	} while (nread < len);
+> 	timeout_end();
+>diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+>index 5bd20ccd9335..bdb0754965df 100644
+>--- a/tools/testing/vsock/vsock_test.c
+>+++ b/tools/testing/vsock/vsock_test.c
+>@@ -1500,18 +1500,7 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+> 	}
+>
+> 	/* Wait until there will be 128KB of data in rx queue. */
+>-	while (1) {
+>-		ssize_t res;
+>-
+>-		res = recv(fd, buf, buf_size, MSG_PEEK);
+>-		if (res == buf_size)
+>-			break;
+>-
+>-		if (res <= 0) {
+>-			fprintf(stderr, "unexpected 'recv()' return: %zi\n", res);
+>-			exit(EXIT_FAILURE);
+>-		}
+>-	}
+>+	recv_buf(fd, buf, buf_size, MSG_PEEK, buf_size);
+>
+> 	/* There is 128KB of data in the socket's rx queue, dequeue first
+> 	 * 64KB, credit update is sent if 'low_rx_bytes_test' == true.
+>
+>-- 
+>2.53.0
+>
 
