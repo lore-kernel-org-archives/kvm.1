@@ -1,116 +1,195 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FFE37C0F3;
-	Wed, 15 Apr 2026 11:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65759367F51;
+	Wed, 15 Apr 2026 11:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776252462; cv=none; b=Re77FrT6Wr1Nu8RK3BPjfmvXNURa7hz7umrfYzfRgbpT9bGdYnkZMljMg1hiZZqhUYgI3pII8/jVAC1THjTNNyRxcBLROQ6QzhI9R+UB5YmLEH/Mb54nc2rA8MPDyx0ecudqwGePm5svhnBJgEzCBO6Lk+/8f9sKJJxGmI6jtpI=
+	t=1776252609; cv=none; b=JfZj5RVoqUuoI5DFCQqnJA0sHBM+V4bVBbC4moG4B05QJn4L/3YS7qeRpbZkb0Fd7VZaMFLaVqNhaggo8Oov2Ixc4IPP0xs10KdxsLS+CO3cHpfCu1qACFi2Hubf2r6vsBTc32+xxL79H4inEpp0Y5ghuBPDn6sbvLof2GfFzNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776252462; c=relaxed/simple;
-	bh=IUN2bvcsKeM/Q76BvAR1EOIsI3occlGpyXrIF8mBUxI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=SgayriNxb8zNCaeUGSTiMJHBuTkhWbAzq67E4Lg2qylvgLnWmGdMBWxL+E0+Cu/wrnAhlJPzUIybGmtW1KserCBdVsNLBjEpNa55eaKqU82m4npcEuIMkum+9+e2mIfjJZEBM2OD665VDjjWt3P9dhtx+DMpgKPs55nUiOXhKu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CVGwsBSH; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776252609; c=relaxed/simple;
+	bh=SHbLV4o2bms70SFEMNyzHlJqt/x7sG95A1eoY9qoSzE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y5VR1O+annBzvJZX2FLIkK8Vd4aur5lWffBuZ4EgBcLk3SudGS2q9AKc3T8GU0pYJc1hIE+uMvfvyZ9xY+4RmaWClktEUqXXFSDE2Vf6Ad5SHG6NJSH7gZA9hFGzWlCERoB/1tvc9Mx4DPtg/EutXlEaudNVZWrCwrPqrCnsRIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VIWkkw9N; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CVGwsBSH"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F5YmQV1804412;
-	Wed, 15 Apr 2026 11:27:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IUN2bv
-	csKeM/Q76BvAR1EOIsI3occlGpyXrIF8mBUxI=; b=CVGwsBSHHBHSoZ/4zfrd98
-	dddSNTAb+VIunbwJylW0YlXCJpPxVTNTzL95WUQraX8vpH8AHyH5nqIo+WY+hN3R
-	din2CFCvO8/07cc/OtVfKlIkk7CNV9rwZHgemzN49iswG0KyH6VmcwIaJYFB9WVi
-	0uyoj9JXMy3ENXXGBVvYYVuvEc4zBkxyYH3aZxw3KdPZ2VCYWC5yJh18/pujAKxQ
-	KmGfp6vCSDLLPJxq8kWlpIs7tYyCmazgcY57t2AmSY+8rvGR8CrNT9UkHeP87PK+
-	606R8AQDF0Wo3shBeahDtlnqUmhbVnP8osIU91Djhz93riZyZ/Ur/rjBrY+2JzdA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89k79th-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 11:27:33 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63F8UXh6003581;
-	Wed, 15 Apr 2026 11:27:32 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg1mne079-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 11:27:32 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63FBRSvS26149322
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Apr 2026 11:27:28 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACBC32004B;
-	Wed, 15 Apr 2026 11:27:25 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 65E682004E;
-	Wed, 15 Apr 2026 11:27:25 +0000 (GMT)
-Received: from t14-nrb (unknown [9.111.91.157])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Apr 2026 11:27:25 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VIWkkw9N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776252607; x=1807788607;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SHbLV4o2bms70SFEMNyzHlJqt/x7sG95A1eoY9qoSzE=;
+  b=VIWkkw9NpD1scyMGGPm7HkWIMbLLUdugrFRw1ytleXTbnkmKDhW6eP3H
+   7nhRqxWYbK0foBTpYSkE9KdjyEXZq0kGNaz9jBnahG/r7CT0yzx+++k8p
+   GtnkfgrjWOtLcOfG8sx0dubnVKJ49JMBMLmOkqfe5sK0mOk3nXRp1mJWp
+   S3e+gS/k91G7J8SWxy7uFbSLB73fr8/eJ14NUFTv7f+NUvninhLDwennB
+   rUojmuyzRzu9xQegCWpO85aWM10+XFYyXi47f8v9yaO7jU5EeTZXLhTcd
+   zAmKTdJTSFQM9WohuSrGTtCJwtqY9Xuc8poJzZsv2YQZgVeHKBv0KpPeQ
+   g==;
+X-CSE-ConnectionGUID: nSwNCz+ITaqO8kFXzG0fGA==
+X-CSE-MsgGUID: Fr9s1c1RSSWp85crzpg43w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="64770849"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="64770849"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 04:30:07 -0700
+X-CSE-ConnectionGUID: /aC0R6AySzGkP7+DLsrVYw==
+X-CSE-MsgGUID: HrKM+OTXSk2Jahqmrvo58g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="268393029"
+Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 04:30:05 -0700
+Message-ID: <c40b5057-4df5-44ba-93c9-5c46696de765@intel.com>
+Date: Wed, 15 Apr 2026 19:29:31 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Apr 2026 13:27:24 +0200
-Message-Id: <DHTOXW3QYV5N.HLO0JCM7YD9L@linux.ibm.com>
-Cc: "Janosch Frank" <frankja@linux.ibm.com>,
-        "Claudio Imbrenda"
- <imbrenda@linux.ibm.com>,
-        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
-        "David Hildenbrand" <david@kernel.org>,
-        "Thomas Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>
-Subject: Re: [kvm-unit-tests PATCH v2 3/5] s390x: sclp: Rework
- sclp_facilities_setup() for simpler control flow
-From: "Nico Boehr" <nrb@linux.ibm.com>
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>,
-        <linux-s390@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260324-vsie-stfle-fac-v2-0-5e52be2e4081@linux.ibm.com>
- <20260324-vsie-stfle-fac-v2-3-5e52be2e4081@linux.ibm.com>
-In-Reply-To: <20260324-vsie-stfle-fac-v2-3-5e52be2e4081@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xAWEx53Rrb10KaQOXbUlesiBhipmrQwA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDEwNCBTYWx0ZWRfX+tnfaXIlLEEv
- HO5GIv4N8ecg6WoLiueb3R4OexAd/+6UOYj+veVwILOWSrrY2bVjLwVLtpOPkk/9nn9bSZsT59Z
- kFyPN41KKnDOQugvnhO6/O9xYnd/PJNyi+MMIXQl1TPC5Xg+DX6jK0g6VpVvqGyZIs/ogrZvzmH
- eOvp6XDSfVluK1XlvEHn87zX3gII52LXJiFUmwsFiY5eu0UiMNpDiSV2MFX20FG7G+Iz5e283xv
- r5PBS79Rt4U3E2zPsdMYCDhgFtm7CL1FKeJVzJeBMd77LbcpeaG0sjs1Q0oewCv4VZrss5LWgCI
- wFMhqOOWL9oZpxFcMfsFbc8lDYk8HEcSsKG7Ycjs3ScmqhyO1KMk1UAsvtbkcsvvUYN4rYeHwDq
- ETL7qJ2xsvOxqnP8LFWfCk5bX5lzkoi0k5VZQZvaZKlD5zE5dDBfBtdL2nUXMpuzIS1cjq8wK0W
- iAU3vG38B512Wd17GpQ==
-X-Proofpoint-ORIG-GUID: xAWEx53Rrb10KaQOXbUlesiBhipmrQwA
-X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69df7625 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=7Wr9Dzo944miuo2bjUkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150104
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/6] KVM: x86: Track available/dirty register masks as
+ "unsigned long" values
+To: Sean Christopherson <seanjc@google.com>
+Cc: Kai Huang <kai.huang@intel.com>, Chang Seok Bae
+ <chang.seok.bae@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org"
+ <kas@kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20260409224236.2021562-1-seanjc@google.com>
+ <20260409224236.2021562-6-seanjc@google.com>
+ <e6e82905e6b9b1637ccb640097e67d21793f5895.camel@intel.com>
+ <ad0DrDUsUKTMfrDW@google.com>
+ <d6f05e5fa781ccb465d27a4fb1c7c1ac1e9e95ff.camel@intel.com>
+ <95a931f8-42cc-4834-953c-30c9167bfdc1@intel.com>
+ <ad5JeT7UuiQI9Tqo@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ad5JeT7UuiQI9Tqo@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Mar 24, 2026 at 4:28 PM CET, Christoph Schlameuss wrote:
-> Reverse the order of operations to allow for early exits with increasing
-> cpu offsets when reading facility bits in the extended range.
+On 4/14/2026 10:04 PM, Sean Christopherson wrote:
+> On Tue, Apr 14, 2026, Xiaoyao Li wrote:
+>> On 4/14/2026 7:03 AM, Huang, Kai wrote:
+>>>> Because VMX and SVM make all GRPs available immediately, except
+>>>> for RSP, KVM ignores avail/dirty for GPRs.  I.e. "fixing" TDX will just shift the
+>>>> "bugs" elsewhere.
+>>> Just want to understand:
+>>>
+>>> I thought the fix could be we simply remove the wrong GPRs from the list.
+>>> Not sure how fixing TDX will shift bugs elsewhere?
+>>
+>> I'm curious too.
+> 
+> What I'm saying is that, _if_ there are bugs where KVM uses a register that isn't
+> available, then modifying TDX's list won't actually fix anything (without more
+> changes), it will just change which code is technically buggy (hence all the quotes
+> above).
+> 
+>>>> More importantly, because the TDX-Module*requires* RCX (the GPR that holds the
+>>>> mask of registers to expose to the VMM) to be hidden on TDVMCALL, KVM*can't*
+>>>> do any kind of meaningful "available" tracking.
+>>>>
+>>> Hmm I think RCX conveys the shared GPRs and VMM can read.  Per "Table 5.323:
+>>> TDH.VP.ENTER Output Operands Format #5 Definition: On TDCALL(TDG.VP.VMCALL)
+>>> Following a TD Entry":
+>>>
+>>>     RCX   ...
+>>> 	Bit(s) Name         Description
+>>>
+>>> 	31:0   PARAMS_MASK  Value as passed into TDCALL(TDG.VP.VMCALL) by
+>>> 			    the guest TD: indicates which part of the guest
+>>> 			    TD GPR and XMM state is passed as-is to the
+>>> VMM
+>>> 			    and back. For details, see the description of
+>>> 			    TDG.VP.VMCALL in 5.5.26.
+>>>
+>>> I think the problem is, as said previously, currently KVM TDX code uses
+>>> KVM's existing infrastructure to emulate MSR, KVM hypercall etc,  but
+>>> TDVMCALL has a different ABI, thus there's a mismatch here.
+>>
+>> I once had patch for it internally.
+>>
+>> It adds back the available check for GPRs when accessing instead of assuming
+>> they are always available. For normal VMX and SVM, all the GPRs are still
+>> always available. But for TDX, only EXIT_INFO_1 and EXIT_INFO_2 are always
+>> marked available, while others need to be explicitly set case by case.
+>>
+>> The good thing is it makes TDX safer that KVM won't consume invalid data
+>> silently for TDX. But it adds additional overhead of checking the
+>> unnecessary register availability for VMX and SVM case.
+>>
+>> -----------------------------&<-------------------------------------
+>> From: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Date: Tue, 11 Mar 2025 07:13:29 -0400
+>> Subject: [PATCH] KVM: x86: Add available check for GPRs
+>>
+>> Since commit de3cd117ed2f ("KVM: x86: Omit caching logic for
+>> always-available GPRs"), KVM doesn't check the availability of GPRs
+>> except RSP and RIP when accessing them, because they are always
+>> available.
+>>
+>> However, it's not true when it comes to TDX. The GPRs are not available
+>> after TD vcpu exits actually.
+> 
+>> And it relies on KVM manually sets the
+>> GPRs value when needed, e.g.
+>>
+>>   - setting rax, rbx, rcx, rdx, rsi, for hypercall emulation in
+>>     tdx_emulate_tdvmall();
+>>
+>>   - setting rax, rcx and rdx before MSR write emulation;
+>>
+>> Add the available check of GPRs read, and WARN_ON_ONCE() when unavailable.
+>> It can help capture the cases of undesired GPRs consumption by TDX.
+> 
+> Sorry, but NAK.  I am strongly against adding any code to the GPR accessors/mutators
+> just for TDX.  It's a _lot_ of code.  From commit de3cd117ed2f ("KVM: x86: Omit
+> caching logic for always-available GPRs"):
+> 
+>      E.g. on x86_64, kvm_emulate_cpuid() is reduced from 342 to 182 bytes and
+>      kvm_emulate_hypercall() from 1362 to 1143, with the total size of KVM
+>      dropping by ~1000 bytes.  With CONFIG_RETPOLINE=y, the numbers are even
+>      more pronounced, e.g.: 353->182, 1418->1172 and well over 2000 bytes.
 
-Would be helpful to add a hint that this is needed for upcoming changes in =
-this
-series.
+yeah. I had the same feeling that bring up the reduced overhead is not 
+acceptable.
 
-Otherwise LGTM.
+> Note that updating only the "available" masks is wrong, as TDX needs to marshall
+> written registers back to their correct location.
 
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
+In what case it needs to marshall written registers back? Can you elaborate?
+
+> In the end, the available/dirty tracking isn't about hardening against bugs, it's
+> about deferring expensive VMREAD and VMWRITE (and guest memory) operations until
+> action is required.
+> 
+> We could bury sanity checks behind a Kconfig of some kind, but I genuinely don't
+> see much value in doing so.  These emulation flows are very static (all register
+> usage is hardcoded), and so it's very much a "get it right once" sort of thing,
+> i.e. the odds of a runtime check finding a bug after initial development are
+> basically zero.
+
+The initial purpose of writing the code was to find if any case/path in 
+KVM that consumes the GPRs for TDX unexpectedly. Not only for the 
+hypercall/MSR emulation paths. There are lots of paths in KVM consuming 
+the GPRs. It's difficult to aduit every path to ensure either a) it 
+won't be reachable by TDX or b) KVM syncs the valid data to the GPRs 
+before accessed by TDX.
+
+> An alternative for TDX would be to avoid bouncing through GPRs in the first place,
+> e.g. by reworking __kvm_emulate_rdmsr() to not access any registers.  But I'm
+> probably opposed to even that, because I doubt the end result would be an overall
+> net positive for KVM.  We'd end up with duplicate code, harder to read common
+> code (because of the new abstractions), and likely without meaningfully moving
+> the needle in terms of finding/preventing bugs.  KVM still needs to get operands
+> to/from the right parameters, though only difference is that for TDX, the parameters
+> would be very "direct".
+
