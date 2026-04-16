@@ -1,194 +1,266 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2411025C818;
-	Thu, 16 Apr 2026 21:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F44C38D6A3;
+	Thu, 16 Apr 2026 21:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776376092; cv=none; b=STlnC5LJhESdMfLKW3SPc/I6Cmh/NYaL3nrcSqgQpIJZT1obIdYV7G2CUUbvVIDE7bitLURP+2U9qPwBZYGy5NGPGjPJ1gXONuhG2nb616HvlkwJMaivfa2/qPeAt0/vnaQdtjrL3yv+1QlBx2hh4l/u3Lar+FFMfnbW3qyqNxs=
+	t=1776376730; cv=none; b=m4PmbC13DOuKdrdE73yyOR+y9LNZArxkORJHnY0Tvc35Yd7F/MxWHnAN3Q1TQPaI15jTfmQKQyG8JZcILorkSWgFC9mUMekrWbnn6dnGYc69yDsIWuilkAvOsR8TGrT/gTr+w/ZlcnA30hZ4I3kG1nAjGTTYdAUimlsbjX94UXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776376092; c=relaxed/simple;
-	bh=7MSvNbi30w9YhHI3nsocyQAM6KfWKAhFKgQIP/bKOr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T3u3hvvDsxJoLnkSxkYx5sJQSbITn1WarRT/xasri3AGvfCg87udP2fy6ALom0ZfZsbl57mrhfjdNqMEgFXPNH0MFCLqZDJ5Q5X9rgmxtRUStsI7IWSn6Ry4fZW7p6kVsoDmVJOjwFcg2LNDW07PEetl0OTFGHrV7u2Uj18oP/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=vcyqTl8Q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=D72n5Lkr; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1776376730; c=relaxed/simple;
+	bh=2Ot5FTvPoNnDmgjuuWF3a8D3xqhKH78K66NWVPjoqnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pre4HUBaVquwG4pYVyaxdqmcknLm895/f/cLP7+ufBsBb+hMAYR3OysS09pXCuedlgPAEiEXten8pvsIcPiU+vyskLP6bLjXfyaBp1GYhzACYO+bh/fO7ADQFZ6FxhJ5Y/gmaZB2nPKcYXkGBp7fNCISY/0Ntxecn7vf5aXgnZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dXqlGymc; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="vcyqTl8Q";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="D72n5Lkr"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 16EBD7A02D0;
-	Thu, 16 Apr 2026 17:48:09 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 16 Apr 2026 17:48:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776376088;
-	 x=1776462488; bh=ITFKWWeYzCrva/eMFhHobi/q2cECC7Q3g4NxtZSWaVo=; b=
-	vcyqTl8QeksncDIFhx7/JlcmPOQf5sIptcY8PODCxcngamrUosCHqd7ZzQu2xrsB
-	YoTF2nKRl6WRgNz/35e8tj6eZM0I24ScfPxtXcJwPKNj6otHT5eFd2CJiSqwfCcn
-	y4of/B/OmYsZNF3betXWqfWtMFJ3XampS/+M0RxdxEwCRcFKQtbJEvBe3hWjcovz
-	kmwYcJV2xS8XpCYNIpO0Vcg0RXXMbquct4J9LLOha5LduZ+QuKyb4nWHrMGRq7C9
-	pxdcyYbRdON7FmSK+qPKP38DiwwKwwm22HDL3LlicSGxCuFLhFHeR3TwWf0sunyN
-	v1YacXr7tHf8ibGD5TBeeA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776376088; x=
-	1776462488; bh=ITFKWWeYzCrva/eMFhHobi/q2cECC7Q3g4NxtZSWaVo=; b=D
-	72n5LkrVd9mvIk/1Dd96/F+QTGd0ljXolxGTOr/bwrG+m2oJvUDciGc4Q1yB+kAT
-	q/an+HZ6IiMdicOMzWs96Vy2zmP9r8BdbOPx+3r9rnBpQOFG94MUCO4b1PHxQvly
-	kDG4gHZTFXNmNkaTq2N9ejeIAOdvQS/VtOOxk/sftbecmevBzWobCf3MDPhO/NgX
-	Ol2B0fsF4FoOaG7QohO0cBeqrXz/luCbZyaIh3dVlk03vSd8foKMxlJq4eKPLLv0
-	cjA0vG37snJyHcZ9D5AKJm5mVMTOK+UQ6KsGml5Zse5iHpaSqQ+hWULZtOgjDW7j
-	nGtprAWXUzNJaIGcg6pkA==
-X-ME-Sender: <xms:GFnhaff8DzrR6di3CUw-e4y2HA-AmAgB5_K-ie9QXeq_2GqYYF5bOA>
-    <xme:GFnhaaJUVYkQaOlQ9xyeOJuHsIiWkw5BPbjDBumGOrFkNZHx6vSYs9UcWFk3ORItc
-    LBTY-ZoxxjtNAdqN2t1twlxhM6gwFAKZNia2P4WDOVN_B-wU-4I>
-X-ME-Received: <xmr:GFnhaczENibCW7fJPN6IqJGPKX8puEykp9RQq-v97Hl4pS1mh8e8Uk_VZA0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegkeduvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepkedtleelffetkeeiveffvdevgfduieefjeelveefkedvfeejgeelvdfhvdek
-    ueffnecuffhomhgrihhnpehurhhluggvfhgvnhhsvgdrtghomhdpshgrshhhihhkohdrug
-    gvvhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegr
-    lhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehsmh
-    htphhouhhtpdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtthho
-    pehlvghonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhgghesiihivghpvgdrtg
-    grpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpthht
-    ohepvhhivhgvkhdrkhgrshhirhgvugguhiesihhnthgvlhdrtghomhdprhgtphhtthhope
-    grnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrd
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
-X-ME-Proxy: <xmx:GFnhaQvJ0t9YKDVADm_Awy6SEryh2wopGaNQ3VFtyBiXs_WQy1IsBw>
-    <xmx:GFnhafB3ilYkmVLqMpoRoTjXstsuwog5RqjxbOUkhBpuqHR-Q5fxyw>
-    <xmx:GFnhaSGYwmlw25OnjSqffOLrGrwNI-1phv9gnp-KVs2N8m_2wNky2Q>
-    <xmx:GFnhafCkmixmmnzd_XWEYFybwE_Tcf7_9kgqVNA9D7mRZdCP8Phwfg>
-    <xmx:GFnhaYqUKzNnHRgPIRg3wV105FuuYIeVdbW2_6mKbTjNtcDmPLaU2BQ2>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 17:48:07 -0400 (EDT)
-Date: Thu, 16 Apr 2026 15:48:06 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin
- Tian <kevin.tian@intel.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] vfio/pci: Don't export DMABUFs for unmappable BARs
-Message-ID: <20260416154806.0c5cb10d@shazbot.org>
-In-Reply-To: <ed5d615f-5ba5-4045-ac45-79f06fd07a05@meta.com>
-References: <20260415181623.1021090-1-mattev@meta.com>
-	<20260416081138.GE361495@unreal>
-	<2ea075f9-c80c-41e9-9f93-9b0a2858f68f@meta.com>
-	<20260416131417.GF361495@unreal>
-	<ed5d615f-5ba5-4045-ac45-79f06fd07a05@meta.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dXqlGymc"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8ADE244C;
+	Thu, 16 Apr 2026 14:58:40 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ECC6B3F641;
+	Thu, 16 Apr 2026 14:58:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776376726; bh=2Ot5FTvPoNnDmgjuuWF3a8D3xqhKH78K66NWVPjoqnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dXqlGymcszaKPWDnLn4Y6wHu/+Ea9CdBDQFHHMWw1Uh55UjIAYge/Kk4HAOGvexRS
+	 MHuLDCQSf6WOwfN1vbU4bM44+C3YXJlombMG4upj6Fr8AZrwQl6/806bHbr/gymIfI
+	 MWBrzA/tXGlLP1JvtqmBMdhpEY4+trXwUcCLYjp4=
+Date: Thu, 16 Apr 2026 22:58:34 +0100
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v2 3/4] KVM: arm64: sefltests: Add basic NV selftest
+Message-ID: <uzobzrn4ywsb3kmeinqlzk2dcen4vkbmaly55k3ogfkzn4kruu@u57g55wklb5e>
+References: <20260412142216.3806482-1-weilin.chang@arm.com>
+ <20260412142216.3806482-4-weilin.chang@arm.com>
+ <adwofV7yf71OdMFk@sm-arm-grace07>
+ <ddr6exocupk6mzshjwvu6sqt57aeqiyxqss3rpgcxxyh54cw4g@rxvm5zh3ybrw>
+ <ad1gqsqqOXyYmJoG@sm-arm-grace07>
+ <xsdf2k2u4g6n7nmxcgwhiraqodwtteuxqqtnj2dx5sxgu74a7j@yjijkyohkq4i>
+ <ad66HasXI2AkEjgK@sm-arm-grace07>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad66HasXI2AkEjgK@sm-arm-grace07>
 
-On Thu, 16 Apr 2026 19:03:40 +0100
-Matt Evans <mattev@meta.com> wrote:
-
-> Hi Leon,
-> 
-> On 16/04/2026 14:14, Leon Romanovsky wrote:
+On Wed, Apr 15, 2026 at 07:05:17AM +0900, Itaru Kitayama wrote:
+> On Tue, Apr 14, 2026 at 11:16:47AM +0100, Wei-Lin Chang wrote:
+> > On Tue, Apr 14, 2026 at 06:31:22AM +0900, Itaru Kitayama wrote:
+> > > On Mon, Apr 13, 2026 at 10:18:42AM +0100, Wei-Lin Chang wrote:
+> > > > Hi Itaru,
+> > > > 
+> > > > On Mon, Apr 13, 2026 at 08:19:25AM +0900, Itaru Kitayama wrote:
+> > > > > On Sun, Apr 12, 2026 at 03:22:15PM +0100, Wei-Lin Chang wrote:
+> > > > > > This selftest simply starts an L1, which starts its own guest (L2). L2
+> > > > > > runs without stage-1 and 2 translations, it calls an HVC to jump back
+> > > > > > to L1.
+> > > > > 
+> > > > > How do you disable both the nested guest (L2)'s MMU and stage 2
+> > > > > translations?
+> > > > 
+> > > > Guest stage-2 is disabled by not setting HCR_EL2.VM in prepare_hyp(),
+> > > > and stage-1 is disabled by not writing to SCTLR_EL12 in init_vcpu(),
+> > > > effectively using the default value set by L0. However since SCTLR_EL1
+> > > > has many architecturally UNKNOWN bits (including SCTLR_EL1.M), it should
+> > > > be better to write a value before running L2 I suppose...
+> > > 
+> > > Thanks. What do you think of using copy_el2_to_el1() macro in at.c, so we
+> > > can prepare in guest_code() to manipulate the SCTLR_EL12 System register 
+> > > with the sensible programmed values?
 > > 
-> > On Thu, Apr 16, 2026 at 02:05:30PM +0100, Matt Evans wrote:  
-> >> Hi Leon,
-> >>
-> >> On 16/04/2026 09:11, Leon Romanovsky wrote:  
-> >>>> On Wed, Apr 15, 2026 at 11:16:23AM -0700, Matt Evans wrote:
-> >>>> Although vfio_pci_core_feature_dma_buf() validates that both requested
-> >>>> DMABUF ranges and the PCI resources being referenced are page-aligned,
-> >>>> there may be reasons other than alignment that cause a BAR to be
-> >>>> unmappable.
-> >>>>
-> >>>> Add a check for vdev->bar_mmap_supported[index], similar to the VFIO
-> >>>> mmap path.
-> >>>>
-> >>>> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-> >>>> Signed-off-by: Matt Evans <mattev@meta.com>
-> >>>> ---
-> >>>>    drivers/vfio/pci/vfio_pci_dmabuf.c | 3 +++
-> >>>>    1 file changed, 3 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >>>> index f87fd32e4a01..4ccaf3531e02 100644
-> >>>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >>>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >>>> @@ -249,6 +249,9 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
-> >>>>    	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
-> >>>>    		return -ENODEV;
-> >>>> +	if (!vdev->bar_mmap_supported[get_dma_buf.region_index])
-> >>>> +		return -EINVAL;
-> >>>> +  
-> >>>
-> >>> And it looks like AI has valid concern about this line too.
-> >>> https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260415181623.1021090-1-mattev@meta.com__;Iw!!Bt8RZUm9aw!5DxsN8cDUviPIZqEjG0pZ_VYYbl_RdmWucTGdTZ3ZzlVP_Ysb0n7ykr0eXwFXdpuqvZH2FK3$  
-> >>
-> >> Ah, Sashiko has a point, and I think its suggestion of checking lower down
-> >> in the default .get_dmabuf_phys (vfio_pci_core_get_dmabuf_phys()) and
-> >> preserving driver overrides is decent.  Will revisit.
-> >>
-> >> To your other question:  
-> >>> I noticed this check in vfio_pci_core_mmap(). Isn't that sufficient?  
-> >>
-> >> The scenario in mind is doing a DMABUF-export for BARs that you haven't
-> >> necessarily noticed can't be mmap()ed, and both paths should be checking.  
+> > Yes, using copy_el2_to_el1() can give us an L2 stage-1 that is identical
+> > to the L1's stage-1. But what I was considering was if guest stage-2 is
+> > enabled (which we plan to implement), then those stage-1 page tables
+> > will have to be mapped for L2, and its base address translated to L2IPA.
+> > It's doable but seems like extra complexity when stage-1 is not so
+> > interesting for KVM (except for AT?), it lets the guest do whatever it
+> > likes and let the hardware do the translation.
 > > 
-> > I added the validation checks that matter on the kernel side, but mmap is
-> > primarily important for callers. What I am missing is an explanation of
-> > why the kernel should impose this restriction on itself.  
+> > Let me know if you have reasons to want stage-1 for L2, there could be
+> > something I should consider but did not.
 > 
-> I don't understand your question, really sorry!  Can you rephrase it 
-> please?  I want to make sure I answer it fully.
-> 
-> Although mmap() fails for BARs that are unmappable (for whatever 
-> reason), a DMABUF export for the same ones could in some slim cases 
-> succeed -- because the checks aren't identical.  If export succeeds, it 
-> could potentially allow P2P (or CPU via a future DMABUF mmap()) access 
-> to something possibly unmappable, no?
-> 
-> For the checks that vfio_pci_probe_mmaps() does (leading to 
-> bar_mmap_supported[] = false), most have corresponding-but-different 
-> checks reachable from DMABUF export:
-> 
-> If a BAR is:		Then DMABUF export...:
-> 
->   size < pagesize	vfio_pci_core_fill_phys_vec() catches it
->   Not IORESOURCE_MEM	pcim_p2pdma_provider() rejects it
->   non_mappable_bars	... nothing?  Export allowed
-> 
-> As a quick test, if I hack in non_mappable_bars=1 for my function, it 
-> appears exporting a DMABUF from it works.
-> 
-> We could add another check for non_mappable_bars, but my thinking was 
-> that we don't want to keep adding to an independent set of DMABUF 
-> checks, especially if a future quirk/etc. could create another scenario 
-> where BARs aren't mappable.  I.e. we should reject DMABUF export in 
-> exactly the same scenarios as mmap() would be rejected, symmetrically, 
-> by testing bar_mmap_supported[].
-> 
-> Hope that goes some way to answering the Q, hopefully I haven't missed 
-> something!
+> By keeping nested guest's MMU enabled, we can exercise the shadow stage
+> 2 on the host. But I am fine with you starting nested guest's IPA and I
+> hope Marc and Oliver approve this seris and merge upstream.
 
-That's the concern as I see it as well, it's a choice whether to
-attempt to support sub-PAGE_SIZE mappings, but if a device is reporting
-non_mappable_bars are we're exporting those BARs through dma-buf for
-mmap, that's a problem.  Should pcim_p2pdma_provider() test this flag
-rather than vfio_pci_dmabuf though?  Thanks,
+I think you have guest stage-1 and guest stage-2 confused. Whether the
+nested guest's stage-1 MMU is enabled or not does not affect what KVM is
+doing with the shadow page tables. Stage-1 MMU translates L2VA -> L2IPA.
+Shadow page tables store the combined translation of L2IPA -> L1IPA
+(stage-2 PTs L1 built for L2) and L1IPA -> host PA (stage-2 PTs host
+built for L1).
 
-Alex
+Additionally, stage-2 not enabled for L2 does not mean shadow stage-2 is
+not exercised, there is still a distince shadow stage-2 for it doing the
+work, albeit simple (the stored mapping is the same as the canonical
+stage-2).
+
+All in all, if we want to make the shadow page tables more interesting,
+what we should do is build a stage-2 for L2, and enable it in L1, not
+just turn on L2's stage-1 MMU.
+
+Thanks,
+Wei-Lin Chang
+
+> 
+> Thanks,
+> Itaru.
+> 
+> > 
+> > Thanks,
+> > Wei-Lin Chang
+> > 
+> > > 
+> > > Itaru.
+> > > 
+> > > > 
+> > > > Thanks,
+> > > > Wei-Lin Chang
+> > > > 
+> > > > > 
+> > > > > Itaru.
+> > > > > 
+> > > > > > 
+> > > > > > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> > > > > > ---
+> > > > > >  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+> > > > > >  .../selftests/kvm/arm64/hello_nested.c        | 103 ++++++++++++++++++
+> > > > > >  2 files changed, 104 insertions(+)
+> > > > > >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > > > 
+> > > > > > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> > > > > > index 3dc3e39f7025..e8c108e0c487 100644
+> > > > > > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > > > > > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > > > > > @@ -168,6 +168,7 @@ TEST_GEN_PROGS_arm64 += arm64/arch_timer_edge_cases
+> > > > > >  TEST_GEN_PROGS_arm64 += arm64/at
+> > > > > >  TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
+> > > > > >  TEST_GEN_PROGS_arm64 += arm64/hello_el2
+> > > > > > +TEST_GEN_PROGS_arm64 += arm64/hello_nested
+> > > > > >  TEST_GEN_PROGS_arm64 += arm64/host_sve
+> > > > > >  TEST_GEN_PROGS_arm64 += arm64/hypercalls
+> > > > > >  TEST_GEN_PROGS_arm64 += arm64/external_aborts
+> > > > > > diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..97387e4697b3
+> > > > > > --- /dev/null
+> > > > > > +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> > > > > > @@ -0,0 +1,103 @@
+> > > > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > > > +/*
+> > > > > > + * hello_nested - Go from vEL2 to EL1 then back
+> > > > > > + */
+> > > > > > +
+> > > > > > +#include "nested.h"
+> > > > > > +#include "processor.h"
+> > > > > > +#include "test_util.h"
+> > > > > > +#include "ucall.h"
+> > > > > > +
+> > > > > > +#define XLATE2GPA	(0xABCD)
+> > > > > > +#define L2STACKSZ	(0x100)
+> > > > > > +
+> > > > > > +/*
+> > > > > > + * TPIDR_EL2 is used to store vcpu id, so save and restore it.
+> > > > > > + */
+> > > > > > +static vm_paddr_t ucall_translate_to_gpa(void *gva)
+> > > > > > +{
+> > > > > > +	vm_paddr_t gpa;
+> > > > > > +	u64 vcpu_id = read_sysreg(tpidr_el2);
+> > > > > > +
+> > > > > > +	GUEST_SYNC2(XLATE2GPA, gva);
+> > > > > > +
+> > > > > > +	/* get the result from userspace */
+> > > > > > +	gpa = read_sysreg(tpidr_el2);
+> > > > > > +
+> > > > > > +	write_sysreg(vcpu_id, tpidr_el2);
+> > > > > > +
+> > > > > > +	return gpa;
+> > > > > > +}
+> > > > > > +
+> > > > > > +static void l2_guest_code(void)
+> > > > > > +{
+> > > > > > +	do_hvc();
+> > > > > > +}
+> > > > > > +
+> > > > > > +static void guest_code(void)
+> > > > > > +{
+> > > > > > +	struct vcpu vcpu;
+> > > > > > +	struct hyp_data hyp_data;
+> > > > > > +	int ret;
+> > > > > > +	vm_paddr_t l2_pc, l2_stack_top;
+> > > > > > +	/* force 16-byte alignment for the stack pointer */
+> > > > > > +	u8 l2_stack[L2STACKSZ] __attribute__((aligned(16)));
+> > > > > > +
+> > > > > > +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> > > > > > +	GUEST_PRINTF("vEL2 entry\n");
+> > > > > > +
+> > > > > > +	l2_pc = ucall_translate_to_gpa(l2_guest_code);
+> > > > > > +	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
+> > > > > > +
+> > > > > > +	init_vcpu(&vcpu, l2_pc, l2_stack_top);
+> > > > > > +	prepare_hyp();
+> > > > > > +
+> > > > > > +	ret = run_l2(&vcpu, &hyp_data);
+> > > > > > +	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
+> > > > > > +	GUEST_DONE();
+> > > > > > +}
+> > > > > > +
+> > > > > > +int main(void)
+> > > > > > +{
+> > > > > > +	struct kvm_vcpu_init init;
+> > > > > > +	struct kvm_vcpu *vcpu;
+> > > > > > +	struct kvm_vm *vm;
+> > > > > > +	struct ucall uc;
+> > > > > > +	vm_paddr_t gpa;
+> > > > > > +
+> > > > > > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+> > > > > > +	vm = vm_create(1);
+> > > > > > +
+> > > > > > +	kvm_get_default_vcpu_target(vm, &init);
+> > > > > > +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> > > > > > +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
+> > > > > > +	kvm_arch_vm_finalize_vcpus(vm);
+> > > > > > +
+> > > > > > +	while (true) {
+> > > > > > +		vcpu_run(vcpu);
+> > > > > > +
+> > > > > > +		switch (get_ucall(vcpu, &uc)) {
+> > > > > > +		case UCALL_SYNC:
+> > > > > > +			if (uc.args[0] == XLATE2GPA) {
+> > > > > > +				gpa = addr_gva2gpa(vm, (vm_vaddr_t)uc.args[1]);
+> > > > > > +				vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL2), gpa);
+> > > > > > +			}
+> > > > > > +			break;
+> > > > > > +		case UCALL_PRINTF:
+> > > > > > +			pr_info("%s", uc.buffer);
+> > > > > > +			break;
+> > > > > > +		case UCALL_DONE:
+> > > > > > +			pr_info("DONE!\n");
+> > > > > > +			goto end;
+> > > > > > +		case UCALL_ABORT:
+> > > > > > +			REPORT_GUEST_ASSERT(uc);
+> > > > > > +			fallthrough;
+> > > > > > +		default:
+> > > > > > +			TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
+> > > > > > +		}
+> > > > > > +	}
+> > > > > > +
+> > > > > > +end:
+> > > > > > +	kvm_vm_free(vm);
+> > > > > > +	return 0;
+> > > > > > +}
+> > > > > > -- 
+> > > > > > 2.43.0
+> > > > > > 
