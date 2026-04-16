@@ -1,111 +1,113 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002D0374E47
-	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 22:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBF8372675
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 23:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776379531; cv=none; b=uv16vpuqqrVIr943BIDC0Xv+eCJLGFBvBh9ADSpEzgf0+OjHriOmHdReHv3KHVubp5IhPD5yKxQW6AIyuoSPBXA298P2olSTV9N7VsMq1gEdpooG1qR/ZusLcIzCrgTF+DBXgmj9OQxRbxAToZw2jrKCRSS6Y7jent/cFPHsvQk=
+	t=1776381048; cv=none; b=ZBCQeDUYbrecM0SKkuS67okVmXVehF5fbifUdqa9Ok5kC9wtP2RNGOEVyyECyU8hy62a57eTWrv4wQ881fHW88z3w8matcBjhmZ5M0muVKrvZjySVQ3Jy3vVZ2dtABTyYB2LYOIMxOch1qb6JU08DruBr3lnhVH5OvZPex2yquc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776379531; c=relaxed/simple;
-	bh=ZdK1a4wtfo6i5zxop3WmUHjbFCExnKakE+Bz0u8FlGs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=prXPxfhbd2T0Jk9VypfD9ArsCrJrp+ZGFS9Pqcktk5YNZa77JKRPUjaG7LlY1ug2QA8Zzy7xFBoPs6x1uGFfCIpc8PuBxilJrQvu65SHtuROjfoydwl61XdJ2M3v9llW1dBGrwaAHw2vcdlz5fH4Iq5ekJ0Ol47AiguVRh3acIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oD2Q4702; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1776381048; c=relaxed/simple;
+	bh=ibo7CnpGrpha454UaRPW1hlDSh9CFygz1tm8RvNj3qM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Tw9P/snb3clW5yOhOdkP1NIs5GpIli1tQCFnk0Lp+sG+mBD4NLfvStsjNswGgLqUlGktZ+37q3u7DhFqCmBxIWkgtq4IbzBWYeqczXnUlLzjFcWVbeEVOw4ryHy4iYc+Z38Cq8M6ROllD2ppfVJWjDtUBAgoY299+00I5P0s9xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mIlSw9WB; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oD2Q4702"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f5f48458eso40088b3a.3
-        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 15:45:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mIlSw9WB"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b24e9b4d82so10743265ad.1
+        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 16:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776379529; x=1776984329; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sx0IUbv8zstyDUBxyHbJwQtyJ++166gxIFGlq89qnlY=;
-        b=oD2Q4702I7BSwNuCN9gviJkqII58feIyTGV4IS4oBltdYOC/Q3A9c1P8TaiAUOrIP3
-         EVJeizfDfbB7UQ+og3yB9nLAcx6e0dP15MgEthMcQHrvROh/YjifaOlUyvIVVeksJ5kz
-         dtl0YZTOBcUBMSlFtQiUXp/PbzMkzwjKMoZTurguZRFRFZgiPxbwnsoCx0Vl2f9/M/5c
-         uzRHU9intoNYo+EKRayFpDEbRLy4NQ6FyiOxeyv+2sAhy+Q1hlHL3GsEEIFnZxJ1+IWb
-         4iGmNUrYWlI2PqKVIB75p+knrafvxc63ueKpIR+XzK/u0gWCk1ciBp9/CM2WymSDF830
-         9XAg==
+        d=google.com; s=20251104; t=1776381047; x=1776985847; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5XjVnvrOeT5QzD9aDDSLvO3F2NHdXn3jVsrlD8MBG0k=;
+        b=mIlSw9WBJEWyyJEKItEIV6u6U6pwIzFCMOcd5qL6jiX9csz0ecZdfa5P317HH20gI5
+         h99wOKxPJUQ7TzRef7YbtkFIVXQQgCPtnrnFn3++VyHJqWUWFb6ICI4U/7voo9G58WGL
+         ocDE0Ag1FyLeJfaBgGFWVG37zYPiBIPaMIW3fpBTv6CdrfsGRV8B+HrVrpv3/yeO7l/L
+         GwwVIFDXfhQnBSgyiQN9HQMHx4UUyco14yFvU5gvnEVdGFTE3wFtn1tF91S1sPU8C3NZ
+         hgBFfOMnQlzBKjFN04vJ0g2biGbBtmJb8DU/IhVChPNOnK/kdTcbjbSaWwl+J95huqvx
+         +xCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776379529; x=1776984329;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sx0IUbv8zstyDUBxyHbJwQtyJ++166gxIFGlq89qnlY=;
-        b=bZtZsJIadaoCPxFmFGL3My3pQZj7IhC0SquIiG47k/CqUFbWQlWgC7gt9fUG45vBcf
-         3CBP28HWlM6hx9J8Cf+Yq83BuGDbExOg+OShz4DKDN9qv/sHFPNgWldQTIrcauX0gGd3
-         g8QxkbVuP2aOz+DKt4XhYc6Xq7oRhEyyZ46tCpNE6HcAP6vH4OuIDvPgsj7iNCH58kFZ
-         bT0ta3YufwyGtJe85oqC7NmZ3bIYVxqNT8Df/FChP8IA6G6XIYmCKDcUg/vyN5koRkO7
-         A5nye33DzQoWQeBMh0REZ12xZAN5cYamoreSRJMiSg0/Kjsww9uefpiz0+rkwFlZDnq5
-         vA7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/SxFD188fTV2zKmJNvrwXx63jEquOYIQVt7KdPNyWF7LgdvEpC8WTANCMhc3iGY0KEDKA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjIAtwgl2hNWYS9Xhq6bzOF8Blj6Or+hndi6+m6FJ9a13X2c33
-	KM0WrYmhDVsdtWzT4cw96t7+ysCTm5fYDuFZMjieU4DKhnAnJy4iGx1evzMdGcCtrqVqw9kfwZS
-	7g2cbLA==
-X-Received: from pfbjw37.prod.google.com ([2002:a05:6a00:92a5:b0:82a:5e62:7b95])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d87:b0:82a:ea3:c172
- with SMTP id d2e1a72fcca58-82f8c9341f5mr143500b3a.46.1776379529104; Thu, 16
- Apr 2026 15:45:29 -0700 (PDT)
-Date: Thu, 16 Apr 2026 15:45:27 -0700
-In-Reply-To: <20260414-vmscape-bhb-v10-9-efa924abae5f@linux.intel.com>
+        d=1e100.net; s=20251104; t=1776381047; x=1776985847;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5XjVnvrOeT5QzD9aDDSLvO3F2NHdXn3jVsrlD8MBG0k=;
+        b=itxCyubdIkcxw3aRfLxu/17El2/zZDh5a0SUDVfgEd5bJ7SiKoD4CXpJrVtWfjGSUi
+         WXDg9AUa1wXXqCrWi3/v93SZS37LKcCuDxE7P7kQiRXHHB1BBtD3A0zIURkmBg+4JO97
+         RdCFLDZaYq27QIrD2bC4cBMNyBJrXbsIUYa1UhRFUDpysGIWCKSXx3ipqbUprhSoTppt
+         lagTzWWsB6JBQ9Chj1dUCv9v9BbxvonS6Uc7N+Ya0htk+w9chaPo81TPK+3P38HC2pj5
+         6sicu3a2XFfP/gu1fUfKsmQi/tbcWdyE7HEEbnRHHuC2SW3r5biLIa714twHCYFzVjlF
+         5M8Q==
+X-Gm-Message-State: AOJu0YxgZdtZcy8GdozjzvkwTa8fm5XrL2zOz6wEPuAC8kaKP+VtNymW
+	uaDqOuY+OMTaPr36oX4ULbKBiOMshqzagsRPOypWm6NVlJhxqa9IUpdZ8sBxAqWmw//Uc2u2MdN
+	2x4uuYw==
+X-Received: from pgno29.prod.google.com ([2002:a63:7e5d:0:b0:c79:607e:269c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3381:b0:37c:b74c:d8c7
+ with SMTP id adf61e73a8af0-3a08ca7378fmr298045637.22.1776381046879; Thu, 16
+ Apr 2026 16:10:46 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 16 Apr 2026 16:10:37 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com> <20260414-vmscape-bhb-v10-9-efa924abae5f@linux.intel.com>
-Message-ID: <aeFmh8Fz6xzkfQKb@google.com>
-Subject: Re: [PATCH v10 09/12] x86/vmscape: Use static_call() for predictor flush
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260416231043.3402410-1-seanjc@google.com>
+Subject: [PATCH v2 0/6] KVM: SEV: sev_dbg_crypt() fix and overhaul
 From: Sean Christopherson <seanjc@google.com>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, 
-	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	David Laight <david.laight.linux@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 14, 2026, Pawan Gupta wrote:
-> Adding more mitigation options at exit-to-userspace for VMSCAPE would
-> usually require a series of checks to decide which mitigation to use. In
-> this case, the mitigation is done by calling a function, which is decided
-> at boot. So, adding more feature flags and multiple checks can be avoided
-> by using static_call() to the mitigating function.
-> 
-> Replace the flag-based mitigation selector with a static_call(). This also
-> frees the existing X86_FEATURE_IBPB_EXIT_TO_USER.
-> 
-> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Tested-by: Jon Kohler <jon@nutanix.com>
-> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> ---
+Ashutosh's fix for a heap OOB/UAF bug in the debug {de,en}crypt code, now
+with a selftest to detect the bug (and confirm the fix), and to validate the
+functionality.
 
-For the KVM change,
+The rest of the patches completely rewrite the code.  When creating the
+selftest, I did the silly thing of testing arbitrary offsets+sizes, and
+couldn't trigger the true badness because the test failed long before it got
+to the larger sizes.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+Specifically (or, at least) the current code fails to handle cases where an
+address and the size aren't naturally aligned.  E.g. when encrypting 9 bytes
+at offset 8, KVM needs to _decrypt_ destination[31:0] into a temporary buffer,
+buffer[31:0], then copy 9 bytes from source[8:0] to buffer[16:8], then encrypt
+buffer[31:0] back into destination[31:0].  The current code only ever copies
+16 bytes, and bizarrely uses a temporary buffer for the source as well.
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 45d7cfedc507..5582056b2fa1 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -11463,7 +11463,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
->  	 * set for the CPU that actually ran the guest, and not the CPU that it
->  	 * may migrate to.
->  	 */
-> -	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
-> +	if (static_call_query(vmscape_predictor_flush))
->  		this_cpu_write(x86_predictor_flush_exit_to_user, true);
->  
->  	/*
+A wholesale rewrite in a single patch isn't my first choice, but the existing
+code obviously hasn't been tested, and it's so bizarre and unnecessarily
+complex that I've zero confidence that an iterative cleanup would be a net
+positive, especially given how many hours it would take.
+
+The initial fix is 7.1 material, the rest (including the selftest, because it
+won't pass), can wait for 7.2.
+
+v1: https://lore.kernel.org/all/20260410050854.2463447-1-ashutoshdesai993@gmail.com
+
+Ashutosh Desai (1):
+  KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+
+Sean Christopherson (5):
+  KVM: selftests: Add a test to verify SEV {en,de}crypt debug ioctls
+  KVM: SEV: Explicitly validate the dst buffer for debug operations
+  KVM: SEV: Add helper function to pin/unpin a single page
+  KVM: SEV: Rewrite logic to {de,en}crypt memory for debug
+  KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers
+
+ arch/x86/kvm/svm/sev.c                        | 423 +++++++++---------
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/sev.h |  24 +
+ .../testing/selftests/kvm/x86/sev_dbg_test.c  | 118 +++++
+ 4 files changed, 347 insertions(+), 219 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/sev_dbg_test.c
+
+
+base-commit: 6b802031877a995456c528095c41d1948546bf45
+-- 
+2.54.0.rc1.513.gad8abe7a5a-goog
+
