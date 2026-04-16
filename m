@@ -1,257 +1,131 @@
-Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A457C37E2FF
-	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 12:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.77
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776344083; cv=none; b=WOOgj6vdBTu0ubMIz19wozV9/rHrWOMivR+yZU5eGMn0886hj0G38Wxrd+RgMz/XOTAM7baQrzR96pwlp3JOoQb0PWGv+NjzlsTsH8m8QOSwOYYp0Xc5h5t5eoTWYAr5MWQY6BTQWPmxfiHjIM2Fm3/FmiMcGaLKCS5z9bPfDak=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776344083; c=relaxed/simple;
-	bh=gQIYCEXJktv7prGlTgLGnPqIMZA7IKUQAgdKfTv2KaI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=H7XiQ5oM3gBWEjH/YpORqDf4XPl5hy1/frWGvbk59T1Ac0cu2R2VzxJMAilo04F7rgjiTy7uMoT17PdXwmH+37gKw67qkCNIUGGxfK2sMuhmhi3XhqBPMGCqjg5amI/2RfycOQM7ufXmndaLIiHRfM2Agi/HNe7gWV1EjWPSK3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-7dc4bfa79aaso7834764a34.3
-        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 05:54:41 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716FA39EF2D
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 13:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776344415; cv=pass; b=XgkNPmoWEygvXfjezZ+3sdU3K3UyBvY9xMwPVFCu1rTMVlrIKW4LytzzWznM1PgcA2dMb/DlLWt/WtlVmTQmwk5IIxjUynfDDbB4EA/kTRp2626V15372cMPrJVnQkGFWmeEr7E0VPQVIiojK18Egy7AWdC7QtH98mMGnMYHpw4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776344415; c=relaxed/simple;
+	bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rxKtsaVFDMrWAGIvlRbgJMC+WqmYcDbSkLoVK373dBQzlMUgXyserMWWMbBYBUAb4wiV8JNeyq2nsDvNCEjEQiiPSjdOWSqHhpwz/NWBa/AaF4VA+hHacC+aQKCjo8BJbKxZmOqlngl0+g3rS0TLcyfMBWfJS6dfThPOyALHPnA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YQq63YOe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sIyq4ke5; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YQq63YOe";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sIyq4ke5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776344412;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
+	b=YQq63YOetJ9IxqUerUaFoappDMp09LrlIOzAwWx92WHEPGV8/fvXt4lpAjA8nsakP8lWAm
+	AoUh6Q989ozsgwellqBi4XXxgOZySE/fJrdtX/YtS3u24ijbtcq3DEY8dy0Cl0lSG6pDUg
+	c0mZuRTrY6l4ksu0BpQNJT/17GNhH04=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-Zb2PFkEiMXq_towLDK9w3A-1; Thu, 16 Apr 2026 09:00:07 -0400
+X-MC-Unique: Zb2PFkEiMXq_towLDK9w3A-1
+X-Mimecast-MFC-AGG-ID: Zb2PFkEiMXq_towLDK9w3A_1776344407
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43cfedb10a8so4995776f8f.1
+        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 06:00:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776344407; cv=none;
+        d=google.com; s=arc-20240605;
+        b=G0dpOp5JYeyw1AnqbfIvAjOrCWB8rOZCPjEF/4WcqhEudwaMbO1GyT1eRqPyzclUlf
+         ewmWyXojQAg4KLqlQyzfLTCs3yb0bnJfka59XsxE9dDXPwM+4gX2XXvgtRTB7qElq6/r
+         JDa2P7iPVlU9ARulWgTT7UPq2oAurzoKZu398OzkTrcXeEVnQ8SSyFjwfpcYoCFgbLJq
+         2sBheDzc0hQ9FrzsaGqrOrqnGPjq7wrkdFHogAYJGVLktXl2j3RxIeSJpZpTV+eNT1HI
+         nrxF+WwE4tmm1pjrwko+ENzAopP3WXp6VUyjh/9ACwDWCKJv+OiJkvC3s8dhd2oK8P6O
+         fSDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
+        fh=GQ+AW4wBYDHa0QeDExAvhx01hh0qb2c4MEwzjE6WmNg=;
+        b=i3oXiAKSwduyJs4nV3RFn8ONpye0PK0eoMhQSk1Aflq20MSBt7dUTaHVMSdZg6SY3/
+         CeB2MQXpXmla7JjljkCP6QVmbndwQaiBFQrsiiekdcUMgbGRLOiy7PGfHN3qb0SFyIXh
+         x3Ehfxj+9ecWaNQkoGNgVpHuqS3049NVYyAb0Obr1Eh/NyBzLvIdR0aWTUxCdrmQKnM8
+         3ZiIS7Zh2FSdpCutLA7rX+VdiG/QIAAVwwBOwiSHU3qBpWh6JziE9XMcuR0fbfXeAMbJ
+         Nu4pGCNEoG2DVRgllh5iwLwDHbe3ifhCcGnuCW77+/uKVkJOxG5mAzCaGOm6UDBIXp+3
+         0jDg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776344406; x=1776949206; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
+        b=sIyq4ke5gtq8eQwTdr3jFSL47a4qeBA3wlyho7YHYtFDv5HqyzyCsPRm0+lUNTJjeJ
+         F4dzZ8Ceyn2xyFKgDlXAgPTWHy0ENoWLTECk3ZKF57k3IBx7gr7F5vhUAWcesTqftiR1
+         vnLAgUBzzVSSFvanJuTHEB85A7Uyf1BxN2xPH+dxIwe13QhOgpfA8iLFIMKJvRVhaIZl
+         VYgoPMt5D8Wd/JpmIXoTYw6NuYq/8Zqwo3eLR1ReN6RTGkMO6CO1ymXcMeeGCbwmKzv0
+         SLL6/ktbnOPRKTw+Y0MvgQen/6SX18r0dqN8ncofojlVdJg+DJjDkGv3d7ep6ImUcX9S
+         GSTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776344080; x=1776948880;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w5XOdkxROII00878gyVtEWLv8Kszanev0vMqoiB7TZA=;
-        b=Tul4YCpBLUnwIko7dW12VOxgzD8zGVpzuFDU4yLMJxmYqXtdsXcztoqBTFBKdzbvtP
-         2wHb4/ZIUIQiMtULiDQqU4Omv+fTCK4jl9xHJW+bPSyOssqoO/IelSRBLth9fj/5Hzcw
-         +mHcQlSgh5ZjJyb2xoTwr/FtwKgWV3LcOgoY2w9e0UhMxcESCQPuDwHIJmJjlOajzFO3
-         cYiRI4g5QIna2fp2zsC2ICQhWJOUzojma0L1r6VNdSwyAvcU5cPEZitlig2SaDpblnLE
-         PFNajKQQ0qjA1NHny2Q+Xi6OFDgbM6EkFmsXcA1l8HG4jWxOzMGn7KfzZe/RdOnw6d2N
-         YryA==
-X-Forwarded-Encrypted: i=1; AFNElJ/wa1CHgCWXnOiCRY8LE9XbjhNXEHu3gAgR+h82OG9YGYP9SGQDBbV1VRWqjscq1IwcmMg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJdBGKCy0A4ZRYuYxCnnI4DGAwoi0ZVKUmZ+ykKGlL4m348Lu3
-	GRn28bED+GbqFjUjdeZqo3wof7YjkG7m7QM7hcGqeT0EFRW+/xqOwibEj+KHR45rSy2oWi+LRg0
-	HPx8OtVsmhbqj9N8ffZ9y2kQg5cnFiOot3lKYzIfCpNfdFDhzB5RzKsrYV1Y=
+        d=1e100.net; s=20251104; t=1776344406; x=1776949206;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
+        b=pZSTihP94yXg5i4rQQ7VXpTTGbagtIbrRXNzRljp19ZBO2AdRPPqAnKHL5tdWxzS5N
+         LMK5lUVA9WvQT07zgBaU/gHWv7wFwqEGT/QHFMJeLrUBz82t0CGVdAKXzSLnWUbYcnnQ
+         g2bACcmosJulYphAv51JIzTVh5rjl950QeCj7VQYDfl+t6/CoAV8XR8BumoM+j+NkpwC
+         TxF1EmCwyreRzcINkG5oxqntqtWHKoKH+5jn3AqcmohzKhEMz4eC2i4trRQJYwB1Svac
+         E2EA0Tj0KDcwiYspiBvBNvbEmk8aqbs8yvz3gvkFZEffqY1OM5bLILxqGWi0l2cfA7w3
+         p/ZA==
+X-Gm-Message-State: AOJu0Yy87/icOYloNZvK1shjonaOcDwACTTLef7fpLx4N+ZKJvuIVoxV
+	oPwLJZKPb/7+Vld5PV9VC7Za2f0uwfQ12A5oVDZ9BmsNRIO3aHH55qxcpdqtDsHQ7OnN8Gh+sTy
+	ApfJtEmwFteSRtk87CBZlSuLXUoI9PldSv9saPXFJgzDxiwkMnhulo96++FJuqoXUdQo2hHMxlz
+	JxNdqSR5yHVVoSuuBVuzBuG6mZeTTH
+X-Gm-Gg: AeBDiesy7QSUE3ee/E12Cq5igCWEAePla3ncC4ZGBHh/n0z0EygHDkNOsi8l9V5GUqy
+	5Kv216ju2vUob2oTAKLR4KM0ENpmnePCkcXWHYlSiTVCln/sDIeeWn6n9mkSPhhAShMftPlrxfB
+	4axvbatQEsGe5rhvQTtBnblJoe1g1k7SIAHPEGbuB3JQjqCu7Bil32Iv/QOcg72HM+pQASgnF7f
+	l30yNqXvJQCDZGEKlZv43BjbWD9b047CNcuf3QYyJCTZisXCFepMKHi43YV43ViV1wHqpmQDIWR
+	fy5CbJiF6p2xYW8=
+X-Received: by 2002:a05:6000:240f:b0:43d:76ec:91f6 with SMTP id ffacd0b85a97d-43d76ec942emr27911325f8f.41.1776344406502;
+        Thu, 16 Apr 2026 06:00:06 -0700 (PDT)
+X-Received: by 2002:a05:6000:240f:b0:43d:76ec:91f6 with SMTP id
+ ffacd0b85a97d-43d76ec942emr27911249f8f.41.1776344406021; Thu, 16 Apr 2026
+ 06:00:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2908:b0:689:d8b0:ccd7 with SMTP id
- 006d021491bc7-68be596a66amr13776273eaf.12.1776344080584; Thu, 16 Apr 2026
- 05:54:40 -0700 (PDT)
-Date: Thu, 16 Apr 2026 05:54:40 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69e0dc10.a00a0220.8f24c.017c.GAE@google.com>
-Subject: [syzbot] [kvm?] [kvm-x86?] BUG: sleeping function called from invalid
- context in kvm_xen_set_evtchn_fast
-From: syzbot <syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com>
-To: bp@alien8.de, dave.hansen@linux.intel.com, dwmw2@infradead.org, 
-	hpa@zytor.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mingo@redhat.com, paul@xen.org, pbonzini@redhat.com, seanjc@google.com, 
-	syzkaller-bugs@googlegroups.com, tglx@kernel.org, x86@kernel.org
+References: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
+In-Reply-To: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 16 Apr 2026 14:59:53 +0200
+X-Gm-Features: AQROBzB06z0j3FfHL_p7_YJA3OFk9JJD1JWJ8q8MT8WlEpmh8AyMWm-lEAm_mqA
+Message-ID: <CABgObfasYTWmuqkz4TaTprcivwkzKGxAjdYZJVgO66HB1wK-5w@mail.gmail.com>
+Subject: Re: PUCK follow up: Trusted IO call details
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "michael.roth@amd.com" <michael.roth@amd.com>, 
+	"Xu, Yilun" <yilun.xu@intel.com>, "djbw@kernel.org" <djbw@kernel.org>, "Weiny, Ira" <ira.weiny@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Wed, Apr 15, 2026 at 8:59=E2=80=AFPM Edgecombe, Rick P
+<rick.p.edgecombe@intel.com> wrote:
+>
+> The call I mentioned is officially called: "TAC Subcommittee: Linux Kerne=
+l Special Interest Group (Linux
+> Kernel-SIG)". This seems to be the info:
+> https://confidentialcomputing.io/about/committees/#Linux-Kernel-SIG
+>
+> Paolo, unfortunately I did remember correctly that it is not an EU friend=
+ly time.
 
-syzbot found the following issue on:
+This one is friendly (9AM PST =3D 6PM CEST). The unfriendly one is the
+IOMMUFD one (5AM :)).
 
-HEAD commit:    e6efabc0afca Add linux-next specific files for 20260414
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=14261a6a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f5ee3699e4b6706d
-dashboard link: https://syzkaller.appspot.com/bug?extid=208f7f3e5f59c11aeb90
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+Paolo
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/7682fddefc6a/disk-e6efabc0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/82bdc6820c4b/vmlinux-e6efabc0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f48466cb7c13/bzImage-e6efabc0.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:231
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 30, name: ktimers/1
-preempt_count: 10001, expected: 0
-RCU nest depth: 2, expected: 2
-5 locks held by ktimers/1/30:
- #0: ffffffff8e25f260 (local_bh){.+.+}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #1: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #2: ffff8880b8726360 (&base->expiry_lock){+...}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #2: ffff8880b8726360 (&base->expiry_lock){+...}-{3:3}, at: timer_base_lock_expiry kernel/time/timer.c:1502 [inline]
- #2: ffff8880b8726360 (&base->expiry_lock){+...}-{3:3}, at: __run_timer_base+0x120/0x9f0 kernel/time/timer.c:2384
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: __rt_spin_lock kernel/locking/spinlock_rt.c:50 [inline]
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1e0/0x400 kernel/locking/spinlock_rt.c:57
- #4: ffff88803913dac8 (&kvm->srcu){.?.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
- #4: ffff88803913dac8 (&kvm->srcu){.?.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
- #4: ffff88803913dac8 (&kvm->srcu){.?.+}-{0:0}, at: kvm_xen_set_evtchn_fast+0x1c6/0x9a0 arch/x86/kvm/xen.c:1817
-irq event stamp: 13772921
-hardirqs last  enabled at (13772920): [<ffffffff8b443c23>] __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:187 [inline]
-hardirqs last  enabled at (13772920): [<ffffffff8b443c23>] _raw_spin_unlock_irq+0x23/0x50 kernel/locking/spinlock.c:206
-hardirqs last disabled at (13772921): [<ffffffff8b40abde>] sysvec_apic_timer_interrupt+0xe/0xc0 arch/x86/kernel/apic/apic.c:1061
-softirqs last  enabled at (13772906): [<ffffffff81885eeb>] ksoftirqd_run_end kernel/softirq.c:325 [inline]
-softirqs last  enabled at (13772906): [<ffffffff81885eeb>] run_ktimerd+0x8b/0x100 kernel/softirq.c:1153
-softirqs last disabled at (13772910): [<ffffffff8192a431>] smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
-Preemption disabled at:
-[<0000000000000000>] 0x0
-CPU: 1 UID: 0 PID: 30 Comm: ktimers/1 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)} 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x329/0x480 kernel/sched/core.c:9162
- rt_read_lock+0xa9/0x4b0 kernel/locking/spinlock_rt.c:231
- kvm_xen_set_evtchn_fast+0x1fc/0x9a0 arch/x86/kvm/xen.c:1819
- xen_timer_callback+0x109/0x220 arch/x86/kvm/xen.c:140
- __run_hrtimer kernel/time/hrtimer.c:1930 [inline]
- __hrtimer_run_queues+0x3bc/0xb10 kernel/time/hrtimer.c:1994
- hrtimer_interrupt+0x455/0x950 kernel/time/hrtimer.c:2113
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1067
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1061 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1061
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:__raw_spin_unlock_irq include/linux/spinlock_api_smp.h:188 [inline]
-RIP: 0010:_raw_spin_unlock_irq+0x29/0x50 kernel/locking/spinlock.c:206
-Code: 90 f3 0f 1e fa 53 48 89 fb 48 83 c7 18 48 8b 74 24 08 e8 8a a9 5c f6 48 89 df e8 c2 35 5d f6 e8 cd e1 88 f6 fb bf 01 00 00 00 <e8> 22 c5 4f f6 65 8b 05 fb 43 77 07 85 c0 74 07 5b c3 cc cc cc cc
-RSP: 0018:ffffc90000a4fb30 EFLAGS: 00000206
-RAX: 0000000000d22878 RBX: ffff8880b87262c0 RCX: 0000000080000001
-RDX: 0000000000000002 RSI: ffffffff8d995925 RDI: 0000000000000001
-RBP: ffffc90000a4fcb8 R08: ffffffff8fcf17f7 R09: 1ffffffff1f9e2fe
-R10: dffffc0000000000 R11: fffffbfff1f9e2ff R12: ffffc9000668fa20
-R13: 1ffff92000149f80 R14: ffff8880b87262c0 R15: ffffc90000a4fc00
- expire_timers kernel/time/timer.c:1798 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x693/0x9f0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
- handle_softirqs+0x1de/0x6d0 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- run_ktimerd+0x69/0x100 kernel/softirq.c:1151
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-=============================
-[ BUG: Invalid wait context ]
-syzkaller #0 Tainted: G        W    L     
------------------------------
-ktimers/1/30 is trying to lock:
-ffff88803913d4d0 (&gpc->lock){+.+.}-{3:3}, at: kvm_xen_set_evtchn_fast+0x1fc/0x9a0 arch/x86/kvm/xen.c:1819
-other info that might help us debug this:
-context-{2:2}
-5 locks held by ktimers/1/30:
- #0: ffffffff8e25f260 (local_bh){.+.+}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #1: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #2: ffff8880b8726360 (&base->expiry_lock){+...}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #2: ffff8880b8726360 (&base->expiry_lock){+...}-{3:3}, at: timer_base_lock_expiry kernel/time/timer.c:1502 [inline]
- #2: ffff8880b8726360 (&base->expiry_lock){+...}-{3:3}, at: __run_timer_base+0x120/0x9f0 kernel/time/timer.c:2384
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: __rt_spin_lock kernel/locking/spinlock_rt.c:50 [inline]
- #3: ffffffff8e3c8100 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1e0/0x400 kernel/locking/spinlock_rt.c:57
- #4: ffff88803913dac8 (&kvm->srcu){.?.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
- #4: ffff88803913dac8 (&kvm->srcu){.?.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
- #4: ffff88803913dac8 (&kvm->srcu){.?.+}-{0:0}, at: kvm_xen_set_evtchn_fast+0x1c6/0x9a0 arch/x86/kvm/xen.c:1817
-stack backtrace:
-CPU: 1 UID: 0 PID: 30 Comm: ktimers/1 Tainted: G        W    L      syzkaller #0 PREEMPT_{RT,(full)} 
-Tainted: [W]=WARN, [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_lock_invalid_wait_context kernel/locking/lockdep.c:4832 [inline]
- check_wait_context kernel/locking/lockdep.c:4904 [inline]
- __lock_acquire+0xec1/0x2cf0 kernel/locking/lockdep.c:5189
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5870
- rt_read_lock+0xcc/0x4b0 kernel/locking/spinlock_rt.c:232
- kvm_xen_set_evtchn_fast+0x1fc/0x9a0 arch/x86/kvm/xen.c:1819
- xen_timer_callback+0x109/0x220 arch/x86/kvm/xen.c:140
- __run_hrtimer kernel/time/hrtimer.c:1930 [inline]
- __hrtimer_run_queues+0x3bc/0xb10 kernel/time/hrtimer.c:1994
- hrtimer_interrupt+0x455/0x950 kernel/time/hrtimer.c:2113
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1067
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1061 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1061
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:__raw_spin_unlock_irq include/linux/spinlock_api_smp.h:188 [inline]
-RIP: 0010:_raw_spin_unlock_irq+0x29/0x50 kernel/locking/spinlock.c:206
-Code: 90 f3 0f 1e fa 53 48 89 fb 48 83 c7 18 48 8b 74 24 08 e8 8a a9 5c f6 48 89 df e8 c2 35 5d f6 e8 cd e1 88 f6 fb bf 01 00 00 00 <e8> 22 c5 4f f6 65 8b 05 fb 43 77 07 85 c0 74 07 5b c3 cc cc cc cc
-RSP: 0018:ffffc90000a4fb30 EFLAGS: 00000206
-RAX: 0000000000d22878 RBX: ffff8880b87262c0 RCX: 0000000080000001
-RDX: 0000000000000002 RSI: ffffffff8d995925 RDI: 0000000000000001
-RBP: ffffc90000a4fcb8 R08: ffffffff8fcf17f7 R09: 1ffffffff1f9e2fe
-R10: dffffc0000000000 R11: fffffbfff1f9e2ff R12: ffffc9000668fa20
-R13: 1ffff92000149f80 R14: ffff8880b87262c0 R15: ffffc90000a4fc00
- expire_timers kernel/time/timer.c:1798 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x693/0x9f0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
- handle_softirqs+0x1de/0x6d0 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- run_ktimerd+0x69/0x100 kernel/softirq.c:1151
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	90                   	nop
-   1:	f3 0f 1e fa          	endbr64
-   5:	53                   	push   %rbx
-   6:	48 89 fb             	mov    %rdi,%rbx
-   9:	48 83 c7 18          	add    $0x18,%rdi
-   d:	48 8b 74 24 08       	mov    0x8(%rsp),%rsi
-  12:	e8 8a a9 5c f6       	call   0xf65ca9a1
-  17:	48 89 df             	mov    %rbx,%rdi
-  1a:	e8 c2 35 5d f6       	call   0xf65d35e1
-  1f:	e8 cd e1 88 f6       	call   0xf688e1f1
-  24:	fb                   	sti
-  25:	bf 01 00 00 00       	mov    $0x1,%edi
-* 2a:	e8 22 c5 4f f6       	call   0xf64fc551 <-- trapping instruction
-  2f:	65 8b 05 fb 43 77 07 	mov    %gs:0x77743fb(%rip),%eax        # 0x7774431
-  36:	85 c0                	test   %eax,%eax
-  38:	74 07                	je     0x41
-  3a:	5b                   	pop    %rbx
-  3b:	c3                   	ret
-  3c:	cc                   	int3
-  3d:	cc                   	int3
-  3e:	cc                   	int3
-  3f:	cc                   	int3
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
