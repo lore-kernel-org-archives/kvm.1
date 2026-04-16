@@ -1,162 +1,146 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503CD246766;
-	Thu, 16 Apr 2026 18:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F3D25783C;
+	Thu, 16 Apr 2026 18:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776363866; cv=none; b=YYAs1Ky+w5TXvCBvYSsjnUzGi8J07oW3/1W50Fbxz7EBS20phJaV3Uhlv9jXr7c3cnyi6UdsYgNTaMqLSS5XZLwYQhFheRGMrcHH1a7NVSKzbrMbcX7Wu3sVd6RgzQ77CqbodLXN20CnAShjUf2R+azHYBBwq5L4y9OA+72EjcU=
+	t=1776364346; cv=none; b=NG3wrvrWBoUmi8nIKfj3NO+T1pHbvbQTLLSE3ZNNbugc/bdggv+ZuYrleKG5r7GTjBIOP0BHHRa+Wm/gsQT+aT5kQPuR9y2RcFMscrmTv1dtOoGHUzYd8sAE9PAO5nZQSDmx57klybru9Xntos10jZBwyeyzeqA1plt6OpdXR0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776363866; c=relaxed/simple;
-	bh=EET7AEqsqeNKGUh2djycBsR6CuvbqaXpc6GyzCzF1uM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kGkKR//cgjylRCwAtMFd3YX+OIbKa017jh035eajcUhEeROT+4Feot2kHppYMvP/u3f+CHKc3xYdiOeUXl3RPuP4HfY+AWSsBLsrDvSEpEroBpTzpqSNq0nPr2oXUlfBjIVnESq5S3QiMQMEK55/QKSgCcwQwOykXt9zrMr6hCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AtOBSa+Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776364346; c=relaxed/simple;
+	bh=cuaEVAsEImHzMRgmx5zy1ElIshNgZdC1LMYmjR+EZF8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dGBcfns3MrOJRV5rLl7N3RanAQwqTBG5ZFwefSZ9q/fffE0r1IptsCN5rUx4d0rApcjkQv5cyjNsilGAHeIGjqCDNUZxITeJoLz+g8w9IZPgDjYd1oyBx0jCyM0gebf1hVynMGRX9p405IbW94aOM8Q0QnfhjbIw9zG58sK09UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOjrVj0z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AtOBSa+Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB08C2BCAF;
-	Thu, 16 Apr 2026 18:24:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOjrVj0z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDF7C2BCAF;
+	Thu, 16 Apr 2026 18:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776363865;
-	bh=EET7AEqsqeNKGUh2djycBsR6CuvbqaXpc6GyzCzF1uM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AtOBSa+ZrmPjRc3npo+3iI35i2uEA4vTVE9yk686rN3DHUu3ws4f+TfZfDMSXBWxt
-	 keL3RrBXqFcCRB4lohq3VRewIEvEvDMk6IUGFhrZtpYM6soYyuQk4fjOUp4aOTEACk
-	 ZE76HwcWXm8F1xnkSEUU+nVPzUraUGGoWmj3FX7h+XwhbLdyPN5p/90xK8xfqJeI54
-	 Thauo5LHFrD2uSJO1CKgd8+WqpkBx6atfkfsGy/IL9IRB7y/JdeM+dag9XvySiQ0a1
-	 1jmZhX1wu2YZsC6vUMylAaRwIGYgsIo2h61jJDF8gJNQFOb5i/ygH3chfd086V3vXJ
-	 I86QMs7FNqtqQ==
-Date: Thu, 16 Apr 2026 11:24:23 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Stephane Eranian <eranian@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: Re: [PATCH 1/4] perf/x86/intel: Don't write PEBS_ENABLED on
- host<=>guest xfers if CPU has isolation
-Message-ID: <aeEpV9kfBSQrxwm-@google.com>
-References: <20260414191425.2697918-1-seanjc@google.com>
- <20260414191425.2697918-2-seanjc@google.com>
+	s=k20201202; t=1776364346;
+	bh=cuaEVAsEImHzMRgmx5zy1ElIshNgZdC1LMYmjR+EZF8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YOjrVj0zkuyJq4UJAR2lP/YzBG7O+jCdG706M15jBmDHS8e2++5PcpU0ovWXMbB1a
+	 33+kZ1OAPsZVfuQ1d2eoozg0XaqoX7973YAjvOan9LfWEvs2LR26eBqQPOSHzMNW99
+	 XC5v2EEC7+KtgR5XWdivrJkVZy8K04wlwava9tp82RdORo1GV1+KNPz6srG802iSX1
+	 0BshNuFosNEh6xxtwDjoW/L2Ao5CMZppGnzZQl0mvXqpNbTte6/x3J5LjyoTMk1RB3
+	 OKfYdF7ririrKNyTHNuiO925fzsqMRe2tQ9VZJUck7m49cPPZ66ZFLMkKQHkgUmsQd
+	 4ErCtFqBERQQQ==
+Message-ID: <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
+Date: Thu, 16 Apr 2026 20:32:19 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260414191425.2697918-2-seanjc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
+ memory
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <20260414142354.1465950-1-kas@kernel.org>
+ <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+ <ad50rPOseVa-SP_s@thinkstation> <aeDoqFWPFxkkNB26@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aeDoqFWPFxkkNB26@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
-
-On Tue, Apr 14, 2026 at 12:14:22PM -0700, Sean Christopherson wrote:
-> When filling the list of MSRs to be loaded by KVM on VM-Enter and VM-Exit,
-> *never* insert an entry for PEBS_ENABLED if the CPU properly isolates PEBS
-> events, in which case disabling counters via PERF_GLOBAL_CTRL is sufficient
-> to prevent unwanted PEBS events in the guest (or host).  Because perf loads
-> PEBS_ENABLE with the unfiltered cpu_hw_events.pebs_enabled, i.e. with both
-> host and guest masks, there is no need to load different values for the
-> guest versus host, perf+KVM can and should simply control which counters
-> are enabled/disabled via PERF_GLOBAL_CTRL.
+On 4/16/26 15:49, Kiryl Shutsemau wrote:
+> On Tue, Apr 14, 2026 at 06:10:44PM +0100, Kiryl Shutsemau wrote:
+>> On Tue, Apr 14, 2026 at 05:37:50PM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> I would rather tackle this from the other direction: it's another form
+>>> of protection (like WP), not really a "minor" mode.
+>>>
+>>> Could we add a UFFDIO_REGISTER_MODE_RWP (or however we would call it)
+>>> and support it for anon+shmem, avoiding the zapping for shmem completely?
+>>
+>> I like this idea.
+>>
+>> It should be functionally equivalent, but your interface idea fits
+>> better with the rest.
+>>
+>> Thanks! Will give it a try.
 > 
-> Avoiding touching PEBS_ENABLED fixes a bug where PEBS_ENABLED can end up
-> with "stuck" bits if a PEBS event is throttled better generating the list
-> and actually entering the guest (Intel CPUs can't arbtitrarily block NMIs).
-> And stating the obvious, leaving PEBS_ENABLED as-is avoids two MSR writes
-> on every VMX transition.
+> Here is an updated version:
 > 
-> Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation for extended PEBS")
-> Cc: Jim Mattson <jmattson@google.com>
-> Cc: Mingwei Zhang <mizhang@google.com>
-> Cc: Stephane Eranian <eranian@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/events/intel/core.c | 42 ++++++++++++++++++++----------------
->  1 file changed, 23 insertions(+), 19 deletions(-)
+> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/log/?h=uffd/rfc-v2
 > 
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 793335c3ce78..002d809f82ef 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -4999,12 +4999,15 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
->  	struct kvm_pmu *kvm_pmu = (struct kvm_pmu *)data;
->  	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
->  	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
-> -	int global_ctrl, pebs_enable;
-> +	u64 guest_pebs_mask = pebs_mask & ~cpuc->intel_ctrl_host_mask;
-> +	int global_ctrl;
->  
->  	/*
->  	 * In addition to obeying exclude_guest/exclude_host, remove bits being
->  	 * used for PEBS when running a guest, because PEBS writes to virtual
-> -	 * addresses (not physical addresses).
-> +	 * addresses (not physical addresses).  If the guest wants to utilize
-> +	 * PEBS, and PEBS can safely enabled in the guest, bits for the guest's
-> +	 * PEBS-enabled counters will be OR'd back in as appropriate.
->  	 */
->  	*nr = 0;
->  	global_ctrl = (*nr)++;
-> @@ -5051,24 +5054,25 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
->  		};
->  	}
->  
-> -	pebs_enable = (*nr)++;
-> -	arr[pebs_enable] = (struct perf_guest_switch_msr){
-> -		.msr = MSR_IA32_PEBS_ENABLE,
-> -		.host = cpuc->pebs_enabled & ~cpuc->intel_ctrl_guest_mask,
-> -		.guest = pebs_mask & ~cpuc->intel_ctrl_host_mask & kvm_pmu->pebs_enable,
-> -	};
-> -
-> -	if (arr[pebs_enable].host) {
-> -		/* Disable guest PEBS if host PEBS is enabled. */
-> -		arr[pebs_enable].guest = 0;
-> -	} else {
-> -		/* Disable guest PEBS thoroughly for cross-mapped PEBS counters. */
-> -		arr[pebs_enable].guest &= ~kvm_pmu->host_cross_mapped_mask;
-> -		arr[global_ctrl].guest &= ~kvm_pmu->host_cross_mapped_mask;
-> -		/* Set hw GLOBAL_CTRL bits for PEBS counter when it runs for guest */
-> -		arr[global_ctrl].guest |= arr[pebs_enable].guest;
-> -	}
-> +	/*
-> +	 * Disable counters where the guest PMC is different than the host PMC
-> +	 * being used on behalf of the guest, as the PEBS record includes
-> +	 * PERF_GLOBAL_STATUS, i.e. the guest will see overflow status for the
-> +	 * wrong counter(s).  Similarly, disallow PEBS in the guest if the host
-> +	 * is using PEBS, to avoid bleeding host state into PEBS records.
-> +	 */
-> +	guest_pebs_mask &= kvm_pmu->pebs_enable & ~kvm_pmu->host_cross_mapped_mask;
-> +	if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
-> +		guest_pebs_mask = 0;
->  
-> +	/*
-> +	 * Do NOT mess with PEBS_ENABLED.  As above, disabling counters via
-> +	 * PERF_GLOBAL_CTRL is sufficient, and loading a stale PEBS_ENABLED,
-> +	 * e.g. on VM-Exit, can put the system in a bad state.  Simply enable
-> +	 * counters in PERF_GLOBAL_CTRL, as perf load PEBS_ENABLED with the
-> +	 * full value, i.e. perf *also* relies on PERF_GLOBAL_CTRL.
-> +	 */
-> +	arr[global_ctrl].guest |= guest_pebs_mask;
-
-I was confused by the earlier comment in the funcion that says it is not
-enough to disable counters but I've realized it's only for the case PEBS
-isolation is not supported by CPU/ucode.
-
-I think it's ok for disabling guest PEBS, but I'm curious if there's a
-case to enable PEBS only in guest and it'd be handled correctly.
-
-Thanks,
-Namhyung
-
->  	return arr;
->  }
->  
-> -- 
-> 2.54.0.rc0.605.g598a273b03-goog
+> will post after -rc1 is tagged.
 > 
+> I like it more. It got substantially cleaner.
+
+I don't have time to look into the details just yet, but my thinking was
+that
+
+a) It would avoid the zap+refault
+
+b) We could reuse the uffd-wp PTE bit + marker to indicate/remember the
+   protection, making it co-exist with NUMA hinting naturally.
+
+b) obviously means that we cannot use uffd-wp and uffd-rwp at the same
+time in the same uffd area. I guess that should be acceptable for the
+use cases we you should have in mind?
+
+But I also haven't taken a closer look at this patch set, whether you
+would already be using a PTE bit somehow (I suspect not :) )
+
+-- 
+Cheers,
+
+David
