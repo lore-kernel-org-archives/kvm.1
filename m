@@ -1,64 +1,64 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B1F378D96
-	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 22:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002D0374E47
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 22:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776379493; cv=none; b=ZLsm64VLq8Zs4HEtS163TfO31XSvun4JA+GBGv9LS84ve7YD+nYhC40Mna/RszLNRSzA/w8ZAqJq0jpLQ3/1OzldV7wqjtRkpGwStv2v9x1ulHaRnwq8Y7A28wah/WtmjCJG+d77e2zLghggC9aae7eryVR39amJ179COrgaBI0=
+	t=1776379531; cv=none; b=uv16vpuqqrVIr943BIDC0Xv+eCJLGFBvBh9ADSpEzgf0+OjHriOmHdReHv3KHVubp5IhPD5yKxQW6AIyuoSPBXA298P2olSTV9N7VsMq1gEdpooG1qR/ZusLcIzCrgTF+DBXgmj9OQxRbxAToZw2jrKCRSS6Y7jent/cFPHsvQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776379493; c=relaxed/simple;
-	bh=QnH1vIimESyZ2peW1iohZ3MwmBA4oBxKLRs7rK4wSqQ=;
+	s=arc-20240116; t=1776379531; c=relaxed/simple;
+	bh=ZdK1a4wtfo6i5zxop3WmUHjbFCExnKakE+Bz0u8FlGs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ggxgkqFzE3B4lND3H3/xoRJ9Rw0U+HQ/q18by+vTa0KfWPOOLqbf9y6RPP/OHxjU/mZ0Znk+1FdgLoK0bTypiBHvRU3hXvpPejSWb9jyVi/wGOJm+5DwBVMH4s9rGLJtCfE4z/UlLafkQI0rjtpn/kVZ+QCDZ+/jRoV4ISC1Xeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VeIywNGF; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=prXPxfhbd2T0Jk9VypfD9ArsCrJrp+ZGFS9Pqcktk5YNZa77JKRPUjaG7LlY1ug2QA8Zzy7xFBoPs6x1uGFfCIpc8PuBxilJrQvu65SHtuROjfoydwl61XdJ2M3v9llW1dBGrwaAHw2vcdlz5fH4Iq5ekJ0Ol47AiguVRh3acIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oD2Q4702; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VeIywNGF"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f07078eaaso65382b3a.0
-        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 15:44:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oD2Q4702"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f5f48458eso40088b3a.3
+        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 15:45:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776379491; x=1776984291; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776379529; x=1776984329; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UqyYEqZgyMpoZKxskZj0QRqQl7ttahHyrPikYOVHCGs=;
-        b=VeIywNGFDT898urzHsB6Lhv0CzlE8C3vn6rrp3ax65KnTTLVOjOmQaJ+bco7wSJcEK
-         Uy2LteuxTCZUjkfGmcCfIm4Fo2uEZTOoWx5DyDzyt9YbtQhMuczlsGBBysKy9fqF8fpu
-         KecMu0Mc4aRkDSV5sL7F5BhQtELHwHFx5LOSL/h6sLPYcGPdO68JwgPnKMwqygpU5OsU
-         wYtHN1iyi0qbTfX9FV81jWlwUJHqQnESeK1b9u3YR1ZmbdLLxZZNcW/3Swyvej0rCDDe
-         9ZQDd3gYL35i9oiaMKBf1YXy9Vm18CoXnTB4wWFJQSeoqAdWfBeUctSDwor4lSHE2cal
-         jfBw==
+        bh=Sx0IUbv8zstyDUBxyHbJwQtyJ++166gxIFGlq89qnlY=;
+        b=oD2Q4702I7BSwNuCN9gviJkqII58feIyTGV4IS4oBltdYOC/Q3A9c1P8TaiAUOrIP3
+         EVJeizfDfbB7UQ+og3yB9nLAcx6e0dP15MgEthMcQHrvROh/YjifaOlUyvIVVeksJ5kz
+         dtl0YZTOBcUBMSlFtQiUXp/PbzMkzwjKMoZTurguZRFRFZgiPxbwnsoCx0Vl2f9/M/5c
+         uzRHU9intoNYo+EKRayFpDEbRLy4NQ6FyiOxeyv+2sAhy+Q1hlHL3GsEEIFnZxJ1+IWb
+         4iGmNUrYWlI2PqKVIB75p+knrafvxc63ueKpIR+XzK/u0gWCk1ciBp9/CM2WymSDF830
+         9XAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776379491; x=1776984291;
+        d=1e100.net; s=20251104; t=1776379529; x=1776984329;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UqyYEqZgyMpoZKxskZj0QRqQl7ttahHyrPikYOVHCGs=;
-        b=kNtiy5BMsn5vlDYK+WQVisWucX0pYiDJ8kgUMUt0M96LzqgyaYCEPRyE0bVg1nyeO7
-         9z9GSnCRl5CGS86ukfuqdTCS/ZhzlVEE0jmJPBkGy2MLkfmpINYV/Er5uvVr+ku3EQnC
-         It2omUIPRuvWqTHIwvkBaSFGZXrWGxboH5xQ7xsKszfSUlfc5bKBDQ6uGJb1YB7yI/1d
-         AJQ4c1Zd7HsgHDFnBkV8Cd21QdzJijIMudF2l/dcMlQIj/qA9/exgjm6JtUJfmhM0tE3
-         es9j1CACjsVXY8GUL84OWvXS5q8PEHIsZ3kxoZ4ZjVbyOaZvx6TPIanzEXzX3bw5FV5w
-         /8nQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9BGA9uZwSmgXd5Ev/5NJaPIlT/vCPb1a737gYyL9m5VULuiZ/ZYo0pNhzjI/a4+QWRZNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk4qrXWJfI6qxKPgjILFNeezkCE+FEpkvXq+QO0triSeph6XYl
-	QdiCqCoz7EkHtriXpaX+7NRHsdRTsfmAwzTN2MLT2INmjx7I9CaGwvKlEWkhBuLFvJB5KJ5pE7D
-	svpI2Qg==
-X-Received: from pfbho13.prod.google.com ([2002:a05:6a00:880d:b0:7ba:8e68:3140])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:439b:b0:82f:8696:5a75
- with SMTP id d2e1a72fcca58-82f8c8bb700mr145981b3a.28.1776379491191; Thu, 16
- Apr 2026 15:44:51 -0700 (PDT)
-Date: Thu, 16 Apr 2026 15:44:49 -0700
-In-Reply-To: <20260414-vmscape-bhb-v10-8-efa924abae5f@linux.intel.com>
+        bh=Sx0IUbv8zstyDUBxyHbJwQtyJ++166gxIFGlq89qnlY=;
+        b=bZtZsJIadaoCPxFmFGL3My3pQZj7IhC0SquIiG47k/CqUFbWQlWgC7gt9fUG45vBcf
+         3CBP28HWlM6hx9J8Cf+Yq83BuGDbExOg+OShz4DKDN9qv/sHFPNgWldQTIrcauX0gGd3
+         g8QxkbVuP2aOz+DKt4XhYc6Xq7oRhEyyZ46tCpNE6HcAP6vH4OuIDvPgsj7iNCH58kFZ
+         bT0ta3YufwyGtJe85oqC7NmZ3bIYVxqNT8Df/FChP8IA6G6XIYmCKDcUg/vyN5koRkO7
+         A5nye33DzQoWQeBMh0REZ12xZAN5cYamoreSRJMiSg0/Kjsww9uefpiz0+rkwFlZDnq5
+         vA7Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/SxFD188fTV2zKmJNvrwXx63jEquOYIQVt7KdPNyWF7LgdvEpC8WTANCMhc3iGY0KEDKA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjIAtwgl2hNWYS9Xhq6bzOF8Blj6Or+hndi6+m6FJ9a13X2c33
+	KM0WrYmhDVsdtWzT4cw96t7+ysCTm5fYDuFZMjieU4DKhnAnJy4iGx1evzMdGcCtrqVqw9kfwZS
+	7g2cbLA==
+X-Received: from pfbjw37.prod.google.com ([2002:a05:6a00:92a5:b0:82a:5e62:7b95])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d87:b0:82a:ea3:c172
+ with SMTP id d2e1a72fcca58-82f8c9341f5mr143500b3a.46.1776379529104; Thu, 16
+ Apr 2026 15:45:29 -0700 (PDT)
+Date: Thu, 16 Apr 2026 15:45:27 -0700
+In-Reply-To: <20260414-vmscape-bhb-v10-9-efa924abae5f@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com> <20260414-vmscape-bhb-v10-8-efa924abae5f@linux.intel.com>
-Message-ID: <aeFmYd1ybZnVlAYW@google.com>
-Subject: Re: [PATCH v10 08/12] kvm: Define EXPORT_STATIC_CALL_FOR_KVM()
+References: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com> <20260414-vmscape-bhb-v10-9-efa924abae5f@linux.intel.com>
+Message-ID: <aeFmh8Fz6xzkfQKb@google.com>
+Subject: Re: [PATCH v10 09/12] x86/vmscape: Use static_call() for predictor flush
 From: Sean Christopherson <seanjc@google.com>
 To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
@@ -78,122 +78,34 @@ Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@s
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Apr 14, 2026, Pawan Gupta wrote:
-> EXPORT_SYMBOL_FOR_KVM() exists to export symbols to KVM modules. Static
-> calls need the same treatment when the core kernel defines a static_call
-> that KVM needs access to (e.g. from a VM-exit path).
+> Adding more mitigation options at exit-to-userspace for VMSCAPE would
+> usually require a series of checks to decide which mitigation to use. In
+> this case, the mitigation is done by calling a function, which is decided
+> at boot. So, adding more feature flags and multiple checks can be avoided
+> by using static_call() to the mitigating function.
 > 
-> Define EXPORT_STATIC_CALL_FOR_KVM() as the static_call analogue of
-> EXPORT_SYMBOL_FOR_KVM(). The same three-way logic applies:
+> Replace the flag-based mitigation selector with a static_call(). This also
+> frees the existing X86_FEATURE_IBPB_EXIT_TO_USER.
 > 
->   - KVM_SUB_MODULES defined: export to "kvm," plus all sub-modules
->   - KVM=m, no sub-modules: export to "kvm" only
->   - KVM built-in: no export needed (noop)
-> 
-> As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override the
-> definition (e.g. to suppress the export when kvm.ko itself will not be
-> built despite CONFIG_KVM=m). Add the x86 no-op override in
-> arch/x86/include/asm/kvm_types.h for that case.
-> 
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Tested-by: Jon Kohler <jon@nutanix.com>
 > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 > ---
->  arch/x86/include/asm/kvm_types.h |  1 +
->  include/linux/kvm_types.h        | 13 ++++++++++++-
->  2 files changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_types.h b/arch/x86/include/asm/kvm_types.h
-> index d7c704ed1be9..bceeaed2940e 100644
-> --- a/arch/x86/include/asm/kvm_types.h
-> +++ b/arch/x86/include/asm/kvm_types.h
-> @@ -15,6 +15,7 @@
->   * at least one vendor module is enabled.
->   */
->  #define EXPORT_SYMBOL_FOR_KVM(symbol)
-> +#define EXPORT_STATIC_CALL_FOR_KVM(symbol)
->  #endif
+
+For the KVM change,
+
+Acked-by: Sean Christopherson <seanjc@google.com>
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 45d7cfedc507..5582056b2fa1 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -11463,7 +11463,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  	 * set for the CPU that actually ran the guest, and not the CPU that it
+>  	 * may migrate to.
+>  	 */
+> -	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
+> +	if (static_call_query(vmscape_predictor_flush))
+>  		this_cpu_write(x86_predictor_flush_exit_to_user, true);
 >  
->  #define KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE 40
-> diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-> index a568d8e6f4e8..c81f4fdba625 100644
-> --- a/include/linux/kvm_types.h
-> +++ b/include/linux/kvm_types.h
-> @@ -13,6 +13,8 @@
->  	EXPORT_SYMBOL_FOR_MODULES(symbol, __stringify(KVM_SUB_MODULES))
->  #define EXPORT_SYMBOL_FOR_KVM(symbol) \
->  	EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
-> +#define EXPORT_STATIC_CALL_FOR_KVM(symbol) \
-> +	EXPORT_STATIC_CALL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
->  #else
->  #define EXPORT_SYMBOL_FOR_KVM_INTERNAL(symbol)
->  /*
-> @@ -27,7 +29,16 @@
->  #define EXPORT_SYMBOL_FOR_KVM(symbol)
->  #endif /* IS_MODULE(CONFIG_KVM) */
->  #endif /* EXPORT_SYMBOL_FOR_KVM */
-> -#endif
-> +
-> +#ifndef EXPORT_STATIC_CALL_FOR_KVM
-> +#if IS_MODULE(CONFIG_KVM)
-> +#define EXPORT_STATIC_CALL_FOR_KVM(symbol) EXPORT_STATIC_CALL_FOR_MODULES(symbol, "kvm")
-> +#else
-> +#define EXPORT_STATIC_CALL_FOR_KVM(symbol)
-> +#endif /* IS_MODULE(CONFIG_KVM) */
-> +#endif /* EXPORT_STATIC_CALL_FOR_KVM */
-> +
-> +#endif /* KVM_SUB_MODULES */
-
-I think I'd prefer to require EXPORT_SYMBOL_FOR_KVM and EXPORT_STATIC_CALL_FOR_KVM
-to come as a pair from arch code.  I can't think of a scenario where arch code
-should override one but not the other.  The end result is slightly less ugly :-)
-
----
- arch/x86/include/asm/kvm_types.h |  1 +
- include/linux/kvm_types.h        | 10 +++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/kvm_types.h b/arch/x86/include/asm/kvm_types.h
-index d7c704ed1be9..bceeaed2940e 100644
---- a/arch/x86/include/asm/kvm_types.h
-+++ b/arch/x86/include/asm/kvm_types.h
-@@ -15,6 +15,7 @@
-  * at least one vendor module is enabled.
-  */
- #define EXPORT_SYMBOL_FOR_KVM(symbol)
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol)
- #endif
- 
- #define KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE 40
-diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-index a568d8e6f4e8..be602d3f287e 100644
---- a/include/linux/kvm_types.h
-+++ b/include/linux/kvm_types.h
-@@ -13,6 +13,8 @@
- 	EXPORT_SYMBOL_FOR_MODULES(symbol, __stringify(KVM_SUB_MODULES))
- #define EXPORT_SYMBOL_FOR_KVM(symbol) \
- 	EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol) \
-+	EXPORT_STATIC_CALL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
- #else
- #define EXPORT_SYMBOL_FOR_KVM_INTERNAL(symbol)
- /*
-@@ -23,11 +25,17 @@
- #ifndef EXPORT_SYMBOL_FOR_KVM
- #if IS_MODULE(CONFIG_KVM)
- #define EXPORT_SYMBOL_FOR_KVM(symbol) EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm")
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol) EXPORT_STATIC_CALL_FOR_MODULES(symbol, "kvm")
- #else
- #define EXPORT_SYMBOL_FOR_KVM(symbol)
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol)
- #endif /* IS_MODULE(CONFIG_KVM) */
-+#else
-+#ifndef EXPORT_STATIC_CALL_FOR_KVM
-+#error Must #define EXPORT_STATIC_CALL_FOR_KVM if #defining EXPORT_SYMBOL_FOR_KVM
-+#endif
- #endif /* EXPORT_SYMBOL_FOR_KVM */
--#endif
-+#endif /* KVM_SUB_MODULES */
- 
- #ifndef __ASSEMBLER__
- 
-
-base-commit: 56b7ace84970ff647b095849e80bc36c094760aa
---
+>  	/*
