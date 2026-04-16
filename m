@@ -1,204 +1,155 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E0C2DEA6E;
-	Thu, 16 Apr 2026 22:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983683191BD;
+	Thu, 16 Apr 2026 22:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776377770; cv=none; b=r9WRxVKqH4hBF0vE1idSvg413oPLYWVR+otwp3VmogtaLPAIlA579wqnb5JZ63JBb9f5ijVeIwwnx/sxy4mKbiSQ/Hnh/z9ICO57Aj7Yo7zqJWOq1mw1R3KbGBCVTOTkgvK5N7/jvDEihfZE7uzHLfDLkkMxk3FjB69WLsAJfLk=
+	t=1776379455; cv=none; b=fRT+m1RyVm58pizzlh2Oy0OaI7vCPnBS8yhP2NRr6pDHCN+bgwAv+g+78BvBrDpBJqjQpaFeH5fsDrLAN5dNBgu/vCuIagNmtgbae77ttXvbYtzgc8luDtKW4qp58ulfM5e4VFNSNdODtAgPoFwBQc2pWRDQlz3n+7ALReHcBxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776377770; c=relaxed/simple;
-	bh=V8ec0TpsIUgqsbX+KSePjrEUrQK13ZrEMxo9eEDXamg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IDN0tRFGanttN20yUuG0sdsEGP7cEwllATWsxj4wYRLR3Uwslmk6K98nYzKOuxdGOWJ/TEsUWo1DGwsWSFAX8aZzJY5cXBkSp7kXUVIHgdNHtlWKPbcrzkunAldaEkz8ynOveVlg+vVVE9uamUKDtAJnx7SJxSbMxQ2h4379UVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=AqBWiK7j; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1776379455; c=relaxed/simple;
+	bh=j2SsrKwHx1PlDFiTIav3oazP14sDhn6ZApe2Ilkm+Qk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SucecU1/aGFXFOh/OglcI9aPs0qMu2vN71H4EMf1N2eMq4a3Emze4VCfL8J4a3qDlFUj9C6bktTVGO1UHiQMjJQ3yc+W5D2phmIFQ/Byz2u+wo+C9QVycHiMO+XBQCO2TkLEkwKxPqeJzklHSgG3PAGut7uwR6mpC0fUnP1GaMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=HhgnRCy1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JYT1CsFh; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="AqBWiK7j"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 616BB244C;
-	Thu, 16 Apr 2026 15:16:03 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FFBD3F7B4;
-	Thu, 16 Apr 2026 15:16:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776377769; bh=V8ec0TpsIUgqsbX+KSePjrEUrQK13ZrEMxo9eEDXamg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AqBWiK7jYMpMWOTFv77VS5U+6k5kJHBT6GdTe//HY5cihe9/pVBCJsGAWC2ycvJDN
-	 R5AUaYZ+2H2I0EbLDIes8OGryXdeEoeg20yuOd/mZN8HzB9Q1K7B1Z06u3olwzbv1H
-	 wsguujqQW5AGTmGsyl1/98eCNv6IiHcU5PzZtwxc=
-Date: Thu, 16 Apr 2026 23:15:57 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v2 2/4] KVM: arm64: sefltests: Add helpers for guest
- hypervisors
-Message-ID: <2grav6nkabbab3e4gm4vtca63kqrpaegq4xqlhdhwc4l32v65i@x5ksiimtk4er>
-References: <20260412142216.3806482-1-weilin.chang@arm.com>
- <20260412142216.3806482-3-weilin.chang@arm.com>
- <ad68VjnGQ3trs7AN@sm-arm-grace07>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="HhgnRCy1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JYT1CsFh"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 32EEE7A0256;
+	Thu, 16 Apr 2026 18:44:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 16 Apr 2026 18:44:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776379449;
+	 x=1776465849; bh=+4+ocCvoeYhWO4RzU4Nm3ZoHgVf0pZuK3DortIW2CKo=; b=
+	HhgnRCy1WuVQcusHdDhE7few+0xNjlHmBsIxrbYhuGMhb0238PJM3qEi9K0FPG7K
+	3ptKxhENkfYEmo6ZyZux0/sEvsWBLWufnX5u19mfvjtyM2ZW8SP/C9BEdSzFdRS3
+	wG6WKNjXQxA6ssk+34/vhTfeBtHVQTgPHhwYwy3jkGmBsmiSHn0vfhxg5a2arZlv
+	TffsJmUMGQKLwiXvpu/cS2XEwGAF30iEEdoOzeUggULpLtDmXJua+xn+7UgMK3F2
+	Vv26cTWk6GMUdF9eNDW8LHnKqb9eDehL28/GW1w73Z0X9HMcKd1Stz578rfB5clB
+	Sr893vaz0WfTS4PH5IKsEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776379449; x=
+	1776465849; bh=+4+ocCvoeYhWO4RzU4Nm3ZoHgVf0pZuK3DortIW2CKo=; b=J
+	YT1CsFh5zI2TKxT8+C8QxctR4tUVFEnLhIndnWEkyWpFg69znQMH622ijsDKN4lu
+	P8iyRn5vCw1MfrCLNTxtywSxKktc3CjqgjgS6MQd2UBef2q+UH0KDT4n1amn209t
+	Ad4Ilyhb6v3GobElri+Hqpkap4f24QPWOPdJ/fVMjX+zJExJKGGdrHvUj0VThF9G
+	gf3zWjb/nYG72lzTl1u85l5epqTNMJRuNn7BOsy063BBt6d/+TWhV36yuYvsMKeB
+	Prdkpq0Ahhkd2yD0Mfs6bonx5YPR/ujO9zCDut3YP1qNVIgqzoJi4Gj/Lp0RB9Uc
+	zzK/0gVAocj0MUilhqNww==
+X-ME-Sender: <xms:OGbhaStC4DV0und_riSZ5-p6y9YbSv6p54zAf-KaF9rGy6VMqJVOyQ>
+    <xme:OGbhaSKnONjOE_R-A6JiXlGu2otUlY99-cXPvo7aNZ7YKHi7O5s5tQtCuFAHnDTfW
+    kjG-NS7qm7fas5QWXd44KqGqdbTApIjRHabwj2G06n_NfhW5JmJ>
+X-ME-Received: <xmr:OGbhaUZoX5Icq3rfTzGpARLKNBO0HHIGFip6nMc5uHjg10LKDQknZdAeefU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegkedvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
+    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopedukedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtth
+    hopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesiihivghp
+    vgdrtggrpdhrtghpthhtohephihishhhrghihhesnhhvihguihgrrdgtohhmpdhrtghpth
+    htohepshhkohhlohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphhtthhopehk
+    vghvihhnrdhtihgrnhesihhnthgvlhdrtghomhdprhgtphhtthhopegrphhophhplhgvse
+    hnvhhiughirgdrtghomhdprhgtphhtthhopehlvghonheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepvhhivhgvkhdrkhgrshhirhgvugguhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:OGbhaYLl_ntaWte04DOQO7Xa3xQ1maGJZYVucQrgmyUIJL5xupgRUQ>
+    <xmx:OGbhadqjMWhmeUkNStkVCbt3X0pEEtFxASekWh0LhxxrpZlMs1oe-w>
+    <xmx:OGbhaRA3a3GNN3w3yScyIB6ZORBMb0431gKzljYP0AbtHJ7tYUbg1Q>
+    <xmx:OGbhaTeRldz7Cuisj0iP_0raEg3rUPrQEg6yTon_F-idJqn_w-B_bQ>
+    <xmx:OWbhaUUkP2EXTAhJLjSlpmbD5pJxTzysOFJxEnaMo_6m_rKq0X4vw4Ya>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 16 Apr 2026 18:44:07 -0400 (EDT)
+Date: Thu, 16 Apr 2026 16:44:06 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, Alistair
+ Popple <apopple@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Vivek
+ Kasireddy <vivek.kasireddy@intel.com>, Kees Cook <kees@kernel.org>, Zhi
+ Wang <zhiw@nvidia.com>, Peter Xu <peterx@redhat.com>, Alexey Kardashevskiy
+ <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <virtualization@lists.linux.dev>,
+ alex@shazbot.org
+Subject: Re: [PATCH 1/2] vfio/pci: Set up VFIO barmap before creating a
+ DMABUF
+Message-ID: <20260416164406.7fb3bb0b@shazbot.org>
+In-Reply-To: <20260415181423.1008458-1-mattev@meta.com>
+References: <20260415181423.1008458-1-mattev@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad68VjnGQ3trs7AN@sm-arm-grace07>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 15, 2026 at 07:14:46AM +0900, Itaru Kitayama wrote:
-> On Sun, Apr 12, 2026 at 03:22:14PM +0100, Wei-Lin Chang wrote:
-> > Add helpers so that guest hypervisors can run nested guests. SP_EL1
-> > save/restore is added to allow nested guests to use a stack.
-> > 
-> > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
-> > ---
-> >  .../selftests/kvm/include/arm64/nested.h      | 17 +++++++
-> >  tools/testing/selftests/kvm/lib/arm64/entry.S |  5 ++
-> >  .../testing/selftests/kvm/lib/arm64/nested.c  | 46 +++++++++++++++++++
-> >  3 files changed, 68 insertions(+)
-> > 
-> > diff --git a/tools/testing/selftests/kvm/include/arm64/nested.h b/tools/testing/selftests/kvm/include/arm64/nested.h
-> > index 86d931facacb..7928ef89494a 100644
-> > --- a/tools/testing/selftests/kvm/include/arm64/nested.h
-> > +++ b/tools/testing/selftests/kvm/include/arm64/nested.h
-> > @@ -21,8 +21,17 @@
-> >  
-> >  extern char hyp_vectors[];
-> >  
-> > +enum vcpu_sysreg {
-> > +	__INVALID_SYSREG__,   /* 0 is reserved as an invalid value */
-> > +
-> > +	SP_EL1,
-> > +
-> > +	NR_SYS_REGS
-> > +};
-> > +
-> >  struct cpu_context {
-> >  	struct user_pt_regs regs;	/* sp = sp_el0 */
-> > +	u64 sys_regs[NR_SYS_REGS];
-> >  };
-> >  
-> >  struct vcpu {
-> > @@ -37,9 +46,17 @@ struct hyp_data {
-> >  	struct cpu_context hyp_context;
-> >  };
+On Wed, 15 Apr 2026 11:14:22 -0700
+Matt Evans <mattev@meta.com> wrote:
+
+> A DMABUF exports access to BAR resources which need to be requested
+> before the DMABUF is handed out.  Usually the resources are requested
+> when setting up the barmap when the VFIO device fd is mmap()ed, but
+> there's no guarantee that's done before a DMABUF is created.
 > 
-> I am not sure of these structs you introduced only for nested guest feature
-> testing, as the KVM arm64 code they are quite complex and involved, 
-> extracring part of those and add members as hello_nested or simliar
-> tests evolve, then add test cases to me seems fragile. 
-> But if you have strong reason to add these would you mind explaining a bit?
-
-Sorry, I don't quite get all of your points. I understand your argument
-being evolving these structs as time goes is fragile. For this didn't
-KVM itself evolve like this?
-
-As for having these structs, how can we make L1 a small hypervisor
-without them?
-
-Thanks,
-Wei-Lin Chang
-
+> Set up the barmap (and so request resources) in the DMABUF-creation
+> path.
 > 
-> Thanks,
-> Itaru.
+> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
+> Signed-off-by: Matt Evans <mattev@meta.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> >  
-> > +void prepare_hyp(void);
-> > +void init_vcpu(struct vcpu *vcpu, vm_paddr_t l2_pc, vm_paddr_t l2_stack_top);
-> > +int run_l2(struct vcpu *vcpu, struct hyp_data *hyp_data);
-> > +
-> > +void do_hvc(void);
-> >  u64 __guest_enter(struct vcpu *vcpu, struct cpu_context *hyp_context);
-> >  void __hyp_exception(u64 type);
-> >  
-> > +void __sysreg_save_el1_state(struct cpu_context *ctxt);
-> > +void __sysreg_restore_el1_state(struct cpu_context *ctxt);
-> > +
-> >  #endif /* !__ASSEMBLER__ */
-> >  
-> >  #endif /* SELFTEST_KVM_NESTED_H */
-> > diff --git a/tools/testing/selftests/kvm/lib/arm64/entry.S b/tools/testing/selftests/kvm/lib/arm64/entry.S
-> > index 33bedf5e7fb2..df3af3463c6c 100644
-> > --- a/tools/testing/selftests/kvm/lib/arm64/entry.S
-> > +++ b/tools/testing/selftests/kvm/lib/arm64/entry.S
-> > @@ -3,6 +3,11 @@
-> >   * adapted from arch/arm64/kvm/hyp/entry.S
-> >   */
-> >  
-> > + .globl do_hvc
-> > + do_hvc:
-> > +	hvc	#0
-> > +	ret
-> > +
-> >  /*
-> >   * Manually define these for now
-> >   */
-> > diff --git a/tools/testing/selftests/kvm/lib/arm64/nested.c b/tools/testing/selftests/kvm/lib/arm64/nested.c
-> > index 06ddaab2436f..b30d20b101c4 100644
-> > --- a/tools/testing/selftests/kvm/lib/arm64/nested.c
-> > +++ b/tools/testing/selftests/kvm/lib/arm64/nested.c
-> > @@ -4,7 +4,53 @@
-> >   */
-> >  
-> >  #include "nested.h"
-> > +#include "processor.h"
-> >  #include "test_util.h"
-> > +#include <asm/sysreg.h>
-> > +
-> > +void prepare_hyp(void)
-> > +{
-> > +	write_sysreg(HCR_EL2_E2H | HCR_EL2_RW, hcr_el2);
-> > +	write_sysreg(hyp_vectors, vbar_el2);
-> > +	isb();
-> > +}
-> > +
-> > +void init_vcpu(struct vcpu *vcpu, vm_paddr_t l2_pc, vm_paddr_t l2_stack_top)
-> > +{
-> > +	memset(vcpu, 0, sizeof(*vcpu));
-> > +	vcpu->context.regs.pc = l2_pc;
-> > +	vcpu->context.regs.pstate = PSR_MODE_EL1h | PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT;
-> > +	vcpu->context.sys_regs[SP_EL1] = l2_stack_top;
-> > +}
-> > +
-> > +void __sysreg_save_el1_state(struct cpu_context *ctxt)
-> > +{
-> > +	ctxt->sys_regs[SP_EL1] = read_sysreg(sp_el1);
-> > +}
-> > +
-> > +void __sysreg_restore_el1_state(struct cpu_context *ctxt)
-> > +{
-> > +	write_sysreg(ctxt->sys_regs[SP_EL1], sp_el1);
-> > +}
-> > +
-> > +int run_l2(struct vcpu *vcpu, struct hyp_data *hyp_data)
-> > +{
-> > +	u64 ret;
-> > +
-> > +	__sysreg_restore_el1_state(&vcpu->context);
-> > +
-> > +	write_sysreg(vcpu->context.regs.pstate, spsr_el2);
-> > +	write_sysreg(vcpu->context.regs.pc, elr_el2);
-> > +
-> > +	ret =  __guest_enter(vcpu, &hyp_data->hyp_context);
-> > +
-> > +	vcpu->context.regs.pc = read_sysreg(elr_el2);
-> > +	vcpu->context.regs.pstate = read_sysreg(spsr_el2);
-> > +
-> > +	__sysreg_save_el1_state(&vcpu->context);
-> > +
-> > +	return ret;
-> > +}
-> >  
-> >  void __hyp_exception(u64 type)
-> >  {
-> > -- 
-> > 2.43.0
-> > 
+> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> index 4ccaf3531e02..fefe7cf4256b 100644
+> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> @@ -272,6 +272,15 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+>  		goto err_free_priv;
+>  	}
+>  
+> +	/*
+> +	 * See comment in vfio_pci_core_mmap(); ensure PCI regions
+> +	 * were requested before returning DMABUFs that reference
+> +	 * them.  Barmap setup does this:
+> +	 */
+> +	ret = vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index);
+> +	if (ret)
+> +		goto err_free_phys;
+> +
+>  	priv->vdev = vdev;
+>  	priv->nr_ranges = get_dma_buf.nr_ranges;
+>  	priv->size = length;
+
+Wouldn't this get a lot easier if we just setup all the barmaps in
+vfio_pci_core_enable(), conditional on pci_resource_len() just like we
+use to filter in REGION_INFO?
+
+I don't recall if there's some reason we've avoid this so far, maybe
+others can shout it out if they do.
+
+We already tear them all down in vfio_pci_core_disable().  It would be
+a small patch to add that, which we would mark as Fixes:, then a small
+follow-up on top of that that removes any then redundant or unnecessary
+callers (all of them).  Thoughts?  Thanks,
+
+Alex
+
+BTW, cover letters are appreciated for multi-part series.
