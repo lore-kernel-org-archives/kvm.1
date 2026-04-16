@@ -1,144 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0213D3338
-	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 13:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D0E1EB9E3;
+	Thu, 16 Apr 2026 15:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776347364; cv=none; b=bDslN/RGLikzFatB6XkDIMrs0P45/241Tk9T4e8JG4Q2knGY6wxUXQfrywlfC1ttr4DOu7vZ245zf5rqIEx1+wEgDdrfDZmUApiJ/POIx31ICcSo/gOfqPV1n+GX/KIRfn85E6TpnXWRkngx6PlyDUy7tY0yJYwCsmtnQG/oQ9o=
+	t=1776352773; cv=none; b=L8AtUe/oumpEqBvspkV0hc2WhIkyGvRKaryHTtxg52AQNhK+U8is6cB3dByqzoc2uWlc3fAH8eTY+2fdw66MPxrUmDwjwRcj4wwkcDObOFsHWriRBlmlrGL2K6p7fySHB+j0km7bXM3f+yU+5jCmkTd5C7f+4jHf4lA34O5rZ0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776347364; c=relaxed/simple;
-	bh=s3RYvsEfI9ZdxhsabL5/svtqvt3W5lr9R3yghTmr/gA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O7aLUMrjCyDNWwaBqvR4YH7afctyod7OpCmDPCPYdoV1lf+skfeYOM47eJANTaTsyfuyZvhN3K7xacj7TvqKkLZ5gR3jrCplioKhOE3gzXnGnC3R1N6/pZDfCD4ASaOgWOETr7OuK+PF82PHbE1s4TEhkP74j0LIVIFgpV6+dJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqlOLz/H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776352773; c=relaxed/simple;
+	bh=SQGLVm8+gwSOrgHOnztkAy3QZn6FCqS4QKL2GjnDUUk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=fVL2Bb/xMZKWdNDU8P/0sNAZbncWJq8tNnwzZi2ely/KQ1dLgEc1AxpUWxFsKuN2UxeUco7jiydh+V69YU6ygKiAETGCwIDTrO6PyvDDZAG+G8QJOPxUTw9jItwIW0iKPa/qE9ZUW7l5LmBvkpCsBk8Wwbc9aNge8NMsyy58wTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grzRA+ry; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqlOLz/H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6DFC2BCAF;
-	Thu, 16 Apr 2026 13:49:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grzRA+ry"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6F4C2BCAF;
+	Thu, 16 Apr 2026 15:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776347363;
-	bh=s3RYvsEfI9ZdxhsabL5/svtqvt3W5lr9R3yghTmr/gA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AqlOLz/HXz7hqXJps/IG3FaK45yw4Z0YqpDgxczLEUlMgLP/IaXrmJbUuoShfRQLv
-	 vftvKRCapRZ2NnHiAPar2EyWyd1TLgt1Ko3HP26W9UXE3KJe6nOTTqAu5ayiqwWDuc
-	 XpRqOEFJHtFkpoOhcRVFGqeTGm9UPhn1W3sRBs3gJTk8qtriK2XhdZZeKMO8eAnMRX
-	 RrWZK4z6KQSDAFWR9ri0eyK6s9sh+oS1BWmgHMXfV+x8F0JKGr4LT1pzYeU6dSS+QX
-	 NTH+dc5QJnfsEaf5J7JTMdMnLxrBMEYV49XhLFbHvE6l6N4y5OIU6WW/oMpYggnVxf
-	 X/zDR59vHkmWA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 10D1DF4006A;
-	Thu, 16 Apr 2026 09:49:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 16 Apr 2026 09:49:22 -0400
-X-ME-Sender: <xms:4ejgaSIYoDKvzxgPhCYw9DPRyWu3jwC0TpDUBp2Y_WPBEvYW4NkgmQ>
-    <xme:4ejgaZZzLX6dOeyn967dwC6gkgLyv9vcgNA6uPCwoD_vHRVb7RcfCwDmoAjJ9YVqE
-    08pcZZq3c1LOn1mJr8ufEayJfWseVOwMDmPX8U7mXRxDeX49F70Dak>
-X-ME-Received: <xmr:4ejgae6P2292B6joISlFkUr1uSQIblLQ826adWwScn_jixogzy7A9WlfZMDvEA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjeduiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepgeehudelheevjefftdeuheegudfhieeutdegjedukeefffeugeevvefhteejuefh
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
-    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeef
-    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
-    ghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplh
-    hjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvh
-    gsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvght
-    thesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:4ejgaSJVJZNJGoZKWD6T5M5NCXLkDUW8HAqvk7UxjtI2XNWxSUR8Nw>
-    <xmx:4ujgacZ3_iV3ApOrNQMeV55o3dk_kAFG7wtgo-r3D52O-xdB1xB3sg>
-    <xmx:4ujgaSwCvAmjEpSOSI1Euf8uiFljZZ1F2wZxHEPu8tpaRo64t5cn4w>
-    <xmx:4ujgaQV7QWSdaLPXVIHy_TozBtgAeyudvkqy14pgSHWIZEzajtLLfQ>
-    <xmx:4ujgaeYmb7YFAUc8ewO2iFBH8S_30cSSVTvrTPJ_T_QqPAxdKtfbGI7L>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 09:49:20 -0400 (EDT)
-Date: Thu, 16 Apr 2026 14:49:14 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <aeDoqFWPFxkkNB26@thinkstation>
-References: <20260414142354.1465950-1-kas@kernel.org>
- <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
- <ad50rPOseVa-SP_s@thinkstation>
+	s=k20201202; t=1776352773;
+	bh=SQGLVm8+gwSOrgHOnztkAy3QZn6FCqS4QKL2GjnDUUk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=grzRA+ryhchirqv5RftkKe9XLqOgJduUF3rrMorD9QYHOWO4w3TLM2cCoAZI6YltL
+	 ZUhOIav7TzWns9ZBRfrwkKfpS+sr6TSwNNiOLFme22PdkbLFEnpp3/7YlJZSR9pHUP
+	 WSAgaRXkbfUNUHOf8XuqJeFqXpLbD/ykg9CKNUPdFAGU09dXqRik5jy01vnKusmE8Q
+	 fg+gBR5iCk3Zj7ZNQDoJObCnXf+uHja6MG+8/CA4Ip6nTr3SrPu4oOLogm5QO0XGCw
+	 xplcVXbRKfFa4thl6IP8jVtqYnp664mLovzeBtyACuOTn/qAqHX8h8JnA+c4OQiQfo
+	 dVWs6zGf4ViZA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F95380AA63;
+	Thu, 16 Apr 2026 15:19:02 +0000 (UTC)
+Subject: Re: [GIT PULL] VFIO updates for v7.1-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260415214915.35831be1@shazbot.org>
+References: <20260415214915.35831be1@shazbot.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260415214915.35831be1@shazbot.org>
+X-PR-Tracked-Remote: https://github.com/awilliam/linux-vfio.git tags/vfio-v7.1-rc1
+X-PR-Tracked-Commit-Id: 493c7eff3c2ffa94ce3c5e62172948a1e38b491e
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f0bf3eac92b2be5f34b944cb82f1c23db642c7f5
+Message-Id: <177635274142.3274006.11116553090921142707.pr-tracker-bot@kernel.org>
+Date: Thu, 16 Apr 2026 15:19:01 +0000
+To: Alex Williamson <alex@shazbot.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, alex@shazbot.org, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ad50rPOseVa-SP_s@thinkstation>
 
-On Tue, Apr 14, 2026 at 06:10:44PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Apr 14, 2026 at 05:37:50PM +0200, David Hildenbrand (Arm) wrote:
-> > On 4/14/26 16:23, Kiryl Shutsemau (Meta) wrote:
-> > > This series adds userfaultfd support for tracking the working set of
-> > > VM guest memory, enabling VMMs to identify cold pages and evict them
-> > > to tiered or remote storage.
-> > > 
-> > > == Problem ==
-> > > 
-> > > VMMs managing guest memory need to:
-> > > 1. Track which pages are actively used (working set detection)
-> > > 2. Safely evict cold pages to slower storage
-> > > 3. Fetch pages back on demand when accessed again
-> > > 
-> > > For shmem-backed guest memory, working set tracking partially works
-> > > today: MADV_DONTNEED zaps PTEs while pages stay in page cache, and
-> > > re-access auto-resolves from cache. But safe eviction still requires
-> > > synchronous fault interception to prevent data loss races.
-> > > 
-> > > For anonymous guest memory (needed for KSM cross-VM deduplication),
-> > > there is no mechanism at all — clearing a PTE loses the page.
-> > > 
-> > > == Solution ==
-> > > 
-> > > The series introduces a unified userfaultfd interface that works
-> > > across both anonymous and shmem-backed memory:
-> > > 
-> > > UFFD_FEATURE_MINOR_ANON: extends MODE_MINOR registration to anonymous
-> > > private memory. Uses the PROT_NONE hinting mechanism (same as NUMA
-> > > balancing) to make pages inaccessible without freeing them.
-> > 
-> > I would rather tackle this from the other direction: it's another form
-> > of protection (like WP), not really a "minor" mode.
-> > 
-> > Could we add a UFFDIO_REGISTER_MODE_RWP (or however we would call it)
-> > and support it for anon+shmem, avoiding the zapping for shmem completely?
-> 
-> I like this idea.
-> 
-> It should be functionally equivalent, but your interface idea fits
-> better with the rest.
-> 
-> Thanks! Will give it a try.
+The pull request you sent on Wed, 15 Apr 2026 21:49:15 -0600:
 
-Here is an updated version:
+> https://github.com/awilliam/linux-vfio.git tags/vfio-v7.1-rc1
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/log/?h=uffd/rfc-v2
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f0bf3eac92b2be5f34b944cb82f1c23db642c7f5
 
-will post after -rc1 is tagged.
-
-I like it more. It got substantially cleaner.
+Thank you!
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
