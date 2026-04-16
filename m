@@ -1,95 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E5D283C93;
-	Thu, 16 Apr 2026 23:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFA9383C64
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 23:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776381170; cv=none; b=h6raE/hUlsn7BNvfMMrWlYZlGEAu7g4A29j5SbFzZGSrqR3cwza5umbKcAnSEsWi6h4EhV2hMbAxFWj7FMyCYNmlVAQrwZtAjJL/zrZL9q8uW+rZbNjDUMbu0OscDGRg1m/oj8Vr+LpR7cxbNxtaMWcauEZDzo3hG9RWsOtxJJg=
+	t=1776381820; cv=none; b=cfInzzVXtElYSiow9cZVLjrkWQsMAw6SnEeGGPCCPt+ppzsSL9KrJYi7SwsngY46sbLfOoYeMyKqtpYRP9xwDP+mFF9dBZeNFvmElYE5NIGZZd96Nnx4Aw+gH4kw7CbH07OSZLxGtnHzQ/4v3IMb7ACQl4sy64spu2x88AHx0ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776381170; c=relaxed/simple;
-	bh=mktI0GL8Ho68lYkNQM7lPXFpO5gRK+biY2qAS/eva+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dzTsiE6a4X+YbOFZLm4HrkDsPqXEtatJMQlnnjGVpRCZ2UgUZNibNv9DOqmFywUn9fcmZDNGA2EWe4STw+AWVzrgxh1hxkQxyZXrC2zwbwHt7GWzRDc1eba/jSfNyHf4Fu59XY6J1g+C/WdhDq9fI/fJOlpea/Wrg3mRc84bYqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nUJ4lY8H; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776381820; c=relaxed/simple;
+	bh=XTF/Ml6zPKPfWMAwzbKlF2sbnfQKo9ci51FH3JVrn/w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pQZuGXapaeescVevL8dOlix0X5/vzjfFaXoQUq7nQcCnDfIZ8i4nTQroR/z5uvxwwBlxhxBS1iyWkPjn0PnTmUVpPTUN/Kl56r7HbWnUDXbdLlB/evAx6Oiwa7Za5BZdJR0GPtM6KAjV3/PWp28xCP42LnJGTn+loaAuwvuyMh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cPMU6WdC; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nUJ4lY8H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776381168; x=1807917168;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mktI0GL8Ho68lYkNQM7lPXFpO5gRK+biY2qAS/eva+4=;
-  b=nUJ4lY8Hk+tEuKIJe0nx+qM0bwGYoEJqstbiL4wP3T/vpci42QQK55ik
-   xtvzLvKKjiJM+7ftv00TYo9OfITvkbRkC9+QLLf+wEcypt0O7tK6rGUeW
-   xi5iQ0Vg/JanfuPnIMjgz2fKeUJ4bc9wg9xZ6HKqFWnY76tl4mfWOb9Ys
-   ujZvKeoyC2iygrnAONnAxqCE99w2+vUAczylkHuBfcUTB9A2E8FsJ1f68
-   jU/PPWQBlovC8MQIwaMkmaCZMndqqOYNHoGEP5ol9D3Gew4Ks8X51HhKt
-   4Xzszl1n0yjo+D9KInWdFkv4j3exF47YodDeeRODgSXxZrKEiS6+DXcp0
-   g==;
-X-CSE-ConnectionGUID: egg2riftSl+kccWvlUQJ2A==
-X-CSE-MsgGUID: 0Cy0D3nwTG2mGKWUFGHttA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="77302291"
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="77302291"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 16:12:47 -0700
-X-CSE-ConnectionGUID: MPoatUXlRk+kaBEhXwEhrQ==
-X-CSE-MsgGUID: r3QQ+mJlQkCflmgz+x26mA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="231123970"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 16:12:47 -0700
-Date: Thu, 16 Apr 2026 16:12:34 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 08/12] kvm: Define EXPORT_STATIC_CALL_FOR_KVM()
-Message-ID: <20260416231234.g6buu3rm2swih35z@desk>
-References: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com>
- <20260414-vmscape-bhb-v10-8-efa924abae5f@linux.intel.com>
- <aeFmYd1ybZnVlAYW@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cPMU6WdC"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82d40278103so70990b3a.2
+        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 16:23:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776381818; x=1776986618; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fcXVDSVlIDOLEOAoYc9j/aTZ1nVJQKX8oOKennXvDpE=;
+        b=cPMU6WdCRW33DdZt0pY1lre09BjuRg2Ql0DlVUa+Pp5aC0NitSBmZbImZWTtr2mtZV
+         3np5gYA3N3ipCuJbpwiZ9s2Kz1okQi0H/NWx/DQcnvwcZyyiL0Cz6rXi8ICVeY1HDBv/
+         m2+eqvBijVV8f9DIq0DjEAtAoZZ4BajXcC9MgV9YqwaBUzvuXdzU6DUuz2CU61dzqwUy
+         lHZDP7e7BJFHFkiF+lyaHbAR+/8E09aoae4JfBIoG9+N77mg14lc6HhqwWJ4WxChGCfb
+         YhrN5UEuofmi2z8r8/xTxzE+ayg3k+1JKXSGgzq4gysPaAt1BlAHI1llPdoPRkfnZ4RB
+         qVqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776381818; x=1776986618;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fcXVDSVlIDOLEOAoYc9j/aTZ1nVJQKX8oOKennXvDpE=;
+        b=cKra7cIJMWHPy2jeOXVkPBkT4MNDqq/ZWhFkbA2j+kYkMMi9HyC7BQNu/jd6j/qK8U
+         fltVgmPXfh0PRif2y1O2Uor+maufgIrir1MEpHsYkEJ0A0bWt+0RkaGlQk93YXS9XoVe
+         iK6gxRI/1UFJs3AJ1a+s3x4JIC9oM3xqSPGPCgcWfz6v+LyWByt7tegr8tzVmenH4T8n
+         +BOZsuCgd5AiiZjM+NFtN3UJZHfBGLBfqnWu7IFOq1syudI7KMOEo1/onBLiufO16oAY
+         Tv0GMlKQjx2rfOm3Fk6v0tQgz8ANzOin9FKp/Iat9Z7HmK8MsiyTjwJz8OnV2v58yYk6
+         AR6A==
+X-Gm-Message-State: AOJu0Yzz/BtDDijwC78PTJ0rXAsfPyH9GSzL+R/Y498SwKb6pPPBSm8i
+	hoHaArX6ffWxXKLC4m+8YzIilkV+49UNegxIF1x9vvtQT6FQtinaNP6Jg015dHF/+ot/073tAr5
+	UEDgPrg==
+X-Received: from pfbg11.prod.google.com ([2002:a05:6a00:ae0b:b0:82c:989e:71f6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2c94:b0:82f:656b:afe8
+ with SMTP id d2e1a72fcca58-82f8c86db35mr223189b3a.20.1776381817575; Thu, 16
+ Apr 2026 16:23:37 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 16 Apr 2026 16:23:22 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeFmYd1ybZnVlAYW@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260416232329.3408497-1-seanjc@google.com>
+Subject: [PATCH v3 0/7] KVM: SEV: Don't advertise unusable VM types
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	John Allen <john.allen@amd.com>
+Cc: kvm@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Tycho Andersen <tycho@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 16, 2026 at 03:44:49PM -0700, Sean Christopherson wrote:
-> I think I'd prefer to require EXPORT_SYMBOL_FOR_KVM and EXPORT_STATIC_CALL_FOR_KVM
-> to come as a pair from arch code.  I can't think of a scenario where arch code
-> should override one but not the other.
+My preference would be to take this through the KVM tree, with acks on the
+crypto patches.  I'd also be a-ok with a stable branch/tag of the crypto
+changes.
 
-Right, will change as you suggested.
+In the words of Tycho:
+
+Recent SEV firmware [1] does not support SEV-ES VMs when SNP is enabled.
+Expose this by revoking VM-types that are not supported by the current
+configurations either from firmware restrictions or ASID configuration.
+
+My previous version of this patch series [2] used SNP_VERIFY_MITIGATION
+to test for a mitigation bit. While AMD-SB-3023 says that there is a
+mitigation bit (3) for CVE-2025-48514, bit 3 corresponds to an unrelated
+issue. The correct way to check for this is to use the SVN/SPL from the
+TCB. We are in the process of updating the SB to reflect this.
+
+v3:
+ - Relocate the supported_vm_types updates to sev_hardware_setup.
+ - Report unusable VM types as such in dmesg.
+
+v2:
+ - https://lore.kernel.org/all/20260324194034.1442133-1-tycho@kernel.org
+ - compare SVN as above
+ - fix commit message prefixes
+ - supported_vm_types local is a u32
+ - move crypto stuff before KVM stuff in the event of patch tetris
+
+[1]: https://www.amd.com/en/resources/product-security/bulletin/amd-sb-3023.html
+[2]: https://lore.kernel.org/all/20260303191509.1565629-1-tycho@kernel.org
+
+Sean Christopherson (3):
+  KVM: SEV: Set supported SEV+ VM types during sev_hardware_setup()
+  KVM: SEV: Consolidate logic for printing state of SEV{,-ES,-SNP}
+    enabling
+  KVM: SEV: Don't advertise support for unusable VM types
+
+Tycho Andersen (4):
+  crypto/ccp: hoist kernel part of SNP_PLATFORM_STATUS
+  crypto/ccp: export firmware supported vm types
+  KVM: SEV: Don't advertise VM types that are disabled by firmware
+  KVM: selftests: Teach sev_*_test about revoking VM types
+
+ arch/x86/kvm/svm/sev.c                        |  40 ++++---
+ drivers/crypto/ccp/sev-dev.c                  | 101 ++++++++++++++++--
+ include/linux/psp-sev.h                       |  37 +++++++
+ .../selftests/kvm/x86/sev_init2_tests.c       |  14 ++-
+ .../selftests/kvm/x86/sev_migrate_tests.c     |   2 +-
+ .../selftests/kvm/x86/sev_smoke_test.c        |   4 +-
+ 6 files changed, 163 insertions(+), 35 deletions(-)
+
+
+base-commit: 6b802031877a995456c528095c41d1948546bf45
+-- 
+2.54.0.rc1.513.gad8abe7a5a-goog
+
