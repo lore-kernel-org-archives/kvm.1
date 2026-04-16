@@ -1,108 +1,122 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947C578F2E;
-	Thu, 16 Apr 2026 07:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5914B25A2DD;
+	Thu, 16 Apr 2026 07:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776325864; cv=none; b=Kxxw84cZ11Z2r44kaFXqAIqiR+KsXHmmlY22HWZkG+iMUqJaEGVtjrhlZh6Y8aeV4Hz22gIUVLQmOyaPJSs+JFj6YrHAGcecCMRLsS07HYIUEDJzpNCqVLFLvKn7UCJrPpA2dvKNevzmYdb7ZhMi93UjX8Surrge2cRZ2Uma/6I=
+	t=1776325967; cv=none; b=QWYts0JjL8XGrcJLTItieJCVS1qXOjhdJZ/RetCzfp/EQZGG2EBI6aEqDEhFALd5oUhghKwY5h1hBhggfV0R5J6VaPd/Yn0kMPKFkqX6RxUzyrvwNwj6Vs2K0J1owHEZzOd7OTcIzLK5I12m76GfKlgRQ5Jm8l00aGn3TEq9tvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776325864; c=relaxed/simple;
-	bh=txtlxy3rwBvjwTQ4Rz6t/0fD4UONZD79bEcwncsEsGE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=i5OsH436b7TaTYqNS0GGX+4b1BHSlXLDxWl/DnQYb/dr6you73AqkHSFJVNxKsMlYfRmy2eYOhU/mLiwmHhnSFynQ5lfysv4iMqhcEaFQLwTu6H3TS64Xv3dEnY/QKVmcA0an8Vv0f0HIa08iTS09VhxKAsejvvSjN/Y936agZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=duXscRbD; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776325967; c=relaxed/simple;
+	bh=3eznngIxB7sBMhkD+RkePITbslHeIIbj318YtTFjwwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pp5OrJuCXp+I4lwM9OLbACX0CIIrCK5ADY4EwccVv2ZbjT7f5YgEx+/Tod664nN59CGpLSZ+3PvBNd7OcqMg0mupV4xG5fykKtBYT2G3JCfK3DY3QT8VIjgsYdB1OHX6r228F6kC3fpWE6H/r7Q38grg4SMTiASXFfXqZ/fdM6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XvXj9MED; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="duXscRbD"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G0RVbk448054;
-	Thu, 16 Apr 2026 07:51:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=txtlxy
-	3rwBvjwTQ4Rz6t/0fD4UONZD79bEcwncsEsGE=; b=duXscRbDp1m3NiKx8RHzj6
-	XUPwCEz1lEQHY3mVtu5HklmjR12dIH9ighDvwrEJLYRfpNseRCHiBQYn6ZluqHyO
-	1XuyqeIN/bEUmpR3dJEzm0J1hSEy2CubJki82c0O7eugH/8I9VIQcF9VThpA0A3J
-	nJmS4Z4a5PQOdtBp8m00XYV8RxASIVdJOb0Hvqmi5EOdLd0KSYFXwyM7TftABzuT
-	XwdV4lP/RGxMU5IalA95wTlF7FXyDMzSFupEfjdI2bJ0wTVINIUmEVk5QW0Or+UT
-	yd9hrFNPPkpf4yM4Qxp6UTS3LndH21Ci4yP94UvKrEvmWSs/OqJEsRZd7slI43IA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89nmb69-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 07:51:02 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G30oJH025629;
-	Thu, 16 Apr 2026 07:51:02 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg2ujsqxb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 07:51:01 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G7ovPn15729112
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 07:50:57 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FDD92004E;
-	Thu, 16 Apr 2026 07:50:57 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 350ED2004B;
-	Thu, 16 Apr 2026 07:50:56 +0000 (GMT)
-Received: from t14-nrb (unknown [9.111.59.166])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Apr 2026 07:50:55 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XvXj9MED"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776325967; x=1807861967;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3eznngIxB7sBMhkD+RkePITbslHeIIbj318YtTFjwwU=;
+  b=XvXj9MEDTVRR+libDi+w9xEzwmpu9nP7twidWwS+hLaTsQEQK8D7F+6Q
+   cxgovWtjUAC+AsrD2NQkx7GQ060D2qfDhUZ2Lv2iu2fuh9Pds04bjWr4g
+   vNpHLREj2HCgu7gSR5wMiWl7xFVnvCF45g+LHXjqiPmZOKBgan7zaWWpn
+   C/ajvH7+eRFGa+yyY7+NaSB28rzPtGGsWo3LxTqmPXFGC7lISsUbh9Wz+
+   xx3gNSg2asRUdaKEEb51hIwLMpL8SMron8qR4g8fTC6qCfZtTSVygZo5+
+   lJgzx6H6JZ6tPjJoOWj8sRZQfOtPP5pvKq3bgAl5EF9POchH2QhiDWN7L
+   w==;
+X-CSE-ConnectionGUID: Awsqv3EgQHuT7nCXnUbDgQ==
+X-CSE-MsgGUID: imk/sQrUQACM1rC8D7aYkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="81199639"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
+   d="scan'208";a="81199639"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 00:52:46 -0700
+X-CSE-ConnectionGUID: J3mB+uQDSjm8yMqW86NbUw==
+X-CSE-MsgGUID: l90HKRPwToSZtaXG5Ah+2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
+   d="scan'208";a="235608328"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa005.jf.intel.com with ESMTP; 16 Apr 2026 00:52:44 -0700
+Date: Thu, 16 Apr 2026 15:30:48 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Dan Williams <djbw@kernel.org>,
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
+	kvm <kvm@vger.kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
+	Alex Williamson <alex.williamson@nvidia.com>
+Subject: Re: [PATCH 1/3] VFIO: take reference to the KVM module
+Message-ID: <aeCQKMbQpeQM2Rk3@yilunxu-OptiPlex-7050>
+References: <20260407180107.1603697-1-pbonzini@redhat.com>
+ <20260407180107.1603697-2-pbonzini@redhat.com>
+ <adf29Rn7q9Db0hxc@google.com>
+ <CABgObfZQ8kcdfiaUyGi6AcZErJztEmcdTcLwo946qtXfUwDM4g@mail.gmail.com>
+ <adkFk3ZN4HJtpLA3@google.com>
+ <69d977c0b367a_6c31a10021@djbw-dev.notmuch>
+ <aeAt4b-QvpcwtRwQ@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Apr 2026 09:50:52 +0200
-Message-Id: <DHUEYN8UX70O.1GM62DLEDMNKZ@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <imbrenda@linux.ibm.com>,
-        <borntraeger@linux.ibm.com>, <nrb@linux.ibm.com>
-Subject: Re: [kvm-unit-tests 4/5] lib: s390x: snippet: Add function to
- create a guest of specific length
-From: "Nico Boehr" <nrb@linux.ibm.com>
-To: "Janosch Frank" <frankja@linux.ibm.com>, <kvm@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260415085145.91197-1-frankja@linux.ibm.com>
- <20260415085145.91197-5-frankja@linux.ibm.com>
-In-Reply-To: <20260415085145.91197-5-frankja@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YAZk5Iwf32v9cfl48FYClZuU6r8tYbId
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA3MiBTYWx0ZWRfX6UxLRQa2uYcD
- yi2OOM3+wpVUxVUHtOwYA7b54KWh5WRzdo+0TgpG1+bdgVL/K/HM7gt4dh21qKN9VwrtzbITyt+
- sV/LDedE0V9K08NkFDxGh9xPECiEa9WWcJ9aZk181OA3CLDsfEtO58qyeL0fvJH0L7o/ZJKKc87
- Qw8V65FdItr4ij+/XHnlrCxKkfWVCiRGaxyHqmY9dipfCdXfhGUQzR43kiFf0S8jrR9ncKs3NQQ
- sBeRVPlTmeSLQJ06yNqLWu+HqpGUr+5cQQ93JlMBaH/1z7GYcdo7tppmrr1UircROOIFTv4QM7r
- dctTLPPXV7AgC6c7VUjV9Vj0vXDVnJ7LK3Q0YZzTiXPs8XqnGRMuNP/g9GJ2BvOBYgSSQW51cWR
- Rc5u7uaEBXeTCICccrhQG0RP5a4qXMa82L8wTicy5y12HwkDdwyuHx/nQzs/z2ejrBQ+hV5zY0k
- wrsquQEJK9TZY3MSDnw==
-X-Proofpoint-ORIG-GUID: YAZk5Iwf32v9cfl48FYClZuU6r8tYbId
-X-Authority-Analysis: v=2.4 cv=FY4HAp+6 c=1 sm=1 tr=0 ts=69e094e6 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=P4jGTtDLmVKjvNjmM4IA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160072
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aeAt4b-QvpcwtRwQ@google.com>
 
-On Wed Apr 15, 2026 at 10:45 AM CEST, Janosch Frank wrote:
-> While 1MB is certainly enough to store the guest code, it's often not
-> enough for memory tests. Let's add a separate function to allow
-> arbitrary guest sizes.
->
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+On Wed, Apr 15, 2026 at 05:31:29PM -0700, Sean Christopherson wrote:
+> On Fri, Apr 10, 2026, Dan Williams wrote:
+> > Sean Christopherson wrote:
+> > > +Dan
+> > 
+> > +Yilun
+> > 
+> > [..]
+> > > I added Dan because the PCI TSM stuff is picking up "struct kvm *kvm" references,
+> > > and I want to head that off too, i.e. have it use the file approach instead of
+> > > whatever it plans on doing (can't tell from the code, because there are no users).
+> > 
+> > The PCI TSM *reference* for 'struct kvm *' will be inherited from
+> > vfio/iommufd. However, the TSM driver needs some context to manipulate
+> 
+> I assume/hope it just need to read "struct kvm" state though?
+> 
+> > the VM. For example, TDX effectively needs:
+> > 
+> >     to_kvm_tdx(kvm)->td.tdr_page
+> > 
+> > ...for operations like TDH.TDI.CREATE that sets up the context for the
+> > privately assigned device.
+> > 
+> > It could follow the example of arch/x86/kvm/mmu/page_track.c and do:
+> > 
+> >     kvm_tdx_tdi_create(struct file *kvm, ...)
+> > 
+> > ...and use file_to_kvm() for that limited helper that does not need to expose
+> > 'struct kvm_tdx' outside of arch/x86/.
+> 
+> Any idea how many assets do you anticipate needing?  E.g. is it just the TDR
+> page, or will TSM need a whole pile of information?
 
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
+kvm_tdx needs to export several infomation for the whole TDX Connect
+to work.
+
+For TSM TDI bind (device secure state transition) part, it only needs
+TDR page PA as the TD identifier for TDX Module.
+
+
+For trusted setup in IOMMU driver, since trusted DMA reuses SEPT as
+trusted IOPT, it needs EPT info - eptp_page_walk_level & ad_enabled to
+setup trusted IOPT accordingly.
+
+Also because of the page table reusing, IOMMU driver also need to
+register a notifier to kvm_tdx for trusted IOTLB flushing on SEPT TLB
+flushing.
+
+Thanks,
+Yilun
