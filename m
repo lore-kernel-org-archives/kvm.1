@@ -1,131 +1,179 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716FA39EF2D
-	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 13:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776344415; cv=pass; b=XgkNPmoWEygvXfjezZ+3sdU3K3UyBvY9xMwPVFCu1rTMVlrIKW4LytzzWznM1PgcA2dMb/DlLWt/WtlVmTQmwk5IIxjUynfDDbB4EA/kTRp2626V15372cMPrJVnQkGFWmeEr7E0VPQVIiojK18Egy7AWdC7QtH98mMGnMYHpw4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776344415; c=relaxed/simple;
-	bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rxKtsaVFDMrWAGIvlRbgJMC+WqmYcDbSkLoVK373dBQzlMUgXyserMWWMbBYBUAb4wiV8JNeyq2nsDvNCEjEQiiPSjdOWSqHhpwz/NWBa/AaF4VA+hHacC+aQKCjo8BJbKxZmOqlngl0+g3rS0TLcyfMBWfJS6dfThPOyALHPnA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YQq63YOe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sIyq4ke5; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BB622A4FC
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 13:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776344736; cv=none; b=PG5nyocFlkS7Mdwf+qDRv2B2yjhnXI+aKXqhhb2s7kxcw0kEzn4K9rXChQN3Bsxwb7aNHxAa/7S9or0EBopBXY7rPbmRJPJsEPx6417xIf+zdbRirnnafAEBS4qJI9/O57GXSDhgxI6UaZx3N/LTJTbtdNjWKjW/BHnKP057svk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776344736; c=relaxed/simple;
+	bh=SCMoLzRRm/am+EPpkcihG51tsn4nZMSuZANwEsceUmE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QUt2Q6jQ38LzKFvqwa0RPUXerUHLLQiNyneB4kRkF9ki/cPB3pHrN1yG5hbVpYxYRlb8O2cBWOojYIT48A6l67Hd0ggPUYjVK6fLMNrwLMhlaegc+yqACvszyGTemZWksrnw/r3uce3Vlp917Ty6ywT8GjQ7UFbaDkiUsyqqatk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=a53n0f48; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YQq63YOe";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sIyq4ke5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776344412;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
-	b=YQq63YOetJ9IxqUerUaFoappDMp09LrlIOzAwWx92WHEPGV8/fvXt4lpAjA8nsakP8lWAm
-	AoUh6Q989ozsgwellqBi4XXxgOZySE/fJrdtX/YtS3u24ijbtcq3DEY8dy0Cl0lSG6pDUg
-	c0mZuRTrY6l4ksu0BpQNJT/17GNhH04=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-Zb2PFkEiMXq_towLDK9w3A-1; Thu, 16 Apr 2026 09:00:07 -0400
-X-MC-Unique: Zb2PFkEiMXq_towLDK9w3A-1
-X-Mimecast-MFC-AGG-ID: Zb2PFkEiMXq_towLDK9w3A_1776344407
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43cfedb10a8so4995776f8f.1
-        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 06:00:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776344407; cv=none;
-        d=google.com; s=arc-20240605;
-        b=G0dpOp5JYeyw1AnqbfIvAjOrCWB8rOZCPjEF/4WcqhEudwaMbO1GyT1eRqPyzclUlf
-         ewmWyXojQAg4KLqlQyzfLTCs3yb0bnJfka59XsxE9dDXPwM+4gX2XXvgtRTB7qElq6/r
-         JDa2P7iPVlU9ARulWgTT7UPq2oAurzoKZu398OzkTrcXeEVnQ8SSyFjwfpcYoCFgbLJq
-         2sBheDzc0hQ9FrzsaGqrOrqnGPjq7wrkdFHogAYJGVLktXl2j3RxIeSJpZpTV+eNT1HI
-         nrxF+WwE4tmm1pjrwko+ENzAopP3WXp6VUyjh/9ACwDWCKJv+OiJkvC3s8dhd2oK8P6O
-         fSDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
-        fh=GQ+AW4wBYDHa0QeDExAvhx01hh0qb2c4MEwzjE6WmNg=;
-        b=i3oXiAKSwduyJs4nV3RFn8ONpye0PK0eoMhQSk1Aflq20MSBt7dUTaHVMSdZg6SY3/
-         CeB2MQXpXmla7JjljkCP6QVmbndwQaiBFQrsiiekdcUMgbGRLOiy7PGfHN3qb0SFyIXh
-         x3Ehfxj+9ecWaNQkoGNgVpHuqS3049NVYyAb0Obr1Eh/NyBzLvIdR0aWTUxCdrmQKnM8
-         3ZiIS7Zh2FSdpCutLA7rX+VdiG/QIAAVwwBOwiSHU3qBpWh6JziE9XMcuR0fbfXeAMbJ
-         Nu4pGCNEoG2DVRgllh5iwLwDHbe3ifhCcGnuCW77+/uKVkJOxG5mAzCaGOm6UDBIXp+3
-         0jDg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776344406; x=1776949206; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
-        b=sIyq4ke5gtq8eQwTdr3jFSL47a4qeBA3wlyho7YHYtFDv5HqyzyCsPRm0+lUNTJjeJ
-         F4dzZ8Ceyn2xyFKgDlXAgPTWHy0ENoWLTECk3ZKF57k3IBx7gr7F5vhUAWcesTqftiR1
-         vnLAgUBzzVSSFvanJuTHEB85A7Uyf1BxN2xPH+dxIwe13QhOgpfA8iLFIMKJvRVhaIZl
-         VYgoPMt5D8Wd/JpmIXoTYw6NuYq/8Zqwo3eLR1ReN6RTGkMO6CO1ymXcMeeGCbwmKzv0
-         SLL6/ktbnOPRKTw+Y0MvgQen/6SX18r0dqN8ncofojlVdJg+DJjDkGv3d7ep6ImUcX9S
-         GSTg==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="a53n0f48"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G98Bxt3364987
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 06:05:33 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=FTTuJ0UV3YsBUN+IlV0raVkqijIy0kyzWGZIIZN1vFc=; b=a53n0f48BW1Q
+	26ExwsS57p42+B27uocKfzZgL4tRNDCCprMOty6celB2WogGLAlaMy4HcIxBlG6r
+	ziWtO3YCW2barioHwpaED1ZMCGChydSN45JwilJd/15Fl5eC/HkUEK0lOombNtH6
+	EIHm5CDMOSTZNfB9tQCQoI5J858zSm/9hVuytYpqWHHA97mfeG8ERop9Q80rtEId
+	JldktzeAI1uqjz9G7THaMlvcsC27bENRCS++p2JhUImv4A0S5slnFfFwecNKqKXo
+	W04ttJezg7dpWe6+OGF5e+Qw655RuFMc0yHfiuuFTLCqrYIsTt2Ndc75w3eXqXLV
+	YITjltYLaw==
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dh84v1w1h-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 06:05:33 -0700 (PDT)
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-488c2a4e257so51814415e9.3
+        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 06:05:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776344406; x=1776949206;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0m2xx2jA5Q16sLQ4TDh35Sw3p9QLy9ti+hc/1dTrKUU=;
-        b=pZSTihP94yXg5i4rQQ7VXpTTGbagtIbrRXNzRljp19ZBO2AdRPPqAnKHL5tdWxzS5N
-         LMK5lUVA9WvQT07zgBaU/gHWv7wFwqEGT/QHFMJeLrUBz82t0CGVdAKXzSLnWUbYcnnQ
-         g2bACcmosJulYphAv51JIzTVh5rjl950QeCj7VQYDfl+t6/CoAV8XR8BumoM+j+NkpwC
-         TxF1EmCwyreRzcINkG5oxqntqtWHKoKH+5jn3AqcmohzKhEMz4eC2i4trRQJYwB1Svac
-         E2EA0Tj0KDcwiYspiBvBNvbEmk8aqbs8yvz3gvkFZEffqY1OM5bLILxqGWi0l2cfA7w3
-         p/ZA==
-X-Gm-Message-State: AOJu0Yy87/icOYloNZvK1shjonaOcDwACTTLef7fpLx4N+ZKJvuIVoxV
-	oPwLJZKPb/7+Vld5PV9VC7Za2f0uwfQ12A5oVDZ9BmsNRIO3aHH55qxcpdqtDsHQ7OnN8Gh+sTy
-	ApfJtEmwFteSRtk87CBZlSuLXUoI9PldSv9saPXFJgzDxiwkMnhulo96++FJuqoXUdQo2hHMxlz
-	JxNdqSR5yHVVoSuuBVuzBuG6mZeTTH
-X-Gm-Gg: AeBDiesy7QSUE3ee/E12Cq5igCWEAePla3ncC4ZGBHh/n0z0EygHDkNOsi8l9V5GUqy
-	5Kv216ju2vUob2oTAKLR4KM0ENpmnePCkcXWHYlSiTVCln/sDIeeWn6n9mkSPhhAShMftPlrxfB
-	4axvbatQEsGe5rhvQTtBnblJoe1g1k7SIAHPEGbuB3JQjqCu7Bil32Iv/QOcg72HM+pQASgnF7f
-	l30yNqXvJQCDZGEKlZv43BjbWD9b047CNcuf3QYyJCTZisXCFepMKHi43YV43ViV1wHqpmQDIWR
-	fy5CbJiF6p2xYW8=
-X-Received: by 2002:a05:6000:240f:b0:43d:76ec:91f6 with SMTP id ffacd0b85a97d-43d76ec942emr27911325f8f.41.1776344406502;
-        Thu, 16 Apr 2026 06:00:06 -0700 (PDT)
-X-Received: by 2002:a05:6000:240f:b0:43d:76ec:91f6 with SMTP id
- ffacd0b85a97d-43d76ec942emr27911249f8f.41.1776344406021; Thu, 16 Apr 2026
- 06:00:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776344732; x=1776949532;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W3Y50d3WB0A+F8Lb7pbybXM0P/H14xPD65MY8eqtg/s=;
+        b=Nd/1RSFlSG2kDCTX7peR/WL2rbCEFUbag7mlc9HjsbrrQYIQ+B/KeNeTfhQlHh6oNk
+         Tef7tKAVsQEcY0ep08i0FexUZisx33p4RszyqAwO4lN+5+8E8f0idORVwqyM/5AHZWA2
+         FeLvhM06TQlje73Sp+m7R0scUQCltg//We2YFTLtUb1UdEJllfMOwQpGMOMs/3CaYX80
+         gBYW7hhDRyxPlN+NneVurU2mN3Wo95EC3uBvxjZQpyus0TF23SxbYYzTMXp7h1mgdk+b
+         dJYS8EUCrVV7ch80+x6bFVJi+RTys42J8w0kKDx71vDw4kdcwZR2G7x+47bQq7OyOrK1
+         Q6rA==
+X-Forwarded-Encrypted: i=1; AFNElJ8rSTORoZlSkqbymVTr1YUTCcqA56AEpwvWLW6xz32FyqUKD8mRQb4jhtFFYaHLkJJPLRI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7dJK9/GwVUeiqmU9ON5vZqejSGLcUpw2vTSB1oy4q0QK9y1Te
+	HUBsiSctL3hwyseNUeW3VgeU9FS59B2DjH0JPAL2jcRR9+KaNxeWoJjpUpAKQ6I1sk8bmc+ybMB
+	Hx040mc3zembXY6DitBsauv2g8n+/d1guMEp9NF1mnTe3vjozlGGz
+X-Gm-Gg: AeBDiet3TAJe6ZF3NqsP/EHmLgaswFjPUQ1ZllWH0z+71MkwEeMIwt3MaYWxXOphzdS
+	92/6qZT9iuk7pjLZKsQNznEHg+sNX9Fz+5QlwGRHMbqKwUuSvQwnCYlSmC9oZA1xd5san2AgeUX
+	2poJccG9A2fSwDkXJDyp9IS1/QwOF/SN9e+BCQz4WsCCDfDKEKbpyFI+ROns2IOC4yB9if3S2eG
+	bOfwqs2hMZekAvNqOeQQELqoPGX6798rcibOffrkXL+lJBRIYHiUUQNvi7EPkmuMcNFVQm2GnDm
+	Gvbl3Edw13Y6vLwoT7+4pscrXqTbX/tObMMgRTlGWp+Rc+tMcgF6SD+iZIvoskl8dFc/GkmwQ+X
+	xfBzd18jD0jZPbmCQ1RAeZ4PhndDhgeDJ2RGJWAOK92nE3+4i4Vggu/V58OCltTVY0r4R3pqKSQ
+	Y9uWLwVEtlWuWLmDCGxGEDEogiJl95ephPTMUqNZ0ax5tifbcZGrJuWP2GDpg5qy5q1+NQhcJq1
+	Lp9sp3B/VTjI1bVZk2aCMk=
+X-Received: by 2002:a05:600c:8907:b0:488:c744:49b with SMTP id 5b1f17b1804b1-488d67d2cfcmr259487055e9.7.1776344732209;
+        Thu, 16 Apr 2026 06:05:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:8907:b0:488:c744:49b with SMTP id 5b1f17b1804b1-488d67d2cfcmr259486385e9.7.1776344731617;
+        Thu, 16 Apr 2026 06:05:31 -0700 (PDT)
+Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f585cea1sm52398755e9.15.2026.04.16.06.05.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 06:05:31 -0700 (PDT)
+Message-ID: <2ea075f9-c80c-41e9-9f93-9b0a2858f68f@meta.com>
+Date: Thu, 16 Apr 2026 14:05:30 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
-In-Reply-To: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 16 Apr 2026 14:59:53 +0200
-X-Gm-Features: AQROBzB06z0j3FfHL_p7_YJA3OFk9JJD1JWJ8q8MT8WlEpmh8AyMWm-lEAm_mqA
-Message-ID: <CABgObfasYTWmuqkz4TaTprcivwkzKGxAjdYZJVgO66HB1wK-5w@mail.gmail.com>
-Subject: Re: PUCK follow up: Trusted IO call details
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "michael.roth@amd.com" <michael.roth@amd.com>, 
-	"Xu, Yilun" <yilun.xu@intel.com>, "djbw@kernel.org" <djbw@kernel.org>, "Weiny, Ira" <ira.weiny@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio/pci: Don't export DMABUFs for unmappable BARs
+Content-Language: en-GB
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        Ankit Agrawal <ankita@nvidia.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260415181623.1021090-1-mattev@meta.com>
+ <20260416081138.GE361495@unreal>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260416081138.GE361495@unreal>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDEyNSBTYWx0ZWRfX1gAmn+tpqsCH
+ qrSEeJdQ04yPiWwUaOpZnffb6ZgDIpaqHfqCY2OO4dJhlit90nYYS1PL6wAeMJrJCv13Lbytczz
+ cgKOglfYh1l2YxgeuTmAMaTWQJwAxYNQnbW392/a6XHQSC/sN6iDVCbb7yGbRcgcpoJ/wHVyXye
+ WM+UUrfVqMblUwkZ/suBXI5kBAuWsFfBDSq8KHGBW35CmJvLmyQI+x4EsbmWZorZs8HZEAaEiVg
+ mu31A0e8Qr/9Jnh9MEA9ZTNQ7au6sRZR5WJBvjLj6ddQnmKyysxg2ycvrhiSKLpEEcRwY7k7mEg
+ 4kKqjLrndoxe/zsJz6HUMw+s0bAN2itzRkF3fT5eKo6zrKAhorW3rhZEoT++D6dJ+hZT+bnbWjK
+ jXqdkhyIZP8ZZN/KiyWysyiMTvDpG6QNmrfJbpsntFopXu3hz8MQ4crvWu7QO/vOhv35sqZHWFa
+ RYFkN2jYNW4aEWlMq+Q==
+X-Proofpoint-GUID: 3Daw78h5F-rO_Ew7ldromie5A7D6ol9U
+X-Authority-Analysis: v=2.4 cv=NfLWEWD4 c=1 sm=1 tr=0 ts=69e0de9d cx=c_pps
+ a=Q4jRaax7EcWM5fECTC1wcQ==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=JnKecZnUtZousrUlYMGU:22 a=c92rfblmAAAA:8 a=VabnemYjAAAA:8
+ a=OifCM7uklORgZM6vcRMA:9 a=QEXdDO2ut3YA:10 a=nJq5_VNI1X7IEIKzvdHs:22
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: 3Daw78h5F-rO_Ew7ldromie5A7D6ol9U
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_03,2026-04-16_02,2025-10-01_01
 
-On Wed, Apr 15, 2026 at 8:59=E2=80=AFPM Edgecombe, Rick P
-<rick.p.edgecombe@intel.com> wrote:
->
-> The call I mentioned is officially called: "TAC Subcommittee: Linux Kerne=
-l Special Interest Group (Linux
-> Kernel-SIG)". This seems to be the info:
-> https://confidentialcomputing.io/about/committees/#Linux-Kernel-SIG
->
-> Paolo, unfortunately I did remember correctly that it is not an EU friend=
-ly time.
+Hi Leon,
 
-This one is friendly (9AM PST =3D 6PM CEST). The unfriendly one is the
-IOMMUFD one (5AM :)).
+On 16/04/2026 09:11, Leon Romanovsky wrote:
+> >=20
+> On Wed, Apr 15, 2026 at 11:16:23AM -0700, Matt Evans wrote:
+>> Although vfio_pci_core_feature_dma_buf() validates that both requested
+>> DMABUF ranges and the PCI resources being referenced are page-aligned,
+>> there may be reasons other than alignment that cause a BAR to be
+>> unmappable.
+>>
+>> Add a check for vdev->bar_mmap_supported[index], similar to the VFIO
+>> mmap path.
+>>
+>> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO reg=
+ions")
+>> Signed-off-by: Matt Evans <mattev@meta.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_dmabuf.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_=
+pci_dmabuf.c
+>> index f87fd32e4a01..4ccaf3531e02 100644
+>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> @@ -249,6 +249,9 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_co=
+re_device *vdev, u32 flags,
+>>   	if (get_dma_buf.region_index >=3D VFIO_PCI_ROM_REGION_INDEX)
+>>   		return -ENODEV;
+>>  =20
+>> +	if (!vdev->bar_mmap_supported[get_dma_buf.region_index])
+>> +		return -EINVAL;
+>> +
+>=20
+> And it looks like AI has valid concern about this line too.
+> https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260415181623=
+.1021090-1-mattev@meta.com__;Iw!!Bt8RZUm9aw!5DxsN8cDUviPIZqEjG0pZ_VYYbl_Rdm=
+WucTGdTZ3ZzlVP_Ysb0n7ykr0eXwFXdpuqvZH2FK3$
 
-Paolo
+Ah, Sashiko has a point, and I think its suggestion of checking lower=20
+down in the default .get_dmabuf_phys (vfio_pci_core_get_dmabuf_phys())=20
+and preserving driver overrides is decent.  Will revisit.
+
+To your other question:
+ > I noticed this check in vfio_pci_core_mmap(). Isn't that sufficient?
+
+The scenario in mind is doing a DMABUF-export for BARs that you haven't=20
+necessarily noticed can't be mmap()ed, and both paths should be checking.
+
+Cheers,
+
+
+Matt
+
+
+>=20
+> Thanks
+>=20
+>>   	dma_ranges =3D memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ran=
+ges,
+>>   				       sizeof(*dma_ranges));
+>>   	if (IS_ERR(dma_ranges))
+>> --=20
+>> 2.47.3
+>>
 
