@@ -1,42 +1,42 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5D03B95F8;
-	Thu, 16 Apr 2026 13:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA6D3CBE6C;
+	Thu, 16 Apr 2026 13:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776345540; cv=none; b=OgrvInYWGuGoMyaxMzeGzilc62GDzpuPkizDccTvakZuGoBqDp2CbJxUGZRn624Uat86UK5UNJNml06A0GDbEkkJZ590x3qe1crFhn/FTt6h8nLe3nFwTFOBwnPq989plDOb3Ac5McmnZ205V91ctzgtdohuK21mCsRSZNz8hiU=
+	t=1776345543; cv=none; b=ZyFqHy/ooosMI1xa46KdK9t53A1t8BzEpeAWqcwVZqCPG5efzxjjKF8hCV1K67i6j9o1cFnI7rs6SixRnLga91ZeP5HM3mt80bTTu2gHj6Gg0ex7FpAcifjrNVlfu5bok9+zzlzT1lHqMIi1sWOUBbc/TAOTRqmtU2AKCqAvUTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776345540; c=relaxed/simple;
-	bh=ZLFYviURK0Jo5iJa3jn+hbjPLtjzafodUV7KOzOUSq4=;
+	s=arc-20240116; t=1776345543; c=relaxed/simple;
+	bh=zUO2lHul+QkL8YX/jCMMcgivZ8YGHKOPtc3j2JLJApQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QCgZOXLIEVkae0pkIeEP5dKg9cJJ4bDhday7kP4l4t8L4y3GrxwVmml4mp73YjjSazV/ytq7sjEecol2DRljjtF2S8+Ixp5XWbYVt7/6t9MZXqBtdIYurGw/pVU41ypaosbyHRgBriRMkvnT/6NlThv5yVFHn58at+Igehsbqdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=PbmtBS8U; arc=none smtp.client-ip=67.231.145.42
+	 MIME-Version:Content-Type; b=fpV4zjVORyTVWfx4XsBWEQ8F9muk1AQgDdSBXLc+v6tXT/J4t1Pdeyb74RyAM64bxc3a0V+iN8gEQnBU/AEkugiHD4AujEmoZAu1vnopfZ5WzSg0QR6hkR7zusPM1f1wrduvyua4LMAoOibeT0VtDtBOyWRAuM0rmyVzUXEsWgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NXqox/Fq; arc=none smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="PbmtBS8U"
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G0Fkku3059899;
-	Thu, 16 Apr 2026 06:18:43 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NXqox/Fq"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G3t62K2770074;
+	Thu, 16 Apr 2026 06:18:47 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=xcqwl6TFNi9lbH5ZbEfmbrASxld9aPm7XILdLR5hDuE=; b=PbmtBS8UVhGy
-	7/ikrQLR1jDE8fdoVXr/Dn78NV5SXkwEVI35WOop8savYDliIr9MAUqru5AJNndg
-	pgBnvyBtMONl4gchK4PbYtbBrGWBFsCdHvMAD1MdMAj7cqhdb1cZQqybY+DBRd0j
-	q9lRVEUSSviDD3Y3sKQRfnQgNZ2tSOoI9MnlCtT1243yXHZtnPICG9sGCo2NbI7A
-	8OVZl7rCipzeX4UZAMenERYzWijk6TrtRG90pLbGCkn5X97I9X4pvD14N+BFXWjU
-	L0k5jPYGCFLKzAEzG0vEMHWpgXhKNOLCLsHqf2ds2OxHZDY9Uf6/O9EanZZ3BPrq
-	8zeBAoVOXA==
+	 bh=lshZxh7nH27kspEDqtsBaSxImoGtUZtyrZMu3Gs/EqI=; b=NXqox/Fq1AiL
+	Yr6K1CVeGCbkTfusLATx7xZeiRruLoHjvLZf39g9Th1SCvunXKX36tjgxCn0rLl3
+	MZINtJAGQAt/hiUA/lUX6nmOtjLX7nRv+MV2jXys0zoB/OPl7OOctPysLbsAV9Qm
+	xgjZC4N711G07o+i3kg0qP8q7lejeEOIZDcP0lpRL214SEo/cS9+aosmrK7DtHcw
+	xIAQJEFaXOP6ddg8rlSsHHAuuJ8enQk5HrLtXMVwWrGsyrJfLqCkMz2rIEN2oZTr
+	KJeJUivj+ybTnGCikrNlwck3Ya5TQpplXiW/AFDrcSdoaPuXaE32J0F+X6m0epge
+	9X1m82IOyg==
 Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dh84x1sr8-2
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dh84v1ydq-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 16 Apr 2026 06:18:43 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+	Thu, 16 Apr 2026 06:18:47 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Thu, 16 Apr
- 2026 13:18:41 +0000
+ 2026 13:18:46 +0000
 From: Matt Evans <mattev@meta.com>
 To: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
         Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
@@ -54,9 +54,9 @@ CC: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
         <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
         <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
         <kvm@vger.kernel.org>
-Subject: [PATCH 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
-Date: Thu, 16 Apr 2026 06:17:47 -0700
-Message-ID: <20260416131815.2729131-5-mattev@meta.com>
+Subject: [PATCH 6/9] vfio/pci: Clean up BAR zap and revocation
+Date: Thu, 16 Apr 2026 06:17:49 -0700
+Message-ID: <20260416131815.2729131-7-mattev@meta.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260416131815.2729131-1-mattev@meta.com>
 References: <20260416131815.2729131-1-mattev@meta.com>
@@ -68,326 +68,312 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: 5wG2NqFMX-CSQTPQEWwcr7atughMWOTQ
-X-Proofpoint-ORIG-GUID: 5wG2NqFMX-CSQTPQEWwcr7atughMWOTQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDEyNyBTYWx0ZWRfX8eTe3XWZIs1V
- 4OveRSM3MIECkcsD80wWvzRc1bmIHRlwK4J84yVihsm5heBwuJc/hQkLGLGPWlrlyve5RyN13FU
- uRGK2ge2H9DsPHljVseFQTNJt7mdUUXJFUeM5tPDQh79lqLzNxHPJv1VxkSR7wf06wKQ7VoG0tT
- bryDGV8kVi/UKAL5DDVNNZQCgln1+RNLGSE9NSIn0mvSsrcvImgO6IVTWdtOaOUG+SJ+blfzbtZ
- ugzSfg0+YIXYlsOHwGpAH+4m5uIUL3O7M5ZpQAPpTEbPVGgPiCs3JeofQInwkUi2hENpRaFMTZL
- kIgVTR6kQJCMdSo0SMFA79VFErhv6J++ItVrpN2Bc5TbLyPPiPvVLHlpAGwHQfd0NtuspbyzlfB
- A2U4zyIJgZ96O0NeBhM3gS6or7eToQdwNxSdpQaCda+nL7G5i/Tw6Zf9RCFA/ZLNPW+eVxFfD6A
- ROWkeoHyj5iOXcYss0A==
-X-Authority-Analysis: v=2.4 cv=aepRWxot c=1 sm=1 tr=0 ts=69e0e1b3 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDEyNyBTYWx0ZWRfXxfzGQe7TMxfc
+ 6Sb7ce7ON/CawW+jFMEJNneiz+idXOXjg9Va2nOEruzXG2mLaQ2X4Crb/Y1kGldJQKE5xc/7VY1
+ rMPDJ2/Dxac83vAwg4LV0piLz63DAnSPy9EagNmbFQjSisC2N4Tvtz8rFW4JRn+caYeOS/Qik9E
+ A/zFHjyaDtgxC9qCaj0N0CDrGtRK0EUiFntRto0KY+nEy5vqRacNWt+9CxVHrCk+vHuD5+hqtbz
+ iFkAwDXnvk+ny5qTn4Lwi9tshxVZd78/DzFhhtc7D6XMVSG7aL2l6adUEKgpn0WTUChLwanNzJQ
+ Ks6ZDLzQkpavy5SnFWzmrSiH6/e+u3LNgeNhmiiP8EQQujjDvcKY2UkwNL5PLzEsf45fTLJf3L3
+ DeVfnCbIDHWauQyOuioLp7Ys99can+aKIobj8o8bzJm9uLy147NS07O2T4WtBW1WM94k02i16wD
+ UhvWT3twKntM3Idi+FQ==
+X-Proofpoint-GUID: sFH0ApgAOq6UN1Ugul8bC7lSe2FepIIz
+X-Authority-Analysis: v=2.4 cv=NfLWEWD4 c=1 sm=1 tr=0 ts=69e0e1b7 cx=c_pps
  a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=tpM8CJlwf7uhpglF1g9U:22 a=VabnemYjAAAA:8 a=kVk1raE1mBRInjEOdVoA:9
- a=gKebqoRLp9LExxC7YDUY:22
+ a=JnKecZnUtZousrUlYMGU:22 a=VabnemYjAAAA:8 a=c4k9Xcs0TiChc187yiQA:9
+ a=O8hF6Hzn-FEA:10 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: sFH0ApgAOq6UN1Ugul8bC7lSe2FepIIz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-16_03,2026-04-16_02,2025-10-01_01
 
-Convert the VFIO device fd fops->mmap to create a DMABUF representing
-the BAR mapping, and make the VMA fault handler look up PFNs from the
-corresponding DMABUF.  This supports future code mmap()ing BAR
-DMABUFs, and iommufd work to support Type1 P2P.
+Previously, vfio_pci_zap_bars() (and the wrapper
+vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
+calls of vfio_pci_dma_buf_move().
 
-First, vfio_pci_core_mmap() uses the new
-vfio_pci_core_mmap_prep_dmabuf() helper to export a DMABUF
-representing a single BAR range.  Then, the vfio_pci_mmap_huge_fault()
-callback is updated to understand revoked buffers, and uses the new
-vfio_pci_dma_buf_find_pfn() helper to determine the PFN for a given
-fault address.
+This commit replaces them a unified new function,
+vfio_pci_zap_revoke_bars() containing both the vfio_pci_dma_buf_move()
+and the unmap_mapping_range(), making it harder for callers to omit
+one.  It adds a wrapper, vfio_pci_lock_zap_revoke_bars(), which takes
+the write memory_lock before zapping, and adds a new
+vfio_pci_unrevoke_bars() for the re-enable path.
 
-Now that the VFIO DMABUFs can be mmap()ed, vfio_pci_dma_buf_move() and
-vfio_pci_dma_buf_cleanup() need to zap PTEs on revocation and cleanup
-paths.
+However, as of "vfio/pci: Convert BAR mmap() to use a DMABUF" the
+unmap_mapping_range() to zap is entirely redundant for plain vfio-pci,
+since the DMABUFs used for BAR mappings already zap PTEs when the
+vfio_pci_dma_buf_move() occurs.
 
-CONFIG_VFIO_PCI_CORE now unconditionally depends on
-CONFIG_DMA_SHARED_BUFFER.  CONFIG_VFIO_PCI_DMABUF remains, to
-conditionally include support for VFIO_DEVICE_FEATURE_DMA_BUF, and
-depends on CONFIG_PCI_P2PDMA.
+One exception remains as a FIXME: in nvgrace-gpu, some BAR VMAs
+conditionally use custom vm_ops, which have not moved to be backed by
+DMABUFs.  If these BARs are mmap()ed, the vdev enables the existing
+behaviour of unmap_mapping_range() for the device fd address space.
 
 Signed-off-by: Matt Evans <mattev@meta.com>
 ---
- drivers/vfio/pci/Kconfig           |  3 +-
- drivers/vfio/pci/Makefile          |  3 +-
- drivers/vfio/pci/vfio_pci_core.c   | 86 ++++++++++++++++++------------
- drivers/vfio/pci/vfio_pci_dmabuf.c | 14 +++++
- drivers/vfio/pci/vfio_pci_priv.h   | 11 +---
- 5 files changed, 71 insertions(+), 46 deletions(-)
+ drivers/vfio/pci/nvgrace-gpu/main.c |  5 +++
+ drivers/vfio/pci/vfio_pci_config.c  | 30 ++++++--------
+ drivers/vfio/pci/vfio_pci_core.c    | 62 +++++++++++++++++++----------
+ drivers/vfio/pci/vfio_pci_priv.h    |  3 +-
+ include/linux/vfio_pci_core.h       |  1 +
+ 5 files changed, 62 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-index 296bf01e185e..2074f2a941e1 100644
---- a/drivers/vfio/pci/Kconfig
-+++ b/drivers/vfio/pci/Kconfig
-@@ -6,6 +6,7 @@ config VFIO_PCI_CORE
- 	tristate
- 	select VFIO_VIRQFD
- 	select IRQ_BYPASS_MANAGER
-+	select DMA_SHARED_BUFFER
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index c1df437754f9..5304d15b9a2b 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -358,6 +358,8 @@ static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
+ 	struct nvgrace_gpu_pci_core_device *nvdev =
+ 		container_of(core_vdev, struct nvgrace_gpu_pci_core_device,
+ 			     core_device.vdev);
++	struct vfio_pci_core_device *vdev =
++		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+ 	struct mem_region *memregion;
+ 	u64 req_len, pgoff, end;
+ 	unsigned int index;
+@@ -368,6 +370,9 @@ static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
+ 	if (!memregion)
+ 		return vfio_pci_core_mmap(core_vdev, vma);
  
- config VFIO_PCI_INTX
- 	def_bool y if !S390
-@@ -56,7 +57,7 @@ config VFIO_PCI_ZDEV_KVM
- 	  To enable s390x KVM vfio-pci extensions, say Y.
++	/* Non-DMABUF BAR mappings need an extra zap */
++	vdev->bar_needs_zap = true;
++
+ 	/*
+ 	 * Request to mmap the BAR. Map to the CPU accessible memory on the
+ 	 * GPU using the memory information gathered from the system ACPI
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index a10ed733f0e3..8bfab0da481c 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -590,12 +590,10 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 		virt_mem = !!(le16_to_cpu(*virt_cmd) & PCI_COMMAND_MEMORY);
+ 		new_mem = !!(new_cmd & PCI_COMMAND_MEMORY);
  
- config VFIO_PCI_DMABUF
--	def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
-+	def_bool y if PCI_P2PDMA
+-		if (!new_mem) {
+-			vfio_pci_zap_and_down_write_memory_lock(vdev);
+-			vfio_pci_dma_buf_move(vdev, true);
+-		} else {
++		if (!new_mem)
++			vfio_pci_lock_zap_revoke_bars(vdev);
++		else
+ 			down_write(&vdev->memory_lock);
+-		}
  
- source "drivers/vfio/pci/mlx5/Kconfig"
+ 		/*
+ 		 * If the user is writing mem/io enable (new_mem/io) and we
+@@ -631,7 +629,7 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 		*virt_cmd |= cpu_to_le16(new_cmd & mask);
  
-diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
-index 6138f1bf241d..881452ea89be 100644
---- a/drivers/vfio/pci/Makefile
-+++ b/drivers/vfio/pci/Makefile
-@@ -1,8 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
+ 		if (__vfio_pci_memory_enabled(vdev))
+-			vfio_pci_dma_buf_move(vdev, false);
++			vfio_pci_unrevoke_bars(vdev);
+ 		up_write(&vdev->memory_lock);
+ 	}
  
--vfio-pci-core-y := vfio_pci_core.o vfio_pci_intrs.o vfio_pci_rdwr.o vfio_pci_config.o
-+vfio-pci-core-y := vfio_pci_core.o vfio_pci_intrs.o vfio_pci_rdwr.o vfio_pci_config.o vfio_pci_dmabuf.o
- vfio-pci-core-$(CONFIG_VFIO_PCI_ZDEV_KVM) += vfio_pci_zdev.o
--vfio-pci-core-$(CONFIG_VFIO_PCI_DMABUF) += vfio_pci_dmabuf.o
- obj-$(CONFIG_VFIO_PCI_CORE) += vfio-pci-core.o
+@@ -712,16 +710,14 @@ static int __init init_pci_cap_basic_perm(struct perm_bits *perm)
+ static void vfio_lock_and_set_power_state(struct vfio_pci_core_device *vdev,
+ 					  pci_power_t state)
+ {
+-	if (state >= PCI_D3hot) {
+-		vfio_pci_zap_and_down_write_memory_lock(vdev);
+-		vfio_pci_dma_buf_move(vdev, true);
+-	} else {
++	if (state >= PCI_D3hot)
++		vfio_pci_lock_zap_revoke_bars(vdev);
++	else
+ 		down_write(&vdev->memory_lock);
+-	}
  
- vfio-pci-y := vfio_pci.o
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 4e9091e5fcc2..c00a61d61250 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1648,18 +1648,6 @@ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev, u16 c
+ 	vfio_pci_set_power_state(vdev, state);
+ 	if (__vfio_pci_memory_enabled(vdev))
+-		vfio_pci_dma_buf_move(vdev, false);
++		vfio_pci_unrevoke_bars(vdev);
  	up_write(&vdev->memory_lock);
  }
  
--static unsigned long vma_to_pfn(struct vm_area_struct *vma)
--{
--	struct vfio_pci_core_device *vdev = vma->vm_private_data;
--	int index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
--	u64 pgoff;
--
--	pgoff = vma->vm_pgoff &
--		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
--
--	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
--}
--
- vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
- 				   struct vm_fault *vmf,
- 				   unsigned long pfn,
-@@ -1687,23 +1675,42 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
- 					   unsigned int order)
- {
- 	struct vm_area_struct *vma = vmf->vma;
--	struct vfio_pci_core_device *vdev = vma->vm_private_data;
--	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
--	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
--	unsigned long pfn = vma_to_pfn(vma) + pgoff;
--	vm_fault_t ret = VM_FAULT_FALLBACK;
--
--	if (is_aligned_for_order(vma, addr, pfn, order)) {
--		scoped_guard(rwsem_read, &vdev->memory_lock)
--			ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
--	}
-+	struct vfio_pci_dma_buf *priv = vma->vm_private_data;
-+	struct vfio_pci_core_device *vdev;
-+	unsigned long pfn = 0;
-+	vm_fault_t ret = VM_FAULT_SIGBUS;
-+
-+	/*
-+	 * We can rely on the existence of both a DMABUF (priv) and
-+	 * the VFIO device it was exported from (vdev).  This fault's
-+	 * VMA was established using vfio_pci_core_mmap_prep_dmabuf()
-+	 * which transfers ownership of the VFIO device fd to the
-+	 * DMABUF, and so the VFIO device is held open because the
-+	 * VMA's vm_file (DMABUF) is open.
-+	 *
-+	 * Since vfio_pci_dma_buf_cleanup() cannot have happened,
-+	 * vdev must be valid; we can take memory_lock.
-+	 */
-+	vdev = READ_ONCE(priv->vdev);
-+
-+	scoped_guard(rwsem_read, &vdev->memory_lock) {
-+		if (!priv->revoked) {
-+			int pres = vfio_pci_dma_buf_find_pfn(priv, vma,
-+							     vmf->address,
-+							     order, &pfn);
-+
-+			if (pres == 0)
-+				ret = vfio_pci_vmf_insert_pfn(vdev, vmf,
-+							      pfn, order);
-+			else if (pres == -EAGAIN)
-+				ret = VM_FAULT_FALLBACK;
-+		}
+@@ -908,11 +904,10 @@ static int vfio_exp_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 						 &cap);
  
--	dev_dbg_ratelimited(&vdev->pdev->dev,
--			   "%s(,order = %d) BAR %ld page offset 0x%lx: 0x%x\n",
--			    __func__, order,
--			    vma->vm_pgoff >>
--				(VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT),
--			    pgoff, (unsigned int)ret);
-+		dev_dbg_ratelimited(&vdev->pdev->dev,
-+				    "%s(order = %d) PFN 0x%lx, VA 0x%lx, pgoff 0x%lx: 0x%x\n",
-+				    __func__, order, pfn, vmf->address,
-+				    vma->vm_pgoff, (unsigned int)ret);
-+	}
+ 		if (!ret && (cap & PCI_EXP_DEVCAP_FLR)) {
+-			vfio_pci_zap_and_down_write_memory_lock(vdev);
+-			vfio_pci_dma_buf_move(vdev, true);
++			vfio_pci_lock_zap_revoke_bars(vdev);
+ 			pci_try_reset_function(vdev->pdev);
+ 			if (__vfio_pci_memory_enabled(vdev))
+-				vfio_pci_dma_buf_move(vdev, false);
++				vfio_pci_unrevoke_bars(vdev);
+ 			up_write(&vdev->memory_lock);
+ 		}
+ 	}
+@@ -993,11 +988,10 @@ static int vfio_af_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 						&cap);
  
- 	return ret;
+ 		if (!ret && (cap & PCI_AF_CAP_FLR) && (cap & PCI_AF_CAP_TP)) {
+-			vfio_pci_zap_and_down_write_memory_lock(vdev);
+-			vfio_pci_dma_buf_move(vdev, true);
++			vfio_pci_lock_zap_revoke_bars(vdev);
+ 			pci_try_reset_function(vdev->pdev);
+ 			if (__vfio_pci_memory_enabled(vdev))
+-				vfio_pci_dma_buf_move(vdev, false);
++				vfio_pci_unrevoke_bars(vdev);
+ 			up_write(&vdev->memory_lock);
+ 		}
+ 	}
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index c00a61d61250..464b63585bef 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -319,8 +319,7 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
+ 	 * The vdev power related flags are protected with 'memory_lock'
+ 	 * semaphore.
+ 	 */
+-	vfio_pci_zap_and_down_write_memory_lock(vdev);
+-	vfio_pci_dma_buf_move(vdev, true);
++	vfio_pci_lock_zap_revoke_bars(vdev);
+ 
+ 	if (vdev->pm_runtime_engaged) {
+ 		up_write(&vdev->memory_lock);
+@@ -406,7 +405,7 @@ static void vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
+ 	down_write(&vdev->memory_lock);
+ 	__vfio_pci_runtime_pm_exit(vdev);
+ 	if (__vfio_pci_memory_enabled(vdev))
+-		vfio_pci_dma_buf_move(vdev, false);
++		vfio_pci_unrevoke_bars(vdev);
+ 	up_write(&vdev->memory_lock);
  }
-@@ -1726,7 +1733,7 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
- 	struct pci_dev *pdev = vdev->pdev;
- 	unsigned int index;
--	u64 phys_len, req_len, pgoff, req_start;
-+	u64 phys_len, req_len;
- 	int ret;
  
- 	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-@@ -1753,11 +1760,9 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 
- 	phys_len = PAGE_ALIGN(pci_resource_len(pdev, index));
- 	req_len = vma->vm_end - vma->vm_start;
--	pgoff = vma->vm_pgoff &
--		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
--	req_start = pgoff << PAGE_SHIFT;
-+	vma->vm_pgoff &= VFIO_PCI_OFFSET_MASK >> PAGE_SHIFT;
- 
--	if (req_start + req_len > phys_len)
-+	if ((vma->vm_pgoff << PAGE_SHIFT) + req_len > phys_len)
+@@ -1229,7 +1228,7 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
+ 	if (!vdev->reset_works)
  		return -EINVAL;
  
+-	vfio_pci_zap_and_down_write_memory_lock(vdev);
++	vfio_pci_lock_zap_revoke_bars(vdev);
+ 
  	/*
-@@ -1768,7 +1773,20 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 	if (ret)
- 		return ret;
+ 	 * This function can be invoked while the power state is non-D0. If
+@@ -1242,10 +1241,9 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
+ 	 */
+ 	vfio_pci_set_power_state(vdev, PCI_D0);
  
--	vma->vm_private_data = vdev;
-+	/*
-+	 * Create a DMABUF with a single range corresponding to this
-+	 * mapping, and wire it into vma->vm_private_data.  The VMA's
-+	 * vm_file becomes that of the DMABUF, and the DMABUF takes
-+	 * ownership of the VFIO device file (put upon DMABUF
-+	 * release).  This maintains the behaviour of a live VMA
-+	 * mapping holding the VFIO device file open.
-+	 */
-+	ret = vfio_pci_core_mmap_prep_dmabuf(vdev, vma,
-+					     pci_resource_start(pdev, index),
-+					     req_len, index);
-+	if (ret)
-+		return ret;
-+
- 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
- 	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+-	vfio_pci_dma_buf_move(vdev, true);
+ 	ret = pci_try_reset_function(vdev->pdev);
+ 	if (__vfio_pci_memory_enabled(vdev))
+-		vfio_pci_dma_buf_move(vdev, false);
++		vfio_pci_unrevoke_bars(vdev);
+ 	up_write(&vdev->memory_lock);
  
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 3554afbc8ebc..a12432825e5e 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -9,6 +9,7 @@
- 
- MODULE_IMPORT_NS("DMA_BUF");
- 
-+#ifdef CONFIG_VFIO_PCI_DMABUF
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 				   struct dma_buf_attachment *attachment)
- {
-@@ -25,6 +26,7 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 
- 	return 0;
- }
-+#endif /* CONFIG_VFIO_PCI_DMABUF */
- 
- static void vfio_pci_dma_buf_done(struct kref *kref)
- {
-@@ -89,7 +91,9 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
- }
- 
- static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
-+#ifdef CONFIG_VFIO_PCI_DMABUF
- 	.attach = vfio_pci_dma_buf_attach,
-+#endif
- 	.map_dma_buf = vfio_pci_dma_buf_map,
- 	.unmap_dma_buf = vfio_pci_dma_buf_unmap,
- 	.release = vfio_pci_dma_buf_release,
-@@ -245,6 +249,7 @@ static int vfio_pci_dmabuf_export(struct vfio_pci_core_device *vdev,
- 	return 0;
- }
- 
-+#ifdef CONFIG_VFIO_PCI_DMABUF
- /*
-  * This is a temporary "private interconnect" between VFIO DMABUF and iommufd.
-  * It allows the two co-operating drivers to exchange the physical address of
-@@ -453,6 +458,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 	kfree(dma_ranges);
  	return ret;
+@@ -1613,20 +1611,44 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
  }
-+#endif /* CONFIG_VFIO_PCI_DMABUF */
+ EXPORT_SYMBOL_GPL(vfio_pci_core_write);
  
- int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
- 				   struct vm_area_struct *vma,
-@@ -530,6 +536,10 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
- 	struct vfio_pci_dma_buf *tmp;
+-static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
++static void vfio_pci_zap_revoke_bars(struct vfio_pci_core_device *vdev)
+ {
+-	struct vfio_device *core_vdev = &vdev->vdev;
+-	loff_t start = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_BAR0_REGION_INDEX);
+-	loff_t end = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_ROM_REGION_INDEX);
+-	loff_t len = end - start;
++	lockdep_assert_held_write(&vdev->memory_lock);
++	vfio_pci_dma_buf_move(vdev, true);
  
- 	lockdep_assert_held_write(&vdev->memory_lock);
+-	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
 +	/*
-+	 * Holding memory_lock ensures a racing VMA fault observes
-+	 * priv->revoked properly.
++	 * All VFIO PCI BARs are backed by DMABUFs, with the current
++	 * exception of the nvgrace-gpu device which uses its own
++	 * vm_ops for a subset of BARs.  For this, BAR mappings are
++	 * still made in the vdev's address_space, and a zap is
++	 * required.  The tracking is crude, and will (harmlessly)
++	 * continue to zap if the special BAR is unmapped, but that
++	 * behaviour isn't the common case.
++	 *
++	 * FIXME: This can go away if the special nvgrace-gpu mapping
++	 * is converted to use DMABUF.
 +	 */
++	if (vdev->bar_needs_zap) {
++		struct vfio_device *core_vdev = &vdev->vdev;
++		loff_t start = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_BAR0_REGION_INDEX);
++		loff_t end = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_ROM_REGION_INDEX);
++		loff_t len = end - start;
++
++		unmap_mapping_range(core_vdev->inode->i_mapping,
++				    start, len, true);
++	}
+ }
  
- 	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
- 		if (!get_file_active(&priv->dmabuf->file))
-@@ -547,6 +557,8 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
- 			if (revoked) {
- 				kref_put(&priv->kref, vfio_pci_dma_buf_done);
- 				wait_for_completion(&priv->comp);
-+				unmap_mapping_range(priv->dmabuf->file->f_mapping,
-+						    0, priv->size, 1);
- 			} else {
- 				/*
- 				 * Kref is initialize again, because when revoke
-@@ -594,6 +606,8 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
- 		if (!was_revoked) {
- 			kref_put(&priv->kref, vfio_pci_dma_buf_done);
- 			wait_for_completion(&priv->comp);
-+			unmap_mapping_range(priv->dmabuf->file->f_mapping,
-+					    0, priv->size, 1);
+-void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
++void vfio_pci_lock_zap_revoke_bars(struct vfio_pci_core_device *vdev)
+ {
+ 	down_write(&vdev->memory_lock);
+-	vfio_pci_zap_bars(vdev);
++	vfio_pci_zap_revoke_bars(vdev);
++}
++
++void vfio_pci_unrevoke_bars(struct vfio_pci_core_device *vdev)
++{
++	lockdep_assert_held_write(&vdev->memory_lock);
++	vfio_pci_dma_buf_move(vdev, false);
+ }
+ 
+ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev)
+@@ -2480,9 +2502,10 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
  		}
- 		vfio_device_put_registration(&vdev->vdev);
- 		fput(priv->dmabuf->file);
+ 
+ 		/*
+-		 * Take the memory write lock for each device and zap BAR
+-		 * mappings to prevent the user accessing the device while in
+-		 * reset.  Locking multiple devices is prone to deadlock,
++		 * Take the memory write lock for each device and
++		 * zap/revoke BAR mappings to prevent the user (or
++		 * peers) accessing the device while in reset.
++		 * Locking multiple devices is prone to deadlock,
+ 		 * runaway and unwind if we hit contention.
+ 		 */
+ 		if (!down_write_trylock(&vdev->memory_lock)) {
+@@ -2490,8 +2513,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 			break;
+ 		}
+ 
+-		vfio_pci_dma_buf_move(vdev, true);
+-		vfio_pci_zap_bars(vdev);
++		vfio_pci_zap_revoke_bars(vdev);
+ 	}
+ 
+ 	if (!list_entry_is_head(vdev,
+@@ -2521,7 +2543,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+ 					 vdev.dev_set_list) {
+ 		if (vdev->vdev.open_count && __vfio_pci_memory_enabled(vdev))
+-			vfio_pci_dma_buf_move(vdev, false);
++			vfio_pci_unrevoke_bars(vdev);
+ 		up_write(&vdev->memory_lock);
+ 	}
+ 
 diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index 3cff1b7eb47b..868a54ba482c 100644
+index 868a54ba482c..a8edbee6ce56 100644
 --- a/drivers/vfio/pci/vfio_pci_priv.h
 +++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -137,13 +137,13 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
- 				   struct vm_area_struct *vma,
- 				   u64 phys_start, u64 req_len,
- 				   unsigned int res_index);
-+void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
-+void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked);
+@@ -82,7 +82,8 @@ void vfio_config_free(struct vfio_pci_core_device *vdev);
+ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev,
+ 			     pci_power_t state);
  
- #ifdef CONFIG_VFIO_PCI_DMABUF
- int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 				  struct vfio_device_feature_dma_buf __user *arg,
- 				  size_t argsz);
--void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
--void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked);
- #else
- static inline int
- vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
-@@ -152,13 +152,6 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- {
- 	return -ENOTTY;
- }
--static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
--{
--}
--static inline void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev,
--					 bool revoked)
--{
--}
- #endif
- 
- #endif
+-void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev);
++void vfio_pci_lock_zap_revoke_bars(struct vfio_pci_core_device *vdev);
++void vfio_pci_unrevoke_bars(struct vfio_pci_core_device *vdev);
+ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev);
+ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev,
+ 					u16 cmd);
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 2ea4e773c121..c1cd67741125 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+ 	bool			needs_pm_restore:1;
+ 	bool			pm_intx_masked:1;
+ 	bool			pm_runtime_engaged:1;
++	bool			bar_needs_zap:1;
+ 	struct pci_saved_state	*pci_saved_state;
+ 	struct pci_saved_state	*pm_save;
+ 	int			ioeventfds_nr;
 -- 
 2.47.3
 
