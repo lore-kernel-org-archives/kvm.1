@@ -1,112 +1,101 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A93198A17
-	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 00:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BB11A683B
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 00:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776299269; cv=none; b=K3tAIvtEuZwNOBnbtsJk3ke2SUNNiqkDA6ErFeeNqkrjLbADKpACciDfmztnLfric8D5U+PzD/5+zNxxmj+JHTggdJLJM2a/IdTYrzw1SpI0EbNUAe/e3UN0xXoZ9zENSCdyXeNGPxQtWrVI15+u5ooyt5lRuZMrQw64/N00Iog=
+	t=1776299383; cv=none; b=CgoDV5ikMykZYxqkFsaUamO7gJa1eWsijg860OssAiRQw47d3UKVMMxu9k5ti9UtqAPTUQNmESgtizrzy633EyvQbm0U1lVFHCpxroLRKKKSJVW9+ht2FmxlRMCKIk9Byh77z6EnisjaEYqQp/f0N4n1EdVP3YFXrqLofnKB+g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776299269; c=relaxed/simple;
-	bh=91KI0fJU4Wp82t2FkQOv787CBX84KoNvLOEgpOIXuqY=;
+	s=arc-20240116; t=1776299383; c=relaxed/simple;
+	bh=4tLfhpuoWMl6k3LyIpifM7WBcRtIBiXUUr/hNejAVAc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=avD7fq33HWkO0vc02485QH5C7W0Inm51/Ji1MCwgSxszb2SOwxA2MZdXSX89XA/S6VD2WIR3ftc1Z3InXQlePi2eCg8rGOanu3pOlG7RQWYxc2Ubp0l7YsJAJtvvLbU1PqEZduZiVKVmkSgLmsmLP7PsJWlYTy19nMj3tzodfwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HlEJmlBn; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=WEXXeNn5GS/ypGZ57DK2hOHSbmdA/6co+rBsne9qtA5V16f5KFrm4pwM4NDNtoEmkVhp3AA3+m/EVlrNw6Uu95xXyBZ/5VWhzQrkpKxs9Vqt5dRAYfnj0eYRqRKyG4YSISFamwNiab0aHTgKWkThbr+NCTnUg1CN0Z83ANAd70U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T8AUHCR1; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HlEJmlBn"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c76c2bb3149so88994a12.1
-        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 17:27:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T8AUHCR1"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f6e6a3a76so1292022b3a.0
+        for <kvm@vger.kernel.org>; Wed, 15 Apr 2026 17:29:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776299268; x=1776904068; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aTqHOZA62OG02ouAmiVm2b8T4YwA2WULJcljq4P/wu8=;
-        b=HlEJmlBn8bkl3vcXTbtmQHwf0Rvv5xDM+j5i1xKMYNaKWMDiHwIOqB7mXKYdlPvw1F
-         /ixYcTgQE2bo4gyVleEqnSUkIupbqjzMtzQtUSr9gwBQuCaufWWummn/dpU5QvqKdz0b
-         FnADTR58MfaM6ZmIJRrAQ9CglwfZ56DAC3SwwkHXIzgSV6eNCA28oSWHUHhDd7dGbh+b
-         aunF19em5/y9fD78b/cY6o14d8vdmtBC8Eqnn9kMXDVNeQzih6RKsxxAYf2y8WR0Pul0
-         +IXWXZpc9hnidjkbACrf/xQIqJ1X4jzUTUNtu6f0Aujq5mYLcxIKjUH0pGuCn1LUQw7M
-         QIww==
+        d=google.com; s=20251104; t=1776299382; x=1776904182; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KzU6XWZ7f5Cr6G2VmDhZlBgT6V/Dd8RtTH+gkK8bzW0=;
+        b=T8AUHCR1tDq1ZWzBGINZfAnxf62LgYuvvy8eQywIyru2BbsXncdV3sLaMwqFzhAS2g
+         LMHWi5jvMKKYSaYsInUvwseT2hjGiYvQGy0HvbZtYtCMeSZgBgCXe6mNEm5P5mnR2an0
+         qnsTkdvrd8wXUu+rR7yeVg9HLaDSi/nTed05Xw2yb8nYpKa3rwfECR7AvfuHX7YfoSMK
+         hkHrxuoRatjC4892yYRmZ6zLOUazY9H8+Jx3fQ3khoJEaOapvCemIWZ3fmLF2ZWKyjwj
+         7x8tqGkR8pQp94nVDBi9rs1FR3HHvLeYTkB5n7DCyhj/HDrkKwKQZQeO6v/Fy/VGjePX
+         SC/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776299268; x=1776904068;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aTqHOZA62OG02ouAmiVm2b8T4YwA2WULJcljq4P/wu8=;
-        b=hyHBtsqMfaNcPko+GodC6FlL8zx4kUGlRth0sefUR44KAyht6v1H082R4x3iA2z2E0
-         lSdie3kjb/C83keiYZPGy8wP56rZAfY+pMU+kF/nsghXjlOMurkocPoq3F0AQq6HAC3j
-         Hz6V1CF39GDirBgeFkOebP3Vy0q/WGp9WVG2isRj+vGhVZ7AK4j0GOcleFvIxj47eEo7
-         pFtCOmFHWNmA4tpEVDxGdGQpzjW8n9qNkMfcwmMPNEkaRzXzMOcgnd9gZRG23gLiiw//
-         PiLeIQW8M/QabiKurYbRZF4x/miqQrQ2luZ9xVPf8PaFJfvnkTQKoWUjv82JInkqulLM
-         C0JQ==
-X-Forwarded-Encrypted: i=1; AFNElJ93fxKbfflwYjoXJ3aEJbNyoqOEvBdb6d1i8as8gnmvEab+0pAyR9V8yFRAz1HD9TR9vhc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywyim3tDNt9MFd4hr14hhQmAboLaKoeAxbft6zw/aRoyT+rS6fv
-	CGsxwqc1fLhtmEg357d21RSBuLWj8TEapkyVmNqGX5hOzjD0ruaWVMllRCBZAuIL2vhkCgheSuR
-	5WTigZw==
-X-Received: from pfgs24.prod.google.com ([2002:a05:6a00:1798:b0:7fb:ed58:5e4b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2191:b0:822:69b2:7ed0
- with SMTP id d2e1a72fcca58-82f764130bcmr1195893b3a.6.1776299267782; Wed, 15
- Apr 2026 17:27:47 -0700 (PDT)
-Date: Wed, 15 Apr 2026 17:27:46 -0700
-In-Reply-To: <9f4a3dfa2d3fa2a81161652d81585b779a182866.camel@intel.com>
+        d=1e100.net; s=20251104; t=1776299382; x=1776904182;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KzU6XWZ7f5Cr6G2VmDhZlBgT6V/Dd8RtTH+gkK8bzW0=;
+        b=IXtWADdWQWLV/n7AECwlRATmFyPVbC9Qs4pIlEz4PyP4Z2U7nKxKmH5JEKVEl+Jge0
+         J7SKy48v5Wl9bRYlEJPtH30BHX8x8iIooD0+WhEB0lXMOdIRqtD18tZKEp5b1EmH2veY
+         4zE7VrvwK7jE+yAjGOhpJk4xOeHxsrv+YJ/dnBtLYhquMJEZoukyGsqMSze+6Oy1lj8U
+         JGtn4JKhdG+yzn7y3kcvhTV7is8rc2LAHO+D8j0yhWE1eqlsKRl2I771wRPozZAuTPJX
+         tf19J4IkHi0w1teC+ULrrVnjoWmQGmIYYPAg0cSG1WgE57nQPgNztDdfpn2h0UrITzXt
+         S8bA==
+X-Forwarded-Encrypted: i=1; AFNElJ9mMEs2FwXQx0+VdPyTcywYXYPZEjlN0UXYFTEPzSqErsL+LeijYfH7OvNZGdPmKQbCusg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMuQWtmh6C7VvNT5tcPmZqNB7FIgYi/FMmcRVBUG7I2CP9qp66
+	zPXXE/FaBQXjElxt8u2Y3JAIkNOAnSM4qOaKY6OlSh4d1nnpqwk/w5+g41JYfjiZ+miRrzInLLS
+	DvIPKqg==
+X-Received: from pfwz19.prod.google.com ([2002:a05:6a00:1d93:b0:82f:541b:7b67])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:130b:b0:82c:217c:98ca
+ with SMTP id d2e1a72fcca58-82f0c2194dcmr23763603b3a.12.1776299381692; Wed, 15
+ Apr 2026 17:29:41 -0700 (PDT)
+Date: Wed, 15 Apr 2026 17:29:40 -0700
+In-Reply-To: <CALMp9eSHJmLLAQAvbvRmq99v568PGkJduoQn1djnXGb-yED_5g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260409235622.2052730-1-seanjc@google.com> <20260409235622.2052730-5-seanjc@google.com>
- <dea50f27311d88dcb09ea98261ca280853396a42.camel@intel.com>
- <aeAFMwBTUCdeq1JS@google.com> <9f4a3dfa2d3fa2a81161652d81585b779a182866.camel@intel.com>
-Message-ID: <aeAtAm0yezpj9EP1@google.com>
-Subject: Re: [PATCH 04/11] KVM: VMX: Read 32-bit GPR values for ENCLS
- instructions outside of 64-bit mode
+References: <CALMp9eRk8O-kGixdXC0Lb0=PgSVE5eFnLLXOZYqMsb=FTczZTA@mail.gmail.com>
+ <adfgPwgXz1iQHpVS@google.com> <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
+ <adfmVXRwzZkvRSnj@google.com> <CALMp9eTvH1Pg0Eb-KCcX7LLJPFgS1xTSR0DzeA8xo4Re7=p=7w@mail.gmail.com>
+ <adfyKU5WUiW4OnUg@google.com> <adgYSnE-I1Z19fCY@google.com>
+ <CALMp9eSjAoVYk2f_j=b_X=EngJ935J=W7YS-C0nDS7b1j2Y4Og@mail.gmail.com>
+ <aeACk7T5Q4TxtRMF@google.com> <CALMp9eSHJmLLAQAvbvRmq99v568PGkJduoQn1djnXGb-yED_5g@mail.gmail.com>
+Message-ID: <aeAtdIPo-8uk8nvH@google.com>
+Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
+ nested SVM transitions
 From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "yosry@kernel.org" <yosry@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"dwmw2@infradead.org" <dwmw2@infradead.org>, "paul@xen.org" <paul@xen.org>
-Content-Type: text/plain; charset="us-ascii"
+To: Jim Mattson <jmattson@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 15, 2026, Kai Huang wrote:
-> On Wed, 2026-04-15 at 14:37 -0700, Sean Christopherson wrote:
-> > On Mon, Apr 13, 2026, Kai Huang wrote:
-> > But IIRC, that's "just" the architectural behavior.  Hardware implementations may
-> > choose to preserve values.
-> 
-> That seems to be a violation to a "basic" architecture :-)
+On Wed, Apr 15, 2026, Jim Mattson wrote:
+> On Wed, Apr 15, 2026 at 2:26=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> > On Thu, Apr 09, 2026, Jim Mattson wrote:
+> > > When would we use the deferred version? As far as the Intel PMU is
+> > > concerned. there's nothing special about a nested transition.
+> >
+> > Actually, outside of VMRUN=3D>#VMEXIT, isn't the deferred version corre=
+ct?  E.g.
+> > when counting instructions, shouldn't WRMSR(EFER) be accounted based on=
+ the *old*
+> > EFER value, not the new EFER value?
+>=20
+> Unless you can point to documentation stating otherwise, I think this
+> needs testing. By analogy with VMRUN and #VMEXIT, accounting should be
+> based on the CPU state at instruction retirement.
 
-Not really.  The SDM says they aren't guaranteed to be _preserved_.  It doesn't
-say that they will be zeroed.  And so literally any value in bits 63:32 is
-architecturally legal.
+IMO, VMRUN and #VMEXIT are broken :-)
 
-> > > If vCPU is in 32-bit mode then it should not be able to access 64-bit GPR?
-> > 
-> > Yes and no.  Mostly no.  Architecturally, they're all off limits.  But, again
-> > going from memory that's ~15 years old at this point, IIRC the behavior is that
-> > writes in 32-bit modes zero bits 63:32, same as 32-bit writes in 64-bit mode.
-> > 
-> > Take all of my memory with a huge grain of salt, it's very possible I'm
-> > mis-remembering hallway discussions from a long time ago.
-> 
-> I tend to think it's beyond the point we need to worry about.  It shouldn't
-> happen even the guest is buggy or malicious AFAICT, unless KVM somehow
-> messes things up itself, in which case a WARN() is more reasonable I
-> suppose.
-
-KVM needs to worry about it from the perspective of not consuming garbage.  As
-above, KVM cannot assume bits 63:32 are zero, and so needs to be careful to only
-consume bits 31:0.
-
-> This also made me look into whether how VMENTER handles GPRs when vCPU is
-> not in 64-bit mode.  I see nothing described in the SDM except VMENTRY
-> checks "guest's" RIP and RFLAGS.  Maybe KVM should explicitly clear high
-> bits of GPRs when going back to compatible mode from 64-bit mode, or maybe
-> hardware does it?
-
-Definitely not.  VM-Exit => VM-Enter must be transparent to the guest.  E.g. if
-a host IRQ arrives, register state shouldn't magically change from the guest's
-perspective.  If hardware clobbers state, so be it.  But I don't want KVM to
-actively clobber registers in this case.
+But yeah, +1 to following what hardware does.  I was thinking we could look=
+ at
+our KUT and selftests code, but AFAICT all of the precise measurements are
+bookended by WRMSRs, so an off-by-one on the frontend would be corrected by=
+ the
+off-by-one on the backend.
