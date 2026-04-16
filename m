@@ -1,168 +1,144 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413F23A1E95;
-	Thu, 16 Apr 2026 13:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0213D3338
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 13:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776346827; cv=none; b=mcCvjKh0i5QC6IoutAejGyvwFQe6niczx333hQIaZBHT36zYCLYpprS9gNgxa/3FkqYU62n0quIRHhe4aRU5FuJdfjqxBaJhnla9xInm9RkgAIN0D977tEkKBT0xFG3w1REYYIeox4aWnm+VpoNhxBxMqSKaud+r49l68ZkF/LU=
+	t=1776347364; cv=none; b=bDslN/RGLikzFatB6XkDIMrs0P45/241Tk9T4e8JG4Q2knGY6wxUXQfrywlfC1ttr4DOu7vZ245zf5rqIEx1+wEgDdrfDZmUApiJ/POIx31ICcSo/gOfqPV1n+GX/KIRfn85E6TpnXWRkngx6PlyDUy7tY0yJYwCsmtnQG/oQ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776346827; c=relaxed/simple;
-	bh=+Cm8zdxXLz7bcaZJWZhDWcXgaMPEgeSJ2u2pQZs12FE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nlKE62vwk3m7o9DtcXFk0jbq84Ie0zvMeuXaJ9JUutEyBPMarTXpaNePvrU69T1FjEVORgljzi79h/4vv86UlVWRmwQBg1pEe9/AEPJBNQiqo232q7tPCEXhbHyGVJj8WlFw+eVVeNmJIGDa4tmxLrdeuIx2sgN39yKEcMCiOrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=cL02z3/J; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BS60DdTJ; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1776347364; c=relaxed/simple;
+	bh=s3RYvsEfI9ZdxhsabL5/svtqvt3W5lr9R3yghTmr/gA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O7aLUMrjCyDNWwaBqvR4YH7afctyod7OpCmDPCPYdoV1lf+skfeYOM47eJANTaTsyfuyZvhN3K7xacj7TvqKkLZ5gR3jrCplioKhOE3gzXnGnC3R1N6/pZDfCD4ASaOgWOETr7OuK+PF82PHbE1s4TEhkP74j0LIVIFgpV6+dJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqlOLz/H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="cL02z3/J";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BS60DdTJ"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id A9CBB1D002E6;
-	Thu, 16 Apr 2026 09:40:23 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqlOLz/H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6DFC2BCAF;
+	Thu, 16 Apr 2026 13:49:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776347363;
+	bh=s3RYvsEfI9ZdxhsabL5/svtqvt3W5lr9R3yghTmr/gA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AqlOLz/HXz7hqXJps/IG3FaK45yw4Z0YqpDgxczLEUlMgLP/IaXrmJbUuoShfRQLv
+	 vftvKRCapRZ2NnHiAPar2EyWyd1TLgt1Ko3HP26W9UXE3KJe6nOTTqAu5ayiqwWDuc
+	 XpRqOEFJHtFkpoOhcRVFGqeTGm9UPhn1W3sRBs3gJTk8qtriK2XhdZZeKMO8eAnMRX
+	 RrWZK4z6KQSDAFWR9ri0eyK6s9sh+oS1BWmgHMXfV+x8F0JKGr4LT1pzYeU6dSS+QX
+	 NTH+dc5QJnfsEaf5J7JTMdMnLxrBMEYV49XhLFbHvE6l6N4y5OIU6WW/oMpYggnVxf
+	 X/zDR59vHkmWA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 10D1DF4006A;
+	Thu, 16 Apr 2026 09:49:22 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 16 Apr 2026 09:40:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776346823;
-	 x=1776433223; bh=/wRBy3MPr3uBglPzHimTBE2v1WQkXuAVNb1SXsJzKsM=; b=
-	cL02z3/JXlwXMIQ0hL1iyF5rr0TSqB5ClZHgEvF5j+Gs+IPXwYKrIrti5g3qNB6w
-	K4JpGKiFJVUVS0yIkGmQINGU1W9PKii0POKonkmSQN5oRBFwbiU+iGo9cOBamNCN
-	O/ZyNDVXBu+QwN1/vyjNYG4Yc9HTsMI9tmof7R/cYU6JcqRNzpTRD1RTqqoZWxvv
-	mpe7vXSLXW7OVgL5ruuw/I04jwR5I/l50iWF1sfDHKRhBJCBvuphpZuLblrarjEt
-	z/3v2FtE/T6nA4TCmuMgQPC4x9Z57uvmJgIR2fyZmRFijg2MCNwjcNElqH61sFE4
-	rr+oxz7sKEkRaYzjYw+8Ow==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776346823; x=
-	1776433223; bh=/wRBy3MPr3uBglPzHimTBE2v1WQkXuAVNb1SXsJzKsM=; b=B
-	S60DdTJFyzVflIZg8wsFxtK3sjKlEmry5YC5XeT2NNnwz/gSdBe6c5z/V+7kZmdd
-	fG2BoNE1fb2STkQEspaL66lUFrDx5qxd888i5edZdO+YSwFgYWhsNMc4JtFoEFXZ
-	osOhP0SpQgQxNPTe8LQaphMvsW4O6UFEhYPEBVgC3EAKLiprGbUtjHGkuOCSTqF2
-	qfxtaINc4dIInHOhKF8eUHMU1FWT+uP1muOFRigkWOPKNBsqw6GVA7XOLBAxjqGB
-	viGWVSltZZsUqrk65F8vvqX5z6e0rH5mhMnVN20dbesrqHZ1FQW6oK3ESh3lp0J9
-	RQ1HqdfPNkqfi++1BLf9A==
-X-ME-Sender: <xms:xubgaWyt2tvtXeYYRjIlO52P_s-g-HP0l_3YgeVK9pQlkyMkiwmH-g>
-    <xme:xubgablOaH-Ju3NySP55YpUj2G81veBf7BXFg3cSS_V0ItmADnPpHCGHi9vaA7nW_
-    d9s99fFXH7M4JFw3LMoT4eA1g-uVj8jaa2We0m-NAU9pll9odD_UQ>
-X-ME-Received: <xmr:xubgafmJJV1l6d5N-pBINb7BBwUP9Gi1xJrydj-yoWNxjSuE5_GsDkcOq68>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjedugecutefuodetggdotefrod
+  by phl-compute-02.internal (MEProxy); Thu, 16 Apr 2026 09:49:22 -0400
+X-ME-Sender: <xms:4ejgaSIYoDKvzxgPhCYw9DPRyWu3jwC0TpDUBp2Y_WPBEvYW4NkgmQ>
+    <xme:4ejgaZZzLX6dOeyn967dwC6gkgLyv9vcgNA6uPCwoD_vHRVb7RcfCwDmoAjJ9YVqE
+    08pcZZq3c1LOn1mJr8ufEayJfWseVOwMDmPX8U7mXRxDeX49F70Dak>
+X-ME-Received: <xmr:4ejgae6P2292B6joISlFkUr1uSQIblLQ826adWwScn_jixogzy7A9WlfZMDvEA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjeduiecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepgeduvefhjeeufeevudeiueeuieeftedtkeevkefhgfdvteefleeuhefgtdeh
-    fffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeeipdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehfvghnghgthhgvnhhgfigvnheshhhurgifvghirdgtoh
-    hmpdhrtghpthhtohepfigrthhhshgrlhgrrdhvihhthhgrnhgrghgvsegrrhhmrdgtohhm
-    pdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtohepkhhvmhesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhptghisehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorhhg
-X-ME-Proxy: <xmx:xubgadyTrRENBgprQaqnksVneOFwQ-SaBhdXq6DyX_5AXBeWl_MjhA>
-    <xmx:xubgaUoTmJ5yyaADRFnLhowZGefmOHzB3-Bo3dmxnW_PjeM9IgxAVg>
-    <xmx:xubgac62Ghv3SnlTRpUdtkkQaMOAzfKqSsmq_OaUuGmD-Es8Ml_upw>
-    <xmx:xubgabfFyJ-QAiZqgqkvMyK3w-GK5K3W0VuxEWh1QO51CR3qT5Q9vQ>
-    <xmx:x-bgaQq2O-QxmHmr7H8VWNlFUeleYNUsVx2p_tKJGf3aFMKgc14xIVwJ>
-Feedback-ID: i03f14258:Fastmail
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepgeehudelheevjefftdeuheegudfhieeutdegjedukeefffeugeevvefhteejuefh
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
+    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeef
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplh
+    hjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvh
+    gsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvght
+    thesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:4ejgaSJVJZNJGoZKWD6T5M5NCXLkDUW8HAqvk7UxjtI2XNWxSUR8Nw>
+    <xmx:4ujgacZ3_iV3ApOrNQMeV55o3dk_kAFG7wtgo-r3D52O-xdB1xB3sg>
+    <xmx:4ujgaSwCvAmjEpSOSI1Euf8uiFljZZ1F2wZxHEPu8tpaRo64t5cn4w>
+    <xmx:4ujgaQV7QWSdaLPXVIHy_TozBtgAeyudvkqy14pgSHWIZEzajtLLfQ>
+    <xmx:4ujgaeYmb7YFAUc8ewO2iFBH8S_30cSSVTvrTPJ_T_QqPAxdKtfbGI7L>
+Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 09:40:21 -0400 (EDT)
-Date: Thu, 16 Apr 2026 07:40:20 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Wathsala Vithanage <wathsala.vithanage@arm.com>, <jgg@ziepe.ca>,
- <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH 3/4] vfio/pci: Add PCIe TPH GET_ST interface
-Message-ID: <20260416074020.57e4ed72@shazbot.org>
-In-Reply-To: <41d5b3ea-abe2-4583-be88-2addf6b4d394@huawei.com>
-References: <20260415090959.53672-1-fengchengwen@huawei.com>
-	<20260415090959.53672-4-fengchengwen@huawei.com>
-	<518e5e0a-d0b2-4775-a32a-e2dc87c8ba4b@arm.com>
-	<41d5b3ea-abe2-4583-be88-2addf6b4d394@huawei.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+ 16 Apr 2026 09:49:20 -0400 (EDT)
+Date: Thu, 16 Apr 2026 14:49:14 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aeDoqFWPFxkkNB26@thinkstation>
+References: <20260414142354.1465950-1-kas@kernel.org>
+ <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+ <ad50rPOseVa-SP_s@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ad50rPOseVa-SP_s@thinkstation>
 
-On Thu, 16 Apr 2026 09:09:50 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
+On Tue, Apr 14, 2026 at 06:10:44PM +0100, Kiryl Shutsemau wrote:
+> On Tue, Apr 14, 2026 at 05:37:50PM +0200, David Hildenbrand (Arm) wrote:
+> > On 4/14/26 16:23, Kiryl Shutsemau (Meta) wrote:
+> > > This series adds userfaultfd support for tracking the working set of
+> > > VM guest memory, enabling VMMs to identify cold pages and evict them
+> > > to tiered or remote storage.
+> > > 
+> > > == Problem ==
+> > > 
+> > > VMMs managing guest memory need to:
+> > > 1. Track which pages are actively used (working set detection)
+> > > 2. Safely evict cold pages to slower storage
+> > > 3. Fetch pages back on demand when accessed again
+> > > 
+> > > For shmem-backed guest memory, working set tracking partially works
+> > > today: MADV_DONTNEED zaps PTEs while pages stay in page cache, and
+> > > re-access auto-resolves from cache. But safe eviction still requires
+> > > synchronous fault interception to prevent data loss races.
+> > > 
+> > > For anonymous guest memory (needed for KSM cross-VM deduplication),
+> > > there is no mechanism at all — clearing a PTE loses the page.
+> > > 
+> > > == Solution ==
+> > > 
+> > > The series introduces a unified userfaultfd interface that works
+> > > across both anonymous and shmem-backed memory:
+> > > 
+> > > UFFD_FEATURE_MINOR_ANON: extends MODE_MINOR registration to anonymous
+> > > private memory. Uses the PROT_NONE hinting mechanism (same as NUMA
+> > > balancing) to make pages inaccessible without freeing them.
+> > 
+> > I would rather tackle this from the other direction: it's another form
+> > of protection (like WP), not really a "minor" mode.
+> > 
+> > Could we add a UFFDIO_REGISTER_MODE_RWP (or however we would call it)
+> > and support it for anon+shmem, avoiding the zapping for shmem completely?
+> 
+> I like this idea.
+> 
+> It should be functionally equivalent, but your interface idea fits
+> better with the rest.
+> 
+> Thanks! Will give it a try.
 
-> On 4/15/2026 9:55 PM, Wathsala Vithanage wrote:
-> > Hi Feng,
-> >=20
-> > get_st=C2=A0 feature is unsafe. It allows a rogue userspace driver in d=
-evice-specific
-> > mode to obtain steering tags for arbitrary CPUs, including ones unrelat=
-ed
-> > to the device or its workload, enabling it to direct traffic into those=
- CPUs=E2=80=99
-> > caches and potentially interfere with other workloads, opening doors to
-> > further exploits depending on other vulnerabilities. =20
->=20
-> Thank you for the follow-up and for referencing the prior RFC
-> discussion on this topic. I appreciate you clarifying the
-> historical context of the safety concerns.
->=20
-> I acknowledge the risks you=E2=80=99ve highlighted, but I believe the
-> risk profile in this VFIO interface is different and already
-> well bounded by existing design and practice:
->=20
-> 1. VFIO device access requires elevated privileges
->    A userspace process can only open a VFIO device node if it
->    has sufficient privileges (typically root). This is not an
->    interface for unprivileged users.
+Here is an updated version:
 
-This argument is NOT helping your cause.  This is not the usage model
-we design for.  VFIO usage requires that privileges be granted to a
-user, in the form of device ACL access and locked memory, but does not
-generally require elevated privileges beyond that, or otherwise grant
-the user authority beyond the scope of the device.  The root use case
-may be typical for you, but is not required for many other typical use
-cases, such as device assignment to VMs.
-=20
-> 2. In the thread "[RFC v2 0/2] Retrieve tph from dmabuf for PCIe
->    P2P memory access", applications can configure the steertag
->    of exported dmabufs from userspace to the kernel. Kernel PCIe
->    drivers (e.g., mlx5 NIC) then use these steertags and set them
->    to their ST tables. Even here, userspace could set invalid
->    steertags that impact GPU performance=E2=80=94but this model is
->    basically accepted I think (refer from maillist discuss).
+https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/log/?h=uffd/rfc-v2
 
-It's an RFC.  It's bold to claim that it's nearly accepted.
+will post after -rc1 is tagged.
 
-> 3. Malicious resource consumption is not unique to TPH
->    A malicious thread can be created to forcibly consume CPU
->    resources and bound to a specific CPU, affecting other CPUs.
->    This is a general system security concern, not one specific
->    to TPH GET_ST, and is addressed by existing system hardening
->    and access control mechanisms=E2=80=94not by removing useful features.
+I like it more. It got substantially cleaner.
 
-You're conflating process abuse of a CPU to a potential side-channel
-DMA attach from a device.  What *existing* hardening protects against
-the latter?
-
-> 4. GET_ST is strictly necessary for Device-Specific (DS) mode
->    when no ST table is present on the device.
->    For devices that do not have a dedicated ST table (a common
->    scenario in many PCIe endpoints), DS mode requires userspace
->    to retrieve per-CPU steering tags first, then program them
->    into the device=E2=80=99s steering logic via other registers. Without
->    GET_ST, userspace cannot obtain the required steertags to
->    enable TPH DS mode at all=E2=80=94rendering TPH support useless for
->    these devices. This is not an optional feature but a
->    fundamental requirement to unlock TPH functionality for a
->    large class of hardware.
-
-Unlocking a hardware feature does not give you authority to ignore the
-security implications of that feature.  Thanks,
-
-Alex
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
