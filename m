@@ -1,200 +1,322 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012018.outbound.protection.outlook.com [40.107.200.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DFE253B73;
-	Thu, 16 Apr 2026 17:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F793322B7D
+	for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 17:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776360803; cv=fail; b=BrocCSxhDqV0/PtATaD2p8wCPr41uuOesm1Gjg7JMK22sxv1WQOPgvP705eWsvG7XqbXx7tL8/qPFoAs2J+6A2MP419QTq5RgaaU8SlRgYa5X3N3Osl7G2Qb/ctypx1DpsvjjgOPpAJMWESxwQ07GqZyQYEjZPWArOITkSTMUeg=
+	t=1776361514; cv=pass; b=oU2fcSFAm2N6q5JHYGk0scn/0wR/7SZyz3YX15bFJPQwMUNKL2aQlzmO1xvazxLckYYoullDuv74gcKp/HL0vjl1obtBCEqqVE66NWxMyERvm1+hfPhAF8J4tyDKR2hxhhS07vcCtYfo53I65+wMvxyqYhjtZ1dPZP6LNO9nJaQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776360803; c=relaxed/simple;
-	bh=yxBDE5fdpP9rw0xs3zrQBzuOBcvsSsiAfSNXApbvTuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
-	 Content-Disposition:MIME-Version; b=snubo180K4GWJoylUoDLzsCZ3jirgFTAGrydWOJBcN4AMqhJwCvf+XuTq/qnvzxn86+Pcts3cWQ3/dnTu2I0nMOrtVpHTkA70Mgk8g22fz1S/2EMMtc17XY9jgcmXzu/iPvn19fvn2BAGiDomjEUPld4UTCT6eDp8GdS1WZz4pU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cFW2K+ir; arc=fail smtp.client-ip=40.107.200.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1776361514; c=relaxed/simple;
+	bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AwNdAPrvZBZ/IOmL7Lak373n5bZGH/L5HqMdbz7qRrvn7QWg8X5Z936bzYvx3A5tzIQyIbhM2GNTe0zex6MFabyU5fvH8KBM0hmFargQjJdtAJTATuCsnegi/8JL/CimPUKkJg/RzjzhK06oe4UiMd3CYcsJkUYwo73SiTCUsu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t5nOymyl; arc=pass smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cFW2K+ir"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fngt2EyZomff707Z4vUEpIeVlSz9KBDoHgblnOevWytsA/nFhd2WH/I3sDi922jdaPEpeJbNcrXLbPb5xlR4F6xy5JMISla9B3yE1PUXEJCQZFr5AOQkj6icSn1shY7O8N30vusl8fwCpH5vNNBhKVPJ3K7F6RJFoj47aJ1xQLViftmCDF6NRwseVUkSjVEh2LELG9xkm9r2Tla3A+Cgy8elICfQUVXLrna4nPFUOPLbLu6IG97sUQDpg8oHnWL4Y5XP4vqFecUdVDiYoky7cicM3A5YhaN5I/1a2qQMvfpYyD6giWeG+RIxNEuEZLuDJBeFM57PDHu7iDL3ymfYlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vgEDL6VdcaHL/R6JbgowJSlvhPJgkoSBEequLN4Cj44=;
- b=kR7S8KEjfBNqDFT1bH0bRt4OOMXx2FOAGodG0MWJI/0D579TQBOhZhvnbwzrg00v90QT2rwxWVipQ5goppug4TlluIZurexf5Cc6q7VHAD9u7v6DxQju4/49BDEaY8DfnIfLsm1xVuHpa44N5erg3Mw1nM2GoB/yhboFmfH8OZ4Wft+xPtnAsDOfvi1jVxSGa143zbhlC6hnB+NHNbx1XjHzSKZiR6E0EzpzJEW7bVXFRnYwPvVTWzsb23TnkMxuBkLmkIUP2iCGPJBH92VgqIpLs0JpZoLBjA0NoyAtQB12qaikmY8lt3CBvNg5TrTVk1H43yofj/robx+G8QpMBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vgEDL6VdcaHL/R6JbgowJSlvhPJgkoSBEequLN4Cj44=;
- b=cFW2K+ira7OsEareRN+VnwZ6qaw7l4rcw9k1je93UHieA5ZiYtsXqCHpa4pQ7F27FF2PC4HG4BHuAddAOX9pNesSitsolP/f3S0G99wbTM3cg2+22XDsZPI3WjiJMepiI/JWE2DM+zB69+4cTskWXSGDXcri1aQFFyw/ZRgKprlp2lp1KY7DPis4ntGoN60A8RfeBHvt52CvGYQQ9CFZYA43avaiTisLboEcKMyT03b2uQFbxkWj2FHPIUctd/pNw+u4RMAw9qnGLio7wmfsmH5KHYxCKcBgOQFoE9oO6LugkBGIE0ULwl+0gsFWbX4kTmmHy1mrDeVayU9CH1yScQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH7PR12MB7796.namprd12.prod.outlook.com (2603:10b6:510:275::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Thu, 16 Apr
- 2026 17:33:19 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9818.017; Thu, 16 Apr 2026
- 17:33:19 +0000
-Date: Thu, 16 Apr 2026 14:33:17 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>
-Subject: [GIT PULL] Please pull IOMMUFD subsystem changes
-Message-ID: <20260416173317.GA1886788@nvidia.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="k/zJzsvoMjd8qYN/"
-Content-Disposition: inline
-X-ClientProxiedBy: YT4PR01CA0387.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:108::12) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t5nOymyl"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-899a5db525cso64497926d6.3
+        for <kvm@vger.kernel.org>; Thu, 16 Apr 2026 10:45:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776361512; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jRipPZ4k6/nlWxBhZ9ZMU2Y0wRQFWiZVoIYaHrrWM7MgeYy8AAafiUKlNFxNkVaSEB
+         txUHSyL74yrkmsm6Thr/Abvwm734I8NM2ZWkIQVjaRYQm6ZyB2UPtKwpuIIOfxDdABVz
+         jD6FxO9Zo/QnKHbmQv6KDPQjkZOSw1o12Ssg8NynzkbYGPzUR8ACjK3/BvtAD+zjjB/n
+         kgEBSmGI2qVUdY5zvAaZdoisyizNq/ki9FeZ+coIjcHR51BinHPapcM6a0OF0d8JK1ZB
+         zjZ/+G2ZDTU7SKVOunX3Pfw49XSbQsKYcWpxpJbNlz0qEfhisoqwVXt5Nnr/tFnA2hu/
+         H0QA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
+        fh=Q05kp7JbbhuKVxf3qUIQQAtPum+N1viuIS8XckXf1BQ=;
+        b=TocE12bGrErj63hXDdEJKzOhFTqffyr48dXvOXLdCZhTQkmvbgXJskQIJJ21o9oBIT
+         x4dx2r8EatoWyT9w0n3hPFcLCPuuCRUJ7LpS/eBVkNXdfCl6it/OsXTEv/PK4XjQ/tL+
+         RZEBf47NvFpV1UtrJs+ItPvMrxYIYBEFz7JEWXkH/qYDN4AyCU/NHwvBrGYVApV4GGwd
+         8XerrLDt32UNHJZnVAmee1KFLKJ8b+LIh4kwga4j5yJfblwDaXe7c2vqIJOGyrQz3MvQ
+         I5S+Yknky0tbvLssJ+ZMDMJukdjsbDK9nJiXiisfNwXodWdBCIF1YQpUCRqp2JoM6uSr
+         BQew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776361512; x=1776966312; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
+        b=t5nOymyl9orXp5JRS17GUiVxDzofOPb8yqJib4eF3pAQ8b4r6IaZQFUO4Rkf+A7x2e
+         ECNFJiG8T4yrNnpmEPFB7jinPnUm7aB6Uv3qTwMzpWkZAzKd7Jj67uTvjt7pLNevJsRi
+         7arE6R9HS5LMeDIW/uThjVnGMhmRzN+WWMLlA9/UQV5CeHYdipacbjN2hDQKPeD7P/5o
+         Oe4fV2Tt3tpI3aeLMnIoWW6J5ARK6jDYqb2arZlNY8eNh56YsMne2ZN2eaHwbpdPZlao
+         LPeLgzD+rgxSgC33xKOO5Xcr/Cn/MNsrkjTHGyqYxVeyyDq8m52BHkYb1cbjGQwHfPuH
+         gStg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776361512; x=1776966312;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jzm6W1Z6bNw1R7/BddIGRoaarTGeMoKKc61rcr/dEKQ=;
+        b=QEcRfrnkp90pswQsEt8NYUCPU0ThoB4L3HFeeVlrFVSexB2YI+BcAXfv6hgHgjhFg4
+         WfjPDu47AoN0lq1DosdpmS3I/WKK7WZl3JaAA18b+Ge2CaV20O0ijadx80PdEWIO1j2E
+         pZe37KeBMPeecS2xOx0dtUaceygHkDvC9Mn6xrOuqVSPMcdqeEGT1YietXMjYJeruyYy
+         NYTrKHGuj6z/EY86+ZMxJ02HYhxt1HVzjjIRJ86iZl+pD1cwL8a33GllJCp0zW7mQf+z
+         PwFSo0m9ftq+V9d9MpLYknsdPqjqzXz1uIafmROJ+IkrOfGxIPWD/4HctzBTSD4x+iLw
+         81zA==
+X-Forwarded-Encrypted: i=1; AFNElJ90UTDTt8E7FPTdaX3FPag44tFCifjhubQztqYqeRsaUGGO/ZNjz41Lgv1L1p2xBACGjBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySoLI8kPloKB8aNo89rHGGeEEyjT+sJXhyEzkXMrxp3ppQZyYU
+	Op+AJXCoY2cAzq/QTG7myee1e2dsRhZm6d0RrZXqchQcq60FpO7r/jzQsrTXpvJ43b+H01aPGD+
+	g+DMXn6Uso4fWj5ICvpliC4PA9/lVVLhsf1nd88oI
+X-Gm-Gg: AeBDieu5FZop2dmeyJ9Y79TbnJF3Ey3setw+Xkm8VYBRIMAGQufD9MYSj4fmJrPmjsJ
+	k3kqASRqkmxmTKMziKTkL5HP7uPnuaoL9mWOStV5bGSsLL/3DHjeztbp6zOF8zJ8wpknEh66g0G
+	gvMlYvruLjTla1pWtO76ChNCiHZ/HMxH1k/6Tqx4IBK/F1IK639yfz52uizdR67NC5Vk5UjfbLI
+	ZHNrIBCl4KvzD2ZQdizIyRiSDIANbdlmt8CqJcuUDMSIbg6dNVpNaMTzsNdTZr7i1T1VIuIGUB4
+	+D2gtfVMlvz+FW0z6wJW6YejggMivV6Aiz0aCZ2qifbQfPo2F9bTCxdcMmc=
+X-Received: by 2002:a05:6214:4b0c:b0:8ac:a0b0:64d5 with SMTP id
+ 6a1803df08f44-8b025ec904dmr2618146d6.37.1776361511320; Thu, 16 Apr 2026
+ 10:45:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB7796:EE_
-X-MS-Office365-Filtering-Correlation-Id: 683a2bb7-8f7d-4f5b-b770-08de9bde3fc0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	y/Fokues7K6eK2lvKihrs3vBNT8vTj6vgBRHzhYRm46q7ov/C6ZDV5linAKYFO7p5xehb1/puWvCaRdSgalOZdXEdG6tl7WDX2IelFDAHJNs5dtBIFY90zSHGisx3X8bwoyp1CeXLH7MBu4vV+dEiPEaVCPFCzPhvnnzf41nT/BFfsFfr2GlMetkt4WpBLBxxMiiYjcgC3r9py84TVHhkW/yi1K9zW5Z/eVeEnXVCXdeJLew4t0+2eIMe7KjBA6YOzD7F04c8IeL0YWqXX4OOrTPXaRHSdKaYkAkDAv38+oQzTF9lr8mczihrC7gd8PjyQ7q9UkKD9GVtImrTh6JYC4akr/CABr662fQvZDMtRZvpE757x1WdzBj02TNSnPOqeTZHLOZWedOyKimpxd9KEGwz8OP9cAeJaZaUq0Y22AaR6jnF+mKKUHLH2x+4rbhVp62dFYb7Vw+1MVvypnZ1cfbv0mm+vE0mrQMRNaI71PFO6IGEPlxSVciUfBfjIcpw4T30e0KYJnvF5gqCNHKCL9llrV0j3UO9zTeNDgJu+RYdVB7hqpUJ/JpaMqIrkZT2HS6yMJmzUE89Xbkg5qI3uw03OFgMmmNtrE4uJzCWakdX0dC8IP6NPjHqL9oyHrm081TwU5OMQaJrJwYArJMMS7rInsGJX5WPnQhGrN5pnoM5r+giO4IzR+iKQPc5742ajVfSL/FwHxm2GyHf6AbRGSxchvGEvINEiVbUDasw/w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vsMx6JBioXgmXSi23XLQKRRBa3DRNPzZWdBME1BCFx0W2hfbPLfnpZcYqWFr?=
- =?us-ascii?Q?+TDLhh8SPt4mh6P8cV01BrdPW3ACPzGfp14SWeOsWkF2JIMh6LZzY+9thn7f?=
- =?us-ascii?Q?kepMchPGaPo+aEICiVXck74Hl0PGzLApPMAFcROhsMHw36++ypa4ubBfvfhS?=
- =?us-ascii?Q?dcQy6TITI/xoLMnEvB0Sah74YMoJIpdT/rNpdIQC0H5hDAVqSq/nrPtxa6fC?=
- =?us-ascii?Q?hZ4AjHRkVnKYOTz4yJDE/RR7xqy5qj/Y3CMgPWVqIpImB6m+QZ//RIX3+KHm?=
- =?us-ascii?Q?DpTYzTGMi5ioDU+Y3RKWnjX0lYIWNcYvJVAVIB4LUOb3aWnoI5pjYOLaX+Ik?=
- =?us-ascii?Q?XsjVLWjtA446EtJAMPqjE4Btu5D1i9aOuI3CNg5jQCt7/jRo8RqWc7bKxf9u?=
- =?us-ascii?Q?USQvkA2S/aWhsQdIVUmcE5cS9E07NpPUVegqvfIOecdEetRO47nHZw0f8SJJ?=
- =?us-ascii?Q?rbw69t2zMipQPhj45hyK66nI0WcfoEC09RtZZyaDjBssm53Qzz7X8NSxtdkt?=
- =?us-ascii?Q?E7SrUBS24vze7tsJzj6DsJbCh8YFlWkCxmWR62kaUOFkqLwHZuDDr3WF/GWY?=
- =?us-ascii?Q?XqURo7c/qUI5T312s+9+KjPM5VGTIDpLA+KZja0VO3OrKZ+1uyqR3OwgrBrU?=
- =?us-ascii?Q?kc7MtW9LWJZGEMidmCx5C3n2KUX9gGwLYSNdBbTchrp0yKPndThBQi+7GolU?=
- =?us-ascii?Q?9Rhu6uSxxTx7tWzdyzh1ZVc+V4eLrOFrZX9AUJaqmvhDR4hTCWbOdKRYPaG8?=
- =?us-ascii?Q?k32Ll9GB/n0dn5RF6vk0gEW+CdVNbMIWLzkLPc29JmZRu00LIZaA4svVb/Q6?=
- =?us-ascii?Q?uIffrKoMc/SsfXGM87u2qYLxbWSOe4C0wdXKtin2GVtu64EjPNSKabx+oCwx?=
- =?us-ascii?Q?R/vkWRHzbDezORXPovR8HNAVNg8+FuOYdvwaIoEJHX8nFKQ+sgS6S4/gayeD?=
- =?us-ascii?Q?9b6nnbenivXwLM4ElkkENAiPJ8qTTjCSvOymeUneXJO+dErWYPyX8ot2OYlX?=
- =?us-ascii?Q?zJZAvH21Uh0msnYYpoWbBuqYIlTzLpPsZ05ORLYsUpo5rDS61K89rbICfFn2?=
- =?us-ascii?Q?/Hhl+73FKh9dFhnCzc29G/OkFkgklv98JvqyivI3FQ+pQpB2xKySK0wPdtXD?=
- =?us-ascii?Q?L4+g3DHeCLEECMA3Qvh5u3qvaQkGxmBdRAyaGnfsW2/Ukb4TaSVeYvL8WFi5?=
- =?us-ascii?Q?tdCOVVQbf2O2DX5X6sTkWdSYV3wG9eigix5WHaEp9CqbS4/zmBimN8bOkPZM?=
- =?us-ascii?Q?iZPsKl/FB1hDBrASzt8S4SWkeHT5VwQ5oYwJef9pYkqkGt7JroG3RfNAlBDK?=
- =?us-ascii?Q?sisFKXGWgDCz/53v9W/foF/Tbb7IHn5zJZk38CTNPu+7abcX8ZMn/pPeCN65?=
- =?us-ascii?Q?MOpA2wCmM/zhJEHt4c/dAe9tKZkoC3fDq9RzdQXX9TIsXOGQv1IGd1k/Uc8l?=
- =?us-ascii?Q?obwccLIdfMK3Hbvzory7xYGVXV8TQowSuEs9gpZy45WGbjL/KhuVtSzPKr1C?=
- =?us-ascii?Q?BIJMJO3SvZr/WVt1ViZqbC1PqFqw32ysycxxlt3TlL29/o5uRHShU9sVEYgl?=
- =?us-ascii?Q?Sr6BJp8jtX8btZNf4psHClFoaP2uqzZ0e5B35UE2ZqLPIgPq3qGYCVCXUy3g?=
- =?us-ascii?Q?fMrdI65OrnhA2mNF08O71ouXpsBn75xM22YUb07/GbnzzSUuug8/TFWr4Blb?=
- =?us-ascii?Q?/QWf6ByGP28/eP2lcvD0iQwQukt4ELs8FAyUc7LcSoHFsuN+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 683a2bb7-8f7d-4f5b-b770-08de9bde3fc0
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 17:33:18.9594
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3u/i0ALIvclZf5iOob+k6Q9ZnfqHEKiTIhBNowu4JxyFupFkC4JEmuHg1rOkC06f
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7796
+References: <20260318155413.793430-1-steven.price@arm.com> <CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com>
+ <d661a24c-6619-4734-96bd-075d3416e809@arm.com> <CABpDEumAVf02uOS5Bj07EDyuU=z9FV-iocQU1j7gFM5z0BeV_w@mail.gmail.com>
+ <97d26e6e-b565-447f-95eb-2ece0755fe57@arm.com>
+In-Reply-To: <97d26e6e-b565-447f-95eb-2ece0755fe57@arm.com>
+From: Alper Gun <alpergun@google.com>
+Date: Thu, 16 Apr 2026 10:44:59 -0700
+X-Gm-Features: AQROBzAsj7mxI_HflVua65l9TneHSVQXwlFi8oSRcQgYzKeZgfQilvBV9R8pGsg
+Message-ID: <CABpDEu=vbo9cDL1PKh2h9JjWCHPP3M9-ueogkPc571c1OQPuhA@mail.gmail.com>
+Subject: Re: [PATCH v13 00/48] arm64: Support for Arm CCA in KVM
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
+	Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---k/zJzsvoMjd8qYN/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Thu, Apr 16, 2026 at 4:05=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
+m.com> wrote:
+>
+> On 16/04/2026 00:27, Alper Gun wrote:
+> > On Wed, Apr 15, 2026 at 4:01=E2=80=AFAM Steven Price <steven.price@arm.=
+com> wrote:
+> >>
+> >> On 14/04/2026 22:40, Alper Gun wrote:
+> >>> On Wed, Mar 18, 2026 at 8:54=E2=80=AFAM Steven Price <steven.price@ar=
+m.com> wrote:
+> >>>>
+> >>>> This series adds support for running protected VMs using KVM under t=
+he
+> >>>> Arm Confidential Compute Architecture (CCA).
+> >>>>
+> >>>> New major version number! This now targets RMM v2.0-bet0[1]. And unl=
+ike
+> >>>> for Linux this represents a significant change.
+> >>>>
+> >>>> RMM v2.0 brings with it the ability to configure the RMM to have the
+> >>>> same page size as the host (so no more RMM_PAGE_SIZE and dealing wit=
+h
+> >>>> granules being different from host pages). It also introduces range
+> >>>> based APIs for many operations which should be more efficient and
+> >>>> simplifies the code in places.
+> >>>>
+> >>>> The handling of the GIC has changed, so the system registers are use=
+d to
+> >>>> pass the GIC state rather than memory. This means fewer changes to t=
+he
+> >>>> KVM code as it looks much like a normal VM in this respect.
+> >>>>
+> >>>> And of course the new uAPI introduced in the previous v12 posting is
+> >>>> retained so that also remains simplified compared to earlier posting=
+s.
+> >>>>
+> >>>> The RMM support for v2.0 is still early and so this series includes =
+a
+> >>>> few hacks to ease the integration. Of note are that there are some R=
+MM
+> >>>> v1.0 SMCs added to paper over areas where the RMM implementation isn=
+'t
+> >>>> quite ready for v2.0, and "SROs" (see below) are deferred to the fin=
+al
+> >>>> patch in the series.
+> >>>>
+> >>>> The PMU in RMM v2.0 requires more handling on the RMM-side (and
+> >>>> therefore simplifies the implementation on Linux), but this isn't qu=
+ite
+> >>>> ready yet. The Linux side is implemented (but untested).
+> >>>>
+> >>>> PSCI still requires the VMM to provide the "target" REC for operatio=
+ns
+> >>>> that affect another vCPU. This is likely to change in a future versi=
+on
+> >>>> of the specification. There's also a desire to force PSCI to be hand=
+led
+> >>>> in the VMM for realm guests - this isn't implemented yet as I'm wait=
+ing
+> >>>> for the dust to settle on the RMM interface first.
+> >>>>
+> >>>> Stateful RMI Operations
+> >>>> -----------------------
+> >>>>
+> >>>> The RMM v2.0 spec brings a new concept of Stateful RMI Operations (S=
+ROs)
+> >>>> which allow the RMM to complete an operation over several SMC calls =
+and
+> >>>> requesting/returning memory to the host. This has the benefit of
+> >>>> allowing interrupts to be handled in the middle of an operation (by
+> >>>> returning to the host to handle the interrupt without completing the
+> >>>> operation) and enables the RMM to dynamically allocate memory for
+> >>>> internal tracking purposes. One example of this is RMI_REC_CREATE no
+> >>>> longer needs "auxiliary granules" provided upfront but can request t=
+he
+> >>>> memory needed during the RMI_REC_CREATE operation.
+> >>>>
+> >>>> There are a fairly large number of operations that are defined as SR=
+Os
+> >>>> in the specification, but current both Linux and RMM only have suppo=
+rt
+> >>>> for RMI_REC_CREATE and RMI_REC_DESTROY. There a number of TODOs/FIXM=
+Es
+> >>>> in the code where support is missing.
+> >>>>
+> >>>> Given the early stage support for this, the SRO handling is all conf=
+ined
+> >>>> to the final patch. This patch can be dropped to return to a pre-SRO
+> >>>> state (albeit a mixture of RMM v1.0 and v2.0 APIs) for testing purpo=
+ses.
+> >>>>
+> >>>> A future posting will reorder the series to move the generic SRO sup=
+port
+> >>>> to an early patch and will implement the proper support for this in =
+all
+> >>>> RMI SMCs.
+> >>>>
+> >>>> One aspect of SROs which is not yet well captured is that in some
+> >>>> circumstances the Linux kernel will need to call an SRO call in a
+> >>>> context where memory allocation is restricted (e.g. because a spinlo=
+ck
+> >>>> is held). In this case the intention is that the SRO will be cancell=
+ed,
+> >>>> the spinlock dropped so the memory allocation can be completed, and =
+then
+> >>>> the SRO restarted (obviously after rechecking the state that the
+> >>>> spinlock was protecting). For this reason the code stores the memory
+> >>>> allocations within a struct rmi_sro_state object - see the final pat=
+ch
+> >>>> for more details.
+> >>>>
+> >>>> This series is based on v7.0-rc1. It is also available as a git
+> >>>> repository:
+> >>>>
+> >>>> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v13
+> >>>>
+> >>>>
+> >>>
+> >>> Hi Steven,
+> >>>
+> >>> I have a question regarding host kexec and kdump scenarios, and
+> >>> whether there is any plan to make them work in this initial series.
+> >>>
+> >>> Intel TDX and AMD SEV-SNP both have a firmware shutdown command that
+> >>> is invoked during the kexec or panic code paths to safely bypass
+> >>> hardware memory protections and boot into the new kernel. As far as
+> >>> I know, there is no similar global teardown command available for
+> >>> the RMM.
+> >>
+> >> Correct, the RMM specification as it stands doesn't provide a mechanis=
+m
+> >> for the host to do this. The host would have to identify all the realm
+> >> guests in the system: specifically the address of the RDs (Realm
+> >> Descriptors) and RECs (Realm Execution Contexts). It needs this to tea=
+r
+> >> down the guests and be able to undelegate the memory.
+> >>
+> >> It's an interesting point and I'll raise the idea of a "firmware
+> >> shutdown command" to make this more possible.
+> >>
+> >>> What is the roadmap for supporting both general kexec and
+> >>> more specifically kdump (panic) scenarios with CCA?
+> >>
+> >> I don't have a roadmap I'm afraid for these. kexec in theory would be
+> >> possible with KVM gracefully terminating all realms. For kdump/panic
+> >> that sort of graceful shutdown isn't really appropriate (or likely to
+> >> succeed).
+> >>
+> >
+> > Thanks Steven for the clarification.
+> >
+> > For us, kdump is highly critical as it is our primary diagnostic tool
+> > for host crashes. Without it, monitoring and debugging at fleet scale
+> > would become unmanageable.
+> >
+> > To confirm my understanding of the current architecture: if a host
+> > panics while no Realms are actively running (and therefore no pages
+> > are currently in the delegated state), the standard kdump extraction
+> > should work perfectly fine without any modifications, correct?
+>
+> This may not be true. We could have pages donated to RMM for GPT,
+> Tracking etc. So, unless Linux keeps track of them, it may be
+> unsafe for a crash kernel to access them.
+>
+> >
+> > Regarding the KVM tracking structures (RDs, RECs, RTTs, etc.) when VMs
+> > are running, perhaps we could use `vmcoreinfo` to export the physical
+> > addresses of these delegated pages. This would allow tools like
+>
+> Thinking of this, do we really need to ? We could access the pages from
+> "vmcore" read and handle the GPFs for such accesses and give out 0s
+> for the Granules. Anyways, we can't get access to the data on those
+> pages that are still in Realm PAS.
+>
 
-Hi Linus,
+I like the idea of handling the GPFs directly during vmcore reads for
+kdump case. That's much simpler\cleaner solution.
 
-A small number of little fixes this cycle.
+> > `makedumpfile` to explicitly filter them out. I assume these pages must
+> > remain hardware-locked while the VMs are active.
+>
+>
+>
+> >
+> > Long-term, having an architectural shutdown command - similar to the
+> > TDH.SYS.DISABLE command in Intel TDX - would be incredibly useful. It
+> > would allow the kdump kernel to safely bypass these hardware security
+> > checks, especially when extracting host-side KVM state.
+>
 
-Thanks,
-Jason
+> For kexec, may be we could do this. Alternatively we could try to
+> reclaim everything back, (GPTs, Tracking) before kexec-reboot.
+>
 
-The following changes since commit 11439c4635edd669ae435eec308f4ab8a0804808:
+Agreed. Reclaiming all delegated memory prior to the kexec reboot
+makes perfect sense.
 
-  Linux 7.0-rc2 (2026-03-01 15:39:31 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd.git tags/for-linus-iommufd
-
-for you to fetch changes up to 8602018b1f17fbdaa5e5d79f4c8603ad20640c12:
-
-  iommufd: Fix a race with concurrent allocation and unmap (2026-04-11 09:57:02 -0300)
-
-----------------------------------------------------------------
-iommufd v7.1 merge window pull request
-
-Several fixes:
-
-- Add missing static const
-
-- Correct type 1 emulation for VFIO_CHECK_EXTENSION when no-iommu is
-  turned on
-
-- Fix selftest memory leak and syzkaller splat
-
-- Fix missed -EFAULT in fault reporting write() fops
-
-- Fix a race where map/unmap with the internal IOVA allocator can unmap
-  things it should not
-
-----------------------------------------------------------------
-Christophe JAILLET (1):
-      iommufd: Constify struct dma_buf_attach_ops
-
-Jacob Pan (1):
-      iommufd: vfio compatibility extension check for noiommu mode
-
-Kexin Sun (1):
-      iommufd: update outdated comment for renamed iommufd_hw_pagetable_alloc()
-
-Pranjal Shrivastava (1):
-      iommufd/selftest: Remove MOCK_IOMMUPT_AMDV1 format
-
-Sina Hassani (1):
-      iommufd: Fix a race with concurrent allocation and unmap
-
-Thorsten Blum (1):
-      iommufd/selftest: Fix page leaks in mock_viommu_{init,destroy}
-
-Zhenzhong Duan (1):
-      iommufd: Fix return value of iommufd_fault_fops_write()
-
- drivers/iommu/iommufd/device.c       |  2 +-
- drivers/iommu/iommufd/eventq.c       |  5 +++--
- drivers/iommu/iommufd/io_pagetable.c | 10 ++++++++++
- drivers/iommu/iommufd/iommufd_test.h |  1 -
- drivers/iommu/iommufd/pages.c        |  2 +-
- drivers/iommu/iommufd/selftest.c     | 35 ++---------------------------------
- drivers/iommu/iommufd/vfio_compat.c  |  2 +-
- 7 files changed, 18 insertions(+), 39 deletions(-)
-
---k/zJzsvoMjd8qYN/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRRRCHOFoQz/8F5bUaFwuHvBreFYQUCaeEdWgAKCRCFwuHvBreF
-YT2yAQCwqYXT6Sstg/A+XTxPwNRc8ZIBfpA/niN33JIccIaUCAEAhEvBO/qg/da0
-EOD7huioNuMdosXO7vFVyYVw0VbuXQ8=
-=6/s5
------END PGP SIGNATURE-----
-
---k/zJzsvoMjd8qYN/--
+> >
+> > As for the protected realm memory, I assume that is an easier problem.
+> > We naturally want to exclude guest pages from a host dump regardless
+> > of whether they are Realm pages or not. However, accidental touches
+> > are still fatal.
+> >
+> >> There is also some RMM configuration which cannot be repeated (see
+> >> RMI_RMM_CONFIG_SET) - which implies that the kexec kernel must be
+> >> similar to the first kernel (i.e. same page size).
+>
+> That is true, the page sizes must match. RMM spec is updated to probe
+> the state of the RMM and detect if it can do the CONFIG_SET
+>
+> Suzuki
+>
+> >>
+> >> Thanks,
+> >> Steve
+>
