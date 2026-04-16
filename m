@@ -1,122 +1,166 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5914B25A2DD;
-	Thu, 16 Apr 2026 07:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C87638F230;
+	Thu, 16 Apr 2026 08:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776325967; cv=none; b=QWYts0JjL8XGrcJLTItieJCVS1qXOjhdJZ/RetCzfp/EQZGG2EBI6aEqDEhFALd5oUhghKwY5h1hBhggfV0R5J6VaPd/Yn0kMPKFkqX6RxUzyrvwNwj6Vs2K0J1owHEZzOd7OTcIzLK5I12m76GfKlgRQ5Jm8l00aGn3TEq9tvU=
+	t=1776326416; cv=none; b=dgDsY9Gr192y5/diEYC3ds3cs4ndck6fm0Z30WZdAkvK+ueNKxLLl0Lk1W2JhX36JzEusATLN7iFyjs7PL7sjbxMx7NactF8aKwDJRc1SVZtVUvJo16F+N/DraaynBsUSs6B+oP5DbecfvEHj6PI3t+4R957hae6JHMrLKO8mxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776325967; c=relaxed/simple;
-	bh=3eznngIxB7sBMhkD+RkePITbslHeIIbj318YtTFjwwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pp5OrJuCXp+I4lwM9OLbACX0CIIrCK5ADY4EwccVv2ZbjT7f5YgEx+/Tod664nN59CGpLSZ+3PvBNd7OcqMg0mupV4xG5fykKtBYT2G3JCfK3DY3QT8VIjgsYdB1OHX6r228F6kC3fpWE6H/r7Q38grg4SMTiASXFfXqZ/fdM6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XvXj9MED; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776326416; c=relaxed/simple;
+	bh=Ho6xh4HmNTyjxY0X1CCeGc4uDCPU7AKiYhqwe1YxOQ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nhsBVy1xaWP+HvFSUHcczL2n28Hkofa+b0FCxjRaJDDCchB5EsYoXmtoTO4ocZFOJa/cHs559UndFEtyH1JwSd73DYwqmmOnxH3JiC2QydE1/Xe+0x6D6rvwdghWQ5uTLmcnhFbHd8xeJOxVJcoT5VRBqZqGTRN2De+3ieGOS94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S4W6aJnx; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XvXj9MED"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776325967; x=1807861967;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3eznngIxB7sBMhkD+RkePITbslHeIIbj318YtTFjwwU=;
-  b=XvXj9MEDTVRR+libDi+w9xEzwmpu9nP7twidWwS+hLaTsQEQK8D7F+6Q
-   cxgovWtjUAC+AsrD2NQkx7GQ060D2qfDhUZ2Lv2iu2fuh9Pds04bjWr4g
-   vNpHLREj2HCgu7gSR5wMiWl7xFVnvCF45g+LHXjqiPmZOKBgan7zaWWpn
-   C/ajvH7+eRFGa+yyY7+NaSB28rzPtGGsWo3LxTqmPXFGC7lISsUbh9Wz+
-   xx3gNSg2asRUdaKEEb51hIwLMpL8SMron8qR4g8fTC6qCfZtTSVygZo5+
-   lJgzx6H6JZ6tPjJoOWj8sRZQfOtPP5pvKq3bgAl5EF9POchH2QhiDWN7L
-   w==;
-X-CSE-ConnectionGUID: Awsqv3EgQHuT7nCXnUbDgQ==
-X-CSE-MsgGUID: imk/sQrUQACM1rC8D7aYkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="81199639"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="81199639"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 00:52:46 -0700
-X-CSE-ConnectionGUID: J3mB+uQDSjm8yMqW86NbUw==
-X-CSE-MsgGUID: l90HKRPwToSZtaXG5Ah+2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="235608328"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 16 Apr 2026 00:52:44 -0700
-Date: Thu, 16 Apr 2026 15:30:48 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Dan Williams <djbw@kernel.org>,
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
-	kvm <kvm@vger.kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
-	Alex Williamson <alex.williamson@nvidia.com>
-Subject: Re: [PATCH 1/3] VFIO: take reference to the KVM module
-Message-ID: <aeCQKMbQpeQM2Rk3@yilunxu-OptiPlex-7050>
-References: <20260407180107.1603697-1-pbonzini@redhat.com>
- <20260407180107.1603697-2-pbonzini@redhat.com>
- <adf29Rn7q9Db0hxc@google.com>
- <CABgObfZQ8kcdfiaUyGi6AcZErJztEmcdTcLwo946qtXfUwDM4g@mail.gmail.com>
- <adkFk3ZN4HJtpLA3@google.com>
- <69d977c0b367a_6c31a10021@djbw-dev.notmuch>
- <aeAt4b-QvpcwtRwQ@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S4W6aJnx"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G1dGkq1733958;
+	Thu, 16 Apr 2026 08:00:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TiLrfB
+	EvZf25Er5GEwnfKUAFLWg/k7VfIe8fClNh99E=; b=S4W6aJnxT65JodCtPCOgfx
+	Ko5tUNbv6iFjqtz3SK1qhm2ee+GENFdBs7x3BD2wo9RtGRrtsbiKgTmauza7+GoQ
+	8h2RzMlOKL0f2r7bgAq32NINpxMTz0jCEAEhArzkB3hMY89sQi3QdBboza2U+J32
+	aCetVPGh6ex7fZQrMzotm3C7wi2OgOs6Iajyk37/ACqIy2W9F4uMvwSmJICh5d0Z
+	+TkTCAOVRMdOUwpC4akoQv/qskzNZymwixn+Rz3sQYCYIArx8bPSRn6a2tAn9+5g
+	s1zL25KQxuaR87tCi8BSdLZLig9oT53+qys6f6J5U0gZLpfwdv99jde4tnh0sh7Q
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89mbgmk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 08:00:12 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G6PmnI015149;
+	Thu, 16 Apr 2026 08:00:12 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0mst57v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 08:00:12 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G8080F55706084
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Apr 2026 08:00:08 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 87FFC2004F;
+	Thu, 16 Apr 2026 08:00:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4EBA920043;
+	Thu, 16 Apr 2026 08:00:08 +0000 (GMT)
+Received: from [9.111.91.184] (unknown [9.111.91.184])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Apr 2026 08:00:08 +0000 (GMT)
+Message-ID: <c8cbd326-a393-4906-90d6-40ce9bf7f309@linux.ibm.com>
+Date: Thu, 16 Apr 2026 10:00:08 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeAt4b-QvpcwtRwQ@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests 5/5] lib: s390x: Remove kvm s390 prefix from sie
+ control block
+To: Nico Boehr <nrb@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
+        borntraeger@linux.ibm.com
+References: <20260415085145.91197-1-frankja@linux.ibm.com>
+ <20260415085145.91197-6-frankja@linux.ibm.com>
+ <DHUEWSSY4DCK.13BQA6YYBXJK5@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <DHUEWSSY4DCK.13BQA6YYBXJK5@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69e0970c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=hJuIRY9HTYWKoeS5xb4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: EnXKyrKIKd6OnNKxp9leIZIsr2hDjZkj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA3MiBTYWx0ZWRfX+mD0e9WKKoxQ
+ J9m7FO9jPHG4GFsQTw48RQuMxringvaKVLL8a3WSMl3qQqq5D4SLpvPIijVO81+f1i3Tr6E5Ex3
+ q0jldgU6kY1mmw6B1ZUD70sQdpjcvCwuNckzQ1BmN8COyrbqI3SyijhGuakJwik2TLitIMZCJNw
+ 5OG9I+vYTKYpFkyGbke8D3WEqWbHuBHVNhgTuRjoy2G5U6QwU/StK+sjyu9AdutweRS44/mN07X
+ WE5cZ+FVWyx8jjxDh1v1Ta2Q9/3NBjHFrOHeyFxx904SrB0/MV6pr+0RF1jHbjPhLpTLqO/ROAz
+ jQFZafXDVPVy0ZbtgbFzTpsMbpdLvpL35bEjC4tES/lAAXZ8oV4rfouR/rzCkr05kQChIWbZ2mT
+ d+ljkctykQYLbh2ME8SRqOQ4x+YtivX+5lt6xjxhUQLfGW3eF/+dxZqF0ZBcPpkeOXFC21t6vIL
+ 1RnvqgoTy2fOyIIOUgg==
+X-Proofpoint-ORIG-GUID: EnXKyrKIKd6OnNKxp9leIZIsr2hDjZkj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160072
 
-On Wed, Apr 15, 2026 at 05:31:29PM -0700, Sean Christopherson wrote:
-> On Fri, Apr 10, 2026, Dan Williams wrote:
-> > Sean Christopherson wrote:
-> > > +Dan
-> > 
-> > +Yilun
-> > 
-> > [..]
-> > > I added Dan because the PCI TSM stuff is picking up "struct kvm *kvm" references,
-> > > and I want to head that off too, i.e. have it use the file approach instead of
-> > > whatever it plans on doing (can't tell from the code, because there are no users).
-> > 
-> > The PCI TSM *reference* for 'struct kvm *' will be inherited from
-> > vfio/iommufd. However, the TSM driver needs some context to manipulate
+On 4/16/26 09:48, Nico Boehr wrote:
+> On Wed Apr 15, 2026 at 10:45 AM CEST, Janosch Frank wrote:
+>> We're not kvm.
+>>
+>> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 > 
-> I assume/hope it just need to read "struct kvm" state though?
+> Hm, is this just a cosmetic change?
+
+Yes
+
 > 
-> > the VM. For example, TDX effectively needs:
-> > 
-> >     to_kvm_tdx(kvm)->td.tdr_page
-> > 
-> > ...for operations like TDH.TDI.CREATE that sets up the context for the
-> > privately assigned device.
-> > 
-> > It could follow the example of arch/x86/kvm/mmu/page_track.c and do:
-> > 
-> >     kvm_tdx_tdi_create(struct file *kvm, ...)
-> > 
-> > ...and use file_to_kvm() for that limited helper that does not need to expose
-> > 'struct kvm_tdx' outside of arch/x86/.
+> On one hand this will make it harder to copy things from Linux to kut.
 > 
-> Any idea how many assets do you anticipate needing?  E.g. is it just the TDR
-> page, or will TSM need a whole pile of information?
+> On the other hand, there's already a ton of divergence between Linux and kut.
+> So it already isn't just copy&paste, this will make it just a bit harder.
+> 
 
-kvm_tdx needs to export several infomation for the whole TDX Connect
-to work.
+For sae we already dropped the s390 part in the control block name in 
+KVM. I aimed to have sie_control_block and sae_control_block once sae 
+support is added.
 
-For TSM TDI bind (device secure state transition) part, it only needs
-TDR page PA as the TD identifier for TDX Module.
-
-
-For trusted setup in IOMMU driver, since trusted DMA reuses SEPT as
-trusted IOPT, it needs EPT info - eptp_page_walk_level & ad_enabled to
-setup trusted IOPT accordingly.
-
-Also because of the page table reusing, IOMMU driver also need to
-register a notifier to kvm_tdx for trusted IOTLB flushing on SEPT TLB
-flushing.
-
-Thanks,
-Yilun
+But I'm not too hung up on this patch.
