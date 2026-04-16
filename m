@@ -1,87 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3350C38C438;
-	Thu, 16 Apr 2026 08:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C93803E4;
+	Thu, 16 Apr 2026 08:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776327104; cv=none; b=eLwkpvoC+le1i9NqVVvmrru97KgzQl8MATzE3itfwxK2NaS66ie0bVLVtqOJ3S3F9/wdu3MbCnbbWJMBLxKEUMqiAOHv6sfgkztSkFnr8fgUCr/BI5KvCWxGJfGtazv9d00PWnGVgwJiIaY2tv58nBlnYyKJrwWfdNAsi4o+cCg=
+	t=1776329701; cv=none; b=n+vqypitbriEmSSD5fwDbuaN76oQbwbqGEx0BHnNvXEoS5D4XtleYXqMjmW30kpa924BL0W9tId2QSQRyVSQRoN7Fb0OlI8La6/CfULYCLq3aVyTSjwUY8kdF9eIHlb9iYDzjw/aYXdDq8cbHiXisk7fSdzezHbJzjBq+lNBm6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776327104; c=relaxed/simple;
-	bh=tXyz13WeeW3uQcW29849BhJ5uoo6XkupaeU5Z11PdAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QMIkFzr2QLuvafK+6wUqKWgP8AESpGE9stBUpa86G08PY1b/AOnSTRF2OfqutZcDOcUrnLV1MrVie071/8SzBMCSTJx0TnxW4bPuv25sPop/vDGWU/PjM2ZiKPoIFDqeUH59gV6qDHWMQEDi8njAk+HvIemlZnnsgLFM7jvDmNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzGLCCUC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776329701; c=relaxed/simple;
+	bh=9IobvFpQbS8xVL4t/3Nn3NBNUu395pAwqYcnMxHAGNg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=O/1GlA9aamQnb8GbiGUodeniDPz3lYfQZdoWLk6dEuxM1h8MVEyT0WgNdFhZ78Ed0QFfyzJKetgdDY2wNZAqwu9zhc96Sbj+hE+Rr+s2fBewYepMWdEiR6GdBMK5JR6bgScN4xTiJaiT95rKcdFHoabExNmyb0KnhmQDLtrjG7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=NkKIkdKV; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzGLCCUC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC41C2BCAF;
-	Thu, 16 Apr 2026 08:11:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776327103;
-	bh=tXyz13WeeW3uQcW29849BhJ5uoo6XkupaeU5Z11PdAo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AzGLCCUCRADOVk7quL71ySNbY1Am+s1GEadSXEFH8v0xXcwOzqfYFQpKrkfnMEwjM
-	 A6iUpjZ14f1xdOSiDFHUNG51qIrgSx7DYfoONSVZohrtQ2KTH5AwXTKu8n0mXIguqf
-	 BxeZ0Gn1PjZubzLVyr4GvpQzAvI0HxOWu9xRkSXFaVFBpm+8gS2n+N/6gbVv4+A7Rq
-	 X+RJjrhwhG0edICsDDjzv3C2b04vv+3x/hx6ef+GWtBXuWPeAGmsxPajefy6b1HEaa
-	 4cS5RV63SPM8tQixGEeAIveuTDA1rP03huYLx6yIh5/Ryk4Rblv2r2j96YDhaf3xA9
-	 /J3G1G9BA3xJw==
-Date: Thu, 16 Apr 2026 11:11:38 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio/pci: Don't export DMABUFs for unmappable BARs
-Message-ID: <20260416081138.GE361495@unreal>
-References: <20260415181623.1021090-1-mattev@meta.com>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="NkKIkdKV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1776329687;
+	bh=9IobvFpQbS8xVL4t/3Nn3NBNUu395pAwqYcnMxHAGNg=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=NkKIkdKVZ4fi31ItM8Tvf11CiXJry9lcn8AW+qVRkgp8lSukkUZMgkG1/DIDVZLDj
+	 FQscoDR2J+LiRYJm7BWOAT1RzL42rfLD6X1ETF+8Iv49qFV0KfMkXi0+AXCT2pAHPs
+	 o9DpEaDWZNF7HhNxKdLnbqYEptjrZ/MrEMEOoFUY=
+Received: from [129.217.186.105] ([129.217.186.105])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63G8skqo025371
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 10:54:46 +0200 (CEST)
+Message-ID: <73033bfc-4da3-4057-9480-bd977a66ecef@tu-dortmund.de>
+Date: Thu, 16 Apr 2026 10:54:45 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415181623.1021090-1-mattev@meta.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
+ <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
+ <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de>
+ <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
+ <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com>
+ <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
+ <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
+ <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
+Content-Language: en-US
+In-Reply-To: <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 15, 2026 at 11:16:23AM -0700, Matt Evans wrote:
-> Although vfio_pci_core_feature_dma_buf() validates that both requested
-> DMABUF ranges and the PCI resources being referenced are page-aligned,
-> there may be reasons other than alignment that cause a BAR to be
-> unmappable.
-> 
-> Add a check for vdev->bar_mmap_supported[index], similar to the VFIO
-> mmap path.
-> 
-> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-> Signed-off-by: Matt Evans <mattev@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index f87fd32e4a01..4ccaf3531e02 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -249,6 +249,9 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
->  		return -ENODEV;
->  
-> +	if (!vdev->bar_mmap_supported[get_dma_buf.region_index])
-> +		return -EINVAL;
-> +
+To summarize the discussion from my POV:
 
-And it looks like AI has valid concern about this line too.
-https://sashiko.dev/#/patchset/20260415181623.1021090-1-mattev@meta.com
+Open point: __ptr_ring_zero_tail() is only called after
+            consuming ring.batch elements.
+1) Consumer wakes up the producer but the slot is not cleaned.
+--> I disagree, the consumer only wakes after consuming ring.size/2.
+    Then __ptr_ring_zero_tail() was called at least once.
+2) Producer is woken up but see the ring is full, so it need to
+   drop the packet.
+--> I disagree, because then NETDEV_TX_BUSY is returned. This is
+    noticeable as qdisc requeue and only happens very rarely.
 
-Thanks
+Points I will address:
+- Minor nit on patch 2 by MST.
+- Rebase patch 3 because of commit d748047
+  ("ptr_ring: disable KCSAN warnings").
+- Document the pair of the smp_mb__after_atomic() in tun_net_xmit
+  with tun_ring_consume().
+- Use 1 ptr_ring spinlock instead of 2 (currently used for consume
+  and empty check), not sure how to implement it pretty rn.
+- Run pktgen benchmarks with pg_set SHARED.
 
->  	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
->  				       sizeof(*dma_ranges));
->  	if (IS_ERR(dma_ranges))
-> -- 
-> 2.47.3
-> 
