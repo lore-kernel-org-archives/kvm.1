@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F4C37475B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19B7376475
 	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 07:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776411130; cv=none; b=nFZ8ghz5lCgP0R77I/SC5fVcwY8nUCxS/KNrQzs0ZoflALIjtwS6uhdngcxJKsbkKTAra10H00WCZ4K+WdN07lLIIExgApsi1GggUIaT/HXytr8U4hSI+BenULfCHFdZhyW6CeFn9QITSdnbWfW8PaOKS1hDqkYTGh+1ftUqVes=
+	t=1776411131; cv=none; b=nOO8/gX6ngzfyeq1K1sCgaAbwUSgWxwVYwFp3uxcQJsSEdLYkBAQetJTMzoV0LPU0MwX2ygQwMfAarRQruvQj0JYM07+cr8lGiRN5xRpNOqOPYMPqqlwy8AZ9OTIZ2FGmoVEvszSlkM2o+SnAk1o6WOeHFx+xWS/n9Th6q2stoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776411130; c=relaxed/simple;
-	bh=DYroadLYZ3vHawS6R2/C6mU1YlGE/m10ELXHsun8edg=;
+	s=arc-20240116; t=1776411131; c=relaxed/simple;
+	bh=vJLhfTGXgbyWmQy4mJdm0Q13aSbe11cQZIkVK2DsOQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERz+doOUN0r3SkcIV2UUWTHWiNd6Rg2P0DNH5QP+jcdUytDxFyUWJ99s/Zkf4fQ/j10CBr0UghZnLsNMk1RY2SQCB37c6ZyyBI7pNfBf0QdRbt7DhwPzCfCQItgizrCVOE6iYrkQIwd5lpaPhuncFVlb6m5Nrpw+a+pFX8bv3JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CPqBVt99; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=AjtHaEHn8a86+4LMpEzVHoOmEYdm9RHTd147Gu5C7vMqhC499ncMuPglAxfgZkH2Uaeoe3m9SLzX8uc7JbXQ4DQ9DRLHO1cLeFW4u3mx677EUN2lhkaMv1PUErb2fuN9BxOV6sv5lCN2YARjfxb8zwhhGY567xW5EV5VlGOn+XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ujv90E12; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CPqBVt99"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ujv90E12"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776411129; x=1807947129;
+  t=1776411130; x=1807947130;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=DYroadLYZ3vHawS6R2/C6mU1YlGE/m10ELXHsun8edg=;
-  b=CPqBVt99HNGeFVX2bqS9U4nUddYe7ti4FSxNdIrN6smRjSNRnAhXRpPc
-   bhghjBjn+MILRy+TOomve8/OO0oWi2NB23+Ijm7CTmqw29/cRq2EBaQUD
-   41ffwj+fyw1C53LPRnJaGrLm6z9kXd77LyQUJ3nICx/YDciXt6fRGwuxZ
-   kfLmVpAeEr6hW+Opab27d5TNY8gqdEUeal4uO21O2IdvRdB3WSjo8+CLn
-   AnJW1L1pRPtlbfN6Vgt72Lq2xP44UAyy/kl9wPXBIhqoRac1q38I3bLhn
-   o3QrkYwAhZykAATl2zZWwc0TX7lA8YX6pQyDRmmKyPOwlOKc9XyP2rYwR
-   Q==;
-X-CSE-ConnectionGUID: hWwMO3CqRcaZsl2vJOm/iA==
-X-CSE-MsgGUID: Q6nhb/8TSZKaDSmJ1akyuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="100070120"
+  bh=vJLhfTGXgbyWmQy4mJdm0Q13aSbe11cQZIkVK2DsOQo=;
+  b=Ujv90E12k2qYl4XfgR9/w61sC7sL5l1O/c5q+EzqGHIL06tCV/y97sUt
+   WzlPAip1fymXB77YtgWenTpc4sL5wXnpGcvQUv8hVjOWMubl4K7I/0GGQ
+   DxJeHYaUNjoOFl4bbe2B+pF+07U/IDTImKZcMCNqfZs97feihUsgy2mFj
+   jFiWGqjbqPpaii4CqrSTiRvkgumZaETsx0rCn4Kg5gng7abYpxm6FiVKZ
+   0Eo0qk5/RLBQkbmkl2JZgBD3Te/uNEVxi0J1OOjUuAYt4oL6XH4GZzvl+
+   LDOdWY3/SVo3TZJrduKwLDjx3rGFhhNAZx48YznhGET5eYokrdCMCXOvn
+   w==;
+X-CSE-ConnectionGUID: 3Si51YTmTfSpMNPpWDuKDQ==
+X-CSE-MsgGUID: OtUBgmfMQKiH0pFw8w1FEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="100070128"
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="100070120"
+   d="scan'208";a="100070128"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 00:32:08 -0700
-X-CSE-ConnectionGUID: 1X+KU3wBQ32yrMIQZHzDDA==
-X-CSE-MsgGUID: QPD9bJeFQneWnKMRYS3eIw==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 00:32:10 -0700
+X-CSE-ConnectionGUID: IGyGQtVSSZSomiVjpcbLtg==
+X-CSE-MsgGUID: jKCvWl/xTVyF23GiL2NOTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="226284830"
+   d="scan'208";a="226284841"
 Received: from litbin-desktop.sh.intel.com ([10.239.159.60])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 00:32:05 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 00:32:07 -0700
 From: Binbin Wu <binbin.wu@linux.intel.com>
 To: kvm@vger.kernel.org
 Cc: pbonzini@redhat.com,
@@ -52,9 +52,9 @@ Cc: pbonzini@redhat.com,
 	chao.gao@intel.com,
 	kai.huang@intel.com,
 	binbin.wu@linux.intel.com
-Subject: [RFC PATCH 02/27] KVM: x86: Reorder the features for CPUID 7
-Date: Fri, 17 Apr 2026 15:35:45 +0800
-Message-ID: <20260417073610.3246316-3-binbin.wu@linux.intel.com>
+Subject: [RFC PATCH 03/27] KVM: x86: Add definitions for CPUID overlays
+Date: Fri, 17 Apr 2026 15:35:46 +0800
+Message-ID: <20260417073610.3246316-4-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
 References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
@@ -66,115 +66,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reorder the feature bits in CPUID_7_ECX, CPUID_7_EDX and CPUID_7_1_EAX
-to align with the hardware defined order.
+Introduces definitions for CPUID overlays to handle varying CPUID
+requirements across different VM types on Intel and AMD platforms.
 
-Opportunistically add comments for unsupported bits for CPUID_7_ECX and
-CPUID_7_EDX.
+3 CPUID overlays are defined and will be used as following:
+- CPUID_OL_VMX for KVM_X86_{DEFAULT_VM, SW_PROTECTED_VM} on
+  intel-compatible platforms.
+- CPUID_OL_TDX for KVM_X86_TDX_VM
+- CPUID_OL_SVM for all VM types supported on AMD-compatible platforms.
 
-No functional change intended.
+Having separate overlays for VMX and TDX helps to handle the cases when
+there are differences about KVM's support for some features, e.g., TSX,
+HLE and WAITPKG are not supported for TDX in KVM. There may be new
+features like this in the future.
+
+Having separate overlays for VMX and SVM helps to handle the case when
+a common feature having support for one vendor, but not for the other.
+Setting the support in common code requires additional handling in
+vendor specific code. E.g., SVM code needs to clear IBT, BUS_LOCK_DETECT
+and MSR_IMM.
+
+More overlays can be added in the future, e.g, AMD may want to have
+a separate CPUID overlay for SNP.
 
 Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
- arch/x86/kvm/cpuid.c | 48 +++++++++++++++++++++++++++++---------------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ arch/x86/kvm/cpuid.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 25f582a8d795..056f86121728 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -947,26 +947,34 @@ void kvm_initialize_cpu_caps(void)
- 	);
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 039b8e6f40ba..f41f8d3db794 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -7,6 +7,29 @@
+ #include <asm/processor.h>
+ #include <uapi/asm/kvm_para.h>
  
- 	kvm_cpu_cap_init(CPUID_7_ECX,
-+		/* PREFETCHWT1 */
- 		F(AVX512VBMI),
--		PASSTHROUGH_F(LA57),
-+		F(UMIP),
- 		F(PKU),
- 		RUNTIME_F(OSPKE),
--		F(RDPID),
--		F(AVX512_VPOPCNTDQ),
--		F(UMIP),
-+		VENDOR_F(WAITPKG),
- 		F(AVX512_VBMI2),
-+		X86_64_F(SHSTK),
- 		F(GFNI),
- 		F(VAES),
- 		F(VPCLMULQDQ),
- 		F(AVX512_VNNI),
- 		F(AVX512_BITALG),
-+		/* TME */
-+		F(AVX512_VPOPCNTDQ),
-+		/* Reserved */
-+		PASSTHROUGH_F(LA57),
-+		/* MPX_MAWAU */
-+		F(RDPID),
-+		/* KEY_LOCKER */
-+		F(BUS_LOCK_DETECT),
- 		F(CLDEMOTE),
-+		/* Reserved */
- 		F(MOVDIRI),
- 		F(MOVDIR64B),
--		VENDOR_F(WAITPKG),
-+		/* ENQCMD */
- 		F(SGX_LC),
--		F(BUS_LOCK_DETECT),
--		X86_64_F(SHSTK),
-+		/* PKS */
- 	);
++enum kvm_cpuid_overlay {
++	CPUID_OL_VMX = 0,
++	CPUID_OL_SVM,
++	CPUID_OL_TDX,
++	NR_CPUID_OL
++};
++
++#define F_CPUID_VMX		BIT(CPUID_OL_VMX)
++#define F_CPUID_SVM		BIT(CPUID_OL_SVM)
++#define F_CPUID_TDX		BIT(CPUID_OL_TDX)
++
++static inline u8 get_cpuid_overlay(struct kvm *kvm)
++{
++	if (kvm && kvm->arch.vm_type == KVM_X86_TDX_VM)
++		return CPUID_OL_TDX;
++
++	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++	    boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
++		return CPUID_OL_SVM;
++
++	return CPUID_OL_VMX;
++}
++
+ extern u32 kvm_cpu_caps[NR_KVM_CPU_CAPS] __read_mostly;
+ extern bool kvm_is_configuring_cpu_caps __read_mostly;
  
- 	/*
-@@ -985,23 +993,31 @@ void kvm_initialize_cpu_caps(void)
- 		kvm_cpu_cap_clear(X86_FEATURE_SHSTK);
- 
- 	kvm_cpu_cap_init(CPUID_7_EDX,
-+		/* Reserved, SGX_KEYS */
- 		F(AVX512_4VNNIW),
- 		F(AVX512_4FMAPS),
--		F(SPEC_CTRL),
--		F(SPEC_CTRL_SSBD),
--		EMULATED_F(ARCH_CAPABILITIES),
--		F(INTEL_STIBP),
--		F(MD_CLEAR),
--		F(AVX512_VP2INTERSECT),
- 		F(FSRM),
-+		/* UINT, Reserved, Reserved */
-+		F(AVX512_VP2INTERSECT),
-+		/* SRBDS_CTRL */
-+		F(MD_CLEAR),
-+		/* RTM_ALWAYS_ABORT, Reserved, TSX_FORCE_ABORT */
- 		F(SERIALIZE),
-+		/* HYBRID_CPU */
- 		F(TSXLDTRK),
-+		/* Reserved, PCONFIG, ARCH_LBR */
-+		F(IBT),
-+		/* Reserved */
-+		F(AMX_BF16),
- 		F(AVX512_FP16),
- 		F(AMX_TILE),
- 		F(AMX_INT8),
--		F(AMX_BF16),
-+		F(SPEC_CTRL),
-+		F(INTEL_STIBP),
- 		F(FLUSH_L1D),
--		F(IBT),
-+		EMULATED_F(ARCH_CAPABILITIES),
-+		/* CORE_CAPABILITIES */
-+		F(SPEC_CTRL_SSBD),
- 	);
- 
- 	/*
-@@ -1033,8 +1049,8 @@ void kvm_initialize_cpu_caps(void)
- 		F(FZRM),
- 		F(FSRS),
- 		F(FSRC),
--		F(WRMSRNS),
- 		X86_64_F(LKGS),
-+		F(WRMSRNS),
- 		F(AMX_FP16),
- 		F(AVX_IFMA),
- 		F(LAM),
 -- 
 2.46.0
 
