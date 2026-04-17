@@ -1,158 +1,194 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0552FB084
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 22:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776466322; cv=pass; b=GDZLcgyqXe7fd5DHFtwn+fPPJ9DJdxFka8Nbdxtx0v6J2Q5VODHr3ZCsbhbK1klLStCkFwOw4kHBPe9pLXll/fah46xdy4N7qFcfosU2WELclEtw78lqtdFHpy9SrQ2wM9YDv66Oiqwja8ORdFkpw5kB42L1kXEA8PKnI/KJ98I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776466322; c=relaxed/simple;
-	bh=1HruGi7X4dU575hOmcU+Ynje9evD+aRUJzp7jhO7jY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NhRCBKHRYRVk072VTPdpkfsXCS4VnoVlnE0nIXTLGAalke6IR9GGHY0v0jQxTsEpHecyMhmsLS7bhBvYyoJLaip/cNJ6Ajcd0XuEJSmB0ybtWhUil741i61o4JeG229AOmLM/IrcUwP7h+X6KrYLDEh8BKpUfaY1WjhM4zDYsag=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O2ux1W5v; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A189B2DC789
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 23:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776469014; cv=none; b=IAgLgbumacGe79q9UsGZEeICrdRyhu/2kKvnD6VbKGQlMXN0KuFAmB0hd5GTHFl+8lMJto0C+k4EIY1V7qALvR4WUPMmDhgkydSb4H0QWJNJO3CqYviLjU2LdUXpWdgwp1oMEcb3qUUhJl+vnmgRSRNJTQPApzbpjeEFI4XNy+4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776469014; c=relaxed/simple;
+	bh=bR+JfLgOReiZQpPuPbj2jQ8xLtLBFTAd/AMflQ9NMAA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=B9/C/wn/yQEiIEYJhY9Fl4IAxwlVLo/aFrlmdnsJ+su5/EgUpYMoxwGwzae4TOV5+BofLMLHubjO4ILscORLqa2CZ2BRZfnjWn7BICb1bQZY4SeMktg3pkKwFCPBYUNGBosQa5IWTBVTSX+TEiZsKuctdw4feSEgyV67+JQHYjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=it8Rvy5L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O2ux1W5v"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66ba6d3dab3so3255a12.0
-        for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 15:52:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776466320; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E5xH0CL+Wq/Jwh8ZRj2qcCBDK6KzWp9zlqK0D+alvtsxUmiwnMzp6wWMi/7+8sFBMr
-         i9PS5wKrGUs/8ZmxNxsTX9A41H7kvOBq+NemNTxWPDo3TjNgx+A0/jDklZrC0ddCAx88
-         L/um1eYiM4SeyzdcwcSEjJV4denOzlsFKNDS7RlTkLGHscsw5yNnPRaSMvc777TvdZdK
-         FcyPjgcU5IB1CHRp93iwzCtqn+ui8drPH7YctRDFhZ4g87fGvabwcUIibJpC0cGPznoe
-         rNF4N1G0oXrbL/MGsF5dBqaQJfcvmIq4FyRGxSpGcyxKa394GnSqq3eahf/b7C7n04JB
-         YEog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jkdtCAtP8odoPa0atr2MGvhK2NtLmBy28A7hTYzVBz0=;
-        fh=c9aCfZaIruaoQaR7qRS5H1GPbROh+Bkw9/YIeVrCVK0=;
-        b=dBrxvQpy4GyqXiFhPOwNieMNn6mr+5dCtO/iIQO29/OHq9K3Zw13BUjnqWxPrsTMB/
-         nX/wUajipkx5JQHDCiCHQ6nNfscmZy6ZDazQjRACUN4/m4Fxo8paeyDZBSuv0pDZGsy4
-         tVFo9dbUszzfLbq7RSudPcaIIZ5m0rNDhhj8CQNN3DdvBsMD6F9Ys/SKvdIGM946mDuN
-         VGKz9h9Ljv3rk4HtctN5Hs59XQ9iKE+FjdutJUW2eRF3wNJhSUSsqde5OZPt95fqONwy
-         cYdi2g56Ugl0mEfUTdSsCNI1IHD94JcmQj9i+AdrEfXMjRdVtfzNMDyXN/DyomeJtjxK
-         /Uwg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776466320; x=1777071120; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jkdtCAtP8odoPa0atr2MGvhK2NtLmBy28A7hTYzVBz0=;
-        b=O2ux1W5vwmEMWphTHVOoiwrwPBOuR05XbMKJi8eLET2kBFjHJPh7zOIGmTwWGxbSkV
-         /LhRcNboCVMWEutkmWGYi5n+K5O/pFGAjRZG8HgJltMXSybVQLIfoaD+ohMNi5Ty+cnc
-         HwqLveM3WIa8gqXVO3eLPb9zDjz9s/VHAoEDs850DhsptWlpO4lsz5oBgq09M70OrXGq
-         gVKGULaDiK8NdwwtxL0/yD9BB+z/WD1waD3Ef0H+qHHPcPA6TIDw9PuZ8GgiebJocfLJ
-         yC/lzBOXF4PJmpOZFi/MK8EW4ZO4mo2dMskpq92ViXTIshTPRhWe2C9q4ZUu/BlpXHyS
-         u97Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776466320; x=1777071120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jkdtCAtP8odoPa0atr2MGvhK2NtLmBy28A7hTYzVBz0=;
-        b=J7nixq4PADjnNa/GjxS4MtTRQsdPO+P1IJhH6RuAOD32kz6d0htumWChPxYrJYemG8
-         xpmhKQdZqxJQXVkbUDIFz+di/VGBysSsk0LYHQzIBG0Q66p0H83RvAJRID597oUEC4Mu
-         ZNFJdOpHIsG6JNOD9UvX1T3oXPbyeSW4HzAvL3GGyW4Wb+hvscdIWwvn2bp7T54yUFtl
-         1t6eQuxg1jdUCN3tnCxASOqCvB7PhjuQY3Kk6yPJjNwZh8Bw/iSfTo1GjpLIO3WRrrNn
-         jlUkormEGJOFn9VV0X5JwHSrC8UGBxdClMKidcWwD3SZJ+JPhfhtHBpygL2hJeeR+K9u
-         MT3g==
-X-Forwarded-Encrypted: i=1; AFNElJ9q+wJBOVQeeltNwqdSvz344AAqugs5EqUzJnNEV8LG/CDRY9KMifcNZXcQl4IHD9X2/UM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN1fA24NK7FmjvsNVDnuMKr+xMihsYERwl69OEYNGkhp+EDmrH
-	nsNqcF5BWnUEhub0lhM5qg9791T/D9aKaUaO5H5lg0QLD4MGdpyOsZDgELJHvDkxz0YkQ+J8p/q
-	4OfFaX58qCRcQHjV4cXCdcZK+mr6usRa4hgNimxpK
-X-Gm-Gg: AeBDieuB781sSJ0mght0Nj9Y9i61jMXIXRt2BzFDg/oNzXcWFEBswFp90BjzwKAnHwe
-	XeDujj4IqIbZpBRFVphKAydBSza+kLwHS55ObRY/yZA1YQLLfJQEQ1xXqYf6zsjn/BOdWbmnVXL
-	+kSTDbRILY+xzWLhaP0Dn0SxgOhNBCHKwx+ffhR5EajQgb9sMfdY1FqVN8pmKQ33uqaGq7vSYsS
-	G+M6R6nNogw0O5xIsAso0BWhb4NFhzsu/z+GVTj4YKR8SQD69RyYBNZwB89wvlpHeD2IBu1m3Z1
-	DS2VcQ/bSNU+QEqNR0hDwg2Cb2M7
-X-Received: by 2002:a05:6402:3192:b0:673:9b15:39ff with SMTP id
- 4fb4d7f45d1cf-6744ec68927mr6122a12.5.1776466319570; Fri, 17 Apr 2026 15:51:59
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="it8Rvy5L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0B7C2BCB3;
+	Fri, 17 Apr 2026 23:36:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776469014;
+	bh=bR+JfLgOReiZQpPuPbj2jQ8xLtLBFTAd/AMflQ9NMAA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=it8Rvy5LOWSAwCxfh/L9FATVWm7HqKML3/IJlZBZU6X+gimBODPjLkGK40Z/lNQIE
+	 HFYaLKUjT0VDLmsdXp4PWARmyhWRt7F+NEkUXc25x34hNc+9499zA4ubr2Hx2+GL7s
+	 nhuxEiWr6fzsOFvFI4CeGtK1L4nVTUTr+exgnIjEBKlen/uQC9X3e8I67i+1a6kVcW
+	 CbHccJ94jS6PLLaYLwEb6BH635PDLZ++BKravkq6lqV7z9te+2NonE0N6e4gVlirFl
+	 O/LYY9L2nQH1DAFJab8Ybtg+CjqZJLd50HlJHcBo5KgrtvX4EI8RXVJt0fbIgO5qBA
+	 axMYiv4RXNgjw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DE903F40078;
+	Fri, 17 Apr 2026 19:36:52 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 17 Apr 2026 19:36:52 -0400
+X-ME-Sender: <xms:FMTiaau7pCV2wgJ-RMJpY12MddUIoRnE74EY89xVksjW8ZhJlP9lgg>
+    <xme:FMTiaevBGXgOXjEkoA8Aa3PcBKJfAKOhOWrvZHbkYSKE1c58D3YWNYF6iwLh5Tj8I
+    b92FiIj_UR3_BTRnCMNwWFsvcaldmo5qAeguCWcCu4MajWj1TyPSGk>
+X-ME-Received: <xmr:FMTiaYmnM_AgrUA2PrQcE9UMGwoxrDzFrrH7_1MxxZK_cl-D1Ac2yYMaLrf2JyUhY6U8qUkyg09fpP_hKNh7EdZm0RFtUDxbSAI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehuddvvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
+    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
+    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
+    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
+    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephihi
+    lhhunhdrgihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
+    dqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidq
+    phgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnrdhjrdifih
+    hllhhirghmshesihhnthgvlhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtth
+    hopegurghvvgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegsrgholhhu
+    rdhluheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeihihhluhhnrdiguh
+    esihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:FMTiactCoWthaudJ_FKux-4nERbEFkionn0XhDuK0tvA9jSrtoxWjQ>
+    <xmx:FMTiafMaHIbPpSZKw-GTQdUv293XnDfDdvR7O4tdkbqS68Q_V45RPg>
+    <xmx:FMTiaV0aNci_pxg0eTQo9dEKFvzeWlYDBiLfFsfYiQdS904XJBCqxQ>
+    <xmx:FMTiaZyuG_EcyQndvZCGty_O8vXYZ-XcQTTx4yCAmAZzoOqcR1Jjlw>
+    <xmx:FMTiaXpq7BrpaPdwuCirfwU3aE7oOV1RpJeNeDj7jb4poUAuXNTC-07->
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 Apr 2026 19:36:52 -0400 (EDT)
+Date: Fri, 17 Apr 2026 16:36:51 -0700
+From: Dan Williams <djbw@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>, 
+ linux-coco@lists.linux.dev, 
+ linux-pci@vger.kernel.org, 
+ dan.j.williams@intel.com, 
+ x86@kernel.org
+Cc: chao.gao@intel.com, 
+ dave.jiang@intel.com, 
+ baolu.lu@linux.intel.com, 
+ yilun.xu@linux.intel.com, 
+ yilun.xu@intel.com, 
+ zhenzhong.duan@intel.com, 
+ kvm@vger.kernel.org, 
+ rick.p.edgecombe@intel.com, 
+ dave.hansen@linux.intel.com, 
+ kas@kernel.org, 
+ xiaoyao.li@intel.com, 
+ vishal.l.verma@intel.com, 
+ linux-kernel@vger.kernel.org
+Message-ID: <69e2c4134f1ef_147c801001a@djbw-dev.notmuch>
+In-Reply-To: <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-4-yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v2 03/31] x86/virt/tdx: Add tdx_page_array helpers for new
+ TDX Module objects
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CALMp9eRk8O-kGixdXC0Lb0=PgSVE5eFnLLXOZYqMsb=FTczZTA@mail.gmail.com>
- <adfgPwgXz1iQHpVS@google.com> <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
- <adfmVXRwzZkvRSnj@google.com> <CALMp9eTvH1Pg0Eb-KCcX7LLJPFgS1xTSR0DzeA8xo4Re7=p=7w@mail.gmail.com>
- <adfyKU5WUiW4OnUg@google.com> <adgYSnE-I1Z19fCY@google.com>
- <CALMp9eSjAoVYk2f_j=b_X=EngJ935J=W7YS-C0nDS7b1j2Y4Og@mail.gmail.com>
- <aeACk7T5Q4TxtRMF@google.com> <CALMp9eSHJmLLAQAvbvRmq99v568PGkJduoQn1djnXGb-yED_5g@mail.gmail.com>
- <aeAtdIPo-8uk8nvH@google.com>
-In-Reply-To: <aeAtdIPo-8uk8nvH@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 17 Apr 2026 15:51:47 -0700
-X-Gm-Features: AQROBzDHMrwUeMaZ0tQGcUGfm5IB4WAtEbo90cxI7V-K_7ct13-ad_GOY4mfqZg
-Message-ID: <CALMp9eS5t16pgZY4PEwdWFqBCQUHMSQDtcAoC4cuPeq-SfWo+w@mail.gmail.com>
-Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
- nested SVM transitions
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sandipan Das <sandipan.das@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 15, 2026 at 5:29=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Wed, Apr 15, 2026, Jim Mattson wrote:
-> > On Wed, Apr 15, 2026 at 2:26=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > > On Thu, Apr 09, 2026, Jim Mattson wrote:
-> > > > When would we use the deferred version? As far as the Intel PMU is
-> > > > concerned. there's nothing special about a nested transition.
-> > >
-> > > Actually, outside of VMRUN=3D>#VMEXIT, isn't the deferred version cor=
-rect?  E.g.
-> > > when counting instructions, shouldn't WRMSR(EFER) be accounted based =
-on the *old*
-> > > EFER value, not the new EFER value?
-> >
-> > Unless you can point to documentation stating otherwise, I think this
-> > needs testing. By analogy with VMRUN and #VMEXIT, accounting should be
-> > based on the CPU state at instruction retirement.
->
-> IMO, VMRUN and #VMEXIT are broken :-)
->
-> But yeah, +1 to following what hardware does.  I was thinking we could lo=
-ok at
-> our KUT and selftests code, but AFAICT all of the precise measurements ar=
-e
-> bookended by WRMSRs, so an off-by-one on the frontend would be corrected =
-by the
-> off-by-one on the backend.
+Xu Yilun wrote:
+[..]
+> The usage of tdx_page_array will be in following patches.
+> 
+> Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+[..]
+> +static struct tdx_page_array *
+> +tdx_page_array_alloc(unsigned int nr_pages)
+> +{
+> +	struct tdx_page_array *array = NULL;
+> +	struct page **pages = NULL;
+> +	u64 *root = NULL;
+> +	int ret;
+> +
+> +	if (!nr_pages)
+> +		return NULL;
+> +
+> +	array = kzalloc_obj(*array);
+> +	if (!array)
+> +		goto out_free;
+> +
+> +	root = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> +	if (!root)
+> +		goto out_free;
+> +
+> +	pages = kcalloc(nr_pages, sizeof(*pages), GFP_KERNEL);
 
-LOL! When EFER.SVME is clear, setting one or both of the G/H bits
-disables the counter.
+This should now be:
 
-In the following code sequence, 10 instructions are retired, and 5
-host-only instructions are retired:
+    kzalloc_objs(struct page *, nr_pages);
 
-mov    $0xc0000301,%ecx
-mov    $0x3,%eax
-xor    %edx,%edx
-wrmsr
-nopl   0x0(%rax,%rax,1)
-mov    $0xc0000080,%ecx
-mov    %ebx,%eax
-mov    %r14d,%edx
-wrmsr
-nopl   0x0(%rax,%rax,1)
-mov    $0xc0000301,%ecx
-xor    %eax,%eax
-xor    %edx,%edx
-wrmsr
+...oh nevermind you caught that in your incremental fixup. ...but a
+couple more comments below:
 
-I think the first wrmsr counts (because the PGC bits are set when it
-retires) and the last one does not (because the PGC bits are clear
-when it retires). If so, then the second wrmsr (setting EFER.SVME)
-counts in host mode.
+[..]
+> +
+> +#define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
+> +#define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+> +#define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+> +
+> +static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
+
+2 quick comments:
+
+* I do not understand shipping a __maybe_unused helper in patch 3 that
+  does not get used until patch10.
+
+* The "assign_raw" verb feels strange. I think this probably just want
+  to be called: to_hpa_list_info(struct tdx_page_array *)
+
+> +{
+> +	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
+> +	       FIELD_PREP(HPA_LIST_INFO_PFN,
+> +			  PFN_DOWN(virt_to_phys(array->root))) |
+> +	       FIELD_PREP(HPA_LIST_INFO_LAST_ENTRY, array->nents - 1);
+> +}
+> +
+> +#define HPA_ARRAY_T_PFN		GENMASK_U64(51, 12)
+> +#define HPA_ARRAY_T_SIZE	GENMASK_U64(63, 55)
+> +
+> +static u64 __maybe_unused hpa_array_t_assign_raw(struct tdx_page_array *array)
+
+to_hpa_array_t()
+
+> +{
+> +	unsigned long pfn;
+> +
+> +	if (array->nents == 1)
+> +		pfn = page_to_pfn(array->pages[array->offset]);
+> +	else
+> +		pfn = PFN_DOWN(virt_to_phys(array->root));
+> +
+> +	return FIELD_PREP(HPA_ARRAY_T_PFN, pfn) |
+> +	       FIELD_PREP(HPA_ARRAY_T_SIZE, array->nents - 1);
+> +}
+> +
+> +static u64 __maybe_unused hpa_array_t_release_raw(struct tdx_page_array *array)
+
+It seems too subtle that this function sometimes returns zero and
+sometimes returns a page that the TDX module will clobber with data that
+we do not care about.
+
+It is also not clear that "0" is what the module considers a valid value
+that meets "checks its validity for forward compatibility". I guess we
+get lucky because all of the calls that need this presently are
+multi-page cases?
+
+I would feel better if this always returned the root HPA and was called
+something like:
+
+    to_output_clobber(), or to_aux_clobber()
+
+...to make it clear that whatever was there before gets destroyed.
