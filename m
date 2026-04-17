@@ -1,81 +1,134 @@
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B496137F8D7
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 07:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B31338592;
+	Fri, 17 Apr 2026 07:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776411815; cv=none; b=hOjuJK8bWjl0hR1TRVwo6SKnL0TbLQ1dDhPD6UgYuIL9Fs50poDfJHe4vjbMdw4pg0s2ydB7jHrLiTByHEcqJQUk0z5gK7pwULufO3ZgbLQxksf5TwBlmizrbZ6RIx8SBmiZk7B3G1kpLIgTWELD+ySR7KbegsXDWD9EsCJwG6w=
+	t=1776412156; cv=none; b=K2eOWICzirZfaJ/8WHZrRUyz+KcDuiiHaE20F6EYLe/Zj5G1dCSkZle9iAZLZGISXMLCVJUEmxCEo0ASPg9esjwcRfs53N8i/oX1FnSJStZ8r08jRZuve7KHzVYMG+mhdc2LpG+Ey6ofJht/zPXzK5OxjPMuY0C/T2HAn0SGDA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776411815; c=relaxed/simple;
-	bh=7Iz+mVh3MQmgoQMBCFvQaGDqoKEYkqYqbViVh0jmCz8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=k1HUTjvpM2zQR4mYXsQYBwOZmvlBRzH3ME3F5UqXHR76h9od6++fSHDS7rfjkpIVTLv1TxjfqVpdYOG6T0uKlFbfuP/Yr39DLIB3gK9iDmX9IEkLiHdKRoMdL2oQ+rlSKl/619cqE3Qn2LHaNG3+RZxKJLMQAgthkSUdcaid7ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-6850890ec96so395699eaf.1
-        for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 00:43:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776411805; x=1777016605;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ekINyUV42nWQZjTrH3fY4ywu5sq0xZ2X89JKQRssFCA=;
-        b=glWQ7UO/7BwoxIY/FOvNM0G5kNvnCE3Yzflg0w7MbjRpjBnuu0mKN4lk4ld8I0zHoo
-         hw3zp76a2a/UsUt1kqgmRPVtTmmFxIdvlHUni0zCrSF7MNjCwDlnjQOwfEr1VUqs8lbW
-         0BpnQxoXEIyRdK5Gdr3aWp4UVTIGAkdcJqUSlE1WIj2v7Uu5p+DP2/1VNTN/VSZdp9oW
-         S3xzxXOCSf1qDCSLPCk1J0oqxfD9/3df4LUg54laXOdomAYwu5u+7DWqyMP+7Xsf8upL
-         vt/fcHycl3YWq7ptY66Tqm0rkPq4WCtP9GqePvvByEIpM6oC/2SonNnqPizEtl8Htn0B
-         nk5g==
-X-Gm-Message-State: AOJu0Yzxw4a9VJHxpTCXoPnEEFVGeYujB0SshpjgsByE1WwePTcWh/hi
-	5w3LWA4OhPHU6aHNsPbeG7YhBrZwC8X/hMuXRVWtElMAAWV0K2A/yN0htP8jiXKl1N4RahOuPu5
-	ZQ/2pWVToSBKSwGkqwtyVeva3mBd2yeC8AHWhWQ5sagtphGxFxdO/YlesHGw=
+	s=arc-20240116; t=1776412156; c=relaxed/simple;
+	bh=3AJkA/Ut2jjL6oMRz7VSDAI+eIzyTGlmE9O5FcOfroY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r/m2H5g6MFEYTHJks6/Mn8LXVbKzRqSDKNbBfE9vSNpA6JsY8LlLkItWcxqBhq+kCeueswoGMZAMGjq3/n9jRZYi4zvy3Ko4eX+Ke9Ro9d18B0gwx06FyW1JxtbabMETkylxM2AdMLlmm/Lb3y9t70S7KAgeCTiDMrK+JSlaDTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=H3ln9FVD; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="H3ln9FVD"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63GH372x435815;
+	Fri, 17 Apr 2026 07:49:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aCLNvU
+	N7YOHtOAH9Wo9JqwmL5rdCFPZd9ShBWsbMBPk=; b=H3ln9FVDLOek0r4F9rWyd+
+	ZMlEtajhZalLZEk6oyE9oWNeAO3lPtgxV8i7hs5VsvXqX2bwJfWhFFzjFxdAzMX6
+	nM3QSEBWg/heXk8S3tI1etSs3QZDuLLNjFacIK/p/+1XPHivVhV/eFM2R2dfl0Ij
+	Es3dmOZ6s4FkQQImIGGpeYO7XVTC65+AqluOUr0xcDnDvqZQRP7iT+1v5sZV2wt1
+	f8eXHQkk8rXvTQi+HIyXK0biitHJ5jtS7DWH/LqodJH/y+nV0VWDOLrqRItx5Kc8
+	BJO9G+CrdKxibAMGAbodbQl3fY5oZ1f2gPLji6k6gmUIIhWsT6gmCJ2YFFbEFqkg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89kgarc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 07:49:05 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63H3iD1O025837;
+	Fri, 17 Apr 2026 07:49:05 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg2ujx4cp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 07:49:04 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63H7n0UX31130168
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Apr 2026 07:49:00 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E6C682004B;
+	Fri, 17 Apr 2026 07:48:59 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8DC9B20040;
+	Fri, 17 Apr 2026 07:48:59 +0000 (GMT)
+Received: from [9.52.200.39] (unknown [9.52.200.39])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Apr 2026 07:48:59 +0000 (GMT)
+Message-ID: <e381b39f-0075-43c2-be8c-131c553702f1@linux.ibm.com>
+Date: Fri, 17 Apr 2026 09:48:59 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:c90:b0:67e:2fe1:26e6 with SMTP id
- 006d021491bc7-69462f49f53mr994032eaf.59.1776411805095; Fri, 17 Apr 2026
- 00:43:25 -0700 (PDT)
-Date: Fri, 17 Apr 2026 00:43:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69e1e49d.050a0220.6979.0002.GAE@google.com>
-Subject: [syzbot] Monthly kvm-x86 report (Apr 2026)
-From: syzbot <syzbot+list1b27cba833de821aebf4@syzkaller.appspotmail.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: s390: pci: fix GAIT table indexing due to
+ double-scaling pointer arithmetic
+To: Junrui Luo <moonafterrain@outlook.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+        Niklas Schnelle
+ <schnelle@linux.ibm.com>,
+        Pierre Morel <pmorel@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+        stable@vger.kernel.org
+References: <SYBPR01MB7881AB7449FEB6B58E4BA6F2AF222@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <SYBPR01MB7881AB7449FEB6B58E4BA6F2AF222@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 0Uu0q6F68Skj7wCiv1vhRP61mLUOsAVD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDA3NyBTYWx0ZWRfX7CqUl1ABynpB
+ cVkbYamIHX9vx5qmMdzRSD4RadfFbwGRz6bdHkbO+FjhkzjoYb2ENQm+ygWhWLrweKKbY8nNbvo
+ VIeoUE5uJS9ATRCYSX6jfME4uNakDnGeSed0Zbur0DgfYwlYA3ZMf5jF31oIkH+SEqB2Y6oYibh
+ pxMwxOMhr3O+2E4gOgmSEXGE5XOH/NZBpZ+He/g5fZrJo//qekXYbm+RyPdPu+hW4/e6+14cO9N
+ 7r/bQVbuRtHn2EDUp+wiymauZ7oEGpsrrOq6QA3LkK1527HRZqauNOAQUiW//rKrXMuBqNZSbfn
+ Da63cZTqNVWRdWTioXKvZotPB2+7P6xgpmN+GBKk48Xmyed3Q9/WWRVMcWSyuNOHVvcgiE9J+xW
+ Ipl86xBJDCcZx8FXNY5fVOnBiwk7VH9pY2WP9UYfU47/Eia2ydfvvfxrtQTqFY1U6Yav0NIkcrH
+ Yz78aNLfPw1BBlVO9Tg==
+X-Proofpoint-ORIG-GUID: wwMh_tvetK0H5EyOgFYip3_UKFa_Peku
+X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69e1e5f2 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=pGLkceISAAAA:8
+ a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=I2cwCrv0WPfETOthkQIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_04,2026-04-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604170077
 
-Hello kvm-x86 maintainers/developers,
+Am 15.04.26 um 11:26 schrieb Junrui Luo:
+> kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
+> aen_host_forward() index the GAIT by manually multiplying the index
+> with sizeof(struct zpci_gaite).
+> 
+> Since aift->gait is already a struct zpci_gaite pointer, this
+> double-scales the offset, accessing element aisb*16 instead of aisb.
+> 
+> This causes out-of-bounds accesses when aisb >= 32 (with
+> ZPCI_NR_DEVICES=512)
+> 
+> Fix by removing the erroneous sizeof multiplication.
+> 
+> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+> Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 
-This is a 31-day syzbot report for the kvm-x86 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/kvm-x86
-
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 5 issues are still open and 78 have already been fixed.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 687     Yes   WARNING: locking bug in kvm_xen_set_evtchn_fast
-                  https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
-<2> 318     Yes   WARNING in handle_exception_nmi (2)
-                  https://syzkaller.appspot.com/bug?extid=4688c50a9c8e68e7aaa1
-<3> 4       Yes   INFO: rcu detected stall in kvm_vcpu_ioctl (4)
-                  https://syzkaller.appspot.com/bug?extid=3d5461510f8dc4adfe30
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+thanks, applied.
