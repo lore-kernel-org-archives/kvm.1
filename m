@@ -1,203 +1,98 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF167301471
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 19:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B5E355049
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 19:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776453081; cv=none; b=onSK3j1TyzBibyGUj+J10g2PQyzXaEFnywOuqNJ3yaFOpn46SQzM/vCGLqWA3XnhA1SpCeB7f0Caot9CeG1x6ZKKz9YKhm+u3Noy7txOgpkrxn10c6XxUbZBQIxf76Mq3s2hQuZygJVtaQQqohTf4+iDIh44PT7KZ5vS6wZO7aM=
+	t=1776455515; cv=none; b=RmACkTlncJrHWla6xmNdvAHu4LUWCNw70+Yd0ZGBceJG17ei1+/gS7nEkGIcb6lSoTKgYz668ry7PDvt9jHdtxXQsh7uC3uE2fl/rTGGlcXKKvcwitfuKmMFFmpz424RvFrPDuCE6T+C/REnnAKOVN7Meiz6MgJuP02VqrezUe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776453081; c=relaxed/simple;
-	bh=EksppSzDvSsQ47uGzr1p+yvuq0K5vNjiJB08Vn6uppE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iY0pug4nk/PPAsok7luFsr3dC/3NQP1v3A3rxc2EKnyF/MgKEQbM0kB9Dtq9o8kurP1rbjtfzlYCK/nScdMC9ecn8ubLKdZoDLysKNDYtUrbJJ3SO4s4o8+jGJ7BSVfp8z6mt5T9N1YvXBatxo8exe/11no5XpUWlhqv/W49Dog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=PETTrcFr; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1776455515; c=relaxed/simple;
+	bh=bmBimFE5oGvyvHxBvr/6K0eQpNFiUatgQXEVHvtQAOQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=paTrr3lwvU6O0P3Lj5O38VpJbrAgMDRfKHl1YrGQZXYqedgd6nt8SYh4x+kK6QEtKT72vv7jkVwT0/ji9vhb23iMfEsJp2U8cXUZi7KTSdvtxbrPBF0it6xVS+WUHED5YEeHrW5ad307VG5Qd+tTn1h3UEMW7aWLcyPVbDTaipc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=coJE3UQL; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="PETTrcFr"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63HEVPsZ2871747
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 12:11:18 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=o3IiKyLMZoDu+X3sU+tCyrGh2WzQ0LhvoZB3ShYXAMA=; b=PETTrcFrd5jp
-	8oqZ/PWFlMifNFdW8CBPDyGkJPZmGlusiNeAQnLNRF2pWWoLC228XRJpa9VzsNhW
-	1z3N9yP+YLBMC2NBR+XP+NUZ2s+SdZF77mBG7zlBaliHp59tNAeT6Sxf5B0PgAcU
-	UTFL3E67DkV+B8jj1X1FTaTP9/43Qq2TUuHT674vm8lcU/xRgC7552dhQMSZ0T/S
-	J0VlIuF/rbgGuU9m7wmvHZ7T8ZR4+x3B/jGjz4oAO+SD3UgkII1unfyEvxGLsorL
-	xyfy7mHs/Fc4Y0PXxID4ppNK6T0S9ORx9tGfhw3xBVpx32/iL7WfZQNQiDMNSDy6
-	9v15gBUoxg==
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dh85deett-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 12:11:18 -0700 (PDT)
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-488c768a9a9so6256355e9.1
-        for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 12:11:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776453077; x=1777057877;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o3IiKyLMZoDu+X3sU+tCyrGh2WzQ0LhvoZB3ShYXAMA=;
-        b=UbauOpRdxxiJuaP+91qjPslnU66j4mawhgDOIAEjKBhi8QB1WnX/m67SjrAU9igi6j
-         HKIuA4g/jrvxNJwDt89utbwPL3kHgM4z19N4SGrd3WkDKwo0QOYPeX1p/jOYgUE6mTu9
-         EQ9y0xZZ/3er+8yB+nsqeAXWwdShXkUd3CvuJns85owji6bQE0q43EYRhEpV1JWujJU9
-         p3wqRCV+gbn7nZg0gT+wbS2swsvVh+hSC9IOVnt5vSnuo/WzU2bdOUk6BAGaTgKhZt+9
-         UcKfdOZJYnbSzSrCl04N8ohSuVyjXVFOMYqo7ny30EaERg91O0ta0tLNodDe65VR9t03
-         S7jw==
-X-Forwarded-Encrypted: i=1; AFNElJ8iMKXYymWSzGINqXyVfMcbockIf5gMgC3FBH1zTNrWZycuE5EbJwbJZe4XVeEPWP/rK9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcTdvfTQ3X5otB8BMCJaY9JFA9shMdzI7u90HhFJ30Ze/wuQp2
-	nlA5kITZolUk3IoinvLa0rQ5ToaI7PcmgSjREx3Q3DFeg6bwvTMTAS9eFawcV6ptU4Toa47POTy
-	jouPyw5H2pPHgxalLXHwBy2S41u8lUEUNesn92JV7KjwQZgOGVtJH
-X-Gm-Gg: AeBDietPkYCHbpYnDcd8aYbLLoybYLkGJlfSaLS3ySVDzM+kBGm+7hl2nmU3zGwEwLl
-	LEsba/o3jjEMuL9dFwxVGGC0rRcVZePqZF3NTYbPPNhx56AsE7FI27y9hS4z8H17e9TKMnldxFm
-	1r3B89wDOK2z8q+/OxPcNcbRXbR/nIP1/R1qpb6KocjHNiTKCpxUBvLMWdHFuesrXKmVSDF/Mck
-	RTWx01ptuDgcoOZMnmesGhE4nwanvgU1HoBthrvPhmbsxMWKXWPeCN7IblMlLNG9YXxf22UGaDy
-	Nq0bM8pLNUGBotQcMpFU6WqDtIEkupWqOEAEWiGg6BhzsLu5qT8wZxuD34M8cX4C7EkQDgsChB+
-	uclVfiYyR+DbjarBGfMfAuOsiVhsBGh+ytKyZO9V6ODybMsLF4aNzeWmfk9F7jRin5csDVASQBD
-	qmik4ppXieaFX7HgrbRMCA39aB4ZhSGAWwKLNelQryuoDHZw79b5ztyuPS2ZblM/l39cGSH34iT
-	QBAy67K642Qvd0UfJnCCyP1GOeaZE1DUg==
-X-Received: by 2002:a05:600c:c04a:b0:487:12c:e7e1 with SMTP id 5b1f17b1804b1-488fb750840mr44340365e9.11.1776453077144;
-        Fri, 17 Apr 2026 12:11:17 -0700 (PDT)
-X-Received: by 2002:a05:600c:c04a:b0:487:12c:e7e1 with SMTP id 5b1f17b1804b1-488fb750840mr44339985e9.11.1776453076662;
-        Fri, 17 Apr 2026 12:11:16 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc1c773fsm60219315e9.12.2026.04.17.12.11.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Apr 2026 12:11:16 -0700 (PDT)
-Message-ID: <3fd01aa0-955d-44e3-aa4a-1918f9c42bb0@meta.com>
-Date: Fri, 17 Apr 2026 20:11:15 +0100
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="coJE3UQL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1776455512;
+	bh=bmBimFE5oGvyvHxBvr/6K0eQpNFiUatgQXEVHvtQAOQ=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=coJE3UQLd8WUBBrKkcX/fW1ra/OOGtWO1jgFS7Yg4hoIqrEyJMKKUsTucRD/onhlQ
+	 KWlWRa5xHHIWYQz/+EytG174oJ6WULjCMLoua3SYmFVs1PLEBsvSJpAVG8FtUhcQb1
+	 ZtgOFXfvWkMVXvbUjKOfl3hcdY6Lw+kvUWHxiy3A=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id A4FAC1C00F8;
+	Fri, 17 Apr 2026 15:51:52 -0400 (EDT)
+Message-ID: <96b0938a2ec7a83c7d2010c6a363e8417749cc27.camel@HansenPartnership.com>
+Subject: Re: PUCK follow up: Trusted IO call details
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Dan Williams <djbw@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "michael.roth@amd.com"
+	 <michael.roth@amd.com>, "Xu, Yilun" <yilun.xu@intel.com>, "Weiny, Ira"
+	 <ira.weiny@intel.com>
+Date: Fri, 17 Apr 2026 15:51:51 -0400
+In-Reply-To: <69e19cf75b5e9_147c8010018@djbw-dev.notmuch>
+References: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
+	 <CABgObfasYTWmuqkz4TaTprcivwkzKGxAjdYZJVgO66HB1wK-5w@mail.gmail.com>
+	 <69e19cf75b5e9_147c8010018@djbw-dev.notmuch>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio/pci: Set up VFIO barmap before creating a DMABUF
-Content-Language: en-GB
-To: "Tian, Kevin" <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
-Cc: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum
- <skolothumtho@nvidia.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
-        Kees Cook <kees@kernel.org>, Zhi Wang <zhiw@nvidia.com>,
-        Peter Xu <peterx@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Eric Auger <eric.auger@redhat.com>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>
-References: <20260415181423.1008458-1-mattev@meta.com>
- <20260416164406.7fb3bb0b@shazbot.org>
- <BN9PR11MB52768421EA5D79C469B899C18C202@BN9PR11MB5276.namprd11.prod.outlook.com>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <BN9PR11MB52768421EA5D79C469B899C18C202@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDE5MiBTYWx0ZWRfX2rbcJ2rR7wy+
- Ku0YVZxWUBKFPD0GaadnyuJxi7SxMawlV2QpwXhON0umdSCxZilmCSlTJmn0CSssrAjQmxnxiKA
- DInS0ntXuahvA8Prqmt/2u+dGAfS5tUFmXVhzUnTKHy1vRvxfOuXh76C8jFexj2hL90yE9RNVSn
- xpuxtmZnvu2I1+7UuKyMawfaSRORicaeW4ARwQLtbFvVWnOAAwqBQjpwIxXrZpYwq2LT5u41C0y
- 0Ua07hNumPHFui7p5asuiAbGRmb9PVtMbeT2wlI+XJPktZ5QJLZWc6DkV8XAQmvkufTEKcFuJVO
- Vf9iNXijOzll86FtZxd3urormXb2UmwXDzj4PKgX8lasGoyYkcIRdrrToZowDZGPm6o8d1/iefm
- ngFTXMibg/VmETVy1bEv3fhHJZ9w5qRmhM0JPsIdLz32tCE6TvJbABhBwUXGhty2hw1prPOdz8t
- 8lt4L9F3nc2ZQ9RMDpw==
-X-Proofpoint-ORIG-GUID: OuWUBACBUSN7ljs1lLwAsDRczkeFskg4
-X-Authority-Analysis: v=2.4 cv=Xfm5Co55 c=1 sm=1 tr=0 ts=69e285d6 cx=c_pps
- a=ocXdEHcuFBd2kx0v6vcWqw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=wpfVPzegXHpEFt3DAXn9:22 a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8
- a=Nw9sHT1wb8GjpDreaWAA:9 a=QEXdDO2ut3YA:10 a=XRP02QYyWapGEjE7oHHB:22
- a=r_pkcD-q9-ctt7trBg_g:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: OuWUBACBUSN7ljs1lLwAsDRczkeFskg4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-17_02,2026-04-17_04,2025-10-01_01
 
-Hi Kevin, Alex,
+On Thu, 2026-04-16 at 19:37 -0700, Dan Williams wrote:
+> Paolo Bonzini wrote:
+> > On Wed, Apr 15, 2026 at 8:59=E2=80=AFPM Edgecombe, Rick P
+> > <rick.p.edgecombe@intel.com> wrote:
+> > >=20
+> > > The call I mentioned is officially called: "TAC Subcommittee:
+> > > Linux Kernel Special Interest Group (Linux Kernel-SIG)". This
+> > > seems to be the info:
+> > > https://confidentialcomputing.io/about/committees/#Linux-Kernel-SIG
+> > >=20
+> > > Paolo, unfortunately I did remember correctly that it is not an
+> > > EU friendly time.
+> >=20
+> > This one is friendly (9AM PST =3D 6PM CEST). The unfriendly one is
+> > the IOMMUFD one (5AM :)).
+>=20
+> There are couple topics at present that would be suitable to raise at
+> the EU-US friendly time. Specifically whether all of the per-arch
+> implementations of "transport large attestation evidence blobs over
+> shared memory from host-to-guest" would be better served with a
+> shared generic transport (simple virtio-pipe / something equivalent
+> for vmbus to publish).
 
-On 17/04/2026 06:16, Tian, Kevin wrote:
-> 
->> From: Alex Williamson <alex@shazbot.org>
->> Sent: Friday, April 17, 2026 6:44 AM
->>
->> On Wed, 15 Apr 2026 11:14:22 -0700
->> Matt Evans <mattev@meta.com> wrote:
->>
->>> A DMABUF exports access to BAR resources which need to be requested
->>> before the DMABUF is handed out.  Usually the resources are requested
->>> when setting up the barmap when the VFIO device fd is mmap()ed, but
->>> there's no guarantee that's done before a DMABUF is created.
->>>
->>> Set up the barmap (and so request resources) in the DMABUF-creation
->>> path.
->>>
->>> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO
->> regions")
->>> Signed-off-by: Matt Evans <mattev@meta.com>
->>> ---
->>>   drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++++
->>>   1 file changed, 9 insertions(+)
->>>
->>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> b/drivers/vfio/pci/vfio_pci_dmabuf.c
->>> index 4ccaf3531e02..fefe7cf4256b 100644
->>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->>> @@ -272,6 +272,15 @@ int vfio_pci_core_feature_dma_buf(struct
->> vfio_pci_core_device *vdev, u32 flags,
->>>   		goto err_free_priv;
->>>   	}
->>>
->>> +	/*
->>> +	 * See comment in vfio_pci_core_mmap(); ensure PCI regions
->>> +	 * were requested before returning DMABUFs that reference
->>> +	 * them.  Barmap setup does this:
->>> +	 */
->>> +	ret = vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index);
->>> +	if (ret)
->>> +		goto err_free_phys;
->>> +
->>>   	priv->vdev = vdev;
->>>   	priv->nr_ranges = get_dma_buf.nr_ranges;
->>>   	priv->size = length;
->>
->> Wouldn't this get a lot easier if we just setup all the barmaps in
->> vfio_pci_core_enable(), conditional on pci_resource_len() just like we
->> use to filter in REGION_INFO?
->>
->> I don't recall if there's some reason we've avoid this so far, maybe
->> others can shout it out if they do.
-> 
-> I don't remember too. probably just because it's not a wide requirement
-> then was made in this on-demand approach...
-> 
->>
->> We already tear them all down in vfio_pci_core_disable().  It would be
->> a small patch to add that, which we would mark as Fixes:, then a small
->> follow-up on top of that that removes any then redundant or unnecessary
->> callers (all of them).  Thoughts?  Thanks,
->>
-> 
-> Agree. then the next patch fixing the racing conditions is also not required.
+Sorry to be a bit late to the party, but why invent a new thing
+(virtio-pipe), why not use the existing virtio-vsock (and hyperv-vsock,
+so no new vmbus device is needed)?  If you're thinking it's because you
+need a simple cat into host and out of guest, then you can do that with
+the ncat --vsock utility:
 
-Oh, if we can do it earlier it's all much cleaner, agreed.  I'd naively 
-thought there was a reason it was done lazily.  One benefit is truly 
-huge TB-scale BARs don't get ioremap()ed until actually used by 
-userspace.  I can't think of a good usage example that relies on open 
-performance.
-
-If you say fine, then great:  Ignore these, and I'll post a new pair of 
-patches doing that (...with a cover letter this time).
+https://man7.org/linux/man-pages/man1/ncat.1.html
 
 
-Thank you,
+Regards,
 
+James
 
-Matt
