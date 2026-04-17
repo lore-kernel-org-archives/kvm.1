@@ -1,60 +1,80 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E7A34A786;
-	Fri, 17 Apr 2026 09:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A693624A8
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776418659; cv=none; b=CZX7MwsJyCrtQZu4sMcvXYfBZuTy2vAa8suHLYQOe4Jp1NcyEkRyojO5YqAwVAlQc7SY8drgKwGiG/xOR+bGBMme4zjjr0CQx05B1QosWjsS1rDt5fxxXONUeVg0NKHrAIPusri+iMypFZ7SUIRX83PEziKKz3BPo1nnJKWKAac=
+	t=1776420310; cv=none; b=dq201ACEfWOmzY8F8IDxieoTUwgc7HzM5mmvWyhhNTNxJIxNLEBV6XQ/ihia1jjtb1m8Y8q89xgIrn3NfbX72r1N3iXbZISuODOdYFGjNuPEMm/j/Y9/KQpiK2Ax9Pzkl9KnsaRzEx84KxQ4vYP0UbZYPKK9lhKUlc/z9XciDZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776418659; c=relaxed/simple;
-	bh=v8yU9HegQivSIJ6KeZL3cwoUwujyWbR6PKrHHxwpFZI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=bIMIzA1RhYCvO/O4D4hD7tcDaCK6tEmYJlDugqCLd1DsiuqMXg6zX5KiQsWAPiFVipAnMIbyD+D7NAYToFLysllqI+NDFcF9zUHQf9pUDVt6difvnyKwvOqu8m1U2Ey22TciSvHw0dXAzfWVGekgSNysh58nHQ9DJcYnHGeqTNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VBblfl0+; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776420310; c=relaxed/simple;
+	bh=HFUf647vhRg08shNRvrLdCirC3ivpFdX+Uw+/h/X180=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AaSsA30gqm0cZeMeXiP8aeEScFkbQ4qPnKp3FRHTRM/6xLUGENYexdnfxAA8sZV3DmgwaX6zB29GQvcab7ZUiPygW+aD9jkhoCdgYtdVPNRXSmtLNCoJefF8K2KC5H0f2M+gtZmbkkID73A/tRVx9tSHa+JilJxXs0HwjE3b7bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XzcyCnV/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GQkIh40F; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Zcdsa+Ci; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PzaWq8PY; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VBblfl0+"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63GI5GRN1733184;
-	Fri, 17 Apr 2026 09:36:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=oG5IOc
-	ERn2jQwZSxAmEMYeoP+GM2UHC8Y439NkXn3DQ=; b=VBblfl0+wrv+CYxHcAmes3
-	SHuElLT2iS6z9a0nF/lC0ZHEvzd8KERZeIwu5QMY027KdUGKfAxKr9WJhmBFwYzf
-	yK4cGj198sydoef6TMBtdePpBt4mU/AnT6nGh/cWLse/L23f5P1f8E0KCQpBvysS
-	uMTr1woT7VdAnPr2WbKZ+dpNlabBmHM/GD22CKG6WyqjNctFE1vSyDa5vvh1wepw
-	ysKJOlf4KCcX+aAjR8ET0RQRMEV/sNqjzMujgUtLpmWSXycf/OSPMnhqRjJ4fUvz
-	IhaFe4jDuKCL0pb/hXBpQEPUr5lqb7yv3McYXBUP+kImzWbjbkQ96zAuLKNgMB6Q
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89mgnjg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Apr 2026 09:36:50 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63H870K4004175;
-	Fri, 17 Apr 2026 09:36:49 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24kpjau-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Apr 2026 09:36:49 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63H9ajJi18219388
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Apr 2026 09:36:45 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 89A642004D;
-	Fri, 17 Apr 2026 09:36:45 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A80C20043;
-	Fri, 17 Apr 2026 09:36:45 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Apr 2026 09:36:44 +0000 (GMT)
-Message-ID: <280451fd-63e9-44b0-9f56-d39dd01861b9@linux.ibm.com>
-Date: Fri, 17 Apr 2026 11:36:44 +0200
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XzcyCnV/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GQkIh40F";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Zcdsa+Ci";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PzaWq8PY"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B66626A9AD;
+	Fri, 17 Apr 2026 10:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776420307; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbiHQuxbonHtZcHsPM48e0n+anyN/Gt9HQiY7pfRgxk=;
+	b=XzcyCnV/6wl2GJvBhbYBJ2lNpoB/xoUhJriUKlCnalCGwX0fY7AMmTRv/oO+2wtvyzVyAh
+	Zfq3Y0h4Ha53Scv2sPYlzGLwU4j9M+hQu9e2uYwFqTsvUoWpewbI4fhscS7xiLoipoa/R8
+	kg1t0rPBcj70vEYgY+X8R4G6QnGuUjs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776420307;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbiHQuxbonHtZcHsPM48e0n+anyN/Gt9HQiY7pfRgxk=;
+	b=GQkIh40FLHWl1e8SIMO/67FZT30VYrN0CXq6ZLC6u1qantg4coO9j33VyoiNEsZlaMq32U
+	2qIoWJ7spOk+dZDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776420306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbiHQuxbonHtZcHsPM48e0n+anyN/Gt9HQiY7pfRgxk=;
+	b=Zcdsa+CiZmUjG4Yd+dP11iGdJW0G2wIqrNgEXNBnMkcsev3wLL6rL6umYoVcOQKcnOu4nB
+	pnjIXw9ib1A4N0ugUwUVsqFLheo8oynAJCdwuQFOHbuALnwUgoCUK1Ol57SLAomm4TLXx/
+	ssLT0q0F7jc4tCnRozT4KRFkeH9P/Eo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776420306;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbiHQuxbonHtZcHsPM48e0n+anyN/Gt9HQiY7pfRgxk=;
+	b=PzaWq8PY2L7SJg6/9WQoPvZSYw6spvcHs9W0rhSGstsjVUZGLvELIqpEszjs+kBk0id+9N
+	qD0aRDn+SEE4aYBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4CCB5593AF;
+	Fri, 17 Apr 2026 10:05:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UcBTENIF4mnkHwAAD6G6ig
+	(envelope-from <clopez@suse.de>); Fri, 17 Apr 2026 10:05:06 +0000
+Message-ID: <ce3e8a51-63fe-4723-b1d8-6555b8b77817@suse.de>
+Date: Fri, 17 Apr 2026 12:05:05 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,84 +82,71 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v5 1/3] KVM: setup empty irq routing when create vm
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: Yi Wang <up2wing@gmail.com>, seanjc@google.com, pbonzini@redhat.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wanpengli@tencent.com, foxywang@tencent.com, oliver.upton@linux.dev,
-        maz@kernel.org, anup@brainfault.org, atishp@atishpatra.org,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com, weijiang.yang@intel.com
-References: <20240506101751.3145407-1-foxywang@tencent.com>
- <20240506101751.3145407-2-foxywang@tencent.com>
- <7e958b82-4eb1-4d61-b301-dde6a19312ba@linux.ibm.com>
+Subject: Re: [PATCH 2/4] KVM: VFIO: use mutex guard in
+ kvm_vfio_file_set_spapr_tce()
+To: kernel test robot <lkp@intel.com>, seanjc@google.com
+Cc: oe-kbuild-all@lists.linux.dev, alex.williamson@redhat.com,
+ pbonzini@redhat.com, open list <linux-kernel@vger.kernel.org>,
+ kvm@vger.kernel.org
+References: <20260313122040.1413091-5-clopez@suse.de>
+ <202604031640.vckbuS2S-lkp@intel.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
 Content-Language: en-US
-In-Reply-To: <7e958b82-4eb1-4d61-b301-dde6a19312ba@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69e1ff32 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=GvQkQWPkAAAA:8
- a=oTrqkLahvbBJYE7AxasA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: GXgCTZd_852EhieiTlcFFnvQsmFISx7r
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDA5MiBTYWx0ZWRfX+Sq9dtCI7foy
- Hd+YtfeLYyp+1E25BwrS1ReBjZsxUybS0Qzj/I5hV0QlYgxkZg8Tc3hJSHPrHO+PmDfjPeldEt/
- hSeefByq6Vm4SD6Xb6NiLiIRayizB00A6/vVbwxIEh4iC3+CDFrJMJh/AC2e/ezQcvJddKO14GV
- f8ZmohdS4VBWjsiMnXmt92XU7LfQDGevKfc+0t+oWKalOdQsSB2Uvf/aQrLoyaMiUPMaNhauAjn
- 3cgzEzqVoyj8/e/r0k+mbghsL4KMJ/q4VmAafX7c7F5b8MqZZyTmlO8l+XWZJ03rrXDah4QO55B
- jyL8jBSkOpwWO2f9d8luA1nD6mSj2hk1K5j41oTxoOBBdQC1ohHsuLJXWTZeDkSZCw5UA/YYW7V
- hy7uTFGE3wAwez4G7n+xA3Ko1VtyrRl8TSTS7zQ/wHR0NsbetDKmfydckurUZQl9HvULTjDhkN4
- YcXPQzj0bZDpF9mjVkQ==
-X-Proofpoint-ORIG-GUID: qspBRwwm02j-0K59fBlo7JYVpPT0zndm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_04,2026-04-16_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604170092
+In-Reply-To: <202604031640.vckbuS2S-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 
-Am 17.04.26 um 10:19 schrieb Christian Borntraeger:
-> Am 06.05.24 um 12:17 schrieb Yi Wang:
->> From: Yi Wang <foxywang@tencent.com>
->>
->> Add a new function to setup empty irq routing in kvm path, which
->> can be invoded in non-architecture-specific functions. The difference
->> compared to the kvm_setup_empty_irq_routing() is this function just
->> alloc the empty irq routing and does not need synchronize srcu, as
->> we will call it in kvm_create_vm().
->>
->> Using the new adding function, we can setup empty irq routing when
->> kvm_create_vm(), so that x86 and s390 no longer need to set
->> empty/dummy irq routing when creating an IRQCHIP 'cause it avoid
->> an synchronize_srcu.
->>
->> Signed-off-by: Yi Wang <foxywang@tencent.com>
+On 4/7/26 5:48 AM, kernel test robot wrote:
+> Hi Carlos,
 > 
-> We have recently looked into cpu consumption for virtio.
-> So interestingly enough, this increases cpu consumption for things like uperf
-> ping pong on s390.
-> Bisect points to this commit.
-> I originally thought that this is a no-op for s390, but it is not.
+> kernel test robot noticed the following build warnings:
 > 
-> The reasons seems to be that nr_rt_entries is now 1 instead of 0 making every
-> interrupt inject more expensive as we no longer drop out in
+> [auto build test WARNING on d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf]
 > 
-> int kvm_irq_map_gsi(struct kvm *kvm,
->                      struct kvm_kernel_irq_routing_entry *entries, int gsi)
-> {
->          struct kvm_irq_routing_table *irq_rt;
->          struct kvm_kernel_irq_routing_entry *e;
->          int n = 0;
+> url:    https://github.com/intel-lab-lkp/linux/commits/Carlos-L-pez/KVM-VFIO-clean-up-control-flow-in-kvm_vfio_file_add/20260314-053050
+> base:   d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf
+> patch link:    https://lore.kernel.org/r/20260313122040.1413091-5-clopez%40suse.de
+> patch subject: [PATCH 2/4] KVM: VFIO: use mutex guard in kvm_vfio_file_set_spapr_tce()
+> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260403/202604031640.vckbuS2S-lkp@intel.com/config)
+> compiler: powerpc64-linux-gcc (GCC) 15.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260403/202604031640.vckbuS2S-lkp@intel.com/reproduce)
 > 
->          irq_rt = srcu_dereference_check(kvm->irq_routing, &kvm->irq_srcu,
->                                          lockdep_is_held(&kvm->irq_lock));
->          if (irq_rt && gsi < irq_rt->nr_rt_entries) {  <---------
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202604031640.vckbuS2S-lkp@intel.com/
 > 
-Hmm, I guess I misread the code and the problem is likely not this.
-Let me have another look.
+> All warnings (new ones prefixed by >>):
+> 
+>    arch/powerpc/kvm/../../../virt/kvm/vfio.c: In function 'kvm_vfio_file_set_spapr_tce':
+>>> arch/powerpc/kvm/../../../virt/kvm/vfio.c:219:13: warning: unused variable 'ret' [-Wunused-variable]
+>      219 |         int ret;
+>          |             ^~~
+> 
+
+Sean, should I send a v2 for this or will you fix it up when applying?
+
+Thanks,
+Carlos
