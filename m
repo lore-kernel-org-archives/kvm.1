@@ -1,29 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED25E383C69
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823B13A9D93
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776423386; cv=none; b=vFLbZT/6mDawKi3InF//myUvxStdwWGaofRyhIGoqWXOh8beQqVG1ScbR0AJ9n2H0/1Oz0Vq0LrnWpRTSY6KM9kovg4mm0rVYmznDMFn/sPzBIYtbtZHckDWBC5ht27Q51lW6R70Qhly0DRxJsoeQIsg1Ylf9RKzuZuWjHtBIk8=
+	t=1776423389; cv=none; b=Bmh8jwohiDSoNOmEK9pmGfZsg/4DANNWc9pkYaXdKo9FyN/KlARUgbWv+W4RULZIB2p/7Df7uLnoQnZUQ5umU6qNiQaSft6j/VQ6v+NvaAMhRHvV2bIVQK01W5O9GCnxufC3CeqFaKKvYiFvwTvxnhx/Hfp3d5cHZqhmJLHitF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776423386; c=relaxed/simple;
-	bh=cDRyFRiwxoK0Vb0dljWhUWkSrtqATFz97Dvamr+hgLM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UCtzfvKxA02E7eNQ1bDdKr9sMssHqkYvUogqKJ+eSNonJXlBZB+qqF3jHsExtFQjKX1DPiPzFsIZJSjJhoL7m2R/LM4hCteLjwiApqoUEG5nTiITfI3nW/VPnZRruz0XM/gtdGAUh0zO2eTDJ/CJt+81K81HnD02u6ubzLMXt9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=oUI+I66V; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1776423389; c=relaxed/simple;
+	bh=YpVZa0KllEBW36jE4jrvNY98y7F9Ue7CymtV2K70qQg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NHtQ1AA/vcvS0tRjuCr/msAp8JyaWI1pn8/elVfHAK4ov+cfm9nzTlGKh/i84X3rUp7AqxbioCAOMJMa11BK4l7EoTkP3OhNRcdJTE64fbi/a51f5Xtu/0yUc+LozupD2IXIHgXW62+GdGSP+VA3bFQkKawYxRjiYRZ0ox8F6og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=eKKkOVDm; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="oUI+I66V"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="eKKkOVDm"
 Received: from DESKTOP-TUU1E5L.fritz.box (p5086d620.dip0.t-ipconnect.de [80.134.214.32])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 5E8B420B7128;
-	Fri, 17 Apr 2026 03:56:21 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5E8B420B7128
+	by linux.microsoft.com (Postfix) with ESMTPSA id 50C5020B7129;
+	Fri, 17 Apr 2026 03:56:25 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 50C5020B7129
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1776423384;
-	bh=kT+fZO67+FFVyM48Jt/bh2LO+EU7++uA6l5Zv1+8NLc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=oUI+I66VJt/nBuWkAhLvnvbtE88rVDiUdYrh3K82v7liYYOMt3JxMjKpKGcTNR6iG
-	 7T5HP4NcvmBnTPuxJW4rns1hUqTGF0S4teD3mJ6YijwXOQKBLKNVm4/7Mpe+0cYjea
-	 tAqu2Wp6s+aJzJGHBMOYf4v823CuRczNw8Lp9AXc=
+	s=default; t=1776423388;
+	bh=Vlb84NjCXw4NOONm0D1TCpsCilPuQF2CzdK3RJxUGA0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eKKkOVDmtfcnC1Z5Fbt7GMN3ytR5hULbR6Jo6QJN+JdawvFnWIz1SlcyKdqbk5umG
+	 5MgnRyd7bYryZGX27OcNjC4szU50dUIwEuSyQZbk6BN3NxYpdzQP8Tgnk8iPxPXsx0
+	 YXaLAz37RH0kTEj89RyBFrZeJJOaNBcs5eDaJceA=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -40,10 +41,12 @@ Cc: kvm@vger.kernel.org,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 00/34] Add migration support to the MSHV accelerator
-Date: Fri, 17 Apr 2026 12:55:44 +0200
-Message-Id: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+Subject: [PATCH 01/34] target/i386/mshv: use arch_load/store_reg fns
+Date: Fri, 17 Apr 2026 12:55:45 +0200
+Message-Id: <20260417105618.3621-2-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,125 +55,190 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hey all, This is a patch series for live migration support in the MSHV
-accelerator. Since this is somewhat invasive and touches various parts
-outside of the accel's folder hierarchies I'm sending an RFC series to
-collect early feedback.
+Improved consistency around the naming of load/store register fn's. this
+is required since we want to roundtrip more registers in a migration
+than what's currently required for MMIO emulation.
 
-This patches are sent in sent in isolation, but for LM to be fully
-functional we will require require the recently submitted patch series
-"Support QEMU cpu models in MSHV accelerator" (at v6 currently) to be
-merged, since on some hosts we will need the CPUID infra to disable
-features that we currently are not able to migrate yet (e.g. AMX tiles).
+Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+---
+ accel/mshv/mshv-all.c       |  2 +-
+ include/system/mshv_int.h   |  6 ++---
+ target/i386/mshv/mshv-cpu.c | 52 ++++++++++++++-----------------------
+ 3 files changed, 23 insertions(+), 37 deletions(-)
 
-In this series we perform some preperatory refactorings and introduce
-new abstractions where required, particulary for irqchips and MSR
-logic. We also have to introduce some generic logic for XSAVE
-de/compaction to allow migration of XSAVE state.
-
-Note: there is some pending optimization to avoid a buffer copy
-and rework existing xsave helper code to be generic over a
-compacted or standard layout. We'll address this in a later revision
-or in a discrete patch.
-
-The guest state components that are covered by migration are:
-
-- standard regs
-- special regs
-- xcr0
-- (legacy) FPU regs
-- XSAVE
-- LAPIC
-- MSRs
-- SynIC state (SIMP, SIEFP, STIMER)
-- pending interrupts/exceptions
-- MP state (AP cpu modes)
-
-Finally, routines for dirty-page tracking to reduce migration downtime
-have beend added and integrated in the respective hooks.
-
-best,
-
-magnus
-
-Changes since RFC:
-
-- Added CET SS/IBT MSR migration
-- Assert 64bit padding on CPUX86State->sysenter_cs statically
-
-Magnus Kulke (34):
-  target/i386/mshv: use arch_load/store_reg fns
-  target/i386/mshv: use generic FPU/xcr0 state
-  target/i386/mshv: impl init/load/store_vcpu_state
-  accel/accel-irq: add AccelRouteChange abstraction
-  accel/accel-irq: add generic begin_route_changes
-  accel/accel-irq: add generic commit_route_changes
-  accel/mshv: add irq_routes to state
-  accel/mshv: update s->irq_routes in add_msi_route
-  accel/mshv: update s->irq_routes in update_msi_route
-  accel/mshv: update s->irq_routes in release_virq
-  accel/mshv: use s->irq_routes in commit_routes
-  accel/mshv: reserve ioapic routes on s->irq_routes
-  accel/mshv: remove redundant msi controller
-  target/i386/mshv: move apic logic into own file
-  target/i386/mshv: remove redundant apic helpers
-  target/i386/mshv: migrate LAPIC state
-  target/i386/mshv: move msr code to arch
-  accel/mshv: store partition proc features
-  target/i386/mshv: expose msvh_get_generic_regs
-  target/i386/mshv: migrate MSRs
-  target/i386/mshv: migrate MTRR MSRs
-  target/i386/mshv: migrate Synic SINT MSRs
-  target/i386/mshv: migrate CET/SS MSRs
-  target/i386/mshv: migrate SIMP and SIEFP state
-  target/i386/mshv: migrate STIMER state
-  accel/mshv: introduce SaveVMHandler
-  accel/mshv: write synthetic MSRs after migration
-  accel/mshv: migrate REFERENCE_TIME
-  target/i386/mshv: migrate pending ints/excs
-  target/i386: add de/compaction to xsave_helper
-  target/i386/mshv: migrate XSAVE state
-  target/i386/mshv: reconstruct hflags after load
-  target/i386/mshv: migrate MP_STATE
-  accel/mshv: enable dirty page tracking
-
- accel/accel-irq.c               |  41 +-
- accel/kvm/kvm-all.c             |   6 +-
- accel/mshv/irq.c                | 360 ++++++------
- accel/mshv/mem.c                | 211 +++++++
- accel/mshv/meson.build          |   1 -
- accel/mshv/mshv-all.c           | 243 +++++++-
- accel/mshv/msr.c                | 375 -------------
- accel/stubs/kvm-stub.c          |   2 +-
- accel/stubs/mshv-stub.c         |   6 +-
- hw/intc/apic_common.c           |   3 +
- hw/misc/ivshmem-pci.c           |   8 +-
- hw/vfio/pci.c                   |  11 +-
- hw/virtio/virtio-pci.c          |   3 +-
- include/accel/accel-route.h     |  17 +
- include/hw/hyperv/hvgdk_mini.h  |  33 ++
- include/hw/hyperv/hvhdk.h       | 150 +++++
- include/hw/i386/apic_internal.h |   5 +
- include/system/accel-irq.h      |   6 +-
- include/system/kvm.h            |  23 +-
- include/system/mshv.h           |  15 +-
- include/system/mshv_int.h       |  89 +--
- target/i386/cpu.h               |  14 +-
- target/i386/kvm/kvm.c           |   5 +-
- target/i386/machine.c           |  46 ++
- target/i386/mshv/meson.build    |   3 +
- target/i386/mshv/mshv-apic.c    |  78 +++
- target/i386/mshv/mshv-cpu.c     | 958 +++++++++++++++++++++++---------
- target/i386/mshv/msr.c          | 467 ++++++++++++++++
- target/i386/mshv/synic.c        | 206 +++++++
- target/i386/xsave_helper.c      | 255 +++++++++
- 30 files changed, 2684 insertions(+), 956 deletions(-)
- delete mode 100644 accel/mshv/msr.c
- create mode 100644 include/accel/accel-route.h
- create mode 100644 target/i386/mshv/mshv-apic.c
- create mode 100644 target/i386/mshv/msr.c
- create mode 100644 target/i386/mshv/synic.c
-
+diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+index d4cc7f5371..7c0eb68a5b 100644
+--- a/accel/mshv/mshv-all.c
++++ b/accel/mshv/mshv-all.c
+@@ -650,7 +650,7 @@ static void mshv_cpu_synchronize_pre_loadvm(CPUState *cpu)
+ static void do_mshv_cpu_synchronize(CPUState *cpu, run_on_cpu_data arg)
+ {
+     if (!cpu->accel->dirty) {
+-        int ret = mshv_load_regs(cpu);
++        int ret = mshv_arch_load_regs(cpu);
+         if (ret < 0) {
+             error_report("Failed to load registers for vcpu %d",
+                          cpu->cpu_index);
+diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
+index 35386c422f..a142dd241a 100644
+--- a/include/system/mshv_int.h
++++ b/include/system/mshv_int.h
+@@ -82,11 +82,9 @@ void mshv_init_mmio_emu(void);
+ int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd);
+ void mshv_remove_vcpu(int vm_fd, int cpu_fd);
+ int mshv_configure_vcpu(const CPUState *cpu, const MshvFPU *fpu, uint64_t xcr0);
+-int mshv_get_standard_regs(CPUState *cpu);
+-int mshv_get_special_regs(CPUState *cpu);
+ int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit);
+-int mshv_load_regs(CPUState *cpu);
+-int mshv_store_regs(CPUState *cpu);
++int mshv_arch_load_regs(CPUState *cpu);
++int mshv_arch_store_regs(CPUState *cpu);
+ int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
+                           size_t n_regs);
+ int mshv_arch_put_registers(const CPUState *cpu);
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index 2bc978deb2..9456e75277 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -107,6 +107,8 @@ static enum hv_register_name FPU_REGISTER_NAMES[26] = {
+     HV_X64_REGISTER_XMM_CONTROL_STATUS,
+ };
+ 
++static int set_special_regs(const CPUState *cpu);
++
+ static int translate_gva(const CPUState *cpu, uint64_t gva, uint64_t *gpa,
+                          uint64_t flags)
+ {
+@@ -285,7 +287,7 @@ static int set_standard_regs(const CPUState *cpu)
+     return 0;
+ }
+ 
+-int mshv_store_regs(CPUState *cpu)
++int mshv_arch_store_regs(CPUState *cpu)
+ {
+     int ret;
+ 
+@@ -295,6 +297,12 @@ int mshv_store_regs(CPUState *cpu)
+         return -1;
+     }
+ 
++    ret = set_special_regs(cpu);
++    if (ret < 0) {
++        error_report("Failed to store speical registers");
++        return ret;
++    }
++
+     return 0;
+ }
+ 
+@@ -323,7 +331,7 @@ static void populate_standard_regs(const hv_register_assoc *assocs,
+     rflags_to_lflags(env);
+ }
+ 
+-int mshv_get_standard_regs(CPUState *cpu)
++static int get_standard_regs(CPUState *cpu)
+ {
+     struct hv_register_assoc assocs[ARRAY_SIZE(STANDARD_REGISTER_NAMES)];
+     int ret;
+@@ -401,8 +409,7 @@ static void populate_special_regs(const hv_register_assoc *assocs,
+     cpu_set_apic_base(x86cpu->apic_state, assocs[16].value.reg64);
+ }
+ 
+-
+-int mshv_get_special_regs(CPUState *cpu)
++static int get_special_regs(CPUState *cpu)
+ {
+     struct hv_register_assoc assocs[ARRAY_SIZE(SPECIAL_REGISTER_NAMES)];
+     int ret;
+@@ -422,17 +429,17 @@ int mshv_get_special_regs(CPUState *cpu)
+     return 0;
+ }
+ 
+-int mshv_load_regs(CPUState *cpu)
++int mshv_arch_load_regs(CPUState *cpu)
+ {
+     int ret;
+ 
+-    ret = mshv_get_standard_regs(cpu);
++    ret = get_standard_regs(cpu);
+     if (ret < 0) {
+         error_report("Failed to load standard registers");
+         return -1;
+     }
+ 
+-    ret = mshv_get_special_regs(cpu);
++    ret = get_special_regs(cpu);
+     if (ret < 0) {
+         error_report("Failed to load special registers");
+         return -1;
+@@ -1103,16 +1110,16 @@ static int emulate_instruction(CPUState *cpu,
+     int ret;
+     x86_insn_stream stream = { .bytes = insn_bytes, .len = insn_len };
+ 
+-    ret = mshv_load_regs(cpu);
++    ret = mshv_arch_load_regs(cpu);
+     if (ret < 0) {
+-        error_report("failed to load registers");
++        error_report("Failed to load registers");
+         return -1;
+     }
+ 
+     decode_instruction_stream(env, &decode, &stream);
+     exec_instruction(env, &decode);
+ 
+-    ret = mshv_store_regs(cpu);
++    ret = mshv_arch_store_regs(cpu);
+     if (ret < 0) {
+         error_report("failed to store registers");
+         return -1;
+@@ -1291,25 +1298,6 @@ static int handle_pio_non_str(const CPUState *cpu,
+     return 0;
+ }
+ 
+-static int fetch_guest_state(CPUState *cpu)
+-{
+-    int ret;
+-
+-    ret = mshv_get_standard_regs(cpu);
+-    if (ret < 0) {
+-        error_report("Failed to get standard registers");
+-        return -1;
+-    }
+-
+-    ret = mshv_get_special_regs(cpu);
+-    if (ret < 0) {
+-        error_report("Failed to get special registers");
+-        return -1;
+-    }
+-
+-    return 0;
+-}
+-
+ static int read_memory(const CPUState *cpu, uint64_t initial_gva,
+                        uint64_t initial_gpa, uint64_t gva, uint8_t *data,
+                        size_t len)
+@@ -1429,9 +1417,9 @@ static int handle_pio_str(CPUState *cpu, hv_x64_io_port_intercept_message *info)
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     CPUX86State *env = &x86_cpu->env;
+ 
+-    ret = fetch_guest_state(cpu);
++    ret = mshv_arch_load_regs(cpu);
+     if (ret < 0) {
+-        error_report("Failed to fetch guest state");
++        error_report("Failed to load registers");
+         return -1;
+     }
+ 
+@@ -1462,7 +1450,7 @@ static int handle_pio_str(CPUState *cpu, hv_x64_io_port_intercept_message *info)
+ 
+     ret = set_x64_registers(cpu, reg_names, reg_values);
+     if (ret < 0) {
+-        error_report("Failed to set x64 registers");
++        error_report("Failed to set RIP and RAX registers");
+         return -1;
+     }
+ 
 -- 
 2.34.1
 
