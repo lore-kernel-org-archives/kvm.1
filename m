@@ -1,465 +1,200 @@
-Received: from outbound.st.icloud.com (p-east2-cluster6-host11-snip4-5.eps.apple.com [57.103.76.236])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E61393DF3
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 11:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.76.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C36377EBA;
+	Fri, 17 Apr 2026 12:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776427026; cv=none; b=HaTlXqZCh8MPNQkcr9V094+HFAqnW2itK7JUaEiGzUtS/CMDL3jM/MFQF5rBE2g3YgD6hDb8pGEoQ2fK9uKQJdLDl+NPSRomamebIkYGBeS2RNLIcRC0isCqygPzvYAWbMWAU9eMJUeOLuShAVL9bqy8BYFXPlr2Qaidd/Q7Vkk=
+	t=1776427339; cv=none; b=hwTuZS8gbYGdZRwgYZTO7WsUOANHzDrTl1u4hrFGpMXnij58xPbgsWJONsJT7UMc5nb9Q84V4WGNILx9ES6dZNsC4NfJjAj9LaRaiP1zQi3u14rSOvWDbfjIHraboJCNhwa6egwxzlGgWFNgQRgz3EkuEbOu/RmaYuj4aI4hV9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776427026; c=relaxed/simple;
-	bh=VuAra3BVyI8mrm/dxKNKHh1UGnYDDB0nGMEEwGWDZ4E=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=D7zRSuhTnEwYv1fLw8UKxumsm/1Bm1UnAKDZNHd25LUKrARHwx9RAxY6cu8/Y+INgNyJtwbLnWVFQWGrjW4n8bW6XFuU4x7mS+Fw7hEjm9rnmKPe2etT0J6mLNUzjyKNXbsIS+fPpxABtDWDsr5SYbmU/gtCEt8nb8d2S91xUEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr; spf=pass smtp.mailfrom=unpredictable.fr; dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b=YvZuZbjj; arc=none smtp.client-ip=57.103.76.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unpredictable.fr
+	s=arc-20240116; t=1776427339; c=relaxed/simple;
+	bh=Lm9SeEaLNGcIHS5a+ygYv/hD9J8+HHqHFTvdjl7yLYg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n82Vv3FTP/UUBmRrPmj4XrkVTZuUF9cwGjK9LD+Qsnm4+uBBObq2hwJ24AhcHlJgc1ILIzf1l6Nm72Brs96e3QOXcs4qB4xPDZAf9yq4oOOuFxTgCFAYtmFzGhZMcb/8+ljEJeI7QlrHWXCBDFgEGeyP4uEOVLb1WRUa++rsBw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TDJnp3hE; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b="YvZuZbjj"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-0 (Postfix) with ESMTPS id 9DF90180056F;
-	Fri, 17 Apr 2026 11:57:02 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; t=1776427023; x=1779019023; bh=V0LxJmOsNpdFCb1pHr4vpWVXoQ4Zmstpf0VC1VoGZJk=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=YvZuZbjjQtEWoIKffCt7k1+lRquPRNh2ly0CJba4d9VqFwTwVdn+wZDBVS/UXA3u1QGvCWjMan5fEiOrbZjWAr9/zn6ndoAg/TUD25paHTcTmy0kIJR82huotAqwy4X1xglPaaAYlLRJXfhZjYW/xJt9ZdGsAOLMhwJL6XGhkAcJ92joMxtSxErufBLL36tcuYYnNhqtHjt+LTycOhMAadz2Wh1Rfp8XJnyolU4TeVYz8ZFvOtJ01IeM8cHK/8BPlE4EjDwoVrzteICT5XZD6hZ8whjwW9caxvX0+8Yk5Wq1toIDnuKIkbscwWdE6iq5S2yRcU5zBxy2GS5zDFfDzg==
-mail-alias-created-date: 1752046281608
-Received: from smtpclient.apple (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-0 (Postfix) with ESMTPSA id BBF15180055C;
-	Fri, 17 Apr 2026 11:56:59 +0000 (UTC)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TDJnp3hE"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63GKFPja1834698;
+	Fri, 17 Apr 2026 12:02:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=y+ANVA
+	viUmCUqOpnan4oSVuj7uYi3EZczATtsQ80Rus=; b=TDJnp3hEevqS5YLdgoikK6
+	1XD2aY1tQteI3K/NNAH5Lrff1ewuyFryJeChWVFiSv7zm5NC/EV7s6+fAWOMAVJu
+	VD//hYhJwCw/JxrDHZJObsaopNSEXcOQGJUPbxE6cS8kWcx+EmezKwTwWffuiO3r
+	/8lbJspsrQCJPT1ifhE81l2o45Q5SXW+E2LDNJCu0TSWw23cBWLFMnXKVL8ePxlh
+	kD8sKsBmv8z9Cut3WTylSXueMLEX4oPraaeDUnR5H+Spuxp5Nj1gp7GsX4eAM8r7
+	x4P29jmuvk4L6fF2I/yQE+KRomVI9X+UkiFj09ZaLi2JnrP8H+XtLziPT2RLL5tw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89rtcpa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 12:02:16 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63HBUVZR015149;
+	Fri, 17 Apr 2026 12:02:15 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0msy97x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 12:02:15 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63HC2Bw162325042
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Apr 2026 12:02:11 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CEC062004B;
+	Fri, 17 Apr 2026 12:02:11 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 719A22004D;
+	Fri, 17 Apr 2026 12:02:11 +0000 (GMT)
+Received: from [9.111.53.204] (unknown [9.111.53.204])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Apr 2026 12:02:11 +0000 (GMT)
+Message-ID: <a037f996-5c51-484b-9dfa-52bf3bb27513@linux.ibm.com>
+Date: Fri, 17 Apr 2026 14:02:11 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH 30/34] target/i386: add de/compaction to xsave_helper
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-In-Reply-To: <20260417105618.3621-31-magnuskulke@linux.microsoft.com>
-Date: Fri, 17 Apr 2026 13:56:47 +0200
-Cc: qemu-devel@nongnu.org,
- kvm@vger.kernel.org,
- Magnus Kulke <magnuskulke@microsoft.com>,
- Wei Liu <liuwe@microsoft.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Wei Liu <wei.liu@kernel.org>,
- Alex Williamson <alex@shazbot.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B59D4B8F-2F54-4E64-9133-C5A4675BFA21@unpredictable.fr>
-References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
- <20260417105618.3621-31-magnuskulke@linux.microsoft.com>
-To: Magnus Kulke <magnuskulke@linux.microsoft.com>
-X-Mailer: Apple Mail (2.3864.500.181)
-X-Proofpoint-ORIG-GUID: W5kzSCG9QsEMjadmKQusX76CscdvavML
-X-Authority-Info-Out: v=2.4 cv=OdmVzxTY c=1 sm=1 tr=0 ts=69e2200f
- cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=yMhMjlubAAAA:8 a=m3H-yIfUdCiYWo78rAoA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: W5kzSCG9QsEMjadmKQusX76CscdvavML
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDExOCBTYWx0ZWRfX2Bui94xGjpeb
- wPXct1TQ82snC7Q2IFfUnoGB22tsO6NUClVqDTCzk4DvuyhWy421f+vTtG9O2zYOUGOY8qpbpfd
- Aafrrblj69IkG/oq4u3dSiTWC1QYMldPI1CBFqWbS21ETTCAemmCHjHSV0JVeydpnht/AAQoT2k
- XpjTJG25hDu/V5ziq9seheavnRxN5gCrY+TPqy80GztQw6ExL6gMqLtK7Q6YlXwNxEKS22JYa4p
- 0nvJabKosQBgTQLlI4jzR9x/w1O8HTHVBhKfNpHJu9nfV9V5jbm5+JhMkB/LtuKWl4Y1IPO4l5s
- SQDDko6EiSak/4paPbR6EZ1BYTrnGRLLLillUWj5LU2SScFW37rm+TPyPMiSIs=
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] KVM: s390: move some facilities from
+ FACILITIES_KVM_CPUMODEL to FACILITIES_KVM
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        KVM <kvm@vger.kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>
+References: <20260401134254.259873-1-borntraeger@linux.ibm.com>
+ <f92b3ea0-76d0-4393-8a82-18de3a7d3e08@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <f92b3ea0-76d0-4393-8a82-18de3a7d3e08@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDExOSBTYWx0ZWRfX7q3NWpaNnO0G
+ b63TyGMa4zru72oNCVlwJ4R9ZT+jDHFOgZm+qZD8UThxC/DxyzQiN0wXcFCbNJaBt34DIrfXrY+
+ cwSCyzxtmUMQAcYTJU9xFoLuJbSWiMxkW+2eYCw/SgGKkpi/c5igN3AYX6lLdJt2fALdW6dLmEI
+ twAXIeKERrR3zTYgjY1WdUgnFAGWg+mhNXAWQnyq5YBs4et8ShC9EDVQIzVxEt9B7VE5msJS/cC
+ k3qUhd1x1SGEJ8fMEpbSBh95HST8m7eu7TDvmNZz4dXihtUDpn6h1a3nnaFU/Ktve+7MQ/nNsV5
+ e1SLOmGBU8CV4hQYTEZUxml4FPQ+be+FuI1/zmeTOmlH7EsSAWFhXm8MiLvE0OAVhzweztKanmC
+ RxdJTuZ4nnccpZLUCh0JeKp/JYWqZv9GFcdm6YB7hvJoBy4fdzIi74Z/8BAqGJD9ZUE0xfw1xXQ
+ +PXik+6SOj5JV4vI3mg==
+X-Proofpoint-ORIG-GUID: CLjzjZwSFlrvpDoRCahUQzgsLV2zmUN3
+X-Proofpoint-GUID: CLjzjZwSFlrvpDoRCahUQzgsLV2zmUN3
+X-Authority-Analysis: v=2.4 cv=fYidDUQF c=1 sm=1 tr=0 ts=69e22148 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=tBUaFa3PY-MiWKzbaXMA:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-17_01,2026-04-17_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 spamscore=0 mlxscore=0 phishscore=0 clxscore=1030
- lowpriorityscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2604170118
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604170119
 
+On 4/17/26 11:00, Christian Borntraeger wrote:
+> Am 01.04.26 um 15:42 schrieb Christian Borntraeger:
+>> Some facilities have been put into FACILITIES_KVM_CPUMODEL to be on the
+>> safe side with older VMMs. Unfortunately this has some unwanted side
+>> effects for VMMs without a CPU model (like kvm unit test) and IBC/VAL is
+>> not used in that case.
+>>
+>> Ideally the guest visible STFLE bits, the behaviour when running
+>> interpreted (HW supported) and the behaviour when running emulated (kvm
+>> or qemu) should be in sync.
+>>
+>> For LPSWEY this was not the case. STFLE.193 was off, but interpretion
+>> did work, emulation did not. As emulation only happened in rare cases
+>> (e.g. deliver a machine check) the result was inconsistency for the
+>> guest.
+>> Move beareh to FACILITIES_KVM to fix the inconsistency.
+>>
+>> NNPA (facility 165) has no fencing and no KVM emulation. The instruction
+>> will work, despite STFLE.165 being off in the guest. Move also to
+>> FACILITIES_KVM.
+>>
+>> Facility 170 (ineffective-nonconstrained-transaction facility) is an
+>> anti facility and should be passed along as well as KVM cannot simulate
+>> the missing function.
+>>
+>> KVM also does not implement trapping for guest RDP and there is no
+>> additional hypervisor control. Move 194 to FACILITIES_KVM as well.
+>>
+>> Facilities 196 and 197 (PAI) also do not have a hypervisor control and
+>> need to be passed on as well.
+>>
+>> The PFCR is also not intercepted by KVM and needs to be moved (stfle.201).
+>>
+>> The other facilities are fine (stfle, emulation, interpretion in sync):
+>> Both AP related features (12 and 15) require a userspace added AP via vfio.
+>> 156 etoken facility is fenced off for interpretion via ECD_ETOKENF so
+>> everything is in sync
+>>
+>> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Hendrik Brueckner <brueckner@linux.ibm.com>
+>> Cc: Janosch Frank <frankja@linux.ibm.com>
+> 
+> 
+> ping.  Any concerns?
 
+Ah, this fell to the floor because of other things. Sorry
 
-> On 17. Apr 2026, at 12:56, Magnus Kulke =
-<magnuskulke@linux.microsoft.com> wrote:
->=20
-> HyperV use XSAVES which stores extended state in compacted format in
-> which components are packed contiguously, while QEMU's internal XSAVE
-> representation use the standard format in which each component is =
-places
-> at a fixed offset. Hence for this purpose we add two conversion fn's =
-to
-> the xsave helper to roundtrip XSAVE state in a migration.
->=20
-> - decompact_xsave_area(): converts compacted format to standard.
->  XSTATE_BV is masked to host XCR0 since IA32_XSS is managed
->  by the hypervisor.
->=20
-> - compact_xsave_area(): converts standard format back to compacted
->  format. XCOMP_BV is set from the host's CPUID 0xD.0 rather than the
->  guest's XCR0, as this is what the hypervisor expects.
->=20
-> Both functions use the host's CPUID leaf 0xD subleaves to determine =
-component
-> sizes, offsets, and alignment requirements.
->=20
-> There are situations when the host advertises features that we want to
-> disable for the guest, e.g. AMX TILE. In this case we cannot rely on =
-the
-> host's xcr0, but instead we use the feature mask that has been =
-generated
-> in as part of the CPU realization process (x86_cpu_expand_features).
->=20
-> Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-> ---
-> target/i386/cpu.h          |   2 +
-> target/i386/xsave_helper.c | 255 +++++++++++++++++++++++++++++++++++++
-> 2 files changed, 257 insertions(+)
-
-Reviewed-by: Mohamed Mediouni <mohamed@unpredictable.fr>
->=20
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 4ad4a35ce9..cd5d5a5369 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -3033,6 +3033,8 @@ void x86_cpu_xrstor_all_areas(X86CPU *cpu, const =
-void *buf, uint32_t buflen);
-> void x86_cpu_xsave_all_areas(X86CPU *cpu, void *buf, uint32_t buflen);
-> uint32_t xsave_area_size(uint64_t mask, bool compacted);
-> void x86_update_hflags(CPUX86State* env);
-> +int decompact_xsave_area(const void *buf, size_t buflen, CPUX86State =
-*env);
-> +int compact_xsave_area(CPUX86State *env, void *buf, size_t buflen);
->=20
-> static inline bool hyperv_feat_enabled(X86CPU *cpu, int feat)
-> {
-> diff --git a/target/i386/xsave_helper.c b/target/i386/xsave_helper.c
-> index bab2258732..2272b83f5f 100644
-> --- a/target/i386/xsave_helper.c
-> +++ b/target/i386/xsave_helper.c
-> @@ -3,6 +3,7 @@
->  * See the COPYING file in the top-level directory.
->  */
-> #include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
->=20
-> #include "cpu.h"
->=20
-> @@ -293,3 +294,257 @@ void x86_cpu_xrstor_all_areas(X86CPU *cpu, const =
-void *buf, uint32_t buflen)
->     }
-> #endif
-> }
-> +
-> +#define XSTATE_BV_IN_HDR  offsetof(X86XSaveHeader, xstate_bv)
-> +#define XCOMP_BV_IN_HDR   offsetof(X86XSaveHeader, xcomp_bvo)
-> +
-> +typedef struct X86XSaveAreaView {
-> +    /* 512 bytes */
-> +    X86LegacyXSaveArea legacy;
-> +    /* 64 bytes */
-> +    X86XSaveHeader     header;
-> +    /* ...followed by individual xsave areas */
-> +} X86XSaveAreaView;
-> +
-> +#define XSAVE_XSTATE_BV_OFFSET  offsetof(X86XSaveAreaView, =
-header.xstate_bv)
-> +#define XSAVE_XCOMP_BV_OFFSET   offsetof(X86XSaveAreaView, =
-header.xcomp_bv)
-> +#define XSAVE_EXT_OFFSET        (sizeof(X86LegacyXSaveArea) + \
-> +                                 sizeof(X86XSaveHeader))
-> +
-> +/**
-> + * decompact_xsave_area - Convert compacted XSAVE format to standard =
-format
-> + * @buf: Source buffer containing compacted XSAVE data
-> + * @buflen: Size of source buffer
-> + * @env: CPU state where the standard format buffer will be written =
-to
-> + *
-> + * Accelerator backends like MSHV might return XSAVE state in =
-compacted format
-> + * (XSAVEC). The state components have to be packed contiguously =
-without gaps.
-> + * The XSAVE qemu buffers are in standard format where each component =
-has a
-> + * fixed offset.
-> + *
-> + * Returns: 0 on success, negative errno on failure
-> + */
-> +int decompact_xsave_area(const void *buf, size_t buflen, CPUX86State =
-*env)
-> +{
-> +    uint64_t compacted_xstate_bv, compacted_xcomp_bv, =
-compacted_layout_bv;
-> +    uint64_t xsave_offset, *xcomp_bv;
-> +    size_t i;
-> +    uint32_t eax, ebx, ecx, edx;
-> +    uint32_t size, dst_off;
-> +    bool align64;
-> +    uint64_t guest_xcr0, *xstate_bv;
-> +
-> +    compacted_xstate_bv =3D *(uint64_t *)(buf + =
-XSAVE_XSTATE_BV_OFFSET);
-> +    compacted_xcomp_bv  =3D *(uint64_t *)(buf + =
-XSAVE_XCOMP_BV_OFFSET);
-> +
-> +    /* This function only handles compacted format (bit 63 set) */
-> +    assert((compacted_xcomp_bv >> 63) & 1);
-> +
-> +    /* Low bits of XCOMP_BV describe which components are in the =
-layout */
-> +    compacted_layout_bv =3D compacted_xcomp_bv & ~(1ULL << 63);
-> +
-> +    /* Zero out buffer, then copy legacy region (FP + SSE) and header =
-as-is */
-> +    memset(env->xsave_buf, 0, env->xsave_buf_len);
-> +    memcpy(env->xsave_buf, buf, XSAVE_EXT_OFFSET);
-> +
-> +    /*
-> +     * We mask XSTATE_BV with the guest's supported XCR0 because:
-> +     * 1. Supervisor state (IA32_XSS) is hypervisor-managed, we don't =
-use
-> +     *    this state for migration.
-> +     * 2. Features disabled at partition creation (e.g. AMX) must be =
-excluded
-> +     */
-> +    guest_xcr0 =3D ((uint64_t)env->features[FEAT_XSAVE_XCR0_HI] << =
-32) |
-> +                 env->features[FEAT_XSAVE_XCR0_LO];
-> +    xstate_bv =3D (uint64_t *)(env->xsave_buf + =
-XSAVE_XSTATE_BV_OFFSET);
-> +    *xstate_bv &=3D guest_xcr0;
-> +
-> +    /* Clear bit 63 - output is standard format, not compacted */
-> +    xcomp_bv =3D (uint64_t *)(env->xsave_buf + =
-XSAVE_XCOMP_BV_OFFSET);
-> +    *xcomp_bv =3D *xcomp_bv & ~(1ULL << 63);
-> +
-> +    /*
-> +     * Process each extended state component in the compacted layout.
-> +     * Components 0 and 1 (FP and SSE) are in the legacy region, so =
-we
-> +     * start at component 2. For each component:
-> +     * - Calculate its offset in the compacted source (contiguous =
-layout)
-> +     * - Get its fixed offset in the standard destination from CPUID
-> +     * - Copy if the component has non-init state (bit set in =
-XSTATE_BV)
-> +     */
-> +    xsave_offset =3D XSAVE_EXT_OFFSET;
-> +    for (i =3D 2; i < 63; i++) {
-> +        if (((compacted_layout_bv >> i) & 1) =3D=3D 0) {
-> +            continue;
-> +        }
-> +
-> +        /* Query guest CPUID for this component's size and standard =
-offset */
-> +        cpu_x86_cpuid(env, 0xD, i, &eax, &ebx, &ecx, &edx);
-> +
-> +        size =3D eax;
-> +        dst_off =3D ebx;
-> +        align64 =3D (ecx & (1u << 1)) !=3D 0;
-> +
-> +        /* Component is in the layout but unknown to the guest CPUID =
-model */
-> +        if (size =3D=3D 0) {
-> +            /*
-> +             * The hypervisor might expose a component that has no
-> +             * representation in the guest CPUID model. We query the =
-host to
-> +             * retrieve the size of the component, so we can skip =
-over it.
-> +             */
-> +            host_cpuid(0xD, i, &eax, &ebx, &ecx, &edx);
-> +            size =3D eax;
-> +            align64 =3D (ecx & (1u << 1)) !=3D 0;
-> +            if (size =3D=3D 0) {
-> +                error_report("xsave component %zu: size unknown to =
-both "
-> +                             "guest and host CPUID", i);
-> +                return -EINVAL;
-> +            }
-> +
-> +            if (align64) {
-> +                xsave_offset =3D QEMU_ALIGN_UP(xsave_offset, 64);
-> +            }
-> +
-> +            if (xsave_offset + size > buflen) {
-> +                error_report("xsave component %zu overruns source =
-buffer: "
-> +                             "offset=3D%zu size=3D%u buflen=3D%zu",
-> +                             i, xsave_offset, size, buflen);
-> +                return -E2BIG;
-> +            }
-> +
-> +            xsave_offset +=3D size;
-> +            continue;
-> +        }
-> +
-> +        if (align64) {
-> +            xsave_offset =3D QEMU_ALIGN_UP(xsave_offset, 64);
-> +        }
-> +
-> +        if ((xsave_offset + size) > buflen) {
-> +            error_report("xsave component %zu overruns source buffer: =
-"
-> +                         "offset=3D%zu size=3D%u buflen=3D%zu",
-> +                         i, xsave_offset, size, buflen);
-> +            return -E2BIG;
-> +        }
-> +
-> +        if ((dst_off + size) > env->xsave_buf_len) {
-> +            error_report("xsave component %zu overruns destination =
-buffer: "
-> +                         "offset=3D%u size=3D%u buflen=3D%zu",
-> +                         i, dst_off, size, =
-(size_t)env->xsave_buf_len);
-> +            return -E2BIG;
-> +        }
-> +
-> +        /* Copy components marked present in XSTATE_BV to guest model =
-*/
-> +        if (((compacted_xstate_bv >> i) & 1) !=3D 0) {
-> +            memcpy(env->xsave_buf + dst_off, buf + xsave_offset, =
-size);
-> +        }
-> +
-> +        xsave_offset +=3D size;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +/**
-> + * compact_xsave_area - Convert standard XSAVE format to compacted =
-format
-> + * @env: CPU state containing the standard format XSAVE buffer
-> + * @buf: Destination buffer for compacted XSAVE data (to send to =
-hypervisor)
-> + * @buflen: Size of destination buffer
-> + *
-> + * Accelerator backends like MSHV might expect XSAVE state in =
-compacted format
-> + * (XSAVEC). The state components are packed contiguously without =
-gaps.
-> + * The XSAVE qemu buffers are in standard format where each component =
-has a
-> + * fixed offset.
-> + *
-> + * This function converts from standard to compacted format, it =
-accepts a
-> + * pre-allocated destination buffer of sufficient size, it is the
-> + * responsibility of the caller to ensure the buffer is big enough.
-> + *
-> + * Returns: total size of compacted XSAVE data written to @buf
-> + */
-> +int compact_xsave_area(CPUX86State *env, void *buf, size_t buflen)
-> +{
-> +    uint64_t *xcomp_bv;
-> +    size_t i;
-> +    uint32_t eax, ebx, ecx, edx;
-> +    uint32_t size, src_off;
-> +    bool align64;
-> +    size_t compact_offset;
-> +    uint64_t host_xcr0_mask, guest_xcr0;
-> +
-> +    /* Zero out buffer, then copy legacy region (FP + SSE) and header =
-as-is */
-> +    memset(buf, 0, buflen);
-> +    memcpy(buf, env->xsave_buf, XSAVE_EXT_OFFSET);
-> +
-> +    /*
-> +     * Set XCOMP_BV to indicate compacted format (bit 63) and which
-> +     * components are in the layout.
-> +     *
-> +     * We must explicitly set XCOMP_BV because =
-x86_cpu_xsave_all_areas()
-> +     * produces standard format with XCOMP_BV=3D0 (buffer is zeroed =
-and only
-> +     * XSTATE_BV is set in the header).
-> +     *
-> +     * XCOMP_BV must reflect the partition's XSAVE capability, not =
-the
-> +     * guest's current XCR0 (env->xcr0). These differ b/c:
-> +     * - A guest's XCR0 is what the guest OS has enabled via XSETBV
-> +     * - The partition's XCR0 mask is the hypervisor's save/restore =
-capability
-> +     *
-> +     * The hypervisor uses XSAVES which saves based on its =
-capability, so the
-> +     * XCOMP_BV value in the buffer we send back must match that =
-capability.
-> +     *
-> +     * We intersect the host XCR0 with the guest's supported XCR0 =
-features
-> +     * (FEAT_XSAVE_XCR0_*) so that features disabled at partition =
-creation
-> +     * (e.g. AMX) are excluded from the compacted layout.
-> +     */
-> +    host_cpuid(0xD, 0, &eax, &ebx, &ecx, &edx);
-> +    host_xcr0_mask =3D ((uint64_t)edx << 32) | eax;
-> +    guest_xcr0 =3D ((uint64_t)env->features[FEAT_XSAVE_XCR0_HI] << =
-32) |
-> +                 env->features[FEAT_XSAVE_XCR0_LO];
-> +    host_xcr0_mask &=3D guest_xcr0;
-> +    xcomp_bv =3D buf + XSAVE_XCOMP_BV_OFFSET;
-> +    *xcomp_bv =3D host_xcr0_mask | (1ULL << 63);
-> +
-> +    /*
-> +     * Process each extended state component in the host's XCR0.
-> +     * The compacted layout must match XCOMP_BV (host capability).
-> +     *
-> +     * For each component:
-> +     * - Get its size and standard offset from host CPUID
-> +     * - Apply 64-byte alignment if required
-> +     * - Copy data only if guest has this component (bit set in =
-env->xcr0)
-> +     * - Always advance offset to maintain correct layout
-> +     */
-> +    compact_offset =3D XSAVE_EXT_OFFSET;
-> +    for (i =3D 2; i < 63; i++) {
-> +        if (!((host_xcr0_mask >> i) & 1)) {
-> +            continue;
-> +        }
-> +
-> +        /* Query host CPUID for this component's size and standard =
-offset */
-> +        host_cpuid(0xD, i, &eax, &ebx, &ecx, &edx);
-> +        size =3D eax;
-> +        src_off =3D ebx;
-> +        align64 =3D (ecx >> 1) & 1;
-> +
-> +        if (size =3D=3D 0) {
-> +            /* Component in host xcr0 but unknown - shouldn't happen =
-*/
-> +            continue;
-> +        }
-> +
-> +        /* Apply 64-byte alignment if required by this component */
-> +        if (align64) {
-> +            compact_offset =3D QEMU_ALIGN_UP(compact_offset, 64);
-> +        }
-> +
-> +        /*
-> +         * Only copy data if guest has this component enabled in =
-XCR0.
-> +         * Otherwise the component remains zeroed (init state), but =
-we
-> +         * still advance the offset to maintain the correct layout.
-> +         */
-> +        if ((env->xcr0 >> i) & 1) {
-> +            memcpy(buf + compact_offset, env->xsave_buf + src_off, =
-size);
-> +        }
-> +
-> +        compact_offset +=3D size;
-> +    }
-> +
-> +    return compact_offset;
-> +}
-> --=20
-> 2.34.1
->=20
->=20
+Makes sense to me:
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
 
