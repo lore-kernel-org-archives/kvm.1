@@ -1,242 +1,158 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77963612D7;
-	Fri, 17 Apr 2026 22:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776465119; cv=none; b=eSR+FaFZ3cYejF/SofLrZxXowgyFyF9UtAsb16aI8qmeTXxFVhbGvvLJ+XJj6Lofu+tckI93ijS0/RHJ/rcFUDMYcwul4cfP0FBwtSzklJrBECt5cySS4nqY1yHN7+1LrZPeVKtSnCm0CPKf7gG4RDcmodNo1PeMaP8iBtoplew=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776465119; c=relaxed/simple;
-	bh=+jDvHTwb/PPyB8ZCopu8GPvccxdiytlykQmJxIUqK+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NrltCttcMyZv7iNhvTpLNG6PWaqPY1sgt2IHf5GKpM0A4pXypP19qtY3j0v39sXxFEo3s28qmoiRvrKFJotxnA0jmkK2zD3yy5Jvy/xmbnSlPOwmK8QS3HF3COV3GOf87aWifU5B8Ed0nt8wVb0De6UxDwDJ4g7xh7SPG25VKgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Y9EuN/rt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YOpcwd0b; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0552FB084
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 22:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776466322; cv=pass; b=GDZLcgyqXe7fd5DHFtwn+fPPJ9DJdxFka8Nbdxtx0v6J2Q5VODHr3ZCsbhbK1klLStCkFwOw4kHBPe9pLXll/fah46xdy4N7qFcfosU2WELclEtw78lqtdFHpy9SrQ2wM9YDv66Oiqwja8ORdFkpw5kB42L1kXEA8PKnI/KJ98I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776466322; c=relaxed/simple;
+	bh=1HruGi7X4dU575hOmcU+Ynje9evD+aRUJzp7jhO7jY4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NhRCBKHRYRVk072VTPdpkfsXCS4VnoVlnE0nIXTLGAalke6IR9GGHY0v0jQxTsEpHecyMhmsLS7bhBvYyoJLaip/cNJ6Ajcd0XuEJSmB0ybtWhUil741i61o4JeG229AOmLM/IrcUwP7h+X6KrYLDEh8BKpUfaY1WjhM4zDYsag=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O2ux1W5v; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Y9EuN/rt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YOpcwd0b"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 973F91D00037;
-	Fri, 17 Apr 2026 18:31:55 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 17 Apr 2026 18:31:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776465115;
-	 x=1776551515; bh=vi8C+0i5Wa+dc998Nzwp+jJSjD+oBo8RYKlZQD6krmM=; b=
-	Y9EuN/rtJwLRZMreziqang3B9SbQvCsv+n//UvupUQhAI8t8hcqq5qPS2QYHzboX
-	qBVTjAlWWkIHIA1R2Iwh6v+016q4qxu6wHLPk4YrOWlILaGy0k4OhvoGFL/hnorv
-	Ptdgy0rAvhgEg8h4ocWxx+FmaCTys6v/w6JDvyYHIZ/k0nvmKDaLa47ZHPF5a8ma
-	BW2lbNdhDXIiFGZhKYZ6UTv5Bm6Up8d9jtCsuppC8N6Y3ReU38tfWzFHwQsxogOs
-	HVwxdjjmMn9HdlfVXMPO+VvzD5hYm6bx31iLBsa8UX4nIeZd4f2NWabxddLegRUN
-	IToYeEMKDDx/11O5pkyZnw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776465115; x=
-	1776551515; bh=vi8C+0i5Wa+dc998Nzwp+jJSjD+oBo8RYKlZQD6krmM=; b=Y
-	Opcwd0bNOfm41AIZiyxj7frs6hH2EOPWtEsMs75NVssf/VA2gijdOozoqwUO1bJy
-	LKt0TvJCVm5dqiQcvl70fPxEdFRuITQsO1mLrnhgkjv0P8i+V/D82KgmbqOn1A93
-	NqEM83dteonWYCra4z1Rs63mmzDB22o5hhnaQPRtsCBLUxk+e/qoqKDeLLT2bp7s
-	juTcxjdqY6XrDkSChV6toyQVOz3pYv+qvxj6GaZe5cSA7WGTBHeP0rfEly7JIpHZ
-	dgg02cXfSSDnNhsgCTYTvXZViAviyQmp055gauRBWiUxVG6AjimdT8qno6BYPmS9
-	0Y/KTAn0q1pm3ydQk3FIg==
-X-ME-Sender: <xms:2rTiaSU85ZiGLzffQ-vsHm26iC3fxbnNSLPyRuT4foEbTIuajTe2uQ>
-    <xme:2rTiaUlRwm7m2W1J1_3t8DEHb_1ADm9s9cS--lxkl70sBwkXu6ZCGCTjQHW9WQ_aT
-    ZrBR_8UBL_7mKOfpCos5qaXWapS7rbm_9GFN_d40aUe9mqzti1wsQ>
-X-ME-Received: <xmr:2rTiaROb0I5ezoyXNM8NN2h20m-all8I9NPuw7K7GXgqxJTWC3A1sEyrg0E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehuddtlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
-    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopedutddpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtth
-    hopehlvghonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhgghesiihivghpvgdr
-    tggrpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpth
-    htohepvhhivhgvkhdrkhgrshhirhgvugguhiesihhnthgvlhdrtghomhdprhgtphhtthho
-    pegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrd
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
-X-ME-Proxy: <xmx:2rTiacIpG2xgEtJbvqte6s7Sg8l0SUl18jxtf10kkeY_y1T9tHMmYA>
-    <xmx:2rTiab3VZ7MFg3KvXAK_LlLfb4Q2NuE-IDeZ60yZTStZDX94Pgi2JQ>
-    <xmx:2rTiaYVV8v_NXISvosRuK42oYa9vikbhxMqoXIj_1TTlKD6KNe-cnQ>
-    <xmx:2rTiaVMr7tZdvF6prJ9K-dXOhAbcrZD24kN7LKcibDNpq_Cbft_Eng>
-    <xmx:27TiaaxIxlxqcP9IpdbB4KtInra8eCsvO0yhQnb3cvsxPy43AphPcnHs>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Apr 2026 18:31:53 -0400 (EDT)
-Date: Fri, 17 Apr 2026 16:31:51 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin
- Tian <kevin.tian@intel.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, alex@shazbot.org, schnelle@linux.ibm.com
-Subject: Re: [PATCH] vfio/pci: Don't export DMABUFs for unmappable BARs
-Message-ID: <20260417163151.18ac44bf@shazbot.org>
-In-Reply-To: <9a8b39c0-5c0b-4f32-88b4-225f16e8f3c6@meta.com>
-References: <20260415181623.1021090-1-mattev@meta.com>
-	<20260416081138.GE361495@unreal>
-	<2ea075f9-c80c-41e9-9f93-9b0a2858f68f@meta.com>
-	<20260416131417.GF361495@unreal>
-	<ed5d615f-5ba5-4045-ac45-79f06fd07a05@meta.com>
-	<20260416154806.0c5cb10d@shazbot.org>
-	<9a8b39c0-5c0b-4f32-88b4-225f16e8f3c6@meta.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O2ux1W5v"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66ba6d3dab3so3255a12.0
+        for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 15:52:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776466320; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E5xH0CL+Wq/Jwh8ZRj2qcCBDK6KzWp9zlqK0D+alvtsxUmiwnMzp6wWMi/7+8sFBMr
+         i9PS5wKrGUs/8ZmxNxsTX9A41H7kvOBq+NemNTxWPDo3TjNgx+A0/jDklZrC0ddCAx88
+         L/um1eYiM4SeyzdcwcSEjJV4denOzlsFKNDS7RlTkLGHscsw5yNnPRaSMvc777TvdZdK
+         FcyPjgcU5IB1CHRp93iwzCtqn+ui8drPH7YctRDFhZ4g87fGvabwcUIibJpC0cGPznoe
+         rNF4N1G0oXrbL/MGsF5dBqaQJfcvmIq4FyRGxSpGcyxKa394GnSqq3eahf/b7C7n04JB
+         YEog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jkdtCAtP8odoPa0atr2MGvhK2NtLmBy28A7hTYzVBz0=;
+        fh=c9aCfZaIruaoQaR7qRS5H1GPbROh+Bkw9/YIeVrCVK0=;
+        b=dBrxvQpy4GyqXiFhPOwNieMNn6mr+5dCtO/iIQO29/OHq9K3Zw13BUjnqWxPrsTMB/
+         nX/wUajipkx5JQHDCiCHQ6nNfscmZy6ZDazQjRACUN4/m4Fxo8paeyDZBSuv0pDZGsy4
+         tVFo9dbUszzfLbq7RSudPcaIIZ5m0rNDhhj8CQNN3DdvBsMD6F9Ys/SKvdIGM946mDuN
+         VGKz9h9Ljv3rk4HtctN5Hs59XQ9iKE+FjdutJUW2eRF3wNJhSUSsqde5OZPt95fqONwy
+         cYdi2g56Ugl0mEfUTdSsCNI1IHD94JcmQj9i+AdrEfXMjRdVtfzNMDyXN/DyomeJtjxK
+         /Uwg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776466320; x=1777071120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jkdtCAtP8odoPa0atr2MGvhK2NtLmBy28A7hTYzVBz0=;
+        b=O2ux1W5vwmEMWphTHVOoiwrwPBOuR05XbMKJi8eLET2kBFjHJPh7zOIGmTwWGxbSkV
+         /LhRcNboCVMWEutkmWGYi5n+K5O/pFGAjRZG8HgJltMXSybVQLIfoaD+ohMNi5Ty+cnc
+         HwqLveM3WIa8gqXVO3eLPb9zDjz9s/VHAoEDs850DhsptWlpO4lsz5oBgq09M70OrXGq
+         gVKGULaDiK8NdwwtxL0/yD9BB+z/WD1waD3Ef0H+qHHPcPA6TIDw9PuZ8GgiebJocfLJ
+         yC/lzBOXF4PJmpOZFi/MK8EW4ZO4mo2dMskpq92ViXTIshTPRhWe2C9q4ZUu/BlpXHyS
+         u97Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776466320; x=1777071120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jkdtCAtP8odoPa0atr2MGvhK2NtLmBy28A7hTYzVBz0=;
+        b=J7nixq4PADjnNa/GjxS4MtTRQsdPO+P1IJhH6RuAOD32kz6d0htumWChPxYrJYemG8
+         xpmhKQdZqxJQXVkbUDIFz+di/VGBysSsk0LYHQzIBG0Q66p0H83RvAJRID597oUEC4Mu
+         ZNFJdOpHIsG6JNOD9UvX1T3oXPbyeSW4HzAvL3GGyW4Wb+hvscdIWwvn2bp7T54yUFtl
+         1t6eQuxg1jdUCN3tnCxASOqCvB7PhjuQY3Kk6yPJjNwZh8Bw/iSfTo1GjpLIO3WRrrNn
+         jlUkormEGJOFn9VV0X5JwHSrC8UGBxdClMKidcWwD3SZJ+JPhfhtHBpygL2hJeeR+K9u
+         MT3g==
+X-Forwarded-Encrypted: i=1; AFNElJ9q+wJBOVQeeltNwqdSvz344AAqugs5EqUzJnNEV8LG/CDRY9KMifcNZXcQl4IHD9X2/UM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN1fA24NK7FmjvsNVDnuMKr+xMihsYERwl69OEYNGkhp+EDmrH
+	nsNqcF5BWnUEhub0lhM5qg9791T/D9aKaUaO5H5lg0QLD4MGdpyOsZDgELJHvDkxz0YkQ+J8p/q
+	4OfFaX58qCRcQHjV4cXCdcZK+mr6usRa4hgNimxpK
+X-Gm-Gg: AeBDieuB781sSJ0mght0Nj9Y9i61jMXIXRt2BzFDg/oNzXcWFEBswFp90BjzwKAnHwe
+	XeDujj4IqIbZpBRFVphKAydBSza+kLwHS55ObRY/yZA1YQLLfJQEQ1xXqYf6zsjn/BOdWbmnVXL
+	+kSTDbRILY+xzWLhaP0Dn0SxgOhNBCHKwx+ffhR5EajQgb9sMfdY1FqVN8pmKQ33uqaGq7vSYsS
+	G+M6R6nNogw0O5xIsAso0BWhb4NFhzsu/z+GVTj4YKR8SQD69RyYBNZwB89wvlpHeD2IBu1m3Z1
+	DS2VcQ/bSNU+QEqNR0hDwg2Cb2M7
+X-Received: by 2002:a05:6402:3192:b0:673:9b15:39ff with SMTP id
+ 4fb4d7f45d1cf-6744ec68927mr6122a12.5.1776466319570; Fri, 17 Apr 2026 15:51:59
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CALMp9eRk8O-kGixdXC0Lb0=PgSVE5eFnLLXOZYqMsb=FTczZTA@mail.gmail.com>
+ <adfgPwgXz1iQHpVS@google.com> <CALMp9eRLpZtpmdH4LJGdNkFO_hdJFw0i9MS94Ou1_GKHADq13w@mail.gmail.com>
+ <adfmVXRwzZkvRSnj@google.com> <CALMp9eTvH1Pg0Eb-KCcX7LLJPFgS1xTSR0DzeA8xo4Re7=p=7w@mail.gmail.com>
+ <adfyKU5WUiW4OnUg@google.com> <adgYSnE-I1Z19fCY@google.com>
+ <CALMp9eSjAoVYk2f_j=b_X=EngJ935J=W7YS-C0nDS7b1j2Y4Og@mail.gmail.com>
+ <aeACk7T5Q4TxtRMF@google.com> <CALMp9eSHJmLLAQAvbvRmq99v568PGkJduoQn1djnXGb-yED_5g@mail.gmail.com>
+ <aeAtdIPo-8uk8nvH@google.com>
+In-Reply-To: <aeAtdIPo-8uk8nvH@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 17 Apr 2026 15:51:47 -0700
+X-Gm-Features: AQROBzDHMrwUeMaZ0tQGcUGfm5IB4WAtEbo90cxI7V-K_7ct13-ad_GOY4mfqZg
+Message-ID: <CALMp9eS5t16pgZY4PEwdWFqBCQUHMSQDtcAoC4cuPeq-SfWo+w@mail.gmail.com>
+Subject: Re: [PATCH v4 4/6] KVM: x86/pmu: Re-evaluate Host-Only/Guest-Only on
+ nested SVM transitions
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sandipan Das <sandipan.das@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 17 Apr 2026 15:25:07 +0100
-Matt Evans <mattev@meta.com> wrote:
-> On 16/04/2026 22:48, Alex Williamson wrote:
-> > On Thu, 16 Apr 2026 19:03:40 +0100
-> > Matt Evans <mattev@meta.com> wrote:
-> >> On 16/04/2026 14:14, Leon Romanovsky wrote:  
-> >>> On Thu, Apr 16, 2026 at 02:05:30PM +0100, Matt Evans wrote:  
-> >>
-> >> I don't understand your question, really sorry!  Can you rephrase it
-> >> please?  I want to make sure I answer it fully.
-> >>
-> >> Although mmap() fails for BARs that are unmappable (for whatever
-> >> reason), a DMABUF export for the same ones could in some slim cases
-> >> succeed -- because the checks aren't identical.  If export succeeds, it
-> >> could potentially allow P2P (or CPU via a future DMABUF mmap()) access
-> >> to something possibly unmappable, no?
-> >>
-> >> For the checks that vfio_pci_probe_mmaps() does (leading to
-> >> bar_mmap_supported[] = false), most have corresponding-but-different
-> >> checks reachable from DMABUF export:
-> >>
-> >> If a BAR is:		Then DMABUF export...:
-> >>
-> >>    size < pagesize	vfio_pci_core_fill_phys_vec() catches it
-> >>    Not IORESOURCE_MEM	pcim_p2pdma_provider() rejects it
-> >>    non_mappable_bars	... nothing?  Export allowed
-> >>
-> >> As a quick test, if I hack in non_mappable_bars=1 for my function, it
-> >> appears exporting a DMABUF from it works.
-> >>
-> >> We could add another check for non_mappable_bars, but my thinking was
-> >> that we don't want to keep adding to an independent set of DMABUF
-> >> checks, especially if a future quirk/etc. could create another scenario
-> >> where BARs aren't mappable.  I.e. we should reject DMABUF export in
-> >> exactly the same scenarios as mmap() would be rejected, symmetrically,
-> >> by testing bar_mmap_supported[].
-> >>
-> >> Hope that goes some way to answering the Q, hopefully I haven't missed
-> >> something!  
-> > 
-> > That's the concern as I see it as well, it's a choice whether to
-> > attempt to support sub-PAGE_SIZE mappings, but if a device is reporting
-> > non_mappable_bars are we're exporting those BARs through dma-buf for
-> > mmap, that's a problem.  Should pcim_p2pdma_provider() test this flag
-> rather than vfio_pci_dmabuf though?  Thanks,  
-> 
-> Do you mean "test this flag" to say 'non_mappable_bars' rather than the 
-> 'vdev->bar_mmap_supported[]' flag?  (I think the former, as the latter 
-> isn't as easily available down there, sorry if that's not what you 
-> intended.)
+On Wed, Apr 15, 2026 at 5:29=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Wed, Apr 15, 2026, Jim Mattson wrote:
+> > On Wed, Apr 15, 2026 at 2:26=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > > On Thu, Apr 09, 2026, Jim Mattson wrote:
+> > > > When would we use the deferred version? As far as the Intel PMU is
+> > > > concerned. there's nothing special about a nested transition.
+> > >
+> > > Actually, outside of VMRUN=3D>#VMEXIT, isn't the deferred version cor=
+rect?  E.g.
+> > > when counting instructions, shouldn't WRMSR(EFER) be accounted based =
+on the *old*
+> > > EFER value, not the new EFER value?
+> >
+> > Unless you can point to documentation stating otherwise, I think this
+> > needs testing. By analogy with VMRUN and #VMEXIT, accounting should be
+> > based on the CPU state at instruction retirement.
+>
+> IMO, VMRUN and #VMEXIT are broken :-)
+>
+> But yeah, +1 to following what hardware does.  I was thinking we could lo=
+ok at
+> our KUT and selftests code, but AFAICT all of the precise measurements ar=
+e
+> bookended by WRMSRs, so an off-by-one on the frontend would be corrected =
+by the
+> off-by-one on the backend.
 
-Yes
+LOL! When EFER.SVME is clear, setting one or both of the G/H bits
+disables the counter.
 
-> Testing non_mappable_bars in pcim_p2pdma_provider() doesn't feel quite 
-> right:
-> 
-> - IIUC non_mappable_bars is about preventing mapping to userspace, not 
-> direct access/P2P/etc.  Splitting hairs a bit, but P2P to such a device 
-> seems valid, so I think this check better stays within vfio-pci 
-> (specifically limiting only userspace access).
+In the following code sequence, 10 instructions are retired, and 5
+host-only instructions are retired:
 
-Indeed the flag does specify userspace mapping in the comment, but I
-think it's more than that.  The only device that currently uses it is a
-device unique to s390x, where AIUI, there is no P2P DMA anyway.
+mov    $0xc0000301,%ecx
+mov    $0x3,%eax
+xor    %edx,%edx
+wrmsr
+nopl   0x0(%rax,%rax,1)
+mov    $0xc0000080,%ecx
+mov    %ebx,%eax
+mov    %r14d,%edx
+wrmsr
+nopl   0x0(%rax,%rax,1)
+mov    $0xc0000301,%ecx
+xor    %eax,%eax
+xor    %edx,%edx
+wrmsr
 
-Also, for "legacy" mapping of device BARs through the vfio type1
-backend, the mechanics of the mapping require the BAR can be mmap'd
-such that the user virtual address can then be used for the DMA
-mapping.  So as far as vfio has traditionally been concerned, there's
-an inherent dependency.
-
-I could definitely see that p2p folks could balk and we need a separate
-flag... or since there's exactly one device that reports this flag,
-maybe we can tweak the description.
-
-> - But non_mappable_bars is just one kind of quirk, and couldn't there 
-> possibly be more?  Good to avoid duplicating quirk checks in mmap() & 
-> export places (so any future maintenance updates just one place and no 
-> disparities arise).
-
-I'm not sure what this is getting at, I think non_mappable_bars is
-meant to be the flag that quirks might set if for any reason we can't
-directly map the BAR.  I think "userspace" mapping is a bit of a
-red-herring, it's at least not mappable by the CPU, but I don't think
-the flag is actually meant to define a policy only for userspace.  If
-it's not mappable by the CPU... is that also enough of a restriction to
-exclude it from P2P mappings?
- 
-> All this to say:   The existng logic in vfio_pci_probe_mmaps() is the 
-> right place to decide something is suitable for userspace/direct
-> mapping (mappable, non-zero sized, not IORESOURCE_IO), IMHO we just
-> need to be checking it consistently.  (VFIO export is less lenient in
-> terms of >= pagesize and imposes additional checks, and that's good
-> as long as the checks are an overlay rather than parallel
-> duplication.)
-
-I'd actually take the opposite stance and say that vfio is not the only
-consumer of pcim_p2pdma_provider() and if a device has a flag that it
-shouldn't be mapped, the p2p subsystem should also honor that, not just
-vfio.
-
-> (Maybe you're also flagging that there could be other checks saying "Is 
-> P2P supported for this BAR?" and they could be done in a generic 
-> drivers/pci place?  I think so;  VFIO export criteria be the 
-> intersection of VFIO- and provider-based checks.)
-
-Yes (I think).  If we determine that non_mappable_bars means both CPU
-and device mappings (which is compatible with its current use case),
-then fixing pcim_p2pdma_provider() to honor the flag fixes all
-consumers.
- 
-> I was thinking something like...
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c 
-> b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index 00cedfe3a57d..9bb8bd153e12 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -359,6 +359,9 @@ int vfio_pci_core_get_dmabuf_phys(struct 
-> vfio_pci_core_device *vdev,
->          if (!*provider)
->                  return -EINVAL;
-> 
-> +       if (!vdev->bar_mmap_supported[region_index])
-> +               return -EINVAL;
-> +
->          return vfio_pci_core_fill_phys_vec(
->                  phys_vec, dma_ranges, nr_ranges,
->                  pci_resource_start(pdev, region_index),
-> 
-> (I.e. leverage logic in vfio_pci_probe_mmaps(), catch bad DMABUF 
-> mappings this way, allows sub-drivers to override .get_dmabuf_phys.)
-> 
-> I'll repost that as v2 if this doesn't seem an outrageous start. :)
-
-That's fixing the leaf driver rather than the subsystem, where
-pci/p2pdma really ought to honor its own flag indicating the BAR is not
-mappable.  The precedent is already there in rejecting IO BARs.  Thanks,
-
-Alex
+I think the first wrmsr counts (because the PGC bits are set when it
+retires) and the last one does not (because the PGC bits are clear
+when it retires). If so, then the second wrmsr (setting EFER.SVME)
+counts in host mode.
