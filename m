@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F203226D4E5
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A28C2E9757
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776423467; cv=none; b=LGsO7rZHQWTyQSqLGJB1NiudRbSGk4EoyN/c1rod1cESdibfwaHsbmls2ckFgIDX5ZJTtS/cj7COtbZh6Me0Jxr5XSfnvVoiakUqO6Q5/9NQfyxmlZQ6ggo50wKSL7eO4VS+a0PvRgTfLE2fbj7+3u7xvtIO3k4xmIlrEiD87qc=
+	t=1776423470; cv=none; b=okG2qu9MukZjKwCd/uFMRH2xjcgYmz3282F2cK/xqvLFnRrTjP6QF7aAZaUi4GsotIuGJga019aEDtKYxjE5+wFfaJ+dISvLfGX/k3uRjyjax7AzftnuuMJ0sRL9mWRf+noFeDzefs+31UIwjaFZWVwg1xf1kR9NYMSUXXxd3n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776423467; c=relaxed/simple;
-	bh=3I0kWjGyfpw0o5dcVkPyHi9W/t7AJLUwAD+NY3i2GUM=;
+	s=arc-20240116; t=1776423470; c=relaxed/simple;
+	bh=0b4pPYlLoRwVGOtg7+STR8KjLvrn6MElFSc6EDNaJwc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AWjBIQVCX7+78dqiJoZhZUhQI2SlsMw3I74NketbWH/o1kegfiMxGdLIDAgvxWl8PF+jz3no9uAZtfM7f24gfpn8TUzZcjyFoiMEpLRbjdoZUXFiojsh8YSfte+8gxq65Rq2SX2z+iu0m7n10JUOOig9Wh8Pjs4x8ImbxG3HlCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Y1uj1HM/; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=G6x42ONid/I9wDfVbOhD1h1/0zUXwq13ZEdkhQ+vah9dBdk1T8/mxe6NdVsyE9YALJfpqk8f3dIdD1YKzKxxt5SSFSaQFD0Yj+kUYW4/4nlNWobDOcTme/K00mHo9usupxfWgHWsz+b/3zENo6jHm1KAX1QfHiBqyXmzCJ7C4Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=QzG34/US; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Y1uj1HM/"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="QzG34/US"
 Received: from DESKTOP-TUU1E5L.fritz.box (p5086d620.dip0.t-ipconnect.de [80.134.214.32])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 065BB20B712B;
-	Fri, 17 Apr 2026 03:57:42 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 065BB20B712B
+	by linux.microsoft.com (Postfix) with ESMTPSA id 80B5120B7129;
+	Fri, 17 Apr 2026 03:57:46 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 80B5120B7129
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1776423465;
-	bh=hkvpr9QCwBz+aAxOE4MLQ16OiKG8v7Bh8aJx066T5TY=;
+	s=default; t=1776423469;
+	bh=S92dx0H1HZeFjxrVBmrak0WH0pq895/vNqGc9ASOqFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1uj1HM/fKCyvdDoBgRqm5KPgSqUuCU5IBK7lkT0ODgu807lNDX4HLDygbCnYLJ7U
-	 LNCehxjd6mjE9oJNou5fw3IscyspowhJVKcM23Hxz2UCQNs2jm59OOOpcg9TTEy8AI
-	 dzp0uVO9TpyAgcnx/BVb09RJYia4Kaa96VypdLI4=
+	b=QzG34/USBCzLRxtfv5Cfx0sEjeo1SylWPk4y4zWIlWIewfUlKAhglnunro8MJfv+8
+	 WCTTwoq/QIt3HL80tqW5tW4Vi6tI/q++c85z8pQ5tOErvqywwrpP8oLifxQkN++19N
+	 ROttbN3jyNWSKd2HX/dhPYE9FXj40826SBC9xhes=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: kvm@vger.kernel.org,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 22/34] target/i386/mshv: migrate Synic SINT MSRs
-Date: Fri, 17 Apr 2026 12:56:06 +0200
-Message-Id: <20260417105618.3621-23-magnuskulke@linux.microsoft.com>
+Subject: [PATCH 23/34] target/i386/mshv: migrate CET/SS MSRs
+Date: Fri, 17 Apr 2026 12:56:07 +0200
+Message-Id: <20260417105618.3621-24-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
 References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
@@ -55,87 +55,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Migrate HyperV SynIC SINT MSRs. We can only read/write those if SCONTROL
-is enabled in the guest, hence we have to split the SINT MSR out and
-make reading/writing them dependent on that MSR.
+This change migrates the MSRs required for CET shadow stack and indirect
+branch tracking. They are gated behind cet_ss_support || cet_ibt_support
+mshv processor feature flags.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- target/i386/mshv/msr.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ include/hw/hyperv/hvgdk_mini.h | 11 +++++++++++
+ target/i386/mshv/msr.c         | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+)
 
+diff --git a/include/hw/hyperv/hvgdk_mini.h b/include/hw/hyperv/hvgdk_mini.h
+index 4d1e062e48..75e953b86c 100644
+--- a/include/hw/hyperv/hvgdk_mini.h
++++ b/include/hw/hyperv/hvgdk_mini.h
+@@ -168,6 +168,17 @@ typedef enum hv_register_name {
+     HV_X64_REGISTER_TSC_DEADLINE    = 0x00080095,
+     HV_X64_REGISTER_TSC_ADJUST      = 0x00080096,
+ 
++    /* CET / Shadow Stack */
++    HV_X64_REGISTER_U_XSS                    = 0x0008008B,
++    HV_X64_REGISTER_U_CET                    = 0x0008008C,
++    HV_X64_REGISTER_S_CET                    = 0x0008008D,
++    HV_X64_REGISTER_SSP                      = 0x0008008E,
++    HV_X64_REGISTER_PL0_SSP                  = 0x0008008F,
++    HV_X64_REGISTER_PL1_SSP                  = 0x00080090,
++    HV_X64_REGISTER_PL2_SSP                  = 0x00080091,
++    HV_X64_REGISTER_PL3_SSP                  = 0x00080092,
++    HV_X64_REGISTER_INTERRUPT_SSP_TABLE_ADDR = 0x00080093,
++
+     /* Other MSRs */
+     HV_X64_REGISTER_MSR_IA32_MISC_ENABLE = 0x000800A0,
+ 
 diff --git a/target/i386/mshv/msr.c b/target/i386/mshv/msr.c
-index b26375e4c2..4881e15f4b 100644
+index 4881e15f4b..b985500797 100644
 --- a/target/i386/mshv/msr.c
 +++ b/target/i386/mshv/msr.c
-@@ -303,6 +303,8 @@ int mshv_get_msrs(CPUState *cpu)
-     struct hv_register_assoc assocs[MSHV_MSR_TOTAL_COUNT];
-     size_t i, j;
-     uint32_t name;
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    bool synic_enabled;
+@@ -83,6 +83,26 @@ static const MshvMsrEnvMap msr_env_map[] = {
+     { IA32_MSR_MTRR_DEF_TYPE, HV_X64_REGISTER_MSR_MTRR_DEF_TYPE,
+                               offsetof(CPUX86State, mtrr_deftype) },
  
-     set_hv_name_in_assocs(assocs, n_assocs);
- 
-@@ -329,6 +331,27 @@ int mshv_get_msrs(CPUState *cpu)
- 
-     store_in_env(cpu, assocs, n_assocs);
- 
-+    /* Read SINT MSRs only if SynIC is enabled */
-+    synic_enabled = x86cpu->env.msr_hv_synic_control & 1;
-+    if (synic_enabled) {
-+        QEMU_BUILD_BUG_ON(MSHV_MSR_TOTAL_COUNT < HV_SINT_COUNT);
++    /* CET / Shadow Stack */
++    { MSR_IA32_U_CET,       HV_X64_REGISTER_U_CET,
++                            offsetof(CPUX86State, u_cet) },
++    { MSR_IA32_S_CET,       HV_X64_REGISTER_S_CET,
++                            offsetof(CPUX86State, s_cet) },
++    { MSR_IA32_PL0_SSP,     HV_X64_REGISTER_PL0_SSP,
++                            offsetof(CPUX86State, pl0_ssp) },
++    { MSR_IA32_PL1_SSP,     HV_X64_REGISTER_PL1_SSP,
++                            offsetof(CPUX86State, pl1_ssp) },
++    { MSR_IA32_PL2_SSP,     HV_X64_REGISTER_PL2_SSP,
++                            offsetof(CPUX86State, pl2_ssp) },
++    { MSR_IA32_PL3_SSP,     HV_X64_REGISTER_PL3_SSP,
++                            offsetof(CPUX86State, pl3_ssp) },
++    { MSR_IA32_INT_SSP_TAB, HV_X64_REGISTER_INTERRUPT_SSP_TABLE_ADDR,
++                            offsetof(CPUX86State, int_ssp_table) },
 +
-+        for (i = 0; i < HV_SINT_COUNT; i++) {
-+            assocs[i].name = HV_REGISTER_SINT0 + i;
-+        }
++    /* XSAVE Supervisor State */
++    { MSR_IA32_XSS,         HV_X64_REGISTER_U_XSS,
++                            offsetof(CPUX86State, xss) },
 +
-+        ret = mshv_get_generic_regs(cpu, assocs, HV_SINT_COUNT);
-+        if (ret < 0) {
-+            error_report("Failed to get SynIC SINT MSRs");
-+            return -errno;
-+        }
-+
-+        for (i = 0; i < HV_SINT_COUNT; i++) {
-+            uint64_t hv_sint_value = assocs[i].value.reg64;
-+            x86cpu->env.msr_hv_synic_sint[i] = hv_sint_value;
-+        }
-+    }
-+
-     return 0;
- }
+     /* Other */
  
-@@ -363,6 +386,8 @@ int mshv_set_msrs(const CPUState *cpu)
-     struct hv_register_assoc assocs[MSHV_MSR_TOTAL_COUNT];
-     int ret;
-     size_t i, j;
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    bool synic_enabled = x86cpu->env.msr_hv_synic_control & 1;
- 
-     load_from_env(cpu, assocs, n_assocs);
- 
-@@ -395,5 +420,21 @@ int mshv_set_msrs(const CPUState *cpu)
-         return -errno;
+     /* TODO: find out processor features that correlate to unsupported MSRs. */
+@@ -291,6 +311,16 @@ static bool msr_supported(uint32_t name)
+         return mshv_state->processor_features.tsc_adjust_support;
+     case HV_X64_REGISTER_TSC_DEADLINE:
+         return mshv_state->processor_features.tsc_deadline_tmr_support;
++    case HV_X64_REGISTER_U_CET:
++    case HV_X64_REGISTER_S_CET:
++    case HV_X64_REGISTER_PL0_SSP:
++    case HV_X64_REGISTER_PL1_SSP:
++    case HV_X64_REGISTER_PL2_SSP:
++    case HV_X64_REGISTER_PL3_SSP:
++    case HV_X64_REGISTER_INTERRUPT_SSP_TABLE_ADDR:
++    case HV_X64_REGISTER_U_XSS:
++        return mshv_state->processor_features.cet_ss_support ||
++               mshv_state->processor_features.cet_ibt_support;
      }
  
-+    /* SINT MSRs can only be written if SCONTROL has been set, so we split */
-+    if (synic_enabled) {
-+        QEMU_BUILD_BUG_ON(MSHV_MSR_TOTAL_COUNT < HV_SINT_COUNT);
-+
-+        for (i = 0; i < HV_SINT_COUNT; i++) {
-+            assocs[i].name        = HV_REGISTER_SINT0 + i;
-+            assocs[i].value.reg64 = x86cpu->env.msr_hv_synic_sint[i];
-+        }
-+
-+        ret = mshv_set_generic_regs(cpu, assocs, HV_SINT_COUNT);
-+        if (ret < 0) {
-+            error_report("Failed to set SynIC SINT MSRs");
-+            return -errno;
-+        }
-+    }
-+
-     return 0;
- }
+     return true;
 -- 
 2.34.1
 
