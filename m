@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394763BADA2
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1653B38AE
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776423444; cv=none; b=Z1T8qKZz3lvmFYHPMvfBMkXiMF75lFPp7KSWP62du4MThzAcDFCzHxam46CjpPSBPUF/cA6AMQNMA+F+bTle/JQIOrsAfO6pJ7bmgb9fiuL2u4NyDAeF9vI6v7hg5HOOu5kdggvQN3BStWkY4efOEcXLyK6D/778Mpe19TrEVdM=
+	t=1776423447; cv=none; b=TKfGQvIA1XopdYPM4Ml76EcNqD1Xe/ZoaUnCunpaWXkRns0PquQhm3VC/FHB/LPvipX7Fs7tKvL5yB02eErebzZtc7xL7Z2Ym4cJv/Ay9tYA2+sIX59iPnUTOnBY9bPuXZKCpX4YN1Zezcn/tO6GCUE7fSXOlV172PGDqY2Hmws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776423444; c=relaxed/simple;
-	bh=MIrRHABxgyZGSHwhqEKKKfAr+HSc9H1EleplPxlswio=;
+	s=arc-20240116; t=1776423447; c=relaxed/simple;
+	bh=cIYLTjtgFewfb8VCd4Ljs/8A0sFXM7Y3Ms/8M4d/oy4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pqfifkKHMI+lcQTzFm/MgAeYBCzjmV0086/GPfP/Z8zVlOQbf79pEIEkOrx4wx4vGjLcbZN71rEpxX6ZBY9zLitf85c/jA1fI15BVqbBTUig13uK1c1Q8BvSwwworLk9VW59xGeYVy6mvOcWdTIWhtocCyb6/mjb5R0X8zbhwEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jh8ThyFs; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=bhX6OicHJQHx0cVAfvSKdOuzmukYIpPACodEgVttSSpCjT6Ch1wGjvwOBXoNRLlJl32Z24C9oDw66yHU79idUPsbRMzN3EvVXGJZTzZRo/QoZLw7y0AJCDCaAsH4dbKmIrnuRkTYdWUs1MwE29NWW5R3e+CGsaz1hh0Bw8KzJSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qirjhkdQ; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jh8ThyFs"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qirjhkdQ"
 Received: from DESKTOP-TUU1E5L.fritz.box (p5086d620.dip0.t-ipconnect.de [80.134.214.32])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2868620B7129;
-	Fri, 17 Apr 2026 03:57:19 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2868620B7129
+	by linux.microsoft.com (Postfix) with ESMTPSA id B5E3620B712D;
+	Fri, 17 Apr 2026 03:57:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B5E3620B712D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1776423443;
-	bh=n7/23i78ePWRFCNhXvpu2aDZEvpadavS9yPcaXyN5rw=;
+	s=default; t=1776423446;
+	bh=JjZO2/X3lUM54v7gEfoxaHgi6BZofDR2FWQNRjmIZ3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jh8ThyFs/ODcR1xk4+8KIBEoaMRe8iwL0cLaJRiqYN3rE45XHIFYso3fkeTIGgf8o
-	 AHDZKir0CeUJdMf4VWKa7sA+W0qYNWWdtnwCyUo0TB5lElLHVJtiy9JOjaeB//YVDq
-	 XjvH394nRuh0skp4phxzIjGQx4zoYp4QfY9tnWBs=
+	b=qirjhkdQcMzjLk6HfksO0+ovH184o9WCffMpzPW296JKa5yVkHlaEy1qGtHCyh4aW
+	 Uv5yG5+j6MvT6Ng6DxBADhs8pInRDfg29mMyFNJ2k5dDgG7sm2AMLw6GFJngvz/DIz
+	 BAg5FK4FLfYF+d97VdoOh3SOf/OUINhwVSsrbIks=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: kvm@vger.kernel.org,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 16/34] target/i386/mshv: migrate LAPIC state
-Date: Fri, 17 Apr 2026 12:56:00 +0200
-Message-Id: <20260417105618.3621-17-magnuskulke@linux.microsoft.com>
+Subject: [PATCH 17/34] target/i386/mshv: move msr code to arch
+Date: Fri, 17 Apr 2026 12:56:01 +0200
+Message-Id: <20260417105618.3621-18-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
 References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
@@ -55,167 +55,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This change implements loading and storing the hyperv lapic state as
-part of the load/store routines for a vcpu.
-
-The HyperV LAPIC is similar to the the split-irqchip in KVM, it will
-only handle MSI/X interrupts. PIC and IOAPIC have to be handled in
-userland.
-
-An opaque blob is added to the APICCommonState, guarded behind a flag,
-hence it will be covered by a migration, as we declare VMSTATE_BUFFER
-for the hv_lapic_state field.
-
-In the future we might want to introduce a dedicated class for MSHV, that
-would require us to wire up an IOAPIC delivery path to QEMU's userland
-emulation.
+The MSR code is x86 specific, hence it's better suited in the arch
+tree.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- hw/intc/apic_common.c           |  3 ++
- include/hw/i386/apic_internal.h |  5 +++
- target/i386/mshv/mshv-cpu.c     | 61 +++++++++++++++++++++++++++++++--
- 3 files changed, 67 insertions(+), 2 deletions(-)
+ accel/mshv/meson.build            | 1 -
+ target/i386/mshv/meson.build      | 1 +
+ {accel => target/i386}/mshv/msr.c | 0
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+ rename {accel => target/i386}/mshv/msr.c (100%)
 
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index bf4abc21d7..a7df870f1a 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -380,6 +380,9 @@ static const VMStateDescription vmstate_apic_common = {
-         VMSTATE_INT64(next_time, APICCommonState),
-         VMSTATE_INT64(timer_expiry,
-                       APICCommonState), /* open-coded timer state */
-+#ifdef CONFIG_MSHV
-+        VMSTATE_BUFFER(hv_lapic_state, APICCommonState),
-+#endif
-         VMSTATE_END_OF_LIST()
-     },
-     .subsections = (const VMStateDescription * const []) {
-diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
-index 0cb06bbc76..6d4ccca4e8 100644
---- a/include/hw/i386/apic_internal.h
-+++ b/include/hw/i386/apic_internal.h
-@@ -23,6 +23,7 @@
+diff --git a/accel/mshv/meson.build b/accel/mshv/meson.build
+index c1b1787c5e..e433187cde 100644
+--- a/accel/mshv/meson.build
++++ b/accel/mshv/meson.build
+@@ -1,6 +1,5 @@
+ system_ss.add(when: 'CONFIG_MSHV', if_true: files(
+   'irq.c',
+   'mem.c',
+-  'msr.c',
+   'mshv-all.c'
+ ))
+diff --git a/target/i386/mshv/meson.build b/target/i386/mshv/meson.build
+index 5eb6e833a6..f44e84688d 100644
+--- a/target/i386/mshv/meson.build
++++ b/target/i386/mshv/meson.build
+@@ -3,6 +3,7 @@ i386_mshv_ss = ss.source_set()
+ i386_mshv_ss.add(files(
+   'mshv-apic.c',
+   'mshv-cpu.c',
++  'msr.c',
+ ))
  
- #include "cpu.h"
- #include "hw/i386/apic.h"
-+#include "hw/hyperv/hvgdk_mini.h"
- #include "system/memory.h"
- #include "qemu/timer.h"
- #include "target/i386/cpu-qom.h"
-@@ -188,6 +189,10 @@ struct APICCommonState {
-     DeviceState *vapic;
-     hwaddr vapic_paddr; /* note: persistence via kvmvapic */
-     uint32_t extended_log_dest;
-+
-+#ifdef CONFIG_MSHV
-+    uint8_t hv_lapic_state[sizeof(struct hv_local_interrupt_controller_state)];
-+#endif
- };
- 
- typedef struct VAPICState {
-diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index 12343acb01..22c962c5ac 100644
---- a/target/i386/mshv/mshv-cpu.c
-+++ b/target/i386/mshv/mshv-cpu.c
-@@ -112,6 +112,25 @@ static int get_generic_regs(CPUState *cpu,
-                             struct hv_register_assoc *assocs,
-                             size_t n_regs);
- 
-+static int get_lapic(CPUState *cpu)
-+{
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    APICCommonState *apic = APIC_COMMON(x86cpu->apic_state);
-+    int cpu_fd = mshv_vcpufd(cpu);
-+    int ret;
-+    struct hv_local_interrupt_controller_state lapic_state = { 0 };
-+
-+    ret = mshv_get_lapic(cpu_fd, &lapic_state);
-+    if (ret < 0) {
-+        error_report("failed to get lapic state");
-+        return -1;
-+    }
-+
-+    memcpy(&apic->hv_lapic_state, &lapic_state, sizeof(lapic_state));
-+
-+    return 0;
-+}
-+
- static void populate_fpu(const hv_register_assoc *assocs, X86CPU *x86cpu)
- {
-     union hv_register_value value;
-@@ -559,6 +578,11 @@ int mshv_arch_load_vcpu_state(CPUState *cpu)
-         return ret;
-     }
- 
-+    ret = get_lapic(cpu);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-     return 0;
- }
- 
-@@ -926,9 +950,11 @@ static uint32_t set_apic_delivery_mode(uint32_t reg, uint32_t mode)
- 
- static int init_lint(const CPUState *cpu)
- {
--    int ret;
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    APICCommonState *apic = APIC_COMMON(x86cpu->apic_state);
-     uint32_t *lvt_lint0, *lvt_lint1;
-     int cpu_fd = mshv_vcpufd(cpu);
-+    int ret;
- 
-     struct hv_local_interrupt_controller_state lapic_state = { 0 };
-     ret = mshv_get_lapic(cpu_fd, &lapic_state);
-@@ -944,7 +970,32 @@ static int init_lint(const CPUState *cpu)
- 
-     /* TODO: should we skip setting lapic if the values are the same? */
- 
--    return mshv_set_lapic(cpu_fd, &lapic_state);
-+    ret = mshv_set_lapic(cpu_fd, &lapic_state);
-+    if (ret < 0) {
-+        return -1;
-+    }
-+
-+    memcpy(apic->hv_lapic_state, &lapic_state, sizeof(lapic_state));
-+
-+    return 0;
-+}
-+
-+static int set_lapic(const CPUState *cpu)
-+{
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    APICCommonState *apic = APIC_COMMON(x86cpu->apic_state);
-+    int cpu_fd = mshv_vcpufd(cpu);
-+    int ret;
-+
-+    struct hv_local_interrupt_controller_state lapic_state = { 0 };
-+    memcpy(&lapic_state, &apic->hv_lapic_state, sizeof(lapic_state));
-+    ret = mshv_set_lapic(cpu_fd, &lapic_state);
-+    if (ret < 0) {
-+        error_report("failed to set lapic");
-+        return -1;
-+    }
-+
-+    return 0;
- }
- 
- int mshv_arch_store_vcpu_state(const CPUState *cpu)
-@@ -971,6 +1022,12 @@ int mshv_arch_store_vcpu_state(const CPUState *cpu)
-         return ret;
-     }
- 
-+    /* INVARIANT: special regs (APIC_BASE) must be restored before LAPIC */
-+    ret = set_lapic(cpu);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-     return 0;
- }
- 
+ i386_system_ss.add_all(when: 'CONFIG_MSHV', if_true: i386_mshv_ss)
+diff --git a/accel/mshv/msr.c b/target/i386/mshv/msr.c
+similarity index 100%
+rename from accel/mshv/msr.c
+rename to target/i386/mshv/msr.c
 -- 
 2.34.1
 
