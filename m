@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C9C37F735
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01092383C69
+	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 10:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776423408; cv=none; b=Ucwhe4zK3+G4s9ZQig1oT2x9QQIF+G+9UJVlso4GAXdJAUaXfuAy+e2uEhx23yQJ6CHTVijGj07RFAV6Bc29Z1Ns+CUxeXBYBLQXqogEpj3N2P4PxzWdiKymJejpkern+lUDH/lkeusFjGu2ZCxdRZTVEtHHMOa3JtReTr2zL4c=
+	t=1776423412; cv=none; b=qMUZa/kTzf6Kf0wKbMJKXE9va9XjL1JF1gteJNae61nl0Yys98ld0FgXMDJ5X5UnRbXfr491wNbVhMvpW76CkGMw32cvqSid8KHld9Q5pzA+TrKNnTy7bv3iZGiiINk1imwWd9Sw3RgYuQ2K6LjqJrMz7u2XS0tuc8XX5mZysSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776423408; c=relaxed/simple;
-	bh=EKp8wzOu+gY8tVeMSoCQq0E2Sy9DcFbEARnr1jZgBO4=;
+	s=arc-20240116; t=1776423412; c=relaxed/simple;
+	bh=XsEpDPM5pjoRWPDbOQifYC2xznrVvxCT4rUtOWvjW4c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GsI4M6aZs7+NlwpPnUfVjs5AIXawGS7XRLWzbhzrtI5c3Rn6hiuI+vAUvuh4lEbvzbPSSZlotyPqvR2bAfE0zU8uYcLPbPdGNoNFsr++JkzYW2o7oARzlieZR1WYGHoZoa4A/lbwLUMrhmbXUKu5AxiAX5KXOE/3yRIaYG+yGEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kE/Mp9sg; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=ZRyiHT+3y6bnmXiH3QyYSv9hKVuLkNST6EnxiIZs7LehOu8TDMEmSW+6FhtDCXKmgbzAPH6xjbegKWT5ae9GuPuz395fq0SNVw0lj+SWaZqCgM7PjtKxNygwCuaNrmZJwo8IDTY/+FYnnOa59Der/LiIqaLvyIM/pVGwtmWv5Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SkPXj0Bq; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kE/Mp9sg"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SkPXj0Bq"
 Received: from DESKTOP-TUU1E5L.fritz.box (p5086d620.dip0.t-ipconnect.de [80.134.214.32])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 063B620B7128;
-	Fri, 17 Apr 2026 03:56:43 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 063B620B7128
+	by linux.microsoft.com (Postfix) with ESMTPSA id A678520B712D;
+	Fri, 17 Apr 2026 03:56:47 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A678520B712D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1776423406;
-	bh=/agQnXNBT1WkQmDfzU3UPBeR7shsVTN7r5KTnFUfoDg=;
+	s=default; t=1776423410;
+	bh=Q99VB31zJMe+kwy7P7q526bcuOKPTBKL3PaUmcduhVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kE/Mp9sglD4u3Y+T7H/EYSbuNQFxkKd9hWWVFtf9UaBFTMOGGk8kPeFwc3cASeQVf
-	 IcXb1/vF4mER7Hz+UZ3tc+VMjCU6Y24E4PfPYoU4ahASH3ixljrQ8sCaCXapsp4F90
-	 MyYNNc/RfIBbZ5Tmsr/oXhEqB7MZnQIlbAyMdicg=
+	b=SkPXj0BqV5Sz7eDBWcWL5BLnQialbzeLC5dE8Wwt0G+CXMcBchC35s3DzM3+xKHRO
+	 KmJS9l4CcHgS7RXkOF7rGJQCVsOsTjjNpDorf9kGudl+iKXS7kFOAJKWdHPJJONLE2
+	 QjEszt93PUpiJ0FqWPA864vtinSIirkg1Z/vydKk=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: kvm@vger.kernel.org,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 06/34] accel/accel-irq: add generic commit_route_changes
-Date: Fri, 17 Apr 2026 12:55:50 +0200
-Message-Id: <20260417105618.3621-7-magnuskulke@linux.microsoft.com>
+Subject: [PATCH 07/34] accel/mshv: add irq_routes to state
+Date: Fri, 17 Apr 2026 12:55:51 +0200
+Message-Id: <20260417105618.3621-8-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
 References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
@@ -55,107 +55,105 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A generic accel_irqchip_commit_route_changes() fn has been introduced for
-usage in the MSHV accelerator. The respective kvm_ fn can be removed
-since we handle the commit op in a generic way.
+This change adds fields related to irq routing to the MSHV state, following
+similar fields in the KVM implementation.
+
+So far the fields are only initialized, they will be used in subsequent
+commits for bookkeeping purposes and storing uncommitted interrupt routes.
+
+The TYPE_MSHV_ACCEL defines have been moved to the header.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/accel-irq.c     | 10 +++-------
- hw/misc/ivshmem-pci.c |  2 +-
- hw/vfio/pci.c         |  4 ++--
- include/system/kvm.h  |  8 --------
- target/i386/kvm/kvm.c |  2 +-
- 5 files changed, 7 insertions(+), 19 deletions(-)
+ accel/mshv/irq.c          | 10 ++++++++++
+ accel/mshv/mshv-all.c     |  6 ++----
+ include/system/mshv.h     |  7 +++++++
+ include/system/mshv_int.h |  5 +++++
+ 4 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/accel/accel-irq.c b/accel/accel-irq.c
-index 3815f6727c..7e71b52555 100644
---- a/accel/accel-irq.c
-+++ b/accel/accel-irq.c
-@@ -45,13 +45,9 @@ int accel_irqchip_update_msi_route(int vector, MSIMessage msg, PCIDevice *dev)
+diff --git a/accel/mshv/irq.c b/accel/mshv/irq.c
+index 3c238c33c3..82f2022c7c 100644
+--- a/accel/mshv/irq.c
++++ b/accel/mshv/irq.c
+@@ -396,3 +396,13 @@ int mshv_reserve_ioapic_msi_routes(int vm_fd)
  
- void accel_irqchip_commit_route_changes(AccelRouteChange *c)
- {
--#ifdef CONFIG_MSHV_IS_POSSIBLE
--    if (mshv_msi_via_irqfd_enabled()) {
--        mshv_irqchip_commit_routes();
--    }
--#endif
--    if (kvm_enabled()) {
--        kvm_irqchip_commit_route_changes(c);
-+    if (c->changes) {
-+        accel_irqchip_commit_routes();
-+        c->changes = 0;
-     }
+     return 0;
  }
++
++void mshv_init_irq_routing(MshvState *s)
++{
++    int gsi_count = MSHV_MAX_MSI_ROUTES;
++
++    s->irq_routes = g_malloc0(sizeof(*s->irq_routes));
++    s->nr_allocated_irq_routes = 0;
++    s->gsi_count = gsi_count;
++    s->used_gsi_bitmap = bitmap_new(gsi_count);
++}
+diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+index 04d248fe1d..8acb080db1 100644
+--- a/accel/mshv/mshv-all.c
++++ b/accel/mshv/mshv-all.c
+@@ -43,10 +43,6 @@
+ #include <err.h>
+ #include <sys/ioctl.h>
  
-diff --git a/hw/misc/ivshmem-pci.c b/hw/misc/ivshmem-pci.c
-index fa23562886..536475e9de 100644
---- a/hw/misc/ivshmem-pci.c
-+++ b/hw/misc/ivshmem-pci.c
-@@ -436,7 +436,7 @@ static void ivshmem_add_kvm_msi_virq(IVShmemState *s, int vector,
-         error_setg(errp, "kvm_irqchip_add_msi_route failed");
-         return;
-     }
--    kvm_irqchip_commit_route_changes(&c);
-+    accel_irqchip_commit_route_changes(&c);
- 
-     s->msi_vectors[vector].virq = ret;
-     s->msi_vectors[vector].pdev = pdev;
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 35b4545482..fb20902412 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -695,7 +695,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-             } else {
-                 vfio_route_change = accel_irqchip_begin_route_changes();
-                 vfio_pci_add_kvm_msi_virq(vdev, vector, nr, true);
--                kvm_irqchip_commit_route_changes(&vfio_route_change);
-+                accel_irqchip_commit_route_changes(&vfio_route_change);
-                 vfio_connect_kvm_msi_virq(vector, nr);
-             }
-         }
-@@ -804,7 +804,7 @@ void vfio_pci_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
-     assert(vdev->defer_kvm_irq_routing);
-     vdev->defer_kvm_irq_routing = false;
- 
--    kvm_irqchip_commit_route_changes(&vfio_route_change);
-+    accel_irqchip_commit_route_changes(&vfio_route_change);
- 
-     for (i = 0; i < vdev->nr_vectors; i++) {
-         vfio_connect_kvm_msi_virq(&vdev->msi_vectors[i], i);
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index fec24d2135..cdd1856ac5 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -476,14 +476,6 @@ int kvm_irqchip_update_msi_route(KVMState *s, int virq, MSIMessage msg,
-                                  PCIDevice *dev);
- void kvm_irqchip_commit_routes(KVMState *s);
- 
--static inline void kvm_irqchip_commit_route_changes(AccelRouteChange *c)
--{
--    if (c->changes) {
--        kvm_irqchip_commit_routes(KVM_STATE(c->accel));
--        c->changes = 0;
--    }
--}
+-#define TYPE_MSHV_ACCEL ACCEL_CLASS_NAME("mshv")
 -
- int kvm_irqchip_get_virq(KVMState *s);
- void kvm_irqchip_release_virq(KVMState *s, int virq);
+-DECLARE_INSTANCE_CHECKER(MshvState, MSHV_STATE, TYPE_MSHV_ACCEL)
+-
+ bool mshv_allowed;
  
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 03312922d5..64cc421abe 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -6690,7 +6690,7 @@ void kvm_arch_init_irq_routing(KVMState *s)
-                 exit(1);
-             }
-         }
--        kvm_irqchip_commit_route_changes(&c);
-+        accel_irqchip_commit_route_changes(&c);
-     }
- }
+ MshvState *mshv_state;
+@@ -457,6 +453,8 @@ static int mshv_init(AccelState *as, MachineState *ms)
  
+     mshv_state = s;
+ 
++    mshv_init_irq_routing(s);
++
+     register_mshv_memory_listener(s, &s->memory_listener, &address_space_memory,
+                                   0, "mshv-memory");
+     memory_listener_register(&mshv_io_listener, &address_space_io);
+diff --git a/include/system/mshv.h b/include/system/mshv.h
+index 1e96b3a606..0d1745315b 100644
+--- a/include/system/mshv.h
++++ b/include/system/mshv.h
+@@ -45,7 +45,13 @@ extern bool mshv_allowed;
+ #define mshv_msi_via_irqfd_enabled() mshv_enabled()
+ #endif
+ 
++#define TYPE_MSHV_ACCEL ACCEL_CLASS_NAME("mshv")
++
+ typedef struct MshvState MshvState;
++
++DECLARE_INSTANCE_CHECKER(MshvState, MSHV_STATE,
++                         TYPE_MSHV_ACCEL)
++
+ extern MshvState *mshv_state;
+ 
+ /* interrupt */
+@@ -60,5 +66,6 @@ void mshv_irqchip_release_virq(int virq);
+ int mshv_irqchip_add_irqfd_notifier_gsi(const EventNotifier *n,
+                                         const EventNotifier *rn, int virq);
+ int mshv_irqchip_remove_irqfd_notifier_gsi(const EventNotifier *n, int virq);
++void mshv_init_irq_routing(MshvState *s);
+ 
+ #endif
+diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
+index 70631ca6ba..56fda76a9c 100644
+--- a/include/system/mshv_int.h
++++ b/include/system/mshv_int.h
+@@ -48,6 +48,11 @@ struct MshvState {
+     int nr_as;
+     MshvAddressSpace *as;
+     int fd;
++    /* irqchip routing */
++    struct mshv_user_irq_table *irq_routes;
++    int nr_allocated_irq_routes;
++    unsigned long *used_gsi_bitmap;
++    unsigned int gsi_count;
+ };
+ 
+ typedef struct MshvMsiControl {
 -- 
 2.34.1
 
