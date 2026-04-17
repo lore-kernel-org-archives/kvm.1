@@ -1,269 +1,232 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010071.outbound.protection.outlook.com [52.101.85.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13A1285058
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 14:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776435914; cv=none; b=Cu2WY/e00OYv/6xNb/vzaPil46gNmaJk9gQbsoPXona1eEjT/E/UXPbbhqqgAifngCiH3oZjPKuKWcAOIK6UZN8JXUBy+WR1YqBUFBQ/eFvWFOL2y+NCqs8HWpqbwOTYT5iGuLnxpypk/xKo2B0WBpNVCXBG/v4+9QzNUyyyxyY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776435914; c=relaxed/simple;
-	bh=dJc550c7lueHVrl6u97GO6FfFrVEV1/fzs6oj14ACaw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=filRg+jgKrThP/EOgMhPkpDpZcyi8Kc8YCQvwCpuEMmG24w9vriP78eWg8Z0FOtbbzV8luuG51CAkoZS2LvE3Wl75VBs3e/LZux3+tq9pLnpDLuAyytaMbjFmQbUcJBjwCtzdgOPTQloAFEDKVeKGBO1euhHhC5rfQ9iDw8eYsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=rYjOsECW; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3333B5850;
+	Fri, 17 Apr 2026 14:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776436470; cv=fail; b=nrwWf8Ko7DxJiVJjCnMmgYiuPIeS2drBZRD0KNP6vNX5UjMejC0jguqW/iR24Ej0AOphYmKGui62+uC0+TQpFETcG9b6j0JtZGx8eBkI89qdBqqBwVzvToh8+k+HTqTO1SCiaEl/HWyjc0CNTfza6m8ITzgjnlC2cfWRgapfM0s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776436470; c=relaxed/simple;
+	bh=DSFcIMZvK+6juq2vvQogzFZNjMfHuYHINjlWg7/1P/I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ne6DzbFrJuXfvdVo1KSIugoqPhkunNAAwptuALdzFST6kB39ozec92f01Wfgi/z2eYH/QU0QKqEPmcApiMmVtCaGmCbTosRiVue5FQQN6eIO94/u1B7XovKYpubTtrmeHcDtO5QQXAplx3avcmfsx9qE39BX06Vnz9nuve1rcZM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uRJRFzwp; arc=fail smtp.client-ip=52.101.85.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="rYjOsECW"
-Received: from pps.filterd (m0528009.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63GKVVpT2401856
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 07:25:12 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=PtNdOLZEYxbJwkCHTykxSu6qPAeRe4NAMSCEL5W2MDQ=; b=rYjOsECW5g8q
-	uTFq6b3PSaGWX8hH093Wsb1Lz6RfZZhxqcgDUIbm8+KeTwcJXjg2rJd/ZJc5E2pT
-	R1O6gqfzamNYsJYdPnFkpis82KKXx165KzSRUivhoj0vDxvdUeRViJgfZOoSSGu5
-	7Ds4NWR1B25u54hXY78QDbDTB549of7TvIXQwNBQFiOnpdLZadeh6dnF5+hISbz/
-	OIGfsmKhgYzlEbLnBwJ+WKinI7txUE/T4iljoTis9cMPUCr2yMpYpCNcMur2k7XE
-	8fHH4mqEGTrq6Q4APAGD7l4YDnwkb1jwIQPzDki3eQwuvv9N2BMLdHaIYXq9MXHR
-	Ndk+Ki0hOA==
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dh864vjy8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 07:25:11 -0700 (PDT)
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4836abfc742so6582545e9.0
-        for <kvm@vger.kernel.org>; Fri, 17 Apr 2026 07:25:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776435910; x=1777040710;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PtNdOLZEYxbJwkCHTykxSu6qPAeRe4NAMSCEL5W2MDQ=;
-        b=m2REAmDClL3/m+dNlxJalidBTXWxyheb66ZuIuxUxll8LfanA2S04lJ21mF7cWz8gu
-         LxcgXAFZtq7onZ9Fm7RNm9maa2EXMM1N5Ln1g0AN9Reg7AAeMnaV/GGjxmzpcM544to4
-         8w5NPhJOuvmopqzpPrpMdVYcZTXSnwR1xZL3Thw6zKwXgeVRsoOPs9HlRnzmBkh5ThbH
-         kMfjQbQtbc+FnygMN4Dx0tWaQ65W6P++miaMm2O2lz+dV1wCNApHSuUegzIwtDqBTpXq
-         duQBwwmwGJ2DDh5BMqdQc4VdvbbeuM7aqA7b0cV1O0Ny81F7NzcETf0QpOJ/oOjyf7St
-         Esvw==
-X-Forwarded-Encrypted: i=1; AFNElJ/8iNpN7iD0Myp55HgoEdad2pCprPpnLlSKGVrHb3ywNfXXi2CnEaNzd65Cu+0xHLD4CDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDrpqIw02dyma1AyIlZEJs/c2f5l3OKedGhqCxEn+AxmkrVQ6T
-	x1Nf7KnSEpPyVM4Z9SA5hil4Q6KS2wBiOggmh5sFfjKQ3b3IGWcAW/mLOmGReZkC6GiQmJl0JPX
-	LJ1sJYdDu16NW/y9m4H01+ohMb1EOB0zX93PV3+iaCmojZX2O+EUf
-X-Gm-Gg: AeBDieuccM1Gxin7BIUx+QO3zPZMlgCo/3IQMvWRMVHYUlmtM7K2lnbAPXdN65mp1u7
-	NpTzu5ZvcLLUqxO9icdsUtb0g2QapQGbIhpLXs7bTf76QnPOynSC3IwmFr5+WmnFjIpGv9v/w2+
-	pLAr8FvYIQJ41Ol99xiRPfRL87jqfRs7E7ahTBkwvfsodB0i+p/yH0BNdkaJVpy0saBbtaC8SZ0
-	/ZGqjK+6DiN2DjxPUzCjEyjrgKZ6bHusTcfmymvJYYc2mXv/dFgE237zoLTDsL8d+YkYjgIVvFb
-	W/jidoOVpJrlupqii2TbmgmhqASdAZUSgrGCSCd3PlQmSD8H9O87r2dhAsmA3IcYEiq7cNLA+IE
-	iC5GatlTk9ffM6TUh+YgJ9B3ZFx3btRHvMCtrhhvj0j4TbqQA8oQ2upq4hfg4t1rjLxARzCjrrl
-	Ow6UFyNzmTtCCIsefZQX2XCfKlBr0EUiLX+k4IQry32SMWVA0dBOLjzrW6V3+Gw4DZhJvvPtpF6
-	BGOG6IJOL9thwFn7Msj1z9Ae2aPhVaxug==
-X-Received: by 2002:a05:600c:3e05:b0:486:ffa3:594 with SMTP id 5b1f17b1804b1-488fb78049amr47995515e9.23.1776435909988;
-        Fri, 17 Apr 2026 07:25:09 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e05:b0:486:ffa3:594 with SMTP id 5b1f17b1804b1-488fb78049amr47995055e9.23.1776435909428;
-        Fri, 17 Apr 2026 07:25:09 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc1ce408sm43261755e9.14.2026.04.17.07.25.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Apr 2026 07:25:08 -0700 (PDT)
-Message-ID: <9a8b39c0-5c0b-4f32-88b4-225f16e8f3c6@meta.com>
-Date: Fri, 17 Apr 2026 15:25:07 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uRJRFzwp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MFAoEnxtxRE2oVrsDNLa5zXxBmszuNutf10dmhHZaYB77zXrLdGP57KlR2u+VnFox9Tsq8JAdtMjn96fL6fVuHi82R/XmbHkw0jHgN2usdvOqhshgykyR1/42gDEmjWOHaN738eoLCoNOzDcujL0qd8dR0wliaNccWcqMJbpZixgzUFk/cfLRfwQkfNEAN4aIaAHQh7ciZdk8Jse9P0z/73ujV64ZJNqZJa9ohDUwp9juxkcHontYjquVaJQhGCS4DehB/I1CNB6EtD2OzhYYYKqD4F5NxFXbWWb0LxfMqdw99Tb8eVSKK2njirOHulBuINax3RM00CLBD1Pf/HP1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MhyhOMwvKI4B2jcji/oTvKaTuNi2eZE0SM2BLu6M2GA=;
+ b=KG0+XGiHyqpDMbJ/tYLaxSNd3bNNau5cpRAGlBljLtubT3YTeVqHG2FWREOuGd+axJPgnRRoFrAT8N7qMPbJubIR4UEGzHydthI/jg2vIOGDjE31kI8OB5hkitqmOjoqmoHIcYl30qWkUNKeIKDoMGbF5c/c4XrWgbr5Vrm7JzZGKSGcADytUD8cJyShX7BZ4E2zI3Bs1BTO+LZbOhomWTqLwBX0rBeOEOrqWUi1P2aScGBXkFcDqNvfPraVpDaozFTtbcCQWEobSOgh9Evd7EnvJvzQqG/3jSmVDxmKaj1i/ZKz21DOPJ/srgJ6ug/DDmkYUxgKI0gX/tsCNe5AiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MhyhOMwvKI4B2jcji/oTvKaTuNi2eZE0SM2BLu6M2GA=;
+ b=uRJRFzwpO6CXmK8gBUOUbXs7TtXdFRyO4CTlEAFcKE2H4y/G2A77t2u8bqPUzsNCRep2otgcSKGu2dorZBKr1uYG2/6uElXJaEvTeMZqs991yiUJwbrAf0Y/OxqneEzfIAPxdtnkHNVrgzV2riFwcWwTkJSSehhQv792zLpNqLw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by SA3PR12MB7806.namprd12.prod.outlook.com (2603:10b6:806:31d::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Fri, 17 Apr
+ 2026 14:34:26 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::f3f2:852c:78d5:9353]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::f3f2:852c:78d5:9353%4]) with mapi id 15.20.9818.017; Fri, 17 Apr 2026
+ 14:34:26 +0000
+Message-ID: <dcd7f51e-c3b0-4f8b-b028-ce7e68f8ff4f@amd.com>
+Date: Fri, 17 Apr 2026 09:34:23 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/7] KVM: SEV: Consolidate logic for printing state of
+ SEV{,-ES,-SNP} enabling
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ John Allen <john.allen@amd.com>
+Cc: kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ Tycho Andersen <tycho@kernel.org>
+References: <20260416232329.3408497-1-seanjc@google.com>
+ <20260416232329.3408497-5-seanjc@google.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Autocrypt: addr=thomas.lendacky@amd.com; keydata=
+ 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
+ WiyqywZI5g==
+In-Reply-To: <20260416232329.3408497-5-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0403.namprd03.prod.outlook.com
+ (2603:10b6:610:11b::13) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio/pci: Don't export DMABUFs for unmappable BARs
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Ankit Agrawal <ankita@nvidia.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260415181623.1021090-1-mattev@meta.com>
- <20260416081138.GE361495@unreal>
- <2ea075f9-c80c-41e9-9f93-9b0a2858f68f@meta.com>
- <20260416131417.GF361495@unreal>
- <ed5d615f-5ba5-4045-ac45-79f06fd07a05@meta.com>
- <20260416154806.0c5cb10d@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260416154806.0c5cb10d@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=GKY41ONK c=1 sm=1 tr=0 ts=69e242c7 cx=c_pps
- a=Q4jRaax7EcWM5fECTC1wcQ==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=U_y8lYiYyhHBU5rMqhb2:22 a=c92rfblmAAAA:8 a=VabnemYjAAAA:8
- a=Wnk4YwcsESJXKludE4MA:9 a=QEXdDO2ut3YA:10 a=nJq5_VNI1X7IEIKzvdHs:22
- a=GvGzcOZaWPEFPQC_NcjD:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: 5zzzvvCgWKB9oOZy6Ycke7DszICXXKlD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDE0NCBTYWx0ZWRfXxskE1VXyX1Ay
- rR3SusoE6ZlqqKvC2XDmzwIhMvH7XFAduXnWtL7I6DRIaMJkrZi8kvwCR0Pp5nzJfQPmvabx8UP
- piwus+WK7CCgmZiAg4i2vAGUbOZGiGbSDgPj6V/F3DbzO/QSk94IhK1WggHvmz17oECwGdPBXPp
- M41Ny3WMFrS3BcSIICc4S8UVPn1nw6Mm8Vjxij771M28dcgarawLhp0KXIKn+Chw8FJi2OwnlNA
- uS6RXJtSiPQFysIn/GyEUzQsFtgDCD6QVo/S4ly+shDFftrIb1UetzSRSyz4H9jiC7lQPEv/B63
- q5JG9nXFTY11j95mlbMcgcroH2we1lCJbBvgcDbdGa13OICrujTQDD1wBMz8kuidCeTPT99Lu8P
- UmkPno+oC47vPQDheA6gYqwrJvki9Z+Zz0i3EVDtfLrYIlj74w+azipgYz9jahSZNE7Ok2Xd4o0
- NrsllYu/NL70qBEat/g==
-X-Proofpoint-ORIG-GUID: 5zzzvvCgWKB9oOZy6Ycke7DszICXXKlD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-17_01,2026-04-17_04,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|SA3PR12MB7806:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2cd22a5d-daef-422c-f6b4-08de9c8e6cc0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	peK8yeUPSSerZWzhZJZrxURHtUDeM2+f2kCp5YBGIoKxQQbzmdH5CvbX6iIyQxlaLzFj0UJnSTgwsihtKi/aOXwJ3iaSNA/VG0cC9h77ANATFRzkAiM1h7cfIWVtYqa91tjPR6OPZ55gvH5dpXdrwbCVsh24igksix97S2mGKlb30ZDSotLjAc4TRQ0I4Wue46FeNB9dpw8OXdf2eMvWOKET/5WyWS6efmdaJlDgPK9uvOMUNPN3Ac9sX87Wt77WzwIr0gzJ+AEIax9opadiEnekd6WrDa1KOJ70kem7HyBdzJOCwK1Qjxj5DWseHmtvjHsaifMvXavI5XtNd2Wa2Yfwve4YXeiEGVf7obRldL6Pmqg4Yp+C3bc5EzIkRa3sj4XI/axRbKicnar9RGz0UNtfYOX0/a8N86S01u72WzcKHQa9oysD6ZraOKpZJj1etoNbPY9mMG8F1FcjGKTGJHYQwj5Apmj6Y4tke7Wx12fqgf58yIZzsateAJB8jpKRs5DrwSAnMxHIluWrqDC0fMdxpQxnRUVfygkitAlQg9GYzbh9U3WQXwOl6/kl9akFHB8L8yCaV/n+6gJ3spDu2pkWYxkXfPXQSasTTmtLHvnjYdVwYYJZIjnMr7yFfI1QeXcEG7Gsci+WRCw4P+aXH3krQx5fp/v+KgAt43do1BLhmgePH0Zcq8DaSA+jdEjxIeU1L2FtQK1eAHuVjWdaIH3ypdqLYzobeQFZBYTg0NQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U1NsL2xmZlVWNW5PRE40L3JteU9hWGNMSmx3dGlTbEpBK3NPQm14QjBocUhy?=
+ =?utf-8?B?U0RGVkVaWEhOOTJYVFhMdGsxejJNLy9IRlRPcW4veWk1YnJwUmpGRXJjV1hw?=
+ =?utf-8?B?elBQNkJCb3hkdnVpSzBBbmVUMlpsaU1DM3hBU3Awb0pTaXNkWWhCaWFzakN0?=
+ =?utf-8?B?QlB2OUkzZEx3Tk13cnNySU9kNU5tTmNlRHlrc3Z6TFJ3T2x4SUhPTWFaMEJj?=
+ =?utf-8?B?UERyRWZicCtoSFQxTFBhQXRmV2xVeGdMUCtLNExzQlpVZmlHSXlneHdLS05n?=
+ =?utf-8?B?OWNWYTJzQ3dBbm9MQnp3U3BwdXBYdzYxQW1OcXRYM0lVcEZWbnI3WnBteGJw?=
+ =?utf-8?B?UHpEVk5XWWI0N1FDVXg4aHplOCtBWFUrYXZUZEU2M3dPYTJidmRjNU8zVm8y?=
+ =?utf-8?B?VXZHSlA3WjNreEpYK2I3eURGcEZEZ1AyMytoQ0c0Nm9DWElwVUtvYkpzZ2Yw?=
+ =?utf-8?B?RzV0a3BDTUxWVmkzamV3VDRxanpzSWpTaFl0YnZiTlRzaUYwM3RQREloTGpm?=
+ =?utf-8?B?UVBQbnU4YVNMNTdoTnBuYzRIRlVFbzJoVWM0Njk2TXl3TzI3cDRMWWcrOEwy?=
+ =?utf-8?B?aElkeWhGd2Y4VWQ0STlFUkZhbUdPVUIraUs0dmZzZi81eWorOTQ0NldMTWNi?=
+ =?utf-8?B?WjNrSldwOGZMNVQrWUFxUEtUQnRxYTVTREdmUkk4dEhmeUJSVm5KaHVCMHJY?=
+ =?utf-8?B?WWJ3T2VtVVRDcFRjUEVkNEJSTmFlN2xPWFRBcytLaDZZRkNZc0xQcVMyNWc0?=
+ =?utf-8?B?eTlOVGhxcDNxUnpjMXc0MU1qUXRwdEpEUFkvakVKYjhua0g0aHlMa0FreG9z?=
+ =?utf-8?B?cnNXenVmOSthMnR3b3pOdFB6SlJXWXlmcHpwM21VMHVwOEVFVGxOUUQ3R1Nx?=
+ =?utf-8?B?c2p5ZGNmN1VPdjd0cTNRWFhwN2ZSK1RycUVFMDQrVEVTazZvOHpZQUk4VXdx?=
+ =?utf-8?B?eFZEQldpckViMTlKUUpYdlYzcFBCTENURHBkQ1hvaDVTZytZVVZTVGZ6UVcw?=
+ =?utf-8?B?dHg1WDZKU1ZoandzcHcxak8reitvOVd2YWJ5WGx0cmxLdVBlNEk4RDRXRmdP?=
+ =?utf-8?B?M2lNTG54UWdhRHZCNktQYUx6ZVUrVVp3TFNlNFZnWGdPYWNVK0ZaWXcrNEhp?=
+ =?utf-8?B?VFhwQXErOG42aG14MW1NanB0amErRmRIeWRxVUx3Tk53eUJYbEN6YmZDeE95?=
+ =?utf-8?B?K1EzN2tjRW15cmh5cmp3S1BIQ1Q0OU9WOHpzdmFORnpNU3J5emVaTTVpOUlu?=
+ =?utf-8?B?R2tqMWhhYnEzek1kb1BiSmxDVm1TelRjazdCc0VWc0wyNXMzZkZmTDJDUjBn?=
+ =?utf-8?B?bTlEbXVTekVkczY3Vlo5WFJvZnBQSm8rbU94dFZuZUQ2VER0ejg3RjBXdWla?=
+ =?utf-8?B?VDllSzNycFFOZ1ZxVHFaRGFuanVGWlR6RUFGNXpjQi9DYnYzcmMxV0pQNTNX?=
+ =?utf-8?B?bVBjN2ZHbUdmdDJhNVpqNHR5SVpCZlU4US95VE9nTDFUUXdtUVVONm12UjFY?=
+ =?utf-8?B?YndGcXlJOTdxRkhNbW5hY0psYktNT0srU2NFTGJYMGd4NU5XU2tEVlU3clFO?=
+ =?utf-8?B?Ym0wMzQzQm00MDhoc0NyRTZyQnc5djJ3M0FVbUV0bWlJNXYzOFZ2elNVQWtq?=
+ =?utf-8?B?L1pkYlRsWXAyN3ovT05zV211a016SVFFWUU2dVNLUEJUdzh0bnNZTDlJS1V4?=
+ =?utf-8?B?aHE5TEZoVXhPZ0FPOWJ1UHhVWTAzR25FTUs3YnVOVUV6dTRJMmtQaXdnSXV2?=
+ =?utf-8?B?SVF0bnMzTFBWV2NaTVV0RVNsNHJUWU5nSzUzRmxPejhhV1pua2JlaW9wR0dq?=
+ =?utf-8?B?WldZQSt2UWdMQ3pXamFVNmlydWw5YXFKMVJhV1hvZmVNQ2lxank0VUJSdjZs?=
+ =?utf-8?B?dEJqRWNSTk5aWjQ2cEpzTGlhcEcycTA1SmI5eXhqMHJ5WjcybWV2Tmc5RW85?=
+ =?utf-8?B?WktQSDlKSW4vYnRRZERTU3YrMHZpelpkVzBMdXRFdjhFU2JGaUIzdERzKzJ2?=
+ =?utf-8?B?RkhsUDJZQkgveHQxb1NvNjE2WWFRZkJlRlVVbklkVU1LdWpIVHJCcURzOTJD?=
+ =?utf-8?B?N2xhVXlxeFlSbWtIcXE1a1pEMml3YnhDVXJXRGxHU1k0cHZkTFNNUUZZMUF3?=
+ =?utf-8?B?aDV0SWFEZkFReXhXOXY3NVdlQkJPRkVCeEQxTWxxTi9DV20rMVRRNG51OHR3?=
+ =?utf-8?B?aUd4K1hEeHBvcDd5UEwrcW9PaElOL3RoNnQvODljS3poamJJWUVOYjNKUk03?=
+ =?utf-8?B?bHBJVkpMQmlzY1lENjdvVnFWcUplbkh5TFB1Sm5VY3BRY0NEenFmaFFic051?=
+ =?utf-8?Q?ZESNW3FmMAO2a8ApJx?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2cd22a5d-daef-422c-f6b4-08de9c8e6cc0
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 14:34:26.3612
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FdLHcanKc7E8muXRgfNe8wQZVZqCYXNZb7wW7RuuzBDKyQdVhTP2DXpd70QyXhuR5EUFLhI5heoa9q9d48u6wA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7806
 
-Hi Alex,
-
-On 16/04/2026 22:48, Alex Williamson wrote:
+On 4/16/26 18:23, Sean Christopherson wrote:
+> Add a helper to print enabled/unusable/disabled for SEV+ VM types in
+> anticipation of SNP also being subjecting to "unusable" logic.
 > 
-> On Thu, 16 Apr 2026 19:03:40 +0100
-> Matt Evans <mattev@meta.com> wrote:
+> No functional change intended.
 > 
->> Hi Leon,
->>
->> On 16/04/2026 14:14, Leon Romanovsky wrote:
->>>
->>> On Thu, Apr 16, 2026 at 02:05:30PM +0100, Matt Evans wrote:
->>>> Hi Leon,
->>>>
->>>> On 16/04/2026 09:11, Leon Romanovsky wrote:
->>>>>> On Wed, Apr 15, 2026 at 11:16:23AM -0700, Matt Evans wrote:
->>>>>> Although vfio_pci_core_feature_dma_buf() validates that both requested
->>>>>> DMABUF ranges and the PCI resources being referenced are page-aligned,
->>>>>> there may be reasons other than alignment that cause a BAR to be
->>>>>> unmappable.
->>>>>>
->>>>>> Add a check for vdev->bar_mmap_supported[index], similar to the VFIO
->>>>>> mmap path.
->>>>>>
->>>>>> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
->>>>>> Signed-off-by: Matt Evans <mattev@meta.com>
->>>>>> ---
->>>>>>     drivers/vfio/pci/vfio_pci_dmabuf.c | 3 +++
->>>>>>     1 file changed, 3 insertions(+)
->>>>>>
->>>>>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->>>>>> index f87fd32e4a01..4ccaf3531e02 100644
->>>>>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->>>>>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->>>>>> @@ -249,6 +249,9 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->>>>>>     	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
->>>>>>     		return -ENODEV;
->>>>>> +	if (!vdev->bar_mmap_supported[get_dma_buf.region_index])
->>>>>> +		return -EINVAL;
->>>>>> +
->>>>>
->>>>> And it looks like AI has valid concern about this line too.
->>>>> https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260415181623.1021090-1-mattev@meta.com__;Iw!!Bt8RZUm9aw!5DxsN8cDUviPIZqEjG0pZ_VYYbl_RdmWucTGdTZ3ZzlVP_Ysb0n7ykr0eXwFXdpuqvZH2FK3$
->>>>
->>>> Ah, Sashiko has a point, and I think its suggestion of checking lower down
->>>> in the default .get_dmabuf_phys (vfio_pci_core_get_dmabuf_phys()) and
->>>> preserving driver overrides is decent.  Will revisit.
->>>>
->>>> To your other question:
->>>>> I noticed this check in vfio_pci_core_mmap(). Isn't that sufficient?
->>>>
->>>> The scenario in mind is doing a DMABUF-export for BARs that you haven't
->>>> necessarily noticed can't be mmap()ed, and both paths should be checking.
->>>
->>> I added the validation checks that matter on the kernel side, but mmap is
->>> primarily important for callers. What I am missing is an explanation of
->>> why the kernel should impose this restriction on itself.
->>
->> I don't understand your question, really sorry!  Can you rephrase it
->> please?  I want to make sure I answer it fully.
->>
->> Although mmap() fails for BARs that are unmappable (for whatever
->> reason), a DMABUF export for the same ones could in some slim cases
->> succeed -- because the checks aren't identical.  If export succeeds, it
->> could potentially allow P2P (or CPU via a future DMABUF mmap()) access
->> to something possibly unmappable, no?
->>
->> For the checks that vfio_pci_probe_mmaps() does (leading to
->> bar_mmap_supported[] = false), most have corresponding-but-different
->> checks reachable from DMABUF export:
->>
->> If a BAR is:		Then DMABUF export...:
->>
->>    size < pagesize	vfio_pci_core_fill_phys_vec() catches it
->>    Not IORESOURCE_MEM	pcim_p2pdma_provider() rejects it
->>    non_mappable_bars	... nothing?  Export allowed
->>
->> As a quick test, if I hack in non_mappable_bars=1 for my function, it
->> appears exporting a DMABUF from it works.
->>
->> We could add another check for non_mappable_bars, but my thinking was
->> that we don't want to keep adding to an independent set of DMABUF
->> checks, especially if a future quirk/etc. could create another scenario
->> where BARs aren't mappable.  I.e. we should reject DMABUF export in
->> exactly the same scenarios as mmap() would be rejected, symmetrically,
->> by testing bar_mmap_supported[].
->>
->> Hope that goes some way to answering the Q, hopefully I haven't missed
->> something!
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+
+> ---
+>  arch/x86/kvm/svm/sev.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
 > 
-> That's the concern as I see it as well, it's a choice whether to
-> attempt to support sub-PAGE_SIZE mappings, but if a device is reporting
-> non_mappable_bars are we're exporting those BARs through dma-buf for
-> mmap, that's a problem.  Should pcim_p2pdma_provider() test this flag> rather than vfio_pci_dmabuf though?  Thanks,
-
-Do you mean "test this flag" to say 'non_mappable_bars' rather than the 
-'vdev->bar_mmap_supported[]' flag?  (I think the former, as the latter 
-isn't as easily available down there, sorry if that's not what you 
-intended.)
-
-Testing non_mappable_bars in pcim_p2pdma_provider() doesn't feel quite 
-right:
-
-- IIUC non_mappable_bars is about preventing mapping to userspace, not 
-direct access/P2P/etc.  Splitting hairs a bit, but P2P to such a device 
-seems valid, so I think this check better stays within vfio-pci 
-(specifically limiting only userspace access).
-
-- But non_mappable_bars is just one kind of quirk, and couldn't there 
-possibly be more?  Good to avoid duplicating quirk checks in mmap() & 
-export places (so any future maintenance updates just one place and no 
-disparities arise).
-
-All this to say:   The existng logic in vfio_pci_probe_mmaps() is the 
-right place to decide something is suitable for userspace/direct mapping 
-(mappable, non-zero sized, not IORESOURCE_IO), IMHO we just need to be 
-checking it consistently.  (VFIO export is less lenient in terms of >= 
-pagesize and imposes additional checks, and that's good as long as the 
-checks are an overlay rather than parallel duplication.)
-
-(Maybe you're also flagging that there could be other checks saying "Is 
-P2P supported for this BAR?" and they could be done in a generic 
-drivers/pci place?  I think so;  VFIO export criteria be the 
-intersection of VFIO- and provider-based checks.)
-
-I was thinking something like...
-
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c 
-b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 00cedfe3a57d..9bb8bd153e12 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -359,6 +359,9 @@ int vfio_pci_core_get_dmabuf_phys(struct 
-vfio_pci_core_device *vdev,
-         if (!*provider)
-                 return -EINVAL;
-
-+       if (!vdev->bar_mmap_supported[region_index])
-+               return -EINVAL;
-+
-         return vfio_pci_core_fill_phys_vec(
-                 phys_vec, dma_ranges, nr_ranges,
-                 pci_resource_start(pdev, region_index),
-
-(I.e. leverage logic in vfio_pci_probe_mmaps(), catch bad DMABUF 
-mappings this way, allows sub-drivers to override .get_dmabuf_phys.)
-
-I'll repost that as v2 if this doesn't seem an outrageous start. :)
-
-Matt
-
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index ea4ce371d5f3..dfeb660b8f5d 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3050,6 +3050,11 @@ static bool is_sev_snp_initialized(void)
+>  	return initialized;
+>  }
+>  
+> +static const char * __init sev_str_feature_state(bool is_supported, bool is_usable)
+> +{
+> +	return is_supported ? is_usable ? "enabled" : "unusable" : "disabled";
+> +}
+> +
+>  void __init sev_hardware_setup(void)
+>  {
+>  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+> @@ -3199,19 +3204,15 @@ void __init sev_hardware_setup(void)
+>  
+>  	if (boot_cpu_has(X86_FEATURE_SEV))
+>  		pr_info("SEV %s (ASIDs %u - %u)\n",
+> -			sev_supported ? min_sev_asid <= max_sev_asid ? "enabled" :
+> -								       "unusable" :
+> -								       "disabled",
+> +			sev_str_feature_state(sev_supported, min_sev_asid <= max_sev_asid),
+>  			min_sev_asid, max_sev_asid);
+>  	if (boot_cpu_has(X86_FEATURE_SEV_ES))
+>  		pr_info("SEV-ES %s (ASIDs %u - %u)\n",
+> -			sev_es_supported ? min_sev_es_asid <= max_sev_es_asid ? "enabled" :
+> -										"unusable" :
+> -										"disabled",
+> +			sev_str_feature_state(sev_es_supported, min_sev_es_asid <= max_sev_es_asid),
+>  			min_sev_es_asid, max_sev_es_asid);
+>  	if (boot_cpu_has(X86_FEATURE_SEV_SNP))
+>  		pr_info("SEV-SNP %s (ASIDs %u - %u)\n",
+> -			str_enabled_disabled(sev_snp_supported),
+> +			sev_str_feature_state(sev_snp_supported, true),
+>  			min_snp_asid, max_snp_asid);
+>  
+>  	sev_enabled = sev_supported;
 
