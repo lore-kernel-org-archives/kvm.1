@@ -1,90 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D5E54654;
-	Fri, 17 Apr 2026 02:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0F336ED1;
+	Fri, 17 Apr 2026 02:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776393649; cv=none; b=BFiPZU2GscuZHcMK20ruSwla6r72N40KQskw9OAcERjBRPWp6jDZEPvH8cqrSaC7x9lix5CpbHu42QU8ZMoZjVAEWwWiPBuJpvGloAhAPdwtdg1BV2QwM9lFghsoQdsx45/KGMkRl3NLY1C5W4/0dO/nkTXkW6g9MLhOnIG/7JI=
+	t=1776394230; cv=none; b=X/KlFdIQY0bzFuimlt8Vf4GJOT/h/1cIH9DH2QnXI40uo3jgDFG4NtACrc7FlBlDLgNO/MkyMOziaNsU9QdBC9i5c1lVXvhHRvwKrQe/ivLgqTClpdT5gSHNZweblXunjUeVJCMyP6EPDWzzR9Q89I49Ov6/CY8FVWdYIpBWRUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776393649; c=relaxed/simple;
-	bh=QUnObaBhJTDAlBb/fKf0iO2RPjvDD1HfhPUJizDkEbE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SrFV0fw4njVJv3nLA9SD5RSJcMv5yRJpPoUkmQlxBFUK29yqPyNyufR4EkIHDT+nUgU/07CfwdtYsGfDwZ2VBetBl5ZsANMKadkwGvh//DWJ7rF1Xgj5+a74eItbEQbgmFZhwn8+Hgo5dives4NGw5v/ggSGgi2FR99ixj7qcD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6a5gzV2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776394230; c=relaxed/simple;
+	bh=5p3Sm2amLE1ygQB0o6GVHtSC1KVohOP+qhV3gkwXeq4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=O3WQ6SGJTXtI5sxxyVGBdAD49Kec0nwyk/6cQoi0/EPVsgL4TZD8Q+2yjvnBSuvmK8pXhB1AmZGF1y6s6hLd+IOchqcafuyOA7deDUz7Rx5+WetyqbgwSEtva1fzZ9+1lTS0xa9SRBAUiT9o3DxYhuDcK++RlufjjlKyJ4Y6kbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Vek29DvQ; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6a5gzV2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39431C2BCAF;
-	Fri, 17 Apr 2026 02:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776393649;
-	bh=QUnObaBhJTDAlBb/fKf0iO2RPjvDD1HfhPUJizDkEbE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Q6a5gzV2FPjW7qfq2gSdIvN81TEpLOHIm/L0ocIcH5l4hi7MQyG9Dt0yhqEWYoVzN
-	 acgtCw/xQ15fG99sme/qYxkRupSxrum9IxLTgOFZcr5CkpqVoCiS6gtUuxLXFHQ5SG
-	 oEDN9aVSJc6Sj9kXNoprj7ur7hi8ArAuqrZHOy/4fifWBqUURunf/WRCLzLxxj0Ko6
-	 y7Qlq8dzDpnI3rJJorQrXuOZbUd1zzKgunaXeXrRwxhB8OD3QfSEvN/xoCAFuohtCe
-	 TMzNMFAZnTz7OEUHtOalpYEndtO4G6x5HInyTj7rpMQhNYefNYKqjR1BShwwLn3QDO
-	 UD1e27hGIVC0g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE14380AA76;
-	Fri, 17 Apr 2026 02:40:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Vek29DvQ"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=hg2qRKt05LW4zcRl9d9aEU93GPuGcduNp2wgx4z7rps=;
+	b=Vek29DvQ5Xp9tY9XF88rRzWcTLyHzi8hLkrwpqgt3dSNCFzRkFh1QoTcAbqaocq48wLWUTypp
+	xycFloana/ixnMu4SdIZAPO6RBpS6PuHYy5sOpWTesPmp8ouLudiviOn3yhPdGTJevysQO8b8ay
+	H28+KPMXI8QlPk8sPp8xZGI=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4fxfN613fzz12LDP;
+	Fri, 17 Apr 2026 10:44:06 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1E8FE40538;
+	Fri, 17 Apr 2026 10:50:23 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 17 Apr 2026 10:50:22 +0800
+Message-ID: <4b1aa148-e0f5-4599-9fbf-70a61b42e4ce@huawei.com>
+Date: Fri, 17 Apr 2026 10:50:22 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4 0/3] vsock/virtio: fix MSG_PEEK calculation on
- bytes
- to copy
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177639361729.3490984.1458427039139248914.git-patchwork-notify@kernel.org>
-Date: Fri, 17 Apr 2026 02:40:17 +0000
-References: <20260415-fix_peek-v4-0-8207e872759e@redhat.com>
-In-Reply-To: <20260415-fix_peek-v4-0-8207e872759e@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, avkrasnov@salutedevices.com, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 RESEND 1/5] pci/tph: Export pcie_tph_get_st_modes() for
+ external use
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: <alex@shazbot.org>, <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260416204948.GA35511@bhelgaas>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260416204948.GA35511@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 15 Apr 2026 17:09:27 +0200 you wrote:
-> `virtio_transport_stream_do_peek`, when calculating the number of bytes to
-> copy, didn't consider the `offset`, caused by partial reads that happened
-> before.
-> This might cause out-of-bounds read that lead to an EFAULT.
-> More details in the commits.
+On 4/17/2026 4:49 AM, Bjorn Helgaas wrote:
+> On Thu, Apr 16, 2026 at 05:30:37PM +0800, Chengwen Feng wrote:
+>> Export the helper to retrieve supported PCIe TPH steering tag modes so
+>> that drivers like VFIO can query and expose device capabilities to
+>> userspace.
+>>
+>> And also add pcie_tph_get_st_table_size() and
+>> pcie_tph_get_st_table_loc() stub implementation in the !CONFIG_PCI_TPH
+>> case.
+>>
+>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> Update subject to "PCI/TPH: Export ..." to match history.
 > 
-> Commit 1 introduces the fix
-> Commit 2 introduces some preliminary work for adding a test and fixes a
-> problem in existing tests.
-> Commit 3 introduces a test that checks for this bug to avoid future
-> regressions.
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> [...]
+> I notice commit logs of other patches could be rewrapped to fill 75
+> columns.
 
-Here is the summary with links:
-  - [net,v4,1/3] vsock/virtio: fix MSG_PEEK ignoring skb offset when calculating bytes to copy
-    https://git.kernel.org/netdev/net/c/080f22f5d302
-  - [net,v4,2/3] vsock/test: fix MSG_PEEK handling in recv_buf()
-    https://git.kernel.org/netdev/net/c/a3f77afbf67d
-  - [net,v4,3/3] vsock/test: add MSG_PEEK after partial recv test
-    https://git.kernel.org/netdev/net/c/2a2675ef6190
+Hi Bjorn,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thank you for the review and the Ack!
 
+I'll fix the subject to "PCI/TPH: Export ..." and rewrap the commit
+messages to 75 columns in the next revision.
 
+Thanks
