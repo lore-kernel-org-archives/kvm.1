@@ -1,130 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD6F40DFAB;
-	Sat, 18 Apr 2026 00:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE21D34DCD7
+	for <kvm@vger.kernel.org>; Sat, 18 Apr 2026 08:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776470761; cv=none; b=iRU61HGC9WLwYCLpZv8igDaG+aiu82YzP1g6IR3SQQcTC9FfbiLgoum0ZTY0FRnd9m/LywsHlp+hTeFzgxk12ayv7z2Fr6tvssG3SKci9NoX28QfcT3eAg8sj8IZxD+dI/6GR58t9ZObJgSHDvrPs+HG+vXsuZQbOosrdziXU8Y=
+	t=1776500113; cv=none; b=aDPe48cpuHlk7t0Z0mmvO6UQ7ygtMHo0voC0JwhAKzATsuwh0PJ8eyRwiyFIuvYwSCJUGiQNM+pOEjk9xf5+b/cwjSQDvTCFThs2YtijIekvRpX8Q1P4dxUiSi5D2rtp6DdXwvQj2aub8bHmTkwSg7iV7bsqdc1qZg8xc1A+Ins=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776470761; c=relaxed/simple;
-	bh=QGdfCQ84T4CRb1lUGI9SJPtbILd4AIxNSPRzeNf7H3M=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=uBvysUf70U/x57A7Hha7USuxlf8GkhCYseFaLlQxmfP9v1UDIdGFFQVa6hIXEW7lndvzU36E9uCa8IOF42CErA1V9sk+zogQEgegFP5998+ShrSaOcmbMJlSZHNiX8MKCVHWEhn7cgx25nYFOBUNK1Jcfg2j2vdbc/fQxtob7hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khG0J03U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776500113; c=relaxed/simple;
+	bh=6pigEJb6MjU5WOzv3cHoV2MRbx3gnmposFMAjl091HA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=i6muXUgdx+YaPx4azizppHX/5+i88VfRDcx0hKD4y9XOUXNSLKeNtrkdeAgDtK4YU9CyVSn+cHj626JueGqkG5pxf6nx7/XlRnVSdlKIrvmUPEGLj1TKob1E8Tah9tYOrof2Fl8oXl7um92/jc12hNxzXpCG1jUryQTa5Vc2lnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=JpwUrAuh reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khG0J03U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82360C2BCB3;
-	Sat, 18 Apr 2026 00:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776470761;
-	bh=QGdfCQ84T4CRb1lUGI9SJPtbILd4AIxNSPRzeNf7H3M=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=khG0J03Uh9+m0+o/DvP8/tF4SLcHidUOl4W72LdxmHu69qkmCenLmTdI8r0jibCq2
-	 tR8mTf0qdLrLOQuMbkl+uOJH6cpMhVTmi4OxxyrS0NM+wfGHBW65A3DYxDT4M9Iwp/
-	 9TALxtL/Wbz/Yo1Bn3aMrZYhie5EHoA9Tbt+FkZn+OwdutYAHNwqX5FQAndnUgknz0
-	 HpUGF7Zwl9Qv3Qx64UckBcHD/dSLrQZz9IkIddMczwjNFZ/qRaarygCKVW9OciUM7m
-	 +5XGC7cx71Li/7QHny30OclsB4fc23T0HULOjKbHJE60yLvxDWeHJJoWm64YmB4hs4
-	 /5iXkb2EhCK7A==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4CD34F40069;
-	Fri, 17 Apr 2026 20:05:59 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 17 Apr 2026 20:05:59 -0400
-X-ME-Sender: <xms:58riaT96P48jQQL2LiyZiDHijo1h99w_G2O8RnastQ_zzE4fvTnJgg>
-    <xme:58riae_epX6EiclWmE0fOY5ejO665fCp_mu8bG7GFSqcY007EI4kp9laxX6EBYx6X
-    jL5-5PhJsGN-cFXwgMgfaedmF8BM1WE3YeIxAdNivPmlOohBGeIuKA>
-X-ME-Received: <xmr:58riaT2andN52XhF-85gcw_TOPQnVNvSwLGzSfScgAALTkfiv0dqHnpjSMIVw7YM4Un4q4A0iNqVSRqoqQujkVTE4eDMPmq2J70>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehuddvkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
-    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
-    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
-    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
-    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephihi
-    lhhunhdrgihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidq
-    phgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnrdhjrdifih
-    hllhhirghmshesihhnthgvlhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtth
-    hopegurghvvgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegsrgholhhu
-    rdhluheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeihihhluhhnrdiguh
-    esihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:58riaW9Ru0Vcsn6vN93WDslULGPFHk_Bko8btQSstOAzhaQ1FCNmAg>
-    <xmx:58riaceui4Mm0Y9H-4Qe-r_xZKfqPb0B8ScRI498znSAgK9vR3Akyg>
-    <xmx:58riaaGD9w7LbZQ1OynWIiHToINuK6hD8xmJ18ZfX9EtnO_tta4xOw>
-    <xmx:58riaZCYJb8103e-nh0dqt4mZzERqxORbmUMfe6cFfMMPU6n7OZRCg>
-    <xmx:58riaV4_RgIQ7mK3v7Qi14LMbf7ragtY-OxmL-bcOiwOQdn4ObkU-hB7>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Apr 2026 20:05:58 -0400 (EDT)
-Date: Fri, 17 Apr 2026 17:05:57 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- linux-coco@lists.linux.dev, 
- linux-pci@vger.kernel.org, 
- dan.j.williams@intel.com, 
- x86@kernel.org
-Cc: chao.gao@intel.com, 
- dave.jiang@intel.com, 
- baolu.lu@linux.intel.com, 
- yilun.xu@linux.intel.com, 
- yilun.xu@intel.com, 
- zhenzhong.duan@intel.com, 
- kvm@vger.kernel.org, 
- rick.p.edgecombe@intel.com, 
- dave.hansen@linux.intel.com, 
- kas@kernel.org, 
- xiaoyao.li@intel.com, 
- vishal.l.verma@intel.com, 
- linux-kernel@vger.kernel.org
-Message-ID: <69e2cae5aeb69_fe08310079@djbw-dev.notmuch>
-In-Reply-To: <20260327160132.2946114-5-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-5-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v2 04/31] x86/virt/tdx: Support allocating contiguous
- pages for tdx_page_array
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="JpwUrAuh"
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63I8EbAe001871
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sat, 18 Apr 2026 17:15:02 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=Vpu164nWx4WQH4ej/oGZKppmfZaoPsbjbattGAiYgSg=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-Id:To:Subject:Date;
+        s=rs20250326; t=1776500102; v=1;
+        b=JpwUrAuhhIIjWvHb4Wrz851b8T5JrYXSGoHkvhkQgv9yJiGepJg5wCf4RHNzkEja
+         aolXogIXvkhi0RXOXhq9+wvqsOYWH6q96xZ7MkoVhOrO7VLg2cVvdxRXgubIZZoA
+         O8NvF/xRKHsa87n8LZw3X7/LhIDDs0jD8wIFrjiwcT7YrcGP1f2HWzk5LPeBxGxS
+         Ga4J5SAGL/nTPTWFMfPT+sm6a6xGHaYuTC7VikzXu095Kei8CdOgCV43+G52ZoVC
+         anJKg4pPQ5wBj6cA1n7/rzGSJgtAJG5YlaR5iF4A1JVlUVpzZYVVFpXGK/Jh8mrF
+         cIk/HujGJDJuvuE8qkH/cA==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Sat, 18 Apr 2026 17:14:23 +0900
+Subject: [PATCH v7 1/4] KVM: arm64: PMU: Add kvm_pmu_enabled_counter_mask()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260418-hybrid-v7-1-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-5ab4c
 
-Xu Yilun wrote:
-> The current tdx_page_array implementation allocates scattered order-0
-> pages. However, some TDX Module operations benefit from contiguous
-> physical memory. E.g. Enabling TDX Module Extensions (an optional TDX
-> feature) requires ~50MB memory and never returns. Such allocation
-> would at worst cause ~25GB permanently fragmented memory if each
-> allocated page is from a different 2M region.
-> 
-> Support allocating contiguous pages for tdx_page_array by making the
-> allocation method configurable. Change the tdx_page_array_alloc() to
-> accept a custom allocation function pointer and a context parameter.
-> Wrap the specific allocation into a tdx_page_array_alloc_contig()
-> helper.
-> 
-> The foreseeable caller will allocate ~50MB memory with this helper,
-> exceeding the maximum HPAs (512) a root page can hold, the typical usage
-> will be:
-> 
->  - struct tdx_page_array *array = tdx_page_array_alloc_contig(nr_pages);
->  - for each 512-page bulk
->    - tdx_page_array_populate(array, offset);
->    - seamcall(TDH_XXX_ADD, array, ...);
-> 
-> The configurable allocation method would also benefit more
-> tdx_page_array usages. TDX Module may require more specific memory
-> layouts encoded in the root page. Will introduce them in following
-> patches.
+This function will be useful to enumerate enabled counters.
 
-Will skip this one as I see it gets massively reworked in your
-incremental update. The change to make the caller responsible for
-creating the page array is great.
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+ arch/arm64/kvm/pmu-emul.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+index b03dbda7f1ab..59ec96e09321 100644
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -619,18 +619,24 @@ void kvm_pmu_handle_pmcr(struct kvm_vcpu *vcpu, u64 val)
+ 	}
+ }
+ 
+-static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc)
++static u64 kvm_pmu_enabled_counter_mask(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
+-	unsigned int mdcr = __vcpu_sys_reg(vcpu, MDCR_EL2);
++	u64 mask = 0;
+ 
+-	if (!(__vcpu_sys_reg(vcpu, PMCNTENSET_EL0) & BIT(pmc->idx)))
+-		return false;
++	if (__vcpu_sys_reg(vcpu, MDCR_EL2) & MDCR_EL2_HPME)
++		mask |= kvm_pmu_hyp_counter_mask(vcpu);
+ 
+-	if (kvm_pmu_counter_is_hyp(vcpu, pmc->idx))
+-		return mdcr & MDCR_EL2_HPME;
++	if (kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E)
++		mask |= ~kvm_pmu_hyp_counter_mask(vcpu);
++
++	return __vcpu_sys_reg(vcpu, PMCNTENSET_EL0) & mask;
++}
++
++static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc)
++{
++	struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
+ 
+-	return kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E;
++	return kvm_pmu_enabled_counter_mask(vcpu) & BIT(pmc->idx);
+ }
+ 
+ static bool kvm_pmc_counts_at_el0(struct kvm_pmc *pmc)
+
+-- 
+2.53.0
+
