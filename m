@@ -1,146 +1,78 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0BE346A13
-	for <kvm@vger.kernel.org>; Sat, 18 Apr 2026 08:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E6035C1BD;
+	Sat, 18 Apr 2026 13:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776500114; cv=none; b=VMsrw+ojlumIjSsjizr4iuBPD5vlkYcE0LcUe7kkBzFjFjS+qYHssBth4v+k4Ih4fVPKBKsWvZQcTPfFzb5rAgT1vaIuIm2i1+OSYeqQ/oXuUS3huqEKRDBpxXioeWZdgqGpSP2r3eBUE/V/Wdr+pxquztsCE9dsJqjdIPd9XL0=
+	t=1776518014; cv=none; b=lJfwry89SWqRYuD2qbKRXePLhlYQ9pLZq0Q4FaZtgbhzoYr1i90oQAQeIl6833vGpx9Ad7InhrFoPCM/o84Pc4JuTKWlydMqiHv73P2HDPG7+8/EzCy3vfOEZEkqCPqzT/Bs0ItMk8PE1B7HwQye8VfTzQQDR/aB6M8MAdZlIfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776500114; c=relaxed/simple;
-	bh=iJr5toA1/CsmmyI6M1AbODpx/FMJj4ZMpGVZAMCOEe4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XP54bbLVkrPJ1LdJG7ruf10s6CHIHL68wLqsQc88z673kFrUkDKo1qlWeXbUlSqsqNTd0ZzGPkPa6OPVIqSNCMfnVYNVfRm/yOmx3m8WUhjmTtDrZZKpPRPJIL9TJG0euU2lzBh+ui9nARebVLUAWX4XYsPyX0B1B9cyBzuhBRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=Xz66r8Qg reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	s=arc-20240116; t=1776518014; c=relaxed/simple;
+	bh=linMTRrQmbwthnOxldhn7k8UFwsFpH/puDeXwoNJ4LY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NISwtczPOIi1/XdqHoKq1QfVEAQxqef2s/iCn3H6qmXiztFueM0pw95UbvH9qnU63UOAF+wF3Tf5Fm6ZwrxZMcmWVFzaC56RYygBxySMqOUuSmysSKJkW4kpUgNIfuhwkQ+UNVpoeJdor06T7M7MjfQabe7eY40MlRJlql8ce9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=Zzlh2sIf; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="Xz66r8Qg"
-Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63I8EbAf001871
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 18 Apr 2026 17:15:02 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=y+sZrQAT5sl0rgEx/XygAhgEwYefEMRbED57gjaRUBQ=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1776500102; v=1;
-        b=Xz66r8Qg0/zVlkTjNC5uzAVewL1IwJGOL+60B/CazMd8aGAysrZMr8+FvUNPY6HD
-         HQat39MdYcRo3+z+jc7/c1crn9T26KBNuY9WihUspLVywY+RNABy2s/dqsE85kgP
-         u8NmKJDv064guvTg6iw+zduaK4dIIhahN6JZ64M4XiFNLuxsGMR5cgTpKl0OOb3c
-         Q7Lp3X2xb4/uZwUKfQH4u87aYKWJ7L+TzBnIOJ9f5jbR1iUSap8F6aB5N3DnWpnc
-         K1afLlY4+JD/UytVEybKUgLh7agDCpj7W9+jRXXaH+C8B8aqLE0R+aaDgRyvdUi+
-         C/ebx585KM3RwIolkbe1og==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 18 Apr 2026 17:14:24 +0900
-Subject: [PATCH v7 2/4] KVM: arm64: PMU: Protect the list of PMUs with RCU
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="Zzlh2sIf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=HPsyAHKAlLETKe2yH8LmN13bz2fsZBuIi/osHntdTm0=; 
+	b=Zzlh2sIf5jp6ScauHz8G8YQweRnvcRrrfXhs1MW5pCt53n11yTHWSuQEsXcvE/8rmlzbyQX+rVr
+	k9iwCcVX2CqYXdLdQXqfKZnwbRIRBittC3wej6IH98BgOkANQHlyIrVRx5pZPShcU3S8ZmK9lfrmH
+	Z2sQjjHxeQlBDPiXc6Ust4vJr+lzMSuG0XZgrqH20HW0fb6kQmvQq9SyxsdT/pw1al+xjTfM0tniF
+	emfZGw1QmlYsVR8Qhp7up+MIO+UgU4LAF4J+xxFe+u9OYJay73POphx4b7O4qGzGKn4ySmQyNuIjp
+	7CWpXNHKFLP02xEKBc1eRAPg1dRMdkCOquyA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wE5UB-0070y0-0C;
+	Sat, 18 Apr 2026 21:13:24 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 18 Apr 2026 21:13:23 +0800
+Date: Sat, 18 Apr 2026 21:13:23 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Tycho Andersen <tycho@kernel.org>
+Subject: Re: [PATCH v3 1/7] crypto/ccp: hoist kernel part of
+ SNP_PLATFORM_STATUS
+Message-ID: <aeODc6v3Ok5Dwq5U@gondor.apana.org.au>
+References: <20260416232329.3408497-1-seanjc@google.com>
+ <20260416232329.3408497-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260418-hybrid-v7-2-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuah@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.15-dev-5ab4c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260416232329.3408497-2-seanjc@google.com>
 
-Convert the list of PMUs to a RCU-protected list that has primitives to
-avoid read-side contention.
+On Thu, Apr 16, 2026 at 04:23:23PM -0700, Sean Christopherson wrote:
+> From: Tycho Andersen <tycho@kernel.org>
+> 
+> ...to its own function. This way it can be used when the kernel needs
+> access to the platform status regardless of the INIT state of the firmware.
+> 
+> No functional change intended.
+> 
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  drivers/crypto/ccp/sev-dev.c | 31 +++++++++++++++++++++++--------
+>  1 file changed, 23 insertions(+), 8 deletions(-)
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- arch/arm64/kvm/pmu-emul.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index 59ec96e09321..ef5140bbfe28 100644
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -7,9 +7,9 @@
- #include <linux/cpu.h>
- #include <linux/kvm.h>
- #include <linux/kvm_host.h>
--#include <linux/list.h>
- #include <linux/perf_event.h>
- #include <linux/perf/arm_pmu.h>
-+#include <linux/rculist.h>
- #include <linux/uaccess.h>
- #include <asm/kvm_emulate.h>
- #include <kvm/arm_pmu.h>
-@@ -26,7 +26,6 @@ static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc);
- 
- bool kvm_supports_guest_pmuv3(void)
- {
--	guard(mutex)(&arm_pmus_lock);
- 	return !list_empty(&arm_pmus);
- }
- 
-@@ -808,7 +807,7 @@ void kvm_host_pmu_init(struct arm_pmu *pmu)
- 		return;
- 
- 	entry->arm_pmu = pmu;
--	list_add_tail(&entry->entry, &arm_pmus);
-+	list_add_tail_rcu(&entry->entry, &arm_pmus);
- }
- 
- static struct arm_pmu *kvm_pmu_probe_armpmu(void)
-@@ -817,7 +816,7 @@ static struct arm_pmu *kvm_pmu_probe_armpmu(void)
- 	struct arm_pmu *pmu;
- 	int cpu;
- 
--	guard(mutex)(&arm_pmus_lock);
-+	guard(rcu)();
- 
- 	/*
- 	 * It is safe to use a stale cpu to iterate the list of PMUs so long as
-@@ -837,7 +836,7 @@ static struct arm_pmu *kvm_pmu_probe_armpmu(void)
- 	 * carried here.
- 	 */
- 	cpu = raw_smp_processor_id();
--	list_for_each_entry(entry, &arm_pmus, entry) {
-+	list_for_each_entry_rcu(entry, &arm_pmus, entry) {
- 		pmu = entry->arm_pmu;
- 
- 		if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
-@@ -1088,9 +1087,9 @@ static int kvm_arm_pmu_v3_set_pmu(struct kvm_vcpu *vcpu, int pmu_id)
- 	int ret = -ENXIO;
- 
- 	lockdep_assert_held(&kvm->arch.config_lock);
--	mutex_lock(&arm_pmus_lock);
-+	guard(rcu)();
- 
--	list_for_each_entry(entry, &arm_pmus, entry) {
-+	list_for_each_entry_rcu(entry, &arm_pmus, entry) {
- 		arm_pmu = entry->arm_pmu;
- 		if (arm_pmu->pmu.type == pmu_id) {
- 			if (kvm_vm_has_ran_once(kvm) ||
-@@ -1106,7 +1105,6 @@ static int kvm_arm_pmu_v3_set_pmu(struct kvm_vcpu *vcpu, int pmu_id)
- 		}
- 	}
- 
--	mutex_unlock(&arm_pmus_lock);
- 	return ret;
- }
- 
-
+Thanks,
 -- 
-2.53.0
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
