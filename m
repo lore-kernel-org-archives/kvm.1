@@ -1,119 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A46137D12E;
-	Sun, 19 Apr 2026 14:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020C52877F4
+	for <kvm@vger.kernel.org>; Sun, 19 Apr 2026 16:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776609296; cv=none; b=pqRES3oC8IMXTy6pTB5dlYk/FwUeghCKKHXH7TcoKNtzCuCfIYajgrr5oHpWtclGBwYVS8RCh9Pgpix+RmCsfJyPuS7BobcUJEtfiXUgt9+XpkxZlg/i3ih8MK2sRWf4GaNF69ygpXsQq52TfUc75EUHjV3hrG4ei5U6fk23+JY=
+	t=1776615050; cv=none; b=EF10K8dX4rfHpfFSanSg+5fRDYynHo7QC7XoH3YbsoyCDAI+N2KwuVV1En701e4NgCh2z2ox5Ks93vS7Y7ELN6s8shdsjJ430DULCU3f5TyuQWc74LZy1zV/YyWSZ1w1PRZw94n3UG0c+jAm6s7Lb9CrBw8yBjTna/al0sOE0Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776609296; c=relaxed/simple;
-	bh=OPx8O9OYxVipA24HAer+gnhYq6XtrF4PKMKTsL1iRy0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l7NREmxGed28bKiFJavQXMFFb/5z73cMWjDFXNJtwVXIwvZKFqlP97iAOErDUDU5qYUrSEtqIXIDd6QGJxtOm9DcgNcwOHZy+Npc+ZfuRyFATtghKvbSrjRlmljkR2EGXSNv7+KvLKeozToSge6lf/LkhHe0eg3S9tilUBRL+6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLd5NYX0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776615050; c=relaxed/simple;
+	bh=e5Sy8oC/95NF/dg1ngcBerX98X/v6V5fD+uFMVCMJIc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=quRNlSqGl4bdPwhFEdVjZyXr6fwosvGG5smi5+b2eaRDhmEIXA0vw7wijL00YBShuC+8vDgxovgpyyxMYCPrB+zn6j9XYRKf+qBObg/Lc0GpgEzzocFAlPNYVk+wM9t55G7T53VV626HfnLCOHZ7DGabblfXRPaPjSn1BzhmC/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vmkcjs8s; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLd5NYX0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6572C2BCAF;
-	Sun, 19 Apr 2026 14:34:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776609295;
-	bh=OPx8O9OYxVipA24HAer+gnhYq6XtrF4PKMKTsL1iRy0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aLd5NYX01/n8EbtB7Djb5saIze5EfciDiFDuH/LEdD6cwKVZmN1vFFCV2HNdgzomp
-	 KtQWGmVSJpSHpBEnHpr1Q2QZCkk5OYMYueK5IlZJN6fUxQ7QS0lgOVKo7t5y0aryjJ
-	 4XftYT8LHyK6vJhmHelm2hns2vFlgAPcu+z0kRFhK2pt/A3NHyCD6B4P79T5p4tY30
-	 G4RTIrb0Bm2N/kOBY9gJC2wbz9uIgMmnTUIJ2s4dFIisoHhCvb3rQSUSxXIkUlrU0o
-	 517Rm6iChYR1OEuD+oKPtS1BSJoXRRqdV7fMp3p314hI1TegwoxbiI0TEw8sahJToe
-	 LhER4l3ELHIcQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wETEb-0000000CqLm-1aIO;
-	Sun, 19 Apr 2026 14:34:53 +0000
-Date: Sun, 19 Apr 2026 15:34:52 +0100
-Message-ID: <87mryzauib.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	devel@daynix.com,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v7 2/4] KVM: arm64: PMU: Protect the list of PMUs with RCU
-In-Reply-To: <20260418-hybrid-v7-2-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-	<20260418-hybrid-v7-2-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vmkcjs8s"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4888375f735so24650155e9.3
+        for <kvm@vger.kernel.org>; Sun, 19 Apr 2026 09:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776615047; x=1777219847; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8HL80pioVPrcP9MAPQXRilyJEi0wxBmY35dvijnyGIE=;
+        b=vmkcjs8sf6qnnxHp2QPpDFbaS+uKyRUSsL5CXyDjvg7SFwrqFIrP6VQl0xXDNGIukG
+         1XvMeu67+ilrS09ulPloXbZCfB7+iNHwfedNJzAumWsHKrY+070DyIwGxPF3Em0yxMe0
+         GrwwnFXNtk7FA+FFkkJctcMEhsiLgPJUjsVqViIWY/qiln45LmlwNcJsbEOx/J7mPbyI
+         45BziYlQM2Lv64mfvtNYWGM3k+kgYc2Ltzy3ff+fJR0/szifK+R/DKpveoHh1LKsF3hB
+         F5Tb2ay38ASvPabN1o4D8iJogCm1CAi1OI/8QaIsByt1hwajGsMOFXmV0cBjFzPiHBZU
+         1kXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776615047; x=1777219847;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8HL80pioVPrcP9MAPQXRilyJEi0wxBmY35dvijnyGIE=;
+        b=UTLld4ESNZ8QIj0BBTRDUA+O7J/QragJFh+VGWzccEPrKBkgsSsxS6VwZEGuNA/tKS
+         GpD+SHgGkQ0XzMFLeoV7fOdvLG19Ew7e0BsDBCwj/e/zwwRHe14CZMSGxOjYvH4YJGS4
+         OdfUuNlXJY0AHizZ/JFOI1luRtUrMQqFbzFhkQwyRLQaLWCnX7gbRwHokflqNdxECjvl
+         dG08/NqZqYCwshob+ZUB9MyCU/kbMgPiCfb+SpYzZQZzTLw97AnWYW9lGa1QyvcEXZgq
+         YfKRfE/aQZLf6XJi4laO6YLkyIOEj4IHHjERS3zsXaSnMyy48WUzM2B977NIEI927lVW
+         7/vw==
+X-Forwarded-Encrypted: i=1; AFNElJ+CTRsm++EWPKLTMu8gJ0e8c6puprZtPLK3lvPYEI43eF+7bkhOkn9wZF+K9UbPKVyvZ2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdrwvaCol17rgv/UfBkmiPwubBnPO5hAtNa/LMXeXWL3qRP3vz
+	NkdV43hPBNLAEbxGbGcI/HpxclDfKAto/zHVHKI2t6g0rd+Bxc3CZQVDLMTjeLSM3mRhE3lTz4n
+	K9rBmBWg=
+X-Gm-Gg: AeBDievgIXTbvgcKYDuC+eG5lIjJZdNCUq0B2MUmUrpkkQuxtuRTbKycafxO0hLLxOT
+	JuoQf1Bqc9/9r1xKLG3Ps97DwWQHAYRElhvj4piiTeBqEDnwN2h9MHcz0t6foLXRyhQBkx/yKt/
+	O2Adg4ZxAJrD63Fk58DN2J9tCV+GHKghz0mcQzElxskNzxamUlVL2NdTXVN1LbWeVcqkNlhHkVl
+	aDaMWSLSg4wf3/VF/zJpRLLWK5A4AwRzNU3r7QMt/pGfHp+RYtbyL3Xs8CgDvHZpfp1YnZl2j5e
+	8YeWoA8/GC/vACzvgqK+IqNxI5oe3vCSlgeVEAe5zj7VDcgkB2eOGABhj+JWvnH1ew10smrTRWM
+	ZKt8MKmy8CcazrWACe1MwUvbch/WWLy/P0qPohbKEuKiLgVWlTz3ckGtk8vIV0t0W2fHiWinPB0
+	YJc1OpAZ+SKi5I8UdxFjYsJMW0dL9v57/8uCPAsVWRyCX9Gpns59rWZNgT2zcBEH6aYBYnO9ay+
+	8jW
+X-Received: by 2002:a05:600c:8b38:b0:485:39b2:a47c with SMTP id 5b1f17b1804b1-488fb796fa0mr137044735e9.25.1776615047261;
+        Sun, 19 Apr 2026 09:10:47 -0700 (PDT)
+Received: from [192.168.69.228] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cc375dsm19669804f8f.14.2026.04.19.09.10.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Apr 2026 09:10:46 -0700 (PDT)
+Message-ID: <d64dff93-7129-4c39-bf9f-d2a8cf2ee4fb@linaro.org>
+Date: Sun, 19 Apr 2026 18:10:44 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: odaki@rsg.ci.i.u-tokyo.ac.jp, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, gustavoars@kernel.org, pbonzini@redhat.com, corbet@lwn.net, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/8] target/ppc/mmu: Replace legacy ld/st_phys() ->
+ address_space_ld/st()
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Glenn Miles <milesg@linux.ibm.com>,
+ kvm@vger.kernel.org, qemu-ppc@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Chinmay Rath <rathc@linux.ibm.com>
+References: <20260319111936.68041-1-philmd@linaro.org>
+ <20260319111936.68041-6-philmd@linaro.org>
+ <0749ae60-f6df-3cb8-bc5d-b46f4c20995c@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Content-Language: en-US
+In-Reply-To: <0749ae60-f6df-3cb8-bc5d-b46f4c20995c@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, 18 Apr 2026 09:14:24 +0100,
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+On 19/3/26 13:59, BALATON Zoltan wrote:
+> On Thu, 19 Mar 2026, Philippe Mathieu-Daudé wrote:
+>> Prefer the address_space_ld/st API over the legacy ld_phys()
+>> because it allow checking for bus access fault.
+>>
+>> This code however doesn't check for fault, so we simply inline
+>> the calls (not specifying any memory transaction attribute nor
+>> expecting transation result) per the definition in
+>> "system/memory_ldst_phys_endian.h.inc":
 > 
-> Convert the list of PMUs to a RCU-protected list that has primitives to
-> avoid read-side contention.
-> 
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> ---
->  arch/arm64/kvm/pmu-emul.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-> index 59ec96e09321..ef5140bbfe28 100644
-> --- a/arch/arm64/kvm/pmu-emul.c
-> +++ b/arch/arm64/kvm/pmu-emul.c
-> @@ -7,9 +7,9 @@
->  #include <linux/cpu.h>
->  #include <linux/kvm.h>
->  #include <linux/kvm_host.h>
-> -#include <linux/list.h>
->  #include <linux/perf_event.h>
->  #include <linux/perf/arm_pmu.h>
-> +#include <linux/rculist.h>
->  #include <linux/uaccess.h>
->  #include <asm/kvm_emulate.h>
->  #include <kvm/arm_pmu.h>
-> @@ -26,7 +26,6 @@ static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc);
->  
->  bool kvm_supports_guest_pmuv3(void)
->  {
-> -	guard(mutex)(&arm_pmus_lock);
->  	return !list_empty(&arm_pmus);
+> Recently when trying to remove _nomigrate memory region functions I was 
+> told if some convenience function has more than 1 use it's probably 
+> worth to keep it. This looks like similar case even more so as the 
+> replacement is unnecessarily more complicated. So what's the problem 
+> with ld_phys in the first place and why do you want to replace it with a 
+> less convenient function? If there's a reason maybe say that in the 
+> commit message.
 
-Please read include/linux/rculist.h and the discussion about the
-interaction of list_empty() with RCU-protected lists. How about using
-list_first_or_null_rcu() for peace of mind?
-
-Thanks,
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
+We want to remove the legacy API because it does not "allow checking
+for bus access fault." The cases where we can safely ignore it are
+rare, and often ignoring it led to subtle bugs.
