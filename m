@@ -1,90 +1,177 @@
-Received: from mail.mokrynskyi.com (mail.mokrynskyi.com [65.109.39.229])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E84B2BD11;
-	Mon, 20 Apr 2026 12:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.39.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9D13803DB
+	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 13:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776689357; cv=none; b=ThPHdJuBErSqVKhXJT/sDmY3DTgOItzTKTodMjmgpCpXTqY51EK1+l52yETkPMMSmtTujVKQCVnETpE1b9K6g0BFPNuBhXGtIMSj+U5bMw7cZwFb4f1B7Elxv+j8HFZuKxABFSdId4JxcB14ovzC2SucyYZP/zBabfsfzTm4c3E=
+	t=1776691262; cv=none; b=cFs8xfNAaqOrm76TPgf0DNOM0BOy99VByNTad2ak+G31KDhXnzwyugfdToLw6fiqMGGOclBXi9C6UWMX+ces9FTB3PnfhDdi9CQ1+ingef/gO1DUJoO50OLlUt7VDpbQD1H8EuthZVY7F6/qKehrdXFzk+kfwvIn6prGZsnr9rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776689357; c=relaxed/simple;
-	bh=o5MRvCMq9+Ah279lX3jtEJBzR1Uuz9D0PrSLa9khD7c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bRt89u3VbvgKOH+BWVYumNuEcF9SVZ8h5xafoE+gyRqEPIqmhryfU8RPm8ry+DWs15yJb54eux4pXKtgEKmtGBE+OdJAGDhftGc6TWHwa1iaJReh38BbA/3sIreCKIYB8lymuDGjMRXZRCKk1PwnP2WGw4Sv5/F3QdY4wmL+fKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com; spf=pass smtp.mailfrom=mokrynskyi.com; dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b=KcOTuG9V; arc=none smtp.client-ip=65.109.39.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mokrynskyi.com
+	s=arc-20240116; t=1776691262; c=relaxed/simple;
+	bh=oRz4R1uy7BvYcGv9q3SW450IGK8oQQE9HdAqw2IRtxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gb9bu577kXvToGxZUjktsDHNZiWWZ4rT1k5zAFCdqgMveT8ruJ8R9Sf5sNyFuurPYNpq6GeHewc880l2CPcbiae30S8lNXmpqRG9+20fK0MDq18YJpZSQQnUGVX21oyi14v8SiyaFCLfy1A2rtI47w+rODoU8UiPOFAe52RoiWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XY6/zVO9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fF4+aoQ9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b="KcOTuG9V"
-Message-ID: <e7ff4327-3d34-4b8f-9c60-8aa6ff1ef7c1@mokrynskyi.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mokrynskyi.com;
-	s=dkim; t=1776689342;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XY6/zVO9";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fF4+aoQ9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776691258;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1BUXAXiNOpEKIJxRQsDw6JveUMIEsPUifEwts9civuA=;
-	b=KcOTuG9VSVFf36sZsOmypGq2y+zdew9nmtfYMRenpXvSQ9YG6TE/GjEW4YX1yOpUWlmY7p
-	lF1o6FrJe5twknxxusevKeiofPPli30Nven9D5McNiHztHZ313gpp4QIzFJ+MpYh6UMtAz
-	S5jzqeHtEuKNJ4c2wHjESnT0MpEz58qov746VAlHmXshJGJjzXNWrJWARfEKOTF7ZFQ1Rf
-	GhTKcwRAutbR3Irm6mcfeapRIpEdYw53Hi+KREhkhR+WxHzomen+jJQmOBfztmI/HIbzdF
-	anmlNXs2cUI/jlpWExc1+ao4cAZLwNu0PgDPOorICWNhQEpn/OZzWZY+C/TM9w==
-Authentication-Results: mail.mokrynskyi.com;
-	auth=pass smtp.mailfrom=nazar@mokrynskyi.com
-Date: Mon, 20 Apr 2026 15:49:01 +0300
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZNw8VU2wHUCMW8yOpvKsEhvAEIS86OBEtLoYfE3AKWY=;
+	b=XY6/zVO9HQb6IhjAWwRrK1wocom4m4QRTATqpSzKFJN8Zacxin60+pr+hgmgftbf2jtcQu
+	uvmS23Th/qe3K9aKdxQRdu+iIZB5BwQ1Jerdv7d9floS0qsgQVYWvor6WIy9jJP0bk4IT4
+	wcjjuxjNnLDRXS52iymtsVufAaAbwgg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-4mEdjEj1P5qVwb5PU3Iedw-1; Mon, 20 Apr 2026 09:20:57 -0400
+X-MC-Unique: 4mEdjEj1P5qVwb5PU3Iedw-1
+X-Mimecast-MFC-AGG-ID: 4mEdjEj1P5qVwb5PU3Iedw_1776691256
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7d0947aeso2291587f8f.3
+        for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 06:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776691256; x=1777296056; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZNw8VU2wHUCMW8yOpvKsEhvAEIS86OBEtLoYfE3AKWY=;
+        b=fF4+aoQ9ORE+8pfPTrY9kG7rar5FYNikC4i9K7e0v9tPpt2C5FwkWfyCfPEEpAy/pv
+         CnqLM1jYEgwYtHevuEjNDYqSqAodtWChyk5m61n7ozsaDQHwZ+kDnFi7Ef8eJ8sgYdGg
+         z8M+U5LvhAsDLB7uPTBuwO+t1vLECvG33ptkZ0XDMXvIOEug+vGqCRf75K2pDkJQUHnZ
+         Fizh2cBJkn4MB/iuOw9ZZXvWmKYZzrknCW81lUBhtDusJTfH5bvvQCvincWxjPpmCJwp
+         FfjxKXmroSm1EPN9FnI4BOBNRlmKkX9PemriunFoGlTJ7F7LTHhQ5Z4aD+WeImQehbPa
+         d4Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776691256; x=1777296056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZNw8VU2wHUCMW8yOpvKsEhvAEIS86OBEtLoYfE3AKWY=;
+        b=o+DqS9V5ZYJgXtwxm3Jue75Op6kGUwguefgx7CAS4mTBUpyLU2qfMKK0zqr0OwLezA
+         dtYKMNJYLWPEnEmKZya4K2kMyAOPyxYdzNPR6Kkfjda1C3HwZxkpRG6wxcH10oV+3WhH
+         rtCvYM9VBzOAsQZ4IvvH6cd6lell/y+QC6lRbpxSyNYgTwcjOxLOJRl6VHZUA1ZsTGJm
+         QtCYtvVVOX/mfHvsiYoZm4//4j0fm+Aj7nz9wmu4E4SpKeW/i4PxinHJ+c3xmd0UuAA5
+         D8vYA+USNoNvuArIXHSf8jpt4B+Wnm+BDmNbv+m6IAUDvBUVudQcmeJ4s5/lTGioaWw9
+         xMZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9yxzQitearFpUkX1DFBs+Yotsl3VKpFVH3KKBEzmOQnipZ/obytABQfIrgUzZ2txL2TTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQTGeDQyE1oQHGL9bOKE9VwOf0VtJYPIkytSUrRT8eVU+MK747
+	cB08oFthFwyhhOoDUXqFAXXeNXg7hhX+zVrALqMjjQ54Vq8qA536cpZdnhv9z9qIHj47DEFq4on
+	np2hM9aMRRNih8P+1EgslxONDMLisWMz1OuGNrZVkYaVFrRnJH4kSxw==
+X-Gm-Gg: AeBDieskQ/ROyXJPiyHNKu6rS3HYU7z0BNVsgeLKgdrd6T5aMaVXTPLUh/Ye4Nl4dce
+	7TeAxgMYDrOsPXsotSB78U+CSwTT+z20HB0Kt0MtewrJazhnCSIIPf9wpfLaUXS9BSUWTGsK6lS
+	La8mayJKRIswwzdc0QSmHpXSfh+e1+R+tbS2ZUAnC3GGw2hScXlO1Dg1AK3MmuHuWWBgkICRsxe
+	ivEMG1oQ+RiTtUuHnXJnwHwhQ/NdcofFGckoUnzvk7QbdEfACzqqGT58PP/pyOrQeg3HcwGCIfA
+	3+AhsAp1WycK0AqAelw2baiU/Cthef1vJUvaXbYMpkBy+orCBb4u6lTrhtCv7889hqKKUsxvbXC
+	fxv7FFjdEqlhIx1n+4drBSUcxXxZpLsobSBxoMyiPLAO/WDKc+QvtWtf41X+HgcOIFXluaZMoqi
+	jMmrX3ZRI9
+X-Received: by 2002:a5d:5e01:0:b0:43d:c95c:5e75 with SMTP id ffacd0b85a97d-43fe3dbec67mr19818833f8f.4.1776691255876;
+        Mon, 20 Apr 2026 06:20:55 -0700 (PDT)
+X-Received: by 2002:a5d:5e01:0:b0:43d:c95c:5e75 with SMTP id ffacd0b85a97d-43fe3dbec67mr19818744f8f.4.1776691255247;
+        Mon, 20 Apr 2026 06:20:55 -0700 (PDT)
+Received: from stex1.redhat.corp (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb1405sm28294807f8f.4.2026.04.20.06.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 06:20:53 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	kvm@vger.kernel.org,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Yiming Qian <yimingqian591@gmail.com>
+Subject: [PATCH net] vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting
+Date: Mon, 20 Apr 2026 15:20:51 +0200
+Message-ID: <20260420132051.217589-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: vfio/pci: Qualcomm PCIe WiFi devices drop link during FLR causing
- host AER crash
-To: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-References: <70de9b8f-b7c7-481b-8cb1-931e3b82eb0e@mokrynskyi.com>
- <20260420122444.GN2577880@ziepe.ca>
- <f732deb0-18e8-422a-923b-0e1c7e2c290b@app.fastmail.com>
-Content-Language: en-US, uk, uk-UA
-From: Nazar Mokrynskyi <nazar@mokrynskyi.com>
-In-Reply-To: <f732deb0-18e8-422a-923b-0e1c7e2c290b@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Bar: ---
+Content-Transfer-Encoding: 8bit
 
-This is happening on Gigabyte MZ32-AR0 motherboard with AMD Epyc Zen 2 CPU.
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-Non-vfio PCIe errors did not crash the system when I observed long time ago.
-This case with VFIO is the only one that crashes my system right now, but I have no idea how to debug this to provide more info, so let me know if there is something I can do.
-Maybe there are different kinds of errors and only some of them cause the machine to crash?
+virtio_transport_init_zcopy_skb() uses iter->count as the size argument
+for msg_zerocopy_realloc(), which in turn passes it to
+mm_account_pinned_pages() for RLIMIT_MEMLOCK accounting. However, this
+function is called after virtio_transport_fill_skb() has already consumed
+the iterator via __zerocopy_sg_from_iter(), so on the last skb, iter->count
+will be 0, skipping the RLIMIT_MEMLOCK enforcement.
 
-I just get this after system resets shown by BIOS:
+Pass pkt_len (the total bytes being sent) as an explicit parameter to
+virtio_transport_init_zcopy_skb() instead of reading the already-consumed
+iter->count.
 
-> Warning: PCI-Express PERR/SERR error detected.
-No such issue with these devices on the host, at least from what I observed and read online.
+This matches TCP and UDP, which both call msg_zerocopy_realloc() with
+the original message size.
 
-Running them under VM also requires the following hacks (libvirtd) that I have not found a way to get rid of (yet):
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-> |<features> <ioapic driver="qemu"/> </features> <devices> <iommu model="intel"> <driver intremap="on" caching_mode="on"/> </iommu> </devices>|
-With all this the device does work, I'm using it right now.
-But I can't turn off or reboot the VM without crashing the host at the same time, which is suboptimal.
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 0742091beae7..416d533f493d 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -73,6 +73,7 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+ 					   struct sk_buff *skb,
+ 					   struct msghdr *msg,
++					   size_t pkt_len,
+ 					   bool zerocopy)
+ {
+ 	struct ubuf_info *uarg;
+@@ -81,12 +82,10 @@ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+ 		uarg = msg->msg_ubuf;
+ 		net_zcopy_get(uarg);
+ 	} else {
+-		struct iov_iter *iter = &msg->msg_iter;
+ 		struct ubuf_info_msgzc *uarg_zc;
+ 
+ 		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-					    iter->count,
+-					    NULL, false);
++					    pkt_len, NULL, false);
+ 		if (!uarg)
+ 			return -1;
+ 
+@@ -398,11 +397,17 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		 * each iteration. If this is last skb for this buffer
+ 		 * and MSG_ZEROCOPY mode is in use - we must allocate
+ 		 * completion for the current syscall.
++		 *
++		 * Pass pkt_len because msg iter is already consumed
++		 * by virtio_transport_fill_skb(), so iter->count
++		 * can not be used for RLIMIT_MEMLOCK pinned-pages
++		 * accounting done by msg_zerocopy_realloc().
+ 		 */
+ 		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+ 		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+ 			if (virtio_transport_init_zcopy_skb(vsk, skb,
+ 							    info->msg,
++							    pkt_len,
+ 							    can_zcopy)) {
+ 				kfree_skb(skb);
+ 				ret = -ENOMEM;
+-- 
+2.53.0
 
-Sincerely, Nazar Mokrynskyi
-github.com/nazar-pc
-
-20.04.26 15:44, Alex Williamson:
->
-> On Mon, Apr 20, 2026, at 6:24 AM, Jason Gunthorpe wrote:
->> On Sat, Apr 18, 2026 at 12:24:07AM +0300, Nazar Mokrynskyi wrote:
->>> Several Qualcomm PCIe WiFi devices drop their PCIe link as part of their
->>> internal reset sequence. Under bare metal this is transparent because the
->>> host root complex performs link retraining automatically. Under VFIO
->>> passthrough, the link-drop generates an uncorrectable AER error that
->>> escalates through the parent bridge to the host, crashing it.
->> If AER's crash the system then it is not compatible with VFIO, IMHO.
->>
->> For VFIO to work as designed the platform must be able to safely
->> contain all the errors the PCI device can generate.
-> Aren't these also the WiFi devices that we tried to quirk because the driver writes the guest view of the MSI address/data elsewhere in the device which breaks interrupt virtualization?  The quirk was very fragile and never got merged, so I'm not sure how these devices are even useful with vfio.  Thanks,
->
-> Alex
