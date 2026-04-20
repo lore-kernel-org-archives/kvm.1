@@ -1,677 +1,238 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141A03D331D
-	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 21:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C19353EC0
+	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 21:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776720048; cv=none; b=iq8WY8N+wzwotiqiQZ7Tr8M9kZ02NgtnNk/juPOfmoTMkgdTIbwzpzoFFyHRhfBgI1uO2AEtJ/067DAUREXY3M0gIqK2cEVTSBwLNotsldjTyftx7g+XgtdEObGm/cNUtkNcIeYQVQYTCyEvOskQD6slmDAcyTXblpAefnxRVco=
+	t=1776721731; cv=none; b=trSi4Y3F3VptQc7v+vnUhQ6FNcOCS+Gki2Iop4EzpzBw+6pZG1+F3+0oz71oOCkiOfOCzAzV3UThncZhO6WyFBYGUn+/9lK9+VuItcaHUWIoqToL5JWBf0I4obau6t6YfFaSXlvr77ZYpl1pMaqLIHzsOF0i/pkLJRZUPOERZ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776720048; c=relaxed/simple;
-	bh=VqWo+jjO8TKH0MhO2Oc+XZ5Pnj2knUhwJRP63dlwQ8s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fOW+y84+emDFC+FNyhByaf3hSnvflxLNkSbjIYgcEeDYuye5d26QnA22JlTQBYGZYHl0Ld+Y+pOAgePRf3rS0W5WfMrSSSCz26wyF1Fxt0XZ07lACaa+yq7pTD+D/nHWulLI54pYKJTcVWfGp50qPqyId1siteQS722sC03+rHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gjbzQ9Pi; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776721731; c=relaxed/simple;
+	bh=QuNWZ4L77xYBX9u3KSBKLFT//gD6QjS8KSAxSIfBFrc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FnL52hJedifUDBaALnMkAsighm0zyg82blHimEbsCPcX+YePs3w0y6ujDelt7THb3bbuHnyy8ImkjemHZVHL12qG3JVVZsXHYmvElTKFzeCyawfbNwkYdidGTxYHNwt+TI/YfCDZp07/H224Cua2aRLxd4uSEF7DVX6A/0Hkk18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D9jVqkCj; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gjbzQ9Pi"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b62da7602a0so1549552a12.2
-        for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 14:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776720044; x=1777324844; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=LVQ/LQLhE4omx5BYLMqaubz6HBWDiRbU4QU9/ukTiik=;
-        b=gjbzQ9PiVrHR/4RSGrTXd8DPmhs3MvPMq5AGtcxgRLYE0QM3hzKRPHNFf21TzpJ2Tu
-         QnkX+g7eEraUVxqsccp50W64Py/O4xbuEsYRkc/bodSZJRsV6QmUOWbGzPLh7ZOwC8QQ
-         uGR1BtxMRcCKVQsouOU0wpoGSn/O8AMy5Dtog3JmYWGpPLjqpQxFSd9IzmSjRxmiVFnr
-         239k/n0MNgkv7paf374XFP5TLYrHj42FZ5pRLAQYvGWft9+2vIsZKaMfvlqb+rbFOZ4u
-         GwP3Ee4xjslMcgl1ANI+FEmukRbZ05Fu74aVNtExddxvdVss0M5oF6oBlZe5eczKBMbh
-         X4jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776720044; x=1777324844;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LVQ/LQLhE4omx5BYLMqaubz6HBWDiRbU4QU9/ukTiik=;
-        b=Omsiit193nY5se2Va/cqW78VJK4HsJJd5Jy4U9pVV9ympD15sWh8AEw6qabfGQ9YVU
-         0SseKJk2OJeD+cQ3Qx60mc9I1VQuxKma4VeqK8gNy1RW64mv7lL2C6V2zU0Zp0WtDci2
-         t+ikMWeHxoeSBZQ3uG2cVN53b6H41EPwodZu5h/anGCJ3hSsMSdgKVtG1waN4jOvvuU5
-         r1pMm3hSlZ2t12lZ6uMmOse7HanImnuhXwM+lqanv0OsrZDswcE4MJKILHRWTAz6AfUa
-         Dq4JihRIsSjui0yH1RXAi2sIUrlCtLqtQj5AI96eN6Y38BdF7QTT1q2S69aStipDItLp
-         SqcQ==
-X-Gm-Message-State: AOJu0YwCj4qE6cuYUGuOSfibjLSyI1F48o15J/WZNcDVUmO338N7ihFu
-	97qMEWRGqunLX5ET/ZP5igSmksru8Y2/NC/OqiOGoAwtR3Gn8L6Gt3hbpRqsiViJW6qIajMC83a
-	Twz3n4g==
-X-Received: from pgbcs14.prod.google.com ([2002:a05:6a02:418e:b0:c76:478c:813f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3288:b0:398:6461:688c
- with SMTP id adf61e73a8af0-3a08d687640mr17010739637.2.1776720044306; Mon, 20
- Apr 2026 14:20:44 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 20 Apr 2026 14:20:04 -0700
-In-Reply-To: <20260420212004.3938325-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D9jVqkCj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776721730; x=1808257730;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QuNWZ4L77xYBX9u3KSBKLFT//gD6QjS8KSAxSIfBFrc=;
+  b=D9jVqkCj8R0lxu7dzSwlNI6rKlCJu+LvQFcYTbR+G8RnEFpIssL/mLOD
+   w8ehtRt2pBbbFBlVJtdcBytpvyCHS441XVQWjVLZ2HjXvemgETRKaobqx
+   Q3eCe7XgmkjtFYEgpCU7HToyVIc2t6bY6O9QVtITlLxmWAExR9rOI80SN
+   hZMdpBbHwzj6hMSXyOkMm1NYNlPqkquF9O6tQtaNqgGoscTdx6sTM8qaS
+   wknvzLl8EvTURqYQ3so/whKqzulIq942/ea7JARUXqeWBSaS8pkIGnHn6
+   SK6Bo0SG6U1cT9m0rk+A99vK/K53WnMeGUqoWXUgWkBQAs5zB74gpiq8t
+   g==;
+X-CSE-ConnectionGUID: 9DuUpLiNTK+UKnU3pLPTaw==
+X-CSE-MsgGUID: 5JHkmAYNTuWjEBH92VmC1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="88347682"
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; 
+   d="scan'208";a="88347682"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 14:48:49 -0700
+X-CSE-ConnectionGUID: yAH5yhW5TP6SY/PtEJ2RuQ==
+X-CSE-MsgGUID: Dtpl24DpTJGeTTJU2JrSNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; 
+   d="scan'208";a="236816735"
+Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.172])
+  by fmviesa005.fm.intel.com with ESMTP; 20 Apr 2026 14:48:49 -0700
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	seanjc@google.com,
+	chang.seok.bae@intel.com
+Subject: [PATCH kvm-unit-tests] x86: xsave: Add test case for emulation of APX instructions
+Date: Mon, 20 Apr 2026 21:23:55 +0000
+Message-ID: <20260420212355.507827-1-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <072ad56c-24d5-425a-9faf-c1a3ba732005@redhat.com>
+References: <072ad56c-24d5-425a-9faf-c1a3ba732005@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260420212004.3938325-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
-Message-ID: <20260420212004.3938325-20-seanjc@google.com>
-Subject: [PATCH v3 19/19] KVM: selftests: Replace "paddr" with "gpa" throughout
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
-	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, loongarch@lists.linux.dev, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Replace all variations of "paddr" variables in KVM selftests with "gpa",
-with the exception of the ELF structures, as those fields are not specific
-to guest virtual addresses, to complete the conversion from vm_paddr_t to
-gpa_t.
+Add a test to validate emulation support for extended GPRs (EGPRs). APX
+extends the x86 general-purpose register set with R16-R31.
 
-No functional change intended.
+The test follows the pattern established by existing AVX tests: it
+performs register-to-memory and register-to-register moves across various
+combinations, and cross-checks emulated execution against native results.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+For convenience, make available only when built with a compiler that
+supports APX. Otherwise, raw bytecode is ugly and inefficient, and
+even macrofied bytecode looks to be an overkill.
+
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 ---
- .../testing/selftests/kvm/arm64/sea_to_user.c |  2 +-
- .../testing/selftests/kvm/include/kvm_util.h  | 23 ++++----
- .../selftests/kvm/include/x86/processor.h     |  6 +--
- .../selftests/kvm/lib/arm64/processor.c       | 22 ++++----
- tools/testing/selftests/kvm/lib/kvm_util.c    | 53 +++++++++----------
- .../selftests/kvm/lib/loongarch/processor.c   | 14 ++---
- .../selftests/kvm/lib/riscv/processor.c       | 16 +++---
- .../selftests/kvm/lib/s390/processor.c        | 12 ++---
- .../testing/selftests/kvm/lib/x86/processor.c | 50 ++++++++---------
- 9 files changed, 98 insertions(+), 100 deletions(-)
+Note:
+As suggested by Paolo [1], I also think this piece of testing can go to
+the KVM test tree. Additional (new) cases like testing KVM ABI and EGPR
+state management will be included to the KVM series (from next revision).
 
-diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-index e16034852470..e96d8982c28b 100644
---- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
-+++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-@@ -275,7 +275,7 @@ static struct kvm_vm *vm_create_with_sea_handler(struct kvm_vcpu **vcpu)
- 	vm_userspace_mem_region_add(
- 		/*vm=*/vm,
- 		/*src_type=*/src_type,
--		/*guest_paddr=*/start_gpa,
-+		/*gpa=*/start_gpa,
- 		/*slot=*/1,
- 		/*npages=*/num_guest_pages,
- 		/*flags=*/0);
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 0d9f11be9806..2ecaaa0e9965 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -725,7 +725,7 @@ gva_t vm_alloc_pages(struct kvm_vm *vm, int nr_pages);
- gva_t __vm_alloc_page(struct kvm_vm *vm, enum kvm_mem_region_type type);
- gva_t vm_alloc_page(struct kvm_vm *vm);
+[1]: https://lore.kernel.org/lkml/072ad56c-24d5-425a-9faf-c1a3ba732005@redhat.com/
+---
+ lib/linux/compiler.h |  5 +++
+ lib/x86/processor.h  |  1 +
+ x86/xsave.c          | 86 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 92 insertions(+)
+
+diff --git a/lib/linux/compiler.h b/lib/linux/compiler.h
+index 8e62aae02b5e..e9df821d50fd 100644
+--- a/lib/linux/compiler.h
++++ b/lib/linux/compiler.h
+@@ -13,6 +13,11 @@
+ 		     + __GNUC_PATCHLEVEL__)
  
--void virt_map(struct kvm_vm *vm, gva_t gva, u64 paddr,
-+void virt_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
- 	      unsigned int npages);
- void *addr_gpa2hva(struct kvm_vm *vm, gpa_t gpa);
- void *addr_gva2hva(struct kvm_vm *vm, gva_t gva);
-@@ -990,21 +990,20 @@ void kvm_gsi_routing_write(struct kvm_vm *vm, struct kvm_irq_routing *routing);
+ #ifdef __clang__
++
++#define CLANG_VERSION (__clang_major__ * 10000	\
++		       + __clang_minor__ * 100	\
++		       + __clang_patchlevel__)
++
+ #if __has_builtin(__builtin_add_overflow) && \
+     __has_builtin(__builtin_sub_overflow) && \
+     __has_builtin(__builtin_mul_overflow)
+diff --git a/lib/x86/processor.h b/lib/x86/processor.h
+index 42dd2d2a4787..85e96741a6bf 100644
+--- a/lib/x86/processor.h
++++ b/lib/x86/processor.h
+@@ -198,6 +198,7 @@ static inline u64 get_non_canonical(u64 addr, u64 mask)
+ #define XFEATURE_MASK_LBR		BIT_ULL(15)
+ #define XFEATURE_MASK_XTILE_CFG		BIT_ULL(17)
+ #define XFEATURE_MASK_XTILE_DATA	BIT_ULL(18)
++#define XFEATURE_MASK_APX		BIT_ULL(19)
  
- const char *exit_reason_str(unsigned int exit_reason);
+ #define XFEATURE_MASK_FP_SSE		(XFEATURE_MASK_FP | XFEATURE_MASK_SSE)
  
--gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t paddr_min, u32 memslot);
--gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
--			   gpa_t paddr_min, u32 memslot,
--			   bool protected);
-+gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t min_gpa, u32 memslot);
-+gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num, gpa_t min_gpa,
-+			   u32 memslot, bool protected);
- gpa_t vm_alloc_page_table(struct kvm_vm *vm);
+diff --git a/x86/xsave.c b/x86/xsave.c
+index 254f9fde6976..a1e57dea18db 100644
+--- a/x86/xsave.c
++++ b/x86/xsave.c
+@@ -1,6 +1,11 @@
+ #include "libcflat.h"
+ #include "desc.h"
+ #include "processor.h"
++#include "linux/compiler.h"
++
++#if GCC_VERSION >= 140000 || CLANG_VERSION >= 180000
++#define TEST_EGPRS
++#endif
  
- static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
--				       gpa_t paddr_min, u32 memslot)
-+				       gpa_t min_gpa, u32 memslot)
+ char __attribute__((aligned(32))) v32_1[32];
+ char __attribute__((aligned(32))) v32_2[32];
+@@ -43,6 +48,78 @@ do {									\
+ 		__TEST_VMOVDQA(ymm##r1, ymm##r2, KVM_FEP);		\
+ } while (0)
+ 
++#ifdef TEST_EGPRS
++
++char __attribute__((aligned(8)))  r8_1[8];
++char __attribute__((aligned(8)))  r8_2[8];
++char __attribute__((aligned(8)))  r8_3[8];
++
++static void initialize_gpr_buffers(void)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(r8_1); i++)
++		r8_1[i] = (char)rdtsc();
++
++	memset(r8_2, 0, sizeof(r8_2));
++	memset(r8_3, 0, sizeof(r8_3));
++}
++
++#define __TEST_MOV_GPRS(reg1, reg2, FEP)				\
++do {									\
++	asm volatile(FEP "mov r8_1(%%rip), %%" #reg1 "\n"		\
++		     FEP "mov %%" #reg1 ", %%" #reg2 "\n"		\
++		     FEP "mov %%" #reg2 ", r8_2(%%rip)\n"		\
++		     "mov %%" #reg2 ", r8_3(%%rip)\n"			\
++		     ::: "memory", #reg1, #reg2);			\
++									\
++	report(!memcmp(r8_1, r8_2, sizeof(r8_1)),			\
++	       "%s MOV using " #reg1 " and " #reg2,			\
++	       strlen(FEP) ? "Emulated" : "Native");			\
++	report(!memcmp(r8_1, r8_3, sizeof(r8_1)),			\
++	       "%s MOV using " #reg1 " and " #reg2,			\
++	       strlen(FEP) ? "Emulated+Native" : "Native");		\
++} while (0)
++
++#define TEST_MOV_GPRS(r1, r2)						\
++do {									\
++	initialize_gpr_buffers();					\
++									\
++	__TEST_MOV_GPRS(r##r1, r##r2, "");				\
++									\
++	if (is_fep_available)						\
++		__TEST_MOV_GPRS(r##r1, r##r2, KVM_FEP);			\
++} while (0)
++
++static __attribute__((target("apxf"))) void test_mov_egprs(void)
++{
++	TEST_MOV_GPRS(16, 31);
++	TEST_MOV_GPRS(17, 30);
++	TEST_MOV_GPRS(18, 29);
++	TEST_MOV_GPRS(19, 28);
++	TEST_MOV_GPRS(20, 27);
++	TEST_MOV_GPRS(21, 26);
++	TEST_MOV_GPRS(22, 25);
++	TEST_MOV_GPRS(23, 24);
++	TEST_MOV_GPRS(24, 23);
++	TEST_MOV_GPRS(25, 22);
++	TEST_MOV_GPRS(26, 21);
++	TEST_MOV_GPRS(27, 20);
++	TEST_MOV_GPRS(28, 19);
++	TEST_MOV_GPRS(29, 18);
++	TEST_MOV_GPRS(30, 17);
++	TEST_MOV_GPRS(31, 16);
++}
++
++#else
++
++static test_mov_egprs(void)
++{
++	report_skip("Skip EGPR MOV tests: compiler does not support APX");
++}
++
++#endif /* TEST_EGPRS */
++
+ static void test_write_xcr0(u64 val)
  {
- 	/*
- 	 * By default, allocate memory as protected for VMs that support
- 	 * protected memory, as the majority of memory for such VMs is
- 	 * protected, i.e. using shared memory is effectively opt-in.
- 	 */
--	return __vm_phy_pages_alloc(vm, num, paddr_min, memslot,
-+	return __vm_phy_pages_alloc(vm, num, min_gpa, memslot,
- 				    vm_arch_has_protected_memory(vm));
+ 	u64 xcr0_alias = rdtsc() << 32, cur;
+@@ -93,6 +170,12 @@ static __attribute__((target("avx"))) void test_avx_vmovdqa(void)
+ 	TEST_VMOVDQA(15, 1);
  }
  
-@@ -1203,13 +1202,13 @@ static inline void virt_pgd_alloc(struct kvm_vm *vm)
- 
- /*
-  * Within @vm, creates a virtual translation for the page starting
-- * at @gva to the page starting at @paddr.
-+ * at @gva to the page starting at @gpa.
-  */
--void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr);
-+void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa);
- 
--static inline void virt_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
-+static inline void virt_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
++static void test_apx(void)
++{
++	test_write_xcr0(XFEATURE_MASK_FP_SSE | XFEATURE_MASK_APX);
++	test_mov_egprs();
++}
++
+ static void test_unsupported_xcrs(void)
  {
--	virt_arch_pg_map(vm, gva, paddr);
-+	virt_arch_pg_map(vm, gva, gpa);
- 	sparsebit_set(vm->vpages_mapped, gva >> vm->page_shift);
- }
+ 	u64 ign;
+@@ -151,6 +234,9 @@ static void test_xsave(void)
+ 	if (supported_xcr0 & XFEATURE_MASK_YMM)
+ 		test_avx_vmovdqa();
  
-@@ -1280,7 +1279,7 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus);
- void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm);
- void kvm_arch_vm_release(struct kvm_vm *vm);
++	if (supported_xcr0 & XFEATURE_MASK_APX)
++		test_apx();
++
+ 	report(write_xcr0_safe(0) == GP_VECTOR,
+ 	       "Write XCR0 = 0 - expect #GP");
  
--bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t paddr);
-+bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t gpa);
- 
- u32 guest_get_vcpuid(void);
- 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 97dc887658c3..77f576ee7789 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1508,13 +1508,13 @@ void tdp_mmu_init(struct kvm_vm *vm, int pgtable_levels,
- 		  struct pte_masks *pte_masks);
- 
- void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
--		   u64 paddr,  int level);
--void virt_map_level(struct kvm_vm *vm, gva_t gva, u64 paddr,
-+		   gpa_t gpa,  int level);
-+void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
- 		    u64 nr_bytes, int level);
- 
- void vm_enable_tdp(struct kvm_vm *vm);
- bool kvm_cpu_has_tdp(void);
--void tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, u64 paddr, u64 size);
-+void tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size);
- void tdp_identity_map_default_memslots(struct kvm_vm *vm);
- void tdp_identity_map_1g(struct kvm_vm *vm,  u64 addr, u64 size);
- u64 *tdp_get_pte(struct kvm_vm *vm, u64 l2_gpa);
-diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
-index 0f693d8891d2..01325bf4d36f 100644
---- a/tools/testing/selftests/kvm/lib/arm64/processor.c
-+++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
-@@ -121,7 +121,7 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- 	vm->mmu.pgd_created = true;
- }
- 
--static void _virt_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr,
-+static void _virt_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
- 			 u64 flags)
- {
- 	u8 attr_idx = flags & (PTE_ATTRINDX_MASK >> PTE_ATTRINDX_SHIFT);
-@@ -133,13 +133,13 @@ static void _virt_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr,
- 		"  gva: 0x%lx vm->page_size: 0x%x", gva, vm->page_size);
- 	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (gva >> vm->page_shift)),
- 		    "Invalid virtual address, gva: 0x%lx", gva);
--	TEST_ASSERT((paddr % vm->page_size) == 0,
--		"Physical address not on page boundary,\n"
--		"  paddr: 0x%lx vm->page_size: 0x%x", paddr, vm->page_size);
--	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
--		"Physical address beyond beyond maximum supported,\n"
--		"  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
--		paddr, vm->max_gfn, vm->page_size);
-+	TEST_ASSERT((gpa % vm->page_size) == 0,
-+		    "Physical address not on page boundary,\n"
-+		    "  gpa: 0x%lx vm->page_size: 0x%x", gpa, vm->page_size);
-+	TEST_ASSERT((gpa >> vm->page_shift) <= vm->max_gfn,
-+		    "Physical address beyond beyond maximum supported,\n"
-+		    "  gpa: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
-+		    gpa, vm->max_gfn, vm->page_size);
- 
- 	ptep = addr_gpa2hva(vm, vm->mmu.pgd) + pgd_index(vm, gva) * 8;
- 	if (!*ptep)
-@@ -170,14 +170,14 @@ static void _virt_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr,
- 	if (!use_lpa2_pte_format(vm))
- 		pg_attr |= PTE_SHARED;
- 
--	*ptep = addr_pte(vm, paddr, pg_attr);
-+	*ptep = addr_pte(vm, gpa, pg_attr);
- }
- 
--void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
-+void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
- {
- 	u64 attr_idx = MT_NORMAL;
- 
--	_virt_pg_map(vm, gva, paddr, attr_idx);
-+	_virt_pg_map(vm, gva, gpa, attr_idx);
- }
- 
- u64 *virt_get_pte_hva_at_level(struct kvm_vm *vm, gva_t gva, int level)
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 905fa214099d..2a76eca7029d 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1027,8 +1027,8 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 
- 		TEST_FAIL("A mem region with the requested slot "
- 			"already exists.\n"
--			"  requested slot: %u paddr: 0x%lx npages: 0x%lx\n"
--			"  existing slot: %u paddr: 0x%lx size: 0x%lx",
-+			"  requested slot: %u gpa: 0x%lx npages: 0x%lx\n"
-+			"  existing slot: %u gpa: 0x%lx size: 0x%lx",
- 			slot, gpa, npages, region->region.slot,
- 			(u64)region->region.guest_phys_addr,
- 			(u64)region->region.memory_size);
-@@ -1442,7 +1442,7 @@ static gva_t ____vm_alloc(struct kvm_vm *vm, size_t sz, gva_t min_gva,
- 	u64 pages = (sz >> vm->page_shift) + ((sz % vm->page_size) != 0);
- 
- 	virt_pgd_alloc(vm);
--	gpa_t paddr = __vm_phy_pages_alloc(vm, pages,
-+	gpa_t gpa = __vm_phy_pages_alloc(vm, pages,
- 					   KVM_UTIL_MIN_PFN * vm->page_size,
- 					   vm->memslots[type], protected);
- 
-@@ -1454,9 +1454,9 @@ static gva_t ____vm_alloc(struct kvm_vm *vm, size_t sz, gva_t min_gva,
- 
- 	/* Map the virtual pages. */
- 	for (gva_t gva = gva_start; pages > 0;
--		pages--, gva += vm->page_size, paddr += vm->page_size) {
-+		pages--, gva += vm->page_size, gpa += vm->page_size) {
- 
--		virt_pg_map(vm, gva, paddr);
-+		virt_pg_map(vm, gva, gpa);
- 	}
- 
- 	return gva_start;
-@@ -1506,22 +1506,21 @@ gva_t vm_alloc_page(struct kvm_vm *vm)
-  * Map a range of VM virtual address to the VM's physical address.
-  *
-  * Within the VM given by @vm, creates a virtual translation for @npages
-- * starting at @gva to the page range starting at @paddr.
-+ * starting at @gva to the page range starting at @gpa.
-  */
--void virt_map(struct kvm_vm *vm, gva_t gva, u64 paddr,
--	      unsigned int npages)
-+void virt_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa, unsigned int npages)
- {
- 	size_t page_size = vm->page_size;
- 	size_t size = npages * page_size;
- 
- 	TEST_ASSERT(gva + size > gva, "Vaddr overflow");
--	TEST_ASSERT(paddr + size > paddr, "Paddr overflow");
-+	TEST_ASSERT(gpa + size > gpa, "Paddr overflow");
- 
- 	while (npages--) {
--		virt_pg_map(vm, gva, paddr);
-+		virt_pg_map(vm, gva, gpa);
- 
- 		gva += page_size;
--		paddr += page_size;
-+		gpa += page_size;
- 	}
- }
- 
-@@ -2008,7 +2007,7 @@ const char *exit_reason_str(unsigned int exit_reason)
-  * Input Args:
-  *   vm - Virtual Machine
-  *   num - number of pages
-- *   paddr_min - Physical address minimum
-+ *   min_gpa - Physical address minimum
-  *   memslot - Memory region to allocate page from
-  *   protected - True if the pages will be used as protected/private memory
-  *
-@@ -2018,12 +2017,12 @@ const char *exit_reason_str(unsigned int exit_reason)
-  *   Starting physical address
-  *
-  * Within the VM specified by vm, locates a range of available physical
-- * pages at or above paddr_min. If found, the pages are marked as in use
-+ * pages at or above min_gpa. If found, the pages are marked as in use
-  * and their base address is returned. A TEST_ASSERT failure occurs if
-- * not enough pages are available at or above paddr_min.
-+ * not enough pages are available at or above min_gpa.
-  */
- gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
--			   gpa_t paddr_min, u32 memslot,
-+			   gpa_t min_gpa, u32 memslot,
- 			   bool protected)
- {
- 	struct userspace_mem_region *region;
-@@ -2031,16 +2030,16 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
- 
- 	TEST_ASSERT(num > 0, "Must allocate at least one page");
- 
--	TEST_ASSERT((paddr_min % vm->page_size) == 0, "Min physical address "
-+	TEST_ASSERT((min_gpa % vm->page_size) == 0, "Min physical address "
- 		"not divisible by page size.\n"
--		"  paddr_min: 0x%lx page_size: 0x%x",
--		paddr_min, vm->page_size);
-+		"  min_gpa: 0x%lx page_size: 0x%x",
-+		min_gpa, vm->page_size);
- 
- 	region = memslot2region(vm, memslot);
- 	TEST_ASSERT(!protected || region->protected_phy_pages,
- 		    "Region doesn't support protected memory");
- 
--	base = pg = paddr_min >> vm->page_shift;
-+	base = pg = min_gpa >> vm->page_shift;
- 	do {
- 		for (; pg < base + num; ++pg) {
- 			if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
-@@ -2052,8 +2051,8 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
- 
- 	if (pg == 0) {
- 		fprintf(stderr, "No guest physical page available, "
--			"paddr_min: 0x%lx page_size: 0x%x memslot: %u\n",
--			paddr_min, vm->page_size, memslot);
-+			"min_gpa: 0x%lx page_size: 0x%x memslot: %u\n",
-+			min_gpa, vm->page_size, memslot);
- 		fputs("---- vm dump ----\n", stderr);
- 		vm_dump(stderr, vm, 2);
- 		abort();
-@@ -2068,9 +2067,9 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
- 	return base * vm->page_size;
- }
- 
--gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t paddr_min, u32 memslot)
-+gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t min_gpa, u32 memslot)
- {
--	return vm_phy_pages_alloc(vm, 1, paddr_min, memslot);
-+	return vm_phy_pages_alloc(vm, 1, min_gpa, memslot);
- }
- 
- gpa_t vm_alloc_page_table(struct kvm_vm *vm)
-@@ -2287,7 +2286,7 @@ void __attribute((constructor)) kvm_selftest_init(void)
- 	kvm_selftest_arch_init();
- }
- 
--bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t paddr)
-+bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t gpa)
- {
- 	sparsebit_idx_t pg = 0;
- 	struct userspace_mem_region *region;
-@@ -2295,10 +2294,10 @@ bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t paddr)
- 	if (!vm_arch_has_protected_memory(vm))
- 		return false;
- 
--	region = userspace_mem_region_find(vm, paddr, paddr);
--	TEST_ASSERT(region, "No vm physical memory at 0x%lx", paddr);
-+	region = userspace_mem_region_find(vm, gpa, gpa);
-+	TEST_ASSERT(region, "No vm physical memory at 0x%lx", gpa);
- 
--	pg = paddr >> vm->page_shift;
-+	pg = gpa >> vm->page_shift;
- 	return sparsebit_is_set(region->protected_phy_pages, pg);
- }
- 
-diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-index 47e782056196..64d91fb76522 100644
---- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-+++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-@@ -116,7 +116,7 @@ gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
- 	return pte_addr(vm, *ptep) + (gva & (vm->page_size - 1));
- }
- 
--void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
-+void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
- {
- 	u32 prot_bits;
- 	u64 *ptep;
-@@ -126,17 +126,17 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
- 			"gva: 0x%lx vm->page_size: 0x%x", gva, vm->page_size);
- 	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (gva >> vm->page_shift)),
- 			"Invalid virtual address, gva: 0x%lx", gva);
--	TEST_ASSERT((paddr % vm->page_size) == 0,
-+	TEST_ASSERT((gpa % vm->page_size) == 0,
- 			"Physical address not on page boundary,\n"
--			"paddr: 0x%lx vm->page_size: 0x%x", paddr, vm->page_size);
--	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
-+			"gpa: 0x%lx vm->page_size: 0x%x", gpa, vm->page_size);
-+	TEST_ASSERT((gpa >> vm->page_shift) <= vm->max_gfn,
- 			"Physical address beyond maximum supported,\n"
--			"paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
--			paddr, vm->max_gfn, vm->page_size);
-+			"gpa: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
-+			gpa, vm->max_gfn, vm->page_size);
- 
- 	ptep = virt_populate_pte(vm, gva, 1);
- 	prot_bits = _PAGE_PRESENT | __READABLE | __WRITEABLE | _CACHE_CC | _PAGE_USER;
--	WRITE_ONCE(*ptep, paddr | prot_bits);
-+	WRITE_ONCE(*ptep, gpa | prot_bits);
- }
- 
- static void pte_dump(FILE *stream, struct kvm_vm *vm, u8 indent, u64 page, int level)
-diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
-index 108144fb858b..ded5429f3448 100644
---- a/tools/testing/selftests/kvm/lib/riscv/processor.c
-+++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
-@@ -75,7 +75,7 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- 	vm->mmu.pgd_created = true;
- }
- 
--void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
-+void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
- {
- 	u64 *ptep, next_ppn;
- 	int level = vm->mmu.pgtable_levels - 1;
-@@ -85,13 +85,13 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
- 		"  gva: 0x%lx vm->page_size: 0x%x", gva, vm->page_size);
- 	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (gva >> vm->page_shift)),
- 		    "Invalid virtual address, gva: 0x%lx", gva);
--	TEST_ASSERT((paddr % vm->page_size) == 0,
-+	TEST_ASSERT((gpa % vm->page_size) == 0,
- 		"Physical address not on page boundary,\n"
--		"  paddr: 0x%lx vm->page_size: 0x%x", paddr, vm->page_size);
--	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
-+		"  gpa: 0x%lx vm->page_size: 0x%x", gpa, vm->page_size);
-+	TEST_ASSERT((gpa >> vm->page_shift) <= vm->max_gfn,
- 		"Physical address beyond maximum supported,\n"
--		"  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
--		paddr, vm->max_gfn, vm->page_size);
-+		"  gpa: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
-+		gpa, vm->max_gfn, vm->page_size);
- 
- 	ptep = addr_gpa2hva(vm, vm->mmu.pgd) + pte_index(vm, gva, level) * 8;
- 	if (!*ptep) {
-@@ -113,8 +113,8 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
- 		level--;
- 	}
- 
--	paddr = paddr >> PGTBL_PAGE_SIZE_SHIFT;
--	*ptep = (paddr << PGTBL_PTE_ADDR_SHIFT) |
-+	gpa = gpa >> PGTBL_PAGE_SIZE_SHIFT;
-+	*ptep = (gpa << PGTBL_PTE_ADDR_SHIFT) |
- 		PGTBL_PTE_PERM_MASK | PGTBL_PTE_VALID_MASK;
- }
- 
-diff --git a/tools/testing/selftests/kvm/lib/s390/processor.c b/tools/testing/selftests/kvm/lib/s390/processor.c
-index 77a7b6965812..a9adb3782b35 100644
---- a/tools/testing/selftests/kvm/lib/s390/processor.c
-+++ b/tools/testing/selftests/kvm/lib/s390/processor.c
-@@ -12,7 +12,7 @@
- 
- void virt_arch_pgd_alloc(struct kvm_vm *vm)
- {
--	gpa_t paddr;
-+	gpa_t gpa;
- 
- 	TEST_ASSERT(vm->page_size == PAGE_SIZE, "Unsupported page size: 0x%x",
- 		    vm->page_size);
-@@ -20,12 +20,12 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- 	if (vm->mmu.pgd_created)
- 		return;
- 
--	paddr = vm_phy_pages_alloc(vm, PAGES_PER_REGION,
-+	gpa = vm_phy_pages_alloc(vm, PAGES_PER_REGION,
- 				   KVM_GUEST_PAGE_TABLE_MIN_PADDR,
- 				   vm->memslots[MEM_REGION_PT]);
--	memset(addr_gpa2hva(vm, paddr), 0xff, PAGES_PER_REGION * vm->page_size);
-+	memset(addr_gpa2hva(vm, gpa), 0xff, PAGES_PER_REGION * vm->page_size);
- 
--	vm->mmu.pgd = paddr;
-+	vm->mmu.pgd = gpa;
- 	vm->mmu.pgd_created = true;
- }
- 
-@@ -60,11 +60,11 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
- 		    "Invalid virtual address, gva: 0x%lx", gva);
- 	TEST_ASSERT((gpa % vm->page_size) == 0,
- 		"Physical address not on page boundary,\n"
--		"  paddr: 0x%lx vm->page_size: 0x%x",
-+		"  gpa: 0x%lx vm->page_size: 0x%x",
- 		gva, vm->page_size);
- 	TEST_ASSERT((gpa >> vm->page_shift) <= vm->max_gfn,
- 		"Physical address beyond beyond maximum supported,\n"
--		"  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
-+		"  gpa: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
- 		gva, vm->max_gfn, vm->page_size);
- 
- 	/* Walk through region and segment tables */
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 892cc517d9f1..b51467d70f6e 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -224,20 +224,20 @@ static u64 *virt_create_upper_pte(struct kvm_vm *vm,
- 				  struct kvm_mmu *mmu,
- 				  u64 *parent_pte,
- 				  gva_t gva,
--				  u64 paddr,
-+				  gpa_t gpa,
- 				  int current_level,
- 				  int target_level)
- {
- 	u64 *pte = virt_get_pte(vm, mmu, parent_pte, gva, current_level);
- 
--	paddr = vm_untag_gpa(vm, paddr);
-+	gpa = vm_untag_gpa(vm, gpa);
- 
- 	if (!is_present_pte(mmu, pte)) {
- 		*pte = PTE_PRESENT_MASK(mmu) | PTE_READABLE_MASK(mmu) |
- 		       PTE_WRITABLE_MASK(mmu) | PTE_EXECUTABLE_MASK(mmu) |
- 		       PTE_ALWAYS_SET_MASK(mmu);
- 		if (current_level == target_level)
--			*pte |= PTE_HUGE_MASK(mmu) | (paddr & PHYSICAL_PAGE_MASK);
-+			*pte |= PTE_HUGE_MASK(mmu) | (gpa & PHYSICAL_PAGE_MASK);
- 		else
- 			*pte |= vm_alloc_page_table(vm) & PHYSICAL_PAGE_MASK;
- 	} else {
-@@ -257,7 +257,7 @@ static u64 *virt_create_upper_pte(struct kvm_vm *vm,
- }
- 
- void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
--		   u64 paddr, int level)
-+		   gpa_t gpa, int level)
- {
- 	const u64 pg_size = PG_LEVEL_SIZE(level);
- 	u64 *pte = &mmu->pgd;
-@@ -271,15 +271,15 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
- 		    "gva: 0x%lx page size: 0x%lx", gva, pg_size);
- 	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (gva >> vm->page_shift)),
- 		    "Invalid virtual address, gva: 0x%lx", gva);
--	TEST_ASSERT((paddr % pg_size) == 0,
-+	TEST_ASSERT((gpa % pg_size) == 0,
- 		    "Physical address not aligned,\n"
--		    "  paddr: 0x%lx page size: 0x%lx", paddr, pg_size);
--	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
-+		    "  gpa: 0x%lx page size: 0x%lx", gpa, pg_size);
-+	TEST_ASSERT((gpa >> vm->page_shift) <= vm->max_gfn,
- 		    "Physical address beyond maximum supported,\n"
--		    "  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
--		    paddr, vm->max_gfn, vm->page_size);
--	TEST_ASSERT(vm_untag_gpa(vm, paddr) == paddr,
--		    "Unexpected bits in paddr: %lx", paddr);
-+		    "  gpa: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
-+		    gpa, vm->max_gfn, vm->page_size);
-+	TEST_ASSERT(vm_untag_gpa(vm, gpa) == gpa,
-+		    "Unexpected bits in gpa: %lx", gpa);
- 
- 	TEST_ASSERT(!PTE_EXECUTABLE_MASK(mmu) || !PTE_NX_MASK(mmu),
- 		    "X and NX bit masks cannot be used simultaneously");
-@@ -291,7 +291,7 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
- 	for (current_level = mmu->pgtable_levels;
- 	     current_level > PG_LEVEL_4K;
- 	     current_level--) {
--		pte = virt_create_upper_pte(vm, mmu, pte, gva, paddr,
-+		pte = virt_create_upper_pte(vm, mmu, pte, gva, gpa,
- 					    current_level, level);
- 		if (is_huge_pte(mmu, pte))
- 			return;
-@@ -303,24 +303,24 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
- 		    "PTE already present for 4k page at gva: 0x%lx", gva);
- 	*pte = PTE_PRESENT_MASK(mmu) | PTE_READABLE_MASK(mmu) |
- 	       PTE_WRITABLE_MASK(mmu) | PTE_EXECUTABLE_MASK(mmu) |
--	       PTE_ALWAYS_SET_MASK(mmu) | (paddr & PHYSICAL_PAGE_MASK);
-+	       PTE_ALWAYS_SET_MASK(mmu) | (gpa & PHYSICAL_PAGE_MASK);
- 
- 	/*
- 	 * Neither SEV nor TDX supports shared page tables, so only the final
- 	 * leaf PTE needs manually set the C/S-bit.
- 	 */
--	if (vm_is_gpa_protected(vm, paddr))
-+	if (vm_is_gpa_protected(vm, gpa))
- 		*pte |= PTE_C_BIT_MASK(mmu);
- 	else
- 		*pte |= PTE_S_BIT_MASK(mmu);
- }
- 
--void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, u64 paddr)
-+void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
- {
--	__virt_pg_map(vm, &vm->mmu, gva, paddr, PG_LEVEL_4K);
-+	__virt_pg_map(vm, &vm->mmu, gva, gpa, PG_LEVEL_4K);
- }
- 
--void virt_map_level(struct kvm_vm *vm, gva_t gva, u64 paddr,
-+void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
- 		    u64 nr_bytes, int level)
- {
- 	u64 pg_size = PG_LEVEL_SIZE(level);
-@@ -332,12 +332,12 @@ void virt_map_level(struct kvm_vm *vm, gva_t gva, u64 paddr,
- 		    nr_bytes, pg_size);
- 
- 	for (i = 0; i < nr_pages; i++) {
--		__virt_pg_map(vm, &vm->mmu, gva, paddr, level);
-+		__virt_pg_map(vm, &vm->mmu, gva, gpa, level);
- 		sparsebit_set_num(vm->vpages_mapped, gva >> vm->page_shift,
- 				  nr_bytes / PAGE_SIZE);
- 
- 		gva += pg_size;
--		paddr += pg_size;
-+		gpa += pg_size;
- 	}
- }
- 
-@@ -495,24 +495,24 @@ bool kvm_cpu_has_tdp(void)
- 	return kvm_cpu_has_ept() || kvm_cpu_has_npt();
- }
- 
--void __tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, u64 paddr, u64 size, int level)
-+void __tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size, int level)
- {
- 	size_t page_size = PG_LEVEL_SIZE(level);
- 	size_t npages = size / page_size;
- 
- 	TEST_ASSERT(l2_gpa + size > l2_gpa, "L2 GPA overflow");
--	TEST_ASSERT(paddr + size > paddr, "Paddr overflow");
-+	TEST_ASSERT(gpa + size > gpa, "GPA overflow");
- 
- 	while (npages--) {
--		__virt_pg_map(vm, &vm->stage2_mmu, l2_gpa, paddr, level);
-+		__virt_pg_map(vm, &vm->stage2_mmu, l2_gpa, gpa, level);
- 		l2_gpa += page_size;
--		paddr += page_size;
-+		gpa += page_size;
- 	}
- }
- 
--void tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, u64 paddr, u64 size)
-+void tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size)
- {
--	__tdp_map(vm, l2_gpa, paddr, size, PG_LEVEL_4K);
-+	__tdp_map(vm, l2_gpa, gpa, size, PG_LEVEL_4K);
- }
- 
- /* Prepare an identity extended page table that maps all the
 -- 
-2.54.0.rc1.555.g9c883467ad-goog
+2.51.0
 
