@@ -1,52 +1,52 @@
-Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E76233BBA7
-	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 15:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.68.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16CB344029
+	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 15:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700098; cv=none; b=CGZamdINct25QvrwVhalxyYLVrryZik65PGbsQnehLZORQJItH0orgmA6te2Ahe42Xgg1xXHTUbMTTZt49ZO2ngrMkuUKWlkNUlVtSL3et9eew2r4onLWPArMNYl7h8+mb0mpeddL76no2GIVLR0lQ3xnjwyVVedDV8RFJ1k7TU=
+	t=1776700103; cv=none; b=jPVUQd6PPE/TdDWU2mSGNDT3GXd1QPPVOCkTQhLKECv3yPWMmjGNcwMdtsllZQxo/dohETRPKWLvQFx/SfWkUtXQaiqwjRNaUBgJuHJ/EAzxSvQha1ExT/KGAB0zonnRs/2wXiRjV3ktSYZyh6rE8xd22KmyGGcM0lNkXigsi/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700098; c=relaxed/simple;
-	bh=9X2i16qyBlAUhPEd5JM9AEnRH1CDpSzmOVbrhfo5CBA=;
+	s=arc-20240116; t=1776700103; c=relaxed/simple;
+	bh=b5WtUpEzLBRMj4V64KGDzPkPwhUvxVS1cZT2Rp2/kK0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W2GC0DxjqAkZ4bpK2ts3x0kU+NOvb+CicodlXf2MeKHCWh0lSaMfFqSPj6kI8PcEzZwwHoL0EhEvv3ZL2oTqEUaoiOQpN0O31beRpbjitB/nrxTi2V1tG0UFk9f044hWeZUI8RygXAFhHzzHpoc5jG6YO2XyfXXUntbtUrMAcpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=VBDPqZ1Z; arc=none smtp.client-ip=44.246.68.102
+	 MIME-Version:Content-Type; b=RVoKTLbtQVZcPuZJvsDC+Xq+8JuzsifHiZVtSIJPcGU0plcwbCId+AKGyLHbFHQ6MpZNS1pYW6Hsxl+wnv3rd5V9uJ5rQ2iqyJ6Ng4/N1jVRbHXLwZEirnjYxD8UqwxvVnIcx5d4cNzZOtibn+oXJvH6IfaPQke1oRzDggeAz54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=HI78sr8e; arc=none smtp.client-ip=44.246.77.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="VBDPqZ1Z"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="HI78sr8e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1776700096; x=1808236096;
+  t=1776700101; x=1808236101;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mTYNJ+Cj3lqr2PWkHM2A14p2rUyWp5mJRGRrflx/09E=;
-  b=VBDPqZ1ZqFGg0rrIYZuZbjyuvFOwYEkrAgkZcJwbWU5APpYite4YBb51
-   8cXuEUT1aonlzpkjrI0LQlmDbLjuIYXfn/OLJyjP9DYNXVBbBKL26rXHk
-   LkMLxD6y5Hkz90+gXIlAbfM+OnGExi40CzkM/dkCOA9alMm8+3Gjvy3up
-   +6dsoVGmp2/HJUkIseiLxSZFQm294n+NSyRh1RAAHCkRzK8RqQziDCHkD
-   MZHfMhACXhLCfrJ83qPojbZT0F07Ym/4gWwwZFIujdBBtl9VXeb+7zV/x
-   iZdeoKVGxOAFiQhgRqkZ+FhVKjXr7cns39MhiM+xy9y9M7ZSS9o4Ny3Uv
-   g==;
-X-CSE-ConnectionGUID: o4U+kARpSumxDH8pKnPu2A==
-X-CSE-MsgGUID: FTJG5EkVSPWPy1wmykFbvA==
+  bh=ap/3E+KC5NaGv9ckPfeKoob64EO8BuXGSWUQDqkhYLs=;
+  b=HI78sr8eJZoMyDGdcbxBIsb+iV2yCKhPdS++TpcRygqZkzWZGzIhQ2mT
+   2/YHWYFYLh9vLQgE8J+bSIksRtGeuKA+TYbFLVow3chF8ZIWkkIbQvNXT
+   oMO3IuNTq7sjJPj1otqauHCLC/vcPO7YPp1SHo05ykaTJR4FJXDjgMS4P
+   cdh2s/3u+ZReWmmUJSO0ZmimVmW/YeCX/wn+psmropIPwoSm4WwvGqyOX
+   /6zWIVajDL4Ci3NCPHf4Ihp+yK8sCBMiZTJvq9vYGst+GamGRFYXSO/cP
+   qScFT9ZUOeda2zB+84DxIvsuAskPcau0F1uq6/ThXBH4TNcUDfFftegc5
+   w==;
+X-CSE-ConnectionGUID: KfRh0mmUQnKhf1zoKWyY9Q==
+X-CSE-MsgGUID: MTGyuerVSASqBG4+YOa/8w==
 X-IronPort-AV: E=Sophos;i="6.23,190,1770595200"; 
-   d="scan'208";a="17753242"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 15:48:11 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:29270]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.189:2525] with esmtp (Farcaster)
- id 419e6823-cd0e-470e-9579-df3cb3db8860; Mon, 20 Apr 2026 15:48:11 +0000 (UTC)
-X-Farcaster-Flow-ID: 419e6823-cd0e-470e-9579-df3cb3db8860
+   d="scan'208";a="17734817"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 15:48:21 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:31316]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.49:2525] with esmtp (Farcaster)
+ id 61c1d64b-f89a-4431-9b09-17099686a02d; Mon, 20 Apr 2026 15:48:21 +0000 (UTC)
+X-Farcaster-Flow-ID: 61c1d64b-f89a-4431-9b09-17099686a02d
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 20 Apr 2026 15:48:06 +0000
+ Mon, 20 Apr 2026 15:48:21 +0000
 Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 20 Apr 2026 15:48:03 +0000
+ Mon, 20 Apr 2026 15:48:18 +0000
 From: Takahiro Itazuri <itazur@amazon.com>
 To: <kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Paolo
  Bonzini" <pbonzini@redhat.com>
@@ -58,9 +58,9 @@ CC: Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>,
  Manwaring" <derekmn@amazon.com>, Alina Cernea <acernea@amazon.com>, "Michael
  Zoumboulakis" <zoumboul@amazon.com>, Takahiro Itazuri <zulinx86@gmail.com>,
 	Takahiro Itazuri <itazur@amazon.com>
-Subject: [RFC PATCH v4 5/7] KVM: pfncache: Invalidate on gmem invalidation and memattr updates
-Date: Mon, 20 Apr 2026 15:46:06 +0000
-Message-ID: <20260420154720.29012-6-itazur@amazon.com>
+Subject: [RFC PATCH v4 7/7] KVM: selftests: Test pfncache invalidation for gmem-backed memory
+Date: Mon, 20 Apr 2026 15:46:08 +0000
+Message-ID: <20260420154720.29012-8-itazur@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260420154720.29012-1-itazur@amazon.com>
 References: <20260420154720.29012-1-itazur@amazon.com>
@@ -72,241 +72,137 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D042UWB003.ant.amazon.com (10.13.139.135) To
+X-ClientProxiedBy: EX19D044UWA002.ant.amazon.com (10.13.139.11) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Invalidate pfncaches when guest_memfd invalidation or memory attribute
-updates render cached PFN resolutions stale.
+Extend pfncache_gmem_test to verify pfncache invalidation paths:
 
-Reuse mn_active_invalidate_count to synchronize with the existing retry
-logic and preserve ordering against mmu_invalidate_seq.
+ - punch_hole: fallocate(PUNCH_HOLE) on the pvclock page's guest_memfd
+   frees the backing page and invalidates the pfncache.  The next
+   vcpu_run re-resolves the PFN with a freshly allocated page.
 
-Invalidation needs to be performed using HVA ranges so that both
-GPA-based and HVA-based pfncaches are covered.  Internally GPA-based
-ones translate GPA to memslot/UHVA first and then resolve PFN, while
-HVA-based ones only resolve PFN and do not store memslot/GPA context.
-Technically, it is possible to make HVA-based pfncaches search the
-corresponding memslot/GPA when activated/refreshed, but it would add
-overhead to a greater or lesser extent, regardless of guest_memfd-backed
-or not.  At the time of writing, only Xen uses HVA-based pfncaches.
+ - file release: kvm_vm_free() closes the guest_memfd fd, triggering a
+   full-range pfncache invalidation.
 
-Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+ - private-to-shared conversion: KVM_SET_MEMORY_ATTRIBUTES changes the
+   pvclock page from private to shared, invalidating the pfncache.  The
+   PFN is re-resolved via GUP instead of kvm_gmem_get_pfn().
+
 Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
 ---
- virt/kvm/guest_memfd.c | 50 ++++++++++++++++++++++++++++++++++++++++++
- virt/kvm/kvm_main.c    | 47 ++++++++++++++++++++++++++++++++++++++-
- virt/kvm/pfncache.c    | 21 ++++++++++--------
- 3 files changed, 108 insertions(+), 10 deletions(-)
+ .../selftests/kvm/x86/pfncache_gmem_test.c    | 39 ++++++++++++++++---
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 79f34dad0c2f..011fd205ac7e 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -215,6 +215,33 @@ static void __kvm_gmem_invalidate_start(struct gmem_fi=
-le *f, pgoff_t start,
- 	struct kvm *kvm =3D f->kvm;
- 	unsigned long index;
-=20
-+	/*
-+	 * Prevent pfncaches from being activated / refreshed using stale PFN
-+	 * resolutions.  To invalidate pfncaches _before_ invalidating the
-+	 * secondary MMUs (i.e. without acquiring mmu_lock), pfncaches must use
-+	 * mn_active_invalidate_count instead of mmu_invalidate_in_progress.
-+	 */
-+	spin_lock(&kvm->mn_invalidate_lock);
-+	kvm->mn_active_invalidate_count++;
-+	spin_unlock(&kvm->mn_invalidate_lock);
-+
-+	/*
-+	 * Invalidation of pfncaches must be done using a HVA range.  pfncaches
-+	 * can be either GPA-based or HVA-based, and all pfncaches store uhva
-+	 * while HVA-based pfncaches do not have gpa/memslot context.  Thus,
-+	 * using GFN ranges would miss invalidating HVA-based ones.
-+	 */
-+	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-+		pgoff_t pgoff =3D slot->gmem.pgoff;
-+		gfn_t gfn_start =3D slot->base_gfn + max(pgoff, start) - pgoff;
-+		gfn_t gfn_end =3D slot->base_gfn + min(pgoff + slot->npages, end) - pgof=
-f;
-+
-+		unsigned long hva_start =3D gfn_to_hva_memslot(slot, gfn_start);
-+		unsigned long hva_end =3D hva_start + (gfn_end - gfn_start) * PAGE_SIZE;
-+
-+		gpc_invalidate_hva_range_start(kvm, hva_start, hva_end);
-+	}
-+
- 	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
- 		pgoff_t pgoff =3D slot->gmem.pgoff;
-=20
-@@ -259,12 +286,35 @@ static void __kvm_gmem_invalidate_end(struct gmem_fil=
-e *f, pgoff_t start,
- 				      pgoff_t end)
+diff --git a/tools/testing/selftests/kvm/x86/pfncache_gmem_test.c b/tools/t=
+esting/selftests/kvm/x86/pfncache_gmem_test.c
+index c61b161f3e0c..a63940c36b15 100644
+--- a/tools/testing/selftests/kvm/x86/pfncache_gmem_test.c
++++ b/tools/testing/selftests/kvm/x86/pfncache_gmem_test.c
+@@ -36,11 +36,10 @@ static void guest_main(vm_paddr_t pvti_pa, struct pvclo=
+ck_vcpu_time_info *pvti)
  {
- 	struct kvm *kvm =3D f->kvm;
-+	bool wake;
+ 	int stage =3D 0;
 =20
- 	if (xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
- 		KVM_MMU_LOCK(kvm);
- 		kvm_mmu_invalidate_end(kvm);
- 		KVM_MMU_UNLOCK(kvm);
+-	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, pvti_pa | KVM_MSR_ENABLED);
+-
+ 	for (;;) {
+ 		uint64_t clock;
+=20
++		wrmsr(MSR_KVM_SYSTEM_TIME_NEW, pvti_pa | KVM_MSR_ENABLED);
+ 		GUEST_ASSERT(pvti->system_time !=3D 0);
+ 		clock =3D __pvclock_read_cycles(pvti, rdtsc());
+ 		GUEST_SYNC_CLOCK(stage++, clock);
+@@ -97,7 +96,8 @@ static uint64_t run_and_verify_kvm_clock(struct kvm_vcpu =
+*vcpu,
+ #define PVCLOCK_GPA		(1ULL << 32)
+=20
+ static struct kvm_vm *setup_vm(struct vm_shape shape,
+-			       struct kvm_vcpu **vcpu_out)
++			       struct kvm_vcpu **vcpu_out,
++			       vm_paddr_t *pvti_gpa_out)
+ {
+ 	struct kvm_vm *vm;
+=20
+@@ -118,6 +118,9 @@ static struct kvm_vm *setup_vm(struct vm_shape shape,
+ 		vcpu_args_set(*vcpu_out, 2, (vm_paddr_t)PVCLOCK_GPA,
+ 			      (struct pvclock_vcpu_time_info *)PVCLOCK_GPA);
+ 		vm_mem_set_private(vm, PVCLOCK_GPA, getpagesize());
++
++		if (pvti_gpa_out)
++			*pvti_gpa_out =3D PVCLOCK_GPA;
+ 	} else {
+ 		vm_vaddr_t pvti_gva;
+ 		vm_paddr_t pvti_gpa;
+@@ -125,6 +128,9 @@ static struct kvm_vm *setup_vm(struct vm_shape shape,
+ 		pvti_gva =3D vm_vaddr_alloc(vm, getpagesize(), 0x10000);
+ 		pvti_gpa =3D addr_gva2gpa(vm, pvti_gva);
+ 		vcpu_args_set(*vcpu_out, 2, pvti_gpa, pvti_gva);
++
++		if (pvti_gpa_out)
++			*pvti_gpa_out =3D pvti_gpa;
  	}
-+
-+	/*
-+	 * This must be done after the increment of mmu_invalidate_seq and
-+	 * smp_wmb() in kvm_mmu_invalidate_end() to guarantee that
-+	 * gpc_invalidate_retry() observes either the old (non-zero)
-+	 * mn_active_invalidate_count or the new (incremented) mmu_invalidate_seq.
-+	 */
-+	spin_lock(&kvm->mn_invalidate_lock);
-+	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
-+		kvm->mn_active_invalidate_count--;
-+	wake =3D !kvm->mn_active_invalidate_count;
-+	spin_unlock(&kvm->mn_invalidate_lock);
-+
-+	/*
-+	 * guest_memfd invalidation itself doesn't need to block active memslots
-+	 * swap as bindings updates are serialized by filemap_invalidate_lock().
-+	 * However, mn_active_invalidate_count is shared with the MMU notifier
-+	 * path, so the waiter must be woken when mn_active_invalidate_count
-+	 * drops to zero.
-+	 */
-+	if (wake)
-+		rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
- }
 =20
- static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index d64e70f8e8e3..b6d0a22fee79 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2583,9 +2583,11 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm=
-, gfn_t start, gfn_t end,
- 		.on_lock =3D kvm_mmu_invalidate_end,
- 		.may_block =3D true,
+ 	return vm;
+@@ -139,16 +145,27 @@ static void test_no_direct_map(void)
  	};
-+	struct kvm_memslots *slots =3D kvm_memslots(kvm);
-+	struct kvm_memory_slot *slot;
- 	unsigned long i;
- 	void *entry;
--	int r =3D 0;
-+	int r =3D 0, bkt;
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
++	vm_paddr_t pvti_gpa;
+ 	uint64_t clock =3D 0;
 =20
- 	entry =3D attributes ? xa_mk_value(attributes) : NULL;
+ 	pr_info("Testing pfncache with NO_DIRECT_MAP guest_memfd\n");
 =20
-@@ -2609,6 +2611,34 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm=
-, gfn_t start, gfn_t end,
- 		cond_resched();
- 	}
+-	vm =3D setup_vm(shape, &vcpu);
++	vm =3D setup_vm(shape, &vcpu, &pvti_gpa);
 =20
-+	/*
-+	 * Prevent pfncaches from being activated / refreshed using stale PFN
-+	 * resolutions.  To invalidate pfncaches _before_ invalidating the
-+	 * secondary MMUs (i.e. without acquiring mmu_lock), pfncaches must use
-+	 * mn_active_invalidate_count instead of mmu_invalidate_in_progress.
-+	 */
-+	spin_lock(&kvm->mn_invalidate_lock);
-+	kvm->mn_active_invalidate_count++;
-+	spin_unlock(&kvm->mn_invalidate_lock);
-+
-+	/*
-+	 * Invalidation of pfncaches must be done using a HVA range.  pfncaches
-+	 * can be either GPA-based or HVA-based, and all pfncaches store uhva
-+	 * while HVA-based pfncaches do not have gpa/memslot info.  Thus,
-+	 * using GFN ranges would miss invalidating HVA-based ones.
-+	 */
-+	kvm_for_each_memslot(slot, bkt, slots) {
-+		gfn_t gfn_start =3D max(start, slot->base_gfn);
-+		gfn_t gfn_end =3D min(end, slot->base_gfn + slot->npages);
-+
-+		if (gfn_start < gfn_end) {
-+			unsigned long hva_start =3D gfn_to_hva_memslot(slot, gfn_start);
-+			unsigned long hva_end =3D hva_start + (gfn_end - gfn_start) * PAGE_SIZE;
-+
-+			gpc_invalidate_hva_range_start(kvm, hva_start, hva_end);
-+		}
-+	}
-+
- 	kvm_handle_gfn_range(kvm, &pre_set_range);
-=20
- 	for (i =3D start; i < end; i++) {
-@@ -2620,6 +2650,21 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm=
-, gfn_t start, gfn_t end,
-=20
- 	kvm_handle_gfn_range(kvm, &post_set_range);
+ 	/* Verify kvm-clock works with gmem-backed pfncache (vmap KHVA) */
+ 	clock =3D run_and_verify_kvm_clock(vcpu, clock);
+ 	clock =3D run_and_verify_kvm_clock(vcpu, clock);
 =20
 +	/*
-+	 * This must be done after the increment of mmu_invalidate_seq and
-+	 * smp_wmb() in kvm_mmu_invalidate_end() to guarantee that
-+	 * gpc_invalidate_retry() observes either the old (non-zero)
-+	 * mn_active_invalidate_count or the new (incremented) mmu_invalidate_seq.
-+	 *
-+	 * mn_memslots_update_rcuwait does not need to be waked when
-+	 * mn_active_invalidate_count drops to zero because active memslots swap
-+	 * is also done while holding slots_lock.
++	 * Punch a hole in the pvclock page's guest_memfd backing.  This
++	 * invalidates the pfncache; the next vcpu_run re-resolves the PFN
++	 * with a freshly allocated page.
 +	 */
-+	spin_lock(&kvm->mn_invalidate_lock);
-+	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
-+		kvm->mn_active_invalidate_count--;
-+	spin_unlock(&kvm->mn_invalidate_lock);
++	pr_info("  punch_hole on pvclock page\n");
++	vm_guest_mem_punch_hole(vm, pvti_gpa, getpagesize());
++	clock =3D run_and_verify_kvm_clock(vcpu, clock);
 +
- out_unlock:
- 	mutex_unlock(&kvm->slots_lock);
-=20
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index bb4ba3a1b3d9..0e7a0f64e14b 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -144,7 +144,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
- #endif
++	/* Smoke test: VM teardown (closing guest_memfd) doesn't crash. */
+ 	kvm_vm_free(vm);
  }
 =20
--static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long=
- mmu_seq)
-+static inline bool gpc_invalidate_retry(struct kvm *kvm, unsigned long mmu=
-_seq)
- {
- 	/*
- 	 * mn_active_invalidate_count acts for all intents and purposes
-@@ -178,14 +178,17 @@ static inline bool mmu_notifier_retry_cache(struct kv=
-m *kvm, unsigned long mmu_s
-  *
-  * The caller holds gpc->refresh_lock, but does not hold gpc->lock nor
-  * kvm->slots_lock.  Reading slot->flags (via kvm_slot_has_gmem() and
-- * kvm_memslot_is_gmem_only()) is safe because memslot changes bump
-- * slots->generation, which is detected in kvm_gpc_check(), forcing callers
-- * to invoke kvm_gpc_refresh().
-+ * kvm_memslot_is_gmem_only()) and looking up memory attributes (via
-+ * kvm_mem_is_private()) without those locks is safe because:
-  *
-- * Looking up memory attributes (via kvm_mem_is_private()) can race with
-- * KVM_SET_MEMORY_ATTRIBUTES, which takes kvm->slots_lock to serialize
-- * writers but doesn't exclude lockless readers.  Handling that race is de=
-ferred
-- * to a subsequent commit that wires up pfncache invalidation for gmem eve=
-nts.
-+ * - memslot changes bump slots->generation, which is detected in
-+ *   kvm_gpc_check(), forcing callers to invoke kvm_gpc_refresh().
-+ *
-+ * - Memory attribute changes and gmem invalidations elevate
-+ *   mn_active_invalidate_count and bump mmu_invalidate_seq, bracketing the
-+ *   pfncache invalidation.  gpc_invalidate_retry() observes either of the=
-se
-+ *   changes and forces a retry of the refresh loop in gpc_to_pfn_retry(),=
- so
-+ *   any stale value read here will be re-evaluated.
-  */
- static inline bool gpc_is_gmem_backed(struct gfn_to_pfn_cache *gpc)
- {
-@@ -293,7 +296,7 @@ static kvm_pfn_t gpc_to_pfn_retry(struct gfn_to_pfn_cac=
-he *gpc)
- 		 * attempting to refresh.
- 		 */
- 		WARN_ON_ONCE(gpc->valid);
--	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
-+	} while (gpc_invalidate_retry(gpc->kvm, mmu_seq));
+@@ -160,16 +177,28 @@ static void test_sw_protected_vm(void)
+ 	};
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
++	vm_paddr_t pvti_gpa;
+ 	uint64_t clock =3D 0;
 =20
- 	gpc->valid =3D true;
- 	gpc->pfn =3D new_pfn;
+ 	pr_info("Testing pfncache with SW_PROTECTED_VM (guest_memfd-backed privat=
+e memory)\n");
+=20
+-	vm =3D setup_vm(shape, &vcpu);
++	vm =3D setup_vm(shape, &vcpu, &pvti_gpa);
+=20
+ 	/* Verify kvm-clock works with gmem-backed private memory */
+ 	clock =3D run_and_verify_kvm_clock(vcpu, clock);
+ 	clock =3D run_and_verify_kvm_clock(vcpu, clock);
+=20
++	/* Convert pvclock page from private to shared */
++	pr_info("  converting pvclock page: private -> shared\n");
++	vm_mem_set_shared(vm, pvti_gpa, getpagesize());
++	clock =3D run_and_verify_kvm_clock(vcpu, 0);
++
++	/* Convert back to private */
++	pr_info("  converting pvclock page: shared -> private\n");
++	vm_mem_set_private(vm, pvti_gpa, getpagesize());
++	clock =3D run_and_verify_kvm_clock(vcpu, 0);
++
++	/* Smoke test: VM teardown (closing guest_memfd) doesn't crash. */
+ 	kvm_vm_free(vm);
+ }
+=20
 --=20
 2.50.1
 
