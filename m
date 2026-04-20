@@ -1,96 +1,109 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D3B1AAE17
-	for <kvm@vger.kernel.org>; Sun, 19 Apr 2026 21:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A258BE9;
+	Mon, 20 Apr 2026 02:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776633046; cv=none; b=QEBcNujnaihtXsfZTO7z6XCFaFCXSy929WPK2nqgz8wWlA6JMUV+H4t2TV9IaWiSDhA1RjSwzDP37dRu/YyVpwR7+rGy8wnVTB98zvKO1Tz4bdOzEWxVd5HBheKTSVMHgWaqjR5J0blVKzElmAnfvCtmLvRTQvMYzPEgvYfKNgw=
+	t=1776652298; cv=none; b=Rhi9xct08HXXAr/mkJhwf7fzTgAxoYoEXZ8R3OYAaWgM28sxR82mMw67QpkBU151p5yqqdQikVBCC0VAfQ2uA6MrSgHtySz1BVTCtX7wg4mdNLtVvhDZGvX1W83Xs7pDC8xOzKJfsOJmVuwlRYR8iBJ+fX4mofbPkNGLaa7/iiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776633046; c=relaxed/simple;
-	bh=X7ZWJUkQepSfNRj4iKcM4JxdLMuKW3iqbOrtJEp9Tgs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C6JOdaiD+fOV6fEo69BMDfFvy5NExZR2uX+2N9zqHByJVM2JxzVLeotO5deSFDyHD+Pfc6D+MBGrwy4a3Z59tbAM9tqZrUxuVVC4uXqu0Znl9b2J1RKWNw4io6LC3dK08284R0+fB74+BYfiGLGhmQGcE8KBsUYqabZqPSEZzvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dIfUKwfV; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1776652298; c=relaxed/simple;
+	bh=TQwullVsUIZOqFIqtUzzuyHJAcez9ayghVBG9N4kZeI=;
+	h=Message-ID:Date:From:To:Cc:Subject:MIME-Version:Content-Type:
+	 Content-Disposition; b=nVZuMWHXb2K8nFx33IMgC++JyG5Ec8DGso3OxNqSTiooq4m6dp+WkVu2ZK6QM+KR0ygTmEeBh5AqQC7LIl5kjDavzuLYq6oAyOklPqM93rp8swPCfFNshsOwPHB3lH/21AueIUU6Pu7VXOhuOZG91m0d8a7cIifEizgBTJsxMB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=arBOEobh; arc=none smtp.client-ip=203.205.221.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dIfUKwfV"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488b0046078so22625985e9.1
-        for <kvm@vger.kernel.org>; Sun, 19 Apr 2026 14:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776633043; x=1777237843; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qsg8rUeDLQZVLVVnW8TfPXsM/XMptyJ8w4S6dfSGN0c=;
-        b=dIfUKwfV6g6gUxohz7TIJZqRzYGeE9HzG0VxXlj6j1+6vgyjbFnTxDIyOgfg78J0Pa
-         UImzEUPFB9wv1p+NLtIl4zlniY5mPSpELF7KSt4qPivZy0VnabY4tRr3M0gvbWIF6vnq
-         kO/iBLZQotSuNhAThMlNnumzWZV5VbLLFd0aqejEBzFz8CJghfLAtRIhrUElKNmOBeFx
-         QL4Qz6I8dP2y819LssrpoyUNU+1+Yn/BPPm2EmBUWd/TveohySNqM5jHmiScCktcngDt
-         9OKv+zKmnttZpMKdZqxS15Q21vC+EswcFGmv3zqJ+xvwVV+MpGVjaPJCe6iZ+Z+r6lz0
-         xV5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776633043; x=1777237843;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qsg8rUeDLQZVLVVnW8TfPXsM/XMptyJ8w4S6dfSGN0c=;
-        b=Xr5wgudUz9qsYkbeRECpS0Q3j6irDMmrx6SwJyqxYmNdCaNxUoMZUuhPkRsvp0SJru
-         /N1i5mkmGVxjubO3lTQL63gEEemUyczbcM4948MfzzpeSJkop0peBNnrPuP8eBnMFwZz
-         C3sCOwW15aOXXgGAeK97G2yAVMkG8d9T3L40xZVCH6cP3yPNxkkzOrIMlMkmhr3QiI3v
-         PtBV9cOBub/DiylC2rsmvc2egMZk5ryjovnV4DO9k26yUGjTU4w8bDri92QTglQIXV1m
-         0uVkwTn+51GB9JhZQ0Rtbmkam9nhZ/HKPCw3iCegwHTnakXRA4r1MqBoENboa12P2Fgf
-         dOzg==
-X-Forwarded-Encrypted: i=1; AFNElJ9lJXkvjvxwNgJOR+jDPlvQX5NwKbsn8QbWKQjbnTM2lEjtlPbeexbvgKqLKAu6iVypaFo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze16bXvt8l0N6vZQpgx/32peYQNlOnJoHYnM6mZW6CAkGQJbBU
-	f+SxDTpY6z/yY65lTHmwk15WwH2U130eKXfISFjSnyHONxLM4SViMNwS/8aPHJdsvk4=
-X-Gm-Gg: AeBDievN8pb11/v+kY1+1RyD5BR2iDvXFRR8F8IzgJZARgWSj2DHlgjmUdnvH4xWNoT
-	EGTi81PMk2h4bv2A75Om6jWrtS8cwPXvM2FuRY+IVbQZVocmJTxeAPsZuw7WIsydUbw8tKYg7PP
-	eMptqPl0TIf8GDKX8FPYewOg6O/H9EIwKISN+tGe2Dbs1eJRwOV55fHB1wyuirH9ZAnu5X2PvrC
-	UAF9hk21DMZlTv7kCgAFENpUmS+OQfQaUdyMe1FSCKjJhgeWzgSdNCG4L8Yf3DQ5R7d+KDxXe2Q
-	o3dK5u/DufvwGs9baWDG2BRhAmJAbdjFO9aUvWM/OIfcOezkrUnYuxS5jhmQTSKld4sSwV1rNNH
-	Axs2f4+F2awRiTfB4Xtsitfv9D+G1IPNr0O5u1TMPmRMJ0U81F7+f/LzuGodMZUA6/QQi0e4itc
-	FCoaRXOhkrGmm4zw2UhGnK7gKe7EwG7KfIZfQiffPRng6BFGdqV+xvkeN0DokoJlLNTcUkO6vDY
-	rrs
-X-Received: by 2002:a05:600c:a30b:b0:485:17a7:b9c7 with SMTP id 5b1f17b1804b1-488fb750a2bmr102595625e9.10.1776633043197;
-        Sun, 19 Apr 2026 14:10:43 -0700 (PDT)
-Received: from [192.168.69.228] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb1682sm24603336f8f.1.2026.04.19.14.10.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2026 14:10:41 -0700 (PDT)
-Message-ID: <e3916acc-98c6-4ace-b990-94084597563f@linaro.org>
-Date: Sun, 19 Apr 2026 23:10:40 +0200
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="arBOEobh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1776652286; bh=wxVdb/Eq8JrZEGitcjcXcDQR5qqONiuRwjZdYnagZZY=;
+	h=Date:From:To:Cc:Subject;
+	b=arBOEobhmoLfNRUSibLbPtGA/DiLcE7uNXi35uC0xi7wHVa+rPna5RhbRn+uqIuqu
+	 mzzTGcOpFXjpjnZ6LBQSsq0qSLJjjQDPprQYxuRYU8Y42n3RGidN1d9+o8Gl41Ee83
+	 eVY+gMtYge3vjhsPlwVqYn0102X6UhFm2J0wfHlM=
+Received: from zh-pc ([116.128.244.169])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 7D72DC58; Mon, 20 Apr 2026 10:31:23 +0800
+X-QQ-mid: xmsmtpt1776652283tmv6052s8
+Message-ID: <tencent_91386147982D1B2901B22D2423D4643AC90A@qq.com>
+X-QQ-XMAILINFO: OATpkVjS499uknEXpEyu2ikjBdlIRHNiNW9MYdVfIicuZNyNNEbldrkSIPfMvY
+	 2wJQZtZh+F7Q9UvbiYRtfOYmrU0/Ot8OFpGvqFbWdH/3Qlw5zB+q8/P1k4NN0v7wo+9qAJuPze4+
+	 /Sn6F4Fn77WFL3QAc8440vhV/L+h5Eckn9MaB4vdUNR9UjmoP9y/FQkqDLTATM5O9//HCXFE8RUW
+	 pYZ0Xy+yDxKv5He8sXF94kzXMOd0oKWNtJtXOKfGHsTXlbzU4kjtoj1BwyoIPKws87dOPT9zt4i+
+	 YCOL+LhI/noORJGyx4QYOJSJ7l/JgXVWBMFvvnm0XttO8IgFwa/0KwWEX+NiASqwZtjsMtx7Mvfr
+	 JiBfqN7XZUCN7WwIxcW6HHjaYc62MTTnYscY4KypmJBmmw/eDLM/0/Q6++VVBp1dyEGkIW9HfN0D
+	 /X369gvVZAVjQx2Av/Bd+ulXYqFpQ5LcIO3PjX8AJo3YrQ08pBy2xfim4SHFbFJIlu0fFdzenALU
+	 Su0KklhpKrGkvY3Kjn+NhIBAK7TuurHipkpGKlGLlLn3ZT/EAC7xuaa/DU3J5btSu6DlCBww9Paw
+	 UXjShfkHOE1P3+rs2qDIB0LThUyzwmFi9w5Xg9kxaBvWjYYV37KwIoxNqvfJ/qGFwA/5awsJuJ7x
+	 2FBSXQRDE4z1l6wmTKMb0M9KSnwf7szzcLkc+fZAZTL3x4xpFRwJAFOxNefuwB1pXChGjANMkRRw
+	 M4MhISawppWWZxW34BfpKEHIC8mOVhwfSbSX0V0vjQB7y2r2Dt/wsZ5cjIm8KjJCZfPAtx/bMxJV
+	 t+J8PDSVTc4STYjCVVE+4kYprEBgTD4k6eg+tE1B5AbnGNjhlE/PToM245fSBbQyT6bjmyU98e+q
+	 somCswrExwTRDyTsA7S1TV3LMULU4b3OmyqID2jYX78BmgcHwKNLxqu5k8X5uw4Q1Uj8PgpP++4R
+	 hBQlsVmYDaK2/2gjwP7w9gbHk0jqJlGCyylWukMUz5CEd2p/qiJExzHbkFVqcOfMgJenlJsWopKy
+	 iq3mQSZKP6NlUyZtJYk19bpzXO2HaSe4CWUJVJ0K9N1ImyRQzXbSmFK0Ix3N8BA8eM/p8702HStH
+	 y61qJb
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+Date: Mon, 20 Apr 2026 10:31:22 +0800
+From: zhanghao <76824143@qq.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: Dynamically scale directed-yield retries in
+ kvm_vcpu_on_spin()
+X-OQ-MSGID: <20260420023122.GA49894@zh-pc>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-11.0? 0/6] qom: Restrict compat properties API to
- system emulation
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, kvm@vger.kernel.org
-References: <20260325151728.45378-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260325151728.45378-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-On 25/3/26 16:17, Philippe Mathieu-Daudé wrote:
+kvm_vcpu_on_spin() currently uses a fixed retry budget (3) when
+kvm_vcpu_yield_to() returns a negative value. That fixed limit is
+often too small on large VMs, where candidate selection is more likely
+to race with scheduler state and transiently fail.
 
-> Philippe Mathieu-Daudé (6):
+Replace the constant retry count with a vCPU-count-based budget:
 
->    hw/core: Move compat_props_add() to 'hw/core/boards.h'
->    qom: Declare GlobalProperty structure in 'qom/compat-properties.h'
->    qom: Declare compat properties API in 'qom/compat-properties.h'
->    qom: Restrict compat properties API to system emulation
+  try = min(nr_vcpus - 1, 8);
 
-Patches 1-5 queued, thanks.
+This keeps retries bounded while allowing more opportunities to find a
+yieldable target as VM size grows. Small VMs keep near-identical
+behavior, while larger VMs get a better chance of making directed-yield
+progress under contention.
+
+No functional change is intended beyond retry-budget tuning.
+
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+---
+ virt/kvm/kvm_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 89489996fbc1..cbe53cea10a3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3961,12 +3961,14 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+ 	int nr_vcpus, start, i, idx, yielded;
+ 	struct kvm *kvm = me->kvm;
+ 	struct kvm_vcpu *vcpu;
+-	int try = 3;
++	int try = 0;
+ 
+ 	nr_vcpus = atomic_read(&kvm->online_vcpus);
+ 	if (nr_vcpus < 2)
+ 		return;
+ 
++	try = min(nr_vcpus - 1, 8);
++
+ 	/* Pairs with the smp_wmb() in kvm_vm_ioctl_create_vcpu(). */
+ 	smp_rmb();
+ 
+
+base-commit: c1f49dea2b8f335813d3b348fd39117fb8efb428
+-- 
+2.25.1
+
