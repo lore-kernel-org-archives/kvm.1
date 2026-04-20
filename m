@@ -1,52 +1,52 @@
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92579342CA2
-	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 15:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429573396EE
+	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 15:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700066; cv=none; b=pM5uNQXEEw9ZO24Y+nj6sX2scSv/74UHDKYooWtXvw0KxWKXxm6AgwLrk29oGNN1wBzB/F/HF26LrBh7tJeYzWacJ9USxXH4tzm4tKIGfvGGE3Y2DGNeGoqPCN9faDI3ZAkLXBTs1mxtk9qUHhtr9QBqwtH4ySnEPB0HH3UGd0o=
+	t=1776700077; cv=none; b=YyZ2Yh4msWGXKpDJ9pGYWpvzHkoJQyKJuT63aM8PV0FDIE7aVNHIpqMQTdqx1YlBQpMBTQhOGw3YXzS5L7SP2/weehwE02bMUk83CGx4t/3Q0doL+AFkl/nEPb7P8gCkDna/VV+HZvFsk2+Z42Tt8AvAGMdHxwzlQshRcMEt/vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700066; c=relaxed/simple;
-	bh=jPYVEwW1lXE/WVSI6Vhc2jO1m/MP39I8N3x4KH91U/0=;
+	s=arc-20240116; t=1776700077; c=relaxed/simple;
+	bh=9TN4OiXcuxlQjj1L545GimSHnDjoX3PVFD4/ClS30P4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RuinvjzpYtuSb8Sca91CUpykkrm9DbNptsIk7OZWTbO/XW66MWZv3b1ky7yuCWmOR+huGG2Ors7oqOADcv5GBg3BqkJUcSLBBSmp0e/9SuTgNMvOySkFOKtK9Rt8E7wW7zAKKbVWCTfSZyVuxU6ySv3oa2JyhRC+bf9bJzyGppk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Ibs9i/Op; arc=none smtp.client-ip=44.246.1.125
+	 MIME-Version:Content-Type; b=QviBQ8q2G5DIviYlSeG8LFYdBDycWN9/BgCD/JYb2hHnwkORrUnNoebJSSC44pe53L8xvN26wDnZo58bZ313w5Eo2SfK5CKmLrLUzLWwfIVgD6a3yQY4RWq+aa1cButNW1B/P9wMIMGgLkolMTGJnDurlgEKO5U9B5+Yw5SkbwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=YCdkmUiY; arc=none smtp.client-ip=44.246.77.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Ibs9i/Op"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="YCdkmUiY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1776700065; x=1808236065;
+  t=1776700076; x=1808236076;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=22p6u2/T4frvBgCFMaq8pWaJ3irvRleY8pPfYexYrlM=;
-  b=Ibs9i/OpBtiU9Su8wTPIQSlSp2AfBJSjTTAh7ZBjDgDUybAZBo92Pjyg
-   LC48jK9VsNgzwqmS87v2cnU4Gg0+ABLcnm7+jNQmzvY281n94a6iP4x40
-   Lur00e37sEpHstpgu/YlOEWmejhOyi5yRBIhNok0p6jdAJoZlRfW0YeCA
-   V8PnBEFEIcFfcdIWK1vh0IsUyuWq3tqxngG6/wDiPdPPmaEVXZajSI85L
-   wxbvN8RJKuL4nxOqAADXRcF0YLV6m++itRy4TF+Ihsb6cjNlGBowVjdxC
-   5W/TP0WJDdaLdzw8tpdZrycb/Mr1t/XE4HiVyQSSiVM8UGRYboFxd+vQB
-   Q==;
-X-CSE-ConnectionGUID: LxzWrAcyTtyILShF50YkAQ==
-X-CSE-MsgGUID: pHK1pTZfTGq77RuRA7VnuQ==
+  bh=nJGGLcBpKhVtD2lBxtvU3QC61TM4tXnib4QYH85QQzQ=;
+  b=YCdkmUiYlIR8ndjHfukF38TfkMp7YFFtFriMJYoQ8sVXoszHBgi2D8RN
+   7L1yviHK5rOFEtGsFonf6BNardDa7aP7FKa2vzWVmkM8525xTHrhddwVG
+   A8sVbDsurYKLloDedyzbgUflVOQ14kwTNOtOouUcUIAFXBTrQF1PmDQyT
+   5b/YXu90RfwR4U3ULesFJ0b/w1VsZwIK85QJv/laMxiglmAODWAp3s/wU
+   GCZcB01ezRp9sWFwdHW6vPdNpA94sTOK36lQ+mohz3NVht6fBe1Il74CJ
+   enCc+OTQs0pLZpKXtnxLm4nk1aw82ODYBcSbZGtVHHSQ3nC1ITQ0gE4m6
+   A==;
+X-CSE-ConnectionGUID: WpigEnrYRdyxH39hoJs02w==
+X-CSE-MsgGUID: 9mJmKPJURJ2fEkps6qM0LA==
 X-IronPort-AV: E=Sophos;i="6.23,190,1770595200"; 
-   d="scan'208";a="17741643"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 15:47:43 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:19487]
+   d="scan'208";a="17734786"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 15:47:53 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:17624]
  by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.54.92:2525] with esmtp (Farcaster)
- id 99b7f631-35e0-466d-9256-40321b707662; Mon, 20 Apr 2026 15:47:42 +0000 (UTC)
-X-Farcaster-Flow-ID: 99b7f631-35e0-466d-9256-40321b707662
+ id 5a46d770-ec7e-4862-b79f-1af6be79379c; Mon, 20 Apr 2026 15:47:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 5a46d770-ec7e-4862-b79f-1af6be79379c
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 20 Apr 2026 15:47:41 +0000
+ Mon, 20 Apr 2026 15:47:52 +0000
 Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 20 Apr 2026 15:47:39 +0000
+ Mon, 20 Apr 2026 15:47:50 +0000
 From: Takahiro Itazuri <itazur@amazon.com>
 To: <kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Paolo
  Bonzini" <pbonzini@redhat.com>
@@ -58,9 +58,9 @@ CC: Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>,
  Manwaring" <derekmn@amazon.com>, Alina Cernea <acernea@amazon.com>, "Michael
  Zoumboulakis" <zoumboul@amazon.com>, Takahiro Itazuri <zulinx86@gmail.com>,
 	Takahiro Itazuri <itazur@amazon.com>
-Subject: [RFC PATCH v4 2/7] KVM: pfncache: Obtain KHVA via vmap() for gmem with NO_DIRECT_MAP
-Date: Mon, 20 Apr 2026 15:46:03 +0000
-Message-ID: <20260420154720.29012-3-itazur@amazon.com>
+Subject: [RFC PATCH v4 3/7] KVM: Rename invalidate_begin to invalidate_start for consistency
+Date: Mon, 20 Apr 2026 15:46:04 +0000
+Message-ID: <20260420154720.29012-4-itazur@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260420154720.29012-1-itazur@amazon.com>
 References: <20260420154720.29012-1-itazur@amazon.com>
@@ -72,116 +72,168 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+X-ClientProxiedBy: EX19D039UWA001.ant.amazon.com (10.13.139.110) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Currently, pfncaches map RAM pages via kmap(), which typically returns a
-kernel address derived from the direct map.  However, guest_memfd
-created with GUEST_MEMFD_FLAG_NO_DIRECT_MAP has their direct map removed
-and uses an AS_NO_DIRECT_MAP mapping.  So kmap() cannot be used in this
-case.
+Rename kvm_mmu_invalidate_begin() to kvm_mmu_invalidate_start() to
+align with mmu_notifier_ops.invalidate_range_start(), which is the
+callback that ultimately drives KVM's MMU invalidation.
 
-pfncaches can be used from atomic context where page faults cannot be
-tolerated.  Therefore, it cannot fall back to access via a userspace
-mapping like KVM does for other accesses to NO_DIRECT_MAP guest_memfd.
+While the naming within KVM itself is a close split between "_begin" and
+"_start", conforming to the mmu_notifier_ops naming is the right call
+since invalidate_range_start() is the external API that KVM hooks into.
 
-To obtain a fault-free kernel host virtual address (KHVA), use vmap()
-for NO_DIRECT_MAP pages.  Since gpc_map() is the sole producer of KHVA
-for pfncaches and only vmap() returns a vmalloc address, gpc_unmap()
-can reliably pair vunmap() using is_vmalloc_addr().
+  $ git grep -E "invalidate(_range)?_begin"  **/kvm | wc -l
+  11
+  $ git grep -E "invalidate(_range)?_start"  **/kvm | wc -l
+  16
 
-Although vm_map_ram() could be faster than vmap(), mixing short-lived
-and long-lived vm_map_ram() can lead to fragmentation.  For this reason,
-vm_map_ram() is recommended only for short-lived ones.  Since pfncaches
-typically have a lifetime comparable to that of the VM, vm_map_ram() is
-deliberately not used here.
-
-pfncaches are not dynamically allocated but are statically allocated on
-a per-VM and per-vCPU basis.  For a normal VM (i.e. non-Xen), there is
-one pfncache per vCPU.  For a Xen VM, there is one per-VM pfncache and
-five per-vCPU pfncaches.  Given the maximum of 1024 vCPUs, a normal VM
-can have up to 1024 pfncaches, consuming 4 MB of virtual address space.
-A Xen VM can have up to 5121 pfncaches, consuming approximately 20 MB of
-virtual address space.  Although the vmalloc area is limited on 32-bit
-systems, it should be large enough and typically tens of TB on 64-bit
-systems (e.g. 32 TB for 4-level paging and 12800 TB for 5-level paging
-on x86_64).  If virtual address space exhaustion becomes a concern,
-migration to an mm-local region could be considered in the future.  Note
-that vmap() and vm_map_ram() only create virtual mappings to existing
-pages; they do not allocate new physical pages.
+No functional change intended.
 
 Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
 ---
- virt/kvm/pfncache.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ arch/x86/kvm/mmu/mmu.c   |  2 +-
+ include/linux/kvm_host.h |  2 +-
+ virt/kvm/guest_memfd.c   | 14 +++++++-------
+ virt/kvm/kvm_main.c      |  6 +++---
+ 4 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index ad41cf3e8df4..682dc3ba2216 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -16,6 +16,7 @@
- #include <linux/highmem.h>
- #include <linux/module.h>
- #include <linux/errno.h>
-+#include <linux/pagemap.h>
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index d3e705ac4c6f..e82a357e2219 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6859,7 +6859,7 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_sta=
+rt, gfn_t gfn_end)
 =20
- #include "kvm_mm.h"
+ 	write_lock(&kvm->mmu_lock);
 =20
-@@ -98,8 +99,19 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigne=
-d long len)
+-	kvm_mmu_invalidate_begin(kvm);
++	kvm_mmu_invalidate_start(kvm);
 =20
- static void *gpc_map(kvm_pfn_t pfn)
+ 	kvm_mmu_invalidate_range_add(kvm, gfn_start, gfn_end);
+=20
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 2ea5d2f172f7..618a71894ed1 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1566,7 +1566,7 @@ void kvm_mmu_free_memory_cache(struct kvm_mmu_memory_=
+cache *mc);
+ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc);
+ #endif
+=20
+-void kvm_mmu_invalidate_begin(struct kvm *kvm);
++void kvm_mmu_invalidate_start(struct kvm *kvm);
+ void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end);
+ void kvm_mmu_invalidate_end(struct kvm *kvm);
+ bool kvm_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 5d6e966d4f32..79f34dad0c2f 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -206,7 +206,7 @@ static enum kvm_gfn_range_filter kvm_gmem_get_invalidat=
+e_filter(struct inode *in
+ 	return KVM_FILTER_PRIVATE;
+ }
+=20
+-static void __kvm_gmem_invalidate_begin(struct gmem_file *f, pgoff_t start,
++static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+ 					pgoff_t end,
+ 					enum kvm_gfn_range_filter attr_filter)
  {
--	if (pfn_valid(pfn))
--		return kmap(pfn_to_page(pfn));
-+	if (pfn_valid(pfn)) {
-+		struct page *page =3D pfn_to_page(pfn);
-+		struct page *head =3D compound_head(page);
-+		struct address_space *mapping =3D READ_ONCE(head->mapping);
-+
-+		if (mapping && mapping_no_direct_map(mapping)) {
-+			struct page *pages[] =3D { page };
-+
-+			return vmap(pages, 1, VM_MAP, PAGE_KERNEL);
-+		}
-+
-+		return kmap(page);
-+	}
+@@ -230,7 +230,7 @@ static void __kvm_gmem_invalidate_begin(struct gmem_fil=
+e *f, pgoff_t start,
+ 			found_memslot =3D true;
 =20
- #ifdef CONFIG_HAS_IOMEM
- 	return memremap(pfn_to_hpa(pfn), PAGE_SIZE, MEMREMAP_WB);
-@@ -115,7 +127,15 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
- 		return;
+ 			KVM_MMU_LOCK(kvm);
+-			kvm_mmu_invalidate_begin(kvm);
++			kvm_mmu_invalidate_start(kvm);
+ 		}
 =20
- 	if (pfn_valid(pfn)) {
--		kunmap(pfn_to_page(pfn));
-+		/*
-+		 * For valid PFNs, gpc_map() returns either a kmap() address
-+		 * (non-vmalloc) or a vmap() address (vmalloc).
-+		 */
-+		if (is_vmalloc_addr(khva))
-+			vunmap(khva);
-+		else
-+			kunmap(pfn_to_page(pfn));
-+
- 		return;
- 	}
+ 		flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+@@ -243,7 +243,7 @@ static void __kvm_gmem_invalidate_begin(struct gmem_fil=
+e *f, pgoff_t start,
+ 		KVM_MMU_UNLOCK(kvm);
+ }
 =20
-@@ -250,8 +270,11 @@ static kvm_pfn_t gpc_to_pfn_retry(struct gfn_to_pfn_ca=
-che *gpc)
+-static void kvm_gmem_invalidate_begin(struct inode *inode, pgoff_t start,
++static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+ 				      pgoff_t end)
+ {
+ 	enum kvm_gfn_range_filter attr_filter;
+@@ -252,7 +252,7 @@ static void kvm_gmem_invalidate_begin(struct inode *ino=
+de, pgoff_t start,
+ 	attr_filter =3D kvm_gmem_get_invalidate_filter(inode);
 =20
- 		/*
- 		 * Obtain a new kernel mapping if KVM itself will access the
--		 * pfn.  Note, kmap() and memremap() can both sleep, so this
--		 * too must be done outside of gpc->lock!
-+		 * pfn.  Note, kmap(), vmap() and memremap() can all sleep, so
-+		 * this too must be done outside of gpc->lock!
-+		 * Note that even though gpc->lock is dropped, it's still fine
-+		 * to read gpc->pfn and other fields because gpc->refresh_lock
-+		 * mutex prevents them from being updated.
- 		 */
- 		if (new_pfn =3D=3D gpc->pfn)
- 			new_khva =3D old_khva;
+ 	kvm_gmem_for_each_file(f, inode->i_mapping)
+-		__kvm_gmem_invalidate_begin(f, start, end, attr_filter);
++		__kvm_gmem_invalidate_start(f, start, end, attr_filter);
+ }
+=20
+ static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+@@ -287,7 +287,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, lo=
+ff_t offset, loff_t len)
+ 	 */
+ 	filemap_invalidate_lock(inode->i_mapping);
+=20
+-	kvm_gmem_invalidate_begin(inode, start, end);
++	kvm_gmem_invalidate_start(inode, start, end);
+=20
+ 	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+=20
+@@ -401,7 +401,7 @@ static int kvm_gmem_release(struct inode *inode, struct=
+ file *file)
+ 	 * Zap all SPTEs pointed at by this file.  Do not free the backing
+ 	 * memory, as its lifetime is associated with the inode, not the file.
+ 	 */
+-	__kvm_gmem_invalidate_begin(f, 0, -1ul,
++	__kvm_gmem_invalidate_start(f, 0, -1ul,
+ 				    kvm_gmem_get_invalidate_filter(inode));
+ 	__kvm_gmem_invalidate_end(f, 0, -1ul);
+=20
+@@ -582,7 +582,7 @@ static int kvm_gmem_error_folio(struct address_space *m=
+apping, struct folio *fol
+ 	start =3D folio->index;
+ 	end =3D start + folio_nr_pages(folio);
+=20
+-	kvm_gmem_invalidate_begin(mapping->host, start, end);
++	kvm_gmem_invalidate_start(mapping->host, start, end);
+=20
+ 	/*
+ 	 * Do not truncate the range, what action is taken in response to the
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 60a8b7ca8ab4..5871882ff1db 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -678,7 +678,7 @@ static __always_inline int kvm_age_hva_range_no_flush(s=
+truct mmu_notifier *mn,
+ 	return kvm_age_hva_range(mn, start, end, handler, false);
+ }
+=20
+-void kvm_mmu_invalidate_begin(struct kvm *kvm)
++void kvm_mmu_invalidate_start(struct kvm *kvm)
+ {
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+ 	/*
+@@ -734,7 +734,7 @@ static int kvm_mmu_notifier_invalidate_range_start(stru=
+ct mmu_notifier *mn,
+ 		.start		=3D range->start,
+ 		.end		=3D range->end,
+ 		.handler	=3D kvm_mmu_unmap_gfn_range,
+-		.on_lock	=3D kvm_mmu_invalidate_begin,
++		.on_lock	=3D kvm_mmu_invalidate_start,
+ 		.flush_on_ret	=3D true,
+ 		.may_block	=3D mmu_notifier_range_blockable(range),
+ 	};
+@@ -2571,7 +2571,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm,=
+ gfn_t start, gfn_t end,
+ 		.end =3D end,
+ 		.arg.attributes =3D attributes,
+ 		.handler =3D kvm_pre_set_memory_attributes,
+-		.on_lock =3D kvm_mmu_invalidate_begin,
++		.on_lock =3D kvm_mmu_invalidate_start,
+ 		.flush_on_ret =3D true,
+ 		.may_block =3D true,
+ 	};
 --=20
 2.50.1
 
