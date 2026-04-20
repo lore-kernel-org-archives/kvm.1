@@ -1,177 +1,180 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5CE3164B4
-	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 06:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2BA288C08;
+	Mon, 20 Apr 2026 07:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776668175; cv=none; b=Iu8VL8JOlE2c6YZl9llBnYEz888Etl2m5gKpDdzNRt9sHwmiKu+otimVEtZpcrmTFhnFwX+f+Elg07ilO6nq9DqQypn73tBwtxhr1oB+wU/dZ4L/Y95+Zmvkb2H9vXXvB1BA5vh+MsgjPz0+WUDFvsdTN+QqKGKE/L1Jv1VfmkA=
+	t=1776668515; cv=none; b=Kn1qUmUFfW4q6iA5rM49cR/2Rf7458yQrymAG9LZmziWHF9oWh45+/gx4fVKcqxujm4rXb+X8hnzz6bRxd6sCUP5AfszyKziHJaxM1PvLaaLv616qeWYqGvrOCvoa86ulX5gaIADwVFLDUtPhxRFLmx+dmHEbqjo4Kl0E9uO6S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776668175; c=relaxed/simple;
-	bh=r1IjBkU3646lOwcvEXbhsToJlMhbKn0Olvzo3Ik8Sd4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g5WbGQh+y3Uh1SiMo1HaPR4cuTnM4TSGhO0WxMt491zu5IYM1lpFJBjoe8padjzT+JJRXB44I/X4lfq8CBVQy7IsEy1GfxL6dYmdHJM8VsSGu/Zcdpa1kWggtqSJFU0m6inoIaHcwsq29HU4KOqJQrynbcKdwh7POiN3RPV9XFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=avkXEZXv; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776668515; c=relaxed/simple;
+	bh=2HubVmemKYFSrpjdVlLvyLMzuA44GJ7AxdEWaTIopnc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OK2wyIhOWXa5us76790Qw0ygWzVIB3ike1cQ7r3tqfTFoYEW9m8mNYxBYfVxx0vBlmDIv/Z5FWzwCIF7Y6yKvi3dX7cVIcV7kAnh2xL9/UpDQNngFpKVgWz72DnLXu7wZ8HBMbeYmTSnZFdESVJ+8PyFtmwwbmI0UgZKUZpU7No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOoS5Wx6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="avkXEZXv"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63JNoiYZ3689187;
-	Mon, 20 Apr 2026 06:56:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=CwL52M
-	GJ8c1IpPyE+ys9kqBvjYaxLRDWBHsBo71u48A=; b=avkXEZXvqPSEonvNW5uTJ9
-	2KNBa31ORBOtlHFcVTXheLoDQ3whUVOP6V3+d8wq6WPBCjyX9RmfvcGa5PMZ0PmQ
-	14nfQxcwI7yoC64WQgk04FRe0OmizPVJGnuTjgi7KFx6wm/9nOzx8IBVcGbHtR3l
-	mxzcLZuEPvzke35GwgUs4szLK9bx5S9YLtXCu5cTLS3RRjteYuBdwBfSBUMhcXdS
-	eOOxmNG4sZlLPDpy/WVBNqcdwOPhEv4HfL1oleNpuKhispOmtRbuKpwTE+JR9PJu
-	8ooTm9+3CXX1sUKOvblPRrbmEZPoWIZjLi5uTVqflVENUX2fLpRXu0XuuhXaJxug
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2nexkx0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Apr 2026 06:56:00 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63K6oJxw002815;
-	Mon, 20 Apr 2026 06:55:59 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmn9juq7m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Apr 2026 06:55:59 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63K6twHL24642074
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Apr 2026 06:55:58 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E91AA58056;
-	Mon, 20 Apr 2026 06:55:57 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2790858045;
-	Mon, 20 Apr 2026 06:55:54 +0000 (GMT)
-Received: from [9.123.0.169] (unknown [9.123.0.169])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Apr 2026 06:55:53 +0000 (GMT)
-Message-ID: <41f8091f-78a5-4034-a235-8e8f55f93c21@linux.ibm.com>
-Date: Mon, 20 Apr 2026 12:25:52 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOoS5Wx6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BBFC19425;
+	Mon, 20 Apr 2026 07:01:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776668514;
+	bh=2HubVmemKYFSrpjdVlLvyLMzuA44GJ7AxdEWaTIopnc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YOoS5Wx6pMZKMZlHW21lbBbviCZhxubZdgxsA5GEOdEF+RMDw+un8C/pDE2dE88W1
+	 QIPOW1WJ9wC+EUw+ikTEoHL/aHm8POBVuM99jhiygKKqp8sluMUIQKxs7Fm8q45l2R
+	 FD/lAPTX3x51DyEOcxfERLKVSxw1mOFWkJ/Q1RDJ6woo8j5PXAMGu76M75jfBaxvMQ
+	 iB5Eg8bM2xbBf1fSvLksohlm4V1RiGmP+aAr4E3Qq5cK5Op3ox663otj5ljWjc1psQ
+	 6c8cEwZgIq1aYGMGHLnhY7HX6UXVDMByfegV4FefqoJqMO0NS8404or0Dzmw/FM0O/
+	 qC9LVkf/tnk6w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wEidk-0000000CylX-00qd;
+	Mon, 20 Apr 2026 07:01:52 +0000
+Date: Mon, 20 Apr 2026 08:01:51 +0100
+Message-ID: <86se8q15eo.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	devel@daynix.com,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v7 2/4] KVM: arm64: PMU: Protect the list of PMUs with RCU
+In-Reply-To: <483e5cf2-a54c-4781-ac6d-49f5bc7128ba@rsg.ci.i.u-tokyo.ac.jp>
+References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+	<20260418-hybrid-v7-2-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+	<87mryzauib.wl-maz@kernel.org>
+	<483e5cf2-a54c-4781-ac6d-49f5bc7128ba@rsg.ci.i.u-tokyo.ac.jp>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] target/ppc/mmu: Restrict hash32_load_hpte() helpers
- scope
-Content-Language: en-GB
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>, Paolo Bonzini <pbonzini@redhat.com>,
-        BALATON Zoltan <balaton@eik.bme.hu>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Glenn Miles <milesg@linux.ibm.com>, kvm@vger.kernel.org,
-        qemu-ppc@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
-        Chinmay Rath <rathc@linux.ibm.com>
-References: <20260319111936.68041-1-philmd@linaro.org>
- <20260319111936.68041-5-philmd@linaro.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20260319111936.68041-5-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 4HGd4fSzItL7vDOHwM2YIj7eaxXwJBLV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIwMDA2NCBTYWx0ZWRfX8bV46rLsl4hX
- OLqbnDMjJ4Gi4yQng4HI3hyZP2Tz8B0lwgTD+eb8mcAznVqc+xpcsROM7TE8T82Ux1LpeuqtZhu
- zbdYSQQaUXVbuDftts6xbCZBwe6HJ3PKAOGFW1jArudZsjOv5PLcQLy3mBR7kXA/as80IEFDa9p
- UQpca/XVQLY7dBQtdsuNB8Ymv8f5h41fngvixZbojFK8WVa+4jXh9XuKQOmhhyXREZq2bgvQ92D
- pQKurNp+EUtOlwS76+oM8c7GRK+KOp74Ps9hMRd6PBeaXN7uP5Ngx+/q60oDYBGsLKHjlEr9a2/
- GoqPwDTg4ZN3SNeWTFcuz1wYIj0C/57NLanm37hocBkhBor+FwdZOUAXPo+eANYg/DusZExFTdd
- scEy2Kxnbow0NIk95PLCCfhJWOk1kj4wE2l62C71lyPPiAjuP+MpmwO3w1AXDqdiGdFdHDT0cuh
- iInOCXm43ZGobf23P+Q==
-X-Proofpoint-GUID: Hwr7rD3K332NdYoR0_6StyByY8D9Vq0l
-X-Authority-Analysis: v=2.4 cv=B7iJFutM c=1 sm=1 tr=0 ts=69e5ce01 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22
- a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8 a=0I839AAy7vvk_TsqX-0A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-20_01,2026-04-17_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
- bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604200064
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: odaki@rsg.ci.i.u-tokyo.ac.jp, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, gustavoars@kernel.org, pbonzini@redhat.com, corbet@lwn.net, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-
-
-On 19/03/26 4:49 pm, Philippe Mathieu-Daudé wrote:
-> hash32_load_hpte() helpers are only used within mmu-hash32.c,
-> no need to have each file including "mmu-hash32.h" to compile
-> them. Move their definition to this source file.
+On Mon, 20 Apr 2026 07:21:45 +0100,
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
-> ---
->   target/ppc/mmu-hash32.h | 16 ----------------
->   target/ppc/mmu-hash32.c | 14 ++++++++++++++
->   2 files changed, 14 insertions(+), 16 deletions(-)
+> On 2026/04/19 23:34, Marc Zyngier wrote:
+> > On Sat, 18 Apr 2026 09:14:24 +0100,
+> > Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+> >> 
+> >> Convert the list of PMUs to a RCU-protected list that has primitives to
+> >> avoid read-side contention.
+> >> 
+> >> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> >> ---
+> >>   arch/arm64/kvm/pmu-emul.c | 14 ++++++--------
+> >>   1 file changed, 6 insertions(+), 8 deletions(-)
+> >> 
+> >> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> >> index 59ec96e09321..ef5140bbfe28 100644
+> >> --- a/arch/arm64/kvm/pmu-emul.c
+> >> +++ b/arch/arm64/kvm/pmu-emul.c
+> >> @@ -7,9 +7,9 @@
+> >>   #include <linux/cpu.h>
+> >>   #include <linux/kvm.h>
+> >>   #include <linux/kvm_host.h>
+> >> -#include <linux/list.h>
+> >>   #include <linux/perf_event.h>
+> >>   #include <linux/perf/arm_pmu.h>
+> >> +#include <linux/rculist.h>
+> >>   #include <linux/uaccess.h>
+> >>   #include <asm/kvm_emulate.h>
+> >>   #include <kvm/arm_pmu.h>
+> >> @@ -26,7 +26,6 @@ static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc);
+> >>     bool kvm_supports_guest_pmuv3(void)
+> >>   {
+> >> -	guard(mutex)(&arm_pmus_lock);
+> >>   	return !list_empty(&arm_pmus);
+> > 
+> > Please read include/linux/rculist.h and the discussion about the
+> > interaction of list_empty() with RCU-protected lists. How about using
+> > list_first_or_null_rcu() for peace of mind?
 > 
-> diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
-> index 5705f57935b..bfea03ea872 100644
-> --- a/target/ppc/mmu-hash32.h
-> +++ b/target/ppc/mmu-hash32.h
-> @@ -71,22 +71,6 @@ static inline hwaddr ppc_hash32_hpt_mask(PowerPCCPU *cpu)
->       return ((cpu->env.spr[SPR_SDR1] & SDR_32_HTABMASK) << 16) | 0xFFFF;
->   }
->   
-> -static inline target_ulong ppc_hash32_load_hpte0(PowerPCCPU *cpu,
-> -                                                 hwaddr pte_offset)
-> -{
-> -    target_ulong base = ppc_hash32_hpt_base(cpu);
-> -
-> -    return ldl_phys(CPU(cpu)->as, base + pte_offset);
-> -}
-> -
-> -static inline target_ulong ppc_hash32_load_hpte1(PowerPCCPU *cpu,
-> -                                                 hwaddr pte_offset)
-> -{
-> -    target_ulong base = ppc_hash32_hpt_base(cpu);
-> -
-> -    return ldl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
-> -}
-> -
->   static inline hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
->   {
->       return (hash * HASH_PTEG_SIZE_32) & ppc_hash32_hpt_mask(cpu);
-> diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-> index 8b980a5aa90..08c9f63a132 100644
-> --- a/target/ppc/mmu-hash32.c
-> +++ b/target/ppc/mmu-hash32.c
-> @@ -201,6 +201,20 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
->       return false;
->   }
->   
-> +static target_ulong ppc_hash32_load_hpte0(PowerPCCPU *cpu, hwaddr pte_offset)
-> +{
-> +    target_ulong base = ppc_hash32_hpt_base(cpu);
-> +
-> +    return ldl_phys(CPU(cpu)->as, base + pte_offset);
-> +}
-> +
-> +static target_ulong ppc_hash32_load_hpte1(PowerPCCPU *cpu, hwaddr pte_offset)
-> +{
-> +    target_ulong base = ppc_hash32_hpt_base(cpu);
-> +
-> +    return ldl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
-> +}
-> +
->   static hwaddr ppc_hash32_pteg_search(PowerPCCPU *cpu, hwaddr pteg_off,
->                                        bool secondary, target_ulong ptem,
->                                        ppc_hash_pte32_t *pte)
+> list_first_or_null_rcu() is useful to replace a sequence of
+> list_empty() and list_first_entry() that is protected by a lock, but
+> this function instead requires the invariant that nobody deletes an
+> element from the list, and list_first_or_null_rcu() does not allow
+> removing the requirement.
+>
+> The header file says:
+> > Where are list_empty_rcu() and list_first_entry_rcu()?
+> >
+> > They do not exist because they would lead to subtle race conditions:
+> >
+> > if (!list_empty_rcu(mylist)) {
+> >	struct foo *bar = list_first_entry_rcu(mylist, struct foo,
+> >					       list_member);
+> >	do_something(bar);
+> > }
+> >
+> > The list might be non-empty when list_empty_rcu() checks it, but it
+> > might have become empty by the time that list_first_entry_rcu()
+> > rereads the ->next pointer, which would result in a SEGV.
+> >
+> > When not using RCU, it is OK for list_first_entry() to re-read that
+> > pointer because both functions should be protected by some lock that
+> > blocks writers.
+> >
+> > When using RCU, list_empty() uses READ_ONCE() to fetch the
+> > RCU-protected ->next pointer and then compares it to the address of
+> > the  list head.  However, it neither dereferences this pointer nor
+> > provides  this pointer to its caller.  Thus, READ_ONCE() suffices
+> > (that is,  rcu_dereference() is not needed), which means that
+> > list_empty() can be used anywhere you would want to use
+> > list_empty_rcu().  Just don't expect anything useful to happen if you
+> > do a subsequent lockless call to list_first_entry_rcu()!!!
+> >
+> > See list_first_or_null_rcu for an alternative.
+> 
+> However, kvm_supports_guest_pmuv3() locked a mutex when calling
+> list_empty() and unlocked it immediately after that, instead of
+> re-reading list_first_entry(). This construct inherently had a race
+> condition with code that deletes an element; when the caller of
+> kvm_supports_guest_pmuv3() decides to enable guest PMUv3, the host PMU
+> may have been gone. But it was still safe because no one deletes an
+> element.
+> 
+> The same logic also applies when using RCU. As the comment says, we
+> can use list_empty() instead of the hypothetical list_empty_rcu()
+> macro because we don't expect it to magically enable something like
+> list_first_entry_rcu(). This function instead keep relying on the fact
+> that no one deletes an element of the list.
 
+And that's exactly the sort of thing I am trying to plan for. *Should*
+we introduce a way to remove PMUs from the list, this predicate
+becomes unsafe.
+
+So I want at least a comment explaining this to the unsuspecting
+reader, as this is rather subtle.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
