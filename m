@@ -1,109 +1,203 @@
-Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A258BE9;
-	Mon, 20 Apr 2026 02:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE3D377EA1
+	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 03:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776652298; cv=none; b=Rhi9xct08HXXAr/mkJhwf7fzTgAxoYoEXZ8R3OYAaWgM28sxR82mMw67QpkBU151p5yqqdQikVBCC0VAfQ2uA6MrSgHtySz1BVTCtX7wg4mdNLtVvhDZGvX1W83Xs7pDC8xOzKJfsOJmVuwlRYR8iBJ+fX4mofbPkNGLaa7/iiw=
+	t=1776654572; cv=none; b=XDsflRdG4AZjY9pPTouFRKd7NSAxCHb9O8rv4Azlkn3jxktSfkoXZLpF8j7Pq4DUSbpoE/EUIxr34gP08X4Tb/9rHKbNVBPZ1+mI9YgLUvd6GC21sScoQz0ZdxDqvLL+BsXowlxMjnlcygZg1UBVzD3WJf7tR3S6oYnVtTlSc+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776652298; c=relaxed/simple;
-	bh=TQwullVsUIZOqFIqtUzzuyHJAcez9ayghVBG9N4kZeI=;
-	h=Message-ID:Date:From:To:Cc:Subject:MIME-Version:Content-Type:
-	 Content-Disposition; b=nVZuMWHXb2K8nFx33IMgC++JyG5Ec8DGso3OxNqSTiooq4m6dp+WkVu2ZK6QM+KR0ygTmEeBh5AqQC7LIl5kjDavzuLYq6oAyOklPqM93rp8swPCfFNshsOwPHB3lH/21AueIUU6Pu7VXOhuOZG91m0d8a7cIifEizgBTJsxMB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=arBOEobh; arc=none smtp.client-ip=203.205.221.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1776654572; c=relaxed/simple;
+	bh=QjlU+K6TNzgSBz5mH1uCX+aRYlnMWSQWE4Jap3gw1xc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ti5sbk5Hx7Fmi9jJfmvJyngnXMewYz5RUDpo35DSLfT+kETzB1jfJPe/EX7OJr5R4B7Q3QAYhJBfgAZfnGhknLcu1iz4HVjvUAT7emCM6Wkm0iXTKh1c+t2IljZsRDLFeVGz+7QwYS3quK7FKPfaAxiBm76T32yvnpePElvee9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Mx7mParP; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="arBOEobh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1776652286; bh=wxVdb/Eq8JrZEGitcjcXcDQR5qqONiuRwjZdYnagZZY=;
-	h=Date:From:To:Cc:Subject;
-	b=arBOEobhmoLfNRUSibLbPtGA/DiLcE7uNXi35uC0xi7wHVa+rPna5RhbRn+uqIuqu
-	 mzzTGcOpFXjpjnZ6LBQSsq0qSLJjjQDPprQYxuRYU8Y42n3RGidN1d9+o8Gl41Ee83
-	 eVY+gMtYge3vjhsPlwVqYn0102X6UhFm2J0wfHlM=
-Received: from zh-pc ([116.128.244.169])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 7D72DC58; Mon, 20 Apr 2026 10:31:23 +0800
-X-QQ-mid: xmsmtpt1776652283tmv6052s8
-Message-ID: <tencent_91386147982D1B2901B22D2423D4643AC90A@qq.com>
-X-QQ-XMAILINFO: OATpkVjS499uknEXpEyu2ikjBdlIRHNiNW9MYdVfIicuZNyNNEbldrkSIPfMvY
-	 2wJQZtZh+F7Q9UvbiYRtfOYmrU0/Ot8OFpGvqFbWdH/3Qlw5zB+q8/P1k4NN0v7wo+9qAJuPze4+
-	 /Sn6F4Fn77WFL3QAc8440vhV/L+h5Eckn9MaB4vdUNR9UjmoP9y/FQkqDLTATM5O9//HCXFE8RUW
-	 pYZ0Xy+yDxKv5He8sXF94kzXMOd0oKWNtJtXOKfGHsTXlbzU4kjtoj1BwyoIPKws87dOPT9zt4i+
-	 YCOL+LhI/noORJGyx4QYOJSJ7l/JgXVWBMFvvnm0XttO8IgFwa/0KwWEX+NiASqwZtjsMtx7Mvfr
-	 JiBfqN7XZUCN7WwIxcW6HHjaYc62MTTnYscY4KypmJBmmw/eDLM/0/Q6++VVBp1dyEGkIW9HfN0D
-	 /X369gvVZAVjQx2Av/Bd+ulXYqFpQ5LcIO3PjX8AJo3YrQ08pBy2xfim4SHFbFJIlu0fFdzenALU
-	 Su0KklhpKrGkvY3Kjn+NhIBAK7TuurHipkpGKlGLlLn3ZT/EAC7xuaa/DU3J5btSu6DlCBww9Paw
-	 UXjShfkHOE1P3+rs2qDIB0LThUyzwmFi9w5Xg9kxaBvWjYYV37KwIoxNqvfJ/qGFwA/5awsJuJ7x
-	 2FBSXQRDE4z1l6wmTKMb0M9KSnwf7szzcLkc+fZAZTL3x4xpFRwJAFOxNefuwB1pXChGjANMkRRw
-	 M4MhISawppWWZxW34BfpKEHIC8mOVhwfSbSX0V0vjQB7y2r2Dt/wsZ5cjIm8KjJCZfPAtx/bMxJV
-	 t+J8PDSVTc4STYjCVVE+4kYprEBgTD4k6eg+tE1B5AbnGNjhlE/PToM245fSBbQyT6bjmyU98e+q
-	 somCswrExwTRDyTsA7S1TV3LMULU4b3OmyqID2jYX78BmgcHwKNLxqu5k8X5uw4Q1Uj8PgpP++4R
-	 hBQlsVmYDaK2/2gjwP7w9gbHk0jqJlGCyylWukMUz5CEd2p/qiJExzHbkFVqcOfMgJenlJsWopKy
-	 iq3mQSZKP6NlUyZtJYk19bpzXO2HaSe4CWUJVJ0K9N1ImyRQzXbSmFK0Ix3N8BA8eM/p8702HStH
-	 y61qJb
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-Date: Mon, 20 Apr 2026 10:31:22 +0800
-From: zhanghao <76824143@qq.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: Dynamically scale directed-yield retries in
- kvm_vcpu_on_spin()
-X-OQ-MSGID: <20260420023122.GA49894@zh-pc>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Mx7mParP"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776654558;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AKl1g17ICBm+Yhc31h7NqqZRHOYKzoDOhKe2BAK4Ft4=;
+	b=Mx7mParPLpVFgaIsnwObBrva2C+5otUR/xdKuDFQn7DRs58EXi/S2SYJmUo/FlL/NI4bMz
+	LVozt4FY9JRCCCV8dw4pPwmOiNy/p+R2L2M9aY7tIFFaB2w3gJK1ABztD7ngmnjP4QsJSy
+	5icta9wZ9AzxQ8BVz01S6WNDN9u5CcE=
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: peterz@infradead.org,
+	david@kernel.org,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com
+Subject: [PATCH 7.2 v9 0/2] skip redundant sync IPIs when TLB flush sent them
+Date: Mon, 20 Apr 2026 11:08:49 +0800
+Message-ID: <20260420030851.6735-1-lance.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-kvm_vcpu_on_spin() currently uses a fixed retry budget (3) when
-kvm_vcpu_yield_to() returns a negative value. That fixed limit is
-often too small on large VMs, where candidate selection is more likely
-to race with scheduler state and transiently fail.
+Hi all,
 
-Replace the constant retry count with a vCPU-count-based budget:
+When page table operations require synchronization with software/lockless
+walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+TLB (tlb->freed_tables or tlb->unshared_tables).
 
-  try = min(nr_vcpus - 1, 8);
+On architectures where the TLB flush already sends IPIs to all target CPUs,
+the subsequent sync IPI broadcast is redundant. This is not only costly on
+large systems where it disrupts all CPUs even for single-process page table
+operations, but has also been reported to hurt RT workloads[1].
 
-This keeps retries bounded while allowing more opportunities to find a
-yieldable target as VM size grows. Small VMs keep near-identical
-behavior, while larger VMs get a better chance of making directed-yield
-progress under contention.
+This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
+the prior TLB flush already provided the necessary synchronization. When
+true, the sync calls can early-return.
 
-No functional change is intended beyond retry-budget tuning.
+A few cases rely on this synchronization:
 
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
----
- virt/kvm/kvm_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+   of the PMD table for other purposes in the last remaining user after
+   unsharing.
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 89489996fbc1..cbe53cea10a3 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3961,12 +3961,14 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
- 	int nr_vcpus, start, i, idx, yielded;
- 	struct kvm *kvm = me->kvm;
- 	struct kvm_vcpu *vcpu;
--	int try = 3;
-+	int try = 0;
- 
- 	nr_vcpus = atomic_read(&kvm->online_vcpus);
- 	if (nr_vcpus < 2)
- 		return;
- 
-+	try = min(nr_vcpus - 1, 8);
-+
- 	/* Pairs with the smp_wmb() in kvm_vm_ioctl_create_vcpu(). */
- 	smp_rmb();
- 
+2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+   and (possibly) freeing the page table / re-depositing it.
 
-base-commit: c1f49dea2b8f335813d3b348fd39117fb8efb428
+Two-step plan as David suggested[4]:
+
+Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
+flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+guarantee IPIs were sent, keeping it clean and simple.
+
+Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+software/lockless page table walks, benefiting all architectures.
+
+Regarding Step 2, it obviously only applies to setups where Step 1 does not
+apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
+attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
+work and tuning; it will be submitted separately once ready.
+
+On a 64-core Intel x86 server, the CAL interrupt count in
+/proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
+range with this series applied.
+
+David Hildenbrand did the initial implementation. I built on his work and
+relied on off-list discussions to push it further - thanks a lot David!
+
+[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
+[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+[4] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+
+v8 -> v9:
+- Rebase on mm-new; re-tested, no code changes.
+- https://lore.kernel.org/linux-mm/20260324085238.44477-1-lance.yang@linux.dev/
+
+v7 -> v8:
+- Pick up Acked-by tags from David, thanks!
+- Add CAL interrupt numbers to the cover letter (per Andrew, thanks!)
+- Rewrite the [2/2] changelog and reword the comment (per David, thanks!)
+- https://lore.kernel.org/linux-mm/20260309020711.20831-1-lance.yang@linux.dev/
+
+v6 -> v7:
+- Simplify init logic and eliminate duplicated X86_FEATURE_INVLPGB checks
+  (per Dave, thanks!)
+- Remove flush_tlb_multi_implies_ipi_broadcast property because no PV
+  backend sets it today.
+- https://lore.kernel.org/linux-mm/20260304021046.18550-1-lance.yang@linux.dev/
+
+v5 -> v6:
+- Use static_branch to eliminate the branch overhead (per Peter, thanks!)
+- https://lore.kernel.org/linux-mm/20260302063048.9479-1-lance.yang@linux.dev/
+
+v4 -> v5:
+- Drop per-CPU tracking (active_lockless_pt_walk_mm) from this series;
+  defer to Step 2 as it adds ~3% GUP-fast overhead
+- Keep pv_ops property false for PV backends like KVM: preempted vCPUs
+  cannot be assumed safe (per Sean, thanks!)
+  https://lore.kernel.org/linux-mm/aaCP95l-m8ISXF78@google.com/
+- https://lore.kernel.org/linux-mm/20260202074557.16544-1-lance.yang@linux.dev/ 
+
+v3 -> v4:
+- Rework based on David's two-step direction and per-CPU idea:
+  1) Targeted IPIs: per-CPU variable when entering/leaving lockless page
+     table walk; tlb_remove_table_sync_mm() IPIs only those CPUs.
+  2) On x86, pv_mmu_ops property set at init to skip the extra sync when
+     flush_tlb_multi() already sends IPIs.
+  https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+- https://lore.kernel.org/linux-mm/20260106120303.38124-1-lance.yang@linux.dev/
+
+v2 -> v3:
+- Complete rewrite: use dynamic IPI tracking instead of static checks
+  (per Dave Hansen, thanks!)
+- Track IPIs via mmu_gather: native_flush_tlb_multi() sets flag when
+  actually sending IPIs
+- Motivation for skipping redundant IPIs explained by David:
+  https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+- https://lore.kernel.org/linux-mm/20251229145245.85452-1-lance.yang@linux.dev/
+
+v1 -> v2:
+- Fix cover letter encoding to resolve send-email issues. Apologies for
+  any email flood caused by the failed send attempts :(
+
+RFC -> v1:
+- Use a callback function in pv_mmu_ops instead of comparing function
+  pointers (per David)
+- Embed the check directly in tlb_remove_table_sync_one() instead of
+  requiring every caller to check explicitly (per David)
+- Move tlb_table_flush_implies_ipi_broadcast() outside of
+  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
+  that don't enable this config.
+  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+
+Lance Yang (2):
+  mm/mmu_gather: prepare to skip redundant sync IPIs
+  x86/tlb: skip redundant sync IPIs for native TLB flush
+
+ arch/x86/include/asm/tlb.h      | 18 +++++++++++++++++-
+ arch/x86/include/asm/tlbflush.h |  2 ++
+ arch/x86/kernel/smpboot.c       |  1 +
+ arch/x86/mm/tlb.c               | 15 +++++++++++++++
+ include/asm-generic/tlb.h       | 17 +++++++++++++++++
+ mm/mmu_gather.c                 | 15 +++++++++++++++
+ 6 files changed, 67 insertions(+), 1 deletion(-)
+
 -- 
-2.25.1
-
+2.49.0
