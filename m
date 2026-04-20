@@ -1,55 +1,55 @@
 Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEF0388E66
-	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 21:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5C93AA1B0
+	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 21:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776720019; cv=none; b=MBkVbOaADyFVrnwpoc2hKdPjJ4Jx5tsNhzkPGwUNALR/Y6B9LA8q5eAXPuMkSJFeqQTCXCqH0ROhXjELJdDYaD1b2f/rkR+Af7J4CtGABXTL6lV0IttnsoTbKk3h5IuFKwWz9BVF9D/psMfBlfNdko04RhRe34xfooy1FsNSbr4=
+	t=1776720023; cv=none; b=ML4z3jTd6HwOg46x3tZMnhmfoZe1m0MV54HD+bYhk+hWSuy27cYVafY38oL3Y/Z0AZdGzZTm+FeENIV9X6pHer8TPSUzevXOoEKurXYCO5T4MXAr6n444CvJh/XhNR+MloSHIl/b42aeYVsffjNEeQUPsZchT6ETPM9V3qGpQvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776720019; c=relaxed/simple;
-	bh=kbweFmD+KO6ooJGyMP084uf3QOm+M3o/PanzUwT5Zeo=;
+	s=arc-20240116; t=1776720023; c=relaxed/simple;
+	bh=aKTu2zQ9sqbrN3KSs4RghOXHomLpVFQ64vPLJKshjg4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t13Tbv9PjsO4UNCYarFNRGjdjczro2HvDe2J36GJrM7F/SQYHEj/Jl67jBlJyDDzkgHmccrYZVoVo5xlOgQfiwNAW5KUJuq1Uv0MwPHdUfyg93cOTMjVRr1Zcw9yyumt7cj2lAb9Qy3pkjq4zyfx/qZjFw0mKCP7Luz9iECbdGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YSpM7rti; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=koIHD15h//g8RYuL2wJIH+gYj7waA6lWg5qeIZfCSyKMgxQZO3KcVMPh/jOMk202+Hz+wka07ZOvS1pZUef8qzPSSCYn05Us+1Fl/guoLs1Hc0Ix7jte6k155yAO64X6tT54zsiWBVb0SAFIZlE0q44PdXNEJGqyK4H/qWM7rEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vxS5UCFR; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YSpM7rti"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c70dd30025fso4230290a12.2
-        for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 14:20:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vxS5UCFR"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c79798cd9b9so903936a12.2
+        for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 14:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776720016; x=1777324816; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776720020; x=1777324820; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=LgSbE/Mgjmr5sEfkbBcIyWDe7SVs47UFLiamE2DA5JI=;
-        b=YSpM7rtiBG7njtBRy6cDl44JnI+4y3MI/RfaL+n55c6DsmOAUsvCDlY3i0qrsVbRzY
-         QWMD9TP4gGYrzqIiPst7rPHKaD3mcz9vTl/ym8F1F5hTQ+VNjqKFDDDPS0+M2Xf4vRAk
-         8TVWJJUt9h/2FcBqoAGURsPEyT5eWSDYoMUVbXQ8zy0xc6Izd705i3U9uiJN3GcE2l5h
-         LoXI1s+t+WuTAwA3TK2YFYfSmCcVLqS20J0vhWV6WiMqagHU/7ub2+Vgu6MQMYrD9KTu
-         TTgAo7BGvqwPdLKYIoKBFaIvi28UMMmnzLMs4OoUvQ+aGtNT36WgYfCxTtgM0eVHi/8B
-         4rWw==
+        bh=wb4qOZehlu9qqoPxcG4skBDjLAAYxFlHWRfg5heAd7Y=;
+        b=vxS5UCFR0/x8xr1DNfN9IgFjAOncHYb2CJt2UKHPm7Pcu5SLqOb0ymn4/YfLGtk0j5
+         fBLaGLicEe/1nAQFh7mVQNPzSv0A8IXWrTMCmIZMv/7yE/ms7H1si++8EH6Ao9gUji6i
+         A+t6fJKW6UJpFUlhex/4Poe8vsVJAMiJkAK7j+cUO5OvmTrHzHcunfVee2A9cijkgmMk
+         AeYpYcyYOISexi/zX6b1It4PuUkVFf4I31y6CRphRMoLmY1QD2xbI+GxkSShRSq3gkT/
+         qykVPUT+w9DSpPmZNpdXnxLY56c9o5rxksSLGgxs9G0xFDY0/3YGA+OdjqO6ozxSjt6q
+         +eNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776720016; x=1777324816;
+        d=1e100.net; s=20251104; t=1776720020; x=1777324820;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LgSbE/Mgjmr5sEfkbBcIyWDe7SVs47UFLiamE2DA5JI=;
-        b=La5Cz6om+hmZHBAWMLnuFoIqhsgxdcFZv599RH71M85oYXFqyLPUrUr6VQddGZ0kSx
-         /ZaNPiNoK2+2ZxU/B4EKkJ/4zZj6yFzoLlzqbxZpPujpuCBIUYgD7kLRBLJDPof2cCoB
-         KobZ+DLnYayDPqquRKGG/VuCuZgLkxw1b9GMI9PUseotX61blr3WSj0qjGGojdk+qFbr
-         9PXTYR5QNh3oblQ9OgQ/FTgdY1Chunz73/okbx0Ij5V9m3YnvI1qOySuRmgAD5iiYQAF
-         lZiKEOn+7lj4CL3sgpXrM5ntfaKLBvOK/xDgs2MMFf9XVq3bqRB5jCqgV9jp2lw4Dq9j
-         9RCw==
-X-Gm-Message-State: AOJu0YyZAobTVpyBWUJVh5Sv0mCTbCc2jXjv9K2imQLR317e69gSkbzg
-	DeORvHFHCpfjSMyTYhCFOYHYMtUQzpGiSctgY4Amm3oOEeeoOJ4h7Z4hUB0itNq57BXTp2D5FNI
-	GhKIhVQ==
-X-Received: from pfbjw21.prod.google.com ([2002:a05:6a00:9295:b0:82f:a4cc:2fb3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd0a:b0:82c:9897:70e6
- with SMTP id d2e1a72fcca58-82f8c8e8aaemr16257900b3a.34.1776720015506; Mon, 20
- Apr 2026 14:20:15 -0700 (PDT)
+        bh=wb4qOZehlu9qqoPxcG4skBDjLAAYxFlHWRfg5heAd7Y=;
+        b=ocVYFuRklHJ9An26cuPsppLuHjv0c41tKcECDsJFsGk3o0Ds35ujbuc2+zuDceW+5O
+         A9Bfe9tmY7adOLtHrofVnw7qTiFa+xaBaYkPlwnj76rflra9CyzZ1vas3se1UvbIuw9D
+         0SArc9JWxoUfbWxoK1g5EW1Lfe62Q4qJ/Xmn9/HfHP2K8U+iYBgtYQ1dCB+pDggCbz1c
+         iaprAoL3QzWqUJuGQBqjHBaceCEIsgLX2Ry9UQltI3lPpFoa62s10/IfjVXVtf4332NS
+         uaYc6l+4p8D75+YjFXgm9L6UuU8pnwv1UxOo7Cvup9GngR+HDhm02NWa01lgeCxIh/jF
+         gPCA==
+X-Gm-Message-State: AOJu0YzlprT7aFWZzXiIsABuL18VL5RBxPh41kEcB4oJeGq4RMrJteNA
+	yozAN27MEqbOM2cPyKvdN75Mo6PSwpgCwOSF/3D9Hm5wRSUi4ZocKXsH6+oA+XvQNF/kptOgGKQ
+	AAWW+Nw==
+X-Received: from pfbfc25.prod.google.com ([2002:a05:6a00:2e19:b0:82f:98cb:c2a9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14c2:b0:82f:44dc:f85c
+ with SMTP id d2e1a72fcca58-82f8c8d6ac2mr15859883b3a.34.1776720019124; Mon, 20
+ Apr 2026 14:20:19 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 20 Apr 2026 14:19:50 -0700
+Date: Mon, 20 Apr 2026 14:19:52 -0700
 In-Reply-To: <20260420212004.3938325-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260420212004.3938325-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
-Message-ID: <20260420212004.3938325-6-seanjc@google.com>
-Subject: [PATCH v3 05/19] KVM: selftests: Use s64 instead of int64_t
+Message-ID: <20260420212004.3938325-8-seanjc@google.com>
+Subject: [PATCH v3 07/19] KVM: selftests: Use s32 instead of int32_t
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -77,13 +77,13 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Use s64 instead of int64_t to make the KVM selftests code more concise
+Use s32 instead of int32_t to make the KVM selftests code more concise
 and more similar to the kernel (since selftests are primarily developed
 by kernel developers).
 
 This commit was generated with the following command:
 
-  git ls-files tools/testing/selftests/kvm | xargs sed -i 's/int64_t/s64/g'
+  git ls-files tools/testing/selftests/kvm | xargs sed -i 's/int32_t/s32/g'
 
 Then by manually adjusting whitespace to make checkpatch.pl happy.
 
@@ -92,221 +92,132 @@ No functional change intended.
 Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/arm64/sea_to_user.c  |  2 +-
- tools/testing/selftests/kvm/arm64/set_id_regs.c  |  2 +-
- tools/testing/selftests/kvm/guest_print_test.c   |  2 +-
- tools/testing/selftests/kvm/include/test_util.h  |  4 ++--
- tools/testing/selftests/kvm/lib/test_util.c      | 16 ++++++++--------
- .../testing/selftests/kvm/lib/userfaultfd_util.c |  2 +-
- tools/testing/selftests/kvm/lib/x86/processor.c  |  2 +-
- tools/testing/selftests/kvm/memslot_perf_test.c  |  2 +-
- tools/testing/selftests/kvm/steal_time.c         |  4 ++--
- tools/testing/selftests/kvm/x86/kvm_clock_test.c |  2 +-
- .../selftests/kvm/x86/nested_tsc_adjust_test.c   |  6 +++---
- 11 files changed, 22 insertions(+), 22 deletions(-)
+ .../kvm/arm64/arch_timer_edge_cases.c         | 24 +++++++++----------
+ .../selftests/kvm/include/arm64/arch_timer.h  |  4 ++--
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/arm64/sea_to_user.c b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-index 61954f2221e4..7285eade4acf 100644
---- a/tools/testing/selftests/kvm/arm64/sea_to_user.c
-+++ b/tools/testing/selftests/kvm/arm64/sea_to_user.c
-@@ -59,7 +59,7 @@ static bool far_invalid;
- static u64 translate_to_host_paddr(unsigned long vaddr)
- {
- 	u64 pinfo;
--	int64_t offset = vaddr / getpagesize() * sizeof(pinfo);
-+	s64 offset = vaddr / getpagesize() * sizeof(pinfo);
- 	int fd;
- 	u64 page_addr;
- 	u64 paddr;
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 9b9c04c963a1..4402f317f7d9 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -36,7 +36,7 @@ struct reg_ftr_bits {
- 	 * For FTR_EXACT, safe_val is used as the exact safe value.
- 	 * For FTR_LOWER_SAFE, safe_val is used as the minimal safe value.
- 	 */
--	int64_t safe_val;
-+	s64 safe_val;
+diff --git a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+index f8b183f13864..f7625eb711d6 100644
+--- a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
++++ b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+@@ -25,8 +25,8 @@
+ /* Depends on counter width. */
+ static u64 CVAL_MAX;
+ /* tval is a signed 32-bit int. */
+-static const int32_t TVAL_MAX = INT32_MAX;
+-static const int32_t TVAL_MIN = INT32_MIN;
++static const s32 TVAL_MAX = INT32_MAX;
++static const s32 TVAL_MIN = INT32_MIN;
  
- 	/* Allowed to be changed by the host after run */
- 	bool mutable;
-diff --git a/tools/testing/selftests/kvm/guest_print_test.c b/tools/testing/selftests/kvm/guest_print_test.c
-index 894ef7d2481e..b059abcf1a5b 100644
---- a/tools/testing/selftests/kvm/guest_print_test.c
-+++ b/tools/testing/selftests/kvm/guest_print_test.c
-@@ -25,7 +25,7 @@ static struct guest_vals vals;
- 
- /* GUEST_PRINTF()/GUEST_ASSERT_FMT() does not support float or double. */
- #define TYPE_LIST					\
--TYPE(test_type_i64,  I64,  "%ld",   int64_t)		\
-+TYPE(test_type_i64,  I64,  "%ld",   s64)		\
- TYPE(test_type_u64,  U64u, "%lu",   u64)		\
- TYPE(test_type_x64,  U64x, "0x%lx", u64)		\
- TYPE(test_type_X64,  U64X, "0x%lX", u64)		\
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index 62fe83763021..d7489db738bf 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -101,8 +101,8 @@ do {										\
- 
- size_t parse_size(const char *size);
- 
--int64_t timespec_to_ns(struct timespec ts);
--struct timespec timespec_add_ns(struct timespec ts, int64_t ns);
-+s64 timespec_to_ns(struct timespec ts);
-+struct timespec timespec_add_ns(struct timespec ts, s64 ns);
- struct timespec timespec_add(struct timespec ts1, struct timespec ts2);
- struct timespec timespec_sub(struct timespec ts1, struct timespec ts2);
- struct timespec timespec_elapsed(struct timespec start);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index d863705f6795..f5b460c445be 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -83,12 +83,12 @@ size_t parse_size(const char *size)
- 	return base << shift;
+ /* After how much time we say there is no IRQ. */
+ static const u32 TIMEOUT_NO_IRQ_US = 50000;
+@@ -355,7 +355,7 @@ static void test_timer_cval(enum arch_timer timer, u64 cval,
+ 	test_timer_xval(timer, cval, TIMER_CVAL, wm, reset_state, reset_cnt);
  }
  
--int64_t timespec_to_ns(struct timespec ts)
-+s64 timespec_to_ns(struct timespec ts)
+-static void test_timer_tval(enum arch_timer timer, int32_t tval,
++static void test_timer_tval(enum arch_timer timer, s32 tval,
+ 			    irq_wait_method_t wm, bool reset_state,
+ 			    u64 reset_cnt)
  {
--	return (int64_t)ts.tv_nsec + 1000000000LL * (int64_t)ts.tv_sec;
-+	return (s64)ts.tv_nsec + 1000000000LL * (s64)ts.tv_sec;
+@@ -385,10 +385,10 @@ static void test_cval_no_irq(enum arch_timer timer, u64 cval,
+ 	test_xval_check_no_irq(timer, cval, usec, TIMER_CVAL, wm);
  }
  
--struct timespec timespec_add_ns(struct timespec ts, int64_t ns)
-+struct timespec timespec_add_ns(struct timespec ts, s64 ns)
+-static void test_tval_no_irq(enum arch_timer timer, int32_t tval, u64 usec,
++static void test_tval_no_irq(enum arch_timer timer, s32 tval, u64 usec,
+ 			     sleep_method_t wm)
  {
- 	struct timespec res;
- 
-@@ -101,15 +101,15 @@ struct timespec timespec_add_ns(struct timespec ts, int64_t ns)
- 
- struct timespec timespec_add(struct timespec ts1, struct timespec ts2)
- {
--	int64_t ns1 = timespec_to_ns(ts1);
--	int64_t ns2 = timespec_to_ns(ts2);
-+	s64 ns1 = timespec_to_ns(ts1);
-+	s64 ns2 = timespec_to_ns(ts2);
- 	return timespec_add_ns((struct timespec){0}, ns1 + ns2);
+-	/* tval will be cast to an int32_t in test_xval_check_no_irq */
++	/* tval will be cast to an s32 in test_xval_check_no_irq */
+ 	test_xval_check_no_irq(timer, (u64)tval, usec, TIMER_TVAL, wm);
  }
  
- struct timespec timespec_sub(struct timespec ts1, struct timespec ts2)
+@@ -463,7 +463,7 @@ static void test_timers_fired_multiple_times(enum arch_timer timer)
+  * timeout for the wait: we use the wfi instruction.
+  */
+ static void test_reprogramming_timer(enum arch_timer timer, irq_wait_method_t wm,
+-				     int32_t delta_1_ms, int32_t delta_2_ms)
++				     s32 delta_1_ms, s32 delta_2_ms)
  {
--	int64_t ns1 = timespec_to_ns(ts1);
--	int64_t ns2 = timespec_to_ns(ts2);
-+	s64 ns1 = timespec_to_ns(ts1);
-+	s64 ns2 = timespec_to_ns(ts2);
- 	return timespec_add_ns((struct timespec){0}, ns1 - ns2);
+ 	local_irq_disable();
+ 	reset_timer_state(timer, DEF_CNT);
+@@ -504,7 +504,7 @@ static void test_reprogram_timers(enum arch_timer timer)
+ 
+ static void test_basic_functionality(enum arch_timer timer)
+ {
+-	int32_t tval = (int32_t) msec_to_cycles(test_args.wait_ms);
++	s32 tval = (s32)msec_to_cycles(test_args.wait_ms);
+ 	u64 cval = DEF_CNT + msec_to_cycles(test_args.wait_ms);
+ 	int i;
+ 
+@@ -685,7 +685,7 @@ static void test_set_cnt_after_xval_no_irq(enum arch_timer timer,
  }
  
-@@ -123,7 +123,7 @@ struct timespec timespec_elapsed(struct timespec start)
- 
- struct timespec timespec_div(struct timespec ts, int divisor)
+ static void test_set_cnt_after_tval(enum arch_timer timer, u64 cnt_1,
+-				    int32_t tval, u64 cnt_2,
++				    s32 tval, u64 cnt_2,
+ 				    irq_wait_method_t wm)
  {
--	int64_t ns = timespec_to_ns(ts) / divisor;
-+	s64 ns = timespec_to_ns(ts) / divisor;
- 
- 	return timespec_add_ns((struct timespec){0}, ns);
- }
-diff --git a/tools/testing/selftests/kvm/lib/userfaultfd_util.c b/tools/testing/selftests/kvm/lib/userfaultfd_util.c
-index 2f069ce6a446..ef8d76f71f83 100644
---- a/tools/testing/selftests/kvm/lib/userfaultfd_util.c
-+++ b/tools/testing/selftests/kvm/lib/userfaultfd_util.c
-@@ -27,7 +27,7 @@ static void *uffd_handler_thread_fn(void *arg)
- {
- 	struct uffd_reader_args *reader_args = (struct uffd_reader_args *)arg;
- 	int uffd = reader_args->uffd;
--	int64_t pages = 0;
-+	s64 pages = 0;
- 	struct timespec start;
- 	struct timespec ts_diff;
- 	struct epoll_event evt;
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 81f5dea51fc3..802543aa588c 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -379,7 +379,7 @@ static u64 *__vm_get_page_table_entry(struct kvm_vm *vm,
- 	 * Check that the vaddr is a sign-extended va_width value.
- 	 */
- 	TEST_ASSERT(vaddr ==
--		    (((int64_t)vaddr << (64 - va_width) >> (64 - va_width))),
-+		    (((s64)vaddr << (64 - va_width) >> (64 - va_width))),
- 		    "Canonical check failed.  The virtual address is invalid.");
- 
- 	for (current_level = mmu->pgtable_levels;
-diff --git a/tools/testing/selftests/kvm/memslot_perf_test.c b/tools/testing/selftests/kvm/memslot_perf_test.c
-index d5161e8aee14..bf62b522d32e 100644
---- a/tools/testing/selftests/kvm/memslot_perf_test.c
-+++ b/tools/testing/selftests/kvm/memslot_perf_test.c
-@@ -1040,7 +1040,7 @@ static bool parse_args(int argc, char *argv[],
- 
- struct test_result {
- 	struct timespec slot_runtime, guest_runtime, iter_runtime;
--	int64_t slottimens, runtimens;
-+	s64 slottimens, runtimens;
- 	u64 nloops;
- };
- 
-diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
-index 6379f47af422..d0a41a2bcccb 100644
---- a/tools/testing/selftests/kvm/steal_time.c
-+++ b/tools/testing/selftests/kvm/steal_time.c
-@@ -123,7 +123,7 @@ struct st_time {
- 	u64 st_time;
- };
- 
--static int64_t smccc(uint32_t func, u64 arg)
-+static s64 smccc(uint32_t func, u64 arg)
- {
- 	struct arm_smccc_res res;
- 
-@@ -140,7 +140,7 @@ static void check_status(struct st_time *st)
- static void guest_code(int cpu)
- {
- 	struct st_time *st;
--	int64_t status;
-+	s64 status;
- 
- 	status = smccc(SMCCC_ARCH_FEATURES, PV_TIME_FEATURES);
- 	GUEST_ASSERT_EQ(status, 0);
-diff --git a/tools/testing/selftests/kvm/x86/kvm_clock_test.c b/tools/testing/selftests/kvm/x86/kvm_clock_test.c
-index 5df0cceec03b..2b8a3feee1f8 100644
---- a/tools/testing/selftests/kvm/x86/kvm_clock_test.c
-+++ b/tools/testing/selftests/kvm/x86/kvm_clock_test.c
-@@ -18,7 +18,7 @@
- 
- struct test_case {
- 	u64 kvmclock_base;
--	int64_t realtime_offset;
-+	s64 realtime_offset;
- };
- 
- static struct test_case test_cases[] = {
-diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
-index db0d44b8fbd6..a18b0cfd42e2 100644
---- a/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
-@@ -53,9 +53,9 @@ enum {
- /* The virtual machine object. */
- static struct kvm_vm *vm;
- 
--static void check_ia32_tsc_adjust(int64_t max)
-+static void check_ia32_tsc_adjust(s64 max)
- {
--	int64_t adjust;
-+	s64 adjust;
- 
- 	adjust = rdmsr(MSR_IA32_TSC_ADJUST);
- 	GUEST_SYNC(adjust);
-@@ -117,7 +117,7 @@ static void l1_guest_code(void *data)
- 	GUEST_DONE();
+ 	test_set_cnt_after_xval(timer, cnt_1, tval, cnt_2, wm, TIMER_TVAL);
+@@ -699,7 +699,7 @@ static void test_set_cnt_after_cval(enum arch_timer timer, u64 cnt_1,
  }
  
--static void report(int64_t val)
-+static void report(s64 val)
+ static void test_set_cnt_after_tval_no_irq(enum arch_timer timer,
+-					   u64 cnt_1, int32_t tval,
++					   u64 cnt_1, s32 tval,
+ 					   u64 cnt_2, sleep_method_t wm)
  {
- 	pr_info("IA32_TSC_ADJUST is %ld (%lld * TSC_ADJUST_VALUE + %lld).\n",
- 		val, val / TSC_ADJUST_VALUE, val % TSC_ADJUST_VALUE);
+ 	test_set_cnt_after_xval_no_irq(timer, cnt_1, tval, cnt_2, wm,
+@@ -718,7 +718,7 @@ static void test_set_cnt_after_cval_no_irq(enum arch_timer timer,
+ static void test_move_counters_ahead_of_timers(enum arch_timer timer)
+ {
+ 	int i;
+-	int32_t tval;
++	s32 tval;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(irq_wait_method); i++) {
+ 		irq_wait_method_t wm = irq_wait_method[i];
+@@ -753,7 +753,7 @@ static void test_move_counters_behind_timers(enum arch_timer timer)
+ 
+ static void test_timers_in_the_past(enum arch_timer timer)
+ {
+-	int32_t tval = -1 * (int32_t) msec_to_cycles(test_args.wait_ms);
++	s32 tval = -1 * (s32)msec_to_cycles(test_args.wait_ms);
+ 	u64 cval;
+ 	int i;
+ 
+@@ -789,7 +789,7 @@ static void test_timers_in_the_past(enum arch_timer timer)
+ 
+ static void test_long_timer_delays(enum arch_timer timer)
+ {
+-	int32_t tval = (int32_t) msec_to_cycles(test_args.long_wait_ms);
++	s32 tval = (s32)msec_to_cycles(test_args.long_wait_ms);
+ 	u64 cval = DEF_CNT + msec_to_cycles(test_args.long_wait_ms);
+ 	int i;
+ 
+diff --git a/tools/testing/selftests/kvm/include/arm64/arch_timer.h b/tools/testing/selftests/kvm/include/arm64/arch_timer.h
+index 4fe0e0d07584..a5836d4ab7ee 100644
+--- a/tools/testing/selftests/kvm/include/arm64/arch_timer.h
++++ b/tools/testing/selftests/kvm/include/arm64/arch_timer.h
+@@ -79,7 +79,7 @@ static inline u64 timer_get_cval(enum arch_timer timer)
+ 	return 0;
+ }
+ 
+-static inline void timer_set_tval(enum arch_timer timer, int32_t tval)
++static inline void timer_set_tval(enum arch_timer timer, s32 tval)
+ {
+ 	switch (timer) {
+ 	case VIRTUAL:
+@@ -95,7 +95,7 @@ static inline void timer_set_tval(enum arch_timer timer, int32_t tval)
+ 	isb();
+ }
+ 
+-static inline int32_t timer_get_tval(enum arch_timer timer)
++static inline s32 timer_get_tval(enum arch_timer timer)
+ {
+ 	isb();
+ 	switch (timer) {
 -- 
 2.54.0.rc1.555.g9c883467ad-goog
 
