@@ -1,163 +1,227 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55CC3D88E0
-	for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 13:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776692692; cv=pass; b=n4TmH4csxoHdUSIxWAxSZZJEEu644OSPW+I681rygnj5HJ/UuMah76xZ5uGU1CdKndOxyiy+BsULcR/5XwPt/Sb4SVIik8daVwNbYWTEWbqe63mtybMDa/NxflF9vHCU+7sa2GorD8+OXTjRbvqeII6kj/M1hCcVgGjkR80e+ac=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776692692; c=relaxed/simple;
-	bh=C7ZkUintBNR+n78eHUpXeuDHLGAWIRDXrwfIjjftvQA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hIgm+0tAGG5C8Fn+DUSztAWr5GGZAPbSKnta47RdBo+u7HKydz2+hppV2aRsgcVbrAKXl7DSLq0AM+GS1Dq8RzrF2LeSRlXpQL65IP1rXWbLvQDDwVf9hbtYNPSOI1Ftc4OY0GiCIE+dkEw3HjfIMYreMscrpqduoeAwivoe7SI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BG3Q/GT4; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sKsuRCg8; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6862C2EA75E;
+	Mon, 20 Apr 2026 13:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776693199; cv=none; b=OEATqB0g52NmSdCCIWzCDLjLP2q4swubpW9w55rdNES6DK77KXzMkXYlwUOjucg/2rSlVjUzCnOyM1HU+SafC/OvmGsn7Ld2Mxk+XxcTJw4bGFSZv+jStTYVStpby6meW2zetauI2rKozfbgHpLJVeIiUit+uTVJUduucCckmVE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776693199; c=relaxed/simple;
+	bh=/2WX7QRrreqNa1lPcnWhMEbZ0TkX/QFlLwzbB3DhuUg=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HUfLQbJHOmdiU1r7Gc4u/2b3r60RkIuTkMNoJ7lLchsSwAoETvEeBGuqrMHM8Zp9vZ7q8LLhJFH3uZG8mHcz0HrAuQLM1eFR8jvk8px/HGfSM2KZ8UM/f5V79e6CTrrYwyh+XqDLGOqZlo2Wy1CEv5IxncF5OSSHD/tlJtf8Lm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLHDrjXd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BG3Q/GT4";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sKsuRCg8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776692689;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j+/nKR8khsmc6e6yq/Nrf/JA9GPxtBwZwZ1LoRnfnx4=;
-	b=BG3Q/GT46TZyOGghDosqoHSIKiEUJxfKh3nvhd2w3bBPujX1rnsgtfBRF3PtEkBlsDpbMB
-	T2VpDRupWBqMAJXGc4FblX1/Cyyf3gvkPRDPRa81fAbVLapVjWhAte19ce/BasosOmT6Uc
-	FoQdqTCc6tmzoDZ5Q8WctlU5p3GNa5M=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-rz_-Wjh4OKmIiOnFlwwsKQ-1; Mon, 20 Apr 2026 09:44:48 -0400
-X-MC-Unique: rz_-Wjh4OKmIiOnFlwwsKQ-1
-X-Mimecast-MFC-AGG-ID: rz_-Wjh4OKmIiOnFlwwsKQ_1776692686
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4411a215f17so579812f8f.1
-        for <kvm@vger.kernel.org>; Mon, 20 Apr 2026 06:44:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776692686; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iezoo9xIaC3/CIOBdRxOeC0U56e4RIe3vORoewi3IscFGsjr0CzOIJWKcoh8bgdaRz
-         U9fT+8RLwqKFk/KBjBPnr2agnhGUzjQfCUWvn67Bmp3p8YBZhMvxwRG4UeWAVbg7WHCA
-         WJKIfFRg53KwCXFdsMFtxEqjDqiiRcJ135rzF3+M+VXerR8TcGNivq0K6jdLHDx0AeUf
-         Fgq54dBW6isppiNf35Gb+DEXbtJm2XybxYT5q1I6coHfdbzh0Z97CjANpyu90uFD2lgM
-         u5SBsH5zws1POlIbwScMr7bZiwPTvZ99kA1OJuLrW3N40Pzmbhh4EMwh2u5oajNq9W7v
-         Kz8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=j+/nKR8khsmc6e6yq/Nrf/JA9GPxtBwZwZ1LoRnfnx4=;
-        fh=SwTCaWSJWz4mm0q7VuBdCMixaAsEaLKue0Mu8zmU0v8=;
-        b=Q71AABF4fYSq3TLrH0hszVXfHLQ2epLLQbUs6ZfBsn0ZPF3Qtw6Ecj39M0nASrFhU7
-         0vm1h2yHR3mhasve6NFhgs8Ee3zZ6F39c++qJv6RGvH67zZL2INXaYAGY2xXxOdmsM0h
-         vC2cvduQCJmsr8vDJs/XnPxIiAxvcpO9ygSwK2sJsCus6UpIF5rHLLIDQIiRJWa9iTUn
-         LGRDJsJ0PUmaGQQCqyvEyPnkg9KEflznZ/6hrYsArDh1HeNTrcuauQVp4p3+wiHkJ4if
-         bepoM1G4MdCnPT742WeeEhLqBsBCFut2m8p35PEni5oLUkeF5ix05QX1xbkjo+nDKLYR
-         5ovA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776692686; x=1777297486; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j+/nKR8khsmc6e6yq/Nrf/JA9GPxtBwZwZ1LoRnfnx4=;
-        b=sKsuRCg8CHMzrxWu6coSQ5QCKyaV/9BI4rhWkw3457nrAU1Vo0dn8B7j+RYKy51+mu
-         ghx6RMdJiRLvEJqnmxsgqphdLoKLFT3/oYZ9ucR3qokB/b574K8QORq36iTpE/wt9zZe
-         E9IucwdOjWoxUFeXBkbBXY67MmqRvtcH0GXQawXzkU2kMtAaay46ltG3Dg3Ua0MLBpB8
-         4AvvuAXQ+WytrZukmpkCnCeCX90AeH2cssdS/OJQ4fe3ZAEeSfCfnzvnhnEhrbSLaO36
-         f1zkym1Y4QxrOMZ9/wyTR6sSzCKAO0eWnmUZiUfkF2sJfw2MVNm3LHtg1fcgYN0BPdFn
-         D3Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776692686; x=1777297486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=j+/nKR8khsmc6e6yq/Nrf/JA9GPxtBwZwZ1LoRnfnx4=;
-        b=PibfuhNyaV5qatqMxPYa4I1MjVa3PQKePwD5HeovlpHsnfUaWbgeWA3gdZiUpA8L1W
-         r4K3/WJ6as8cZ3LFKjDcnDvn2bX2SEYDcsYIKl6cz3EHzXKu166GK3y81t/zlthoUqrV
-         +aW35q90gZcO3OzCtozB6gPYF6ROApguj6YLd/Q8gn7SfFM7GWw0OSUcc/orPAsKKLCc
-         myEQV5lKKGViuQiAjg5QNhJYnnw2M1CeScRXdIfL4jtb9GChQqIHNQUVbTrKB15i0OJM
-         5KJobcuXAsUi9f3vlJaP74B4heg8p08u5yNZKbSyv71XQh2cn7m4yfq0OMFHhsxV928M
-         ZtUw==
-X-Forwarded-Encrypted: i=1; AFNElJ8J6wvjFq2dHQlztIdl2GjqE6T6nAHuzJoFd+geFUz7doHukV6fDX566p67d/TJjhleLtk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuKFVzM9+L0P6rauhYgzEluqTP9dr4AOa4btGUR64/PJtl9oQW
-	/5rSsdhmmR6mc0s8GOQH+mN3EOmAe9AQ1ARpmofpQrDwsg/TnvclwtNxCejX37McWO04XMw225o
-	P4jRG8QJgfWKVKIypJVQH2evMtC1D/j+CfIwjTh3+p4khDvAFn24VufUOpWMB0Wx1JdeO+A+zAM
-	31SxldhBM32lXOUZGUnt8IWLanJ0r3UGqmy3gM5QM=
-X-Gm-Gg: AeBDiet5UA48USwIIt3ilZ2Nww4Y2l6NoePcLlTj4LP7DjORoa8kFqNMVBrYpP0JIx/
-	e3S8SPo5zKHuzd5XSAE47EIUnQuz8GFbkfJXBYrUk0rmB3N+vOP9c7UTrubAOjUZTg0hULL22sm
-	JaVqPUXB3+UsLTOcPOuWxnEyOEkIUz6pMtpQOW1JIKR8UIvHXOzvbswkmoRUnhR7c9ovnWzkoLW
-	amVIK0MI9GfLKrZByA9CW5uBoUny8rQJiiaOK+TM3tDMoRcnSx343yG0tNy4kgGsE5DKEdY02kb
-	UP5/6uiE9YEadgA=
-X-Received: by 2002:a05:6000:1acf:b0:43c:f1a5:56f6 with SMTP id ffacd0b85a97d-43fe3e23c0emr20516834f8f.43.1776692685813;
-        Mon, 20 Apr 2026 06:44:45 -0700 (PDT)
-X-Received: by 2002:a05:6000:1acf:b0:43c:f1a5:56f6 with SMTP id
- ffacd0b85a97d-43fe3e23c0emr20516790f8f.43.1776692685324; Mon, 20 Apr 2026
- 06:44:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLHDrjXd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB41C19425;
+	Mon, 20 Apr 2026 13:53:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776693199;
+	bh=/2WX7QRrreqNa1lPcnWhMEbZ0TkX/QFlLwzbB3DhuUg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CLHDrjXdglACtNImEqi28IDMMq7a5VhtuFLdyxVmCXCyceC4zd94riRPfAVgYMPA0
+	 EvhnwhPlhqZSYz1oW/9EpYgcRqCh0KlVGeYyKv0OaJ+I3bcrttEzeUId2W6blRETn6
+	 m47ogPkO9Fvt5G3+IJTKRSl230r0zn/MAa3H5V2XJ7nKn4yOY0wRf2BX6yvvqTy3QP
+	 MzM+0VSDOTi2+sUr92tv5K+/QzK2ZzxE0ur6/57SeB/VszFCS0E3IiRytMNb1KD7pn
+	 iveHZNnTVhLopLxmDmSXERfBw8mGUtEfPMeRPcdm2RvxvO53fB17/KW31sQf6hOor2
+	 FJmdjbmlZxbHw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wEp3s-0000000D5cc-1J1N;
+	Mon, 20 Apr 2026 13:53:16 +0000
+Date: Mon, 20 Apr 2026 14:53:15 +0100
+Message-ID: <86ldeh20xg.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	devel@daynix.com,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v7 3/4] KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY
+In-Reply-To: <ad44c69e-2f99-4f31-81b4-faae52eea080@rsg.ci.i.u-tokyo.ac.jp>
+References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+	<20260418-hybrid-v7-3-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
+	<87ldeic1gk.wl-maz@kernel.org>
+	<06c6664c-7f0c-47b2-babf-ba2a541fd9f2@rsg.ci.i.u-tokyo.ac.jp>
+	<86qzoa0xj6.wl-maz@kernel.org>
+	<ad44c69e-2f99-4f31-81b4-faae52eea080@rsg.ci.i.u-tokyo.ac.jp>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260420132314.1023554-1-sashal@kernel.org> <20260420132314.1023554-334-sashal@kernel.org>
-In-Reply-To: <20260420132314.1023554-334-sashal@kernel.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 20 Apr 2026 15:44:16 +0200
-X-Gm-Features: AQROBzDobIMPDnE7Fi6IMXXk8ozHKwMYsB0F5MzEPgxvyvUL_mGRNveHXmVGu_U
-Message-ID: <CABgObfbWk_AxsLB6v6RJQY6VfA3mwH_tiuobFrb94XBD=PdVXg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 7.0-6.1] KVM: x86: Check for injected exceptions
- before queuing a debug exception
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: odaki@rsg.ci.i.u-tokyo.ac.jp, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, gustavoars@kernel.org, pbonzini@redhat.com, corbet@lwn.net, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Apr 20, 2026 at 2:34=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
-> From: Yosry Ahmed <yosry@kernel.org>
->
-> [ Upstream commit e907b4e72488f1df878e7e8acf88d23e49cb3ca7 ]
+On Mon, 20 Apr 2026 13:07:15 +0100,
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+> 
+> On 2026/04/20 18:51, Marc Zyngier wrote:
+> > On Mon, 20 Apr 2026 09:36:16 +0100,
+> > Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+> >> 
+> >> On 2026/04/20 2:19, Marc Zyngier wrote:
+> >>> On Sat, 18 Apr 2026 09:14:25 +0100,
+> >>> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+> >>>> 
+> >>>> On a heterogeneous arm64 system, KVM's PMU emulation is based on the
+> >>>> features of a single host PMU instance. When a vCPU is migrated to a
+> >>>> pCPU with an incompatible PMU, counters such as PMCCNTR_EL0 stop
+> >>>> incrementing.
+> >>>> 
+> >>>> Although this behavior is permitted by the architecture, Windows does
+> >>>> not handle it gracefully and may crash with a division-by-zero error.
+> >>>> 
+> >>>> The current workaround requires VMMs to pin vCPUs to a set of pCPUs
+> >>>> that share a compatible PMU. This is difficult to implement correctly in
+> >>>> QEMU/libvirt, where pinning occurs after vCPU initialization, and it
+> >>>> also restricts the guest to a subset of available pCPUs.
+> >>>> 
+> >>>> Introduce the KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY attribute to
+> >>>> create a "fixed-counters-only" PMU. When set, KVM exposes a PMU that is
+> >>>> compatible with all pCPUs but that does not support programmable
+> >>>> event counters which may have different feature sets on different PMUs.
+> >>>> 
+> >>>> This allows Windows guests to run reliably on heterogeneous systems
+> >>>> without crashing, even without vCPU pinning, and enables VMMs to
+> >>>> schedule vCPUs across all available pCPUs, making full use of the host
+> >>>> hardware.
+> >>>> 
+> >>>> Much like KVM_ARM_VCPU_PMU_V3_IRQ and other read-write attributes, this
+> >>>> attribute provides a getter that facilitates kernel and userspace
+> >>>> debugging/testing.
+> >>> 
+> >>> OK, so that's the sales pitch. But how is it implemented? I would like
+> >>> to be able to read a high-level description of the implementation
+> >>> trade-offs.
+> >> 
+> >> Implementation-wise it is very trivial. Essentially the following
+> >> addition in kvm_arm_pmu_v3_get_attr() is the entire implementation:
+> >> +	case KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY:
+> >> +		if (test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY,
+> >> &vcpu->kvm->arch.flags))
+> >> +			return 0;
+> >> 
+> >> Both its functionality and code complexity is trivial. So we can argue that:
+> >> - the functionality is too trivial to be useful or
+> >> - the interface/implementation complexity is so trivial that it does not
+> >>    incur maintenance burden
+> >> 
+> >> In this case the selftest uses the getter so I was more inclined to
+> >> have it, but adding one just for the selftest sounds too ad-hoc, so
+> >> here I looked into other attributes to ensure that it was not
+> >> introducing inconsistency with existing interfaces.
+> >> 
+> >> As the result, I found there are other read-write attributes; in fact
+> >> there are more read-write attributes than write-only ones.
+> > 
+> > You're completely missing the point. I'm referring to the whole of the
+> > commit message, which is more of a marketing slide than a technical
+> > description.
+> 
+> In terms of implementation, the obvious tradeoff is that it adds more
+> code to implement the feature. One thing to note is that
+> kvm_vcpu_load_pmu() is added and is called each time a vCPU migrates
+> across pCPUs. The heavy part, making the KVM_REQ_RELOAD_PMU request,
+> only happens when the feature is enabled.
 
-Nacked-by: Paolo Bonzini <pbonzini@redhat.com>
+Well, that's what I want to see. The repeated blurb about Windows
+being broken is cover letter material, but not fir for a commit
+message.
 
-> - NO Reported-by: (no syzbot tag directly on this patch, though cover
->   letter referenced syzkaller repro for the series)
+[...]
 
-This reproducer is *not* causing trouble in the host.
+> >>> "for the first time" gives the impression that it will work if you try
+> >>> again. I'd rather we say that "This feature is incompatible with the
+> >>> existence of a PMU event filter".
+> >> 
+> >> The following sequence will work:
+> >> 1. Set KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
+> >> 2. Set KVM_ARM_VCPU_PMU_V3_FILTER
+> >> 3. Set KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
+> >> 
+> >> This is to make the behavior conistent with KVM_ARM_VCPU_PMU_V3_SET_PMU.
+> > 
+> > I don't think this is correct. Filtering is completely at odds with
+> > this patch, and I don't want to have to reason about the combination.
+> 
+> kvm_arm_pmu_v3_set_pmu() has the following condition:
+> 
+> if (kvm_vm_has_ran_once(kvm) ||
+>     (kvm->arch.pmu_filter && kvm->arch.arm_pmu != arm_pmu)) {
+> 	ret = -EBUSY;
+> 	break;
+> }
+> 
+> kvm_arm_pmu_v3_set_pmu_fixed_counters_only() has the corresponding
+> condition for consistency:
+> 
+> if (kvm_vm_has_ran_once(kvm) ||
+>     (kvm->arch.pmu_filter &&
+>      !test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY,
+> 	       &kvm->arch.flags)))
+> 	return -EBUSY;
+> 
+> We can of course kill the PMU event filter for
+> FIXED_COUNTERS_ONLY. The filter is effectively no-op with
+> FIXED_COUNTERS_ONLY and I don't think that consistency matters much.
 
-> **Step 2.4: FIX QUALITY**
-> Record: Obviously correct; surgical one-line addition of a boolean
-> condition to existing guard. No risk of deadlock/regression - it only
-> adds another case that returns -EBUSY, which is existing ioctl behavior
-> that userspace must already tolerate. Aligns with architectural
-> behavior: you cannot queue a new exception while one is being delivered.
+We shouldn't allow weird combinations in the UAPI. Since it makes no
+sense to have both fixed-function *and* filters, we should make them
+mutually exclusive.
 
-Debugging a guest from the host is not architectural.
+[...]
 
-> **Step 3.2: ORIGINAL BUGGY COMMIT**
-> Record: Bug introduced in commit `4f926bf291863` ("KVM: x86: Polish
-> exception injection via KVM_SET_GUEST_DEBUG") by Jan Kiszka, Oct 2009.
-> `git describe --contains` =3D `v2.6.33-rc1~387^2~10`. This means the bug
-> exists in every active stable tree (5.4, 5.10, 5.15, 6.1, 6.6, 6.12,
-> etc.).
+> >> I expect migration will be handled with the conventional register
+> >> getters and setters, but please share if you have a concern.
+> > 
+> > At the very least I want to see some documentation explaining that.
+> 
+> What kind of documentation do you expect?
 
-It's not buggy, just incomplete.
+A description of what counters are exposed by this feature, and what
+architectural features they are dependent on.
 
-> AGAINST backporting:
-> - No explicit stable tag/nomination on the list
-> - Impact is guest-only (not host)
-> - Requires specific user action via KVM_SET_GUEST_DEBUG ioctl
-> - For pre-v6.1 trees, minor adaptation is needed (inline the helper's
->   check)
+> If we change kvm_vcpu_load_pmu() to avoid for_each_set_bit(), there
+> would be a good chance to forget updating it when mechanically
+> updating existing for_each_set_bit() instances, so it is a candidate
+> for documentation. But I don't have a good idea where to place it
+> either.
 
-Bigger: manual reviews are needed for all these AUTOSEL decisions.
-Please don't DoS the maintainers with this stuff. The most stable KVM
-is the top of Linus's tree.
+The moment we introduce FEAT_PMUv3_ICNTR, the whole PMUv3 emulation
+will catch fire anyway, as we already limit ourselves to 32 bits for
+reset and nesting switch.
 
-Paolo
+So this will be a major redesign anyway. If you are really worried,
+leave a comment in there.
 
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
