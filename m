@@ -1,67 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D20D2C11F1;
-	Mon, 20 Apr 2026 09:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08F438A733;
+	Mon, 20 Apr 2026 10:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776678721; cv=none; b=hfMAXAgZIJQWVI5fNqtkt87yGJQsMWMHqDznV1m2OmGvb6SwmGc+I5WPDK4u00G1aa7bI8zGuUycjuOioA4HC96j13IO74CpCG6fv+XQ37P+7FL8VgjX/Z7Gmn2qqlQWUbBOM4ZXm+d4lIBlKYzp9QmdrQHluUE3u7KKEzuXcqU=
+	t=1776682661; cv=none; b=mxUZoL4IOtuS5otIXfJHoEWRfAqTHfWxGxWtPEgt7oZVqT0RfphABcCYRMkcGM5e4sIIdIA8XT3Vz/0gaL9hygfQtnFsGHc54HRMDqfyHJqxQRpZdoPpntpO8K8JFc7FvkhSsEzcXTrv6eZ78KsqQlCMveEEDMGJH1+D4yGCEj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776678721; c=relaxed/simple;
-	bh=XYhx9+CFohe0iWyUB9sZOynfbxZLAMSrZvs0/XibZHw=;
+	s=arc-20240116; t=1776682661; c=relaxed/simple;
+	bh=RV6KLhKQJV9O10vjxbnO2mSqItoj7sx7NBlZB3v6Dsk=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RILJKqn2rsN1P4cdEbjPGCCb4pMQdW9/QF9zKKrpApzvjhB4Lxiz3gkt4SfdgI/MKKG3ByzzWhzgNazTsOz1tPo9jWsuOTO/VXY91/EciS+hebXw7tDtv3G7buSHZsfGak5BC3JSmyupSM6KaDKFATm8RHFn08v9b5aBdETJHPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLcSna+Q; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=mj8JAt6S8X/tN59jGI3sqgpYYsmMAo0904nA+L3dmEEaHQrCkm9VSbplKztdUcRdlXmKcaX/2JnES4yKdsxg1zUTT9Zfu7xAlftQfBEvqsA1JlU0NOPnf7i5X0QiWzl7QZ5Ld5qyI39LXGJb+HmaUMIOWVSPt879x1ZIB+VSD34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNdNMpJO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLcSna+Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80F5C19425;
-	Mon, 20 Apr 2026 09:52:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNdNMpJO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5A1C2BCB0;
+	Mon, 20 Apr 2026 10:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776678721;
-	bh=XYhx9+CFohe0iWyUB9sZOynfbxZLAMSrZvs0/XibZHw=;
+	s=k20201202; t=1776682661;
+	bh=RV6KLhKQJV9O10vjxbnO2mSqItoj7sx7NBlZB3v6Dsk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gLcSna+Q6Yk8c35tT8OV/c6Mq0u6l8OWNuBwMXESWipUaU6r3wJgKVht+lG4Xmd8M
-	 I1gmZPtEPoqVjEWVHuBFTJSD63ep0KvmMz/riSc+pc9a2cF8/LB/xBjB7zyRT0VE5N
-	 8+Io6FUZzWUGTgn33z9WmPQPZ/y1JI8DIYWUFSAIIMKfJaXfMvSUtfPyI22e6odlsK
-	 yDYKDgQpN3uQ1tKc1CrDteF2V7AUY6l8mmJ7Y1pGC9YjGE8CDPjb5ux8mlAkKYQGIz
-	 1UJGcUO2EoCpnLdlk0r/6wRAiBQiBxoOglYo2DO62tT3vjidQAmwtayWS4ikVqcMp6
-	 S9NxbQOgckMWQ==
+	b=JNdNMpJOs/QU1EDyD5dKvXOmZv1rjh+NBsM6GcdHMLSL/OjW6/S1cLi+eTzoWkvlS
+	 kh+3j0VWnwZwUBAJaEt+MHqgkpOpd2jH8nsaJ8Ozm65otWB/3t5Rrz/rnL4tXlvvOM
+	 GAmEPAb3OJLBECf8AzyvUVxg0+4epkJ/KTW5ed0K9ZsnO1NgkG8mBKBDnH1RhcP+4P
+	 EvFV2PMNLd2iOSJ8tuYJk+x/xfonr7akIF4UPECxO/fFaRB49tzjFwxdzId4cezhZ/
+	 p1+tcPVtySt7bl5NQFMl5wO8jV5KGM/c1hjdXcdwh2Upoi8xPzeD187MKTu1nhKqIw
+	 fz09jetb3gqDw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wElIM-0000000D19Y-1hWs;
-	Mon, 20 Apr 2026 09:51:58 +0000
-Date: Mon, 20 Apr 2026 10:51:57 +0100
-Message-ID: <86qzoa0xj6.wl-maz@kernel.org>
+	id 1wEmJu-0000000D2AQ-3mS1;
+	Mon, 20 Apr 2026 10:57:38 +0000
+Date: Mon, 20 Apr 2026 11:57:38 +0100
+Message-ID: <86o6jd2925.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu
- <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	devel@daynix.com,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v7 3/4] KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY
-In-Reply-To: <06c6664c-7f0c-47b2-babf-ba2a541fd9f2@rsg.ci.i.u-tokyo.ac.jp>
-References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-	<20260418-hybrid-v7-3-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
-	<87ldeic1gk.wl-maz@kernel.org>
-	<06c6664c-7f0c-47b2-babf-ba2a541fd9f2@rsg.ci.i.u-tokyo.ac.jp>
+	linux-s390@vger.kernel.org,
+	Andreas Grapentin <Andreas.Grapentin@ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v1 00/27] KVM: s390: Introduce arm64 KVM
+In-Reply-To: <20260402042125.3948963-1-seiden@linux.ibm.com>
+References: <20260402042125.3948963-1-seiden@linux.ibm.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,293 +70,168 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: odaki@rsg.ci.i.u-tokyo.ac.jp, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, gustavoars@kernel.org, pbonzini@redhat.com, corbet@lwn.net, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, Andreas.Grapentin@ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, ggala@linux.ibm.com, brueckner@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, Ulrich.Weigand@de.ibm.com, will@kernel.org, yuzenghui@huawei.com
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, 20 Apr 2026 09:36:16 +0100,
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
-> 
-> On 2026/04/20 2:19, Marc Zyngier wrote:
-> > On Sat, 18 Apr 2026 09:14:25 +0100,
-> > Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
-> >> 
-> >> On a heterogeneous arm64 system, KVM's PMU emulation is based on the
-> >> features of a single host PMU instance. When a vCPU is migrated to a
-> >> pCPU with an incompatible PMU, counters such as PMCCNTR_EL0 stop
-> >> incrementing.
-> >> 
-> >> Although this behavior is permitted by the architecture, Windows does
-> >> not handle it gracefully and may crash with a division-by-zero error.
-> >> 
-> >> The current workaround requires VMMs to pin vCPUs to a set of pCPUs
-> >> that share a compatible PMU. This is difficult to implement correctly in
-> >> QEMU/libvirt, where pinning occurs after vCPU initialization, and it
-> >> also restricts the guest to a subset of available pCPUs.
-> >> 
-> >> Introduce the KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY attribute to
-> >> create a "fixed-counters-only" PMU. When set, KVM exposes a PMU that is
-> >> compatible with all pCPUs but that does not support programmable
-> >> event counters which may have different feature sets on different PMUs.
-> >> 
-> >> This allows Windows guests to run reliably on heterogeneous systems
-> >> without crashing, even without vCPU pinning, and enables VMMs to
-> >> schedule vCPUs across all available pCPUs, making full use of the host
-> >> hardware.
-> >> 
-> >> Much like KVM_ARM_VCPU_PMU_V3_IRQ and other read-write attributes, this
-> >> attribute provides a getter that facilitates kernel and userspace
-> >> debugging/testing.
-> > 
-> > OK, so that's the sales pitch. But how is it implemented? I would like
-> > to be able to read a high-level description of the implementation
-> > trade-offs.
-> 
-> Implementation-wise it is very trivial. Essentially the following
-> addition in kvm_arm_pmu_v3_get_attr() is the entire implementation:
-> +	case KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY:
-> +		if (test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY,
-> &vcpu->kvm->arch.flags))
-> +			return 0;
-> 
-> Both its functionality and code complexity is trivial. So we can argue that:
-> - the functionality is too trivial to be useful or
-> - the interface/implementation complexity is so trivial that it does not
->   incur maintenance burden
-> 
-> In this case the selftest uses the getter so I was more inclined to
-> have it, but adding one just for the selftest sounds too ad-hoc, so
-> here I looked into other attributes to ensure that it was not
-> introducing inconsistency with existing interfaces.
-> 
-> As the result, I found there are other read-write attributes; in fact
-> there are more read-write attributes than write-only ones.
+Hi Steffen, s390 folks,
 
-You're completely missing the point. I'm referring to the whole of the
-commit message, which is more of a marketing slide than a technical
-description.
+On Thu, 02 Apr 2026 05:20:56 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
+>=20
+> By introducing a novel virtualization acceleration for the ARM architectu=
+re on
+> s390 architecture, we aim to expand the platform's software ecosystem. Th=
+is
+> initial patch series lays the groundwork by enabling KVM-accelerated ARM =
+CPU
+> virtualization on s390. To achieve this, a common KVM layer between s390 =
+and
+> arm64 is introduced (see below for more details). Design considerations of
+> arm64 on the s390 Architecture The s390 virtualization architecture is ex=
+tended
+> with a set of new instructions dedicated to supporting=C2=A0ARM-based vir=
+tual
+> machines. The s390 KVM host acts as EL2 (hypervisor) for a EL1/EL0
+> (OS/application) arm64 guest. To achieve this, the new Start-Arm-Execution
+> (SAE) instruction enables accelerated execution of arm64 VMs.=C2=A0 Addit=
+ional new
+> s390 instructions are introduced to query available arm64 features, used =
+to
+> populate the arm64 ID register contents, as well as, new s390 instruction=
+s to
+> save/restore various arm64 registers in the VM context.
 
-I really don't care about the getter at this stage, which while
-pointless, does not make things more awful than they already are.
+Apologises for the delay in responding to this, things got delayed a
+bit with the Easter break. Since then, Will and I have been discussing
+this series and what it means for the future of the arm64 port.
 
-> 
-> > 
-> >> 
-> >> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> >> ---
-> >>   Documentation/virt/kvm/devices/vcpu.rst |  29 ++++++
-> >>   arch/arm64/include/asm/kvm_host.h       |   2 +
-> >>   arch/arm64/include/uapi/asm/kvm.h       |   1 +
-> >>   arch/arm64/kvm/arm.c                    |   1 +
-> >>   arch/arm64/kvm/pmu-emul.c               | 155 +++++++++++++++++++++++---------
-> >>   include/kvm/arm_pmu.h                   |   2 +
-> >>   6 files changed, 147 insertions(+), 43 deletions(-)
-> >> 
-> >> diff --git a/Documentation/virt/kvm/devices/vcpu.rst b/Documentation/virt/kvm/devices/vcpu.rst
-> >> index 60bf205cb373..e0aeb1897d77 100644
-> >> --- a/Documentation/virt/kvm/devices/vcpu.rst
-> >> +++ b/Documentation/virt/kvm/devices/vcpu.rst
-> >> @@ -161,6 +161,35 @@ explicitly selected, or the number of counters is out of range for the
-> >>   selected PMU. Selecting a new PMU cancels the effect of setting this
-> >>   attribute.
-> >>   +1.6 ATTRIBUTE: KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
-> >> +------------------------------------------------------
-> >> +
-> >> +:Parameters: no additional parameter in kvm_device_attr.addr
-> >> +
-> >> +:Returns:
-> >> +
-> >> +	 =======  =====================================================
-> >> +	 -EBUSY   Attempted to set after initializing PMUv3 or running
-> >> +		  VCPU, or attempted to set for the first time after
-> >> +		  setting an event filter
-> >> +	 -ENXIO   Attempted to get before setting
-> >> +	 -ENODEV  Attempted to set while PMUv3 not supported
-> >> +	 =======  =====================================================
-> >> +
-> >> +If set, PMUv3 will be emulated without programmable event counters. The VCPU
-> >> +will use any compatible hardware PMU. This attribute is particularly useful on
-> > 
-> > Not quite "any PMU". It will use *the* PMU of the physical CPU,
-> > irrespective of the implementation.
-> 
-> I think:
-> 
-> - this comment
-> - one on the KVM_EXIT_FAIL_ENTRY_CPU_UNSUPPORTED note
-> - one on kvm_pmu_create_perf_event()
-> - and one on kvm_arm_pmu_v3_set_pmu_fixed_counters_only()
-> 
-> All boil down into one question: will it support all possible CPUs, or
-> will it support a subset? Let me answer here:
-> 
-> This patch is written to support a subset instead of all possible
-> CPUs. If a pCPU does not have a compatible PMU, the pCPU will not be
-> supported and cause KVM_EXIT_FAIL_ENTRY_CPU_UNSUPPORTED.
+By way of opening the discussion, we want to be clear that we are
+supportive of the effort. Our comments here should be seen as areas of
+potential improvement and not as rejection of what you are trying to
+achieve.
 
-This is not a thing. Either *all* the CPUs have a PMU that can be used
-for KVM, or PMU support is not offered to guests. That's a hard line
-in the sand. And the code already upholds this by checking the
-sanitised PMUVer field.
+* Code movement:
 
->
-> This patch does not enforce all possible CPUs are covered by the
-> compatible PMUs. Theoretically speaking,
-> kvm_arm_pmu_get_pmuver_limit() enables the PMU emulation when real
-> PMUv3 hardware covers all possible CPUs *or* the relevant registers
-> can be trapped with IMPDEF, so some pCPU may not have a compatible PMU
-> and only provide the IMPDEF trapping.
+  The patches you have posted demonstrate that it is possible to
+  expose a large amount of arm64-specific code and definition to s390,
+  and yet still manage to build both architectures without regression.
+  However, the result looks rather messy and may adversely affect
+  maintainability on the arm64 side.
 
-How is that possible? Please describe the case where that can happen,
-and I will make sure that such a system stops booting. The intent is
-definitely that that:
+  The moving of files into shared locations is particularly painful,
+  and gets in the way of overall maintainability. Not only does it
+  break our comfortable habits, it makes the backporting of fixes
+  harder.  Importantly, these changes come with no benefit on the
+  arm64 side.
 
-- for early CPUs, we take the minimal capability of all CPUs
+  Would it be possible to try some other means of reaching the
+  arm64-specific files *in situ*, either by making use of relative
+  paths, or by using symbolic links? Even better, files that are
+  generated on arm64 (such as the sysreg definitions) should equally
+  be generated for s390, locally to the s390 part of the tree.
 
-- for late CPUs, either they match at least the capability recorded by
-  early CPUs, or they don't boot.
+  But that doesn't mean that we consider that the arm64 tree is
+  immutable and that we are not open to change, quite the opposite.
+  Most of the KVM/arm64 include files are an unholy mix of arch
+  definitions, data structures that have some arch relevance, but also
+  code and data that is strictly implementation specific. Splitting
+  these (as you already have for some include files) could both help
+  with sharing what is actually needed, keep the arm64-specific stuff
+  at bay, *and* benefit arm64's overall maintainability. We would need
+  some tooling to enforce the split and avoid regressing it, something
+  that could happen quickly given the level of activity on arm64. Yet
+  another way to achieve this could be to mechanically process the
+  arm64 files as part of the s390 build to extract the relevant
+  information, and we could help with this.
 
-> Practically, I don't think any sane configuration will ever have such
-> a subset support, so we can explicitly enforce all possible CPUs are
-> covered by the compatible PMUs if desired.
+  Looking a bit more into the distance, it is likely that KVM/arm64
+  will grow feature support quicker than s390 can absorb them, and
+  that some feature won't ever make any sense of s390 (pKVM, for
+  example).  We need to establish how these features can be built
+  without arm64 being hindered by s390. This is also true when adding
+  architectural support for features that don't exist in the s390 view
+  of arm64.
 
-That's not just desired. This is a requirement. And it is already
-enforced AFAICS.
+* UAPI and guest API:
 
-> 
-> > 
-> >> +heterogeneous systems where different hardware PMUs cover different physical
-> >> +CPUs. The compatibility of hardware PMUs can be checked with
-> >> +KVM_ARM_VCPU_PMU_V3_SET_PMU. All VCPUs in a VM share this attribute. It isn't
-> >> +possible to set it for the first time if a PMU event filter is already present.
-> > 
-> > "for the first time" gives the impression that it will work if you try
-> > again. I'd rather we say that "This feature is incompatible with the
-> > existence of a PMU event filter".
-> 
-> The following sequence will work:
-> 1. Set KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
-> 2. Set KVM_ARM_VCPU_PMU_V3_FILTER
-> 3. Set KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
-> 
-> This is to make the behavior conistent with KVM_ARM_VCPU_PMU_V3_SET_PMU.
+  Obviously, one of our biggest concerns is the userspace API. We
+  appreciate that you want to reuse it as it is, warts and all, and
+  directly incorporate additional feature support as it becomes
+  available. This means that, should any divergence in UAPI appear,
+  the source of truth must be on the arm64 side. This has the
+  following consequences:
 
-I don't think this is correct. Filtering is completely at odds with
-this patch, and I don't want to have to reason about the combination.
+    - s390 cannot add extensions to the UAPI
 
-[...]
+    - s390 must be compatible with all future arm64 extensions
 
-> >> +	int i;
-> >> +
-> >> +	for_each_set_bit(i, &mask, 32) {
-> >> +		pmc = kvm_vcpu_idx_to_pmc(vcpu, i);
-> >> +		if (!pmc->perf_event)
-> >> +			continue;
-> >> +
-> >> +		cpu_pmu = to_arm_pmu(pmc->perf_event->pmu);
-> >> +		if (!cpumask_test_cpu(vcpu->cpu, &cpu_pmu->supported_cpus)) {
-> >> +			kvm_make_request(KVM_REQ_RELOAD_PMU, vcpu);
-> >> +			break;
-> >> +		}
-> >> +	}
-> >> +}
-> >> +
-> > 
-> > Why do we need to inflict this on VMs that do not have the fixed
-> > counter restriction?
-> 
-> This function is to re-create the perf_event in case the current
-> perf_event does not support the pCPU because e.g., the pCPU is a
-> E-core while the perf_event only covers the P-cores.
+  Similar concerns exist on the guest/hypervisor API, including:
 
-That's not what I meant. This code is only here to support the
-fixed-function feature. It makes no sense outside of it, because *we
-don't support counter migration across implementations*.
+  - errata mitigation: this is unsurprisingly a hot topic, which keeps
+    causing us some massive headaches. We are particularly concerned
+    about errata that need to be disclosed to the guest and acted upon
+    via a hypercall. Should there be a need for those, how will we
+    coordinate the deployment of such hypercall?
 
-So what's the purpose of this stuff for the normal KVM setup?
+    The way it has been deployed so far is that PSCI has grown an
+    errata discovery mechanism. ARM assigns function numbers and
+    specifies what these hypercalls mitigate. KVM, in turn, takes part
+    in implementing the mitigation. We expect that s390 would follow
+    the same behaviour, including coordination with ARM for the
+    function numbering.
 
-> 
-> > 
-> > And even then, all you have to reconfigure is the cycle counter. So
-> > why the loop? All we want to find out is whether the cycle counter is
-> > instantiated on the PMU that matches the current CPU.
-> 
-> I just wanted to avoid hardcoding assumptions on the fixed
-> counter(s). FEAT_PMUv3_ICNTR will be naturaly handled with a loop, for
-> example.
+  - device assignment: this is unknown territory for us, as we
+    commonly use vfio-pci (and more occasionally vfio-platform). How
+    would that look for an arm64 guest on s390?
 
-Well, not that loop, since ICNTR is counter 32. So please let's stop
-the nonsense and only add what is required?
+  - s390-specific ISA extension: although we obviously cannot control
+    how you will decide to expose features to your arm64 guests,
+    KVM/arm64 makes a point of forbidding any use of implementation
+    specific instruction or system registers. We expect the s390
+    implementation to uphold this.
 
-[...]
+  - s390-specific hypercalls: aside from the errata handling
+    mentioned above, we would very much like to avoid anything that is
+    implementation specific, and keep the hypercall space as small as
+    possible. In other words, an unenlightened arm64 guest must work
+    and continue to work.
 
-> >>   +
-> >> clear_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY,
-> >> &kvm->arch.flags);
-> > 
-> > Why does this need to be cleared? I'd rather we make sure it is never
-> > set the first place.
-> 
-> KVM_ARM_VCPU_PMU_V3_SET_PMU and
-> KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY can be set on the same
-> VCPU. The last KVM_ARM_VCPU_PMU_V3_SET_PMU or
-> KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY setting will be effective.
-> 
-> A VMM may try set these attributes to check if the setting is
-> supported. For example, the RFC QEMU patch first uses
-> KVM_ARM_VCPU_PMU_V3_SET_PMU to find a compatible PMU that covers all
-> pCPUs, and then falls back to
-> KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY. The order of such probing is
-> up to the VMM.
+* Overall maintenance
 
-KVM_ARM_VCPU_PMU_V3_SET_PMU is not a probing mechanism. You must probe
-the PMUs by looking in /sys/bus/event_source/devices/, like kvmtool
-does.
+  Unsurprisingly, we are not totally familiar with s390. To say that
+  there is a learning gap would only be an understatement. So how do
+  we make sure we don't break things out of pure ignorance? Is there
+  any documentation we can refer to when hacking on code that will
+  eventually run on your side of the computing universe?
 
-So there is no reason to support this stuff, and the two flags should
-be made mutually exclusive.
+  We need to be able to build and test what we produce. How do we go
+  about that? We appreciate that you may not be in a position to help
+  with this right now, but at least having a plan would be reassuring.
+  This should include things like automatic testing of our CI branches.
+  We are happy to test build s390 as part of our maintenance flow, if
+  pointed to existing binary toolchains compiled for arm64 and x86,
+  together with a typical configuration.
 
-[...]
+  What about debugging? We expect that you'd have to help, should an
+  arm64 change cause a regression on s390, as it is fairly unlikely
+  that we would be able to reproduce it.
 
-> >>
-> > 
-> > In conclusion, I find this patch to be rather messy. For a start, it
-> > needs to be split in at least 5 patches:
-> > 
-> > - at least two for the refactoring
-> > - one for the PMU core changes
-> > - one for the UAPI
-> > - one for documentation
-> 
-> That clarifies the expected granurarity of patches. The next version
-> will be in that layout, perhaps with more patches if an additional
-> change. Thanks for the guidance.
-> 
-> > 
-> > I'd also like some clarification on how this is intended to work if we
-> > enable FEAT_PMUv3_ICNTR, because the definition seems to be designed
-> > to encompass all fixed-function counters, and I expect this to grow
-> > over time.
-> 
-> Indeed the UAPI was designed to encompass all fixed-function counters
-> as suggested by Oliver.
-> 
-> To support the UAPI, the implementation avoids hardcoding the
-> assumption on the fixed counter(s). FEAT_PMUv3_INCTR will be naturaly
-> supported once the common code is properly updated (i.e., the size of
-> the event counter bitmask is grown the corresponding registers are
-> wired up with a proper check of the feature.)
-> 
-> I expect migration will be handled with the conventional register
-> getters and setters, but please share if you have a concern.
+  Finally, we feel it would be beneficial for both projects to swap
+  prisoners and have cross-reviewers in MAINTAINERS, so that there is
+  an s390 reviewer added to KVM/arm64, and an arm64 reviewer added to
+  KVM/s390.
 
-At the very least I want to see some documentation explaining that.
+It probably would be beneficial to work through some of these things
+face-to-face. Maybe around LPC or KVM Forum if you manage to get
+there? Or some other place/time?
 
 Thanks,
 
-	M.
+	Marc and Will
 
--- 
+--=20
 Without deviation from the norm, progress is not possible.
