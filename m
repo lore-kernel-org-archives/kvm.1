@@ -1,74 +1,110 @@
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3B02139C9;
-	Tue, 21 Apr 2026 14:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE503D6682;
+	Tue, 21 Apr 2026 14:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776780035; cv=none; b=F9WQtR+UQXzCyzTzcQOhHSXHA5XHfpzFNLczA2cFCwNkZ04AfqyW7RmfypUBs//uQJoXxAm2JLFAIuizLKve9joJTO1kZkAp97uQqy0gvjXQAj0BzgT+Ca/uMbcAHvUeUA3AZHvOY/m+pDYc7dBJiFnlwCVZjmFNuAcUhaoMY4k=
+	t=1776780389; cv=none; b=s6xo9pd1TP5zrQji4z3lHIaPRBgMckHrR+q83bvqPS/1dvmbPeRLvkazdxrTEUOlPfVax+UEO+rTcVQyOVvX95dhnrSe+s0cZBuQgFGAREhSFgndp1xxLAofqopQvITxoosBLdGY2E5C6XJQy6hcNwT7CzZ2SzakLPTnFB0TOHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776780035; c=relaxed/simple;
-	bh=/1jbOgE9EYOOgUgVbI42L40v0govhiu/2Pul4kU16yY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uavXv6S7D3SPQR6sktYEgbzk1w302CcTifMwLcFlR6IuKU3XDDsUwJ5tUUE9I/YmO+SG8V3kfiPsMmK1vEHKYSJepZUQzwX5QO69ReuN5W3UQb3kJlnFwQefI306vB1BPsMUYyO9Aj7iPq5c5OQGKFWOHyMMYqg9JB7DY8BLSBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26766BE1F0;
-	Tue, 21 Apr 2026 14:00:26 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf03.hostedemail.com (Postfix) with ESMTPA id E6ADE60016;
-	Tue, 21 Apr 2026 14:00:23 +0000 (UTC)
-Date: Tue, 21 Apr 2026 10:02:09 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- torvalds@linux-foundation.org, Marc Zyngier <maz@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH] kernel: trace: do not generate undefsyms_base.c
-Message-ID: <20260421100209.7535e26f@gandalf.local.home>
-In-Reply-To: <20260421100455.324333-1-pbonzini@redhat.com>
-References: <20260421100455.324333-1-pbonzini@redhat.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1776780389; c=relaxed/simple;
+	bh=KLkU2JaKNWfaB+72rvS+Uc2eWx57bAkCQqfvhEhX1Qc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M0eSCrQ+3JJqQPIgAFkGr7Knov97DcxWjymNFefG3niFrrr8mT77Ixdf6dr1aQBfeF6Y7zlvf8vSYg+FTdwlHLmPTYAJea+vJTTbIUS+XuoXG1tfSNzRscL/p5ALcnIRq6tHR78AAWJy/hNunVIc7ipu15VB+wtZutgypkg8N3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M87GVt0o; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M87GVt0o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C768BC2BCB0;
+	Tue, 21 Apr 2026 14:06:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776780389;
+	bh=KLkU2JaKNWfaB+72rvS+Uc2eWx57bAkCQqfvhEhX1Qc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M87GVt0op0cOWVFk+tFWcrm8TrcbedF7DeBnwyT8lgMWIsiK4r8n+rXttk73jxkge
+	 d4B4z7Kerd43S3Oc3qwwKqnld3me9RXV9lFBcWya2N37p0Wa9HCbt7qhlsVNrXyUHZ
+	 drv+c2aQB6wyEMm3CoilddIL+FGQdEp0Blt6FLky1zQh8qsNPQUHdq/0d2gkpAUn1p
+	 +QbGZScd0MjKdBHY3+Fbf65nkX3VShTSY0Ph/9jMJK0LYeORR/iiTWq60h1waIffS9
+	 DJ1vAIdM1Vu6Pax9nINvqHUgvW/GpmjYcr6mpJui2LphwLGptjRaWfYhpxrYYGVDGM
+	 D+QcYPRlJKhDw==
+Message-ID: <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org>
+Date: Tue, 21 Apr 2026 16:06:24 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
+ fault path on Linux 7.0.0-08391-g1d51b370a0f8
+To: Zw Tang <shicenci@gmail.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, hannes@cmpxchg.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
+ seanjc@google.com
+References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E6ADE60016
-X-Rspamd-Server: rspamout06
-X-Stat-Signature: 3aajqzfum8h16okea47o66gshero7qe5
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX186c+WFgLXZo/OPl0C/So0xzwDxZG/pLuY=
-X-HE-Tag: 1776780023-459337
-X-HE-Meta: U2FsdGVkX1//ZU8H0sffD+YNYcYrxLHWnE18KS7Bc6FKQcodMkTU3VrIHZ6/tEZXnIo8Hw+TEhcwcgpd5Vzyazidn+USihCNY8tGN/Hqx1pc2GkNBRAdWFrLcZGqA2ih76Mm5Q52DBioBMQ9UW3BO4lyF6euof1hc6MH8nCcoPIHgnd5Ea1pTTwf3I0x4foYOInVw1QC1cQBAB2cb09Qo/QN2mDqu+MMSekFAWXXGisb3AyuLbETF31r0UCv5Bsud6LjLO95VpuUIwkQ7EU4c40JIYE7TIRCgnQFfJibbyDxJf1dqHVaS7QH/pKMdqcAVtXWHZi3nyHl6r0N9QmqLYNsHnL8gCfhfxEfJEqEBhXulGjztBQW+4VrUa0psHe34CpWbprMCMWawAm5486QkwVk2s9XDQaecKrSF75GVTg=
 
-On Tue, 21 Apr 2026 11:04:55 +0100
-Paolo Bonzini <pbonzini@redhat.com> wrote:
-
-> The code to autogenerate undefsyms_base.c in the Makefile is larger
-> than the file itself.
+On 4/21/26 13:17, Zw Tang wrote:
+> Hi,
 > 
-> Remove the "echo" indirection that creates the file, which keeps
-> the build system sane and makes it much easier to edit it if/when
-> new situations arrive.
-> 
-> Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> I am reporting a WARNING in workingset_activation() triggered by a
+> syzkaller C reproducer on Linux 7.0.0-08391-g1d51b370a0f8.
 
-Marc beat you to it by a few minutes ;-)
+g1d51b370a0f8 is not a known git commit id.
 
-  https://lore.kernel.org/all/20260421095446.2951646-1-maz@kernel.org/
+Do you have an upstream git commit where the line number
+include/linux/memcontrol.h:381 makes sense?
 
-Although he didn't Cc linux-trace-kernel@vger.kernel.org :-p
 
-But anyway, it ended up in my internal Patchwork. I'll take his as they are
-both pretty much the same patch.
+-- 
+Cheers,
 
-Thanks,
-
--- Steve
+David
