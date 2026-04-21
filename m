@@ -1,197 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5F3845AE;
-	Tue, 21 Apr 2026 12:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DFE30E0EF;
+	Tue, 21 Apr 2026 12:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776775387; cv=none; b=FcsrI1i2sENgMpFcei4a+6x3NO2bHCzO2s0P+2q4sxf+UItQQZt0nV2Z9UcdFFFyKQKhDwKSFhgG1a38r31c+1Xn5ZdK+CH6/xPc2S4Lan9dq0MDkkQQjbA7ZIMj8UIZVIcAcGLkuPOWDA0hWxhXkDN5BELwA6kl1h/KF6APUag=
+	t=1776775940; cv=none; b=B96IOwsLYnWyyRIEsYOJd3tjJ/opY2WAoiWSl+tpUQc8CmjnwjxLLLN2awQ5jE1q7VQapiJ56L4sdhRS0e/Ov7aTWyHRWZBpxRNjQID91olsgyBAcJel0Ev+pk6HiIJodXXGkTNZ1TLL94rYKYNxAhd/OCPoYWs9PgoR2e42UO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776775387; c=relaxed/simple;
-	bh=m1DD4aKC1/IaFiEIe653EE1XT3Zbg+htg46Kj+jGB/8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FUrC3gAeoock+7l/yUtGET6ncSbDJx3GnYWhsM9EodKqe3oFeRRYk3fNKlU1MegoxvCsiNdHvrWrV1YqmswQgVCnFyPuCBPMRdlMphM+44EcAZyWejUwBzaofdQ0w6i3N42FTxfIswGq6n/F2fDYd4wM8zt5zZuUod5lTgudNXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMC5kNQc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776775940; c=relaxed/simple;
+	bh=afxfuBhErYQMVwA35UR65Id9aa8cZgGs5iOcJYwU7cc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=SwRYJ83SufmZpMT52/ABlbjwLeoxJhbym01O0rjNYkq/mZHzssF/qqADKrUI8il61pABTRNrSPWX0vxJD4S9eVMify4w32CVUR3asy2jHbCZGUnhgLvgGKoNi/rBtAqgyfNctIDz+iiEpkXMBBZIp3c/jfZlpO/MXQTSAVPAtAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OjOVgEc5; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMC5kNQc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEABBC2BCB0;
-	Tue, 21 Apr 2026 12:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776775387;
-	bh=m1DD4aKC1/IaFiEIe653EE1XT3Zbg+htg46Kj+jGB/8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rMC5kNQcKTFXXeyxYYSYCiZeYJc/iYKHk1FcPipJOxq47Is7+q/vmUT6OByUqydpb
-	 cVA2+ktqDLsyhadU8ZS5uBm4cdAUK0pMaujvd0zG/Mds/U+YC8dzoRRKMXsFg4l02J
-	 1Qinb8YewYqKUsYb1ZBJqMtbdkkuIR027GjVjNZhNHB8gzRc3+U1fEuXbrwTdQfVEw
-	 a0EWSpTOhdepMz9605uEDdo+dr1QKKzUXdpflUvcUEQUWhiIieZl4c+2f8eTX7l7B/
-	 UYs7WBPGilIjbSy2NOuDdMBG3774/JvpJbPEOf+7JwJVRQMBJdn/piLcxZDl0K5V71
-	 o16GDIhduIYog==
-Message-ID: <74c3d4df-4f0c-44b2-9ade-a4b4422d3daf@kernel.org>
-Date: Tue, 21 Apr 2026 14:42:47 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OjOVgEc5"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63KJgWoa1926145;
+	Tue, 21 Apr 2026 12:52:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=4cbEEl
+	LUi+POfQbIlHB0LGlNuZOxEcc4WtjmUruYbxA=; b=OjOVgEc5JvgTAAis7ZKv4D
+	jq0Ye6swFP6VC0M4NTRjLL8vn2IUsx+OHhO15S4XNdkmQRWCYrxT7VUnv7xCksJM
+	H/uEUYA0zzyQh3mI1w8ZVKYLPenSXfobHyZNYhvbMIrwaRIdv56fY7ym3Lwr5IKA
+	MoQW9k79HFoanh18qlVjVoV9q6mxLHNVYlvkgcC1rzDFBwETUEnZRoFvPknr48gQ
+	RBzyLVStueZubnRwD68KaXHsM2tdiRDp/gBUGV4MgSV+gyFZDgoX60N4J3LZxx81
+	JRft0I+3RehLa9vXC+Tk0BE5/Elgs6E1b9Zi+2/DbJ9LyMCrX0jkou5SPGZpbGQQ
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2nf4ayn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 12:52:14 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LCZGr1017797;
+	Tue, 21 Apr 2026 12:52:13 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmmnvru65-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 12:52:13 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LCq9mD43909448
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Apr 2026 12:52:09 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6CCE520040;
+	Tue, 21 Apr 2026 12:52:09 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 35EF12004B;
+	Tue, 21 Apr 2026 12:52:09 +0000 (GMT)
+Received: from t14-nrb (unknown [9.111.84.218])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 21 Apr 2026 12:52:09 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] powerpc: Run typos -w
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Link Mauve <linkmauve@linkmauve.fr>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Geoff Levand <geoff@infradead.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Anatolij Gustschin <agust@denx.de>,
- =?UTF-8?Q?Breno_Leit=C3=A3o?= <leitao@debian.org>,
- Nayna Jain <nayna@linux.ibm.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
- Eric Biggers <ebiggers@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Ard Biesheuvel <ardb@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
- Thomas Huth <thuth@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Hildenbrand <david@kernel.org>, Alistair Popple <apopple@nvidia.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Donet Tom <donettom@linux.ibm.com>, Andrew Morton
- <akpm@linux-foundation.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@rivosinc.com>, Will Deacon <will@kernel.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Paul Moore
- <paul@paul-moore.com>, Nam Cao <namcao@linutronix.de>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.ibm.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Kees Cook <kees@kernel.org>, Stephen Rothwell <sfr@cab.auug.org.au>,
- Xichao Zhao <zhao.xichao@vivo.com>, Gautam Menghani <gautam@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- Guangshuo Li <lgs201920130244@gmail.com>, Li Chen
- <chenl311@chinatelecom.cn>, Aboorva Devarajan <aboorvad@linux.ibm.com>,
- Petr Mladek <pmladek@suse.com>, Feng Tang <feng.tang@linux.alibaba.com>,
- "Nysal Jan K.A." <nysal@linux.ibm.com>, Aditya Gupta
- <adityag@linux.ibm.com>, Sayali Patil <sayalip@linux.ibm.com>,
- Rohan McLure <rmclure@linux.ibm.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Yeoreum Yun
- <yeoreum.yun@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Donnellan <andrew+kernel@donnellan.id.au>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Athira Rajeev <atrajeev@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>,
- Thomas Gleixner <tglx@kernel.org>, Chen Ni <nichen@iscas.ac.cn>,
- Haren Myneni <haren@linux.ibm.com>,
- Jonathan Greental <yonatan02greental@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, "Yury Norov (NVIDIA)"
- <yury.norov@gmail.com>, Gaurav Batra <gbatra@linux.ibm.com>,
- Nilay Shroff <nilay@linux.ibm.com>, Vivian Wang <wangruikang@iscas.ac.cn>,
- =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- "Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
- Thierry Reding <treding@nvidia.com>, Yury Norov <ynorov@nvidia.com>,
- "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
- Ruben Wauters <rubenru09@aol.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, x86@kernel.org
-References: <20260421121420.26079-1-linkmauve@linkmauve.fr>
- <20260421121420.26079-3-linkmauve@linkmauve.fr>
- <2026042113-shaded-favored-c342@gregkh>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <2026042113-shaded-favored-c342@gregkh>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 21 Apr 2026 14:52:08 +0200
+Message-Id: <DHYUI1FNUDZF.2K5O1SY030GKJ@linux.ibm.com>
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>,
+        "Nico Boehr"
+ <nrb@linux.ibm.com>, <linux-s390@vger.kernel.org>
+Cc: "Janosch Frank" <frankja@linux.ibm.com>,
+        "Claudio Imbrenda"
+ <imbrenda@linux.ibm.com>,
+        "David Hildenbrand" <david@kernel.org>,
+        "Thomas
+ Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>,
+        "Nina Schoetterl-Glausch"
+ <nsg@linux.ibm.com>
+Subject: Re: [kvm-unit-tests PATCH v2 4/5] s390x: sclp: Add detection of
+ alternate STFLE facilities
+From: "Nico Boehr" <nrb@linux.ibm.com>
+X-Mailer: aerc 0.21.0
+References: <20260324-vsie-stfle-fac-v2-0-5e52be2e4081@linux.ibm.com>
+ <20260324-vsie-stfle-fac-v2-4-5e52be2e4081@linux.ibm.com>
+ <DHTP3011DZ4W.3HVEWE0UNIYTY@linux.ibm.com>
+ <DHVJB8HIEM2P.IEP85VEWA4KA@linux.ibm.com>
+In-Reply-To: <DHVJB8HIEM2P.IEP85VEWA4KA@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: SACq-V7iJVK_76f4Ix4gZCU2JLvVooiy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDEyNyBTYWx0ZWRfX1jYYXLVg/FYF
+ NFilfBNqS7WKgG1KtN+Cil64hVcLq3a+HtyMaUiMs/W6Dfo86HmEM7Gf/OoUiTZ1RJ3YUadIGNI
+ pWg/FvV+u/E6Ur6SdpasrlaV4Ypbn8CVUKka6p5HZRPvb+zgCokLw3/IcgBlrdyB5uuTNBSz86O
+ e6pe22zX/C05E4V4K6Arw6D65AFymRUInyhCIXh4R5+/4NsfiA61GA0JCfSFGP456IwVXNCvt4O
+ jJtE1mF2IOdrp1wzKl3DwDAlO7e7GUuF9vNmw+MzOExbnQEESROV/8sz2Kzadoe2Q8u1esdzRmb
+ uOhsmfokK1c1SSmew4Y9DNgUro7bA0tNEQFkaw1bSOJNBta9KLuXuFIBP0m/OdpyeN0FWqw17Kh
+ TbUd3jGTemHy/qGEni0iKuBWmu9E39q4whUUCl52NXKf6m7KDIaUPhHfM2Qld8JXh0Tzch1H9+1
+ QyS28LEWptVR82IId1w==
+X-Proofpoint-GUID: SACq-V7iJVK_76f4Ix4gZCU2JLvVooiy
+X-Authority-Analysis: v=2.4 cv=B7iJFutM c=1 sm=1 tr=0 ts=69e772fe cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=JDlLnzAmX2ppTn9s91sA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_02,2026-04-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210127
 
-On 21/04/2026 14:36, Greg Kroah-Hartman wrote:
-> On Tue, Apr 21, 2026 at 02:14:14PM +0200, Link Mauve wrote:
->> diff --git a/arch/powerpc/boot/dts/mpc8308_p1m.dts b/arch/powerpc/boot/dts/mpc8308_p1m.dts
->> index 41f917f97dab..48a98449ecbb 100644
->> --- a/arch/powerpc/boot/dts/mpc8308_p1m.dts
->> +++ b/arch/powerpc/boot/dts/mpc8308_p1m.dts
->> @@ -90,14 +90,14 @@ can@1,0 {
->>  			compatible = "nxp,sja1000";
->>  			reg = <0x1 0x0 0x80>;
->>  			interrupts = <18 0x8>;
->> -			interrups-parent = <&ipic>;
->> +			interrupts-parent = <&ipic>;
->>  		};
->>  
->>  		cpld@2,0 {
->>  			compatible = "denx,mpc8308_p1m-cpld";
->>  			reg = <0x2 0x0 0x8>;
->>  			interrupts = <48 0x8>;
->> -			interrups-parent = <&ipic>;
->> +			interrupts-parent = <&ipic>;
->>  		};
->>  	};
->>  
-> 
-> Isn't this going to break a working system?  If not, then was this dts
-> file ever correct in the first place?
+On Fri Apr 17, 2026 at 5:28 PM CEST, Christoph Schlameuss wrote:
+> On Wed Apr 15, 2026 at 1:34 PM CEST, Nico Boehr wrote:
+>> On Tue Mar 24, 2026 at 4:28 PM CET, Christoph Schlameuss wrote:
+>> [...]
+>>> diff --git a/lib/s390x/sclp.c b/lib/s390x/sclp.c
+>>> index d624872cba608fcbbd0c482a25f091fe19475a43..77b2a5ec00d68ec7ee82da2=
+95f2f31c539b5c00c 100644
+>>> --- a/lib/s390x/sclp.c
+>>> +++ b/lib/s390x/sclp.c
+>> [...]
+>>>  	if (read_info->offset_cpu <=3D 134)
+>>>  		return;
+>>>  	sclp_facilities.has_diag318 =3D read_info->byte_134_diag318;
+>>> +
+>>> +	if (read_info->offset_cpu <=3D 139)
+>>> +		return;
+>>> +	sclp_facilities.has_astfleie2 =3D sclp_feat_check(139, SCLP_FEAT_139_=
+BIT_ASTFLEIE2);
+>>
+>> Help me understand which case is the odd one, the diag318 one where we a=
+ccess
+>> read_info directly or this one where we use sclp_feat_check()?
+>>
+>> Or is there a particular reason to do it this way that I didn't see?
+>
+> Both methods will read from the location read_info is pointing to. Which
+> actually is pointing to _read_info, which is a 2 page buffer. The actual =
+sclp
+> info is read into _read_info dependent on facility 140 as either 1 or 2 p=
+ages.
+>
+> So the data will then in either case be there in _read_info, either from =
+the 2
+> page sclp read or as zeros behind the 1 page sclp read.
+> As for byte_134_diag318 in struct ReadInfo I dont think there is a golden=
+ way.
+> Without fac140 byte_134_diag318 does not exist but is in the struct. And =
+with
+> fac140 and using sclp_feat_check we are reaching behind struct ReadInfo i=
+nto
+> _read_info.
+> Both not optimal.
+>
+> In the end the difference is if we go the extra mile and define all the f=
+eature
+> bits in struct ReadInfo or just use sclp_feat_check to check the bit dire=
+ctly.
+> Simply because I think clp_facilities_setup looks cleaner that way and it=
+ is
+> easier to add more feature bits.
+> I agree that we should use the same method for all high feature bits.
+>
+> So I propose to add another patch here to use sclp_feat_check directly fo=
+r
+> diag318 as well. And also remove byte_134_diag318 from struct ReadInfo.
 
-It looks DTS was not correct in the first place, but wrong property
-probably did not matter, because parent node has it right. Still this is
-beyond trivial language fix and should be a separate.
-
-OTOH, interrupts-parent is clearly the wrong property. There is no such
-thing.
-
-Quoting commit msg:
-"I have manually reviewed every single"
-
-Clearly not true.
-
-Best regards,
-Krzysztof
+Thank you, makes sense to me. Do you want to take this as part of this seri=
+es or
+should I send a patch you can base your series on?
