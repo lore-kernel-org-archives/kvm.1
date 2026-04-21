@@ -1,209 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C44E3B19C2
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 10:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776765904; cv=none; b=UpXHli6mJl6aF3YrEj8Hmq+1299F2G67NCXULS3ByuDRorpwkDL7MPEal5als4wbQ4i+NshmLdi55DTZOSv2how38utnPA4KqjNlm2D4ZJmfj34sHq6MXBg4VwUp8iJSt0b8tWdfuRuyFb/NKlLkJ12Y6blo0Oiyq71z7WeblQM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776765904; c=relaxed/simple;
-	bh=yfBmJxKFE2B8sFZRFT6pz/Bmzuj/HOGPpJ9ua1lUQAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SvSHU+u+MdwMdPNQBRE3F7OpDUBkWq+Ezl/lb6dGU6tpoo7xR++klo0HSUjX1oCoDXQuc5wtGaAZ6Vidsj0EHwigjwcUGJdww+QWJJYxJvgCvfDnFVhGrdZGcfRWdiFKIRfF8ZQMHZ/Mdx4qZryEItLm2JTag7BsTWSulbRHFH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=INX8393X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GOm74OKB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4482A3B6363
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 11:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776770274; cv=pass; b=MWjjyw9YTfxL69Vt/ax3c6d6A6NhHmMl7kTw8Sv6s5d5b+/ghT+T/VzXdx2SUleFVIXJL5oRjpt3HPEKdhwvLLIVRiremPWLmwapkkKzRNJbwSDy3qoXBbXJk8yhJRqajCtKEAmRQBfkT4alcpU0lcqaCP99wMhkKmmTa2Ymo8o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776770274; c=relaxed/simple;
+	bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CVaeaYUBLT80a4Yc9guT4btr7/zOoeYOm4vYBr4BgW7ieDsJEddar4auOnL1ZX4qok0dTQYVRQy6jyysNaXVfcvkRPAvAOIu+zWZT1crafRiMCYIkPzEC1SIs0b6eP1YOxnu+EYcjtCiYjXkBN+9QGT/bRwxUmndMhmiMx8asXA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELueQRLt; arc=pass smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="INX8393X";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GOm74OKB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776765902;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gLpMq3bvSknPmfM0Vr8rolbKX4splOg+Lf8VMaqkFw8=;
-	b=INX8393XdL1FijHodn9KvcG10GDQSx4h3+7mBDvp33Pa46tO22EkIWKtNhrpi97uP8+8R2
-	DeqCNmqYkvdZkE4TpMQ8KGtxIST7xKxtKDQubNp4F9YBRsfveYthWxNSpjwSLvbgv1jowg
-	QKNH7PBXrs0NTs6aV3jp7ROhE01ahhc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-mmbFOgP1P2aXhOHZID4MfQ-1; Tue, 21 Apr 2026 06:05:01 -0400
-X-MC-Unique: mmbFOgP1P2aXhOHZID4MfQ-1
-X-Mimecast-MFC-AGG-ID: mmbFOgP1P2aXhOHZID4MfQ_1776765900
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43fe4674d3eso4122056f8f.1
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 03:05:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELueQRLt"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ab46931cf1so35974375ad.0
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 04:17:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776770272; cv=none;
+        d=google.com; s=arc-20240605;
+        b=f4DooqVDUv2nMYqK09c8zUBPe7gsN3aE5JnftVLonTuPQX+GFnbDjTbJQbKJHEK0WX
+         9+KCnoQ/MinqJTu6WDOxGthHwhYwVpT6PmB1/prQLbx5o7nZJJmx+0zU+MnIrJime4eF
+         69O1Jkd5B1UHf+iyzkmnJI3wuTviYtH5IyDgM8OuYj29X+w6QhiBxUagUEwnNQJ4UNdw
+         hYjFKBlHcGH2mq0YOAyzjFdIklQQOE1XOnZ6/AJw5KOiRMypWzjbiiGUbiIXZufs8GJo
+         FPkX29XzbjaOXslz3Uqy+i4fjjbvshqFqipgsFmSqEUZKbHwy49gEmMs8t+yC272OGYm
+         iqgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
+        fh=SE3zyewpUcCqiPQOMljTuLBzsoq8qqj1t/jNCufcqig=;
+        b=gjqxatLfe09FkR6FK1I1PgjgeCf+XwFjaorrqHOPP+TLy+F9Z7eRPEPLbJAp0dauim
+         xZb6KZu6Qs/TVWi7G8lDGhfzAGFC799ojy/3EThhJ48cuBWzLqTbHo8aCurTVvlHFtEH
+         p1sJqdzJuhVViK0NQ4jSMYIeTJQByJrQY+E3QcS4Na24CWJJYqlhsI8zwawHkLiyHQL4
+         W6nNKyr7XuCMkXeaY4aPvZtZeczQQIdlcEGLi8YBILWc64+Otokgmt4Rt7nQqettsc1F
+         HMmba1tqReEsj4PI2S/a74YDFtq9fmO6DAkMiz3tNxbxcjnEC4Ep19CvHxJ3+Lp9Ilj4
+         7A0A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776765900; x=1777370700; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gLpMq3bvSknPmfM0Vr8rolbKX4splOg+Lf8VMaqkFw8=;
-        b=GOm74OKBfFxx/jNr2Vxll6gHIFxfZ19KdK9wGb/4i7epzStH/WuJyCEBVl/DuDNGRd
-         ZvCT2yzkUYkKARj/ts9Qut90EOTh2bEJYP596jkaYIcXruqDYshRw+zWr4hOCwtVr62E
-         JsL0NTvN6aCoLg/rldFsR8RfIqdRoMG7oszlN0H6EYBphEFsByPq9h5y6B4z9sENGCOT
-         gDEj7Nrr514VMdOeQlovepiZZUsH8FUMiZ5WDh8xkzI6FMCF3hSOWD6VsIZkxTVR4eSQ
-         17Iuj/Nz4ec8LXFdGeDOi+HE3UGcjFCKc8dycqK4A+v/mJaLTMd4N49883n6Nw+u9JLv
-         eFEg==
+        d=gmail.com; s=20251104; t=1776770272; x=1777375072; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
+        b=ELueQRLtmf75Xi+ZZyWFpi8Mg85fY8cnBX+9ZkKQggNNvunD2uWYBuf2jVOBSUqnLu
+         qsuCCuNFBD+Fq1WduFzquI1+3Xat9lu/XYsZAvtc33/blxEcchJJEf3MI2o4Lq6I/jXK
+         7DBfut+EuO8HmDvlbm8XxGUzrDmb9TvYZPlBsaTL313NkASvz1zky27lpd4Dn2ltcEHa
+         yNghMTtN98ItEf0O0hSHwlVi1ZE3YbXjS3LQF6TZAcsYNycxthUoFrhZVSyRLglIkYm6
+         4zjOAJ38z8qdEYhCuiFRFRpQ4uYz+b72762qcuVuodaNbF5p4ZMt5hCkGQZjywP8xliF
+         rkCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776765900; x=1777370700;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gLpMq3bvSknPmfM0Vr8rolbKX4splOg+Lf8VMaqkFw8=;
-        b=D8xxbjeb61acoC0W1xeIiJoj/k0XSry+Sg0Gp9Dojsng7SDabR/PkTcuhpSL2qP3VJ
-         wMQ6J1glWUREbZp7IUx9Cdx0I/Su9C0KXjWttN/V1Igz8x85VXuI3Vi1ZfJWmde8RChz
-         4Z3IgfR38mss9BMqcWErFtwYClzSkak/MGGDdblst0nlYmVHbVXwaxTyEku09O+VoT1R
-         cg+cTbNkfa0bFkNFxTpgt+Tiw2EzxihUDATVVoQbxaJlvTDFBR0Ez1ZF7wqniFlj6pw7
-         8Cm48SvRw1yRqdnkbQktZ3FJhI9slLIsVLGCKg1OuCZaMGv8PGHjep85JNA6Ww/TVreK
-         tlWw==
-X-Forwarded-Encrypted: i=1; AFNElJ9mKHy6sq0a5QrLSZdY9o8n0ZvSCfg29LgwxxO9vW7t6f6IpC1g3oW9WKPYyqYk4ZP0HpY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVklgOZ4Yxo+9Dl/U0AgJ/cmY88vuaQMxdOyEYz3E3rDJn/xf5
-	6NCq3dZ5lYHOZU29K57r/fi5MspS9A0fqE72Hp4wty3gy4FdbmS5JV5fzizWjNvQGtLe77XgZaB
-	l1FjL5mRnCHZN850nTqnMclOdGpdc/q8svZvDKk1z4b4nrcWMnCK/bA==
-X-Gm-Gg: AeBDievovzDGjazqFv+Mz2G+qT8/NU/2QUFKu0OQGoXxMkurukHJGvDSdC07H5HoRVr
-	CYuKP20FwDTHZjuI4YgWHQ2N+AT8YAiZRq1Ca8pUnnxK2qONN5iHGpAqxZ7XysCYu0RcIZOkSct
-	ccNyZ8msdcJwyiWXVyDEMxj8HwVusrnEdEltxaLt85X4neO8nmqqp0JIy1QsFiJHCk/9uyOjq03
-	e++ENiGa7+EJZDtnbv3xCNcb2QeNg+TvTpYwvrv3S7IHjh70qEbYTXjYdIVeg/KxbZtaekbKchK
-	P2DBg68rzZzOZioC+eWKblGGHi9C0W9dDXQ20EXryEHztSYU2sQS3BhA/y2lLMNgCfZqF/y31JM
-	4QPTabZhjcGr4HfGVCpyuaA/xotJuiPHK7lpjaEkwAPmkfEg4cxnZ+X0esi/oz4900VtEv1wfGf
-	jvIUpD2US7fr2vSCsaCYQuXQSV3gWP+h0dyEk=
-X-Received: by 2002:a05:600c:a00c:b0:488:c51f:e04e with SMTP id 5b1f17b1804b1-488fb765e65mr233926825e9.13.1776765899885;
-        Tue, 21 Apr 2026 03:04:59 -0700 (PDT)
-X-Received: by 2002:a05:600c:a00c:b0:488:c51f:e04e with SMTP id 5b1f17b1804b1-488fb765e65mr233926275e9.13.1776765899402;
-        Tue, 21 Apr 2026 03:04:59 -0700 (PDT)
-Received: from [172.20.57.158] ([129.41.46.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb72d365sm172202905e9.1.2026.04.21.03.04.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 03:04:57 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	rostedt@goodmis.org,
-	Marc Zyngier <maz@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH] kernel: trace: do not generate undefsyms_base.c
-Date: Tue, 21 Apr 2026 11:04:55 +0100
-Message-ID: <20260421100455.324333-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1776770272; x=1777375072;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
+        b=fL3qEnrL6IlH7fOEkvAXXKhT/vr/vbEZ57i8yQrciNn8k982vQ1+SpdR7yE1+yd484
+         mCq8E1al0GsmXhilHoRnOsuFM+MROF6beztk21w6UWkzWXexvgUkvN7oRZ6a0Y1hxjZO
+         cT5D+FipESpK2X1/sAGzWFeA75vlZkDGJ/9rgqp2Nz66dzVeM4R1T+6U20Qj9gVE3RBY
+         enXoYBxneJhtWcKXAchzFyByhegOQtO9FHh53x4NdMHzkX05peHD3wPwIEbqSJLjO6T/
+         oL9R5h6Z4uR/xv+HmgT77L/UW/WCgLlUt17VqdllMNP38MPGp4eOmYUi7LKWkPToaOyE
+         uqGA==
+X-Gm-Message-State: AOJu0YxN3Iaf4NgeFVBL52hFrvPLNBpEWmXgSZi/AXg7qTO2bGqIF9zG
+	TIm3RyNtDQjMm+1a27ErUmyAb64pTnxdFtHis2BcFrp6tY5BdeVIUzlHwLh7wEzX5sFd1kWv9t1
+	mX41RGzZM1DUxM+iCy9N9jfQQ7XvB8uY=
+X-Gm-Gg: AeBDiesoTV0UN55ZSMfMs6jOFhxFyBYyt092p4x6hf+zSVOlKX8STCsOGyUrosGRMCF
+	MYnC0GIj6ybUqi500Bq8cRvO6wLjUVcc+jNgeXCJZWVGtykErbPGulF26IfB9/AZuwJO6AHH05H
+	NVMgLAUY3oMXABvHuZXDPKk3aOjDJ5jC6ASxD1j4EKtofK3ILpid59Q/6bTgS0b6kV+IDyQZEM+
+	yyKzw2bgwuGDsXnsBKV8MLLBM4Mxfp2Ee80RvnaswMZNZCKs0eLpRhxizSZ/5VHMiB6h32SY5ly
+	Q0Gc+CG05wgVXep0IXVau3jyGlwn
+X-Received: by 2002:a17:903:166e:b0:2b4:64cf:e8f8 with SMTP id
+ d9443c01a7336-2b5f9dbcd22mr166529785ad.2.1776770272491; Tue, 21 Apr 2026
+ 04:17:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Zw Tang <shicenci@gmail.com>
+Date: Tue, 21 Apr 2026 19:17:40 +0800
+X-Gm-Features: AQROBzCvxTzVOatYGD3oQlMzZmTAz5McY1A204T_VliE2k6DNBeXHfpitVDrZ9A
+Message-ID: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+Subject: [BUG] WARNING in workingset_activation triggered by KVM page fault
+ path on Linux 7.0.0-08391-g1d51b370a0f8
+To: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-The code to autogenerate undefsyms_base.c in the Makefile is larger
-than the file itself.
+Hi,
 
-Remove the "echo" indirection that creates the file, which keeps
-the build system sane and makes it much easier to edit it if/when
-new situations arrive.
+I am reporting a WARNING in workingset_activation() triggered by a
+syzkaller C reproducer on Linux 7.0.0-08391-g1d51b370a0f8.
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- kernel/trace/.gitignore       |  1 -
- kernel/trace/Makefile         | 35 ++++-------------------------------
- kernel/trace/undefsyms_base.c | 28 ++++++++++++++++++++++++++++
- 3 files changed, 32 insertions(+), 32 deletions(-)
- delete mode 100644 kernel/trace/.gitignore
- create mode 100644 kernel/trace/undefsyms_base.c
+The warning is hit from the KVM page fault path:
+kvm_set_page_accessed() -> folio_mark_accessed() -> workingset_activation().
 
-diff --git a/kernel/trace/.gitignore b/kernel/trace/.gitignore
-deleted file mode 100644
-index 6adbb09d6deb..000000000000
---- a/kernel/trace/.gitignore
-+++ /dev/null
-@@ -1 +0,0 @@
--/undefsyms_base.c
-diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
-index 4d4229e5eec4..1decdce8cbef 100644
---- a/kernel/trace/Makefile
-+++ b/kernel/trace/Makefile
-@@ -133,41 +133,14 @@ obj-$(CONFIG_TRACE_REMOTE) += trace_remote.o
- obj-$(CONFIG_SIMPLE_RING_BUFFER) += simple_ring_buffer.o
- obj-$(CONFIG_TRACE_REMOTE_TEST) += remote_test.o
- 
--#
- # simple_ring_buffer is used by the pKVM hypervisor which does not have access
- # to all kernel symbols. Fail the build if forbidden symbols are found.
--#
--# undefsyms_base generates a set of compiler and tooling-generated symbols that can
--# safely be ignored for simple_ring_buffer.
--#
--filechk_undefsyms_base = \
--	echo '$(pound)include <linux/atomic.h>'; \
--	echo '$(pound)include <linux/string.h>'; \
--	echo '$(pound)include <asm/page.h>'; \
--	echo 'static char page[PAGE_SIZE] __aligned(PAGE_SIZE);'; \
--	echo 'void undefsyms_base(void *p, int n);'; \
--	echo 'void undefsyms_base(void *p, int n) {'; \
--	echo '	char buffer[256] = { 0 };'; \
--	echo '	u32 u = 0;'; \
--	echo '	memset((char * volatile)page, 8, PAGE_SIZE);'; \
--	echo '	memset((char * volatile)buffer, 8, sizeof(buffer));'; \
--	echo '	memcpy((void * volatile)p, buffer, sizeof(buffer));'; \
--	echo '	cmpxchg((u32 * volatile)&u, 0, 8);'; \
--	echo '	WARN_ON(n == 0xdeadbeef);'; \
--	echo '}'
--
--$(obj)/undefsyms_base.c: FORCE
--	$(call filechk,undefsyms_base)
--
--clean-files += undefsyms_base.c
--
--$(obj)/undefsyms_base.o: $(obj)/undefsyms_base.c
- 
-+# Basic compiler and tooling-generated symbols that can safely be left
-+# undefined. Ensure KASAN is enabled to avoid logic that may disable
-+# FORTIFY_SOURCE when KASAN is not enabled. undefsyms_base.o does not
-+# automatically get KASAN flags because it is not linked into vmlinux.
- targets += undefsyms_base.o
--
--# Ensure KASAN is enabled to avoid logic that may disable FORTIFY_SOURCE when
--# KASAN is not enabled. undefsyms_base.o does not automatically get KASAN flags
--# because it is not linked into vmlinux.
- KASAN_SANITIZE_undefsyms_base.o := y
- 
- UNDEFINED_ALLOWLIST = __asan __gcov __kasan __kcsan __hwasan __sancov __sanitizer __tsan __ubsan __x86_indirect_thunk \
-diff --git a/kernel/trace/undefsyms_base.c b/kernel/trace/undefsyms_base.c
-new file mode 100644
-index 000000000000..e65baf58e6ff
---- /dev/null
-+++ b/kernel/trace/undefsyms_base.c
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * simple_ring_buffer is used by the pKVM hypervisor which does not have access
-+ * to all kernel symbols.  Whatever is undefined when compiling this file is
-+ * compiler and tooling-generated symbols that can safely be ignored for
-+ * simple_ring_buffer.
-+ */
-+
-+#include <linux/atomic.h>
-+#include <linux/string.h>
-+#include <asm/page.h>
-+
-+void undefsyms_base(void *p, int n);
-+
-+static char page[PAGE_SIZE] __aligned(PAGE_SIZE);
-+
-+void undefsyms_base(void *p, int n)
-+{
-+	char buffer[256] = { 0 };
-+
-+	u32 u = 0;
-+	memset((char * volatile)page, 8, PAGE_SIZE);
-+	memset((char * volatile)buffer, 8, sizeof(buffer));
-+	memcpy((void * volatile)p, buffer, sizeof(buffer));
-+	cmpxchg((u32 * volatile)&u, 0, 8);
-+	WARN_ON(n == 0xdeadbeef);
-+}
--- 
-2.53.0
+At first glance this looks more like an MM/workingset issue than a
+KVM-specific bug, although KVM/SVM is the trigger path.
 
+Reproducer:
+C reproducer: pastebin.com/raw/zzNSd9HK
+console output: pastebin.com/raw/TuipfpyA
+kernel config: pastebin.com/raw/aq1V3cLk
+
+Kernel:
+HEAD commit: 1d51b370a0f8
+git tree: torvalds/linux
+kernel version: 7.0.0-08391-g1d51b370a0f8 #1 PREEMPT(lazy) (QEMU
+Standard PC, Q35)
+
+The warning is:
+
+WARNING in workingset_activation
+
+Log excerpt:
+
+WARNING: include/linux/memcontrol.h:381 at
+workingset_activation+0x466/0x540, CPU#1: repro/238
+
+Call Trace:
+folio_mark_accessed+0x1d3/0x650
+kvm_set_page_accessed+0x5a/0x70
+kvm_release_page_clean+0x26/0x180
+direct_page_fault+0x553/0x11a0
+kvm_mmu_page_fault+0x35b/0x2020
+kvm_handle_page_fault+0x1aa/0x380
+svm_invoke_exit_handler+0x7a/0xe0
+svm_handle_exit+0x416/0x7f0
+vcpu_enter_guest+0x26ad/0x49c0
+kvm_arch_vcpu_ioctl_run+0x697/0x25e0
+kvm_vcpu_ioctl+0x737/0x1610
+__x64_sys_ioctl+0x192/0x220
+do_syscall_64+0x117/0xfc0
+entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The reproducer appears to drive KVM into a guest page fault flow that
+marks a folio as accessed, and the warning is then emitted inside
+workingset_activation().
+
+Because the RIP is in workingset_activation() itself, this may
+indicate a problem in workingset/LRU or memcg/lruvec handling, with
+KVM only serving as the trigger path.
+
+Please let me know if I should also send this to additional KVM x86
+maintainers, but mm/workingset.c seems to be the primary fault
+location.
+
+Thanks.
