@@ -1,150 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6418937B020
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 07:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911F1175A87
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 07:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776757158; cv=none; b=Odl3ENAXqnqR3ESLJtIF1O6u6TvvjvarKHbpELyvu6kNHwTAglmz4hXKHSJpkuDLQSTx3RfSR3E4PYfzpwDIp5PUY8207FqQcgaN0mjuEZJLx2u4YWFScfEtHzOfNtLYIB9rL6yiWDzjH6kzyq1TRKD2Zdq8thkTgWlSs+8lhNE=
+	t=1776758166; cv=none; b=QvIzk9tiiBu5twG4ep4u3T6FpHWNYdzkwLlMgdBzib0zXlTo8b69CHRrMW/o1cBGra6W7QYE7AEumX64b4GvyfUQ2AEVdTtfEkRDIbwu5uUJ4LlV0TZD1zjcf55LB3cNVRJjFubQlPSutYCxrcUgsOX64g710GIo3OtQsMyif9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776757158; c=relaxed/simple;
-	bh=4IbGy36IosVUSriwz99c2P//S+z90WBxPFyAYswm+tI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Gw9eYS8e/Y49fiAjzYWDgJ5+MIoa3JqK5CURcwJHCmnp7XnFZaXAyc7cyYWJr1qru3q5W3eVwYs7HjBx3+aht5UkaNdt49CXeI7KrE18JrOll+KPOHYNIvV1YbpXXhLLWpWqQzIFPvDAWqwZOQ8MbF2jsYyeM709QUIP1QKZzLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbWLRf6I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776758166; c=relaxed/simple;
+	bh=VIN+T5XnVuGHbrqX8N+18Av3xcWV0Tci7f7EO9pmui0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FHA838q/TmZFiaSN18q9OrXEkphnOQJbVmjR0DxreBz8Wywcn11rEEcwBWh+hGDVuwPP+LAt77wnAxHXOf1mIKZl6SJkNx2o0SDQu+mAGzXI5xpFShdpyE802I2yI6fl0w6Jf9iT8iIJ1wV47+VsPecTn8c9BWilmtP0Fhr/BCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BRYE0Yrq; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbWLRf6I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79343C2BCB0;
-	Tue, 21 Apr 2026 07:39:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776757158;
-	bh=4IbGy36IosVUSriwz99c2P//S+z90WBxPFyAYswm+tI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hbWLRf6IM+hCXR6PJkhP2cb897NyMROnH5IhbXGx9815B/OiF7lxT8jffe/c2pKjw
-	 YGNxRylbgmJWFNILjekVQ+ug+kEyrgrMuZDEaw6APCkw4JlCYSdcFJVHHCKv9DOYlp
-	 ZzS8Vmwu3G3nxNLTEX0mlYYqohl6PsOOK+m0wnKFKBI2bxMrQhlOVCkygmef+21zBE
-	 AMafA/A7eroWd5fZEL2gLMMiU5k/B5DN6b05/zMZqf2L3WA9/SvClVFtoY3bI0FaLj
-	 bdedj+3PAI8KmJDg1gC5nJzFbGgP6kXRGBh+Q8UAXLR/ygvOcT3eHkfOOK60F5S0U6
-	 nrwttU4jxIBvw==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Binbin Wu <binbin.wu@linux.intel.com>, "Verma, Vishal L"
- <vishal.l.verma@intel.com>, "peterz@infradead.org" <peterz@infradead.org>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Edgecombe, Rick P"
- <rick.p.edgecombe@intel.com>, "Wu, Binbin" <binbin.wu@intel.com>,
- "x86@kernel.org" <x86@kernel.org>
-Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
-In-Reply-To: <770ae152-c3fd-4068-8462-23064de02238@linux.intel.com>
-References: <70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel@intel.com>
- <87mryxekxy.ffs@tglx>
- <770ae152-c3fd-4068-8462-23064de02238@linux.intel.com>
-Date: Tue, 21 Apr 2026 09:39:14 +0200
-Message-ID: <87eck8daot.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BRYE0Yrq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776758164; x=1808294164;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VIN+T5XnVuGHbrqX8N+18Av3xcWV0Tci7f7EO9pmui0=;
+  b=BRYE0Yrq02vReczsKdwpEIDtKXHOBfQkPrTuLxjEM9AZstU8NOrtf9TZ
+   WDtTJKRpVrpDGYYy8WCPWYZXtte8a5vTXqStxUPGCs/uo53vO9steEIQm
+   mAp0qVymdeBmOvuaRRXyM6dAK3UOjgpaqxHfSKOixGvYCcvofl04TVM2S
+   Y9C1Du9MzH04ZweGqJ/LRQ67VJl1a+y6FVo/Q51TxKbfBnc770OEL45BW
+   Zv1tN1szJVGY8xR9vEKHq9HNGAFzGCl46wmKk0d3hx8AS6WDXUg6KSr9O
+   /VbOlcZL691IfctnnMYzHdqQp2xIkXmePu7vKCdsdr8RwhGPBdqnIN0qz
+   w==;
+X-CSE-ConnectionGUID: NBtNF2ZGTEu2cTq3kyBnyQ==
+X-CSE-MsgGUID: zaDWvdaORAuD2/gbqAu/2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="89064777"
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
+   d="scan'208";a="89064777"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 00:56:03 -0700
+X-CSE-ConnectionGUID: ikCKoxLSR0mH9v5TwR3/4g==
+X-CSE-MsgGUID: hku0xwHaTv+wDJf7sT/iPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
+   d="scan'208";a="270046179"
+Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 00:56:01 -0700
+Message-ID: <16768449-df59-4798-948d-3be609d3942d@linux.intel.com>
+Date: Tue, 21 Apr 2026 15:55:59 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 17/27] KVM: x86: Init allowed masks for extended CPUID
+ range in paranoid mode
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <20260417073610.3246316-18-binbin.wu@linux.intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260417073610.3246316-18-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 21 2026 at 12:51, Binbin Wu wrote:
-> On 4/20/2026 11:00 PM, Thomas Gleixner wrote:
->>>  static inline void xfer_to_guest_mode_prepare(void)
->>>  {
->>>         lockdep_assert_irqs_disabled();
->>> +       hrtimer_rearm_deferred();
->>>         tick_nohz_user_enter_prepare();
->> 
->> 
->> This code should never be reached with a rearm pending. Something else
->> went wrong earlier. So while the patch "works" it papers over the
->> underlying problem.
->
-> IIUC, the problem might be:
->
-> HRTimer -> VMExit:
-> [IRQ is disabled]
->     kvm_x86_call(handle_exit_irqoff)(vcpu)
->         vmx_handle_exit_irqoff
->             handle_external_interrupt_irqoff
->                 sysvec_apic_timer_interrupt
->                     irqentry_enter
->                     ...
->                     irqentry_exit
->                         irqentry_exit_to_kernel_mode
->                             if (!regs_irqs_disabled(regs)) //<-- This is false, hrtimer 
->                                 hrtimer_rearm_deferred()         rearm is skipped!
->
->
-> This issue is triggered on TDX since TDX can't use preemption timer while normal
-> VMX VM uses preemption timer by default.
+Below are responses to issues reported by sashiko. [1]
+[1] https://sashiko.dev/#/patchset/20260417073610.3246316-1-binbin.wu%40linux.intel.com?part=17
 
-Kinda.
+[...]
 
-The issue is that vmx_handle_exit_irqoff() always hands in regs with
-regs->flags.X86_EFLAGS_IF == 0. That has absolutely nothing to do with
-TDX and the preemption timer.
+> @@ -1310,6 +1311,18 @@ void kvm_initialize_cpu_caps(void)
+>  		F(AVX10_VNNI_INT, F_CPUID_DEFAULT),
+>  	);
+>  
+> +	kvm_cpu_cap_ignore(0x80000000, 0, 0, BIT(CPUID_EAX),
+> +			   F_CPUID_DEFAULT | F_CPUID_TDX);
+> +	kvm_cpu_cap_ignore(0x80000000, 0, 0, BIT(CPUID_EBX) | BIT(CPUID_ECX) | BIT(CPUID_EDX),
+> +			   F_CPUID_SVM);
 
-The patch below solves the problem right there in the exit code, which
-is unfortunate as there might be a NEED_RESCHED pending. But that can't
-be taken into account as KVM enables interrupts _before_ reaching the
-exit work point.
+Issue #1:
+"Does this strict zero-checking of EBX, ECX, and EDX on VMX/TDX break
+userspace VMMs like QEMU?
+QEMU unconditionally populates 0x80000000 EBX, ECX, and EDX with the CPU
+vendor string (e.g., GenuineIntel) across all x86 architectures. When
+KVM paranoid mode is enabled, KVM will reject these non-zero values.
+This could cause KVM_SET_CPUID2 to fail with -EINVAL, breaking VM creation
+for TDX (where paranoid mode is forced to true) or VMX.
+Do these registers need to be ignored across all overlays, similar to the
+explicit workaround implemented below for 0x80000001 EAX?"
 
-Yet another proof that virt creates more problems than it solves.
+The concern is valid.
+Although after commit a539cd26145c
+("i386/cpu: Mark EBX/ECX/EDX in CPUID 0x80000000 leaf as reserved for Intel"),
+QEMU by default zeros out EBX, ECX, EDX for Intel or Zhaoxin CPUs, 
 
-Thanks,
+But for back compatibility (PC machine v10.0 and older), or 
+vendor_cpuid_only_v2 is manually disabled, there will be problems.
+Considering CPUID paranoid mode is enforced for TDX, it will cause problem
+when older QEMU populates 0x80000000 EBX, ECX, and EDX unconditionally. Will
+add 0x80000000 EBX/ECX/EDX to ignored set for VMX/TDX as well.
 
-        tglx
----
-Subject: entry: Enforce hrtimer rearming in the irqentry_exit path
-From: Thomas Gleixner <tglx@kernel.org>
-Date: Tue, 21 Apr 2026 09:00:52 +0200
 
-irqentry_exit_to_kernel_mode_after_preempt() invokes
-hrtimer_rearm_deferred() only when the interrupted context had interrupts
-enabled. That's a correct decision because the timer interrupt can only be
-delivered in interrupt enabled contexts. The interrupt disabled path is
-used by exceptions and traps which never touch the hrtimer mechanics.
+[...]
 
-So much for the theory, but then there is VIRT which ruins everything.
+> @@ -1388,6 +1422,10 @@ void kvm_initialize_cpu_caps(void)
+>  		F(AMD_IBPB_RET, F_CPUID_DEFAULT),
+>  	);
+>  
+> +	kvm_cpu_cap_init_mf(CPUID_8000_0008_ECX, GENMASK_U32(17, 12) | GENMASK_U32(7, 0),
+> +			    F_CPUID_SVM);
+> +	kvm_cpu_cap_ignore(0x80000008, 0, 0, BIT(CPUID_EDX), F_CPUID_SVM);
+> +
+Issue #2:
+"Will initializing this allowed mask exclusively for AMD cause failures for
+multi-core VMs booted via QEMU on Intel?
+QEMU unconditionally populates 0x80000008 ECX with the core count and
+APIC ID size for any multi-core guest configuration, bypassing host vendor
+checks.
+Under KVM paranoid mode, KVM will reject these non-zero values on Intel
+hosts, causing KVM_SET_CPUID2 to fail and preventing multi-core VMs from
+booting.
+Does the allowed mask or ignore rule for this register need to be expanded
+to include VMX and TDX?"
 
-KVM invokes regular interrupts with pt_regs which have interrupts
-disabled. That's correct from the KVM point of view, but completely
-violates the obviously correct expectations of the interrupt entry/exit
-code.
+Similar to issue #1, for back compatibility (PC machine v10.0 and older), will
+add the allowed mask for ECX in VMX/TDX overlays and ignore EDX for VMX/TDX
+overlays for CPUID 0x80000008.
 
-Cure this by adding a hrtimer_rearm_deferred() invocation into the
-interrupted context has interrupt disabled path of
-irqentry_exit_to_kernel_mode_after_preempt().
 
-That's unfortunate when there is an actual reschedule pending, but it can't
-be avoided because KVM invokes a lot of code and also reenables interrupts
-_before_ reaching the point where the reschedule condition is handled. That
-can delay the rearming significantly, which in turn can cause artificial
-latencies.
 
-Fixes: 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming")
-Reported-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Closes: https://lore.kernel.org/70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel@intel.com
----
- include/linux/irq-entry-common.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
 
---- a/include/linux/irq-entry-common.h
-+++ b/include/linux/irq-entry-common.h
-@@ -516,6 +516,14 @@ irqentry_exit_to_kernel_mode_after_preem
- 		instrumentation_end();
- 	} else {
- 		/*
-+		 * This is sadly required due to KVM, which invokes regular
-+		 * interrupt handlers with interrupt disabled state in @regs.
-+		 */
-+		instrumentation_begin();
-+		hrtimer_rearm_deferred();
-+		instrumentation_end();
-+
-+		/*
- 		 * IRQ flags state is correct already. Just tell RCU if it
- 		 * was not watching on entry.
- 		 */
