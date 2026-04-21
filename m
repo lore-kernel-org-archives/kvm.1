@@ -1,57 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AE73D75C5
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 14:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6923917A303
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 14:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776782646; cv=none; b=UoQYyrcK9ekoZ0EJjE05bSLHF2dXBzOcsNlJreLOBra4gfFDv+7Ofl7pcpBn5faoY+gnhWpPOZh1WIYj2li9c7syI3kInNC6vQ1MjX1bciFN38BuU1GREIt6huQYXk2MivqOOljKeTzZqra++qYB0qL2SZscblqec+6piOVwi4s=
+	t=1776782732; cv=none; b=mEefBUYu0VMUoxUfdmMAKTUiSQdl7KrjqqBiOL6f2lXJyYlM3Z2xlQTCBI89dEgbookQQDn5L3otmTmJbkLH7jj5q+J+yA/EndWENRO3GHrVM3OBtmEUKnMyRo2Rx4VjQl15mL7IXAD97c+jwbqdQIG9NfttmR1tmnmwPzCFuLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776782646; c=relaxed/simple;
-	bh=UN4Je6wcA6/RUfs78P/pLdn9tLyXPMVI1CGMtwSK/gI=;
+	s=arc-20240116; t=1776782732; c=relaxed/simple;
+	bh=6v8l7d6Bj+KBnucZNr8Q/6n3GftNycbVhDnxwUmgpxE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g+qk8ghcG5MLni+NBgVKzidEv4/kOTCQj4IkWH1K+BtjICHxrufii1I5BtnX8TNrc5NWUClEApmwW2OLlWTOztB78Pjs9tZDZ9cjIucXnnMaZeqlGB+x8rLsmozG9u/JBKdCmM/bA9sfu19l35mvbHYv+TcOVH6BeurZG8sqft4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BWSMMVCD; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=peiOCCE58r9i7jbJUoG75eHtsiTvRSRLkknpvdgXMPaAo57UedpnHC6Mgg5G3JM0DqhGdBFOprL9ZePo7liQShf0njumqX4wOcTnRihnOXH824bl33FkEkPx7g/p8tln98xa03dUvW9GEAaqa3VddVwBg2pSmANy7UrCa0KGGnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i0fL18Ka; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BWSMMVCD"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa860e71eso1429160b3a.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 07:44:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i0fL18Ka"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c797e31a9b7so4283776a12.1
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 07:45:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776782645; x=1777387445; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tavAqjtLt+mm7XJ48qJxWOujWXgsE4WRZCTG66i4cZA=;
-        b=BWSMMVCDu9G48AuWUIfCFdZqVzF3kof2cUADeoychwTOE720LC7WCqrUv4phEtV474
-         BqacBUVHLEEx2eXixqHPhBmbT+DEAZedzoT7YGpmza8yA5ZSRhreE1o8qjmzW/VrFhv7
-         4lIWI8Kne13CjtXNJhYeVHmKUFp/Tdoj/Je8Pelqe2/Oc8BEpcWfRFXTjxlM0mg4NEgE
-         +IByJ1/UWi/rJ1M+Ca6WQEsUjGNIkMcBw+YWgp3S+Or2s1qoFUABTbWqe1rUz3b86Hri
-         bdqTVO7yN4Jl568tvJuVzJF5Tu1mNusQLrdCuvc7YE6f8hanzzW+fT3kiyuoEfbuJAuJ
-         dv0g==
+        d=google.com; s=20251104; t=1776782731; x=1777387531; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hkC5SsQmyFi4P4ZC+Bva/sdA39QV4G+J9W/F9CJ/tjQ=;
+        b=i0fL18KamOapoGpSbl+G5gvXXwKNVyWzFVo1iH/gmxQReVxWvjhCOD1OApdasVe4J+
+         0xl2+/SFBIiovjWLfK5/b15J7fsJdM/kmTlSI88eU6Ahe86MeQmFjK/COjEA8Zl6z8JP
+         Bjq+wKabb4rM1YmK/b2ugtfw46VK3ukRJnrRdNTFaAbYKTIi3837POqJoAkQ0MrUbkZe
+         PsmQwXJ8geFb+9sH21/hEjO1kXaeCBDrNA8V5Pa5peDgxyY4BvZ5ciav2XCzkgif/yOC
+         HGlsIBfub079PMdmRSfs16Rtv5BYsSJG5wc4JmurUJk3hxxoAs5jo7MJlq0npwdCNYZ8
+         7Syw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776782645; x=1777387445;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tavAqjtLt+mm7XJ48qJxWOujWXgsE4WRZCTG66i4cZA=;
-        b=g12lR47imPYeFJ/+ESyKm6Jcfb5CDnn81OCWsA2D8iu0aRhsuOBqHl7G6nzX8P2GV8
-         03XZUmpg7KMBNcZCUM/61WOCs+RrwKaVwbGNZW6YinJTqVOvONkhvDvEf83AtAFvledf
-         Jnx4ko0o7o1g5XLIohievohYro3kpvJWX3RQUiUBdEl72WfUPoIcYSQyzvz7FCAxlgXg
-         6/KYeXmGpNkEnKJi4sCk7jp54oglSSh+ys1p8caT28/sC/2iA8fvYnIsjko2Sl57NPxS
-         Y6OrcLfyk/kawki5J2l4oKcCnDHG2SwD352OPWqrr1wYksvNJi0QJCP62rKuqIJGn2lf
-         kY0g==
-X-Forwarded-Encrypted: i=1; AFNElJ+XRtdSktoflrEwmkqtPDnB+FsKdcExd1PctuKBZAMZJvDl/e488YtPHpqLpv2LMsCgJT4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaiioEBN6klyyCU11SWh06YHabggPGK9Gh/6xlOZxMsUq6trlt
-	TsIRKIsYBjdh/wd3KiiaRgjpHgknVwQHYk/qoWRkgq6zc2Ov/GKlR1atmC2A7X4fYqBPRgKjuoP
-	bob+FvQ==
-X-Received: from pfbdl11.prod.google.com ([2002:a05:6a00:490b:b0:82f:6e26:770b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ac6:b0:829:8041:83f
- with SMTP id d2e1a72fcca58-82f8c7df387mr17715985b3a.7.1776782644459; Tue, 21
- Apr 2026 07:44:04 -0700 (PDT)
-Date: Tue, 21 Apr 2026 07:44:02 -0700
-In-Reply-To: <DS0PR02MB93214EEAB50391C84CB7B9C48B44A@DS0PR02MB9321.namprd02.prod.outlook.com>
+        d=1e100.net; s=20251104; t=1776782731; x=1777387531;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hkC5SsQmyFi4P4ZC+Bva/sdA39QV4G+J9W/F9CJ/tjQ=;
+        b=Cphek+rkkDN7bxfFM1h3YQR/yxOgw8Q9kwKzj1h7VXC8K7K+GMu7Um6QHDB1hJ2lxR
+         bX86oi/RGVTgr4+E8mC/t22+Ilv/XK9EMpIeoOmt7zs6gNnCsYfZSwqY33HgU31rPmZT
+         b82/4eO9DtZSQmt88ftraJS80uLZxasOb/H1Cm6MDyXJzdPY8Nx5uPpAcGgRA9LF7YYW
+         NlCnXuYhVXxspZkYuOVHTsdbf/2pQiIvGkCgwrgIL5nV5Xj+BssLs0xdy5wvSDM+agFa
+         3BRJkRzQZy8T0Ap7Mrq7XdQzfN+PnYJp/+Wm7bwy70tTVj8sa7shaAb4VCzWlfLIqr0Q
+         R43g==
+X-Forwarded-Encrypted: i=1; AFNElJ9qqGlZZAvfYxI5G2j9Hatit4oDAb2DaJ5YCOxHT7S+vXFglgiGxzIH9k9qhAsqDZBwLMs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtRars1W1KHpVgWsqWv1YlM3tqdD0KWbHJ+Jn6JMZ0GneX+ELv
+	9Jst1jBfH9Jf0t8VZqaKzvJdHXB2GVsY5KRwP/0QYXKyuqEuss56CUMsPgFQfkQnvFJk5+704bZ
+	xB+UPbA==
+X-Received: from pfbho22.prod.google.com ([2002:a05:6a00:8816:b0:82f:61ed:8b2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:408e:b0:827:2a07:231d
+ with SMTP id d2e1a72fcca58-82f8c839c08mr19494150b3a.17.1776782730512; Tue, 21
+ Apr 2026 07:45:30 -0700 (PDT)
+Date: Tue, 21 Apr 2026 07:45:29 -0700
+In-Reply-To: <IA0PR02MB9462F33B049604001F2469D68B592@IA0PR02MB9462.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,73 +57,21 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
- <43e9c370c07092e6e1342f70d272166a1f3caedb.camel@infradead.org> <DS0PR02MB93214EEAB50391C84CB7B9C48B44A@DS0PR02MB9321.namprd02.prod.outlook.com>
-Message-ID: <aeeNMhOM2fc2BW6u@google.com>
+ <DS0PR02MB9321941EFE9070089B6E1AC38B4BA@DS0PR02MB9321.namprd02.prod.outlook.com>
+ <IA0PR02MB9462F33B049604001F2469D68B592@IA0PR02MB9462.namprd02.prod.outlook.com>
+Message-ID: <aeeNiQf6NMJk9zKd@google.com>
 Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
 From: Sean Christopherson <seanjc@google.com>
 To: Thanos Makatos <thanos.makatos@nutanix.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Ilias Stamatis <ilstam@amazon.com>, Paul Durrant <paul@xen.org>, 
-	"graf@amazon.de" <graf@amazon.de>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	John Levon <john.levon@nutanix.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Paolo Bonzini <pbonzini@redhat.com>, John Levon <john.levon@nutanix.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Mar 12, 2026, Thanos Makatos wrote:
-> > From: David Woodhouse <dwmw2@infradead.org>
-> > On Fri, 2026-03-06 at 12:56 +0000, Thanos Makatos wrote:
-> > > Add a new flag, KVM_IOEVENTFD_FLAG_POST_WRITE, when assigning an
-> > > ioeventfd that results in the value written by the guest to be copied
-> > > to user-supplied memory instead of being discarded.
-> > >
-> > > The goal of this new mechanism is to speed up doorbell writes on NVMe
-> > > controllers emulated outside of the VMM. Currently, a doorbell write =
-to
-> > > an NVMe SQ tail doorbell requires returning from ioctl(KVM_RUN) and t=
-he
-> > > VMM communicating the event, along with the doorbell value, to the NV=
-Me
-> > > controller emulation task.=C2=A0 With POST_WRITE, the NVMe emulation =
-task is
-> > > directly notified of the doorbell write and can find the doorbell val=
-ue
-> > > in a known location, without involving VMM.
+On Fri, Apr 10, 2026, Thanos Makatos wrote:
+> Hi Paolo, Sean,
+> 
+> Following up on this, please let me know whether this is something I
+> should revise/resend.
 
-...
-
-> > I'd love to see if this KVM_IOEVENTFD_FLAG_POST_WRITE works for the
-> > i82559 emulation use case. I think back-to-back writes are discarded
-> > with this model, while Ilias's patches would convey each one?
-
-Do you happen to know the requirements for i82559 emulation?  I tried readi=
-ng the
-spec and QEMU's code, and that was just a waste of ~20 minutes :-)
-
-> Yes, they're discarded, only the last write is visible, and this is by de=
-sign
-> to fit the NVMe doorbell use case.
-
-I wouldn't say the design is specifically to fit the NVMe doorbell use case=
-,
-rather that KVM doesn't need to convey each write to support NVMe doorbells=
-, and
-forwarding only the most recent value is a massive "win" for complexity.
-
-Which, for me, is also the argument for accepting KVM_IOEVENTFD_FLAG_POST_W=
-RITE
-even if there are a limited number of use cases: it's simple (and performan=
-t)
-enough that it's probably worth supporting even if similar functionality ca=
-n be
-implemented via polling on coalesced I/O buffers.  I.e. maintaing both does=
-n't
-seem too onerous, if that's where we wend up.
-
-> ioregionfd,
-> https://lore.kernel.org/all/88ca79d2e378dcbfb3988b562ad2c16c4f929ac7.came=
-l@gmail.com,
-> was a similar proposal for forwarding MMIO writes without discarding
-> back-to-back writes.
-
-And if you were curious what the code looked like:
-
-https://lore.kernel.org/kvm/cover.1613828726.git.eafanasova@gmail.com
+No action needed on your end.  More discussion is needed to make sure this is
+uAPI that we want to support long term, but we're not waiting on you for anything.
