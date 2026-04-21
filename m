@@ -1,93 +1,183 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3A133B6CC
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8486935B125
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776813328; cv=none; b=hrGCLAAMmol0dn3AabJBAfn4oTe4fKaPmIwLmyb1UyimYSua+sbE1lESNtDtPHmAD7yr5B60o+RJ4/EDP1mH3FW7VhG+CdZkQ5ZniLHZebiR1UD4gNeMWezB8ug7TVB2+S+Q1lsWt7B0YyhsmhMzWopzsNXKF057C4ugs/q7Xzc=
+	t=1776813372; cv=none; b=NpazyEl3exEuMCanrYy9SVA9JzEoo+kwjOzJ0IAVS4gRt1YEocTvV8bahTcXGfZgzw6kyMD3WKYN8ZyL6wJu4regI0L3ZVQCAs66ivEzFaUGZP8nWOp+Vbaqaa4zgMIvp8XCaDgNSH0jb/AdbN8bJpccGZuVLqMVyVU2h1bE8GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776813328; c=relaxed/simple;
-	bh=/foAcyRbPhtlo0zvHRTqVHIGrBYvfobgoTE1vTtcw6c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QqpVQmgvIKCHGeIz2g03+aVfb/YG64CV30c1HqMwTN7nFXIXc+Ppnpe53x31jv2rzdjUI4LhAllX7lyWH7pXCiYo1ki2Qe7fMT112iGxNvXCeK25fF7fgRVeqAFIvnq8c4GJQoxgF8q1Fc9xbPG/sR3l/UtScxC3RX5w8lGgb5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RhlqNfef; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1776813372; c=relaxed/simple;
+	bh=Rot/SXQ8dEiEbDELhyjWeMwkyYMZDUzgGvvDVxUxoOM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XbpVKYmNJrz+Wp8KxP3i08UdJiC5ffEd12oycpI9dvAHc7xgc4xFJS1MdVqCVTDFh/x7wCN8hQ3t0UakCvKjGKbsY1Ufx9pudviUPsDNSofWmXcmjcbnfN5JZhA+bjjPDeX64mzLFVkAjE97LbtVkXhIl5RHyKSOE+/70tWhgcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tzzwenao; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RhlqNfef"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f6b0a7164so6714214b3a.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:15:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tzzwenao"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4654f9bb6so50254535ad.2
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:16:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776813326; x=1777418126; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBkw5MFUES880nys/IZGP/M14ZZqVIt9D3WkhSnPKCk=;
-        b=RhlqNfefZK3Cv0bqEC0v45Co9gXDo+8L0scynS60K8UNVnqIRa0h3xl/xJTUuDAyPM
-         k3xDDR3wWGtsl9OXOthENtHkJ8sc6sBT7lxP0N/44wbvGY0fbn3kjEXGSxuNSb/V4N4D
-         34hFU+tvB/QnpMLcxgooMb7M+THyMmX+h55oPu7T7+6VKQ2Z6rMe6QXpWHu3DY0B0wPI
-         IIcOXOH9lqp2feRRoR5ZW+4J4xKG1jDeGWXKmAHaMSJPbnqU7CRxehdDAr9sKXhXxIsY
-         BfdJCqNpErhjCxIMzphGK5zpRm6+sdDneXhXeW/+CIUNUjpOhht03pw2mJYEdLHB42m0
-         aAcQ==
+        d=google.com; s=20251104; t=1776813371; x=1777418171; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=E53Vsp5SigylH1BGAw2CFNHTfpSAIZOTzOsysIgRH5Q=;
+        b=tzzwenaoznNAs2DmCvHRldjlXqYA+CIDQHOFlI5WIQibVLChGpxNHqAlw9+4bZczRf
+         NWyF50ywQdQesx/1fnzV5y/K+Bg43P+Wb6aa5gnIRmLWHj7vqOO96qX3vcF6Bzmy4lsn
+         Wl66lShReb7fr4O6/UHNZtz2tDhc+s4x9NGMJWUKCohVXNEwZ3HldRyX8r569l5NtptK
+         TSM/OIzBW7Bu4i6Ej2STMgbrTpvnLdcbzXNFCjS9MINEphO+kmGWaMhevg0Wml6K1pC2
+         B00TcWAOH0FOO0Sc5LT40HFZhF2MEG6ilCcynkiZMwf7Emuzx/zuqZY1sc51Jt5QilHA
+         fGJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776813326; x=1777418126;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBkw5MFUES880nys/IZGP/M14ZZqVIt9D3WkhSnPKCk=;
-        b=NXjSOcGQtiZIAIee/Zf52CgZ/VI74WmmbrV/tUV1WKYdgEBMBCFG7fheGjQ/i2lqrp
-         TMLatxMV7XJzvsy6I0VzFvITx4hvK3Qx0lSLdM2Tx1C2Qj6GO7+SRrPd/mS4DEuhRhrD
-         n7k7GgVqCMIbbKSJOaP5I/sNjv4txxR/BEjyBGCpSH9o6WaPbv+mMR6FatQgwRzfie/q
-         +h/YD4iaHFRe/+XqMk0IE9b0XLKvGpjV6cZiJ1twPv4OOWOpkI84FH0ZxFlt0SPdmDR6
-         IoGW+i2LN5mbbABKK74zaocfGbcsiJpUmROOVjto2k3aB8/zS4SURLaNOq1wz0Catq44
-         CGag==
-X-Forwarded-Encrypted: i=1; AFNElJ+JC+vVDBr2iVM/mpjIC6ZiSO98GXOMrPv2wI+qvf1jyzE4ckiP/I2/0ERDC9PerWnrU2k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBOxkNPYE8HhC6/AcUpVPOtS+1vmi9d0dypp54TQHBLHRRHThp
-	aQj184v6jOdLQ5JVUT9dqq/Iiz53W6b+aMxPeLvbhr+WaGopqI1TG/ZwX6wHRsXnvvNGj8OK0Ws
-	VcLgYfg==
-X-Received: from pfbhw5.prod.google.com ([2002:a05:6a00:8905:b0:82f:71fd:3094])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:928b:b0:82f:6dad:7b75
- with SMTP id d2e1a72fcca58-82f8c8ebc91mr22055925b3a.33.1776813326123; Tue, 21
- Apr 2026 16:15:26 -0700 (PDT)
-Date: Tue, 21 Apr 2026 16:15:24 -0700
-In-Reply-To: <aegCKy-4wxRq2jou@google.com>
+        d=1e100.net; s=20251104; t=1776813371; x=1777418171;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=E53Vsp5SigylH1BGAw2CFNHTfpSAIZOTzOsysIgRH5Q=;
+        b=rgGCFeuU8oNBij1u4eKpx0hmYq22Dsn+tDZZ4l9KUDQF19T7jagBbTc28yYeD4kAvy
+         NWhKcAkIvl2bhIHoATiJ9Uhmz165HVP57n8YXIiSipP2C1RZ2vqXH8lfVQfNRVVAo9n9
+         +NJvga35mkWuuDZ1gKBa+wWfGN8MWHvTwbU7r+CN8AXp9iBZrkdBajUPbfYKJZjVYSl9
+         t2sBD3xhAUuoBBubmgLTkV8rJSktDyewK3E8WTHWAw5U5AkwuF8/bkd43MJ48potn7xB
+         rq1bo9kXCU6d60OYONKwptUsDTs9B0BRNX8N9l2EvLNpU9KNXa+iOGMQDnCD6baDYTdX
+         etwg==
+X-Gm-Message-State: AOJu0YyNRsjhbAqX0LuxCdY6zVYfjrWS9sGT0qMxyCt37V3bHMLWiixu
+	SSLAD9d2fcQd9O5/yga4H4Dqh90oT1QaPVbDe7I3GrVmJHBU0Tazhu/oRJ3nM5XX+iHUD+H22+K
+	DOypKFwTN
+X-Received: from plpn23.prod.google.com ([2002:a17:902:9697:b0:2b0:b92b:a3d4])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c403:b0:2b2:5a5a:4f2f
+ with SMTP id d9443c01a7336-2b5f9fc4d06mr215637055ad.33.1776813370676; Tue, 21
+ Apr 2026 16:16:10 -0700 (PDT)
+Date: Tue, 21 Apr 2026 23:15:41 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260407063245.2755579-1-nikunj@amd.com> <20260407063245.2755579-8-nikunj@amd.com>
- <aegCKy-4wxRq2jou@google.com>
-Message-ID: <aegFDBWMUvhR53c1@google.com>
-Subject: Re: [PATCH v6 7/7] KVM: SVM: Add Page modification logging support
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Nikunj A Dadhania <nikunj@amd.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
-	thomas.lendacky@amd.com, bp@alien8.de, joao.m.martins@oracle.com, 
-	kai.huang@intel.com
-Content-Type: text/plain; charset="us-ascii"
+X-Mailer: git-send-email 2.54.0.rc2.533.g4f5dca5207-goog
+Message-ID: <20260421231557.1254270-1-jrhilke@google.com>
+Subject: [PATCH v3 00/16] KVM: selftests: Link with VFIO selftests lib and
+ test device interrupts
+From: Josh Hilke <jrhilke@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 21, 2026, Yosry Ahmed wrote:
-> > @@ -3253,6 +3278,54 @@ static int bus_lock_exit(struct kvm_vcpu *vcpu)
-> >  	return 0;
-> >  }
-> >  
-> > +void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct vcpu_svm *svm = to_svm(vcpu);
-> > +
-> > +	if (WARN_ON_ONCE(!vcpu->kvm->arch.cpu_dirty_log_size))
-> > +		return;
-> > +
-> > +	guard(svm_vmcb01)(vcpu);
-> 
-> Why do we need this? Why not update vmcb01 directly below?
+This is v3 of a series which introduces tools/testing/selftests/kvm/irq_test.c
+in KVM selftests. This test exercises the delivery of interrupts (both
+emulated via eventfd and real from a VFIO device) to guest vCPUs. Beyond basic
+injection, the series adds coverage for several complex scenarios, including:
+- Dynamic updates to KVM's GSI routing table while interrupts are active.
+- Waking up halted vCPUs via interrupts.
+- Stressing interrupt delivery during random host IRQ affinity changes.
+- Stressing interrupt delivery during random vCPU thread migration across
+  physical CPUs.
+- Testing non-postable interrupt remapping (using NMIs to force transitions).
+- Supporting both xAPIC and x2APIC modes in the guest.
 
-Yeah, I don't see the point of patch 6.  guard(svm_vmcb01) doesn't exist in the
-current code base because it's not needed.
+The series also links the VFIO selftests library into KVM selftests to enable
+testing of VFIO-KVM interactions.
 
-> IIUC VMX needs this because it updates the loaded VMCS, but the VMCB is
-> just memory.
+The test can optionally use a PCI device bound to vfio-pci to test physical
+device interrupts. If using a device, it can be invoked by passing the BDF to
+the VFIO selftests setup script, and then running the test with the device BDF
+passed via the -d option:
+$ ./tools/testing/selftests/vfio/scripts/setup.sh 0000:6a:01.0
+$ tools/testing/selftests/kvm/irq_test -d 0000:6a:01.0
 
-Yep.  If VMWRITE could target an arbitrary VMCS pointer, VMX wouldn't need the
-helper either.
+This test only supports x86. Testing physical device interrupts (-d argument)
+requires a device with a supported VFIO selftest driver. Currently supported
+devices include:
+- Intel DSA (Data Streaming Accelerator), 8086:0b25
+- Intel IOAT (I/O Acceleration Technology), 8086:2021
+
+The test can be run with following command-line arguments allow for broad
+coverage of the interrupt delivery path:
+-a: Random IRQ Affinity. Randomly affinitizes the device IRQ to different host
+    CPUs to verify stable delivery during interrupt steering changes.
+-b: Block vCPUs. Causes vCPUs to HLT instead of spinning, verifying that
+    Posted-interrupt wakeup (PIW) correctly kicks blocked vCPUs.
+-c: Clear GSI Routes. Periodically destroys/recreates KVM's GSI routing table to
+    verify handling of dynamic IRQ updates.
+-d: Device MSI Triggers. Uses the physical device to trigger MSIs instead of
+    eventfd emulation (requires a supported device driver).
+-i: IRQ Count. Sets the number of interrupts to generate (default 1000).
+-m: vCPU Migration. Migrates vCPUs to random physical CPUs to verify that
+    posted interrupts follow the vCPU across host cores.
+-n: NMI Delivery. Routes interrupts as NMIs into the guest to verify the
+    VFIO-NMI delivery path.
+-v: vCPU Count. Distributes interrupts across multiple vCPUs via round-robin
+    routing.
+-x: xAPIC Mode. Forces legacy xAPIC mode to verify compatibility.
+
+The series also links the VFIO selftests library into KVM selftests to enable
+testing of VFIO-KVM interactions.
+
+Changelog
+---------
+v3:
+- Split monolithic test patch into smaller, logical patches (Sean).
+- Moved guest read/write macros to separate patch and renamed them (Sean).
+- Extracted /proc/interrupts parsing logic into separate helpers (Sean).
+- Renamed guest_rng to kvm_rng for consistency (Sean).
+- Added helper to generate random u64 in range [min,max] (Sean).
+- Added support for printing vCPU affinity on timeout.
+- Removed configurable timeout argument.
+
+v2:
+- Split the monolithic test into a series of logical patches (Sean)
+- Move READ_FROM_GUEST and WRITE_TO_GUEST macros to kvm_util.h (Sean)
+- Add gettid, sched_setaffinity, and sched_getaffinity to kvm_syscalls.h (Sean)
+- Extract /proc/interrupts parsing logic into lib/irq_util.c (Sean)
+- Add -t command-line option for configurable interrupt timeout (Sean)
+- Improve assertion messages with specific vCPU failure context (Sean)
+- Update guest loop to use cpu_relax() when not blocking (Sean)
+- Add KVM_RANDOM_SEED support to kvm_selftest_init for reproducibility (Sean)
+- Randomize the default IRQ vector and GSI (Sean)
+- Use kvm_mmap() instead of mmap() (Sean)
+
+[v2] https://lore.kernel.org/kvm/20260331194033.3890309-1-jrhilke@google.com/
+
+David Matlack (13):
+  KVM: selftests: Build and link sefltests/vfio/lib into KVM selftests
+  KVM: selftests: Add /proc/interrupts parsing helpers
+  KVM: selftests: Add guest read/write macros
+  KVM: selftests: Add IRQ injection test
+  KVM: selftests: Verify device IRQs are routed to vCPUs
+  KVM: selftests: Verify IRQ affinity changes
+  KVM: selftests: Verify IRQs wake up halted vCPUs
+  KVM: selftests: Verify dynamic IRQ routing updates
+  KVM: selftests: Configure number of IRQs
+  KVM: selftests: Verify non-postable IRQ remapping
+  KVM: selftests: Verify vCPU migration during IRQ delivery
+  KVM: selftests: Configure number of vCPUs
+  KVM: selftests: Add xAPIC support
+
+Josh Hilke (3):
+  KVM: selftests: Rename guest_rng to kvm_rng
+  KVM: selftests: Add helper to generate random u64 in range [min,max]
+  KVM: selftests: Print vCPU affinity on timeout
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   7 +-
+ .../selftests/kvm/dirty_log_perf_test.c       |   4 +-
+ tools/testing/selftests/kvm/dirty_log_test.c  |   8 +-
+ .../selftests/kvm/include/kvm_syscalls.h      |   6 +
+ .../testing/selftests/kvm/include/kvm_util.h  |  13 +
+ .../testing/selftests/kvm/include/proc_util.h |  28 ++
+ .../testing/selftests/kvm/include/test_util.h |  26 +-
+ .../selftests/kvm/include/x86/kvm_util_arch.h |   4 +-
+ tools/testing/selftests/kvm/irq_test.c        | 367 ++++++++++++++++++
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  88 ++++-
+ tools/testing/selftests/kvm/lib/memstress.c   |   8 +-
+ tools/testing/selftests/kvm/lib/proc_util.c   |  62 +++
+ tools/testing/selftests/kvm/lib/test_util.c   |  22 +-
+ tools/testing/selftests/kvm/mmu_stress_test.c |   9 +-
+ tools/testing/selftests/kvm/steal_time.c      |  21 +-
+ 15 files changed, 615 insertions(+), 58 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
+ create mode 100644 tools/testing/selftests/kvm/irq_test.c
+ create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
+
+-- 
+2.54.0.rc2.533.g4f5dca5207-goog
+
