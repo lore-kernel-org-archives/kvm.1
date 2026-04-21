@@ -1,200 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E5B3D6469;
-	Tue, 21 Apr 2026 13:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8771E376C
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 13:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776776642; cv=none; b=QdPHN57Lxhu3PF3JNYS0lNDk7gXsU67jVdlPp81Xlm15fS3Q4xTA4aSsQeYd+5AAH1H15dlETBqd6yvdgwX0zZ/IXjE51nNVqFMpkt8NJ0f6RcvVSplox5IUdxkqi0M8jwxtJdyW1c+glm6/QJ7ZoC+Cyo+TsR9U0i8SmuTA2Vo=
+	t=1776777603; cv=none; b=f0xi9Tful98j6cZJ1xNzba1hIuc7SMzElIlZB7plZHB/AO6+J4oevuvKaLjJAjWpCbQ3DF3ACH18Bi5m5Lml4qcUSTO3GH9tVSoNud5nyk8lMSJsOM4N83o5pUaMHS36sBaBWsPzvXMsjySuHOsjcj9hp5zhDlZQPDwgAfOiLrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776776642; c=relaxed/simple;
-	bh=h89KPraY+wdrcwNr8DY3CJydCGxk7pR9YiiPdhRuE7o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cnKb2UAIHIoMuCN7U/i+JLUW8sTiTDiJk9W0Q0n1zrtZAMlQKTlSIJpiJZdrOkH+mlXUKg6B7J1hAWz21ixCgmx7UaQkvWjgST03T/I9A2S6W7t5yUQhMvrFCcOyJG9aVd+D08of0TEsH/IbZga3D/oUEqyoIUWP0RcveXxIL9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lblW3fN/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776777603; c=relaxed/simple;
+	bh=ZT95mCKdj1r9aXCabqBK65ju45MMcPlr/DoVE3vZI8I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bs443hN84ZEo3euBwyHcN28xkfVkYgMNM494Xv6GVYWP/SUJ3DGcpux6Dwh715ize6t9qToTc/eUxqcLOMAR3rS4amj19iQVeRsrrjpqiVx44Z5n/XdDDPrEN0++E+PC2kF2TOq4kLl2s4SlYgk3Sux8ntps1Qu9qliw/b3i6Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JBUmGQfI; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lblW3fN/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DB0C4AF0C;
-	Tue, 21 Apr 2026 13:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776776642;
-	bh=h89KPraY+wdrcwNr8DY3CJydCGxk7pR9YiiPdhRuE7o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lblW3fN/iUQHqxqXTRrmG+VISAc6Ux3YEFKhyadi2HK9XSYN5eklKxARVsgecaNEM
-	 HStNpgYE9rKF8mQMzidcplDLpyN51BlfZ5XybeuGJpWF7pcjqRv9+3RhVHdJ5m2KOL
-	 W3adAcEWXUtimfU8QekoS8GK4X5v8h4thp4mqBiBGxAovwk6VZttITqVtGMiG/G4M9
-	 KTiFQfJDkJJ3XrHnRdXSMGoP5BBPJrQV1FRntPXNlcFiZRKU4EYxIi/4Fyyb1vg2sy
-	 hZSv5er7Mwh/uYYDvBGXRcBJkM5tcSXoLR2ZEafk7WKJoM0hcVjejUc3OEm83A9vfM
-	 5+9soV0DP0TkA==
-Message-ID: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
-Date: Tue, 21 Apr 2026 15:03:56 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JBUmGQfI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0kN4BunEbeSm7du72HT3tJEgrYoeqRp3O8086ZDE5tY=; b=JBUmGQfImZFrgq2VSRBPIVa2mY
+	i5fHeRg8v6WypM0x0kGBM+mhr9oUcnnJXYt/v/W/ztA5eDR1TByCy90XY6benZjY2BSjk/nMNTZun
+	1OU8Hmxxd1HvL25HRfAoeVdx8rueSHpqN7dDGg2Z/OThthj0zAJRiXSTzBzOoWlN1siUPlgMWu6dm
+	F1vxUI32ODXZFGqdT7YoMsGM3hxJVJalzyMRyUFM8spVu/8+UfsE6T70LukmL9ll8QE1PK+UPgAes
+	JidfgYO7i4Slze94ml4raFsJftojwkfv7Ew49e6nWN3fJoTwE64HMrCuzVunDZuj/k7LR/qV9+sd5
+	nQDKwh5Q==;
+Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wFB19-0000000AAy5-2ExS;
+	Tue, 21 Apr 2026 13:19:55 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id EFF8E300708; Tue, 21 Apr 2026 15:19:53 +0200 (CEST)
+Date: Tue, 21 Apr 2026 15:19:53 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Wu, Binbin" <binbin.wu@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
+Message-ID: <20260421131953.GA1064669@noisy.programming.kicks-ass.net>
+References: <70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel@intel.com>
+ <87mryxekxy.ffs@tglx>
+ <770ae152-c3fd-4068-8462-23064de02238@linux.intel.com>
+ <87eck8daot.ffs@tglx>
+ <20260421111858.GH3126523@noisy.programming.kicks-ass.net>
+ <20260421113212.GI3126523@noisy.programming.kicks-ass.net>
+ <20260421113407.GE3102924@noisy.programming.kicks-ass.net>
+ <20260421114940.GJ3126523@noisy.programming.kicks-ass.net>
+ <20260421120531.GF3102924@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
- memory
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <20260414142354.1465950-1-kas@kernel.org>
- <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
- <ad50rPOseVa-SP_s@thinkstation> <aeDoqFWPFxkkNB26@thinkstation>
- <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
- <aeFCuLJXT8VOkzH7@thinkstation>
- <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
- <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <aeTnlQUOOh-dHG8z@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421120531.GF3102924@noisy.programming.kicks-ass.net>
 
-On 4/19/26 16:33, Kiryl Shutsemau wrote:
-> On Fri, Apr 17, 2026 at 01:26:34PM +0100, Kiryl Shutsemau wrote:
->>> Leaving NUMA-balancing aside, a simple
->>> mprotect(PROT_NONE)+mprotect(PROT_READ) would already be problematic to
->>> distinguish both cases.
->>
->> Hm. I didn't consider this case (miss some uffd lore). Will rework to
->> reuse existing PTE bit.
+On Tue, Apr 21, 2026 at 02:05:31PM +0200, Peter Zijlstra wrote:
+> On Tue, Apr 21, 2026 at 01:49:40PM +0200, Peter Zijlstra wrote:
+> > On Tue, Apr 21, 2026 at 01:34:07PM +0200, Peter Zijlstra wrote:
+> > > On Tue, Apr 21, 2026 at 01:32:12PM +0200, Peter Zijlstra wrote:
+> > > > On Tue, Apr 21, 2026 at 01:18:58PM +0200, Peter Zijlstra wrote:
+> > > > > On Tue, Apr 21, 2026 at 09:39:14AM +0200, Thomas Gleixner wrote:
+> > > > > 
+> > > > > > ---
+> > > > > > Subject: entry: Enforce hrtimer rearming in the irqentry_exit path
+> > > > > > From: Thomas Gleixner <tglx@kernel.org>
+> > > > > > Date: Tue, 21 Apr 2026 09:00:52 +0200
+> > > > > > 
+> > > > > > irqentry_exit_to_kernel_mode_after_preempt() invokes
+> > > > > > hrtimer_rearm_deferred() only when the interrupted context had interrupts
+> > > > > > enabled. That's a correct decision because the timer interrupt can only be
+> > > > > > delivered in interrupt enabled contexts. The interrupt disabled path is
+> > > > > > used by exceptions and traps which never touch the hrtimer mechanics.
+> > > > > > 
+> > > > > > So much for the theory, but then there is VIRT which ruins everything.
+> > > > > > 
+> > > > > > KVM invokes regular interrupts with pt_regs which have interrupts
+> > > > > > disabled. That's correct from the KVM point of view, but completely
+> > > > > > violates the obviously correct expectations of the interrupt entry/exit
+> > > > > > code.
+> > > > > 
+> > > > > Mooo :-(
+> > > 
+> > > Also, is this a x86/KVM 'special' or is this true for all arch/KVM that
+> > > use GENERIC_ENTRY?
+> > 
+> > Should we not make asm_fred_entry_from_kvm()/VMX_DO_EVENT_IRQOFF fix IF
+> > on the fake frame instead? We know it will enable IRQs after doing
+> > handle_exit_irqoff() in vcpu_enter_guest().
 > 
-> See https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/rfc-v3
-> 
+> Moo, you can't do that either, because it will ERETS/IRET and fuck up
+> the state :/
 
-Quick feedback from skimming over it:
+How insane is something like this?
 
-
-1) ARCH_SUPPORTS_PROT_NONE needs some thought, because I am pretty sure all 
-architectures support something like mprotect(PROT_NONE), and the config
-option might be misleading.
-
-So you very likely want to express different semantics here. You want to
-know whether pte_protnone()/pmd_protnone() works.
-
-
-2) The other stuff is really just an extension of existing WP handling.
-I suspect we want to have some reasonable cleanups to not end up in
-common code with
-
-@@ -1841,7 +1841,7 @@ static void copy_huge_non_present_pmd(
- 	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 	mm_inc_nr_ptes(dst_mm);
- 	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
--	if (!userfaultfd_wp(dst_vma))
-+	if (!userfaultfd_wp(dst_vma) && !userfaultfd_rwp(dst_vma))
- 		pmd = pmd_swp_clear_uffd_wp(pmd);
- 	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
-
-All the uffd handling should be better isolated (i.e., a single vma check?),
-and likely the uffd bit should be abstracted away from being called "wp" to
-something more generic.
-
-Maybe it's simply a "uffd" flag which's semantics depend
-on the vma flags.
-
-Maybe something like:
-
-@@ -1841,7 +1841,7 @@ static void copy_huge_non_present_pmd(
- 	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 	mm_inc_nr_ptes(dst_mm);
- 	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-	if (!userfaultfd_uses_pte_bit(dst_vma))
- 		pmd = pmd_swp_clear_uffd(pmd);
- 	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
-
-Not sure, needs another thought. But I think there are some decent
-cleanups to be had.
-
-
-3) Some other stuff needs a second thought, like
-
-diff --git a/mm/gup.c b/mm/gup.c
-index 8e7dc2c6ee738..08fc18f1290d4 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -695,7 +695,8 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
- 	/* ... and a write-fault isn't required for other reasons. */
- 	if (pmd_needs_soft_dirty_wp(vma, pmd))
- 		return false;
--	return !userfaultfd_huge_pmd_wp(vma, pmd);
-+	return !userfaultfd_huge_pmd_wp(vma, pmd) &&
-+	       !userfaultfd_huge_pmd_rwp(vma, pmd);
+---
+diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
+index 894f7f16eb80..f3e2a8fde1ab 100644
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -98,6 +98,7 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+ 	push %rdi			/* fred_ss handed in by the caller */
+ 	push %rbp
+ 	pushf
++	or $X86_EFLAGS_KVM, (%rsp)
+ 	push $__KERNEL_CS
+ 
+ 	/*
+diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+index 7535131c711b..aab93f07e768 100644
+--- a/arch/x86/include/asm/entry-common.h
++++ b/arch/x86/include/asm/entry-common.h
+@@ -97,4 +97,16 @@ static __always_inline void arch_exit_to_user_mode(void)
  }
-
-How can a pte be writable and prot_none at the same time? Maybe just confused AI
-output that you should carefully double check before sending that out officially.
-
-
-4) How do we want to handle PM_UFFD_WP?
-
-We are pretty much out of flags soon. Overloading PM_UFFD_WP means that we will not
-be able to easily support using a separate bit.
-
-But our internal design will not easily allow that either, and I am not really
-sure we want to go down that path any time soon.
-
-Maybe we could document this for now as "In WP VMAs, indicated WP PTEs.
-Otherwise, in RWP VMAs, indicates RWP.". Whenever we would allow both at the
-same time, we could change the semantics. User space would fail to create one
-with both protection types for now either way.
-
-
--- 
-Cheers,
-
-David
+ #define arch_exit_to_user_mode arch_exit_to_user_mode
+ 
++static __always_inline void arch_exit_to_kernel_mode(struct pt_regs *regs)
++{
++#ifdef CONFIG_KVM_INTEL
++	/*
++	 * KVM is a reserved bit and must always be 0. Hardware will #GP on
++	 * IRET/ERETS with this bit set.
++	 */
++	regs->flags &= ~X86_EFLAGS_KVM;
++#endif
++}
++#define arch_exit_to_kernel_mode arch_exit_to_kernel_mode
++
+ #endif
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index 7bb7bd90355d..c31f7bc2eba2 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -311,7 +311,15 @@ void user_stack_pointer_set(struct pt_regs *regs, unsigned long val)
+ 
+ static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
+ {
+-	return !(regs->flags & X86_EFLAGS_IF);
++	/*
++	 * return context | IF | KVM
++	 * ---------------+----+----
++	 * IRQ-off        |  0 |  0
++	 * IRQ-on         |  0 |  1
++	 * IRQ-on         |  1 |  0
++	 * invalid        |  1 |  1
++	 */
++	return (regs->flags & (X86_EFLAGS_IF | X86_EFLAGS_KVM)) == 0;
+ }
+ 
+ /* Query offset/name of register from its name/offset */
+diff --git a/arch/x86/include/uapi/asm/processor-flags.h b/arch/x86/include/uapi/asm/processor-flags.h
+index 81d0c8bf1137..d32edefde587 100644
+--- a/arch/x86/include/uapi/asm/processor-flags.h
++++ b/arch/x86/include/uapi/asm/processor-flags.h
+@@ -14,6 +14,8 @@
+ #define X86_EFLAGS_FIXED	_BITUL(X86_EFLAGS_FIXED_BIT)
+ #define X86_EFLAGS_PF_BIT	2 /* Parity Flag */
+ #define X86_EFLAGS_PF		_BITUL(X86_EFLAGS_PF_BIT)
++#define X86_EFLAGS_KVM_BIT	3 /* KVM Flag -- must be 0 */
++#define X86_EFLAGS_KVM		_BITUL(X86_EFLAGS_PF_BIT)
+ #define X86_EFLAGS_AF_BIT	4 /* Auxiliary carry Flag */
+ #define X86_EFLAGS_AF		_BITUL(X86_EFLAGS_AF_BIT)
+ #define X86_EFLAGS_ZF_BIT	6 /* Zero Flag */
+diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
+index 8a481dae9cae..3d0d0fb8de79 100644
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -50,6 +50,7 @@
+ 	push %rbp
+ #endif
+ 	pushf
++	or $X86_EFLAGS_KVM, (%_ASM_SP)
+ 	push $__KERNEL_CS
+ 	\call_insn \call_target
+ 
+diff --git a/include/linux/irq-entry-common.h b/include/linux/irq-entry-common.h
+index 167fba7dbf04..0acc20b63513 100644
+--- a/include/linux/irq-entry-common.h
++++ b/include/linux/irq-entry-common.h
+@@ -167,6 +167,10 @@ static __always_inline void arch_exit_to_user_mode(void);
+ static __always_inline void arch_exit_to_user_mode(void) { }
+ #endif
+ 
++#ifndef arch_exit_to_kernel_mode
++static __always_inline void arch_exit_to_kernel_mode(struct pt_regs *regs) { }
++#endif
++
+ /**
+  * arch_do_signal_or_restart -  Architecture specific signal delivery function
+  * @regs:	Pointer to currents pt_regs
+@@ -548,6 +552,7 @@ static __always_inline void irqentry_exit_to_kernel_mode(struct pt_regs *regs,
+ 	instrumentation_end();
+ 
+ 	irqentry_exit_to_kernel_mode_after_preempt(regs, state);
++	arch_exit_to_kernel_mode(regs);
+ }
+ 
+ /**
