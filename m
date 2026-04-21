@@ -1,184 +1,103 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA463AF65A
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DE93624C8
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776813422; cv=none; b=QPh07X0PoDogk5jXmabOI65jRrnOgNwqvauMTAJOF3QjYG4wnd+I1tckHvoFEK6MCxK086LBNagAw6fjqjnS0Y9muqa8hBRYlSs3ernXODwZihg7iUApGHvlqrt4UpiD+SDkRAPyXAiRZJpm/v2KFlQfP6uxpa4vmfROPRucHZI=
+	t=1776813548; cv=none; b=GP4DyWy5QRS6Pqfpbg9MrRRk+edYXXA5x6EtpDPc21wrxBaF0ZdoeA1YYyMj1OKFVtDrr0AIbR7zqIoHjgJ1uhea42zh1aq/ZKue5TSGfc7e1a0nVWl4XgRQSMj5vmBwR64J7/Q2MCJ6CtlC060Fj6rR5po6jroVL5zHs2w5EEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776813422; c=relaxed/simple;
-	bh=fj7JUx1AwMGW7mIKH0BhadVvQ5Y5pYoHLkslfo3qCQw=;
+	s=arc-20240116; t=1776813548; c=relaxed/simple;
+	bh=YfWSGbEp3Ri5vampl4rizakqWYJxYDI1iUywls5D1TM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=D60Kqed7Qnz0Z2PEUkn2qzEMoBUkK/XpCdxu85H1HFU4O05Z5Rl/XWMDk8/j2S+2/MHIARpeTrqnp+OWlwXK9oioarz48I8hGb/I3ajt2umZ61QYb4NBdazVLm3z+9ws4ErShOpEfrvCw58Rotba2AOH/WTil6fq6zlj5Qwg1M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y28cWqv+; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=QPw+jD5hbeSTo1Zi2f7pcAWL+1GuICY75ryilm4mnd2rPpApJgXfwuw9PQkfjGgbnzDrDIYkXi5O9AkGIyMYwSebk+26SexgTHTvhlJDXgJNByQb9Hjw+5ETzzpAaaG2JNgFf4mw7MGTzZMjQy29Zlw4LIs87fPvzN0I+JD+sus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gNcOPW6X; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y28cWqv+"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7973e22399so1762275a12.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:17:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gNcOPW6X"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b249541063so42247305ad.3
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:19:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776813420; x=1777418220; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776813546; x=1777418346; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l9nBhlqR+0aAnoMpV5TVq1zZN0Z8CLajwssRZVTrrkI=;
-        b=Y28cWqv+yKbtfsQFonSgzpNUixq9kRveNf6siv4WgN1BiaYvLPLabCudFvLi32y6LX
-         k5ecpgvDC3pNWFQTvS59myDRnRVinaQ55/JOs5Rxw5agcb8P+9saXmVZPKpZn/QGvskC
-         xAASMO4Uq9jNZCWSqHK4hVCvrJmNTDtWPfckyhwpHU/ApmnfFhOssdk6/pm6E24ZWxRk
-         NiFo7kZ1Xu12uQ/bJ2vt++d18AnWcj0swxGmP/zoHPo/ngDvDSCUBavHalHmIXVMg9L5
-         T5As0fAYVahokL4Fk/eTzVlCNJiEfauY2/YZCKICcmrkXcSjNObTmCuu/uEyTbtZzf7R
-         2pRg==
+        bh=kzFNL3zJHiQW2Vbyq91237YpRLX6Z7YBrHD5R7EMXmY=;
+        b=gNcOPW6XuAwnGlPCGvTAVzswebAL7Dt0ebJoQye+2ZWDxK4arDOLu1R0X7fxBiRIq0
+         rjDkA/uvqLpTt+Ae7V6R2tqNoDLvNie9AzR1fEJC+YFU0npqeyiPULOAhHh05+i4QsA0
+         IpIPByJ+XcqVPQa02ouy16KpKLYiWcFWYCQGaEGMwShfSacnphFoqDrw0cFUet3AlZQt
+         DEncMjytLqP9Z5z3pNaxStFnjfvNUMZaCeoPpK9gmlhWiZQAX+c63deuwDo6tERNyqhA
+         Tfnw05UvjNA+ytzfI7BQNYrs55AUHIeBDSFqPU1N2e3w6TaH8mOzDcKBkSMIlMYe7KOT
+         NhEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776813420; x=1777418220;
+        d=1e100.net; s=20251104; t=1776813546; x=1777418346;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l9nBhlqR+0aAnoMpV5TVq1zZN0Z8CLajwssRZVTrrkI=;
-        b=NBFySTf+e73GgfXD/TqnU7TeeeVWlpIsMhKGuzmR+JAo74Jua1/Fd3nOEplyJ3yNoO
-         UJ1xApNeV9Fm9l2pW05iMpFpa6XBtsz6SwIOBif9D635d0Gn0MbslHzvsmvYEp3XToj+
-         IXlBcpgnBBMc4y91lffKioTORuAeaLXeGZLp+m6Ce8abrSz21oy/oy+BaYVnT/mq1TpP
-         F2XfmNe01FKz59Fn07/BVpTUwpYtXGR1YSqwmAx9ZqbFK1WNp6KYWRsGdL0N/25txpNd
-         IK8p50UHh0YFqL54f5WvpGHl4f2GIP4zJhrRWPwdeC/iSgjJT2gJ6RhQIz5rwN3T1aV4
-         U6PQ==
-X-Gm-Message-State: AOJu0Yw2nOcLuaFC/pji2TzGqrNfrEO49ZIeE8VcEVV/t6IqrJ7R+msY
-	ZPh7uLS2snXjjSAYXwnd7flIPItOGs4A/64JdVAA+Jf9KvSG+Rjuo0ofZ+7ySfMPPRg/MIjznj5
-	bXbNzXMyM
-X-Received: from pgkk7.prod.google.com ([2002:a63:2407:0:b0:c74:42:8984])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0c:b0:3a2:e59a:7a46
- with SMTP id adf61e73a8af0-3a2e59a83femr6744428637.24.1776813419838; Tue, 21
- Apr 2026 16:16:59 -0700 (PDT)
-Date: Tue, 21 Apr 2026 23:15:57 +0000
-In-Reply-To: <20260421231557.1254270-1-jrhilke@google.com>
+        bh=kzFNL3zJHiQW2Vbyq91237YpRLX6Z7YBrHD5R7EMXmY=;
+        b=iiRHTEiItArimsPj0Z6o2u5cdW4Ffjq8so6Cy4VSNHIVVeXPMPY1Xn+Mak/m8nHTzE
+         JPnJPW4LcA9Sk0+CIookPKtFhlgy65AtCHQ9gh3Uz+egItgJUhd/q9pMLjWsH0Jd9o4k
+         /KvrUzByUGOQ2AdVP+Xlkq8d/WEpRmfkjZs3dlVmJPRFOtGF+CrLDOJY9mVdpfb7lwv3
+         zJtLf1CxQHljZwVA91faxu3iGB3ZpmvNDPsgI+XKOopzlWZLHjkV88ANVzDBVapTH8Zo
+         aSV/dIJtHbxegj3x8Q6ODzPY/chadKSAlvDGFCGVxiUyNDA9fOpqIU0Qgy0EdTa0BdrJ
+         GGSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8I7OFMBs4W+snkJrLPUmGV3wMZSaXii0HM74R8kuiOlmjIdOySp16w6dIRhEu/B1p4NH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTvzzu/WeWrjeFBHHhi7GB/EeF+dM7lwnEMYyBRTvVoPTHHCmD
+	6IPl2m0G0CcuGJjocluFisRJaUtK/ePY/3avLHnC/Jh6YioWwTZ/mbf865zhrDeAqUCUgpzskOl
+	B14PTzQ==
+X-Received: from plu17.prod.google.com ([2002:a17:903:3691:b0:2ae:39ef:fd8a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c9c4:b0:2b2:712c:61be
+ with SMTP id d9443c01a7336-2b5f9ed0b48mr140812005ad.18.1776813545519; Tue, 21
+ Apr 2026 16:19:05 -0700 (PDT)
+Date: Tue, 21 Apr 2026 16:19:03 -0700
+In-Reply-To: <aegDJssx-ZvbfggI@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260421231557.1254270-1-jrhilke@google.com>
-X-Mailer: git-send-email 2.54.0.rc2.533.g4f5dca5207-goog
-Message-ID: <20260421231557.1254270-17-jrhilke@google.com>
-Subject: [PATCH v3 16/16] KVM: selftests: Add xAPIC support
-From: Josh Hilke <jrhilke@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, Josh Hilke <jrhilke@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20260408001137.3290444-1-peter.fang@intel.com>
+ <20260408001137.3290444-4-peter.fang@intel.com> <aegDJssx-ZvbfggI@google.com>
+Message-ID: <aegF59gToidudIUC@google.com>
+Subject: Re: [PATCH v2 3/3] KVM: Take gpa_t in kvm_vcpu_map[_readonly]()
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Peter Fang <peter.fang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Ritesh Harjani <ritesh.list@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: David Matlack <dmatlack@google.com>
+On Tue, Apr 21, 2026, Yosry Ahmed wrote:
+> On Tue, Apr 07, 2026 at 05:11:30PM -0700, Peter Fang wrote:
+> > Move the conversion from a gpa_t to a gfn_t into kvm_vcpu_map() and
+> > kvm_vcpu_map_readonly() so that they take a gpa_t directly, reducing
+> > boilerplate at call sites.
+> > 
+> > __kvm_vcpu_map() still takes a gfn_t because guest page mapping is
+> > fundamentally GFN-based.
+> > 
+> > No functional change intended.
+> > 
+> > Compile-tested on x86 and ppc, which are the current users of these
+> > interfaces.
+> > 
+> > Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> > Signed-off-by: Peter Fang <peter.fang@intel.com>
+> > ---
+> 
+> I was going to suggest a WARN in kvm_vcpu_map() and
+> kvm_vcpu_map_readonly() if the passed GPA is not page-aligned, but Sean
+> usually hates my paranoid WARN suggestions.
 
-Add the '-x' flag to tools/testing/selftests/kvm/irq_test.c to configure
-the guest to use xAPIC mode instead of the default x2APIC mode. This
-expands test coverage to ensure that IRQ injection and routing work
-correctly when the guest uses the older xAPIC interface.
+Heh, for good reason.  Adding such a WARN would be triggered by this code:
 
-Co-developed-by: Josh Hilke <jrhilke@google.com>
-Signed-off-by: Josh Hilke <jrhilke@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- tools/testing/selftests/kvm/irq_test.c | 28 +++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+                if (!kvm_vcpu_map(vcpu, vmcs12->posted_intr_desc_addr, map)) {
+                        vmx->nested.pi_desc =
+                                (struct pi_desc *)(((void *)map->hva) +
+                                offset_in_page(vmcs12->posted_intr_desc_addr));
 
-diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-index 6fd082d37f9a..99698cf143fe 100644
---- a/tools/testing/selftests/kvm/irq_test.c
-+++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -20,20 +20,27 @@ static bool guest_received_irq[KVM_MAX_VCPUS];
- static bool guest_received_nmi[KVM_MAX_VCPUS];
- static pid_t vcpu_tids[KVM_MAX_VCPUS];
- static bool migrate_vcpus;
-+static bool x2apic = true;
- static bool irq_affinity;
- static bool block_vcpus;
- static bool done;
- 
- static u32 guest_get_vcpu_id(void)
- {
--	return x2apic_read_reg(APIC_ID);
-+	if (x2apic)
-+		return x2apic_read_reg(APIC_ID);
-+	else
-+		return xapic_read_reg(APIC_ID) >> 24;
- }
- 
- static void guest_irq_handler(struct ex_regs *regs)
- {
- 	WRITE_ONCE(guest_received_irq[guest_get_vcpu_id()], true);
- 
--	x2apic_write_reg(APIC_EOI, 0);
-+	if (x2apic)
-+		x2apic_write_reg(APIC_EOI, 0);
-+	else
-+		xapic_write_reg(APIC_EOI, 0);
- }
- 
- static void guest_nmi_handler(struct ex_regs *regs)
-@@ -43,7 +50,10 @@ static void guest_nmi_handler(struct ex_regs *regs)
- 
- static void guest_code(void)
- {
--	x2apic_enable();
-+	if (x2apic)
-+		x2apic_enable();
-+	else
-+		xapic_enable();
- 
- 	sti_nop();
- 
-@@ -139,7 +149,7 @@ static void kvm_clear_gsi_routes(struct kvm_vm *vm)
- 
- static void help(const char *name)
- {
--	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h] [-i nr_irqs] [-m] [-n] [-v nr_vcpus]\n", name);
-+	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h] [-i nr_irqs] [-m] [-n] [-v nr_vcpus] [-x]\n", name);
- 	printf("\n");
- 	printf("Tests KVM IRQ injection via irqfd using an emulated eventfd.\n");
- 	printf("-a	Randomly affinitize the device's host IRQ to different physical CPUs throughout the test\n");
-@@ -150,6 +160,7 @@ static void help(const char *name)
- 	printf("-m	Pin vCPU threads to random physical CPUs throughout the test\n");
- 	printf("-n	Deliver 50 percent of IRQs as non-maskable interrupts\n");
- 	printf("-v	Number of vCPUS to run\n");
-+	printf("-x	Use xAPIC mode instead of x2APIC mode in the guest\n");
- 	printf("\n");
- 	exit(KSFT_FAIL);
- }
-@@ -183,7 +194,7 @@ int main(int argc, char **argv)
- 	struct iommu *iommu;
- 	struct kvm_vm *vm;
- 
--	while ((c = getopt(argc, argv, "abcd:hi:mnv:")) != -1) {
-+	while ((c = getopt(argc, argv, "abcd:hi:mnv:x")) != -1) {
- 		switch (c) {
- 		case 'a':
- 			irq_affinity = true;
-@@ -209,6 +220,9 @@ int main(int argc, char **argv)
- 		case 'v':
- 			nr_vcpus = atoi_positive("Number of vCPUS", optarg);
- 			break;
-+		case 'x':
-+			x2apic = false;
-+			break;
- 		case 'h':
- 		default:
- 			help(argv[0]);
-@@ -221,6 +235,9 @@ int main(int argc, char **argv)
- 	vm_install_exception_handler(vm, vector, guest_irq_handler);
- 	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
- 
-+	if (!x2apic)
-+		virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
-+
- 	if (device_bdf) {
- 		iommu = iommu_init(default_iommu_mode);
- 		device = vfio_pci_device_init(device_bdf, iommu);
-@@ -243,6 +260,7 @@ int main(int argc, char **argv)
- 
- 	kvm_assign_irqfd(vm, gsi, eventfd);
- 
-+	sync_global_to_guest(vm, x2apic);
- 	sync_global_to_guest(vm, block_vcpus);
- 
- 	for (i = 0; i < nr_vcpus; i++)
--- 
-2.54.0.rc2.533.g4f5dca5207-goog
-
+The PI descriptor only needs to be 64-bit aligned, not page-aligned.
