@@ -1,287 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D0025393B;
-	Tue, 21 Apr 2026 14:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1DA3D6CD9;
+	Tue, 21 Apr 2026 14:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776780979; cv=none; b=jePcTmBunsolCs4E+rTqhZ45sC+ef/lPQrLFtSqVlev8E4rUaAv5HQBx+fyheMppupWcK5hFy51du7Mc14Mo+76g/ZLzb5JZUmK5unJIsSUDu1o0X3YMLvM9MfBTj1DpTlUeg0/PbSWaEX/4lg/D8KRYobDx/T4noAdfw+w6qZU=
+	t=1776781006; cv=none; b=f0xeauoNNU5R6Gvb7iyyOJHmifbuH5mXdf7eVMOkG6GE2XMmeBPJvPE6JQK3BMTuXzz4aYHdraibekSwos0BR98lPNwFPbtEyYJpDcSIVjsj1CPfxdRBwZfxpcoaFl7WJU0O4uG6URqa15GH8wFZ1TisrKFpeW1zpJxUU4MsJho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776780979; c=relaxed/simple;
-	bh=h/8/kXR9WVQhJVmpeE75Sr+3TfzbqmlbbbMVMSysPzU=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=kFm9rkbCVgIoO8aYnNDYlMa5XBkp9/oceuOfUGGWK3ULXpmbqRoESgvqrBc+8pXVDKiBjSrADa8AvZwCj84PFulXVzPYXzAxT5Y/MmKFamgw3Etxq+VUrRnx9Nj1a/iamQtW30pkMwMuKh3njLz3vVz5ZA6EKYglIdBRgXImzxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TYehD2an; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776781006; c=relaxed/simple;
+	bh=oghBsycnXDnrtMi1JYuIu/4lJFlqtB/s6yt+NLMKL70=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t+avDxNbjXRgcywdMZtExMHjfAeO0x5rrfI7qVyLVecpCo9zk6n8BskuoopYEOwSsGPaY5sSfoeUHkCqZmX6UiVeI8WK+IPHiKjKu0S41F5uYho76EhKyRs8DCa8KEetdQBI6dqqR51yB2CKx0roFin5nLTI1CKjoOAL5KJ1RCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KI3/pG7f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TYehD2an"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776780978; x=1808316978;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=h/8/kXR9WVQhJVmpeE75Sr+3TfzbqmlbbbMVMSysPzU=;
-  b=TYehD2anQI0PALsnGd1rRo5HynYYE6eIvCF6W8Xvt5PJW8Vtm4AEb5uB
-   mZJeUJdD+cqvuz6UD9ZFYsSmQ+Jqg4xBhmIWiquZKhBENI9Xz+ddRvcHd
-   zKakwMioN2AHcgPotcY6f/b2MHwEUDx+v61bdMiFR4H+kube81inqpuHf
-   XbBycY3/hPN43Doy5h9rsY7yhGKqjAyfByRI7u+Z0f5CggzTqnAWWprB+
-   4mjDETwD1MGP1Z2Q9xe/49qikgdbgySzLLQEeWWYEaNpaHu6SP/nBz+v/
-   wQUl3sOoJXdmsajzz7nRXX1m2wWM7cqwWa00vcTz7HNGqjrKbbN32DZgt
-   A==;
-X-CSE-ConnectionGUID: 09890oStTluZZTH/8jDClQ==
-X-CSE-MsgGUID: p42u23OySs6N8nBd1ASPpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77592179"
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
-   d="scan'208";a="77592179"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 07:16:17 -0700
-X-CSE-ConnectionGUID: UtjkeHSzSvaIumd4Vj9jFw==
-X-CSE-MsgGUID: xXBRkmo7ReudtoBsy+l0Og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
-   d="scan'208";a="236421909"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.105])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 07:16:14 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 21 Apr 2026 17:16:10 +0300 (EEST)
-To: Ankit Agrawal <ankita@nvidia.com>
-cc: alex@shazbot.org, kvm@vger.kernel.org, jgg@ziepe.ca, yishaih@nvidia.com, 
-    skolothumtho@nvidia.com, kevin.tian@intel.com, bhelgaas@google.com, 
-    LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v4 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU readiness
- check via CXL DVSEC
-In-Reply-To: <20260421140659.748577-1-ankita@nvidia.com>
-Message-ID: <5b2c6258-ade6-c35c-0edb-6da0ec96e987@linux.intel.com>
-References: <20260421140659.748577-1-ankita@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KI3/pG7f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656F6C2BCB0;
+	Tue, 21 Apr 2026 14:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776781006;
+	bh=oghBsycnXDnrtMi1JYuIu/4lJFlqtB/s6yt+NLMKL70=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KI3/pG7fZrnb2u+WC2Vvy1x8VHbZt+nb/x02CyxQt+lErZJAKhPNUhGaDgx5zdBin
+	 P1kGZOp2aBTaNKJrTCAlNqE1PovzkjIrxgJacDGiumHQeFxPmiPdXTSQ2uXorDaXaQ
+	 bmOsFLthgAYV1zaSh5q+hS9w8JorLKHbKiuqwnLz2ggW6A0dh/UAQN1779Nldw0tPH
+	 eRyEng+GbA5wDQzQ8vg8E5ousmKZUVxbiX5uxKAjp61y/ASaEBvbsSEc/a90hjR5f5
+	 UdfVsGgEf15MJJpw/QbFheKs7KnkxiNo+WDFpnkF5Ly3BdB1vIrS9A0LQzjy8n9WyE
+	 mXeFtj7xcEAVA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wFBu8-0000000DRnn-0UlL;
+	Tue, 21 Apr 2026 14:16:44 +0000
+Date: Tue, 21 Apr 2026 15:16:43 +0100
+Message-ID: <86ik9k1jqs.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	Arnd Bergmann
+ <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH] kernel: trace: do not generate undefsyms_base.c
+In-Reply-To: <20260421100209.7535e26f@gandalf.local.home>
+References: <20260421100455.324333-1-pbonzini@redhat.com>
+	<20260421100209.7535e26f@gandalf.local.home>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: rostedt@goodmis.org, pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, torvalds@linux-foundation.org, arnd@arndb.de, nathan@kernel.org, linux-trace-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 21 Apr 2026, Ankit Agrawal wrote:
-
-> Add a CXL DVSEC-based readiness check for Blackwell-Next GPUs alongside
-> the existing legacy BAR0 polling path. On probe and after reset, the
-> driver reads the CXL Device DVSEC capability to determine whether the
-> GPU memory is ready. A static inline wrapper dispatches to the
-> appropriate readiness check (legacy v/s blackwell-next based on whether
-> the CXL DVSEC capability is present.
+On Tue, 21 Apr 2026 15:02:09 +0100,
+Steven Rostedt <rostedt@goodmis.org> wrote:
 > 
-> The memory readiness is checked by polling on the Memory_Active bit
-> based on the Memory_Active_Timeout. It also checks if MEM_INFO_VALID
-> is set within 1 second. If not, return error. This is based on the
-> CXL spec 4.0 Tables 8-13.
+> On Tue, 21 Apr 2026 11:04:55 +0100
+> Paolo Bonzini <pbonzini@redhat.com> wrote:
 > 
-> Add PCI_DVSEC_CXL_MEM_ACTIVE_TIMEOUT to pci_regs.h for the timeout
-> field encoding.
+> > The code to autogenerate undefsyms_base.c in the Makefile is larger
+> > than the file itself.
+> > 
+> > Remove the "echo" indirection that creates the file, which keeps
+> > the build system sane and makes it much easier to edit it if/when
+> > new situations arrive.
+> > 
+> > Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > 
-> cc: Kevin Tian <kevin.tian@intel.com>
-
-Cc is the correct form for this tag.
-
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> ---
->  drivers/vfio/pci/nvgrace-gpu/main.c | 102 +++++++++++++++++++++++++---
->  include/uapi/linux/pci_regs.h       |   1 +
->  2 files changed, 95 insertions(+), 8 deletions(-)
+> Marc beat you to it by a few minutes ;-)
 > 
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index fa056b69f899..81a725460112 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -3,6 +3,7 @@
->   * Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved
->   */
->  
-> +#include <linux/bitfield.h>
->  #include <linux/sizes.h>
->  #include <linux/vfio_pci_core.h>
->  #include <linux/delay.h>
-> @@ -64,6 +65,8 @@ struct nvgrace_gpu_pci_core_device {
->  	bool has_mig_hw_bug;
->  	/* GPU has just been reset */
->  	bool reset_done;
-> +	/* CXL Device DVSEC offset; 0 if not present (legacy GB path) */
-> +	int cxl_dvsec;
->  };
->  
->  static void nvgrace_gpu_init_fake_bar_emu_regs(struct vfio_device *core_vdev)
-> @@ -242,7 +245,7 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
->  	vfio_pci_core_close_device(core_vdev);
->  }
->  
-> -static int nvgrace_gpu_wait_device_ready(void __iomem *io)
-> +static int nvgrace_gpu_wait_device_ready_legacy(void __iomem *io)
->  {
->  	unsigned long timeout = jiffies + msecs_to_jiffies(POLL_TIMEOUT_MS);
->  
-> @@ -256,6 +259,81 @@ static int nvgrace_gpu_wait_device_ready(void __iomem *io)
->  	return -ETIME;
->  }
->  
-> +/*
-> + * Decode the 3-bit Memory_Active_Timeout field from CXL DVSEC Range 1 Low
-> + * (bits 15:13) into milliseconds. Encoding per CXL spec r4.0 sec 8.1.3.8.2:
-> + * 000b = 1s, 001b = 4s, 010b = 16s, 011b = 64s, 100b = 256s,
-> + * 101b-111b = reserved (clamped to 256s).
-> + */
-> +static inline unsigned long cxl_mem_active_timeout_ms(u8 timeout)
-> +{
-> +	return 1000UL << (2 * min_t(u8, timeout, 4));
+>   https://lore.kernel.org/all/20260421095446.2951646-1-maz@kernel.org/
+> 
+> Although he didn't Cc linux-trace-kernel@vger.kernel.org :-p
+> 
+> But anyway, it ended up in my internal Patchwork. I'll take his as they are
+> both pretty much the same patch.
 
-MSEC_PER_SEC
+On the other hand, Paolo's patch has the SPDX tag on the new file,
+which I forgot to add. Your call, anyway.
 
-Also, don't forget to add include for units.h.
+Thanks,
+
+	M.
 
 -- 
- i.
-
-
-> +}
-> +
-> +/*
-> + * Check if CXL DVSEC reports memory as valid and active.
-> + */
-> +static inline bool cxl_dvsec_mem_is_active(u32 status)
-> +{
-> +	return (status & PCI_DVSEC_CXL_MEM_INFO_VALID) &&
-> +	       (status & PCI_DVSEC_CXL_MEM_ACTIVE);
-> +}
-> +
-> +static int nvgrace_gpu_wait_device_ready_cxl(struct nvgrace_gpu_pci_core_device *nvdev)
-> +{
-> +	struct pci_dev *pdev = nvdev->core_device.pdev;
-> +	int cxl_dvsec = nvdev->cxl_dvsec;
-> +	unsigned long mem_info_valid_deadline;
-> +	unsigned long timeout = 0;
-> +	u32 dvsec_memory_status;
-> +
-> +	mem_info_valid_deadline = jiffies + msecs_to_jiffies(POLL_QUANTUM_MS);
-> +
-> +	do {
-> +		pci_read_config_dword(pdev,
-> +				      cxl_dvsec + PCI_DVSEC_CXL_RANGE_SIZE_LOW(0),
-> +				      &dvsec_memory_status);
-> +
-> +		if (dvsec_memory_status == ~0U)
-> +			return -ENODEV;
-> +
-> +		if (cxl_dvsec_mem_is_active(dvsec_memory_status))
-> +			return 0;
-> +
-> +		/*
-> +		 * Once MEM_INFO_VALID is set, derive the MEM_ACTIVE timeout
-> +		 * from the register.
-> +		 */
-> +		if (dvsec_memory_status & PCI_DVSEC_CXL_MEM_INFO_VALID) {
-> +			if (!timeout) {
-> +				u8 mem_active_timeout =
-> +					FIELD_GET(PCI_DVSEC_CXL_MEM_ACTIVE_TIMEOUT,
-> +						  dvsec_memory_status);
-> +
-> +				timeout = jiffies +
-> +					  msecs_to_jiffies(cxl_mem_active_timeout_ms(mem_active_timeout));
-> +			}
-> +		}
-> +
-> +		/* Bail early if MEM_INFO_VALID is not set within 1 second */
-> +		if (!(dvsec_memory_status & PCI_DVSEC_CXL_MEM_INFO_VALID) &&
-> +		    time_after(jiffies, mem_info_valid_deadline))
-> +			return -ETIME;
-> +
-> +		msleep(POLL_QUANTUM_MS);
-> +	} while (!timeout || !time_after(jiffies, timeout));
-> +
-> +	return -ETIME;
-> +}
-> +
-> +static inline int nvgrace_gpu_wait_device_ready(struct nvgrace_gpu_pci_core_device *nvdev,
-> +						void __iomem *io)
-> +{
-> +	return nvdev->cxl_dvsec ?
-> +		nvgrace_gpu_wait_device_ready_cxl(nvdev) :
-> +		nvgrace_gpu_wait_device_ready_legacy(io);
-> +}
-> +
->  /*
->   * If the GPU memory is accessed by the CPU while the GPU is not ready
->   * after reset, it can cause harmless corrected RAS events to be logged.
-> @@ -275,7 +353,7 @@ nvgrace_gpu_check_device_ready(struct nvgrace_gpu_pci_core_device *nvdev)
->  	if (!__vfio_pci_memory_enabled(vdev))
->  		return -EIO;
->  
-> -	ret = nvgrace_gpu_wait_device_ready(vdev->barmap[0]);
-> +	ret = nvgrace_gpu_wait_device_ready(nvdev, vdev->barmap[0]);
->  	if (ret)
->  		return ret;
->  
-> @@ -1146,11 +1224,16 @@ static bool nvgrace_gpu_has_mig_hw_bug(struct pci_dev *pdev)
->   * Ensure that the BAR0 region is enabled before accessing the
->   * registers.
->   */
-> -static int nvgrace_gpu_probe_check_device_ready(struct pci_dev *pdev)
-> +static int nvgrace_gpu_probe_check_device_ready(struct nvgrace_gpu_pci_core_device *nvdev)
->  {
-> +	struct pci_dev *pdev = nvdev->core_device.pdev;
->  	void __iomem *io;
->  	int ret;
->  
-> +	/* CXL path only reads PCI config space; no need to map BAR0. */
-> +	if (nvdev->cxl_dvsec)
-> +		return nvgrace_gpu_wait_device_ready_cxl(nvdev);
-> +
->  	ret = pci_enable_device(pdev);
->  	if (ret)
->  		return ret;
-> @@ -1165,7 +1248,7 @@ static int nvgrace_gpu_probe_check_device_ready(struct pci_dev *pdev)
->  		goto iomap_exit;
->  	}
->  
-> -	ret = nvgrace_gpu_wait_device_ready(io);
-> +	ret = nvgrace_gpu_wait_device_ready_legacy(io);
->  
->  	pci_iounmap(pdev, io);
->  iomap_exit:
-> @@ -1183,10 +1266,6 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
->  	u64 memphys, memlength;
->  	int ret;
->  
-> -	ret = nvgrace_gpu_probe_check_device_ready(pdev);
-> -	if (ret)
-> -		return ret;
-> -
->  	ret = nvgrace_gpu_fetch_memory_property(pdev, &memphys, &memlength);
->  	if (!ret)
->  		ops = &nvgrace_gpu_pci_ops;
-> @@ -1198,6 +1277,13 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
->  
->  	dev_set_drvdata(&pdev->dev, &nvdev->core_device);
->  
-> +	nvdev->cxl_dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
-> +						     PCI_DVSEC_CXL_DEVICE);
-> +
-> +	ret = nvgrace_gpu_probe_check_device_ready(nvdev);
-> +	if (ret)
-> +		goto out_put_vdev;
-> +
->  	if (ops == &nvgrace_gpu_pci_ops) {
->  		nvdev->has_mig_hw_bug = nvgrace_gpu_has_mig_hw_bug(pdev);
->  
-> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> index 14f634ab9350..718fb630f5bb 100644
-> --- a/include/uapi/linux/pci_regs.h
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -1357,6 +1357,7 @@
->  #define  PCI_DVSEC_CXL_RANGE_SIZE_LOW(i)		(0x1C + (i * 0x10))
->  #define   PCI_DVSEC_CXL_MEM_INFO_VALID			_BITUL(0)
->  #define   PCI_DVSEC_CXL_MEM_ACTIVE			_BITUL(1)
-> +#define   PCI_DVSEC_CXL_MEM_ACTIVE_TIMEOUT		__GENMASK(15, 13)
->  #define   PCI_DVSEC_CXL_MEM_SIZE_LOW			__GENMASK(31, 28)
->  #define  PCI_DVSEC_CXL_RANGE_BASE_HIGH(i)		(0x20 + (i * 0x10))
->  #define  PCI_DVSEC_CXL_RANGE_BASE_LOW(i)		(0x24 + (i * 0x10))
-> 
+Without deviation from the norm, progress is not possible.
