@@ -1,273 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE4E31D74B;
-	Tue, 21 Apr 2026 16:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69453033E8;
+	Tue, 21 Apr 2026 16:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776790510; cv=none; b=YpkKWgqAXBrVQM3WtlleK8r96/IVTPezOvad3Bbm8JJXK0eVYqCGy3bQEEcWdPE9win1UqMQvu6LQo3A4079BvhmNAS2wk+fh5vMHG4V+MMYPymysaLJcHBQAET3ky8oYxbzWJ/3bgoaKCnXARstYsh8/2fYaubnpUTdCgM3FJc=
+	t=1776790783; cv=none; b=EEJkaYR4IrYXbeTXfv+BIge7jVt4yY7SohEy1fWa1GyCb8A4HVgto7RSMBCVKZx1zjinW/K5JywT4ch4r6/RGxR+tpJiC9iK9A41tTH/dQTFKP2o3SSngy+UNQ4ZoEqvWSWtUVd0aHaCbc5QYukvF+jxWI61AcasyBbW8ygYkMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776790510; c=relaxed/simple;
-	bh=rC+pyjU2yTuTjyO+bqTQtq5LAqMehjWCZQKRpDlj5Ag=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R44eminMfcDLG6RSB7XcDvu4hHEN9ww0MkXMpyzWruIxy4x8SAxfC8oorSBvXkH147SMbTYDPkMlIVmpIlRkXS/ktqPLonJ3KCmQ/iXVc52T/rQCgLvDJ5Pc01SKvrHkj3o83bdDtLMGA4n6vltM1LA0vJd3qMVcb7FjxNF3Wx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkKMAKTL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776790783; c=relaxed/simple;
+	bh=3xkW6Ke+o3NRCuvbOJKD2Ict0GZtRKo6boDp9ITB92A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OD7PqUkFm1zlO4TiI4ajisDWMT2V8YLzObuY9CHY0tBGu7CKqc1t0BEwRYzbT8MFXSa8CpjB6i+2otr2XeTa7qfR9URNmiP+qF79zMn41cN9zXSTfeiHnBa9fMwho+Kqp1VPGiLFpvaTlCJcQgdymQ9I9fiqz6/2p2t/iyEVwso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EK6LhhY7; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkKMAKTL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA468C2BCB6;
-	Tue, 21 Apr 2026 16:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776790510;
-	bh=rC+pyjU2yTuTjyO+bqTQtq5LAqMehjWCZQKRpDlj5Ag=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OkKMAKTLB541h9NNZbDML9uix/g4liWjDNKH8oFS8keYGZeRBwbuR1ZVxF+uQP7E2
-	 CzKgI2Izx/Knz9u/iZxgrsD4b1WV5zs0PqPqG2Gy5CfR89Z2rFf+g5NLoEdp1jGJKR
-	 cGhQ9unaqCHIg6aJ7IUKEjk51iOGcZdRTOvUOSTiK+6D5AqyUKYXLRvNaguPbhT8wH
-	 g1dQq9r0B4wfuGDSB7RxU6jIirRBvAgNEgKEuw1CYLyvWyFna1XPeoYZC2Vo3GORcp
-	 NsI5r1J5wTgMopkpzCA1VJOHvPWvaF/vrlaB3vPBPRJBfqD+56QXQpayELto0GZFLo
-	 qQSX66nTfYksQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wFENO-0000000DUic-2e3O;
-	Tue, 21 Apr 2026 16:55:06 +0000
-Date: Tue, 21 Apr 2026 17:55:05 +0100
-Message-ID: <86fr4o1ceu.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"kernel@xen0n.name" <kernel@xen0n.name>,
-	"linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>,
-	"linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>,
-	"loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>,
-	"linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"corbet@lwn.net"
-	<corbet@lwn.net>,
-	"oupton@kernel.org"
-	<oupton@kernel.org>,
-	"joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"yuzenghui@huawei.com"
-	<yuzenghui@huawei.com>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"tglx@kernel.org" <tglx@kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"willy@infradead.org"
-	<willy@infradead.org>,
-	"akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>,
-	"david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"vbabka@kernel.org" <vbabka@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>,
-	"ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net"
-	<daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>,
-	"eddyz87@gmail.com"
-	<eddyz87@gmail.com>,
-	"song@kernel.org" <song@kernel.org>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"kpsingh@kernel.org"
-	<kpsingh@kernel.org>,
-	"sdf@fomichev.me" <sdf@fomichev.me>,
-	"haoluo@google.com" <haoluo@google.com>,
-	"jolsa@kernel.org"
-	<jolsa@kernel.org>,
-	"jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"jhubbard@nvidia.com"
-	<jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>,
-	"jannh@google.com" <jannh@google.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"riel@surriel.com"
-	<riel@surriel.com>,
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"jgross@suse.com" <jgross@suse.com>,
-	"yu-cheng.yu@intel.com"
-	<yu-cheng.yu@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"coxu@redhat.com"
-	<coxu@redhat.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>,
-	"yosry@kernel.org" <yosry@kernel.org>,
-	"ajones@ventanamicro.com"
-	<ajones@ventanamicro.com>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>,
-	"tabba@google.com" <tabba@google.com>,
-	"prsampat@amd.com" <prsampat@amd.com>,
-	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
-	"mlevitsk@redhat.com"
-	<mlevitsk@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"agordeev@linux.ibm.com"
-	<agordeev@linux.ibm.com>,
-	"alex@ghiti.fr" <alex@ghiti.fr>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"borntraeger@linux.ibm.com"
-	<borntraeger@linux.ibm.com>,
-	"chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"dev.jain@arm.com"
-	<dev.jain@arm.com>,
-	"gor@linux.ibm.com" <gor@linux.ibm.com>,
-	"hca@linux.ibm.com" <hca@linux.ibm.com>,
-	"palmer@dabbelt.com"
-	<palmer@dabbelt.com>,
-	"pjw@kernel.org" <pjw@kernel.org>,
-	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>,
-	"thuth@redhat.com"
-	<thuth@redhat.com>,
-	"yang@os.amperecomputing.com"
-	<yang@os.amperecomputing.com>,
-	"Liam.Howlett@oracle.com"
-	<Liam.Howlett@oracle.com>,
-	"urezki@gmail.com" <urezki@gmail.com>,
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
-	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
-	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>,
-	"lenb@kernel.org"
-	<lenb@kernel.org>,
-	"pavel@kernel.org" <pavel@kernel.org>,
-	"rafael@kernel.org"
-	<rafael@kernel.org>,
-	"yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
-	"vannapurve@google.com" <vannapurve@google.com>,
-	"jackmanb@google.com"
-	<jackmanb@google.com>,
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>,
-	"Itazuri, Takahiro"
-	<itazur@amazon.co.uk>,
-	"Manwaring, Derek" <derekmn@amazon.com>
-Subject: Re: [PATCH v12 09/16] KVM: arm64: define kvm_arch_gmem_supports_no_direct_map()
-In-Reply-To: <20260410151746.61150-10-kalyazin@amazon.com>
-References: <20260410151746.61150-1-kalyazin@amazon.com>
-	<20260410151746.61150-10-kalyazin@amazon.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EK6LhhY7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776790781; x=1808326781;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3xkW6Ke+o3NRCuvbOJKD2Ict0GZtRKo6boDp9ITB92A=;
+  b=EK6LhhY7hTkxyRWHIhBr3e1lasbAQZ8Q5UYMSQBD4TgG2KYT7HmitHvq
+   wFdfxysBU8vkYVVQYxYK3hETGSOZwT6Y0PRNIgv0fkTh1bOGqEtz/ssPQ
+   5QwHx1HmmwRenTpX5YVF/ib9GA/ZiOrnDz9qVLaknC7lqh2w33+Eff00L
+   sIqlUKjmGTtFVA4kHelJ1YXwziBMpZhuBBntSMGnTUotSV+gHpYcbg7H/
+   2Gm361D3FlxXQk1xbkh2lp7XPzV8snSAqCdt/czS3/hvvCdVSlYMchr5o
+   1fxFGLvAhcr3B0qtplqNmz6pPJvqQ/h6iGWBYylv8+htAlat0Hxx/MTXE
+   w==;
+X-CSE-ConnectionGUID: Q2FS00EWRzWRzC7iZzmFWA==
+X-CSE-MsgGUID: ZJ4IwWNBS6y6QitvBjtMvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="100390190"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="100390190"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 09:59:41 -0700
+X-CSE-ConnectionGUID: wsFiZVlKRuWOvyUD+jsfDA==
+X-CSE-MsgGUID: GouIYHodTL6xOMN2QA0UHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="232003029"
+Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 09:59:37 -0700
+From: Sonam Sanju <sonam.sanju@intel.com>
+To: vineeth@bitbyteword.org
+Cc: dmaluka@chromium.org,
+	kunwu.chan@linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	paulmck@kernel.org,
+	pbonzini@redhat.com,
+	rcu@vger.kernel.org,
+	seanjc@google.com,
+	sonam.sanju@intel.com,
+	stable@vger.kernel.org,
+	tj@kernel.org
+Subject: Re: [PATCH v2] KVM: eventfd: Use WQ_UNBOUND workqueue for irqfd cleanup - New logs confirm preemption race
+Date: Tue, 21 Apr 2026 22:24:55 +0530
+Message-Id: <20260421165455.2486211-1-sonam.sanju@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAO7JXPjEtnsk9xer+_uSPQi9DBqCe0cSnfB=ePaKntoKv=N3tQ@mail.gmail.com>
+References: <CAO7JXPjEtnsk9xer+_uSPQi9DBqCe0cSnfB=ePaKntoKv=N3tQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kalyazin@amazon.co.uk, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, kernel@xen0n.name, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-pm@vger.kernel.org, pbonzini@redhat.com, corbet@lwn.net, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, seanjc@google.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, luto@kernel.org, peterz@infradead.org, willy@infradead.org, akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, jannh@google.com, pfalcato@suse.de, skhan@linuxfoundation.org, riel@surriel.com, ryan.roberts@arm.com, jgross@suse.com, yu-cheng.yu@intel.com, kas@kernel.org, coxu@redhat.com, ackerleytng@google.com, yosry@kernel.org, ajones@ventanamicro.com, maobibo@loongson.cn, tabba@google.com, prsampat@amd.com, wu.fei9@sanechips.com.cn, mlevitsk@redhat.com, jmattson@google.com, jthoughton@google.com, agordeev@linux.ibm.com, alex@ghiti.fr, aou@eecs.berkeley.edu, borntraeger@linux.ibm.com, chenhuacai@kernel.org, baolu.lu@linux.intel.com, dev.jain@arm.com, gor@linux.ibm.com, hca@linux.ibm.com, palmer@dabbelt.com, pjw@kernel.org, shijie@os.amperecomputing.com, svens@linux.ibm.com, thuth@redhat.com, yang@os.amperecomputing.com, Liam.Howlett@oracle.com, urezki@gmail.com, zhengqi.arch@bytedance.com, gerald.schaefer@linux.ibm.com, jiayuan.chen@shopee.com, lenb@kernel.org, pavel@kernel.org, rafael@kernel.org, yangyicong@hisilicon.com, vannapurve@google.com, jackmanb@google.com, patrick.roy@linux.dev, jackabt@amazon.co.uk, itazur@amazon.co.uk, derekmn@amazon.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 Apr 2026 16:19:24 +0100,
-"Kalyazin, Nikita" <kalyazin@amazon.co.uk> wrote:
-> 
-> From: Patrick Roy <patrick.roy@linux.dev>
-> 
-> Support for GUEST_MEMFD_FLAG_NO_DIRECT_MAP on arm64 depends on 1) direct
-> map manipulations at 4k granularity being possible, and 2) FEAT_S2FWB.
-> 
-> 1) is met whenever the direct map is set up at 4k granularity (e.g. not
->  with huge/gigantic pages) at boottime, as due to ARM's
-> break-before-make semantics, breaking huge mappings into 4k mappings in
-> the direct map is not possible (BBM would require temporary invalidation
-> of the entire huge mapping, even if only a 4k subrange should be zapped,
-> which will probably crash the kernel). However, the current default for
-> rodata_full is true, which forces a 4k direct map.
-
-Where is this 4kB requirement enforced? Or is it that you means
-"PAGE_SIZE"?
-
-> 
-> 2) is required to allow KVM to elide cache coherency operations when
-> installing stage 2 page tables, which require the direct map to be
-> entry for the newly mapped memory to be present (which it will not be,
-> as guest_memfd would have removed direct map entries in
-> kvm_gmem_get_pfn()).
-> 
-> Cc: Will Deacon <will@kernel.org>
-> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
-> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
-> ---
->  arch/arm64/include/asm/kvm_host.h | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 70cb9cfd760a..fbdd43e7e94e 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -19,6 +19,7 @@
->  #include <linux/maple_tree.h>
->  #include <linux/percpu.h>
->  #include <linux/psci.h>
-> +#include <linux/set_memory.h>
->  #include <asm/arch_gicv3.h>
->  #include <asm/barrier.h>
->  #include <asm/cpufeature.h>
-> @@ -1682,6 +1683,18 @@ static __always_inline enum fgt_group_id __fgt_reg_to_group_id(enum vcpu_sysreg
->  									\
->  		p;							\
->  	})
-> +#ifdef CONFIG_KVM_GUEST_MEMFD
-
-KVM/arm64 has:
-
-        select KVM_GUEST_MEMFD
-
-> +static inline bool kvm_arch_gmem_supports_no_direct_map(struct kvm *kvm)
-> +{
-> +	/*
-> +	 * Without FWB, direct map access is needed in kvm_pgtable_stage2_map(),
-> +	 * as it calls dcache_clean_inval_poc().
-> +	 */
-> +	return can_set_direct_map() && cpus_have_final_cap(ARM64_HAS_STAGE2_FWB);
-> +}
-> +#define kvm_arch_gmem_supports_no_direct_map kvm_arch_gmem_supports_no_direct_map
-> +#endif /* CONFIG_KVM_GUEST_MEMFD */
-
-Why is it an inline function? Given that it takes a kvm parameter,
-I fully expect that you'll have to evaluate this at some point.
-
-But since struct kvm cannot be dereferenced in asm/kvm_host.h, it will
-have to move. How about doing it right now?
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Hi Vineeth, Kunwu, Tejun,=0D
+=0D
+Collected new crash logs with additional debug instrumentation in=0D
+wq_worker_sleeping(), kick_pool(), and show_one_worker_pool() to capture=0D
+pool state during the hang. The results conclusively confirm Vineeth's=0D
+preemption race theory.=0D
+=0D
+From the new logs:=0D
+=0D
+1. Pool dump with nr_running/nr_idle (added instrumentation):=0D
+=0D
+   pool 10: cpus=3D2 flags=3D0x0 hung=3D201s workers=3D11 nr_running=3D1 nr=
+_idle=3D5=0D
+=0D
+   11 workers, 5 idle, 6 in D-state (all irqfd_shutdown) -- yet=0D
+   nr_running=3D1. No worker is actually running on CPU 2.=0D
+=0D
+2. NMI backtrace confirms CPU 2 is completely idle:=0D
+=0D
+   NMI backtrace for cpu 2 skipped: idling at intel_idle+0x57/0xa0=0D
+=0D
+   So nr_running=3D1 is a phantom count -- no worker is running, but=0D
+   the pool thinks one is.=0D
+=0D
+3. The first stuck worker (kworker/2:0, PID 33) shows the preemption=0D
+   in wq_worker_sleeping:=0D
+=0D
+   kworker/2:0  state:D  Workqueue: kvm-irqfd-cleanup irqfd_shutdown=0D
+     __schedule+0x87a/0xd60=0D
+     preempt_schedule_irq+0x4a/0x90=0D
+     asm_fred_entrypoint_kernel+0x41/0x70=0D
+     ___ratelimit+0x1a1/0x1f0            <-- inside pr_info_ratelimited=0D
+     wq_worker_sleeping+0x53/0x190       <-- preempted HERE=0D
+     schedule+0x30/0xe0=0D
+     schedule_preempt_disabled+0x10/0x20=0D
+     __mutex_lock+0x413/0xe40=0D
+     irqfd_resampler_shutdown+0x53/0x200=0D
+     irqfd_shutdown+0xfa/0x190=0D
+=0D
+   This confirms the exact race: a reschedule IPI interrupted=0D
+   wq_worker_sleeping() after worker->sleeping was set to 1 but=0D
+   before pool->nr_running was decremented. The preemption triggered=0D
+   wq_worker_running() which incremented nr_running (1->2), then=0D
+   on resume the decrement brought it back to 1 instead of 0.=0D
+=0D
+4. The second pool dump 31 seconds later shows the stall is permanent:=0D
+=0D
+   pool 10: cpus=3D2 flags=3D0x0 hung=3D232s workers=3D11 nr_running=3D1 nr=
+_idle=3D5=0D
+=0D
+   Same phantom nr_running=3D1, hung time growing.=0D
+=0D
+5. The deadlock chain:=0D
+   - PID 33: holds resampler_lock mutex, stuck in wq_worker_sleeping=0D
+   - PID 520: past mutex, stuck in synchronize_srcu_expedited=0D
+   - PIDs 120, 4792, 4793, 4796: waiting on resampler_lock mutex=0D
+   - crosvm_vcpu2: waiting in kvm_vm_release -> __flush_workqueue=0D
+   - init (PID 1): stuck in pci_device_shutdown -> __flush_work=0D
+   - Multiple userspace processes stuck in fsnotify_destroy_group=0D
+   - Reboot thread timed out, system triggered sysrq crash=0D
+=0D
+6. kick_pool_skip debug print fired for other pools but NOT for=0D
+   pool 10 -- because need_more_worker() was never true (nr_running=0D
+   was never 0), so kick_pool() was never even called for this pool.=0D
+=0D
+Regarding a fix, we can consider a workqueue-level fix in =0D
+wq_worker_sleeping() itself:=0D
+=0D
+  void wq_worker_sleeping(struct task_struct *task)=0D
+  {=0D
+      ...=0D
+      if (READ_ONCE(worker->sleeping))=0D
+          return;=0D
+=0D
+  +   preempt_disable();=0D
+      WRITE_ONCE(worker->sleeping, 1);=0D
+      raw_spin_lock_irq(&pool->lock);=0D
+=0D
+      if (worker->flags & WORKER_NOT_RUNNING) {=0D
+          raw_spin_unlock_irq(&pool->lock);=0D
+  +       preempt_enable();=0D
+          return;=0D
+      }=0D
+=0D
+      pool->nr_running--;=0D
+      if (kick_pool(pool))=0D
+          worker->current_pwq->stats[PWQ_STAT_CM_WAKEUP]++;=0D
+=0D
+      raw_spin_unlock_irq(&pool->lock);=0D
+  +   preempt_enable();=0D
+  }=0D
+=0D
+The idea is to disable preemption from sleeping=3D1 until we hold the pool=
+=0D
+lock (which disables IRQs). This prevents the reschedule IPI from=0D
+triggering preempt_schedule_irq() in this window. Note that=0D
+wq_worker_running() already uses preempt_disable/enable around its=0D
+nr_running++ for a similar race against unbind_workers().=0D
+=0D
+Does this approach look correct to you?=0D
+=0D
+=0D
+Thanks,=0D
+Sonam=0D
