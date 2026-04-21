@@ -1,203 +1,193 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363B237269A
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 18:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776797737; cv=none; b=Mi7De6EEwW60mLdzwT5H1HVL+viejLLRjRJytlWbVvm/ZnMHqLEWkxwoMiwcaTfoaSwWxex+5Jq2Ig6BLezmaAO3zFKec4LtMKaR/plEtroDwfzKzgdXkCcE4cO8SJucQfkVMkL+OSowgrpKMHXYgtbvAjhl8FMKgAhYxAYLkgQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776797737; c=relaxed/simple;
-	bh=qVvBvOQqKGEzLCHyOgMcDhSNkB14NQcii4Q5A3oGYnw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oqoThke4PLn+RlFm6Hde9xzY0VVBxhaX2GxEN7f43FiSM8JYBEVreyYQtuPKfoQQJt9FEuM9CzTl3MFF1AUBchZ8WvjadAP0kYJ6xVqAA37sxj2oJ7Y9Q5d8+LIOfrUFBm2QA054TmLGd8nyGjRRmVuFcW15zzUyqn21Srt+a1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M89eztci; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA72034C155
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 19:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776798203; cv=pass; b=c2l8F35WFIiwRbybKA6GCynj8Ue3OwFLggUgW2QeJCChVvIt1rzisAKin04HqkJRGcGiOekdIMcyADQL3Pc31/uQ5ZAyWEAUQMSUQ4APMQxwaVYmtKrVFUkeqow/Ows9Om7t/Fe5gTqsx69ToHcZYxDc+SPAeyk8LJSq/tQkw54=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776798203; c=relaxed/simple;
+	bh=QgyTwREA1708WZZfzzYg7xC0sHLOEAknYGjPxGZLswo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W9F59QbtTckmZcDbLxmX3YV93/wQBTh+Sod7MjPwU4pcQoOD6QrOkpD4X5WK6Wgckuvwp4rHX0074A/MnhrKV5HimWwHvcqfq+1nxVNAC/PZWWyjmxpN7DSiW2uBSJx3iSS4MISy8Oz3Gbi2Sb0qPNefHXp3Wev4GLySDgfg/dc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g/ijTF4T; arc=pass smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M89eztci"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2ec948174so43132315ad.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 11:55:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g/ijTF4T"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38e12c67a6fso45331541fa.1
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 12:03:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776798200; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PVEZ9t93USRG2Bmwa2HZOhcU3hpf0tP2r+dZjYSgEGIlcbLm5oYhdB453ZKlGdxwHm
+         beOVDGGguGpFkyN7/Z3v8w/BMyHOCV8Vq8GgZP0Fio2QzA+m+6TCMQPNlkVOuye14bTA
+         kCfYsICnkmpqzZI5AO6BFfPvOSJQkH7iTKvH+GzcNjodVZIa4OcYoK9VwRiaxBbmXio3
+         yt3RJdJM1HfDR3dgtJeDdZ5knAdLoWKtupauIlIEkWwlXI6v7O0p7HnkRcwVnYKb0FbU
+         DiAQtabtjGcsgCZAGGl6ZSyAXGk71tvmG36XXhzxox+LdInczWyyxBSa8+uKXuH+WkKa
+         0TCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=j/JJh9D4iHfbIL7VgfpIvEFwBxZt49NSTXxWwWS0h9Q=;
+        fh=YPt9ZmTzBFA4TWYJOwPIpexZiyCu1dMbqBm2Ypo9PC0=;
+        b=azfMV5a22wA3ok6u/xFmbdiu/o3j8lpjMpMN9AybWVHBwqsPk1WfHuFvAjLr5Y3hdk
+         kf6N/TV+hxMakLumE7kkTvasrlZJT+efUpWH1BaaiXI16C6ElObryHGqmm0Voye11ZBn
+         g1g6SvZmG0F+4X57xfWysaStqqwMD9X5YkSfeI0Zwze+qcwJWpo0kuPq42rPygGgF21C
+         664+Y66JpglA8lOrsozG5WCUY3EtC4s/GpqAQeB3V912L/FR4dnrhYucOPRtRvCKJfAW
+         SN0+mz77azmiuMrLQu9MV9zhP1E63QaJc67Oa+uY2rQrTLYdJua97CByqIN6VRghrdKb
+         FtCw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776797735; x=1777402535; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZLWlLX522r0XZtMZZCqXdxFCNg/wdnKZiwaXTjpO9Mk=;
-        b=M89eztciHAIYQ9nLycKyszOPuxnYoFK041Ff8SU7zZHYQFjpTjxNDENssrqWPfVjkE
-         ZRFdqrLQVxxw0jYS0vyAXqf/VFwGC723RT6V4KvU9LrfYLxkwYTSDcL2UX2q/iSmKdPw
-         VhdlcEWJWf94tztWPrwQtEyZT0VpeHXNZcCfUfhNcVU/1ihIQWKwu9ym6Z4XN8UORz3x
-         zi77yedRV8IOdWYlFLCcQ1GErmlM6aMAZSDOM1FYwg0g4wNUDHYJIOEqRkpVfj8UOAie
-         UVvjNvTX+Pp1IhZCTKZFLiusDGbSRO+LE/9YEIysSVyQ3H9cJCxo1h6ZR0gXfYxyqeCw
-         rWuA==
+        d=google.com; s=20251104; t=1776798200; x=1777403000; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j/JJh9D4iHfbIL7VgfpIvEFwBxZt49NSTXxWwWS0h9Q=;
+        b=g/ijTF4T2Jr2Uuz7dUjpmwfdp6JIf+K8bvLyvsLKTjOvHgt+o9odOqgY2DLdK5cgbX
+         SJlwOwu+LQDoh4BthiNcJodH+APKEeTBDZRAmqpkTVcPg2UfrPqF2aB9WsIX6V3ZUShB
+         d9ZFheLnL8j9Dz743XVWq9gqOBAazzs3YcQLhzkeY50mAZrjbV4qTS/AuOU2zjyBlnQW
+         IVP6aqfBcmh5a8Zs8/MwY2gPZqoEle5rJQZf43dHIE3PRr6OJXuCinG+x7zsWynYbl9p
+         GV3NRz9iiKgss9LTEThLCAU6iPBkdkZT9dmBqBvdaGcGBAf6riu3tagGMT8k9MeJ/9Yq
+         XiNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776797735; x=1777402535;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZLWlLX522r0XZtMZZCqXdxFCNg/wdnKZiwaXTjpO9Mk=;
-        b=Tpv1hNl3BXQgCDRw9sBdnCABxhfRWy7NqKzy12mq7HOeKYEKLD8rvOYbBZPaZK6fV6
-         4MmZ/HTIlrHtj94GlfsHNQJWwuXHAwymQX/n8Mwgh+PwcsFxMifAL98Bg6BYsbvr6nb+
-         cMUTdf1rdGpU4ouhWm3wlK7tskP27Ah3C8QEoWSloonI9+kN2WgD2LDIR7cYjsecfN5u
-         TRTgwPssWyf6z/8vBHD0Oz6spKfDJOC7UYQoVVA9GXh6I7Zqgy2q89S/wRJ3pDSPTUT5
-         4EpIpfTZU7J3mPQJkRrM8jXeVYi5Odl1YhpsAlztx5qC2CZ3amE41m9b4CgO++cr3XsQ
-         EeiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/Kswa/Uj71EAnH10mT4smSb4R9cW+oqI2ayw9nMdq0Py4ABbJsXQYBjRY4JLjTA0EHfdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJU/NTpTRpVvqMlnweJaPMEhcpSLRQAITVW1aTaAPgaAr7iPRs
-	RNzHiE6E+Fo1Kz8WQRL7pDNw7E1E4GHfNEKaPPFUQ7slcGT1aAma4ZN9qcJMJTjoRDZiIhzIp/Z
-	SURrJRw==
-X-Received: from plbkg4.prod.google.com ([2002:a17:903:604:b0:2b4:5f51:534e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b30:b0:2b4:586d:2e5c
- with SMTP id d9443c01a7336-2b5f9ecbaa1mr193571915ad.2.1776797735374; Tue, 21
- Apr 2026 11:55:35 -0700 (PDT)
-Date: Tue, 21 Apr 2026 11:55:33 -0700
-In-Reply-To: <878qagb20x.ffs@tglx>
+        d=1e100.net; s=20251104; t=1776798200; x=1777403000;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=j/JJh9D4iHfbIL7VgfpIvEFwBxZt49NSTXxWwWS0h9Q=;
+        b=eOHWo0+ZGR4mH1nkB4FHF66/ums+28MO2jsz0o7+rK0wtHmwkJfx3neSxCH3JE++en
+         7Es0RTQ444owTqhxQilEEhc9AiYCErztnV+WmCm9aFKDNgr83R5LN5ZRsfMY6dY+11MF
+         TmzFvbVJu+5KqdbSM83Y20cNqhurpfXzarXoqEmlZfvmb40sPiOpXtg8Jwt4QoE2pCfH
+         qjQ9OinA0Zkmp8qpflXaYEPQTJeieCs8cfBWmTE+/rm1Ja6GSZA9u76m+vm39Hu0Jlga
+         P6O55dh+W68jwIxAzWRBT76JfkBB9ezlnaXSmUAXJx/l+sU2qQFxMPxUiNtkTr7XS2Ab
+         H97w==
+X-Forwarded-Encrypted: i=1; AFNElJ+qkGI2SHmG83Be5i34ihdTTKH+po2rYVo0F9A4mfTg1TKT/8+LibvGeyTDokpiX34qHl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRLQbeFVM7rtgOMOIyJpzMZY2nIejVCmNc8BVR6zluDQxRbrGk
+	rYvqdSUIFySSs4Yi6IfKgOhHOdlkYfVKHvuJ0N6v4fqPYTGOqqRMs27g8ObpY/hJIB/plV+9ssz
+	RI0xpRhrgbnNB2tO6j4CZ4+WdWfTlzMA9L9XJZtJC
+X-Gm-Gg: AeBDiesb7iE57UH/mgnlpt5XLFJZhyTf2Q5Skn/eQGCgKQTBaMg6vYpV/3HtX31FI47
+	Pi8jIFCsW7pJudpWXKpAtaT4iDo99PQ/7WKbBizhUKynTh9ul+5q+29Ck0uYXcXjPQg4OS0C1s8
+	tlR9Q45LfCQ22cxGhGlemu4zslw8c5X3hsk3KNp0DCqNwvkGLC3XGW18E1ZrRpCFvEthvoozM0J
+	0R6Pf2jRD7afo+ZeOlUabKJEbn0SjnnGlrh3LnEuURShEPNANYZ4ABXT6ykFOf8g8SK+Fo9aAvP
+	7HJtjArpnFVSLWYxYlFjvSyndDVVOw==
+X-Received: by 2002:a2e:a913:0:b0:38e:21bb:b2ad with SMTP id
+ 38308e7fff4ca-38ec77fb34amr60020221fa.2.1776798199609; Tue, 21 Apr 2026
+ 12:03:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <87mryxekxy.ffs@tglx> <770ae152-c3fd-4068-8462-23064de02238@linux.intel.com>
- <87eck8daot.ffs@tglx> <20260421111858.GH3126523@noisy.programming.kicks-ass.net>
- <20260421113212.GI3126523@noisy.programming.kicks-ass.net>
- <20260421113407.GE3102924@noisy.programming.kicks-ass.net>
- <20260421114940.GJ3126523@noisy.programming.kicks-ass.net>
- <87cxzsb5n0.ffs@tglx> <CALMp9eTeqE4u6ioepVeowRkcNs63DYZTg8og8em12u4FsVWNfw@mail.gmail.com>
- <878qagb20x.ffs@tglx>
-Message-ID: <aefIJR_FcEeP-fcS@google.com>
-Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: Jim Mattson <jmattson@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Vishal L Verma <vishal.l.verma@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>, Paolo Bonzini <bonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-8-dmatlack@google.com>
+ <CALzav=ehpWA=XchL+XLZuaYfYmBTPNWDYt1W3LFY5-6+US4E7w@mail.gmail.com> <20260421184433.GG3199414@nvidia.com>
+In-Reply-To: <20260421184433.GG3199414@nvidia.com>
+From: David Matlack <dmatlack@google.com>
+Date: Tue, 21 Apr 2026 12:02:51 -0700
+X-Gm-Features: AQROBzApHbC_QwlDNMpyz8z8DrBINgdkBviaRKsddB8iPIY8E4-Zx9sb-aAKTZM
+Message-ID: <CALzav=cFarR4q7NugCxXwCW6wnyU9dJRaaTnxs7MY5ia5SDJWQ@mail.gmail.com>
+Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Hilke <jrhilke@google.com>, Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, 
+	kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 21, 2026, Thomas Gleixner wrote:
-> On Tue, Apr 21 2026 at 10:20, Jim Mattson wrote:
-> > On Tue, Apr 21, 2026 at 10:14=E2=80=AFAM Thomas Gleixner <tglx@kernel.o=
-rg> wrote:
-> >>
-> >> On Tue, Apr 21 2026 at 13:49, Peter Zijlstra wrote:
-> >> > On Tue, Apr 21, 2026 at 01:34:07PM +0200, Peter Zijlstra wrote:
-> >> >> > > > KVM invokes regular interrupts with pt_regs which have interr=
-upts
-> >> >> > > > disabled. That's correct from the KVM point of view, but comp=
-letely
-> >> >> > > > violates the obviously correct expectations of the interrupt =
-entry/exit
-> >> >> > > > code.
-> >> >> > >
-> >> >> > > Mooo :-(
-> >> >>
-> >> >> Also, is this a x86/KVM 'special' or is this true for all arch/KVM =
-that
-> >> >> use GENERIC_ENTRY?
-> >> >
-> >> > Should we not make asm_fred_entry_from_kvm()/VMX_DO_EVENT_IRQOFF fix=
- IF
-> >> > on the fake frame instead? We know it will enable IRQs after doing
-> >> > handle_exit_irqoff() in vcpu_enter_guest().
-> >>
-> >> Doesn't work :)
-> >>
-> >> > SVM does not seem affected with this particular insanity.
-> >>
-> >> Looks like. It will take the interrupt after local_irq_enable().
+On Tue, Apr 21, 2026 at 11:44=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> w=
+rote:
+>
+> On Tue, Apr 21, 2026 at 10:40:29AM -0700, David Matlack wrote:
+> > On Mon, Mar 23, 2026 at 4:58=E2=80=AFPM David Matlack <dmatlack@google.=
+com> wrote:
 > >
-> > FWIW, VMX should work just like SVM if we clear VM_EXIT_ACK_INTR_ON_EXI=
-T.
+> > > +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args=
+ *args)
+> > > +{
+> > > +       struct vfio_device *device =3D vfio_device_from_file(args->fi=
+le);
+> > > +       struct vfio_pci_core_device *vdev;
+> > > +       struct pci_dev *pdev;
+> > > +       int ret;
+> > > +
+> > > +       vdev =3D container_of(device, struct vfio_pci_core_device, vd=
+ev);
+> > > +       pdev =3D vdev->pdev;
+> > > +
+> > > +       guard(mutex)(&device->dev_set->lock);
+> > > +
+> > > +       /*
+> > > +        * Userspace must disable interrupts on the device prior to f=
+reeze so
+> > > +        * that the device does not send any interrupts until new int=
+errupt
+> > > +        * handlers have been established by the next kernel.
+> > > +        */
+> > > +       if (vdev->irq_type !=3D VFIO_PCI_NUM_IRQS) {
+> > > +               pci_err(pdev, "Freeze failed! Interrupts are still en=
+abled.\n");
+> > > +               return -EINVAL;
+> > > +       }
+> > > +
+> > > +       ret =3D pci_load_saved_state(pdev, vdev->pci_saved_state);
+> > > +       if (ret)
+> > > +               return ret;
+> > > +
+> > > +       vfio_pci_core_try_reset(vdev);
+> >
+> > I think a call to pci_clear_master() is needed here to so the device
+> > stops issuing memory transactions while VFIO is trying to resetting
+> > it.
+>
+> That doesn't sound right, reset should always work..
 
-Hell no.
+pcie_flr() calls pci_wait_for_pending_transaction() which times out
+and prints an error message. The reset seems to be working fine though
+after that.
 
-> I know. What's the point of that VM_EXIT_ACK_INTR_ON_EXIT exercise? Is
-> there any performance benefit or is it just used because it's there?
+>
+> Didn't look beyond this hunk but why is a function called 'freeze'
+> donig a reset anyhow?
 
-There are performance benefits, and it preserves ordering: the first IRQ th=
-at's
-serviced by the host is guaranteed to be _the_ IRQ that triggered the VM-Ex=
-it.
-E.g. with AMD's approach, any IRQs that arrive between the VM-Exit and STI =
-(which
-is a pretty big swath of code) could be serviced before the IRQ that trigge=
-red
-the exit, depending on priority.
+Disabling bus mastering, resetting the device, and restoring
+vdev->pci_saved_state in freeze() is temporary. This allows us to pass
+the preserved device to the next kernel in a safe idle state. The plan
+is to remove them once enough Live Update functionality in VFIO, the
+PCI core, and iommufd are working.
 
-VM_EXIT_ACK_INTR_ON_EXIT also provides symmetry with Intel's handing of NMI=
-s, as
-NMIs are unconditionally "acked" on VM-Exit.
-
-Even if performance is "fine", changing decades of fundamental KVM behavior=
- is
-terrifying.
-
-Pulling in an earlier idea:
-
- : Now for VMX, that hrtimer_rearm_deferred() call should really go into
- : handle_external_interrupt_irqoff(), which in turn requires to export
- : __hrtimer_rearm_deferred().
-
-IMO, that's the way to go.  But instead of exporting __hrtimer_rearm_deferr=
-ed(),
-move vmx_do_nmi_irqoff() and vmx_do_interrupt_irqoff() into core kernel ent=
-ry code
-(along with the assembly glue), and then EXPORT_SYMBOL_FOR_KVM those.  It'd=
- mean
-some extra surgery, e.g. to provide an equivalent to KVM's IDT lookup:
-
-	gate_offset((gate_desc *)host_idt_base + vector)
-
-But I suspect it would be a big net positive in the end.i  E.g. the entry c=
-ode
-would *know* it's dealing with a direct call from KVM, and thus shouldn't n=
-eed
-to play pt_regs games.
-
-Actually, even better would be to bury the FRED vs. not-FRED details in ent=
-ry
-code.  E.g. on the KVM invocation side, we could get to something like the =
-below,
-and I'm pretty sure _reduce_ the number of for-KVM exports in the process.
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a29896a9ef14..f6f5c124ed3b 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7127,17 +7127,9 @@ static void handle_external_interrupt_irqoff(struct =
-kvm_vcpu *vcpu,
-            "unexpected VM-Exit interrupt info: 0x%x", intr_info))
-                return;
-=20
--       /*
--        * Invoke the kernel's IRQ handler for the vector.  Use the FRED pa=
-th
--        * when it's available even if FRED isn't fully enabled, e.g. even =
-if
--        * FRED isn't supported in hardware, in order to avoid the indirect
--        * CALL in the non-FRED path.
--        */
-+       /* For the IRQ to the core kernel for processing. */
-        kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
--       if (IS_ENABLED(CONFIG_X86_FRED))
--               fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
--       else
--               vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_b=
-ase + vector));
-+       x86_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
-        kvm_after_interrupt(vcpu);
-=20
-        vcpu->arch.at_instruction_boundary =3D true;
-@@ -7447,10 +7439,7 @@ noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu)
-                return;
-=20
-        kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
--       if (cpu_feature_enabled(X86_FEATURE_FRED))
--               fred_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
--       else
--               vmx_do_nmi_irqoff();
-+       x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
-        kvm_after_interrupt(vcpu);
- }
+> > Sashiko also wondered if pci_clear_master() is needed to ensure that
+> > the device has bus mastering disabled during the kexec
+>
+> Only devices that are not being preserved..
+>
+> > think that is actually an issue. vfio_pci_core_enable() makes sure
+> > that vdev->pci_saved_state has bus mastering disabled, so
+> > pci_restore_state() below here should guaranteed it is clear during
+> > kexec.
+>
+> .. and bus mastering should not be disabled on any device expecting to
+> be preserved ..
