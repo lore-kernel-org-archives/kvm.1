@@ -1,118 +1,87 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06BA379ED2
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724AF303A04;
+	Tue, 21 Apr 2026 16:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776789679; cv=none; b=Rae3P854jNMCqS4dNRyE2AROtAg3vj14Zv8rVzC3bclCB64DH3MSa2wvaFqXgdlUEIVpDtjH5mMfrgRGF1lHT2jlyqqgHOf1xRWxF2p31ESl+2lp0M7Ylg6j/Rdy2vxDRyfq5TQMx8QibwxKRbRk9cKKWNEmK297aCQbYRg71/o=
+	t=1776789961; cv=none; b=jBR0KeumST2Ik0KHrVj66WZKNEk2ZXvcV3gYOKyFgJdJyf2z5LnaRS4fKIwoVhgawRF+urkbTLt0VuAh2w/DrbSgqRMSSPnZMgauW2nYav9IdhKcYrjgjC4fwmsu7+oS8BphCkFRmNaaj9fFAPcWxQBNGq8r35LgA16+iFozYL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776789679; c=relaxed/simple;
-	bh=JgBQYCcFyw7eZBRlU8slk/gqMwHy5PO1mGjXHwFR09k=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YOwywXt3ZaK/tj/wwBJexC382+8nXDE2yHL1JoTCt3IabiLjrBobpq6epzze65FtV4CMG2qIp21hXuWXZR6IjV/vCAW2DMhCqiG6vtUNB0Ekg8b1VsRE1sdHeCTmsblHZ6CO4z64Y43pBk7pvj0J1pA86B4fmaXXDAUof8ZmuRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eLLvBnCP; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
+	s=arc-20240116; t=1776789961; c=relaxed/simple;
+	bh=xVFyy3In7iyaJKA5KQrp6T21C59AcxNsHdrAWxPWRro=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kUiCBU7GZfWzUnR1IbmY73VLcl5ysNktuGGpgxHanhuHcn8piLOYLufJlOI+Rk13TX//0xNZ8Zt4KW2pfaWy80j5fzKqYQR4Rjq35j/yCVQD1Fcl3uOFWT0FrM5qAmhid1NLvBjZ0WDGylnEJdGaq114aS/a3TwPhlw/j1lydy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2tW2gK1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eLLvBnCP"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2ec948174so42062675ad.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 09:41:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776789677; x=1777394477; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mGHowqlkhnvPIJdGbn1Su1BmTTCjZzOEKR7Ulucq9pI=;
-        b=eLLvBnCPLIEO6IriHt7qDNSPlBdGnGxoAAeUiXfHbgxgualIHuyJigrckF/fDIpEMa
-         +b/QTPrHgvjWs8uMzpxA/FghvZv+avKpqZb9KmvhhtrOMIptNSW8fdeW0QfNVJeGbvHI
-         uyqZPluIh4dOzLxbR6fePiQ9gMYdmij/csClQF7UpqH3boJgWGRwFld3sKpt5cgJeio9
-         L1wBn034cVCSGA0PzgeZy9qLyjmJ+/krOG3WwoXZIPnbE6EUHRlH61Q3wW0tmZsZzrJG
-         t3clq4eanMGPgSrC4Bm/r/4vdv5tGOEW1aEuqmwzk9BUP5kiU2c0vUA4kdzUeMGY+V2b
-         c7EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776789677; x=1777394477;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mGHowqlkhnvPIJdGbn1Su1BmTTCjZzOEKR7Ulucq9pI=;
-        b=REgFnyTYBvjTvfFMUl3r1RrU+WlHmXVcvDgRLM1DBAg5loxFndU9/Fu3W7k+OLm4xb
-         DyTkotuwncC43ZEbUst7xfFCZSaS+wJ91ZD3Fqd1Iolf/fJxx2DRvD3KnLbkVbcM3h1k
-         DJOmgWJq7Zs1TkXX1Z8+eEi8bY23klXg8WTS6BCtrpNIvddX96AJfkpUdrqlCzPb/AxK
-         vIMPe1iwXLY9s2o2ST7jWH1JinPMRdTpef7Ut9NH93Fk7owqzCsYRqqoBWkMM07Tp7M0
-         5WUFcQATLKEZviAz9swwu3YLZKbsaVLjGu1I6AYi3ivK2mKZ/b2vSH71TMvJ7iqzo/yJ
-         +YAg==
-X-Gm-Message-State: AOJu0Yz91F0wwwlpkdzGOSIv7D9o/ncvDXmhXo+tMzr2IknLiBCjsQCJ
-	dL1DtiDaa0PV4j4OzTBYw0DkI+MS5V9PsKFUOp/+904FFNfg491ef9DkPXr0QxJ00F0je15wLFV
-	tMnl8Hl/MjtoJME9kBp9g7pmfO9Pn3hETd6obApJOLYYPYqltClJAxFrxm5RGQvt4hyLVK0bHZV
-	w4ZjMAmElDvxC8+O6E97mlGwz1k4pY3My5NMubBsZAERDRP/llKZwN7sInbwg=
-X-Received: from plik3.prod.google.com ([2002:a17:903:3843:b0:2ae:bb1f:5234])
- (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1ac6:b0:2b2:5840:808e with SMTP id d9443c01a7336-2b5f9ee9487mr187401765ad.10.1776789676962;
- Tue, 21 Apr 2026 09:41:16 -0700 (PDT)
-Date: Tue, 21 Apr 2026 09:41:12 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2tW2gK1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E345EC2BCB0;
+	Tue, 21 Apr 2026 16:46:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776789960;
+	bh=xVFyy3In7iyaJKA5KQrp6T21C59AcxNsHdrAWxPWRro=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=V2tW2gK1iv2iIepeWIcM1uVxRBY1gllfjq3VaaO73nT466WuQRT3PgKAcTiUQJBdS
+	 rX7H2QXRXlxTa6Pb8oKMkS1PfGOnFdlHSMOVVbm6Hamn29BZ/9tnXBYTDI0KlXXTDO
+	 73D3fSNMFSLGNzsraAgrjvkhJQu8xkULzVipb4I676I948TWH3yi2Acngdoq0Lks4O
+	 2f9TVQmWTeedE6anja10x1riWgvrZErvYxZbOg5xAq8gnoRykFMDnR5tGgoaB+eIxq
+	 Es1iP9PK3gMkpjPjuF/V6wT+41VmeS1WevEhFur0/Dtwdyc2FAB+nqgTan7GYjEuO/
+	 +ikNrF8a50y4g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wFEEY-0000000DUc9-1vVG;
+	Tue, 21 Apr 2026 16:45:58 +0000
+Date: Tue, 21 Apr 2026 17:45:58 +0100
+Message-ID: <86h5p41cu1.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jing Zhang <jingzhangos@google.com>
+Cc: KVM <kvm@vger.kernel.org>,
+	KVMARM <kvmarm@lists.linux.dev>,
+	ARMLinux <linux-arm-kernel@lists.infradead.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] KVM: arm64: Treat ID_AA64DFR0_EL1.PMUVer as an unsigned field
+In-Reply-To: <20260421164112.2448553-1-jingzhangos@google.com>
+References: <20260421164112.2448553-1-jingzhangos@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
-Message-ID: <20260421164112.2448553-1-jingzhangos@google.com>
-Subject: [PATCH] KVM: arm64: Treat ID_AA64DFR0_EL1.PMUVer as an unsigned field
-From: Jing Zhang <jingzhangos@google.com>
-To: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
-	ARMLinux <linux-arm-kernel@lists.infradead.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>
-Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jing Zhang <jingzhangos@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: jingzhangos@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-ID_AA64DFR0_EL1.PMUVer is an unsigned 4-bit field, but was historically
-marked as signed in the cpufeature table. This led
-kvm_init_host_debug_data() to fail detection of PMUv3 implementation on
-systems with PMUv3p8 or newer, as the signed extraction of the field
-(e.g., 0b1000 for PMUv3p8) would result in a negative value.
+On Tue, 21 Apr 2026 17:41:12 +0100,
+Jing Zhang <jingzhangos@google.com> wrote:
+> 
+> ID_AA64DFR0_EL1.PMUVer is an unsigned 4-bit field, but was historically
+> marked as signed in the cpufeature table. This led
+> kvm_init_host_debug_data() to fail detection of PMUv3 implementation on
+> systems with PMUv3p8 or newer, as the signed extraction of the field
+> (e.g., 0b1000 for PMUv3p8) would result in a negative value.
+> 
+> Fix this by marking the field as unsigned in the ftr_id_aa64dfr0 table
+> and updating the KVM initialization code to use unsigned extraction.
+> While at it, ensure that both the 'Not Implemented' (0b0000) and
+> 'Implementation Defined' (0b1111) values are correctly handled as
+> indicating the absence of a standard PMUv3.
+> 
+> Signed-off-by: Jing Zhang <jingzhangos@google.com>
 
-Fix this by marking the field as unsigned in the ftr_id_aa64dfr0 table
-and updating the KVM initialization code to use unsigned extraction.
-While at it, ensure that both the 'Not Implemented' (0b0000) and
-'Implementation Defined' (0b1111) values are correctly handled as
-indicating the absence of a standard PMUv3.
+https://lore.kernel.org/all/20260305-james-kvm-pmuver-sign-v2-0-ee80a125af9b@linaro.org/
 
-Signed-off-by: Jing Zhang <jingzhangos@google.com>
----
- arch/arm64/kernel/cpufeature.c | 2 +-
- arch/arm64/kvm/debug.c         | 4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+	M.
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 32c2dbcc0c641..1b5e37a1a41b4 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -565,7 +565,7 @@ static const struct arm64_ftr_bits ftr_id_aa64dfr0[] = {
- 	 * We can instantiate multiple PMU instances with different levels
- 	 * of support.
- 	 */
--	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_EXACT, ID_AA64DFR0_EL1_DebugVer_SHIFT, 4, 0x6),
- 	ARM64_FTR_END,
- };
-diff --git a/arch/arm64/kvm/debug.c b/arch/arm64/kvm/debug.c
-index 3ad6b7c6e4ba7..2834d7ef9dedb 100644
---- a/arch/arm64/kvm/debug.c
-+++ b/arch/arm64/kvm/debug.c
-@@ -75,8 +75,10 @@ static void kvm_arm_setup_mdcr_el2(struct kvm_vcpu *vcpu)
- void kvm_init_host_debug_data(void)
- {
- 	u64 dfr0 = read_sysreg(id_aa64dfr0_el1);
-+	u64 pmuver;
- 
--	if (cpuid_feature_extract_signed_field(dfr0, ID_AA64DFR0_EL1_PMUVer_SHIFT) > 0)
-+	pmuver = cpuid_feature_extract_unsigned_field(dfr0, ID_AA64DFR0_EL1_PMUVer_SHIFT);
-+	if (pmuv3_implemented(pmuver))
- 		*host_data_ptr(nr_event_counters) = FIELD_GET(ARMV8_PMU_PMCR_N,
- 							      read_sysreg(pmcr_el0));
- 
 -- 
-2.54.0.rc1.555.g9c883467ad-goog
-
+Without deviation from the norm, progress is not possible.
