@@ -1,64 +1,63 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0033A4537
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 09:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669733451A6
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 09:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776763568; cv=none; b=Jeg/d8ZH8tufRrZCxuxHeUCDpB3Gv1g/TsapdV4M7WpU/P+6RjIVvaibu6YzbrzASukVAFutC9Wt5XiwYXzu8YLq2qjwdo99WFbeYzWLmG3psDR2pIry6Qov8dRqNitd1hbXyJKb640eZ7ZeXfuuotjKhLFwaWDk835/atQpppQ=
+	t=1776763578; cv=none; b=G3TjhnCmw8y6oavItxWWmh0DxfF2jFGF/Rb8RSNAPQrqdSXplUZTTSHDOUHV5ROhenXQFIXVMKUXxLx2Ax+33Z4ZUBbvN+D4tvevOniZsqur0jGv178cdWiDwS0DccBu+GhNSzj1slq49yjZ+D3JStK0bG8Z6vHUY8RjfCZko/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776763568; c=relaxed/simple;
-	bh=6PIN/dG7wFqQzqUa3HZ7Md7FkGfW//HU1jgeoeBIV1E=;
+	s=arc-20240116; t=1776763578; c=relaxed/simple;
+	bh=NqIa/AVjalXxIFvZZGUvR0dRYemXOYMzQmU4EZu8VMY=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q7k2CPxceMV7fUBHbUn65bTie3qzmfHkRpBDJBJCAo6VzCY2oZJbv8vT4Zr0mv3VNuq/Os+T1zGwYW1ldCvfooxyUNm3/LpXpjBet9h1ppbicIzFVzSJ8be/6GUDUt4MkQL8jabBt3LjhS4wuulEnjQhhVE6Nsl2qic4T/hj+XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=aLgBMTtq; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=ALIRYMRK0hjc4UBBWT56Oe0fU3cfOiJzY5ipz/HUiu3ns68VPKR1x8FOCuN9DsekR8irUQyLYknys2nPkLnHz6fk7YzJmLMQeOpUWCvH649huOlhcF6olqfG5uF7Yzi2EnAoG2SuQXafqfLguDkHzCMYFUu4EPlgp/lvTHG2/0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=k6STzqCz; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="aLgBMTtq"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3591cc98871so1811950a91.3
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 02:26:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="k6STzqCz"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35f9ab079bdso2499856a91.2
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 02:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1776763566; x=1777368366; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1776763576; x=1777368376; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FJWvxx2SvBNX2CVsFvwsTk0IK3zSjjAIlJH4BJFUonM=;
-        b=aLgBMTtq5BDkSduB8coXYpoodGKG9tuSocK8BDlmgDOrw8Kqzo+gYzNq0/wtkZubha
-         hjZgW9QOzntpnZDp2LqV4LtUGHX38VDzo4tkVZxUukxYFKvbORQpL4jxUYpklFTCAZJU
-         XVnlqo4Hk0YfY2Fv73Bk8KXyyEhO5ZdBJ61pnldTgG68w2/71TWZm8HFm54AH+x8Y9o3
-         LgLMbfIRHCIyqfkAhh37nUdvqcx3O7HFhlPBIxpq0rGb1nqvrXNE4oQjDdgzcCGqUjYu
-         TqYgmCuEisedUau/et0KIf3OaMaCfY2cCHDXjQiQO1RAnTTu1e5fWpck+8S+bt09L5XV
-         4h/A==
+        bh=vuusCw6rlfDGFySSxpy3cAwZYM4fJMPSUnMyh4fNp+s=;
+        b=k6STzqCzh4nQJwlUfc7Dq+aZKHTOH3FAx/Yfnx1vUnkIWPz+5dAS95O4t4E1PvQIaw
+         Vp06O/tCOIi55uNnDoKonOa8x2E+ab9kPixsievWw4CiSvHAMTh7ItbB9XEu2nA+FUjB
+         ZsRhSxig1AikZ9TW8VoT/geODGCoegvKd/koJRaAW34cjZUtC4sb4xFQ6Prg3VXBjVfg
+         LPUyMRVLXHUXIRm7uLwLOBCnjTYlfqAtLYd6ngjq4OKtaR/7JH4yS8VAxxHiWxKWpJgp
+         M7SotZF+N+pjrgWRAEF8R4M/W8qqVjHiyzKg7GW/YQMn23UpHHoFIGftvu7+WfmkAx2e
+         erKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776763566; x=1777368366;
+        d=1e100.net; s=20251104; t=1776763576; x=1777368376;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=FJWvxx2SvBNX2CVsFvwsTk0IK3zSjjAIlJH4BJFUonM=;
-        b=B5mNnyTx5BKcCtHj/AmLZ9oI6sbpnBqq9LrrBgYC3htVNgDZkEfEIi9rBC4dICMPvW
-         7SXGoimW9asOpC768B9PeItDuSZceA3YDwJ5zgPgww0Rd/Px8+WGNIMoorMgyntYRH4z
-         7Qg+JkBWmMiJaMftO5bwgNBqVU6wD7+EBQSGfRoznzbkmNOf87NjD5/m6gNynAFA72xC
-         59jFJQADML/cMy5BdWr6HOSOs+rBU3h44NpYl2wfV9kc9copDNjYm10C9D4VLVcAiJNS
-         iU303WCV8ajLwTzjsksaoWr24PfyHcNFRdJ9IORXDLkI4o6w79yiHXomhMG8DbwltQAg
-         uuzA==
-X-Forwarded-Encrypted: i=1; AFNElJ9pJRxvosemRJa6Y+6jafdDDfLXMR1wyCxkiKLT52VXF8YVMTM7Ax6U1j3MNPU9CTl/SLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaNulqhtw0k0tVBw0NNf67dWDMJY0oD+jE+sWzArfrOzU06Mo7
-	JhHJux+ACtyah0+IqHORqXUrwIqKVfdfa2iJLjPkZwTyE5tceqDY+gg1DL9v9KRvRBM=
-X-Gm-Gg: AeBDieunxZA0ODaBd3PUBlsSZBszBBpCbajipydNF3ICBvxlf1nycOL7AKVjw8PXAC+
-	Sy9SvrKCyUxDYw+tbxerl64/f1O8gFkmTW2D1F9ZrP50zNXgN0JdaavYE6vBPzdhZCbdu+35BDo
-	dJyd0kZ5v6QKe59znLPw4ojVAYxQZMZPd2ai+L4q0TEjdmSWa/sVEsQDfYWgFS1/wQyQ71K3vdT
-	CYbffLz106oFw6el91Ke8opRCfSNdo54r6zuhcJqIpw/+Ft9g635xgwYt/I8F8iEO/1G/l/zePz
-	k8y0EXTPj3+qFBUBrIoNI8AKVk5Ujgb13x3r9RdRodAa5ERLf2/0zmO9XBCvl8bNJMb7l87I+Cy
-	ZkvjPWGJ4/5yypPz85yNfCbesLYZYVSoCMLgJCRT071F4bp7uhgly1BP8OKXVpGeFDuYZP5cjh5
-	yC6T/qUSHaIJKIF2TkH5F6kf2wFMJuYH3QjK8hdoR5pQrDX9Pq/SkDftZnppYwD7up9gwxhHow5
-	F9+tN0=
-X-Received: by 2002:a17:90b:5865:b0:35d:a557:e41 with SMTP id 98e67ed59e1d1-3614046f978mr18558407a91.14.1776763566317;
-        Tue, 21 Apr 2026 02:26:06 -0700 (PDT)
+        bh=vuusCw6rlfDGFySSxpy3cAwZYM4fJMPSUnMyh4fNp+s=;
+        b=AZe3BklO5DGxBr3T0eLdtEq3qm6Wo5ravPewDEWGIvUeA1quQh5yme3fWY0lj1Iqla
+         XybRyiTpMKTks0B4WTZIuiISvLaVNHdjEPb3KBnyHBDt7wqDIVObAbvndExUWX+nk3HZ
+         T22wMYIPfHZSDl/jWeffa3g7L2mb2L7kW/UOon7oXQ56rM+mIxZAxmvb0cqpKvfVqjeG
+         4tDpgWn4qOrjuIdl2IVCLWKjehEeucpOzobvIuWzIfxSgtiXmsswmFVROfNBn4GZI/60
+         kZrdo4w2Cn4DgyndhspksV3rARNTd4GNo1DfcurcSo71bVWskI2BL6VCmk2T2fftQcPQ
+         7zXg==
+X-Forwarded-Encrypted: i=1; AFNElJ+OfzqiaYTVjWrg4GFNaMfvlgu2OEzg7JS6bIkTKEJ3JebaYXUkWtI9mdW2yqjcOVe/kNs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpdI7CEx/ZblnI7sUftTnkrEdi+3UMfm6wx9A0hz18OHu7mYnU
+	DGDVZVTknSzNO+k7/ar7z69liwihitwgzZDC98Zqt9RaIm6Z8bQycuvTMkKiTteahuM=
+X-Gm-Gg: AeBDieux9x6oOhWl6If4qOo5QYOJPEcP5EW6s9ueqIM5P43CAGSuNYAE2EGEaGu3CRF
+	Qw5eWy0Sk/T50Qa6A5Kp1eDH37UH/YH4BtnljZQHTIhaooS363J5uff2w7oLglvhMKWskv9XbaG
+	k1ha4BzcVJHucrYaI5H2/pabz8LskmlAp6jLUMt6d3Lr+GWo2g45huEV4xd4tyw7g+0VTacCrJf
+	m7VcKKfl+AD70xK4NiI+BDroGufs2tkdIBEO2PLMVfJWsqeuzChVZ43kdjbCE2Mq8BjXVPpFoRe
+	iV3MOZT/z8jcW3v43tztjDpnHx7OTJgHdpWkuFymjRAlWtTMT1VSOzglG89t3pvxcpLCnxrlt2m
+	GGNv7rYOA0fe14S5aS1iXOkJmT9hAJwK24uswzC3toEJQimSYvxKMiZHk0i42XdvkFhk4Q1FcnW
+	P8L+UMXoGLRfF/9fnazURNNQbuEBjaRa2yNnMX8UbHFxzOneAOZSoNUglOXNLsUV3km7PU
+X-Received: by 2002:a17:90b:1809:b0:359:15c8:e8e1 with SMTP id 98e67ed59e1d1-361404a8241mr17256461a91.25.1776763575646;
+        Tue, 21 Apr 2026 02:26:15 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([61.213.176.6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff39csm131965105ad.4.2026.04.21.02.25.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff39csm131965105ad.4.2026.04.21.02.26.06
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 21 Apr 2026 02:26:05 -0700 (PDT)
+        Tue, 21 Apr 2026 02:26:15 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: akpm@linux-foundation.org,
 	alex@ghiti.fr,
@@ -102,9 +101,9 @@ To: akpm@linux-foundation.org,
 	vishal.moola@gmail.com,
 	wangruikang@iscas.ac.cn,
 	zhangchunyan@iscas.ac.cn
-Subject: [PATCH 6/7] riscv: batch write-protect contiguous PTE ranges
-Date: Tue, 21 Apr 2026 17:24:56 +0800
-Message-Id: <20260421092457.37649-7-cuiyunhui@bytedance.com>
+Subject: [PATCH 7/7] riscv: add Svnapot-aware pte_batch_hint support
+Date: Tue, 21 Apr 2026 17:24:57 +0800
+Message-Id: <20260421092457.37649-8-cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20260421092457.37649-1-cuiyunhui@bytedance.com>
 References: <20260421092457.37649-1-cuiyunhui@bytedance.com>
@@ -116,156 +115,121 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hook wrprotect_ptes() into the Svnapot contpte helpers so write
-protection can preserve fully covered NAPOT blocks and only unfold
-partial ranges at the edges.
+Provide a Svnapot-specific pte_batch_hint() implementation so callers can
+batch over a contiguous napot range without re-reading each PTE entry.
+Keep the public wrapper in pgtable.h and leave the CONFIG-disabled case on
+the existing single-entry fallback.
 
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/riscv/include/asm/pgtable.h | 38 +++++++++++++++++++++++++++--
- arch/riscv/mm/contpte.c          | 42 ++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 19 +++++++++++++++++-
+ arch/riscv/mm/contpte.c          | 33 ++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 1 deletion(-)
 
 diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 3e6516b5a4587..db82253efb218 100644
+index db82253efb218..264af77392c6e 100644
 --- a/arch/riscv/include/asm/pgtable.h
 +++ b/arch/riscv/include/asm/pgtable.h
-@@ -813,13 +813,30 @@ __ptep_set_wrprotect(struct mm_struct *mm, unsigned long address, pte_t *ptep)
- 	 * shadow stack memory is XWR = 010 and thus clearing _PAGE_WRITE will lead to
- 	 * encoding 000b which is wrong encoding with V = 1. This should lead to page fault
- 	 * but we dont want this wrong configuration to be set in page tables.
-+	 * Keep the entry readable when clearing write permissions so we don't create
-+	 * an invalid present encoding.
- 	 */
- 	atomic_long_set((atomic_long_t *)ptep,
--			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
-+			(pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) |
-+			_PAGE_READ);
- }
+@@ -872,6 +872,13 @@ static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
  
- #define __ptep_set_wrprotect __ptep_set_wrprotect
+ #define __ptep_clear_flush_young __ptep_clear_flush_young
  
-+static inline void __wrprotect_ptes(struct mm_struct *mm,
-+				    unsigned long address,
-+				    pte_t *ptep, unsigned int nr)
++static inline unsigned int __pte_batch_hint(pte_t *ptep, pte_t pte)
 +{
-+	for (;;) {
-+		__ptep_set_wrprotect(mm, address, ptep);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		address += PAGE_SIZE;
-+	}
++	return 1;
 +}
 +
-+#define __wrprotect_ptes __wrprotect_ptes
- static inline pte_t __ptep_clear_flush(struct vm_area_struct *vma,
- 				       unsigned long address,
- 				       pte_t *ptep)
-@@ -879,6 +896,8 @@ pte_t napotpte_get_and_clear_full_ptes(struct mm_struct *mm,
- void napotpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
- 				     unsigned long addr, pte_t *ptep,
- 			     unsigned int nr, cydp_t flags);
-+void napotpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
-+			     pte_t *ptep, unsigned int nr);
- bool napotpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 				    unsigned long address, pte_t *ptep,
- 			    pte_t entry, int dirty);
-@@ -1004,11 +1023,25 @@ static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
- 	return napotpte_get_and_clear_full_ptes(mm, addr, ptep, nr, full);
++#define __pte_batch_hint __pte_batch_hint
++
+ #ifdef CONFIG_RISCV_ISA_SVNAPOT
+ 
+ /*
+@@ -886,6 +893,7 @@ void __napotpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+ 			   pte_t *ptep, pte_t pte);
+ pte_t napotpte_ptep_get(pte_t *ptep, pte_t orig_pte);
+ pte_t napotpte_ptep_get_lockless(pte_t *ptep);
++unsigned int napotpte_pte_batch_hint(pte_t *ptep);
+ void napotpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		       pte_t *ptep, pte_t pte, unsigned int nr);
+ void napotpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+@@ -1056,6 +1064,15 @@ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
+ 	return napotpte_ptep_clear_flush_young(vma, address, ptep);
  }
  
-+#define wrprotect_ptes wrprotect_ptes
-+static inline void wrprotect_ptes(struct mm_struct *mm,
-+				  unsigned long address, pte_t *ptep,
-+				  unsigned int nr)
++#define pte_batch_hint pte_batch_hint
++static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
 +{
-+	if (likely(nr == 1)) {
-+		napotpte_try_unfold(mm, address, ptep, __ptep_get(ptep));
-+		__ptep_set_wrprotect(mm, address, ptep);
-+		return;
-+	}
++	if (!pte_present(pte))
++		return 1;
 +
-+	napotpte_wrprotect_ptes(mm, address, ptep, nr);
++	return napotpte_pte_batch_hint(ptep);
 +}
 +
- #define __HAVE_ARCH_PTEP_SET_WRPROTECT
- static inline void ptep_set_wrprotect(struct mm_struct *mm,
- 				      unsigned long address, pte_t *ptep)
- {
--	__ptep_set_wrprotect(mm, address, ptep);
-+	wrprotect_ptes(mm, address, ptep, 1);
- }
+ #else /* CONFIG_RISCV_ISA_SVNAPOT */
  
- #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
-@@ -1062,6 +1095,7 @@ napotpte_ptep_clear_flush_young(struct vm_area_struct *vma,
- #define clear_young_dirty_ptes			__clear_young_dirty_ptes
- #define clear_full_ptes				__clear_full_ptes
- #define get_and_clear_full_ptes			__get_and_clear_full_ptes
-+#define wrprotect_ptes				__wrprotect_ptes
- #define __HAVE_ARCH_PTEP_SET_WRPROTECT
+ static __always_inline bool riscv_pte_present_napot(pte_t pte)
+@@ -1100,9 +1117,9 @@ napotpte_ptep_clear_flush_young(struct vm_area_struct *vma,
  #define ptep_set_wrprotect			__ptep_set_wrprotect
  #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+ #define ptep_clear_flush_young			__ptep_clear_flush_young
++#define pte_batch_hint				__pte_batch_hint
+ 
+ #endif /* CONFIG_RISCV_ISA_SVNAPOT */
+-
+ #define pgprot_nx pgprot_nx
+ static inline pgprot_t pgprot_nx(pgprot_t _prot)
+ {
 diff --git a/arch/riscv/mm/contpte.c b/arch/riscv/mm/contpte.c
-index 77c2a4dbd3dda..077ffa49e89d9 100644
+index 077ffa49e89d9..134b8c401cabc 100644
 --- a/arch/riscv/mm/contpte.c
 +++ b/arch/riscv/mm/contpte.c
-@@ -261,6 +261,30 @@ static void napotpte_try_unfold_range(struct mm_struct *mm,
- 	}
+@@ -187,6 +187,12 @@ static inline bool napotpte_is_consistent(pte_t pte, pte_t orig_pte)
+ 	       pte_val(pte_mask_ad(pte)) == pte_val(pte_mask_ad(orig_pte));
  }
  
-+static void napotpte_try_unfold_partial(struct mm_struct *mm,
-+					unsigned long addr, pte_t *ptep,
-+					unsigned int nr)
++static inline bool napotpte_is_batch_consistent(pte_t pte, pte_t orig_pte)
 +{
-+	pte_t pte;
-+
-+	if (ptep != napot_align_ptep(ptep) || nr < napotpte_pte_num()) {
-+		pte = READ_ONCE(*ptep);
-+		if (pte_present_napot(pte))
-+			__napotpte_try_unfold(mm, addr, ptep, pte);
-+	}
-+
-+	if (ptep + nr != napot_align_ptep(ptep + nr)) {
-+		unsigned long last_addr;
-+		pte_t *last_ptep;
-+
-+		last_addr = addr + PAGE_SIZE * (nr - 1);
-+		last_ptep = ptep + nr - 1;
-+		pte = READ_ONCE(*last_ptep);
-+		if (pte_present_napot(pte))
-+			__napotpte_try_unfold(mm, last_addr, last_ptep, pte);
-+	}
++	return pte_present_napot(pte) &&
++	       pte_val(pte_mkold(pte)) == pte_val(pte_mkold(orig_pte));
 +}
 +
- void __napotpte_try_unfold(struct mm_struct *mm, unsigned long addr,
- 			   pte_t *ptep, pte_t pte)
+ void __napotpte_try_fold(struct mm_struct *mm, unsigned long addr,
+ 			 pte_t *ptep, pte_t pte)
  {
-@@ -485,6 +509,24 @@ void napotpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+@@ -391,6 +397,33 @@ pte_t napotpte_ptep_get_lockless(pte_t *orig_ptep)
  }
- EXPORT_SYMBOL(napotpte_clear_young_dirty_ptes);
+ EXPORT_SYMBOL(napotpte_ptep_get_lockless);
  
-+void napotpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
-+			     pte_t *ptep, unsigned int nr)
++unsigned int napotpte_pte_batch_hint(pte_t *ptep)
 +{
-+	unsigned int i;
++	pte_t orig_pte, pte;
++	pte_t *start;
++	unsigned int i, nr, off;
 +
-+	if (!napot_hw_supported() || !mm_is_user(mm)) {
-+		for (i = 0; i < nr; i++, ptep++, addr += PAGE_SIZE)
-+			__ptep_set_wrprotect(mm, addr, ptep);
-+		return;
++	if (!napot_hw_supported())
++		return 1;
++
++	orig_pte = READ_ONCE(*ptep);
++	if (!pte_present_napot(orig_pte))
++		return 1;
++
++	start = napot_align_ptep(ptep);
++	nr = napotpte_pte_num();
++	off = ptep - start;
++
++	for (i = off; i < nr; i++) {
++		pte = READ_ONCE(start[i]);
++		if (!napotpte_is_batch_consistent(pte, orig_pte))
++			return 1;
 +	}
 +
-+	napotpte_try_unfold_partial(mm, addr, ptep, nr);
-+
-+	for (i = 0; i < nr; i++, ptep++, addr += PAGE_SIZE)
-+		__ptep_set_wrprotect(mm, addr, ptep);
++	return nr - off;
 +}
-+EXPORT_SYMBOL(napotpte_wrprotect_ptes);
++EXPORT_SYMBOL(napotpte_pte_batch_hint);
 +
- bool napotpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 				    unsigned long address, pte_t *ptep,
- 				    pte_t entry, int dirty)
+ void napotpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		       pte_t *ptep, pte_t pte, unsigned int nr)
+ {
 -- 
 2.39.5
 
