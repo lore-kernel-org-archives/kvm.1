@@ -1,99 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1DA3D6CD9;
-	Tue, 21 Apr 2026 14:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CA63CF67C;
+	Tue, 21 Apr 2026 14:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776781006; cv=none; b=f0xeauoNNU5R6Gvb7iyyOJHmifbuH5mXdf7eVMOkG6GE2XMmeBPJvPE6JQK3BMTuXzz4aYHdraibekSwos0BR98lPNwFPbtEyYJpDcSIVjsj1CPfxdRBwZfxpcoaFl7WJU0O4uG6URqa15GH8wFZ1TisrKFpeW1zpJxUU4MsJho=
+	t=1776781122; cv=none; b=V/QjWfIemoUtkTAcZnJx1zyT3/eAApCFpzjszDAKLOgv5r/7S0HVV0BcrFLo9zc2xRR3MmesX85drr08ghYf9Y/MFph7eKP34kKEcHzRTX52j+Z/nyHSQSoPUfxoTLBRePmWm5nmvoiRcuzdAmLaPb4bDLr29nESQrb3Kpx7SsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776781006; c=relaxed/simple;
-	bh=oghBsycnXDnrtMi1JYuIu/4lJFlqtB/s6yt+NLMKL70=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t+avDxNbjXRgcywdMZtExMHjfAeO0x5rrfI7qVyLVecpCo9zk6n8BskuoopYEOwSsGPaY5sSfoeUHkCqZmX6UiVeI8WK+IPHiKjKu0S41F5uYho76EhKyRs8DCa8KEetdQBI6dqqR51yB2CKx0roFin5nLTI1CKjoOAL5KJ1RCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KI3/pG7f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776781122; c=relaxed/simple;
+	bh=vAu2TZe4KLTTnExsF79HZ16TqzLObTuSThMNMoqwYmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=UFVGTarzdiHyfATXjO4+MKCw4HsgrTMkSpvBM7c9q2KzVr4lMXb6qST1a/FTLT9G+qXTVZWfDEW267oRwtje5anM2RrD6dCsI/Tar9ISezLa7TI6B8FVICnLYd9HYEjN6GVXyiA1YmiTBRX5zGQJPczTmTwjGn4PpM0XPkc71Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=DU2TyQmQ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KI3/pG7f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656F6C2BCB0;
-	Tue, 21 Apr 2026 14:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776781006;
-	bh=oghBsycnXDnrtMi1JYuIu/4lJFlqtB/s6yt+NLMKL70=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KI3/pG7fZrnb2u+WC2Vvy1x8VHbZt+nb/x02CyxQt+lErZJAKhPNUhGaDgx5zdBin
-	 P1kGZOp2aBTaNKJrTCAlNqE1PovzkjIrxgJacDGiumHQeFxPmiPdXTSQ2uXorDaXaQ
-	 bmOsFLthgAYV1zaSh5q+hS9w8JorLKHbKiuqwnLz2ggW6A0dh/UAQN1779Nldw0tPH
-	 eRyEng+GbA5wDQzQ8vg8E5ousmKZUVxbiX5uxKAjp61y/ASaEBvbsSEc/a90hjR5f5
-	 UdfVsGgEf15MJJpw/QbFheKs7KnkxiNo+WDFpnkF5Ly3BdB1vIrS9A0LQzjy8n9WyE
-	 mXeFtj7xcEAVA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wFBu8-0000000DRnn-0UlL;
-	Tue, 21 Apr 2026 14:16:44 +0000
-Date: Tue, 21 Apr 2026 15:16:43 +0100
-Message-ID: <86ik9k1jqs.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="DU2TyQmQ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0D1825DC;
+	Tue, 21 Apr 2026 07:18:34 -0700 (PDT)
+Received: from devkitleo.cambridge.arm.com (devkitleo.cambridge.arm.com [10.1.196.90])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28ACA3F915;
+	Tue, 21 Apr 2026 07:18:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776781120; bh=vAu2TZe4KLTTnExsF79HZ16TqzLObTuSThMNMoqwYmo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DU2TyQmQAdeK7LaY99ERkB/P2rD92ghDuIBKbHU6l8oH8aVSyeuqUaXTzQZZME4pS
+	 3Cma8C6BrCfnkUqZx1mWuRt1mElr+RuJm0OJoKWjz0NS+id2zVAQUoRqox3MEZXy2j
+	 +eYt99Ev0UEajRaFBOa6mkGWCp0dShOF6OHK89AU=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	liuyonglong@huawei.com,
+	Jonathan.Cameron@huawei.com,
+	yezhenyu2@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
 	kvm@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	Arnd Bergmann
- <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH] kernel: trace: do not generate undefsyms_base.c
-In-Reply-To: <20260421100209.7535e26f@gandalf.local.home>
-References: <20260421100455.324333-1-pbonzini@redhat.com>
-	<20260421100209.7535e26f@gandalf.local.home>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH v3 4/5] KVM: arm64: Enable HDBSS support and handle HDBSSF events
+Date: Tue, 21 Apr 2026 15:18:28 +0100
+Message-ID: <aeeHNMqDx5Yipt_K@devkitleo>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <acpfD3YjMpEdL5KZ@devkitleo>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com> <20260225040421.2683931-5-zhengtian10@huawei.com> <acQj5grOdZT8LUGp@devkitleo> <e3253959-0340-4c13-a980-a599e090a6de@huawei.com> <acabezCO4B5BE40Q@devkitleo> <4e800c1e-25db-4aa2-b100-63434973de93@huawei.com> <acpfD3YjMpEdL5KZ@devkitleo>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: rostedt@goodmis.org, pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, torvalds@linux-foundation.org, arnd@arndb.de, nathan@kernel.org, linux-trace-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Tue, 21 Apr 2026 15:02:09 +0100,
-Steven Rostedt <rostedt@goodmis.org> wrote:
-> 
-> On Tue, 21 Apr 2026 11:04:55 +0100
-> Paolo Bonzini <pbonzini@redhat.com> wrote:
-> 
-> > The code to autogenerate undefsyms_base.c in the Makefile is larger
-> > than the file itself.
+On Mon, Mar 30, 2026 at 12:31:28PM +0100, Leonardo Bras wrote:
+> On Sat, Mar 28, 2026 at 02:05:25PM +0800, Tian Zheng wrote:
 > > 
-> > Remove the "echo" indirection that creates the file, which keeps
-> > the build system sane and makes it much easier to edit it if/when
-> > new situations arrive.
-> > 
-> > Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Marc beat you to it by a few minutes ;-)
-> 
->   https://lore.kernel.org/all/20260421095446.2951646-1-maz@kernel.org/
-> 
-> Although he didn't Cc linux-trace-kernel@vger.kernel.org :-p
-> 
-> But anyway, it ended up in my internal Patchwork. I'll take his as they are
-> both pretty much the same patch.
+> > On 3/27/2026 11:00 PM, Leonardo Bras wrote:
+> > > On Fri, Mar 27, 2026 at 03:35:29PM +0800, Tian Zheng wrote:
+> > > > On 3/26/2026 2:05 AM, Leonardo Bras wrote:
+> > > > > Hello Tian,
+> > > > > 
+> > > > > I am currently working on HACDBS enablement(which will be rebased on top of
+> > > > > this patchset) and due to the fact HACDBS and HDBSS are kind of
+> > > > > complementary I will sometimes come with some questions for issues I have
+> > > > > faced myself on that part. :)
+> > > > > 
+> > > > > (see below)
+> > > > 
+> > > > Of course! Happy to exchange ideas and learn together.
+> > > :)
 
-On the other hand, Paolo's patch has the SPDX tag on the new file,
-which I forgot to add. Your call, anyway.
+Hello Tian,
 
-Thanks,
+On the above, HACDBS depends on HACDBSIRQ which can be announced by either 
+device-tree or ACPI. 
 
-	M.
+Do you think it's ok for it to be ACPI only, for now?
 
--- 
-Without deviation from the norm, progress is not possible.
+Thanks!
+Leo
