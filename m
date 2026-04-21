@@ -1,149 +1,125 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4482A3B6363
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 11:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776770274; cv=pass; b=MWjjyw9YTfxL69Vt/ax3c6d6A6NhHmMl7kTw8Sv6s5d5b+/ghT+T/VzXdx2SUleFVIXJL5oRjpt3HPEKdhwvLLIVRiremPWLmwapkkKzRNJbwSDy3qoXBbXJk8yhJRqajCtKEAmRQBfkT4alcpU0lcqaCP99wMhkKmmTa2Ymo8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776770274; c=relaxed/simple;
-	bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CVaeaYUBLT80a4Yc9guT4btr7/zOoeYOm4vYBr4BgW7ieDsJEddar4auOnL1ZX4qok0dTQYVRQy6jyysNaXVfcvkRPAvAOIu+zWZT1crafRiMCYIkPzEC1SIs0b6eP1YOxnu+EYcjtCiYjXkBN+9QGT/bRwxUmndMhmiMx8asXA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELueQRLt; arc=pass smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7468A231832
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 11:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776770347; cv=none; b=PIn7DL5INVuok5M3aTDslZa1/hagHuPndbMEbqm5Jv2ILIdW8LFWsinXy1fsnk05XinLDCyLkD1+X178nrM74JMsSGwWRPtLB9dH7dIP6czOcbFglj8aGGIBEJV2AMs8r384rOsh7+WUrkiiuNsgnF9Qj87dKXPBh51vMVa902g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776770347; c=relaxed/simple;
+	bh=BYG43dvcdrs38O8r0699oyHRu9QLVTtlF00I22aGEP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYNUHBnhkNyfsF2UEC8LsuPExpLEaSGRxo5ku9WP61raaS68Ah4FF/zNrAoXYNmnyohp8IqwXkkah6dlQI3gq5rfbWUVs06sPgeANoR1dVNJslpXWkK+wuj93MoZdc/y2CW3pJNFMwY2N5+aIB9pk1+xxYneo5xWdEQq6GfdA/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=G2Z5immx; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELueQRLt"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ab46931cf1so35974375ad.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 04:17:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776770272; cv=none;
-        d=google.com; s=arc-20240605;
-        b=f4DooqVDUv2nMYqK09c8zUBPe7gsN3aE5JnftVLonTuPQX+GFnbDjTbJQbKJHEK0WX
-         9+KCnoQ/MinqJTu6WDOxGthHwhYwVpT6PmB1/prQLbx5o7nZJJmx+0zU+MnIrJime4eF
-         69O1Jkd5B1UHf+iyzkmnJI3wuTviYtH5IyDgM8OuYj29X+w6QhiBxUagUEwnNQJ4UNdw
-         hYjFKBlHcGH2mq0YOAyzjFdIklQQOE1XOnZ6/AJw5KOiRMypWzjbiiGUbiIXZufs8GJo
-         FPkX29XzbjaOXslz3Uqy+i4fjjbvshqFqipgsFmSqEUZKbHwy49gEmMs8t+yC272OGYm
-         iqgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-        fh=SE3zyewpUcCqiPQOMljTuLBzsoq8qqj1t/jNCufcqig=;
-        b=gjqxatLfe09FkR6FK1I1PgjgeCf+XwFjaorrqHOPP+TLy+F9Z7eRPEPLbJAp0dauim
-         xZb6KZu6Qs/TVWi7G8lDGhfzAGFC799ojy/3EThhJ48cuBWzLqTbHo8aCurTVvlHFtEH
-         p1sJqdzJuhVViK0NQ4jSMYIeTJQByJrQY+E3QcS4Na24CWJJYqlhsI8zwawHkLiyHQL4
-         W6nNKyr7XuCMkXeaY4aPvZtZeczQQIdlcEGLi8YBILWc64+Otokgmt4Rt7nQqettsc1F
-         HMmba1tqReEsj4PI2S/a74YDFtq9fmO6DAkMiz3tNxbxcjnEC4Ep19CvHxJ3+Lp9Ilj4
-         7A0A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776770272; x=1777375072; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-        b=ELueQRLtmf75Xi+ZZyWFpi8Mg85fY8cnBX+9ZkKQggNNvunD2uWYBuf2jVOBSUqnLu
-         qsuCCuNFBD+Fq1WduFzquI1+3Xat9lu/XYsZAvtc33/blxEcchJJEf3MI2o4Lq6I/jXK
-         7DBfut+EuO8HmDvlbm8XxGUzrDmb9TvYZPlBsaTL313NkASvz1zky27lpd4Dn2ltcEHa
-         yNghMTtN98ItEf0O0hSHwlVi1ZE3YbXjS3LQF6TZAcsYNycxthUoFrhZVSyRLglIkYm6
-         4zjOAJ38z8qdEYhCuiFRFRpQ4uYz+b72762qcuVuodaNbF5p4ZMt5hCkGQZjywP8xliF
-         rkCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776770272; x=1777375072;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-        b=fL3qEnrL6IlH7fOEkvAXXKhT/vr/vbEZ57i8yQrciNn8k982vQ1+SpdR7yE1+yd484
-         mCq8E1al0GsmXhilHoRnOsuFM+MROF6beztk21w6UWkzWXexvgUkvN7oRZ6a0Y1hxjZO
-         cT5D+FipESpK2X1/sAGzWFeA75vlZkDGJ/9rgqp2Nz66dzVeM4R1T+6U20Qj9gVE3RBY
-         enXoYBxneJhtWcKXAchzFyByhegOQtO9FHh53x4NdMHzkX05peHD3wPwIEbqSJLjO6T/
-         oL9R5h6Z4uR/xv+HmgT77L/UW/WCgLlUt17VqdllMNP38MPGp4eOmYUi7LKWkPToaOyE
-         uqGA==
-X-Gm-Message-State: AOJu0YxN3Iaf4NgeFVBL52hFrvPLNBpEWmXgSZi/AXg7qTO2bGqIF9zG
-	TIm3RyNtDQjMm+1a27ErUmyAb64pTnxdFtHis2BcFrp6tY5BdeVIUzlHwLh7wEzX5sFd1kWv9t1
-	mX41RGzZM1DUxM+iCy9N9jfQQ7XvB8uY=
-X-Gm-Gg: AeBDiesoTV0UN55ZSMfMs6jOFhxFyBYyt092p4x6hf+zSVOlKX8STCsOGyUrosGRMCF
-	MYnC0GIj6ybUqi500Bq8cRvO6wLjUVcc+jNgeXCJZWVGtykErbPGulF26IfB9/AZuwJO6AHH05H
-	NVMgLAUY3oMXABvHuZXDPKk3aOjDJ5jC6ASxD1j4EKtofK3ILpid59Q/6bTgS0b6kV+IDyQZEM+
-	yyKzw2bgwuGDsXnsBKV8MLLBM4Mxfp2Ee80RvnaswMZNZCKs0eLpRhxizSZ/5VHMiB6h32SY5ly
-	Q0Gc+CG05wgVXep0IXVau3jyGlwn
-X-Received: by 2002:a17:903:166e:b0:2b4:64cf:e8f8 with SMTP id
- d9443c01a7336-2b5f9dbcd22mr166529785ad.2.1776770272491; Tue, 21 Apr 2026
- 04:17:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="G2Z5immx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=pCRunEybbQFqFpO1VzKOkoYAaKIC60X8y0uvIR5pPXw=; b=G2Z5immxoPRneO3D2XOf3a/xKl
+	rqQN0/taXdg56Y46T1dsTik5mZ701LBbmjE2wAvW43tKi5DO1XkJQSYnbQY0z+5hTgA69hW9wfmuF
+	4rVqMGEo6c8rVurDWhBxTavs2WwQsgsZ3xyuJxa0rUfkN39blqFrH1L2KcchcWoe3ll53i9vAJeVO
+	SRaxKo6unwAx0dxlj5IejN83jrQzrB5hzUVSExsnI53Nv/0jXMzlv5PIrlCGcsbUPxWLKcj1mh6vW
+	KQ9ZNEJmv7SoFYYL9QkDeUclBGDd39JKMu2O1xqbrBkhZH3SBESi52xEDyNk3Kbqw22VxradnyEJM
+	aQ2+TfVQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wF988-00000009dWW-0XxL;
+	Tue, 21 Apr 2026 11:19:00 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 48767300BD2; Tue, 21 Apr 2026 13:18:58 +0200 (CEST)
+Date: Tue, 21 Apr 2026 13:18:58 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Wu, Binbin" <binbin.wu@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
+Message-ID: <20260421111858.GH3126523@noisy.programming.kicks-ass.net>
+References: <70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel@intel.com>
+ <87mryxekxy.ffs@tglx>
+ <770ae152-c3fd-4068-8462-23064de02238@linux.intel.com>
+ <87eck8daot.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Zw Tang <shicenci@gmail.com>
-Date: Tue, 21 Apr 2026 19:17:40 +0800
-X-Gm-Features: AQROBzCvxTzVOatYGD3oQlMzZmTAz5McY1A204T_VliE2k6DNBeXHfpitVDrZ9A
-Message-ID: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
-Subject: [BUG] WARNING in workingset_activation triggered by KVM page fault
- path on Linux 7.0.0-08391-g1d51b370a0f8
-To: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87eck8daot.ffs@tglx>
 
-Hi,
+On Tue, Apr 21, 2026 at 09:39:14AM +0200, Thomas Gleixner wrote:
 
-I am reporting a WARNING in workingset_activation() triggered by a
-syzkaller C reproducer on Linux 7.0.0-08391-g1d51b370a0f8.
+> ---
+> Subject: entry: Enforce hrtimer rearming in the irqentry_exit path
+> From: Thomas Gleixner <tglx@kernel.org>
+> Date: Tue, 21 Apr 2026 09:00:52 +0200
+> 
+> irqentry_exit_to_kernel_mode_after_preempt() invokes
+> hrtimer_rearm_deferred() only when the interrupted context had interrupts
+> enabled. That's a correct decision because the timer interrupt can only be
+> delivered in interrupt enabled contexts. The interrupt disabled path is
+> used by exceptions and traps which never touch the hrtimer mechanics.
+> 
+> So much for the theory, but then there is VIRT which ruins everything.
+> 
+> KVM invokes regular interrupts with pt_regs which have interrupts
+> disabled. That's correct from the KVM point of view, but completely
+> violates the obviously correct expectations of the interrupt entry/exit
+> code.
 
-The warning is hit from the KVM page fault path:
-kvm_set_page_accessed() -> folio_mark_accessed() -> workingset_activation().
+Mooo :-(
 
-At first glance this looks more like an MM/workingset issue than a
-KVM-specific bug, although KVM/SVM is the trigger path.
+That also complicates the comment that goes with
+hrtimer_rearm_deferred(). Not sure how to 'fix' that.
 
-Reproducer:
-C reproducer: pastebin.com/raw/zzNSd9HK
-console output: pastebin.com/raw/TuipfpyA
-kernel config: pastebin.com/raw/aq1V3cLk
+> Cure this by adding a hrtimer_rearm_deferred() invocation into the
+> interrupted context has interrupt disabled path of
+> irqentry_exit_to_kernel_mode_after_preempt().
+> 
+> That's unfortunate when there is an actual reschedule pending, but it can't
+> be avoided because KVM invokes a lot of code and also reenables interrupts
+> _before_ reaching the point where the reschedule condition is handled. That
+> can delay the rearming significantly, which in turn can cause artificial
+> latencies.
 
-Kernel:
-HEAD commit: 1d51b370a0f8
-git tree: torvalds/linux
-kernel version: 7.0.0-08391-g1d51b370a0f8 #1 PREEMPT(lazy) (QEMU
-Standard PC, Q35)
+Yeah, this is a trainwreck. If they want it better, KVM needs to get
+'fixed' to not play silly games like this.
 
-The warning is:
+> Fixes: 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming")
+> Reported-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Closes: https://lore.kernel.org/70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel@intel.com
 
-WARNING in workingset_activation
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-Log excerpt:
-
-WARNING: include/linux/memcontrol.h:381 at
-workingset_activation+0x466/0x540, CPU#1: repro/238
-
-Call Trace:
-folio_mark_accessed+0x1d3/0x650
-kvm_set_page_accessed+0x5a/0x70
-kvm_release_page_clean+0x26/0x180
-direct_page_fault+0x553/0x11a0
-kvm_mmu_page_fault+0x35b/0x2020
-kvm_handle_page_fault+0x1aa/0x380
-svm_invoke_exit_handler+0x7a/0xe0
-svm_handle_exit+0x416/0x7f0
-vcpu_enter_guest+0x26ad/0x49c0
-kvm_arch_vcpu_ioctl_run+0x697/0x25e0
-kvm_vcpu_ioctl+0x737/0x1610
-__x64_sys_ioctl+0x192/0x220
-do_syscall_64+0x117/0xfc0
-entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The reproducer appears to drive KVM into a guest page fault flow that
-marks a folio as accessed, and the warning is then emitted inside
-workingset_activation().
-
-Because the RIP is in workingset_activation() itself, this may
-indicate a problem in workingset/LRU or memcg/lruvec handling, with
-KVM only serving as the trigger path.
-
-Please let me know if I should also send this to additional KVM x86
-maintainers, but mm/workingset.c seems to be the primary fault
-location.
-
-Thanks.
+> ---
+>  include/linux/irq-entry-common.h |    8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> --- a/include/linux/irq-entry-common.h
+> +++ b/include/linux/irq-entry-common.h
+> @@ -516,6 +516,14 @@ irqentry_exit_to_kernel_mode_after_preem
+>  		instrumentation_end();
+>  	} else {
+>  		/*
+> +		 * This is sadly required due to KVM, which invokes regular
+> +		 * interrupt handlers with interrupt disabled state in @regs.
+> +		 */
+> +		instrumentation_begin();
+> +		hrtimer_rearm_deferred();
+> +		instrumentation_end();
+> +
+> +		/*
+>  		 * IRQ flags state is correct already. Just tell RCU if it
+>  		 * was not watching on entry.
+>  		 */
