@@ -1,114 +1,73 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9E438422F
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CBA4A23;
+	Tue, 21 Apr 2026 23:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776814145; cv=none; b=kCdsJgxtP90L0X0bS49W5HIfMED3yh9Qo9S3l+OqnaU7SbhqYhYfGMnQemxrQR97zKxSLH8xcfmEFAOFXLDxoeDJAipCL6EdcEF1yL+kfQcqVey7OBjHeYgAOkeyJTPxCIdb00H7iQM6pkXIWZP/IIEVneFVKRI7St9UTjA6pwo=
+	t=1776814330; cv=none; b=CARoe30oroMI1rLgSVuCO6Wmo8hLXGIiEtRxV++A1UXyBEOAh2tSmi41vg887qZVC1txl5h0HsFdhBb+738VPNAXu20A0qT4j48JPZC7NHXPo457A38MQUwWGrHoToX0pHQpxaGN6bfKQv4OYQxFseig3/PQYe3lsixxI28nEPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776814145; c=relaxed/simple;
-	bh=5pVjND2zS3BS94LVyguRQfamNNOmirLhH50CvnXpJts=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J/0MvYgifFWYO3yjZvX0NNg27RY5g7qQXWTHcGwCxpZxOTrAhYHR/nxLZCQDOE3Jb7Xr1ItJH1u4yliaqEHMYn0ebqRNNA8hiZ2MjgVBmaKxPLUOgDls8Z7opsgAZC5HiGnpudGjifqCci3vV+DPeiHPcK1bag0SnJdWiJnDrKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=huH9MA6e; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776814330; c=relaxed/simple;
+	bh=q1D5SMCNzWViZ20I3r4uKlRvyHo9NptwrP0Gh3oIxcY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=go3fW3lX5yG5CsektpU2DsuUJHYxB/MYaYCPQmUlGRhS55GDPQxQwLu++o/3HL5BNnY5ruw1nc9B0Z5T6BMJzT/LwGVWcx3oinbQXSFET5AFZfNNlYqJ87GTk74+t5XSYkAyV/zX6HIAtb99QeG34YR5henbhPnlsLA/nmtcn1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TnWATvzF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="huH9MA6e"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f220f1dabso3485530b3a.1
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:29:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776814142; x=1777418942; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZWZYxE3QD5cUq20TfuzmdK/ApbS+ouPpLPbbjRuSCrk=;
-        b=huH9MA6ej5DlDKSI+LFYPw3opqiszPdd82YMyHGedluMVXsQrt7RrZRse8gPDAXsp8
-         lzp7bIK0pmSEBxPX8Xp+e+Gq0xJZ2iK0w48tpmAPVn+it8drUBlKep2KVEgPKYcKDZyK
-         OOgnHsAeDf22Es9w/kXR/9eGarViHX4bmq/xAg75OLXdQ1HrJhBcKjahN4F2VBAIXUtM
-         eQypXqNed/O/6C+ZlfV8fACOXBWnh1jFKNLNKGDM+zjmGoIettQSxVNgbrgcOhAE3qZ9
-         FonNkl/3/D8TogdvyLpdbZqJJnW5HdXfVSlhbGkQG4Edqcmd3xmePxdY+4pfiJ+LKqZA
-         ANaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776814142; x=1777418942;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZWZYxE3QD5cUq20TfuzmdK/ApbS+ouPpLPbbjRuSCrk=;
-        b=YDCVEflSJeqve2TeHXa2EykRBfdZ6J7XhUaiiD31iR+Rg6967+UMRMzlewkKqgJ2rQ
-         3kpp0dCI+bn0NjhPq2PhoU4I4wccQq2ZsKHwTVl32Bw7rqNlKpCJnyuIuD/m49pPBQ10
-         rz/nD30bfo2SJDtYxPEku0Q68uDIR0A0TPMNfGWKo/SOwP8S5ZEvI9t+lV4mH7lNQ5SP
-         izWqxMu2gNP3REKj8b74JtY/jj54Wz1Ou9xzlXiq+5vmixceOjiGX987MGboNKhngYQb
-         JBSKV4o+PnUzeN2kZvg4YVu3S4XC/85NTjRodiKoZycOhbqTsKdZHLndXoiiWLYRtNCM
-         3/WQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/Taeg79V0WB9WNZVV0TtCLwAQU4ULcVHKS7UNHiexXTv9gTsmbnCV1f2YfntMFG49SJ5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8fKMCTEew4d45imxT9IkTT33SXHLbI9ig75Avo8HGIv1dpdfY
-	LGQbxJ2me6OI7PxbrVE1l7ToNAoCFHogNQ5N4Fgz4l3C4w2C4ryg1mFl+mVS/I+WkRVyg8F/BcX
-	IWnJ19Q==
-X-Received: from pfve12.prod.google.com ([2002:a05:6a00:1a8c:b0:82f:6a57:a9aa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2889:b0:82f:4d2e:5a9a
- with SMTP id d2e1a72fcca58-82f8c8c5b8emr20478533b3a.29.1776814142280; Tue, 21
- Apr 2026 16:29:02 -0700 (PDT)
-Date: Tue, 21 Apr 2026 16:29:00 -0700
-In-Reply-To: <aegF59gToidudIUC@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TnWATvzF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AFBC2BCB0;
+	Tue, 21 Apr 2026 23:32:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776814329;
+	bh=q1D5SMCNzWViZ20I3r4uKlRvyHo9NptwrP0Gh3oIxcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TnWATvzFxr6KgSTBPG9NS6OG0e+ZpQq74Jey2e7yRY0RWvTXHdmNvKYJl4GdqInk+
+	 MTIDt+zDmCZuCDq0VQ7VF8OnoXr8sPkBo7mVkVR7yZr3Y/S+4WU2bhlbHwFdyBWUj0
+	 hE8TlXJCEmEszlQz7BOgVV/D8HXTYUm5MuH5duOPKS7JZ6t8PbxXc9sDyaFThhBmbD
+	 9iTbGhESV0wnKj/z4M/rVupZTBZA8RCscDGCaeYa7OA5ttziPCYyR6adQfiEb14tQR
+	 i7spdkgctBwVPjfzHs2aPNMLEUQ1tsUDqizAqCgqLO+nLdOB5S9elzM30ZXEY3xrCB
+	 aIOcr0VOs6r/g==
+Date: Tue, 21 Apr 2026 23:32:08 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/11] KVM: x86: Move kvm_<reg>_{read,write}()
+ definitions to x86.h
+Message-ID: <aegIHrL1pqnRkhDh@google.com>
+References: <20260409235622.2052730-1-seanjc@google.com>
+ <20260409235622.2052730-7-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260408001137.3290444-1-peter.fang@intel.com>
- <20260408001137.3290444-4-peter.fang@intel.com> <aegDJssx-ZvbfggI@google.com> <aegF59gToidudIUC@google.com>
-Message-ID: <aegIPGYPH-nxGsua@google.com>
-Subject: Re: [PATCH v2 3/3] KVM: Take gpa_t in kvm_vcpu_map[_readonly]()
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Peter Fang <peter.fang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409235622.2052730-7-seanjc@google.com>
 
-On Tue, Apr 21, 2026, Sean Christopherson wrote:
-> On Tue, Apr 21, 2026, Yosry Ahmed wrote:
-> > On Tue, Apr 07, 2026 at 05:11:30PM -0700, Peter Fang wrote:
-> > > Move the conversion from a gpa_t to a gfn_t into kvm_vcpu_map() and
-> > > kvm_vcpu_map_readonly() so that they take a gpa_t directly, reducing
-> > > boilerplate at call sites.
-> > > 
-> > > __kvm_vcpu_map() still takes a gfn_t because guest page mapping is
-> > > fundamentally GFN-based.
-> > > 
-> > > No functional change intended.
-> > > 
-> > > Compile-tested on x86 and ppc, which are the current users of these
-> > > interfaces.
-> > > 
-> > > Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> > > Signed-off-by: Peter Fang <peter.fang@intel.com>
-> > > ---
-> > 
-> > I was going to suggest a WARN in kvm_vcpu_map() and
-> > kvm_vcpu_map_readonly() if the passed GPA is not page-aligned, but Sean
-> > usually hates my paranoid WARN suggestions.
+On Thu, Apr 09, 2026 at 04:56:17PM -0700, Sean Christopherson wrote:
+> Move the direct GPR accessors to x86.h so that they can use
+> is_64_bit_mode().
 > 
-> Heh, for good reason.  Adding such a WARN would be triggered by this code:
+> No functional change intended.
 > 
->                 if (!kvm_vcpu_map(vcpu, vmcs12->posted_intr_desc_addr, map)) {
->                         vmx->nested.pi_desc =
->                                 (struct pi_desc *)(((void *)map->hva) +
->                                 offset_in_page(vmcs12->posted_intr_desc_addr));
-> 
-> The PI descriptor only needs to be 64-bit aligned, not page-aligned.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/kvm_cache_regs.h | 34 ----------------------------------
+>  arch/x86/kvm/x86.h            | 34 ++++++++++++++++++++++++++++++++++
 
-To elaborate a bit, I'm all for adding WARNs in flows where something bad is all
-but guaranteed to happen if an assumption is violated, or in APIs where there's
-a history of goofs and/or subtlety in how the API behaves.
+That's a shame, register accessors semantically fit in kvm_cache_regs.h,
+but taking a step back.. is it even worth having kvm_cache_regs.h
+anymore?
 
-What I'm against is adding WARNs because someone could write bad code in the
-future, or because KVM doesn't do XYZ at this time.  Such WARNs usualy just add
-noise, and can even be actively harmful.  E.g. in this case, ignoring the PID
-usage, a reader might look at the WARN and think it's _wrong_ to map a page in
-order to access a subset of the page, which is just not true.
+At some point I needed to move guest mode helpers out of there too (as
+they should be):
+
+https://lore.kernel.org/kvm/20260326031150.3774017-3-yosry@kernel.org/
+
+With this patch and that one, we'd have <200 lines left. Is there a
+reason why it can't just be merged with x86.h? I don't see any of the
+headers included by x86.h including kvm_cache_regs.h.
+
