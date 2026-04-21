@@ -1,176 +1,168 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69453033E8;
-	Tue, 21 Apr 2026 16:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3113D1509AB;
+	Tue, 21 Apr 2026 17:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.228.1.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776790783; cv=none; b=EEJkaYR4IrYXbeTXfv+BIge7jVt4yY7SohEy1fWa1GyCb8A4HVgto7RSMBCVKZx1zjinW/K5JywT4ch4r6/RGxR+tpJiC9iK9A41tTH/dQTFKP2o3SSngy+UNQ4ZoEqvWSWtUVd0aHaCbc5QYukvF+jxWI61AcasyBbW8ygYkMA=
+	t=1776791251; cv=none; b=YoLVRP0rELpxGlS4rxsWEocB5iqK/F4XRFaPLOyRf4qkL5Sj7ocK6fh+ElZ++lxGds/hy8CLE+yK43WPlGS0PzTsN3UYHPPu6wcg3j5oOtq3Gl2bHIeZjP7t7UiIMBnRVG/6t6oP2c6OH6NNZl5hYN47mi99cjxjn2wAUMb1jaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776790783; c=relaxed/simple;
-	bh=3xkW6Ke+o3NRCuvbOJKD2Ict0GZtRKo6boDp9ITB92A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OD7PqUkFm1zlO4TiI4ajisDWMT2V8YLzObuY9CHY0tBGu7CKqc1t0BEwRYzbT8MFXSa8CpjB6i+2otr2XeTa7qfR9URNmiP+qF79zMn41cN9zXSTfeiHnBa9fMwho+Kqp1VPGiLFpvaTlCJcQgdymQ9I9fiqz6/2p2t/iyEVwso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EK6LhhY7; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EK6LhhY7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776790781; x=1808326781;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3xkW6Ke+o3NRCuvbOJKD2Ict0GZtRKo6boDp9ITB92A=;
-  b=EK6LhhY7hTkxyRWHIhBr3e1lasbAQZ8Q5UYMSQBD4TgG2KYT7HmitHvq
-   wFdfxysBU8vkYVVQYxYK3hETGSOZwT6Y0PRNIgv0fkTh1bOGqEtz/ssPQ
-   5QwHx1HmmwRenTpX5YVF/ib9GA/ZiOrnDz9qVLaknC7lqh2w33+Eff00L
-   sIqlUKjmGTtFVA4kHelJ1YXwziBMpZhuBBntSMGnTUotSV+gHpYcbg7H/
-   2Gm361D3FlxXQk1xbkh2lp7XPzV8snSAqCdt/czS3/hvvCdVSlYMchr5o
-   1fxFGLvAhcr3B0qtplqNmz6pPJvqQ/h6iGWBYylv8+htAlat0Hxx/MTXE
-   w==;
-X-CSE-ConnectionGUID: Q2FS00EWRzWRzC7iZzmFWA==
-X-CSE-MsgGUID: ZJ4IwWNBS6y6QitvBjtMvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="100390190"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="100390190"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 09:59:41 -0700
-X-CSE-ConnectionGUID: wsFiZVlKRuWOvyUD+jsfDA==
-X-CSE-MsgGUID: GouIYHodTL6xOMN2QA0UHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="232003029"
-Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 09:59:37 -0700
-From: Sonam Sanju <sonam.sanju@intel.com>
-To: vineeth@bitbyteword.org
-Cc: dmaluka@chromium.org,
-	kunwu.chan@linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	paulmck@kernel.org,
-	pbonzini@redhat.com,
-	rcu@vger.kernel.org,
-	seanjc@google.com,
-	sonam.sanju@intel.com,
-	stable@vger.kernel.org,
-	tj@kernel.org
-Subject: Re: [PATCH v2] KVM: eventfd: Use WQ_UNBOUND workqueue for irqfd cleanup - New logs confirm preemption race
-Date: Tue, 21 Apr 2026 22:24:55 +0530
-Message-Id: <20260421165455.2486211-1-sonam.sanju@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAO7JXPjEtnsk9xer+_uSPQi9DBqCe0cSnfB=ePaKntoKv=N3tQ@mail.gmail.com>
-References: <CAO7JXPjEtnsk9xer+_uSPQi9DBqCe0cSnfB=ePaKntoKv=N3tQ@mail.gmail.com>
+	s=arc-20240116; t=1776791251; c=relaxed/simple;
+	bh=BmLatGy8n1zKmv3W1i69jDYO1lD52eKYiSdHSJdTpeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hWmmbShRAnnRWeyuIgfALBggo4xC11vz7zRyTtJodnrjqaCuRUb28Y7iawPTgFYWVitNK4etXALUVQ2BeBV5KeMyrhRlr4p2vuvEMeGLlJ8FerHQlwVTMI6e9/6tnHwitHWvoS/I2zUj8sz1JPQYSlmLpWy70oOUfdDZU4As4Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass smtp.mailfrom=kernel.crashing.org; arc=none smtp.client-ip=63.228.1.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.crashing.org
+Received: from gate.crashing.org (localhost [127.0.0.1])
+	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 63LH4FuA3771909;
+	Tue, 21 Apr 2026 12:04:15 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.18.1/8.18.1/Submit) id 63LH47sR3771903;
+	Tue, 21 Apr 2026 12:04:07 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Tue, 21 Apr 2026 12:04:06 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Link Mauve <linkmauve@linkmauve.fr>
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+        Alexey Makhalov <alexey.makhalov@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Geoff Levand <geoff@infradead.org>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Anatolij Gustschin <agust@denx.de>,
+        Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Thorsten Blum <thorsten.blum@linux.dev>,
+        Thomas Huth <thuth@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        David Hildenbrand <david@kernel.org>,
+        Alistair Popple <apopple@nvidia.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Donet Tom <donettom@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+        Will Deacon <will@kernel.org>,
+        "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+        Paul Moore <paul@paul-moore.com>, Nam Cao <namcao@linutronix.de>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Srikar Dronamraju <srikar@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
+        "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Kees Cook <kees@kernel.org>, Stephen Rothwell <sfr@cab.auug.org.au>,
+        Xichao Zhao <zhao.xichao@vivo.com>,
+        Gautam Menghani <gautam@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        Guangshuo Li <lgs201920130244@gmail.com>,
+        Li Chen <chenl311@chinatelecom.cn>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Feng Tang <feng.tang@linux.alibaba.com>,
+        "Nysal Jan K.A." <nysal@linux.ibm.com>,
+        Aditya Gupta <adityag@linux.ibm.com>,
+        Sayali Patil <sayalip@linux.ibm.com>,
+        Rohan McLure <rmclure@linux.ibm.com>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Yeoreum Yun <yeoreum.yun@arm.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+        Athira Rajeev <atrajeev@linux.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+        Chen Ni <nichen@iscas.ac.cn>, Haren Myneni <haren@linux.ibm.com>,
+        Jonathan Greental <yonatan02greental@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+        Gaurav Batra <gbatra@linux.ibm.com>,
+        Nilay Shroff <nilay@linux.ibm.com>,
+        Vivian Wang <wangruikang@iscas.ac.cn>,
+        Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+        "Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+        Thierry Reding <treding@nvidia.com>, Yury Norov <ynorov@nvidia.com>,
+        "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+        Ruben Wauters <rubenru09@aol.com>, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-crypto@vger.kernel.org,
+        kvm@vger.kernel.org, virtualization@lists.linux.dev, x86@kernel.org
+Subject: Re: [PATCH 2/2] powerpc: Run typos -w
+Message-ID: <aeeuBnjhRN7G9gYK@gate>
+References: <20260421121420.26079-1-linkmauve@linkmauve.fr>
+ <20260421121420.26079-3-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421121420.26079-3-linkmauve@linkmauve.fr>
 
-Hi Vineeth, Kunwu, Tejun,=0D
-=0D
-Collected new crash logs with additional debug instrumentation in=0D
-wq_worker_sleeping(), kick_pool(), and show_one_worker_pool() to capture=0D
-pool state during the hang. The results conclusively confirm Vineeth's=0D
-preemption race theory.=0D
-=0D
-From the new logs:=0D
-=0D
-1. Pool dump with nr_running/nr_idle (added instrumentation):=0D
-=0D
-   pool 10: cpus=3D2 flags=3D0x0 hung=3D201s workers=3D11 nr_running=3D1 nr=
-_idle=3D5=0D
-=0D
-   11 workers, 5 idle, 6 in D-state (all irqfd_shutdown) -- yet=0D
-   nr_running=3D1. No worker is actually running on CPU 2.=0D
-=0D
-2. NMI backtrace confirms CPU 2 is completely idle:=0D
-=0D
-   NMI backtrace for cpu 2 skipped: idling at intel_idle+0x57/0xa0=0D
-=0D
-   So nr_running=3D1 is a phantom count -- no worker is running, but=0D
-   the pool thinks one is.=0D
-=0D
-3. The first stuck worker (kworker/2:0, PID 33) shows the preemption=0D
-   in wq_worker_sleeping:=0D
-=0D
-   kworker/2:0  state:D  Workqueue: kvm-irqfd-cleanup irqfd_shutdown=0D
-     __schedule+0x87a/0xd60=0D
-     preempt_schedule_irq+0x4a/0x90=0D
-     asm_fred_entrypoint_kernel+0x41/0x70=0D
-     ___ratelimit+0x1a1/0x1f0            <-- inside pr_info_ratelimited=0D
-     wq_worker_sleeping+0x53/0x190       <-- preempted HERE=0D
-     schedule+0x30/0xe0=0D
-     schedule_preempt_disabled+0x10/0x20=0D
-     __mutex_lock+0x413/0xe40=0D
-     irqfd_resampler_shutdown+0x53/0x200=0D
-     irqfd_shutdown+0xfa/0x190=0D
-=0D
-   This confirms the exact race: a reschedule IPI interrupted=0D
-   wq_worker_sleeping() after worker->sleeping was set to 1 but=0D
-   before pool->nr_running was decremented. The preemption triggered=0D
-   wq_worker_running() which incremented nr_running (1->2), then=0D
-   on resume the decrement brought it back to 1 instead of 0.=0D
-=0D
-4. The second pool dump 31 seconds later shows the stall is permanent:=0D
-=0D
-   pool 10: cpus=3D2 flags=3D0x0 hung=3D232s workers=3D11 nr_running=3D1 nr=
-_idle=3D5=0D
-=0D
-   Same phantom nr_running=3D1, hung time growing.=0D
-=0D
-5. The deadlock chain:=0D
-   - PID 33: holds resampler_lock mutex, stuck in wq_worker_sleeping=0D
-   - PID 520: past mutex, stuck in synchronize_srcu_expedited=0D
-   - PIDs 120, 4792, 4793, 4796: waiting on resampler_lock mutex=0D
-   - crosvm_vcpu2: waiting in kvm_vm_release -> __flush_workqueue=0D
-   - init (PID 1): stuck in pci_device_shutdown -> __flush_work=0D
-   - Multiple userspace processes stuck in fsnotify_destroy_group=0D
-   - Reboot thread timed out, system triggered sysrq crash=0D
-=0D
-6. kick_pool_skip debug print fired for other pools but NOT for=0D
-   pool 10 -- because need_more_worker() was never true (nr_running=0D
-   was never 0), so kick_pool() was never even called for this pool.=0D
-=0D
-Regarding a fix, we can consider a workqueue-level fix in =0D
-wq_worker_sleeping() itself:=0D
-=0D
-  void wq_worker_sleeping(struct task_struct *task)=0D
-  {=0D
-      ...=0D
-      if (READ_ONCE(worker->sleeping))=0D
-          return;=0D
-=0D
-  +   preempt_disable();=0D
-      WRITE_ONCE(worker->sleeping, 1);=0D
-      raw_spin_lock_irq(&pool->lock);=0D
-=0D
-      if (worker->flags & WORKER_NOT_RUNNING) {=0D
-          raw_spin_unlock_irq(&pool->lock);=0D
-  +       preempt_enable();=0D
-          return;=0D
-      }=0D
-=0D
-      pool->nr_running--;=0D
-      if (kick_pool(pool))=0D
-          worker->current_pwq->stats[PWQ_STAT_CM_WAKEUP]++;=0D
-=0D
-      raw_spin_unlock_irq(&pool->lock);=0D
-  +   preempt_enable();=0D
-  }=0D
-=0D
-The idea is to disable preemption from sleeping=3D1 until we hold the pool=
-=0D
-lock (which disables IRQs). This prevents the reschedule IPI from=0D
-triggering preempt_schedule_irq() in this window. Note that=0D
-wq_worker_running() already uses preempt_disable/enable around its=0D
-nr_running++ for a similar race against unbind_workers().=0D
-=0D
-Does this approach look correct to you?=0D
-=0D
-=0D
-Thanks,=0D
-Sonam=0D
+Hi!
+
+On Tue, Apr 21, 2026 at 02:14:14PM +0200, Link Mauve wrote:
+> diff --git a/arch/powerpc/boot/dts/fsl/ppa8548.dts b/arch/powerpc/boot/dts/fsl/ppa8548.dts
+> index f39838d93994..32558104b3a9 100644
+> --- a/arch/powerpc/boot/dts/fsl/ppa8548.dts
+> +++ b/arch/powerpc/boot/dts/fsl/ppa8548.dts
+> @@ -95,7 +95,7 @@ i2c@3100 {
+>  
+>  	/*
+>  	 * Only ethernet controller @25000 and @26000 are used.
+> -	 * Use alias enet2 and enet3 for the remainig controllers,
+> +	 * Use alias enet2 and enet3 for the remaining controllers,
+
+Aliases.
+
+> diff --git a/arch/powerpc/boot/dts/mpc8308_p1m.dts b/arch/powerpc/boot/dts/mpc8308_p1m.dts
+> index 41f917f97dab..48a98449ecbb 100644
+> --- a/arch/powerpc/boot/dts/mpc8308_p1m.dts
+> +++ b/arch/powerpc/boot/dts/mpc8308_p1m.dts
+> @@ -90,14 +90,14 @@ can@1,0 {
+>  			compatible = "nxp,sja1000";
+>  			reg = <0x1 0x0 0x80>;
+>  			interrupts = <18 0x8>;
+> -			interrups-parent = <&ipic>;
+> +			interrupts-parent = <&ipic>;
+>  		};
+
+interrupt-parent .
+
+All the names of properties have a meaning!  Just as you cannot change
+a function name in C without changing all calls to it as well, you
+really should never change a property name (if you want stuff to keep
+on working, that is ;-) ).
+
+In this case, the property was never actually used (because of the
+typo).  Maybe it wasn't needed?  If you make changes to a DTS, post it
+*separately* from the rest of this series, and test it *thoroughly*.
+Just a "does it boot" test is certainly not enough.
+
+It could well be that fixing the typo (so that the property name becomes
+"interrupt-parent") makes the kernel no longer boot on the systems
+affected, or less obvious problems can show up.
+
+It will need to be tested and evaluated by whoever maintains the DTSes
+in question, really :-/  And you cannot test it works for one DTS and
+then conclude it will work everywhere, heh.
+
+
+Segher
