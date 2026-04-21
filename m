@@ -1,185 +1,281 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012016.outbound.protection.outlook.com [52.101.43.16])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0E8378D71;
-	Tue, 21 Apr 2026 19:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776799248; cv=fail; b=fc5fepb9pVZRo7UdLlHROIhewaBva0gFG9ybYRpTLDbqouL58glD+qLkLvbcdTUUKsvJoOzwc5sdrYNAN43J/DkQTH7KvMwjmnZSTe/ROPH7ux/pUZr38WH9yPzZsqBpVVQMCAk57wApTiTYMfXDh5wJUU7tNd/qB5umQnHAdME=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776799248; c=relaxed/simple;
-	bh=PqAnuUzU2+l0T688PTqKw+uE/u0dbTPKccmdkxlCGoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Lt62LpthEMikXezXKnKSWoWN4634MKdgJKLiG75P+qABo3RVII2Zh+EXeM31CEfn3KYk0HIlVoCZyh+2UULTE+JM6WRk7X4mz0ZI4QfOhKiRiG05KTFyMnqMVNXbS+8U4fzl5rw1KRMSWTrgk4L3m6EldKtAg4yEH6rEEvl35Xs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bkgn6yz4; arc=fail smtp.client-ip=52.101.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7516C372EE0;
+	Tue, 21 Apr 2026 19:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776799891; cv=none; b=Gctwjzz4kh7oBuGUF9AY5q31J5EMTz0rxoFOLs0Bk99gXKazNGwYYfH1fbdW1t5h3Azq7hbnye3cK9dH44hlQL4RQRaEckdDG7Wm7t0E6xR2z8vnkRTA9JADq7PrDInMdMlAxKDmp536RzyutexcxZA3Lt4ayTHRFxSINwiitYM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776799891; c=relaxed/simple;
+	bh=IinquCqdbzmTntsumlWfMgE9/jz08jueg77OoAkwzCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oaEaGXXlT+c2tR1Eig6p+Oboh1tey7SbL7qA2TsO9ytbe9Xfe0GKO8vxkFblylNLt0k7/OvUvnKA5ShvvSBqwOYptTtsmZ3JWo8QMPFeLiNKwELKm2ep5U6E7sipZrWw9ENvHuARuKCfl+3Wr48tRf7KsvocJgzv7YWfhrPHEwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GLkquT7F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CD+xjxzU; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bkgn6yz4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AB3OwNmNiLq02cV/8f2V4xseVBLLBThFVXBBiLSa/G/kTDy+i/yImomm51X8cJjq28zsxlpNhDCPf/bK8et3hhNQzAD/7JCWj0TaOz9fodvDY6wJy1aDf/dFL4cXhdmhAGAopc2p7LzZkUv13uUtaVbDmATECkGYPOn/k4o9yI9z7cCwLSOkIknkuM8Mq/BS5sJYArypysdEtScdpbm9L2BBUOHZ4JAYCmBRpGa/MOwHvVio/N9vSlry3WApxVyC31tKxm3w0BsuAKbJmaLVIjwD+l2VCkEH0OeQ3H6I3TAvzRtM5ZgtDKcV4EhDj6rpxIVmbUg/g8R80exCitxfhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iT8/t4hqx6YsKjv6GiyYdJPDbRUrv/SDi6uN3iMzbxM=;
- b=VTVEcQ6yT5LFgtdje7hP7EG6GRbc2jfFn0pE9iZmwbdU5tNw9XuNbqazfsG6c9OaW9s11p8deOVbyppZP8pJqF+OCT09faw/O1aY6uhlz8JyclsZ0aY6gCq5qR4WBmKdkjbaRIsXOfas2nGui1XQU6EPiPzSWXcSexJ6cSo/ahqtA+3sxQttq14tbKH1d62qAwAD+O5UouuRsggcb3NfHoJIGhrVctz5IPCrz11SO5+4mHElkbi3mSecLLBOL4BmmW2soV4ESqCBSUfUlzHYy1GZS5pwurGQrLmja2QAgklg8D0h4kMQDCxfKPmNbLoSWWsRaIWzh50/9fpAUeHb6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iT8/t4hqx6YsKjv6GiyYdJPDbRUrv/SDi6uN3iMzbxM=;
- b=bkgn6yz4Xveuy6enkf1zsJpS4+8123bGHpuQWNRQ8e6v/xS1YqqSA+tEtOfxHMFjdlViVkyGd5ICiiSGRpigG3lIVLZanrkwGBmvMTUdhcFrj992VYxeh+U5a/bu3ng7B01XQ8PxuA9D8azDx2p60CQuysHpUUW462QLLiszccUDQwIfWc26VsFP5EOVymrRYumK0wLU1S8VbB+cgE9Ylr73zmhJA/UgSA2rNSCzYUnVoZonOziVQOsxfwyB03+jJJUxeY1O6ejoUdot/E1KE+0sCxHpvVa71FCtG4kZJzCCn6ZtQDKG7OGQHA6wY/braERzq7CJ1+n9IxS0x3v7jA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH7PR12MB7233.namprd12.prod.outlook.com (2603:10b6:510:204::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
- 2026 19:20:43 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
- 19:20:43 +0000
-Date: Tue, 21 Apr 2026 16:20:42 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	Askar Safin <safinaskar@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Chris Li <chrisl@kernel.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
-	Marco Elver <elver@google.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <20260421192042.GH3199414@nvidia.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-8-dmatlack@google.com>
- <CALzav=ehpWA=XchL+XLZuaYfYmBTPNWDYt1W3LFY5-6+US4E7w@mail.gmail.com>
- <20260421184433.GG3199414@nvidia.com>
- <CALzav=cFarR4q7NugCxXwCW6wnyU9dJRaaTnxs7MY5ia5SDJWQ@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALzav=cFarR4q7NugCxXwCW6wnyU9dJRaaTnxs7MY5ia5SDJWQ@mail.gmail.com>
-X-ClientProxiedBy: BL1P221CA0012.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:2c5::6) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GLkquT7F";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CD+xjxzU"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 8EE77EC00A3;
+	Tue, 21 Apr 2026 15:31:27 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 21 Apr 2026 15:31:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776799887;
+	 x=1776886287; bh=hIF2+30qOQFQxzgm1H9H8kdO/7SbRVRzMzpLBLQLkHM=; b=
+	GLkquT7FdWJWnMDVjI6VSaP2Nb8SBDofub6/6YlVXIMFR+NzSkQ5+V1MJPvHBaZI
+	sY68IG6k0DdSRA2KP21RQJOragdX1ZicrGUQios2dunp6HUpYh/V9wy3SRfge/bz
+	xG7mUtDtKIml0fg0+yk/iDmAZBgNBBYsnzf5uf+/whyaM8A0aTuMIUMUoYpC1mdj
+	7gQ6t/8DoFK8gZgBO0hDyAh4CG9wmmZ/b1HQFx9C4Nje/fZdUAj6t64mnqYDP2/b
+	zX03U2oKOF/93CReJ4r9MeGEhaSoCdgMWRsRon2ovegqv1pA/fmv3FbbqsmxHyxZ
+	pksSDT1F+DahG3LtLbItQA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776799887; x=
+	1776886287; bh=hIF2+30qOQFQxzgm1H9H8kdO/7SbRVRzMzpLBLQLkHM=; b=C
+	D+xjxzU0ySCSiWsAENEwREph3gutca+8jb/2ukIXwxWAavXTavcQTte7NHv6vuHb
+	R2aMttcBZP/jFtT/pH8hU66polWGOu5RIumYKdCX7qZyUmrZ/LibT9enhVfZEpd3
+	cernd/4SagGVD9YZHMSywT2YjWfsEkRCdWKiMBZzdfol1PXPydBe1lhEUMTJ5UsJ
+	vVy2t20aWSSl5VQNk6gnGvNyoqVlg50MpVV0bN0UB0Zz4WUezr6nFcN54tbh/3sd
+	Ug3QR2RpkpRXZem9ilcz9Ci44ZV6k5ypAxKslhsjYnYEk4Hx0ZW/SshfQcKWOpD9
+	kRf6QE8A6YOKWar8XYN9w==
+X-ME-Sender: <xms:jtDnafCoGJf4lQKa72JCGiYmN_KXQAVAUnuEU0sZCYInrZUFHbUYdw>
+    <xme:jtDnaQNnLX2-HutU1kl6R0xNzIiv33yiPkoEpbvg3fbCe3Y4cMZYZgwSAYNmLfYlX
+    P-kZoJBakj7nG3AkgUe3SnHxPb8xGEQAGk2xHpM_u5Rz99e6vgTew>
+X-ME-Received: <xmr:jtDnaRNBZbSeQF-lOnpn4com5znlWC-xD7RgoYkCwXabvJfA1HBEYliqdsA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeivddvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
+    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopedukedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtth
+    hopehkvghvihhnrdhtihgrnhesihhnthgvlhdrtghomhdprhgtphhtthhopehjghhgseii
+    ihgvphgvrdgtrgdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtg
+    hpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplhgvohhn
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepshhkohhlohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphht
+    thhopeihihhshhgrihhhsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:jtDnactiQNzKnH0OM_z3owk7yhgBtB4G-s6wUU0_E0WISFCVoExi-g>
+    <xmx:jtDnae-R7wcg0vLy_AthDU3FDJRIUuzlxHv8ofx6-oIrOUxTc-qrSw>
+    <xmx:jtDnaQF0jMqyEL_7q9cJjCxYReLe2wlXH2d-HGxKWWPdZLJtjrDKKg>
+    <xmx:jtDnadQJqdhRFqk6tZwmoZVUFVRwdD5Zkyl-SNpISech-Vqyflcm3w>
+    <xmx:j9Dnaab64ovIADOud0mfMF__j7V7J04q1aDnCOB-3jA8R2zrqt1PrESl>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 21 Apr 2026 15:31:25 -0400 (EDT)
+Date: Tue, 21 Apr 2026 13:31:23 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ankit
+ Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, Alexey
+ Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, Zhi Wang
+ <zhiw@nvidia.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <virtualization@lists.linux.dev>, alex@shazbot.org
+Subject: Re: [PATCH 1/2] vfio/pci: Set up barmap in vfio_pci_core_enable()
+Message-ID: <20260421133123.36fc0353@shazbot.org>
+In-Reply-To: <20260421174143.3883579-2-mattev@meta.com>
+References: <20260421174143.3883579-1-mattev@meta.com>
+	<20260421174143.3883579-2-mattev@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB7233:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aca0a3f-9c7c-4b0d-b39d-08de9fdb14e3
-X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Kd8xGL6SFpML6qGGK7qRoCDdftITqEfgQfyjP+QBctPOAzLg+qIbTJuUwW6fsmjnP+yaYV1ooRguGD3Iw4v+YjtkjiGzAAEHux1hEoktfyto+3QV5dDR5veOFobyNtedtfwdyJRrmlGzxq5djEFNKUVgUr7H6Ud13ifzycrddFMrrzpijXGC1RdN6T7qzM5Hr3ygTuhXF3TNkbYcL0eM8ajLSAK16UkoX4fG9eB+KAhCGIQ09ax7ko0/6oE6ypw6Ymnx2ttTLnG+HliqjTDWrOCmeft96LDdB1li8pbPNqTJHt2xpLbQIgX0NFjRfcZiID49HKTOukygjV+59oJRdgINW2d1m+MDGdOGmOHwidxmQgv/NNEPX66cSLCstMpX6EbVF17mTlsmyrDi8XpRAPJjIzh4D0iUQStu2jfaKBCUtPiW/ztLNyD1LP1KHYYRh1/ulnpRM8OFKyBSTPGQgierQsa8pFaeOfy+2DE0NNdOyDGzBehOB8DjgFtepavMkErK7+5UxiznNPbZhTw0xw2tv9ku1P2tWkcrrzELyJMRarbwjP2V6d2yKP0TFkanGjqO7hqJFW1SH2nMBqUmZsBdG4u0QKHYDRc5dL4ZNnZv2t1OJKqux+LLaUfP03/yhVKAUJuemDc/nUCm9/YBb4koe0ikORJ/Id18rg3w+I2k/Va8pF76iOiVrVvtn0PY63JhuV7B3wncQaDTtLVZyh80o0YDWC//tz5E9mSmsoo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pEfjo0RKO370kJoVQowS1gGNNv2xt7J98af77o/R9gw0pSnF5VlNjQxjTbmu?=
- =?us-ascii?Q?DRbkRUmWKdU4EFlQ0/1HNY/++GMmdml4cvIXns0OIArRVJqgyRpgXn8vMISh?=
- =?us-ascii?Q?Z6QKsn23BRvEws6KOnCThapMRsi2nPGpn0yKN2uNVb4/QiP2X3L+jC0c+bLJ?=
- =?us-ascii?Q?rEcXfi/N+DpgU43MXR7EiAlgiF+VM3F881etdeYnfRQrQIc9+sCjTssCu2Jd?=
- =?us-ascii?Q?IjRfTfUH+yK66ylslRs+PZiGZVcChOJhoKLmFn1PN/5ps9PXHS9F0FT/9fxo?=
- =?us-ascii?Q?loLExhsKgCQTJix+OCCJAh1ybMnJ0lw/GpdjrkaTmlRznE8siy+80MglOyts?=
- =?us-ascii?Q?GhUWl2M+Pwfx4xVgBOtQbDvHfFSUSqjFxEjXdK5bDQWLqoc1quVyPct2kkqU?=
- =?us-ascii?Q?FErz4LCQwMSXgeS8hTa6ZUWLUSPQvH+DqewYBCXMTZiWdd94DJAikKBCwnqd?=
- =?us-ascii?Q?j/fCiegmgbz3jErhK/fx6KukvTTOgZlWMi0Dv9/pcKEo2DHRF8b/pCzJIoyH?=
- =?us-ascii?Q?2NOukZimtLtwjRRMKNdAaAr2EAkhCqMMPVvdPYzezFe9Lc8Ao5PqUsNkjHvw?=
- =?us-ascii?Q?eeiyfdx+9EUxGs3S9UOovKaSiCi1Q2v2Oo4X72U1UFtXhT/M9EIJNji0R6EI?=
- =?us-ascii?Q?IP3zwoN5pwY4tg0ByVCLqfMA+1SYbooewvtgsd0GQUyseBDlJPo+xpHEYqZ7?=
- =?us-ascii?Q?eHeYP0lphMgo+gmcKXiAz7/eeldO9XGpfr2Q1Yjj/aBDUFe45r++UajsAhhI?=
- =?us-ascii?Q?WFlFpC0jxy6b11+uK0nfa7v2Wf8rQeTaXmbjhrn/bqJsftczYAnks1v7TjlT?=
- =?us-ascii?Q?xWxD5G1htcym3/hEIoEs4yUk4ins9DJ7bHMnSj/yHicwrGMz+zCLMOucCUg0?=
- =?us-ascii?Q?GZj/wmtGuHQi58alHv6DwcqAK3G4t9Ecj9QGh6CWyZLgVoNSFeLLa/91Iki2?=
- =?us-ascii?Q?cutT70sl7g+io4HEE1VCJt/+J5xORsWQnohXy+uUYMlYdfHhdjeeCGqodA0V?=
- =?us-ascii?Q?sV2qotCXmaoi2eje+zslbxgPRrziQmdLig2Im3ael5eByhBJ7Yhp6ma+55Wu?=
- =?us-ascii?Q?P+uXPEKL5VkTQJ58D7e9fo7pYt3D1NmEbUbnt+CDI3Ts6FRUZ3Q+ps6xE01O?=
- =?us-ascii?Q?Q6MwEH8uFiusycwswyc5ciOU0KnetTumR+WDqYJI5u2KC2IsbvvLVbVSu66H?=
- =?us-ascii?Q?6/2JfsUTS06pkQss0jeSZnvzbh/COx2DxR+EoLg5Rl8L7I+wZ/YsmvIca6Vq?=
- =?us-ascii?Q?k6xvz9SVhJHoWfjgkgD34MmqxQlcGrSthynIbhR98aHi2L/HUVZq4lS8EWzI?=
- =?us-ascii?Q?Q2cbCLLgoqNGk9QUpaRjm9tKEKcx+4aq2lWaG4wQM3VnzkY7yVLFhjVeh/K1?=
- =?us-ascii?Q?ftVEccQu0sIlUz+PF5FdoOPyMKmomc0wd/FapUR5R9WqeulRsRktFnzoL6lv?=
- =?us-ascii?Q?XnKLlTuobsaTwlFRN22yC+QAbEXd+YlHYEwAHLqoZkKfgMjWUAAU1EJiQDlv?=
- =?us-ascii?Q?S/qUOWDzLzhjxIPvjc5KGfDZ6SgLPiESC0brfbA0Ic5FQQaj6aFLbogKbi55?=
- =?us-ascii?Q?SxfIDQYA1o0hwq23XjJS07lK27HpidbiS/AvS1ld8w0EcquTRkelsHSdv3K5?=
- =?us-ascii?Q?Ls2QhDG+Qrr836r5Uvpk+RZanx9ncJdUjDuARqnPU/5amoZ+gRbTEYNO7JP7?=
- =?us-ascii?Q?OzcrIPe+2vKyC3/h7QCU5i9/ItAxPRYcnrUYSXwgalZ5XjOd?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aca0a3f-9c7c-4b0d-b39d-08de9fdb14e3
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 19:20:43.1883
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FCUmHDPBTwPMLW8mmjZLB615OOiAdOwfBMHsvlWVNVTExtSxmzuJehv4Xx9UPN+H
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7233
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 21, 2026 at 12:02:51PM -0700, David Matlack wrote:
-> > > I think a call to pci_clear_master() is needed here to so the device
-> > > stops issuing memory transactions while VFIO is trying to resetting
-> > > it.
-> >
-> > That doesn't sound right, reset should always work..
+On Tue, 21 Apr 2026 10:41:40 -0700
+Matt Evans <mattev@meta.com> wrote:
+
+> The previous lazy-setup of the barmaps provided opportunities to
+> forget to do it (for example, DMABUF export).  Since all users will
+> ultimately require BAR resources to have been requested, request them
+> in vfio_pci_core_enable.
 > 
-> pcie_flr() calls pci_wait_for_pending_transaction() which times out
-> and prints an error message. The reset seems to be working fine though
-> after that.
+> Existing calls to vfio_pci_core_setup_barmap() are now benign, but
+> remain because some callers use it to validate a BAR index.  This
+> fixes at least the case where DMABUF export could succeed before
+> resources were requested.
+> 
+> This keeps resource request and ioremap() done at the same time, but
+> in future the ioremap() could be done on-demand (not all VFIO users
+> need it).
+> 
+> Fixes: 7f5764e179c6 ("vfio: use vfio_pci_core_setup_barmap to map bar in mmap")
+> Fixes: 0d77ed3589ac0 ("vfio/pci: Pull BAR mapping setup from read-write path")
+> Signed-off-by: Matt Evans <mattev@meta.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 63 +++++++++++++++++++++++++++-----
+>  drivers/vfio/pci/vfio_pci_rdwr.c | 25 +++----------
+>  2 files changed, 60 insertions(+), 28 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 3f8d093aacf8..4a314213f3ae 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -482,6 +482,55 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
+>  }
+>  #endif /* CONFIG_PM */
+>  
+> +static void __vfio_pci_core_unmap_bars(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	int i;
+> +
+> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> +		int bar = i + PCI_STD_RESOURCES;
+> +
+> +		if (!vdev->barmap[i])
+> +			continue;
+> +		pci_iounmap(pdev, vdev->barmap[bar]);
+> +		pci_release_selected_regions(pdev, 1 << bar);
+> +		vdev->barmap[bar] = NULL;
+> +	}
+> +}
+> +
+> +static int __vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	int ret = 0;
+> +	int i;
+> +
+> +	/* Eager-request BAR resources (and iomap) */
+> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> +		int bar = i + PCI_STD_RESOURCES;
+> +		void __iomem *io;
+> +
+> +		if (pci_resource_len(pdev, i) == 0)
+> +			continue;
+> +
+> +		ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+> +		if (ret)
+> +			goto err_free_barmap;
+> +
+> +		io = pci_iomap(pdev, bar, 0);
+> +		if (!io) {
+> +			pci_release_selected_regions(pdev, 1 << bar);
+> +			ret = -ENOMEM;
+> +			goto err_free_barmap;
+> +		}
+> +		vdev->barmap[bar] = io;
+> +	}
+> +	return 0;
+> +
+> +err_free_barmap:
+> +	__vfio_pci_core_unmap_bars(vdev);
+> +	return ret;
+> +}
+> +
+>  /*
+>   * The pci-driver core runtime PM routines always save the device state
+>   * before going into suspended state. If the device is going into low power
+> @@ -568,6 +617,9 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
+>  		vdev->has_vga = true;
+>  
+> +	ret = __vfio_pci_core_map_bars(vdev);
+> +	if (ret)
+> +		goto out_free_zdev;
 
-Wow, that doesn't sound right in more ways :)
+Beyond simply changing to a preemptive mapping scheme, this hard
+failure makes me concerned about regressing userspace.  With the
+current lazy scheme, we only claim the BAR if the user accesses it and
+the failure only occurs in the access path.  That means we could have
+BARs that are never mapped.  With a hard failure here, with might be
+uncovering some latent issues, and if those latent issues are with BARs
+that we never cared to map previously, we're causing trouble for no
+gain.
 
-pci_reset_function() just calls straight down to that and it is
-directly tied into the sysfs reset file.
+I'd suggest setup should be a void function that generates pci_warn()
+on conflict or iomap error, but doesn't block the device.  Each usage
+path (including mmap that gets removed in the next path) still needs to
+validate the mapping is present for the given BAR and fail the call
+path otherwise.
 
-Meaning the sysfs doesn't work if the device is actively doing DMA?
-Feels wrong!
+There's also a subtle range check added in the virtio driver in the
+next patch, is that fixing a bug or paranoia?  Do we need a helper that
+does a range test and barmap test?  Thanks,
 
-However it has been like that since 2008 so I probably wouldn't touch
-it and agree that disabling busmastering appears to be an undocumented
-requirement.
+Alex
 
-Jason
+>  
+>  	return 0;
+>  
+> @@ -591,7 +643,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  	struct pci_dev *pdev = vdev->pdev;
+>  	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+>  	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+> -	int i, bar;
+> +	int i;
+>  
+>  	/* For needs_reset */
+>  	lockdep_assert_held(&vdev->vdev.dev_set->lock);
+> @@ -646,14 +698,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  
+>  	vfio_config_free(vdev);
+>  
+> -	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> -		bar = i + PCI_STD_RESOURCES;
+> -		if (!vdev->barmap[bar])
+> -			continue;
+> -		pci_iounmap(pdev, vdev->barmap[bar]);
+> -		pci_release_selected_regions(pdev, 1 << bar);
+> -		vdev->barmap[bar] = NULL;
+> -	}
+> +	__vfio_pci_core_unmap_bars(vdev);
+>  
+>  	list_for_each_entry_safe(dummy_res, tmp,
+>  				 &vdev->dummy_resources_list, res_next) {
+> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+> index 4251ee03e146..d1386a31a3a3 100644
+> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+> @@ -200,26 +200,13 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+>  
+>  int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
+>  {
+> -	struct pci_dev *pdev = vdev->pdev;
+> -	int ret;
+> -	void __iomem *io;
+> -
+> -	if (vdev->barmap[bar])
+> -		return 0;
+> -
+> -	ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+> -	if (ret)
+> -		return ret;
+> -
+> -	io = pci_iomap(pdev, bar, 0);
+> -	if (!io) {
+> -		pci_release_selected_regions(pdev, 1 << bar);
+> -		return -ENOMEM;
+> -	}
+> -
+> -	vdev->barmap[bar] = io;
+> +	/*
+> +	 * The barmap is now always set up in vfio_pci_core_enable().
+> +	 * Some legacy callers use this function to check if the BAR
+> +	 * is legitimate, so maintain that:
+> +	 */
+>  
+> -	return 0;
+> +	return vdev->barmap[bar] ? 0 : -EBUSY;
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
+>  
+
