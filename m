@@ -1,73 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CBA4A23;
-	Tue, 21 Apr 2026 23:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776814330; cv=none; b=CARoe30oroMI1rLgSVuCO6Wmo8hLXGIiEtRxV++A1UXyBEOAh2tSmi41vg887qZVC1txl5h0HsFdhBb+738VPNAXu20A0qT4j48JPZC7NHXPo457A38MQUwWGrHoToX0pHQpxaGN6bfKQv4OYQxFseig3/PQYe3lsixxI28nEPQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776814330; c=relaxed/simple;
-	bh=q1D5SMCNzWViZ20I3r4uKlRvyHo9NptwrP0Gh3oIxcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=go3fW3lX5yG5CsektpU2DsuUJHYxB/MYaYCPQmUlGRhS55GDPQxQwLu++o/3HL5BNnY5ruw1nc9B0Z5T6BMJzT/LwGVWcx3oinbQXSFET5AFZfNNlYqJ87GTk74+t5XSYkAyV/zX6HIAtb99QeG34YR5henbhPnlsLA/nmtcn1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TnWATvzF; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0904523B61B
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776814485; cv=pass; b=hM6Ia21RlR0EaBMdcVGnxGrTtMvuAnxGhdv/nzMRo/XhteH9fTCyLSyXbiEc98PMm6vrrISdj7J2+Ir8jwvhc1zK75YnlhHZlD96imjPNNZYPe5l6xKiHW8T33HLgDo9LRHtiq595IMfXSpUOrj2oE/LKyUWicOTWw3U9PWOpzY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776814485; c=relaxed/simple;
+	bh=0x06FmnZwMy/50kwkFclJJa4WtXa2VYKic89kMQCGQ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kDdqqFhj7CDP/AG21xdD8a4PvvfyBH/ENPZ8x0detxGcmNysBEr29kp7kFyjT/9OqhNdyXW9AnSHfiZx/DI2oINYn9tHH36nL77uRSscJ1+OmBZbHKzUlsm+RFMqjIDvQTtrrX9ws5FzfuDuzT7j/lkWBUendFDVm4bAPoJ84j0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f+qZjPX9; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TnWATvzF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AFBC2BCB0;
-	Tue, 21 Apr 2026 23:32:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776814329;
-	bh=q1D5SMCNzWViZ20I3r4uKlRvyHo9NptwrP0Gh3oIxcY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TnWATvzFxr6KgSTBPG9NS6OG0e+ZpQq74Jey2e7yRY0RWvTXHdmNvKYJl4GdqInk+
-	 MTIDt+zDmCZuCDq0VQ7VF8OnoXr8sPkBo7mVkVR7yZr3Y/S+4WU2bhlbHwFdyBWUj0
-	 hE8TlXJCEmEszlQz7BOgVV/D8HXTYUm5MuH5duOPKS7JZ6t8PbxXc9sDyaFThhBmbD
-	 9iTbGhESV0wnKj/z4M/rVupZTBZA8RCscDGCaeYa7OA5ttziPCYyR6adQfiEb14tQR
-	 i7spdkgctBwVPjfzHs2aPNMLEUQ1tsUDqizAqCgqLO+nLdOB5S9elzM30ZXEY3xrCB
-	 aIOcr0VOs6r/g==
-Date: Tue, 21 Apr 2026 23:32:08 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/11] KVM: x86: Move kvm_<reg>_{read,write}()
- definitions to x86.h
-Message-ID: <aegIHrL1pqnRkhDh@google.com>
-References: <20260409235622.2052730-1-seanjc@google.com>
- <20260409235622.2052730-7-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f+qZjPX9"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-671f1a0d0c5so35561a12.0
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:34:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776814482; cv=none;
+        d=google.com; s=arc-20240605;
+        b=axtH6WcJhaBiOeyp6dtt5+aK3HGcFm0kHpyHiiBThQ6/ob3c5yFZOh7TPyImvLiy85
+         E+fqAZYcmH5n8P5W8qi3ocsggJ+G4j4nU6iaC0GqJOXSy9eY/rBbxp34kegtY73JZ5Ci
+         HM29EbjA5CM87FD4N3IyD/u5Milsmp0IxoOoi2yeznbX30Gz0a/6AWPfBjRkaH4+2bVN
+         L3F5PoexZl5XfWkqb17Ap2kTqzr+F6wPZYzx4d2P2XEGGOHOB08vHB1eCHvchYHYpnlj
+         f/eNSISos3hxG7JqxhxlGNOqjfgGdqbplGBHamlvXqZOooo4AjBywjzaIqv7BQyV7kfp
+         616A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0x06FmnZwMy/50kwkFclJJa4WtXa2VYKic89kMQCGQ0=;
+        fh=9+NgjjNfFMSEG4iKwWKz/7lMnO2b930Za5kYtyTk7lc=;
+        b=icOu6AJtDSgkjZJLDNZgBLucwSJ/ex/ynY8TD/EYAqEvCiCqZAeR/MRcVxitLU0l0m
+         E5/WHFYBzRlvnFADgLArFr9P95H15CIXPOIx7XZsl9qW0Y1+VwqkGu3H7FX42UKGxvGS
+         mSzFtbn4hzVbG4DRoS10bP7hblSkYH8QBA2ktMrv73dMuPF/mjoZ45JbWQg2IrGv/iWs
+         oGyaVAMj8l6o+ijJsjXAmW/NKBdTVX5QuR5MTbOw1XBdQveBuRFjJF0VRUmWHgNaKCfr
+         jbQSALRqV21fYuVFh2TBEFJbjIhDI5cVxHID502olASq25eVeUm2+hu3jv4q00uBM7ni
+         n3Nw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776814482; x=1777419282; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0x06FmnZwMy/50kwkFclJJa4WtXa2VYKic89kMQCGQ0=;
+        b=f+qZjPX9x0T+zjwezZ+9dFF7DoWcUQWL8yZ66CEm4DoMTmxB1LipP9jX9CBxZQiv5k
+         WDUw7iFdUR/34h8Htp4uPQhyIXV7ni5LXWnDSyzmA+9UmIXOLAuSvGxIZwhYNm9fcyNY
+         0XfSHbzKh5fBEbWbmiyAJz8Z5oosRLGUN8JOxn721mbvVf3uaC+iEYQXB3WT3wC0O6o6
+         S2+P64qk3qsZRBn/g0RQLneXXrfMP0ybHPzy+A4Lc2RLE7TKZUfg1OoJ6lMu9sOXGG0v
+         Cj6p7q7jDk+Ey4vsQtt4gV8YqlXTlsjGxlNkbbOHzds9xH8g3+kHkQQEg8tQ48S3COkl
+         J29Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776814482; x=1777419282;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0x06FmnZwMy/50kwkFclJJa4WtXa2VYKic89kMQCGQ0=;
+        b=Zub62tYQ4DubULyouGrxRnLukksHJyUnAw0qV+dviUGKY0pM8qzgeLYwsrczo3D4wW
+         gnJfd3VnfMYDZrGesbJ7SD6pGbSCr44cGdpAySLwconjZqTivk1ZljCVfD1AltJeWTNz
+         6BLSSJ+0xXOiMTf1wKczA0JtH2gzcSsaWUKpOe52VVAPq2dFh0RZHCoFFeOvNX6/jjZ7
+         0tTY+jcCb38gQQZ4dnxngqf9qZA/MbQigwosXW0/IARfK78nBx/PVaeHFuAOQtUsGbv+
+         S5M4b0frB0gr0egbKLiuzGFQuwaCPCOOnm8lylke1WEKuBq0qDjDY1masp2+tsG/cyRB
+         Ku+Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/apt+52sKgB53nCdY3/RVCRdbXo7s8enYyKffA8O8FLHftIGSTCdjs2b7JziFmBRhZ70I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPbT+r4/9YtrW2pVV2Twy6vr0r6KzVuV5ERk+71g3t4pV2TiIJ
+	V7O7Z0bMJFrZKUVIE3NEZtBjJaq3KrtsO+VPd9L4R4mQQSAgn52Zb4tKuzzE9dQX9c2Cg9J4u3+
+	IJycn4jql7nwOPlbxGcoHmOudhtN6/UwQ7bR0l8Q+S7fD7NfAN4FeJG0e
+X-Gm-Gg: AeBDies3sf+ZCHzICB5BQZ9BxnvFiEHsCb6LcWdZxvj4UPVcgtc4RQyMDBvVeK8cWnz
+	mOpOOOAY57rYFRKcfqWdwemRG+wKed+pZuDBZPpBHW+xxJSWc1DqXnCrvYbBv0i+cZmlLkDqWaJ
+	Ib/DgSnsncZI4Jv4SVAanu0jcUfJggTkuZ1sw3G8xbmh1yVjTAQ9SfDrCYc/dOisV94iF8Rk1JB
+	tE6bpeEq3mPxHmqZNm4TnalplDfEUJgsIwyHeqq30Q8mr0vU7RTq8Y/J1P26VK7r9efah5dbcUK
+	IEmg8tNZ8jQO2AFo4oyjIJdyWXaR
+X-Received: by 2002:a05:6402:902:b0:670:7177:94df with SMTP id
+ 4fb4d7f45d1cf-67440714a81mr166376a12.6.1776814482004; Tue, 21 Apr 2026
+ 16:34:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409235622.2052730-7-seanjc@google.com>
+References: <87mryxekxy.ffs@tglx> <770ae152-c3fd-4068-8462-23064de02238@linux.intel.com>
+ <87eck8daot.ffs@tglx> <20260421111858.GH3126523@noisy.programming.kicks-ass.net>
+ <20260421113212.GI3126523@noisy.programming.kicks-ass.net>
+ <20260421113407.GE3102924@noisy.programming.kicks-ass.net>
+ <20260421114940.GJ3126523@noisy.programming.kicks-ass.net>
+ <87cxzsb5n0.ffs@tglx> <CALMp9eTeqE4u6ioepVeowRkcNs63DYZTg8og8em12u4FsVWNfw@mail.gmail.com>
+ <878qagb20x.ffs@tglx> <aefIJR_FcEeP-fcS@google.com> <CABgObfaNaDYCo_rkkwAnFzKYYe9G9wnz1+yiv0H73CbtE8AXpw@mail.gmail.com>
+ <87tst49bgt.ffs@tglx> <CABgObfb7Yy5Q3E2Boy_H4a0F3GodDOr1Z_Sw0BzdfvOmagcRnA@mail.gmail.com>
+In-Reply-To: <CABgObfb7Yy5Q3E2Boy_H4a0F3GodDOr1Z_Sw0BzdfvOmagcRnA@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 21 Apr 2026 16:34:29 -0700
+X-Gm-Features: AQROBzCRzODgAbweGQU1lrGWJQCiYZuwjSQcYcvoRHbZTHg1ImQh7JeiYCR1h_Y
+Message-ID: <CALMp9eRyqC4bEqVL22x-F77fBbsBLv4HgTOyGfBOz_a=qk+Gog@mail.gmail.com>
+Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Vishal L Verma <vishal.l.verma@intel.com>, kvm <kvm@vger.kernel.org>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"the arch/x86 maintainers" <x86@kernel.org>, Paolo Bonzini <bonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 09, 2026 at 04:56:17PM -0700, Sean Christopherson wrote:
-> Move the direct GPR accessors to x86.h so that they can use
-> is_64_bit_mode().
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/kvm_cache_regs.h | 34 ----------------------------------
->  arch/x86/kvm/x86.h            | 34 ++++++++++++++++++++++++++++++++++
+On Tue, Apr 21, 2026 at 4:16=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+> ...
+> There were two different steps. Posted interrupt support on the CPU
+> was introduced in Ivy Bridge. Posted interrupt support on the IOMMU in
+> Broadwell (and added to KVM with commit efc644048ecd, "KVM: x86:
+> Update IRTE for posted-interrupts", 2015-10-01). New virt features
+> used to come on the "tock" instead of the "tick").
 
-That's a shame, register accessors semantically fit in kvm_cache_regs.h,
-but taking a step back.. is it even worth having kvm_cache_regs.h
-anymore?
-
-At some point I needed to move guest mode helpers out of there too (as
-they should be):
-
-https://lore.kernel.org/kvm/20260326031150.3774017-3-yosry@kernel.org/
-
-With this patch and that one, we'd have <200 lines left. Is there a
-reason why it can't just be merged with x86.h? I don't see any of the
-headers included by x86.h including kvm_cache_regs.h.
-
+Nit: I believe posted interrupts were only introduced in the higher
+end Ivy Town parts, but I could be wrong. :)
