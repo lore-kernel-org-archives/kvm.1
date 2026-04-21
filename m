@@ -1,47 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBFA3A1D1B;
-	Tue, 21 Apr 2026 23:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF6131E85A;
+	Tue, 21 Apr 2026 23:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776813953; cv=none; b=tO6hTNpDpzhDxA/p/2/IA/haYxjeNmsLJ1aL3eYj8NdGErtpJ3Kv55w9kv7jwqzeR0s6p2xeI8ZP4Z3+QQsPzG1KW1W6YmaMVkDMDIRU6gTvzXPLFICj6bElTJ4RKd8Gk1ACvYh680b7EHaflzNgE45rykxe7QwdvKRJRLRKmu8=
+	t=1776813999; cv=none; b=R6YpFqEdnCa1te7ApONMWUF/2mz7uElb+TdwlqaChpn+lzZzFSQcFQCsjvjTwXumH0oSYb3CFcSJDyRPfCoKfr0lMndhEqWDSgw7Z/oPMnZp1Up9dvVfGMEW7ej8yOBo1cjF4lqP/BcMefC96cjSxonR/H9tYxU4yiHI9el7AHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776813953; c=relaxed/simple;
-	bh=elyV3lZqAtgWQ4j9hhssoiVA6LYW5W2kDn6tN9c0c6s=;
+	s=arc-20240116; t=1776813999; c=relaxed/simple;
+	bh=Lz8EL1X2ZM5g7nf1AYJz8AnaVclJoErh1YbS/7Z79gI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sdwlunn51NJUleYZOUoyY8i2Q1Zg4L2JWtba2u+0PtqWfHRWpzbeE7DxsWylhviNXH9v6fd1eR99nUIKirXFHTf55XZzFAPcmH7b8PWxlL7g9FP4AaWrGLW0nsl2C0wBQHkbTsNlDqi/6UmMKT1lVkEML/J0tvq8AEBTu2M3fyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izyOuPOR; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=doAOwcKcJXZ5wjWcGgYW7u1m8F3dRaGkRRrGbLNDLzoPP0WoSdyDflkdM661TFPeSpfziy2DuE4n7xmtB8sBLH9KkrL6gFuGdFmdyLWBb3GrlPODS95/vhucYEoDCZjdXouBah4EJnYJuhgFfvOV43fIcNskbB44FXVa77OEJ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkco4w07; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izyOuPOR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45BEC2BCB0;
-	Tue, 21 Apr 2026 23:25:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkco4w07"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2DAC2BCB0;
+	Tue, 21 Apr 2026 23:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776813952;
-	bh=elyV3lZqAtgWQ4j9hhssoiVA6LYW5W2kDn6tN9c0c6s=;
+	s=k20201202; t=1776813999;
+	bh=Lz8EL1X2ZM5g7nf1AYJz8AnaVclJoErh1YbS/7Z79gI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=izyOuPORTuxjKW5U2mdSF+VAOnjQQgG69VP+OVa5FCQ53AEaa/fE3VfMzK1CHYfmt
-	 /F5YMUPGIxO1UaoG0ax3A3jDZaAAX9ASTu030KHSqpGriuZLxJf7bm1qBzKq3G+hvb
-	 4N7f70lQFNJPX9CsdlFFl0+iMOcRFnXglJhSu+c9Jgp1VKqATuKJzvKpJYd5k1VqcL
-	 ngHDPCLoiz/Iu7XbuMXfqfnR0RsW5UsvsQpKUbB1LKMVaVVgf1t54f+kYKo6xDEdTh
-	 KV9eI2uzuAbPTpIQe0VGETkyHxbFYWnjvbw35KQxZykWCOKZKnk0ZkKQNkLQ3j4WHK
-	 w6CkKROwLQx+g==
-Date: Tue, 21 Apr 2026 23:25:50 +0000
+	b=jkco4w07XJjSM5g/d1XXgTGSQoZScJvP0sIYtSnmzqtYPLZGQR1hU3yKSHTh41y47
+	 cwwEO8IoASNs8aTZKp1jW6ayQ8EhejKQkfYTeBts3Ki4y3XJKGE0EZm3IAywZx4fIp
+	 pY4V11oD8J/mQ/VyTYLwYd2K5MLFjk9ReXeG2r1SIwXndhZa/g/9Bq3sHyjqrKtzq5
+	 rZ6CFJ5wQwpuFI6vt1P1Ch14Hwgow4O+69W2j3gGL+WkMqxow/5Ct1vkTRbkz5g1Mi
+	 rbgxt8GeaH4hzmXCOTb6CCEKAY8OpBvNRGahD66Ub6wXzuLkGG/VuFebpGeVBy9Xcl
+	 XW8904d9GEGTQ==
+Date: Tue, 21 Apr 2026 23:26:37 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Fang <peter.fang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] KVM: Take gpa_t in kvm_vcpu_map[_readonly]()
-Message-ID: <aegHZrDn3GouTpZf@google.com>
-References: <20260408001137.3290444-1-peter.fang@intel.com>
- <20260408001137.3290444-4-peter.fang@intel.com>
- <aegDJssx-ZvbfggI@google.com>
- <aegF59gToidudIUC@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/11] KVM: SVM: Truncate INVLPGA address in
+ compatibility mode
+Message-ID: <aegHqAQrNGtpAhwk@google.com>
+References: <20260409235622.2052730-1-seanjc@google.com>
+ <20260409235622.2052730-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,39 +45,30 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aegF59gToidudIUC@google.com>
+In-Reply-To: <20260409235622.2052730-2-seanjc@google.com>
 
-On Tue, Apr 21, 2026 at 04:19:03PM -0700, Sean Christopherson wrote:
-> On Tue, Apr 21, 2026, Yosry Ahmed wrote:
-> > On Tue, Apr 07, 2026 at 05:11:30PM -0700, Peter Fang wrote:
-> > > Move the conversion from a gpa_t to a gfn_t into kvm_vcpu_map() and
-> > > kvm_vcpu_map_readonly() so that they take a gpa_t directly, reducing
-> > > boilerplate at call sites.
-> > > 
-> > > __kvm_vcpu_map() still takes a gfn_t because guest page mapping is
-> > > fundamentally GFN-based.
-> > > 
-> > > No functional change intended.
-> > > 
-> > > Compile-tested on x86 and ppc, which are the current users of these
-> > > interfaces.
-> > > 
-> > > Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> > > Signed-off-by: Peter Fang <peter.fang@intel.com>
-> > > ---
-> > 
-> > I was going to suggest a WARN in kvm_vcpu_map() and
-> > kvm_vcpu_map_readonly() if the passed GPA is not page-aligned, but Sean
-> > usually hates my paranoid WARN suggestions.
+On Thu, Apr 09, 2026 at 04:56:12PM -0700, Sean Christopherson wrote:
+> Check for full 64-bit mode, not just long mode, when truncating the
+> virtual address as part of INVLPGA emulation.  Compatibility mode doesn't
+> support 64-bit addressing.
 > 
-> Heh, for good reason.  Adding such a WARN would be triggered by this code:
+> Note, the FIXME still applies, e.g. if the guest deliberately targeted
+> EAX while in 64-bit via an address size override.  That flaw isn't worth
+> fixing as it would require decoding the code stream, which would open a
+> an entirely different can of worms, and in practice no sane guest would
+> shove garbage into RAX[63:32] and execute INVLPGA.
 > 
->                 if (!kvm_vcpu_map(vcpu, vmcs12->posted_intr_desc_addr, map)) {
->                         vmx->nested.pi_desc =
->                                 (struct pi_desc *)(((void *)map->hva) +
->                                 offset_in_page(vmcs12->posted_intr_desc_addr));
+> Note #2, VMSAVE, VMLOAD, and VMRUN all suffer from the same architectural
+> flaw of not providing the full linear address in a VMCB exit information
+> field, because, quoting the APM verbatim:
 > 
-> The PI descriptor only needs to be 64-bit aligned, not page-aligned.
+>   the linear address is available directly from the guest rAX register
+> 
+> (VMSAVE, VMLOAD, and VMRUN take a physical address, but they're behavior
+> with respect to rAX is otherwise identical).
+> 
+> Fixes: bc9eff67fc35 ("KVM: SVM: Use default rAX size for INVLPGA emulation")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
 
-I didn't know that, thanks for pointing out. You meant 64-byte aligned
-though, right?
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
