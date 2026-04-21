@@ -1,206 +1,167 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BF03242AB
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 21:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11ED53537CE;
+	Tue, 21 Apr 2026 21:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776808297; cv=none; b=H9NclRiJIDazbGOGzqjz6zVak+PtRVIy+h9E1veCU101kTA8IOq8OffRYDb8gjND5a6WvhdEbbtzeW9hJbvzsLxNGVg3aoBBxCKqebv/WvH5nFcYPMr8ehYnflV9a/vlAPkeYzW6CMPkANNTOpYaYZhX1jIlYOOOXmgYpnklqiI=
+	t=1776808300; cv=none; b=freBOxrK11j+mZ4eTGVYcHFZa+8Br7gZdfZVQVt4JBI99fxtmHApmgkFUBbGPoUnKbo5X3g+LjCL4ryVwyiZE2KWSluZxDZMZF4IGMLIrbj9FGoSM2iQbzRocoRJ4XHEQQG9m4+KmG4ADwg5R8b8FvWiV50ajENSoiMWqMWRD64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776808297; c=relaxed/simple;
-	bh=8URItRpFauZLE8W6/S36pVEcJMigUBLUMd5drwiTN8w=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=TyXNYkwkGXr6oOkGxOahCXjjlXZQgJI5yhNFn0Ot1292+Mo8gXAEcoJz35UhiDa+hbhS0XsDJMPUorsS/vac1ppvi7swqnzJDYurKMBc32SfxZa8tG8aepu+ZOtpFsngUE1dCfGQv51zPu8EHuxZ3Des/21sJRl4n6rQ+o2971A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMh/2iZp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776808300; c=relaxed/simple;
+	bh=e8khfY+cFY85RCCUdY/+9cWHVCfWjH1ZA3LYAAwUCyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mw1xrIrUsbkpnabLj0DWVEGPDPVOq69lJZpuExJZHDwqSg6SFsUHedRdhpPAmM+byTbvsrTN4lSg9WL3n9HKR4eba19goRoZ8cKzLswSBj5NPR1O4hiu2Ye/7hzREwdsjHC3zoCretq2l0RjIpkdKlUBWbNZS8UY4Z1y4GwxU1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SI5KPqSS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMh/2iZp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB5AC2BCB4;
-	Tue, 21 Apr 2026 21:51:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SI5KPqSS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2412C2BCB5;
+	Tue, 21 Apr 2026 21:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776808297;
-	bh=8URItRpFauZLE8W6/S36pVEcJMigUBLUMd5drwiTN8w=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=FMh/2iZpTdOwN9+ZNS7GINGbW8l6d8QxN+Zv+OBkgqBc+vl94dwS450PSJMTFcQuO
-	 kHDT5clmWICrDv9rZ8WfxRook5OQpN81z2nslfhqFfI9Er2U/DvgdNT9txWPqi42Ew
-	 Dv1cNyQfvaMSPORoSL2CXXbzlPOAVIVVpmfawUwqfV9sBM0+9bMXgL598NAwbRKuyU
-	 PvKLGvLC/7K50N+rePwTaKsc2ie0RAWfzbMI5j8WXHdYCiaE55W68ICGH6IOEHtNHC
-	 t/NWgKZM7JQf7T+fA8+9faxa3/KBu8qki3Ft4Ytp4UUkRjVbu8aKPgxeSIi449kYON
-	 vLtyHd6ehGyug==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DC110F4006B;
-	Tue, 21 Apr 2026 17:51:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 21 Apr 2026 17:51:35 -0400
-X-ME-Sender: <xms:Z_Hnae-xWJ1rXjQDEZzqdN5QUhPRYTKWuRX5BecdGHxJEX6zhiwSPQ>
-    <xme:Z_HnaXcYHZZCVZymAl0mGOW6lFPrtEOJKLvDL-OIymQ6Kkeywyew1C80KuRlp5oHt
-    r40Gd3D7ISqykcR3GZp2WE19FhDwXRTT-Jx9wluYsSa00Swv8_hDZc>
-X-ME-Received: <xmr:Z_HnaSt0sRg-eeRPTr6KERkX5n9p5wyypVSHzQ3OAJlRvQ_lQjtrSqOwnH6LISysAbA5QoVs_LtUFjo92XKo5_b25In2mGAdssM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeivdehudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtjeertddttdejnecuhfhrohhmpeffrghnucghihhl
-    lhhirghmshcuoegujhgsfieskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elhfeiudfgvdeijedtleeltdduueekffejjedvjefhgeevjeefueejledtleetjeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomh
-    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeel
-    gedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpd
-    hnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephihi
-    lhhunhdrgihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepughjsgifse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehrihgtkhdrphdrvggughgvtghomhgsvges
-    ihhnthgvlhdrtghomhdprhgtphhtthhopegthhgrohdrghgrohesihhnthgvlhdrtghomh
-    dprhgtphhtthhopeihihhluhhnrdiguhesihhnthgvlhdrtghomhdprhgtphhtthhopeig
-    keeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrghssehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegsrgholhhurdhluheslhhinhhugidrihhnthgvlhdrtghomhdprhgt
-    phhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:Z_HnaY2vq7VuP4xiDPz63HQJm1Tz0aQLSwdBhMu8XziXYaySEvXZUg>
-    <xmx:Z_HnaXAshVHwzHM7MGqkrx-4W5Y6gBeN7PmvzAXJH2aDhK8zQvaoSQ>
-    <xmx:Z_HnaVdC13YUfhgt-qea0b_V1UZoTEEvP4UeegTjq6g8npyJIyik0Q>
-    <xmx:Z_HnaZxyG68ufTgmuya-rfsk6MSPr47cesAFsXMciDi4gv7hhdXrvw>
-    <xmx:Z_HnaQNSWzzcD8S2vXyM9JYPYFdHxwICKxQWUZX9QO4MX3cILs0hjzKr>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Apr 2026 17:51:35 -0400 (EDT)
-Date: Tue, 21 Apr 2026 14:51:34 -0700
-From: Dan Williams <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- Dan Williams <djbw@kernel.org>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
- "Gao, Chao" <chao.gao@intel.com>, 
- "Xu, Yilun" <yilun.xu@intel.com>, 
- "x86@kernel.org" <x86@kernel.org>, 
- "kas@kernel.org" <kas@kernel.org>, 
- "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, 
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
- "Jiang, Dave" <dave.jiang@intel.com>, 
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, 
- "Verma, Vishal L" <vishal.l.verma@intel.com>, 
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Message-ID: <69e7f166319a5_fe083100f7@djbw-dev.notmuch>
-In-Reply-To: <aeSTPuR9cuga+I69@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-6-yilun.xu@linux.intel.com>
- <828f174d49a1ecaec65ba1179e08c6b22e249297.camel@intel.com>
- <acvX1x5nDdGtZWyI@yilunxu-OptiPlex-7050>
- <f38d0a080aee052937cb6721683d55155c657717.camel@intel.com>
- <ad4Pj0cqlprvNUSj@yilunxu-OptiPlex-7050>
- <aeBufjwO3t7XzVle@yilunxu-OptiPlex-7050>
- <69e2c9334cbf7_147c8010040@djbw-dev.notmuch>
- <aeSTPuR9cuga+I69@yilunxu-OptiPlex-7050>
-Subject: Re: [PATCH v2 05/31] x86/virt/tdx: Extend tdx_page_array to support
- IOMMU_MT
+	s=k20201202; t=1776808299;
+	bh=e8khfY+cFY85RCCUdY/+9cWHVCfWjH1ZA3LYAAwUCyY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SI5KPqSS6PI9nIybbOlKTmKJzGEkpUEtaSpQYkVOSMasHZFMgD8HH16qGWceIZh/p
+	 HWx8Yh+/4L1jYD4DEmxx/gFtDDRJxpNo0byS0UgXK/HnhxbbkbzXUdNsKzN8cCVS9B
+	 suZyA0yM2KirZGVhZ2/lr77wGwI7K2vtFJS8rvwXbDF874R3b195arZqCWCrvmF6SM
+	 YlkYXqDnERbd9pBGatD1xzDeDsWaLEn+fki5ayk/Vjcq80kj2RoqG2eiMLXfXQVcfg
+	 rp/wVFQg3tmMNpjeB2Elq93MkXy7lhZdgd9oFfRqyrP3bhxzrv1sIUuijZqZfrMpOR
+	 jhENS3pOR3kAg==
+Date: Tue, 21 Apr 2026 14:51:35 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	torvalds@linux-foundation.org, rostedt@goodmis.org,
+	Marc Zyngier <maz@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH] kernel: trace: do not generate undefsyms_base.c
+Message-ID: <20260421215135.GA367904@ax162>
+References: <20260421100455.324333-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421100455.324333-1-pbonzini@redhat.com>
 
-Xu Yilun wrote:
-> On Fri, Apr 17, 2026 at 04:58:43PM -0700, Dan Williams wrote:
-> > Xu Yilun wrote:
-> > [..]
-> > > > 
-> > > > I'm drafting some changes and make the tdx_page_array look like:
-> > > > 
-> > > >   struct tdx_page_array {
-> > > > 	/* public: */
-> > > > 	unsigned int nr_pages;
-> > > > 	struct page **pages;
-> > > > 
-> > > > 	/* private: */
-> > > > 	u64 *root;
-> > > > 	bool flush_on_free;
-> > 
-> > How about "need_phymem_page_wbinvd"?
+On Tue, Apr 21, 2026 at 11:04:55AM +0100, Paolo Bonzini wrote:
+> The code to autogenerate undefsyms_base.c in the Makefile is larger
+> than the file itself.
 > 
-> Yes.
+> Remove the "echo" indirection that creates the file, which keeps
+> the build system sane and makes it much easier to edit it if/when
+> new situations arrive.
 > 
-> > 
-> > That makes it a bit more greppable and not to be confused with other
-> > flushing.
-> > 
-> > [..]
-> > > Hi, I end up made the following changes on top of this series:
-> > > 
-> > > -------8<--------
-> > > 
-> > >  arch/x86/include/asm/tdx.h            |  32 +-
-> > >  arch/x86/virt/vmx/tdx/tdx.c           | 561 ++++++++------------------
-> > >  drivers/virt/coco/tdx-host/tdx-host.c | 179 ++++++--
-> > >  3 files changed, 316 insertions(+), 456 deletions(-)
-> > > 
-> > > +		ret = tdx_ext_mem_setup(nr_pages, &ext_mem);
-> > >  		if (ret)
-> > > +			return ret;
-> > >  	}
-> > >  
-> > > +	ret = tdx_ext_init();
-> > > +	if (ret)
-> > > +		goto out_remove_ext_mem;
-> > > +
-> > >  	/*
-> > > +	 * Extensions memory is never reclaimed once assigned, stop tracking it
-> > > +	 * and free the tracking structures.
-> > >  	 */
-> > > +	tdx_page_array_free(ext_mem.chunk);
-> > 
-> > Wait, these pages belong to the module now, they can't be freed, or I am
-> > missing something?
+> Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Yeah, I don't really know how I did not see this originally :/ tunnel
+vision is real I suppose.
+
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+
+> ---
+>  kernel/trace/.gitignore       |  1 -
+>  kernel/trace/Makefile         | 35 ++++-------------------------------
+>  kernel/trace/undefsyms_base.c | 28 ++++++++++++++++++++++++++++
+>  3 files changed, 32 insertions(+), 32 deletions(-)
+>  delete mode 100644 kernel/trace/.gitignore
+>  create mode 100644 kernel/trace/undefsyms_base.c
 > 
-> With this new solution, tdx_page_array is downgraded to a descriptor,
-> doesn't manage the actual data pages/memory any more. So
-> tdx_page_array_free() will not free data pages, only frees the
-> tdx_page_array descriptor.
-
-Oh, I was confused by the fact that tdx_page_array_free() still loops
-through array->pages in the need_wbinvd case. In the case of "never
-reclaim" it will also "never wbinvd". ...and this why populate has that
-"WARN_ON_ONCE(array->pages && array->flush_on_free);".
-
-A couple recommendations come to mind:
-
-* s/tdx_page_array_free/tdx_page_array_destroy/
-
-  ...since "destroy" mirrors create and matches other cases where only
-  metadata is managed.
-
-* Create a new tdx_page_array_repopulate() helper to make it clear which
-  paths depend on being able to repopulate and move the WARN_ON_ONCE() out of
-  the common path that does not repopulate. "repopulate" can have
-  "realloc" semantics where it allocates on first use, but otherwise
-  "populate" gets to not care about the corner cases. Make the WARN case
-  fail repopulate.
-
-> > >  	pr_info("%lu KB allocated for TDX Module Extensions\n",
-> > >  		nr_pages * PAGE_SIZE / 1024);
-> > >  
-> > >  	return 0;
-> > >  
-> > > -out_flush:
-> > > -	if (ext_mem)
-> > > +out_remove_ext_mem:
-> > > +	if (nr_pages) {
-> > > +		/*
-> > > +		 * TDH.EXT.MEM.ADD only collects required memory. TDX.EXT.INIT
-> > > +		 * does the actual initialization so if it fails some pages may
-> > > +		 * have been touched by the TDX module, flush cache before
-> > > +		 * returning these pages to kernel.
-> > > +		 */
-> > >  		wbinvd_on_all_cpus();
-> > > +		tdx_ext_mem_remove(&ext_mem);
-> > 
-> > This only releases the last populated chunk, not all previous chunks,
-> > right?
+> diff --git a/kernel/trace/.gitignore b/kernel/trace/.gitignore
+> deleted file mode 100644
+> index 6adbb09d6deb..000000000000
+> --- a/kernel/trace/.gitignore
+> +++ /dev/null
+> @@ -1 +0,0 @@
+> -/undefsyms_base.c
+> diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
+> index 4d4229e5eec4..1decdce8cbef 100644
+> --- a/kernel/trace/Makefile
+> +++ b/kernel/trace/Makefile
+> @@ -133,41 +133,14 @@ obj-$(CONFIG_TRACE_REMOTE) += trace_remote.o
+>  obj-$(CONFIG_SIMPLE_RING_BUFFER) += simple_ring_buffer.o
+>  obj-$(CONFIG_TRACE_REMOTE_TEST) += remote_test.o
+>  
+> -#
+>  # simple_ring_buffer is used by the pKVM hypervisor which does not have access
+>  # to all kernel symbols. Fail the build if forbidden symbols are found.
+> -#
+> -# undefsyms_base generates a set of compiler and tooling-generated symbols that can
+> -# safely be ignored for simple_ring_buffer.
+> -#
+> -filechk_undefsyms_base = \
+> -	echo '$(pound)include <linux/atomic.h>'; \
+> -	echo '$(pound)include <linux/string.h>'; \
+> -	echo '$(pound)include <asm/page.h>'; \
+> -	echo 'static char page[PAGE_SIZE] __aligned(PAGE_SIZE);'; \
+> -	echo 'void undefsyms_base(void *p, int n);'; \
+> -	echo 'void undefsyms_base(void *p, int n) {'; \
+> -	echo '	char buffer[256] = { 0 };'; \
+> -	echo '	u32 u = 0;'; \
+> -	echo '	memset((char * volatile)page, 8, PAGE_SIZE);'; \
+> -	echo '	memset((char * volatile)buffer, 8, sizeof(buffer));'; \
+> -	echo '	memcpy((void * volatile)p, buffer, sizeof(buffer));'; \
+> -	echo '	cmpxchg((u32 * volatile)&u, 0, 8);'; \
+> -	echo '	WARN_ON(n == 0xdeadbeef);'; \
+> -	echo '}'
+> -
+> -$(obj)/undefsyms_base.c: FORCE
+> -	$(call filechk,undefsyms_base)
+> -
+> -clean-files += undefsyms_base.c
+> -
+> -$(obj)/undefsyms_base.o: $(obj)/undefsyms_base.c
+>  
+> +# Basic compiler and tooling-generated symbols that can safely be left
+> +# undefined. Ensure KASAN is enabled to avoid logic that may disable
+> +# FORTIFY_SOURCE when KASAN is not enabled. undefsyms_base.o does not
+> +# automatically get KASAN flags because it is not linked into vmlinux.
+>  targets += undefsyms_base.o
+> -
+> -# Ensure KASAN is enabled to avoid logic that may disable FORTIFY_SOURCE when
+> -# KASAN is not enabled. undefsyms_base.o does not automatically get KASAN flags
+> -# because it is not linked into vmlinux.
+>  KASAN_SANITIZE_undefsyms_base.o := y
+>  
+>  UNDEFINED_ALLOWLIST = __asan __gcov __kasan __kcsan __hwasan __sancov __sanitizer __tsan __ubsan __x86_indirect_thunk \
+> diff --git a/kernel/trace/undefsyms_base.c b/kernel/trace/undefsyms_base.c
+> new file mode 100644
+> index 000000000000..e65baf58e6ff
+> --- /dev/null
+> +++ b/kernel/trace/undefsyms_base.c
+> @@ -0,0 +1,28 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * simple_ring_buffer is used by the pKVM hypervisor which does not have access
+> + * to all kernel symbols.  Whatever is undefined when compiling this file is
+> + * compiler and tooling-generated symbols that can safely be ignored for
+> + * simple_ring_buffer.
+> + */
+> +
+> +#include <linux/atomic.h>
+> +#include <linux/string.h>
+> +#include <asm/page.h>
+> +
+> +void undefsyms_base(void *p, int n);
+> +
+> +static char page[PAGE_SIZE] __aligned(PAGE_SIZE);
+> +
+> +void undefsyms_base(void *p, int n)
+> +{
+> +	char buffer[256] = { 0 };
+> +
+> +	u32 u = 0;
+> +	memset((char * volatile)page, 8, PAGE_SIZE);
+> +	memset((char * volatile)buffer, 8, sizeof(buffer));
+> +	memcpy((void * volatile)p, buffer, sizeof(buffer));
+> +	cmpxchg((u32 * volatile)&u, 0, 8);
+> +	WARN_ON(n == 0xdeadbeef);
+> +}
+> -- 
+> 2.53.0
 > 
-> Not true. ext_mem stores all the data pages and the reusable descriptor
-> 'chunk' for SEAMCALL. tdx_ext_mem_remove() removes all the data pages
-> and the 'chunk'.
-
-Yes, see that now.
