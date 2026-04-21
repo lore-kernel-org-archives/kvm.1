@@ -1,168 +1,287 @@
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3113D1509AB;
-	Tue, 21 Apr 2026 17:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.228.1.57
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776791251; cv=none; b=YoLVRP0rELpxGlS4rxsWEocB5iqK/F4XRFaPLOyRf4qkL5Sj7ocK6fh+ElZ++lxGds/hy8CLE+yK43WPlGS0PzTsN3UYHPPu6wcg3j5oOtq3Gl2bHIeZjP7t7UiIMBnRVG/6t6oP2c6OH6NNZl5hYN47mi99cjxjn2wAUMb1jaQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776791251; c=relaxed/simple;
-	bh=BmLatGy8n1zKmv3W1i69jDYO1lD52eKYiSdHSJdTpeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hWmmbShRAnnRWeyuIgfALBggo4xC11vz7zRyTtJodnrjqaCuRUb28Y7iawPTgFYWVitNK4etXALUVQ2BeBV5KeMyrhRlr4p2vuvEMeGLlJ8FerHQlwVTMI6e9/6tnHwitHWvoS/I2zUj8sz1JPQYSlmLpWy70oOUfdDZU4As4Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass smtp.mailfrom=kernel.crashing.org; arc=none smtp.client-ip=63.228.1.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.crashing.org
-Received: from gate.crashing.org (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 63LH4FuA3771909;
-	Tue, 21 Apr 2026 12:04:15 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.18.1/8.18.1/Submit) id 63LH47sR3771903;
-	Tue, 21 Apr 2026 12:04:07 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Tue, 21 Apr 2026 12:04:06 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
-        Alexey Makhalov <alexey.makhalov@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Geoff Levand <geoff@infradead.org>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
-        Eric Biggers <ebiggers@kernel.org>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Thorsten Blum <thorsten.blum@linux.dev>,
-        Thomas Huth <thuth@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        David Hildenbrand <david@kernel.org>,
-        Alistair Popple <apopple@nvidia.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Donet Tom <donettom@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-        Will Deacon <will@kernel.org>,
-        "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-        Paul Moore <paul@paul-moore.com>, Nam Cao <namcao@linutronix.de>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Srikar Dronamraju <srikar@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
-        "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Kees Cook <kees@kernel.org>, Stephen Rothwell <sfr@cab.auug.org.au>,
-        Xichao Zhao <zhao.xichao@vivo.com>,
-        Gautam Menghani <gautam@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        Guangshuo Li <lgs201920130244@gmail.com>,
-        Li Chen <chenl311@chinatelecom.cn>,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Feng Tang <feng.tang@linux.alibaba.com>,
-        "Nysal Jan K.A." <nysal@linux.ibm.com>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Sayali Patil <sayalip@linux.ibm.com>,
-        Rohan McLure <rmclure@linux.ibm.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Yeoreum Yun <yeoreum.yun@arm.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Donnellan <andrew+kernel@donnellan.id.au>,
-        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-        Athira Rajeev <atrajeev@linux.ibm.com>,
-        Kajol Jain <kjain@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
-        Chen Ni <nichen@iscas.ac.cn>, Haren Myneni <haren@linux.ibm.com>,
-        Jonathan Greental <yonatan02greental@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-        Gaurav Batra <gbatra@linux.ibm.com>,
-        Nilay Shroff <nilay@linux.ibm.com>,
-        Vivian Wang <wangruikang@iscas.ac.cn>,
-        Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
-        "Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-        Thierry Reding <treding@nvidia.com>, Yury Norov <ynorov@nvidia.com>,
-        "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
-        Ruben Wauters <rubenru09@aol.com>, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-crypto@vger.kernel.org,
-        kvm@vger.kernel.org, virtualization@lists.linux.dev, x86@kernel.org
-Subject: Re: [PATCH 2/2] powerpc: Run typos -w
-Message-ID: <aeeuBnjhRN7G9gYK@gate>
-References: <20260421121420.26079-1-linkmauve@linkmauve.fr>
- <20260421121420.26079-3-linkmauve@linkmauve.fr>
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90173859FA
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 17:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776791344; cv=pass; b=ZwSix0jTzYYoqosGj0XSQ39jRx004/tYBLH+vGoE9j+aRvf7ButNh6E0nGCtjz6DUcgZqWI8u4VqCUTMVTEj7TE66NVwR4C4aS5Q85B6LYd9OySYG8xqciJgjk7wc7nTmmCi/KS1pqOBAQDne/AeUzcnIRIy1ggK579g5Gnor+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776791344; c=relaxed/simple;
+	bh=fX/Sz0zC6ezU75jh9T36eNVptRuVVrhH7wuRuIMNVVo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YvLdi6opXZYsm53TmIDkZSXNa3qj6hD3Qg2hyuWYOxGLF7V1ocHbTtfo8ZpORF2srubGe7NV/Z4/272d7ctCyuChE+dgH4WJBLWnWT0MENeMgd2IAZc0emaprW7d7au8SIKqpjWBnf2kfSDQdgYANc2GRQ77l1p75nHFOb2bXEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lH/qQcoq; arc=pass smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lH/qQcoq"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4891ca4ce02so265155e9.1
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 10:09:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776791340; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a0BmZixWstyxkkSlEJCGZH/j3VlmnTuPEbFlw0bt0WrY4LRxODK2PlYLmzAzdly2P0
+         K0BHprNKF5WtLI6iD+b8kd1+UQFc5Sx0aal6KimzTNCpCh4/7HJjaZbj/1W78IyGN0VV
+         VzyZW6U41dxg0YEknF0C4RoY8vX6lEKyq2ywRIpck4u0LioCtskPAcQ2pbfTS8yESrOp
+         +yEwtzQIVihq2uSubDo45/woEyoyfBtWwfF8zvHq0cat/PKl5CLeT99CnXDhm7JrOdlw
+         emlv5QSo0imO91jqfJc0DUdeHnfG2upJpd2imRZgOa7RNKI/xeRBLBwpeAzkf8WEocMk
+         al6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HFQ8wxNql59DNKoY4m4ShNnIhY0FuV9hRkmF8YGbPEM=;
+        fh=C1A4QJuxuSUtvzdrqyFIR17c5uKpFM7HIJWPLvKg2fQ=;
+        b=WmG1uvHjgMwsWY0qJaGC3Wk7HQwL+EWPl07jHzRv2rHrjLYyOJEyhLXFhV+UZWSQgk
+         huab0ZXBkvKuFHUYRM80v4HCfAMbQS9fKDd3LK6spLCLWrj5LtdfrIZZdDUu2wRYohEI
+         tCzG4qr0PclgEzKTCHJnN1AqVHxuNk8swtpKyZ3iYw3L8p96nSERFyi5NW1r8/WHurFW
+         ipw9ZGw0Jx1kao11L843GiwQzJ5Agwrb1JtfzPsSTnWmT/VHAmUfW5m7XeEpnILaN8hV
+         dXVi5fIqhLqXcnGauXGaVRH7aAEDWHAPo3l8YikGuB20FER8O8nxjNCLwDS+nnHOysoH
+         T3ZQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776791340; x=1777396140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HFQ8wxNql59DNKoY4m4ShNnIhY0FuV9hRkmF8YGbPEM=;
+        b=lH/qQcoqWgCzVH1l7CoLmWJ8vKSspfaNzKOO6kCZIx/X/0IPr3pCk9TXEs+8siDGJX
+         YqXwSymcBgzWg5aaozsGdFT35Srgt8ZbwcziVxBW+O710tCB5Qae9CoFHOw/CtivF0O0
+         OiGE8kNxRV1w8fzWCVb3vd6rtd4k4Y73LYWWy3MG+aZe4hLYzaRvLILht3CvNmbUuClU
+         Jz97iuNoyficNcXLqsMlcHAH3D91uvE3x/PLVHH4GvtFjee3AEABy5kv84siVkViZrqf
+         TUnb8sSYXwHwlVOjp5elpJufLH/mycCsXOnDKsfl9vwj0UuN4iyg2sbl1E85kxwqEEt3
+         C5EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776791340; x=1777396140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HFQ8wxNql59DNKoY4m4ShNnIhY0FuV9hRkmF8YGbPEM=;
+        b=pjB33S+Xs9tUaKdD8HQYnOhEp4j38NvnPQaxwHYUd7JbslW/cQTee1JnZS7fbeyb9p
+         +gTlKU556z3s3mcV+eHthj3ddTXO0WGzwoMhM1JZuRfc2hELJry8jgTAancU3Vu2E0QP
+         MdaGr9fSyxclRtUrUiyUHiD8qkvtJL+BloEvESR7V7R/oeiULs+igqzukAQ5j2q4zcsg
+         E1TZilLA0cAxb0H2jV1j+GnSglPGZtLwLz5enSgxQ2nwXpWbK1PJevR2MlkWYDx8UEUq
+         E6fjBa9fsLkCoj+ptwS/JGNKMUaF+6Oxba3Vty3qnRu9nofJSmDzYhgvCiIVrHo28T+/
+         +3YQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/KbcRco3mUId/AVOlLMRpr21XHOv2UXgoVwk9l1VSgnIEaNT4g41coITJ1wj8R64vNDNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgwRzfxUbkfQl3D+YA9KyCj1m9Qg5M17A9+Flw1OQ/KRo6QHQK
+	zWKEwsMT3cIeh7L9saJKtnlEOQD4qF/KnSuftoqbgSptUP5jlvkwFvbTBFzW6fkvjc6o9cGKhXP
+	ylby4PrTBuTGxawu7/ONILj+dBGxHkQ05Ot/ZXPbS
+X-Gm-Gg: AeBDies/NO5IMg87cm+1tO3OGCbRiOS8exBosZp2bZEcR6iU0nGrGFAz0JkjX7ugUoA
+	sfQ21BSkgPrW6PMXwwqTRWOslxpIPHWU7uQwTtKUfwLxBdel73PET82BywnAycFNYyhJYjO+jFW
+	jNNgm4S/xdOeGDfbE1koz6e/eLFxroOedzf0XjG3yYEad7mZ7zVNwBdtHM/UuJYngYClRr9L3ps
+	2gsmPVKyjts+WvGttWgHWJc8aMtAVqTuOblRYJLeNEguacXyN1nkY3AQHDtOqPG1NZtg6Hcayzo
+	rFz193+VzBkSgCgqsSCotaJwQnw7acA+dHzStBc=
+X-Received: by 2002:a05:600d:6443:10b0:488:c4b2:e832 with SMTP id
+ 5b1f17b1804b1-489013bd895mr2808755e9.3.1776791339707; Tue, 21 Apr 2026
+ 10:08:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421121420.26079-3-linkmauve@linkmauve.fr>
+References: <20260410151746.61150-1-kalyazin@amazon.com> <20260410151746.61150-11-kalyazin@amazon.com>
+ <aeemS2wm38Cm4qAf@google.com>
+In-Reply-To: <aeemS2wm38Cm4qAf@google.com>
+From: Frank van der Linden <fvdl@google.com>
+Date: Tue, 21 Apr 2026 10:08:48 -0700
+X-Gm-Features: AQROBzBifkAsQzS0X3Z1RL6hHFJu96bsJJpCRfOrgFmfYjKrDR-uZJ-l8nIAe34
+Message-ID: <CAPTztWb67XZvfcMVnbegDNNW0LJa9UsaTGx3M898xJUJrekk0w@mail.gmail.com>
+Subject: Re: [PATCH v12 10/16] KVM: guest_memfd: Add flag to remove from
+ direct map
+To: Sean Christopherson <seanjc@google.com>
+Cc: Nikita Kalyazin <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "ackerleytng@google.com" <ackerleytng@google.com>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com" <tabba@google.com>, 
+	"prsampat@amd.com" <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"gor@linux.ibm.com" <gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>, 
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>, 
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, 
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"pavel@kernel.org" <pavel@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>, 
+	"yangyicong@hisilicon.com" <yangyicong@hisilicon.com>, "vannapurve@google.com" <vannapurve@google.com>, 
+	"jackmanb@google.com" <jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>, 
+	Jack Thomson <jackabt@amazon.co.uk>, Takahiro Itazuri <itazur@amazon.co.uk>, 
+	Derek Manwaring <derekmn@amazon.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Tue, Apr 21, 2026 at 9:31=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Fri, Apr 10, 2026, Nikita Kalyazin wrote:
+> > From: Patrick Roy <patrick.roy@linux.dev>
+> >
+> > Add GUEST_MEMFD_FLAG_NO_DIRECT_MAP flag for KVM_CREATE_GUEST_MEMFD()
+> > ioctl. When set, guest_memfd folios will be removed from the direct map
+> > after preparation, with direct map entries only restored when the folio=
+s
+> > are freed.
+> >
+> > To ensure these folios do not end up in places where the kernel cannot
+> > deal with them, set AS_NO_DIRECT_MAP on the guest_memfd's struct
+> > address_space if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is requested.
+> >
+> > Note that this flag causes removal of direct map entries for all
+> > guest_memfd folios independent of whether they are "shared" or "private=
+"
+> > (although current guest_memfd only supports either all folios in the
+> > "shared" state, or all folios in the "private" state if
+> > GUEST_MEMFD_FLAG_MMAP is not set). The usecase for removing direct map
+> > entries of also the shared parts of guest_memfd are a special type of
+> > non-CoCo VM where, host userspace is trusted to have access to all of
+> > guest memory, but where Spectre-style transient execution attacks
+> > through the host kernel's direct map should still be mitigated.  In thi=
+s
+> > setup, KVM retains access to guest memory via userspace mappings of
+> > guest_memfd, which are reflected back into KVM's memslots via
+> > userspace_addr. This is needed for things like MMIO emulation on x86_64
+> > to work.
+> >
+> > Direct map entries are zapped right before guest or userspace mappings
+> > of gmem folios are set up, e.g. in kvm_gmem_fault_user_mapping() or
+> > kvm_gmem_get_pfn() [called from the KVM MMU code].
+>
+> ...
+>
+> > +#define KVM_GMEM_FOLIO_NO_DIRECT_MAP BIT(0)
+> > +
+> > +static bool kvm_gmem_folio_no_direct_map(struct folio *folio)
+> > +{
+> > +     return ((u64)folio->private) & KVM_GMEM_FOLIO_NO_DIRECT_MAP;
+> > +}
+> > +
+> > +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+> > +{
+> > +     int r =3D 0;
+> > +
+> > +     VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> > +
+> > +     if (WARN_ON_ONCE(!(GMEM_I(folio_inode(folio))->flags & GUEST_MEMF=
+D_FLAG_NO_DIRECT_MAP)))
+> > +             return -EINVAL;
+> > +
+> > +     if (kvm_gmem_folio_no_direct_map(folio))
+> > +             goto out;
+> > +
+> > +     r =3D folio_zap_direct_map(folio);
+> > +     if (!r)
+> > +             folio->private =3D (void *)((u64)folio->private | KVM_GME=
+M_FOLIO_NO_DIRECT_MAP);
+> > +
+> > +out:
+> > +     return r;
+> > +}
+> > +
+> > +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
+> > +{
+> > +     folio_restore_direct_map(folio);
+> > +     folio->private =3D (void *)((u64)folio->private & ~KVM_GMEM_FOLIO=
+_NO_DIRECT_MAP);
+> > +}
+>
+> Making guest_memfd responsible for zapping and restoring the direct map o=
+n a per-
+> folio basis feels wrong given the addition of AS_NO_DIRECT_MAP.  I especi=
+ally don't
+> like that the "rules" for when an AS_NO_DIRECT_MAP folio has a direct map=
+ will vary
+> based on the owner, and even within an owner (e.g. guest_memfd) will be a=
+d hoc.
+>
+> E.g. as per the series to add guest_memfd write() support[*]:
+>
+>   When direct map removal is implemented [2]
+>    - write() will not be allowed to access pages that have already
+>      been removed from direct map
+>    - on completion, write() will remove the populated pages from
+>      direct map
+>
+> That's pretty gross ABI, because with KVM_GMEM_FOLIO_NO_DIRECT_MAP, users=
+pace can
+> write() exactly once.  To re-write memory, I assume userspace would need =
+to do a
+> PUNCH_HOLE or truncate.
+>
+> What's preventing us from handling this automagically in e.g. filemap_add=
+_folio()
+> and filemap_remove_folio()?  Then the usage rules are pretty straightforw=
+ard: the
+> kernel must *always* assume the direct map is invalid for folios from
+> AS_NO_DIRECT_MAP mappings.
+>
+> Then if KVM needs to utilize a kernel mapping, e.g. in kvm_gmem_populate(=
+), KVM
+> could use dedicated variants of kmap_local_xxx() to deal with a local map=
+ping for
+> a folio/page without a direct map.  Or, KVM could simply disallow the spe=
+cific
+> sequence that would require KVM to do the memcpy (I'm pretty sure we can =
+do that
+> with in-place shared=3D>private conversion support).
+>
+> I realize that could throw a big wrench into write() performance, but IMO=
+, before
+> merging either series, we need a complete story for exactly how this will=
+ all fit
+> together, in a maintainable fashion and with sane ABI.
+>
+> [*] https://lore.kernel.org/all/20251114151828.98165-1-kalyazin@amazon.co=
+m
+>
 
-On Tue, Apr 21, 2026 at 02:14:14PM +0200, Link Mauve wrote:
-> diff --git a/arch/powerpc/boot/dts/fsl/ppa8548.dts b/arch/powerpc/boot/dts/fsl/ppa8548.dts
-> index f39838d93994..32558104b3a9 100644
-> --- a/arch/powerpc/boot/dts/fsl/ppa8548.dts
-> +++ b/arch/powerpc/boot/dts/fsl/ppa8548.dts
-> @@ -95,7 +95,7 @@ i2c@3100 {
->  
->  	/*
->  	 * Only ethernet controller @25000 and @26000 are used.
-> -	 * Use alias enet2 and enet3 for the remainig controllers,
-> +	 * Use alias enet2 and enet3 for the remaining controllers,
+I agree with this - this approach would also allow for memory that was
+never in the direct map to begin with, or has been taken out already
+(for which I happen to have a use case :-)). guest_memfd and other
+code can then assume that AS_NO_DIRECT_MAP means they have to take
+explicit action to map it if needed. It's a clean, simple ABI.
 
-Aliases.
+With the current set of patches, it seems like this couldn't be done
+in a clean manner.
 
-> diff --git a/arch/powerpc/boot/dts/mpc8308_p1m.dts b/arch/powerpc/boot/dts/mpc8308_p1m.dts
-> index 41f917f97dab..48a98449ecbb 100644
-> --- a/arch/powerpc/boot/dts/mpc8308_p1m.dts
-> +++ b/arch/powerpc/boot/dts/mpc8308_p1m.dts
-> @@ -90,14 +90,14 @@ can@1,0 {
->  			compatible = "nxp,sja1000";
->  			reg = <0x1 0x0 0x80>;
->  			interrupts = <18 0x8>;
-> -			interrups-parent = <&ipic>;
-> +			interrupts-parent = <&ipic>;
->  		};
-
-interrupt-parent .
-
-All the names of properties have a meaning!  Just as you cannot change
-a function name in C without changing all calls to it as well, you
-really should never change a property name (if you want stuff to keep
-on working, that is ;-) ).
-
-In this case, the property was never actually used (because of the
-typo).  Maybe it wasn't needed?  If you make changes to a DTS, post it
-*separately* from the rest of this series, and test it *thoroughly*.
-Just a "does it boot" test is certainly not enough.
-
-It could well be that fixing the typo (so that the property name becomes
-"interrupt-parent") makes the kernel no longer boot on the systems
-affected, or less obvious problems can show up.
-
-It will need to be tested and evaluated by whoever maintains the DTSes
-in question, really :-/  And you cannot test it works for one DTS and
-then conclude it will work everywhere, heh.
-
-
-Segher
+- Frank
