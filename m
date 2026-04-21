@@ -1,199 +1,172 @@
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazolkn19013075.outbound.protection.outlook.com [52.103.74.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D156A2D9ECD;
-	Tue, 21 Apr 2026 08:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.74.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776761948; cv=fail; b=DEzX/5p8IOz7un/vwMOv+4L9bO8LPMo+AQB538OIo/wJLpZmA/H10o5Y3Qpbcn9gi/PVSU3bZlYgTwvdj6zUZ40/6rx0QOIhMdYcLDqnMVsyFi19MfEIo05Ue42ARy9L51EWWVSrcebIR1cq1tCEYMfVu0bb2Nnh5Zcopqcuggs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776761948; c=relaxed/simple;
-	bh=NokonzZuvXtjqF4bjgjXSAsh4sHFzRqAlXBmQJLe9pc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=f+cj2Fvhh5TKWxWl8uwJkcXJXwpNl9rvorwI4pCmdcib9PrOFnQ5p+CiJ5dKIBIk8bloPinQfUCYPXWpLklDTywjYqQNIKioxhgBxqEv4F1V2ZG2hsj3C9K4k/NcocfYIgZoK76gd7s4BJCePsEBwezAkAgTpEgQGe6q2XudQhc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=YeYKypEt; arc=fail smtp.client-ip=52.103.74.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EFE3603EE
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 09:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776763513; cv=none; b=YnVYi3s/37cZPgX2rRDSHhPKdZNAX2pLsqH1GOjVA8tl4BkHneFAck9cGkXNH4o+suStjjdjKJVSXuxD8WELhimAYM6e0qu8qtZQFlh2oY/btGnTpNt1rIuinFW+ItiCJnz4q0VqRfDzhqnRe+w0s1q1I4xQLZ0Ab5ytjtZZ5y4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776763513; c=relaxed/simple;
+	bh=nJwiGFl4TjH5C8Mw3Fm+cxT0UutDEaY57xKcpUJmn84=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=MTz44ZogII4gxlfLssfhPoARKLN/TDotFgRoLOQ+ItKGt9nYVf9Dbj4o7ekDnF0A8E+fRHAxEcf/9bVkq/AHecy91qP0OZoBzMUTBuD2GTMoEZ0SRJinrbvEmjjTFnsvHWfO1+mB1iOwb8xiNM727m4hji6Oxq+L1WTAAolfknQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=i6GdwEp0; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="YeYKypEt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I+LnMJQ3/zkSiefx3/vkImGCINPkF0AOP7EmluBGzSf8+hwUBj7qE64ZRSd4ZestPRtuqkFjbkquN4t4rLOS4fPIG+iK3qau/tXU4fkzJvc0jLY9Kvv17SCSIhOfEqU4UqQr3CdXdXTIt7cHu6fRStRZ1wTyNv4xF/CnBE77F6yDq6XCg7+79YP00oFwbwY8N8VtxskwNUumhWnKZl4xzvxw0dCT7QNMSpdRJ8yEG/JbUbISS+y1em/0tluS/FPixdxaleBmg7VSxtXZ7ETRwRMrp+66kI0PUIdu4GPfl4XhX7oh6k/6/2iyjUalBuGH70CwLU+04D7GzllZ0gsKew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=duyCc3MulzhCf6MuyPdfhWEmckTc5p1/WTYFSt5JomU=;
- b=Z+jQdUkt3A5szxObrkExymOKHmW+nvIyri7dAfdfokIWApB3fviPXvuSSIgx0T2jyoczhZZqE6MMISgScLZrV+EDrdTxtyPEdCUNdBA6qZhPjlx/ruz/NLXULbI6d0t43VMQ+fkOm9WjSGHzmghWRzTsFBKxR255S0iTDhPHKor0Ydyt0lRi+Ezuf962abzQChOZCWhV7EwSFDXaZvLgRvsor/RXp2JHf2hdydX5qZE8Qrks7NOsXaaZXTqDvz0zGrpliJTi/aacHrR6W4LJgnS/2ZC+H9/d6JAdfhp4FsxggPemSxZXqPUR822Nf1tuobQnLzlgW86geE3RTfByYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=duyCc3MulzhCf6MuyPdfhWEmckTc5p1/WTYFSt5JomU=;
- b=YeYKypEttIvlgRULntCJdJg399euKuwY4P9vSjosu92hgBuF/1lfQhNRMuy/uj9OH8z/wunHcjzMZPBahchjpFBzqW9SVubrBaYIhlVF+MopcZuodbBQhlr7QoelcB5bgf7vzE+7A9pJaWboBDy+IsDLMvdfnBzgitHs4bDylEuVQSom8IsksYWIc9s5jINUwEMS165mGpxYZXoRWERxvLLBjbohic9jQgJKGLTRS8WuFW3fQo8/a4cRmnp6x5srWngQUlu2A+G3dSw8/NxBzBJdxeMNMs7SMiSKxKWgaGQUXCbm8h/MR6LOEbAnX33i1f8VN5WXi5sn4/u6v18Pmg==
-Received: from SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- (2603:1096:4:1b0::7) by OSNPR01MB7771.apcprd01.prod.exchangelabs.com
- (2603:1096:604:31f::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Tue, 21 Apr
- 2026 08:59:03 +0000
-Received: from SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- ([fe80::c735:fab8:6e3d:6d1c]) by SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- ([fe80::c735:fab8:6e3d:6d1c%4]) with mapi id 15.20.9818.033; Tue, 21 Apr 2026
- 08:59:03 +0000
-Message-ID:
- <SI2PR01MB43931A8F02B985CBC7AABF49DC2C2@SI2PR01MB4393.apcprd01.prod.exchangelabs.com>
-Date: Tue, 21 Apr 2026 16:58:28 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: Dynamically scale directed-yield retries in
- kvm_vcpu_on_spin()
-To: zhanghao <76824143@qq.com>, Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <tencent_91386147982D1B2901B22D2423D4643AC90A@qq.com>
-Content-Language: en-US
-From: Wei Wang <wei.w.wang@hotmail.com>
-In-Reply-To: <tencent_91386147982D1B2901B22D2423D4643AC90A@qq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TP0P295CA0040.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::13) To SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- (2603:1096:4:1b0::7)
-X-Microsoft-Original-Message-ID:
- <9b884a56-5891-4f31-b775-b350197c309a@hotmail.com>
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="i6GdwEp0"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b2429f98d0so22380895ad.2
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 02:25:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1776763510; x=1777368310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TYfKwapVQTASKc189TeQO1FVNxhT1wLsuvJTPgVY/gk=;
+        b=i6GdwEp0vkUVEscd8KRSDlOwXOjiFOF2TFeYYt5FO74sRtwInYg6o6LmbhrhF/d2XW
+         ytf0l7BycADWJ97Cs5AuPLQTp0GJaX9Fgtgz8lSDrkoAGIecUe1RTzuHl0s/gG+yOohh
+         sgjSYikWwR31bJNO3ivBjXF6DGfT0Mg+ejNl3pQRDUFTnt5adQh5ehqiIytsfwIUJroI
+         nMjoYIYa/XDLYI+uZQKklKWzBhGfNksYLIybZw/JRwL0K/87J0sjOAfV392KsVbfTGQV
+         L9nXbwokqZFrkI9TAF1Tu6m4RLy/PwMtGjb3v51Icy5LH/r4sRTbe3cV2G1B2xVC2gij
+         nhsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776763510; x=1777368310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TYfKwapVQTASKc189TeQO1FVNxhT1wLsuvJTPgVY/gk=;
+        b=jZUx3Nnz291rszl42nKQTV5tGG8+OmgE7tiABdjLBbp0MGVZ+fslqKX1PIc62OBRsm
+         7/4ZjhKsmpIxvyqDTCF/gc7qAXSiu9ljfzEPdIyzxnhGwFePiwMQthBI8AHw+inWUh3g
+         1s4dYv6hqHkr5oufMFXhWFtCdFSafN0juw4hghAhw1uxdLowKF4edJUdQNZvsOpVdxH6
+         8wgUQ5uMIYm165a1XApc5QXtHyy5DnOIZd2U8tTGpkE2wOUlsREFBOvk4Z4FlkOELVPu
+         A82XZ2rRo3ALOt0Tuig1iREFujatzEKvAlF8VuzqqpSzkxiLqalNIojlK+KKyqyVAIzA
+         HI3g==
+X-Forwarded-Encrypted: i=1; AFNElJ/JiE7fOp0kC3oGSpigCFANC2twWebTq0eFZcSLmXR73O6KDPLipNzF9dkCBUtaNPOky7I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4cGg03LpEPQxXZlAPnkTgwLz4CCVSkZ+QLcpzGnmCDly4T7s0
+	i0332ZXqWfc6HuuthqVT2Ujewl7VcTrVv38U0nV3VbZrAfMGDZfX2AcKZfkLQNajo+I=
+X-Gm-Gg: AeBDiesg7RIEJBDM31x2o5G7ls6oy6qxz1dHF56LHthuRruogy2++90IPoYxOcU1VZc
+	zJF7HoKBYgvqO8c6IBfb9hLpWjH7K8KtgTjCEaQHK6jWdX2dI90a8xhWT5CJwbsFfwtFI0GPwuf
+	MKoZC1lHOfxWPw+T8tpK2XpdW7/1jKHy09ee0GPZ5q/FVMJUArZgdyry+ydkuY0Lt2IB8SAaLF4
+	vcvjq3563hC2D8CR76Tqa20o7+OuwSKjSgxk5L6ysfoGbmwnmiddzuace96eY61ogEMGLZjmRxx
+	kPwic8e6JETAvh/qFeM6ORb058CWLQrjS26k3hVPZpNVaU8onl8vax2m6M7VptJG52+OLCpyOHh
+	qurmcCVpAz8ImCjeKbD3qoHa26C+KQHepaaDpWudTl/XppuEjL/nQhsr4qrm4xXofyqZfizgq/t
+	64but0Cv+i8AiyqjGRQyHTGQjZyC6qpUQP7LrZCcdh6WkL3pC1ZQXERlTKGSQevxn1fT/KKMD/9
+	OV003g=
+X-Received: by 2002:a17:903:1ac8:b0:2b0:70c8:ccea with SMTP id d9443c01a7336-2b5f9eaeba2mr175964215ad.13.1776763510266;
+        Tue, 21 Apr 2026 02:25:10 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([61.213.176.6])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff39csm131965105ad.4.2026.04.21.02.25.01
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 21 Apr 2026 02:25:09 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: akpm@linux-foundation.org,
+	alex@ghiti.fr,
+	andrew+kernel@donnellan.id.au,
+	andreyknvl@gmail.com,
+	anup@brainfault.org,
+	aou@eecs.berkeley.edu,
+	apopple@nvidia.com,
+	ardb@kernel.org,
+	atish.patra@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	cuiyunhui@bytedance.com,
+	david@kernel.org,
+	debug@rivosinc.com,
+	djordje.todorovic@htecgroup.com,
+	dvyukov@google.com,
+	elver@google.com,
+	glider@google.com,
+	ilias.apalodimas@linaro.org,
+	junhui.liu@pigmoral.tech,
+	kasan-dev@googlegroups.com,
+	kees@kernel.org,
+	kevin.brodsky@arm.com,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	liu.xuemei1@zte.com.cn,
+	ljs@kernel.org,
+	namcao@linutronix.de,
+	osalvador@suse.de,
+	palmer@dabbelt.com,
+	pjw@kernel.org,
+	rmclure@linux.ibm.com,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	ryabinin.a.a@gmail.com,
+	surenb@google.com,
+	vincenzo.frascino@arm.com,
+	vishal.moola@gmail.com,
+	wangruikang@iscas.ac.cn,
+	zhangchunyan@iscas.ac.cn
+Subject: [PATCH v1 0/7] riscv: add Svnapot-based contiguous PTE support
+Date: Tue, 21 Apr 2026 17:24:50 +0800
+Message-Id: <20260421092457.37649-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SI2PR01MB4393:EE_|OSNPR01MB7771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8d4af21a-b8af-4db8-7da3-08de9f843bf1
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|37011999003|5072599009|19110799012|15080799012|461199028|41001999006|8060799015|51005399006|23021999003|6090799003|7042599007|40105399003|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZDl1c05sNmc3N254MXliRytPeEsyd1RFQ0Y5NlVRRHZNalpPbGx4NnVzNHhL?=
- =?utf-8?B?OUtlTGttVTFrd0ZTdWxlU0ljWTJuL1hnckY1VGZNQ2UwdWJwMm5vMUpFOHY1?=
- =?utf-8?B?VCtRcWk2dHRaZVpCTmFXRStGVURWaTAzUXR2bmxpcDlEeFpWbm5VZGZYUnFL?=
- =?utf-8?B?TldFQ1dxZlBqSGlKandoblA1REk1ZGQ2K0s0eFl3TTExLzlhb3pnc09uWFRI?=
- =?utf-8?B?YlZoZ0JkbFRlOGFaRXJQSitIdjNybTZleWd2K3hkRmxBdUpiZ1UzNHJPSGNU?=
- =?utf-8?B?b0NTNlNWZjV6SG0wVXNjWjNYdUp6eS9xRWh4bnQ0cy9HTStwN2NZYVlCL0c5?=
- =?utf-8?B?STd2WVVRZHhub3Iya0twMjVleUVnTGttNlByRERXTmVZYk5ReTRGUGJZUGZk?=
- =?utf-8?B?blBwNjBNRmVWV1hOdzh6cmVPb29PM1RkeGYwU1oxUUpEaWdIQ0pxWkRkcEo0?=
- =?utf-8?B?eW0vZU5Mbi9iUHdOSXFNbVI3enJKUmlDTlVqSDUwQ2JLYnFURHRHVHBnY0xz?=
- =?utf-8?B?NU9xbWxyZnJxNVJBaml1TnNCVkJiTEx1OTdrSUh0S1cxamprSFh3N29nbGNw?=
- =?utf-8?B?Ykw2dFVZQ25aSkZXTGJkRUJJT3h1aG1UQzU2YmZQMnBxOVpsaiswSkJDVmhB?=
- =?utf-8?B?bW5pV3k5dWhVRm9ENmxKVDZ1Sm5HS204bmhuWGRBMU1lTGtZdDV1bzlIWjJ5?=
- =?utf-8?B?MUNIVXRidE5YZ0RjUm1vR3IyajdiM0pJN2p2d3RUL05vRGQ4Nzh6MkRBdCs2?=
- =?utf-8?B?K042cGVWcE9xdEE3UjVEWFhWRzVmMkZ5Y0xEZVg5Y3VVcUxJQWNCNStoS1RZ?=
- =?utf-8?B?ZEN0dS93dG9PMzhrVGhxRXFPZFdWdDhYQ0ZUSEx3U0xjMzFVWnJMbzNlaUtF?=
- =?utf-8?B?N2hEZm5ybmtjQW5RSE9MdW03UHlVbFgxbkpUUXFpQUtxcmxnUkpXZTFnSDdo?=
- =?utf-8?B?cGM1SEhmbDN0ZC84b2Y3R2crMDFaQkxMMllkU1kwS1BrT25EU0c5d2hxTkUv?=
- =?utf-8?B?RWVWbnE0eUhVbmxHYmcvMTNwQ2hGTEU0UU1ZaDJ1VVIrMGx1UkxKWmVWQy91?=
- =?utf-8?B?Y0svVFk3SmNFK2dhR1pydkhuemNrME8ySE5QbmYvQk9jMDFDT09WdlJlbWIw?=
- =?utf-8?B?RnBtNmNwS1ZkWWhENWpXT1pnU2tkOE5TVTZlZTRVNkZnengzdTdxNC8vMW1G?=
- =?utf-8?B?bW9qMlhaZmFiRzBVclpKdkZsQzNZYlAwSVpRNTI2QXNoNXJVS21JVHQ3UDlw?=
- =?utf-8?B?cGdDSktScnNGR0Q0Wm80UHMwcEwvY2tobHkwRW9SSG9HOGRaR3ZuaVlmRUc0?=
- =?utf-8?B?ZlkvTThvd2xTTUJ4MUR0b21zN1IrZnlhRkRhb3B1Z0ZMZWhlNzEzKzFIaU5V?=
- =?utf-8?B?cTE2eGlGSDFBYnc9PQ==?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M3ZHR1dXbWtCVmNlaHpLQlN4NTk4TEdURnROaHRYN3BJb0hWYnFxNnRiWnFD?=
- =?utf-8?B?U3NoZm1LRzluN0YzMzZSeDZibHprYUhqSHlVc3hORjFJWmY2T0lNS2VjSGNm?=
- =?utf-8?B?Wm9SanlSc29ZYndneTV2Qm81N0xSOHB0TGprUnZQWmlIQ05KK3lRb3ZidEpT?=
- =?utf-8?B?QWN1eGZyZFRCNmdKYldoVDRmWUxLQVU1VkttUEg4bVY2TVZtWG0vOWwzcW9m?=
- =?utf-8?B?WmFjVC9CRmdLK2xJTVdDNmg1SlNXZEVtNXIwWElpWnpSZW5KUWxWcUJFTkRk?=
- =?utf-8?B?Q1dsdTVrNU8wZmRwaytyVGpkT21WNzNIK0lIMTV0OFhuTjFjUXZ6c0w1cENn?=
- =?utf-8?B?a2dTaGQ0MmtIbzJzTG5tWEhCRGdIelRPQWczditXY3haYnhzdGovZXNoNnFV?=
- =?utf-8?B?emFBY205VzRZaVowR01sVTZqWUdFakxrNWw1c0Foc2tuR1F1THhlNnVILzVC?=
- =?utf-8?B?UE9FUnd3WFRPRXBSZS9FajdaazlMN3VhUFQzaGVuL21PQ0FzckpFbTZMZUpx?=
- =?utf-8?B?YUVCVXorV3k0NVpkMnRKMHBhS0VQU29oME5QaVRpT3RVQjFhK2g0U1VzS1Uy?=
- =?utf-8?B?TjByS041VXJRZGVyaGdGcjdhc0ZDVjhiNW12WkJ0cFpZMFFIOTNYalhjOXRo?=
- =?utf-8?B?Nk95c281ZGZ1WHRjMUZTUVVUenhTQkFaeHU5QnFQeStVd0pORlNtdEVJOEg0?=
- =?utf-8?B?VUNoU2JvZUlSVGN6UTRGWWVPSGJpeHZ1WjNGL2RiNnR5WC9INWJ2Q3NXblg2?=
- =?utf-8?B?aU1XZnMxUVZjUWp4RnR1NGRGajZ0S3VzOTFsUEp2djcyWnFFamNCbUxZa3RI?=
- =?utf-8?B?WlN3c1NiU0ZCZTZmUXRHMWtVWkphNWswOWViMmdRbmdBbC9BYjVnM2ljK3lD?=
- =?utf-8?B?eHZzVWUwL1NJYTdxQWVnZFJUY2U2bEp5eGQrK25UL2JVOUhIS1pCSm9NeER0?=
- =?utf-8?B?Nml0R3FyeElWa3RGS0p2VUgvUTk3Z0xLZEJTRE9ST1RUYTNkMWhyanB3MnBk?=
- =?utf-8?B?MG1zVXNKZU9ra0w5YVFvR3l6RTk3UlpIRkgrWG5DRVNRamhDTEdTZkVkR09Z?=
- =?utf-8?B?OUlIenlBZ1NPeTJpeElpTTVFcjF3K05zT1RkNk9IZ3RPYmFpRmVEMVFMMmYz?=
- =?utf-8?B?SVJUZnRPWjFXTnFyWGtKakRrN2UvaDBtWWVIcDlyeDNVU0xZVWRYc2V0aFBy?=
- =?utf-8?B?VzRnV3o4UVdCV0c3dkd5bkN3U0lMS1JUTE1OZjQraDlFN05MVHRWZ1QrOUZj?=
- =?utf-8?B?SjhMSWdVYy9HUzBrdTVBK1FQTFRBZ3VlZTJEKy9kL044RFc4cmpBYmp5STMr?=
- =?utf-8?B?d3RzMG9MZEViMmVxcjQrUHRUK1FBdjhYQUlZMFRFVExMKzJGSWEzamg4Qmtn?=
- =?utf-8?B?MStNZ2wyZ08yc1lkYUE5OWk0VUxaS09UQ0VzNnBxSHBkbXBqdkRHbVVxUHVW?=
- =?utf-8?B?ZjFDRHFEaU9jL1JxRzNGOHV0NGlkYmdVRjA4RHB3TTIyd1lGM2ZWV1VxWERZ?=
- =?utf-8?B?aUltRC9pWFZEb1liRklWODdpNnk1WFNnS2xIWU1YZzJvRHFpL1N5K0ZsbmdI?=
- =?utf-8?B?aVl5ZytDQXZab2ZieUNlZnhDZVNmVk03WlRFZXU2VW1tQVRqdVh0UE5lWkgy?=
- =?utf-8?B?M3dFaGovbXMrSjNqS0RuZ0E3NHAwVHlpUVFnVzhzbmZNNy9JUmJRYnNtR2FX?=
- =?utf-8?B?cTJYSmExcEVYcEszakVseFFTNW5WeHo2aGVTRld0dDhmckpPYTNZTTdqa2dD?=
- =?utf-8?B?Ni9MQjZpazlqa0xCNUw4VjBXemtDQXFUNWJoRStydkV3Zk9TbElPM1RZbGR3?=
- =?utf-8?B?UkVjVENCZjREVjRtcVYza25lUWdTYjRGS1NtblF1dS9vbjZ5Uk1aZ0EyUy9w?=
- =?utf-8?Q?vOzCqg0T5Jjbm?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-3e488.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d4af21a-b8af-4db8-7da3-08de9f843bf1
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR01MB4393.apcprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 08:59:03.2457
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSNPR01MB7771
+Content-Transfer-Encoding: 8bit
 
-On 4/20/26 10:31 AM, zhanghao wrote:
-> kvm_vcpu_on_spin() currently uses a fixed retry budget (3) when
-> kvm_vcpu_yield_to() returns a negative value. That fixed limit is
-> often too small on large VMs, where candidate selection is more likely
-> to race with scheduler state and transiently fail.
-> 
-> Replace the constant retry count with a vCPU-count-based budget:
-> 
->    try = min(nr_vcpus - 1, 8);
+Hi,
 
-Why is 8 the right value here?
+First of all, thanks to Ryan Roberts for the work on mTHP and
+Contiguous PTE support on arm64. That work provides a very useful
+reference for reducing page fault overhead and TLB pressure for
+large but still PTE-mapped memory ranges.
 
-Also, the probability of hitting these races depends more on host
-overcommitment than on the VM’s vCPU count.
+This series adds Svnapot-based contiguous PTE support for RISC-V.
 
-> 
-> This keeps retries bounded while allowing more opportunities to find a
-> yieldable target as VM size grows. Small VMs keep near-identical
-> behavior, while larger VMs get a better chance of making directed-yield
-> progress under contention.
+To achieve similar benefits on RISC-V, this series introduces a
+Contiguous-PTE-like mechanism built on top of the Svnapot extension.
+The intent is to preserve the core-MM PTE semantics while allowing
+RISC-V to transparently fold eligible base-page mappings into
+Svnapot-encoded contiguous mappings when possible.
 
-Increasing the retry count also adds overhead. Do you have data showing
-that this could provide a measurable performance benefit?
+The series splits the low-level raw PTE helpers from the public
+core-MM-facing PTE helpers, so that:
 
-> 
-> No functional change is intended beyond retry-budget tuning.
-> 
-> Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-> ---
->   virt/kvm/kvm_main.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 89489996fbc1..cbe53cea10a3 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -3961,12 +3961,14 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
->   	int nr_vcpus, start, i, idx, yielded;
->   	struct kvm *kvm = me->kvm;
->   	struct kvm_vcpu *vcpu;
-> -	int try = 3;
-> +	int try = 0;
->   
->   	nr_vcpus = atomic_read(&kvm->online_vcpus);
->   	if (nr_vcpus < 2)
->   		return;
->   
-> +	try = min(nr_vcpus - 1, 8);
-> +
->   	/* Pairs with the smp_wmb() in kvm_vm_ioctl_create_vcpu(). */
->   	smp_rmb();
->   
-> 
-> base-commit: c1f49dea2b8f335813d3b348fd39117fb8efb428
+-the __xxx helpers expose the raw hardware PTE encoding,
+-the xxx helpers provide the semantic view expected by core MM,
+-and Svnapot-aware handling is centralized in the public wrapper layer.
+
+Performance results:
+
+-Compared with the native 4K base-page setup, the mTHP + PTE fold
+scheme improves overall SPEC CPU performance by about 2%.
+-The native 4K page setup shows higher memory access latency, and its
+memory read latency is about 12% higher than this scheme.
+
+Yunhui Cui (7):
+  riscv: mm: split raw and public PTE helpers
+  riscv/kvm: use raw PTE helpers for G-stage leaf PTEs
+  riscv: mm: add Svnapot-aware contiguous PTE wrappers
+  riscv: hugetlb: switch NAPOT mappings to raw PTE helpers
+  riscv: add contiguous PTE range clearing helpers
+  riscv: batch write-protect contiguous PTE ranges
+  riscv: add Svnapot-aware pte_batch_hint support
+
+ arch/riscv/include/asm/kfence.h  |   4 +-
+ arch/riscv/include/asm/pgtable.h | 455 +++++++++++++++++++++-
+ arch/riscv/kernel/efi.c          |   4 +-
+ arch/riscv/kernel/hibernate.c    |   2 +-
+ arch/riscv/kvm/gstage.c          |  48 +--
+ arch/riscv/kvm/mmu.c             |   4 +-
+ arch/riscv/mm/Makefile           |   1 +
+ arch/riscv/mm/contpte.c          | 650 +++++++++++++++++++++++++++++++
+ arch/riscv/mm/fault.c            |   4 +-
+ arch/riscv/mm/hugetlbpage.c      |  55 ++-
+ arch/riscv/mm/init.c             |   8 +-
+ arch/riscv/mm/kasan_init.c       |  14 +-
+ arch/riscv/mm/pageattr.c         |  12 +-
+ arch/riscv/mm/pgtable.c          |  58 ++-
+ 14 files changed, 1222 insertions(+), 97 deletions(-)
+ create mode 100644 arch/riscv/mm/contpte.c
+
+-- 
+2.39.5
 
