@@ -1,227 +1,224 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011006.outbound.protection.outlook.com [52.101.62.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47611370D53;
-	Tue, 21 Apr 2026 18:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776796467; cv=none; b=r9kP8WeasMwDLSnLJGgDApDlgLhzvqqLaDyziCLOH3Y2UuKLeLSEiacurPyZymLw4aF8/1ugazsqp8AndTncPX875vNvC5DF44m7kOD9GtKbJIUVQ3JK03nky8DN364drpb1yge7mcBa/guy0HkAyB7S+fLRS8M6OvUSlAz3gqY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776796467; c=relaxed/simple;
-	bh=N7YD2AsfJCkT0QgcejkHQz90JHmdMqJCQD8lQ9MJwMw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=re7XhmdUvW0HPP00wCqpJrwORvNr1uqCYnjbKW7gLrKWz9QGzuucnsxEFboOGvak8DF8ehHPOW3x6OWo1nXkSTeCGaaqiviJZRtvkLEeZpTUDXuICmmcai3KRgsWT4IkyjLcUiks5aTCSoZnarUr0YWqymrsj9c0hVCc4sVgEZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QqwsSRCU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA393451C1;
+	Tue, 21 Apr 2026 18:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776797205; cv=fail; b=f1hqjgD/PAFoZeszypJcV9YRB0wHmkJJEv2yR5oAdKWdZzTUrxZTl47ktUQKIz0LzVvZZxexVMarouwHzZDLOnTdIbeq8bhcIMtBGkDwYVAAqFIhwAVWqVbwgBC6PmPNUntIlmlnG2WjWQqh+fbLhw2n2/BIi9JsremnXF+9xXc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776797205; c=relaxed/simple;
+	bh=O9Njtr13FIBuHnUMEFeu5q4ddYl6y2cnHmYXY9PVVy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HhTSnqruMtHA0ht3eg5HAp5fjLWpckfGUaAMDFuc4NExl89rvh4DzAK+ESK7uzP/ZT4GVAh2zqe0nSYKEXPK6i1BjIKTBTDNQZpxWQJYJi6ew/7EVmtBfRnk9hkOaINC654IXtuyGSpRFWr/EtpkxV9V8jHEl+ycsgh3LJ67b+s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IDPxN0f9; arc=fail smtp.client-ip=52.101.62.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QqwsSRCU"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LHoJMG554385;
-	Tue, 21 Apr 2026 18:34:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=jlts/1
-	c1eD99RlKXaStlcRLT94jBErUB6PeQcFLgi9c=; b=QqwsSRCUsT+MqDjNWdydvA
-	WfZGaPUVxL11dFEbgA1whpZsROFc58qETCVjej2xAvDITv3xNUre1BTD59Sl76hx
-	BE7CyWZ0S/e4wbzzNXw07NL6KN7BFKCuRKOj6BxLSgA8P9kmIajlbL05K8fbPVID
-	45ojOmAlN30hlfNukOnHqJhdDmvk0inaSS12/BwkRts48Zv9Jrhx6tv8xd6FBbAv
-	JJsAEzoxJnw3yDjU44c75B3+8iDLpV7pb2wc/ziO+3A9C1KDdqC26SKOudn5afde
-	PSpaa+xvruOlctEQnJ6UtVvgd+m8yjOMiITRqDdOIeE0No2yF5RXz9kau8yG4fNg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2h9myws-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Apr 2026 18:34:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LIKPF1025307;
-	Tue, 21 Apr 2026 18:34:07 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmn9k1vvt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Apr 2026 18:34:07 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LIY6sW58589580
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 18:34:06 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1CC4658063;
-	Tue, 21 Apr 2026 18:34:06 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 71AFB5804B;
-	Tue, 21 Apr 2026 18:34:04 +0000 (GMT)
-Received: from [9.61.103.12] (unknown [9.61.103.12])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Apr 2026 18:34:04 +0000 (GMT)
-Message-ID: <e03198bb-7dcd-4fac-9857-01e750787001@linux.ibm.com>
-Date: Tue, 21 Apr 2026 14:34:03 -0400
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IDPxN0f9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MQuDURL32lkBDBTlrYzjLcXiU7LVc4oFnje2nBOo4yupq0ewCHcTlxOfdwjdJb+7vu0DUYJ4FOZQw3e5GFHmKmVmlZ9+nR9fihi79Ro6guRHweuOw93tLX7CALiB9IWTBB64LI/LGyMQXSiQgASU8ku+0uTQ+J8sQMErSJ3eOTKbp86Sz4fZHzDqyOs6e8XgflQ0umMkTmotOVQy1mupsRwNxLGyYOudd4JP7U7O/SmDdV+021SUcS/U6XnILcQu1fjiZmCdx6mOpCOJpl+WOGWRg2HjNixEIxgV//SM5IC3WHlb2BJ8+9suNwikxVI6o+ZwM+Nm+3ZnVPF/3qH3tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e+kACXubQVychG3T3bFYkuF43LW1APPB/RYMm5S0V84=;
+ b=gBITsIyTW3Pa6a4bg5W1WrUPwwm3UnS1JIZvW94soi6TX7ExyvPLGHODbkGYpQXx2Y6KhK5gSQDNLzfmGMOcSuo9fmbNGRzNbjf4XoiyAUgeOguX9tRqeDjq/teiLxDzqkeBkV1x5UgmpG/Y7raLMzLLia2Bg1FfABPFF2m+TBSt3ZhmIBVmRf3YJVFIOSnQ7FQAW6MtYsNya/g5U3ugsCknmo3kDFrnM8kJaFJCxfbx6Sz6xz24XRYdnjDVN13XPxaWgmtE1O1bymf/H788Ld3s965atO8wR5HYezYyR9oDtTFrfnkVjaWJNJBlGJnBCncDEb5ETpIrkcMe2gle6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e+kACXubQVychG3T3bFYkuF43LW1APPB/RYMm5S0V84=;
+ b=IDPxN0f9ISxOOLeascsjtndScu3b7giRZirIsn5KIfWR/3snqn1ODC4lo+TrPExg8Fjut21ow3mdJfvrRQDHm9NU0UtJ0no32xUdip+89gmwU0QmbO/3u51a7fx0v0gPuMvE/sQLBcakvXY1uVImlFf4bcazMmH65LX3a9vxUMtGczEMZfmlLBUvHSQt4N6/OELBB80C8NjN1LzCCo1oM9F0TYC1fvchgXjhk25qZXEsYd+xFEhdWo/7lnVrafw3e1C69z66hadjAMXrJcVnNs36+Mm/STl0U2GWPLzOghr+EV8Rq4dLAiX2ecMbLNWOU8Ui144a3VzPhpULAg6BXA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DS7PR12MB8322.namprd12.prod.outlook.com (2603:10b6:8:ed::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
+ 2026 18:44:35 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 18:44:35 +0000
+Date: Tue, 21 Apr 2026 15:44:33 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+	Askar Safin <safinaskar@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Chris Li <chrisl@kernel.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
+	kexec@lists.infradead.org, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
+	Marco Elver <elver@google.com>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <20260421184433.GG3199414@nvidia.com>
+References: <20260323235817.1960573-1-dmatlack@google.com>
+ <20260323235817.1960573-8-dmatlack@google.com>
+ <CALzav=ehpWA=XchL+XLZuaYfYmBTPNWDYt1W3LFY5-6+US4E7w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=ehpWA=XchL+XLZuaYfYmBTPNWDYt1W3LFY5-6+US4E7w@mail.gmail.com>
+X-ClientProxiedBy: BL1PR13CA0424.namprd13.prod.outlook.com
+ (2603:10b6:208:2c3::9) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/16] s390/vfio-ap: Add live guest migration support
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
-        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com
-References: <20260407205100.331150-1-akrowiak@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260407205100.331150-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: S_xSUQRuG3MwEo0MzIiNZMXD_lfGp1s4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE4MiBTYWx0ZWRfX1e4JZZ7hvYdN
- ql/S2BLLR8DoSaHus8dFTVAFqqdvkFWYS8+SBdk5w9SjoCsGnihTnlRnaWWGNxkKXO6hrhAvJ1y
- 5yI3kVIgldHH7bZ4HddKxNEjjuAeqCc0fszYro1eeLLYtLLHVvDrl93SaoWZ4Dz8cUdk027P5aC
- J4TUr7oao1+YN1/I9vpmt/MR4ERQjbQf3X3JEAz6gpSlgGlARiwTx5f6gR94XwjmxwUtY8KjhU/
- OV0c3io1Tf9y7KcYlz570hWNjvzvMMUkqjmZf2vMHBgysabGtEdT3dOCpuqVB+10da3spdoBOY/
- Ic45shy3sV5daNWRhdOyF8A2tCQTMvzanPV6wqCFGkYyxs6zT7wUbgQbSzaNrkKWDNhnTA1+iG7
- zVdyg865QY0RULFGbAPqZAz/M5PT/YFdhSvlbuRbXBoB3TDGwxzlo27p0qiPmF99rq7HuIHdk5w
- d+2rI/TcFwxVMhOMMbA==
-X-Authority-Analysis: v=2.4 cv=XLYAjwhE c=1 sm=1 tr=0 ts=69e7c320 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=BeJFQei6KuwYuYFmKvkA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: S_xSUQRuG3MwEo0MzIiNZMXD_lfGp1s4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604210182
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS7PR12MB8322:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11e3a8bb-3d72-426d-1df7-08de9fd60883
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+ 7YqzFTMfxS7NqxKLZmF1Gingefbl4N1kf8JVwm+ANR8iVFK1DOsJsAYC/xP6nQwnc0wWAocAObBvDPTmEFm+UQEbmKBCjYOTSB/imj54BriR7L/VRiyszpMPv/bfH990k7oCItmpipeAmqIdpcdofz0uJEOlngcuYnxlmWicp7b2AUpQCNE3ioEaQ5sGmMENwLog5SyCL5OaHaw6UpzJ7oHcKdHXiTRm7apk28Djr0QNOmMOdlJJ/XlxU8omunAtpPh1kpRGkwy0TFAvQtuj6aBnlB09cVFz0l3EnsAIXY24862AqgjF2RV5zznotqOBHbVBkvomZxy9l37nwbPHs9aEf9GVNmSPUWZOKVStwZpixpCDu6sPE7XiM6teBa72XpQXntfdcPi7p50/iFnIeOobFyHvbXz9o5Zn08UwFrHUWb74QyR8QWA835IuenEwLthxq9gYTSvVZMwBc682UPuqG7Eo44VpApBevpGwPMtycpmxbiJXqFTRRISaSXY04Uj3qFVKRO6UZfaS0pKIQLzTNuYqNHdPauqprQ1G8989929K/wYeF7SQ4T8eo+es/+aGUuw6cJDrcbRLjPVZG1nGkpc/95ogaEZm3XN6XPHkAExNTj7aHGpDsiVYDh+V0WvjI03208Y7AkjqLuN2KI42d2RqZFFGgLbs22hSIiMNS2IZYN+5rlltT8tf7bUp5F4WkTK/538ek72s4LycWgfCNxCiWxrJRmlhju+u2h0=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?OVova1VtK3BlZm1rd1hjaFk1QktHd1U4MXRxZXdnRU1PemNsa2JURFBORnFW?=
+ =?utf-8?B?eThiWStTd2hlSU9PM3dENFF4YUlQbkNqLzMzYTlJNjZPaE9IK29wemdqUllU?=
+ =?utf-8?B?QUZaK2JoTXhuaHVaNjM0a01zdWZ4WXptcE84azk4cmFQSEdHNTE0U2g0V0Zk?=
+ =?utf-8?B?UjRHVWNuS0lxNXNocFVHNVViMk15UTJ5b3NrRFVQNzZjVmhHK3NXQTRlOEdy?=
+ =?utf-8?B?eDBDeURuamsrc2thVnIwZ2NMek00OUpxTDBzUVUxNXI0d1NsTGpuM3c5eWtJ?=
+ =?utf-8?B?NCtEekNzdk5lN2l3ak05a0p1M0hBaWlCKzAyVjZrZ1hHNFJVcHQ1NVJiVity?=
+ =?utf-8?B?RXYzVVNBeXFWT3hJcFptTkJEUmVVSEk5WTA5UUJsRUNIdXhtNFJYTENTL1p3?=
+ =?utf-8?B?TkYyZEdsVXN3RThvN2I4WHcxckJvV001a0lSdHF0U0lOTW45SmVISjBlVks5?=
+ =?utf-8?B?YlJmaHhhY1F2TGlVdGszcTg0MkplQlJVb1BVbjcwc0pwVlh6L0h1UjEweVlZ?=
+ =?utf-8?B?WCtjdy8rNUEvdDN4TE9hNmROc0lIWkFrMHFBOTNvdjFkM3Q1dnJTZ2RSTEp0?=
+ =?utf-8?B?cDBUbUZDd2dMbDZQOTh5aUgrUU5SYmhJL0pQQndOTUNGUk5UK1VDZ2RYaVA2?=
+ =?utf-8?B?U1FHVXFDYkQ1RUJnRW4wdWlQc0Q1ckxNMm4yNWtpMHBHQTkrdHU0MmRDek5x?=
+ =?utf-8?B?enllOUQvUWNyTTFFMGw2UXhMNDVXL0lMeUJ1YkFmUzhkZFB4bmFzcmtwNGQr?=
+ =?utf-8?B?VHNlS1dFT1FrOTZQSnFrVkVIWkJ3clNJb1hYZ2ZQTFRURm1IZkY3YnhCa2l3?=
+ =?utf-8?B?NVFoOWlQRXZKa2RCd3hIdGtaT3BBUnVRWnhJN1RYc3UyWDdyRFBvNzR4N2RO?=
+ =?utf-8?B?Ujhxa1JkSHlBa3NMeVZ1cTBvemlPdlNiVlo4SE5JeFFvdEVmOXlmMGN3M0Jm?=
+ =?utf-8?B?dEhCMDI1TW9YN1pUNzNQQXJ3VFFrd1IvRXhsZTlnZUZMNnc5c1RVb1h1cXUz?=
+ =?utf-8?B?NVlEV05EV1I3VkhlV3RnMFlMRUR5d2tVTUdpWWp5ZWEvNWpHNTFXUGp2RWhw?=
+ =?utf-8?B?RUJCa3JVK0NwbkcxQUFGdGlXbnlCSlBVSEZTZTRXcGhQSGhLbml4ZUxwMExa?=
+ =?utf-8?B?TUVUOGtJVitlYnRzZDJDMUZ0cWJvRHhWbzJ5SEhoeTNQdWdrdEJXR3VaOUZO?=
+ =?utf-8?B?bDhuTERIc1hIdHBNSEhUR1pkQ21ZbG9SVVRxdjJ5Q01JdmpzdzM1NXRMVFVO?=
+ =?utf-8?B?UVV6UGJ3Y2FYRUU3NHFoRDhRWWhseTNzZTZ4RC9OVFN4dXB1V0pqQ1BZNy85?=
+ =?utf-8?B?NzdkZHFkaG4yQXQ4S2w4ZUo5OGpJKzkrUmdjSTlXRWY0QzZ3a3ZSby9BYWFF?=
+ =?utf-8?B?SlpDVVRHRW54QSt4dmphdDg2YnRjQ1laOXNrYnJDc3VodTcrbnNMR2hLNCtE?=
+ =?utf-8?B?Ymt3UStqUS9CN2tGeDdxYnZKcThlS3d1K2xwbFREeU55QlFRa2RMVlN2TlNh?=
+ =?utf-8?B?azFVTldRU0FnZVdkREoydGN1ZktDV2h3cGtQRmZrUmU2OTc2Tk9hazFXNEJy?=
+ =?utf-8?B?Zm1SVEgzN0c0QVcyQW1HNVB0SXdmdTVvUXhjSTJoREhwQmpUL0UxVnBUaUlH?=
+ =?utf-8?B?TXBRakd5d0lCT3RGaTRzbGdkY20yUjk3eVJTeHlvWVR2K241MHY5WG1SejBk?=
+ =?utf-8?B?aEpLd2VCeXNGRnJ2WjAyTUQrTFpPdXVDTGRVOVp6Mjh0cDRKVzZkTC9tT0hS?=
+ =?utf-8?B?ODFVbUtCZm55emNEVUZrVThPTlZibEdCWG92OThwSkZUYWhxOVQ0Y3ZYeU9I?=
+ =?utf-8?B?cXQ4OFRMdmdmTDkwTlZKWkZPM3JqbXU1ZUVoOFRSREI0VWcyZHBzSGV4d0Ix?=
+ =?utf-8?B?VnJ4VTJYYlMwK2xOMVo2bFVkbTU1dStUaE5mSGh2VyszN20yMmtOQnJTSkli?=
+ =?utf-8?B?NUllMUNXUU0rZHJldGNYUDBQSm1BbjlmQ2g3czhiSTZnZjNDR0tBNFJwYWVG?=
+ =?utf-8?B?VHZaSTh1b003dTk5ZGxoZEl0ekdFcVA4OUtTa2VvMDBtRFVjZTlvaUN1Z1NW?=
+ =?utf-8?B?bklkbjR6U1lSVk9qR2Nwcm13K01McU5DZGhMWmVadk9QUll4Q0E5MWI3TFox?=
+ =?utf-8?B?Zmw4UWg4ZzBuVnl2N3BWck9ieDgzOWRad2Evb3N2SnZOZ2xWeEJ0V0dEZHBo?=
+ =?utf-8?B?Y09pWEp6V0ZJU0ZIcFBkZk82QVZrejRTNk5TRnRKRjhSTkQ5NDRNd2lFNFVY?=
+ =?utf-8?B?d3dqK21xcWFBbWxUSUxKU0pOeXZCZXREdXRKWkpnZHdRSkcwa200eHlYRDVq?=
+ =?utf-8?Q?CYkRHD7qYclaGzJsiL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11e3a8bb-3d72-426d-1df7-08de9fd60883
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 18:44:34.9371
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8nmX8yTWapmJyo6vDhfmDUdWJ6dZafqHtYG90LCj07FyvzBeAaJDvD2/bD0l5JJG
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8322
 
+On Tue, Apr 21, 2026 at 10:40:29AM -0700, David Matlack wrote:
+> On Mon, Mar 23, 2026 at 4:58 PM David Matlack <dmatlack@google.com> wrote:
+> 
+> > +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
+> > +{
+> > +       struct vfio_device *device = vfio_device_from_file(args->file);
+> > +       struct vfio_pci_core_device *vdev;
+> > +       struct pci_dev *pdev;
+> > +       int ret;
+> > +
+> > +       vdev = container_of(device, struct vfio_pci_core_device, vdev);
+> > +       pdev = vdev->pdev;
+> > +
+> > +       guard(mutex)(&device->dev_set->lock);
+> > +
+> > +       /*
+> > +        * Userspace must disable interrupts on the device prior to freeze so
+> > +        * that the device does not send any interrupts until new interrupt
+> > +        * handlers have been established by the next kernel.
+> > +        */
+> > +       if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
+> > +               pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
+> > +               return -EINVAL;
+> > +       }
+> > +
+> > +       ret = pci_load_saved_state(pdev, vdev->pci_saved_state);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       vfio_pci_core_try_reset(vdev);
+> 
+> I think a call to pci_clear_master() is needed here to so the device
+> stops issuing memory transactions while VFIO is trying to resetting
+> it.
 
+That doesn't sound right, reset should always work..
 
-On 4/7/26 4:50 PM, Anthony Krowiak wrote:
+Didn't look beyond this hunk but why is a function called 'freeze'
+donig a reset anyhow?
 
-PING
+> Sashiko also wondered if pci_clear_master() is needed to ensure that
+> the device has bus mastering disabled during the kexec 
 
-> This patch series implements live guest migration support for KVM guests
-> with s390 AP (Adjunct Processor) devices passed through via the VFIO
-> mediated device framework.
->
-> Background
-> ----------
->
-> The vfio-ap device driver differs from typical VFIO device drivers in that
-> it does not virtualize a physical device. Instead, it manages AP
-> configuration metadata identifying the AP adapters, domains, and control
-> domains to which a guest will be granted access. These AP resources are
-> configured by assigning them to a vfio-ap mediated device via its sysfs
-> assignment interfaces. When the fd for the VFIO device is opened by
-> userspace, the vfio_ap device driver sets the guest's AP configuration
-> from the metadata stored with the mediated device. As such, the AP devices
-> are not accessed directly through the vfio_ap driver, so the driver has no
-> internal device state to migrate. It's sole purpose during migration is to
-> ensure that the AP configurations of the source and destination guests are
-> compatible.
->
-> Implementation Approach
-> -----------------------
->
-> This series implements the VFIO migration protocol using the STOP_COPY
-> migration flow. The key aspects are:
->
-> 1. Hardware Information Capture (Patches 1-2)
->     - Store AP queue hardware characteristics at probe time
->     - Provide access to queue objects for validation
->
-> 2. Migration Infrastructure (Patches 3-5)
->     - Define migration data structures
->     - Initialize/release migration data on device open/close
->
-> 3. State Machine Implementation (Patches 6-13)
->     - Implement required VFIO migration callbacks
->     - Handle state transitions: STOP → STOP_COPY → STOP (source)
->                                 STOP → RESUMING → STOP (destination)
->     - Use file streams for AP configuration data transfer
->
-> 4. Validation and Callbacks (Patches 14-15)
->     - Implement migration state and data size callbacks
->     - Required for VFIO_DEVICE_FEATURE_MIGRATION support
->
-> 5. Documentation (Patch 16)
->     - Add live guest migration chapter to vfio-ap.rst
->
-> Compatibility Validation
-> ------------------------
->
-> The series includes comprehensive validation to ensure source and
-> destination AP configurations are compatible. For each queue, the following
-> characteristics must match:
->
-> - AP type (target must be same or newer than source)
-> - Installed facilities (APSC, APQKM, AP4KC, SLCF)
-> - Operating mode (CCA, Accelerator, XCP)
-> - APXA facility setting
-> - Classification (native vs stateless functions)
-> - Queue usability (binding/associated state)
->
-> When incompatibilities are detected, migration fails with detailed error
-> messages identifying the specific queue and characteristic that caused
-> the failure.
->
-> Configuration Management
-> ------------------------
->
-> This implementation does not prevent configuration changes during
-> migration. Configuration stability is an orchestration-layer
-> responsibility, consistent with other VFIO device types. The driver's
-> role is to validate configurations and provide clear diagnostics when
-> incompatibilities are detected, enabling orchestration tools to implement
-> appropriate policies.
->
-> Change log v1 to v2
-> -------------------
->
-> - Removed patches that attempted to block configuration changes during
->    migration due to inherent race conditions and incomplete protection
-> - Simplified approach focuses on validation and error reporting
-> - Reduced series from 18 to 16 patches
-> - Rewrote the description in the cover letter to better describe the
->    patch series, remove confusing comments as well as references to
->    function provided by the patches that were removed.
->
-> Anthony Krowiak (16):
->    s390/vfio-ap: Store queue hardware info when probed
->    s390/vfio-ap: Provide access to queue objects and related info
->    s390/vfio-ap: Data structures for facilitating vfio device migration
->    s390/vfio-ap: Initialize/release vfio device migration data
->    s390-vfio-ap: Callback to set vfio device mig state during guest
->      migration
->    s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
->    s390/vfio-ap: File ops called to save the vfio device migration state
->    s390/vfio-ap: Transition device migration state from STOP to RESUMING
->    s390/vfio-ap: File ops called to resume the vfio device migration
->    s390/vfio-ap: Transition device migration state from RESUMING to STOP
->    s390/vfio-ap: Transition device migration state from STOP_COPY to STOP
->    s390/vfio-ap: Transition device migration state from STOP to RUNNING
->      and vice versa
->    s390-vfio-ap: Callback to get the current vfio device migration state
->    s390/vfio-ap: Callback to get the size of data to be migrated during
->      guest migration
->    s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
->    s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
->
->   Documentation/arch/s390/vfio-ap.rst     |  325 +++++--
->   drivers/s390/crypto/Makefile            |    2 +-
->   drivers/s390/crypto/vfio_ap_drv.c       |    4 +-
->   drivers/s390/crypto/vfio_ap_migration.c | 1095 +++++++++++++++++++++++
->   drivers/s390/crypto/vfio_ap_ops.c       |   66 +-
->   drivers/s390/crypto/vfio_ap_private.h   |   10 +
->   6 files changed, 1395 insertions(+), 107 deletions(-)
->   create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
->
+Only devices that are not being preserved..
 
+> think that is actually an issue. vfio_pci_core_enable() makes sure
+> that vdev->pci_saved_state has bus mastering disabled, so
+> pci_restore_state() below here should guaranteed it is clear during
+> kexec.
+
+.. and bus mastering should not be disabled on any device expecting to
+be preserved ..
+
+Jason
