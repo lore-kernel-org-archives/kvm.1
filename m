@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC17F3D9046;
-	Tue, 21 Apr 2026 14:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C9A3A257C;
+	Tue, 21 Apr 2026 14:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776783338; cv=none; b=J18YwdSyzdSo6STRLPJHNn+JtluDXJUlp7SSWWR85Fz8Ws6Wcd7n4Q1SfbSiiKZmfXWu3xF7MuIY+3f/b5I+Q43OGn9mKV2zurs0MC19eGIGbQHg9NZVhIno1w70BhtJl0qYjKadl0PePrk4CfVF6vYwCP9unLx6tijzSNp+3PA=
+	t=1776783346; cv=none; b=Hpq6xMBr1A/FoLKOQL1LHfySpNsKB8+MJbR6w+qWVGYJVjjTk0xyUEwCzlltIaAZJKMNRS5+4MlHWWgsVHQlECVscqfN03fy0FnSrf8RfFUm2Tl8YiyNxG0ttEcTNSVak/LfLJee3BYsPB3hr3eokJyhNUKOnRZeZpuiE4vRLaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776783338; c=relaxed/simple;
-	bh=yNgRE8sbFsnNOSNkaFVjWslqS4WljCPIev13eHJ7d2Y=;
+	s=arc-20240116; t=1776783346; c=relaxed/simple;
+	bh=p/wdV82CM5k36GboR0wr9dwL7I5eqEnXaA6SjWQmRfw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uHNhUyDk5LNc29+PgIYKmwo3Ui5PFYWo18bQ7Ji/WkNWwPYh3awEkjCYxrN0y9elHTvy/LI/YGOH+cpsiBpsF45voBMkDHTpoXuQeqPGe2gnpYd3HtZa8SeJpKZ3jvnscK5hv0SMgfzPcXn0EtkrF55RQb6Nj9mqZN0s+9aW6es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTKaUxrB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ALjkThzVQxS2JNNo7maBhEex7aqCdFTq7OcpJYPODKqIth0qC9zuxXE8zzCVkpDL1ZZ8GDGI25yNq1Src7W7X3XL/TNXu3Kzheo0W+ChAXxvv3pYj3Zuc0hYvHQkd7HBEDxVWX+N81S07Jvche812Swjtva3aCqOIj3Q3s7dsn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sa1jaqy1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTKaUxrB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00CDC2BCB7;
-	Tue, 21 Apr 2026 14:55:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sa1jaqy1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E22EC2BCB0;
+	Tue, 21 Apr 2026 14:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776783338;
-	bh=yNgRE8sbFsnNOSNkaFVjWslqS4WljCPIev13eHJ7d2Y=;
+	s=k20201202; t=1776783346;
+	bh=p/wdV82CM5k36GboR0wr9dwL7I5eqEnXaA6SjWQmRfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTKaUxrB6CCnvZO9DbKdwed0dvhzWBIhh60yKBBdZYUyGLOrHzPTFZA7VguG797+W
-	 kVkG6kerplCHTSg9AX1bJ2r91cZYFZzb2YEoem/3RRDl8AhkXZK3jb2w88mhKz+JZ+
-	 gcxQWAC2bM15un1YqKrH6ktP5Or/M4bAZc8FhwcLWqzcWWn/iJCC+1f45RNGNoxRdI
-	 N3eJR/humoI3w9Besak31t3dcQXLb+Fj7b/Kh7Q9VMZ3eR9G03rLKRM6NbsSoBkI8n
-	 Tgckp5xr4/ct4QeAcsTQsjsXF+jAkXG5sKawrPriiiEyd7etliMmg2LWM+5eEsEUuS
-	 olYFcyAOSDeQg==
+	b=sa1jaqy1uX4ggAIR1nqF3d8IXx0KZGfwmVA6Z8jfMhMthXvBdFJF0Mr9+UyUY8Moo
+	 3zTrLZJtIChGJlFtY7o5EFHNQximwR+f2HbTkMlQos1LBTsl6o8xuhIlYqLyYPx4jZ
+	 2khgDZ6NrK2mTo6XOpQGXa2NbxzYRBAZhErASFbDeMXHOstYf+3roFObXsM2TUSA/H
+	 7ASK6YFsVrRd3GTXsRQlvACe5U7v6a7uOql3uyPhTcGc9OsN6fCEcCZvB1gxWnaSkY
+	 8msQfhT63/P+MHfZPj/9fMfiWucnHcmFNgWyfB0J2rzMJHQjaN5HcieUt5WGDZ+OQj
+	 3fJeW/qyClWuw==
 From: guoren@kernel.org
 To: fangyu.yu@linux.alibaba.com,
 	cp0613@linux.alibaba.com,
@@ -44,9 +44,9 @@ Cc: kvm-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
 	linux-riscv@lists.infradead.org
-Subject: [PATCH 1/3] RISC-V: KVM: AIA: Make HGEI number and management fully per-CPU
-Date: Tue, 21 Apr 2026 10:54:48 -0400
-Message-Id: <20260421145451.1597930-2-guoren@kernel.org>
+Subject: [PATCH 2/3] RISC-V: KVM: AIA: Replace global HGEI count with simple enabled bool
+Date: Tue, 21 Apr 2026 10:54:49 -0400
+Message-Id: <20260421145451.1597930-3-guoren@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20260421145451.1597930-1-guoren@kernel.org>
 References: <20260421145451.1597930-1-guoren@kernel.org>
@@ -60,121 +60,134 @@ Content-Transfer-Encoding: 8bit
 
 From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-Previously the number of Hypervisor Guest External Interrupt (HGEI)
-lines was stored in a single global variable `kvm_riscv_aia_nr_hgei`
-and assumed to be the same for all HARTs. This assumption does not
-hold on heterogeneous RISC-V SoCs where different cores may expose
-different HGEIE CSR widths.
-
-Introduce `nr_hgei` field into the per-CPU `struct aia_hgei_control`
-and probe the actual supported HGEI count for the current HART in
-`kvm_riscv_aia_enable()` using the standard RISC-V CSR probe
-technique:
-
-    csr_write(CSR_HGEIE, -1UL);
-    nr = fls_long(csr_read(CSR_HGEIE));
-    if (nr)
-        nr--;
-
-All HGEI allocation, free and disable paths (`kvm_riscv_aia_free_hgei()`,
-`kvm_riscv_aia_disable()`, etc.) now use the per-CPU value instead of
-the global one.
-
-The early global `kvm_riscv_aia_nr_hgei` is kept only for deciding
-whether SGEI interrupt registration is needed; the real per-HART
-initialization of lock and free_bitmap is moved to enable time.
-
-This makes KVM AIA robust on big.LITTLE-style and multi-vendor
-asymmetric platforms.
+Now that HGEI line management is fully per-CPU (via struct
+aia_hgei_control::nr_hgei), the global `kvm_riscv_aia_nr_hgei`
+is no longer needed. Replace it with a simple `bool
+kvm_riscv_aia_hgei_enabled` that only indicates whether HGEI
+support is available at all.
 
 Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
 ---
- arch/riscv/kvm/aia.c | 40 ++++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ arch/riscv/include/asm/kvm_aia.h |  2 +-
+ arch/riscv/kvm/aia.c             | 18 ++++++++----------
+ arch/riscv/kvm/aia_device.c      |  4 ++--
+ arch/riscv/kvm/main.c            |  3 +--
+ 4 files changed, 12 insertions(+), 15 deletions(-)
 
+diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
+index b04ecdd1a860..e8749ac6bed7 100644
+--- a/arch/riscv/include/asm/kvm_aia.h
++++ b/arch/riscv/include/asm/kvm_aia.h
+@@ -79,7 +79,7 @@ struct kvm_vcpu_aia {
+ 
+ #define irqchip_in_kernel(k)		((k)->arch.aia.in_kernel)
+ 
+-extern unsigned int kvm_riscv_aia_nr_hgei;
++extern bool kvm_riscv_aia_hgei_enabled;
+ extern unsigned int kvm_riscv_aia_max_ids;
+ DECLARE_STATIC_KEY_FALSE(kvm_riscv_aia_available);
+ #define kvm_riscv_aia_available() \
 diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index 5ec503288555..a23729052cfb 100644
+index a23729052cfb..70ff1d25dd99 100644
 --- a/arch/riscv/kvm/aia.c
 +++ b/arch/riscv/kvm/aia.c
-@@ -23,6 +23,7 @@ struct aia_hgei_control {
- 	raw_spinlock_t lock;
- 	unsigned long free_bitmap;
- 	struct kvm_vcpu *owners[BITS_PER_LONG];
-+	unsigned int nr_hgei;
- };
+@@ -28,7 +28,7 @@ struct aia_hgei_control {
  static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
  static int hgei_parent_irq;
-@@ -452,7 +453,7 @@ void kvm_riscv_aia_free_hgei(int cpu, int hgei)
  
- 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
+-unsigned int kvm_riscv_aia_nr_hgei;
++bool kvm_riscv_aia_hgei_enabled;
+ unsigned int kvm_riscv_aia_max_ids;
+ DEFINE_STATIC_KEY_FALSE(kvm_riscv_aia_available);
  
--	if (hgei > 0 && hgei <= kvm_riscv_aia_nr_hgei) {
-+	if (hgei > 0 && hgei <= hgctrl->nr_hgei) {
- 		if (!(hgctrl->free_bitmap & BIT(hgei))) {
- 			hgctrl->free_bitmap |= BIT(hgei);
- 			hgctrl->owners[hgei] = NULL;
-@@ -486,21 +487,8 @@ static irqreturn_t hgei_interrupt(int irq, void *dev_id)
- 
- static int aia_hgei_init(void)
- {
--	int cpu, rc;
-+	int rc;
+@@ -491,7 +491,7 @@ static int aia_hgei_init(void)
  	struct irq_domain *domain;
--	struct aia_hgei_control *hgctrl;
--
--	/* Initialize per-CPU guest external interrupt line management */
--	for_each_possible_cpu(cpu) {
--		hgctrl = per_cpu_ptr(&aia_hgei, cpu);
--		raw_spin_lock_init(&hgctrl->lock);
--		if (kvm_riscv_aia_nr_hgei) {
--			hgctrl->free_bitmap =
--				BIT(kvm_riscv_aia_nr_hgei + 1) - 1;
--			hgctrl->free_bitmap &= ~BIT(0);
--		} else
--			hgctrl->free_bitmap = 0;
--	}
  
  	/* Skip SGEI interrupt setup for zero guest external interrupts */
- 	if (!kvm_riscv_aia_nr_hgei)
-@@ -545,9 +533,29 @@ static void aia_hgei_exit(void)
+-	if (!kvm_riscv_aia_nr_hgei)
++	if (!kvm_riscv_aia_hgei_enabled)
+ 		goto skip_sgei_interrupt;
  
- void kvm_riscv_aia_enable(void)
+ 	/* Find INTC irq domain */
+@@ -524,7 +524,7 @@ static int aia_hgei_init(void)
+ static void aia_hgei_exit(void)
  {
-+	struct aia_hgei_control *hgctrl;
-+
- 	if (!kvm_riscv_aia_available())
+ 	/* Do nothing for zero guest external interrupts */
+-	if (!kvm_riscv_aia_nr_hgei)
++	if (!kvm_riscv_aia_hgei_enabled)
  		return;
  
-+	hgctrl = this_cpu_ptr(&aia_hgei);
-+
-+	/* Figure-out number of bits in HGEIE */
-+	csr_write(CSR_HGEIE, -1UL);
-+	hgctrl->nr_hgei = fls_long(csr_read(CSR_HGEIE));
-+	csr_write(CSR_HGEIE, 0);
-+	if (hgctrl->nr_hgei)
-+		hgctrl->nr_hgei--;
-+
-+	if (hgctrl->nr_hgei) {
-+		hgctrl->free_bitmap = BIT(hgctrl->nr_hgei + 1) - 1;
-+		hgctrl->free_bitmap &= ~BIT(0);
-+	} else {
-+		hgctrl->free_bitmap = 0;
-+	}
-+
-+	raw_spin_lock_init(&hgctrl->lock);
-+
- 	csr_write(CSR_HVICTL, aia_hvictl_value(false));
- 	csr_write(CSR_HVIPRIO1, 0x0);
- 	csr_write(CSR_HVIPRIO2, 0x0);
-@@ -588,7 +596,7 @@ void kvm_riscv_aia_disable(void)
+ 	/* Free per-CPU SGEI interrupt */
+@@ -631,6 +631,7 @@ int kvm_riscv_aia_init(void)
+ {
+ 	int rc;
+ 	const struct imsic_global_config *gc;
++	unsigned int kvm_riscv_aia_nr_hgei;
  
- 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
+ 	if (!riscv_isa_extension_available(NULL, SxAIA))
+ 		return -ENODEV;
+@@ -641,21 +642,18 @@ int kvm_riscv_aia_init(void)
+ 	kvm_riscv_aia_nr_hgei = fls_long(csr_read(CSR_HGEIE));
+ 	csr_write(CSR_HGEIE, 0);
+ 	if (kvm_riscv_aia_nr_hgei)
+-		kvm_riscv_aia_nr_hgei--;
++		kvm_riscv_aia_hgei_enabled = true;
  
--	for (i = 0; i <= kvm_riscv_aia_nr_hgei; i++) {
-+	for (i = 0; i <= hgctrl->nr_hgei; i++) {
- 		vcpu = hgctrl->owners[i];
- 		if (!vcpu)
- 			continue;
+ 	/*
+ 	 * Number of usable HGEI lines should be minimum of per-HART
+ 	 * IMSIC guest files and number of bits in HGEIE
+ 	 */
+-	if (gc)
+-		kvm_riscv_aia_nr_hgei = min((ulong)kvm_riscv_aia_nr_hgei,
+-					    gc->nr_guest_files);
+-	else
+-		kvm_riscv_aia_nr_hgei = 0;
++	if (!gc)
++		kvm_riscv_aia_hgei_enabled = 0;
+ 
+ 	/* Find number of guest MSI IDs */
+ 	kvm_riscv_aia_max_ids = IMSIC_MAX_ID;
+-	if (gc && kvm_riscv_aia_nr_hgei)
++	if (gc && kvm_riscv_aia_hgei_enabled)
+ 		kvm_riscv_aia_max_ids = gc->nr_guest_ids + 1;
+ 
+ 	/* Initialize guest external interrupt line management */
+diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+index 3d1e81e2a36b..5b45b1114425 100644
+--- a/arch/riscv/kvm/aia_device.c
++++ b/arch/riscv/kvm/aia_device.c
+@@ -71,7 +71,7 @@ static int aia_config(struct kvm *kvm, unsigned long type,
+ 				 * external interrupts (i.e. non-zero
+ 				 * VS-level IMSIC pages).
+ 				 */
+-				if (!kvm_riscv_aia_nr_hgei)
++				if (!kvm_riscv_aia_hgei_enabled)
+ 					return -EINVAL;
+ 				break;
+ 			default:
+@@ -628,7 +628,7 @@ void kvm_riscv_aia_init_vm(struct kvm *kvm)
+ 	 */
+ 
+ 	/* Initialize default values in AIA global context */
+-	aia->mode = (kvm_riscv_aia_nr_hgei) ?
++	aia->mode = (kvm_riscv_aia_hgei_enabled) ?
+ 		KVM_DEV_RISCV_AIA_MODE_AUTO : KVM_DEV_RISCV_AIA_MODE_EMUL;
+ 	aia->nr_ids = kvm_riscv_aia_max_ids - 1;
+ 	aia->nr_sources = 0;
+diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+index cb8a65273c1f..bcfa139f4871 100644
+--- a/arch/riscv/kvm/main.c
++++ b/arch/riscv/kvm/main.c
+@@ -169,8 +169,7 @@ static int __init riscv_kvm_init(void)
+ 	kvm_info("VMID %ld bits available\n", kvm_riscv_gstage_vmid_bits());
+ 
+ 	if (kvm_riscv_aia_available())
+-		kvm_info("AIA available with %d guest external interrupts\n",
+-			 kvm_riscv_aia_nr_hgei);
++		kvm_info("AIA available with guest external interrupts\n");
+ 
+ 	kvm_riscv_setup_vendor_features();
+ 
 -- 
 2.40.1
 
