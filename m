@@ -1,53 +1,53 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D7A33B6CC
-	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3569E34405B
+	for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776813379; cv=none; b=TzZFIJsR1JMNEzB8dFouHZPIWNV00eljA8RibWrZJPsh9ujxTzM3pkl+GX6vuAzz0Rlv6IYu9VdF0PfGn6n+iuMAE0n68JrgwiviIt17lMfbt+l6XzAiMtGXT2/1ZjdfemQVHCTtfKTKkZFCPHV3rlPahsSOmQqGxhg2AXd8Lk8=
+	t=1776813383; cv=none; b=lhfxKZ1R23qgPR/AnTHgB3cP2AYF618mPRBENApQdUjlL9AyESTImMDfGXJ7vA7JCC8O182TaxzJR/7efYXltmX7KjYgc3gjFj1Z8iUHSoCRvsFOODRW/WCgtOETS/4Tuq76R2Jk85+4uae4u9AvmVhDfQ5RE0/i1fO/VNyl2MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776813379; c=relaxed/simple;
-	bh=ebk5ilefbIDTZI9sFE22OCVz4B0wFhUHMvdtjnuf530=;
+	s=arc-20240116; t=1776813383; c=relaxed/simple;
+	bh=Fa5Z2b3AFmLW659rMLC6e+YsFIKYNkhhbhmajGAg4nY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=M9Em8QXml31gdAsfrIMdFUwJped/E3QQfCLDCf2m0byOcNXacCH5eRkPscdk29imKnH9mFUDgpmST6MPgmXf+8YDX9sf2GZ68b4/dmyTU7anLd7Drh3f/n196lrNOs6JBZohXiul7TC4TLeHrr6yH1w0tNhS1TFRus/v8ZHnwrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=At3/Nklz; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=SMyFbzHZlmN0c6YxScOJHcBkjhmDuN4ceJ4ioT3KgTq3MAaFQDIt4bjXrwaNY9Am+oRWdKi9j2IqcLCruOf6OnubOholJeT9tvpYGQbwEFSy4EKSOWZvqpybvuUnPz3G0i6EqfLLZeWnXnBUWqH3Ft62AoYMLIKjscnu9Jw5iwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uD/+xPdh; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="At3/Nklz"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2ead99f5dso61580015ad.0
-        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:16:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uD/+xPdh"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f9f49e4beso2248085b3a.0
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 16:16:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776813377; x=1777418177; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776813382; x=1777418182; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tTdoZnVnH7POlnBUq53tWb2qcF6s7WDxtHhm+48XUXE=;
-        b=At3/NklzDiidGNjBbp0QTGJJPHkbNMYExtQNAPehfZTJVNQlgoZCAbsCntfI9YO0aD
-         VyZ0TjIxJZrd1Gkg0jfj++cP2/EblZBWLnCJk8hHqb8TX9XQbM2ikMkV0Z5vG/UcBYbQ
-         9XlxHIEN6yxBJjuDwKZFqXdTWBL1WZ6WR9rNvwR4cDvxrShbiGPEfUVTYxRGjjeHygwn
-         YauliJJOkyfbcT7fW2Os1WDNUQmgPj/1oViq/e/SQVEaKIToi5t3KTkF6JSGswNOUaFY
-         LOfOXV6TglQLoYUroCbWJOHMJrcw833UdQ4B7hYBc5ZLBGbf0RHiiB6S3EyoQx4OO14i
-         kigQ==
+        bh=rO/sEyq9fOmOK5M/bH4lLglok4DGILopTeBk6BkE89o=;
+        b=uD/+xPdhypYdxotlXFJ/U+5synkwswX801iTRPOTvCZD6wkqv+Oo0RxOe3Hj9IBEgm
+         lai85CpRDf9XEYas6vLixY5URX/0KOCT07Mq1sUKHRylW3iTV0QkCgeBSbk0m0eOuO50
+         19lMOCa/iD0RNohRpCu52KFHVV9htg8dtrNL2tlM7rc9P7n727rm4dkC5Xu8WeOprtKg
+         wWG6RiZF/8OMRalpq30oHrinCJKHdNCE6f30COb4FZ3/NbofvgCOdQFoP21OrfqPdpAJ
+         aNQJqdGknvUjsHKvavrmSN/4Yi3+kuY8nZFK2QJ2m5BjHdiVSbtv42120sciyC+zbI64
+         zyxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776813377; x=1777418177;
+        d=1e100.net; s=20251104; t=1776813382; x=1777418182;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tTdoZnVnH7POlnBUq53tWb2qcF6s7WDxtHhm+48XUXE=;
-        b=G9NTrWMWtQdX507e+EeGjcDw6CXzAUoq0jUIhtEPSrIkq9c9iyDwnGBC9RtT7vEE2d
-         iLd3CzVQ9qM6XigPY9qWYFbKITdoakPVuA/uuclboI3iSJZ16TXpUOowmSKH0u5o1D1J
-         p6M3KqhaRPt4DYwxhPm2T7kkNQzk5y97XObok6BKe7Ztsb77i8QFNmEB8opPL25pN3YV
-         3gFujWKUzWsBD+71sHq0MsU/VtZEFsNyeh/dyI4VNO+VVm3kLVobiEQOrYa0bTDWDE9Q
-         W2QlOx1w+PNhdBeMVI4MdTv+MGWKWEkuLcIkw+uk9+/RBcV5sHbAhQunJG/uInk5Z8Nq
-         6sUA==
-X-Gm-Message-State: AOJu0YwxKX+mxBrERO/St7kBysP7IG0A2MrlZROS7nv2ZO7vk96B2Cgl
-	lE4Tivl0b1Y9G97SMcvjHLn7oeWPCvLVSrqom293Z+6BNIxRBaOxzLtaYb0+MNTZTkzp7iG4xHc
-	hF5MChL/P
-X-Received: from pgal185.prod.google.com ([2002:a63:3ec2:0:b0:c79:8016:5127])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e081:b0:3a2:ecb8:56f0
- with SMTP id adf61e73a8af0-3a2ecb85faemr5276984637.33.1776813377212; Tue, 21
- Apr 2026 16:16:17 -0700 (PDT)
-Date: Tue, 21 Apr 2026 23:15:42 +0000
+        bh=rO/sEyq9fOmOK5M/bH4lLglok4DGILopTeBk6BkE89o=;
+        b=UBXCXY7FE8NjbnoBQ5w9W0HH/Dsnf7NVFf+5HznqCnreKERUhnsgIUigvWgQLdno0K
+         VhGWDK5f7lqPdk/kJ+RGNCRrRR/sD+kBHVGT7dYVCxmXwR0FFGktg0hfWa+Q3VXG6uSS
+         L8pjzj5EFZyqwTlea6Hm9UvZoWbnLmIwtS1+OvzxeQM+Hho2i0X6OEd2z4ftygvS9tA6
+         SdyJURzVelxdiNc8XZvR/driqingg3ixsr75dkxkfrTfDnDxt0Em6yQPsiuSmc78HskQ
+         WGQbPYbb4EersdJNCotDq89kvEVm6mw1neWXKg0z6gIgJTxXy18MMN5dNLYd3nwsoiMM
+         Tt5Q==
+X-Gm-Message-State: AOJu0YxGl2hE7V4RaSL7VU4wpLcorGLATbuFCwr+5dvkeIPIeTxuxGLH
+	dQ7b+IrJawwp82WqnEwsam5zBwxuGlpuwEzzPyyw+AG/pP2xJwNsU8UWFBjnk3Csln/+JYts4Qb
+	ya9uXOZvL
+X-Received: from pfkm16.prod.google.com ([2002:a05:6a00:810:b0:82f:acfe:350b])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1a0b:b0:82f:b519:a5cb
+ with SMTP id d2e1a72fcca58-82fb519a73emr8945998b3a.37.1776813381347; Tue, 21
+ Apr 2026 16:16:21 -0700 (PDT)
+Date: Tue, 21 Apr 2026 23:15:43 +0000
 In-Reply-To: <20260421231557.1254270-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,9 +57,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260421231557.1254270-1-jrhilke@google.com>
 X-Mailer: git-send-email 2.54.0.rc2.533.g4f5dca5207-goog
-Message-ID: <20260421231557.1254270-2-jrhilke@google.com>
-Subject: [PATCH v3 01/16] KVM: selftests: Build and link sefltests/vfio/lib
- into KVM selftests
+Message-ID: <20260421231557.1254270-3-jrhilke@google.com>
+Subject: [PATCH v3 02/16] KVM: selftests: Add /proc/interrupts parsing helpers
 From: Josh Hilke <jrhilke@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -68,43 +67,101 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Include libvfio.mk into the KVM selftests Makefile and link it into all
-KVM selftests by adding it to LIBKVM_OBJS.
+Introduce utility functions to parse /proc/interrupts and extract the
+host IRQ number for a given VFIO device and MSI vector.
 
-Note that KVM selftests build their own copy of sefltests/vfio/lib and
-the resulting object files are placed in $(OUTPUT)/lib. This allows the
-KVM and VFIO selftests to apply different CFLAGS when building without
-conflicting with each other.
+These helpers lay the groundwork for subsequent patches that will use
+real VFIO devices to trigger hardware interrupts. Specifically, they are
+needed to allow the test to log the exact IRQ number being used for
+better debugging.
 
-Signed-off-by: David Matlack <dmatlack@google.com>
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../testing/selftests/kvm/include/proc_util.h |  9 ++++
+ tools/testing/selftests/kvm/lib/proc_util.c   | 42 +++++++++++++++++++
+ 3 files changed, 52 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
+ create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
 
 diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 6471fa214a9f..b3e223f45575 100644
+index b3e223f45575..d944b81cad7d 100644
 --- a/tools/testing/selftests/kvm/Makefile.kvm
 +++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -252,6 +252,7 @@ OVERRIDE_TARGETS = 1
- # which causes the environment variable to override the makefile).
- include ../lib.mk
- include ../cgroup/lib/libcgroup.mk
-+include ../vfio/lib/libvfio.mk
- 
- INSTALL_HDR_PATH = $(top_srcdir)/usr
- LINUX_HDR_PATH = $(INSTALL_HDR_PATH)/include/
-@@ -306,7 +307,9 @@ LIBKVM_S := $(filter %.S,$(LIBKVM))
- LIBKVM_C_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_C))
- LIBKVM_S_OBJ := $(patsubst %.S, $(OUTPUT)/%.o, $(LIBKVM_S))
- LIBKVM_STRING_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_STRING))
--LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ) $(LIBCGROUP_O)
-+LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ)
-+LIBKVM_OBJS += $(LIBCGROUP_O)
-+LIBKVM_OBJS += $(LIBVFIO_O)
- SPLIT_TEST_GEN_PROGS := $(patsubst %, $(OUTPUT)/%, $(SPLIT_TESTS))
- SPLIT_TEST_GEN_OBJ := $(patsubst %, $(OUTPUT)/$(ARCH)/%.o, $(SPLIT_TESTS))
- 
+@@ -11,6 +11,7 @@ LIBKVM += lib/kvm_util.c
+ LIBKVM += lib/lru_gen_util.c
+ LIBKVM += lib/memstress.c
+ LIBKVM += lib/guest_sprintf.c
++LIBKVM += lib/proc_util.c
+ LIBKVM += lib/rbtree.c
+ LIBKVM += lib/sparsebit.c
+ LIBKVM += lib/test_util.c
+diff --git a/tools/testing/selftests/kvm/include/proc_util.h b/tools/testing/selftests/kvm/include/proc_util.h
+new file mode 100644
+index 000000000000..7c465e8584e2
+--- /dev/null
++++ b/tools/testing/selftests/kvm/include/proc_util.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef SELFTEST_KVM_PROC_UTIL_H
++#define SELFTEST_KVM_PROC_UTIL_H
++
++#include <stdint.h>
++
++int get_proc_vfio_irq_number(const char *vfio_device_bdf, int msi);
++
++#endif /* SELFTEST_KVM_PROC_UTIL_H */
+diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/selftests/kvm/lib/proc_util.c
+new file mode 100644
+index 000000000000..ad1c54a81869
+--- /dev/null
++++ b/tools/testing/selftests/kvm/lib/proc_util.c
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "kvm_util.h"
++#include "test_util.h"
++#include "proc_util.h"
++
++#include <ctype.h>
++
++static FILE *open_proc_interrupts(void)
++{
++	FILE *fp;
++
++	fp = fopen("/proc/interrupts", "r");
++	TEST_ASSERT(fp, "fopen(/proc/interrupts) failed");
++
++	return fp;
++}
++
++int get_proc_vfio_irq_number(const char *device_bdf, int msi)
++{
++	char search_string[64];
++	char line[4096];
++	int irq = -1;
++	FILE *fp;
++
++	fp = open_proc_interrupts();
++
++	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msi);
++
++	while (fgets(line, sizeof(line), fp)) {
++		if (strstr(line, device_bdf) && strstr(line, search_string)) {
++			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
++			break;
++		}
++	}
++
++	fclose(fp);
++
++	TEST_ASSERT(irq != -1, "Failed to locate IRQ for %s %s", device_bdf,
++		    search_string);
++	return irq;
++}
++
 -- 
 2.54.0.rc2.533.g4f5dca5207-goog
 
