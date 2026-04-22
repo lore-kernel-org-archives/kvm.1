@@ -1,128 +1,148 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434D329E44
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 20:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C552C21C7
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 21:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776890074; cv=none; b=F0090YrabOnGSOzHW47DrQ8nisiVB3jo11zAeRTPC2XWmhQcoHjO/rfQocmotV5bPXnBwu15RNnrwydRO6a7++6y8MsB7i3i9dwxG8m+O24nEkkutAA9HzvF0yU32AiTfFf/MyGEsbTuR5+S0snM9RXtpGEFc08BHdsHAo5/8iE=
+	t=1776891808; cv=none; b=ptoCoG8RMDW758SSQa1O71QZBpF9+Za4NNGgpJ0bcjhiKwKHQCa1817NmUYILxBJkiPAFKn6XcB++wx8M9m0Dgl2mfmzNmccnMJETwSZ8QfsAcT82fNQfKQkYDu/dNOh3u3ayIOYuejgrhZ0DCjWeSIV18RID011JRQWjcygaZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776890074; c=relaxed/simple;
-	bh=pwSDZnuvS1XtjUG7bpT846TmDeZH4c/r+oypjJGBte8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XKjIOHAMdGXEbdHA/NJQkKElC715RXhqLjvJAoVR8y/dHs7uEIFGsiNaKQCnyBd9+H3aOkvthP7lajA6VFWVyjgjCy3nBJgmURGGL6l7HVEm1Hh0wUDDe7U+5BeWL3EwkIqiFRJi5vmVMnucmQXBiJGtcCmcP/fVTmx1fcppmHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BQSLU2Iy; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776891808; c=relaxed/simple;
+	bh=CjXMm9O9HgEbazVGNENiF7rUYZhQt66j+C1SKcZ9yJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DLL5NWU4zLJ/DpHf7naz7Ze9yfPomwsaweApeZa75MXZHxJh0s+q8anhsiI21ZANjl9v7pXZxKOkqpmCf07c8hqn5dLt+HMGd+OUrahVqN0vvBZLGobPwuDW3rZfCI/OvzTxXYh7bdbM3xiIS1ZLp5rBsPyOJLeyLxQ+ssFrRl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNSXkOVh; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BQSLU2Iy"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35fbb57764aso7327721a91.1
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 13:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776890071; x=1777494871; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r6cKYb2nrrVr10xS0LVArs9DazD2S5XwOnl2A2OaOrk=;
-        b=BQSLU2IyxjnhDdDge3AOzlrhzrjkOkORlwOKY/i0QoPlRHzodgSksUa3JXardQMfxY
-         EfQMHw7WdPQ/BMkohRZXiro3dGeQW6eYpvFVXraBBMEMK7xdEyNlaRHTdraJAjqW2dBR
-         y6N5x8Q7Y+Fh9obuN5dKu3G/WJOEAqjwu0bXvxRGCIONDYxbU5/fnC0tbRpG8XPmtzgj
-         OJUaeL0q0WKuE15Uz/4eZ3pqoK4O7qMrRq3UFdD92LSNRojFqzysoJdCLTeCr5XTrP1y
-         MygCdsUk06zhFupEhyVKuPbsGDhKs/jT0UBqsHRTxFo2lFootts9cP47784jO4KaWLTb
-         Gnhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776890071; x=1777494871;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r6cKYb2nrrVr10xS0LVArs9DazD2S5XwOnl2A2OaOrk=;
-        b=Z45jFSrJaUTxoEyco50RhyKK6/vpDXJvAzN7eUQ5AjoMLXlvUvrJP+PoeAFl9T1Lnx
-         lKJ89d5St4NIdfVNhsVVgfVaWx97BfFepMzbxrxpyCxnB8oT9V/iWjGUIHneB9jAG3JJ
-         5SGFBVxexHHhzV1FSrldwqG7UQhdA9RSy1pg2kBGsLVvtkdVF93w8kGt59A+I8ZKTg4M
-         dgNtwtT/vCrE1e1zH+R158bw7Jh99MIQwzZnvr0Sl6hFN/dH9DRbeZAVrs394V4bsbmI
-         ao+9yHTXk3nEINXr5OtfTEQmMjSSr0Ar6ogAoUfO16/0/sL9RZln9dSbBKqGmt1Vtw0W
-         zlug==
-X-Forwarded-Encrypted: i=1; AFNElJ958NrvJt/PxTauyB0wQ/g/QIzrKAvjGrD6xU/E7CPm1HERafQB5bDnVVn+sCCJgXp29lk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEREUfJh90ObxZfwMpZTRVri266i6LOeWDWbbdK8Us2kh8clyE
-	RMKJ41hAV1+Kao05rvtscyOarGd4RIVfWILerhzGXNAUloqjFt30wjXUr9x5A7jXqpPr1PbMWmN
-	sfoVmmA==
-X-Received: from pjvi16.prod.google.com ([2002:a17:90a:dc10:b0:35e:591b:3591])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3ec5:b0:35f:b4c1:91ea
- with SMTP id 98e67ed59e1d1-361402ee818mr18770329a91.13.1776890070624; Wed, 22
- Apr 2026 13:34:30 -0700 (PDT)
-Date: Wed, 22 Apr 2026 13:34:29 -0700
-In-Reply-To: <aekrJrSRoclZoBo9@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNSXkOVh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776891807; x=1808427807;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CjXMm9O9HgEbazVGNENiF7rUYZhQt66j+C1SKcZ9yJc=;
+  b=nNSXkOVh+VT/ui4OI93Zi5MKvN8YVac8TPY2NGgcv+J8hJU80SDD/1Di
+   Sbm9QatJGeJ9jnGtZXYLzuKc6b7VygP+BYT/5i7Irflo63XVmMWi3LZ/+
+   KBUAdUED8tI470cS1AqnSdsJInp8umGCgDAvAVDtc8Nj3pgTDGWEzcoic
+   Ldq7SwzOxdIHtvjQK8L93Z5RHEoENCzeBWwvq/7neaKKQ4TVU+lF5/A6K
+   mAp0En7oLUfMbwaIQ0DjnSMADcxFQlGfyNJwM+VAfiUQa3jwdC9ldXjBI
+   KGgeWX1KIj3yNlWf3A0bnyuAcvsyI3jsAaKYnxHtudVhuc9YLSAT6Wg3O
+   w==;
+X-CSE-ConnectionGUID: lwW8DToSTQ+naTNhLylCBw==
+X-CSE-MsgGUID: hXoVo1WdSHKTwCsvU+KlMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77917718"
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
+   d="scan'208";a="77917718"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 14:03:27 -0700
+X-CSE-ConnectionGUID: JFHHzxPrScKv5+EVEyoQHg==
+X-CSE-MsgGUID: Yl6Xr6X/SAOmXBMsJdwUmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
+   d="scan'208";a="228120888"
+Received: from unknown (HELO [10.241.241.111]) ([10.241.241.111])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 14:03:26 -0700
+Message-ID: <be9cf7a9-4793-4bd4-b91e-cc9e0b6696a4@intel.com>
+Date: Wed, 22 Apr 2026 14:03:25 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260408001137.3290444-1-peter.fang@intel.com>
- <20260408001137.3290444-4-peter.fang@intel.com> <aegDJssx-ZvbfggI@google.com>
- <aegF59gToidudIUC@google.com> <aegIPGYPH-nxGsua@google.com>
- <CAO9r8zOsHdsMuyjWr3XafjNnMKDci1OOdw8eJHrH-O+jrDH10Q@mail.gmail.com>
- <aegV3ELp20DlC5Ge@google.com> <aekrJrSRoclZoBo9@google.com>
-Message-ID: <aekw1S5Gdkyx8teC@google.com>
-Subject: Re: [PATCH v2 3/3] KVM: Take gpa_t in kvm_vcpu_map[_readonly]()
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Peter Fang <peter.fang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 11/13] target/i386: Add pebs-fmt CPU option
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Sandipan Das <sandipan.das@amd.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Dongli Zhang <dongli.zhang@oracle.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>
+References: <20260304180713.360471-1-zide.chen@intel.com>
+ <20260304180713.360471-12-zide.chen@intel.com> <aeiE9ZZ5AE+uMgmN@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <aeiE9ZZ5AE+uMgmN@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 22, 2026, Yosry Ahmed wrote:
-> > > Perhaps we just need to rename the functions (e.g.
-> > > kvm_vcpu_map_page()), or more intrusively pass in a size and do bounds
-> > > checking.
-> > 
-> > Definitely the latter.  Or both I guess, but probably just the latter.
+
+
+On 4/22/2026 1:21 AM, Zhao Liu wrote:
+> Hi Zide,
 > 
-> I think both. I think renaming to kvm_vcpu_map_page() (and similar for
-> others) would further clarify things, especially with the introduction
-> of kvm_vcpu_map_ptr() below.
-
-I don't like "page" it's too easy to incorrectly assume "page" means "struct page".
-There are KVM APIs that do use "page" generically, e.g. kvm_read_guest_page(),
-but for this particular case I'd like to stay away from "page; there's a _lot_
-of ugly history around mapping "struct page" vs. "other" memory in KVM.
-
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 9093251beb39..e8d2e98b0068 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -3114,9 +3114,10 @@ struct page *__gfn_to_page(struct kvm *kvm, gfn_t gfn, bool write)
-> >  }
-> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(__gfn_to_page);
-> >  
-> > -int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gfn_t gfn, struct kvm_host_map *map,
-> > -		   bool writable)
-> > +int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gpa_t gpa, gpa_t len,
-> > +		   struct kvm_host_map *map, bool writable)
-> >  {
-> > +	gfn_t gfn = gpa_to_gfn(gpa);
-> >  	struct kvm_follow_pfn kfp = {
-> >  		.slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn),
-> >  		.gfn = gfn,
-> > @@ -3124,6 +3125,10 @@ int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gfn_t gfn, struct kvm_host_map *map,
-> >  		.refcounted_page = &map->pinned_page,
-> >  		.pin = true,
-> >  	};
-> > +	kvm_pfn_t pfn;
-> > +
-> > +	if (WARN_ON_ONCE(offset_in_page(gpa) + len > PAGE_SIZE))
-> > +		return -EINVAL;
+> On Wed, Mar 04, 2026 at 10:07:10AM -0800, Zide Chen wrote:
+>> Date: Wed, 4 Mar 2026 10:07:10 -0800
+>> From: Zide Chen <zide.chen@intel.com>
+>> Subject: [PATCH V3 11/13] target/i386: Add pebs-fmt CPU option
+>> X-Mailer: git-send-email 2.53.0
+>>
+>> Similar to lbr-fmt, target/i386 does not support multi-bit CPU
+>> properties, so the PEBS record format cannot be exposed as a
+>> user-visible CPU feature.
+>>
+>> Add a pebs-fmt option to allow users to specify the PEBS format via the
+>> command line.  Since the PEBS state is part of the vmstate, this option
+>> is considered migratable.
+>>
+>> We do not support PEBS record format 0.  Although it is a valid format
+>> on some very old CPUs, it is unlikely to be used in practice.  This
+>> allows pebs-fmt=0 to be used to explicitly disable PEBS in the case of
+>> migratable=off.
+>>
+>> If PEBS is not enabled, mark it as unavailable in IA32_MISC_ENABLE and
+>> clear the PEBS-related bits in IA32_PERF_CAPABILITIES.
+>>
+>> If migratable=on on PEBS capable host and pmu is enabled:
+>> - PEBS is disabled if pebs-fmt is not specified or pebs-fmt=0.
+>> - PEBS is enabled if pebs-fmt is set to the same value as the host.
+>>
+>> When migratable=off, the behavior is similar, except that omitting
+>> the pebs-fmt option does not disable PEBS.
+>>
+>> Signed-off-by: Zide Chen <zide.chen@intel.com>
 > 
-> Maybe do the bounds checking after initializing 'map', then
-> kvm_vcpu_map_ptr() wouldn't need to explicitly set the pointer to NULL
-> on failure? 
+> ...
+> 
+>>      if (user_req != -1) {
+>> +        if (!is_lbr_fmt && !(env->features[FEAT_1_EDX] & CPUID_DTS)) {
+>> +            error_setg(errp, "vPMU: %s is unsupported without Debug Store", name);
+>> +            return false;
+>> +        }
+>> +
+> 
+> This is a general code path to check user_req != -1... but
+> 
+>> diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+>> index 1d0047d037c7..60bf3899852a 100644
+>> --- a/target/i386/kvm/kvm-cpu.c
+>> +++ b/target/i386/kvm/kvm-cpu.c
+>> @@ -231,6 +231,7 @@ static void kvm_cpu_instance_init(CPUState *cs)
+>>      }
+>>  
+>>      cpu->lbr_fmt = -1;
+>> +    cpu->pebs_fmt = -1;
+> 
+> -1 is only set for KVM, so other accelerators have lbr_fmt=0 by default.
+> 
+> This will cause make check fail:
+> 
+> stderr:
+> qemu-system-x86_64: vPMU: pebs is unsupported without Debug Store
+> Broken pipe
+> ../tests/qtest/libqtest.c:201: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
+> 
+> (test program exited with status code -6)
+> 
+> So I think the initialization should be placed in the general code path
+> as well (x86_cpu_initfn()) - and move lbr_fmt initialization back to
+> general x86 codes.
 
-Hmm, no.  I don't want to encourage the caller to rely on the state of @map if
-the call fails.
+Yes, the related changes in patch 9/13 should be reverted.
 
-> There is already possibility of failure after initialization anyway.
+> 
+> Thanks,
+> Zhao
+> 
 
-Sure, but the caller shouldn't rely on that.
