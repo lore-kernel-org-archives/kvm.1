@@ -1,49 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599D5324B32;
-	Wed, 22 Apr 2026 15:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E602571B8
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 15:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776873045; cv=none; b=pwW/aVvU8WM9Uczfh+5N6KDXJZ+8eWAeygx85Sx394M0lUO09uKwyt8CS16/Oi4KQeVcZpSF+YnMXJaEWA+qBfoaUhcjRk+VF+a4kQIpPX1Lpw/M3pWsQJtZayIUriM8WgDwGdU88jGDdvbHN+YLXgaboirhVdy/IaTupKk2Tug=
+	t=1776873262; cv=none; b=qRhmaebA7Hm2qqC0q035C/lqefYR/epOGz9OVPkkdlQc4pDClQmMjeI81z1jdnZ77eMPZEXVqwwzxTyQI4k1OaW7nOwOP3ie8u8uZJl8+/ATivGqNHiyMwF1Tzud7PpGj+VzzuLJynDm9JSy15xidX2y+YkWohkVSmqooRyxw+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776873045; c=relaxed/simple;
-	bh=FpsxQZvjVjd9Akt2HBKxJZNBDYIwr4Pi2TKkjE5Tlz4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qJ/1DMz25IAPxFkiHaual8HJ6MynL2jZ0AGjx4o+4EAcgM4UwaSL/tFKK4L9AkL10FnjrTvRByETPuKHj04LaqwXk8ed6iNBatDirAJ3iglI/a/wfLPSXjkCRVKWMbGOpEkaWCp+z0tgGqyMnLyUMgUFDX83ZFwdUMaccqtxmIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enPaOMzz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776873262; c=relaxed/simple;
+	bh=p/o4p72Vt4z2tehtlFZfx0ZIoNtJEdCjfn1U5LZ50wo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DDUVjCVHepxitS0Sk5dV4i6APOtTQV4M50ys3AUYRefEnLF5ddtq+76dr3Rhi6Ldc5pK81QfiKeW63Jix/0UAaYWZUTLlxQKby7EdhL1rVM/fOxS2vCTRqKdYW5SeeryfFeORW65jDtzrIeu2RYSdpCR5UsRN6CDyFYvFW7vC+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TbHGnsgz; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enPaOMzz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CABC2BCB4;
-	Wed, 22 Apr 2026 15:50:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776873045;
-	bh=FpsxQZvjVjd9Akt2HBKxJZNBDYIwr4Pi2TKkjE5Tlz4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=enPaOMzziCmx6sr2LApjufNywy31WK/vha4S3YkkiF/0etI/sirJrRIEOLwClzd1H
-	 O2v51rMmm402y+uRLj8NnGOHQP8WC8l4f4RC913duPj3OS6gbQOEN5OAeIY8LEHr2f
-	 fUOx/MPLQdppyJqTQmNX2qLAfqJ6Kpb2sZQyYdi6/IvuUnuTeEM3pJp0XJSBRbfZTP
-	 O9+03Xys4uAEOU3bs24NB63O+tX0bvzm4dty3AmY8tjUo1UywPR3ml77bSbN6kUQOa
-	 11CtWaLhvKLrfAzVhEFwhfYCOeKgEK0Xg90Xr32wBioPtJTl56QUBDa/jlgLX98vFE
-	 kr+BqycHO6Ehg==
-Message-ID: <924eb446-10b3-4167-84ff-289efed03388@kernel.org>
-Date: Wed, 22 Apr 2026 17:50:39 +0200
-Precedence: bulk
-X-Mailing-List: kvm@vger.kernel.org
-List-Id: <kvm.vger.kernel.org>
-List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TbHGnsgz"
+Date: Wed, 22 Apr 2026 08:54:05 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776873249;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MNSFjB5scCIoduSEowvVTvq40a5owQCVbC+es3+xqtc=;
+	b=TbHGnsgz4p/jZjpNe6F0BBXy57w0Nk0cSY+BQuwiWwjJG/PLr2GOdU2l7UQe1AJdxQXVnB
+	POvEsUH+T22cL7uij8iDLevqfu6ddNozYM2c/HnGCbzjO+UTdgyMVoI2bRH5C4b6jsZZYV
+	gPcMqHyxmRgSplWg2AGT2ceTaWfXYsw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>
 Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
  fault path on Linux 7.0.0-08391-g1d51b370a0f8
-To: Sean Christopherson <seanjc@google.com>
-Cc: Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>
+Message-ID: <aejuZb1sDlsKVc3M@linux.dev>
 References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
  <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org>
  <PS1PPF7E1D7501FEA2B54606827E0DE1805AB2D2@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
@@ -51,108 +44,64 @@ References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
  <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com>
  <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
  <aejGuMRQjeEEH-V3@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+Precedence: bulk
+X-Mailing-List: kvm@vger.kernel.org
+List-Id: <kvm.vger.kernel.org>
+List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <aejGuMRQjeEEH-V3@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 4/22/26 15:01, Sean Christopherson wrote:
+On Wed, Apr 22, 2026 at 06:01:44AM -0700, Sean Christopherson wrote:
 > On Wed, Apr 22, 2026, David Hildenbrand (Arm) wrote:
->> On 4/22/26 04:06, Zw Tang wrote:
->>> Hi David,
->>>
->>> Thanks for pointing this out.
->>>
->>> You are right. The commit id I sent was incorrect. I mistakenly used the
->>> git describe-style suffix g1d51b370a0f8, but the actual git commit is:
->>>
->>> 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
->>>
->>> The short commit id is:
->>>
->>> 1d51b370a0f8
->>>
->>> Sorry for the confusion.
->>>
->>> I am also re-checking whether the kernel image was built from a clean tree
->>> and whether there were any local modifications when the crash was reproduced,
->>> so that the reported source line numbers match the exact build.
->>
->> Okay, on that tree include/linux/memcontrol.h:381 points at
->>
->> 	lockdep_assert_once(rcu_read_lock_held() ||
->> 	lockdep_is_held(&cgroup_mutex));
->>
->> lockdep_is_held() would not trigger a warning like that IIRC, but
->>
->> lockdep_assert_once() does
->>
->> 	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
->>
->>
->> So likely we are calling obj_cgroup_memcg() without the RCU read lock held?
->>
->>
->> kvm_release_page_clean()->kvm_set_page_accessed()->mark_page_accessed()->folio_mark_accessed()->workingset_activation()
->>
->> ... grabs the RCU lock, though, before calling
->>
->> 	rcu_read_lock();
->> 	workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
->> 	rcu_read_unlock();
+> > On 4/22/26 04:06, Zw Tang wrote:
+> > > Hi David,
+> > > 
+> > > Thanks for pointing this out.
+> > > 
+> > > You are right. The commit id I sent was incorrect. I mistakenly used the
+> > > git describe-style suffix g1d51b370a0f8, but the actual git commit is:
+> > > 
+> > > 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
+> > > 
+> > > The short commit id is:
+> > > 
+> > > 1d51b370a0f8
+> > > 
+> > > Sorry for the confusion.
+> > > 
+> > > I am also re-checking whether the kernel image was built from a clean tree
+> > > and whether there were any local modifications when the crash was reproduced,
+> > > so that the reported source line numbers match the exact build.
+> > 
+> > Okay, on that tree include/linux/memcontrol.h:381 points at
+> > 
+> > 	lockdep_assert_once(rcu_read_lock_held() ||
+> > 	lockdep_is_held(&cgroup_mutex));
+> > 
+> > lockdep_is_held() would not trigger a warning like that IIRC, but
+> > 
+> > lockdep_assert_once() does
+> > 
+> > 	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
+> > 
+> > 
+> > So likely we are calling obj_cgroup_memcg() without the RCU read lock held?
+> > 
+> > 
+> > kvm_release_page_clean()->kvm_set_page_accessed()->mark_page_accessed()->folio_mark_accessed()->workingset_activation()
+> > 
+> > ... grabs the RCU lock, though, before calling
+> > 
+> > 	rcu_read_lock();
+> > 	workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
+> > 	rcu_read_unlock();
 > 
 > No?  Since commit 906c38ff52e9 ("memcg: workingset: remove folio_memcg_rcu usage"),
 > I see:
-
-Yeah, I used git show show
-1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2:include/linux/memcontrol.h to look at
-the file but then explored the other code without a checkout, ugh.
-
 > 
 > void workingset_activation(struct folio *folio)
 > {
@@ -168,15 +117,7 @@ the file but then explored the other code without a checkout, ugh.
 > and I haven't been able to reproduce the splat to add instrumentation (though I
 > haven't tried very hard).
 
-folio_lruvec() does a folio_memcg(folio) that does a obj_cgroup_memcg() for
-folio_memcg_kmem().
+folio_lruvec() -> folio_memcg() -> obj_cgroup_memcg() if folio_memcg_kmem()
 
-So the page was charged through __memcg_kmem_charge_page() by passing
-__GFP_ACCOUNT to the kernel.
+How is the given folio (page) is allocated?
 
-So this is likely not some ordinary folio?
-
--- 
-Cheers,
-
-David
