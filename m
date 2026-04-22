@@ -1,153 +1,96 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485AF3C0624
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 08:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71143C13FD
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 09:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776848390; cv=none; b=dHSlgqC1PYkDuxvFkDTbBI1q9pVWyS6+lPHnW1G9LliFceWRP1Z3SkZq42lVYSFTEylTv0aaZKKDG3sQsfk657MGnM0lVwZJvMp6b6Vpn/YQ1K6jWZJsOw0LU2lqib/gg+y362H9yDyE0ZXAOwAWuru8e3hmgHSSvKpiXyeWvUI=
+	t=1776849207; cv=none; b=RsZl5Y8+uQtStOXigzyC/smYvo6qozN7diobph2mK+Tg5WZ86vDd0CvSxG2bUbvRzjRFrrtGGBaHpvy2CIYhObJbJ5zipu//JclLlowCux1oGVnmLyNb3Jooitwj7C2lvKTyNIAjbdmE1VB6TDQQ+Bu3907/xfp3Wjzjp8BK70g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776848390; c=relaxed/simple;
-	bh=BDpkwmS7Ss1+tywQFmikr+msx+/dKPHRNjl0SAy5LZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d9vB5Csxf+/Zsz26t5ay5Dck/iwKGD0nbNOWXm6/xldIwGN9HABzyexMIFufWDGY++72C3d/U8mCs+Kt7wnwwCivDb5N6ROQZwm/Qk+P3aYyGJWnY8k7xuKF4szFGULm3XbRphOK9UlAowqABKdlMTfKqa1FxAGyBBYImN2w1ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QmpPhPUC; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776849207; c=relaxed/simple;
+	bh=lnDH+L5FeyefzEiOwoi//zMzH528ayKYykWRM2wp6vk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MXKHC/rgsGZXdJdE23Um5FcB+OFD/O7BfbE7cvUU2VDMl5lbG9PMyWRpxnqLwK0Y/RchYi2wlVoj5V6eLVCmziSNzXXDdSTKeirs0jjimFS7Bdy6c8Gmt/+zEum+Lu6UR7xm3SRxiLle292JIy8RjUJApq9nWYc12EVyeKwxOzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPzbSsZ1; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QmpPhPUC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776848388; x=1808384388;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BDpkwmS7Ss1+tywQFmikr+msx+/dKPHRNjl0SAy5LZ8=;
-  b=QmpPhPUCADtd2NSaFVVpXcPXl80pFDDVQ3pG5FYRd987rcWrfR3sL+h0
-   wahW4ziJDfRAaf2mXMACR4G71YhZXgrybDsyl4V4WiNfGNa03qDEqIMY/
-   Vyh1gu5OQEf385ZASIwLCOroZVM4xM41+k98CZoCFnJV/QL5Wxq+5tU4t
-   RlfXfVyoCNM0MshvM9xkBS6INrvGi4Xw6P5IMxmyH7Bs41Vpez3qTvCJ4
-   IF2g9jgpCzA+M/NWWeUh+8Wadj83BZz9s+85D714njgFE0sK3JtqtWM/K
-   mi3Fieq8ygVBGvax4d2VBDldGinBuBTeUGqUgR8JES0fBySAHLOSLXG1n
-   w==;
-X-CSE-ConnectionGUID: g32+x3N7TN6aorY5Zj1jFA==
-X-CSE-MsgGUID: BZmYUaFoSdKGppL4EDWt/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77500501"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77500501"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:59:47 -0700
-X-CSE-ConnectionGUID: lKoZ4/QJRHeHOfYT8/+ezQ==
-X-CSE-MsgGUID: j4myfYXyQ7mZY1aXc0SX1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="236300212"
-Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:59:45 -0700
-Message-ID: <ce8ae1eb-77ae-43b3-973e-ef27cc0c6832@linux.intel.com>
-Date: Wed, 22 Apr 2026 16:59:43 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPzbSsZ1"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b941762394aso708437966b.1
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 02:13:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776849204; x=1777454004; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OKsuHuOjVnQIcIxkx06GjcZGC/dgb1PFZKky9ByNtmc=;
+        b=jPzbSsZ1GuZlxJ8NV3SvUI6vf3xLYDDj4+haUtF8zUg5blgFOCFfe9SvorHViNWXM7
+         oaocCs11Retpkh+ON0Z8qyeCboBWIBKGTpv22Xceqf0R3WqGxLBk6+Z1SXU3vJw+/J37
+         ldxjS1BfTsUb/krcK6CDgqzfjtOoom0hJ9Lzblxs11TX2q7/NYYmndx4DHcek3sM7tJ0
+         Hu0F+9GkikWaGznKgA2sJQet5Br5zVSg9vAurjoxzs+2s4WKOsrd0IEN7byuRUxO538b
+         5/kKkLcp1DVuRW001D9REi9z9eEGnQSroYhy94ZqgE9pMkU/Qw/GZvTvbet4aWp4gPio
+         gjIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776849204; x=1777454004;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OKsuHuOjVnQIcIxkx06GjcZGC/dgb1PFZKky9ByNtmc=;
+        b=X9IiKQoggTuX/SER3qzKxXHnC4FNkEo99FU8hmBzHDeSAIhPVq4We5TVOHUBc+J1iA
+         THZsaJmmeEnMn1rfFz3FqDqIoWM65nTjP0/VMg7ktxPGIhZZQuAWDO8qVPO6QgnpkBzr
+         TsXVVTNmAQ7vAXUGwS3OVDS6SJAdA7GLTrkvWIrf5ycY5QEgSZFx7PpvKPJZ8UarYh0w
+         98HHAlOqwaagWxeMnUXzFn34cEwVtaOSG95AkXRItDz2MYPs1foMka/SqJgeLItb9ZvA
+         DeA4H75mklc+7xNWwimQHDyNu/YMSofrWyJU/XZ/WJ8TInQjPlzXX7ZpdRLhJvBFEnfI
+         CYGg==
+X-Gm-Message-State: AOJu0Yx1Y0s4hKkEe7CUPqyqJVXq1Bic+3rgMaCfjlY5EWRBQcAFbBkl
+	L+3QRLZtUJrCeuJP6bkjUA6JEUaswToyq+H0+toVU1RISRhGHdIuXuDZ
+X-Gm-Gg: AeBDievEpfbnwJYaNMVeUHxVDzdpvSu9AffAWQ2+CSzdkJnIJrXv7FMpefOilS+8Im6
+	DloHCDQBZN9dTGjqe7yk9+B4765HwNxS8l+TChQPkpVQ3enit9fpY74gqt4k4fJbTBAs7Lj6L5p
+	WXmIYJqdkgCjGldF0MavbScBT+1pNuuaMRBWpuNP0c1cZ17Ywonw+gwtpHtCW8LGTurXWuqdVNX
+	Dyo5tYxSHPsJDniwHrSQNDC4Fe2CAWNn53rDR0Vi9bv71yaq/nKZCNvlstxZVOi2FBjXsbEQxJQ
+	5ehaiO1TTET8FOwttif3kNR4h3NT+jatA5i4n8i6lcM/AooUEWy98T0AgzAJB+i6yklkmnr4bu+
+	E5p2gtgHT+Dhm8FvUNi/S8oOnciNzmm1Lsd1vHVdgqqSyx4mryehgCSx5qUQvnBNFaViyZwASXO
+	OQQEm9/lNBUCP9KybGSK7oJ7PIk7i+QVAf1uZ3AUSgLm3djN+wmnUVYReQ7Gg7BhfYMG5KsLJvG
+	fvnWe/oQPwc
+X-Received: by 2002:a17:907:3d4f:b0:ba8:d9b6:4993 with SMTP id a640c23a62f3a-ba8d9b64b32mr476670466b.8.1776849203836;
+        Wed, 22 Apr 2026 02:13:23 -0700 (PDT)
+Received: from localhost (226.55.classcom.pl. [195.150.55.226])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba538429115sm464634766b.15.2026.04.22.02.13.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 02:13:23 -0700 (PDT)
+Date: Wed, 22 Apr 2026 11:13:33 +0200
+From: Piotr Zarycki <piotr.zarycki@gmail.com>
+To: Dan Carpenter <error27@gmail.com>
+Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
+	shuah@kernel.org, vkuznets@redhat.com, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] KVM: selftests: hyperv_tlb_flush: replace NOP loop with
+ udelay()
+Message-ID: <aeiM82FpO-CcqBlI@arch-piotr>
+References: <20260421172953.191345-1-piotr.zarycki@gmail.com>
+ <aefZrtpivxh0eK_0@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 22/27] KVM: x86: Verify userspace CPUID inputs in
- paranoid mode
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com,
- xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
-References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
- <20260417073610.3246316-23-binbin.wu@linux.intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260417073610.3246316-23-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aefZrtpivxh0eK_0@stanley.mountain>
 
-Below are responses to issues reported by sashiko. [1]
-[1] https://sashiko.dev/#/patchset/20260417073610.3246316-1-binbin.wu%40linux.intel.com?part=22
-
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 08f5bc1d26b10..2027230a1f426 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-[ ... ]
-> +static int cpuid_check_and_set_vcpu_caps(struct kvm_vcpu *vcpu,
-> +					 struct kvm_cpuid_entry2 *entry)
-> +{
-[ ... ]
-> +		/*
-> +		 * A vCPU has a feature if it's supported by KVM and is enabled
-> +		 * in guest CPUID.  Note, this includes features that are
-> +		 * supported by KVM but aren't advertised to userspace!
-> +		 */
-> +		vcpu->arch.cpu_caps[leaf] = supported;
-> +		vcpu->arch.cpu_caps[leaf] &= cpuid_get_reg_unsafe(entry, reg);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
-> +{
-[ ... ]
-> +	/*
-> +	 * If CPUID paranoid mode is enabled, KVM rejects userspace's guest
-> +	 * CPUID definition if it contains any bits that aren't supported or
-> +	 * unknown by KVM.  Otherwise, reset guest capabilities to userspace's
-> +	 * guest CPUID definition, i.e. honor userspace's definition for
-> +	 * features that don't require KVM or hardware management/support (or
-> +	 * that KVM simply doesn't care about).
-> +	 */
-> +	for (int i = 0; i < vcpu->arch.cpuid_nent; i++) {
-> +		r = cpuid_check_and_set_vcpu_caps(vcpu, &vcpu->arch.cpuid_entries[i]);
-
-Issue #1:
-"KVM_SET_CPUID2 allows userspace to pass an array of CPUID entries which may
-include duplicates. Because this loop iterates sequentially over the entries,
-if duplicates are provided, won't vcpu->arch.cpu_caps reflect the
-capabilities of the last matching entry in the array?
-KVM's guest CPUID emulation uses kvm_find_cpuid_entry(), which searches the
-array sequentially and returns the first matching entry. Could this cause a
-state mismatch where KVM enforces access controls and emulates behaviors using
-the capabilities defined in the last entry, but the guest software makes
-decisions based on the first entry?"
-
-Indeed.
-
-I am not sure whether CPUID paranoid mode should reject userspace's input
-if there are duplicated entries.
-There could be two options:
-- Detect whether a vcpu cap has been set, if there is a duplicated entry,
-  reject the whole input or ignore the later one.
-- Split the cpuid paranoid check out.
+On Tue, Apr 21, 2026 at 11:10:22PM +0300, Dan Carpenter wrote:
+> 
+> How did you test this?
+> 
 
 
-> +		/*
-> +		 * No need to worry about the changes having been made if any
-> +		 * check fails, all the changes will be reverted when returning
-> +		 * an error on the set CPUID patch.
-> +		 */
-> +		if (r)
-> +			return r;
+  I built the test using:
 
-Issue #2:
-"The comment mentions all changes will be reverted on error, but is
-vcpu->arch.xen.cpuid fully restored if we fail here?
-When kvm_set_cpuid() updates vcpu->arch.xen.cpuid with the Xen base and limit
-from the new entries, it happens before calling kvm_vcpu_after_set_cpuid().
-If this paranoid check fails and returns -EINVAL, the error recovery in
-kvm_set_cpuid() restores the old CPUID entries and cpu_caps, but it appears
-to miss vcpu->arch.xen.cpuid.
-Could this leave vcpu->arch.xen.cpuid out-of-sync with the restored CPUID
-array, potentially allowing a malicious VMM to expose Xen-specific emulations
-at a ghost CPUID leaf?"
+    make -C tools/testing/selftests/kvm ARCH=x86_64 x86/hyperv_tlb_flush
 
-It's the same issue as below:
-https://lore.kernel.org/kvm/1931c7d3-b21e-4704-9012-4a16597bbebf@linux.intel.com/
+  And ran it 100 times to verify it passes consistently
 
->  	}
->  
->  	kvm_update_cpuid_runtime(vcpu);
+    results: 100/100 passed, 0 failed
+    average time: 466ms
 
+  For comparison, the original NOP loop averaged ~537ms on the same machine.
