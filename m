@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30A219D08F;
-	Wed, 22 Apr 2026 18:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C845A35B63C;
+	Wed, 22 Apr 2026 18:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776882460; cv=none; b=JSPTmDX8RVLunIgpX9hn1e6/V5qtpgLmYDk4rVFPhAu+mdGWMbyATf+jI5FECNw7OE4+KI8ifPbqCXtlpj3Ht4lLciKHuR8VCOT9VB4cYtWoL8y0XohcDZCf7djRYby6ZjTUxp6hw/dPEYYx+iAa0OcbtJdTBZ22Uctd2kiZclY=
+	t=1776883197; cv=none; b=RKtHoCvm1ZkxZN18xuKqooIsLqVe5A5GpFWVnEAM8y7xBhayE3o1Iej2yJZlroOdVbuVp5u19uNd0B2S0NLoGgHH67RaHMgK724zJEEqU9lz4BacyO0TMz6DAe4oXffRIgcrSMIxnkMiCiqVCfJ0YZs2lWMsV6fygYly/hp1T8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776882460; c=relaxed/simple;
-	bh=33nEStdYJu2p7JAJnFtCQC+AQD0fSDhILvplFUmzfpg=;
+	s=arc-20240116; t=1776883197; c=relaxed/simple;
+	bh=gPBkLTS8xvviMRNP8SEcmV5ut7acgVc3jDTKipEUsns=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jt3rSqWVepsfwVmT1Rlk96qfCZL0vWOsrG3zf/jEmAaFzJGZYbobe45YUGt0GlxnzNqR3tHdZyv5oH1LHZR0Mee9FqqG5Leu9SHpxS5c4AkTmjmzZZM4+BWNbIH9NV6KC6nHJBHYP3yIoDIsTedBk5ZMFHc5tCZEeDB5uC8TpOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrd+KDpJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Hv8NvnPpoulgpkFgHey7C+8Y6Ws5Gsclfy0oApV4X3Z95jpP7BIIlFbCMih114bt22Sx/nYv3MqfX/Sn1QHheFyYAvBDZP6I3/H7aPz4bfft3yREhFIZHHPLuDP3DzlvVF4/PhgOpW8kJs1njaSuZ/P5DvOND8af9u2CzRD4t0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RG1AIUof; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrd+KDpJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C15AC2BCB4;
-	Wed, 22 Apr 2026 18:27:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RG1AIUof"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4F7C19425;
+	Wed, 22 Apr 2026 18:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776882460;
-	bh=33nEStdYJu2p7JAJnFtCQC+AQD0fSDhILvplFUmzfpg=;
+	s=k20201202; t=1776883197;
+	bh=gPBkLTS8xvviMRNP8SEcmV5ut7acgVc3jDTKipEUsns=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rrd+KDpJxkq6drKUWtNHeio/xx3jrIcl5z+Njs3jkOaybiD48Fw0SCODunG/GvCuc
-	 X7nEnyGn+38O7E8QEUkmrnWvV8uQ4SXEohfH5yTWYuXa1a0jRsoJWZHY6GYKw+Yz0s
-	 38lEcTergBhV1ExWix5sElq9LaRjVoJr8DeSRZY2SARVPmIuVHvE58v383U6W8aLaE
-	 K/DiLI3eirYS4oaDHNr6gh177X7BJTNFYGghsoktYk+BPFkI3iVtE9RIcB1drM61ek
-	 MolaToXCfBakcgXmk9aBrMIsyAE1DLryexYkGznzEmX0tsQj4HZcizbE2glrf2qkU+
-	 bcKZ2DZvEh0pw==
-Message-ID: <290e59cb-920e-483f-aba3-6c4bed5bd291@kernel.org>
-Date: Wed, 22 Apr 2026 20:27:32 +0200
+	b=RG1AIUofKfe1bYx9Q4cRXAEWj+ON9FElIcMnnfMFF5BknmDNEGf66PIK9UkMmih4x
+	 q4NIPGJeGozprMQtH0pH+1BGB0EycqP3DdE4hsePDKc9wLbrk0rCcr0QGuyZi/inG0
+	 Q14x9hD9OKGhJslLLO4vekucewh5KWpQQh/pFsm2mIyNW6/ib4cYFwNT0njGDjRqcz
+	 ZiZXIEM9kE+YJMcvfUsW4MF20wGd+/oxvvcfR4drh233AJLyRUYZmR009wFJVXp2am
+	 9b6/ARH061RBy+hrJ/gWkrclE4F/ERVWbBtDGpVIzd6ISnUXHEzAHNEQWAm89JrQne
+	 5K/NY4RJaPr1Q==
+Message-ID: <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+Date: Wed, 22 Apr 2026 20:39:50 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,14 +47,15 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
  <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
  kvm@vger.kernel.org
-References: <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+References: <20260414142354.1465950-1-kas@kernel.org>
+ <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
  <ad50rPOseVa-SP_s@thinkstation> <aeDoqFWPFxkkNB26@thinkstation>
  <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
  <aeFCuLJXT8VOkzH7@thinkstation>
  <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
  <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
  <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation> <aeiUGtFgmYB9M18L@thinkstation>
+ <aed6fHLrIdahbdY3@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -101,41 +102,148 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aeiUGtFgmYB9M18L@thinkstation>
+In-Reply-To: <aed6fHLrIdahbdY3@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/22/26 11:27, Kiryl Shutsemau wrote:
-> On Tue, Apr 21, 2026 at 03:33:27PM +0100, Kiryl Shutsemau wrote:
->>> 3) Some other stuff needs a second thought, like
+On 4/21/26 16:33, Kiryl Shutsemau wrote:
+> On Tue, Apr 21, 2026 at 03:03:56PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/19/26 16:33, Kiryl Shutsemau wrote:
 >>>
->>> diff --git a/mm/gup.c b/mm/gup.c
->>> index 8e7dc2c6ee738..08fc18f1290d4 100644
->>> --- a/mm/gup.c
->>> +++ b/mm/gup.c
->>> @@ -695,7 +695,8 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
->>>  	/* ... and a write-fault isn't required for other reasons. */
->>>  	if (pmd_needs_soft_dirty_wp(vma, pmd))
->>>  		return false;
->>> -	return !userfaultfd_huge_pmd_wp(vma, pmd);
->>> +	return !userfaultfd_huge_pmd_wp(vma, pmd) &&
->>> +	       !userfaultfd_huge_pmd_rwp(vma, pmd);
->>>  }
+>>> See https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/rfc-v3
 >>>
->>> How can a pte be writable and prot_none at the same time? Maybe just confused AI
->>> output that you should carefully double check before sending that out officially.
 >>
->> Note that this path is for !pmd_write() case to begin with. It serves
->> FOLL_FORCE case. I believe this check is correct: we don't want to allow
->> to write to such pages even with FOLL_FORCE.
+>> Quick feedback from skimming over it:
 >>
->> But looking around, I missed gup_can_follow_protnone() modification. It
->> has to return false for RWP.
+>>
+>> 1) ARCH_SUPPORTS_PROT_NONE needs some thought, because I am pretty sure all 
+>> architectures support something like mprotect(PROT_NONE), and the config
+>> option might be misleading.
+>>
+>> So you very likely want to express different semantics here. You want to
+>> know whether pte_protnone()/pmd_protnone() works.
 > 
-> With gup_can_follow_protnone() fixed, the checks in
-> can_follow_write_pmd/pte() are redundant. Will drop them.
+> We do support mprotect(PROT_NONE) everywhere, but we don't always have a
+> way to distinguish such entries from others without VMA in hands. Like,
+> there are other PTEs that don't have present bit set. In my and NUMA
+> balancing context we cannot rely on VMA, because we want to install
+> PAGE_NONE entires into accessible VMA.
 
-Yes, that sounds better.
+Exactly. So it's not ARCH_SUPPORTS_PROT_NONE.
+
+> 
+> So we need two things; pte/pmd_protnone() checks and PAGE_NONE itself.
+> The first to test PTE for PAGE_NONE, the second for pte/pmd_modify() to
+> make the entry protnone.
+> 
+> Currently, generic code only use this functionality for NUMA balancing
+> and gated by NUMA balancing config option. So I moved it under separate
+> config option.
+> 
+> Do you want it to be named differently?
+
+Would ARCH_SUPPORTS_PXX_PROTNONE or sth. like that better describe that
+pte_protnone()/pmd_protnone() do what we want?
+
+> 
+>> 2) The other stuff is really just an extension of existing WP handling.
+>> I suspect we want to have some reasonable cleanups to not end up in
+>> common code with
+>>
+>> @@ -1841,7 +1841,7 @@ static void copy_huge_non_present_pmd(
+>>  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>>  	mm_inc_nr_ptes(dst_mm);
+>>  	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+>> -	if (!userfaultfd_wp(dst_vma))
+>> +	if (!userfaultfd_wp(dst_vma) && !userfaultfd_rwp(dst_vma))
+>>  		pmd = pmd_swp_clear_uffd_wp(pmd);
+>>  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+>>
+>> All the uffd handling should be better isolated (i.e., a single vma check?),
+>> and likely the uffd bit should be abstracted away from being called "wp" to
+>> something more generic.
+>>
+>> Maybe it's simply a "uffd" flag which's semantics depend
+>> on the vma flags.
+>>
+>> Maybe something like:
+>>
+>> @@ -1841,7 +1841,7 @@ static void copy_huge_non_present_pmd(
+>>  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>>  	mm_inc_nr_ptes(dst_mm);
+>>  	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+>> 	if (!userfaultfd_uses_pte_bit(dst_vma))
+>>  		pmd = pmd_swp_clear_uffd(pmd);
+>>  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+>>
+>> Not sure, needs another thought. But I think there are some decent
+>> cleanups to be had.
+> 
+> That's fair. Maybe userfaultfd_protected() name is better for the VMA
+> check?
+
+Yes, something like that could also work.
+
+> 
+> And about UFFD_WP bit name. Maybe we can just drop _WP: _PAGE_UFFD_WP ->
+> _PAGE_UFFD, pte_uffd_wp() -> pte_uffd()?
+
+Yes, I hinted at the above with pmd_swp_clear_uffd().
+
+> 
+> But it is a lot of changes. Can I do the bit rename as a follow up
+> patchset?
+
+Let's get this clean. There is no need to rush that in ;)
+
+I suspect it's a fairly mechanical change.
+
+> 
+>> 3) Some other stuff needs a second thought, like
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 8e7dc2c6ee738..08fc18f1290d4 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -695,7 +695,8 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
+>>  	/* ... and a write-fault isn't required for other reasons. */
+>>  	if (pmd_needs_soft_dirty_wp(vma, pmd))
+>>  		return false;
+>> -	return !userfaultfd_huge_pmd_wp(vma, pmd);
+>> +	return !userfaultfd_huge_pmd_wp(vma, pmd) &&
+>> +	       !userfaultfd_huge_pmd_rwp(vma, pmd);
+>>  }
+>>
+>> How can a pte be writable and prot_none at the same time? Maybe just confused AI
+>> output that you should carefully double check before sending that out officially.
+> 
+> Note that this path is for !pmd_write() case to begin with. It serves
+> FOLL_FORCE case. I believe this check is correct: we don't want to allow
+> to write to such pages even with FOLL_FORCE.
+> 
+> But looking around, I missed gup_can_follow_protnone() modification. It
+> has to return false for RWP.
+
+Right, read-permission checks come before the write-permission checks.
+
+> 
+>> 4) How do we want to handle PM_UFFD_WP?
+>>
+>> We are pretty much out of flags soon. Overloading PM_UFFD_WP means that we will not
+>> be able to easily support using a separate bit.
+>>
+>> But our internal design will not easily allow that either, and I am not really
+>> sure we want to go down that path any time soon.
+>>
+>> Maybe we could document this for now as "In WP VMAs, indicated WP PTEs.
+>> Otherwise, in RWP VMAs, indicates RWP.". Whenever we would allow both at the
+>> same time, we could change the semantics. User space would fail to create one
+>> with both protection types for now either way.
+> 
+> Yeah. I think about doing documentation-only update for PM_UFFD_WP for
+> now.
+
+Ok, good!
 
 -- 
 Cheers,
