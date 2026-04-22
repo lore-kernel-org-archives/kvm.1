@@ -1,105 +1,100 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E7E3EBF08
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74993D1711
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862445; cv=none; b=sx1TirRx6XN6u+GoQa/F8ALQpse8WwwSlJ95W4mGrlgqjN+40XOhtplP/9mCmTLuGVKkbR2PzNeR9hO3jJ+sooTYckYu4Q2M1T1xfyFhg+YQYBwxWX3sWRlefgVQpLN7BLpa6voJcqNQBn2zDSvLM1nPY8yBOdqzlYZi41B1Hto=
+	t=1776862645; cv=none; b=IFzL4XWyN3Jjmwva6EzyW1p4lQqXBQi0S5t//ukTQeJgcSgkIBQ1EBQaNK3MNh0mtQKafOTKb1G1c5gBqcczbaOqjNOxOwcRMJvZboFxsn+Ia8geF25LAalXRKDeTnNdIat1vqcRZ2PLYWElnbH8INsreS/tqb1nSWYzJdCQdCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776862445; c=relaxed/simple;
-	bh=i0VhflUxEFpED0+itF1fFpiYo5q4BEti/6FUf86soek=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LNhzSHNHOHdB1YtbNZ3dsQ5KVjLCev6Wtqwiq+TNLwuomDwe+BgxPaTfdxbaMuOAOukCxCfKFCPd0f8ORtDRkjezdDKKGwDpH/ZaD1XD9uq2wsbEgkqV1TtRRIsGr3myDIHBNP63LKDiCSK/zbLoqcfcYjYyAWBPy/Opnn3dqIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TYTaTNEa; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1776862645; c=relaxed/simple;
+	bh=i+UbOwWqMgpssWJ3B+3lbxW8w6OY5CYF4YTaS6tILGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tYhWIHwgVU0Kp4BTvINjpxxAQrmEgiY9qAztidIKRZ9NhHv4xIldDM2Ihb+tEe3xzdUlzdwn4JSv0mZxMZ6c9l+06arjZDyvPn0b+0NjQ4Naq5qTzv2c08UZHyAuXLw8+C6fz5t8UBRZsjGFBBibDGspihiL85jYQQXEnF0M4Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=k/dpX5CM; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TYTaTNEa"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488ad135063so47393855e9.0
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776862443; x=1777467243; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=00AJ7UrUeXPy7ZqKcucMiGTlG4wrum92TpmohAq+VBM=;
-        b=TYTaTNEazuWTVlXPHz0q7wJQ5mJEsDoMuk1Aaay9vKH3SPs604dKfOHtQWZxjQ/6wm
-         ttH1hdqksQVYi3dQyD6VkCTmgGp6I2pf1Lvo5V1LO3OqSMhZqKI9CQYPDwj4tcQ3cN/I
-         nHR3Zsw0O2N0iPzzpB95QBlUpHOxoOViC4Dkp2BAQd7oAbeVwmwdYlOYZ59tCC79Hs1j
-         bBJzykbQUGG/C5ZkUUBkRUsmaU1JrKntiUUwIuH73O5+75Bnk6ZSOu5N7EK5XvkYHaaE
-         BO4PyxoBeXGXBmcPBbBwmdHLpfyCm6t34qvyKBingeeHkR6ufSNT6/OkP2BCO2lwUrhz
-         m4xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862443; x=1777467243;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=00AJ7UrUeXPy7ZqKcucMiGTlG4wrum92TpmohAq+VBM=;
-        b=p4+LB53HlwCYirFbf7twYKnQZqgrVLPi3U07ZtAIrEBlN4egTvkVtgreXZaBzLvmAP
-         4BBOStTXspeT7YAyRuRjTo6Wu+3as9nvdDpeQy4fVDe7fyxy4OqkeBcnKV8YnkzZiJWr
-         FA/UUn+CTURSm+xs7rsdXn7hI13NxXbQ80BgppU6PQSZFHMky827KTerU3ay/Bn1ukqm
-         N1vxWVnGXLyhAZimgll73P96BDIDF7TCo3s5fuk7iTep+yDYzzgfrDCen+sdLI6EGUdS
-         iqjMhdWBOcJ3dGjkTTnB7BYJizLvskuub9ar9JiLcOlC6izyBRORq4xPPdSQJ/WZuWNL
-         v+VA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Fq/kpgvXSiBbArgxQXflu8VvsjlINwr5hwSJ8sD7WcsqHCNxrcrZcTe1wOgDvDAAapI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygVgaubR7ivHRafi3bDSYmdsOVhLLlblDTgy4/8uyT3b74zm1j
-	jG53oaFulc1wfa2uZFbq2aCODFV+mBZOVzVuIeF2vL5RCL1IirqArwwNovO5g9kiW/Q=
-X-Gm-Gg: AeBDieuSfh1i+w/afiovnT/7qe11QejHriIC920ZsAItL9agGK8UQv2i6tp4/JcMdw7
-	av03j7CnvYmvk8eDQlu681KmcD0T9o/ZVszt74/mDhL9yFqFKd8tDkFHe1OqVYnzMFFcvweH+Sr
-	SmmlVGd3DGSBTsB/qLugh3AhgGmE/OpQCs2t1es+gdoV9f/WENfYQPiyTQja1hqiDciqz7s9eoH
-	qhXSi/QnLktSnRMMNoJJ013WPNlqbRu8/3YVM8tXMJxAggmG6X25ZaDAFN7d3Zn+j4sA8JMblE9
-	fNGHF6GeE6+0abl3+7q4gpP7r16n5P63WEJVscFkMmoQHdP+dZSe/5pnYBLdqYSc0+iZodJ8sBD
-	9dkSn6LzyeYCIoc40nXll9cwDYbRjvc7JGO/qyZedZ+jLyNX7AOt6bnnjpPrsDRnB932WWHYlQ6
-	gADZ2OesRkA5sdSNW6OEVdLehMnofJdt5gWK1dZ7yckXlp
-X-Received: by 2002:a05:600c:4f0c:b0:489:1c1f:35e6 with SMTP id 5b1f17b1804b1-4891c1f38c8mr201641885e9.6.1776862442605;
-        Wed, 22 Apr 2026 05:54:02 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc0f82bbsm753110215e9.3.2026.04.22.05.54.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 05:54:02 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 38A1C60342;
-	Wed, 22 Apr 2026 13:54:01 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>,  qemu-arm@nongnu.org,  Peter Maydell
- <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,  Mohamed
- Mediouni <mohamed@unpredictable.fr>,  kvm@vger.kernel.org,  Pedro Barbuda
- <pbarbuda@microsoft.com>
-Subject: Re: [PATCH v2 00/31] target/arm: fully model WFxT instructions for
- A-profile
-In-Reply-To: <20260422101043.1234229-1-alex.bennee@linaro.org> ("Alex
-	=?utf-8?Q?Benn=C3=A9e=22's?= message of "Wed, 22 Apr 2026 11:10:11 +0100")
-References: <20260422101043.1234229-1-alex.bennee@linaro.org>
-User-Agent: mu4e 1.14.1-pre3; emacs 30.1
-Date: Wed, 22 Apr 2026 13:54:01 +0100
-Message-ID: <877bpzxija.fsf@draig.linaro.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="k/dpX5CM"
+Received: from example.com (unknown [167.220.208.49])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 886F120B6F01;
+	Wed, 22 Apr 2026 05:57:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 886F120B6F01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1776862644;
+	bh=GkyMoNv3DEhmejdoMuZt1WIwI2IrPe33BUhDY+BehLw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k/dpX5CMDWD/DiecWpZRHxHYpzwW8L5hTI+6U5P7OhCcmd0CH2mk2Ienz5ZdnM9zO
+	 rBMFZz+X+ItVlwN/57xpLFxMl28ZBD67VomNpq0pbZof61WOw0HOWMNHIxedXNO6/S
+	 JMs6OiQjZlLiwINLwL4cJxu9Yf/QBN5R/0vyvtFE=
+Date: Wed, 22 Apr 2026 14:57:18 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+	Magnus Kulke <magnuskulke@microsoft.com>,
+	Wei Liu <liuwe@microsoft.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Wei Liu <wei.liu@kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH 16/34] target/i386/mshv: migrate LAPIC state
+Message-ID: <aejFrlqsVuchoSkK@example.com>
+References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+ <20260417105618.3621-17-magnuskulke@linux.microsoft.com>
+ <E651C54B-3AE5-45B6-A275-26C415EA0582@unpredictable.fr>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E651C54B-3AE5-45B6-A275-26C415EA0582@unpredictable.fr>
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+On Fri, Apr 17, 2026 at 01:54:48PM +0200, Mohamed Mediouni wrote:
+> 
+> 
+> > On 17. Apr 2026, at 12:56, Magnus Kulke <magnuskulke@linux.microsoft.com> wrote:
+> > 
+> > This change implements loading and storing the hyperv lapic state as
+> > part of the load/store routines for a vcpu.
+> > 
+> > The HyperV LAPIC is similar to the the split-irqchip in KVM, it will
+> > only handle MSI/X interrupts. PIC and IOAPIC have to be handled in
+> > userland.
+> > 
+> > An opaque blob is added to the APICCommonState, guarded behind a flag,
+> > hence it will be covered by a migration, as we declare VMSTATE_BUFFER
+> > for the hv_lapic_state field.
+> > 
+> > In the future we might want to introduce a dedicated class for MSHV, that
+> > would require us to wire up an IOAPIC delivery path to QEMU's userland
+> > emulation.
+> > 
+> > Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+> 
+> Hi,
+> 
+> Is there a way to make this not opaque in a way that retains the ability to
+> Save-restore between KVM and MSHV? 
+> 
+> Or is that not a wanted goal?
+> 
 
-> This series fully models the behaviour of WFxT instructions. We
-> already had support for WFE for M-profile but we left off A-profile as
-> it has more potential sources of wake-ups. The main one is the event
-> stream which includes events from significant bits of the timer
-> ticking over.
->
-<snip>
->   target/arm: enable event stream on WFE instructions
->   target/arm: implement WFET
-<snip>
+as we discussed offline: there is mapping code in the mshv-ioctls
+crate and some prior art in WHPX that we can use as a reference. So
+we are to able to roundtrip the lapic state using generic field on
+APICCommonState and a few additional mshv-specific fields. This seems
+to work reliably in my migration tests.
 
-I've posted v3 to handle the missing WFE exception and fix a minor
-syndrome bug on the WFET exception.
+I'll update this in the next iteration of this series. A KVM <=> MSHV
+migration path remains a non-goal, but it'll be a bit nicer to have the
+state transparent in the migration stream.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+best,
+
+magnus
