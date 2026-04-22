@@ -1,65 +1,65 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A55D3CE48D
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F803CE49F
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776852657; cv=none; b=MxTLVOWGb1PC+cxRx1xR7w+grAVTi3Rmkzjz0ZmGKpx5gMyZRFgAe/cFhR3CYudHj1qiC8zrBJffWj5/v+iHzfYCEyMtvSZAgS3kiuAy5q2KAiLsPpFScWdyISCeluGgdI1s1LqzKCNwuSMorDxTBWEGnM2Gd+GEw7xKCHHHHDI=
+	t=1776852658; cv=none; b=oWqZTZsxsDSiYYxuBHBxrDNVnSndG3ahw+XXsxjWWr0AHHbaWM+Bgnvr9D3RTh4uULu/4s03A3+aO8Ax9sFaSQXUVyNNvTRnJVgTS/qwl05kALwVtFYUdZC9Qh6Dj7phbjUmDdDykEBYiJJ53Ql0w/meosfsMtI7NfwaNJ68Tkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776852657; c=relaxed/simple;
-	bh=cccoPHM6d5qV2Ni48oei9X1VKYcFgX+rd8Sz/6nSoWw=;
+	s=arc-20240116; t=1776852658; c=relaxed/simple;
+	bh=0Ykhl9IF8fNR/4GTFmuwJ/ajcVHu9zeqWMWjbn0CNxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DcJa9mKqnDFYkgB/TWJ8JE5b8lTArdodbndNefYeBzYUrpCvCjqwtS0s3gaQNZyCAjIxwjprNY7gU91W3MXMIfQtkqYpKFxHW28u/uIToe0F8SAO6QcmN5HTzm7Mu+khBNwIZjqtHtOzyif8FLY4oF/fsJhcvUP6sdTewldm7zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ki6DdxtH; arc=none smtp.client-ip=209.85.221.41
+	 MIME-Version:Content-Type; b=gum1D5nZBOkHTPzgmyq5HXojXlK1odarntcLVtLkbtk2f8NPG1k66smqFoQziRf4O07SCEVDc8BUnhyaqO73RHR2BhndAw5YRGWx/zxvaYSqUpwJ0pSNdEw5oRXHfslFix2E+dC5AU6hwnGaC8rHi+eHT0C9glr05Y2iXTs1fCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q1za52F9; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ki6DdxtH"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43d7645adbdso2849308f8f.1
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:10:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q1za52F9"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488b0046078so47845535e9.1
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776852654; x=1777457454; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776852655; x=1777457455; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AJ6frWkT466kUBA2I2u6c2X58fkiBAsV+LbvLNVH5Kk=;
-        b=Ki6DdxtH6B49ksMunThedxsJh92Koasou9AQWk5Uy5eBRfchJSSH5rXBjdzlU07uj0
-         lj0GnGoBAstkpyBRtVnTdc7EmuLgeVmW6/hOAzeY2gtqhfNfgXzJU8UyjMcUrVnwWdUe
-         iRrRhhcc0ZPGAVHQzdctwfa5WvpsuwFYI8K3oO8uWctVYV7zsxFcaUflFGfHdvKSvtlR
-         E1XFJn1UBtxfImUdA/Jiwd85QPoPeOmH7YTwFF2+Y1D413nKwRRCNyCf7UZNuLTIPiqw
-         LW/2iVqhFsbF8ZID0O6OiMNKUJ1lefo9EBzmTPSm3YX4qbJAloO1wBExBBxws4/8lm2u
-         Dc5A==
+        bh=Oy8aVZbZZZe1U+CUvOIDDEpwm1FnWydA8CkWhWsEzmU=;
+        b=q1za52F9BgCIitJyA/GG4zJucUTMGSe645Cz9CIT9W9ga4OKPfDzPnxB9TEALiphr7
+         2pwHOEH7k9VOHUakKZo3e4bJCcpyRyGRPOgkc9TLDjc3p7HfgAkuaUXvec2c7P8wWtKl
+         LgSK3saE+s7uIwVfXexYhwWO2cJy2tsCyxvvY+tPaQ1bhnhSZYn9YPIViGliHx0NKvCZ
+         U0eddhY+jvug0JZrYF9X/23m8ir0IM6OyVdcQQo49SOe9KgOpDCuRK6EsgMPiken5BEp
+         EVVaDbMHr8XUg28CvxKqHTDFDVng5nsshnHFTBGcYaoCAh1+ZhZvkah64qgcRfTnPIXr
+         MpUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776852654; x=1777457454;
+        d=1e100.net; s=20251104; t=1776852655; x=1777457455;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AJ6frWkT466kUBA2I2u6c2X58fkiBAsV+LbvLNVH5Kk=;
-        b=dq3nE97CPa3mZmNVox9LAHwrX69KcAxV9Z6yGjOd6f1D8qD76L3NzVle5H7ZVRJAKX
-         9VUzIyiiwAGsKRLWhOWu4bDq/1I9sEXdmRF8OLBB0CxIH+7XUiXQM/6FUBsq8dDV5LJm
-         FV1uUenze6hQ/dXrNGeoY3TNaYz6zlh45l8i1dUAphOzDXHsf5p3v0b2WLEjOgSFkj6w
-         XJ7/VTBcrPIeO6Kt1yAjuniA/g8HbAtkpu8T0OmNE1o0cSahTyzMjmOJV3kwJ8rNQOPW
-         TcZLs685e12lKZW90mWnptFyA2Hi4UYQhoIO/Y8L160xSpami5ymKV+B8Hw3hKnLuCvV
-         kTAQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/VaNWqnnrr1J0SyQCzua7jOrPIF9o3qe5QnRNoshnfBspiBDcooJQmj4Fo6R93PTlTGLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPJcPUAbNgL2a1bMvKSQr+KE5lCwS2T3sdJbqVjXg/d/4ck6y+
-	AKGlGxft6FKMJNBq2i22Gcy9FVYg7cjClNu3SECT84R97y7+NyF5GX/kgGZEbelxrs8=
-X-Gm-Gg: AeBDieuEyKLI6YqMujCOA82I8+4u8W+yjGviou8UgsJ2gadLBo3MoI/vqqgQPQEbpHn
-	/6DS3369zPUyMPwxocPZ7T0Vuha+xKm0Zi+65sL0h2wnAUOyV98IZBqmZK5nX8lDjp4TtseO7O0
-	vz556h0EOvMKmRvnHyx/b65/I0lNezjwOecZzsCwDqeUkfMfa/MSIObJfMDoHbpW0jaU8OV5lts
-	UgJVTXpFPTIo826XUtpq9kI+RBDFvJd+I6MUwsXU5Ylcy9hFTvR+G+U9OBEGg/35k6qLOUn5X++
-	lJvHfthQ3dInDFGtaLrr9M3LHNgbSlCY8WRys5xjDfvyroTZ8NHowNDmjkP/ZWly+2EITcZHtt2
-	gTrtZgORlH5IdBU80uuViPhDZxPetJn27mFmCTngeQoOMkHdmE2P6PZuDslHsLZHJ/I/wTX9O6X
-	k7HdOC86wtocaaYTsj4msXQ8M6cg9YZgoNuQ==
-X-Received: by 2002:a05:6000:1a8c:b0:43e:b0f8:66f1 with SMTP id ffacd0b85a97d-43fe3e0b86emr33151843f8f.43.1776852654367;
-        Wed, 22 Apr 2026 03:10:54 -0700 (PDT)
+        bh=Oy8aVZbZZZe1U+CUvOIDDEpwm1FnWydA8CkWhWsEzmU=;
+        b=sGmrDY1lg51X1j8fzwga4Y8B3n4gZ/E2ivF54SIhnMTT2ljQl3McT3uqJwVXV4sslq
+         4NxUUZIzsqnV6YQH1F9Jdvf9v2TjTE5pqZzXYuRy7VBuKwyWJO6T86z3bxcpJs4iPpEM
+         Evzatnr7VS2fIwIIlV3rmghgr+BdRILNVeJkg1NPqKeBmV3T7H6C3n5txHYIGv5AqemV
+         HMP7NTbZruFO4DPTTwghCBq5uvRADVm8kIpSDL/3tPXWseiEkzOJNcQA0yRHyIZbAJg3
+         Cg/w4lv92mxMOfV+80emj1xxBCiS9jSQH2tKe5UKjkC2us+3gUGnwEI7fQV9Y3jlPzj1
+         Haog==
+X-Forwarded-Encrypted: i=1; AFNElJ94eQ+1N5rWpH3kwflaksF8JJM6YfMoJHKLAtkCCojZ5f48ks3tPLUGaFS0an2QsqpJHy4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHbPztpCTuIvV9/jhC4rxLnil5UgVSDYuIYCHIgJSKHuqGBgL4
+	gminUVpGDF9luLlr6mnQd05705ap0vF6QpgkuY05a8DNf2YB4Y+wRSqWgMSp9m2d+uY=
+X-Gm-Gg: AeBDietdGuYuoCL82Wz+y8mLe2zlq/NVzjxJ1EMtEs7t4Efis6in3DkE149R5JPL/x6
+	gJPdphTp0VpQSuxnvafomGVClVzUk0mIWYzpoPdDSIyEl5qNzuCqnG3vPzM6OR4fJoxKiyc05dv
+	0PUjnmDxpHYnn/Q6Xh2inZL8Ycl2hIQlwCbkSZ7sxdvi+G08SNw3RpXwlM/DCJeL/aJuXHeIKts
+	X3p2288cpze75zjFscg7zkcDqmZuczrYlA6v5t8ImJAOu260nYUm4QA2HdG4KFUS0cqj1cGH4pz
+	MLn3vFdAdagEp7UTXLXMb9AR3U4WAgUOs/NgCqRC9lblM00Q4tpgMDC+hNtzxAwv5AWnC/YQhjH
+	yYCxit2y6y7XsZv7w3v8gQn7ZUOWGglg55+lGg2THp6BGKulu+2y/xZmJPnuE97zwJPxQpHWaXR
+	xxUIh/P3HghTtUvdpQjvLMy3gAoY/gJ3QA2w==
+X-Received: by 2002:a05:600c:4e4c:b0:48a:58ae:9938 with SMTP id 5b1f17b1804b1-48a58ae9f69mr70183535e9.19.1776852655127;
+        Wed, 22 Apr 2026 03:10:55 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4eec9sm42224451f8f.34.2026.04.22.03.10.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891bb3d121sm372711075e9.14.2026.04.22.03.10.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Apr 2026 03:10:52 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 880F161028;
+	by draig.lan (Postfix) with ESMTP id 61DED60F2B;
 	Wed, 22 Apr 2026 11:10:44 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +72,9 @@ Cc: Alexander Graf <agraf@csgraf.de>,
 	Pedro Barbuda <pbarbuda@microsoft.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 14/31] target/arm: migrate memory op syndromes to registerfields
-Date: Wed, 22 Apr 2026 11:10:25 +0100
-Message-ID: <20260422101043.1234229-15-alex.bennee@linaro.org>
+Subject: [PATCH v2 12/31] target/arm: migrate wfx syndromes to registerfields
+Date: Wed, 22 Apr 2026 11:10:23 +0100
+Message-ID: <20260422101043.1234229-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422101043.1234229-1-alex.bennee@linaro.org>
 References: <20260422101043.1234229-1-alex.bennee@linaro.org>
@@ -87,60 +87,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+This will help later when we expand the fields we report.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+
 ---
- target/arm/syndrome.h | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+v2
+  - use !is_16bit directly
+---
+ target/arm/syndrome.h | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 7ff8c30e2bb..841fd3292b8 100644
+index 2ad6b97aea5..65d0de63a83 100644
 --- a/target/arm/syndrome.h
 +++ b/target/arm/syndrome.h
-@@ -742,14 +742,39 @@ static inline uint32_t syn_serror(uint32_t extra)
+@@ -655,11 +655,25 @@ static inline uint32_t syn_breakpoint(int same_el)
      return res;
  }
  
 +/*
-+ * ISS encoding for an exception from the Memory Copy and Memory Set
-+ * instructions.
++ * ISS encoding for an exception from a WF* instruction
 + */
-+FIELD(MOP_ISS, SIZEREG, 0, 5)
-+FIELD(MOP_ISS, SRCREG, 5, 5)
-+FIELD(MOP_ISS, DESTREG, 10, 5)
-+FIELD(MOP_ISS, FORMATOPT, 16, 2)
-+FIELD(MOP_ISS, OPT_A, 16, 1)
-+FIELD(MOP_ISS, WRONG_OPT, 17, 1)
-+FIELD(MOP_ISS, EPILOGUE, 18, 1)
-+FIELD(MOP_ISS, OPTIONS, 19, 4)
-+FIELD(MOP_ISS, IS_SETG, 23, 1)
-+FIELD(MOP_ISS, MEMINST, 24, 1)
++FIELD(WFX_ISS, TI, 0, 2)
++FIELD(WFX_ISS, RV, 2, 1)
++FIELD(WFX_ISS, RN, 5, 5)
++FIELD(WFX_ISS, COND, 20, 4)
++FIELD(WFX_ISS, CV, 24, 1)
 +
- static inline uint32_t syn_mop(bool is_set, bool is_setg, int options,
-                                bool epilogue, bool wrong_option, bool option_a,
-                                int destreg, int srcreg, int sizereg)
+ static inline uint32_t syn_wfx(int cv, int cond, int ti, bool is_16bit)
  {
--    return (EC_MOP << ARM_EL_EC_SHIFT) | ARM_EL_IL |
--        (is_set << 24) | (is_setg << 23) | (options << 19) |
--        (epilogue << 18) | (wrong_option << 17) | (option_a << 16) |
--        (destreg << 10) | (srcreg << 5) | sizereg;
-+    uint32_t res = syn_set_ec(0, EC_MOP);
-+    res = FIELD_DP32(res, SYNDROME, IL, 1);
+-    return (EC_WFX_TRAP << ARM_EL_EC_SHIFT) |
+-           (is_16bit ? 0 : (1 << ARM_EL_IL_SHIFT)) |
+-           (cv << 24) | (cond << 20) | ti;
++    uint32_t res = syn_set_ec(0, EC_WFX_TRAP);
++    res = FIELD_DP32(res, SYNDROME, IL, !is_16bit);
 +
-+    res = FIELD_DP32(res, MOP_ISS, MEMINST, is_set);
-+    res = FIELD_DP32(res, MOP_ISS, IS_SETG, is_setg);
-+    res = FIELD_DP32(res, MOP_ISS, OPTIONS, options);
-+    res = FIELD_DP32(res, MOP_ISS, EPILOGUE, epilogue);
-+    res = FIELD_DP32(res, MOP_ISS, WRONG_OPT, wrong_option);
-+    res = FIELD_DP32(res, MOP_ISS, OPT_A, option_a);
-+    res = FIELD_DP32(res, MOP_ISS, DESTREG, destreg);
-+    res = FIELD_DP32(res, MOP_ISS, SRCREG, srcreg);
-+    res = FIELD_DP32(res, MOP_ISS, SIZEREG, sizereg);
++    res = FIELD_DP32(res, WFX_ISS, CV, cv);
++    res = FIELD_DP32(res, WFX_ISS, COND, cond);
++    res = FIELD_DP32(res, WFX_ISS, TI, ti);
 +
 +    return res;
  }
  
- 
+ static inline uint32_t syn_illegalstate(void)
 -- 
 2.47.3
 
