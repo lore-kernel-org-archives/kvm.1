@@ -1,121 +1,196 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE9D33C502
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 16:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DC1391835;
+	Wed, 22 Apr 2026 17:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776877073; cv=none; b=lRVyqckIxRFkactOwcZPRvBCJfDq4PldSTGZQqaVrwguX2OssMuygb5k+GNzCr7Ml5+Af694v+fmjmV3v8QdlLzGndvjNvO5WLSKFqUsYLtyku7NJQuc6hNJnGfo6+FxOnx3JgAuPzYp+0mFdBGtNTgUCxwVIJKLlNyE/qgYEbw=
+	t=1776880211; cv=none; b=ErRb3GFVR8ffgzdzcBAsWRpF8LLhEByPpFOfqv3kEyIGnkRJk3xm2X7h6v+jIWMk72AQ5f/hgUljGnk8wKhCwqNyofkxNlMYGRZYWAz3DvvNcDW3j94EebXPzEurJuSOgDmedKwP9ukysl9XWFjk080iID98+PTkx+C+HIqkxbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776877073; c=relaxed/simple;
-	bh=9hZvi2+L0oPcPV7DQ9cBNe9ZAeWP2seFBttrtNZthps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V1m/AocCi+zUVMAL2aYM6zqGkM3O9XuFfkrMykoJG6BEibGEbuxieRUKhy3PUjhWhzErT8rTEYmLce1Nfmzrgx1r9H8FAP1HfHgNAIasfA1V2hC0zKuwkYC6N2+Movx16BmBf713VtNcL+UZk8tPR7rY20SkCgZTEVYPWYaCR+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iKB1/ynZ; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1776880211; c=relaxed/simple;
+	bh=RcfdQiLFf9M3i/IP00/idYyj9IgwJ1oxZGyHNU1I+50=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lFISvbHsYep5TZW5+sfGKPsQ4VbDkKX7on17pTqFWdL3TQSAcKerXguQp1LMH+/W2VxIqdEPOKWDipu9NIo9EYuo00dKK0uuuug+ez++nQQxZOuV/I1V7ZHs6of6dNutLDlMovTBE8IOG/N2dPTpZuXOQyDoGLp9Z7rwpHqvBBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=IhWbqnnB; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iKB1/ynZ"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43d75312379so4241590f8f.1
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 09:57:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776877071; x=1777481871; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DbTeMp0F6npNH4gs60DUNZm6vpG8shzFCghJCd+tOro=;
-        b=iKB1/ynZv/OG1YUmXA3m7L99BedkdS1Lt2G2VpNtO3caQBGbYt14OqDj0jbb/klZ/T
-         VGwDyd0DRP848sMMFXEYyWEJNPGzGNFDaXXJUb0phgK3/8ZUBvMlCV1xNo9c/s43A4SI
-         55ZK21fp3sA3X5rPUiJstTSQWh64hJYfigR2ufwyS7pKJZDWgVk8GiN9/KUV1MNJZidc
-         ZgX0Md8hxcBrZQB9nRoTe7S1xOQ6AiyFbfpINIq7lsKb9iKn9AxdqmCFqNoM7hC7jwD9
-         5ToAv3oaAn5nK0n72FQG6/NTU7xrek0JZXT82pddFMH0yFwmGk1YmD/NEWexBc90HBwo
-         +row==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776877071; x=1777481871;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DbTeMp0F6npNH4gs60DUNZm6vpG8shzFCghJCd+tOro=;
-        b=JN+GRD8fqISG5JudwuG3GnaXf1G2hDOuBZ7KCjpq4GRSXGbI7+c0zf92qU1pzvwljr
-         F4l6mEMZtyrg+0lmgTQAYmFImAZF5j5SjAiX+htTWhTD9U6+1oDW4KwI4E9St7MJfJ9Y
-         Zeomud0rpzTheJk8xDXKTHhoKMv3gUTGCvJV+v9+paSRlFA5K2vXNo2ZNeS9teBO1wX0
-         XiPIiz70XqqYVeEDJlQaD8DnYWJVSQNM4GrUkZSav1i+rYQFYgXm5ioIbHAvmGB3R/AF
-         hORT/aubZiSo23TdTb5VPzMoDjyCEG8SltlBg7no7yolTM71F9F4fibQ/8hu+MF2LSba
-         GKKA==
-X-Forwarded-Encrypted: i=1; AFNElJ/UPrCeK8YrrMH4nG4dvRbW0Rgp+SEBzR9ex3cu4YBlA+ICSSWD1B5B04+EptoPTDekpGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+pjWemjy9rhB+MT4EyZg337ntK1lhCUyBaO7dlRHMlVZbTSbI
-	rHW4tbcv7QJeovKMAyfN5SZ3Pa62ZYGOd/AYdhgdfSVOszDJOuhMuS3DpeEraJqJ3hc=
-X-Gm-Gg: AeBDieuLWUyoTgHU3UJf7yw4HR9HYyEoF4voZYeumHsj11aEIvVpAEEX2W3QZUbXWwY
-	1LcD80E8Tiyi1USY5q0pNkMsevdXcIFhS6qf93r2vbXYDU11sG+sVIel3i/B9qHZtBWdbO0JB+n
-	/FuBwLiZX49ysREcvJ6boKCrQw9b7xfd9/yejz+/WIWTiENMeFAhgUnHejvMPjO5JcGolmuk2cS
-	BSfRxpuQPXjuXPV04py+WbwLygqB80d+eqbfPnIh7WIL+zvGb+VhA/Lyh/aL82DkwwCntTmNQmb
-	m/O+bCgiiKV1qRXNj4nvs6Ur+PCGdIh2ThPODKsVmJlb5IZW7vDCOrnqYVPvXOYTgbFYHJLesGa
-	dqJhehbVQahwDFSzdcKFTyLIBou/qVVlcesrJDd2TThvjzVp9Aor8vO3IjrjYzw7AH9pVqtTCwA
-	blbbVWoYqVswjsXvzNvO32Req3pY5TpZStxbIJwU6E9SWp6VvlwKhAWkwnZJnMletd4LoajTM+x
-	q6S
-X-Received: by 2002:a05:600c:3150:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-488fb8b9deamr269580515e9.13.1776877070648;
-        Wed, 22 Apr 2026 09:57:50 -0700 (PDT)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb72d365sm229925445e9.1.2026.04.22.09.57.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 09:57:49 -0700 (PDT)
-Message-ID: <a0835cb6-50b7-4db3-b747-bf3d5a4badd9@linaro.org>
-Date: Wed, 22 Apr 2026 18:57:48 +0200
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="IhWbqnnB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=KJx43tBTqhlaiRDdxuTnqGFSnvf9IAGPT6zRmvq6y+A=; b=IhWbqnnB1jm4
+	x0Z6N+RFvw574zG82nd/whe1vh1o5pOcdMhsdJ5ol+8dwUJNbXYjU8lq6cw7+/xn7FK/xC+rJIQTC
+	6ApeLFqitvd5i3zkfEdPlNR/AslCzbXbiLT4cMFD0sL81qaQaRtCzKNfhrctLZyflzeJmgl+WxhBm
+	oJRmwoY+4LujM3zZndlpXFBn7GV+bOZDgKxe9r5me3fYTh0ahTjWHDnAWkQdLks6+lGv1OyfDyAwi
+	V74tFG9YNgXGkl67FgpPecR8YgxFJvVJnvT3d9kzwDe0n0daDzQZhfr/XkNo19RSaKdT4xFWVSfw7
+	tWFgvySGI593iJ47cOOqtA==;
+Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.vzint.dev)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <khorenko@virtuozzo.com>)
+	id 1wFbfQ-004KQw-0N;
+	Wed, 22 Apr 2026 19:49:59 +0200
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Subject: [RFC PATCH 0/1] KVM: VMX: restore host CR2 after VM exit
+Date: Wed, 22 Apr 2026 19:49:59 +0200
+Message-ID: <20260422175000.1544258-1-khorenko@virtuozzo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 26/32] target/arm: ensure aarch64 DISAS_WFE will exit
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Pedro Barbuda <pbarbuda@microsoft.com>, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Mohamed Mediouni <mohamed@unpredictable.fr>,
- kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20260422125250.1303100-1-alex.bennee@linaro.org>
- <20260422125250.1303100-27-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260422125250.1303100-27-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 22/4/26 14:52, Alex Bennée wrote:
-> This mirrors the logic for DISAS_WFE in 32 bit world.
-> 
-> Fixes: 252ec405768 (target-arm: implement WFE/YIELD as a yield for AArch64)
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   target/arm/tcg/translate-a64.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-> index 073454b9195..d79c8ab431b 100644
-> --- a/target/arm/tcg/translate-a64.c
-> +++ b/target/arm/tcg/translate-a64.c
-> @@ -10917,6 +10917,7 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
->           case DISAS_WFE:
->               gen_a64_update_pc(dc, 4);
->               gen_helper_wfe(tcg_env);
+Hi,
 
-If we mirror the logic we can also mirror the comment,
-otherwise the description rationale isn't very helping:
+this is an RFC for a small change to arch/x86/kvm/vmx/vmx.c that
+restores the host CR2 register after every VM exit, overwriting the
+guest's CR2 value that Intel VMX intentionally leaves in the hardware
+register.
 
-             /*
-              * The helper can return if the event register is set, so we
-              * must go back to the main loop to check for events.
-              */
 
-> +            tcg_gen_exit_tb(NULL, 0);
->               break;
->           case DISAS_YIELD:
->               gen_a64_update_pc(dc, 4);
+Where we first saw the problem:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The panic that triggered this investigation was not observed on a
+mainline kernel.  It came from a RHEL9-based downstream Virtuozzo
+kernel running a nested KVM workload: the host where the panic
+happened is itself an L1 KVM guest of an outer hypervisor, and it runs
+its own L2 KVM guests on top.
+
+In the crash dump, four cascading kernel #PF oopses all reported the
+same CR2 value, while the instructions at the reported faulting RIPs
+could not have produced that fault:
+
+  add $0x8,%rsp          (no memory access at all)
+  lea ...,%r12           (no memory access at all)
+  mov %rax,0x10(%rsp)    (write to local stack, not to the reported CR2)
+  mov %rax,(%rbp)        (write to local stack, not to the reported CR2)
+
+All four oopses happened inside the L1 host itself: the original fault
+plus three further faults taken inside the oops-reporting code
+(dump_pagetable() -> copy_from_kernel_nofault(), vt_console_print() ->
+lf(), vsnprintf() in the "Modules linked in" path).
+They are not extra levels of guest nesting; the nesting stack in this
+setup is just two deep (outer hypervisor, then this L1 host running its
+own L2 guests).
+
+The reported CR2 did not correspond to any register or operand in the
+surrounding code, but it had the form of a kernel virtual address
+belonging to an inner KVM guest that had run on that CPU.
+
+That matched the well-known property of VMX: after a VM exit, the
+hardware CR2 register still holds the guest's CR2 - KVM only copies it
+into vcpu->arch.cr2, it does not restore the host value.  In a real #PF
+the CPU would overwrite CR2 with the new faulting address; the fact that
+CR2 stays the same across all four oopses indicates that at least three
+of them reached the #PF reporting path without the CPU having actually
+updated CR2.
+
+
+Why this mattered in practice:
+
+What actually panicked this L1 host kernel was not the original fault
+on its own - in isolation it would most likely have been a single,
+locally contained oops.  The fatal part was that the oops reporter
+itself tripped over a CR2 pointing into L2-guest memory:
+show_fault_info() / dump_pagetable() treated the stale guest CR2 as a
+host faulting address and walked the L1 host's page tables for it,
+which raised further #PFs inside the reporting code and escalated a
+would-be local oops into a full panic of this L1 host.  On top of
+that, every oops header in the log carried that same guest-derived
+CR2, which makes this class of crashes effectively undiagnosable from
+the dump alone - the "faulting address" printed next to the RIP has
+nothing to do with what the RIP was actually doing.  Restoring the
+host CR2 after VM exit removes both effects at the source.
+
+
+Why this is an RFC rather than a straight PATCH:
+
+The mechanical fact (VMX leaves the guest CR2 in the hardware register
+after VM exit, and the rest of the kernel treats CR2 as "address of
+the last host #PF") is easy to verify from the source.  What I cannot
+pin down from that one dump is which exact delivery path brought a #PF
+handler into play with the CPU not having updated CR2 on that run.
+The plausible candidates include:
+
+  - corner cases of outer-hypervisor event injection into this host;
+  - NMI/MCE entries racing with oops reporting;
+  - crash/__show_regs() invoked from contexts other than a freshly
+    taken #PF, where die()/oops code reads CR2 as if it were fresh.
+
+All of these stop mattering the moment the host CR2 stops being a
+guest-controlled value after a VM exit.  The patch targets the
+weakest link directly: the "CR2 on the host == address of the last
+host #PF" invariant should hold across VM entry/exit on VMX, and
+today it does not.
+
+AMD SVM does not need this patch because CR2 lives in the VMCB save area
+and the CPU handles host/guest CR2 automatically; KVM's SVM code only
+ever touches svm->vmcb->save.cr2.  I am happy to add a brief comment to
+that effect in svm.c if it would help prevent a similar "optimization"
+from being introduced there.
+
+
+Verification against mainline:
+
+To make sure the issue is not already fixed somewhere in mainline, I
+checked the current:
+
+  v7.0-12635-g6596a02b20788  (base-commit of this patch)
+
+In arch/x86/kvm/vmx/vmx.c::vmx_vcpu_enter_exit(), the code still
+reads:
+
+        if (vcpu->arch.cr2 != native_read_cr2())
+                native_write_cr2(vcpu->arch.cr2);
+
+        vmx->fail = __vmx_vcpu_run(vmx, ...);
+
+        vcpu->arch.cr2 = native_read_cr2();
+        /* host CR2 is not restored */
+
+A full-tree search confirms that vmx_vcpu_enter_exit() is the only
+place in arch/x86/kvm/vmx that touches the hardware CR2 register:
+vmenter.S does not touch it, and arch/x86/kvm/svm never accesses it.
+So the same latent behaviour is present in mainline, regardless of
+whether this exact crash has been reported against a mainline kernel.
+
+
+Patch properties:
+
+  - Hot path impact: one extra register compare in the common case,
+    one extra MOV to CR2 under unlikely() when the guest modified CR2.
+
+  - Stays within the existing noinstr region.  native_read_cr2() and
+    native_write_cr2() are plain inline asm with no instrumentation,
+    so noinstr constraints are preserved.
+
+  - Not a security fix for a user-triggerable issue per se, but it
+    removes a class of confusing "kernel CR2 points into guest memory"
+    oops reports and hardens the CR2 invariant for the whole kernel.
+
+Thanks,
+Konstantin
+
+Konstantin Khorenko (1):
+  KVM: VMX: restore host CR2 after VM exit
+
+ arch/x86/kvm/vmx/vmx.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+
+base-commit: 6596a02b207886e9e00bb0161c7fd59fea53c081
+-- 
+2.43.0
 
