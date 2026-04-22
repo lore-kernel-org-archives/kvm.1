@@ -1,66 +1,67 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF933E95AE
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2643EB81B
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862385; cv=none; b=X2YZ6h0o6y3mKAunYjsN8wO9tBJTF+f6UdXbjv+Xh+XSPAgvPNH2w9YcrhvVRIJjciwA/X1gHsLAJrClAoadCrbkZNCsSIici5EV7BgAbX4H61iDCwOCOiI2J4HbNd4s2jDDB2Kb8dfuzCT9DUoI4RwLg4fWB8eSq9pasLw/BRQ=
+	t=1776862385; cv=none; b=kt6iUeETTDHdiSapcRQx1Xyx7GQ0Mgyf8umc6sxq26dJwIB+W3h6hPZu0Svpcr8T/OUwlWJTbHDqttJqTUF+fEhwOobhWhFyPKVcR4B+YYrvPLgbHbvTS9S2g/L4QH/0B87iA0kkpQL+vzzwxxsZYNgb9vGPXcnIMbYGIt5mqUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776862385; c=relaxed/simple;
-	bh=64pJ+ylAWbDMx/CsFRbY2DsMFV7ux9DLeHKsqq9XEFc=;
+	bh=cccoPHM6d5qV2Ni48oei9X1VKYcFgX+rd8Sz/6nSoWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XLmcXTL/M55XFC6w3hiIDjxPE/TW/nEAjkkI/wnioqMz5Zv57kcSZoqk9sNPkRzbi9VHQxlGumhz1O5MQhlX5fVkcPh49B67ir2Haz2kCSR9Ebdp9wIGyov7fWtAZOVsszPM2JIEeH00Fg2D3W0KVH0+Yp2k1umygyJvYkTs7m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S229LWTG; arc=none smtp.client-ip=209.85.128.51
+	 MIME-Version:Content-Type; b=KORozQx3ecbBCVZHAdFw+KT/ozOjArjPAAUEMBhhGysSHFs5HcwBmmWourEpefwE0IVj7Qhb3XFnU+tOdN+qGmhZ2t4EPJYkRszfvAiQpSpNQuLt44XX3p0d1gHuAN9rDbTDyPTrsQnLcJgQIHddygdkqQKncfKnS6QyT3ym5G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L72UJDwP; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S229LWTG"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so33552175e9.1
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:53:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L72UJDwP"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43fe62837baso3302268f8f.3
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:53:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776862382; x=1777467182; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776862383; x=1777467183; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7nsukKtrqlrIyVc1W2h4m0opSAHZeyebGQjoHRKe/ww=;
-        b=S229LWTGHdN0rPCAbdvFPSi0eewVAuEcMvlT3A99Pu+W2ijadk7+B68bXzzZuaITAK
-         L08qej7JeKGvzKvh0SQ3FiuQ2S2n2ydia7AlDemZRgFje1yNWABCsJPg3FkLSdmYf7f7
-         2A22g+lBJUHkmOvJ/v4SJ2/E5XtjV96hWmGOjGsyB0/CS5XifOyimOcSLshq9+gxVrDy
-         i+l7CGPkgcApQ5U8CsGzIhc3wQza6vVY0RVJ/vB3PZG3fbLsREgu0s29PQSB998nCYEB
-         JOsaOeOVO9fUhV09Hwr3xa5W4nN4seAz0arlEM6AHrLzkITyxRNewfXHW+6HylQF95SW
-         hH0A==
+        bh=AJ6frWkT466kUBA2I2u6c2X58fkiBAsV+LbvLNVH5Kk=;
+        b=L72UJDwPf2uUOeFhfAaruz3BbapRzncd0lWB3KOmXSVUlDUep75OqRnEuOVa8DiwAE
+         R9w7eqZU8jzFCiv+bTpiV1v76FSrioqCnEzYGHDzGuJxXGxf6dWMfFQQSD/M1wy+z95V
+         1jhjtXyROocihk2qQ1zABw0iLR4LfNSWWCUWiIL3GmR3seJ4U/CowTNy5ji04TGyvDpn
+         kSTTnFZFDqhH7rOTDg6wEpiDKo6Q7BeOiulNusuRJYEpeG6okApPB7hj1iuuJ+u2c6nq
+         HjtwK50Ok/icgvEK+508IaapKP/ocBy2qdx1RPEZU1SIUeDdoF2eE3sZs1lX8xMDllJt
+         7ICg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862382; x=1777467182;
+        d=1e100.net; s=20251104; t=1776862383; x=1777467183;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7nsukKtrqlrIyVc1W2h4m0opSAHZeyebGQjoHRKe/ww=;
-        b=WCcGH/GvDXwf9LYm7S1eHk5yuSP3/6sp//IfXheCaB6k4m35/zkpVT0KvLxvx3n4ya
-         yphcrtAQd1KOPYNDIMusDsZ/zqJfiZ2Iy790amvFaBZ8VB6X3gr//DIpnLBLPINKRv8+
-         cRK33mhp+2KwRDvNVL6e8IuJoBNdpIQ+dh3svM4oj9vOQx/sJlrw/PlEVxJ/kCLbTQVA
-         nMEgKO11sB31Bp5fJ3MYJtKH24Y/xXckCncq/DclEw9FGlnOuGHiJJnwY3taUqXxL9m8
-         Iy40WP4RmIQVBJKPKxTCqNwzKJgvi74Kxj4iPjNQHBXgnzcOepkUEC5HAw86S+aXl2ME
-         4PDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8RViuSwduZxQnwrxhf6LhZKygQefMaPWLeRHe0dXtixoenMA3XX/0HovidigV/Dw9UMXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6GropjNO8MKJ/vkTiMBdcu5shsYKf2/vCQSZEYgo2CZwIuP1W
-	oYQRXEi63N6tPSc3mqtoQV4IHhZfhIvWD3A0PNdMqAaZtawGMZDJwLdf84I/iAqsn10=
-X-Gm-Gg: AeBDievCMt5ojDEYwfNJx8UeXpfh89dLTs+7uqrWHBgO6nKk49+yXIbTZuGjsVJhdAu
-	nhAmGyNBX/27fFzJ8ePNb/655hN3btEoYHinDZL0He4fupHGaOzWdpaY2+YFHLCTYcftZz+R2K2
-	6B8jrmN+MzhoJ69dXXRWuL1Efq1ndUOnk01RoIQi/nG58hqSdH9urR5hgBWIRfmbK8Tb3aXaW8Q
-	1bKpf/w3hdHgKerCLGdQPpRa+eBQBKb/zEzYh5AvJu0ZjtHcfO2XWcwmxP7sh19mHt88Xw5gGmD
-	AEIbgZPTJpPRWaQe1oFXe6gokpRSKtZaiBZEnHdTuVqXPcqd6OPypm4jK1wUBDXtb1jYzI0nw6B
-	d/7RauGjZg1uI+Xi8+EJxt9AM26ltlx/F3tQueWcXR/p+iz5KtRou7z5rDlge++IQE6WSlYdCHy
-	JEfbVaeIJRJjzDORFyYH4ekEA9iZEz7PcnZA==
-X-Received: by 2002:a05:600c:a105:b0:486:fb69:4960 with SMTP id 5b1f17b1804b1-488fb7786e4mr229329295e9.19.1776862382062;
+        bh=AJ6frWkT466kUBA2I2u6c2X58fkiBAsV+LbvLNVH5Kk=;
+        b=Jf9T2ZMCShyXqz3vZaRGMDMw6d7q2SbvDqm1sV15Nuhg2+8ycO8L8CgHIZx5gcQyXI
+         Ae1U56p4uqLxHu/kqOS2NwyoVY5r/VYQvvxGiQBmYolDnvM7k0qfVCplcs6VVDb7Q9Jy
+         5K0SDjZ97gdrSmvmEF+1eWLFaVn6H8rC3tv3l4b3N3PVR4/p6XSmq+FiMXonRBhKEZRg
+         bD/iQTqUbQKptUMaCz3WmfS419bojdCeAwTd/iFOIr3ARSWaDhxOadgtM7FEY4UtcSQX
+         tsuba73oC2HojfnkHS4JHvh4LX5IW25OyQSMJIKfLC55O+7Dsjj3iLHidBi0wwu+ICjl
+         ol1g==
+X-Forwarded-Encrypted: i=1; AFNElJ8WZd2peD/YvLhWn9MC0HyZJpp1Xclfwwiwij6JkCXCslhf/rOe4xRHXsc264hZIrNK0fY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6Cu5sFrMUJAX6czzT3i4NJ0wUTGFehuBbhUx+YYPB3DHQxsTR
+	JYzcLKynzZRM7IMChAwCv9rHB0knNWn2H6vHlojPd98hRKClvDvydo7ibz999x6hqmzIqxEBwsW
+	IBzcR8rQ=
+X-Gm-Gg: AeBDietU0BOHvKA9UjB+ngGZbpi1cFjHDv7CecggizOFUTTYsJZfUBoJ/jMggl6OPII
+	qU4dPM3Mee5t1Fx9MfB61GqRQf654AbjGeKSfqwksnQn9gTS8nzxP6eUEVrbA3mHzwsTlIo4mmA
+	zLgzFle/TBpg3+08dhpQH8r3uZvonXHmgVqQx7DN2kkg4FvyJ/RgoOdeCAwkzcni1igXSQtEm02
+	G1s6Kp4SY6Is4lVFY3f8P0ehpvtxTPY+jm2QVSJ58kjZciLFK4wMW2uVTDWdBGcJGwPyVVVuLWZ
+	Mn7SmJOrw3OUzfASEH79D8BpUHvWU7YtoS2ZZrPDwcFi1It6jqmjVaFawGwMwaXKrc4rc2E4Slv
+	MkUKxClXqgv/Unxg7yXEb1ncAdrS3dMDPkIpk74XifmI9yIN5DS+ttKbJFrXU2ufRCy+ACU6EnR
+	dYPwxMGQn6ACsbqxTnikByBcxx3+B4+4Aoyg==
+X-Received: by 2002:a05:6000:184d:b0:43c:ef4f:79e4 with SMTP id ffacd0b85a97d-43fe3dfd36fmr33892324f8f.37.1776862382774;
         Wed, 22 Apr 2026 05:53:02 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc0f82bbsm753005695e9.3.2026.04.22.05.52.55
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e59f97sm50548552f8f.37.2026.04.22.05.52.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 05:52:55 -0700 (PDT)
+        Wed, 22 Apr 2026 05:53:02 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id CAF0560EFD;
-	Wed, 22 Apr 2026 13:52:51 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 15B9961028;
+	Wed, 22 Apr 2026 13:52:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
@@ -72,9 +73,9 @@ Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
 	qemu-arm@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 11/32] target/arm: migrate debug syndromes to registerfields
-Date: Wed, 22 Apr 2026 13:52:28 +0100
-Message-ID: <20260422125250.1303100-12-alex.bennee@linaro.org>
+Subject: [PATCH v3 14/32] target/arm: migrate memory op syndromes to registerfields
+Date: Wed, 22 Apr 2026 13:52:31 +0100
+Message-ID: <20260422125250.1303100-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
 References: <20260422125250.1303100-1-alex.bennee@linaro.org>
@@ -87,90 +88,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Migrate syn_swstep, syn_watchpoint and syn_breakpoint to the
-registerfields API.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/syndrome.h | 54 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 6 deletions(-)
+ target/arm/syndrome.h | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 2031b3704fb..2ad6b97aea5 100644
+index 7ff8c30e2bb..841fd3292b8 100644
 --- a/target/arm/syndrome.h
 +++ b/target/arm/syndrome.h
-@@ -595,22 +595,64 @@ static inline uint32_t syn_data_abort_vncr(int ea, int wnr, int fsc)
+@@ -742,14 +742,39 @@ static inline uint32_t syn_serror(uint32_t extra)
      return res;
  }
  
 +/*
-+ * ISS encoding for an exception from a Software Step exception.
++ * ISS encoding for an exception from the Memory Copy and Memory Set
++ * instructions.
 + */
-+FIELD(SOFTSTEP_ISS, IFSC, 0, 6)
-+FIELD(SOFTSTEP_ISS, EX, 6, 1)
-+FIELD(SOFTSTEP_ISS, ISV, 24, 1)
++FIELD(MOP_ISS, SIZEREG, 0, 5)
++FIELD(MOP_ISS, SRCREG, 5, 5)
++FIELD(MOP_ISS, DESTREG, 10, 5)
++FIELD(MOP_ISS, FORMATOPT, 16, 2)
++FIELD(MOP_ISS, OPT_A, 16, 1)
++FIELD(MOP_ISS, WRONG_OPT, 17, 1)
++FIELD(MOP_ISS, EPILOGUE, 18, 1)
++FIELD(MOP_ISS, OPTIONS, 19, 4)
++FIELD(MOP_ISS, IS_SETG, 23, 1)
++FIELD(MOP_ISS, MEMINST, 24, 1)
 +
- static inline uint32_t syn_swstep(int same_el, int isv, int ex)
+ static inline uint32_t syn_mop(bool is_set, bool is_setg, int options,
+                                bool epilogue, bool wrong_option, bool option_a,
+                                int destreg, int srcreg, int sizereg)
  {
--    return (EC_SOFTWARESTEP << ARM_EL_EC_SHIFT) | (same_el << ARM_EL_EC_SHIFT)
--        | ARM_EL_IL | (isv << 24) | (ex << 6) | 0x22;
-+    uint32_t res = syn_set_ec(0, EC_SOFTWARESTEP + same_el);
+-    return (EC_MOP << ARM_EL_EC_SHIFT) | ARM_EL_IL |
+-        (is_set << 24) | (is_setg << 23) | (options << 19) |
+-        (epilogue << 18) | (wrong_option << 17) | (option_a << 16) |
+-        (destreg << 10) | (srcreg << 5) | sizereg;
++    uint32_t res = syn_set_ec(0, EC_MOP);
 +    res = FIELD_DP32(res, SYNDROME, IL, 1);
 +
-+    res = FIELD_DP32(res, SOFTSTEP_ISS, ISV, isv);
-+    res = FIELD_DP32(res, SOFTSTEP_ISS, EX, ex);
-+    res = FIELD_DP32(res, SOFTSTEP_ISS, IFSC, 0x22);
++    res = FIELD_DP32(res, MOP_ISS, MEMINST, is_set);
++    res = FIELD_DP32(res, MOP_ISS, IS_SETG, is_setg);
++    res = FIELD_DP32(res, MOP_ISS, OPTIONS, options);
++    res = FIELD_DP32(res, MOP_ISS, EPILOGUE, epilogue);
++    res = FIELD_DP32(res, MOP_ISS, WRONG_OPT, wrong_option);
++    res = FIELD_DP32(res, MOP_ISS, OPT_A, option_a);
++    res = FIELD_DP32(res, MOP_ISS, DESTREG, destreg);
++    res = FIELD_DP32(res, MOP_ISS, SRCREG, srcreg);
++    res = FIELD_DP32(res, MOP_ISS, SIZEREG, sizereg);
 +
 +    return res;
  }
  
-+/*
-+ * ISS encoding for an exception from a Watchpoint exception
-+ */
-+FIELD(WATCHPOINT_ISS, DFSC, 0, 6)
-+FIELD(WATCHPOINT_ISS, WNR, 6, 1)
-+FIELD(WATCHPOINT_ISS, CM, 8, 1)
-+FIELD(WATCHPOINT_ISS, FnV, 10, 1)
-+FIELD(WATCHPOINT_ISS, VNCR, 13, 1) /* FEAT_NV2 */
-+FIELD(WATCHPOINT_ISS, FnP, 15, 1)
-+FIELD(WATCHPOINT_ISS, WPF, 16, 1)
-+/* bellow mandatory from FEAT_Debugv8p9 */
-+FIELD(WATCHPOINT_ISS, WPTV, 17, 1) /* FEAT_Debugv8p2 - WPT valid */
-+FIELD(WATCHPOINT_ISS, WPT, 18, 6) /* FEAT_Debugv8p2 - missing WP number */
-+
- static inline uint32_t syn_watchpoint(int same_el, int cm, int wnr)
- {
--    return (EC_WATCHPOINT << ARM_EL_EC_SHIFT) | (same_el << ARM_EL_EC_SHIFT)
--        | ARM_EL_IL | (cm << 8) | (wnr << 6) | 0x22;
-+    uint32_t res = syn_set_ec(0, EC_WATCHPOINT + same_el);
-+    res = FIELD_DP32(res, SYNDROME, IL, 1);
-+
-+    res = FIELD_DP32(res, WATCHPOINT_ISS, CM, cm);
-+    res = FIELD_DP32(res, WATCHPOINT_ISS, WNR, wnr);
-+    res = FIELD_DP32(res, WATCHPOINT_ISS, DFSC, 0x22);
-+
-+    return res;
- }
  
-+/*
-+ * ISS encoding for an exception from a Breakpoint or a Vector Catch
-+ * debug exception.
-+ */
-+FIELD(BREAKPOINT_ISS, IFSC, 0, 6)
-+
- static inline uint32_t syn_breakpoint(int same_el)
- {
--    return (EC_BREAKPOINT << ARM_EL_EC_SHIFT) | (same_el << ARM_EL_EC_SHIFT)
--        | ARM_EL_IL | 0x22;
-+    uint32_t res = syn_set_ec(0, EC_BREAKPOINT + same_el);
-+    res = FIELD_DP32(res, SYNDROME, IL, 1);
-+    res = FIELD_DP32(res, BREAKPOINT_ISS, IFSC, 0x22);
-+
-+    return res;
- }
- 
- static inline uint32_t syn_wfx(int cv, int cond, int ti, bool is_16bit)
 -- 
 2.47.3
 
