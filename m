@@ -1,66 +1,65 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2643EB81B
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3033EBF03
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862385; cv=none; b=kt6iUeETTDHdiSapcRQx1Xyx7GQ0Mgyf8umc6sxq26dJwIB+W3h6hPZu0Svpcr8T/OUwlWJTbHDqttJqTUF+fEhwOobhWhFyPKVcR4B+YYrvPLgbHbvTS9S2g/L4QH/0B87iA0kkpQL+vzzwxxsZYNgb9vGPXcnIMbYGIt5mqUI=
+	t=1776862387; cv=none; b=GLYNcNOsB6ODlVMtLczdzdVsX09XDODiYPEKB/UZ0tlmuN4AIoQZW2XtBK8K5Pi+DiALft+TURXYx1xzlEicDxj6DgMOKmHOXP4PhVXlyTYg2COLXS0atqnkuhgYIA1V2lfDX7lIZFS8KVOgiKwEI7q7IDNloR47RTGYXwMX7iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776862385; c=relaxed/simple;
-	bh=cccoPHM6d5qV2Ni48oei9X1VKYcFgX+rd8Sz/6nSoWw=;
+	s=arc-20240116; t=1776862387; c=relaxed/simple;
+	bh=r6G7A3H4PQ9qziC8KwDFiCMnFLOFgzctZsk6jMHAt+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KORozQx3ecbBCVZHAdFw+KT/ozOjArjPAAUEMBhhGysSHFs5HcwBmmWourEpefwE0IVj7Qhb3XFnU+tOdN+qGmhZ2t4EPJYkRszfvAiQpSpNQuLt44XX3p0d1gHuAN9rDbTDyPTrsQnLcJgQIHddygdkqQKncfKnS6QyT3ym5G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L72UJDwP; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version:Content-Type; b=mGenxqV6f06XDtVyA4JiUFE3ll3Ylz/69Qs9Es2+/Erte1+TAMOTlqvZFNFR9p5GMuRkPTkN8+KTIqc4t+R9hyjzjZXc0vxyxEZ2M+A77ZE6mrzKKatdpz8fZH0VN4cnETp6V8YvhxVNepjylnAhdZs81Gr3yOyvIh1PkzI/93E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uNyxnQV7; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L72UJDwP"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43fe62837baso3302268f8f.3
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:53:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uNyxnQV7"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488ad135063so47385015e9.0
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776862383; x=1777467183; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776862384; x=1777467184; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AJ6frWkT466kUBA2I2u6c2X58fkiBAsV+LbvLNVH5Kk=;
-        b=L72UJDwPf2uUOeFhfAaruz3BbapRzncd0lWB3KOmXSVUlDUep75OqRnEuOVa8DiwAE
-         R9w7eqZU8jzFCiv+bTpiV1v76FSrioqCnEzYGHDzGuJxXGxf6dWMfFQQSD/M1wy+z95V
-         1jhjtXyROocihk2qQ1zABw0iLR4LfNSWWCUWiIL3GmR3seJ4U/CowTNy5ji04TGyvDpn
-         kSTTnFZFDqhH7rOTDg6wEpiDKo6Q7BeOiulNusuRJYEpeG6okApPB7hj1iuuJ+u2c6nq
-         HjtwK50Ok/icgvEK+508IaapKP/ocBy2qdx1RPEZU1SIUeDdoF2eE3sZs1lX8xMDllJt
-         7ICg==
+        bh=9fpr3Ng7R6+bvHtx79oLF5EYo5OylKP6gzyU2DP/N60=;
+        b=uNyxnQV7nFOy54KHlvya29kqTeFbDZxDMgvdjbIKP3zOwHSGMZc3NNpJ1UIe7CafqJ
+         j9AFXNJ/Ml2GviuXqXExjIjfJo6EMCxlmSaY9ZL7IfDbDGqTc48VdnOfoDMkECxYNeBM
+         YUc/p4osHDyhRwcLFf8T/YaeLXbsSpx7kjfUlZsH47Exs1YzekbolRvWHIf7cE4bmcpq
+         bS67CG9HAg29lSo2g9ALgSbEPLxAOveWeDshhZjLZqdt8F9h32n2RDeTne6Znm2cHukP
+         Drnt5eFL8ZErXAQOmc44Akh72o7bPn2YPVQ2ARUUz9Tm79yxJvtJcHJKcRCylRg3l08U
+         jDZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862383; x=1777467183;
+        d=1e100.net; s=20251104; t=1776862384; x=1777467184;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AJ6frWkT466kUBA2I2u6c2X58fkiBAsV+LbvLNVH5Kk=;
-        b=Jf9T2ZMCShyXqz3vZaRGMDMw6d7q2SbvDqm1sV15Nuhg2+8ycO8L8CgHIZx5gcQyXI
-         Ae1U56p4uqLxHu/kqOS2NwyoVY5r/VYQvvxGiQBmYolDnvM7k0qfVCplcs6VVDb7Q9Jy
-         5K0SDjZ97gdrSmvmEF+1eWLFaVn6H8rC3tv3l4b3N3PVR4/p6XSmq+FiMXonRBhKEZRg
-         bD/iQTqUbQKptUMaCz3WmfS419bojdCeAwTd/iFOIr3ARSWaDhxOadgtM7FEY4UtcSQX
-         tsuba73oC2HojfnkHS4JHvh4LX5IW25OyQSMJIKfLC55O+7Dsjj3iLHidBi0wwu+ICjl
-         ol1g==
-X-Forwarded-Encrypted: i=1; AFNElJ8WZd2peD/YvLhWn9MC0HyZJpp1Xclfwwiwij6JkCXCslhf/rOe4xRHXsc264hZIrNK0fY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6Cu5sFrMUJAX6czzT3i4NJ0wUTGFehuBbhUx+YYPB3DHQxsTR
-	JYzcLKynzZRM7IMChAwCv9rHB0knNWn2H6vHlojPd98hRKClvDvydo7ibz999x6hqmzIqxEBwsW
-	IBzcR8rQ=
-X-Gm-Gg: AeBDietU0BOHvKA9UjB+ngGZbpi1cFjHDv7CecggizOFUTTYsJZfUBoJ/jMggl6OPII
-	qU4dPM3Mee5t1Fx9MfB61GqRQf654AbjGeKSfqwksnQn9gTS8nzxP6eUEVrbA3mHzwsTlIo4mmA
-	zLgzFle/TBpg3+08dhpQH8r3uZvonXHmgVqQx7DN2kkg4FvyJ/RgoOdeCAwkzcni1igXSQtEm02
-	G1s6Kp4SY6Is4lVFY3f8P0ehpvtxTPY+jm2QVSJ58kjZciLFK4wMW2uVTDWdBGcJGwPyVVVuLWZ
-	Mn7SmJOrw3OUzfASEH79D8BpUHvWU7YtoS2ZZrPDwcFi1It6jqmjVaFawGwMwaXKrc4rc2E4Slv
-	MkUKxClXqgv/Unxg7yXEb1ncAdrS3dMDPkIpk74XifmI9yIN5DS+ttKbJFrXU2ufRCy+ACU6EnR
-	dYPwxMGQn6ACsbqxTnikByBcxx3+B4+4Aoyg==
-X-Received: by 2002:a05:6000:184d:b0:43c:ef4f:79e4 with SMTP id ffacd0b85a97d-43fe3dfd36fmr33892324f8f.37.1776862382774;
-        Wed, 22 Apr 2026 05:53:02 -0700 (PDT)
+        bh=9fpr3Ng7R6+bvHtx79oLF5EYo5OylKP6gzyU2DP/N60=;
+        b=Y9YGKZR+iJtchUqlkM/bLi1KLRORYZdHLcfSepj2fSlXYqgnBsTbWmdDQ9CNL7z1cA
+         qruFqKb3IJlh+2g25Rk576H+wQeJhbYu74a3Fq9LGBoMO/0aQVibHSH8VVqN8r2UOfTF
+         06W7bbAmtJ1pcVT9yy++q6Vp9tm0iG4n7P3fBmO9TTZBGjn1sYQwIl8MEAkeSsaV9h61
+         TsxE0eUtGgula8SzX42+8dFLJRO0W8UrM03mvY/Ugz+QRS3O6heYyqGxLeXqaz+1Yym1
+         vUAJ4NHYF8qB4fUgXjvLfwVqUvB8ccVqnGiDfODCEBvzPKQFQ1q0V7IRpYBgAXeXsDw5
+         ScRA==
+X-Forwarded-Encrypted: i=1; AFNElJ9fhvZkAQrqhXd63l+yDefUeWMfXXJpgRKZlCG9XH6+6/Bz4fCmfo5/ZikkhowoHSG3qNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFbd0FcNUKk+FMEksdZmpdUTj1CKi3j37O2Tyob1Zp9YIwz/wE
+	j+8IJWwLfYZRLmKxE3zrlKQsV0EhGRuEk15O07lRsfNqNc7N9sC4Ugfoov9B428NQrQ=
+X-Gm-Gg: AeBDieudSEwM7lnoXzwTIwL1J89rrbqJcwnYuoG2vBUW8Q5Q6dbwkXpjBRT3k7v2Kwy
+	ygCr8unWKNWd4EPaAwvF4FvZNNqiAS3NS960mZ4d4MEkMK4nIG8nhU3MnMbUcsfcBX8dF+TbLnO
+	0fl9XyyaBaBsCC+RtSnFC0/2A+KP3CxFXEG8cZ0nkJIaK8yToQR8C8rJSws2XPQEsNltQ31K5ev
+	qxcuhWZcCZECTyWo3przRKXLm/94Xe0iUpld4hsV7ZofqUy2KZdAw9xPjm4siws2WML7pwBWvED
+	kVLpgInCy+YZTAfrMk47ILDu4bIIIsFgKBzRntBYUKPl+eL/bj57pcRO+LxHQYjlGIvt0zdUu2d
+	wBm0HZG1X4HJL/Vm7cp61aWPw2w+HQPWIMR9TvgbF0k/iSn157V8zO5HeRxrSLCGPBCfdRpO8j1
+	we0uIC/SbGKDxYXYfZlwx+H9EGgYnOgWR8tjgyuqaAfH1f
+X-Received: by 2002:a05:600c:8b55:b0:48a:57e1:d8cc with SMTP id 5b1f17b1804b1-48a57e1d8d4mr85199615e9.9.1776862384161;
+        Wed, 22 Apr 2026 05:53:04 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e59f97sm50548552f8f.37.2026.04.22.05.52.56
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a5499b0edsm137343125e9.14.2026.04.22.05.52.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Apr 2026 05:53:02 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 15B9961028;
+	by draig.lan (Postfix) with ESMTP id 3D0B3610BC;
 	Wed, 22 Apr 2026 13:52:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,9 +72,9 @@ Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
 	qemu-arm@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 14/32] target/arm: migrate memory op syndromes to registerfields
-Date: Wed, 22 Apr 2026 13:52:31 +0100
-Message-ID: <20260422125250.1303100-15-alex.bennee@linaro.org>
+Subject: [PATCH v3 16/32] target/arm: use syndrome helpers in arm_cpu_do_interrupt_aarch32_hyp
+Date: Wed, 22 Apr 2026 13:52:33 +0100
+Message-ID: <20260422125250.1303100-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
 References: <20260422125250.1303100-1-alex.bennee@linaro.org>
@@ -88,60 +87,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+One more step towards dropping the old #defines.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- target/arm/syndrome.h | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 7ff8c30e2bb..841fd3292b8 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -742,14 +742,39 @@ static inline uint32_t syn_serror(uint32_t extra)
-     return res;
- }
- 
-+/*
-+ * ISS encoding for an exception from the Memory Copy and Memory Set
-+ * instructions.
-+ */
-+FIELD(MOP_ISS, SIZEREG, 0, 5)
-+FIELD(MOP_ISS, SRCREG, 5, 5)
-+FIELD(MOP_ISS, DESTREG, 10, 5)
-+FIELD(MOP_ISS, FORMATOPT, 16, 2)
-+FIELD(MOP_ISS, OPT_A, 16, 1)
-+FIELD(MOP_ISS, WRONG_OPT, 17, 1)
-+FIELD(MOP_ISS, EPILOGUE, 18, 1)
-+FIELD(MOP_ISS, OPTIONS, 19, 4)
-+FIELD(MOP_ISS, IS_SETG, 23, 1)
-+FIELD(MOP_ISS, MEMINST, 24, 1)
-+
- static inline uint32_t syn_mop(bool is_set, bool is_setg, int options,
-                                bool epilogue, bool wrong_option, bool option_a,
-                                int destreg, int srcreg, int sizereg)
- {
--    return (EC_MOP << ARM_EL_EC_SHIFT) | ARM_EL_IL |
--        (is_set << 24) | (is_setg << 23) | (options << 19) |
--        (epilogue << 18) | (wrong_option << 17) | (option_a << 16) |
--        (destreg << 10) | (srcreg << 5) | sizereg;
-+    uint32_t res = syn_set_ec(0, EC_MOP);
-+    res = FIELD_DP32(res, SYNDROME, IL, 1);
-+
-+    res = FIELD_DP32(res, MOP_ISS, MEMINST, is_set);
-+    res = FIELD_DP32(res, MOP_ISS, IS_SETG, is_setg);
-+    res = FIELD_DP32(res, MOP_ISS, OPTIONS, options);
-+    res = FIELD_DP32(res, MOP_ISS, EPILOGUE, epilogue);
-+    res = FIELD_DP32(res, MOP_ISS, WRONG_OPT, wrong_option);
-+    res = FIELD_DP32(res, MOP_ISS, OPT_A, option_a);
-+    res = FIELD_DP32(res, MOP_ISS, DESTREG, destreg);
-+    res = FIELD_DP32(res, MOP_ISS, SRCREG, srcreg);
-+    res = FIELD_DP32(res, MOP_ISS, SIZEREG, sizereg);
-+
-+    return res;
- }
- 
- 
+---
+v2
+  - drop excess brackets
+---
+ target/arm/helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 7389f2988c4..40dd070d2c1 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -8898,9 +8898,9 @@ static void arm_cpu_do_interrupt_aarch32_hyp(CPUState *cs)
+              */
+             if (cs->exception_index == EXCP_PREFETCH_ABORT ||
+                 (cs->exception_index == EXCP_DATA_ABORT &&
+-                 !(env->exception.syndrome & ARM_EL_ISV)) ||
++                 !FIELD_EX32(env->exception.syndrome, SYNDROME, IL)) ||
+                 syn_get_ec(env->exception.syndrome) == EC_UNCATEGORIZED) {
+-                env->exception.syndrome &= ~ARM_EL_IL;
++                env->exception.syndrome = FIELD_DP32(env->exception.syndrome, SYNDROME, IL, 0);
+             }
+         }
+         env->cp15.esr_el[2] = env->exception.syndrome;
 -- 
 2.47.3
 
