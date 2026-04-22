@@ -1,142 +1,210 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922E43C7E1B
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 13:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88663C7E1B;
+	Wed, 22 Apr 2026 13:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862913; cv=none; b=PNTRgDM7fvBo1a3F0248p65PijNoDVD01AM9YXUM2FuMMGxVxQ1J6/vO2rs9WMoE2wX0YnOxmz6zxzS7WmpenPaFZei1E/ul0mX8e0Kb4cYzTtPC2MRng/2e7S61ts3aMhnMn7upCYPhFg1NNPuvpa3Et1iHax0mqllD8v6BHIY=
+	t=1776862944; cv=none; b=pEiL0PSFKOSw6MXKRR4PlDuVwXjZCgl9HogARSFaSevg/vPPWLU7eBjxF1ddp0CECfxJO+vJv2Qd3aMdWY6CvcZRKBPkSzCsy/Zdgg5fZxUjoC36HYPhVqgAGs4JRTU53pkfuFCnWzLyHQBQi8rUDgG/G+U5ZphUtTeNpY7noLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776862913; c=relaxed/simple;
-	bh=nqneL9zUt0dZNJebbf/LWs0KS5YJnC38qHTTLCAxNbc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Wqck9QWqEgqipR4HmA4kbKsVUTYnUXOTyyH8ccN/wguFnfJLDy3TRDVGa+pnpoA6GUIRKuIiq9fOs1kVoSwGKuTLWW/1eC1XHIko7W5NMGj+lYEkXQxs65tW7kwlk+NGs4nS42Cyapmdi0emLF8yZwpLl8G87VzxAnWLVUuLx9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gEt5PNp1; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776862944; c=relaxed/simple;
+	bh=K7ayVR7+pnOqpBwHBQKatfwfRBkINA133GaK8PooW5Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U1RqWS6DqWBBV8HwhR/kH0ilOP/Hmw8TGhFxygKBJ8wtlMcikQh7fdfxNKnrxhrIhMLy+UvK3cwa17VpnnFfslK0haF4W30n1sGlG1Co+eJX/DQT+n2Y00iOE1jqNJXToJyN87nbAK13e3kR/VGBjtA407J6ZgZ9OSOsUS4Swqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WXq0xjB8; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gEt5PNp1"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4678c6171so59000055ad.1
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776862912; x=1777467712; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+12Isrg19MaOCC4LV9S11q3fZdSarqpUEBnPPaS2+4=;
-        b=gEt5PNp1CCOta9qVKP71QxbkjpjrFqErZPGu7QYPsAw7lNF6oL/pgkyl5ZmITG7xHl
-         qzpIN6irN9YMhjir5VzhrM5HpZ+MEGHPf1AXXsMYDmx3vJZ0v8tEyfFS/6DEWM60OMj6
-         6vScNYgBYHoBVgYrtFJR41DrHH03SL4Z/oyCSAWfJz/Fyvl91kpB4j3MvJ+KNpvCs0Is
-         n55qMlLxN8OyHLKoxUp4wm7W/+sUjqdKKi10J/p5jLPstDrqYge04jQDAkuvbOdgkrck
-         BZH8EWsrRCumYaTQ8gH6YTJiYLBoqufJlg+r0LQBi55yplEcediy6Ama7EzTGAIyfz8r
-         JgzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862912; x=1777467712;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+12Isrg19MaOCC4LV9S11q3fZdSarqpUEBnPPaS2+4=;
-        b=ETqzN5r2AiFeLq4Cp0bptp0JqR44kBhYG+YlwZnDwEmgtjYZTSHsW8G9cLNPJ1VCIj
-         pmhDq1zHOK57NxcrpRRha2/BQjh1PDk3NZwIVDSfjecL67RMTZOAt+LHRg/YnV9WpLr8
-         r+m6PTyqm7VCmE5SxByjKfcYIypyMlygcbvHhQmEYEpyw5eI0BqwRFrxTb/z8kDwBk9R
-         GmCZ+TdDUtbls5wAhUMWmLpAO3dkn1xHQZbfcrdW9myLn6o4iCpuLInnySpc/YV87a40
-         PDymqV2xL8BXQOdeuaVLu2EXg5zeiZGxyrbcKPKwEl0fUKV1S4WuNlklX2F4mdnbirUP
-         iZUg==
-X-Forwarded-Encrypted: i=1; AFNElJ+A4wrigjGtvzwNdsFo6F//0F0oIInW1TLWrR71hbq/p0qmcnEB1yGJ0cEvKPFsZ6w9VLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTf8RJ8JtIwi/P5trfF6Dk8GmvcAgfGRmC9AMfvUrSsUNuedf4
-	AdtIbZaRPjx7DCusGnE0QzkAA8Xj7HAkNSEO5p8JnFh1eWXXUrxOy6odTwKXGEjHLu0cYpUa+/a
-	99e7DXw==
-X-Received: from plsp12.prod.google.com ([2002:a17:902:bd0c:b0:2b2:4270:9f7c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3dad:b0:2b4:5dff:310f
- with SMTP id d9443c01a7336-2b5f9fcf868mr138652695ad.34.1776862911351; Wed, 22
- Apr 2026 06:01:51 -0700 (PDT)
-Date: Wed, 22 Apr 2026 06:01:44 -0700
-In-Reply-To: <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WXq0xjB8"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MC1JxN679751;
+	Wed, 22 Apr 2026 13:02:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IAk+oA
+	ra9BBwDoLPQU4kbPUsuc9NfHQMhIZIqbxtRr4=; b=WXq0xjB8zjKF3OiKf0Onve
+	Rb7nTICvZFwHY+ksBx8PW7APb9tNNtY4s4QaIigKhFJFCe0haamaVHbV2HVKSpFa
+	gA4MApjfG1MQmreF4bL8FKeJKJBZJt4mfXMae35yGS0w7nzCLJPpxVi6QK6YeWWo
+	RjlNUIeYqn4ljYa6KQ4AFWK6H/zZSZAVh+0cAKVdcvDetcVq68X/p9meRI9Er67f
+	TI7TAz2eAI0QyTnDmlzGD8CveVVOcpQWn0yOjBtS99ikjLLYNnvK6xdDqCGXXnn9
+	hynT/lj32Qwl/ZakpFqCyzMLtcjby++UiqsVRjs5X531x/qy6O6GsO26tMhVUHzQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu7k9xt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Apr 2026 13:02:19 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63MCoJp9013995;
+	Wed, 22 Apr 2026 13:02:19 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkya9sc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Apr 2026 13:02:18 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63MD2FAo31261336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Apr 2026 13:02:15 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 172B62004B;
+	Wed, 22 Apr 2026 13:02:15 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 858A720043;
+	Wed, 22 Apr 2026 13:02:14 +0000 (GMT)
+Received: from [9.111.42.51] (unknown [9.111.42.51])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Apr 2026 13:02:14 +0000 (GMT)
+Message-ID: <6a045fc5-e673-4b1a-945a-898a086026ed@linux.ibm.com>
+Date: Wed, 22 Apr 2026 15:02:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
- <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org> <PS1PPF7E1D7501FEA2B54606827E0DE1805AB2D2@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
- <CAPHJ_VKsVzyYzZ5ZnBkNbYLEMXDYL5x+7jfyUxhcwT1j4zPXOw@mail.gmail.com>
- <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com> <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
-Message-ID: <aejGuMRQjeEEH-V3@google.com>
-Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
- fault path on Linux 7.0.0-08391-g1d51b370a0f8
-From: Sean Christopherson <seanjc@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] KVM: s390: vsie: Implement ASTFLEIE facility 2
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>,
+        linux-s390@vger.kernel.org
+Cc: David Hildenbrand <david@kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260226-vsie-alter-stfle-fac-v2-0-914974cb922c@linux.ibm.com>
+ <20260226-vsie-alter-stfle-fac-v2-4-914974cb922c@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260226-vsie-alter-stfle-fac-v2-4-914974cb922c@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9FVGfurs_AzZ5pQfCz5Kignl8Ji01BYa
+X-Authority-Analysis: v=2.4 cv=Ksp9H2WN c=1 sm=1 tr=0 ts=69e8c6db cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=kPgyvtw9x8oKl6yeoNMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 9FVGfurs_AzZ5pQfCz5Kignl8Ji01BYa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDEyMyBTYWx0ZWRfX3BBXNEi69E2u
+ MmaAlSUNS+FHzjAl2ZZxcVUboapvL3AaC/W8qW41Dy+w8U8syAzOBld1gNrRkqe/fhRzSJIn3Cq
+ pi5rBQTdD3SwVQQ97dj6P2oHq+O6TGkvTvEOS7DzmMj2FSR0K81YbIWib52T2PJqAg+hDYhTtoT
+ QAzIS+dIDEs8F9Mj7DNKCv6vUKCtcYktPufNDbXrfrQwIXTq5XgiJ/VLNqYd5K0beUXCrwH0SbZ
+ qmbRs432P5bs6Mu9qtuUyufnprRxqJKQdOoxnw2cZJe2cBAgPz0iEwrr9xhIwhR5Noy7uOroczd
+ xzGIwGBCECqVmnE8WGAzWMemQGSfUX6rgpQCppAfEkc5ynvHMAisYCGEnEAsYidFnROpL0EfMcb
+ 3yJF++Hbf7P7atRzGIzYHx7UqfWypwE4UTXs17pesxaMAXOoCWWnK4+tmVvm6GrmVSQ6R6hKCjk
+ I6/kEXUUbbc5WPMNW8A==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-22_01,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 adultscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604220123
 
-On Wed, Apr 22, 2026, David Hildenbrand (Arm) wrote:
-> On 4/22/26 04:06, Zw Tang wrote:
-> > Hi David,
-> > 
-> > Thanks for pointing this out.
-> > 
-> > You are right. The commit id I sent was incorrect. I mistakenly used the
-> > git describe-style suffix g1d51b370a0f8, but the actual git commit is:
-> > 
-> > 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
-> > 
-> > The short commit id is:
-> > 
-> > 1d51b370a0f8
-> > 
-> > Sorry for the confusion.
-> > 
-> > I am also re-checking whether the kernel image was built from a clean tree
-> > and whether there were any local modifications when the crash was reproduced,
-> > so that the reported source line numbers match the exact build.
+On 2/26/26 13:49, Christoph Schlameuss wrote:
+> From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 > 
-> Okay, on that tree include/linux/memcontrol.h:381 points at
+> Implement shadowing of format-2 facility list when running in VSIE.
 > 
-> 	lockdep_assert_once(rcu_read_lock_held() ||
-> 	lockdep_is_held(&cgroup_mutex));
+> ASTFLEIE2 is available since IBM z16.
+> To function G1 has to run this KVM code and G1 and G2 have to run QEMU
+> with ASTFLEIE2 support.
 > 
-> lockdep_is_held() would not trigger a warning like that IIRC, but
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> ---
+>   arch/s390/include/asm/kvm_host.h |  7 +++++++
+>   arch/s390/kvm/kvm-s390.c         |  2 ++
+>   arch/s390/kvm/vsie.c             | 34 ++++++++++++++++++++++++++++++----
+>   3 files changed, 39 insertions(+), 4 deletions(-)
 > 
-> lockdep_assert_once() does
-> 
-> 	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
-> 
-> 
-> So likely we are calling obj_cgroup_memcg() without the RCU read lock held?
-> 
-> 
-> kvm_release_page_clean()->kvm_set_page_accessed()->mark_page_accessed()->folio_mark_accessed()->workingset_activation()
-> 
-> ... grabs the RCU lock, though, before calling
-> 
-> 	rcu_read_lock();
-> 	workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
-> 	rcu_read_unlock();
+> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+> index 23d17700319a5ef2031eabcad34b6191d1ef9b21..89a797e436336b9671119d93b02f3b39b0ed45e6 100644
+> --- a/arch/s390/include/asm/kvm_host.h
+> +++ b/arch/s390/include/asm/kvm_host.h
+> @@ -506,6 +506,13 @@ struct kvm_s390_cpu_model {
+>   	struct kvm_s390_vm_cpu_uv_feat uv_feat_guest;
+>   };
+>   
+> +#define S390_ARCH_FAC_FORMAT_2 2
+> +struct kvm_s390_f2_flcb {
 
-No?  Since commit 906c38ff52e9 ("memcg: workingset: remove folio_memcg_rcu usage"),
-I see:
+Time to bikeshed.
+I think the format should be at the end and we should name it like we 
+named the apcbs.
 
-void workingset_activation(struct folio *folio)
-{
-	/*
-	 * Filter non-memcg pages here, e.g. unmap can call
-	 * mark_page_accessed() on VDSO pages.
-	 */
-	if (mem_cgroup_disabled() || folio_memcg_charged(folio))
-		workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
-}
+kvm_s390_flcb2
 
-But for the life of me, I can't figure out how obj_cgroup_memcg() is being reached,
-and I haven't been able to reproduce the splat to add instrumentation (though I
-haven't tried very hard).
 
-> The folio_memcg_charged() only checks folio->memcg_data.
-> 
-> So something does not quite add up here?
-> 
-> -- 
-> Cheers,
-> 
-> David
+[...]
+
+>   static_assert(sizeof(struct vsie_page) == PAGE_SIZE);
+> @@ -999,6 +999,28 @@ static int handle_stfle_0(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
+>   	return 0;
+>   }
+>   
+> +static int handle_stfle_2(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, u32 fac_list_origin)
+> +{
+> +	struct kvm_s390_f2_flcb *flcb_s = (struct kvm_s390_f2_flcb *)vsie_page->fac;
+> +	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
+> +	u64 len;
+> +
+> +	if (read_guest_real(vcpu, fac_list_origin, &len, sizeof(len)))
+> +		return set_validity_icpt(scb_s, 0x1090U);
+> +
+> +	/* discard reserved bits */
+> +	len = (len & U8_MAX);
+
+Was that the reason why we needed to include stddef.h?
+
+I don't see functional problems.
+
