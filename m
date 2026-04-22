@@ -1,66 +1,66 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9572D212554
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 13:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CC73E9F9E
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 13:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862956; cv=none; b=MUDQSC2G8QhhvRegS1fMngr0NdZ/2YTdBS+hc/kTMKfa8s8TwNpO5Z3Y/SOmrs7rOc7jME63k+GRNj51LQP3NzB/RmLXjIu+VlmEX/HSSIuzZdHl7hKZuhAdnqIwA1M8OI9pvUOjcxUgctKnm1f+ts6UjjRFLnAoEHN0pNj1AcM=
+	t=1776862958; cv=none; b=iSHAAA3CiDJiJxz1q04Wc9pC/VFCwFsb+mbOp4Ap31SgXzxbGjynVX3Fo/fgZXOmwE4o0vhUHMfeXcachIbG40GyIx52JYY7DRhflq+HjQX74b1Q2q+4FVLFYg9ume68O568EQps4sQGUghtkpJpkST7my40LQZzWgXmUr59D34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776862956; c=relaxed/simple;
-	bh=at7f5AKTH91oYlNvw3aVXQ96KLv8B399FbxI2NTz3tY=;
+	s=arc-20240116; t=1776862958; c=relaxed/simple;
+	bh=72X5t8gqBOH7lR1VhdtCDVZUqxU/OT5J3VUOYEz18xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MIlBc7QLYeODUD9x1VAFv6gpDOPSuMx6tn8Sq7T6Ha5tr52xUozfKy4R7zZvWBuxh1lNQwi3XOR/2I0Ou/N1VNdFZISrb4viIBuqj3bkzqSzjRsls91pzi6zxynXPVB3zPNRH8J83r2Ct9BaX3brg40EwN2/e+OvoAXnxmwrnCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K8EYuaMC; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=pXrIVb58gnzyooWz2KFEG1ZDTjLyZHK4CPYcpNIt7I4aa9bYKJZBd2laaJF3czMpt6qO9I5mP1jKSqfqMVOG2dodgsRjdkLT6hFq/rffoIh0LIKuy4boOZBPnu9jA25RM3g00OC2EfdDeFRfftZm5VpqwATCYdkpnurP0Np++qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hXpRhpf0; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K8EYuaMC"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so43413145e9.2
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:02:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hXpRhpf0"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d03db7f87so3712759f8f.3
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776862954; x=1777467754; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776862956; x=1777467756; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yq/bGIVh38nrtfwG2BReGAMOSU3dNrWCtccK7bpObt0=;
-        b=K8EYuaMCauEPRy8QvB6BFomdAnEPT119OMqB9XlXQ6Baa6ZpFAmSVR4e3AyakDaW3X
-         fWhBc7yO1FWauV8xbtUk0v4yPZfKBQoCr3yeWEEW3D5bMtdIk3Ycis35EFXIc6/JxIvB
-         e/udQWHoscNXDzxfqUgljvCL9+hweyvB/1QoLtVm6N1vjFXnZhsGr8hE46flRIDRItDq
-         WCxPgt3//h+OlsxrI4ZC4N88PkEVdqSpsAvtUGOfKQVh/gtH5FuF0xFgwPq3u83AKtBP
-         MPqeeKQ4p/xrmb2EToGRm/5ieOoHGAEXKdylKgx3GfXami4+KbYwEP2oq3JQToKiVizQ
-         i7Ug==
+        bh=p/Vl2py7bAr3MMXnnVGwEiFMxjfl+Vi5CKcG3JxQvlI=;
+        b=hXpRhpf0UEH5MhQLY+ZIMq5Fp8DupuTpi497FaNR1P14UFsvpCAbGS4HmVR4Me7COx
+         lHCBq/xf/z5toYGx2GMrn2eEz5/ZdaJGev7thFPDwuYt3v52TDckdMmOh6sz12AyWQps
+         jrEN15ZP7mkt+bS4NFUEHgOZ/vlDzNN2mbrYjExLHBBosZgQqponSmUgwZKf+5lfUrNW
+         kX2Cd08PBzAZ46JH6+sn9kBU1t2m2oDUgKzpDdZkd+vDUnPpigSBLZChfmXxVW4XXHuv
+         vJyQrgDBLkjtlQ0q1ScWMfoLbDsakWdwrl9+R2GYb1qMv9aBM6FJV/d2m0TkBPb63sHk
+         TA5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862954; x=1777467754;
+        d=1e100.net; s=20251104; t=1776862956; x=1777467756;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yq/bGIVh38nrtfwG2BReGAMOSU3dNrWCtccK7bpObt0=;
-        b=TuJGfyuslGml9xFXwLe+JxSduiA6J5CaQZ3wUyTlSHDn+zWnX2Q0DTyOLGrnPRZKOc
-         90jTG7LLlAj1KDJTRnHr//aCfmDH8KLkLZhrjurmRcg1YN7E0hMRfL3pMrLMX+NUI1J+
-         OI/ZdyM5NpO9BkoywAPwm3KJkGUxSwyq++3VIDVub59XRXNEwPn9zWhq/dFv9QP/7Au3
-         +h6p9Nu+oeSebkbgJEiP9Km0UM1+BoI7ol41rXzpQLNU+GHb9jPFn/Kom7x2uUEZwvQK
-         G8TJmO5TcpN4blypRwS7tRsgn6n7Lry5AQvZAWxJ2TkNgW/1g22lbXceSwDMeaNeGQFd
-         gtQw==
-X-Forwarded-Encrypted: i=1; AFNElJ/GBqlB0P1nKu8fKViz3FidnEpbaMznylcwU+kgdeXvbDCwyPyuCxEkcYxfHFFkJ1hoqzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzuUDGyrSolnD20Wn7kLX8acb4yjJmkgVYUMH9wVJJm70eG9ZT
-	Vu9S/tilE/lQMq4Ih0WVZKiCbNJMSZXsfAXmknVhBdafYLa2RSn3VkITlH57jJAHHgU=
-X-Gm-Gg: AeBDiesGRRRf0DqQLvQpSER98vQjvkNiCSYz390Db4cWAQcqn6LI0rS8Dz2P4AAzCh4
-	Q+Ph0hNzyLR7CnfqQT5Pz3YTwl7weWM7BVpF/V57rz/DnXL1azB1L6xQy6v/B8Npg9ggjW5N7yT
-	49E7CBnt6XW/XAWmg36hOE4ValyD+ay7opr3j0gRJJGAFzSTa66NU1UW5vyVHgYERb7PLZlRxAu
-	lAwlJIOCSDEz+88icbKWIy8oRi7W6W1rIRfjUdTsHO0UhXJcWndxyZX77sDkCvFWzQzUo32nRpR
-	YkUKWcYiL0XbA3aacRJ/7cEbuswRwau1PFsEXLf04pxbKpv203IanNPXAwO1c3yfNfdjXpNk4ML
-	8nZvB8chLFQ2a2YzHaSvlGadDfCOI7SMhDV/w6mAVBGsr4H472yh0KI5MzzexPqY6vzSQBo5Pu9
-	sOm0Qt/wYXOhEYkkrkSCT5BP4R9hIyJQ9g7xqeRUuw5jOa
-X-Received: by 2002:a05:600c:1da1:b0:488:d376:42cd with SMTP id 5b1f17b1804b1-488fb785901mr358408635e9.22.1776862952412;
-        Wed, 22 Apr 2026 06:02:32 -0700 (PDT)
+        bh=p/Vl2py7bAr3MMXnnVGwEiFMxjfl+Vi5CKcG3JxQvlI=;
+        b=S3I8QJFHb8e8yXQBZgeM8YIg2OwLM/IKmTU0OCajd4dSaZk+qdrugMkS3Mc0b7ECNW
+         +osVUaY4OxS0BrTPCBATOmPLH60UcysBzcQIwqF0yBOOSb2JsVP75Mo2zY7I/kTlt2Qx
+         Uc7QyBiqZ7fn0QJpak1REMjgPNrtirwyOksuDpunjXSXCG7S6ir2YUyEZR+QWAPmeSo6
+         +xMXwpfeteZNjVX3Z4C4jIv43us7rwbkY23FR4akxdTMQvuY6lo7YlEfqer5MOMUU0iE
+         /Y2tooiRiZPCaKnP1ntdv9HITLoTE4VYS8wt5g2PyRrthutCLFHAVD6xihGhVoqK6aMm
+         vq1w==
+X-Forwarded-Encrypted: i=1; AFNElJ9xkO3lenA4dACmBz+ZKfOGHqGATPcGPypG8VUZmDwXAk35/jfL5hmtlIEifjVNsV5vS58=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIEN+F4gcs2OOVUCiMGpVrWev/gNvO6W/bhxTyk9emIynFQP+/
+	1NIBl1iVvXMY7GrQASXs0JQwqqeKLEmf8LQ+F863UWBmQux08mVq1cuB8cnf9bC4qRU=
+X-Gm-Gg: AeBDiet9XKJ18gI2tYNP+0QC0TXIoY4Ln6ygLwxpS2PcoFqc+TEn4aI5T9G64cxBV57
+	4KrlFNKGDMy7OUIaNI1wAQMem/7mxY8QWqTkL7dsyQtmkuBq8/nuccVKCss8/U70EDzVWoIy5hX
+	z75FmP43bJfgtPXD6sS42vy1V78q6hqW71tY5HpvfRXnsrdnR6ja9ekKI8dz1QwjcAWRKCAkMeh
+	p4gn56nYSspYEGkXSTwtsB2ZoxB639utaeHnxLrYeWMlpN2sN5udcOIa4Jg75rASehJTXQjPPjR
+	+pVWVXnGyfpmShOx1OjxFJHbn8b8VKCLh9yHS8dfGbRA+a8fYhb///6ChyzL6RnwAa71HFY6Gan
+	lLlYHa6kgdb8s7YsVgLjVuWNRKOl6zSeTaozYs9B8bbt3Uvp23NZA1tHfTOkaAU0DfzZNzaJ36i
+	4EfJCe5NuZAREsEu9IEz8IAuOZlTrIZkLN4MbnVHHiLR0l
+X-Received: by 2002:a05:6000:1a8d:b0:43b:40ef:5d1a with SMTP id ffacd0b85a97d-43fe3db3c24mr34177692f8f.5.1776862955514;
+        Wed, 22 Apr 2026 06:02:35 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ffc5e3f4sm230894695e9.2.2026.04.22.06.02.27
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a174sm50153175f8f.18.2026.04.22.06.02.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Apr 2026 06:02:30 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 78333611CD;
-	Wed, 22 Apr 2026 13:52:52 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 4906061668;
+	Wed, 22 Apr 2026 13:52:53 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
@@ -70,11 +70,10 @@ Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
 	Mohamed Mediouni <mohamed@unpredictable.fr>,
 	kvm@vger.kernel.org,
 	qemu-arm@nongnu.org,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 19/32] target/arm: make hvf use syndrome helpers for decode
-Date: Wed, 22 Apr 2026 13:52:36 +0100
-Message-ID: <20260422125250.1303100-20-alex.bennee@linaro.org>
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 28/32] target/arm: hoist event broadcast code into a helper
+Date: Wed, 22 Apr 2026 13:52:45 +0100
+Message-ID: <20260422125250.1303100-29-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
 References: <20260422125250.1303100-1-alex.bennee@linaro.org>
@@ -87,41 +86,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Rather than open coding a bunch of shifts and masks we can use the
-syndrome definitions.
+We will shortly call it from more places.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/hvf/hvf.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ target/arm/internals.h     | 19 +++++++++++++++++++
+ target/arm/tcg/op_helper.c |  9 +--------
+ 2 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 5fc8f6bbbd9..1c1c31f0b15 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -2123,14 +2123,14 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-         break;
-     }
-     case EC_DATAABORT: {
--        bool isv = syndrome & ARM_EL_ISV;
--        bool iswrite = (syndrome >> 6) & 1;
--        bool s1ptw = (syndrome >> 7) & 1;
--        bool sse = (syndrome >> 21) & 1;
--        uint32_t sas = (syndrome >> 22) & 3;
-+        bool isv = FIELD_EX32(syndrome, DABORT_ISS, ISV);
-+        bool iswrite = FIELD_EX32(syndrome, DABORT_ISS, WNR);
-+        bool s1ptw = FIELD_EX32(syndrome, DABORT_ISS, S1PTW);
-+        bool sse = FIELD_EX32(syndrome, DABORT_ISS, SSE);
-+        uint32_t sas = FIELD_EX32(syndrome, DABORT_ISS, SAS);
-         uint32_t len = 1 << sas;
--        uint32_t srt = (syndrome >> 16) & 0x1f;
--        uint32_t cm = (syndrome >> 8) & 0x1;
-+        uint32_t srt = FIELD_EX32(syndrome, DABORT_ISS, SRT);
-+        uint32_t cm = FIELD_EX32(syndrome, DABORT_ISS, CM);
-         uint64_t val = 0;
-         uint64_t ipa = excp->physical_address;
-         AddressSpace *as = cpu_get_address_space(cpu, ARMASIdx_NS);
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index dc593f1fec8..089f679ac0a 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -682,6 +682,25 @@ bool arm_is_psci_call(ARMCPU *cpu, int excp_type);
+ /* Actually handle a PSCI call */
+ void arm_handle_psci_call(ARMCPU *cpu);
+ 
++/**
++ * arm_broadcast_event: set the event_register for all PEs
++ *
++ * This kicks all PEs which will up which are waiting on the event
++ * register.
++ */
++static inline void arm_broadcast_event(void)
++{
++    CPUState *cs;
++
++    CPU_FOREACH(cs) {
++        ARMCPU *target_cpu = ARM_CPU(cs);
++        target_cpu->env.event_register = true;
++        if (!qemu_cpu_is_self(cs)) {
++            qemu_cpu_kick(cs);
++        }
++    }
++}
++
+ /**
+  * arm_clear_exclusive: clear the exclusive monitor
+  * @env: CPU env
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 655e3f96e78..6a2be85fcaa 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -474,14 +474,7 @@ void HELPER(wfit)(CPUARMState *env, uint32_t rd)
+ 
+ void HELPER(sev)(CPUARMState *env)
+ {
+-    CPUState *cs = env_cpu(env);
+-    CPU_FOREACH(cs) {
+-        ARMCPU *target_cpu = ARM_CPU(cs);
+-        target_cpu->env.event_register = true;
+-        if (!qemu_cpu_is_self(cs)) {
+-            qemu_cpu_kick(cs);
+-        }
+-    }
++    arm_broadcast_event();
+ }
+ 
+ void HELPER(wfe)(CPUARMState *env)
 -- 
 2.47.3
 
