@@ -1,229 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F352EAB72
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 01:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6DF30B53F
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 02:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776822184; cv=fail; b=C1t/cz0jz8r5TOYweHDYmh8NIfBN8T0+SMmxP80g3TkCZocdUEpPIX1yJOu6tAM4eMQtiGXHeJap+/EoaSKAIplmPXs2PkKvXvSB7QAJKaYTtUuTzmci0VQV8La2Pqjyz0lBEjBd2SaVHkolCoYB2u7o+ZUUlhpkgyVWXS77OJc=
+	t=1776823631; cv=pass; b=QI04xU894hmfr2GbXuieMFy3RONabC+zIzjtVjTZTOQLNG9kmp0QXPH/iwmd0bFN/z/24B+f/rGfEgCZJFWK8pInpDR69zpMNIkYSM00foYmz/8A1Jn0dT7snAeG+7MPl7+CvBD15aIu9QcWCEyqODAYYfO0RpX4gXzmIWdWH2A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776822184; c=relaxed/simple;
-	bh=yjbnqNh6hTVqntk9rc1lvzIwc1oCect2/zgkdVUE8WY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pW9eRr8OjqLp2ppq34mv/npwVYXN3NRDyXH/BIAuNtnM3iin05ozY7eCGP3epfcfuZL/VHTjkOT74Yk4jDirmpkxBgJAa626wtZ6bv8URNN89/Zlb8Hkg5nrUK0HCkzYj79jgFSWC7qyCBLA2lMzRuSV/A0V6ysoHYa9mjNw/J0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W2K8Zvda; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776823631; c=relaxed/simple;
+	bh=WWpj8K5tVkivvOPzV8h13mA6RDX/L7gtRkhm/3EcP2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TajZ2JpVvnzZk2bbk2O2oP1YRhk2QY8hu2Og5WGytB0xE6s5OnhzIMX3muxcjXn05cifLvmb3IxvSZ5hNczWW3KQ5ukMnxC15A+2T3tSPYyilYEPS3sSGjR2PieM9jbpJjmNRgYTE+newhaJUYNRf9wzfRJYhKqNuC/w1v9oogU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsI4wzsk; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W2K8Zvda"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776822181; x=1808358181;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=yjbnqNh6hTVqntk9rc1lvzIwc1oCect2/zgkdVUE8WY=;
-  b=W2K8ZvdahizsDBvwEBqZPoIuaukM1WUOP9ghb3x1XwmDZRCU4vemW2Ze
-   sHiUc1jkWofz7I+03CrF7ekCqUX+WLmpc2Yp4E+fIwZqIzjX6th3I5bV2
-   r+G46Ih3w5j6pbrba4mQ4VVpnPGOZaHAWx3oAIGd1hDcFLGN2PImhoFgC
-   zmgGbpioyMBo3TcLqLRjN4umSfH0RDnttBoYnRQheSPYqb2+wz7WyOO28
-   JQaw6pmeTA3h55BHL+TY5pPvnR0aWXIX7QjiQcwnAC2iy2n8Bt6BU0TG7
-   1JNZxj8DsYjin76yiVTa1aoCSQziFB6pB/OThGWYtU1qc+rLhoCzOKfvH
-   Q==;
-X-CSE-ConnectionGUID: Oo44Mjw4THaKZkbnBvVyzA==
-X-CSE-MsgGUID: 134jQLIHT+G0AqKrQkq4Dw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="89153264"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="89153264"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 18:43:00 -0700
-X-CSE-ConnectionGUID: 0HUpY6MsQXO4YcnrLfssqQ==
-X-CSE-MsgGUID: EBOkRUfDQJOAGnQmBiv2uA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="236216612"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 18:43:01 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 21 Apr 2026 18:42:59 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 21 Apr 2026 18:42:59 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.15)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 21 Apr 2026 18:42:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=klrRDB1JBMx69T85+aiyKMJLywaZ21L8xzwnDCKs0H4gl6xqIuPDDzgTZQYQfa5IClhlwZbiEmWkgdl3bciyQKy2ULKHOr4uD5qTB83mTsSAss2pswjYHPr/z4DnaMpZIVy82orBxhiv9Yn0MGWoEthLzskKwv2fZfUHxoFRcFOzQ9kwyJgEBPsEXwmMIqsO5dPNc+gJMASLeAjsxxclM30Spya6nuZbeC6P1l+5nHxR7qlqAkS0GX4kj41XVe2YdFtfX7a4sEUXOI/t6WB/cX3Uz80OJ29Al4iJRQUD2QQx5rhhn3RX08DwWPRWsvli/Y/0bBhwFFZMRcasYvn3tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yjbnqNh6hTVqntk9rc1lvzIwc1oCect2/zgkdVUE8WY=;
- b=Fg8x8pkq9tCV2xrAfMqkMkq7UypnnM97wq79FezdOgtW4be1TaLXMlCArCzRZ23gNDis9evBRTREdGBPbu0NYQurGIk6hq31ZH5RTLkqUPKf48meQ/OV4w5GaQYGIgOHAI0tcGvwHL7G35r/6rBe5ggDPAWZD3Gae+9kfbIyah3etVBhFkXGYixbb4Ga4IHDdSd3avm/MszPFs0KZGgPhPoNxXNgLh90Sp8vYPMWsN3aKWsOOD31YNtmbpgXgiLsV6n3/OzhzUReqrY4kKZlKeJfZoSUVnhWqAvDcHi0G2eGFr8SQh2AUErizicJ1uld5n44E6fK25/VtQuVmCyLwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
- SA0PR11MB4752.namprd11.prod.outlook.com (2603:10b6:806:99::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.16; Wed, 22 Apr 2026 01:42:52 +0000
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86%6]) with mapi id 15.20.9846.016; Wed, 22 Apr 2026
- 01:42:52 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>
-CC: "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"joao.m.martins@oracle.com" <joao.m.martins@oracle.com>, "nikunj@amd.com"
-	<nikunj@amd.com>, "bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v6 7/7] KVM: SVM: Add Page modification logging support
-Thread-Topic: [PATCH v6 7/7] KVM: SVM: Add Page modification logging support
-Thread-Index: AQHcxliL7ApYp79orUu4JhjyJLC0JLXnk/4AgAIguwCAAJHqgIAACw0AgAAURYA=
-Date: Wed, 22 Apr 2026 01:42:52 +0000
-Message-ID: <977e805339a29ab789650aa18cd320dd1e9e0c25.camel@intel.com>
-References: <20260407063245.2755579-1-nikunj@amd.com>
-	 <20260407063245.2755579-8-nikunj@amd.com>
-	 <34cfe5e8-756a-435a-a73d-54bf69801161@amd.com>
-	 <aeeS7LDPJ6NCy3Uw@google.com>
-	 <3e4641288d7791919abf1a5b02b80431285484e5.camel@intel.com>
-	 <aegWmKk8uK5r10dM@google.com>
-In-Reply-To: <aegWmKk8uK5r10dM@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|SA0PR11MB4752:EE_
-x-ms-office365-filtering-correlation-id: 45eff984-2fe9-43b3-1649-08dea01077ba
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|38070700021|56012099003|22082099003;
-x-microsoft-antispam-message-info: 43RQkfnbqMtFmpvmWFoHYS5/0qlApCFvPzyakYSKL4OxHjLiAtJGYq0osPWo610IJ+d3Gufqb3hky6fd7PGr6sPvJ9gVyl9cnToYfpcNG6AE56zE5x6SshHMC0vW+pyt/bB8jqxHNxhthP4gxo/wFZlVZSRENRS7t1KGX5xPaDjl1RKmLoIi8SAAkCZ/2JHvIZptVErA8apMrI8WjV3fmUbnjnTwiuH2TRoiXrY4wM2AtY+j8Yv6KRhocwgGWJzHCulirgdWGk99u/PapZojODbq+6mc1kmt5NbLdONTw7qAAeLiBDi2s9X0ED5SHiuxpPv5hTZbMKcaCPFeG5rtgRsloOckgZSEXVWSrr1fe2PBZter+XtzKLsMVJV1vRzT48InTmvVGPZb1j+YN2tfoKKLiASdmc135mAwc1IQf0pQ4U3LZi6fgSJLtFhJift4n5idDBhuJlq/NnCyW0Fi8bYaFaeRDwdKHnwee3eP728OQtMAbZkm32jzqNjb/5DvNLeRqZ5DB3uqwNtONg2wEq40KvcIkgL6l6TGM8Lp9RW83yljJoghUBnqpnJwtaoiFdLgexH/Y3t+elQCti9PJA6WEQ1XjGUZE+z7KCwvTssraLaqPfJzsafA8VPQKP04Bi/G5y65T3GlU97ggjsJ9SHuDaDIhrM9IVHA0kBNFh21QV0Oih+75mkddcHhZuNsNay4Jayc5Y9fMJCQsepo9Z3lPHXiYgdv12HSB0eowOrvgsM5rh5Sngme5kETxq5M2XD6UA9rmOo/7ufcDUn7I474y7EFSjXwAqxU8c7ytrg=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(38070700021)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TUZCTEp6ZWE5YXJpeUtpNmh2TksvV3g3R0VmMkhrR0V3cWdCcndURmpCZmNQ?=
- =?utf-8?B?YmFwcFFFVEpLa3Yvek5rdWwrbnorMGxiZ1B4a3NqNjRFT2ZrRHpaSFN2U1hn?=
- =?utf-8?B?SEhiVUxoR1hNUEhhcGVjOFBUU0JyZUx4MlYyN1NqY3hpZkpPbHRtUDFuWEY4?=
- =?utf-8?B?TnRLLzc2K1Z3eHRjODBHcVllamM5eGVpMjQ3QmdLeDUxaERlOFk4ekFYUDdY?=
- =?utf-8?B?bG5NanAzSFJ6elArdEZHOEZycytJSGxkcVpKV25taC9ncXdpQi9QZHFOS2Jr?=
- =?utf-8?B?bFljemRET25INHpBY1FUWUJYSWFHbmZRMlVJQzJFSTVpMlZ4K0pCa1ExdVg3?=
- =?utf-8?B?TUR4d3U0blVVNkZhdHlVdk9UL1RHV1F5T1AvaUl4a2lXaFpyUnoyR1hGb2Fu?=
- =?utf-8?B?VFpzWm5qMG1ibG1wSjdzOGI4d2pJMmJjdjhhc2cvMW9jUTBmdGhlNDJVSndH?=
- =?utf-8?B?dU12ZVJPMldvZ29iRjRlS0NKaEZPTHV2bnpiSnVaMG81dXpuRkxRZm1KbCtI?=
- =?utf-8?B?VytvY1dPNHBnUU5sT0xIV2xFUHFqR2JIMGllamdZQ0JJM21TWExXazFvMHFM?=
- =?utf-8?B?dUk0VjkvT08vaWh2dDVDY0h0Y011OXRuSnZiZlZFaDBXWmdZSVk5YmpzdWZH?=
- =?utf-8?B?ZTlhdkd5Q3NDdEJ2aXlVTVFFTmk3Y2s5VWdOQ1pwR01JTkduYjEvMHNZZTFT?=
- =?utf-8?B?TWhINGJ5TGY3WU5aaXFNdThJS0lucHMyLzRoN0pnQWxOTDFPV1dRVnE4ZXVX?=
- =?utf-8?B?OHd1NVpwMXNtOGFyaXJaRFAvZzd0TXBrdllVRVY0VzdIQW8zWUF2VjhVcU5I?=
- =?utf-8?B?VFFhcnZ3TjlXNG5JdUJsZ2N6ZTlZN1dtMzZrcXJKcTAyeXNQa2J5dGN4RnFS?=
- =?utf-8?B?eFFBWUc1Q3NaTk9KWUN0RGZNTlArOERkRnBJTktJclFTNHJoMXNoSUx6amdS?=
- =?utf-8?B?MnUzNnZwU0Fqd2t1clpZVm91ckNsd2FuSHljR2pGU1NWclJicXY5UzdYV1Zk?=
- =?utf-8?B?L3R0WnMyNkRMbHdEelpncVU1R1NYN3JQWW1haDR3V0lPQSt1WDJ3TTVSQmdj?=
- =?utf-8?B?OW9yUGEzTm1uamlYSWJHK0xFNWYwUlNFNVdoSDBDcjBoQzJKbFp5azg5eFJC?=
- =?utf-8?B?bmY5QitkNnFCcFNpeWJEeWxIYWc4VGwvbGduaTZ2MzZCWUZHa2hsVnI5eTF0?=
- =?utf-8?B?d0JyMjJJME9idDhuNzcvWUhiYWUwenFUd3d6ckJBVGMwMVl0Mm40eE9MY1Ra?=
- =?utf-8?B?VVVSNnZPVzBkNzZlbnh5QUZzU0NhNDA0T0x3eXg3RWhqU0JEZE9zSnpLTmR0?=
- =?utf-8?B?NUtPUUd3emw5Nm5VK0xzMTFnd1BiUjFKSVpOZEtNTGt4Vm5TbVhwQmpPM1Uw?=
- =?utf-8?B?YzZtWWpoUTNRZFpmOWtiTTJxSmRNL0FENURHa29DRnZKSnQ4WlVXUytFWkM5?=
- =?utf-8?B?RkFXY0c2UnFLWGFYQWhjUUJkNjNYRUU5ZUVsYW9Gdk5FUGY4Tis5QkUrVXov?=
- =?utf-8?B?NStNTnR4WVZGcHdzYkZ3UnJ5UTBjRnBiY1NtcDltZ1BHY1hPd1VWTDNhblpU?=
- =?utf-8?B?RXRnNmhRczdnQW4yTUY3ZUpqUWUwMTJOOGQ2WS8yeThmRHhVa3YzdnV2VWx1?=
- =?utf-8?B?dVBUeFRqZzBYY0lwN3FFWStXY3pEVkFLODF0Wll6WEJzTkJqd05vQnk0S2Q4?=
- =?utf-8?B?R2FPdnRFQzJabG1XU2J3TE0zQlBoWHhPekY3bUJzYkVKdjYrS1ZPb0VuMGd6?=
- =?utf-8?B?bW5DRTlOcUxQbUdCRllQY1VheTVrd093MkdrTFBmdUxvcXp2MVB5NkVYcFp2?=
- =?utf-8?B?dlNGQ2tvUXAzRUk1ZkZURnArNkZTOXhJajRMVVVWL1g0WHNjdWJKMmtQeTg3?=
- =?utf-8?B?Yzk4MFdHMUl4dWtiT3hndUZSaGY1M2t1aUwwRnU0cytmaVhHdk9rZzZIWnAv?=
- =?utf-8?B?bGh6bFJRWFRqYVN0eW9CSTR4Lzc5TS9tR1ZacU5TMFUrdUpNSzBtMnArckFw?=
- =?utf-8?B?MGdUNXdTa2RzanlrRDhyRW85Y3lBVVNXQkFBVzN2QS8wNGNibllIRjlDcGNI?=
- =?utf-8?B?UGFkemRlTG1tWWhBRVQ3MDgzSGw5Tno1OWlWc0ZnSTg5aitWTlNLYVo0Zkk1?=
- =?utf-8?B?Z0pHU2VkMXd3eU5SR3Zja1l6OGtUVE1OTHMwOUNCNGRhd0R5NWVMeFRndDM3?=
- =?utf-8?B?WXJWbVpJN1hvWFAranJ2YTBOeitmRy96emhkMlM0UHVmU1hmUFUrVnBQdjNk?=
- =?utf-8?B?eXRYYXFPM2NEZGNUVHczSVFOQjVkR1hLN3lrTkpoR3BkdU5NZ0NzNmgrcCs1?=
- =?utf-8?B?Q2h0MnErRTk2Z1Ixb2NHUExkakFtSlB0R2VEMmN0Z1Jvc2l3WVdmZz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3C6ABCAAA907054CBF2E09ADEE1853DC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsI4wzsk"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2aae4816912so31206195ad.2
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 19:07:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776823629; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ai67RlncSg1dsY4B6+w3ClO9ohQ6ctYBZmy0cpnm39t3hub/2tTSuk3DgiIBAageZH
+         ETDJWwmBKfWOcaegCKMqk+cCnvspt+kQPsx5IdWgiv2cw+7OlsERgc/eOyhUjueTRT4G
+         p2TSI8fR9EZh++nvB/UMz98t3L2Yf+5AAKtZ40TgzwRBcp71YOHvVYTPd+LUF2JOxvtd
+         inrJDcgLNeoSra/DoQa0N3SFoCIKQj/v/eHAS2gCy1AxDI5qrTbP5R3kf+SoZe8Z2mTO
+         D7bQa7MaoBbq2ijnYwHy3ay1V3mSA54NPrNMfu7Rb4lbrzlbSC6CwMP/aHiSbinpoenS
+         a9+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WWpj8K5tVkivvOPzV8h13mA6RDX/L7gtRkhm/3EcP2M=;
+        fh=JxAOLV2ZMWUR5a3Lz4TKSLx8y0keUgAqlu0xUZOcmaI=;
+        b=Z4y1C9Sr2THf6kdYc4cmtCVh/8O4kB33iVi1+W7oAhYgj6n4Fp0Yhdc/lMfkJoZSab
+         wMyqtTUOuFr06xBZNVgw9gnK3VTMk5gtTalIBl5a2o/8vT5yvtVS4zel88jmVtDuDJzD
+         cgzEJUh34pPeOikIDn4yZYvw+g43BYHFxXSlPEmtEdfTenaDNklUn8yNdC8L9DfkvXa6
+         4W7Cla27tAfqlfZpKCBf+LEaytw9thZFsRcNwLboKnW/q8txgIrgsC1TEi7n4f8MCHu2
+         gIkx/A1gdySdMud9hwXmK6N9hcfVRpAwij+Crj2uEWCzueuElsbaU6c9sYw5RTmZEdPQ
+         p1dA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776823629; x=1777428429; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WWpj8K5tVkivvOPzV8h13mA6RDX/L7gtRkhm/3EcP2M=;
+        b=bsI4wzskIx9Awqy/uTIxK4p9hcR5ObfCleuLTJYfqhe2o+RE4iUzEMi8TwzzSgrf0q
+         xGzC/yAPLIQyxduvgmwrU7nJ7jy2GUqd0dsc4qz4MqUzGC6jZNF/aAoMs/56y4G4V14f
+         ZSq5YPd1SdGlPAHBWMVxWuwswLA/2fqRuq6aMbul0jQ3kbRTrSTviTKxdMU/gtXmuOpd
+         hp+X0SCUO6EsoV5QGG3tiASyqHnQWoF4Y9PKmXu/sLeazPCP9d+B6+q8jWp4arfGnsg3
+         bHI3y02070bMTwXy/quWagPQcIbXCym5/SVCIyNr8wssyNzxL28jz0K9LfbBEUEVY+HP
+         X/Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776823629; x=1777428429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WWpj8K5tVkivvOPzV8h13mA6RDX/L7gtRkhm/3EcP2M=;
+        b=WklqdRBsaDnuU17gT9LX/Ho/b0Ei5TdqfpCQPTRXf8T4kSS9taz1O/8Q3YDZnzKOb/
+         2Tk+zlOXgmNuHi5xWWoRGshF88LK8uSTylVbxfr20kxALbtZBp0ZxmlzhMaaA/kZKUxz
+         fQ1qPyE7Ck9rU+VWvkPwgRto2jOm3Rn2NIYgyKQnQguhWM0mwd9BPSSRO4L7PP7q9IuJ
+         zrlvy26QuE5tYQMNEL6a37071r4vYEhHg9KHtIp4eAPpn59nesfo08/WeIkMMe+uTwKZ
+         dFlNlehGjv4Yjrntk/d6GpC2hsQNmJpV6TgvQkJxPik/PvGVFvtNJihhLoa3uDQA2Urf
+         hIRQ==
+X-Gm-Message-State: AOJu0YxJiHVXcd13UTHFXsENDS+/TU6/oETdXHTX4jEuxkjfNVpju88c
+	KTxR/1yChR1zf0w2CdDFRf0VC0Q6Q4T209MncZ+Y/ntxRRaIzTYFHXoB//ni41dufFtxm9Hz8/F
+	40hkbAW5t/5mPevMKohsGk0IwIherM1g=
+X-Gm-Gg: AeBDiesn3UROMMzP3VQmiCAeJ4KVz432o+i4sB5Nu8Q7IHRwyNm/9ymdIO58H06vWrW
+	GgtlipoAHObXDIvoldFv4eoKx3mR7yz/TY1z+qNltyO3aXqxgTxHCXnRI6juDQ7mXTlI7rdQQyC
+	4wFyo5SLe/IRxKZB5DUZtT3fcVTY2Yj09vSsaCW33LGuNpcSLzznJtMe5pMcdMFSh91I787gFqR
+	NyRtfz8JqqliUZd51Ol+ChbkFaX2a8Twnzj/Hrk5rXioOq8nMkAW9r458VLnVW0dkqMnt8Tgpww
+	eG7bEwDk8JyMrTXC9QU=
+X-Received: by 2002:a17:902:7585:b0:2b4:656b:aeb0 with SMTP id
+ d9443c01a7336-2b5f9f61d74mr129202335ad.35.1776823629391; Tue, 21 Apr 2026
+ 19:07:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: LzPBSu9YZD53F7mky1RL1w1uwW1SlKD6Avo0Xyw29WAjbRFbBGE8L/HsLL1pJ/pKcCm/a1yxzbS3aIZPqKiTqj6PGAQsjS8z4CvXKiLkPi08P3JpZjVde5mDstB3pltffhLbgXgwIJl7/bIkaKwN52zOxru6LPJSD13bKi7dudRdK6GfB8Nn8+pejJxVVwAZGs9fjAZLwvP2/KlhnrARCaPmW8JKvfPLBUlpJ+yGSLVKCtYLBC5SVY0+PHEem5JbLI3bTW5z4/iOHvbsZ6NXJN7F5sP5yryYXLqtsen/d8xQzPGq2igs8Jat8yIyqFMLAjEM1JvjQ1TEQqNBdwPe4A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45eff984-2fe9-43b3-1649-08dea01077ba
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Apr 2026 01:42:52.1281
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 20h5Rz2XZMESE8MoRagmS/HImOUTxXFwVV9gafh2sOd8vVGcOWCe/jLqrGd4SMva1vc3YlCgHUUNLJUuNHvMuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4752
-X-OriginatorOrg: intel.com
+References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+ <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org> <PS1PPF7E1D7501FEA2B54606827E0DE1805AB2D2@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
+ <CAPHJ_VKsVzyYzZ5ZnBkNbYLEMXDYL5x+7jfyUxhcwT1j4zPXOw@mail.gmail.com>
+In-Reply-To: <CAPHJ_VKsVzyYzZ5ZnBkNbYLEMXDYL5x+7jfyUxhcwT1j4zPXOw@mail.gmail.com>
+From: Zw Tang <shicenci@gmail.com>
+Date: Wed, 22 Apr 2026 10:06:58 +0800
+X-Gm-Features: AQROBzCiAonjo35s67_JoyIpUPtqTCm3_6UwO3hAdG0USmTimwNrRapE995lvK0
+Message-ID: <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com>
+Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
+ fault path on Linux 7.0.0-08391-g1d51b370a0f8
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"seanjc@google.com" <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gVHVlLCAyMDI2LTA0LTIxIGF0IDE3OjMwIC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBPbiBUdWUsIEFwciAyMSwgMjAyNiwgS2FpIEh1YW5nIHdyb3RlOg0KPiA+IE9uIFR1
-ZSwgMjAyNi0wNC0yMSBhdCAwODowOCAtMDcwMCwgU2VhbiBDaHJpc3RvcGhlcnNvbiB3cm90ZToN
-Cj4gPiA+ID4gwqDCoCB2Q1BVIFJlc2V0Og0KPiA+ID4gPiDCoMKgwqDCoCB2Y3B1X2VudGVyX2d1
-ZXN0KCkNCj4gPiA+ID4gwqDCoMKgwqDCoMKgIOKUnOKUgD4ga3ZtX2NoZWNrX3JlcXVlc3QoS1ZN
-X1JFUV9FVkVOVCkNCj4gPiA+ID4gwqDCoMKgwqDCoMKgIOKUnOKUgD4ga3ZtX2FwaWNfYWNjZXB0
-X2V2ZW50cygpDQo+ID4gPiA+IMKgwqDCoMKgwqDCoCDilILCoMKgwqDCoCDilJTilIA+IGt2bV92
-Y3B1X3Jlc2V0KC4uLiwgdHJ1ZSkNCj4gPiA+ID4gwqDCoMKgwqDCoMKgIOKUgsKgwqDCoMKgwqDC
-oMKgwqDCoMKgIOKUlOKUgD4gaW5pdF92bWNiKC4uLiwgdHJ1ZSkNCj4gPiA+ID4gwqDCoMKgwqDC
-oMKgIOKUgsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKUlOKUgD4gY29udHJvbC0+
-cG1sX2luZGV4ID0gUE1MX0hFQURfSU5ERVggLS0gUE1MIGJ1ZmZlciB3YXMgYWxyZWFkeSBmbHVz
-aGVkDQo+ID4gPiA+IMKgwqDCoMKgwqDCoCDilJTilIA+IGt2bV94ODZfY2FsbCgpOiBOZXh0IFZN
-UlVODQo+ID4gPiA+IA0KPiA+ID4gPiA+IENvdWxkIHRoaXMgcmVzdWx0IGluIHRoZSBoeXBlcnZp
-c29yIGxvc2luZyB0cmFjayBvZiBkaXJ0eSBtZW1vcnkgZHVyaW5nIGxpdmUNCj4gPiA+ID4gPiBt
-aWdyYXRpb24sIGxlYWRpbmcgdG8gbWVtb3J5IGNvcnJ1cHRpb24gb24gdGhlIGRlc3RpbmF0aW9u
-IGhvc3QsIHNpbmNlDQo+ID4gPiA+ID4gc3ZtX2ZsdXNoX3BtbF9idWZmZXIoKSBpc24ndCBjYWxs
-ZWQgYmVmb3JlIHJlc2V0dGluZyB0aGUgaW5kZXg/DQo+ID4gPiA+IA0KPiA+ID4gPiBBRkFJVSwg
-bm8uIFRoZSBQTUwgYnVmZmVyIGlzIGFsd2F5cyBmbHVzaGVkIG9wcG9ydHVuaXN0aWNhbGx5IGF0
-IGV2ZXJ5IFZNIGV4aXQuDQo+ID4gPiANCj4gPiA+IEh1aC7CoCBUaGVyZSdzIGEgcHJlLWV4aXN0
-aW5nIGJ1ZyBoZXJlLsKgIENvbW1pdCBmN2YzOWM1MGVkYjkgKCJLVk06IHg4NjogRXhpdCB0bw0K
-PiA+ID4gdXNlcnNwYWNlIGlmIGZhc3RwYXRoIHRyaWdnZXJzIG9uZSBvbiBpbnN0cnVjdGlvbiBz
-a2lwIikgYWRkZWQgYSBwYXRoIHRoYXQgc2tpcHMNCj4gPiA+IGt2bV94ODZfb3BzLmhhbmRsZV9l
-eGl0KCksIGFuZCBzcGVjaWZpY2FsbHkgY2FuIGdpdmUgdXNlcnNwYWNlIGNvbnRyb2wgd2l0aG91
-dA0KPiA+ID4gZ29pbmcgdGhyb3VnaCB2bXhfZmx1c2hfcG1sX2J1ZmZlcigpOg0KPiA+ID4gDQo+
-ID4gPiAJaWYgKHVubGlrZWx5KGV4aXRfZmFzdHBhdGggPT0gRVhJVF9GQVNUUEFUSF9FWElUX1VT
-RVJTUEFDRSkpDQo+ID4gPiAJCXJldHVybiAwOw0KPiA+ID4gDQo+ID4gPiAJciA9IGt2bV94ODZf
-Y2FsbChoYW5kbGVfZXhpdCkodmNwdSwgZXhpdF9mYXN0cGF0aCk7DQo+ID4gPiANCj4gPiA+IEdp
-dmVuIHRoYXQgU1ZNIHN1cHBvcnQgZm9yIFBNTCBpcyAob2J2aW91c2x5KSBvbiBpdHMgd2F5LCBp
-dCdzIG1pbGRseSB0ZW1wdGluZw0KPiA+ID4gdG8gYWRkIGEgZGVkaWNhdGVkIGt2bV94ODZfb3Bz
-IGhvb2sgdG8gZmx1c2ggdGhlIGJ1ZmZlciBvbiBhIGZhc3RwYXRoIHVzZXJzcGFjZQ0KPiA+ID4g
-ZXhpdC7CoCBCdXQsIEkgZGlzbGlrZSBvbmUtb2ZmIGt2bV94ODZfb3BzIGhvb2tzLCBhbmQgdGhh
-dCBvbmx5IHdvcmtzIGlmIHRoZXJlJ3MNCj4gPiA+IG5vIG90aGVyIHZlbmRvciBhY3Rpb24gcmVx
-dWlyZWQuwqAgRS5nLiB2ZXJ5IHRoZW9yZXRpY2FsbHksIGEgZmFzdHBhdGggdXNlcnNwYWNlDQo+
-ID4gPiBleGl0IGNvdWxkIGFsc28gYmUgY29pbmNpZGVudCB3aXRoIGJ1c19sb2NrX2RldGVjdGVk
-Lg0KPiA+IA0KPiA+IFNlZW1zIHZteF92Y3B1X3Jlc2V0KCkgZG9lc24ndCByZXNldCBQTUwgaW5k
-ZXggdXBvbiBJTklUIGV2ZW50LCB3aGljaCBzZWVtcw0KPiA+IHRvIGJlIGZpbmUgc2luY2Ugd2Ug
-YXJlIG5vdCBsb3NpbmcgYW55IGRpcnR5IEdQQSB0cmFja2luZyBBRkFJQ1QgKG90aGVyd2lzZQ0K
-PiA+IHdlIGFscmVhZHkgaGF2ZSBhIGJ1ZyBmb3IgVk1YIGhlcmUpPw0KPiA+IA0KPiA+IEhvdyBh
-Ym91dCBkb2luZyB0aGUgc2FtZSBmb3IgU1ZNPw0KPiANCj4gV2UgZG9uJ3QgcmVhbGx5IGhhdmUg
-dGhhdCBsdXh1cnkuICBPbiBTSFVURE9XTiAoZXZlbiBpbnRlcmNlcHRlZCBTSFVURE9XTiksIHRo
-ZQ0KPiBzdGF0ZSBvZiB0aGUgVk1DQiBpcyB0ZWNobmljYWxseSB1bmRlZmluZWQuICBJLmUuIEtW
-TSBuZWVkcyB0byB3cml0ZSBfc29tZXRoaW5nXy4NCg0KWW91IG1lYW4gS1ZNIG5lZWRzIHRvIHJl
-c2V0IFZNQ0IgdG8gcmVmbGVjdCB0aGUgYXJjaGl0ZWN0dXJhbGx5IGRlZmluZWQgSU5JVA0Kc3Rh
-dGUgZm9yIGEgdkNQVT8gIE9yIHRoZSBoYXJkd2FyZSBpdHNlbGYgbWF5IHJlc2V0IFZNQ0IgdGh1
-cyBtYXkgcmVzZXQgUE1MDQppbmRleD8NCg0KPiANCj4gSG1tLCBhY3R1YWxseSwgaG93IGlzIHRo
-YXQgZ29pbmcgdG8gd29yaz8gIERyb3BwaW5nIFBNTCBlbnRyaWVzIGp1c3QgYmVjYXVzZSBhDQo+
-IHZDUFUgaGl0IFNIVVRET1dOIGlzbid0IGdvaW5nIHRvIGZseS4gwqANCj4gDQoNCk5vdCBkcm9w
-cGluZywgYnV0IGp1c3QgbGVhdmUgUE1MIGluZGV4IHVuY2hhbmdlZC4gIFRoZSBQTUwgYnVmZmVy
-IGl0c2VsZiBpcw0Kc3RpbGwgdGhlcmUgdW5jaGFuZ2VkLCBhbmQgUE1MIGlzIHN0aWxsIHdvcmtp
-bmcgaW4gaGFyZHdhcmUgdGh1cyB0aGUgYnVmZmVyDQp3aWxsIGV2ZW50dWFsbHkgZ2V0IGZsdXNo
-ZWQuDQoNClRoaXMgaXMgdGhlIGNhc2UgZm9yIFZNWCBBRkFJQ1QsIHRodXMgSSB3b25kZXIgd2hl
-dGhlciB0aGlzIGFsc28gd29ya3MgZm9yDQpTVk0uDQoNCj4gRS5nLiBpZiBhIFZNIGNyYXNoZXMg
-d2hpbGUgaXQncyBiZWluZw0KPiBtaWdyYXRlZCBieSB0aGUgaG9zdCwgdGhlbiBpdCBjb3VsZCBl
-bmQgdXAgd2l0aCBjb3JydXB0ZWQsIGluY29oZXJlbnQgZGF0YSBvbg0KPiB0aGUgdGFyZ2V0IGR1
-ZSB0byBsZWF2aW5nIGRpcnRpZWQgcGFnZXMgYmVoaW5kLg0KDQpJZiB3ZSBsZWF2ZSBQTUwgaW5k
-ZXggdW5jaGFuZ2VkIHVwb24gSU5JVCBhcyBtZW50aW9uZWQgYWJvdmUsIEkgZG9uJ3QgdGhpbmsN
-CndlIHdpbGwgbG9zZSBhbnkgZGlydHkgR1BBIHRyYWNraW5nLiAgQnV0IG1heWJlIEkgYW0gbWlz
-c2luZyBzb21ldGhpbmcuDQo=
+Hi David,
+
+Thanks for pointing this out.
+
+You are right. The commit id I sent was incorrect. I mistakenly used the
+git describe-style suffix g1d51b370a0f8, but the actual git commit is:
+
+1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
+
+The short commit id is:
+
+1d51b370a0f8
+
+Sorry for the confusion.
+
+I am also re-checking whether the kernel image was built from a clean tree
+and whether there were any local modifications when the crash was reproduce=
+d,
+so that the reported source line numbers match the exact build.
+
+Thanks.
+
+Zw Tang <shicenci@gmail.com> =E4=BA=8E2026=E5=B9=B44=E6=9C=8822=E6=97=A5=E5=
+=91=A8=E4=B8=89 10:06=E5=86=99=E9=81=93=EF=BC=9A
+>
+>
+> ________________________________
+> =E5=8F=91=E4=BB=B6=E4=BA=BA: Tang Zw <shicenci@gmail.com>
+> =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4: 2026=E5=B9=B44=E6=9C=8822=E6=97=A5 =
+10:03
+> =E6=94=B6=E4=BB=B6=E4=BA=BA: David Hildenbrand (Arm) <david@kernel.org>; =
+linux-mm@kvack.org <linux-mm@kvack.org>; akpm@linux-foundation.org <akpm@li=
+nux-foundation.org>; hannes@cmpxchg.org <hannes@cmpxchg.org>
+> =E6=8A=84=E9=80=81: kvm@vger.kernel.org <kvm@vger.kernel.org>; linux-kern=
+el@vger.kernel.org <linux-kernel@vger.kernel.org>; pbonzini@redhat.com <pbo=
+nzini@redhat.com>; seanjc@google.com <seanjc@google.com>
+> =E4=B8=BB=E9=A2=98: =E5=9B=9E=E5=A4=8D: [BUG] WARNING in workingset_activ=
+ation triggered by KVM page fault path on Linux 7.0.0-08391-g1d51b370a0f8
+>
+> Hi David,
+> Thanks for pointing this out.
+> You are right. The commit id I sent was incorrect. I mistakenly used the
+> git describe-style suffix g1d51b370a0f8, but the actual git commit is:
+> 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
+> The short commit id is:
+> 1d51b370a0f8
+> Sorry for the confusion.
+> I am also re-checking whether the kernel image was built from a clean tre=
+e
+> and whether there were any local modifications when the crash was reprodu=
+ced,
+> so that the reported source line numbers match the exact build.
+> Thanks.
+>
+> ________________________________
+> =E5=8F=91=E4=BB=B6=E4=BA=BA: David Hildenbrand (Arm) <david@kernel.org>
+> =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4: 2026=E5=B9=B44=E6=9C=8821=E6=97=A5 =
+22:06
+> =E6=94=B6=E4=BB=B6=E4=BA=BA: Zw Tang <shicenci@gmail.com>; linux-mm@kvack=
+.org <linux-mm@kvack.org>; akpm@linux-foundation.org <akpm@linux-foundation=
+.org>; hannes@cmpxchg.org <hannes@cmpxchg.org>
+> =E6=8A=84=E9=80=81: kvm@vger.kernel.org <kvm@vger.kernel.org>; linux-kern=
+el@vger.kernel.org <linux-kernel@vger.kernel.org>; pbonzini@redhat.com <pbo=
+nzini@redhat.com>; seanjc@google.com <seanjc@google.com>
+> =E4=B8=BB=E9=A2=98: Re: [BUG] WARNING in workingset_activation triggered =
+by KVM page fault path on Linux 7.0.0-08391-g1d51b370a0f8
+>
+> On 4/21/26 13:17, Zw Tang wrote:
+> > Hi,
+> >
+> > I am reporting a WARNING in workingset_activation() triggered by a
+> > syzkaller C reproducer on Linux 7.0.0-08391-g1d51b370a0f8.
+>
+> g1d51b370a0f8 is not a known git commit id.
+>
+> Do you have an upstream git commit where the line number
+> include/linux/memcontrol.h:381 makes sense?
+>
+>
+> --
+> Cheers,
+>
+> David
