@@ -1,136 +1,159 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0AD2773FF;
-	Wed, 22 Apr 2026 06:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2F42DC357
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776837878; cv=none; b=Gv6EsmxAcqzp4hM+3t1ldcDqPFEJ7XB1zOqAlYFU54A47QUgXKA+H026JcesHE5bGlTQjuIFssyubuV446inJoSFwEzCSzUf1kx3uYN1ZDHp2ZoFRRLoWET2BdEXcIBCuRUz5eubevYtBXR7MXd1vwKcIVGagUDn7btvG967UN4=
+	t=1776837961; cv=none; b=KH52iNkj4e3YQKIXJ+tE4G1H266fMAORaii5kzO5iAlq8Ui92WoLW5QTDHRQUMvwtpomCWEAmhnEBeTSB3VnITTkM88VL7i7QgQ5iwshzsIS7mx6Nz7Cb4Z7HNiXcyEo5LXvE2RVHn5zdeVSlcfFzQyLc0mOoP/n7mLUIsmlD54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776837878; c=relaxed/simple;
-	bh=l/Xv0ByC+wpOpBjaVlGMf2Va9omIbMuTRr98oFoAT3Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=rNxhAG/4kohS0IfgSa/kBxaSH+O0QGw7wOCwPw/zQrmYMmGmzSlu4vlxHjFqz1wUiVW06qjddczaOJtOA07PQ+qt9AV0Mp+dPFW4DlMERqVFXOCG1rDsdv7Drf7baPx+JTJXcvxUk8oo3lSO3I5ZiFgPOK34/npWWI85slfUQKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bKjb55FJ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776837961; c=relaxed/simple;
+	bh=D0IhErlGrKKuMRwPOP4Tlt1GsqbT8xAI/tb1DvR/nwI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gpbxBHfN5bn0GZM3mQYjJ0Vi/Td8/0PJVNKEwx8/W4JlcIzJERDxSZRJuCWH9IqYQS7SEUGgAmRazotriVYoVJkuZiRbXg5AqNtxYF2jchTb7ck7iVhltynpy3KR82QMr4mZEgt0wt1WB2eMxfDIEjUmmN5JezIUIAOnTHUp3VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Kfv5f0JH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hDqYmxVj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bKjb55FJ"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LIlh45970191;
-	Wed, 22 Apr 2026 06:04:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yqoli/
-	BKS1Da1rSShv6mTI8JJDCdV0SCpYsnIOdKZFo=; b=bKjb55FJwQ8nYjWOgUC5QD
-	20gvTXAcw3VrhGCCg+ithk5pWq/Id61i3EoGa7bS1qD2ReKTI6WKqjpFsrqHa1iT
-	fmNpRp7l/1L20e947zURAONQcrCB4ZBkIg9Wwgu8ECHRi9EbOVp4gedZR2hHBKaf
-	1/G51iu9qnGyINZ4xFQjT7p0xCEprd0MoSfsxq/w6BBSC4LNNj23FAssNFKZPnJI
-	0PqMf1PHP48ZnFietN4sR7qB7QCu6SPdR15hUUneqNYzWtTP3iAkXdWoDn3TLL1R
-	ckS0HRckM9JxLqiytUvp29FM2c3M3X7RUt7SMcrHFktbMSTQAK1s3PPBHyjCy6kA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu3hs5y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Apr 2026 06:04:36 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63M5oTfp025645;
-	Wed, 22 Apr 2026 06:04:35 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dpjkxs0gq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Apr 2026 06:04:35 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63M64W1s57934258
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Apr 2026 06:04:32 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 06FD320043;
-	Wed, 22 Apr 2026 06:04:32 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADF1C20040;
-	Wed, 22 Apr 2026 06:04:31 +0000 (GMT)
-Received: from t14-nrb (unknown [9.111.40.84])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Apr 2026 06:04:31 +0000 (GMT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Kfv5f0JH";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hDqYmxVj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776837959;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ztMyE+ktT7jgxWkcpg5pXckPoWAOQRydQBsfKgsWIR8=;
+	b=Kfv5f0JHpqpicGsTAaScc4FnO1qDnV/Qc6jlm8+NuYGhNC0RKJZGAPZOzwJNUc75kDcgO1
+	9j/9zv2szVNTHBT0X9Us3478saG06peoqVi+tumso6gUhMYxoBJAMAMvXwS/E6UEyCai+2
+	8VE9abcizCMjvzuAyG1Wm+wAubdzFbE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-456-R281mTHJNmOfzGwo2XmQJg-1; Wed, 22 Apr 2026 02:05:57 -0400
+X-MC-Unique: R281mTHJNmOfzGwo2XmQJg-1
+X-Mimecast-MFC-AGG-ID: R281mTHJNmOfzGwo2XmQJg_1776837956
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48a5adc12ffso2017925e9.0
+        for <kvm@vger.kernel.org>; Tue, 21 Apr 2026 23:05:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776837956; x=1777442756; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ztMyE+ktT7jgxWkcpg5pXckPoWAOQRydQBsfKgsWIR8=;
+        b=hDqYmxVjaUFNP+JqjAK10rEDyUqPY+VznggUVQe3/btlF51uwQpYbTtb55kBTMTcls
+         7ncjTixzlBivWxn4QY3xYORodFD6PN3rFZvNmVghZw6obWOH3h/ZYqP1lhSMTttDZKfb
+         J68mkCBHDsd5mCC/o7EiuHZC1TLbErOfBPlmGuV7vqunH5DA+IIDle8okMSUrZSBvm93
+         XW4JYjcYTa8hOll4OyAlooTBYbUFLdFVZ9ig3Olts6B1mUOyGUSCd55Z+7LiAdb0vd1d
+         bV8dks6QJ5d1hSR85vUW2RqQFnUy84iwTfZiOe34Dfi2Ji6afHrh104HrtwF5eTZkDtn
+         1rrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776837956; x=1777442756;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ztMyE+ktT7jgxWkcpg5pXckPoWAOQRydQBsfKgsWIR8=;
+        b=Wfoox4+X6ywzj+7L4fvJKCdwUXtNppPYVW3zZwKJtQt7wbmeV47ZFlZMIzYyW6c/O7
+         D+MIFMmgpJQ43ryYJtLSrSW50uWB4UJ5Xgm36adcd708ScnzWcjsgTmQ1NyiZHNhmplp
+         72a4azGCDktttbG6b9LbEdTDwn/kT3tj4ofehXBufTKIAKKldvkHgyTqlixhFRBaPAUA
+         Thw3IBr0S2NI0X4u55xS7vEcWGO00tCxacaKN0gXJUwUaIcSlXS1cCgNxZ8Ctrr93AiY
+         bs/X2rNbLBwBnSiQDapyR9c8H+d3y1oNL7x76nR+tYGVqG1Cqtk7YHnkOeq6UaXXcevQ
+         r6kw==
+X-Forwarded-Encrypted: i=1; AFNElJ8hTGf3qe60KXStowYXuAouNucGAMCRGSy3nDy/eIAoblUJeMkdBkcTPNopqZwxw5VBT/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD7jtpvaWsr7xHc+mw2bjfOJiukSloc+8BPcGPUkKVpdau38b/
+	rhMOD5DXl/GHS0/bQJqKTUqG8vLfus0w7XGuwNuQ53pvf1WgEWvZH3CrGU7GCjGVOgzOe/WUjqg
+	Z1Kkk5mmFFjYDe0gwidwzPgtrhdxwidIo+wd9qyh0utrMQQmZ6MnVmQ==
+X-Gm-Gg: AeBDievGeObGx6sQxD2bza02HV8Z8yrPHedyRZwK3r3xcHFb5z7UZn3rShTb7G1QxzS
+	HpBOh6MIy2cfVgkTopuPSBuxVFtpusjp8DxItUMQwQfh37bmVB056DcPJmWyzekX2NQWhCxZl6P
+	t6BLRaai0DNxeF7H9KMpUp95ch+0DducWKzeZEkC7yxo7pw24AYejKwnKak4xllMnML+0gYjlfp
+	HRYxi2DYXSs9wkS4z6A5qT6U6YTJSUJk7YtjhzMzH2MFLTFEUL2VZLNOYBUgHsYfotmPn4JXMXK
+	Wez+H2/f+NscGODxc7w2zCVVkyeEJ9N4TePxHJkmRNmo/9p1PjZb101piE1NEpvmCbyH2cAK7ji
+	92eNR/+yjRiZyPTULv7g7bp/iqcszBx3nfL+1snxLuOI2JI8rB5WBQg==
+X-Received: by 2002:a05:600c:470d:b0:48a:52ce:a4b1 with SMTP id 5b1f17b1804b1-48a52cea6d8mr117687655e9.15.1776837955982;
+        Tue, 21 Apr 2026 23:05:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:470d:b0:48a:52ce:a4b1 with SMTP id 5b1f17b1804b1-48a52cea6d8mr117687235e9.15.1776837955527;
+        Tue, 21 Apr 2026 23:05:55 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-25-21.inter.net.il. [80.230.25.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc177dafsm520792265e9.4.2026.04.21.23.05.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 23:05:54 -0700 (PDT)
+Date: Wed, 22 Apr 2026 02:05:52 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Kohei Enju <kohei@enjuk.jp>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v1] vhost_net: fix sleeping with preempt-disabled in
+ vhost_net_busy_poll()
+Message-ID: <20260422020539-mutt-send-email-mst@kernel.org>
+References: <20260422023026.81960-1-kohei@enjuk.jp>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 22 Apr 2026 08:04:31 +0200
-Message-Id: <DHZGGHFIB3HM.23YH58OREC8WD@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <imbrenda@linux.ibm.com>,
-        <borntraeger@linux.ibm.com>, <nrb@linux.ibm.com>
-Subject: Re: [kvm-unit-tests PATCH v2 2/4] lib: s390x: sie: Allocate
- physical guest memory via memalign
-From: "Nico Boehr" <nrb@linux.ibm.com>
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>,
-        "Janosch Frank"
- <frankja@linux.ibm.com>, <kvm@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260420084933.251244-1-frankja@linux.ibm.com>
- <20260420084933.251244-3-frankja@linux.ibm.com>
- <DHYXKO2IPF13.1SJ3D8S49W7BZ@linux.ibm.com>
-In-Reply-To: <DHYXKO2IPF13.1SJ3D8S49W7BZ@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: d625QQD7ttNf8_fzwrqZrcPwaGOHoi3S
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDA1NSBTYWx0ZWRfX+GMl8ukwESIJ
- bFggQ+gAFdXA+4M/RfYmKww7npHYBhOpM00HAB9+kYQeq3FwhskbYoP0G27h/qSeCXy7qdHVzQb
- np9KmU9WYgC+C5tEgUhcjWv4UV+9HVts0J6UK9gVZqyTjLWT8TSSOVHEmMyaF9NA8l2iccXfK0/
- QPo+wlkV3qfAy1S7ujIcHzSLjatO0/Z0vmcM4lyI4bRqtfS4YUpN7eiIuCFXOBrqrJMNNgLVTkN
- y3I9ZDNj8RPSpI3oGKDwdBhsO1tnGp4i/M1+hHNiKCklJNNVGzaTMcI0VjWhFQp26b0OlxX/FbN
- Jmyya70DAsLSMwd7FoH4LLqkQPyVUXz8hbtvK3mOdef39sk4b2ehey9YJcBtupFXb3i4yyEz91N
- 6omhj6aMIJWNxbK30dpPLRTU8s9/t9L9OVCx0NJsahdnOMRin61qXjfnK40hrhRgUIMYkTE6meY
- 0ufnnNQo3Kd2sSDN9fw==
-X-Authority-Analysis: v=2.4 cv=a6kAM0SF c=1 sm=1 tr=0 ts=69e864f4 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=6CX5Zf9KZRiv3f7GAsYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: d625QQD7ttNf8_fzwrqZrcPwaGOHoi3S
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604220055
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260422023026.81960-1-kohei@enjuk.jp>
 
-On Tue Apr 21, 2026 at 5:16 PM CEST, Christoph Schlameuss wrote:
-> On Mon Apr 20, 2026 at 10:44 AM CEST, Janosch Frank wrote:
->> alloc_pages_flags() alignes the allocation on the same order as its
->> requested size. Since we use virtual memory for SIE we can instead
->> align to 1MB by using memalign() which is less wasteful.
->>
->> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
->> ---
->>  lib/s390x/sie.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/s390x/sie.c b/lib/s390x/sie.c
->> index 47d4cdde..b1b0a8a0 100644
->> --- a/lib/s390x/sie.c
->> +++ b/lib/s390x/sie.c
->> @@ -171,7 +171,8 @@ uint8_t *sie_guest_alloc(uint64_t guest_size)
->>  	guest_virt =3D (uint8_t *)ALIGN(get_ram_size() + guest_counter * 4UL *=
- SZ_1G, SZ_2G);
->>  	guest_counter++;
->> =20
->> -	guest_phys =3D alloc_pages(get_order(guest_size) - 12);
->> +	guest_phys =3D memalign_pages_flags(SZ_1M, guest_size, 0);
->
-> There is a const for that:
->
-> guest_phys =3D memalign_pages_flags(SZ_1M, guest_size, AREA_ANY);
+On Wed, Apr 22, 2026 at 02:30:24AM +0000, Kohei Enju wrote:
+> syzbot reported "sleeping function called from invalid context" in
+> vhost_net_busy_poll().
+> 
+> Commit 030881372460 ("vhost_net: basic polling support") introduced a
+> busy-poll loop and preempt_{disable,enable}() around it, where each
+> iteration calls a sleepable function inside the loop.
+> 
+> The purpose of disabling preemption was to keep local_clock()-based
+> timeout accounting on a single CPU, rather than as a requirement of
+> busy-poll itself:
+> 
+> https://lore.kernel.org/netdev/1448435489-5949-4-git-send-email-jasowang@redhat.com/T/#u
+> 
+>   Changes from RFC V1:
+>   ...
+>   - Disable preemption during busy looping to make sure local_clock()
+>     was correctly used.
+> 
+> >From this perspective, migrate_disable() is sufficient here, so replace
+> preempt_disable() with migrate_disable(), avoiding sleepable accesses
+> from a preempt-disabled context.
+> 
+> Fixes: 030881372460 ("vhost_net: basic polling support")
+> Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+> Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
+> Signed-off-by: Kohei Enju <kohei@enjuk.jp>
 
-Or just
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-guest_phys =3D memalign_pages(SZ_1M, guest_size);
+> ---
+>  drivers/vhost/net.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+> index 80965181920c..c6536cad9c4f 100644
+> --- a/drivers/vhost/net.c
+> +++ b/drivers/vhost/net.c
+> @@ -560,7 +560,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+>  	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
+>  				     tvq->busyloop_timeout;
+>  
+> -	preempt_disable();
+> +	migrate_disable();
+>  	endtime = busy_clock() + busyloop_timeout;
+>  
+>  	while (vhost_can_busy_poll(endtime)) {
+> @@ -577,7 +577,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+>  		cpu_relax();
+>  	}
+>  
+> -	preempt_enable();
+> +	migrate_enable();
+>  
+>  	if (poll_rx || sock_has_rx_data(sock))
+>  		vhost_net_busy_poll_try_queue(net, vq);
+> -- 
+> 2.51.0
 
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
