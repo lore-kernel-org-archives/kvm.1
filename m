@@ -1,39 +1,60 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA66B369965;
-	Wed, 22 Apr 2026 07:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE7136BCCA
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 07:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776841688; cv=none; b=RHJr+bqMfACyyTUpo9N/CkmEV07Enye84x0Si5n6XBCmIqRZeYkzffw3VbYA2ylqOTG2OMtBFhw9emQ06vM0ktshzic2iLDDgfgJA93zZ7V3FyfshDS+yF99bz1tX3bDJsO2XXrN5wuv5bqrmiUYUDdjqtd8mVixERGYF68Kw7M=
+	t=1776841990; cv=none; b=I/JNE8da0XWP2lpGQ0DfgogU/WMN4ggVAsBthxbcyoG3YVGzmO3ViVaOYSZgRBGY4kmIktXWfWwLFThbAfCTnvwEzBC0BMxzxtRzY2fcaMUh0YH1WFlkro2ONZ4fzwoDrCQqewg8jvIGS9StqRgHJ9260nookv/lKs0glUySxeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776841688; c=relaxed/simple;
-	bh=gqk3uD4R/tE9ZWWfHwCVoKk1/vJMJjFUD5vCjQ+gtRE=;
+	s=arc-20240116; t=1776841990; c=relaxed/simple;
+	bh=ctNB7OuFRAFq5o70bcXAZ///pIEX10u+BxqYtSSZtRI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AQhPKKpVcnwvLRCzULFp/g5r0qd0phMXpCienoMSLrproavxcmjCEAGYN+g+ec42Zr6reO0CzSUG4Ej/PRAyxsrGjQoJmzEW4fvx9Ea5AfhaYQ0nQ1LALcZJDLTjbhZTqw5iXdnF7ukjJX4fSFTdXxorCo4TycbloYrtkaClvaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=nazrWpPO reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	 In-Reply-To:Content-Type; b=mJuIuolzkH//nZxRrB5HwET9sXTTvcmIVG7UXLvPcHcsosvlr3CLv7tiyTIIuRP2ZQpj00v06mbioXwxqV2SIec/lzjyYrbdRHdylz2C9T/ArHVD1OjUHL48loAFBg0P5eb+HXvwqztlQdJ++owYeO4uqEojlgl5pqZhPU+hxBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HVrAyWKi; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="nazrWpPO"
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63M726wI004805
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 22 Apr 2026 16:02:06 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=spF9IOW2V15dt6bJE0CRBrgMv2oh2xWd5j7mz2cgmZk=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20250326; t=1776841326; v=1;
-        b=nazrWpPOx1MUGEQQP5jnqy7DnpgSUPBt+epaBv0wb9yxB67VjM13b0XbIxSdZ8Dz
-         T5CQmSpsVMKBnJWJBfvZMyngEYKJFfZMNjN4w3ZhdoyB/XSw+qLYb41eEckAGS2X
-         BEH57BHzIM/fhzGcS+hQUiDIl6RRIFTOkCguyNTRX1mIApCowv428/0fWfm5Kd6Z
-         7toEuwuPTFRzu6kLLpeWean3D2SrmYR7F6yyBrnOXU1DR15c0U959WEwh6XJm81g
-         ttzTKQqQ/7GXlyL+w+Y5UGnyurFKA4AzE/cgET+zMT1z4YjUDTpISkP1n8h/yvfC
-         7KGiBzQMkIDtiEEF+lvS1A==
-Message-ID: <327f74e4-78b8-4629-a418-d1d3ba78859f@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 22 Apr 2026 16:02:05 +0900
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HVrAyWKi"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LIlhOQ589847;
+	Wed, 22 Apr 2026 07:12:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RWbt/a
+	h76YcoI5hYN1E5wI+MJoULhx0ce77jifk4aYU=; b=HVrAyWKiWjnY3pYg1hwmIf
+	VL767EwcfXyzDZD96GBgx2MVjzn1ph+/6Wjb+85chNlCjL2FBPCcRMsDdCmaymz+
+	0hMVSyzOwY7mSjN4avOfsPa0y/Ky6jr/l5oxD+byQ5/cPv71T++Q11sFxL5Opvci
+	IysPtK8SQWB/+rZKDcYF0B2VlurczBcVmZPmV5FYuSux3CeoDkMw3dOzPY0S61Zf
+	45/wzm62u4MYunf3mu/XR0FlhqjhmgJoBeInrjeKsZMpe5touxmOs+KOEOHTVya+
+	Vrod+rh8PsaqkxnPB7eEa2VH5HjAHvnCUNwX+2cLlL+7OANqk5aAK1dUVL+qLspQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu226un-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Apr 2026 07:12:48 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63M75TA1001655;
+	Wed, 22 Apr 2026 07:12:47 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyh7f1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Apr 2026 07:12:47 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63M7Cj2U42926484
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Apr 2026 07:12:45 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90BD058052;
+	Wed, 22 Apr 2026 07:12:45 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6F4D858045;
+	Wed, 22 Apr 2026 07:12:41 +0000 (GMT)
+Received: from [9.39.31.8] (unknown [9.39.31.8])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Apr 2026 07:12:41 +0000 (GMT)
+Message-ID: <61318a9d-578d-438c-ac76-e7579f0eb743@linux.ibm.com>
+Date: Wed, 22 Apr 2026 12:42:39 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,208 +62,87 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/4] KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu
- <yuzenghui@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuah@kernel.org>, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org, devel@daynix.com, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
- <20260418-hybrid-v7-3-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp>
- <87ldeic1gk.wl-maz@kernel.org>
- <06c6664c-7f0c-47b2-babf-ba2a541fd9f2@rsg.ci.i.u-tokyo.ac.jp>
- <86qzoa0xj6.wl-maz@kernel.org>
- <ad44c69e-2f99-4f31-81b4-faae52eea080@rsg.ci.i.u-tokyo.ac.jp>
- <86ldeh20xg.wl-maz@kernel.org>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <86ldeh20xg.wl-maz@kernel.org>
+Subject: Re: [PATCH 5/8] target/ppc/mmu: Replace legacy ld/st_phys() ->
+ address_space_ld/st()
+Content-Language: en-GB
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        BALATON Zoltan <balaton@eik.bme.hu>,
+        Glenn Miles <milesg@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org,
+        qemu-ppc@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20260319111936.68041-1-philmd@linaro.org>
+ <20260319111936.68041-6-philmd@linaro.org>
+ <0749ae60-f6df-3cb8-bc5d-b46f4c20995c@eik.bme.hu>
+ <d64dff93-7129-4c39-bf9f-d2a8cf2ee4fb@linaro.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <d64dff93-7129-4c39-bf9f-d2a8cf2ee4fb@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: JEy_Qw61y7-2Psv0sYq5GE7-ggZAumDk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDA2MiBTYWx0ZWRfXztkTpwG2EiP+
+ zIe3JA5kQl3AKZ+FmvWnDJv0Efb5L1g+AspPRaZaq2UoQ02K6WapRgFHd5cYsuElCfjj5ZF64JU
+ QnmG3fK7W8ENse8OQj5KzGf1Nq7KVDq09RJXkDC6M9tGoBK+GMiI2wQyFOXdDLDIVf0BwwfEUat
+ 2hdM2BgaL9wOyAANF1qXPDFzlxKfucY31fO6At1RwPfXSGUj1Bp1wsgt6bIrIGZZGx+D1CG5EOQ
+ NTkqUb/Yxaoc30zz2pEeewmDd4rVCWGgJs6F1ceKWRIQY+7Qu7uXs+4lwbg0IYxGmzIApkMDErT
+ gNVVOmIod2EbOCtjp/ZiNyVLiVGKwikbVTnrVFFpTptYWqiLzxjoY0ZElHR8lIgHgvndl+HAfd/
+ R+ZokjfXbtX0xlUrwbI8NWbHRTFCH3u8PLL473FU/Gr5DYhPXswDS+o+xtKofXxRXx60Dx6b/7M
+ AoRw76SZVN3bqYLtEYA==
+X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69e874f0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22
+ a=6uq8Rgr9QLxLrv8afR8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: cy9uItKEJDEWOI1-2bUh_MaU6_lYrtmU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604220062
 
-On 2026/04/20 22:53, Marc Zyngier wrote:
-> On Mon, 20 Apr 2026 13:07:15 +0100,
-> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->>
->> On 2026/04/20 18:51, Marc Zyngier wrote:
->>> On Mon, 20 Apr 2026 09:36:16 +0100,
->>> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->>>>
->>>> On 2026/04/20 2:19, Marc Zyngier wrote:
->>>>> On Sat, 18 Apr 2026 09:14:25 +0100,
->>>>> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->>>>>>
->>>>>> On a heterogeneous arm64 system, KVM's PMU emulation is based on the
->>>>>> features of a single host PMU instance. When a vCPU is migrated to a
->>>>>> pCPU with an incompatible PMU, counters such as PMCCNTR_EL0 stop
->>>>>> incrementing.
->>>>>>
->>>>>> Although this behavior is permitted by the architecture, Windows does
->>>>>> not handle it gracefully and may crash with a division-by-zero error.
->>>>>>
->>>>>> The current workaround requires VMMs to pin vCPUs to a set of pCPUs
->>>>>> that share a compatible PMU. This is difficult to implement correctly in
->>>>>> QEMU/libvirt, where pinning occurs after vCPU initialization, and it
->>>>>> also restricts the guest to a subset of available pCPUs.
->>>>>>
->>>>>> Introduce the KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY attribute to
->>>>>> create a "fixed-counters-only" PMU. When set, KVM exposes a PMU that is
->>>>>> compatible with all pCPUs but that does not support programmable
->>>>>> event counters which may have different feature sets on different PMUs.
->>>>>>
->>>>>> This allows Windows guests to run reliably on heterogeneous systems
->>>>>> without crashing, even without vCPU pinning, and enables VMMs to
->>>>>> schedule vCPUs across all available pCPUs, making full use of the host
->>>>>> hardware.
->>>>>>
->>>>>> Much like KVM_ARM_VCPU_PMU_V3_IRQ and other read-write attributes, this
->>>>>> attribute provides a getter that facilitates kernel and userspace
->>>>>> debugging/testing.
->>>>>
->>>>> OK, so that's the sales pitch. But how is it implemented? I would like
->>>>> to be able to read a high-level description of the implementation
->>>>> trade-offs.
->>>>
->>>> Implementation-wise it is very trivial. Essentially the following
->>>> addition in kvm_arm_pmu_v3_get_attr() is the entire implementation:
->>>> +	case KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY:
->>>> +		if (test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY,
->>>> &vcpu->kvm->arch.flags))
->>>> +			return 0;
->>>>
->>>> Both its functionality and code complexity is trivial. So we can argue that:
->>>> - the functionality is too trivial to be useful or
->>>> - the interface/implementation complexity is so trivial that it does not
->>>>     incur maintenance burden
->>>>
->>>> In this case the selftest uses the getter so I was more inclined to
->>>> have it, but adding one just for the selftest sounds too ad-hoc, so
->>>> here I looked into other attributes to ensure that it was not
->>>> introducing inconsistency with existing interfaces.
->>>>
->>>> As the result, I found there are other read-write attributes; in fact
->>>> there are more read-write attributes than write-only ones.
+
+
+On 19/04/26 9:40 pm, Philippe Mathieu-Daudé wrote:
+> On 19/3/26 13:59, BALATON Zoltan wrote:
+>> On Thu, 19 Mar 2026, Philippe Mathieu-Daudé wrote:
+>>> Prefer the address_space_ld/st API over the legacy ld_phys()
+>>> because it allow checking for bus access fault.
 >>>
->>> You're completely missing the point. I'm referring to the whole of the
->>> commit message, which is more of a marketing slide than a technical
->>> description.
+>>> This code however doesn't check for fault, so we simply inline
+>>> the calls (not specifying any memory transaction attribute nor
+>>> expecting transation result) per the definition in
+>>> "system/memory_ldst_phys_endian.h.inc":
+
+Nit: "include/system/memory_ldst_phys_endian.h.inc"
+
 >>
->> In terms of implementation, the obvious tradeoff is that it adds more
->> code to implement the feature. One thing to note is that
->> kvm_vcpu_load_pmu() is added and is called each time a vCPU migrates
->> across pCPUs. The heavy part, making the KVM_REQ_RELOAD_PMU request,
->> only happens when the feature is enabled.
+>> Recently when trying to remove _nomigrate memory region functions I 
+>> was told if some convenience function has more than 1 use it's 
+>> probably worth to keep it. This looks like similar case even more so 
+>> as the replacement is unnecessarily more complicated. So what's the 
+>> problem with ld_phys in the first place and why do you want to replace 
+>> it with a less convenient function? If there's a reason maybe say that 
+>> in the commit message.
 > 
-> Well, that's what I want to see. The repeated blurb about Windows
-> being broken is cover letter material, but not fir for a commit
-> message.
+> We want to remove the legacy API because it does not "allow checking
+> for bus access fault." The cases where we can safely ignore it are
+> rare, and often ignoring it led to subtle bugs.
 
-I understand. I'll leave the Windows issue the cover letter and write 
-focused patch messages after splitting patches.
+It would be nice to have an ack from BALATON or Glenn as well since rest 
+of the patches are specific to pegasos/ppc32, although no funtional 
+change intended here.
 
-> 
-> [...]
-> 
->>>>> "for the first time" gives the impression that it will work if you try
->>>>> again. I'd rather we say that "This feature is incompatible with the
->>>>> existence of a PMU event filter".
->>>>
->>>> The following sequence will work:
->>>> 1. Set KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
->>>> 2. Set KVM_ARM_VCPU_PMU_V3_FILTER
->>>> 3. Set KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
->>>>
->>>> This is to make the behavior conistent with KVM_ARM_VCPU_PMU_V3_SET_PMU.
->>>
->>> I don't think this is correct. Filtering is completely at odds with
->>> this patch, and I don't want to have to reason about the combination.
->>
->> kvm_arm_pmu_v3_set_pmu() has the following condition:
->>
->> if (kvm_vm_has_ran_once(kvm) ||
->>      (kvm->arch.pmu_filter && kvm->arch.arm_pmu != arm_pmu)) {
->> 	ret = -EBUSY;
->> 	break;
->> }
->>
->> kvm_arm_pmu_v3_set_pmu_fixed_counters_only() has the corresponding
->> condition for consistency:
->>
->> if (kvm_vm_has_ran_once(kvm) ||
->>      (kvm->arch.pmu_filter &&
->>       !test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY,
->> 	       &kvm->arch.flags)))
->> 	return -EBUSY;
->>
->> We can of course kill the PMU event filter for
->> FIXED_COUNTERS_ONLY. The filter is effectively no-op with
->> FIXED_COUNTERS_ONLY and I don't think that consistency matters much.
-> 
-> We shouldn't allow weird combinations in the UAPI. Since it makes no
-> sense to have both fixed-function *and* filters, we should make them
-> mutually exclusive.
+If we do not have any further comments from them/others, could you
+please post v2 addressing the comment in patch 2/8 reg keeping 
+declaration within !CONFIG_USER_ONLY block? It  could be moved to one of 
+the existing block as well.
 
-Then I think it makes sense to make KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS 
-mutually exclusive for consistency, but I found something weird with it.
-
-The documentation says it already "mandates that a PMU has explicitly 
-been selected via KVM_ARM_VCPU_PMU_V3_SET_PMU", but apparently that's 
-not properly implemented.
-
-kvm_arm_pmu_v3_set_nr_counters() has the following check:
-	if (!kvm->arch.arm_pmu)
-		return -EINVAL;
-
-I suspect it is intended to check if a PMU has explicitly been selected, 
-but this check is effectively no-op because kvm_arm_set_default_pmu() 
-has already set kvm->arch.arm_pmu before reaching there.
-
-Furthermore, tools/testing/selftests/kvm/arm64/vpmu_counter_access.c 
-seems to expect KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS to work without 
-selecting a PMU via KVM_ARM_VCPU_PMU_V3_SET_PMU.
-
-How should we deal with the discrepancy between the documentation and 
-the implementation/selftest?
-
-> 
-> [...]
-> 
->>>> I expect migration will be handled with the conventional register
->>>> getters and setters, but please share if you have a concern.
->>>
->>> At the very least I want to see some documentation explaining that.
->>
->> What kind of documentation do you expect?
-> 
-> A description of what counters are exposed by this feature, and what
-> architectural features they are dependent on.
-
-I'll update the attribute documentation accordingly.
-
-> 
->> If we change kvm_vcpu_load_pmu() to avoid for_each_set_bit(), there
->> would be a good chance to forget updating it when mechanically
->> updating existing for_each_set_bit() instances, so it is a candidate
->> for documentation. But I don't have a good idea where to place it
->> either.
-> 
-> The moment we introduce FEAT_PMUv3_ICNTR, the whole PMUv3 emulation
-> will catch fire anyway, as we already limit ourselves to 32 bits for
-> reset and nesting switch.
-> 
-> So this will be a major redesign anyway. If you are really worried,
-> leave a comment in there.
-
-I'll leave one line comment in the implementation corresponding to the 
-attribute documentation.
-
-Regards,
-Akihiko Odaki
+Thanks
+Harsh
