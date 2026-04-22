@@ -1,165 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5E63E6DCB;
-	Wed, 22 Apr 2026 12:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7001B3D1CD4;
+	Wed, 22 Apr 2026 12:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776861960; cv=none; b=MZZ6bKt0h4qCNOPzmJwJTpspFQt8kLOkskdA9o1hJRek6mW2X4mm3qs9gMwLMFeG6Ga7ULaBfQPBkxsiNhpK/1EmgSaWbPL0rVp4wksX3w7BL30RjLaJfcNJhSBOuVjiK5c1Q20wOxdUi4RQ6DpScD1sTRGCOUY40RgbkAxJlLY=
+	t=1776862270; cv=none; b=pP/r1smluu6CjpvihWNderk3gzuCHEocjDBgagL/3gj3mmRCfXUyzBkXpkSi8dR+d5UOeIhT6KBYqFLn1xA+iNmsWmfoUKCEQ2KJa7gIibuhN5o/JrmZBY5hodzDYMEUdtzxyEm3mXkgFnkk/oYbG424hq8HS7wsR7DLcBIj3rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776861960; c=relaxed/simple;
-	bh=AeRYKHaYb7gUgMTBBnt0z16R/9ZmP47LowXSmF6UL8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tn6Nt6oJcH0hthxhSODL+U29FpEUOgCTyqAVL3ng9jfvDi8lMSF5NyDGJO/XM7AxHoK0zHo/KF8egWCDcjvnaO1YKFJuOn8+MVV1zZOt26VE2NrL3YCh4MQqKHebuH1IZtFpO5Uq6KuGX0jlrUfOL5jFMOll7w4IIN4BCoB8Y+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lg/wVty3; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776862270; c=relaxed/simple;
+	bh=qKSk0bujugzo01qNCAajRUp//6Nfu8txmQoFRLIq9C0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GG+FidM3mRg44/vqAeEOi+/6+Uw32yDYvjbS/cTg8eHbvcLggPgqPlLZuLZMEOeb/JCFbFQ/kjnBC6lgNuxxG04DqMM1+drgyz5Nq6uLO8M8u/Cjr1oZBmwugznNfudXOXlKSCxJ2C9yqRWaWG69SsV51d3YGLoLHV9TNdNdCo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dMT6OhRz; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lg/wVty3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776861959; x=1808397959;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=AeRYKHaYb7gUgMTBBnt0z16R/9ZmP47LowXSmF6UL8g=;
-  b=lg/wVty3Eh1Z2FOqlYtzEEY8okkV7QOxwULrc2AmhHZUdodc4+omJUEW
-   Sn37hZz2WCR0sos4Tc+XgM3Cd4KLHNB6eFfpcAT4Y8eN1RBjlDR3SHVdW
-   iqArdmJM/7ekalwAg6X7r4NfzlLumbO7XiDho/POKM1vCDABmtistWT0F
-   p78cextscT8yKulIl5Y1fz4OeiKAK9tmIYfT+JJaa0QEnXQoili6DZaQy
-   BczIMJT7FdQyw0TC7VwukeFdXk+RiHPUOun477sxV3DsGYKyJHoGGii0H
-   RMzVJeI8sVHwpRnDDHYUeQol27hgG5+5riiXH6dMBvT5D3W4mh4efL2FP
-   A==;
-X-CSE-ConnectionGUID: tOT/q406Q/ahnUqmBzrs2Q==
-X-CSE-MsgGUID: 8dT2Pl8eRvyweMKMG4Hjfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="89280526"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="89280526"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 05:45:58 -0700
-X-CSE-ConnectionGUID: TMe572xdTmiKUp7BI6CKyg==
-X-CSE-MsgGUID: PtHnWHEGRZu0Ex4IMvRn/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="262737152"
-Received: from pste-spr-rvp-01.sclab.intel.com (HELO spr01.sclab.intel.com) ([10.102.60.130])
-  by orviesa002.jf.intel.com with ESMTP; 22 Apr 2026 05:45:56 -0700
-From: "Nowicki, Robert" <robert.nowicki@intel.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	seanjc@google.com,
-	vishal.l.verma@intel.com,
-	pbonzini@redhat.com,
-	robert.nowicki@intel.com,
-	Igor.Swierszcz@intel.com
-Subject: [PATCH] x86/tdx, KVM: fix HKID leak when kexec is initiated with active TDs
-Date: Wed, 22 Apr 2026 14:45:36 +0200
-Message-ID: <20260422124536.53756-1-robert.nowicki@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dMT6OhRz"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MCL4nd679439;
+	Wed, 22 Apr 2026 12:51:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=7xylnA
+	Zx5b4klSPd+E2R3d4qAXQuNUKBSaxX7mEc9yQ=; b=dMT6OhRzMa9yJL3q2fInO8
+	H5+67VEo4Vf8So0qwbLEkApwIJU9lI9Yc74jBGR5WGW0GptLSZ4pANC6MEZKD5q9
+	j+yjTS3F+hr+DUvK4OFfpxuI5ie4EbU3fIGUMq2tLmFu8Idm9XxNTwtDq9DowiK9
+	dR5ej02g8LtHr51ShJkaaGDQHhgqjWdR/v37k+u7jtx99nuQOURxK3xzkDo5GDa3
+	C5bsyWzdywg/sk3/P+nozy6ugm46QTk5/25+QVNtSCF8JId5NlOYtoaqNtpP2Mgy
+	dv4wpYfTIs1lOQM1QEDQKNQHtp4Cyizuz6qX1FG2ohKRLL9EkswELyewGUQOWDFw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu7k8gw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Apr 2026 12:51:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63MCoKEw023897;
+	Wed, 22 Apr 2026 12:51:04 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjky28pr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Apr 2026 12:51:04 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63MCp0m435586464
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Apr 2026 12:51:01 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D48D32004B;
+	Wed, 22 Apr 2026 12:51:00 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4E22C20043;
+	Wed, 22 Apr 2026 12:51:00 +0000 (GMT)
+Received: from [9.111.42.51] (unknown [9.111.42.51])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Apr 2026 12:51:00 +0000 (GMT)
+Message-ID: <b19d9db4-81f6-4aa7-981d-aebc69ab5683@linux.ibm.com>
+Date: Wed, 22 Apr 2026 14:51:00 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] KVM: s390: vsie: Refactor handle_stfle
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>,
+        linux-s390@vger.kernel.org
+Cc: David Hildenbrand <david@kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260226-vsie-alter-stfle-fac-v2-0-914974cb922c@linux.ibm.com>
+ <20260226-vsie-alter-stfle-fac-v2-3-914974cb922c@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260226-vsie-alter-stfle-fac-v2-3-914974cb922c@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JiZJez4MzRcPmpXDTIakFbc6rryvRKh4
+X-Authority-Analysis: v=2.4 cv=Ksp9H2WN c=1 sm=1 tr=0 ts=69e8c439 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=jI7lt5Zo0p4w2OnscCsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: JiZJez4MzRcPmpXDTIakFbc6rryvRKh4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDEyMyBTYWx0ZWRfX1zlR8Zun9luc
+ PTWabtS5tlF7eA2bYAVOJLL97PuW7C3uX21qJwVTdPExzSCSluGy/p0SmqcrL5ZaCmhmY3fCU43
+ apzEvCYbkjGKHNBzrLgfB0EcFAcWOKWvBWxhR6xh27GNOa/IB8EJYI/hIUGWhykNMuHjEKzh+hz
+ qzyiG7PdaIPmum7DzM3R6l5+Bghroq94Xvr9p7956pkXDErCVKSXqNZaxWNtawFqS9rgKLLVKo1
+ iwdIYAIAstLPpTTLpjZQl0iQN1oJIxDkXAv4TBDzUMa364dqgYVPCn2Gsx5FZnUDI1PTbXuGvI1
+ jdyDiHrNWbfF2q9IOeol/QLiJo1Kq3Q8kA03TAEDDsu+eUoPllQVZqf1Z3ZG2Xp64MG83hA/Dy0
+ zEuL4dw8Qy+YJu+EznbXSjJKy5nxhzhU3MxVDjjOXqdbuV89kM91q9K6ndeIvVWssU6ZzdPa5Ov
+ +Mwn58qUNAhuDOMBqKA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-22_01,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 adultscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604220123
 
-When kexec is initiated while TDs are running, vCPU threads can be
-mid-TDH.VP.ENTER on other CPUs when tdx_shutdown() fires. The TDX
-module rejects TDH.MNG.VPFLUSHDONE for a VP in RUNNING state, leaving
-the HKID in a leaked state:
+On 2/26/26 13:49, Christoph Schlameuss wrote:
+> From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> 
+> Use switch case in anticipation of handling format-1 and format-2
+> facility list designations in the future.
+> As the alternate STFLE facilities are not enabled, only case 0 is
+> possible.
+> No functional change intended.
+> 
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-  kvm_intel: tdh_mng_vpflushdone() failed. HKID 33 is leaked.
-
-Fix this by introducing a quiescing flag set at the start of
-tdx_shutdown(). KVM's tdx_vcpu_run() checks the flag and returns
-EXIT_FASTPATH_NONE before attempting TDH.VP.ENTER. After setting the
-flag, tdx_shutdown() calls on_each_cpu(tdx_seam_sync) with wait=1 to
-ensure any CPU currently inside TDH.VP.ENTER has exited SEAM before
-tdx_sys_disable() is called.
-
-Fixes: 58171ae22e11 ("x86/tdx: Disable the TDX module during kexec and kdump")
-Signed-off-by: Nowicki, Robert <robert.nowicki@intel.com>
----
- arch/x86/include/asm/tdx.h  |  2 ++
- arch/x86/kvm/vmx/tdx.c      |  3 +++
- arch/x86/virt/vmx/tdx/tdx.c | 12 ++++++++++++
- 3 files changed, 17 insertions(+)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index a0a4a15142fc..68a87bdbca9a 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -173,6 +173,7 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
- }
- 
- void tdx_sys_disable(void);
-+bool tdx_kexec_quiescing(void);
- 
- u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
- u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
-@@ -206,6 +207,7 @@ static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
- static inline void tdx_sys_disable(void) { }
-+static inline bool tdx_kexec_quiescing(void) { return false; }
- #endif	/* CONFIG_INTEL_TDX_HOST */
- 
- #endif /* !__ASSEMBLER__ */
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 50a5cfdbd33e..2d658db7700d 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1053,6 +1053,9 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 	struct vcpu_vt *vt = to_vt(vcpu);
- 
-+	if (unlikely(tdx_kexec_quiescing()))
-+		return EXIT_FASTPATH_NONE;
-+
- 	/*
- 	 * WARN if KVM wants to force an immediate exit, as the TDX module does
- 	 * not guarantee entry into the guest, i.e. it's possible for KVM to
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index aaf22a87717a..71c7e4fadda3 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -236,6 +236,16 @@ static void tdx_cpu_flush_cache(void)
- 	this_cpu_write(cache_state_incoherent, false);
- }
- 
-+
-+static atomic_t tdx_shutdown_in_progress = ATOMIC_INIT(0);
-+
-+bool tdx_kexec_quiescing(void)
-+{
-+	return atomic_read(&tdx_shutdown_in_progress);
-+}
-+EXPORT_SYMBOL_GPL(tdx_kexec_quiescing);
-+
-+static void tdx_seam_sync(void *ign) { }
- static void tdx_shutdown_cpu(void *ign)
- {
- 	/*
-@@ -252,6 +262,8 @@ static void tdx_shutdown_cpu(void *ign)
- 
- static void tdx_shutdown(void *ign)
- {
-+	atomic_set(&tdx_shutdown_in_progress, 1);
-+	on_each_cpu(tdx_seam_sync, NULL, 1);
- 	tdx_sys_disable();
- 	on_each_cpu(tdx_shutdown_cpu, NULL, 1);
- }
--- 
-2.53.0
-
----------------------------------------------------------------------
-Intel Technology Poland sp. z o.o.
-ul. Slowackiego 173 | 80-298 Gdansk | Sad Rejonowy Gdansk Polnoc | VII Wydzial Gospodarczy Krajowego Rejestru Sadowego - KRS 101882 | NIP 957-07-52-316 | Kapital zakladowy 200.000 PLN.
-Spolka oswiadcza, ze posiada status duzego przedsiebiorcy w rozumieniu ustawy z dnia 8 marca 2013 r. o przeciwdzialaniu nadmiernym opoznieniom w transakcjach handlowych.
-
-Ta wiadomosc wraz z zalacznikami jest przeznaczona dla okreslonego adresata i moze zawierac informacje poufne. W razie przypadkowego otrzymania tej wiadomosci, prosimy o powiadomienie nadawcy oraz trwale jej usuniecie; jakiekolwiek przegladanie lub rozpowszechnianie jest zabronione.
-This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
-
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
