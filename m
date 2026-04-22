@@ -1,153 +1,479 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753F440DFAC;
-	Wed, 22 Apr 2026 07:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D685B372EDE
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 07:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776843846; cv=none; b=PC5DI9HL/9l24hOxSOvrFDM/2/6uZrEgJl4V2Cg35WTHJrku5X0d/FzVO7YIvTgNvrYcebsDjmE1Y98MUHqFS/as2lzSMlzq4R/ky1dcVCZMj/Za73tWSBr+oc6mq+KKcAbCVVXjByqIVSYsvrcyrPHCTzkU/MkiTOeEiVsAoBg=
+	t=1776844020; cv=none; b=tRkssr4W0ipWMF2SFNHUTikyeMVbvR9H8uCv5CMDTs3z7S0jkkoF3lQTHexJsmck0Mh8I8CXolvuvbOPCQzzl/SoBzBNIzQgu6jm2hC3PEQp2gkUsJUdX409sKMKUIWh3lrd1652lwd5PnGR4uRgMErnBQxLfo9VcRVIt9yIe94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776843846; c=relaxed/simple;
-	bh=vWLjnWt7YlFAE9bRILiFkIEkqtF0XExovSeFfrogYw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h0+9ibzhwpFm/xKplPuVpE/BwlWlgc5s9BvVNfw53UnnBwGfHDgnLm8ssMEtoZzzrr4QQgyXWgv9RiUnNwMYr2fIMwOtN8zCTecAmKVOhdl2KsKA/GVp7vCfCNzUSE4gtRdsRGJ0Xz0dFSO3Zieuq/QDp/PuCrIrA3tFbkFcG2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtOJQCgk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776844020; c=relaxed/simple;
+	bh=5OFWeDUCx5kJbjdkW451G/yWs5cdRME7dnngq7p24SA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=erzSwKEqoxzRQjn1kpwT5FpyyIJ+kk5CtRyiG75ZqlTSR99+38DboTJ6Shj9fccuoodIHbQT5g6Cx7KV1PdMesE64CYBwsfihdti93CxzDLgx0xpkpc1qJ1u4P/LRKXN5MzJYFJNoyb+r5gjv+LkAokHlJsxmCYjI3mNUUJez48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bxeI1pOu; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtOJQCgk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C9AC19425;
-	Wed, 22 Apr 2026 07:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776843846;
-	bh=vWLjnWt7YlFAE9bRILiFkIEkqtF0XExovSeFfrogYw8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FtOJQCgkPikLqgGI3awmAu+n1qOETDl8CpqMIe462CXoOjXsqw8gr9+cVQWpR2zGd
-	 fLipr1uIKIEbW5txQLdqkrZYfGwsVxbLFRbGDziUpKe8bg8x21czlzwDX/PPypX3+C
-	 mdhyg2GiToALg5OZmaQAb33vjIjDYNO5yUDrZWQ3G7mpHZx0r/WC5100WlL/bDqbQc
-	 p8qboliNzdCWFbxNfQRb0hziRMjOvU0xFhlFMX6fVp0m0LcKgZad10aKikqCGp7jYZ
-	 kcGEjng29R2OhnTmny1bwQu5ADqslBUj+xvEWyttmeYiMTP2PJihGk26iExz5Q2pn9
-	 zJe6KEK3DuPYA==
-Message-ID: <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
-Date: Wed, 22 Apr 2026 09:44:00 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bxeI1pOu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=sV5KIoLeJ5G+Yc2lvQgNhD8OQMmSTDyTuSV8X7D/zYk=; b=bxeI1pOuhqxtS0IuWx0sj3VX7v
+	PYyC7XCKoioc6XaU3W5ZVWmKJkjuvmHEdtsloCkAXNXMrudBvUoYP8nj/5m5LWHx8krzw65hJzYGO
+	dc0dgUpRdwMtdFWBSkrri93cO6qbksomx3cgHAtHmTihPkTFXgeSMTCBQ38WjoNEKou/+X/2VBvFG
+	5r8xs2wOAPDgbXf+Z1VwnzA4Qwr11+rVFeC1QCxIkiROtIIbhQXdeN2rBfhEm0qXlMIzh/9a6/GCD
+	uVQIgABr3YBYwNcNMQto2Ip5k4ekZulI75si6QoAE5QwnajOVM7YKtwGxqlzDqCzdiYYUEw0TlDtF
+	41ziuK1Q==;
+Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wFSIK-0000000AwRc-1hdk;
+	Wed, 22 Apr 2026 07:46:49 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E80EF3008E2; Wed, 22 Apr 2026 09:46:46 +0200 (CEST)
+Date: Wed, 22 Apr 2026 09:46:46 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Jim Mattson <jmattson@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Vishal L Verma <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	Paolo Bonzini <bonzini@redhat.com>
+Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
+Message-ID: <20260422074646.GO3126523@noisy.programming.kicks-ass.net>
+References: <20260421114940.GJ3126523@noisy.programming.kicks-ass.net>
+ <87cxzsb5n0.ffs@tglx>
+ <CALMp9eTeqE4u6ioepVeowRkcNs63DYZTg8og8em12u4FsVWNfw@mail.gmail.com>
+ <878qagb20x.ffs@tglx>
+ <aefIJR_FcEeP-fcS@google.com>
+ <20260421200620.GK3126523@noisy.programming.kicks-ass.net>
+ <aefktNLiS3ur10yD@google.com>
+ <20260421210201.GM3126523@noisy.programming.kicks-ass.net>
+ <aefvVjTtx22EzMkR@google.com>
+ <20260422065542.GN3126523@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
- fault path on Linux 7.0.0-08391-g1d51b370a0f8
-To: Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>
-References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
- <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org>
- <PS1PPF7E1D7501FEA2B54606827E0DE1805AB2D2@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
- <CAPHJ_VKsVzyYzZ5ZnBkNbYLEMXDYL5x+7jfyUxhcwT1j4zPXOw@mail.gmail.com>
- <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260422065542.GN3126523@noisy.programming.kicks-ass.net>
 
-On 4/22/26 04:06, Zw Tang wrote:
-> Hi David,
+On Wed, Apr 22, 2026 at 08:55:42AM +0200, Peter Zijlstra wrote:
+> On Tue, Apr 21, 2026 at 02:42:46PM -0700, Sean Christopherson wrote:
+> > On Tue, Apr 21, 2026, Peter Zijlstra wrote:
+> > > On Tue, Apr 21, 2026 at 08:57:24PM +0000, Sean Christopherson wrote:
+> > > > This as delta? (I had typed this all up before Peter posted a new verison, so
+> > > > dammit I'm sending it!)
+> > > 
+> > > :-)
+> > > 
+> > > I'll go stare at it in the morning, I'm about to go crash out.
+> > 
+> > New delta against your effective v2, builds all of my configs (which isn't _that_
+> > many, but I think they cover most of the weirder ways to include KVM (or not)).
+> > 
+> > I'll start testing the full thing to try and get early signal on the health.
 > 
-> Thanks for pointing this out.
+> Oh, re-reading commit 28d11e4548b7, I think this wrecks NMIs. The patch
+> will also use the FRED NMI path and that's not good when running IDT.
 > 
-> You are right. The commit id I sent was incorrect. I mistakenly used the
-> git describe-style suffix g1d51b370a0f8, but the actual git commit is:
-> 
-> 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
-> 
-> The short commit id is:
-> 
-> 1d51b370a0f8
-> 
-> Sorry for the confusion.
-> 
-> I am also re-checking whether the kernel image was built from a clean tree
-> and whether there were any local modifications when the crash was reproduced,
-> so that the reported source line numbers match the exact build.
+> I'll go fix that and stick in a few more comments to clarify this magic.
 
-Okay, on that tree include/linux/memcontrol.h:381 points at
+This should probably we at least two patches, one moving the code into
+the x86 core and one adding that hrtimer fix on top. But kept as one for
+now.
 
-	lockdep_assert_once(rcu_read_lock_held() ||
-	lockdep_is_held(&cgroup_mutex));
+Irrespective of the hrtimer fix, I think the initial move into x86 core
+part is a sane move.
 
-lockdep_is_held() would not trigger a warning like that IIRC, but
+---
+Subject: x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86
 
-lockdep_assert_once() does
+Move the VMX interrupt dispatch magic into the x86 core code. This
+isolates KVM from the FRED/IDT decisions and reduces the amount of
+EXPORT_SYMBOL_FOR_KVM().
 
-	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
-
-
-So likely we are calling obj_cgroup_memcg() without the RCU read lock held?
-
-
-kvm_release_page_clean()->kvm_set_page_accessed()->mark_page_accessed()->folio_mark_accessed()->workingset_activation()
-
-... grabs the RCU lock, though, before calling
-
-	rcu_read_lock();
-	workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
-	rcu_read_unlock();
-
-
-The folio_memcg_charged() only checks folio->memcg_data.
-
-So something does not quite add up here?
-
--- 
-Cheers,
-
-David
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
+index 72cae8e0ce85..83b4762d6ecb 100644
+--- a/arch/x86/entry/Makefile
++++ b/arch/x86/entry/Makefile
+@@ -13,7 +13,7 @@ CFLAGS_REMOVE_syscall_64.o	= $(CC_FLAGS_FTRACE)
+ CFLAGS_syscall_32.o		+= -fno-stack-protector
+ CFLAGS_syscall_64.o		+= -fno-stack-protector
+ 
+-obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o
++obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o common.o
+ 
+ obj-y				+= vdso/
+ obj-y				+= vsyscall/
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+new file mode 100644
+index 000000000000..c8a9ddd3e809
+--- /dev/null
++++ b/arch/x86/entry/common.c
+@@ -0,0 +1,62 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#include <linux/entry-common.h>
++#include <linux/kvm_types.h>
++#include <linux/hrtimer_rearm.h>
++#include <asm/fred.h>
++#include <asm/desc.h>
++
++#if IS_ENABLED(CONFIG_KVM_INTEL)
++/*
++ * On VMX, NMIs and IRQs (as configured by KVM) are acknowledge by hardware as
++ * part of the VM-Exit, i.e. the event itself is consumed as part the VM-Exit.
++ * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs and IRQs
++ * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ VM-Exit is
++ * purely a signal that an NMI/IRQ is pending, i.e. the event that triggered
++ * the VM-Exit is held pending until it's unblocked in the host.
++ */
++noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int vector)
++{
++	if (event_type == EVENT_TYPE_EXTINT) {
++#ifdef CONFIG_X86_64
++		/*
++		 * Use FRED dispatch, even when running IDT. The dispatch
++		 * tables are kept in sync between FRED and IDT, and the FRED
++		 * dispatch works well with CFI.
++		 */
++		fred_entry_from_kvm(event_type, vector);
++#else
++		idt_entry_from_kvm(vector);
++#endif
++		/*
++		 * Strictly speaking, only the NMI path requires noinstr.
++		 */
++		instrumentation_begin();
++		/*
++		 * KVM/VMX will dispatch from IRQ-disabled but for a context
++		 * that will have IRQs-enabled. This confuses the entry code
++		 * and it will not have reprogrammed the timer (or do
++		 * preemption). Minimal fixup for now.
++		 */
++		hrtimer_rearm_deferred();
++		instrumentation_end();
++
++		return;
++	}
++
++	WARN_ON_ONCE(event_type != EVENT_TYPE_NMI);
++
++#ifdef CONFIG_X86_64
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		return fred_entry_from_kvm(event_type, vector);
++#endif
++
++	/*
++	 * Notably, we must use IDT dispatch for NMI when running in IDT mode.
++	 * The FRED NMI context is significantly different and will not work
++	 * right (speficially FRED fixed the NMI recursion issue).
++	 */
++	idt_entry_from_kvm(vector);
++}
++EXPORT_SYMBOL_FOR_KVM(x86_entry_from_kvm);
++#endif
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 6ba2b3adcef0..16f0a5b253e2 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -75,3 +75,49 @@ THUNK warn_thunk_thunk, __warn_thunk
+ #if defined(CONFIG_STACKPROTECTOR) && defined(CONFIG_SMP)
+ EXPORT_SYMBOL(__ref_stack_chk_guard);
+ #endif
++
++#if IS_ENABLED(CONFIG_KVM_INTEL)
++.macro IDT_DO_EVENT_IRQOFF call_insn call_target
++	/*
++	 * Unconditionally create a stack frame, getting the correct RSP on the
++	 * stack (for x86-64) would take two instructions anyways, and RBP can
++	 * be used to restore RSP to make objtool happy (see below).
++	 */
++	push %_ASM_BP
++	mov %_ASM_SP, %_ASM_BP
++
++#ifdef CONFIG_X86_64
++	/*
++	 * Align RSP to a 16-byte boundary (to emulate CPU behavior) before
++	 * creating the synthetic interrupt stack frame for the IRQ/NMI.
++	 */
++	and  $-16, %rsp
++	push $__KERNEL_DS
++	push %rbp
++#endif
++	pushf
++	push $__KERNEL_CS
++	\call_insn \call_target
++
++	/*
++	 * "Restore" RSP from RBP, even though IRET has already unwound RSP to
++	 * the correct value.  objtool doesn't know the callee will IRET and,
++	 * without the explicit restore, thinks the stack is getting walloped.
++	 * Using an unwind hint is problematic due to x86-64's dynamic alignment.
++	 */
++	leave
++	RET
++.endm
++
++.pushsection .text, "ax"
++SYM_FUNC_START(idt_do_interrupt_irqoff)
++	IDT_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
++SYM_FUNC_END(idt_do_interrupt_irqoff)
++.popsection
++
++.pushsection .noinstr.text, "ax"
++SYM_FUNC_START(idt_do_nmi_irqoff)
++	IDT_DO_EVENT_IRQOFF call asm_exc_nmi
++SYM_FUNC_END(idt_do_nmi_irqoff)
++.popsection
++#endif
+diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
+index 894f7f16eb80..0d2768ab836c 100644
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -147,5 +147,4 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+ 	RET
+ 
+ SYM_FUNC_END(asm_fred_entry_from_kvm)
+-EXPORT_SYMBOL_FOR_KVM(asm_fred_entry_from_kvm);
+ #endif
+diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
+index ec95fe44fa3a..f44d6a606b4c 100644
+--- a/arch/x86/include/asm/desc.h
++++ b/arch/x86/include/asm/desc.h
+@@ -438,6 +438,10 @@ extern void idt_setup_traps(void);
+ extern void idt_setup_apic_and_irq_gates(void);
+ extern bool idt_is_f00f_address(unsigned long address);
+ 
++extern void idt_do_interrupt_irqoff(unsigned int vector);
++extern void idt_do_nmi_irqoff(void);
++extern void idt_entry_from_kvm(unsigned int vector);
++
+ #ifdef CONFIG_X86_64
+ extern void idt_setup_early_pf(void);
+ #else
+diff --git a/arch/x86/include/asm/desc_defs.h b/arch/x86/include/asm/desc_defs.h
+index 7e6b9314758a..2f2ce8aadf07 100644
+--- a/arch/x86/include/asm/desc_defs.h
++++ b/arch/x86/include/asm/desc_defs.h
+@@ -145,7 +145,7 @@ struct gate_struct {
+ typedef struct gate_struct gate_desc;
+ 
+ #ifndef _SETUP
+-static inline unsigned long gate_offset(const gate_desc *g)
++static __always_inline unsigned long gate_offset(const gate_desc *g)
+ {
+ #ifdef CONFIG_X86_64
+ 	return g->offset_low | ((unsigned long)g->offset_middle << 16) |
+diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+index 7535131c711b..eca24b5e07f4 100644
+--- a/arch/x86/include/asm/entry-common.h
++++ b/arch/x86/include/asm/entry-common.h
+@@ -97,4 +97,6 @@ static __always_inline void arch_exit_to_user_mode(void)
+ }
+ #define arch_exit_to_user_mode arch_exit_to_user_mode
+ 
++extern void x86_entry_from_kvm(unsigned int entry_type, unsigned int vector);
++
+ #endif
+diff --git a/arch/x86/include/asm/fred.h b/arch/x86/include/asm/fred.h
+index 2bb65677c079..18a2f811c358 100644
+--- a/arch/x86/include/asm/fred.h
++++ b/arch/x86/include/asm/fred.h
+@@ -110,7 +110,6 @@ static __always_inline unsigned long fred_event_data(struct pt_regs *regs) { ret
+ static inline void cpu_init_fred_exceptions(void) { }
+ static inline void cpu_init_fred_rsps(void) { }
+ static inline void fred_complete_exception_setup(void) { }
+-static inline void fred_entry_from_kvm(unsigned int type, unsigned int vector) { }
+ static inline void fred_sync_rsp0(unsigned long rsp0) { }
+ static inline void fred_update_rsp0(void) { }
+ #endif /* CONFIG_X86_FRED */
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 42bf6a58ec36..db4072875f5f 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -633,17 +633,6 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_MC,	xenpv_exc_machine_check);
+ #endif
+ 
+ /* NMI */
+-
+-#if IS_ENABLED(CONFIG_KVM_INTEL)
+-/*
+- * Special entry point for VMX which invokes this on the kernel stack, even for
+- * 64-bit, i.e. without using an IST.  asm_exc_nmi() requires an IST to work
+- * correctly vs. the NMI 'executing' marker.  Used for 32-bit kernels as well
+- * to avoid more ifdeffery.
+- */
+-DECLARE_IDTENTRY(X86_TRAP_NMI,		exc_nmi_kvm_vmx);
+-#endif
+-
+ DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
+ #ifdef CONFIG_XEN_PV
+ DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 260456588756..0e8fb61f63ff 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -268,6 +268,19 @@ void __init idt_setup_early_pf(void)
+ }
+ #endif
+ 
++noinstr void idt_entry_from_kvm(unsigned int vector)
++{
++	if (vector == NMI_VECTOR)
++		return idt_do_nmi_irqoff();
++
++	/*
++	 * Only the NMI path requires noinstr.
++	 */
++	instrumentation_begin();
++	idt_do_interrupt_irqoff(gate_offset(idt_table + vector));
++	instrumentation_end();
++}
++
+ static void __init idt_map_in_cea(void)
+ {
+ 	/*
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 3d239ed12744..06fe225fb0a2 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -609,14 +609,6 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
+ 		goto nmi_restart;
+ }
+ 
+-#if IS_ENABLED(CONFIG_KVM_INTEL)
+-DEFINE_IDTENTRY_RAW(exc_nmi_kvm_vmx)
+-{
+-	exc_nmi(regs);
+-}
+-EXPORT_SYMBOL_FOR_KVM(asm_exc_nmi_kvm_vmx);
+-#endif
+-
+ #ifdef CONFIG_NMI_CHECK_CPU
+ 
+ static char *nmi_check_stall_msg[] = {
+diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
+index 8a481dae9cae..ff1f254a0ef4 100644
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -31,38 +31,6 @@
+ #define VCPU_R15	__VCPU_REGS_R15 * WORD_SIZE
+ #endif
+ 
+-.macro VMX_DO_EVENT_IRQOFF call_insn call_target
+-	/*
+-	 * Unconditionally create a stack frame, getting the correct RSP on the
+-	 * stack (for x86-64) would take two instructions anyways, and RBP can
+-	 * be used to restore RSP to make objtool happy (see below).
+-	 */
+-	push %_ASM_BP
+-	mov %_ASM_SP, %_ASM_BP
+-
+-#ifdef CONFIG_X86_64
+-	/*
+-	 * Align RSP to a 16-byte boundary (to emulate CPU behavior) before
+-	 * creating the synthetic interrupt stack frame for the IRQ/NMI.
+-	 */
+-	and  $-16, %rsp
+-	push $__KERNEL_DS
+-	push %rbp
+-#endif
+-	pushf
+-	push $__KERNEL_CS
+-	\call_insn \call_target
+-
+-	/*
+-	 * "Restore" RSP from RBP, even though IRET has already unwound RSP to
+-	 * the correct value.  objtool doesn't know the callee will IRET and,
+-	 * without the explicit restore, thinks the stack is getting walloped.
+-	 * Using an unwind hint is problematic due to x86-64's dynamic alignment.
+-	 */
+-	leave
+-	RET
+-.endm
+-
+ .section .noinstr.text, "ax"
+ 
+ /**
+@@ -320,10 +288,6 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
+ 
+ SYM_FUNC_END(__vmx_vcpu_run)
+ 
+-SYM_FUNC_START(vmx_do_nmi_irqoff)
+-	VMX_DO_EVENT_IRQOFF call asm_exc_nmi_kvm_vmx
+-SYM_FUNC_END(vmx_do_nmi_irqoff)
+-
+ #ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ 
+ /**
+@@ -375,13 +339,3 @@ SYM_FUNC_START(vmread_error_trampoline)
+ 	RET
+ SYM_FUNC_END(vmread_error_trampoline)
+ #endif
+-
+-.section .text, "ax"
+-
+-#ifndef CONFIG_X86_FRED
+-
+-SYM_FUNC_START(vmx_do_interrupt_irqoff)
+-	VMX_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
+-SYM_FUNC_END(vmx_do_interrupt_irqoff)
+-
+-#endif
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index a29896a9ef14..753f0dbb9cf8 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7083,9 +7083,6 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
+ 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
+ }
+ 
+-void vmx_do_interrupt_irqoff(unsigned long entry);
+-void vmx_do_nmi_irqoff(void);
+-
+ static void handle_nm_fault_irqoff(struct kvm_vcpu *vcpu)
+ {
+ 	/*
+@@ -7127,17 +7124,9 @@ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
+ 	    "unexpected VM-Exit interrupt info: 0x%x", intr_info))
+ 		return;
+ 
+-	/*
+-	 * Invoke the kernel's IRQ handler for the vector.  Use the FRED path
+-	 * when it's available even if FRED isn't fully enabled, e.g. even if
+-	 * FRED isn't supported in hardware, in order to avoid the indirect
+-	 * CALL in the non-FRED path.
+-	 */
++	/* For the IRQ to the core kernel for processing. */
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+-	if (IS_ENABLED(CONFIG_X86_FRED))
+-		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+-	else
+-		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
++	x86_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+ 	kvm_after_interrupt(vcpu);
+ 
+ 	vcpu->arch.at_instruction_boundary = true;
+@@ -7447,10 +7436,7 @@ noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu)
+ 		return;
+ 
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+-	if (cpu_feature_enabled(X86_FEATURE_FRED))
+-		fred_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+-	else
+-		vmx_do_nmi_irqoff();
++	x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+ 	kvm_after_interrupt(vcpu);
+ }
+ 
