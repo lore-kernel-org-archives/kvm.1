@@ -1,149 +1,143 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339B539184C;
-	Wed, 22 Apr 2026 17:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30A219D08F;
+	Wed, 22 Apr 2026 18:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776880212; cv=none; b=oH83rWXkD44/vhyd40CWQjigENseJD7PJbfhofPu4uIu9wzqZU9dVy4uLSDFPnhGRHk+Vc0HG2faDqYhy10m6TjsLhythhhqOJd8x4L+U2k/6hBmK1hrBcfqQiX9UBGx3f7kIzSbbzwFEmwHiGwf5Dgp0n4MJ4SM+4KyiB8WvhI=
+	t=1776882460; cv=none; b=JSPTmDX8RVLunIgpX9hn1e6/V5qtpgLmYDk4rVFPhAu+mdGWMbyATf+jI5FECNw7OE4+KI8ifPbqCXtlpj3Ht4lLciKHuR8VCOT9VB4cYtWoL8y0XohcDZCf7djRYby6ZjTUxp6hw/dPEYYx+iAa0OcbtJdTBZ22Uctd2kiZclY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776880212; c=relaxed/simple;
-	bh=b9XRXh5k9/zsttfo5zzzCoU+uzUIP41798k0kJAQECo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHLUkWIaN0C608UhXng6U3/mupuYtY01RmR7i73uIzvdom6oSSR4kDjjuTE1q/RLMzx8vPl2NJ4fWBePsL8DAcyPvaxdSusowmZrZui9LsHu5clSRyFMgx4j0X5QneKIIHqdsL/OQurfKPYmEGYCykguNWxGFAUyE1qGuOfa+/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=OAwei166; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1776882460; c=relaxed/simple;
+	bh=33nEStdYJu2p7JAJnFtCQC+AQD0fSDhILvplFUmzfpg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jt3rSqWVepsfwVmT1Rlk96qfCZL0vWOsrG3zf/jEmAaFzJGZYbobe45YUGt0GlxnzNqR3tHdZyv5oH1LHZR0Mee9FqqG5Leu9SHpxS5c4AkTmjmzZZM4+BWNbIH9NV6KC6nHJBHYP3yIoDIsTedBk5ZMFHc5tCZEeDB5uC8TpOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrd+KDpJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="OAwei166"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=t1I9cTfl5nUY0ImgwPNBuZFoTfUYggsb+7YdOc9cqtU=; b=OAwei166U6SF
-	HKsuCOpLVDEYnDuJ4+yssEac7TW0fDbAD3aK5SxwUSryyE/agChyjVMvp8Bsmq0Au0OHZD9AFKsW8
-	bSsKpiYwTeMUSQVSmrCvkua14qP4Fv9EwxCXw6b8yIK4LnSwGmINoCjIYtXiJ6e2mYIQFD+8oVyAd
-	5ghLnCwIdj3iBtw7ibwavQNu3DlgW88NxGQBXHgkYIEKwAKWE5baSwCYcR/sDZ+lysF8loyA8BynR
-	02i6t9nt5/UxuekrcALyTVBBMfpLxUsbN12Ch4NvJgktPJoKd8FAqW265H1Aq4/HAbXA+K6X/ZbXw
-	WnVrDbOokUMXbJsfv3YpkA==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.vzint.dev)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1wFbfQ-004KQw-1s;
-	Wed, 22 Apr 2026 19:50:00 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Subject: [RFC PATCH 1/1] KVM: VMX: restore host CR2 after VM exit
-Date: Wed, 22 Apr 2026 19:50:00 +0200
-Message-ID: <20260422175000.1544258-2-khorenko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260422175000.1544258-1-khorenko@virtuozzo.com>
-References: <20260422175000.1544258-1-khorenko@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrd+KDpJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C15AC2BCB4;
+	Wed, 22 Apr 2026 18:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776882460;
+	bh=33nEStdYJu2p7JAJnFtCQC+AQD0fSDhILvplFUmzfpg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rrd+KDpJxkq6drKUWtNHeio/xx3jrIcl5z+Njs3jkOaybiD48Fw0SCODunG/GvCuc
+	 X7nEnyGn+38O7E8QEUkmrnWvV8uQ4SXEohfH5yTWYuXa1a0jRsoJWZHY6GYKw+Yz0s
+	 38lEcTergBhV1ExWix5sElq9LaRjVoJr8DeSRZY2SARVPmIuVHvE58v383U6W8aLaE
+	 K/DiLI3eirYS4oaDHNr6gh177X7BJTNFYGghsoktYk+BPFkI3iVtE9RIcB1drM61ek
+	 MolaToXCfBakcgXmk9aBrMIsyAE1DLryexYkGznzEmX0tsQj4HZcizbE2glrf2qkU+
+	 bcKZ2DZvEh0pw==
+Message-ID: <290e59cb-920e-483f-aba3-6c4bed5bd291@kernel.org>
+Date: Wed, 22 Apr 2026 20:27:32 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
+ memory
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+ <ad50rPOseVa-SP_s@thinkstation> <aeDoqFWPFxkkNB26@thinkstation>
+ <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
+ <aeFCuLJXT8VOkzH7@thinkstation>
+ <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
+ <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
+ <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation> <aeiUGtFgmYB9M18L@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aeiUGtFgmYB9M18L@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Intel VMX, CR2 is not part of the VMCS guest/host state area.  The
-CPU does not save or restore it automatically across VM transitions,
-so KVM manages it in software: before VM entry it writes vcpu->arch.cr2
-into the hardware register if it differs from the current value, and
-after VM exit it reads the hardware register back into vcpu->arch.cr2.
+On 4/22/26 11:27, Kiryl Shutsemau wrote:
+> On Tue, Apr 21, 2026 at 03:33:27PM +0100, Kiryl Shutsemau wrote:
+>>> 3) Some other stuff needs a second thought, like
+>>>
+>>> diff --git a/mm/gup.c b/mm/gup.c
+>>> index 8e7dc2c6ee738..08fc18f1290d4 100644
+>>> --- a/mm/gup.c
+>>> +++ b/mm/gup.c
+>>> @@ -695,7 +695,8 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
+>>>  	/* ... and a write-fault isn't required for other reasons. */
+>>>  	if (pmd_needs_soft_dirty_wp(vma, pmd))
+>>>  		return false;
+>>> -	return !userfaultfd_huge_pmd_wp(vma, pmd);
+>>> +	return !userfaultfd_huge_pmd_wp(vma, pmd) &&
+>>> +	       !userfaultfd_huge_pmd_rwp(vma, pmd);
+>>>  }
+>>>
+>>> How can a pte be writable and prot_none at the same time? Maybe just confused AI
+>>> output that you should carefully double check before sending that out officially.
+>>
+>> Note that this path is for !pmd_write() case to begin with. It serves
+>> FOLL_FORCE case. I believe this check is correct: we don't want to allow
+>> to write to such pages even with FOLL_FORCE.
+>>
+>> But looking around, I missed gup_can_follow_protnone() modification. It
+>> has to return false for RWP.
+> 
+> With gup_can_follow_protnone() fixed, the checks in
+> can_follow_write_pmd/pte() are redundant. Will drop them.
 
-The host CR2 is intentionally left clobbered by the guest after VM
-exit, as an optimization: the expectation is that the next host page
-fault will overwrite it before anything else looks at it.
+Yes, that sounds better.
 
-That expectation is fragile.  The rest of the kernel treats CR2 as an
-invariant.
- -  exc_page_fault() reads it at the very start of #PF handling, before
-    any instruction could have updated it.
- -  __show_regs() reads and prints it from die()/oops/crash paths.
-
-Any flow that reaches a #PF handler, or that reads CR2 in an oops or
-crash context, without the CPU having just taken a real host #PF, will
-observe the guest's CR2 instead of the host's.
-
-On nested setups the stale guest CR2 left in the hardware register
-has the form of a kernel virtual address in the inner guest's address
-space, which overlaps 1:1 with the outer-guest kernel layout.  That
-makes the stale value visually indistinguishable from a plausible
-outer-guest fault address, which can lead to confusing oops reports
-whose CR2 has no relation to the reported faulting RIP.
-
-Fix: save the host CR2 before VM entry into a local variable.  After
-VM exit, compare the already-read vcpu->arch.cr2 against the saved
-host value, and write the host CR2 back if the guest modified it.
-In the common case where the guest did not touch CR2 this is a single
-register compare with no write; the restore is placed under unlikely()
-because most VM-entry/exit cycles do not involve a guest CR2 write.
-The change stays within the existing noinstr region;
-native_read_cr2()/native_write_cr2() are plain inline asm with no
-instrumentation.
-
-This brings VMX in line with the CR2 invariant the rest of the kernel
-already relies on.
-
-AMD SVM is not affected.  On SVM, CR2 is part of the VMCB save area
-and the CPU saves and restores host and guest CR2 automatically on
-VMRUN and #VMEXIT.  KVM's SVM code only accesses svm->vmcb->save.cr2
-and never touches the hardware CR2 register.
-
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
- arch/x86/kvm/vmx/vmx.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a29896a9ef145..dd441b90dfd4a 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7458,6 +7458,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 					unsigned int flags)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	unsigned long host_cr2;
- 
- 	guest_state_enter_irqoff();
- 
-@@ -7465,13 +7466,25 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 
- 	vmx_disable_fb_clear(vmx);
- 
--	if (vcpu->arch.cr2 != native_read_cr2())
-+	host_cr2 = native_read_cr2();
-+	if (vcpu->arch.cr2 != host_cr2)
- 		native_write_cr2(vcpu->arch.cr2);
- 
- 	vmx->fail = __vmx_vcpu_run(vmx, (unsigned long *)&vcpu->arch.regs,
- 				   flags);
- 
- 	vcpu->arch.cr2 = native_read_cr2();
-+
-+	/*
-+	 * Restore host CR2 if the guest modified it.  The rest of the
-+	 * kernel relies on CR2 holding the address of the last host
-+	 * #PF; leaving the guest value there can mislead any code path
-+	 * that reads CR2 without the CPU having just taken a real host
-+	 * #PF (exc_page_fault(), __show_regs() from oops/crash paths,
-+	 * NMI/MCE report, nested-virt corner cases, etc.).
-+	 */
-+	if (unlikely(vcpu->arch.cr2 != host_cr2))
-+		native_write_cr2(host_cr2);
- 	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
- 
- 	vmx->idt_vectoring_info = 0;
 -- 
-2.43.0
+Cheers,
 
+David
