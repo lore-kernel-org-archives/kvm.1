@@ -1,65 +1,66 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C495B3CCFAC
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846253CD8AE
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776853056; cv=none; b=uU8TNv6+Qc6kv3WYe0ucvfw0285fASQgiHP5x02jpcNrF26FD8ulcwK27lJNVDgSla0nZTRIBXs7ThDP/Gb5i7ypae1nRapzcSaqctAqXbbkp7/y/3XnO26JvV6WMI20mxD2jLRwTbOec/7wS7M+plr9gP8+Yg8UfUnxL/jgV7w=
+	t=1776853059; cv=none; b=MPQ1H3nSCk6K1lAmKR2Ke+ERyQ8QX67+o6mWgdZVXjh+9K7WYNhLYF85Z2yoEih5nn8cAUANg/KZkxxGj4vnGnJeUxc1kGJS3/d/dvC/fW8oJIcMSkV0tdZRJ7bJbM2q8p2m5StKMJQZGqHHyfpeVlq6Wz0L0wgpnG3rfUcg19Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776853056; c=relaxed/simple;
-	bh=mTHqKZdyVGIZLMhFJ87JytFjQaPWNezBghnsDlTRqW8=;
+	s=arc-20240116; t=1776853059; c=relaxed/simple;
+	bh=at7f5AKTH91oYlNvw3aVXQ96KLv8B399FbxI2NTz3tY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QC3x8/HwixhaY9QIYJ48UpZzTadsUaJ47NivAtByvUU6ta7fRuhu1wIoCzQfwoEnCS5qHv3hAJjXqQkBxilWOoaz2PLaQY9VUhKPP5KovgL4GkC8IEY5B8UdKcKMzLDGH40NDMrr3xhb+LLzopuUxUavIyqEiehGvJQkw0srep0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bVLRTQDA; arc=none smtp.client-ip=209.85.221.51
+	 MIME-Version:Content-Type; b=R3tgQsJ2KskCkkfxBX/TzCc7bkfllLBQ7dbMYbIqvErgTtxwWwMxy7X6GhP2XhzECWqM1fkJZGRPFJJAvXU4q1sJov2sLLgOlsLaeIQZT2IVicasF/4vKPc0+3tRq8CUT97h4qFWGNgUgKRqY0WjTGQzXajmBkk28RRBJrf/Dx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=E9037WL/; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bVLRTQDA"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4411e1eba51so1933084f8f.3
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:17:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E9037WL/"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891cd41959so33540925e9.3
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:17:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776853053; x=1777457853; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776853054; x=1777457854; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1esNeOF5ufpO0cAxHdsE5rjzSjC5Q+4Ajm02teJ1954=;
-        b=bVLRTQDA9vwmuWulzM02geBABSfkwx7nfeepqnQSxC+tPgoGhn1aJOal72+c+mwzcE
-         lujIvzHits00nHP5RPBf4bQLUhi3tgUGub5094mf8da0MJK17qi3dxLFWCShvMqeAxzx
-         KuGImWpAebVh4J2MvSpJX9kNKlhwCXIWg6cspRjjLPAxMARB7WtvL0vdtN2I0fIntpE3
-         otbIfs8EK+n2I0qyrw5WhzM/KP6kuQpxh9cutmWlay8drN+VF3CNLK93DkujEnynSFRT
-         pi1bCHmuag0yt3JSMUol9TUs1M+e2XusSJnt2ze02xodbrNwNBY2QLUsSNXQ9p+uOp6l
-         zMRw==
+        bh=yq/bGIVh38nrtfwG2BReGAMOSU3dNrWCtccK7bpObt0=;
+        b=E9037WL/w4YEGOCiQNNKYcTQJg3jSbJG027Ze1xIQOTVk54VtttMwURGjSIVNWVSbv
+         HttEmsQQfsZcMZQG6a6dEAVKYbVSPG1hRA0cGCf29au/rD+Rjkq2y4fPnsKiFkpoA7mo
+         qmASbGkFjQEBLEuGWvw9ZrGdPkTCuvZlb9ikuBZAvJG5Nh1Ol9Wjlrb6I+UOGsfY2bYi
+         8F5NUhdjs/cjRoHD1JGBHjG6jo1gqgBc0ZPnDqL2XqCnl78VnS+zEkcHfIqTQLcKnPuK
+         5WG4miXBsyh4tlCUEFfHPhEM7y43iY8Ha06nXSgMIpDCzo0Lta9tQc6te9sIRnrb+Z2I
+         C/xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776853053; x=1777457853;
+        d=1e100.net; s=20251104; t=1776853054; x=1777457854;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1esNeOF5ufpO0cAxHdsE5rjzSjC5Q+4Ajm02teJ1954=;
-        b=gtrKjsHs7yf2U1Em7e98/oNLp+fcucrWGcO01jpXo051Xft1PriCdWR1T1xmiGoQPI
-         vzQFRb+9LO6KLcMl6vAL+8h1/oS2V+Os+d8H3NIQJZnUHgD5VgGEgMXmdvyh+u63fhUa
-         TD2h4+7LQ/rzgOE35mKj/hegaP5ufcpeqfeyclZa07jMLwbGrk/xKWMPy9W4NymwVRga
-         mDH9XPVMcVzpWwjV9ttfrtIHUV8/X9U6DfhptGyqal+oNJbs62pDmq9J8rBx/2eDfI+3
-         O4U+EJE1LEK6/wNBKHs3nuCKKGWIkZ058Y2uLAU06ZLhcDVOda6w62efjMhqqAO2x0PA
-         d22Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+QabhM8rClXeBVr2mvKSHg3OwIDCvTaPNUW8goTHcDhDSKSoVsfw8yc3Q/+kNy59f1gYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHlD1nkh2+mE5WYD/LYmhQHIVSSYGcBPciWNhQ6dP7FBSgPM2R
-	yNlaPIbMaBwSc1cpzEw2p23YSMDmva1pXs7ziVgAk9NWnvwUcMpjaTF2LTkR2Yvk//k=
-X-Gm-Gg: AeBDiev0YiOLSPPzvGaRI5rPrHKWyOtnlTSZw+OoCUzC8vFwM4x1LWaGg5x77AilKEt
-	jayx302uR51HF1XqsWCpjJhtrdiriQfNms8xgKDvrEUjOGjitBEFVwmuugTQyuK2aJxzJBMi7Vh
-	Ia+OBvin0lIWG0CcpDYaXry234af2+sdleFLKW2Nfa0HgEmSzrnZ6CNkMsvMCAf1MbniukCO3Jv
-	dMz8oBvVioCFwMRwO36ZaJRfe274ICSkpSEANTNi8EQ7rG1bd0VVC2S0Dc0IO3IbShBJJJfxz1R
-	L75qWhE7EBZ5ZAhzZaGPsqefWJNxCKEKIK8mBABnO9/LcggjHmmtvYg2O6uzxjzc80/8poHzKOi
-	QKBbsH8jZbID4f2+icHulPiDiz5ZOEJskpy3/xlpshYto5oo9Wg/oNLWplpuNZqXYkTPdRAz7sa
-	DwE7FA59zgKzmjyqz/5WbWCPDvSIfGf32Lsw==
-X-Received: by 2002:a5d:5f43:0:b0:43c:fde6:212d with SMTP id ffacd0b85a97d-43fe3e13d46mr34364660f8f.33.1776853053246;
+        bh=yq/bGIVh38nrtfwG2BReGAMOSU3dNrWCtccK7bpObt0=;
+        b=fueJ3pn8uz0Xcs0fG+HlVJZy+mVGzU5mIKBecoq3ihBAjDVsrNV4RhQiUo18nJRqCQ
+         hBXe2ixQewgQYQYifBvOSUTVMLrOzDs4217BVhiWHk/Cjx31rKlct1HDFypzq+ZbWaha
+         bst7G2L+l8/eqCLJ4HQn0WYPjw00UebcFdSdkMl614dI5/Np2MhnxZal0wpNTPJueKTe
+         Ba9YKq31hEmD1GFYueNDU0//fGomChcEuvQLZULbtleOhjPDgc6pUEGmp8GsPTEEnUHX
+         LiP0fNUZwhixlOYnUUa/RsLtg+PvPtFdUJ31sd1hmT0dmy1G7vVnED/aUqlTGGiuXlcN
+         8fjw==
+X-Forwarded-Encrypted: i=1; AFNElJ8o1N3b77C4c08yZgaAWdKJnfphMy67uMIoSXgPQSrQ/gnLfQuTAuvwUA0m7iaIFef8bQ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxon4Y6us1zN0f4essng7BiY+fFgT0Fqkev/cv2r5G80LaLHZDN
+	YzGts0WU4o81Kx7QTGMZ+A+hOD/aN+u4pzjj3a10Id+/t6CZnGcVutbajnNMaYcK4JT+pr5CPeH
+	edkLlJmM=
+X-Gm-Gg: AeBDietnbf+sWWnp9TEyk1Xg/fUbjmZVRrPwaVZ7dbU8l0ub+1l0cL8iX8dkwpGDNz3
+	9xmvJe5FVLLCZgwrIgD3TGdEkJQzTMPmg3SVwWLEwEA6w47ePXhRlZxsoSJUvi5wx3jj3UsRj/e
+	2JsHJsbteWOkdJwuBSL7+clOauhV7HcjtMR56JCY6yUGeK+4uRD64E+9hcardGnqK0pgd4OaWex
+	xlVZ22rw54WYTlRpvvUCAgFHjl948xgbOKA17OhPzcfZ1q3bgUNgHHNHt2IBQBQ/oDt+DtLG6bw
+	1Qt4KqveEirggaJQz5DkUKMahI4LKmc7asrkS+4rislc8yV9pJZ6ZzTP+7uMzWVWxq9jM7XlFmJ
+	4EGrN39isl1xiVyOYXld05CYXPztQzFSlF09o+Ee9qJLr6SQBGxsM6d0rBxFx3JrwC99iR6ZEWs
+	jIvrkhrNLQcaScaH0CppW0emA4P+4boyoltA==
+X-Received: by 2002:a05:600c:c0d5:b0:488:c683:be89 with SMTP id 5b1f17b1804b1-488fb74dffemr240575745e9.9.1776853053932;
         Wed, 22 Apr 2026 03:17:33 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4d5b1sm48556243f8f.30.2026.04.22.03.17.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a55dc9f58sm266237205e9.6.2026.04.22.03.17.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 03:17:28 -0700 (PDT)
+        Wed, 22 Apr 2026 03:17:33 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id D6D1F611AD;
+	by draig.lan (Postfix) with ESMTP id E967F611CD;
 	Wed, 22 Apr 2026 11:10:44 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +73,9 @@ Cc: Alexander Graf <agraf@csgraf.de>,
 	Pedro Barbuda <pbarbuda@microsoft.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 18/31] target/arm: make whpx use syndrome helpers for decode
-Date: Wed, 22 Apr 2026 11:10:29 +0100
-Message-ID: <20260422101043.1234229-19-alex.bennee@linaro.org>
+Subject: [PATCH v2 19/31] target/arm: make hvf use syndrome helpers for decode
+Date: Wed, 22 Apr 2026 11:10:30 +0100
+Message-ID: <20260422101043.1234229-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422101043.1234229-1-alex.bennee@linaro.org>
 References: <20260422101043.1234229-1-alex.bennee@linaro.org>
@@ -88,42 +89,40 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 Rather than open coding a bunch of shifts and masks we can use the
-syndrome definitions. While we are at it assert it really is a
-EC_DATAABORT.
+syndrome definitions.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/whpx/whpx-all.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ target/arm/hvf/hvf.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/whpx/whpx-all.c b/target/arm/whpx/whpx-all.c
-index bbf0f6be961..4cfc7f99698 100644
---- a/target/arm/whpx/whpx-all.c
-+++ b/target/arm/whpx/whpx-all.c
-@@ -356,15 +356,16 @@ static int whpx_handle_mmio(CPUState *cpu, WHV_MEMORY_ACCESS_CONTEXT *ctx)
- {
-     uint64_t syndrome = ctx->Syndrome;
- 
--    bool isv = syndrome & ARM_EL_ISV;
--    bool iswrite = (syndrome >> 6) & 1;
--    bool sse = (syndrome >> 21) & 1;
--    uint32_t sas = (syndrome >> 22) & 3;
-+    bool isv = FIELD_EX32(syndrome, DABORT_ISS, ISV);
-+    bool iswrite = FIELD_EX32(syndrome, DABORT_ISS, WNR);
-+    bool sse = FIELD_EX32(syndrome, DABORT_ISS, SSE);
-+    uint32_t sas = FIELD_EX32(syndrome, DABORT_ISS, SAS);
-     uint32_t len = 1 << sas;
--    uint32_t srt = (syndrome >> 16) & 0x1f;
--    uint32_t cm = (syndrome >> 8) & 0x1;
-+    uint32_t srt = FIELD_EX32(syndrome, DABORT_ISS, SRT);
-+    uint32_t cm = FIELD_EX32(syndrome, DABORT_ISS, CM);
-     uint64_t val = 0;
- 
-+    assert(syn_get_ec(syndrome) == EC_DATAABORT);
-     assert(!cm);
-     assert(isv);
- 
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 5fc8f6bbbd9..1c1c31f0b15 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -2123,14 +2123,14 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
+         break;
+     }
+     case EC_DATAABORT: {
+-        bool isv = syndrome & ARM_EL_ISV;
+-        bool iswrite = (syndrome >> 6) & 1;
+-        bool s1ptw = (syndrome >> 7) & 1;
+-        bool sse = (syndrome >> 21) & 1;
+-        uint32_t sas = (syndrome >> 22) & 3;
++        bool isv = FIELD_EX32(syndrome, DABORT_ISS, ISV);
++        bool iswrite = FIELD_EX32(syndrome, DABORT_ISS, WNR);
++        bool s1ptw = FIELD_EX32(syndrome, DABORT_ISS, S1PTW);
++        bool sse = FIELD_EX32(syndrome, DABORT_ISS, SSE);
++        uint32_t sas = FIELD_EX32(syndrome, DABORT_ISS, SAS);
+         uint32_t len = 1 << sas;
+-        uint32_t srt = (syndrome >> 16) & 0x1f;
+-        uint32_t cm = (syndrome >> 8) & 0x1;
++        uint32_t srt = FIELD_EX32(syndrome, DABORT_ISS, SRT);
++        uint32_t cm = FIELD_EX32(syndrome, DABORT_ISS, CM);
+         uint64_t val = 0;
+         uint64_t ipa = excp->physical_address;
+         AddressSpace *as = cpu_get_address_space(cpu, ARMASIdx_NS);
 -- 
 2.47.3
 
