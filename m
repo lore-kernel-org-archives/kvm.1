@@ -1,33 +1,34 @@
 Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DC1391835;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339B539184C;
 	Wed, 22 Apr 2026 17:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776880211; cv=none; b=ErRb3GFVR8ffgzdzcBAsWRpF8LLhEByPpFOfqv3kEyIGnkRJk3xm2X7h6v+jIWMk72AQ5f/hgUljGnk8wKhCwqNyofkxNlMYGRZYWAz3DvvNcDW3j94EebXPzEurJuSOgDmedKwP9ukysl9XWFjk080iID98+PTkx+C+HIqkxbM=
+	t=1776880212; cv=none; b=oH83rWXkD44/vhyd40CWQjigENseJD7PJbfhofPu4uIu9wzqZU9dVy4uLSDFPnhGRHk+Vc0HG2faDqYhy10m6TjsLhythhhqOJd8x4L+U2k/6hBmK1hrBcfqQiX9UBGx3f7kIzSbbzwFEmwHiGwf5Dgp0n4MJ4SM+4KyiB8WvhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776880211; c=relaxed/simple;
-	bh=RcfdQiLFf9M3i/IP00/idYyj9IgwJ1oxZGyHNU1I+50=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lFISvbHsYep5TZW5+sfGKPsQ4VbDkKX7on17pTqFWdL3TQSAcKerXguQp1LMH+/W2VxIqdEPOKWDipu9NIo9EYuo00dKK0uuuug+ez++nQQxZOuV/I1V7ZHs6of6dNutLDlMovTBE8IOG/N2dPTpZuXOQyDoGLp9Z7rwpHqvBBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=IhWbqnnB; arc=none smtp.client-ip=130.117.225.111
+	s=arc-20240116; t=1776880212; c=relaxed/simple;
+	bh=b9XRXh5k9/zsttfo5zzzCoU+uzUIP41798k0kJAQECo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EHLUkWIaN0C608UhXng6U3/mupuYtY01RmR7i73uIzvdom6oSSR4kDjjuTE1q/RLMzx8vPl2NJ4fWBePsL8DAcyPvaxdSusowmZrZui9LsHu5clSRyFMgx4j0X5QneKIIHqdsL/OQurfKPYmEGYCykguNWxGFAUyE1qGuOfa+/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=OAwei166; arc=none smtp.client-ip=130.117.225.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="IhWbqnnB"
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="OAwei166"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=KJx43tBTqhlaiRDdxuTnqGFSnvf9IAGPT6zRmvq6y+A=; b=IhWbqnnB1jm4
-	x0Z6N+RFvw574zG82nd/whe1vh1o5pOcdMhsdJ5ol+8dwUJNbXYjU8lq6cw7+/xn7FK/xC+rJIQTC
-	6ApeLFqitvd5i3zkfEdPlNR/AslCzbXbiLT4cMFD0sL81qaQaRtCzKNfhrctLZyflzeJmgl+WxhBm
-	oJRmwoY+4LujM3zZndlpXFBn7GV+bOZDgKxe9r5me3fYTh0ahTjWHDnAWkQdLks6+lGv1OyfDyAwi
-	V74tFG9YNgXGkl67FgpPecR8YgxFJvVJnvT3d9kzwDe0n0daDzQZhfr/XkNo19RSaKdT4xFWVSfw7
-	tWFgvySGI593iJ47cOOqtA==;
+	Content-Type; bh=t1I9cTfl5nUY0ImgwPNBuZFoTfUYggsb+7YdOc9cqtU=; b=OAwei166U6SF
+	HKsuCOpLVDEYnDuJ4+yssEac7TW0fDbAD3aK5SxwUSryyE/agChyjVMvp8Bsmq0Au0OHZD9AFKsW8
+	bSsKpiYwTeMUSQVSmrCvkua14qP4Fv9EwxCXw6b8yIK4LnSwGmINoCjIYtXiJ6e2mYIQFD+8oVyAd
+	5ghLnCwIdj3iBtw7ibwavQNu3DlgW88NxGQBXHgkYIEKwAKWE5baSwCYcR/sDZ+lysF8loyA8BynR
+	02i6t9nt5/UxuekrcALyTVBBMfpLxUsbN12Ch4NvJgktPJoKd8FAqW265H1Aq4/HAbXA+K6X/ZbXw
+	WnVrDbOokUMXbJsfv3YpkA==;
 Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.vzint.dev)
 	by relay.virtuozzo.com with esmtp (Exim 4.96)
 	(envelope-from <khorenko@virtuozzo.com>)
-	id 1wFbfQ-004KQw-0N;
-	Wed, 22 Apr 2026 19:49:59 +0200
+	id 1wFbfQ-004KQw-1s;
+	Wed, 22 Apr 2026 19:50:00 +0200
 From: Konstantin Khorenko <khorenko@virtuozzo.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -40,10 +41,12 @@ Cc: Thomas Gleixner <tglx@kernel.org>,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Subject: [RFC PATCH 0/1] KVM: VMX: restore host CR2 after VM exit
-Date: Wed, 22 Apr 2026 19:49:59 +0200
-Message-ID: <20260422175000.1544258-1-khorenko@virtuozzo.com>
+Subject: [RFC PATCH 1/1] KVM: VMX: restore host CR2 after VM exit
+Date: Wed, 22 Apr 2026 19:50:00 +0200
+Message-ID: <20260422175000.1544258-2-khorenko@virtuozzo.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260422175000.1544258-1-khorenko@virtuozzo.com>
+References: <20260422175000.1544258-1-khorenko@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,145 +55,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+On Intel VMX, CR2 is not part of the VMCS guest/host state area.  The
+CPU does not save or restore it automatically across VM transitions,
+so KVM manages it in software: before VM entry it writes vcpu->arch.cr2
+into the hardware register if it differs from the current value, and
+after VM exit it reads the hardware register back into vcpu->arch.cr2.
 
-this is an RFC for a small change to arch/x86/kvm/vmx/vmx.c that
-restores the host CR2 register after every VM exit, overwriting the
-guest's CR2 value that Intel VMX intentionally leaves in the hardware
-register.
+The host CR2 is intentionally left clobbered by the guest after VM
+exit, as an optimization: the expectation is that the next host page
+fault will overwrite it before anything else looks at it.
 
+That expectation is fragile.  The rest of the kernel treats CR2 as an
+invariant.
+ -  exc_page_fault() reads it at the very start of #PF handling, before
+    any instruction could have updated it.
+ -  __show_regs() reads and prints it from die()/oops/crash paths.
 
-Where we first saw the problem:
+Any flow that reaches a #PF handler, or that reads CR2 in an oops or
+crash context, without the CPU having just taken a real host #PF, will
+observe the guest's CR2 instead of the host's.
 
-The panic that triggered this investigation was not observed on a
-mainline kernel.  It came from a RHEL9-based downstream Virtuozzo
-kernel running a nested KVM workload: the host where the panic
-happened is itself an L1 KVM guest of an outer hypervisor, and it runs
-its own L2 KVM guests on top.
+On nested setups the stale guest CR2 left in the hardware register
+has the form of a kernel virtual address in the inner guest's address
+space, which overlaps 1:1 with the outer-guest kernel layout.  That
+makes the stale value visually indistinguishable from a plausible
+outer-guest fault address, which can lead to confusing oops reports
+whose CR2 has no relation to the reported faulting RIP.
 
-In the crash dump, four cascading kernel #PF oopses all reported the
-same CR2 value, while the instructions at the reported faulting RIPs
-could not have produced that fault:
+Fix: save the host CR2 before VM entry into a local variable.  After
+VM exit, compare the already-read vcpu->arch.cr2 against the saved
+host value, and write the host CR2 back if the guest modified it.
+In the common case where the guest did not touch CR2 this is a single
+register compare with no write; the restore is placed under unlikely()
+because most VM-entry/exit cycles do not involve a guest CR2 write.
+The change stays within the existing noinstr region;
+native_read_cr2()/native_write_cr2() are plain inline asm with no
+instrumentation.
 
-  add $0x8,%rsp          (no memory access at all)
-  lea ...,%r12           (no memory access at all)
-  mov %rax,0x10(%rsp)    (write to local stack, not to the reported CR2)
-  mov %rax,(%rbp)        (write to local stack, not to the reported CR2)
+This brings VMX in line with the CR2 invariant the rest of the kernel
+already relies on.
 
-All four oopses happened inside the L1 host itself: the original fault
-plus three further faults taken inside the oops-reporting code
-(dump_pagetable() -> copy_from_kernel_nofault(), vt_console_print() ->
-lf(), vsnprintf() in the "Modules linked in" path).
-They are not extra levels of guest nesting; the nesting stack in this
-setup is just two deep (outer hypervisor, then this L1 host running its
-own L2 guests).
+AMD SVM is not affected.  On SVM, CR2 is part of the VMCB save area
+and the CPU saves and restores host and guest CR2 automatically on
+VMRUN and #VMEXIT.  KVM's SVM code only accesses svm->vmcb->save.cr2
+and never touches the hardware CR2 register.
 
-The reported CR2 did not correspond to any register or operand in the
-surrounding code, but it had the form of a kernel virtual address
-belonging to an inner KVM guest that had run on that CPU.
-
-That matched the well-known property of VMX: after a VM exit, the
-hardware CR2 register still holds the guest's CR2 - KVM only copies it
-into vcpu->arch.cr2, it does not restore the host value.  In a real #PF
-the CPU would overwrite CR2 with the new faulting address; the fact that
-CR2 stays the same across all four oopses indicates that at least three
-of them reached the #PF reporting path without the CPU having actually
-updated CR2.
-
-
-Why this mattered in practice:
-
-What actually panicked this L1 host kernel was not the original fault
-on its own - in isolation it would most likely have been a single,
-locally contained oops.  The fatal part was that the oops reporter
-itself tripped over a CR2 pointing into L2-guest memory:
-show_fault_info() / dump_pagetable() treated the stale guest CR2 as a
-host faulting address and walked the L1 host's page tables for it,
-which raised further #PFs inside the reporting code and escalated a
-would-be local oops into a full panic of this L1 host.  On top of
-that, every oops header in the log carried that same guest-derived
-CR2, which makes this class of crashes effectively undiagnosable from
-the dump alone - the "faulting address" printed next to the RIP has
-nothing to do with what the RIP was actually doing.  Restoring the
-host CR2 after VM exit removes both effects at the source.
-
-
-Why this is an RFC rather than a straight PATCH:
-
-The mechanical fact (VMX leaves the guest CR2 in the hardware register
-after VM exit, and the rest of the kernel treats CR2 as "address of
-the last host #PF") is easy to verify from the source.  What I cannot
-pin down from that one dump is which exact delivery path brought a #PF
-handler into play with the CPU not having updated CR2 on that run.
-The plausible candidates include:
-
-  - corner cases of outer-hypervisor event injection into this host;
-  - NMI/MCE entries racing with oops reporting;
-  - crash/__show_regs() invoked from contexts other than a freshly
-    taken #PF, where die()/oops code reads CR2 as if it were fresh.
-
-All of these stop mattering the moment the host CR2 stops being a
-guest-controlled value after a VM exit.  The patch targets the
-weakest link directly: the "CR2 on the host == address of the last
-host #PF" invariant should hold across VM entry/exit on VMX, and
-today it does not.
-
-AMD SVM does not need this patch because CR2 lives in the VMCB save area
-and the CPU handles host/guest CR2 automatically; KVM's SVM code only
-ever touches svm->vmcb->save.cr2.  I am happy to add a brief comment to
-that effect in svm.c if it would help prevent a similar "optimization"
-from being introduced there.
-
-
-Verification against mainline:
-
-To make sure the issue is not already fixed somewhere in mainline, I
-checked the current:
-
-  v7.0-12635-g6596a02b20788  (base-commit of this patch)
-
-In arch/x86/kvm/vmx/vmx.c::vmx_vcpu_enter_exit(), the code still
-reads:
-
-        if (vcpu->arch.cr2 != native_read_cr2())
-                native_write_cr2(vcpu->arch.cr2);
-
-        vmx->fail = __vmx_vcpu_run(vmx, ...);
-
-        vcpu->arch.cr2 = native_read_cr2();
-        /* host CR2 is not restored */
-
-A full-tree search confirms that vmx_vcpu_enter_exit() is the only
-place in arch/x86/kvm/vmx that touches the hardware CR2 register:
-vmenter.S does not touch it, and arch/x86/kvm/svm never accesses it.
-So the same latent behaviour is present in mainline, regardless of
-whether this exact crash has been reported against a mainline kernel.
-
-
-Patch properties:
-
-  - Hot path impact: one extra register compare in the common case,
-    one extra MOV to CR2 under unlikely() when the guest modified CR2.
-
-  - Stays within the existing noinstr region.  native_read_cr2() and
-    native_write_cr2() are plain inline asm with no instrumentation,
-    so noinstr constraints are preserved.
-
-  - Not a security fix for a user-triggerable issue per se, but it
-    removes a class of confusing "kernel CR2 points into guest memory"
-    oops reports and hardens the CR2 invariant for the whole kernel.
-
-Thanks,
-Konstantin
-
-Konstantin Khorenko (1):
-  KVM: VMX: restore host CR2 after VM exit
-
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+---
  arch/x86/kvm/vmx/vmx.c | 15 ++++++++++++++-
  1 file changed, 14 insertions(+), 1 deletion(-)
 
-
-base-commit: 6596a02b207886e9e00bb0161c7fd59fea53c081
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index a29896a9ef145..dd441b90dfd4a 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7458,6 +7458,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 					unsigned int flags)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
++	unsigned long host_cr2;
+ 
+ 	guest_state_enter_irqoff();
+ 
+@@ -7465,13 +7466,25 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 
+ 	vmx_disable_fb_clear(vmx);
+ 
+-	if (vcpu->arch.cr2 != native_read_cr2())
++	host_cr2 = native_read_cr2();
++	if (vcpu->arch.cr2 != host_cr2)
+ 		native_write_cr2(vcpu->arch.cr2);
+ 
+ 	vmx->fail = __vmx_vcpu_run(vmx, (unsigned long *)&vcpu->arch.regs,
+ 				   flags);
+ 
+ 	vcpu->arch.cr2 = native_read_cr2();
++
++	/*
++	 * Restore host CR2 if the guest modified it.  The rest of the
++	 * kernel relies on CR2 holding the address of the last host
++	 * #PF; leaving the guest value there can mislead any code path
++	 * that reads CR2 without the CPU having just taken a real host
++	 * #PF (exc_page_fault(), __show_regs() from oops/crash paths,
++	 * NMI/MCE report, nested-virt corner cases, etc.).
++	 */
++	if (unlikely(vcpu->arch.cr2 != host_cr2))
++		native_write_cr2(host_cr2);
+ 	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
+ 
+ 	vmx->idt_vectoring_info = 0;
 -- 
 2.43.0
 
