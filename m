@@ -1,65 +1,65 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167953CCFB7
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945553542E5
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776853050; cv=none; b=lkw0qs90q/fyggKMr1nl904Nyhx+V7yIC8qQiZ21fQZr4YZJyhbv8UPrQWZGrxE1McZuGe15Uqimx2TNk2kxPekC9eZHObpSBP0bU9++cBuDq0TlvDmkPCeiWNDfwvAm6PVNwFOkcitsoWQzTFxQHe73ZPU3LC2eM/LSI9HBmeI=
+	t=1776853051; cv=none; b=KJZrsxoo5NR99vcD68Tt1MDzRVQKxWo7KzOwmX44hpJ7gjmzMOnPO0r9/NQm5V4f0yFy8bo1nVvfHJUAvmYjooE3M39gXFMY388iqq/u5g/RZJOanSI9vla2QtUwv1xdyoUnDDcxA9og9zEp+lQfjzKf9ztraQE/OOc4OsSDbu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776853050; c=relaxed/simple;
-	bh=lyULEi3e+kfDY4pAOD/6uauE8RXFENVITu7ezFzC9Ng=;
+	s=arc-20240116; t=1776853051; c=relaxed/simple;
+	bh=njaaxVkDTZ7V3g2mtdEiQS9uYW4hol4xRhNOHh6yxVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g08UpVXa9NJp50W+xINicPQrTQolgek3Ek9ZBKaPOgAM9AVF3u2OcZbIUQ5qau2Q6q3l4CHJ0qaFVGzKFG/izJo8ONeW1J5rfFBpFXX1lLTASTqfA8gQicepBEPxPqz3HnM0gcODnP0sJs7Rpk8s/l7DeNWQ63Go6kcg60yWbm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OsvSMp8Z; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version:Content-Type; b=FVYNTI/CPJ2N6qQTatoYnEitIaC25S2cADTgTvxshageKaNQE9eanb7CeUBJijTXnz2U03KUREsPpuXeqUOYW2SOyDuAIjfsAQgvM9mZUriMYVgMtB95EO9SxSWFelKtwg7FG8ypZ/FRPQ66SW4IuhE/RYIrKLPEfRUqWmzmgBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IyMJaawI; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OsvSMp8Z"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d03db7f87so3571669f8f.3
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:17:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IyMJaawI"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488b150559bso41662325e9.1
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:17:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776853047; x=1777457847; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776853048; x=1777457848; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UF2x3LQsFVeOwuh4smvXIT3vMnoh5OJHhwB45pzXnIE=;
-        b=OsvSMp8Z3A61C6caLy/a5eT8DFSU/MQxjs7mgqeN/SqpK81GJiA3ziLHN3YxckN/YJ
-         fs/jyquSU+Lwv1mFjkyYXXDW7JOeo3azEM6ObO7r/2AUi9IBub8J4YqxXOHmcsZygbv8
-         8cJCYVPw8tCfhpexyHUkYQ3oaor5BgZh/Ig/oYWkIGHHScUOWnvw26cGITfBc3EjUAGG
-         DT3RyLmgtueHnOz+gnGcv9KaPiIXB41x0ps2JUrm3g03Yfj+q9qhHzpUClvb0CbJtnUL
-         1TeF4ZLSk57JDDDfNTy1L3BAX/i4UhRFdGr0jPR5+T2uLBV4QJI+/KjxGOSKBnfWm15r
-         2kAg==
+        bh=LHt/fkh4CQTgDK0U2IQzNp32v6ZUUxM/zBvWXPy5kqQ=;
+        b=IyMJaawIbsjNT9qsRxeFZ3uaStSTCgbVq6JGSc0q+/q4aiG8ATexqhuTXIzEbVu+7I
+         lVK5ru/G4UGqgy3tGM/SjGQm7CD1FnTw0JavomsGbftjCPi+3PsBBUrBcWW8v7pTwJTm
+         2P9EtDNayZ3PPSMXC6NiX/Va2QUg/4CQwGQ+Rmy7J47qnTaF8TV4LBnyZ9LIKqCP0zz/
+         +BGjgp+HDemdjoUpAw/BloWx0dakL5rzFdBgTUAJFIxkhfSSE0pkj7p0gDYoyX96uSbh
+         59lS/ctAXERF3ArQdUCY5CmqyOnTuX9tDsRRkVHay97w4GTjv+M1aQo/3eYTbOeofYPg
+         d92Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776853047; x=1777457847;
+        d=1e100.net; s=20251104; t=1776853048; x=1777457848;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UF2x3LQsFVeOwuh4smvXIT3vMnoh5OJHhwB45pzXnIE=;
-        b=AK8kEbRuivRxugUjRjlSC0AKri4wc+BDVxkMv9QpZCt9aVayBrA9QJRzPDIaFj79WE
-         Y+VUT5VCQbTGaVIjxgszpj2B6ceu1YY+U4cs/w25GPgl9bHnmDUOBWXCV4jjUcS7eo09
-         IvL313Tve2bhOUVRXzb9xAXVUpDk/+9ZdfZi42uC0NvVLLSROqUbUCkAPsVxPTixUtoh
-         ljhCxwvlGeiYB5+hZtwOZqsmkL9YA3fv4w1QbSkUXkr+gW6oNZo2JAiJZ57w52pf1OOO
-         PdJD3+A4PQ7ikM1lieHYU4rqscpKT1IePsRLB2jKaZhRVJDqXKRHjgLnhp3ldVp0Aj2H
-         3mMw==
-X-Forwarded-Encrypted: i=1; AFNElJ+rUTLjlIwAqCK46Rpd/xAgOAODALn7qxqkzlCZinDO9vJR052zN/ltVeYxWUEBDHlu/n0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzexetN6kQProSih6/0aeYjSo0K3cR9yiF245p5Tjr2y1AIe0ZV
-	dp0Eui2IE68PRL3blVn9StvFXhJlyzeoDbro7jqW1GMJshAuj6IxtjIpfHevTynPiYA=
-X-Gm-Gg: AeBDietkn9EuR/c71w8YekfuWzjv0kUNVaTCiU4ofwis3PvOBcnFPirin1XFitdPjs2
-	yvsDEURFa6jvoZVnr8LZ2gF3CB4dm9XOacv9aWjyjA9AWPPz/YAmEV6/z6X+MqwUldXz+0RzNyU
-	WoSY/bms5MMTe5uQL0o8ws54hwSJWUDFkkRZr6T65taNgT77a4txj11qlQItM7P+/wadanTC9nS
-	YJjy93N1Jpc5SSBNaM6Di2P37FS/WDP5UxnNW1WcNKpkZh+3t4EEzxkr7plhyj2zcRNOUryS5WX
-	a+NbTuTmNCKZW45KaNL6DuS9OhDzHMrYlT76YxjoFyw9INjjtJHFDEL1wtqbnEtCbe1nKgZZ50z
-	Qr6Ci4ijxrEGjs7gE1KlN7tt88eExoyu/1/u6oaAtnashBQJknGFk2grhaokHKsdMglnpoQEwD3
-	UqIgbsPqI72tdGfhom0udNjcCDCA1UzDO7Yv4KOmkTPXsC
-X-Received: by 2002:a05:6000:24c8:b0:43d:70b3:7edf with SMTP id ffacd0b85a97d-43fe3dc5386mr35212015f8f.12.1776853047494;
+        bh=LHt/fkh4CQTgDK0U2IQzNp32v6ZUUxM/zBvWXPy5kqQ=;
+        b=NCz2vyWMQ7jBiMVUvF+Bb4OlyWwUap8h9hTx6tHQJlVxtJEv5lmZfvSNu2s5qkmSm/
+         S/pg9bkT8WLeXLejnwA1BeUw0bWa6XR1+zGri6Qrke39KKuR/Qhhr+ql5anF3ghChODw
+         PIFUiZyaZU5cJIR2LkqWkbTnHwIfxcivHNu42DQ4evJfy/Zz14qJYuS0wERf8x2/px37
+         6pZ1CQNjZaQE3MaR5p/h1NeUbDFHJQ5d6yd/IISq2bj93HJ/DbPOl0lK9YPxUGGUH2Dt
+         9ByXADs+dLSVjGYtAUSP2lNhAYnLXxEbgvmCgMpxcNIXfnrDDXwMpxjl+gQ79DaoOGNi
+         N0LA==
+X-Forwarded-Encrypted: i=1; AFNElJ+N1QG/NnT/q9CHYbiW8NV6sp+NFOTqZj0PtUx91uSUHVPPSIWBTBzNnfQypjwQ9/Fx2Fo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGVLUIm9t4eObnYZ3bmVwzx5ULreZHbuo0c8ZOcvLrSarcqOwD
+	f5rJ5bIT1y9eJDTzfOYZ/GmLAwGEcLYFG6c/l/CNXUOLDYX8vVvrtKEMaZeqghj8L44=
+X-Gm-Gg: AeBDies2CJ/flGH3FtzJQkne2LjXIWMY8ufgi+fsAHa/oyw6lqZnmfQvFy9WUMhU+OV
+	TaTOtmg++Xjhd9JAWsAOFV37IbBSUvZn45fRuENRcYtjQkQIAT9sDCemcUBAG2Y6oFkld9jy9NK
+	HjTo//3tye81k/KQRc6wU8BZo7UUBwmQD9jxlsu7gqQM8QZK8ranaStFFA03QKPS17veENZNxiN
+	/FQKTHttUewPIYj0uT93WVnXSw3hUQq0vUgBuCIhtR70X90QMPq7a1gA8fEfxCHX2qQZxnLAD1G
+	xPq+Oh4IXyvPTt5wQCbzUxXf3x8LYOq+5KwcV6fU/af+DQvlWwIsm6AldhAAlNzLe4qOXiZbILV
+	6BM4hVCVX+sORwJCzYn9+9RUXxbEaBpBWiPCitlgtPNO1zApSjfCRjsYM6d0407IPRGTF6SdCHk
+	BKxMqp9CL6mY/4O+/CCNGZGb5i/tO1c0Zu8A==
+X-Received: by 2002:a05:600c:3216:b0:489:1ff1:74d3 with SMTP id 5b1f17b1804b1-4891ff17521mr88617735e9.20.1776853047996;
         Wed, 22 Apr 2026 03:17:27 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4d525sm42572233f8f.31.2026.04.22.03.17.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891cdfcd50sm84551615e9.9.2026.04.22.03.17.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Apr 2026 03:17:24 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 2F18F614A7;
+	by draig.lan (Postfix) with ESMTP id 863CD61667;
 	Wed, 22 Apr 2026 11:10:45 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +72,9 @@ Cc: Alexander Graf <agraf@csgraf.de>,
 	Pedro Barbuda <pbarbuda@microsoft.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 22/31] target/arm: remove old syndrome defines
-Date: Wed, 22 Apr 2026 11:10:33 +0100
-Message-ID: <20260422101043.1234229-23-alex.bennee@linaro.org>
+Subject: [PATCH v2 26/31] target/arm: ensure aarch64 DISAS_WFE will exit
+Date: Wed, 22 Apr 2026 11:10:37 +0100
+Message-ID: <20260422101043.1234229-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422101043.1234229-1-alex.bennee@linaro.org>
 References: <20260422101043.1234229-1-alex.bennee@linaro.org>
@@ -87,39 +87,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Now everything is defined with registerfields we can drop the old
-defines.
+This mirrors the logic for DISAS_WFE in 32 bit world.
 
+Fixes: 252ec405768 (target-arm: implement WFE/YIELD as a yield for AArch64)
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v2
-  - remove stuff dropped earlier
----
- target/arm/syndrome.h | 9 ---------
- 1 file changed, 9 deletions(-)
+ target/arm/tcg/translate-a64.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index d4dfab8cd15..04a71eebcb5 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -106,15 +106,6 @@ typedef enum {
-     GCS_IT_GCSPOPX = 9,
- } GCSInstructionType;
- 
--#define ARM_EL_EC_LENGTH 6
--#define ARM_EL_IL_SHIFT 25
--#define ARM_EL_ISV_SHIFT 24
--#define ARM_EL_IL (1 << ARM_EL_IL_SHIFT)
--#define ARM_EL_ISV (1 << ARM_EL_ISV_SHIFT)
--
--/* In the Data Abort syndrome */
--#define ARM_EL_VNCR (1 << 13)
--
- static inline uint32_t syn_get_ec(uint32_t syn)
- {
-     return FIELD_EX32(syn, SYNDROME, EC);
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 073454b9195..d79c8ab431b 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -10917,6 +10917,7 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+         case DISAS_WFE:
+             gen_a64_update_pc(dc, 4);
+             gen_helper_wfe(tcg_env);
++            tcg_gen_exit_tb(NULL, 0);
+             break;
+         case DISAS_YIELD:
+             gen_a64_update_pc(dc, 4);
 -- 
 2.47.3
 
