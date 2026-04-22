@@ -1,113 +1,136 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1913E9F96
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 13:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53EB3E9F8B
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 13:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776863347; cv=none; b=Hi3iNwrW6XHVo3j8GMwRr6d8NEDNwZkw0QfWW9RQq04HjSGjrMDBcvS8T7vNTSUPRcp/BH32mngH6ph/u/J7Jho/3dn627bR3pbSQ0buCOu61nMEFxwKTA4XUErz+8aC2KG1J8HWrLgwRx3uDXgJNkMn2rz1/eKMebFBphRh1Js=
+	t=1776863679; cv=none; b=rm1ihfJ6ssf9rnftew2Ex3XMvYjCfvVWVbnVqUAGDqRhppUvEUGyYqWGEnDVYm8TN9gEwfUvTt5vZNWn3S7FwoapNVco5Widn63YYgpJwnsqHVGrUnI/XUYcyyI7UPELg6fuAzTT8VnDqNaHXJxiCuGucK/GN+SwAACqx94VrD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776863347; c=relaxed/simple;
-	bh=njaaxVkDTZ7V3g2mtdEiQS9uYW4hol4xRhNOHh6yxVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q2NuKEAHz6pYPGwEI28UpMzT841iY70qRTLKzhOc2kH4xS7sGEKjivR6BcgYpP8Mq5Y304vGo6/KMTknL0G4jw09YD/jkJMOp8zvcX0vIjwPntAnh0ny8dU57pSs6n+fkQv0mCdwTLgSjaAx/D1yQx2a3zhe4Iy6PRCp2xIwFdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GmExCRrW; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1776863679; c=relaxed/simple;
+	bh=DXWtlVkPOzmiBYtDp9HYbIc/G0f51h19oHhBbaJOPr4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mp/xBJLj6L0G+Oc5fV3u1YGHAqTFqzVs9jn2zA9TeUdsrQDG9IV5TyvFInbodR4KHgjYJeaoVpEYVx+fXOW5Dvd2ZXfNJHbowFFMY7bSFTjBpYnbeMXI3n1tYmCalFxq0J8+5yC5l4ljyzHvjHMde50TCcmZrsLhLOy5rqkzga8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KLi7Vj+w; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GmExCRrW"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ba61a0a2d26so597206766b.2
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:09:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KLi7Vj+w"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f6b984b3aso2978093b3a.3
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776863344; x=1777468144; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LHt/fkh4CQTgDK0U2IQzNp32v6ZUUxM/zBvWXPy5kqQ=;
-        b=GmExCRrW+iocjhGJFLrl/So89zhQ8CO3FWjD/+2Y2PwFNP122uia8KtKPL18ti22gZ
-         vuo7IxFBwEjbjJojUoz7JDCMR3Nx93+13DvJ9IwxPW3rmjpgNtlt6t8Nr9co5fJWcz8d
-         zmLOpngaFkFsdywzKRTmrgnEN+KvzJbwP2UYfn8qzbdGaXW6kX7tZsnTKnlxsY9k7dr7
-         PqdeyBh+tHCV/UfdgEE8wEa5tcfYg6BjgLN1peUsuhDpFEoUQ0fHzhDyclWwGVeQwIZE
-         /1+OEdJq5Ij/5VoTYJ3D0ZEVXDKUKVGo5yPuOpmIVzUO7RCMuEAMhuVs336BNX/wIuXB
-         4TAQ==
+        d=google.com; s=20251104; t=1776863676; x=1777468476; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FdptR/OyRs4SIYm8Am4tpwhSMykd7DPRgYTUDop6DiQ=;
+        b=KLi7Vj+wXLPyuzcGWap5PaoR3bQFSip6Im8Jxmz20x3Qp02kfLLC/FTUNVJ0wdMpUy
+         zhcmMZrupzVxUELmlvcwHOBiUMmSpy9uUCfoMU97Fpi1Bod8imUs+BJYauvF3ntMYyGf
+         jM2rj/n6Mx8Dl3lDci3E5NuugFV3e354E065+N1YdiXnoZKMNANYvtLevzInwKQQwj8+
+         EG2spS3rA8BR4EncTzG2DXgAoYXSFo3HLTpeBZHIsNnxMws8BGIkJ6HXQBDGZYdQhDQO
+         EbwDrFIMBIu5tArCTlApH8rkJypVypFEa+o9t56LACgxNOxo665nM4TLqOzON8/ikp9R
+         ejWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776863344; x=1777468144;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LHt/fkh4CQTgDK0U2IQzNp32v6ZUUxM/zBvWXPy5kqQ=;
-        b=fwdAWRXVl/HqukX75mg/dkpQ8Q7lyYdZVSTRXBbQa80b4Cy14aDxcfTo5PSdP/9NKO
-         n8YyN4nnB8AOuGTUsNxi+7ccpXX2DqEIvgvV643wQX44QKQmYenUymHm+Q5iArKeHM12
-         zHQM+BysZBSAHDuwEzEx3j7Y5BIretpvEK5uhOZ7CxZhsxcQMW94PdQcQtYF6AqISNAu
-         ldnbzOAdpIskIo20DPctYYk3eASIj6afUwRuH4Sv1JrMNtB6lVBwPviPddnr3Zabyzx2
-         /KjYywF6pRRplbXGWUeRcR2Webh5dcjdIZvV6GkVGMFfCE7f2DuGPX1T+XT3J8B9hmdd
-         hZCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/177tpKivrXkFGbvwq1VRUT8TJm1zCB3VgcPNQGSUkbY98t0oA0JJEbdgT6KU6Fk1mgvE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXUlk/NW7+yylYyAHL4h1S/eNmur9bUyP2nL454VEKfZ8mDTVL
-	4EYFlK0J69zcembnzu/1dBGGT+uqKWLgpUwJmR4K4m+eK5hYPu9I4pUeDM1b1T9RlGY=
-X-Gm-Gg: AeBDiesGG6RophPu6cmQGh8AqglvckOiU4cuDl6TlNzE2IRi8VyeHVRNxJwp7nqYuOg
-	0MRNCEuQ7UQilSbKGuWMUd4V1dKliXf/waDOhjLyLZTWptrK/FwjfOWpJImIkDNppKEAzD8QCR+
-	eqjgt3K/WpUIlEY8YfY8QybXNzBNosIKbTiRoyI13Ph3gsN2Pp7A1R4qj9KrHMuMfFRLo9k3CrO
-	lATAjmWshPxlAoSNZtPcN2U57g1CRIetEVpWUHE/pyjBNjrifkBXIqFB15MG0RMQr0pv+WRH+Is
-	43khBvNVwT3DjOYxED/nUv2fo4mU0W6C8n7hc4rohcBgFRcTQl8tu1dEtSelZcY24UFkwIehZBc
-	tF5aQQ5W1S4bYnGu6bsPGHn0memy7EH1F9y8RJZNjJP6+jK8NhwPLzONBUez/99HrJp97GY4PKt
-	yubRA2TbxQsgboKCIpc63PIRIKFgnccPBpUA==
-X-Received: by 2002:a17:907:3d4c:b0:bab:1e1d:40b9 with SMTP id a640c23a62f3a-bab1e1d40fdmr140947566b.44.1776862950837;
-        Wed, 22 Apr 2026 06:02:30 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4d6casm41420944f8f.32.2026.04.22.06.02.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 06:02:27 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 15D7E61667;
-	Wed, 22 Apr 2026 13:52:53 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
-	Alexander Graf <agraf@csgraf.de>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mohamed Mediouni <mohamed@unpredictable.fr>,
-	kvm@vger.kernel.org,
-	qemu-arm@nongnu.org,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 26/32] target/arm: ensure aarch64 DISAS_WFE will exit
-Date: Wed, 22 Apr 2026 13:52:43 +0100
-Message-ID: <20260422125250.1303100-27-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
-References: <20260422125250.1303100-1-alex.bennee@linaro.org>
+        d=1e100.net; s=20251104; t=1776863676; x=1777468476;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FdptR/OyRs4SIYm8Am4tpwhSMykd7DPRgYTUDop6DiQ=;
+        b=rbU7136EHxkQ+qpt8H0HBz82oGxmzKwgheoHx/rlL039sx4ngR4mnnycqrhcQU0CbB
+         n/o9GVI6GdfBDb/fE9um0oDrbY6kP10tSud/ltvcqJ13Zhakbyav3PV0ipVTOUQIGLOi
+         KYDwBu/bk065zFz+pAiz7JgumAr/CZODLMTipydmqDojzfbvSGk4wViYQhawDCxLr3CE
+         qPsoHzahMz0jbfOf/D9rnWNBfN9u5Qr6FfsF1ODlOj7mOalcQlkxatpx5bkc82RPNXIs
+         V4ha+gk9WxsWUM9Wmf0tY15MnRnyvinvC+6wfiwXyiEWN+tHAW8dt3ccg69JCxdTVEnL
+         f4+Q==
+X-Gm-Message-State: AOJu0YyAtqQJEPqVcJ0RWnCDGRGaH6vmRmpQulpp4JVEPCJIw2Z1sNiS
+	Mc8IPvG3SnGxA2ywyZhqs80ugL93GJZ1DEM8Uu/KzvjTkFCbK1krE/rNDc+QlZwBPACgaygc+7b
+	PWwbOSQ==
+X-Received: from pfkm9.prod.google.com ([2002:a05:6a00:809:b0:82f:7220:86e7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e23:b0:829:88e7:c88b
+ with SMTP id d2e1a72fcca58-82f8c869b8emr24120276b3a.19.1776863675752; Wed, 22
+ Apr 2026 06:14:35 -0700 (PDT)
+Date: Wed, 22 Apr 2026 06:14:34 -0700
+In-Reply-To: <20260422124536.53756-1-robert.nowicki@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com> <20260422124536.53756-1-robert.nowicki@intel.com>
+Message-ID: <aejJup_I4wM0Rb93@google.com>
+Subject: Re: [PATCH] x86/tdx, KVM: fix HKID leak when kexec is initiated with
+ active TDs
+From: Sean Christopherson <seanjc@google.com>
+To: Robert Nowicki <robert.nowicki@intel.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	vishal.l.verma@intel.com, pbonzini@redhat.com, Igor.Swierszcz@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-This mirrors the logic for DISAS_WFE in 32 bit world.
+On Wed, Apr 22, 2026, Robert Nowicki wrote:
+> When kexec is initiated while TDs are running, vCPU threads can be
+> mid-TDH.VP.ENTER on other CPUs when tdx_shutdown() fires. The TDX
+> module rejects TDH.MNG.VPFLUSHDONE for a VP in RUNNING state, leaving
+> the HKID in a leaked state:
+> 
+>   kvm_intel: tdh_mng_vpflushdone() failed. HKID 33 is leaked.
+> 
+> Fix this by introducing a quiescing flag set at the start of
+> tdx_shutdown(). KVM's tdx_vcpu_run() checks the flag and returns
+> EXIT_FASTPATH_NONE before attempting TDH.VP.ENTER. After setting the
+> flag, tdx_shutdown() calls on_each_cpu(tdx_seam_sync) with wait=1 to
+> ensure any CPU currently inside TDH.VP.ENTER has exited SEAM before
+> tdx_sys_disable() is called.
+> 
+> Fixes: 58171ae22e11 ("x86/tdx: Disable the TDX module during kexec and kdump")
 
-Fixes: 252ec405768 (target-arm: implement WFE/YIELD as a yield for AArch64)
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- target/arm/tcg/translate-a64.c | 1 +
- 1 file changed, 1 insertion(+)
+Please don't post seemingly standalone patches for code that hasn't yet been
+merged, it's quite confusing.
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 073454b9195..d79c8ab431b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -10917,6 +10917,7 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-         case DISAS_WFE:
-             gen_a64_update_pc(dc, 4);
-             gen_helper_wfe(tcg_env);
-+            tcg_gen_exit_tb(NULL, 0);
-             break;
-         case DISAS_YIELD:
-             gen_a64_update_pc(dc, 4);
--- 
-2.47.3
+>  u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
+>  u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
+> @@ -206,6 +207,7 @@ static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
+>  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
+>  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
+>  static inline void tdx_sys_disable(void) { }
+> +static inline bool tdx_kexec_quiescing(void) { return false; }
+>  #endif	/* CONFIG_INTEL_TDX_HOST */
+>  
+>  #endif /* !__ASSEMBLER__ */
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 50a5cfdbd33e..2d658db7700d 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -1053,6 +1053,9 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>  	struct vcpu_tdx *tdx = to_tdx(vcpu);
+>  	struct vcpu_vt *vt = to_vt(vcpu);
+>  
+> +	if (unlikely(tdx_kexec_quiescing()))
 
+Requiring KVM to check a global on every entry is pretty ugly, especially since
+this is for a very rare scenario (in terms of number of entries).  And forcing
+KVM to do a CALL+RET to check an almost-never-set flag is especially ugly.
+
+Why not handle this entirely in tdx_shutdown_cpu()?  E.g. have the last CPU through
+disable TDX, and hld all the CPUs hostage until that's done.  It's not the prettiest
+thing in the world, but it's entirely self-contained.
+
+static void tdx_shutdown_cpu(void *__nr_cpus_remaining)
+{
+	atomic_t *nr_cpus_remaining = __nr_cpus_remaining;
+
+	if (!atomic_add_unless(nr_cpus_remaining, -1, 1)) {
+		tdx_sys_disable();
+		atomic_set(nr_cpus_remaining, 0);
+	}
+
+	x86_virt_put_ref(X86_FEATURE_VMX);
+
+	while (!atomic_read(nr_cpus_remaining))
+		cpu_relax();
+}
+
+static void tdx_shutdown(void *ign)
+{
+	atomic_t nr_cpus_remaining = ATOMIC_INIT(num_online_cpus());
+
+	on_each_cpu(tdx_shutdown_cpu, &nr_cpus_remaining, 1);
+}
