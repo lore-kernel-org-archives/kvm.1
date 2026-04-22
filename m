@@ -1,337 +1,115 @@
-Received: from outbound.baidu.com (mx21.baidu.com [220.181.3.85])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3BE3AA4E7;
-	Wed, 22 Apr 2026 08:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.3.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9465F30EF90
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 08:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776845739; cv=none; b=kTK8W//EW4dWQ+f5JXJ/2jZVgjbja5Z+GkaHNHMZ7N0DbvfgyzKsY+B5WujDGWV/o8CG8xWsb91xUZr94XGfy246Ipbfs0jjhqWWeeEarqycJXUrJp3UXU/dqrPAyD2OehWywhEYbV1MgMR3BrIc0qzA6ODLs92OGOt2so+FtDc=
+	t=1776846143; cv=none; b=Mv03EhBU3+XX1iqq0nNCBjWMJPw3dzPH+NbYLA02tFcMV8Jq/qiP9TQ13cZyf+2vttrsjNgeTeYn2CR0TmCrE44JRb0Rg1OPGJF0sxVajaefpMwY5yw3Kw6pVcXjBMc2ulmt0nQ4dqH3z5bK2AR+mLXWJ1tPGH6wFwMTQgjDu8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776845739; c=relaxed/simple;
-	bh=plKUIgB6l2Ed6G5qzisz7CpFSJI2/nUpVobYu+qQ6hU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AiqX+Rbv30iJA0IAkjyvOsrXyYE7OPH9odwBuUBBOsisPyAazUfwW0a0FP05ld6rBdO7VKawMSfnDxRAtveRbVZikh0xTSn2fjHPJAJkmxTRMfxdd7HISeguX0yzoPOt86YCrzBtytopYrwlTDWY64HkAZFAcXg2utaALoI8TnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=f1SckEzd; arc=none smtp.client-ip=220.181.3.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1776846143; c=relaxed/simple;
+	bh=ruje3/k5RBG06rfLX6Wgxo/Cy3wjS358mjBMDyw4j8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J6QKtniq0oHM73j2DwGtzHCqTSlnqtUsvAMJ7rclENfK1RPtBPiTjAPLQR8zAyQUQpyG+E0gVhV4MRFNpFFHdR81AY2cQ7upnuTc9WMaOUajqefAIMsGtVCwmi89mKP4ICKmPNx3V7NK0XDOTlMJu1w5KKDgAn1EGIhfp1HBScc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y/7K19b8; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="f1SckEzd"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin
- Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Alistair Popple <apopple@nvidia.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] vfio/pci: Allow disabling idle D3 on a per-device basis
-Date: Wed, 22 Apr 2026 04:13:07 -0400
-Message-ID: <20260422081307.2550-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y/7K19b8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776846141; x=1808382141;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ruje3/k5RBG06rfLX6Wgxo/Cy3wjS358mjBMDyw4j8A=;
+  b=Y/7K19b8j8hbzRPKPlJUwFGCQRxRoSlOQ6lBvs4fTOcbxwBqA0Kfe56O
+   O3vaRH49kG+clpPVCpPpag40TmMMpy62Rl9Te9+PTczNRjDd2PEvVYkJG
+   QsR4bRA/UC1IYjtzHzLcf1VBzG/Q+KfJzvIyh8sojixNuw3aeI4vHND8X
+   cGRZayLme1jvA2aW+DCqj1OlN2iHR5HLifGr5yEZsyCMMzkmpTQxnTI1N
+   sJN1KASi0MVtDZIHPur9T1xMHWx2vi9HT2fmo9WycS5Pn+qt5iwnQCz7g
+   UseDoSyd9bQLm3Ks0EH3vfA1r0RRavTCoXe0CXXN6hJQbndxnPPw3dGJL
+   g==;
+X-CSE-ConnectionGUID: jMZoqjTVTfiP91d2IotbkQ==
+X-CSE-MsgGUID: LFhhamTHQeOiXjuFF27DSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="88869232"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="88869232"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:22:21 -0700
+X-CSE-ConnectionGUID: IN+Nqc7MTAesuHwEJMk1gw==
+X-CSE-MsgGUID: MUcuXCf0Tt6HSYaFH64Bcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="232156751"
+Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:22:20 -0700
+Message-ID: <1931c7d3-b21e-4704-9012-4a16597bbebf@linux.intel.com>
+Date: Wed, 22 Apr 2026 16:22:16 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc11.internal.baidu.com (172.31.3.21) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1776845597;
-	bh=g98MrTgAgCtfmDKyc/pMIFXEUb37beyhxWf3/naYnwg=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=f1SckEzdstsX6jYn2EsH5XLiIM3k9SZsh2aytOamqT662MT/ibdqsiE9zvc1VKctF
-	 Bn66BQvWarul+50JwcEN/0pKTz50N8/hhs+tjvurqYLXqy4FUdmK8CUgOrJeYZtkGI
-	 cZk+26zQd6UBYXA+BxN+Se6PW6vDYItb88lLLVJ4GcTBn3w2jzmo2WgMVUzwXUAMQt
-	 42vw8OI95oCTTT/ZSrhs1tBiUPgWnJmCrsnlxBrvC9Nqnwxlmln/yxYNl3R8bIQPld
-	 pVP7pdzQcUIgHnp3q6mjRr8TRI7iVnc/SesY7gbw9Y+Q2WymlyT/ryf1H+hlHhxjV9
-	 jwYbL122TBJiQ==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 21/27] KVM: x86: Make kvm_vcpu_after_set_cpuid()
+ return an error code
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <20260417073610.3246316-22-binbin.wu@linux.intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260417073610.3246316-22-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Li RongQing <lirongqing@baidu.com>
+Below are responses to issues reported by sashiko. [1]
+[1] https://sashiko.dev/#/patchset/20260417073610.3246316-1-binbin.wu%40linux.intel.com?part=21
 
-The disable_idle_d3 module parameter currently toggles idle D3 power
-management for all devices handled by vfio-pci. This is too coarse for
-environments where only specific devices (e.g., certain GPUs or NICs)
-have issues with D3 state transition.
+[...]
+> @@ -649,7 +651,9 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
+>  #ifdef CONFIG_KVM_XEN
+>  	vcpu->arch.xen.cpuid = kvm_get_hypervisor_cpuid(vcpu, XEN_SIGNATURE);
+>  #endif
+> -	kvm_vcpu_after_set_cpuid(vcpu);
+> +	r = kvm_vcpu_after_set_cpuid(vcpu);
+> +	if (r)
+> +		goto err;
+>  
+>  success:
+>  	kvfree(e2);
 
-For example, some PCIe devices exhibit hardware bugs or firmware issues
-when entering or exiting D3 state. These devices may experience PCIe link
-speed degradation after transitioning out of D3, reducing from Gen4/Gen5
-to lower speeds, which can significantly impact I/O bandwidth. In such
-cases, only these problematic devices need to have idle D3 disabled,
-rather than all devices globally.
+"Is vcpu->arch.xen.cpuid successfully restored when kvm_vcpu_after_set_cpuid()
+fails?
+Looking at the error path in kvm_set_cpuid():
+err:
+	memcpy(vcpu->arch.cpu_caps, vcpu_caps, sizeof(vcpu_caps));
+	swap(vcpu->arch.cpuid_entries, e2);
+	swap(vcpu->arch.cpuid_nent, nent);
+	return r;
+}
+We restore cpuid_entries, cpuid_nent, and cpu_caps, but it does not look like
+vcpu->arch.xen.cpuid is reverted back to its original state.
+Could this leave xen.cpuid permanently out-of-sync with the restored CPUID
+entries if an invalid configuration is rejected?"
 
-Introduce a new module parameter 'disable_idle_d3_ids' to allow users to
-specify a list of vendor:device IDs that should have idle D3 disabled.
+This is a valid concern.
 
-To support this, add a 'disable_idle_d3' flag to struct
-vfio_pci_core_device. This flag is initialized during device probe
-based on both the global 'disable_idle_d3' parameter and the new
-'disable_idle_d3_ids' list. All runtime PM decisions are then shifted
-to use this per-device flag.
+It is simple to snapshot the value of vcpu->arch.xen.cpuid and restore it if
+the check fails. And after a further check, kvm_hv_vcpu_init() is also called
+before CPUID paranoid check. If hv_vcpu is already allocated, nothing changed
+in kvm_hv_vcpu_init(). If hv_vcpu has not been allocated, the memory allocated
+in kvm_hv_vcpu_init() needs to be freed if the check fails.
+ 
+Another option is to split paranoid CPUID verification out. As described as an
+open in the cover letter, this patch series combines vCPU capability initialization
+and paranoid CPUID verification inside kvm_vcpu_after_set_cpuid(). The issue is
+gone if the paranoid CPUID verification is done before these changes are made, though
+there will be some duplications during paranoid CPUID verification and vCPU
+capability initialization.
 
-In vfio_pci_dev_set_try_reset(), update the logic to iterate through
-all devices in the dev_set and respect their individual D3 settings
-when performing a bus reset.
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- drivers/vfio/pci/vfio_pci.c      |   7 ++-
- drivers/vfio/pci/vfio_pci_core.c | 109 +++++++++++++++++++++++++++++++++++----
- include/linux/vfio_pci_core.h    |   3 +-
- 3 files changed, 107 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 0c771064c..fd55776 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -60,6 +60,10 @@ static bool disable_denylist;
- module_param(disable_denylist, bool, 0444);
- MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist. Disabling the denylist allows binding to devices with known errata that may lead to exploitable stability or security issues when accessed by untrusted users.");
- 
-+static char disable_idle_d3_ids[1024];
-+module_param_string(disable_idle_d3_ids, disable_idle_d3_ids, sizeof(disable_idle_d3_ids), 0444);
-+MODULE_PARM_DESC(disable_idle_d3_ids, "Comma-separated list of vendor:device IDs to disable idle D3");
-+
- static bool vfio_pci_dev_in_denylist(struct pci_dev *pdev)
- {
- 	switch (pdev->vendor) {
-@@ -262,7 +266,8 @@ static int __init vfio_pci_init(void)
- 	is_disable_vga = disable_vga;
- #endif
- 
--	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3);
-+	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3,
-+			disable_idle_d3_ids);
- 
- 	/* Register and scan for devices */
- 	ret = pci_register_driver(&vfio_pci_driver);
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index ad52abc..ac037a7 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -42,6 +42,73 @@ static bool nointxmask;
- static bool disable_vga;
- static bool disable_idle_d3;
- 
-+struct vfio_pci_d3_info {
-+	struct list_head list;
-+	unsigned int vendor;
-+	unsigned int device;
-+};
-+
-+/*
-+ * disable_idle_d3_list is built in vfio_pci_core_set_params() before
-+ * pci_register_driver(), and is read-only after that, so no locking is
-+ * needed. It is freed in vfio_pci_core_cleanup() after
-+ * pci_unregister_driver() completes.
-+ */
-+static LIST_HEAD(disable_idle_d3_list);
-+
-+static void vfio_pci_parse_d3_ids(const char *disable_idle_d3_ids)
-+{
-+	char *tmp, *p, *id_str;
-+
-+	if (*disable_idle_d3_ids == '\0')
-+		return;
-+
-+	tmp = kstrdup(disable_idle_d3_ids, GFP_KERNEL);
-+	if (!tmp)
-+		return;
-+
-+	p = tmp;
-+	while ((id_str = strsep(&p, ","))) {
-+		unsigned int v, d;
-+		struct vfio_pci_d3_info *info;
-+
-+		if (*id_str == '\0')
-+			continue;
-+
-+		if (sscanf(id_str, "%x:%x", &v, &d) == 2) {
-+			info = kzalloc_obj(*info, GFP_KERNEL);
-+			if (!info)
-+				break;
-+			info->vendor = v;
-+			info->device = d;
-+			list_add_tail(&info->list, &disable_idle_d3_list);
-+		} else
-+			pr_warn("vfio-pci: invalid ids '%s'\n", id_str);
-+	}
-+	kfree(tmp);
-+}
-+
-+static void vfio_pci_free_d3_ids(void)
-+{
-+	struct vfio_pci_d3_info *info, *next;
-+
-+	list_for_each_entry_safe(info, next, &disable_idle_d3_list, list) {
-+		list_del(&info->list);
-+		kfree(info);
-+	}
-+}
-+
-+static bool vfio_pci_dev_in_d3_list(struct pci_dev *pdev)
-+{
-+	struct vfio_pci_d3_info *info;
-+
-+	list_for_each_entry(info, &disable_idle_d3_list, list) {
-+		if (pdev->vendor == info->vendor && pdev->device == info->device)
-+			return true;
-+	}
-+	return false;
-+}
-+
- static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
- {
- 	struct vfio_pci_eventfd *eventfd =
-@@ -501,7 +568,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 	u16 cmd;
- 	u8 msix_pos;
- 
--	if (!disable_idle_d3) {
-+	if (!vdev->disable_idle_d3) {
- 		ret = pm_runtime_resume_and_get(&pdev->dev);
- 		if (ret < 0)
- 			return ret;
-@@ -579,7 +646,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- out_disable_device:
- 	pci_disable_device(pdev);
- out_power:
--	if (!disable_idle_d3)
-+	if (!vdev->disable_idle_d3)
- 		pm_runtime_put(&pdev->dev);
- 	return ret;
- }
-@@ -715,7 +782,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
- 	vfio_pci_dev_set_try_reset(vdev->vdev.dev_set);
- 
- 	/* Put the pm-runtime usage counter acquired during enable */
--	if (!disable_idle_d3)
-+	if (!vdev->disable_idle_d3)
- 		pm_runtime_put(&pdev->dev);
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_disable);
-@@ -2107,6 +2174,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
- 
-+	vdev->disable_idle_d3 = disable_idle_d3 ||
-+			vfio_pci_dev_in_d3_list(vdev->pdev);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_init_dev);
-@@ -2202,7 +2272,7 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
- 
- 	dev->driver->pm = &vfio_pci_core_pm_ops;
- 	pm_runtime_allow(dev);
--	if (!disable_idle_d3)
-+	if (!vdev->disable_idle_d3)
- 		pm_runtime_put(dev);
- 
- 	ret = vfio_register_group_dev(&vdev->vdev);
-@@ -2211,7 +2281,7 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
- 	return 0;
- 
- out_power:
--	if (!disable_idle_d3)
-+	if (!vdev->disable_idle_d3)
- 		pm_runtime_get_noresume(dev);
- 
- 	pm_runtime_forbid(dev);
-@@ -2230,7 +2300,7 @@ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev)
- 	vfio_pci_vf_uninit(vdev);
- 	vfio_pci_vga_uninit(vdev);
- 
--	if (!disable_idle_d3)
-+	if (!vdev->disable_idle_d3)
- 		pm_runtime_get_noresume(&vdev->pdev->dev);
- 
- 	pm_runtime_forbid(&vdev->pdev->dev);
-@@ -2541,6 +2611,7 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
- 	struct vfio_pci_core_device *cur;
- 	struct pci_dev *pdev;
- 	bool reset_done = false;
-+	int ret;
- 
- 	if (!vfio_pci_dev_set_needs_reset(dev_set))
- 		return;
-@@ -2554,8 +2625,16 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
- 	 * state. Increment the usage count for all the devices in the dev_set
- 	 * before reset and decrement the same after reset.
- 	 */
--	if (!disable_idle_d3 && vfio_pci_dev_set_pm_runtime_get(dev_set))
--		return;
-+	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list) {
-+		if (!cur->disable_idle_d3) {
-+			ret = pm_runtime_resume_and_get(&cur->pdev->dev);
-+			if (ret < 0) {
-+				pci_warn(cur->pdev,
-+					"failed to resume device for bus reset, ret=%d\n", ret);
-+				goto out;
-+			}
-+		}
-+	}
- 
- 	if (!pci_reset_bus(pdev))
- 		reset_done = true;
-@@ -2564,23 +2643,33 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
- 		if (reset_done)
- 			cur->needs_reset = false;
- 
--		if (!disable_idle_d3)
-+		if (!cur->disable_idle_d3)
-+			pm_runtime_put(&cur->pdev->dev);
-+	}
-+	return;
-+
-+out:
-+	list_for_each_entry_continue_reverse(cur, &dev_set->device_list, vdev.dev_set_list) {
-+		if (!cur->disable_idle_d3)
- 			pm_runtime_put(&cur->pdev->dev);
- 	}
- }
- 
- void vfio_pci_core_set_params(bool is_nointxmask, bool is_disable_vga,
--			      bool is_disable_idle_d3)
-+			      bool is_disable_idle_d3, const char *ids)
- {
- 	nointxmask = is_nointxmask;
- 	disable_vga = is_disable_vga;
- 	disable_idle_d3 = is_disable_idle_d3;
-+	vfio_pci_free_d3_ids();
-+	vfio_pci_parse_d3_ids(ids);
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_set_params);
- 
- static void vfio_pci_core_cleanup(void)
- {
- 	vfio_pci_uninit_perm_bits();
-+	vfio_pci_free_d3_ids();
- }
- 
- static int __init vfio_pci_core_init(void)
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 2ebba74..2062543 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -127,6 +127,7 @@ struct vfio_pci_core_device {
- 	bool			needs_pm_restore:1;
- 	bool			pm_intx_masked:1;
- 	bool			pm_runtime_engaged:1;
-+	bool			disable_idle_d3:1;
- 	struct pci_saved_state	*pci_saved_state;
- 	struct pci_saved_state	*pm_save;
- 	int			ioeventfds_nr;
-@@ -157,7 +158,7 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
- 				      const struct vfio_pci_regops *ops,
- 				      size_t size, u32 flags, void *data);
- void vfio_pci_core_set_params(bool nointxmask, bool is_disable_vga,
--			      bool is_disable_idle_d3);
-+			      bool is_disable_idle_d3, const char *ids);
- void vfio_pci_core_close_device(struct vfio_device *core_vdev);
- int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
- void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
--- 
-2.9.4
 
