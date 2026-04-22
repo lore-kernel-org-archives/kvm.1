@@ -1,156 +1,313 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243BE3CAE95;
-	Wed, 22 Apr 2026 10:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC253542E5
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 10:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776852953; cv=none; b=hzfmewmLETNb5IV/zz0ASVhbNEInkwmYyXjb6qDp1vjlk4altwA6Xm/BxX970mpILwjy2oQPHsDj5coEuW0LtC6b7y425GF/Sn2FgmMY7hvX53qEFzbiPdyOjfkRV+nPld+A5F5vY5MHyFW3cuMRVZRYoOZalis1dFoemiR0sX4=
+	t=1776853048; cv=none; b=XpLs+Udr801fZUGVe7VzontaQalqK7jeRE1onxaAJivDVA4W5zSZXsbv8l9kX2C9ya0ntW/i46yrkDdFrLPobOvnO7KF1RnFIYXREdHa+GyRa2aTI/8H3qSb7dL7AILuU154APHpbecpjho1TYH+tgZKBIRexqJTbCPfdCRuuow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776852953; c=relaxed/simple;
-	bh=4pm3cuE4YtiBWgDifB2kYoUnXjTiXLk2G7f65ddr4uo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LdRuPafa9DLB9lQ4pBqx4bfrWXttl629gAOJJc3eVd6kZDskobzCoLbdY9vtgeEuCHYL1tm042wnfQx+cbrm4d+YS9ssJ4gxuXScyIW+olOXXPA1xsbk5+RtsSPdIO4omKHGIl9yVFShbNPBUSezZUb3MYtvmPkyMi6u8DH953E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U5SemlP9; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776853048; c=relaxed/simple;
+	bh=dAebQ6ZDDatNzL+6vwaqtuO7483PVvyMvhFQdmkviAA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pbSv72qqZD84tD4FAlqeiGRgrRVzERA3fqlgFdBOHBpkThJ3GnmfJeKyBDVT9uwdTw2mwQysSrvLZ9PjfH+w+IZDu+VAr41Cx9//JaC9W19nBEgP1Iha1m9E3qX9u+EeA0ZBkqekqDSI6ZI446PN2ms7Glc9vlHE6nBbiOcdBt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p01C+Z/H; arc=none smtp.client-ip=209.85.221.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U5SemlP9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776852952; x=1808388952;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4pm3cuE4YtiBWgDifB2kYoUnXjTiXLk2G7f65ddr4uo=;
-  b=U5SemlP9hrw0llBaEkQ2q7iu04foN6faUT1/CZT94U0RvXTgrl1YfUWb
-   IIh6wHLVAY4F/PMH+j4KWPgM/86Pw90h04cNzkW7E+4IU6mm7OKor2EQX
-   azpvioUPriOFT6z7GZ0WAzAdHPYqTJeCdQB4PH+dUCbFcurj2XxdXbD5y
-   I4Gsh/Rwn5YCgfxa+/QHD5/fsUTh88Vwwc4K7vlmF1l2gmz0dX6RNMMyo
-   K/jlTtIiSG+grfhMMqxrs3cX9AfyMACjy1vxz9tDEJcxFeST5o61QlcJH
-   Kv1CN8SrOB0o0qrQN2v6Dh4RIVUD5Q5j63u29xZmn+cJdiGzNz17uewgA
-   Q==;
-X-CSE-ConnectionGUID: GVM6/bUURyShbWj8gujq6w==
-X-CSE-MsgGUID: Fdm0J4AqTZmk8LIAtGrkeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="88103576"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="88103576"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 03:15:51 -0700
-X-CSE-ConnectionGUID: clzp6i49Tqy7fKYj7FwyrQ==
-X-CSE-MsgGUID: 2wvphU5qQKabKVkwrdVVEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="227983651"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 22 Apr 2026 03:15:47 -0700
-Date: Wed, 22 Apr 2026 17:53:34 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
-	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
-	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 27/31] coco/tdx-host: Implement SPDM session setup
-Message-ID: <aeianoT0LZFC2DNt@yilunxu-OptiPlex-7050>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-28-yilun.xu@linux.intel.com>
- <51f2be5a-47d2-4a06-92bb-368aaed73530@suse.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p01C+Z/H"
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-43fe608cb92so3662258f8f.2
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 03:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776853045; x=1777457845; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4/Ygp/F48dZ3RysrI6Uw/aAqnHQSpp+gk0lyGlg/T44=;
+        b=p01C+Z/HfhiMyJ74FXEnSVp2BiKomiyGFVQUnOqwdQuPPPu1xgHh5zvomhKjU49n4F
+         7gj7InDnmKcB7988dHVQdynIKrm3bIzIwRFySZ7Yakzl2784dCFCwHQVIvcJUb9w5vPG
+         BJKTf301/Mam+/7/JopI0RVto+qVl5/31r2wicS+O+D5TGFUEiWlD47IrIFrUeSYlhor
+         4OkyKHRBAIJ7qhX4zpKX6fuXSqu+Qwv69E3QTG2g6O4i9hutNUyneVfnHO5mdp+fTJhi
+         zBsg7xGNpW8kNc8kH+vYOeT98/k1n42pUiqiXIhI9gC7Wshb/YefmixeWuV2k/GBkTtf
+         a4Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776853045; x=1777457845;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4/Ygp/F48dZ3RysrI6Uw/aAqnHQSpp+gk0lyGlg/T44=;
+        b=GqXIaT/lTgvkoBlUMuAR40Jr4IAjJyojOxcOYnl6EF9YXbi92UpIaVI65qK4SSpkSg
+         jRFweRBN7Q42HYPRJTMrkKya27AngAxp4fQd0pBWWh7ZAgt1Yiz/qtPdQBNjqHB8j7+K
+         mmh6JQa21OVEIZsI64nHQxGVnNYoz6jgQrdj6aWGi/B5zjwbNcgb6mVKV0uvG7ZvJDyq
+         MWtYPG5G9i+AiehdnJpki2EZurukZJdz2z9rmTP6Sfcu2Mbso4LkwwgXiR7cq5WWXlmG
+         s52oe2ekV9GjEocQ+iB16XbuR5wtU97bO7r7WZzF2Gd/aPMsqs8j72AKZ9N8n6hTDToc
+         nlvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ84bzPBsXn9LiYZks54Wu8HmncQTc2ARcWnJlYWsP/mVB0wMAdoMCdxYs+rDEGZBwLdvJA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRhwG6AmUfCSAOFWiDoIaEOKOfzv4uu9opu/zL+WvkSJ8aGeab
+	XphcxDvhGlI9Ql6HLs/9Iu7U2NKyPD327G6hZ61vj+5S7rO/I6g78N75uE3JBgHzuoU=
+X-Gm-Gg: AeBDieuv5dJLXamwiAy5y+6/AVzyI0tPx/g5wm3AQe1eVpSjnNMU7WwozCLLaCyCRqt
+	ysCCgAMb7gLtjJnfKrCLw+LPqEKok71FTxoDabeO8av+UnaHSGMba3ZLvsArNMiunB8OHIAQ6fY
+	vtRq78Z6LWWox4eG1hW05JhF6NKO+1tZ/Yjvr5BodjcoyGafBUDFS7Avg/TAxI8ZaXJ84x/D2vH
+	RDExmvnl4fSj3TXy0G8osVMpZX5+9TSTpjXGfFXhieN0MidC9PwhZSkHVPzfAj+7thE0uADKS/O
+	03FLmrX9O5G2dX7kDnUE5McCKk7vjI3xhbm/GJQVwqTYkVyhs3Zu4e5+40gg/qGA6P7BcYfWUyP
+	Tv+htA0CHBoyffb2I3MtsH8r2H/mQScdpsx6+Y389Z+0iYmJyejbE+jknn9R3Qpw/oEHDaVHBXv
+	fq9i/6RWQhyl+iyQXUzvj/SVwh3b6P1wWYNg==
+X-Received: by 2002:a5d:5889:0:b0:43d:7a97:78b5 with SMTP id ffacd0b85a97d-43fe3e0a448mr32111190f8f.33.1776853044898;
+        Wed, 22 Apr 2026 03:17:24 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4d5b1sm48555959f8f.30.2026.04.22.03.17.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 03:17:24 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 5F2015F93F;
+	Wed, 22 Apr 2026 11:10:45 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Alexander Graf <agraf@csgraf.de>,
+	qemu-arm@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	kvm@vger.kernel.org,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 24/31] target/arm: teach arm_cpu_has_work about halting reasons
+Date: Wed, 22 Apr 2026 11:10:35 +0100
+Message-ID: <20260422101043.1234229-25-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260422101043.1234229-1-alex.bennee@linaro.org>
+References: <20260422101043.1234229-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51f2be5a-47d2-4a06-92bb-368aaed73530@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> > +#define TDISP_FUNC_ID		GENMASK(15, 0)
-> > +#define TDISP_FUNC_ID_SEGMENT		GENMASK(23, 16)
-> > +#define TDISP_FUNC_ID_SEG_VALID		BIT(24)
-> > +
-> > +static inline u32 tdisp_func_id(struct pci_dev *pdev)
-> > +{
-> > +	u32 func_id;
-> > +
-> > +	func_id = FIELD_PREP(TDISP_FUNC_ID_SEGMENT, pci_domain_nr(pdev->bus));
-> > +	if (func_id)
-> > +		func_id |= TDISP_FUNC_ID_SEG_VALID;
-> 
-> This check implies pci_domain_nr returning 0 is considered invalid. Other
-> callers in the kernel seem to not care, they just use the domain nr, so is
-> this check spurious or intentional ?
+With the advent of WFE and WFI we need to pay closer attention to the
+reason why the vCPU may be sleeping to figure out if we should wake
+it up.
 
-This is the func_id format defined in TDISP SPEC, bit 24 is a must. It
-is not the linux defined SBDF format.
+Create env->halt_reason to track this and then re-order the tests so
+we:
 
-> 
-> > +	func_id |= FIELD_PREP(TDISP_FUNC_ID,
-> > +			      PCI_DEVID(pdev->bus->number, pdev->devfn));
-> > +
-> > +	return func_id;
-> > +}
-> > +
-> > +struct spdm_config_info_t {
-> > +	u32 vmm_spdm_cap;
-> > +#define SPDM_CAP_HBEAT          BIT(13)
-> > +#define SPDM_CAP_KEY_UPD        BIT(14)
-> 
-> nit: move those defines above the struct definition, they just break the
-> reading flow as it is.
+  - ignore everything is the vCPU is powered off
+  - wake up if the event_register is set and we were in a WFE
+  - otherwise any IRQ event does wake the vCPU up.
 
-Yes.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ target/arm/cpu.h           | 27 +++++++++++++++++++++++++
+ target/arm/arm-powerctl.c  |  4 +++-
+ target/arm/cpu.c           | 40 +++++++++++++++++++++++++++-----------
+ target/arm/kvm.c           |  5 +++--
+ target/arm/machine.c       |  2 +-
+ target/arm/tcg/op_helper.c |  3 +++
+ 6 files changed, 66 insertions(+), 15 deletions(-)
 
-...
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 657ff4ab20b..98cdfa6f130 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -257,6 +257,19 @@ typedef enum ARMFPStatusFlavour {
+ } ARMFPStatusFlavour;
+ #define FPST_COUNT  10
+ 
++/**
++ * ARMHaltReason - the reason we have entered halt state
++ *
++ * To be able to correctly wake up via arm_cpu_has_work() we need to
++ * track the reason we went to sleep.
++ */
++typedef enum {
++    NOT_HALTED = 0,
++    HALT_PSCI,
++    HALT_WFI,
++    HALT_WFE
++} ARMHaltReason;
++
+ typedef struct CPUArchState {
+     /* Regs for current mode.  */
+     uint32_t regs[16];
+@@ -760,6 +773,9 @@ typedef struct CPUArchState {
+     /* Optional fault info across tlb lookup. */
+     ARMMMUFaultInfo *tlb_fi;
+ 
++    /* Reason the CPU is halted */
++    ARMHaltReason halt_reason;
++
+     /*
+      * The event register is shared by all ARM profiles (A/R/M),
+      * so it is stored in the top-level CPU state.
+@@ -1691,6 +1707,17 @@ static inline void xpsr_write(CPUARMState *env, uint32_t val, uint32_t mask)
+ #endif
+ }
+ 
++/**
++ * arm_set_cpu_power_state() - set power state synced with halt_reason
++ */
++static inline void arm_set_cpu_power_state(ARMCPU *cpu, ARMPSCIState state)
++{
++    CPUARMState *env = &cpu->env;
++
++    cpu->power_state = state;
++    env->halt_reason = (state == PSCI_OFF) ? HALT_PSCI : NOT_HALTED;
++}
++
+ #define HCR_VM        (1ULL << 0)
+ #define HCR_SWIO      (1ULL << 1)
+ #define HCR_PTW       (1ULL << 2)
+diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
+index a788376d1d3..4ca63a54443 100644
+--- a/target/arm/arm-powerctl.c
++++ b/target/arm/arm-powerctl.c
+@@ -78,6 +78,7 @@ static void arm_set_cpu_on_async_work(CPUState *target_cpu_state,
+ 
+     /* Finally set the power status */
+     assert(bql_locked());
++    target_cpu->env.halt_reason = NOT_HALTED;
+     target_cpu->power_state = PSCI_ON;
+ }
+ 
+@@ -186,6 +187,7 @@ static void arm_set_cpu_on_and_reset_async_work(CPUState *target_cpu_state,
+ 
+     /* Finally set the power status */
+     assert(bql_locked());
++    target_cpu->env.halt_reason = NOT_HALTED;
+     target_cpu->power_state = PSCI_ON;
+ }
+ 
+@@ -239,7 +241,7 @@ static void arm_set_cpu_off_async_work(CPUState *target_cpu_state,
+     ARMCPU *target_cpu = ARM_CPU(target_cpu_state);
+ 
+     assert(bql_locked());
+-    target_cpu->power_state = PSCI_OFF;
++    arm_set_cpu_power_state(target_cpu, PSCI_OFF);
+     target_cpu_state->halted = 1;
+     target_cpu_state->exception_index = EXCP_HLT;
+ }
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index ccc47c8a9ad..124be8c401e 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -144,18 +144,36 @@ static bool arm_cpu_has_work(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+ 
+-    if (arm_feature(&cpu->env, ARM_FEATURE_M)) {
+-        if (cpu->env.event_register) {
+-            return true;
+-        }
++    /*
++     * Only another PSCI call can wake the CPU up in which case the
++     * power_state would be set by arm_set_cpu_on_and_reset_async_work()
++     */
++    if (cpu->power_state == PSCI_OFF) {
++        g_assert(cpu->env.halt_reason == HALT_PSCI);
++        return false;
++    }
++
++    /*
++     * A wake-up event should only wake us if we are halted on a WFE
++     */
++    if (cpu->env.halt_reason == HALT_WFE && cpu->env.event_register) {
++        cpu->env.halt_reason = NOT_HALTED;
++        return true;
++    }
++
++    /*
++     * Otherwise pretty much any IRQ would wake us up
++     */
++    if (cpu_test_interrupt(cs,
++                           CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
++                           | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU_INTERRUPT_VFNMI
++                           | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
++                           | CPU_INTERRUPT_EXITTB)) {
++        cpu->env.halt_reason = NOT_HALTED;
++        return true;
+     }
+ 
+-    return (cpu->power_state != PSCI_OFF)
+-        && cpu_test_interrupt(cs,
+-               CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
+-               | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU_INTERRUPT_VFNMI
+-               | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
+-               | CPU_INTERRUPT_EXITTB);
++    return false;
+ }
+ #endif /* !CONFIG_USER_ONLY */
+ 
+@@ -250,7 +268,7 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
+     env->vfp.xregs[ARM_VFP_MVFR1] = cpu->isar.mvfr1;
+     env->vfp.xregs[ARM_VFP_MVFR2] = cpu->isar.mvfr2;
+ 
+-    cpu->power_state = cs->start_powered_off ? PSCI_OFF : PSCI_ON;
++    arm_set_cpu_power_state(cpu, cs->start_powered_off ? PSCI_OFF : PSCI_ON);
+ 
+     if (arm_feature(env, ARM_FEATURE_AARCH64)) {
+         /* 64 bit CPUs always start in 64 bit mode */
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index d4a68874b88..c08e4797b32 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1143,11 +1143,12 @@ static int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
+     if (cap_has_mp_state) {
+         struct kvm_mp_state mp_state;
+         int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_MP_STATE, &mp_state);
++        ARMPSCIState state;
+         if (ret) {
+             return ret;
+         }
+-        cpu->power_state = (mp_state.mp_state == KVM_MP_STATE_STOPPED) ?
+-            PSCI_OFF : PSCI_ON;
++        state = (mp_state.mp_state == KVM_MP_STATE_STOPPED) ? PSCI_OFF : PSCI_ON;
++        arm_set_cpu_power_state(cpu, state);
+     }
+     return 0;
+ }
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index b0e499515cf..62401c5a3ea 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -916,7 +916,7 @@ static int get_power(QEMUFile *f, void *opaque, size_t size,
+ {
+     ARMCPU *cpu = opaque;
+     bool powered_off = qemu_get_byte(f);
+-    cpu->power_state = powered_off ? PSCI_OFF : PSCI_ON;
++    arm_set_cpu_power_state(cpu, powered_off ? PSCI_OFF : PSCI_ON);
+     return 0;
+ }
+ 
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 652611b4313..46c745077d5 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -403,6 +403,7 @@ void HELPER(wfi)(CPUARMState *env, uint32_t insn_len)
+                         target_el);
+     }
+ 
++    env->halt_reason = HALT_WFI;
+     cs->exception_index = EXCP_HLT;
+     cs->halted = 1;
+     cpu_loop_exit(cs);
+@@ -464,6 +465,7 @@ void HELPER(wfit)(CPUARMState *env, uint32_t rd)
+     } else {
+         timer_mod(cpu->wfxt_timer, nexttick);
+     }
++    env->halt_reason = HALT_WFI;
+     cs->exception_index = EXCP_HLT;
+     cs->halted = 1;
+     cpu_loop_exit(cs);
+@@ -508,6 +510,7 @@ void HELPER(wfe)(CPUARMState *env)
+             return;
+         }
+ 
++        env->halt_reason = HALT_WFE;
+         cs->exception_index = EXCP_HLT;
+         cs->halted = 1;
+         cpu_loop_exit(cs);
+-- 
+2.47.3
 
-> > +static void *tdx_dup_array_data(struct tdx_page_array *array,
-> > +				unsigned int data_size)
-> > +{
-> > +	unsigned int npages = (data_size + PAGE_SIZE - 1) / PAGE_SIZE;
-> 
-> nit: There's DIV_ROUND_UP
-
-Yes.
-
-...
-
-> > +DEFINE_FREE(tdx_spdm_session_teardown, struct tdx_tsm_link *,
-> > +	    if (!IS_ERR_OR_NULL(_T)) tdx_spdm_session_teardown(_T))
-> > +
-> >   static int tdx_tsm_link_connect(struct pci_dev *pdev)
-> >   {
-> > -	return -ENXIO;
-> > +	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
-> > +
-> > +	struct tdx_tsm_link *tlink_spdm __free(tdx_spdm_session_teardown) =
-> > +		tdx_spdm_session_setup(tlink);
-> 
-> Is the free() really needed here, either the session is correctly setup and
-> tlink_spdm is returned. But if session_setup() files then what about calling
-> spdm_session_disconnect() on an unestablished session?
-
-Ah, we have more steps to add, the __free() will take function when the
-following steps fail.
-
-We may add __free() when we add more steps, but I think that makes the
-diff harder to read, so I want to keep this style.
-
-Thanks.
-
-> 
-> 
-> > +	if (IS_ERR(tlink_spdm)) {
-> > +		pci_err(pdev, "fail to setup spdm session\n");
-> > +		return PTR_ERR(tlink_spdm);
-> > +	}
-> > +
-> > +	retain_and_null_ptr(tlink_spdm);
-> > +
-> > +	return 0;
-> >   }
-> 
-> <snip>
-> 
