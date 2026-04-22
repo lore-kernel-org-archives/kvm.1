@@ -1,165 +1,146 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7001B3D1CD4;
-	Wed, 22 Apr 2026 12:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5440B3D0929
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862270; cv=none; b=pP/r1smluu6CjpvihWNderk3gzuCHEocjDBgagL/3gj3mmRCfXUyzBkXpkSi8dR+d5UOeIhT6KBYqFLn1xA+iNmsWmfoUKCEQ2KJa7gIibuhN5o/JrmZBY5hodzDYMEUdtzxyEm3mXkgFnkk/oYbG424hq8HS7wsR7DLcBIj3rA=
+	t=1776862375; cv=none; b=hEzzV+bSyyaQaUvwvO861ov61iFoRyQgP0uKRGYD9xV4Z9c8bOAqlnpY04Wtj5QkZFM0We+btwdQuBsPYWfZRG7teq7Zdfixb8IzBo+v/5SQ0qRt0e4TsQ9BXOnpUeijdUuaIRg+l+fbxsISPzR58sWYMvg52gfykKdofWrGeOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776862270; c=relaxed/simple;
-	bh=qKSk0bujugzo01qNCAajRUp//6Nfu8txmQoFRLIq9C0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GG+FidM3mRg44/vqAeEOi+/6+Uw32yDYvjbS/cTg8eHbvcLggPgqPlLZuLZMEOeb/JCFbFQ/kjnBC6lgNuxxG04DqMM1+drgyz5Nq6uLO8M8u/Cjr1oZBmwugznNfudXOXlKSCxJ2C9yqRWaWG69SsV51d3YGLoLHV9TNdNdCo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dMT6OhRz; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776862375; c=relaxed/simple;
+	bh=p9zh1aSSTJl7qcoNAxlI9Zgvn5vO3xLa8DoNJqH9INE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SWgfmZTsOE3GsZ9l87QZtbAaQAS9gR41bsyCtyTRUCb7ZFWEj+lA2LeItwbxsMJSzlZuPGblvkLvHCLCbuyI/UuGM9sI8GTUTYkkorhAVIehGLhsBhuA3y4FidkQ8UtK5fL1FgDngC3tPG3IpQySsf3viuH12WgefPTJ+xCFuxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MttD/aGL; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dMT6OhRz"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MCL4nd679439;
-	Wed, 22 Apr 2026 12:51:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7xylnA
-	Zx5b4klSPd+E2R3d4qAXQuNUKBSaxX7mEc9yQ=; b=dMT6OhRzMa9yJL3q2fInO8
-	H5+67VEo4Vf8So0qwbLEkApwIJU9lI9Yc74jBGR5WGW0GptLSZ4pANC6MEZKD5q9
-	j+yjTS3F+hr+DUvK4OFfpxuI5ie4EbU3fIGUMq2tLmFu8Idm9XxNTwtDq9DowiK9
-	dR5ej02g8LtHr51ShJkaaGDQHhgqjWdR/v37k+u7jtx99nuQOURxK3xzkDo5GDa3
-	C5bsyWzdywg/sk3/P+nozy6ugm46QTk5/25+QVNtSCF8JId5NlOYtoaqNtpP2Mgy
-	dv4wpYfTIs1lOQM1QEDQKNQHtp4Cyizuz6qX1FG2ohKRLL9EkswELyewGUQOWDFw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu7k8gw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Apr 2026 12:51:05 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63MCoKEw023897;
-	Wed, 22 Apr 2026 12:51:04 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjky28pr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Apr 2026 12:51:04 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63MCp0m435586464
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Apr 2026 12:51:01 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D48D32004B;
-	Wed, 22 Apr 2026 12:51:00 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E22C20043;
-	Wed, 22 Apr 2026 12:51:00 +0000 (GMT)
-Received: from [9.111.42.51] (unknown [9.111.42.51])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Apr 2026 12:51:00 +0000 (GMT)
-Message-ID: <b19d9db4-81f6-4aa7-981d-aebc69ab5683@linux.ibm.com>
-Date: Wed, 22 Apr 2026 14:51:00 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MttD/aGL"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so5638589f8f.3
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776862373; x=1777467173; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K6n23oz7LRRQlFUUM3gTQS/rrKewMUhskSZOvSJMe4M=;
+        b=MttD/aGLn0cuJxc0Djd5DU6jNkipci4HiQUrxr9+oO+dZBWrjPIodbDajhJcKBqGXc
+         L4cHNH1XZYjGzaRMaITQbaB9gclwcmiieJHGlSH6GVeJS1xYS9Um7WdF76TuM4khoXqA
+         pnjUSxkBIkf+EKqyjMMiHO8bJW7c1KpVtkvYWaMPCWY4C5vcYVuVyiBkUpLpa0WUDlr+
+         yXYB04b6UFo/3R8M6RGIH/oMDwxmauxyzTnRBvyTcAllHKivTpqWA+YwKdfmJB6B4Ojo
+         if8sJcniRvQTBMSSnd4p9J5YpaUwmkS8KQ76OtwbQ/BSgMSS64IrnKXzQW/eKyg0XZNb
+         UsXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776862373; x=1777467173;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=K6n23oz7LRRQlFUUM3gTQS/rrKewMUhskSZOvSJMe4M=;
+        b=QIsIc4HGHfBhLQBy6wfN/gMpUZfXeWRpZcTaPda0hJa9rJ0TVsIwcXpSMn/glXRHcJ
+         bwN7I+jRltCtV/W6ZIRAgB7meu5ymHA+/OBWXf57Vp7+8JQNO3yfR7tum2JPG8tfWj0M
+         fHSZVFTrCLzkouKCOnRZNQ5g43RjtyOpP4sh24z9MMISaaM12M51hxzLbgxMoGrUzR+O
+         brTYFE+TLK2R1ZtG/SLxeEbJp1NEqu5hmTpThcjUq1q8rUAD2X7K+asRXEYbUbP11fc3
+         +igL6Je95G3a41TPQ0d5xYav3HN/CtwsmrC7uG+YMxZ7IW16U5x33ii4z4Q1c0DtjE3s
+         czYA==
+X-Forwarded-Encrypted: i=1; AFNElJ8aLCmE3dGH+oFu3U93pHY5Pmxd1pkL0QuTjsV4jakDKviSC532RIgaJfFNN3Qfb0PP9b8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+7YkX82Lqh3Wm2XSgizPPFm8xOLbIiToquHD9rJkglL63BXBS
+	EZMhFSow9AmaoavIesff8xDyiUz63T7cbPNdauJTUpQM7DVpQUp4iu8f+1pHoXNW3o4=
+X-Gm-Gg: AeBDietYxKExsVAgBryALZ29l7adhzVg3L9Sq8by/yllxeLUWD3NEU/74UCoeHgIFBK
+	it4agCbTJ+uRdm4ufYxrW9qEmZAoivmQKLcwwOrzSjO2w0HjQykTcfHm/F4x8bCg9PfHhqpe/Ol
+	pBUG54w5ro5e0YCWfumSWfTz907WVGwIcMRVEdK6HU9shPFf4XLztD+eH2D4qUTR/VfLoOEzCIN
+	22kDDdxOPE2tdTQvCaZV5B4/u2qxeDsY6oeIYQMTlkvAyijskEAerFeBnuYIi+v9AbdL6MHtZyn
+	dtGiAX2FBoSFvuaCVUh5+FekXHgCSGDGgXoUJdMEYUuTWcreyBpsJs1jJaJmhiQcHaZbtCHVUzy
+	3UWGY3J8bVglMsoj/YgNyY8eBhivy0wFVU/wcLC2yWLKghZp/VMP+rYU8r6rQHrS92kYRE68NeK
+	pch2NBrd5Qo6xM1TF6/0O8oJKm8qMJdEH3EQ==
+X-Received: by 2002:a05:6000:200c:b0:43d:77f4:7145 with SMTP id ffacd0b85a97d-43fe3dd407dmr34461259f8f.19.1776862372594;
+        Wed, 22 Apr 2026 05:52:52 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4c221cdsm46907702f8f.0.2026.04.22.05.52.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 05:52:51 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 330505FC04;
+	Wed, 22 Apr 2026 13:52:51 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
+	Alexander Graf <agraf@csgraf.de>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	kvm@vger.kernel.org,
+	qemu-arm@nongnu.org,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v3 03/32] target/arm: migrate FP/SIMD trap syndromes to registerfields
+Date: Wed, 22 Apr 2026 13:52:20 +0100
+Message-ID: <20260422125250.1303100-4-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
+References: <20260422125250.1303100-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] KVM: s390: vsie: Refactor handle_stfle
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>,
-        linux-s390@vger.kernel.org
-Cc: David Hildenbrand <david@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260226-vsie-alter-stfle-fac-v2-0-914974cb922c@linux.ibm.com>
- <20260226-vsie-alter-stfle-fac-v2-3-914974cb922c@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260226-vsie-alter-stfle-fac-v2-3-914974cb922c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JiZJez4MzRcPmpXDTIakFbc6rryvRKh4
-X-Authority-Analysis: v=2.4 cv=Ksp9H2WN c=1 sm=1 tr=0 ts=69e8c439 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=jI7lt5Zo0p4w2OnscCsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: JiZJez4MzRcPmpXDTIakFbc6rryvRKh4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDEyMyBTYWx0ZWRfX1zlR8Zun9luc
- PTWabtS5tlF7eA2bYAVOJLL97PuW7C3uX21qJwVTdPExzSCSluGy/p0SmqcrL5ZaCmhmY3fCU43
- apzEvCYbkjGKHNBzrLgfB0EcFAcWOKWvBWxhR6xh27GNOa/IB8EJYI/hIUGWhykNMuHjEKzh+hz
- qzyiG7PdaIPmum7DzM3R6l5+Bghroq94Xvr9p7956pkXDErCVKSXqNZaxWNtawFqS9rgKLLVKo1
- iwdIYAIAstLPpTTLpjZQl0iQN1oJIxDkXAv4TBDzUMa364dqgYVPCn2Gsx5FZnUDI1PTbXuGvI1
- jdyDiHrNWbfF2q9IOeol/QLiJo1Kq3Q8kA03TAEDDsu+eUoPllQVZqf1Z3ZG2Xp64MG83hA/Dy0
- zEuL4dw8Qy+YJu+EznbXSjJKy5nxhzhU3MxVDjjOXqdbuV89kM91q9K6ndeIvVWssU6ZzdPa5Ov
- +Mwn58qUNAhuDOMBqKA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-22_01,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 adultscore=0 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604220123
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2/26/26 13:49, Christoph Schlameuss wrote:
-> From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> 
-> Use switch case in anticipation of handling format-1 and format-2
-> facility list designations in the future.
-> As the alternate STFLE facilities are not enabled, only case 0 is
-> possible.
-> No functional change intended.
-> 
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+The syn_simd_access trap was never used so remove it. We should only
+see the COPROC encoding on v7 architectures.
 
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+
+---
+v2
+  - use !is16_bit directly
+---
+ target/arm/syndrome.h | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
+index 29462aa103c..72051443d59 100644
+--- a/target/arm/syndrome.h
++++ b/target/arm/syndrome.h
+@@ -337,21 +337,26 @@ static inline uint32_t syn_cp15_rrt_trap(int cv, int cond, int opc1, int crm,
+     return res;
+ }
+ 
++/*
++ * ISS encoding for an exception from an access to a register of
++ * instruction resulting from the FPEN or TFP traps.
++ */
++FIELD(FP_ISS, COPROC, 0, 4) /* ARMv7 only */
++FIELD(FP_ISS, COND, 20, 4)
++FIELD(FP_ISS, CV, 24, 1)
++
+ static inline uint32_t syn_fp_access_trap(int cv, int cond, bool is_16bit,
+                                           int coproc)
+ {
+     /* AArch32 FP trap or any AArch64 FP/SIMD trap: TA == 0 */
+-    return (EC_ADVSIMDFPACCESSTRAP << ARM_EL_EC_SHIFT)
+-        | (is_16bit ? 0 : ARM_EL_IL)
+-        | (cv << 24) | (cond << 20) | coproc;
+-}
++    uint32_t res = syn_set_ec(0, EC_ADVSIMDFPACCESSTRAP);
++    res = FIELD_DP32(res, SYNDROME, IL, !is_16bit);
+ 
+-static inline uint32_t syn_simd_access_trap(int cv, int cond, bool is_16bit)
+-{
+-    /* AArch32 SIMD trap: TA == 1 coproc == 0 */
+-    return (EC_ADVSIMDFPACCESSTRAP << ARM_EL_EC_SHIFT)
+-        | (is_16bit ? 0 : ARM_EL_IL)
+-        | (cv << 24) | (cond << 20) | (1 << 5);
++    res = FIELD_DP32(res, FP_ISS, CV, cv);
++    res = FIELD_DP32(res, FP_ISS, COND, cond);
++    res = FIELD_DP32(res, FP_ISS, COPROC, coproc);
++
++    return res;
+ }
+ 
+ static inline uint32_t syn_sve_access_trap(void)
+-- 
+2.47.3
+
