@@ -1,65 +1,66 @@
 Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D2D3DBD66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5BA3E9F96
 	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862379; cv=none; b=KDEEj4/fjBtIby1a/ejrnkxLfiH6ZysJbt/GhEgjhhnoVAg+dGTWgA4N8n4lWWBWUKYz8/kgWALYAaQ//vN51TU2O7/LZp6m/QJTpB1H6LkCRraYaO8KTe2D2bPmzZYMjcLAe73D7sUNl1x5g1tduT8Z2nX9P2+I5VmDct2LaSc=
+	t=1776862380; cv=none; b=rl70ZfDp8LneB671WHYOxqm8dsrPV9+RbAf6qG4PN//QzCOoYP710vf6A58DUPkVUhQ2yVQgg5s+7qY0uvKFX0iC9qI9VUB2ud46ogUNgfMpsQAYWZ/UED3AgBfMsllB4gbp5Z+uiVzMJguW1jIqGJCaXuEROtJ3QkwJ9vs5+vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776862379; c=relaxed/simple;
-	bh=cZIp9nxerNU8oAlNtGhJ7PtRCs2wETNV24N1qiRPFIE=;
+	s=arc-20240116; t=1776862380; c=relaxed/simple;
+	bh=Bme4SqmHD3uUqh79O1qpJHX8H3Zd/wSEVuQYFTr57WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NQp9krj49R2KdzfRnQydBRuT+F99xKmmhSUy4UgXjibA+oH/5EBIRvHzK3TeEeNUyq8/5am0LISnT+85IebcqaAEnd8yTe6JvbHNuZk4zc4N7UsxMIPPoqJSCWwW/g6or+NiOJ9WQqDvNjWyAMEEa8RPXI+rwMXAVNOX22DEoeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZcpPs0fg; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version:Content-Type; b=p6bu/7AnWtGUYBQ8AHFG2WwlH2IPznHqgePb0rMNmAHVvug5ulo1BXnHzK6nGnHjAlsBxVFpBMGNH5ZEB9TKBL9MTejvBED8frjec5SnQUjwr5Xu9pcWrtGRiCQPeny/Cw1P+FUe7vma3ocqCkIvvfp7uFwN3xLoIWQ4m66vxkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sCTfgzHZ; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZcpPs0fg"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so67789815e9.2
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sCTfgzHZ"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso60858685e9.2
         for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1776862377; x=1777467177; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e8D+Vwc6j20F82XkTXJvqmESw0OfURlyV19jvdfWNbI=;
-        b=ZcpPs0fgp5vHrMJ9KTit902/gmTAP6dv1h1pa/jjcllD8EYhuj5S0U1xrqCgcIEKQ3
-         SH055g6L0tQFs8564ppGYXXYEu5o4ZnBmdJvVrs2sWY+aHIQVoKRl0D4ST5Apiu3puK9
-         gJp3yYRBHGBekZQs1tHABghAqb1s3AZpb+lw+ASAzQYLHkMy6qHd8wJrd+Q3HdmK+GOk
-         1PxvfkTBbU1g77Ojn1wui74PVkamm2cchOhsSzIBhcuri+gUmUEHlPb9/25d0RLoiwEf
-         pzb73UFzKBSaXhEUlLvfNKJNvvx67YTSjCrlD9MnGArEZKicSWmCD1nO444jN57aApHq
-         tbXw==
+        bh=OMEvstJVHgigEudV5H559dC48ky9GaKFB5z4g04o+Y4=;
+        b=sCTfgzHZS5qZ81I3ktcRgkmNkaVnqKXGvzJkT7MJ4PsnrbczDekB3ZQApmJ01WRQ8P
+         OrzEjcCwW+Q9sHwZnPNgupfKsSOaE4Yc8WdehDBBfABaD1M1SaB6C0o92Dtl4YmSqn8B
+         b7f1DmOVYb0aTSv4Aeg+Sku69+E1+sirCypZq6uMCIo8cHT88gGzInCOShg3PkeyYB2S
+         L+Gi0JMkgUCAnpf7rV9aKFNr9k9flouk3HS1KEZUxAI5JpLGaGwkJCyAdOJrJxisGZR1
+         o/W0sJIANzn7WFWYr5EJ4hMHehzE52au1cflO5CY/7ghB1BR2C4M82Lmkk4Q5byU5UyQ
+         lX5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1776862377; x=1777467177;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=e8D+Vwc6j20F82XkTXJvqmESw0OfURlyV19jvdfWNbI=;
-        b=Fx/yCYfcGU6LupFJOHc6V3cusE95WenhKbuwNHL2pz8MXz53Kz44XqAkJmBqfDhXF+
-         4tzGlptytC80+hXOFvXlh2xPK7L1dfxpRfTA8llrKA8XbxY25eAaR1kX1sia+eHxJVEM
-         3dDP0xKAwYa1nAWlNr37+dqYcnc1WmFYMq325w2jM9ngISCTypuNh2tz7G4N+cjHUK0T
-         1PUx9OntiB0EvHV9c2DJtRyIBVWYS2quIs+0W7r1o3xcIz4HufBhSM4ZLiM2WDOdmvFw
-         1SpuMiL3C9+s7mvD5QUkxv5e6M9X+0DvKmYZG7k0qOxgJH0nuWZgNdZFF+Iu2bH8X4zH
-         H9TQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+os+CowY4KCEJlTyqnHQDDRUsgZ1qG7cCsccf3oK2tSQXnchvaTV74mIesy/+yiSva8gU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiUNYQPlY7jaFJZDAbrZceZ0ZaMOzE77zeoCvNRFJOz7G96NWX
-	kNrirRIlg49cOLpK5k99gPgOtz3iZGTlAVYAV68lRcAS5ozCh6wSL/ZeqlU3/NmFfzw=
-X-Gm-Gg: AeBDiesc0tJwauVu0e+C86f52htwmpEo1UHE7thfK9zBYTqUfs4V3H/1sdnHbqVEaqo
-	w7uRvjgxL4sZsaLEqtSEyWYLP/7nHuBfPe4kX9XUkZXkYRwzK2ZfXYWbU8MSRyFCd2ZsKcINRH1
-	VEXMq4E8bI1Ir+2WpZsLJ9OCFysXFz1NELkTu2u2U/rVjrReRNjZ7JoPnqeV7u/0EJvBgiYWQi0
-	RwSR+w6Oe8Oz4AZHKH7fWMRNKahql9LQdg8hJP3eWlNC9HQpaE0ExdTxiJa+Y3p4mbic6NiKfyI
-	6ZQdype7eWGUu85Lt8b6LDq3BsTwf6DLWXhfcPC8+pcQHkh7ErWaFJD8xQFlwmZD1Kn2tLscoHb
-	Ud5R4r3XkNUrDrOgQEoE/CHVq4kUfOjUBYrVrI1S1BPPEhDN6HDhqOtXFA90S8nFeIuYYszz7BI
-	klN9E0hcvg3T1NANjofBsCTQFcYXx68GThSw==
-X-Received: by 2002:a05:600c:899:b0:489:1a63:509c with SMTP id 5b1f17b1804b1-4891a635125mr125689055e9.0.1776862376580;
-        Wed, 22 Apr 2026 05:52:56 -0700 (PDT)
+        bh=OMEvstJVHgigEudV5H559dC48ky9GaKFB5z4g04o+Y4=;
+        b=KCOfGu2W8XG1nEs3QpunCB1kxW5msiqj1Tj1Y4g6fWx64JAMS19CP6aY9n7dLEE0M1
+         GFFQtabSgnhOCP4shz3xWnuTy7SiXUBulHTYCPSV77JRr349vqY1/Bbgb07DnPszzYZq
+         JX3jPwGGhqzfVu5+zjAFmuU4ospvUOgk6TIReoEke6LknbwrNe6b1DNI+GPzihqeZg0F
+         ZB413106aL5Y/4LbY/UVmMoDE1j25VwTYSyT/h7oJHLFzPB7HYA24Xl5Y34c2DmJBLnG
+         WNuPyhIbEh/RCCwIWcIfcvTJrzg9Fu5T01uRghDW1iIGGM+XhFX5KlKbP48YLOBCexUj
+         sI2A==
+X-Forwarded-Encrypted: i=1; AFNElJ97jKD9baooGEv99YeR0aMAz8voLZxrtAZsByn8lbC69HRtBmOczaCP91kNaeMagnWZ+g8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNejGUvguILuw9i5Y8DjhREqAHrVLA1lBU3AdAC5C1V3aT2ooA
+	LkinELVxvPvVHVc6IxYSG/lfH1YuOADZAnZ0P03WeJnKu1Z85Tx7Q5bu0UyeTM2JAfs40vtTrvC
+	ksQr+X1Q=
+X-Gm-Gg: AeBDiet7sgHXGU2UFIFzImK3EzxJnmXTovT80d519gWdRRhoEGtSuDeYTROx80nIqUZ
+	ddI7gPj+uVuNT40TkTEXwfF/Djw1bD2nMXrkW3Ix4ScZBsTEC3cj4d2Kv4H5oYtznQvhfQdJSZH
+	g594j6M7Wcm7Zimd/9ElZG53yacK9ddjrYezqhtOWoUGIn7XiixpEyax5JPzrvysezEmmSoHA+7
+	1ohzYvPhKINq7TjqISEkRmL/cQE+1Q7qNgurBIKNgzV8Pogyib5kMSGw7EYhwmM3R3w8VyN1g2U
+	73nAOMC+fJzBp+OoJNTHsz5zwpCS84CZ7Q7fS2U7zpVKAI9rz+K0cHU8Tqlbe0g/IMxMpQ0VXE4
+	usdueerKeUtihDcOWqsWnlYF3ZAUS0pFtqF8rtVIhCvvHoGHvdKpwPFjeW3cGHUc6YWNEhc/XGh
+	hTI7HG5NdyvHDBUID7hDMYneHV10okU17mYg==
+X-Received: by 2002:a05:600c:4e4c:b0:48a:58ae:9938 with SMTP id 5b1f17b1804b1-48a58ae9f69mr79775915e9.19.1776862377319;
+        Wed, 22 Apr 2026 05:52:57 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc17f642sm409465435e9.5.2026.04.22.05.52.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc17f642sm409465985e9.5.2026.04.22.05.52.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Apr 2026 05:52:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 91B0160E72;
+	by draig.lan (Postfix) with ESMTP id A537460ED5;
 	Wed, 22 Apr 2026 13:52:51 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +73,9 @@ Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
 	qemu-arm@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 08/32] target/arm: migrate BXJ trap syndromes to registerfields
-Date: Wed, 22 Apr 2026 13:52:25 +0100
-Message-ID: <20260422125250.1303100-9-alex.bennee@linaro.org>
+Subject: [PATCH v3 09/32] target/arm: migrate Granule Protection traps to registerfields
+Date: Wed, 22 Apr 2026 13:52:26 +0100
+Message-ID: <20260422125250.1303100-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
 References: <20260422125250.1303100-1-alex.bennee@linaro.org>
@@ -87,48 +88,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is an Armv7 specific syndrome for chips with Jazelle
-functionality.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/syndrome.h | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ target/arm/syndrome.h | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
 diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 52a6745cb23..6fcf0ac7572 100644
+index 6fcf0ac7572..bc65106c61a 100644
 --- a/target/arm/syndrome.h
 +++ b/target/arm/syndrome.h
-@@ -440,10 +440,26 @@ static inline uint32_t syn_btitrap(int btype)
+@@ -462,12 +462,36 @@ static inline uint32_t syn_bxjtrap(int cv, int cond, int rm)
      return res;
  }
  
 +/*
-+ * ISS encoding for trapped BXJ execution
++ * ISS encoding for a Granule Protection Check exception
 + *
-+ * This is an Armv7 encoding.
++ * These are only reported to EL3
 + */
-+FIELD(BXJ_ISS, RM, 0, 4)
-+/* bits 4:19 are Reserved, UNK/SBZP */
-+FIELD(BXJ_ISS, COND, 20, 4)
-+FIELD(BXJ_ISS, CV, 24, 1)
++FIELD(GPC_ISS, xFSC, 0, 6)
++FIELD(GPC_ISS, WnR, 6, 1) /* Write not Read */
++FIELD(GPC_ISS, S1PTW, 7, 1)
++FIELD(GPC_ISS, CM, 8, 1)
++FIELD(GPC_ISS, VNCR, 13, 1)
++FIELD(GPC_ISS, GPCSC, 14, 6)
++FIELD(GPC_ISS, InD, 20, 1) /* Instruction not Data access */
++FIELD(GPC_ISS, S2PTW, 21, 1)
 +
- static inline uint32_t syn_bxjtrap(int cv, int cond, int rm)
+ static inline uint32_t syn_gpc(int s2ptw, int ind, int gpcsc, int vncr,
+                                int cm, int s1ptw, int wnr, int fsc)
  {
--    return (EC_BXJTRAP << ARM_EL_EC_SHIFT) | ARM_EL_IL |
--        (cv << 24) | (cond << 20) | rm;
-+    uint32_t res = syn_set_ec(0, EC_BXJTRAP);
+-    return (EC_GPC << ARM_EL_EC_SHIFT) | ARM_EL_IL | (s2ptw << 21)
+-        | (ind << 20) | (gpcsc << 14) | (vncr << 13) | (cm << 8)
+-        | (s1ptw << 7) | (wnr << 6) | fsc;
++    uint32_t res = syn_set_ec(0, EC_GPC);
 +    res = FIELD_DP32(res, SYNDROME, IL, 1);
 +
-+    res = FIELD_DP32(res, BXJ_ISS, CV, cv);
-+    res = FIELD_DP32(res, BXJ_ISS, COND, cond);
-+    res = FIELD_DP32(res, BXJ_ISS, RM, rm);
++    res = FIELD_DP32(res, GPC_ISS, S2PTW, s2ptw);
++    res = FIELD_DP32(res, GPC_ISS, InD, ind);
++    res = FIELD_DP32(res, GPC_ISS, GPCSC, gpcsc);
++    res = FIELD_DP32(res, GPC_ISS, VNCR, vncr);
++    res = FIELD_DP32(res, GPC_ISS, CM, cm);
++    res = FIELD_DP32(res, GPC_ISS, S1PTW, s1ptw);
++    res = FIELD_DP32(res, GPC_ISS, WnR, wnr);
++    res = FIELD_DP32(res, GPC_ISS, xFSC, fsc);
 +
 +    return res;
  }
  
- static inline uint32_t syn_gpc(int s2ptw, int ind, int gpcsc, int vncr,
+ static inline uint32_t syn_insn_abort(int same_el, int ea, int s1ptw, int fsc)
 -- 
 2.47.3
 
