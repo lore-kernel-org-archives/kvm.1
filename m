@@ -1,65 +1,65 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BE23EAC86
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401FB3EAC8B
+	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 12:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776862382; cv=none; b=OxcT58Wd1lrdoJLuZOrSAXHDEczzNjRgf6VmJWGIt8Z6DsLh+2TFj4lT/+YQiPvC0LM8saTJtjvPPIJwWEBxVdr8xMkS3qkVLqJjumJfH6yaqrfTALZ5crDqZPQzDB4no3IPBHbAlpIFhGnwKGkZDVAoYmbeTCTFdymtqQsPA1k=
+	t=1776862382; cv=none; b=CB3bv6whSsEuB+FrU4STqoxDhbgFULVe6pZ48ch1ua8t6FhnjwipMTWcDpBNbmfNryBrWm4Xlc4yOZlvXivKSUQ7esKgTs677VANxVAPu0I9Xijr/R1WCrJwLkxVvSDqLMxFlzMYGKe9ZyCXhsD7PRJhqID+rQYUc2c5qtMCbNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776862382; c=relaxed/simple;
-	bh=0Ykhl9IF8fNR/4GTFmuwJ/ajcVHu9zeqWMWjbn0CNxk=;
+	bh=I74ngpgJdGFCGwvTHiD1IdLZCW7KJU87muANcBYteRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DcDZn+BwnmebFSQD7C/5YeD6VMYiBTlpgKYPBbQQcmtwGvIe8qzTOFeb2KyfybHuP+GnC33+w9KL4SEVuTSAXMvUJUOHU70h5PG0fTAdxuYes7tPF23Z5Gg1pvBXrUQtUN8ZzHtTstURx5Wxxii+m2l+1pjG3D4caKY3d/ha9kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hlRlHC/y; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version:Content-Type; b=Iz12NTcU9bKsZOahpapqcql3M4d4xnhkVMkCtvGSD2Sn4qyEzbxMEdm7Ru3F+JJzUO205mhKP+iSvTH3XuhkcAxJifyzBehGPQPmQxNM0rOS/B2d08H8T92B014PLmbPMKvUf0FzPD7Ms3HcxbPTmaBCCQ19UMMnXChntwQVC+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q+VVci8P; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hlRlHC/y"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4891f625344so37527775e9.0
-        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:53:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q+VVci8P"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso60859155e9.2
+        for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 05:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776862379; x=1777467179; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1776862380; x=1777467180; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Oy8aVZbZZZe1U+CUvOIDDEpwm1FnWydA8CkWhWsEzmU=;
-        b=hlRlHC/ywzgvRLHzKAF8VnquxvPwEN9K/iI5bdzLA6YJdNgc42tpS5K5EuwDA4nrlk
-         4xyA/z6aWdWvf6fygoZngzFPPEEVHkEkToShAW4hD+zrH7pvuWZAs7oDkpf9rJt2mq+n
-         NT7OV6oZBsXUMtK/RX+mrtb7ApMM87Z+PmZ7vED/UPIqbS5BaEqBFb7Fg8awC8OeJKNX
-         0kbUZ4jNVqGfK523HULFBkYl8/TKkj9QLL6vW79yqdGq8fxtw7281EZ6aeGLsDfVVIGJ
-         z/bOWPWkrVv8vMAsu8jcGrVVBtazwJR4/MjVq5jhKWu8KeqQ2Hy8a10wzVQIS+xw37xp
-         nWyQ==
+        bh=EAtQqYAVHVvhu80r9xI/PSbLS4M6sLMvc1JPbP3qMzs=;
+        b=q+VVci8PU1nHgJkQzPhIOZ6t/61AKWvrYUt8J6YHXVJN92Z2NiXwmDv32DpWOm3X2X
+         mZq+div8EqzKkqSwL5wBgbbT/Ea5RiOuqT9XVBPn3S9VJZ47hNyKqKPIOfbqlWiO9OKe
+         3+e/s2Ut9rmkEq/uhD5+Ss7NY76hQUr2edxPKEkbzXYQvmyAp+Jr6YdfPAJSPvnSO7s0
+         4NiFGA0/AabwLm1HXv6nW7ViLJH0cslbyStN/AzBFeXHtoTxxDyHCpQpDvqxNK1AaALb
+         5Qk1sY7E6o/T5pskQAHOOD3y0gm6embk1fhVh1oQo40ktTV3spqrrbT3uv8DPUNmz3sY
+         tuuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862379; x=1777467179;
+        d=1e100.net; s=20251104; t=1776862380; x=1777467180;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Oy8aVZbZZZe1U+CUvOIDDEpwm1FnWydA8CkWhWsEzmU=;
-        b=AmTtXyN5MlPjhEQB0OMJ1NyEqIyyZ27PkFQXZPtTxnmIXdVlvfJDpwfJREPOVmA+am
-         jNzIPdTm2RdZcJk3C/LX/Rs8bS/kXQ9tBqAxc8gMS3WNB0XQnjIxwAm/apJZioipcXf3
-         IEbgED1AEVphN7Zrm5Psed81Ck48+tZu1xL+zPja/ZFTJem/Bm99z8LmyYkf+4j3dpB3
-         dmNPbH7gtWJnYT/cYzfQKcivOL/t8lBCa4uOmO7gE2zqHoxwMMsPslNYVLoX/DrOk94h
-         hAZs6oEEy/uUQk56oTwpdu/nuTMRhy4StlAKH9t3ONl7VUParjYYatDOJrdGJg8ZD+Qx
-         o8vA==
-X-Forwarded-Encrypted: i=1; AFNElJ9sNrOPKShC/IaG6wvUWVt6MiyfqjkCUcnxXg7GvWdgIAjX6KUqM24T41ItPE71AdseoOc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwcvuChWDGHs+mP1BK9NIU1k3e7mD4oPlr5P/wdqT+uQVIzAoy
-	1wrQrRG9rUrICDtxdCCMkmeulG50ieCpePvv70MOWA2eFb1x4FHHTMS93bKDTJr+ngQ=
-X-Gm-Gg: AeBDievgtxUeWmj+r5ZhWGm6G2AmrL9l0TQxiyh8qMmieTV7XpJfrSoFese+Zkmk7wr
-	/Msru5gsSfwgCk1MuS1m/yHAxn5rQhtq13tIrVoCjCBo2dTtYVDe0HqLErI6Dijb8Okd0pktVr2
-	pF88UflvfkyAAxCiPPKzqmnG77u08KbHgyKSZiI4GxEDKTUYBo9LQ4PLloBwf6u7tZvnw7NTbtc
-	+gps6fiAo0/Et5zkvsa+HiTuFPPhY5RKNe9yNed57WIoEF/0ltwUbrVpG/wTiVIVp2u8Nv0Ww9Y
-	L+5olb6NflffDkG/0ejVmEDEE1CVd+bf9PtncetdpNj+PA4MzSoEezBdaaY29R0pRemITl6EnB1
-	FNH6ePBn/dlPy/nDGFmjYHPCQDH9OIEKbuU48s6OSpej8vXVX4x+/CooHmp8uBLRSu4AQP7bZ9E
-	kFDA2UP65kAO4PQKW5hFnSaXgsdhCFJWd9hg==
-X-Received: by 2002:a05:600c:2288:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-488fb881ee2mr212647635e9.1.1776862379208;
+        bh=EAtQqYAVHVvhu80r9xI/PSbLS4M6sLMvc1JPbP3qMzs=;
+        b=fm8AQjmLUgQsyB1wC7+uyY26Iz1R+Lg4mA97XV64IbqSBnBdMZNhEt5GuPx3NzX6nC
+         sQpzxY27+d5saPblXiJLXCXY0sHtRDqVwe/pmg9bjC4I5LJgdtkTjddNkVOcs8rdztnK
+         lCsTzQVOicC8oFZ7R4XMNJq+l1iuJ8NnNyY99uFnZWcMEV0tNTzhsLDsxvM1thpsZvbP
+         ZIzG6U3RmBZUD5leUuZSypAYCzzAVYG1YOlxKs9G5aS5jVd3rN6wVMGC3UTAwMcQ+K23
+         A6l5zgQcHfZIS0jdaMba3cnyf+btH2ZhkTp+3cKYXbvWgP/EDrNrfCSUd5Vj8tUMUwEM
+         TZ+g==
+X-Forwarded-Encrypted: i=1; AFNElJ9BbqMLyC/7UAIkEmb6Vhhzjv3J3CXvA5y7XGCRJCZpyabOqHgZ9jGz9vZ/hyj6ujvcqNg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCmPQGWVUUM7nMhjzcTZ/DRjG1pp1NOsGiAfrX0U3C7ViKrMOI
+	XkMCZBQpH3MduNpFGQd+XoZsBGiHs9F5Hdseczw9A8IKOE3VlIE+1xqZ86cIHheHyVE=
+X-Gm-Gg: AeBDieu9DbT+vHNMtNniGUGJKrYo+cN1lIe5C9IZbHZ9m4glA4jyLGrMwK5mG+S+8Hr
+	aveXQCTJXmp24qq07LSCBn0fH7RwpVazFnnF5emQ+jxIF7SH5+Zx6lmJHgoAHSvvvznHSD42I0F
+	NNGZ0LT6FXihAFNX/EDCo5wxt5TNE+lcq8o2i/NSfaLplIXBocP3phr3RFQvhYqR1fBmWgFzeTd
+	uRKbfDHY7y/22N4IOZyWkiGkMai6EPLHCvwczr2vOLsKBzsGrRzK/qbRcV8q+jaMOCUSFF6gkyR
+	2HFAbIpevOKHDGg+p5vSdbFZp1geDaY0ChLvKck78QmNoAE708KZjBqeWpLmqouADs14dcUYbiN
+	ADK+3Gu99pQuJ70a2UiJwvvud+IE4CcxTpHg/DXka3hW7RBR3C5stEpe3Ng3Os/GUY1iuFTcOuk
+	AMBXN8CEGASOGors2mAMj83Bo3NKOoVABIcQ==
+X-Received: by 2002:a05:600c:19c8:b0:48a:554d:b9a2 with SMTP id 5b1f17b1804b1-48a554dba51mr117525785e9.6.1776862379611;
         Wed, 22 Apr 2026 05:52:59 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4412150a071sm10434897f8f.21.2026.04.22.05.52.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a5aa3ae83sm83315365e9.12.2026.04.22.05.52.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Apr 2026 05:52:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id E154060F2B;
+	by draig.lan (Postfix) with ESMTP id 7F987608C6;
 	Wed, 22 Apr 2026 13:52:51 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +72,9 @@ Cc: Pedro Barbuda <pbarbuda@microsoft.com>,
 	qemu-arm@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 12/32] target/arm: migrate wfx syndromes to registerfields
-Date: Wed, 22 Apr 2026 13:52:29 +0100
-Message-ID: <20260422125250.1303100-13-alex.bennee@linaro.org>
+Subject: [PATCH v3 07/32] target/arm: migrate BTI trap syndromes to registerfields
+Date: Wed, 22 Apr 2026 13:52:24 +0100
+Message-ID: <20260422125250.1303100-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org>
 References: <20260422125250.1303100-1-alex.bennee@linaro.org>
@@ -87,51 +87,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This will help later when we expand the fields we report.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v2
-  - use !is_16bit directly
----
- target/arm/syndrome.h | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ target/arm/syndrome.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 2ad6b97aea5..65d0de63a83 100644
+index fd8639d4f07..52a6745cb23 100644
 --- a/target/arm/syndrome.h
 +++ b/target/arm/syndrome.h
-@@ -655,11 +655,25 @@ static inline uint32_t syn_breakpoint(int same_el)
+@@ -426,9 +426,18 @@ static inline uint32_t syn_pactrap(void)
      return res;
  }
  
 +/*
-+ * ISS encoding for an exception from a WF* instruction
++ * ISS encoding for an exception from a Branch Target Identification
++ * instruction.
 + */
-+FIELD(WFX_ISS, TI, 0, 2)
-+FIELD(WFX_ISS, RV, 2, 1)
-+FIELD(WFX_ISS, RN, 5, 5)
-+FIELD(WFX_ISS, COND, 20, 4)
-+FIELD(WFX_ISS, CV, 24, 1)
++FIELD(BTI_ISS, BTYPE, 0, 2)
 +
- static inline uint32_t syn_wfx(int cv, int cond, int ti, bool is_16bit)
+ static inline uint32_t syn_btitrap(int btype)
  {
--    return (EC_WFX_TRAP << ARM_EL_EC_SHIFT) |
--           (is_16bit ? 0 : (1 << ARM_EL_IL_SHIFT)) |
--           (cv << 24) | (cond << 20) | ti;
-+    uint32_t res = syn_set_ec(0, EC_WFX_TRAP);
-+    res = FIELD_DP32(res, SYNDROME, IL, !is_16bit);
-+
-+    res = FIELD_DP32(res, WFX_ISS, CV, cv);
-+    res = FIELD_DP32(res, WFX_ISS, COND, cond);
-+    res = FIELD_DP32(res, WFX_ISS, TI, ti);
-+
+-    return (EC_BTITRAP << ARM_EL_EC_SHIFT) | ARM_EL_IL | btype;
++    uint32_t res = syn_set_ec(0, EC_BTITRAP);
++    res = FIELD_DP32(res, SYNDROME, IL, 1);
++    res = FIELD_DP32(res, BTI_ISS, BTYPE, btype);
 +    return res;
  }
  
- static inline uint32_t syn_illegalstate(void)
+ static inline uint32_t syn_bxjtrap(int cv, int cond, int rm)
 -- 
 2.47.3
 
