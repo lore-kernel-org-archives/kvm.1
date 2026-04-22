@@ -1,85 +1,132 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DA61684BE
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 06:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA92934250D;
+	Wed, 22 Apr 2026 06:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776840955; cv=none; b=SvVpa/95EfWi1aEWpBO7DhLTzPExZK8BTaDjeATnImjM8z8E0JHvB79xCtU+6DwDIku5ml8VfjXuXBLRIlySsq0VUp/hY9qVEVxvJl95lrOanJxsItI6m52oR7MGlCy1zEvEIomzS7OmnpBq96i1i+FN4gXX2tRs9JiTwvdwZB8=
+	t=1776840959; cv=none; b=kbbp641r0fT1JBqndFkIXoWk0WeUxO41BGC8W5Aedv1ausbBpJFG9P0IEkBPt4i+LmhLdfLnzJtas1fHeSxfAhCV/xjqFz2zoXO+lszdhDdfA68fmPS789vwLKKPAc0PoVYXbAiHUSEAqqlUHIdqVNQTMXPyBUj/foakkzjC/dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776840955; c=relaxed/simple;
-	bh=2DemsOezg/z3DkZS5H1dvBnCGi3HrYdAoFz5trCrzaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=itjDZrq/h7TxFExdvNxayklJl7q8RDZQyqs8wb/yBtPh4p2zRPJ//eojXlPhMkEILAwFUTnZKsvFaGs7Y8TDktJt4grVfSE+owdpLQkfaMcArt8PX57Ff59JKnYWnPMP/USn2mogK0GIF/7kdlNQ2AdbJonQSygaGgrltsVBmPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pKSUvDwu; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1776840959; c=relaxed/simple;
+	bh=GRlOT8rQaBVdGjKH5rznWRqlHgxVjYUD0arOTMSTikw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r+WIO+c+X8uI2rR+iXM/141Oa/ZZb2IulNMbv3koLvw4eZYDYoqoBiaqctwdUUFYr6IA3Z9DIAn9pkDu4mdM2PhDCV6UeKKAlYJYW7KnhEF7G1FdQqAeeH3swILNc998j1ag+GbTvJpjppnCYsbQ4oJ1zcrKt7LqqbKka/TwMDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJzO+Pm6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pKSUvDwu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wxqAo6OR7qeLNWMF1zi73AWo6MmC+rCHLnjlPsmqr4I=; b=pKSUvDwuNB44J7t+qn0y48uWwF
-	Wy7qdHh3hGyQBiPgbax11KhxHAnJ6Mk5WuECelZZBruwNtg5Lsq6pfZ6hNJ4rmcmdcHN5VnhfA2ms
-	sEUxAUx9Q/ykyjqeSG9KQlagSj+MX8FoG4MbprMK1qSOSznPNhLCRxl9rWrPeOqYydoqe9Ct6kYOQ
-	zjvdnXxKYNigzEtPe7jFHcmKWjbolXF0sAKa0Euc/mrbwnskuIp93FN/0IZskzFKYrwfplxxFj1I1
-	YKs0A11KuoRh4equfkSbobk+JrrbVmUbjZpwMhwyrP/QoUkuwPWGmBLgcXoZ+E7OjDd6xrhm9r8rK
-	nzX1F3iw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFRUu-0000000BLb9-0ib5;
-	Wed, 22 Apr 2026 06:55:44 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A64AA3008E2; Wed, 22 Apr 2026 08:55:42 +0200 (CEST)
-Date: Wed, 22 Apr 2026 08:55:42 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Jim Mattson <jmattson@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Vishal L Verma <vishal.l.verma@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	Paolo Bonzini <bonzini@redhat.com>
-Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
-Message-ID: <20260422065542.GN3126523@noisy.programming.kicks-ass.net>
-References: <20260421113407.GE3102924@noisy.programming.kicks-ass.net>
- <20260421114940.GJ3126523@noisy.programming.kicks-ass.net>
- <87cxzsb5n0.ffs@tglx>
- <CALMp9eTeqE4u6ioepVeowRkcNs63DYZTg8og8em12u4FsVWNfw@mail.gmail.com>
- <878qagb20x.ffs@tglx>
- <aefIJR_FcEeP-fcS@google.com>
- <20260421200620.GK3126523@noisy.programming.kicks-ass.net>
- <aefktNLiS3ur10yD@google.com>
- <20260421210201.GM3126523@noisy.programming.kicks-ass.net>
- <aefvVjTtx22EzMkR@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJzO+Pm6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8A4C19425;
+	Wed, 22 Apr 2026 06:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776840959;
+	bh=GRlOT8rQaBVdGjKH5rznWRqlHgxVjYUD0arOTMSTikw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JJzO+Pm6Kg7ii1fx9bj/eiVt5rPhhaPxsxbiZ+Lu7Ll1YRwVKRZ+w9rGhJaD288YA
+	 dlz1Vti4zIvGFEQOtUDoyAZkjzaOvvfuATlrlar5ZbgI+4XyMiyHlSB5tWyxoLqs/C
+	 Ves7y7L+X/m/35zNFBpGDcJeagz2mo734RF2DPNAZyHgMusDYWLU+2g6D/W7s8GYlc
+	 8Ga0Xu0A9uP3TI+jBuye2iRzBpAu4BldV434w5N6CycOGueAo7TcdC6RJybgLBSXK5
+	 TVPJ+KQ+a330r9SmkAqJfwyoetfXDySm0YfGgaNiSy9FQZ9S7PYY9dbBy/kP8uTHVE
+	 BIkfVK6U+hOag==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wFRV6-0000000DeC5-3Gfn;
+	Wed, 22 Apr 2026 06:55:56 +0000
+Date: Wed, 22 Apr 2026 07:55:56 +0100
+Message-ID: <86eck71o1v.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Cc: Fuad Tabba <tabba@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Mark Brown
+ <broonie@kernel.org>,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	Darren Hart <darren@os.amperecomputing.com>
+Subject: Re: [PATCH v4 35/49] KVM: arm64: GICv3: nv: Plug L1 LR sync into deactivation primitive
+In-Reply-To: <86a4vo49ni.wl-maz@kernel.org>
+References: <20251120172540.2267180-1-maz@kernel.org>
+	<20251120172540.2267180-36-maz@kernel.org>
+	<2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
+	<878qb9cxzr.wl-maz@kernel.org>
+	<1e050b67-2276-41ad-9265-796ba853dc7c@os.amperecomputing.com>
+	<86a4vo49ni.wl-maz@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aefvVjTtx22EzMkR@google.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: vishnu@os.amperecomputing.com, tabba@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, christoffer.dall@arm.com, broonie@kernel.org, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, darren@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Apr 21, 2026 at 02:42:46PM -0700, Sean Christopherson wrote:
-> On Tue, Apr 21, 2026, Peter Zijlstra wrote:
-> > On Tue, Apr 21, 2026 at 08:57:24PM +0000, Sean Christopherson wrote:
-> > > This as delta? (I had typed this all up before Peter posted a new verison, so
-> > > dammit I'm sending it!)
-> > 
-> > :-)
-> > 
-> > I'll go stare at it in the morning, I'm about to go crash out.
+[+ Darren]
+
+On Tue, 31 Mar 2026 10:42:57 +0100,
+Marc Zyngier <maz@kernel.org> wrote:
 > 
-> New delta against your effective v2, builds all of my configs (which isn't _that_
-> many, but I think they cover most of the weirder ways to include KVM (or not)).
+> On Tue, 31 Mar 2026 07:31:54 +0100,
+> Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
+> > 
+> > >> LOG:
+> > >> [  164.647367] Call trace:
+> > >> [  164.647368]  smp_call_function_many_cond+0x334/0x7a0 (P)
+> > >> [  164.647372]  smp_call_function_many+0x20/0x40
+> > >> [  164.647374]  kvm_make_all_cpus_request+0xec/0x1b8
+> > >> [  164.647377]  vgic_queue_irq_unlock+0x1c8/0x2c8
+> > >> [  164.647380]  kvm_vgic_inject_irq+0x194/0x1e0
+> > >> [  164.647381]  kvm_vm_ioctl_irq_line+0x170/0x400
+> > >> [  164.647386]  kvm_vm_ioctl+0x7b8/0xc88
+> > >> [  164.647389]  __arm64_sys_ioctl+0xb4/0x118
+> > >> [  164.647393]  invoke_syscall+0x6c/0x100
+> > >> [  164.647397]  el0_svc_common.constprop.0+0x48/0xf0
+> > >> [  164.647398]  do_el0_svc+0x24/0x38
+> > >> [  164.647400]  el0_svc+0x3c/0x170
+> > >> [  164.647403]  el0t_64_sync_handler+0xa0/0xe8
+> > >> [  164.647405]  el0t_64_sync+0x1b0/0x1b8
+> > > 
+> > > This trace is about interrupt injection from userspace, not
+> > > deactivation of a HW interrupt.
+> > > None of that makes much sense.
+> > 
+> > Although this behavior is puzzling, it matches the trace I typically
+> > observe on L0. After reverting the patch, I was able to boot L2 guests
+> > successfully.
 > 
-> I'll start testing the full thing to try and get early signal on the health.
+> Well, this patch fixes real bugs, so it isn't going anywhere.
+> 
+> The patch you are reverting addresses the deactivation of a HW
+> interrupt, which is likely to be a timer (that's the only one we
+> support). The stacktrace points to the userspace injection of an SPI.
+> 
+> If we need to broadcast IPI, that's because there is no other SPI
+> currently in flight. But if a CPU is not responding to the IPI, what
+> is it doing? How does this interact with the patch you are reverting?
+> 
+> Given that I don't know what you're running, how you are running it,
+> that I don't have access to whatever HW you are using, and that you
+> are providing no useful information that'd help me debug this, I will
+> leave it up to you to debug it and come back with a detailed analysis
+> of the problem.
 
-Oh, re-reading commit 28d11e4548b7, I think this wrecks NMIs. The patch
-will also use the FRED NMI path and that's not good when running IDT.
+Have you made progress on this? I can't reproduce it at all despite my
+best effort. I'm perfectly happy to help, but you need to give me
+*something* to go on.
 
-I'll go fix that and stick in a few more comments to clarify this magic.
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
