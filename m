@@ -1,148 +1,178 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE7136BCCA
-	for <kvm@vger.kernel.org>; Wed, 22 Apr 2026 07:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9865936C0CF;
+	Wed, 22 Apr 2026 07:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776841990; cv=none; b=I/JNE8da0XWP2lpGQ0DfgogU/WMN4ggVAsBthxbcyoG3YVGzmO3ViVaOYSZgRBGY4kmIktXWfWwLFThbAfCTnvwEzBC0BMxzxtRzY2fcaMUh0YH1WFlkro2ONZ4fzwoDrCQqewg8jvIGS9StqRgHJ9260nookv/lKs0glUySxeo=
+	t=1776842034; cv=none; b=HyDQlk0WjIz0+z/FCz0s9JuMr6canKzbUdeS87aOMx5MJ319KuJljkaRtfB+hyVBO88Pf9ABoY1ovCazv0Maw3eW12D/VRji5NWnZOue1qk+bN8C8+zzaL8aWhlIKDMRgntIUT46GdEBIoa3WT5KNy5fUCLNroOOYsTbFZLHyQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776841990; c=relaxed/simple;
-	bh=ctNB7OuFRAFq5o70bcXAZ///pIEX10u+BxqYtSSZtRI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mJuIuolzkH//nZxRrB5HwET9sXTTvcmIVG7UXLvPcHcsosvlr3CLv7tiyTIIuRP2ZQpj00v06mbioXwxqV2SIec/lzjyYrbdRHdylz2C9T/ArHVD1OjUHL48loAFBg0P5eb+HXvwqztlQdJ++owYeO4uqEojlgl5pqZhPU+hxBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HVrAyWKi; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776842034; c=relaxed/simple;
+	bh=2fkao8ArefIYQIbLZPL2ShMrSXc6ICRKryHIhWNINls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdhWVpVPN0gXqa9ewLvfF/x25ExStj45vcQQfoOFxPNhhNWPTOp2yli0RYZdzAj9y7ncvUtvnwwOeQ50VnkBc2hY+GLKRh+kUe3sDOBiCThFIi9BRrzksvtqXKHN7ib/VYOl20Ks1IzIojyA8+KpmplUdUPOlQ8e5bWq+wNebBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FeKXi2s+; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HVrAyWKi"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LIlhOQ589847;
-	Wed, 22 Apr 2026 07:12:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=RWbt/a
-	h76YcoI5hYN1E5wI+MJoULhx0ce77jifk4aYU=; b=HVrAyWKiWjnY3pYg1hwmIf
-	VL767EwcfXyzDZD96GBgx2MVjzn1ph+/6Wjb+85chNlCjL2FBPCcRMsDdCmaymz+
-	0hMVSyzOwY7mSjN4avOfsPa0y/Ky6jr/l5oxD+byQ5/cPv71T++Q11sFxL5Opvci
-	IysPtK8SQWB/+rZKDcYF0B2VlurczBcVmZPmV5FYuSux3CeoDkMw3dOzPY0S61Zf
-	45/wzm62u4MYunf3mu/XR0FlhqjhmgJoBeInrjeKsZMpe5touxmOs+KOEOHTVya+
-	Vrod+rh8PsaqkxnPB7eEa2VH5HjAHvnCUNwX+2cLlL+7OANqk5aAK1dUVL+qLspQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu226un-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Apr 2026 07:12:48 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63M75TA1001655;
-	Wed, 22 Apr 2026 07:12:47 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyh7f1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Apr 2026 07:12:47 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63M7Cj2U42926484
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Apr 2026 07:12:45 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90BD058052;
-	Wed, 22 Apr 2026 07:12:45 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6F4D858045;
-	Wed, 22 Apr 2026 07:12:41 +0000 (GMT)
-Received: from [9.39.31.8] (unknown [9.39.31.8])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Apr 2026 07:12:41 +0000 (GMT)
-Message-ID: <61318a9d-578d-438c-ac76-e7579f0eb743@linux.ibm.com>
-Date: Wed, 22 Apr 2026 12:42:39 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FeKXi2s+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776842033; x=1808378033;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2fkao8ArefIYQIbLZPL2ShMrSXc6ICRKryHIhWNINls=;
+  b=FeKXi2s+sMp35Nb945P/0iuyMIxmDiVq7x1rKFZ/iFxNegKQkya1pFIq
+   IACXZ3h2X4ildyuawqueaFXZ52HvH1u4KfYXXjlQM9EdzC1zKzPfXMd21
+   26kWtub62VnbzFuYIQ8XobxtcKct8O6tRV/xgJhrvKoQNkoDIqgVWCSCW
+   U3LX/xUHkFS0cOTttr0lVANloLbTjrLA6CdkLdHMrSmBnTclbru73Yz6h
+   69yyJ4WgOassZz70JJYx1VutuLwRYC7LF+Tfb2BgAVXa1sbjgu5ltq0GX
+   /8k0lTpjrFRmIoyMqNBBVxnUUuMAc9IL8K1NV70H1MdswliC6P0CIVl37
+   w==;
+X-CSE-ConnectionGUID: /WjouxYHSf2swGr6VJGHjQ==
+X-CSE-MsgGUID: xCP1YMg5QCiUfpgHLpBXfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77491887"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="77491887"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 00:13:51 -0700
+X-CSE-ConnectionGUID: 8bjn/CoeRfmR+ZxM9NIV9g==
+X-CSE-MsgGUID: b/tjYM8wT72QHDuE4PxnmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="227681986"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.201])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 00:13:32 -0700
+Date: Wed, 22 Apr 2026 10:13:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Link Mauve <linkmauve@linkmauve.fr>, linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Geoff Levand <geoff@infradead.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Anatolij Gustschin <agust@denx.de>,
+	Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
+	Nayna Jain <nayna@linux.ibm.com>,
+	Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Thomas Huth <thuth@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	David Hildenbrand <david@kernel.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+	Will Deacon <will@kernel.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Paul Moore <paul@paul-moore.com>, Nam Cao <namcao@linutronix.de>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Jiri Bohac <jbohac@suse.cz>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kees Cook <kees@kernel.org>, Stephen Rothwell <sfr@cab.auug.org.au>,
+	Xichao Zhao <zhao.xichao@vivo.com>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	"Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Sayali Patil <sayalip@linux.ibm.com>,
+	Rohan McLure <rmclure@linux.ibm.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Kajol Jain <kjain@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>, Haren Myneni <haren@linux.ibm.com>,
+	Jonathan Greental <yonatan02greental@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Gaurav Batra <gbatra@linux.ibm.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Thierry Reding <treding@nvidia.com>, Yury Norov <ynorov@nvidia.com>,
+	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	Ruben Wauters <rubenru09@aol.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev, x86@kernel.org
+Subject: Re: [PATCH 1/2] powerpc: Add a typos.toml file
+Message-ID: <aeh1GzpdvGjRdMdd@ashevche-desk.local>
+References: <20260421121420.26079-1-linkmauve@linkmauve.fr>
+ <20260421121420.26079-2-linkmauve@linkmauve.fr>
+ <215f12d6-62c1-4837-9f78-ef270684950c@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/8] target/ppc/mmu: Replace legacy ld/st_phys() ->
- address_space_ld/st()
-Content-Language: en-GB
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        BALATON Zoltan <balaton@eik.bme.hu>,
-        Glenn Miles <milesg@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org,
-        qemu-ppc@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20260319111936.68041-1-philmd@linaro.org>
- <20260319111936.68041-6-philmd@linaro.org>
- <0749ae60-f6df-3cb8-bc5d-b46f4c20995c@eik.bme.hu>
- <d64dff93-7129-4c39-bf9f-d2a8cf2ee4fb@linaro.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <d64dff93-7129-4c39-bf9f-d2a8cf2ee4fb@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: JEy_Qw61y7-2Psv0sYq5GE7-ggZAumDk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDA2MiBTYWx0ZWRfXztkTpwG2EiP+
- zIe3JA5kQl3AKZ+FmvWnDJv0Efb5L1g+AspPRaZaq2UoQ02K6WapRgFHd5cYsuElCfjj5ZF64JU
- QnmG3fK7W8ENse8OQj5KzGf1Nq7KVDq09RJXkDC6M9tGoBK+GMiI2wQyFOXdDLDIVf0BwwfEUat
- 2hdM2BgaL9wOyAANF1qXPDFzlxKfucY31fO6At1RwPfXSGUj1Bp1wsgt6bIrIGZZGx+D1CG5EOQ
- NTkqUb/Yxaoc30zz2pEeewmDd4rVCWGgJs6F1ceKWRIQY+7Qu7uXs+4lwbg0IYxGmzIApkMDErT
- gNVVOmIod2EbOCtjp/ZiNyVLiVGKwikbVTnrVFFpTptYWqiLzxjoY0ZElHR8lIgHgvndl+HAfd/
- R+ZokjfXbtX0xlUrwbI8NWbHRTFCH3u8PLL473FU/Gr5DYhPXswDS+o+xtKofXxRXx60Dx6b/7M
- AoRw76SZVN3bqYLtEYA==
-X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69e874f0 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22
- a=6uq8Rgr9QLxLrv8afR8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: cy9uItKEJDEWOI1-2bUh_MaU6_lYrtmU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604220062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <215f12d6-62c1-4837-9f78-ef270684950c@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Tue, Apr 21, 2026 at 02:26:35PM +0200, Krzysztof Kozlowski wrote:
+> On 21/04/2026 14:14, Link Mauve wrote:
+> > This file is used by the typos tool[1] to determine which words to fix,
+> > which ones not to fix, and what the target word should be.
 
+It's a little too many people in Cc list...
 
-On 19/04/26 9:40 pm, Philippe Mathieu-Daudé wrote:
-> On 19/3/26 13:59, BALATON Zoltan wrote:
->> On Thu, 19 Mar 2026, Philippe Mathieu-Daudé wrote:
->>> Prefer the address_space_ld/st API over the legacy ld_phys()
->>> because it allow checking for bus access fault.
->>>
->>> This code however doesn't check for fault, so we simply inline
->>> the calls (not specifying any memory transaction attribute nor
->>> expecting transation result) per the definition in
->>> "system/memory_ldst_phys_endian.h.inc":
+> > [1] https://github.com/crate-ci/typos
 
-Nit: "include/system/memory_ldst_phys_endian.h.inc"
+You may do it as Link tag in a form of
 
->>
->> Recently when trying to remove _nomigrate memory region functions I 
->> was told if some convenience function has more than 1 use it's 
->> probably worth to keep it. This looks like similar case even more so 
->> as the replacement is unnecessarily more complicated. So what's the 
->> problem with ld_phys in the first place and why do you want to replace 
->> it with a less convenient function? If there's a reason maybe say that 
->> in the commit message.
+Link: $URL [1]
+
+> > Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 > 
-> We want to remove the legacy API because it does not "allow checking
-> for bus access fault." The cases where we can safely ignore it are
-> rare, and often ignoring it led to subtle bugs.
+> This typos.toml file does not belong to the kernel, IMO, but that's up
+> to PowerPC folks.
 
-It would be nice to have an ack from BALATON or Glenn as well since rest 
-of the patches are specific to pegasos/ppc32, although no funtional 
-change intended here.
+In kernel we use codespell. If we want to have another tool to welcome, we
+need to setup infrastructure in parallel, so it will be `make` option with
+the fixed name and choose the tool based on availability, et cetera.
 
-If we do not have any further comments from them/others, could you
-please post v2 addressing the comment in patch 2/8 reg keeping 
-declaration within !CONFIG_USER_ONLY block? It  could be moved to one of 
-the existing block as well.
+> My note here is: please use your real, full name. See submitting patches.
 
-Thanks
-Harsh
++1.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
