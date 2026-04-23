@@ -1,156 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B62310777;
-	Thu, 23 Apr 2026 06:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776925075; cv=none; b=jXFCBIvivshCYQPR2n95uk0TBjctDc3hgQAhY7dN/TFeFFaNwv1C9oX4DvF+nqQYBj+DUsOOSwyFhIpclUujf3u2EKSLMxAOb/RjRoFVSeLMiI4dgBZrQ7yGiVnuS97odp/hDp4hxzsj4DIhXKBIX5NPPsoaBMT+x2BvytzHf/Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776925075; c=relaxed/simple;
-	bh=b6MuRVTf/ZgA9L22eiHzgpdsNzUtE5SipssmAjn0OuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q5ziba7oKYUFVGaP7jrd+VeXjyqyMZt+ovYGo9LF5sd1095OF/LG4j71J+G87qPQrGFCU2EYlmatHqUtRGlzJ6CibBkxaD/EM6Kr20+E4mUEWTcMkUM3BE+FZx6PI/wEy1QPqhdCKgVeHnylRxEgVKXPSf2H34TPL9pZReCdRlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bCj3YTNO; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E729829AAEA;
+	Thu, 23 Apr 2026 07:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776930598; cv=fail; b=Sd4H8RDRw7EqC169ABWH+biJi3PdtFHsoVt5GWodsaTyCI48KpDpioGG6GDcl/mz0qM7VSqALD9wPE+ljiq+ry7vnKkwAm5XSkRtsyFO/C8LtS9Ou0UFJmMvDUup44kyv+EjtyMTZ3l7p6ogsQUYPHl9MtDRUenDjGnaCGkTE50=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776930598; c=relaxed/simple;
+	bh=OS4BO2ZHKdJhXANW3oO5O7bfYGJ9FN5Ut3KUWyjmc1I=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Qs5xx+yvD7QjX+XWkVBY6dKmn2Si5FiJkutHOGzKc4yqPb4PzWaoCBhy5gpMBeEllZUuApHWyR+aq5tjqHeib1zUFZa2PsjukXPk5VEFDrJc7K9Lv7TXNpS3K5Fh98pmYzTb0ZD43bc/GMcBNrXktsxzMPihZtZobuIsR4TsqP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SAAeI2ZS; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bCj3YTNO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SAAeI2ZS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776925074; x=1808461074;
+  t=1776930597; x=1808466597;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=b6MuRVTf/ZgA9L22eiHzgpdsNzUtE5SipssmAjn0OuY=;
-  b=bCj3YTNOJJ+0bpJZbCMlkL2fCcPybdY6VP56M0YVzUXVDG4T2jDLhWr1
-   4x2tRTBzHZzTu5TS5+870ntFcd7jLrceDUnGp0RpZjT1RDlqPlr0gqB09
-   bIVyexesLw1Sh34n33kgSSxs1MMQ+A/dtABUv+uuoaMV4KGOzL9K1l+fa
-   mdNB1oFKeTfOTdKPwg6fAwveXOf7vIXmkzz64GsxINQnw2hh2aJzNcs96
-   yC255KgLFuoePoXI3klMl8g5oCsn/CA/3R/s33FqGiwBD+ITfHTqTqgfq
-   OA29AgZAWOXwTUSlvDJzzaomMstw8Jc1ns1Xf/C4KR/WHP/mtoxGKuuCc
-   g==;
-X-CSE-ConnectionGUID: RDG7+Fw9SwKy91R9WQ55TA==
-X-CSE-MsgGUID: fUtcQbmTT4ij4CWLdm14OQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="100539497"
+   in-reply-to:mime-version;
+  bh=OS4BO2ZHKdJhXANW3oO5O7bfYGJ9FN5Ut3KUWyjmc1I=;
+  b=SAAeI2ZS7BP21/DOO0gQvcKsdcmm4STqytcoawkO+JxcIIDzKoNTpDq+
+   4OiOs0wP3KZ5iDMvM7Uq9wm+zKx/qr1Zk50EtV4mrP5eA8oGhwXyYdmPN
+   jT2lLsMO5zBE0os5pNeBGBzkSKB8m2wJh/Bm5aJaElnWhwPh6fxvuURRN
+   62xXB2365IwaMO1wiNoPY1+6+/76Sgfl9Fj0v7/qoRO9hSCbmtS6nFeJn
+   +Dg8i4lIuUa6NXfGrdNVQH3IZKk7Wnqk4VKsjiJE7+wY3hR4UJdqULIx0
+   ZSitm6w2D4YPS4YOLUJAUgSxUh/dr6JoRiraDrIte84QTZ3Ey9kzlGNO4
+   w==;
+X-CSE-ConnectionGUID: 6Y4Z8vGURNqO4lMYHKhWAg==
+X-CSE-MsgGUID: v60aogNjSV+4XLDgMgCrvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="76927956"
 X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="100539497"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 23:17:53 -0700
-X-CSE-ConnectionGUID: S+yNJqCWSamNx0R/Nab0pw==
-X-CSE-MsgGUID: ldGozOmnSMCeaNdo8u1hhA==
+   d="scan'208";a="76927956"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 00:49:56 -0700
+X-CSE-ConnectionGUID: z0KSVfhISmCDOJv+BjwhfA==
+X-CSE-MsgGUID: c7fIRLoER0akwjsQNQz28g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="229899249"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 23:17:52 -0700
-Date: Wed, 22 Apr 2026 23:17:52 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Jason Baron <jbaron@akamai.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v11 12/12] x86/vmscape: Add cmdline vmscape=on to override
- attack vector controls
-Message-ID: <20260422-vmscape-bhb-v11-12-b18e0cf32af4@linux.intel.com>
-X-Mailer: b4 0.16-dev
-References: <20260422-vmscape-bhb-v11-0-b18e0cf32af4@linux.intel.com>
+   d="scan'208";a="231707240"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 00:49:56 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 23 Apr 2026 00:49:55 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 23 Apr 2026 00:49:55 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.60) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 23 Apr 2026 00:49:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HC7paawsMJrRNS3ffWzuqfjoNTIUTsN0m2R2WDXKt3g24X4vtMZKOkllYwN50QdyATjIecl2Zf0lVEnOAk8OOp+aRTzI7xZ0RorRPo7Zc+Tlfa9mf76xarZKwMcvdqdJpX4n40yllLr2omTIIcd432iLrtmKB3m+WJvxgO2bfV6pxHOqOhMkJgRsl50RdA37RfnWyh8CijR5v2BtEmSOxHFlUQ15zEX+2WguKyMHToj9ZTpOo4L7jdNK0oLPndnUm2wjjJPEB6VkTQ/3tueiQ2F9qOpKvB2xGuyyjbamm2c6E4yyGXNdNUM5TGJIRGiUFB3mSBiQ/O2qhxKoTlaFgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PK0VrOwBqLDWedfhkRWU/yTrwDpdo9dgA+ovcbCsk1Y=;
+ b=KwgK0IL7rmjTKe9gYJwGRMzCqA6hObTegToJV8nTZSx+aYM9ioRnazKsWIK6II50XQFXjXOpFcINFfgtuVFaueHGl059yebneFtvL5rTLV+AMB5DBbUaq1jhS8LS2LVfFk1eR6b951P2nxpBJXO3V5K9u30sBYl1r0qd6VIpq9gXqGSAG+Fv0yYlISXSQeTJNkohnb+B8PPHeo8mrNXZisQppVuMG1ZaXidgSjs2+8m6reJfX7QTdohOHiCuiSparFiBsRDgYzeyPqW7ZwRE6/l0E0CUxpwEcNr1E6lI0HURNzI6l4FMd3aLu0UzvQ4r8wbqXaLWMnk9hKAXWZLtEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
+ by SA1PR11MB8328.namprd11.prod.outlook.com (2603:10b6:806:376::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Thu, 23 Apr
+ 2026 07:49:52 +0000
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
+ 07:49:51 +0000
+Date: Thu, 23 Apr 2026 00:49:47 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Yosry Ahmed <yosry@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, "Nicholas
+ Piggin" <npiggin@gmail.com>, Ritesh Harjani <ritesh.list@gmail.com>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+	<chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, <kvm@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] KVM: Take gpa_t in kvm_vcpu_map[_readonly]()
+Message-ID: <20260423074947.GA1733452@pedri>
+References: <20260408001137.3290444-1-peter.fang@intel.com>
+ <20260408001137.3290444-4-peter.fang@intel.com>
+ <aegDJssx-ZvbfggI@google.com>
+ <aegF59gToidudIUC@google.com>
+ <aegIPGYPH-nxGsua@google.com>
+ <CAO9r8zOsHdsMuyjWr3XafjNnMKDci1OOdw8eJHrH-O+jrDH10Q@mail.gmail.com>
+ <aegV3ELp20DlC5Ge@google.com>
+ <aekrJrSRoclZoBo9@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aekrJrSRoclZoBo9@google.com>
+X-ClientProxiedBy: BYAPR07CA0108.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::49) To SJ0PR11MB5645.namprd11.prod.outlook.com
+ (2603:10b6:a03:3b9::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260422-vmscape-bhb-v11-0-b18e0cf32af4@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SA1PR11MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4839d42d-aa1e-48d9-a82d-08dea10ce692
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: D73jMJGUbNRmEwG2lQMlc33FhXUlVIUFat3QGVI3owEicQytsuh/UBOebXkXJZ0ZF5pPVxUcinT4YqLPrb7rhvoNVwjRA8+K4EMClnoMv0WqRcpgOFunDkWYInZGkS3tWKn0QhQP38iYCOKsYNint6AUeQnW1uTrE5g4vQADBtiXqRuBRmhC7rWv+SroRzorO6O57cDmARr/Tv2WEn0EWnfy3GPeA1v0DmZ1w1NTtXl8qK8GNLrgaaThTXVanDXno0t+GeV+P1/eVOKbFSZUGEUTwXlejbIJAR7GOxnXWiKOAOp8WtgB3Jkh/0gudZDXPV8+mJeCo/d2q0qlfVxoht9/sq3KVGSWzj6sROgdvhtRXnmqOXUwF2XBlGXMJCHap4xoNh3b5tgCQzRbGVeqdo9hflHwuqB4qP7OR7tmUppgRqWQbSpKr6pOmQ+pdB8p4T6yvm8C5rE0fhpsvenp6WGZAe1CZWY1C/rCDlMymsXrzpFZTgirIV8esq3FyDwMa9UNeg8o6PlBCHZ7xSVeMXOu01ekBaGD+YkiE0QOFNpQhxgTboinrTn7EagOPIjRQcuXc7XbE9BvfB3N+TNN8fGPPjhHCZVUvsLPxqOc8enTatOE1ix2fk49YcVszEhj4xMxEhEAjiYfVzaSP1DeJHXc+scyarqzpT3E8FVb32URwcb46s3TAFlz2B6jL1dOF4zsGsClaQl6aMfWO4IFgwrJmNwZWyDs11Jz7QQo8p4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0bNqB2lP+4GLm5u/GPsL/J2dTbXs/pJiQVyhwCYPFBAQ7mQCzYlniyEOxonU?=
+ =?us-ascii?Q?136p9L19rSRaTtxXZSsJ6M8ITe48000tOWyTU7AasJirt+YxVtvBxmpEzRoM?=
+ =?us-ascii?Q?UCtyvNdWRkdq7vOMnkzi2uSsHLnWx9JOmT/hnzDUMzpTUkoTBNQoBWjzAxCU?=
+ =?us-ascii?Q?IJ61cmjfcsH0REMRPBBlNf8h4spFrr/25QBQcT8j5XVEsRqVgUlAeV29w0s9?=
+ =?us-ascii?Q?72etDQRSSadVJwYMBP2NHwWrRi1eYDqqQEbOSSAwoWpKOfxiZ2rvaSipglp5?=
+ =?us-ascii?Q?E5vwgDH3eAgq7QvY3yUJ8LC0C0vUo0LVV2rwKORXChxsxabNIzI4HVRFlUPG?=
+ =?us-ascii?Q?0+SK7RSy+Ve+JrPnrpFMJorMev+weUHGPjhaiXbYZLCsfOkJJiO3ZuiDlWiu?=
+ =?us-ascii?Q?flYlx7uulLE8TM7ysd6QSpyRWpdkRKvD102lwg8sMbZMQbnIufyRC7oKbYlQ?=
+ =?us-ascii?Q?9V0naHefI+MsZFudbuJ2SgLJp6mCdi5TmcFUJTiURp2+GNa1sc8I5aham7ro?=
+ =?us-ascii?Q?GjTEFkFpllviCMqLKPhMfHEjV/QsNhitTY3oXg0UHIpIBXl+nIrxb3Lqc6X6?=
+ =?us-ascii?Q?WOcM1UfEcHVi8ljI3YdWvbmoKhgSziZq5k03OJ+6FYFRLFgaNWjSQGOAUNpu?=
+ =?us-ascii?Q?OQn0MziccjUwF0dPWEwdg9S7szOXRYtBjvTYU5WNYBxIKN/IfWtV5+sOYyo8?=
+ =?us-ascii?Q?Bth3/P8AF+511qoReTzLgfI0DUBC7sOMjVKd5WnTNgbEHDTQvZTu/dE1NuMt?=
+ =?us-ascii?Q?BPQpnAMwAC9Pte85HTPwS8nbD3vhvWlvezinvGmJfXX3MJ+JZaNW3OFHHSj2?=
+ =?us-ascii?Q?/zRt1wux2H2wgcAdeJarJJbtXSwE1UzjSp3GfvTJeYTLXaOHhNXGjDTCghjW?=
+ =?us-ascii?Q?z9NarwOBxCG94fOCWD3z8mK5ZS/9WxxNUxnYJTSnE3uwWrPwtNMiDyB7J+co?=
+ =?us-ascii?Q?W0hL9s3fICWgu1sOvSW6qPGohyKYXLruhL/J8xGIgAR6Nno38Mh+gvjTFd/J?=
+ =?us-ascii?Q?K/UmFlNzWQHpa0ypYDrGU0fHOXeAyRoT0O2eUo2PY80BLrX3GXKn/NWHop5o?=
+ =?us-ascii?Q?5ZAj6wVMiPV6kxzgcJCF7NhB4+KiDjM7BkUnc5O2KO4EdGoSY4jCjDFVlXAO?=
+ =?us-ascii?Q?NKZcOi/EoFpb2wDEqP7c1i+H0FkalMmGkknVzoa8xIsqjlCjbGYJIUVs3D43?=
+ =?us-ascii?Q?LLlcv7RfdWoMyeCJoQJo8Y/nBXx/UY9SeIKGHO7woy19rz2Zg1X5o8wwbdaB?=
+ =?us-ascii?Q?+9756laatY2c2XSekEVcj3bMQZYJInPnX1mo0R7XYa2eVEVS2G3hBAkoLkNI?=
+ =?us-ascii?Q?xMfkmitLPoRbIkQo7a62BH2JsVjgVTehUasljpKIAQZ38rKOSQgivihJAvFh?=
+ =?us-ascii?Q?NmOgY8Cj/rjanDiFTsJ1GF7OwwDbe1feQI0VAKshKeXYschjwQ1AKdt11Zmp?=
+ =?us-ascii?Q?04X3SzbsBxqZt9QuCBwiOeBEsNYLdCT2oKlTPAui440QSl+j/PnRreSvdTHD?=
+ =?us-ascii?Q?bBECg5Ue2ay/OLbcVJcDuBkP6MFcOCcLgQA+7mX3iWzX7mv0sGQBIW4TsPK6?=
+ =?us-ascii?Q?AyB1fiVVdwhpkAfBe4LrUbOphl4Hz4r4LP0fkMmdMWJg8cXNv4HWSqs1QiJK?=
+ =?us-ascii?Q?GXRYbQ23Dud7iTeOOUvzR/VQT9h4ur/CNGlNwYjt1zhbfurf3GgsT4mhGQem?=
+ =?us-ascii?Q?1yvp0q/9t4O0TTMh3RNAUuQKpHHUSTfupX9VeU6runcLuoEral04EKqWEcN9?=
+ =?us-ascii?Q?fIi723CT+Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: MU6Z+nyDcq6/WZDcQB4ufRQquQRNV7f4VHjzxl83m4Ox4kdyAJYReAOmNERjUsHPuRPX5cONOSV5pbzqHC4aok3Dm1GPle0ch9826mrVltmXFlMPzVBbuU3yybu4CexLCV4+Rk+krtd6jnfIIpAMEBAeTwIBP6vx/25q0IYVT2PktfvDl3QmQSTGomZDRmhxJVjQtcvP2TZrV7siQg68yKIfFaER7Rf/b15tCOIEV+9N6NV88h53GmPU0OM2caa7LGJ4RCIW5ZOUsSfIEf1T+K8amxv1Hnr4csnsIrNdERCTDKYKLYzfRrlJEIgV4s1Y4bANOVyj31/xcV5y4jZOKg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4839d42d-aa1e-48d9-a82d-08dea10ce692
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 07:49:51.4782
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AtKvAZSLw9eBvVj748RPV+VuJal4aTo3bxFzoEilgg/5dWTPRwDDnR2rMyZAXSN5mRXDLecimHphURQRdGP43Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8328
+X-OriginatorOrg: intel.com
 
-In general, individual mitigation knobs override the attack vector
-controls. For VMSCAPE, =ibpb exists but nothing to select BHB clearing
-mitigation. The =force option would select BHB clearing when supported, but
-with a side-effect of also forcing the bug, hence deploying the mitigation
-on unaffected parts too.
+On Wed, Apr 22, 2026 at 08:19:45PM +0000, Yosry Ahmed wrote:
+> > 
+> > Anyways, back to the hardening.  We can do it with minimal additional churn.  After
+> > patch 3 (passing a @gpa to __kvm_vcpu_map(), not a @gfn), do the below over a few
+> > patches (completely untested).  This way the common case of mapping and accessing
+> > an entire page Just Works, and flows like the PI descriptor handling don't have to
+> > many provide the length (which also can be error prone).
+> 
+> Yeah probably this (maybe not in the same order):
+> - Convert map->pfn to map->hpa.
+> - Pass size to __kvm_vcpu_map() and do bounds checking.
+> - Rename kvm_vcpu_map() and __kvm_vpcu_map() to kvm_vcpu_map_page() and
+>   __kvm_vcpu_map_page().
+> - Introduce kvm_vcpu_map_ptr() wrapper and simplify the nested PID call
+>   site.
+> 
+> Generally looks good with a small nit/question below. Peter, would you
+> be interested in extending the series to do this? If not, I can send a
+> follow up on top of your series when it's hashed out.
 
-Add a new cmdline option vmscape=on to enable the mitigation based on the
-VMSCAPE variant the CPU is affected by.
+Yep, I can extend the series into v3. Adding kvm_vcpu_map_ptr() and
+renaming the original APIs make sense to me, and I want to check all the
+call sites again to see if anything else can be improved. Thanks for the
+discussion. The out-of-bounds issue was not something I had considered.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Tested-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- Documentation/admin-guide/hw-vuln/vmscape.rst   | 4 ++++
- Documentation/admin-guide/kernel-parameters.txt | 2 ++
- arch/x86/kernel/cpu/bugs.c                      | 2 ++
- 3 files changed, 8 insertions(+)
-
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-index 7c40cf70ad7a..2558a5c3d956 100644
---- a/Documentation/admin-guide/hw-vuln/vmscape.rst
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -117,3 +117,7 @@ The mitigation can be controlled via the ``vmscape=`` command line parameter:
- 
-    Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
-    (default when CONFIG_MITIGATION_VMSCAPE=y)
-+
-+ * ``vmscape=on``:
-+
-+   Same as ``auto``, except that it overrides attack vector controls.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3853c7109419..98204d464477 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -8383,6 +8383,8 @@ Kernel parameters
- 					  unaffected processors
- 			auto		- (default) use IBPB or BHB clear
- 					  mitigation based on CPU
-+			on		- same as "auto", but override attack
-+					  vector control
- 
- 	vsyscall=	[X86-64,EARLY]
- 			Controls the behavior of vsyscalls (i.e. calls to
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index fbdb137720c4..4e0b77fb21dd 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -3088,6 +3088,8 @@ static int __init vmscape_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		setup_force_cpu_bug(X86_BUG_VMSCAPE);
- 		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
-+	} else if (!strcmp(str, "on")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
- 	} else if (!strcmp(str, "auto")) {
- 		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
- 	} else {
-
--- 
-2.34.1
-
-
+> 
+> [..]
