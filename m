@@ -1,145 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B413A872A;
-	Thu, 23 Apr 2026 18:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776967684; cv=none; b=HZAiAtQdm1vdEVoRcEincIaWdDiHJUVGQnilCrl6U95wLD+MzfYlF3Q5QIeTI2boWmQ2LuKorGbO2fg403sdLmVQaoPpQ9pBBdBFlAekdfprQyrv5T78avRavD3s+oLlZLzG26Rb/NqGE0jUBBJOFni3ez3VFqbImfKXkpx0MzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776967684; c=relaxed/simple;
-	bh=fUtnL9qRpoANwM3bPHlOiGowL2i2i1ePLUkXdrCF8M8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PFPu6c5xsCy8DwPUSwj4ZAdrdcVhURfrbk4aYDh3cL5Xy0MhyAfv62y0eKc4aps9fi44QUd7Lw7hACCW9cd8Ddxu6DlZOVSUt7n1ktOnobNv7Ktga5jB8genRVOSPUHY2dOlIYMJ9HN5JXRkKIIMTbNuFYr/Cq8wf0F+37mZ/Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAP3ZIAR; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0E9347FD7
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 18:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776968057; cv=pass; b=X4oXi2KvO7WKnQ82aQtgCNjnAI76OUo0loZHfVsTXAXbUIIOL0o4l9/6392aCa4jM1OOTya6BhUmDnhwvw9G5LeXO/Ra9TRO7KHgBHXeVnWyl2EVRxKPr+8drVpcFPanIHFksQsiqrcBttv3Eh7p32PYwMpZu3ZIbl/ZNrBOsTA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776968057; c=relaxed/simple;
+	bh=3X0XEQ7mUewMdktVqynHYf8leq1tI6zJiV17AX+r9CY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YNM5K4PtjtuU1gHihqqowtLy8/JVFhSBMi18OwvIREoPHChM5gPzeYZNeelIZN73YkHmVKgyYKNg8kGLQ5HjZZXopr7HZtfrA9fK0G43A+r0XSeAX7ZuQiGv98Ky6N8/I7N93BZo9cdCA4EYmxYLHTAWIRmJJhpFS2nSZbEVQHg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jbuBaOLu; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAP3ZIAR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55978C4AF0B;
-	Thu, 23 Apr 2026 18:08:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776967683;
-	bh=fUtnL9qRpoANwM3bPHlOiGowL2i2i1ePLUkXdrCF8M8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hAP3ZIARBqueoN9RFilIOZs+UJq6a6x9Enmg84t8Usw7oQUBeSKkK4ZPIb7xzSUYu
-	 oUIsnNj65y6jrspk5WdGMHIoY5kg4ytXH1NL33s66LoxvcJvd+cx8tdqpQBX93pZvp
-	 LCNNdUgwNNPyVaZ4S7d232awap213vIhzXg1e+DvNFkUksTZGXboF1Xax3jdyoNbjR
-	 jvLeaT5nf3App95sC5MiAbOi8IVTGruuKLoVADY3xUDaQqAWXrdU8c2Wd56lVfyWee
-	 wSkDxYDdmdrZizKwNW0eqIkLU1akChNOaQts8wFZQ/SLsBX7u57LnVxkkFu7Ezv5N2
-	 Fi7VP3VTfO/UA==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 618A6F4006B;
-	Thu, 23 Apr 2026 14:08:02 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 23 Apr 2026 14:08:02 -0400
-X-ME-Sender: <xms:AmDqafKne51c23t3lOUfwu3m9Jat5CujNgYxp6RC3pVv8n1E5ApPhg>
-    <xme:AmDqaSaPnjQM5JuaZTSQ7uK_5VTA28rKQMlnqvZXZWf--t9BbghNabwV-_s1AV9Hx
-    3AREOoCahoWWPLLRniuN8x1J2BrT2C-zrldhyy7PEvNwOT2cydEMw>
-X-ME-Received: <xmr:AmDqaT6shwVvN1bYvTKiFRpp--F0ku9VmqAT3BGObH8t1GaOQCMYWgum0DBytQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeijeekfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeffffekgeffjefgkedvjeeggedttdeljeekhffhudeiudfhiefgudeugffhheffuden
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
-    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfeei
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrd
-    gtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    rghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehljh
-    hssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsg
-    grsghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthht
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:AmDqaTJDnWhOA6Lo5VS3-3zpSTgB3bAOxPGZpGcQWjdEIwFuZdcZSQ>
-    <xmx:AmDqaZY0sSALVtS7asmIB8MYX0nPAO4sjU53qds5bVXfXSrKC7Ur7w>
-    <xmx:AmDqabxGOc2JRHlMYEDYv15bQ-MaKvilloF3PHIY3GW_bvq3v5r5IA>
-    <xmx:AmDqaVUM8UDa_Zh5-pPT75bjmmW8iNzLWo2YmuCcUZxlgN1lsXJlKg>
-    <xmx:AmDqafblfb_m5kSp-CjhTquEbv5wDlCyHGQsZxMnJDje3tAR6gHC6Kz1>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Apr 2026 14:08:01 -0400 (EDT)
-Date: Thu, 23 Apr 2026 19:08:00 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <aeo5IPpQi7onyjTF@thinkstation>
-References: <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
- <aeFCuLJXT8VOkzH7@thinkstation>
- <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
- <aeImfRrrvr3UoKtL@thinkstation>
- <aeTnlQUOOh-dHG8z@thinkstation>
- <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation>
- <aeoxnuGKO3uqS2kG@x1.local>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jbuBaOLu"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67148a70f8aso56919a12.1
+        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 11:14:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776968054; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AHzRXyGAY/xnpsGhnC56SfpyK7Chu42ZMQYT7NazYibJBxW+pY1dHyqPsv2bYpqEjc
+         FUrU8WnKfBzYZbvHniLuhBVQ9MxqytgAPcnbE0WJk7VKimrvLDFK41CmP+MHiA8q2vRG
+         38X6DKtexQe0Cs1FYxMwHibwVa42rS7x8OIJ9CH1BZTcNc1sG7cWSi/mvylbYAlbCwOS
+         JrEKN6RqZ84gEBgUamHYrc+CTJWj9P4fpQ3eWu88Q01Ev/RBUJsxp7o1gNw4ePIDxirg
+         hfOTgRy9pk5whfcoCRuc5k6I5oMjuDpsVd2dLNt/+ttbPqhBwRBqY2YMTA5pH+lxEt1O
+         05eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=K4QPY9s3GqKXMk5HSC8jCFB/X41J7ptf4y91qIA/h/U=;
+        fh=uS06rJCUKMhhDBAZHqN5kKJQQpaMGbLPx1TZJ63XRe4=;
+        b=b9mhQLh+aSsZu4CoHt4iOTDyk39/MSxHArb72ax5ZNAj5CK/wGDwKXhVll+qkQ4KVQ
+         qQg1P1jSE6TZ9hdgtdGd37q+dRcQM4sQzqxZAqQOiHRr8OZ4oqVvs/Zdetd1gdXGbqMu
+         X3m5b3yogQnKEct3E9Ph7iVZJ8FYLpQah3p2fE5RlCgmp1L/fh4OqBXpjLxU7rGASQk/
+         GBf+J5JybTY8Fvdn8KBC3IZO/mWUUqsFzhVXIrQCrEoIpNA6+4WPzW6rmr+5CjF/Yxf8
+         mZSvL1duz3N2felAuqdNC+mvctrMsg45FSj6qkGWpmssXj3xbeGWqQSdDagudPFGl9+/
+         RMPg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776968054; x=1777572854; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K4QPY9s3GqKXMk5HSC8jCFB/X41J7ptf4y91qIA/h/U=;
+        b=jbuBaOLuRFbY4hV2GM54HNoLpwfm1m4mjMMwrJRig/CoyXFg6IEayF+LDESMNawKpW
+         E3JdIWpxkoCkLc8DyOiHr+fjHbghzpY1xWbp5OK5IEKri4krZQTxlp18C1GykIqPxzV5
+         nEFfYeJK5bvZBXF+Bi2V7uyO4dyXIPn80W0KOMxhMB2xMnRgdfBnJf5hRZmwt1sztolC
+         5bfMdqJ3tWp9VDW4RJFUOguZchn0dLlOVoAvxhduV1k3EVZ8t23as0tEOalXardC+nG2
+         iCAktBVftDLpcuOx44WuRh1vjzLpROXZ/FO/YxFG6SxXLkyQuGT4hlE5VK9nAXqHEqwg
+         Yz4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776968054; x=1777572854;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=K4QPY9s3GqKXMk5HSC8jCFB/X41J7ptf4y91qIA/h/U=;
+        b=AI0wmKshCE2NAgybv2NK1tCfBBimT/iym50sPCOj2I6UoN48T/p9d0+y4y2fC8o3oh
+         HYrWwJpPVyAvHkS6isB7Y2UyhYOqMJvsV0v+cC1+cFaWgbTPTnny6QqANjwTc5QRRQOI
+         9z1p/32o4A9HRtn4Kgl+HoSunVUn/GNM3vY/edxT3T8wmAEdSP1cIZenkuQLfi3Hr7kH
+         GmjMm4FhlEgjWQskBt5WzwuwJkJ1wRsqCddMvca0bBELN/uMq3dO+q0Rga4NN557Synd
+         MdJCmg6rXc/SMFimgXz5RTiGhP160n3fuC6nFxPqdBOV0e2lIHFfunhZiGGrszhnHFbt
+         PWYA==
+X-Forwarded-Encrypted: i=1; AFNElJ/vC3RmB6ErXBBhRv5zgcGdFXrR1duiof/hZnTWeQqVVsjciwsyqIINGPC8SPtzoEROTo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIWGNN3JWMhU4ELLjI3aLuF0YWaZZEgKNztr+9kussCcKBSOsp
+	AzRyOFnPmT02DwAysIFzQ4DJ01TXSiOWJsJvdXryFSgvPp482mdrY/h6/NMRtW/lsxE1XmCQu4L
+	bWbtXmjbNTfxjRxdCtgJuGfIcY8zbtUFVBvXLzJnh
+X-Gm-Gg: AeBDieuaBh4ikk/nIjtPaeNwU5Rv+WppF19wiZTtezxMa4Rys0jqVMun9Op5vBxXJw3
+	TAJJY4XBbzc2FIY7TL3tRcafKID0hSRmcm37OScylkkzQlc5qQ8ppng01iSal5S3Ql7r8IKn6rM
+	Cq+F1/kwZ+q5yIxcijrKfhI2P8Q1mvk5mB3TB4f7uflED3rAsnPwg8XKisXEA7vsCtn04ytRad8
+	brODrRKpvqIu0gOMKaJQm8v12ApZ5OZoAH+A+seX33pfSL05c9OrpMii6KmjHOD0GWI7WrJDrzW
+	6OZleMpXxxtlbB1jh5Stgf7jfbNU
+X-Received: by 2002:a05:6402:951:b0:670:9e9f:1a5e with SMTP id
+ 4fb4d7f45d1cf-674404f0026mr269246a12.2.1776968053761; Thu, 23 Apr 2026
+ 11:14:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeoxnuGKO3uqS2kG@x1.local>
+References: <20260423150340.463896-1-seanjc@google.com> <20260423150340.463896-5-seanjc@google.com>
+In-Reply-To: <20260423150340.463896-5-seanjc@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 23 Apr 2026 11:14:01 -0700
+X-Gm-Features: AQROBzA-HWufnC0-Ev6XrddaWAfr8RjJyxYq0ElI4imQXSGVPU0VALJTnOxzTWM
+Message-ID: <CALMp9eTYhE7Co7LHb-251NhSHdyK4vzC4mrPu2_bRbDbrDcwew@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] perf/x86: KVM: Have perf define a dedicated struct
+ for getting guest PEBS data
+To: Sean Christopherson <seanjc@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 23, 2026 at 10:50:06AM -0400, Peter Xu wrote:
-> Hello, Kiryl,
-> 
-> On Thu, Apr 23, 2026 at 03:27:11PM +0100, Kiryl Shutsemau wrote:
-> > The patchet is pretty good shape in my eyes and will probably drop RFC
-> > tag.
-> 
-> I still have some high level questions not yet got answered.  Do you want
-> to answer them?
-> 
-> https://lore.kernel.org/all/ad59TxAHNwFWH7Cc@x1.local/
+On Thu, Apr 23, 2026 at 8:03=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Have perf define a struct for getting guest PEBS data from KVM instead of
+> poking into the kvm_pmu structure.  Passing in an entire "struct kvm_pmu"
+> _as an opaque pointer_ to get at four fields is silly, especially since
+> one of the fields exists purely to convey information to perf, i.e. isn't
+> used by KVM.
+>
+> Perf should also own its APIs, i.e. define what fields/data it needs, not
+> rely on KVM to throw fields into data structures that effectively hold
+> KVM-internal state.
+>
+> Opportunistically rephrase the comment about cross-mapped counters to
+> explain *why* PEBS needs to be disabled.
+>
+> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Sorry, reply to this got lost in my TODO list.
-
-> In summary, it's about:
-> 
-> - Whether we have explored other approaches on page hotness tracking
-
-So, for read/write tracking we have clear_refs=1, page_idle and DAMON.
-Did I miss something?
-
-clear_refs is process-wide hammer. And you can miss a hot page if it
-races with LRU rotation.
-
-page_idle needs rmap. It will not scale.
-
-DAMON is built around sampling. It is good for working set estimation,
-but I don't think it is directly useful for eviction decision. It can
-miss hot pages. LRU rotation will also loose info.
-
-None of them gives comparable capabilities.
-
-We also need a mechanism to atomically evict pages.
-
-> - Whether read protection is required for an userspace swap system
->   (e.g. did you get time to have a look at umap?)
-
-I looked at it briefly, so I can miss details.
-
-IIUC, in absence of read tracking it doesn't collect hotness information
-at all. The eviction is based on fault-in time: the oldest faulted-in
-page gets evicted first. I guess it is fine if you don't care much about
-refault cost. Like, if your workload fits into memory completely and
-refaults are rare.
-
-That's not my case.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Reviewed-by: Jim Mattson <jmattson@google.com>
