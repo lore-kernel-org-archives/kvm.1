@@ -1,375 +1,150 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485B319C556;
-	Thu, 23 Apr 2026 23:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1A13126DA;
+	Thu, 23 Apr 2026 23:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776986995; cv=none; b=WxCXfaEND2Orw6rYzDNQJKea2kEiuE0E30Pgvq16V3R7kkSHANN+yqXJliS7PpcSoSm3MRdN3oe/tCEnDYY2c/GYYGzXpeCyTH3DFXkfODlKsuyMIzLTjNz5LpplSaw93P7oNmrq39WCVFkQ08GExHBFRzBz1EQNOz7sofG9l7Q=
+	t=1776988412; cv=none; b=SfKcfc8BRSkHv7IWizOho9VOGCGzbtK3POLgi0gt1cA32Bz5GidTycvZEvb4j1Vu5wLDt8ny3XPijMhlHRLbg31MjeE2lnIp8tSmff7VVHzSA1ecOOMkvgCFU5hx+p2HrYema7M6gqoF/CItYUVN+1Wg+E6QQZjcxLoWBOx/g4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776986995; c=relaxed/simple;
-	bh=gOPidmCRXi4BatggfBlyyOeeTP+Ab0sBqGHBfWVtsKY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=BmZKkWf3pZ1WTpTN0Z9nQ3mjcJTgIvXElUay1uUNtotnVZ4LdGU6AEL7jQH8ALflsRxZdBXJH9xPr3QU5oa++lmpdm1/A2Xh1sMDq1pY6c4AlBEB52dCmIcOEpQ/qDLPW9gaMA/p8R2hdsjCNx8da7uIbW4jJ+yfEnMHNxEEEM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=HLDJ4wCo; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1776988412; c=relaxed/simple;
+	bh=7QQI2cLRizJ3B9L2teZ4EZmnF4p+ep2iFxZBXnDp5EA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AGySxBZTjZi1yLLaAvoZGl8YEgr+D1asQv1PscG36ykAlkqbddfqwE4xtFlySlFLfAP3oBy+OfxmA91Uwprbe/h7IB+n6m7wKcis6sjJdPv8sXCE4P0dKSm5z8MoEcsJmByhh6qq3FkyUjkF28Q69Y5j8y8dcwIGqwwpA42aTi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JmjbBknB; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="HLDJ4wCo"
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 63NMv41v1817216
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 23 Apr 2026 15:57:05 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 63NMv41v1817216
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026032601; t=1776985026;
-	bh=6W9iThonCmQx4dYJQMBQrxRDvx5m6/3f4NOKsNrPQtY=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=HLDJ4wCoo4s9yT6/jY1r0dRzac+I79VDuXWQMZALYLaA1rLx26oQvKzAu8NWhIA4P
-	 mlQ4fToQSQzuWMCZ+8dkGRvAOr8SN1GjfzbF/rUVxpsIIBuHJmvsRJHL233mFDBdOr
-	 trQemUeL+exgKteLWHqs6MsTvazeyI6UaZwWNJ5vSKIPWf5ddd1imZapq4oriYIfiA
-	 BCsJ9YTsLaxho+VifoA0dLybi0Pjao1tHOwkENYRq8ZNuW/zH1+pHgYAWNQmvxs46Q
-	 KgzGwiIELFy7obniVxhSEa51BLiGfQbloWCgZDLYJFL2upZLoM5C5XxRc0xjuWZoSx
-	 +On4CPPn/mVlQ==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JmjbBknB"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NJdVZZ3229299;
+	Thu, 23 Apr 2026 23:53:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=0oCuxI3hB2N3tw0dwDVM0HW3sjNYpZ1N/cO8OjFkI
+	6Y=; b=JmjbBknBB+/2Ptg/j0yYVREwjIxX3uh0cJrKunP/CxHN76I2qOh4KZ7yQ
+	VfqmSQKiETzQTndMVuNMR5jbOfiYcOQoQ1rCjT+ZhVcQPk6R1qPM10H8MRkA+tow
+	KI3zZDpgBqsnhXAuDu6AGqNAlqm4qrCzfMJHlMZQm7xtEozzsG92Uh3S12KqiEZm
+	FteYiyo5ogi8zsq3jTuSG++teIrZc6adUwfMfa0Kqgu8Nt15gOArZdLHdDIWyJNX
+	msnEDEHkfu0hX/0CfEIt5EqtY+gst/f1EVCjtdP1l16AV80pnmcAA3MgftOTe5fR
+	uehn2bnRfU59MDaBazfbpWz1PEgug==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu2b9bb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 23:53:28 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NNoWrq032037;
+	Thu, 23 Apr 2026 23:53:27 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjky8pq9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 23:53:27 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NNrQlL14353130
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Apr 2026 23:53:26 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 351DF58056;
+	Thu, 23 Apr 2026 23:53:26 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7DA7D58052;
+	Thu, 23 Apr 2026 23:53:25 +0000 (GMT)
+Received: from 9.60.13.83 (unknown [9.60.13.83])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Apr 2026 23:53:25 +0000 (GMT)
+From: Douglas Freimuth <freimuth@linux.ibm.com>
+To: borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, frankja@linux.ibm.com,
+        david@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: mjrosato@linux.ibm.com, freimuth@linux.ibm.com
+Subject: [PATCH v4 0/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic Fast Inject 
+Date: Fri, 24 Apr 2026 01:53:13 +0200
+Message-ID: <20260423235316.3665-1-freimuth@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v9 00/22] Enable FRED with KVM VMX
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <7f93eb25874ddd13a1ad6e3c75785f11041c8b7f.camel@infradead.org>
-Date: Thu, 23 Apr 2026 15:56:54 -0700
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org, Andrew Cooper <andrew.cooper3@citrix.com>,
-        "Saenz Julienne, Nicolas" <nsaenz@amazon.es>, pbonzini@redhat.com,
-        seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
-        chao.gao@intel.com, hch@infradead.org, sohil.mehta@intel.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DADE0E58-DD8A-4206-BF54-1DA87864117D@zytor.com>
-References: <20251026201911.505204-1-xin@zytor.com>
- <7f93eb25874ddd13a1ad6e3c75785f11041c8b7f.camel@infradead.org>
-To: David Woodhouse <dwmw2@infradead.org>
-X-Mailer: Apple Mail (2.3864.500.181)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ONdcotTjzxdj6s-Ap0vKM-gwCnr08CEC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDIzMiBTYWx0ZWRfX+e/BFjWjUOfW
+ S8QY+JgNAOpv6kf+vVPoiN1xFDQCfWZftZUVT5+nFlYrEL7iJ7SQSn/HDcDj3jmyHVzGYNpUf/c
+ 91zpVpTXcoduF1Y2SJUh3TV5ww+sxNm8EHB5TLu0iwhVGtlCGJYiycCM6QSeNIpSG5nPpflCVaf
+ 8e0/bmOfKu7Q82ZEIvKxBEQ7TSlS9BAftDICLYBj81cgkZ4GR12pR3U5WpPQfft4Kv45OgpyEHN
+ f4wHLtx5jyUEZc+iKtdvKp4hysNxB80nJT+SpgpKjaUCehHuWCGWXEEbiGy2rS0Xf0IPyuTu6La
+ kZW68c4zzHvS/rONeTaoysU6VjHd8vrKZ48tpkY42aXS/aAiwuFW2YZAgDuODfM5DZoGw+SlRp/
+ mvJSquacbYxZX6D1HtoEiDNo8qz3DzDUzZuRgTMT1u0FaaJVT4i+R9uwSKuaxs6fnh3TIr7c2NS
+ oVsf+6IpdFDdeQSFnuA==
+X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69eab0f8 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=84OqXecvdpAWjh0nY3QA:9
+X-Proofpoint-ORIG-GUID: ONdcotTjzxdj6s-Ap0vKM-gwCnr08CEC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604230232
 
+S390 needs this series of three patches in order to enable a non-blocking
+path for irqfd injection on s390 via kvm_arch_set_irq_inatomic(). Before
+these changes, kvm_arch_set_irq_inatomic() would just return -EWOULDBLOCK
+and place all interrupts on the global work queue, which must subsequently
+be processed by a different thread. This series of patches implements an
+s390 version of inatomic and is relevant to virtio-blk and virtio-net and
+was tested against virtio-pci and virtio-ccw.
 
+The inatomic fast path cannot lose control since it is running with
+interrupts disabled. This meant making the following changes that exist on
+the slow path today. First, the adapter_indicators page needs to be mapped
+since it is accessed with interrupts disabled, so we added map/unmap
+functions. Second, access to shared resources between the fast and slow
+paths needed to be changed from mutex and semaphores to raw_spin_lock's.
+Finally, the memory allocation on the slow path utilizes GFP_KERNEL_ACCOUNT
+but we had to implement the fast path with GFP_ATOMIC allocation. Each of
+these enhancements were required to prevent blocking on the fast inject
+path.
 
-> On Apr 23, 2026, at 7:35=E2=80=AFAM, David Woodhouse =
-<dwmw2@infradead.org> wrote:
->=20
-> On Sun, 2025-10-26 at 13:18 -0700, Xin Li (Intel) wrote:
->> This patch set enables the Intel flexible return and event delivery
->> (FRED) architecture with KVM VMX to allow guests to utilize FRED.
->=20
-> This could do with having a *lot* of KVM selftests.
+Statistical counters have been added to enable analysis of irq injection on
+the fast path and slow path including io_390_inatomic, io_flic_inject_airq,
+io_set_adapter_int and io_390_inatomic_adapter_masked. And counters have
+been added to analyze map/unmap of the adapter_indicator
+pages in non-Secure Execution environments and to track fencing of Fast
+Inject in Secure Execution environments. In order to take advantage of this
+kernel series with virtio-pci, a QEMU that includes the
+'s390x/pci: set kvm_msi_via_irqfd_allowed' fix is needed.  Additionally,
+the guest xml needs a thread pool and threads explicitly assigned per disk
+device using the common way of defining threads for disks.
 
-Hi David,
+Patch 1 enables map/unmap of adapter indicator pages but for Secure
+Execution environments it avoids the long term mapping.
 
-Thanks, I will integrate your tests into this FRED test:
-https://lore.kernel.org/kvm/20240207172646.3981-26-xin3.li@intel.com/
+v3->v4: In kvm_s390_adapter_unmap mark_page_dirty using guest address.
+v3->v4: In kvm_s390_unmap_all_adapters_pv mark_page_dirty using guest addr.
+v3->v4: In kvm_s390_unmap_all_adapters_pv decrement nr_maps.
+v3->v4: In kvm_s390_adapter_unmap hold maps->lock through list deletion.
+v3->v4: In kvm_s390_destroy_adapters hold the maps->lock until list empty.
+v3->v4: In kvm_s390_unmap_all_adapters_pv hold maps->lock to empty list.
+v3->v4: Change maps_lock and ais_lock to raw_spinlock for RT kernel case.
 
+Douglas Freimuth (3):
+  KVM: s390: Add map/unmap ioctl and clean mappings post-guest
+  KVM: s390: Enable adapter_indicators_set to use mapped pages
+  KVM: s390: Introducing kvm_arch_set_irq_inatomic fast inject
 
->=20
-> Here's one to get you started (untested as I haven't found suitable
-> hardware to test it on).
+ arch/s390/include/asm/kvm_host.h |  11 +-
+ arch/s390/kvm/interrupt.c        | 401 ++++++++++++++++++++++++++-----
+ arch/s390/kvm/kvm-s390.c         |  56 ++++-
+ arch/s390/kvm/kvm-s390.h         |   3 +-
+ 4 files changed, 402 insertions(+), 69 deletions(-)
 
-Same here for me now :(
-
->=20
-> =46rom bd465aabebcb124e09a26fe9f4c861354febabe4 Mon Sep 17 00:00:00 =
-2001
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> Date: Thu, 23 Apr 2026 15:20:11 +0100
-> Subject: [PATCH] KVM: selftests: Add FRED event type classification =
-test
->=20
-> Test that software-generated events deliver the correct FRED event
-> type in the FRED stack frame.
->=20
-> In FRED mode, the CPU pushes event metadata including the event type
-> into the FRED stack frame. Different instruction types should produce
-> different event types:
->  - ICEBP (INT1): EVENT_TYPE_PRIV_SWEVT (5)
->  - INT3:         EVENT_TYPE_SWEXC (6)
->  - INT n:        EVENT_TYPE_SWINT (4)
->=20
-> The test sets up a guest in FRED mode by enabling CR4.FRED and
-> configuring the FRED MSRs, with a hand-written FRED entry point that
-> extracts the event type from the FRED SS field. It exercises each
-> software event type and verifies the classification is correct.
->=20
-> Requires KVM guest FRED support (the FRED KVM VMX series) and
-> hardware FRED support. Skips if either is unavailable.
->=20
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
-> tools/testing/selftests/kvm/Makefile.kvm      |   1 +
-> .../selftests/kvm/x86/int1_fred_test.c        | 225 ++++++++++++++++++
-> 2 files changed, 226 insertions(+)
-> create mode 100644 tools/testing/selftests/kvm/x86/int1_fred_test.c
->=20
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm =
-b/tools/testing/selftests/kvm/Makefile.kvm
-> index 148d427ff24b..62e76617f82f 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -74,6 +74,7 @@ TEST_GEN_PROGS_x86 +=3D x86/feature_msrs_test
-> TEST_GEN_PROGS_x86 +=3D x86/exit_on_emulation_failure_test
-> TEST_GEN_PROGS_x86 +=3D x86/fastops_test
-> TEST_GEN_PROGS_x86 +=3D x86/fix_hypercall_test
-> +TEST_GEN_PROGS_x86 +=3D x86/int1_fred_test
-> TEST_GEN_PROGS_x86 +=3D x86/hwcr_msr_test
-> TEST_GEN_PROGS_x86 +=3D x86/hyperv_clock
-> TEST_GEN_PROGS_x86 +=3D x86/hyperv_cpuid
-> diff --git a/tools/testing/selftests/kvm/x86/int1_fred_test.c =
-b/tools/testing/selftests/kvm/x86/int1_fred_test.c
-> new file mode 100644
-> index 000000000000..7ffb54b56047
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/int1_fred_test.c
-> @@ -0,0 +1,225 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Test FRED event type classification for software-generated events.
-> + *
-> + * In FRED mode, the CPU pushes event metadata including the event =
-type
-> + * into the FRED stack frame SS field. This test verifies the correct
-> + * event type for:
-> + *   - ICEBP (INT1, opcode 0xF1): EVENT_TYPE_PRIV_SWEXC (5)
-> + *   - INT3 (opcode 0xCC):        EVENT_TYPE_SWEXC (6)
-> + *   - INT n (opcode 0xCD nn):    EVENT_TYPE_SWINT (4)
-> + *
-> + * The FRED stack page is evicted via MADV_DONTNEED before each test
-> + * to also exercise EPT/NPT fault handling during FRED frame push.
-> + *
-> + * This test requires KVM guest FRED support and hardware FRED =
-support.
-> + * It will skip if either is unavailable.
-> + */
-> +#include <stdint.h>
-> +#include <string.h>
-> +#include <sys/mman.h>
-> +
-> +#include "test_util.h"
-> +#include "kvm_util.h"
-> +#include "processor.h"
-> +
-> +/* FRED: CPUID.(EAX=3D7,ECX=3D1):EAX bit 17 */
-> +#define X86_FEATURE_FRED KVM_X86_CPU_FEATURE(7, 1, EAX, 17)
-> +
-> +/* FRED MSRs */
-> +#define MSR_IA32_FRED_RSP0 0x1cc
-> +#define MSR_IA32_FRED_STKLVLS 0x1d0
-> +#define MSR_IA32_FRED_CONFIG 0x1d4
-> +
-> +/* FRED event types (from arch/x86/include/asm/trapnr.h) */
-> +#define EVENT_TYPE_SWINT 4 /* INT n */
-> +#define EVENT_TYPE_PRIV_SWEXC 5 /* INT1 (ICEBP) */
-> +#define EVENT_TYPE_SWEXC 6 /* INTO, INT3 */
-> +
-> +/* FRED SS field layout */
-> +#define FRED_SS_TYPE_SHIFT 48
-> +#define FRED_SS_TYPE_MASK (0xfULL << FRED_SS_TYPE_SHIFT)
-> +#define FRED_SS_VECTOR_SHIFT 32
-> +#define FRED_SS_VECTOR_MASK (0xffULL << FRED_SS_VECTOR_SHIFT)
-> +
-> +/* CR4.FRED (bit 32) */
-> +#define X86_CR4_FRED (1ULL << 32)
-> +
-> +/* Guest memory layout */
-> +#define FRED_STACK_GPA 0xc0000000ULL
-> +#define FRED_STACK_SIZE PAGE_SIZE
-> +
-> +/*
-> + * FRED stack frame as pushed by the CPU on event delivery.
-> + * Layout from low address (RSP) to high address:
-> + *
-> + *   RSP+0x00: error code
-> + *   RSP+0x08: RIP (return address)
-> + *   RSP+0x10: CS (with auxiliary info in upper bits)
-> + *   RSP+0x18: RFLAGS
-> + *   RSP+0x20: RSP (original)
-> + *   RSP+0x28: SS (with event type/vector in upper bits)
-> + */
-> +struct fred_stack_frame {
-> + uint64_t error_code;
-> + uint64_t rip;
-> + uint64_t cs;
-> + uint64_t rflags;
-> + uint64_t rsp;
-> + uint64_t ss;
-> +};
-> +
-> +/* Shared result area */
-> +static volatile uint64_t fred_ss_value;
-> +static volatile uint64_t fred_saved_rip;
-> +static volatile bool fred_handler_called;
-> +
-> +static void __used fred_handler(struct fred_stack_frame *frame)
-> +{
-> + fred_ss_value =3D frame->ss;
-> + fred_saved_rip =3D frame->rip;
-> + fred_handler_called =3D true;
-> +}
-> +
-> +/*
-> + * FRED entry points. MSR_IA32_FRED_CONFIG points to the page-aligned
-> + * base. Ring 3 events enter at base+0, ring 0 events at base+0x100.
-> + * Since ICEBP executes in ring 0, the CPU enters at fred_entrypoint
-> + * + 256 =3D fred_entrypoint_kernel.
-> + */
-> +extern void fred_entrypoint(void);
-> +
-> +asm(
-> + ".pushsection .text\n"
-> + ".global fred_entrypoint\n"
-> + ".balign 4096\n"
-> +"fred_entrypoint:\n"
-> + /* Ring 3 entry =E2=80=94 unused, no userspace in this test */
-> + "ud2\n"
-> + /* Pad to +256 for ring 0 entry */
-> + ".org fred_entrypoint + 256, 0xcc\n"
-> +"fred_entrypoint_kernel:\n"
-> + "movq %rsp, %rdi\n"
-> + "call fred_handler\n"
-> + ".byte 0xf2, 0x0f, 0x01, 0xca\n" /* ERETS */
-> + ".popsection\n"
-> +);
-> +
-> +static void check_fred_event(uint64_t expected_rip, uint8_t =
-expected_vector,
-> +     uint8_t expected_type, const char *name)
-> +{
-> + uint64_t event_type, event_vector;
-> +
-> + GUEST_ASSERT(fred_handler_called);
-> + GUEST_ASSERT_EQ(fred_saved_rip, expected_rip);
-> +
-> + event_type =3D (fred_ss_value & FRED_SS_TYPE_MASK) >> =
-FRED_SS_TYPE_SHIFT;
-> + event_vector =3D (fred_ss_value & FRED_SS_VECTOR_MASK) >> =
-FRED_SS_VECTOR_SHIFT;
-> +
-> + GUEST_ASSERT_EQ(event_vector, expected_vector);
-> + GUEST_ASSERT_EQ(event_type, expected_type);
-> +}
-> +
-> +static void guest_code(void)
-> +{
-> + uint64_t expected_rip;
-> +
-> + /*
-> + * Enable FRED:
-> + *  1. Set MSR_IA32_FRED_CONFIG to our entry point
-> + *  2. Set MSR_IA32_FRED_RSP0 to our FRED stack
-> + *  3. Set MSR_IA32_FRED_STKLVLS (all events use stack level 0)
-> + *  4. Set CR4.FRED
-> + */
-> + wrmsr(MSR_IA32_FRED_CONFIG, (uint64_t)fred_entrypoint);
-> + wrmsr(MSR_IA32_FRED_RSP0, FRED_STACK_GPA + FRED_STACK_SIZE);
-> + wrmsr(MSR_IA32_FRED_STKLVLS, 0);
-> +
-> + {
-> + uint64_t cr4;
-> + asm volatile("mov %%cr4, %0" : "=3Dr"(cr4));
-> + cr4 |=3D X86_CR4_FRED;
-> + asm volatile("mov %0, %%cr4" :: "r"(cr4));
-> + }
-> +
-> + /* Test 1: ICEBP (INT1) =E2=80=94 should be EVENT_TYPE_PRIV_SWEXC =
-(5) */
-> + fred_handler_called =3D false;
-> + asm volatile("lea 1f(%%rip), %0\n\t"
-> +     ".byte 0xf1\n\t"
-> +     "1:" : "=3Dr"(expected_rip) :: "memory");
-> + check_fred_event(expected_rip, DB_VECTOR, EVENT_TYPE_PRIV_SWEXC,
-> + "ICEBP");
-> + GUEST_SYNC(0);
-> +
-> + /* Test 2: INT3 =E2=80=94 should be EVENT_TYPE_SWEXC (6) */
-> + fred_handler_called =3D false;
-> + asm volatile("lea 1f(%%rip), %0\n\t"
-> +     "int3\n\t"
-> +     "1:" : "=3Dr"(expected_rip) :: "memory");
-> + check_fred_event(expected_rip, BP_VECTOR, EVENT_TYPE_SWEXC, "INT3");
-> + GUEST_SYNC(1);
-> +
-> + /* Test 3: INT $0x20 =E2=80=94 should be EVENT_TYPE_SWINT (4) */
-> + fred_handler_called =3D false;
-> + asm volatile("lea 1f(%%rip), %0\n\t"
-> +     "int $0x20\n\t"
-> +     "1:" : "=3Dr"(expected_rip) :: "memory");
-> + check_fred_event(expected_rip, 0x20, EVENT_TYPE_SWINT, "INT $0x20");
-> + GUEST_SYNC(2);
-> +}
-> +
-> +static const char * const test_names[] =3D {
-> + [0] =3D "ICEBP (EVENT_TYPE_PRIV_SWEXC)",
-> + [1] =3D "INT3 (EVENT_TYPE_SWEXC)",
-> + [2] =3D "INT $0x20 (EVENT_TYPE_SWINT)",
-> +};
-> +
-> +int main(int argc, char *argv[])
-> +{
-> + struct kvm_vcpu *vcpu;
-> + struct kvm_vm *vm;
-> + struct ucall uc;
-> + unsigned int nr_pages;
-> + void *fred_stack_hva;
-> + int test;
-> +
-> + TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_FRED));
-> +
-> + pr_info("Testing FRED event types with EPT fault on stack\n");
-> +
-> + vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +
-> + /* Map the FRED stack page */
-> + nr_pages =3D vm_calc_num_guest_pages(VM_MODE_DEFAULT, =
-FRED_STACK_SIZE);
-> + vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-> +    FRED_STACK_GPA, 1, nr_pages, 0);
-> + virt_map(vm, FRED_STACK_GPA, FRED_STACK_GPA, nr_pages);
-> + fred_stack_hva =3D addr_gpa2hva(vm, FRED_STACK_GPA);
-> +
-> + for (test =3D 0; test < ARRAY_SIZE(test_names); test++) {
-> + /*
-> + * Evict the FRED stack page so the CPU takes an EPT/NPT
-> + * violation when pushing the FRED frame. KVM must handle
-> + * the fault, map the page, and reinject the event.
-> + */
-> + madvise(fred_stack_hva, FRED_STACK_SIZE, MADV_DONTNEED);
-> +
-> + vcpu_run(vcpu);
-> + TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-> +
-> + switch (get_ucall(vcpu, &uc)) {
-> + case UCALL_ABORT:
-> + REPORT_GUEST_ASSERT(uc);
-> + break;
-> + case UCALL_SYNC:
-> + TEST_ASSERT_EQ(uc.args[1], test);
-> + pr_info("  %s: PASSED\n", test_names[test]);
-> + break;
-> + default:
-> + TEST_FAIL("Unexpected ucall");
-> + }
-> + }
-> +
-> + kvm_vm_free(vm);
-> + return 0;
-> +}
-> --=20
-> 2.43.0
->=20
->=20
->=20
->=20
+-- 
+2.52.0
 
