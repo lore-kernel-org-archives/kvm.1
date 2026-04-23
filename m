@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6BF391E49;
-	Thu, 23 Apr 2026 19:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383882DB7B7;
+	Thu, 23 Apr 2026 19:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776972338; cv=none; b=Ll7hDKH/rVMLawYGmcfgCDDxxs820NXXqLJumP0ybjJyoc+jmgZmKudmUb+Tg+LSR/oDgah2bvFjht2LGEfrg3Nvu7hjszN5SiPOObvSceJSY2kaD13X6DIFKhO/zqT28vZkkdDCjCOBe8fEkKES2n6ftnEvZMJjZseWrgftFao=
+	t=1776973504; cv=none; b=QHUpfgSwd8EwawTCvwGgs0I2vhGX+IGKBmHWNUEQmc9tF+jcIZ595vApBhEZ75n8bezlN3nPI5CMUt+CS5i6WjeDBrN/XoxRtImSXXbk8qZqAyMqTB3RA+h35K9LPhiJiKFble+C2z8T9Fq5v/MrNVvW9PVrMGwrggogw7PtYwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776972338; c=relaxed/simple;
-	bh=mEhSNzw438eFSo2SttGbiPSYg2mHMQZBVE1dKmzNCRM=;
+	s=arc-20240116; t=1776973504; c=relaxed/simple;
+	bh=ENC60U4eoLTeOFgHvSyl4mRh0gHFD8ZCM+8UztNm+Oc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CsUs/DrdV1vsd7USdn5q85okRR6cFdwV/xkytrJrX2VyLwGFqyl655eo03gLTQUH+wA8+/aE4+7/AQ2VdR+PrUYkE25l8I/LHZSISy1mpVJ+a4Fer/66fe7cUAcGhd8eZIg+fTR1Jeeu/TuvjDnI7Zzp5KoX9EgrCvGoXvzIU/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVX7LR5V; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=B2s2W+ywfveimjx9jKuCoMIxcH0kcI4GZByU32DGE1eZDlcKYtURKauvVseVVv/TSwYjZOhgE25v/vvUKnM1fryMXbMCMXy3YyNZxs9jdQDo3WPJFN6K17xThXKp2E4yKRvSdZLNGZ/NfgLTiJOQc6rvE4RnBYwJeOK4lkZNYeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTjkhAl5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVX7LR5V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4E7C2BCAF;
-	Thu, 23 Apr 2026 19:25:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTjkhAl5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8445C2BCAF;
+	Thu, 23 Apr 2026 19:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776972337;
-	bh=mEhSNzw438eFSo2SttGbiPSYg2mHMQZBVE1dKmzNCRM=;
+	s=k20201202; t=1776973503;
+	bh=ENC60U4eoLTeOFgHvSyl4mRh0gHFD8ZCM+8UztNm+Oc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FVX7LR5VfT9r+KDdUIYNaKW4g1qbwcNTMrf1WWtlqrxX2N6+4OFX2vTsYp1PuTRpn
-	 mveZ91DqGnBIL7zSKFKil5s5fMsAEY5uHjZ+eXPw5qMGJyxWJbHz6fJXEK0E5czucz
-	 O2wxGgqwuGJnt88RUqCa5l4hRyybxiGh0U+sxVJpxmLvatbj0FwdWzl3o2KZYl0OVj
-	 JhRVlG9Xr6AMize3o3Bbpikvp+LKEg5E1NQHZykdlqvZ509ULoXZ/H85A5eYVLRt+I
-	 r0AOAmna18dl5Es84/sYgSuoBB8GoR7vPYRr7NvfgjlQbhkdk2GNqhrPQQNgY6vTgh
-	 ctogcTdfyfZZg==
-Message-ID: <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org>
-Date: Thu, 23 Apr 2026 21:25:30 +0200
+	b=WTjkhAl5drIfu9apC/Pi9agzSVtP58XXpDt2+cIt9h3kL6pdH1FmRKQU8q4lE5mb/
+	 hCR0Jxqd4pQYChGR9GdRdJDAoZyFicegVlKibLa0Lufvv7X8N0JEYqUrGI0oh7Vv/M
+	 3oEdsdTEVdvpkpGLwXo8VQyyOxHEPzYnM/aTsFCYPIyouxcSwpu1GHz0uUwGJEWkuj
+	 iQ8omD6X26DJfCh4G4tx2nwQFQLflEQuYa9LlRrKm758y9dvJwkI7pjAZrffcRkPDV
+	 Ki8Zekn7Y9+qoDgsT/rDBXYUiYpaOMrmIzWirEsXPA0oabydG9O3thHtUWGRWVMTlr
+	 g14lLOI11hBYQ==
+Message-ID: <1bcf0c90-7aee-47b2-a58c-7932e6ad088a@kernel.org>
+Date: Thu, 23 Apr 2026 21:44:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,26 +35,24 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
- memory
-To: Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <aeFCuLJXT8VOkzH7@thinkstation>
- <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
- <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
- <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation> <aeoxnuGKO3uqS2kG@x1.local>
- <aeo5IPpQi7onyjTF@thinkstation> <aeprnnccJeyHB2rt@x1.local>
+Subject: Re: [PATCH 7.2 v9 2/2] x86/tlb: skip redundant sync IPIs for native
+ TLB flush
+To: Dave Hansen <dave.hansen@intel.com>, Lance Yang <lance.yang@linux.dev>,
+ akpm@linux-foundation.org
+Cc: peterz@infradead.org, dave.hansen@linux.intel.com, ypodemsk@redhat.com,
+ hughd@google.com, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ jgross@suse.com, seanjc@google.com, pbonzini@redhat.com,
+ boris.ostrovsky@oracle.com, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260420030851.6735-1-lance.yang@linux.dev>
+ <20260420030851.6735-3-lance.yang@linux.dev>
+ <f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -101,22 +99,62 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aeprnnccJeyHB2rt@x1.local>
+In-Reply-To: <f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+On 4/23/26 19:56, Dave Hansen wrote:
+> On 4/19/26 20:08, Lance Yang wrote:
+>> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
+>> +	/*
+>> +	 * Treat unshared_tables just like freed_tables, such that lazy-TLB
+>> +	 * CPUs also receive IPIs during unsharing of page tables, allowing
+>> +	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
+>> +	 */
+>> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
+>> +			   tlb->freed_tables || tlb->unshared_tables);
+>>  }
 > 
-> The other thing is, as I mentioned in the other email, I still don't know
-> how the current RW protection would work for anonymous.  I don't yet think
-> the user swapper can read the anon page with RW-protected pgtables.  So far
-> my understanding is maybe you only care about shmem so it's fine, but it'll
-> always be great to confirm with you.
+> I've been staring at this trying to make sense of it for too long.
+> 
+> Right now, flush_tlb_mm_range() literally has an argument named
+> "freed_tables" and "tlb->freed_tables" is passed there. That seems
+> totally sane. It's 100% straightforward to follow.
+> 
+> But it makes zero logical sense to me to now mix "tlb->unshared_tables"
+> in there. Sure, what you _want_ is the freed_tables==1 behavior from
+> tlb->unshared_tables==1, and this obviously hacks that in there, but
+> it's not explained well enough and not maintainable like this. IOW, it's
+> still just hack.
+> 
+> I think what's happened here is that info->freed_tables is being
+> modified from being strictly related to page table freeing, and moved
+> over to a bit which tells TLB flushing implementations whether they can
+> respect CPUs in lazy TLB mode.
+> 
+> It's mentioned in the comment, but then ever reflected into the code.
+> 
+> Shouldn't we be doing something like the attached patch? Look at how
+> that maps over to the flushing side, like in the hyperv code:
+> 
+>> -       bool do_lazy = !info->freed_tables;
+>> +       bool do_lazy = !info->wake_lazy_cpus;
+>>  
+>>         trace_hyperv_mmu_flush_tlb_multi(cpus, info);
+>>  
+>> @@ -198,7 +198,7 @@ static u64 hyperv_flush_tlb_others_ex(co
+>>  
+>>         flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
+>>         nr_bank = cpumask_to_vpset_skip(&flush->hv_vp_set, cpus,
+>> -                       info->freed_tables ? NULL : cpu_is_lazy);
+>> +                       info->wake_lazy_cpus ? NULL : cpu_is_lazy);
+> 
+> That even makes the hyperv code easier to read over what was there
+> before, IMNHO.
+> 
+> Thoughts?
 
-I wonder if uffdio_move could be used for a swapper implementation instead?
-
-If we ever have to read from a protnone page, maybe we could teach ptrace access
-to do it, or have something that can read from prot_none areas -- like
-uffdio_copy, which can write to prot-none areas.
+Looks better!
 
 -- 
 Cheers,
