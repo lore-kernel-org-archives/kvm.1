@@ -1,122 +1,163 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0E9347FD7
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 18:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776968057; cv=pass; b=X4oXi2KvO7WKnQ82aQtgCNjnAI76OUo0loZHfVsTXAXbUIIOL0o4l9/6392aCa4jM1OOTya6BhUmDnhwvw9G5LeXO/Ra9TRO7KHgBHXeVnWyl2EVRxKPr+8drVpcFPanIHFksQsiqrcBttv3Eh7p32PYwMpZu3ZIbl/ZNrBOsTA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776968057; c=relaxed/simple;
-	bh=3X0XEQ7mUewMdktVqynHYf8leq1tI6zJiV17AX+r9CY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YNM5K4PtjtuU1gHihqqowtLy8/JVFhSBMi18OwvIREoPHChM5gPzeYZNeelIZN73YkHmVKgyYKNg8kGLQ5HjZZXopr7HZtfrA9fK0G43A+r0XSeAX7ZuQiGv98Ky6N8/I7N93BZo9cdCA4EYmxYLHTAWIRmJJhpFS2nSZbEVQHg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jbuBaOLu; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DC927FD4F;
+	Thu, 23 Apr 2026 18:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776968748; cv=none; b=DPDCI24fmF9BogIpuiXKopCP/2o5Dt/daTB+ofL8w66Fy8qdjOw6gxFv/DXMeLyouPaJa73WycXvn/yBbWM34owxC69FNzYXCIdyGo4nAORPuFZwD6+TclasSInuYZTWMldHhfWaqmxF0TiyZQWnwL0EoVZF1agYb/KAiewMWjE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776968748; c=relaxed/simple;
+	bh=oWNEM6jnYyfWzRXF8wCV0h45OFTGIH/LQA3zNpeI+P0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H7DoW9Wnqu4QZvwdqoD7LiGy4fnsTboKEqG9Zo99ftQxX1Aq814+8zsW3mMSm4OmLsXuRiX9LdjIdpLLPXZDyvAUI1jt6txlJHOBoMP8BbyMnQiiPMHcMWXR51BObE1KsTBATuViHzdgpqP2XrrJPDR9Hdr+Fz9VXK+frZtq4Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=WSL9zXud; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jbuBaOLu"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67148a70f8aso56919a12.1
-        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 11:14:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776968054; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AHzRXyGAY/xnpsGhnC56SfpyK7Chu42ZMQYT7NazYibJBxW+pY1dHyqPsv2bYpqEjc
-         FUrU8WnKfBzYZbvHniLuhBVQ9MxqytgAPcnbE0WJk7VKimrvLDFK41CmP+MHiA8q2vRG
-         38X6DKtexQe0Cs1FYxMwHibwVa42rS7x8OIJ9CH1BZTcNc1sG7cWSi/mvylbYAlbCwOS
-         JrEKN6RqZ84gEBgUamHYrc+CTJWj9P4fpQ3eWu88Q01Ev/RBUJsxp7o1gNw4ePIDxirg
-         hfOTgRy9pk5whfcoCRuc5k6I5oMjuDpsVd2dLNt/+ttbPqhBwRBqY2YMTA5pH+lxEt1O
-         05eA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K4QPY9s3GqKXMk5HSC8jCFB/X41J7ptf4y91qIA/h/U=;
-        fh=uS06rJCUKMhhDBAZHqN5kKJQQpaMGbLPx1TZJ63XRe4=;
-        b=b9mhQLh+aSsZu4CoHt4iOTDyk39/MSxHArb72ax5ZNAj5CK/wGDwKXhVll+qkQ4KVQ
-         qQg1P1jSE6TZ9hdgtdGd37q+dRcQM4sQzqxZAqQOiHRr8OZ4oqVvs/Zdetd1gdXGbqMu
-         X3m5b3yogQnKEct3E9Ph7iVZJ8FYLpQah3p2fE5RlCgmp1L/fh4OqBXpjLxU7rGASQk/
-         GBf+J5JybTY8Fvdn8KBC3IZO/mWUUqsFzhVXIrQCrEoIpNA6+4WPzW6rmr+5CjF/Yxf8
-         mZSvL1duz3N2felAuqdNC+mvctrMsg45FSj6qkGWpmssXj3xbeGWqQSdDagudPFGl9+/
-         RMPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776968054; x=1777572854; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K4QPY9s3GqKXMk5HSC8jCFB/X41J7ptf4y91qIA/h/U=;
-        b=jbuBaOLuRFbY4hV2GM54HNoLpwfm1m4mjMMwrJRig/CoyXFg6IEayF+LDESMNawKpW
-         E3JdIWpxkoCkLc8DyOiHr+fjHbghzpY1xWbp5OK5IEKri4krZQTxlp18C1GykIqPxzV5
-         nEFfYeJK5bvZBXF+Bi2V7uyO4dyXIPn80W0KOMxhMB2xMnRgdfBnJf5hRZmwt1sztolC
-         5bfMdqJ3tWp9VDW4RJFUOguZchn0dLlOVoAvxhduV1k3EVZ8t23as0tEOalXardC+nG2
-         iCAktBVftDLpcuOx44WuRh1vjzLpROXZ/FO/YxFG6SxXLkyQuGT4hlE5VK9nAXqHEqwg
-         Yz4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776968054; x=1777572854;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=K4QPY9s3GqKXMk5HSC8jCFB/X41J7ptf4y91qIA/h/U=;
-        b=AI0wmKshCE2NAgybv2NK1tCfBBimT/iym50sPCOj2I6UoN48T/p9d0+y4y2fC8o3oh
-         HYrWwJpPVyAvHkS6isB7Y2UyhYOqMJvsV0v+cC1+cFaWgbTPTnny6QqANjwTc5QRRQOI
-         9z1p/32o4A9HRtn4Kgl+HoSunVUn/GNM3vY/edxT3T8wmAEdSP1cIZenkuQLfi3Hr7kH
-         GmjMm4FhlEgjWQskBt5WzwuwJkJ1wRsqCddMvca0bBELN/uMq3dO+q0Rga4NN557Synd
-         MdJCmg6rXc/SMFimgXz5RTiGhP160n3fuC6nFxPqdBOV0e2lIHFfunhZiGGrszhnHFbt
-         PWYA==
-X-Forwarded-Encrypted: i=1; AFNElJ/vC3RmB6ErXBBhRv5zgcGdFXrR1duiof/hZnTWeQqVVsjciwsyqIINGPC8SPtzoEROTo0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIWGNN3JWMhU4ELLjI3aLuF0YWaZZEgKNztr+9kussCcKBSOsp
-	AzRyOFnPmT02DwAysIFzQ4DJ01TXSiOWJsJvdXryFSgvPp482mdrY/h6/NMRtW/lsxE1XmCQu4L
-	bWbtXmjbNTfxjRxdCtgJuGfIcY8zbtUFVBvXLzJnh
-X-Gm-Gg: AeBDieuaBh4ikk/nIjtPaeNwU5Rv+WppF19wiZTtezxMa4Rys0jqVMun9Op5vBxXJw3
-	TAJJY4XBbzc2FIY7TL3tRcafKID0hSRmcm37OScylkkzQlc5qQ8ppng01iSal5S3Ql7r8IKn6rM
-	Cq+F1/kwZ+q5yIxcijrKfhI2P8Q1mvk5mB3TB4f7uflED3rAsnPwg8XKisXEA7vsCtn04ytRad8
-	brODrRKpvqIu0gOMKaJQm8v12ApZ5OZoAH+A+seX33pfSL05c9OrpMii6KmjHOD0GWI7WrJDrzW
-	6OZleMpXxxtlbB1jh5Stgf7jfbNU
-X-Received: by 2002:a05:6402:951:b0:670:9e9f:1a5e with SMTP id
- 4fb4d7f45d1cf-674404f0026mr269246a12.2.1776968053761; Thu, 23 Apr 2026
- 11:14:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="WSL9zXud"
+Received: from pps.filterd (m0528007.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NH8t7S2499036;
+	Thu, 23 Apr 2026 11:25:37 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=LklIq/rv1EFSTQEz+p
+	2441/vx1iffgZbusssJoT0mF0=; b=WSL9zXudruPuggHDijjodQpx62ywSAdFJW
+	i1swOUjuqjxoENLB+paXsoGRTT4dVcNNhRTdDQt3tL5N6AfpcH8QMA/qOn6u98Vf
+	spuiRIKXjTJni4K2F3M8Wh62uIEOdgkr6XDJiLFa4CC+/J8Io8PSE1LQ5OtMYUQE
+	q4sMYEzjA9+ncagqjVFVz8Td3HuICv/xdHY63z5KrD1el30CjMw61lPNV0CfONqg
+	HFYviTZmGe/MqIyPcGxEJZ8AGp2FSBU/edMzV1bpmh1s33pmKbpnCHZ513Fn8/TT
+	blP0Hd4FYRr52AQylQ7H4+480/+d5P/nxqizZY0X1rD4c/ciolRA==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dpepcxsf4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 23 Apr 2026 11:25:36 -0700 (PDT)
+Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
+ (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Thu, 23 Apr
+ 2026 18:25:28 +0000
+From: Matt Evans <mattev@meta.com>
+To: Alex Williamson <alex@shazbot.org>, Kevin Tian <kevin.tian@intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
+        Alistair
+ Popple <apopple@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>, Kees Cook
+	<kees@kernel.org>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Yishai Hadas
+	<yishaih@nvidia.com>
+CC: Alexey Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>,
+        Peter Xu <peterx@redhat.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        Zhi Wang <zhiw@nvidia.com>, <kvm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <virtualization@lists.linux.dev>
+Subject: [PATCH v2 0/3] vfio/pci: Request resources and map BARs at enable time
+Date: Thu, 23 Apr 2026 11:25:06 -0700
+Message-ID: <20260423182517.2286030-1-mattev@meta.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260423150340.463896-1-seanjc@google.com> <20260423150340.463896-5-seanjc@google.com>
-In-Reply-To: <20260423150340.463896-5-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 23 Apr 2026 11:14:01 -0700
-X-Gm-Features: AQROBzA-HWufnC0-Ev6XrddaWAfr8RjJyxYq0ElI4imQXSGVPU0VALJTnOxzTWM
-Message-ID: <CALMp9eTYhE7Co7LHb-251NhSHdyK4vzC4mrPu2_bRbDbrDcwew@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] perf/x86: KVM: Have perf define a dedicated struct
- for getting guest PEBS data
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=VKLtWdPX c=1 sm=1 tr=0 ts=69ea6420 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=4h92JMTCafKA-fb_NiOh:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=k94C9gkFF5w_uSWTU5gA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: P9JcLlLeo4xlQccZvg0D8lxtzsi4tf5F
+X-Proofpoint-GUID: P9JcLlLeo4xlQccZvg0D8lxtzsi4tf5F
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDE3OSBTYWx0ZWRfX+lvHzz5cK9QM
+ TQvoqpJw0TspefpslQPv5ufXvHNQcVmDWf6xE704+cNnuipC0x6/93AWpx31ID6Jyi0LACq7lnb
+ /7b0QymeTcRspfl5jZvqxvaJbVL94BHI5ucscilGQ1OwSmffC/c/qrWbUjm1y0RJKoopxX5wocL
+ BLyuisva/SsSd2rkNBHo8Ai/vSQx90sohiXa//poKvjtdkU6h0MqGR5qmCYLpCnowXjBZsuNHY4
+ ikdQ0asPW6nuYAVyCWvOmXRYk6rUJaxo4MGfZCJutca6HxdwoHbcxfqocZQSWimdbE+OVPBL2jf
+ zzhyCvZ9ibDaJVMQZwtErz9uuaoWopBwKqKDKYrt1JBSV2YORwcZi3jD94m9SaYLdPWNUrr9gDg
+ PeD0nlVl1wYQ0Tg7JvplevHHyJlCjGMUJa4dOcD/zBl1wSAOwfd6d3+0v6LdbReUfQH1d2Bkpe+
+ 6jWI+h2j37YcRwD4Ajw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
 
-On Thu, Apr 23, 2026 at 8:03=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Have perf define a struct for getting guest PEBS data from KVM instead of
-> poking into the kvm_pmu structure.  Passing in an entire "struct kvm_pmu"
-> _as an opaque pointer_ to get at four fields is silly, especially since
-> one of the fields exists purely to convey information to perf, i.e. isn't
-> used by KVM.
->
-> Perf should also own its APIs, i.e. define what fields/data it needs, not
-> rely on KVM to throw fields into data structures that effectively hold
-> KVM-internal state.
->
-> Opportunistically rephrase the comment about cross-mapped counters to
-> explain *why* PEBS needs to be disabled.
->
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Hi,
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+This is a replacement for these patches posted to set up the
+VFIO barmap in the DMABUF export path, and add serialisation:
+
+ https://lore.kernel.org/kvm/20260415181423.1008458-1-mattev@meta.com
+
+Those patches were motivated by the DMABUF export originally missing a
+call to vfio_pci_core_setup_barmap() and so possibly exporting a range
+for which resources weren't yet requested.
+
+Responses in the thread indicated there wasn't a strong historical
+reason to require the bar-mapping to be performed on-demand at BAR
+reference time.  It's much simpler to move this to
+vfio_pci_core_enable(), and that then avoids having to deal with
+concurrent lazy requests.
+
+The first patch requests PCI resources and pci_iomap() of the BARs in
+vfio_pci_core_enable(), moving this out of
+vfio_pci_core_setup_barmap().
+
+Some callers relied on vfio_pci_core_setup_barmap() for its ioremap()
+effect, and other callers use it for its resource-acquiring effect.
+The function remains in the first patch, containing a cheap check that
+both these actions have occurred and keeping the same error behaviour.
+
+The second patch then removes calls to vfio_pci_core_setup_barmap(),
+in favour of two small helper functions which make it clearer to
+distinguish code that needs just the resource (e.g. mmap) and code
+that needs the iomap as well (e.g. the rdwr routines, or virtio).
+
+The third patch adds the resource check to VFIO DMABUF export, which
+was previously able to export an unrequested resource.  Although patch
+1 at first appears to fix this by requesting resources at enable time,
+code using the BAR still needs to check the resource really was
+acquired.
+
+In future we could reconsider performing all the ioremap()s at startup
+time, since a lot of VFIO users will never access BARs in-kernel and
+won't need them.  Mapping huge BARs will cost some time & memory, and
+if necessary this could be reduced by doing the ioremap() portion on
+demand.
+
+=== Changes ===
+
+v2:
+
+ - Don't fail if resources can't be requested or iomapped, even for
+   valid BARs, as this would change the userspace-observable error
+   behaviour.  Specifically, if there was an issue with one particular
+   BAR which happened to never be used, then userspace would never
+   encounter an error for it.  Track iomap and resource-acquisition
+   status per BAR.
+
+ - Break out the checks for resource success from those for iomap
+   success, in the form of the two new helpers.
+
+ - Third patch to add the check to VFIO DMABUF export, because
+   init-time requests can now fail.
+
+v1:
+  https://lore.kernel.org/kvm/20260421174143.3883579-1-mattev@meta.com/
+
+Matt Evans (3):
+  vfio/pci: Set up bar resources and maps in vfio_pci_core_enable()
+  vfio/pci: Replace vfio_pci_core_setup_barmap() with checks for
+    resource/map
+  vfio/pci: Check BAR resources before exporting a DMABUF
+
+ drivers/vfio/pci/nvgrace-gpu/main.c |  8 ++--
+ drivers/vfio/pci/vfio_pci_core.c    | 66 +++++++++++++++++++++++------
+ drivers/vfio/pci/vfio_pci_dmabuf.c  |  6 ++-
+ drivers/vfio/pci/vfio_pci_rdwr.c    | 29 +------------
+ drivers/vfio/pci/virtio/legacy_io.c |  4 +-
+ include/linux/vfio_pci_core.h       | 24 ++++++++++-
+ 6 files changed, 88 insertions(+), 49 deletions(-)
+
+-- 
+2.47.3
+
