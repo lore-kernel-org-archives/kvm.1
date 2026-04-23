@@ -1,419 +1,191 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CC3361660;
-	Thu, 23 Apr 2026 16:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B883B38AF;
+	Thu, 23 Apr 2026 16:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776960026; cv=none; b=UAkt9cx2gS6qzvLGWmt8lrbcnGix+KNTlZYmfQ69ZRG8Iw+LqTtrlWwi95BSmsfaARzjLbUByncVvq6VJPULKtTv+hl3+ccwTHfZa8gIlkMhHBcxuG67MksB3Q/a93UO1i2KSsweyuG6aJitjsDQB+EyOoVkQ5RlNJlOCTxqTOU=
+	t=1776960704; cv=none; b=Mz8Cnzer82pZDQy9NRBJojZtbVmWFHIFs5mMbHM8vHTd+tpE81kK6+tpPYs6u5DtD6jOR8hOf0pC2+hFNaX/aWcw0QWX17qvdwJ9L62lspT6rFt4EXqxMth9X3fWEfqcb6/0xonDjNz8gD8vjXxlPlgYBP9WBfNkBYFOGa3aGrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776960026; c=relaxed/simple;
-	bh=1YKanNQdAcIlTh3ehngQBKPlZ4XBrkQsMsmcxSJWs+E=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=CL3AifQ7gaZX56fBzWXcHcHHVP2VLH/eAc4EYS6YT8+Igocu/UfkcsOHmnopTNTzwF9+SabTwM84Rq3AvICUDGU/3zej9UVaqKGZVnZEf+OTgX+LQoIABK/iTKLaFQux7EBU5fjIrjRcz9YGyZRYnUgWbHlx8fmK10RFFUQtoqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=h3bOBLwN; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1776960704; c=relaxed/simple;
+	bh=NwSQ5W3OkXSYKvZWQ1PKtWmGWeMIrSt8dgUnFNUEk9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UCaHlj42FcSfk8SK6mwSX2Vj/H1GkPTlxvseK8NM2hvQ3YkZVUOMd6cbV2KxmFdde9Fz4V7S9hxGGRz0yFdAOMQwt8gealjedfV2Eo9DxQgrFObhELN7QCUjKST3Nc0bhf9Lg5OAdfk2UuWD/W96224WS8RWQSOBxC5BGMahiHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJ5roPcp; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="h3bOBLwN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
-	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To;
-	bh=dUakD7NdtZl/+r3NnUfo5KXjKQz7UCBVyAgnDQZRi0Q=; b=h3bOBLwNve/HJqQxPUL+cjVxef
-	KVaX036+YPsLuVOcIGvWxI5inJmk4r/G6fuwlg+y3saNASiuVXRbuse2MnerSapM5Ei22BGcnnf5L
-	jCWRP8GeLo0eBR4cLsykBJOSUgTOkC1+OQ7IZgEb/5sgzv/ZHBzU7c84hHT4qQx062GUuyetkk0TV
-	ipgSuP1rgv56A4pa1GEK4Xb/OF9PeSVVLjiGemD/GtQzhU5mqGWf47FWuW7yKOJ66nmmm0GcwbxYC
-	3Gwa+paNXKX728yDq1W3LfFm/NZMHlqe0fQUkcTi+zxBUZAa9F5pY5Nh0y/Zfy3z4QyJvjd4894nq
-	9IX1K1OA==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFwTR-0000000DhN3-33Lm;
-	Thu, 23 Apr 2026 16:00:17 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id 26AA9300E8B; Thu, 23 Apr 2026 18:00:16 +0200 (CEST)
-Message-ID: <20260423155936.843498069@infradead.org>
-User-Agent: quilt/0.68
-Date: Thu, 23 Apr 2026 17:56:12 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: tglx@kernel.org
-Cc: linux-kernel@vger.kernel.org,
- peterz@infradead.org,
- Sean Christopherson <seanjc@google.com>,
- Jim Mattson <jmattson@google.com>,
- Binbin Wu <binbin.wu@linux.intel.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- Binbin Wu <binbin.wu@intel.com>,
- "x86@kernel.org" <x86@kernel.org>,
- Paolo Bonzini <bonzini@redhat.com>
-Subject: [PATCH 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86 core
-References: <20260423155611.216805954@infradead.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJ5roPcp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776960702; x=1808496702;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NwSQ5W3OkXSYKvZWQ1PKtWmGWeMIrSt8dgUnFNUEk9c=;
+  b=OJ5roPcp/oK41GyzL/HnZSz+aulrZVG8epy0E0kuRTCkfdNiEKdHay6x
+   SbFBnwjQ+qw0xnSonQAGwQvwp8wEGkPuHiF8ATs3h4EhM+/H+lZ63z+a9
+   f90n9ZssS7ywXtPS56mtrhp/V+xcPVV16uAH7O+d+n966UP/ZVgu8uqiN
+   jm9bsAouCfnZlUwu3FuW42b8NSgNGmurRfM20CB2S4eMAuEZU7QGw1PKe
+   ajckppwCYekKgZiKNidmo12C05h36DBQT2V38Ef1QOPcx0GKjY8AS/ZPi
+   ldrCJlZQbX4ZbMEaB8Z7Pbyy20bwrcDtNJs+4EvNRhjaaJ0DeKPtdHw/+
+   A==;
+X-CSE-ConnectionGUID: H6QOR9lDSaC65py1dqVx/w==
+X-CSE-MsgGUID: +F58VTqdQk2aYuL7iK17mg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="77100786"
+X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
+   d="scan'208";a="77100786"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 09:11:42 -0700
+X-CSE-ConnectionGUID: xhjZTAs0QHGErBnFKdPmyQ==
+X-CSE-MsgGUID: jSKRxRWHQMWaqvQ3FNHC5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
+   d="scan'208";a="236689740"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa003.jf.intel.com with ESMTP; 23 Apr 2026 09:11:37 -0700
+Date: Thu, 23 Apr 2026 23:49:20 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dan Williams <djbw@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 08/31] x86/virt/tdx: Configure TDX Module with
+ optional TDX Connect feature
+Message-ID: <aeo/gOWbGy89nWDN@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-9-yilun.xu@linux.intel.com>
+ <69e8223f4c8e6_fe08310058@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69e8223f4c8e6_fe08310058@djbw-dev.notmuch>
 
-Move the VMX interrupt dispatch magic into the x86 core code. This
-isolates KVM from the FRED/IDT decisions and reduces the amount of
-EXPORT_SYMBOL_FOR_KVM().
+On Tue, Apr 21, 2026 at 06:19:59PM -0700, Dan Williams wrote:
+> Xu Yilun wrote:
+> > TDX Module supports optional TDX features (e.g. TDX Connect & TDX Module
+> > Extensions) that won't be enabled by default.
+> 
+> So this is another place where "optional" is misleading. For simplicity
+> there is no mechanism to fallback from TDX Connect operation if present,
+> at least in the core. The only optional aspects would be the mechanism
+> that could be unloaded through the tdx_host driver.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
----
- arch/x86/entry/Makefile             |    2 -
- arch/x86/entry/common.c             |   48 ++++++++++++++++++++++++++++++++++++
- arch/x86/entry/entry.S              |   46 ++++++++++++++++++++++++++++++++++
- arch/x86/entry/entry_64_fred.S      |    1 
- arch/x86/include/asm/desc.h         |    4 +++
- arch/x86/include/asm/desc_defs.h    |    2 -
- arch/x86/include/asm/entry-common.h |    2 +
- arch/x86/include/asm/fred.h         |    1 
- arch/x86/include/asm/idtentry.h     |   11 --------
- arch/x86/kernel/idt.c               |   13 +++++++++
- arch/x86/kernel/nmi.c               |    8 ------
- arch/x86/kvm/vmx/vmenter.S          |   46 ----------------------------------
- arch/x86/kvm/vmx/vmx.c              |   20 ++-------------
- 13 files changed, 118 insertions(+), 86 deletions(-)
+I see. I think I should use 'extra' instead of 'optional' in all places.
+I'll rephase the comments.
 
---- a/arch/x86/entry/Makefile
-+++ b/arch/x86/entry/Makefile
-@@ -13,7 +13,7 @@ CFLAGS_REMOVE_syscall_64.o	= $(CC_FLAGS_
- CFLAGS_syscall_32.o		+= -fno-stack-protector
- CFLAGS_syscall_64.o		+= -fno-stack-protector
- 
--obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o
-+obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o common.o
- 
- obj-y				+= vdso/
- obj-y				+= vsyscall/
---- /dev/null
-+++ b/arch/x86/entry/common.c
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <linux/entry-common.h>
-+#include <linux/kvm_types.h>
-+#include <asm/fred.h>
-+#include <asm/desc.h>
-+
-+#if IS_ENABLED(CONFIG_KVM_INTEL)
-+/*
-+ * On VMX, NMIs and IRQs (as configured by KVM) are acknowledge by hardware as
-+ * part of the VM-Exit, i.e. the event itself is consumed as part the VM-Exit.
-+ * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs and IRQs
-+ * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ VM-Exit is
-+ * purely a signal that an NMI/IRQ is pending, i.e. the event that triggered
-+ * the VM-Exit is held pending until it's unblocked in the host.
-+ */
-+noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int vector)
-+{
-+	if (event_type == EVENT_TYPE_EXTINT) {
-+#ifdef CONFIG_X86_64
-+		/*
-+		 * Use FRED dispatch, even when running IDT. The dispatch
-+		 * tables are kept in sync between FRED and IDT, and the FRED
-+		 * dispatch works well with CFI.
-+		 */
-+		fred_entry_from_kvm(event_type, vector);
-+#else
-+		idt_entry_from_kvm(vector);
-+#endif
-+		return;
-+	}
-+
-+	WARN_ON_ONCE(event_type != EVENT_TYPE_NMI);
-+
-+#ifdef CONFIG_X86_64
-+	if (cpu_feature_enabled(X86_FEATURE_FRED))
-+		return fred_entry_from_kvm(event_type, vector);
-+#endif
-+
-+	/*
-+	 * Notably, we must use IDT dispatch for NMI when running in IDT mode.
-+	 * The FRED NMI context is significantly different and will not work
-+	 * right (speficially FRED fixed the NMI recursion issue).
-+	 */
-+	idt_entry_from_kvm(vector);
-+}
-+EXPORT_SYMBOL_FOR_KVM(x86_entry_from_kvm);
-+#endif
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -75,3 +75,49 @@ THUNK warn_thunk_thunk, __warn_thunk
- #if defined(CONFIG_STACKPROTECTOR) && defined(CONFIG_SMP)
- EXPORT_SYMBOL(__ref_stack_chk_guard);
- #endif
-+
-+#if IS_ENABLED(CONFIG_KVM_INTEL)
-+.macro IDT_DO_EVENT_IRQOFF call_insn call_target
-+	/*
-+	 * Unconditionally create a stack frame, getting the correct RSP on the
-+	 * stack (for x86-64) would take two instructions anyways, and RBP can
-+	 * be used to restore RSP to make objtool happy (see below).
-+	 */
-+	push %_ASM_BP
-+	mov %_ASM_SP, %_ASM_BP
-+
-+#ifdef CONFIG_X86_64
-+	/*
-+	 * Align RSP to a 16-byte boundary (to emulate CPU behavior) before
-+	 * creating the synthetic interrupt stack frame for the IRQ/NMI.
-+	 */
-+	and  $-16, %rsp
-+	push $__KERNEL_DS
-+	push %rbp
-+#endif
-+	pushf
-+	push $__KERNEL_CS
-+	\call_insn \call_target
-+
-+	/*
-+	 * "Restore" RSP from RBP, even though IRET has already unwound RSP to
-+	 * the correct value.  objtool doesn't know the callee will IRET and,
-+	 * without the explicit restore, thinks the stack is getting walloped.
-+	 * Using an unwind hint is problematic due to x86-64's dynamic alignment.
-+	 */
-+	leave
-+	RET
-+.endm
-+
-+.pushsection .text, "ax"
-+SYM_FUNC_START(idt_do_interrupt_irqoff)
-+	IDT_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
-+SYM_FUNC_END(idt_do_interrupt_irqoff)
-+.popsection
-+
-+.pushsection .noinstr.text, "ax"
-+SYM_FUNC_START(idt_do_nmi_irqoff)
-+	IDT_DO_EVENT_IRQOFF call asm_exc_nmi
-+SYM_FUNC_END(idt_do_nmi_irqoff)
-+.popsection
-+#endif
---- a/arch/x86/entry/entry_64_fred.S
-+++ b/arch/x86/entry/entry_64_fred.S
-@@ -147,5 +147,4 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
- 	RET
- 
- SYM_FUNC_END(asm_fred_entry_from_kvm)
--EXPORT_SYMBOL_FOR_KVM(asm_fred_entry_from_kvm);
- #endif
---- a/arch/x86/include/asm/desc.h
-+++ b/arch/x86/include/asm/desc.h
-@@ -438,6 +438,10 @@ extern void idt_setup_traps(void);
- extern void idt_setup_apic_and_irq_gates(void);
- extern bool idt_is_f00f_address(unsigned long address);
- 
-+extern void idt_do_interrupt_irqoff(unsigned int vector);
-+extern void idt_do_nmi_irqoff(void);
-+extern void idt_entry_from_kvm(unsigned int vector);
-+
- #ifdef CONFIG_X86_64
- extern void idt_setup_early_pf(void);
- #else
---- a/arch/x86/include/asm/desc_defs.h
-+++ b/arch/x86/include/asm/desc_defs.h
-@@ -145,7 +145,7 @@ struct gate_struct {
- typedef struct gate_struct gate_desc;
- 
- #ifndef _SETUP
--static inline unsigned long gate_offset(const gate_desc *g)
-+static __always_inline unsigned long gate_offset(const gate_desc *g)
- {
- #ifdef CONFIG_X86_64
- 	return g->offset_low | ((unsigned long)g->offset_middle << 16) |
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -97,4 +97,6 @@ static __always_inline void arch_exit_to
- }
- #define arch_exit_to_user_mode arch_exit_to_user_mode
- 
-+extern void x86_entry_from_kvm(unsigned int entry_type, unsigned int vector);
-+
- #endif
---- a/arch/x86/include/asm/fred.h
-+++ b/arch/x86/include/asm/fred.h
-@@ -110,7 +110,6 @@ static __always_inline unsigned long fre
- static inline void cpu_init_fred_exceptions(void) { }
- static inline void cpu_init_fred_rsps(void) { }
- static inline void fred_complete_exception_setup(void) { }
--static inline void fred_entry_from_kvm(unsigned int type, unsigned int vector) { }
- static inline void fred_sync_rsp0(unsigned long rsp0) { }
- static inline void fred_update_rsp0(void) { }
- #endif /* CONFIG_X86_FRED */
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -633,17 +633,6 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_MC,	xenpv_
- #endif
- 
- /* NMI */
--
--#if IS_ENABLED(CONFIG_KVM_INTEL)
--/*
-- * Special entry point for VMX which invokes this on the kernel stack, even for
-- * 64-bit, i.e. without using an IST.  asm_exc_nmi() requires an IST to work
-- * correctly vs. the NMI 'executing' marker.  Used for 32-bit kernels as well
-- * to avoid more ifdeffery.
-- */
--DECLARE_IDTENTRY(X86_TRAP_NMI,		exc_nmi_kvm_vmx);
--#endif
--
- DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
- #ifdef CONFIG_XEN_PV
- DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -268,6 +268,19 @@ void __init idt_setup_early_pf(void)
- }
- #endif
- 
-+noinstr void idt_entry_from_kvm(unsigned int vector)
-+{
-+	if (vector == NMI_VECTOR)
-+		return idt_do_nmi_irqoff();
-+
-+	/*
-+	 * Only the NMI path requires noinstr.
-+	 */
-+	instrumentation_begin();
-+	idt_do_interrupt_irqoff(gate_offset(idt_table + vector));
-+	instrumentation_end();
-+}
-+
- static void __init idt_map_in_cea(void)
- {
- 	/*
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -609,14 +609,6 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
- 		goto nmi_restart;
- }
- 
--#if IS_ENABLED(CONFIG_KVM_INTEL)
--DEFINE_IDTENTRY_RAW(exc_nmi_kvm_vmx)
--{
--	exc_nmi(regs);
--}
--EXPORT_SYMBOL_FOR_KVM(asm_exc_nmi_kvm_vmx);
--#endif
--
- #ifdef CONFIG_NMI_CHECK_CPU
- 
- static char *nmi_check_stall_msg[] = {
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -31,38 +31,6 @@
- #define VCPU_R15	__VCPU_REGS_R15 * WORD_SIZE
- #endif
- 
--.macro VMX_DO_EVENT_IRQOFF call_insn call_target
--	/*
--	 * Unconditionally create a stack frame, getting the correct RSP on the
--	 * stack (for x86-64) would take two instructions anyways, and RBP can
--	 * be used to restore RSP to make objtool happy (see below).
--	 */
--	push %_ASM_BP
--	mov %_ASM_SP, %_ASM_BP
--
--#ifdef CONFIG_X86_64
--	/*
--	 * Align RSP to a 16-byte boundary (to emulate CPU behavior) before
--	 * creating the synthetic interrupt stack frame for the IRQ/NMI.
--	 */
--	and  $-16, %rsp
--	push $__KERNEL_DS
--	push %rbp
--#endif
--	pushf
--	push $__KERNEL_CS
--	\call_insn \call_target
--
--	/*
--	 * "Restore" RSP from RBP, even though IRET has already unwound RSP to
--	 * the correct value.  objtool doesn't know the callee will IRET and,
--	 * without the explicit restore, thinks the stack is getting walloped.
--	 * Using an unwind hint is problematic due to x86-64's dynamic alignment.
--	 */
--	leave
--	RET
--.endm
--
- .section .noinstr.text, "ax"
- 
- /**
-@@ -320,10 +288,6 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_
- 
- SYM_FUNC_END(__vmx_vcpu_run)
- 
--SYM_FUNC_START(vmx_do_nmi_irqoff)
--	VMX_DO_EVENT_IRQOFF call asm_exc_nmi_kvm_vmx
--SYM_FUNC_END(vmx_do_nmi_irqoff)
--
- #ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
- 
- /**
-@@ -375,13 +339,3 @@ SYM_FUNC_START(vmread_error_trampoline)
- 	RET
- SYM_FUNC_END(vmread_error_trampoline)
- #endif
--
--.section .text, "ax"
--
--#ifndef CONFIG_X86_FRED
--
--SYM_FUNC_START(vmx_do_interrupt_irqoff)
--	VMX_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
--SYM_FUNC_END(vmx_do_interrupt_irqoff)
--
--#endif
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7083,9 +7083,6 @@ void vmx_load_eoi_exitmap(struct kvm_vcp
- 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
- }
- 
--void vmx_do_interrupt_irqoff(unsigned long entry);
--void vmx_do_nmi_irqoff(void);
--
- static void handle_nm_fault_irqoff(struct kvm_vcpu *vcpu)
- {
- 	/*
-@@ -7127,17 +7124,9 @@ static void handle_external_interrupt_ir
- 	    "unexpected VM-Exit interrupt info: 0x%x", intr_info))
- 		return;
- 
--	/*
--	 * Invoke the kernel's IRQ handler for the vector.  Use the FRED path
--	 * when it's available even if FRED isn't fully enabled, e.g. even if
--	 * FRED isn't supported in hardware, in order to avoid the indirect
--	 * CALL in the non-FRED path.
--	 */
-+	/* For the IRQ to the core kernel for processing. */
- 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
--	if (IS_ENABLED(CONFIG_X86_FRED))
--		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
--	else
--		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
-+	x86_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
- 	kvm_after_interrupt(vcpu);
- 
- 	vcpu->arch.at_instruction_boundary = true;
-@@ -7447,10 +7436,7 @@ noinstr void vmx_handle_nmi(struct kvm_v
- 		return;
- 
- 	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
--	if (cpu_feature_enabled(X86_FEATURE_FRED))
--		fred_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
--	else
--		vmx_do_nmi_irqoff();
-+	x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
- 	kvm_after_interrupt(vcpu);
- }
- 
+> 
+> .../me notices that other comments on this patch say the same, but do
+> read on, another important detail about ktime_get_real_seconds() below.
+> 
+> > It extends TDH.SYS.CONFIG for host to choose to enable them on bootup.
+> > 
+> > Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
+> > features to enable. The bitmap uses the same definitions as
+> > TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
+> > configuration, e.g. TDX Module Extensions is a service that supports TDX
+> > Connect, it is implicitly enabled when TDX Connect is enabled. Setting
+> > TDX_FEATURES0_EXT in the bitmap has no effect.
+> > 
+> > TDX Module advances the version of TDH.SYS.CONFIG for the change, so
+> > use the latest version (v1) for optional feature enabling. But
+> > supporting existing Modules which only support v0 is still necessary
+> > until they are deprecated, enumerate via TDX_FEATURES0 to decide which
+> > version to use.
+> 
+> I would say this differently, it will always be the case that new
+> kernels are needed to enable new features, but it is unlikely that
+> TDH.SYS.CONFIG ever needs to change again. The v0 -> v1 transition means
+> that feature bits are to be used here on out. So there is little value
+> in worrying about deprecating v0 to save a couple lines of code in 5-7
+> years when these original TDX platforms sunset.
+
+OK. I'll use your rationale.
+
+> 
+> > TDX Module updates global metadata when optional features are enabled.
+> > Host should update the cached tdx_sysinfo to reflect these changes.
+> > 
+> > Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > ---
+> >  arch/x86/virt/vmx/tdx/tdx.h |  3 ++-
+> >  arch/x86/virt/vmx/tdx/tdx.c | 16 +++++++++++++++-
+> >  2 files changed, 17 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> > index e5a9331df451..870bb75da3ba 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.h
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> > @@ -58,7 +58,8 @@
+> >  #define TDH_PHYMEM_CACHE_WB		40
+> >  #define TDH_PHYMEM_PAGE_WBINVD		41
+> >  #define TDH_VP_WR			43
+> > -#define TDH_SYS_CONFIG			45
+> > +#define TDH_SYS_CONFIG_V0		45
+> > +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+> >  
+> >  /* TDX page types */
+> >  #define	PT_NDA		0x0
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> > index 130214933c2f..0c5d6bdd810f 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -1353,6 +1353,7 @@ static int construct_tdmrs(struct list_head *tmb_list,
+> >  static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+> >  {
+> >  	struct tdx_module_args args = {};
+> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> >  	u64 *tdmr_pa_array;
+> >  	size_t array_sz;
+> >  	int i, ret;
+> > @@ -1377,7 +1378,15 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+> >  	args.rcx = __pa(tdmr_pa_array);
+> >  	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> >  	args.r8 = global_keyid;
+> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> > +
+> > +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TDXCONNECT) {
+> > +		args.r9 |= TDX_FEATURES0_TDXCONNECT;
+> > +		args.r11 = ktime_get_real_seconds();
+> 
+> Mainline has reason to not entertain this module requirement. The fact
+> that passing zero is an error is useful to detect unsupported modules.
+
+Ah, it is "useful"...  :)
+
+> An updated module would accept zero as indicating "VMM requests module
+> disable all policy and mechanisms related to untrusted wall clock time".
+> Specifically, there are several problems with this:
+> 
+> 1/ No other TSM implementation requires the VMM to pass in an untrusted time
+> 2/ The wall time may change and may require hooks to keep the module time
+>    up to date, but see point 1/, this would be a TDX special flower hook.
+> 3/ Presumably this allows the module or the guest to do certificate expiration
+>    checks, but that is the responsibility of the relying party. The
+>    relying party may have reason to accept an "expired" cert as determined
+>    by VMM wall clock, and the guest presumably already has mechanisms to
+>    determine untrusted wall clock time from the VMM if it wants. Guests
+>    do not need TDX ABI for that.
+> 
+> So I think Linux wants to pass 0 here and wait for modules that accept
+> that as the start of TDX Connect support. As you said, given there are
+> no released modules with TDX Connect there is time to make that first
+> release drop this requirement.
+
+I see. Actually the Module is about to remove the r11 RTC.
+
+https://cdrdv2.intel.com/v1/dl/getContent/871617
+
+I'll remove this r11.
 
 
