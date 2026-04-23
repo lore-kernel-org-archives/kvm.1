@@ -1,162 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD82313523
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 20:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEAA26E6F3
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 20:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776975038; cv=none; b=l2dQNJ3nklnSx3cySBnz2XoBqIQODtyPrGEKIJQ1ZtT1huSVDvQQDIOLNZrxlu1pM/4MIihdE/fc/SYTNXIVKm/VmblhvufZ57vdD2oGS/Esh7WGaHSVDlYlmlyofVGcqpQ4hdCLcutbRBDH04O30GXbhwLv2AMxkcHjHiY4ImE=
+	t=1776977546; cv=none; b=A8idXDHvN6EwY60sBA1/igEyonvNLOGBwQak0ZKCLgX0FeYioo+8RGwr0h+F4HTKKRr009hTTYWjMEVG73/Xj1gGQ7PPiyQZGZnHtFNF1B/5fHQqX+JY0HFXk8hkSbQHygeC/Sp2Cf9Cj/cvB6xdBt6nHat1o3ceynADDwDAL7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776975038; c=relaxed/simple;
-	bh=HWvc3SolTkjILjVuQingZd/cQ6XMRPtVQk3Bexw8POc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=snTXeRvv2/HacNaNZTkWgJu9VgHBijY2Sz0DF2+2m5y0YAVNXfTzPgmfrXu9wIYRJSMmIoObCoDDx7iFGScNTsPc5X9ahyLkvDV3i+pYJOo6cPjCjJhuLNGG3/FNd5OXdJsKffHOWg3UTdhTl6AJTLuDlwpai/1AnHMGZ0G1D3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=esHd+RDF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uIfRLiTC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="esHd+RDF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uIfRLiTC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776975036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L1G8kt4KIcRoHxbZhKFDwigWKJXLBw/Au6uDx0Oi0Fg=;
-	b=esHd+RDFq2x4QyR8cO1UheK9aUGBLo8yhuGXtza8i4OzuxLgyBCJDPc84ZVP0XaS/BbErZ
-	E/cOcOfWKu8q+BVpwkcugprg/ne2Dw6+w6dfvSSQotkoXqKJSMbvSqqDoo0dziA4Eod0CO
-	vRb4WM3htMsk9ez6X8dNzY05BP0+6XE=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-538ah1gNMB6RIn5XS7UPkg-1; Thu, 23 Apr 2026 16:10:34 -0400
-X-MC-Unique: 538ah1gNMB6RIn5XS7UPkg-1
-X-Mimecast-MFC-AGG-ID: 538ah1gNMB6RIn5XS7UPkg_1776975034
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8eb55e55362so974952985a.2
-        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 13:10:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776975034; x=1777579834; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1G8kt4KIcRoHxbZhKFDwigWKJXLBw/Au6uDx0Oi0Fg=;
-        b=uIfRLiTCfJA0XH3cVVfxBGtSRk78RR9/pGET5yvBE1xAZGMOe+JfXigqRPHWaUB3wh
-         t8w3bJnlIX9FKxFprvDfJ5sN5rvf9l3raPfP8UFyI3k7adcS39wB+I4djBjUTWS8pn23
-         pJ+M04GcyseVtZHuqJ3FY6umojVzhu5L/JkHKUje14BQnbmQdrDNW7a3C1jZUTsOnJGC
-         PCBEQdsewKBVA6dzTcHGsb0CDBCD8leuUWoqJAnD4FH2x4CVLaQMDsYZqoYHpVO7TlrQ
-         LssGP0faSuzyn6Ite29VecxdD5i3ttUL98+q+b3gp3dVU4k/xzys/0JuY0DJI4JnuxCt
-         tTsA==
+	s=arc-20240116; t=1776977546; c=relaxed/simple;
+	bh=3vucp0MZUx1PxwRNoeXQyCKgM7tWqKNYAr4aRYdzad8=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=jFiJXkEQ+0XUiRJCOsQdnkfmXrsQOTbyXjShsQtfpvn4ttHcw5ZIKvtJpRoR/iO3saQK0ir6wK5XetzJwklRVD7gaFSqYIo3Ce54/JTE02reH23mKX/zFmtaj2Lm/MGmksDUSOU58fGbznhgQkRZpvK+64T6rHlrQFmyetRDVJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6948d83a548so11778494eaf.0
+        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 13:52:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776975034; x=1777579834;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L1G8kt4KIcRoHxbZhKFDwigWKJXLBw/Au6uDx0Oi0Fg=;
-        b=PDJFI7mseuN37VHuK0Uadf7FqnavgIgeGdiLOIy7kq65RGARYKoxhqz4y58UeCEwp6
-         ggRni+HefpafH5iPNH+Ln7tMGbtVwzeCqpEHtu9746cpD2VRbS1XhVdEfg8Rund3qKIr
-         en5QPg52SXd22BqXzrP/Dv2jloOvrKEzZOTxAVhWQbblejVNmr1xHLd9n3ezHG87i2DN
-         qiD/yhqeDj1TiIpF4Zq0U1YzIVBqBuZ+z8n8S72yP3eH9zkbitjZ4hwA9oyndFpikuau
-         67YQId+9KPSlOLckvGgaB/ehZVSdTP7VHV0yP4MqM+tzFHKu5ZkRN0rsC0/GT/yOqkN7
-         QGdA==
-X-Forwarded-Encrypted: i=1; AFNElJ+OwLr58Kp9FBLOVNS53mFXZ7lkXGdBJ9SJmJ05arFSJx5YkB4z4Hu7UM1UbV4uYoXmyiw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6VhjCBaO/Q/W1owl9unbzKUdNudSG1CtZ8ViY9ghyBtuo1ryG
-	CfrsZKBeU2ARzddy6ysp25+D4P+6LT53uJKligJPB/FTEbcgjrhQgzZLCsFmiaTREEwmwIAHNGd
-	aoV39O0B8WZhjPNS7xeKLFxFy2OREpXw4DilNDZFoiHtevLlHk12MUw==
-X-Gm-Gg: AeBDietaQVKzvr55T0wz3dTVdXKXzZW3StNZwLWW8/3rK7LobWZLGs3RirJqu+yS9dn
-	eKF7vqL9N17Vp3G/u+8Vkv/raA4ly6jkmmxoPFZShCBpkvf/kIRNncKWCqgng21OBb3L0o4spNp
-	hGRTpROu8tGUx3rDuqDqTFi7NuTnIWx4Dpsn2YP6TkDFLvgaRIgde4J4XVsydt4fyv0T9VflPVw
-	2IruQm16I35Pr2IbApJkRwzwTHjw1xb0sFsntg3GQIZavKLIYVLcyOaKoxrtjff8yHAroL0Tn8G
-	kbr9u/9MNkJjJzi1MfUM6GvOeobbT3pP0iQtKkAU5VUIaNABnWMVTFryAoaSdUQEkJvnp7soH6J
-	CAiHAsjQq8tCgR0hioC2Fr/3ATBLu1uum43K+HdPE7/+/eAvWRIkQFT58VQ==
-X-Received: by 2002:a05:620a:25ca:b0:8df:1541:d782 with SMTP id af79cd13be357-8e79236e338mr4156919285a.52.1776975033997;
-        Thu, 23 Apr 2026 13:10:33 -0700 (PDT)
-X-Received: by 2002:a05:620a:25ca:b0:8df:1541:d782 with SMTP id af79cd13be357-8e79236e338mr4156914485a.52.1776975033492;
-        Thu, 23 Apr 2026 13:10:33 -0700 (PDT)
-Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d8edb789sm1845246085a.31.2026.04.23.13.10.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 13:10:33 -0700 (PDT)
-Date: Thu, 23 Apr 2026 16:10:30 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <aep8tsYFfr_Xe54q@x1.local>
-References: <aeImfRrrvr3UoKtL@thinkstation>
- <aeTnlQUOOh-dHG8z@thinkstation>
- <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation>
- <aeoxnuGKO3uqS2kG@x1.local>
- <aeo5IPpQi7onyjTF@thinkstation>
- <aeprnnccJeyHB2rt@x1.local>
- <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org>
+        d=1e100.net; s=20251104; t=1776977544; x=1777582344;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iMs2/RKyUiezJ0Mkvd3k2pVXI1yax6hTuiTwjuqib3c=;
+        b=CcC9WLbxYWZ0zJebjfqupMquK2ZBB3Zq+vM7ejLWn+iz1SQUqCw1yJi+hWiKScRKIs
+         SUxqIgj+yyJcE47Rm59av4fFoGyBF8vSA4p6qGjFSR991ZJI7r+dMFG2EDNaoKbb3d/n
+         4M+xDKB8ls4O2U0T16oILzVGeUOdRe2WfoiV8SG09pFR4N7LMweYYEi1B/jzHjAsgpmV
+         SK2PyJyUY8jhUsuxeO/j/ZPIEcILbwH5iITmqoiI8oyfrIPuGvMu2OU41PK2YG8UOqyL
+         fN+ozo4+021Z53bJOMRXHNOof1HGFIAI4L++3Fiz5YdfcVuIzhzxRFu/6V9wyQGimceC
+         fFCw==
+X-Gm-Message-State: AOJu0Yz9f7Mw0LdJ/VHjIpszh7h81JWnVGvN7qghlrjVivOB+oJN09Io
+	HIi6OQ2j58+RgIRckK3FNUt+qW6Q6V1LShPcjaYlrJ/4qlI4vNjk0n8XVLPgpIkEFyEZcJOmPny
+	Aki5SxcHfvF+TPTC1r86qioI/66SRd4BXJm2Bp3rngKiCDOpLjTDKSqVBOpc=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org>
+X-Received: by 2002:a05:6820:c90:b0:688:6d55:195 with SMTP id
+ 006d021491bc7-69462f2f14fmr17266443eaf.57.1776977544013; Thu, 23 Apr 2026
+ 13:52:24 -0700 (PDT)
+Date: Thu, 23 Apr 2026 13:52:23 -0700
+In-Reply-To: <20260423140833.439512-1-seanjc@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69ea8687.a00a0220.9259.002c.GAE@google.com>
+Subject: [syzbot ci] Re: KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
+From: syzbot ci <syzbot+ciae116ac2b0afefad@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, vkuznets@redhat.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 23, 2026 at 09:25:30PM +0200, David Hildenbrand (Arm) wrote:
-> > 
-> > The other thing is, as I mentioned in the other email, I still don't know
-> > how the current RW protection would work for anonymous.  I don't yet think
-> > the user swapper can read the anon page with RW-protected pgtables.  So far
-> > my understanding is maybe you only care about shmem so it's fine, but it'll
-> > always be great to confirm with you.
-> 
-> I wonder if uffdio_move could be used for a swapper implementation instead?
+syzbot ci has tested the following series
 
-If RW is justified to be useful first, maybe.
+[v1] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
+https://lore.kernel.org/all/20260423140833.439512-1-seanjc@google.com
+* [PATCH 1/5] KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
+* [PATCH 2/5] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
+* [PATCH 3/5] KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cross-vCPU accesses
+* [PATCH 4/5] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
+* [PATCH 5/5] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active accesses
 
-I had a gut feeling Kirill's use case doesn't use anon at all, then if
-nobody needs it we can still decide to not support anon.
+and found the following issue:
+WARNING in kvm_hv_vcpu_uninit
 
-> 
-> If we ever have to read from a protnone page, maybe we could teach ptrace access
-> to do it, or have something that can read from prot_none areas -- like
-> uffdio_copy, which can write to prot-none areas.
+Full report is available here:
+https://ci.syzbot.org/series/e1f68dae-f32a-4112-a163-7a00f36d6508
 
-Somethinig like swap_access() in my proposal can also partly achieve that.
+***
 
-https://lore.kernel.org/all/aYuad2k75iD9bnBE@x1.local/
+WARNING in kvm_hv_vcpu_uninit
 
-There, it was only about reading from swap so far, though.  But that one
-might be easier to be extended to read PROT_NONE and directly put data into
-buffer user specified (ps: in my local tree impl I named it maccess() to
-pair with mincore(), but it doesn't really matter; it doesn't even need to
-be a syscall..).
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      85f871f6ba46f20d7fbc0b016b4db648c33220dd
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/4f8c36c7-e865-4f65-bb81-e22962e8a1e0/config
+syz repro: https://ci.syzbot.org/findings/60fac5d8-1296-4ec7-a8e3-40f561d007e9/syz_repro
 
-To me, the interfacing is not a major issue.  The major question I have is
-why RW protection can help in swap system impl when we already have uffd-wp.
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
+WARNING: arch/x86/kvm/hyperv.h:79 at to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline], CPU#1: syz.2.19/5974
+WARNING: arch/x86/kvm/hyperv.h:79 at kvm_hv_vcpu_uninit+0x163/0x1b0 arch/x86/kvm/hyperv.c:906, CPU#1: syz.2.19/5974
+Modules linked in:
+CPU: 1 UID: 0 PID: 5974 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline]
+RIP: 0010:kvm_hv_vcpu_uninit+0x163/0x1b0 arch/x86/kvm/hyperv.c:906
+Code: 48 89 df e8 0f 0f d8 00 48 c7 03 00 00 00 00 eb 05 e8 e1 8c 6d 00 5b 41 5c 41 5e 41 5f 5d e9 c4 a8 5a 0a cc e8 ce 8c 6d 00 90 <0f> 0b 90 e9 65 ff ff ff 48 c7 c1 00 12 12 90 80 e1 07 80 c1 03 38
+RSP: 0018:ffffc90003e07940 EFLAGS: 00010293
+RAX: ffffffff81592fe2 RBX: ffff8881b6acd380 RCX: ffff8881046e4980
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
+RBP: 0000000000000002 R08: ffff88817696d743 R09: 1ffff1102ed2dae8
+R10: dffffc0000000000 R11: ffffed102ed2dae9 R12: 0000000000000000
+R13: 00000000fffffff8 R14: ffff88817696d740 R15: dffffc0000000000
+FS:  00007f4cc3a9b6c0(0000) GS:ffff8882a944f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4cc2c4edd5 CR3: 000000016d918000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ kvm_arch_vcpu_destroy+0x1a9/0x380 arch/x86/kvm/x86.c:12963
+ kvm_vm_ioctl_create_vcpu+0x69a/0x930 virt/kvm/kvm_main.c:4269
+ kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5168
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4cc2b9c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4cc3a9b028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f4cc2e15fa0 RCX: 00007f4cc2b9c819
+RDX: 0000000000000000 RSI: 000000000000ae41 RDI: 0000000000000004
+RBP: 00007f4cc2c32c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4cc2e16038 R14: 00007f4cc2e15fa0 R15: 00007ffd36efc848
+ </TASK>
 
-So I want to make sure the use case can't be implemented by uffd-wp already.
-Because that's really what we might do for QEMU.
 
-The other thing is I want to see possibilities of reusing any new kernel
-feature that can provide hotness.  Currently idle page tracking has issue,
-not only about perf and rmap, but also on not working with mglru (defaults
-for Fedora/RHEL).  If we can split the requirements and solve the hotness
-issue, then it'll also be very helpful.
+***
 
-Thanks,
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
--- 
-Peter Xu
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
