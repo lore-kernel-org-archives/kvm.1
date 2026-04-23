@@ -1,260 +1,167 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A8D310784
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 14:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0333311967;
+	Thu, 23 Apr 2026 14:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776953929; cv=none; b=vAFWAGYDzoqRLg8Ksm8fg1+kjxm+F9LHHlaqbfm81cLBI7j0NfgrM3FP8loI69EmyiwAHcySbV82FknHzxjcKpK5/Rw+XIu7ndpsdRf6EbWDH/oYMKsiivv4z5q5w4C9SMbY3ansFZeiYJ/qIYMVuJ2/tabM9PXpbIdBWO19R0U=
+	t=1776954430; cv=none; b=rYkT/QJcUh95QFqYElm643wFRaSOSND7vq8Rt3VTR1gzB3/IAh9lzm8L0Z9uC4QVMNpIFqinYVh3uXYHGfqZ4o7BUmjwaYU47lFAMM5G7gphTAf6oS3H15dAKR5IJSh4FVf2miyMJrzqH5FjFwDUFh8bqSWdkohwz2EhWJ+5iew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776953929; c=relaxed/simple;
-	bh=LSJOTkRvgDMochGAG2u+xvbWFmTWnSE6qQ3xJqtS+t0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VWbjQMIPgbynnEuSm9XKix5//+i5pMzTqpXTX1Ijc8CDLxTD+HQDouLB/+Ka+Xee5LLNOtRrgDh58fK9/7pgq+SkB1txEGs8gbw0woe26bQB2JJzG7lEO1umrOmVdxD7bBmsEqiEEtM6xjlcT9+1LeZMvUrY7Cc5FIGjXDvmQP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=v+MJo+HS; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1776954430; c=relaxed/simple;
+	bh=lM6V0bzSahFntk6r+/mn6Gn1o5v3gobkoJaEE0WvLgI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JZeJQS0bOcBlOFFpLaxqlVk+FnIway4aeimi9R4cg/FWEGBAu/LfWcm70T1Bh0xoIqIrFFhoUfrYGUUmbcqKb+M8sWw385F3kE6ympxZmKiApXaloGc6qCkZqh8h4Pv3Iarcmt7rIe+wvJiaoRmLYKIVeJNpHXXA/QTJRKOJnXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e6nY0QDM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="v+MJo+HS"
-Received: from pps.filterd (m0528005.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MJib474169397
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 07:18:46 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=e95FCMfWZPIOflPX9x4B7yDZMlPKVoCcJEUwN6OatrI=; b=v+MJo+HS/N5D
-	fQTCqX9AVRisJuiPh225WBruwA/jUDdds5TjN78vSY40xglltHw7sbQxw5AvTPSf
-	nPNNM3WRIeid0dKheMQdeG8V/Zsqw5XBZbUjxDocbW6JXMdsO0ExGuQXsyiu5ZOS
-	waD0d7hALvvqpIT/jXEzxvGKRcxR/ZF0HenovdWMeIjCo3droUW9GqF4RFw5i0+T
-	W3QLbIBISHFR9/4kZMCfze6WsQB4VbHOKS9fq7FV0uPvSa0NrkT8vjGtC59ZtvUa
-	H+Ti/O/LRiHpB22D0rTaVbUaftTG0yfsQSLTtvhLG53LWfHSgk45XjxI9zS4kC5L
-	+JBDLK+TLw==
-Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dpepacuwq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 07:18:46 -0700 (PDT)
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-12c87ba0890so18442837c88.0
-        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 07:18:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776953926; x=1777558726;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e95FCMfWZPIOflPX9x4B7yDZMlPKVoCcJEUwN6OatrI=;
-        b=sdMpVohWoIJOFWNCpEs3fH4OwQiChGZ10ungWvllApUTXPBeqyO2MwXMQKMhmnZ2+/
-         U25q1eo2x/n/kmbs2ek780UTzJc01RSMStj48OdU86A2Twl/lzWqWPPgWzxx5YJsQhKp
-         jF8pmugdiBamAToBUNxHaNSRf5KsSMveuGKrngWnHCMZZJI/B8g0gU/0Vt/y+F3/Kx7w
-         Cc1vzEZ8abAFNDW587f7yq5mGX0v0ZuEakLLgob4T5H14FLYxFnPBJ4n0uE0hHCDKipv
-         SOvaZZAjHzQCvMBU76TSQOclxhpSVigBGXNFYJ4Ufx5R8M/QHJ7vC6n9p2/fh9l7ZR6z
-         J+dQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+D4HYWuy0BFkxtH4wXgKt2fhAtnBlE8+wNs+iIKb5PkLWW0QPg1i26vNTfDm4tuMn37BU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkRHBEZXzssFYkrXtMOmZG//RQJeoRLDsKnsLU1mwlHNPjfntd
-	lQYpGJw7272waRrR2jvPB4/dQ1Dd+ti7wJIiBNTLVn9djovlUHtfs7BFj5McAjhWhiMPBfV3m30
-	YQJhHx+zQEg09OvantKy/kG5AyvW6w6URyhTd8jfx2DTBdMF/qUE9
-X-Gm-Gg: AeBDietThnT7pi8pNJq5MwNNQFrULz0YUhkK0wBs3vqh7OlWIpxQTrUmO2YHOnnDpOu
-	EgXooClLqjIceds9lUm4/CZCBa5/FkuKEm+oxu/K7mhARC6+rUol0LA7bKJgNMdMIh/rI5sMCLF
-	sssYPvzUnlXpEEG4FUS9o4MTaWaJ+BDziS1cZPI5JfsK5aVF3CL58RtCz885/q9iQiwB0w2mJ1N
-	As4wabixx403lsID+Lo/yzh8XDQp82g9/GUT14SE4+vUtb06U6Aesx5wP56paQpZO71NtSChuCw
-	XaTqNNdClbHZghFd9oVLhunex3+sgEJUAeOqJwHK1K/qCnUDM+GNQrkzi/5Xdsufo3qsLwjrkQt
-	8pj0q7zTZU+B+js0gTwaVRZpTWnayL1S7MSvBWOIf
-X-Received: by 2002:a05:7022:e22:b0:128:cedb:33c6 with SMTP id a92af1059eb24-12c73f9759emr16988864c88.16.1776953925414;
-        Thu, 23 Apr 2026 07:18:45 -0700 (PDT)
-X-Received: by 2002:a05:7022:e22:b0:128:cedb:33c6 with SMTP id a92af1059eb24-12c73f9759emr16988839c88.16.1776953924605;
-        Thu, 23 Apr 2026 07:18:44 -0700 (PDT)
-Received: from [10.0.40.30] ([51.52.155.79])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a18a2bsm41524610c88.10.2026.04.23.07.18.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Apr 2026 07:18:44 -0700 (PDT)
-Message-ID: <1500fb01-3046-4d82-8cb4-3469dc2c848c@meta.com>
-Date: Thu, 23 Apr 2026 15:18:39 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e6nY0QDM"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N86KFU3291979;
+	Thu, 23 Apr 2026 14:27:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=LZoJcU11omsJG9tT8g7dZCteo24C
+	GlOxzZtSg7znF/k=; b=e6nY0QDMBZYNZHvxdK00atNMEAXvJqUOSvZ4W/8EUvaa
+	KGLiZP5/dB/tosq4EFUOjg8Kz71VuhHbN/cmFO+paeQA09zY+nH3bFnvaPmkQGY/
+	pflTOPoPlFQFddKMKoC0c167xHXy3gfNalrXVPiYmmtR3lkDs5UgCbFvI8vPS0FP
+	RpGOsZThHI9UWryeVTmqMRgDD/Qv+oGW5AHzybogdtwNMEwLPmqT3u04+knWZ42y
+	C+R6x8PXkCz4fbj4n7xmw2EATPFLviOrsnRc0fUOHb/yn2CwlMaDBOhg7l2K7Wgl
+	8w8GHhNPKlnD7ith09w2vsCkj9X/gMF7tGWD9llk7Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dphfrgg15-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 14:27:05 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NEKSXp032544;
+	Thu, 23 Apr 2026 14:27:04 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dpjky6xn6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 14:27:04 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NER1pC31719732
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Apr 2026 14:27:01 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D03920040;
+	Thu, 23 Apr 2026 14:27:01 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 250C720043;
+	Thu, 23 Apr 2026 14:27:01 +0000 (GMT)
+Received: from [9.52.198.32] (unknown [9.52.198.32])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Apr 2026 14:27:01 +0000 (GMT)
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Subject: [kvm-unit-tests PATCH v4 0/6] s390x: Add test for STFLE
+ interpretive execution (format-2)
+Date: Thu, 23 Apr 2026 16:26:44 +0200
+Message-Id: <20260423-vsie-stfle-fac-v4-0-32943fe43394@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio/pci: Set up barmap in vfio_pci_core_enable()
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Ankit Agrawal <ankita@nvidia.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Yishai Hadas
- <yishaih@nvidia.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-References: <20260421174143.3883579-1-mattev@meta.com>
- <20260421174143.3883579-2-mattev@meta.com>
- <20260421133123.36fc0353@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260421133123.36fc0353@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: UtREwhRxEAeWmgaSC-aTTtFGB8CUoa20
-X-Authority-Analysis: v=2.4 cv=KMxqylFo c=1 sm=1 tr=0 ts=69ea2a46 cx=c_pps
- a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23QzW7CMAwH8Fepcl5Y89FSOPEeaIc0/APWSLola
+ cSEePdFZRIS7BLJsv2L7StLiITEts2VRRRKNIUa6LeG2ZMJR3A61JjJVvZtfXhJBJ6yO4M7Y7l
+ uFbTu14cBktWmrwhHlwXcs8/i+Rwo84yUE/uo+ROlPMWf5b8ilqo7LcQzXQRvue7t2sB2GyHH3
+ ZnCfFnR6Fd28gtX5INQUr8QshIdOjlCQreD+I9QD0LL1ylUJZQFBg0HZ9QzcbtvHfE91+vlv9V
+ Hk8Br3lPeNlOkI4V3b1JGrB23X0MDBrp3AQAA
+X-Change-ID: 20260202-vsie-stfle-fac-403e4467d8e2
+To: linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>, Thomas Huth <thuth@redhat.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1829;
+ i=schlameuss@linux.ibm.com; h=from:subject:message-id;
+ bh=lM6V0bzSahFntk6r+/mn6Gn1o5v3gobkoJaEE0WvLgI=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJmvdEySL0sWJcdMSGkR2/eW832RWu67HRVd/0R+sJ6Tl
+ TRpTuzvKGVhEONikBVTZKkWt86r6mtdOueg5TWYOaxMIEMYuDgFYCIuwowMP5wPilpfjOmyuyE4
+ R24C1/HY9SXfj4nzClsopginrcjpYGSY1r7Jh/u5neRknY4Lph+6r9rd1l7zQDtiT8baC9Neu83
+ kBQA=
+X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
+ fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: WP6c_cU9T63nbZMCKu5srb_Wu7A5WeWf
+X-Proofpoint-ORIG-GUID: WP6c_cU9T63nbZMCKu5srb_Wu7A5WeWf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDE0MiBTYWx0ZWRfX9rjtxQXk2sr+
+ IF+U7h14zrWV6vuec6mC+YcMOjCW/7y6P96vcAe5DyoqBaWtdULPbuBTUoTj5roVl2GGe2oM3lW
+ LhHrsGXy3R2ozJ3HMXmfuY7kME0Dt0hrSi7EKZuSnj8gErqWa91yMAOcu/a2cPgp86qObJYyMAP
+ IPbDTLttLaOQjtFuwnvwHRF2LaqBY+wwKONQrSzH48sKZHNJaGzISZgjqG1VTzAgqlOYbSF0I2y
+ qMw2CkeNwXbdTsKM7bNbSHkn2mif0cYhVBSvhyl4IvxHC/crfwlPKKkxODsOQq5Y/EfuSwrkUMd
+ eamr+xGNc3oxJBvmbnWe0P+CX7usjP2CdcDZ6k+YqBjKgysGX1GR1CRw3kQ/tGUR+1qYqf01xz/
+ Uh6dhz1DOzeZQW2xUtzgEtNGXLTWMuqM9FP8NkrZpb4BFMLg5bayKanqEvvWkZoGfrPeIWdoP7X
+ N0y9WDCsUqt+wmlEIDg==
+X-Authority-Analysis: v=2.4 cv=SJxykuvH c=1 sm=1 tr=0 ts=69ea2c39 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=jCddH8ec0KUNCymVuxII:22 a=VabnemYjAAAA:8
- a=iNyBAbhlopIjzdoupJ0A:9 a=QEXdDO2ut3YA:10 a=vBUdepa8ALXHeOFLBtFW:22
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDE0MiBTYWx0ZWRfXwkBF/TAO5ZoC
- XJixvARKzpJbiMW5K1NtKpNCuoBCuBdt/Ch2L9VSAXR9Z5zh9Zfq/2/0m4PvjJorxtmMiZrBIcC
- QJyh0lpBSZfTRHFrXc/bC/EMT2PwZHK+hZVhIFZga+SeOoBxvNLGWpbxf5xy5+4lU/TaGme3O8e
- xJ35FU6M1ajWKvMDscpxikbaHXwoUeayfJ2xsuiHECielYiDvDceNWYS8SL6DQrzA7fDbbcXyDB
- 8j/cZm0aWT81gxo4G7TpOImBC4uCRjx1/zpo2uEC4hq5dB3YrB616XC2zR1JPTPBdNECuQHpoZe
- txJPFErt4FJSFTlZ2aj4f7QGuxUkal2tk9P6qE9YVTSK29TjgZ1Riv5ZcocLf/DXIDjhpajRDUf
- pUq439xjczQtSfnvhmNWXzNGwGpbfVVXN58SZ6HpYwSVJXV5UQEg3+D2/vQndAG5EqfsJFWRbVg
- ti958fmIrBw/dZP/vXg==
-X-Proofpoint-GUID: UtREwhRxEAeWmgaSC-aTTtFGB8CUoa20
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=X28-lOWfyt9Dm7dHER8A:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1015 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604230142
 
-Hi Alex,
+Test the shadowing of format-2 facility list when running in VSIE.
 
-On 21/04/2026 20:31, Alex Williamson wrote:
-> 
-> On Tue, 21 Apr 2026 10:41:40 -0700
-> Matt Evans <mattev@meta.com> wrote:
-> 
->> The previous lazy-setup of the barmaps provided opportunities to
->> forget to do it (for example, DMABUF export).  Since all users will
->> ultimately require BAR resources to have been requested, request them
->> in vfio_pci_core_enable.
->>
->> Existing calls to vfio_pci_core_setup_barmap() are now benign, but
->> remain because some callers use it to validate a BAR index.  This
->> fixes at least the case where DMABUF export could succeed before
->> resources were requested.
->>
->> This keeps resource request and ioremap() done at the same time, but
->> in future the ioremap() could be done on-demand (not all VFIO users
->> need it).
->>
->> Fixes: 7f5764e179c6 ("vfio: use vfio_pci_core_setup_barmap to map bar in mmap")
->> Fixes: 0d77ed3589ac0 ("vfio/pci: Pull BAR mapping setup from read-write path")
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>   drivers/vfio/pci/vfio_pci_core.c | 63 +++++++++++++++++++++++++++-----
->>   drivers/vfio/pci/vfio_pci_rdwr.c | 25 +++----------
->>   2 files changed, 60 insertions(+), 28 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 3f8d093aacf8..4a314213f3ae 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -482,6 +482,55 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
->>   }
->>   #endif /* CONFIG_PM */
->>   
->> +static void __vfio_pci_core_unmap_bars(struct vfio_pci_core_device *vdev)
->> +{
->> +	struct pci_dev *pdev = vdev->pdev;
->> +	int i;
->> +
->> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
->> +		int bar = i + PCI_STD_RESOURCES;
->> +
->> +		if (!vdev->barmap[i])
->> +			continue;
->> +		pci_iounmap(pdev, vdev->barmap[bar]);
->> +		pci_release_selected_regions(pdev, 1 << bar);
->> +		vdev->barmap[bar] = NULL;
->> +	}
->> +}
->> +
->> +static int __vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
->> +{
->> +	struct pci_dev *pdev = vdev->pdev;
->> +	int ret = 0;
->> +	int i;
->> +
->> +	/* Eager-request BAR resources (and iomap) */
->> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
->> +		int bar = i + PCI_STD_RESOURCES;
->> +		void __iomem *io;
->> +
->> +		if (pci_resource_len(pdev, i) == 0)
->> +			continue;
->> +
->> +		ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
->> +		if (ret)
->> +			goto err_free_barmap;
->> +
->> +		io = pci_iomap(pdev, bar, 0);
->> +		if (!io) {
->> +			pci_release_selected_regions(pdev, 1 << bar);
->> +			ret = -ENOMEM;
->> +			goto err_free_barmap;
->> +		}
->> +		vdev->barmap[bar] = io;
->> +	}
->> +	return 0;
->> +
->> +err_free_barmap:
->> +	__vfio_pci_core_unmap_bars(vdev);
->> +	return ret;
->> +}
->> +
->>   /*
->>    * The pci-driver core runtime PM routines always save the device state
->>    * before going into suspended state. If the device is going into low power
->> @@ -568,6 +617,9 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->>   	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
->>   		vdev->has_vga = true;
->>   
->> +	ret = __vfio_pci_core_map_bars(vdev);
->> +	if (ret)
->> +		goto out_free_zdev;
-> 
-> Beyond simply changing to a preemptive mapping scheme, this hard
-> failure makes me concerned about regressing userspace.  With the
-> current lazy scheme, we only claim the BAR if the user accesses it and
-> the failure only occurs in the access path.  That means we could have
-> BARs that are never mapped.  With a hard failure here, with might be
-> uncovering some latent issues, and if those latent issues are with BARs
-> that we never cared to map previously, we're causing trouble for no
-> gain.
+The tests will skip the format 2 tests
+* if running with unpatched kernels or qemu in G1 or G2
+* if running on machines prior IBM z16 GA1 (where ASTFLEIE2 is not
+  available)
 
-Thanks.  Hm, so for example a valid non-zero-sized BAR but the 
-pci_iomap() hitting ENOMEM.  Good point, that could be annoying if the 
-BAR was otherwise unused.
+---
+The original series was started by Nina and finished by me.
 
-> I'd suggest setup should be a void function that generates pci_warn()
-> on conflict or iomap error, but doesn't block the device.  Each usage
-> path (including mmap that gets removed in the next path) still needs to
-> validate the mapping is present for the given BAR and fail the call
-> path otherwise.
+---
+Changes in v4:
+- check feature bit presence before reading feature bits
+- revert sclp_facilities_setup() early returns
 
-I'd hoped to be able to assume resources have been successfully 
-requested, since we've at least one example of forgetting to do it 
-explicitly (DMABUF export), but no worries.  I'll re-add explicit checks 
-to usage paths (incl. for DMABUF export) to make failures consistent 
-with current behaviour.
+Changes in v3:
+- Remove unnecessary format loop in test_stfle_format_0() - formats are
+  already addressed explicitly
+- Added patch to use sclp_feat_check directly for DIAG318
+- Add no-stfle prefix to improve test log
+- Move prefixes to main() to have prefixes in no-stfle checks
 
-> There's also a subtle range check added in the virtio driver in the
-> next patch, is that fixing a bug or paranoia?  Do we need a helper that
-> does a range test and barmap test?  Thanks,
+Changes in v2:
+- Rework sclp_facilities_setup()
+- Removed explicit manual padding from struct sclp_facilities
 
-That'll be nicer, I agree.  Given the point above, two tiny helpers make 
-sense for the two "uses":
+---
+Christoph Schlameuss (4):
+      s390x: sclp: Remove unnecessary padding from struct sclp_facilities
+      s390x: sclp: Check sclp byte before reading feature bits
+      s390x: sclp: Use sclp_feat_check directly to read DIAG318 feature bit
+      s390x: Add test for STFLE interpretive execution (format-2)
 
-- Was resource X requested successfully?   (For DMABUF, mmap, etc.)
-- Get X's iomapped base address.  (For rdwr, virtio, nvgpu-grace.)
+Nina Schoetterl-Glausch (2):
+      s390x: snippets: Add reset_guest() to lib
+      s390x: sclp: Add detection of alternate STFLE facilities
 
-(The motivation for the range check was just robustness, not a specific 
-bug.  It's cheap to sanity-check and Pretty Bad if the index is ever out 
-of range.)
+ lib/s390x/sclp.c    |  7 ++++--
+ lib/s390x/sclp.h    |  8 +++---
+ lib/s390x/sie.c     | 11 ++++++++
+ lib/s390x/sie.h     |  1 +
+ lib/s390x/snippet.h |  6 +++++
+ s390x/spec_ex-sie.c | 10 ++------
+ s390x/stfle-sie.c   | 72 +++++++++++++++++++++++++++++++++++++++++++++++++----
+ 7 files changed, 97 insertions(+), 18 deletions(-)
+---
+base-commit: ea91ac1763561b23e7eba3f7c1fa3d45f29b89be
+change-id: 20260202-vsie-stfle-fac-403e4467d8e2
 
-Reposting... Thanks,
-
-
-Matt
+Best regards,
+-- 
+Christoph Schlameuss <schlameuss@linux.ibm.com>
 
