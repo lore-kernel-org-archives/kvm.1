@@ -1,160 +1,147 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AAF36D9E8
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 15:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3046239B97B
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 15:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776956634; cv=none; b=NtNEZ0QKyKxNDL8pLksLR11GLTU9ZsktlyA64THDEIofcyT+tiDQ+zq+2SQveKThe2SsC2FriepbqcXGWJd2lBhPfr8R+YAwY7nCrR/Ux8eUzrqibLO5N4N0hPkkpKRCmfGVoFX7boc6WYjQvNkoy+gO6qxbqQAyYLmTZpQ8/HQ=
+	t=1776957799; cv=none; b=DId20iX1aT5xET5RbLP42Y34O9ub5zC/UYgE+LA2PL5o1N8ZUV1NQaIhB1T68lKS5tFpCYWP1kU/msipBBvb9IdtaCwB7lxSNaiCba8AWWYkqo1y1+lJasnkNsa7Nlxc62Lw1/sbqQfkE9EBviZ75xsdEC+X1qA8SIhPTi1PCrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776956634; c=relaxed/simple;
-	bh=CkcrXIw1Eem4o4QbNMX/btWn5w25geAaYmxE9sQm1Qg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aHPmAk+3Bl1XPyFGgTWgJ+vHg/TVU7p8pSCY6kpOTqdYrEM6solYTkPIGf1EzOXnqLB6TxIA6e6pwmFUIMuvB5zNPm90NqbLz8Xep4tNvv7IBOnf4gqKP2OZC2ZhqC0r1ncJgF41dtxzWp5VIjgIg1KhJZTVDQe0Vu2U2Nqc7aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e+pkJGdb; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776957799; c=relaxed/simple;
+	bh=MpK0Qm7+J2WMp5Hj0ykvwccPlciIs/DeSmAc4KByY/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oAQISQQVvPqOv2T1OV6uNuLyBOIUGJBcb1U+QPlPK/FR40bdySemVy+c04LOWHeNs5I6ZG0SowTT0r6QNX5UdZKF07QeqGb02KGJw3u0x5W8Z3XpwJ5GtR+o60eHgqNL8XyoniiphFTirqF5I/9D3dMT9VVLl4P/X/hE5bWnYu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=K2m+19cx; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e+pkJGdb"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c44bf176so8111551a91.0
-        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 08:03:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776956632; x=1777561432; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=i2vqUKmveKZlZolMhgpBRxhYsBG7B/PvclnkTlsDmdw=;
-        b=e+pkJGdbBvESWNOjbM5epX5AI2LVvr5FMFChbVXdBftiZuNdT8Oh77p0eSUUzzbL7Z
-         3p+id4Wxp8rytzilBtTW0yFTIwoGoj5zQ4qNmRG4TUwV1zUi+expCe9ul4pzA8bHv5ZX
-         WEFTIB4S3gUMcpgtRRA0oX1+VUoX2lW39+0TyX0+35/Ib8bnxBGRJYjzgEnjXyI9pZOV
-         5PY2L85cBYL6HzUp+XmOmU4fScwaOOrgWrCcFtQ7kU1mGpId1g+wuj8RqWIP4N6S41KZ
-         tsDwd6O2TAOp/XkoHKia8lPHRyHXYQWtauhTQKQagpShNhESFE2w8lBK4HvV+gXF8CLt
-         mz1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776956632; x=1777561432;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i2vqUKmveKZlZolMhgpBRxhYsBG7B/PvclnkTlsDmdw=;
-        b=NCgcWOwvR5ETQ5YqR17QskVMo3hoqE9TqLJcjy5pJL0uZDcQawi9GaSXSxbYjhjj90
-         vfnjUkwQcc4XyziHaPBL/en0y1XCnbRp+1g3w5pft0hZgevc7YNlJZSd9dw6/Q27oVmV
-         MVI8iYVHLhwMChF1/mEQExJ8aTePDbm4LPMjO2GIOOy/bIgl8aAcJdsQekDhU98v2QVd
-         jWOR8Ht9WDpx0Qpxc0xOG67D/CXFkqwbc+cTz7VfDX4v91uVBW7g5jePuf8wu1oh3F+v
-         pPHKy+jBYZyQe+HmWdVIxfVRNg41h2ocQyg0GY5ULoiI+EzSnlXaiSKdd+E/KZEqhKNa
-         oRqw==
-X-Forwarded-Encrypted: i=1; AFNElJ9wjc3P3I05mkifVl+SvR4/lTefDw02YlNu6BGtUjhRM43hsVwB6oa7FsM1M4gAOqxDhYw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr+vsDF8wSwvA0qFTFXFF9H16Ti189jv++UhMIddEL3GsOlJFN
-	6ELE3WAq3/ZR+KOxDoXEWJ5RYYxpyxDrpdjX1h/2oMFMl3LVK2j5FcXX0qgsMLNLgFVB/s7iiIT
-	ixsKghA==
-X-Received: from pgnp16.prod.google.com ([2002:a63:7f50:0:b0:c79:66d7:2ed5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7285:b0:39b:e321:67ea
- with SMTP id adf61e73a8af0-3a08d8fba25mr30645370637.45.1776956627069; Thu, 23
- Apr 2026 08:03:47 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 23 Apr 2026 08:03:38 -0700
-In-Reply-To: <20260423150340.463896-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="K2m+19cx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=JDVh1/I6YdTmSYOg0iF27pU8Jte7zxoIJJ4f1FtZl2Q=; b=K2m+19cxaD5IUM7S4VFDHKwKTi
+	N0HzVaHfNpPTLi1Y9Dc3NWmmXzVUnp+QJhqlfTqkmWkCp6lYNCrQ39QENZ/FGiFCv6rbep7fiZt0y
+	NEDW4LGboj18ZJkxqLEpla+U/4xJUO4eneaUgPxW58/5ddd3VCLpquW8C2wEV0JqAlg2oEoGUvIUA
+	DrvPbnWBiOX/P10Ef+zoaG3ZDjAeJ9DGJDosg7rXO/NFANKW+k3LZ8cwPbtcT+IDSZb6A1IghtBb0
+	/QRm7F65gz1EYYwsxvp6KswbtnkaXD2icd96X6JfRIF+TrOGBCUuG3C8Wl+zMcVWFYN61FTg3e+q3
+	x8FQia6g==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wFvtY-0000000DepP-3JaM;
+	Thu, 23 Apr 2026 15:23:12 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5BAC93008E2; Thu, 23 Apr 2026 17:23:12 +0200 (CEST)
+Date: Thu, 23 Apr 2026 17:23:12 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Vishal L Verma <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	Paolo Bonzini <bonzini@redhat.com>
+Subject: Re: CPU Lockups in KVM with deferred hrtimer rearming
+Message-ID: <20260423152312.GI1064669@noisy.programming.kicks-ass.net>
+References: <CALMp9eTeqE4u6ioepVeowRkcNs63DYZTg8og8em12u4FsVWNfw@mail.gmail.com>
+ <878qagb20x.ffs@tglx>
+ <aefIJR_FcEeP-fcS@google.com>
+ <20260421200620.GK3126523@noisy.programming.kicks-ass.net>
+ <aefktNLiS3ur10yD@google.com>
+ <20260421210201.GM3126523@noisy.programming.kicks-ass.net>
+ <aefvVjTtx22EzMkR@google.com>
+ <20260422065542.GN3126523@noisy.programming.kicks-ass.net>
+ <20260422074646.GO3126523@noisy.programming.kicks-ass.net>
+ <87o6ja1u36.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260423150340.463896-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260423150340.463896-3-seanjc@google.com>
-Subject: [PATCH v2 2/4] perf/x86/intel: Don't context switch DS_AREA (and PEBS
- config) if PEBS is unused
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o6ja1u36.ffs@tglx>
 
-When filling the list of MSRs to be loaded by KVM on VM-Enter and VM-Exit,
-load the guest values for DS_AREA and (conditionally) MSR_PEBS_DATA_CFG if
-and only if PEBS will be active in the guest, i.e. only if a PEBS record
-may be generated while running the guest.  As shown by the !pebs_ept path,
-it's perfectly safe to run with the host's DS_AREA, so long as PEBS-enabled
-counters are disabled via PERF_GLOBAL_CTRL.
+On Thu, Apr 23, 2026 at 12:57:49AM +0200, Thomas Gleixner wrote:
+> On Wed, Apr 22 2026 at 09:46, Peter Zijlstra wrote:
+> > On Wed, Apr 22, 2026 at 08:55:42AM +0200, Peter Zijlstra wrote:
+> >> On Tue, Apr 21, 2026 at 02:42:46PM -0700, Sean Christopherson wrote:
+> >> > On Tue, Apr 21, 2026, Peter Zijlstra wrote:
+> >> > > On Tue, Apr 21, 2026 at 08:57:24PM +0000, Sean Christopherson wrote:
+> >> > > > This as delta? (I had typed this all up before Peter posted a new verison, so
+> >> > > > dammit I'm sending it!)
+> >> > > 
+> >> > > :-)
+> >> > > 
+> >> > > I'll go stare at it in the morning, I'm about to go crash out.
+> >> > 
+> >> > New delta against your effective v2, builds all of my configs (which isn't _that_
+> >> > many, but I think they cover most of the weirder ways to include KVM (or not)).
+> >> > 
+> >> > I'll start testing the full thing to try and get early signal on the health.
+> >> 
+> >> Oh, re-reading commit 28d11e4548b7, I think this wrecks NMIs. The patch
+> >> will also use the FRED NMI path and that's not good when running IDT.
+> >> 
+> >> I'll go fix that and stick in a few more comments to clarify this magic.
+> >
+> > This should probably we at least two patches, one moving the code into
+> > the x86 core and one adding that hrtimer fix on top. But kept as one for
+> > now.
+> >
+> > Irrespective of the hrtimer fix, I think the initial move into x86 core
+> > part is a sane move.
+> 
+> I agree.
+> 
+> > +#if IS_ENABLED(CONFIG_KVM_INTEL)
+> > +/*
+> > + * On VMX, NMIs and IRQs (as configured by KVM) are acknowledge by hardware as
+> > + * part of the VM-Exit, i.e. the event itself is consumed as part the VM-Exit.
+> > + * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs and IRQs
+> > + * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ VM-Exit is
+> > + * purely a signal that an NMI/IRQ is pending, i.e. the event that triggered
+> > + * the VM-Exit is held pending until it's unblocked in the host.
+> > + */
+> > +noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int vector)
+> > +{
+> > +	if (event_type == EVENT_TYPE_EXTINT) {
+> > +#ifdef CONFIG_X86_64
+> > +		/*
+> > +		 * Use FRED dispatch, even when running IDT. The dispatch
+> > +		 * tables are kept in sync between FRED and IDT, and the FRED
+> > +		 * dispatch works well with CFI.
+> > +		 */
+> > +		fred_entry_from_kvm(event_type, vector);
+> > +#else
+> > +		idt_entry_from_kvm(vector);
+> > +#endif
+> > +		/*
+> > +		 * Strictly speaking, only the NMI path requires noinstr.
+> > +		 */
+> > +		instrumentation_begin();
+> > +		/*
+> > +		 * KVM/VMX will dispatch from IRQ-disabled but for a context
+> > +		 * that will have IRQs-enabled. This confuses the entry code
+> > +		 * and it will not have reprogrammed the timer (or do
+> > +		 * preemption). Minimal fixup for now.
+> 
+> It's sadly the final fixup.
+> 
+> There is no way that KVM can benefit from the deferred rearm mechanism
+> in case that NEED_RESCHED is set.
+> 
+> That's actually independent of the VMX specific handle_exit_irqoff()
+> situation, which obviously cannot reschedule.
+> 
+> The other early local_irq_enable/disable dance, which caused you to buy
+> a new WTF'o'meter, happens with preemption disabled, so the irq exit
+> code will do the rearm right there.
+> 
+> So be it ....
 
-Omitting DS_AREA and MSR_PEBS_DATA_CFG when PEBS is unused saves two MSR
-writes per MSR on each VMX transition, i.e. eliminates two/four pointless
-MSR writes on each VMX roundtrip when PEBS isn't being used by the guest.
-
-Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation for extended PEBS")
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Mingwei Zhang <mizhang@google.com>
-Cc: Stephane Eranian <eranian@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/events/intel/core.c | 39 +++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
-
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 002d809f82ef..407fd392fd46 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -5037,23 +5037,14 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
- 		return arr;
- 	}
- 
-+	/*
-+	 * If the guest won't use PEBS or the CPU doesn't support PEBS in the
-+	 * guest, then there's nothing more to do as disabling PMCs via
-+	 * PERF_GLOBAL_CTRL is sufficient on CPUs with guest/host isolation.
-+	 */
- 	if (!kvm_pmu || !x86_pmu.pebs_ept)
- 		return arr;
- 
--	arr[(*nr)++] = (struct perf_guest_switch_msr){
--		.msr = MSR_IA32_DS_AREA,
--		.host = (unsigned long)cpuc->ds,
--		.guest = kvm_pmu->ds_area,
--	};
--
--	if (x86_pmu.intel_cap.pebs_baseline) {
--		arr[(*nr)++] = (struct perf_guest_switch_msr){
--			.msr = MSR_PEBS_DATA_CFG,
--			.host = cpuc->active_pebs_data_cfg,
--			.guest = kvm_pmu->pebs_data_cfg,
--		};
--	}
--
- 	/*
- 	 * Disable counters where the guest PMC is different than the host PMC
- 	 * being used on behalf of the guest, as the PEBS record includes
-@@ -5065,6 +5056,26 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
- 	if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
- 		guest_pebs_mask = 0;
- 
-+	/*
-+	 * Context switch DS_AREA and PEBS_DATA_CFG if and only if PEBS will be
-+	 * active in the guest; if no records will be generated while the guest
-+	 * is running, then simply keep the host values resident in hardware.
-+	 */
-+	arr[(*nr)++] = (struct perf_guest_switch_msr){
-+		.msr = MSR_IA32_DS_AREA,
-+		.host = (unsigned long)cpuc->ds,
-+		.guest = guest_pebs_mask ? kvm_pmu->ds_area : (unsigned long)cpuc->ds,
-+	};
-+
-+	if (x86_pmu.intel_cap.pebs_baseline) {
-+		arr[(*nr)++] = (struct perf_guest_switch_msr){
-+			.msr = MSR_PEBS_DATA_CFG,
-+			.host = cpuc->active_pebs_data_cfg,
-+			.guest = guest_pebs_mask ? kvm_pmu->pebs_data_cfg :
-+						   cpuc->active_pebs_data_cfg,
-+		};
-+	}
-+
- 	/*
- 	 * Do NOT mess with PEBS_ENABLED.  As above, disabling counters via
- 	 * PERF_GLOBAL_CTRL is sufficient, and loading a stale PEBS_ENABLED,
--- 
-2.54.0.545.g6539524ca2-goog
-
+OK, I'll go make this two patches, fix up that comment and post it
+proper.
