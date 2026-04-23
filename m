@@ -1,1933 +1,260 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAC531717E
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 14:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A8D310784
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 14:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776953869; cv=none; b=ecnL+k1DcLwqZzEa6bXmhJgAhEA0jIz/b8eFMiz7uYpXvA2m+3bSpKRh6GEglGKAYS1PvtKWU0wXFm8Qum9gJrE0LTIWmQGUF+H26dFbaO37T+i92iczs2QXxYL1ghY0VlegkKmpnCmNAt+mRH8oX7zQFkZaIEg4bbqzXZVE1Jo=
+	t=1776953929; cv=none; b=vAFWAGYDzoqRLg8Ksm8fg1+kjxm+F9LHHlaqbfm81cLBI7j0NfgrM3FP8loI69EmyiwAHcySbV82FknHzxjcKpK5/Rw+XIu7ndpsdRf6EbWDH/oYMKsiivv4z5q5w4C9SMbY3ansFZeiYJ/qIYMVuJ2/tabM9PXpbIdBWO19R0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776953869; c=relaxed/simple;
-	bh=PQLlxpZlorCmis/WBTUduP7pVR7y9k5r0ipjyA9Z8jw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BdvfWGSUTPCadB5XmP3zu3mOoJBKTmtNh8VVXVnJ1u03WbaD1tAY599vpcZOo5esu7ejUyhZF4qt7XCf+PDzgzTJY44c9wfDzj3x18IS/cqKEWUW45O8RC/YTL3nY5LjQMsGv0Lg3YqioqK9CF/A9KW6wMyMeVWlky5r5ZhpcRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KGXO9UX6; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776953929; c=relaxed/simple;
+	bh=LSJOTkRvgDMochGAG2u+xvbWFmTWnSE6qQ3xJqtS+t0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VWbjQMIPgbynnEuSm9XKix5//+i5pMzTqpXTX1Ijc8CDLxTD+HQDouLB/+Ka+Xee5LLNOtRrgDh58fK9/7pgq+SkB1txEGs8gbw0woe26bQB2JJzG7lEO1umrOmVdxD7bBmsEqiEEtM6xjlcT9+1LeZMvUrY7Cc5FIGjXDvmQP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=v+MJo+HS; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KGXO9UX6"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N8Sxld3944125;
-	Thu, 23 Apr 2026 14:17:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="v+MJo+HS"
+Received: from pps.filterd (m0528005.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MJib474169397
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 07:18:46 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xb8lVM
-	7EPVINw3271QMWge91NyAaHHFFAr3BwKqqmm4=; b=KGXO9UX6hk/u+k9xjlHe/G
-	Lzen/s6k8PoNzYjkZTwVIDhq0FX1qAGyHjYOfDJebhzNw0kTmr+EcgrbgZeniHlO
-	SE/yplfLUZg+7QBLthoSMsKCKDNhH2mknQOKZ5dXcxMjqKiOFq82FnVZgvCwMzc1
-	y9iBa3SUD31VDTC1mSMP/AhHNLGUG6M/AFk97R59WczSycFgXHuvOjFxoVlJ4+AR
-	mAC2ePwiD/ijkI5zdk5k5+s5VIiLjfEY+K0tQJJXacjuO+AraoC842fizxzZwfbW
-	8t7lmcz3QrQok0VaFI4J1patsCXXjZGR1ugLY2SUzbQB/NBmlpdVoJv5uQsIsa5A
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu3rewy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 14:17:23 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NE5Vu3015118;
-	Thu, 23 Apr 2026 14:17:23 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkypwpy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 14:17:22 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NEHIDd61800750
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Apr 2026 14:17:18 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5066820040;
-	Thu, 23 Apr 2026 14:17:18 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 157B020049;
-	Thu, 23 Apr 2026 14:17:18 +0000 (GMT)
-Received: from [9.52.198.32] (unknown [9.52.198.32])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Apr 2026 14:17:18 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Thu, 23 Apr 2026 16:16:51 +0200
-Subject: [kvm-unit-tests PATCH 2/3] scripts/checkpatch.pl: Copy kernel
- codespell file
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=e95FCMfWZPIOflPX9x4B7yDZMlPKVoCcJEUwN6OatrI=; b=v+MJo+HS/N5D
+	fQTCqX9AVRisJuiPh225WBruwA/jUDdds5TjN78vSY40xglltHw7sbQxw5AvTPSf
+	nPNNM3WRIeid0dKheMQdeG8V/Zsqw5XBZbUjxDocbW6JXMdsO0ExGuQXsyiu5ZOS
+	waD0d7hALvvqpIT/jXEzxvGKRcxR/ZF0HenovdWMeIjCo3droUW9GqF4RFw5i0+T
+	W3QLbIBISHFR9/4kZMCfze6WsQB4VbHOKS9fq7FV0uPvSa0NrkT8vjGtC59ZtvUa
+	H+Ti/O/LRiHpB22D0rTaVbUaftTG0yfsQSLTtvhLG53LWfHSgk45XjxI9zS4kC5L
+	+JBDLK+TLw==
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dpepacuwq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 07:18:46 -0700 (PDT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-12c87ba0890so18442837c88.0
+        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 07:18:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776953926; x=1777558726;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e95FCMfWZPIOflPX9x4B7yDZMlPKVoCcJEUwN6OatrI=;
+        b=sdMpVohWoIJOFWNCpEs3fH4OwQiChGZ10ungWvllApUTXPBeqyO2MwXMQKMhmnZ2+/
+         U25q1eo2x/n/kmbs2ek780UTzJc01RSMStj48OdU86A2Twl/lzWqWPPgWzxx5YJsQhKp
+         jF8pmugdiBamAToBUNxHaNSRf5KsSMveuGKrngWnHCMZZJI/B8g0gU/0Vt/y+F3/Kx7w
+         Cc1vzEZ8abAFNDW587f7yq5mGX0v0ZuEakLLgob4T5H14FLYxFnPBJ4n0uE0hHCDKipv
+         SOvaZZAjHzQCvMBU76TSQOclxhpSVigBGXNFYJ4Ufx5R8M/QHJ7vC6n9p2/fh9l7ZR6z
+         J+dQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+D4HYWuy0BFkxtH4wXgKt2fhAtnBlE8+wNs+iIKb5PkLWW0QPg1i26vNTfDm4tuMn37BU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkRHBEZXzssFYkrXtMOmZG//RQJeoRLDsKnsLU1mwlHNPjfntd
+	lQYpGJw7272waRrR2jvPB4/dQ1Dd+ti7wJIiBNTLVn9djovlUHtfs7BFj5McAjhWhiMPBfV3m30
+	YQJhHx+zQEg09OvantKy/kG5AyvW6w6URyhTd8jfx2DTBdMF/qUE9
+X-Gm-Gg: AeBDietThnT7pi8pNJq5MwNNQFrULz0YUhkK0wBs3vqh7OlWIpxQTrUmO2YHOnnDpOu
+	EgXooClLqjIceds9lUm4/CZCBa5/FkuKEm+oxu/K7mhARC6+rUol0LA7bKJgNMdMIh/rI5sMCLF
+	sssYPvzUnlXpEEG4FUS9o4MTaWaJ+BDziS1cZPI5JfsK5aVF3CL58RtCz885/q9iQiwB0w2mJ1N
+	As4wabixx403lsID+Lo/yzh8XDQp82g9/GUT14SE4+vUtb06U6Aesx5wP56paQpZO71NtSChuCw
+	XaTqNNdClbHZghFd9oVLhunex3+sgEJUAeOqJwHK1K/qCnUDM+GNQrkzi/5Xdsufo3qsLwjrkQt
+	8pj0q7zTZU+B+js0gTwaVRZpTWnayL1S7MSvBWOIf
+X-Received: by 2002:a05:7022:e22:b0:128:cedb:33c6 with SMTP id a92af1059eb24-12c73f9759emr16988864c88.16.1776953925414;
+        Thu, 23 Apr 2026 07:18:45 -0700 (PDT)
+X-Received: by 2002:a05:7022:e22:b0:128:cedb:33c6 with SMTP id a92af1059eb24-12c73f9759emr16988839c88.16.1776953924605;
+        Thu, 23 Apr 2026 07:18:44 -0700 (PDT)
+Received: from [10.0.40.30] ([51.52.155.79])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a18a2bsm41524610c88.10.2026.04.23.07.18.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Apr 2026 07:18:44 -0700 (PDT)
+Message-ID: <1500fb01-3046-4d82-8cb4-3469dc2c848c@meta.com>
+Date: Thu, 23 Apr 2026 15:18:39 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio/pci: Set up barmap in vfio_pci_core_enable()
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Ankit Agrawal <ankita@nvidia.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Yishai Hadas
+ <yishaih@nvidia.com>,
+        Alexey Kardashevskiy <aik@ozlabs.ru>,
+        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
+References: <20260421174143.3883579-1-mattev@meta.com>
+ <20260421174143.3883579-2-mattev@meta.com>
+ <20260421133123.36fc0353@shazbot.org>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260421133123.36fc0353@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260423-b4-cmdline-v1-2-f72ad0020d42@linux.ibm.com>
-References: <20260423-b4-cmdline-v1-0-f72ad0020d42@linux.ibm.com>
-In-Reply-To: <20260423-b4-cmdline-v1-0-f72ad0020d42@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: Janosch Frank <frankja@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        Thomas Huth <thuth@redhat.com>, Andrew Jones <andrew.jones@linux.dev>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=40770;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=PQLlxpZlorCmis/WBTUduP7pVR7y9k5r0ipjyA9Z8jw=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJmvNN9aSB4tzP17LP/L+0dVF7Tavlu+ndnGfphT+PWU7
- J/rD8xP7ShlYRDjYpAVU2SpFrfOq+prXTrnoOU1mDmsTCBDGLg4BWAi7WmMDLvmX/evX/RqT8Du
- 0LNaawWZG7bEvL279M+UD0FGM48YPJnG8D+g56SX3JZ1kc5CC/+LVTpO/CD85A3nrafygcKRWSd
- XL2QGAA==
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 89ylzFCsrAyruIwq6bWsA2LcCSy5ob64
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEzNyBTYWx0ZWRfXyhYp6RtZikGW
- 7HlcuCwgGm8LBIW5d952Stsvgo3dj9lEzchTOaMhdrsfdyK1XITencUMx2l9sbYaqo8gOwMYGnu
- 9qMK7eR17qK8EKtirf+vtPZmHyoKkf4iPFAlqBDEwwz1EnqNdryFnofG9RE9KubLMz53gmI3N9B
- CIjXJKJ36IugR2c1XowGZ0JYvh2ZOAlEizoNS6Xz3WSdXGwW7YG5Dm9rX8AnnuYWrUfElWDRfYc
- DBNGWJKvrYGGJKGJEMPUhLkLrZq0+EAJd/QW2d40rsBAm47fdiCj4H5HXXLpCeOyi65mcSuN+cE
- 8aPDP6qvDAkwMgBjJX7kyUS1KKgIydriAdgOAckp1qtbuAKW0EtaQgzfceT6JqlNqrZwsXJSfYx
- wAJFTNyKEDigSJoqp5yM2UKrlzzkxeDVrLJjMBxOQVrNqv68y9rTgKLauOr/WNtGXYZLrGQmdwD
- beReND5wwSfUYLbB7ig==
-X-Authority-Analysis: v=2.4 cv=a6kAM0SF c=1 sm=1 tr=0 ts=69ea29f4 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-ORIG-GUID: UtREwhRxEAeWmgaSC-aTTtFGB8CUoa20
+X-Authority-Analysis: v=2.4 cv=KMxqylFo c=1 sm=1 tr=0 ts=69ea2a46 cx=c_pps
+ a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=UJelDFyLru9BBQf-ZNsA:9 a=2alxZDUTujkSe-CZ:21 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: xL37mHIQRPnzvA4HQm6dISGot51JcBi0
+ a=7x6HtfJdh03M6CCDgxCd:22 a=jCddH8ec0KUNCymVuxII:22 a=VabnemYjAAAA:8
+ a=iNyBAbhlopIjzdoupJ0A:9 a=QEXdDO2ut3YA:10 a=vBUdepa8ALXHeOFLBtFW:22
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDE0MiBTYWx0ZWRfXwkBF/TAO5ZoC
+ XJixvARKzpJbiMW5K1NtKpNCuoBCuBdt/Ch2L9VSAXR9Z5zh9Zfq/2/0m4PvjJorxtmMiZrBIcC
+ QJyh0lpBSZfTRHFrXc/bC/EMT2PwZHK+hZVhIFZga+SeOoBxvNLGWpbxf5xy5+4lU/TaGme3O8e
+ xJ35FU6M1ajWKvMDscpxikbaHXwoUeayfJ2xsuiHECielYiDvDceNWYS8SL6DQrzA7fDbbcXyDB
+ 8j/cZm0aWT81gxo4G7TpOImBC4uCRjx1/zpo2uEC4hq5dB3YrB616XC2zR1JPTPBdNECuQHpoZe
+ txJPFErt4FJSFTlZ2aj4f7QGuxUkal2tk9P6qE9YVTSK29TjgZ1Riv5ZcocLf/DXIDjhpajRDUf
+ pUq439xjczQtSfnvhmNWXzNGwGpbfVVXN58SZ6HpYwSVJXV5UQEg3+D2/vQndAG5EqfsJFWRbVg
+ ti958fmIrBw/dZP/vXg==
+X-Proofpoint-GUID: UtREwhRxEAeWmgaSC-aTTtFGB8CUoa20
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1011 phishscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604230137
 
-Provide a codespell config to actually let it do something.
-Obviously codespell is not happy about the addition of these misspellings
-here.
+Hi Alex,
 
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
----
- scripts/spelling.txt | 1802 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 1802 insertions(+)
+On 21/04/2026 20:31, Alex Williamson wrote:
+> 
+> On Tue, 21 Apr 2026 10:41:40 -0700
+> Matt Evans <mattev@meta.com> wrote:
+> 
+>> The previous lazy-setup of the barmaps provided opportunities to
+>> forget to do it (for example, DMABUF export).  Since all users will
+>> ultimately require BAR resources to have been requested, request them
+>> in vfio_pci_core_enable.
+>>
+>> Existing calls to vfio_pci_core_setup_barmap() are now benign, but
+>> remain because some callers use it to validate a BAR index.  This
+>> fixes at least the case where DMABUF export could succeed before
+>> resources were requested.
+>>
+>> This keeps resource request and ioremap() done at the same time, but
+>> in future the ioremap() could be done on-demand (not all VFIO users
+>> need it).
+>>
+>> Fixes: 7f5764e179c6 ("vfio: use vfio_pci_core_setup_barmap to map bar in mmap")
+>> Fixes: 0d77ed3589ac0 ("vfio/pci: Pull BAR mapping setup from read-write path")
+>> Signed-off-by: Matt Evans <mattev@meta.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_core.c | 63 +++++++++++++++++++++++++++-----
+>>   drivers/vfio/pci/vfio_pci_rdwr.c | 25 +++----------
+>>   2 files changed, 60 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 3f8d093aacf8..4a314213f3ae 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -482,6 +482,55 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
+>>   }
+>>   #endif /* CONFIG_PM */
+>>   
+>> +static void __vfio_pci_core_unmap_bars(struct vfio_pci_core_device *vdev)
+>> +{
+>> +	struct pci_dev *pdev = vdev->pdev;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>> +		int bar = i + PCI_STD_RESOURCES;
+>> +
+>> +		if (!vdev->barmap[i])
+>> +			continue;
+>> +		pci_iounmap(pdev, vdev->barmap[bar]);
+>> +		pci_release_selected_regions(pdev, 1 << bar);
+>> +		vdev->barmap[bar] = NULL;
+>> +	}
+>> +}
+>> +
+>> +static int __vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+>> +{
+>> +	struct pci_dev *pdev = vdev->pdev;
+>> +	int ret = 0;
+>> +	int i;
+>> +
+>> +	/* Eager-request BAR resources (and iomap) */
+>> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>> +		int bar = i + PCI_STD_RESOURCES;
+>> +		void __iomem *io;
+>> +
+>> +		if (pci_resource_len(pdev, i) == 0)
+>> +			continue;
+>> +
+>> +		ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+>> +		if (ret)
+>> +			goto err_free_barmap;
+>> +
+>> +		io = pci_iomap(pdev, bar, 0);
+>> +		if (!io) {
+>> +			pci_release_selected_regions(pdev, 1 << bar);
+>> +			ret = -ENOMEM;
+>> +			goto err_free_barmap;
+>> +		}
+>> +		vdev->barmap[bar] = io;
+>> +	}
+>> +	return 0;
+>> +
+>> +err_free_barmap:
+>> +	__vfio_pci_core_unmap_bars(vdev);
+>> +	return ret;
+>> +}
+>> +
+>>   /*
+>>    * The pci-driver core runtime PM routines always save the device state
+>>    * before going into suspended state. If the device is going into low power
+>> @@ -568,6 +617,9 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>>   	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
+>>   		vdev->has_vga = true;
+>>   
+>> +	ret = __vfio_pci_core_map_bars(vdev);
+>> +	if (ret)
+>> +		goto out_free_zdev;
+> 
+> Beyond simply changing to a preemptive mapping scheme, this hard
+> failure makes me concerned about regressing userspace.  With the
+> current lazy scheme, we only claim the BAR if the user accesses it and
+> the failure only occurs in the access path.  That means we could have
+> BARs that are never mapped.  With a hard failure here, with might be
+> uncovering some latent issues, and if those latent issues are with BARs
+> that we never cared to map previously, we're causing trouble for no
+> gain.
 
-diff --git a/scripts/spelling.txt b/scripts/spelling.txt
-new file mode 100644
-index 000000000000..1abb6ae15890
---- /dev/null
-+++ b/scripts/spelling.txt
-@@ -0,0 +1,1802 @@
-+# Originally from Debian's Lintian tool. Various false positives have been
-+# removed, and various additions have been made as they've been discovered
-+# in the kernel source.
-+#
-+# License: GPLv2
-+#
-+# The format of each line is:
-+# mistake||correction
-+#
-+# Copied with this comment change from linux kernel  028ef9c96e96 ("Linux 7.0")
-+abandonning||abandoning
-+abigious||ambiguous
-+abitrary||arbitrary
-+abitrate||arbitrate
-+abnornally||abnormally
-+abnrormal||abnormal
-+abord||abort
-+aboslute||absolute
-+abov||above
-+abreviated||abbreviated
-+absense||absence
-+absolut||absolute
-+absoulte||absolute
-+acccess||access
-+acceess||access
-+accelaration||acceleration
-+accelearion||acceleration
-+acceleratoin||acceleration
-+accelleration||acceleration
-+accelrometer||accelerometer
-+accesing||accessing
-+accesnt||accent
-+accessable||accessible
-+accesss||access
-+accidentaly||accidentally
-+accidentually||accidentally
-+acclerated||accelerated
-+accoding||according
-+accomodate||accommodate
-+accomodates||accommodates
-+accordign||according
-+accoring||according
-+accout||account
-+accquire||acquire
-+accquired||acquired
-+accross||across
-+accumalate||accumulate
-+accumalator||accumulator
-+acessable||accessible
-+acess||access
-+acessing||accessing
-+achitecture||architecture
-+acient||ancient
-+acitions||actions
-+acitve||active
-+acknowldegement||acknowledgment
-+acknowledgement||acknowledgment
-+ackowledge||acknowledge
-+ackowledged||acknowledged
-+acording||according
-+activete||activate
-+actived||activated
-+actualy||actually
-+actvie||active
-+acumulating||accumulating
-+acumulative||accumulative
-+acumulator||accumulator
-+acutally||actually
-+adapater||adapter
-+adderted||asserted
-+addional||additional
-+additionaly||additionally
-+additonal||additional
-+addres||address
-+adddress||address
-+addreses||addresses
-+addresss||address
-+addrress||address
-+aditional||additional
-+aditionally||additionally
-+aditionaly||additionally
-+adminstrative||administrative
-+adress||address
-+adresses||addresses
-+adrresses||addresses
-+advertisment||advertisement
-+adviced||advised
-+afecting||affecting
-+againt||against
-+agaist||against
-+aggreataon||aggregation
-+aggreation||aggregation
-+ajust||adjust
-+albumns||albums
-+alegorical||allegorical
-+algined||aligned
-+algorith||algorithm
-+algorithmical||algorithmically
-+algoritm||algorithm
-+algoritms||algorithms
-+algorithmn||algorithm
-+algorrithm||algorithm
-+algorritm||algorithm
-+aligment||alignment
-+alignement||alignment
-+allign||align
-+alligned||aligned
-+alllocate||allocate
-+alloated||allocated
-+allocatote||allocate
-+allocatrd||allocated
-+allocte||allocate
-+allocted||allocated
-+allpication||application
-+alocate||allocate
-+alogirhtms||algorithms
-+alogrithm||algorithm
-+alot||a lot
-+alow||allow
-+alows||allows
-+alreay||already
-+alredy||already
-+altough||although
-+alue||value
-+ambigious||ambiguous
-+ambigous||ambiguous
-+amoung||among
-+amount of times||number of times
-+amout||amount
-+amplifer||amplifier
-+amplifyer||amplifier
-+an union||a union
-+an user||a user
-+an userspace||a userspace
-+an one||a one
-+analysator||analyzer
-+ang||and
-+anniversery||anniversary
-+annoucement||announcement
-+anomolies||anomalies
-+anomoly||anomaly
-+anonynous||anonymous
-+anway||anyway
-+aplication||application
-+apeared||appeared
-+appearence||appearance
-+applicaion||application
-+appliction||application
-+applictions||applications
-+applys||applies
-+appplications||applications
-+appropiate||appropriate
-+appropriatly||appropriately
-+approriate||appropriate
-+approriately||appropriately
-+apropriate||appropriate
-+aquainted||acquainted
-+aquired||acquired
-+aquisition||acquisition
-+aquires||acquires
-+arbitary||arbitrary
-+architechture||architecture
-+archtecture||architecture
-+arguement||argument
-+arguements||arguments
-+arithmatic||arithmetic
-+aritmetic||arithmetic
-+arne't||aren't
-+arraival||arrival
-+artifical||artificial
-+artillary||artillery
-+asign||assign
-+asser||assert
-+assertation||assertion
-+assertting||asserting
-+assgined||assigned
-+assiged||assigned
-+assigment||assignment
-+assigments||assignments
-+assistent||assistant
-+assocaited||associated
-+assocated||associated
-+assocating||associating
-+assocation||association
-+assocative||associative
-+associcated||associated
-+assotiated||associated
-+asssert||assert
-+assum||assume
-+assumtpion||assumption
-+asume||assume
-+asuming||assuming
-+asycronous||asynchronous
-+asychronous||asynchronous
-+asynchnous||asynchronous
-+asynchrnous||asynchronous
-+asynchronus||asynchronous
-+asynchromous||asynchronous
-+asymetric||asymmetric
-+asymmeric||asymmetric
-+atleast||at least
-+atomatically||automatically
-+atomicly||atomically
-+atempt||attempt
-+atrributes||attributes
-+attachement||attachment
-+attatch||attach
-+attched||attached
-+attemp||attempt
-+attemps||attempts
-+attemping||attempting
-+attepmpt||attempt
-+attnetion||attention
-+attruibutes||attributes
-+authentification||authentication
-+authenicated||authenticated
-+automaticaly||automatically
-+automaticly||automatically
-+automatize||automate
-+automatized||automated
-+automatizes||automates
-+autonymous||autonomous
-+auxillary||auxiliary
-+auxilliary||auxiliary
-+avaiable||available
-+avaialable||available
-+avaible||available
-+availabe||available
-+availabled||available
-+availablity||availability
-+availaible||available
-+availale||available
-+availavility||availability
-+availble||available
-+availiable||available
-+availible||available
-+avalable||available
-+avaliable||available
-+aysnc||async
-+backgroud||background
-+backword||backward
-+backwords||backwards
-+bahavior||behavior
-+bakup||backup
-+baloon||balloon
-+baloons||balloons
-+bandwith||bandwidth
-+banlance||balance
-+batery||battery
-+battey||battery
-+beacuse||because
-+becasue||because
-+becomming||becoming
-+becuase||because
-+beeing||being
-+befor||before
-+begining||beginning
-+beter||better
-+betweeen||between
-+bianries||binaries
-+bitmast||bitmask
-+bitwiedh||bitwidth
-+boardcast||broadcast
-+borad||board
-+boundry||boundary
-+brievely||briefly
-+brigde||bridge
-+broadcase||broadcast
-+broadcat||broadcast
-+bufer||buffer
-+bufferred||buffered
-+bufferur||buffer
-+bufufer||buffer
-+cacluated||calculated
-+caculate||calculate
-+caculation||calculation
-+cadidate||candidate
-+cahces||caches
-+calcluate||calculate
-+calender||calendar
-+calescing||coalescing
-+calibraiton||calibration
-+calle||called
-+callibration||calibration
-+callled||called
-+callser||caller
-+calucate||calculate
-+calulate||calculate
-+cancelation||cancellation
-+cancle||cancel
-+cant||can't
-+cant'||can't
-+canot||cannot
-+cann't||can't
-+cannnot||cannot
-+capabiity||capability
-+capabilites||capabilities
-+capabilties||capabilities
-+capabilty||capability
-+capabitilies||capabilities
-+capablity||capability
-+capatibilities||capabilities
-+capapbilities||capabilities
-+captuer||capture
-+caputure||capture
-+carefuly||carefully
-+cariage||carriage
-+casued||caused
-+catagory||category
-+cehck||check
-+challange||challenge
-+challanges||challenges
-+chache||cache
-+chanell||channel
-+changable||changeable
-+chanined||chained
-+channle||channel
-+channnel||channel
-+charachter||character
-+charachters||characters
-+charactor||character
-+charater||character
-+charaters||characters
-+charcter||character
-+chcek||check
-+chck||check
-+checksumed||checksummed
-+checksuming||checksumming
-+childern||children
-+childs||children
-+chiled||child
-+chked||checked
-+chnage||change
-+chnages||changes
-+chnange||change
-+chnnel||channel
-+choosen||chosen
-+chouse||chose
-+circumvernt||circumvent
-+claread||cleared
-+clared||cleared
-+clearify||clarify
-+closeing||closing
-+clustred||clustered
-+cnfiguration||configuration
-+coexistance||coexistence
-+colescing||coalescing
-+collapsable||collapsible
-+colorfull||colorful
-+comand||command
-+comit||commit
-+commerical||commercial
-+comming||coming
-+comminucation||communication
-+commited||committed
-+commiting||committing
-+committ||commit
-+commmand||command
-+commnunication||communication
-+commoditiy||commodity
-+comsume||consume
-+comsumer||consumer
-+comsuming||consuming
-+comaptible||compatible
-+compability||compatibility
-+compaibility||compatibility
-+comparsion||comparison
-+compatability||compatibility
-+compatable||compatible
-+compatibililty||compatibility
-+compatibiliy||compatibility
-+compatibilty||compatibility
-+compatiblity||compatibility
-+competion||completion
-+compilant||compliant
-+compleatly||completely
-+completition||completion
-+completly||completely
-+complient||compliant
-+componnents||components
-+compoment||component
-+comppatible||compatible
-+compres||compress
-+compresion||compression
-+compresser||compressor
-+comression||compression
-+comsumed||consumed
-+comunicate||communicate
-+comunication||communication
-+conbination||combination
-+concurent||concurrent
-+conditionaly||conditionally
-+conditon||condition
-+condtion||condition
-+condtional||conditional
-+conected||connected
-+conector||connector
-+configed||configured
-+configration||configuration
-+configred||configured
-+configuartion||configuration
-+configuation||configuration
-+configued||configured
-+configuratoin||configuration
-+configuraton||configuration
-+configuretion||configuration
-+configutation||configuration
-+congiuration||configuration
-+conider||consider
-+conjuction||conjunction
-+connction||connection
-+connecetd||connected
-+connectinos||connections
-+connetor||connector
-+connnection||connection
-+connnections||connections
-+consistancy||consistency
-+consistant||consistent
-+consits||consists
-+constructred||constructed
-+containes||contains
-+containts||contains
-+contaisn||contains
-+contant||contact
-+contence||contents
-+contiguos||contiguous
-+continious||continuous
-+continous||continuous
-+continously||continuously
-+continueing||continuing
-+contiuous||continuous
-+contraints||constraints
-+contruct||construct
-+contol||control
-+contoller||controller
-+controled||controlled
-+controler||controller
-+controll||control
-+contruction||construction
-+contry||country
-+conuntry||country
-+convertion||conversion
-+convertor||converter
-+convienient||convenient
-+convinient||convenient
-+corected||corrected
-+correponding||corresponding
-+correponds||corresponds
-+correspoding||corresponding
-+cotrol||control
-+cound||could
-+couter||counter
-+coutner||counter
-+creationg||creating
-+cryptocraphic||cryptographic
-+cummulative||cumulative
-+cunter||counter
-+curent||current
-+curently||currently
-+cylic||cyclic
-+dafault||default
-+deactive||deactivate
-+deafult||default
-+deamon||daemon
-+debouce||debounce
-+decendant||descendant
-+decendants||descendants
-+decompres||decompress
-+decsribed||described
-+decrese||decrease
-+decription||description
-+detault||default
-+dectected||detected
-+defailt||default
-+deferal||deferral
-+deffered||deferred
-+defferred||deferred
-+definate||definite
-+definately||definitely
-+definiation||definition
-+definiton||definition
-+defintion||definition
-+defintions||definitions
-+defualt||default
-+defult||default
-+deintializing||deinitializing
-+deintialize||deinitialize
-+deintialized||deinitialized
-+deivce||device
-+delared||declared
-+delare||declare
-+delares||declares
-+delaring||declaring
-+delemiter||delimiter
-+deley||delay
-+delibrately||deliberately
-+delievered||delivered
-+demodualtor||demodulator
-+demension||dimension
-+dependancies||dependencies
-+dependancy||dependency
-+dependant||dependent
-+dependend||dependent
-+depreacted||deprecated
-+depreacte||deprecate
-+desactivate||deactivate
-+desciptor||descriptor
-+desciptors||descriptors
-+descritpor||descriptor
-+descripto||descriptor
-+descripton||description
-+descrition||description
-+descritptor||descriptor
-+desctiptor||descriptor
-+desriptor||descriptor
-+desriptors||descriptors
-+desination||destination
-+destionation||destination
-+destoried||destroyed
-+destory||destroy
-+destoryed||destroyed
-+destorys||destroys
-+destroied||destroyed
-+detabase||database
-+deteced||detected
-+detecion||detection
-+detectt||detect
-+detroyed||destroyed
-+develope||develop
-+developement||development
-+developped||developed
-+developpement||development
-+developper||developer
-+developpment||development
-+deveolpment||development
-+devided||divided
-+deviece||device
-+devision||division
-+diable||disable
-+diabled||disabled
-+dicline||decline
-+dictionnary||dictionary
-+didnt||didn't
-+diferent||different
-+differrence||difference
-+diffrent||different
-+differenciate||differentiate
-+diffreential||differential
-+diffrentiate||differentiate
-+difinition||definition
-+digial||digital
-+dimention||dimension
-+dimesions||dimensions
-+diconnected||disconnected
-+disabed||disabled
-+disasembler||disassembler
-+disble||disable
-+disgest||digest
-+disired||desired
-+dispalying||displaying
-+dissable||disable
-+dissapeared||disappeared
-+diplay||display
-+directon||direction
-+direcly||directly
-+direectly||directly
-+diregard||disregard
-+disassocation||disassociation
-+disassocative||disassociative
-+disapear||disappear
-+disapeared||disappeared
-+disappared||disappeared
-+disbale||disable
-+disbaled||disabled
-+disble||disable
-+disbled||disabled
-+disconnet||disconnect
-+discontinous||discontinuous
-+disharge||discharge
-+disnabled||disabled
-+dispertion||dispersion
-+dissapears||disappears
-+dissconect||disconnect
-+distiction||distinction
-+divisable||divisible
-+divsiors||divisors
-+dsiabled||disabled
-+docuentation||documentation
-+documantation||documentation
-+documentaion||documentation
-+documment||document
-+doesnt||doesn't
-+donwload||download
-+donwloading||downloading
-+dorp||drop
-+dosen||doesn
-+downlad||download
-+downlads||downloads
-+droped||dropped
-+droput||dropout
-+druing||during
-+dyanmic||dynamic
-+dynmaic||dynamic
-+eanable||enable
-+eanble||enable
-+easilly||easily
-+ecspecially||especially
-+edditable||editable
-+editting||editing
-+efective||effective
-+effectivness||effectiveness
-+efficently||efficiently
-+ehther||ether
-+eigth||eight
-+elementry||elementary
-+eletronic||electronic
-+embeded||embedded
-+emtpy||empty
-+enabledi||enabled
-+enbale||enable
-+enble||enable
-+enchanced||enhanced
-+encorporating||incorporating
-+encrupted||encrypted
-+encrypiton||encryption
-+encryped||encrypted
-+encryptio||encryption
-+endianess||endianness
-+enpoint||endpoint
-+enhaced||enhanced
-+enlightnment||enlightenment
-+enqueing||enqueuing
-+entires||entries
-+entites||entities
-+entrys||entries
-+enocded||encoded
-+enought||enough
-+enterily||entirely
-+enviroiment||environment
-+enviroment||environment
-+environement||environment
-+environent||environment
-+eqivalent||equivalent
-+equiped||equipped
-+equivelant||equivalent
-+equivilant||equivalent
-+eror||error
-+errorr||error
-+errror||error
-+estbalishment||establishment
-+etsablishment||establishment
-+etsbalishment||establishment
-+evalute||evaluate
-+evalutes||evaluates
-+evalution||evaluation
-+evaulated||evaluated
-+excecutable||executable
-+excceed||exceed
-+exceded||exceeded
-+exceds||exceeds
-+exceeed||exceed
-+excellant||excellent
-+exchnage||exchange
-+execeeded||exceeded
-+execeeds||exceeds
-+exeed||exceed
-+exeeds||exceeds
-+exeuction||execution
-+existance||existence
-+existant||existent
-+exixt||exist
-+exsits||exists
-+exlcude||exclude
-+exlcuding||excluding
-+exlcusive||exclusive
-+exlusive||exclusive
-+exlicitly||explicitly
-+exmaple||example
-+expecially||especially
-+experies||expires
-+explicite||explicit
-+explicity||explicitly
-+explicitely||explicitly
-+explict||explicit
-+explictely||explicitly
-+explictly||explicitly
-+expresion||expression
-+exprienced||experienced
-+exprimental||experimental
-+extened||extended
-+exteneded||extended
-+extensability||extensibility
-+extention||extension
-+extenstion||extension
-+extracter||extractor
-+faied||failed
-+faield||failed
-+faild||failed
-+failded||failed
-+failer||failure
-+faill||fail
-+failied||failed
-+faillure||failure
-+failue||failure
-+failuer||failure
-+failng||failing
-+faireness||fairness
-+falied||failed
-+faliure||failure
-+fallbck||fallback
-+familar||familiar
-+fatser||faster
-+feauture||feature
-+feautures||features
-+fetaure||feature
-+fetaures||features
-+fetcing||fetching
-+fileystem||filesystem
-+fimrware||firmware
-+fimware||firmware
-+firmare||firmware
-+firmaware||firmware
-+firtly||firstly
-+firware||firmware
-+firwmare||firmware
-+finanize||finalize
-+findn||find
-+finilizes||finalizes
-+finsih||finish
-+fliter||filter
-+flusing||flushing
-+folloing||following
-+followign||following
-+followings||following
-+follwing||following
-+fonud||found
-+forcebly||forcibly
-+forseeable||foreseeable
-+forse||force
-+fortan||fortran
-+forwardig||forwarding
-+forwared||forwarded
-+frambuffer||framebuffer
-+framming||framing
-+framwork||framework
-+frequence||frequency
-+frequncy||frequency
-+frequancy||frequency
-+frome||from
-+fronend||frontend
-+fucntion||function
-+fuction||function
-+fuctions||functions
-+fullill||fulfill
-+funcation||function
-+funcion||function
-+functionallity||functionality
-+functionaly||functionally
-+functionnality||functionality
-+functonality||functionality
-+funtion||function
-+funtions||functions
-+furthur||further
-+futhermore||furthermore
-+futrue||future
-+gatable||gateable
-+gateing||gating
-+gauage||gauge
-+gaurenteed||guaranteed
-+generiously||generously
-+genereate||generate
-+genereted||generated
-+genric||generic
-+gerenal||general
-+geting||getting
-+globel||global
-+grabing||grabbing
-+grahical||graphical
-+grahpical||graphical
-+granularty||granularity
-+grapic||graphic
-+grranted||granted
-+grups||groups
-+guage||gauge
-+guarenteed||guaranteed
-+guarentee||guarantee
-+halfs||halves
-+hander||handler
-+handfull||handful
-+hanlde||handle
-+hanled||handled
-+happend||happened
-+hardare||hardware
-+harware||hardware
-+hardward||hardware
-+havind||having
-+heigth||height
-+heirarchically||hierarchically
-+heirarchy||hierarchy
-+heirachy||hierarchy
-+helpfull||helpful
-+hearbeat||heartbeat
-+heterogenous||heterogeneous
-+hexdecimal||hexadecimal
-+hybernate||hibernate
-+hiearchy||hierarchy
-+hierachy||hierarchy
-+hierarchie||hierarchy
-+homogenous||homogeneous
-+horizental||horizontal
-+howver||however
-+hsould||should
-+hypervior||hypervisor
-+hypter||hyper
-+idel||idle
-+identidier||identifier
-+iligal||illegal
-+illigal||illegal
-+illgal||illegal
-+iomaped||iomapped
-+imblance||imbalance
-+immeadiately||immediately
-+immedaite||immediate
-+immedate||immediate
-+immediatelly||immediately
-+immediatly||immediately
-+immidiate||immediate
-+immutible||immutable
-+impelentation||implementation
-+impementated||implemented
-+implemantation||implementation
-+implemenation||implementation
-+implementaiton||implementation
-+implementated||implemented
-+implemention||implementation
-+implementd||implemented
-+implemetation||implementation
-+implemntation||implementation
-+implentation||implementation
-+implmentation||implementation
-+implmenting||implementing
-+incative||inactive
-+incomming||incoming
-+incompaitiblity||incompatibility
-+incompatabilities||incompatibilities
-+incompatable||incompatible
-+incompatble||incompatible
-+inconsistant||inconsistent
-+increas||increase
-+incremeted||incremented
-+incrment||increment
-+incuding||including
-+inculde||include
-+indendation||indentation
-+indended||intended
-+independant||independent
-+independantly||independently
-+independed||independent
-+indiate||indicate
-+indicat||indicate
-+inexpect||inexpected
-+infalte||inflate
-+inferface||interface
-+infinit||infinite
-+infomation||information
-+informatiom||information
-+informations||information
-+informtion||information
-+infromation||information
-+ingore||ignore
-+inheritence||inheritance
-+inital||initial
-+initalized||initialized
-+initalised||initialized
-+initalise||initialize
-+initalize||initialize
-+initation||initiation
-+initators||initiators
-+initialiazation||initialization
-+initializationg||initialization
-+initializiation||initialization
-+initializtion||initialization
-+initialze||initialize
-+initialzed||initialized
-+initialzing||initializing
-+initilization||initialization
-+initilize||initialize
-+initliaze||initialize
-+initilized||initialized
-+inofficial||unofficial
-+inrerface||interface
-+insititute||institute
-+instace||instance
-+instal||install
-+instanciate||instantiate
-+instanciated||instantiated
-+instuments||instruments
-+insufficent||insufficient
-+intead||instead
-+inteface||interface
-+integreated||integrated
-+integrety||integrity
-+integrey||integrity
-+intendet||intended
-+intented||intended
-+interal||internal
-+interanl||internal
-+interchangable||interchangeable
-+interferring||interfering
-+interger||integer
-+intergrated||integrated
-+intermittant||intermittent
-+internel||internal
-+interoprability||interoperability
-+interuupt||interrupt
-+interupt||interrupt
-+interupts||interrupts
-+interurpt||interrupt
-+interrface||interface
-+interrrupt||interrupt
-+interrup||interrupt
-+interrups||interrupts
-+interruptted||interrupted
-+interupted||interrupted
-+intiailized||initialized
-+intial||initial
-+intialisation||initialisation
-+intialised||initialised
-+intialise||initialise
-+intialization||initialization
-+intialized||initialized
-+intialize||initialize
-+intregral||integral
-+intrerrupt||interrupt
-+intrrupt||interrupt
-+intterrupt||interrupt
-+intuative||intuitive
-+inavlid||invalid
-+invaid||invalid
-+invaild||invalid
-+invailid||invalid
-+invald||invalid
-+invalde||invalid
-+invalide||invalid
-+invalidiate||invalidate
-+invalud||invalid
-+invididual||individual
-+invokation||invocation
-+invokations||invocations
-+ireelevant||irrelevant
-+irrelevent||irrelevant
-+isnt||isn't
-+isssue||issue
-+issus||issues
-+iteraions||iterations
-+iternations||iterations
-+itertation||iteration
-+itslef||itself
-+ivalid||invalid
-+jave||java
-+jeffies||jiffies
-+jumpimng||jumping
-+juse||just
-+jus||just
-+kown||known
-+lable||label
-+langage||language
-+langauage||language
-+langauge||language
-+langugage||language
-+lauch||launch
-+layed||laid
-+legnth||length
-+leightweight||lightweight
-+lengh||length
-+lenght||length
-+lenth||length
-+lesstiff||lesstif
-+libaries||libraries
-+libary||library
-+librairies||libraries
-+libraris||libraries
-+licenceing||licencing
-+limted||limited
-+logaritmic||logarithmic
-+loggging||logging
-+loggin||login
-+logile||logfile
-+loobpack||loopback
-+loosing||losing
-+losted||lost
-+maangement||management
-+machinary||machinery
-+maibox||mailbox
-+maintainance||maintenance
-+maintainence||maintenance
-+maintan||maintain
-+makeing||making
-+mailformed||malformed
-+malplaced||misplaced
-+malplace||misplace
-+managable||manageable
-+managament||management
-+managment||management
-+mangement||management
-+manger||manager
-+manoeuvering||maneuvering
-+manufaucturing||manufacturing
-+mappping||mapping
-+maping||mapping
-+matchs||matches
-+mathimatical||mathematical
-+mathimatic||mathematic
-+mathimatics||mathematics
-+maxmium||maximum
-+maximium||maximum
-+maxium||maximum
-+mechamism||mechanism
-+mechanim||mechanism
-+meetign||meeting
-+memeory||memory
-+memmber||member
-+memoery||memory
-+memroy||memory
-+ment||meant
-+mergable||mergeable
-+mesage||message
-+mesages||messages
-+messags||messages
-+messgaes||messages
-+messsage||message
-+messsages||messages
-+metdata||metadata
-+micropone||microphone
-+microprocesspr||microprocessor
-+migrateable||migratable
-+miliseconds||milliseconds
-+millenium||millennium
-+milliseonds||milliseconds
-+minimim||minimum
-+minium||minimum
-+minimam||minimum
-+minimun||minimum
-+miniumum||minimum
-+minumum||minimum
-+misalinged||misaligned
-+miscelleneous||miscellaneous
-+misformed||malformed
-+mispelled||misspelled
-+mispelt||misspelt
-+mising||missing
-+mismactch||mismatch
-+missign||missing
-+missmanaged||mismanaged
-+missmatch||mismatch
-+misssing||missing
-+miximum||maximum
-+mmnemonic||mnemonic
-+mnay||many
-+modfiy||modify
-+modifer||modifier
-+modul||module
-+modulues||modules
-+momery||memory
-+memomry||memory
-+monitring||monitoring
-+monochorome||monochrome
-+monochromo||monochrome
-+monocrome||monochrome
-+mopdule||module
-+mroe||more
-+mulitplied||multiplied
-+muliple||multiple
-+multipler||multiplier
-+multidimensionnal||multidimensional
-+multipe||multiple
-+multple||multiple
-+mumber||number
-+muticast||multicast
-+mutilcast||multicast
-+mutiple||multiple
-+mutli||multi
-+nams||names
-+navagating||navigating
-+nead||need
-+neccecary||necessary
-+neccesary||necessary
-+neccessary||necessary
-+necesary||necessary
-+neded||needed
-+negaive||negative
-+negoitation||negotiation
-+negotation||negotiation
-+nerver||never
-+nescessary||necessary
-+nessessary||necessary
-+none existent||non-existent
-+noticable||noticeable
-+notication||notification
-+notications||notifications
-+notifcations||notifications
-+notifed||notified
-+notifer||notifier
-+notity||notify
-+notfify||notify
-+nubmer||number
-+numebr||number
-+numer||number
-+numner||number
-+nunber||number
-+obtaion||obtain
-+obusing||abusing
-+occassionally||occasionally
-+occationally||occasionally
-+occurance||occurrence
-+occurances||occurrences
-+occurd||occurred
-+occured||occurred
-+occurence||occurrence
-+occure||occurred
-+occuring||occurring
-+ocurrence||occurrence
-+offser||offset
-+offet||offset
-+offlaod||offload
-+offloded||offloaded
-+offseting||offsetting
-+oflload||offload
-+omited||omitted
-+omiting||omitting
-+omitt||omit
-+ommiting||omitting
-+ommitted||omitted
-+onself||oneself
-+onthe||on the
-+ony||only
-+openning||opening
-+operatione||operation
-+opertaions||operations
-+opportunies||opportunities
-+optionnal||optional
-+optmizations||optimizations
-+orientatied||orientated
-+orientied||oriented
-+orignal||original
-+originial||original
-+orphanded||orphaned
-+otherise||otherwise
-+ouput||output
-+oustanding||outstanding
-+overaall||overall
-+overhread||overhead
-+overlaping||overlapping
-+oveflow||overflow
-+overflw||overflow
-+overlfow||overflow
-+overide||override
-+overrided||overridden
-+overriden||overridden
-+overrrun||overrun
-+overun||overrun
-+overwritting||overwriting
-+overwriten||overwritten
-+pacakge||package
-+pachage||package
-+packacge||package
-+packege||package
-+packge||package
-+packtes||packets
-+pakage||package
-+paket||packet
-+pallette||palette
-+paln||plan
-+palne||plane
-+paramameters||parameters
-+paramaters||parameters
-+paramater||parameter
-+paramenters||parameters
-+parametes||parameters
-+parametised||parametrised
-+paramter||parameter
-+paramters||parameters
-+parmaters||parameters
-+particuarly||particularly
-+particularily||particularly
-+partion||partition
-+partions||partitions
-+partiton||partition
-+pased||passed
-+passin||passing
-+pathes||paths
-+pattrns||patterns
-+pecularities||peculiarities
-+peformance||performance
-+peforming||performing
-+peice||piece
-+pendantic||pedantic
-+peprocessor||preprocessor
-+perfomance||performance
-+perfoming||performing
-+perfomring||performing
-+periperal||peripheral
-+peripherial||peripheral
-+permissons||permissions
-+permited||permitted
-+peroid||period
-+persistance||persistence
-+persistant||persistent
-+phoneticly||phonetically
-+pipline||pipeline
-+plaform||platform
-+plalform||platform
-+platfoem||platform
-+platfomr||platform
-+platfrom||platform
-+plattform||platform
-+pleaes||please
-+ploting||plotting
-+plugable||pluggable
-+poinnter||pointer
-+pointeur||pointer
-+poiter||pointer
-+posible||possible
-+positon||position
-+possibilites||possibilities
-+postion||position
-+potocol||protocol
-+powerfull||powerful
-+pramater||parameter
-+preambule||preamble
-+preamle||preamble
-+preample||preamble
-+preapre||prepare
-+preceeded||preceded
-+preceeding||preceding
-+preceed||precede
-+precendence||precedence
-+precission||precision
-+predicition||prediction
-+preemptable||preemptible
-+prefered||preferred
-+prefferably||preferably
-+prefitler||prefilter
-+preform||perform
-+previleged||privileged
-+previlege||privilege
-+premption||preemption
-+prepaired||prepared
-+prepate||prepare
-+preperation||preparation
-+preprare||prepare
-+pressre||pressure
-+presuambly||presumably
-+previosuly||previously
-+previsously||previously
-+primative||primitive
-+princliple||principle
-+priorty||priority
-+priting||printing
-+privilaged||privileged
-+privilage||privilege
-+priviledge||privilege
-+priviledged||privileged
-+priviledges||privileges
-+privleges||privileges
-+probaly||probably
-+probabalistic||probabilistic
-+procceed||proceed
-+proccesors||processors
-+procesed||processed
-+proces||process
-+procesing||processing
-+processessing||processing
-+processess||processes
-+processpr||processor
-+processsed||processed
-+processsing||processing
-+procteted||protected
-+prodecure||procedure
-+progamming||programming
-+progams||programs
-+progess||progress
-+programable||programmable
-+programers||programmers
-+programm||program
-+programms||programs
-+progres||progress
-+progresss||progress
-+prohibitted||prohibited
-+prohibitting||prohibiting
-+promiscous||promiscuous
-+promps||prompts
-+pronnounced||pronounced
-+prononciation||pronunciation
-+pronouce||pronounce
-+pronunce||pronounce
-+propery||property
-+propigate||propagate
-+propigation||propagation
-+propogation||propagation
-+propogate||propagate
-+prosess||process
-+protable||portable
-+protcol||protocol
-+protecion||protection
-+protedcted||protected
-+protocoll||protocol
-+promixity||proximity
-+psudo||pseudo
-+psuedo||pseudo
-+psychadelic||psychedelic
-+purgable||purgeable
-+pwoer||power
-+queing||queuing
-+quering||querying
-+querrying||querying
-+queus||queues
-+randomally||randomly
-+raoming||roaming
-+readyness||readiness
-+reasearcher||researcher
-+reasearchers||researchers
-+reasearch||research
-+recalcualte||recalculate
-+receieve||receive
-+recepient||recipient
-+recevied||received
-+receving||receiving
-+recievd||received
-+recieved||received
-+recieve||receive
-+reciever||receiver
-+recieves||receives
-+recieving||receiving
-+recogniced||recognised
-+recognizeable||recognizable
-+recompte||recompute
-+recommanded||recommended
-+recyle||recycle
-+redect||reject
-+redircet||redirect
-+redirectrion||redirection
-+redundacy||redundancy
-+reename||rename
-+refcounf||refcount
-+refence||reference
-+refered||referred
-+referencce||reference
-+referenace||reference
-+refererence||reference
-+refering||referring
-+refernces||references
-+refernnce||reference
-+refrence||reference
-+regiser||register
-+registed||registered
-+registerd||registered
-+registeration||registration
-+registeresd||registered
-+registerred||registered
-+registes||registers
-+registraration||registration
-+regsiter||register
-+regster||register
-+regualar||regular
-+reguator||regulator
-+regulamentations||regulations
-+reigstration||registration
-+releated||related
-+relevent||relevant
-+reloade||reload
-+remoote||remote
-+remore||remote
-+removeable||removable
-+repective||respective
-+repectively||respectively
-+replacable||replaceable
-+replacments||replacements
-+replys||replies
-+reponse||response
-+representaion||representation
-+repsonse||response
-+reqested||requested
-+reqeust||request
-+reqister||register
-+requed||requeued
-+requestied||requested
-+requiere||require
-+requieres||requires
-+requirment||requirement
-+requred||required
-+requried||required
-+requst||request
-+requsted||requested
-+reregisteration||reregistration
-+reseting||resetting
-+reseved||reserved
-+reseverd||reserved
-+resizeable||resizable
-+resonable||reasonable
-+resotre||restore
-+resouce||resource
-+resouces||resources
-+resoures||resources
-+responce||response
-+resrouce||resource
-+ressizes||resizes
-+ressource||resource
-+ressources||resources
-+restesting||retesting
-+resumbmitting||resubmitting
-+retransmited||retransmitted
-+retreived||retrieved
-+retreive||retrieve
-+retreiving||retrieving
-+retrive||retrieve
-+retrived||retrieved
-+retrun||return
-+retun||return
-+retuned||returned
-+reudce||reduce
-+reuest||request
-+reuqest||request
-+reutnred||returned
-+revsion||revision
-+rewritting||rewriting
-+rmeoved||removed
-+rmeove||remove
-+rmeoves||removes
-+rountine||routine
-+routins||routines
-+rquest||request
-+runing||running
-+runned||ran
-+runnnig||running
-+runnning||running
-+runtine||runtime
-+sacrifying||sacrificing
-+safly||safely
-+safty||safety
-+satify||satisfy
-+satisifed||satisfied
-+savable||saveable
-+scaleing||scaling
-+scaned||scanned
-+scaning||scanning
-+scarch||search
-+schdule||schedule
-+seach||search
-+searchs||searches
-+secion||section
-+secquence||sequence
-+secund||second
-+segement||segment
-+seleted||selected
-+semaphone||semaphore
-+senario||scenario
-+senarios||scenarios
-+sentivite||sensitive
-+separatly||separately
-+sepcify||specify
-+seperated||separated
-+seperately||separately
-+seperate||separate
-+seperatly||separately
-+seperator||separator
-+sepperate||separate
-+seqeunce||sequence
-+seqeuncer||sequencer
-+seqeuencer||sequencer
-+sequece||sequence
-+sequemce||sequence
-+sequencial||sequential
-+serivce||service
-+serveral||several
-+servive||service
-+sesion||session
-+setts||sets
-+settting||setting
-+shapshot||snapshot
-+shoft||shift
-+shotdown||shutdown
-+shoud||should
-+shouldnt||shouldn't
-+shoule||should
-+shrinked||shrunk
-+siginificantly||significantly
-+signabl||signal
-+significanly||significantly
-+similary||similarly
-+similiar||similar
-+simlar||similar
-+simliar||similar
-+simpified||simplified
-+simultaneusly||simultaneously
-+simultanous||simultaneous
-+singaled||signaled
-+singal||signal
-+singed||signed
-+slect||select
-+sleeped||slept
-+sliped||slipped
-+softwade||software
-+softwares||software
-+soley||solely
-+soluation||solution
-+souce||source
-+speach||speech
-+specfic||specific
-+specfication||specification
-+specfield||specified
-+speciefied||specified
-+specifc||specific
-+specifed||specified
-+specificatin||specification
-+specificaton||specification
-+specificed||specified
-+specifing||specifying
-+specifiy||specify
-+specifiying||specifying
-+speficied||specified
-+speicify||specify
-+speling||spelling
-+spinlcok||spinlock
-+spinock||spinlock
-+splitted||split
-+spreaded||spread
-+spurrious||spurious
-+sructure||structure
-+stablilization||stabilization
-+staically||statically
-+staion||station
-+standardss||standards
-+standartization||standardization
-+standart||standard
-+standy||standby
-+stardard||standard
-+staticly||statically
-+statisitcs||statistics
-+statuss||status
-+stoped||stopped
-+stoping||stopping
-+stoppped||stopped
-+straming||streaming
-+struc||struct
-+structres||structures
-+stuct||struct
-+strucuture||structure
-+stucture||structure
-+sturcture||structure
-+subdirectoires||subdirectories
-+suble||subtle
-+substract||subtract
-+submited||submitted
-+submition||submission
-+succeded||succeeded
-+suceed||succeed
-+succesfuly||successfully
-+succesfully||successfully
-+succesful||successful
-+successed||succeeded
-+successfull||successful
-+successfuly||successfully
-+sucessfully||successfully
-+sucessful||successful
-+sucess||success
-+superflous||superfluous
-+superseeded||superseded
-+suplied||supplied
-+suported||supported
-+suport||support
-+supportet||supported
-+suppored||supported
-+supporing||supporting
-+supportin||supporting
-+suppoted||supported
-+suppported||supported
-+suppport||support
-+supprot||support
-+supress||suppress
-+surpressed||suppressed
-+surpresses||suppresses
-+susbsystem||subsystem
-+suspeneded||suspended
-+suspsend||suspend
-+suspicously||suspiciously
-+swaping||swapping
-+switchs||switches
-+swith||switch
-+swithable||switchable
-+swithc||switch
-+swithced||switched
-+swithcing||switching
-+swithed||switched
-+swithing||switching
-+swtich||switch
-+syfs||sysfs
-+symetric||symmetric
-+synax||syntax
-+synchonized||synchronized
-+sychronization||synchronization
-+sychronously||synchronously
-+synchronuously||synchronously
-+syncronize||synchronize
-+syncronized||synchronized
-+syncronizing||synchronizing
-+syncronus||synchronous
-+syste||system
-+sytem||system
-+sythesis||synthesis
-+tagert||target
-+taht||that
-+tained||tainted
-+tarffic||traffic
-+tansmit||transmit
-+targetted||targeted
-+targetting||targeting
-+taskelt||tasklet
-+teh||the
-+temeprature||temperature
-+temorary||temporary
-+temproarily||temporarily
-+temperture||temperature
-+theads||threads
-+therfore||therefore
-+thier||their
-+threds||threads
-+threee||three
-+threshhold||threshold
-+thresold||threshold
-+throtting||throttling
-+throught||through
-+tansition||transition
-+trackling||tracking
-+troughput||throughput
-+trys||tries
-+thses||these
-+tiggers||triggers
-+tiggered||triggered
-+tiggerring||triggering
-+tipically||typically
-+timeing||timing
-+timming||timing
-+timout||timeout
-+tmis||this
-+tolarance||tolerance
-+toogle||toggle
-+torerable||tolerable
-+torlence||tolerance
-+traget||target
-+traking||tracking
-+tramsmitted||transmitted
-+tramsmit||transmit
-+tranasction||transaction
-+tranceiver||transceiver
-+tranfer||transfer
-+tranmission||transmission
-+tranport||transport
-+transcevier||transceiver
-+transciever||transceiver
-+transferd||transferred
-+transfered||transferred
-+transfering||transferring
-+transision||transition
-+transistioned||transitioned
-+transmittd||transmitted
-+transormed||transformed
-+trasaction||transaction
-+trasfer||transfer
-+trasmission||transmission
-+trasmitter||transmitter
-+treshold||threshold
-+trigged||triggered
-+triggerd||triggered
-+trigerred||triggered
-+trigerring||triggering
-+trun||turn
-+tunning||tuning
-+ture||true
-+tyep||type
-+udpate||update
-+updtes||updates
-+uesd||used
-+unknwon||unknown
-+uknown||unknown
-+usccess||success
-+uncommited||uncommitted
-+uncompatible||incompatible
-+uncomressed||uncompressed
-+unconditionaly||unconditionally
-+undeflow||underflow
-+undelying||underlying
-+underun||underrun
-+unecessary||unnecessary
-+unexecpted||unexpected
-+unexepected||unexpected
-+unexpcted||unexpected
-+unexpectd||unexpected
-+unexpeted||unexpected
-+unexpexted||unexpected
-+unfortunatelly||unfortunately
-+unifiy||unify
-+uniterrupted||uninterrupted
-+uninterruptable||uninterruptible
-+unintialized||uninitialized
-+unitialized||uninitialized
-+unkmown||unknown
-+unknonw||unknown
-+unknouwn||unknown
-+unknow||unknown
-+unkown||unknown
-+unamed||unnamed
-+uneeded||unneeded
-+unneded||unneeded
-+unneccecary||unnecessary
-+unneccesary||unnecessary
-+unneccessary||unnecessary
-+unnecesary||unnecessary
-+unneedingly||unnecessarily
-+unnsupported||unsupported
-+unuspported||unsupported
-+unmached||unmatched
-+unprecise||imprecise
-+unpriviledged||unprivileged
-+unpriviliged||unprivileged
-+unregester||unregister
-+unresgister||unregister
-+unrgesiter||unregister
-+unsinged||unsigned
-+unstabel||unstable
-+unsolicted||unsolicited
-+unsolicitied||unsolicited
-+unsuccessfull||unsuccessful
-+unsuported||unsupported
-+untill||until
-+ununsed||unused
-+unuseful||useless
-+unvalid||invalid
-+upate||update
-+upsupported||unsupported
-+upto||up to
-+useable||usable
-+usefule||useful
-+usefull||useful
-+usege||usage
-+usera||users
-+usualy||usually
-+usupported||unsupported
-+utilites||utilities
-+utillities||utilities
-+utilties||utilities
-+utiltity||utility
-+utitity||utility
-+utitlty||utility
-+vaid||valid
-+vaild||valid
-+validationg||validating
-+valide||valid
-+variantions||variations
-+varible||variable
-+varient||variant
-+vaule||value
-+verbse||verbose
-+veify||verify
-+verfication||verification
-+veriosn||version
-+versoin||version
-+verisons||versions
-+verison||version
-+veritical||vertical
-+verson||version
-+vicefersa||vice-versa
-+virtal||virtual
-+virtaul||virtual
-+virtiual||virtual
-+visiters||visitors
-+vitual||virtual
-+vunerable||vulnerable
-+wakeus||wakeups
-+was't||wasn't
-+wathdog||watchdog
-+wating||waiting
-+wiat||wait
-+wether||whether
-+whataver||whatever
-+whcih||which
-+whenver||whenever
-+wheter||whether
-+whe||when
-+wierd||weird
-+wihout||without
-+wiil||will
-+wirte||write
-+withing||within
-+wnat||want
-+wont||won't
-+workarould||workaround
-+writeing||writing
-+writting||writing
-+wtih||with
-+zombe||zombie
-+zomebie||zombie
+Thanks.  Hm, so for example a valid non-zero-sized BAR but the 
+pci_iomap() hitting ENOMEM.  Good point, that could be annoying if the 
+BAR was otherwise unused.
 
--- 
-2.53.0
+> I'd suggest setup should be a void function that generates pci_warn()
+> on conflict or iomap error, but doesn't block the device.  Each usage
+> path (including mmap that gets removed in the next path) still needs to
+> validate the mapping is present for the given BAR and fail the call
+> path otherwise.
+
+I'd hoped to be able to assume resources have been successfully 
+requested, since we've at least one example of forgetting to do it 
+explicitly (DMABUF export), but no worries.  I'll re-add explicit checks 
+to usage paths (incl. for DMABUF export) to make failures consistent 
+with current behaviour.
+
+> There's also a subtle range check added in the virtio driver in the
+> next patch, is that fixing a bug or paranoia?  Do we need a helper that
+> does a range test and barmap test?  Thanks,
+
+That'll be nicer, I agree.  Given the point above, two tiny helpers make 
+sense for the two "uses":
+
+- Was resource X requested successfully?   (For DMABUF, mmap, etc.)
+- Get X's iomapped base address.  (For rdwr, virtio, nvgpu-grace.)
+
+(The motivation for the range check was just robustness, not a specific 
+bug.  It's cheap to sanity-check and Pretty Bad if the index is ever out 
+of range.)
+
+Reposting... Thanks,
+
+
+Matt
 
