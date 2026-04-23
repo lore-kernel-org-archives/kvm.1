@@ -1,121 +1,130 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE9C3AA4FA;
-	Thu, 23 Apr 2026 18:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448FB3242B5;
+	Thu, 23 Apr 2026 18:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776968759; cv=none; b=U2vwBSRbYH6ozhOn93eLSlREzwf0/UUYIj+McHZxYSLNtBh1fpcI7DW1E16pLKgmrKiXkko9zHU86t07AxzifVqUsrzggnhqHDHyO+rqAgx5bgpQU0MGw5/9fr0vrSgniYvAKIQU68ZdezPvib9WlPbA3cOcKeKRT+vR0YJefFE=
+	t=1776968835; cv=none; b=UDOOL3dY+5b3U3CAdcPE6X0cq3jDFTLf2f5qz9TI6TidxV1Bb+aX75aaQxwxu2INwHGoUfLHB1hyN2AcnKMRV4YCg/WkCr1WJhtc0+QfCbQI1OxzxPodHnxhfqHJs+HeL/KxV3zG3qYzjgEAZ5uc9jfySnr8TgoCF7OHfmRxB2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776968759; c=relaxed/simple;
-	bh=MWaaLFpeeq2xR+LuBLxRO6gRPD9oLC6FHTF40PcVw54=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HAE7dLx2xTxuiOPHCWx9KAuoycsYvYF/YCKnmgAiuvy6bHbgUjW7PlgD5VmK0zLvQk+xO+raN/cDFM7now3sGh5pTfjIh4P9kOpnCYIUi8ZO+UPII4O/yDiyu7pCXz69HRhk4Cqgyy0aZfhiKfJCz3fMg6PT8dKlK9TOg7xG1OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=JWriJUtS; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1776968835; c=relaxed/simple;
+	bh=8Z017pm09Fdrc/A+yN7TpkFKEmDdbW2HLSHnsJBUjxk=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=BKtb2WbK3YCq2Cl1Lmfx+a+IuCxGjzSpb7oWeFEXO45UQG+pXzyjn8dbd3mvEvV5m6tKOYVup+GWXjG13t0uJmVo1tI0v0EuzX19fwnRf9XAcx7MSFDGXL0Z1fi5Kbk4c/Jkj1UiuNrmM+geK7vDamK9eQkbRfIOgaqCDYJsWgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=YhhbPw+i; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="JWriJUtS"
-Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NH8rSA2691363;
-	Thu, 23 Apr 2026 11:25:43 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=qNvhzshz8buvBXe3D62FiCWxbKMg+r/IzqcfUklWZZI=; b=JWriJUtSYhRI
-	4sCVTTHNUZikVtRmVGYxClueIfqRNLBaQ4P+8BqVXQ+Vc2K+jcyza6TGJdw8BCs4
-	xJssA1l9uG1VQL+WOJ4LexuBzR183VGvi5XO88QO8p+0Tq+vwmyz1AmOm7n01oJX
-	Sf+CejS2VTL0c8tXUlsLelm57SF3L1CEQcqkm0zkD7j3BOJJZV/NbRIog19B5ma3
-	c9onP5c0gQ6ZqQmGu8GuPPJJJW+RPRMz3puKNG/VtFGMO4/t1YcC5wbh4OXdnJ7v
-	Nr/jCStwpyDTsMbrom+hbNzBVXsLHKgiW9w0SiT74+Zs74KhJTX0jyTIx8xijaC8
-	gUcVn0MMSA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dpepdpn0x-4
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 23 Apr 2026 11:25:43 -0700 (PDT)
-Received: from localhost (2620:10d:c085:108::150d) by mail.thefacebook.com
- (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Thu, 23 Apr
- 2026 18:25:42 +0000
-From: Matt Evans <mattev@meta.com>
-To: Alex Williamson <alex@shazbot.org>, Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
-        Alistair
- Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Kees Cook
-	<kees@kernel.org>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Yishai Hadas
-	<yishaih@nvidia.com>
-CC: Alexey Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>,
-        Peter Xu <peterx@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Zhi Wang <zhiw@nvidia.com>, <kvm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <virtualization@lists.linux.dev>
-Subject: [PATCH v2 3/3] vfio/pci: Check BAR resources before exporting a DMABUF
-Date: Thu, 23 Apr 2026 11:25:09 -0700
-Message-ID: <20260423182517.2286030-4-mattev@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260423182517.2286030-1-mattev@meta.com>
-References: <20260423182517.2286030-1-mattev@meta.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="YhhbPw+i"
+Received: from smtpclient.apple ([192.19.161.250])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 63NHskJ61332001
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 23 Apr 2026 10:54:47 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 63NHskJ61332001
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026032601; t=1776966888;
+	bh=L3LQ4TVAekCMBbaowZBtQV00ASOQDnEIocQxeIni4q0=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=YhhbPw+iIHI6ICRIEt8U5G1K57xfNOlf6wbbn0T8Rnt1LbxMNwLErhYAjRcm6mHeZ
+	 1t6PoN4m6SyeDoIPpEjRTpB0/3fZ9x6xJ0bqxakzcTLd4/l46eUS88bpbZSxH/jRFC
+	 zIW+3ev3+dN1GZqmOfkL3kCR6duSUgrcR8YxaY6Outp3k/Op5Q+Vk2IC+TLP3tC6GK
+	 82920YG1ktZERXdsRgP5oJ78rxeghXubnw537NTIVRD7UyqPjrPDMxtixcAiVsIuhN
+	 JxpHBdNpntdmEDCjrtc2pvmXtFn9JroQXeMQLahfCtyIKyEpGtPVsCZr/HHvaoDYte
+	 LjeLnmWzWMpZA==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: DBnoXmXyPEWZwTE6BsYpZQC0OyYVgKN_
-X-Authority-Analysis: v=2.4 cv=Ov9/DS/t c=1 sm=1 tr=0 ts=69ea6427 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=GbPsI2Ihf5RTnMjR_gZv:22 a=VabnemYjAAAA:8 a=Cv6RvFvLZYHFA_XSKfkA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: DBnoXmXyPEWZwTE6BsYpZQC0OyYVgKN_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDE3OSBTYWx0ZWRfXws+yqIy52B/s
- toydUSzGVhd/VMlBo1hHPKnuv9QS0zBbMLpvXpKXZ/tUWykUW1N0f99zFm40eBNJR8VjSt4wUGM
- uCygZr8WJ0SZozFfsJqVCiFYbS0Q8dJoBInHFLRQf1ikFSYz0RLxIO67HJN/989fQLKCACZv/Us
- Ap+AuSGWc2JOP3TrdKmLsUqP2IX0BMTZ+f47m77Mk0/h2lpTTzFR0jGBcZ0FgPb+gV8N+82wgjg
- oDcn3WWb9iSJwab0zYA/6rdFrgw+gAI8t7/YC1YZkOmoVFRn8gV6lQp5z8eVZQY5n73PNUIaFHP
- owuWWQAAeoKvN4XO2oP+FBYmxt2Qg5LsLPUH0LHmmhKrZwBD7ylxuBDEotyhdsveaPXD2hiyLes
- QDYvxJGh84SHA2H0nZthEjdCh135gZcF5dosr0vS0iuGUWUfw4vsY/dTXsrs9siUIO8Wq3Mh8Xd
- AX0e6sbBM/ZjPR+zORg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86
+ core
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <20260423155936.843498069@infradead.org>
+Date: Thu, 23 Apr 2026 10:54:31 -0700
+Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
+        Sean Christopherson <seanjc@google.com>,
+        Jim Mattson <jmattson@google.com>,
+        Binbin Wu <binbin.wu@linux.intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+        Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+        Paolo Bonzini <bonzini@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F54F290F-BB2A-455D-A5EC-7D4BA27DC0DD@zytor.com>
+References: <20260423155611.216805954@infradead.org>
+ <20260423155936.843498069@infradead.org>
+To: Peter Zijlstra <peterz@infradead.org>
+X-Mailer: Apple Mail (2.3864.500.181)
 
-A DMABUF exports access to BAR resources and, although they are
-requested at startup time, we need to ensure they really were reserved
-before exporting.  Otherwise, it's possible to access unreserved
-resources through the export.
+Few nits below, but
 
-Add a check to the DMABUF-creation path.
+Reviewed-by: Xin Li <xin@zytor.com <mailto:xin@zytor.com>>
 
-Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-Signed-off-by: Matt Evans <mattev@meta.com>
----
- drivers/vfio/pci/vfio_pci_dmabuf.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index f87fd32e4a01..9139198ae270 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -244,9 +244,11 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 		return -EINVAL;
- 
- 	/*
--	 * For PCI the region_index is the BAR number like everything else.
-+	 * For PCI the region_index is the BAR number like everything
-+	 * else.  Check that PCI resources have been claimed for it.
- 	 */
--	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
-+	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
-+	    vfio_pci_core_check_bar_rsrc(vdev, get_dma_buf.region_index) != 0)
- 		return -ENODEV;
- 
- 	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
--- 
-2.47.3
+> On Apr 23, 2026, at 8:56=E2=80=AFAM, Peter Zijlstra =
+<peterz@infradead.org> wrote:
+>=20
+> Move the VMX interrupt dispatch magic into the x86 core code. This
+> isolates KVM from the FRED/IDT decisions and reduces the amount of
+> EXPORT_SYMBOL_FOR_KVM().
+>=20
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
+> --- /dev/null
+> +++ b/arch/x86/entry/common.c
+> @@ -0,0 +1,48 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#include <linux/entry-common.h>
+> +#include <linux/kvm_types.h>
+> +#include <asm/fred.h>
+> +#include <asm/desc.h>
 
+Swap the two header inclusion order?
+
+> +
+> +#if IS_ENABLED(CONFIG_KVM_INTEL)
+> +/*
+> + * On VMX, NMIs and IRQs (as configured by KVM) are acknowledge by =
+hardware as
+> + * part of the VM-Exit, i.e. the event itself is consumed as part the =
+VM-Exit.
+> + * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs =
+and IRQs
+> + * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ =
+VM-Exit is
+> + * purely a signal that an NMI/IRQ is pending, i.e. the event that =
+triggered
+> + * the VM-Exit is held pending until it's unblocked in the host.
+> + */
+> +noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int =
+vector)
+
+Is u32 better than unsigned int as is close to hardware definition?
+
+Currently, the event type and event vector are defined as 4-bit and =
+8-bit
+fields, respectively; and they can be readily expanded to 8 and 16 bits =
+by
+utilizing adjacent reserved bits.
+
+> +{
+> + if (event_type =3D=3D EVENT_TYPE_EXTINT) {
+> +#ifdef CONFIG_X86_64
+> + /*
+> + * Use FRED dispatch, even when running IDT. The dispatch
+> + * tables are kept in sync between FRED and IDT, and the FRED
+> + * dispatch works well with CFI.
+> + */
+> + fred_entry_from_kvm(event_type, vector);
+
+Then should we rename the =E2=80=9Cfred_=E2=80=9D prefix, say =
+=E2=80=9Cx86_64_"?
+
+Sorry naming is hard to me ;)=
