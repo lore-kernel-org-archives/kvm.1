@@ -1,95 +1,63 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396B737DEB5;
-	Thu, 23 Apr 2026 16:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2D5383C9D;
+	Thu, 23 Apr 2026 16:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776961010; cv=none; b=fKUDlHCRd1J/8v6GuvBA7B2ZWLiNdNDuMGCrfcX3OPPWHrvUC5Sl97IWb7bXN2Mqpl/d3RIC+pQwqSEW6l7ND+51diUNzD8qEHIBXa96dABrZRGTwwo6XLGsp/W/Ilw4AYLSQKKhptOPBI7Q0Hiu4GvTGp6qO4BlO6MD7eSZHjA=
+	t=1776961129; cv=none; b=aaiqjg9FKAWTd0JqQwAcU8wo8pP2LErYxTcg4hShl/0YQhP/38kMKZZuQrl1oP4dqHhsV2kvqZ/ikgonUVYPG9CWdeqUO7dtzOiLmQcOzdTQb0Pc/hxSPsgLB9WEmzg1bmfmIObItXE5wTE8F2+xaF4rGDmTgDHM1hmYknxVkYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776961010; c=relaxed/simple;
-	bh=3TuCer8dMjOuWTldjw+dyH7Is7P3SFDrvfxQ/Qjus2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m/9+Kn92nKnbCtemWPMWDLPrfg6gYDAvlTfMYuLIqF+E2An5y0lQtDr2vAiCal1eQcviYrB+BupVn2y1VHY/1F0u47Rwaxu6r/Ril1i1YQj/NY3X2r/NxoWg+w469KGT+bP4Lxn8yF8MvDHSmFiuS7a6vwbT9PX2BJm7wGmKenc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UqatAL6M; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1776961129; c=relaxed/simple;
+	bh=ry9nza6CM990KkgnFuK65dchTClFVOAsxrRLaS4fM9M=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Ocm0mO+lMas0+JnAC2wUiH9MSsSvHLCzbgwhtOi2h8dUkkVz8I+eF0FlY8cxfvY1huqjZ1wfNoH9b/0WSz95J82D3lWbjB47AT1X6hJj/p+ZwFTDsMLKFAxejCdrey9mZnDZt9/VCNzsyOQWqLVnB05O5hNNLoXjGlEThpBbiG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qV0JmptZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UqatAL6M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KEbBMy/7Z6YoPH/c4t4nNAeYgkjzdgqfs3JRrO4cFrw=; b=UqatAL6MwZYbiHnNEqVD2AO9Ys
-	3+JHjMR78VFxwl5eKaK2psl7aVuKlUglykZsQ1BIw8So0WRNPT0SQZce5zeszTqYnWWhUE7sCS5W+
-	TwdF1dcv89fUT6Eu1UAfptFy8D7Lte1IvgRl8vsiJm4HP2HezUGaavknRqM262CKZkGz4LjpLuaf4
-	1MxtSPeyF44aHNCTsbjzqS2sLbSYpvtmm/apVuAy2uP0IkgSGbpiwEtPMhuyaximYIT5MiPAY1RCe
-	eCMx51HxCDUTnQZ0IVVbbq9Cu0ra9ofu1n82ERBCQw0qvZnu8bJFMOMy9gSHiYH/O2wabs9xSIeG8
-	xqSA3Z6A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFwjJ-0000000DPQa-45Uo;
-	Thu, 23 Apr 2026 16:16:42 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 46DB13008E2; Thu, 23 Apr 2026 18:16:41 +0200 (CEST)
-Date: Thu, 23 Apr 2026 18:16:41 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Stephane Eranian <eranian@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: Re: [PATCH v2 0/4] perf/x86: Don't write PEBS_ENABLED on KVM
- transitions
-Message-ID: <20260423161641.GA641209@noisy.programming.kicks-ass.net>
-References: <20260423150340.463896-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qV0JmptZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815E0C2BCAF;
+	Thu, 23 Apr 2026 16:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776961129;
+	bh=ry9nza6CM990KkgnFuK65dchTClFVOAsxrRLaS4fM9M=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=qV0JmptZhzw+OgxdWu4TLKY9dwh+jDMGjpWZ4O5EMFHqGGzaks+6pYYBAKzTN28VH
+	 TsBfuzqUMsGYHGltplfYZQnMD2jwN+nvDfJqhC/aqHbDeEsQByz5G/7zHsVrrDjhlX
+	 GybZDsZXGncv8aXTTuXZwoHrvUj6tJoRzKco+DAZ3MTFxoOMR923izvaLRg1vwWPSi
+	 dwpS4NvvfHMu/UXKjO5GlLD/qzYQNm8ZZu/rZ7S1+NLHa5oqX00tLhlV5Z5ADHTEmJ
+	 HLyRpRcfk/rn+o4LirIHWXleTvVxp5rOTPRtUaW+hkcbBwH7O0sAzJLlotF9IEyZTi
+	 BzTixtGFWLbnQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FFD438111CE;
+	Thu, 23 Apr 2026 16:18:12 +0000 (UTC)
+Subject: Re: [GIT PULL] VFIO updates for v7.1-rc1 (part 2)
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260422152018.3fa67154@shazbot.org>
+References: <20260422152018.3fa67154@shazbot.org>
+X-PR-Tracked-List-Id: <kvm.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260422152018.3fa67154@shazbot.org>
+X-PR-Tracked-Remote: https://github.com/awilliam/linux-vfio.git tags/vfio-v7.1-rc1-pt2
+X-PR-Tracked-Commit-Id: 30471982cd667972ba93ce894765d4b8544958e6
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: df7bf834a135e1f5bcbeecbec07605fa5d92f0bd
+Message-Id: <177696109093.655676.8325417777245613703.pr-tracker-bot@kernel.org>
+Date: Thu, 23 Apr 2026 16:18:10 +0000
+To: Alex Williamson <alex@shazbot.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, alex@shazbot.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260423150340.463896-1-seanjc@google.com>
 
-On Thu, Apr 23, 2026 at 08:03:36AM -0700, Sean Christopherson wrote:
-> Testing this against our "PEBS_ENABLED is stuck" reproducer is (still) a work
-> in-progress (largely because the "reproducer" is currently "throw the kernel in
-> a big test pool"), i.e. I don't know if this actually resolves the problems we
-> are seeing.  But even if it doesn't fully resolve our woes, it seems like a
-> no-brainer improvement, and if we're missing something with respect to "stuck"
-> PEBS_ENABLED, it'd be nice to get feedback/input asap.
-> 
-> Note, if the throttling theory is correct (which is looking unlikely at the
-> moment), then there are likely more fixes that need to be done, e.g. for CPUs
-> without isolation, and/or if PERF_GLOBAL_CTRL can be modified from NMI context
-> too.
+The pull request you sent on Wed, 22 Apr 2026 15:20:18 -0600:
 
-Throttle does: pmu->stop() := x86_pmu_stop() -> intel_pmu_disable_event()
+> https://github.com/awilliam/linux-vfio.git tags/vfio-v7.1-rc1-pt2
 
-Which in turn should:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/df7bf834a135e1f5bcbeecbec07605fa5d92f0bd
 
-  x86_pmu_disable_event()
-    wrmsrq(config_base, config & ~EN);
-  x86_pmu_pebs_disable() := intel_pmu_pebs_disable()
-    wrmsr(PEBS_ENABLE, pebs_enabled & ~(1<<idx));
+Thank you!
 
-So that's just the counter EN bit and PEBS_ENABLED cleared. However, if
-this is from PMI, then the PMI handler should also update GLOBAL_CTRL --
-provided it wasn't 0.
-
-See intel_pmu_handle_irq():
-
-  if (pmu_enabled)
-  	__intel_pmu_enable_all()
-	  wrmsrq(GLOBAL_CTRL, intel_ctrl);
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
