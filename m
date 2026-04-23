@@ -1,140 +1,118 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691E03081D6;
-	Thu, 23 Apr 2026 12:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBDE3F0A98
+	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 13:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776947973; cv=none; b=F6RxC7FLFF1hb8V+uLZiLSElikTfkJnRDFXxNNm3r4mYUmVh46LW7bCxxOMFvfmTqxwQ1D0XWyHORXiD1zWkA3pPKH+2ExZqR2eNI5WIyERdIbux01eOA+QU9M23tY0AFhBF//MkQEx/7rcXUCgCG0F3pWxKYD6QoCRBwH5mCbw=
+	t=1776949983; cv=none; b=T+xF21P+FP+CZ34QhRVtowiiAJfqarAAE9Ihk3IjNweyNH6iAQqmhKTBDLMZRTwe0G1Ak5h6GIi6ihNzQVlVxdHiBL50IF66wgoab9cxsO6sxs4txuotXXcIa4r8AxugdlXIa4tvMI1qMLWiB7Lv1QSUBYIRLLPmR7bSFTZ8CkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776947973; c=relaxed/simple;
-	bh=ZHh12tIT7R0Hs5jBgYIxknN/SdiVfn9XiNby7R6fb8A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAntuArMSHtpzw995IVwEl9cKTsBXEqe2ryjSsbdfroROlmBz+9zOUytZNnC2rpWvAsxPaLvMzYCk2ZgUJZMl4FpizSxzb5eHKIlfmKnMnZUHUHMP61BP5M5Byhc/Icj2/a6sglG+2MWITlAFJz5zh0CWWk3zEhmsi5z8odz3OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DfvqlNDq; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1776949983; c=relaxed/simple;
+	bh=OFPsVUKTkkJPaSLrVoEdb9zPLdAMuapXjHJIMHyQpqI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=opthv4JlJKbnwolYYikJpJqSSTRXWjoYv7/uqHohni3pGIlfNuW72SM8d1NBoebmeNoszeuS4iSs1IeSJFuIKjNZHJvenzziGsS4W2Di+EfhIwmyp+5ec+/SZudv/YLrCmO/9YWo4K7HU6J7DafQyBPEr3676VhdvM985I5kmTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ph4tBiup; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DfvqlNDq"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N6ooHR3229044;
-	Thu, 23 Apr 2026 12:39:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=MJlZtWw/4gdNS13g9
-	bA4qysynpC7Oxq4YaW6tOTdmY4=; b=DfvqlNDqfiaCQcnXMPImWly2pL9DPULLH
-	16Z2Ct8E942rtk0yqCT7q2hnN71vhUdXSCYM4hOGRoKTaBpT6DGvVV8c+C//KPqw
-	PEyBS3IoSpykyVFS909aSzJz0MPV7Tv/cEZ1w7OceA1+3Qa+qwWtdJnR6kelaNMf
-	OywEeTuo30ADn+jGWy8vj3d2jyoq95W8GLyMm+QtiTHOfK6h5w1EVVgXJSrFLNDq
-	jASxulaX2Yp70YJuI9mHqG1MoaV9GYrnzhqfP+eyHMISxkuFOU/Jzizz8x1AaB3Y
-	dczAw7HyGbNbFbnoh3tKHolIPjFKvgWSNRJauu7yCjUxIMUB2ne7w==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu28m8w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 12:39:25 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NCZRKY003353;
-	Thu, 23 Apr 2026 12:39:24 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyek3p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 12:39:24 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NCdKkD50135316
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Apr 2026 12:39:20 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9E5B2004F;
-	Thu, 23 Apr 2026 12:39:20 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FD002005A;
-	Thu, 23 Apr 2026 12:39:20 +0000 (GMT)
-Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Apr 2026 12:39:20 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
-        borntraeger@linux.ibm.com, hca@linux.ibm.com
-Subject: [PATCH 2/3] kvm: s390: Fix LPSW/E early exception bear behavior
-Date: Thu, 23 Apr 2026 12:36:03 +0000
-Message-ID: <20260423123902.14663-3-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260423123902.14663-1-frankja@linux.ibm.com>
-References: <20260423123902.14663-1-frankja@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ph4tBiup"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c798ace3d02so2283360a12.3
+        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 06:13:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776949981; x=1777554781; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9gKFsUpIcJrOZ7JV012cOGqmLlLh75Tdbz6kdKZGcdk=;
+        b=ph4tBiupjuLp6t/sTgxD1XKl1wEf5iYcYhvGnRrqD4t1vCR6kfvWJKwW8NFxZKOg5A
+         YWOgnN4RlxtFofD33JhSbYF+ttQQlRuC0XMpZF5aLlUIpjpG8cgAvch59hv0of20jvIU
+         lGCdY3mei3SBG69+W5naU3Spr8cC0ThfxUh5xA7NXp6jiyeWQOHVE/rWzePhgoi+wQXR
+         3THDivfKBAAirFeT+zGeHqmemtiLtP2IfFlQ8ra033+J9fdp2viVLgsXs2YyzZqQBK6x
+         oKacUrNjZJ86LwU2h6Ojh+7NfbOmriJzJ6KbnhXs04VSHsdDCtAu+IUWpGAzMajY5iAi
+         HTZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776949981; x=1777554781;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9gKFsUpIcJrOZ7JV012cOGqmLlLh75Tdbz6kdKZGcdk=;
+        b=PJOOXSx8ppOqeXgaBVTvVLL6Rssc32fFA2L0UpQBCBjDOM2cUzzNFRzUpN8apFi/cs
+         Ypas2XGPMCDtRgvWti6ToATxMCGM3jRet1RDwYqefHGvDcXT6fqtNAahFnyxMR4KtobN
+         cX0nRvJb7MnSq8Sz1WDnvcm3FVZtziIsk1qv/Wyj9U4ErEsOPdR89Sz42r1pop/d/Ri5
+         Uz05XH1R43TlE129Q9eX0o5LWvpQUqniKTqSJjW9PJIoErBNPEAOih3ve98TS3suHeOb
+         KoHNnYZ35mGPNxwiAt7qfiWe9hHpjcwiN4qH3oCJqVI3HDKWPLfHkmYC7zbIuJldGa6A
+         vVjw==
+X-Forwarded-Encrypted: i=1; AFNElJ8dHg3y6AyCqEiPNcCzADs71iiWXJSD9aNx20HKY6ouaTdm33NwHOM+uxdgV5UXY7XhwQw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfMjUjfSFglAS1mC1HxXs6juOHAK7a9uphVdtJkEiZEbBEFaB5
+	f8jRyIwbpS5dex1Gt++ZtV+8WHFpQOG+XqEFxb/aVHcJb6CwWzTzw2cE2YmLCmyDOit+omnW74f
+	NXFQ4IA==
+X-Received: from pfbiv33.prod.google.com ([2002:a05:6a00:66e1:b0:82f:1051:621])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a883:b0:829:6f7d:3093
+ with SMTP id d2e1a72fcca58-82f8c9ece1emr28281470b3a.48.1776949980819; Thu, 23
+ Apr 2026 06:13:00 -0700 (PDT)
+Date: Thu, 23 Apr 2026 06:12:59 -0700
+In-Reply-To: <20260422-vmscape-bhb-v11-8-b18e0cf32af4@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _6Z3Sup1UrKEdmcLm6Z5Sa-wWUY0WQpJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEyMiBTYWx0ZWRfX4EHTVB+VIMU5
- qLF3QnV34oQf0iGowjUN7HSECmoQkjVlaFyDOooednjyLVCrP1RHtQe1o9v23EVH+Sc3hPQ5RsW
- XpqW1Z8p1K7nMnJQjr80jHU96z1aO37HhPmF1klCI5lKPrwvL+BuejhsohPn0otA0AlWBql3IjH
- xENbbch0QyOvV0T01ANmRFvaMPj+ThvACSsNmHAgCyBoKCG4Z2jpaST3lKvw3z32RUjapVZpp7u
- 7sO7iwY3OnpSX969dB5jAa4V1UT+3QC7EAga2oeTLPacz8AqH7/mcaLquNTkPPImvRpkYo6GYAO
- PXhEwJ3088Ounkc58fW3Fl1ykyDIuRYnTIIZTefmCXIWUl89Ych37vUqQ5GQsYN3+o48RuFcjp6
- 2TXlvnKgU5PvCtrThJrg50kJ5S1AFCZt0gyB4Rj1kJr+Kc1s6Tm9C0FAHigHizGQf7n3+pkOk0G
- HBkFf0KTRFna2XwzO1Q==
-X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69ea12fd cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=FGL5-UHicGFpkBeQ7iUA:9
-X-Proofpoint-ORIG-GUID: _6Z3Sup1UrKEdmcLm6Z5Sa-wWUY0WQpJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604230122
+Mime-Version: 1.0
+References: <20260422-vmscape-bhb-v11-0-b18e0cf32af4@linux.intel.com> <20260422-vmscape-bhb-v11-8-b18e0cf32af4@linux.intel.com>
+Message-ID: <aeoa2yM2gq8Llype@google.com>
+Subject: Re: [PATCH v11 08/12] kvm: Define EXPORT_STATIC_CALL_FOR_KVM()
+From: Sean Christopherson <seanjc@google.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, 
+	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	David Laight <david.laight.linux@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>, 
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-When loading a PSW a lot of specification exceptions are recognized
-after the PSW has been loaded. In these cases the load PSW(E) succeeds
-but the loaded PSW was invalid. Since the load completed we need to
-set the bear.
+Uber nit (don't bother with a new version), please capitalize KVM:
 
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Fixes: 1653545abc68 ("KVM: s390: Fix lpsw/e breaking event handling")
----
- arch/s390/kvm/priv.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On Wed, Apr 22, 2026, Pawan Gupta wrote:
+> EXPORT_SYMBOL_FOR_KVM() exists to export symbols to KVM modules. Static
+> calls need the same treatment when the core kernel defines a static_call
+> that KVM needs access to (e.g. from a VM-exit path).
+> 
+> Define EXPORT_STATIC_CALL_FOR_KVM() as the static_call analogue of
+> EXPORT_SYMBOL_FOR_KVM(). The same three-way logic applies:
+> 
+>   - KVM_SUB_MODULES defined: export to "kvm," plus all sub-modules
+>   - KVM=m, no sub-modules: export to "kvm" only
+>   - KVM built-in: no export needed (noop)
+> 
+>   As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override both
+>   macros (e.g. to suppress the export when kvm.ko itself will not be
+>   built despite CONFIG_KVM=m). Add the x86 no-op overrides in
+>   arch/x86/include/asm/kvm_types.h for that case. To keep the pair in
+>   sync, EXPORT_STATIC_CALL_FOR_KVM() is defined inside the
+>   EXPORT_SYMBOL_FOR_KVM #ifndef block; an arch that defines
+>   EXPORT_SYMBOL_FOR_KVM must also define EXPORT_STATIC_CALL_FOR_KVM or the
+>   build will fail with a compile-time error.
+> 
+> As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override
+> EXPORT_STATIC_CALL_FOR_KVM definition (e.g. to suppress the export when
+> kvm.ko itself will not be built despite CONFIG_KVM=m). Add the x86 no-op
+> override in arch/x86/include/asm/kvm_types.h for that case.
+> 
+> Architectures must also define EXPORT_STATIC_CALL_FOR_KVM when they define
+> EXPORT_SYMBOL_FOR_KVM.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> ---
 
-diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
-index cc0553da14cb..56e63679f9d1 100644
---- a/arch/s390/kvm/priv.c
-+++ b/arch/s390/kvm/priv.c
-@@ -736,9 +736,11 @@ int kvm_s390_handle_lpsw(struct kvm_vcpu *vcpu)
- 	gpsw->mask = (new_psw.mask & ~PSW32_MASK_BASE) << 32;
- 	gpsw->mask |= new_psw.addr & PSW32_ADDR_AMODE;
- 	gpsw->addr = new_psw.addr & ~PSW32_ADDR_AMODE;
-+	vcpu->arch.sie_block->gbea = iaddr;
-+
- 	if (!is_valid_psw(gpsw))
- 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
--	vcpu->arch.sie_block->gbea = iaddr;
-+
- 	return 0;
- }
- 
-@@ -762,9 +764,11 @@ static int handle_lpswe(struct kvm_vcpu *vcpu)
- 	if (rc)
- 		return kvm_s390_inject_prog_cond(vcpu, rc);
- 	vcpu->arch.sie_block->gpsw = new_psw;
-+	vcpu->arch.sie_block->gbea = iaddr;
-+
- 	if (!is_valid_psw(&vcpu->arch.sie_block->gpsw))
- 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
--	vcpu->arch.sie_block->gbea = iaddr;
-+
- 	return 0;
- }
- 
--- 
-2.51.0
-
+Acked-by: Sean Christopherson <seanjc@google.com>
