@@ -1,138 +1,185 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594CA389458;
-	Thu, 23 Apr 2026 17:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2482738C2DE;
+	Thu, 23 Apr 2026 17:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776963630; cv=none; b=tyxSd2rDLqqSt5BR6JNQzVgitTtmOOv54R44qfEg33umjFL2UKA/EYGggvw3i8wy9sfr07kwLdYxvLd0uLENdWGXEYe/mL6HRVDOktgeCjDG98acpR4tSxSku6WpDq1RI+SpZGOiBRDNvnBDM05PBAnSFVm87ZP7cuX6VlRG7GQ=
+	t=1776963826; cv=none; b=j1yeA2dRUg7ccjVBuKBg7+S+Ib3QTrK8ZBYt+FIDIKO9aAX+plTtFeR9KxIt4tYF1l4s7IO97ONVjpZQzUwDREOv7zM9tIKYDI0d6y/QDxJblwQwPpU64GB+6+Vb1ItK5hyxMAHnuuwYW8PU2/SL8K9KC9PGiaPOoWxyhK9rWjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776963630; c=relaxed/simple;
-	bh=BIlzZJefjy1vIQjn3xfRlUsz1PH77jv+SclZT4pp1I8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qC9QNY0R6edqbeVydoNIUoExpXkiX4PjNeZ2QsR4caGrL2c7XV5uqGawmNlEGnWAbUWWXb4Gh8b28HOX/4HnU4DthJ2thin/TIjoZyfbcjume6/vnLJPk6B37CvoIYxRDt9IMYOa/P7D3+U2Uex+c4rmxpp73xyg/rB0HLWdkaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P4w7y/gh; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776963826; c=relaxed/simple;
+	bh=JQVWx7RaIDbESE9oPeqlS8yppidlsNm3EhrW2QSV4FU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HyzUT2tnNdkP1Q2OwFWMJZzYjXtwVYMuo4nGkglUPWdGrqrppcYWqhii5o/OJmVrrt5DahzZuGkH3+Y5VJlBSXk+H19fdMB3LKZTTlCzGoZIiB+stXRsfC58dejcduopdBPyCmI3BPwTVicybH7owVzjDbgKMz9YUS/ConigYkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U01BanXf; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P4w7y/gh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U01BanXf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776963629; x=1808499629;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BIlzZJefjy1vIQjn3xfRlUsz1PH77jv+SclZT4pp1I8=;
-  b=P4w7y/gh06TlxfzDLfhzBTw+IYn3Mfghgq4LVnLP0x3UALVfqDAFVYt1
-   OlIz8EdeMe+erA/PrTjxZNtGUTXKiS87SiLwB10uFsf/sRG7u0D0nUojy
-   VZ3wIdpvimzP4hV/6Cyz81iWlYp9ucs4YTVSI/kttQZLhrn0Qk3xo4o2j
-   s/mfCyXJnMqeAYtdgMvIw+Zopx/k5bkMxnPXP17VZpeIyB7WvDpLHvuzM
-   kM3+sjNTVEGF7mZt2+nLCf1x8kwnqnr9PdS5AY7jte5Wmio51I71EBeBh
-   +nOdSQ1XW9dQ5UyfL0z5Y5enN4n8Y648/pkV2/fInam21mOil+RQeIMXJ
-   Q==;
-X-CSE-ConnectionGUID: cxCeR9ZIQNmX752oxR7tLQ==
-X-CSE-MsgGUID: svyMV1lvR+my2JrhI6UDOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="77957154"
+  t=1776963824; x=1808499824;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JQVWx7RaIDbESE9oPeqlS8yppidlsNm3EhrW2QSV4FU=;
+  b=U01BanXf80hkdzWZ1KTty5SW5ZXTa3wO8hhQyi7fUWi0KwtQv3koEi6x
+   JSjdOvGs5Y4PU3J0nvrU9CYodlugUMgYonuKZH8nakDtUE+WqNxKqwx49
+   0SajcwCIWGyiJUAcAyJ3dIB6RZUUH5LsmhFymunjvysH1WLewHZBgrjK4
+   54IAhcsNYfwXClGzzxMSPMFRMOuIX3bkGFRtuhK1qx26imFwULvMeavXB
+   sez59r0NIAElJeW2xlc1dZRyHN3OfhcK5NXrH1cFecTGqeqWWzDC7/clW
+   Cvkza17u0AgCVhS/Z0Ty/1OsXjrr/SXp4J9Vr4Gjj0VlBIkbPADX2d0+E
+   w==;
+X-CSE-ConnectionGUID: IjFzSO80R+q2FyNvMBObLA==
+X-CSE-MsgGUID: pTH1RkVrQICG9SAah2gUgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="88634137"
 X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
-   d="scan'208";a="77957154"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 10:00:27 -0700
-X-CSE-ConnectionGUID: WNOToX61S7ewW+QNIt/7bw==
-X-CSE-MsgGUID: kYdVgoB7SwOizbZxjAeVZw==
+   d="scan'208";a="88634137"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 10:03:43 -0700
+X-CSE-ConnectionGUID: ithzOzeGTPu1MKhvwWn4pQ==
+X-CSE-MsgGUID: yNROL9LKSGe+PXzQHmaUTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
-   d="scan'208";a="256013272"
-Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.108.10]) ([10.125.108.10])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 10:00:25 -0700
-Message-ID: <090435af-fe89-46bf-b8e6-75f41163cab2@intel.com>
-Date: Thu, 23 Apr 2026 10:00:18 -0700
+   d="scan'208";a="256216467"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 23 Apr 2026 10:03:39 -0700
+Date: Fri, 24 Apr 2026 00:41:22 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 10/31] x86/virt/tdx: Add extra memory to TDX Module
+ for Extensions
+Message-ID: <aepLsi/cHnw3Cfgs@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-11-yilun.xu@linux.intel.com>
+ <89bccca9a409e02667278fd83f0b7b9064557dab.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 00/12] VMSCAPE optimization for BHI variant
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
- Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- David Kaplan <david.kaplan@amd.com>, Sean Christopherson
- <seanjc@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- David Laight <david.laight.linux@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>,
- bpf@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260422-vmscape-bhb-v11-0-b18e0cf32af4@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260422-vmscape-bhb-v11-0-b18e0cf32af4@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <89bccca9a409e02667278fd83f0b7b9064557dab.camel@intel.com>
 
-On 4/22/26 23:14, Pawan Gupta wrote:
-> v11:
-> - Use ifdef EXPORT_SYMBOL_FOR_KVM guard for EXPORT_STATIC_CALL_FOR_KVM()
->   definition. It is not practical to define one but not the other. (Sean)
-> - Collected tags.
+On Thu, Apr 23, 2026 at 12:59:55AM +0000, Huang, Kai wrote:
+> On Sat, 2026-03-28 at 00:01 +0800, Xu Yilun wrote:
+> > +static int tdx_ext_mem_add(struct tdx_page_array *ext_mem)
+> > +{
+> > +	struct tdx_module_args args = {
+> > +		.rcx = hpa_list_info_assign_raw(ext_mem),
+> > +	};
+> > +	u64 r;
+> > +
+> > +	tdx_clflush_page_array(ext_mem);
+> > +
+> > +	do {
+> > +		r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
+> > +		cond_resched();
+> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
+> 
+> 
+> Ditto here.  I don't think we should introduce any more cond_resched().
 
-The feedback here seems to be winding down. I'll plan to queue this
-after -rc1 unless something else big comes up.
+Good to me.
+
+> 
+> Btw, I think technically we can reuse the seamcall_ir_resched() you introduced
+> later, albeit in which a local '_args' is used as a copy of the original 'args',
+> but that has no harm for the case where we can just use the 'args' to loop.
+
+No we can't. TDH_EXT_MEM_ADD is designed to use output parameter RCX
+to override/update input parameter RCX, so the caller doesn't have to
+do manual parameter update on retry call. Using seamcall_ir_resched()
+makes each retry use the original RCX, not the updated one.
+
+> 
+> I am wondering whether we can just use that here, or we just get rid of that
+> helper (then open retry by the callers of these SEAMCALL wrappers), since there
+> will be more cases where we need to manually set 'resume=1' in the SEAMCALL
+> input 'args' when retrying TDX_INTERRUPTED_RESUMABLE.
+
+I'd like to know why some SEAMCALLs needs resume flag but others don't.
+If there is chance we don't introduce too much variants for the same thing,
+that's most friendly to OS. And "no resume flag" is my best preference.
+
+For now, I can see only one SEAMCALL with resume flag in mainline,
+tdh_phymem_cache_wb(). I'd rather we treat it as an exception and no
+resume flag any more if possible.
+
+Then we don't have to make all following efforts, they are complex...
+
+> 
+> Unless you have good idea to unify them all?
+> 
+> E.g., we have something like below in our internal KVM code, using macros to do
+> 'resume=1' and retry as the caller wishes.  But my understanding is Dave
+> probably won't like macros.  :-)
+> 
+> (you may see broken indent/text due to text wrapper and sorry for that.) 
+> 
+> /*
+>  * ...
+>  *
+>  * The retry_func and update_args allow the SEAMCALL to be retried in a loop if
+>  * it can still return other error code when there's no race from both KVM and 
+>  * vCPUs and can be "retried" until it succeeds.                               
+>  */
+> #define tdh_do_no_vcpus_retry(tdh_func, kvm, retry_func, update_args, args...)\
+> ({                                                                            \
+>         struct kvm_tdx *__kvm_tdx = to_kvm_tdx(kvm);                          \
+>         u64 __err;                                                            \
+>                                                                               \
+>         lockdep_assert_held_write(&kvm->mmu_lock);                            \
+>                                                                               \
+>         __err = retry_func(tdh_func, update_args, args);                      \
+>         if (unlikely(tdx_operand_busy(__err))) {                              \
+>                 WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, true);               \
+>                 kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);   \
+>                                                                               \
+>                 __err = retry_func(tdh_func, update_args, args);              \
+>                                                                               \
+>                 WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, false);              \
+>         }                                                                     \
+>         __err;                                                                \
+> })                                                                             
+> 
+> #define tdh_intr_retry(tdh_func, update_args, args...)                        \
+> ({                                                                            \
+>         u64 ____err;                                                          \
+>                                                                               \
+>         do {                                                                  \
+>                 ____err = tdh_func(args);                                     \
+>                                                                               \
+>                 if ((____err & TDX_SEAMCALL_STATUS_MASK) !=		      \
+> 				TDX_INTERRUPTED_RESUMABLE)                   
+> \	                       
+>                         break;                                                \
+>                                                                               \
+>                 update_args;                                                  \
+>         } while (1);                                                          \
+>         ____err;                                                              \
+> })
+> 
+> #define tdh_no_retry(tdh_func, update_args, args...)    tdh_func(args)
+> 
+> #define tdh_do_no_vcpus(tdh_func, kvm, args...) \
+>         tdh_do_no_vcpus_retry(tdh_func, kvm, tdh_no_retry, ;, args)
+> 
+> #define tdh_do_no_vcpus_intr_retry(tdh_func, kvm, update_args, args...) \
+>         tdh_do_no_vcpus_retry(tdh_func, kvm, tdh_intr_retry, update_args, args)
