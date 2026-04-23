@@ -1,127 +1,92 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2273806C8
-	for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 16:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1710F37D137;
+	Thu, 23 Apr 2026 16:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776961595; cv=none; b=c/qTIsC6NaMCXPobfr0wE1wDgXwyWH64Boet2vzoOQWTLHIqER+KbUg2ogEtdOK439zrIbe+S0JAaH8kYPS6mHWPdqDGYDcI4TuZDXvbYH/XqMl341t60nbMtmsA/Euu2KZfHydWPW8MIsTpoC90Wenuoaw1QuB569gLJpJ+xjM=
+	t=1776962186; cv=none; b=t8FPzr5idMpd9fa5/uE8+gg4qJPnIiU53rCiiaFQGjtiQQbNh4mrj/CIIxDpu5KAAlKYEJ6mSfaWVPn01gSdLAm7TNY5Mrp4BgQZGhiOrmE/FC234ZFAjDcf9gy8R9VnqtX+B3Yx+fOUCn6BCHdVjYGX3Ed5JpJmAYsONWzEJAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776961595; c=relaxed/simple;
-	bh=mLYv8WZqZbpdK7gb+Jc9DDETesX8Ne4WD9MXv4JEr9Y=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ElEAQUCyTnpsKqL9qwAkGlhZRwhc0SoFVWWZ7aHHLnO6pmHY1C0E/RWwetFrPu5ZelprIne9wPJy+9ZIXH9DLQodV4HrlQOVSh4m36TeT2fX/cCu4BKcOLYEn8ZZYxzVIKN4P8BjwAlIt8eMAlpBBSEe4ae9M5tUYalbHKv7Vag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ubJePkEO; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1776962186; c=relaxed/simple;
+	bh=+ds0NJEr0kE5UiInXg4j6EEFq+upi2AL/UPD2beEDHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DOYGCknSoLFy7h1XAmfIJLBRbLiF2ko3aDt9ftE6RIyYxR+86hEhTHPUb6bz76TzExINd1gB59WAZElzgUa+PN0UPTEoJ+GUWm/wG+ZB0NOLQ9Te6koWFkPxryXYHa9emIlc59HIufqFop45kjwyclJ6MLqw2XK1D+SsiHdiJ2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFxUlvEi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ubJePkEO"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fbb57764aso8279726a91.1
-        for <kvm@vger.kernel.org>; Thu, 23 Apr 2026 09:26:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776961594; x=1777566394; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=4t9k99Hk+Nxw6lMwotfPJxna6r0dcmYdL1wJ+beGW5I=;
-        b=ubJePkEO1AHEnwv+NUROYzYOj1rvXS3WbwYSbnLHTlKIgp+AVWHhAW0qMaAxRaTIsT
-         OV0LmVBXGR3KK7YC5sloX3x9fICzaYBXXehnWc9W5vwbbauMGHAXCdIklRt6DJIU80uB
-         DmPeXTA0UTANVM9Dh+RFwQWOEsyJxz7aCV51jtywFzq0kDOVoP03MtZmYhGxhFdvOmvM
-         4v8blJ0TITaHKB8K789yjbIPCFOv6L/NRFbg9z8P4m9vUcPha9jzinXeKpBwPNa4IB4f
-         IqpzMj76C223KwrmJ6XQf6QCBsNqrBnP4/Xggbup4fp4IHLJaTNYaP0KgkA0rd/fBm4a
-         +yug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776961594; x=1777566394;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4t9k99Hk+Nxw6lMwotfPJxna6r0dcmYdL1wJ+beGW5I=;
-        b=hTzeZDKkTbB3DVTyLeS5IqqIZZ9WwLtk0YRLOxW3d92wMbgF5gigg1zrPOfvGABvpV
-         fGhH9w8HacdADIlXQ0gHL58c++n/YrEDOHU/pucZ6dNAcI4NIW/ulwCaANWnN8WxlrMg
-         Xhnr6TyW/NqvOKRBNuEYxt368kUFNgn1bfEt3jeihcsZDfOEtD7KjInvNTColX0wU3cT
-         5O9ROTdr+vJzTi9qKkFKGxf05Ss6xIHRxrWkQab3Kn2gMbKhhX2c3YJi4KV6/sML0+Po
-         U48MB5rYTq/sNzh5GJW+7X7crlTEkGGjfvrCy/u7CDYbaEv1/LOGEqMII5rPIBrIYov7
-         B7EA==
-X-Gm-Message-State: AOJu0YxEKZvcTVrN2fn6nFTjQGOTp2YtuuS8WZLkd3uegFLTNfct52tt
-	IIE8kOHUUF9q7XLOKxt8QAR9WWKiFdL/WQtw4wfGHAojw7gxLlt7HmqQdQ2xnKGzbfd1l1h0DR1
-	t1Q3bAg==
-X-Received: from plte11.prod.google.com ([2002:a17:902:744b:b0:2b4:6527:7f6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2c8d:b0:359:84a3:1942
- with SMTP id 98e67ed59e1d1-361402eaf94mr26630578a91.13.1776961593615; Thu, 23
- Apr 2026 09:26:33 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 23 Apr 2026 09:26:28 -0700
-In-Reply-To: <20260423162628.490962-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFxUlvEi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6273C2BCAF;
+	Thu, 23 Apr 2026 16:36:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776962185;
+	bh=+ds0NJEr0kE5UiInXg4j6EEFq+upi2AL/UPD2beEDHw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MFxUlvEil3p0G4/+Srcn1Lcv8ULKuz5MdQjip3z4jyrMDZoevDjCng49TzOKH9Fv3
+	 dEk69l7bhwQeudKNavjKtkNShhpMJB/1SFTf3Pz2vMxn3cSNznEVSMojHW7Gik4F02
+	 02YCjdt2DFw4iJJZ7A663518tvdF2eITdNnqbyHexDiw4uFQ23Sfykof2EOXoXZUAI
+	 Q/x/5W1MH58mW9ZPe9bkpTVQg+Vs2cbcnGGOqgF0MGDgW4d+yqDaB75QXgCksYYFyM
+	 5hBzl2IILNqzK0InB6PGcPYQxnALhyALO7CYvHYN9YblK1EmxBZBODAJQjBnrGFjJq
+	 c69nqIqmrVWpQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wFx2N-0000000E7YO-0aR6;
+	Thu, 23 Apr 2026 16:36:23 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH] KVM: arm64: Wake-up from WFI when iqrchip is in userspace
+Date: Thu, 23 Apr 2026 17:36:07 +0100
+Message-ID: <20260423163607.486345-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260423162628.490962-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260423162628.490962-3-seanjc@google.com>
-Subject: [PATCH 2/2] KVM: SVM: Refresh vcpu->arch.cr{0,3} prior to invoking
- fastpath handler
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Nikunj A . Dadhania" <nikunj@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Refresh KVM's copies of CR0 and CR3 from the VMCB prior to (potentially)
-invoking a fastpath handler to ensure that KVM doesn't consume stale
-state.  While it's unlikely KVM will ever consume CR3 or CR0.{TS,MP} in
-the fastpath, grabbing the values from the VMCB is inexpensive, i.e. the
-risk of subtle bugs far outweighs the reward of deferring reads for a
-small subset of VM-Exits.
+It appears that there is nothing in the wake-up path that
+evaluates whether the in-kernel interrupts are pending unless
+we have a vgic.
 
-Note, KVM doesn't currently consume CR3 or CR0.{TS,MP} in the fastpath,
-as KVM requires next_rip to be valid (i.e. KVM doesn't read CR3 to decode
-the instruction), CR0.MP is never consumed, and CR0.TS is only consumed by
-the full emulator.
+This means that the userspace irqchip support has been broken for
+about four years, and nobody noticed. It was also broken before
+as we wouldn't wake-up on a PMU interrupt, but hey, who cares...
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+It is probably time to remove the feature altogether, because it
+was a terrible idea 10 years ago, and it still is.
+
+Fixes: b57de4ffd7c6d ("KVM: arm64: Simplify kvm_cpu_has_pending_timer()")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/arm64/kvm/arm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index eb351ca4dd82..df0bd132edf7 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3644,14 +3644,6 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct kvm_run *kvm_run = vcpu->run;
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 176cbe8baad30..8bb2c7422cc8b 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -824,6 +824,10 @@ int kvm_arch_vcpu_runnable(struct kvm_vcpu *v)
+ {
+ 	bool irq_lines = *vcpu_hcr(v) & (HCR_VI | HCR_VF | HCR_VSE);
  
--	/* SEV-ES guests must use the CR write traps to track CR registers. */
--	if (!is_sev_es_guest(vcpu)) {
--		if (!svm_is_intercept(svm, INTERCEPT_CR0_WRITE))
--			vcpu->arch.cr0 = svm->vmcb->save.cr0;
--		if (npt_enabled)
--			vcpu->arch.cr3 = svm->vmcb->save.cr3;
--	}
--
- 	if (unlikely(exit_fastpath == EXIT_FASTPATH_EXIT_USERSPACE))
- 		return 0;
- 
-@@ -4505,11 +4497,17 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	if (!static_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 		x86_spec_ctrl_restore_host(svm->virt_spec_ctrl);
- 
-+	/* SEV-ES guests must use the CR write traps to track CR registers. */
- 	if (!is_sev_es_guest(vcpu)) {
- 		vcpu->arch.cr2 = svm->vmcb->save.cr2;
- 		vcpu->arch.regs[VCPU_REGS_RAX] = svm->vmcb->save.rax;
- 		vcpu->arch.regs[VCPU_REGS_RSP] = svm->vmcb->save.rsp;
- 		vcpu->arch.regs[VCPU_REGS_RIP] = svm->vmcb->save.rip;
++	irq_lines |= (!irqchip_in_kernel(v->kvm) &&
++		      (kvm_timer_should_notify_user(v) ||
++		       kvm_pmu_should_notify_user(v)));
 +
-+		if (!svm_is_intercept(svm, INTERCEPT_CR0_WRITE))
-+			vcpu->arch.cr0 = svm->vmcb->save.cr0;
-+		if (npt_enabled)
-+			vcpu->arch.cr3 = svm->vmcb->save.cr3;
- 	}
- 	vcpu->arch.regs_dirty = 0;
- 
+ 	return ((irq_lines || kvm_vgic_vcpu_pending_irq(v))
+ 		&& !kvm_arm_vcpu_stopped(v) && !v->arch.pause);
+ }
 -- 
-2.54.0.545.g6539524ca2-goog
+2.47.3
 
