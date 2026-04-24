@@ -1,193 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8954B54763
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 07:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E126ED3E
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 07:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777015926; cv=none; b=Q0rNu2Iguy+zlWdKal6GVbl7eqzajh65VWFOlFhTpPMiqimKcoP66kZEMgURFxiiRC+cg/V5DR6O+naHRlJR3fqDltbZwpRME7lZVte2L61JwRf9bXjN10tQqdMuHkhcY2O3sfTYtyh8TBLKUH4pgPrSZX9BkgrLIFAA5FtwAg8=
+	t=1777016233; cv=none; b=uG5b1z8XeKw4e70xkSg/oDCDlESvyVdkRFKYhZtNQ8cguC78/uw+VgmYwBOHlGEJ0EI9RkEXWLKOyxka4dJ7OznuXiOkOy4rFSMDejLfekH/6L/O/RdSE6i91tClhrfdz1l8Rs8Wxq95HGHsE290xunjzSVIBs1i43IdC0uwXmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777015926; c=relaxed/simple;
-	bh=6Gnghml8Lif6S5PnBmr6tPtdsbaqY216/IVgDv/vbT0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kJE/nWXlMcrqpHS0tNMS5Xji+UgeEKcwJKV1H3qB+0N9czcX+Bn+NLNNg1NaFzw3mbo56LxC97VvVGw5fItcbNDUVDDvhFjhVIWiiJgm6R1JxxMEPziiIHe3QPHeFlaiiFcPcjWAi/DCe+a+fdYhHx4Ra+2U8IC6a6mMR96QT8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BUxtARzV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T6qz0d6f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777016233; c=relaxed/simple;
+	bh=XcfdmQ+sofV7VgZr1Fk1s/UZPDM0QJrRSOaVW+bYFEU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
+	 References:In-Reply-To; b=YmWXSifd87ZqvPEqO5zKO0mYro9TjStDdhmkC6QuYLWCkGUh23VisCN5vj5VhfQaOIJ/EBJ+UOLOpvMVIxtrDz74OL9LFh7aE5A7YZCwzp253ALoDnxtZmW5YoZS5zuBjOkltUs08ml0NQ59TbnijyoZGLlQAB1T/V/epOWMAE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Sc8kxpXy; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BUxtARzV";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T6qz0d6f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777015924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iXM+JOFEp4FqtdTb0bwZTt9BrwdIgGJqGWwtjuSYcM8=;
-	b=BUxtARzViC9cc+dWXkQlH22B+Gv4NxYEAUWsJdq18UviHNjd80HjFhUkq220bsvdOzHK09
-	b3F+wWgR/2Trfc6ter8hEp17jI803oBeJCV10gp07jwzwXp3Utq3tW/QQtnYZTo1ABDP+5
-	0c39tFPC34bZfTBur0vJj0RcaUHOF/8=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-DIG5MgqCM9Kaqyuc0ru3KQ-1; Fri, 24 Apr 2026 03:32:03 -0400
-X-MC-Unique: DIG5MgqCM9Kaqyuc0ru3KQ-1
-X-Mimecast-MFC-AGG-ID: DIG5MgqCM9Kaqyuc0ru3KQ_1777015922
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c7976ded5c5so7949038a12.0
-        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 00:32:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777015922; x=1777620722; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iXM+JOFEp4FqtdTb0bwZTt9BrwdIgGJqGWwtjuSYcM8=;
-        b=T6qz0d6f8hgAg2NhG7FoBfGIVaXhJaaenk7PUdFgD4ZT9ZY7XfFVQQdaQiFOV/y/e9
-         MVJxMLmwNQw7FoYpAMK+h0NoqIFlk3VcNeVAVyfkKljeHiQpRUkFtSl3M55zHwiT0+0s
-         moxnZKw40Nh43gGUjK9H0Rud5XN9Spxk9hCYscnZEwWRMRQMHHq0cXkZU1TDhstQjFDh
-         hpZ7fjDYRay+LAkXH1YvOtZX4FA4Iudoj+KhWKxILHtmKL4TtHtAiFkVtqcApX/9I4Vi
-         qgqQsMy8TRnPHjhfCxB6tvZ/e2F1K8wkjV22Gm6UzhahiJThQ4pg1KvYcE4pOaMt/iDL
-         ac1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777015922; x=1777620722;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iXM+JOFEp4FqtdTb0bwZTt9BrwdIgGJqGWwtjuSYcM8=;
-        b=l1oMKaiM8oyYK4lerbl2VighBh55OD549RbJu8Mo4VBHuK261gwafCGxuIoDATs+6Y
-         +tiP2OnZZZYecP275WX4h6jy/CBgBDoCd4XKYshrxw3UROYJLCgvGEU+RYaVyyQp3Q72
-         Lx+ra0a0i59YKFzTi8vLJLzFJYtYToPtTJh+39fS9WHwmHo4ElxDO1a+CAsBoHM3Smm2
-         24+JrxJ6NH/T1+JVgSiYE4NBPa8TPAMR+mUMRSiUzBuAEVsYNGzCraxwZeNku20629oX
-         dzSYAX+SgCyFA1uiqViiD+2gGfPzLThI6q4GydjvjBwMaUtXgYX6ewb4m49l+KgXEDzB
-         ecGw==
-X-Forwarded-Encrypted: i=1; AFNElJ/8NrsCeufFXiqK3GLYV2S+AQYHd3NudxUOfHy04E47gR8cxWx9iHw8OvvItSWCWx3tQ2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOCtbBd453d3ftZ38wynrUCNgNCt295u2Dnvj0UkYM0g0gpOw4
-	DXqrP6YcmB9NCGFlY11wZB1OdAXae1RQ8MKc+vE9o9JuTtF1iMTGEjhDIS/FcFNH5VoT8bMK0FQ
-	W1tMak3atk9lfbOnILH4p1aPC1nZhQZ8gImOugPaITrluJDb0YFpEmyPF7Wp5AA==
-X-Gm-Gg: AeBDieuNTJf7LOFApwaAdBV2ahn28v1OH0o8wOsPa4PmsMpRZRO1eif5U1VW/x9J0j+
-	c6ooi9GEeVizfmChBOyVumqNVd/ONYO+M8fOmb+wAgYj/2uB+xLSpCEn+PTGXkChjqYGodnoz5/
-	7ceqlyCtzBwIrpNpGT89xlDynZRoE+94hkHSECpLosyMiIKLdZ223X6TLnxlJigcW1LnzjTjZSL
-	DF2HHc/B83kh1rZS9+x7sdZlTiFKFcU+zbK5smpjUFC4eK9aT231Lha0Lz3bz64CSgwJLw+9eoT
-	CYe/nsxwRgc5AUcY92baDlmuUzUnChSsWhKUi/7Y3VvHby1WLFm311Z6yyCCF/sNiiF1cjPo35N
-	TuwkhV3H5WM4LLJONmkr0LAzqUL6Sig==
-X-Received: by 2002:a05:6a00:994:b0:82f:193f:807c with SMTP id d2e1a72fcca58-82f8c7deca2mr33107422b3a.2.1777015921853;
-        Fri, 24 Apr 2026 00:32:01 -0700 (PDT)
-X-Received: by 2002:a05:6a00:994:b0:82f:193f:807c with SMTP id d2e1a72fcca58-82f8c7deca2mr33107368b3a.2.1777015921280;
-        Fri, 24 Apr 2026 00:32:01 -0700 (PDT)
-Received: from [192.168.0.9] ([47.64.114.147])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8317076ca48sm5225402b3a.35.2026.04.24.00.31.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 00:32:00 -0700 (PDT)
-Message-ID: <6761d631-a714-420c-9c2f-258aec664d17@redhat.com>
-Date: Fri, 24 Apr 2026 09:31:53 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Sc8kxpXy"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NHQ5b13291897;
+	Fri, 24 Apr 2026 07:37:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=3nYm/C
+	ji9AqA/uLjRt9xY9E9i4dn7sg14FYW+Fprmps=; b=Sc8kxpXyNDGGsWUB4Y8V5u
+	JdUQ/D0NHlRV8SJohY2ym9xawvdjCvPg4C54eEWA9K/x65gBmRo9a4ideqR4BOBL
+	4+NgI4DY3CSYQZLPFYR+iwR1OmcldDPa9qSuzrGRIRT+m2USaLxhqWjb3hp0RNh7
+	TUq0k5ZHAoK24BMQXoNJjYjGjRuduMtMuZtvNXYHVTm6bnaGnDplYHboCS+Jo9UJ
+	aQVS2dyrOFSxosPmpTj9R9uuUmEIg4ye6ycwwTA4gheFn2f3I/iwdPccklCQ4cq1
+	6dWSoUJZ1QcyYUeXbmXLxOAylnu4efoX95CRNafd6zbkmUQSPqb786Hygjuo6hWQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dphfrm2h4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 07:36:59 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63O7ZT7c031684;
+	Fri, 24 Apr 2026 07:36:58 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyhw4m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 07:36:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63O7aswP55247254
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Apr 2026 07:36:54 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1858C2004B;
+	Fri, 24 Apr 2026 07:36:54 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DA85420043;
+	Fri, 24 Apr 2026 07:36:53 +0000 (GMT)
+Received: from darkmoore (unknown [9.87.142.223])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Apr 2026 07:36:53 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 3/3] scripts/get_maintainer.pl: Ignore
- --nogit-chief-penguins option
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org
-Cc: Janosch Frank <frankja@linux.ibm.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Andrew Jones <andrew.jones@linux.dev>,
- Nicholas Piggin <npiggin@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Apr 2026 09:36:47 +0200
+Message-Id: <DI17O7XO24UY.1UTBAQJVIGSCE@linux.ibm.com>
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: "Janosch Frank" <frankja@linux.ibm.com>,
+        "Paolo Bonzini"
+ <pbonzini@redhat.com>,
+        "Andrew Jones" <andrew.jones@linux.dev>,
+        "Nicholas
+ Piggin" <npiggin@gmail.com>
+To: "Thomas Huth" <thuth@redhat.com>,
+        "Christoph Schlameuss"
+ <schlameuss@linux.ibm.com>,
+        <kvm@vger.kernel.org>
+Subject: Re: [kvm-unit-tests PATCH 1/3] scripts/checkpatch.pl: Add empty
+ codespell and const_structs configs
+X-Mailer: aerc 0.21.0
 References: <20260423-b4-cmdline-v1-0-f72ad0020d42@linux.ibm.com>
- <20260423-b4-cmdline-v1-3-f72ad0020d42@linux.ibm.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20260423-b4-cmdline-v1-3-f72ad0020d42@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20260423-b4-cmdline-v1-1-f72ad0020d42@linux.ibm.com>
+ <87e4fcbf-92bd-4f74-9db9-369e4ba8bca8@redhat.com>
+In-Reply-To: <87e4fcbf-92bd-4f74-9db9-369e4ba8bca8@redhat.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ejR1lyrRjg1uC5xj-eH8KlSdQJfRS2Kq
+X-Proofpoint-ORIG-GUID: LsLkm3GXNv4tx08ZV2tzu8DjILL7bCM7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDA2NiBTYWx0ZWRfX4zp8kUDR5n5A
+ 3mykb06qHie7IJSBpvv1TZ278bMxjFJZCKDG3Ke2/hrf1eTduYSa9V20KgleRLODrC+8B2g5Qoe
+ H5F7oXuX+vUjniy0xeIZBa5jjwf6X+5iETiGsBubGIzsq0eiRG9Dcfu+Gs3SIDwONis8e5PjRTl
+ KQ4zmPvB2UDRD6fRpL+Okg4rlfK+oIpLLPQGZvlHNcUzPjj8YJNICZHIVCr4ck0HXDBmA0hqJD+
+ YW289DLCwLqK2EK9gEXs5zWUsKK9RO1zIctPC+EFkRSurcUNzkbGLe5eNDm04mIwvVVFcvAI28n
+ cx0iaSn4XG+oWr5QnAbY7qCFItx9XMurbmQ/ME6gZ1KUEs5iY+Z7lDXjEexmmuyxfBHlOMuM1IX
+ j1uASKsNGTbv1EoY7NCOVR6jsQp5YaBFD/CMBcw5+bU03QOPy0zuPcZCfmcQVvZ1b4UbIPvEn2C
+ PHu5Vslu7SWsKoH6ubA==
+X-Authority-Analysis: v=2.4 cv=SJxykuvH c=1 sm=1 tr=0 ts=69eb1d9b cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=20KFwNOVAAAA:8
+ a=fjU1KvmuhNk0jL3U-k4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1015 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604240066
 
-On 23/04/2026 16.16, Christoph Schlameuss wrote:
-> b4 by default calls the get_maintainer.pl script with the
-> '--nogit-chief-penguins' option letting the 'b4 prep --auto-to-cc' fail.
-> 
-> Adding parsing of that option without any related functionality to allow
-> simple usage of b4 in the development workflow.
-> 
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> 
-> ---
-> 
-> Sorry, I am not too versed with perl, so if there are better ways to fix
-> this please comment.
-> ---
->   scripts/get_maintainer.pl | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
-> index 117b69145f0e..9b99f6218467 100755
-> --- a/scripts/get_maintainer.pl
-> +++ b/scripts/get_maintainer.pl
-> @@ -31,6 +31,7 @@ my $email_fixes = 1;
->   my $email_list = 1;
->   my $email_moderated_list = 1;
->   my $email_subscriber_list = 0;
-> +my $email_git_chief_penguins = 0;
+On Fri Apr 24, 2026 at 9:00 AM CEST, Thomas Huth wrote:
+> On 23/04/2026 16.16, Christoph Schlameuss wrote:
+>> Without these files each patch is flagged with these errors providing no
+>> value and swamping actually found warnings and errors:
+>>=20
+>> =E2=97=8F xxxxxxxxxxxx: commit title
+>>    =E2=97=8F checkpatch.pl: No typos will be found - file '.../kvm-unit-=
+tests/scripts/spelling.txt': No such file or directory
+>>    =E2=97=8F checkpatch.pl: No structs that should be const will be foun=
+d - file '.../kvm-unit-tests/scripts/const_structs.checkpatch': No such fil=
+e or directory
+>
+> Very weird, we've got the checkpatch.pl script in the tree since a while,=
+=20
+> but I cannot remember having seen these warnings in the past. However, I=
+=20
+> just tried to run checkpatch.pl with a patch, and I now get them, too ...
+>
 
-The variable is called email_git_penguin_chiefs in the kernel version of 
-this script ... Could you please use that here, too, so we stay at least a 
-little bit in sync with the kernel script?
+Maybe you did have a git setting modifying the arguments? IMO this just sho=
+uld
+at least somewhat work OOTB.
 
-  Thanks,
-   Thomas
+>> diff --git a/scripts/const_structs.checkpatch b/scripts/const_structs.ch=
+eckpatch
+>> new file mode 100644
+>> index 000000000000..e69de29bb2d1
+>
+> Maybe add "virtio_config_ops" to the file so that it does not look so emp=
+ty?
+>
+> Anyway:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
+I agree that it does look strange completely empty. Will add virtio_config_=
+ops.
 
->   my $email_git = 0;
->   my $email_git_all_signature_types = 0;
->   my $email_git_blame = 0;
-> @@ -228,6 +229,7 @@ if (!GetOptions(
->   		'git-blame!' => \$email_git_blame,
->   		'git-blame-signatures!' => \$email_git_blame_signatures,
->   		'git-fallback!' => \$email_git_fallback,
-> +		'git-chief-penguins!' => \$email_git_chief_penguins,
->   		'git-min-signatures=i' => \$email_git_min_signatures,
->   		'git-max-maintainers=i' => \$email_git_max_maintainers,
->   		'git-min-percent=i' => \$email_git_min_percent,
-> 
-
+Thanks
