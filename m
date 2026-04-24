@@ -1,124 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469C5345CD0;
-	Fri, 24 Apr 2026 07:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8954B54763
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 07:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777015486; cv=none; b=eOrSzSGjNLcre9cD90w0LMfkfC23H7l1XCK6Nsekjf5ZQG1GSgTj4PFZKfHPbQAXN0CXHsRz5X05mTNKCB2zuiYshzA4+YtkIbsm66bOUPbvvKYoteNKrzYa22LNvhTs/UJqb2lz981HzVF6SP+iCW2A/Qg1a5+u7/Z+GpWOAaw=
+	t=1777015926; cv=none; b=Q0rNu2Iguy+zlWdKal6GVbl7eqzajh65VWFOlFhTpPMiqimKcoP66kZEMgURFxiiRC+cg/V5DR6O+naHRlJR3fqDltbZwpRME7lZVte2L61JwRf9bXjN10tQqdMuHkhcY2O3sfTYtyh8TBLKUH4pgPrSZX9BkgrLIFAA5FtwAg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777015486; c=relaxed/simple;
-	bh=6mVWuteGVpQy8M878VFdWu6XkCt5gpyOdVPcDnaHa8s=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pQqhVi90bgK5q8YfhkdP8/T6UJvDc4RyiUUsVSQ7zB8Hu2eTxSVy0qOS6Kifwlb+ok3R5GSo2cCEg6KCqW5Wxd/B1Q4rG68Dwtpb+pBLU4kZPoBzqL5wuC60doWjcMW76S3ye5DRVp+sbsgfnA8BGvUNQeCHRCABzUlQXzSqO80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfxfy4wt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777015926; c=relaxed/simple;
+	bh=6Gnghml8Lif6S5PnBmr6tPtdsbaqY216/IVgDv/vbT0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kJE/nWXlMcrqpHS0tNMS5Xji+UgeEKcwJKV1H3qB+0N9czcX+Bn+NLNNg1NaFzw3mbo56LxC97VvVGw5fItcbNDUVDDvhFjhVIWiiJgm6R1JxxMEPziiIHe3QPHeFlaiiFcPcjWAi/DCe+a+fdYhHx4Ra+2U8IC6a6mMR96QT8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BUxtARzV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T6qz0d6f; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfxfy4wt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207FFC19425;
-	Fri, 24 Apr 2026 07:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777015486;
-	bh=6mVWuteGVpQy8M878VFdWu6XkCt5gpyOdVPcDnaHa8s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sfxfy4wtCPyxDjviJPdNUMQ0DmV/qDZ05+48OVbM7hViSb6pq7JQkNHZHhS7T9YqN
-	 kYEvgoVakwXR0kwBU2v63u5Y04J9IWsmLukn3u6Su88OCwSTeLt7RzIv2EWaK6ImsT
-	 9423m0qMPrVJdbqqz6futIDiJWdQtOlQ6RZISFBzXdC6jdNMoZfw6WZcXPHR2jqP9+
-	 YZS0Zj49PmXVNv5/qdBbNw7kOSTU8ogLg+PDcvvK3+WOshPfCIqIDQSTszZL3fZDXv
-	 5wTxLDKNGhbuRaIRmkdowf/NuROQz4kidg19G4fbqn2iDxbmjvXgR97OnBFuhDbxFt
-	 f/MiYL6q75ONQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wGAu3-0000000EI9I-0fWL;
-	Fri, 24 Apr 2026 07:24:43 +0000
-Date: Fri, 24 Apr 2026 08:24:42 +0100
-Message-ID: <87jytwbz2d.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Yao Yuan <yaoyuan@linux.alibaba.com>
-Cc: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH] KVM: arm64: Wake-up from WFI when iqrchip is in userspace
-In-Reply-To: <uhqgyol622go4lm5btbk4jyieb3swhskpkyel4mnksfeki2mo2@ecnjvxwiqcfw>
-References: <20260423163607.486345-1-maz@kernel.org>
-	<uhqgyol622go4lm5btbk4jyieb3swhskpkyel4mnksfeki2mo2@ecnjvxwiqcfw>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BUxtARzV";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T6qz0d6f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777015924;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=iXM+JOFEp4FqtdTb0bwZTt9BrwdIgGJqGWwtjuSYcM8=;
+	b=BUxtARzViC9cc+dWXkQlH22B+Gv4NxYEAUWsJdq18UviHNjd80HjFhUkq220bsvdOzHK09
+	b3F+wWgR/2Trfc6ter8hEp17jI803oBeJCV10gp07jwzwXp3Utq3tW/QQtnYZTo1ABDP+5
+	0c39tFPC34bZfTBur0vJj0RcaUHOF/8=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-DIG5MgqCM9Kaqyuc0ru3KQ-1; Fri, 24 Apr 2026 03:32:03 -0400
+X-MC-Unique: DIG5MgqCM9Kaqyuc0ru3KQ-1
+X-Mimecast-MFC-AGG-ID: DIG5MgqCM9Kaqyuc0ru3KQ_1777015922
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c7976ded5c5so7949038a12.0
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 00:32:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777015922; x=1777620722; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=iXM+JOFEp4FqtdTb0bwZTt9BrwdIgGJqGWwtjuSYcM8=;
+        b=T6qz0d6f8hgAg2NhG7FoBfGIVaXhJaaenk7PUdFgD4ZT9ZY7XfFVQQdaQiFOV/y/e9
+         MVJxMLmwNQw7FoYpAMK+h0NoqIFlk3VcNeVAVyfkKljeHiQpRUkFtSl3M55zHwiT0+0s
+         moxnZKw40Nh43gGUjK9H0Rud5XN9Spxk9hCYscnZEwWRMRQMHHq0cXkZU1TDhstQjFDh
+         hpZ7fjDYRay+LAkXH1YvOtZX4FA4Iudoj+KhWKxILHtmKL4TtHtAiFkVtqcApX/9I4Vi
+         qgqQsMy8TRnPHjhfCxB6tvZ/e2F1K8wkjV22Gm6UzhahiJThQ4pg1KvYcE4pOaMt/iDL
+         ac1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777015922; x=1777620722;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iXM+JOFEp4FqtdTb0bwZTt9BrwdIgGJqGWwtjuSYcM8=;
+        b=l1oMKaiM8oyYK4lerbl2VighBh55OD549RbJu8Mo4VBHuK261gwafCGxuIoDATs+6Y
+         +tiP2OnZZZYecP275WX4h6jy/CBgBDoCd4XKYshrxw3UROYJLCgvGEU+RYaVyyQp3Q72
+         Lx+ra0a0i59YKFzTi8vLJLzFJYtYToPtTJh+39fS9WHwmHo4ElxDO1a+CAsBoHM3Smm2
+         24+JrxJ6NH/T1+JVgSiYE4NBPa8TPAMR+mUMRSiUzBuAEVsYNGzCraxwZeNku20629oX
+         dzSYAX+SgCyFA1uiqViiD+2gGfPzLThI6q4GydjvjBwMaUtXgYX6ewb4m49l+KgXEDzB
+         ecGw==
+X-Forwarded-Encrypted: i=1; AFNElJ/8NrsCeufFXiqK3GLYV2S+AQYHd3NudxUOfHy04E47gR8cxWx9iHw8OvvItSWCWx3tQ2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOCtbBd453d3ftZ38wynrUCNgNCt295u2Dnvj0UkYM0g0gpOw4
+	DXqrP6YcmB9NCGFlY11wZB1OdAXae1RQ8MKc+vE9o9JuTtF1iMTGEjhDIS/FcFNH5VoT8bMK0FQ
+	W1tMak3atk9lfbOnILH4p1aPC1nZhQZ8gImOugPaITrluJDb0YFpEmyPF7Wp5AA==
+X-Gm-Gg: AeBDieuNTJf7LOFApwaAdBV2ahn28v1OH0o8wOsPa4PmsMpRZRO1eif5U1VW/x9J0j+
+	c6ooi9GEeVizfmChBOyVumqNVd/ONYO+M8fOmb+wAgYj/2uB+xLSpCEn+PTGXkChjqYGodnoz5/
+	7ceqlyCtzBwIrpNpGT89xlDynZRoE+94hkHSECpLosyMiIKLdZ223X6TLnxlJigcW1LnzjTjZSL
+	DF2HHc/B83kh1rZS9+x7sdZlTiFKFcU+zbK5smpjUFC4eK9aT231Lha0Lz3bz64CSgwJLw+9eoT
+	CYe/nsxwRgc5AUcY92baDlmuUzUnChSsWhKUi/7Y3VvHby1WLFm311Z6yyCCF/sNiiF1cjPo35N
+	TuwkhV3H5WM4LLJONmkr0LAzqUL6Sig==
+X-Received: by 2002:a05:6a00:994:b0:82f:193f:807c with SMTP id d2e1a72fcca58-82f8c7deca2mr33107422b3a.2.1777015921853;
+        Fri, 24 Apr 2026 00:32:01 -0700 (PDT)
+X-Received: by 2002:a05:6a00:994:b0:82f:193f:807c with SMTP id d2e1a72fcca58-82f8c7deca2mr33107368b3a.2.1777015921280;
+        Fri, 24 Apr 2026 00:32:01 -0700 (PDT)
+Received: from [192.168.0.9] ([47.64.114.147])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8317076ca48sm5225402b3a.35.2026.04.24.00.31.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 00:32:00 -0700 (PDT)
+Message-ID: <6761d631-a714-420c-9c2f-258aec664d17@redhat.com>
+Date: Fri, 24 Apr 2026 09:31:53 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: yaoyuan@linux.alibaba.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH 3/3] scripts/get_maintainer.pl: Ignore
+ --nogit-chief-penguins option
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org
+Cc: Janosch Frank <frankja@linux.ibm.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Andrew Jones <andrew.jones@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20260423-b4-cmdline-v1-0-f72ad0020d42@linux.ibm.com>
+ <20260423-b4-cmdline-v1-3-f72ad0020d42@linux.ibm.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20260423-b4-cmdline-v1-3-f72ad0020d42@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 24 Apr 2026 07:33:02 +0100,
-Yao Yuan <yaoyuan@linux.alibaba.com> wrote:
+On 23/04/2026 16.16, Christoph Schlameuss wrote:
+> b4 by default calls the get_maintainer.pl script with the
+> '--nogit-chief-penguins' option letting the 'b4 prep --auto-to-cc' fail.
 > 
-> On Thu, Apr 23, 2026 at 05:36:07PM +0800, Marc Zyngier wrote:
-> > It appears that there is nothing in the wake-up path that
-> > evaluates whether the in-kernel interrupts are pending unless
-> > we have a vgic.
-> >
-> > This means that the userspace irqchip support has been broken for
-> > about four years, and nobody noticed. It was also broken before
-> > as we wouldn't wake-up on a PMU interrupt, but hey, who cares...
-> >
-> > It is probably time to remove the feature altogether, because it
-> > was a terrible idea 10 years ago, and it still is.
-> >
-> > Fixes: b57de4ffd7c6d ("KVM: arm64: Simplify kvm_cpu_has_pending_timer()")
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  arch/arm64/kvm/arm.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > index 176cbe8baad30..8bb2c7422cc8b 100644
-> > --- a/arch/arm64/kvm/arm.c
-> > +++ b/arch/arm64/kvm/arm.c
-> > @@ -824,6 +824,10 @@ int kvm_arch_vcpu_runnable(struct kvm_vcpu *v)
-> >  {
-> >  	bool irq_lines = *vcpu_hcr(v) & (HCR_VI | HCR_VF | HCR_VSE);
-> >
+> Adding parsing of that option without any related functionality to allow
+> simple usage of b4 in the development workflow.
 > 
-> Hi Marc,
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 > 
-> > +	irq_lines |= (!irqchip_in_kernel(v->kvm) &&
-> > +		      (kvm_timer_should_notify_user(v) ||
-> > +		       kvm_pmu_should_notify_user(v)));
+> ---
 > 
-> How about a new helper like 'kvm_should_notify_us_irqchip()' ?
-> We can replace the same part at beginning of kvm_vcpu_exit_request() and
-> here w/ unlikely().
+> Sorry, I am not too versed with perl, so if there are better ways to fix
+> this please comment.
+> ---
+>   scripts/get_maintainer.pl | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
+> index 117b69145f0e..9b99f6218467 100755
+> --- a/scripts/get_maintainer.pl
+> +++ b/scripts/get_maintainer.pl
+> @@ -31,6 +31,7 @@ my $email_fixes = 1;
+>   my $email_list = 1;
+>   my $email_moderated_list = 1;
+>   my $email_subscriber_list = 0;
+> +my $email_git_chief_penguins = 0;
 
-I'd rather not introduce a helper, for two reasons:
+The variable is called email_git_penguin_chiefs in the kernel version of 
+this script ... Could you please use that here, too, so we stay at least a 
+little bit in sync with the kernel script?
 
-- this needs to be backported all the way to 5.19, because that's how
-  far it has been broken. So keeping it small and localised is far
-  better than introducing a helper that will make the backport less
-  obvious.
+  Thanks,
+   Thomas
 
-- I have patches to remove the other calls to kvm_*_notify_user() as a
-  simplification of this utterly stupid feature.
 
-Finally, and while I agree that this could take an unlikely()
-qualifier, a much better course of action would be to have a separate
-patch that moves the qualifier to the predicate itself.
+>   my $email_git = 0;
+>   my $email_git_all_signature_types = 0;
+>   my $email_git_blame = 0;
+> @@ -228,6 +229,7 @@ if (!GetOptions(
+>   		'git-blame!' => \$email_git_blame,
+>   		'git-blame-signatures!' => \$email_git_blame_signatures,
+>   		'git-fallback!' => \$email_git_fallback,
+> +		'git-chief-penguins!' => \$email_git_chief_penguins,
+>   		'git-min-signatures=i' => \$email_git_min_signatures,
+>   		'git-max-maintainers=i' => \$email_git_max_maintainers,
+>   		'git-min-percent=i' => \$email_git_min_percent,
+> 
 
-Thanks,
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
