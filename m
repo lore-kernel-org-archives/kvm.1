@@ -1,121 +1,137 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD4636D9F5;
-	Fri, 24 Apr 2026 19:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B023ECBE5;
+	Fri, 24 Apr 2026 19:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777059345; cv=none; b=T30t2TzkeElZfMf6m0LrdGLXrGGAeTSJTGQMt1Qyd+yXr9jpAUDMiDJRJYRfiLketptuA0cPVmwfSL5fP/KK3J/UUTxK3xzYIMKhmo4qYvtMwF3zC2quw6FoSatLI2yYer4bn0XTogm3XABobUMb/wwrJmYc8k4c3ZMLoXPLjBE=
+	t=1777059550; cv=none; b=ZkrwCH0bYR8RS5HWXHHDA4s/Yxom+d6L/8Lcg9zs4eHziBCY58fL6jRiYnxHvTU/F1V0NZjyY9bwnUvjIszqNOUWGT4+eNxLUsZRhBbaySPvj9ESej9t5vhUF6hN319jE4wzmppPhAWm6nVRaT39VPsgQ6BCGHsX9bPNdZCmJow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777059345; c=relaxed/simple;
-	bh=qTBZ+eIMF2wJiZVzdNzeHLi3B8j+sp9MfsXdYYNqeys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Adq0MlcmcToHI7ZChvOB/ExG2jYdNTB9eElSFuynAraxM7xWN6uCToEaTRHMUC5CvtivOChYmnKUzb6HSEo2dtndlYj/zd6RU/U9nEASKaTpSD/7Y62X2wWnx3xGD9dmI89hNElsPmTOp31O4lxmVVgSmozjPNtTLQzQJsjEkZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dLRk3Exc; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1777059550; c=relaxed/simple;
+	bh=RASnbwqalpFGwkiDz20lzK83CJ6MAa1aWCQBiOAXD78=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tyMDN999EMnw2v8Bhwdt5wh+fXKy48ZKwBFemBDhr604xI12ec/+Hs3ZVe79Y86cdX1nHr7pifrnVGXloMAm1sxynDx7C/aZFCqnEg7YVOU22ick7gw1iqrR0Yp4PPpVp5w5XkPCQxZOUc4lqTL6Z9zWsmXk5p+AuPjhCr6tDsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pwka+Q+b; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dLRk3Exc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XdkH1kke8xKNHhewDP/J3YySwRvCbjXWp0T4uztq+es=; b=dLRk3ExcR3bJdP3rx8RDX2VDn+
-	XXZVHvWmgCd7fo/OIGaJC63rzZiZIz2LpR47O5RLmEJzgdJs7Bo/5H1POeKA7czocmGPzuTyuI26v
-	6g3xKivFhtkRJJJnZb3SBZ3k0jTcevV+iuI+a66hVCa8UphNH/U2PpNiRSKWONOMvFurwnOcZR/F+
-	1KCteXs6F5aLAQZFcodjh5JGIh3uoaNNfiYci4x02r6w/pg+dBuMNZoewQyvAorQ+puyBEuFT33Fl
-	W9qQ8PjQEVS6lQ1ng7yqkVdECou37wa5YEtpbc9+ovZvy11plaEo3qbSSvg9nqqUxLm0tRfv+/SVt
-	b0IJTefQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGMJG-0000000FhuN-2hyR;
-	Fri, 24 Apr 2026 19:35:30 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 47CCF301142; Fri, 24 Apr 2026 21:35:29 +0200 (CEST)
-Date: Fri, 24 Apr 2026 21:35:29 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Yosry Ahmed <yosry@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, shy828301@gmail.com, riel@surriel.com,
-	jannh@google.com, jgross@suse.com, seanjc@google.com,
-	pbonzini@redhat.com, boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ioworker0@gmail.com,
-	roman.gushchin@linux.dev
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
- them
-Message-ID: <20260424193529.GA3853824@noisy.programming.kicks-ass.net>
-References: <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
- <aetw4aoABYj3keMh@plex>
- <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
- <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
- <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
- <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
- <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
- <20260424190141.GA3783056@noisy.programming.kicks-ass.net>
- <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
- <20260424192250.GC3783056@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pwka+Q+b"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63OBF0WE3108720;
+	Fri, 24 Apr 2026 19:39:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=1g3hIKe5SzgfRdx89bKW0skWGPafTPKM/83AXfZl7
+	iI=; b=pwka+Q+bTNWQChkbX6KDELcdDhK503nyL52vI3esveMNhaVN+DM/Gm0+m
+	EJ0UJTwmiDR6a8zLCKTd4h0/FvizCxSERmaMImPGP/KF5agG8uV6dAuJdl8F9JL2
+	1R6AijvyIh6OtNG36AXjjLq10ktQ3XPCBhorPyloFgvrWc6m8skQsh9drdnTwBO8
+	g+28HtZLUc9AgdEFQK+sl20UA7QxirGKnsO7Re6KuF4M6ndhQxXuwtsaAqcK7ssy
+	SU1Jp6jz7dn1gtLhbk1cf7eaXvQbGCAhAlV4f7JWG6c43L92yed4qmQgCLws+nBs
+	g71S94bvs1f/Bp87NTi75AmfHze7Q==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu6pp2k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 19:39:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63OJZJvr019920;
+	Fri, 24 Apr 2026 19:39:03 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyc8f5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 19:39:03 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63OJd29t12059184
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Apr 2026 19:39:02 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 76E0C58056;
+	Fri, 24 Apr 2026 19:39:02 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8452B58052;
+	Fri, 24 Apr 2026 19:39:01 +0000 (GMT)
+Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown [9.61.79.186])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Apr 2026 19:39:01 +0000 (GMT)
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+To: linux-s390@vger.kernel.org
+Cc: alifm@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com,
+        frankja@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, schnelle@linux.ibm.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: s390: pci: Fix aisb calculation
+Date: Fri, 24 Apr 2026 15:39:00 -0400
+Message-ID: <20260424193900.940816-1-mjrosato@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424192250.GC3783056@noisy.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE4OCBTYWx0ZWRfX8r0bpvQtUi7L
+ QhhTLIEMfBPJrHdv6Wv9RZPl9qlc9mBNGtHYX3sy4td4fsgSRyOfd3Lpw1wpWACbLXAGxRCk510
+ ZYz9IZ1syTxoQlNN5C/XCR9CMgtRAzkhqT0l0yI/SikyHai30Rpnz2ZBlN+HUP1muX94YbK7Xgl
+ NAfyuxX78pO9oHXF9dlqoQyMSQife2fAjj6wZm37rbFNdq1tsIV9IW9uJufGXTp0ADjOI6dS0ln
+ cLJ0jda+JKnXxCMWKFhKTD7J9BXoVKZOo3GvywFGWubnvKaQrCQIAZoKgPKw5bSozMWRVAxsunO
+ b1hzZU9VIaWtCW4lgfN4bBJDV9B/qQfsqhMiHkraUPnfk5oic2yfjIpL9mw5YN4taavDUyBfO3k
+ 51/+BJR2J1ajE0J8U9fGM2tVU/rS3d/o5m2c+c+AWrScw53XENV+eLeZ+Qz5uWWND+532G6kYpW
+ f3qU2pWBiEprTsRj26g==
+X-Proofpoint-ORIG-GUID: OTAwnfp6YaxnXtp8iwEHoJAWxX94JbF_
+X-Proofpoint-GUID: OTAwnfp6YaxnXtp8iwEHoJAWxX94JbF_
+X-Authority-Analysis: v=2.4 cv=BYfoFLt2 c=1 sm=1 tr=0 ts=69ebc6d8 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=D0XiIlwIJVH3yKn5C8sA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-24_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 clxscore=1015 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604240188
 
-On Fri, Apr 24, 2026 at 09:22:51PM +0200, Peter Zijlstra wrote:
+The current implementation of aisb calculation will erroneously index
+via an unsigned long * as well as multiply by 8B for every 64-bits in
+the offset; only one or the other is required.  This throws off aisb
+calculations once the number of devices exceeds 64, and can result
+in out-of-bounds access as well as failure to indicate summary bits
+associated with those devices in guests.
 
->     mdir = mailbox.Maildir('~/Maildir/');
-> 
->     for i, r in enumerate(reviews):
->         inline = r.get('inline_review', '') or ''
->         if not inline:
->             continue
-> 
->         author_name = r.get('author_name', 'Sashiko Reviewer')
->         author_email = r.get('author_email', 'noreply@sashiko.dev')
-> 
->         msgid = msgids[r['patch_id']]
->         subject = subjects[r['patch_id']]
-> 
->         # Create the Email object
->         msg = EmailMessage()
->         msg['Subject'] = f"Re: {subject}"
->         msg['From'] = f"{author_name} <{author_email}>"
->         msg['To'] = "peterz@infradead.org"
->         msg['Date'] = formatdate(localtime=True)
-> 
->         # The critical threading headers
->         msg['Message-ID'] = f"<review-{i}-{msgid}>"
->         msg['References'] = f"<{msgid}>"
->         msg['In-Reply-To'] = f"<{msgid}>"
-> 
->         msg.set_content(inline)
-> 
->         mdir.add(msg)
-> 
->     mdir.flush()
+Fix this by converting to a physical address before applying the
+offset, as is already done in arch/s390/pci/pci_irq.c.
 
-So Ideally I would have 'Reply-to' header set to the original sender and
-added 'Cc' like the original email. However, AFAICT the JSON does not
-contain this information, and while I could use the mdir object to find
-the original message in my Inbox, this is incredibly slow.
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+---
+ arch/s390/kvm/pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I have a TODO to use python-notmuch to do this, but haven't gotten
-around to doing this yet.
+diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+index 86d93e8dddae..338171f9371b 100644
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -166,7 +166,7 @@ static int kvm_zpci_set_airq(struct zpci_dev *zdev)
+ 	fib.fmt0.noi = airq_iv_end(zdev->aibv);
+ 	fib.fmt0.aibv = virt_to_phys(zdev->aibv->vector);
+ 	fib.fmt0.aibvo = 0;
+-	fib.fmt0.aisb = virt_to_phys(aift->sbv->vector + (zdev->aisb / 64) * 8);
++	fib.fmt0.aisb = virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) * 8;
+ 	fib.fmt0.aisbo = zdev->aisb & 63;
+ 	fib.gd = zdev->gisa;
+ 
+@@ -309,7 +309,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+ 
+ 	/* Update guest FIB for re-issue */
+ 	fib->fmt0.aisbo = zdev->aisb & 63;
+-	fib->fmt0.aisb = virt_to_phys(aift->sbv->vector + (zdev->aisb / 64) * 8);
++	fib->fmt0.aisb = virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) * 8;
+ 	fib->fmt0.isc = gisc;
+ 
+ 	/* Save some guest fib values in the host for later use */
+-- 
+2.53.0
 
-With that 'fixed' I could actually reply to these messages and it would
-all 'just' work. For now I copy/paste when needed.
