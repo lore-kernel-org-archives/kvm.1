@@ -1,187 +1,141 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B06831ED93;
-	Fri, 24 Apr 2026 10:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45B7372B2F;
+	Fri, 24 Apr 2026 10:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777026442; cv=none; b=NqpxbiPzAe03YmNF9UKTr4nTlPrEkh4QewBqC4X/5x6/iZSg+M5b34b6naFr8wjHxhQWaxQPGFZnnmWsnqwPt6Wwq4dWaJg8MbTNOIZfoeK7hRpSP0oCEQW34daRodfWrHNlQw9M3u+TcHL8gzGH68WZSO/KB0gboU4S/wl8EpM=
+	t=1777026892; cv=none; b=ip7UWt/LHR1KfDoYLf3A+uOc6ZvjiUmjB5ndcJFNGqHgJshZREUhzIz51dV/1ZvYpK5w1LjD7nreyVByjEopALKttSh+MwKLKDuv25qTCnKtOyia/D4mKotdnN8GuZMycFoTbwxti5Zt0W8yyN+X5HVqGdQsymUeiDcehXAC5Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777026442; c=relaxed/simple;
-	bh=Yq0E5Y22mnSrei+WA0S7287xcZRgNxXEtToRIMDxfFY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fV7wietL1W9YKuYKj757xMaZULjuB8/OP2V4gMkoBbClzkeprPshVVEx2kGz1A21oogJdDRBmAekE43zwL08TnfRYcAk61o9IYJc8YSAO3tBztpUb5yzpu2wneGIAWDf2wW2vN81wpjL9epMduXbAxdC0yHnl43xII/fNZw7on4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ekM+qOKY; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1777026892; c=relaxed/simple;
+	bh=PEyb6FtGbI/y7wrR0DER3IIKFWzjINJX60KL18Yzo7c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WeN4/272nY3WaizD32SVJcPzk6ooQ96SAdJ4ioKo94lT+jRtio6V0v1BCTwTNRTWzcS2/NMBBVc1vU7uhX7aGEEz0OWnJA06US11avaT2qktPHmJjS1e22BJ2YflBhn0dtfEmPxUjH3XvD8ulE1WJXBqJc1o6uQ8D3X0LMWtHYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzPE19aI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ekM+qOKY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Yq0E5Y22mnSrei+WA0S7287xcZRgNxXEtToRIMDxfFY=; b=ekM+qOKYctJ0tgYco+QmcgMi0j
-	DIL2Fr0kODsGhxtN92B6X1teKN5byHpQOpwm6NlZ7BHTOd8snfwHdufXH3GCl3gXtuh7btr9/zqMX
-	lXe2tLrlEDOh6VrI/yhjmyL9jgbWqdAncfesrpgEyNxMV32ApRSPyJ3Tnv2xdi74vllwbUwWZ7QQX
-	T/UUJz4WOCr1+1Z4DUtAyfKfyLLjKuyGm0tUnEmw3LjmX4xip63pL4ZziB5FohOfe2l6Qv/fxMIim
-	CBDnIFuCu4HLiPC9StQw1PJ7voMAEM+xHjTNG/GCbbOG+Tlby7WaWmBKf99gcdKjg+DAoTxxIbs5H
-	XjMVhSwQ==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGDkV-0000000Eafz-2NpH;
-	Fri, 24 Apr 2026 10:27:03 +0000
-Message-ID: <c2fad21764d2561469151f5dd5d35833ae8f76e6.camel@infradead.org>
-Subject: Re: [PATCH v2 0/3] KVM: Fix and clean up kvm_vcpu_map[_readonly]()
- usages
-From: David Woodhouse <dwmw2@infradead.org>
-To: Peter Fang <peter.fang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, "Griffoul,
- Fred" <fgriffo@amazon.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>,  kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 24 Apr 2026 11:27:03 +0100
-In-Reply-To: <20260408001137.3290444-1-peter.fang@intel.com>
-References: <20260408001137.3290444-1-peter.fang@intel.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-XgoUOdys/5sPEXn/rgmJ"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzPE19aI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28940C4AF09;
+	Fri, 24 Apr 2026 10:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777026891;
+	bh=PEyb6FtGbI/y7wrR0DER3IIKFWzjINJX60KL18Yzo7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AzPE19aIZMgleOj/9Q7vqfwN9bsj9eXevrDOI8GRSdwxw+lk6cdJetqiieBdiQveT
+	 vyjhKFYAWIx0OboZGTxjR7SxzElRboGrqBA7wyqsAfh/A2rzelHLROqcleYL3Mrkt+
+	 YNmCNLzcKDtYT1Rax37fg649Gx74TdctTD1h6EGbXlEuJ/Xyi9uQZXbVbA+RADYK0c
+	 UwpFbbq8bpY7D21KSX5uN4EkXkTAg7SsT8YLRmg7y7HJ47lL1HYnUvyhTeU4ZWmPeG
+	 /TM3uIQvoOg5FY4QfhVQdAwCo8tSgVEmXMkkgr9tOXhduJeHAT7oP4UoFJb/JzORLv
+	 6y8HrPtoEzLQA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 38E5CF40068;
+	Fri, 24 Apr 2026 06:34:50 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 24 Apr 2026 06:34:50 -0400
+X-ME-Sender: <xms:Skfrac-9Tfj0ayWIBJIyngPd4UlMGsnZuiY2Oelqutif3fZ89iuzgw>
+    <xme:SkfraTNg1kxr5_buB3DEXyDvBCKG4GgTfo0nWqyAN6dyJ9vDnG1M4d2_CcatbFkHf
+    uC8G8SDCtNyHrsZb0n-pTk_58d3N0hdZ5Zueu8mn01R4yd_aXmCjM0>
+X-ME-Received: <xmr:SkfraYMAqtZJXSqD1tnl6ecYoMkMELXZiL5l-qals8ZbGO6s1wuIwfBVKC0ypA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeileektdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepiefgvddtkeevjefhhedtudeuueeikeejkedvgffgtdekgeeiveejvdegtedvhefg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeeipdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurght
+    ihhonhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
+    peiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:SkfraROW4DK729VqpkvKr_9pXjP4KoM5f2Ijx0pGvl9ajs3wr547_w>
+    <xmx:SkfrafUWOGIT00cIGKIOwesTuYnJ7J989uaVVotDzWIgsw5j_hZNsw>
+    <xmx:SkfraZrqDgPEAmJatscUh4DMeUJmyMI_-RQaPUOMUT-77ArD7thZGA>
+    <xmx:SkfraVeHg_mWZ1zZqHIOmbwfIE1rZc8UvSJL51nsn7j2yohQ9UZJxw>
+    <xmx:SkfraVC1daTB8U6MHmddnRPSUtC-87Qe-I1RWKoYXacKv5v0ffkmLpEm>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Apr 2026 06:34:49 -0400 (EDT)
+Date: Fri, 24 Apr 2026 11:34:48 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aes7b17nG0cXrtEd@thinkstation>
+References: <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
+ <aeImfRrrvr3UoKtL@thinkstation>
+ <aeTnlQUOOh-dHG8z@thinkstation>
+ <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation>
+ <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation>
+ <aeprnnccJeyHB2rt@x1.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aeprnnccJeyHB2rt@x1.local>
 
+On Thu, Apr 23, 2026 at 02:57:34PM -0400, Peter Xu wrote:
+> On Thu, Apr 23, 2026 at 07:08:00PM +0100, Kiryl Shutsemau wrote:
+> > > - Whether read protection is required for an userspace swap system
+> > >   (e.g. did you get time to have a look at umap?)
+> > 
+> > I looked at it briefly, so I can miss details.
+> > 
+> > IIUC, in absence of read tracking it doesn't collect hotness information
+> > at all. The eviction is based on fault-in time: the oldest faulted-in
+> 
+> For example, let's imagine if we can have a per-mm idle page tracker, would
+> it work for you to collect hotness info?
+>
+> The other idea is, no matter whether we use MGLRU or legacy LRU, if we can
+> expose a better interface to share hotness info from kernel to userspace,
+> would it be possible?
 
---=-XgoUOdys/5sPEXn/rgmJ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I don't see how either fits our problem.
 
-On Tue, 2026-04-07 at 17:11 -0700, Peter Fang wrote:
-> kvm_vcpu_map() and kvm_vcpu_map_readonly() are declared to take a gpa_t
-> in kvm_host.h when they're supposed to take a gfn_t. First fix the
-> function prototypes, and then refactor them to correctly take a gpa_t,
-> reducing boilerplate gpa->gfn conversions at all call sites.
->=20
-> No actual harm has been done yet as all of the call sites are correctly
-> passing in a gfn.
->=20
-> No functional change intended. All changes are compile-tested on x86 and
-> ppc, which are the current users of these APIs.
+Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
+memory. We need visibility in the virtual address space domain.
 
-Fred is already removing all the usage of kvm_vcpu_map() in nested VMX=C2=
-=B9
-and nested SVM probably wants the same treatment. And the PowerPC one
-looks like it could just as easily operate on the userspace address?=20
+We don't care which physical page backs a given guest address at any
+moment. We want to know which piece of the user's dataset is cold, and
+the answer has to be indifferent to kernel actions underneath: the
+tracking must survive migration and swap-out. RWP gives us that — the
+uffd-wp bit is preserved across swap PTEs and migration entries, so the
+"this VA was declared cold" marker stays attached to the VA. A
+physical-side tracker loses its state the moment the folio is freed or
+replaced: a refaulted folio is a fresh object with no history.
 
-Could we just kill kvm_vcpu_map() completely?
+Scaling goes the same way. Per-mm tracking of the form RWP does can
+scale with the working set. A physical-side tracker scales with all folios
+on the LRU/memcg, then needs an rmap walk per folio to map back to a
+VA — which is exactly the reason page_idle doesn't scale for this use
+case today.
 
+There is also a cgroup-level confound: memcg hotness mixes guest memory
+with the VMM's own (worker threads, I/O buffers, vhost-user rings).
+VMA-scoped tracking is the natural unit regardless of the migration
+story.
 
-
-=C2=B9 https://lore.kernel.org/kvm/20260102142429.896101-1-griffoul@gmail.c=
-om/
-
---=-XgoUOdys/5sPEXn/rgmJ
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQyNDEwMjcw
-M1owLwYJKoZIhvcNAQkEMSIEICY0KRgMOPyqrVqgE1O4F+JMvGYmTNuy8y4AU5cL+KadMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIADGH8DIuW6NO7
-b8Ayexb5UM4jXde4s+gnSbb0uGnBw5VtFaqIExZDgEvRak48Xe9uksvPD+ctVqPCPX5XO4TwLkb5
-mN/Bxxefx/8IJkJzx3oQLJCKtok7we0oftqctgB5diDfEDYrLUmN8zhrhgclhXuslAhoj26z7GBH
-6ETBvIm+Xted6a5Elyr5yuRwZHZ3yyPkDKs3YTyBVkXp066afuAuzBQeXADcRuIJJb1Dl7VEApBN
-h6o4tKjVu1DrUrSSFLSZSdZIaAd+jfQVTwlwEjppKDWkBLhU9Z9Faqt37jRUKc0azj4rjGrMPfJG
-rWdTzuWydfuzC3Rju+QHZ+OUwdNF+9VvBAPnCgqH0jVMUaGN9XnVbphc4y/kziw9OXg09VaXu6RV
-OfBuycEqmbO/+Q1spA1IFiYe7+vAcUlh0jqZ7Wx31ymFbNse77WL4DGwYGeEQjMZPFusrIo9mNDz
-hYau+iZlC+gaIq4MosMEH30EaeZUidc+gosJrXmtH1vwHcSREsP8nFYkiUF548DIZPOVS5GXPH69
-2hAxFMs1rwhcMpSNTgkfc+AVbvFhm9ldat8KehL067boyOCOIlJMmwjgtC1m9CVCr34b1eiKTi9V
-0KFmK/sbSq8eovYCQxpKgbhm6jhGvgiIlS7vzbc9gtmj3aVDc0Ne6tuhgBf8q34AAAAAAAA=
-
-
---=-XgoUOdys/5sPEXn/rgmJ--
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
