@@ -1,177 +1,160 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E653E022D
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 14:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777042107; cv=pass; b=ptX2iOnxLYeILS//HCeiIEGBg6irJnR9zllnuXfdFXSgYzr+cBFDO0NptCWr8Y+DXwwRQjhkotMhGzTduDAvVqA+THfuAmC8FB9gI7Tnp/3R5lin+18rbEY28DH8jAolLdqkKFYkRp+jCKIyscEkXByedWhUTDBUkZA9Cdk0+B4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777042107; c=relaxed/simple;
-	bh=MFLezGQkjpyNvidVcNWJBCkv+ZJGnFlRSwwDl3G0bLU=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Qo1WBnVe5JC2quAkB7WWrTriGmAevOR48ItuTL0mOO4z5+/uynsowUkMNBs+s2tWiUSbbnkw9iEOc8OyuGM/kEFfgqtARNSu1nXAkSEiig4Dtceju9Yts+nn7EgBDpOAWKnGQwNB7juIG68cc/tld8bwQYliQHnFeemT7eHlFXQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; spf=none smtp.mailfrom=xenosoft.de; dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=ZQCimJAo; dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=tpy4+zWG; arc=pass smtp.client-ip=85.215.255.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=xenosoft.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738791AA7A6
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777043024; cv=none; b=cRIWBP0kzGnesoH9DPI71m1Eer5H8gRikahTRgjqGtWcR5Yr+GW9fApPtVJs7rpIrrnx11dIumC8lv9qZ2Txvf/5zocXuahAFBijvMp6sNJ+oJNWRUjLEIirIgSJZ8nrAa6flnNOiEQ8bNPCN8uXpZDqlkV6P+EGZGxRZJOjTwA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777043024; c=relaxed/simple;
+	bh=sam5CzX7hUFWo2rSuIUY9jL5rVRI1ZwRvCUUTaLpc/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YYWXTzcbUJ06AFn4ZzK2kIyUZoIy0BdBWPtQtWhjgoyRN3VCtb5jaEpbtBOj5jBZKI/d3S3b1yvyPx8kJgvZSn6vVWNtxJNEN0mPC+wNC36WuRDpnVHUPpLeSq9I/olfyQA/w8UNKc/E/jOpFtFNPmckcfjk5ctBHxwNFuScl7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ea9yJbyH; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="ZQCimJAo";
-	dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="tpy4+zWG"
-ARC-Seal: i=1; a=rsa-sha256; t=1777042079; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=sY3+JyxOHH35fbBxp2GDkpTGsBGnsW1n3ENA5u3iiSmya0N7jp4SAJl40c46nImZ5O
-    u/rUC5/ID75tsbPl1y1SgVN8HZB1U/Yc1FYfsGACcz7Z2J1WIE+KOk8sq5pJ3YDw8S9n
-    xuufLMf2VKueGKsIj+4g+1+Y2+CSVcASj+lJgz2tTDVgcBNEM5sHiLmWO2T7tmNRo6SY
-    mMZDk+lxcZk3wEcjWh85D78cYrMuVSIm18PscKQ+7L+F7y+5/PWiXIZtooOYH5CS33Fp
-    ruBjySSGhJJS1wNzde/sojAShth1EAL+3DEkwJbLqQHBuOLPl+Qg2UJCDvz4aktCPtdE
-    PxvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1777042079;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=AxqLW8EPOEFlnjj49t6Ck8WlSYjtqj1YnihzRrcoLe4=;
-    b=h94z/3dJGm0VuDZc+rJZtJQlA2IYBz0wVuIjw7gBPIhdY4aXEbwtREg3YBzKnx7W4I
-    QoYSgXGyMFrn19toXHGgiSFshBiXavFDF8ZXwkCxXGb/ESaTWi1VR8qDJ4l8KhS9ExAd
-    RatXXOyqQMTA+dJ5VkxXjU3sTj91Ebl1I91XJSueD1IresF5KW7vEuQHd6P5wxBW7iXL
-    dvGKEqV6T3TRGqkcOzd2SK+C02XE0qkz8jmpqrV+TrAP7r3ZqBQSz4ZMy35F5P177A1H
-    Kx+kfNEzF9+x4N0CShYuVGmIOuO7k2NBqBm4WmSlWv5umo0bv0pJ+ZNBBrKXKSc/7Chl
-    VGYA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1777042079;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=AxqLW8EPOEFlnjj49t6Ck8WlSYjtqj1YnihzRrcoLe4=;
-    b=ZQCimJAoxEebAKTmorkVldtEq8aby6XBh8g3Z/6oYcn4QnUT0wafCcIKfEMO3MRBdi
-    p/PjWCVwElv2vN1n/T00gmQZuuUMrjwLmA/LKghl9MhzJL3qvclCMgNfX2HkpCwuVvWT
-    0yhnDayggijzkMthn0m0zcN5Z1xJeppw1V96e/CFAfTVkgSph0aYh9idbw2pcACS/vnA
-    K8Yd1xJ610S4j8WWEzIPG8vh3QMFFeE8xBi5yLRbvxkmGvq8g1j3hJNV6MLUwRLWYBku
-    vTZYWdEn9HBnyfUeK02l9GyMTruKF38j8wAbGpLL5bS3SvacUw3xc7dScPqa836xD5eN
-    prVA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1777042079;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=AxqLW8EPOEFlnjj49t6Ck8WlSYjtqj1YnihzRrcoLe4=;
-    b=tpy4+zWGZNmPwLvXtsCIVEH4OP0LcOcIecU3E65WmvxHZxHCPtfXprceHIGElMgCfd
-    DqzOK1r1eKRYxDynLeDQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIi+l7x/g"
-Received: from void-ppc.a-eon.tld
-    by smtp.strato.de (RZmta 55.0.1 DYNA|AUTH)
-    with ESMTPSA id e7876023OElwxiU
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 24 Apr 2026 16:47:58 +0200 (CEST)
-Subject: Re: KVM-PR no longer works when compiled with new GCC compilers
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org,
- "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>
-Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
-References: <cfd779d6-9440-46b2-9ed5-752f1ae6b5d1@xenosoft.de>
- <588ada6c-bcc4-e93b-1beb-4f7f859e3d5c@xenosoft.de>
- <eee732904c2a7ccce9b496b05f988a36d8a9883e.camel@physik.fu-berlin.de>
- <5da12382-5424-4bd9-981f-359e4dc1fa67@xenosoft.de>
-Organization: A-EON Open Source
-Message-ID: <a584b7a1-fc25-a475-099a-634159b6ffe8@xenosoft.de>
-Date: Fri, 24 Apr 2026 16:47:58 +0200
-X-Mailer: BrassMonkey/34.1.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ea9yJbyH"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b0afa0210bso36752115ad.2
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 08:03:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777043023; x=1777647823; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gdnOmdvYkq1xF25fAEazaVF6DIg+bGDl6V2EYI1zKDU=;
+        b=Ea9yJbyHQe82ThmrdwNs9z9RSGsQMh08rJfRXjLI0A/EKGyvxSHOcseDdXM8enl6aw
+         ZTTE4RgSUOgs28it5Xj47AdbqXFfnfjxTjCqoSLHoLDWCLF/gzepeIxoT0C1I4ew68i2
+         C7W1+PsA1CdnUczpB3Ux94tUjJNRv9qFeQUP+lRHljHIuAH9dwb8jrIZa7sIOoOsTAEB
+         l5QVAHuVcUimynAFtMPqEnNnaUiWDQSj3tYB9gw4UYAVW7nwpuWLJ9fJyZ6U938PL4aj
+         gkheKpepmyTGJ2zQulMx4AkRR1XobfJbzNnYZOPr0m5KLLgIlst2xk2VxRuZdQ9GoIn1
+         9M8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777043023; x=1777647823;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gdnOmdvYkq1xF25fAEazaVF6DIg+bGDl6V2EYI1zKDU=;
+        b=GQqSGNCaKd4y7SpCabKe2dYbJrj/0YXwxIwPIux66w5mbmokYftEGYUxnA7OzwJZdH
+         yFSBNspxlAkhhYZH0RmPkZyejR/7IimqiBs0/O/DXgVWA3IsmHhoxF11q3RTOGZguGJj
+         wZh/F955P46gpknIQSpw7Y2ie4TcsY33IhSYz4MmlFSVHTCdYYraeqh2pnbF+G7zbZMB
+         xn+uo/QRGpYFQw2Ah3XEZfHuPevZtYWO85kHKCAKUuzrtHVNXOZwIqTbf3Jof9+YetOO
+         RChCdmqtWKKu3Y8B1fl272Co5eOnd7loOTinjZsdoBIZo2AsSGGH5xSD7mheWEKEMfIc
+         lJTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/h27x8lqWz9Io8FkzPWN2Gen78oHl6kz27rOCZG9ECp+XWmJGqczRFTlLBQJN2yp96g4A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF/cvBZh6O6nwdIQNx3cIhiDUy3p2BUDABEGwHF72I7ehpLaq+
+	Xznck4NHr366BoJX07rMLt61015/39fux4XmiZAlk7sklGmIf08Wovy4
+X-Gm-Gg: AeBDiespMuOdV6qjjVpnv/JVm78YDEDKblqVdQn/BTp//km1zoCQ5HROlioMhjO9mPv
+	JhtQFK7Drm1UKfV1+Rz/4p8/zvh9o59U5o6f4XFxdpLBLN+AE47zSFEmoa1G987sVmm1hwi/b3o
+	Epw0fK5bcYcgeKq2EF+JjOXqJYsTgLg4BNfdzNzRvrAzlV9G88GXIeSh0pPLjH86ZDiiKjQcnzb
+	Wmgp7YfmDMsgfqH1/GrPTX1s05Yy9gy9UDIyo4qiLcfi403HmwPpML4DE6WK5nFdSwYEuTGQ8WA
+	gGZfTVzaerM6Wr9gUIt7maszu94kZWrAK/nAlv1AqL4ClUiLx1/OUN0LHwfHxOrx/y5+8YBf7YV
+	iewa1u3ix1hy+ezsC1isefY8vQJT8cs6pEJFyQlfUbr10Wos71eRWA2x4/7GW7OGrrxkTqang3/
+	RH5ImxZ2JGCfu/epxFcAv4/xz+KkyyJ+qVDIWhH/WUT3yx8F/PZ7W7DWEiOIxuFQG9wUu+gzgWA
+	W6jQJOiJLFKm7Nc
+X-Received: by 2002:a17:903:286:b0:2b2:680c:2193 with SMTP id d9443c01a7336-2b5f9f64affmr349377755ad.31.1777043022350;
+        Fri, 24 Apr 2026 08:03:42 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:ba99:851:d885:8271])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab4cc47sm233257465ad.82.2026.04.24.08.03.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 08:03:41 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: mst@redhat.com,
+	jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	stefanha@redhat.com,
+	sgarzare@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+Subject: [PATCH] vsock/virtio: fix memory leak in virtio_transport_recv_listen()
+Date: Fri, 24 Apr 2026 20:33:10 +0530
+Message-ID: <20260424150310.57228-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <5da12382-5424-4bd9-981f-359e4dc1fa67@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 23/04/26 19:46, Christian Zigotzky wrote:
-> On 23 April 2026 at 07:35 pm, John Paul Adrian Glaubitz wrote:
->> Hi Christian,
->>
->> On Thu, 2026-04-23 at 18:50 +0200, Christian Zigotzky wrote:
->>> On 02/10/25 08:37, Christian Zigotzky wrote:
->>>> Hello,
->>>>
->>>> KVM-PR (-enable-kvm) doesn't work anymore on our PA Semi Nemo boards
->>>> [1] if we compiled it with new GCC compilers.
->>>> The VM can't boot. There aren't any messages on the serial console of
->>>> QEMU.
->>>>
->>>> It boots without KVM-PR.
->>>>
->>>> Kernel config with new GCC compiler [2]:
->>>>
->>>> - CONFIG_CC_VERSION_TEXT="powerpc64-suse-linux-gcc (SUSE Linux) 
->>>> 11.5.0"
->>>> - CONFIG_TARGET_CPU="power4"
->>>> - CONFIG_TUNE_CPU="-mtune=power10"
->>>>
->>>> It works if I compile it with an old GCC compiler [3]:
->>>>
->>>> - CONFIG_CC_VERSION_TEXT="powerpc-linux-gnu-gcc (Ubuntu
->>>> 9.4.0-1ubuntu1~20.04.1) 9.4.0"
->>>> - CONFIG_TARGET_CPU="power4"
->>>> - CONFIG_TUNE_CPU="-mtune=power9"
->>>>
->>>> Mtune changes to power9 automatically if I compiled it with an old GCC
->>>> compiler. If I compile it with a new GCC compiler again it changes
->>>> automatically to mtune=power10.
->>>>
->>>> Is mtune the reason of the KVM-PR issue? I think the issue is the new
->>>> GCC. [4]
->>>>
->>>> Could you please check whether KVM-PR is compatible with new versions
->>>> of GCC compilers?
->>>>
->>>> Thanks in advance,
->>>>
->>>> Christian
->>>>
->>>>
->>>>
->>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->>>>
->>>> [2]
->>>> https://github.com/chzigotzky/kernels/blob/45186997e6f347fd092f9ab629d62d6041426227/configs/x1000_defconfig 
->>>>
->>>>
->>>> [3]
->>>> https://github.com/chzigotzky/kernels/blob/bc7a3e27b3fcdee52a8135435f02cf807a43872a/configs/x1000_defconfig 
->>>>
->>>>
->>>> [4] KVM-PR no longer works on an X1000 if the kernel has been compiled
->>>> with a new GCC:
->>>> https://forum.hyperion-entertainment.com/viewtopic.php?p=57146#p57146
->>>>
->>> Error messages (kvm-pr compiled with powerpc64-linux-gnu-gcc 14.1.1
->>> 20240507 Red Hat Cross 14.1.1-1, GNU ld version 2.41-2.el10_0):
->>>
->>> [  800.274759] Couldn't emulate instruction 0x00000000 (op 0 xop 0)
->>> [  800.274767] kvmppc_exit_pr_progint: emulation at 100 failed 
->>> (00000000)
->> I don't think "mtune=power9" or "mtune=power10" will work. Did you 
->> try "mtune=power4"?
->>
->> Adrian
->>
-> I haven't tried it yet, but I'm going to give it a try.
->
-> Christian
-I compiled it with "mtune=power4" today but without any success.
+Two bugs exist in virtio_transport_recv_listen():
 
-Error messages:
+1. On the transport assignment error path, sk_acceptq_added() is called
+   but sk_acceptq_removed() is never called when vsock_assign_transport()
+   fails or assigns a different transport than expected. This causes the
+   parent listener's accept backlog counter to be permanently inflated,
+   eventually causing sk_acceptq_is_full() to reject legitimate incoming
+   connections.
 
-[  800.274759] Couldn't emulate instruction 0x00000000 (op 0 xop 0)
-[  800.274767] kvmppc_exit_pr_progint: emulation at 100 failed (00000000)
+2. There is a race between __vsock_release() and vsock_enqueue_accept().
+   __vsock_release() sets sk->sk_shutdown to SHUTDOWN_MASK and flushes
+   the accept queue under the parent socket lock. However,
+   virtio_transport_recv_listen() checks sk_shutdown and subsequently
+   calls vsock_enqueue_accept() without holding the parent socket lock.
+   This means a child socket can be enqueued after __vsock_release() has
+   already flushed the queue, causing the child socket and its associated
+   resources to leak
+   permanently. The existing comment in the code hints at this race but
+   the fix was never implemented.
 
-Christian
+Fix both issues: add sk_acceptq_removed() on the transport error path,
+and re-check sk->sk_shutdown under the parent socket lock before calling
+vsock_enqueue_accept() to close the race window. The child socket lock
+is released before acquiring the parent socket lock to maintain correct
+lock ordering (parent before child).
 
+Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+Tested-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ net/vmw_vsock/virtio_transport_common.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 416d533f493d..fad5fa4a4296 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1578,6 +1578,7 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 	 */
+ 	if (ret || vchild->transport != &t->transport) {
+ 		release_sock(child);
++		sk_acceptq_removed(sk);
+ 		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+ 		sock_put(child);
+ 		return ret;
+@@ -1588,11 +1589,19 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 		child->sk_write_space(child);
+ 
+ 	vsock_insert_connected(vchild);
++	release_sock(child);
++	lock_sock(sk);
++	if (sk->sk_shutdown == SHUTDOWN_MASK) {
++		release_sock(sk);
++		sk_acceptq_removed(sk);
++		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
++		sock_put(child);
++		return -ESHUTDOWN;
++	}
+ 	vsock_enqueue_accept(sk, child);
++	release_sock(sk);
+ 	virtio_transport_send_response(vchild, skb);
+ 
+-	release_sock(child);
+-
+ 	sk->sk_data_ready(sk);
+ 	return 0;
+ }
 -- 
-Sent with BrassMonkey 34.1.0 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_34.1.0)
+2.43.0
 
