@@ -1,137 +1,177 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DB43C6A2B
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 14:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777041653; cv=none; b=eWHOa9JYoCb/j4bsKZ/dgbGNW87pc3bE7pDFB7PVhNf4ydVfZv6mKjKWhLnGVV5nTrnBRYflDbU5gf8EfWDXDBq3G1QxJSkt6RmnqtRCpe62oF2Nxy9gfA8tDYx/MOR/ug7lPTJ8V28fnpYaIzZNb8CltMcm8n1KYN/V3n1J7KY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777041653; c=relaxed/simple;
-	bh=ssQXKcLcGAYDJ+MlHe6P5SXi6S6dHklut16i873xFNM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EdDxtoFK8vtmWKTDPxwOgxBAFMt56zBw7TF/CTb9dOXINDVj/l+2gKp+S7IOPxyG6xeEye2/JeQ11jKfSibvU/Q7BuXuAY//yG6Hz3msddz9D86vLRqNM4m0B0FZRe7jHYF9hNNOhOpO5a3HyWwx2X9/GCaZvj/5caO3e3TKRk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=kyY1MOez; arc=none smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E653E022D
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 14:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777042107; cv=pass; b=ptX2iOnxLYeILS//HCeiIEGBg6irJnR9zllnuXfdFXSgYzr+cBFDO0NptCWr8Y+DXwwRQjhkotMhGzTduDAvVqA+THfuAmC8FB9gI7Tnp/3R5lin+18rbEY28DH8jAolLdqkKFYkRp+jCKIyscEkXByedWhUTDBUkZA9Cdk0+B4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777042107; c=relaxed/simple;
+	bh=MFLezGQkjpyNvidVcNWJBCkv+ZJGnFlRSwwDl3G0bLU=;
+	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Qo1WBnVe5JC2quAkB7WWrTriGmAevOR48ItuTL0mOO4z5+/uynsowUkMNBs+s2tWiUSbbnkw9iEOc8OyuGM/kEFfgqtARNSu1nXAkSEiig4Dtceju9Yts+nn7EgBDpOAWKnGQwNB7juIG68cc/tld8bwQYliQHnFeemT7eHlFXQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; spf=none smtp.mailfrom=xenosoft.de; dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=ZQCimJAo; dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=tpy4+zWG; arc=pass smtp.client-ip=85.215.255.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=xenosoft.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="kyY1MOez"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651bf695701so6434607d50.2
-        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 07:40:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777041651; x=1777646451; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MGeb+YYn7RN3axNi7qPpfKeHmTAGHGlAbe1TFBeXhXU=;
-        b=kyY1MOezylA79zBtj3kmcMYQHCmr4SI/htchkVaO2N7heXb4aSObb7WLGcZ8SfZMsV
-         w//K8oEwFKmdrPlxQg/pJzYfTTMMTLPsUP56eLpDR3XydP11WnZog6MNvk0P8wdMqoR1
-         fhiVhm/8bTXnpWP2X+TBy74OBsR4No92mGslWdV0enTf9i1cKleYrUlV649Hlv6KARCd
-         vqvKaqYfTqZ6PAXsyD/hp7fLTu4XTS3Cay3STKyO0HZyKCWNBtWixuuLCP0IXgXE8Zaz
-         BDm6rZtr2o1Q4OJMCw6sXX573tzBNDFIPoReq3qQ+BU157F0VykwFgJCPMkRkRnUPkJI
-         +tPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777041651; x=1777646451;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MGeb+YYn7RN3axNi7qPpfKeHmTAGHGlAbe1TFBeXhXU=;
-        b=MBQQ9cuyCG2fut2ys3JKF53IL/MTBFHzD+MduwJLknY49Q81DOmy77z2H6SDvFEE6p
-         xlj1RoAXhTU7jE/JvSyTgJjIFX28hRr6haV8Yxuak4HaePDkaAiraoWLD7uy8nSpbC0r
-         e7KE2t1WeeP+rTjcJK/X0cSkNG5ci75xHs/+OrtzDQ9zm5cm140+qAUS3yKjQmko3uBY
-         ex1nLrmSKUfbOGLGF9QmifNmZlweBhsNDPqcH2bEIfzIudz9flEJvicoOWwj8UQXGHfA
-         x/et31RperogHchpcjaBOun0preH7WRUU3uvea5L9B2M+ljLsmmizq0lnafYr/4u1PUo
-         BBiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+HAF2vIokPTYj7htgG9YCzN9LqKlex5viPZBAxl2fBqaifLlngrpn16bP5vMmiuPsaK3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdlREOhjCgz86nHqRfmpJ5jgS7Af7ev3fgaJx5iINSV0AE0Y2X
-	XV/C7iumzdSwef0UY/e600V1kfmseSskBa9SyAd+bIYF5+ApI4c+MoAR2mwte3I1ARg=
-X-Gm-Gg: AeBDiesMh0xZG3jXLfgtnf5Xex4N4pu+MSfXfzlPRh0lZGuWkhkdBxah7gC+OFNNByG
-	4sy5H79fhS59yaZK1nsNdeEpChfRnAP/k8G9oKtv0XrUwBpNQNhooEI5ASgfyn40ekiuP7PP20m
-	dp2Nv5ClEWOk8io/bwmNdmvpcy6P01PYyEPsDn0BftU8o7hHssQh/MQe2kXcW+hUMsHyTppmBnk
-	7MNTvhI51rzndwer7Qf/8sCi9go0QRK3CeTv15pjLMj71tZmjQGRWZy4dJ+/nltcy55Q4afoeBT
-	DOygu/Qmmdxp/LnMoA2TzNMBtD9TeHyPBG26mX1CQ2Ld6wpcsXrljya/d/HBglt1VJNQ2uDZKHZ
-	jyPEOfAoVffb74QvLSF7q7JoEvO2iBDQTfp2jSVFv6O36cCJCVl3EO7obkAXWkw42zStbdwGDfB
-	dkLqSAd4TDdsrfLV8TcNxZ7W4y0evxwLiSfWcdKYbA6JPDQ3d9/62476kf5Px/ZNqtWO7WUck6L
-	ZlCiVNwgRlRGMI3dwip9OVqls+SaSG511Cr4cPE
-X-Received: by 2002:a05:690e:4004:b0:657:4568:c4c4 with SMTP id 956f58d0204a3-6574568c682mr1080804d50.18.1777041650771;
-        Fri, 24 Apr 2026 07:40:50 -0700 (PDT)
-Received: from google.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65314b25fa8sm10692424d50.1.2026.04.24.07.40.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 07:40:50 -0700 (PDT)
-Date: Fri, 24 Apr 2026 10:40:49 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Lance Yang <lance.yang@linux.dev>, peterz@infradead.org, 
-	dave.hansen@intel.com, dave.hansen@linux.intel.com, ypodemsk@redhat.com, 
-	hughd@google.com, will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
-	arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com, 
-	jgross@suse.com, seanjc@google.com, pbonzini@redhat.com, 
-	boris.ostrovsky@oracle.com, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	ioworker0@gmail.com, roman.gushchin@linux.dev
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
- them
-Message-ID: <aeuAwkNsmDer08MD@google.com>
-References: <20260424062528.71951-1-lance.yang@linux.dev>
- <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
- <aetw4aoABYj3keMh@plex>
- <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
- <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
- <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
+	dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="ZQCimJAo";
+	dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="tpy4+zWG"
+ARC-Seal: i=1; a=rsa-sha256; t=1777042079; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=sY3+JyxOHH35fbBxp2GDkpTGsBGnsW1n3ENA5u3iiSmya0N7jp4SAJl40c46nImZ5O
+    u/rUC5/ID75tsbPl1y1SgVN8HZB1U/Yc1FYfsGACcz7Z2J1WIE+KOk8sq5pJ3YDw8S9n
+    xuufLMf2VKueGKsIj+4g+1+Y2+CSVcASj+lJgz2tTDVgcBNEM5sHiLmWO2T7tmNRo6SY
+    mMZDk+lxcZk3wEcjWh85D78cYrMuVSIm18PscKQ+7L+F7y+5/PWiXIZtooOYH5CS33Fp
+    ruBjySSGhJJS1wNzde/sojAShth1EAL+3DEkwJbLqQHBuOLPl+Qg2UJCDvz4aktCPtdE
+    PxvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1777042079;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=AxqLW8EPOEFlnjj49t6Ck8WlSYjtqj1YnihzRrcoLe4=;
+    b=h94z/3dJGm0VuDZc+rJZtJQlA2IYBz0wVuIjw7gBPIhdY4aXEbwtREg3YBzKnx7W4I
+    QoYSgXGyMFrn19toXHGgiSFshBiXavFDF8ZXwkCxXGb/ESaTWi1VR8qDJ4l8KhS9ExAd
+    RatXXOyqQMTA+dJ5VkxXjU3sTj91Ebl1I91XJSueD1IresF5KW7vEuQHd6P5wxBW7iXL
+    dvGKEqV6T3TRGqkcOzd2SK+C02XE0qkz8jmpqrV+TrAP7r3ZqBQSz4ZMy35F5P177A1H
+    Kx+kfNEzF9+x4N0CShYuVGmIOuO7k2NBqBm4WmSlWv5umo0bv0pJ+ZNBBrKXKSc/7Chl
+    VGYA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1777042079;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=AxqLW8EPOEFlnjj49t6Ck8WlSYjtqj1YnihzRrcoLe4=;
+    b=ZQCimJAoxEebAKTmorkVldtEq8aby6XBh8g3Z/6oYcn4QnUT0wafCcIKfEMO3MRBdi
+    p/PjWCVwElv2vN1n/T00gmQZuuUMrjwLmA/LKghl9MhzJL3qvclCMgNfX2HkpCwuVvWT
+    0yhnDayggijzkMthn0m0zcN5Z1xJeppw1V96e/CFAfTVkgSph0aYh9idbw2pcACS/vnA
+    K8Yd1xJ610S4j8WWEzIPG8vh3QMFFeE8xBi5yLRbvxkmGvq8g1j3hJNV6MLUwRLWYBku
+    vTZYWdEn9HBnyfUeK02l9GyMTruKF38j8wAbGpLL5bS3SvacUw3xc7dScPqa836xD5eN
+    prVA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1777042079;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=AxqLW8EPOEFlnjj49t6Ck8WlSYjtqj1YnihzRrcoLe4=;
+    b=tpy4+zWGZNmPwLvXtsCIVEH4OP0LcOcIecU3E65WmvxHZxHCPtfXprceHIGElMgCfd
+    DqzOK1r1eKRYxDynLeDQ==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIi+l7x/g"
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 55.0.1 DYNA|AUTH)
+    with ESMTPSA id e7876023OElwxiU
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Fri, 24 Apr 2026 16:47:58 +0200 (CEST)
+Subject: Re: KVM-PR no longer works when compiled with new GCC compilers
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org,
+ "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+ mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+References: <cfd779d6-9440-46b2-9ed5-752f1ae6b5d1@xenosoft.de>
+ <588ada6c-bcc4-e93b-1beb-4f7f859e3d5c@xenosoft.de>
+ <eee732904c2a7ccce9b496b05f988a36d8a9883e.camel@physik.fu-berlin.de>
+ <5da12382-5424-4bd9-981f-359e4dc1fa67@xenosoft.de>
+Organization: A-EON Open Source
+Message-ID: <a584b7a1-fc25-a475-099a-634159b6ffe8@xenosoft.de>
+Date: Fri, 24 Apr 2026 16:47:58 +0200
+X-Mailer: BrassMonkey/34.1.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
+In-Reply-To: <5da12382-5424-4bd9-981f-359e4dc1fa67@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 04-24 07:31, Andrew Morton wrote:
-> On Fri, 24 Apr 2026 16:20:55 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
-> > On 4/24/26 16:15, Andrew Morton wrote:
-> > > On Fri, 24 Apr 2026 13:37:04 +0000 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > > 
-> > >> On 04-24 06:30, Andrew Morton wrote:
-> > >>>
-> > >>>
-> > >>> Sashiko questions:
-> > >>> 	https://sashiko.dev/#/patchset/20260424062528.71951-1-lance.yang@linux.dev
-> > >>>
-> > >>> (I never know if my Sashiko emails are welcome/useful.  Maybe Sashiko
-> > >>> said the same stuff about v9 and it's all wrong.  But better safe than
-> > >>> sorry!)
-> > >>
-> > >> These emails are helpful; but, I do not believe you should have to 
-> > >> manually follow up with a link to every new patch series.
-> > >>
-> > >> Perhaps  Sashiko could automatically send a summary email in response to 
-> > >> the cover letter, or provide a link once the reviews are complete. For 
-> > >> the kexec ML, we opted-in with Roman to receive automated emails from 
-> > >> sashiko.
-> > > 
-> > > Yep.  I'd be OK with an automatic reply-to-all.  Maybe some won't like
-> > > that.
-> > > 
-> > > An alternative I've discussed with Roman is an automated
-> > > reply-to-author with a cc to a dedicated list (we could use mm-commits
-> > > for now).
-> > > 
-> > > Preferences?
-> > 
-> > Reply-to-author would likely be better as a first step.
-> 
-> Why do you think so?
-> 
-> Pasha, is it too early to determine how reply-to-all is working out for
-> kexec?
+On 23/04/26 19:46, Christian Zigotzky wrote:
+> On 23 April 2026 at 07:35 pm, John Paul Adrian Glaubitz wrote:
+>> Hi Christian,
+>>
+>> On Thu, 2026-04-23 at 18:50 +0200, Christian Zigotzky wrote:
+>>> On 02/10/25 08:37, Christian Zigotzky wrote:
+>>>> Hello,
+>>>>
+>>>> KVM-PR (-enable-kvm) doesn't work anymore on our PA Semi Nemo boards
+>>>> [1] if we compiled it with new GCC compilers.
+>>>> The VM can't boot. There aren't any messages on the serial console of
+>>>> QEMU.
+>>>>
+>>>> It boots without KVM-PR.
+>>>>
+>>>> Kernel config with new GCC compiler [2]:
+>>>>
+>>>> - CONFIG_CC_VERSION_TEXT="powerpc64-suse-linux-gcc (SUSE Linux) 
+>>>> 11.5.0"
+>>>> - CONFIG_TARGET_CPU="power4"
+>>>> - CONFIG_TUNE_CPU="-mtune=power10"
+>>>>
+>>>> It works if I compile it with an old GCC compiler [3]:
+>>>>
+>>>> - CONFIG_CC_VERSION_TEXT="powerpc-linux-gnu-gcc (Ubuntu
+>>>> 9.4.0-1ubuntu1~20.04.1) 9.4.0"
+>>>> - CONFIG_TARGET_CPU="power4"
+>>>> - CONFIG_TUNE_CPU="-mtune=power9"
+>>>>
+>>>> Mtune changes to power9 automatically if I compiled it with an old GCC
+>>>> compiler. If I compile it with a new GCC compiler again it changes
+>>>> automatically to mtune=power10.
+>>>>
+>>>> Is mtune the reason of the KVM-PR issue? I think the issue is the new
+>>>> GCC. [4]
+>>>>
+>>>> Could you please check whether KVM-PR is compatible with new versions
+>>>> of GCC compilers?
+>>>>
+>>>> Thanks in advance,
+>>>>
+>>>> Christian
+>>>>
+>>>>
+>>>>
+>>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+>>>>
+>>>> [2]
+>>>> https://github.com/chzigotzky/kernels/blob/45186997e6f347fd092f9ab629d62d6041426227/configs/x1000_defconfig 
+>>>>
+>>>>
+>>>> [3]
+>>>> https://github.com/chzigotzky/kernels/blob/bc7a3e27b3fcdee52a8135435f02cf807a43872a/configs/x1000_defconfig 
+>>>>
+>>>>
+>>>> [4] KVM-PR no longer works on an X1000 if the kernel has been compiled
+>>>> with a new GCC:
+>>>> https://forum.hyperion-entertainment.com/viewtopic.php?p=57146#p57146
+>>>>
+>>> Error messages (kvm-pr compiled with powerpc64-linux-gnu-gcc 14.1.1
+>>> 20240507 Red Hat Cross 14.1.1-1, GNU ld version 2.41-2.el10_0):
+>>>
+>>> [  800.274759] Couldn't emulate instruction 0x00000000 (op 0 xop 0)
+>>> [  800.274767] kvmppc_exit_pr_progint: emulation at 100 failed 
+>>> (00000000)
+>> I don't think "mtune=power9" or "mtune=power10" will work. Did you 
+>> try "mtune=power4"?
+>>
+>> Adrian
+>>
+> I haven't tried it yet, but I'm going to give it a try.
+>
+> Christian
+I compiled it with "mtune=power4" today but without any success.
 
-It is too early, we have opted-in only at the end of last week.
+Error messages:
 
-Pasha
+[  800.274759] Couldn't emulate instruction 0x00000000 (op 0 xop 0)
+[  800.274767] kvmppc_exit_pr_progint: emulation at 100 failed (00000000)
+
+Christian
+
+-- 
+Sent with BrassMonkey 34.1.0 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_34.1.0)
+
