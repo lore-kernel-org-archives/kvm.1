@@ -1,208 +1,157 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDC92BEC27;
-	Fri, 24 Apr 2026 15:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0695D2D131D;
+	Fri, 24 Apr 2026 15:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777043591; cv=none; b=M+rzJ3O6GkqPXE2FKl5cSXE6V2TvVqwCBKhGU6zW5PuoKrD8G1KFRUIHYA8L/1hocUj6zHF0UL4bOKbr+jpj5ie3vPBplUktHGEaD4h8dwsAsabfPsUUv7Rn37/8e99qJXEdOlGLjbWQ3mD5t/LeSS+7dA3MPWqXRr/Ic8GhNzg=
+	t=1777043704; cv=none; b=r5BYuiObnwoi8wkk0UMj7u5GbRk0iTpRlHXZZOMaH5KfE91y9xMFImGrQm+kKf+o9QdnaRPrwVdH2H/somv3r8pLXVxkUNOkNBuzaityYIqgTgAVvH357c9T9BUlWCuY+bFLtsTtFw9WpoT9Dr8ZlRL7K7zKIv++yLaw3M6Qp+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777043591; c=relaxed/simple;
-	bh=xYXJK+a+R3f1wnU/4nZkOjCcn01JAxieLKQ2xSOGPB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qS9s9kdY7q4lBsb+XCk650T3my/c9M2T2HuyUBs1z1u4HQBaq8yzO+3wwFiRAEORaBaFMn+bD8gtyLZktxR9FV7eU+hpAw+4ymVGFXDYdaGhnLcmu3YRxoJfsNy+prGlOvFZoHJbHYeA99rsOHZaZJUoW7gAuRu9AB6VTWu0/M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZhhchdJF; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1777043704; c=relaxed/simple;
+	bh=g9K5mfNblRY0b8MrHwI5cfWeLShbsP+DXXMV5iplhIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NvMooC+hWCYkOb4EaxyEdl4x/XGyiUU5eRzyi1SyoFaPwmsVK/50xc+k7dNtto4riVUNNc8y0bhRzI9hBhLKg+oC3tlhPcx/XaO3p/8Ru1p42cLIH1YFVgwguKvgja9LAsPQKjWiMyqQkx2DjetgV5RmRzjyJX13KSE/acMeAOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixejiLbC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZhhchdJF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=baIpBz6aXOlLb2F6BEUohnTvCndCw/3+ATrc+ipc7oU=; b=ZhhchdJFtym8U+LIXCoVLeR2gB
-	/csyHZe3SikhGJKPPECkv/IGwNAFB49pA/VgwWs+vJ3q/bThmE33AO9boC7HohP1U5av3e9kSTeOH
-	AWLbUnRwoeRUGOHsRMzxe8X/1v7l2IMCLy6h91V0RFCrlcho/8nHHyk8AoPldjdmP9HtOjRKUCxt2
-	aQCkricJncWE0f/vLN2+1gicbZAskJsVAVwRIsTu8vBEX+BoQz5/jRVr9KL2m/YH/z2jx9QW5kp5o
-	qiRUYnvW3KAOCdw5y/068LZpESHso9/GpHfOBSSafH7EumBrbLlgaxIIMIId9Z4WpUIJywsNo1744
-	3zsbr63A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGID3-0000000F1yt-04pa;
-	Fri, 24 Apr 2026 15:12:50 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id B1ED130301B; Fri, 24 Apr 2026 17:12:47 +0200 (CEST)
-Date: Fri, 24 Apr 2026 17:12:47 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, shy828301@gmail.com, riel@surriel.com,
-	jannh@google.com, jgross@suse.com, seanjc@google.com,
-	pbonzini@redhat.com, boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ioworker0@gmail.com
-Subject: Re: [PATCH 7.2 v10 2/2] x86/tlb: skip redundant sync IPIs for native
- TLB flush
-Message-ID: <20260424151247.GG3126523@noisy.programming.kicks-ass.net>
-References: <20260424062528.71951-1-lance.yang@linux.dev>
- <20260424062528.71951-3-lance.yang@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixejiLbC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834ECC19425;
+	Fri, 24 Apr 2026 15:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777043703;
+	bh=g9K5mfNblRY0b8MrHwI5cfWeLShbsP+DXXMV5iplhIU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ixejiLbCe6paehrBYEgux/SsbNRd7z0hbwWE3TgN2pwgIIvCNGNdeIfJ9tK+Y95ru
+	 oYaLVhKd6Wllz358gOUojfmSejLRJaq+8q2GtBDJSqIF4nk6OZJQ6/BVQd4QkqyQ96
+	 ldDaQq40R4xj6QDnnWHhlWhEi+PQXPRroBHYyyNn7s2jUbQIiXAOVO4qK0/Go7MVOq
+	 Nd+KX3P0gBE2ckpNniPIZJwnRslVs5KS8h36Bqe/8HtCpLmeKF7CHLG5lMGjkQpd9m
+	 Yd6X1/oKxy3NNdUCBIkWsAma9wwIRyxwe5tYXqGw3H+nihQkZTNnMm67JWCEGkV81Y
+	 2fsMq98wGr6EA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wGIFA-0000000EPWA-2PuZ;
+	Fri, 24 Apr 2026 15:15:00 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ben Simner <ben.simner@cl.cam.ac.uk>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Fuad Tabba <tabba@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Sebastian Ene <sebastianene@google.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Will Deacon <will@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.1, take #1
+Date: Fri, 24 Apr 2026 16:14:43 +0100
+Message-ID: <20260424151443.750077-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424062528.71951-3-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, ben.simner@cl.cam.ac.uk, dwmw@amazon.co.uk, tabba@google.com, qperret@google.com, sebastianene@google.com, vdonnefort@google.com, will@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Apr 24, 2026 at 02:25:28PM +0800, Lance Yang wrote:
-> diff --git a/arch/x86/hyperv/mmu.c b/arch/x86/hyperv/mmu.c
-> index cfcb60468b01..2cf1eeaffd6f 100644
-> --- a/arch/x86/hyperv/mmu.c
-> +++ b/arch/x86/hyperv/mmu.c
-> @@ -63,7 +63,7 @@ static void hyperv_flush_tlb_multi(const struct cpumask *cpus,
->  	struct hv_tlb_flush *flush;
->  	u64 status;
->  	unsigned long flags;
-> -	bool do_lazy = !info->freed_tables;
-> +	bool do_lazy = !info->wake_lazy_cpus;
->  
->  	trace_hyperv_mmu_flush_tlb_multi(cpus, info);
->  
-> @@ -198,7 +198,7 @@ static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
->  
->  	flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
->  	nr_bank = cpumask_to_vpset_skip(&flush->hv_vp_set, cpus,
-> -			info->freed_tables ? NULL : cpu_is_lazy);
-> +			info->wake_lazy_cpus ? NULL : cpu_is_lazy);
->  	if (nr_bank < 0)
->  		return HV_STATUS_INVALID_PARAMETER;
->  
-> diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
-> index 866ea78ba156..fb256fd95f95 100644
-> --- a/arch/x86/include/asm/tlb.h
-> +++ b/arch/x86/include/asm/tlb.h
+Paolo,
 
->  static inline void tlb_flush(struct mmu_gather *tlb)
->  {
->  	unsigned long start = 0UL, end = TLB_FLUSH_ALL;
->  	unsigned int stride_shift = tlb_get_unmap_shift(tlb);
->  
-> +	/*
-> +	 * Both freed_tables and unshared_tables must wake lazy-TLB CPUs, so
-> +	 * they receive IPIs before reusing or freeing page tables, allowing
-> +	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
-> +	 */
-> +	bool wake_lazy_cpus = tlb->freed_tables || tlb->unshared_tables;
-> +
->  	if (!tlb->fullmm && !tlb->need_flush_all) {
->  		start = tlb->start;
->  		end = tlb->end;
->  	}
->  
-> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
-> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, wake_lazy_cpus);
->  }
->  
->  static inline void invlpg(unsigned long addr)
-> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-> index 5a3cdc439e38..39b9454781c3 100644
-> --- a/arch/x86/include/asm/tlbflush.h
-> +++ b/arch/x86/include/asm/tlbflush.h
-> @@ -225,7 +227,7 @@ struct flush_tlb_info {
->  	u64			new_tlb_gen;
->  	unsigned int		initiating_cpu;
->  	u8			stride_shift;
-> -	u8			freed_tables;
-> +	u8			wake_lazy_cpus;
->  	u8			trim_cpumask;
->  };
->  
-> @@ -315,7 +317,7 @@ static inline bool mm_in_asid_transition(struct mm_struct *mm) { return false; }
->  extern void flush_tlb_all(void);
->  extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
->  				unsigned long end, unsigned int stride_shift,
-> -				bool freed_tables);
-> +				bool wake_lazy_cpus);
->  extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
->  
->  static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+This is the first drop of KVM/arm64 fixes for 7.1. Nothing really
+major so far, but a rather wide range of fixes for idreg handling,
+long standing regressions, SMCCC compliance and more. Add a few
+cleanups to the fix, and that's about it. As usual, gory details in
+the tag below.
 
-> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> index 621e09d049cb..3ce254a3982c 100644
-> --- a/arch/x86/mm/tlb.c
-> +++ b/arch/x86/mm/tlb.c
-> @@ -1360,16 +1362,16 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
->  				(info->end - info->start) >> PAGE_SHIFT);
->  
->  	/*
-> -	 * If no page tables were freed, we can skip sending IPIs to
-> -	 * CPUs in lazy TLB mode. They will flush the CPU themselves
-> -	 * at the next context switch.
-> +	 * If lazy-TLB CPUs do not need to be woken, we can skip sending
-> +	 * IPIs to them. They will flush themselves at the next context
-> +	 * switch.
->  	 *
-> -	 * However, if page tables are getting freed, we need to send the
-> -	 * IPI everywhere, to prevent CPUs in lazy TLB mode from tripping
-> -	 * up on the new contents of what used to be page tables, while
-> -	 * doing a speculative memory access.
-> +	 * However, if page tables are getting freed or unshared, we need
-> +	 * to send the IPI everywhere, to prevent CPUs in lazy TLB mode
-> +	 * from tripping up on the new contents of what used to be page
-> +	 * tables, while doing a speculative memory access.
->  	 */
-> -	if (info->freed_tables || mm_in_asid_transition(info->mm))
-> +	if (info->wake_lazy_cpus || mm_in_asid_transition(info->mm))
->  		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
->  	else
->  		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
-> @@ -1402,7 +1404,7 @@ static DEFINE_PER_CPU(unsigned int, flush_tlb_info_idx);
->  
->  static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
->  			unsigned long start, unsigned long end,
-> -			unsigned int stride_shift, bool freed_tables,
-> +			unsigned int stride_shift, bool wake_lazy_cpus,
->  			u64 new_tlb_gen)
->  {
->  	struct flush_tlb_info *info = this_cpu_ptr(&flush_tlb_info);
-> @@ -1429,7 +1431,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
->  	info->end		= end;
->  	info->mm		= mm;
->  	info->stride_shift	= stride_shift;
-> -	info->freed_tables	= freed_tables;
-> +	info->wake_lazy_cpus	= wake_lazy_cpus;
->  	info->new_tlb_gen	= new_tlb_gen;
->  	info->initiating_cpu	= smp_processor_id();
->  	info->trim_cpumask	= 0;
-> @@ -1448,7 +1450,7 @@ static void put_flush_tlb_info(void)
->  
->  void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
->  				unsigned long end, unsigned int stride_shift,
-> -				bool freed_tables)
-> +				bool wake_lazy_cpus)
->  {
->  	struct flush_tlb_info *info;
->  	int cpu = get_cpu();
-> @@ -1457,7 +1459,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
->  	/* This is also a barrier that synchronizes with switch_mm(). */
->  	new_tlb_gen = inc_mm_tlb_gen(mm);
->  
-> -	info = get_flush_tlb_info(mm, start, end, stride_shift, freed_tables,
-> +	info = get_flush_tlb_info(mm, start, end, stride_shift, wake_lazy_cpus,
->  				  new_tlb_gen);
->  
->  	/*
+Please pull,
 
-This whole s/freed_tables/wake_lazy_cpus/ rename should probably be its
-own patch, as should that include unshare_tables thing be.
+	M.
 
-That seems like unrelated changes.
+The following changes since commit 94b4ae79ebb42a8a6f2124b4d4b033b15a98e4f9:
+
+  Merge branch kvm-arm64/misc-7.1 into kvmarm-master/next (2026-04-08 12:26:11 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.1-1
+
+for you to fetch changes up to 4ce98bf0865c349e7026ad9c14f48da264920953:
+
+  KVM: arm64: Wake-up from WFI when iqrchip is in userspace (2026-04-24 12:03:57 +0100)
+
+----------------------------------------------------------------
+KVM/arm64 fixes for 7.1, take #1
+
+- Allow tracing for non-pKVM, which was accidentally disabled when
+  the series was merged
+
+- Rationalise the way the pKVM hypercall ranges are defined by using
+  the same mechanism as already used for the vcpu_sysreg enum
+
+- Enforce that SMCCC function numbers relayed by the pKVM proxy are
+  actually compliant with the specification
+
+- Fix a couple of feature to idreg mappings which resulted in the
+  wrong sanitisation being applied
+
+- Fix the GICD_IIDR revision number field that could never been
+  written correctly by userspace
+
+- Make kvm_vcpu_initialized() correctly use its parameter instead
+  of relying on the surrounding context
+
+- Enforce correct ordering in __pkvm_init_vcpu(), plugging a
+  potential pin leak at the same time
+
+- Move __pkvm_init_finalise() to a less dangerous spot, avoiding
+  future problems
+
+- Restore functional userspace irqchip support after a four year
+  breakage (last functional kernel was 5.18...). This is obviously
+  ripe for garbage collection.
+
+- ... and the usual lot of spelling fixes
+
+----------------------------------------------------------------
+David Woodhouse (1):
+      KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
+
+Fuad Tabba (5):
+      KVM: arm64: Fix FEAT_Debugv8p9 to check DebugVer, not PMUVer
+      KVM: arm64: Fix typo in feature check comments
+      KVM: arm64: Fix FEAT_SPE_FnE to use PMSIDR_EL1.FnE, not PMSVer
+      KVM: arm64: Fix kvm_vcpu_initialized() macro parameter
+      KVM: arm64: Fix pin leak and publication ordering in __pkvm_init_vcpu()
+
+Marc Zyngier (2):
+      KVM: arm64: pkvm: Adopt MARKER() to define host hypercall ranges
+      KVM: arm64: Wake-up from WFI when iqrchip is in userspace
+
+Quentin Perret (1):
+      KVM: arm64: Fix initialisation order in __pkvm_init_finalise()
+
+Sebastian Ene (1):
+      KVM: arm64: Reject non compliant SMCCC function calls in pKVM
+
+Vincent Donnefort (1):
+      KVM: arm64: Re-allow hyp tracing HVCs for [nh]VHE
+
+ arch/arm64/include/asm/kvm_asm.h   | 28 ++++++++++++++++++----------
+ arch/arm64/include/asm/kvm_host.h  |  5 +----
+ arch/arm64/kvm/arm.c               |  4 ++++
+ arch/arm64/kvm/config.c            | 23 ++++++++++++++++-------
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c | 30 +++++++++++++++++-------------
+ arch/arm64/kvm/hyp/nvhe/pkvm.c     | 38 +++++++++++++++++++++++++-------------
+ arch/arm64/kvm/hyp/nvhe/setup.c    |  6 +++---
+ arch/arm64/kvm/vgic/vgic-mmio-v2.c |  2 +-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |  2 +-
+ 9 files changed, 86 insertions(+), 52 deletions(-)
