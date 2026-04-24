@@ -1,157 +1,366 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0695D2D131D;
-	Fri, 24 Apr 2026 15:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3463E2BF002
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777043704; cv=none; b=r5BYuiObnwoi8wkk0UMj7u5GbRk0iTpRlHXZZOMaH5KfE91y9xMFImGrQm+kKf+o9QdnaRPrwVdH2H/somv3r8pLXVxkUNOkNBuzaityYIqgTgAVvH357c9T9BUlWCuY+bFLtsTtFw9WpoT9Dr8ZlRL7K7zKIv++yLaw3M6Qp+U=
+	t=1777043713; cv=none; b=TSuRj1G5Eqd2e+a+F7itmKaaDxKm+bH2vfwzCK3yW5dHFOb4gDwIgWgYFnfr/RlInEyGojeWM78F0p/Y1RjhLsH7c/IiSOl9LFhvCFY2K46Qu9rDPESxpkOjD8rBhdlSeg+4jkl8wMvQX8V8QHKfyikMzW8ZKahin1qalLx3TXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777043704; c=relaxed/simple;
-	bh=g9K5mfNblRY0b8MrHwI5cfWeLShbsP+DXXMV5iplhIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NvMooC+hWCYkOb4EaxyEdl4x/XGyiUU5eRzyi1SyoFaPwmsVK/50xc+k7dNtto4riVUNNc8y0bhRzI9hBhLKg+oC3tlhPcx/XaO3p/8Ru1p42cLIH1YFVgwguKvgja9LAsPQKjWiMyqQkx2DjetgV5RmRzjyJX13KSE/acMeAOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixejiLbC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777043713; c=relaxed/simple;
+	bh=ioJ64Vv4/63C6jN9tf7/hYM07FRHdTvnzqSDPYYNvoA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=susWW1MVQFgOAXnDbKYeJfc1k09J9RReSrujIrtqoHDf4lruhVevMqBYagqVlDPA30E7/GEe230MQwTBFzi0fuNws7lssFfpk6lNveKNDLvIoKAwEsJpM7yb3drqAdKZ7LgfhF+g64h+KpKVIaKz6RFd/Ob26l7wdLFargBWTJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=DW3TZ+JD; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixejiLbC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834ECC19425;
-	Fri, 24 Apr 2026 15:15:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777043703;
-	bh=g9K5mfNblRY0b8MrHwI5cfWeLShbsP+DXXMV5iplhIU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ixejiLbCe6paehrBYEgux/SsbNRd7z0hbwWE3TgN2pwgIIvCNGNdeIfJ9tK+Y95ru
-	 oYaLVhKd6Wllz358gOUojfmSejLRJaq+8q2GtBDJSqIF4nk6OZJQ6/BVQd4QkqyQ96
-	 ldDaQq40R4xj6QDnnWHhlWhEi+PQXPRroBHYyyNn7s2jUbQIiXAOVO4qK0/Go7MVOq
-	 Nd+KX3P0gBE2ckpNniPIZJwnRslVs5KS8h36Bqe/8HtCpLmeKF7CHLG5lMGjkQpd9m
-	 Yd6X1/oKxy3NNdUCBIkWsAma9wwIRyxwe5tYXqGw3H+nihQkZTNnMm67JWCEGkV81Y
-	 2fsMq98wGr6EA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wGIFA-0000000EPWA-2PuZ;
-	Fri, 24 Apr 2026 15:15:00 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ben Simner <ben.simner@cl.cam.ac.uk>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Fuad Tabba <tabba@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Sebastian Ene <sebastianene@google.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Will Deacon <will@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM/arm64 fixes for 7.1, take #1
-Date: Fri, 24 Apr 2026 16:14:43 +0100
-Message-ID: <20260424151443.750077-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="DW3TZ+JD"
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63OEVhs22176818
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 08:15:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=q9BtwkbPllejPVBe4f4tiQUOCFRGB+hx4Z1hh2G7sJU=; b=DW3TZ+JDjU0O
+	zwt4q4JN+sUgpBDXiEjG+mOHnHds07sqT+OYjLqB058WrppSFseAB2c40/AxM+YQ
+	+b7Q4DrERbPIvOslCMIx9iwGhC9Lc79qdx5a21IfgWUrd9ahvmspNrsp90eP6kkK
+	gwcRwuFmBHLUonsd51ltnnxOlAAfLhY3STLctMdm3tvyCeIh7rE6hctfyQTPKY4e
+	RI/4KFLPXVfGugVEG8mK6Rv70AMmGhjPGxoeb2HIi/vQV6Bmr+yi39HUHMRHr/7Z
+	rcIIEmMRDuQsF3v2mgyaCSznhm9HlhOuxImu0MjL+g4rGC0fIRlk73PpY28TsUi3
+	RKI+t7xmPA==
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dpepg73ra-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 08:15:10 -0700 (PDT)
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-678ad5bfc8cso596284a12.2
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 08:15:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777043709; x=1777648509;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q9BtwkbPllejPVBe4f4tiQUOCFRGB+hx4Z1hh2G7sJU=;
+        b=hLkMMOj6S/j2LZmgNODZiKXsvRRbeI45whCBrXY2CdZtzY45Ncc5pPP5UeK/9oiLMO
+         Cytedyu/zpPFeFmXUnFMSRAbRIdkI4OyiOzfWCiXmZ3yOhRevMmiHSd4t6gjRDo4P2JY
+         gzTAWBGE+6Io9uO+dIrggvUJJifzwZ5mfYiPIb+Sgwilbir/h3lyTOsJ9dbyu0pDGprr
+         pCvMYuu/g6TCWrR7/AY4BfbrKPqV74upeHtjvuh63ntq1mOBltGGkY8wijq5zFwOCoz/
+         2YyHOQC5u/OCrIlO9PKfjzPJOtdpA1VbQXjvY1S25H+rq/jkqEfJRomHcaNTEE6iSRLu
+         fCCg==
+X-Forwarded-Encrypted: i=1; AFNElJ/0WYwA/I0gKficqDr0iXJxv9/W8QJcG979WSfPn1krGN+ppS93AFk+5mtB3RwmJQXVgCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2BCicuQ8qkJ3lfKTyFHADem5SOncf8BYnl1imxwRggDhNBD/N
+	Zq6OkvLUzGqoEIenEUHrXkjea2tOWHHdKkv5rtxpuAttsSrjgGuO0w++fLaIwQTfwEVeESRQgy7
+	Cc/59MHEV0JKzAOrswPXe8JN+C1XACGHX8t5SODAaezeQm8KTwruE
+X-Gm-Gg: AeBDievzakxHOSlef9vBnzMhoWxuWLnKk++NFbGMKj2IhsyiBDXB+8RSqFeq4AVbuUd
+	K4eeXuk3ILy6doj8uvztz0HMGPJWk71AIIw8PFKcT+y+PtkBxbhy87DDfeFxGLaOXij4A/UJaeu
+	j3UrRYYwlX1N6VfPrbYIBisDyILKNbG8slFeqDJ3BH32dt5yH3aV//t0qjW730nJ0GeT4QHm0O6
+	bBYFdhGcTbLmW+uEQ+j2T66P8fCG9Oc8qo/cB7Fzvitpl0a8Jn7fOxgw5WEKbT+gFC3KhF5Ve3h
+	rFqZCZMRZ/0aIdBfvDfMKfaKxKGOh02nhHnHWTsuCwy5s7zNyEiPsXt2AXl/BsU0Kh0ZdKjHmmO
+	tYUFTDXHO75fgzh7Dnfq7mvb9NTzFdj0InNyBXgorBsV1LHKrNO6pH0jqXwMvp1yL1rctzvccRM
+	CftAyoQMi78ausR+KFFPhqlftTkoNzejTUYOEVyRb/mnMTm970hQJovcb04xGuJz/jH2LVQFFdb
+	vkgv3mXhEHUYHP1TC7UyLfJdnONf1uMZA==
+X-Received: by 2002:a05:6402:1c04:b0:670:3b53:9bc with SMTP id 4fb4d7f45d1cf-672bfd8b7f6mr10189122a12.4.1777043708699;
+        Fri, 24 Apr 2026 08:15:08 -0700 (PDT)
+X-Received: by 2002:a05:6402:1c04:b0:670:3b53:9bc with SMTP id 4fb4d7f45d1cf-672bfd8b7f6mr10189093a12.4.1777043707727;
+        Fri, 24 Apr 2026 08:15:07 -0700 (PDT)
+Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-672c4d5babcsm4861621a12.23.2026.04.24.08.15.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 08:15:07 -0700 (PDT)
+Message-ID: <729d6593-f88b-42bf-b3a0-8c364d9ca5b4@meta.com>
+Date: Fri, 24 Apr 2026 16:15:06 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, ben.simner@cl.cam.ac.uk, dwmw@amazon.co.uk, tabba@google.com, qperret@google.com, sebastianene@google.com, vdonnefort@google.com, will@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] vfio/pci: Set up bar resources and maps in
+ vfio_pci_core_enable()
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Ankit Agrawal <ankita@nvidia.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Yishai Hadas
+ <yishaih@nvidia.com>,
+        Alexey Kardashevskiy <aik@ozlabs.ru>,
+        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
+References: <20260423182517.2286030-1-mattev@meta.com>
+ <20260423182517.2286030-2-mattev@meta.com>
+ <20260423153053.6833135e@shazbot.org>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260423153053.6833135e@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=ZLTnX37b c=1 sm=1 tr=0 ts=69eb88fe cx=c_pps
+ a=DTy5UCxgudPLKrSn28m7Kw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=crHB47gyY4rKiduisYu9:22 a=VabnemYjAAAA:8 a=c9-ciuUNkuK7RFakVDoA:9
+ a=QEXdDO2ut3YA:10 a=VzYV69SsQLkmnS9OQLw-:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: 4luFXbfBXY--KNt8h-00BaDhLFleo2SZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE0NyBTYWx0ZWRfX1CS/IAPdWlK2
+ UpHLraxYgy+bN1SDxPNWl4KojylikMyjTsSuVuEsQ/O/JwkGB/z8BuKP5A4JYcm9ak873yu+IkQ
+ T7ikdY/TKxSL+rAKMap20QmaWkMBLxYVEPC0Gj4yTfJ2mWjODPe6rdm5mxOlBIhNejdoWjveKTp
+ mjVVrxkzaktxaTvjgVoP76OJOvNM80pQLH/ssBTsIX9YsR1BU9DWcLls5P0NGROk3dsij04Obon
+ 9OWtby04vqEZf7X5mtK9OOxvDFrhrnikoSbGe7ow//jgmG1A5u1mMNpOb+5xucW+Nt0655ILRLb
+ wrNWv0eSGhQUFHYFYpzBu5ooSOMQrQ1zRsX6I88Nc5TUEERwUfjuAiq2xO9atVUIAcwcWtpiZRq
+ jKwfmUn9N8o5TzMKnETJ93rKVy7sq7uNOh5qZ1as8qK752madL9OixIlamm7Ne90SnTL8lx1cEH
+ H48NTbPVJ62wVbg/8+A==
+X-Proofpoint-GUID: 4luFXbfBXY--KNt8h-00BaDhLFleo2SZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-24_01,2026-04-21_02,2025-10-01_01
 
-Paolo,
+Hi Alex,
 
-This is the first drop of KVM/arm64 fixes for 7.1. Nothing really
-major so far, but a rather wide range of fixes for idreg handling,
-long standing regressions, SMCCC compliance and more. Add a few
-cleanups to the fix, and that's about it. As usual, gory details in
-the tag below.
+On 23/04/2026 22:30, Alex Williamson wrote:
+> 
+> On Thu, 23 Apr 2026 11:25:07 -0700
+> Matt Evans <mattev@meta.com> wrote:
+> 
+>> Previously BAR resource requests and the corresponding pci_iomap()
+>> were performed on-demand and without synchronisation, which was racy.
+>> Rather than add synchronisation, it's simplest to address this by
+>> doing both activities from vfio_pci_core_enable().
+>>
+>> The resource allocation and/or pci_iomap() can still fail; their
+>> status is tracked and existing calls to vfio_pci_core_setup_barmap()
+>> will fail in the same way as before.  This keeps the point of failure
+>> as observed by userspace the same, i.e. failures to request/map unused
+>> BARs are benign.
+>>
+>> Fixes: 7f5764e179c6 ("vfio: use vfio_pci_core_setup_barmap to map bar in mmap")
+>> Fixes: 0d77ed3589ac0 ("vfio/pci: Pull BAR mapping setup from read-write path")
+>> Signed-off-by: Matt Evans <mattev@meta.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_core.c | 61 +++++++++++++++++++++++++++-----
+>>   drivers/vfio/pci/vfio_pci_rdwr.c | 29 ++++++---------
+>>   include/linux/vfio_pci_core.h    |  1 +
+>>   3 files changed, 64 insertions(+), 27 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 3f8d093aacf8..c59c61861d81 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -482,6 +482,55 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
+>>   }
+>>   #endif /* CONFIG_PM */
+>>   
+>> +static void __vfio_pci_core_unmap_bars(struct vfio_pci_core_device *vdev)
+>> +{
+>> +	struct pci_dev *pdev = vdev->pdev;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>> +		int bar = i + PCI_STD_RESOURCES;
+>> +
+>> +		if (vdev->barmap[bar])
+>> +			pci_iounmap(pdev, vdev->barmap[bar]);
+>> +		if (vdev->have_bar_resource[bar])
+>> +			pci_release_selected_regions(pdev, 1 << bar);
+>> +		vdev->barmap[bar] = NULL;
+>> +		vdev->have_bar_resource[bar] = false;
+>> +	}
+>> +}
+>> +
+>> +static void __vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+>> +{
+>> +	struct pci_dev *pdev = vdev->pdev;
+>> +	int i;
+>> +
+>> +	/*
+>> +	 * Eager-request BAR resources, and iomap; soft failures are
+>> +	 * allowed, and consumers must check before use.
+>> +	 */
+> 
+> I'd use this to describe that soft failures maintain compatible error
+> signatures to previously used on-demand mapping.
 
-Please pull,
+Done.
 
-	M.
+>> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>> +		int ret;
+>> +		int bar = i + PCI_STD_RESOURCES;
+>> +		void __iomem *io;
+> 
+> Reverse Christmas tree ordering.
 
-The following changes since commit 94b4ae79ebb42a8a6f2124b4d4b033b15a98e4f9:
+Done.
 
-  Merge branch kvm-arm64/misc-7.1 into kvmarm-master/next (2026-04-08 12:26:11 +0100)
+>> +
+>> +		if (pci_resource_len(pdev, i) == 0)
+>> +			continue;
+>> +
+>> +		ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+>> +		if (ret) {
+>> +			pci_warn(vdev->pdev, "Failed to reserve region %d\n", bar);
+>> +			continue;
+>> +		}
+>> +		vdev->have_bar_resource[bar] = true;
+>> +
+>> +		io = pci_iomap(pdev, bar, 0);
+>> +		if (io)
+>> +			vdev->barmap[bar] = io;
+>> +		else
+>> +			pci_warn(vdev->pdev, "Failed to iomap region %d\n", bar);
+>> +	}
+>> +}
+> 
+> I see you making the point in the cover letter about the resource
+> request vs the iomap resource, but we currently handle these together.
+> If either fails, setup barmap fails and the path returns error.  I
+> don't see any justification for now allowing the request resource to
+> succeed but the iomap fails.
 
-are available in the Git repository at:
+The primary effect was to let consumers see -EBUSY for a resource 
+reservation failure or -ENOMEM for an iomap failure (whether through 
+this patch's vfio_pci_core_setup_barmap() or the next patch's helpers), 
+and that keeps the error signatures identical.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.1-1
+A weak secondary effect was that a BAR that gets resource but fails for 
+whatever reason to iomap it can still be used by most clients (assuming 
+the general usage is to mmap).  The system's pretty sick if this is the 
+case, so as I say it's weak.
 
-for you to fetch changes up to 4ce98bf0865c349e7026ad9c14f48da264920953:
+OK, if you prefer the combined approach and don't feel the subsequent 
+single-semantic check helpers (need mapping, need resource) are clearer 
+to read then I'll recombine them, though:
 
-  KVM: arm64: Wake-up from WFI when iqrchip is in userspace (2026-04-24 12:03:57 +0100)
+  - If vfio_pci_core_map_bars() just sets barmap[n] iff both resource 
+acquisition and iomap succeed, then a later check can only return one 
+error from either cause.  I'll go with -ENOMEM unless you prefer -EBUSY. 
+  Using something else can again make userspace see previously-unseen 
+error values.
 
-----------------------------------------------------------------
-KVM/arm64 fixes for 7.1, take #1
+  - IMHO vfio_pci_core_setup_barmap() should still be renamed (in a 2nd 
+patch) since it doesn't do any setting up anymore.  Cosmetic, but 
+cleaner to parse when the callers use vfio_pci_core_check_barmap_valid() no?
 
-- Allow tracing for non-pKVM, which was accidentally disabled when
-  the series was merged
+> These functions also don't need the double-underscore prefix.
 
-- Rationalise the way the pKVM hypercall ranges are defined by using
-  the same mechanism as already used for the vcpu_sysreg enum
+Done.
 
-- Enforce that SMCCC function numbers relayed by the pKVM proxy are
-  actually compliant with the specification
+>> +
+>>   /*
+>>    * The pci-driver core runtime PM routines always save the device state
+>>    * before going into suspended state. If the device is going into low power
+>> @@ -568,6 +617,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>>   	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
+>>   		vdev->has_vga = true;
+>>   
+>> +	 __vfio_pci_core_map_bars(vdev);
+>>   
+>>   	return 0;
+>>   
+>> @@ -591,7 +641,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>>   	struct pci_dev *pdev = vdev->pdev;
+>>   	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+>>   	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+>> -	int i, bar;
+>> +	int i;
+>>   
+>>   	/* For needs_reset */
+>>   	lockdep_assert_held(&vdev->vdev.dev_set->lock);
+>> @@ -646,14 +696,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>>   
+>>   	vfio_config_free(vdev);
+>>   
+>> -	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>> -		bar = i + PCI_STD_RESOURCES;
+>> -		if (!vdev->barmap[bar])
+>> -			continue;
+>> -		pci_iounmap(pdev, vdev->barmap[bar]);
+>> -		pci_release_selected_regions(pdev, 1 << bar);
+>> -		vdev->barmap[bar] = NULL;
+>> -	}
+>> +	__vfio_pci_core_unmap_bars(vdev);
+> 
+> I expect this doesn't need to change if we drop the separation between
+> resources and iomap.
 
-- Fix a couple of feature to idreg mappings which resulted in the
-  wrong sanitisation being applied
+OK, restored.
 
-- Fix the GICD_IIDR revision number field that could never been
-  written correctly by userspace
+>>   	list_for_each_entry_safe(dummy_res, tmp,
+>>   				 &vdev->dummy_resources_list, res_next) {
+>> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+>> index 4251ee03e146..bf7152316db4 100644
+>> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+>> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+>> @@ -200,25 +200,18 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+>>   
+>>   int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
+>>   {
+>> -	struct pci_dev *pdev = vdev->pdev;
+>> -	int ret;
+>> -	void __iomem *io;
+>> -
+>> -	if (vdev->barmap[bar])
+>> -		return 0;
+>> -
+>> -	ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+>> -	if (ret)
+>> -		return ret;
+>> -
+>> -	io = pci_iomap(pdev, bar, 0);
+>> -	if (!io) {
+>> -		pci_release_selected_regions(pdev, 1 << bar);
+>> +	/*
+>> +	 * The barmap is now always set up in vfio_pci_core_enable().
+> 
+> "now" is going to read strangely very quickly.
 
-- Make kvm_vcpu_initialized() correctly use its parameter instead
-  of relying on the surrounding context
+Hm, yeah, fixed.
 
-- Enforce correct ordering in __pkvm_init_vcpu(), plugging a
-  potential pin leak at the same time
+>> +	 * Some legacy callers use this function to ensure the BAR
+>> +	 * resources are requested, and others to ensure the
+>> +	 * pci_iomap() was done, so check here:
+>> +	 */
+>> +	if (bar < 0 || bar >= PCI_STD_NUM_BARS)
+>> +		return -EINVAL;
+>> +	if (vdev->barmap[bar] == 0)
+>>   		return -ENOMEM;
+>> -	}
+>> -
+>> -	vdev->barmap[bar] = io;
+>> -
+>> +	if (!vdev->bar_has_rsrc[bar])
+> 
+> Typo, this won't incrementally compile.  Thanks,
 
-- Move __pkvm_init_finalise() to a less dangerous spot, avoiding
-  future problems
+Fixed.
 
-- Restore functional userspace irqchip support after a four year
-  breakage (last functional kernel was 5.18...). This is obviously
-  ripe for garbage collection.
+Alex, thanks for all your comments so far, I realise this is a pretty 
+noddy fix but it's good to get it clean.
 
-- ... and the usual lot of spelling fixes
 
-----------------------------------------------------------------
-David Woodhouse (1):
-      KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
+Matt
 
-Fuad Tabba (5):
-      KVM: arm64: Fix FEAT_Debugv8p9 to check DebugVer, not PMUVer
-      KVM: arm64: Fix typo in feature check comments
-      KVM: arm64: Fix FEAT_SPE_FnE to use PMSIDR_EL1.FnE, not PMSVer
-      KVM: arm64: Fix kvm_vcpu_initialized() macro parameter
-      KVM: arm64: Fix pin leak and publication ordering in __pkvm_init_vcpu()
+> 
+> Alex
+> 
+>> +		return -EBUSY;
+>>   	return 0;
+>>   }
+>>   EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
+>> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+>> index 2ebba746c18f..1f508b067d82 100644
+>> --- a/include/linux/vfio_pci_core.h
+>> +++ b/include/linux/vfio_pci_core.h
+>> @@ -101,6 +101,7 @@ struct vfio_pci_core_device {
+>>   	const struct vfio_pci_device_ops *pci_ops;
+>>   	void __iomem		*barmap[PCI_STD_NUM_BARS];
+>>   	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
+>> +	bool			have_bar_resource[PCI_STD_NUM_BARS];
+>>   	u8			*pci_config_map;
+>>   	u8			*vconfig;
+>>   	struct perm_bits	*msi_perm;
+> 
 
-Marc Zyngier (2):
-      KVM: arm64: pkvm: Adopt MARKER() to define host hypercall ranges
-      KVM: arm64: Wake-up from WFI when iqrchip is in userspace
-
-Quentin Perret (1):
-      KVM: arm64: Fix initialisation order in __pkvm_init_finalise()
-
-Sebastian Ene (1):
-      KVM: arm64: Reject non compliant SMCCC function calls in pKVM
-
-Vincent Donnefort (1):
-      KVM: arm64: Re-allow hyp tracing HVCs for [nh]VHE
-
- arch/arm64/include/asm/kvm_asm.h   | 28 ++++++++++++++++++----------
- arch/arm64/include/asm/kvm_host.h  |  5 +----
- arch/arm64/kvm/arm.c               |  4 ++++
- arch/arm64/kvm/config.c            | 23 ++++++++++++++++-------
- arch/arm64/kvm/hyp/nvhe/hyp-main.c | 30 +++++++++++++++++-------------
- arch/arm64/kvm/hyp/nvhe/pkvm.c     | 38 +++++++++++++++++++++++++-------------
- arch/arm64/kvm/hyp/nvhe/setup.c    |  6 +++---
- arch/arm64/kvm/vgic/vgic-mmio-v2.c |  2 +-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c |  2 +-
- 9 files changed, 86 insertions(+), 52 deletions(-)
