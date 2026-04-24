@@ -1,195 +1,207 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A713C6A2B;
-	Fri, 24 Apr 2026 12:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA493D34A1
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 13:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777033502; cv=none; b=PDzRybET8eJXsYenMqt6YK1oNXNZDinAhQgN0xPChGt+C4RW9mY4GTzoMTmadwvKy/nbWh0cxUYUkKB7blL9tKMz/mYh4xbAWdOMmz7kdsu70LQ6R7RnWODexKghfEvJGQ2PIM8qUtmGli3gssIJRN1eoP5zF1olkCZkNN122CY=
+	t=1777035612; cv=none; b=l7ZMGauHQXdduxMQeErztWaTnJfD5epVw+eKtPXADWT2tF0pYeSCOksHmOUnnPfkUytG/UIt8E0J9w2p8HDzq5xnQZZ5opLO1RhY8RxCmwGmlWpUypAbJevq/HCR+Iz3aAP6K7d9dU6FJGKEMRbBMIOu3W0dgpEQt5An4DTJBm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777033502; c=relaxed/simple;
-	bh=wn/fWkAQXK9zD2jiEpQyq3pAnDA3rolT0nS1WFD6U/c=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mk0VOf1IfCOSd74/cQHc+9lgCC5DNYzmAf2zFjG21P5dzIoHhjTcUb7xU+YezTYxFGy9IAnYIR810v66/IwklBFGZ1mj+U9ngHz4lcKHIem5l+ivu5riSXS5TnR/GYEnnD+GWUyX2o9HNHvcUoMRHvAYPQmclrgs0iDAqvpupIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CKJLsqOE; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1777035612; c=relaxed/simple;
+	bh=mNaMVJ45d/XkfX9LnPfVcMylCsWv/6zRlhpVNM52jUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pIWnuXW+ife1DVCcbSXPGQEFHwTNsOudemYVAczwgUdvryQDhMe4TdKku7q7XoC8S1lk/s+mrSbSurliVUFVdqDuSwShbFTBcaaOg0hrHICnPA4ZLzIiPdJXRIpESbzpuGvU21dyKWaJPsQX3kT2uWLZxVqk5dxzzOB3QGZoNLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fFTV7/OR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KbSQaYvK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CKJLsqOE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wn/fWkAQXK9zD2jiEpQyq3pAnDA3rolT0nS1WFD6U/c=; b=CKJLsqOEweqlo7SxLXCFw+FFTF
-	owfm/oUrWNH+O87TgDoUuBSZ5pqYayNPMGP4eLetXh3oD50wSEp0IRiUNm+T/6ywKus07jhwK8XRZ
-	w3lm3g1dz3aT2iIT8TPV21ZosEUYeZEhyVQqVosirIUvPTT0W8i4szCkrA6l2mk0cpIup3b64dUcU
-	Og/HcVut4snz0SzL1KnN91rBCzDvxiSGZB8ZGH3EoUN4pM3m7qZpeXx6y4OzeCbfQcY9Ewvy4L8bD
-	VlBccbb2vZ++853NZRP0x2Ce+KEIGa+XW4K9JsDp3jbjINJCtCJKgcCNuLzKY1xhgZjMhW5UHFYF9
-	vtSPCZqg==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGFaT-0000000Elw3-490v;
-	Fri, 24 Apr 2026 12:24:50 +0000
-Message-ID: <106addd3f78918a9a584c43c181a9609aef1ceca.camel@infradead.org>
-Subject: Re: (subset) [PATCH 1/3] KVM: arm64: vgic: Fix IIDR revision field
- extracted from wrong value
-From: David Woodhouse <dwmw2@infradead.org>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey
- Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Raghavendra Rao
- Ananta <rananta@google.com>, Eric Auger <eric.auger@redhat.com>, Kees Cook
- <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor
- <nathan@kernel.org>,  linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev,  linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-  linux-kselftest@vger.kernel.org
-Date: Fri, 24 Apr 2026 13:24:49 +0100
-In-Reply-To: <177702878141.537738.13460155220731277452.b4-ty@kernel.org>
-References: <20260407210949.2076251-1-dwmw2@infradead.org>
-	 <20260407210949.2076251-2-dwmw2@infradead.org>
-	 <177702878141.537738.13460155220731277452.b4-ty@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-ZrfNu1OxeAq6e1kAhLUT"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fFTV7/OR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KbSQaYvK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777035602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CuxHqotWAXKQn8tfukv8Lxf0MCnzWeGdcx1e3ImXNv4=;
+	b=fFTV7/OR0y9acSovjvOioYx8UWjqexln4e+IcnaaPu2GDGFVpatcZaqVGWJLuAa00un+Cx
+	s/Gp4c4b6QqFYLzrPwK2HfkpKfCejVleXCSJPLcN4HH5G8Te+51ncYV0A3egHdt4+ieoux
+	6sh3LcfKAdW0P8g1GBtpS7sZMpAAXhY=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-xS8wbEqGPEWAd6GByxLtEg-1; Fri, 24 Apr 2026 09:00:01 -0400
+X-MC-Unique: xS8wbEqGPEWAd6GByxLtEg-1
+X-Mimecast-MFC-AGG-ID: xS8wbEqGPEWAd6GByxLtEg_1777035600
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8eb55e55362so1106785585a.2
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 06:00:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777035600; x=1777640400; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CuxHqotWAXKQn8tfukv8Lxf0MCnzWeGdcx1e3ImXNv4=;
+        b=KbSQaYvK0+FHgvQDrgrmhoPEgDWwUnb5mawymHIH/7+J0/T1I7pa4LdpgEi/5aBxo7
+         /xo05V/MLnkBDbH4AyEbM9WuEpoF8NhfCIENq+KMsJrplaAZikmVzZHVJqSi6lZJzDeN
+         IPqaKjLsSW7o/Rz4fhQWNVkVeNNomvsKunceOnC/RbKhxLCmFsu3h7/IQnlvR+W+NA5g
+         hKFnBSVbVEanfm6lxLjEg8FKGcZ+l57+n39rB8KjrbEEqLJmh5ZRYEMkQqkjg6LehPlz
+         us4t6G3xuelpWXedBb76zRp37UaBmrm1w9OTFhX1IFMw3bPdLLC7+m2w2vgxmiXS5hti
+         WjgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777035600; x=1777640400;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CuxHqotWAXKQn8tfukv8Lxf0MCnzWeGdcx1e3ImXNv4=;
+        b=D5+8uUwuDhxgwVNgYE3q94YtnWvpFyClVxwMnIv8yPQ7Mx+L2AIV73PyJken+MJarh
+         fuyN/4QaTNtsg/SgN5nE6DlYjzsMfAgCVBMsqxJgP5j4cnQPyv8OVXe/pUUFyPT/RP/f
+         aVtr2fl5Ykj3NhqMgdfquFgDp2KD3ZLv5CKCHUYV3P6L99S6mlrE4/fukmuG2kn6AGB5
+         DaFMT6TFYmyOCJ63yWqtD+RM9lA9tV5mrimiGaEQ1p+QWgszvmcxlkY1VCOqdeUXgJo2
+         885sI7M7yGVTSzN9lBlWnOZlNShmAkeVkaivGXLjbX5MATZ0avtTlu7cWVe5nmqX4O/W
+         TVyg==
+X-Forwarded-Encrypted: i=1; AFNElJ8M7imeUoKAAr+jAyRVcY/efwAvIRXz1+e9cB/Elkb0oD6HbKqtiL4F4qhgvTAg9IqZP/4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg/CCTU0pcPA3JF0MjaQ3oX4bY/UcaHlP8Fb/s3YM++339DcG5
+	Sr/03sFFYpPJtMpisDlYVu16DWLkQC7SyNNGtvw3w5nkH3xWgfPMSLqkX8iM7VCd4qjFV9+0JqT
+	XVZpSSmFsWv8Kd9Vn7NHDjBXk2nodb0j/2jjHqux150TZBTVyJd1mQQ==
+X-Gm-Gg: AeBDiesPeBwr9qftum63hA+mlkhfqIXZZPx6QH1E866Zio8jr5KjHR4SMR2uUylm4GS
+	SweoXxglKZEQ8cqM/cBRSlkl+NaeUsVBmgrRAkq1al7FOX06H88OTuutLczubdTN7iATZiWnUdu
+	dwJTDQsAfFHA62OYMrCXq+6Dq+WcPKfY8MkL0NQXgq/w0DDXhviF8UEVo48bifabKMF0hb/ZCIR
+	wWc2UJE+NIztXaSg4m+PDfWOqPB+IQN/5FIat0ePpQKYtJ4I3PKk6COyZI2I5NQZoKcacOsksZ/
+	JB30zrLpuQGr8RQv4m8bItQ8Fm1tBmJSkGJHtvHuy6EZsDYbp8zUVIBC1yQu0RR1LR9UoeoHGm6
+	UjU5sRA2ZqNZjz6+9DJMIoKbPdrxXtD4XHBafZqiD97b4pHCT3ng+y01g2A==
+X-Received: by 2002:a05:620a:40cb:b0:8ef:47ae:94de with SMTP id af79cd13be357-8ef47ae9518mr2002364585a.39.1777035600012;
+        Fri, 24 Apr 2026 06:00:00 -0700 (PDT)
+X-Received: by 2002:a05:620a:40cb:b0:8ef:47ae:94de with SMTP id af79cd13be357-8ef47ae9518mr2002358885a.39.1777035599426;
+        Fri, 24 Apr 2026 05:59:59 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8eb3aa60b99sm1676032585a.42.2026.04.24.05.59.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 05:59:58 -0700 (PDT)
+Date: Fri, 24 Apr 2026 08:59:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aetpTUc9ojwF6Is7@x1.local>
+References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation>
+ <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation>
+ <aeprnnccJeyHB2rt@x1.local>
+ <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org>
+ <aep8tsYFfr_Xe54q@x1.local>
+ <aetHWMZyEEIEzsJZ@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aetHWMZyEEIEzsJZ@thinkstation>
 
+On Fri, Apr 24, 2026 at 12:37:35PM +0100, Kiryl Shutsemau wrote:
+> On Thu, Apr 23, 2026 at 04:10:30PM -0400, Peter Xu wrote:
+> > On Thu, Apr 23, 2026 at 09:25:30PM +0200, David Hildenbrand (Arm) wrote:
+> > > > 
+> > > > The other thing is, as I mentioned in the other email, I still don't know
+> > > > how the current RW protection would work for anonymous.  I don't yet think
+> > > > the user swapper can read the anon page with RW-protected pgtables.  So far
+> > > > my understanding is maybe you only care about shmem so it's fine, but it'll
+> > > > always be great to confirm with you.
+> 
+> 
+> That's true. We use vhost and therefore shmem in our setup.
 
---=-ZrfNu1OxeAq6e1kAhLUT
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I see, thanks for confirming.
 
-On Fri, 2026-04-24 at 12:07 +0100, Marc Zyngier wrote:
-> On Tue, 07 Apr 2026 21:27:02 +0100, David Woodhouse wrote:
-> > The uaccess write handlers for GICD_IIDR in both GICv2 and GICv3
-> > extract the revision field from 'reg' (the current IIDR value read back
-> > from the emulated distributor) instead of 'val' (the value userspace is
-> > trying to write). This means userspace can never actually change the
-> > implementation revision =E2=80=94 the extracted value is always the cur=
-rent one.
-> >=20
-> > Fix the FIELD_GET to use 'val' so that userspace can select a different
-> > revision for migration compatibility.
-> >=20
-> > [...]
->=20
-> Applied to fixes, thanks!
->=20
-> [1/3] KVM: arm64: vgic: Fix IIDR revision field extracted from wrong valu=
-e
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 commit: a0e6ae45af17e8b27958830595799c702f=
-fbab8d
+Side note: I believe host works for anon too since GUP works for anon, but
+it doesn't matter as long as we know anon isn't a must.
 
-There was a v2 of this series which also cleaned up the weird
-inconsistency of the IIDR value with the actual behaviour, and which
-fixed the fact that it's currently not possible to maintain guest
-compatibility when upgrading from a pre-d53c2c29ae0d kernel to a new
-one =E2=80=94 despite the fact that that kind of compatibility is *precisel=
-y*
-what the revision field in the IIDR is designed for.
+> 
+> One idea I had about how to make atomic eviction for anon is extending
+> process_vm_read() and process_madvise():
+> 
+> - Add a flag to process_vm_read() to bypass the protnone check on
+>   accessible (or only RWP?) VMAs.
+> 
+> - Allow process_madvise(MADV_DONTNEED) when the caller already has
+>   ptrace write access to the target.
+> 
+> The standing objection to remote DONTNEED has been "destructive", but
+> process_vm_writev() already lets a ptrace-capable caller overwrite
+> arbitrary anon with attacker-chosen content. DONTNEED is strictly
+> weaker — it zeroes, it does not inject — so the trust model is already
+> established.
+> 
+> > > I wonder if uffdio_move could be used for a swapper implementation instead?
+> 
+> I considered it. UFFDIO_MOVE can in principle relocate the cold folio
+> into a staging VMA inside the VMM, which then reads it and drops it.
+> The downside is the VMM has to maintain a second address range and
+> serialise eviction through it. A purpose-built primitive — something
+> like UFFDIO_EVICT that zaps the PTE and returns the folio contents
+> (optionally to an fd for io_uring) — seems cleaner.
 
-https://lore.kernel.org/all/20260408113256.2095505-1-dwmw2@infradead.org/
+Right, the other thing is unnecessary overhead on the extra pgtable
+operations when moving to the staging VMA (e.g. tlb flush).
 
---=-ZrfNu1OxeAq6e1kAhLUT
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+> 
+> 
+> > If RW is justified to be useful first, maybe.
+> > 
+> > I had a gut feeling Kirill's use case doesn't use anon at all, then if
+> > nobody needs it we can still decide to not support anon.
+> > 
+> > > 
+> > > If we ever have to read from a protnone page, maybe we could teach ptrace access
+> > > to do it, or have something that can read from prot_none areas -- like
+> > > uffdio_copy, which can write to prot-none areas.
+> > 
+> > Somethinig like swap_access() in my proposal can also partly achieve that.
+> > 
+> > https://lore.kernel.org/all/aYuad2k75iD9bnBE@x1.local/
+> 
+> A maccess()-style primitive that reads through PROT_NONE is a reasonable
+> building block and overlaps with part of what UFFDIO_EVICT would need.
+> 
+> > There, it was only about reading from swap so far, though.  But that one
+> > might be easier to be extended to read PROT_NONE and directly put data into
+> > buffer user specified (ps: in my local tree impl I named it maccess() to
+> > pair with mincore(), but it doesn't really matter; it doesn't even need to
+> > be a syscall..).
+> > 
+> > To me, the interfacing is not a major issue.  The major question I have is
+> > why RW protection can help in swap system impl when we already have uffd-wp.
+> > 
+> > So I want to make sure the use case can't be implemented by uffd-wp already.
+> > Because that's really what we might do for QEMU.
+> 
+> Race-free eviction can definitely be implemented with uffd-wp already.
+> But not proper working set discovery.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQyNDEyMjQ0
-OVowLwYJKoZIhvcNAQkEMSIEIEnVu20qf4GbbO3luZhHoBjF/CcaKEUnH2IKvhngv2nnMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAnlyv0yDpuzel
-oI6yUJTIdaGDzbdv6ioNfn/m+BkLKcq2x4mspFv62FDHaEGuuRCQrnO4gNI+UoMwzkq8Xm07MPWI
-6qkJJg76K37vGhsF4mQjfibnZSPPuR6Y/E6C+b7yt1Kwyni6fvWCgC/FePNmRzFs0ie9s4bjfLec
-Ctd8MMTXgxxSXqPdCKA9lHe1WpOM/7gcZq5FIr15lJ3ZDrp67ErVjuybtCzTnrfn7jTteIMEEx+F
-kvWOUpWBIdGZcfXaXRS/u7YQaqQpn7C1z0iOmk4t4TWGuaMdKULfY3hGddwzZKibO/sjTNXC7a/7
-l6IONNPeUCN75orxaXQuyNCmQIJSwFe5Sy40mMmmQPOMNrkhXl5sjmjfykelshlmBsyrEW8pDVsW
-iyiIEtmVWOqXPSKNjIZCz1zn38/TXXo48HCE7TIPXHWBYxwS5sLLl7ZWKjyMcL8NEmulV4Om+rBp
-RoLL4+A2ayYVsrx5DW9Lpvbn/+zawX+YqHFV0XbCxIBoAF+unteWi7V4zoYdJL2mp904ImmUeyWV
-DJu/LGBQ2McP+bTT07J3J/M3jbO4vaMyb95DnNv+uPLvXxu+1CIt3cE5MBmJW86ppMNAQCl/gxXO
-RE4xOv2BML0CFe4CetgI2bi+cdn5vyHaAmMKmdvNU+0YAWffIZ4D8yFCosfSYYsAAAAAAAA=
+Good.  Then we can focus the discussion on hotness tracking with RWP and
+its benefits, and compare it with a pure access bit focused tracking system
+(as I mentioned in the other reply).
 
+Thanks,
 
---=-ZrfNu1OxeAq6e1kAhLUT--
+-- 
+Peter Xu
+
