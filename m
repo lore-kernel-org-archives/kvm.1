@@ -1,261 +1,89 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E8832863D
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CDD335562
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777045283; cv=none; b=SxoBtxRv+9KrB3xHV5KqC/1hfXvKQTOlj+5k96yzMEhqmGmNexkfyst7LKxsXJZtwR82R09OLogOq/sBIc5KjlRWmACj+VvSCZDBHxQJKIHRCNy5gWfl1nvPXKZnTn4DBQJZiOMHVB0EKb3DubA1W53Mw6g8tDyzXknSyTLspq0=
+	t=1777045729; cv=none; b=k83hclqsrFGlsja6MZqeDO9nnqpLF2H3jp5rVd4hlaRzp/Dn8n34RkF0eq6MFAUuVa3T+mIdcur64JerZ4H8U8mysJmXBTZdr6Md7JhpoDKCykpyytloQUEtNS5FkaQYxsEM1kYqSsca/lnFikbCwDDo8u+mhyPJP321lsfmKyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777045283; c=relaxed/simple;
-	bh=etJ/+2RIKsC5O6uHnB0DLrbyV5IAlJ/ziSf95HB66+M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hhttS3RJY76yS7XEyp6oDA863qlIVLzEqsjsQRYmlGCyuSNpGHaG7yq2FILtJfq61AOFRRwZU0KTssNqkv2WOr/pWEF+sJOvp5b8bRT80q7x3APvKnuz6e+9GN1wV79qkN4WROJXKSHi/UU74IshtDPKXP+bEmIq70l+BCay4hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FVMiA25d; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1777045729; c=relaxed/simple;
+	bh=kU6sLy/i0cJOnetP5Co+iC5u31/ISmJNhpmdzi/dPH0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HvFhrNpNqT6oESatIlzkxFKnZec88P+ePxoEEUtmFGabkcqfW2h7ChxTB+e2AobWxKq8Ntdy0sIozrf6L4G0S0CeZp1Bw3qLByky1127boNqJwbTcWuCE81oB5oMJyhIAKEgznO3cuiRl+f0Ad5jIqW4YPORZWPzjHm/gQvfq+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=UE5GDi1L; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FVMiA25d"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777045268;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ysp3KPMytxumBnUhViA+YLOkzHtdbcKVPu5U5PduTew=;
-	b=FVMiA25dgArZNLgbbK4HTmNrusZGey87n92PAC9jHYnERUfYYLftC1BUFSpsuqNc73414b
-	R+gednPC/10TAQJi5ow5O05J9ug2nVxVvoj4nTbStoC0J6kfoHCaeWKYeH7cbk2WuhDc5o
-	sNw59YsNilfbCrYm2Ai+yQaV/yLAe3s=
-From: Lance Yang <lance.yang@linux.dev>
-To: lance.yang@linux.dev
-Cc: akpm@linux-foundation.org,
-	peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com
-Subject: Re: [PATCH 7.2 v10 1/2] mm/mmu_gather: prepare to skip redundant sync IPIs
-Date: Fri, 24 Apr 2026 23:40:48 +0800
-Message-Id: <20260424154048.61420-1-lance.yang@linux.dev>
-In-Reply-To: <20260424062528.71951-2-lance.yang@linux.dev>
-References: <20260424062528.71951-2-lance.yang@linux.dev>
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="UE5GDi1L"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=sR7PWVzDNl0Tt491SxI4OxCz/9aFZbKZgaCBkHzdKEE=; t=1777045726;
+	x=1777650526; b=UE5GDi1LSQWTJ6MiYXrfvkXzAEHd0fUzRy8DI8Zx8+D9iLKSWcm5mJKHbkWxE
+	+ZnG2F1rJ7C1FfG+WaAGI7QoIKQId6l8k+po1BomnItpBnG4Ebvmu++Wg0cJFAK2WlOQIMYqiT/eV
+	bPywQ71J3RK9JmTJ24sk1mMGIQrIxzS+lLaYxOuBvBuewzQb3+48rggTciQ+44u26hCxsEJA613Rv
+	X00fbjrH3CxOsn7h6T+NGWmf3Y1kKusWpABQcyz8qr10kmggIynAKT8J9ZfLh6pxR32/sE8fZUilM
+	TZ3aPNybYFAmGk94zlnEqRoox8kvmHErH8tOhRhg8v/ZYV6pIA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1wGIli-00000000k6X-3PRH; Fri, 24 Apr 2026 17:48:38 +0200
+Received: from dynamic-002-242-158-062.2.242.pool.telefonica.de ([2.242.158.62] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1wGIli-000000007EX-2Trq; Fri, 24 Apr 2026 17:48:38 +0200
+Message-ID: <d9ad0cd6fa640f23c396778bce2aa322e40e7e88.camel@physik.fu-berlin.de>
+Subject: Re: KVM-PR no longer works when compiled with new GCC compilers
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev
+	 <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org, 
+ "debian-powerpc@lists.debian.org"
+	 <debian-powerpc@lists.debian.org>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au, mad skateman
+	 <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+Date: Fri, 24 Apr 2026 17:48:37 +0200
+In-Reply-To: <a584b7a1-fc25-a475-099a-634159b6ffe8@xenosoft.de>
+References: <cfd779d6-9440-46b2-9ed5-752f1ae6b5d1@xenosoft.de>
+	 <588ada6c-bcc4-e93b-1beb-4f7f859e3d5c@xenosoft.de>
+	 <eee732904c2a7ccce9b496b05f988a36d8a9883e.camel@physik.fu-berlin.de>
+	 <5da12382-5424-4bd9-981f-359e4dc1fa67@xenosoft.de>
+	 <a584b7a1-fc25-a475-099a-634159b6ffe8@xenosoft.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
+On Fri, 2026-04-24 at 16:47 +0200, Christian Zigotzky wrote:
+> I compiled it with "mtune=3Dpower4" today but without any success.
+>=20
+> Error messages:
+>=20
+> [=C2=A0 800.274759] Couldn't emulate instruction 0x00000000 (op 0 xop 0)
+> [=C2=A0 800.274767] kvmppc_exit_pr_progint: emulation at 100 failed (0000=
+0000)
 
-On Fri, Apr 24, 2026 at 02:25:27PM +0800, Lance Yang wrote:
->From: Lance Yang <lance.yang@linux.dev>
->
->When page table operations require synchronization with software/lockless
->walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
->TLB (tlb->freed_tables or tlb->unshared_tables).
->
->On architectures where the TLB flush already sends IPIs to all target CPUs,
->the subsequent sync IPI broadcast is redundant. This is not only costly on
->large systems where it disrupts all CPUs even for single-process page table
->operations, but has also been reported to hurt RT workloads[1].
->
->Introduce tlb_table_flush_implies_ipi_broadcast() to check if the prior TLB
->flush already provided the necessary synchronization. When true, the sync
->calls can early-return.
->
->A few cases rely on this synchronization:
->
->1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
->   of the PMD table for other purposes in the last remaining user after
->   unsharing.
->
->2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
->   and (possibly) freeing the page table / re-depositing it.
->
->Currently always returns false (no behavior change). The follow-up patch
->will enable the optimization for x86.
->
->[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
->[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
->[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
->
->Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->Signed-off-by: Lance Yang <lance.yang@linux.dev>
->---
-> include/asm-generic/tlb.h | 17 +++++++++++++++++
-> mm/mmu_gather.c           | 15 +++++++++++++++
-> 2 files changed, 32 insertions(+)
->
->diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
->index bdcc2778ac64..cb41cc6a0024 100644
->--- a/include/asm-generic/tlb.h
->+++ b/include/asm-generic/tlb.h
->@@ -240,6 +240,23 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
-> }
-> #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
-> 
->+/**
->+ * tlb_table_flush_implies_ipi_broadcast - does TLB flush imply IPI sync
->+ *
->+ * When page table operations require synchronization with software/lockless
->+ * walkers, they flush the TLB (tlb->freed_tables or tlb->unshared_tables)
->+ * then call tlb_remove_table_sync_{one,rcu}(). If the flush already sent
->+ * IPIs to all CPUs, the sync call is redundant.
->+ *
->+ * Returns false by default. Architectures can override by defining this.
->+ */
->+#ifndef tlb_table_flush_implies_ipi_broadcast
->+static inline bool tlb_table_flush_implies_ipi_broadcast(void)
->+{
->+	return false;
->+}
->+#endif
->+
-> #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
-> /*
->  * This allows an architecture that does not use the linux page-tables for
->diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->index 3985d856de7f..37a6a711c37e 100644
->--- a/mm/mmu_gather.c
->+++ b/mm/mmu_gather.c
->@@ -283,6 +283,14 @@ void tlb_remove_table_sync_one(void)
-> 	 * It is however sufficient for software page-table walkers that rely on
-> 	 * IRQ disabling.
-> 	 */
->+
->+	/*
->+	 * Skip IPI if the preceding TLB flush already synchronized with
->+	 * all CPUs that could be doing software/lockless page table walks.
->+	 */
->+	if (tlb_table_flush_implies_ipi_broadcast())
->+		return;
+What exactly are you running inside the KVM? 0x00000000 doesn't seem like
+a valid instruction and a quick Google research reveals that this triggers
+a SIGLL trap.
 
-Sashiko told me[1]:
+Adrian
 
-"
-Could skipping the global IPI fail to synchronize with lockless walkers
-running outside the mm_cpumask?
-
-tlb_remove_table_sync_one() is used (e.g., by khugepaged during THP collapse)
-to wait for lockless page table walkers to finish. On 32-bit architectures
-like x86 PAE, pmdp_get_lockless() disables interrupts to prevent torn reads
-of 64-bit PMDs.
-
-While the preceding TLB flush sends IPIs to CPUs in the target mm's
-mm_cpumask, lockless walkers such as pte_offset_map() are frequently executed
-by background threads unrelated to the target mm (e.g., kswapd via
-page_vma_mapped_walk()). These threads run on CPUs outside of mm_cpumask
-and would not receive the TLB flush IPI.
-
-If the global smp_call_function(..., 1) IPI is skipped, the modifying thread
-might not wait for kswapd. Could this allow it to overwrite the PMD while the
-out-of-context reader is reading it, resulting in a torn PMD?
-"
-
-Afraid not.
-
-When CONFIG_MMU_GATHER_RCU_TABLE_FREE=n, tlb_remove_table_sync_one() is
-just a NOP.
-
-So if lockless walkers outside mm_cpumask really required a separate
-global IPI here, systems running with CONFIG_MMU_GATHER_RCU_TABLE_FREE=n
-would already be broken today, because there is no such IPI there to
-begin with :)
-
-[1] https://sashiko.dev/#/patchset/20260424062528.71951-1-lance.yang@linux.dev
-
->
-> 	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
-> }
-> 
->@@ -312,6 +320,13 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
->  */
-> void tlb_remove_table_sync_rcu(void)
-> {
->+	/*
->+	 * Skip RCU wait if the preceding TLB flush already synchronized
->+	 * with all CPUs that could be doing software/lockless page table walks.
->+	 */
->+	if (tlb_table_flush_implies_ipi_broadcast())
->+		return;
->+
-
-And Sashiko also pointed out[2]:
-
-"
-Does skipping synchronize_rcu() here violate the RCU lifetime guarantee of
-page tables?
-
-Generic software page table walkers, such as pte_offset_map(), rely strictly
-on rcu_read_lock() to protect page table pages from being freed concurrently.
-Crucially, they execute with hardware interrupts enabled.
-
-Under CONFIG_PREEMPT_RCU, an IPI broadcast does not wait for rcu_read_lock()
-critical sections to complete. The IPI simply interrupts the reader, executes
-the flush, and returns immediately.
-
-Could this allow the page table to be freed while the reader is still actively
-accessing it, leading to a use-after-free for concurrent pte_offset_map()
-readers?
-"
-
-Nop.
-
-tlb_remove_table_sync_rcu() still has a single caller: the
-!CONFIG_PT_RECLAIM __tlb_remove_table_one() fallback. It was introduced
-for that slow batch-allocation-failure path in 1fb3d8c20bfa
-("mm/mmu_gather: replace IPI with synchronize_rcu() when batch
-allocation fails"), replacing the previous tlb_remove_table_sync_one()
-there.
-
-So if pte_offset_map() readers really required a full RCU grace period
-in that fallback path, that concern would already have existed before
-1fb3d8c20bfa.
-
-So we're safe here :)
-
-[2] https://sashiko.dev/#/patchset/20260424062528.71951-1-lance.yang@linux.dev
-
-> 	synchronize_rcu();
-> }
-> 
->-- 
->2.49.0
->
->
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
