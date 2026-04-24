@@ -1,89 +1,240 @@
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CDD335562
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29364345753
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777045729; cv=none; b=k83hclqsrFGlsja6MZqeDO9nnqpLF2H3jp5rVd4hlaRzp/Dn8n34RkF0eq6MFAUuVa3T+mIdcur64JerZ4H8U8mysJmXBTZdr6Md7JhpoDKCykpyytloQUEtNS5FkaQYxsEM1kYqSsca/lnFikbCwDDo8u+mhyPJP321lsfmKyM=
+	t=1777045817; cv=none; b=J/efjtjwPOMg332HOE0OjGPbQ9Jb/Y00wx+gAnWsr3304AA3oFMzxFblJqlPNtIelgS+2DnMuH6CzeePWj78JZgi9SFwaf2EV0a8GX1jMYHspGed4f/wSpG4BLhmBliU7tXquXuhFpZfPdutsHZyQBqPi9BQ9obEA3ZsUctLJEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777045729; c=relaxed/simple;
-	bh=kU6sLy/i0cJOnetP5Co+iC5u31/ISmJNhpmdzi/dPH0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HvFhrNpNqT6oESatIlzkxFKnZec88P+ePxoEEUtmFGabkcqfW2h7ChxTB+e2AobWxKq8Ntdy0sIozrf6L4G0S0CeZp1Bw3qLByky1127boNqJwbTcWuCE81oB5oMJyhIAKEgznO3cuiRl+f0Ad5jIqW4YPORZWPzjHm/gQvfq+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=UE5GDi1L; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+	s=arc-20240116; t=1777045817; c=relaxed/simple;
+	bh=8ajPySBvaEj4QejDUTT/lGKe3oq//ktcHG0pG8tk4J0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hIRooKfGLdiQAVnjcv5Lf5Yi9c+rZPdFNAIMdmm8tKLJdXDmUZ/mYV4ZbZevPYKRDIswmuaztdlbkfU3kUSpJwnnnB6wqqI8/XH2CRAycpDXlRU5Nh6Xz8/npLTWZouokU00w9wr502R0G24XGVdpIkzNmOlpdnQ+nUd0zIpEyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nDYZtFLL; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="UE5GDi1L"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=sR7PWVzDNl0Tt491SxI4OxCz/9aFZbKZgaCBkHzdKEE=; t=1777045726;
-	x=1777650526; b=UE5GDi1LSQWTJ6MiYXrfvkXzAEHd0fUzRy8DI8Zx8+D9iLKSWcm5mJKHbkWxE
-	+ZnG2F1rJ7C1FfG+WaAGI7QoIKQId6l8k+po1BomnItpBnG4Ebvmu++Wg0cJFAK2WlOQIMYqiT/eV
-	bPywQ71J3RK9JmTJ24sk1mMGIQrIxzS+lLaYxOuBvBuewzQb3+48rggTciQ+44u26hCxsEJA613Rv
-	X00fbjrH3CxOsn7h6T+NGWmf3Y1kKusWpABQcyz8qr10kmggIynAKT8J9ZfLh6pxR32/sE8fZUilM
-	TZ3aPNybYFAmGk94zlnEqRoox8kvmHErH8tOhRhg8v/ZYV6pIA==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.99)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1wGIli-00000000k6X-3PRH; Fri, 24 Apr 2026 17:48:38 +0200
-Received: from dynamic-002-242-158-062.2.242.pool.telefonica.de ([2.242.158.62] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.99)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1wGIli-000000007EX-2Trq; Fri, 24 Apr 2026 17:48:38 +0200
-Message-ID: <d9ad0cd6fa640f23c396778bce2aa322e40e7e88.camel@physik.fu-berlin.de>
-Subject: Re: KVM-PR no longer works when compiled with new GCC compilers
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev
-	 <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org, 
- "debian-powerpc@lists.debian.org"
-	 <debian-powerpc@lists.debian.org>
-Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au, mad skateman
-	 <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
-Date: Fri, 24 Apr 2026 17:48:37 +0200
-In-Reply-To: <a584b7a1-fc25-a475-099a-634159b6ffe8@xenosoft.de>
-References: <cfd779d6-9440-46b2-9ed5-752f1ae6b5d1@xenosoft.de>
-	 <588ada6c-bcc4-e93b-1beb-4f7f859e3d5c@xenosoft.de>
-	 <eee732904c2a7ccce9b496b05f988a36d8a9883e.camel@physik.fu-berlin.de>
-	 <5da12382-5424-4bd9-981f-359e4dc1fa67@xenosoft.de>
-	 <a584b7a1-fc25-a475-099a-634159b6ffe8@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nDYZtFLL"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777045812;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0j98C+k0FMWienD6UU5F2vb7kP4FNq4bGSEt/E3eHFc=;
+	b=nDYZtFLLrnOgK12w/V+IKSpSn1f+kKAdlx9MxGf9+VxfN8W+VCYuqrJwbVbkr853pz5rGx
+	DSsRYviaI913+dgjdnpLDuo5l1LinOTZYG0rPmnGn/WaHi4nK1Qh8qC8CpUOvF1BW3DNGZ
+	zruonZ1x3yeh1kvHTNrfZAZ1C0jmVD0=
+From: Lance Yang <lance.yang@linux.dev>
+To: peterz@infradead.org,
+	dave.hansen@intel.com
+Cc: lance.yang@linux.dev,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com
+Subject: Re: [PATCH 7.2 v10 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
+Date: Fri, 24 Apr 2026 23:49:43 +0800
+Message-Id: <20260424154943.67564-1-lance.yang@linux.dev>
+In-Reply-To: <20260424151247.GG3126523@noisy.programming.kicks-ass.net>
+References: <20260424151247.GG3126523@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 2026-04-24 at 16:47 +0200, Christian Zigotzky wrote:
-> I compiled it with "mtune=3Dpower4" today but without any success.
->=20
-> Error messages:
->=20
-> [=C2=A0 800.274759] Couldn't emulate instruction 0x00000000 (op 0 xop 0)
-> [=C2=A0 800.274767] kvmppc_exit_pr_progint: emulation at 100 failed (0000=
-0000)
 
-What exactly are you running inside the KVM? 0x00000000 doesn't seem like
-a valid instruction and a quick Google research reveals that this triggers
-a SIGLL trap.
+On Fri, Apr 24, 2026 at 05:12:47PM +0200, Peter Zijlstra wrote:
+>On Fri, Apr 24, 2026 at 02:25:28PM +0800, Lance Yang wrote:
+>> diff --git a/arch/x86/hyperv/mmu.c b/arch/x86/hyperv/mmu.c
+>> index cfcb60468b01..2cf1eeaffd6f 100644
+>> --- a/arch/x86/hyperv/mmu.c
+>> +++ b/arch/x86/hyperv/mmu.c
+>> @@ -63,7 +63,7 @@ static void hyperv_flush_tlb_multi(const struct cpumask *cpus,
+>>  	struct hv_tlb_flush *flush;
+>>  	u64 status;
+>>  	unsigned long flags;
+>> -	bool do_lazy = !info->freed_tables;
+>> +	bool do_lazy = !info->wake_lazy_cpus;
+>>  
+>>  	trace_hyperv_mmu_flush_tlb_multi(cpus, info);
+>>  
+>> @@ -198,7 +198,7 @@ static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
+>>  
+>>  	flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
+>>  	nr_bank = cpumask_to_vpset_skip(&flush->hv_vp_set, cpus,
+>> -			info->freed_tables ? NULL : cpu_is_lazy);
+>> +			info->wake_lazy_cpus ? NULL : cpu_is_lazy);
+>>  	if (nr_bank < 0)
+>>  		return HV_STATUS_INVALID_PARAMETER;
+>>  
+>> diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+>> index 866ea78ba156..fb256fd95f95 100644
+>> --- a/arch/x86/include/asm/tlb.h
+>> +++ b/arch/x86/include/asm/tlb.h
+>
+>>  static inline void tlb_flush(struct mmu_gather *tlb)
+>>  {
+>>  	unsigned long start = 0UL, end = TLB_FLUSH_ALL;
+>>  	unsigned int stride_shift = tlb_get_unmap_shift(tlb);
+>>  
+>> +	/*
+>> +	 * Both freed_tables and unshared_tables must wake lazy-TLB CPUs, so
+>> +	 * they receive IPIs before reusing or freeing page tables, allowing
+>> +	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
+>> +	 */
+>> +	bool wake_lazy_cpus = tlb->freed_tables || tlb->unshared_tables;
+>> +
+>>  	if (!tlb->fullmm && !tlb->need_flush_all) {
+>>  		start = tlb->start;
+>>  		end = tlb->end;
+>>  	}
+>>  
+>> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
+>> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, wake_lazy_cpus);
+>>  }
+>>  
+>>  static inline void invlpg(unsigned long addr)
+>> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+>> index 5a3cdc439e38..39b9454781c3 100644
+>> --- a/arch/x86/include/asm/tlbflush.h
+>> +++ b/arch/x86/include/asm/tlbflush.h
+>> @@ -225,7 +227,7 @@ struct flush_tlb_info {
+>>  	u64			new_tlb_gen;
+>>  	unsigned int		initiating_cpu;
+>>  	u8			stride_shift;
+>> -	u8			freed_tables;
+>> +	u8			wake_lazy_cpus;
+>>  	u8			trim_cpumask;
+>>  };
+>>  
+>> @@ -315,7 +317,7 @@ static inline bool mm_in_asid_transition(struct mm_struct *mm) { return false; }
+>>  extern void flush_tlb_all(void);
+>>  extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+>>  				unsigned long end, unsigned int stride_shift,
+>> -				bool freed_tables);
+>> +				bool wake_lazy_cpus);
+>>  extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>>  
+>>  static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+>
+>> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+>> index 621e09d049cb..3ce254a3982c 100644
+>> --- a/arch/x86/mm/tlb.c
+>> +++ b/arch/x86/mm/tlb.c
+>> @@ -1360,16 +1362,16 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
+>>  				(info->end - info->start) >> PAGE_SHIFT);
+>>  
+>>  	/*
+>> -	 * If no page tables were freed, we can skip sending IPIs to
+>> -	 * CPUs in lazy TLB mode. They will flush the CPU themselves
+>> -	 * at the next context switch.
+>> +	 * If lazy-TLB CPUs do not need to be woken, we can skip sending
+>> +	 * IPIs to them. They will flush themselves at the next context
+>> +	 * switch.
+>>  	 *
+>> -	 * However, if page tables are getting freed, we need to send the
+>> -	 * IPI everywhere, to prevent CPUs in lazy TLB mode from tripping
+>> -	 * up on the new contents of what used to be page tables, while
+>> -	 * doing a speculative memory access.
+>> +	 * However, if page tables are getting freed or unshared, we need
+>> +	 * to send the IPI everywhere, to prevent CPUs in lazy TLB mode
+>> +	 * from tripping up on the new contents of what used to be page
+>> +	 * tables, while doing a speculative memory access.
+>>  	 */
+>> -	if (info->freed_tables || mm_in_asid_transition(info->mm))
+>> +	if (info->wake_lazy_cpus || mm_in_asid_transition(info->mm))
+>>  		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
+>>  	else
+>>  		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
+>> @@ -1402,7 +1404,7 @@ static DEFINE_PER_CPU(unsigned int, flush_tlb_info_idx);
+>>  
+>>  static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
+>>  			unsigned long start, unsigned long end,
+>> -			unsigned int stride_shift, bool freed_tables,
+>> +			unsigned int stride_shift, bool wake_lazy_cpus,
+>>  			u64 new_tlb_gen)
+>>  {
+>>  	struct flush_tlb_info *info = this_cpu_ptr(&flush_tlb_info);
+>> @@ -1429,7 +1431,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
+>>  	info->end		= end;
+>>  	info->mm		= mm;
+>>  	info->stride_shift	= stride_shift;
+>> -	info->freed_tables	= freed_tables;
+>> +	info->wake_lazy_cpus	= wake_lazy_cpus;
+>>  	info->new_tlb_gen	= new_tlb_gen;
+>>  	info->initiating_cpu	= smp_processor_id();
+>>  	info->trim_cpumask	= 0;
+>> @@ -1448,7 +1450,7 @@ static void put_flush_tlb_info(void)
+>>  
+>>  void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+>>  				unsigned long end, unsigned int stride_shift,
+>> -				bool freed_tables)
+>> +				bool wake_lazy_cpus)
+>>  {
+>>  	struct flush_tlb_info *info;
+>>  	int cpu = get_cpu();
+>> @@ -1457,7 +1459,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+>>  	/* This is also a barrier that synchronizes with switch_mm(). */
+>>  	new_tlb_gen = inc_mm_tlb_gen(mm);
+>>  
+>> -	info = get_flush_tlb_info(mm, start, end, stride_shift, freed_tables,
+>> +	info = get_flush_tlb_info(mm, start, end, stride_shift, wake_lazy_cpus,
+>>  				  new_tlb_gen);
+>>  
+>>  	/*
+>
+>This whole s/freed_tables/wake_lazy_cpus/ rename should probably be its
+>own patch, as should that include unshare_tables thing be.
+>
+>That seems like unrelated changes.
 
-Adrian
+Thanks, makes sense! Will split the pure s/freed_tables/wake_lazy_cpus/
+rename out.
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+For the tlb->unshared_tables part, I would keep it with this patch, 
+since lazy-TLB CPUs still have to be woken before reusing unshared page
+tables.
+
+@Dave what do you think?
+
+Thanks,
+Lance
