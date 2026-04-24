@@ -1,215 +1,158 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013006.outbound.protection.outlook.com [40.93.196.6])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012052.outbound.protection.outlook.com [52.101.43.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204C113B5B3;
-	Fri, 24 Apr 2026 17:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F231246781;
+	Fri, 24 Apr 2026 18:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777053088; cv=fail; b=Ye06khOH4iktjOAUzJi/S+MK51cilvrfUS9naMto1rKpWqbZJbHMm0ysbuoc3H530zjyUaliFU/QglrzhZg/XSwAIkJqBS99/rAXCuq6pkLFRsByfqiHVGOeydKIqpi7U9KJzfl1kRc8IXJEsvj9ZzZtFJhbKg5qCIyGn0fVaok=
+	t=1777053913; cv=fail; b=PRcF/dfQdBCGxsvYMWmzna6zqbvZIqsHDDmjb7GFdv/aUEF/O4lpNNohqAgK51shef6YjObn4y2fzY/9dczrI3WYqL/o0AJYPs5ir5hJ3qv/7O3ZRwwXvQcjuWZgJdul9d3FBVHxAd608E4n2MBoD7e82hzsNnQHsAVx/sN3Ay0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777053088; c=relaxed/simple;
-	bh=b/yN7alrEaujuTkmtZNedOLcM/qBFwPkRq1+ZVWG89E=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bY6qnhfs5nqOOVpmxbbPVQfhyVdu63apI66rG92o2iwh3z+//V0LQKxmuZ4koGIKb9N0Hk1Q7gspuwa7RNOQIkWY0I/T9utCuAUDGjCNNgHm60BiB/rD8pBNo8I39uW2xpjau3+X4ALz9WPpTsgu6KUpAmQzP80zeU/M/r6qS/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=x7KoVGGI; arc=fail smtp.client-ip=40.93.196.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1777053913; c=relaxed/simple;
+	bh=tqH4uHAzc5ydE02ZobuYPlNY9N3SdWHlDlbnzzUShFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JBF1Rsvm/43a2u5ITNFgKwRuoH8m6N4pahMjSQ9RUjz25i6hjyQGVBeqrgp9SVVObhRjMgY+rYuauT1kbvhu4epUWrfgnI6rupn/9me8hRQbGL5YLdxfzSTk9r4+bZKQgTbRj/HK91Yhd9sTQg2RwfYHTN81ue0wXPHMCWdXoHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OWOUpnEt; arc=fail smtp.client-ip=52.101.43.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="x7KoVGGI"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OWOUpnEt"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mftRD/Cz9Huaw2F98AawisSSFPFG51rsqME2LSBXqhHIqq78Q4VWaN6lSHeb1rpS0w1HW3qUaziAafp6UoIkhdFMmWW9biEB9G7Sq0911Wn6JS3alkOcA89t20rnroTXr6mBonN13++noST7IWaDe+zwHMzcOTh5zpzSWopg4Txw7qVPvLXTsj7kRcfADTmbs13FOcO/DAkkH+GldFBVdonhoDm7Bsu2EZ+768O9/5ihvFDq7kZ+l6S1DYOiQl2yijGkukR4KfZIUEpTC1++2OJvB0SBCE2HpH68SJEW3COWhg3rbTHFnDTLCik8Ondbl9Ul3whOAYAqFPKSzMIm8g==
+ b=AR6HeFKGAaP6UG++Ed13ru1lXUlalZo5v+5AfKiyKpFvnRHTCkugTJwWUpLY19lkGDtYHgTg8BOFMv0TaB4xbjJD5+/a0jAxA0LaD9Y5c4g/FhO+jptcSn6MceeB7QjLjMNgs6cJBErqPxgot/jELGay3akVG7e2ObJFu4VuN5eh2/XCk0yPGY665fp7U+9n+ZShB5WZ8BBzLG43wJJXvq7VWmJAKURYbVATikiS6RohMeJe03BIRn/HHM5SQsypahSEjyiQoO4U/5TEBpL/0pEz93Ocnchel1/soz+bPH4Paf47AmzlrTRfVrGxaSHCXN+p3UW1PubpMMRTS6wacg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EwZ2B4WSWBlK4x+ZdSKQ4wlck9LiWJwzJ++DTuFWNSc=;
- b=lQbKCoCKYylsGUTsKo4fzKLdFXHYu7HbwPOeZBrXNGE3ld8xoRXKNEn4so3gGG0mhjBfXIt5vlq9i6KqNbu2slfIM2UGLHalKFsDwhtvX5TmT2H9NPIsZcLhKRkoHX523sogbXz//EuK3SNjuTkq5YAHF9ANSKVO/XoLtutjzJj1vw0FB1YMraRPkM2Xtx7gBsx7PkfUhXFZW/OSpoaUQImG0mIIO6FZwIqd75sALDQT1fiRdDpQfm9oxzhzU18e6dNSgbalu6fOADcqlJU3GkJ9Cgw1ruIJzJpUc8Y4LXr4Qsx3uzvjlDuinVJfey7JWDBO3WRl1PNiXLWNq/0RuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=g6k2TLTDI387Kmeylh3K4GUHezwUAwfDpnRMhCNhdPc=;
+ b=GrMd9wa0vkStv1sTvJTRR/vTzwrLXOBtfxr4XK5V6YR08zqfJK93zMa7k/T5WKDds/ryBuX79MsgBZgrubA0S1HdsfdmHEQglc2YlhWnMFnrZgEEXX7jnU9Q0QudzA5kbE0zYZ5nTdVoXrcmgflNDhdEXwW5EHkuUxz4nY5jg/TDMFv4J7kSckUo4ZhlS4wSx9KkkbSEhv/Bh/lu7Oto4gEAPRDbvuY/rP4lsXLE9suGr7ILZYNXXS72sKEMuSRgcIs6X5VkmORh/7Cj7U8hfN4ognHn5FCnFyGDRCdvqIfoWEL2NQkEmqaygk8lgiT43TdZ909DxzkGT8q0+i+8ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EwZ2B4WSWBlK4x+ZdSKQ4wlck9LiWJwzJ++DTuFWNSc=;
- b=x7KoVGGIQZtn7ckFJEhrT/kCwVqNXz+1VzOqUqAx0D9Uq/9/5dzDd1YFtKHeYyoLxcsh7EQicNQkLViWQUd2pRdU2QP1QGeXG4CXqh72gJnIWeA5vJwhrJtGx8F4U0HJHY3ZfEkxSfsNfj/dhUVft7snL4EcOeWbE8KFKDOnoaw=
-Received: from SA0PR11CA0200.namprd11.prod.outlook.com (2603:10b6:806:1bc::25)
- by DS0PR12MB8296.namprd12.prod.outlook.com (2603:10b6:8:f7::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.22; Fri, 24 Apr 2026 17:51:22 +0000
-Received: from SA2PEPF00003AE4.namprd02.prod.outlook.com
- (2603:10b6:806:1bc:cafe::10) by SA0PR11CA0200.outlook.office365.com
- (2603:10b6:806:1bc::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.22 via Frontend Transport; Fri,
- 24 Apr 2026 17:51:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AE4.mail.protection.outlook.com (10.167.248.4) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Fri, 24 Apr 2026 17:51:22 +0000
-Received: from purico-9dcchost.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 24 Apr
- 2026 12:51:21 -0500
-From: Melody Wang <huibo.wang@amd.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Joerg Rodel <joro@8bytes.org>
-CC: <linux-kernel@vger.kernel.org>, <x86@kernel.org>, Tom Lendacky
-	<thomas.lendacky@amd.com>, <kvm@vger.kernel.org>, Melody Wang
-	<huibo.wang@amd.com>
-Subject: [PATCH v4 7/7] KVM: SVM: Enable Restricted Injection for an SEV-SNP guest
-Date: Fri, 24 Apr 2026 17:51:05 +0000
-Message-ID: <20260424175105.4106-1-huibo.wang@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1777048608.git.huibo.wang@amd.com>
-References: <cover.1777048608.git.huibo.wang@amd.com>
+ bh=g6k2TLTDI387Kmeylh3K4GUHezwUAwfDpnRMhCNhdPc=;
+ b=OWOUpnEt7DALdegKHFXFML1cZQpJsdCUqHdc3EuN1ZUg8Y0mCwsr8MJpnPf+G88wmvo+lYX459+pFRbzCtvUyAcRMN1FsZA742uKkiEVEEBxfiwdF2sGJWTfNvfunhH/GfOokNGoD3eOiH35vOSxpwlVHRezqwUBijJCHN6XDcfxvGk2pd2IbIB+s+GooWnn7YoS/erdymTRk+i3vIic7ab7khfHDaEL5psS9PsXflnqnBbFC76YccpAx3uG81ZLxjJKEWxhoLS9+HR4Zj45fSsiW4euq3jPrfAiAdFo4Z+Vn+8/tkx5tlk3UXbrs37kBHuxl91/+gqNRi2bBuaCRA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by PH8PR12MB6793.namprd12.prod.outlook.com (2603:10b6:510:1c4::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Fri, 24 Apr
+ 2026 18:05:06 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9846.019; Fri, 24 Apr 2026
+ 18:05:06 +0000
+Date: Fri, 24 Apr 2026 15:05:05 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Matt Evans <mattev@meta.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Alex Mastro <amastro@fb.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 1/9] vfio/pci: Fix vfio_pci_dma_buf_cleanup() double-put
+Message-ID: <20260424180505.GE3444440@nvidia.com>
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-2-mattev@meta.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260416131815.2729131-2-mattev@meta.com>
+X-ClientProxiedBy: YT4PR01CA0095.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:ff::18) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE4:EE_|DS0PR12MB8296:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57746540-62fe-49a4-0dc3-08dea22a190b
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH8PR12MB6793:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef97b846-e5e6-47d5-62df-08dea22c03f5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|82310400026|1800799024|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	z/U5OrAnu5Wbo/vnyjbFtMH4i28D2jpcLGtwlYsOjY1Iff5NoXlAjCeroNoxlvz6e7uDz8QmltdMZM2aPAW0ONjvVsntWwOHtvXcPxkt7KpKUy1r02T8TI24cFGBOgdAe4tHt9Wtqo8gSq5u0rKwz7UabfuIMsYnuhDV/sudHDQTwjHI2kLS01xONEggJTkUw6HTyqonyuQTzUhFxnXdzxU7Gm0x02KZmOMbmotnOsBh+8FiwzRTP2eg9iunk3b88di0H0J2b4L3piII9lRQewQJBPMV2Z6huYvCZ4cy14wjqsiI/pnU7rUkrawmgGYEJPITpirmmI5QULnWLZeGtU4TRVQmCqw5B3v1p05BEj2/CBwNh7Gk3qIw7kuiPZp4wWC48HzUvEBGTUDE4uavlboLOcfGxCT9rx14yjsBbpfRAjHaSNBKRyPtI9sIn5/mIVvSgjPCMKgVvjlGuzg61ASeeus/9fFtQNWli2L8n6fpRNPlXmLJtQYj6xBz5mvJJzH36WLql/tHFxpne6FZz5+BOYw80iEBWgI+zj1v/Dt3hNZpNEecmluR9MHHntGWDapDPjbw1etcGThXUI8swxZuLc2n0T5MQC8FaFQUU/UG8qQfvnaM+SYY8kdPZqmq5qlB22lLOK2Bw8tFt37sRwh2ZqMbzgVL/9pTzTHzD4lvR7Dma7D0prxI0WQRikxrjMINurzUmldpOe79hWfDWlt1i6Va0/l/KwNNZlORRtbhQw1Rtr2FE/sMgY3nA5MtdD+RNH0oJTSHx03eOmW59A==
+	pYzpZfoDAob7GFhEXPNQhUKoto/Afjr/U1GVuWw1N3bTnmh0UhitHfqPUWFYbIH0spwvRNH9Pv0r6M8g8J+vdyjp0vZ/yTtDptBq3vqkYdv+cyQ+qx/jJOjkwQEoBuKBGEmgv4gXZjX0qbXtDJOy71KIPeOMpuMA3uVkAi8UQZL6hp5mg5h5LWhC7ukRwNfLe7xkTvO853VKwH7m3K4p9alxJdZ7QXe/8v7fT2omNFr344ufVdNAVRCvFb1ctRh1tWLWBS5vLAyzzewIr6EqePaRatjUm1rcrdQILJyMJRPfFagNbvz0eK1JTRT6+0JBCxuNy6yP3v+LVn8ew7mx8I3JlofmfD+QVREEbODUI5VbLp1Ww7HTfH3aq+WFaivOlGXTcdfe8FMWUtIUPGiIUXN8SbxlAJdQEZNEN1sPwtf7zBvUPHKZJhDKNYwRCTRITrFZR+rVOTYVSy3jYhqJu6q4yfnU79NuERknm8MYLQt+vLC2Wm4iQYoW6Y4EBaz42ORIvsJ5055Rh66If8UR4kHTUir7Y+MkvRrgMGFC7sIyWEfJAsMuXyJdgJ1UeFZfx9FDaq08UVRHUWBGgBsDj4XkPdLeCbkaZISz/VRwbiBDdiM5gJoQ2oU8IMOPYqMjga1OjvicuAOnzZkR+UkwsdEL19vK7/GIILut28qsVcPkB8+YUMQbU4YgwzVxb2bIg20jo1eQlh9JR3jAO72CNKNX5x5aWwBjaVKojz+hMD4=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(82310400026)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	mXmQBeFS/LdAo00mD+Mnh7ZiMYgcafnWuHE9/uxyMS+Ht67+GBflbCMHPas4lHwIxYUeDALaOA/Jg4czQH4enH5alhQau84z8wa44V69E48Yvafstprgjrei0tfT3b3AdQMuSujGtE/Dne85XB0vijSIT2g9+Xml+JfUfzb180wUNpHG0NZioZ/dWLTPlxi48z8DJWFGgrHCPj9xcPntUuQ12meG3mv57sBnHJkQResLPkmr6U2CKYhNqDita5hTE/4/88r9uCMDTFl2Y6Xl99Se8lEzIBofORPra3Ke5Qaq7TsCSTG7mxEuh8v6XPFrx+cHjCLLiMBZeMBs9dNIa5Y6i3deKrbFVs2pRY5ZJSZOkVL4GdGSwAlZm218optJL1LRohxteySfriUrutlJJefALem6frJRNhYGenVh1CSqxGXnKM5PIXldh4n4o8+7
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 17:51:22.5313
+	=?us-ascii?Q?6rrKEzvHujYZI4ZWF7IoFF3MI1ZmextK1AZHH57MbSBMNhnrWTtALGs6wD8S?=
+ =?us-ascii?Q?bdkFTG41gUKU44XrMVxzlw5g8iOmrbOWQxn9G5Hn3jt1hkI2LTKXU5v/0wxL?=
+ =?us-ascii?Q?zqZ3FLHrh3XcBZCIrHs1jdLKi8k6/rjN/nzL2hSenUbRoiOlxGtbwkDT3cT6?=
+ =?us-ascii?Q?wTI/6wlQjOKeufWbCROhZBVF9bjTqaIf0+PSJXWNUKk1kVkUj39BUOvSTzP/?=
+ =?us-ascii?Q?HLv9SsXY0byyfHezwitXInv0RGD7XeSzBuzMWUxXZO4a3KnV1HPMzKXUdqtk?=
+ =?us-ascii?Q?pA8+GJMheFTiic3rQcupsSPT6eyt0w/Q9TyLuKnGFljfFMV95OzCeWRJKnVr?=
+ =?us-ascii?Q?c3963peqsi8eYXeMePMOCpy0GYQqALH890PY3gR+IWo8oW41STecwIVN+aFB?=
+ =?us-ascii?Q?wu4KKCMes8bN+qFcWC/rsTg8f/l3Zrrg7wFTDbw9ggpXgTMXBk2y+9ve2LRj?=
+ =?us-ascii?Q?7ZjO/OTu7eCtBMgy+x8LNFpA3zY7Z5+2RbP+UehJ4p3pR69paCLqS0enTX4p?=
+ =?us-ascii?Q?ICIFgY9mBCxyCgHReSsuezGReGoxGPJz9ZTG6X2v8mwaoPiRYHMYS4W2Q6lX?=
+ =?us-ascii?Q?bkIDzZ4VS5Sr9wZJ2+sNZJ2Zxq/q6OwPq909cQKK5EQppXpE3HX/5G1IvBuv?=
+ =?us-ascii?Q?PKDytgxhkOU9CVo/4c/GT4+K0J9bIowztN8GQqI5ZCLVBZfJEnpYljBEKPnE?=
+ =?us-ascii?Q?NIVD+Tlq/IlaiwYIkVfNly+tyRTIMW/AgjgVzudX/7SS96Qorgk/F/pU6XM6?=
+ =?us-ascii?Q?7ajqp78ewGD5RcxL4HxT4sQAZBgw1J4sDk4hCGoRpGeQToYHa2qIK7V8LX8/?=
+ =?us-ascii?Q?Ych7cc4xFcAx65HAlZsO75dZ8q8KE4F2wTFOQ0jCheNW1gz5AFbZYiZTNbEZ?=
+ =?us-ascii?Q?tiqTZF7lgd7tY/L6btCV/qDrnyIMwE1amecYZbZvBuWIag0jw3Ky4aMQ9TXO?=
+ =?us-ascii?Q?QTRCLGul4adu1CXQ993S5QSzGQGTF8/3jokNY6D0/gTfhB+35KBh9HPUErAF?=
+ =?us-ascii?Q?RCKlpBihzi34swddhzdAtXvu0rNP7KhZ5Mzo7mec35Z/MW5sIHso5IXKd5di?=
+ =?us-ascii?Q?SeYTBeKdlZLycgXvXsz+JNEJyDFqhBCHxa4JIAPbHXNw4BbrmgzUXA6MMog4?=
+ =?us-ascii?Q?puUfmin38FRi/hvEOwuHMBSkuSMR9TAqds5mlpO5j2eXkJRoSdnXuscFyNsK?=
+ =?us-ascii?Q?svc/tmA3Sef4kl7FFu/S8lpu0ip0xa0SByDxifa3ruWt0rqejpAQmf/35nPX?=
+ =?us-ascii?Q?JWtn9dRNfRQbJLQOcxpNQ0cAX6hOCYG/F4+GUATwfxQ0N5wtd/jOT6hRnvZ4?=
+ =?us-ascii?Q?GsW7JyEuCqBDSMmveFaCVm2BoMIwr7Wmevpb4w3y+8xEiZ4er5L34fTwxwMo?=
+ =?us-ascii?Q?Vlobw0dFCUz24R0jaH2fuC38hdJKIYG4t7Wz8N1pmIFd3yLEyoOaGpD/Xi3w?=
+ =?us-ascii?Q?me9D+yI4KoXfC6bPQct1jcLmz3BqS3JJBFjxb5Ac8Uu2UxW1tNCZ3iOQFR0G?=
+ =?us-ascii?Q?fG/7BFdLGLNk5oFe/A/2HwGkoh2S27P17wtKWYFZo2VNWjZvSPxH/J09xCv1?=
+ =?us-ascii?Q?1bXLktVYty3H8x97qnEAaz4XlugsViFNI+dtDGi3ZDROsu6SeH0c5LWVFdn7?=
+ =?us-ascii?Q?+hloP5wqG9TpVZvOLNml5ZUE8McuTXGRed63HQPtp9moTuIyL4m66cDkHv6L?=
+ =?us-ascii?Q?5hT3Xl2wuYaaZDcONSPBm45DJS5Gn6i0FnDGYajm0vtR6S9e?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef97b846-e5e6-47d5-62df-08dea22c03f5
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 18:05:06.4547
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57746540-62fe-49a4-0dc3-08dea22a190b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003AE4.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8296
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qItdUgtpn7K1hBZOH67uPWTmaGaljnPKiTxsD2O6LvbLUebI2q5d0N91UG0bVFhY
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6793
 
-Enable Restricted Injection in an SEV-SNP guest by setting the corresponding
-bit in the VMSA SEV features field (SEV_FEATURES[3]) from QEMU.
+On Thu, Apr 16, 2026 at 06:17:44AM -0700, Matt Evans wrote:
+> vfio_pci_dma_buf_cleanup() assumed all VFIO device DMABUFs need to be
+> revoked.  However, if vfio_pci_dma_buf_move() revokes DMABUFs before
+> the fd/device closes, then vfio_pci_dma_buf_cleanup() would do a
+> second/underflowing kref_put() then wait_for_completion() on a
+> completion that never fires.  Fixed by predicating on revocation
+> status.
+> 
+> This could happen if PCI_COMMAND_MEMORY is cleared before closing the
+> device fd (but the scenario is more likely to hit when future commits
+> add more methods to revoke DMABUFs).
+> 
+> Fixes: 1a8a5227f2299 ("vfio: Wait for dma-buf invalidation to complete")
+> Signed-off-by: Matt Evans <mattev@meta.com>
+> ---
+> 
+> (Just a fix, but later "vfio/pci: Convert BAR mmap() to use a DMABUF"
+> and "vfio/pci: Permanently revoke a DMABUF on request" depend on this
+> context, so including in this series.)
+> 
+> drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 
-Add Restricted Injection to the supported hypervisor features.
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Co-developed-by: Thomas Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Thomas Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Melody Wang <huibo.wang@amd.com>
----
- arch/x86/include/asm/cpufeatures.h |  1 +
- arch/x86/include/asm/sev-common.h  |  1 +
- arch/x86/kvm/svm/sev.c             | 26 +++++++++++++++++++++++++-
- 3 files changed, 27 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index de7bd88e539d..dc35806ff05e 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -453,6 +453,7 @@
- #define X86_FEATURE_SNP_SECURE_TSC	(19*32+ 8) /* SEV-SNP Secure TSC */
- #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* Virtual TSC_AUX */
- #define X86_FEATURE_SME_COHERENT	(19*32+10) /* hardware-enforced cache coherency */
-+#define X86_FEATURE_RESTRICTED_INJECTION (19*32+12) /* Restricted Injection */
- #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" SEV-ES full debug state swap support */
- #define X86_FEATURE_RMPREAD		(19*32+21) /* RMPREAD instruction */
- #define X86_FEATURE_SEGMENTED_RMP	(19*32+23) /* Segmented RMP support */
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index 01a6e4dbe423..ee17a3541b55 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -136,6 +136,7 @@ enum psc_op {
- 
- #define GHCB_HV_FT_SNP			BIT_ULL(0)
- #define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
-+#define GHCB_HV_FT_SNP_RINJ		(BIT_ULL(2) | GHCB_HV_FT_SNP_AP_CREATION)
- #define GHCB_HV_FT_SNP_MULTI_VMPL	BIT_ULL(5)
- 
- /*
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 95ee199e38fb..c26575516eec 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -40,7 +40,9 @@
- #define GHCB_VERSION_MAX	2ULL
- #define GHCB_VERSION_MIN	1ULL
- 
--#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
-+#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP |		\
-+				 GHCB_HV_FT_SNP_AP_CREATION |	\
-+				 GHCB_HV_FT_SNP_RINJ)
- 
- /*
-  * The GHCB spec essentially states that all non-zero error codes other than
-@@ -64,6 +66,10 @@ module_param_named(sev_es, sev_es_enabled, bool, 0444);
- static bool __ro_after_init sev_snp_enabled = true;
- module_param_named(sev_snp, sev_snp_enabled, bool, 0444);
- 
-+/* enable/disable SEV-SNP Restricted Injection support */
-+static bool sev_snp_restricted_injection_enabled = true;
-+module_param_named(restricted_injection, sev_snp_restricted_injection_enabled, bool, 0444);
-+
- static unsigned int __ro_after_init nr_ciphertext_hiding_asids;
- module_param_named(ciphertext_hiding_asids, nr_ciphertext_hiding_asids, uint, 0444);
- 
-@@ -3224,6 +3230,12 @@ void __init sev_hardware_setup(void)
- 
- 	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
- 		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
-+
-+	if (!sev_snp_enabled || !cpu_feature_enabled(X86_FEATURE_RESTRICTED_INJECTION))
-+		sev_snp_restricted_injection_enabled = false;
-+
-+	if (sev_snp_restricted_injection_enabled)
-+		sev_supported_vmsa_features |= SVM_SEV_FEAT_RESTRICTED_INJECTION;
- }
- 
- void sev_hardware_unsetup(void)
-@@ -4740,10 +4752,20 @@ void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm)
- 		vcpu->arch.reserved_gpa_bits &= ~(1UL << (best->ebx & 0x3f));
- }
- 
-+static void sev_snp_init_vmcb(struct vcpu_svm *svm)
-+{
-+	struct kvm_sev_info *sev = &to_kvm_svm(svm->vcpu.kvm)->sev_info;
-+
-+	/* V_NMI is not supported when Restricted Injection is enabled */
-+	if (sev->vmsa_features & SVM_SEV_FEAT_RESTRICTED_INJECTION)
-+		svm->vmcb->control.int_ctl &= ~V_NMI_ENABLE_MASK;
-+}
-+
- static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
- {
- 	struct kvm_sev_info *sev = to_kvm_sev_info(svm->vcpu.kvm);
- 	struct vmcb *vmcb = svm->vmcb01.ptr;
-+	struct kvm_vcpu *vcpu = &svm->vcpu;
- 
- 	svm->vmcb->control.misc_ctl |= SVM_MISC_ENABLE_SEV_ES;
- 
-@@ -4810,6 +4832,8 @@ static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
- 		set_ghcb_msr(svm, GHCB_MSR_SEV_INFO((__u64)sev->ghcb_version,
- 						    GHCB_VERSION_MIN,
- 						    sev_enc_bit));
-+	if (is_sev_snp_guest(vcpu))
-+		sev_snp_init_vmcb(svm);
- }
- 
- void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
--- 
-2.43.0
-
+Jason
