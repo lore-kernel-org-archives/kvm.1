@@ -1,149 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAF91F0991;
-	Fri, 24 Apr 2026 15:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4783CF663
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777045946; cv=none; b=GxuzY2EdPwpEuSkPiFTeEavLC4cP/rCfSD6/zrBb+XWaoXWRtnBBGC83F4r9LCZiIaHdf2tkF9CMPllzq6K/8HIS4VPdx+0KvSrXtFlx+AAR1aWq27UHc3mlK6OBU42TKYS4xMQ/sdeh7tzRPIVY3Z5ccKuWh9XL1kCfYvjySMw=
+	t=1777046147; cv=none; b=hoDx3ltiWDFXs2FJ9w/7MzFUy5DRp2DQjP8pWafBE6awlW/UVF7F42aTkhFg3sU3iPBRY1Hpj4/6lb+PewUpiFK2k41197/4vm1yzjYKNkLZGS9fEANjKinFztH+JNhcuRSr6fr1mGwklVdonEOfEYJQBtfH6d3MQGfMcuOOkCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777045946; c=relaxed/simple;
-	bh=HwsZeGTyjhLwKj6nQnbktyz6LRCvsAfioqPnhRfj+n8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T6HhnWEwDjKHefJtf7fHvlefKC9pTifQ0dVRmP7wy/bopqR6ky6FXyl5gVqQapRozElVgMl9KpRB0VlCsx9EZl2x5gGnVZ8V95ZvbrUF4FFCPE/UaQk5Fu35GBX6JPQNAGv7EyEVtcjibbyemyVAnfLOw5z1idKQCYQ0KFlXDH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yeicglqx; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1777046147; c=relaxed/simple;
+	bh=LZ1g410fGp9cQzldzvNuJ90pocHt3VissIO7Xj+d5+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nDUpzCcdAwEvGzzgs/7U9GQctOoVPX9/3pi1xyNDg/eDdnhfRpf+kKY0FgByAT0J+RwSuaW2Zldsggmni1LzqxC5+9jvReATBabqRdIbMs8liW1VetIBGV38ktpUjidscCbaMre0wiYD/GQUCoTmHS2UO2Yu0j0TjBV6VN1+I1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eyIPXdrC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EUBEQbAk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yeicglqx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777045945; x=1808581945;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HwsZeGTyjhLwKj6nQnbktyz6LRCvsAfioqPnhRfj+n8=;
-  b=YeicglqxObd6Mafiurey5f6T6fDYOEse3BNuasqY5DNg0Zo12hv3QXaU
-   R7gHQylilUh3rnVYF6YC+Y3HlpMmdYeOwaoFgYC5JVk6GuQWLOFFhH4v2
-   5Bwl8P+6SRVtXbv6rE8ZE5qoJcQ+Owg/wP2QcM9q+reOo/hSo5667zO2U
-   IIsB/0vOACZm8LCSViRMwlUKQmGvanK3ikttU+3WmF3XpxDR8Q4QEIM6r
-   zILFqX0xRPA42KQRg1tFgFIPbj9xlHq+X61/uKK3zrg9sLakTnGIK0v+H
-   41PccwPv3jAEfFUUNK209ezP9MXQfkTygy8luk7leFOKkF5gZodiQ52jy
-   A==;
-X-CSE-ConnectionGUID: vSQ4Q/I5TNqpBKJ0JKQCPQ==
-X-CSE-MsgGUID: RNlxKBuWTLqmPWm1pyln3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11766"; a="80611089"
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="80611089"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 08:52:25 -0700
-X-CSE-ConnectionGUID: E0Nx+DioSqmBoBKTm4PzUg==
-X-CSE-MsgGUID: czNrzks6Rq6tARJvsoUAxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="237987969"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.73]) ([10.125.108.73])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 08:52:22 -0700
-Message-ID: <f437455d-1598-483d-9dcf-1932d265ef3f@intel.com>
-Date: Fri, 24 Apr 2026 08:52:16 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eyIPXdrC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EUBEQbAk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777046145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
+	b=eyIPXdrCyXs6HcPqszAVrsCQuSSmAK6cTv07bGV0QgxhdzuI/hgtZYKLwRAEXOL7VPKkF+
+	AJsysCaJJat/HdfIICE4RcVvyasL3psA2hCb7AuI0IY0gWCcj6QiDvI5qJWhv8lDmNSlT6
+	GhobYteBdQnYM/sg0BP4dZZ5VAWvQyM=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-6---CJ5srXN8eYG7COzDDTUg-1; Fri, 24 Apr 2026 11:55:42 -0400
+X-MC-Unique: --CJ5srXN8eYG7COzDDTUg-1
+X-Mimecast-MFC-AGG-ID: --CJ5srXN8eYG7COzDDTUg_1777046142
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8a5f6110cadso187698376d6.3
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 08:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777046142; x=1777650942; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
+        b=EUBEQbAkbuNfos+bk1ZVgR3yyz+3sYi2/npQVvto4J3EOkqB1553h1EZ45IOMkFADF
+         syoO3jVLZO1ij7mS0IVGuI8KRsg/XIcSMpXCRYzQqM6m3OsfMuQown9Tzoxw4IKZHl4t
+         /6uFTJQaS1/BuRURFHtbaKMgwkWdmncOJigOEM9Z1MDM88ZxzJxYaagpCRSQNCuVoISk
+         Myeq/4wAmlLFF5Eg4US2OYW5azIHcjhEvxuQ6ZBTO5KqDffjorfx9QYyeFtiP+0sMqLA
+         L3sTNLVw4gbgkzLRhoi44pNZ9DghKLfwMxDnEkOSOwqcGP8MkbSDVfqkic7RcoU8oPoo
+         /xNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777046142; x=1777650942;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
+        b=e6NilvZBkRyXxse2ShcjYhR9nKqhmk05jVG81UlhYdX5WUPS4vWOlmSSzLxeGFifDN
+         nSDbl7poqm2/D4Ny+7PukUMVq4JD58Bor9ONjMBKIMgz3GfFxe0/LDYm2iS93G+G/dzS
+         xXZlkm+hM66qsyswYKPJkVAwMpPMhhBy6M9+ZK/ebv+80p3Pqad7A77ZZZPs6zB40c2+
+         S7IU7oefW2rCCHij5Zjvz7BC1Gv7dJZ8H3rcvc8EjEt5w0vzQjPUemedn3nBWtbvqTcq
+         z31jH02KC8EAGXsX6WIRoqlokaa6W7oUlXras1gfwsHLXrTqZs6zdB7oXd50caZDlWhe
+         lVNg==
+X-Forwarded-Encrypted: i=1; AFNElJ/c2Wqm3j8WQ1Sk7UZgc2HDEogWKS0vaHZ4Ag+ftMV/PvFlUKsUWd0/2NmhyK5hrpHXqQA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0zzDP7je7ScR+brgLw8EvXyboXK8U1lIYaq4w22lfFd9U8lff
+	hhX1XMcjA/tp97qI+XfGRUm5YPkeknbu8TIdSoNV5yeKWxx3E9bTEqrEaoAAZWXSvRVNo98iIiw
+	MhXqny1HvG9NfpJbGg+PeQbqezwyV2jk607CgXBcZbGJJ9vf4mFToMw==
+X-Gm-Gg: AeBDiet+huvpjD7ytVWP+UZbVikchnlNksATAByC1632PTXPMWVGwsnYpkndEHf7ERL
+	rcoRu2y+HvAEOJjfQfQzWwb57PYLjot8Ldwgbi4zm/oFab6z1kfECiFwhw2swe1MNfjk8mrpQFJ
+	N/ypa7eLzrPqBY3JVMN+b9UsCCxgyVEkCkDpGNIQEIlg4uNaxPRc55qhVD68IPXnWql4ygGZ9XG
+	Pe+2Av9xcOlU4Nq1PbvOkvXnpvJlgdHp+hgwZYIGIckJJ95xd9I+tJLNN4B27ma1nkZHuABmno3
+	c1Dm15BECO0gtyMaXYxOS5MuIVVELm2m2aIG5Y0JoAjSmqM3CfAy3uhM+dJu8muB0MfC6h5Jo+Z
+	nodngNIoJyoN1YTZVopFFCNzqrLEiuzkZEeiAZ0OKIMZt05H6idONIGg5SQ==
+X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499700251cf.23.1777046141626;
+        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
+X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499699791cf.23.1777046141002;
+        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fafe9674csm148150631cf.3.2026.04.24.08.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 08:55:40 -0700 (PDT)
+Date: Fri, 24 Apr 2026 11:55:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aeuSe0PY-g10KNUF@x1.local>
+References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation>
+ <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation>
+ <aeprnnccJeyHB2rt@x1.local>
+ <aes7b17nG0cXrtEd@thinkstation>
+ <aetZUOINzfTXChLL@x1.local>
+ <aetyhki-UD70dyRL@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v10 1/2] mm/mmu_gather: prepare to skip redundant sync
- IPIs
-To: Peter Zijlstra <peterz@infradead.org>, Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@linux.intel.com,
- ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260424062528.71951-1-lance.yang@linux.dev>
- <20260424062528.71951-2-lance.yang@linux.dev>
- <20260424150454.GF3126523@noisy.programming.kicks-ass.net>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260424150454.GF3126523@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
 
-On 4/24/26 08:04, Peter Zijlstra wrote:
-> So I don't like this at all.... The comment says there is a preceding
-> TLB flush, but there is nothing that guarantees there is. One would have
-> to go audit all users and ensure this is always true.
+On Fri, Apr 24, 2026 at 02:49:58PM +0100, Kiryl Shutsemau wrote:
+> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
+> > On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
+> > > Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
+> > > memory. We need visibility in the virtual address space domain.
+> > 
+> > Yes they are, but ACCESS bit isn't.
 > 
-> This thing is incredibly fragile.
+> A-bit is not a reliable signal for userspace working-set tracking
+> because the kernel itself is a concurrent consumer. It is exactly why
+> page_idle needs PG_young on top of the A-bit: PG_young is the "kernel
 
-Yeah, this seems like an attempt to apply a code solution to a data
-structure problem.
+I assume you meant PG_idle.  I actually don't know whether PG_young is
+still actively used anywhere in the current code base.
 
-I think I talked about this in earlier iterations. But, ideally, what
-happens here is that the things doing the table freeing or collapsing or
-whatever would note in a data structure what they did.
+> ate the A-bit but the page was actually touched" escape hatch. And
+> bringing PG_young into the picture puts us right back into physical-side
+> tracking.
+> 
+> > For migration, see e.g. remove_migration_pte() has:
+> > 
+> > 		if (!softleaf_is_migration_young(entry))
+> > 			pte = pte_mkold(pte);
+> 
+> remove_migration_pte() only propagates young-at-unmap. It does not
+> cover the common case: A-bit cleared by reclaim before migration
+> started. The concurrent-consumer problem is what breaks the signal,
+> not the migration boundary.
 
-Then the actual flushing code can look at the data structure and figure
-out what kind of flush it needs. Things like "do I need to flush on lazy
-CPUs?" Or, "have I done an IPI since the last page table free?"
+IMHO it's a separate problem, and AFAIU it was well solved at least with
+old LRUs with PG_idle. It's just slightly unfortunate it doesn't yet work
+with MGLRU.  Also, when the extra bit is in folio->flags, it only works if
+both the consumers are reporting per-folio, not per-mm.
 
-But, if I remember from earlier in this thread, some of the callers of
-this stuff didn't have a nice data structure (like an mmu_gather) passed
-in to the places where it would be needed to exfiltrate the information.
+I'm actually curious whether there're numbers or solid proof showing that
+in your case the per-folio perf is too bad already to justify a new per-mm
+API, like RWP.  It's because currently this proposal is still so far very
+much about "let's implement a swap system".  It really doesn't yet have a
+lot to prove on hotness tracking POV.
 
-I think Lance gave up on that because it looked too invasive to him.
+Not asking for a time-consuming test immediately, but IMHO these should
+really be solid clues to first justify the overhead with current rmap in
+production.
 
-But, I think this boils down to the code being too fragile as-is to
-support what Lance is trying to do. It actually needs some refactoring
-love before it can support the desired optimization. I'm not sure
-there's an easy way out here.
+For us, we know the overhead in theory, but we never really measured how
+much.
+
+Even if so, I don't think it's unsolvable.
+
+I want to explore if there's something that can still be generic and work
+for per-mm tracking.  I believe if we can have some bit in the ptes, then
+when mm reclaim code walks clearing ACCESS bit and sees some vma is being
+tracked, then instead of setting PG_idle, it can just move the access bit
+over to that special pte bit, and only to this vma this pte.  IIUC that'll
+benefit from both worlds: fast HW-accelerated access bit, and no minor
+faults.
+
+Would something like that worth exploring?
+
+-- 
+Peter Xu
+
