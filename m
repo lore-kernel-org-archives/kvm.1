@@ -1,122 +1,138 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012059.outbound.protection.outlook.com [52.101.43.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7298E358D3D;
-	Fri, 24 Apr 2026 08:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777019160; cv=none; b=JZLdYfUkC4slB9j7UlNDsfC+XPagDBnnVkVdX9xSqv+pAxX6mTDDrUUe0PW55dxJ7Ef2BPjLNU2uYkbyNiaSw7l6u0w3K8/SIIEjRuVlmOX3tSsCztuuFg5WBLyeCJMlffSC/oOWh7FH/rpPzJ02ObIk8gW0VAhnhlv36O/FcWA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777019160; c=relaxed/simple;
-	bh=qbpqHYHXo5cVVMvcWZZEGa2oGr0mmblnjVSPUfSnX7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OAME/vuzV13/0vfKQ4S3X1LctghddCv+68Ynyt85eh2ht60qa9kt0TP6losUS0BHcV2WO+UssK5DFW6IhHREFgoHpYEQSGlcetEzoqqOdvDDP147KBzJ4LKDOQEq9uENvflwxhUQlDrIZhtnmHgUY/u/j03YY3L5jMlaxSEachQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iyYMPc0Y; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55AD2C324D;
+	Fri, 24 Apr 2026 08:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777020355; cv=fail; b=q1D2YwOXqy1cFLOQcBQLxZ1N32Bso6IR3rMi0MG1ihwfYtPR0f0U8ZxqdljsLUEiwve/sITIWA75TLGj+vZcvGpoJtjN9fQaXJJEp4cQ3j6IGHvfWVWKRP81ySpBXwewNcwr3HLFDsP2XF8O2HOxCBfoCG2AC8oXmmVlvXqFhdM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777020355; c=relaxed/simple;
+	bh=P1/yk+O2UJuIzSp0//5QHuY8AXbXrVQ3GhaP6P/+6Rg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lNb/DtqsUjqiFT4snyUBP/8tkibgks3tQklYhoxSBoMoY5emPgfXmLsE2SxY8KQNy2mWBgWiE5ed/joMfI1StD57AdF+JxgvXBykStOAfhLDNXQieuMMlC5flhbazxMgYN2nO3QZfb8xGLEPOzzO4SZHpfOcvFAOLdAEDpo+5sg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RmR7ACaW; arc=fail smtp.client-ip=52.101.43.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iyYMPc0Y"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NIUb943291955;
-	Fri, 24 Apr 2026 08:25:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=qbpqHYHXo5cVVMvcWZZEGa2oGr0mmb
-	lnjVSPUfSnX7k=; b=iyYMPc0YmOBLHbzcWETwJRncMGhcF+idc3kRUPpiphRXE7
-	Hi+SBJkakrD6lwIwXn0qauX/EOVhr/YLtKg+UNd75jJDmhPZsTeky1CCWuvWbqMK
-	CUn16OLtsnbhVAMrC26Tt8pMNmb8E0zGSrTkXXwTfX0owah55pacH5U/ohr7JnCj
-	iDOKZVkyHVHNIhttE1yB0x2W+XDPx74xom0XGMihnLGo7WQvN4IjHERpMfSK/3Xz
-	ZcnFKofZjbJqQu8wqKSzrEy5gThfD35qUt/y3TsOFpwqTaHpGBpX2tOKhqXDafYv
-	UAYJjKGgSI4xWn9LIVerQskdhUqNZHC60dYnJztA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dphfrm81m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 08:25:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63O8KWKM019120;
-	Fri, 24 Apr 2026 08:25:34 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkya0uh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 08:25:33 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63O8PVgG50528662
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Apr 2026 08:25:32 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E04EB2004E;
-	Fri, 24 Apr 2026 08:25:31 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3154B20040;
-	Fri, 24 Apr 2026 08:25:27 +0000 (GMT)
-Received: from Gautams-MacBook-Pro.local (unknown [9.43.77.7])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 24 Apr 2026 08:25:26 +0000 (GMT)
-Date: Fri, 24 Apr 2026 13:55:18 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>, Yosry Ahmed <yosry@kernel.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] KVM: Take gpa_t in kvm_vcpu_map[_readonly]()
-Message-ID: <aeso7lRjzDhIKEXV@Gautams-MacBook-Pro.local>
-References: <20260408001137.3290444-1-peter.fang@intel.com>
- <20260408001137.3290444-4-peter.fang@intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RmR7ACaW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g6TIewr0/XKrm5K32qNtz+XEbcSQa1yGkYE2MfsUbfJ0/OM1HxwbtOltl1EhXjedFu+hX0XsxL95ZYMYV2QVNp5b9G9paRg78aEaaq3TVZaYSuQwNtS/KUb9PCVxeCnbzi2DscVMEPPs9mDB15VsyqNUZ4RBU1Y6UN2gStI8X1K9YzM5ZC143eWu/OGcTD9jZK1dzIBp22yjL2O7B+OfnVF5ed/AHPf1uX6Wj+L6Xs+2o+n9xubAr/hucQj05Q5CY07DPKd4UEAezYjU04bonX9JOV83TYr5TEsc6OmGbnqwG4jn6g1c/mSX6pDPGVpXslqMKA9zSJWEN5agQpHi+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wPTxEpJljI7bLKvXtTzHtrieDNMjjaQibdCKLab8fUg=;
+ b=D0zBUMUlymKc8VAV1pTEGzzNuz/xnqkHMreq6rXxdL5J3aqSzn+Ew5l4GROEbrf7ryMHGC9YXI7NN3MyOw5Wu9OC4GvRXobc5yxaClf10++F1Gjbgc43kgi2IPvrCNgOHF70bDD8gIDMEL91+gexNLwkARNqGdkoh3En2N38FBMDVPcOLaKP1IccVkN1jDfM9vcgwo70SvZpbxVW4zHItHlH31/5CXvX9H6wwULLljtyuP/bTSaijLnohMV6naUDNbCHgXJ0fQEukw3XAJipHImh23DAyElFhRRMCrWJ0qN6hFUli0ecX6/d9E7/D1t+JZ3IC1Q30daXR05x8but8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wPTxEpJljI7bLKvXtTzHtrieDNMjjaQibdCKLab8fUg=;
+ b=RmR7ACaWtmdpqWyfFzYllvizflEI/MDVKHPA9SYjRsyIc0Xy/JFKUGrcbnSXmqa7dRrPkjx+JCGFtVRvr/ju5WSxNU5CpfOZzz2LZF/A9IR/ZEmZ61NSnFqxNZs+5U/DxAU0b8ZD/n3Hw3rlrpeE0y6wdPFhVMNGzGJx6/H5H98=
+Received: from BL1P223CA0031.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:5b6::6)
+ by SA5PPFD911547FB.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.20; Fri, 24 Apr
+ 2026 08:45:51 +0000
+Received: from BL6PEPF00022573.namprd02.prod.outlook.com
+ (2603:10b6:208:5b6::4) by BL1P223CA0031.outlook.office365.com
+ (2603:10b6:208:5b6::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.22 via Frontend Transport; Fri,
+ 24 Apr 2026 08:45:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Fri, 24 Apr 2026 08:45:50 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 24 Apr
+ 2026 03:45:50 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 24 Apr
+ 2026 03:45:50 -0500
+Received: from [10.252.210.85] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 24 Apr 2026 03:45:48 -0500
+Message-ID: <7f27de9d-de4d-4aa2-9ce9-35b49990c894@amd.com>
+Date: Fri, 24 Apr 2026 14:15:47 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260408001137.3290444-4-peter.fang@intel.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: wBygo57Phfjx6n0uHlbxhJ9GYvH1qDtX
-X-Proofpoint-ORIG-GUID: 2Vc1kq0JQ7XgGNb8DZGjRTzmC2-piCiM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDA3NiBTYWx0ZWRfXxm6Uzqq5Bp7u
- fkKJyf60yQlmdLJCU5AaAOzg0KlxPY07KEC++J+kEhZoYRh3+Uy+np02Mvg6gCcFjnaWL7J7p5K
- 3uVlW2ik8Fdx+HsFgyuI1sQtRmrrnLlccb/yfdmsoLdO5d7YflPB7yX3LzoRU+JYH58JHd2HxsP
- uoTSQI1QuCNqOlvVJbI9Ma+sOjHxejmcVqdk4FCuPHchcj1+7Uhr1rJa3by0zBR2X4G38VZIsse
- WO5KoSOHxAsn1A9nhopSp5fIhybeVH6LNozsDZ3hvqrcibRPYb7IP9YpIwvY10dGFb8NZx6cmtD
- X7rKbFE18ccbir0wnGyjJduv1l3nbtLLY/HdudpLZjB18H1khfc2ST5kfY1Ne8V2aNTzA3g7k22
- j4fmaMbsn291hRCaG38fbVdW0gpHDBs9htd36LSIiGZH6B4nwACpmqwoynstE8nJRsi3zXuyJwf
- sArsyNxLOKPnR7AjQpQ==
-X-Authority-Analysis: v=2.4 cv=SJxykuvH c=1 sm=1 tr=0 ts=69eb28ff cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=SXutj9_lnH9CGaSYosoA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 malwarescore=0 impostorscore=0 bulkscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1011 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604240076
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] KVM: SVM: Refresh vcpu->arch.cr{0,3} prior to
+ invoking fastpath handler
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260423162628.490962-1-seanjc@google.com>
+ <20260423162628.490962-3-seanjc@google.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <20260423162628.490962-3-seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB03.amd.com: nikunj@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|SA5PPFD911547FB:EE_
+X-MS-Office365-Filtering-Correlation-Id: eea52954-b7b4-4a21-6d45-08dea1dde383
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	ZrmwcuQ8F9PQ9VjQxEVTlTIZIfE/JiFoHmJS5p7SZ+4tOP1YoX3mfemuMYiLWFqkgpzVEjoBo0TUamtJRDNtrvjtNtcYgooyP4Vrf4lbXE40FsZigYpn4qXJlQoiICN4VvVle67Zgs35DenQy2pKwcTOcjS5LB83OhWkYUt+T0nYxVGM8LbcEZHXZnSI/6SDcPvYXipgrxqwpO8nytx8nDR0NzbZuAEcmCmYhwzqB15rAl8sTih2Pe3Y8fgY/XZQsZMyWjqSU2WXa+NfibZmMEeJWepYnjjQfLR8kS7r8pfHRiRdh7XvgJT2fBq7vj6QhIVXu6gpuQkI+QwV2TBjyhZVQFvochqPxzva5GHj1IFt6jsQa+pPrb9RXkwHSTOjNUTKgGE2Zwd0diMoSKWLy0h2tVxCLtx7cSIzlGz5flDz/M5GtDmLIJYRsO0Rk87I3w7+w1lpjkhkAIIHBfOBnJNGvEC597rrM8iuxicAuqqjNxyBvm2RPdhyamj8qKl7VHSjIJNlyFzP3T81nAWEAcW1qqwAqcKGNcNNaZ1BYa7wL5hH2g2kgO52guJgbJtr90z6V73h7jYZ5QSRqnIr8o9rYeBhMe/X9uJGz2cWY2taDp0TPpvQaxCODZPnv83/8CgwiYU94NIxvZ1NXDgL+4S0czjrUGAXpMmh8CPRMFP7GgtsO/cqN3Eu/SFc2S+DF3Mx+LANjcUKOuhN9nSaChyLomXQ5eEcq7XSb3nSOFSnIUpSJ24vEc9Vms9XKUV4zjhizHvonv/6YUEl6HFzuA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	XCFRePWKtWDFdGSLumdV8+6gKzvhgE9a55Gp05tuw69UXR8rQVWmWYzQlIoWeyVC1DKyARxJxKclqykryAwkYwy39a7dJkXKlAZA5Y7xsY8R8uKIlWa4wpeyFPaLlAOSSQgFzd9EMVH85P5Mx6z+cmVjJf/ZSfYGjXnPx1RTZ5yclgqapev5+5lyyhcOHzb3SqQ3yb/+GeybJ32fYWXsSQDlT9kcq3b0KA/rk+FMLZB8TeFsxY8XBWb6wT4nBegsmD1cIdcftphkW0thpcxMdmXILvh1S7ZC9+8Ghv1XKPYthEqj/cwGepQWVtlcwxVswOM/rrD/7srklrQPuBeeWYm0zDh7l2fYK9tQM2PGqcx97GDuyQljZyRBWqLDMIe8Q6nrtbHn0wlWR2xtP93dyxbeLUsQ3xDD9KilJ2DMsYcvHyan3r7wd3trh7uf0v53
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 08:45:50.9634
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eea52954-b7b4-4a21-6d45-08dea1dde383
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00022573.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFD911547FB
 
-On Tue, Apr 07, 2026 at 05:11:30PM -0700, Peter Fang wrote:
-> Move the conversion from a gpa_t to a gfn_t into kvm_vcpu_map() and
-> kvm_vcpu_map_readonly() so that they take a gpa_t directly, reducing
-> boilerplate at call sites.
 
-For this refactor, shouldn't the prototypes continue to take in gpa? I
-think this was agreed in v1? [1]
 
-Am I missing something?
+On 4/23/2026 9:56 PM, Sean Christopherson wrote:
+> Refresh KVM's copies of CR0 and CR3 from the VMCB prior to (potentially)
+> invoking a fastpath handler to ensure that KVM doesn't consume stale
+> state.  While it's unlikely KVM will ever consume CR3 or CR0.{TS,MP} in
+> the fastpath, grabbing the values from the VMCB is inexpensive, i.e. the
+> risk of subtle bugs far outweighs the reward of deferring reads for a
+> small subset of VM-Exits.
 
-[1] : https://lore.kernel.org/kvm/ac8BOGXIPMnJ7kIg@google.com/
+This also keeps CR0/CR3 current during the fast-reenter loop in
+vcpu_enter_guest(), which previously skipped svm_handle_exit() entirely.
 
-Thanks,
-Gautam
+> 
+> Note, KVM doesn't currently consume CR3 or CR0.{TS,MP} in the fastpath,
+> as KVM requires next_rip to be valid (i.e. KVM doesn't read CR3 to decode
+> the instruction), CR0.MP is never consumed, and CR0.TS is only consumed by
+> the full emulator.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: Nikunj A. Dadhania <nikunj@amd.com>
+
+
