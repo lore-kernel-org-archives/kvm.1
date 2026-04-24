@@ -1,217 +1,120 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B959933508E;
-	Fri, 24 Apr 2026 19:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E03266581
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 20:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777060590; cv=none; b=nAlXJA7qhR6LmHqHFz0fqRY+ao7RIRBi2jue/mLku6gyud2qo1lluqN4EsrCCO7mh+v0AjrUXdRYNDBubLFAbPIspCsNGocciX6jdPK2CGFt1WMgKLSm+lqRbKwGiJzX6ZoYWIgqI76cBKljl66+ZgY6+fQ3ZKT7mr89HFW1XzQ=
+	t=1777061040; cv=none; b=k8VxOmCB4PtGAYvU1gOrqkDlj5JdgOPSUfAUIUbO7p5UhQyWzHT5tQoBh1MqZJIYxZEBorTksyfJnL0bpazC4MHxBRIbJ4znOXytn1EtKQ6/qoYtxICTwdEKNY7ACzWBpTU/BQLGZ5GlaTyK5EFHV0oG3I7YTrJpct3cKz5KFPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777060590; c=relaxed/simple;
-	bh=N+eES5iDAp3HUdDKvG1AaEVUIYUWx41kbj8QHKRhfcw=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=M32mNM8Ed6e4i35I40WNOYCJv3XWOVJwQkm+KDBPG/j0BouIeRml/wX5J69a7MH1mDFvdHhZNajvheqTSulrxKSuunk2seA8Js5/jouiqVmNDUf7aTeFCXK0/gKuttlFb5kAee/+L6CpMnqhUeZhjfov18M9KGySrZ5oSCE0wYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rgsQoacD; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1777061040; c=relaxed/simple;
+	bh=bhwojWNOT7gZ93oXwkOllBjanSFwmgfsTYSBLERvY2k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Or1IwXNtBBfeVylbOd+SCU7q0SzjTqzQA/v8BZHjrTZ2TARBYm64mkZE3M3DUVCnDuZ9O5KNPwOUVIETb4k5FYSUTQrav54b6YkLSSFHN77pDlMT714aVqKA7afj+camzqsQ048wz9xRNUaRqW+QwdiAlGtGVNXteEYOmSBPmgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PUmPo52b; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rgsQoacD"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63OF9PEY3226677;
-	Fri, 24 Apr 2026 19:56:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7gUQwu
-	xd1OgWahg+m+xrzfmHchqpyvUXwfcqLF9orlM=; b=rgsQoacDTtH7Em+T5VPr4n
-	6xdcTUZ/fFVsgk0d7NeWNWkkjvEwVaqxyT0Y1Hr+mUj9Av+rxYVU1afTeQxWM6KW
-	EZo8lyE9k7wVehLp0o2jQ/lmGm4nyEYw7wlBFuCOV5K2s9y/t9rI0nYxrUnJxDTl
-	vBegVdk3DKY/x2JdjJeaySNaP9acYKWxpVh50lKkDdxtxx10KNwOU9lbQMNJI0v0
-	1f+ocYYFYooR2cAQ6s7fiNn31qDapyjaE2HXnOGcEiGBiYqzzGFnGn4fPew+VrXA
-	tn9WLIBTwK4kCBDoug865prmPP8RmcD9HyOHos5h4HeNh8iZe2Kcs7KblNdsbbGg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu2fpjh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 19:56:27 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63OJoKJ6002455;
-	Fri, 24 Apr 2026 19:56:26 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyc9vv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 19:56:26 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63OJuPN06554190
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Apr 2026 19:56:25 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E405F5805D;
-	Fri, 24 Apr 2026 19:56:24 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FE7C58054;
-	Fri, 24 Apr 2026 19:56:22 +0000 (GMT)
-Received: from [9.87.143.165] (unknown [9.87.143.165])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Apr 2026 19:56:22 +0000 (GMT)
-Message-ID: <d0765cdf0f3832c3fd92af53d2a4060d2d018439.camel@linux.ibm.com>
-Subject: Re: [PATCH] KVM: s390: pci: Fix aisb calculation
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org
-Cc: alifm@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260424193900.940816-1-mjrosato@linux.ibm.com>
-References: <20260424193900.940816-1-mjrosato@linux.ibm.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=mQINBGHm3M8BEAC+MIQkfoPIAKdjjk84OSQ8erd2OICj98+GdhMQpIjHXn/RJdCZLa58k
- /ay5x0xIHkWzx1JJOm4Lki7WEzRbYDexQEJP0xUia0U+4Yg7PJL4Dg/W4Ho28dRBROoJjgJSLSHwc
- 3/1pjpNlSaX/qg3ZM8+/EiSGc7uEPklLYu3gRGxcWV/944HdUyLcnjrZwCn2+gg9ncVJjsimS0ro/
- 2wU2RPE4ju6NMBn5Go26sAj1owdYQQv9t0d71CmZS9Bh+2+cLjC7HvyTHKFxVGOznUL+j1a45VrVS
- XQ+nhTVjvgvXR84z10bOvLiwxJZ/00pwNi7uCdSYnZFLQ4S/JGMs4lhOiCGJhJ/9FR7JVw/1t1G9a
- UlqVp23AXwzbcoV2fxyE/CsVpHcyOWGDahGLcH7QeitN6cjltf9ymw2spBzpRnfFn80nVxgSYVG1d
- w75ksBAuQ/3e+oTQk4GAa2ShoNVsvR9GYn7rnsDN5pVILDhdPO3J2PGIXa5ipQnvwb3EHvPXyzakY
- tK50fBUPKk3XnkRwRYEbbPEB7YT+ccF/HioCryqDPWUivXF8qf6Jw5T1mhwukUV1i+QyJzJxGPh19
- /N2/GK7/yS5wrt0Lwxzevc5g+jX8RyjzywOZGHTVu9KIQiG8Pqx33UxZvykjaqTMjo7kaAdGEkrHZ
- dVHqoPZwhCsgQARAQABtChOaWtsYXMgU2NobmVsbGUgPHNjaG5lbGxlQGxpbnV4LmlibS5jb20+iQ
- JXBBMBCABBAhsBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAhkBFiEEnbAAstJ1IDCl9y3cr+Q/Fej
- CYJAFAmmAWs8FCQl6sYAACgkQr+Q/FejCYJAn2g//UKzlXOgizdk0wudLooRbGzDo23ktGSPK5Oj9
- 9o5z6v4Jz5+qOHo5835683cqkMLM9//udA1ZcKV88LVwyfmoHChPW24cWBmOEy7RJOWCR4WeEINaO
- pZUGF5YOx7oKTkPs511ky2FR0Heg35754pgTuTMEpYzRXr5pNMPS8mHXcXSARFPDPaCF+uBJ9BafO
- L7XbpSwKRttePsWAlPHbSbloeDApBfHUhcF/pbuM9GNs+c/8V9NK+SwwqNK214t7jaSq9k+19/hfE
- jvU45nbiYQM4VqGCelxVFRWol93JnwPFp/JaMgxgV1VYFH9Ijtgh+qNVVBqO8bbTjioFKy1bHdprN
- 9GyPLDxoaI/lBg+5CwKewzazUjFd0xaqZbTXSgNK4ev/IuNI3qZV8tpvZZWwIgZU1K0Bhplt8Sku+
- O9Yl2H54erq9zuzwXjqBJtoW0+MaKbe+1gZ/v2/AVE2VeQMugPUWDg+2bpJaApRkeA4xQ9XfeW6Bp
- It7xYrwwbVhQtWRC0sRh+QNlU9HI28wPSnLWn7HFBeWupaIrxSp4IEL3eHUn8xv4aA8lpdNsHXD/X
- vqOSUwy5jlTPTlemvwaC9mNHagNdVXng8C6+hxiDLhZ6xH2P4qNHTKmjW61NsdF6Y/HfWP+lmbi8/
- 474UNCltDt/fP01ajqogfWZKFymoH0O0KU5pa2xhcyBTY2huZWxsZSA8bmlrbGFzLnNjaG5lbGxlQ
- GlibS5jb20+iQJUBBMBCAA+AhsBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEnbAAstJ1IDCl9y
- 3cr+Q/FejCYJAFAmmAWusFCQl6sYAACgkQr+Q/FejCYJAtIw//WmQW/Z+SLdfrlDH5J2bvixzFNnO
- TOvp8uM8vcNZsxZwPXem4AeCXHayCqipxpa0iXWufEIvdMxkBxWvvM//V+rTUgQnJe6nhDxfLGklx
- 5Mb2H+K/ndS73ElCuA30MPYq7mHr8i3gEmi2ZFX1W47JecJ8hno/DQxhHRG7bd+GFsiKCbsjLWXNq
- s/VaAK9uyOTQx7m6/2nR8L+Mvl1BrRXwkj7Qp0qxfQSd4r+IVNBzNFOcrGagBqsyHrN7Is7IICktH
- 9VFl/G8P+hfviHQLnlxw9ltzpM1Dy6N1+BM3kbqD59gX+L6wqiLJI42eh+SHCiy35FvD3AFlYx4jZ
- MWE6qIgFnbwcL1kvcA7nnwfr3ZizCYPm8e334xXxslXBoRGsvjXSbAeAyZo2dvJXffNHdcDdUbJSl
- CfOixNGGKiQvs00X9ekfq9WmmRFvmYHu/m3lg1OXnMjFFIO41O51ZdhbEYJiqZEki7jA8Hd9xuWwQ
- nFDHhacU3xxivZ4BKQGQc+4XZ3yp/q6+7ux9prepRy/LeRyoaAmE67oxEsAgj+qyA3Tfy5nRTDdRQ
- E//gpaIt9H1VEx+68dRWHroxBQeozpnFPi25AlX3k4/EtVZjcItPWgE9iru1qT4DH3BBrz7Kd1zUw
- NnQC77zDJyZD2WUj1E+5bftO0aeE+7HZXj3tM/ea0K05pa2xhcyBTY2huZWxsZSA8bmlrbGFzLnNj
- aG5lbGxlQGdtYWlsLmNvbT6JAlQEEwEIAD4CGwEFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSds
- ACy0nUgMKX3Ldyv5D8V6MJgkAUCaYBa6wUJCXqxgAAKCRCv5D8V6MJgkF/TEACOY2kL4NGFIbWeM5
- TUhatxqe8c3RT6jvNjq32CkvaK/cSZzBkS0smddyOzxt2WnsvMgkr9cM7P+CevoMwhT3e0lgQbqBD
- /vXZJjWKddC+iKXeqWkjMVcgCOsWNZ7PWEzRUT5X1AEFq2zzxQAQ/bCWEYNqIbHN4b6G1Wk+2Y598
- +KypZ3FS0bwiItnPQOWzOOqJCGxDxaEUuXFx4ah8HtVdtIev8jPS/5uzQO9iG2vZQUWeMEYZtfMHW
- sbFWqo2A3lxB+KPzNIYFhul4Lyx1CwvKUAGSHOx7FZuc2xI5DYt/Wdh2QyKFYr7xVzv3uwJjeS1+3
- 6gvyB7DJaQuY+PziNPv4GPr5wy0cRkJ6Ps15fgC6y6wNwoNdNXKlwiuclIsBzJKa7A0pZMIfpCpIJ
- bEHP7oy3drBRAhIrBx7Lx1lyqqodDqc+ok5IQ5WcKG/TOrH732mTmJX6fxYTiCVxcU4WLJSNZbrZ/
- pjF0AWXs7E+onAkQy6RLg/XU1iiU5QdMvug+fTA6TpPSUMdujWtGWUt3/4nC+69AVc8tXtRQTZ7gP
- t7uIcQFwPqUuJGS26vl0w/6dIABQAyU9acvE3adCZra+/PBKFZi/yxT1WgV1T2mexKSWwQgLcR57J
- Yp5oWnQRgi/S6fAoskIWkp9UVcfAQPY0p45NwO5cZR9/g06JZmyrQhTmlrbGFzIFNjaG5lbGxlIDx
- uaWtzQGtlcm5lbC5vcmc+iQJUBBMBCAA+AhsBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEnbAA
- stJ1IDCl9y3cr+Q/FejCYJAFAmmAWusFCQl6sYAACgkQr+Q/FejCYJAz4A/9F+dMhzu7YonagL4qh
- WDz5IpRD4vzYKOBZ+qwYp1ugJz1BIUppN9i68HKoS4ARfgP97Sv9GpOy9g7L0lymH2MPF8hRPK0Yn
- 7DKIkeu/r28YWEoWfoVm5reC+gpxMgmxBz4JScE4f6xfa7+Nw0bbTDl+nxftJD7lf/dTiruNJsXph
- HQnZ5wPXmxeH6XVJikfpyrGe8iJZALbtHtjlx6Omu7NvRGikenB8trrWS5W0F60ZdbqH1HdmDDcrZ
- pDq6LtAARHK5tGRm0SK6sZpKe3nULFeeCt7T/edk2FC6KVh4sL1jw1kyceX4DjiMffqYBPrhK5gz5
- cDIixLBF9C6Wt1ObvuDBrIQf1/3q6EZrUrUuf6qtaXDMuC6cSlShm47qaPEvVYh67O9JZQ7vzvaea
- UI74DJUb8Pjnz7mTOmMOzsS1gUhCue4n2YSSM6ythioCGb/3bgMGTpuer3JhvZG5s5uKD9yyj8s8x
- 35qJkCFfjmjVx9s3vSUS48X+cUpYcMispErKzFu7C0YgKoxvJ4XTfXlDBiMFMPYcN67hsb2jeYHVJ
- wzE+fIZiDx9JLh1oQW2krwjweisE+3glOaKXZKi0fBtkxyH41iemLtLNYZRJopv6ykdl3hiI+Nh+a
- 3FZJPTo/OpqchMm8XIeDxC4NFFiPMpyLeYzIxO7eZpiGrAjVTE=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Apr 2026 21:55:20 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PUmPo52b"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777061037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gm9Vc9zCNOE3P/GhlVsvS6tFwN/kYtHjyT1Zy2zlkMY=;
+	b=PUmPo52bP6GIdc3Tj/NyeQSPGZeASWCb676HK4WXkQSumqGrBWHkmUhZlVe5P8x4a9eNHx
+	CtLEeBySRLbPG3w+MZ6QN+EHrswAmxH3Ly3l9w71PMs7OToMEATUPzY5gcEH0cbU3HX9Qv
+	XKC1HNDXJguPEYb4A6ikM4nNvQYZBKM=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Zi Yan <ziy@nvidia.com>,  Yosry Ahmed <yosry@kernel.org>,  "David
+ Hildenbrand (Arm)" <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  Lance Yang <lance.yang@linux.dev>,  dave.hansen@intel.com,
+  dave.hansen@linux.intel.com,  ypodemsk@redhat.com,  hughd@google.com,
+  will@kernel.org,  aneesh.kumar@kernel.org,  npiggin@gmail.com,
+  tglx@linutronix.de,  mingo@redhat.com,  bp@alien8.de,  x86@kernel.org,
+  hpa@zytor.com,  arnd@arndb.de,  ljs@kernel.org,
+  baolin.wang@linux.alibaba.com,  Liam.Howlett@oracle.com,
+  npache@redhat.com,  ryan.roberts@arm.com,  dev.jain@arm.com,
+  baohua@kernel.org,  shy828301@gmail.com,  riel@surriel.com,
+  jannh@google.com,  jgross@suse.com,  seanjc@google.com,
+  pbonzini@redhat.com,  boris.ostrovsky@oracle.com,
+  virtualization@lists.linux.dev,  kvm@vger.kernel.org,
+  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  ioworker0@gmail.com
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush
+ sent them
+In-Reply-To: <20260424193529.GA3853824@noisy.programming.kicks-ass.net> (Peter
+	Zijlstra's message of "Fri, 24 Apr 2026 21:35:29 +0200")
+References: <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
+	<aetw4aoABYj3keMh@plex>
+	<20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
+	<80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
+	<20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
+	<644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
+	<CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
+	<20260424190141.GA3783056@noisy.programming.kicks-ass.net>
+	<E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
+	<20260424192250.GC3783056@noisy.programming.kicks-ass.net>
+	<20260424193529.GA3853824@noisy.programming.kicks-ass.net>
+Date: Fri, 24 Apr 2026 20:03:14 +0000
+Message-ID: <7ia45x5gktx9.fsf@castle.c.googlers.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE5MyBTYWx0ZWRfX4VAOQ1F1zmAn
- b1vZ6gwno/0kAjRAD0facOFsTsXtaedoh+5rcHBmKCJJxKDK+HIT57Z0+a2LCaVmIT1lE5GZNXp
- KUVIpCXW9OyyFfHk2TrF8IMMPOq0cq7B5DHtOdE8b14FCRczzdiwbjB8kl/9/gip0yy8BbMzDI0
- m380MsRIorBxgcHUvoRAJDbtwCOyvOf652JJIK7hpYEqdAqJQzDUXmu3RIvWzj1sSUbPwEs7JSw
- ijHK4tiBgkwVvG9E2aYf3scdNmKD0oxC9LLdutO0gAEDjEpF+oGshfjqd0LqbEv+EX8wfdKZgOf
- wCKY7QRjafVLbfZSF1UQ6F1/zbpApSOpmye4/2W9rWWfbpqJdSuj3mHRuFf72fevyhRm5tKMX4L
- T9dkfFS9RIo91QizH4D94QsZ9OyeXMVFot16v5lv06rJJvxVSwQKi0VRmwttGXsSM3Hf/grTsmX
- zyMfBVBy5qnbW9oG88w==
-X-Proofpoint-ORIG-GUID: THGD9oFknJJnabAEDcVszK5o8OUkhQlb
-X-Proofpoint-GUID: THGD9oFknJJnabAEDcVszK5o8OUkhQlb
-X-Authority-Analysis: v=2.4 cv=XMUAjwhE c=1 sm=1 tr=0 ts=69ebcaeb cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=Ig3K_AtWKVE-Xje-oqQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-24_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1011 priorityscore=1501 impostorscore=0 bulkscore=0
- spamscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604240193
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 2026-04-24 at 15:39 -0400, Matthew Rosato wrote:
-> The current implementation of aisb calculation will erroneously index
-> via an unsigned long * as well as multiply by 8B for every 64-bits in
-> the offset; only one or the other is required.  This throws off aisb
-> calculations once the number of devices exceeds 64, and can result
-> in out-of-bounds access as well as failure to indicate summary bits
-> associated with those devices in guests.
->=20
-> Fix this by converting to a physical address before applying the
-> offset, as is already done in arch/s390/pci/pci_irq.c.
->=20
-> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disab=
-ling interrupt forwarding")
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
->  arch/s390/kvm/pci.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index 86d93e8dddae..338171f9371b 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
-> @@ -166,7 +166,7 @@ static int kvm_zpci_set_airq(struct zpci_dev *zdev)
->  	fib.fmt0.noi =3D airq_iv_end(zdev->aibv);
->  	fib.fmt0.aibv =3D virt_to_phys(zdev->aibv->vector);
->  	fib.fmt0.aibvo =3D 0;
-> -	fib.fmt0.aisb =3D virt_to_phys(aift->sbv->vector + (zdev->aisb / 64) * =
-8);
-> +	fib.fmt0.aisb =3D virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) *=
- 8;
+Peter Zijlstra <peterz@infradead.org> writes:
 
-As you state, one or the other would work, wouldn't it be easy to read
-like below:
+> On Fri, Apr 24, 2026 at 09:22:51PM +0200, Peter Zijlstra wrote:
+>
+>>     mdir = mailbox.Maildir('~/Maildir/');
+>> 
+>>     for i, r in enumerate(reviews):
+>>         inline = r.get('inline_review', '') or ''
+>>         if not inline:
+>>             continue
+>> 
+>>         author_name = r.get('author_name', 'Sashiko Reviewer')
+>>         author_email = r.get('author_email', 'noreply@sashiko.dev')
+>> 
+>>         msgid = msgids[r['patch_id']]
+>>         subject = subjects[r['patch_id']]
+>> 
+>>         # Create the Email object
+>>         msg = EmailMessage()
+>>         msg['Subject'] = f"Re: {subject}"
+>>         msg['From'] = f"{author_name} <{author_email}>"
+>>         msg['To'] = "peterz@infradead.org"
+>>         msg['Date'] = formatdate(localtime=True)
+>> 
+>>         # The critical threading headers
+>>         msg['Message-ID'] = f"<review-{i}-{msgid}>"
+>>         msg['References'] = f"<{msgid}>"
+>>         msg['In-Reply-To'] = f"<{msgid}>"
+>> 
+>>         msg.set_content(inline)
+>> 
+>>         mdir.add(msg)
+>> 
+>>     mdir.flush()
+>
+> So Ideally I would have 'Reply-to' header set to the original sender and
+> added 'Cc' like the original email. However, AFAICT the JSON does not
+> contain this information, and while I could use the mdir object to find
+> the original message in my Inbox, this is incredibly slow.
+>
+> I have a TODO to use python-notmuch to do this, but haven't gotten
+> around to doing this yet.
+>
+> With that 'fixed' I could actually reply to these messages and it would
+> all 'just' work. For now I copy/paste when needed.
 
-         fib.fmt0.aisb =3D virt_to_phys(aift->sbv->vector + (zdev->aisb / 6=
-4));
-
->  	fib.fmt0.aisbo =3D zdev->aisb & 63;
->  	fib.gd =3D zdev->gisa;
-> =20
-> @@ -309,7 +309,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *z=
-dev, struct zpci_fib *fib,
-> =20
->  	/* Update guest FIB for re-issue */
->  	fib->fmt0.aisbo =3D zdev->aisb & 63;
-> -	fib->fmt0.aisb =3D virt_to_phys(aift->sbv->vector + (zdev->aisb / 64) *=
- 8);
-> +	fib->fmt0.aisb =3D virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) =
-* 8;
-
-Same argument as above.
-
->  	fib->fmt0.isc =3D gisc;
-> =20
->  	/* Save some guest fib values in the host for later use */
-
-Ouch, good catch! Was this kind of a follow up to the issue someone
-found upstream with a wrong calculation in the gait? Or did you just
-notice things break with more than 64 devices?
-
-Thanks,
-Niklas
+I can add an api to return a json with the review and all
+meta-information by the original msgid, will it be useful?
