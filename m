@@ -1,81 +1,81 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4783CF663
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 15:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C693D9DA3
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777046147; cv=none; b=hoDx3ltiWDFXs2FJ9w/7MzFUy5DRp2DQjP8pWafBE6awlW/UVF7F42aTkhFg3sU3iPBRY1Hpj4/6lb+PewUpiFK2k41197/4vm1yzjYKNkLZGS9fEANjKinFztH+JNhcuRSr6fr1mGwklVdonEOfEYJQBtfH6d3MQGfMcuOOkCU=
+	t=1777046995; cv=none; b=MlestF4rCh9WHda5lNZY8uWFwiNmiFisK3VjlqQvvmicTeJCgtBu5XZhhhVAMbT3H5CLN2jfALfbco5vAHyTF+rHp7NbP67OazDmEFhoOiVuxEgqLHri4Z6ys8ZcobW122ki4SE4fe1oQqt74hFJEXMx0WI8cmfqCIN7O8Ipsb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777046147; c=relaxed/simple;
-	bh=LZ1g410fGp9cQzldzvNuJ90pocHt3VissIO7Xj+d5+I=;
+	s=arc-20240116; t=1777046995; c=relaxed/simple;
+	bh=2ouheRYAPVivepVFahxoOCkRgEDqPg4oI4DjSnLOeB8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDUpzCcdAwEvGzzgs/7U9GQctOoVPX9/3pi1xyNDg/eDdnhfRpf+kKY0FgByAT0J+RwSuaW2Zldsggmni1LzqxC5+9jvReATBabqRdIbMs8liW1VetIBGV38ktpUjidscCbaMre0wiYD/GQUCoTmHS2UO2Yu0j0TjBV6VN1+I1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eyIPXdrC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EUBEQbAk; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHuxM63UHptgPMSWj7WfuNwwm/e9+0qWb8ekcwADN0ookc6T0VYasH5Mqmd2FNbSiVM+2+mkRrk3sl+3UU2vLn8eOhrsndM1EIB6Z/BG03giIg8H2wtWAEql3eoyJ814ZIwEbvt7ojKYCXIs6qxGPW/n2kEJwjcUfn4whKH+ja0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RWaBeHjd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rjw0vtOW; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eyIPXdrC";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EUBEQbAk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RWaBeHjd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rjw0vtOW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777046145;
+	s=mimecast20190719; t=1777046992;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
-	b=eyIPXdrCyXs6HcPqszAVrsCQuSSmAK6cTv07bGV0QgxhdzuI/hgtZYKLwRAEXOL7VPKkF+
-	AJsysCaJJat/HdfIICE4RcVvyasL3psA2hCb7AuI0IY0gWCcj6QiDvI5qJWhv8lDmNSlT6
-	GhobYteBdQnYM/sg0BP4dZZ5VAWvQyM=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
+	b=RWaBeHjdsMzSJ950NO9DaOZbAglCUIFNjndnTX/9GzGSZz1KVztUVx3VQDCl9yyZ7f68UJ
+	KDUX1WfvtdAF5qC1Od4LmFUm1Gbi3Q4KqawfzG9MOnvttKFExiDxHhUGgui8ciMkhN6vcx
+	Ua1r+g8L33SkwwNusHFKYwVCDmyml80=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6---CJ5srXN8eYG7COzDDTUg-1; Fri, 24 Apr 2026 11:55:42 -0400
-X-MC-Unique: --CJ5srXN8eYG7COzDDTUg-1
-X-Mimecast-MFC-AGG-ID: --CJ5srXN8eYG7COzDDTUg_1777046142
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8a5f6110cadso187698376d6.3
-        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 08:55:42 -0700 (PDT)
+ us-mta-94-52Cj8PaZMiq-97ncM0jPQQ-1; Fri, 24 Apr 2026 12:09:51 -0400
+X-MC-Unique: 52Cj8PaZMiq-97ncM0jPQQ-1
+X-Mimecast-MFC-AGG-ID: 52Cj8PaZMiq-97ncM0jPQQ_1777046991
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-64eb0bff77cso12010497d50.0
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 09:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777046142; x=1777650942; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1777046991; x=1777651791; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
-        b=EUBEQbAkbuNfos+bk1ZVgR3yyz+3sYi2/npQVvto4J3EOkqB1553h1EZ45IOMkFADF
-         syoO3jVLZO1ij7mS0IVGuI8KRsg/XIcSMpXCRYzQqM6m3OsfMuQown9Tzoxw4IKZHl4t
-         /6uFTJQaS1/BuRURFHtbaKMgwkWdmncOJigOEM9Z1MDM88ZxzJxYaagpCRSQNCuVoISk
-         Myeq/4wAmlLFF5Eg4US2OYW5azIHcjhEvxuQ6ZBTO5KqDffjorfx9QYyeFtiP+0sMqLA
-         L3sTNLVw4gbgkzLRhoi44pNZ9DghKLfwMxDnEkOSOwqcGP8MkbSDVfqkic7RcoU8oPoo
-         /xNA==
+        bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
+        b=rjw0vtOW27JBX4TIoZ6gQWnCUoFyOnYx/Ec18lgRztIwl8DJSK4dusVvRK32gn3UmD
+         6CurLE5P0xv/LlIeAjIUQORf44xhduC/MdoHZEF0u87t+vyE/Z7o5ajJjkxtgPkhPepI
+         rzDRM+CdNpMZgbgG6DE41dWO5DF5IgGsCqyDiSxBciJhDoJmMlvGlhta2YU7sFD9q0CW
+         OV3q/VMi8T16ad3Fwx1PloCdTbAaQ3qywmO2rIjPVOTIPM4dExfZEjUGTJzwmcBAB7NF
+         EuAeI6hmWXYn1M+4DNYkZfuFkFrnqBSL28pb6UIkZ2fTTIyOEJLWXLpT5iVRT/jdLDaT
+         XZ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777046142; x=1777650942;
+        d=1e100.net; s=20251104; t=1777046991; x=1777651791;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
-        b=e6NilvZBkRyXxse2ShcjYhR9nKqhmk05jVG81UlhYdX5WUPS4vWOlmSSzLxeGFifDN
-         nSDbl7poqm2/D4Ny+7PukUMVq4JD58Bor9ONjMBKIMgz3GfFxe0/LDYm2iS93G+G/dzS
-         xXZlkm+hM66qsyswYKPJkVAwMpPMhhBy6M9+ZK/ebv+80p3Pqad7A77ZZZPs6zB40c2+
-         S7IU7oefW2rCCHij5Zjvz7BC1Gv7dJZ8H3rcvc8EjEt5w0vzQjPUemedn3nBWtbvqTcq
-         z31jH02KC8EAGXsX6WIRoqlokaa6W7oUlXras1gfwsHLXrTqZs6zdB7oXd50caZDlWhe
-         lVNg==
-X-Forwarded-Encrypted: i=1; AFNElJ/c2Wqm3j8WQ1Sk7UZgc2HDEogWKS0vaHZ4Ag+ftMV/PvFlUKsUWd0/2NmhyK5hrpHXqQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0zzDP7je7ScR+brgLw8EvXyboXK8U1lIYaq4w22lfFd9U8lff
-	hhX1XMcjA/tp97qI+XfGRUm5YPkeknbu8TIdSoNV5yeKWxx3E9bTEqrEaoAAZWXSvRVNo98iIiw
-	MhXqny1HvG9NfpJbGg+PeQbqezwyV2jk607CgXBcZbGJJ9vf4mFToMw==
-X-Gm-Gg: AeBDiet+huvpjD7ytVWP+UZbVikchnlNksATAByC1632PTXPMWVGwsnYpkndEHf7ERL
-	rcoRu2y+HvAEOJjfQfQzWwb57PYLjot8Ldwgbi4zm/oFab6z1kfECiFwhw2swe1MNfjk8mrpQFJ
-	N/ypa7eLzrPqBY3JVMN+b9UsCCxgyVEkCkDpGNIQEIlg4uNaxPRc55qhVD68IPXnWql4ygGZ9XG
-	Pe+2Av9xcOlU4Nq1PbvOkvXnpvJlgdHp+hgwZYIGIckJJ95xd9I+tJLNN4B27ma1nkZHuABmno3
-	c1Dm15BECO0gtyMaXYxOS5MuIVVELm2m2aIG5Y0JoAjSmqM3CfAy3uhM+dJu8muB0MfC6h5Jo+Z
-	nodngNIoJyoN1YTZVopFFCNzqrLEiuzkZEeiAZ0OKIMZt05H6idONIGg5SQ==
-X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499700251cf.23.1777046141626;
-        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
-X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499699791cf.23.1777046141002;
-        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
+        bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
+        b=tZ1p2IJaaeRqk3xymoL8+T7qT7Qzp3CxcJjLZvwQ7PvGmGLRVvlYp/wpZ/O5EnrRd6
+         7jX/bktGHYM+ZLsXYEemLQvoE3BO1WdIOvklXeCEjlgsc412eImB9g5I1sVU53Jm8VNX
+         iepELuByLECmsXdUwwglpawsfSyWqa7ziKCKKvxiDVr+3kyVMAaTB/LZbf2DX/qsmDc0
+         0CxU1Ik6La1rz6GbIwEcrEuHUkNynmDHl6wnqoXmsCpR+0INKTYTh4bIzuk26e3IQ5R4
+         4RXgFmS38+p2jgcycGgzI/Fu/52oPi0jWs18rcdcZFt1ndIKAgm+EBTZrLppHrwpPYT+
+         tVDw==
+X-Forwarded-Encrypted: i=1; AFNElJ/s1SVziq5T8n3YXhPX13OuCdrZiot2mC2KNDjDf1EPR9zofuaR4mDs60DcHfq9boJF+xA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6Yc7PHTOIFDQYuBnYrIEMA6Lvh9x8MI0l4safs0i1l5SxbCiY
+	Q21JH+18uJTr2PLoVuhYETqefdkcwYuXK61W8Bw6e1eA+OBXZqKwVeFRa+hbLy/MGEPcjXLf2Er
+	4Vf82jf69RfEKtDjxYfAFlkrpzNaW06dyxCyu0+p3SbSRuXk4fA45CA==
+X-Gm-Gg: AeBDievn5ZNbPTZE6Xi8vB+O2oWcFGroOZ+hI/ovfDtfrn/pGPMVnDhChlpXlLzRWiJ
+	kASRlxOTGdEAC17+J7ELQh42PY+xLvSlGlVJkpOUYLloIF2FsgucktLtTbtH2elOOSJNaSPX95x
+	dvqbkvZ/X4I22AHxVxjwU7xVL6COpRI/6IHEgRS2zQqnk3HnZLmqdKOmYkRG6kur+vpz/rv9690
+	tgrTXKTWQAvmPqgWL+YBUQtMR24Aq3e0B6MhQs9Us+i6XBNYwQ8wLr2L7qKGy3ow+k/2WUFDPDp
+	95xck4RKx5V3v9CzbrOcV8m1vac+aRRy4mhdqXi8L/uA1uw9+eWzsWKYCkJHg62KkT2nP2fQnlu
+	W6z3Q+ESMXm7WBTw7TeiKn+OaJ8zr5mHrYlC0I3DWIR+2hxKyJUmZXKA6pw==
+X-Received: by 2002:a05:690e:419c:b0:651:cf84:7744 with SMTP id 956f58d0204a3-653107ebc28mr25160567d50.11.1777046990847;
+        Fri, 24 Apr 2026 09:09:50 -0700 (PDT)
+X-Received: by 2002:a05:690e:419c:b0:651:cf84:7744 with SMTP id 956f58d0204a3-653107ebc28mr25160511d50.11.1777046990305;
+        Fri, 24 Apr 2026 09:09:50 -0700 (PDT)
 Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fafe9674csm148150631cf.3.2026.04.24.08.55.39
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae5eaf1sm191939006d6.30.2026.04.24.09.09.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 08:55:40 -0700 (PDT)
-Date: Fri, 24 Apr 2026 11:55:39 -0400
+        Fri, 24 Apr 2026 09:09:49 -0700 (PDT)
+Date: Fri, 24 Apr 2026 12:09:48 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Kiryl Shutsemau <kas@kernel.org>
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -92,9 +92,8 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
 Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
  guest memory
-Message-ID: <aeuSe0PY-g10KNUF@x1.local>
-References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
+Message-ID: <aeuVzCUJ1P3pL4rD@x1.local>
+References: <aed6fHLrIdahbdY3@thinkstation>
  <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
  <aeorZMvKwu8zKX5i@thinkstation>
  <aeoxnuGKO3uqS2kG@x1.local>
@@ -103,6 +102,7 @@ References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
  <aes7b17nG0cXrtEd@thinkstation>
  <aetZUOINzfTXChLL@x1.local>
  <aetyhki-UD70dyRL@thinkstation>
+ <aeuSe0PY-g10KNUF@x1.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -111,66 +111,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
+In-Reply-To: <aeuSe0PY-g10KNUF@x1.local>
 
-On Fri, Apr 24, 2026 at 02:49:58PM +0100, Kiryl Shutsemau wrote:
-> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
-> > On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
-> > > Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
-> > > memory. We need visibility in the virtual address space domain.
-> > 
-> > Yes they are, but ACCESS bit isn't.
-> 
-> A-bit is not a reliable signal for userspace working-set tracking
-> because the kernel itself is a concurrent consumer. It is exactly why
-> page_idle needs PG_young on top of the A-bit: PG_young is the "kernel
+On Fri, Apr 24, 2026 at 11:55:39AM -0400, Peter Xu wrote:
+> For us, we know the overhead in theory, but we never really measured how
+> much.
 
-I assume you meant PG_idle.  I actually don't know whether PG_young is
-still actively used anywhere in the current code base.
+I think I didn't discuss the other side of things, where hypervisor can
+touch some pages and mark it accessed, even if you don't want to.
 
-> ate the A-bit but the page was actually touched" escape hatch. And
-> bringing PG_young into the picture puts us right back into physical-side
-> tracking.
-> 
-> > For migration, see e.g. remove_migration_pte() has:
-> > 
-> > 		if (!softleaf_is_migration_young(entry))
-> > 			pte = pte_mkold(pte);
-> 
-> remove_migration_pte() only propagates young-at-unmap. It does not
-> cover the common case: A-bit cleared by reclaim before migration
-> started. The concurrent-consumer problem is what breaks the signal,
-> not the migration boundary.
+IMHO we should track most of such accesses, except special cases.
 
-IMHO it's a separate problem, and AFAIU it was well solved at least with
-old LRUs with PG_idle. It's just slightly unfortunate it doesn't yet work
-with MGLRU.  Also, when the extra bit is in folio->flags, it only works if
-both the consumers are reporting per-folio, not per-mm.
+One example is when the access happened because of emulated DMAs, then it
+should be marked alongside to the guest access: that's when you mentioned
+vhost, and I believe whatever vhost touched on the pages it should be
+marked hot even the guest didn't touch it.
 
-I'm actually curious whether there're numbers or solid proof showing that
-in your case the per-folio perf is too bad already to justify a new per-mm
-API, like RWP.  It's because currently this proposal is still so far very
-much about "let's implement a swap system".  It really doesn't yet have a
-lot to prove on hotness tracking POV.
+The special case is really migration that I can think so.
 
-Not asking for a time-consuming test immediately, but IMHO these should
-really be solid clues to first justify the overhead with current rmap in
-production.
+When at this, I also want to know whether you can benefit from something
+like swap_access() / maccess() that I can propose when it's ready.  It
+means we can shift some corner case accesses from hypervisor to that API
+then it won't cause false-positive even if rmap is involved.  Then rmap
+will be a pure perf issue, if it will still be an issue at all.
 
-For us, we know the overhead in theory, but we never really measured how
-much.
+I can also share at least my plan on our side, in case it helps to find
+shared goals. Basically we at least have two ways to go:
 
-Even if so, I don't think it's unsolvable.
+Plan A: propose maccess() then use it in qemu for migration purpose.
+        migration is so far the only thing we want to rule out.  We want to
+        keep DMAs access promote pages, for example.  This will keep
+        relying on kernel to do hotness tracking and evictions.  IMHO the
+        best and simplest solution so far taking both user+kernel into
+        account.
 
-I want to explore if there's something that can still be generic and work
-for per-mm tracking.  I believe if we can have some bit in the ptes, then
-when mm reclaim code walks clearing ACCESS bit and sees some vma is being
-tracked, then instead of setting PG_idle, it can just move the access bit
-over to that special pte bit, and only to this vma this pte.  IIUC that'll
-benefit from both worlds: fast HW-accelerated access bit, and no minor
-faults.
+Plan B: if above didn't work, we can implement swap in qemu.  We need some
+        API like what you're looking for, except that the major challenge
+        to us is MGLRU compatibility.
 
-Would something like that worth exploring?
+So IIUC if you're looking for completely flexible swap backends, then Plan
+A won't work for you: that'll always stick with kernel's swapfile
+managements and it's not always flexible enough.  Then I want to look if we
+can share goal in plan B.  But if we can find some shared goal in plan A /
+maccess(), then I'll also be more than willing to know.  For that part I
+can definitely see what I can do.
+
+Thanks,
 
 -- 
 Peter Xu
