@@ -1,149 +1,172 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B576E330651
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 05:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A7C1E5714;
+	Fri, 24 Apr 2026 06:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777007045; cv=none; b=js56QYbUBRCqewDazzqqwA9T+15TusxqAjhbnRWu4hd8lKWbG3UdKWZ7I2MHTWunGVhzt+e2WNenifWRrYgVZzFBTX7FFifc4nhn/Xu49ZO3USC5ktpz3WoEvc1dPHYOyZKm+Z8xOOc8eNwZI1THyH4cu1ySTfb3M9xuEZxrR/0=
+	t=1777010747; cv=none; b=HwqR8Yo3Arqt6SzQbpOWd+fDhwUwequL3y2B4cCVlDvFmDHB816K4Dn+1iqbmC4CEC3yye8WhnDWQOBTj7i2XTv3uDxZnodEul2jwmMxa4B8DvsjPSXiQFRtIDy4p+jg4Z1Kg285gvScbYPr78L1EjPq8UcA8OXeXGGVwxm0/HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777007045; c=relaxed/simple;
-	bh=awHC7Ghsok5G40mNYDQmGxMPSQCdBf9nVUvG1OcuYEc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkTY/W/xSN31mvgA2Sper9EOBWgpHrfZi5ARXm2M9loz2csu/w9B6ojXDoZ27Y0bRTFO4mABolsyQM3jSr8MpnsN/y0dZsmQiXhVdfKL/izYwVnLB6ohvp4JiiA/W2iyB9xQs0XDGTSJ/CMb1ad3eQqodxkLQtftBE1PF/8i2rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k6w7+Mgc; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1777010747; c=relaxed/simple;
+	bh=KPY9LU+s6/YDRas0SFY1KqBhJRbkyGskwzXCiErzSPQ=;
+	h=Message-ID:Date:From:To:Cc:Subject:MIME-Version:Content-Type:
+	 Content-Disposition; b=AguzVpajgaVb2uvEGegcPFwgNb1ZfeZdCmWNZjOuZpH+ZxSAInQepSbP5b1PGyiatR493RIyGUHGTgss86zcGs2t1LVakQCxUFttHrdARy+4RnPIWcXJfQjT9MjdVyZCCvdP1/dEOxlCDF183a/9BeWDbDBiPL+H73KwiruSE8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=h21B76iN; arc=none smtp.client-ip=162.62.57.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k6w7+Mgc"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777007031;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rF/14iOG/TKWQJ1iA5emqkLbN1JUZtyc7urLxXkKtYs=;
-	b=k6w7+MgcqYIlU+lFz2OOnnJETtGqStoZm15MrlwZJlFr80pOyWH6gZ6d2zM2guk98Kx4hw
-	tXCLb6gF/s7OF6Yz18Pc0TSuybZ8lAg9MR+ILu0Icc1wm4wkNrZjQ12wjGjJGxTsyLLXJc
-	mGIvQmB9tRHJGZ2PRed7SjpDnA1qOfM=
-From: Lance Yang <lance.yang@linux.dev>
-To: dave.hansen@intel.com
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com
-Subject: Re: [PATCH 7.2 v9 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
-Date: Fri, 24 Apr 2026 13:03:29 +0800
-Message-Id: <20260424050329.96623-1-lance.yang@linux.dev>
-In-Reply-To: <f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com>
-References: <f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="h21B76iN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1777010732; bh=VJqV86Sgq8sxLBsspfWAxFISZUkddb4uMrE2fByw0wM=;
+	h=Date:From:To:Cc:Subject;
+	b=h21B76iNH/mIlP+fg4/M9ootZUoxYYTiA2chRAFRbA9y8GXfbjNe85YDu6e0ZcMBP
+	 7wGm8NrTXSys9EdUuEeKKvjP5OyqeX2i0C4kcHcWivxW0JmV+YEqB7Jo0nxlBBV6+z
+	 VJ46jm1d/yRqukGI+ReTEZSl2h33kzXTwCPPjxE0=
+Received: from zh-pc ([116.128.244.169])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id 15E01E72; Fri, 24 Apr 2026 14:05:30 +0800
+X-QQ-mid: xmsmtpt1777010730tf7gck55k
+Message-ID: <tencent_DB120129B359660BBBD7CCC9681F507C0105@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNznyGnvpbpn/g1nLxH7SdtCA24fqg4vXsfAG27TBxKSY/RP/zuud1
+	 di1ZjLCvzpHkY3BYz2Jfnjp6FbtGO5DmG4hyHuYlDRcf+7kHoiGzSBHqT9OTwT8IZDae/WMhb6a7
+	 3nwbwNQnDvAOprSO16qk7UCuWqpTVb3idfAPeqZVlZ+BqsWzndiLSQ/27YwFZlC1KID9JjumDgaj
+	 ZzEFYk02qf+bBk++ekMoX4BpS/Dcd1jWYr7JagjLGzdQaN7GPlg6w9Os24+dcTuJ9HnzBGih+vwX
+	 fW7Z5LjyM7+diehglfNKU6+MPLRp19k+T02v4IDFow1Q5u6Ehdh05+ikmRYtMvy9p9k2HOAqNVBL
+	 9l2SElu/M6qWP8lI6gObvMXF2YTYPreBh+XAumbrRkoScEyfVa8slK21Q0iPDYyO2Aw8K2fzdG5Q
+	 pvDrg9J+NULrGgV2dN3VBwsFJKS7G/tqE3wCbXs496WAu/gSEez4QEo7tjYDOUdTZhn4CD8Ddakb
+	 /nkvAn41zlHR77RVetzoIhBiHdhWwriHL3xw3hy9TlBWbDRilOA3xbjkKF/CeAcwLcVGN0PrbmJS
+	 2vuAlTyzU0npemSXmQumLP5+ryg5E+vPLQmbsKR4Hi9wDoxKcHs8O+7cBJz0/8f6kThs+N4UKzRt
+	 Pne7Gy8XlaEh7fRNA/nXngD2e+EDO0+Qm1yFHvqmSQm/QL/dm4Guv1kYJw+fu3gGGDhssT567Iz2
+	 1TIrvmN93N/gb4GRn5FolARmmg8pl/n7fETHHUdil8hAJCJ/2vcLp5VMfTpneg2bcthaBOD9hz8y
+	 1KhqFBw44WpAHQQyjtBWl35i2KOz+xpsuUudgexzsSVeu93PXTXTgahWuYcTpZXPQnhIkn0Sbsab
+	 WK+7gG7/FMKZpN/knYmOCffR+B+hd3mzfNa7zVt/iSwgK8UIRuTnDCDteNP8UBnDHOdW20EFoVN/
+	 4HUE7i5jtowdBTXdBmzehKcCejNA9ZuwTVX5Bl+GOpuFgqO/eES9MR7ToCwbZNP8XSSQv1Xu9c8P
+	 ogsqgIq33ySJN5vZUC
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+Date: Fri, 24 Apr 2026 14:05:30 +0800
+From: zhanghao <76824143@qq.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: x86: enrich kvm_fast_mmio trace event fields
+X-OQ-MSGID: <20260424060432.GA119955@zh-pc>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Hi Dave,
+kvm_fast_mmio currently logs only the GPA, which makes fast-MMIO traces
+less useful when diagnosing access patterns.
 
-On Thu, Apr 23, 2026 at 10:56:03AM -0700, Dave Hansen wrote:
-[...]
->On 4/19/26 20:08, Lance Yang wrote:
->> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
->> +	/*
->> +	 * Treat unshared_tables just like freed_tables, such that lazy-TLB
->> +	 * CPUs also receive IPIs during unsharing of page tables, allowing
->> +	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
->> +	 */
->> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
->> +			   tlb->freed_tables || tlb->unshared_tables);
->>  }
->
->I've been staring at this trying to make sense of it for too long.
->
->Right now, flush_tlb_mm_range() literally has an argument named
->"freed_tables" and "tlb->freed_tables" is passed there. That seems
->totally sane. It's 100% straightforward to follow.
->
->But it makes zero logical sense to me to now mix "tlb->unshared_tables"
->in there. Sure, what you _want_ is the freed_tables==1 behavior from
->tlb->unshared_tables==1, and this obviously hacks that in there, but
->it's not explained well enough and not maintainable like this. IOW, it's
->still just hack.
->
->I think what's happened here is that info->freed_tables is being
->modified from being strictly related to page table freeing, and moved
->over to a bit which tells TLB flushing implementations whether they can
->respect CPUs in lazy TLB mode.
->
->It's mentioned in the comment, but then ever reflected into the code.
->
->Shouldn't we be doing something like the attached patch? Look at how
->that maps over to the flushing side, like in the hyperv code:
+Extend kvm_fast_mmio to carry access metadata:
+  - access direction (read/write)
+  - access length
+  - access value
 
-Cool, thanks!
+Update all x86 call sites to the new tracepoint signature. For VMX/SVM
+reserved-bit MMIO paths, keep length/value as 0 where detailed payload
+is not readily available. For TDX MMIO write path, pass through size/value
+that are already available in context.
 
-I was trying to keep the change small by passing unshared_tables through
-the exsiting freed_tables argument, but that made the code a bit harder
-to follow ...
+This improves observability while keeping existing fast-MMIO behavior
+unchanged.
 
->
->> -       bool do_lazy = !info->freed_tables;
->> +       bool do_lazy = !info->wake_lazy_cpus;
->>  
->>         trace_hyperv_mmu_flush_tlb_multi(cpus, info);
->>  
->> @@ -198,7 +198,7 @@ static u64 hyperv_flush_tlb_others_ex(co
->>  
->>         flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
->>         nr_bank = cpumask_to_vpset_skip(&flush->hv_vp_set, cpus,
->> -                       info->freed_tables ? NULL : cpu_is_lazy);
->> +                       info->wake_lazy_cpus ? NULL : cpu_is_lazy);
->
->That even makes the hyperv code easier to read over what was there
->before, IMNHO.
->
->Thoughts?
-[...]
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+---
+ arch/x86/kvm/svm/svm.c |  2 +-
+ arch/x86/kvm/trace.h   | 22 +++++++++++++++++++---
+ arch/x86/kvm/vmx/tdx.c |  2 +-
+ arch/x86/kvm/vmx/vmx.c |  2 +-
+ 4 files changed, 22 insertions(+), 6 deletions(-)
 
-Yeah, renaming the flush_tlb_info bit to wake_lazy_cpus reads much
-better. Will fold this into v10, Thanks for spelling it out!
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index e7fdd7a9c280..1820a78d3e70 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1981,7 +1981,7 @@ static int npf_interception(struct kvm_vcpu *vcpu)
+ 
+ 		if (nrips && svm->vmcb->control.next_rip &&
+ 		    !kvm_io_bus_write(vcpu, KVM_FAST_MMIO_BUS, gpa, 0, NULL)) {
+-			trace_kvm_fast_mmio(gpa);
++			trace_kvm_fast_mmio(gpa, KVM_TRACE_FAST_MMIO_WRITE, 0, 0);
+ 			return kvm_skip_emulated_instruction(vcpu);
+ 		}
+ 	}
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index e7fdbe9efc90..d04d05d17d77 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -207,19 +207,35 @@ TRACE_EVENT(kvm_pio,
+ /*
+  * Tracepoint for fast mmio.
+  */
++#define KVM_TRACE_FAST_MMIO_READ	0
++#define KVM_TRACE_FAST_MMIO_WRITE	1
++
++#define kvm_trace_symbol_fast_mmio \
++	{ KVM_TRACE_FAST_MMIO_READ, "read" }, \
++	{ KVM_TRACE_FAST_MMIO_WRITE, "write" }
++
+ TRACE_EVENT(kvm_fast_mmio,
+-	TP_PROTO(u64 gpa),
+-	TP_ARGS(gpa),
++	TP_PROTO(u64 gpa, u32 type, u32 len, u64 val),
++	TP_ARGS(gpa, type, len, val),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(u64,	gpa)
++		__field(u32,	type)
++		__field(u32,	len)
++		__field(u64,	val)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		__entry->gpa		= gpa;
++		__entry->type		= type;
++		__entry->len		= len;
++		__entry->val		= val;
+ 	),
+ 
+-	TP_printk("fast mmio at gpa 0x%llx", __entry->gpa)
++	TP_printk("fast mmio %s len %u gpa 0x%llx val 0x%llx",
++		  __print_symbolic(__entry->type, kvm_trace_symbol_fast_mmio),
++		  __entry->len,
++		  __entry->gpa, __entry->val)
+ );
+ 
+ /*
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 04ce321ebdf3..2b4acead3d0a 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1403,7 +1403,7 @@ static inline int tdx_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, int size,
+ 				 unsigned long val)
+ {
+ 	if (!kvm_io_bus_write(vcpu, KVM_FAST_MMIO_BUS, gpa, 0, NULL)) {
+-		trace_kvm_fast_mmio(gpa);
++		trace_kvm_fast_mmio(gpa, KVM_TRACE_FAST_MMIO_WRITE, size, val);
+ 		return 0;
+ 	}
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index a29896a9ef14..af26b895f267 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5970,7 +5970,7 @@ static int handle_ept_misconfig(struct kvm_vcpu *vcpu)
+ 	gpa = vmcs_read64(GUEST_PHYSICAL_ADDRESS);
+ 	if (!is_guest_mode(vcpu) &&
+ 	    !kvm_io_bus_write(vcpu, KVM_FAST_MMIO_BUS, gpa, 0, NULL)) {
+-		trace_kvm_fast_mmio(gpa);
++		trace_kvm_fast_mmio(gpa, KVM_TRACE_FAST_MMIO_WRITE, 0, 0);
+ 		return kvm_skip_emulated_instruction(vcpu);
+ 	}
+ 
 
-Lance
+base-commit: dd6c438c3e64a5ff0b5d7e78f7f9be547803ef1b
+-- 
+2.25.1
+
