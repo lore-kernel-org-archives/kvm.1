@@ -1,270 +1,194 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013066.outbound.protection.outlook.com [40.107.201.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD8323909F;
-	Fri, 24 Apr 2026 18:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777054516; cv=fail; b=YHNoQ5X3R33DR+aelyocMPUF5gE9++Tt6PbqMAsuxhdIkwmUgFbXvVCJSND4sKcjiqOqlHyVRgOFb/qfh6uPjSqCADb1Vud0D1Nr5Di65hJDG49vLa8V5EcSddrSgml1j+35L3VwoMwDeI4va4yqI3Lf6B0uKDdJ8KZKAHGXLCg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777054516; c=relaxed/simple;
-	bh=zp/snQFHBiiW/LbZUytZMpejdFlEv8W2VvDoAZ/9YWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Rf3kNEjeeu3qGThuIt9BL+NZFtrFoOs36lNkCMy72tdFedc7VVXOzIJTEW1xapdZw+5aUA325WFqybloFWmuY1kjZbRzkBIwaCyYf9BubtJXbPZYO6ZWahzm9fzQU8KNKuVTNGm/YzubRmY2Qu5KlPg5LxxwFMQVMjQRewS/+X4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ErMKlxue; arc=fail smtp.client-ip=40.107.201.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D06F3EFD0B
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 18:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777054842; cv=none; b=Bh/KVAtCsC6syk37FXPfiMlZEX9dG8KAdK92NGKIxJD9v0EYYVLnE/D4WjwsZ+dVIJT9lkHfuKxc3quDsnenu2Lwexxv+Tvkg8kgHrcvpQwRatc90qK46NMARMSFs6ZbVP+T+wTpJ/92T+F02vMYQD7IvrwV/fPuE2N3QHlbuQI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777054842; c=relaxed/simple;
+	bh=b68WVtnKyNXVgz5IpZquuOaUPnNYbHk3xlQM+t3lxGQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nD26Z+WnFRaLVYbChFHpdTLNF54hLcpB5DWCkkRVywVpjB85QEA2jhdUMJec5zROuBIzsh8gg/zn25s0PwGWPOVqYDHI4vK5giuFXyOkl+DhIE53+zj823aiNByfVTYozSwa9l9fF7+bM6wZf4odMH6UjCPavAR+URvEFh67EOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cdMmO/Ep; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ErMKlxue"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O6hDuzT4FqF/8T+Ag39+ft1LODptxs8gy7dS16e8CImfvqgFsY11Y71Mp3ZWvC6I6+Qwp5AKKkvyfit+4dIOQv/IbIfkOpZdri0uS7BZFTkZLVCcnVUQZ7zuRSBwjJnA0iBRuifGiT0s3wX9/owZG7ppaPM0aP/RMTkwKvxYJsAysLqlIY9W14xqseS+ROy4aGpNtSClqFIVXw0/h00ukl4WmfT6WGiShKbnHNqPANdTl3oDL3GWfgMbliu0xF6wWWz2zNT0rZ4paC0nPApMeDnjsWRI4JxDYaKkxTcR28NHR55M8QHJ5oAlfNNRlbtXAHJ1G30TBkTC/QJ1RPkltQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=14Fbcp7TgS0X4Hr+lTZS4Ke6ZRwNjycYv0U+OMfOAxk=;
- b=WRus6in1l58HF8caRRrTKW/G0RhlnAedhKYIpHhNWrI8q/cAp9kSLc4vZYAmdE91IQOwoiX+nzQYDqLO0slnvh1A1JdLgiasHQMQ2vEYDoqndsQdKbFqqgPpYUNqrVq6cwUc4qt0Hi9px/KEaV+WDvWUBHS95SAd1wfrMlaUgNWaNxJHZ4h77BBNKB54NGYebwd+F0srGHl5+PPMhSpe66jeDx8jNHHbKhQBaVz86dO1+wMwLXk1B5Cbf4O24KAnJpHNetizuXsVPQWd4JM8xnNhHI8tZJ8NyHUxVlS2y6bbrOfhAYUmUQIJPCPbJOxk4YoWdoqmyguzgCVwqUQeHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=14Fbcp7TgS0X4Hr+lTZS4Ke6ZRwNjycYv0U+OMfOAxk=;
- b=ErMKlxueUhp9IqsEjifXmA/8aFNcssFvY4aekcXwHgSNNRvb/tuLzO0wjf103QAAwLEi9n65gxwNKFKbhHvzHCjMVjon75EGfVUX0wEYWB309ns/BaKW3SyUU3YRwR8qBVBziqwDy/bOEDMtvdNuhl8zI1MEkbtQnb3lzBO9F1YkcWYIlK6otu8b/wu2bU6dSDMY9AAC2npjCf1Oc9F4VWoycBfWn9ROj0wnL3gB0e1iOPr9HurVY4mFdX+AxNwWGb4IKAesG2IFT64tPl7T8NujMSD0eNAoUbUklo01J4h+zsc/NL8T3iQFJT2pGGSDlHwzbj8fbfWVMpEL7k0OJA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by MN2PR12MB4093.namprd12.prod.outlook.com (2603:10b6:208:198::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
- 2026 18:15:11 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9846.019; Fri, 24 Apr 2026
- 18:15:11 +0000
-Date: Fri, 24 Apr 2026 15:15:10 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Matt Evans <mattev@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 2/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
-Message-ID: <20260424181510.GF3444440@nvidia.com>
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-3-mattev@meta.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260416131815.2729131-3-mattev@meta.com>
-X-ClientProxiedBy: IA4P221CA0009.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:559::11) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cdMmO/Ep"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43fe8bda8e9so4506607f8f.1
+        for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 11:20:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777054837; x=1777659637; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PJ3ffUmyrezSY/rh/pt0nrkBPeHVspjmLRhtqz3CZrg=;
+        b=cdMmO/EpcWjUIe/GNLKOVAtkdGHCTMRJq+pTyNn1mhuTz+BpCPPrVItG7RtgsqG5oO
+         NeL2VjccVtm5bNNWFE3RhEouWCRbFuz2NVvhvHgi0v27jzgnwtLDDbX80MghoFKH+NGi
+         sIz0W4yxO9QbryF2E7uGLKJidJxKfTh/V6SKnjdlxAc9Z7d8HsqYrH2zExn/qyfNhb8p
+         lMu2jW8kEuFD2+jsSuLGZVpx/VggisfwkvbLK3bd/6E/0420KTVG3kTl4qnepPALba3w
+         F3P1LjFZwklIOmXZr3PCgHQed6adrrOcME6B3i/vC8SmP8Eu63hPHHYPvcvRHP0aJUtd
+         NyQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777054837; x=1777659637;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PJ3ffUmyrezSY/rh/pt0nrkBPeHVspjmLRhtqz3CZrg=;
+        b=fOMoSxnM8zhA+ZKZwWnJpGiLFWAVQ9YysIEVxXZVIbGXtZltdLkyj2yjPnb8P2Z3mn
+         ULGQ2aBwi9vf3aNAWKx/pO+RdPbgBod6eJQ6vKYvfapTNTrs3Lenn2f7XScGitzbCi2Q
+         HbWbCv+t6yA3ho9s5wDPX6Fh+6ExFBF0E7xG0uGWYr3jKNMTDLt1qf+j7zSRvHwRiuRn
+         TpzsxD7wD1eBFWvmkb6KRqZ+No9N9x9FFdBPtARo7ItATI+bnd2+OmUX1EMHN8qKlUjR
+         +OKfpcB5WVg5XnbfqAYnLtj9L4u5jU8O6yNeH78+uZoJGlOGxemJmjNxPrJVj58hRYeZ
+         VkDw==
+X-Forwarded-Encrypted: i=1; AFNElJ+mwQ9ibrWutllD7vmvK3NXW5rxG+ZxlY7bov3PoKtRbVW8yK1NrUnzmAIvuLCOC4/+Rkg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf/fg3Z2uU9PizoBl5mVzymA2ranuPXh+CXXaa/p/vmBLDL/YD
+	KjiviBZ7T8Rt1buFGOJaB2zedAUhBY50GeqB8QLiAHz61cDvAxMdLtV8lRQ5tLXdP6kfJzzOFPk
+	OpeeT6A8oKA==
+X-Gm-Gg: AeBDiestSLFiuABv7g2rHvM2RRfcrkAojTZcmd190wF8vnJjbRv98FDjf8PlFiuC7ch
+	EZflrl0Ydiri2bUUxgPTvF6HCiyUlrcFw04J8C3t5uVpEMzpuFzAhtYCT5s2uh77581aCbazw/j
+	g6DLZ5jCNo9/spI0AWfEC+ptN/aFx4VpAIsaLM5k1gIo3v2awT2I6oURN1SxabAWq9sL2tOSImU
+	OALG9ZFHJZ9VRXMnuOXyPhr4uGqC12MroTVkdE5raINiCTnrT/7qR563YWu5Wcus2x9N2hJdOFo
+	mwWj+Dwk+cMaNUGsB28ZpT/muVYk67bk4wMCNQOft9/bh+VW7PFqPTAjmYA8Z8eLeqCXc8YxjVI
+	cH93q4y/4EYMydYgb69I7BE1lHNonpMm1fzW7TzEniUnzAz46REJctM2n49IFFc9aImrYpTQsqW
+	r66y0s4YmQziaQEM4LLJrGDQNrsgGmM+yRzQ==
+X-Received: by 2002:a05:6000:1889:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-43fe3e0bd8dmr49822275f8f.32.1777054836694;
+        Fri, 24 Apr 2026 11:20:36 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a7b4sm57497836f8f.22.2026.04.24.11.20.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 11:20:36 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 0E1EF5F7C7;
+	Fri, 24 Apr 2026 19:20:35 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pedro Barbuda <pbarbuda@microsoft.com>,  Alexander Graf
+ <agraf@csgraf.de>,  Peter Maydell <peter.maydell@linaro.org>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Mohamed Mediouni
+ <mohamed@unpredictable.fr>,  kvm@vger.kernel.org,  qemu-arm@nongnu.org
+Subject: Re: [PATCH v3 00/32] target/arm: fully model WFxT instructions for
+ A-profile
+In-Reply-To: <20260422125250.1303100-1-alex.bennee@linaro.org> ("Alex
+	=?utf-8?Q?Benn=C3=A9e=22's?= message of "Wed, 22 Apr 2026 13:52:17 +0100")
+References: <20260422125250.1303100-1-alex.bennee@linaro.org>
+User-Agent: mu4e 1.14.1-pre3; emacs 30.1
+Date: Fri, 24 Apr 2026 19:20:34 +0100
+Message-ID: <87y0ic43v1.fsf@draig.linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|MN2PR12MB4093:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57fddc49-8c08-4039-2aca-08dea22d6c70
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	cGv709BlogjWO1u3QeLEcTgNKLME+hg8Zdvd1XjyzEWdLuOhb0s96qlIkUpukxaY8lDm91f+xmx2Ph7rpycLfFc8old3MXajyUgkHBKgNGpR6zRCiw8HhrQWZTdJDNTl3AsLCHyWJcVhH3pKpXR6R7ky7a8zqeBQJHhAwwxBONwZYBnVtlJJDVv2E4RcTdlyOosiyqQNk29UxgQXgi9/Rj7Kd43RjthiWfmfGYe+a6rvJH/w7o7LTi2K8Q9Xo2sRsFrWQwenijgpQxJNTvDaU9g7wS8tozw65AgPdYsarcvNyrK9kv0E24IiI2th6rgbMC9uF2+a3Mqa70nmRxJLASLH77gU4nSuxlI/skvWI5PkmZRECPCGeFAR66XIf0JF89U80AtzrL5shVt+QSYMcJqx/L1ZXTh59axdry2BQUCifSTfVK0JkPuPlJOsYBS4Svk9wubv6n5KviVmKMfRIW4OzCy+QmkJnicBpPw2LvRCtBZrYGmu/bNbiBSiXrIArRmadZPqh7P7XeJ09imX1yKlmErwSsxro31AwEIYnf5H7IHnpQaGvguPQf/V2v+wQ/EVda2XN88gfulaQvpuPa6cnvAzCdAPr8uhcn+ADgQVM3Oq8pluBqm1aoQdhHDP54MCK2BFo7+tg6P49YKPIVbdb+g5eqKvtSLvYZHI7pJmTdrTDBD+2j/G2tLuxuH3Tsy4QMA4ZDHkXtlN909KHjcZT50nEUX0MQ91WJmV2cc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VMYs3KSj2ANQ6dAtzjA+8NeO1vdDpSytv9hiTfLmLG9JJQf9LofCkGWTfzr2?=
- =?us-ascii?Q?dDQlyH02nC8921Lvz38rd2dkNj13tY84cUDawLImDHhCdqfQzSFew2N3AjBF?=
- =?us-ascii?Q?ICP942n46DHkwhd+02rOxTCSwfV2zP4jgjgU+C0uTEbE6vo5KdGEzJw5Rr1n?=
- =?us-ascii?Q?S5M6af7HQzKG1xcjEYdQ4NfQvmexk4jtszt4DyPgaR+XpPHQYMSHFQ8hhSLQ?=
- =?us-ascii?Q?Qx1f5BxQTm8OzEeIOoMVuOccp1zTJdmP0yEtoQWPuKIPDAKj518nuXlwpox5?=
- =?us-ascii?Q?8fgB1jRCw0AT4pJbQZxeP1YDXdGc86VWN+Z8gqo1N5lGgY0R1YwRVHYJnMEY?=
- =?us-ascii?Q?mbauASFfZXut0SB0nopzdOuustdbhtG94YKLkCkA8/ooUkd5gQ+Wm5eDQ1r8?=
- =?us-ascii?Q?Pf6E2fi/rIllENL+zYcLyZcAuH8iX6xePtGyTyJ3igh27zKwzvio9jglHRq2?=
- =?us-ascii?Q?4a94rcF+W6h5REGvbZywq3u4jpw6+2+4whQTAN5oak3ReAi1YpH+ctIT/4b0?=
- =?us-ascii?Q?54b+UzllGbXb+Qxmybxi5WrJ6tou5hdJcUunUT+05g/3eJFDyW+/LV8soSa4?=
- =?us-ascii?Q?b8XoZeD9kEx7SXYX27PIOGKgWZkgkQhdldta5M+mzVC1E9tMv60j9uOxbN4d?=
- =?us-ascii?Q?BGlvhSXmgOeCjnVoTFYPeUHBKeKrw8BOhvFRTCgE7EXzs7OxSciclXALiYBd?=
- =?us-ascii?Q?oEWKaI9BZmUJ83yBXX84R2s8twptGLjpkfsL2YLTlRmfYZc5ZpkqmSY612fq?=
- =?us-ascii?Q?4QVVFEAeQhsYW4iizL0XaFju16pmfa/aVFbMU0hmuMDXgrPzWzdpsvwnpiRE?=
- =?us-ascii?Q?MUnrR3NklaxLLC/U9Xg/lAGcKGxmvMDWVGpFICDMM/g3jrxqvivgCsZXe3pi?=
- =?us-ascii?Q?QLj0Q44AaA5NgMeLg+4NAhTqC2COkiNczJQyPIkLE6ILz9STPqRixYEXiSaT?=
- =?us-ascii?Q?36bD6ZqpsAPYoOmZ9/7nbWKUid4gOVq0lyWh+WL1oetuFCnlrk88Wr8uOx+t?=
- =?us-ascii?Q?2sZwDIk/eGlD2yElWeBoNEL17uRa22a9IH3p/fO/B/xBYL1uDDdvNI9a3Pr7?=
- =?us-ascii?Q?Fo810ibgPwVQ+stjjcJ1DHNI/ERKvwUrZVV6H8WIvjfTt/bUKVgDJN/1T6Ya?=
- =?us-ascii?Q?FqqyvPvw7y/6hrYlPSMwTlSyyN2W2EhuM0MGKkpvBRsmxPbhjm5GoqkOhsfx?=
- =?us-ascii?Q?5klM3b1DY9jFo8KghMREVq0KeJSi0HGiXZGldfLm4d7sLH6CZPh6g1KO8GkA?=
- =?us-ascii?Q?641RG3A6by8jqmOrPyNfFY4rOpKlmJCOatnskY6+NfdylzkI/IpNSyguNbDs?=
- =?us-ascii?Q?Qh6fFe+zujuj4rqxj7ME4X9X5kvV2jsl85swLWlvuYJj3x9SeZ2njoIxP5K4?=
- =?us-ascii?Q?/I+AOs6j6uKB9EHlJECR7ZRTTOlCxOheY4KokpyRmtqpL/wMNnwdiuBL8hlh?=
- =?us-ascii?Q?B7g+wdSd+7OK4KytEu53nN+y9qc1Fv7ifchy2Gc2OgbEYwsW3Ot3N8lPgv7M?=
- =?us-ascii?Q?zGPJLU/acV0/pVYRYSsb9zXKLPmWPVemNgqvETMt3PiQnF6B4Mf/mNk/zuPd?=
- =?us-ascii?Q?SU6SmmJgMXFQ0Srh6jPcn7LTQ5u3XFxEv9EH5C9nOpkV7vGJV0SONVjS/Hh6?=
- =?us-ascii?Q?PjgH3wRv/EjCv/uhf/QQrVwUj77Zo7DeshAWii/rHn1umKjIe022pFZTokXs?=
- =?us-ascii?Q?/MNaTH4cdXHwAcPjjDsad/izuaCOE7dkW9uQtriQYBoviov4?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57fddc49-8c08-4039-2aca-08dea22d6c70
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 18:15:11.1670
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /KZ7zxfiYBsey/kjqm9JcmnnGHwWEHPZm7uNqzogS39jPgaKFNiHQWscYIqFz7py
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4093
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 16, 2026 at 06:17:45AM -0700, Matt Evans wrote:
-> Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
-> find a PFN.
-> 
-> This supports multi-range DMABUFs, which typically would be used to
-> represent scattered spans but might even represent overlapping or
-> aliasing spans of PFNs.
-> 
-> Because this is intended to be used in vfio_pci_core.c, we also need
-> to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
-> 
-> Signed-off-by: Matt Evans <mattev@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 124 ++++++++++++++++++++++++++---
->  drivers/vfio/pci/vfio_pci_priv.h   |  19 +++++
->  2 files changed, 130 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index 04478b7415a0..8b6bae56bbf2 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -9,19 +9,6 @@
->  
->  MODULE_IMPORT_NS("DMA_BUF");
->  
-> -struct vfio_pci_dma_buf {
-> -	struct dma_buf *dmabuf;
-> -	struct vfio_pci_core_device *vdev;
-> -	struct list_head dmabufs_elm;
-> -	size_t size;
-> -	struct phys_vec *phys_vec;
-> -	struct p2pdma_provider *provider;
-> -	u32 nr_ranges;
-> -	struct kref kref;
-> -	struct completion comp;
-> -	u8 revoked : 1;
-> -};
-> -
->  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
->  				   struct dma_buf_attachment *attachment)
->  {
-> @@ -106,6 +93,117 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
->  	.release = vfio_pci_dma_buf_release,
->  };
->  
-> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_dma_buf *vpdmabuf,
-> +			      struct vm_area_struct *vma,
-> +			      unsigned long address,
-> +			      unsigned int order,
-> +			      unsigned long *out_pfn)
-> +{
-> +	/*
-> +	 * Given a VMA (start, end, pgoffs) and a fault address,
-> +	 * search the corresponding DMABUF's phys_vec[] to find the
-> +	 * range representing the address's offset into the VMA, and
-> +	 * its PFN.
-> +	 *
-> +	 * The phys_vec[] ranges represent contiguous spans of VAs
-> +	 * upwards from the buffer offset 0; the actual PFNs might be
-> +	 * in any order, overlap/alias, etc.  Calculate an offset of
-> +	 * the desired page given VMA start/pgoff and address, then
-> +	 * search upwards from 0 to find which span contains it.
-> +	 *
-> +	 * On success, a valid PFN for a page sized by 'order' is
-> +	 * returned into out_pfn.
-> +	 *
-> +	 * Failure occurs if:
-> +	 * - The page would cross the edge of the VMA
-> +	 * - The page isn't entirely contained within a range
-> +	 * - We find a range, but the final PFN isn't aligned to the
-> +	 *   requested order.
-> +	 *
-> +	 * (Upon failure, the caller is expected to try again with a
-> +	 * smaller order; the tests above will always succeed for
-> +	 * order=0 as the limit case.)
-> +	 *
-> +	 * It's suboptimal if DMABUFs are created with neigbouring
-> +	 * ranges that are physically contiguous, since hugepages
-> +	 * can't straddle range boundaries.  (The construction of the
-> +	 * ranges vector should merge such ranges.)
-> +	 */
-> +
-> +	const unsigned long pagesize = PAGE_SIZE << order;
-> +	unsigned long rounded_page_addr = address & ~(pagesize - 1);
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-ALIGN_DOWN(address, pagesize);
+> This series fully models the behaviour of WFxT instructions. We
+> already had support for WFE for M-profile but we left off A-profile as
+> it has more potential sources of wake-ups. The main one is the event
+> stream which includes events from significant bits of the timer
+> ticking over.
+>
+> The series starts with some refactoring of the syndrome register
+> helpers to use registerfields. We then expand the WFIT trap handling
+> to report the register used. We then implement the event stream events
+> for SEV, global monitor and the timer related ones before enabling WFE
+> for A-profile and then finally WFET.
+>
+> Note on AI usage. As an experiment I previously posted an RFC series
+> with the help of Gemini. This series however is a ground up
+> re-implementation which takes some different approaches on modelling
+> the event stream. In particular rather than running multiple timers we
+> use the same wxft timer and just compute if the timeout or timer event
+> will come first.
+>
+> v2
+>   - I've kept the tests separate, see:
+>
+>     Message-ID: <20260417164328.1009132-1-alex.bennee@linaro.org>
+>     Date: Fri, 17 Apr 2026 17:43:20 +0100
+>     Subject: [PATCH 0/7] tests/tcg: more capabilities for aarch64-softmmu=
+ tests
+>     From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.or=
+g>
+>
+>   - tweaks to global monitor behaviour
+>   - STLR/STL will also trigger events to avoid deadlocks
+>   - see under the --- in the patches for details
+>
+> v3
+>   - fixed the WFE exception handling
+>
+> Alex.
+>
+> Alex Benn=C3=A9e (32):
+>   target/arm: migrate basic syndrome helpers to registerfields
+>   target/arm: migrate system/cp trap syndromes to registerfields
+>   target/arm: migrate FP/SIMD trap syndromes to registerfields
+>   target/arm: migrate eret trap syndromes to registerfields
+>   target/arm: migrate SME trap syndromes to registerfields
+>   target/arm: migrate PAC trap syndromes to registerfields
+>   target/arm: migrate BTI trap syndromes to registerfields
+>   target/arm: migrate BXJ trap syndromes to registerfields
+>   target/arm: migrate Granule Protection traps to registerfields
+>   target/arm: migrate fault syndromes to registerfields
+>   target/arm: migrate debug syndromes to registerfields
+>   target/arm: migrate wfx syndromes to registerfields
+>   target/arm: migrate gcs syndromes to registerfields
+>   target/arm: migrate memory op syndromes to registerfields
+>   target/arm: migrate check_hcr_el2_trap to use syndrome helper
+>   target/arm: use syndrome helpers in arm_cpu_do_interrupt_aarch32_hyp
+>   target/arm: use syndrome helpers to set SAME_EL EC bit
+>   target/arm: make whpx use syndrome helpers for decode
+>   target/arm: make hvf use syndrome helpers for decode
+>   target/arm: use syndrome helpers in merge_syn_data_abort
+>   target/arm: use syndrome helpers to query VNCR bit
+>   target/arm: remove old syndrome defines
+>   target/arm: report register in WFIT syndromes
 
-> +	unsigned long rounded_page_end = rounded_page_addr + pagesize;
-> +	unsigned long buf_page_offset;
-> +	unsigned long buf_offset = 0;
-> +	unsigned int i;
-> +
-> +	if (rounded_page_addr < vma->vm_start || rounded_page_end > vma->vm_end) {
-> +		if (order > 0)
-> +			return -EAGAIN;
-> +
-> +		/* A fault address outside of the VMA is absurd. */
-> +		WARN(1, "Fault addr 0x%lx outside VMA 0x%lx-0x%lx\n",
-> +		     address, vma->vm_start, vma->vm_end);
-> +		return -EFAULT;
-> +	}
-> +
-> +	if (unlikely(check_add_overflow(rounded_page_addr - vma->vm_start,
-> +					vma->vm_pgoff << PAGE_SHIFT, &buf_page_offset)))
-> +		return -EFAULT;
+Peter,
 
-> +
-> +	for (i = 0; i < vpdmabuf->nr_ranges; i++) {
-> +		size_t range_len = vpdmabuf->phys_vec[i].len;
-> +		phys_addr_t range_start = vpdmabuf->phys_vec[i].paddr;
-> +
-> +		/*
-> +		 * If the current range starts after the page's span,
-> +		 * this and any future range won't match.  Bail early.
-> +		 */
-> +		if (buf_page_offset + pagesize <= buf_offset)
-> +			break;
+Do you think you could take the patches up to here so I don't need to
+hold the re-factoring patches in the tree?
 
-No overflow check on this +? If we are worried order is so large that
-the first needs a check then this would too..
+>   target/arm: teach arm_cpu_has_work about halting reasons
+>   target/arm: redefine event stream fields
+>   target/arm: ensure aarch64 DISAS_WFE will exit
+>   target/arm: implements SEV/SEVL for all modes
+>   target/arm: hoist event broadcast code into a helper
+>   target/arm: implement global monitor events
+>   target/arm: enable event stream on WFE instructions
+>   target/arm: handle the WFE trap case
+>   target/arm: implement WFET
+>
+>  target/arm/cpu.h               |  27 ++
+>  target/arm/internals.h         |  31 +-
+>  target/arm/syndrome.h          | 595 +++++++++++++++++++++++++++------
+>  target/arm/tcg/helper-defs.h   |   5 +-
+>  target/arm/tcg/translate.h     |  32 ++
+>  target/arm/tcg/a32.decode      |   5 +-
+>  target/arm/tcg/a64.decode      |   5 +-
+>  target/arm/tcg/t16.decode      |   4 +-
+>  target/arm/tcg/t32.decode      |   4 +-
+>  target/arm/arm-powerctl.c      |   4 +-
+>  target/arm/cpu.c               |  53 ++-
+>  target/arm/helper.c            |  12 +-
+>  target/arm/hvf/hvf.c           |  14 +-
+>  target/arm/kvm.c               |   5 +-
+>  target/arm/machine.c           |   2 +-
+>  target/arm/tcg/debug.c         |   2 +-
+>  target/arm/tcg/op_helper.c     | 231 +++++++++++--
+>  target/arm/tcg/tlb_helper.c    |   6 +-
+>  target/arm/tcg/translate-a64.c |  60 +++-
+>  target/arm/tcg/translate.c     |  35 +-
+>  target/arm/tcg/vfp_helper.c    |   5 +-
+>  target/arm/whpx/whpx-all.c     |  13 +-
+>  22 files changed, 946 insertions(+), 204 deletions(-)
 
-> +
-> +		if (buf_page_offset >= buf_offset &&
-> +		    buf_page_offset + pagesize <= buf_offset + range_len) {
-
-> +			/*
-> +			 * The faulting page is wholly contained
-> +			 * within the span represented by the range.
-> +			 * Validate PFN alignment for the order:
-> +			 */
-> +			unsigned long pfn = (range_start >> PAGE_SHIFT) +
-> +				((buf_page_offset - buf_offset) >> PAGE_SHIFT);
-
-(range_start + (buf_page_offset - buf_offset)) / PAGE_SIZE;
-
-?
-
-Jason
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
