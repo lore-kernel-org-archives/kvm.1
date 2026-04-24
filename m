@@ -1,175 +1,128 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3D73D6467;
-	Fri, 24 Apr 2026 20:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66DD3E3150;
+	Fri, 24 Apr 2026 20:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777061405; cv=none; b=vBzNtcB6E/koTfGi/dd13H77o9SDInPT+ENsYz/tr6VOKMS4Oh85VbvoQhspL+wAHthm5Ku1/024eJQpNpzVPkmI4B1ElwRSMxLb58NYm1QMSOHXkHWfC225WNHKF5qfmgfN4z6xrXdHSq5WFogf6uB+qG75woDG4ZHH/Lz1NFw=
+	t=1777061543; cv=none; b=VO6ZPh75xLMt3HhSGRYXw5N5P6Z5wJleIDWMOxjn2Ud0FBkMdBexiLgDx76IUQ6OUCxV7i8nFUGoO0sdmZZURTaz+1x5Sj7Vbkm5R6QKi41+KjEqqIMQV+h4hLLF81odYocR64DlOvoMKGE5TYhyImFD7yiNaTakI7wwNkS8tMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777061405; c=relaxed/simple;
-	bh=F3cwnQW7D8LiYH503XHMJ8Kj9/V/I6VXEal3wlm+ghQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e3vIA8Z47nOZvSSr/C+JdhRhtJ+TSDcx7aC25abzQRdPte79GokcHvP/LkAUBiyQgSy+UvKBjLMgkaiAt+5kPt+u5sEKRRo4J+R1Rojcy9djOWkERemQttbXcE6SbseeIdmBPPDTq+Zdd7QI7lkFtrKxC9Rf+liobikoqsQ4sJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rd19fhga; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1777061543; c=relaxed/simple;
+	bh=RNMi8j69E6SyZYSTyxa4Rgeppp5kOvW/DVxpzRjMv8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X5bqFaoGFVaAi2AkWmwXwYBt/k5CdPpDTetqLh4UfYG91n00UxgQ+UQvbvtqRVfZxYlcHHu4mwfPNeUMS6FcpU+x6HPt2Y80HhE0yCYNt+CSzEbIGvM6u0RRKrmj4G2jS7kuPphtMycF/ogQ1y4HIPkQ5zWq68QMdZsQNEnzST8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ffWhi37p; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rd19fhga"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63OCUNhW3944372;
-	Fri, 24 Apr 2026 20:09:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=I33drf
-	efZQmVD9JtJ615KdZVWbQq/SGPrNVO/WQDP5s=; b=rd19fhgadBZe3GbjblFu1o
-	+OqoMOohqgUkMqL4lBAZCqaXKfVvkE9TziLTJRXOIdxdp0u4Z2odL4VtC8/9xwvk
-	SifR+Xzn5/6C6/NRQ4K2Hl5Klr7m9bYDgdLIOnrwx69OjugGZ7NVv/8bgSqsN8Jm
-	6WyGyAk3V7e08o0IoXx1BqbrFwo2T9HUNfeEz0IPPteGxcXZsFtyxHN2/yoI7Va9
-	3cAplEtw60HoRfSbU5/mQUkJrXydLD3ViK6HddUZ7E7INAzI0SvfkgfX7zBHn2uM
-	ZxgW6Uk7EQgmFaZnNV2EbQkUS8YUa8z9fjUGuE2EveLmUoO7bZ91nz3mGR75l4jg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu3xpp6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 20:09:56 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63OK5RRe012637;
-	Fri, 24 Apr 2026 20:09:55 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkymbu9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 20:09:55 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63OK9s8O24707786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Apr 2026 20:09:54 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4961958055;
-	Fri, 24 Apr 2026 20:09:54 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD1AB5804B;
-	Fri, 24 Apr 2026 20:09:52 +0000 (GMT)
-Received: from [9.61.79.186] (unknown [9.61.79.186])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Apr 2026 20:09:52 +0000 (GMT)
-Message-ID: <1acdd73d-2b30-4d92-af83-1d5d1ec34c7d@linux.ibm.com>
-Date: Fri, 24 Apr 2026 16:09:52 -0400
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ffWhi37p"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=R2gaRjg/CIye/6fA05gchsWC8RdbQ511C4bcMcmE3UY=; b=ffWhi37pPSombHmnM7V2siTel6
+	XhOcC9uho2ip4uKGHzUY6KCWyA25VVTTIu+jmD6PKyw7uzEPPidXyBdTKpBF3db7hQ2CXEirPYM7d
+	mbOuK3/bq1/NWyyf7j4gAtJ1dikM9FQ4urbzO4xcmkGKMjK19qdLVoy75SILKV6DKjQOZ7IxoBCRw
+	rNusdzBNhnsOrlUg3KPcYHo++EPYC918x1pjSWji81mw1OCWux+8lta2a/0fBTFCp+0rmyJMk+gYJ
+	LmthHCuq/1mMFIcTpOpWJ1LoYXpqHHM/ov0DGrQ8OFeuJl/s4tVY3n3GMvDgz81Lb4EvvDnwfjifb
+	07TEMcGw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wGMsb-0000000FR5i-1WST;
+	Fri, 24 Apr 2026 20:12:02 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D3EA7301142; Fri, 24 Apr 2026 22:11:59 +0200 (CEST)
+Date: Fri, 24 Apr 2026 22:11:59 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Zi Yan <ziy@nvidia.com>, Yosry Ahmed <yosry@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
+	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, shy828301@gmail.com, riel@surriel.com,
+	jannh@google.com, jgross@suse.com, seanjc@google.com,
+	pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, ioworker0@gmail.com
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
+ them
+Message-ID: <20260424201159.GD3783056@noisy.programming.kicks-ass.net>
+References: <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
+ <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
+ <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
+ <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
+ <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
+ <20260424190141.GA3783056@noisy.programming.kicks-ass.net>
+ <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
+ <20260424192250.GC3783056@noisy.programming.kicks-ass.net>
+ <20260424193529.GA3853824@noisy.programming.kicks-ass.net>
+ <7ia45x5gktx9.fsf@castle.c.googlers.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: s390: pci: Fix aisb calculation
-To: Niklas Schnelle <schnelle@linux.ibm.com>, linux-s390@vger.kernel.org
-Cc: alifm@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260424193900.940816-1-mjrosato@linux.ibm.com>
- <d0765cdf0f3832c3fd92af53d2a4060d2d018439.camel@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <d0765cdf0f3832c3fd92af53d2a4060d2d018439.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JKP1uo35xPvVuPs2fK03h189BQbAZj6E
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE5MyBTYWx0ZWRfXy3klnv0oJ8Hy
- mhgw9HtJA/UOD8HVZy9+LsswztAkxPgRNaIKlgNZuMzHjrSAvPMIjdGTsP4AFwrIWWCXtf5SYC2
- Eo3IX1r7YOe/QwxlGX9cxdNe0VsFqExu26KPQIoGP1wqyp9LHAEKiC0MCMSq48YJB56z2vD7x5N
- g2SL6K9ZQyMkD+FBPR/pa13pM87ZoOEUQrKzu5lCkyM22DDTUgFJ70A6eFObILraanEvZdN8Pp1
- 980he99Q5fJo0PTwrSkJsvEcYeNdaKHgBl0W+g9pYwScfKRFfKGKXeDEqqsqNZYlWiT9eSFQ4Ut
- Ug8DA7iGaaUf3FPsilE7qMYVQDfgWIQQuszPzbvE7Z+8lqUrgiVj213LqtJVw+l1JbrhVsh2tmX
- q4ivb/GLQBEiUI9eJnzTJHC7yWPmWrjt4qBVU4ufft23bOQE6DLkS18y9EsRJzsPvFsBZzyA1QF
- 5Kh5kUK5BfTQ21k0ilw==
-X-Authority-Analysis: v=2.4 cv=a6kAM0SF c=1 sm=1 tr=0 ts=69ebce14 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=AC7riLsFB4pJyvA54YkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: JKP1uo35xPvVuPs2fK03h189BQbAZj6E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-24_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604240193
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ia45x5gktx9.fsf@castle.c.googlers.com>
 
-On 4/24/26 3:55 PM, Niklas Schnelle wrote:
-> On Fri, 2026-04-24 at 15:39 -0400, Matthew Rosato wrote:
->> The current implementation of aisb calculation will erroneously index
->> via an unsigned long * as well as multiply by 8B for every 64-bits in
->> the offset; only one or the other is required.  This throws off aisb
->> calculations once the number of devices exceeds 64, and can result
->> in out-of-bounds access as well as failure to indicate summary bits
->> associated with those devices in guests.
->>
->> Fix this by converting to a physical address before applying the
->> offset, as is already done in arch/s390/pci/pci_irq.c.
->>
->> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
->> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
->> ---
->>  arch/s390/kvm/pci.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
->> index 86d93e8dddae..338171f9371b 100644
->> --- a/arch/s390/kvm/pci.c
->> +++ b/arch/s390/kvm/pci.c
->> @@ -166,7 +166,7 @@ static int kvm_zpci_set_airq(struct zpci_dev *zdev)
->>  	fib.fmt0.noi = airq_iv_end(zdev->aibv);
->>  	fib.fmt0.aibv = virt_to_phys(zdev->aibv->vector);
->>  	fib.fmt0.aibvo = 0;
->> -	fib.fmt0.aisb = virt_to_phys(aift->sbv->vector + (zdev->aisb / 64) * 8);
->> +	fib.fmt0.aisb = virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) * 8;
+On Fri, Apr 24, 2026 at 08:03:14PM +0000, Roman Gushchin wrote:
+> Peter Zijlstra <peterz@infradead.org> writes:
 > 
-> As you state, one or the other would work, wouldn't it be easy to read
-> like below:
+> > On Fri, Apr 24, 2026 at 09:22:51PM +0200, Peter Zijlstra wrote:
+> >
+> >>     mdir = mailbox.Maildir('~/Maildir/');
+> >> 
+> >>     for i, r in enumerate(reviews):
+> >>         inline = r.get('inline_review', '') or ''
+> >>         if not inline:
+> >>             continue
+> >> 
+> >>         author_name = r.get('author_name', 'Sashiko Reviewer')
+> >>         author_email = r.get('author_email', 'noreply@sashiko.dev')
+> >> 
+> >>         msgid = msgids[r['patch_id']]
+> >>         subject = subjects[r['patch_id']]
+> >> 
+> >>         # Create the Email object
+> >>         msg = EmailMessage()
+> >>         msg['Subject'] = f"Re: {subject}"
+> >>         msg['From'] = f"{author_name} <{author_email}>"
+> >>         msg['To'] = "peterz@infradead.org"
+> >>         msg['Date'] = formatdate(localtime=True)
+> >> 
+> >>         # The critical threading headers
+> >>         msg['Message-ID'] = f"<review-{i}-{msgid}>"
+> >>         msg['References'] = f"<{msgid}>"
+> >>         msg['In-Reply-To'] = f"<{msgid}>"
+> >> 
+> >>         msg.set_content(inline)
+> >> 
+> >>         mdir.add(msg)
+> >> 
+> >>     mdir.flush()
+> >
+> > So Ideally I would have 'Reply-to' header set to the original sender and
+> > added 'Cc' like the original email. However, AFAICT the JSON does not
+> > contain this information, and while I could use the mdir object to find
+> > the original message in my Inbox, this is incredibly slow.
+> >
+> > I have a TODO to use python-notmuch to do this, but haven't gotten
+> > around to doing this yet.
+> >
+> > With that 'fixed' I could actually reply to these messages and it would
+> > all 'just' work. For now I copy/paste when needed.
 > 
->          fib.fmt0.aisb = virt_to_phys(aift->sbv->vector + (zdev->aisb / 64));
+> I can add an api to return a json with the review and all
+> meta-information by the original msgid, will it be useful?
 
-My rationale was to match exactly what zpci_set_airq() in
-arch/s390/pci/pci_irq.c is doing (I tested that code at the same time to
-ensure it produced the expected result as a comparison to the code
-changed by this patch).
-
-I'd rather all 3 places stay the same unless you have a strong opinion
-on it.  I think the reason they ended up different in the first place is
-because this code and the pci_irq.c code were updated independently for
-V!=R.
-
-> 
->>  	fib.fmt0.aisbo = zdev->aisb & 63;
->>  	fib.gd = zdev->gisa;
->>  
->> @@ -309,7 +309,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
->>  
->>  	/* Update guest FIB for re-issue */
->>  	fib->fmt0.aisbo = zdev->aisb & 63;
->> -	fib->fmt0.aisb = virt_to_phys(aift->sbv->vector + (zdev->aisb / 64) * 8);
->> +	fib->fmt0.aisb = virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) * 8;
-> 
-> Same argument as above.
-> 
->>  	fib->fmt0.isc = gisc;
->>  
->>  	/* Save some guest fib values in the host for later use */
-> 
-> Ouch, good catch! Was this kind of a follow up to the issue someone
-> found upstream with a wrong calculation in the gait? Or did you just
-> notice things break with more than 64 devices?
-
-A follow-up of sorts.  Sashiko gave various outputs to that gait patch
-that were unrelated to it; I'm looking into those things and it led me
-to at least this issue which I did verify is a real bug.
-
-Thanks,
-Matt
-
+Oh yes, that would be more convenient. Thanks!
