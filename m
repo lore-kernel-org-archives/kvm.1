@@ -1,58 +1,58 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E126ED3E
-	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 07:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC4F1D5CC9
+	for <kvm@vger.kernel.org>; Fri, 24 Apr 2026 07:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777016233; cv=none; b=uG5b1z8XeKw4e70xkSg/oDCDlESvyVdkRFKYhZtNQ8cguC78/uw+VgmYwBOHlGEJ0EI9RkEXWLKOyxka4dJ7OznuXiOkOy4rFSMDejLfekH/6L/O/RdSE6i91tClhrfdz1l8Rs8Wxq95HGHsE290xunjzSVIBs1i43IdC0uwXmI=
+	t=1777016553; cv=none; b=TzrlufMz5x/iD4UzJK51j8GxOuz6zssZ4wIxaBRyLz9kknucetqZP3eSn1ovnSapw4A9lLLme/R7DveLw52w1DIDvAzfWYK5eVg0S6xN1UfuvnephEMApX4zMt/Do7ozAiQwhKEwUuXGWkzTqaJF58L2B0LsGlJ8XHFjjeKdTkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777016233; c=relaxed/simple;
-	bh=XcfdmQ+sofV7VgZr1Fk1s/UZPDM0QJrRSOaVW+bYFEU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
-	 References:In-Reply-To; b=YmWXSifd87ZqvPEqO5zKO0mYro9TjStDdhmkC6QuYLWCkGUh23VisCN5vj5VhfQaOIJ/EBJ+UOLOpvMVIxtrDz74OL9LFh7aE5A7YZCwzp253ALoDnxtZmW5YoZS5zuBjOkltUs08ml0NQ59TbnijyoZGLlQAB1T/V/epOWMAE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Sc8kxpXy; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1777016553; c=relaxed/simple;
+	bh=yUe6Yw22z7e1ofC1YGPSEOnkyEjE0QHXkzWkIsMUJdM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Subject:From:Cc:
+	 References:In-Reply-To; b=YDFq9wytIyRwiy1m4UM51I+6/JlqWc3ZI7OKV/RKOKuf0D/D2iPzCr+J9SPK19lwa4XM/axp9GWMyH97oTGJNsKHl9lUjndS64hGWpasDCugqJMqPlKgZFL2SZVYUvA3oPh+k78vIT9SDIUfcw75c0XCKB7VL3Sx/W4uSR4EZFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tGWvB9Zn; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Sc8kxpXy"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tGWvB9Zn"
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NHQ5b13291897;
-	Fri, 24 Apr 2026 07:37:00 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NIJKBB3292261;
+	Fri, 24 Apr 2026 07:42:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3nYm/C
-	ji9AqA/uLjRt9xY9E9i4dn7sg14FYW+Fprmps=; b=Sc8kxpXyNDGGsWUB4Y8V5u
-	JdUQ/D0NHlRV8SJohY2ym9xawvdjCvPg4C54eEWA9K/x65gBmRo9a4ideqR4BOBL
-	4+NgI4DY3CSYQZLPFYR+iwR1OmcldDPa9qSuzrGRIRT+m2USaLxhqWjb3hp0RNh7
-	TUq0k5ZHAoK24BMQXoNJjYjGjRuduMtMuZtvNXYHVTm6bnaGnDplYHboCS+Jo9UJ
-	aQVS2dyrOFSxosPmpTj9R9uuUmEIg4ye6ycwwTA4gheFn2f3I/iwdPccklCQ4cq1
-	6dWSoUJZ1QcyYUeXbmXLxOAylnu4efoX95CRNafd6zbkmUQSPqb786Hygjuo6hWQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mf4A6x
+	iU88uRcuWxkaxHJmngNwOaKJVkZEfyXCn12KA=; b=tGWvB9Zn3ACm/X0g+cgWPM
+	Vyl019QtIp1kt9DS1sAcJqSMiU64q4eUVTeV+INCzdxeBBrRdjtd6F0KhexEwaXB
+	ZKwcAGgKYd3kjr6lyQP47OLjjgX0DjctCEKsif1itpHT2m1PSW0Ty2OAZwtTkjkQ
+	iR9j2JATH7+TJnpnNHL5288Z+AvwP51UzNBtdtdTRj9hYp5bfcZJVPWUouEJdz/r
+	Pi+VogsI2DLHpceQzpA9UiMkcIF1LdfQ4AqdLMaQoCD/B6HqjJ8o22um/uIwKfef
+	J7FW90YZ9Fyj4trjt339yvfIZDp8qe9jl1dIP/oGMBk5yYB3W/XRduCG9LaDdA8w
 	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dphfrm2h4-1
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dphfrm32j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 07:36:59 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63O7ZT7c031684;
-	Fri, 24 Apr 2026 07:36:58 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkyhw4m-1
+	Fri, 24 Apr 2026 07:41:59 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63O7Za2h019031;
+	Fri, 24 Apr 2026 07:41:58 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dpjky9wur-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 07:36:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63O7aswP55247254
+	Fri, 24 Apr 2026 07:41:58 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63O7ftWo45809920
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Apr 2026 07:36:54 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1858C2004B;
-	Fri, 24 Apr 2026 07:36:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA85420043;
-	Fri, 24 Apr 2026 07:36:53 +0000 (GMT)
+	Fri, 24 Apr 2026 07:41:55 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EFE3F2004E;
+	Fri, 24 Apr 2026 07:41:54 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BFE4B20043;
+	Fri, 24 Apr 2026 07:41:54 +0000 (GMT)
 Received: from darkmoore (unknown [9.87.142.223])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Apr 2026 07:36:53 +0000 (GMT)
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Apr 2026 07:41:54 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,8 +61,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Apr 2026 09:36:47 +0200
-Message-Id: <DI17O7XO24UY.1UTBAQJVIGSCE@linux.ibm.com>
+Date: Fri, 24 Apr 2026 09:41:17 +0200
+Message-Id: <DI17RO3YOC9R.1TACO4RM2RLT8@linux.ibm.com>
+To: "Thomas Huth" <thuth@redhat.com>,
+        "Christoph Schlameuss"
+ <schlameuss@linux.ibm.com>,
+        <kvm@vger.kernel.org>
+Subject: Re: [kvm-unit-tests PATCH 3/3] scripts/get_maintainer.pl: Ignore
+ --nogit-chief-penguins option
 From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
 Cc: "Janosch Frank" <frankja@linux.ibm.com>,
         "Paolo Bonzini"
@@ -70,34 +76,28 @@ Cc: "Janosch Frank" <frankja@linux.ibm.com>,
         "Andrew Jones" <andrew.jones@linux.dev>,
         "Nicholas
  Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>,
-        "Christoph Schlameuss"
- <schlameuss@linux.ibm.com>,
-        <kvm@vger.kernel.org>
-Subject: Re: [kvm-unit-tests PATCH 1/3] scripts/checkpatch.pl: Add empty
- codespell and const_structs configs
 X-Mailer: aerc 0.21.0
 References: <20260423-b4-cmdline-v1-0-f72ad0020d42@linux.ibm.com>
- <20260423-b4-cmdline-v1-1-f72ad0020d42@linux.ibm.com>
- <87e4fcbf-92bd-4f74-9db9-369e4ba8bca8@redhat.com>
-In-Reply-To: <87e4fcbf-92bd-4f74-9db9-369e4ba8bca8@redhat.com>
+ <20260423-b4-cmdline-v1-3-f72ad0020d42@linux.ibm.com>
+ <6761d631-a714-420c-9c2f-258aec664d17@redhat.com>
+In-Reply-To: <6761d631-a714-420c-9c2f-258aec664d17@redhat.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: ejR1lyrRjg1uC5xj-eH8KlSdQJfRS2Kq
-X-Proofpoint-ORIG-GUID: LsLkm3GXNv4tx08ZV2tzu8DjILL7bCM7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDA2NiBTYWx0ZWRfX4zp8kUDR5n5A
- 3mykb06qHie7IJSBpvv1TZ278bMxjFJZCKDG3Ke2/hrf1eTduYSa9V20KgleRLODrC+8B2g5Qoe
- H5F7oXuX+vUjniy0xeIZBa5jjwf6X+5iETiGsBubGIzsq0eiRG9Dcfu+Gs3SIDwONis8e5PjRTl
- KQ4zmPvB2UDRD6fRpL+Okg4rlfK+oIpLLPQGZvlHNcUzPjj8YJNICZHIVCr4ck0HXDBmA0hqJD+
- YW289DLCwLqK2EK9gEXs5zWUsKK9RO1zIctPC+EFkRSurcUNzkbGLe5eNDm04mIwvVVFcvAI28n
- cx0iaSn4XG+oWr5QnAbY7qCFItx9XMurbmQ/ME6gZ1KUEs5iY+Z7lDXjEexmmuyxfBHlOMuM1IX
- j1uASKsNGTbv1EoY7NCOVR6jsQp5YaBFD/CMBcw5+bU03QOPy0zuPcZCfmcQVvZ1b4UbIPvEn2C
- PHu5Vslu7SWsKoH6ubA==
-X-Authority-Analysis: v=2.4 cv=SJxykuvH c=1 sm=1 tr=0 ts=69eb1d9b cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-GUID: 2nx3Zsx9HbDNaOIMea4oP9MoN6DEjN7B
+X-Proofpoint-ORIG-GUID: EDw1Ok3I1W-BjDAlh7rPQzvphLo4D5sS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDA2NiBTYWx0ZWRfX7JFuByWkO+bo
+ fxpbXQyiYsLiGh1Uep17cfWt5raHtgaKDsD+ZnKpD4UslJi+N3uNFa2JcOTVoE/CpPoFjm6P7+W
+ FHbC3kMJU2ewS1Ue0t5nQC5/uFOtMIH8xF/i0Ii/IIsVMrZXRh0ExGJKsFk3PqjolEOji+pYkFN
+ BTuO3l0exC3K3bA3r+aDpUeYAA0yRJ9/ZTBUJ0wwvILzrO9aRN68D1atOh9EvuohMHsGLtjQHqh
+ BQd+M/AwLhZI7gANeoH63EnQWiWqZ1LJIJXLoTOXvzZ/AVX+tOMfB/ifjyBOgqnyUliRA4mE8xP
+ gUgNnwnzRR6OoakTssgiq9hASWxnSVA4G8Qg81yxU/+6OllJ08EzeVIgvBHjKzaHM5OM/41JRHo
+ a+RX1AcismJLU6Xx89371/cqaT36us25gulij2bVD0MiiaJTEiH6HMf/C31Z/UucKXiJ+i31EnH
+ 9pKKSfjejA/hsXZ0RCg==
+X-Authority-Analysis: v=2.4 cv=SJxykuvH c=1 sm=1 tr=0 ts=69eb1ec7 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=20KFwNOVAAAA:8
- a=fjU1KvmuhNk0jL3U-k4A:9 a=QEXdDO2ut3YA:10
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=E2ZC3_dGiowAEw5H33oA:9 a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
@@ -107,41 +107,58 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604240066
 
-On Fri Apr 24, 2026 at 9:00 AM CEST, Thomas Huth wrote:
+On Fri Apr 24, 2026 at 9:31 AM CEST, Thomas Huth wrote:
 > On 23/04/2026 16.16, Christoph Schlameuss wrote:
->> Without these files each patch is flagged with these errors providing no
->> value and swamping actually found warnings and errors:
+>> b4 by default calls the get_maintainer.pl script with the
+>> '--nogit-chief-penguins' option letting the 'b4 prep --auto-to-cc' fail.
 >>=20
->> =E2=97=8F xxxxxxxxxxxx: commit title
->>    =E2=97=8F checkpatch.pl: No typos will be found - file '.../kvm-unit-=
-tests/scripts/spelling.txt': No such file or directory
->>    =E2=97=8F checkpatch.pl: No structs that should be const will be foun=
-d - file '.../kvm-unit-tests/scripts/const_structs.checkpatch': No such fil=
-e or directory
+>> Adding parsing of that option without any related functionality to allow
+>> simple usage of b4 in the development workflow.
+>>=20
+>> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+>>=20
+>> ---
+>>=20
+>> Sorry, I am not too versed with perl, so if there are better ways to fix
+>> this please comment.
+>> ---
+>>   scripts/get_maintainer.pl | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>=20
+>> diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
+>> index 117b69145f0e..9b99f6218467 100755
+>> --- a/scripts/get_maintainer.pl
+>> +++ b/scripts/get_maintainer.pl
+>> @@ -31,6 +31,7 @@ my $email_fixes =3D 1;
+>>   my $email_list =3D 1;
+>>   my $email_moderated_list =3D 1;
+>>   my $email_subscriber_list =3D 0;
+>> +my $email_git_chief_penguins =3D 0;
 >
-> Very weird, we've got the checkpatch.pl script in the tree since a while,=
+> The variable is called email_git_penguin_chiefs in the kernel version of=
 =20
-> but I cannot remember having seen these warnings in the past. However, I=
-=20
-> just tried to run checkpatch.pl with a patch, and I now get them, too ...
+> this script ... Could you please use that here, too, so we stay at least =
+a=20
+> little bit in sync with the kernel script?
+>
+>   Thanks,
+>    Thomas
+>
 >
 
-Maybe you did have a git setting modifying the arguments? IMO this just sho=
-uld
-at least somewhat work OOTB.
+Oh wow, good eye. That was my intend to have it the same as in the kernel
+version. But obviously I can mess that up. Will fix. Thx.
 
->> diff --git a/scripts/const_structs.checkpatch b/scripts/const_structs.ch=
-eckpatch
->> new file mode 100644
->> index 000000000000..e69de29bb2d1
->
-> Maybe add "virtio_config_ops" to the file so that it does not look so emp=
-ty?
->
-> Anyway:
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>>   my $email_git =3D 0;
+>>   my $email_git_all_signature_types =3D 0;
+>>   my $email_git_blame =3D 0;
+>> @@ -228,6 +229,7 @@ if (!GetOptions(
+>>   		'git-blame!' =3D> \$email_git_blame,
+>>   		'git-blame-signatures!' =3D> \$email_git_blame_signatures,
+>>   		'git-fallback!' =3D> \$email_git_fallback,
+>> +		'git-chief-penguins!' =3D> \$email_git_chief_penguins,
+>>   		'git-min-signatures=3Di' =3D> \$email_git_min_signatures,
+>>   		'git-max-maintainers=3Di' =3D> \$email_git_max_maintainers,
+>>   		'git-min-percent=3Di' =3D> \$email_git_min_percent,
+>>=20
 
-I agree that it does look strange completely empty. Will add virtio_config_=
-ops.
-
-Thanks
