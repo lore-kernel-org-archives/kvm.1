@@ -1,127 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355B41397;
-	Sat, 25 Apr 2026 06:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17DF238C3B;
+	Sat, 25 Apr 2026 08:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777097125; cv=none; b=e9npQvSMmO/gwHUORYFLp5kxsbbsKL+M6jLj/PRICl15bVj5tAM+91ziZhc12p44t1vLADJSu7Yb+s/jLGtW0H7a5b4RgaBOXrvaDEKwHBy7qVEQzd/3yVu8cMD1zocfM/YO0Tg0zw5vTpifnVQMeCfo4LVTt4fVExwmXTUvHfE=
+	t=1777106782; cv=none; b=C7V9KxYuZArMKJCqDceYehFRnEzMhSMtfcRYzmMDw2AVSmaO3DfOAmY9OoOX/H8JKRII+GH25quS88WTYIgSY4lRVgA4IjbVut38p3ESr2kfwrO9d92WxSCDA7pHNyHCNgiuld1CGcLY+XozVDFReoOXqjXtDCfrj5FcKCDxwKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777097125; c=relaxed/simple;
-	bh=fCn5CkE9SAvKIPG+1QSeNXcmbKoRK85ZM5U75VHX5pA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TgqjO8Efh1WtwAfjz0/qtYCv2JplDXyCNYjbuhpiMjCx7G5dsmGz1KRY5UVNJyDsRA+h2JJc4QQxpzLI8sWUHxI9iAmQ1na2XEiEQRhSCW4WpYDbtDbfsjZBxvmcQFuEYq+Yv4937AVMwCadTI7AokBpX2qciOzKj88EUJc9QhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaW2yCS2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777106782; c=relaxed/simple;
+	bh=rSxfunIGSHk14MUJKSTFNSYATTxwMqrcub1WT5QZVVw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kK2ty4EoL1erHNEJsda9iaR5AAnXOcfL68BKj5L4Z2TRDY2Y8bj6ylRUFKOSnyOeSNpgMV6Tm4uENnxmyN/0e04CAAEa/IzaR1j1eBTf9l75QnLR+hAfOQkfAg2SiYunHaH4ga7btgdW2TPv7ru17vEEcERawzr2x2LTc8Bome0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jMo9St1o; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaW2yCS2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20932C2BCB0;
-	Sat, 25 Apr 2026 06:05:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777097124;
-	bh=fCn5CkE9SAvKIPG+1QSeNXcmbKoRK85ZM5U75VHX5pA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XaW2yCS2subdMaUlxpPlBvDvgFPt6XRix/Vipx7bAXFR79GRy5+gY88ihVJGTr4JA
-	 DwB90CNgUSlyrNWLInV70jqwTVCnzO4xgZPKk182bnCJGFpjEGwenXcB5mHQmXIeKG
-	 GvumtJwbBFSSrrR5IFwDr0V0RpqsY7Vjqc4/d+MRP7BeDD7nfDcCu20Wd06zcskmZ9
-	 EQ92OFzv9q5tLLJNNNosWWF6NAj6LihNtf8JUHYhizq2RPBBJHh+2NTxD8JuOchddU
-	 5h8QtuloPhsrfbhZ6EsqJH/a9jSXs9R+3ljsvwO2yizfzb9yIcDGayxEa7sAehhNZf
-	 8T8jq2b+pw3VQ==
-Message-ID: <652b4a01-2382-4faf-bc1c-f127ee0b2c75@kernel.org>
-Date: Sat, 25 Apr 2026 08:05:16 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jMo9St1o"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=arGDMajk/38n/zFbEhbqe2wKQuL+pRQW1uw7zlONIVM=;
+	b=jMo9St1oVjo90Tq9j0PdDOs61HDGgASFH6nRK5vw5Ma2dmHoTB4+DVrIR55VFKuTBcyjHTXqT
+	XcEBGEQma+307/aOdAZKlWk/CjOTbce2VqMnaF5/TjmlGyqI5tOZAiWBmaXvnq3zq+IFiQmRdt+
+	Fat01x3DZbfmPltwtP+mof0=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4g2jts6pm5z1prLm;
+	Sat, 25 Apr 2026 16:39:49 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2754840537;
+	Sat, 25 Apr 2026 16:46:17 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 25 Apr 2026 16:46:16 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v4 0/5] vfio/pci: Add PCIe TPH support
+Date: Sat, 25 Apr 2026 16:46:02 +0800
+Message-ID: <20260425084607.53825-1-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
- memory
-To: Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <aeTnlQUOOh-dHG8z@thinkstation>
- <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation> <aeoxnuGKO3uqS2kG@x1.local>
- <aeo5IPpQi7onyjTF@thinkstation> <aeprnnccJeyHB2rt@x1.local>
- <aes7b17nG0cXrtEd@thinkstation> <aetZUOINzfTXChLL@x1.local>
- <aetyhki-UD70dyRL@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-On 4/24/26 15:49, Kiryl Shutsemau wrote:
-> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
->> On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
->>> Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
->>> memory. We need visibility in the virtual address space domain.
->>
->> Yes they are, but ACCESS bit isn't.
-> 
-> A-bit is not a reliable signal for userspace working-set tracking
-> because the kernel itself is a concurrent consumer. 
-Right, I don't think we want to rely on either the A bit just like we don't want
-to rely on the Dirty bit in other code. (and even SoftDirty bit is a flawed concept)
+This patchset enables userspace control over PCIe TPH steering tags,
+motivated by the following considerations:
 
-I do see some value in a reliable RWP mechanism based on uffd. The real question
-is, how much benefit it would bring (which other use cases could benefit from it).
+1. Why userspace needs the capability to control steering tags:
+   When PCIe devices are fully owned by userspace workloads such as DPDK
+   and SPDK, only userspace has full knowledge of core binding policies
+   and traffic distribution strategies. Without this series, userspace
+   cannot enable TPH or configure steering tags, leaving built-in PCIe
+   performance optimizations unused in high-throughput polling I/O
+   scenarios.
+
+2. Why this interface must be implemented in VFIO:
+   VFIO is the standard, secure community solution for granting full
+   PCIe device ownership to userspace. Existing kernel TPH interfaces
+   are designed purely for in-kernel drivers. For user-owned devices,
+   VFIO provides the only isolated and correct path to expose per-device
+   TPH management.
+
+TPH supports both IV and DS modes. Since device-specific (DS) TPH mode
+introduces cross-VM isolation risks such as untrusted guests programming
+arbitrary steering tags to impact other domains, so a new module parameter
+`enable_unsafe_tph_ds_mode` is added. It defaults to off, and blocks all
+unsafe DS-mode TPH operations when disabled.
+
+To restrict abuse of SET_ST and prevent arbitrary steering tag programming
+from userspace, the interface only accepts explicit CPU ID, memory type
+and index inputs. The kernel resolves the corresponding steering tag
+internally before programming, limiting userspace to controlled,
+index-based configuration.
+
+Based on earlier RFC work by Wathsala Vithanage.
+
+v4:
+- Address Jason's comment of restrict device-specific mode under module
+  param control.
+- Rename module param to enable_unsafe_tph_ds_mode
+v3:
+- Add module param enable_unsafe_tph_ds to guard unsafe usage
+  of TPH device-specific mode with no ST table
+v2:
+- Export pcie_tph_get_st_modes()
+- Add detailed comment for UAPI structures and operations
+- Add batch entry limit VFIO_TPH_MAX_ENTRIES
+- Improve robustness and error handling
+
+Chengwen Feng (5):
+  PCI/TPH: Export pcie_tph_get_st_modes() for external use
+  vfio/pci: Add PCIe TPH interface with capability query
+  vfio/pci: Add PCIe TPH enable/disable support
+  vfio/pci: Add PCIe TPH GET_ST interface
+  vfio/pci: Add PCIe TPH SET_ST interface
+
+ drivers/pci/tph.c                |  13 +-
+ drivers/vfio/pci/vfio_pci.c      |  13 +-
+ drivers/vfio/pci/vfio_pci_core.c | 221 ++++++++++++++++++++++++++++++-
+ include/linux/pci-tph.h          |   7 +
+ include/linux/vfio_pci_core.h    |   3 +-
+ include/uapi/linux/vfio.h        | 131 ++++++++++++++++++
+ 6 files changed, 383 insertions(+), 5 deletions(-)
 
 -- 
-Cheers,
+2.17.1
 
-David
