@@ -1,57 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BD83148AE;
-	Sat, 25 Apr 2026 00:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49CE1DD889;
+	Sat, 25 Apr 2026 00:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777075209; cv=none; b=B6iv/AqiD8efJbknC2kJhsiSqg3B3jTcQSYD3OfxZwF9Iswvm2cthdOITrFgvzjYBFCF97m984EJF3I9fUMdzXFbXXDJw8++GXFuqq4hxuwLv675QDphh2GetxR36sfw2IJGBRqlYsPpqA521enoWg+VANYBw+/30EGXTUe+A90=
+	t=1777078713; cv=none; b=S//rGmHIVztn91js6eN031tPjnts81kDWa4e98MnYwtKE8TS+6a3Y4aFtLUQzdTcua3bMehQsy63V6Q27Wf1s8/8nJySgu0qMMDQojehv0iaYE/4vwxd2LgLMmTaK4vID+g125ppJTZP9rejJk9doGm141TCuCLnSF8b76mQAWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777075209; c=relaxed/simple;
-	bh=C8r7huZNyRElYBe+dzNVCmXSopmsS7PatU3slqIvHiI=;
+	s=arc-20240116; t=1777078713; c=relaxed/simple;
+	bh=OXNxLHcbXvYstCd0hV40g2fHvy0QoEeo82TGhCpF1qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYK47PmD9Qg5KpBjWwDvziFCrTUFtB/ExcEaQM8Z9L4sfqSWGT88xTBjwsgRJ1vwyhYuDyfc1tq8lXiBLLIzu/spfzHr8DWjGEMkx5yZtscaMQ8I6HERNX27ly/m1uxDtHyJXHcrkbyTgeGIBUC6pOTjWrOqs1shCjU25UG2Yys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IsP6Nh8W; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=I0DCQo5xRTgMsLrQ1+GeOuJE5VLe1NHQJL+I6QelrqvulKmCUtNtWYRxHtavOcBlOmDvXyPvCDRIm2bvJ2KZ28zqB4U96DleDhG+SCn8px6UScHzDH8cxsUwXQD5JHzxsAwgUxsOVBAsPZ9jWflNXYjnOnytYi6KlFnOxyb6SW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6lj8ZcI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IsP6Nh8W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F5DC19425;
-	Sat, 25 Apr 2026 00:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6lj8ZcI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C2CC19425;
+	Sat, 25 Apr 2026 00:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777075208;
-	bh=C8r7huZNyRElYBe+dzNVCmXSopmsS7PatU3slqIvHiI=;
+	s=k20201202; t=1777078713;
+	bh=OXNxLHcbXvYstCd0hV40g2fHvy0QoEeo82TGhCpF1qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IsP6Nh8WvKEeCyPJ56ahQHwF2bxzxblJotd1wZXbilPyV3ve/Uv8Fv6kAOoOzg680
-	 JLRwJXvtvWV8b+bWgo10MkWEQwvxbFRoRRApx99J14hHn8fRbsy2knuRrjitI/Yqwd
-	 5TDlZhBpyC/o7ItjCRUbfLopFA09l+QpXJe3pklvOuKrdKP7MrYWCUQGYquGkA6Ylc
-	 z+mx7p/i4O4Y3yD3JVGMuSPP2XfiojskNYGLRFLNAXsvYcNyZ6ucZXPH7nVSKGrAy9
-	 qs9kjsYLBG6KTgXZQrtiCzdp1e7jFlwQE8kqWEmr7uXOjnB2b3S5Jk68JSgotIDUQR
-	 qvV2VssP7PYQA==
+	b=r6lj8ZcIssuYUzBmdUm2MTEcxm0OX5yYkORS/Teky3PLp5AKGzuJC2+02+AVURTJe
+	 4HC52cDmZgNUic/X2A2ZBPbi5YYFTNtZ+iltBZGhFNyjP99MuV5jbbdJfEtD0eiR1q
+	 ZogmJ+phFmniFFp+haYiOe0Kw+dnIWEvt8VvaJD8FaqCI3nHuF/Fm16U8dHeAHFTGc
+	 fG5CD/E4KXZT5RGkE1uat0Y7fWE3lNk2TkfpLnNlwIUVz8LRFwdBR3gh0fFBh6pvbx
+	 Ci0Zu2cVA1XvRKVCOCdN91qeB1Efixa2bjCPl8tR+qm0e46JOyXaKSMfVGX6DEhFt+
+	 eiHpqN7AzWeCg==
 From: SeongJae Park <sj@kernel.org>
-To: Peter Xu <peterx@redhat.com>
+To: Yosry Ahmed <yosry@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Kiryl Shutsemau <kas@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	"David Hildenbrand (Arm)" <david@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	ljs@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest memory
-Date: Fri, 24 Apr 2026 16:59:59 -0700
-Message-ID: <20260425000000.84178-1-sj@kernel.org>
+	ioworker0@gmail.com,
+	roman.gushchin@linux.dev
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent them
+Date: Fri, 24 Apr 2026 17:58:22 -0700
+Message-ID: <20260425005824.85689-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aetaH3W47iR56nQ5@x1.local>
+In-Reply-To: <CAO9r8zOTFUSXc_iZ3i9iL3v9Fw+SOFoROj0vcO_1GwBxO9CVqA@mail.gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,89 +81,53 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Fri, 24 Apr 2026 07:55:11 -0400 Peter Xu <peterx@redhat.com> wrote:
+On Fri, 24 Apr 2026 12:15:30 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
 
-> On Thu, Apr 23, 2026 at 05:26:24PM -0700, SeongJae Park wrote:
-> > On Thu, 23 Apr 2026 14:57:34 -0400 Peter Xu <peterx@redhat.com> wrote:
-> > 
-> > > On Thu, Apr 23, 2026 at 07:08:00PM +0100, Kiryl Shutsemau wrote:
-> > > > On Thu, Apr 23, 2026 at 10:50:06AM -0400, Peter Xu wrote:
-> > [...] 
-> > > > > - Whether we have explored other approaches on page hotness tracking
-> > [...]
-> > > > DAMON is built around sampling. It is good for working set estimation,
-> > > > but I don't think it is directly useful for eviction decision. It can
-> > > > miss hot pages. LRU rotation will also loose info.
-> > > 
-> > > Exactly.  If we need to collect ACCESS bit (or anything similar) for
-> > > eviction accuracy pusrpose, IIUC we need per-page info, we can't estimate
-> > > by sampling.
-> > 
-> > That's a fair argument.
-> > 
-> > Nonetheless, there are some companies who use DAMON [1] for a similar eviction
-> > purpose on their products.
-> > 
-> > Also, page level accuracy issue was indeed concerns from many people.  DAMON
-> > therefore provides page level DAMOS filter [2].  The idea is finding a large
-> > region of cold pages in low overhead first, then do page level access recheck
-> > on page of the region using the filter, just before doing the eviction.
-> > 
-> > DAMON-based memory tiering also uses it [3], to avoid wrongly
-> > promoting/demoting cold/hot pages in DAMON-claimed hot/cold regions.  The
-> > evaluation result was not very bad, and a few more users reported positive test
-> > results.
-> > 
-> > Also, DAMON can be used for page level monitoring [5] and open to changes for
-> > users.  Actually a work [6] for making DAMON-based page level monitoring more
-> > lightweight is ongoing.
+> On Fri, Apr 24, 2026 at 12:12 PM Zi Yan <ziy@nvidia.com> wrote:
+> >
+> > On 24 Apr 2026, at 15:01, Peter Zijlstra wrote:
+> >
+> > > On Fri, Apr 24, 2026 at 11:50:03AM -0700, Yosry Ahmed wrote:
+> > >
+> > >> But I imagine it's useful for reviewers to see Sashiko's feedback as
+> > >> well (without having to go look on the website).
+> > >
+> > > That's why I have a script; if I press 'S' in mutt on an 0/n email, said
+> > > script goes and does webrequest to sashiko and inserts the review
+> > > comments into my local maildir as properly threaded replies to the
+> > > series at hand.
+> > >
+> > > No looking at website needed.
+> >
+> > Do you mind sharing that script? It looks like a great work flow. Thanks.
 > 
-> Good to know that, thanks for the info, SJ.  I'll add a note and try to
-> explore all these at some point.
-> 
-> I recall I read a paper describing damon tracking overheads when
-> granularity is small and when the memory scope is large (in VM's case, it
-> can be e.g. 1TB or more).  Would there be quick answer on whether this one
-> still suffers (or maybe it was never a problem)?
+> Yeah that sounds great :)
 
-I think that should still be same.  In case of fixed granularity monitoring,
-the overhead is inherently proportional to the memory size.  And we didn't make
-many effort on making the overhead lower.  We have two ongoing works [1,2] for
-that, though.
+FWIW my workflow was also similar to PeterZ [1], except I use hkml's Sashiko
+integration.
 
-Nonetheless, whether the overhead is too high or not would depend on the use
-case, I'd say.  That is, if the system has hundreds of CPUs, letting DAMON
-occupying one CPU might be no real problem.  Rather, there were users who
-willing to give more than one CPUs to DAMON if DAMON can provide more accurate
-monitoring results or work faster.  That kind of scaling is possible, by using
-multiple kdamonds that monitors different partitions of the address ranges.
+The hkml integration requires two key strokes to get the Sashiko review, so I
+think Peter's script is superior.  It provides a draft [2] for sharing full
+Sashiko review that I can further writeup my comment and directly send, though.
+It is helpful for asking the author their opinion about Sashiko's review, with
+a fine pointer to the question.
 
-> 
-> > 
-> > I understand no one fits all and the decision is up to each user :)
-> > Nevertheless, I will be happy to help if you have any question or request for
-> > DAMON.
-> 
-> I'll definitely ask after digging more into that, thanks for the offer!
+So I initially started opening web browser to check Sashiko review.  After that
+I used hkml to read the review on terminal and copy-pasted the output to ask
+question to authors with quote of Sashiko review.  Finally I was able to just
+forward Sashiko review together with my questions to authors.  Each step of the
+changes made my life much easier.
 
-The pleasure is mine! :)
+DAMON is opted in to the Sashiko's mail reply service from the beginning, and
+recently Sashiko started the mail delivery.  Now I don't need to use the hkml
+integration, and I feel my life has been even much easier than before.
 
-> 
-> > 
-> > [1] https://cdn.amazon.science/ee/a4/41ff11374f2f865e5e24de11bd17/resource-management-in-aurora-serverless.pdf
-> > [2] https://origin.kernel.org/doc/html/latest/mm/damon/design.html#filters
-> > [3] https://github.com/damonitor/damo/blob/next/scripts/mem_tier.sh#L40
-> > [4] https://www.phoronix.com/news/DAMON-Self-Tuned-Memory-Tiering
-> > [5] https://origin.kernel.org/doc/html/latest/mm/damon/faq.html#can-i-simply-monitor-page-granularity
-> > [6] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
-
-[1] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
-[2] https://lore.kernel.org/20260423122340.138880-1-jiayuan.chen@linux.dev
+[1] https://github.com/sjp38/hackermail/blob/master/USAGE.md#sashikodev
+[2] https://github.com/sjp38/hackermail/blob/master/USAGE.md#forwarding-sashikodev-statuscomments-to-mailing-list
 
 
 Thanks,
 SJ
-
-[...]
