@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A781DE894;
-	Sat, 25 Apr 2026 00:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3E51E7C2E;
+	Sat, 25 Apr 2026 00:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777078791; cv=none; b=BY9yN9InCqDf722hJfsDh3smhbj6JWZUArBNPIXic2KrOtlM8FFDMbG0cU8xt1fkhqOg8anru1TvnRBuKcB0ltuAL6En5pfxh0w4eLprNxe70e1LSTfz2E/JBP2fFWypezD0NYOSvNhhMubchK73LMGx2YgEohDHCQpWEmebEn0=
+	t=1777078796; cv=none; b=TLvn5MqNzMbXgHqrp56Cd0zkBF7HmZEFEXOX2Zopq0pHtN24uBfANAxEz/Mhar11y9805YNjYNXdvWW2sy2WIixxpJCN+cH+XRDcAX3E9gCMKkQyS6ALRI+xSLHwxl5zjFxoy7iOKJmhrXZbhbFwAJ9ZA5wdM0ozDeCUGsRNc9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777078791; c=relaxed/simple;
-	bh=qJflKuAh/n/m965x+f/wDzFNfhoMXFcBLlCylFjbZyk=;
+	s=arc-20240116; t=1777078796; c=relaxed/simple;
+	bh=7uQ0gjeqEPD6nPlkRBOxKlYHRuy/F0gDZ8rMmS8aYzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpgi7wB5/IPtmAcVRrRs6bU3wJZS2/HO4ewuXFGraSGA/V6Ne97hA87iJxowCxLDWphF7PunP4xG0nFdP9i9/QcdgouKqNyX0zaWK2HOKtJvaNJSJmLTVIyaPFbhkzMDKilJhco4SRrEdY19sbrEjDGOJZqhw+9y8MBzMl5dNds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LoLW64A9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ZO2q+CpXGG8TzXhz0mjjlzckOuzlpfZx+GuZHJFn2nf2JyqFYferv6YIbCRMrZbAsKz2/HTefq4hVJgokqk4mm2upcf7ld6+rVCf3LiZlNI48mrKCFgW7AMAzS96059lIvIIad7s19uhwJfQGT2tksxiNMN2Omcf4VjBMZHPd40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVR8FtSh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LoLW64A9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFADC19425;
-	Sat, 25 Apr 2026 00:59:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVR8FtSh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BAAC2BCB5;
+	Sat, 25 Apr 2026 00:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777078791;
-	bh=qJflKuAh/n/m965x+f/wDzFNfhoMXFcBLlCylFjbZyk=;
+	s=k20201202; t=1777078795;
+	bh=7uQ0gjeqEPD6nPlkRBOxKlYHRuy/F0gDZ8rMmS8aYzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LoLW64A9/zxlX08Uz3CvBNE5wF8jGEs5SzbJx+E5ncuk4yXsIWon+rnaHXGSL6y89
-	 6NR+JfhQdDCu/UwJzrQWTpDCvrn30WBh834gWgKFumnvz90WofOUY+lLs4VXctPCBZ
-	 ivbmOV5th+04bc/B43ITBsvcx7m4JMgNspAoy9CKVahNbR+AGAAU72i+d7L6J8f9AZ
-	 UARNwI0khfCs86K/wiMAB+L6qItRb7t0pmNChJ8LRuku8mMKiOKe7i09dRJ7UHEK0h
-	 LsdLS4OYNlYFJznB+Y8+mbYGoLs3IH7OcefJ8EQpbSv7BNRkqdEnMNGnp34nU1oGn2
-	 N+VLDth9ceL1Q==
+	b=iVR8FtShNzdaxPaI5u0kaR0SDRKtyeuyA0azvOPHDlNXRRDcCYZ1WMk4SzB4nuyN2
+	 ScIpNayyJLSYkFEXP0qIBwGRCGQ9Yufhp7UBtIzYj7wg2PFsLM7N84fRIA9MaIp7sz
+	 mxHKuswu/FhIDWcGI8fTfF2cACfGiCOd/e/nxbSMNWWhitRTRX5UVPoJzWDo3N+dZX
+	 SJB2sjmMlGggVJE1HRZtx41I/j3Cno1cGW4aCwxLQkSJf1uaIOd7RcaDlbPLFtb2am
+	 6V5TXLmroYqxvjDheBh7EN03+Zelu15yyfHmSUL00bBUecK/8lp07xUb4lxU/EhqnD
+	 caINHRMDPIQAQ==
 From: guoren@kernel.org
 To: guoren@kernel.org
 Cc: alex@ghiti.fr,
@@ -44,9 +44,9 @@ Cc: alex@ghiti.fr,
 	palmer@dabbelt.com,
 	pjw@kernel.org,
 	tglx@kernel.org
-Subject: [PATCH V2 2/4] RISC-V: KVM: AIA: Replace global HGEI count with simple enabled bool
-Date: Sat, 25 Apr 2026 00:59:14 +0000
-Message-ID: <20260425005916.3321811-3-guoren@kernel.org>
+Subject: [PATCH V2 3/4] irqchip/riscv-imsic: Move nr_guest_files to per-HART local config
+Date: Sat, 25 Apr 2026 00:59:15 +0000
+Message-ID: <20260425005916.3321811-4-guoren@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260425005916.3321811-1-guoren@kernel.org>
 References: <20260425005916.3321811-1-guoren@kernel.org>
@@ -60,134 +60,93 @@ Content-Transfer-Encoding: 8bit
 
 From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-Now that HGEI line management is fully per-CPU (via struct
-aia_hgei_control::nr_hgei), the global `kvm_riscv_aia_nr_hgei`
-is no longer needed. Replace it with a simple `bool
-kvm_riscv_aia_hgei_enabled` that only indicates whether HGEI
-support is available at all.
+With the recent KVM AIA per-HART HGEI conversion, the global
+nr_guest_files is no longer appropriate. Different HARTs in
+heterogeneous SoCs may have different numbers of guest interrupt
+files.
+
+Move `nr_guest_files` from `struct imsic_global_config` to
+`struct imsic_local_config`, and compute it per-CPU in
+imsic_setup_state() based on the actual MMIO guest file region size.
+
+Update the related comment to reflect that KVM now uses the
+per-HART value.
+
+This eliminates the last global assumption about guest files and
+completes the per-HART conversion series for RISC-V AIA/IMSIC.
 
 Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
 ---
- arch/riscv/include/asm/kvm_aia.h |  2 +-
- arch/riscv/kvm/aia.c             | 18 ++++++++----------
- arch/riscv/kvm/aia_device.c      |  4 ++--
- arch/riscv/kvm/main.c            |  3 +--
- 4 files changed, 12 insertions(+), 15 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-state.c | 10 ++++++----
+ include/linux/irqchip/riscv-imsic.h     |  6 +++---
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
-index b04ecdd1a860..e8749ac6bed7 100644
---- a/arch/riscv/include/asm/kvm_aia.h
-+++ b/arch/riscv/include/asm/kvm_aia.h
-@@ -79,7 +79,7 @@ struct kvm_vcpu_aia {
+diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
+index e3ed874d89e7..f01525362cf7 100644
+--- a/drivers/irqchip/irq-riscv-imsic-state.c
++++ b/drivers/irqchip/irq-riscv-imsic-state.c
+@@ -878,7 +878,6 @@ int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
+ 	}
  
- #define irqchip_in_kernel(k)		((k)->arch.aia.in_kernel)
+ 	/* Configure handlers for target CPUs */
+-	global->nr_guest_files = BIT(global->guest_index_bits) - 1;
+ 	for (i = 0; i < nr_parent_irqs; i++) {
+ 		rc = imsic_get_parent_hartid(fwnode, i, &hartid);
+ 		if (rc) {
+@@ -910,23 +909,26 @@ int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
+ 			reloff -= ALIGN(resource_size(&mmios[j]),
+ 			BIT(global->guest_index_bits) * IMSIC_MMIO_PAGE_SZ);
+ 		}
++
++		local = per_cpu_ptr(global->local, cpu);
++		local->nr_guest_files = BIT(global->guest_index_bits) - 1;
++
+ 		if (index >= nr_mmios) {
+ 			pr_warn("%pfwP: MMIO not found for parent irq%d\n", fwnode, i);
+ 			continue;
+ 		}
  
--extern unsigned int kvm_riscv_aia_nr_hgei;
-+extern bool kvm_riscv_aia_hgei_enabled;
- extern unsigned int kvm_riscv_aia_max_ids;
- DECLARE_STATIC_KEY_FALSE(kvm_riscv_aia_available);
- #define kvm_riscv_aia_available() \
-diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index a23729052cfb..70ff1d25dd99 100644
---- a/arch/riscv/kvm/aia.c
-+++ b/arch/riscv/kvm/aia.c
-@@ -28,7 +28,7 @@ struct aia_hgei_control {
- static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
- static int hgei_parent_irq;
+-		local = per_cpu_ptr(global->local, cpu);
+ 		local->msi_pa = mmios[index].start + reloff;
+ 		local->msi_va = mmios_va[index] + reloff;
  
--unsigned int kvm_riscv_aia_nr_hgei;
-+bool kvm_riscv_aia_hgei_enabled;
- unsigned int kvm_riscv_aia_max_ids;
- DEFINE_STATIC_KEY_FALSE(kvm_riscv_aia_available);
+ 		/*
+-		 * KVM uses global->nr_guest_files to determine the available guest
++		 * KVM uses local->nr_guest_files to determine the available guest
+ 		 * interrupt files on each CPU. Take the minimum number of guest
+ 		 * interrupt files across all CPUs to avoid KVM incorrectly allocating
+ 		 * an unexisted or unmapped guest interrupt file on some CPUs.
+ 		 */
+ 		nr_guest_files = (resource_size(&mmios[index]) - reloff) / IMSIC_MMIO_PAGE_SZ - 1;
+-		global->nr_guest_files = min(global->nr_guest_files, nr_guest_files);
++		local->nr_guest_files = min(local->nr_guest_files, nr_guest_files);
  
-@@ -491,7 +491,7 @@ static int aia_hgei_init(void)
- 	struct irq_domain *domain;
+ 		nr_handlers++;
+ 	}
+diff --git a/include/linux/irqchip/riscv-imsic.h b/include/linux/irqchip/riscv-imsic.h
+index 4b348836de7a..13e8bd7ff4b4 100644
+--- a/include/linux/irqchip/riscv-imsic.h
++++ b/include/linux/irqchip/riscv-imsic.h
+@@ -40,6 +40,9 @@
+ struct imsic_local_config {
+ 	phys_addr_t				msi_pa;
+ 	void __iomem				*msi_va;
++
++	/* Number of guest interrupt files per core */
++	u32					nr_guest_files;
+ };
  
- 	/* Skip SGEI interrupt setup for zero guest external interrupts */
--	if (!kvm_riscv_aia_nr_hgei)
-+	if (!kvm_riscv_aia_hgei_enabled)
- 		goto skip_sgei_interrupt;
+ struct imsic_global_config {
+@@ -68,9 +71,6 @@ struct imsic_global_config {
+ 	/* Number of guest interrupt identities */
+ 	u32					nr_guest_ids;
  
- 	/* Find INTC irq domain */
-@@ -524,7 +524,7 @@ static int aia_hgei_init(void)
- static void aia_hgei_exit(void)
- {
- 	/* Do nothing for zero guest external interrupts */
--	if (!kvm_riscv_aia_nr_hgei)
-+	if (!kvm_riscv_aia_hgei_enabled)
- 		return;
- 
- 	/* Free per-CPU SGEI interrupt */
-@@ -631,6 +631,7 @@ int kvm_riscv_aia_init(void)
- {
- 	int rc;
- 	const struct imsic_global_config *gc;
-+	unsigned int kvm_riscv_aia_nr_hgei;
- 
- 	if (!riscv_isa_extension_available(NULL, SxAIA))
- 		return -ENODEV;
-@@ -641,21 +642,18 @@ int kvm_riscv_aia_init(void)
- 	kvm_riscv_aia_nr_hgei = fls_long(csr_read(CSR_HGEIE));
- 	csr_write(CSR_HGEIE, 0);
- 	if (kvm_riscv_aia_nr_hgei)
--		kvm_riscv_aia_nr_hgei--;
-+		kvm_riscv_aia_hgei_enabled = true;
- 
- 	/*
- 	 * Number of usable HGEI lines should be minimum of per-HART
- 	 * IMSIC guest files and number of bits in HGEIE
- 	 */
--	if (gc)
--		kvm_riscv_aia_nr_hgei = min((ulong)kvm_riscv_aia_nr_hgei,
--					    gc->nr_guest_files);
--	else
--		kvm_riscv_aia_nr_hgei = 0;
-+	if (!gc)
-+		kvm_riscv_aia_hgei_enabled = 0;
- 
- 	/* Find number of guest MSI IDs */
- 	kvm_riscv_aia_max_ids = IMSIC_MAX_ID;
--	if (gc && kvm_riscv_aia_nr_hgei)
-+	if (gc && kvm_riscv_aia_hgei_enabled)
- 		kvm_riscv_aia_max_ids = gc->nr_guest_ids + 1;
- 
- 	/* Initialize guest external interrupt line management */
-diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-index 3d1e81e2a36b..5b45b1114425 100644
---- a/arch/riscv/kvm/aia_device.c
-+++ b/arch/riscv/kvm/aia_device.c
-@@ -71,7 +71,7 @@ static int aia_config(struct kvm *kvm, unsigned long type,
- 				 * external interrupts (i.e. non-zero
- 				 * VS-level IMSIC pages).
- 				 */
--				if (!kvm_riscv_aia_nr_hgei)
-+				if (!kvm_riscv_aia_hgei_enabled)
- 					return -EINVAL;
- 				break;
- 			default:
-@@ -628,7 +628,7 @@ void kvm_riscv_aia_init_vm(struct kvm *kvm)
- 	 */
- 
- 	/* Initialize default values in AIA global context */
--	aia->mode = (kvm_riscv_aia_nr_hgei) ?
-+	aia->mode = (kvm_riscv_aia_hgei_enabled) ?
- 		KVM_DEV_RISCV_AIA_MODE_AUTO : KVM_DEV_RISCV_AIA_MODE_EMUL;
- 	aia->nr_ids = kvm_riscv_aia_max_ids - 1;
- 	aia->nr_sources = 0;
-diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index cb8a65273c1f..bcfa139f4871 100644
---- a/arch/riscv/kvm/main.c
-+++ b/arch/riscv/kvm/main.c
-@@ -169,8 +169,7 @@ static int __init riscv_kvm_init(void)
- 	kvm_info("VMID %ld bits available\n", kvm_riscv_gstage_vmid_bits());
- 
- 	if (kvm_riscv_aia_available())
--		kvm_info("AIA available with %d guest external interrupts\n",
--			 kvm_riscv_aia_nr_hgei);
-+		kvm_info("AIA available with guest external interrupts\n");
- 
- 	kvm_riscv_setup_vendor_features();
- 
+-	/* Number of guest interrupt files per core */
+-	u32					nr_guest_files;
+-
+ 	/* Per-CPU IMSIC addresses */
+ 	struct imsic_local_config __percpu	*local;
+ };
 -- 
 2.43.0
 
