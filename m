@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A596263F34;
-	Sat, 25 Apr 2026 05:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355B41397;
+	Sat, 25 Apr 2026 06:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777096620; cv=none; b=aeuH5xJTDTpbJX6R/0SawTZJ5IEebS6X7lMbrJa9hT0q7ri7iLwSNC2R1M/ftlH+52QgRyB6hrLpz2HRpXW/Dg6N29DtUij4NTeD29zbz2RkaQM8cXH9OF/8TLUZJVINZNRiJN07lPcFWnQ57veNxP3tL5w7ToJWbRdiaHDNtzA=
+	t=1777097125; cv=none; b=e9npQvSMmO/gwHUORYFLp5kxsbbsKL+M6jLj/PRICl15bVj5tAM+91ziZhc12p44t1vLADJSu7Yb+s/jLGtW0H7a5b4RgaBOXrvaDEKwHBy7qVEQzd/3yVu8cMD1zocfM/YO0Tg0zw5vTpifnVQMeCfo4LVTt4fVExwmXTUvHfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777096620; c=relaxed/simple;
-	bh=Tm1RVF/otoy7t8GU5QzG858Hip+jjhcSOcigpbnnIKY=;
+	s=arc-20240116; t=1777097125; c=relaxed/simple;
+	bh=fCn5CkE9SAvKIPG+1QSeNXcmbKoRK85ZM5U75VHX5pA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+DDL6EA4xiCL6zPciHIwQE64OzK+4DNGK+uLjXznQx1VGSEnd42Rbd5uQ6vXUoBQQmbqgLSBgiTmbLkg6bFI+8ooCgvXM6D4saL9BjAzebtU35LFDsv1qHX9YJ1SvZuo0w7xPtaAriCGGetLhPmmYT14PNhtlhN40fUiubLoDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csaj2/sP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=TgqjO8Efh1WtwAfjz0/qtYCv2JplDXyCNYjbuhpiMjCx7G5dsmGz1KRY5UVNJyDsRA+h2JJc4QQxpzLI8sWUHxI9iAmQ1na2XEiEQRhSCW4WpYDbtDbfsjZBxvmcQFuEYq+Yv4937AVMwCadTI7AokBpX2qciOzKj88EUJc9QhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaW2yCS2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csaj2/sP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD955C2BCB0;
-	Sat, 25 Apr 2026 05:56:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaW2yCS2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20932C2BCB0;
+	Sat, 25 Apr 2026 06:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777096620;
-	bh=Tm1RVF/otoy7t8GU5QzG858Hip+jjhcSOcigpbnnIKY=;
+	s=k20201202; t=1777097124;
+	bh=fCn5CkE9SAvKIPG+1QSeNXcmbKoRK85ZM5U75VHX5pA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=csaj2/sPuUjak144yih/NYw1vSry/TXCHzWpoDZcz5rAcuuVYu5iInicKb4zlCr44
-	 w9BepnEXbI6L9DWYUaTMPSi6oeEGk7YcprFxmNZus0KmJ4M5azn8XHPlou0JYacw+h
-	 bDvFfwrtUnik8NSo1Gm7EzIXQazOuvmYF2mWkscyHv85tIwo2FAqHrxyOovalwtkGE
-	 FHiuWIzk5oN8en9lg33iJ/GvC8hEbbBfsyEi5oGw6YUXwmHbVDdhDNCIbdUtvfSzXj
-	 8W3+FjlTTLkY0fd5L+eBYd6NWQQo70jpddYtlprwAlT/rvNwT11pUuqG12oFU3uNA3
-	 lIqP29VveexVA==
-Message-ID: <602b431e-244e-4171-bc82-6ba7ee71fe65@kernel.org>
-Date: Sat, 25 Apr 2026 07:56:52 +0200
+	b=XaW2yCS2subdMaUlxpPlBvDvgFPt6XRix/Vipx7bAXFR79GRy5+gY88ihVJGTr4JA
+	 DwB90CNgUSlyrNWLInV70jqwTVCnzO4xgZPKk182bnCJGFpjEGwenXcB5mHQmXIeKG
+	 GvumtJwbBFSSrrR5IFwDr0V0RpqsY7Vjqc4/d+MRP7BeDD7nfDcCu20Wd06zcskmZ9
+	 EQ92OFzv9q5tLLJNNNosWWF6NAj6LihNtf8JUHYhizq2RPBBJHh+2NTxD8JuOchddU
+	 5h8QtuloPhsrfbhZ6EsqJH/a9jSXs9R+3ljsvwO2yizfzb9yIcDGayxEa7sAehhNZf
+	 8T8jq2b+pw3VQ==
+Message-ID: <652b4a01-2382-4faf-bc1c-f127ee0b2c75@kernel.org>
+Date: Sat, 25 Apr 2026 08:05:16 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,24 +37,24 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
  memory
-To: Peter Xu <peterx@redhat.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
+To: Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
  "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
  Sean Christopherson <seanjc@google.com>, Paolo Bonzini
  <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
  kvm@vger.kernel.org
-References: <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
+References: <aeTnlQUOOh-dHG8z@thinkstation>
  <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
  <aed6fHLrIdahbdY3@thinkstation>
  <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
  <aeorZMvKwu8zKX5i@thinkstation> <aeoxnuGKO3uqS2kG@x1.local>
  <aeo5IPpQi7onyjTF@thinkstation> <aeprnnccJeyHB2rt@x1.local>
- <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org> <aep8tsYFfr_Xe54q@x1.local>
+ <aes7b17nG0cXrtEd@thinkstation> <aetZUOINzfTXChLL@x1.local>
+ <aetyhki-UD70dyRL@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -101,55 +101,25 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aep8tsYFfr_Xe54q@x1.local>
+In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/23/26 22:10, Peter Xu wrote:
-> On Thu, Apr 23, 2026 at 09:25:30PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> The other thing is, as I mentioned in the other email, I still don't know
->>> how the current RW protection would work for anonymous.  I don't yet think
->>> the user swapper can read the anon page with RW-protected pgtables.  So far
->>> my understanding is maybe you only care about shmem so it's fine, but it'll
->>> always be great to confirm with you.
+On 4/24/26 15:49, Kiryl Shutsemau wrote:
+> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
+>> On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
+>>> Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
+>>> memory. We need visibility in the virtual address space domain.
 >>
->> I wonder if uffdio_move could be used for a swapper implementation instead?
+>> Yes they are, but ACCESS bit isn't.
 > 
-> If RW is justified to be useful first, maybe.
-> 
-> I had a gut feeling Kirill's use case doesn't use anon at all, then if
-> nobody needs it we can still decide to not support anon.
-> 
->>
->> If we ever have to read from a protnone page, maybe we could teach ptrace access
->> to do it, or have something that can read from prot_none areas -- like
->> uffdio_copy, which can write to prot-none areas.
-> 
-> Somethinig like swap_access() in my proposal can also partly achieve that.
+> A-bit is not a reliable signal for userspace working-set tracking
+> because the kernel itself is a concurrent consumer. 
+Right, I don't think we want to rely on either the A bit just like we don't want
+to rely on the Dirty bit in other code. (and even SoftDirty bit is a flawed concept)
 
-Looks more like the hammer for the nail here: we could fault the page in just
-fine, while keeping it mapped prot_none and keeping the uffd-rwp pte bit set.
-
-I was rather thinking of some uffd-specific thing that can read from a uffd-rwp
-protected pte without trigger uffd.
-
-> 
-> https://lore.kernel.org/all/aYuad2k75iD9bnBE@x1.local/
-> 
-> There, it was only about reading from swap so far, though.  But that one
-> might be easier to be extended to read PROT_NONE and directly put data into
-> buffer user specified (ps: in my local tree impl I named it maccess() to
-> pair with mincore(), but it doesn't really matter; it doesn't even need to
-> be a syscall..).
-> 
-> To me, the interfacing is not a major issue.  The major question I have is
-> why RW protection can help in swap system impl when we already have uffd-wp.
-> 
-> So I want to make sure the use case can't be implemented by uffd-wp already.
-> Because that's really what we might do for QEMU.
-
-There has to be some added value indeed.
+I do see some value in a reliable RWP mechanism based on uffd. The real question
+is, how much benefit it would bring (which other use cases could benefit from it).
 
 -- 
 Cheers,
