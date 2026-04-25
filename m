@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C322E2264D3;
-	Sat, 25 Apr 2026 05:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A596263F34;
+	Sat, 25 Apr 2026 05:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777094252; cv=none; b=tHowMIki/0cHZvXW6En9FfsZAQF0ZrPL7Or5vpQQNyXe2dm/1lG4LIOXmAgQWEByptFH/kagxGo0QOPK5xSj+xYRgumnpA7tFTBO9NLUGu2ZL1KsP80Jw63N45EIAsy0I0iH20Qrxixh45ha467H/aZUFCrL+9nTKS2VPYUaeJk=
+	t=1777096620; cv=none; b=aeuH5xJTDTpbJX6R/0SawTZJ5IEebS6X7lMbrJa9hT0q7ri7iLwSNC2R1M/ftlH+52QgRyB6hrLpz2HRpXW/Dg6N29DtUij4NTeD29zbz2RkaQM8cXH9OF/8TLUZJVINZNRiJN07lPcFWnQ57veNxP3tL5w7ToJWbRdiaHDNtzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777094252; c=relaxed/simple;
-	bh=5j0hI25fcLwvYs9O7EkFhaSQIshTYicy/Hs4ivFoX7s=;
+	s=arc-20240116; t=1777096620; c=relaxed/simple;
+	bh=Tm1RVF/otoy7t8GU5QzG858Hip+jjhcSOcigpbnnIKY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mr7K+WRtTocFSQ1iDlT+OwlBad/89K1uWhId3aKDVLuLdFcU1t3J0ftXv9TUB7veEueAz741Tzx6Utp2r6S+q3q0+2KFfeY7xR4h44qhYCtWQFJVYKW37bZgL9FByyYM0iak/UtDn9snAwb1iYx+/oJ1ho0XqWvbRnCZiH3mwjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdbnbOvV; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=K+DDL6EA4xiCL6zPciHIwQE64OzK+4DNGK+uLjXznQx1VGSEnd42Rbd5uQ6vXUoBQQmbqgLSBgiTmbLkg6bFI+8ooCgvXM6D4saL9BjAzebtU35LFDsv1qHX9YJ1SvZuo0w7xPtaAriCGGetLhPmmYT14PNhtlhN40fUiubLoDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csaj2/sP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdbnbOvV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B17C2BCB2;
-	Sat, 25 Apr 2026 05:17:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csaj2/sP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD955C2BCB0;
+	Sat, 25 Apr 2026 05:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777094252;
-	bh=5j0hI25fcLwvYs9O7EkFhaSQIshTYicy/Hs4ivFoX7s=;
+	s=k20201202; t=1777096620;
+	bh=Tm1RVF/otoy7t8GU5QzG858Hip+jjhcSOcigpbnnIKY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cdbnbOvV4TD3FZeIGsUUcdf9MMkutHF5KfqVKtYmFCSCXqO5GuwwpFG6lm6IVVtzd
-	 LpgUZ7+Q934UMJJnJnvl4Ax2ep+64+pjmAyavKljk4KBbiz9J067TXLEJ54uclHQEY
-	 UTtzfKNbX7rOtJs35REfe+0KnxAVy1MMN8DTary7pT+fNnaPpHKYQTBjJ6DUXHvyFS
-	 V6H2s9nyK6jpFsSIfvLyuU+9PaPLQvBWPVn4f/97W4BV0IB9mNDO3mglYi3XmOr9cP
-	 f74Er1HQYlZ1TFJxEqicTb0wRfEGihBbaqjxidkw4bKL1pMjDHcH1gBAvoVpmVjZZs
-	 hfsO7Kv5mVPng==
-Message-ID: <872e752d-c7fa-4a75-a963-4e2f42ce468b@kernel.org>
-Date: Sat, 25 Apr 2026 07:17:18 +0200
+	b=csaj2/sPuUjak144yih/NYw1vSry/TXCHzWpoDZcz5rAcuuVYu5iInicKb4zlCr44
+	 w9BepnEXbI6L9DWYUaTMPSi6oeEGk7YcprFxmNZus0KmJ4M5azn8XHPlou0JYacw+h
+	 bDvFfwrtUnik8NSo1Gm7EzIXQazOuvmYF2mWkscyHv85tIwo2FAqHrxyOovalwtkGE
+	 FHiuWIzk5oN8en9lg33iJ/GvC8hEbbBfsyEi5oGw6YUXwmHbVDdhDNCIbdUtvfSzXj
+	 8W3+FjlTTLkY0fd5L+eBYd6NWQQo70jpddYtlprwAlT/rvNwT11pUuqG12oFU3uNA3
+	 lIqP29VveexVA==
+Message-ID: <602b431e-244e-4171-bc82-6ba7ee71fe65@kernel.org>
+Date: Sat, 25 Apr 2026 07:56:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,33 +35,26 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
- them
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Lance Yang
- <lance.yang@linux.dev>, peterz@infradead.org, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
-References: <20260424062528.71951-1-lance.yang@linux.dev>
- <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
- <aetw4aoABYj3keMh@plex>
- <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
- <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
- <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
- <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
- <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
- <4e7699eb-e101-4a25-b585-79a777eb7cc2@kernel.org>
- <CAO9r8zO4eSiAK9U-ijzWJMK80XsK+LmFxGAG+nTo+tmK6aLfYA@mail.gmail.com>
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
+ memory
+To: Peter Xu <peterx@redhat.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
+ <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation> <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation> <aeprnnccJeyHB2rt@x1.local>
+ <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org> <aep8tsYFfr_Xe54q@x1.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -108,61 +101,55 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAO9r8zO4eSiAK9U-ijzWJMK80XsK+LmFxGAG+nTo+tmK6aLfYA@mail.gmail.com>
+In-Reply-To: <aep8tsYFfr_Xe54q@x1.local>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 4/24/26 21:18, Yosry Ahmed wrote:
-> On Fri, Apr 24, 2026 at 12:09 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 4/24/26 20:50, Yosry Ahmed wrote:
->>> On Fri, Apr 24, 2026 at 11:36 AM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
+On 4/23/26 22:10, Peter Xu wrote:
+> On Thu, Apr 23, 2026 at 09:25:30PM +0200, David Hildenbrand (Arm) wrote:
 >>>
->>> But I imagine it's useful for reviewers to see Sashiko's feedback as
->>> well (without having to go look on the website).
+>>> The other thing is, as I mentioned in the other email, I still don't know
+>>> how the current RW protection would work for anonymous.  I don't yet think
+>>> the user swapper can read the anon page with RW-protected pgtables.  So far
+>>> my understanding is maybe you only care about shmem so it's fine, but it'll
+>>> always be great to confirm with you.
 >>
->> I read a lot of them, yes. Maintainers know how to find it.
->>
->> I even think maintainers should  briefly go over it before applying to spot if
->> anything in there is still left unanswered. But that doesn't need a mailing list
->> posting.
->>
->> I enjoy if contributors are aware of the reports and use that input in a
->> reasonable, like Zi just did [1]. And if they are unsure, they usually ask to
->> double-check.
->>
->> [1] https://lore.kernel.org/r/15191F7F-0D10-4907-B963-DA4EA0E36EB6@nvidia.com
->>
->>> It's possible that
->>> Sashiko is right but the author isn't convinced, so getting more eyes
->>> on the feedback would help.
->>
->> Forcing contributors to reply to everything. I don't like that, in particular
->> not as long as there is no way for contributors to run it early in private.
->>
->> In most cases, contributors just do the reasonable thing: incorporate the
->> feedback in a new version.
+>> I wonder if uffdio_move could be used for a swapper implementation instead?
 > 
-> The usefulness of the mailing list posting is that it makes it easier
-> to respond and discuss the review. Yes, what Zi did is great, but it
-> would be nice if contributors/reviewers didn't need to manually quote
-> Sashiko.
+> If RW is justified to be useful first, maybe.
+> 
+> I had a gut feeling Kirill's use case doesn't use anon at all, then if
+> nobody needs it we can still decide to not support anon.
+> 
+>>
+>> If we ever have to read from a protnone page, maybe we could teach ptrace access
+>> to do it, or have something that can read from prot_none areas -- like
+>> uffdio_copy, which can write to prot-none areas.
+> 
+> Somethinig like swap_access() in my proposal can also partly achieve that.
 
-I think the most important part is the contributor side. A private posting is
-sufficient for that.
+Looks more like the hammer for the nail here: we could fault the page in just
+fine, while keeping it mapped prot_none and keeping the uffd-rwp pte bit set.
 
-So if possible, I'd start with that and see how it goes.
+I was rather thinking of some uffd-specific thing that can read from a uffd-rwp
+protected pte without trigger uffd.
 
 > 
-> That being said, I understand the concerns and the pressure to respond
-> to everything as you mention below. Maybe at some point this will
-> become an easier decision to make as reviews become more refined.
+> https://lore.kernel.org/all/aYuad2k75iD9bnBE@x1.local/
+> 
+> There, it was only about reading from swap so far, though.  But that one
+> might be easier to be extended to read PROT_NONE and directly put data into
+> buffer user specified (ps: in my local tree impl I named it maccess() to
+> pair with mincore(), but it doesn't really matter; it doesn't even need to
+> be a syscall..).
+> 
+> To me, the interfacing is not a major issue.  The major question I have is
+> why RW protection can help in swap system impl when we already have uffd-wp.
+> 
+> So I want to make sure the use case can't be implemented by uffd-wp already.
+> Because that's really what we might do for QEMU.
 
-There is another thing to consider here: impact on other reviewers, in
-particular, new contributors, when they spot excessive review already posted to
-the mailing list. And the first thing being them reading that.
+There has to be some added value indeed.
 
 -- 
 Cheers,
