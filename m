@@ -1,73 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD1A201278;
-	Sun, 26 Apr 2026 11:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7DF31F9A7;
+	Sun, 26 Apr 2026 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777202171; cv=none; b=mvKE+xvgCIIxGePtWyN5eoNHhtyM6YsR4U0MOZvqGxuGsixnmpDwin3ZeBvAe99DqkFHH4EKjIisfYzOs/wVeZ7yxXGpKoY8EBqcdu6URBePSgHF6zkehc/Mxe7Zw77q1OTD4WsuUqPXJEDNtsu9OR6Gc67uwMAY+qo8gjCrnR4=
+	t=1777212459; cv=none; b=nLG07ymWNvGIxWVQVaaQ/xmos+jKYUpmJbpjf0GCa2yK6sc3yarIOXcOf1hoelXOQkvvPBPWp0lzaO0PIOGMcjeiorHhli1miCtx+J4DqXTgWBf0zqirKsLM5UFz9eEBOcsZWkYxeM9rET1Cf41pm8Y7KujPFEsQG4zrXmUylXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777202171; c=relaxed/simple;
-	bh=Wn2FRa5CGuL62SGQEo1Ts5OEuIpTDHE10o9+L8T2HW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b7Ntc8mhHN73VA+qTyFc9fGcOBd+bKXpxF3QIgR19c41T7VD8SlidMWRCjOJWCWwy7ZM1JN/+VINt+CoFxG4gHOKkjpUhWyqF5dWIorQVK7GXuQfMQ30r1bDT+fBnBlIomxmfjydiDuS+q7obwE7YC05VfejIgQ0LtmeTBLjADU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bffs8Sql; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777212459; c=relaxed/simple;
+	bh=lDY502D0UwTlnUwqf8BtPahtm7twsTmu8HFtn+sm0IA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dxM+bv0r8cdHflf5DKClX+cUu4qQriM5w1o7GfQ8F2/F6LE1VVzDwfvn8lh/HehdG+6Xw2O4kj11C+e6sO+qzjW0kgDn5662KqtEb+Cl0tLF55FatYzX7ZZfv4Gj79g0tHKGV1JlIebxIXu61UyiXzE8jcsF1L1YRN084VuXRws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tH7DMitl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bffs8Sql"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5589C2BCAF;
-	Sun, 26 Apr 2026 11:16:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tH7DMitl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9C2C2BCAF;
+	Sun, 26 Apr 2026 14:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777202171;
-	bh=Wn2FRa5CGuL62SGQEo1Ts5OEuIpTDHE10o9+L8T2HW0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bffs8Sqla4K8yZAcERyMs2wMx+4HAEyv3CllkIZclJ7Uh7Fzt6U7yyMPMIvDhdLGi
-	 cIbmHPZ0PPaBlsW5O2gqmf1b7A3xRba/LaYHzFrIs31E0iYbyAET9ehMfrJro1Ga3P
-	 JqxJFrqqaMauWAikdOATba+e+Drv41x5SOMsQ7553xoI7iQPFw+z9kyY0vbdg4PRhh
-	 M1Xu4y5lhpdP1nYloyYlEl9rgNwzvJqUIrQQQxHjm/zGPP5J4Sdq2YDNtzM7mEgtd2
-	 faQkwWsCDW2a7H/rlBX6qhx7H9X/wpGGWnN1IvWpCGvxt8qryKFiHvjPuBRihvymu/
-	 4mWAqbJiz4UKA==
-Date: Sun, 26 Apr 2026 14:16:06 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Kees Cook <kees@kernel.org>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH v2 3/3] vfio/pci: Check BAR resources before exporting a
- DMABUF
-Message-ID: <20260426111606.GC440345@unreal>
-References: <20260423182517.2286030-1-mattev@meta.com>
- <20260423182517.2286030-4-mattev@meta.com>
+	s=k20201202; t=1777212459;
+	bh=lDY502D0UwTlnUwqf8BtPahtm7twsTmu8HFtn+sm0IA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tH7DMitlSokecV8h+r6UW83iqIZELeQsvftYXNCwbWJ4C1tGsegwbFrQwE8VRLIol
+	 pdOPTL5FUBTWxqfYLt3YWZOTmZ06lkNOZRAKdTSqbouqHoUEMyemuj1pbvXGPVse2u
+	 F/EYw15WAetJgngUM32zjvi9O6m9TA+Ww0qQG9A1qaB5LXBYujRuLmbvLwg/s46wmH
+	 XO/Oo18VWtjN1/TECD1FWniOIDDXuN5zmlWI7FaX+lsuxs5VirkvkLZ9axgQN2yLSk
+	 XR8Yh/ZDZt64YYJ9u0bBs9jhqEegHr5aFTjc2tTVqXuYVyRs/lSlBUGv7BFwWW+LcU
+	 Oew3uCGUnOUdQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wH092-0000000EnUE-3vU3;
+	Sun, 26 Apr 2026 14:07:37 +0000
+Date: Sun, 26 Apr 2026 15:07:36 +0100
+Message-ID: <87ik9dbys7.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Cc: Fuad Tabba <tabba@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Mark Brown
+ <broonie@kernel.org>,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	Darren Hart <darren@os.amperecomputing.com>
+Subject: Re: [PATCH v4 35/49] KVM: arm64: GICv3: nv: Plug L1 LR sync into deactivation primitive
+In-Reply-To: <861pg213to.wl-maz@kernel.org>
+References: <20251120172540.2267180-1-maz@kernel.org>
+	<20251120172540.2267180-36-maz@kernel.org>
+	<2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
+	<878qb9cxzr.wl-maz@kernel.org>
+	<1e050b67-2276-41ad-9265-796ba853dc7c@os.amperecomputing.com>
+	<86a4vo49ni.wl-maz@kernel.org>
+	<86eck71o1v.wl-maz@kernel.org>
+	<e283e755-c348-43cf-b5fe-278c5eab742d@os.amperecomputing.com>
+	<861pg213to.wl-maz@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260423182517.2286030-4-mattev@meta.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: vishnu@os.amperecomputing.com, tabba@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, christoffer.dall@arm.com, broonie@kernel.org, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, darren@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Apr 23, 2026 at 11:25:09AM -0700, Matt Evans wrote:
-> A DMABUF exports access to BAR resources and, although they are
-> requested at startup time, we need to ensure they really were reserved
-> before exporting.  Otherwise, it's possible to access unreserved
-> resources through the export.
+On Sun, 26 Apr 2026 10:14:11 +0100,
+Marc Zyngier <maz@kernel.org> wrote:
 > 
-> Add a check to the DMABUF-creation path.
+> On Wed, 22 Apr 2026 15:57:44 +0100,
+> Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
+> > 
+> > Hi Marc,
+> > 
+> > On 22-04-2026 12:25, Marc Zyngier wrote:
+> > >
+> > > Have you made progress on this? I can't reproduce it at all despite my
+> > > best effort. I'm perfectly happy to help, but you need to give me
+> > > *something* to go on.
+> > 
+> > 
+> > Thanks for your support!!
+> > 
+> > The issue is triggered as soon as the timer interrupt (IRQ 27) is
+> > deactivated. Preventing the deactivation of IRQ 27 during nested VGIC
+> > state transitions prevents the failure from reproducing.
 > 
-> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-> Signed-off-by: Matt Evans <mattev@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> Which level of deactivation? From L2 to L1? Or L1 to L0? The former
+> should just be a an update to the irq structure, while the latter is
+> effectively a write to ICC_DIR_EL1, and *that* is a new behaviour
+> introduced by this patch.
 > 
+> I wonder if your implementation is such that ICC_DIR_EL1 is trapped by
+> ICH_HCR_EL2.TDIR, which is allowed by the architecture, but that none
+> of the two implementations I have actually enforce (the trap only
+> applies to ICV_DIR_EL1). Can you try the hack below which disables the
+> traps much earlier, and let me know if that helps?
+> 
+> Even if that's the case, this should result in an EL2->EL2 exception,
+> and that should be caught as an unhandled exception in entry-common.c,
+> so something else is afoot.
+
+Actually, this should never happen. ICH_HCR_EL2.TDIR is constructed
+like all the other GICv3 trap bits, in the sense that it only traps
+accesses from EL1, not EL2 (for sanity reasons, I'm not considering
+the possibility of a trap to EL3...).
+
+Still, I'm interested in finding out if that hack helps at all.
 
 Thanks,
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
