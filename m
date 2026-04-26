@@ -1,149 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CA81397;
-	Sun, 26 Apr 2026 09:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B722459CF;
+	Sun, 26 Apr 2026 10:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777194854; cv=none; b=JKYLUebQJHuVmT859glO+6y7YU8k67aotNVUutfsBc5KxKNtKeM3NwY49IUejLpKpRYuAPecXyGWNA7Cz9L16TI46n3LrHaZxF8XrOgIFY2lygTLqQd8WZcBcewIVCqw+WSLcunuweeOr3CBMjnKXTuq7f7t/BWfWJGRkwpVeFs=
+	t=1777200739; cv=none; b=NPlinDPKBITR5LPg1vLymsKNRiwlkQ6S3bKXLxfJLkWf93bqk5tZx/oQ4vurnOaOD8yPNbhCNXfXTgl88tpf1OmLdVI7MaXJEiilsaPTbPq7YgqRaO4qChBorRk/VdHCMdgqY6PiuQ5a9Wrk6ZOQ7Xe+uwKCi6YGns5W5PW2xSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777194854; c=relaxed/simple;
-	bh=mIDtI2DvRmR2rKhKS/QpZYOxXcixSL38uwNQkFExpJY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VnJt4KUgZwI44EHt8RCS3yOLZBv4/EpFMudogdgLapH5r06A+8NREZXAavISbMUcEg2vFrQ8xykRwV8FylgJQ/4ZEa+grxTUxiLRg/UqXzWNyj/XVaFEhS8k5l3n2P30hxev8gH1+gTLp3MstR1+j3gWfrEg8d3uKDIF7usFC7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKiWiQjH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777200739; c=relaxed/simple;
+	bh=lNdbI4/apg1ysSsy83oxwfPftRF4Br9c6ZIns4MKmcA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iHWAdcDyaF3Fesxp4tN20MlQ3V6wIhUT5LzPjxCBmIjLn4tl7PmluA5vMW2zdfcHtQPX6KkkiCOWfFnoi99Qo6sa/BZaDbex/sb4q3Sz5S1CLPJaIKTt58/uS3S1vEtG22682Dd7AFcfJnynFP5A6gv1Zc+huiYN20cVHlbDtBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hfr9xNcU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKiWiQjH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EECDC2BCAF;
-	Sun, 26 Apr 2026 09:14:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hfr9xNcU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79468C2BCAF;
+	Sun, 26 Apr 2026 10:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777194854;
-	bh=mIDtI2DvRmR2rKhKS/QpZYOxXcixSL38uwNQkFExpJY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sKiWiQjHfFPALfrhENoLfMQrcqClLCseJNaGBJlhSiIKV/HVCJLNeNJH0yA5F0wJl
-	 uDOLlNPKzqwTfmvWOZyu4BhSzTRr+e64lOVw5Qlz/U/La4Xe4IXrJTHRAp3m1hKe0O
-	 eGo4hI+2rsda6kMdHrpRYRstWmUiSyWJYffq4JXhHs7C+ynRQwYti1gxXLk7RDW7YL
-	 q2Ty/Z7nD44BnBAyp2L24hV7ZV7YXX++j8ERtT8ugq1VtT6ol4AmkavnX1oo6kbeaT
-	 /CIgLGoufUknVpBI35ZF8EPuHTn86aDaTf1LH/rVvfzG21CTD1voMqJaaPnRZcrijv
-	 mq+UTY6/DzDRA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wGvZ5-0000000EkyH-46jc;
-	Sun, 26 Apr 2026 09:14:12 +0000
-Date: Sun, 26 Apr 2026 10:14:11 +0100
-Message-ID: <861pg213to.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Cc: Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Mark Brown
- <broonie@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	Darren Hart <darren@os.amperecomputing.com>
-Subject: Re: [PATCH v4 35/49] KVM: arm64: GICv3: nv: Plug L1 LR sync into deactivation primitive
-In-Reply-To: <e283e755-c348-43cf-b5fe-278c5eab742d@os.amperecomputing.com>
-References: <20251120172540.2267180-1-maz@kernel.org>
-	<20251120172540.2267180-36-maz@kernel.org>
-	<2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
-	<878qb9cxzr.wl-maz@kernel.org>
-	<1e050b67-2276-41ad-9265-796ba853dc7c@os.amperecomputing.com>
-	<86a4vo49ni.wl-maz@kernel.org>
-	<86eck71o1v.wl-maz@kernel.org>
-	<e283e755-c348-43cf-b5fe-278c5eab742d@os.amperecomputing.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1777200739;
+	bh=lNdbI4/apg1ysSsy83oxwfPftRF4Br9c6ZIns4MKmcA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hfr9xNcUqlk+qH6bcnj9WFdahdi/+KDiSesUiqrA8reL0MzFxy0++syvclaIlpz3P
+	 B8JxvylaHT3Xwx9AAhk46IY+t1DMqQv18H4w7NWye3zArUgg6BCSRVoMcntzSOxaiA
+	 Dg9omC+3ngGzS9FO+aSVbeQ6hlT+J9WVSjMq2JKe7+mXjrRewm+ElgvrIqcp0fQonr
+	 +VVM/PhE+swJE0L4nVj+Im+kuXQhA7Y3W8xjI3yQ3nEx1QtWstvFCugOTpxwQpx4gw
+	 BEiEZookIYZUJY2DMvc/slD1qTrSsiUImb3TM9yQfeUekDqstZiXi4xnxbNuk1Tgmj
+	 2bZ/ygwh33E8g==
+Date: Sun, 26 Apr 2026 13:52:15 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>, Alex Williamson <alex@shazbot.org>
+Cc: Matt Evans <mattev@meta.com>, Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
+Message-ID: <20260426105215.GA440345@unreal>
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-10-mattev@meta.com>
+ <20260424183153.GJ3444440@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: vishnu@os.amperecomputing.com, tabba@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, christoffer.dall@arm.com, broonie@kernel.org, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, darren@os.amperecomputing.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260424183153.GJ3444440@nvidia.com>
 
-On Wed, 22 Apr 2026 15:57:44 +0100,
-Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
+On Fri, Apr 24, 2026 at 03:31:53PM -0300, Jason Gunthorpe wrote:
+> On Thu, Apr 16, 2026 at 06:17:52AM -0700, Matt Evans wrote:
+> > A new field is reserved in vfio_device_feature_dma_buf.flags to
+> > request CPU-facing memory type attributes for mmap()s of the buffer.
+> > Add a flag VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC, which results in WC
+> > PTEs for the DMABUF's BAR region.
+> > 
+> > Signed-off-by: Matt Evans <mattev@meta.com>
+> > ---
+> >  drivers/vfio/pci/vfio_pci_dmabuf.c | 15 +++++++++++++--
+> >  drivers/vfio/pci/vfio_pci_priv.h   |  1 +
+> >  include/uapi/linux/vfio.h          | 12 +++++++++---
+> >  3 files changed, 23 insertions(+), 5 deletions(-)
 > 
-> Hi Marc,
+> Nice and simple
 > 
-> On 22-04-2026 12:25, Marc Zyngier wrote:
-> >
-> > Have you made progress on this? I can't reproduce it at all despite my
-> > best effort. I'm perfectly happy to help, but you need to give me
-> > *something* to go on.
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 > 
-> 
-> Thanks for your support!!
-> 
-> The issue is triggered as soon as the timer interrupt (IRQ 27) is
-> deactivated. Preventing the deactivation of IRQ 27 during nested VGIC
-> state transitions prevents the failure from reproducing.
+> > @@ -1549,8 +1551,12 @@ struct vfio_region_dma_range {
+> >  struct vfio_device_feature_dma_buf {
+> >  	__u32	region_index;
+> >  	__u32	open_flags;
+> > -	__u32   flags;
+> > -	__u32   nr_ranges;
+> > +	__u32	flags;
+> > +	/* Flags sub-field reserved for attribute enum */
+> > +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_MASK		(0xfU << 28)
+> > +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_UC		(0 << 28)
+> > +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC		(1 << 28)
+> > +	__u32	nr_ranges;
 
-Which level of deactivation? From L2 to L1? Or L1 to L0? The former
-should just be a an update to the irq structure, while the latter is
-effectively a write to ICC_DIR_EL1, and *that* is a new behaviour
-introduced by this patch.
+Alex,
 
-I wonder if your implementation is such that ICC_DIR_EL1 is trapped by
-ICH_HCR_EL2.TDIR, which is allowed by the architecture, but that none
-of the two implementations I have actually enforce (the trap only
-applies to ICV_DIR_EL1). Can you try the hack below which disables the
-traps much earlier, and let me know if that helps?
+The TPH proposal extends the flags field in a similar way, but I suggested
+a different approach to conserve bits. At the moment, we spend three bits
+on a single feature, which feels wasteful.
 
-Even if that's the case, this should result in an EL2->EL2 exception,
-and that should be caught as an unhandled exception in entry-common.c,
-so something else is afoot.
+What do you think?
+https://lore.kernel.org/all/20260409120415.GF86584@unreal/
 
-Thanks,
-
-	M.
-
-diff --git a/arch/arm64/kvm/vgic/vgic-v3-nested.c b/arch/arm64/kvm/vgic/vgic-v3-nested.c
-index 5c69fa615823c..ee415c1038b4e 100644
---- a/arch/arm64/kvm/vgic/vgic-v3-nested.c
-+++ b/arch/arm64/kvm/vgic/vgic-v3-nested.c
-@@ -280,6 +280,14 @@ void vgic_v3_sync_nested(struct kvm_vcpu *vcpu)
- 	struct shadow_if *shadow_if = get_shadow_if();
- 	int i;
- 
-+	/* We need these to be synchronised to generate the MI */
-+	__vcpu_assign_sys_reg(vcpu, ICH_VMCR_EL2, read_sysreg_s(SYS_ICH_VMCR_EL2));
-+	__vcpu_rmw_sys_reg(vcpu, ICH_HCR_EL2, &=, ~ICH_HCR_EL2_EOIcount);
-+	__vcpu_rmw_sys_reg(vcpu, ICH_HCR_EL2, |=, read_sysreg_s(SYS_ICH_HCR_EL2) & ICH_HCR_EL2_EOIcount);
-+
-+	write_sysreg_s(0, SYS_ICH_HCR_EL2);
-+	isb();
-+
- 	for_each_set_bit(i, &shadow_if->lr_map, kvm_vgic_global_state.nr_lr) {
- 		u64 val, host_lr, lr;
- 
-@@ -309,14 +317,6 @@ void vgic_v3_sync_nested(struct kvm_vcpu *vcpu)
- 		vgic_v3_deactivate(vcpu, FIELD_GET(ICH_LR_PHYS_ID_MASK, lr));
- 	}
- 
--	/* We need these to be synchronised to generate the MI */
--	__vcpu_assign_sys_reg(vcpu, ICH_VMCR_EL2, read_sysreg_s(SYS_ICH_VMCR_EL2));
--	__vcpu_rmw_sys_reg(vcpu, ICH_HCR_EL2, &=, ~ICH_HCR_EL2_EOIcount);
--	__vcpu_rmw_sys_reg(vcpu, ICH_HCR_EL2, |=, read_sysreg_s(SYS_ICH_HCR_EL2) & ICH_HCR_EL2_EOIcount);
--
--	write_sysreg_s(0, SYS_ICH_HCR_EL2);
--	isb();
--
- 	vgic_v3_nested_update_mi(vcpu);
- }
- 
-
--- 
-Without deviation from the norm, progress is not possible.
+Thanks
