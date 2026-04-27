@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5C93B6378
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 10:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91D63B531B
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 10:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777287541; cv=none; b=pDCrDLQHjue08RwjExwyrFd1Jw7XeeqbI755R1oQYD29plKKCEzTklgVjhIjyKKzqFtmnKU6YaiJYmDyfQ6GIW3LVzheBx0KZVsCPVJvlBGcp1x2Re5pJze0i+AmbipHvRAclTAl9XpJCA90vzB894GrBxYjWvQKKQ7UGSkxxlE=
+	t=1777287542; cv=none; b=LP5UwEE1JGFaJngTzFBLeioHP1q1o8oAXY4ei1ot8nQEEnOwjv8C3lzzxOab4ih0eMFF5vtTFix0RMZ5wmjmJYFnMQZvOaO5ja89EPvhRq++XfHqDDMDPNirIs28Ubwc5Xyy6sGsDfSN0hoOYKPBHME7w/LazG+XifvWxj1InCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777287541; c=relaxed/simple;
-	bh=auRBh63JZxS/Md8dCtYnvllxjrwNFKnUaHvxyC+s8jM=;
+	s=arc-20240116; t=1777287542; c=relaxed/simple;
+	bh=TaYpCTETe11C3Yfg/FrIsNKEV43YWUGQn1eYB47uKmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GOimWe0mDfIo8hVD5UZtJlUWBk0v/KV+PZF9XP5zRlnhanEE3X2mls/2CsEAn8hZGKkWnM5jOwmf0qpWthf+yBqCS3cWSylWPX2ks++3Jd98eRmzgDMx/4+a1bNZc6uUfzC9EOeFZcQd7B48KWOVsLCb2Aq4hRos/7r7gNFPDqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tx/MBEbg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=VtXUdOlmkcYMtsPRirh9JFV1jvu4/vw/HuDr83ZyZ/CqlCej6JjAVI2X9VgPi10+hD7LJLcmFNByYuYpjNfD3PDrDIlnHIjDqGeTFQLFUUlRuKE0kKSobMMdoQFNBK5f/iF8/rvpRt9qyAjd1AaoH1KU/xGFNNXEJzr2nk20Mds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c4OsnlfD; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tx/MBEbg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c4OsnlfD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777287537;
+	s=mimecast20190719; t=1777287538;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TgGPSi7arVWiRpDPJ8V+u2Ms4i69wEtWAtSbWjbaVFY=;
-	b=Tx/MBEbghDNHgt0i6EAmX8ZYqqBni/0PxaNRFrUGNMZcK7X6EmkbEHJOBBfF+ZAp9INGTW
-	6jwIK6uaf4NLaY0QxJFupCUE5AtQIMWMjVxLEYUTwapDhC3IHhYDvhM6Rs1TT/nutDQgBj
-	s2c0Mv9zmt0e1zcLFnhUfsyG2wzzHP0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=PbFMocHNKjLLQkLK9ZyuZA3bwif9NnNEuCbZf7qi6Yo=;
+	b=c4OsnlfDD62eqEDf+9iw/QJap9zUwYXhcH9zAHv9Fd+ScgNxM8rLJmIHrckekaqw0QE9qo
+	BPskjTZELSOnBlrtufAZlSeNmCdASnKpUOTi8pmdvsw94WY1cBroAE7kVq5ULfo9vpA76F
+	xmEv1AFoqI/jJXvN8ADWD+FY6pZDLYc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-ktzl7qp2N2uxrQ7ojlmxfg-1; Mon,
- 27 Apr 2026 06:58:52 -0400
-X-MC-Unique: ktzl7qp2N2uxrQ7ojlmxfg-1
-X-Mimecast-MFC-AGG-ID: ktzl7qp2N2uxrQ7ojlmxfg_1777287531
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-_dAoTzKnMMKSnj5XzwahXQ-1; Mon,
+ 27 Apr 2026 06:58:54 -0400
+X-MC-Unique: _dAoTzKnMMKSnj5XzwahXQ-1
+X-Mimecast-MFC-AGG-ID: _dAoTzKnMMKSnj5XzwahXQ_1777287533
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5E8F6180060B;
-	Mon, 27 Apr 2026 10:58:51 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 833021800367;
+	Mon, 27 Apr 2026 10:58:53 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7B0A71800347;
-	Mon, 27 Apr 2026 10:58:50 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C57E71800347;
+	Mon, 27 Apr 2026 10:58:52 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Binbin Wu <binbin.wu@linux.intel.com>,
 	Uros Bizjak <ubizjak@gmail.com>,
 	"Chang S. Bae" <chang.seok.bae@intel.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH v2 1/7] KVM: VMX: remove regs argument of __vmx_vcpu_run
-Date: Mon, 27 Apr 2026 06:58:42 -0400
-Message-ID: <20260427105848.44865-2-pbonzini@redhat.com>
+Subject: [PATCH v2 3/7] KVM: SVM: prepare for making SPEC_CTRL switch common with VMX
+Date: Mon, 27 Apr 2026 06:58:44 -0400
+Message-ID: <20260427105848.44865-4-pbonzini@redhat.com>
 In-Reply-To: <20260427105848.44865-1-pbonzini@redhat.com>
 References: <20260427105848.44865-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -64,201 +64,172 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Registers are reachable through vcpu_vmx, no need to pass
-a separate pointer to the regs[] array.
-
-No functional change intended.
+Remove the local labels and restrict RESTORE_*_BODY to just
+the restore code itself.  Since the alternatives are different
+between VMX and SVM, having labels in the per-vendor file and
+jumps in another would be too confusing.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/kvm-asm-offsets.c |  1 +
- arch/x86/kvm/vmx/vmenter.S     | 58 +++++++++++++++-------------------
- arch/x86/kvm/vmx/vmx.c         |  3 +-
- arch/x86/kvm/vmx/vmx.h         |  3 +-
- 4 files changed, 28 insertions(+), 37 deletions(-)
+ arch/x86/kvm/svm/vmenter.S | 54 +++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/kvm/kvm-asm-offsets.c b/arch/x86/kvm/kvm-asm-offsets.c
-index 24a710d37323..36ac61724dd7 100644
---- a/arch/x86/kvm/kvm-asm-offsets.c
-+++ b/arch/x86/kvm/kvm-asm-offsets.c
-@@ -24,6 +24,7 @@ static void __used common(void)
- 
- 	if (IS_ENABLED(CONFIG_KVM_INTEL)) {
- 		BLANK();
-+		OFFSET(VMX_vcpu_arch_regs, vcpu_vmx, vcpu.arch.regs);
- 		OFFSET(VMX_spec_ctrl, vcpu_vmx, spec_ctrl);
- 	}
- }
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 8a481dae9cae..0a09288a8d29 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -11,24 +11,24 @@
- 
- #define WORD_SIZE (BITS_PER_LONG / 8)
- 
--#define VCPU_RAX	__VCPU_REGS_RAX * WORD_SIZE
--#define VCPU_RCX	__VCPU_REGS_RCX * WORD_SIZE
--#define VCPU_RDX	__VCPU_REGS_RDX * WORD_SIZE
--#define VCPU_RBX	__VCPU_REGS_RBX * WORD_SIZE
-+#define VCPU_RAX	(VMX_vcpu_arch_regs + __VCPU_REGS_RAX * WORD_SIZE)
-+#define VCPU_RCX	(VMX_vcpu_arch_regs + __VCPU_REGS_RCX * WORD_SIZE)
-+#define VCPU_RDX	(VMX_vcpu_arch_regs + __VCPU_REGS_RDX * WORD_SIZE)
-+#define VCPU_RBX	(VMX_vcpu_arch_regs + __VCPU_REGS_RBX * WORD_SIZE)
- /* Intentionally omit RSP as it's context switched by hardware */
--#define VCPU_RBP	__VCPU_REGS_RBP * WORD_SIZE
--#define VCPU_RSI	__VCPU_REGS_RSI * WORD_SIZE
--#define VCPU_RDI	__VCPU_REGS_RDI * WORD_SIZE
-+#define VCPU_RBP	(VMX_vcpu_arch_regs + __VCPU_REGS_RBP * WORD_SIZE)
-+#define VCPU_RSI	(VMX_vcpu_arch_regs + __VCPU_REGS_RSI * WORD_SIZE)
-+#define VCPU_RDI	(VMX_vcpu_arch_regs + __VCPU_REGS_RDI * WORD_SIZE)
- 
- #ifdef CONFIG_X86_64
--#define VCPU_R8		__VCPU_REGS_R8  * WORD_SIZE
--#define VCPU_R9		__VCPU_REGS_R9  * WORD_SIZE
--#define VCPU_R10	__VCPU_REGS_R10 * WORD_SIZE
--#define VCPU_R11	__VCPU_REGS_R11 * WORD_SIZE
--#define VCPU_R12	__VCPU_REGS_R12 * WORD_SIZE
--#define VCPU_R13	__VCPU_REGS_R13 * WORD_SIZE
--#define VCPU_R14	__VCPU_REGS_R14 * WORD_SIZE
--#define VCPU_R15	__VCPU_REGS_R15 * WORD_SIZE
-+#define VCPU_R8		(VMX_vcpu_arch_regs + __VCPU_REGS_R8  * WORD_SIZE)
-+#define VCPU_R9		(VMX_vcpu_arch_regs + __VCPU_REGS_R9  * WORD_SIZE)
-+#define VCPU_R10	(VMX_vcpu_arch_regs + __VCPU_REGS_R10 * WORD_SIZE)
-+#define VCPU_R11	(VMX_vcpu_arch_regs + __VCPU_REGS_R11 * WORD_SIZE)
-+#define VCPU_R12	(VMX_vcpu_arch_regs + __VCPU_REGS_R12 * WORD_SIZE)
-+#define VCPU_R13	(VMX_vcpu_arch_regs + __VCPU_REGS_R13 * WORD_SIZE)
-+#define VCPU_R14	(VMX_vcpu_arch_regs + __VCPU_REGS_R14 * WORD_SIZE)
-+#define VCPU_R15	(VMX_vcpu_arch_regs + __VCPU_REGS_R15 * WORD_SIZE)
- #endif
- 
- .macro VMX_DO_EVENT_IRQOFF call_insn call_target
-@@ -68,7 +68,6 @@
- /**
-  * __vmx_vcpu_run - Run a vCPU via a transition to VMX guest mode
-  * @vmx:	struct vcpu_vmx *
-- * @regs:	unsigned long * (to guest registers)
-  * @flags:	VMX_RUN_VMRESUME:	use VMRESUME instead of VMLAUNCH
-  *		VMX_RUN_SAVE_SPEC_CTRL: save guest SPEC_CTRL into vmx->spec_ctrl
-  *		VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO: vCPU can access host MMIO
-@@ -94,12 +93,6 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	push %_ASM_ARG1
- 
- 	/* Save @flags (used for VMLAUNCH vs. VMRESUME and mitigations). */
--	push %_ASM_ARG3
--
--	/*
--	 * Save @regs, _ASM_ARG2 may be modified by vmx_update_host_rsp() and
--	 * @regs is needed after VM-Exit to save the guest's register values.
--	 */
- 	push %_ASM_ARG2
- 
- 	lea (%_ASM_SP), %_ASM_ARG2
-@@ -107,6 +100,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 
- 	ALTERNATIVE "jmp .Lspec_ctrl_done", "", X86_FEATURE_MSR_SPEC_CTRL
- 
-+	/* Reload @vmx, _ASM_ARG1 may be modified by vmx_update_host_rsp().  */
-+	mov WORD_SIZE(%_ASM_SP), %_ASM_DI
-+
+diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
+index d47c5c93c991..aa655b519fe0 100644
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -39,10 +39,8 @@
+ 	ALTERNATIVE_2 "", \
+ 		"jmp 800f", X86_FEATURE_MSR_SPEC_CTRL, \
+ 		"", X86_FEATURE_V_SPEC_CTRL
+-801:
+ .endm
+-.macro RESTORE_GUEST_SPEC_CTRL_BODY
+-800:
++.macro RESTORE_GUEST_SPEC_CTRL_BODY guest_spec_ctrl:req, label:req
  	/*
  	 * SPEC_CTRL handling: if the guest's SPEC_CTRL value differs from the
- 	 * host's, write the MSR.
-@@ -115,7 +111,6 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * there must not be any returns or indirect branches between this code
+ 	 * host's, write the MSR.  This is kept out-of-line so that the common
+@@ -53,24 +51,23 @@
  	 * and vmentry.
  	 */
--	mov 2*WORD_SIZE(%_ASM_SP), %_ASM_DI
  #ifdef CONFIG_X86_64
- 	mov VMX_spec_ctrl(%rdi), %rdx
+-	mov SVM_spec_ctrl(%rdi), %rdx
++	mov \guest_spec_ctrl, %rdx
  	cmp PER_CPU_VAR(x86_spec_ctrl_current), %rdx
-@@ -142,8 +137,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * an LFENCE to stop speculation from skipping the wrmsr.
- 	 */
- 
--	/* Load @regs to RAX. */
--	mov (%_ASM_SP), %_ASM_AX
-+	/* Load @vmx to RAX. */
-+	mov WORD_SIZE(%_ASM_SP), %_ASM_AX
- 
- 	/* Load guest registers.  Don't clobber flags. */
- 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
-@@ -162,7 +157,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	mov VCPU_R14(%_ASM_AX), %r14
- 	mov VCPU_R15(%_ASM_AX), %r15
+-	je 801b
++	je \label
+ 	movl %edx, %eax
+ 	shr $32, %rdx
+ #else
+-	mov SVM_spec_ctrl(%edi), %eax
++	mov \guest_spec_ctrl, %eax
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current), %ecx
+ 	xor %eax, %ecx
+-	mov SVM_spec_ctrl + 4(%edi), %edx
++	mov 4 + \guest_spec_ctrl, %edx
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %esi
+ 	xor %edx, %esi
+ 	or %esi, %ecx
+-	je 801b
++	je \label
  #endif
--	/* Load guest RAX.  This kills the @regs pointer! */
-+	/* Load guest RAX.  This kills the @vmx pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
+ 	mov $MSR_IA32_SPEC_CTRL, %ecx
+ 	wrmsr
+-	jmp 801b
+ .endm
+ 
+ .macro RESTORE_HOST_SPEC_CTRL
+@@ -78,10 +75,8 @@
+ 	ALTERNATIVE_2 "", \
+ 		"jmp 900f", X86_FEATURE_MSR_SPEC_CTRL, \
+ 		"", X86_FEATURE_V_SPEC_CTRL
+-901:
+ .endm
+-.macro RESTORE_HOST_SPEC_CTRL_BODY spec_ctrl_intercepted:req
+-900:
++.macro RESTORE_HOST_SPEC_CTRL_BODY guest_spec_ctrl:req, spec_ctrl_intercepted:req, label:req
+ 	/* Same for after vmexit.  */
+ 	mov $MSR_IA32_SPEC_CTRL, %ecx
+ 
+@@ -92,28 +87,27 @@
+ 	cmpb $0, \spec_ctrl_intercepted
+ 	jnz 998f
+ 	rdmsr
+-	movl %eax, SVM_spec_ctrl(%_ASM_DI)
+-	movl %edx, SVM_spec_ctrl + 4(%_ASM_DI)
++	movl %eax, \guest_spec_ctrl
++	movl %edx, 4 + \guest_spec_ctrl
+ 998:
+ 	/* Now restore the host value of the MSR if different from the guest's.  */
+ #ifdef CONFIG_X86_64
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current), %rdx
+-	cmp SVM_spec_ctrl(%rdi), %rdx
+-	je 901b
++	cmp \guest_spec_ctrl, %rdx
++	je \label
+ 	movl %edx, %eax
+ 	shr $32, %rdx
+ #else
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current), %eax
+-	mov SVM_spec_ctrl(%edi), %esi
++	mov \guest_spec_ctrl, %esi
+ 	xor %eax, %esi
+ 	mov PER_CPU_VAR(x86_spec_ctrl_current + 4), %edx
+-	mov SVM_spec_ctrl + 4(%edi), %edi
++	mov 4 + \guest_spec_ctrl, %edi
+ 	xor %edx, %edi
+ 	or %edi, %esi
+-	je 901b
++	je \label
+ #endif
+ 	wrmsr
+-	jmp 901b
+ .endm
+ 
+ #define SVM_CLEAR_CPU_BUFFERS \
+@@ -162,6 +156,7 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 
+ 	/* Clobbers RAX, RCX, RDX (and ESI on 32-bit), consumes RDI (@svm). */
+ 	RESTORE_GUEST_SPEC_CTRL
++801:
  
  	/*
-@@ -172,7 +167,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * do VERW.  Else, do nothing (no mitigations needed/enabled).
+ 	 * Use a single vmcb (vmcb01 because it's always valid) for
+@@ -242,6 +237,7 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	 * and RSP (pointer to @spec_ctrl_intercepted).
  	 */
- 	ALTERNATIVE_2 "",									  \
--		      __stringify(testl $VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO, WORD_SIZE(%_ASM_SP); \
-+		      __stringify(testl $VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO, (%_ASM_SP);	  \
- 				  jz .Lskip_mmio_verw;						  \
- 				  VERW;								  \
- 				  .Lskip_mmio_verw:),					  	  \
-@@ -180,7 +175,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 		      __stringify(VERW), X86_FEATURE_CLEAR_CPU_BUF_VM
- 
- 	/* Check @flags to see if VMLAUNCH or VMRESUME is needed. */
--	testl $VMX_RUN_VMRESUME, WORD_SIZE(%_ASM_SP)
-+	testl $VMX_RUN_VMRESUME, (%_ASM_SP)
- 	jz .Lvmlaunch
+ 	RESTORE_HOST_SPEC_CTRL
++901:
  
  	/*
-@@ -215,8 +210,8 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	/* Temporarily save guest's RAX. */
- 	push %_ASM_AX
+ 	 * Mitigate RETBleed for AMD/Hygon Zen uarch. RET should be
+@@ -295,8 +291,12 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	pop %_ASM_BP
+ 	RET
  
--	/* Reload @regs to RAX. */
--	mov WORD_SIZE(%_ASM_SP), %_ASM_AX
-+	/* Reload @vmx to RAX. */
-+	mov 2*WORD_SIZE(%_ASM_SP), %_ASM_AX
+-	RESTORE_GUEST_SPEC_CTRL_BODY
+-	RESTORE_HOST_SPEC_CTRL_BODY (%_ASM_SP)
++800:
++	RESTORE_GUEST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), 801b
++	jmp 801b
++900:
++	RESTORE_HOST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), (%_ASM_SP), 901b
++	jmp 901b
  
- 	/* Save all guest registers, including RAX from the stack */
- 	pop           VCPU_RAX(%_ASM_AX)
-@@ -241,9 +236,6 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	xor %ebx, %ebx
+ 10:	cmpb $0, _ASM_RIP(virt_rebooting)
+ 	jne 2b
+@@ -362,6 +362,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
  
- .Lclear_regs:
--	/* Discard @regs.  The register is irrelevant, it just can't be RBX. */
--	pop %_ASM_AX
--
+ 	/* Clobbers RAX, RCX, and RDX (@hostsa), consumes RDI (@svm). */
+ 	RESTORE_GUEST_SPEC_CTRL
++801:
+ 
+ 	/* Get svm->current_vmcb->pa into RAX. */
+ 	mov SVM_current_vmcb(%rdi), %rax
+@@ -378,6 +379,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 
+ 	/* Clobbers RAX, RCX, RDX, consumes RDI (@svm) and RSI (@spec_ctrl_intercepted). */
+ 	RESTORE_HOST_SPEC_CTRL
++901:
+ 
  	/*
- 	 * Clear all general purpose registers except RSP and RBX to prevent
- 	 * speculative use of the guest's values, even those that are reloaded
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a29896a9ef14..7dd4aff29026 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7468,8 +7468,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	if (vcpu->arch.cr2 != native_read_cr2())
- 		native_write_cr2(vcpu->arch.cr2);
+ 	 * Mitigate RETBleed for AMD/Hygon Zen uarch. RET should be
+@@ -391,8 +393,12 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	FRAME_END
+ 	RET
  
--	vmx->fail = __vmx_vcpu_run(vmx, (unsigned long *)&vcpu->arch.regs,
--				   flags);
-+	vmx->fail = __vmx_vcpu_run(vmx, flags);
+-	RESTORE_GUEST_SPEC_CTRL_BODY
+-	RESTORE_HOST_SPEC_CTRL_BODY %sil
++800:
++	RESTORE_GUEST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), 801b
++	jmp 801b
++900:
++	RESTORE_HOST_SPEC_CTRL_BODY SVM_spec_ctrl(%_ASM_DI), %sil, 901b
++	jmp 901b
  
- 	vcpu->arch.cr2 = native_read_cr2();
- 	vcpu->arch.regs_avail &= ~VMX_REGS_LAZY_LOAD_SET;
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index db84e8001da5..53793d530a69 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -370,8 +370,7 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu);
- void vmx_update_host_rsp(struct vcpu_vmx *vmx, unsigned long host_rsp);
- void vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx, unsigned int flags);
- unsigned int __vmx_vcpu_run_flags(struct vcpu_vmx *vmx);
--bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned long *regs,
--		    unsigned int flags);
-+bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned int flags);
- void vmx_ept_load_pdptrs(struct kvm_vcpu *vcpu);
- 
- void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool set);
+ 3:	cmpb $0, virt_rebooting(%rip)
+ 	jne 2b
 -- 
 2.52.0
 
