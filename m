@@ -1,163 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922393B0ACD;
-	Mon, 27 Apr 2026 10:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC10239A052
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 10:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777287159; cv=none; b=MUzq7F2XPwgjK0SYRTHxeerG/VzhL+p67Hq/Mvq0nlu2ldKOIunFDT7fVe5HGfv5uDeknyvdZtF43aTYbmAqWqgzTu5/dW2eXnzqtTxz6PKsyIlXZfCpI1ToFkB54ckosfE60B1CP7zRT1axsSY96SBhN7CLYcTKUXR/ZgVwsgY=
+	t=1777287502; cv=none; b=CujdJ0F1TMA4GNXoRVIinVNuO135HTmVboMBM9rBawHOK4icuqhOjgFpncE+qKLG6+bq3JaIDEnbc1pSwg9qP0OooAjhUSJgpsKg6e48ay4zGqdr4cZ9R6qd3U3J402JgAMyjiDBkbuNALGCHpjUauCN5cG7JTnqVRC/pNXrFjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777287159; c=relaxed/simple;
-	bh=IDtaj8qDPCoKLn7FLT5h06j/NwN3NbNxb5XhN240DSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PdpogLlSzymZRmCsGCmiw9FzH4aHwuPMed7I0ENoHJXq0ezLuD/w9LG23v1urm9c9wrKL4iAjLrybouJxoykVWUNDYVxSkWBwHMDCKqg79NUtTsQooMx0RlA9j0Y/OzLnESrg+WHqmJOMIl/hqLj1lh0nKrVyYXGiiuQvSq+MUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lq5x4RAc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777287502; c=relaxed/simple;
+	bh=dyPAr09lWlR/RQ4fkkDMb+zOF+584aQzExR/1zdUeaY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A9hP3kXmnXzcCILsYYI728aH29Qzkem5+42KUFJrP5PsLvEP5S00WM9622mUwhoQHKpbwiQKhpX2wrm16MHYBhKLzxPeNoiUeI19HdS9i7vLaPa314YusCPBhSq0Pw7OaW9eAH9/EsEhdFi2bLGKlzOc0Hpme+RUf6sVdAn2K7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EPPqc3An; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=D1s8Xz9x; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lq5x4RAc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A09C19425;
-	Mon, 27 Apr 2026 10:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777287159;
-	bh=IDtaj8qDPCoKLn7FLT5h06j/NwN3NbNxb5XhN240DSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lq5x4RAcNGcgHRuSdZID8zUAfGXoRIuX3BWOQFyvrtUNcoDyDL7F02naaYVkPrZ7t
-	 xGBB95QBpgtB7OP6mjMzBXd71/JvQzEbT+1wS0QRkVZozlmkkROCO7Xf78cCsoMROV
-	 wYPbZt1Tq+J+2PvLdYpMEc46qkdjeAbQLXE2JvqvAQyJv3ygNl1ftJyAaRS9RbGgc9
-	 Yc4ozuNPgRF5Z4Z+G0aHs0u+dcb8StB0C1dCtBZJeY5S6ISRUVfklMVBywjZUU+5Zk
-	 DP+6hyITcXfswDoAXrs7BavzyK4kEpPkxIYo3U+35v8C/0Rc2mCAofHVg8nU0xqx7w
-	 9pLcQMA3DribA==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1727DF4007B;
-	Mon, 27 Apr 2026 06:52:38 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 27 Apr 2026 06:52:38 -0400
-X-ME-Sender: <xms:9j_vaRdJxmwAzlw3e7YRcdCjoKb-_iFJeqFWAZ8fjr4r4UILNlAOyw>
-    <xme:9j_vaedpSCgjXb6sga0pwzEZOHlKqPy0a4P1RoTWuSseKRZHMNpfvVarTVh516RuO
-    VR3QaHGmR8yaysX3QM0NjQqWicfyKjukLfficV3-L0lgKdwxvtBTTfg>
-X-ME-Received: <xmr:9j_vaWs2T2cZxQgrpZHUVzdJu7WRmXEdhApgxHcUVNq3NDApwM7IzBPsoojzug>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeehtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeeuieejieffkeehfeffffdtkeelfeelhefhfefhudehjeehvdffleeuvddufefgkeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegurghvihgusehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhi
-    ohhnrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhg
-    lhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohep
-    iihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:9j_vaVuGM7jbRtmfRyu7XHUQQBiCllZBLkcJqM_pGtwmxX6PlNmeXQ>
-    <xmx:9j_vaQujznu0OONSHzF7EKEFB7xUNcB6dk2WL1O5-rQ7v_QU7ft1_w>
-    <xmx:9j_vaY1s2lM14MOre5Tojy0TPvzInCjzWhTU4N5W_l8V5fTMmoWYbA>
-    <xmx:9j_vaVLsM3YeHltvz58F_FbLRQyC7AwKgg3jlJT1SVDLqkHjnIHlBQ>
-    <xmx:9j_vaa-ScGWQp7fhQ-euoBy97V06vaqH2MA5y9H75sPO8ELbvcKAPCgb>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Apr 2026 06:52:37 -0400 (EDT)
-Date: Mon, 27 Apr 2026 11:52:36 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <ae85cnYpuKT9lotn@thinkstation>
-References: <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation>
- <aeoxnuGKO3uqS2kG@x1.local>
- <aeo5IPpQi7onyjTF@thinkstation>
- <aeprnnccJeyHB2rt@x1.local>
- <aes7b17nG0cXrtEd@thinkstation>
- <aetZUOINzfTXChLL@x1.local>
- <aetyhki-UD70dyRL@thinkstation>
- <aeuSe0PY-g10KNUF@x1.local>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EPPqc3An";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="D1s8Xz9x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777287500;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wclsbCz45VsM77RlQTKKMaoJPnWAhWJRZZhkjEMod8Q=;
+	b=EPPqc3AnigT7UCBxJ17m75aAZvxluYFPJaMRI+t14RfAoB4x5en/qOc+S12Zo88NLCyZUx
+	dqQCYlhRKH01EokRHlpcrDVYPChe1PS6nrWY3DfhAFyM0fVmMjHpylVRnjGGBmOs9uzPp6
+	E1p4aqR5jx8vlFEh/plNigugaSMFN+Q=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-DRnGJRbhNxi62s8rnDM5EA-1; Mon, 27 Apr 2026 06:58:16 -0400
+X-MC-Unique: DRnGJRbhNxi62s8rnDM5EA-1
+X-Mimecast-MFC-AGG-ID: DRnGJRbhNxi62s8rnDM5EA_1777287496
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50d8e8c47a3so269560231cf.0
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 03:58:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777287496; x=1777892296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wclsbCz45VsM77RlQTKKMaoJPnWAhWJRZZhkjEMod8Q=;
+        b=D1s8Xz9x0iQEukKt8sQruQ54592rdG6R/iRx+F5Hby/KcQlWaMton+911Z740S5Jtb
+         SqCizu1NFviFekUpAdvWwA4XShc2fokY+CG5kMt+sFGttChTIDT4A4TvyzxTc+CP91Pg
+         Ex7ePLT9LCWbuimzp57Mb0qihzXKMGJ/yQICGPhtE54URE1LRiWxo3oufSMAfGhhXrcN
+         YEO0XBqCGtqSXQ8VDugZUWA9P9CGE6w5kFn6++pYZWaNeqE3MMCIjcOzOFx4AoPAvi0J
+         KHnT7r/hCD/gySMZOvjO6DF1p5hh6lW49dUlmCt99m40CYO2YnaB9HEfO6TsreqHbBoQ
+         Jmvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777287496; x=1777892296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wclsbCz45VsM77RlQTKKMaoJPnWAhWJRZZhkjEMod8Q=;
+        b=C9VaTQ7/+grm/bS9XYiW8hYjwyjE7saits0UDnXoI6ypM5DkQ8p7eSa4iArgk2cXIi
+         SISkg/oC3w9SA5hAyAL5hu6sUz1ol0ATl41ABxIZPNlrXfxUDQbfBlhNaUyKrtI2VuNS
+         CS26qdkeLBHe2JhvaNTKWlyfuF0sN5x1zukqlTSefhx8qaKJmMZ4W1+U/APoSjnPrE0+
+         E1MTMFIVkh4H28pFtVRy5JfDx2sJn/t4BWlobEM/cEqbAwmTojQ+CNiiMJVRRlE3tL6i
+         ofQ62yL53X5uUf8u9EwWOwit8W1hxFDrIwI51+pbH1oxRqCySezZmF+R1yl29Ff4/a8d
+         KzoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8xD62ZanUWRfQnMVJmHHwluag+OK7awvG574mCKZ6KyAls+6JYAYbfsREliKbvzBMeQ9U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI9ACJubh3kOBMtLBZnRRFle409eHCb+I17BsP7H92r5HRNGED
+	fViQfNcxgHLF+4ONDaZy/tyAxPwE6uj3xhYGeJcPpwlQAGfpVSBw1AJdym+zrAQ0skcS4MMaucc
+	8eujsX7L84s6n6GPMnyGQytzZhIlzp6y9hFlHaHQNwlEGOyWRjN329A==
+X-Gm-Gg: AeBDieugDHxsh0hFcGXMJfMYuDC2P3GMNXVEtS42mkwgHneuJ9g4ebPlUrt+eCPXTFG
+	b76XNWyaB078FDFfAp/xk+bGsv30pXi/8Lf2kMdXdXP9EAIKJrxoWqTSO0+5VvKovvCX+jhyTmP
+	CZ1sksiUET7ZMtWkCgbjly/y3A2K8wdFKsHU2AjUs8FOUWyhzRBbvwmZ2Di+P9WaS2m7wfRhDz7
+	WQXxjjH5b5v9Kn5unGeNnU/E6loYjso99xc0vZ/i1RwPCNJozChIOCeEONUBSibt1UDRa+jBoPu
+	bPLBHtqMCJ3qCi2Zl1tSzODwLkihnjjzNEVGrHhylupqadztgofRKZg7hsckmHvXDMcwhtOUkoB
+	KUn6u1UrhsW3+CLAgNXkcMidbpJsSDY6oF+AdtGzr7IIXqP9nxhQDtpebbpr/wYBHJ4OMo+gkkF
+	8I0+wsWr+NHR7PNsmZXl4YcAwYqb/Y99nHnuM=
+X-Received: by 2002:ac8:7d56:0:b0:50e:ca38:e219 with SMTP id d75a77b69052e-50eca390557mr474867671cf.45.1777287495887;
+        Mon, 27 Apr 2026 03:58:15 -0700 (PDT)
+X-Received: by 2002:ac8:7d56:0:b0:50e:ca38:e219 with SMTP id d75a77b69052e-50eca390557mr474867401cf.45.1777287495453;
+        Mon, 27 Apr 2026 03:58:15 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.85.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e39495192sm263471871cf.27.2026.04.27.03.58.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 03:58:14 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	linux-m68k@lists.linux-m68k.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] mm_types: remove references to s390 gmap
+Date: Mon, 27 Apr 2026 12:58:10 +0200
+Message-ID: <20260427105810.23761-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeuSe0PY-g10KNUF@x1.local>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 24, 2026 at 11:55:39AM -0400, Peter Xu wrote:
-> On Fri, Apr 24, 2026 at 02:49:58PM +0100, Kiryl Shutsemau wrote:
-> > On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
-> > > On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
-> > > > Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
-> > > > memory. We need visibility in the virtual address space domain.
-> > > 
-> > > Yes they are, but ACCESS bit isn't.
-> > 
-> > A-bit is not a reliable signal for userspace working-set tracking
-> > because the kernel itself is a concurrent consumer. It is exactly why
-> > page_idle needs PG_young on top of the A-bit: PG_young is the "kernel
-> 
-> I assume you meant PG_idle.  I actually don't know whether PG_young is
-> still actively used anywhere in the current code base.
-> 
-> > ate the A-bit but the page was actually touched" escape hatch. And
-> > bringing PG_young into the picture puts us right back into physical-side
-> > tracking.
-> > 
-> > > For migration, see e.g. remove_migration_pte() has:
-> > > 
-> > > 		if (!softleaf_is_migration_young(entry))
-> > > 			pte = pte_mkold(pte);
-> > 
-> > remove_migration_pte() only propagates young-at-unmap. It does not
-> > cover the common case: A-bit cleared by reclaim before migration
-> > started. The concurrent-consumer problem is what breaks the signal,
-> > not the migration boundary.
-> 
-> IMHO it's a separate problem, and AFAIU it was well solved at least with
-> old LRUs with PG_idle. It's just slightly unfortunate it doesn't yet work
-> with MGLRU.  Also, when the extra bit is in folio->flags, it only works if
-> both the consumers are reporting per-folio, not per-mm.
-> 
-> I'm actually curious whether there're numbers or solid proof showing that
-> in your case the per-folio perf is too bad already to justify a new per-mm
-> API, like RWP. 
+s390 does not anymore use special struct page for its shadow page tables.
+The honor of giving a special meaning to pt_index is now m68k's, so
+rename the fields and adjust them for the desired type.
 
-Fair ask, and I don't have numbers I can point to right now. But I'd
-flag that the case for RWP doesn't rest only on cost:
+Cc: linux-mm@kvack.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+	Compile-tested only.
 
-  - LRU-agnostic. Per-folio approaches are bound to the current
-    reclaim backend (legacy, MGLRU, whatever is next);
-  - Race-free against reclaim's A-bit consumption;
-  - Deterministic preservation across swap and migration.
+ arch/m68k/mm/motorola.c  |  2 +-
+ include/linux/mm_types.h | 11 +++++------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-Numbers would strengthen the cost story but they don't change those
-structural points.
-
-> I want to explore if there's something that can still be generic and work
-> for per-mm tracking.  I believe if we can have some bit in the ptes, then
-> when mm reclaim code walks clearing ACCESS bit and sees some vma is being
-> tracked, then instead of setting PG_idle, it can just move the access bit
-> over to that special pte bit, and only to this vma this pte.  IIUC that'll
-> benefit from both worlds: fast HW-accelerated access bit, and no minor
-> faults.
-> 
-> Would something like that worth exploring?
-
-This can be interesting. But a spare pte bit is high ask.
-
-And when you start tracking, you need to clear A-bit. Where do you move
-it? Activate folio?
-
+diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+index b30aa69a73a6..67e8a2cf4c41 100644
+--- a/arch/m68k/mm/motorola.c
++++ b/arch/m68k/mm/motorola.c
+@@ -105,7 +105,7 @@ static struct list_head ptable_list[3] = {
+ 
+ #define PD_PTABLE(ptdesc) ((ptable_desc *)&(virt_to_ptdesc((void *)(ptdesc))->pt_list))
+ #define PD_PTDESC(ptable) (list_entry(ptable, struct ptdesc, pt_list))
+-#define PD_MARKBITS(dp) (*(unsigned int *)&PD_PTDESC(dp)->pt_index)
++#define PD_MARKBITS(dp)   (PD_PTDESC(dp)->pt_markbits)
+ 
+ static const int ptable_shift[3] = {
+ 	7+2, /* PGD */
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index a308e2c23b82..9e4dbcddaf33 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -550,13 +550,12 @@ FOLIO_MATCH(compound_info, _head_3);
+  * struct ptdesc -    Memory descriptor for page tables.
+  * @pt_flags: enum pt_flags plus zone/node/section.
+  * @pt_rcu_head:      For freeing page table pages.
+- * @pt_list:          List of used page tables. Used for s390 gmap shadow pages
+- *                    (which are not linked into the user page tables) and x86
+- *                    pgds.
++ * @pt_list:          List of used page tables. Used by m68k pointer tables
++ *                    and x86 pgds.
+  * @_pt_pad_1:        Padding that aliases with page's compound head.
+  * @pmd_huge_pte:     Protected by ptdesc->ptl, used for THPs.
+  * @__page_mapping:   Aliases with page->mapping. Unused for page tables.
+- * @pt_index:         Used for s390 gmap.
++ * @pt_markbits:      Used for m68k pointer tables.
+  * @pt_mm:            Used for x86 pgds.
+  * @pt_frag_refcount: For fragmented page table tracking. Powerpc only.
+  * @pt_share_count:   Used for HugeTLB PMD page table share count.
+@@ -583,7 +582,7 @@ struct ptdesc {
+ 	unsigned long __page_mapping;
+ 
+ 	union {
+-		pgoff_t pt_index;
++		unsigned int pt_markbits;
+ 		struct mm_struct *pt_mm;
+ 		atomic_t pt_frag_refcount;
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+@@ -612,7 +611,7 @@ TABLE_MATCH(flags, pt_flags);
+ TABLE_MATCH(compound_info, pt_list);
+ TABLE_MATCH(compound_info, _pt_pad_1);
+ TABLE_MATCH(mapping, __page_mapping);
+-TABLE_MATCH(__folio_index, pt_index);
++TABLE_MATCH(__folio_index, pt_markbits);
+ TABLE_MATCH(rcu_head, pt_rcu_head);
+ TABLE_MATCH(page_type, __page_type);
+ TABLE_MATCH(_refcount, __page_refcount);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.53.0
+
