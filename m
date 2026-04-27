@@ -1,54 +1,54 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E113E7151
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED613EDAD5
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777312620; cv=none; b=XGP91coEHKq6UGuFrNsRkGfDzaRhcY3lO8BeecKjMP+2Y/D6DA9qGw6NxJnhUZglCtZuI9hrxDTa7d6Jl/wneJrNTGuofPxqfO9TW0aWHiqz1Oq6HkAwEW3jhvHzg352tM8bTSMc68Kb2//DGKUCeHDIhLGBYks4Ys1D/2QGek4=
+	t=1777312623; cv=none; b=A1Xs47LKjKIM2Hat5TAq7i34vkuf9pOEJQIieNVUHVYh+tX5M4f/vek2Rdvd3nGHvsagSm6LVVcCeb7jW9tDf49vWQTBUdBCTbYOPuixdUGoNbk8KVEZedXVIoB66fpo/+QtccqyV0hNjzUDTCSHYZNAjta2Exw3dtWnnnvqycE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777312620; c=relaxed/simple;
-	bh=oTPrNsJGn9y9ve7G0JXQaEe3AHZWdcmCD6cOOWFC2jI=;
+	s=arc-20240116; t=1777312623; c=relaxed/simple;
+	bh=qD1+4rSMtt4ULuCNU76s0xvQxVAb+b7zgr5Un97ZxPQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TAA/zxWOG9K/zUaxzDGwfnYms2aJh8uWSyKZ8d/34dBsgoXzlXSV63hQDqSVHFeEBS2L84tV7w/iyj993D9zdljKwUTOwxG4BNMx2/KrXUFRI7q+9HFQOR+oqONPyhphiZfPzNjlrCRL+nl/FSQ+Hk+GSc1eDwknfCYvb3zi3yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cZNlTPT1; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=EbGNS/W1LCF+gh5Ejsg6lWmSw+CMrxr7se4l0zgO+cV+8esEZ0Ivc04y/Cvg+zwuXcfkQBf+fWTqdbQB8SArROiW482bllmPqjE/FX6uq0kgpyA3prfN75Nagwrbwb47qWix/Ges0Ok+viQHeteFN67jA+CX4M0UhSbRpjNrcRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T4gDqk2f; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cZNlTPT1"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c79943d2fbfso2998345a12.1
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 10:56:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T4gDqk2f"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35842aa350fso20300605a91.0
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 10:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777312614; x=1777917414; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777312619; x=1777917419; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=97dwBGOJ4jagqgVLDeX5AsU1vRAHIAdmrbC0lOtevyE=;
-        b=cZNlTPT13I1S40yZZL1xeraX2o1K6/NHy+OCYXAO0Izj7PmZyyqv6gHCPcHDlu0nm/
-         ixuvDueJfXoCLbEbUKQBSXVC7TkFHk9bS7hRI4oJdP5x7UUpZGaO3ddfrOaG64OztmV2
-         ilyy8/NLhpKUNpO3BwZqvrUa6ui66L26qRII6QsI15Ay2i/LdEQ2L5myU7NWgUv1IIzH
-         Cj9nJYoZwqSV4XfZnWRSPHCCKj40Qvl8S1HCR0CybKKDllyrJFz05pw1W/+sN5HO+kB1
-         uGMo5r+yDP/vC/6OftJrHeIzfqeHBCHSmeLgHL5rv2VVf+gHa3rWcnjf5GsezMWceJQ2
-         TeqA==
+        bh=DZvQUlC5buTtM3avbD9rscPBVR4juLrgYjrdDPyoXaU=;
+        b=T4gDqk2f/msAQbECjoLlYLU+q2aFE4dt/mkmSojiuD+oVtMVKxh0Ar9nsHrtgxHHZF
+         Idr/BQwr/xf9yceVyRqaex50mG5wh3Z+NAjIyRQ78b0iqOnWc6v+tq+JjM6SMgWpocZQ
+         444RMqy1O1ltzmyT5/YwMs2HYWpgNG5gh5Avq5aoAsL+aJpdwBy3ye1l0irrDxKNdtOS
+         quVMLXcPab9coyG1p/LWbWH/L5it2vcJm0QdQ114Ie5KVE4EBPG8pByVCCldItcCcX+s
+         L+0sroOoiOc9z0dX7udxEvTqP5x6WZwIYWVh2+5wZMFbrEspWd92PoA76QZW32xEFZIX
+         Coeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777312614; x=1777917414;
+        d=1e100.net; s=20251104; t=1777312619; x=1777917419;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=97dwBGOJ4jagqgVLDeX5AsU1vRAHIAdmrbC0lOtevyE=;
-        b=kmN31WYw2EKJ1ySjjq1OBY4YvKex2fCSYfcfd6ptmWuS+ne3X72TYgtlN/vs0jq+3E
-         jmgxNwCMKGgBjrbksypBYjmuLsNCAXT241i2acPVtrO5wQG/PxpiS/+cSTba7c61UBOm
-         izWnOY7+A9TVWkiZxhlby/KyvFd1TXAkqSxhz1WhM3JtWkSGvPzRqIDax3w2KQA3IaFg
-         P5zcjIWJOJAFzPlQlICfYfnd/hdaUTdsaYI8avWGGP3zASMfQfIRoQS/NJXC7vBgIe7n
-         uC3QqY/vWjs8Y8k2tklMsYiJL5YthlYhktgw60lce938oaKr4bCDbNEw6y/pY2oT2nuT
-         OBqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/ZQ197epRC5kTpaOEvCQ6OPnkRSzqTz46QkfyYdBRYoF3/eL0lJ4sw9FZpJVZMseAsd8k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3Jp+CraW6gSQMwYiuIgYYQALMMJw7akzld1o03tFNY95F6rrn
-	pTxAOq4kL9xPPzhu31m+zkCLljyOnznzkFXgQFpTuTYYHXW5luoUJqwamUijkoIKzoq5FYQuRfu
-	17Gr0TkgNUj5HZw==
-X-Received: from pgbda9.prod.google.com ([2002:a05:6a02:2389:b0:c6e:6f94:b489])
+        bh=DZvQUlC5buTtM3avbD9rscPBVR4juLrgYjrdDPyoXaU=;
+        b=sRGHJhZ7xx8k0Ogp0bBqk67vZerKM+w3xiWjfijFbSHZjvkwB1lzqQKR7JsW7iIY1L
+         4Fc9tYM2/4R7Gj1rf5cc8wMcckPbj7ZQEk/VrXkOsRmbEKyJc0/ecH0Mp5ikbVQZ0TNk
+         fxeWHIduDFl9kenIYI+eoyw+Zu0UwIVN72vEuTYUQkhGK5PbQyDH49rrROhNZQxhGWs7
+         MNQyBwvJezwsagDLcQsniDzBuapIleCjj+gyacPtPMhNVWfLbsNx6VbrB1zo7RwULhca
+         uftMKNk0MNWcfDMgaQew907SlRchGcHnCwD09ubssjtLu8aiX8s3KZi5r81tg+4fgd6d
+         sdig==
+X-Forwarded-Encrypted: i=1; AFNElJ8BnUc8VDaf1yXkF3Pb1Uo/lDZqTseS4Yfo30FHGAPL8eKO56lkvpvnS7N0XYffQEIJDXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhvLzCjxPdxrN/IXjFYZMNndjICMBlqwiduFzj5hGVMNRFRVPX
+	19SMeMDI8IAA8/uswh3lKd2AY6938QeDllmlr1eYCoeWCjkrQxXMSrwBFYkfpWWSC8LMsahqJw4
+	U0MvhSDXR4VZ7pA==
+X-Received: from pghr24.prod.google.com ([2002:a63:e518:0:b0:c79:7991:6d2f])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:1592:b0:3a2:dd8a:5088 with SMTP id adf61e73a8af0-3a398f4533dmr355326637.51.1777312613917;
- Mon, 27 Apr 2026 10:56:53 -0700 (PDT)
-Date: Mon, 27 Apr 2026 17:56:28 +0000
+ 2002:a17:90b:3908:b0:35e:3e86:e2d3 with SMTP id 98e67ed59e1d1-36490bf8ef1mr128061a91.10.1777312618973;
+ Mon, 27 Apr 2026 10:56:58 -0700 (PDT)
+Date: Mon, 27 Apr 2026 17:56:31 +0000
 In-Reply-To: <20260427175633.1978233-1-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260427175633.1978233-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260427175633.1978233-12-skhawaja@google.com>
-Subject: [PATCH v2 11/16] iommu/vt-d: preserve PASID table of preserved device
+Message-ID: <20260427175633.1978233-15-skhawaja@google.com>
+Subject: [PATCH v2 14/16] iommufd: Add APIs to preserve/unpreserve a vfio cdev
 From: Samiullah Khawaja <skhawaja@google.com>
 To: David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
 	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
@@ -74,332 +74,206 @@ Cc: Samiullah Khawaja <skhawaja@google.com>, Robin Murphy <robin.murphy@arm.com>
 	YiFei Zhu <zhuyifei@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-In scalable mode the PASID table is used to fetch the io page tables.
-Preserve and restore the PASID table of the preserved devices.
+Add APIs that can be used to preserve and unpreserve a vfio cdev. Use
+the APIs exported by the IOMMU core to preserve/unpreserve device.
+
+The LUO token of the preserved iommufd is fetched and returned back to
+the caller as that can be used during restore to get the restored
+iommufd. Handle to the preserved state of the device is also returned to
+reassociate with the restored state after live update kexec.
 
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- drivers/iommu/intel/iommu.c      |   5 +-
- drivers/iommu/intel/iommu.h      |  12 +++
- drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
- drivers/iommu/intel/pasid.c      |   7 +-
- drivers/iommu/intel/pasid.h      |   9 ++
- include/linux/kho/abi/iommu.h    |  13 +++
- 6 files changed, 184 insertions(+), 3 deletions(-)
+ drivers/iommu/iommufd/device.c          | 102 ++++++++++++++++++++++++
+ drivers/iommu/iommufd/iommufd_private.h |   3 +
+ include/linux/iommufd.h                 |  29 +++++++
+ 3 files changed, 134 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index b90757164cd8..6d42051dcf7c 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2951,8 +2951,10 @@ static int clear_unpreserve_context_entry_fn(struct device *dev,
- 	if (!info)
- 		return 0;
+diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
+index 170a7005f0bc..d19fece00da3 100644
+--- a/drivers/iommu/iommufd/device.c
++++ b/drivers/iommu/iommufd/device.c
+@@ -2,6 +2,7 @@
+ /* Copyright (c) 2021-2022, NVIDIA CORPORATION & AFFILIATES
+  */
+ #include <linux/iommu.h>
++#include <linux/iommu-liveupdate.h>
+ #include <linux/iommufd.h>
+ #include <linux/pci-ats.h>
+ #include <linux/slab.h>
+@@ -610,6 +611,10 @@ int iommufd_hw_pagetable_attach(struct iommufd_hw_pagetable *hwpt,
+ 	int rc;
  
--	if (dev_is_pci(dev) && dev_iommu_preserved_state(dev))
-+	if (dev_is_pci(dev) && dev_iommu_preserved_state(dev)) {
-+		pasid_cleanup_preserved_table(dev);
- 		return 0;
+ 	mutex_lock(&igroup->lock);
++	if (iommufd_device_is_preserved(idev)) {
++		rc = -EBUSY;
++		goto err_unlock;
 +	}
  
- 	domain_context_clear(info);
- 	return 0;
-@@ -4013,6 +4015,7 @@ const struct iommu_ops intel_iommu_ops = {
- 	.page_response		= intel_iommu_page_response,
- #ifdef CONFIG_IOMMU_LIVEUPDATE
- 	.preserve_device	= intel_iommu_preserve_device,
-+	.unpreserve_device	= intel_iommu_unpreserve_device,
- 	.preserve		= intel_iommu_preserve,
- 	.unpreserve		= intel_iommu_unpreserve,
- #endif
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index 8e37acf7de12..62076a1a0b4d 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -1290,12 +1290,15 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
- #ifdef CONFIG_IOMMU_LIVEUPDATE
- int intel_iommu_preserve_device(struct device *dev,
- 				struct iommu_device_ser *device_ser);
-+void intel_iommu_unpreserve_device(struct device *dev,
-+				   struct iommu_device_ser *device_ser);
- int intel_iommu_preserve(struct iommu_device *iommu,
- 			 struct iommu_hw_ser *iommu_ser);
- void intel_iommu_unpreserve(struct iommu_device *iommu,
- 			    struct iommu_hw_ser *iommu_ser);
- void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
- 					       struct iommu_hw_ser *iommu_ser);
-+void pasid_cleanup_preserved_table(struct device *dev);
- #else
- static inline int intel_iommu_preserve_device(struct device *dev,
- 					      struct iommu_device_ser *device_ser)
-@@ -1303,6 +1306,11 @@ static inline int intel_iommu_preserve_device(struct device *dev,
- 	return -EOPNOTSUPP;
- }
- 
-+static inline void intel_iommu_unpreserve_device(struct device *dev,
-+						 struct iommu_device_ser *device_ser)
-+{
-+}
-+
- static inline int intel_iommu_preserve(struct iommu_device *iommu,
- 				       struct iommu_hw_ser *iommu_ser)
- {
-@@ -1318,6 +1326,10 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
- 							     struct iommu_hw_ser *iommu_ser)
- {
+ 	attach = xa_cmpxchg(&igroup->pasid_attach, pasid, NULL,
+ 			    XA_ZERO_ENTRY, GFP_KERNEL);
+@@ -1665,3 +1670,100 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
+ 	iommufd_put_object(ucmd->ictx, &idev->obj);
+ 	return rc;
  }
 +
-+static inline void pasid_cleanup_preserved_table(struct device *dev)
-+{
-+}
- #endif
- 
- #ifdef CONFIG_INTEL_IOMMU_SVM
-diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-index 50a63812533f..404b485e97b9 100644
---- a/drivers/iommu/intel/liveupdate.c
-+++ b/drivers/iommu/intel/liveupdate.c
-@@ -14,6 +14,7 @@
- #include <linux/pci.h>
- 
- #include "iommu.h"
-+#include "pasid.h"
- #include "../iommu-pages.h"
- 
- static void unpreserve_iommu_context_table(struct intel_iommu *iommu, int end)
-@@ -140,10 +141,96 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
- 	iommu_for_each_preserved_device(_restore_used_domain_ids, iommu);
- }
- 
-+enum pasid_lu_op {
-+	PASID_LU_OP_PRESERVE = 1,
-+	PASID_LU_OP_UNPRESERVE,
-+	PASID_LU_OP_RESTORE,
-+	PASID_LU_OP_FREE,
-+};
-+
-+static int pasid_lu_do_op(void *table, enum pasid_lu_op op)
-+{
-+	int ret = 0;
-+
-+	switch (op) {
-+	case PASID_LU_OP_PRESERVE:
-+		ret = iommu_preserve_page(table);
-+		break;
-+	case PASID_LU_OP_UNPRESERVE:
-+		iommu_unpreserve_page(table);
-+		break;
-+	case PASID_LU_OP_RESTORE:
-+		iommu_restore_page(virt_to_phys(table));
-+		break;
-+	case PASID_LU_OP_FREE:
-+		iommu_free_pages(table);
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int pasid_lu_handle_pd(struct pasid_dir_entry *dir, enum pasid_lu_op op)
-+{
-+	struct pasid_entry *table;
-+	int ret;
-+
-+	/* Only preserve first table for NO_PASID. */
-+	table = get_pasid_table_from_pde(&dir[0]);
-+	if (!table)
-+		return -EINVAL;
-+
-+	ret = pasid_lu_do_op(table, op);
-+	if (ret)
-+		return ret;
-+
-+	ret = pasid_lu_do_op(dir, op);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	if (op == PASID_LU_OP_PRESERVE)
-+		pasid_lu_do_op(table, PASID_LU_OP_UNPRESERVE);
-+
-+	return ret;
-+}
-+
-+void pasid_cleanup_preserved_table(struct device *dev)
-+{
-+	struct pasid_table *pasid_table;
-+	struct pasid_dir_entry *dir;
-+	struct pasid_entry *table;
-+	size_t dir_size;
-+
-+	pasid_table = intel_pasid_get_table(dev);
-+	if (!pasid_table)
-+		return;
-+
-+	dir = pasid_table->table;
-+	table = get_pasid_table_from_pde(&dir[0]);
-+	if (!table)
-+		return;
-+
-+	/* Clear everything except the first entry in table. */
-+	memset(&table[1], 0, SZ_4K - sizeof(*table));
-+
-+	/* Use the folio order to calculate the size of Pasid Directory */
-+	dir_size = (1 << (folio_order(virt_to_folio(dir)) + PAGE_SHIFT));
-+
-+	/* Clear everything except the first entry in directory */
-+	memset(&dir[1], 0, dir_size - sizeof(struct pasid_dir_entry));
-+
-+	clflush_cache_range(&table[0], SZ_4K);
-+	clflush_cache_range(&dir[0], dir_size);
-+}
-+
- int intel_iommu_preserve_device(struct device *dev,
- 				struct iommu_device_ser *device_ser)
- {
- 	struct device_domain_info *info = dev_iommu_priv_get(dev);
-+	struct pasid_table *pasid_table;
-+	int ret;
- 
- 	if (!dev_is_pci(dev)) {
- 		dev_err(dev, "Cannot preserve non-PCI device\n");
-@@ -155,9 +242,45 @@ int intel_iommu_preserve_device(struct device *dev,
- 
- 	device_ser->domain_iommu_ser.attachment_id = domain_id_iommu(info->domain,
- 								     info->iommu);
-+
-+	if (!sm_supported(info->iommu))
-+		return 0;
-+
-+	pasid_table = intel_pasid_get_table(dev);
-+	if (!pasid_table)
-+		return -EINVAL;
-+
-+	ret = pasid_lu_handle_pd(pasid_table->table, PASID_LU_OP_PRESERVE);
-+	if (ret)
-+		return ret;
-+
-+	device_ser->intel.pasid_table = virt_to_phys(pasid_table->table);
-+	device_ser->intel.max_pasid = pasid_table->max_pasid;
- 	return 0;
- }
- 
-+void intel_iommu_unpreserve_device(struct device *dev,
-+				   struct iommu_device_ser *device_ser)
-+{
-+	struct device_domain_info *info = dev_iommu_priv_get(dev);
-+	struct pasid_table *pasid_table;
-+
-+	if (!dev_is_pci(dev))
-+		return;
-+
-+	if (!info)
-+		return;
-+
-+	if (!sm_supported(info->iommu))
-+		return;
-+
-+	pasid_table = intel_pasid_get_table(dev);
-+	if (!pasid_table)
-+		return;
-+
-+	pasid_lu_handle_pd(pasid_table->table, PASID_LU_OP_UNPRESERVE);
-+}
-+
- int intel_iommu_preserve(struct iommu_device *iommu_dev,
- 			 struct iommu_hw_ser *ser)
- {
-@@ -194,3 +317,21 @@ void intel_iommu_unpreserve(struct iommu_device *iommu_dev,
- 	unpreserve_iommu_context_table(iommu, ROOT_ENTRY_NR);
- 	iommu_unpreserve_page(iommu->root_entry);
- }
-+
-+void *intel_pasid_try_restore_table(struct device *dev, u64 max_pasid)
-+{
-+	struct iommu_device_ser *ser = dev_iommu_restored_state(dev);
-+
-+	if (!ser)
-+		return NULL;
-+
-+	BUG_ON(pasid_lu_handle_pd(phys_to_virt(ser->intel.pasid_table),
-+				  PASID_LU_OP_RESTORE));
-+	if (WARN_ON_ONCE(ser->intel.max_pasid != max_pasid)) {
-+		pasid_lu_handle_pd(phys_to_virt(ser->intel.pasid_table),
-+				   PASID_LU_OP_FREE);
-+		return NULL;
-+	}
-+
-+	return phys_to_virt(ser->intel.pasid_table);
-+}
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 89541b74ab8c..5cac8e95f73b 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -60,8 +60,11 @@ int intel_pasid_alloc_table(struct device *dev)
- 
- 	size = max_pasid >> (PASID_PDE_SHIFT - 3);
- 	order = size ? get_order(size) : 0;
--	dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
--					1 << (order + PAGE_SHIFT));
-+
-+	dir = intel_pasid_try_restore_table(dev, 1 << (order + PAGE_SHIFT + 3));
-+	if (!dir)
-+		dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
-+						1 << (order + PAGE_SHIFT));
- 	if (!dir) {
- 		kfree(pasid_table);
- 		return -ENOMEM;
-diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
-index 48d3bb6b68de..44e673a4ad8f 100644
---- a/drivers/iommu/intel/pasid.h
-+++ b/drivers/iommu/intel/pasid.h
-@@ -301,6 +301,15 @@ static inline void pasid_set_eafe(struct pasid_entry *pe)
- 
- extern unsigned int intel_pasid_max_id;
- int intel_pasid_alloc_table(struct device *dev);
 +#ifdef CONFIG_IOMMU_LIVEUPDATE
-+void *intel_pasid_try_restore_table(struct device *dev, u64 max_pasid);
-+#else
-+static inline void *intel_pasid_try_restore_table(struct device *dev,
-+						  u64 max_pasid)
++static bool _iommufd_device_has_pasid_attachments(struct iommufd_device *idev)
 +{
-+	return NULL;
++	struct iommufd_group *igroup = idev->igroup;
++	unsigned long start = IOMMU_NO_PASID;
++
++	if (xa_find_after(&igroup->pasid_attach,
++			  &start, UINT_MAX, XA_PRESENT))
++		return true;
++
++	return false;
++}
++
++int iommufd_device_preserve(struct liveupdate_session *s,
++			    struct iommufd_device *idev,
++			    u64 *iommufd_tokenp,
++			    u64 *preserved_state)
++{
++	struct iommufd_group *igroup = idev->igroup;
++	struct iommufd_hwpt_paging *hwpt_paging;
++	struct iommufd_hw_pagetable *hwpt;
++	struct iommufd_attach *attach;
++	int ret;
++
++	mutex_lock(&igroup->lock);
++	if (_iommufd_device_has_pasid_attachments(idev)) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	attach = xa_load(&igroup->pasid_attach, IOMMU_NO_PASID);
++	if (!attach) {
++		ret = -ENOENT;
++		goto out;
++	}
++
++	hwpt = attach->hwpt;
++	hwpt_paging = find_hwpt_paging(hwpt);
++	if (!hwpt_paging || !hwpt_paging->liveupdate_preserved) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ret = liveupdate_get_token_outgoing(s, idev->ictx->file, iommufd_tokenp);
++	if (ret)
++		goto out;
++
++	ret = iommu_preserve_device(hwpt_paging->common.domain,
++				    idev->dev,
++				    preserved_state);
++
++	if (!ret)
++		igroup->liveupdate_preserved = true;
++out:
++	mutex_unlock(&igroup->lock);
++	return ret;
++}
++EXPORT_SYMBOL_NS_GPL(iommufd_device_preserve, "IOMMUFD");
++
++void iommufd_device_unpreserve(struct liveupdate_session *s,
++			       struct iommufd_device *idev)
++{
++	struct iommufd_group *igroup = idev->igroup;
++	struct iommufd_hwpt_paging *hwpt_paging;
++	struct iommufd_hw_pagetable *hwpt;
++	struct iommufd_attach *attach;
++
++	mutex_lock(&igroup->lock);
++	attach = xa_load(&igroup->pasid_attach, IOMMU_NO_PASID);
++	if (!attach) {
++		WARN(1, "IOMMU_NO_PASID attachment not found");
++		igroup->liveupdate_preserved = false;
++		goto out;
++	}
++
++	hwpt = attach->hwpt;
++	hwpt_paging = find_hwpt_paging(hwpt);
++	if (!hwpt_paging || !hwpt_paging->liveupdate_preserved) {
++		WARN(1, "Attached domain is not preserved");
++		igroup->liveupdate_preserved = false;
++		goto out;
++	}
++
++	iommu_unpreserve_device(hwpt_paging->common.domain, idev->dev);
++	igroup->liveupdate_preserved = false;
++out:
++	mutex_unlock(&igroup->lock);
++}
++EXPORT_SYMBOL_NS_GPL(iommufd_device_unpreserve, "IOMMUFD");
++
++bool iommufd_device_is_preserved(struct iommufd_device *idev)
++{
++	return idev && idev->igroup && idev->igroup->liveupdate_preserved;
++}
++EXPORT_SYMBOL_NS_GPL(iommufd_device_is_preserved, "IOMMUFD");
++#endif
+diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+index 3c88aa115d08..9b47eaf92d42 100644
+--- a/drivers/iommu/iommufd/iommufd_private.h
++++ b/drivers/iommu/iommufd/iommufd_private.h
+@@ -486,6 +486,9 @@ struct iommufd_group {
+ 	struct xarray pasid_attach;
+ 	struct iommufd_sw_msi_maps required_sw_msi;
+ 	phys_addr_t sw_msi_start;
++#ifdef CONFIG_IOMMU_LIVEUPDATE
++	bool liveupdate_preserved;
++#endif
+ };
+ 
+ /*
+diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
+index 6e7efe83bc5d..d1fd5d71e0fd 100644
+--- a/include/linux/iommufd.h
++++ b/include/linux/iommufd.h
+@@ -9,6 +9,7 @@
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/iommu.h>
++#include <linux/liveupdate.h>
+ #include <linux/refcount.h>
+ #include <linux/types.h>
+ #include <linux/xarray.h>
+@@ -71,6 +72,34 @@ void iommufd_device_detach(struct iommufd_device *idev, ioasid_t pasid);
+ struct iommufd_ctx *iommufd_device_to_ictx(struct iommufd_device *idev);
+ u32 iommufd_device_to_id(struct iommufd_device *idev);
+ 
++#ifdef CONFIG_IOMMU_LIVEUPDATE
++int iommufd_device_preserve(struct liveupdate_session *s,
++			    struct iommufd_device *idev,
++			    u64 *iommufd_tokenp,
++			    u64 *preserved_state);
++void iommufd_device_unpreserve(struct liveupdate_session *s,
++			       struct iommufd_device *idev);
++bool iommufd_device_is_preserved(struct iommufd_device *idev);
++#else
++static inline int iommufd_device_preserve(struct liveupdate_session *s,
++					  struct iommufd_device *idev,
++					  u64 *iommufd_tokenp,
++					  u64 *preserved_state)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline void iommufd_device_unpreserve(struct liveupdate_session *s,
++					     struct iommufd_device *idev)
++{
++}
++
++static inline bool iommufd_device_is_preserved(struct iommufd_device *idev)
++{
++	return false;
 +}
 +#endif
- void intel_pasid_free_table(struct device *dev);
- struct pasid_table *intel_pasid_get_table(struct device *dev);
- int intel_pasid_setup_first_level(struct intel_iommu *iommu, struct device *dev,
-diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
-index 5ffedf0dbd5a..5eeb1e0c9bce 100644
---- a/include/linux/kho/abi/iommu.h
-+++ b/include/linux/kho/abi/iommu.h
-@@ -119,6 +119,16 @@ struct iommu_dev_map_ser {
- 	u64 iommu_phys;
- } __packed;
- 
-+/**
-+ * struct iommu_device_intel_ser - Intel specific state of serialized device
-+ * @pasid_table: Physical address of pasid table
-+ * @max_pasid: Maximum supported pasid
-+ */
-+struct iommu_device_intel_ser {
-+	u64 pasid_table;
-+	u64 max_pasid;
-+} __packed;
 +
- /**
-  * struct iommu_device_ser - Serialized state of a device
-  * @hdr: Common object header
-@@ -131,6 +141,9 @@ struct iommu_device_ser {
- 	u32 devid;
- 	u32 pci_domain_nr;
- 	struct iommu_dev_map_ser domain_iommu_ser;
-+	union {
-+		struct iommu_device_intel_ser intel;
-+	};
- } __packed;
- 
- /**
+ struct iommufd_access_ops {
+ 	u8 needs_pin_pages : 1;
+ 	void (*unmap)(void *data, unsigned long iova, unsigned long length);
 -- 
 2.54.0.545.g6539524ca2-goog
 
