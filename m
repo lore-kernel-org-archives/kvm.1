@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BB2342177;
-	Mon, 27 Apr 2026 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2E23469E7;
+	Mon, 27 Apr 2026 15:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303802; cv=none; b=N2KiEdM137gwUEVX703AKXPOs6HcTbDTTpsHXPxIdM7QrKMF3T9hNOGcYEarcaDI13o+63iAbfR339j9ifjZvxKZmEvl2HAGiPfontwg8071xJ90jLqHBNVFxYWyuAor6j2ioMoCaapnTy7M9kfXXt/VPJN5L0Km5SBbKo8aRFg=
+	t=1777303803; cv=none; b=Yju93AE23oZzfOu7yQEidEovEs/4Z2GlGVc2qAi/tPCrWZ4vC5W95gI1CVDmvk83CHTkApIUAJFRO5VTt1VTMe3c2ispp1sD5rseK+8UfwAw7k7N2PBYid9R4sQiQDzHe334X37gD22bdlPy9NfT9tc8VkGmpL1zLRyKKCrCldE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303802; c=relaxed/simple;
-	bh=7jJ7eblQ5a5Un2crtpNxhvp6+2PVrme2ig2h67JHyH4=;
+	s=arc-20240116; t=1777303803; c=relaxed/simple;
+	bh=9cpPVIbzbxLNuvVdcP0yIXzTtF37m4eskrQ4CNQkg8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1/EYmrgqT53J3qKy6SwTM08wMH0H4cYfI1a9IqA5KnKADLHhaxjntHHKpAWGozMgl7t2WYsdhg0Ro4eFSIu1I7lAE5rJlmI5VDgGMgUOFD9JUE/Jpw4b8Mnis+GXYeoWlIo65HLBbU178+eENY2mTCAGwfiyC0HHcdewB6zZKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bAJ8R1rP; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=SYgYIh1uZMAimHTAk12ZnSWHPOBuR/JbrkM/jJOHNBCGMJnadVlw3GvT1O/80eQNjwNA0YiK1aHXKLe3GHceFi//gTljlw5GHGX+XygUdisOkxWBYEXlWNBZ6wYu3FIPoc1m7GTE7yAN+2PzkpAOFrmboYkjpXvoRZW3Wj9PlxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a8ligaDR; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bAJ8R1rP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a8ligaDR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777303800; x=1808839800;
+  t=1777303802; x=1808839802;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7jJ7eblQ5a5Un2crtpNxhvp6+2PVrme2ig2h67JHyH4=;
-  b=bAJ8R1rPwZl6Mi6am2dAgx3O+ddA9DbHvqWV6el+dIkVqIzjlYMgcUY4
-   Dm17bVZEYSfa1/d+kRDIbcicwMRTm6so91dI9d1c8Iy41WG5i87AY76nn
-   EbPLNIJKLcuX0ZyszrtPi59/DQXuIGBhkM+fxDUywOUr1FtJBGA4A0xsF
-   8UK5QKslr+aRLCNdtgYO9I4JD2xY0xEJtHzkvqNgSsKQu7jflcMtdkBOJ
-   cUpkJBrBE+uzBDjq97upDLbdRRmaJCE2hy1z7VhsaKI9TLJOXaOF5rg8U
-   PSMAYEsJb/jDp+H/GoKHOw8X6vWC3i2BdVGFypJCkjVkDm0zAxLdz6ClW
-   Q==;
-X-CSE-ConnectionGUID: aXM5UN6aRNOgrHtg8wPlhw==
-X-CSE-MsgGUID: CkQvhOdXRYyiq/8ReIJ7Ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900678"
+  bh=9cpPVIbzbxLNuvVdcP0yIXzTtF37m4eskrQ4CNQkg8k=;
+  b=a8ligaDRVD9bc9wD8fHkhi4esBg94plaaGBihXxoElV9Li6GBPyh2RbC
+   93vCXV5t93Ez5TclVN6O5QzvyE1hfzK3HQLeWHnuzlHx6CMagOJplBGft
+   WNf4KGFjK3gPj6OLEeceueUsVP/Ot+O6sb+v70kQuMgjoZPTdylpCv/63
+   cN+AJarBw2GHeLiYJ8Fy8mc/U0hE+m6NvZDfkZijcyKiUPWmDOvnYnGMF
+   VVJwx8PE+fa/21S/86SJ3Qfvo+3btRQ25so8hYy29qBEmpleabkGZXCLk
+   1VdJ9oI9gQzN7o0gxkgdcUIhTHg4YD6Gl2T798zqxP22K7bbJvYQcyoqR
+   w==;
+X-CSE-ConnectionGUID: NYQOyIX6SqizETrw32cIZA==
+X-CSE-MsgGUID: FpLhcQ9PSPKG4M83Z2jKNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900698"
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="77900678"
+   d="scan'208";a="77900698"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:29:57 -0700
-X-CSE-ConnectionGUID: JA9RVQmKSkG+1Qc82mzNdQ==
-X-CSE-MsgGUID: 5KJncBUWRwC/9oNpjMI1hw==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:29:59 -0700
+X-CSE-ConnectionGUID: 0v+ln5ErTf2VanJKgYUB6w==
+X-CSE-MsgGUID: Gp8xSLwxSpqvt4EkcoKfcQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="232673227"
+   d="scan'208";a="232673236"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:29:57 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:29:59 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v8 05/21] x86/virt/seamldr: Add a helper to retrieve P-SEAMLDR information
-Date: Mon, 27 Apr 2026 08:27:59 -0700
-Message-ID: <20260427152854.101171-6-chao.gao@intel.com>
+Subject: [PATCH v8 07/21] coco/tdx-host: Implement firmware upload sysfs ABI for TDX module updates
+Date: Mon, 27 Apr 2026 08:28:01 -0700
+Message-ID: <20260427152854.101171-8-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260427152854.101171-1-chao.gao@intel.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
@@ -84,129 +84,252 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-P-SEAMLDR reports its state via SEAMLDR.INFO, including its version and
-the number of remaining runtime updates.
+Linux kernel supports two primary firmware update mechanisms:
+  - request_firmware()
+  - firmware upload (or fw_upload)
 
-This information is useful for userspace. For example, the admin can use
-the P-SEAMLDR version to determine whether a candidate TDX module is
-compatible with the running loader, and can use the remaining update count
-to determine whether another runtime update is still possible.
+The former is used by microcode updates, SEV firmware updates, etc. The
+latter is used by CXL and FPGA firmware updates.
 
-Add a helper to retrieve P-SEAMLDR information in preparation for
-exposing P-SEAMLDR version and other necessary information to userspace.
-Export the new kAPI for use by tdx-host.ko.
+One key difference between them is: request_firmware() loads a named
+file from the filesystem where the filename is kernel-controlled, while
+fw_upload accepts firmware data directly from userspace.
 
-Note that there are two distinct P-SEAMLDR APIs with similar names:
+Use fw_upload for TDX module updates as loading a named file isn't
+suitable for TDX (see below for more reasons). Specifically, register
+TDX faux device with fw_upload framework to expose sysfs interfaces
+and implement operations to process data blobs supplied by userspace.
 
-  SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
-                information such as version and remaining updates.
+Why fw_upload instead of request_firmware()?
+============================================
+The explicit file selection capabilities of fw_upload is preferred over
+the implicit file selection of request_firmware() for the following
+reasons:
 
-  SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
-                    and system information such as Convertible Memory
-		    Regions (CMRs) and number of CPUs and sockets.
+a. Intel distributes all versions of the TDX module, allowing admins to
+load any version rather than always defaulting to the latest. This
+flexibility is necessary because future extensions may require reverting to
+a previous version to clear fatal errors.
 
-The former is used here.
+b. Some module version series are platform-specific. For example, the 1.5.x
+series is for certain platform generations, while the 2.0.x series is
+intended for others.
 
-For details, see "Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
-Interface Specification".
+c. The update policy for TDX module updates is non-linear at times. The
+latest TDX module may not be compatible. For example, TDX module 1.5.x
+may be updated to 1.5.y but not to 1.5.y+1. This policy is documented
+separately in a file released along with each TDX module release.
+
+So, the default policy of "request_firmware()" of "always load latest", is
+not suitable for TDX. Userspace needs to deploy a more sophisticated policy
+check (e.g., latest may not be compatible), and there is potential
+operator choice to consider.
+
+Just have userspace pick rather than add kernel mechanism to change the
+default policy of request_firmware().
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Link: https://lore.kernel.org/kvm/01fc8946-eb84-46fa-9458-f345dd3f6033@intel.com/
 ---
- arch/x86/include/asm/seamldr.h  | 36 +++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/seamldr.c | 20 +++++++++++++++++-
- 2 files changed, 55 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/include/asm/seamldr.h
+Dave also suggested making .poll_complete() optional in fw_upload_ops.
+That will be handled in a separate series.
+
+v8:
+ - don't preemptively handle bugs that never occurs, i.e., drop the
+ WARN_ON_ONCE(offset). [Dave]
+ - tighten up the comment in .poll_complete() [Dave]
+ - make the error-code mapping reviewable [Rick]
+---
+ arch/x86/include/asm/seamldr.h        |  1 +
+ arch/x86/virt/vmx/tdx/seamldr.c       | 15 +++++
+ drivers/virt/coco/tdx-host/Kconfig    |  2 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 87 ++++++++++++++++++++++++++-
+ 4 files changed, 102 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
-new file mode 100644
-index 000000000000..c67e5bc910a9
---- /dev/null
+index c67e5bc910a9..ac6f80f7208b 100644
+--- a/arch/x86/include/asm/seamldr.h
 +++ b/arch/x86/include/asm/seamldr.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_SEAMLDR_H
-+#define _ASM_X86_SEAMLDR_H
-+
-+#include <linux/types.h>
-+
-+/*
-+ * This is called the "SEAMLDR_INFO" data structure and is defined
-+ * in "SEAM Loader (SEAMLDR) Interface Specification".
-+ *
-+ * The SEAMLDR.INFO documentation requires this to be aligned to a
-+ * 256-byte boundary.
-+ */
-+struct seamldr_info {
-+	u32	version;
-+	u32	attributes;
-+	u32	vendor_id;
-+	u32	build_date;
-+	u16	build_num;
-+	u16	minor_version;
-+	u16	major_version;
-+	u16	update_version;
-+	u32	acm_x2apicid;
-+	u32	num_remaining_updates;
-+	u8	seam_info[128];
-+	u8	seam_ready;
-+	u8	seam_debug;
-+	u8	p_seam_ready;
-+	u8	reserved[93];
-+} __packed __aligned(256);
-+
-+static_assert(sizeof(struct seamldr_info) == 256);
-+
-+int seamldr_get_info(struct seamldr_info *seamldr_info);
-+
-+#endif /* _ASM_X86_SEAMLDR_H */
+@@ -32,5 +32,6 @@ struct seamldr_info {
+ static_assert(sizeof(struct seamldr_info) == 256);
+ 
+ int seamldr_get_info(struct seamldr_info *seamldr_info);
++int seamldr_install_module(const u8 *data, u32 size);
+ 
+ #endif /* _ASM_X86_SEAMLDR_H */
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 65616dd2f4d2..7269a239bc22 100644
+index 7269a239bc22..650c0f097aac 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -8,8 +8,13 @@
+@@ -6,6 +6,7 @@
+  */
+ #define pr_fmt(fmt)	"seamldr: " fmt
  
++#include <linux/mm.h>
  #include <linux/spinlock.h>
  
-+#include <asm/seamldr.h>
-+
- #include "seamcall_internal.h"
- 
-+/* P-SEAMLDR SEAMCALL leaf function */
-+#define P_SEAMLDR_INFO			0x8000000000000000
-+
- /*
-  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-  * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-@@ -18,8 +23,21 @@
-  */
- static DEFINE_RAW_SPINLOCK(seamldr_lock);
- 
--static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
-+static int seamldr_call(u64 fn, struct tdx_module_args *args)
- {
- 	guard(raw_spinlock)(&seamldr_lock);
- 	return seamcall_prerr(fn, args);
+ #include <asm/seamldr.h>
+@@ -41,3 +42,17 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
+ 	return seamldr_call(P_SEAMLDR_INFO, &args);
  }
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
 +
-+int seamldr_get_info(struct seamldr_info *seamldr_info)
++/**
++ * seamldr_install_module - Install a new TDX module.
++ * @data: Pointer to the TDX module update blob.
++ * @size: Size of the TDX module update blob.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++int seamldr_install_module(const u8 *data, u32 size)
 +{
-+	struct tdx_module_args args = {};
-+
-+	/*
-+	 * Use slow_virt_to_phys() since @seamldr_info may be allocated on
-+	 * the stack.
-+	 */
-+	args.rcx = slow_virt_to_phys(seamldr_info);
-+	return seamldr_call(P_SEAMLDR_INFO, &args);
++	/* TODO: Update TDX module here */
++	return 0;
 +}
-+EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
++EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+index d35d85ef91c0..ca600a39d97b 100644
+--- a/drivers/virt/coco/tdx-host/Kconfig
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -1,6 +1,8 @@
+ config TDX_HOST_SERVICES
+ 	tristate "TDX Host Services Driver"
+ 	depends on INTEL_TDX_HOST
++	select FW_LOADER
++	select FW_UPLOAD
+ 	default m
+ 	help
+ 	  Enable access to TDX host services like module update and
+diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+index 079913dcc888..d9bb1e7ef795 100644
+--- a/drivers/virt/coco/tdx-host/tdx-host.c
++++ b/drivers/virt/coco/tdx-host/tdx-host.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/device/faux.h>
++#include <linux/firmware.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/sysfs.h>
+@@ -84,14 +85,19 @@ static struct attribute *seamldr_attrs[] = {
+ 	NULL,
+ };
+ 
+-static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
++static bool can_expose_seamldr(void)
+ {
+ 	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+ 
+ 	if (!sysinfo)
+ 		return 0;
+ 
+-	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
++	return tdx_supports_runtime_update(sysinfo);
++}
++
++static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
++{
++	return can_expose_seamldr() ? attr->mode : 0;
+ }
+ 
+ static const struct attribute_group seamldr_group = {
+@@ -105,6 +111,81 @@ static const struct attribute_group *tdx_host_groups[] = {
+ 	NULL,
+ };
+ 
++static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
++					 const u8 *data, u32 size)
++{
++	return FW_UPLOAD_ERR_NONE;
++}
++
++static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
++				       u32 offset, u32 size, u32 *written)
++{
++	int ret;
++
++	ret = seamldr_install_module(data, size);
++	switch (ret) {
++	case 0:
++		*written = size;
++		return FW_UPLOAD_ERR_NONE;
++	default:
++		return FW_UPLOAD_ERR_FW_INVALID;
++	}
++}
++
++static enum fw_upload_err tdx_fw_poll_complete(struct fw_upload *fwl)
++{
++	/*
++	 * The upload completed during tdx_fw_write().
++	 * Never poll for completion.
++	 */
++	return FW_UPLOAD_ERR_NONE;
++}
++
++
++static void tdx_fw_cancel(struct fw_upload *fwl)
++{
++	/*
++	 * TDX module updates are not cancellable.
++	 * Provide a no-op callback to satisfy fw_upload_ops.
++	 */
++}
++
++static const struct fw_upload_ops tdx_fw_ops = {
++	.prepare	= tdx_fw_prepare,
++	.write		= tdx_fw_write,
++	.poll_complete	= tdx_fw_poll_complete,
++	.cancel		= tdx_fw_cancel,
++};
++
++static void seamldr_deinit(void *tdx_fwl)
++{
++	firmware_upload_unregister(tdx_fwl);
++}
++
++static int seamldr_init(struct device *dev)
++{
++	struct fw_upload *tdx_fwl;
++
++	if (!can_expose_seamldr())
++		return 0;
++
++	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
++					   &tdx_fw_ops, NULL);
++	if (IS_ERR(tdx_fwl))
++		return PTR_ERR(tdx_fwl);
++
++	return devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
++}
++
++static int tdx_host_probe(struct faux_device *fdev)
++{
++	return seamldr_init(&fdev->dev);
++}
++
++static const struct faux_device_ops tdx_host_ops = {
++	.probe		= tdx_host_probe,
++};
++
+ static struct faux_device *fdev;
+ 
+ static int __init tdx_host_init(void)
+@@ -112,7 +193,7 @@ static int __init tdx_host_init(void)
+ 	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
+ 		return -ENODEV;
+ 
+-	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, NULL, tdx_host_groups);
++	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, &tdx_host_ops, tdx_host_groups);
+ 	if (!fdev)
+ 		return -ENODEV;
+ 
 -- 
 2.47.1
 
