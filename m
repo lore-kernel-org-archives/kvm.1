@@ -1,174 +1,158 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012062.outbound.protection.outlook.com [52.101.43.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011CA364EA4;
-	Mon, 27 Apr 2026 18:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777315176; cv=fail; b=Tr+8UB1I7Phd9cb1YgUiGgr4Zpl492dJNfXFBeSvOHNKzaz3WlbC2ujNJYQZUxJjIAh2EKpyJzjHIW8Xe3KrlttOvobdO/szjxTcN8ir2ehtFiI48cWnPS/XSlB+7F872JvbBaaM5yVwfU2A0kr8uw/HiBgYXB+Po3W6R/A5Ajo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777315176; c=relaxed/simple;
-	bh=v6nZWslnPRtWXM9K4AUWXCfW7Bzv0P3BDwGs6enAYTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CQcodAoPTkbSJ2RNQAk9rW0Pzqyfnp/mQMeY8IrL92z9IGXVexeFRqzuYNIZEYxgqGtpCTsUTNCe9691xr59QHio4nH0tROVNGefZEUgDIGru+dp2+c+dcwGMusXpl5NBaJuz0y+QdaQ/opUyExzJsPGJD2r3C9KcZSxnezdRBI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pmvWhp/o; arc=fail smtp.client-ip=52.101.43.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26627CA45
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 18:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777315809; cv=none; b=tPgUOdUUeld/Ez6TWnGd3PcoqDocqE33YeybVT9UpLwk1i4bYLhkNvBeh0rxb97HuABAxz2aT74mL1hnYiYOUAyd1uoG0bRm1zp77MlopgNn9b5eILdtwlv+5mVBoBubH4PMV5aMbv4pE+enWeY51iN0JZX6EK+9duVXsjQ/glc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777315809; c=relaxed/simple;
+	bh=PpEEh35ily420vdYFXkjffKY1Am2rkbKm+8YIHOFl8w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=h4Dl+L9YwAx0QPNsqaDs8T/sttMTwloQ8AiVnKLmLaGmizVU9OwM7cmJ2CxnXMsJMCo4PuzUEwlY9ifFij9g59xIPaGbIrAQHwBtmw/1nkvFd43wb5fx6VlqXRWq3auA2cHqrW6lllKNrtUw5gyNAf6yulsxKlDY3tm442wVrmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=baGs/0d6; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pmvWhp/o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IQeGa+YdNTuEb823qdZS8Hpotu2r72E0T7L133DkAjYdxm4sXHNsSUmdDgfuLqSgZ8ptJqXAaawtnWfzbuYE9JgTht/7aoE/UBY4fb8CsN7gCBIZfgKE1at/fpNpM0xSdAZJWuaUqRa0tqhI+N/yx9xph7PK0K68mzfAl3ULUBoKMqt7kO8SmQqIRPQp/EyHUjaf8pVm2IKhXkERYsuE6sazi1OyFGe8w6Tpyc067R/wsyQcV3mHt7zG29uYi1UdlBEBwV7zkb5+etoOikaMn5emW16FR/V0uWFWi+xABha/3wJBSOsptBb5XuUEJ0gI46UsoZZATZeItdPD4X+E7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nALNUxvPaXzFesZYqSMaFrytkX4CgELDa/JWTp7Lw8s=;
- b=px9mAWIgpW1g8A++4bB0b0HuBTVzWQKUHx38Lv15RAJgY6RPeHYUnILh/TwEOgn2886PJ4HV1v36kbLLG0HxUFAomMviDfWTHNqC74F0NXfW2B6flkUGEtIYX1KuG62cISJfxDrgdMABrDWp6xVA2MUygcqCtHSOnaMZ5ZNilmoI++yqNmdF0OaD0k2KfXGmE6cSPLaiwtfXftefCRmJeENOcw80UlNkg4EMTulJcftI1iU27D4XyjUiX2sDWu2PtYSLmYIgPWNxczRp1XfiNZwvXibbYm5a4muPrwHvEBOL77eyyAZhWYd43uPx0Y5scO9gl7o17mc1PxH3v/Hq8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nALNUxvPaXzFesZYqSMaFrytkX4CgELDa/JWTp7Lw8s=;
- b=pmvWhp/oxEcxQMryFRvqYtTB0A/GaOLun2mURAQK9jJXjqt4Nrc84ZfAfdVzaosEdXMWAP59oi4+UbMy4mec1KbzWHAyoF57I8DflvmrAbfhIb57bYv5qY2FGaPKUQk1zJRQQp9CqnyFj5VocFwyiXwUgS9FNTnrrFLeiZOJ1G9JrF4fAHR8lxFNj5/FwsIq3FU1ajVbQb2H+3//9zc7t+U20kMXMalri61t8NRsJ5k3/mDo4BdG+GEoyoHOcMDJdBMl8UX3LCr93JIqZbyQOPZZ1D/mW+4NjIfkYIV4DzD/8KPPzEEOg0Q59M3wKfLfO1wJ1sZJFQP38+wbciAclw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by CH3PR12MB8969.namprd12.prod.outlook.com (2603:10b6:610:17c::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.15; Mon, 27 Apr
- 2026 18:39:19 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
- 18:39:19 +0000
-Date: Mon, 27 Apr 2026 14:39:16 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 2/9] uaccess: Convert INLINE_COPY_{TO/FROM}_USER
- to kconfig and reduce ifdefery
-Message-ID: <ae-tVFVfx72oCC_i@yury>
-References: <cover.1777306795.git.chleroy@kernel.org>
- <9fe875d2f55af59c12708336c571a46038528678.1777306795.git.chleroy@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9fe875d2f55af59c12708336c571a46038528678.1777306795.git.chleroy@kernel.org>
-X-ClientProxiedBy: BN9PR03CA0924.namprd03.prod.outlook.com
- (2603:10b6:408:107::29) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="baGs/0d6"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b241be0126so203790405ad.3
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 11:50:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777315807; x=1777920607; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1D0uMxHq1T6Kl6m57IkABPQ2Xq65sMA6twQ3v835jKo=;
+        b=baGs/0d6yAVbnHuMp4ofoCMigPzoscV4a4IVDNl1/AVIgnhIsWpDY5ochrAP3Lw8AA
+         JPyfVdC864w0tC2fbAtbvNQYYXqvKBhpXJuS9raHeBseR4VX1FlkmRggODin+EWt52lF
+         6ZC0dk6WUeFz3UJ5VO78KppFfdAsUr5/VJJsEIbJ+UyDCrN9az/rN32jmf4eFAZO9Urw
+         m3K9ZLaqiIaGg76aK4pkWvhs7mGNOdfoCBhLTzoyz+CTimQoNY/ZF3erPEtzHYOST6X9
+         9LAxUwYBsB+FYGtHHzTCsh5umamEmpB7dib4xtZbYRfat7fHDu3zOg4+MsAGnuJfSlh6
+         ifxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777315807; x=1777920607;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1D0uMxHq1T6Kl6m57IkABPQ2Xq65sMA6twQ3v835jKo=;
+        b=UJfOdxcKrE5pWA5BqADw1wfzueny3TP+hEuhIfFl8WNqTAlsNPU9Ragm0nEFL2Behb
+         NTALNLO08Mf+DCcC+m6VigAFyjONAzrNWuGWqCtzPH0yRIJafkZR/4TuMgXEpZQKIswy
+         4QsJjuLK0EL0dDaXT3ok0DvK8Fd3jeRne9pGpFoyIwBSGnLY8nD1jnM4SK4NhtegaJWW
+         yubXqn7MgbXpr8fqXa6kG1GWxi/T+7dQL5Kd8bH5zROpneiKt46ME5gGi3jnjyJv6e/n
+         kpMd9pXkfruKUtL3V720CDLfQ+4c16dbc6iGynB8wFmnHxS0rYpocqXJgchKFpvBRCNb
+         fwxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZRsR/Va9wlXwGeCqHR/+70KHhG55NBGsfnx85Iakwci2ZM8F5HSLxdjDp8+0Z3KdiM/0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwR7sVtvXjIJp2TNVSHh9Ir4CKBYyO+KOlx96N2wjLY8Sqme0v
+	6sw4kHqm0blo7v1SH7OxLJ+U+X2fpdfS0X2k1A4wQaiRGGbHyqyzVLCXeRkboYPJfYcIMC/J+7L
+	FvEp3Fw==
+X-Received: from plnw7.prod.google.com ([2002:a17:902:da47:b0:2b2:4c1c:26de])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c07:b0:2b0:6f21:8289
+ with SMTP id d9443c01a7336-2b97a9459b9mr3932515ad.25.1777315807355; Mon, 27
+ Apr 2026 11:50:07 -0700 (PDT)
+Date: Mon, 27 Apr 2026 11:50:05 -0700
+In-Reply-To: <aesRPt5Vpco29vAt@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|CH3PR12MB8969:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88d3e4e6-a43d-4919-49fd-08dea48c4adf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	TPoVweG6k+dJJz5MfIFVzAwybwz2jm9fSNM7cxd69vHJE9UR7v6gWyNzsADjvW7ykt1GxFh4Loi1ek62Aro4GaYSpAgmWTn2FafAKuzv9brpXCmKrPkRpx9DEAPIV+O5dQy3egB7SEzayZhdD/hWFuNZI6/aSgi9lHWX7gRMsSsQ+hETpWZ33SUUr8PWk26gfuJDFv6mOEW2uC2BXHmIXUBpyDzOLTJkWEZLidp+7/nea6eckeX0OWVi4bEZfR9vET0pIew0s/JD7Zz/RgAl3L1OS3LR+WDk0Cj+9xRSjoZt6hvaQHTWsroBoiVTErBG9cZcE6iDBPvkBn6JALg+xzh67RQUZnSxe3dpsNnBDx7CyfIbDUoxU3lAu9QNZYDT1pjKtmsR0xUxypUJz8heZAAejUX+cI5zyhEOMCfbZhYDfC8lL5HRKEb55UhgnG1W7/6v/FhxkMwqKMlyWokoOjOY4UTekvoZ2YoBlTz/0SexmXJCV8GlzzJCCy3Y1wJ/gnGl1oiAmGAyfo29/0sdy3H4BAYwxQB+IiP82ASQGpLESNwitwXe5+qlNSYOiiNPhvXQr7YPxg9TQ20Ipo3dS/oLszmjrr6IMeWdSIzAycLxAjM4ybcGKoHCvx/iHvz1ya1/Lu6sN7VNJ7G92kgR4XUfztSnUa/+T4Ty1oGleBPJ/1/eGU/xx0C11jRZy6aMFQ1qLzVFXPf+Rw3f5XbXFGlI7ibkCm1ybi3SLvQHJsk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?oib4bKcV8LA5vdjLqJ8bgcxtg+HiGQmptbpLOggOnOXMP8WzMNQrzTBLxW0t?=
- =?us-ascii?Q?J/O13Po8omZAsmm/pQpy/oqttV579odYMQrIVxXSjgf18STek1XRrKGwVmp0?=
- =?us-ascii?Q?l0BU1ufe1EiXFQOU6+6botm2sdTbVj9guzWn35tmDPDQr3Dwwmyjq5n/e4XI?=
- =?us-ascii?Q?SzRjxH/T3DI21r6vl4cCl334Ew2ij5/yQJC8A/DRNX+V7pyzPYuZovSr9F/H?=
- =?us-ascii?Q?Wgm4eMo8ZKAXBaCC+JcutRhN7eAH9v+cW52Q3ahFRH6xBK3C4/Z3i735rmIV?=
- =?us-ascii?Q?aMfpxHZ0SFW7fKav66AdZnuwM6sLZ9JgRxdV6lUM7BH/+pQ+3Pt5OuxuIF7P?=
- =?us-ascii?Q?wOEzXGgLg/FCQyv3W40kHRzWP2soqwyli3M0yrSc+NSjlNU55HajGFi1JvaI?=
- =?us-ascii?Q?tiNl9ri9lNxc+qE7KdAVPFL/2e+CEWg2vZahotUnAp3114m5sQG/4rVIg4gm?=
- =?us-ascii?Q?gd9zXeVaEsINZnTiz1qVCTLSKFcxLzulAejw8jMwtJRbeGBzK4ZC1e7VOCW+?=
- =?us-ascii?Q?aKVYJaES/nOjEprimIme29LeOa01vmBbY6+qz+yCseVYOQCq9CdDX7e1deoV?=
- =?us-ascii?Q?zaTnta1O/6L4nX1080PXzmu9mTtYtJNQO3DF9ovWHiONsmGP4U11bu49laOs?=
- =?us-ascii?Q?B0UU9IxLtWutiJxYBVD0KN4xfooNicHXXZR6LrmeOgPpcSsKDeGO2BnYG9lv?=
- =?us-ascii?Q?jdgN60ENdKBvmSOFTzCRkCByFYt+/x7RaSBTKsrsbJl8Enat/5Q9rpxaSuYv?=
- =?us-ascii?Q?Hk0QJmiBMLq/XaaCVVftv/lOLZiG1rfq9bJc6AGkJ7Be2P6481HfBvkVoSKm?=
- =?us-ascii?Q?7dS46V0SCDnMF6O9L5WMOGcQF3/JmPJwDC3bbG0KXyXraugzFpO2I2A/zirX?=
- =?us-ascii?Q?a/CdkcxQ4G6IILYhs8aeRubhtiJ4TjMT/T5Mn38f6As5actrgh5OSaby7k/P?=
- =?us-ascii?Q?p/eP1WrTDycIQ7kQbNn0vPkAk/h7ELW35FbH3Phz+HVj/qsyPVuI3ZrMXUag?=
- =?us-ascii?Q?WAN4DeGhJIVi4hPoLtGwda6uakBNXByYqWFG6Y8WSZFrAuFMwEgvc3vSyFyl?=
- =?us-ascii?Q?Dx5n3nRrxw1RgZUiiAKDP0rwsC7WGhhl7rCLYH8tGf3cooY4z46us5fwXFjC?=
- =?us-ascii?Q?wNTDl7f7oWOaDilXo0Jux13wM3eh0BtH51CgLCN9tDrJnzsW7ZyZvcKQk5Tn?=
- =?us-ascii?Q?O9ixfPU/YHVSwPfjb9gBof+EiT69zyPNYsZE4X2O8CyU4Z8XVVbkKhgMngy9?=
- =?us-ascii?Q?YRDPa867pPjQhJc3j8j98MgOVgWGheyih5q5W+m9AMvdBEneu+a9dnByQyMn?=
- =?us-ascii?Q?qCLgefyIDgxtIR+PcNMkMkPhjugjUNVEanta6lIV/gHJ2JE334rR3ZB3QcoQ?=
- =?us-ascii?Q?NbJNKCyplpSmz2mdkoBN9xHWSzQA2d2/nRHmtmEYPxzVHY+pAEBbGSLUGA+G?=
- =?us-ascii?Q?n7hhnzbzDtnl+NVWD79E8VDdTdq6sg4VE3PrKKvMdORAmzEkarJh1RDPehzr?=
- =?us-ascii?Q?rf0jUwl/4QGQHSZRpxkK/lDw7l5CdWKgWv1KnfHZnVpP43iLu8DuyVVHQL2R?=
- =?us-ascii?Q?VCkeADDpChtUpYBLJdlINE5FPPK7QdiOkkbRoLE8VBbhAFo5vAXH2E7YlciW?=
- =?us-ascii?Q?k0gtUjR84c84anx2yV2+7D9n2SuoEUaYGM1OOv9cl/uolZtt2Je3yiYv7HTI?=
- =?us-ascii?Q?yD9W0nKiIOg27gfW0ZUuL7Zq68OzdAmeaqD7+UqqyPO6Vm6rjH2beLlolKD3?=
- =?us-ascii?Q?NnU9q5OrFzP7EEzyxKROJwYEahtrjRNUQfGufTekFC1cKWXYO/DQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88d3e4e6-a43d-4919-49fd-08dea48c4adf
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 18:39:19.3919
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1EMi8W1U4wKLqFUR+2jNWxP3McH9TdZjJFX+Py1zekodl7uM/ruq8Dm5SoHnnrACMPwMaK2iGgbUgpHPN2cF6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8969
+Mime-Version: 1.0
+References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-4-yosry@kernel.org>
+ <adReHbkVRDGOihb4@google.com> <aesRPt5Vpco29vAt@google.com>
+Message-ID: <ae-v3aGftsAQuG5E@google.com>
+Subject: Re: [PATCH v4 3/6] KVM: x86/pmu: Disable counters based on
+ Host-Only/Guest-Only bits in SVM
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Apr 27, 2026 at 07:13:43PM +0200, Christophe Leroy (CS GROUP) wrote:
-> Among the 21 architectures supported by the kernel, 16 define both
-> INLINE_COPY_TO_USER and INLINE_COPY_FROM_USER while the 5 other ones
-> don't define any of the two.
+On Fri, Apr 24, 2026, Yosry Ahmed wrote:
+> On Mon, Apr 06, 2026 at 06:30:05PM -0700, Sean Christopherson wrote:
+> > I would rather make a single call from kvm_pmu_handle_event(), and let the vendor
+> > deal with mediated vs. legacy.  I want to avoid mediated-specific ops as much as
+> > possible, and I think kvm_x86_ops.reprogram_counters() would be easier to
+> > understand overall.
 > 
-> To simplify and reduce risk of mistakes, convert them to a single
-> kconfig item named CONFIG_ARCH_WANTS_NOINLINE_COPY which will be
-
-We've got a special word for it: outline. Can you name it
-CONFIG_OUTLINE_USERCOPY, or similar?
-
-> selected by the 5 architectures that don't want inlined copy.
+> I think this doesn't apply anymore now that most nested transitions
+> won't be handled through kvm_pmu_handle_event(). Also because we need
+> kvm_mediated_pmu_refresh_event_filter() to still be called before
+> re-evaluating H/G bits and EFER.SVME.
 > 
-> To minimise complication in a later patch, also remove
-> ifdefery and replace it with IS_ENABLED().
+> I think leave this callback as-is and handle everything through
+> reprogram_counter(). Export reprogram_counter() and rename it to
+> kvm_pmu_reprogram_counter(), and end up with something like this:
 > 
-> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> void __kvm_pmu_handle_nested_transition(struct kvm_vcpu *vcpu, bool defer)
+> {
+> 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> 	DECLARE_BITMAP(bitmap, X86_PMC_IDX_MAX);
+> 
+> 	if (bitmap_empty(pmu->reprogram_on_nested_transition, X86_PMC_IDX_MAX))
+> 		return;
+> 
+> 	bitmap_copy(bitmap, pmu->reprogram_pmi, X86_PMC_IDX_MAX);
+> 	bitmap_zero(pmu->reprogram_on_nested_transition, X86_PMC_IDX_MAX);
+> 
+> 	BUILD_BUG_ON(sizeof(pmu->reprogram_on_nested_transition) != sizeof(atomic64_t));
+> 	if (defer) {
+> 		atomic64_or(*(s64 *)pmu->reprogram_on_nested_transition,
+> 			    &vcpu_to_pmu(vcpu)->__reprogram_pmi);
+> 		kvm_make_request(KVM_REQ_PMU, vcpu);
+> 		return;
+> 	}
+> 
+> 	kvm_for_each_pmc(pmu, pmc, bit, bitmap)
+> 		kvm_pmu_reprogram_counter(pmc);
+> }
+> 
+> void kvm_pmu_handle_nested_transition(struct kvm_vcpu *vcpu)
+> {
+> 	__kvm_pmu_handle_nested_transition(vcpu, false);
+> }
+> 
+> Actually, if that's desired, we can move this logic into SVM code now.
+> We won't be calling kvm_pmu_handle_nested_transition() from inside
+> enter_guest_mode() and leave_guest_mode() anyway so that we can only
+> defer for the svm_leave_nested() path.
+> 
+> So we can move:
+> - kvm_pmu_handle_nested_transition() to
+> svm_pmu_handle_nested_transition()
+> - pmu->reprogram_on_nested_transition to
+> svm->nested.reprogram_on_nested_transition
+> 
+> Not sure if we want to keep SVM-specific logic in SVM code, or if we
+> want to keep code generic as much as possible. I can see good arguments
+> for both stances.
 
-Andrew has taken my consolidation patch for INLINE_COPY_USER:
+We can have our cake and eat it too.  Add svm_pmu_handle_nested_transition(),
+but then also rename and rework reprogram_counters() to support both deferred and
+synchronous operation, e.g. something like so:
 
-https://lore.kernel.org/all/20260427085814.7ca0b134603b8d5813e23396@linux-foundation.org/
+---
+static inline void __kvm_pmu_reprogram_counters(struct kvm_pmu *pmu, u64 diff,
+						bool defer)
+{
+	struct kvm_vcpu *vcpu = pmu_to_vcpu(pmu);
 
-Please base your series on top of it.
+	lockdep_assert_once(defer || kvm_get_running_vcpu() == vcpu);
 
-I'm not sure this patch is relevant to the goal of your series. Maybe
-send it separately?
+	if (!diff)
+		return;
 
-Thanks,
-Yury
+	atomic64_or(diff, &pmu->__reprogram_pmi);
+
+	if (defer)
+		kvm_make_request(KVM_REQ_PMU, vcpu);
+	else
+		kvm_pmu_handle_event(pmu_to_vcpu(pmu));
+}
+
+static inline void kvm_pmu_reprogram_counters(struct kvm_pmu *pmu, u64 diff)
+{
+	__kvm_pmu_reprogram_counters(pmu, diff, true);
+}
+---
+
+and then have SVM code pass in the reprogram_on_nested_transition or whatever.
