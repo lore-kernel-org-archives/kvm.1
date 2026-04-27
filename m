@@ -1,123 +1,159 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A393D1711
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 14:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC7E2F531F;
+	Mon, 27 Apr 2026 14:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777298743; cv=none; b=lN9l4ZKByGFtpiVr/qPkgruhll5PM7TRQCY5MfNidynnIhabj6cgZyGFxCJUQG/Nv+tiGIXRn3XOHeBExGRt+DD62ENAe+J8spF6VIQMammghZi+SuFH4oxMLPheH6MuTEZ3i5wYVF4s7B6s+aXgTKpGPy0IsrNUQPfN/RkBWyE=
+	t=1777300613; cv=none; b=JP2B96Ft6ZDeQQOalxqCsqXnX7bFFqdToMsl8Tbicz9yriorYrBiXPpejsyA27FVRqcPqJif5J1Nf3XSnydM/dqIJJsizkfwrqiwl6e8GbsgbWJaAjG1QoWORIwEHibLwKEI7ZVZUUZPfAoETQRoCvRN3k08PRWpwmt5QfFPbv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777298743; c=relaxed/simple;
-	bh=iGS050Vh31Rx6ADQYBwC5U1aYufsbvINEeiUPc1swZo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJyY6/XdteZ+QSlROieKJ8yXefLm91WO+ST4nELf0iUn02D3O5qytAzp8PuC46VD34DvU7yO6ATtB+1hZdsbfbtvWlfsftwS97Xt6vhWSDpwQNPoO2lrIJ9zcj+PZbvHz0xE5O1OHpMgH5isuRUJT/5aEY0nuHfA45ZBfs8LZLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=FZj4YQ8n; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1777300613; c=relaxed/simple;
+	bh=9DRxDffdXvFA9S8m3u8VvuWFoR3YyyqhTaGBfq5zhlM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EqTVf1zMMQYCAeFsTgISoRSfX0JyHjPnu0UTcj74jeUwmakl4bxTjebHzcN5vXM7iiFcTYCE6TpHveKjzcanPG1aPX2EQbe+ZDS6I8wdjCZFPflDRUhNPOEDNPLOtqoSve92u+Im63rBc29eLUMKOm8t/AwpZWIdQpcu7RFsdvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=uekKU/XQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ujpzMDM7; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="FZj4YQ8n"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8d736211595so671445185a.0
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 07:05:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1777298741; x=1777903541; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iGS050Vh31Rx6ADQYBwC5U1aYufsbvINEeiUPc1swZo=;
-        b=FZj4YQ8nEy1EHgskPUz2LFFSRfYdc62Nvfn6izixWeYkTxE0DRvuABG0+v+JMkbFkI
-         GJNnCyWhe3/VnozU5z/lmQFnC7nL7WTfrOGbG6+6ngbdbuRM4nFdSbvFvZyUfMk54xEf
-         XoIyVyC6eYETNPHVdA7jiyxY0skxpyGxpMbVGyLYrk+dtKzs/zUAAopc0k5eLVKjfb8D
-         u8Gi8W/e4PVVXx500x2P6eVBrDys3zkRfSiicuYqwaPet8PRvaPUUaMDjw7rA0DPXWHF
-         5sOHDg75t8HNmbOOo+z29SkvrlKnpBK7lIbAOZCEIeLB7I7FKeXAynV9tQs7sgVokM42
-         RYcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777298741; x=1777903541;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iGS050Vh31Rx6ADQYBwC5U1aYufsbvINEeiUPc1swZo=;
-        b=CTjX94z+GKdeqfRP163EidDj8OwgT2rGAw5D3ui+/NTZYeEDdhv9GxiiX67+76lrv7
-         sJlxSoYip6+efLXwC0qDneyLtTMbURGo3WfqOhQyOzNxRNzieCUWFD18KznvCR3p9csg
-         PB72ZKKoCt6INLKJkK4EQsutr/1KS5wczPavzgWAcw/4Yqh46aPi4t9raEnoh0yovHNY
-         rvjk0UQ4KngUDNJSQnJh+7pGt34vOhuzXgTBIsU0LiWHjPMl2Dj0Do86NrAg33hwL9u3
-         mb3RgBO3KIF2AXuXQvKjKB22mKd3ai0uJZVPrzZ82tTqinLl7qm/AJrKt9Ddvrd4zqzu
-         +oPg==
-X-Forwarded-Encrypted: i=1; AFNElJ9TU9yUsOy5kWNuXJlj7+H6iu5MhDgsn1I3z//YnIPcc9DGMB8m1tvKrMpC5LF9n8FpkiY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzINNsaGuzxEzC7zPzXTyG0rMZPJs/HLO/M7wp4ds+zIb8ad7Wz
-	PwyJ/odFtZlPwLvlVRsRN++MAYA2PTDpa+DrO1SeuP9JPOqrqE+/Z0VRLBUFCGls7Og=
-X-Gm-Gg: AeBDieugJuPmZQp9eAkKisLjvf/M45MyItXXgAMoamZWrVcYf3SdU8E/WErZ9urR7N0
-	4LNqpJZfzUZEv05+Y4zD4arLlbxDl7RQgR8hEKzU5pIyARJUuPBbKolqHxwN4clWsWIQCXCwks7
-	TSfWnajtl2SmRU7rJ6MI1gwQQGUnXNzuStGu/NZNhG75MS8f3Tw61vIVgVG7B4dDs6EFACxh5JP
-	pMCRtlCi4ygKQDQrK6RXmwVfDo0OyaMrS/KMPr9amOqwNz4uG2GL0/t1b8pRff7+zrqjg5zWQx+
-	iDj4bdujsTupJlmahUMg8iNamyIRFiCbpdeumzh6H4UzB3QXvZ4a5YVBk5u0Y0vm2RHvTlmH3ht
-	+M4+HeHQ89dWy2bRYob3OLzhiCD7HcNaQdInAJrXgFPfRwUcv+i+Q4+4jx+In/trJdmlpyjr5bJ
-	YBvI5X4J0628aZi01yJlEQ4rADBEVqlOUjrQq7L6pzAtrVdo/NmIWJXno7RBBMTfjsIhfIBAYn9
-	oZ1WK2MItpXJnAgLLqOC9RQt0M=
-X-Received: by 2002:a05:6214:489:b0:8b1:f3e1:5e12 with SMTP id 6a1803df08f44-8b1f3e16020mr426493366d6.14.1777298740980;
-        Mon, 27 Apr 2026 07:05:40 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac4260bsm260265136d6.4.2026.04.27.07.05.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 07:05:40 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wHMah-00000003YNw-36NU;
-	Mon, 27 Apr 2026 11:05:39 -0300
-Date: Mon, 27 Apr 2026 11:05:39 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v4 4/4] iommufd/vdevice: add TSM guest request ioctl
-Message-ID: <20260427140539.GE740385@ziepe.ca>
-References: <20260427061005.901854-1-aneesh.kumar@kernel.org>
- <20260427061005.901854-5-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="uekKU/XQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ujpzMDM7"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2FF497A01E1;
+	Mon, 27 Apr 2026 10:36:48 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 27 Apr 2026 10:36:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1777300607;
+	 x=1777387007; bh=j3Ga1b+UElSKHH4tx3q9I//plz4ie3nieWxtnW8dRLw=; b=
+	uekKU/XQxj+fxDGaTUUCOJQMpbQSQa7hGgrgLQNRW5U40DjbcGKjWBpIZ3KdicKd
+	y7pEuUf3jkDqW4rYl4eVc8TWnDGK7QRNlBdCdmflEN292mkasG3BIVP4886b1EjD
+	7kCyY1RRL++bkkWZzOKmccVZYEkEXiDo2M3HkTwd9MVALGTY0yBRRQO9JoH124x7
+	JYKhQYDR0ESyBMCuCliTUTlvObzsatBYr49m1yWj579bxuX6JJAQEosk2Hxw49Mp
+	F44VDP/DNkHXpFL4Lbru9vr3fW968M48FB6N0cwWwfrHS4KjxgI2sHJlpJx5pVNV
+	WWL0i4jp+oi7xVrwyqJVkQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1777300607; x=
+	1777387007; bh=j3Ga1b+UElSKHH4tx3q9I//plz4ie3nieWxtnW8dRLw=; b=u
+	jpzMDM7Of+yzDMJp7gBp7/QTT3XcoPpk0DHZsa5dQA3Iro8hqx6tE3WcjJIxrKJE
+	zmHDfM4LhB01TQQODBHq9B+mCCAY3XRYWYQL8ALxh3/1yxoA1H/s53et2LcTVzfI
+	YdP7sAGiloJ8fItlS9jCbzM8zwQRobNEJrDOtxNyspD9+syAjTfzUlsY36x8p0ee
+	UIXeiFfgj+TN7yEuiduaMPQtVE4U4x2/ITHXSPox5mM3XCnICGK8ypbNWJD2LE1H
+	9FRa212dvlxjrj/wBF69f+ct3hrJ2xgYiKrz3fKXxvpD4oACITnZB3yNy/jmX6EN
+	+dRkY/+/4Ug9zRJKHGAXA==
+X-ME-Sender: <xms:f3TvaRbiCYf8jFfQsS7mqKVkONIjBIKARj4rhOy8R2IzyyPKq_sCSQ>
+    <xme:f3TvaWzxDzS4RFBeIbKiuigKKKPlR3ntJC5EW1INUSk5Z-D2SkngckJKqUUVPnA-W
+    WgCYvUh0usdHkUlvbSASAc0K5jQRawStYYMHWey4HZ1sRQ_RqUS>
+X-ME-Received: <xmr:f3Tvaf-LrDBce0YILrh1y5cv2tUNImBCh7mzs6rBJyGruktuCh84-FmtyOI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeelhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepkeehjeeitefffeeuieetjedtjeffvdelledvuedvffdvfeetgefhveekuedv
+    fedvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhgvgiesshhhrgiisghothdrohhrghdp
+    nhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlvg
+    honheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhm
+    pdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtthhopegrmhgrsh
+    htrhhosehfsgdrtghomhdprhgtphhtthhopegthhhrihhsthhirghnrdhkohgvnhhighes
+    rghmugdrtghomhdprhgtphhtthhopehmnhhghigruggrmhesrghmrgiiohhnrdguvgdprh
+    gtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepsghj
+    ohhrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhumhhithdrshgvmhifrghlse
+    hlihhnrghrohdrohhrgh
+X-ME-Proxy: <xmx:f3TvaSxMrrBIFQMhK9Oob_UuUIigDC2qkQVd3R06fMyCypFEKQvfow>
+    <xmx:f3TvaUsYAD2stHChwchFhVxdLQlR7HXPhlI3eOECV47EKD6RtLSCnA>
+    <xmx:f3TvaR1uEEilQ8PoAz_RQ9xF-gE8R4bRF7yX5OAliqvnbDdeZ71VHw>
+    <xmx:f3TvaQ7-YpmZviOmLTh2VAFMBXW9G-UQW3DwjxjzKK_xxziE3gC7Mg>
+    <xmx:f3TvaVQ3cavOKXSQKYAqQMsEkKr8c9nkl_JSkq9AQ1DZXHpH92ouBKE0>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Apr 2026 10:36:46 -0400 (EDT)
+Date: Mon, 27 Apr 2026 08:36:44 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Matt Evans <mattev@meta.com>, Alex
+ Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Mahmoud Adam <mngyadam@amazon.de>, David
+ Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian
+ <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Pranjal
+ Shrivastava <praan@google.com>, Alistair Popple <apopple@nvidia.com>, Vivek
+ Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
+Message-ID: <20260427083644.4ee174cd@shazbot.org>
+In-Reply-To: <20260426105215.GA440345@unreal>
+References: <20260416131815.2729131-1-mattev@meta.com>
+	<20260416131815.2729131-10-mattev@meta.com>
+	<20260424183153.GJ3444440@nvidia.com>
+	<20260426105215.GA440345@unreal>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427061005.901854-5-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 27, 2026 at 11:40:05AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> +/**
-> + * struct iommu_vdevice_tsm_guest_request - ioctl(IOMMU_VDEVICE_TSM_GUEST_REQUEST)
-> + * @size: sizeof(struct iommu_vdevice_tsm_guest_request)
-> + * @vdevice_id: vDevice ID the guest request is for
-> + * @scope: Bus-specific scope classification for the guest request
-> + * @req_len: Size in bytes of the input payload at @req_uptr
-> + * @resp_len: Size in bytes of the output buffer at @resp_uptr
-> + * @__reserved: Must be 0
-> + * @req_uptr: Userspace pointer to the guest-provided request payload
-> + * @resp_uptr: Userspace pointer to the guest response buffer
-> + *
-> + * Forward a guest request to the TSM bound vDevice. This is intended for
-> + * guest TSM/TDISP message transport where the host kernel only marshals
-> + * bytes between userspace and the TSM implementation.
-> + *
-> + * The meaning and valid values of @scope are defined by the TSM backend for
-> + * the device bus type.
+On Sun, 26 Apr 2026 13:52:15 +0300
+Leon Romanovsky <leon@kernel.org> wrote:
 
-If you want to do this then you have to also provide a way to discover
-what the TSM backend is so userspace can form the correct numbers.
+> On Fri, Apr 24, 2026 at 03:31:53PM -0300, Jason Gunthorpe wrote:
+> > On Thu, Apr 16, 2026 at 06:17:52AM -0700, Matt Evans wrote:  
+> > > A new field is reserved in vfio_device_feature_dma_buf.flags to
+> > > request CPU-facing memory type attributes for mmap()s of the buffer.
+> > > Add a flag VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC, which results in WC
+> > > PTEs for the DMABUF's BAR region.
+> > > 
+> > > Signed-off-by: Matt Evans <mattev@meta.com>
+> > > ---
+> > >  drivers/vfio/pci/vfio_pci_dmabuf.c | 15 +++++++++++++--
+> > >  drivers/vfio/pci/vfio_pci_priv.h   |  1 +
+> > >  include/uapi/linux/vfio.h          | 12 +++++++++---
+> > >  3 files changed, 23 insertions(+), 5 deletions(-)  
+> > 
+> > Nice and simple
+> > 
+> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> >   
+> > > @@ -1549,8 +1551,12 @@ struct vfio_region_dma_range {
+> > >  struct vfio_device_feature_dma_buf {
+> > >  	__u32	region_index;
+> > >  	__u32	open_flags;
+> > > -	__u32   flags;
+> > > -	__u32   nr_ranges;
+> > > +	__u32	flags;
+> > > +	/* Flags sub-field reserved for attribute enum */
+> > > +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_MASK		(0xfU << 28)
+> > > +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_UC		(0 << 28)
+> > > +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC		(1 << 28)
+> > > +	__u32	nr_ranges;  
+> 
+> Alex,
+> 
+> The TPH proposal extends the flags field in a similar way, but I suggested
+> a different approach to conserve bits. At the moment, we spend three bits
+> on a single feature, which feels wasteful.
+> 
+> What do you think?
+> https://lore.kernel.org/all/20260409120415.GF86584@unreal/
 
-Also, since scope is now a uapi whatever in tsm is defining the values
-must be moved to the uapi headers.
+I already proposed a very different interface for TPH that decouples
+the dma-buf creation from setting the TPH values:
 
-Probably this is not a good idea and iommufd should just have its own
-enum with unique numbers for every bus and do the validation and
-translation.
+https://lore.kernel.org/all/20260423132016.4a25e074@shazbot.org/
 
-Jason
+This is overall less intrusive than the TPH change proposed, but it
+could still make sense to align this as an operation on the dma-buf,
+that can be probed as a separate feature.  Thanks,
+
+Alex
