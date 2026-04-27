@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E21735B137;
-	Mon, 27 Apr 2026 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EC634CFAB;
+	Mon, 27 Apr 2026 15:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303809; cv=none; b=gaM0VbCbRf37e90q+jz8VKOLEI6Sx7E+hBvrpjT0xROtwuR2sQoW2mV3xFaHaQ4Pm1P9c3bjkFJrVJH+3Z123TilUPWdp06ATIhZ+TewEZ6+15P1C1HeTUDlE53XrwNV52hgoHI1/F1pOQsLYniIXrUGwPgNXNtx2pJUZTWh8Uc=
+	t=1777303811; cv=none; b=agglPKVi2WDCSB8UKAsAxM0ywVTsu0ujjKyyFN0hxxzG3sNmQG/974RXeJFfftc5oz36qi+aRf6tK4mFO1wivexHuEii+HmCKwEs/QypWmzPr3P71t//ywO/KjX8EIp6x9IoI8Vfg/RFocvb/TwvDvP1qJ8K9E6xXpcdPQ9WEa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303809; c=relaxed/simple;
-	bh=MkTby7MAGYp6SKIMZJtG4/M9cL+AH9h4ywlrCOuBmmA=;
+	s=arc-20240116; t=1777303811; c=relaxed/simple;
+	bh=G6E/SUwn0tSQlC4UDt7dGl8v/X5x4hxGEc8gPhZREI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I7RK2ZkXht3pmDuxrH5HHIO6GifFQirml/qEkTCyh4MwTUHa9VNuaanpzH9+o5HEy/JZifMmGEnGyi/fZAuegRyiBbA0HlCoZBfnjpEIZYAKwbK4WD/h5qSIMmyNctYjoGxvEesBz8nSDZPxPWkD/p/7LV0BwlbAo9RTlYtcQlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y1KPLgH/; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=QOeRDXWmZX/xm72A/52FFDCXCNH2i8rvQcm3c0qW8JUmA5TfbREZiqmM5St3idr4BfbTOlpSmUgL5UVBrRmzuP1ZUPJchaSHmQPLDy0mcBa82uAhz2B9c6Dm196gUW2NKozOKjFE6rn3Aj0ASQO+iekEcOA3FzLioxOH+GJ0auk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NJphLlOk; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y1KPLgH/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NJphLlOk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777303808; x=1808839808;
+  t=1777303809; x=1808839809;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MkTby7MAGYp6SKIMZJtG4/M9cL+AH9h4ywlrCOuBmmA=;
-  b=Y1KPLgH/cXhF39KhxjXI8O4KRnJxnqAwz+5/MdmMH+SFYp6ry6PxbfPK
-   gbpksyqx2oisQfzkz9jYBRRliilLYK8eu3aPJIa8luDTbDiYF+QY6k1j6
-   w/qCcS+iP/3U69uiSfvKdoHxBaPoNgI3+tn1k6lwyNK13dJ9hQZC90K0T
-   iE80L3egOi9QYUakYLW4rWll3vVL3UBf1fgK+UGEvubM7IdrcXEYe6nCh
-   AEScpAXoMwN5ZwGSnaeyp74dNNEV4b05VSO2FpjorU/RFDrEHf5CMcZ2y
-   o44CeOhWa5pBXegjG8P+c/vpaD3N68eT4QI/Q50Ku1CWn0vNg7Q1E0IVc
-   A==;
-X-CSE-ConnectionGUID: +qAXeFTXTGCKQGhrETEnaQ==
-X-CSE-MsgGUID: hDTFvKNXSjqXHmwzGE+vsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900760"
+  bh=G6E/SUwn0tSQlC4UDt7dGl8v/X5x4hxGEc8gPhZREI4=;
+  b=NJphLlOkPqsvAQEwNuCHYNvDXvOtb5w15MzoB89KTadK7hZIFlB33UCw
+   qA2gvr9y2fRaFvIt6CY+pFolgamR4LWBq1vyEIBxg+7nxX8eHkKi9EwjP
+   EeSEZmKutu6FWDcNNNuiMkCPfL/UgwuWjrAKUtqwUe/5y7ODAf4AbUDDg
+   421wCI7Duf8A8QMBVaBtjx/VxeKSQVsbZDgiguVNYDHAvmJnSDVakMkVe
+   IemxujVz2Ceeh5cFrxbY7zPx++ufKCYi3UELJNWMF1hefPAcmnNtIZz54
+   WlyqUwicNeLrlPsNbaZzaKRZ7M1HZ2ptbcspwsxcEMe5D/6fA1MAOqE6E
+   w==;
+X-CSE-ConnectionGUID: L237l+SyRPK+6zA1LLjoZg==
+X-CSE-MsgGUID: D280VLP9Tc6NZASuyIDnWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900770"
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="77900760"
+   d="scan'208";a="77900770"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:03 -0700
-X-CSE-ConnectionGUID: FDyS1Dm+QkCWCi264f1Ydw==
-X-CSE-MsgGUID: UNXKPTXWS5eW0H/gkBR3mg==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:04 -0700
+X-CSE-ConnectionGUID: Vy+h/VF+Ql2sCPWxLM8gog==
+X-CSE-MsgGUID: SCdPSp5eTOi4lK0+9eu2eQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="232673300"
+   d="scan'208";a="232673318"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:03 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:04 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v8 14/21] x86/virt/tdx: Restore TDX module state
-Date: Mon, 27 Apr 2026 08:28:08 -0700
-Message-ID: <20260427152854.101171-15-chao.gao@intel.com>
+Subject: [PATCH v8 15/21] x86/virt/tdx: Refresh TDX module version after update
+Date: Mon, 27 Apr 2026 08:28:09 -0700
+Message-ID: <20260427152854.101171-16-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260427152854.101171-1-chao.gao@intel.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
@@ -84,92 +84,104 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-TDX module state was packed as handoff data during module shutdown. After
-per-CPU initialization, the new module can restore TDX module state from
-handoff data to preserve running TDs.
+The kernel exposes the TDX module version through sysfs so userspace can
+check update compatibility. That information needs to remain accurate
+across runtime updates.
 
-Once the restoration is done, the TDX module update is complete, which
-means the new module is ready to handle requests from the host and guests.
+A runtime update may change the module's update_version, so refresh the
+cached version after a successful update and emit a log message to show
+the version change.
 
-Implement the new TDH.SYS.UPDATE SEAMCALL to restore TDX module state
-and invoke it on one CPU since it only needs to be called once.
+Drop __ro_after_init from tdx_sysinfo because it is now updated at runtime.
 
-For error handling, Intel® Trust Domain Extensions (Intel® TDX)
-Module Base Architecture Specification, Chapter "Restore TDX Module
-State after a TD-Preserving Update" states
+Perform the refresh outside of stop_machine() since printk() within
+stop_machine() would add significant latency.
 
-  If TDH.SYS.UPDATE returns an error, then the host VMM can continue
-  with the non-update sequence (TDH.SYS.CONFIG, TDH.SYS.KEY.CONFIG
-  etc.). In this case all existing TDs are lost. Alternatively, the host
-  VMM can request the P-SEAMLDR to update to another TDX module. If that
-  update is successful, existing TDs are preserved.
+Do not refresh the rest of tdx_sysinfo. Refreshing them at runtime could
+disrupt running software that relies on the previously reported values.
 
-Given the complexity and uncertain value of above recovery paths, simply
-propagate errors.
-
-Also note that the location and the format of handoff data is defined by
-the TDX module. The new module knows where to get handoff data and how
-to parse it. The kernel doesn't need to provide its location, format etc.
+Note that major and minor versions are not refreshed because runtime updates
+are supported only between releases with identical major and minor versions.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
+Sashiko flagged a potential torn-read concern: update_version is read
+via sysfs while it is refreshed post-update. But, update_version is a
+naturally-aligned u16, and on x86, the compiler won't split aligned u16
+accesses. So READ_ONCE/WRITE_ONCE() aren't needed for update_version.
+
 v8:
- - don't add a duplicate error code as seamcal_prerr() will do that
- - don't reset tdx module status to ERORR on error
+- drop the unnecessary old/new metadata comparison
+- do not refresh the handoff version, since it is no longer cached
+- rename the helper to reflect its purpose instead of using the generic
+  tdx_module_post_update()
 ---
- arch/x86/virt/vmx/tdx/seamldr.c |  5 +++++
- arch/x86/virt/vmx/tdx/tdx.c     | 13 +++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h     |  2 ++
- 3 files changed, 20 insertions(+)
+ arch/x86/virt/vmx/tdx/seamldr.c             |  8 +++++++-
+ arch/x86/virt/vmx/tdx/tdx.c                 | 21 ++++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  1 +
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  2 +-
+ 4 files changed, 29 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 04c7a87ac7df..98a8d9d3ae25 100644
+index 98a8d9d3ae25..c81b26c4bac1 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -213,6 +213,7 @@ enum module_update_state {
- 	MODULE_UPDATE_SHUTDOWN,
- 	MODULE_UPDATE_CPU_INSTALL,
- 	MODULE_UPDATE_CPU_INIT,
-+	MODULE_UPDATE_RUN_UPDATE,
- 	MODULE_UPDATE_DONE,
- };
- 
-@@ -275,6 +276,10 @@ static int do_seamldr_install_module(void *seamldr_params)
- 			case MODULE_UPDATE_CPU_INIT:
- 				ret = tdx_cpu_enable();
- 				break;
-+			case MODULE_UPDATE_RUN_UPDATE:
-+				if (primary)
-+					ret = tdx_module_run_update();
-+				break;
- 			default:
- 				break;
- 			}
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 3bbb12aefb4b..9e4085a1e683 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1266,6 +1266,19 @@ int tdx_module_shutdown(void)
- 	return 0;
- }
- 
-+int tdx_module_run_update(void)
-+{
-+	struct tdx_module_args args = {};
+@@ -306,6 +306,8 @@ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+  */
+ int seamldr_install_module(const u8 *data, u32 size)
+ {
 +	int ret;
 +
-+	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+ 	struct seamldr_params *params __free(free_seamldr_params) =
+ 						init_seamldr_params(data, size);
+ 	if (IS_ERR(params))
+@@ -314,6 +316,10 @@ int seamldr_install_module(const u8 *data, u32 size)
+ 	/* Ensure a stable set of online CPUs for the update process. */
+ 	guard(cpus_read_lock)();
+ 	set_target_state(MODULE_UPDATE_START + 1);
+-	return stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
++	ret = stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
 +	if (ret)
 +		return ret;
 +
-+	tdx_module_initialized = true;
++	return tdx_module_refresh_version();
+ }
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 9e4085a1e683..a7dfa4ee8813 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -61,7 +61,7 @@ static int sysinit_ret;
+ /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
+ static LIST_HEAD(tdx_memlist);
+ 
+-static struct tdx_sys_info tdx_sysinfo __ro_after_init;
++static struct tdx_sys_info tdx_sysinfo;
+ static bool tdx_module_initialized;
+ 
+ /*
+@@ -1279,6 +1279,25 @@ int tdx_module_run_update(void)
+ 	return 0;
+ }
+ 
++int tdx_module_refresh_version(void)
++{
++	struct tdx_sys_info_version *old, new;
++	int ret;
++
++	/* Shouldn't fail as the update has succeeded. */
++	ret = get_tdx_sys_info_version(&new);
++	WARN_ON_ONCE(ret);
++
++	old = &tdx_sysinfo.version;
++	pr_info("version " TDX_VERSION_FMT " -> " TDX_VERSION_FMT "\n",
++		old->major_version, old->minor_version, old->update_version,
++		new.major_version, new.minor_version, new.update_version);
++
++	/* Major/minor versions should not change across updates. */
++	tdx_sysinfo.version.update_version	= new.update_version;
 +	return 0;
 +}
 +
@@ -177,24 +189,29 @@ index 3bbb12aefb4b..9e4085a1e683 100644
  {
  	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
 diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 36afebf0e04b..5fef813002c2 100644
+index 5fef813002c2..d0e8cac9c1d5 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.h
 +++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -47,6 +47,7 @@
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
- #define TDH_SYS_SHUTDOWN		52
-+#define TDH_SYS_UPDATE			53
- 
- /*
-  * SEAMCALL leaf:
-@@ -112,5 +113,6 @@ struct tdmr_info_list {
- };
+@@ -114,5 +114,6 @@ struct tdmr_info_list {
  
  int tdx_module_shutdown(void);
-+int tdx_module_run_update(void);
+ int tdx_module_run_update(void);
++int tdx_module_refresh_version(void);
  
  #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index e793dec688ab..e49c300f23d4 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -7,7 +7,7 @@
+  * Include this file to other C file instead.
+  */
+ 
+-static __init int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
++static int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
+ {
+ 	int ret = 0;
+ 	u64 val;
 -- 
 2.47.1
 
