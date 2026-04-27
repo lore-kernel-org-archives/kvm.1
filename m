@@ -1,128 +1,111 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACADB3B8939
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 11:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777288969; cv=pass; b=pzVCKDxaMvEtdvJMq1hAoDBtyj2SRuubmCZQyO6mWcxXwX3CAhooKFouxNcpPhLcRY3Jouk9RQAYzVhDyEVTsweQ+P54BQ0lQHnyBfjPd7B7PVupfRFx+Aolk6b6CXRDeKK0HjfSFOLFJBKSUxUAldyxel5MrOpXrS1feWuwu28=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777288969; c=relaxed/simple;
-	bh=NKjhzn06sNkk8mjBc0Rnn3sUoHjtQBDdTSKSL9EnVqw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lkuz9BWNeixCvyx59uwnIBRf1inDdzDbVKb2A090WKIaCe/PeiiKayHy61RiV5f5/ZNXeEghNEPhM2KBfT2m7ahwXa9CvJItRMSAtZRNqpmnxZOetbmayCN7qc+lLxj9t+VasTFOVrkx4jCpYnP9oLbC5+2h5O2Y3e7UWDzD3xQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m03wDaaz; arc=pass smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2491F30E0D4;
+	Mon, 27 Apr 2026 11:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777289965; cv=none; b=XR39LDv6fU3gj26ItnulYKiIeqYsGE0mmfZgf6X2550kfv8J4kG3lHI3EW0UetEChS03FL5A1s857zIorj2C7+TFiPlKPkTzQf2EfAl7gFHv2xLIBQFpv4Zzz745fmAQV30JbQUPwDH9p7YwQdBm065BcT1cytkhLEPzyt6C3lE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777289965; c=relaxed/simple;
+	bh=5p/+BJw364LpBg2TW5B7Hb/TLyJRCIFAcAv/CoEAiC4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l4pXQoj0TO9xYDqHx2SXrVj7HIi5ptKOMb1ISNgiAqENsHEMyvlMSuZcxmoVeU/AUdfwHbC61JcTWexJHG3qjfqqpMgszEJ2kY9GaB3FQ5eMPSthT824Nn0IQt0hnJa2nlHHxpMjyJSm6SUZiAw07oHfsVspLbIUoNRcqua1BAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKo0bjg1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m03wDaaz"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-65890a6ca20so947772d50.0
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 04:22:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777288965; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PX9c93+6vnAH44dQRCTeyfvtiguj6f6SThKVHB+03cJvqmo7jufjLHNkTTG8Yy0cVG
-         lvWOVkrUUj4PCOYI6woXCh9y80166MeEQLJl7DnoByBnl6A9T1HYD33uvyfc7DYuYsHh
-         9P4Uda14jd9k9fwOG5bgUyXxEIwMLHmSbzg9lCA7jLwP5kn5rxVzMtMn2O4IjIABlZeV
-         RLsFhWLOsfLzhYZ6SfN3s58cLow7uSma2RULfgFul+fNtFZFF0AGiej+y+cHvyKJNG0D
-         8mwixQoKE3RtwsaD6mXjgA52UmOYDX1TxDvzgqaOkXdHEp/y6YDCJc3ddBntvAk2F4/O
-         9qZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=NKjhzn06sNkk8mjBc0Rnn3sUoHjtQBDdTSKSL9EnVqw=;
-        fh=vmsEmJOLoBYSF66G4wAzejmoRoB7/h+1tx5QCiPHTJE=;
-        b=WoRbGGwc/bk3IeKXJnsxmGYvQEDCPM7vznSzjYtoZc2UVXrvBHpvheWvnRX3+90mYI
-         B+Xcy5i5yNAyG7qSrgwLrKqs/55rKFxUwhSF1z0vB7DceumHUAquP3+00zDZVjjBtvLZ
-         8fvBGpQ9PdACqK+cIzdkZ+kpw1Mfy+QEnL6jKL7jrIO5ZeccPPEDtj3RgcWMJA5raqcK
-         Phf1bS2f1RYh7SaXxf67XCBsHAB93EGDurk3K+UDPp8p/GgMbaT0rh7QxkSKElp2OBKe
-         4s2Mjl53QGNtcdCWjzVBzGczTZ/dvcUgeHQdpXwmkn5WsHTW2vhWtMNTpGCogkDtAhSi
-         N6BA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777288965; x=1777893765; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NKjhzn06sNkk8mjBc0Rnn3sUoHjtQBDdTSKSL9EnVqw=;
-        b=m03wDaaz42Ske8BcwZ0vTRkAfMeRFFfYFYu5F7gx7t6pPn4hiuQ2H41jFsId792gAK
-         QYzdcQgjlYd1RV7saIBiDpYJJs1ETkNYwJNhqwsJq+2iZvVTV+Lksk/GXlJxP8un0eR2
-         0BYJw6hJFOUGr/jZSd3W55gXb/jdTAPOBKRF+0+zKyIBdmAPswUm3z88gk0ICTu1bUOD
-         cBREga3QaQYULtBu41gx1K7xUCqB8t1p3OR6xBwvgwhp+FqSbiG95FnlhkMtiKlXkhLN
-         TiiRMxF61bLhq4Y30P2QDa3TBoS5WEAUQY0pWRGz6rp4ifYGiKRuXezfilUa4caUjseA
-         FFxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777288965; x=1777893765;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NKjhzn06sNkk8mjBc0Rnn3sUoHjtQBDdTSKSL9EnVqw=;
-        b=jGqNya97aDSZVNRjEU7s3SR8fMwN00bglnj50RM30/zp+wB6N5NF1VEgjcrZwRRbwo
-         lUQnnwGtuJPNPR2il76+ki7gJvHwOMfXdvOklY1++Nxnhsqg6pue2T46LNEoVfIH+93r
-         XELdWnU+uxk17ptBtjk05szo946necDkgqqinEzhzDe5SyWbvjRjlj1jxwsdY2A6FFRx
-         MmVscPgDi770IAK6G5m60HrspxyA6yiT1TBNhjNUsLzFCLD26lUuts6CP5yxsHyd5RWB
-         KSoMU3fGcNTb20D2elee/ZNx+WDzsNds7KzQpN6TLj2pDj7NYnIpPKjGrwoYt00Ytfpz
-         UPbw==
-X-Forwarded-Encrypted: i=1; AFNElJ8z2lJR/xz7+WxEm37SeUyCQzIkp9i0y5DHyfukWGTn9je5MvgT+QkoHgZ+WZkEhoRYDwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLY/AFjM4Mx11rBOO5IjRf/tqYWE+f/5azqvzZQDXsciD82WWB
-	bDCuohPiMaGOqNjZu6YwNx/N2ueHgIzuJtjGZVlneQ6L/Z30vjnO2nqrU+2SZ/AT2kEsLOJBlh9
-	7H4jnIXAXj/ba2oL75jyja/FyhaSNHB7RFMQ099QnkQ==
-X-Gm-Gg: AeBDiev5fIX3hmA1TjWcZmP8Ik4uhLuNmlJbYa7ZfDolrMKu1g0abvDZoNRre7h4bgx
-	QsiTXvPRLIDfqDGDHwrh1UZ8Q4hGDuHvSR/c4fOFkRpo4L42cVwWQbwj0yTQ2PeyzaH+heFcZle
-	hQ0OJuWfO13m7RwEDLKklBoFDONo5Dge2bd8w0dzOZcsX4pbL4wPHtJTJwU1Hn0BiJl1jfHWj8M
-	9JKuY+N3MO+vDMlgKa9/68OZyhYsPfpxLpUYUMdnY//qW3DvOLbJwY2aCYasipafaZGayn8WLaC
-	2aVe9j5Ge4soZG5S0jJVf0OaK7egYV59j0S+AsavtOdMZdLlj1ugJfzMjcxuPauAYg+mmwQa4x7
-	mGA==
-X-Received: by 2002:a05:690e:4192:b0:652:c12f:18bc with SMTP id
- 956f58d0204a3-65310a3a628mr32618634d50.43.1777288965320; Mon, 27 Apr 2026
- 04:22:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKo0bjg1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A3BC19425;
+	Mon, 27 Apr 2026 11:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777289964;
+	bh=5p/+BJw364LpBg2TW5B7Hb/TLyJRCIFAcAv/CoEAiC4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MKo0bjg1kFuTImzP+X9JZ7jTXfrIDV8HBEDsocf4wcyVyL/T2swotqNw0+zmOOOm+
+	 fh0QUwcusXnwMZZqxSDTZohj/qSw5QKEDGp3SwlOCyagvHishSDJ+/WB1zm83l1aap
+	 iNSaUQJALajTDYeULElowTiTtaeVCrjL+eLHyklWy9REKT2hGyys1jFclYkR0Vx61v
+	 xVSCmGX7A0rZwU+yTMyHKGoNaDC/sTVxFjogaGcKMAtAzFX+mXEUpo5ykrCl+3tQQk
+	 gHYZOzmUWwOt9I52UPiCAvR04DW3gTGgl18XvXUvNe8clR469jqUe5iUlmNLrKGa6U
+	 KPWRR7q2HJWCA==
+Message-ID: <f4fd0c56-6541-4cc5-9b7e-d4fdc5eb4f5b@kernel.org>
+Date: Mon, 27 Apr 2026 13:39:20 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260422-arm-v1-1-106a9a9e22dd@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260422-arm-v1-1-106a9a9e22dd@rsg.ci.i.u-tokyo.ac.jp>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Apr 2026 12:22:34 +0100
-X-Gm-Features: AQROBzADG4QwKVW78l2Y-krxUGH0JZTq2v5PrDXl03f_kk4zSO8vVSythrH3RFc
-Message-ID: <CAFEAcA99QzC6D=H8jet0aLrp1BByhOq9x6T8bUJ7SY6qTvoWcw@mail.gmail.com>
-Subject: Re: [PATCH] target/arm/kvm: Mark host feature cache valid last
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm_types: remove references to s390 gmap
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20260427105810.23761-1-pbonzini@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260427105810.23761-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Apr 2026 at 13:13, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> kvm_arm_set_cpu_features_from_host() treats dtb_compatible as the host
-> feature cache valid bit, but kvm_arm_get_host_cpu_features() set it
-> before later register reads could fail.
->
-> Set target and dtb_compatible only after the feature data is complete.
->
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+On 4/27/26 12:58, Paolo Bonzini wrote:
+> s390 does not anymore use special struct page for its shadow page tables.
+> The honor of giving a special meaning to pt_index is now m68k's, so
+> rename the fields and adjust them for the desired type.
+> 
+> Cc: linux-mm@kvack.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
-> This fixes a semantic issue I found while writing the next version of [1].
-> I am not aware of any case where it manifests as a real bug.
 
-We're not currently consistent since we have one check that might
-return false from kvm_arm_get_host_cpu_features() before we set
-dtb_compatible and then several after. But I think that the
-right thing to do is to set dtb_compatible right at the top,
-and adjust kvm_arm_set_cpu_features_from_host() to copy
-cpu->host_cpu_probe_failed in its "populate from cache" codepath.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-That is, if we have an SMP config and we can't get the host
-CPU features the first time we call kvm_arm_get_host_cpu_features()
-there's no point in repeating that attempt over and over for
-every other CPU. We should instead treat the "host probe failed"
-indication as part of our cached data and copy that.
+-- 
+Cheers,
 
-On the other hand, if we do that then the practical upshot will
-be that we print the error message once per CPU rather than
-just once...
-
-thanks
--- PMM
+David
