@@ -1,117 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17661175A9A;
-	Mon, 27 Apr 2026 02:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D923537F7;
+	Mon, 27 Apr 2026 03:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777256934; cv=none; b=FlyC9pp/4lzTysFb9/E9J73eKZvtrGlxnhJdOrWDbOC9P8hMGIllzW9l30bSxWO4mGWhmovo2rpiwdp2n2BPqxxdEiEwJLLn0iSXSnxLSUTxgvuEKQxPcTZJRJV2rWDHSCEnh17pylR+0LsyhwE2CXJOFWCWTXh2HeISfIoASSQ=
+	t=1777259611; cv=none; b=GqE4Baa7totea4gQhcqSTt0c+nnWjTjG8s2fIBdC8RjmdTY7bAOKzPnBI8B5nEOhrB+paN1tvvD/x5TLu+x1MF6c7IQ80+giTeGfrZv+E0OjtCAXm5KqbVbgdRVLJTsZXr37Gmfkr0uvvJdKy55v3DOEMNO2RCuqZLdgpJ7tXPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777256934; c=relaxed/simple;
-	bh=i8gqAuFNUK8Q6Vx5zHl08vt8VAdZ4gaMq0NwUSuJVVc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kxzG6BGm4PNCSAHIpfN399ZSLk/TQtwz3YGUdF2KO8L8k4vre/JLscDZv3y/K9P8EcGdnYRYC0GKHr7VtL5cUIKlkaaHJjxs0yC8rqtz8IkgcyCoaCvTnq20pHK47m0IYcVodkvhpkNN4gr4C2SjOrNx4wAAPNoloYIkPPupZAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VY+qMloK; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1777259611; c=relaxed/simple;
+	bh=V80SL+lhwvJTQ0cXw8bvUx5mV2JJH1vu6VApetJqC/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pdmcqImvR+sh5SfuG/D8bq5wDIUPzx4K0NbF1lD7iVxHeYsyCNu9kdgw+FIHdUs/JwyHwvN0hdYU3t29BKSbvk0pTC0cH31eA6Gb+RTbnbzEAypoTNEvIJcrPX1bx8dQ+2VEmccl+6Gg/uZT4jLcZlCFoldQT9JeFPlf1mlltdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oCUK8wwc; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VY+qMloK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oCUK8wwc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777256933; x=1808792933;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=i8gqAuFNUK8Q6Vx5zHl08vt8VAdZ4gaMq0NwUSuJVVc=;
-  b=VY+qMloKeYUD0MiZTQpX62ZwPp9tLRDNzLuobdHdTZpFg0YDlm3viI9y
-   TlQT95NwVHEPYOGSaOZyU9UBUtelRzPpxdNRAQNH3tQI8Rb8j/Wmpoiwb
-   xcgBZYxxIMM3Q0OIg49OMLzbsvxK3KeJIdG5Iyu2jaCHRyyDFNpT+nndb
-   1BGFZf/FZaPH+/PdPKpLvR43TqnoSrUHRsU69fz5sYiFzOjzpz5PWGUr5
-   WIpiJ8yZ76dipm0xcePEc1XUK2X4ws0Fr2Lmks6CzxJGJUPfsHx9b9K4f
-   vwj3Lh1KkhtRIOIbczSq5+QENFAXadysSTfF9QSW7U76N3spXPDxBkoXk
-   A==;
-X-CSE-ConnectionGUID: sSyNj7hFT6WYEwvSAH1T+g==
-X-CSE-MsgGUID: 1SOSGcvXQUq7r9YfRpdKeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="78125377"
+  t=1777259609; x=1808795609;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=V80SL+lhwvJTQ0cXw8bvUx5mV2JJH1vu6VApetJqC/w=;
+  b=oCUK8wwcgC3UUWD6Np185HkE/+Vp2dbLbOFCPkD27l9mtVKrXQCCKuzi
+   cZguS/XPgSoHJk/cACHzo95zfRVGqA6nhg7LvXsm4MlC3tUm2X3kVitYP
+   K1ZOaJ+B9vzffoSAp7zEk5wgd20885b2qR7HKeBKb9YtFnCpIpHzWl/hh
+   jqB0OsztJuEc7eMNG8pAHihNcFwJmuNOB4Cg+hWkdk/mwvaefe2KzzgbI
+   6GE4M0/PN+z9U2ui7y0+pcyJjMs3JGUAKTkfraNvqWTsZW0WB0B0pM+GG
+   uHk3u0mv8FFTPFbaYg0TmhoMhgFHQ+Qx0yQ5nK2me08Heftz7ZEwXAEp4
+   w==;
+X-CSE-ConnectionGUID: RVcKT/P5THymYDbNGr6Mdw==
+X-CSE-MsgGUID: 1J3wBD0gTeux3EYPBV+bow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="89606068"
 X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="78125377"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 19:28:52 -0700
-X-CSE-ConnectionGUID: yr6Yeo8MQpu4oQxzgqtObg==
-X-CSE-MsgGUID: RshLQUYFS1aAsYKp28qf3A==
+   d="scan'208";a="89606068"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 20:13:28 -0700
+X-CSE-ConnectionGUID: T+Q4B9PtSeaiD0zyK+WjNA==
+X-CSE-MsgGUID: sqRr1n3dQ7C5lSSVJ1g95A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="257025239"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.147]) ([10.124.241.147])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 19:28:48 -0700
-Message-ID: <72db96b7-a71f-4570-aaab-b5c3956b98ad@linux.intel.com>
-Date: Mon, 27 Apr 2026 10:28:46 +0800
+   d="scan'208";a="238504442"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa005.fm.intel.com with ESMTP; 26 Apr 2026 20:13:25 -0700
+Date: Mon, 27 Apr 2026 10:50:58 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"Williams, Dan J" <dan.j.williams@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
+ the TDX module
+Message-ID: <ae7PErLELqLHE4JA@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-20-yilun.xu@linux.intel.com>
+ <BN9PR11MB52767F28E9FF692ACE69F3D78C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <aehkFicutMwa2LP+@yilunxu-OptiPlex-7050>
+ <BN9PR11MB52763F59424C6E4AFD7F63988C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] perf/x86/intel: Make @data a mandatory param for
- intel_guest_get_msrs()
-To: Sean Christopherson <seanjc@google.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>
-References: <20260423150340.463896-1-seanjc@google.com>
- <20260423150340.463896-4-seanjc@google.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260423150340.463896-4-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN9PR11MB52763F59424C6E4AFD7F63988C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 
+> > > btw in patch23 commit msg:
+> > >
+> > > "
+> > > There is no dedicated way to enumerate which IOMMU devices support
+> > > trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
+> > > devices and tell their trusted capability by the return value.
+> > > "
+> > >
+> > > which implies that ecap_tdxc() alone doesn't really report the capability?
+> > 
+> > Ah, good catch. Let me explain:
+> > 
+> > ecap_tdxc does report the capability. This bit is special cause both
+> > trusted part & untrusted part access it.
+> > 
+> > For IOMMU driver (which now handles the untrusted part), it can directly
+> > query to this bit and decide what to do.
+> > 
+> > But for tdx-host driver which handles the trusted part, it shouldn't
+> > speculate into the IOMMU for capability enumeration. TDX Module has more
+> > concerns about trusted capability, including the related I/O stack
+> 
+> I guess "more concerns" means that there are more conditions for
+> TDX module to look at beyond ecap_tdxc(), so it's not appropriate
+> for tdx-host driver to check ecap alone.
 
-On 4/23/2026 11:03 PM, Sean Christopherson wrote:
-> Drop "support" for passing a NULL @data/@kvm_pmu param when getting guest
-> MSRs.  KVM, the only in-tree user, unconditionally passes a non-NULL
-> pointer, and carrying code that suggests @data may be NULL is confusing,
-> e.g. incorrectly implies that there are scenarios where KVM doesn't pass
-> a PMU context.
->
-> Fixes: 8183a538cd95 ("KVM: x86/pmu: Add IA32_DS_AREA MSR emulation to support guest DS")
-> Cc: Jim Mattson <jmattson@google.com>
-> Cc: Mingwei Zhang <mizhang@google.com>
-> Cc: Stephane Eranian <eranian@google.com>
-> Reviewed-by: Jim Mattson <jmattson@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/events/intel/core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 407fd392fd46..7403ca721b6a 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -5038,11 +5038,11 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
->  	}
->  
->  	/*
-> -	 * If the guest won't use PEBS or the CPU doesn't support PEBS in the
-> -	 * guest, then there's nothing more to do as disabling PMCs via
-> -	 * PERF_GLOBAL_CTRL is sufficient on CPUs with guest/host isolation.
-> +	 * If the CPU doesn't support PEBS in the guest, then there's nothing
-> +	 * more to do as disabling PMCs via PERF_GLOBAL_CTRL is sufficient on
-> +	 * CPUs with guest/host isolation.
->  	 */
-> -	if (!kvm_pmu || !x86_pmu.pebs_ept)
-> +	if (!x86_pmu.pebs_ept)
->  		return arr;
->  
->  	/*
+Exactly. 
 
-LGTM. Thanks.
-
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-
-
+> 
+> > capabilities e.g. SPDM/IDE cap...  So in patch23 I actually mean we
+> > don't have an enumeration SEAMCALL for trusted capability, I will
+> > refactor that message:
+> > 
+> >     There is no dedicated *SEAMCALL* to enumerate which IOMMU devices
+> > support
+> >     trusted operations...
