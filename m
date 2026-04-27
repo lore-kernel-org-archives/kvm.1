@@ -1,125 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7DF31F9A7;
-	Sun, 26 Apr 2026 14:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A417745
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 00:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777212459; cv=none; b=nLG07ymWNvGIxWVQVaaQ/xmos+jKYUpmJbpjf0GCa2yK6sc3yarIOXcOf1hoelXOQkvvPBPWp0lzaO0PIOGMcjeiorHhli1miCtx+J4DqXTgWBf0zqirKsLM5UFz9eEBOcsZWkYxeM9rET1Cf41pm8Y7KujPFEsQG4zrXmUylXQ=
+	t=1777250232; cv=none; b=vEU8SoFozy22nKjqKT/uuiQT/bFtIiMaNcFcQw75n/4ZUZNbxlHJ0LTKKl71/1VHUfUjVmS6F/mppLakBvQkwNl2ddIejeSP8F1SG5Yxgq7SVmldnN5/xS/m2vh39e+f8LmHrskc+0ifgeOj52uimlfqi/v1CBdW0XEW9aLzpPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777212459; c=relaxed/simple;
-	bh=lDY502D0UwTlnUwqf8BtPahtm7twsTmu8HFtn+sm0IA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dxM+bv0r8cdHflf5DKClX+cUu4qQriM5w1o7GfQ8F2/F6LE1VVzDwfvn8lh/HehdG+6Xw2O4kj11C+e6sO+qzjW0kgDn5662KqtEb+Cl0tLF55FatYzX7ZZfv4Gj79g0tHKGV1JlIebxIXu61UyiXzE8jcsF1L1YRN084VuXRws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tH7DMitl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777250232; c=relaxed/simple;
+	bh=JA7fhWQUKJ7bKOO5WZ2l4tLYAxtvAQeGMTMWREFP7ac=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Ph1nsoBz9s00v84bGnGUbvvVkYE4bd3YraSbPLZLfyBGjxnwBSXoFkBrtSizusjrdstm3SIhLFhUesWTV9owGco0gzZfStQhciLAuH5FNr+3jS4vkO1SfeUPj/cR3mUrNU7P+b3XS9GM42UukjELdfuU40+Jmi6wL56gL+Cl3Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTyGJ4tI; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tH7DMitl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9C2C2BCAF;
-	Sun, 26 Apr 2026 14:07:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777212459;
-	bh=lDY502D0UwTlnUwqf8BtPahtm7twsTmu8HFtn+sm0IA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tH7DMitlSokecV8h+r6UW83iqIZELeQsvftYXNCwbWJ4C1tGsegwbFrQwE8VRLIol
-	 pdOPTL5FUBTWxqfYLt3YWZOTmZ06lkNOZRAKdTSqbouqHoUEMyemuj1pbvXGPVse2u
-	 F/EYw15WAetJgngUM32zjvi9O6m9TA+Ww0qQG9A1qaB5LXBYujRuLmbvLwg/s46wmH
-	 XO/Oo18VWtjN1/TECD1FWniOIDDXuN5zmlWI7FaX+lsuxs5VirkvkLZ9axgQN2yLSk
-	 XR8Yh/ZDZt64YYJ9u0bBs9jhqEegHr5aFTjc2tTVqXuYVyRs/lSlBUGv7BFwWW+LcU
-	 Oew3uCGUnOUdQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wH092-0000000EnUE-3vU3;
-	Sun, 26 Apr 2026 14:07:37 +0000
-Date: Sun, 26 Apr 2026 15:07:36 +0100
-Message-ID: <87ik9dbys7.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Cc: Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Mark Brown
- <broonie@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	Darren Hart <darren@os.amperecomputing.com>
-Subject: Re: [PATCH v4 35/49] KVM: arm64: GICv3: nv: Plug L1 LR sync into deactivation primitive
-In-Reply-To: <861pg213to.wl-maz@kernel.org>
-References: <20251120172540.2267180-1-maz@kernel.org>
-	<20251120172540.2267180-36-maz@kernel.org>
-	<2e12c5c2-a1b6-47b7-b54c-7281a77bbe0a@os.amperecomputing.com>
-	<878qb9cxzr.wl-maz@kernel.org>
-	<1e050b67-2276-41ad-9265-796ba853dc7c@os.amperecomputing.com>
-	<86a4vo49ni.wl-maz@kernel.org>
-	<86eck71o1v.wl-maz@kernel.org>
-	<e283e755-c348-43cf-b5fe-278c5eab742d@os.amperecomputing.com>
-	<861pg213to.wl-maz@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTyGJ4tI"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82fa8d6425bso3546741b3a.0
+        for <kvm@vger.kernel.org>; Sun, 26 Apr 2026 17:37:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777250231; x=1777855031; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mVdfUhTIoRGg+RbxdXBCn/qp3+VQxZ3cyedRP11wnO8=;
+        b=mTyGJ4tIEkwcSzOMZM7wAAaDbcvVUrt9wbByfgJ4/esK9zB/pGp0DaNtgGSDMnih60
+         REwRmeA9M8HeOyta5gOi2YFvTFIYetAAFf3ApdyEF7aATEG1yQikhiKKub7j5hIjSrVi
+         drEzT9sThYH5dZ3dULmetSZVOMtIP8G7M3Fgh1ZvdolS3W6aCJ3h56Ri1ZrLqyKRcyP4
+         mJcfsdSxtj9c96RPHKIfmUXPH5BAK8ayPuvIoDaS+v5fHZhSzu7IW6dJkpmpTG86Jghk
+         wPuN5ewG2OJuG7KFSj6dauZjwfvSsNtZMaTyE5bfT+himnZlJaNpWY2LsqtRHLEBAPNy
+         kjEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777250231; x=1777855031;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mVdfUhTIoRGg+RbxdXBCn/qp3+VQxZ3cyedRP11wnO8=;
+        b=ikBuBwqmPbP9mMMZQd+7M/j6jnAiui1jVoZ7V6PPD6WHCgD7pLVMZN1DBU5HCTsaSj
+         Vae52SU/h9y4EcjcS9rafyquiJsJlaHsvAgEFnR3XegJWiIuIbRfTJt73DtSNL95Eop8
+         I8R+CSWYAT8PV3HltEHV6wjC0OwebrDPiMJx5HK7K9M3Z9VgyRlXU4cdEu1fN5BOGhl4
+         d6Fb6wgNYMRMD0ye5p7VcpRLbGbi9DNvGdx8JIukNDMUZ7fThdg5B39I3FOYN6Q0ro3V
+         JpUnAhoofttA+0X1frY3iJzqkbdvl3OOBJ6QXTTb9GQICHZBeWcFmihAb2x5WWTyvE1b
+         RwLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9IdfqOCUqBf8XecwaFY9BUEHk0pWjiV21gkGzMlJkqTzR/iqQNxU3+DlUQnK+T5WkdbH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiKJT9xUoR8A1RWwJZzriXhF/Gum3MbObIEYlTsLBNDT8Yj8zV
+	LzUWFF/FNnol8EFrGCuqNSs94FDY5K3beuiKHD3c0PRu7wVu5xjzKiD3XJTf2A==
+X-Gm-Gg: AeBDies3HTw6MMDa2K0T7ZZrnhwtDl4DQhccndhNTqYLNydS4k5VivF++V67gZBDYnY
+	K90/l/RQvjnmQvk2HEtVbOWfiaiMm63ypiQLw47pvSIXL22BsBzvZUP8u5+SkMZsryGD/VxoP2a
+	j6MV1l3u1aUlbplwOpefaL7I6CcT16aztO5MhA2Z5MZdOR8lRM9wlzo1F8ue+K7IcZ+3QI+85Kq
+	i7HXkma17/nV0jKmbx1e5wk117nehdxpX1XMdUfIs3r9U0UuuEz9jJOrc5SJdlBd+1aBJjPeK3z
+	ZUa15SKtlu6OTPSfw/rx5sO7vaT6nyj+xIJgRh8eKg+Sg2CenfD/UqWxkXMIneEZSUz6CaC1uv4
+	diaTOWY1GOhlC963ea/41quxnc8pkzcSXrmDdB56UJyjl8NqwlXFx331k0+pzFc8PleSK1mHtCd
+	XLbBDwHqA+tCLzaCJ/Od6uV1mm5zoKpcvBPHfkwBVntKg=
+X-Received: by 2002:a05:6a00:4308:b0:82f:3733:2f96 with SMTP id d2e1a72fcca58-82f8c82e853mr41049342b3a.8.1777250230657;
+        Sun, 26 Apr 2026 17:37:10 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83336687182sm2598534b3a.35.2026.04.26.17.37.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 17:37:09 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gautam Menghani <Gautam.Menghani@ibm.com>, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for tracing exits
+In-Reply-To: <20260424092558.31798-1-Gautam.Menghani@ibm.com>
+Date: Mon, 27 Apr 2026 06:00:46 +0530
+Message-ID: <lde9s0qx.ritesh.list@gmail.com>
+References: <20260424092558.31798-1-Gautam.Menghani@ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: vishnu@os.amperecomputing.com, tabba@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, christoffer.dall@arm.com, broonie@kernel.org, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, darren@os.amperecomputing.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sun, 26 Apr 2026 10:14:11 +0100,
-Marc Zyngier <maz@kernel.org> wrote:
-> 
-> On Wed, 22 Apr 2026 15:57:44 +0100,
-> Vishnu Pajjuri <vishnu@os.amperecomputing.com> wrote:
-> > 
-> > Hi Marc,
-> > 
-> > On 22-04-2026 12:25, Marc Zyngier wrote:
-> > >
-> > > Have you made progress on this? I can't reproduce it at all despite my
-> > > best effort. I'm perfectly happy to help, but you need to give me
-> > > *something* to go on.
-> > 
-> > 
-> > Thanks for your support!!
-> > 
-> > The issue is triggered as soon as the timer interrupt (IRQ 27) is
-> > deactivated. Preventing the deactivation of IRQ 27 during nested VGIC
-> > state transitions prevents the failure from reproducing.
-> 
-> Which level of deactivation? From L2 to L1? Or L1 to L0? The former
-> should just be a an update to the irq structure, while the latter is
-> effectively a write to ICC_DIR_EL1, and *that* is a new behaviour
-> introduced by this patch.
-> 
-> I wonder if your implementation is such that ICC_DIR_EL1 is trapped by
-> ICH_HCR_EL2.TDIR, which is allowed by the architecture, but that none
-> of the two implementations I have actually enforce (the trap only
-> applies to ICV_DIR_EL1). Can you try the hack below which disables the
-> traps much earlier, and let me know if that helps?
-> 
-> Even if that's the case, this should result in an EL2->EL2 exception,
-> and that should be caught as an unhandled exception in entry-common.c,
-> so something else is afoot.
+Gautam Menghani <Gautam.Menghani@ibm.com> writes:
 
-Actually, this should never happen. ICH_HCR_EL2.TDIR is constructed
-like all the other GICv3 trap bits, in the sense that it only traps
-accesses from EL1, not EL2 (for sanity reasons, I'm not considering
-the possibility of a trap to EL3...).
+> From: Gautam Menghani <gautam@linux.ibm.com>
+>
+> The macro kvm_trace_symbol_exit is used for providing the mappings
+> for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
+> trap reason is displayed as string instead of a vector number when using
+> the kvm_guest_exit tracepoint.
+>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/trace_book3s.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
+> index 9260ddbd557f..eafbaeb5a9db 100644
+> --- a/arch/powerpc/kvm/trace_book3s.h
+> +++ b/arch/powerpc/kvm/trace_book3s.h
+> @@ -28,6 +28,7 @@
+>  	{0xea0, "H_VIRT"}, \
+>  	{0xf00, "PERFMON"}, \
+>  	{0xf20, "ALTIVEC"}, \
+> -	{0xf40, "VSX"}
+> +	{0xf40, "VSX"}, \
+> +	{0xf80, "H_FAC_UNAVAIL"},
 
-Still, I'm interested in finding out if that hack helps at all.
+So I ended up looking into other trace_symbols too and I don't think we
+should have a trailing comma here. It may cause some issues silently in
+trace-cmd or other places. I remember going through it when I was doing
+some other tracing work earlier but I don't recollect it now.
 
-Thanks,
+Can we just remove the trailing comma and send a v2 please?
 
-	M.
+btw, 0XF80 is correct as per "arch/powerpc/include/asm/kvm_asm.h"
 
--- 
-Jazz isn't dead. It just smells funny.
+#define BOOK3S_INTERRUPT_H_FAC_UNAVAIL	0xf80
+
+-ritesh
+
