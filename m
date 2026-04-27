@@ -1,159 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AD83E274D;
-	Mon, 27 Apr 2026 18:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A00E2E0412
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 18:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777314054; cv=none; b=u1/Ds/LwShlIadKzXh+lhNI4gPsN9exef3ie1BjXf1WAoD2miBL1hJLkSmjiQgFnkwueiKw1ZE39Eh5sZqwKyghwgVBf9T+vWcRQ/13dBpNuCMgX9ogM/K0pcG8KWxEesYHqnIe5mg2OvSvN6I6WvoH2aQOhDsmlwbKWSrX6Jow=
+	t=1777315058; cv=none; b=FIPuPL8iEFOEMocXxOwz6Z9qvoMSyHnDprSoxKrWWv27SO42ZcFIvtndL0M2UlAVAZkotNTZa8zWz2qlMEZb35+3dCAycTQ9g6XOR9pBVRbfrjdllqqbIagf+YhSsUqx6b5Qct+eqMSJdnMuch6ErDKdncz4a+8h7U1XxtE3nFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777314054; c=relaxed/simple;
-	bh=fSfdZ5/fBIJBn92+lTQ8RknrFiSruKk4Zm5FPbyuhQI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hZjCzRBOdWpzK3uvkI8gRjnAcZaKmKArWlmpDhiw0GgVB4zsMAYIXjZcAWTXdrpnG0sJUq1ajJCjvn36+YUmAjH6Vph2VJw/sM7s7qVdAR8PkRST9bRCOJncBwN1OtrW0UMhsYc5r6fSftL5OFZBrBgih5DvSnSbgr9V0twHDU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2scZpbK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777315058; c=relaxed/simple;
+	bh=m4T08v0n5rer/Aid8hTieHs817vXp7AqH3Xfx4disSs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=e03PRU23bi9iOp+RUdWvpZQL9HIS8CKIMJftVsARg0fQ3A3DMcEJXOd5MF+w/AT7Faj5mm8Rh174yHPyypINLK1PWJEBCN22O1zKry6PJr76Zw2mPatpmrgEFRX4t3mLzJ15ZMwDmRnH7zBsAoc7L84xkDv1l/6HVi+ie+Fc/Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZvcX0Usr; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2scZpbK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCCFC2BCB5;
-	Mon, 27 Apr 2026 18:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777314053;
-	bh=fSfdZ5/fBIJBn92+lTQ8RknrFiSruKk4Zm5FPbyuhQI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J2scZpbKenpOejPaCkxdr8Fr6c4RornKyxLjF0dKFYhSlw+matCdj3SDWlLeqEo9E
-	 a373XI9Iold2YwxLkAFI1OVkbxbR9JLgxu/comiCZJeBJjQK8IiPFbF3a0OQIu5zFJ
-	 z32D8XDVz5Fo00XfpR09lc3WO+fPx7ont3FOA+TL4jxGM7w1J5Z2cHWcv2Vi05coRU
-	 6lIPjD/Eh4XtMiOh4PUlJfQ+hbcnF50oIaF0Y5is14Jb9Uy7pNbq6e4WVWxwPn3QZF
-	 F5175xYuXBtUSK+HvgeuPZTDTXog5e6524IUP62vgqpWl/U/vR5Pqvo+DbOYeGkne+
-	 cSOzK+yVIhXWw==
-Message-ID: <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
-Date: Mon, 27 Apr 2026 20:20:38 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZvcX0Usr"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f74bcfb86so12687458b3a.0
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 11:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777315057; x=1777919857; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8V0U2CiNzZ5dcx3AMXIw7uJIsqfRpaxOOQdxJ3Zu/s=;
+        b=ZvcX0UsrWCBd0MC9tyUXzk7gDtSJk68TUVwDCiq0/cHWKZDzkZ4LG9yCvRIQagqYBh
+         q8+45Zk5NdEfJJW1/zktk1+sduu5FQhlOuF+bHY+EzJNA/Rqu14qXVwp/7X49QP2LzMK
+         E6AGwFyQOWH4hdGqxINttgzrWW37eNgEMdwfkw82rbU+fuWOfeSN8KWgif4lNdQoNY59
+         uE5UPR1wC1UTcI+G9zAs9C8xPI89H79oESlRyvaDkuZKOXwDQBh2QXikHaI8wAbRIAA0
+         WBQfujnJQsGHJB7O79RwrPH3WjjO7hq0tA5Dm584Hv7nDUUkTS0qKwJL+fdLJ7UQmArq
+         BVgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777315057; x=1777919857;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8V0U2CiNzZ5dcx3AMXIw7uJIsqfRpaxOOQdxJ3Zu/s=;
+        b=Nh/soyCCigeXlssDpe88R89hNzkK8zazZed5Zk6C342Ka3jTxjpY8t4mUcywAkLyv6
+         8v5L+E99j18nn3hscf5ncTKP/WUDsbecq4rp5ZnJIt4+NrDeHeu+jlvm+TQtcX+ml1KP
+         vX2QAW3Yo9eeJYIk30KNauUJPiZy9XIQV5AWF/eO3PWXRRonJDpeLIyXFgVDPIT5NPu7
+         Tnz7AQ1+mhHnoE8GfqkLmu8Hlv1Q9+MT8U+8yDBTCZAH8ZZ/ops2NHW8n6E/mWbWVRxE
+         lNvUXAZljd3RtRj7CgYesqLDY4t4u4HKskwB7i0YbnDL9xDbTj/4hHqCYHoRsml7FT+Z
+         VSGw==
+X-Forwarded-Encrypted: i=1; AFNElJ8UFZInqd4oQFKDnYqyLiFPh4m6i6E9jQBKThFQ48FlTVaeRwNHYzjf/loCMKHG2pFUy5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6gLyFn/UrUG2lPL+j+coOUhFrOdIyqNBfzPqDEiFBqE0wcSt5
+	Mbbs6F0+dx7IGLxBFxMo0zmmGRt1Ew3X1nFiue0JjoyJb7LH93lqisEpbKxgNzIDnLIqorDBIFb
+	c5TGHkQ==
+X-Received: from pfbfc25.prod.google.com ([2002:a05:6a00:2e19:b0:82f:98cb:c2a9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3407:b0:82f:6e39:d90f
+ with SMTP id d2e1a72fcca58-834dc283f7cmr149172b3a.39.1777315056743; Mon, 27
+ Apr 2026 11:37:36 -0700 (PDT)
+Date: Mon, 27 Apr 2026 11:37:35 -0700
+In-Reply-To: <tencent_DB120129B359660BBBD7CCC9681F507C0105@qq.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- David Laight <david.laight.linux@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-x25@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-sound@vger.kernel.org,
- sound-open-firmware@alsa-project.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-arch@vger.kernel.org
-References: <cover.1777306795.git.chleroy@kernel.org>
- <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
- <ae-j2_QirCySZD02@yury>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <ae-j2_QirCySZD02@yury>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <tencent_DB120129B359660BBBD7CCC9681F507C0105@qq.com>
+Message-ID: <ae-s7x-46gnuc07M@google.com>
+Subject: Re: [PATCH] KVM: x86: enrich kvm_fast_mmio trace event fields
+From: Sean Christopherson <seanjc@google.com>
+To: zhanghao <76824143@qq.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+On Fri, Apr 24, 2026, zhanghao wrote:
+> kvm_fast_mmio currently logs only the GPA, which makes fast-MMIO traces
+> less useful when diagnosing access patterns.
 
-
-Le 27/04/2026 à 19:58, Yury Norov a écrit :
-> On Mon, Apr 27, 2026 at 07:13:48PM +0200, Christophe Leroy (CS GROUP) wrote:
->> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
-> 
-> No, they don't. They (should) rely on a generic implementation from
-> linux/uaccess.h, like every other arch, except for  PPC and RISCV.
-> 
-> But they #define arch_unsafe_get_user, and the unsafe_copy_from_user()
-> becomes undefined conditionally on that.
-> 
-> So please, fix that bug instead of introducing another arch flavor.
-> We'd always choose generic version, unless there's strong evidence
-> that arch one is better.
-
-But they both implement the exact same unsafe_copy_to_user(). What is 
-the difference here ?
-
-Should that function become generic too ?
-
-Christophe
-
-> 
-> 
-> Thanks,
-> Yury
->   
->> Add it.
->>
->> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
->> ---
->>   arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
->>   1 file changed, 24 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
->> index 3a0dd3c2b233..10c458ffa399 100644
->> --- a/arch/x86/include/asm/uaccess.h
->> +++ b/arch/x86/include/asm/uaccess.h
->> @@ -598,7 +598,7 @@ _label:									\
->>    * We want the unsafe accessors to always be inlined and use
->>    * the error labels - thus the macro games.
->>    */
->> -#define unsafe_copy_loop(dst, src, len, type, label)				\
->> +#define unsafe_put_loop(dst, src, len, type, label)				\
->>   	while (len >= sizeof(type)) {						\
->>   		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
->>   		dst += sizeof(type);						\
->> @@ -611,10 +611,29 @@ do {									\
->>   	char __user *__ucu_dst = (_dst);				\
->>   	const char *__ucu_src = (_src);					\
->>   	size_t __ucu_len = (_len);					\
->> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
->> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
->> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
->> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
->> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
->> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
->> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
->> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
->> +} while (0)
->> +
->> +#define unsafe_get_loop(dst, src, len, type, label)				\
->> +	while (len >= sizeof(type)) {						\
->> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
->> +		dst += sizeof(type);						\
->> +		src += sizeof(type);						\
->> +		len -= sizeof(type);						\
->> +	}
->> +
->> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
->> +do {									\
->> +	char *__ucu_dst = (_dst);					\
->> +	const char __user *__ucu_src = (_src);				\
->> +	size_t __ucu_len = (_len);					\
->> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
->> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
->> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
->> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
->>   } while (0)
->>   
->>   #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
->> -- 
->> 2.49.0
->>
-
+What's the overall use case / motivation?  Fast MMIO doesn't consume the value,
+length, or type.  Why trace something that KVM ignores by design?
