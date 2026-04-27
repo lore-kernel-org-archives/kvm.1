@@ -1,125 +1,298 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC68301717;
-	Mon, 27 Apr 2026 12:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078F23C4544
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 13:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777294236; cv=none; b=LES0VOrhMBfK16vGjjJjNgnt7YyAOvn9FyZnCbQEOwVeFOZjp3SJAADw+003ZrVD1IEC28PwKGtP/m8JlX5c7VUGYXQ9H7Qm8mTo0NdJCD6aEzLPZyBuIOwPV5rNaVUUzLTm0CQHfIlgtVzwkNvF5cZ9whDzxlGdX8yUhQzwE0U=
+	t=1777294856; cv=none; b=rRwjyGR7/JzSpvhFphr62bn9DdI6ImwqndjZ+biIuQuIKcD9eZ1pJnCDrBC1joHtM8JWc4qilVbPvBXbZgivs9Ob3Cgb8XSqXxQwUdihkhOH1qmisYzZTl+XHjJcptLlb1lY7+YHr+pWoXXv6y9gytJoAuGts3w8W3k9Sz2jWi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777294236; c=relaxed/simple;
-	bh=BbOKLHT4XowbWrKB/OCd7ydCzFiGZK491CAr//69O1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OlxUPG9K+Idy6zm81usWlky1m7wNBXH8mymPUfIgJXsSDTDXjPyMwyGmK9wA5leFV8a1bMW0MKeW62znw+XMz0aBBORcXySiqFjxgwBwunuttp9yKziLNSGswetMlGATzBfn4+KqMV9xqzwtgTMYd7zg9kfBX/cdx+QtXtZ+rwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qyWmjglI; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1777294856; c=relaxed/simple;
+	bh=F2Xp1+J0t/YjwriVvl8Pbc8Dl2/SEtYsRRibhtSqsno=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S6N1wL7CV022wRQNZvPVcbjeqeV7u0SDQ42FdiGhXAdlXZXhXnoI4epxpZQCGokNj4ScNg9R+1XXt+ZCMAJjEukSm9VysIwdHknaECZUHA/ba2v7w8G9x9P2H0bfYc1r1ZrNAu/TlneqYYVg/xn/MTMb/IX/iZWBgsfc0zabYiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WlW7Mzr/; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qyWmjglI"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QNVGNv3017137;
-	Mon, 27 Apr 2026 12:50:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:sender:subject:to; s=pp1; bh=59SWzXZ+Hgl7z01y0cWjI0l
-	IytClP7KTtmTjxB2ZfWc=; b=qyWmjglI/BZIqzvrlqPgHOhAPGj8+YY8fgPnI2M
-	q/QGvwqp9Ii9NkPO3TagZcuxfZPJV7tQ3NCp8UYC+NAdIM8hD/viBe8YRQOc/gTl
-	Ja8zQyiopDPLIcO49+UVYVsRyF9xdyokB9yiIcNknrP6b3khdlSvZFOhPXAoHhtf
-	MYrvWAK23cmCcQjyRxwgLpDcwM4eTa0bqycFO90rKOQXv5VDit2WPEbtzc33fey4
-	yVc4DO0Tr7pJTd//aWvcPHngHUxnhx6aPxnGE0n9bWt2y51Bqj9HzaCE52ZZJg4+
-	TJANHoAqWmQmqB6Q2n0bJMjMoVGm8chKQ2r3jFh+9ROwMTg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn9r0d7f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 12:50:32 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63RCckbV022954;
-	Mon, 27 Apr 2026 12:50:31 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ds7xq5a2q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 12:50:31 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63RCoRkM45220210
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Apr 2026 12:50:27 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E6C820043;
-	Mon, 27 Apr 2026 12:50:27 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75AAD20040;
-	Mon, 27 Apr 2026 12:50:27 +0000 (GMT)
-Received: from vela (unknown [9.111.3.200])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 27 Apr 2026 12:50:27 +0000 (GMT)
-Received: from brueckner by vela with local (Exim 4.99.1)
-	(envelope-from <brueckner@linux.ibm.com>)
-	id 1wHLPu-000000006j6-3nt2;
-	Mon, 27 Apr 2026 14:50:26 +0200
-Date: Mon, 27 Apr 2026 14:50:26 +0200
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, David Hildenbrand <david@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] KVM: s390: vsie: Refactor handle_stfle
-Message-ID: <ae9bkscHB51fUA5w@linux.ibm.com>
-References: <20260226-vsie-alter-stfle-fac-v2-0-914974cb922c@linux.ibm.com>
- <20260226-vsie-alter-stfle-fac-v2-3-914974cb922c@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WlW7Mzr/"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso86555125e9.2
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 06:00:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777294852; x=1777899652; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e+5B0T5BZcM8PN6hrBB/cl4KNtkNonj2W3WbwM9F740=;
+        b=WlW7Mzr/FQPOHzl78AjOARfsiDzmro59jico3M3KArs74MiZeNKlN7Es5xNapzB4Jn
+         sGjukUXBJR/JENCOCKifbp6/k2GEaAORNMa3IvNanCAkcKthBYMbOWhHo3h+yO6x/F3F
+         e5m+/vSi+YPd6O+cpOvNSMYBzrSeE1JTUs3cs0vwsyXknuz2KLCugg7ZEnbb9lqH0KUc
+         sNJU6RpVbDYqxkTiosGa8nBpIYGtfPwc6N8k1PXB7EtlFaatSnFTOt3EyoPe/W3V9ASZ
+         Ibqh8swcysOmEO2W8DsxFBG5JMpH0rGbkxdze+NV7o+1cGtcKA9wc+CDKlv2mMKEWNoQ
+         ov3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777294852; x=1777899652;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e+5B0T5BZcM8PN6hrBB/cl4KNtkNonj2W3WbwM9F740=;
+        b=HN7/n7DvsZJQDexp/5DO4cqmHLDooJKuQ5U85uDROBueu5/E6W5Mj//r+Q/LGz0YZN
+         QT4sVlPEZGsNYPG3KzdYUfCpE+FgmXw/5mNzz8rJYsQA8EdREuNyiTnGXRk4nNgzA+bY
+         JKMXlw24mR65SdXtuMB4o5LPSxXCHR1g9w/5wkA1e4/U8qYgUMrPfy9r0B31P3uWVNqH
+         2plsUKDXbXaWo8mG8YLSEARAxX1n7ALUqojR4zi7AyYmrfZYEgy6aod9wYNTCCTFTOmy
+         Ckt8KYwVUKkQDYx6vtAEt/7aYu3JNegekReJAgf525ET9weVoRFQclWf65OvMBsjF8kL
+         iZlA==
+X-Forwarded-Encrypted: i=1; AFNElJ+kS4qf0iPUrhOWRFjJxjjoe4tKKJLTTccAdl522SoKwzmE8rVADLPczjw6Q30TJoHU/jg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy4oftVgMwPTgsokZdrTXzvX0e+p01Hf4s0pkqtjX7V6PQu8NJ
+	ZTNprSjSwqmNjTin6kUaFxaqL3nwbytU6QJ+F6M5izXsPybTyxaBNqVUQDIoOox76Xw=
+X-Gm-Gg: AeBDies+Sz+h5DjtZSCqqZS0el/1jN8cuwQAMaTctgArzvaYQp04mSbY6rCzOGLB44Y
+	HXLW/pXL82IXNbC3qjVHE9RJmA/jrtqh1+jwb+tQf94fgr2UKDvHaDGch/+ktxyPhhTLwU87VFw
+	RU50fOB0I1LJyp9fOYt+96Kl6KoMjkDDf4TkI/IqeElAy0ZsXzGTLPBL/qMTX6oeQvYcAh8lDS0
+	dO0f+bo2rbtuddvx5wdKoSNc44XG+LPNYmbUymlw9NOmsYxZlHJ3W+vLzvW/+94i+OgkQACC9L1
+	qPftWUnJXRQtlY+nXYDEhRrxz6ryx4DhytQqGFsQT4ijHuVAiO7XrxpTcMepPv8R1mTB44wFZHW
+	s6b92hAR/lj3DQN6N+2nTAE+Dd4FWsXXes/kdehDCXDmJcm4vS72kskOwuqv/Flq1C3Nn8+BpQ4
+	PD+svGqXlp5Owt0TEuEdClFzNxad3Et0lDgQ==
+X-Received: by 2002:a05:600d:8451:b0:48a:599a:36fe with SMTP id 5b1f17b1804b1-48a599a4413mr263744425e9.24.1777294851986;
+        Mon, 27 Apr 2026 06:00:51 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ffc558f2sm622865905e9.1.2026.04.27.06.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 06:00:51 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 06B075F877;
+	Mon, 27 Apr 2026 14:00:50 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Andrew Jones <andrew.jones@linux.dev>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	kvmarm@lists.linux.dev (open list:ARM),
+	kvm@vger.kernel.org (open list:Default mailing list)
+Subject: [kvm-unit-tests PATCH] arm: add wfx test case
+Date: Mon, 27 Apr 2026 14:00:45 +0100
+Message-ID: <20260427130045.3669851-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226-vsie-alter-stfle-fac-v2-3-914974cb922c@linux.ibm.com>
-Sender: Hendrik Brueckner <brueckner@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 26baCeDkPpPZW9x3RqVZoyHWSfrQsr4F
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDEzMSBTYWx0ZWRfX+QI5a/O4+IRF
- IOJrdwqG8GxTKCtTQp7POcv9IFmAwG0/Brxbuix9aBzs05luHYrGiWm/CkV1ml5T3n4cMI35Epq
- mtNr6+/RmTM08Ez9VETL61LICfPpnXer4mQGsW8hEZa+mvx6f4huH3u/7ZjQm2wv6xziLNrVz/n
- fIHYciecwWPUR8dpqZjZv2oL+hUo5g9EGCILSpVutQl98BjN1MZWtZ2fenP3g+kDwb3U9CLG3Xr
- IFiDv6FRWkTIEqBFM7fRU3+yK3EjBXmzML38p9eedSCJxR4LxjnFPdZp3q8vTjCyb7wtawZtxIf
- ulaFw3l25KR5RJ6tOyLs0XzzGwnv6D1pUf0uvePsiNiiX7kgm38txH0E8X66qa+slne7X0Oy6eG
- Tsw/soJb3ZWs2WB1tJMD8zXMSSH9fDHVN3ezRCfnzD8ZxFmFkgyUrmc8xxDVdZ7s1bms0A107LX
- JRR/nnCizC8f/xMqIZw==
-X-Authority-Analysis: v=2.4 cv=Kc7idwYD c=1 sm=1 tr=0 ts=69ef5b98 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=jI7lt5Zo0p4w2OnscCsA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: 26baCeDkPpPZW9x3RqVZoyHWSfrQsr4F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-27_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- malwarescore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604270131
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 26, 2026 at 01:49:06PM +0100, Christoph Schlameuss wrote:
-> From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> 
-> Use switch case in anticipation of handling format-1 and format-2
-> facility list designations in the future.
-> As the alternate STFLE facilities are not enabled, only case 0 is
-> possible.
-> No functional change intended.
-> 
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+This is based on a similar test case I wrote for QEMU's tcg tests although
+obviously able to take advantage of kvm-unit-tests additional plumbing for
+dealing with the GIC and IRQs.
 
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ arm/Makefile.arm64        |   1 +
+ lib/arm64/asm/processor.h |   7 ++
+ lib/arm64/asm/sysreg.h    |   3 +
+ arm/wfx.c                 | 137 ++++++++++++++++++++++++++++++++++++++
+ arm/unittests.cfg         |   5 ++
+ 5 files changed, 153 insertions(+)
+ create mode 100644 arm/wfx.c
+
+diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+index a40c830d..52b3f35d 100644
+--- a/arm/Makefile.arm64
++++ b/arm/Makefile.arm64
+@@ -64,6 +64,7 @@ tests += $(TEST_DIR)/cache.$(exe)
+ tests += $(TEST_DIR)/debug.$(exe)
+ tests += $(TEST_DIR)/fpu.$(exe)
+ tests += $(TEST_DIR)/mte.$(exe)
++tests += $(TEST_DIR)/wfx.$(exe)
+ 
+ include $(SRCDIR)/$(TEST_DIR)/Makefile.common
+ 
+diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
+index 32ddc1b3..2104036d 100644
+--- a/lib/arm64/asm/processor.h
++++ b/lib/arm64/asm/processor.h
+@@ -173,5 +173,12 @@ static inline bool system_supports_rndr(void)
+ 	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
+ }
+ 
++static inline bool system_supports_wfxt(void)
++{
++	u64 id_aa64isar2_el1 = read_sysreg_s(ID_AA64ISAR2_EL1);
++
++	return ((id_aa64isar2_el1 >> ID_AA64ISAR2_EL1_WFxT_SHIFT) & 0xf) != 0;
++}
++
+ #endif /* !__ASSEMBLER__ */
+ #endif /* _ASMARM64_PROCESSOR_H_ */
+diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
+index f2d05018..cb96a649 100644
+--- a/lib/arm64/asm/sysreg.h
++++ b/lib/arm64/asm/sysreg.h
+@@ -77,6 +77,9 @@ asm(
+ #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
+ #define ID_AA64PFR1_EL1_MTE_SHIFT	8
+ 
++#define ID_AA64ISAR2_EL1		sys_reg(3, 0, 0, 6, 2)
++#define ID_AA64ISAR2_EL1_WFxT_SHIFT	0
++
+ #define ID_AA64MMFR0_EL1_FGT_SHIFT	56
+ #define ID_AA64MMFR0_EL1_FGT_FGT2	0x2
+ 
+diff --git a/arm/wfx.c b/arm/wfx.c
+new file mode 100644
+index 00000000..912e50e6
+--- /dev/null
++++ b/arm/wfx.c
+@@ -0,0 +1,137 @@
++/*
++ * WFX Instructions Test (WFI, WFE, WFIT, WFET)
++ *
++ * Copyright (c) 2026 Linaro Ltd
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <libcflat.h>
++#include <asm/processor.h>
++#include <asm/gic.h>
++#include <asm/timer.h>
++#include <asm/io.h>
++
++#define TIMEOUT 200000
++
++#define sev() asm volatile("sev" : : : "memory")
++#define sevl() asm volatile("sevl" : : : "memory")
++#define wfi() asm volatile("wfi" : : : "memory")
++#define wfe() asm volatile("wfe" : : : "memory")
++
++#define wfit(reg) \
++	asm volatile(".arch armv8.7-a\n\twfit %0" : : "r" (reg) : "memory")
++#define wfet(reg) \
++	asm volatile(".arch armv8.7-a\n\twfet %0" : : "r" (reg) : "memory")
++
++static void timer_handler(struct pt_regs *regs)
++{
++	/* Disable timer to stop IRQ from re-firing */
++	write_sysreg(0, cntv_ctl_el0);
++}
++
++static bool check_elapsed(uint64_t start, uint64_t threshold, const char *test, bool more)
++{
++	uint64_t end = read_sysreg(cntvct_el0);
++	uint64_t elapsed = end - start;
++	bool pass = more ? elapsed >= threshold : elapsed <= threshold;
++
++	report(pass, "%s (%ld ticks)", test, elapsed);
++
++	if (!pass) {
++		report_info("%s %s", test, more ? "woke too early" : "slept despite SEV");
++	}
++	return pass;
++}
++
++static void test_wfi(void)
++{
++	uint64_t start;
++
++	report_info("Testing WFI...");
++
++	start = read_sysreg(cntvct_el0);
++	write_sysreg(TIMEOUT, cntv_tval_el0);
++	write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
++	isb();
++
++	local_irq_enable();
++	wfi();
++	local_irq_disable();
++
++	check_elapsed(start, TIMEOUT, "WFI", true);
++}
++
++static void test_wfe(void)
++{
++	uint64_t start;
++
++	report_info("Testing WFE/SEV...");
++	sev();
++	start = read_sysreg(cntvct_el0);
++	wfe();
++	check_elapsed(start, TIMEOUT, "WFE/SEV", false);
++
++	report_info("Testing WFE/SEVL...");
++	sevl();
++	start = read_sysreg(cntvct_el0);
++	wfe();
++	check_elapsed(start, TIMEOUT, "WFE/SEVL", false);
++}
++
++static void test_wfit(void)
++{
++	uint64_t start, timeout;
++
++	report_info("Testing WFIT...");
++	start = read_sysreg(cntvct_el0);
++	timeout = start + TIMEOUT;
++	wfit(timeout);
++	check_elapsed(start, TIMEOUT, "WFIT", true);
++}
++
++static void test_wfet(void)
++{
++	uint64_t start, timeout;
++
++	report_info("Testing WFET...");
++	/* Ensure no pending events */
++	sev();
++	wfe();
++
++	start = read_sysreg(cntvct_el0);
++	timeout = start + TIMEOUT;
++	wfet(timeout);
++	check_elapsed(start, TIMEOUT, "WFET", true);
++}
++
++int main(void)
++{
++
++	if (gic_init() < 0) {
++		report_abort("GIC init failed");
++		return 1;
++	}
++
++	/* Install timer handler for WFI wake-up */
++	install_irq_handler(EL1H_IRQ, timer_handler);
++	gic_enable_defaults();
++
++	/* Enable Virtual Timer PPI */
++	gic_irq_set_clr_enable(27, true);
++
++	report_prefix_push("WFx");
++	test_wfi();
++	test_wfe();
++	report_prefix_pop();
++
++	if (system_supports_wfxt()) {
++		report_prefix_push("WFxT");
++		test_wfit();
++		test_wfet();
++	} else {
++		report_skip("WFxT instructions not supported");
++	}
++
++	return report_summary();
++}
+diff --git a/arm/unittests.cfg b/arm/unittests.cfg
+index 12fc4468..7adf96f2 100644
+--- a/arm/unittests.cfg
++++ b/arm/unittests.cfg
+@@ -339,3 +339,8 @@ groups = mte
+ test_args = asymm
+ qemu_params = -machine mte=on
+ arch = arm64
++
++[wfx]
++file = wfx.flat
++groups = wfx
++arch = arm64
+-- 
+2.47.3
+
