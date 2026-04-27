@@ -1,344 +1,393 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48E13ACA65
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 11:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5907F30E84F;
+	Mon, 27 Apr 2026 12:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777290489; cv=none; b=pbTwdU3y6oYBVN8kYhKSKQHcF0Ffm3agYqGNHyX3E5lPRR9f9PXNZnirDpful5GRDTp2zrKA3XTB5HM+7jg87z8Jqc5GH0YNBvARfOhSPNx6830mtcyeF0zxcg6fYqLsmPO1P6yjthryl8ONhFery9l/72FywW9JCuA/zsFu1sY=
+	t=1777291610; cv=none; b=lbQimw/v7h4aNnaBDqVqA6gXgnCfCVFaAKhqL0LR5kQqBkzLVfhyPR6jqi5uq+NZany97gqmgmub2NOhWETXT2zhSXlNmLCoSoJthfiYun3NyvYJ5/5ucc3TOeKipnQECiDnGlaEPD1mp1ctoN12U2vbTs8lQXLV6lH1vTiAdN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777290489; c=relaxed/simple;
-	bh=pjmD2rpWCTaX/fu8VNsiLzZf3zO/e5i0dzsoenQP/qg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/4I75xCDqPk13WAe6GZAgAI3dQHjer/kZoSQD4W5SpCZpacN+5ge92zuowdZqpCfWnrvWKgOUrkcXeRu/oYU8hTFTBxpATxJ86KOU9SaBHYqJnitTSGG0BMR+OxlI3p9S4peH0YZi+FRLwnrNgOtIJ94rQL1SZHl5PTLIQyjJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7gBAPoR; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7gBAPoR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD70CC19425;
-	Mon, 27 Apr 2026 11:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777290489;
-	bh=pjmD2rpWCTaX/fu8VNsiLzZf3zO/e5i0dzsoenQP/qg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7gBAPoRN7OpkMaur6cH9VpqNyNmw3fv3zNQOigJejeBqwr+VoIhqnt8BAUz75A6n
-	 4W0m+4sopJjPubKP6ES01G/OhspOCer+CC/SU0zoDnYSuNEInSXR2LEgo7KtFTWJpH
-	 c+grh1VyfSk7fzzgW4qV2zaNFTpn47mJUl69YAZ5js8ijvg9bMQ8flfDTSl4GwCxyN
-	 agXu+0NhyEtFkXp+py79KBvA7mW8dqB3XYSc40jk1paz0tx42dijZ82nda09NXNxg+
-	 Mk+SAwTd6P3LvkGWTVlDQ2kLCNdxmwcpxBLzuYe0GZ88fZJulS75cmnI5Q/LYd81yW
-	 A5A6V6KxUA0nw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 15FDAF40069;
-	Mon, 27 Apr 2026 07:48:08 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 27 Apr 2026 07:48:08 -0400
-X-ME-Sender: <xms:-EzvaekTZyx5qVbzGFEDxvU_StAcrPifBl41S1Tk_r6Kp8rhavt0Ng>
-    <xme:-EzvaZwXvbrFUKEHfYlDscqkn7QVCrAlnPHuY6xRL2ghfg0jiS3SIPcgJVJVSD6f2
-    _U3GZFhPefLD78fGUrvaAQtrUAjnVrJQacDiqV-67V6sp1ElDaNSw>
-X-ME-Received: <xmr:-EzvaVJ1Rrpcst0AmAzbM-acln8iL3li_S8DFBZMd5UVZ-HyL-CeXKoFyA2HZg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeeiudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertd
-    ertdejnecuhfhrohhmpedfmfhirhihlhcuufhhuhhtshgvmhgruhculdfovghtrgdmfdcu
-    oehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhephfdvfedvveejve
-    ehhffhvedufedujeefuddvkeehleduhfeihfehudejffffiefgnecuvehluhhsthgvrhfu
-    ihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtph
-    gruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedq
-    khgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtg
-    hpthhtohepvdegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhi
-    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghp
-    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgt
-    phhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrd
-    hhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughi
-    rgdrtghomh
-X-ME-Proxy: <xmx:-EzvacKw21LaXNJMXCZyLXnXadXxqN12RkCJu6M4OaCWBXIO69Ch9Q>
-    <xmx:-EzvaUXh-KXNWOJWE29bn8QGh3V47iKVqWc4c8Pg2BW4cidBjBT82Q>
-    <xmx:-EzvaUD6QMZ6mWC9wjVoxVP65ESaeOEDg4NnW-zzevwE6L121jhCPg>
-    <xmx:-EzvaXEzcU3n9hCJORUJJftNQACO3pwzRo2pF1lJ0MBKZj7sAAR5PA>
-    <xmx:-EzvaQecOHD1Y6YsCN9oPVNEkjaBvP4xDltJmuX64Wb8kqfceoK5DMan>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Apr 2026 07:48:06 -0400 (EDT)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	sj@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 14/14] Documentation/userfaultfd: document RWP working set tracking
-Date: Mon, 27 Apr 2026 12:46:02 +0100
-Message-ID: <20260427114607.4068647-15-kas@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260427114607.4068647-1-kas@kernel.org>
-References: <20260427114607.4068647-1-kas@kernel.org>
+	s=arc-20240116; t=1777291610; c=relaxed/simple;
+	bh=ojXDTOwK6Airy0n6xNWtScMsf5HE76PQqMsHpI/oVTA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=iCcl/7Lxl4EQUoTOSGJz2/U6H1CteHLXPlbEk5+1kROkHVTxPVQiiv1AD1wly70vjtySHQWH9fUsPoyGwvQCn31ArgQ9eSxPmXqxhlTnEZG78ZeCYUcKCT9ip+OQU4mqZsLj7MtUdJSGWL5J9mVDL1vdR/zJ5F9zIq21H0f1qRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [111.9.175.10])
+	by gateway (Coremail) with SMTP id _____8Bxb+tRUe9p_lsEAA--.14545S3;
+	Mon, 27 Apr 2026 20:06:41 +0800 (CST)
+Received: from [10.136.12.26] (unknown [111.9.175.10])
+	by front1 (Coremail) with SMTP id qMiowJDxysFMUe9p+711AA--.24906S3;
+	Mon, 27 Apr 2026 20:06:39 +0800 (CST)
+Subject: Re: [PATCH V4 1/2] LoongArch: KVM: Compile the switch.S file directly
+ into the kernel
+To: Huacai Chen <chenhuacai@kernel.org>, lixianglai <lixianglai@loongson.cn>
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>
+References: <20260414113111.2997864-1-lixianglai@loongson.cn>
+ <20260414113111.2997864-2-lixianglai@loongson.cn>
+ <CAAhV-H6g41ah0xUxKJfe1=+xSMeaBcAbGnYya-xMAT3NtFUbgg@mail.gmail.com>
+ <3c07246f-75d2-f138-94c3-8a71f749f443@loongson.cn>
+ <CAAhV-H43UxunddHJOnONmXNtJbk1vriiXjWk5XU7M9e8gKr+tg@mail.gmail.com>
+From: Jinyang He <hejinyang@loongson.cn>
+Message-ID: <259eb913-0667-a16a-f916-5bc9725037ae@loongson.cn>
+Date: Mon, 27 Apr 2026 20:06:36 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <CAAhV-H43UxunddHJOnONmXNtJbk1vriiXjWk5XU7M9e8gKr+tg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID:qMiowJDxysFMUe9p+711AA--.24906S3
+X-CM-SenderInfo: pkhmx0p1dqwqxorr0wxvrqhubq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3uw4UJF15Jw1DtF4fCF1fXwc_yoWktw48p3
+	srCFs5CF48Xrn8Xr1jq3Wqvr9IqrZ7Kr1IgF17tayrCrnF9FnrXF1kJrWDuFyvkw4kGF10
+	vFy5Xr1fZFyUJacCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8r9
+	N3UUUUU==
 
-Add an admin-guide section covering UFFDIO_REGISTER_MODE_RWP:
+On 2026-04-27 16:48, Huacai Chen wrote:
 
-  - sync and async fault models;
-  - UFFDIO_RWPROTECT semantics;
-  - UFFD_FEATURE_RWP_ASYNC;
-  - UFFDIO_SET_MODE runtime mode flips.
+> On Mon, Apr 27, 2026 at 4:43 PM lixianglai <lixianglai@loongson.cn> wrote:
+>> Hi Huacai Chen:
+>>> Hi, Xianglai,
+>>>
+>>> After this patch I get:
+>>> arch/loongarch/kvm/switch.o: warning: objtool: kvm_enter_guest+0x0:
+>>> unreachable instruction
+>>>
+>>> But if I restore SYM_FUNC_START/SYM_FUNC_END for kvm_enter_guest, the
+>>> warning disappear. So please make sure which one is correct.
+>> Oh~ Here, we should use SYM_FUNC_START/SYM_FUNC_END. I also reproduced
+>> this issue locally.
+>> After making the modification, the compilation did not notice this
+>> compilation warning.
+> Jinyang,
+>
+> What's your opinion? I remember you suggest to use
+> SYM_CODE_START/SYM_CODE_END here.
+Yes, I'd prefer SYM_CODE_START/SYM_CODE_END here.
 
-It also covers typical VMM working-set-tracking workflow from detection
-loop through sync-mode eviction and back to async.
+ From Documentation/core-api/asm-annotations.rst, SYM_FUNC_* is for
+C-like functions with standard calling conventions, while SYM_CODE_* is
+for special code with non-standard conventions (interrupt handlers,
+entry/exception code, trampolines). The kvm_enter_guest is like a
+trampoline which ertn to guest.
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-6
----
- Documentation/admin-guide/mm/userfaultfd.rst | 201 ++++++++++++++++++-
- 1 file changed, 195 insertions(+), 6 deletions(-)
+But if changing to SYM_CODE_* causes other issues with the current patch,
+perhaps we can be flexible about this for now.
 
-diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
-index 1e533639fd50..c6304ddcf238 100644
---- a/Documentation/admin-guide/mm/userfaultfd.rst
-+++ b/Documentation/admin-guide/mm/userfaultfd.rst
-@@ -275,16 +275,16 @@ tracking and it can be different in a few ways:
-   - Dirty information will not get lost if the pte was zapped due to
-     various reasons (e.g. during split of a shmem transparent huge page).
- 
--  - Due to a reverted meaning of soft-dirty (page clean when uffd-wp bit
--    set; dirty when uffd-wp bit cleared), it has different semantics on
--    some of the memory operations.  For example: ``MADV_DONTNEED`` on
-+  - Due to a reverted meaning of soft-dirty (page clean when the uffd bit
-+    is set; dirty when the uffd bit is cleared), it has different semantics
-+    on some of the memory operations.  For example: ``MADV_DONTNEED`` on
-     anonymous (or ``MADV_REMOVE`` on a file mapping) will be treated as
--    dirtying of memory by dropping uffd-wp bit during the procedure.
-+    dirtying of memory by dropping the uffd bit during the procedure.
- 
- The user app can collect the "written/dirty" status by looking up the
--uffd-wp bit for the pages being interested in /proc/pagemap.
-+uffd bit for the pages being interested in /proc/pagemap.
- 
--The page will not be under track of uffd-wp async mode until the page is
-+The page will not be under track of userfaultfd-wp async mode until the page is
- explicitly write-protected by ``ioctl(UFFDIO_WRITEPROTECT)`` with the mode
- flag ``UFFDIO_WRITEPROTECT_MODE_WP`` set.  Trying to resolve a page fault
- that was tracked by async mode userfaultfd-wp is invalid.
-@@ -307,6 +307,195 @@ transparent to the guest, we want that same address range to act as if it was
- still poisoned, even though it's on a new physical host which ostensibly
- doesn't have a memory error in the exact same spot.
- 
-+Read-Write Protection
-+---------------------
-+
-+``UFFDIO_REGISTER_MODE_RWP`` enables read-write protection tracking on a
-+memory range. It is similar to (but faster than) ``mprotect(PROT_NONE)``
-+combined with a signal handler; unlike ``mprotect(PROT_NONE)``, RWP only
-+traps accesses to *present* PTEs, so accesses to unpopulated addresses in a
-+protected range fall through to the normal missing-page path. It uses the
-+PROT_NONE hinting mechanism (same as NUMA balancing) to make pages
-+inaccessible while keeping them resident in memory. Works on anonymous,
-+shmem, and hugetlbfs memory.
-+
-+This is designed for VM memory managers that need to track the working set
-+of guest memory for cold page eviction to tiered or remote storage.
-+
-+**Setup:**
-+
-+1. Open a userfaultfd and enable ``UFFD_FEATURE_RWP`` via ``UFFDIO_API``.
-+   Optionally request ``UFFD_FEATURE_RWP_ASYNC`` as well — it requires
-+   ``UFFD_FEATURE_RWP`` to be set in the same ``UFFDIO_API`` call.
-+
-+2. Register the guest memory range with ``UFFDIO_REGISTER_MODE_RWP``
-+   (and ``UFFDIO_REGISTER_MODE_MISSING`` if evicted pages will need to be
-+   fetched back from storage).
-+
-+**Feature availability:**
-+
-+RWP is built on top of two kernel primitives: a spare PTE bit owned by
-+userfaultfd (``CONFIG_HAVE_ARCH_USERFAULTFD_WP``) and arch support for
-+present-but-inaccessible PTEs (``CONFIG_ARCH_HAS_PTE_PROTNONE``). When both
-+are available on a 64-bit kernel, the build selects
-+``CONFIG_USERFAULTFD_RWP=y`` and the ``VM_UFFD_RWP`` VMA flag becomes
-+available.
-+
-+``UFFD_FEATURE_RWP`` and ``UFFD_FEATURE_RWP_ASYNC`` are masked out of the
-+features returned by ``UFFDIO_API`` when the running kernel or architecture
-+cannot support them — for example 32-bit kernels (where ``VM_UFFD_RWP`` is
-+unavailable), kernels built without ``CONFIG_USERFAULTFD_RWP``, and
-+architectures whose ptes cannot carry the uffd bit at runtime (e.g. riscv
-+without the ``SVRSW60T59B`` extension). ``UFFDIO_API`` does not fail;
-+unsupported bits are simply absent from ``uffdio_api.features`` on return.
-+VMMs should inspect the returned ``features`` after ``UFFDIO_API`` and fall
-+back to another tracking method when RWP is unavailable.
-+
-+**Protecting and Unprotecting:**
-+
-+Use ``UFFDIO_RWPROTECT`` to protect or unprotect a range, mirroring the
-+``UFFDIO_WRITEPROTECT`` interface::
-+
-+    struct uffdio_rwprotect rwp = {
-+        .range = { .start = addr, .len = len },
-+        .mode = UFFDIO_RWPROTECT_MODE_RWP,  /* protect */
-+    };
-+    ioctl(uffd, UFFDIO_RWPROTECT, &rwp);
-+
-+Setting ``UFFDIO_RWPROTECT_MODE_RWP`` sets PROT_NONE on present PTEs in the
-+range. Pages stay resident and their physical frames are preserved — only
-+access permissions are removed.
-+
-+Clearing ``UFFDIO_RWPROTECT_MODE_RWP`` restores normal VMA permissions and
-+wakes any faulting threads (unless ``UFFDIO_RWPROTECT_MODE_DONTWAKE`` is set).
-+
-+**Scope of protection:**
-+
-+RWP protection is a property of *present* PTEs. ``UFFDIO_RWPROTECT`` only
-+affects entries that are already populated. Unpopulated addresses within
-+the range remain unpopulated; when first accessed they fault through the
-+normal missing path (``do_anonymous_page()``, ``do_swap_page()``,
-+``finish_fault()``) and the resulting PTE is not RWP-protected. To observe
-+the population itself, co-register the range with
-+``UFFDIO_REGISTER_MODE_MISSING``.
-+
-+Protection is preserved across page reclaim: a page swapped out while
-+RWP-protected carries the marker on its swap entry, and swap-in restores
-+the PROT_NONE state so the first access after swap-in still faults. The
-+same applies to pages temporarily replaced by migration entries.
-+
-+Operations that drop the PTE entirely — ``MADV_DONTNEED`` on anonymous
-+memory, hole-punch on shmem, truncation of a file mapping — also drop the
-+RWP marker: the next access re-populates the range without protection.
-+Unlike WP (which persists via ``PTE_MARKER_UFFD_WP``), there is no
-+persistent RWP marker today. The VMM needs to re-arm the range with
-+``UFFDIO_RWPROTECT`` after any operation that explicitly frees PTEs.
-+
-+**Fault Handling:**
-+
-+When a protected page is accessed:
-+
-+- **Sync mode** (default): The faulting thread blocks and a
-+  ``UFFD_PAGEFAULT_FLAG_RWP`` message is delivered to the userfaultfd
-+  handler. The handler resolves the fault with ``UFFDIO_RWPROTECT``
-+  (clearing ``MODE_RWP``), which restores the PTE permissions and wakes
-+  the faulting thread.
-+
-+- **Async mode** (``UFFD_FEATURE_RWP_ASYNC``): The kernel automatically
-+  restores PTE permissions and the thread continues without blocking. No
-+  message is delivered to the handler.
-+
-+**Runtime Mode Switching:**
-+
-+``UFFDIO_SET_MODE`` toggles ``UFFD_FEATURE_RWP_ASYNC`` at runtime, allowing
-+the VMM to switch between lightweight async detection and safe sync
-+eviction without re-registering. The toggle takes ``mmap_write_lock()`` to
-+ensure all in-flight faults complete before the mode change takes effect.
-+
-+**Cold Page Detection with PAGEMAP_SCAN:**
-+
-+RWP-protected PTEs carry the uffd PTE bit; the fault-resolution path
-+clears it. ``PAGEMAP_SCAN`` reports ``PAGE_IS_ACCESSED`` once the bit is
-+clear on a ``VM_UFFD_RWP`` VMA, so inverting it efficiently reports the
-+still-protected (cold) pages::
-+
-+    struct pm_scan_arg arg = {
-+        .size = sizeof(arg),
-+        .start = guest_mem_start,
-+        .end = guest_mem_end,
-+        .vec = (uint64_t)regions,
-+        .vec_len = regions_len,
-+        .category_mask = PAGE_IS_ACCESSED,
-+        .category_inverted = PAGE_IS_ACCESSED,
-+        .return_mask = PAGE_IS_ACCESSED,
-+    };
-+    long n = ioctl(pagemap_fd, PAGEMAP_SCAN, &arg);
-+
-+The returned ``page_region`` array contains contiguous cold ranges that can
-+then be evicted.
-+
-+**Cleanup:**
-+
-+When the userfaultfd is closed or the range is unregistered, all PROT_NONE
-+PTEs are automatically restored to their normal VMA permissions. This
-+prevents pages from becoming permanently inaccessible.
-+
-+**VMM Working Set Tracking Workflow:**
-+
-+A typical VMM lifecycle for cold page eviction to tiered storage::
-+
-+    /* One-time setup */
-+    uffd = userfaultfd(O_CLOEXEC | O_NONBLOCK);
-+    ioctl(uffd, UFFDIO_API, &(struct uffdio_api){
-+        .api = UFFD_API,
-+        .features = UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+    });
-+    ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
-+        .range = { guest_mem, guest_size },
-+        .mode = UFFDIO_REGISTER_MODE_RWP |
-+                UFFDIO_REGISTER_MODE_MISSING,
-+    });
-+
-+    /* Tracking loop */
-+    while (vm_running) {
-+        /* 1. Detection phase (async — no vCPU stalls) */
-+        ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
-+            .range = full_range,
-+            .mode = UFFDIO_RWPROTECT_MODE_RWP });
-+        sleep(tracking_interval);
-+
-+        /* 2. Find cold pages (uffd bit still set) */
-+        ioctl(pagemap_fd, PAGEMAP_SCAN, &(struct pm_scan_arg){
-+            .category_mask = PAGE_IS_ACCESSED,
-+            .category_inverted = PAGE_IS_ACCESSED,
-+            .return_mask = PAGE_IS_ACCESSED,
-+            ...
-+        });
-+
-+        /* 3. Switch to sync for safe eviction */
-+        ioctl(uffd, UFFDIO_SET_MODE,
-+              &(struct uffdio_set_mode){
-+                  .disable = UFFD_FEATURE_RWP_ASYNC });
-+
-+        /* 4. Evict cold pages (vCPU faults block in handler) */
-+        for each cold range:
-+            pwrite(storage_fd, cold_addr, len, offset);
-+            madvise(cold_addr, len, MADV_DONTNEED);
-+
-+        /* 5. Resume async tracking */
-+        ioctl(uffd, UFFDIO_SET_MODE,
-+              &(struct uffdio_set_mode){
-+                  .enable = UFFD_FEATURE_RWP_ASYNC });
-+    }
-+
-+During step 4, if a vCPU accesses a cold page being evicted, it blocks
-+with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault. The handler can either let it
-+wait (the eviction completes, ``MADV_DONTNEED`` fires, the fault retries as
-+``MISSING`` and is resolved with ``UFFDIO_COPY`` from storage) or unprotect
-+it immediately with ``UFFDIO_RWPROTECT``.
-+
-+This workflow works identically for anonymous, shmem, and hugetlbfs memory.
-+
- QEMU/KVM
- ========
- 
--- 
-2.51.2
+Thanks
+Jinyang
+>
+> Huacai
+>
+>>
+>> Thanks,
+>> Xianglai.
+>>
+>>> Huacai
+>>>
+>>> On Tue, Apr 14, 2026 at 7:57 PM Xianglai Li <lixianglai@loongson.cn> wrote:
+>>>> If we directly compile the switch.S file into the kernel, the address of
+>>>> the kvm_exc_entry function will definitely be within the DMW memory area.
+>>>> Therefore, we will no longer need to perform a copy relocation of
+>>>> kvm_exc_entry.
+>>>>
+>>>> Based on the above description, compile switch.S directly into the kernel,
+>>>> and then remove the copy relocation execution logic for the kvm_exc_entry
+>>>> function.
+>>>>
+>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>>>> ---
+>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
+>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>>> Cc: Bibo Mao <maobibo@loongson.cn>
+>>>>
+>>>>    arch/loongarch/Kbuild                       |  2 +-
+>>>>    arch/loongarch/include/asm/asm-prototypes.h | 21 +++++++++++++
+>>>>    arch/loongarch/include/asm/kvm_host.h       |  3 --
+>>>>    arch/loongarch/kvm/Makefile                 |  2 +-
+>>>>    arch/loongarch/kvm/main.c                   | 35 ++-------------------
+>>>>    arch/loongarch/kvm/switch.S                 | 27 +++++++++++-----
+>>>>    6 files changed, 46 insertions(+), 44 deletions(-)
+>>>>
+>>>> diff --git a/arch/loongarch/Kbuild b/arch/loongarch/Kbuild
+>>>> index beb8499dd8ed..1c7a0dbe5e72 100644
+>>>> --- a/arch/loongarch/Kbuild
+>>>> +++ b/arch/loongarch/Kbuild
+>>>> @@ -3,7 +3,7 @@ obj-y += mm/
+>>>>    obj-y += net/
+>>>>    obj-y += vdso/
+>>>>
+>>>> -obj-$(CONFIG_KVM) += kvm/
+>>>> +obj-$(subst m,y,$(CONFIG_KVM)) += kvm/
+>>>>
+>>>>    # for cleaning
+>>>>    subdir- += boot
+>>>> diff --git a/arch/loongarch/include/asm/asm-prototypes.h b/arch/loongarch/include/asm/asm-prototypes.h
+>>>> index 704066b4f736..e8ce153691e5 100644
+>>>> --- a/arch/loongarch/include/asm/asm-prototypes.h
+>>>> +++ b/arch/loongarch/include/asm/asm-prototypes.h
+>>>> @@ -20,3 +20,24 @@ asmlinkage void noinstr __no_stack_protector ret_from_kernel_thread(struct task_
+>>>>                                                                       struct pt_regs *regs,
+>>>>                                                                       int (*fn)(void *),
+>>>>                                                                       void *fn_arg);
+>>>> +
+>>>> +struct kvm_run;
+>>>> +struct kvm_vcpu;
+>>>> +
+>>>> +void kvm_exc_entry(void);
+>>>> +int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
+>>>> +
+>>>> +struct loongarch_fpu;
+>>>> +
+>>>> +#ifdef CONFIG_CPU_HAS_LSX
+>>>> +void kvm_save_lsx(struct loongarch_fpu *fpu);
+>>>> +void kvm_restore_lsx(struct loongarch_fpu *fpu);
+>>>> +#endif
+>>>> +
+>>>> +#ifdef CONFIG_CPU_HAS_LASX
+>>>> +void kvm_save_lasx(struct loongarch_fpu *fpu);
+>>>> +void kvm_restore_lasx(struct loongarch_fpu *fpu);
+>>>> +#endif
+>>>> +
+>>>> +void kvm_save_fpu(struct loongarch_fpu *fpu);
+>>>> +void kvm_restore_fpu(struct loongarch_fpu *fpu);
+>>>> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+>>>> index 19eb5e5c3984..0bcdffc14c5f 100644
+>>>> --- a/arch/loongarch/include/asm/kvm_host.h
+>>>> +++ b/arch/loongarch/include/asm/kvm_host.h
+>>>> @@ -86,7 +86,6 @@ struct kvm_context {
+>>>>    struct kvm_world_switch {
+>>>>           int (*exc_entry)(void);
+>>>>           int (*enter_guest)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+>>>> -       unsigned long page_order;
+>>>>    };
+>>>>
+>>>>    #define MAX_PGTABLE_LEVELS     4
+>>>> @@ -356,8 +355,6 @@ void kvm_exc_entry(void);
+>>>>    int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
+>>>>
+>>>>    extern unsigned long vpid_mask;
+>>>> -extern const unsigned long kvm_exception_size;
+>>>> -extern const unsigned long kvm_enter_guest_size;
+>>>>    extern struct kvm_world_switch *kvm_loongarch_ops;
+>>>>
+>>>>    #define SW_GCSR                (1 << 0)
+>>>> diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
+>>>> index cb41d9265662..fe665054f824 100644
+>>>> --- a/arch/loongarch/kvm/Makefile
+>>>> +++ b/arch/loongarch/kvm/Makefile
+>>>> @@ -11,7 +11,7 @@ kvm-y += exit.o
+>>>>    kvm-y += interrupt.o
+>>>>    kvm-y += main.o
+>>>>    kvm-y += mmu.o
+>>>> -kvm-y += switch.o
+>>>> +obj-y += switch.o
+>>>>    kvm-y += timer.o
+>>>>    kvm-y += tlb.o
+>>>>    kvm-y += vcpu.o
+>>>> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+>>>> index 2c593ac7892f..18800a38b150 100644
+>>>> --- a/arch/loongarch/kvm/main.c
+>>>> +++ b/arch/loongarch/kvm/main.c
+>>>> @@ -348,8 +348,7 @@ void kvm_arch_disable_virtualization_cpu(void)
+>>>>
+>>>>    static int kvm_loongarch_env_init(void)
+>>>>    {
+>>>> -       int cpu, order, ret;
+>>>> -       void *addr;
+>>>> +       int cpu, ret;
+>>>>           struct kvm_context *context;
+>>>>
+>>>>           vmcs = alloc_percpu(struct kvm_context);
+>>>> @@ -365,30 +364,8 @@ static int kvm_loongarch_env_init(void)
+>>>>                   return -ENOMEM;
+>>>>           }
+>>>>
+>>>> -       /*
+>>>> -        * PGD register is shared between root kernel and kvm hypervisor.
+>>>> -        * So world switch entry should be in DMW area rather than TLB area
+>>>> -        * to avoid page fault reenter.
+>>>> -        *
+>>>> -        * In future if hardware pagetable walking is supported, we won't
+>>>> -        * need to copy world switch code to DMW area.
+>>>> -        */
+>>>> -       order = get_order(kvm_exception_size + kvm_enter_guest_size);
+>>>> -       addr = (void *)__get_free_pages(GFP_KERNEL, order);
+>>>> -       if (!addr) {
+>>>> -               free_percpu(vmcs);
+>>>> -               vmcs = NULL;
+>>>> -               kfree(kvm_loongarch_ops);
+>>>> -               kvm_loongarch_ops = NULL;
+>>>> -               return -ENOMEM;
+>>>> -       }
+>>>> -
+>>>> -       memcpy(addr, kvm_exc_entry, kvm_exception_size);
+>>>> -       memcpy(addr + kvm_exception_size, kvm_enter_guest, kvm_enter_guest_size);
+>>>> -       flush_icache_range((unsigned long)addr, (unsigned long)addr + kvm_exception_size + kvm_enter_guest_size);
+>>>> -       kvm_loongarch_ops->exc_entry = addr;
+>>>> -       kvm_loongarch_ops->enter_guest = addr + kvm_exception_size;
+>>>> -       kvm_loongarch_ops->page_order = order;
+>>>> +       kvm_loongarch_ops->exc_entry = (void *)kvm_exc_entry;
+>>>> +       kvm_loongarch_ops->enter_guest = (void *)kvm_enter_guest;
+>>>>
+>>>>           vpid_mask = read_csr_gstat();
+>>>>           vpid_mask = (vpid_mask & CSR_GSTAT_GIDBIT) >> CSR_GSTAT_GIDBIT_SHIFT;
+>>>> @@ -422,16 +399,10 @@ static int kvm_loongarch_env_init(void)
+>>>>
+>>>>    static void kvm_loongarch_env_exit(void)
+>>>>    {
+>>>> -       unsigned long addr;
+>>>> -
+>>>>           if (vmcs)
+>>>>                   free_percpu(vmcs);
+>>>>
+>>>>           if (kvm_loongarch_ops) {
+>>>> -               if (kvm_loongarch_ops->exc_entry) {
+>>>> -                       addr = (unsigned long)kvm_loongarch_ops->exc_entry;
+>>>> -                       free_pages(addr, kvm_loongarch_ops->page_order);
+>>>> -               }
+>>>>                   kfree(kvm_loongarch_ops);
+>>>>           }
+>>>>
+>>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+>>>> index f1768b7a6194..1a5636790ef9 100644
+>>>> --- a/arch/loongarch/kvm/switch.S
+>>>> +++ b/arch/loongarch/kvm/switch.S
+>>>> @@ -5,10 +5,12 @@
+>>>>
+>>>>    #include <linux/linkage.h>
+>>>>    #include <asm/asm.h>
+>>>> +#include <asm/page.h>
+>>>>    #include <asm/asmmacro.h>
+>>>>    #include <asm/loongarch.h>
+>>>>    #include <asm/regdef.h>
+>>>>    #include <asm/unwind_hints.h>
+>>>> +#include <linux/kvm_types.h>
+>>>>
+>>>>    #define HGPR_OFFSET(x)         (PT_R0 + 8*x)
+>>>>    #define GGPR_OFFSET(x)         (KVM_ARCH_GGPR + 8*x)
+>>>> @@ -100,8 +102,16 @@
+>>>>            *  -        is still in guest mode, such as pgd table/vmid registers etc,
+>>>>            *  -        will fix with hw page walk enabled in future
+>>>>            * load kvm_vcpu from reserved CSR KVM_VCPU_KS, and save a2 to KVM_TEMP_KS
+>>>> +        *
+>>>> +        * PGD register is shared between root kernel and kvm hypervisor.
+>>>> +        * So world switch entry should be in DMW area rather than TLB area
+>>>> +        * to avoid page fault reenter.
+>>>> +        *
+>>>> +        * In future if hardware pagetable walking is supported, we won't
+>>>> +        * need to copy world switch code to DMW area.
+>>>>            */
+>>>>           .text
+>>>> +       .p2align PAGE_SHIFT
+>>>>           .cfi_sections   .debug_frame
+>>>>    SYM_CODE_START(kvm_exc_entry)
+>>>>           UNWIND_HINT_UNDEFINED
+>>>> @@ -190,8 +200,8 @@ ret_to_host:
+>>>>           kvm_restore_host_gpr    a2
+>>>>           jr      ra
+>>>>
+>>>> -SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
+>>>>    SYM_CODE_END(kvm_exc_entry)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
+>>>>
+>>>>    /*
+>>>>     * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
+>>>> @@ -200,7 +210,7 @@ SYM_CODE_END(kvm_exc_entry)
+>>>>     *  a0: kvm_run* run
+>>>>     *  a1: kvm_vcpu* vcpu
+>>>>     */
+>>>> -SYM_FUNC_START(kvm_enter_guest)
+>>>> +SYM_CODE_START(kvm_enter_guest)
+>>>>           /* Allocate space in stack bottom */
+>>>>           addi.d  a2, sp, -PT_SIZE
+>>>>           /* Save host GPRs */
+>>>> @@ -215,8 +225,8 @@ SYM_FUNC_START(kvm_enter_guest)
+>>>>           /* Save kvm_vcpu to kscratch */
+>>>>           csrwr   a1, KVM_VCPU_KS
+>>>>           kvm_switch_to_guest
+>>>> -SYM_INNER_LABEL(kvm_enter_guest_end, SYM_L_LOCAL)
+>>>> -SYM_FUNC_END(kvm_enter_guest)
+>>>> +SYM_CODE_END(kvm_enter_guest)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_enter_guest)
+>>>>
+>>>>    SYM_FUNC_START(kvm_save_fpu)
+>>>>           fpu_save_csr    a0 t1
+>>>> @@ -224,6 +234,7 @@ SYM_FUNC_START(kvm_save_fpu)
+>>>>           fpu_save_cc     a0 t1 t2
+>>>>           jr              ra
+>>>>    SYM_FUNC_END(kvm_save_fpu)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_save_fpu)
+>>>>
+>>>>    SYM_FUNC_START(kvm_restore_fpu)
+>>>>           fpu_restore_double a0 t1
+>>>> @@ -231,6 +242,7 @@ SYM_FUNC_START(kvm_restore_fpu)
+>>>>           fpu_restore_cc     a0 t1 t2
+>>>>           jr                 ra
+>>>>    SYM_FUNC_END(kvm_restore_fpu)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_fpu)
+>>>>
+>>>>    #ifdef CONFIG_CPU_HAS_LSX
+>>>>    SYM_FUNC_START(kvm_save_lsx)
+>>>> @@ -239,6 +251,7 @@ SYM_FUNC_START(kvm_save_lsx)
+>>>>           lsx_save_data   a0 t1
+>>>>           jr              ra
+>>>>    SYM_FUNC_END(kvm_save_lsx)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lsx)
+>>>>
+>>>>    SYM_FUNC_START(kvm_restore_lsx)
+>>>>           lsx_restore_data a0 t1
+>>>> @@ -246,6 +259,7 @@ SYM_FUNC_START(kvm_restore_lsx)
+>>>>           fpu_restore_csr  a0 t1 t2
+>>>>           jr               ra
+>>>>    SYM_FUNC_END(kvm_restore_lsx)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lsx)
+>>>>    #endif
+>>>>
+>>>>    #ifdef CONFIG_CPU_HAS_LASX
+>>>> @@ -255,6 +269,7 @@ SYM_FUNC_START(kvm_save_lasx)
+>>>>           lasx_save_data  a0 t1
+>>>>           jr              ra
+>>>>    SYM_FUNC_END(kvm_save_lasx)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lasx)
+>>>>
+>>>>    SYM_FUNC_START(kvm_restore_lasx)
+>>>>           lasx_restore_data a0 t1
+>>>> @@ -262,10 +277,8 @@ SYM_FUNC_START(kvm_restore_lasx)
+>>>>           fpu_restore_csr   a0 t1 t2
+>>>>           jr                ra
+>>>>    SYM_FUNC_END(kvm_restore_lasx)
+>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lasx)
+>>>>    #endif
+>>>> -       .section ".rodata"
+>>>> -SYM_DATA(kvm_exception_size, .quad kvm_exc_entry_end - kvm_exc_entry)
+>>>> -SYM_DATA(kvm_enter_guest_size, .quad kvm_enter_guest_end - kvm_enter_guest)
+>>>>
+>>>>    #ifdef CONFIG_CPU_HAS_LBT
+>>>>    STACK_FRAME_NON_STANDARD kvm_restore_fpu
+>>>> --
+>>>> 2.39.1
+>>>>
+>>
 
