@@ -1,201 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC59339714;
-	Mon, 27 Apr 2026 17:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253BD3DA7D8
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777310365; cv=none; b=FMMCJWBZRrjjYSiA3eaR054EBybd+MBN+lSN3BN5CocSCcm8tIENJh1D+pCEesMt/NXdLvmDrgdKbTCry0Ws+gXSliqYGgAikUbOn+Q+F0KGjeL6CPBJrSP/6A4kIKVX2k8i7JaCo/d+VNC51IcRSJYDEqTpxQo1Wefcb3LD8UI=
+	t=1777311281; cv=none; b=Zw789N3tblphIkofWW32Q3c+7QBNWUZUHpk/s0FLtC3XVWq94FOEB3uJxe04ws5o7tr6C5+F8aZo1CBz/3HJkk/vLcxFOtCKu5o17Dp4VkbZYdjrhJNvXOD7lk/DQJ9/pL95aBITYrg91pvpYLdEuPKXEKdcilMZULMkRGxj/eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777310365; c=relaxed/simple;
-	bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhQrdf7UOghUHj346nNBuNK4t8QKwv42weWTHzLB9J9H1Pg4KEcSn0eVYUQ5ec4lrY6ahBwiH6ofUxBY24/Bicz662twTEYvS8xMs3PQ8bMO23fNazIbxyRHabz7++ADrmyPHUUZtHt6Ieg+neofEfeiXp9GpsZ8FZ+KHzEUFP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8kV5Zhk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777311281; c=relaxed/simple;
+	bh=zXsxEj1uV1jT6g8uPy7vpdf7iKBLusxzqQTDXrMZoXE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hVKJ6dS8u8fidInVExiS9FwuC1RurdUbeqocxwamcIt0KkvTqIYOjAXBy7b/FwJPfz0YoQkC+PJqmc6s4FZeMjnxsYBWSqjaJpfrJvRzptpLG2zTodEupXVR8bZ67RbpLiniBAw+mlkO6yTHORfFS05MKOtkBPJvqdy215MvZOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=warKmD6n; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8kV5Zhk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25EEC2BCB7;
-	Mon, 27 Apr 2026 17:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777310364;
-	bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8kV5Zhk7HZbxy8X7mxqUL5UgTTJPPuuLtSKHKOe5PwbIiNodL9/7ESxRbcOMv4dB
-	 NN/pd897F5mMQZv6MW+RM/3mikWvqmJGQCtupbd6YHiobStaCQu79RRkwt3Bs1rL/A
-	 WmXtcy3vIzgejB2MGSu6MrKJ33itreKKdFlemNypyCUExoUHGXA1bHbqFqaNX4ujdd
-	 iXZiXWTV/w69yfgs2V8e+zdWAilhhtsvDDxzPIT8CbbievjXPmrPwVloE5aoqLKmYP
-	 ca2+sf92YJQm2mLHcpyNlGd6mMQP6QhUed6Hx8vk/CloBjO7tSgz4fayv+CeXka+Fz
-	 NwGM6tvALNVmQ==
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-x25@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Subject: [RFC PATCH v1 9/9] uaccess: Convert small fixed size copy_{to/from}_user() to scoped user access
-Date: Mon, 27 Apr 2026 19:13:50 +0200
-Message-ID: <8780eb2ef80575931a339e5225bc80eb13e9be6c.1777306795.git.chleroy@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1777306795.git.chleroy@kernel.org>
-References: <cover.1777306795.git.chleroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="warKmD6n"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa5ecd760so5240818b3a.0
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 10:34:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777311279; x=1777916079; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YdEnpzDIOCEcXBvG6SCSAkx4aELVLebcgUGVQXndMA8=;
+        b=warKmD6n2W02WagiH3IGv9uPEFHrJJo6RKaw4EAdfd7iKERgqHAufUN1XPMC+QrsVB
+         aVMYBV9+WX1dYV7c2GKOoeDbm7RSgLO49o6sN2ZheU4QmjqWR56tR91zkIOVvxEJ+us8
+         rbL0ZlOKAxl42VSQmvpUHjgBiDOPmiLMyt9rlY9S2azb6EKegfIfhhDzqGdq25Ty2z8h
+         4lidO2nTyObGtwUggF9ddec9JMv332p07hqUuHYf9D01ikmW5oBtB3yR56i/kquvz5P/
+         VjYJ7jAC5/MKtGS2GRvoyOLphlLdefpEqD6kgDH42PT4Viqu3VW3HVipiD+1Z+vHVu14
+         sEZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777311279; x=1777916079;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YdEnpzDIOCEcXBvG6SCSAkx4aELVLebcgUGVQXndMA8=;
+        b=PKcbNkZ33TOSWNL4NZaX/rAmsLSUN7qfvAHX9fawCUYNjyDNm5NyCzUB3njRdcFJqQ
+         yc+R3lRCsCpdrw1Pj8cBFozG8tS2wZb9XD+x7IMv0OMTWZLdIBke0NIeUNSK5YIYI+GK
+         V8JbRseCmpkVnfMjFr6ymML4Ypmi5yRKnIAOiY+Nte+J8aMUDqTwmoXcVjhjBfQym9sd
+         v8KakYv9cOn1Qsc+ZdnatBqTIWntVGj/jEq8g5p9bFfy51v4KbhPT16LBS6dyyoYAafw
+         zl+VtuZYplNdaS8M+lja5GfDkgmlVJBmqIgrGmbq85U/qDPJHuw1/m6Ld8msZyB6Skej
+         UO9A==
+X-Forwarded-Encrypted: i=1; AFNElJ8DPnFIbq2MpwJkZehDrbcOtg18CtG3nVoqQgXno9Cd45et5byeV9iaMPdNwZNvgMdlcMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHQ4mzRKrzOSbfPH5QDS1XRuC5GZc9ph3mP+HxFVtm7RehYWEC
+	tncBvDH/4rcsD9gQc0Il9h6mpgmDdOEt0O0eyC3E48PwU2fycN7tDFLmSmkycRubgqirPEGA4NW
+	0mTKgYg==
+X-Received: from pfblh2.prod.google.com ([2002:a05:6a00:7102:b0:82f:ad57:40bb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3498:b0:82f:85c8:fc19
+ with SMTP id d2e1a72fcca58-82f8c8502d9mr43552491b3a.11.1777311279289; Mon, 27
+ Apr 2026 10:34:39 -0700 (PDT)
+Date: Mon, 27 Apr 2026 10:34:38 -0700
+In-Reply-To: <9d318656-3faf-479c-817f-f32f7d5caaae@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3638; i=chleroy@kernel.org; h=from:subject:message-id; bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxlr/n9yu2DE7uwkCZGbl0uCp6Y1JLvZTPpz+P/PY xNqPMoaOkpZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBE9HwZ/ns82Ho9PV2Q+7Pp 5fqvs6O/v3YN+3EgL+Wk4b/co1rlkZ8YGVZxmDl7XFiUcmPSTPW14WGSHT6/1u4pcTY2cjD0U7P bzAkA
-X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260423150340.463896-1-seanjc@google.com> <20260423150340.463896-3-seanjc@google.com>
+ <9d318656-3faf-479c-817f-f32f7d5caaae@linux.intel.com>
+Message-ID: <ae-eLlHq8g3KMuXT@google.com>
+Subject: Re: [PATCH v2 2/4] perf/x86/intel: Don't context switch DS_AREA (and
+ PEBS config) if PEBS is unused
+From: Sean Christopherson <seanjc@google.com>
+To: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>, 
+	Stephane Eranian <eranian@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-copy_{to/from}_user() is a heavy function optimised for copy of large
-blocs of memory between user and kernel space.
+On Mon, Apr 27, 2026, Dapeng Mi wrote:
+> > @@ -5065,6 +5056,26 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+> >  	if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
+> >  		guest_pebs_mask = 0;
+> >  
+> > +	/*
+> > +	 * Context switch DS_AREA and PEBS_DATA_CFG if and only if PEBS will be
+> > +	 * active in the guest; if no records will be generated while the guest
+> > +	 * is running, then simply keep the host values resident in hardware.
+> > +	 */
+> > +	arr[(*nr)++] = (struct perf_guest_switch_msr){
+> > +		.msr = MSR_IA32_DS_AREA,
+> > +		.host = (unsigned long)cpuc->ds,
+> > +		.guest = guest_pebs_mask ? kvm_pmu->ds_area : (unsigned long)cpuc->ds,
+> > +	};
+> 
+> The code looks good to me.
+> 
+> one nit: people may be curious on why set same host value for guest if they
+> don't notice that the same value on host and guest would lead to the MSRs
+> would be removed from MSR load-list. Maybe add comments to further explain it.
 
-When the number of bytes to be copied is known at build time and small,
-using scoped user access removes the burden of that optimisation.
-
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
----
- include/linux/uaccess.h | 47 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
-
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 33b7d0f5f808..3ac544527af2 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -50,6 +50,8 @@
-  #define mask_user_address(src) (src)
- #endif
- 
-+#define SMALL_COPY_USER		64
-+
- /*
-  * Architectures should provide two primitives (raw_copy_{to,from}_user())
-  * and get rid of their private instances of copy_{to,from}_user() and
-@@ -191,6 +193,9 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
- 	return res;
- }
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_from_user(void *to, const void __user *from, unsigned long n);
-+
- extern __must_check unsigned long
- _copy_from_user(void *, const void __user *, unsigned long);
- 
-@@ -207,6 +212,9 @@ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
- 	return n;
- }
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_to_user(void __user *to, const void *from, unsigned long n);
-+
- extern __must_check unsigned long
- _copy_to_user(void __user *, const void *, unsigned long);
- 
-@@ -215,6 +223,8 @@ copy_from_user_common(void *to, const void __user *from, unsigned long n, bool p
- {
- 	if (!check_copy_size(to, n, false))
- 		return n;
-+	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
-+		return _small_copy_from_user(to, from, n);
- 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
- 		return _copy_from_user(to, from, n);
- 	else
-@@ -239,6 +249,8 @@ copy_to_user_common(void __user *to, const void *from, unsigned long n, bool par
- 	if (!check_copy_size(from, n, true))
- 		return n;
- 
-+	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
-+		return _small_copy_to_user(to, from, n);
- 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
- 		return _copy_to_user(to, from, n);
- 	else
-@@ -838,6 +850,41 @@ for (bool done = false; !done; done = true)					\
- #define scoped_user_rw_access(uptr, elbl)				\
- 	scoped_user_rw_access_size(uptr, sizeof(*(uptr)), elbl)
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_from_user(void *to, const void __user *from, unsigned long n)
-+{
-+	might_fault();
-+	instrument_copy_from_user_before(to, from, n);
-+	scoped_user_read_access_size(from, n, failed) {
-+		/*
-+		 * Ensure that bad access_ok() speculation will not lead
-+		 * to nasty side effects *after* the copy is finished:
-+		 */
-+		if (!can_do_masked_user_access())
-+			barrier_nospec();
-+		unsafe_copy_from_user(to, from, n, failed);
-+	}
-+	instrument_copy_from_user_after(to, from, n, 0);
-+	return 0;
-+failed:
-+	instrument_copy_from_user_after(to, from, n, n);
-+	return n;
-+}
-+
-+static __always_inline __must_check unsigned long
-+_small_copy_to_user(void __user *to, const void *from, unsigned long n)
-+{
-+	might_fault();
-+	if (should_fail_usercopy())
-+		return n;
-+	instrument_copy_to_user(to, from, n);
-+	scoped_user_write_access_size(to, n, failed)
-+		unsafe_copy_to_user(to, from, n, failed);
-+	return 0;
-+failed:
-+	return n;
-+}
-+
- /**
-  * get_user_inline - Read user data inlined
-  * @val:	The variable to store the value read from user memory
--- 
-2.49.0
-
++1.  In the same comment (maybe on the function?), I'll also call out that the
+inclusion/exclusion of MSRs must only ever be based on constant host state,
+specifically because of the need to _remove_ MSRs from the list when KVM doesn't
+need to load a guest value on entry.
