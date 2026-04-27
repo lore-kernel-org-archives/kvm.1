@@ -1,119 +1,124 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5D7223708
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 05:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6528433B97F;
+	Mon, 27 Apr 2026 06:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777267874; cv=none; b=nG3UIczDkNWunfkizkJq5dTMNusmhweo0n3zqOeQBSH6ikuWaZleX2JZ+EiLtaCwjjWNyc+tyAp7yILD8sejVwRt68rwaKRKiuJ/WS/rPt4erUAKQXjDsBfUUMMJ7gH/l7LUnG7Wt9oHz89rnfF4yJirLHPaDLE4d9INIxw4oBo=
+	t=1777270224; cv=none; b=PpM6Woqhhe1d82H3FbRdyVFlFvUQUNAbxbIVKvANBliuhzH7SoQGxpyH9pIyi0TVerJErWNzxL4cXG7pIcU84JOB/IR/lGgfrtNK+VnzidVaE4VfL2VS2I73Llw1l3xDLJrL2SgohKruf5xSNhHzpEIKTlkifFso8NGlvq/kl40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777267874; c=relaxed/simple;
-	bh=lvXqGJ4qnETui8FjJAA/vDD4sFCtdPp3cmr4bpb3PuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iViYLJNaWi2q4jaFrZIRQcyamYtlNkIwtOzJ73wlbktD8jTh+wbnmloSNkKOZpVnLeYZ9ADxIsf2JwPNzPQStN6GW8nCWIW8QVaF3FvWqUlIRqdhxKcGBc+Hf7cmjSRpqfHifM8u9h/gRTT8zYmGfFxlmsyAmFFkrZsr3ntcMqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Bar4rOUY; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1777270224; c=relaxed/simple;
+	bh=FXNseaUyPlkvsiojsWtx3KsUI8A3dSz/hWt+/LNARW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s8CSdPFZL/NK/J6nW6NCR+1VNvFqVYSOHqtvgKGS2ZYsTA1iHpf0rqa3PhVfZtir731lTtSSNE6kMrIZn9W0NTRP3A/CDbUmguyxN/pL4lAyq+aFLl/N8KQLVKKfvFNBidFyLrnmz093c35khTkC2OHvh8c5Ek5iTQqFTqCkcRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Np/fJ/Ld; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Bar4rOUY"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777267864; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=DcwYOBMc+yK36LdyPYEOFx9D/UsqSBJDiqZK+/FoA3c=;
-	b=Bar4rOUY+TPH/Ezl7DIk6rsIic1OJIxpnesQ9f/F+1/uiG4iGV4PV6eKgYmIKOJ6W1VrPT3MRrpqMlReOcW41t2Fd/dy+7hI5fYIjdv2FM4Xajs1vo6eua97NErf/FguoUrcpsSmEVCrnTYLeca+bzJ1sVOno3k/AGDqd+6Adlg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X1jDD2S_1777267863;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X1jDD2S_1777267863 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 27 Apr 2026 13:31:03 +0800
-Date: Mon, 27 Apr 2026 13:31:02 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH] KVM: arm64: Wake-up from WFI when iqrchip is in userspace
-Message-ID: <gd2ju4harg3bpt4kfbenyblfhg4di2vsu6q26e5rsg2whibq4w@rl7sippqm3sj>
-References: <20260423163607.486345-1-maz@kernel.org>
- <uhqgyol622go4lm5btbk4jyieb3swhskpkyel4mnksfeki2mo2@ecnjvxwiqcfw>
- <87jytwbz2d.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Np/fJ/Ld"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA62C19425;
+	Mon, 27 Apr 2026 06:10:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777270224;
+	bh=FXNseaUyPlkvsiojsWtx3KsUI8A3dSz/hWt+/LNARW4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Np/fJ/Ld8KknmcuTyDZSt4YryM3X+4gbXd53P72vx5f445xArwgyHL4dp23zKRvnh
+	 0Ss+eoQknDzxVnEHgj+n1BGXQDExt1l8vGFVYGzPE+Fxx5xrSt7pOLUQyDfNkohLL8
+	 F7/3fUf2j+bSPgTfmqyp9liLHfRiDmFnBjLnvS3TVlC9GGugJqC8nqoalw2CCD21eC
+	 tKD/73pJ9i/sssx9iWPd6D2Golfv39hpljJnjt2jXLEvCkkj4QPyvrDy5x6kz8MbUj
+	 xyNZznOSubPKcoyk7UGIhCASRyE2I2a1LQoddp/gtKYzpDKD3NTO/rzdEajl9puGme
+	 aJ7jTpw/nO+dA==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v4 0/4] Add iommufd ioctls to support TSM operations
+Date: Mon, 27 Apr 2026 11:40:01 +0530
+Message-ID: <20260427061005.901854-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jytwbz2d.wl-maz@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 24, 2026 at 08:24:42AM +0800, Marc Zyngier wrote:
-> On Fri, 24 Apr 2026 07:33:02 +0100,
-> Yao Yuan <yaoyuan@linux.alibaba.com> wrote:
-> >
-> > On Thu, Apr 23, 2026 at 05:36:07PM +0800, Marc Zyngier wrote:
-> > > It appears that there is nothing in the wake-up path that
-> > > evaluates whether the in-kernel interrupts are pending unless
-> > > we have a vgic.
-> > >
-> > > This means that the userspace irqchip support has been broken for
-> > > about four years, and nobody noticed. It was also broken before
-> > > as we wouldn't wake-up on a PMU interrupt, but hey, who cares...
-> > >
-> > > It is probably time to remove the feature altogether, because it
-> > > was a terrible idea 10 years ago, and it still is.
-> > >
-> > > Fixes: b57de4ffd7c6d ("KVM: arm64: Simplify kvm_cpu_has_pending_timer()")
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > ---
-> > >  arch/arm64/kvm/arm.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > > index 176cbe8baad30..8bb2c7422cc8b 100644
-> > > --- a/arch/arm64/kvm/arm.c
-> > > +++ b/arch/arm64/kvm/arm.c
-> > > @@ -824,6 +824,10 @@ int kvm_arch_vcpu_runnable(struct kvm_vcpu *v)
-> > >  {
-> > >  	bool irq_lines = *vcpu_hcr(v) & (HCR_VI | HCR_VF | HCR_VSE);
-> > >
-> >
-> > Hi Marc,
-> >
-> > > +	irq_lines |= (!irqchip_in_kernel(v->kvm) &&
-> > > +		      (kvm_timer_should_notify_user(v) ||
-> > > +		       kvm_pmu_should_notify_user(v)));
-> >
-> > How about a new helper like 'kvm_should_notify_us_irqchip()' ?
-> > We can replace the same part at beginning of kvm_vcpu_exit_request() and
-> > here w/ unlikely().
->
-> I'd rather not introduce a helper, for two reasons:
->
-> - this needs to be backported all the way to 5.19, because that's how
->   far it has been broken. So keeping it small and localised is far
->   better than introducing a helper that will make the backport less
->   obvious.
+This patch series adds iommufd ioctl support for TSM-related operations.
+These ioctls allow VMMs to perform TSM management tasks such as bind and
+unbind operations, and to handle guest requests.
 
-Agree on this point very much!
+Changes from v2:
+https://lore.kernel.org/all/20260309111704.2330479-1-aneesh.kumar@kernel.org
+* Bump the series revision to v4 to keep it in sync with the dependent CCA DA
+  patchsets. There was no v3 posting.
+* Drop [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd with a
+  vIOMMU
+* Add two new patches to associate a struct kvm * with iommufd objects:
+  iommufd/device: Associate a kvm pointer to iommufd_device
+  iommufd/viommu: Associate a kvm pointer to iommufd_viommu
+* Address review feedback
 
->
-> - I have patches to remove the other calls to kvm_*_notify_user() as a
->   simplification of this utterly stupid feature.
+Changes from v1:
+https://lore.kernel.org/all/20250728135216.48084-8-aneesh.kumar@kernel.org
+* Rebase onto the latest kernel
+* Address review feedback
+* Drop the TSM map ioctl; the KVM prefault patch will be used instead to
+  ensure that private memory is preallocated
 
-OK.
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
->
-> Finally, and while I agree that this could take an unlikely()
-> qualifier, a much better course of action would be to have a separate
-> patch that moves the qualifier to the predicate itself.
+Aneesh Kumar K.V (Arm) (2):
+  iommufd/tsm: add vdevice TSM bind/unbind ioctl
+  iommufd/vdevice: add TSM guest request ioctl
 
-I got it, thanks for your such detail explanation!
+Nicolin Chen (1):
+  iommufd/viommu: Associate a kvm pointer to iommufd_viommu
 
->
-> Thanks,
->
-> 	M.
->
-> --
-> Jazz isn't dead. It just smells funny.
+Shameer Kolothum (1):
+  iommufd/device: Associate a kvm pointer to iommufd_device
+
+ drivers/iommu/iommufd/Makefile          |   2 +
+ drivers/iommu/iommufd/device.c          |   5 +-
+ drivers/iommu/iommufd/iommufd_private.h |  17 ++++
+ drivers/iommu/iommufd/main.c            |   6 ++
+ drivers/iommu/iommufd/selftest.c        |   2 +-
+ drivers/iommu/iommufd/tsm.c             | 109 ++++++++++++++++++++++++
+ drivers/iommu/iommufd/viommu.c          |  24 +++++-
+ drivers/vfio/iommufd.c                  |   2 +-
+ drivers/virt/coco/tsm-core.c            |  30 +++++++
+ include/linux/iommu.h                   |   1 +
+ include/linux/iommufd.h                 |   5 +-
+ include/linux/tsm.h                     |  42 +++++++++
+ include/uapi/linux/iommufd.h            |  67 +++++++++++++++
+ 13 files changed, 305 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/iommu/iommufd/tsm.c
+
+-- 
+2.43.0
+
