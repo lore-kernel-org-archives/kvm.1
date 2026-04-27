@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECCA14A4F0;
-	Mon, 27 Apr 2026 15:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0746834B1B0;
+	Mon, 27 Apr 2026 15:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303804; cv=none; b=jYu612sSerwiTf34kmOlhGwtI7JH+oQMsNfZumZQiPxAhSp4drWsH3JmJ3ZxaqW71/eymLYCRXtRllfXVpgCXY3sigrf9IEJ7gCYHQ0j8XrKBUG2LYUR5i9+HAoTsfTV93enEcUPdrwSCiCuZawXoYZcLE88ZXn46z01gWswx7I=
+	t=1777303806; cv=none; b=PXcVWh5bNimINGVwovOImsM8C9n4cFGzJANptYvkYGucCl+zd3ID+lcrtOufgt0AOzdS+31BPvXzv40KR9l1mvWYhdhJjj/eE+pgrY/qKORKA+c8of9B5TEGQVZ7qQucUZAMdd9uaEJcNM3mNi/pijuWfNQsAF4gxx0rG3R9lnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303804; c=relaxed/simple;
-	bh=bYjbc69A8zGruZ+zi8SjXIkHOPsqT90J/RUZegvsP2o=;
+	s=arc-20240116; t=1777303806; c=relaxed/simple;
+	bh=wEwibR+gTdBFd4dJUSNRJHiWPMrn1nUW4D5LVd9Dmt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anZVjNwOJUGkufIqjQpRM4bqz56qsNr5Q8HzKXrdN3bAP0WjsGvOKyFKOXgwCz+E67SPvZoN6EH3Ja18bGjUBx6b2c7iwmi4e+5FDjrkv3A38F/2LGOj1TqPD0VoeUxr1BqefN14q4w/MwowMyQsZTKggzsqx5v8vHsE17S1s0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MmhVo/8D; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version:Content-Type; b=s+PMk1B5xQGY3bJi9Oe5BrmfVkrl3gpTHdyWvBAPJQ3L+zutj7S5eX4BE2sokIeGy3AQvAwsdkJnx4AnFGkNkKjIJDVrESQK8z96BTkyLL18xDgZaRIQzlyzuhJnpeL0bXNgHZGURGFdS0x+z+Xjsn2hyW1PxRVQSkBsvi/uedA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dFHAOLH6; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MmhVo/8D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dFHAOLH6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777303802; x=1808839802;
+  t=1777303804; x=1808839804;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bYjbc69A8zGruZ+zi8SjXIkHOPsqT90J/RUZegvsP2o=;
-  b=MmhVo/8DgruDiu0Kgxx1g5ijq4iy+/T8O4r0bOjIClLwxcMNNOv6x2rW
-   GCn1royOMEutWq37juzmd7SBFwnFjzXAuqS4nxeFK9xMU10C07iHieoWc
-   3EDNSfTsnJCqEX1qHDnuJhtP2KYe4qB2YwNzZXyP0MRwRf9hTlcZi6guf
-   a+jJ/uwwNqDZVcFjvktuwByCh9C5kELjtOLDxzqarpLcLPIBEK/NIhxDS
-   VSRFBP9mfQjSQQaUoQbSIinIgVGUjsb0LheQ/5TpWOVGVSujVjzZVC9a/
-   qCFvQ5aXkMM++UEdJzUJyVRLF1PNU+C/KVyMcrzUEjSo8nF7zJcT8nSk1
+  bh=wEwibR+gTdBFd4dJUSNRJHiWPMrn1nUW4D5LVd9Dmt0=;
+  b=dFHAOLH6ouj581DpDaFVY4R1hFVSOlhkEcP04NyrR74k0R2Z5LKKjPCi
+   CWKmZ1qkCCvW67TBDHiXFvGUAuSZQ01ApSWr7EbGnqLGdMs93ubrmSqQl
+   tFJLnqoarN2LOAaBLmVahuGNPPmhjd9rUBAAZi5GprXporZpdG8RPSKmy
+   Yuh8iWY198WI6XIsrQ9k6luHNokw/FdF9U1G9nfColQmGz2UWnjUt8nJT
+   S0ZxoPjfYtXDUZP3ouj42xAgjQeULoIWqoUkCCd/Ny3bxwr+2NqJ/fisi
+   3satVo6AkJPYyLTWnSAXR0ELroYAEWtwQ8/kCu5HDmRt0kh1Ysbysc/bJ
    A==;
-X-CSE-ConnectionGUID: 4v2TkQ+pSAqk2Mwa0B6tYA==
-X-CSE-MsgGUID: O52dH+X/SY6LDa4TZ3i4Jw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900707"
+X-CSE-ConnectionGUID: 5JUULhC1S1KXspaNJfoWjg==
+X-CSE-MsgGUID: /BlzTns6SiyjEhfjPrybuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77900715"
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="77900707"
+   d="scan'208";a="77900715"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:29:59 -0700
-X-CSE-ConnectionGUID: 4LQMalnkSRuA32tY42rbnw==
-X-CSE-MsgGUID: cvgX8Q3YRgaa1Zf3Gt8EfQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:00 -0700
+X-CSE-ConnectionGUID: LRBEnch9QjyCYa4WFGi3sQ==
+X-CSE-MsgGUID: Tb7XvmEkRuGY2vYoJ0Jn5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="232673243"
+   d="scan'208";a="232673248"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:29:59 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:30:00 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v8 08/21] x86/virt/seamldr: Allocate and populate a module update request
-Date: Mon, 27 Apr 2026 08:28:02 -0700
-Message-ID: <20260427152854.101171-9-chao.gao@intel.com>
+Subject: [PATCH v8 09/21] x86/virt/seamldr: Introduce skeleton for TDX module updates
+Date: Mon, 27 Apr 2026 08:28:03 -0700
+Message-ID: <20260427152854.101171-10-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260427152854.101171-1-chao.gao@intel.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
@@ -84,230 +84,171 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX module
-update requests. This structure contains physical addresses pointing to
-the module binary and its signature file (or sigstruct), along with an
-update scenario field.
+TDX module updates require careful synchronization with other TDX
+operations. The requirements are (#1/#2 reflect current behavior that
+must be preserved):
 
-TDX modules are distributed in the tdx_blob format defined in
-blob_structure.txt from the "Intel TDX module Binaries Repository". A
-tdx_blob contains a header, sigstruct, and module binary. This is also the
-format supplied by the userspace to the kernel.
+1. SEAMCALLs need to be callable from both process and IRQ contexts.
+2. SEAMCALLs need to be able to run concurrently across CPUs
+3. During updates, only update-related SEAMCALLs are permitted; all
+   other SEAMCALLs shouldn't be called.
+4. During updates, all online CPUs must participate in the update work.
 
-Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure. The
-header is consumed solely by the kernel to extract the sigstruct and
-module, so validate it before processing to protect the kernel ABI. The
-sigstruct and module are passed to and validated by P-SEAMLDR, so don't
-duplicate any validation in the kernel.
+No single lock primitive satisfies all requirements. For instance,
+rwlock_t handles #1/#2 but fails #4: CPUs spinning with IRQs disabled
+cannot be directed to perform update work.
 
-Note: the sigstruct_pa field in SEAMLDR_PARAMS has been extended to
-a 4-element array. The updated "SEAM Loader (SEAMLDR) Interface
-Specification" will be published separately.
+Use stop_machine() as it is the only well-understood mechanism that can
+meet all requirements.
+
+And TDX module updates consist of several steps (See Intel® Trust Domain
+Extensions (Intel® TDX) Module Base Architecture Specification, Chapter
+"TD-Preserving TDX module Update"). Ordering requirements between steps
+mandate lockstep synchronization across all CPUs.
+
+multi_cpu_stop() is a good example of performing a multi-step task in
+lockstep. But it doesn't synchronize steps within the callback function
+it takes. So, implement one based on its pattern to establish the
+skeleton for TDX module updates. Specifically, add a global state
+machine where each state represents a step in the update flow. The state
+advances only after all CPUs acknowledge completing their work in the
+current state. This acknowledgment mechanism is what ensures lockstep
+execution.
+
+Potential alternative to stop_machine()
+=======================================
+An alternative approach is to lock all KVM entry points and kick all
+vCPUs. Here, KVM entry points refer to KVM VM/vCPU ioctl entry points,
+implemented in KVM common code (virt/kvm). Adding a locking mechanism
+there would affect all architectures KVM supports. And to lock only TDX
+vCPUs, new logic would be needed to identify TDX vCPUs, which the KVM
+common code currently lacks. This would add significant complexity and
+maintenance overhead to KVM for this TDX-specific use case, so don't take
+this approach.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 v8:
- - Consolidate all tdx_blob validation into a dedicated helper instead of
- scattering checks across two functions. [Rick]
- - Clarify which validations are performed by the kernel and which are
- intentionally left to P-SEAMLDR/userspace. [Rick]
- - Drop free_seamldr_params() helper [Rick]
- - Change params->version assignment to a single sig_size > 4K expression
- [Rick]
- - Don't preemptively handle "PAGE_SIZE != 4KB" [Dave]
+ - Add a "so don't take this approach" after alternative solution
+ discussion in the changelog [Rick]
+ - Use imperative mood for a comment [Dave]
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 155 ++++++++++++++++++++++++++++++++
- 1 file changed, 155 insertions(+)
+ arch/x86/virt/vmx/tdx/seamldr.c | 79 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 77 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 650c0f097aac..f70be8e2a07b 100644
+index f70be8e2a07b..aa839aaeb79d 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -7,6 +7,7 @@
+@@ -7,8 +7,10 @@
  #define pr_fmt(fmt)	"seamldr: " fmt
  
  #include <linux/mm.h>
-+#include <linux/slab.h>
++#include <linux/nmi.h>
+ #include <linux/slab.h>
  #include <linux/spinlock.h>
++#include <linux/stop_machine.h>
  
  #include <asm/seamldr.h>
-@@ -16,6 +17,33 @@
- /* P-SEAMLDR SEAMCALL leaf function */
- #define P_SEAMLDR_INFO			0x8000000000000000
  
-+#define SEAMLDR_MAX_NR_MODULE_PAGES	496
-+#define SEAMLDR_MAX_NR_SIG_PAGES	4
-+
-+/*
-+ * The seamldr_params "scenario" field specifies the operation mode:
-+ * 0: Install TDX module from scratch (not used by kernel)
-+ * 1: Update existing TDX module to a compatible version
-+ */
-+#define SEAMLDR_SCENARIO_UPDATE		1
-+
-+/*
-+ * This is called the "SEAMLDR_PARAMS" data structure and is defined
-+ * in "SEAM Loader (SEAMLDR) Interface Specification".
-+ *
-+ * It describes the TDX module that will be installed.
-+ */
-+struct seamldr_params {
-+	u32	version;
-+	u32	scenario;
-+	u64	sigstruct_pa[SEAMLDR_MAX_NR_SIG_PAGES];
-+	u8	reserved[80];
-+	u64	num_module_pages;
-+	u64	mod_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
-+} __packed;
-+
-+static_assert(sizeof(struct seamldr_params) == 4096);
-+
- /*
-  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-  * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-@@ -43,6 +71,128 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
+@@ -190,6 +192,77 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
+ 	return alloc_seamldr_params(blob, size);
  }
- EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
  
 +/*
-+ * Intel TDX module blob. Its format is defined at:
-+ * https://github.com/intel/tdx-module-binaries/blob/main/blob_structure.txt
-+ *
-+ * Note this structure differs from the reference above: the two variable-length
-+ * fields "@sigstruct" and "@module" are represented as a single "@data" field
-+ * here and split programmatically using the offset_of_module value.
-+ *
-+ * Note @offset_of_module is relative to the start of struct tdx_blob, not
-+ * @data, and @length is the total length of the blob, not the length of
-+ * @data.
++ * During a TDX module update, all CPUs start from MODULE_UPDATE_START and
++ * progress to MODULE_UPDATE_DONE. Each state is associated with certain
++ * work. For some states, just one CPU needs to perform the work, while
++ * other CPUs just wait during those states.
 + */
-+struct tdx_blob {
-+	u16	version;
-+	u16	checksum;
-+	u32	offset_of_module;
-+	u8	signature[8];
-+	u32	length;
-+	u32	reserved0;
-+	u64	reserved1[509];
-+	u8	data[];
-+} __packed;
++enum module_update_state {
++	MODULE_UPDATE_START,
++	MODULE_UPDATE_DONE,
++};
 +
-+/* Supported versions of the tdx_blob */
-+#define TDX_BLOB_VERSION_1	0x100
++static struct {
++	enum module_update_state state;
++	int thread_ack;
++	/*
++	 * Protect update_data. Raw spinlock as it will be acquired from
++	 * interrupt-disabled contexts.
++	 */
++	raw_spinlock_t lock;
++} update_data = {
++	.lock = __RAW_SPIN_LOCK_UNLOCKED(update_data.lock)
++};
++
++static void set_target_state(enum module_update_state state)
++{
++	/* Reset ack counter. */
++	update_data.thread_ack = num_online_cpus();
++	update_data.state = state;
++}
++
++/* Last one to ack a state moves to the next state. */
++static void ack_state(void)
++{
++	guard(raw_spinlock)(&update_data.lock);
++	update_data.thread_ack--;
++	if (!update_data.thread_ack)
++		set_target_state(update_data.state + 1);
++}
 +
 +/*
-+ * Blob fields are processed by the kernel and the payloads
-+ * are passed to the TDX module. Do normal user input type
-+ * check for any fields that don't get passed to the TDX module.
++ * See multi_cpu_stop() from where this multi-cpu state-machine was
++ * adopted, and the rationale for touch_nmi_watchdog().
 + */
-+static const struct tdx_blob *get_and_check_blob(const u8 *data, u32 size)
++static int do_seamldr_install_module(void *seamldr_params)
 +{
-+	const struct tdx_blob *blob = (const void *)data;
++	enum module_update_state newstate, curstate = MODULE_UPDATE_START;
++	int ret = 0;
 +
-+	/*
-+	 * Ensure the size is valid otherwise reading any field from the
-+	 * blob may overflow.
-+	 */
-+	if (size <= sizeof(struct tdx_blob))
-+		return ERR_PTR(-EINVAL);
++	do {
++		/* Chill out and re-read update_data. */
++		cpu_relax();
++		newstate = READ_ONCE(update_data.state);
 +
-+	/*
-+	 * Don't care about user passing the wrong file, but protect
-+	 * kernel ABI by preventing accepting garbage.
-+	 */
-+	if (memcmp(blob->signature, "TDX-BLOB", 8))
-+		return ERR_PTR(-EINVAL);
++		if (newstate != curstate) {
++			curstate = newstate;
++			switch (curstate) {
++			/* TODO: add the update steps. */
++			default:
++				break;
++			}
 +
-+	/*
-+	 * Ensure the offset of the module is within valid bounds and
-+	 * page-aligned.
-+	 */
-+	if (blob->offset_of_module >= size || blob->offset_of_module <= sizeof(struct tdx_blob))
-+		return ERR_PTR(-EINVAL);
-+	if (!IS_ALIGNED(blob->offset_of_module, PAGE_SIZE))
-+		return ERR_PTR(-EINVAL);
++			ack_state();
++		} else {
++			touch_nmi_watchdog();
++			rcu_momentary_eqs();
++		}
++	} while (curstate != MODULE_UPDATE_DONE);
 +
-+	if (blob->version != TDX_BLOB_VERSION_1)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (blob->reserved0 || memchr_inv(blob->reserved1, 0, sizeof(blob->reserved1)))
-+		return ERR_PTR(-EINVAL);
-+
-+	return blob;
++	return ret;
 +}
 +
-+static struct seamldr_params *alloc_seamldr_params(const struct tdx_blob *blob, unsigned int blob_size)
-+{
-+	struct seamldr_params *params;
-+	int module_pg_cnt, sig_pg_cnt;
-+	const u8 *sig, *module;
-+	int i;
-+
-+	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
-+	if (!params)
-+		return ERR_PTR(-ENOMEM);
-+
-+	/*
-+	 * Split the blob into a sigstruct and a module. Assume all
-+	 * size/offsets are within bounds of blob_size due to prior checks.
-+	 */
-+	sig		= blob->data;
-+	sig_pg_cnt	= (blob->offset_of_module - sizeof(struct tdx_blob)) >> PAGE_SHIFT;
-+	module		= (const u8 *)blob + blob->offset_of_module;
-+	module_pg_cnt	= (blob_size - blob->offset_of_module) >> PAGE_SHIFT;
-+
-+	/*
-+	 * Only use version 1 when required (sigstruct > 4KB) for backward
-+	 * compatibility with P-SEAMLDR that lacks version 1 support.
-+	 */
-+	params->version = sig_pg_cnt > 1;
-+	params->scenario = SEAMLDR_SCENARIO_UPDATE;
-+
-+	for (i = 0; i < MIN(sig_pg_cnt, SEAMLDR_MAX_NR_SIG_PAGES); i++) {
-+		params->sigstruct_pa[i] = vmalloc_to_pfn(sig) << PAGE_SHIFT;
-+		sig += PAGE_SIZE;
-+	}
-+
-+	params->num_module_pages = MIN(module_pg_cnt, SEAMLDR_MAX_NR_MODULE_PAGES);
-+	for (i = 0; i < params->num_module_pages; i++) {
-+		params->mod_pages_pa_list[i] = vmalloc_to_pfn(module) << PAGE_SHIFT;
-+		module += PAGE_SIZE;
-+	}
-+
-+	return params;
-+}
-+
-+static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
-+{
-+	const struct tdx_blob *blob;
-+
-+	blob = get_and_check_blob(data, size);
-+	if (IS_ERR(blob))
-+		return ERR_CAST(blob);
-+
-+	return alloc_seamldr_params(blob, size);
-+}
-+
-+DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
-+	    if (!IS_ERR_OR_NULL(_T)) free_page((unsigned long)_T))
-+
- /**
-  * seamldr_install_module - Install a new TDX module.
-  * @data: Pointer to the TDX module update blob.
-@@ -52,6 +202,11 @@ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
-  */
- int seamldr_install_module(const u8 *data, u32 size)
- {
-+	struct seamldr_params *params __free(free_seamldr_params) =
-+						init_seamldr_params(data, size);
-+	if (IS_ERR(params))
-+		return PTR_ERR(params);
-+
- 	/* TODO: Update TDX module here */
- 	return 0;
+ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+ 	    if (!IS_ERR_OR_NULL(_T)) free_page((unsigned long)_T))
+ 
+@@ -207,7 +280,9 @@ int seamldr_install_module(const u8 *data, u32 size)
+ 	if (IS_ERR(params))
+ 		return PTR_ERR(params);
+ 
+-	/* TODO: Update TDX module here */
+-	return 0;
++	/* Ensure a stable set of online CPUs for the update process. */
++	guard(cpus_read_lock)();
++	set_target_state(MODULE_UPDATE_START + 1);
++	return stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
  }
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
 -- 
 2.47.1
 
