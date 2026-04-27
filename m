@@ -1,62 +1,61 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C183E715E
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471163E7151
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777311454; cv=none; b=lz0HqRdC6SF7Cv6Z/0xSMUhl+eLOZ91Jv+6+Yxjq/uMxZdy4cBCavh0Np3fyoQADu7gd7TTVQdISCHN23T6gCKf9Q8981OYZtIuzTwJ/8SFsCAbwTk3XbDfenLtLFvMXnj9Ssfk6HQHYA+1Zm83eZvydYpiofHxkdDEdPjxP3+U=
+	t=1777311455; cv=none; b=ky9PhWYW8zH8B8i04uocjPz+5A1I9JlOqGzMmOBh7SJfMV56/uSq3RhDAa+++YXs40cbKTyJ72B/FSBeWR0nhiXesO/KOAoSnsAUv9Zp9LV4v2M+A0OGm6bY4X7JnvfVLyVxo9Tq3F+EHNpUiguDXtltuvIwMXmOFZUE4pjhL6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777311454; c=relaxed/simple;
-	bh=vOL+CYux8NFjKLHwONkZpU/3Y9V3t+NAnLpizBb9G1s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AvhJp8vnTOvPwc7hUTD5Qn17ZXI7l+jKuCtPaqeFSrywSjdVGMMOFHClDGBlCvW4ML0klr8bCuD0ICCCfMxIgpfof/vb79fEMYSG5+6/TJKpsHGNo6RM+4jRX+zCBxX2DlZmsSwLHMjrFdi2zBhGd4q4UYxni2B90QRE0YJqx9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YLn4/hJx; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1777311455; c=relaxed/simple;
+	bh=NNbMM5V2ZP9D0cXtCONJpZR+y1mVrePzSDhOqfvBVfE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YRaaMpsyKHM0mtXKYjCm5fOsGEnbVKLNW9V4/QZH5Z+6bg0mmGRnOo06bi/d047msW0+hb6CaTCA4mr/AJMYSPjiGMh50SHpiHYw9UslLqKpdCYqQ7vf5SxjL0hvfbLeMowzswKx1adPKMayeggt00DeOebg/TBJV9P6LKld48Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GG3qwKB1; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YLn4/hJx"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63RGPa82031301;
-	Mon, 27 Apr 2026 17:37:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=YuAJmE
-	FB2rLz/telSoECpGd2FjdHgs0rg1Z4yE0Hv8Q=; b=YLn4/hJxfLdpmd13/LaCPt
-	kiQqzf3s99X4ncIr21QfpQ1wB4u087Mb6871VgRvgFqSnZR308/HnScsJ1ZuTKuJ
-	WEy3fLbHixAkVvEPfechuev/xzmmpaO7qp2gX9mWvRV7VezR5+mNq88ciTvfaCYC
-	7wgnLXndv1I3dHcoXtJO9k7bPhfw3s6Ghc6jHGRzGI1p4dX8gZch7bLxsAwruENl
-	qeRNIwFduWks2wrwjyaLh2pRpxY2k+HEAvmgT5lbvE8/zNTWNxbUt/QmCiBUxg9C
-	B0H/gKAXUDBXTo0lave9ig3Dd7O5SLIqHmnnR34ab1D1kFJQNUomSYqNl+yHitNw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drm1drxe8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 17:37:25 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63RHNlUx019700;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GG3qwKB1"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63REWcm93131367;
 	Mon, 27 Apr 2026 17:37:25 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8avpc56-1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=WGYalOI522xkz+LxI26Z1CaRll7E
+	37yDoYwaLgj/o2M=; b=GG3qwKB1lkavqTTV6XaM7ghmOMqeiMxw8ovz8IYbx/7i
+	5hGamrWc/LjTzKWCisV7UCjreGugtiGu4qV3A0zbxjxBMYF8y7xmt+8mVG1XXJH5
+	8oygwvcVLTDDorZFDJrXlbQbhDinekQwsdMGWhSeCnyipGDXCeOrxd4IHLEHELRX
+	yvl5QW46DHgoNksx6g5RZTy8MTLPu55Wz2nkJmubnIoAx931cUHGMfsOMa8kJQqR
+	LFiOKuNkldOglaOfJVoRUlr8q9JPTrghFJKofIFQRbJl5uy1OoBTUlEphYDoH1co
+	smB5ZT9PfDT45kWQgVq9uoMrA//hUUvv8RfSKXKYnQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drk1jh3g5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 17:37:25 +0000 (GMT)
+	Mon, 27 Apr 2026 17:37:24 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63RHNiLv011165;
+	Mon, 27 Apr 2026 17:37:23 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ds7xq6dqv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Apr 2026 17:37:23 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63RHbL6F48431552
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63RHbK5j22544682
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Apr 2026 17:37:21 GMT
+	Mon, 27 Apr 2026 17:37:20 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DBB62004B;
-	Mon, 27 Apr 2026 17:37:21 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3241320043;
+	Mon, 27 Apr 2026 17:37:20 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E10120040;
-	Mon, 27 Apr 2026 17:37:21 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C4A5520040;
+	Mon, 27 Apr 2026 17:37:19 +0000 (GMT)
 Received: from [192.168.88.52] (unknown [9.111.47.231])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Apr 2026 17:37:21 +0000 (GMT)
+	Mon, 27 Apr 2026 17:37:19 +0000 (GMT)
 From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Mon, 27 Apr 2026 19:36:45 +0200
-Subject: [kvm-unit-tests PATCH v2 3/4] scripts/get_maintainer.pl: Ignore
- --nogit-chief-penguins option
+Subject: [kvm-unit-tests PATCH v2 0/4] scripts: Configure and update tools
+ to allow basic b4 usage
+Date: Mon, 27 Apr 2026 19:36:42 +0200
+Message-Id: <20260427-b4-cmdline-v2-0-0fea2a50a9d0@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,87 +64,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-b4-cmdline-v2-3-0fea2a50a9d0@linux.ibm.com>
-References: <20260427-b4-cmdline-v2-0-0fea2a50a9d0@linux.ibm.com>
-In-Reply-To: <20260427-b4-cmdline-v2-0-0fea2a50a9d0@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OwRKCMAxEf4XJ2WiJiMrJ/3A4FBoloy3aFgbH4
+ d/toEePm83b3TcE9sIBquwNnkcJ0rskaJVB22l3ZRSTNJCiUhW0xabA1pq7OEZ9yImNIip3R0j
+ Aw/NFpiXsDLfR4uAkYuQQA9Rf3/NzSB3x99TowNj21kqsst7LVdzG6hDZL0AnIfb+tYwb84X4t
+ 2PMUeFlT9ooRcoUdErnYVpLY9cpHOp5nj+R7RMp6QAAAA==
+X-Change-ID: 20260423-b4-cmdline-a812ed022659
 To: kvm@vger.kernel.org
 Cc: Janosch Frank <frankja@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
         Thomas Huth <thuth@redhat.com>, Andrew Jones <andrew.jones@linux.dev>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christoph Schlameuss <schlameuss@linux.ibm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1357;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1566;
  i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=vOL+CYux8NFjKLHwONkZpU/3Y9V3t+NAnLpizBb9G1s=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJnv550vPPnmZE9QkXKiqsviH3u97dfq55kem8c6uShsc
- 9XCG6HeHaUsDGJcDLJiiizV4tZ5VX2tS+cctLwGM4eVCWQIAxenAEzk0lZGhlkPyljqXzv3vBM/
- tUWbZf3dyuutQSUm+/XkH6y9YTP77kaG/565zXMin36bMVProlDNjZ+pj1LnsU/8YPvw0PM9vif
- 8JDgA
+ bh=NNbMM5V2ZP9D0cXtCONJpZR+y1mVrePzSDhOqfvBVfE=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJnv5+18LB3AYjHj5cHOg+JRqTd/237fmHi2WW/SOlHm2
+ zIfrtq87yhlYRDjYpAVU2SpFrfOq+prXTrnoOU1mDmsTCBDGLg4BWAiHvMYGa49CNJJtly2yX7R
+ 2VkOsRpevMXKT7pEtp6c6tO4kD9Nj5uRYfvhaNaLy8UrjL83LxAq6GN4GTWxpCYuTONu3a+6rDY
+ /bgA=
 X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
  fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: hZw4_Ac4Wz0ZO_dcT8wSf1LwcwpbsqTt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDE4NCBTYWx0ZWRfX4B304gBU3109
- UVrMl2UF73e15fd7hWayxotx4C2Rz4cIlKErdKDMCI524aHLLzFCtuMqqKoMLLLJI83gMHTQLDX
- wy/Ij4KyFeU+RuPjEvbwXAFBTQviA121jZDgrp1ghZ6Du6Or1bEzxAF5IRFprk/WDD06tn9rFG4
- 2zaW/TkeWLGEbJb0WQXUJGcbPpAfO/IM1nXRzNBFu7KevhJJZTHzHZ9C6hdvuIty1U+TJeVrOP+
- 69v3wTVpOzqm15HMiIA48HNBAEeFvrURMr12gkSmgeLUz/wv8pLFTTExlKzlNtl/rIMCmks7Pf0
- nzdwB0VqrqldssrsPUBVg32dzvm0pVjsXY4Y4ETzFRfF5ZI0VeBuiIIAb4/8C/X499HdU/iMfB6
- TJKnjmLgWphzFrMHdD3G6F6lSFGHDPLr407X9BZWw3tZ136WQDriDa/jZzWMLPF1gGE50C2CJ1B
- 2sqMT32blEP6WnDFukQ==
-X-Authority-Analysis: v=2.4 cv=VZLH+lp9 c=1 sm=1 tr=0 ts=69ef9ed6 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDE4NCBTYWx0ZWRfXzaSz8iaofSV1
+ iRvptPkqlmeP9BKOxGoRz1dJzJoJgBsqyAaeO0pYQYG60VmgS17iLlp1f/2UqZnxi/xw8OpQDn9
+ +KbI64hM9ba3cvH4zwEsLovQLddtTkBjcPxcuy+A7Td/mnogr7Yuvjzv4mZONIrTdUlSCZpqdwV
+ QvU3Tl4He5o/WaDzhAk5c4Bro38WoleV+Tenp0D6ivvdoZBa0L/U74ac/xVboXQDGMF9PQhGET6
+ SFB8Q9DC12AOF7f71y8KpGNghxP+pbWYEzvOnYb6cN+rNEIJLz7GxK12z6DAgmjTDypTouTP34N
+ P0zSZO1zFkD95X7BK3WuCE9MfSMT8Mjh777baHnyTJ4FQb1vFgO0IWLW2b2uFzTdix48Bt0dtd0
+ 9BQJczbHXGtTIj2RFiKkpNSzNEsNjoJbzzSnLeLofoBzpYuQlk7a1ZCeKJvpVbERQV6CwQhY8pB
+ X5jjlPZnJ1dKpDB+3pA==
+X-Proofpoint-GUID: Ct2Tjj6PKrIjpB9vzZYEHR2-g1_d6OSO
+X-Proofpoint-ORIG-GUID: wEt2eLk-O6EtP6yFmIGv2dY-fW1OgdQ8
+X-Authority-Analysis: v=2.4 cv=MohiLWae c=1 sm=1 tr=0 ts=69ef9ed5 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=lxj2BVOkSjtvKpCaR2wA:9 a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: nIS8EIM2Soq5vllatIiGwsT318ivNKfI
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=Axkr_NyDMhVxGLxSvsIA:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-27_04,2026-04-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
- spamscore=0 malwarescore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270184
+ phishscore=0 adultscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604270184
 
-b4 by default calls the get_maintainer.pl script with the
-'--nogit-chief-penguins' option letting the 'b4 prep --auto-to-cc' fail.
+Provide some basic configuration for checkpatch.pl so that use on the
+command line is less confusing and actually useful.
+Checking new patches with i.e. 'b4 prep --check' will now not just give you
+dummy errors.
 
-Adding parsing of that option without any related functionality to allow
-simple usage of b4 in the development workflow.
-
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Modify get_maintainer.pl to work when called from 'b4 prep --auto-to-cc'.
 
 ---
+The second patch also copies the current codespell config from the kernel.
+I think this would be nice to have but I would also understand if nobody
+wants to add that dead weight here. In that case I would also agree drop
+that second patch.
 
-Sorry, I am not too versed with perl, so if there are better ways to fix
-this please comment.
 ---
- scripts/get_maintainer.pl | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v2:
+- corrected variable name to match kernel script
+- replace codespell dict with minimal and kvm-unit-tests specific
+  version instead of copy form the kernel
+- add virtio_config_ops as initial content for const_structs.checkpatch
+- add a patch to configure the default b4 prefix
 
-diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
-index 117b69145f0e..4d4ff4236f2f 100755
---- a/scripts/get_maintainer.pl
-+++ b/scripts/get_maintainer.pl
-@@ -31,6 +31,7 @@ my $email_fixes = 1;
- my $email_list = 1;
- my $email_moderated_list = 1;
- my $email_subscriber_list = 0;
-+my $email_git_penguin_chiefs = 0;
- my $email_git = 0;
- my $email_git_all_signature_types = 0;
- my $email_git_blame = 0;
-@@ -228,6 +229,7 @@ if (!GetOptions(
- 		'git-blame!' => \$email_git_blame,
- 		'git-blame-signatures!' => \$email_git_blame_signatures,
- 		'git-fallback!' => \$email_git_fallback,
-+		'git-chief-penguins!' => \$email_git_penguin_chiefs,
- 		'git-min-signatures=i' => \$email_git_min_signatures,
- 		'git-max-maintainers=i' => \$email_git_max_maintainers,
- 		'git-min-percent=i' => \$email_git_min_percent,
+---
+Christoph Schlameuss (4):
+      scripts/checkpatch.pl: Add empty codespell and const_structs configs
+      scripts/checkpatch.pl: Create a project specific codespell config
+      scripts/get_maintainer.pl: Ignore --nogit-chief-penguins option
+      b4: Add b4 config with default prefix
 
+ .b4-config                       |  2 ++
+ scripts/const_structs.checkpatch |  1 +
+ scripts/get_maintainer.pl        |  2 ++
+ scripts/spelling.txt             | 34 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 39 insertions(+)
+---
+base-commit: ea91ac1763561b23e7eba3f7c1fa3d45f29b89be
+change-id: 20260423-b4-cmdline-a812ed022659
+
+Best regards,
 -- 
-2.53.0
+Christoph Schlameuss <schlameuss@linux.ibm.com>
 
