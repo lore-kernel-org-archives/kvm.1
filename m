@@ -1,142 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BD0386C36
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 08:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777279761; cv=pass; b=c/6X1FXtgsQV6Gep0X4NXw3KKq9awkwTi79hwtOEF4qB1TOtLJ+fLTjo1HmssxhWf8j+JDVvx12qXLmsEsJEEUlxbwWy6zCNoPxHTzar50YUHmxN8KnDaS9uSpvzEfcIRClumEn04W0yBk4d5kNyhN+iwKlK6iHw6pued8Lqf7w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777279761; c=relaxed/simple;
-	bh=H6Am3uVt3DNgjA2oGEJ3FedMywpLpFTMNRXP9GXlqYI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vm8rg/uK6AZ3XjPFPsOXzp36LiippqSUQYB3JKhonU1NGdgNJcQ9DNi5zfT2XW679R1Fd4uXVrzXWi40LE2FpoPsbYd97qdSwFjGWxm9RuxcGmQ2kaGvYM2DBM2kq+/dOcDV8E4jqtgO/HfTBPwo/TMFmeb2lcUhmodf1fslovM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CAiEuWCM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PWU+fLDj; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219273A6F12;
+	Mon, 27 Apr 2026 08:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777280044; cv=none; b=BaLNcAg79PAqRvEfXABccMQSF2WDCl1mwe0SS29LoNMmuv0y/rNy1BJ2X54U/2FcrTLsQrGOc0gIJXGjhar0VIWj+XHcD1VbgPZzFoRTxV5OoR1WVaDUsfkWo3c/6TDzwiA9R1isPegYR0MBQiaIgq786ERFFDnpQv1bvFsiT0M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777280044; c=relaxed/simple;
+	bh=PtRJvasZkHp+/95b/vL94bJzCcFOTEky3Sgd0xF9RXI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DvHZh7r/H2jbxeVhVyQOKruJ5rc+vPkkjzjCQSNaTPvEtAdx/5d3stnkIjRbw0Q5XwKYIV6Vl6+ywBNa2RIJKDR7u39Wnlci30zokNfzVSuRP1z+DensFDkJyGpQxgP2W27MgEVlJwcn0oPbftY0s5PWQGfCS4kjODCWrS5dJ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGvBru2d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CAiEuWCM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PWU+fLDj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777279759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1v3quVUYGUtXVenLkGC0x/9Av7Dhy2+itJqpwQl5jXU=;
-	b=CAiEuWCMlIbPzVIeaKr6Ic/vlyYO3mkTpvKNi7Sn0UKJn+BanrFKBwPDCZtS+CvScl39Dx
-	3Se+K6/KPCjsrQAgoBvb6fp89AeE/O/WQfQaC2w48Br0nQSbkRPegfSpljGRV/a+rUgOEe
-	OXEsgbBnruLu/JCDBtlqFHK1X2PKc7I=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-711-Ab8H0uK0Mlm40aI_Z2kPIA-1; Mon, 27 Apr 2026 04:49:17 -0400
-X-MC-Unique: Ab8H0uK0Mlm40aI_Z2kPIA-1
-X-Mimecast-MFC-AGG-ID: Ab8H0uK0Mlm40aI_Z2kPIA_1777279756
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48a55ecc249so47736005e9.1
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 01:49:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777279756; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DoxV1IvuZfEwzn+OiYVZUV9dRWCfT8CP/VkB54Gtj7VmCIUkstgNEwn5s2FpFHGd43
-         i9dYZzy/T9Ts4D0sXh3+Oym6FmooF4HyL5UGwum6TOP76JRB8q0hg6MrU5dJaC5Xs5Zo
-         Rb3gp1AwHFLpiQ8D8rmmbTIfEeYJO5wICoIBkXm3EMIPSoIUQsJROIelrQ+kEyb8VWlO
-         zh8QEFGUGeud6wn5D9LGyb0zRJ2MvbFJ/rdMVq05Sk9eGcHaOWJ6rB65GWqAxeMzq1/T
-         /7fX2+DUsXuFtd0LGm8O+3lC6orNGE9EM8Ys27A9/CG7+tsB1f1NF+/Q7xuUHajizNYp
-         K7hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1v3quVUYGUtXVenLkGC0x/9Av7Dhy2+itJqpwQl5jXU=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=f6Jq1SQrQXEz4fDonRXdM7qaJtaqQfdE/1+ElTuy4HcKfi/Wr34Fk+rpZbdDf4R9Ol
-         o3n+CH3mKzaTUKmgbDcg/ZMO5H1KZSSb+ADGYTVW5iFrNfbJVxm2+aAtXAFU/d8e1C1/
-         650MoJc2Jm0AHTwTrrNDpoEVYLgBM5BXA3Sr0qTN1o+JUkICiKoLkA6yr4oOr/WD5jbb
-         6RrA0MMRvqrpPDmD2+x+DMzwmWsQehQ+eHS9/icfMoh+DVRwtATBGXNppp0fFmhBY092
-         SsbJ/22PAJ4QR2xDvO/ApjX4jih4Kw+CzkuUsTTu/en1mKJywNdD8YRWOOX8oaXeqPy6
-         UFfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777279756; x=1777884556; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1v3quVUYGUtXVenLkGC0x/9Av7Dhy2+itJqpwQl5jXU=;
-        b=PWU+fLDj0hERyHUDjTsLpFv7B5/o7iZPWvbB33T3EcbveKuCwU+xXM5rUyu9+UFYPB
-         WABzThRLtjY0gi4vX7DqG9oy11JljUiXwF6VOlBAbErUkBMfVtXPc4hV886JSv+aYlfH
-         /5vs69Miwi1wPNGAvh6oESLXzkZDw1mnWSrbcNvAoHQzoGPDOu7nM/Ou5QUwAxf2PTeF
-         3C9MqW3e1WGUPocvhGAaChnBAc67B9SLIbTub2fNj+SBSDKsYtVy+0wM0Jeh5XoDiK29
-         ylrzUjUwGgs38vZGr1Hjd9vQjYWApqco/YK97klM8lk8VmQMhleSstqxs5bXWefhRdeU
-         GChA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777279756; x=1777884556;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1v3quVUYGUtXVenLkGC0x/9Av7Dhy2+itJqpwQl5jXU=;
-        b=Q9Qf6nPNgyT6s1RvEmRmQbcMkJzOIoZudxauPJR47CPm0kFA9NIhRT60+GcPpMgi9B
-         W8TIqz0A1ePds6FGXt3/fGmxJ9iEHgNMrZsT7IVaH7Z334/aYeaiQoNE8LA0lv3zxuSx
-         vPGeu4EVKEoqzj1f6RSRN0xguiYvF/sMIAo4lFbsK0D5WdVR/JEH9Pr5SQPOBZ+hmroP
-         Ync7cih1JT2Hq4WS5RJFySw4wjzzCsFTR6FWAQAVD2f8RETnTOoAkPqCt/rMhkyW46PP
-         QXHezCavz8CLlCxXxLcS6dcesKhyhtJzPElJ3Vsp+xiPJxCnYzdPuqu34mSR3ww6fJN0
-         U+vw==
-X-Gm-Message-State: AOJu0YyxWjlPkHArw49mAnAq9SXldc6C03v/7NZdKS8ei39oKyoRBuSi
-	7HsIqIXHtogTH+LF3g1cEOAjjXg/9Y6X3QOhQPxaWTi2lENrZqO90Ux1L5JXypq9+JVgP/Yg++N
-	bihp9K5iuAqDlQYpUdOLxooawWRJGjF7/m5wTkmxeas9kly71SvXclLNjGoVCExXhlN0BwQWS4E
-	UZeEOZk/N4KMTzeUPIBil1AUON0yZ4
-X-Gm-Gg: AeBDieszHbiw+OojtuhkIUNReg0J0lh+7eCkkWCL7L3Z9LaPaeDVUUDwS8sNP4rbuKi
-	ZqIKkF/WfG+z5rp7gDJ2rQ/1+SuJVBVIsvEbiLsYwoFYpws8Bth5HZBD8eyWu/7zw9EZc7iD+5k
-	qjMpFZAswFF4MUObbkfoGFfvLUavuQF+RWxSSVgfngLqLVkl/jdLPjH7whba0j9BBgVJFV7/C4o
-	1tpVQIpZh9E2553yiJUE8sNveO6y145O7wi5uCtl50Ohdp94kvCJK5BINYvZn0uEJDLyXjHy164
-	rOoWbYzRvLP5Avg=
-X-Received: by 2002:a05:600c:64c8:b0:485:2fe9:336f with SMTP id 5b1f17b1804b1-488fb7a0d24mr618668245e9.30.1777279756092;
-        Mon, 27 Apr 2026 01:49:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:64c8:b0:485:2fe9:336f with SMTP id
- 5b1f17b1804b1-488fb7a0d24mr618667805e9.30.1777279755504; Mon, 27 Apr 2026
- 01:49:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGvBru2d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2484C2BCB4;
+	Mon, 27 Apr 2026 08:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777280043;
+	bh=PtRJvasZkHp+/95b/vL94bJzCcFOTEky3Sgd0xF9RXI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eGvBru2du1vkxSlCwhoF5+RD25f8/jipUj6nJW3i8PK5u+iKtE7HMW4CEIMfpJtrF
+	 t4vlM7yBSyANHHK9oRs+WpteFmnxx/pY4CiWv2DvIRdTy7NH8l6iqSU8uulGfHZpnu
+	 jHoCRsWLXcqMqU4MduvgenOdiT/Cz29l0WB7QwvIYnmuwerweo6WsOX1D/t6HScKtB
+	 xDrzEAavdqmEUyIYWUdKfkt4CbM+X/LhV88K1eNzOciCn6RzLjtRBAvgvz42689kfS
+	 bXHpum7jsoE+AHM0nJhJ6FT/Xi+ixk3KV8+2mqOOQcsIOlVaZm5DUUZjKYPPLK82t1
+	 TphzYQf1VbVDA==
+Message-ID: <9b02dc87-15e3-4f6b-af53-aeb1b3ef01e1@kernel.org>
+Date: Mon, 27 Apr 2026 10:53:49 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260423184932.547047-1-seanjc@google.com>
-In-Reply-To: <20260423184932.547047-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 27 Apr 2026 10:49:03 +0200
-X-Gm-Features: AVHnY4JE9bgBczo1yMjB0lmfZVUwfBcg9WAvc9UtEwYu1TeWLIM_GktrL3Yq5Xg
-Message-ID: <CABgObfZVwAs2jW_KY-bf6d=nUxufZcFHcmwT9R7reLxQygzsxQ@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: Selftests type renames for 7.1
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
+ them
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yosry Ahmed <yosry@kernel.org>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Lance Yang <lance.yang@linux.dev>,
+ peterz@infradead.org, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+ ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+ arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
+ seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
+References: <20260424062528.71951-1-lance.yang@linux.dev>
+ <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
+ <aetw4aoABYj3keMh@plex>
+ <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
+ <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
+ <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
+ <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
+ <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
+ <4e7699eb-e101-4a25-b585-79a777eb7cc2@kernel.org>
+ <CAO9r8zO4eSiAK9U-ijzWJMK80XsK+LmFxGAG+nTo+tmK6aLfYA@mail.gmail.com>
+ <872e752d-c7fa-4a75-a963-4e2f42ce468b@kernel.org>
+ <20260425043605.a3a1819fb219c649eab0f3a1@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260425043605.a3a1819fb219c649eab0f3a1@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 23, 2026 at 8:49=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Please pull an invasive set of "tree"-wide changes to switch selftests to=
- the
-> kernel's preferred naming for common types and variables.  This has been =
-in
-> -next all week, and I verified a variety of selftests generate identical =
-code
-> before and after, so I'm reasonably confident I didn't break non-x86
-> architectures.
+On 4/25/26 13:36, Andrew Morton wrote:
+> On Sat, 25 Apr 2026 07:17:18 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>>> The usefulness of the mailing list posting is that it makes it easier
+>>> to respond and discuss the review. Yes, what Zi did is great, but it
+>>> would be nice if contributors/reviewers didn't need to manually quote
+>>> Sashiko.
+>>
+>> I think the most important part is the contributor side. A private posting is
+>> sufficient for that.
+> 
+> Thinking through how is this going to work out.
+> 
+> - contributor sends patchset
+> 
+> - akpm looks at the Sashiko scan and thinks "huh, we might be seeing
+>   a new version soon".
+> 
+> - Now what?  Maybe contributor doesn't like AI, maybe contributor
+>   thinks it was all nonsense.  But I don't know this!
 
-Since I didn't make it in time for rc1, I have pulled this last in the
-pull request. For now it is in kvm/next only, we'll see what Linus
-says (95%+ he doesn't care, but just in case these are the last famous
-words).
+Right. In the common case, people will just read the output and process it in a
+reasonable way, like some people do today even without any notification.
 
-> Speaking of non-x86, please also apply a patch to fix LoongArch selftests=
-:
->
->   https://lore.kernel.org/all/20260420192644.3892050-1-seanjc@google.com
->
-> which got broken by the RISC-V changes this cycle.
+But there will be cases where people ignore it, I am sure.
 
-Yep, done.
+> 
+>   So I send the email "I see that Sashiko said stuff - can we expect
+>   a new version?".  Which is no improvement over what's happening now.
 
-Paolo
+That only happens in the scenarios where there is no further feedback from other
+reviewers and there won't be a new revision.
 
+That's why I am saying that the AI review on the last upstream posting before
+merging is the most important one from a maintainer perspective.
+
+I agree that when we are about to merge something and AI review was not
+addressed (no feedback from contributor), that it's a problem.
+
+> 
+> What I would like to have is some reasonably reliable and prompt means
+> by which we all learn contributor's views on the Sashiko scan. 
+
+Right. At the same time I don't want full AI review posted to the mailing list
+immediately to each and every revision of a patch set.
+
+
+As  first step, I would be fine with having AI review send a review status in
+case it went into a problem to everyone as reply to each patch set, just stating
+whether it failed to apply, or if something was found etc. Paired with a link
+like you would send.
+
+> 
+> One way to bring this about might be to set suitable reply-to headers
+> in the Sashiko->contributor email, along with a few words asking
+> contributor to let everyone know the status.
+
+Yes, that's an alternative if we were to send the full AI review to
+contributors. Which might make sense in addition to the AI review status (above).
+
+> 
+> But whatever - let's not overthink this.  To start somewhere, let's
+> send that private email, spend a few weeks evaluating then perhaps make
+> adjustments.
+
+Right, let's do this step by step.
+
+-- 
+Cheers,
+
+David
