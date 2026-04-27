@@ -1,161 +1,169 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012027.outbound.protection.outlook.com [40.107.209.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A242DCF74
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 20:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777320406; cv=none; b=GWmb81oWT+JIzoyt9WJKsQ3g18yrNgTdVv2DVzvbbvrB5ATqfeh93A21IfqywjohmIObDvs7f3BhDx5r5/rBiOf82VRipB77uApu69YAJ28r+s2zKCrBcjTzJilz+kCMMsQDfLR/dI1DnrgZtstuH7ghBTgzd60DIoIBmrAfyUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777320406; c=relaxed/simple;
-	bh=mchmBOninHmBPN1mzPiVNuzZOFh/Z1wHaMQzLRMfJDM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=igjn0oNSOG3L+xynopYlbwIUJd1cj+GJzNGV4npWENMgLR52DIk0sDTmIM8DUegir0mqbhzuwa+WU00yLHY4NuFwkgtoMDNkCQ5f1DnqmWmBl1QtfdbNaz1yigJkpYuh2DCCWUBDfU5XftT9VX6F374zjV6EwHmJZMRqRR3soVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CXq62yQX; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594D3043BE;
+	Mon, 27 Apr 2026 20:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777320788; cv=fail; b=l9y6cZMzKu3OsKRpp8KwrpNX1iGww1AXkoGQbn9HlGChl89TEGLzG91JvcGJhZVfSLwhwD+JuJ8nCT4tso9nYwZwVGZ4w9gBK+sNSS+kqW/vhz+SmOdB86KHUaiDogPfAlClbrOgpf6TeTkk8+c83IaCW5R+4UXp0dBp9Eb+04o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777320788; c=relaxed/simple;
+	bh=nxQPkLzoRwgP9w+X7bgNDKStPP5w+ze2qZKtyO5SFGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=azu3YSO6VRq83U24FrFMDRj2KZmFo/f7PvvXap8GrbSxG9wvZL54Debrzw/12qXVGmKTKGzCDNqkfKs1xYHezvvij3m5q6dfOc4mWaz8H20DSyyAaLmfBQM3oselvBB3sR8BIN6oigal+DI0RL7pQmb1r0qG5yVS/DOnocNs7yQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hMJCquiW; arc=fail smtp.client-ip=40.107.209.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CXq62yQX"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f803658d5so12763650b3a.1
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 13:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777320405; x=1777925205; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C0f7IVbit3tXPHjM+yWF3WzqBRFhWjNUsC8bD83FHeM=;
-        b=CXq62yQX7TQMTNbBK8Z1Z8zt+A31gLfz6IEDizhOmlfjWPg7VCxCqstcg+WrN2uFWl
-         iM3jiHcx9Fb1oRXZagpYa2wxEABYO1s/eSIhp17l6/CJigu8EsNXkmHB8mBeM/Yq36Eg
-         0DRG0qw1F+KL4m1XadMQ8xrNLLfWc0WRN0qEBHJI88HVs3ZteL/DWOVlfE5ED71qKQLF
-         2+zIclGkELZN66exy1eTIe92/NM3bJJ1+dd5z77AG+NpghFGcWYgAVa0WfgCUjjx5mvC
-         HhVRijIyHDS+bbfAOSLiqMvdcYgBSbPwv6Ob0QNV5ACP3nRhjj/5FHel8N3ZrrDeLrDa
-         ksDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777320405; x=1777925205;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=C0f7IVbit3tXPHjM+yWF3WzqBRFhWjNUsC8bD83FHeM=;
-        b=Z5CK2W4RRdwjUGghPzNJ9YCFtFw9vX+SYdrvxlvbBPEFsfBzVbYqPAL4GZSpxLiifK
-         ArOHogWYJ6uBRvgJvXzFHeY+8axWx5M5nxgREeYAWlTUjdVO1F8T3R+8BtNGCKAXlnwp
-         aH7fRIVjCPG0Ra1V8PG7WpXX4i6rRbKCPMfhqN6y/Vx4ffjLfKIMewHtDPdRPqis6H1l
-         noJJLedDTVSukJxqYdhMFRHxQkFX18R9YCZDJ6pbX3tAZobYvdRLTk0kNOn8bavkmOjX
-         vCWDK4wKZnrpDobWPzKouJ5f2Nn11SsHjBhv963bovxyBC8Di7yIVUQoNfsHT683T1Mt
-         haNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/S2AqBXAcLJh121tiWwajIOwVSy26AawPvAfThoUkQYz5zKW4rI0AvgZeQfAMS5BIhisQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbakN5H4U65sZMxDwaZ3r5Ed8qsZbUJhhTtA/doIw1H31PNBpM
-	mEKFtlg7Ebb6HYv+ixRNyapnmupUiy/XHmuDuOPrmlFIo+WXkuAT7KyFk/VQlJzBSST7ZalhDMk
-	prTgNhg==
-X-Received: from pfbij6.prod.google.com ([2002:a05:6a00:8cc6:b0:82f:b839:2d80])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4fc8:b0:82f:4628:4198
- with SMTP id d2e1a72fcca58-834dc22ad90mr433312b3a.31.1777320404779; Mon, 27
- Apr 2026 13:06:44 -0700 (PDT)
-Date: Mon, 27 Apr 2026 13:06:43 -0700
-In-Reply-To: <CAO9r8zMyOvvt=TH93O9=wAGCNvVtuUg2m3e8CF4No1SqdRNmpg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hMJCquiW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BtrDbDcz6oik0VAePSzg5fGR+cooJsvCiqVpAkRyxjo7tVYcK6FTW120At87PvC2HmYqvF+zAYmUozmBiDpk3obvOrmRqnQu5b4NUoZkF4ujvP7nKdWKNRWeaLOXO5lx22JtfQpfCueE0stod3ZgwyZHZra4CSp8si7hhoGCGMHOU9NRGgQZvWgZxjvpiddt/5heAo5jaUAbusoeb6/N+ctwOqovcjGb3J/PDBJNthLIqytbew6CjsXMgRhp3uIkXxoc2xEaZ44Y9Ktv5ANbxXoHDUfrqejvOg1lxzqXzqzdTsDZXzt8mwjNLgfzVceatnj1bajoVfBGEPtevW6/ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UKWQR0wFCYKwd7/WyoEVlZ7dAryoy8A/34DACb4Mweg=;
+ b=eIPokbumH3eDN+DqP5Ep1KaEMIWbZhTzgBKsNv19VF/W6X7jjPowB4UntDHWj76GVOLpVErRkTwf2pJ/YrDs45ZN6xDND6686ErEpWA2qQXwRCmtP46ysRgjHvM1NVSf8oin7VwsuXb30pKGJB4D4xu/biMyeV+73vzwzUrpYBXo7hdAidNUQHrxfYLBQEUhcH9MtIkFcqmeakpXHhSDEtl8blygh6QE25OuMpVAmZUWxT7paNvKfjp0MlyKuWB9S5BekJIjYVv4y8EE8wAO9HrTEKcIsKrwKajDUUZC4yUEssV8xNuhIqndzV8atExLn9UGWsZ3+sD76wTjiGaGgw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UKWQR0wFCYKwd7/WyoEVlZ7dAryoy8A/34DACb4Mweg=;
+ b=hMJCquiWsKvsKPfnV6x+XewanJiprCXhKZ7l3EnI0mUQee6FHRXLrWa9OPoGIpSx+3ijfDDYf7rNW7PoM7DOSBnLPvsXAImaoD6B98Y7Upx4a9+jmx8qzSA1GldDlcxK8Pewp0jwDRy5JdWZd5Oq81ubXZq43utYi9tCvPcHtbJVcvLFWW/q7KgNksf7InTQ6smdi1OyjYpNmneI+Yx09fiTp08WMkqdpQGjsSSQVU9D7WqLP1BLpIUpVlAs267Rgj9nox2HtSQ5p5eE42gWq/zkifeODpWv1mo/3UxmRXJegCDfavI3oSRox5pAtdJxjEw5pvmed4+9e03qhtyLkg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
+ by LV3PR12MB9166.namprd12.prod.outlook.com (2603:10b6:408:19c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
+ 2026 20:12:58 +0000
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 20:12:57 +0000
+Date: Mon, 27 Apr 2026 16:12:55 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [RFC PATCH v1 9/9] uaccess: Convert small fixed size
+ copy_{to/from}_user() to scoped user access
+Message-ID: <ae_DR6NYwy05mhAe@yury>
+References: <cover.1777306795.git.chleroy@kernel.org>
+ <8780eb2ef80575931a339e5225bc80eb13e9be6c.1777306795.git.chleroy@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8780eb2ef80575931a339e5225bc80eb13e9be6c.1777306795.git.chleroy@kernel.org>
+X-ClientProxiedBy: BN9PR03CA0683.namprd03.prod.outlook.com
+ (2603:10b6:408:10e::28) To CY8PR12MB8300.namprd12.prod.outlook.com
+ (2603:10b6:930:7d::16)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-4-yosry@kernel.org>
- <adReHbkVRDGOihb4@google.com> <aesRPt5Vpco29vAt@google.com>
- <ae-v3aGftsAQuG5E@google.com> <CAO9r8zO9YxhkfQAXu6ocDD7=SQ7ia1stTmOS4Z6JbMa00hz97w@mail.gmail.com>
- <ae--4AYNLshM5_zJ@google.com> <CAO9r8zMyOvvt=TH93O9=wAGCNvVtuUg2m3e8CF4No1SqdRNmpg@mail.gmail.com>
-Message-ID: <ae_B0zRVKe6HfRGj@google.com>
-Subject: Re: [PATCH v4 3/6] KVM: x86/pmu: Disable counters based on
- Host-Only/Guest-Only bits in SVM
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|LV3PR12MB9166:EE_
+X-MS-Office365-Filtering-Correlation-Id: bdfef69d-b376-4a04-fa4d-08dea4995fc0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	od/438acft25Q7RIva94Fxe/74ILZrpC6Pf2LMgzKavMVDWiDXC8uUoFq51iqUDaeoOUGT2b7TNIfay4ho0beW8vBSY0l8mrYDUcnR7pCpHtvSlyDnRz5/wnwyZGpPSPU6HBMY0s4gTTvMQ7j0VfwxRe5kbixpH2JA3xdZrASXEZ0pDl1d1WJThBE+/uDOUOALBd8YwZ/+eeNpvnwFCD5DW3KE3lR/Xb2wgRjP9OoLwepFg1JjlfF7x6lpvxpSuiwfFobDUXA7Mqqcz9R6V0ZMrYf9s0pCS4lu/upE91liCZMK8a6QVcT7bHE1yqSUEYYdyWzmVdOCGRVsBtyzVPHpVCQ/H/ouWq0d8egAxhDCKXbaYNKhonqrA1fBXpvk7reDl5D9oT4zLApwPnJxjUXjXzFA80TEJcRTmM79P+K2WrN+x//RhjVGYrw5pmVliJLTW6G/qltB//r5oYHnZqjOuThXK718Z7PTqzjJ0ujUCmUN5I3dUam74AL7WiU47YOnjqHI9K4DCSsiwq2QroO6C3f6BX2+0WK07DzbTXOTuRKVwj1Nkp+F2oyodFlbSeL+I1H/MYBrTTz4hFS3IGNmkgEDTZWJeEFpqkCbnH+WC250/oWJ2xTuA6uT0mLue6TD/so+mr20GkqDu2inq+/ILmI9NvNmWVpTgfUNLmDuiIhDW2dC1N/PLuNJVvEX/LdXBnej8nvO2Fm1k4Q6rMCXk86ZerjhL/ymTd8rnhDvA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WIrm7lyr11ondb9zM/aFtj1gKgk8kypk8TAM2g+Ohof+5WQlgtD6zGVPj+Qj?=
+ =?us-ascii?Q?Fl/MRzepnMFlWaP+kwU9gjhd02anG8z5ZTflf6LYu+ClIguvgmZIH1trgYIR?=
+ =?us-ascii?Q?xpyX4jFk+mQH/otJqXtEelOmF0//lkOX7LVVqlCazvFwry5EU7dmu7JNJT/W?=
+ =?us-ascii?Q?IbGi6+a3YEyzdP/EZUUe3nrTxRbrRZDNSHUnwQzjhjLJiSehNgJ8L+6UzAPV?=
+ =?us-ascii?Q?dDiNnwHotXKiFihodbBo+fEfI9W9aOKkkT0AlLxUbPwVzVgwuLl/IAV6kHSk?=
+ =?us-ascii?Q?Kzy9/VaCvcedh+Ekb8EKVC7l56CzmOv5ObfYMSjBWAnrfSoPrNwnCy5NnRdU?=
+ =?us-ascii?Q?+FtCnuU/ZC3EWU1Q5bSAez3Rz0iUWDmQskAPeHnSo6sutK7XR5O2RLiUuC/r?=
+ =?us-ascii?Q?TIh2Opz5P54jcYUxkqzjzr+dfuklzkPQHeF1CQUTNTlOgTAHwWNUkyQLDi3E?=
+ =?us-ascii?Q?NDPoW5DvCmJyWmxlu3tHIfhbRrBWcq2jwEo4eXMYF6sudilgr+NzPPVAXOBs?=
+ =?us-ascii?Q?W6uDfUElRNq/ZzmcZcSEdDnPL0FMBctSTiRLhtrsd3gRRYkZvoBJZH9wsh0x?=
+ =?us-ascii?Q?GbgOffPEcvqnuzeH3DQD7hxNGedeVFBu5LMfUDfI8tj0JD0NoO/jMCEwwEGj?=
+ =?us-ascii?Q?7Zi4xjZGRB85BK8gVagzsgxl6saeseYWtOB89bfaFHfEn7HIk8Qq6sZMkaUV?=
+ =?us-ascii?Q?yJP5GoHZqlylAB4zzpIdOnati8J4GDK/OEUABB6jkmNyPeclWcz3JebExSLH?=
+ =?us-ascii?Q?ojb86TGjorvvhaPeWb0Yty2WVHv32UrZhDB58hWeKWGUhdof5c/zfJOiZVOT?=
+ =?us-ascii?Q?CJZCc/8139A05YvEL0fjDybsXnGcOzdz+mYd84MuTyf9vfyb2aP1taw2oHX/?=
+ =?us-ascii?Q?K0wCh7XR/H/K7aaltZN8NRbRjuDiXGsAQd9dLyhJq4YfT2SK73apbNYHwsJd?=
+ =?us-ascii?Q?3zR8++zrasGafDCm+TTNhPJkSJ1MDgMJtjv+Y9PwKG/4VF+yZvV3vgJGVFPt?=
+ =?us-ascii?Q?4YicrggVdQoDsPXtMFzhWO14linokl4iwe5aTOUhxYvXZaAyowQpt5wfurCs?=
+ =?us-ascii?Q?Ayh9RyF73+nepCUQNc4DUAy07tlFq34oGBkP1+a3753zs4MtmQJulZf3OBuZ?=
+ =?us-ascii?Q?8F1Z190YLYL3QKV3jRJoJFKhU2RgBcxzG8PxQBDiQn2AWAUsEQLhYhcpZcuj?=
+ =?us-ascii?Q?53L9khHWvM6P9qP8xVFd7/dphsBE6M7uEjQ2JGmn1fKCkKJBY/FtpAUEIEY5?=
+ =?us-ascii?Q?dYVWF6lgfU0RkNfTzK7/pit+VVUkKfk4YFbI1g+As9p6XbLpIHR9no3K8oRY?=
+ =?us-ascii?Q?v33Wt8tpGQ/3QrvQJMeRlNrgwRWMxq3uLTATB4vDm1ilG0jimpQPBgxrT/2X?=
+ =?us-ascii?Q?VPGoCPEn4HUnV1Mf+lE7vxxp/vFpjRqDvwJGbqps0Rn8nFvgrd5mY4EHSgZ6?=
+ =?us-ascii?Q?smSLlB6AP2eTUV01HAxRBefOvYtdF0qSe93p9Fi3Qzo4FDMJkG8BRLxDyuov?=
+ =?us-ascii?Q?k8rLzPpoXpCwmf+kEClhjVMbMDbLikFkJlonRdZYJawiYwXY05H8rZBhQLWP?=
+ =?us-ascii?Q?0feHNzp89zyUqPHP7LbSe0EVRO2Kaec+AqlfTVYtXHhrn6dgv4ER9PjPwQYz?=
+ =?us-ascii?Q?SGZWHJfMP3Dwbx/9JF7Ar0+yL48OyXDsjmJqC5FYyMLMeziXXEes+OYa4KgX?=
+ =?us-ascii?Q?5okmJIxxdB9AxsqQWPd+OzFWlm0XzrT0CAAYw0BwF9WQUj40YsjQQ+uWqIJ+?=
+ =?us-ascii?Q?MlBpJt8puB7ETX/Bjze8q8/K1KeWGNB4KYXANyzSR2LWPBEqi39e?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdfef69d-b376-4a04-fa4d-08dea4995fc0
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 20:12:57.8040
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L4Ck4zF95sPRkpw+1DBvmDDt+EvJGjHXhYAqkKsZVyTO5WLUeoARd7Y3XQH+qd9LnDnkEcQd9xWJtVVZZwcboA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9166
 
-On Mon, Apr 27, 2026, Yosry Ahmed wrote:
-> On Mon, Apr 27, 2026 at 12:54=E2=80=AFPM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> >
-> > On Mon, Apr 27, 2026, Yosry Ahmed wrote:
-> > > > static inline void __kvm_pmu_reprogram_counters(struct kvm_pmu *pmu=
-, u64 diff,
-> > > >                                                 bool defer)
-> > > > {
-> > > >         struct kvm_vcpu *vcpu =3D pmu_to_vcpu(pmu);
-> > > >
-> > > >         lockdep_assert_once(defer || kvm_get_running_vcpu() =3D=3D =
-vcpu);
-> > > >
-> > > >         if (!diff)
-> > > >                 return;
-> > > >
-> > > >         atomic64_or(diff, &pmu->__reprogram_pmi);
-> > > >
-> > > >         if (defer)
-> > > >                 kvm_make_request(KVM_REQ_PMU, vcpu);
-> > > >         else
-> > > >                 kvm_pmu_handle_event(pmu_to_vcpu(pmu));
-> > > > }
-> > >
-> > > I like that the KVM PMU code is now presenting a generic API to
-> > > reprogram counters rather than handling nested transitions, even
-> > > though reprogram_on_nested_transition fits better semantically in
-> > > kvm_pmu (than svm_nested_state).
-> > >
-> > > I do have a few questions:
-> > >
-> > > 1. Do we want to do all of the work in kvm_pmu_handle_event() on ever=
-y
-> > > nested transition (rather than just reprogram counters)? Genuinely
-> > > asking as I am not sure if the rest of it is significant.
-> >
-> > Yes, we have to for correctness.  And somewhat sneakily, it's not that =
-as much
-> > work as it might seem at first glance because the Host/Guest stuff is l=
-imited to
-> > the mediated PMU.  Specifically, pmu->need_cleanup will never be true a=
-nd so the
-> > heavy-ish kvm_pmu_cleanup() will never be invoked.
-> >
-> > As for correctness, we either need to run through this code:
-> >
-> >         kvm_for_each_pmc(pmu, pmc, bit, bitmap)
-> >                 kvm_pmu_recalc_pmc_emulation(pmu, pmc);
-> >
-> > or pend a KVM_REQ_PMU so that it's done before re-entering the guest, s=
-o that
-> > KVM does the right thing when skipping/emulating guest instructions.  T=
-hat flow
-> > is relatively cheap, so I don't see any reason to defer it.
->=20
-> As a micro-optimization, should kvm_pmu_handle_event() clear KVM_REQ_PMU?
+On Mon, Apr 27, 2026 at 07:13:50PM +0200, Christophe Leroy (CS GROUP) wrote:
+> copy_{to/from}_user() is a heavy function optimised for copy of large
+> blocs of memory between user and kernel space.
+> 
+> When the number of bytes to be copied is known at build time and small,
+> using scoped user access removes the burden of that optimisation.
+> 
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> ---
+>  include/linux/uaccess.h | 47 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+> 
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 33b7d0f5f808..3ac544527af2 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -50,6 +50,8 @@
+>   #define mask_user_address(src) (src)
+>  #endif
+>  
+> +#define SMALL_COPY_USER		64
 
-I vote no.  The odds of introducing a race, now or in the future, far outwe=
-igh
-the benefits.
+Let's make it L1_CACHE_BYTES, and maybe configurable?
 
-> > > 2. This approach will reprogram all counters that need it on nested
-> > > transitions. In my proposed approach above, I only iterate over
-> > > counters in reprogram_on_nested_transition and reprogram them. Do you
-> > > think it matters? I guess if other counters need reprogramming we'll
-> > > probably do it in kvm_pmu_handle_event() before running the vCPU
-> > > anyway,
-> >
-> > Correct.  KVM has to do the work before the next VMRUN, all we're doing=
- is
-> > completing the work earlier than is strictly necessary.
-> >
-> > > but then we're repeating the work here?
-> >
-> > No, it's not repeated.  That's why I want to callkvm_pmu_handle_event()=
-: it
-> > updates pmu->reprogram_pmi to clear bits for PMCs that are successfully=
- reprogrammed.
->=20
-> Yeah kvm_pmu_cleanup() is the only thing that could be done, I didn't
-> know that doesn't apply to the mediated PMU.
-
-It's a less-than-awesome name.  It's a flag that says "go ahead and release
-perf_events that haven't been used for an entire time slice".  I.e. it's ga=
-rbage
-collection for the legacy PMU.
