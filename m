@@ -1,144 +1,227 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012051.outbound.protection.outlook.com [52.101.53.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A10A3E8C4F
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 18:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1734331E84F;
+	Mon, 27 Apr 2026 18:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777313547; cv=pass; b=AxKxIr5Umn0m6u67sF5hxZj3263b4XZQHBWQIEdV/jmg4chHvpyXuYKgoWmxqN6KKiNfQX4ihABedbBNz78XvGPX6JRRxIaSy0Jl4W4VPdVa4JGd4rLINA6IkQWK5SG/j6NbnAlowWG6+GqEE2PzPqPxKTChUTaul3XWi2CcVvM=
+	t=1777313630; cv=fail; b=EgxQMLepJ0R9+bn6JAoCsl4CxZvBLOylHZyVeGXs6aChJT3yfS/l9H+Co1pVg3cD6XkXV7RimIQCRtNUSCMCBrYUeLjkX34+gWc/aF7rZe9mTYr4AtOojW8bm1pLDvGXZCzM0nEbHXf4xXTmR4buPPJKz2kNmKUmPRu9mSlrEvE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777313547; c=relaxed/simple;
-	bh=Bv6BTNFx8eotL6sCX8FOszmjIvqGdco6s4FUj3kQRLs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mhYDmzB8R026Plb2kkt7U9Gl8/zmF3wABNJUBX/Mhx9cigKlB82wqtg4+qEovPy8YNrfU2D/KwQN9J7RDu8yDmZtTyrWqtviTXpiZYlS5sVDlYWhJ//T/+V2kJ22djLpBemV6dxTkmYbJMxaLKjy7eFZ+NNYboafr3QRdGxdp7s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OoP7TYg4; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1777313630; c=relaxed/simple;
+	bh=IdBptXn90TfbiXGYR2A0yNkry6iVO6Kg/kWcZZ4OB8A=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nq0D+ksH22MX3OBg2h90PpIahSuVm4f0HEiLWx6PxttujOKuoFooXgHgQmiUWyEIgTLz1DdT7+v8Y2WKTNKO+youX9pMF6GHyfRbcPqICpjbULBpOWzO20QcF97fXlTl2IAwG49Vaihu2wy+l1Mc8yh5WpnV06ZHsV/j+CzNDgw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rqg0/zc3; arc=fail smtp.client-ip=52.101.53.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OoP7TYg4"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50d836552daso69471cf.0
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 11:12:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777313545; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MPa9dbpw1vpIUywZMBfVvGREzcV9DBrcq6wBtnouQ9HHi3jht9/LNlGpR1y8E6jMrF
-         WRA6+Z6bDfaSb4PQYM+r5p2dkACOXc10ZWWqIsV3R8/XwXDUHklF82EPvCRhZjSPSpIu
-         fqMwkoe5t+Da0XrEPhlDIuL1bgGa2btFE0Kud/ftrVcTB0QbWNWdcd9YnTCBn67BvItI
-         Q7+hww0y+jSddyuWE3bLajnNEJ4t2UnsXskspVxQYCiV5j9bJavBZdakf5dtmBSLTCJt
-         3p6P+uE7Y5RredLZjaxBKRSxfM3XN/ZYG/FYRZUfoiXInZsg+iEJYKthaVm5kqX4yZ+h
-         FDuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
-        fh=KidvXKJHGLQZwtmEGhu7JZdmBmxqCpr9/yyJeRZYVio=;
-        b=LX1jXRUtxcjFxOyFrTis9zKIkxcDfWf7G/Hw1gEeNCypfraHM3byqSJZWJz6aTR2SZ
-         TH+1QYKFV+HhLcWooqSJFndru9y/2xjbdSINpW72V9dDmYoXHJ7Az1kGj27KHRtiBp3Q
-         Mp8N7fNbrtT+2x62Xh6UD81emRHv28YtoJHGJDJp99nKEGnXWVuzjTmwlNeJaNahMQ+m
-         6AGWiE8rgT7ar+0vkigA1qtl70egBMLUV6XpdztatV5a9nLWZ4c4WcpCsi0kHFhgYbr1
-         quSvYjpxEczkh9Kav8YSKr+UOYxRx/zKfjohNMVD4kOXfA/U8vtEk0eLE3VZPD1dlIU9
-         uC6g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777313545; x=1777918345; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
-        b=OoP7TYg4eSMLlBtiKHpyDKHtgnnoJGaWfKiWHehu6l38sgGjT+TOas2zrppnae/yV6
-         mBLWr73bW5gciUQRNyectc2jwHrFjS9jlLLn12OFbPMn/N1G0JgNA/oMRkvb87w2t8o+
-         SLDyYH5s4++xbkAQGOLq7lVPp7JLzDR33KzAQHda0Nvx7oBtjgXwieRfNzXOXcEol+mY
-         9ewOcrd6MiHB/jf8IqBXPnyNnxi48eHNvibiKwuiqf1LBxQeO0EOuZYQpT7MdVtjU4SJ
-         umHgN+gUflDDa4zpGIif07saeAiXq/vDBkeLywkd6KxM9dsGOIxc5azUmCGnBwI+CeM/
-         2IcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777313545; x=1777918345;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=462X41kdBtO/lLaDMT5cvpDfu7D1CiZVzDMruqarSW0=;
-        b=YF6VIgqP7TJD/R8V8ufxBz2jEBItrulVUe8ne9HKntwvNNT9GSpXY2DVsT0nrqkP11
-         8ghqBCdsJSbajub2OBEu6zbigZojIiObEkgbbdrqF8HcmPOlKAGg5bQq9lUYFSGxF0t7
-         t3OwiQjehTNEkTqB6QHKlJgeWC+k04HqpkveWO2xbjPBhfex0tAhtk8mPL1NQTrfUnVc
-         ARYm4E4L0jtBR10IzQKjFHn088gM1p5NxZBIgx1Awg7zKiytHTJ2fvYG7kSStohSVXJm
-         yp+d2b4lDnRbhVv+iznacmucebPYzqLjen85zt0J6t0KghIYTXJERySrfLV3FYvOhbmB
-         y0+Q==
-X-Gm-Message-State: AOJu0YyuD7bI5FfUWvjRuR9py2owI8pXpTgXsN6IFRWK4GoGTt30RZbv
-	ZWKuUl86Er8dxkviHm0QomvHi8ncxffdOZ+XEMvFGxy9LGAewyYH9HDsjUBRXI5jclHKVvi+2Ld
-	QY2Kf0ikpmRoFWjLUtOAaSiff/REz06Jzpn9migUu
-X-Gm-Gg: AeBDietxQv6zxrnpFn2BD7J69bH3pF5qSudA3iLhJHdnWtTAMOcuFo8xXm+PaROaOyD
-	C2S81KXWyPnp0UfeGBmTKSpOhHV/WpXbg2pCH2e0JwWDN7vHEIymsXnCFdO+i9JN21/MLWCyat2
-	4umToqNI+Jk1uSDW+AecIJ87qmem+qOJII8fIX/lVXz5+udcH/v1YRR0+OU8iA/M4C1T4z7Qc1n
-	ZNgDWPcqQKSy4MBE6g+NuKQFkVKV7eI/DMbS03aSumw+y5KWzW6yA0PRGIsMnTFKINGB3d8Nbox
-	UaS0n3pTmUZraEAMDxffOZEnkmzVnD9EAq3OrX/3Cdgwte7pXDu7HsB3hr3Iq8vZFqMp35ps
-X-Received: by 2002:a05:622a:5e17:b0:50f:bea3:9475 with SMTP id
- d75a77b69052e-5100cbe3608mr1392371cf.14.1777313544554; Mon, 27 Apr 2026
- 11:12:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rqg0/zc3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rxpf7LJ1gm3uqdgT0QRPyGR8zwYnDIlB7DtsV2/ICZUg+1ll/fw9chKTe8qHnWiuQbvsz6Rq450Y3cU5iQvUlE5Q711rihQ/yGYzgIgTOunKnf8oyuTylaXC2kTgqtMMRZPBdTBxHMboMNDZEb+QnrO+aSPoJp07moRlRslUMXJBt0VJXiHtCVhkFSwplq2GYrxGvlqTF0BypeJ1lElXz0nergXR0G+T3asGWkI7XlghU+j4zSuJT1mR/ZEogu0w3jNH/DHh0PjJX/ql+NBcyQ1G2Yx8jUUJmAZFpkgI7APqExuXNRZzopgLTxJoqoYc6ooh6qpftDHuZrb95Q+kkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+S2ZbruBVvrKyLOdEJcOOwMS59sa6G5PVoQI+zE1yKc=;
+ b=EccMf31uBgvtMjU+FHpqpvDBW6ftRhV/loLTU0RCsjiQHq2HujGXFIv1TNuqPpUlbuqZt/CIpuzSptm5o4hjLJnmGSS+JmNByvWt8hoZfqNSfBmxn1/6tLF4rt+r3KArdIXOZSYj5pBdcRtgykZmkqrvs05bci0XN8FUL6FedWOhMxrZVNxaj44yoF8PVN3wMGHvtJ1KJk0O4e9WISPMX9pmFT+6bVDpnlUj76BvUjQwY45Yavfm9ij8Ws7ukQqUlLTgtoxKpvbEzw/Y+sVHQlaNL+SBQOhGVHzd0brOLR0kR7XBPjyhQavX+KjDD+4z3pMERnkbKrXNMRSXvy3bAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+S2ZbruBVvrKyLOdEJcOOwMS59sa6G5PVoQI+zE1yKc=;
+ b=rqg0/zc3eJVicS3PFEVoYRHU2GDJPvIYCQhW2iKx0PMIlZerDpS7EaOxjGcDF1+6/y9OJNBd1dqUFJ1BgD5j+dWY37VskCVTNu/0k+noR/5IHh9CNBkv/JYoYH31gJzjccISN23yNR82HEClYrh7g3nkdlXR5A0jkOEoDUWFFwgnH6p+Bb1poKQiW0WleObqBzK32gPqQYcoCd+5Lqh6TksEPAZqFiejj2ed+TmOtB7HowFmxh/qMKlF6eR+vp1bru/Oiyoa/z1g9ew2k0MgQtJ2OtejnM8eSEZyYokiPTiLLdWauTeBsIhHvBViVf+7JHfMIdOGa0IEWTsKfp/f1g==
+Received: from MN2PR11CA0007.namprd11.prod.outlook.com (2603:10b6:208:23b::12)
+ by MN6PR12MB8542.namprd12.prod.outlook.com (2603:10b6:208:477::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
+ 2026 18:13:42 +0000
+Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
+ (2603:10b6:208:23b:cafe::db) by MN2PR11CA0007.outlook.office365.com
+ (2603:10b6:208:23b::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.26 via Frontend Transport; Mon,
+ 27 Apr 2026 18:13:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Mon, 27 Apr 2026 18:13:40 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 27 Apr
+ 2026 11:13:18 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.126.230.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 27 Apr 2026 11:13:10 -0700
+From: <mhonap@nvidia.com>
+To: <alwilliamson@nvidia.com>, <skolothumtho@nvidia.com>, <ankita@nvidia.com>,
+	<mst@redhat.com>, <imammedo@redhat.com>, <anisinha@redhat.com>,
+	<eric.auger@redhat.com>, <peter.maydell@linaro.org>,
+	<shannon.zhaosl@gmail.com>, <jonathan.cameron@huawei.com>,
+	<fan.ni@samsung.com>, <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
+	<marcel.apfelbaum@gmail.com>, <clg@redhat.com>, <cohuck@redhat.com>,
+	<dan.j.williams@intel.com>, <dave.jiang@intel.com>,
+	<alejandro.lucero-palau@amd.com>
+CC: <vsethi@nvidia.com>, <cjia@nvidia.com>, <targupta@nvidia.com>,
+	<zhiw@nvidia.com>, <kjaju@nvidia.com>, <linux-cxl@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>,
+	"Manish Honap" <mhonap@nvidia.com>
+Subject: [RFC 0/9] QEMU: CXL Type-2 device passthrough via vfio-pci
+Date: Mon, 27 Apr 2026 23:42:26 +0530
+Message-ID: <20260427181235.3003865-1-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427152854.101171-1-chao.gao@intel.com> <20260427152854.101171-2-chao.gao@intel.com>
-In-Reply-To: <20260427152854.101171-2-chao.gao@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 27 Apr 2026 11:12:12 -0700
-X-Gm-Features: AVHnY4L5q1UHrVRtKqKnRAb0L10M9ZeW4_EVR8OMjdp9PtmE7Gxn7pe3CDO74Ws
-Message-ID: <CAGtprH8mcz4HTBQvnSfWuZ_yErDUKq9PX3Mr55KAfw2VK_o9Mg@mail.gmail.com>
-Subject: Re: [PATCH v8 01/21] x86/virt/tdx: Move low level SEAMCALL helpers
- out of <asm/tdx.h>
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, binbin.wu@linux.intel.com, 
-	dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com, 
-	kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com, paulmck@kernel.org, 
-	pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com, 
-	sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com, 
-	vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com, 
-	yan.y.zhao@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	"H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|MN6PR12MB8542:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d92f96d-b87b-42b7-c037-08dea488b5b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|36860700016|82310400026|1800799024|921020|13003099007|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	PO9HMGXNRPzeKmpMW4lay998skO1hCp/hS6TjlQ067JjndmSdYGLSdPAuyngZoPZfzn8QJhZCu5bDLlVpx31eq78nEcnAt4SlkGJbKyOu4fu9fu6af0K0i2HFkkxXNQ19MJHdS69/9ivODUPC1enFwvHHh9Pz+Yd/YM6fJce0tJNxT5FCaKe+Lqy9xGTxZs4t/D+FGQXiX1YcEY3qFQ1a02THXxd+mci8oGoZZhTOPYrf5N7VUe/PW0F6O43Nz2EfrvpEoIbzHjUOQ0i9utxw5t5Esdu0Hn0POauPN5ImWZeZXVHEqGhILdY+thQqh8cLkvJ88T+LG0aK07sn0RuU1p0BnqB1E22s0CcRth4hh3sTWAYC9Auvks626aWQhZC62mkPNir0skqql2h07ZDxXnopA/qpJF220iUcq/TXSetnPwjYxX7FlRHMYo87bIV94R5mc5cPdRXEBc5NqCSeXc4xAjh5RKLxakNtnXm92lEByS3gMfbRWgjAVwOaiN3RbpaWM4OveoMMZ44zP0doTp7QSsRfIXOJ0OB5yL7INH7DDyQaH3lAw4Om+dUOjQuabqKRsEyQCM7+9WQzrFEmPigQtUejiYhJkGuT7JYg7OeW+TKVy7gysi+uzJDBLwyuwzAq8bWliJUaPkXvf35AVpjWID0EGt63TdmrUqHiS43uHUpg2vZANdNDNkY98YhF8eG57uOQcusCYL1XOxEjm2n2Rz3wTP5A3dd0BRLvnOWhQUSrb2Gr5KJYAzRzDwMO/uLIM1QpDz+JlikReY8u//pxZAVxrc31AUEZZBHPhKVmid2bmFKX8Knax8xb/IN
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(82310400026)(1800799024)(921020)(13003099007)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	gGyGDS3SU+1gp6lAqF8lhBQh+K0jhSrpDMoy7wvw8i7e7rsxxVDd4Ry0UAoB3FKliPJV2fmNE/B377f46Lh171/GG/g2r5jYpZ3OsBADdiHphn4Z5JEiK6JBQ6UPypsXp+zONx5y6SWSNb0UNasUWTrI3ADsBhKlaL1fin4piUdAnT9weQCEqIiTU6k+z1pz2XXBgu53SQCyfRucFlePn3yPa9269oeUMdpKdnoi1d4CVoM7PJWzSz3T2oA8t4NcrLLBf5X2lOHMS3iPcyblC+PeTXJOfvFo5+/FUjwfKmk5m4yx7lT6DX4SgHg7yikApAtdDDvuIhh6qPrRMnO/lMPs1jgYbqeDL7kjnTtnb0nhu1ie3ouWsZx04OvhNL9rl2rkl+qc+oLrQZGnXAQg8TdkN6ZY8nxLe4qj6spwwC6MyhzngCt0I2u18t0vS/29
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 18:13:40.1989
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d92f96d-b87b-42b7-c037-08dea488b5b0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8542
 
-On Mon, Apr 27, 2026 at 8:30=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
-:
->
-> From: Kai Huang <kai.huang@intel.com>
->
-> TDX host core code implements three seamcall*() helpers to make SEAMCALLs
-> to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
-> are exposed to other kernel code which includes <asm/tdx.h>.
->
-> However, other than the TDX host core, seamcall*() are not expected to
-> be used by other kernel code directly.  For instance, for all SEAMCALLs
-> that are used by KVM, the TDX host core exports a wrapper function for
-> each of them.
->
-> Move seamcall*() and related code out of <asm/tdx.h> and make them only
-> visible to TDX host core.
->
-> Since TDX host core tdx.c is already very heavy, don't put low level
-> seamcall*() code there but to a new dedicated "seamcall_internal.h".  Als=
-o,
-> currently tdx.c has seamcall_prerr*() helpers which additionally print
-> error message when calling seamcall*() fails.  Move them to
-> "seamcall_internal.h" as well. In such way all low level SEAMCALL helpers
-> are in a dedicated place, which is much more readable.
->
-> Copy the copyright notice from the original files and consolidate the
-> date ranges to:
->
->         Copyright (C) 2021-2023 Intel Corporation
->
-> Signed-off-by: Kai Huang <kai.huang@intel.com>
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+From: Manish Honap <mhonap@nvidia.com>
 
-Reviewed-by: Vishal Annapurve <vannapurve@google.com>
+This series adds QEMU-side support for passing CXL Type-2 devices
+(GPUs and accelerators with host-managed device memory) to VMs via
+vfio-pci.
+
+It pairs with the kernel series "vfio/pci: CXL Type-2 passthrough"[1]
+posted to the vfio mailing list. Patches 3-7 need that kernel series
+present to do anything useful. I am new to QEMU development, so please
+forgive and point me in the right direction for correct infrastructure
+decisions.
+
+Background
+----------
+
+CXL Type-2 devices expose device memory (CXL.mem) through HDM decoders.
+The kernel vfio-pci driver shadows the HDM Decoder Capability registers
+so userspace can observe and control decoder commits without touching
+the hardware register page directly.
+
+Without this series, the guest never sees the device memory range and
+the HDM decoder goes unconfigured. The device shows up but its memory
+is unreachable.
+
+Design decisions
+----------------
+
+CXL.mem is exposed to the guest as a dedicated GPA window declared in ACPI
+(CEDT/CFMWS) rather than a PCI BAR. The HDM decoder BASE must match the
+CFMWS base and remain stable; BAR assignment is not stable. A separate
+VIRT_HIGH_CXL_MMIO window in the ARM virt memory map carries this GPA range,
+independent of the existing PCIe MMIO slots.
+
+The Component Register BAR contains two distinct ranges. Accelerator
+register windows are passed through as direct hardware mmaps via
+VFIO_REGION_INFO_CAP_SPARSE_MMAP. The HDM Decoder Capability block is
+excluded from that sparse list by the kernel and must be intercepted by
+QEMU to track decoder state. A single priority-1 COMP_REGS overlay
+placed at hdm_regs_offset inside the BAR container wins over any
+hardware-backed alias at the same offset, with no per-window aliasing
+required.
+
+The guest has no mechanism to remap host physical mappings. QEMU programs
+decoder 0 with the CFMWS base through the kernel's COMP_REGS shadow at
+machine_done time, after all devices are realized and before the guest starts.
+The notifier is registered only for devices the kernel reports as
+firmware-committed (VFIO_CXL_CAP_FIRMWARE_COMMITTED).
+
+The CXL.mem MemoryRegion is a mmap-backed RAM-device region backed by a
+VM_IO|VM_PFNMAP VMA. The VFIO MemoryListener would attempt an IOMMU
+DMA mapping for it when it is added to system_memory, which always
+fails: pin_user_pages() refuses VM_IO pages. No IOMMU mapping is needed
+for these regions - CPU access goes via KVM Stage-2 page faults and
+device DMA to RAM uses separate per-RAM-section IOMMU entries. The
+listener is extended to skip the mapping attempt for VFIO-owned
+RAM-device regions.
+
+pxb-cxl bridges had no _DSM method. Without _DSM function 5 the OS
+defaults to treating PCI configuration as reassignable.
+On machines with firmware-committed HDM decoders that reassignment breaks
+the CXL.mem mapping, so the _DSM is added with preserve_config=true for ARM and
+false for x86.
+
+Known issues:
+- The bios-tables test will fail due to the _DSM addition.
+  A fix will be provided in a follow-up round.
+- VFIO_CXL_CAP_CACHE_CAPABLE will require additional handling.
+- Devices with multiple firmware-committed HDM decoders are not fully
+  supported.
+- Non-firmware-committed devices are not supported.
+- linux-headers sync is manual and temporary; once the kernel series is
+  merged, this patch will be replaced with script generated update.
+
+[1] https://lore.kernel.org/linux-cxl/20260401143917.108413-1-mhonap@nvidia.com
+
+Manish Honap (9):
+  hw/arm/virt: Add CXL FMWS PA window for device memory
+  cxl: Add preserve_config to pxb-cxl OSC method
+  linux-headers: Update vfio.h for CXL Type-2 device passthrough
+  hw/vfio/region: Add vfio_region_setup_with_ops() for custom region ops
+  hw/vfio/pci: Add CXL Type-2 device detection and region setup
+  hw/vfio/pci: Wire CXL component-register BAR with COMP_REGS overlay
+  hw/vfio+cxl: Program HDM decoder 0 at machine_done for
+    firmware-committed devices
+  hw/arm/smmu-common: Allow pxb-cxl as SMMUv3 primary bus
+  vfio/listener: Skip DMA mapping for VFIO-owned RAM-device regions
+
+ hw/acpi/cxl-stub.c         |   2 +-
+ hw/acpi/cxl.c              |   4 +-
+ hw/arm/smmu-common.c       |  17 +-
+ hw/arm/virt-acpi-build.c   |   5 +
+ hw/arm/virt.c              |   7 +
+ hw/cxl/cxl-host-stubs.c    |   2 +
+ hw/cxl/cxl-host.c          |   8 +
+ hw/i386/acpi-build.c       |   2 +-
+ hw/pci-host/gpex-acpi.c    |  43 +++-
+ hw/vfio/listener.c         |  14 ++
+ hw/vfio/pci.c              | 411 +++++++++++++++++++++++++++++++++++++
+ hw/vfio/pci.h              |  15 ++
+ hw/vfio/region.c           |  15 +-
+ hw/vfio/trace-events       |   6 +
+ hw/vfio/vfio-region.h      |   3 +
+ include/hw/acpi/cxl.h      |   2 +-
+ include/hw/arm/virt.h      |   2 +
+ include/hw/cxl/cxl_host.h  |  10 +
+ include/hw/pci-host/gpex.h |   2 +
+ linux-headers/linux/vfio.h |  18 ++
+ 20 files changed, 570 insertions(+), 18 deletions(-)
+
+--
+2.25.1
+
