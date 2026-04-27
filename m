@@ -1,62 +1,62 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9833E5573
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767417E105
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777311458; cv=none; b=o86Dygia4NPm6tnFlypsVL/VcZ/KDgvWpTImh8G96yx6fBGB9esm7wkj8LFVlQWAS0yjNz4qvDPViCv+nL1dlt3jssJtmkDy55YbEf24xRseDHYx70iSuXT0OkQ0ZISMy+ZvuOWndvUlFySqnc6WfGRrYuDs4eGbGvR2CS80pIU=
+	t=1777311462; cv=none; b=D/Us5vo6trmZXJ9kUZcwG8zpTHCkk3Nm0NELtq//sKWXRrgoLf9uqA581D9PEkMdP23xEEjFb6hK6i++6hznLSzTlF3tO2D3IMgBWD2D8I0g2fXHeSOcHlEdiuVHemPj37rZzcBwq81HPp9PEk2TeL9NcJCRVzt5TqDbLhyW/9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777311458; c=relaxed/simple;
-	bh=yFtRRqldfkjaIFwxsTTNCTRJI7Fb5UyR+KfLi116/qg=;
+	s=arc-20240116; t=1777311462; c=relaxed/simple;
+	bh=ANS5SKD/65k+mVrkDedze1kiYPyKDLNlIHEYxqFB4MA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rw1Xs0BVTnU88hDQ9Fd4y+rJievmLcEoGT3ef1vxXK4nox4T2AMh3OdhHYiCM9fyDWSE8pMKna+3oMFNByDgVBNX5LnXIAf/CeYZsQFDGehJrVVu9JiCAGQNXXqo45jfmXVxPsVPhFzZHUM/lGOlrWvd8fo4yUk8kTC2YYdDIP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eJ4G95zG; arc=none smtp.client-ip=148.163.156.1
+	 In-Reply-To:To:Cc; b=XClisQNSbETm5AybFPL6Hy42+TJBxcqW5dFOQvpEU0xoqxLeFSowS/EhnYZ0FBvS+vFI2aoQHZpdWfRwLQNwLEBP3i9+KLFqqgZbKVAFn4/ZzYvtWTwonU9GLAa2ybjdbdT+Orbb0xyJji5K7wYeeDRSd/2mGcGvykunFkEfkQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Spbwv1Um; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eJ4G95zG"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63RFlDY92932084;
-	Mon, 27 Apr 2026 17:37:27 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Spbwv1Um"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63RER3KI3403831;
+	Mon, 27 Apr 2026 17:37:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ET6ST3
-	80paGznG+R1VpDgcL8IJqcUqUhLfjHop3Fm4w=; b=eJ4G95zG2P4myUCZhZ/yCc
-	C3Ll/5HXzzmdktEaabUiqkMTnuiIPaEDakAzvl0SJXwghCKt3/RJ7Z1m4VzsetgU
-	IROIr/AvzpfEwDGUzkoTllW7wbWPv2QkVBHSgwCEfkdMZhvWiO4PHQ6Vtp9idVeI
-	WxndNkmp+LR6yt7m4+xyPF3i5o8zxZ1c25Nt+18kTsL5/8CxEhkfvjlD+7ODl9bF
-	ByiodrxdLJ8Hpct46du5WOxwEsl1q7+86mK0xPXBRx4d/S9e80+kJTCwV66vHY8i
-	F5X4Pf2+cyDpo18v8vEHfG+Sp91+Ti6NXldS0+BklxR05j/lODc4h4w+amrywOXw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PTOrQO
+	Jsrn+KVoiS5Hffu6mHiv0Lfyv67IOJdpFRk/g=; b=Spbwv1UmCTAg6lmEZIFmam
+	tWm1IvWJrx3NUFcR4CIk/mhjJR5YGmANQvmMeVY1TKesa/Q/SmkbYPhcdW2E2r6z
+	/nb89WjWJlJw9Z2XyTBNM+SkZSoD8RRrsNFCTOxBdHm8Hg8MEwPbsOHEgDy5vsTv
+	S6fPbfAVxFXgP+8MrZ7AAorhGsiozcreacI2HxEMWu9g5pGIVH7+jBtKfCM+p6tq
+	Yufu/x5XFXz6CUAC0FHxPg7MejwfoWTNwYZyyWqoxrgpNuo8XrjWL/k1qvafo5Hv
+	yhL9QAUnV9CHP25GEYCsAWrd6LG3YCa9bPaJKyBjEJFsAxKJHbdb48Gdegh5tRMw
 	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn9r1ref-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 17:37:27 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63RHNhhT009956;
-	Mon, 27 Apr 2026 17:37:26 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8xjx9at-1
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drm1drxe5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 27 Apr 2026 17:37:25 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63RHNikh008312;
+	Mon, 27 Apr 2026 17:37:24 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds9eh66ys-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Apr 2026 17:37:24 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63RHbMSQ47251952
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63RHbKxN22544686
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Apr 2026 17:37:22 GMT
+	Mon, 27 Apr 2026 17:37:20 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20ED820043;
-	Mon, 27 Apr 2026 17:37:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id A676D20043;
+	Mon, 27 Apr 2026 17:37:20 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B202720040;
-	Mon, 27 Apr 2026 17:37:21 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 45AC120040;
+	Mon, 27 Apr 2026 17:37:20 +0000 (GMT)
 Received: from [192.168.88.52] (unknown [9.111.47.231])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Apr 2026 17:37:21 +0000 (GMT)
+	Mon, 27 Apr 2026 17:37:20 +0000 (GMT)
 From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Mon, 27 Apr 2026 19:36:46 +0200
-Subject: [kvm-unit-tests PATCH v2 4/4] b4: Add b4 config with default
- prefix
+Date: Mon, 27 Apr 2026 19:36:43 +0200
+Subject: [kvm-unit-tests PATCH v2 1/4] scripts/checkpatch.pl: Add empty
+ codespell and const_structs configs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,8 +64,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-b4-cmdline-v2-4-0fea2a50a9d0@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260427-b4-cmdline-v2-1-0fea2a50a9d0@linux.ibm.com>
 References: <20260427-b4-cmdline-v2-0-0fea2a50a9d0@linux.ibm.com>
 In-Reply-To: <20260427-b4-cmdline-v2-0-0fea2a50a9d0@linux.ibm.com>
 To: kvm@vger.kernel.org
@@ -74,57 +74,62 @@ Cc: Janosch Frank <frankja@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christoph Schlameuss <schlameuss@linux.ibm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=396;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=920;
  i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=yFtRRqldfkjaIFwxsTTNCTRJI7Fb5UyR+KfLi116/qg=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJnv551XF3G/elM9fCVTQ5V47jk1Xb61Hvf9PK+FPL/Zt
- Ywj39G9o5SFQYyLQVZMkaVa3Dqvqq916ZyDltdg5rAygQxh4OIUgInEZjP8D1M+u4r5+qOzhyXa
- K38X+1hZzJ0acvtlkvvjrshIv/Qp8xkZ2oUDP/wNYhCevmCD7ow5NeINnfrp+r7R8wKPmd5KORX
- JCwA=
+ bh=ANS5SKD/65k+mVrkDedze1kiYPyKDLNlIHEYxqFB4MA=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJnv552/9Cs8ftfsJdH/tDsrD6mdFFY45Dxb6rXFYZc6i
+ 7BCA+1pHaUsDGJcDLJiiizV4tZ5VX2tS+cctLwGM4eVCWQIAxenAEzE4CPDf9/WqZIfc8PPFCg1
+ v3hpIWLKWWmb9bGF063UWvDSReEtGgz/1P88VH/+dUcyj9xKpeb/OnwLFU8nmV9uEHq63Pnv7ON
+ +rAA=
 X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
  fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: Ib9nOhEuTRt-UURBQb6dYR5q9vZNZlK2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDE4NCBTYWx0ZWRfX7NKMv8rml3u5
- zuNnSHaALfPUWF3fYI9jYVgaDdJyK2r73KmEjk6hy5OMOtq0g0saGS7JnhTxmh8GdkE3eBYCfYB
- RiNqfx4uX89nK24qblOgWwslr+UHGKD4zdaY9/3S6D7ajvWTurzgu63Z2WOruv2IY9KU4iyyh8l
- drPr6q2jqbqIp+s+eOiz4j4d74WrzpU3oPZs4/qBF+Dl5o6k5ayT9LVKR5+FUm7j+ISWcDPiwSm
- fRaPYc7ksxQJbcVAds0wiR0cUSMY3lTovLebEC8ceDbychTZAlUYs8PAnNOhKl6WTLt80ySi4YN
- lCSDKgoRtJ9V0smqM0m44BF2RpOk1eC+ErkKIdsh2ULzJTUhzOGzguuJg6s9/ZEfHKNCQvZ2KHy
- +7pGnPK7Mx0AXplQEp3+uyAVma6cowqCn3vPR5LLRP3OPZ5vL3c3zpNOXBAvOLyD8GOuSkFhcx4
- fCMWX2ngyhr0OYDETJQ==
-X-Authority-Analysis: v=2.4 cv=Kc7idwYD c=1 sm=1 tr=0 ts=69ef9ed7 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-ORIG-GUID: ylLgytEoQ_vNePRotWY0yfseDPn3ngTJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDE4NCBTYWx0ZWRfX9FbOIwHR93NJ
+ CnBqTp0kRti8F3VO8+qaVmZ/PuRSngsDv4lChn3kTv1Tc7a5YfXrV7paWAxlOzmRqXE7bXivhZV
+ r5MC3CXwe3OCJ7b3bjjPYhRnNOWilR/1rtf2vtK1WXrNI2K84mIuSRAp30Q35JGq34VBhCBAnZW
+ bJr5KXai5mBIX3SOt9V4Gv+Y44ius6ezHBkavjaMp7baNOiCELS+6vZuUQrckgASbKn9z44M2Sb
+ dyOvIyXtqt/F/xQOduF/tgN2rwIpjdBzCSz4xCTC/jXJONynbWnZICLtXk/lCqajzB3r8s/bYc3
+ YDKqWAX9jViW7qPkTZSws1pQPhws6otA6k95Hz4lyEV84KPImw/L1JsSTSN4KK+4bRgTKfRRZwn
+ RsvxKUZTQFqbRKeCKRvxTGFxvLnFwz/CEpia8Ed3eJaWogjUZSfbppNdUPkOUuYpbtMoq72rfWV
+ rGokyA0Zc9Is0HGsOcA==
+X-Authority-Analysis: v=2.4 cv=VZLH+lp9 c=1 sm=1 tr=0 ts=69ef9ed5 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=V6kfYKY3lgMUIaNSnIEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 0l0aTKouLa92tN4hVQodNlbDiX1TKa4A
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=20KFwNOVAAAA:8 a=7PIkpXOR5HpayDouYfoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: F8HAr3iNA0gSvVpTyKPng3oXm8f1HwQa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-27_04,2026-04-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- malwarescore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604270184
+ clxscore=1015 suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270184
 
-b4.send-prefixes adds the prefixes when creating a new patch series.
+Without these files each patch is flagged with these errors providing no
+value and swamping actually found warnings and errors:
 
+● xxxxxxxxxxxx: commit title
+  ● checkpatch.pl: No typos will be found - file '.../kvm-unit-tests/scripts/spelling.txt': No such file or directory
+  ● checkpatch.pl: No structs that should be const will be found - file '.../kvm-unit-tests/scripts/const_structs.checkpatch': No such file or directory
+
+Fixes: 846737f068d9 ("checkpatch support")
 Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- .b4-config | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/const_structs.checkpatch | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/.b4-config b/.b4-config
+diff --git a/scripts/const_structs.checkpatch b/scripts/const_structs.checkpatch
 new file mode 100644
-index 000000000000..b780cc3d4e6f
+index 000000000000..6d9ce1d891bc
 --- /dev/null
-+++ b/.b4-config
-@@ -0,0 +1,2 @@
-+[b4]
-+send-prefixes = kvm-unit-tests
++++ b/scripts/const_structs.checkpatch
+@@ -0,0 +1 @@
++virtio_config_ops
 
 -- 
 2.53.0
