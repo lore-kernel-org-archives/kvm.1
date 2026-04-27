@@ -1,184 +1,230 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010069.outbound.protection.outlook.com [52.101.201.69])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A023E92A0;
-	Mon, 27 Apr 2026 19:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777317591; cv=fail; b=tH6yuCJbrB/omk9PJIL34WJcrsRDVjNHxx46cokL5tXSyBllBDzxZS+1X6QDODQTemV6Sd8/NswWmUjjNwKlXU0KGZA9UPEtuVvWB1KVpDEjpj64/q47+gT+fH12dfp92xU0YBBaj2NXDaKePigT7kr822LZHI42fK5iqySP3SI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777317591; c=relaxed/simple;
-	bh=QZFzIQdZ3YBkWl+pry9Vul/3AcxOOWxKfKh1ZrhYsFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uWc2Xus6gOAmT4Sm+7Thk/qLIGdcXfbCdX+C1ZeugXjwZdOkngjVFbezg23rsBNtJqFT8tryFNoYb+rlzGKqyvL5AsXo3h+GH0bXbWEqJFV/6rSeMHICIQdvvo91R9uNUFjTBfuaCJP9G7P6ZUd5/H+UHbxH9mt6VUsiO4ROIFw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YPchTHpL reason="signature verification failed"; arc=fail smtp.client-ip=52.101.201.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB44402455
+	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 19:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777318958; cv=none; b=Yse3NyYRbtof0f5IZm+Q2BR2hFg+dZyo91Epo2NuxLWWZXffplpNMQkDF9RoIGu0yCBZTeinLMUZIDUrsr10jZJQbdMz4FYiGu8FTCx0lQC0aGB4ItMsESxZxFwyHCzVPYgZzcjURzplHcJxLWw5zCmxKevnsMWH+sFW+ip9ixY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777318958; c=relaxed/simple;
+	bh=dJeoIAYC0cILfwsTzSiUsZ2WIJGKmi2Cbxeyu6ial4s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ISEVriB0eOpwXpOA3qhfxy9NT4QkloFit4BeL905vVeBo6oabbSuVcdlYsN+9xWBowZddUjrYpv8ITeFZhy+iM3v1wwSBdci/bHHvAZv3jdTGCvBvbZLXyn7fWYQukxkpyb2mzf8jruTGeWeTY+fZWN2O6SUfnWRfh9K42DwsLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f39IWY5P; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YPchTHpL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DVhEHbKse9FapnN2cz2aJUX+HTxcItqfquBUQFwLCiP5WPrtNQiNPTnGI4MIon3AgmkAQl5HhYuSQnuQt8IDeRYhgInyB/AOQdBwrpUiHITV3f694UVLHuUrOiv9b2cfG6r3+auR6MSVkkcLuQ4Y+tF/rhfDNeBCXess0F+F/TkXrV+dz92vsSLlL5tn1Ynl2fbpcNoIAef0KBxuv6gcdjE4t82LvHJAaDNASNUKyKFm7x4T0BsLAz0/sYnIg36y560VeNc7zOL4T4Ud5AI185ZovsKb5e37aJIb1I3/TkqG0ULl2gwnmAIb6WWT/tvMtVulTJ6c/93Ndgr0CuF4fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/kehAw/qIO6D93HVE5am8hZKsLTTbdaFhcjGhCC5rQk=;
- b=barriPy2JoAhTOU2YWoiBczra9jgxyFIS6Vn5fMeLmZuoQbamS7hXIudelNBWOJlYCTT4fz6sLrJvnhUdW9BOtoGyJggKAsOzpYbdXTAoZYuiChGWVjjK4zj5T6ViLKFtxvsysAksVjZEfM7DJVmWiyYI9e45cpEy9i20IgZjrl32t2DE427qEOO5vlB9eYx56Yl/nXGgL4VLYapDOlIgCcuJftQuYsdND79AhJHc1YvPlUNuHXQ+n3CfukGLrY/uuf3W2l/Yujue6iK9C39RkCuvxgHmU04+3GeYVYQvrsxPBRvQZHz5V/LPu92hWZsyj93vuK0RwQezDTTJlGlNw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/kehAw/qIO6D93HVE5am8hZKsLTTbdaFhcjGhCC5rQk=;
- b=YPchTHpLT9QyaGFbz/V/HaxoYwml60CPwBCohwTGccSxQF5xp4aCWy87+9L75FNFxG+fxrmiBfrijK9S2U71MhRFySlXZXPcGWovjvdfkNvvp25q1PAB1mr+HmzjdR2xRedKx7NR5nzOddAsQnNEGyggXH0WqDfgUQo8MCzVvhQJIRQ9THI7KbDluLzImajEqpi/FOh1jFu/Gzsx5Px0K5iD8tBWuFPua2hJduhxINK682Oc8hT1rNV3ppOrrAFmrK5A2egSfIVt/1zbLX+OPjABfYsc675DnlpFoxG5tXvBSDdEGGHoW1lpS7Myqc3PGBqojvAzWyzSfMH/AHuVBg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by CY3PR12MB9678.namprd12.prod.outlook.com (2603:10b6:930:101::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.12; Mon, 27 Apr
- 2026 19:19:39 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
- 19:19:39 +0000
-Date: Mon, 27 Apr 2026 15:19:36 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Message-ID: <ae-2yLWSGnfeTvh1@yury>
-References: <cover.1777306795.git.chleroy@kernel.org>
- <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
- <ae-j2_QirCySZD02@yury>
- <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
-X-ClientProxiedBy: BLAPR03CA0031.namprd03.prod.outlook.com
- (2603:10b6:208:32d::6) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f39IWY5P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777318955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zdK+EUUHjdOp8sYOM/4o8Xc8d42cwjolKP4mkoiOi+w=;
+	b=f39IWY5PA0hm5rZ4P+vktGr4mVgCnq+m/SNoYOT8F2hD2PZOWHoIVsOEBu33O83CBFMXvP
+	eJsgHZ3ipA3kt5/1Fb38AYrmy4AHalPTGMFaG35rcgAHf2HCfk2pmgkgz5FzHntLcvVvTE
+	Ayq/4EqTbtPKnT45eSmznzTUEGHFuDA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-pXqu-zsyOkOZ0slRxBWEMw-1; Mon,
+ 27 Apr 2026 15:42:32 -0400
+X-MC-Unique: pXqu-zsyOkOZ0slRxBWEMw-1
+X-Mimecast-MFC-AGG-ID: pXqu-zsyOkOZ0slRxBWEMw_1777318947
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0467E19560AA;
+	Mon, 27 Apr 2026 19:42:24 +0000 (UTC)
+Received: from localhost (unknown [10.44.24.6])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DCD42195608E;
+	Mon, 27 Apr 2026 19:42:17 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 00/41] Fix various QOM object life-cycle issues
+Date: Mon, 27 Apr 2026 23:41:59 +0400
+Message-Id: <20260427-qom-tests-v1-0-c413f3605311@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|CY3PR12MB9678:EE_
-X-MS-Office365-Filtering-Correlation-Id: c742778b-fa9b-44f9-51b3-08dea491ed5d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	shZ1u0REr6wDLRLPyyEdIcR7HSBaBLI9bkPwQrtikVH2FtKB2JxFo1blEpu1cI3NJl8SRfbhAKLYIVGCuUMzmvBnxw+FuY/TWQm+eDHPdr22c6rn1JUuzt3nYVxIbuuLTVTRWsq+e+SUyzbYaEEs9iTQJbTfJiMIr1QcnMs7HyZ09hEYM4Y4qXo4Dqr7nhb5zdIkE0fiLtqy/Zisxe0E2yKOvU4HmFcaFOiR7Aq6DJwZzTG+BR733bn5EC71RBcWvOANFgJM2znxVv/dOuQYufc4G4dUHtXgydGyNUS+fngDUjvyX5MkmDLhOMznjZqXlYqgeu5lMUCpG8HffRFHlOXhBcrYgf+ovMMHaCYbFuDT66UC1VDFvb4rz83Hk2Lnl6vSSpPTv8rxpTSPpx4cdJdNmo0Mn5Mi/3x46vGIX9O5JTAct5Ir50zvkKLZe7/Kp1qSfB39msc26Lzz7LD733/o3mPnQXyAGLurnHZgJ5jM3FLt650dCqhJcZlPMaXHq6+AjtwJTG6y+mX2JUt2792E1LYJn7KjXVu8/xqn/7IpL5oC4IQQUgghT221wDL3lrh3xCL1IuqFJShNLP2kKxWwgFBJzIfU0pnScVGPPU9YsipaXNEtmsuD5RQqnXWq43E7KCoMjIP73gvWalBIhJkqTKcX6NUkX7ot5JSYyuNq1A833Lgaec6O0C//zC9ubi3rz9CymfV/P6BrxHZIhmtQ5semmv0gY0c6C5hRnqM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?T8W6XhUXwT9dv5kuj9kFMa1Pc+caKbpom/7i+ro0mWLEx/WsMCf7Uv+yLt?=
- =?iso-8859-1?Q?gAyF6hz8bSDC1bWR1FTEkkI65aMUmC7iyx7e6/xfNDa3Fqe7SiC1j77stI?=
- =?iso-8859-1?Q?LrG24onu6fFBF8DWYf6MIuIlkdgrbAd2EiVVGxnofgYgHTQhw5136OB8qO?=
- =?iso-8859-1?Q?CnzmyDAwjI33B1CjeJnNBBJkCzrksdZvxIcHW0uIe6E0PZHf537RLpIETM?=
- =?iso-8859-1?Q?s+cBh7JvH4GNxPjZACl7GXrozKiFqXSwFIzHaU9Zd4jSjyzd0KPJpIHPKf?=
- =?iso-8859-1?Q?8h/I+NEnIGw4Lnjlmh9mYKMwd0qS2GIHpVaOy1bH5MCjGmjowRaXjQ79be?=
- =?iso-8859-1?Q?jGRLn+Oomml9guRrsFzOQ7DbbOlFy8pqy9R+D9ZnGVn8wEgYSRw75xgmry?=
- =?iso-8859-1?Q?2ACNauoKPoUzpnRmfqW3sPF9JS/tvt2t2PPNVTZJLV6vuJBnNmyWilx/9u?=
- =?iso-8859-1?Q?SrlYzTyazTZWIZbUeG2soKD4eNVokxFYJQoBgEsGEV2njiNv6HUubbi0pF?=
- =?iso-8859-1?Q?Vqp14jJqz5sSfFayA6WZcArZ+USE5vjanuqRtNQfdkNsKj0R4pEMc493o0?=
- =?iso-8859-1?Q?NCXeFBw/ojt6aGg8g6h7tHIHZcYuw7ohhZUMOvg3ffhlK9u79tO7oKpC3u?=
- =?iso-8859-1?Q?wiPOjYl6brt/0GKfD3iRNbrV6TRbbioNcjuDS7LZqgWxe6vMy7NndX+woA?=
- =?iso-8859-1?Q?uRdr5blnc5k3cJWHAzCHgJ5WF2JWGApq1uyN9UWgvqNw083HRffGg6P5ix?=
- =?iso-8859-1?Q?cG24FhHq+kscs9DSxIC+Aujk67lP+3jqbld/7XWy8cKm8qvSHwRqhWblhk?=
- =?iso-8859-1?Q?2okcTJPbDNOuvYYOSGTPE+vmAEFbkK1UHPvMUY9ATxehETfXPZs7yjb3aq?=
- =?iso-8859-1?Q?w3hdW7xtyg3/7tDEWG7+fOEy9FFT/gEBpvxotxF6oySrb2HXqp/fqrjhbq?=
- =?iso-8859-1?Q?+CZwwgugua6eO4UL5qPz9hiIFbMAfNaGqRykJRiykn+pL+t1YHattmJ89+?=
- =?iso-8859-1?Q?zMjzPmRht5LCTdelXGsXfPIKJiFXD3T9vDfN3lmWj4Ts7wlilxpgiOpMaL?=
- =?iso-8859-1?Q?p7E3h5ji6cLKiR9cNwmzJTNOGBx5zvsEG4+PNQXhBDGMpxOVgOl+EeAV9d?=
- =?iso-8859-1?Q?2s3FGgMUZVYPP9cV5NsthWoh6iNfuRN7NkopE2q3yxMVZlN6dt7HdpbO1Y?=
- =?iso-8859-1?Q?0fu25Ra/a3yy2XE0TtJPHqDm12P85rdM3CgNkUv822FbtecXgL64Qkuo5p?=
- =?iso-8859-1?Q?bU1qrEG+LOPjM/jMvPhwRHc5ppnq/gaXYhFU5FH0G3K5d4d0ixkRyi37Wv?=
- =?iso-8859-1?Q?QFsdW6QrX/SrL3DsdbaAqQnL1rxC0EQG3YCsMUYGRLPRYd9ad5xPY0x+Rq?=
- =?iso-8859-1?Q?pi74xEsiw9PrH9X+6nGn6Y3d7VcpnV6Av8/J+hqLZLRt6W9B7IXfCaTIAV?=
- =?iso-8859-1?Q?8KCRWdm4ExrgkDdvMYea8olZLEBlvgMeZtCVoxZ810+OR4vZKUUMbB37Ha?=
- =?iso-8859-1?Q?gwC1ZTD4TpsWjGJNj5Ry/c9tX5RkpCdCKRBegPQIrqdU1WX41QArSPS9fb?=
- =?iso-8859-1?Q?xDEYSUCFDpxyHnIl4mh4MFcUHTIxFSpQAIB1z5w75JzJg+rYBE9y0Z0uA2?=
- =?iso-8859-1?Q?hx89znOZLi5+tvIZldfaxSE1Dk0RrYzkMtqQuuDh61/I6rksRc2kt6jYug?=
- =?iso-8859-1?Q?hvJgjrdcklYMst8NSnorft9iaeq41s5Z02Our3r1w88xwCK/RrRq8aIdSR?=
- =?iso-8859-1?Q?gpisMPDwKRAml31b4cWNg8wz9VF+bGszAp5BtKObcEufaeReWjiKmyXNV3?=
- =?iso-8859-1?Q?qbI4euw+Po2OswoqiwgiX8xIAeThU5sXrO2JRJTwu37/nYFGOi2s?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c742778b-fa9b-44f9-51b3-08dea491ed5d
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 19:19:39.4410
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 40kb2lLpGDA1U6OK1K/FxB8sAmuWJ+U6w4mJNOJ6ae5Bq52M+Y3YVxXlUqHMzI9liQk01DjxzLicYADua7DWLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9678
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM3wpAMBSA8VfRubayEc2ryIXNwVH+7YyUvLvh8
+ ldf3wWMjpChjC5weBDTMgfIOAI7NHOPgtpgUInKk0wVYlsm4ZE9C93aLjU615mUEPrVYUfn96r
+ q37ybEa1/B3DfD977/DltAAAA
+X-Change-ID: 20260427-qom-tests-9dcf3b969411
+To: qemu-devel@nongnu.org
+Cc: armbru@redhat.com, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ jag.raman@oracle.com, Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
+ peterx@redhat.com, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>, 
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, 
+ zhenwei pi <zhenwei.pi@linux.dev>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
+ Alexander Graf <graf@amazon.com>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>, 
+ Francisco Iglesias <francisco.iglesias@amd.com>, 
+ Vikram Garhwal <vikram.garhwal@bytedance.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, Fam Zheng <fam@euphon.net>, 
+ qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
+ Laurent Vivier <lvivier@redhat.com>, Ninad Palsule <ninad@linux.ibm.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
+ Jamin Lin <jamin_lin@aspeedtech.com>, Kane Chen <kane_chen@aspeedtech.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
+ qemu-arm@nongnu.org, Glenn Miles <milesg@linux.ibm.com>, 
+ qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
+ Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Aditya Gupta <adityag@linux.ibm.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Chao Liu <chao.liu.zevorn@gmail.com>, qemu-riscv@nongnu.org, 
+ Titus Rwantare <titusr@google.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5793;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=dJeoIAYC0cILfwsTzSiUsZ2WIJGKmi2Cbxeyu6ial4s=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBp77wUV8Svhx4wJY8eV5FxLPjbbpOCdELnlPu6q
+ M+OCl1EXviJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCae+8FAAKCRDa6OEJdZac
+ 5ZJID/46S/D9kDQit+CYg+Q9+kkdNgbW+Vak0z9KkhG9HjyyH9MBWRGvdgLuSwjazXEPn5d2Bf1
+ YBtH1ASYUrH77iYpV+p9LQTP3kGwGIA/Z+LX43RkfIuY4aNZ2CNUpAWgLZoEigIRd+AJIwxhXej
+ 5QrNRlKTPSsXJP1oStq1Cc/9sY8DIgN9OZ7l37wye8nYzSXj6jlFslnBEJ70LUA6ntYSAmrSLdp
+ Xlg1Puaa2VRFgn0/NDUbm/j4txR9wWowDyVNSgoj0IDc/Aw5kXmnZqXCcMhFbFh/3PVo18aV1wL
+ bMOY3erCq9AK2ttsPjsoO689lvj8KNbXx+UKZq1G6S4Y2zLeYnDaPQTpx6teT9A8ze5DIQZ/DAi
+ 5U+n/ZenL43ybKoVUGzh4QrDu7tHoFpcziK2+VEZX91bUJmFiY1FAi3fZPaO3qvQLcA7Wk2fr+N
+ iXUErlU07ERqCugTNp3ViYjZkG7WBUJ47Iynfkl+cgZ3/mcF5DVfARfItVybrDObRG0lqCnk1QR
+ 5yXxDmItCNx4SYpUJf3k29yBPw0/M1aF5OGWz3wuOdcSO7DE16FaC/gvrUbsBkSWTfu9E74MGtZ
+ jwrkR+nOPcJZDE+a65ylovdTR7IBTRhaUgLBqxxln2YBms7CG4Ai3XMPB9y7VzmkVx35b5IXHSA
+ E58vN+e67z4iNXQ==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Apr 27, 2026 at 08:20:38PM +0200, Christophe Leroy (CS GROUP) wrote:
-> 
-> 
-> Le 27/04/2026 ‡ 19:58, Yury Norov a Ècrit†:
-> > On Mon, Apr 27, 2026 at 07:13:48PM +0200, Christophe Leroy (CS GROUP) wrote:
-> > > At the time being, x86 and arm64 are missing unsafe_copy_from_user().
-> > 
-> > No, they don't. They (should) rely on a generic implementation from
-> > linux/uaccess.h, like every other arch, except for  PPC and RISCV.
-> > 
-> > But they #define arch_unsafe_get_user, and the unsafe_copy_from_user()
-> > becomes undefined conditionally on that.
-> > 
-> > So please, fix that bug instead of introducing another arch flavor.
-> > We'd always choose generic version, unless there's strong evidence
-> > that arch one is better.
-> 
-> But they both implement the exact same unsafe_copy_to_user(). What is the
-> difference here ?
->
-> Should that function become generic too ?
+Hi,
 
-This is what Linus said when added x86 implementation for copy_from_user()
-in c512c69187197:
+After Markus's "Several QOM objects crash on introspection" report, I
+started writing some unit test.
 
-  Note that it only does this [arch version] for the copying _to_ user space,
-  and we still don't have a unsafe version of copy_from_user().
-  
-  That's partly because we have no current users of it, but also partly
-  because the copy_from_user() case is slightly different and cannot
-  efficiently be implemented in terms of a unsafe_get_user() loop (because
-  gcc can't do asm goto with outputs).
+This series adds a new "qom-tests" qtest command that exercises basic QOM
+object life-cycle: it instantiates all non-abstract object types, gets/sets
+their properties, and unrefs them. This quickly surfaces leaks and crashes
+that could otherwise be triggered at runtime via QMP qom commands.
 
-In the unsafe_copy_to_user case, arch versions were justified. Just as
-said, I'm not against arch version for unsafe_copy_from_user(), but it
-should be explained very well.
+The bulk of the series fixes the issues found by this test and ASan
+help. Some of the patches are redundant with patches sent earlier on the
+ML and marked as RFC, they should naturally be dropped during rebases,
+but are added for completeness and to make sure CI pass after this
+series in the meantime.
+
+Signed-off-by: Marc-Andr√© Lureau <marcandre.lureau@redhat.com>
+---
+Marc-Andr√© Lureau (41):
+      hw/pci: handle missing bus in prop_pci_busnr_get
+      chardev/char-socket: handle NULL addr in char_socket_get_addr
+      hw/pci-bridge: handle missing parent in prop_pxb_uid_get
+      hw/pci-host/i440fx: handle NULL bus in pci-hole64 getters
+      hw/pci-host/q35: handle NULL bus in pci-hole64 getters
+      hw/remote: check visit return in vfu_object_set_socket
+      qom: skip link property check callback when clearing link
+      hw/intc/apic: guard against NULL cpu in set_id
+      RFC hw/remote: guard listener unregister in finalize
+      backends/cryptodev-lkcf: skip cleanup when not initialized
+      RFC io/net-listener: move mutex init to instance_init
+      RFC net/colo-compare: guard finalize against uninitialized state
+      RFC system/ioport: move embedded memory region cleanup to portio_list_destroy
+      ui/console: remove console from global list on finalization
+      hw/i386/x86: free oem_id and oem_table_id on finalization
+      hw/core/machine: free shim_filename on finalization
+      hw/core/resetcontainer: free children array on finalization
+      net/filter: free old values in property setters
+      ui/console-vc: destroy fifo on text console finalization
+      target/i386/sev: add finalize functions and fix leaking setters
+      target/i386/kvm/tdx: free strings in tdx_guest_finalize
+      hw/i386/nitro_enclave: add instance finalize
+      net/can: free ifname on socketcan finalization
+      backends/igvm-cfg: free filename on finalization
+      scsi/pr-manager-helper: free path on finalization
+      accel/kvm: free device path on finalization
+      system/qtest: free log path on finalization
+      hw/i386/pc: free pcspk on finalization
+      hw/fsi: move OPBus address space init to realize
+      hw/gpio/pca9552: fix state_str leak in pca955x_set_led
+      hw/arm/aspeed: free fmc_model and spi_model on finalization
+      hw/tpm: free PPI buffer on finalization
+      hw/arm/sbsa-ref: free unrealized flash devices on finalization
+      hw/arm/virt: free flash devices and OEM strings on finalization
+      hw/loongarch/virt: free flash devices and OEM strings on finalization
+      hw/ppc/spapr: free host_model and host_serial on finalization
+      hw/ppc/pnv: drop extra ref on PHB after adding as child
+      target/riscv: fix general_user_opts hash table leak
+      hw/riscv/virt: free flash devices and OEM strings on finalization
+      hw/i2c/pmbus: fix undefined behavior in pmbus_direct_mode2data
+      qtest: add "qom-tests" command
+
+ tests/qtest/libqtest.h              |  8 ++++++
+ accel/kvm/kvm-all.c                 |  8 ++++++
+ backends/cryptodev-lkcf.c           |  4 +++
+ backends/igvm-cfg.c                 |  1 +
+ chardev/char-socket.c               |  4 +++
+ hw/arm/aspeed.c                     |  9 +++++++
+ hw/arm/sbsa-ref.c                   | 12 +++++++++
+ hw/arm/virt.c                       | 14 ++++++++++
+ hw/core/machine.c                   |  1 +
+ hw/core/resetcontainer.c            |  3 +++
+ hw/fsi/aspeed_apb2opb.c             | 31 +++++++++++++++------
+ hw/gpio/pca9552.c                   |  2 +-
+ hw/i2c/pmbus_device.c               |  4 +--
+ hw/i386/nitro_enclave.c             | 11 ++++++++
+ hw/i386/pc.c                        | 10 +++++++
+ hw/i386/x86.c                       |  9 +++++++
+ hw/intc/apic_common.c               |  2 +-
+ hw/loongarch/virt.c                 | 14 ++++++++++
+ hw/pci-bridge/pci_expander_bridge.c |  8 +++++-
+ hw/pci-host/i440fx.c                | 15 +++++++++--
+ hw/pci-host/q35.c                   | 15 +++++++++--
+ hw/pci/pci.c                        | 11 ++++++--
+ hw/ppc/pnv.c                        |  1 +
+ hw/ppc/spapr.c                      |  2 ++
+ hw/remote/remote-obj.c              |  4 ++-
+ hw/remote/vfio-user-obj.c           |  4 ++-
+ hw/riscv/virt.c                     | 14 ++++++++++
+ hw/tpm/tpm_tis_sysbus.c             |  9 +++++++
+ io/net-listener.c                   |  9 ++++++-
+ net/can/can_socketcan.c             |  8 ++++++
+ net/colo-compare.c                  | 31 +++++++++++----------
+ net/filter.c                        |  2 ++
+ qom/object.c                        | 10 ++++---
+ scsi/pr-manager-helper.c            |  1 +
+ system/ioport.c                     |  4 ++-
+ system/qtest.c                      | 54 +++++++++++++++++++++++++++++++++++++
+ target/i386/kvm/tdx.c               |  5 ++++
+ target/i386/sev.c                   | 37 +++++++++++++++++++++++++
+ target/riscv/cpu.c                  |  7 +++++
+ tests/qtest/libqtest.c              |  6 +++++
+ tests/qtest/qom-test.c              | 12 +++++++++
+ ui/console-vc.c                     |  1 +
+ ui/console.c                        |  6 ++++-
+ 43 files changed, 379 insertions(+), 44 deletions(-)
+---
+base-commit: aa15257174da180c6a8a9d58f87319cfe61c5520
+change-id: 20260427-qom-tests-9dcf3b969411
+
+Best regards,
+--  
+Marc-Andr√© Lureau <marcandre.lureau@redhat.com>
+
