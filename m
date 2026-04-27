@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D923537F7;
-	Mon, 27 Apr 2026 03:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7E923A561;
+	Mon, 27 Apr 2026 03:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777259611; cv=none; b=GqE4Baa7totea4gQhcqSTt0c+nnWjTjG8s2fIBdC8RjmdTY7bAOKzPnBI8B5nEOhrB+paN1tvvD/x5TLu+x1MF6c7IQ80+giTeGfrZv+E0OjtCAXm5KqbVbgdRVLJTsZXr37Gmfkr0uvvJdKy55v3DOEMNO2RCuqZLdgpJ7tXPo=
+	t=1777260774; cv=none; b=ZYbR5nFVAncrko6hZgxb5vCL2KwBZM1cKUxR3UN3LNJikmUvhM+oeT4aXUjuHRVBv7UJn1lVvcxbMrHfSTb9xYpIzxf9vtdhoSM5RlTRgidi6sm5sAARCXSU/SHGSTWNLF8S1mkd6c940eVKasx/sVRicBI+mNgEhkTPgV7RYMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777259611; c=relaxed/simple;
-	bh=V80SL+lhwvJTQ0cXw8bvUx5mV2JJH1vu6VApetJqC/w=;
+	s=arc-20240116; t=1777260774; c=relaxed/simple;
+	bh=424HvNddsDICO2hthptABkQmQxChYu0/EeJULWRIXNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pdmcqImvR+sh5SfuG/D8bq5wDIUPzx4K0NbF1lD7iVxHeYsyCNu9kdgw+FIHdUs/JwyHwvN0hdYU3t29BKSbvk0pTC0cH31eA6Gb+RTbnbzEAypoTNEvIJcrPX1bx8dQ+2VEmccl+6Gg/uZT4jLcZlCFoldQT9JeFPlf1mlltdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oCUK8wwc; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=Djp+zP/+/9mdzjkdTZGOcwCCnvn0Bh6+aERXY0iSeblVlqRsFx2IhkuVieMJCP2vzcvLm3XZQpsdTAYhlC7Y57WL19+zAuNkvA/ABzBiGd4mpK2osCL9QMaJVhR2UW6HAk1WqqMU32Ko5N0luKmHnXAkqZdtcA9JZmBQJ19TIRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AR03Xixn; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oCUK8wwc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AR03Xixn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777259609; x=1808795609;
+  t=1777260772; x=1808796772;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=V80SL+lhwvJTQ0cXw8bvUx5mV2JJH1vu6VApetJqC/w=;
-  b=oCUK8wwcgC3UUWD6Np185HkE/+Vp2dbLbOFCPkD27l9mtVKrXQCCKuzi
-   cZguS/XPgSoHJk/cACHzo95zfRVGqA6nhg7LvXsm4MlC3tUm2X3kVitYP
-   K1ZOaJ+B9vzffoSAp7zEk5wgd20885b2qR7HKeBKb9YtFnCpIpHzWl/hh
-   jqB0OsztJuEc7eMNG8pAHihNcFwJmuNOB4Cg+hWkdk/mwvaefe2KzzgbI
-   6GE4M0/PN+z9U2ui7y0+pcyJjMs3JGUAKTkfraNvqWTsZW0WB0B0pM+GG
-   uHk3u0mv8FFTPFbaYg0TmhoMhgFHQ+Qx0yQ5nK2me08Heftz7ZEwXAEp4
-   w==;
-X-CSE-ConnectionGUID: RVcKT/P5THymYDbNGr6Mdw==
-X-CSE-MsgGUID: 1J3wBD0gTeux3EYPBV+bow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="89606068"
+  bh=424HvNddsDICO2hthptABkQmQxChYu0/EeJULWRIXNA=;
+  b=AR03XixnhDX84M5qdxaP4vFfBVdHhm0bPF5sk56zPPPhDrbG4lnnRhqS
+   +LHN/fokiJ9R8ooI/NVj0ZW/RyvEQHp4/JMUGBDFmewdUy248+/LafGMZ
+   NU7oEoIgPQggMiahr/efJ+SG50phAXDsDVrPRxfRdgHqKSPBn9iU2z46O
+   +kLkel+NlU1doLDl8X4Hkucz6L+omkkN9CeRdHqqJ53nHJRYVl0JFfN8Z
+   NkWp8aZtufRjqH6ItAJ6PJwY+fvytIy6FcQnTwMq8y3fVaJsoszGkE7oR
+   XTgVxZ+nPB1zkQd0Y/WVOMVVgVBjnMrIf4DraUCnLUIX3UzbVGHvRcXp8
+   g==;
+X-CSE-ConnectionGUID: CxI0FSjCTGmEydCAhA5+cQ==
+X-CSE-MsgGUID: 2/zdNp/YR06BCD9iO/CSFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="77301632"
 X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="89606068"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 20:13:28 -0700
-X-CSE-ConnectionGUID: T+Q4B9PtSeaiD0zyK+WjNA==
-X-CSE-MsgGUID: sqRr1n3dQ7C5lSSVJ1g95A==
+   d="scan'208";a="77301632"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2026 20:32:51 -0700
+X-CSE-ConnectionGUID: NDmLYr/pQBGaE7Dnu5nedA==
+X-CSE-MsgGUID: ofb5gXFLRPyGsuxQarzkyw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
-   d="scan'208";a="238504442"
+   d="scan'208";a="235292336"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 26 Apr 2026 20:13:25 -0700
-Date: Mon, 27 Apr 2026 10:50:58 +0800
+  by fmviesa004.fm.intel.com with ESMTP; 26 Apr 2026 20:32:48 -0700
+Date: Mon, 27 Apr 2026 11:10:20 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: "Tian, Kevin" <kevin.tian@intel.com>
 Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
@@ -61,14 +61,14 @@ Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
 	"Verma, Vishal L" <vishal.l.verma@intel.com>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 19/31] iommu/vt-d: Reserve the MSB domain ID bit for
- the TDX module
-Message-ID: <ae7PErLELqLHE4JA@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v2 23/31] coco/tdx-host: Setup all trusted IOMMUs on TDX
+ Connect init
+Message-ID: <ae7TnI4xGDEWY1Cd@yilunxu-OptiPlex-7050>
 References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
- <20260327160132.2946114-20-yilun.xu@linux.intel.com>
- <BN9PR11MB52767F28E9FF692ACE69F3D78C582@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aehkFicutMwa2LP+@yilunxu-OptiPlex-7050>
- <BN9PR11MB52763F59424C6E4AFD7F63988C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20260327160132.2946114-24-yilun.xu@linux.intel.com>
+ <BN9PR11MB527640A3D76B66DCE5FFA58C8C582@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <aeiUartvxzsvq2Ye@yilunxu-OptiPlex-7050>
+ <BN9PR11MB5276916B241153121738EB208C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,41 +77,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BN9PR11MB52763F59424C6E4AFD7F63988C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+In-Reply-To: <BN9PR11MB5276916B241153121738EB208C2B2@BN9PR11MB5276.namprd11.prod.outlook.com>
 
-> > > btw in patch23 commit msg:
+On Fri, Apr 24, 2026 at 06:54:54AM +0000, Tian, Kevin wrote:
+> > From: Xu Yilun <yilun.xu@linux.intel.com>
+> > Sent: Wednesday, April 22, 2026 5:27 PM
+> > 
+> > On Thu, Apr 09, 2026 at 07:51:56AM +0000, Tian, Kevin wrote:
+> > > > From: Xu Yilun <yilun.xu@linux.intel.com>
+> > > > Sent: Saturday, March 28, 2026 12:01 AM
+> > > >
+> > > > Setup all trusted IOMMUs on TDX Connect initialization and clear all on
+> > > > TDX Connect removal.
+> > > >
+> > > > Trusted IOMMU setup is the pre-condition for all following TDX Connect
+> > > > operations such as SPDM/IDE setup. It is more of a platform
+> > > > configuration than a standalone IOMMU configuration, so put the
+> > > > implementation in tdx-host driver.
+> > > >
 > > >
-> > > "
-> > > There is no dedicated way to enumerate which IOMMU devices support
-> > > trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
-> > > devices and tell their trusted capability by the return value.
-> > > "
-> > >
-> > > which implies that ecap_tdxc() alone doesn't really report the capability?
+> > > not sure what above tries to tell. why is it a platform configuration
+> > > when you have seamcalls on each IOMMU?
 > > 
-> > Ah, good catch. Let me explain:
+> > This is to say the TDH.IOMMU.SETUP relates to PCIe SPDM/IDE, it is not
+> > just about IOMMU. By identifying the
 > > 
-> > ecap_tdxc does report the capability. This bit is special cause both
-> > trusted part & untrusted part access it.
+> >   for_each_iommu(iommu)
+> > 	tdh.iommu.setup(iommu)
 > > 
-> > For IOMMU driver (which now handles the untrusted part), it can directly
-> > query to this bit and decide what to do.
-> > 
-> > But for tdx-host driver which handles the trusted part, it shouldn't
-> > speculate into the IOMMU for capability enumeration. TDX Module has more
-> > concerns about trusted capability, including the related I/O stack
+> > as a platform configuration, it justifies why we trigger this
+> > configuration at tdx-host driver probe, rather than in some
+> > IOMMU/IOMMUFD API.
 > 
-> I guess "more concerns" means that there are more conditions for
-> TDX module to look at beyond ecap_tdxc(), so it's not appropriate
-> for tdx-host driver to check ecap alone.
+> iommu drivers also involve PCI, e.g. call pci_enable_ats(), etc.
+> 
+> so having relation to PCIe SPDM/IDE is not an argument of
+> platform vs. IOMMU.
 
-Exactly. 
+OK, I think I could delete the platform vs. IOMMU thing in commit log.
 
 > 
-> > capabilities e.g. SPDM/IDE cap...  So in patch23 I actually mean we
-> > don't have an enumeration SEAMCALL for trusted capability, I will
-> > refactor that message:
-> > 
-> >     There is no dedicated *SEAMCALL* to enumerate which IOMMU devices
-> > support
-> >     trusted operations...
+> Actually I'm OK to put that logic in tdx-host. Just the explanation
+> here doesn't make much sense...
+> 
