@@ -1,110 +1,99 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A417745
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 00:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CBC175A81;
+	Mon, 27 Apr 2026 01:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777250232; cv=none; b=vEU8SoFozy22nKjqKT/uuiQT/bFtIiMaNcFcQw75n/4ZUZNbxlHJ0LTKKl71/1VHUfUjVmS6F/mppLakBvQkwNl2ddIejeSP8F1SG5Yxgq7SVmldnN5/xS/m2vh39e+f8LmHrskc+0ifgeOj52uimlfqi/v1CBdW0XEW9aLzpPo=
+	t=1777252920; cv=none; b=RFGXpMsuPyqLlEoNLORdZnUgU0wOjdaoDuGrbhvzlbuXP4tjSgC4jcmOzVC0dSfiuUleH6cWQRAAGdf6gkRG6L0Nu0dWNymaiq0+AT99ySQRSK7qddVdx+ap6hV3iQuLeb3GuKgK/2EfxjPjdF/GBgMazjZSkH1W2TyxVUxOC4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777250232; c=relaxed/simple;
-	bh=JA7fhWQUKJ7bKOO5WZ2l4tLYAxtvAQeGMTMWREFP7ac=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Ph1nsoBz9s00v84bGnGUbvvVkYE4bd3YraSbPLZLfyBGjxnwBSXoFkBrtSizusjrdstm3SIhLFhUesWTV9owGco0gzZfStQhciLAuH5FNr+3jS4vkO1SfeUPj/cR3mUrNU7P+b3XS9GM42UukjELdfuU40+Jmi6wL56gL+Cl3Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTyGJ4tI; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTyGJ4tI"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82fa8d6425bso3546741b3a.0
-        for <kvm@vger.kernel.org>; Sun, 26 Apr 2026 17:37:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777250231; x=1777855031; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mVdfUhTIoRGg+RbxdXBCn/qp3+VQxZ3cyedRP11wnO8=;
-        b=mTyGJ4tIEkwcSzOMZM7wAAaDbcvVUrt9wbByfgJ4/esK9zB/pGp0DaNtgGSDMnih60
-         REwRmeA9M8HeOyta5gOi2YFvTFIYetAAFf3ApdyEF7aATEG1yQikhiKKub7j5hIjSrVi
-         drEzT9sThYH5dZ3dULmetSZVOMtIP8G7M3Fgh1ZvdolS3W6aCJ3h56Ri1ZrLqyKRcyP4
-         mJcfsdSxtj9c96RPHKIfmUXPH5BAK8ayPuvIoDaS+v5fHZhSzu7IW6dJkpmpTG86Jghk
-         wPuN5ewG2OJuG7KFSj6dauZjwfvSsNtZMaTyE5bfT+himnZlJaNpWY2LsqtRHLEBAPNy
-         kjEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777250231; x=1777855031;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mVdfUhTIoRGg+RbxdXBCn/qp3+VQxZ3cyedRP11wnO8=;
-        b=ikBuBwqmPbP9mMMZQd+7M/j6jnAiui1jVoZ7V6PPD6WHCgD7pLVMZN1DBU5HCTsaSj
-         Vae52SU/h9y4EcjcS9rafyquiJsJlaHsvAgEFnR3XegJWiIuIbRfTJt73DtSNL95Eop8
-         I8R+CSWYAT8PV3HltEHV6wjC0OwebrDPiMJx5HK7K9M3Z9VgyRlXU4cdEu1fN5BOGhl4
-         d6Fb6wgNYMRMD0ye5p7VcpRLbGbi9DNvGdx8JIukNDMUZ7fThdg5B39I3FOYN6Q0ro3V
-         JpUnAhoofttA+0X1frY3iJzqkbdvl3OOBJ6QXTTb9GQICHZBeWcFmihAb2x5WWTyvE1b
-         RwLQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9IdfqOCUqBf8XecwaFY9BUEHk0pWjiV21gkGzMlJkqTzR/iqQNxU3+DlUQnK+T5WkdbH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiKJT9xUoR8A1RWwJZzriXhF/Gum3MbObIEYlTsLBNDT8Yj8zV
-	LzUWFF/FNnol8EFrGCuqNSs94FDY5K3beuiKHD3c0PRu7wVu5xjzKiD3XJTf2A==
-X-Gm-Gg: AeBDies3HTw6MMDa2K0T7ZZrnhwtDl4DQhccndhNTqYLNydS4k5VivF++V67gZBDYnY
-	K90/l/RQvjnmQvk2HEtVbOWfiaiMm63ypiQLw47pvSIXL22BsBzvZUP8u5+SkMZsryGD/VxoP2a
-	j6MV1l3u1aUlbplwOpefaL7I6CcT16aztO5MhA2Z5MZdOR8lRM9wlzo1F8ue+K7IcZ+3QI+85Kq
-	i7HXkma17/nV0jKmbx1e5wk117nehdxpX1XMdUfIs3r9U0UuuEz9jJOrc5SJdlBd+1aBJjPeK3z
-	ZUa15SKtlu6OTPSfw/rx5sO7vaT6nyj+xIJgRh8eKg+Sg2CenfD/UqWxkXMIneEZSUz6CaC1uv4
-	diaTOWY1GOhlC963ea/41quxnc8pkzcSXrmDdB56UJyjl8NqwlXFx331k0+pzFc8PleSK1mHtCd
-	XLbBDwHqA+tCLzaCJ/Od6uV1mm5zoKpcvBPHfkwBVntKg=
-X-Received: by 2002:a05:6a00:4308:b0:82f:3733:2f96 with SMTP id d2e1a72fcca58-82f8c82e853mr41049342b3a.8.1777250230657;
-        Sun, 26 Apr 2026 17:37:10 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83336687182sm2598534b3a.35.2026.04.26.17.37.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 17:37:09 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Gautam Menghani <Gautam.Menghani@ibm.com>, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for tracing exits
-In-Reply-To: <20260424092558.31798-1-Gautam.Menghani@ibm.com>
-Date: Mon, 27 Apr 2026 06:00:46 +0530
-Message-ID: <lde9s0qx.ritesh.list@gmail.com>
-References: <20260424092558.31798-1-Gautam.Menghani@ibm.com>
+	s=arc-20240116; t=1777252920; c=relaxed/simple;
+	bh=CWmzRJgfn0UBdbDnrKyuKMFFos+n3gVb4I8g3lwEZeE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jcxvkADqOCX+oNuwftfmgmeBUg2aMA4re3rcoSXmgs7f6ZrGzPMK/E6keHn/yXvL0WcSemst0hfHPsBhZIXc9mD8FjuCI2sEh/N58gjHhWLnxU6eaEDEHKsow3wjBS4BAtLhQ6ytlpeN1XWf51TVC60wacIPQONmRUGpo6PVxV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 7866515041d711f1aa26b74ffac11d73-20260427
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:f22e5be7-149b-44b6-843b-a8a1a78727c8,IP:15,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:f22e5be7-149b-44b6-843b-a8a1a78727c8,IP:15,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:9e8c26ad00135fa63ef713404ec30fd2,BulkI
+	D:26042709215374FSTQXC,BulkQuantity:0,Recheck:0,SF:10|38|66|78|81|82|102|1
+	23|127|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:
+	nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
+	RE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 7866515041d711f1aa26b74ffac11d73-20260427
+X-User: zhaoguohan@kylinos.cn
+Received: from zgh-vmware-virtual-platform.localdomain [(116.128.244.171)] by mailgw.kylinos.cn
+	(envelope-from <zhaoguohan@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1993856307; Mon, 27 Apr 2026 09:21:51 +0800
+From: zhaoguohan@kylinos.cn
+To: Alex Williamson <alex@shazbot.org>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	kvm@vger.kernel.org,
+	intel-xe@lists.freedesktop.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] vfio/xe: avoid duplicate reset in xe_vfio_pci_reset_done
+Date: Mon, 27 Apr 2026 09:21:28 +0800
+Message-ID: <20260427012128.117051-1-zhaoguohan@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260424091719.58800-1-zhaoguohan@kylinos.cn>
+References: <20260424091719.58800-1-zhaoguohan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Gautam Menghani <Gautam.Menghani@ibm.com> writes:
+From: GuoHan Zhao <zhaoguohan@kylinos.cn>
 
-> From: Gautam Menghani <gautam@linux.ibm.com>
->
-> The macro kvm_trace_symbol_exit is used for providing the mappings
-> for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
-> trap reason is displayed as string instead of a vector number when using
-> the kvm_guest_exit tracepoint.
->
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
->  arch/powerpc/kvm/trace_book3s.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
-> index 9260ddbd557f..eafbaeb5a9db 100644
-> --- a/arch/powerpc/kvm/trace_book3s.h
-> +++ b/arch/powerpc/kvm/trace_book3s.h
-> @@ -28,6 +28,7 @@
->  	{0xea0, "H_VIRT"}, \
->  	{0xf00, "PERFMON"}, \
->  	{0xf20, "ALTIVEC"}, \
-> -	{0xf40, "VSX"}
-> +	{0xf40, "VSX"}, \
-> +	{0xf80, "H_FAC_UNAVAIL"},
+xe_vfio_pci_reset_done() sets deferred_reset and, when it manages to
+acquire state_mutex itself, hands the cleanup off to
+xe_vfio_pci_state_mutex_unlock().
 
-So I ended up looking into other trace_symbols too and I don't think we
-should have a trailing comma here. It may cause some issues silently in
-trace-cmd or other places. I remember going through it when I was doing
-some other tracing work earlier but I don't recollect it now.
+That helper already clears deferred_reset and runs xe_vfio_pci_reset()
+before dropping the mutex. Calling xe_vfio_pci_reset() again right
+afterwards repeats the reset handling unnecessarily.
 
-Can we just remove the trailing comma and send a v2 please?
+Fixes: 1f5556ec8b9e ("vfio/xe: Add device specific vfio_pci driver variant for Intel graphics")
+Signed-off-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
+---
+v2:
+- Correct the Fixes tag to point to 1f5556ec8b9e
 
-btw, 0XF80 is correct as per "arch/powerpc/include/asm/kvm_asm.h"
+ drivers/vfio/pci/xe/main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-#define BOOK3S_INTERRUPT_H_FAC_UNAVAIL	0xf80
-
--ritesh
-
+diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
+index 4ecadbbfd86e..cbff5af385ef 100644
+--- a/drivers/vfio/pci/xe/main.c
++++ b/drivers/vfio/pci/xe/main.c
+@@ -135,8 +135,6 @@ static void xe_vfio_pci_reset_done(struct pci_dev *pdev)
+ 	}
+ 	spin_unlock(&xe_vdev->reset_lock);
+ 	xe_vfio_pci_state_mutex_unlock(xe_vdev);
+-
+-	xe_vfio_pci_reset(xe_vdev);
+ }
+ 
+ static const struct pci_error_handlers xe_vfio_pci_err_handlers = {
+-- 
+2.43.0
