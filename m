@@ -1,342 +1,182 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9E33B7757
-	for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 23:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777333195; cv=none; b=K+b/JQBTMbCv4WJt6XVqnPxawbOrAsDNyu9MSwjOEfraykbncnUomiUyVG2wOatzBXII8ezdCGi2jrkYXGiBu9tnxuClOSt0XglF8O9STiOZHGD8F1S0kFT/kHj3atlGSzOxPweaoeMx+ybAt5+fjWut/TPWOAvrAWPczXK7cwU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777333195; c=relaxed/simple;
-	bh=xcjyL33lkZOTQPMEJTOcYt3d+VZ4V5k7rG3coXlIp9A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VeHD+07Gg8biVVdYmIClX7Cevf/uzkZ4RrXIeWkzDWVz7oOkqPWkqzMv0hXKI6lMfLnDr9o/BpukNAiEaj5DiDrVPqfANcgB2C0G5vJnidwgLwybgLcYdKObVGXt4D9X5V69HzOPm3Yf6xv+QEXpBS6Nwvjcp3aUq4rdx73lJwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oGL9TdaH; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857D335CB7F;
+	Mon, 27 Apr 2026 23:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777333774; cv=fail; b=fxgpmPLLHpDKaOMhZAlmgD4NEumks30Bu5UBfQfuRrj0crlDy6dJQbmMpfy7QarKtLstfpXDUb4sIlsycgDcTlCrjF1QfIb2DlfyfkptGK6+vT0BRL0vWbOlYwDYPIdyo7qCJp9I8K2HxWo3/zVoCuu/BK2pGL2zTgw60umHlRE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777333774; c=relaxed/simple;
+	bh=XwhI9wAJ1brmDp63ySZfQpI28d0KyNkfel9EviiPKa8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uksHHwDFmJl/qnvXZBjqc1Fvw/uPnTMHUQhCJ7n+/MwxvtnMDldjShf/KCdPoU9y4j9RVnsh4sO4VU8olTv6njibHOBwzlcpl2SzRpnonYXoc857YytMQsWLJRb3dcnVyUn2HmrGvGlp836xCgKBxRVZAIAJfePFZW2VfB9lEgg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VMBfEajK; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oGL9TdaH"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c799ee56bd6so2737157a12.2
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 16:39:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777333193; x=1777937993; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=T8J/Wk3ohRqFL0ElINDYivXMB+84Zl+NPmQ/vauwbCY=;
-        b=oGL9TdaHwSHphEaXFcUsewJwVjdJ3DH8NSaYRO3xRgZN0LzQ7+4QNhKx3ZOtTcbm/a
-         1myX5pVFIKPYPOZph6Ed8MbWBQ/KoEHrnBX/kFAMdv9zFkZpETO3RZAznkAUaf7ccrCo
-         iFZZoG30nTOdc8JC5xcXkt0DZffgQ0rCQxBpbUTWQ3a/W2cLXoV+F7okD78A99jJbZuJ
-         mNjnocMNAVRzRu+wGrCVjmAxA2NNb7G9sFkanLL5Y/P/Busu6/5e6KtC3lqkckzzYMog
-         wqfpcokEqnyqVCKPwkwEegZa4xDie15A7CahIytfKdCH9e8jsnGEaRLPdk/BYkxCChOl
-         nN+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777333193; x=1777937993;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=T8J/Wk3ohRqFL0ElINDYivXMB+84Zl+NPmQ/vauwbCY=;
-        b=TLo+6S8zPFw7rlZOM0wMkvCB5uEqbSxujBDJT3YCV2gq4ZzQrg0u+anLV5H+OrI7TO
-         VN6OvLMSijU8Ho3TG0XhR9qMT00QFCo31tt/nssu+Xe7JelnOkPHdkkF17oGqvX4qx87
-         sIF9pQAqJeULG3gSHV/I7GaR5ccX/AUgnPLbeJGBhjl0wndUnKBzrmraJOHO8Q54AWHH
-         W5U/dgkLUq/DRhS/pbzZkZQjjAT1zkVvoWiE7reuMZc2VCB3yVFyIQkQuX2yTvISFUjX
-         T18ZNXkmt1Ew8N/MipnPItqOBR0fsKBgkyUgnLjzg2Ghig+DLZou1EzlPnuPtBfH+Vs0
-         g31w==
-X-Forwarded-Encrypted: i=1; AFNElJ9YSYYW87yudqGnxjlVQj1s0Ya0kDRB8eBaTJQ1RWZcBmy5aQG3u0r5FhIJC89MIulm7aM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyScGWa7AJyiiQ7xLLnM3wFmdVm7N+CtodJ7DrtJsNO60zi4HoT
-	BqT62MUQMhDxWh+P24ii9QJx4402Pm6/wE40DP0fOWRnXSJiH6R6jMhxZgEUwe9mkX97srXex17
-	KUQg5+g==
-X-Received: from pfbbj12.prod.google.com ([2002:a05:6a00:318c:b0:82f:b322:30fb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d22:b0:82f:1d38:f68f
- with SMTP id d2e1a72fcca58-834ddbe64f0mr513532b3a.31.1777333192887; Mon, 27
- Apr 2026 16:39:52 -0700 (PDT)
-Date: Mon, 27 Apr 2026 16:39:51 -0700
-In-Reply-To: <20260427204313.50741-1-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VMBfEajK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777333773; x=1808869773;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=XwhI9wAJ1brmDp63ySZfQpI28d0KyNkfel9EviiPKa8=;
+  b=VMBfEajKddnesIbgv92xKLxlc7uJLi+pUOtlKhCrfdWicQJG+/PRvMDK
+   Fqg52181nG6vlpmjJFdQTFGfCD87p6rJQNeSLLyEpkwndjVyy9E8FNNbN
+   A6ZBUTLWNe9bp/eszbhnBM6Qm+CTK4MSDvfDEcHGU/LGhllKs2dWTx5Kx
+   sUN6I6RsoED9teFy1QuRuphwOKjFQP8Ze85lFVbD1kHQ4VJk2as5M7zYf
+   G+R8DlJ2UK1nvPep+/Q/11uyA0mvR+3LbbmIxKR2GauRcIoU7azhVUBBE
+   jyI9ZYi+GnXJLiJ4LHlN4yMw1Ayl+ZpTBgQuy0XOtOYUdquON08CyTej0
+   w==;
+X-CSE-ConnectionGUID: FOfCJzkISSiv0/lwUwmu9w==
+X-CSE-MsgGUID: +dItXexESvCuHa7/OJV1hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100892650"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="100892650"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 16:49:32 -0700
+X-CSE-ConnectionGUID: VUbzIwfHTeKm7Ukn52Z6vw==
+X-CSE-MsgGUID: 2Asa56IsQou1B/6OcJSu5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="233647414"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 16:49:30 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 16:49:30 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 27 Apr 2026 16:49:30 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.14) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 16:49:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Acx4p40necuNgGsq23ncONfUB6r6RvM7huGSH5WDdlk7ENJlJS49xwkeLkbJvrZHmQD0oyyduckZZ84bjE/7yCMN0EYrLescR4bhlht85nIkMWI6z+aIoX6spYWAP/xdUt4NS2+ZTVjVmV3WLSBtV8qLPgnMV6ELzpFxYw51rXREtgRazt+5J237zlossWa6ohDDk1pGUKHXYclZgmqc0uZEhwKQ4v5UpRSohEBQkcB0AnUK6PHy5TouXnXyO/09Dm40ovUaFuk9H2s7/Eu1g4WwX42nWUlC2XNOCpwkLn2BusoFQp5Yi2AaOsf2pzc0hpynePZeKJqM2OuBPrwuvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XwhI9wAJ1brmDp63ySZfQpI28d0KyNkfel9EviiPKa8=;
+ b=bmTGTyPLD42tkYOulmjVNjxtCSeJWvft9KUaW8HxbjAroNUtx+JQt+uAMSZUoDTRxBqPXu59h4fgLnKH9mYaXSfzHzR0RH6Qbupd+zYHVPsTPkEFxt7AoIBAsIwmsAPg/M7yVN4yfrSRER3JsrLHPPggJwMik1dAnd9KlmS4eYeo2MI3Rgfq43CyR5afFcu0h0sM9i17dD9silySIkzC9CjijeWml+IcGFZ0ynZCSfLMZmec5RLfVk1GxxytABKgAWRD7GSdHjquSUEsemPCIbeUtMRyYN9H21lVaWLhFuAKnqUJ5Vk/qRGxE2ITvbJgJlTFK3C7Ye1CwUzwm+e3Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by SA0PR11MB4749.namprd11.prod.outlook.com (2603:10b6:806:9a::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
+ 2026 23:49:24 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 23:49:24 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "seanjc@google.com" <seanjc@google.com>
+CC: "Tng, Ackerley" <ackerleytng@google.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KVM: selftests: Include linux version of mman.h
+Thread-Topic: [PATCH] KVM: selftests: Include linux version of mman.h
+Thread-Index: AQHc1oaILpjwTk/yw0+jOup648haVbXzkTuAgAACqoA=
+Date: Mon, 27 Apr 2026 23:49:24 +0000
+Message-ID: <34e88a990e667ee402238a13a63b224dea1bcfa0.camel@intel.com>
+References: <20260427204313.50741-1-rick.p.edgecombe@intel.com>
+	 <ae_zx9cRf8HQwvpX@google.com>
+In-Reply-To: <ae_zx9cRf8HQwvpX@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|SA0PR11MB4749:EE_
+x-ms-office365-filtering-correlation-id: 3e1a3045-f5cf-420d-f57f-08dea4b79c60
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021|56012099003|22082099003|18002099003;
+x-microsoft-antispam-message-info: Ibml+InM66op8HT03CBi1Nwfqx3UbwaLeAMTH0hLuiyAcwlTyEuYC49O6zPWisWAyWE8gkk+VlS0NNPABcdA2/uErfW07pP9ASnjVmkZHFKbN2XiDEhXmgY3jjA0ZNiQm3CLXAZpQVqWN9vZ2ZUvGs7kiNyXe2f9R4UlDji08JMCLDlIa0dwMxA8JJu7qaNbmrUjWodKZEjliSYC2U/hUl7rduenxDO5UJDSJ24qTEEd057G7eLkR5UGMfY3KdBLVrsjlgJgL9AcXc5EWAkL9O5HiBaGyOzBgYu7PKlWpFn8JGy+5bDZkGTEjEIpp+KICz6SKgKYePnk9BZfuWes8ztj30BnM798jIHSwXsa0mXKap/+YWkbxIJteoR0SmZMWAWzikIgo2dfddvj6idEUhCtyHIgnexpzlRE984bERvst2mKytlfXwjU3ApN5WuJwf/kU8Ki6lKcPyC4TUbDMqqc8f6CyCCIUjXOj92HmBmQmjn4/6dnrxoTRmaTdxblK2g8nbY3MkMDlWM7bMsIr74jI5O1nqz0ra2XGj9grRjjXTliCK0ShQ5M232uxJgmlR4fdUt5eU1/4Tu0JsawMTCt8YKOgmkaDqbNMZp6VAvEapdI6rL+b3UvfNemw2qS4QiBQ/hRSXIwUCwI/JAABQ7m5R1a8kUTfMhMtP08DHyi7Cgei14MNOgHFkkjsY+oKF5iSfOupgLlp2EEUyGtty4X52Yu3uEdQg/yvM8WlbExXC6HO+GpRqSOr4a4b+LMw5ZutqMOjrBS/yHmGO7iVsSzmnufmU3AmJoCOmecLXM=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VkJWTGJRSjBOeVhLdHZ5Tk00YlFlQnhEMlRGRFZYYlNIQ1lXeUdDeFNPR09N?=
+ =?utf-8?B?TXNlSW84YStFc3JMK2dsMThtYXp2cXFadHJNWjkwV1NmQ1lHWEtIL0hYU2Fw?=
+ =?utf-8?B?TVJGR0s3ZEtxTGZ5NjYySXV3QlFPcWxudW9WN0VxYlVEbkRic3dJUTh6RGt3?=
+ =?utf-8?B?NU9KMGYxS1V1eC8vUGZ3RjdyQUlDNnVLSmQzbWlWMHp0OUE0OWwxQ2syZDZU?=
+ =?utf-8?B?eVZIZm44VWdoUjlzT3FqMXRTTy85aTJlNWc5eTMzbjBaNHFBVWNMY1lOVXR3?=
+ =?utf-8?B?V3BCZkFDbGpDZHhzMitjbUhXdEdlTnlVTFduMEVqUnVIQUV5enNGQW5rV2JM?=
+ =?utf-8?B?aVpxbTBVWnV6VytPY3NHaUs3OWRlZGlBaHVZU2lUT1JaTXA3UVhreEtCTkNX?=
+ =?utf-8?B?a0RvNGkvTGdvZUp2aTdHcGczdjFzVUdINXk3akdmbWhOSlJRWWMvdGJxY2Ja?=
+ =?utf-8?B?MlBmNERMSVU1bHBrN0tDN2EzN1ZvK29RK1hIdWh1Z3pyZ1hFRnl2YkZqemhL?=
+ =?utf-8?B?OVFyUnN1dldwVDRWQjhubUgwSjQ0bG9XT0VuTHVyc1VlSzZ2blFyWTAzY1Np?=
+ =?utf-8?B?alNkYUNqTnRNb1dTWWM3U1E0aGg0V1I3VW42Y0ZVMDlZY0h2RllocVpweTh1?=
+ =?utf-8?B?U3Y3NEFZei9ibDdxd2pIVjN6SzRHMHF4d2NiYjE4aDlTMlNYVW9CTkJNcGRh?=
+ =?utf-8?B?VXE2Vm9CekxUYnYxWHM2YnZ6Y1YxbTdBQmZERzNrSWVkaUJ3Vmg4NFRiSTlt?=
+ =?utf-8?B?cHJici9nNTIvODhYUUp1SHZXb2ZFRDhsbnNtMlhsUERDTW85NkpMc3FtSDll?=
+ =?utf-8?B?dzQ5TVZFUWdnSjUvT29XNWZ2RlNlQ1NWZmM0UHBKZ1lHRVZYRE82OXE4OWxv?=
+ =?utf-8?B?QkVMZWc0cVc5SWdRUTdVVFE3Z0FTeG94Y2pTQ21lK0ZNOEdCOTl4VHBCNFZ5?=
+ =?utf-8?B?ai8vZ25qSm8vV1lUMW5GeEkxbVphelhNQTNENzJ1Q1BTQ3lSWE9IZ3RIM3lq?=
+ =?utf-8?B?aVlaaHNQVmdOSnJTVkpNZENrdzlHeDg2YjlqOWJBcHdTSktQUGhzdmNPcmR4?=
+ =?utf-8?B?Y20vZklSMzNoTjVjV0lIRUlqM3AzM3R2MUY5alEzZkxxQ2NiWDNqRnd2M0hK?=
+ =?utf-8?B?elFMTjY5b3E1NW1vOEdWZDRyZFVvTk1reUVCZjQ4OHE0UE95NXV0TDZvZi9s?=
+ =?utf-8?B?S0JIOVh2QlJnV1JKRlRlOS9nNTRNM1JLbGUwZmlKQUFURWI1cUFxZ2VRTyto?=
+ =?utf-8?B?bVIxcWZUWndpdGx1TlpIMkZIRXpSRThZbElNczNOVWpUTFlrdHFoQnBOdlVZ?=
+ =?utf-8?B?UEw0MTF5bXlpcVplUnhaRWNmWm01SUdCWG44emo5WEFFUUhIOEVQWUpRQVRK?=
+ =?utf-8?B?Z3BzbklJdlN4U0hMVDdSR2swNXBub0N4SVc0b1hXVmtvdjNlV1BHYVRZdFRv?=
+ =?utf-8?B?ck1RdE9rclRKSGhoZHdHMmxhM0t4ZmxGRXl3R3QrU2Z3aXVQRTkyc1VNalc5?=
+ =?utf-8?B?TTZCL09LMiswUWYyTEJiYUpSc3Z5TGlzTmNnYVoyWW5yZGRxT1N3dW4yQk5k?=
+ =?utf-8?B?cE1UUTYveUZ0akU1cERrbnYxcTdQL0QxdUZrR0pwLzF6Q0NyZ3l1b1ZYU1Rs?=
+ =?utf-8?B?RXdCaGRuOW5ETHZNa1ZLSXB2V1NDL3dUeDloVnNzUmY3Mm53OUhlMlNwbFlK?=
+ =?utf-8?B?Q2cxamlJVHhpbmlteGE4SW8yV0FtRFM4K2dpTk1JYjJwL0ErdWlVbmJjNzA0?=
+ =?utf-8?B?UmZrdi94RkQ0T1dUV29KTVdOTUVqU2lMUXRDTkJBblZQL1pqRTM0Ymh5V09z?=
+ =?utf-8?B?NzZoMTFQRWxiS1VVUE1STUxDM2o4RldrSFdWclFPVHdKbjJrL1IyS2VnTnJ1?=
+ =?utf-8?B?UTVGdjlUOHdmQVZWVnduT2EzVE1vTy9ka1RoMUI5ZlMrVXMrTjFsWXg0V0pL?=
+ =?utf-8?B?WGNDK0FBcFgzWGFQeVlkTk96dmN1TitzYW9XclhxNlNFYnhNaVZVSDQwVUNm?=
+ =?utf-8?B?L2JoRXJtQ0JCY1ZqM2dJMFVMVEhBdUNQSkJkWFQvdlk3NzV6OFZPYitFZTZP?=
+ =?utf-8?B?L1FvRFdaclJCMjN3RkYwZmlYWVh5c2dMWTV0bXp2V1cvZkVXcmVzeENxRjg1?=
+ =?utf-8?B?WVp4ZndkZ2VTYUdyQkVNRTk2bHFESzdhTWM4b3BKS1lRRC9Ec0FUaEVMSHQx?=
+ =?utf-8?B?bC9XUjVjRkl3dWNBODhHVFdMaGgxNW94NGRRaUZOSGUveDUxbnZxMlY5UHZm?=
+ =?utf-8?B?aWNUOE4xRHFHYXM2MkIxM2xwdGJuRWZ0bHFzV2NsdnFXUmRVb1p5YURTZXJK?=
+ =?utf-8?B?NmxHN0d2bDhSWGlKNDdtT0FUNHQzYlNOeVg1UGEzbXBuRWVYalFhODRGT3lD?=
+ =?utf-8?Q?uCwOKLoXUEvyej90=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2F3F74FB0D302A4991DFF0BD3CBCE86B@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260427204313.50741-1-rick.p.edgecombe@intel.com>
-Message-ID: <ae_zx9cRf8HQwvpX@google.com>
-Subject: Re: [PATCH] KVM: selftests: Include linux version of mman.h
-From: Sean Christopherson <seanjc@google.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: pbonzini@redhat.com, ackerleytng@google.com, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: H6WsbRHwOBE7bOCWIOnPDTdruZC3q9/Dc1zXdnRluETIX5zjmeveBd4dsjvVSTOFawq2GNVYaVYvtt1nIQSb1tPKk0amtwSsu3SslspDA96jyi4s0NKhNWGruQ6RRQSqYmOxX3m/bNgPRwMmKJoDZrZeBwmPu+7xKT5E6hocr+y/FysTFdhAq1nIJKfkXrHCbM/73eaFAIgpcQZAy/h7A7rccaf/nRrMFQZLrkvSquwaLyafHKCwMcZQ3pb1K/GBE6S06eQNblO6wSFX2tO5KVRD9535lzo1df48oQAOfsiGdcs8ppXL68PkCYAUs6HPElRqyg2wQVVOrz3UauJHEQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e1a3045-f5cf-420d-f57f-08dea4b79c60
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2026 23:49:24.2507
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eypTnB++jkG1W/y6r7Xzw7VGZmQXO+h14yJZhVxKc1QKlvcpEDAVHsKr+OPVSrKF+WgX2X0ebBlh9cVNELKb0BFwihtgwurRMcaGhgTpxeU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4749
+X-OriginatorOrg: intel.com
 
-On Mon, Apr 27, 2026, Rick Edgecombe wrote:
-> Fix a selftest build error by switching a mman.h header include from the
-> "sys" version to the "linux" one.
->=20
-> Recently a reference to MADV_COLLAPSE was added to guest_memfd_test.c.
-> This works fine if the system libc has this definition, but against older
-> libcs, it leads to build errors like:
->   In file included from include/kvm_util.h:8,
->                    from guest_memfd_test.c:21:
->   guest_memfd_test.c: In function =E2=80=98test_collapse=E2=80=99:
->   guest_memfd_test.c:219:47: error: =E2=80=98MADV_COLLAPSE=E2=80=99 undec=
-lared (first use in this function); did you mean =E2=80=98MADV_COLD=E2=80=
-=99?
->       219 |         TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE),=
- -1);
->           |                                               ^~~~~~~~~~~~~
->     include/test_util.h:62:16: note: in definition of macro =E2=80=98TEST=
-_ASSERT_EQ=E2=80=99
->        62 |         typeof(a) __a =3D (a);                               =
-             \
->           |                ^
->     guest_memfd_test.c:219:47: note: each undeclared identifier is report=
-ed only once for each function it appears in
->       219 |         TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE),=
- -1);
->           |                                               ^~~~~~~~~~~~~
->     include/test_util.h:62:16: note: in definition of macro =E2=80=98TEST=
-_ASSERT_EQ=E2=80=99
->        62 |         typeof(a) __a =3D (a);                               =
-             \
->           |                ^
->=20
-> The problem is the test is pulling in the libc version of mman.h instead =
-of
-> the Linux one. Switch it to the Linux one so MADV_COLLAPSE will be
-> guaranteed to be present (if the user installs the headers).
->=20
-> Fixes: 9830209b4ae8 ("KVM: selftests: Test MADV_COLLAPSE on guest_memfd")
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> ---
->=20
-> Hi,
->=20
-> I'm not sure if there is standard official version of the header to inclu=
-de
-> for the selftests, but the KVM selftests no longer build for me. This fix=
-es
-> it.
-
-KVM selftests (well, selftests in general, actually) are intended to use wh=
-atever
-kernel headers have have been installed for selftests.  E.g. for my setups,=
- that
-means the headers from the git tree I'm building.
-
-However, for mman.h, we actually need both.  linux/mman.h provides the blee=
-ding
-header flags and definitions, but sys/mman.h proves the syscall wrappers th=
-at
-selftests expect/use.  The below builds because sys/mman.h is getting inclu=
-ded
-elsewhere, more than likely by tools/testing/selftests/kvm/include/test_uti=
-l.h.
-
-Rather than updating individual tests on an ad hoc basis, what if we try ou=
-r
-best to handle this once?
-
----
- .../testing/selftests/kvm/access_tracking_perf_test.c  |  2 +-
- tools/testing/selftests/kvm/guest_memfd_test.c         |  2 +-
- tools/testing/selftests/kvm/include/kvm_syscalls.h     | 10 ++++++++++
- tools/testing/selftests/kvm/include/test_util.h        |  2 +-
- tools/testing/selftests/kvm/lib/kvm_util.c             |  2 +-
- tools/testing/selftests/kvm/memslot_perf_test.c        |  2 +-
- .../testing/selftests/kvm/s390/shared_zeropage_test.c  |  3 +--
- tools/testing/selftests/kvm/s390/tprot.c               |  2 +-
- tools/testing/selftests/kvm/set_memory_region_test.c   |  2 +-
- 9 files changed, 18 insertions(+), 9 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/access_tracking_perf_test.c b/tool=
-s/testing/selftests/kvm/access_tracking_perf_test.c
-index e5bbdb5bbdc3..4415c94b2866 100644
---- a/tools/testing/selftests/kvm/access_tracking_perf_test.c
-+++ b/tools/testing/selftests/kvm/access_tracking_perf_test.c
-@@ -41,10 +41,10 @@
- #include <inttypes.h>
- #include <limits.h>
- #include <pthread.h>
--#include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-=20
-+#include "kvm_syscalls.h"
- #include "kvm_util.h"
- #include "test_util.h"
- #include "memstress.h"
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing=
-/selftests/kvm/guest_memfd_test.c
-index b099b09cbae3..79dd3f91f1ae 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -14,10 +14,10 @@
- #include <linux/bitmap.h>
- #include <linux/falloc.h>
- #include <linux/sizes.h>
--#include <linux/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-=20
-+#include "kvm_syscalls.h"
- #include "kvm_util.h"
- #include "numaif.h"
- #include "test_util.h"
-diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/tes=
-ting/selftests/kvm/include/kvm_syscalls.h
-index 843c9904c46f..067a4c9cf452 100644
---- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-+++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-@@ -2,8 +2,18 @@
- #ifndef SELFTEST_KVM_SYSCALLS_H
- #define SELFTEST_KVM_SYSCALLS_H
-=20
-+/*
-+ * Include both the kernel and libc versions of mman.h.  The kernel provid=
-es
-+ * the most up-to-date flags and definitions, while libc provides the sysc=
-all
-+ * wrappers tests expect.
-+ */
-+#include <linux/mman.h>
-+
-+#include <sys/mman.h>
- #include <sys/syscall.h>
-=20
-+#include <test_util.h>
-+
- #define MAP_ARGS0(m,...)
- #define MAP_ARGS1(m,t,a,...) m(t,a)
- #define MAP_ARGS2(m,t,a,...) m(t,a), MAP_ARGS1(m,__VA_ARGS__)
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testin=
-g/selftests/kvm/include/test_util.h
-index d9b433b834f1..a56271c237ae 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -19,9 +19,9 @@
- #include <errno.h>
- #include <unistd.h>
- #include <fcntl.h>
--#include <sys/mman.h>
- #include "kselftest.h"
-=20
-+#include <linux/mman.h>
- #include <linux/types.h>
-=20
- #define msecs_to_usecs(msec)    ((msec) * 1000ULL)
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/sel=
-ftests/kvm/lib/kvm_util.c
-index 2a76eca7029d..e08967ef7b7b 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -5,13 +5,13 @@
-  * Copyright (C) 2018, Google LLC.
-  */
- #include "test_util.h"
-+#include "kvm_syscalls.h"
- #include "kvm_util.h"
- #include "processor.h"
- #include "ucall_common.h"
-=20
- #include <assert.h>
- #include <sched.h>
--#include <sys/mman.h>
- #include <sys/resource.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-diff --git a/tools/testing/selftests/kvm/memslot_perf_test.c b/tools/testin=
-g/selftests/kvm/memslot_perf_test.c
-index 3d02db371422..e977e979470f 100644
---- a/tools/testing/selftests/kvm/memslot_perf_test.c
-+++ b/tools/testing/selftests/kvm/memslot_perf_test.c
-@@ -15,7 +15,6 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <sys/mman.h>
- #include <time.h>
- #include <unistd.h>
-=20
-@@ -23,6 +22,7 @@
- #include <linux/sizes.h>
-=20
- #include <test_util.h>
-+#include <kvm_syscalls.h>
- #include <kvm_util.h>
- #include <processor.h>
- #include <ucall_common.h>
-diff --git a/tools/testing/selftests/kvm/s390/shared_zeropage_test.c b/tool=
-s/testing/selftests/kvm/s390/shared_zeropage_test.c
-index a9e5a01200b8..478381e6f84e 100644
---- a/tools/testing/selftests/kvm/s390/shared_zeropage_test.c
-+++ b/tools/testing/selftests/kvm/s390/shared_zeropage_test.c
-@@ -4,11 +4,10 @@
-  *
-  * Copyright (C) 2024, Red Hat, Inc.
-  */
--#include <sys/mman.h>
--
- #include <linux/fs.h>
-=20
- #include "test_util.h"
-+#include "kvm_syscalls.h"
- #include "kvm_util.h"
- #include "kselftest.h"
- #include "ucall_common.h"
-diff --git a/tools/testing/selftests/kvm/s390/tprot.c b/tools/testing/selft=
-ests/kvm/s390/tprot.c
-index 8054d2b178f0..d86179827a18 100644
---- a/tools/testing/selftests/kvm/s390/tprot.c
-+++ b/tools/testing/selftests/kvm/s390/tprot.c
-@@ -4,8 +4,8 @@
-  *
-  * Copyright IBM Corp. 2021
-  */
--#include <sys/mman.h>
- #include "test_util.h"
-+#include "kvm_syscalls.h"
- #include "kvm_util.h"
- #include "kselftest.h"
- #include "ucall_common.h"
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
-esting/selftests/kvm/set_memory_region_test.c
-index 9b919a231c93..e639a9db51ee 100644
---- a/tools/testing/selftests/kvm/set_memory_region_test.c
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c
-@@ -8,11 +8,11 @@
- #include <stdlib.h>
- #include <string.h>
- #include <sys/ioctl.h>
--#include <sys/mman.h>
-=20
- #include <linux/compiler.h>
-=20
- #include <test_util.h>
-+#include <kvm_syscalls.h>
- #include <kvm_util.h>
- #include <processor.h>
-=20
-
-base-commit: 5c96e184e344065813e652e1ca0571e448e160fb
---=20
-
->  tools/testing/selftests/kvm/guest_memfd_test.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
-ng/selftests/kvm/guest_memfd_test.c
-> index ec7644aae999..7c113b8c4f75 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -14,7 +14,7 @@
->  #include <linux/bitmap.h>
->  #include <linux/falloc.h>
->  #include <linux/sizes.h>
-> -#include <sys/mman.h>
-> +#include <linux/mman.h>
->  #include <sys/types.h>
->  #include <sys/stat.h>
-> =20
-> --=20
-> 2.54.0
->=20
+T24gTW9uLCAyMDI2LTA0LTI3IGF0IDE2OjM5IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiBIb3dldmVyLCBmb3IgbW1hbi5oLCB3ZSBhY3R1YWxseSBuZWVkIGJvdGguwqAgbGlu
+dXgvbW1hbi5oIHByb3ZpZGVzIHRoZSBibGVlZGluZw0KPiBoZWFkZXIgZmxhZ3MgYW5kIGRlZmlu
+aXRpb25zLCBidXQgc3lzL21tYW4uaCBwcm92ZXMgdGhlIHN5c2NhbGwgd3JhcHBlcnMgdGhhdA0K
+PiBzZWxmdGVzdHMgZXhwZWN0L3VzZS7CoCBUaGUgYmVsb3cgYnVpbGRzIGJlY2F1c2Ugc3lzL21t
+YW4uaCBpcyBnZXR0aW5nIGluY2x1ZGVkDQo+IGVsc2V3aGVyZSwgbW9yZSB0aGFuIGxpa2VseSBi
+eSB0b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9rdm0vaW5jbHVkZS90ZXN0X3V0aWwuaC4NCj4gDQo+
+IFJhdGhlciB0aGFuIHVwZGF0aW5nIGluZGl2aWR1YWwgdGVzdHMgb24gYW4gYWQgaG9jIGJhc2lz
+LCB3aGF0IGlmIHdlIHRyeSBvdXINCj4gYmVzdCB0byBoYW5kbGUgdGhpcyBvbmNlPw0KDQpTb3Vu
+ZHMgcmVhc29uYWJsZSB0byBtZS4gQnV0IEkgY291bGRuJ3QgZmluZCB0aGUgYmFzZSBjb21taXQg
+dGhhdCBsZXQgbWUgYXBwbHkNCnRoaXMgaW4gb3JkZXIgdG8gdGVzdCBpdC4gRG8geW91IHdhbnQg
+bWUgdG8gdHVybiBpdCBpbnRvIGEgcGF0Y2g/DQo=
