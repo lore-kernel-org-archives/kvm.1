@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9601C288AD;
-	Tue, 28 Apr 2026 19:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFDA47AF65;
+	Tue, 28 Apr 2026 19:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777404445; cv=none; b=QR9qSPVv4IdO2MKvEES/f/XjrW3KPa3omPLTkxfaNDO7q9bpEQxfnTyRybrAh65roL2qwpSMsjXih73Pt7d0yrQRWUEJfmxlsoXMOjCaSZnaq2jczghv7BTJbIh6Kp5VcP9mVR1BEUqGy+gIGFevJkSppXiDeeIh/Y1+aruEPgc=
+	t=1777404470; cv=none; b=YNOEQ3QIHKGN1pP4ywr/uXZndlMk4J5dpPi9B7G3HFW7PHWQCElv/qTCzPdWkETC8bi7UFcSTE2/v1yuvkBKVL81bguHU9zZRs/qsq1KVqlG9z3YJqhIUJvIs3l8nFqonXbFxyd/Hj+ZBblT/sHNhTHzh0WxEAr/GZ29CLSBasM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777404445; c=relaxed/simple;
-	bh=pazMAS6VV7M0DQMzk9x8zs5F1L/Hhz32b3limC4G1w8=;
+	s=arc-20240116; t=1777404470; c=relaxed/simple;
+	bh=Fllzk44jkAKLIDCSemv+bGN5QV+TRanT06AhSKOY+JM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mrm71JHjjWzI08r4H+HplJcX0qidQCqDqSDwyZ4yp6sC+O8r3xvvZSG9ypEXDskygLrGwerqzkr5II4UURXBk6oxjqs8/tT23gOIrZ4zGcvX/3vj3ey+xUk7SHfhpxkal74u104AUImVXUQf1FkfCF1dq/BjdjU73yJZ2jGeYQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oytGkfkp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=A2f6K2zMHy6tlcgdUTMms6HFA6GSZX9hbyK3hUS2059IQc5bJHYbm8obAbeTZIGl0Sah+2bKA3TKnODTMwrp6y/mptzvSHHh1nTYCqX6rFl699W2bYZ6TiaILp6fxBMLvoZXgQ+tJ+ACVD+/ZBl+K3YcFLTAet0vET6s8D8/QUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eo4Q47PO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oytGkfkp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D9EC2BCAF;
-	Tue, 28 Apr 2026 19:27:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eo4Q47PO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFB9C2BCAF;
+	Tue, 28 Apr 2026 19:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777404445;
-	bh=pazMAS6VV7M0DQMzk9x8zs5F1L/Hhz32b3limC4G1w8=;
+	s=k20201202; t=1777404469;
+	bh=Fllzk44jkAKLIDCSemv+bGN5QV+TRanT06AhSKOY+JM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oytGkfkpA49tOh1CoMsoBLdfLCkB/OfCIaqXZStOyr09fuk1XOPOtPraTNiOyAY7G
-	 FH6rfR2u8Ytpy1pF5y+osW7/u41zpJfp6Gs6uPuzjWcQh2hOr/Q65sLVMCVmpubgt1
-	 Me7R8kbOUNm/IPw7ExOR0WqWPcsLeb73hvp4dGE693mD1jfSB3SVYBgnZD8kNCASHc
-	 ENxquKhlA8Rm43m727XiMBHMTQE+dwD0eCZXBoqSySdM9coitq5kgsWfB8VOgi2o7s
-	 wWOg949kT5SAnzAdedH5Lv2YujGj5kOQFyw0U63R30THpcm0atxnu7kWjvcWB5+QCP
-	 VsBXqCD8Ea5dQ==
-Message-ID: <14ef288d-f06c-40b4-9ae6-a32eb9d21555@kernel.org>
-Date: Tue, 28 Apr 2026 21:27:17 +0200
+	b=eo4Q47PO+Golt1u6e8wUBroxHPlVQbkAi0uRXuyaiQx3mnVhpr6p1PKLQ+eEr4oGO
+	 7WO2q5z5Ba9N/uV6NRndFJUDjN4V8shuU/x4yCFIIjACgtjV38nnRFdIyv9/UN9V1L
+	 wZQQw2EmNVwp9Jl55mESJ3t5/PIRaZNwBQhzT1Siz6OylQua99ckFnHMTFlTTIrNna
+	 4oBnsU3YZvscsDtZpGM818oqDmcMb3tQV7FtrY8qQOwalGMMJw5mPtTqjwjm5fA0iF
+	 jQt32uGvWZYBBdbfxBSLdwSmQAndJ6VJcZAOzOgJjlXyRORdsh0snxI1Z4s0vebgE1
+	 EeCIWlYK6oBVw==
+Message-ID: <d6a90fc2-baf8-47a9-bda8-c21e55523677@kernel.org>
+Date: Tue, 28 Apr 2026 21:27:43 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/5] MAINTAINERS: Add an entry for KVM's guest_memfd
+Subject: Re: [RFC PATCH 4/5] MAINTAINERS: Add David H. as a KVM guest_memfd
+ reviewer
 To: Sean Christopherson <seanjc@google.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -47,7 +48,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  Janosch Frank <frankja@linux.ibm.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>
 References: <20260428171541.1342335-1-seanjc@google.com>
- <20260428171541.1342335-4-seanjc@google.com>
+ <20260428171541.1342335-5-seanjc@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -94,46 +95,41 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260428171541.1342335-4-seanjc@google.com>
+In-Reply-To: <20260428171541.1342335-5-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/28/26 19:15, Sean Christopherson wrote:
-> To better reflect how guest_memfd has been maintained for the last few
-> years, and to prepare for significant upcoming growth and expansion, add a
-> dedicated MAINTAINERS entry for KVM's guest_memfd, with Paolo and myself
-> (Sean) as co-maintainers.
+> Officially "reward" David with guest_memfd responsibilities and authority,
+> as he's been instrumental in pushing guest_memfd forward, and his ongoing
+> input and feedback, especially from an mm/ perspective, is and will be
+> critical to keeping us virtualization folks from going too far off the
+> rails.
+
+Thanks for the kind words, Sean!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
 > 
-> List both the KVM and KVM x86 git trees as authoritative repositories, as
-> any given guest_memfd change has a equal odds of hitting KVM x86 or not.
-> 
+> Cc: David Hildenbrand <david@kernel.org>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  MAINTAINERS | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 89b470db22de..9eceeb6f699d 100644
+> index 9eceeb6f699d..8dd5cdbef66f 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -14396,6 +14396,15 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
->  F:	drivers/video/backlight/ktz8866.c
->  
-> +KVM GUEST_MEMFD
-> +M:	Sean Christopherson <seanjc@google.com>
-> +M:	Paolo Bonzini <pbonzini@redhat.com>
-> +L:	kvm@vger.kernel.org
-> +S:	Supported
-> +T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-> +T:	git https://github.com/kvm-x86/linux.git
-> +F:	virt/kvm/guest_memfd.*
->
+> @@ -14399,6 +14399,7 @@ F:	drivers/video/backlight/ktz8866.c
+>  KVM GUEST_MEMFD
+>  M:	Sean Christopherson <seanjc@google.com>
+>  M:	Paolo Bonzini <pbonzini@redhat.com>
+> +R:	David Hildenbrand <david@kernel.org>
+>  L:	kvm@vger.kernel.org
+>  S:	Supported
+>  T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
 
-LGTM. There is still the open question regarding other hypervisors, and it
-having to move out of virt/kvm at some point.
-
-For the time being, this is the right thing to do.
 
 -- 
 Cheers,
