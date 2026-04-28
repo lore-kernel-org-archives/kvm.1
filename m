@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9017E3D9DA0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24C03D9DD1;
 	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418721; cv=none; b=S/02cqE8s5UMx+WeNQQvLxJiDn8fPsJimC4nSpstKH2xK48vivh5dzs2Pt9LBI8gh8HvrODqyptIO7dKyOj+yf2qIStxGnTfzTvchNlYRNbgJvCoCmLX61QLtgbBGWc/NMLJGs298DyauaT4+71eF9tJnmTtXZBmRWd4RRMmSeA=
+	t=1777418721; cv=none; b=t9nEGZ9As2xXarB0J36zsQzHx0NumMQAnaWj99TSsbuk7kwOZ+sCjhWaZGT8guE16TEzaW5GnFBZsAIexVp8x7mfJ5cuwq+GGHmYHfHt1tm3ZjXdhTORFHJaog3byC7QxVZKTjXoEtco55maS2+KdLyk/j3QOXnSOHdcudeIkO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777418721; c=relaxed/simple;
-	bh=sREAP2MxGPEbvXSq5SRQ/nStAIIJ5drv06P6dsUlKj0=;
+	bh=QOGgIebHJ3oA3+irXcl9BGohiofC0zjPb2yCAcdjnIs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IqQBDGgT5N3SRh5kZmAJyxvXvoM/b8BDLuZXULZSIlT2PyJrUHXMxkJUaVyLAkC6G/CCvjtz2nLKS0+1WdSZ/F4eu0SY78q4uwEFh+QJJm8i1JDpkfxIlKBMXGuezrpl22KYynUPcw68p7Ll93lU+zX3xehNs5St6fezfifkpYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VezrHNtt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=t/wtiVRGQX1RcuFqPWawq/erAu7H93tRfDZsqnLg6HGjkRgKBgYUskw5IYeZUUl9nouuOMq+gb2JMoh3QB8j/hFSrtXc3WT/wbbZDL7tSmzibPcKSPY3yyLeoA7xxDZSNykhVRBLdlnrclPIMEm2VbRfZZPvNUeihQm+DlpMEec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4902lTI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VezrHNtt"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 415E5C2BCAF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4902lTI"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7B689C2BCC7;
 	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777418721;
-	bh=sREAP2MxGPEbvXSq5SRQ/nStAIIJ5drv06P6dsUlKj0=;
+	bh=QOGgIebHJ3oA3+irXcl9BGohiofC0zjPb2yCAcdjnIs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VezrHNtt59Dx1C2KXiPFAf1qGG5aL14O7Xt7SsmDPsDSSgIbQWWaGeuzsqrPzSKEp
-	 JbuN/2lpgyJygOhSexN9SK8JmQITv7LcE5VPw0t7fmbkqA8tyW/2yefChZdspqpq60
-	 vavvHsIuCVZ3BZLh/OT5DUdnktWbZTJEWoEd+ccLzkzVqipIku1AgZveNH624/W5Lm
-	 H6h9LdzhdIjBf5Mjj4hertntX+O19dQ3qTFpUSSgNeTkHD1OojScPF4znehmOfb9cu
-	 kZPWaAyYk2QJjJy68GT56xz7R6rRm23XpttVgdhFpBDUNWcw5TbRweBE/BzCVpkORH
-	 deJqVab1J4ijQ==
+	b=o4902lTIWzSn6RzsWqcaiQDbh2wnM0mdoLAb88h3ELQ7OieeKgo7+GMVVdvUqiV0J
+	 w0/uZkJXzZoMnkIpOi0Pmzx4qtKhrHkT2CSL67nxORoT+5SLewiI6Mmv0Hmp3+x4c6
+	 /kVa7kB9ocNok0mYRG+Yzd8R5z/te9/PFUYl0usHbWBdGPIhvuYtMRw/ISNZwcUlB7
+	 vT4po+oUH4joJO0bZKQrfD6ObATcLYarBEVojSqs9Haw2AQcyx7QWvGdlgj2sxszyz
+	 MLyrXIgcQfxjdrxM81od9at/yoXpiDuImpj0Vz7Rf3Qy0RN6DilEkF6AqVVWwITO7d
+	 1N0z314mgkPqw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38514FF8875;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 706D0FF8877;
 	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:42 -0700
-Subject: [PATCH RFC v5 47/53] KVM: selftests: Provide common function to
- set memory attributes
+Date: Tue, 28 Apr 2026 16:25:45 -0700
+Subject: [PATCH RFC v5 50/53] KVM: selftests: Update
+ private_mem_conversions_test to mmap() guest_memfd
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-47-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-50-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=5499;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=5312;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=x8WxP9zvytzuqL5tzXmnvDO35wF0Bk1eLqxImWMw/aQ=;
- b=iV5e1pQisdMevCU5CiJtojdosppLVl1PRMIYiUBBT/pi9FZox4TCPglLIzytx0XkHy9Ph9bsO
- xFjPgwK5wRvAwZzt6Lx1VOzRt2Hz4eVHfIO3i7PgOCUXg601spXNW2d
+ bh=bwPTkwZvDxfUUFYwlpNeKbRuK99+tHHLhQpgIWpmwPw=;
+ b=28SKjyLa2IUqWFkTFjnKcnXy6T655u38NWUOOjx5dHDE7NQ0XXqy7HzAEe1gatNHcYlDdkdLP
+ iBUvyWpIELZDJMKOlTTxgvHdfQJaPjRG4mNsaWlhLHBlWjYGDHA1rYg
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -86,142 +86,137 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Introduce vm_mem_set_memory_attributes(), which handles setting of memory
-attributes for a range of guest physical addresses, regardless of whether
-the attributes should be set via guest_memfd or via the memory attributes
-at the VM level.
+Update the private memory conversions selftest to also test conversions
+that are done "in-place" via per-guest_memfd memory attributes. In-place
+conversions require the host to be able to mmap() the guest_memfd so that
+the host and guest can share the same backing physical memory.
 
-Refactor existing vm_mem_set_{shared,private} functions to use the new
-function. Opportunistically update the size parameter to use size_t instead
-of u64.
+This includes several updates, that are conditioned on the system
+supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
 
-Update existing caller of vm_mem_set_private().
+1. Set up guest_memfd requesting MMAP and INIT_SHARED.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+2. With in-place conversions, the host's mapping points directly to the
+   guest's memory. When the guest converts a region to private, host access
+   to that region is blocked. Update the test to expect a SIGBUS when
+   attempting to access the host virtual address (HVA) of private memory.
+
+3. Use vm_mem_set_memory_attributes(), which chooses how to set memory
+   attributes based on whether kvm_has_gmem_attributes.
+
+Restrict the test to using VM_MEM_SRC_SHMEM because guest_memfd's required
+mmap() flags and page sizes happens to align with those of
+VM_MEM_SRC_SHMEM. As long as VM_MEM_SRC_SHMEM is used for src_type,
+vm_mem_add() works as intended.
+
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h     | 47 ++++++++++++++++------
- tools/testing/selftests/kvm/lib/x86/sev.c          |  2 +-
- .../testing/selftests/kvm/pre_fault_memory_test.c  |  2 +-
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  4 +-
- 4 files changed, 39 insertions(+), 16 deletions(-)
+ .../kvm/x86/private_mem_conversions_test.c         | 46 ++++++++++++++++++----
+ 1 file changed, 38 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 7de88cbdfd2b8..c9dba44ce6bf9 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -454,18 +454,6 @@ static inline void vm_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
- 	vm_ioctl(vm, KVM_SET_MEMORY_ATTRIBUTES, &attr);
- }
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+index 289ad10063fca..14a25609a8a35 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+@@ -306,9 +306,14 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
+ 	if (do_fallocate)
+ 		vm_guest_mem_fallocate(vm, gpa, size, map_shared);
  
--static inline void vm_mem_set_private(struct kvm_vm *vm, gpa_t gpa,
--				      u64 size)
--{
--	vm_set_memory_attributes(vm, gpa, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
--}
--
--static inline void vm_mem_set_shared(struct kvm_vm *vm, gpa_t gpa,
--				     u64 size)
--{
--	vm_set_memory_attributes(vm, gpa, size, 0);
--}
--
- static inline int __gmem_set_memory_attributes(int fd, loff_t offset,
- 					       size_t size, u64 attributes,
- 					       loff_t *error_offset,
-@@ -536,6 +524,41 @@ static inline void gmem_set_shared(int fd, loff_t offset, size_t size, u64 flags
- 	gmem_set_memory_attributes(fd, offset, size, 0, flags);
- }
- 
-+static inline void vm_mem_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
-+						size_t size, u64 attrs, u64 flags)
-+{
-+	if (kvm_has_gmem_attributes) {
-+		gpa_t end = gpa + size;
-+		off_t fd_offset;
-+		gpa_t addr;
-+		size_t len;
-+		int fd;
+-	if (set_attributes)
+-		vm_set_memory_attributes(vm, gpa, size,
+-					 map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
++	if (set_attributes) {
++		u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
++		u64 flags = kvm_has_gmem_attributes ?
++			    KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE : 0;
 +
-+		for (addr = gpa; addr < end; addr += len) {
-+			fd = kvm_gpa_to_guest_memfd(vm, addr, &fd_offset, &len);
-+			len = min(end - addr, len);
-+
-+			gmem_set_memory_attributes(fd, fd_offset, len, attrs, flags);
-+		}
-+	} else {
-+		TEST_ASSERT(!flags, "Flags are not supported.");
-+		vm_set_memory_attributes(vm, gpa, size, attrs);
++		vm_mem_set_memory_attributes(vm, gpa, size, attrs, flags);
 +	}
-+}
 +
-+static inline void vm_mem_set_private(struct kvm_vm *vm, gpa_t gpa,
-+				      size_t size, u64 flags)
-+{
-+	vm_mem_set_memory_attributes(vm, gpa, size,
-+				     KVM_MEMORY_ATTRIBUTE_PRIVATE, flags);
-+}
+ 	run->hypercall.ret = 0;
+ }
+ 
+@@ -352,8 +357,20 @@ static void *__test_mem_conversions(void *__vcpu)
+ 				size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
+ 				u8 *hva = addr_gpa2hva(vm, gpa + i);
+ 
+-				/* In all cases, the host should observe the shared data. */
+-				memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
++				/*
++				 * When using per-guest_memfd memory attributes,
++				 * i.e. in-place conversion, host accesses will
++				 * point at guest memory and should SIGBUS when
++				 * guest memory is private.  When using per-VM
++				 * attributes, i.e. separate backing for shared
++				 * vs. private, the host should always observe
++				 * the shared data.
++				 */
++				if (kvm_has_gmem_attributes &&
++				    uc.args[0] == SYNC_PRIVATE)
++					TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
++				else
++					memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
+ 
+ 				/* For shared, write the new pattern to guest memory. */
+ 				if (uc.args[0] == SYNC_SHARED)
+@@ -382,6 +399,7 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
+ 	const size_t slot_size = memfd_size / nr_memslots;
+ 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+ 	pthread_t threads[KVM_MAX_VCPUS];
++	u64 gmem_flags;
+ 	struct kvm_vm *vm;
+ 	int memfd, i;
+ 
+@@ -397,12 +415,17 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
+ 
+ 	vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));
+ 
+-	memfd = vm_create_guest_memfd(vm, memfd_size, 0);
++	if (kvm_has_gmem_attributes)
++		gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
++	else
++		gmem_flags = 0;
 +
-+static inline void vm_mem_set_shared(struct kvm_vm *vm, gpa_t gpa,
-+				     size_t size, u64 flags)
-+{
-+	vm_mem_set_memory_attributes(vm, gpa, size, 0, flags);
-+}
++	memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
+ 
+ 	for (i = 0; i < nr_memslots; i++)
+ 		vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
+ 			   BASE_DATA_SLOT + i, slot_size / vm->page_size,
+-			   KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
++			   KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, gmem_flags);
+ 
+ 	for (i = 0; i < nr_vcpus; i++) {
+ 		gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
+@@ -452,17 +475,24 @@ static void usage(const char *cmd)
+ 
+ int main(int argc, char *argv[])
+ {
+-	enum vm_mem_backing_src_type src_type = DEFAULT_VM_MEM_SRC;
++	enum vm_mem_backing_src_type src_type;
+ 	u32 nr_memslots = 1;
+ 	u32 nr_vcpus = 1;
+ 	int opt;
+ 
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ 
++	src_type = kvm_has_gmem_attributes ? VM_MEM_SRC_SHMEM :
++					     DEFAULT_VM_MEM_SRC;
 +
- void vm_guest_mem_fallocate(struct kvm_vm *vm, gpa_t gpa, u64 size,
- 			    bool punch_hole);
- 
-diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
-index 93f9169034617..d0205b3299e0b 100644
---- a/tools/testing/selftests/kvm/lib/x86/sev.c
-+++ b/tools/testing/selftests/kvm/lib/x86/sev.c
-@@ -33,7 +33,7 @@ static void encrypt_region(struct kvm_vm *vm, struct userspace_mem_region *regio
- 		const u64 offset = (i - lowest_page_in_region) * vm->page_size;
- 
- 		if (private)
--			vm_mem_set_private(vm, gpa_base + offset, size);
-+			vm_mem_set_private(vm, gpa_base + offset, size, 0);
- 
- 		if (is_sev_snp_vm(vm))
- 			snp_launch_update_data(vm, gpa_base + offset,
-diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-index fcb57fd034e67..9d16a277696ce 100644
---- a/tools/testing/selftests/kvm/pre_fault_memory_test.c
-+++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-@@ -184,7 +184,7 @@ static void __test_pre_fault_memory(unsigned long vm_type, bool private)
- 	virt_map(vm, gva, gpa, TEST_NPAGES);
- 
- 	if (private)
--		vm_mem_set_private(vm, gpa, TEST_SIZE);
-+		vm_mem_set_private(vm, gpa, TEST_SIZE, 0);
- 
- 	pre_fault_memory(vcpu, gpa, 0, SZ_2M, 0, private);
- 	pre_fault_memory(vcpu, gpa, SZ_2M, PAGE_SIZE * 2, PAGE_SIZE, private);
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index 10db9fe6d9063..9309d67841482 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -63,7 +63,7 @@ static void test_private_access_memslot_deleted(void)
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
- 	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE, 0);
- 
- 	pthread_create(&vm_thread, NULL,
- 		       (void *(*)(void *))run_vcpu_get_exit_reason,
-@@ -99,7 +99,7 @@ static void test_private_access_memslot_not_private(void)
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
- 	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE, 0);
- 
- 	exit_reason = run_vcpu_get_exit_reason(vcpu);
- 
+ 	while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
+ 		switch (opt) {
+ 		case 's':
+ 			src_type = parse_backing_src_type(optarg);
++			TEST_ASSERT(!kvm_has_gmem_attributes ||
++				    src_type == VM_MEM_SRC_SHMEM,
++				    "Testing in-place conversions, only %s mem_type supported\n",
++				    vm_mem_backing_src_alias(VM_MEM_SRC_SHMEM)->name);
+ 			break;
+ 		case 'n':
+ 			nr_vcpus = atoi_positive("nr_vcpus", optarg);
 
 -- 
 2.54.0.545.g6539524ca2-goog
