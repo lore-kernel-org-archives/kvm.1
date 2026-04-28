@@ -1,150 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B6F362142;
-	Tue, 28 Apr 2026 19:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB40E37A494
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 19:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777404634; cv=none; b=GmIrCueoAUanCCuWI1IyBI9HWdjvDGlrsAmQpKZzGrtbQ4d7mm05G30OQmLxp/eBznrcLFHqQ+r8WAEW/xyEea3ZGiObokDd8IpGLRGy1yomICP7wsTI8GV7aRVqaYyxDhUorQ/JunHNNpfg77H0EvOuzvSaD8AhSVDTjxAOaJM=
+	t=1777405969; cv=none; b=igiQbMPk6c6ama8NzagcQ5Lm+v+J/V+flMmKv+eP8fezFI27OpOeyhOYno0nhNZVg3VBl1vgZd2kc7KbjueP+etXD9xHGZGzH96r7BKRl5wXq/dmEPlBRmvxUwKreJ1zVcLHhpAWrKFRcv5Y0ahvm2HcxcvcvAE+8xZwsPf7FPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777404634; c=relaxed/simple;
-	bh=BYxHer+N0N43XU5sH8GY0LFptA2FaL8BA/99CH+k9M8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eWrcXDE4rcC1XqhGj5Be6O2+HmU5DiAHFvsvWi+eNUZmf12f6v31m+ilGAmoWYU6AOTx2r+C7eOKHNTP4qMO1UO/YcnIiee0gDgl0YqCkLDDGP5qHL6JqspDQtmMNw9Y9OqZoqbcUxGwGsdDZoeR08fqaWPMhOZDMJtBtrFM7RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gb4MMHiN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777405969; c=relaxed/simple;
+	bh=EdF6NqLMXj+vo4TMcPGE8M5ypFpIZGyhqbD7NyYtkA4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=et/oFLeUn/SlT5/mcJ5SeQwbzxkawiGHHgvqaPeLa8Jr6ygL3UMZgK0B3fRwSgedLmiv87aKt+QcYKNssCSfWqNbMKJnDmS6h2WZY7wNFc/p0kbgZPiXscMyA50f2IA3XQCUbPGiunxSNLE2lFIUQih3nymOEha3WXdNszi6szk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lSTjhffE; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gb4MMHiN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8471C2BCAF;
-	Tue, 28 Apr 2026 19:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777404633;
-	bh=BYxHer+N0N43XU5sH8GY0LFptA2FaL8BA/99CH+k9M8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gb4MMHiNm7SYbwxux7mrseqGxaoTLP1ph3BwgLjF9nBfJf5dM9oSswiDpBlkH+ZsY
-	 nuhs2fPUCmfJcbSBk0DBq758wGbXePmB05FS4RTx3ElRKD2GNGFJ0ZP0TyU1WhW2J0
-	 VvGMhqocrde+tzKuomvJcldjkjFfo86eq3bgpEVwbG+fEL/1PB1W8a/Vyg4A9gWDPq
-	 iCEEQMo5gxtxQgNf/Il+HzwPmAtmJDwmo3fzF26uP45JNiTDiF5B3GwxnplfDDGTnD
-	 EtBtCs5FqL49Nik6F0ylUSbt+GqaoX6Lv3mOVPd2g0e+8+teXNN2Pqbnvz8V74hktn
-	 D8PEX96OeEyYg==
-Message-ID: <2377d2a5-e151-46fe-81cc-61ceeb1d70a9@kernel.org>
-Date: Tue, 28 Apr 2026 21:30:27 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lSTjhffE"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c79798cd9b9so4453961a12.2
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 12:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777405967; x=1778010767; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3s28yegQ9fVQN3KSZhlWBZCHr39ir/gqDmXWLfmjY4U=;
+        b=lSTjhffEBJSbSVVUCyOgznBSPWLP2+oO0otHTTg0ANM/ITngvU3tnJRWu6DWJhhqm0
+         0/1lIPNKk9XgSuKPvRj87lz9+ToYr4QSgsTJNzYqzt6KmDii0A+2p0dABNYSap4YUhd9
+         zjLQuHqLGj5j9ePEA2/dzG7T1bPpsbPfQYD5RXbaILibU4Gc5VeUKNimQU1+UQ3ebkYs
+         bwJqirrVe3/pcQYBsI9fbPmtWBmFdpdF8d7u1/c/idPlhAlqtjxeUGT0wUOJmARXwQ79
+         HlmtUBpL5LTDAsFrMhsBzghhhvZMrxAHI3TKlKq+8Hs9st6wKlVAcvfPREhL/I6pKynW
+         gFuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777405967; x=1778010767;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3s28yegQ9fVQN3KSZhlWBZCHr39ir/gqDmXWLfmjY4U=;
+        b=OxxNK4MJJBrAXwrCgZgdPW4V0lWFqDJ4GCkTEa5vjjfBqIwkyzJMkbG6/CT+MTs4tf
+         WyaDApbU0jmG17p6TIfGsbzdBTCSLfK4op0KWx4fsy5zc9oWbzJrRPlEStihl46aDejN
+         A4H0smwdV7DhnlCGn3SAX4TDMWRrC08D4RrGHzvEr8VsNi3YRjeegkv90GGFWiC9sZBh
+         TB6tiS5KZCtoGloRlNUlDnBZE4YED67k5TYVeA8/MRlIKGEf9QBmxLlQswzErcqVzgsj
+         Pen7QQ9zzMVWb5natgt/+0hVXhi7smm8/wMb1eCv9LE0NgR96JBE0iu03zJ226Ui+XXk
+         F6kQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+RKtc5V0AFHQX/z1pBQM9PTC/UurOW7jYXl9x1QSxepZP4BIPtwLc6KzJSOHHPuvN/cmI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZyVYr87bCtmkuN5WRQ7AoPnLgic3Gc3oTbUbOtU37od9cGoCS
+	VUp7d8swLCiqKbMzJY1cMZPCshujrX/Ra1o/V7ZjFBOwra3CBr2K6BnJnrYf6Q8ay5ywELUaxKN
+	jxugp5g==
+X-Received: from pfbk21.prod.google.com ([2002:a05:6a00:b015:b0:82f:790c:3922])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d85:b0:82a:6de8:fa50
+ with SMTP id d2e1a72fcca58-834ea5cb4b4mr674937b3a.18.1777405966843; Tue, 28
+ Apr 2026 12:52:46 -0700 (PDT)
+Date: Tue, 28 Apr 2026 12:52:45 -0700
+In-Reply-To: <afEEN_4ufBcQld0q@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/5] MAINTAINERS: Add myself (Sean) as a reviewer in
- the main KVM entry
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yosry Ahmed <yosry@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Anup Patel <anup@brainfault.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-References: <20260428171541.1342335-1-seanjc@google.com>
- <20260428171541.1342335-6-seanjc@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260428171541.1342335-6-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260202-vfio-selftest-only-64bit-v2-1-9c3ebb37f0f4@fb.com>
+ <e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com> <20260427231217.GA1670652@nvidia.com>
+ <afATrrjqt8zj2plL@google.com> <afEEN_4ufBcQld0q@google.com>
+Message-ID: <afEQDT_nv0kdlaBU@google.com>
+Subject: Re: [PATCH v2] vfio: selftests: only build tests on arm64 and x86_64
+From: Sean Christopherson <seanjc@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Matt Evans <mattev@meta.com>, Ted Logan <tedlogan@fb.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 4/28/26 19:15, Sean Christopherson wrote:
-> Add myself as a reviewer for overall KVM, as I have been helping shepherd
-> a decent chunk of the virt/kvm commits into the kernel over the last few
-> years, and I expect to continue doing so.  Of the 270 non-merge commits
-> that have been made to virt/kvm since v6.6, I have committed 127 (~47%)
-> and Paolo has committed 117 (~43.3%), with all but 5 of the remaining 26
-> coming from non-KVM folks, e.g. from treewide changes.
+On Tue, Apr 28, 2026, David Matlack wrote:
+> On 2026-04-27 06:55 PM, Sean Christopherson wrote:
+> > On Mon, Apr 27, 2026, Jason Gunthorpe wrote:
+> > > Even though this is a 64 bit build.
+> > 
+> > Heh, it's much funnier when it's happening to someone else.  :-)
+> > 
+> > KVM selftests went through these exact pains.  I'm pretty sure these are the
+> > relevant commits (the empty targets one may or may not apply to VFIO).
+> > 
+> > 9af04539d474dda4984ff4909d4568e6123c8cba KVM: selftests: Override ARCH for x86_64 instead of using ARCH_DIR
+> > 67730e6c53d70fb31618230f81c4acee9f72eaa3 KVM: selftests: Use canonical $(ARCH) paths for KVM selftests directories
+> > 43fbd8cd389faa9760c5152b1c58e893c812953b KVM: selftests: Provide empty 'all' and 'clean' targets for unsupported ARCHs
 > 
-> Note, this intended to purely be an efficiency and quality of life
-> improvement, for both contributors and myself.  There is no implied right
-> of succession or anything of the sort.
+> KVM selftests don't prevent 32-bit x86 builds though,
+
+Yes they do?  x86 is an alias for x86_64 (or vice versa), and so the i386 target
+gets binned into the empty target provided by tools/testing/selftests/kvm/Makefile.
+And KVM selftests most definitely don't play nice with 32-bit.
+
+> which is part of what we're trying to do here.
 > 
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Oliver Upton <oupton@kernel.org>
-> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: Anup Patel <anup@brainfault.org>
-> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Janosch Frank <frankja@linux.ibm.com>
-> Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
+> For example running...
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8dd5cdbef66f..a9f2a7737547 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14034,6 +14034,7 @@ F:	kernel/umh.c
->  
->  KERNEL VIRTUAL MACHINE (KVM)
->  M:	Paolo Bonzini <pbonzini@redhat.com>
-> +R:	Sean Christopherson <seanjc@google.com>
->  L:	kvm@vger.kernel.org
->  S:	Supported
->  W:	http://www.linux-kvm.org
+>   $ make -C tools/testing/selftests/kvm ARCH=x86 CC="gcc -m32"
+> 
+> ...produces a lot of -Wformat errors that were also seeing in VFIO selftests
+> from the kernel test robot.
 
-I believe any bigger subsystem should have a backup in place. If that's spelled
-out through an M or R depends on the subsystem.
-
-Certainly LGTM, but if you would have made that an M, I would also not have been
-struck by surprise (up to you and Paolo to figure out) :)
-
--- 
-Cheers,
-
-David
+Uh, don't do that?  KVM selftests can't even get past the preprocessor with -m32.
+Either the kernel test robot is trolling y'all, or there's something missing in
+the VFIO configuration, because I'm not seeing any magic in KVM to guard against
+the above.
