@@ -1,134 +1,297 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8885F23507B
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 00:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B3D2C2349
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 01:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777336659; cv=none; b=fsMqA9PE0yvF3/09SNwvJVkGR1uWfchi5cMHGRDboUXad6vea5H9ahvktxME6yHuNw1TgpW/WqA1e0svh7xXk7Uxr6vkKXfYNhSmPch0h5bo0s6toqMYx93FEpZBR9IzWC1BcLf3Aqs408nyJPQklUWZjCNZyyCHavCAmuyELiw=
+	t=1777339509; cv=none; b=ISmCs7/HGzJVeXIgbipCIFrn3QPR7CWyb4RioYZnHQzcrJHJbz3SYlyOEjcnYyXeRhhm4j1If0tQS5dto/F3jsJn/1NFIgTmsDKHi25Gys1J0AuyX76M062UOKSocCES+8HWiu5knQyT5jDIEHW+Q2tad7PNjRGrPW7eretaLhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777336659; c=relaxed/simple;
-	bh=xldXiXW12wKZgF8yZGXX6JIIkmm6qM9b48ykTSKRiwg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mE17jtBnVDZe5lWqO6aXkh3yXtQuX0dOQuJpzZ2pCjMRnaSY3YyrkOV7mi55BAt8qvWMvVcCwIgkh/k0iBij6GuRRx3m3xZ3xO2INiJQm5VBZJBOoGYSDao1PNaFoRLJKfpZTg9T7DLgiiopUUa5dFfE+Cpcje6nUNVQYYvfqmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4+bv63C; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777339509; c=relaxed/simple;
+	bh=CRVpVVy6IXwGlJPB1m/7OfTQOzQuRkuutrAQbzsGcdc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jEN+ASgzO+tUGVzwBZ4b9gK5DEE1WQ7nBzyv4aqgaOf3iHdvTY7tD+eUQkEa3dAJ4VIFSOV4CMeZHuqQCc9xiRq5mP+6ftJa9srr0PsVCg6gJQiznjzlaMYNCw9oNjrtQJoqUXXx0nGlWefPjIxORg0SJwg6kopzcT6zddymTLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OrR3wDzr; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4+bv63C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4657BC4AF0B
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 00:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777336659;
-	bh=xldXiXW12wKZgF8yZGXX6JIIkmm6qM9b48ykTSKRiwg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J4+bv63CQNC7EMM3rG7Syb1QfYE6xZT076zG1lvgW9VaVPEf+Wvl7OSFKXHja56p7
-	 luTq6YVl47aths9M/7v/ZD/keTq835CbyYe1CVUVe4VDWwDXRybgWN56OA3G9drsTr
-	 gFxhymDrjIVjtL6IHGs3FHB0K9LyMcBny8bmuPv7wGFwQ4MzvLw1ayEGr81YsTmMNy
-	 xEzWCnaijevdELR8OF+eJDP0SzeUwjdiiwUwfhnEuJbT2Vu4NCRRwdENBswipkJunM
-	 Wrr3DyOd0BykVOZSD43uXI6FzsEZot1vRvGeyrPq9Wetuj6VBWUskUXTgOTLvGspfl
-	 8csMCBY+vVmuQ==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ba67b332bbaso1277703166b.0
-        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 17:37:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+Y9qCwLFg036v30+wRgcJYJmEED9Eqz/CVhoUAhTW0MTZQcr5o1+i0QB/rMLewAElxuGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSnv6fJC4KQF489BSf25iehyX+w34yyXoC3iaCpiW1aYliRuZs
-	KpTko+gMVmc0yaaZe2S5jkGP0e/JAXpCNRq1Sz32njicGE6B5gAylQEJ8mQWFEpfrSWTu2abUht
-	2RlyaNYk0PM8S+0RqSHXGWJOMfNytuWY=
-X-Received: by 2002:a17:907:1b10:b0:b9d:c374:6e33 with SMTP id
- a640c23a62f3a-bb80377e051mr49362466b.26.1777336658156; Mon, 27 Apr 2026
- 17:37:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OrR3wDzr"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c79907d4c57so3682496a12.0
+        for <kvm@vger.kernel.org>; Mon, 27 Apr 2026 18:25:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777339507; x=1777944307; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:reply-to:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZD7f5dkl1jAyNQxm+BbpZTZ07IPze5Ar/mE0RucBoYU=;
+        b=OrR3wDzrBadgL62xBYptvE3p0sVJ/vZyzMa5XUXo/a/jPmD4WZiYetvkWqTv6QIDtR
+         DRbRDK5m4gPbIjwD3bfjpsUnkAofzWuAOUEb5NtQkpxQ8VABgcunWsTT5QgZL5q3ye8C
+         4dx45zpfLWZ3Ag+8aUz2MRPJqxm3S/a1tgzMBjH/uTYPfp4dfpELFOaCFNe6h6Acs2cr
+         8pkjnGU+GAV5lvf4z0sNdrm0CXH6AesntUCKCpSAVzbmOFHI1FmNSMwcsccDrQb1GgFQ
+         uOFB54q/9THSdEHZHdEeLBEf69JYlaeeJx4FrnD+fUJTGSZG4mt9qykk4kdv+9QG5/9p
+         ywwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777339507; x=1777944307;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZD7f5dkl1jAyNQxm+BbpZTZ07IPze5Ar/mE0RucBoYU=;
+        b=kuMUx35j4Tn5uOg4GIhYN9OBkl91kGX66CXvRQEFmbnSVvNIP6Qzo32wSIakR0RZOI
+         cBLwu67k/rdW+sYx4Pe/XmqyrHdYsafcCBrNCVXG9M3mXztgOqN0xFIkW4QDCIMHUAS4
+         wT++qQYtOCH6jVT4KkgL2bgBoC9W5Ht1l19y0LF6YwY16bW7rxi8iDvVjJg7dClNcgXE
+         bBqfbeh7Eclxrdj8vQlW8IAtbcBOxZDua6UMVqQkUkEE3W0cYdO0nSZH5CdeH9J4jWAi
+         pd6NKtz/5uEQIgYEOfplbYZJ+tPtWG3wdFOaVotoO/Pyd1g/XGnZPwhVXARJmheE83m7
+         qPQw==
+X-Gm-Message-State: AOJu0YzkROorhtDx9jL7sXMadhi3JWY4fp1m6sBBhN8NIb04gHqLwarc
+	NQady49lHF3qveC0/RPIc/y7rV9dE9K91i1OZID5MZLjIwPRBM3mx42+mM/nvQ+1cNRZ4WdjC0J
+	KZd2bjg==
+X-Received: from pgbfq1.prod.google.com ([2002:a05:6a02:2981:b0:bac:6acd:818b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d83:b0:3a3:171f:6b23
+ with SMTP id adf61e73a8af0-3a39bcaa7b1mr1309174637.0.1777339507282; Mon, 27
+ Apr 2026 18:25:07 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 27 Apr 2026 18:25:03 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260326031150.3774017-1-yosry@kernel.org> <20260326031150.3774017-4-yosry@kernel.org>
- <adReHbkVRDGOihb4@google.com> <aesRPt5Vpco29vAt@google.com>
- <ae-v3aGftsAQuG5E@google.com> <CAO9r8zNzyp4X8Pny7aFAjX8swSxpfmwu7GF9Ry7Kz9GSKpw+bw@mail.gmail.com>
- <ae_3BWwjHiYC3hzm@google.com> <CAO9r8zN-qru58rsBaTDae+5zGp=6eJRkYFDqdGhy7SYPwt9+pg@mail.gmail.com>
- <CAO9r8zPdnMK7oqjz_6i_0=Bh5hyw96BLY=x71emTNCwLtqyoww@mail.gmail.com>
-In-Reply-To: <CAO9r8zPdnMK7oqjz_6i_0=Bh5hyw96BLY=x71emTNCwLtqyoww@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 27 Apr 2026 17:37:25 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNSbRAdAapsUGrg_DJxKu4jKfQHYWXcBRp5G+_0xO5KQg@mail.gmail.com>
-X-Gm-Features: AVHnY4Kyin5zEsEHZZ9g2NE4mRMDIADU2bXCsYDyXiG-axCwkxDivzHHebVlyRE
-Message-ID: <CAO9r8zNSbRAdAapsUGrg_DJxKu4jKfQHYWXcBRp5G+_0xO5KQg@mail.gmail.com>
-Subject: Re: [PATCH v4 3/6] KVM: x86/pmu: Disable counters based on
- Host-Only/Guest-Only bits in SVM
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260428012503.1213654-1-seanjc@google.com>
+Subject: [PATCH] KVM: selftests: Include sys/mman.h *and* linux/mman.h, via kvm_syscalls.h
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 27, 2026 at 5:35=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Mon, Apr 27, 2026 at 5:34=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Mon, Apr 27, 2026 at 4:53=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Mon, Apr 27, 2026, Yosry Ahmed wrote:
-> > > > > We can have our cake and eat it too.  Add svm_pmu_handle_nested_t=
-ransition(),
-> > > > > but then also rename and rework reprogram_counters() to support b=
-oth deferred and
-> > > > > synchronous operation, e.g. something like so:
-> > > > >
-> > > > > ---
-> > > > > static inline void __kvm_pmu_reprogram_counters(struct kvm_pmu *p=
-mu, u64 diff,
-> > > >
-> > > > I don't like 'diff', I think just 'unsigned long *bitmap' and pass =
-a
-> > >
-> > > Hard no.  I agree @diff is a weird name (I was literally just copy+pa=
-sting the
-> > > existing code), but I _really_ don't like passing a pointer, especial=
-ly not to
-> > > an unsigned long.  The bitmap usage throughout the PMU code is mostly=
- internal
-> > > implementation details.  But for what is reprogram_counters(), and wh=
-at will be
-> > > __kvm_pmu_reprogram_counters(), the "counters to reprogram" is very t=
-ightly
-> > > coupled to the architectural layout of PERF_GLOBAL_CTRL and PEBS_ENAB=
-LED.  And
-> > > more broadly in the PMU, for the layout of GLOBAL_STATUS_BUFFER_OVF_B=
-IT,
-> > > MSR_CORE_PERF_GLOBAL_STATUS, and probably at least one other MSRs.  T=
-hat all
-> > > should be captured in the APIs.
-> > >
-> > > The other reason I don't want to pass a pointer is so that even when =
-the source
-> > > _is_ a PMU-internal bitmap, it's super duper obvious that the source =
-bitmap isn't
-> > > modified, and that it's operating on a snapshot in time.
-> >
-> > Sounds good, I will keep u64 (and maybe name it 'counters'), or maybe
-> > s64 as that's what kvm_pmu_handle_event() uses (and what the atomic
-> > helpers take).
-> >
-> > >
-> > > > bitmap in here like most PMU code?
-> > >
-> > > FWIW, AFAICT, passing a bitmap as a function argument isn't common at=
- all.  I
-> > > only see kvm_for_each_pmc() and kvm_pmu_trigger_event() taking a bitm=
-ap.  There
-> > > is a lot of bitmap _usage_, but rarely does KVM pass around a bitmap =
-as a function
-> > > argument.
-> >
-> > We still need to pass a bitmap as an argument to the
-> > reprogram_counters() callback that we'll add in
-> > kvm_pmu_handle_event(), or would you rather we cast the bitmap to s64
-> > here as well?
->
-> Hmm I think we should pass the bitmap as-is, otherwise we'll cast it
-> back when calling kvm_for_each_pmc().
+Include both linux/mman.h (the kernel provided version) and sys/mman.h (the
+libc provided version) throughout KVM selftests, by way of kvm_syscalls.h
+(which should have been including sys/mman.h anyways).  Pulling in the
+kernel's version fixes compilation errors with the guest_memfd test on
+older versions of libc due to a recent commit adding MADV_COLLAPSE testing.
 
-intel_pmu_cross_mapped_check() actually does this. I will pass in a
-s64 and cast it in this case.
+  In file included from include/kvm_util.h:8,
+                   from guest_memfd_test.c:21:
+  guest_memfd_test.c: In function =E2=80=98test_collapse=E2=80=99:
+  guest_memfd_test.c:219:47: error: =E2=80=98MADV_COLLAPSE=E2=80=99 undecla=
+red (first use in this function); did you mean =E2=80=98MADV_COLD=E2=80=99?
+      219 |         TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -=
+1);
+          |                                               ^~~~~~~~~~~~~
+    include/test_util.h:62:16: note: in definition of macro =E2=80=98TEST_A=
+SSERT_EQ=E2=80=99
+       62 |         typeof(a) __a =3D (a);                                 =
+           \
+          |                ^
+    guest_memfd_test.c:219:47: note: each undeclared identifier is reported=
+ only once for each function it appears in
+      219 |         TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -=
+1);
+          |                                               ^~~~~~~~~~~~~
+    include/test_util.h:62:16: note: in definition of macro =E2=80=98TEST_A=
+SSERT_EQ=E2=80=99
+       62 |         typeof(a) __a =3D (a);                                 =
+           \
+          |                ^
+
+Route the includes through kvm_syscalls.h to try and avoid a future game
+of whack-a-mole, i.e. so that future expansion of test coverage doesn't run
+into the same problem.
+
+To discourage use of sys/mman.h, opportunistically include the kernel's
+version of mman.h in test_util.h as it only needs MAP_SHARED, i.e. only
+needs the full set of kernel defs, not the libc syscall wrappers.
+
+Fixes: 9830209b4ae8 ("KVM: selftests: Test MADV_COLLAPSE on guest_memfd")
+Reported-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Closes: https://lore.kernel.org/all/20260427204313.50741-1-rick.p.edgecombe=
+@intel.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ .../testing/selftests/kvm/access_tracking_perf_test.c  |  2 +-
+ tools/testing/selftests/kvm/guest_memfd_test.c         |  2 +-
+ tools/testing/selftests/kvm/include/kvm_syscalls.h     | 10 ++++++++++
+ tools/testing/selftests/kvm/include/test_util.h        |  2 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c             |  2 +-
+ tools/testing/selftests/kvm/memslot_perf_test.c        |  2 +-
+ .../testing/selftests/kvm/s390/shared_zeropage_test.c  |  3 +--
+ tools/testing/selftests/kvm/s390/tprot.c               |  2 +-
+ tools/testing/selftests/kvm/set_memory_region_test.c   |  2 +-
+ 9 files changed, 18 insertions(+), 9 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/access_tracking_perf_test.c b/tool=
+s/testing/selftests/kvm/access_tracking_perf_test.c
+index e5bbdb5bbdc3..4415c94b2866 100644
+--- a/tools/testing/selftests/kvm/access_tracking_perf_test.c
++++ b/tools/testing/selftests/kvm/access_tracking_perf_test.c
+@@ -41,10 +41,10 @@
+ #include <inttypes.h>
+ #include <limits.h>
+ #include <pthread.h>
+-#include <sys/mman.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+=20
++#include "kvm_syscalls.h"
+ #include "kvm_util.h"
+ #include "test_util.h"
+ #include "memstress.h"
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing=
+/selftests/kvm/guest_memfd_test.c
+index d6528c6f5e03..79dd3f91f1ae 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -14,10 +14,10 @@
+ #include <linux/bitmap.h>
+ #include <linux/falloc.h>
+ #include <linux/sizes.h>
+-#include <sys/mman.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+=20
++#include "kvm_syscalls.h"
+ #include "kvm_util.h"
+ #include "numaif.h"
+ #include "test_util.h"
+diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/tes=
+ting/selftests/kvm/include/kvm_syscalls.h
+index 843c9904c46f..067a4c9cf452 100644
+--- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
++++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
+@@ -2,8 +2,18 @@
+ #ifndef SELFTEST_KVM_SYSCALLS_H
+ #define SELFTEST_KVM_SYSCALLS_H
+=20
++/*
++ * Include both the kernel and libc versions of mman.h.  The kernel provid=
+es
++ * the most up-to-date flags and definitions, while libc provides the sysc=
+all
++ * wrappers tests expect.
++ */
++#include <linux/mman.h>
++
++#include <sys/mman.h>
+ #include <sys/syscall.h>
+=20
++#include <test_util.h>
++
+ #define MAP_ARGS0(m,...)
+ #define MAP_ARGS1(m,t,a,...) m(t,a)
+ #define MAP_ARGS2(m,t,a,...) m(t,a), MAP_ARGS1(m,__VA_ARGS__)
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testin=
+g/selftests/kvm/include/test_util.h
+index d9b433b834f1..a56271c237ae 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -19,9 +19,9 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <fcntl.h>
+-#include <sys/mman.h>
+ #include "kselftest.h"
+=20
++#include <linux/mman.h>
+ #include <linux/types.h>
+=20
+ #define msecs_to_usecs(msec)    ((msec) * 1000ULL)
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/sel=
+ftests/kvm/lib/kvm_util.c
+index 2a76eca7029d..e08967ef7b7b 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -5,13 +5,13 @@
+  * Copyright (C) 2018, Google LLC.
+  */
+ #include "test_util.h"
++#include "kvm_syscalls.h"
+ #include "kvm_util.h"
+ #include "processor.h"
+ #include "ucall_common.h"
+=20
+ #include <assert.h>
+ #include <sched.h>
+-#include <sys/mman.h>
+ #include <sys/resource.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+diff --git a/tools/testing/selftests/kvm/memslot_perf_test.c b/tools/testin=
+g/selftests/kvm/memslot_perf_test.c
+index 3d02db371422..e977e979470f 100644
+--- a/tools/testing/selftests/kvm/memslot_perf_test.c
++++ b/tools/testing/selftests/kvm/memslot_perf_test.c
+@@ -15,7 +15,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <sys/mman.h>
+ #include <time.h>
+ #include <unistd.h>
+=20
+@@ -23,6 +22,7 @@
+ #include <linux/sizes.h>
+=20
+ #include <test_util.h>
++#include <kvm_syscalls.h>
+ #include <kvm_util.h>
+ #include <processor.h>
+ #include <ucall_common.h>
+diff --git a/tools/testing/selftests/kvm/s390/shared_zeropage_test.c b/tool=
+s/testing/selftests/kvm/s390/shared_zeropage_test.c
+index a9e5a01200b8..478381e6f84e 100644
+--- a/tools/testing/selftests/kvm/s390/shared_zeropage_test.c
++++ b/tools/testing/selftests/kvm/s390/shared_zeropage_test.c
+@@ -4,11 +4,10 @@
+  *
+  * Copyright (C) 2024, Red Hat, Inc.
+  */
+-#include <sys/mman.h>
+-
+ #include <linux/fs.h>
+=20
+ #include "test_util.h"
++#include "kvm_syscalls.h"
+ #include "kvm_util.h"
+ #include "kselftest.h"
+ #include "ucall_common.h"
+diff --git a/tools/testing/selftests/kvm/s390/tprot.c b/tools/testing/selft=
+ests/kvm/s390/tprot.c
+index 8054d2b178f0..d86179827a18 100644
+--- a/tools/testing/selftests/kvm/s390/tprot.c
++++ b/tools/testing/selftests/kvm/s390/tprot.c
+@@ -4,8 +4,8 @@
+  *
+  * Copyright IBM Corp. 2021
+  */
+-#include <sys/mman.h>
+ #include "test_util.h"
++#include "kvm_syscalls.h"
+ #include "kvm_util.h"
+ #include "kselftest.h"
+ #include "ucall_common.h"
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
+esting/selftests/kvm/set_memory_region_test.c
+index 9b919a231c93..e639a9db51ee 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -8,11 +8,11 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+-#include <sys/mman.h>
+=20
+ #include <linux/compiler.h>
+=20
+ #include <test_util.h>
++#include <kvm_syscalls.h>
+ #include <kvm_util.h>
+ #include <processor.h>
+=20
+
+base-commit: 39f1c201b93f4ff71631bac72cff6eb155f976a4
+--=20
+2.54.0.545.g6539524ca2-goog
+
