@@ -1,55 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8B63EB7F0
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4673FA5FC
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777374608; cv=none; b=Y656hbRssvn3WrHiI2o3THuzW1Ve6nL0q6zM5agu4lW0XvQhZbD9rx0q3WxXuUyGlRyrOqM5fp9B9qiyQL6N0Jh12SYcZTF/UJeMi5m6UO+KB3TT07rz4tYALsYcNw03A0Oz9Ilku2AMkgiUQPtaKCeZ6gOvkxs+aU17OoK/pS0=
+	t=1777374609; cv=none; b=Slrh9iIHr8zRwGqm0CZb+ZXhv47kg+A8i4Akd9JRBO+i9ZELHA0j05TF0BjtVuerLSl8BtkTNQxhcS8yBPLFciQ2nU8g1Q/aF3tIvWlqE6IV1lF21V2BDjoC8oha72WR4hIk5yAKOD2EaHHH8XbdGl7X9iyZFfknotGnzf133is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777374608; c=relaxed/simple;
-	bh=uWRDnS/vHDd52rjGMERq6SsAiryYF/CgZnXspFuYvHw=;
+	s=arc-20240116; t=1777374609; c=relaxed/simple;
+	bh=CeVJdQrpMNewl6kbY7DOoOFc0qOOqb7KKzRI0hbw3C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RMYOyEp9omUu9Y0WLlQsxVxgIAuuW7DlUzFu15foG2H4FhhvRWMeQR6ziRkL42GxHKiH9gm26sm+6iWAhlbiYfNmumbSrujR7SsIRqGbyg3UtdF83FxHLnGr99VlIu7rOt6L0iIhrN1EfkHH4Kexsa6BSvwOE8iOcrtIqwOj7c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X3t9y54u; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Ae+ZXd7DMqIwZJh0UZgUoUNwB9ECM/34W+pmQwe4tnMwxZ6ATcR8PhtUo+E5+EP809yfc0eZ9mWchQ0q6h8XPZgYwkmKXxdc4H46EZELTpaVhAsWBA8EZCS1JYoZpuMBnSHHT7gpIgsvv1I42DxJHI52gYIwfzhP6PgaJ9MJWVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aP+64Xj6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X3t9y54u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aP+64Xj6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777374602;
+	s=mimecast20190719; t=1777374604;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Kuf4IDR3Ydbimabid6qV/JghvOduDmfrEOhZ/hgfers=;
-	b=X3t9y54uviADtZUFdEkgjPx0hEZJEudmH8mFnwWfWr1Rikpb64XWg3lY8ZQqJrT/Q4tJS/
-	yZVwTs1y1hXnriUqh8hV1v251OWTbMnUbHQx8RymRoAw/+NxzHmmdCNkw7fgAkw1SWfqo3
-	eAW6Iaa0lJjjdpFeauqaUXDX70w4Szs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=XjlRO/sYKTHoG35nIXOBvfqYt2OqrvgxHk73uv4xoxQ=;
+	b=aP+64Xj6Iu3wWz7G3T/amaVB3Yuww0DtmV55OMtuR4ScAJ+o+ocItmfMchf9SCOeACbxP4
+	Ry455/QiL6bJvMuG+C6jUZJE1JQpIhtjISq/cUctMFk+YvoQROjz09CAqFK+51cBgk2AOK
+	RmBJZNQ0pNMrAC9wsHIqrHYM18v5ULo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-hmPNU8CTNky9muvwOoZq8A-1; Tue,
- 28 Apr 2026 07:10:01 -0400
-X-MC-Unique: hmPNU8CTNky9muvwOoZq8A-1
-X-Mimecast-MFC-AGG-ID: hmPNU8CTNky9muvwOoZq8A_1777374600
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-292-83K9qVKoM4OqUo2bqqqBFQ-1; Tue,
+ 28 Apr 2026 07:10:00 -0400
+X-MC-Unique: 83K9qVKoM4OqUo2bqqqBFQ-1
+X-Mimecast-MFC-AGG-ID: 83K9qVKoM4OqUo2bqqqBFQ_1777374599
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F7531800367;
-	Tue, 28 Apr 2026 11:10:00 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B640419560B4;
+	Tue, 28 Apr 2026 11:09:59 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC6FF180047F;
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2F134180047F;
 	Tue, 28 Apr 2026 11:09:59 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: jon@nutanix.com,
 	d.riley@proxmox.com
-Subject: [PATCH 16/28] KVM: nVMX: pass advanced EPT violation vmexit info to guest
-Date: Tue, 28 Apr 2026 07:09:34 -0400
-Message-ID: <20260428110946.11466-17-pbonzini@redhat.com>
+Subject: [PATCH 15/28] KVM: VMX: enable use of MBEC
+Date: Tue, 28 Apr 2026 07:09:33 -0400
+Message-ID: <20260428110946.11466-16-pbonzini@redhat.com>
 In-Reply-To: <20260428110946.11466-1-pbonzini@redhat.com>
 References: <20260428110946.11466-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,85 +62,288 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-KVM will use advanced vmexit information for EPT violations to
-virtualize MBEC.  Pass it to the guest since it is easy and allows
-testing nested nested.
+If available, set SECONDARY_EXEC_MODE_BASED_EPT_EXEC in the secondary
+execution controls and configure XS and XU separately (even if they
+are always used together).
 
 Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/vmx.h     |  4 ++++
- arch/x86/kvm/mmu/paging_tmpl.h |  2 +-
- arch/x86/kvm/vmx/nested.c      | 13 +++++++++----
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/vmx.h      |  3 +++
+ arch/x86/kvm/mmu.h              |  7 ++++++-
+ arch/x86/kvm/mmu/spte.c         |  6 +++---
+ arch/x86/kvm/mmu/spte.h         |  5 +++--
+ arch/x86/kvm/vmx/capabilities.h |  7 +++++++
+ arch/x86/kvm/vmx/common.h       | 10 +++++-----
+ arch/x86/kvm/vmx/main.c         |  9 +++++++++
+ arch/x86/kvm/vmx/nested.c       |  1 +
+ arch/x86/kvm/vmx/vmx.c          | 16 +++++++++++++++-
+ arch/x86/kvm/vmx/vmx.h          |  1 +
+ arch/x86/kvm/vmx/x86_ops.h      |  1 +
+ 11 files changed, 54 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 54aa5be50df9..ed2ded531e55 100644
+index 2b30b921b375..54aa5be50df9 100644
 --- a/arch/x86/include/asm/vmx.h
 +++ b/arch/x86/include/asm/vmx.h
-@@ -535,6 +535,7 @@ enum vmcs_field {
- #define VMX_EPT_1GB_PAGE_BIT			(1ull << 17)
- #define VMX_EPT_INVEPT_BIT			(1ull << 20)
- #define VMX_EPT_AD_BIT				    (1ull << 21)
-+#define VMX_EPT_ADVANCED_VMEXIT_INFO_BIT	(1ull << 22)
- #define VMX_EPT_EXTENT_CONTEXT_BIT		(1ull << 25)
- #define VMX_EPT_EXTENT_GLOBAL_BIT		(1ull << 26)
- 
-@@ -617,6 +618,9 @@ enum vm_entry_failure_code {
- 					 EPT_VIOLATION_PROT_USER_EXEC)
- #define EPT_VIOLATION_GVA_IS_VALID	BIT(7)
+@@ -619,9 +619,12 @@ enum vm_entry_failure_code {
  #define EPT_VIOLATION_GVA_TRANSLATED	BIT(8)
-+#define EPT_VIOLATION_GVA_USER		BIT(9)
-+#define EPT_VIOLATION_GVA_WRITABLE	BIT(10)
-+#define EPT_VIOLATION_GVA_NX		BIT(11)
  
  #define EPT_VIOLATION_RWX_TO_PROT(__epte) (((__epte) & VMX_EPT_RWX_MASK) << 3)
- #define EPT_VIOLATION_USER_EXEC_TO_PROT(__epte) (((__epte) & VMX_EPT_USER_EXECUTABLE_MASK) >> 4)
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index de8770d2fcfc..f5f9e745f21d 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -494,7 +494,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 	 * [2:0] - Derive from the access bits. The exit_qualification might be
- 	 *         out of date if it is serving an EPT misconfiguration.
- 	 * [5:3] - Calculated by the page walk of the guest EPT page tables
--	 * [7:8] - Derived from [7:8] of real exit_qualification
-+	 * [7:11] - Derived from [7:11] of real exit_qualification
- 	 *
- 	 * The other bits are set to 0.
- 	 */
++#define EPT_VIOLATION_USER_EXEC_TO_PROT(__epte) (((__epte) & VMX_EPT_USER_EXECUTABLE_MASK) >> 4)
+ 
+ static_assert(EPT_VIOLATION_RWX_TO_PROT(VMX_EPT_RWX_MASK) ==
+ 	      (EPT_VIOLATION_PROT_READ | EPT_VIOLATION_PROT_WRITE | EPT_VIOLATION_PROT_EXEC));
++static_assert(EPT_VIOLATION_USER_EXEC_TO_PROT(VMX_EPT_USER_EXECUTABLE_MASK) ==
++	      (EPT_VIOLATION_PROT_USER_EXEC));
+ 
+ /*
+  * Exit Qualifications for NOTIFY VM EXIT
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index d8c13e43c2d7..d15f908d048f 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -83,12 +83,17 @@ static inline gfn_t kvm_mmu_max_gfn(void)
+ 	return (1ULL << (max_gpa_bits - PAGE_SHIFT)) - 1;
+ }
+ 
++static inline bool mmu_has_mbec(struct kvm_mmu *mmu)
++{
++	return mmu->root_role.cr4_smep;
++}
++
+ u8 kvm_mmu_get_max_tdp_level(void);
+ 
+ void kvm_mmu_set_mmio_spte_mask(u64 mmio_value, u64 mmio_mask, u64 access_mask);
+ void kvm_mmu_set_mmio_spte_value(struct kvm *kvm, u64 mmio_value);
+ void kvm_mmu_set_me_spte_mask(u64 me_value, u64 me_mask);
+-void kvm_mmu_set_ept_masks(bool has_ad_bits);
++void kvm_mmu_set_ept_masks(bool has_ad_bits, bool has_mbec);
+ 
+ void kvm_init_mmu(struct kvm_vcpu *vcpu);
+ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr0,
+diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+index 779ee44893b0..6da5c73d1004 100644
+--- a/arch/x86/kvm/mmu/spte.c
++++ b/arch/x86/kvm/mmu/spte.c
+@@ -497,7 +497,7 @@ void kvm_mmu_set_me_spte_mask(u64 me_value, u64 me_mask)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_set_me_spte_mask);
+ 
+-void kvm_mmu_set_ept_masks(bool has_ad_bits)
++void kvm_mmu_set_ept_masks(bool has_ad_bits, bool has_mbec)
+ {
+ 	kvm_ad_enabled		= has_ad_bits;
+ 
+@@ -506,10 +506,10 @@ void kvm_mmu_set_ept_masks(bool has_ad_bits)
+ 	shadow_dirty_mask	= VMX_EPT_DIRTY_BIT;
+ 	shadow_nx_mask		= 0ull;
+ 	shadow_xs_mask		= VMX_EPT_EXECUTABLE_MASK;
+-	shadow_xu_mask		= VMX_EPT_EXECUTABLE_MASK;
++	shadow_xu_mask		= has_mbec ? VMX_EPT_USER_EXECUTABLE_MASK : VMX_EPT_EXECUTABLE_MASK;
+ 	shadow_present_mask	= VMX_EPT_SUPPRESS_VE_BIT;
+ 
+-	shadow_acc_track_mask	= VMX_EPT_RWX_MASK;
++	shadow_acc_track_mask	= VMX_EPT_RWX_MASK | shadow_xu_mask;
+ 	shadow_host_writable_mask = EPT_SPTE_HOST_WRITABLE;
+ 	shadow_mmu_writable_mask  = EPT_SPTE_MMU_WRITABLE;
+ 
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 958605c6a5ea..22923ddd0617 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -24,7 +24,7 @@
+  * - bits 55 (EPT only): MMU-writable
+  * - bits 56-59: unused
+  * - bits 60-61: type of A/D tracking
+- * - bits 62: unused
++ * - bits 62 (EPT only): saved XU bit for disabled AD
+  */
+ 
+ /*
+@@ -65,7 +65,8 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+  * must not overlap the A/D type mask.
+  */
+ #define SHADOW_ACC_TRACK_SAVED_BITS_MASK (VMX_EPT_READABLE_MASK | \
+-					  VMX_EPT_EXECUTABLE_MASK)
++					  VMX_EPT_EXECUTABLE_MASK | \
++					  VMX_EPT_USER_EXECUTABLE_MASK)
+ #define SHADOW_ACC_TRACK_SAVED_BITS_SHIFT 52
+ #define SHADOW_ACC_TRACK_SAVED_MASK	(SHADOW_ACC_TRACK_SAVED_BITS_MASK << \
+ 					 SHADOW_ACC_TRACK_SAVED_BITS_SHIFT)
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index 7e59eb0f41bb..07469d1cfe74 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -15,6 +15,7 @@ extern bool __read_mostly enable_ept;
+ extern bool __read_mostly enable_unrestricted_guest;
+ extern bool __read_mostly enable_ept_ad_bits;
+ extern bool __read_mostly enable_pml;
++extern bool __read_mostly enable_mbec;
+ extern int __read_mostly pt_mode;
+ 
+ #define PT_MODE_SYSTEM		0
+@@ -406,4 +407,10 @@ static inline bool cpu_has_notify_vmexit(void)
+ 		SECONDARY_EXEC_NOTIFY_VM_EXITING;
+ }
+ 
++static inline bool cpu_has_ept_mbec(void)
++{
++	return vmcs_config.cpu_based_2nd_exec_ctrl &
++		SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
++}
++
+ #endif /* __KVM_X86_VMX_CAPS_H */
+diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+index 1afbf272efae..40fa72f31fc7 100644
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -91,15 +91,15 @@ static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	/* Is it a fetch fault? */
+ 	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
+ 		      ? PFERR_FETCH_MASK : 0;
+-	/*
+-	 * ept page table entry is present?
+-	 * note: unconditionally clear USER_EXEC until mode-based
+-	 * execute control is implemented
+-	 */
++	/* ept page table entry is present?  */
+ 	error_code |= (exit_qualification &
+ 		       (EPT_VIOLATION_PROT_MASK & ~EPT_VIOLATION_PROT_USER_EXEC))
+ 		      ? PFERR_PRESENT_MASK : 0;
+ 
++	if (mmu_has_mbec(vcpu->arch.mmu))
++		error_code |= (exit_qualification & EPT_VIOLATION_PROT_USER_EXEC)
++			      ? PFERR_PRESENT_MASK : 0;
++
+ 	if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
+ 		error_code |= (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) ?
+ 			      PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index dbebddf648be..83d9921277ea 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -755,6 +755,14 @@ static int vt_set_identity_map_addr(struct kvm *kvm, u64 ident_addr)
+ 	return vmx_set_identity_map_addr(kvm, ident_addr);
+ }
+ 
++static bool vt_tdp_has_smep(struct kvm *kvm)
++{
++	if (is_td(kvm))
++		return false;
++
++	return vmx_tdp_has_smep(kvm);
++}
++
+ static u64 vt_get_l2_tsc_offset(struct kvm_vcpu *vcpu)
+ {
+ 	/* TDX doesn't support L2 guest at the moment. */
+@@ -966,6 +974,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 	.set_tss_addr = vt_op(set_tss_addr),
+ 	.set_identity_map_addr = vt_op(set_identity_map_addr),
+ 	.get_mt_mask = vmx_get_mt_mask,
++	.tdp_has_smep = vt_op(tdp_has_smep),
+ 
+ 	.get_exit_info = vt_op(get_exit_info),
+ 	.get_entry_info = vt_op(get_entry_info),
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 299d4ca60fb3..46b65475765d 100644
+index cd1924c6e075..299d4ca60fb3 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -443,10 +443,14 @@ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
- 			vm_exit_reason = EXIT_REASON_EPT_MISCONFIG;
- 			exit_qualification = 0;
- 		} else {
-+			u64 mask = EPT_VIOLATION_GVA_IS_VALID |
-+				EPT_VIOLATION_GVA_TRANSLATED;
-+			if (vmx->nested.msrs.ept_caps & VMX_EPT_ADVANCED_VMEXIT_INFO_BIT)
-+				mask |= EPT_VIOLATION_GVA_USER |
-+					       EPT_VIOLATION_GVA_WRITABLE |
-+					       EPT_VIOLATION_GVA_NX;
- 			exit_qualification = fault->exit_qualification;
--			exit_qualification |= vmx_get_exit_qual(vcpu) &
--					      (EPT_VIOLATION_GVA_IS_VALID |
--					       EPT_VIOLATION_GVA_TRANSLATED);
-+			exit_qualification |= vmx_get_exit_qual(vcpu) & mask;
- 			vm_exit_reason = EXIT_REASON_EPT_VIOLATION;
- 		}
+@@ -2440,6 +2440,7 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
+ 				  SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY |
+ 				  SECONDARY_EXEC_APIC_REGISTER_VIRT |
+ 				  SECONDARY_EXEC_ENABLE_VMFUNC |
++				  SECONDARY_EXEC_MODE_BASED_EPT_EXEC |
+ 				  SECONDARY_EXEC_DESC);
  
-@@ -7240,7 +7244,8 @@ static void nested_vmx_setup_secondary_ctls(u32 ept_caps,
- 			VMX_EPT_PAGE_WALK_5_BIT |
- 			VMX_EPTP_WB_BIT |
- 			VMX_EPT_INVEPT_BIT |
--			VMX_EPT_EXECUTE_ONLY_BIT;
-+			VMX_EPT_EXECUTE_ONLY_BIT |
-+			VMX_EPT_ADVANCED_VMEXIT_INFO_BIT;
+ 		if (nested_cpu_has(vmcs12,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 337bbfecc021..72a75fa33c93 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -114,6 +114,9 @@ module_param(emulate_invalid_guest_state, bool, 0444);
+ static bool __read_mostly fasteoi = 1;
+ module_param(fasteoi, bool, 0444);
  
- 		msrs->ept_caps &= ept_caps;
- 		msrs->ept_caps |= VMX_EPT_EXTENT_GLOBAL_BIT |
++bool __read_mostly enable_mbec = 1;
++module_param_named(mbec, enable_mbec, bool, 0444);
++
+ module_param(enable_apicv, bool, 0444);
+ module_param(enable_ipiv, bool, 0444);
+ 
+@@ -2773,6 +2776,7 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 			return -EIO;
+ 
+ 		vmx_cap->ept = 0;
++		_cpu_based_2nd_exec_control &= ~SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
+ 		_cpu_based_2nd_exec_control &= ~SECONDARY_EXEC_EPT_VIOLATION_VE;
+ 	}
+ 	if (!(_cpu_based_2nd_exec_control & SECONDARY_EXEC_ENABLE_VPID) &&
+@@ -4735,6 +4739,9 @@ static u32 vmx_secondary_exec_control(struct vcpu_vmx *vmx)
+ 	 */
+ 	exec_control &= ~SECONDARY_EXEC_ENABLE_VMFUNC;
+ 
++	if (!enable_mbec)
++		exec_control &= ~SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
++
+ 	/* SECONDARY_EXEC_DESC is enabled/disabled on writes to CR4.UMIP,
+ 	 * in vmx_set_cr4.  */
+ 	exec_control &= ~SECONDARY_EXEC_DESC;
+@@ -7823,6 +7830,11 @@ u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
+ 	return (MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT);
+ }
+ 
++bool vmx_tdp_has_smep(struct kvm *kvm)
++{
++	return enable_mbec;
++}
++
+ static void vmcs_set_secondary_exec_control(struct vcpu_vmx *vmx, u32 new_ctl)
+ {
+ 	/*
+@@ -8622,6 +8634,8 @@ __init int vmx_hardware_setup(void)
+ 
+ 	if (!cpu_has_vmx_ept_ad_bits() || !enable_ept)
+ 		enable_ept_ad_bits = 0;
++	if (!cpu_has_ept_mbec() || !enable_ept)
++		enable_mbec = 0;
+ 
+ 	if (!cpu_has_vmx_unrestricted_guest() || !enable_ept)
+ 		enable_unrestricted_guest = 0;
+@@ -8683,7 +8697,7 @@ __init int vmx_hardware_setup(void)
+ 	set_bit(0, vmx_vpid_bitmap); /* 0 is reserved for host */
+ 
+ 	if (enable_ept)
+-		kvm_mmu_set_ept_masks(enable_ept_ad_bits);
++		kvm_mmu_set_ept_masks(enable_ept_ad_bits, enable_mbec);
+ 	else
+ 		vt_x86_ops.get_mt_mask = NULL;
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index db84e8001da5..0a4e263c4095 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -567,6 +567,7 @@ static inline u8 vmx_get_rvi(void)
+ 	 SECONDARY_EXEC_ENABLE_VMFUNC |					\
+ 	 SECONDARY_EXEC_BUS_LOCK_DETECTION |				\
+ 	 SECONDARY_EXEC_NOTIFY_VM_EXITING |				\
++	 SECONDARY_EXEC_MODE_BASED_EPT_EXEC |				\
+ 	 SECONDARY_EXEC_ENCLS_EXITING |					\
+ 	 SECONDARY_EXEC_EPT_VIOLATION_VE)
+ 
+diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
+index d09abeac2b56..69cf276be88e 100644
+--- a/arch/x86/kvm/vmx/x86_ops.h
++++ b/arch/x86/kvm/vmx/x86_ops.h
+@@ -103,6 +103,7 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+ int vmx_set_tss_addr(struct kvm *kvm, unsigned int addr);
+ int vmx_set_identity_map_addr(struct kvm *kvm, u64 ident_addr);
+ u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
++bool vmx_tdp_has_smep(struct kvm *kvm);
+ 
+ void vmx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+ 		       u64 *info1, u64 *info2, u32 *intr_info, u32 *error_code);
 -- 
 2.52.0
 
