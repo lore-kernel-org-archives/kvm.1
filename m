@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6323A4523;
-	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AF23B9DB7;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418719; cv=none; b=eMYib1y9F/aahQOFny7vZx1Wc/0CKky30QXasNj9wyx5bRKYGlbunfO8lCN69KDAQOZYKMJUiOnH3+D5U46sfpdTfXjJqhA82K+LojQs5zDSewVnJ4eDLZwec4cJ9XMlSeHwVF6CoCZHbyhg1UknXyds1s2XpTRcM7OMksgWQfI=
+	t=1777418720; cv=none; b=g+LU8O9KiS0RH1xCSd6wGNE5xCnaeAFlZgIESKRVPuEj2vfacjGY4V/43zdOpF4mSKw4hiT2cAKw6cs7r756RJAuECIo360Yk2Bpn9uu5ipqZc8Jl0Nm144qCqcnuT5Wx+oIhh1Nd9/pYZxw/mCBKS8X5hBFkvx7IZzPqEs20k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777418719; c=relaxed/simple;
-	bh=yIQ1qb/5thBEPl1WW7+A4KzPierGynmKhGiUR/3Ml6c=;
+	s=arc-20240116; t=1777418720; c=relaxed/simple;
+	bh=0SjVPRO4Z/23E55mrkb6GG4DyIoejAGIeB+G9ojCMgc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XqEaT6JGDXqdgesbmVFh/YZ4cGvMSg4xdJY6F7CjQgcPvGD/2IxN1941YadEYrz8r/lTlmecLFgDxNem8UHXrUXEJQRn/FtRrNlQHy4EKMYMiuw26lj67/9ny5EHuf+0pQRnQiyvjkyri4taodfHRdPwiXOdA868SRac4LkNh+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqzkNOfj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=GuewOJ6tlAAMds41UP1su4AEmJN2xsrEr02ijVXqqJXy31k6/Q3e7fRGJmvBoAWibZX8ZKBynkZMRFNFIbNqEoaHY0iIk3FGL+abKDqktm4mO4DYNf38GswwU2kLK4gAsMf5LlpXDxgviJt9wbdFEJbWXtg2sszfbJxUFTWdO48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMDuQVTR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqzkNOfj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 540A2C2BCF7;
-	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMDuQVTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 55815C2BCB3;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418719;
-	bh=yIQ1qb/5thBEPl1WW7+A4KzPierGynmKhGiUR/3Ml6c=;
+	s=k20201202; t=1777418720;
+	bh=0SjVPRO4Z/23E55mrkb6GG4DyIoejAGIeB+G9ojCMgc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=iqzkNOfjetQv0OkOlMI4tZoTh+sRABN+hK+ANmOFw/Y0SQPFWkuEL1h8joP+JXUaw
-	 holJDjTe6B+rq4XlfKj3mAaSD488WXovSxw7VjFVbkk31MlIsZriCcQAUobgbbS5+4
-	 U3vufYnU831eYzE7hnJgsAplr2Sf/lQetR74SIaW6TYCvLC9TnTHOVdX1yhvunNxmR
-	 sAZhmVuNPo8Ha+M+kQdBEXi3e+yI+rAc5yHBoH4kzECyKbbnVWSU33aaWelmlFVaur
-	 YvVc8MESc7z18FYFcuPypzKc/GC7Ywh8zipYDdvDfBE6GhtkEphZ+kVUEtljAgqH/I
-	 bH4JGvvE8VGtw==
+	b=KMDuQVTRFq/SjweNl+dvCcuHqLllfpg1Cr+EnV8PVzJwQ6pehIj6k8BkRJFB5u8o9
+	 7KSwraOttoyGZEElJJSyxx9pqYKnvWLbQw01FGpP5KFyGEO0oCWj1ACGhKVQSDd4cE
+	 zGx0Ep/hyVNIV5Uxg9tBcmb64ULO69hlO9Sn9QywAf55LJ+wyx1l7HhvLh6k7zyt8p
+	 8rgUJ5otQHKdYpgUwMhQohH9x77tO+PB5cfd8Eo9/OYDMEDzepuSQiXiMDapB2rfFJ
+	 gWVUIOWvNuPrdgmHA3jbJJXmCmvIYRSQYI5MYNJRJHuXX5MoIPaT7O9zaKpSX7WaWw
+	 /ZyJ++DcE+qDA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B007FF8875;
-	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49CC5CCF9E3;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:20 -0700
-Subject: [PATCH RFC v5 25/53] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
+Date: Tue, 28 Apr 2026 16:25:32 -0700
+Subject: [PATCH RFC v5 37/53] KVM: selftests: Test conversion before
+ allocation
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-25-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-37-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2077;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=1717;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ZUVil0lCIwc17luhnyQSnbr0drwWGJzhuW+VIyBKAEE=;
- b=7+JgXh5IsJ8zEo/B+5TkhpuCJ+LAfF3PUrxanugOqLUqBAxiPXjz3BKUNbVG/YL3JTPBaLNVM
- Arrpar2DOqaCNzQACmKnSm35p43EbE0LBLcBBsBuSJO2Q79UgEO9KPL
+ bh=R2wZQC9Rl/28rBzV/KkPj9FBUgmPcyYP86nHAFudBWE=;
+ b=/i2LTbFszjp0Vo39iGn4dfkVeMzGR59QOCC/Arn1GW2lpZqVsU0x6gH9VKriOoBrPoXdYRE2e
+ cgcVK1Qnf3cAUEzP1oidALyBhLnBWMewTJ966oSkktFmtf2mzBC7ON4
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -88,54 +88,49 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Update tdx_gmem_post_populate() to handle cases where a source page is
-not explicitly provided. Instead of returning -EOPNOTSUPP when src_page
-is NULL, default to using the page associated with the destination PFN.
+Add two test cases to the guest_memfd conversions selftest to cover
+the scenario where a conversion is requested before any memory has been
+allocated in the guest_memfd region.
 
-This change allows for in-place memory conversion where the data is
-already present in the target PFN, ensuring the TDX module has a valid
-source page reference for the TDH.MEM.PAGE.ADD operation.
+The KVM_SET_MEMORY_ATTRIBUTES2 ioctl can be called on a memory region at
+any time. If the guest had not yet faulted in any pages for that region,
+the kernel must record the conversion request and apply the requested state
+when the pages are eventually allocated.
+
+The new tests cover both conversion directions.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
- arch/x86/kvm/vmx/tdx.c                   | 8 ++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ .../selftests/kvm/x86/guest_memfd_conversions_test.c       | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
-index 6a222e9d09541..fbc0f179dc750 100644
---- a/Documentation/virt/kvm/x86/intel-tdx.rst
-+++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-@@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
- Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
- provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 25f463bc9da52..92b18373a17f1 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -275,6 +275,20 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4)
+ #undef f
+ }
  
-+If memory attributes are tracked in guest_memfd, pass NULL for
-+@source_addr to initialize the memory region using memory contents
-+already populated in guest_memfd memory.
++/*
++ * Test that even if there are no folios yet, conversion requests are recorded
++ * in guest_memfd.
++ */
++GMEM_CONVERSION_TEST_INIT_SHARED(before_allocation_shared)
++{
++	test_convert_to_private(t, 0, 0, 'A');
++}
 +
- Note, before calling this sub command, memory attribute of the range
- [gpa, gpa + nr_pages] needs to be private.  Userspace can use
- KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 04ce321ebdf39..10373e606242a 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3116,8 +3116,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
- 		return -EIO;
- 
--	if (!src_page)
--		return -EOPNOTSUPP;
-+	if (!src_page) {
-+		if (vm_memory_attributes)
-+			return -EOPNOTSUPP;
++GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
++{
++	test_convert_to_shared(t, 0, 0, 'A', 'B');
++}
 +
-+		src_page = pfn_to_page(pfn);
-+	}
- 
- 	kvm_tdx->page_add_src = src_page;
- 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+ int main(int argc, char *argv[])
+ {
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.54.0.545.g6539524ca2-goog
