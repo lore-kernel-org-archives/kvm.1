@@ -1,196 +1,419 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013015.outbound.protection.outlook.com [40.93.196.15])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61593502A6;
-	Tue, 28 Apr 2026 19:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777403089; cv=fail; b=CLHOLA3Y0wNifMq8bkAJ7WY9sLY6Eo461z63RluvWmNu9gVO6ZVp8BQP7UtxIJqI0ABiuU7cTOMJHcVDDjVe3c9cYQxQjoHcr90zfjlWESSMiZaa9KWIz5Q5nrzVOR6052lxOc5VBDjyoQYy8KcpFKlg5NfRSeKxKNDwdpwbTAQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777403089; c=relaxed/simple;
-	bh=zIf0x2hRze70nR4gw0e6K4Ny+08TVxyNo2S29kivlOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=n7Otxei77XYeQU/RsKOnmQfrSFVpK/6g/y7lj1hbOBq+ujg61w+jY4oP1QvDdoE4JzUR7HrlBlGa+M2epJl/VpNkFdNf9e3xufG43GtTN+XhmoHEvusnFxi8OTh++z0ZE5w/IFnVb4HWk29EpOkWJva4tGhKqw8mW10FdoOhng0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UD4V8Kly; arc=fail smtp.client-ip=40.93.196.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD496441041;
+	Tue, 28 Apr 2026 19:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777403581; cv=none; b=fsqdnJYxqE5UPRC80hxHX9BQ038xeauW+L1Ck6qAKrgSkI15NkFVmrgiJKtOE3yNEQE10qxm5s0gMQuYhUX4C+VdIk1r5HM2doLAY7fp3+jmbJXdxt2DzTqz8xkUMbaLUqi2pYrPSjw3NBfxI5VNwpdvE1Phn08xJG8cBgz575Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777403581; c=relaxed/simple;
+	bh=LW20oK5gep1O4hCoBzhzlxKkVMKP6dTyYEq1aE0qMrY=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=Nvg0Ni4x8QD/IMS0TAwZVL3PgZtmOPKsP/Bt0Ti3asf5lPwbmEuXibO6/OfLuDAn+y5tph8FPSuDaL8pBhjdZXyW5XWg7E7ipyBV9+RQT3GlpohuWdqW84sVHuheDtRb7k9k0SVj0pi4wZyrqbg2A5EYNXShJ9XJSuCey9HUuPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QzCop7WT; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UD4V8Kly"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D2lSkQZzxxPXmHjhG1oWMc9i5wCFvCYKZJV3njgSVpjMKrfgwAaMQTRXCpGI5m6P1NwBbaHxnpu5yDGHPx/2y4go9AEFC/9nqK+AgOEfRv5mFg71Q8127XuVL3NQUamiQWU7/03zuM9QjgQCBLCWixfBH3lhWy0cw3BhqHxyNQgINu620rdNs9ke93sCKs79HKvpG2ffTFo0IlVJqB95nTr7ZvZttDv7G1NCvkZ1WBYQQ5Dv2eIL3VVmCuD/FHLxlUoPXtCdwfHmJgq50A7QZSMmpbmhUet4lyn5m+EyyND472f2cETfFX5CHA22sI+UkuxZl0ay5nVAzQARQrnpgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/NXozzkOG/c7V/R1DJi0SOcwl6gy7uSDzemh553nd20=;
- b=y4X5mr2/9DF+Mf+guaep5G9W/VllqzEN8zY6FnBXWnh5DPPdF/48hwcLb2X6gS1WLL0SHIAh6JcPIkfDHDtG4hqERJmbWv5vd7/nSkAtv3O3jZUqgEONKil1pIdQhmUuArg9mGS8JO/78nYYd0xZNCbHZVXRpbrXIpTOzdnRnCaFs7OWjXlPX1ruF8n45f7uDuuQqe96v87zRk0AjvpoGwyuncdExU+REUf+4EQHeh6fcyFo4i2S5wvPRIzb0f+p0ns7wN80HF6W5ngq8w/Beg4bOHhB17VrkscHP4uPyOvsn4drM1O+PzU8LDJoafZ7NoV2f8Mu0IOgMuI4Sf5HPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/NXozzkOG/c7V/R1DJi0SOcwl6gy7uSDzemh553nd20=;
- b=UD4V8Klyd15Uy2izdC1rLHZRJyc1wsKJfU2P14IK6eOr3rWyqqOVrF9aJwerhJ4pGnDRGPv8qv1VO2MGcI8pTVym7lXGFNZi1XVN//j3hQS3FWowXEPFIV2ABMgqdkjLCGMIabx0lNrviM06QbLvUA29CBsnggqwjBCXxmz5UURAm5RSMR0EzOBPnjWSj/1U/8n5Ku39TcqKav4QJiqy7VrTzaU0HAHZdm8iD/bninqX4r0dSzkRfO9tn9F8EueT+pXvTkfb88W949kosHthydihu73iWAC8jVXGcWGzv+Rrikqmh0drMUuie2cjXTUZuPlStTN/eqqcugwtQDRCSw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.17; Tue, 28 Apr
- 2026 19:04:39 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 19:04:38 +0000
-Date: Tue, 28 Apr 2026 16:04:37 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	patches@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH] vfio: selftests: Fix out-of-tree build with make O=
-Message-ID: <20260428190437.GE718365@nvidia.com>
-References: <0-v1-79f29139180b+8e-vfio_st_make_o_jgg@nvidia.com>
- <afD7-rg58XvqRJpD@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afD7-rg58XvqRJpD@google.com>
-X-ClientProxiedBy: BN1PR12CA0022.namprd12.prod.outlook.com
- (2603:10b6:408:e1::27) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QzCop7WT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:Date:To:From
+	:Subject:Message-ID:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=MPtT6lfJ1mcwWUBwYq4nwnM8SAjUYS9/wvh+pAM9QBQ=; b=QzCop7WT76dYs8lHjFox/z5pi5
+	R/WerepPftvIOiSnWseweT2aFCqbL3YXqbb0HoxJwICUxJZkN3mBUgdjz5VXbCx4dQn0C3Ny+c5Av
+	wvicGj1j3F3oN1q2p6M7ZRoDez/KA4zBNEh0JmYsLzL8NW4sIdsP+iiPzefwggJ5Laq6s/d5B/7X/
+	UwntkUsPR8A6/F5+yyblwbRYn/CS2n+rQWLcE+AV6FPwzaZoAJU/BdIo+igL1m9UHCOURAnoz4y5b
+	qdqVYN9X+qN83xYyBZRkxHsXy/szqKtSW52NAHqanu+v4TSzBHkyHYAegAnm9NqwDKbbtvcAXh+fa
+	u7qAvCtA==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wHnrL-00000003uCl-1xdv;
+	Tue, 28 Apr 2026 19:12:40 +0000
+Message-ID: <c855535b4262ecd41f67734d19e8f48a7f014c2a.camel@infradead.org>
+Subject: [PATCH] KVM: x86/xen: Add
+ KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant
+ <paul@xen.org>, kvm@vger.kernel.org,  linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org
+Date: Tue, 28 Apr 2026 20:12:39 +0100
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-qmv3LylIXMZ8XL1hvURK"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB7500:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb5f268d-2396-4a9a-a602-08dea558ff04
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	WUvO+NRAahHcn/rxbUB5yInLAT/fULQlJ25awbXpPq2UblUz9beMKWzzfVMk3SVIsfRmnGf0YRmqOlEUi2aqLW2lprn7z5bi/IYdmjUEGz/R2YjJGcq7MjZ0PYlBTu/YK3uhw56TGbZNYPX57kPj3j+jfgu1atGOi45XrcEMoU16J0tyUR4Y+fuwG00mpoZVRlcyrUAfw4nT+UvL80lC34IRHSiDKSNN/0t9HR7R/0CBDodr1pRYIGVI2Cj/5utgD5CXnsASjGvUoqEL3foHOwUszgs1PNUNhzx8FypqYsNLhvThFC5ovzPvypQHqhSr5e+OlE+EAPpDEm5B/BmYYlXikd87wbbRu1D9orVY38O/UHZ8gBj03g7TqiOQP0B/jhrddJe4uzup7GdBbNiQye9eNcVs3NA+l1o9uOvumNlsM1DBZCnTE/Ht/caFzyQJv08U8ax+uxLWBaJusbhA5Y14rJ/Iedoyk/Ea0PEqfYMpNWn+nrlg/z1aJyg2NITmV0BngHKhICX/Tv1ZsMgybDK4xFyOBKSqcy+YwwNFrXQytm1vnamauu3h9+qIBiUHIuCoQ0gIF8czRc2x2bQtlTpNyryOmE6W+a9I7/2Vp0cV1823M7mNCLJ2D5Rp/MvFHliOI41cu8YO84jwow46SMF3Dm8Z38CrJR3MDQvgh7kzSNPEqoXr5N5s0KhuQP0km+Enlokvh+i6mQUQ5B32x6qHqeGXINnOw7jxNwAA/4w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e2vlSgP8HDCLkE3F9Bw2Kuav2tcWDIkC3V1yoy7iiIb1nw5vC2zuP84lw+gH?=
- =?us-ascii?Q?Lx5hsTqZaGioqF22egDVuPjkTEsrcO2zmsT2rVC0RT8WvyjxLldhcLbhK3pM?=
- =?us-ascii?Q?jA0RK/r47ojWhze1io8FrXampZrwdDH4d14wnMahDhQSojn+OtZjpFBAN6Z5?=
- =?us-ascii?Q?BARst2plBq2804uHJVOUY876hIur4lLhMPxxcBoJ4mY0mBJVvOqhcZt6J0EU?=
- =?us-ascii?Q?YmptYZLwpnqIm6pPyHJ998d/8ZKdyAWIKjUgXEDcR1Q9l8sQREfpfkFcz/zf?=
- =?us-ascii?Q?idbHscQ45rNo7hjadBvIl4JjfCrj3QmbciBKS+N57j2KPYUpOsAFWrxSB2i+?=
- =?us-ascii?Q?/VgnCr1e5QunsC/75HZP3yde3c+27yyljFvwYzZ6BpeGx22dHMp7vZk4EZSW?=
- =?us-ascii?Q?lY9VdBnuw08ZqxyCSyWW109sHxok5WZ1ZjSmePiXk8+2ItWWtWaIPn8eyS6b?=
- =?us-ascii?Q?IpYkCg6hDaUvor9+Q70yR+S7l78Gh1tgOdm5qKTmCQDZvA2pbLbpew/mM6d5?=
- =?us-ascii?Q?kMCU2jPYwRZQ50s1BtCoPb4j13hmt39nLe8lt5vtBIj3ZP/vMW1xiMPa/4RB?=
- =?us-ascii?Q?mpzEZrfjN8aJ2I6z40BZFwPg794cPpiAN4LTiovVZ9hQnnZ+VnJjp0qEm7tK?=
- =?us-ascii?Q?4nmBEnKNCQqniUlGMNOtxinXivp+LUsXTc+XF2tOdKOVnTd0rPJRFZ1p5ZcC?=
- =?us-ascii?Q?escX1YUK4mUhJrLrhVRsVY2/DbhNu0sub524OgmHGKvhDPeRX6Ng+ZbZ7d4a?=
- =?us-ascii?Q?AvCdl1EcyJzfrS+u3wa6WNLADcclu0EwXkC480KQeqGzs0Xxezd0MFOdgrC/?=
- =?us-ascii?Q?2I+ugEgYx8sHnEWUZk1Nm0IQIR0vrn1yrQbFDmaSPmrHBHEQ28ntf1VrWBVz?=
- =?us-ascii?Q?iq4vU9KUcWGmrTxneCXIV/ROtY3nE++3Q3KUtR9z58kgkqXI7G1UcfHCS9eF?=
- =?us-ascii?Q?BPTf1xilDOVsKrSA1hCvikJrJWFX1tyIj+qXER5TytaV5Zhwq0ev9rmF3kNB?=
- =?us-ascii?Q?/t2uGCEct4/cEcPuFSAP7T+URslhi+yt7uo9rltjKGmCgP4PkfXePAzRTvS9?=
- =?us-ascii?Q?QJXyeirRlx2iyGLx5iBha/1VOvzA/0eo2DjCT/5W4e2BuyCzgZW2UjH6F29L?=
- =?us-ascii?Q?TmShfEr9oaNrHi55ol0WAahb71kfxu9wjqHJw6c4bCuUbwFMiH3bCFJcdEcP?=
- =?us-ascii?Q?oC9NHpuEqcP1uzNN0P8vz3e6Efp5PRSSd/EB4+DiCOK/s1TfDIdU2345xPNt?=
- =?us-ascii?Q?HFIWEGWEP6cF8os2BV+N1Rdd/I99sdDvGCCWu4vue6LQTlFN+ch9mCEXmPyT?=
- =?us-ascii?Q?UR2gSRcGMm7l+Y3a+blPlBvL0ffQWDkoNlXOEKS72iawTcIRm0nOkCIjJD3w?=
- =?us-ascii?Q?v96okKR8X5e4zpF29/RLv5SFuIxYQGPhi4yvdRdKB9PZ3yAVP8XKc+OlpPP8?=
- =?us-ascii?Q?CvSqNEBM2coVrFvJJtNM2pruvp3oCzeKjytHHutY4/AfGmOfyKvdC95DhApu?=
- =?us-ascii?Q?3zuSAg73pRwK7+Et1fc/1h5OW3Z1gnmnTEstLrlHmqJsSq18eLZ+64H7N+UW?=
- =?us-ascii?Q?b2V9+Wv6DefCJmNzZJJnEPZEFKMBLHspASJFT7nRDWXqJzpCZ5cCmn/UI+Ak?=
- =?us-ascii?Q?WvTWHwpc4fzMd6TH1ILIHL47kPsFlKPM4MTZKxfwJOZlcFk1gKPa8lbVuPqo?=
- =?us-ascii?Q?SO+pj1H+2C9zmlJq5XHKilii9Iaj+bVhx1p7VY++gAmlK1gV?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb5f268d-2396-4a9a-a602-08dea558ff04
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 19:04:38.8799
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /DYSdAInv0wOI+a708+dHBUpNvVKfsfdjm2k4OwTz24cmWQiGpNUnl9txK4kGTeu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7500
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Apr 28, 2026 at 06:27:06PM +0000, David Matlack wrote:
-> On 2026-04-27 08:07 PM, Jason Gunthorpe wrote:
-> > The test programs are compiled via a static pattern rule that requires
-> > intermediate .o files:
-> > 
-> >   $(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
-> > 
-> > After lib.mk prefixes TEST_GEN_PROGS with $(OUTPUT), this creates
-> > dependencies on .o files in the output directory (e.g.
-> > $(OUTPUT)/vfio_dma_mapping_test.o). However, there is no rule to compile
-> > these .o files from the source directory .c files when OUTPUT differs
-> > from the source directory.
-> > 
-> > Add an explicit chain of pattern rules:
-> >   $(OUTPUT)/% -> $(OUTPUT)/%.o -> %.c
-> > 
-> > Following the same pattern already used in libvfio.mk for the library
-> > objects.
-> > 
-> > Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
-> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> > ---
-> >  tools/testing/selftests/vfio/Makefile | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> > index 40165d087a0bc4..81c3be8298fdc2 100644
-> > --- a/tools/testing/selftests/vfio/Makefile
-> > +++ b/tools/testing/selftests/vfio/Makefile
-> > @@ -27,10 +27,13 @@ CFLAGS += $(EXTRA_CFLAGS)
-> >  
-> >  LDFLAGS += -pthread
-> >  
-> > -$(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
-> > +$(TEST_GEN_PROGS): $(OUTPUT)/%: %(OUTPUT)/%.o $(LIBVFIO_O)
-> 
-> Changing this line (with the fix you replied with) is not actually
-> needed right? I tried the following without it and was able to build:
-> 
->   $ make OUTPUT=/tmp -C tools/testing/selftests/vfio
-> 
-> $(TEST_GEN_PROGS) has already been prefixed with $(OUTPUT), so %
-> in the original pattern already included $(OUTPUT).
-> 
-> Is this for readability?
 
-Yes, it makes more sense to explicitly match the stems through the
-flow than to have the implicit $(TEST_GEN_PROGS) == XXX/$(OUTPUT)
+--=-qmv3LylIXMZ8XL1hvURK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> >  	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
-> >  
-> >  TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
-> > +$(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
-> > +	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
-> 
-> Looking at this commit made me confused how this was even working before
-> and I learned that make has built-in rules to build .o files that
-> assumes the .c is in the same directory. 
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Yes
+Commit 3617c0ee7decb ("KVM: x86/xen: Only write Xen hypercall page for
+guest writes to MSR") blocked host-initiated writes from triggering the
+Xen hypercall page setup, to fix an SRCU usage violation when the
+hypercall MSR index collides with a real MSR written during vCPU reset.
 
-> I see now that we were reying
-> on those built-in rules to build $(TEST_GEN_PROGS_O). It makes sense to
-> have an explicit rule to handle the directory mismatch between .c and
-> .o.
+However, some VMMs legitimately need to trigger hypercall page setup
+from host context. For example, a VMM may intercept the guest's MSR
+write to track an epoch (for kexec/crash recovery), and then replay the
+write as a host-initiated KVM_SET_MSRS to populate the hypercall page.
+The host_initiated check breaks this use case.
 
-Hmm now that I think about it, I wonder if it used the right flags..
+Add KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE as a new vcpu attribute
+that explicitly invokes kvm_xen_write_hypercall_page() under proper
+locking. This gives userspace a safe interface to trigger hypercall page
+setup without going through the MSR write path, preserving the
+host_initiated defence in depth while restoring the lost functionality.
 
-> This also got me thinking it might be a nice cleanup to use the
-> predefined macros $(COMPILE.c) and $(LINK.c) in these rules instead of
-> $(CC) $(CFLAGS) ... etc. No need to attach that to this fix though.
+Fixes: 3617c0ee7dec ("KVM: x86/xen: Only write Xen hypercall page for guest=
+ writes to MSR")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ Documentation/virt/kvm/api.rst                | 11 +++
+ arch/x86/include/uapi/asm/kvm.h               |  3 +
+ arch/x86/kvm/x86.c                            |  3 +-
+ arch/x86/kvm/xen.c                            |  7 ++
+ .../selftests/kvm/x86/xen_vmcall_test.c       | 96 +++++++++++++++++++
+ 5 files changed, 119 insertions(+), 1 deletion(-)
 
-Yeah probably
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rs=
+t
+index 52bbbb553ce1..63423c375a78 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -5800,6 +5800,17 @@ KVM_XEN_VCPU_ATTR_TYPE_UPCALL_VECTOR
+   vector configured with HVM_PARAM_CALLBACK_IRQ. It is disabled by
+   setting the vector to zero.
+=20
++KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
++  This attribute is available when the KVM_CAP_XEN_HVM ioctl indicates
++  support for KVM_XEN_HVM_CONFIG_WRITE_HYPERCALL_PAGE. It triggers
++  population of the Xen hypercall page at the guest physical address
++  specified in ``gpa``, just as if the guest had written to the
++  hypercall MSR. This is intended for VMMs that intercept the guest's
++  MSR write (e.g. to track an epoch for kexec/crash recovery) and need
++  to replay the write from host context. Direct host-initiated writes
++  via KVM_SET_MSRS are blocked for safety; this attribute provides the
++  correct alternative.
++
+=20
+ 4.129 KVM_XEN_VCPU_GET_ATTR
+ ---------------------------
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kv=
+m.h
+index 5f2b30d0405c..977f3aa66c18 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -596,6 +596,7 @@ struct kvm_x86_mce {
+ #define KVM_XEN_HVM_CONFIG_RUNSTATE_UPDATE_FLAG	(1 << 6)
+ #define KVM_XEN_HVM_CONFIG_PVCLOCK_TSC_UNSTABLE	(1 << 7)
+ #define KVM_XEN_HVM_CONFIG_SHARED_INFO_HVA	(1 << 8)
++#define KVM_XEN_HVM_CONFIG_WRITE_HYPERCALL_PAGE	(1 << 9)
+=20
+ #define KVM_XEN_MSR_MIN_INDEX			0x40000000u
+ #define KVM_XEN_MSR_MAX_INDEX			0x4fffffffu
+@@ -704,6 +705,8 @@ struct kvm_xen_vcpu_attr {
+ #define KVM_XEN_VCPU_ATTR_TYPE_UPCALL_VECTOR	0x8
+ /* Available with KVM_CAP_XEN_HVM / KVM_XEN_HVM_CONFIG_SHARED_INFO_HVA */
+ #define KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO_HVA	0x9
++/* Available with KVM_CAP_XEN_HVM / KVM_XEN_HVM_CONFIG_WRITE_HYPERCALL_PAG=
+E */
++#define KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE 0xa
+=20
+ /* Secure Encrypted Virtualization command */
+ enum sev_cmd_id {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0a1b63c63d1a..3facf0429c0a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4891,7 +4891,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
+g ext)
+ 		    KVM_XEN_HVM_CONFIG_EVTCHN_2LEVEL |
+ 		    KVM_XEN_HVM_CONFIG_EVTCHN_SEND |
+ 		    KVM_XEN_HVM_CONFIG_PVCLOCK_TSC_UNSTABLE |
+-		    KVM_XEN_HVM_CONFIG_SHARED_INFO_HVA;
++		    KVM_XEN_HVM_CONFIG_SHARED_INFO_HVA |
++		    KVM_XEN_HVM_CONFIG_WRITE_HYPERCALL_PAGE;
+ 		if (sched_info_on())
+ 			r |=3D KVM_XEN_HVM_CONFIG_RUNSTATE |
+ 			     KVM_XEN_HVM_CONFIG_RUNSTATE_UPDATE_FLAG;
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 91fd3673c09a..c16b4560c9e7 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -907,6 +907,13 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struc=
+t kvm_xen_vcpu_attr *data)
+ {
+ 	int idx, r =3D -ENOENT;
+=20
++	/*
++	 * kvm_xen_write_hypercall_page() manages its own locking.
++	 * Handle it before taking xen_lock to avoid a deadlock.
++	 */
++	if (data->type =3D=3D KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE)
++		return kvm_xen_write_hypercall_page(vcpu, data->u.gpa) ? -EIO : 0;
++
+ 	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+ 	idx =3D srcu_read_lock(&vcpu->kvm->srcu);
+=20
+diff --git a/tools/testing/selftests/kvm/x86/xen_vmcall_test.c b/tools/test=
+ing/selftests/kvm/x86/xen_vmcall_test.c
+index 2585087cdf5c..1536d510ab30 100644
+--- a/tools/testing/selftests/kvm/x86/xen_vmcall_test.c
++++ b/tools/testing/selftests/kvm/x86/xen_vmcall_test.c
+@@ -12,6 +12,8 @@
+ #include "processor.h"
+ #include "hyperv.h"
+=20
++#include <string.h>
++
+ #define HCALL_REGION_GPA	0xc0000000ULL
+ #define HCALL_REGION_SLOT	10
+=20
+@@ -26,6 +28,10 @@
+ #define HVCALL_SIGNAL_EVENT		0x005d
+ #define HV_STATUS_INVALID_ALIGNMENT	4
+=20
++enum {
++	TEST_WRITE_HYPERCALL_PAGE =3D 1,
++};
++
+ static void guest_code(void)
+ {
+ 	unsigned long rax =3D INPUTVALUE;
+@@ -76,17 +82,65 @@ static void guest_code(void)
+ 			     "r"(r8));
+ 	GUEST_ASSERT(rax =3D=3D HV_STATUS_INVALID_ALIGNMENT);
+=20
++	/*
++	 * Test KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE: ask userspace
++	 * to set up MSR filtering, then write the MSR. The WRMSR will exit
++	 * to userspace (not populate the page). Userspace verifies the page
++	 * is empty, uses the attr to populate it, then resumes us.
++	 */
++	GUEST_SYNC(TEST_WRITE_HYPERCALL_PAGE);
++
++	__asm__ __volatile__("wrmsr" : : "c" (XEN_HYPERCALL_MSR),
++			     "a" (HCALL_REGION_GPA & 0xffffffff),
++			     "d" (HCALL_REGION_GPA >> 32));
++
++	/* Userspace populated the page via the attr =E2=80=94 verify it works */
++	rax =3D INPUTVALUE;
++	rdi =3D ARGVALUE(1);
++	rsi =3D ARGVALUE(2);
++	rdx =3D ARGVALUE(3);
++	r10 =3D ARGVALUE(4);
++	r8 =3D ARGVALUE(5);
++	r9 =3D ARGVALUE(6);
++	__asm__ __volatile__("call *%1" : "=3Da"(rax) :
++			     "r"(HCALL_REGION_GPA + INPUTVALUE * 32),
++			     "a"(rax), "D"(rdi), "S"(rsi), "d"(rdx),
++			     "r"(r10), "r"(r8), "r"(r9));
++	GUEST_ASSERT(rax =3D=3D RETVALUE);
++
+ 	GUEST_DONE();
+ }
+=20
++static void setup_msr_filter(struct kvm_vm *vm)
++{
++	uint64_t deny_bits =3D 0;
++	struct kvm_msr_filter filter =3D {
++		.flags =3D KVM_MSR_FILTER_DEFAULT_ALLOW,
++		.ranges =3D {
++			{
++				.flags =3D KVM_MSR_FILTER_WRITE,
++				.nmsrs =3D 1,
++				.base =3D XEN_HYPERCALL_MSR,
++				.bitmap =3D (uint8_t *)&deny_bits,
++			},
++		},
++	};
++
++	vm_ioctl(vm, KVM_X86_SET_MSR_FILTER, &filter);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	unsigned int xen_caps;
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
++	bool msr_filter_ready =3D false;
+=20
+ 	xen_caps =3D kvm_check_cap(KVM_CAP_XEN_HVM);
+ 	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL);
++	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_WRITE_HYPERCALL_PAGE);
++	TEST_REQUIRE(kvm_check_cap(KVM_CAP_X86_USER_SPACE_MSR));
++	TEST_REQUIRE(kvm_check_cap(KVM_CAP_X86_MSR_FILTER));
+=20
+ 	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
+ 	vcpu_set_hv_cpuid(vcpu);
+@@ -123,6 +177,36 @@ int main(int argc, char *argv[])
+ 			continue;
+ 		}
+=20
++		if (run->exit_reason =3D=3D KVM_EXIT_X86_WRMSR) {
++			/* MSR filter caught the Xen hypercall MSR write */
++			TEST_ASSERT(msr_filter_ready,
++				    "Unexpected WRMSR exit before filter setup");
++			TEST_ASSERT_EQ(run->msr.index, XEN_HYPERCALL_MSR);
++
++			/*
++			 * The host_initiated check should have prevented
++			 * KVM from populating the page. Verify it's empty.
++			 */
++			uint8_t *hcall_page =3D addr_gpa2hva(vm, HCALL_REGION_GPA);
++			TEST_ASSERT_EQ(hcall_page[0], 0);
++
++			/*
++			 * Now use the attr to populate the page, as a
++			 * VMM would after intercepting the MSR write.
++			 */
++			struct kvm_xen_vcpu_attr attr =3D {
++				.type =3D KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE,
++				.u.gpa =3D HCALL_REGION_GPA,
++			};
++			vcpu_ioctl(vcpu, KVM_XEN_VCPU_SET_ATTR, &attr);
++
++			/* Verify the page is now populated */
++			TEST_ASSERT_EQ(hcall_page[0], 0xb8);
++
++			run->msr.error =3D 0;
++			continue;
++		}
++
+ 		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+=20
+ 		switch (get_ucall(vcpu, &uc)) {
+@@ -130,6 +214,18 @@ int main(int argc, char *argv[])
+ 			REPORT_GUEST_ASSERT(uc);
+ 			/* NOT REACHED */
+ 		case UCALL_SYNC:
++			TEST_ASSERT_EQ(uc.args[1], TEST_WRITE_HYPERCALL_PAGE);
++
++			/*
++			 * Guest is about to write the Xen MSR. Clear the
++			 * hypercall page, install MSR filter to intercept
++			 * the write, and enable userspace MSR exits.
++			 */
++			memset(addr_gpa2hva(vm, HCALL_REGION_GPA), 0, PAGE_SIZE);
++			vm_enable_cap(vm, KVM_CAP_X86_USER_SPACE_MSR,
++				      KVM_MSR_EXIT_REASON_FILTER);
++			setup_msr_filter(vm);
++			msr_filter_ready =3D true;
+ 			break;
+ 		case UCALL_DONE:
+ 			goto done;
+--=20
+2.43.0
 
-Jason
+
+
+--=-qmv3LylIXMZ8XL1hvURK
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQyODE5MTIz
+OVowLwYJKoZIhvcNAQkEMSIEIImG4sMDYjKah80fUuFCttF325WRQ8f/LLhJSPNNgn29MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIApc6evEHGRqmA
+xBiM2DalKAlcV7w79taOYftme7vPq8KtYBksf+wUL478GPbMce1y9v1u62dehIOvJA4h9zUY8ClM
+Wm9ClDCc6Jn+bpZcK/G6PnBXTc6Gti6x+1evU7VG8IOttz0ONd1Wbe2ha9YEE/CO5HQ0jCVb7ACe
+Cas5xCkYsCAFj4SnbQDblS7DuJpssPIqFT6KL7e0UbKScfbpHhSit4QBDdy80oQ6EBI6CT6wLwtC
+Ybjo2H3034FxdGaiS77A/HYZFHdt6r1MloMhmFK3kGgIWSZfbo92WmNRl30bN+Zfo6+G7jgi03f6
+sfAv3urozTIi9bf3pLpwwKyraHX7LtEV/9/CZVEoLwBfDaclXyyUDGSSYH+3/6DiLNEF+Ey7mNKp
+sEetCOnfZ2fvbhpVfb+slVe8gg+nOPOhchzvsi0Rsl8ElaFojsXRJnQPLRRhLvbr+TXy8rAKoRFD
+ih5S0GuTKTgQrO5dNahFaCPGDFaOHd+t5mi4/aXuWjMT7fm8Bh8gTvxVcwHTwET3IClg8/3TSOO6
+TCFKnkjYoMjcvbtfTFhbwGOTACVKtKkad/0qxyG1SjnkGXilOIMB8W5ePshLHurwcSIigKy+z99r
+Kuw5d/o6C6MLq6oNkmRhjfolmjS768rPvAI9+dozb9plgnyH14az/p/50GhM30UAAAAAAAA=
+
+
+--=-qmv3LylIXMZ8XL1hvURK--
