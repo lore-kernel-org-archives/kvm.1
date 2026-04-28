@@ -1,148 +1,106 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C902580CF
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 16:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6486B32ED27;
+	Tue, 28 Apr 2026 16:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777394806; cv=none; b=u7YyLahNrnkBFpcbWcVCENPskBvAb/+aWZ2y7eXmGPKCOV9VeHb9MF0GiwX+fH4tK5b2Nt2gI2c6peIvTCuLUZe2A3DWWMQJpnK/r+sJh7jyhAwJyHDaC7xGwCCLvBmHUNK1zrUZ9BDd0lJnR3ZrzL+tkHHUjfetEDGVwNtyot4=
+	t=1777394968; cv=none; b=P5EJdJwM4q7d0PdESYK+JGBZrDz/lgn7O3XjY5ftnCLY159+hV65m800IYluoZpfTi5Prylh7i6TDCTuDX0rjhImpD3FccgE4WqKi/m836dJjndlBR30ePNcyyDvwnZwsq6r0QYpM7rFnUAJwOBYl+pFJrkMTsO2mqZOBuai8IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777394806; c=relaxed/simple;
-	bh=02Ll0yphJszxQQ3HWl4fGFlC3mEDZ3rgtgF4T/gAhdc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hXoWMCjyU4lHsYIEClxoJ7Ytg54qnJ3M7NgUIjwgzr4XgXBWSZUDYVEQTC97sfxpd0Kt2otj6Jexd6HzAJJyQVDhFoL7xCZffnCrAbqGRX8xGexr68+mMCPKBFhLc+gG54U1tBWpKxjCYPv5wdroMJq/M2DouYh7kdgNF0Gc4ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hVOGYrQN; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1777394968; c=relaxed/simple;
+	bh=vt987uQbRVex++Kh8Yu7uxsLcxvnod6yMw5w4mWMTvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1gjcO555Jr7tQ5ivnc+vJ+rqtHrnUdaWLkkvR1CIXO6wXl2i2q9MSL75O56l5Xb64A98WCFkr2wjN1cvJ42M1Ssy9pObHd0tvUXMXJfKuiWOzzOX5HJto2UGbK7b8t+xLT3A1AOnvajCEOIELQYMccywWM/VrY95UA01lCSzPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jZTEIcrl; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hVOGYrQN"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2e06219cbso141149305ad.3
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777394804; x=1777999604; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kEkPC/bbmwo82zT+9sMdK7tO+DGFA2UM3xH5lqU9uE8=;
-        b=hVOGYrQNYg6P/8G4eKUVwhdKyjDwMXiB5eQ9087qmJI1lyCBmM3OseIjfS/q8VVJhg
-         ADPRjMrlOxT7EK8MTZ0tsjcq+JAh5WfbU2+jM8tBl0vXBVwES8+6B3/MJQqSvaX6pV4L
-         ajb7UdDtFQFgU0N5oh1FdXQ5OZTXkyl4+PCjyi1DmUtfDM5J8jO5JLczp1veitgmszfq
-         +tjYUHOVCMQnfd8a6CynmoNLgQ11ILWXuTJhfF9oG8KlPEpj4qPBDTXtv6XVffqdC9rS
-         weSEqTD3S6WOWRgfS5xjI9OJrm5otHK7lh3vepR/DGJufXkg77k+0GUwxN2NL1eC79rN
-         eI1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777394804; x=1777999604;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kEkPC/bbmwo82zT+9sMdK7tO+DGFA2UM3xH5lqU9uE8=;
-        b=o1qgzi6D4wQVsDZkeBKv+Ju8d2DLNmvVIZbgXUGpzseyDXgzGEg7N+BbVNkPXylpLA
-         jgqGQ7bpKoNSRLpRI8q9aEr3tYrPoxDcKeYGYEpBD97i2Nrrsy1H1q79a1POmV6z5CY7
-         SZiO1snhVJuVrVccoC97dKFJSgAP+SfrU+FfHMuRcDWy2B9vznNEMhhJkj+lXrzpX1HZ
-         RyU7fmmtbnSv1L7vKTTFA2fFi1t8dh8u/sx8ShT4cZO4r/URNMha2r7h4O3W87kl9SVr
-         PiMNjTEm9GfSNvCjpA87wk/ctebuHXyhEIzCNIpOxJHt+FoDrwTslsXhrIr6fZBJ34Kl
-         lWVg==
-X-Forwarded-Encrypted: i=1; AFNElJ/VgiFY0aUTuk7Zz4i4b1z7/eUre8uIE8cZELWaLTopFWbGSMVMzLAqqAXS9q/aQGgNicw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG34JnRglZFf1JzW1+kMWGxQ/seuUsVgsMIlaSLVtPvtY//nII
-	tqTz1S5sK2KcTAQ3pEdmI9ZacX8DJyvkCccFUk9CqLvpc1c6uAjdE92OJKKJPPK5zkhHCnpoTSy
-	xZo+Kog==
-X-Received: from pgbcz1.prod.google.com ([2002:a05:6a02:2301:b0:c61:2d0c:40bf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a1a:b0:3a3:5726:7e39
- with SMTP id adf61e73a8af0-3a3af426340mr463737637.23.1777394803747; Tue, 28
- Apr 2026 09:46:43 -0700 (PDT)
-Date: Tue, 28 Apr 2026 09:46:42 -0700
-In-Reply-To: <20f94bed-2843-44ab-877c-3e68bd4314f8@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jZTEIcrl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777394967; x=1808930967;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vt987uQbRVex++Kh8Yu7uxsLcxvnod6yMw5w4mWMTvk=;
+  b=jZTEIcrlKMrIp1msvhui+g/I458uFZ91qFm+P98uA3VU9Ff/Ch20bmrJ
+   YbVkVTTF/orbv58n4YyObcAbRDerzhOaM89Yj3Mix2VB8LWYO6+NlVi/X
+   Rt3nnO/Z0CHrIgjf1RAGAPwVessALtGrF+ljYVwisvZQTs3qxpC15ANjl
+   Z7vPUNcHbGbv7wrTGqEK3slTv4dPBO3BTFWH48PU+0y98zkR2qdGrThOG
+   fcdOvm3nu9aT+VWpfq5JpNF2HoUcCo7Bx/G/nj69Ije0c8b5tBoUjZooy
+   d2nWPv3GXKhr+TLrsWEnxOZ+DAvX7Dg30DiFukisu8E4tMIctzEA6sAKe
+   w==;
+X-CSE-ConnectionGUID: 9jdSVW2yRa+WoG1iSjMZ/w==
+X-CSE-MsgGUID: ZdqTFRHbRVy4wB0BasvKbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="82177526"
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
+   d="scan'208";a="82177526"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 09:49:26 -0700
+X-CSE-ConnectionGUID: ErT5uC0OSuWdS/OVF6EVLw==
+X-CSE-MsgGUID: UWv/3S0ZTFuSOD7uwwuD3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
+   d="scan'208";a="233969407"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 09:49:26 -0700
+Date: Tue, 28 Apr 2026 09:49:09 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Borislav Petkov <borislav.petkov@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, stable@kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v3 1/6] cpu/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <20260428164909.xkxdqhdsguq2wpal@desk>
+References: <20260402202558.195005-1-kim.phillips@amd.com>
+ <20260402202558.195005-2-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260427204847.112899-1-tycho@kernel.org> <20260427204847.112899-4-tycho@kernel.org>
- <ae_TCofu4bHP_Ch-@google.com> <afDJZQHNi-qdcEEe@tycho.pizza>
- <afDYCpbeT0HsXTMF@google.com> <20f94bed-2843-44ab-877c-3e68bd4314f8@amd.com>
-Message-ID: <afDkcpcQ5vPsjQkO@google.com>
-Subject: Re: [PATCH v2 3/4] KVM: SEV: Add the kvm-amd.rapl_disable module parameter
-From: Sean Christopherson <seanjc@google.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Tycho Andersen <tycho@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
-	John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kim Phillips <kim.phillips@amd.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Li RongQing <lirongqing@baidu.com>, Eric Biggers <ebiggers@kernel.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260402202558.195005-2-kim.phillips@amd.com>
 
-On Tue, Apr 28, 2026, Tom Lendacky wrote:
-> On 4/28/26 10:53, Sean Christopherson wrote:
-> > On Tue, Apr 28, 2026, Tycho Andersen wrote:
-> >> On Mon, Apr 27, 2026 at 02:20:10PM -0700, Sean Christopherson wrote:
-> >>> I'm pretty sure I said this earlier: KVM absolutely should not be able to disable
-> >>> RAPL for the entire system.  That needs to be a power management thing.
-> >>
-> >> You definitely noted "not CCP", I don't think I quite understood what
-> >> that meant though:
-> >> https://lore.kernel.org/all/aZ86BZWi-GLiHvmt@tycho.pizza/
-> >>
-> >> I'm a little worried that putting it in power management will generate
-> >> some weird dependencies, or weakref symbols that can't change things
-> >> if they are loaded independently of kvm_amd or something. But let me
-> >> see what I can come up with.
-> > 
-> > Ugh, and it's not even powerman per se, it's actually a module in perf.  Oof.
-> > 
-> > I 100% agree it'll be tricky, but I also stand by comments that neither the CCP
-> > driver or KVM should be allowed to silently pull the rug out from under the RAPL
-> > module.
+On Thu, Apr 02, 2026 at 03:25:53PM -0500, Kim Phillips wrote:
+> spectre_v2=eibrs currently enables retpolines when SNP is enabled,
+> instead of AutoIBRS (EIBRS) because the commit that disabled
+> AutoIBRS if SNP is enabled stopped short of enabling
+> X86_FEATURE_IBRS_ENHANCED.
 > 
-> Maybe something that can be added to the current sev= kernel command line
-> parameter, e.g. sev=norapl, or such?
+> Change the logic to enable X86_FEATURE_IBRS_ENHANCED, and move the
+> decision to switch to retpolines in the default/"auto" case in
 
-Yeah.  The only question I have is if we expect end users to want to disable RAPL
-at runtime.  If so, then we probably want a sysfs knob or something.
+The retpoline switch happens in force case(=on) too.
 
-However, letting RAPL be toggled on/off will introduce some amount of complexity,
-as the kernel would need to negotiate/coordinate with the RAPL perf module and
-with the CPP driver to ensure RAPL stays in the "correct" state.  E.g. if the
-perf module is loaded, then RAPL is effectively pinned "on".  And if SNP has been
-initialized with RAPL_DIS, then RAPL is effectively pinned "off".  Blech.
-
-> Maybe even with a kernel config option for a default value?
-
-Probably overkill?
-
-> On SNP_SHUTDOWN it will be re-enabled if it was disabled.
-
-Stating the obvious, if we do this, we open the can of worms I described above.
-
-> >>> KVM then needs to communicate (and enforce?) the policy to
-> >>> userspace.
-> >>
-> >> KVM doesn't need to enforce anything, the SEV firmware will generate a
-> >> launch error for policy violation if it's not supported.
-> >>
-> >> For communicating to userspace if it's not a kvm module parameter, one
-> >> option is to mask it off in sev_get_snp_supported_policy() if it was
+> spectre_v2_select_mitigation().  This allows the existing
+> spectre_v2=eibrs logic to work as intended.
 > 
-> Did you mean sev_get_snp_policy_bits() or were you referring to the KVM
-> ioctl() for retrieving them?
+> Also emit a performance loss warning for using AutoIBRS with
+> SNP enabled.
 > 
-> >> initialized without the support. Then it'll be visible via
-> >> KVM_X86_SNP_POLICY_BITS.
-> > 
-> > Ya, this is what I was envisioning.
-> 
-> It's still a valid policy bit (if supported by the platform), so I don't
-> think masking it off is appropriate.
+> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+> Cc: stable@kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202603121136.bc8zNsHS-lkp@intel.com/
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+> ---
 
-But it's not fully supported, no?  I.e. won't the VM fail if it requests RAPL_DIS?
-
-Ooh, presumably the subtle difference is that on a platform without RAPL_DIS at
-all, the VM will successfully launch and thus could run with RAPL enabled even
-if the VM requested RAPL_DIS?
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
