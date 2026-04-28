@@ -1,156 +1,152 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011012.outbound.protection.outlook.com [52.101.62.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8951477E3A;
-	Tue, 28 Apr 2026 18:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777400751; cv=fail; b=nT5/BG5dxGfhA3Sx0kYB7G5A5bKdtU/qBxA05a96P6s+sWWtHPlgzd+mYP6Jw/aAYm0WhO9UML2aSSjrdVFZMxlSpf1vhq7YKRpbVBaNspTZAPcJ9lFbjAQ5PWV0KDbtnScsmjOhtgQX6PmvTog0bH9dgchwh2O7ZafrhERPwxY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777400751; c=relaxed/simple;
-	bh=LkUVndl4hAuxkNYto3kt5EECo8RA3hTLV6oTO5XSHeU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gmH/dqrUm3MZMTHxXbwEHX/OL8PpOasWtDuh0YzlxrYXbs3iedHC2wVIbND6QcUYTHqdjXwWC4c5+oEIJrNSwfji0b6YqTiO/g2+odGhMp3S3xvmOJGuaJ3d7OTTbXp92hwx0DF2DUT3B0R/onR3cW3qHfO7qioQwYlPv/dXsOk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wBCxff8I; arc=fail smtp.client-ip=52.101.62.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D96447AF56
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 18:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777400835; cv=none; b=E4PzWlFM3NlE4Tqyo//8YGaeViSeOnChj3ALBSEilTolefXm+v9th0AumPEP0taBd04+n894F+mc+bEIb8BhA6w4qREiih2puVUBAxqebS8UiQLeu1ddnLU6F3Z3L2MQTojt9gKHcDe/xuOB2ZkPW4XS0MiAiaB9XESeWNr1OsU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777400835; c=relaxed/simple;
+	bh=Qgs4VKe6aa4WyJBdEkeJSC4dGYTWRhPAU+v9n/d2wxk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U9JXf40pB36VMiPZiVO3zvMbygQf1lD6PYGdCmIlrb8IkeZAdAiihb2sdg941rt6Ni1TYyNUJ7D2V57u/YgO/WYoSMtUZCt0dqCIUu3YtQz3UB6OKe7RC8lqG73cclXxPdyhsAFwfoJ9F+ER98ZqSG5V4Ec++2lqWB12OUDNqpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vUQhxdmd; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wBCxff8I"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JCZXFPgO2kQ4WjBhkVjedAiRT7xSymDuOnb8S6fpuXUo+DvrGSiRtr4V58pWYPdne3Fy0kUW8zZedCR0ZuRTyT97CcSpdnOG/H/ZxoSdytUN4lAhSfsN5Y83lW9lWHZpTG1BgzRj2xlUv+pJI0Y8eXiPaN88tclYPj7XjzCU1byrilZsR7WYebuZ2FXM753WE8vQs31o2799IbuC/v7JwDrxxIMD1Ps9siEnTm2PxSfuwrrrNCrCtHr8/oPIHMoWhTMM9kqPQ37q5eE7s9wYi6JE6z3m+pWzvlkjbRhmVdTcYvBxomoiYwGhq+VaQDdI271rsehsSFlJhlVswWtXzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6FySCDsn6vSyR+I/7fac79CrlAOfL4pujWk+TIfpLW8=;
- b=DOiwo5KmE9GL+Kk8qNFNV+TacPIQ65l6AvOcC8/dooRL8TBkCSJp/lhCo5AKUoI4tS88lmMTIpuUD3qa8c8cBZkMZI3Jd4t01DeX7MFBvQZCkq5Q8cJG4pxnfuaGFAbslozad63xYdZCCXcJsRto7kuHU2En0onq4pm3Eqs2xwQzz0Q9YAFoFsvBVrrYaAQc2uEvNDTw1EUnVlMn8A+hOWGVt/DTD69r9hxslEbw9sZL/rjhgSS+/W9l6HLcaRdK0qJKuW9t8CpYTLg7BKAn2etTWI0R+wNzJpx/+dbdTKyaOBFMGRVur/6PinaQ1zQlqT/S1+Q/UaxzJWIm58CJfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6FySCDsn6vSyR+I/7fac79CrlAOfL4pujWk+TIfpLW8=;
- b=wBCxff8IcnH8LFICDazamw8eEPneIP9/UztgBNdPnRaf9je/0HYEdonyk3rwrHPX+oEYrVC1daO8oW41Ryto+GZ7F4mD0ljA5Sk4czLkTba9h7sqpyt6qq+38yq+xhOhBy4loA6gi7BJhkJ1gHKQvQUMg6/oMRsNSF1RRTgm38c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB8106.namprd12.prod.outlook.com (2603:10b6:510:2ba::9)
- by CY8PR12MB7244.namprd12.prod.outlook.com (2603:10b6:930:57::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.17; Tue, 28 Apr
- 2026 18:25:47 +0000
-Received: from PH7PR12MB8106.namprd12.prod.outlook.com
- ([fe80::95d6:81b:325d:1923]) by PH7PR12MB8106.namprd12.prod.outlook.com
- ([fe80::95d6:81b:325d:1923%5]) with mapi id 15.20.9870.016; Tue, 28 Apr 2026
- 18:25:47 +0000
-Message-ID: <23513d19-2df2-4213-b12b-8c8a9a9b9b57@amd.com>
-Date: Tue, 28 Apr 2026 11:25:46 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/7] KVM: SVM: Enable Restricted Injection for an
- SEV-SNP guest
-To: Joerg Rodel <joro@8bytes.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org
-References: <cover.1777048608.git.huibo.wang@amd.com>
- <20260424175105.4106-1-huibo.wang@amd.com>
- <6fqi2slwzxy4bwie6lqtcirdlstnh37epdl4sizfmldk4rnr66@x7s4vjhqxayp>
-Content-Language: en-US
-From: Melody Wang <huibo.wang@amd.com>
-In-Reply-To: <6fqi2slwzxy4bwie6lqtcirdlstnh37epdl4sizfmldk4rnr66@x7s4vjhqxayp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR21CA0019.namprd21.prod.outlook.com
- (2603:10b6:a03:114::29) To PH7PR12MB8106.namprd12.prod.outlook.com
- (2603:10b6:510:2ba::9)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vUQhxdmd"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35d90833cacso7481317a91.2
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:27:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777400833; x=1778005633; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y0UGTjzT1o8VOQ2X8VCxDZk9yTiALK5gtuUuVtTpZzQ=;
+        b=vUQhxdmdeuDL+FmBTeTFCL84u8FbaZMFQd8jFbXkAUH7rA8EFiDAWvTaanwtnGkWDT
+         aGpUA5rJl4AQw3logHsf4Mgxvaf8CATv4bXr2qZmtCqbycJmH7EtK2AtrC2bTha7iBO8
+         huu5X3m/SjKAApAt62Qm3adcufkd8yhIA9gRixIfobX6+0+PDt+Fdz1n0vJs0MVGmZ4Q
+         pGWkJbhfoAgfE5H1F6ii/BpZNyJuq+C+YS0qdMnHlxG+qFrtn5UB0CL6VvCdozxz0ubA
+         wN5G/MBrV27x/IeC4Fq+Glo2p93SI6i0i5zaxdSO6s5o9nJ9ckYuibeT/xoQZKOC4m7o
+         BinQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777400833; x=1778005633;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y0UGTjzT1o8VOQ2X8VCxDZk9yTiALK5gtuUuVtTpZzQ=;
+        b=GduuYM8MuVX9iQCe23ZAmdXLw91nA8kbC13veEEXRiVSOQV+RwusvWsTerzmbW5FHC
+         WLe3eHOOiDdZObKyXO6qshaNVxVhEXrQhQalNswKqYVvNMlByDhppw/Whx5CR4K3x5d2
+         0G72+1JaDu+dbrVPYDBXHjxdkWL6Jr6DXcnUlIOVxO+paVv8v01KAaY08n3RoA464hLg
+         hw+iUjUNBSwcD30KxouEcKqTEqb5l8OCAQlMSRjZQp+KswDMhcOjnA3IjCG7JyMZw7sS
+         jOJACc2pRBk+i4MalhQu7nssVDLqvTew4UI7lsqoJkIZebJ1q8ZQFs+mGzxmBi4P3Tr+
+         Ljbg==
+X-Forwarded-Encrypted: i=1; AFNElJ9lxD+DqsJmZ+E4Yd4jd4BTuk2OsCAgTg03R6GTNtp1vu3k9R/x6tcdTvLkpHH4+rq4usQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6ZHGQ4kDjPdNXd7vre1AEOWISQdBkKUNExII6XJNQKL7ygjJv
+	qPiOoVAGvz/+iy+Fa7h7Uo8ZDkMuSquGqFkGRTNQYLJPSQpLsZLLRLFoKSbeSX0NPIBYzSsWQrE
+	oiAmG0g==
+X-Gm-Gg: AeBDieuYZJnn6NdpCbW4Xc0AmiyzmwgkeYzxPBYcE7Y8iwb3Uo23eMB6VBjLfbybC6V
+	ZKqOpYhrA7w3dJujC87ngEnVO2HSNUwXpR5NeTIN3fPIcI3pQe8E80Rr3Abm5gD8snZIReJ8iO6
+	IlEQGnWrnOtZWlaT19METxcBAcm9h6f5qUf49RyEjnA9BfrK51f3F/CwQh7rC6Or98Mv25lBiUU
+	X6RwN8mTRoPWhjne8m7v8c4kt7diqfUx1WgkHByZ0J10WIOmx5mjTd0qzA6wTGVprYWSFlQlg9m
+	you31H/eLWwNsHL/5k2wSmCG7wDVhNebqQ2kmRrSiXkx01/1JBJIi430qkJP06ewaaBx8OEG7nN
+	D9w2kbbKyZjVoCDsxXmvoY3HvA759kFfKbXzMpNdEBdSh3aQ7F6pkPCUpkLKdhNBDJIMj4WnCSp
+	FvDZPO/Ubq4og2NhB0b/96ouI0Tzxvh0k8HNjXE23trUEb9PaIEC8wl6+ZB/GkRUs+DAp0fxuDe
+	ZATMA==
+X-Received: by 2002:a17:90b:268f:b0:359:87a8:e65c with SMTP id 98e67ed59e1d1-3649202ea13mr4377890a91.17.1777400832390;
+        Tue, 28 Apr 2026 11:27:12 -0700 (PDT)
+Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364a119e0b4sm76522a91.5.2026.04.28.11.27.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 11:27:11 -0700 (PDT)
+Date: Tue, 28 Apr 2026 18:27:06 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	patches@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] vfio: selftests: Fix out-of-tree build with make O=
+Message-ID: <afD7-rg58XvqRJpD@google.com>
+References: <0-v1-79f29139180b+8e-vfio_st_make_o_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB8106:EE_|CY8PR12MB7244:EE_
-X-MS-Office365-Filtering-Correlation-Id: d86fc429-fde4-40d5-ebb5-08dea5539185
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	eL//FjMt0QwDh/MGDxFDaheuMe2GCcOFbeCo5xGWlWRFRDIafiEwB70OR5twI3ddV56rZ7L7daYvseOb4f5f4fZ+HfpJTaFTt56XmTPef/fNhW+z//tR8Rs6K6/ZnAb64pr4Lm3OZedc3sMReLi1WNoBpN9kZxEDtAXxG13rzvNLXn7G4Efd5ZPbiGyVdDC0NRV0S/lICUM+ZMktAlgtoZVrlz22VeDMo7o98Xy6tGSh5ufhEwzWqT08wH4XqLaM9Y3RkvRa/ek9SSh2N1MHHOCj0sgO1Rn33+esT/jAUJgcL6w7+cYEcuE9xyPt8rOW79VpWEUsQA1ONqlu7y4o65C6lboS2C8+qsncuhLKWlGr92Vnpmu5C9t0pbrGxHMfIAcyC73YaPv2n9iwSMuEveePPCSzM8bVZgfGOrTyhfIStHoGjp38qtuqTF9kXWv2mHWX40zozzt2DI8OMOGJkuDdkwecRb2kF6TyQtgCZwU8a9nnogWaoS/l+l45N+bnImF8dZIpsa6qXWT4wqIODEfpOnNqlRjMYcyp7q7PTERlxYcJeQnj0T69ISMKeDa3+fHhv/c90j7UgnsQbPDBm6bLteomAQNrIUHrLet9P522DVekKTBQOZNBKv5URwrpIVy0Yee4tV1ZlZvaLQ4ms8N4wKP2fTSuRchM+CyHSO/Kat/7EKdQrD4LvqcwZZvLQhvbuvbHnj+AinkRSxPhD6P8OCyb4OVqKCqcLYocwgg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8106.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dFNOdHJkaTVHcW83TmI2TEpmUHZKdVRtckx6M1NMMENiZU9Yc2Y5SU5rRXRs?=
- =?utf-8?B?bWZrK3F1Q2VVbU16NEhaL2xScUVQV3ZMT0tMNnJrMzYvNnlUVkQyQ1dHZy8y?=
- =?utf-8?B?T01WV1c1UHhkT0F1RjljZ3FrNjR1SGx6ZjV6dnN2aEgrR1hFREtNbm1mVmgv?=
- =?utf-8?B?b1VhZzRkNTFzQlRWYjdGMTN6U3Z1eUxHU3FYN1NoRm9TcklKRDlpbWlTZ0t1?=
- =?utf-8?B?TzlGcG90eHNyYkNiNDMwWm4wUzlETTJJZ05iUlQwVHRrWFpnaGJzbUVBc3dG?=
- =?utf-8?B?RnRZSTdRTy9wM1AyMmhBNnFFOHRTWUl3RGNGc2NoRm1ES2tSNmJZeEpQQnc0?=
- =?utf-8?B?bHQxY1hpeVJONWxTSml6QjZrRHFlV0hwUWtiaVlLZ29hVTZqaW9Zb0ZNZXBs?=
- =?utf-8?B?ZE9hMGF2ajFFbDZyc2h5V0ZSMGo5RldWcFZZSzQ4Uml6cUF3M0VvbXVHV0VG?=
- =?utf-8?B?a0ZuSENGRk9YNGs1NERVaUc4Qy85dy9tWmhzaGlTOGpjQStUTDlHb0wvdGhZ?=
- =?utf-8?B?R0ViWkNMQm1uejFoTUdjaDdFZVg0R21FL2loNUNFdlYxdUZzbExlVFBCaGhv?=
- =?utf-8?B?UVZXSjY4QnJJV3NSbnh2T1Y5WDhsVXpqVUs5ZkV3d2lvZG9HbFZnRjhsT2JE?=
- =?utf-8?B?NkY3aFlBYk1tdW9xSzF5MGNHbGxBV0tLeW5mRTRYTGZINUJ6MnNrNU92VEtR?=
- =?utf-8?B?dUxHcWdJWk91VTh0VkxGczVnT2VPRmNjaVR5ZW8zcUpERnVPa2RNQUdGMUhh?=
- =?utf-8?B?QnRKQzExaHExcE9oZFZjZjZ0ZmNhUHZtRTVuY2tkT1R2a1FORzUwZ21ZWGlh?=
- =?utf-8?B?L2k3ejEvejJPVCt4MVZkNE5PQ1lBSjdJRnh5eUFIQXZvVC9BUXlOUEd3NGhv?=
- =?utf-8?B?ZnBMZmZEN21HOEp3OGxRNkhZcWpva2xnSlowSjhnaHdTYXk5enQyYm1kQ0ho?=
- =?utf-8?B?M05VUW9mVE8vY3VmUWpLdjl4T2NCRXpSSDRTcEhHcS9LMllCeHlvWlFVMnBH?=
- =?utf-8?B?MWJ0eGhRcHptSjhTVFVWMFRTRWtIdlpyRlplZWY4N1F4TVNNTVhiR1BTNVBM?=
- =?utf-8?B?MmVpSlN6YVV2S3BOWktsYU1ZN3o2VFhXaHRJTW9ZdEcyTzVzbkhQanAvNmlD?=
- =?utf-8?B?T0dwQjZvc3dDNGRpUmVNYkZNVCtOZjZmdk1SYXpGOTdNWHIvYmxuV2hRSSti?=
- =?utf-8?B?UjRpSkdNclg2b0E4OUF4ZENQMm5ENW5lSHVkZUNoUTlYRE9OUlREdUZjRUpW?=
- =?utf-8?B?M2FTUjFSUjdTejFDNG1PWDRZYWRDZ1p4VXJON3U1TmNqSVM0WGhBNFIxckp0?=
- =?utf-8?B?M1BwMldISzY0a2N4TSs2VUtVdkZlekMvZkJicFVTVFZaMS9JTEJ6RkFLTlpr?=
- =?utf-8?B?MnAvWVNvZUhNS0prQSsvbHRQajRqUkZSVjk4RmRjaVZtdHYwaXNDd3BJVUdi?=
- =?utf-8?B?VVhud1ZpT3lSUUhSeEFwVkMyRXBHV0JVSWwwNFRHWTFvQjVuUU9PcXUxREY3?=
- =?utf-8?B?M0Z5enJ1VTFuMkhvYmhrWXlEVGVpaU5MM0tNeFVqNGFsY3NrVTJVRWxuWVJy?=
- =?utf-8?B?STVwTnJ0Nmw4SjVoUzZ2U1JMVEVtSVVvNzJYYXBxWE0zMDlERmoyRFBvSHB2?=
- =?utf-8?B?OGM2Vi9RSnNxUWxxOURaWmV5UHpZT0xoejRGOXlnY2dPWm5rUlJXNDlrdGp6?=
- =?utf-8?B?cjFmTDdjbUtSc3lGMXZTa1FLSnZwdDZtV21UREV6N0ZrMTdBOE9FWWluL09k?=
- =?utf-8?B?TDdlT1YvUkR0aUxhWm9wWWxBa3ZuZ0JCOFJ5NHN2KzE3cXFKdnBEWG13cnNz?=
- =?utf-8?B?NGxzWUdjaURybHZjenpEcTR3OTRqUHp6SUs3STJFTlB2aDVlaWRLbWtreUhW?=
- =?utf-8?B?NDFwMzFuL2pQTzhhaGYzWG5ZMk8vbW1EYnJGOG1kcE5MMWRFYmhPNkdKWmVS?=
- =?utf-8?B?Z1oreTZ1ZFRML2s4OVpyTWVHZVZyR1FDbUw3bDQxbGo4b3FhUFVuQ3dKUzFa?=
- =?utf-8?B?RjJpdmczWGdZZ1REZ240NUd5YXRJN3FZeE9PdktDa3g3SkkzOS9CS2FIM0JP?=
- =?utf-8?B?NlVGaUN6QmQ1WFZJeEFtM3ErOVVxVXAzRnd4c01RQWZxM2JkbEswdUhIZFFa?=
- =?utf-8?B?dEl3dnRnNWMyWXNNZWs1STMyRG5MNUxpKzN3V3J4RnhveTRTR3ZSL0VTamxN?=
- =?utf-8?B?alB6bW1raWpzZ202VTViWXh6Smd5bFozVUdnVlZPV1JFUjhpNGxtVVhzRHd2?=
- =?utf-8?B?OU81QWtoY1lIMmhmYklHbWlLRDNPcVB4RXA1dGhBa0pTVW81ajJPcG51VHdo?=
- =?utf-8?B?cGw3S0gwRW5JZDcyelJ0NmFEV1dKeTdtbG1zSC9zMFlrc0E3Mi9DZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d86fc429-fde4-40d5-ebb5-08dea5539185
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8106.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 18:25:47.7218
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zt6xWwpuYamCHANkqOpE+x7kMwaJ13pf8zBMT0uFOy8reNZNo4+xgaUDt8MOB+8hMHOGvk7p/O2HCvBPZ/iMAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7244
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0-v1-79f29139180b+8e-vfio_st_make_o_jgg@nvidia.com>
 
-Hi Joerg,
-
-On 4/28/26 3:52 AM, Joerg Rodel wrote:
-> On Fri, Apr 24, 2026 at 05:51:05PM +0000, Melody Wang wrote:
->> +/* enable/disable SEV-SNP Restricted Injection support */
->> +static bool sev_snp_restricted_injection_enabled = true;
->> +module_param_named(restricted_injection, sev_snp_restricted_injection_enabled, bool, 0444);
+On 2026-04-27 08:07 PM, Jason Gunthorpe wrote:
+> The test programs are compiled via a static pattern rule that requires
+> intermediate .o files:
 > 
-> Any particular reason for a module parameter? I think it is fine to just offer
-> the feature when supported by the hardware and enable it when the VMM (or the
-> guest, when planes land) requests it.
+>   $(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
 > 
-Yes, you are right, I will delete it now, and only if it is really 
-needed I can add it back.
+> After lib.mk prefixes TEST_GEN_PROGS with $(OUTPUT), this creates
+> dependencies on .o files in the output directory (e.g.
+> $(OUTPUT)/vfio_dma_mapping_test.o). However, there is no rule to compile
+> these .o files from the source directory .c files when OUTPUT differs
+> from the source directory.
+> 
+> Add an explicit chain of pattern rules:
+>   $(OUTPUT)/% -> $(OUTPUT)/%.o -> %.c
+> 
+> Following the same pattern already used in libvfio.mk for the library
+> objects.
+> 
+> Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  tools/testing/selftests/vfio/Makefile | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> index 40165d087a0bc4..81c3be8298fdc2 100644
+> --- a/tools/testing/selftests/vfio/Makefile
+> +++ b/tools/testing/selftests/vfio/Makefile
+> @@ -27,10 +27,13 @@ CFLAGS += $(EXTRA_CFLAGS)
+>  
+>  LDFLAGS += -pthread
+>  
+> -$(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
+> +$(TEST_GEN_PROGS): $(OUTPUT)/%: %(OUTPUT)/%.o $(LIBVFIO_O)
 
-Thanks,
-Melody
-> -Joerg
+Changing this line (with the fix you replied with) is not actually
+needed right? I tried the following without it and was able to build:
 
--- 
-Thanks,
-Melody
+  $ make OUTPUT=/tmp -C tools/testing/selftests/vfio
 
+$(TEST_GEN_PROGS) has already been prefixed with $(OUTPUT), so %
+in the original pattern already included $(OUTPUT).
+
+Is this for readability?
+
+>  	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
+>  
+>  TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
+> +$(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
+> +	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
+Looking at this commit made me confused how this was even working before
+and I learned that make has built-in rules to build .o files that
+assumes the .c is in the same directory. I see now that we were reying
+on those built-in rules to build $(TEST_GEN_PROGS_O). It makes sense to
+have an explicit rule to handle the directory mismatch between .c and
+.o.
+
+This also got me thinking it might be a nice cleanup to use the
+predefined macros $(COMPILE.c) and $(LINK.c) in these rules instead of
+$(CC) $(CFLAGS) ... etc. No need to attach that to this fix though.
+
+> +
+>  TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBVFIO_O))
+>  -include $(TEST_DEP_FILES)
+>  
+> 
+> base-commit: 681b35420592a2e072d9759254185e72d2e914c8
+> -- 
+> 2.43.0
+> 
