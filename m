@@ -1,185 +1,196 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013015.outbound.protection.outlook.com [40.93.196.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D781ACED5
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 19:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777402942; cv=none; b=lBUz7teHMeeNFfJx8L2hqmwN/Ehq4iIMflUiRGaX0qBtU7dJVEtmskp+CaLFq5hycDf7lP7uqukWSq3Gs4mS4SmF/FPozH4Q6UsJ4hkfhZGwEBdKG+Lf77RtqEAZYNnFMm1q/dsE2AW8ZQrLGBH8rSQ2k488O/KxkCl/t1aqpMA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777402942; c=relaxed/simple;
-	bh=utj7qAfjlNCCoxisNE8c1eXcslz7rYb9Hqgx+ZHGzoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJ0wgvZAD92hIeStLRJWmJYVJHuqJadez29tbVHeq8UJF9x+1NZ8CPuVZ0EJINXL9MfHmyiniFR5U6FW5IJ40wswi93E6SDDojri00k7qDGfM6O44gqsPUNu6d866npWtXcGC3ZrwONBua4Vwi+aD9DrCgV0dm13+IP1QC1SbuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pfPZn/6B; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61593502A6;
+	Tue, 28 Apr 2026 19:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777403089; cv=fail; b=CLHOLA3Y0wNifMq8bkAJ7WY9sLY6Eo461z63RluvWmNu9gVO6ZVp8BQP7UtxIJqI0ABiuU7cTOMJHcVDDjVe3c9cYQxQjoHcr90zfjlWESSMiZaa9KWIz5Q5nrzVOR6052lxOc5VBDjyoQYy8KcpFKlg5NfRSeKxKNDwdpwbTAQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777403089; c=relaxed/simple;
+	bh=zIf0x2hRze70nR4gw0e6K4Ny+08TVxyNo2S29kivlOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=n7Otxei77XYeQU/RsKOnmQfrSFVpK/6g/y7lj1hbOBq+ujg61w+jY4oP1QvDdoE4JzUR7HrlBlGa+M2epJl/VpNkFdNf9e3xufG43GtTN+XhmoHEvusnFxi8OTh++z0ZE5w/IFnVb4HWk29EpOkWJva4tGhKqw8mW10FdoOhng0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UD4V8Kly; arc=fail smtp.client-ip=40.93.196.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pfPZn/6B"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b45cb89f7eso73753025ad.0
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 12:02:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777402941; x=1778007741; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xUzs5gShcjOh9gjGckbIhxPp4FsmMFw+qYY2UNbR7e0=;
-        b=pfPZn/6BHKj15/714PmoD6yCkxfcoWhHVpY9gDxKCeV6hgwxjMch3YIGj/c+L7onLd
-         1/kE/cd4+2oIMyM9ey1Gton1Q0OykXln0NWlgioF8GeCigmkg6TT/FjeCAHUqcc90nsu
-         eu9BFQ+u8cCw9XAg+0XoX582t61T40SR384giKZR918MD81RqzwKFHI1EtJAYPoBigcm
-         MjxlbTrPW4YLXoaYvab7DnI1lUaJuzJrqvmQEKAbzqNLSLqUGledF/dVsRrWIU87CKG/
-         Yr8scLj96LazgxRR6kP0ankAsilRyx2yMw95JUBj6DUBpuPvLZoiIAZkZKnvgFR4EGF7
-         1Yyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777402941; x=1778007741;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xUzs5gShcjOh9gjGckbIhxPp4FsmMFw+qYY2UNbR7e0=;
-        b=dviPrrD7zMFTC1Ak68qopGljDMHhhbHLeHLB+eDvrLwPWC2H4hoEpo9gepn62VrmOP
-         Xzeid8DT2druCOUIybjs4YPk3kfGW40Kj+r0qj94TWfHtt9ICZkBRv/DQvmEnzn53Mk4
-         4IJKVzSLRvid0Sea6VXyw+OZam8noO0h4jcl+2Exupz5qy+WhEwhJ7U0Lhx0IeH3vHpy
-         MJ4ZU3ATeAAtLWQw3SnBv3MRmTrmgQ4l+OYLdJtd/TFD3o67hMk3rgl5w9D8k0VqsOYu
-         m3roiSuom/rmnbpzJW47qRhRlDlISRsUUZYFurDWElCzEi2P30zawIRY9/myDlHNxfSm
-         Ln5w==
-X-Forwarded-Encrypted: i=1; AFNElJ+fiawyABOCg3YUe8irG+1cCRvyaPEnyOEu7+/LW0N2Ek3pCUUiJmKPKk+9AGHFnDRkAqA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzrRYDZBJy2+LenxP/LFWKNau50E2eAWDvBafqQHkGKA6OBQB+
-	vbcleU9662XGV1Tev9woMy//5knm+dBChkHLHWC57br8Vf7UxbVEkQ1tk/Ysm/hX/w==
-X-Gm-Gg: AeBDievUJ+Vh2XDuSgVF0RRzaVhuQQvysottChTOBYIhkDn+B2mTIE7qSrNmnQEPsvW
-	rmCxFZdHUcuZkrQpOKoZr0oRCRHXuUg7XhXOVz/Ky64YKcbwpuuGyGXosLLkTMWhCIMgzvleH/O
-	xS/8Hc2JVupwjZ/fDNzGUGNBDQ/WWwanLuhN3eBgbax//Q7dSBYTEiX02ZTEPWTr+/bP8E0YMdD
-	iaO+LjOU7j2mkK24b3hTULMGtI/2j27pvI3Mnl+p/PNjkutnpnDuQXKOVwXNFLz6mYDH94xROWu
-	kx0cVl/tZkQ0dBUiLwc+ZR1RX9vjaaSjctpVbghipn3VyDVY2Mqx/H+IgG+0f222o2g/lDPoxIU
-	/vkawNfUAtfmRl7rl3mhXhMaxFJteizG6jwrVmeKO4xKK0sHgNgWOi+FNgL5iDhF8+jR0TEv3T5
-	pK15zlp2Wqs1KgJDS6rQVEJjncV/nhIhBJxIXeRRrczu1THMyU/dz/lfeo+p46Ek1Ih8q2x3pFV
-	no0Ew==
-X-Received: by 2002:a17:903:2ed0:b0:2ae:cb0e:fd59 with SMTP id d9443c01a7336-2b97c4120bdmr44062645ad.8.1777402940096;
-        Tue, 28 Apr 2026 12:02:20 -0700 (PDT)
-Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9887a4ba0sm2025ad.32.2026.04.28.12.02.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 12:02:19 -0700 (PDT)
-Date: Tue, 28 Apr 2026 19:02:15 +0000
-From: David Matlack <dmatlack@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Matt Evans <mattev@meta.com>,
-	Ted Logan <tedlogan@fb.com>, Alex Williamson <alex@shazbot.org>,
-	Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v2] vfio: selftests: only build tests on arm64 and x86_64
-Message-ID: <afEEN_4ufBcQld0q@google.com>
-References: <20260202-vfio-selftest-only-64bit-v2-1-9c3ebb37f0f4@fb.com>
- <e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com>
- <20260427231217.GA1670652@nvidia.com>
- <afATrrjqt8zj2plL@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UD4V8Kly"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D2lSkQZzxxPXmHjhG1oWMc9i5wCFvCYKZJV3njgSVpjMKrfgwAaMQTRXCpGI5m6P1NwBbaHxnpu5yDGHPx/2y4go9AEFC/9nqK+AgOEfRv5mFg71Q8127XuVL3NQUamiQWU7/03zuM9QjgQCBLCWixfBH3lhWy0cw3BhqHxyNQgINu620rdNs9ke93sCKs79HKvpG2ffTFo0IlVJqB95nTr7ZvZttDv7G1NCvkZ1WBYQQ5Dv2eIL3VVmCuD/FHLxlUoPXtCdwfHmJgq50A7QZSMmpbmhUet4lyn5m+EyyND472f2cETfFX5CHA22sI+UkuxZl0ay5nVAzQARQrnpgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/NXozzkOG/c7V/R1DJi0SOcwl6gy7uSDzemh553nd20=;
+ b=y4X5mr2/9DF+Mf+guaep5G9W/VllqzEN8zY6FnBXWnh5DPPdF/48hwcLb2X6gS1WLL0SHIAh6JcPIkfDHDtG4hqERJmbWv5vd7/nSkAtv3O3jZUqgEONKil1pIdQhmUuArg9mGS8JO/78nYYd0xZNCbHZVXRpbrXIpTOzdnRnCaFs7OWjXlPX1ruF8n45f7uDuuQqe96v87zRk0AjvpoGwyuncdExU+REUf+4EQHeh6fcyFo4i2S5wvPRIzb0f+p0ns7wN80HF6W5ngq8w/Beg4bOHhB17VrkscHP4uPyOvsn4drM1O+PzU8LDJoafZ7NoV2f8Mu0IOgMuI4Sf5HPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/NXozzkOG/c7V/R1DJi0SOcwl6gy7uSDzemh553nd20=;
+ b=UD4V8Klyd15Uy2izdC1rLHZRJyc1wsKJfU2P14IK6eOr3rWyqqOVrF9aJwerhJ4pGnDRGPv8qv1VO2MGcI8pTVym7lXGFNZi1XVN//j3hQS3FWowXEPFIV2ABMgqdkjLCGMIabx0lNrviM06QbLvUA29CBsnggqwjBCXxmz5UURAm5RSMR0EzOBPnjWSj/1U/8n5Ku39TcqKav4QJiqy7VrTzaU0HAHZdm8iD/bninqX4r0dSzkRfO9tn9F8EueT+pXvTkfb88W949kosHthydihu73iWAC8jVXGcWGzv+Rrikqmh0drMUuie2cjXTUZuPlStTN/eqqcugwtQDRCSw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.17; Tue, 28 Apr
+ 2026 19:04:39 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 19:04:38 +0000
+Date: Tue, 28 Apr 2026 16:04:37 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	patches@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] vfio: selftests: Fix out-of-tree build with make O=
+Message-ID: <20260428190437.GE718365@nvidia.com>
+References: <0-v1-79f29139180b+8e-vfio_st_make_o_jgg@nvidia.com>
+ <afD7-rg58XvqRJpD@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afD7-rg58XvqRJpD@google.com>
+X-ClientProxiedBy: BN1PR12CA0022.namprd12.prod.outlook.com
+ (2603:10b6:408:e1::27) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afATrrjqt8zj2plL@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB7500:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb5f268d-2396-4a9a-a602-08dea558ff04
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	WUvO+NRAahHcn/rxbUB5yInLAT/fULQlJ25awbXpPq2UblUz9beMKWzzfVMk3SVIsfRmnGf0YRmqOlEUi2aqLW2lprn7z5bi/IYdmjUEGz/R2YjJGcq7MjZ0PYlBTu/YK3uhw56TGbZNYPX57kPj3j+jfgu1atGOi45XrcEMoU16J0tyUR4Y+fuwG00mpoZVRlcyrUAfw4nT+UvL80lC34IRHSiDKSNN/0t9HR7R/0CBDodr1pRYIGVI2Cj/5utgD5CXnsASjGvUoqEL3foHOwUszgs1PNUNhzx8FypqYsNLhvThFC5ovzPvypQHqhSr5e+OlE+EAPpDEm5B/BmYYlXikd87wbbRu1D9orVY38O/UHZ8gBj03g7TqiOQP0B/jhrddJe4uzup7GdBbNiQye9eNcVs3NA+l1o9uOvumNlsM1DBZCnTE/Ht/caFzyQJv08U8ax+uxLWBaJusbhA5Y14rJ/Iedoyk/Ea0PEqfYMpNWn+nrlg/z1aJyg2NITmV0BngHKhICX/Tv1ZsMgybDK4xFyOBKSqcy+YwwNFrXQytm1vnamauu3h9+qIBiUHIuCoQ0gIF8czRc2x2bQtlTpNyryOmE6W+a9I7/2Vp0cV1823M7mNCLJ2D5Rp/MvFHliOI41cu8YO84jwow46SMF3Dm8Z38CrJR3MDQvgh7kzSNPEqoXr5N5s0KhuQP0km+Enlokvh+i6mQUQ5B32x6qHqeGXINnOw7jxNwAA/4w=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?e2vlSgP8HDCLkE3F9Bw2Kuav2tcWDIkC3V1yoy7iiIb1nw5vC2zuP84lw+gH?=
+ =?us-ascii?Q?Lx5hsTqZaGioqF22egDVuPjkTEsrcO2zmsT2rVC0RT8WvyjxLldhcLbhK3pM?=
+ =?us-ascii?Q?jA0RK/r47ojWhze1io8FrXampZrwdDH4d14wnMahDhQSojn+OtZjpFBAN6Z5?=
+ =?us-ascii?Q?BARst2plBq2804uHJVOUY876hIur4lLhMPxxcBoJ4mY0mBJVvOqhcZt6J0EU?=
+ =?us-ascii?Q?YmptYZLwpnqIm6pPyHJ998d/8ZKdyAWIKjUgXEDcR1Q9l8sQREfpfkFcz/zf?=
+ =?us-ascii?Q?idbHscQ45rNo7hjadBvIl4JjfCrj3QmbciBKS+N57j2KPYUpOsAFWrxSB2i+?=
+ =?us-ascii?Q?/VgnCr1e5QunsC/75HZP3yde3c+27yyljFvwYzZ6BpeGx22dHMp7vZk4EZSW?=
+ =?us-ascii?Q?lY9VdBnuw08ZqxyCSyWW109sHxok5WZ1ZjSmePiXk8+2ItWWtWaIPn8eyS6b?=
+ =?us-ascii?Q?IpYkCg6hDaUvor9+Q70yR+S7l78Gh1tgOdm5qKTmCQDZvA2pbLbpew/mM6d5?=
+ =?us-ascii?Q?kMCU2jPYwRZQ50s1BtCoPb4j13hmt39nLe8lt5vtBIj3ZP/vMW1xiMPa/4RB?=
+ =?us-ascii?Q?mpzEZrfjN8aJ2I6z40BZFwPg794cPpiAN4LTiovVZ9hQnnZ+VnJjp0qEm7tK?=
+ =?us-ascii?Q?4nmBEnKNCQqniUlGMNOtxinXivp+LUsXTc+XF2tOdKOVnTd0rPJRFZ1p5ZcC?=
+ =?us-ascii?Q?escX1YUK4mUhJrLrhVRsVY2/DbhNu0sub524OgmHGKvhDPeRX6Ng+ZbZ7d4a?=
+ =?us-ascii?Q?AvCdl1EcyJzfrS+u3wa6WNLADcclu0EwXkC480KQeqGzs0Xxezd0MFOdgrC/?=
+ =?us-ascii?Q?2I+ugEgYx8sHnEWUZk1Nm0IQIR0vrn1yrQbFDmaSPmrHBHEQ28ntf1VrWBVz?=
+ =?us-ascii?Q?iq4vU9KUcWGmrTxneCXIV/ROtY3nE++3Q3KUtR9z58kgkqXI7G1UcfHCS9eF?=
+ =?us-ascii?Q?BPTf1xilDOVsKrSA1hCvikJrJWFX1tyIj+qXER5TytaV5Zhwq0ev9rmF3kNB?=
+ =?us-ascii?Q?/t2uGCEct4/cEcPuFSAP7T+URslhi+yt7uo9rltjKGmCgP4PkfXePAzRTvS9?=
+ =?us-ascii?Q?QJXyeirRlx2iyGLx5iBha/1VOvzA/0eo2DjCT/5W4e2BuyCzgZW2UjH6F29L?=
+ =?us-ascii?Q?TmShfEr9oaNrHi55ol0WAahb71kfxu9wjqHJw6c4bCuUbwFMiH3bCFJcdEcP?=
+ =?us-ascii?Q?oC9NHpuEqcP1uzNN0P8vz3e6Efp5PRSSd/EB4+DiCOK/s1TfDIdU2345xPNt?=
+ =?us-ascii?Q?HFIWEGWEP6cF8os2BV+N1Rdd/I99sdDvGCCWu4vue6LQTlFN+ch9mCEXmPyT?=
+ =?us-ascii?Q?UR2gSRcGMm7l+Y3a+blPlBvL0ffQWDkoNlXOEKS72iawTcIRm0nOkCIjJD3w?=
+ =?us-ascii?Q?v96okKR8X5e4zpF29/RLv5SFuIxYQGPhi4yvdRdKB9PZ3yAVP8XKc+OlpPP8?=
+ =?us-ascii?Q?CvSqNEBM2coVrFvJJtNM2pruvp3oCzeKjytHHutY4/AfGmOfyKvdC95DhApu?=
+ =?us-ascii?Q?3zuSAg73pRwK7+Et1fc/1h5OW3Z1gnmnTEstLrlHmqJsSq18eLZ+64H7N+UW?=
+ =?us-ascii?Q?b2V9+Wv6DefCJmNzZJJnEPZEFKMBLHspASJFT7nRDWXqJzpCZ5cCmn/UI+Ak?=
+ =?us-ascii?Q?WvTWHwpc4fzMd6TH1ILIHL47kPsFlKPM4MTZKxfwJOZlcFk1gKPa8lbVuPqo?=
+ =?us-ascii?Q?SO+pj1H+2C9zmlJq5XHKilii9Iaj+bVhx1p7VY++gAmlK1gV?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb5f268d-2396-4a9a-a602-08dea558ff04
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 19:04:38.8799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /DYSdAInv0wOI+a708+dHBUpNvVKfsfdjm2k4OwTz24cmWQiGpNUnl9txK4kGTeu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7500
 
-On 2026-04-27 06:55 PM, Sean Christopherson wrote:
-> On Mon, Apr 27, 2026, Jason Gunthorpe wrote:
-> > On Tue, Mar 17, 2026 at 01:55:17PM +0000, Matt Evans wrote:
-> > > Hi Ted,
-> > > 
-> > > On 03/02/2026 01:23, Ted Logan wrote:
-> > > > Only build vfio self-tests on arm64 and x86_64; these are the only
-> > > > architectures where the vfio self-tests are run. Addresses compiler
-> > > > warnings for format and conversions on i386.
-> > > > 
-> > > > Reported-by: kernel test robot <lkp@intel.com>
-> > > > Closes: https://lore.kernel.org/oe-kbuild-all/202601211830.aBEjmEFD-lkp@intel.com/
-> > > > Signed-off-by: Ted Logan <tedlogan@fb.com>
-> > > > ---
-> > > > Do not build vfio self-tests for 32-bit architectures, where they're
-> > > > untested and unmaintained. Only build these tests for arm64 and x86_64,
-> > > > where they're regularly tested.
-> > > > 
-> > > > Compiler warning fixed by patch:
-> > > > 
-> > > >    In file included from tools/testing/selftests/vfio/lib/include/libvfio.h:6:
-> > > >    tools/testing/selftests/vfio/lib/include/libvfio/iommu.h:49:2: warning: format specifies type 'unsigned long' but the argument has type 'u64' (aka 'unsigned long long') [-Wformat]
-> > > >       49 |         VFIO_ASSERT_EQ(__iommu_unmap(iommu, region, NULL), 0);
-> > > >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > >    tools/testing/selftests/vfio/lib/include/libvfio/assert.h:32:37: note: expanded from macro 'VFIO_ASSERT_EQ'
-> > > >       32 | #define VFIO_ASSERT_EQ(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, ==, ##__VA_ARGS__)
-> > > >          |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > >    tools/testing/selftests/vfio/lib/include/libvfio/assert.h:27:22: note: expanded from macro 'VFIO_ASSERT_OP'
-> > > >       26 |         fprintf(stderr, "  Observed: %#lx %s %#lx\n",                           \
-> > > >          |                                              ~~~~
-> > > >       27 |                         (u64)__lhs, #_op, (u64)__rhs);                          \
-> > > >          |                                           ^~~~~~~~~~
-> > > > ---
-> > > > Changes in v2:
-> > > > - Add white space around arch checks
-> > > > - Clean up uname command
-> > > > - Link to v1: https://lore.kernel.org/r/20260130-vfio-selftest-only-64bit-v1-1-d89ac0944c01@fb.com
-> > > > ---
-> > > >  tools/testing/selftests/vfio/Makefile | 9 +++++++++
-> > > >  1 file changed, 9 insertions(+)
-> > > > 
-> > > > diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> > > > index ead27892ab65..8e90e409e91d 100644
-> > > > --- a/tools/testing/selftests/vfio/Makefile
-> > > > +++ b/tools/testing/selftests/vfio/Makefile
-> > > > @@ -1,3 +1,10 @@
-> > > > +ARCH ?= $(shell uname -m)
-> > > > +
-> > > > +ifeq (,$(filter $(ARCH),arm64 x86_64))
-> > > 
-> > > This fails to build (i.e. elides the build) on my local arm64 machine,
-> > > because uname -m returns 'aarch64', not 'arm64'.
+On Tue, Apr 28, 2026 at 06:27:06PM +0000, David Matlack wrote:
+> On 2026-04-27 08:07 PM, Jason Gunthorpe wrote:
+> > The test programs are compiled via a static pattern rule that requires
+> > intermediate .o files:
 > > 
-> > I have the same issue on x86! The kernel uses x86 is the ARCH when you
-> > run it straight from the top level make
+> >   $(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
 > > 
-> > make[4]: Entering directory '/home/jgg/oss/wip/mlx5st/tools/testing/selftests/vfio'
-> > Makefile:1: "Saw ARCH=x86"
+> > After lib.mk prefixes TEST_GEN_PROGS with $(OUTPUT), this creates
+> > dependencies on .o files in the output directory (e.g.
+> > $(OUTPUT)/vfio_dma_mapping_test.o). However, there is no rule to compile
+> > these .o files from the source directory .c files when OUTPUT differs
+> > from the source directory.
 > > 
-> > Even though this is a 64 bit build.
+> > Add an explicit chain of pattern rules:
+> >   $(OUTPUT)/% -> $(OUTPUT)/%.o -> %.c
+> > 
+> > Following the same pattern already used in libvfio.mk for the library
+> > objects.
+> > 
+> > Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> > ---
+> >  tools/testing/selftests/vfio/Makefile | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> > index 40165d087a0bc4..81c3be8298fdc2 100644
+> > --- a/tools/testing/selftests/vfio/Makefile
+> > +++ b/tools/testing/selftests/vfio/Makefile
+> > @@ -27,10 +27,13 @@ CFLAGS += $(EXTRA_CFLAGS)
+> >  
+> >  LDFLAGS += -pthread
+> >  
+> > -$(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
+> > +$(TEST_GEN_PROGS): $(OUTPUT)/%: %(OUTPUT)/%.o $(LIBVFIO_O)
 > 
-> Heh, it's much funnier when it's happening to someone else.  :-)
+> Changing this line (with the fix you replied with) is not actually
+> needed right? I tried the following without it and was able to build:
 > 
-> KVM selftests went through these exact pains.  I'm pretty sure these are the
-> relevant commits (the empty targets one may or may not apply to VFIO).
+>   $ make OUTPUT=/tmp -C tools/testing/selftests/vfio
 > 
-> 9af04539d474dda4984ff4909d4568e6123c8cba KVM: selftests: Override ARCH for x86_64 instead of using ARCH_DIR
-> 67730e6c53d70fb31618230f81c4acee9f72eaa3 KVM: selftests: Use canonical $(ARCH) paths for KVM selftests directories
-> 43fbd8cd389faa9760c5152b1c58e893c812953b KVM: selftests: Provide empty 'all' and 'clean' targets for unsupported ARCHs
+> $(TEST_GEN_PROGS) has already been prefixed with $(OUTPUT), so %
+> in the original pattern already included $(OUTPUT).
+> 
+> Is this for readability?
 
-KVM selftests don't prevent 32-bit x86 builds though, which is part of what
-we're trying to do here.
+Yes, it makes more sense to explicitly match the stems through the
+flow than to have the implicit $(TEST_GEN_PROGS) == XXX/$(OUTPUT)
 
-For example running...
+> >  	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
+> >  
+> >  TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
+> > +$(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
+> > +	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+> 
+> Looking at this commit made me confused how this was even working before
+> and I learned that make has built-in rules to build .o files that
+> assumes the .c is in the same directory. 
 
-  $ make -C tools/testing/selftests/kvm ARCH=x86 CC="gcc -m32"
+Yes
 
-...produces a lot of -Wformat errors that were also seeing in VFIO selftests
-from the kernel test robot.
+> I see now that we were reying
+> on those built-in rules to build $(TEST_GEN_PROGS_O). It makes sense to
+> have an explicit rule to handle the directory mismatch between .c and
+> .o.
 
-I think something like this would fix your issue Jason. I haven't tested it on
-ARM yet:
+Hmm now that I think about it, I wonder if it used the right flags..
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 0684932d91bf..db71aef6bfb2 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -1,6 +1,11 @@
- ARCH ?= $(shell uname -m)
+> This also got me thinking it might be a nice cleanup to use the
+> predefined macros $(COMPILE.c) and $(LINK.c) in these rules instead of
+> $(CC) $(CFLAGS) ... etc. No need to attach that to this fix though.
 
--ifeq (,$(filter $(ARCH),aarch64 arm64 x86_64))
-+# VFIO selftests are currently only supported on 64-bit x86 and ARM.
-+ifneq (,$(filter $(ARCH),x86 x86_64 aarch64 arm64))
-+SUPPORTED_ARCH := $(shell echo __LP64__ | $(CC) $(CFLAGS) -E -x c - | tail -n 1)
-+endif
-+
-+ifneq ($(SUPPORTED_ARCH),1)
- # Do nothing on unsupported architectures
- include ../lib.mk
- else
+Yeah probably
 
+Jason
