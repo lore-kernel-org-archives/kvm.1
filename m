@@ -1,176 +1,269 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5326A3CAE8F;
-	Tue, 28 Apr 2026 08:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777364144; cv=none; b=CPv7/Krs7AZtc/ei4g7VrJKAxRr/AE7A+aKfc6Xopkh4xf3DB5fBHxzww7TjIAsnD0c3vXBTBlnHTDN0hX4GILT4aRxhfhu5B91xgMKtY4RDFZEW+dIP0/nzHpaYE/erA3Q+nR9M9iDalhZKCPnsO7P9L/lCMQGeVhbbUjFdtYs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777364144; c=relaxed/simple;
-	bh=bf0l+qnY5Z4nXTL6SarVdLg3czWRX2ly2rs/LxCaUq8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LunF4JMCRMiIyW0Fmj/LZ4HQFf2R1+KJaSb15QR5dMlcj2xAR5MlKF5r/EwSSxjoqrjnhOIcF+l3aLevyNHSibhRJs3TKrhSHIzY2xjyXZzWlLYFpJqn8XO+4KCwQnEM/NW2DubwWjYCmofUuuUNhvpJkL2N3w8jMqE3wG1J+Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XFmI5N7w; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B718F3D3304
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 08:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777364692; cv=pass; b=Fq+W4d9cAx7dTDXCpRF195uXwNm+49bmrrNM+ySLOZJYT5n86unn5rhr7SAO/vU2pYfGltOzpZy5VQ/1nyADlL950MjEYlhYffLTxUk5nleaOg72rNAK7q1FgxDzfesqohVmtURqkKU9iJArYNRe/Li/GFWSOeBK3tbUaqsAY80=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777364692; c=relaxed/simple;
+	bh=rflQkKHjNVxCVgZtglvz+DJcNmjV4gDXBMOsyusJUg4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d+6z2U/nRO8umyXU929ZjuKV6pv5LHwg4X4Pww6SuIaxrYZ3nfiDMR3NyNt4Q9M7vStY9oTpWUbVbDLVKRqbKsRDDIsVWyMrpeHREBKjZwwfWUucPujeT0377FsfkMxgs+auDpUvVDGO642Fvf7m+ql5GFKM6SenlFktFEzGwDc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FKlDK6/J; arc=pass smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XFmI5N7w"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63S4iRow2652173;
-	Tue, 28 Apr 2026 08:15:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kpNmdQ
-	FLv7DSnpbN0s0soSDlc2OGTcpPz0FwN7cCdF4=; b=XFmI5N7wTpvDHNKAqWM3qP
-	IqsrlEf4wIR1/sWjRUHTvPnTdmQAWUNkWTnnEprrEpofM5C6fDi+bnZIiKzXUxyf
-	gyLoJqlXtyeSEgG/eL2Sif2DYZQCINf2jdE6vQNTv4u7crbqvcLhoPmu6KLkzhgS
-	hyIY71ajKsMI5O4cr6MmEM2RFfS22WBuAG3im1LOjhTm+5cD9LJYi9TKW9GhT+Jc
-	hx7zkevLXV7w+R/tOKcRgcQ0itWsDpNLbC+kX9a/p4kDOK82e9ZJRpOaM8q6u6s5
-	v6VT38B6B3+PYrC8iL/BxumjAKCBhIrbRtYSZ3nxtHCAMoTQE13pZhDAPKOJVvoA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn8vba5e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 08:15:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63S88wZo029960;
-	Tue, 28 Apr 2026 08:15:38 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8xk0t65-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 08:15:38 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63S8FYmI49414592
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Apr 2026 08:15:34 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 92EE220040;
-	Tue, 28 Apr 2026 08:15:34 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 68F0320043;
-	Tue, 28 Apr 2026 08:15:34 +0000 (GMT)
-Received: from [9.52.198.32] (unknown [9.52.198.32])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Apr 2026 08:15:34 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Tue, 28 Apr 2026 10:15:26 +0200
-Subject: [kvm-unit-tests PATCH v5 5/6] s390x: sclp: Add detection of
- alternate STFLE facilities
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FKlDK6/J"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7991db3dc98so121699197b3.0
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 01:24:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777364689; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gSWen9ZJSi0YIpAel/Va0bHnTcaC0t4LVjOWW/7vVJrEOFBdebpudgagvyW3094db+
+         spSQjcS4pyuYseS9z0T1GXYVqSATD4a0RUIKzIHGsZy7OwIwDVeAuLQvx3NB1G39Eeon
+         yEUauwxeJjE87UkkLj50aufvnnVBRyd28um6FFcOpLUkEpv0zcpqOgZyj+v/k0XTBy5b
+         kuNyPYR6VIKkedZO65mpTS6ISt6SBhlfd2mWUmZznnVy1VBTb56oRtoPJrfy78hq6GXx
+         HR1yVUD9Uiiefsq9Ze+TLeYGiLsq95CEUYX49Q0S+3hWVMwTWyIeDCj2Z/9YBDJKnWwz
+         FbXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5nbTPPIa6lE5He4gxsryrRCR65xYKtTO0ggHOsJlUxQ=;
+        fh=LWUNqf/CUR8xT2vk61z8Fn4yLP7BchD60909ndnpXp0=;
+        b=EnT5czQsvVFEJ+DrhXpmZXGYwiRrPeINW3CfT/fTrpDY5JuUvZLol12hfIcFoSInWx
+         ecuTqP9DKZ85bpJnxQXk6aRTiOU/N3ZUQhyR+pqxzQ2Py1i4qVUiRim1/675P0ZChY3w
+         X16gN+ryCV7rjKkM6kzMC8BZUo91/DPYzc+Fsa3Myyk51bvWv2O1XVSfAPoRnpfhLN+k
+         g4zISXGmeKOpGTOYSIv1P+QARs246x4iXTuRWvFb6ehxn0dJ6omdZDCj17uauNT8M3LR
+         KjmC62J51+97cDA1NLlzg/xHr/s6wLG/DSfjEs6K6fPteNv66kLUEve1zwb5FDcr4kmP
+         NBhw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777364689; x=1777969489; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5nbTPPIa6lE5He4gxsryrRCR65xYKtTO0ggHOsJlUxQ=;
+        b=FKlDK6/Jv8kfNtGY1NX3h4cuGQWkh2bPTW7s66iUkenkESCJzpbNLojgUNBzDYprm9
+         9kki5WolLEy4iP4IZ4NnwQihx9jf4egowH5WAba33+Y/OWmQgkweU1z7f6S5djyqJTrH
+         HvAZlGXU3uq+ugZQomxwBSaQts3a+yRqX8z5CJTekmBpgkiim9ViESCEWAPkwXk7xdsC
+         qkYoejn0VNDhBvEDV6mjENXKuKOrxO4gv0q0AFPoYme3nFCC+B/vaErA10V4qyvfc4Zu
+         lvwCBXlasfqxv6fdHxJjDabhVhOFY2nnXcQmUnpn9mLRZm+znxQSAjedltgsdXTMtu8t
+         UhIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777364689; x=1777969489;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5nbTPPIa6lE5He4gxsryrRCR65xYKtTO0ggHOsJlUxQ=;
+        b=Q4dSckQKosNxLsOr7ITGU7FqyQ0u2aDB8L4bN4lOROq9tiS679dEAPNg3dzQLvd8q+
+         Dk8MA6AnXB84J2AQ7TOVtdcdBoq7oB4vR2lKENQj3C2pFzqy4Tx2nBS9QN4m/qmAjbWo
+         hPP18glsVtQv9aMqyhu+JMRAe4/VvmKfSQ6afSi9UtdxTLLJa5xkSA6PTFQOlT4Q2rkN
+         HiLnU5RGU2BAlq0avexa+bFppBmXV5ftvj+yd9YqmtaVKrTbFFofeB1XiDrmL6v6q/dx
+         k9OswaYquebx40PjD99Nxr4v61GQpcsvtNgyOxckKGlpUdqRfkCrK3KZUk6gVJAsDDjf
+         CjtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/1QLnuoOflB7FpM3Hex4YA7K7WP37fS8H9h3blgsF8aBZbw9fR6oca6OJXgasH30SnQE8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPwpzGMMV7959mJ3wZCW+yqPcJ/q7qZKyMl14I52qYOeQTs385
+	NyrdgEPpptkW85ZEadx4DrVc848SZwfV+F32ZgfSmh3hQOTA5q8YQiiyyMBT37UsMrsFEX2wLCW
+	v7ocI5gQb9HN3OGHx610P+qzoCtml6PM=
+X-Gm-Gg: AeBDiesUttR2kVZ6XUce1uzuQjcGDGATGnlMVgVWnb7jaQvAWx23ir+0V03l3IiVfRT
+	T3TSjz6XqMAZqNchQ6bbrpZwyUw4V6ju56lpe4JTD7N13y6JlmB+2Cv1Jesxg5yskeqJ5YgRMYt
+	kHO3QZHD5f/g3Z4LFg4LkUNQu8vA6k6gYZuJHGUIy6FTOgqkJEi5UyNw+D8jVJ1y0Yifn1GOug0
+	3fpCmm49PkF6P5Y9GlDxYVBAMU84SysJSffKcVQtnVjQw3AO1JeNrwpi2HgvLXmAUZKqM5f6dob
+	62rS79IcM00G1cPQnY47oIyBSdC8PuC6+Xyr/Ub7zrtfO7fBDnrkpmnTziNOl4rl4vuAvdpki6w
+	1MZOLoug=
+X-Received: by 2002:a05:690c:2607:b0:7b6:422d:7623 with SMTP id
+ 00721157ae682-7bcf5212a91mr20867887b3.16.1777364688595; Tue, 28 Apr 2026
+ 01:24:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-vsie-stfle-fac-v5-5-34c5933a218c@linux.ibm.com>
-References: <20260428-vsie-stfle-fac-v5-0-34c5933a218c@linux.ibm.com>
-In-Reply-To: <20260428-vsie-stfle-fac-v5-0-34c5933a218c@linux.ibm.com>
-To: linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>, Thomas Huth <thuth@redhat.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2285;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=7EC9rvaW7G5GBY47rpXFojzlbtl2vpcSYdgjniiWOw8=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJkfcpaK955RUWzxfC3+veDZsdTKIxvP1U7u901l+nOrw
- Xxt6CnZjlIWBjEuBlkxRZZqceu8qr7WpXMOWl6DmcPKBDKEgYtTACbC0sjIcN6O+btv3fdd7cGH
- pd+VpLI889mmHnEgY029rhvH2+XvVzL89zN+N/936FMD7osfimamrGY59tsnag/Pgh7BNs1lwel
- LGAA=
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=CIIamxrD c=1 sm=1 tr=0 ts=69f06cab cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=jhiYOCp1ZGrQtAn_9xAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: LejFzHz9UeCcqkLfyCq7QMcPID5CsBL3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDA3MSBTYWx0ZWRfX0kcoe/Gtgtm4
- Qfg0IDrfDpCr2vT+/31BV5XBNwX+RIrhGKwzh20OoLpmj/7CbokvqCd5z3bRposSz6kztCWNXAG
- JmW7tCFBEM0zAojgmtVQ5GwLy+qLa55jzjMyrwkIWKkKJmQHvYLWDJm1SgYXVimCCEXTwPABeys
- i3nEofdOgFg80tFK6FMzWRo+ZYdv1GYTFHY3asx1wfz0dGVJe8xsv6Z0BPe5GtDVayfdh9dmpeh
- /cbzL9GX+E0G1q/Kivx9FANjJa6CUrazjmUg+58RRMDSfsImGnnu/LWYf1XjxZMX3DZWTdF9heH
- H65LqUeNkd+bDtHM9zydi5L1U/zBGeapwZ+l57lIB+Yv5gqQDUq39fr9us/2dU4aYNPVSbsVGMA
- o0XMMtT++XKFoZJEqpBea5CKMUZL8MMCaa1bOfaWU41YBKaIxOl9zBxE18QUe6SaUWSCYUcJASo
- 77WXK/sfeWosFID4SXg==
-X-Proofpoint-GUID: LejFzHz9UeCcqkLfyCq7QMcPID5CsBL3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_02,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604280071
+References: <20260424150310.57228-1-kartikey406@gmail.com> <ae9ilWoZI_-EMdWQ@sgarzare-redhat>
+In-Reply-To: <ae9ilWoZI_-EMdWQ@sgarzare-redhat>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Tue, 28 Apr 2026 13:54:36 +0530
+X-Gm-Features: AVHnY4LkfkfcAbNkAqMYMqsD9ddBBMlOtODTH4wKfniL5RjT_dtXJ2UJOta3HQA
+Message-ID: <CADhLXY6APdmMQLSxN9b66pV5mp5sDwJRR7_BJAh13BaK-qoa=w@mail.gmail.com>
+Subject: Re: [PATCH] vsock/virtio: fix memory leak in virtio_transport_recv_listen()
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
+	eperezma@redhat.com, stefanha@redhat.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+On Mon, Apr 27, 2026 at 7:15=E2=80=AFPM Stefano Garzarella <sgarzare@redhat=
+.com> wrote:
+>
+> On Fri, Apr 24, 2026 at 08:33:10PM +0530, Deepanshu Kartikey wrote:
+> >Two bugs exist in virtio_transport_recv_listen():
+>
+> Two bugs, two fixes, two patches usually.
+>
+> >
+> >1. On the transport assignment error path, sk_acceptq_added() is called
+> >   but sk_acceptq_removed() is never called when vsock_assign_transport(=
+)
+> >   fails or assigns a different transport than expected. This causes the
+> >   parent listener's accept backlog counter to be permanently inflated,
+> >   eventually causing sk_acceptq_is_full() to reject legitimate incoming
+> >   connections.
+>
+> Wait, I can't see this issue. sk_acceptq_added() is called after the
+> vsock_assign_transport(), so why we should call sk_acceptq_removed()
+> in the error path of vsock_assign_transport()?
+>
+> Maybe I'm missing something.
+>
+> >
+> >2. There is a race between __vsock_release() and vsock_enqueue_accept().
+> >   __vsock_release() sets sk->sk_shutdown to SHUTDOWN_MASK and flushes
+> >   the accept queue under the parent socket lock. However,
+> >   virtio_transport_recv_listen() checks sk_shutdown and subsequently
+> >   calls vsock_enqueue_accept() without holding the parent socket lock.
+>
+> Are you sure about this?
+>
+> virtio_transport_recv_listen() is called only by
+> virtio_transport_recv_pkt() after calling lock_sock(sk), so I'm really
+> confused.
+>
+> >   This means a child socket can be enqueued after __vsock_release() has
+> >   already flushed the queue, causing the child socket and its associate=
+d
+> >   resources to leak
+> >   permanently. The existing comment in the code hints at this race but
+> >   the fix was never implemented.
+>
+> Are you referring to:
+>         /* __vsock_release() might have already flushed accept_queue.
+>          * Subsequent enqueues would lead to a memory leak.
+>          */
+>         if (sk->sk_shutdown =3D=3D SHUTDOWN_MASK) {
+>                 virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+>                 return -ESHUTDOWN;
+>         }
+>
+> In this case I think we are saying that we are doing this check exactly
+> to avoid that issue.
+>
+> >
+> >Fix both issues: add sk_acceptq_removed() on the transport error path,
+>
+> Again, better to fix the 2 issues with 2 patches (same series is fine).
+>
+> >and re-check sk->sk_shutdown under the parent socket lock before calling
+> >vsock_enqueue_accept() to close the race window. The child socket lock
+> >is released before acquiring the parent socket lock to maintain correct
+> >lock ordering (parent before child).
+> >
+>
+> We are missing the Fixes tag, and I think we can target the `net` tree
+> with this patch (i.e. [PATCH net]), see:
+> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+>
+> >Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+> >Closes: https://syzkaller.appspot.com/bug?extid=3D1b2c9c4a0f8708082678
+> >Tested-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+> >Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> >---
+> > net/vmw_vsock/virtio_transport_common.c | 13 +++++++++++--
+> > 1 file changed, 11 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/vir=
+tio_transport_common.c
+> >index 416d533f493d..fad5fa4a4296 100644
+> >--- a/net/vmw_vsock/virtio_transport_common.c
+> >+++ b/net/vmw_vsock/virtio_transport_common.c
+> >@@ -1578,6 +1578,7 @@ virtio_transport_recv_listen(struct sock *sk, stru=
+ct sk_buff *skb,
+> >        */
+> >       if (ret || vchild->transport !=3D &t->transport) {
+> >               release_sock(child);
+> >+              sk_acceptq_removed(sk);
+>
+> Ditto, are we sure about this?
+>
+> >               virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+> >               sock_put(child);
+> >               return ret;
+> >@@ -1588,11 +1589,19 @@ virtio_transport_recv_listen(struct sock *sk, st=
+ruct sk_buff *skb,
+> >               child->sk_write_space(child);
+> >
+> >       vsock_insert_connected(vchild);
+> >+      release_sock(child);
+> >+      lock_sock(sk);
+>
+> IMO this is a deadlock with the lock_sock(sk) called by the caller.
+>
+> Also a comment would be helpful here to explain why we're doing this.
+>
+> >+      if (sk->sk_shutdown =3D=3D SHUTDOWN_MASK) {
+> >+              release_sock(sk);
+> >+              sk_acceptq_removed(sk);
+> >+              virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+> >+              sock_put(child);
+> >+              return -ESHUTDOWN;
+>
+> Since this is very similar to the error path of
+> vsock_assign_transport(), I think it would be better to start by
+> defining a common error path for the function and use labels to exit, so
+> we can avoid duplicating the code multiple times.
+>
+> >+      }
+> >       vsock_enqueue_accept(sk, child);
+> >+      release_sock(sk);
+> >       virtio_transport_send_response(vchild, skb);
+> >
+> >-      release_sock(child);
+> >-
+>
+> TBH I'm really worried about this patch since both fixes are completely
+> wrong IMO.
+>
+> Thanks,
+> Stefano
+>
+> >       sk->sk_data_ready(sk);
+> >       return 0;
+> > }
+> >--
+> >2.43.0
+> >
+>
 
-Detect availability of alternate STFLE interpretive execution facilities
-1 and 2.
 
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
----
- lib/s390x/sclp.c | 2 ++
- lib/s390x/sclp.h | 4 ++++
- 2 files changed, 6 insertions(+)
+Hi Stefano,
 
-diff --git a/lib/s390x/sclp.c b/lib/s390x/sclp.c
-index 9d9fd3cbcb8c..850cf432dc90 100644
---- a/lib/s390x/sclp.c
-+++ b/lib/s390x/sclp.c
-@@ -162,11 +162,13 @@ void sclp_facilities_setup(void)
- 	sclp_facilities.has_esop = sclp_feat_check(85, SCLP_FEAT_85_BIT_ESOP);
- 	sclp_facilities.has_kss = sclp_feat_check(98, SCLP_FEAT_98_BIT_KSS);
- 	sclp_facilities.has_cmma = sclp_feat_check(116, SCLP_FEAT_116_BIT_CMMA);
-+	sclp_facilities.has_astfleie1 = sclp_feat_check(116, SCLP_FEAT_116_BIT_ASTFLEIE1);
- 	sclp_facilities.has_64bscao = sclp_feat_check(116, SCLP_FEAT_116_BIT_64BSCAO);
- 	sclp_facilities.has_esca = sclp_feat_check(116, SCLP_FEAT_116_BIT_ESCA);
- 	sclp_facilities.has_ibs = sclp_feat_check(117, SCLP_FEAT_117_BIT_IBS);
- 	sclp_facilities.has_pfmfi = sclp_feat_check(117, SCLP_FEAT_117_BIT_PFMFI);
- 	sclp_facilities.has_diag318 = sclp_feat_check(134, SCLP_FEAT_134_BIT_DIAG318);
-+	sclp_facilities.has_astfleie2 = sclp_feat_check(139, SCLP_FEAT_139_BIT_ASTFLEIE2);
- 
- 	for (i = 0; i < read_info->entries_cpu; i++, cpu++) {
- 		/*
-diff --git a/lib/s390x/sclp.h b/lib/s390x/sclp.h
-index 87af429b5798..eb574350d678 100644
---- a/lib/s390x/sclp.h
-+++ b/lib/s390x/sclp.h
-@@ -129,9 +129,11 @@ struct sclp_facilities {
- 	uint64_t has_cmma : 1;
- 	uint64_t has_64bscao : 1;
- 	uint64_t has_esca : 1;
-+	uint64_t has_astfleie1 : 1;
- 	uint64_t has_kss : 1;
- 	uint64_t has_pfmfi : 1;
- 	uint64_t has_ibs : 1;
-+	uint64_t has_astfleie2 : 1;
- };
- 
- /* bit number within a certain byte */
-@@ -142,9 +144,11 @@ struct sclp_facilities {
- #define SCLP_FEAT_116_BIT_64BSCAO	0
- #define SCLP_FEAT_116_BIT_CMMA		1
- #define SCLP_FEAT_116_BIT_ESCA		4
-+#define SCLP_FEAT_116_BIT_ASTFLEIE1	7
- #define SCLP_FEAT_117_BIT_PFMFI		1
- #define SCLP_FEAT_117_BIT_IBS		2
- #define SCLP_FEAT_134_BIT_DIAG318	0
-+#define SCLP_FEAT_139_BIT_ASTFLEIE2	1
- 
- typedef struct ReadInfo {
- 	SCCBHeader h;
+Thank you for the detailed review!
 
--- 
-2.53.0
+You are correct on both points. I apologize for the confusion =E2=80=94 I w=
+as
+looking at an older version of the code where sk_acceptq_added() was
+called BEFORE vsock_assign_transport(), which made the
+sk_acceptq_removed() fix appear necessary. In the current kernel,
+sk_acceptq_added() is already moved to after vsock_assign_transport(),
+so that issue no longer exists.
 
+Regarding the lock_sock(sk) fix =E2=80=94 you are also correct that
+virtio_transport_recv_pkt() already holds lock_sock(sk) before calling
+virtio_transport_recv_listen(), so our second fix would indeed cause a
+deadlock. I missed that completely.
+
+I am still investigating the root cause of the memory leak reported by
+syzbot. The backtrace points to the vsock loopback path
+(vsock_loopback_work), so I am looking there next. I will send a v2
+once I have a correct analysis and fix.
+
+Sorry again for the noise.
+
+Thanks,
+Deeranshu Kartikey
