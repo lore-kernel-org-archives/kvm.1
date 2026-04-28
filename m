@@ -1,127 +1,170 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A91747AF6D;
-	Tue, 28 Apr 2026 18:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2A027F19F
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 18:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777401092; cv=none; b=MrqGPdHZmn9tsJdjpYywy+R0291HXcHQduPkuO6iKgBE69ts8MkI/rgnzDpELX4sU7gZk1IDybFpJWxaIPBUwab9hPRXE0p12eXltIOMcVHvrZ7iuV5JyR5cvpmVIYi+IBhE9U80tUCj1WQOGsaD1bsEydiHkF6xMCKjtDt/7g0=
+	t=1777401845; cv=none; b=mo8H8BY0ifvq7KGgeZZMruRZQsX2SSzV9aH8+D0u6v4Oo/KrBAbrDvbEbvMYAPpLnsmuJuJIBjo0RKgNBSfqB6Nx3Ajv1TFhPL5nYvsf9/v2Gm5RF2BRKmL9nhCk91MVjUsZGFgVFpqGu3EdcsLeLLlR1kuaoI6I4btv+mPE9Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777401092; c=relaxed/simple;
-	bh=YqIbouP1QQZZj4irMFN2NaPn8dKRK6jDi3R3gDUUMco=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m7IIKZc8+nOQ/uTYnpO8yJhje+3r4ZUaE4L8WZS74M6WxhDCMM0yVOUYuJHU9w1Yqb6hH2DB3IDHkFY/TpdmJiWz0fuecd44MoxiCCsGrgnHuI6jnJERsAWRytQDTr9q+pooEJ+Lh89JRoiAWkxVVr+i0N3ouN5SnlOMeZ3g/FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QnBaudCl; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1777401845; c=relaxed/simple;
+	bh=+4dWjNW0MAtI7qbpEEHTSK3A6idXP3scE6YWXGSI2Lc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=miTaQBWEYkBjApcoqhj2ybbv2bkgSe02hJA1ck4yd538k9bu4lOSN3yWYj1W7yyTL+C/eK+9xTeJVa4gzXwHNzzKBwjz9Ksf8Dn51pKRwABxNA0ZbMUU90MBxMHSpFXTEhTSU5eprYNI/dlul3d8btLU+ydMWEQZFpqmFq3IV7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wT9BM3dw; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QnBaudCl"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63SBHIHB935847;
-	Tue, 28 Apr 2026 18:31:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=862JwB
-	dU3AS3MnJ2WsujPUgTGILIxct/hGQrfO1H5+A=; b=QnBaudClr0oHW8WwK3wmRe
-	9liU9/dpSOThv2rAIwE7zmyc7QJlUuLOCJZi7Odz3jxSxlIPHMWfNUJYk/PrvCFV
-	lL7k5YAa8aaCIU8n2M4HqZrSLXqQuUPZLX9YkGWPTvp+mq53wtofr+2NIKITedm+
-	fGD+wL3ib1/xCeEYubgHdZ/DkILqIV9fl8l7jutt1DK1OhSpq80Dcv6WsdO2YTjD
-	3lZ1XHV8EyivkgBWhM3dmMcgDqGQK4/MaCwO2U//ojWx6+NsYap1GBKOkqbsFb6t
-	o/yJUmUukY6b9qyQHV12mJRHRomGv2mHwy6JdnN+HgBKkpQOlAQQ1C52nOWhY07w
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn9r72e7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 18:31:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63SINiKG003460;
-	Tue, 28 Apr 2026 18:31:24 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds9ehaxn4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 18:31:24 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63SIVNwO15729210
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Apr 2026 18:31:23 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23E5A5805D;
-	Tue, 28 Apr 2026 18:31:23 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E86058053;
-	Tue, 28 Apr 2026 18:31:21 +0000 (GMT)
-Received: from [9.61.116.216] (unknown [9.61.116.216])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Apr 2026 18:31:21 +0000 (GMT)
-Message-ID: <1a44c655-eb27-4f4d-8e1c-ff3ee518ce73@linux.ibm.com>
-Date: Tue, 28 Apr 2026 14:31:20 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wT9BM3dw"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4678c6171so111760995ad.1
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777401844; x=1778006644; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WTnb3RdkOOM3FgAsrKAJXfLReTvrvHzD4M2LtCPRIn0=;
+        b=wT9BM3dwA3S0jQ4WXuaudI/6JNSb6xcnDmJuisoMKee000mqGezwg6A1/Az+L8HFZo
+         BTBI56A9fpnHrvMMfuc/qeDOOm/YgoGFW5fwgj3LK8ld76WavzzTPUzLcYmRGMipB1Vg
+         4IrwCN3KxS2J5kzuTRfbO5dpgOsOcV2MjfWgFlDGXv1IbPftFC8ePJUM2zE/8FYDdyQ/
+         UflvJxMmETtahWEQUmObDp4HXXmHqYEVLS9aSt068dQHNUoXwar7hprVTIdajDylYpug
+         1Jy5XzjaRuaLZyUi5iMn3RcEarDmO98SuDcompkyBEAwKSRVuNXXu2/N5YkAQh1xUOzm
+         AAUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777401844; x=1778006644;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WTnb3RdkOOM3FgAsrKAJXfLReTvrvHzD4M2LtCPRIn0=;
+        b=g7Ok/T910I+tnB70iRpJR0gqyzjpn4WeOCMzsoAz698QJ3SoqM8hmeyRPdqCZq2nMI
+         +ltdq6cb9GGCXaW3uh7BCYgO03AjLtLdAO66N7EXzf5JpfPWg+B9fl6bLgatapQ3Dub3
+         8ZOm7CBnQuMHjYdsDPp/JsW3cOp3U0G/tOVc7yYmFy3ZkJEpHv6Gzueb+cte7O+3O2LD
+         xzWTlZt4L/GqixaZUQnEpuPUKznWB5UjGugfPYz5v4i5vnc3kMqtQmMWhO76jOiCttey
+         SWQPB2zKrCsUeeJI9tWJ+1dt7S7x0hFF9BjFyYMlHwHZHT9RcKzVmVOz4iOACyjsxpES
+         y6wg==
+X-Forwarded-Encrypted: i=1; AFNElJ9jvK8/d1tBjOC8D7ecBWErkQ6RGbnTngmVHSLrmF0btciOejYAL0W0Wqlf7MQLncGSx8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiYVJm9pnxQr/k3SJ1cDgZAb/k4+izv2+lXtbKQ86VEBx/b+z4
+	/6fVcIEUxebvZAQNfpo1uiaMozB6dXqB+/JsmTxOQJFsW0m7wJlJMZfb1vIO+4rqDp725gjyVfN
+	6QpBPlA==
+X-Received: from pgib18.prod.google.com ([2002:a63:e712:0:b0:c73:cc95:c0d7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa2:b0:3a0:b65a:5def
+ with SMTP id adf61e73a8af0-3a39c2726f9mr5138003637.33.1777401843677; Tue, 28
+ Apr 2026 11:44:03 -0700 (PDT)
+Date: Tue, 28 Apr 2026 11:44:02 -0700
+In-Reply-To: <b8c413a52c0285534d552c8646f9071fca4351f4.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/16] s390/vfio-ap: Add live guest migration support
-To: Christian Borntraeger <borntraeger@de.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260407205100.331150-1-akrowiak@linux.ibm.com>
- <e8e07556-4618-4203-aaf7-e2e95c6fea71@linux.ibm.com>
- <861c2116-7d3c-4f5e-ad83-0ca314cc6e48@de.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <861c2116-7d3c-4f5e-ad83-0ca314cc6e48@de.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kMMKht6DLD3GdZNfHdooceSw1hQjjtbj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDE3NyBTYWx0ZWRfX0BmLEi/batEq
- MSaRBrG1cJ0YUeqxs/q28Ui4JF24lzv9Fqb3jzURRJxpKf9kb/X2Prnul3cHSp/QxFgYnU14RUE
- Zoe85KDNTifAYhV17UT/MFooJIFmrgJZLn2jQzd+TkEv2wCbFq2lQwozPVCXZ9yWxtr+fEGLe86
- U7cEOsxk0g8J0qeZZ5MFFb3DhjtLHJZUYEdKFPkNsFB2L6PdXx2vYzmc//LcplcmZUBeL3GXsBl
- oxU+MmztfGJhy9/LmKIe+fqzf+gX5Qtjv/kHAXb65MyuaDQDMCR/ZrD1lTd0GjlZfepkEWFLyM8
- 9ikuhdCok9+W9aB6+70YVfNNTkw4TMSb3qJiwAs5IEhA612TtWrUohMqsvZeSvy/iyV7tG9mQKf
- OCEBBFdz4HN9L9pvBWBQGtMFgNnpyKnv2nnfRjxuyWDQC8lBkUhcUHKjAOSkAIxeGwsiXphdhml
- UkQntIf2SA+38ngjC3Q==
-X-Authority-Analysis: v=2.4 cv=Kc7idwYD c=1 sm=1 tr=0 ts=69f0fcfd cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=c92rfblmAAAA:8
- a=VnNF1IyMAAAA:8 a=l7cB-S0xE_IsS9hsg3oA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-ORIG-GUID: kMMKht6DLD3GdZNfHdooceSw1hQjjtbj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- malwarescore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604280177
+Mime-Version: 1.0
+References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
+ <20260428024746.1040531-2-binbin.wu@linux.intel.com> <afCdoufK0D+1hKAR@intel.com>
+ <afDgiz38tARlIQNr@google.com> <b8c413a52c0285534d552c8646f9071fca4351f4.camel@intel.com>
+Message-ID: <afD_8se-aOikeHTT@google.com>
+Subject: Re: [PATCH 1/2] KVM: TDX: Allow TDs to read MSR_IA32_PLATFORM_ID
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Vishal L Verma <vishal.l.verma@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Apr 28, 2026, Rick P Edgecombe wrote:
+> On Tue, 2026-04-28 at 09:30 -0700, Sean Christopherson wrote:
+> > > This patch looks good to me. But the rule for which MSRs should be em=
+ulated
+> > > by KVM for TDX is not very clear to me.
+> >=20
+> > I would strongly prefer to not take this patch, and instead fix the gue=
+st.=C2=A0
+> > This isn't some latent/pre-existing guest behavior, it's brand new
+> > functionality. I.e. Linux-as-a-TDX-guest broke itself.
+> >=20
+> > More importantly from a guest security perspective, consuming
+> > MSR_IA32_PLATFORM_ID is actively dangerous.=C2=A0 E.g. it could allow t=
+he untrusted
+> > host to steer the guest's behavior with respect to feature detection an=
+d
+> > enablement.
+>=20
+> I feel like you could make similar cases about a lot the VMM controlled M=
+SRs.
 
+Oh, for sure.  And far worse (yet another reminder that I need to refresh t=
+his
+series).
 
-On 4/28/26 9:56 AM, Christian Borntraeger wrote:
-> Am 28.04.26 um 15:10 schrieb Anthony Krowiak:
->>
->>
->> On 4/7/26 4:50 PM, Anthony Krowiak wrote:
->>
->> A patch review would be greatly appreciated.
->
-> Sorry, everybody seems busy. Can you maybe start with having a look at 
-> sashiko
->
-> https://sashiko.dev/#/patchset/20260407205100.331150-1-akrowiak%40linux.ibm.com 
->
->
-> if any of the review findings are correct?
+https://lore.kernel.org/all/20250227021855.3257188-1-seanjc@google.com
 
+> > And once KVM allows reads from MSR_IA32_PLATFORM_ID, there's no going b=
+ack.=C2=A0
+> > E.g. if the TDX-Module wants to emulate MSR_IA32_PLATFORM_ID, because t=
+here's
+> > an actual *need* to do so, then we're going to have a (minor) mess with=
+ KVM's
+> > ABI.
+>=20
+> This is a problem with the bare metal KVM behavior too, and it's just sup=
+er old?
 
-I'll take a look.
+No?  Oh, I see what you're asking.  I'm mostly concerned about the host sid=
+e of
+things.  The problem with TDX is that a TDX-Module update could effectively=
+ change
+KVM's behavior, i.e. if the TDX-Module decides it needs to emulate PLATFORM=
+_ID for
+whatever reason.  So not only would KVM need to enumerate to userspace that=
+ the
+MSR is supported/emulated for TDX guests, KVM would also need to differenti=
+ate
+between emulated by KVM and emulated by the TDX-Module.
 
+> For TDX, hmm. I guess the standard thing to do in order to avoid creating=
+ a KVM
+> ABI problems is just match the arch behavior. But for TDs, it is a very s=
+pecial
+> type of VM. The special TDX guest things can't work on bare metal. Furthe=
+rmore,
+> guest opt ins can change what arch is even supposed to be virtualized. So=
+ the
+> normal KVM default thing to do doesn't always fit.
+>=20
+> So instead we will just virtualize as little as possible to keep Linux gu=
+est
+> running? Ok.
+
+Yeah, and the sequence of events matters.  Most of KVM's half-hearted emula=
+tion
+of random MSRs exists because KVM needed to be able to run existing kernels=
+.  But
+once KVM (and other hypervisors) existed, kernels learned to run as guests =
+(and
+hardware vendors largely did a better job of explicitly enumerating MSRs an=
+d
+whatnot), and so the need to throw hacks into KVM mostly went away.
+
+> > > Maybe we can document the rule here, if there is one. That would make=
+ it
+> > > much easier to tell whether future issues like this are guest regress=
+ions
+> > > or missing KVM handling.
+>=20
+> Speaking in general now about TDX guest ABI, not about this specific MSR.=
+ I
+> agree it would be good to have some story about how this is supposed to w=
+ork and
+> evolve. Similar to the CPUID bit stuff we are trying to clean up.
+>=20
+> I'm also remembering the debate about what to do about the MTRR bit being=
+ forced
+> on, but not being able to apply the KVM solution (which got ripped out an=
+yway)
+> to the S-EPT. Or the guest maxpfn thing, where we got the TDX module to a=
+dd
+> CPUID bit support we needed. By default, we can try to make it so the TDX=
+ module
+> will, or will let us, faithfully match the normal x86 arch bit behavior.
