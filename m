@@ -1,56 +1,56 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEC843DA3F
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 17:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2988B42EEB4
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 17:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777396563; cv=none; b=qKD+JZ+Icx/TMs4/bA8g/boMTySvsGFXukJIHTJjWWViOBCQzBxL6vyh9UQHCD5cvKgXpKis6d1wxVwl9BmTeQgGIVqKzsMu1t6qaNNLYfd518OjChXM9Vt9Y6W96IAj8X1ElQMr0jmrT3TUo82Qv+59hKIEBW4smaDQaMCwkyA=
+	t=1777396565; cv=none; b=sIhRnl/0jj1r/pO8vNjVfcl39nvYtjHGVFq8KvM0ewZtZEuejFdOJmcPViuyHndWA48vGl52DCvfEAgXSa12lDhGEM76L9aFr3mEC6UEgebnLDutvpbt/0mVVo4+BL3Kf/U6ELyS+M40C7XS6wu1eYMHfYms5YLOaUDcKU1HzWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777396563; c=relaxed/simple;
-	bh=sJT/BWB71XQHqaBeAa7pWa8ixz8I9grIBnJEuBlwnps=;
+	s=arc-20240116; t=1777396565; c=relaxed/simple;
+	bh=1uiml0bm9m36ZN+On0jSrkItfTHXBP/nIdcfCh6AX9o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nMSyyO1s/FL1DZW9p+IBYaDmOLUKoMa09KzbCb2CDcgzi9RrzSo/LKjrXEg2jqbHo+bvS/RNabG5NbE/TDbxf5domOdvFYITOUx4JCseTRToTK4RJPoHmyScnuKN9hfbKWt5s2tCr4RmlOb9go7SnuxkVe7Hac5TohWczqUZiLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fi1IY9X3; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=I77LJRnnWQzflfa/rh1iTiAGAo1kaWKBd1mMXRtAALsS9BiXdbGyiFMh2JFagRX6UUQ2xttr31vXBBqUqN7fAzlmH3N+BSni47zkqZqfY8wsS+bHTCM52qqylBmUVRh4g5uOF6vZIBA7TWtPsomHP0Td1jI1VFlD0qcqf11bre8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=msHN2qIl; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fi1IY9X3"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f74bcfb86so14139041b3a.0
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 10:15:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="msHN2qIl"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f6a5b4f88so15449691b3a.2
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 10:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777396556; x=1778001356; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777396557; x=1778001357; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=pB70d3mVql6RUUSlFgAqlD0KUMSBEvpQeqGOJn9+rvk=;
-        b=Fi1IY9X34lFrNBtH/jIZ61CD7Xq+MJuHaGTGboYhREW+kbjZO5tX7DnMaO5RhnWBiA
-         UwHZ5OwKTDPqb2iaLAlt+iNo5pLDq46XT3RgGPLWveny0Fk3qurJuUYlmbFi6FY7oeif
-         FLzJNTiojnU8LYi9isg2IRH6yesTpG4SNe+md5a4UnfD3NipNCWK5e7Rsdcew4wBxEZa
-         QjQ3rFy18+geuuHtGIQFYXKkDyziWRdZPxJLE2a+1ckQjyY8djvi5D7PKdrpISAifzLm
-         MbNPzZaKGgJR6lECvutsqAhMVkEiv8X0hikWoFo0DwzE7wjStcUjBEASoYA+OjOKALth
-         Gs0w==
+        bh=oYc/5nXwDHl/2dX5VkltRQ5fFLBzkZa0o8ZgjwDLbaQ=;
+        b=msHN2qIlpCKsYDsaW2hhGpPewfg+4/1T2ioW26bel0gMGqHrHBpumJfS34zfTFg77U
+         ADBz17TV8fVFsvgcHavXuQvkO1a7Jfb6RWe8JNmp+cPqda6sbRjeTXBkFEN1fIRLW5cv
+         d7wIhXT/2Z4q/TwRIi1ZLlur6CR7djDhokgn9xRAhkUy4mJL9NUNYqp8Ez+vbDtP0G0G
+         jvdoLnh5LKi3Xyu8fpcyU9g/NnHIdv+6405U2JyTF1Jb+OjMGGAiCHcuJTMvliq4RBU/
+         FDtVDUIPkRHK+ifiqSaZdf0L1LWlSHIpRwGQtfnhr6+PKCuZpdyXYlimn45vouu7Ycla
+         ObPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777396556; x=1778001356;
+        d=1e100.net; s=20251104; t=1777396557; x=1778001357;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pB70d3mVql6RUUSlFgAqlD0KUMSBEvpQeqGOJn9+rvk=;
-        b=H6WSfn2kIK/BTx4JD67wm+p0hGPVz9Glicniv51KsH5rfoVGKIzwjxWJGWQIugnaI/
-         hmHjHNpfQ53JlwzZbne2d+Tlhwq/PsyjFopxFGFaOVX49RYGZyYHiNF2OsBJNnoc1eio
-         JYqyX5KjmEPlSjXx6CSAtZ+NCp2l28oE4V6O7p3qgN/Gcx1XNGcJrIi02jytvH59fjx5
-         cCK4O1vTvpBAMcfup0d4SJpMZCwKFpOCG4CvAmiLZFsmWWzdNLw2ne77LK/4t/RfXuOV
-         l3YfvqMxo8c8mczDOLT/2Kgwkdhe8bE016ZIdODPNV+x8esJYcYG4RISaGzP/jSv2tCk
-         9GpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9MezuiKWqkDVPb0C0sKgqVQVRtEbam6us4aCV0evpXi71GPgheo0s3RhB0R15wOtMzMnE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg3VBWnUrlqEukA5GlPCL0cN8Xeh7LL2K3kXQIDz0zA89qOSbC
-	4Q5CDcrBjkwUUeYD+qams648FPPEfkOxepl84K/W6l3n3Fc4Aj4pWXMuvbNT/iBs3MTRbPn1NIH
-	Iq7vTCQ==
-X-Received: from pfbhx21.prod.google.com ([2002:a05:6a00:8995:b0:82f:8b22:bc77])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10c9:b0:82f:a6bf:bede
- with SMTP id d2e1a72fcca58-834ddc59be5mr3940969b3a.40.1777396555594; Tue, 28
- Apr 2026 10:15:55 -0700 (PDT)
+        bh=oYc/5nXwDHl/2dX5VkltRQ5fFLBzkZa0o8ZgjwDLbaQ=;
+        b=B/NpmVeSlbmNbf5vwfshpSA1Cl20mPyjjD3RVY0bwsNf3dyd6TuMi7s5mGBH0KhCPu
+         d9HmcH9OEMo1TFKIOOiMzxj2R9m8nA7P2yxrhD28WckMmbcW3RVVwNMerMZuSVOeGTBw
+         pt06Yft5Ykp4A5gAZnhVN/4/m0X1TJXfqe01YOHgWb2VXo/YEImqRLsi0HjJVXYzZcz2
+         aAzlv7g+MihW2hdElmYtlwbXjP9tspr284te+oyL8lDhFeoWLO+A1YvVVUeItKIa0nyQ
+         RFYVxybZTlejB89qn7yL7SMd4OPyQzxZ/R1+p+X4lICsH5ADRBcj3TC386WzmG1fW7vs
+         m3mA==
+X-Forwarded-Encrypted: i=1; AFNElJ/cCj9MXrwT9hea+YmK+gAIQw6KnyzuxFfqM4ikd9i1eQck1aWuF9Ldi/duL/oRPXcJMQY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd7BYCWWRltzu3MqkE5yIiVTccak86iqzAJbKGP4CYl0qrOtOv
+	Z7++0ABj8DySjIBIpJbsPOpOvrn1OiZswiHqv+DsMQ/J/ger9HOTvOgsdoboP9NsUprzJCqHtvp
+	gjYIbwg==
+X-Received: from pfbde15.prod.google.com ([2002:a05:6a00:468f:b0:82f:1051:621])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:408a:b0:82f:5051:f022
+ with SMTP id d2e1a72fcca58-834ddc2d824mr3942585b3a.32.1777396557290; Tue, 28
+ Apr 2026 10:15:57 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 28 Apr 2026 10:15:37 -0700
+Date: Tue, 28 Apr 2026 10:15:38 -0700
 In-Reply-To: <20260428171541.1342335-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260428171541.1342335-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260428171541.1342335-2-seanjc@google.com>
-Subject: [RFC PATCH 1/5] MAINTAINERS: Add kvm-x86 tree to KVM x86 entries
+Message-ID: <20260428171541.1342335-3-seanjc@google.com>
+Subject: [RFC PATCH 2/5] KVM: guest_memfd: Move gmem function declarations to
+ dedicated guest_memfd.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -72,48 +73,119 @@ Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger
 	Claudio Imbrenda <imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add the kvm-x86 tree to all KVM x86 entries so that humans, bots, and
-everything in between can more easily find KVM x86 (and some broader KVM)
-patches that are targeted for the next kernel release, but haven't yet made
-their way to the main KVM tree.  While the KVM x86 patch flow is documented
-in Documentation/process/maintainer-kvm-x86.rst, that's very much one-off
-documentation; random passersbys likely don't know it exists, and it's not
-suitable for any workflow that's at all automated.
+Extract the gmem function declarations out of kvm_mm.h and into a dedicated
+header, guest_memfd.h.  This will allow creating a MAINTAINERS entry for
+guest_memfd without having to rely on content pattern matching.
 
-Reported-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ virt/kvm/guest_memfd.c |  1 +
+ virt/kvm/guest_memfd.h | 34 ++++++++++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c    |  1 +
+ virt/kvm/kvm_mm.h      | 27 ---------------------------
+ 4 files changed, 36 insertions(+), 27 deletions(-)
+ create mode 100644 virt/kvm/guest_memfd.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2fb1c75afd16..89b470db22de 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14149,6 +14149,7 @@ L:	kvm@vger.kernel.org
- S:	Supported
- P:	Documentation/process/maintainer-kvm-x86.rst
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-+T:	git https://github.com/kvm-x86/linux.git
- F:	arch/x86/include/asm/kvm*
- F:	arch/x86/include/asm/svm.h
- F:	arch/x86/include/asm/vmx*.h
-@@ -14419,6 +14420,7 @@ M:	Paolo Bonzini <pbonzini@redhat.com>
- L:	kvm@vger.kernel.org
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-+T:	git https://github.com/kvm-x86/linux.git
- F:	arch/x86/kvm/hyperv.*
- F:	arch/x86/kvm/kvm_onhyperv.*
- F:	arch/x86/kvm/svm/hyperv.*
-@@ -14433,6 +14435,7 @@ M:	Paolo Bonzini <pbonzini@redhat.com>
- L:	kvm@vger.kernel.org
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-+T:	git https://github.com/kvm-x86/linux.git
- F:	arch/x86/kvm/xen.*
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 69c9d6d546b2..a93a31568337 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -9,6 +9,7 @@
+ #include <linux/pagemap.h>
  
- L3MDEV
+ #include "kvm_mm.h"
++#include "guest_memfd.h"
+ 
+ static struct vfsmount *kvm_gmem_mnt;
+ 
+diff --git a/virt/kvm/guest_memfd.h b/virt/kvm/guest_memfd.h
+new file mode 100644
+index 000000000000..e8b825da264b
+--- /dev/null
++++ b/virt/kvm/guest_memfd.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __KVM_GUEST_MEMFD_H__
++#define __KVM_GUEST_MEMFD_H__
++
++#include <linux/kvm_types.h>
++
++#ifdef CONFIG_KVM_GUEST_MEMFD
++int kvm_gmem_init(struct module *module);
++void kvm_gmem_exit(void);
++int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
++int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
++		  unsigned int fd, loff_t offset);
++void kvm_gmem_unbind(struct kvm_memory_slot *slot);
++#else
++static inline int kvm_gmem_init(struct module *module)
++{
++	return 0;
++}
++static inline void kvm_gmem_exit(void) {};
++static inline int kvm_gmem_bind(struct kvm *kvm,
++					 struct kvm_memory_slot *slot,
++					 unsigned int fd, loff_t offset)
++{
++	WARN_ON_ONCE(1);
++	return -EIO;
++}
++
++static inline void kvm_gmem_unbind(struct kvm_memory_slot *slot)
++{
++	WARN_ON_ONCE(1);
++}
++#endif /* CONFIG_KVM_GUEST_MEMFD */
++
++#endif /* __KVM_GUEST_MEMFD_H__ */
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 89489996fbc1..a4035ffb421f 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -56,6 +56,7 @@
+ 
+ #include "coalesced_mmio.h"
+ #include "async_pf.h"
++#include "guest_memfd.h"
+ #include "kvm_mm.h"
+ #include "vfio.h"
+ 
+diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
+index 9fcc5d5b7f8d..4958c0a93d64 100644
+--- a/virt/kvm/kvm_mm.h
++++ b/virt/kvm/kvm_mm.h
+@@ -67,31 +67,4 @@ static inline void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm,
+ }
+ #endif /* HAVE_KVM_PFNCACHE */
+ 
+-#ifdef CONFIG_KVM_GUEST_MEMFD
+-int kvm_gmem_init(struct module *module);
+-void kvm_gmem_exit(void);
+-int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
+-int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+-		  unsigned int fd, loff_t offset);
+-void kvm_gmem_unbind(struct kvm_memory_slot *slot);
+-#else
+-static inline int kvm_gmem_init(struct module *module)
+-{
+-	return 0;
+-}
+-static inline void kvm_gmem_exit(void) {};
+-static inline int kvm_gmem_bind(struct kvm *kvm,
+-					 struct kvm_memory_slot *slot,
+-					 unsigned int fd, loff_t offset)
+-{
+-	WARN_ON_ONCE(1);
+-	return -EIO;
+-}
+-
+-static inline void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+-{
+-	WARN_ON_ONCE(1);
+-}
+-#endif /* CONFIG_KVM_GUEST_MEMFD */
+-
+ #endif /* __KVM_MM_H__ */
 -- 
 2.54.0.545.g6539524ca2-goog
 
