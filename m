@@ -1,30 +1,30 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5661A4779A1;
-	Tue, 28 Apr 2026 13:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AD9478871;
+	Tue, 28 Apr 2026 13:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382077; cv=none; b=eIhMvc/BIzhqubtqIPJUDgoJgOjmPi3lygJKmB8qy1kpq1TNo56qveherYJJnH8LN4fh/b5SMb1lG+5xtQ4zahhmViXyX5SP4lLy31gnZCs6hrLg07yR+ntmjmnLssows9368GSfM5E2ZPgkjvvBxKxb/1JBK7BlmAkGR+0asoM=
+	t=1777382081; cv=none; b=nlS2iwpB26XHjapzqSolKcu7t445uyE8vbzD1sHAiexoOsjrMGw7RcO2O0WAwkPXtvNvV0Jzl/47VRYxrWq0YphM67eBdBZD1kZMRcJn4a6VxY0tru+hHp38yKC/XdwquL8jWYD3c5Rz9Y0u4lfIRtB5KQI0QNU1dx0C+aPTm1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382077; c=relaxed/simple;
-	bh=CYrKDGIxXX5Mlt9NTR7wFUenmnP6V8xyIg08eBd1CxA=;
+	s=arc-20240116; t=1777382081; c=relaxed/simple;
+	bh=LB3Lz/w6tAwr1A9br7Z481rveDfNzKHq5xoD3VRRSwM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G1Nn5q08rhrc3LQ/SjfNqRggEGOWqH+B4jh6/3bsm6uZOxhLNLekFW+lfCQdI+wM16gBAgK5TUQ8dj+9esSQsnZALNEKylBIoT2i+BLhfijwlCwtEP4umzyBCbZO/sflXJdSBEecdiiCsLXGPOAhgitYrq8bxeJYsYP34OeMyDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=H1v+lgsP; arc=none smtp.client-ip=115.124.30.113
+	 MIME-Version; b=i9UQ3nCn5XoJE4z3Dc1thEYQsQrMUQQ0iCVLHyDgnfawVbEctaCFzwmbM4fO+lxuqemVU5Y4D+v96AYssy+B+Z1fHJnxK1LC9tky8+hO8JDPqTFpG6Z1B4jqJAN+R7Qrma/8KX/VE09zs+09SRjN8sOz1rtXmCEWRwYJxackeR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=BzLsBhvk; arc=none smtp.client-ip=115.124.30.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="H1v+lgsP"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="BzLsBhvk"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1777382073; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=RbONRCU5tMlRlZ5V3hZOSCmiwWT78tBKTzkHzfkMhIE=;
-	b=H1v+lgsPDUdCJn4OQNalwDpL8eS4qETfadnD6dmqLbd0ZZsj6JVjH2VvATqbF//Vdbpj7q0jlkx8TnRDJHsOm/AdaExSXQL9JezneS5bMot0hr46MUqgKxjiBP+6nBA0hHFK8GynHM2xcuc36aVdA6WT35Audmzke7Gf09cUQ4s=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R951e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X1ubII2_1777382070;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1ubII2_1777382070 cluster:ay36)
+	t=1777382070; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=wDviUyznucLdHZjKk0KKSvorH0J1X46CC4BtnY6yTUA=;
+	b=BzLsBhvkTI4eKPF2a1hfzE97pPocHBu9Mqt9xssvW+Goonc4ui7un2PLmpPKn3kCEYGKnohYaKiF2z7GmxH/ekozTNhvLvBHSU5DzfQJv6wnL9UN58BvzmVhcxM5sM5bkYMLYEkngfW3DuN2X6fWin2gpAHblULJFXZW46AjoC4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X1ubIGy_1777382066;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1ubIGy_1777382066 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 28 Apr 2026 21:14:31 +0800
+          Tue, 28 Apr 2026 21:14:27 +0800
 From: fangyu.yu@linux.alibaba.com
 To: joro@8bytes.org,
 	will@kernel.org,
@@ -49,9 +49,9 @@ Cc: guoren@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [RFC PATCH 10/11] iommupt: Add RISC-V dirty tracking PTE ops
-Date: Tue, 28 Apr 2026 21:13:58 +0800
-Message-Id: <20260428131359.34872-11-fangyu.yu@linux.alibaba.com>
+Subject: [RFC PATCH 08/11] iommu/riscv: Add dirty tracking support for second-stage domains
+Date: Tue, 28 Apr 2026 21:13:56 +0800
+Message-Id: <20260428131359.34872-9-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
 References: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
@@ -65,77 +65,143 @@ Content-Transfer-Encoding: 8bit
 
 From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Implement the three dirty-tracking hooks required by the generic page
-table framework for the RISC-V format:
+Add hardware dirty tracking support for second-stage (iohgatp) domains
+used in KVM VFIO device pass-through.
 
-  pt_entry_is_write_dirty():
-    Check the D bit (bit 7) in the PTE.
+The RISC-V IOMMU can automatically set the dirty bit in PTEs on write
+access when DC.tc.GADE is set and the hardware has AMO_HWAD capability.
+Wire this up to the iommufd dirty tracking interface:
 
-  pt_entry_make_write_clean():
-    Clear the D bit across the full contiguous range.
+  - riscv_iommu_set_dirty_tracking(): Walks all bonds of the domain and
+    sets or clears DC.tc.GADE in each device context entry.
 
-  pt_entry_make_write_dirty():
-    Atomically set D via try_cmpxchg64() on a single PTE.
+  - riscv_iommu_dirty_ops: Exposes set_dirty_tracking and the generic
+    page-table read_and_clear_dirty via IOMMU_PT_DIRTY_OPS(riscv_64).
+
+  - domain_alloc_paging_flags: Assigns dirty_ops to second-stage domains
+    when AMO_HWAD is advertised in hardware capabilities.
+
+  - riscv_iommu_capable: Reports IOMMU_CAP_DIRTY_TRACKING when
+    AMO_HWAD is present.
 
 Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 ---
- drivers/iommu/generic_pt/fmt/riscv.h | 43 ++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/iommu/riscv/iommu.c | 84 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 84 insertions(+)
 
-diff --git a/drivers/iommu/generic_pt/fmt/riscv.h b/drivers/iommu/generic_pt/fmt/riscv.h
-index 0281356cfaf6..44b87e70f029 100644
---- a/drivers/iommu/generic_pt/fmt/riscv.h
-+++ b/drivers/iommu/generic_pt/fmt/riscv.h
-@@ -222,6 +222,49 @@ static inline void riscvpt_attr_from_entry(const struct pt_state *pts,
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index 0c13430ecc7f..1f7967074492 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -1247,6 +1247,84 @@ static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
+ 	return 0;
  }
- #define pt_attr_from_entry riscvpt_attr_from_entry
  
 +/*
-+ * Dirty tracking: RISC-V PTEs use D (bit 7) as the hardware dirty bit.
-+ * When Svnapot 64K is active a leaf entry spans 16 consecutive PTEs; we
-+ * must check / clear all of them so that no dirty indication is lost.
++ * Enable or disable hardware A/D bit updates (GADE) in the device context for
++ * all devices attached to a second-stage domain. When dirty tracking is
++ * enabled the IOMMU hardware will set the dirty bit in PTEs on write access,
++ * making them visible to read_and_clear_dirty().
 + */
-+static inline bool riscvpt_entry_is_write_dirty(const struct pt_state *pts)
++static int riscv_iommu_set_dirty_tracking(struct iommu_domain *iommu_domain,
++					  bool enable)
 +{
-+	unsigned int num_contig_lg2 = riscvpt_entry_num_contig_lg2(pts);
-+	const pt_riscv_entry_t *tablep =
-+		pt_cur_table(pts, pt_riscv_entry_t) +
-+		log2_set_mod(pts->index, 0, num_contig_lg2);
-+	const pt_riscv_entry_t *end = tablep + log2_to_int(num_contig_lg2);
++	struct riscv_iommu_domain *domain = iommu_domain_to_riscv(iommu_domain);
++	struct riscv_iommu_bond *bond;
++	struct riscv_iommu_device *iommu, *prev;
++	struct riscv_iommu_dc *dc;
++	struct iommu_fwspec *fwspec;
++	struct riscv_iommu_command cmd;
++	u64 tc;
++	int i;
 +
-+	for (; tablep != end; tablep++)
-+		if (READ_ONCE(*tablep) & RISCVPT_D)
-+			return true;
-+	return false;
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(bond, &domain->bonds, list) {
++		iommu = dev_to_iommu(bond->dev);
++		fwspec = dev_iommu_fwspec_get(bond->dev);
++
++		for (i = 0; i < fwspec->num_ids; i++) {
++			dc = riscv_iommu_get_dc(iommu, fwspec->ids[i]);
++			tc = READ_ONCE(dc->tc);
++			if (!(tc & RISCV_IOMMU_DC_TC_V))
++				continue;
++
++			if (enable)
++				tc |= RISCV_IOMMU_DC_TC_GADE;
++			else
++				tc &= ~RISCV_IOMMU_DC_TC_GADE;
++			WRITE_ONCE(dc->tc, tc);
++
++			/* Invalidate cached device context entry */
++			riscv_iommu_cmd_iodir_inval_ddt(&cmd);
++			riscv_iommu_cmd_iodir_set_did(&cmd, fwspec->ids[i]);
++			riscv_iommu_cmd_send(iommu, &cmd);
++			riscv_iommu_iodir_iotinval(iommu, false, dc->iohgatp, dc, NULL);
++		}
++	}
++
++	prev = NULL;
++	list_for_each_entry_rcu(bond, &domain->bonds, list) {
++		iommu = dev_to_iommu(bond->dev);
++		if (iommu == prev)
++			continue;
++
++		riscv_iommu_cmd_sync(iommu, RISCV_IOMMU_IOTINVAL_TIMEOUT);
++		prev = iommu;
++	}
++
++	rcu_read_unlock();
++
++	/*
++	 * Reflect the active dirty-tracking state in the page table feature
++	 * flags.  When active, riscvpt_iommu_set_prot() will leave D=0 in
++	 * new mappings so that the hardware can set it on the first write,
++	 * providing accurate per-page dirty information.  When inactive,
++	 * new mappings get D=1 to avoid write faults on a D=0 PTE.
++	 */
++	if (enable)
++		domain->riscvpt.riscv_64pt.common.features |=
++			BIT(PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE);
++	else
++		domain->riscvpt.riscv_64pt.common.features &=
++			~BIT(PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE);
++
++	return 0;
 +}
-+#define pt_entry_is_write_dirty riscvpt_entry_is_write_dirty
 +
-+static inline void riscvpt_entry_make_write_clean(struct pt_state *pts)
-+{
-+	unsigned int num_contig_lg2 = riscvpt_entry_num_contig_lg2(pts);
-+	pt_riscv_entry_t *tablep =
-+		pt_cur_table(pts, pt_riscv_entry_t) +
-+		log2_set_mod(pts->index, 0, num_contig_lg2);
-+	pt_riscv_entry_t *end = tablep + log2_to_int(num_contig_lg2);
++static const struct iommu_dirty_ops riscv_iommu_dirty_ops = {
++	IOMMU_PT_DIRTY_OPS(riscv_64),
++	.set_dirty_tracking = riscv_iommu_set_dirty_tracking,
++};
 +
-+	for (; tablep != end; tablep++)
-+		WRITE_ONCE(*tablep, READ_ONCE(*tablep) & ~(pt_riscv_entry_t)RISCVPT_D);
-+}
-+#define pt_entry_make_write_clean riscvpt_entry_make_write_clean
+ static const struct iommu_domain_ops riscv_iommu_paging_domain_ops = {
+ 	IOMMU_PT_DOMAIN_OPS(riscv_64),
+ 	.attach_dev = riscv_iommu_attach_paging_domain,
+@@ -1325,6 +1403,8 @@ static struct iommu_domain *riscv_iommu_domain_alloc_paging_flags(
+ 			riscv_iommu_free_paging_domain(&domain->domain);
+ 			return ERR_PTR(-ENOMEM);
+ 		}
++		if (iommu->caps & RISCV_IOMMU_CAPABILITIES_AMO_HWAD)
++			domain->domain.dirty_ops = &riscv_iommu_dirty_ops;
+ 	} else {
+ 		domain->pscid = ida_alloc_range(&riscv_iommu_pscids, 1,
+ 						RISCV_IOMMU_MAX_PSCID, GFP_KERNEL);
+@@ -1401,10 +1481,14 @@ static struct iommu_group *riscv_iommu_device_group(struct device *dev)
+ 
+ static bool riscv_iommu_capable(struct device *dev, enum iommu_cap cap)
+ {
++	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
 +
-+static inline bool riscvpt_entry_make_write_dirty(struct pt_state *pts)
-+{
-+	pt_riscv_entry_t *tablep =
-+		pt_cur_table(pts, pt_riscv_entry_t) + pts->index;
-+	pt_riscv_entry_t new = pts->entry | RISCVPT_D;
-+
-+	return try_cmpxchg64(tablep, &pts->entry, new);
-+}
-+#define pt_entry_make_write_dirty riscvpt_entry_make_write_dirty
-+
- /* --- iommu */
- #include <linux/generic_pt/iommu.h>
- #include <linux/iommu.h>
+ 	switch (cap) {
+ 	case IOMMU_CAP_CACHE_COHERENCY:
+ 	case IOMMU_CAP_DEFERRED_FLUSH:
+ 		return true;
++	case IOMMU_CAP_DIRTY_TRACKING:
++		return !!(iommu->caps & RISCV_IOMMU_CAPABILITIES_AMO_HWAD);
+ 	default:
+ 		return false;
+ 	}
 -- 
 2.50.1
 
