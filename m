@@ -1,68 +1,69 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43BC441033
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 12:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C06F43E9D2
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 12:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777380543; cv=none; b=g72AJAKteQwhG7Fzc9V+xvWXPUwLg1xPpUNsur8HpO633K3xao95j/25uDrijpE+bhSU6cjYMSaeowNJTgF8gGlZw4mzaztNRRMlxCbgNMg/rve64Lf+Xc2hkxzBk/wrxHsHZPmqVn8zcalX8NSWyPRzB+owFLupRYeIOLIX8eg=
+	t=1777380623; cv=none; b=N50WiDEEE9UwpkvtaGcCCF1pWjYw2Uqp92dYzWIqsnWL6qV3b2qlPs/5wKJ8FwQODWcsVJdvLnhVPYwumd5Y+k8LSeJFyHOxcRNygJP/lC49D2T1LJe5yl7MALAA9tXnkRUy4rLuevuGqAqF7mCS8PawLeZaz+Yzls8mcn8j8TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777380543; c=relaxed/simple;
-	bh=6uQsReytJShRtVwFuY+KaKU4UtffiV2XCyp37o5sVFE=;
+	s=arc-20240116; t=1777380623; c=relaxed/simple;
+	bh=CFt6SaX8lvBwsyPzjjPQPyUBGsOZKHipwWBBIQuAwpU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ird5YFufb0NmyvLgiYbwTO4xRXXI0ag1mOrU7/vm+eCtiGbxA3/odREhHGZapgz48+ixOlrNJKBlmVvEPMitmr6dHgic/vec3LJgJsSUQYKGvik6c9ImVqxsXxcb6jmXtCVZ2dWsZdFADo/oY9ITA7o+/S6JR0/2T/ogLDvHKaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=CP5msS+S; arc=none smtp.client-ip=209.85.222.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=jbKhqPDX17AOdsWaX7fBPVyvZEWBWPltdGOh8BvxlK9VuvaPBTxoPv16svWr/XQB17pWaA0njJkzEIZYUbZckBTcyBMx0dq/JZS8uxZFYDcbH483Sjgu1fI/y15BKFt4pMGB0OhkJ/uwt07tL2SE0bQgsQXa4BnH31ArfWlAVBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Tr1k85tK; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="CP5msS+S"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8d65f4073bfso1539069585a.3
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 05:48:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Tr1k85tK"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cb38e86cf2so1028918785a.1
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 05:50:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1777380538; x=1777985338; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1777380619; x=1777985419; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rZDznJLnR5IBM+qy2CmcyjeNtRZUzmIeFEkRhR7jVHY=;
-        b=CP5msS+SeFqC0P5r+J8LIGBHHs/4982bjoP4g4YSzw2DuC+chMk5eiGfZRpnxCAqnb
-         D0U/QDSySnpuFyn5z9i1tlzxAmGyMtirfxtPxmtAH5Hev1QpLDYrcPDDawrAeJezbz3k
-         asw8FdWzZQBsXqalnq3g/THCx/Od0M865lnJBoISvgLLsvV1y7V1p4CQBTMMwNSXl3Fn
-         cMKPdtNkFLuM9Gt12QDivSj/vVRWmVXcp/PmKn7iD1Qh+Xp1PkLfjx7Ug9sD9E1lPTTf
-         Z2iKkTzjnZL3XnEujwPdI7Cl9Am8Oz6/dePGOtsFWDkCx9K4r4NNsmpgiS2GC1RMajhV
-         x2jw==
+        bh=8t5Y74JK09wcmnesHru+6hwOpLCoWPkIfn+Q28jlzBo=;
+        b=Tr1k85tKMGHYfw3Kl8PagEqJxqx7qaNfrlzjDPBYLM+4OuzAl6LUk52Nhl8oaaENo4
+         7exJSA+021qZP8s+B/6CizSBukWCLHTZkJ6bhc1XOng/cZbRUzLNvGaffOnt3u0vvYKp
+         +hIynTh3AumpIQrokUc8bNUONA7QRNuWVBxUvc/+CZyjAGhDWlDIXXcwR5+z6EZ4sQyc
+         0+7dXZF42RzF304j+s0liQdMDCYtvm/iZcHUzv02Ntv/C8wyhLHRP8hRp50hmYd09lON
+         1dlnQWxCQJpl30Mbz48qFIr9RWHbn0DHeo7x6M73Q3aSDCHxEK+VK9BX8PT0MGAL3wmC
+         bedw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777380538; x=1777985338;
+        d=1e100.net; s=20251104; t=1777380619; x=1777985419;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rZDznJLnR5IBM+qy2CmcyjeNtRZUzmIeFEkRhR7jVHY=;
-        b=I2vONJyFQGnFP0p51Pt+eW1HSm2dh2HdZZkDo8nGCuqs8CosG24D4oH5fTi4+LgUGs
-         lFpcIjxD+rGkLRnJNVjllwsLy4FuhlyvsfagGG6zxAcz6rKOjTHMyfqVfhba8DXBa7ru
-         VnMBbRt0ewsM68NDqM7Su3WWELJPci3+H/TPw7D4TUssDIs1y2IpYHu1SL19lXqB1ToF
-         wD8OVlWVhOwuZVagojA7SwhfN9zQruECgz2f/OywJGBrubwOaqfOruJauhFiXvceXf9O
-         GFu5ldZhb9hKB+FKJbXR6JVcegAirPQpW4g7AtKo2NITWRHBv6TbVoM3EQoLvAx3AMg/
-         0Gvw==
-X-Forwarded-Encrypted: i=1; AFNElJ8k8rLhtYcJ5IiM70Nq6jc0ELuMKd/vGlWAnOr8WMj4iSs+1YcZQ72yurJDxwOJM2vHTOg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZ/EKNlabjsHmSJ2U6CFzuruKnR1Oi6vGUmFmrGFJhNI29Qs/O
-	26Rm0I4mDXtG5VDs97Q3fEFPY6CFA0NQ42rcntPPSFWVFA9njqTpzXfxcmjRfIwQb24=
-X-Gm-Gg: AeBDietI2+GPKNuRpfpLFD4kVbJFvP24wkbBTIsdV4xtkydv+0be89Tj+wPY4Zit6aL
-	MtOAhdC/KHFYQ4C9tHnhGkfODL9usH/CSxobjBXW9wlKhAQ65DanJaBfCnag2GrCDnpgXHI0XyY
-	DKZ52nJHFyxkCCY0kibHcKeVHFABpcGQSicS3/Me0e5CbnEOMMqEEaqXtrmY86dZgemOjRb9Eu1
-	7GXOZWbNsPatNbl85HTJxpTcLTuMXyYNmRPtu0dj8pOzrQDhFLX/7pMy5Cm822jcnC5JxQ8rB5j
-	5mx8x+I5cOPRv0fhhoxoOQgDl7F9e9A453UyvMo9YqlA+9jPtP/vJ2qm506ZNT9fBFpuBOp+k/D
-	QP7XwW5FiE4LL8ChB/JVqBVbfJWKTVgv90rVMSZk+LPjlKhbvUSV4OqNIBXd4uAk//my2NYNIDX
-	Q9DgUHbCqkNXUR542aXCmb1XqOvlJCdL02NtlEPluRMnxjI35yyub69/b7HDok2fcEuD02e5wcY
-	dbPgzfb06XszgRW
-X-Received: by 2002:a05:620a:1a29:b0:8ed:2b66:9ec3 with SMTP id af79cd13be357-8f7d72475c8mr387065185a.16.1777380537766;
-        Tue, 28 Apr 2026 05:48:57 -0700 (PDT)
+        bh=8t5Y74JK09wcmnesHru+6hwOpLCoWPkIfn+Q28jlzBo=;
+        b=BMDRtu/SHz0pQM4mQwem3boqcH+2880jw0N9UB4ut/oaNr8hLOVezJ4dqhH7NuBi43
+         hHgYbsHo0m9D7h7EwhiN4oHVJDeUaT3osKy0vjow3gg02UDamxInQ9psYLw1jOx5qKCY
+         j5222n3gVzEz4lMcwaQ4wrsf4alKG4nruoXVXEjbYpW7xRD6CjGPmMqAcRJRIkYz/KI2
+         2cYKdQGTQv1n+dmAC3o7PIN9yGLgiylmKlc8aQ4vq7rGU4Msb3WX7Cc7b5gHlZTxBlgN
+         o65zBSgBjdMDoM6A/VR3svrmHB63SgfUG1hGmm3p0IwRuwkfM7EXs9GkgBSAVlOmOWA4
+         rNNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9WqK08fTGD2W0VfteTZOB7SEYFKPP/XjEGHFybcwhfmiQWr3T9nlPI4UgMiDC1F6vZxoI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yycz4nlInfqKPbDj9do75lRdWfmyXfyX2sovySy7iQwwyitK29a
+	p7HRRKFodRm7vyHYcVAEBUfSg21PT4nLtZi178sFnEv61wQ74rlPJ1qyigeUs9crns/fcw5dNfp
+	2BpDrtLo=
+X-Gm-Gg: AeBDieuTpEN+6HY719cNHaiPogx1oYL87lkbsBfQQttDKUHHyRwDyTXP6Z9odJpXMm7
+	IeVV1OxxdlW1KudFsXHN7aZUYnAOQx4aE4tedIlIVnVM/f7+fU6wkuiLwafMBO1ePhjg7iAmwFb
+	9NhpSotWdtajHNxl+8l7SAv09/BGdnn/XkFZi09BtwE0CLMCyERqq+sgDPNTQ2lGK+6NhaNQ/lI
+	ryvKApwd8ipbyf56T/fzzm0yOnID5WOoh2qYhq+T/PF1kK3EiIuDFgf3R1V5+pbgT9xJG11d0zR
+	3p3qJDw6pUC0WN7ZDvOOI6BhcVcKetnB3kL7BgjOev6skTMz8TMUFPgCbp2IQU5NtJN2DZGQXJl
+	WmhzAe+XYNQMTN78MMBzHzgnn3R/5qPT6CQw57tqvPhlvsX1wwROfvYWPFl9148Kay3OSSvDlHz
+	ysmAQZWXpcvhwe2w4BhrZC1MA0KewqksxjzB96gGQBP7v/vWHaLLQAukeujfG0+y1uh3iW2KGTh
+	AXL8U25qBgJszGXW+V9oEFFLQI=
+X-Received: by 2002:a05:620a:4688:b0:8ed:2b66:9eb2 with SMTP id af79cd13be357-8f7d734683dmr403211385a.15.1777380619112;
+        Tue, 28 Apr 2026 05:50:19 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c7cd2c0dsm183064985a.26.2026.04.28.05.48.54
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c51af6dbsm182444485a.20.2026.04.28.05.50.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 05:48:55 -0700 (PDT)
+        Tue, 28 Apr 2026 05:50:16 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wHhry-0000000AVug-1I54;
-	Tue, 28 Apr 2026 09:48:54 -0300
-Date: Tue, 28 Apr 2026 09:48:54 -0300
+	id 1wHhtH-0000000AWMo-3Ut3;
+	Tue, 28 Apr 2026 09:50:15 -0300
+Date: Tue, 28 Apr 2026 09:50:15 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -76,13 +77,16 @@ Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
 	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v4 4/4] iommufd/vdevice: add TSM guest request ioctl
-Message-ID: <20260428124854.GA849557@ziepe.ca>
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 1/4] iommufd/device: Associate a kvm pointer to
+ iommufd_device
+Message-ID: <20260428125015.GB849557@ziepe.ca>
 References: <20260427061005.901854-1-aneesh.kumar@kernel.org>
- <20260427061005.901854-5-aneesh.kumar@kernel.org>
- <20260427140539.GE740385@ziepe.ca>
- <yq5acxzj1dwu.fsf@kernel.org>
+ <20260427061005.901854-2-aneesh.kumar@kernel.org>
+ <20260427135906.GB740385@ziepe.ca>
+ <yq5afr4f1egv.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -91,43 +95,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5acxzj1dwu.fsf@kernel.org>
+In-Reply-To: <yq5afr4f1egv.fsf@kernel.org>
 
-On Tue, Apr 28, 2026 at 05:43:05PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
-> 
-> > On Mon, Apr 27, 2026 at 11:40:05AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> +/**
-> >> + * struct iommu_vdevice_tsm_guest_request - ioctl(IOMMU_VDEVICE_TSM_GUEST_REQUEST)
-> >> + * @size: sizeof(struct iommu_vdevice_tsm_guest_request)
-> >> + * @vdevice_id: vDevice ID the guest request is for
-> >> + * @scope: Bus-specific scope classification for the guest request
-> >> + * @req_len: Size in bytes of the input payload at @req_uptr
-> >> + * @resp_len: Size in bytes of the output buffer at @resp_uptr
-> >> + * @__reserved: Must be 0
-> >> + * @req_uptr: Userspace pointer to the guest-provided request payload
-> >> + * @resp_uptr: Userspace pointer to the guest response buffer
-> >> + *
-> >> + * Forward a guest request to the TSM bound vDevice. This is intended for
-> >> + * guest TSM/TDISP message transport where the host kernel only marshals
-> >> + * bytes between userspace and the TSM implementation.
-> >> + *
-> >> + * The meaning and valid values of @scope are defined by the TSM backend for
-> >> + * the device bus type.
+On Tue, Apr 28, 2026 at 05:31:04PM +0530, Aneesh Kumar K.V wrote:
+> > I thought we were trying to get away from struct kvm?
 > >
-> > If you want to do this then you have to also provide a way to discover
-> > what the TSM backend is so userspace can form the correct numbers.
+> > https://lore.kernel.org/all/adf29Rn7q9Db0hxc@google.com/
+> >
+> > Ie this should be a 'struct file *kvm_fd'
+> >
+> > ?
+> >
+> > Though I am wondering how practical it is to do this at this moment :\
 > >
 > 
-> These guest-driven requests end up in the correct VMM backend, which
-> should already be aware of the scope value to use. In the case of ARM
-> CCA, the RHI calls include a device ID (vdev_id), which the VMM can use
-> to determine the appropriate scope value.
+> Should we also switch 
+> 
+> modified   drivers/vfio/vfio.h
+> @@ -22,8 +22,8 @@ struct vfio_device_file {
+>  
+>  	u8 access_granted;
+>  	u32 devid; /* only valid when iommufd is valid */
+> -	spinlock_t kvm_ref_lock; /* protect kvm field */
+> -	struct kvm *kvm;
+> +	spinlock_t kvm_ref_lock; /* protect kvm_file */
+> +	struct file *kvm_file;
+>  	struct iommufd_ctx *iommufd; /* protected by struct vfio_device_set::lock */
+>  };
+>  
+> @@ -88,7 +88,7 @@ struct vfio_group {
+>  #endif
+>  	enum vfio_group_type		type;
+>  	struct mutex			group_lock;
+> -	struct kvm			*kvm;
+> +	struct file			*kvm_file;
+>  	struct file			*opened_file;
+>  	struct blocking_notifier_head	notifier;
+>  	struct iommufd_ctx		*iommufd;
 
-That seems kind of indirect, we technically support multiple TSMs in
-the kernel, how does it all get reconciled?
+Ideally, yes everything outside kvm should just use the struct file
+and there should be quite narrow places where you do some kvm
+operation on it.
+ 
+> ie,
+> KVM_CREATE_DEVICE with KVM_DEV_TYPE_VFIO still use kvm->users_count,
+> KVM_DEV_VFIO_FILE_ADD -> will switch to get_file(kvm->_file);
+> and VFIO_DEVICE_BIND_IOMMUFD -> will switch to get_file(df->kvm_file)
+> 
+> > Maybe ask Paolo how his series is going?
 
-Passing overlapping numbers here without any way to tell them apart is
-not a good uapi design.
+I thought the above is what Paolo's series was going after?
 
 Jason
