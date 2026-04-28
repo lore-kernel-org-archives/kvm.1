@@ -1,106 +1,112 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A7239DBE6
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 23:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40AA81724
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 23:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418835; cv=none; b=iZHQz/t8fC+0L5DHKklgOxEYrfPBchxl2KeS8T3bkwUVXIL7c/9CTQiQKFDkgDRInixIhnKWIFNL5O7BfWiXz9qpLR1Uzqfn0EJ1G8H7Xz7FxJEr6WuYLO/IRy94sGbRu1ovCztn4tCd8INn1NtUk+Mc4bo3f2m3zKcv7i1Il/g=
+	t=1777419212; cv=none; b=dhG/yt9LwORml8vf4lPHsuIHbpSmQlFaCbGWT4d3MTFPqVHBHkppOKAn8JAwCStVQ3YxErW7d389G7+a2NwXe7sGEgjsh3QcTSBYkSDQT+weFbYYzFzYRBBssGT6ow6/H+i2yiaEGd6U7izSx4hcBwokW4as1edR4Y3hfvXbkvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777418835; c=relaxed/simple;
-	bh=7y7W3gxpmzQz1hiasjRf2DZeaIf/c4efp3xC4UDsjzw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JdJbfhu1cOtNWDvOqVRfvVaASR0YfEuoF+gYxf002NOmMG855DvMPy+q6nd2TQr7Lig+HAZPwnc9xnUtbPi187YedyFD6lalTZuhflhqPZiTaaSUhypdNPNwKUYBLW23uAqtWzF8AsUyJltnS8VIC2s8Y3+KuMWboaY3Kv4KVfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U9BtImIp; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1777419212; c=relaxed/simple;
+	bh=u5jNgX3aBCZeke7gIDGCVPb6JkDwECjFRBtYrME8E6o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YrI5V+uroFY+y0pD7y+8hciFShaOgoqI1C/1erIWxdk7IwQsOVp91KfihuUsMD19VVACL1flFHeV3n/R+7oVzOz4Vg7cu6Kr+ntU3ygioUf0bi6XWfUAgBzlNrEkXITnW7qn73zkDpxVtaQBfPyYEO6LB1PIfUOhjYS36p4RBgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f0EbKtvI; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U9BtImIp"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35e59791605so13063842a91.1
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 16:27:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f0EbKtvI"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b630b4d8d52so7070679a12.3
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 16:33:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777418831; x=1778023631; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7phDv/pQWSM7X6O/hsO/CGo6GRlLKm+dH4N3lxKr+ww=;
-        b=U9BtImIpe1Z0/FBBrkThwzc/vGkemLVi+L8BrqQEc0/kffmImib3dEnod3n+Qwmcrl
-         NT4UL3fP6kJhwSMwn/sPuLw4i5XLOj0dpiX1zeEsRx5BiEgecFKdOd1EtPH1UNAAON7J
-         8XSobb9sSrGK+c9lE4Akwlt7SEqpVBFIq+bOMuBkG2Hxeyo+rvwHlT1v6O4ScmF3gzlD
-         8xyiPJ4XYfxwAomiFtOdk/2bHm2bEeesEV6OBfKNXqzpS+bC3ae2xC/+GRkzNghBU1DK
-         jdFsM3JcM9nvqY//EMSi01OqzkAhKrqX18V5ByaL/p8JJhv6371hoFOaT51/9wem+Uot
-         AjnA==
+        d=google.com; s=20251104; t=1777419210; x=1778024010; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JywkponAAlLbpKs0ZR4pdZDQ9JhpG3xml6Pp+KH2bc4=;
+        b=f0EbKtvIggskKvEMJ2/jHZ0vIccIW2mkd6vuGeStLeJ+1zsQHufB7qstKnjKkV0+xw
+         +OLMAg6bbn5xX8BMUT+Mg7hU1nvjc6O2MpJB54SjYdh0C/3R1lw0mXmHlX7jitRgSgWS
+         8xtI/Y+1ur0Sb3092x3a9IOlDAIOPaG5tUCYgFvisghsDsnXpvwGi/qw5DkT6I/DGY4A
+         evvwqdgrYydCD6ZIrSQ9g12pDDURzQxVZ+wRmMIXWQ/4DwWCjlinIDMaSlodaYHKPRup
+         UMF+A8Gb3U+KsjpU728uXkRu6wwwEPkNLB6/tBoejX1667brP0vFTctX5JQCszw1zxM8
+         Lg3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777418831; x=1778023631;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7phDv/pQWSM7X6O/hsO/CGo6GRlLKm+dH4N3lxKr+ww=;
-        b=omLQpNxHX2v7hTAlIR7qH/JAIKt3iH/wakBLYhuzLl8Liaal3Ge4ewn7yEQsEoulXt
-         46FFy8ZWZNWuCO/tWZ8pCgbgdBkfWsmvAng68mywJ/vOxd8j7HHAEl85bVhw9qfBVGUW
-         cLQ9FQzBzbWGAVhyrBX2CAhPt7C7jxZHWhWt3MiTwDlxuJf9uaapE2XSqPuAPxayZKXO
-         +r6x4Mn+Rnoxu2MPtvYIUmXDalkPijVrVX6uNA9oU/HjVe4C22SlEozcgcm7ULto3Y23
-         IyZbbfSKHbkhubxls3SEr8RdVQlA3ZGwnR4NIvYLu7Ifx3YgIU09sxlktDx3Y+gsBI/Q
-         2aXA==
-X-Gm-Message-State: AOJu0YxC6jttpOWwznHak+bYvh0kjTgSY5V5aYm4AFfQ8E3LpzKUCY13
-	2meNhtd2gp70KNcu0q2Rap/Lp92Q7SHSK+BwT9RapDd6lWDPXtI7C0Rqw92R6HSpaD0Lhwip+Z2
-	o65/T9EMzu/J3hyosMh6B7iTjd80Zf+mEZNDVpN9LJs2TGPkrtJguc/hSP2c2hIh955Z+/hqmQZ
-	BjAhp8aYxd2oFDRLwvxu3zbB9T/wOUbN4KMdOK1IXmJQo=
-X-Received: from pjbcf17.prod.google.com ([2002:a17:90a:ebd1:b0:35d:9018:737])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3806:b0:35f:c729:de9f with SMTP id 98e67ed59e1d1-364921abbddmr5232859a91.27.1777418831246;
- Tue, 28 Apr 2026 16:27:11 -0700 (PDT)
-Date: Tue, 28 Apr 2026 23:27:06 +0000
+        d=1e100.net; s=20251104; t=1777419210; x=1778024010;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JywkponAAlLbpKs0ZR4pdZDQ9JhpG3xml6Pp+KH2bc4=;
+        b=LTUVIukB30/upNALJ7Ita0WhwWMCZjDqYx+jbc8aVZYKosVhLhT1oBVAgLkC8YCds4
+         ecpx1AwMZwB29CJXNpQ7H83c+0yAczG2epe6kQAjkgj9g8LVxp3xk0A0X2bbRRZW+Bg0
+         ASfbYzvzxfflPTq1wSHcekZUiubAgYvmLQKWeVJ8pxcI04h7TYPDvAzCEX22uJ/9zjY4
+         ni8it5g82BQJC3ZY1zt3UF0+VunwgMAFnl8rJwQzPnpewNsfNaBp8U0C0T0YPg2g+QSI
+         wX4Nm0TOAiZmJUbw6K7iyEKHVlQpPlzxXC6/t7r4k5xMBZnQxHVCfFDVdwUBSCZjs/zK
+         dQ5w==
+X-Forwarded-Encrypted: i=1; AFNElJ+KRzMY5k7+h6A5ahXyDGlXlyVmvdg1EbYoTW0Yj1iJ+3PVsbygd1dVJ6KPzf6b2JpjFq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOgno2lE38zt01GQMa1lK+Kooti3VdMIr2n95nqIxyVD61n6Qh
+	U0nOY666ecmTz7TChj4hNTK19JJth40IDXd8HZYAbJt5hAvqdXwlyl5eYlM3dFeZW1/buChoL5x
+	84shNNnjI8J4RKPSmbERXjpRj1w==
+X-Received: from pgbcr2.prod.google.com ([2002:a05:6a02:4102:b0:c76:1d9:8c20])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:6a20:b0:398:8546:c3fc with SMTP id adf61e73a8af0-3a39bffeb82mr6084413637.7.1777419209934;
+ Tue, 28 Apr 2026 16:33:29 -0700 (PDT)
+Date: Tue, 28 Apr 2026 16:33:20 -0700
+In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260428232707.2139059-1-dmatlack@google.com>
-Subject: [PATCH] vfio: selftests: Allow builds when ARCH=x86
-From: David Matlack <dmatlack@google.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Ted Logan <tedlogan@fb.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>
+Message-ID: <cover.1777418884.git.ackerleytng@google.com>
+Subject: [POC PATCH 0/6] guest_memfd in-place conversion selftests for SNP
+From: Ackerley Tng <ackerleytng@google.com>
+To: devnull+ackerleytng.google.com@kernel.org
+Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
+	andrew.jones@linux.dev, aneesh.kumar@kernel.org, axelrasmussen@google.com, 
+	baohua@kernel.org, bhe@redhat.com, binbin.wu@linux.intel.com, bp@alien8.de, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, chrisl@kernel.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	forkloop@google.com, hpa@zytor.com, ira.weiny@intel.com, jgg@ziepe.ca, 
+	jmattson@google.com, jthoughton@google.com, kas@kernel.org, 
+	kasong@tencent.com, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com, 
+	mhiramat@kernel.org, michael.roth@amd.com, mingo@redhat.com, 
+	nphamcs@gmail.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	pbonzini@redhat.com, pratyush@kernel.org, qi.zheng@linux.dev, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, seanjc@google.com, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, shivankg@amd.com, shuah@kernel.org, 
+	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
+	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
+	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
+	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Allow builds when ARCH=x86 since the top-level Makefile can set ARCH=x86
-even for 64-bit x86 builds.
+With these POC patches, I was able to test the set memory
+attributes/conversion ioctls with SNP.
 
-Note that ARCH=x86 could also indicate a native build on a 32-bit x86
-host. However, it doesn't seem like anyone is building selftests
-natively on 32-bit x86 hosts these days since KVM selftests allow
-ARCH=x86 and fail to compile on 32-bit x86.
+The content policies work, and PRESERVE can be used before the SNP VM
+is finalized. SNP_LAUNCH_UPDATE can accept 0 for source address and
+the SNP VM runs fine. :)
 
-If someone reports an issue on 32-bit native builds we can harden the
-KVM and VFIO selftests to explicitly check 64-bit (see the discussion in
-the Closes link below).
+Ackerley Tng (6):
+  KVM: selftests: Initialize guest_memfd with INIT_SHARED
+  KVM: selftests: Use guest_memfd memory contents in-place for SNP
+    launch update
+  KVM: selftests: Make guest_code_xsave more friendly
+  KVM: selftests: Allow specifying CoCo-privateness while mapping a page
+  KVM: selftests: Test conversions for SNP
+  KVM: selftests: Test content modes ZERO and PRESERVE for SNP
 
-Fixes: a55d4bbbe644 ("vfio: selftests: only build tests on arm64 and x86_64")
-Reported-by: Jason Gunthorpe <jgg@nvidia.com>
-Closes: https://lore.kernel.org/kvm/20260427231217.GA1670652@nvidia.com/
-Signed-off-by: David Matlack <dmatlack@google.com>
----
-Cc: Sean Christopherson <seanjc@google.com>
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  12 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  13 +-
+ tools/testing/selftests/kvm/lib/x86/sev.c     |   9 +-
+ .../selftests/kvm/x86/sev_smoke_test.c        | 255 +++++++++++++++++-
+ 5 files changed, 271 insertions(+), 20 deletions(-)
 
- tools/testing/selftests/vfio/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 0684932d91bf..40165d087a0b 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -1,6 +1,6 @@
- ARCH ?= $(shell uname -m)
- 
--ifeq (,$(filter $(ARCH),aarch64 arm64 x86_64))
-+ifeq (,$(filter $(ARCH),aarch64 arm64 x86 x86_64))
- # Do nothing on unsupported architectures
- include ../lib.mk
- else
-
-base-commit: 2a4c0c11c0193889446cdb6f1540cc2b9aff97dd
--- 
+--
 2.54.0.545.g6539524ca2-goog
-
