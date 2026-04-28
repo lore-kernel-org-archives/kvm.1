@@ -1,269 +1,292 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781E9391E7E
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05CC2D0603
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382547; cv=none; b=uqXCnstJJMXZDgMigZprqH9cqO+OGy6AuR1Hbxs7xLhXgqMAODpSZ7EKbmniVAR8QYreO8x3bhob5JoChtlNvYwH7ptkUcEN63CD9NroS7qwrq/N3PAnOVwTSk9ipAtOdLXj3UW6iOf0SugvtHed0yonWCYiOg3o/MydU/pV3dc=
+	t=1777382829; cv=none; b=EUPtYVM0BhdZ5Knpaeyk0EaBsAjMJHx8sUJqkOTJlSjTUxtZwEeMfUY4nLu1YN4lMiiVnSKwjivJsR7Pp5GpwqJLAzF9ETbb8FJadja/RhGEPT5aoWMbyP2JjMT97u90g4ceiJdq12042f/HTIZC1+NbCTJEgBa2mk+f/o3rI54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382547; c=relaxed/simple;
-	bh=2BB9SsZnD1oUi/iZNMFAyjkEk2+CmkyVl1grdupCgZ4=;
+	s=arc-20240116; t=1777382829; c=relaxed/simple;
+	bh=IyapETfcrA5bdzogS0BMgrPXC9c/KLCTS2PzVSSlXMo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tkQIgrsTxYZPq+cJ5CUVCvFB3ljkQZLV0xnGSQ2M/dyNwJMu539gHh7R8UbHEhEGcOF1gCEpQ4GgS/1NsEmEa0nx3Y1PuvDPU2rSWT6sdmx9KosCToSk6aucW3HUo505GgAeiE2sdI7i9DMgq2kONWnLHhfKixjAZzd5PadLwew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CW3N0LnN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Plia3UEQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWEtTgC+/xhmNVPEZGFC7aFogU9ISh35EhcptsGg+WSTGhz2Ko9xGYZ2mpf9fvw5N4ArmuHZtVKSBLQ/EDw6nLofHicEUIAIP3gmdO8C9N8HozPbbrTG+tdANI9dD4eJcBzJwCZhFUaWfIG502gIiZXJTWbm3W0+7XtUtY+mrGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cMe7uZnX; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CW3N0LnN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Plia3UEQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777382544;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=voE5hj3Jt4qgd9THMxCkOfk/n2r5u/BP+6aC7p7RNyk=;
-	b=CW3N0LnNC6+6cOFiYMTVycjQQLjMUZWnx/xplMwsG/er5Z/2SkF5X69nObHsCV6qwPvSX3
-	bfi1cAz6QIxg7I+6Ltt+Nuw6TrkU1B3+I4+Ir4TbfbOIIDUFYGd9x+hd05/Q20EXbUhJYd
-	bZwZrV0Lj6a5QtPsHKZcB5/1aDrC2fU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-M-vJFtlIPYe4j9NlibWtSw-1; Tue, 28 Apr 2026 09:22:22 -0400
-X-MC-Unique: M-vJFtlIPYe4j9NlibWtSw-1
-X-Mimecast-MFC-AGG-ID: M-vJFtlIPYe4j9NlibWtSw_1777382541
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d1dea12aaso1644866f8f.1
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 06:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777382541; x=1777987341; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=voE5hj3Jt4qgd9THMxCkOfk/n2r5u/BP+6aC7p7RNyk=;
-        b=Plia3UEQ4mI+kXP9VPN2wF1Qt8sFJiL6IwR59KVfHkQ9FlQ6wpFbq7vsg9BuqwcKkz
-         rw3F+as7zn863kFscIDhgODcpxC8D4I/j8mEGTmb7FjWpd3z8Zh4n6XhU6llxkPNMv6W
-         UpzUsyZJwgQwIuhvR8/WU7JKcvSmTd/+uRtT9ahEvyQ16wnjBS7nlOLrn4oMzl12/9e3
-         V3Va78AigXvYCvLvm9w5JtSkQGvEJcZMY5lBpqKVW/cCbpjrtm5m9Zmc4sF0lg6y+N16
-         byRSDtCOUcjKo3TSl94CPbDLuklnhROSMpDJOtDyht8gOtsuSBQf9vGtJ05i7EwfgA9U
-         0iIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777382541; x=1777987341;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=voE5hj3Jt4qgd9THMxCkOfk/n2r5u/BP+6aC7p7RNyk=;
-        b=fVOakpaSw0XX7a20Amddbb8FptlUDLI3kDo5XzwJyM7bJG4USKSXU5VYd5fLagyavG
-         R/bWK6W3tN7zHl29nvqOmGxhdIx4O1fvnPJYaon1TLRQMUN3eTY6XGf2QPSLF3x6Dfrx
-         ANcGPaUPyrwX8SQgIJKvNKNdi67zgQwkp8DF8fJalH95Cj1ZuOW9G8opk+wv/3EefLwt
-         z8sL49LWul5EKaltk0BJTS4x9eLQtEGgaa+gxpJiDVSRfNHKnq3dFGbwIjcDk7A37Cq5
-         YRFsKhtPPGydN8rtbtU/RbetJRKEUa/G2RrCVvijQvg76li5w+SA33VSrX+rYmT7QTX3
-         brzg==
-X-Forwarded-Encrypted: i=1; AFNElJ/p9Zb9SNjyX9P3uKoM5VwKTmzSx74MWSMfSmCs9CXrMJkT9THr7TEO4+0ewVLegXfkuJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAnW4D8gwSxB7mHCfcTLAxPK3lAwrrArH5SjY8n9L5TkGeUa8/
-	KnpBfHcsHygBbb4lWQ/sArb4ukAWu95TKcwkKx3fNmZr0OAQVni5AMLe1s8HsKXqyBL2gd8IDB/
-	VkWYZt7/KIiQN9JISoFBNWxXim0JrHN+dimeTnAF7Pgqt4F8+Y1cfWw==
-X-Gm-Gg: AeBDietLFFKOG4trm5IhSzL44dU9bhXMMIxxQLwRWNmXoz7PJAiVRPCJBrd7Beo2iK+
-	MEmI1OO+BpHB+xIqpUJYwe6I6S44ajNSDpeL2DswXn3yiu/sLrbtEGK8OvQAO9k/vByc1kbQT3/
-	MPRijRM3I2i0OdWE1etra8GnzbyRzNl6NGaYnErFfXNh9q3XnhiFN2n/xWzSFcuOl9TabUKvn5X
-	tdRvADLioT/2wJwNkkj45OPM9veFm8nGg5Ao2s0LSG+xlDOP/lz5vzL7SPgotK9cs0rUkmzwxG7
-	vlbqdB87Ctuv2CsE2f/doCr3tCfvIm5LfMVMoBr4sMoejYVQ3tyCvJxeF27y1RkHlqbkaWLvxzp
-	TN75NfbG/ZHOKi98lRDnohCzrn/5JCkzr2koj9YiAnn3m1GWQXwtiwoK8
-X-Received: by 2002:a05:6000:2c01:b0:43d:773d:78ff with SMTP id ffacd0b85a97d-4464a1684bdmr5626378f8f.27.1777382540728;
-        Tue, 28 Apr 2026 06:22:20 -0700 (PDT)
-X-Received: by 2002:a05:6000:2c01:b0:43d:773d:78ff with SMTP id ffacd0b85a97d-4464a1684bdmr5626286f8f.27.1777382540032;
-        Tue, 28 Apr 2026 06:22:20 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-47-179.inter.net.il. [80.230.47.179])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4463d02f6a1sm6487599f8f.13.2026.04.28.06.22.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 06:22:18 -0700 (PDT)
-Date: Tue, 28 Apr 2026 09:22:14 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net-next v9 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-Message-ID: <20260428092150-mutt-send-email-mst@kernel.org>
-References: <20260428123859.19578-1-simon.schippers@tu-dortmund.de>
- <20260428123859.19578-5-simon.schippers@tu-dortmund.de>
- <20260428084851-mutt-send-email-mst@kernel.org>
- <cdc3cbc8-cf6a-437c-b34c-dd8ced65d7f8@tu-dortmund.de>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cMe7uZnX"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2C0B497;
+	Tue, 28 Apr 2026 06:27:00 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B23B3F62B;
+	Tue, 28 Apr 2026 06:27:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777382826; bh=IyapETfcrA5bdzogS0BMgrPXC9c/KLCTS2PzVSSlXMo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cMe7uZnXRS3E8eiaXBZbf/31/9iUxv+ImqQ6FjohOPE8MehQgU634Hpr6XSuDjIpo
+	 igQNg12C5u3+RpzYi2ngwf9eqHo5924XcBQ1KN36+NNo3TPokhBaVJEBqBumQzpe0i
+	 U/xwFwL5j/3UvcdUvyenH7P8iTzIyRS4oF2HdjvE=
+Date: Tue, 28 Apr 2026 14:26:57 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Andrew Jones <andrew.jones@linux.dev>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	"open list:ARM" <kvmarm@lists.linux.dev>,
+	"open list:Default mailing list" <kvm@vger.kernel.org>
+Subject: Re: [kvm-unit-tests PATCH] arm: add wfx test case
+Message-ID: <20260428132657.GA591628@e124191.cambridge.arm.com>
+References: <20260427130045.3669851-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cdc3cbc8-cf6a-437c-b34c-dd8ced65d7f8@tu-dortmund.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260427130045.3669851-1-alex.bennee@linaro.org>
 
-On Tue, Apr 28, 2026 at 03:10:44PM +0200, Simon Schippers wrote:
-> On 4/28/26 14:50, Michael S. Tsirkin wrote:
-> > On Tue, Apr 28, 2026 at 02:38:59PM +0200, Simon Schippers wrote:
-> >> This commit prevents tail-drop when a qdisc is present and the ptr_ring
-> >> becomes full. Once an entry is successfully produced and the ptr_ring
-> >> reaches capacity, the netdev queue is stopped instead of dropping
-> >> subsequent packets.
-> >>
-> >> If producing an entry fails anyways due to a race, tun_net_xmit returns
-> >> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
-> >> LLTX is enabled and the transmit path operates without the usual locking.
-> >>
-> >> If no qdisc is present, the previous tail-drop behavior is preserved.
-> >>
-> >> The existing __tun_wake_queue() function of the consumer races with the
-> >> producer for waking/stopping the netdev queue: the consumer may drain
-> >> the ring just as the producer stops the queue, leading to a permanent
-> >> stall. To avoid this, the producer re-checks the ring after stopping
-> >> and wakes the queue itself if space was just made. An
-> >> smp_mb__after_atomic() is required so the re-peek of the ring sees any
-> >> drain that the consumer performed.
-> >> smp_mb__after_atomic() pairs with the test_and_clear_bit() inside of
-> >> netif_wake_subqueue():
-> >>
-> >> Consumer CPU                  Producer CPU
-> >> ========================      =========================
-> >> __ptr_ring_consume()
-> >> netif_wake_subqueue()         netif_tx_stop_queue()
-> >>           /\                  smp_mb__after_atomic()
-> >>           ||                  __ptr_ring_produce_peek()
-> >> contains RMW operation
-> >>  test_and_clear_bit()
-> >>           /\
-> >>           ||
-> >>  "Fully ordered RMW:
-> >> smp_mb() before + after"
-> >>     - atomic_t.txt
-> >>
-> >> Benchmarks:
-> >> The benchmarks show a slight regression in raw transmission performance,
-> >> though no packets are lost anymore.
-> > 
-> > Could you include the packets received as well?
-> > To demonstrate the gains/lack of loss. 
-> > 
+Hi,
+
+Few small comments.
+
+On Mon, Apr 27, 2026 at 02:00:45PM +0100, Alex Bennée wrote:
+> This is based on a similar test case I wrote for QEMU's tcg tests although
+> obviously able to take advantage of kvm-unit-tests additional plumbing for
+> dealing with the GIC and IRQs.
 > 
-> Do you mean the number of packets received by the VM?
-> They should just be the same as the number sent (shown below), right?
-
-Minus the loss? Which this is about, right?
-
-> I assume they would be visible as RX-DRP for TAP.
-> For TAP + vhost-net I would have to rewrite the XDP drop
-> program to count the number of dropped packets...
-> And I would have to automate it...
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>  arm/Makefile.arm64        |   1 +
+>  lib/arm64/asm/processor.h |   7 ++
+>  lib/arm64/asm/sysreg.h    |   3 +
+>  arm/wfx.c                 | 137 ++++++++++++++++++++++++++++++++++++++
+>  arm/unittests.cfg         |   5 ++
+>  5 files changed, 153 insertions(+)
+>  create mode 100644 arm/wfx.c
 > 
-> >>
-> >> The previously introduced threshold to only wake after the queue stopped
-> >> and half of the ring was consumed showed to be a descent choice:
-> >> Waking the queue whenever a consume made space in the ring strongly
-> >> degrades performance for tap, while waking only when the ring is empty
-> >> is too late and also hurts throughput for tap & tap+vhost-net.
-> >> Other ratios (3/4, 7/8) showed similar results (not shown here), so
-> >> 1/2 was chosen for the sake of simplicity for both tun/tap and
-> >> tun/tap+vhost-net.
-> >>
-> >> Test setup:
-> >> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
-> >> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
-> >> mitigations disabled.
-> >>
-> >> Note for tap+vhost-net:
-> >> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
-> >> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
-> >>
-> >> +--------------------------+--------------+----------------+----------+
-> >> | 1 thread                 | Stock        | Patched with   | diff     |
-> >> | sending                  |              | fq_codel qdisc |          |
-> >> +------------+-------------+--------------+----------------+----------+
-> >> | TAP        | Transmitted | 1.136 Mpps   | 1.130 Mpps     | -0.6%    |
-> >> |            +-------------+--------------+----------------+----------+
-> >> |            | Lost/s      | 3.758 Mpps   | 0 pps          |          |
-> >> +------------+-------------+--------------+----------------+----------+
-> >> | TAP        | Transmitted | 3.858 Mpps   | 3.816 Mpps     | -1.1%    |
-> >> |            +-------------+--------------+----------------+----------+
-> >> | +vhost-net | Lost/s      | 789.8 Kpps   | 0 pps          |          |
-> >> +------------+-------------+--------------+----------------+----------+
-> >>
-> >> +--------------------------+--------------+----------------+----------+
-> >> | 2 threads                | Stock        | Patched with   | diff     |
-> >> | sending                  |              | fq_codel qdisc |          |
-> >> +------------+-------------+--------------+----------------+----------+
-> >> | TAP        | Transmitted | 1.117 Mpps   | 1.087 Mpps     | -2.7%    |
-> >> |            +-------------+--------------+----------------+----------+
-> >> |            | Lost/s      | 8.476 Mpps   | 0 pps          |          |
-> >> +------------+-------------+--------------+----------------+----------+
-> >> | TAP        | Transmitted | 3.679 Mpps   | 3.464 Mpps     | -5.8%    |
-> >> |            +-------------+--------------+----------------+----------+
-> >> | +vhost-net | Lost/s      | 5.306 Mpps   | 0 pps          |          |
-> >> +------------+-------------+--------------+----------------+----------+
-> >>
-> >> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> >> ---
-> >>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
-> >>  1 file changed, 28 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> >> index efe809597622..c2a1618cc9db 100644
-> >> --- a/drivers/net/tun.c
-> >> +++ b/drivers/net/tun.c
-> >> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
-> >>  	struct netdev_queue *queue;
-> >>  	struct tun_file *tfile;
-> >>  	int len = skb->len;
-> >> +	bool qdisc_present;
-> >> +	int ret;
-> >>  
-> >>  	rcu_read_lock();
-> >>  	tfile = rcu_dereference(tun->tfiles[txq]);
-> >> @@ -1065,13 +1067,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
-> >>  
-> >>  	nf_reset_ct(skb);
-> >>  
-> >> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-> >> +	queue = netdev_get_tx_queue(dev, txq);
-> >> +	qdisc_present = !qdisc_txq_has_no_queue(queue);
-> >> +
-> >> +	spin_lock(&tfile->tx_ring.producer_lock);
-> >> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
-> >> +	if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
-> >> +		netif_tx_stop_queue(queue);
-> >> +		/* Re-peek and wake if the consumer drained the ring
-> >> +		 * concurrently in a race. smp_mb__after_atomic() pairs
-> >> +		 * with the test_and_clear_bit() of netif_wake_subqueue()
-> >> +		 * in __tun_wake_queue().
-> >> +		 */
-> >> +		smp_mb__after_atomic();
-> >> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
-> >> +			netif_tx_wake_queue(queue);
-> >> +	}
-> >> +	spin_unlock(&tfile->tx_ring.producer_lock);
-> >> +
-> >> +	if (ret) {
-> >> +		/* If a qdisc is attached to our virtual device,
-> >> +		 * returning NETDEV_TX_BUSY is allowed.
-> >> +		 */
-> >> +		if (qdisc_present) {
-> >> +			rcu_read_unlock();
-> >> +			return NETDEV_TX_BUSY;
-> >> +		}
-> >>  		drop_reason = SKB_DROP_REASON_FULL_RING;
-> >>  		goto drop;
-> >>  	}
-> >>  
-> >>  	/* dev->lltx requires to do our own update of trans_start */
-> >> -	queue = netdev_get_tx_queue(dev, txq);
-> >>  	txq_trans_cond_update(queue);
-> >>  
-> >>  	/* Notify and wake up reader process */
-> >> -- 
-> >> 2.43.0
-> > 
+> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+> index a40c830d..52b3f35d 100644
+> --- a/arm/Makefile.arm64
+> +++ b/arm/Makefile.arm64
+> @@ -64,6 +64,7 @@ tests += $(TEST_DIR)/cache.$(exe)
+>  tests += $(TEST_DIR)/debug.$(exe)
+>  tests += $(TEST_DIR)/fpu.$(exe)
+>  tests += $(TEST_DIR)/mte.$(exe)
+> +tests += $(TEST_DIR)/wfx.$(exe)
+>  
+>  include $(SRCDIR)/$(TEST_DIR)/Makefile.common
+>  
+> diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
+> index 32ddc1b3..2104036d 100644
+> --- a/lib/arm64/asm/processor.h
+> +++ b/lib/arm64/asm/processor.h
+> @@ -173,5 +173,12 @@ static inline bool system_supports_rndr(void)
+>  	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
+>  }
+>  
+> +static inline bool system_supports_wfxt(void)
+> +{
+> +	u64 id_aa64isar2_el1 = read_sysreg_s(ID_AA64ISAR2_EL1);
+> +
+> +	return ((id_aa64isar2_el1 >> ID_AA64ISAR2_EL1_WFxT_SHIFT) & 0xf) != 0;
+> +}
+> +
+>  #endif /* !__ASSEMBLER__ */
+>  #endif /* _ASMARM64_PROCESSOR_H_ */
+> diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
+> index f2d05018..cb96a649 100644
+> --- a/lib/arm64/asm/sysreg.h
+> +++ b/lib/arm64/asm/sysreg.h
+> @@ -77,6 +77,9 @@ asm(
+>  #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
+>  #define ID_AA64PFR1_EL1_MTE_SHIFT	8
+>  
+> +#define ID_AA64ISAR2_EL1		sys_reg(3, 0, 0, 6, 2)
+> +#define ID_AA64ISAR2_EL1_WFxT_SHIFT	0
+> +
+>  #define ID_AA64MMFR0_EL1_FGT_SHIFT	56
+>  #define ID_AA64MMFR0_EL1_FGT_FGT2	0x2
+>  
+> diff --git a/arm/wfx.c b/arm/wfx.c
+> new file mode 100644
+> index 00000000..912e50e6
+> --- /dev/null
+> +++ b/arm/wfx.c
+> @@ -0,0 +1,137 @@
+> +/*
+> + * WFX Instructions Test (WFI, WFE, WFIT, WFET)
+> + *
+> + * Copyright (c) 2026 Linaro Ltd
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <libcflat.h>
+> +#include <asm/processor.h>
+> +#include <asm/gic.h>
+> +#include <asm/timer.h>
+> +#include <asm/io.h>
+> +
+> +#define TIMEOUT 200000
 
+Instead of a hardcoded TIMEOUT, what about something similar to arm/timer.c:
+
+	u64 time_10ms = read_sysreg(cntfrq_el0) / 100;
+
+> +
+> +#define sev() asm volatile("sev" : : : "memory")
+> +#define sevl() asm volatile("sevl" : : : "memory")
+> +#define wfi() asm volatile("wfi" : : : "memory")
+> +#define wfe() asm volatile("wfe" : : : "memory")
+> +
+> +#define wfit(reg) \
+> +	asm volatile(".arch armv8.7-a\n\twfit %0" : : "r" (reg) : "memory")
+> +#define wfet(reg) \
+> +	asm volatile(".arch armv8.7-a\n\twfet %0" : : "r" (reg) : "memory")
+> +
+> +static void timer_handler(struct pt_regs *regs)
+> +{
+> +	/* Disable timer to stop IRQ from re-firing */
+> +	write_sysreg(0, cntv_ctl_el0);
+> +}
+> +
+> +static bool check_elapsed(uint64_t start, uint64_t threshold, const char *test, bool more)
+> +{
+> +	uint64_t end = read_sysreg(cntvct_el0);
+> +	uint64_t elapsed = end - start;
+> +	bool pass = more ? elapsed >= threshold : elapsed <= threshold;
+> +
+> +	report(pass, "%s (%ld ticks)", test, elapsed);
+> +
+> +	if (!pass) {
+> +		report_info("%s %s", test, more ? "woke too early" : "slept despite SEV");
+> +	}
+> +	return pass;
+> +}
+> +
+> +static void test_wfi(void)
+> +{
+> +	uint64_t start;
+> +
+> +	report_info("Testing WFI...");
+> +
+> +	start = read_sysreg(cntvct_el0);
+> +	write_sysreg(TIMEOUT, cntv_tval_el0);
+> +	write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
+> +	isb();
+> +
+> +	local_irq_enable();
+> +	wfi();
+> +	local_irq_disable();
+> +
+> +	check_elapsed(start, TIMEOUT, "WFI", true);
+> +}
+> +
+> +static void test_wfe(void)
+> +{
+> +	uint64_t start;
+> +
+
+I think a comment here would be good, just to say it's testing that a wfe
+doesn't sleep for a 'long' period with no pending events, or something like
+that?
+
+> +	report_info("Testing WFE/SEV...");
+> +	sev();
+> +	start = read_sysreg(cntvct_el0);
+> +	wfe();
+> +	check_elapsed(start, TIMEOUT, "WFE/SEV", false);
+> +
+> +	report_info("Testing WFE/SEVL...");
+> +	sevl();
+> +	start = read_sysreg(cntvct_el0);
+> +	wfe();
+> +	check_elapsed(start, TIMEOUT, "WFE/SEVL", false);
+> +}
+> +
+> +static void test_wfit(void)
+> +{
+> +	uint64_t start, timeout;
+> +
+> +	report_info("Testing WFIT...");
+> +	start = read_sysreg(cntvct_el0);
+> +	timeout = start + TIMEOUT;
+> +	wfit(timeout);
+> +	check_elapsed(start, TIMEOUT, "WFIT", true);
+> +}
+> +
+> +static void test_wfet(void)
+> +{
+> +	uint64_t start, timeout;
+> +
+> +	report_info("Testing WFET...");
+> +	/* Ensure no pending events */
+> +	sev();
+
+Could this just be sevl here? Not that it really matters.
+
+> +	wfe();
+> +
+> +	start = read_sysreg(cntvct_el0);
+> +	timeout = start + TIMEOUT;
+> +	wfet(timeout);
+> +	check_elapsed(start, TIMEOUT, "WFET", true);
+> +}
+> +
+> +int main(void)
+> +{
+> +
+> +	if (gic_init() < 0) {
+> +		report_abort("GIC init failed");
+> +		return 1;
+> +	}
+> +
+> +	/* Install timer handler for WFI wake-up */
+> +	install_irq_handler(EL1H_IRQ, timer_handler);
+> +	gic_enable_defaults();
+> +
+> +	/* Enable Virtual Timer PPI */
+> +	gic_irq_set_clr_enable(27, true);
+
+Instead of hardcoding 27 here, you can use:
+
+	u32 irq = current_level() == CurrentEL_EL1 ? TIMER_VTIMER_IRQ : TIMER_HVTIMER_IRQ;                                                                     
+	gic_irq_set_clr_enable(irq, true);
+
+Which also allows the test to run at EL2.
+
+> +
+> +	report_prefix_push("WFx");
+> +	test_wfi();
+> +	test_wfe();
+> +	report_prefix_pop();
+> +
+> +	if (system_supports_wfxt()) {
+> +		report_prefix_push("WFxT");
+> +		test_wfit();
+> +		test_wfet();
+> +	} else {
+> +		report_skip("WFxT instructions not supported");
+> +	}
+> +
+> +	return report_summary();
+> +}
+> diff --git a/arm/unittests.cfg b/arm/unittests.cfg
+> index 12fc4468..7adf96f2 100644
+> --- a/arm/unittests.cfg
+> +++ b/arm/unittests.cfg
+> @@ -339,3 +339,8 @@ groups = mte
+>  test_args = asymm
+>  qemu_params = -machine mte=on
+>  arch = arm64
+> +
+> +[wfx]
+> +file = wfx.flat
+> +groups = wfx
+> +arch = arm64
+
+Thanks,
+Joey
