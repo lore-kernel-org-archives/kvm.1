@@ -1,46 +1,46 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BAE3F1655;
-	Tue, 28 Apr 2026 10:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFCB3B9D80;
+	Tue, 28 Apr 2026 10:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777373418; cv=none; b=gItwZgJnreLmmg+TU92pfS+csdU1o0pbKttcS3Na4xTdEQUgXdsY75MHsgDNMVlH5lcibGnZsDpEC2P+oYi7Fmr6PhV3Db+AJQ/aHC0xxEIoBwCJOrYemB5MHDfbPIN6FFwIPAlTifnkzvNdYu38eimXSbfSAYbhNQ0n4HOgLzQ=
+	t=1777373572; cv=none; b=uiTSyIHebMmUYdUX1JPkPtisnN5C/0EuyvOq4ry1wFi9PWx3OlMXZBy8Sn9Pu0M5avOSqdGr4ah6w6JFFntxVcqD7sL39ScDK7wUjMz+13hWbto7adFwg6xevQtsuEJ1yPjWfVahWHQAGFArjPspRNlOF75fwXaj5ddyAIuMU6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777373418; c=relaxed/simple;
-	bh=8ZrdSAbD+qM4d6qkrSqQZHYw16yBPEG/+Vdsk0nKTAo=;
+	s=arc-20240116; t=1777373572; c=relaxed/simple;
+	bh=6LfQFUqIq2UfT/ymxTqMHXXBhqgYwmoHty8ORTufbmk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VLndz4j7ivzUaQdcFH5gBzpbhER889fk5XYfZPfjzcZ6+OS7YGW53dtCBABsnbbK0v8xzJZJIImPIZLc81D5iy1Fo/n0sf6pNds9uKZUKqNjtChvx09gryVGfe4f4sLnVDrUiwPbMdVZXq1AqD/MpjQoXZd/KM4afHMb/Bj3Fuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=03YekhSi; arc=none smtp.client-ip=85.214.250.239
+	 Content-Type:Content-Disposition:In-Reply-To; b=TwQ5wORTOrz1W1nQ0kEFk7Tq5QL33Aquo8k4ZI2BtwSSIN0eWm+kTd13tuppq5jxNW1ZpJzueyC2BuXS6OuNNkEzdXgarWgQYcAc7c2WvNRHp3wHDGF7960n55sGEtgyW6g2tDBunXxZgvTgABStHQJXdzd2pOtiH140CzeCW8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Kg9AgpJb; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="03YekhSi"
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Kg9AgpJb"
 Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 250DB200936;
-	Tue, 28 Apr 2026 12:50:15 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 387F5200936;
+	Tue, 28 Apr 2026 12:52:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1777373415;
-	bh=8ZrdSAbD+qM4d6qkrSqQZHYw16yBPEG/+Vdsk0nKTAo=;
+	s=default; t=1777373569;
+	bh=6LfQFUqIq2UfT/ymxTqMHXXBhqgYwmoHty8ORTufbmk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=03YekhSil1SXJAnpSqcWbne6AUJXXFxzN7mENhSLjhzVMeO0jnxjWJk2JmCWmT6K0
-	 GQ/MtV/dYn/rfqzWf53CtXUe5+tBkrFewdNgaIZ5I6ujsy1ZgULjdTBzBXdR8ZbHrP
-	 JG1rLWYolHdD8J7+xwoJ65bwU4jAPJWKFG66bK1ZqK7qrVu0KJ2lB87JWSgZMx8sZy
-	 z/rYyNmxVYD0iNoY+WLfGz9+RSbfvER3PntErCzFuzUFwNXt9ZfsrijAreb1BBTIuk
-	 NRvsbnMpiXUafvD0L3DZ4XZV/xbGQkLHMkIWL4wkdsfM15PFYyq0Oq+Wm3JstUGzxb
-	 I2TrFZE8N4PTg==
-Date: Tue, 28 Apr 2026 12:50:13 +0200
+	b=Kg9AgpJbvdqrhUMCYGVoshWH66Z4JwYxyF3D3DKfyudpm8sa05OsZs1mf3QCxGANq
+	 y0LVVuXeDJBUYPhW3CTZadzrrMv4tU/2wwk+likmJXSQ8pKlz5AkIUo7aoWUelvxA+
+	 rQaBXd/pJoonAMSXOdAq4Bnic+vRwidl8BxyhzOh4z8jV1xtcKM9J0+KcaXh2SCnqu
+	 Tf80/IHBpU/qnlhA8wNOUWYeyS7smI/5rCDShnBdrNhw73u+17H3/ufh/RSCBLGSun
+	 6LetJ+3rYklWu8Z+ouXEFSK0M41BPLJniDkqIjQ0YZ+MWlcK5wSoz4oaoPbaBDxm/4
+	 QNBp+okGfX5BA==
+Date: Tue, 28 Apr 2026 12:52:48 +0200
 From: Joerg Rodel <joro@8bytes.org>
 To: Melody Wang <huibo.wang@amd.com>
 Cc: Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
 	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v4 5/7] KVM: SVM: Inject MCEs when Restricted Injection
- is active
-Message-ID: <u4vvzt56ldo2dfhrdo3nwzw46ktqtngob6ng2qbgypqeyxcbmn@akgecfbqkloy>
+Subject: Re: [PATCH v4 7/7] KVM: SVM: Enable Restricted Injection for an
+ SEV-SNP guest
+Message-ID: <6fqi2slwzxy4bwie6lqtcirdlstnh37epdl4sizfmldk4rnr66@x7s4vjhqxayp>
 References: <cover.1777048608.git.huibo.wang@amd.com>
- <51f8c478c5fc09b3bdeb8329c682a01fbe0ea5db.1777048608.git.huibo.wang@amd.com>
+ <20260424175105.4106-1-huibo.wang@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,23 +49,15 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <51f8c478c5fc09b3bdeb8329c682a01fbe0ea5db.1777048608.git.huibo.wang@amd.com>
+In-Reply-To: <20260424175105.4106-1-huibo.wang@amd.com>
 
-On Fri, Apr 24, 2026 at 05:42:09PM +0000, Melody Wang wrote:
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0a1b63c63d1a..420f1ec0dcfb 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10789,6 +10789,12 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
->  			kvm_update_dr7(vcpu);
->  		}
->  
-> +		if (vcpu->arch.exception.vector == MC_VECTOR) {
-> +			r = static_call(kvm_x86_mce_allowed)(vcpu);
-> +			if (!r)
-> +				goto out_except;
+On Fri, Apr 24, 2026 at 05:51:05PM +0000, Melody Wang wrote:
+> +/* enable/disable SEV-SNP Restricted Injection support */
+> +static bool sev_snp_restricted_injection_enabled = true;
+> +module_param_named(restricted_injection, sev_snp_restricted_injection_enabled, bool, 0444);
 
-If this path is taken the warning at the bottom of the function will trigger. I
-think the target needs to be out: instead of out_except.
+Any particular reason for a module parameter? I think it is fine to just offer
+the feature when supported by the hardware and enable it when the VMM (or the
+guest, when planes land) requests it.
 
 -Joerg
