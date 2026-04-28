@@ -1,59 +1,57 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5DF3F54CE
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407DC3D6CD8
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777374326; cv=none; b=To6tvlua4Xc8JC24vwqrSmnuu3s2v9GfPmz8J7NDbV9eABJL3Cbkyr07lJHBrQ7/UrYRmkLfLz5uSmQXK9WiEUI0E7HMcKQKYI6bYKt2bwhQunlFoPbvZn6S8K9EJxtg/BSvZuJNvhudrfk3ZKE+wFkouVBwARoFu5uGiyTYNFc=
+	t=1777374595; cv=none; b=A1E4u5JTxjdGaAqO99FTbaP+TIxVl6T5cw6P6NqhtWthEuq1VKoV846PXJOf9S9JMUwXRlQD8K7QEsm9a97k6D/XE2rr7NOE1sW6YnG8fTWh438AUlzjfQ6Q9YDpsE4SssU1ndhwZp8nVjwgh0Ww7qHH2mz1JeT2lpQh2fnN2YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777374326; c=relaxed/simple;
-	bh=cD9DIH7+ELj6GiyYjRm70PO91o/6JXizcPfqfiteNT4=;
+	s=arc-20240116; t=1777374595; c=relaxed/simple;
+	bh=kZ5o17P9kuQLq3qxTyxpQUTRQOzBgubCy3Nch+ibymU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ujP4xav3jPOLj0mLgwHz8WW8QQ0NBVo/DxmpJ2zPcKnPvYzipkwEPiRZY3l+RbFLwybD+aJs+oE37l6CISlsznJz98nPdZCaDsAYCbi8yfTc39mBAyqHtC8p93GSizpIbjYWydjCMGpbqd4fbFrULvd+aXLpZs385eTK8uw4HlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Umc3INOG; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=LMJgtAnR8JZt9hFdNUAxcdx3dClmd8FIfhOGZVNV43PkCjayTPXn2RHrECdd4KsQykuCKt3UXduSH8R1i30pu6sspWm5NZWWjX+6lJE3HUz1BBtL5wYeQCMfuPtYoGq8/qQ4HtCg4HmeFLKeUL6VNpoAiiFYzJqScCnHm33IkRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i+xpdcJA; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Umc3INOG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i+xpdcJA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777374321;
+	s=mimecast20190719; t=1777374593;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HGRofkCiZMBgwi9NrIcS60E9J22RIyMII4UU2DpGcKc=;
-	b=Umc3INOG2EGbcmMaxcSVeOkQtfoxkc7Bx/9CCdgM1BLLce7N59rvxs2Vs3NUuasIDP3ICu
-	eXraIKSMA8K6QP0yhSmOWEWwHlHGdkayMiF8eefwumjqpfngvS1wwWZE8Lt8pjxPeQYlB0
-	DznJSjS/IVaGK6n1sK3WZJ8zuStmAdI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=NCcSrd+hKpzwGh0VZiUZWb0acdQRJpx8ZctDOWe/EHY=;
+	b=i+xpdcJAXoSPDrXucPaIa8kEv7iDYHUbA8LeeQROajm3yjudqJ5zFDNHDJXn2MBn5MpHqU
+	Vrb1GYEGG5TtVqYCQUKVNgnMkRjqZ+oEuWen8GiU6eOGXEX6Au99qJc6gv951KIOR/Sr2T
+	LfSmZMKE8gJA9hdPMOU77CAxmaJ2vpE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-YHHsoIsmPxGQjrM6mP2Jxw-1; Tue,
- 28 Apr 2026 07:05:18 -0400
-X-MC-Unique: YHHsoIsmPxGQjrM6mP2Jxw-1
-X-Mimecast-MFC-AGG-ID: YHHsoIsmPxGQjrM6mP2Jxw_1777374316
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-TASaEmlFNUWHZqxxnC5CBA-1; Tue,
+ 28 Apr 2026 07:09:52 -0400
+X-MC-Unique: TASaEmlFNUWHZqxxnC5CBA-1
+X-Mimecast-MFC-AGG-ID: TASaEmlFNUWHZqxxnC5CBA_1777374591
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B38818001F7;
-	Tue, 28 Apr 2026 11:05:16 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0711195608B;
+	Tue, 28 Apr 2026 11:09:50 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC465180047F;
-	Tue, 28 Apr 2026 11:05:15 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 66EDB3000C22;
+	Tue, 28 Apr 2026 11:09:50 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Cc: Binbin Wu <binbin.wu@linux.intel.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 8/8] KVM: VMX: replace vmx_spec_ctrl_restore_host with RESTORE_HOST_SPEC_CTRL_BODY
-Date: Tue, 28 Apr 2026 07:05:07 -0400
-Message-ID: <20260428110507.11248-9-pbonzini@redhat.com>
-In-Reply-To: <20260428110507.11248-1-pbonzini@redhat.com>
-References: <20260428110507.11248-1-pbonzini@redhat.com>
+Cc: jon@nutanix.com,
+	d.riley@proxmox.com
+Subject: [PATCH 04/28] KVM: x86/mmu: shuffle high bits of SPTEs in preparation for MBEC
+Date: Tue, 28 Apr 2026 07:09:22 -0400
+Message-ID: <20260428110946.11466-5-pbonzini@redhat.com>
+In-Reply-To: <20260428110946.11466-1-pbonzini@redhat.com>
+References: <20260428110946.11466-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,151 +60,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Reuse the same assembly as SVM, just with alternatives instead
-of cpu_feature_enabled(X86_FEATURE_KERNEL_IBRS).
+Access tracking will need to save bit 10 when MBEC is enabled.
+Right now it is simply shifting the R and X bits into bits 54 and 56,
+but bit 10 would not fit with the same scheme.  Reorganize the
+high bits so that access tracking will use bits 52, 54 and 62.
+As a side effect, the free bits are compacted slightly, with
+56-59 still unused.
 
-Note that Intel does need an LFENCE with eIBRS, unlike AMD's AutoIBRS.
-However, it is not needed for X86_FEATURE_KERNEL_IBRS because there
-are no conditional branches between FILL_RETURN_BUFFER and ret.
-
+Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/vmenter.h     |  9 +++++++--
- arch/x86/kvm/vmx/vmenter.S | 28 ++++++++++++++++++++++------
- arch/x86/kvm/vmx/vmx.c     | 25 -------------------------
- arch/x86/kvm/vmx/vmx.h     |  1 -
- 4 files changed, 29 insertions(+), 34 deletions(-)
+ arch/x86/kvm/mmu/spte.h | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/vmenter.h b/arch/x86/kvm/vmenter.h
-index 73f3adc301d9..ba3f71449c62 100644
---- a/arch/x86/kvm/vmenter.h
-+++ b/arch/x86/kvm/vmenter.h
-@@ -55,7 +55,12 @@
- #ifdef CONFIG_X86_64
- 	mov PER_CPU_VAR(x86_spec_ctrl_current), %rdx
- 	cmp \guest_spec_ctrl, %rdx
--	je \label
-+	/*
-+	 * For legacy IBRS, the IBRS bit always needs to be written after
-+	 * transitioning from a less privileged predictor mode, regardless of
-+	 * whether the guest/host values differ.
-+	 */
-+	ALTERNATIVE __stringify(je \label), "", X86_FEATURE_KERNEL_IBRS
- 	movl %edx, %eax
- 	shr $32, %rdx
- #else
-@@ -66,7 +71,7 @@
- 	mov 4 + \guest_spec_ctrl, %edi
- 	xor %edx, %edi
- 	or %edi, %esi
--	je \label
-+	ALTERNATIVE __stringify(je \label), "", X86_FEATURE_KERNEL_IBRS
- #endif
- 	wrmsr
- .endm
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 7dd9bac0e454..0c95dc5bc01d 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -105,9 +105,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	 * Unlike AMD there's no V_SPEC_CTRL here, so do not leave the body
- 	 * out of line.  Clobbers RAX, RCX, RDX, RSI.
- 	 */
--	ALTERNATIVE "jmp .Lspec_ctrl_done", "", X86_FEATURE_MSR_SPEC_CTRL
--	RESTORE_GUEST_SPEC_CTRL_BODY VMX_spec_ctrl(%_ASM_DI), .Lspec_ctrl_done
--.Lspec_ctrl_done:
-+	ALTERNATIVE "jmp .Lspec_ctrl_guest_done", "", X86_FEATURE_MSR_SPEC_CTRL
-+	RESTORE_GUEST_SPEC_CTRL_BODY VMX_spec_ctrl(%_ASM_DI), .Lspec_ctrl_guest_done
-+.Lspec_ctrl_guest_done:
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index a107ddb66601..7913672c0f6f 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -17,10 +17,20 @@
+  */
+ #define SPTE_MMU_PRESENT_MASK		BIT_ULL(11)
  
- 	/*
- 	 * Since vmentry is serializing on affected CPUs, there's no need for
-@@ -252,16 +252,32 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	FILL_RETURN_BUFFER %_ASM_CX, RSB_CLEAR_LOOPS, X86_FEATURE_RSB_VMEXIT,\
- 			   X86_FEATURE_RSB_VMEXIT_LITE
- 
--	pop %_ASM_ARG2	/* @flags */
--	pop %_ASM_ARG1	/* @vmx */
-+	/* Clobbers RAX, RCX, RDX, RSI.  */
-+	ALTERNATIVE "jmp .Lspec_ctrl_host_done", "", X86_FEATURE_MSR_SPEC_CTRL
-+	mov WORD_SIZE(%_ASM_SP), %_ASM_DI
-+	RESTORE_HOST_SPEC_CTRL_BODY VMX_spec_ctrl(%_ASM_DI), (%_ASM_SP), .Lspec_ctrl_host_done
-+.Lspec_ctrl_host_done:
- 
--	call vmx_spec_ctrl_restore_host
-+	/*
-+	 * Halt speculation past a conditional wrmsr.  Intel's eIBRS
-+	 * guarantees that the guest cannot control the RSB "once IBRS is
-+	 * set", but in the eIBRS case speculative execution past the 'je'
-+	 * can go all the way to the RET below while MSR_IA32_SPEC_CTRL
-+	 * still holds the guest value.
-+	 */
-+	ALTERNATIVE_2 "", "lfence", X86_FEATURE_MSR_SPEC_CTRL, \
-+		"", X86_FEATURE_KERNEL_IBRS
- 
- 	CLEAR_BRANCH_HISTORY_VMEXIT
- 
- 	/* Put return value in AX */
- 	mov %_ASM_BX, %_ASM_AX
- 
-+	/* Pop our saved arguments from the stack */
-+	pop %_ASM_BX
-+	pop %_ASM_BX
++/*
++ * The ignored high bits are allocated as follows:
++ * - bits 52, 54: saved X-R bits for access tracking when EPT does not have A/D
++ * - bits 53 (EPT only): host writable
++ * - bits 55 (EPT only): MMU-writable
++ * - bits 56-59: unused
++ * - bits 60-61: type of A/D tracking
++ * - bits 62: unused
++ */
 +
-+	/* ... and then the callee-save registers */
- 	pop %_ASM_BX
- #ifdef CONFIG_X86_64
- 	pop %r12
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a8039b0f9392..b033f611fa04 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7388,31 +7388,6 @@ void noinstr vmx_update_host_rsp(struct vcpu_vmx *vmx, unsigned long host_rsp)
- 	}
- }
+ /*
+  * TDP SPTES (more specifically, EPT SPTEs) may not have A/D bits, and may also
+  * be restricted to using write-protection (for L2 when CPU dirty logging, i.e.
+- * PML, is enabled).  Use bits 52 and 53 to hold the type of A/D tracking that
++ * PML, is enabled).  Use bits 60 and 61 to hold the type of A/D tracking that
+  * is must be employed for a given TDP SPTE.
+  *
+  * Note, the "enabled" mask must be '0', as bits 62:52 are _reserved_ for PAE
+@@ -29,7 +39,7 @@
+  * TDP with CPU dirty logging (PML).  If NPT ever gains PML-like support, it
+  * must be restricted to 64-bit KVM.
+  */
+-#define SPTE_TDP_AD_SHIFT		52
++#define SPTE_TDP_AD_SHIFT		60
+ #define SPTE_TDP_AD_MASK		(3ULL << SPTE_TDP_AD_SHIFT)
+ #define SPTE_TDP_AD_ENABLED		(0ULL << SPTE_TDP_AD_SHIFT)
+ #define SPTE_TDP_AD_DISABLED		(1ULL << SPTE_TDP_AD_SHIFT)
+@@ -65,7 +75,7 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+  */
+ #define SHADOW_ACC_TRACK_SAVED_BITS_MASK (SPTE_EPT_READABLE_MASK | \
+ 					  SPTE_EPT_EXECUTABLE_MASK)
+-#define SHADOW_ACC_TRACK_SAVED_BITS_SHIFT 54
++#define SHADOW_ACC_TRACK_SAVED_BITS_SHIFT 52
+ #define SHADOW_ACC_TRACK_SAVED_MASK	(SHADOW_ACC_TRACK_SAVED_BITS_MASK << \
+ 					 SHADOW_ACC_TRACK_SAVED_BITS_SHIFT)
+ static_assert(!(SPTE_TDP_AD_MASK & SHADOW_ACC_TRACK_SAVED_MASK));
+@@ -84,8 +94,8 @@ static_assert(!(SPTE_TDP_AD_MASK & SHADOW_ACC_TRACK_SAVED_MASK));
+  * to not overlap the A/D type mask or the saved access bits of access-tracked
+  * SPTEs when A/D bits are disabled.
+  */
+-#define EPT_SPTE_HOST_WRITABLE		BIT_ULL(57)
+-#define EPT_SPTE_MMU_WRITABLE		BIT_ULL(58)
++#define EPT_SPTE_HOST_WRITABLE		BIT_ULL(53)
++#define EPT_SPTE_MMU_WRITABLE		BIT_ULL(55)
  
--void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
--					unsigned int flags)
--{
--	u64 hostval = this_cpu_read(x86_spec_ctrl_current);
--
--	if (!cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL))
--		return;
--
--	if (flags & KVM_ENTER_SAVE_SPEC_CTRL)
--		vmx->spec_ctrl = native_rdmsrq(MSR_IA32_SPEC_CTRL);
--
--	/*
--	 * If the guest/host SPEC_CTRL values differ, restore the host value.
--	 *
--	 * For legacy IBRS, the IBRS bit always needs to be written after
--	 * transitioning from a less privileged predictor mode, regardless of
--	 * whether the guest/host values differ.
--	 */
--	if (cpu_feature_enabled(X86_FEATURE_KERNEL_IBRS) ||
--	    vmx->spec_ctrl != hostval)
--		native_wrmsrq(MSR_IA32_SPEC_CTRL, hostval);
--
--	barrier_nospec();
--}
--
- static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu,
- 					     bool force_immediate_exit)
- {
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index be6a1dc2f69f..f62007a5c2a7 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -367,7 +367,6 @@ void vmx_set_virtual_apic_mode(struct kvm_vcpu *vcpu);
- struct vmx_uret_msr *vmx_find_uret_msr(struct vcpu_vmx *vmx, u32 msr);
- void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu);
- void vmx_update_host_rsp(struct vcpu_vmx *vmx, unsigned long host_rsp);
--void vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx, unsigned int flags);
- unsigned int __vmx_vcpu_enter_flags(struct vcpu_vmx *vmx);
- bool __vmx_vcpu_run(struct vcpu_vmx *vmx, unsigned int flags);
- void vmx_ept_load_pdptrs(struct kvm_vcpu *vcpu);
+ static_assert(!(EPT_SPTE_HOST_WRITABLE & SPTE_TDP_AD_MASK));
+ static_assert(!(EPT_SPTE_MMU_WRITABLE & SPTE_TDP_AD_MASK));
 -- 
 2.52.0
+
 
