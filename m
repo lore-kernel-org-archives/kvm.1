@@ -1,207 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7B243CED6
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D65144B671
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777383341; cv=none; b=NRfE5N05IGT30bRSkVr0yQG7+mX2QLcs9De0m1WJzVx3y/tfAuGMWSAYXX/EqMu5JZsbKJ+sVHlDzP3cjlcb1bXF5NhEg+wOixTnFXa5CcWOL5EJN/jz5H93t8uwFKq8Wit2boyFg34PAXScg5J0vM5Lk8njw+YnphLqW0ZUbow=
+	t=1777383406; cv=none; b=YhWmyHEQDCsrslUpXyRITfmK40Czy0m6fOGKQEnWyrbr5cfxbi4kH1iBNZ9tHInXrHk0jN2FYaubPodqk0hyrHOmiiLRZXfpvVMkrKimXu+uB0uoOqxu7edtOQhZDiEYeof3THUfEjGDBqf9MItgXwMsoKwljA1cFPH7fxU1l1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777383341; c=relaxed/simple;
-	bh=qxplnc/JBQyyyGTyLoPjndr1NOiChBJT8A4Z0PcAMWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=duEWM9GXjiNVoz3Xpnah/U1qtmB7DILzN4Uexd+kd37RFBABDl0JAAgyJsdw8irjlJ6/IEKrZKM/wI0FyfZAMKr+X1BLr2UuZrRmPKYH7LIfq1m7lLn4xgWost8dQ6DknWD810oveKm4GITo/INTK6eBbX3LR3LUUw/HryjhEOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T+X38T2j; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777383406; c=relaxed/simple;
+	bh=esToKOeJowsAkTTeyqSbmSIgmhGnHRhb2YdBS1u1Im0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aIeEjbKMxuEshGauUb7dAViX7X1FmWn7jAuRRkFVhPHelzGZ8qlfUZINBm3oJyY/zFs+3DzjuC4ofOaunMLqmxYSqoy4C5nicELLJSW7JlOgBnHxBeQkv/jAAEOKX8Eu22KlRblaMk6UkZy8cF8NOdwOgRqFjFLUYuQArfxdvxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=CCCpCEka; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T+X38T2j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777383338;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lB4Y/5cqM0khTaQSgF8Vzt4Eb20B1iT0B3MRjtH5Vyw=;
-	b=T+X38T2jRlFFHsu8fZ97ZKBYqrREpH/d5XXKfXbIv9sI4OH6YcKJ771pw+Co/7keD/9I6R
-	4I6UM/BhpktLdmvWk4j/Vz8hCyJiSifyGZOwvUmTi6nmdRu+82a0hVy4K4RsUaD7U53DNo
-	3IH+a0WMvXN+lkq+Xta3UIVlg6+V/do=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-kMCbZgEZONuA5cps0NeEcw-1; Tue,
- 28 Apr 2026 09:35:35 -0400
-X-MC-Unique: kMCbZgEZONuA5cps0NeEcw-1
-X-Mimecast-MFC-AGG-ID: kMCbZgEZONuA5cps0NeEcw_1777383331
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E1891802439
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:35:29 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AB60C19560AB;
-	Tue, 28 Apr 2026 13:35:28 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com
-Subject: [kvm-unit-tests PATCH 1/2] x86/apic: separate reporting from actual measurements
-Date: Tue, 28 Apr 2026 15:35:23 +0200
-Message-ID: <20260428133524.3628482-2-imammedo@redhat.com>
-In-Reply-To: <20260428133524.3628482-1-imammedo@redhat.com>
-References: <20260428133524.3628482-1-imammedo@redhat.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="CCCpCEka"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8ec37d52c0dso1181058485a.0
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 06:36:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1777383404; x=1777988204; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZ19NsW5fr6ajdZR5D4lYg3z8k9sQDPcT96d4+jJChg=;
+        b=CCCpCEkaKpe5tEjOu+k7WSh0VNfkjg802bvXXdHMbKlYZZjGdecKDW7UTXH+OU5rU8
+         Jkc/Z6ZX0bpi5JvTDUKWMntyc4Izso7NrzcCakzoZReb1nTwFpD6TtoRFhnwuJMBzcgM
+         JFNg/SMdDPMRFjVuOSuGIYqqpE2WpwVR+4DZDpUnAls7mja2kBvXtZZ/bVthpnb14ch8
+         eiMXBFQyfUuFMo+8K1hdac4AqHfeX5kxLPfbDcIxqejVv55q6nzfYl2kM+qLTniXf5cn
+         /YBURlAde3Nxe+TkrXaq4uRfKUh7LlEMqL8WgHe8wfRGyRGCToZuYfs8kmW8Cz6qcnXC
+         ddMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777383404; x=1777988204;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eZ19NsW5fr6ajdZR5D4lYg3z8k9sQDPcT96d4+jJChg=;
+        b=pb4oVXdcb4expN75tg5vip3AwlinvkiFqvBMIYQOZtfw1Xmhu8OJW46dkDo9M+FUOx
+         bEUgSpRQkG+jhCZXLmqxKVUxNB3vb501nWUc2cyutbk6F3E6yERxfE9CsPay6v2ftI1S
+         ymzrUF1/d7EistueZnH4hu/4vwEUMn/987s6VPIV7zgC7Zkz0MSJW/88/ul0KD0XknAQ
+         YsCzN0dbviQM/bHe556ZHuwTzOv2Dj/JILp6BkfcdWvvwMeKQYe0MNQUv5QoASutTvJq
+         CItYX/JDtPemj2sxmm4sSj+DVYePXy8Br90m1jl/kAEa5flTjL4QSyGTXIDMy6r0GMoL
+         dYDw==
+X-Forwarded-Encrypted: i=1; AFNElJ/yHok00f6LKN2cPDD2WhIxgVAKA1fL9RAU2kNTGKsBfZMu7FnAwaZ0NZEn3mq0Vx90q58=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydSrAMvygKdJ9GXc6Yhbues7i5vJ0uujXABrcka1nCrHo+V3+/
+	vqoBHRYWdxBJrpuBOnvNUANNhQ9C1Qh9OL5N0xw/cOkQEOrCPAxWkyyNh5SSVs9o6UE=
+X-Gm-Gg: AeBDieu16+0DJj7WwtA/rsKLyN3u055U85/gzF9Xb12Cp0P82wjHFhXqfRxdb5hrH5z
+	oxokIjgK0nj1rqfc0OQ03ukT3mDGHH+pTaeaL8/7ERKnFV8GorSmxQBzQJFPLKZwT19SNIg+YML
+	fN1NGTW6ok0b2x0HGw/hUnmbEzqbONaaJ2KG2rO4eXBbVkOaqwbOMNuoPHGkp/S0rl0HEGiPfl9
+	BweieC7+A4oUX5yoVHXMNp+Kuo8iBY+c5m3c7WGgsxOEr59AE6VjI6cPWpfmNCyQfSH9wUH7QSd
+	dDIEmzgnT3Z79SVZSPrwANar9I7aeqhW13cIdCltN1J8CAKo7QocIv/bVIv7G/wd4PtKwMDQBMd
+	0vCCjiZNRs+FlR4HfWDSPP6GZNaZDAHrqSAMgKLFuTnnrz/VZybyjsiHbYJlGwCq2uq/ZMdlkdv
+	nmSMIMlE8KjGGAGuQeQh+4WKbM5C6evhi0QYGfZXtNg3UVNzmsQT2RbjOgwcTkF7L3Okqddg90e
+	8JAHl28/z/HA20i
+X-Received: by 2002:a05:620a:4002:b0:8ec:a621:a3af with SMTP id af79cd13be357-8f7d7d17f49mr430093585a.27.1777383404115;
+        Tue, 28 Apr 2026 06:36:44 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c7cd2becsm194526285a.29.2026.04.28.06.36.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 06:36:42 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wHicD-0000000Aii6-3yTF;
+	Tue, 28 Apr 2026 10:36:41 -0300
+Date: Tue, 28 Apr 2026 10:36:41 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: fangyu.yu@linux.alibaba.com
+Cc: joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	tjeznach@rivosinc.com, kevin.tian@intel.com,
+	baolu.lu@linux.intel.com, vasant.hegde@amd.com, anup@brainfault.org,
+	atish.patra@linux.dev, skhawaja@google.com, guoren@kernel.org,
+	kvm@vger.kernel.org, iommu@lists.linux.dev,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 07/11] iommupt: Don't preset D when RISC-V IOMMU
+ dirty tracking on
+Message-ID: <20260428133641.GF849557@ziepe.ca>
+References: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
+ <20260428131359.34872-8-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428131359.34872-8-fangyu.yu@linux.alibaba.com>
 
-Move report() calls to the end of the function so that serial I/O
-does not interfere with timer measurements.
+On Tue, Apr 28, 2026 at 09:13:55PM +0800, fangyu.yu@linux.alibaba.com wrote:
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> 
+> When mapping writable pages, the RISC-V format code currently
+> pre-sets the PTE D bit unconditionally.
+> 
+> If hardware dirty tracking is active (DC.tc.GADE set), the IOMMU
+> sets D autonomously on the first write. Pre-setting D makes every
+> new mapping appear dirty immediately and breaks dirty tracking.
+> 
+> Introduce PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE and, when set, leave
+> D cleared for new writable mappings so hardware can capture the
+> first write. Keep pre-setting D when dirty tracking is inactive.
+> 
+> Only meaningful for second-stage (iohgatp) page tables.
 
-While at it, wrap the test body in a for loop as preparation
-for adding retry logic to deal with failures due to large
-enough vCPU stalls.
+You shouldn't need anything like this, the D bit is managed by the
+iommufd core appropriately. It *should* start out pre-set as that is
+faster when not tacking. Only once dirty tracking is started does D
+get cleared. User space is supposed to assume that everything is dirty
+prior to its first D clear.
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
- x86/apic.c | 109 +++++++++++++++++++++++++++++++----------------------
- 1 file changed, 63 insertions(+), 46 deletions(-)
-
-diff --git a/x86/apic.c b/x86/apic.c
-index 0a52e9a4..d4eb8e11 100644
---- a/x86/apic.c
-+++ b/x86/apic.c
-@@ -573,62 +573,79 @@ static inline void apic_change_mode(unsigned long new_mode)
- 
- static void test_apic_change_mode(void)
- {
--	uint32_t tmict = 0x999999;
-+	const uint32_t tmict_values[] = {
-+		0x999999,    /* ~10ms */
-+	};
-+	int retry, max_retries = ARRAY_SIZE(tmict_values);
-+	uint32_t tmict;
-+	bool tmict_reset = false, o_nonzero = false, o_reached_zero = false;
-+	bool p_nonzero = false, p_not_reset = false, p_after_wrap = false;
-+	bool p2o_not_reset = false, p2o_reached_zero = false, p2o_stay_zero = false;
- 
- 	printf("starting apic change mode\n");
- 
--	apic_write(APIC_TMICT, tmict);
-+	for (retry = 0; retry < max_retries; retry++) {
-+		tmict = tmict_values[retry];
-+		apic_write(APIC_TMICT, tmict);
-+		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
-+		tmict_reset = apic_read(APIC_TMICT) == tmict;
- 
--	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
-+		/* Testing one-shot */
-+		apic_change_mode(APIC_LVT_TIMER_ONESHOT);
-+		apic_write(APIC_TMICT, tmict);
-+		o_nonzero = apic_read(APIC_TMCCT);
- 
--	report(apic_read(APIC_TMICT) == tmict, "TMICT value reset");
-+		wait_until_tmcct_is_zero(tmict, false);
-+		o_reached_zero = !apic_read(APIC_TMCCT);
- 
--	/* Testing one-shot */
--	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
--	apic_write(APIC_TMICT, tmict);
--	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
-+		/*
-+		 * Write TMICT before changing mode from one-shot to periodic
-+		 * TMCCT should be reset to TMICT periodicly
-+		 */
-+		apic_write(APIC_TMICT, tmict);
-+		wait_until_tmcct_is_zero(tmict, true);
-+		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
-+		p_nonzero = apic_read(APIC_TMCCT);
- 
--	wait_until_tmcct_is_zero(tmict, false);
--	report(!apic_read(APIC_TMCCT), "TMCCT should have reached 0");
-+		/*
-+		 * After the change of mode, the counter should not be reset
-+		 * and continue counting down from where it was
-+		 */
-+		p_not_reset = apic_read(APIC_TMCCT) < (tmict / 2);
-+		/*
-+		 * Specifically wait for timer wrap around and skip 0.
-+		 * Under KVM lapic there is a possibility that a small amount
-+		 * of consecutive TMCCR reads return 0 while hrtimer is reset
-+		 * in an async callback
-+		 */
-+		wait_until_tmcct_wrap_around(tmict, false);
-+		p_after_wrap = apic_read(APIC_TMCCT) > (tmict / 2);
- 
--	/*
--	 * Write TMICT before changing mode from one-shot to periodic TMCCT should
--	 * be reset to TMICT periodicly
--	 */
--	apic_write(APIC_TMICT, tmict);
--	wait_until_tmcct_is_zero(tmict, true);
--	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
--	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
-+		wait_until_tmcct_is_zero(tmict, true);
-+		/*
-+		 * Keep the same TMICT and change timer mode to one-shot
-+		 * TMCCT should be > 0 and count-down to 0
-+		 */
-+		apic_change_mode(APIC_LVT_TIMER_ONESHOT);
-+		p2o_not_reset = apic_read(APIC_TMCCT) < (tmict / 2);
- 
--	/*
--	 * After the change of mode, the counter should not be reset and continue
--	 * counting down from where it was
--	 */
--	report(apic_read(APIC_TMCCT) < (tmict / 2),
--	       "TMCCT should not be reset to TMICT value");
--	/*
--	 * Specifically wait for timer wrap around and skip 0.
--	 * Under KVM lapic there is a possibility that a small amount of consecutive
--	 * TMCCR reads return 0 while hrtimer is reset in an async callback
--	 */
--	wait_until_tmcct_wrap_around(tmict, false);
--	report(apic_read(APIC_TMCCT) > (tmict / 2),
--	       "TMCCT should be reset to the initial-count");
-+		wait_until_tmcct_is_zero(tmict, false);
-+		p2o_reached_zero = !apic_read(APIC_TMCCT);
- 
--	wait_until_tmcct_is_zero(tmict, true);
--	/*
--	 * Keep the same TMICT and change timer mode to one-shot
--	 * TMCCT should be > 0 and count-down to 0
--	 */
--	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
--	report(apic_read(APIC_TMCCT) < (tmict / 2),
--	       "TMCCT should not be reset to init");
--	wait_until_tmcct_is_zero(tmict, false);
--	report(!apic_read(APIC_TMCCT), "TMCCT should have reach zero");
--
--	/* now tmcct == 0 and tmict != 0 */
--	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
--	report(!apic_read(APIC_TMCCT), "TMCCT should stay at zero");
-+		/* now tmcct == 0 and tmict != 0 */
-+		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
-+		p2o_stay_zero = !apic_read(APIC_TMCCT);
-+	}
-+
-+	report(tmict_reset, "TMICT value reset");
-+	report(o_nonzero, "one-shot: TMCCT should have a non-zero value");
-+	report(o_reached_zero, "one-shot: TMCCT should have reached 0");
-+	report(p_nonzero, "periodic: TMCCT should have a non-zero value");
-+	report(p_not_reset, "TMCCT should not be reset to TMICT value");
-+	report(p_after_wrap, "TMCCT should be reset to the initial-count");
-+	report(p2o_not_reset, "TMCCT should not be reset to init");
-+	report(p2o_reached_zero, "TMCCT should have reach zero");
-+	report(p2o_stay_zero, "TMCCT should stay at zero");
- }
- 
- #define KVM_HC_SEND_IPI 10
--- 
-2.47.3
-
+Jason
