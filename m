@@ -1,54 +1,54 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC0B38F954
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 23:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B369393DD9
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 23:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777419213; cv=none; b=I+bFclSl7yG9ufLluezjDvjiOLct0YPFKQO+r+SORCbkCPlNbh2+r4uF1hVDDd+AZIwhMl0QdEb9AvnGZFbj/2wg7VuPiZOmxsGj4UTFW6eLEWU89tm9fMSpIl+cnTtQtVRICCjwErFN7+u/x5dZpWxR3RsWfO+77zcoPWA1BbI=
+	t=1777419214; cv=none; b=oB/6f4q/pC7RjR5fZtvLa7ac4q3Fg4wtlWc5W1zu4DrTGM6iA6QWxoMc2nsUWnFXiW2ucOhSJPmTUX1ZMTnxOEPQULfsqf+u+DDrXERnOmOs/hFBjJvDvhszsa7z73HSObecpSYStdbnx37QJsJaOxkj78HVcpBMxoZVzkF1koI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777419213; c=relaxed/simple;
-	bh=w9utNXxCCC62f2kYxm5u5Pd5S1Lxi8j2YN3oYBMKdM0=;
+	s=arc-20240116; t=1777419214; c=relaxed/simple;
+	bh=Nfygr8MpIrK7JcE/WoxSsKJQvLtZfLIiToBsPwm9bVk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=E4aFdtJgzKCvgf4vLtNdUwdGG90SdfXJiDLVUL0MUAGtGwPVWpyoOFXeGfYjK2pr7mUZGc0Ffc/10G0Ha38u58vaCdusmG0NlYB3iCtJNKwIcrRR7/+a50QFYGKHGQ5Lmc8/cIEkEZqWWblWb7ipZWvoiE7bX+MRwxXJ8erGaHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LwkGlO3G; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=aTb3P8DTPc9UP21GKwDS+rWNZwsGRmOgbah+LhQPftx1GXE1J4Rf1NX0974P68B+CC6bkThKI9SWuEPXUoL1vxntWRQFGOcM2vM6LTHxzYZE3B2eStsAswB3f3PfjkchvuM7dzQcZIl2CwuW95kdbYHjwWGM1zvCd++cRTCOO8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yezx7Zy9; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LwkGlO3G"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b258636d16so120684445ad.2
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 16:33:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yezx7Zy9"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa7c6699fso13828939b3a.1
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 16:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777419211; x=1778024011; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777419212; x=1778024012; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=clSh7OBsCI0JhKUCKzkprD+sDtva2OSfrDX8pAze+SM=;
-        b=LwkGlO3GGoU0U9Eq3kERzXqRqw777yR2A8NQRDVWb2ME+VDXMc3wFpq4OYsfzcEV+R
-         a1/pJNEjqsuGAxFzhxX+SNIlgfvyOZR3bqRmKkwHQxvYcuSFWOnR3im+rxlCx8jYEyPF
-         VfvpmKke+C4ih1/4wwv988fY1jmXELofGxoaN8dDLuuVl8J3iMgiRL914FkC9KS0dWl/
-         tk1dS+i9IEIYTHu/uNiu0GlMksRXO4zwKm2q6HeTnpW/KTv2BUTIKu4Ejb624L8TTYzA
-         v4Dc/tmlohyyDg82naAUSGZDZfc53V23DEPuhQrunL54/upsWCJETPXuVWilUd2pjBiv
-         m4bg==
+        bh=OKlqfvGeioYCy/1YHyXYlqGH92j3/mbwl8rUOBF5k84=;
+        b=Yezx7Zy9h7hGs644cRx0X6c+NhGlr9Bu0VvzOc7Ns60GN2ug3/SGuvKwqxJT/dxB0+
+         bmUPGgXL/15wOKW1VeSyotgUg/YVR29L8yVniMX6xpNYSC8FvGha5J2dElqlVU0LwoZc
+         TLN624tqkph+9UzEeB6EYfS9ghg7UrxUWMnKTb7GZmcN2Jn0YHveCpbP7/85yxRuetTa
+         beYI2ZiKh1b6x8o5Un7E8OnhNJ6tInjQvvyLQyLC5IWDhjlYrJ+EV3AkImGHlg4Hk6o+
+         fnI02T8xyM5+4mWRhlQSdLkEYQgyz0iDyRKGXuIZu5P9/zMIP/mjG9P85fbwFEqHTSET
+         P0xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777419211; x=1778024011;
+        d=1e100.net; s=20251104; t=1777419212; x=1778024012;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=clSh7OBsCI0JhKUCKzkprD+sDtva2OSfrDX8pAze+SM=;
-        b=Y6jwC/VjgBl6YougDBJMN9mZzRRjpGHwF2FOOIVBTbfWAERKseTLNDYF2WNnyyuGEj
-         BUZ7/zvZ7L280sjRyzx5qawdPPBYVKrs7UCNbtgrJx5Gjdz5Yv2bRkVYyUsurOypbwT+
-         bRIc9zhPKNsqdODrqja89Qsy02N45MpE79ltKUKEMGRwi69kYXc1NgX99TXW4jEv1Xl3
-         hj7VPnxyyK0fYviO8aaSH6rB24v9ckF/lpO0gvIRh7oXVlwMd1OisffHdSqqQXjUtwg1
-         WNIeeMnY8Aa8zm2Bv0IJWe3KqfxYCT/lfezMCgK4fDLu57NUPTq5W25pFRTojHMwIEMd
-         6rYA==
-X-Forwarded-Encrypted: i=1; AFNElJ86SBoIZDEROMz2f5yXv13a8uW5zF0+OfN1cM/lv0DzcCpRfPNfMPOQaGdw72DG0xYuS78=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYSD2o1vuwgx7CQ8pg0lbhht68p+pPNLm5/RnGOIO8s0i5n5Ct
-	3VqWKGCqVBFs89ONAnbkFGrGCkrzKhAQyhE2JKfLQorLIN6/0oz2J56Sy3BMlDsaT5sW/LZ3BUR
-	YX2j4ooHRWdUKWncgrWH7WFG/IA==
-X-Received: from plpn20.prod.google.com ([2002:a17:902:9694:b0:2b2:ec1e:c943])
+        bh=OKlqfvGeioYCy/1YHyXYlqGH92j3/mbwl8rUOBF5k84=;
+        b=Q8eFOQ4ZaO6O3HHBD0LWiX4x5fuFfsIIGHCPoKEO9WcwwyqJ4FanonvwCjzmOx7O8h
+         bolnY8etIGwYLtWTa1+pls//2AQglzGV4NVfhbVkLeSSdBlC6qAh97IBWRGhOIehXtae
+         fDl9B+PQu8QXe3MaYoVtp174/FnDmEiMLMZcsr8Yg45DYGxovxsIVk1FlKjOLUOZYdDT
+         enbKvtieO5JYQlvaLd/JUgXXn94gxt7gkwsrNXJ7EK6xU1IN8S1Zw9j61J+6PNRUxwas
+         w+I8EJHtRFTR4SNMNipSi5HfYgVUqOzcTlRu7sqeEvwKeyP78kz64uSflnELLcNkgBc4
+         eN8Q==
+X-Forwarded-Encrypted: i=1; AFNElJ81ueGWAhQtWSv7eza8CYCeanKu1aBorgC1IycFwZGn6oZqhBaKK/w6a+bkZrJg3DoaIMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDMWFvcZc3bMGtYBET9CTzuF+Xucidd6DK7Gm4r09ae6M42IrF
+	4kRpKAN5q7RpqybhbxN4Ni82Q17z6U0WUkoEv12avf5c9ANQdwHKqDbS6DTXfcUvLFAWg8wmmuU
+	e2lKIT7Wx16+haARLFaqH5kN6eg==
+X-Received: from pfwp18.prod.google.com ([2002:a05:6a00:26d2:b0:82f:61ed:8b2])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:3c2f:b0:2b9:6453:389a with SMTP id d9443c01a7336-2b97c3cc0b3mr49885595ad.8.1777419210821;
- Tue, 28 Apr 2026 16:33:30 -0700 (PDT)
-Date: Tue, 28 Apr 2026 16:33:21 -0700
+ 2002:a05:6a00:4487:b0:82f:77c9:a89f with SMTP id d2e1a72fcca58-834ddc57adfmr5463785b3a.37.1777419211701;
+ Tue, 28 Apr 2026 16:33:31 -0700 (PDT)
+Date: Tue, 28 Apr 2026 16:33:22 -0700
 In-Reply-To: <cover.1777418884.git.ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,8 +58,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <cover.1777418884.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <94c9e342215e6c88988d7aa62f3ba627eda34e94.1777418884.git.ackerleytng@google.com>
-Subject: [POC PATCH 1/6] KVM: selftests: Initialize guest_memfd with INIT_SHARED
+Message-ID: <bfbf372d037a77504563fc6e1f25306fdaf1f48a.1777418884.git.ackerleytng@google.com>
+Subject: [POC PATCH 2/6] KVM: selftests: Use guest_memfd memory contents
+ in-place for SNP launch update
 From: Ackerley Tng <ackerleytng@google.com>
 To: devnull+ackerleytng.google.com@kernel.org
 Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
@@ -82,60 +83,47 @@ Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org,
 	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
 	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
 	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
-	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com, 
-	Sagi Shahar <sagis@google.com>
+	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Initialize guest_memfd with INIT_SHARED for VM types that require
-guest_memfd.
+Update the SEV-SNP launch update flow to utilize guest_memfd in-place
+conversion.
 
-Memory in the first memslot is used by the selftest framework to load
-code, page tables, interrupt descriptor tables, and basically everything
-the selftest needs to run. The selftest framework sets all of these up
-assuming that the memory in the memslot can be written to from the
-host. Align with that behavior by initializing guest_memfd as shared so
-that all the writes from the host are permitted.
+Include the KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE flag when setting memory
+attributes to private. This is permitted before the SNP VM is finalized.
 
-guest_memfd memory can later be marked private if necessary by CoCo
-platform-specific initialization functions.
+In snp_launch_update_data, pass 0 as the host virtual address. This
+instructs the kernel to perform the launch update using the guest_memfd
+backing the guest physical address rather than a userspace-provided
+buffer.
 
-Suggested-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/lib/x86/sev.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 216d6e037153c..3811aef8c98cd 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -483,8 +483,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
- {
- 	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
- 						 nr_extra_pages);
-+	enum vm_mem_backing_src_type src_type;
- 	struct userspace_mem_region *slot0;
- 	struct kvm_vm *vm;
-+	u64 gmem_flags;
- 	int i, flags;
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
+index d0205b3299e0b..72b2935871fe4 100644
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c
+@@ -32,13 +32,14 @@ static void encrypt_region(struct kvm_vm *vm, struct userspace_mem_region *regio
+ 		const u64 size = (j - i + 1) * vm->page_size;
+ 		const u64 offset = (i - lowest_page_in_region) * vm->page_size;
  
- 	kvm_set_files_rlimit(nr_runnable_vcpus);
-@@ -502,7 +504,15 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
- 	if (is_guest_memfd_required(shape))
- 		flags |= KVM_MEM_GUEST_MEMFD;
+-		if (private)
+-			vm_mem_set_private(vm, gpa_base + offset, size, 0);
++		if (private) {
++			vm_mem_set_private(vm, gpa_base + offset, size,
++					   KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE);
++		}
  
--	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
-+	gmem_flags = 0;
-+	src_type = VM_MEM_SRC_ANONYMOUS;
-+	if (is_guest_memfd_required(shape) && kvm_has_gmem_attributes) {
-+		src_type = VM_MEM_SRC_SHMEM;
-+		gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-+	}
-+
-+	vm_mem_add(vm, src_type, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
-+
- 	for (i = 0; i < NR_MEM_REGIONS; i++)
- 		vm->memslots[i] = 0;
+ 		if (is_sev_snp_vm(vm))
+ 			snp_launch_update_data(vm, gpa_base + offset,
+-					       (u64)addr_gpa2hva(vm, gpa_base + offset),
+-					       size, page_type);
++					       0, size, page_type);
+ 		else
+ 			sev_launch_update_data(vm, gpa_base + offset, size);
  
 -- 
 2.54.0.545.g6539524ca2-goog
