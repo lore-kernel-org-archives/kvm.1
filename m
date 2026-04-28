@@ -1,210 +1,243 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B1F44A708;
-	Tue, 28 Apr 2026 13:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42230449EB2;
+	Tue, 28 Apr 2026 13:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381857; cv=none; b=c1nlmAzvYVCgpRzhQAeMVgaZ3hlEkY22Ax2Sd05IqTK11feDdYqfxhARGwOW/QTlYL3L8y4NE86wV1dQ2WuMqGIFcdwL/rRw+rVZ2YjeC8zEd/J7b+G+Zl/RQvrQbvNZn5GulzccHrsjuyfEuo3iSG4FgkPA18+3PFJB4pgy29U=
+	t=1777382061; cv=none; b=Im8M+D1Z/gMPsvoFbwDsvmp+6rayiFxIymH0r1HQezdSs1A86z2jikuI8RxQ9hse/PyKkGPNIuQRU3sFQplpH8kz83csFviMl3b4Tb6zUpwGKcLNZc/HXhdB8rg8chb1OsaEbwnNENig9OAiAZgyqcPkYpZcKlgH0U17Z4MM990=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381857; c=relaxed/simple;
-	bh=nmszbhvlmW6fCGQOwQbFQYvBDmzyGhtjk20ogqwaHEE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mWnkvLQjYbnJpDCdrOG9eo7xEKghlTsesQ7zAhNkwL9V8Vmv+XtblzzocDggGIF3gRLKFKAJ2ib64aNhStLFMfvxlVEnnv/N7yreBDFO6UtfsZGI9Mhoimsr1Fk17g0ZcEh/Zhmfu6nGOKeNJikK6X/cJmFSiR9R5RmM2gsMv1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
-Received: from [129.217.186.62] ([129.217.186.62])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63SDAig6017192
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 15:10:45 +0200 (CEST)
-Message-ID: <cdc3cbc8-cf6a-437c-b34c-dd8ced65d7f8@tu-dortmund.de>
-Date: Tue, 28 Apr 2026 15:10:44 +0200
+	s=arc-20240116; t=1777382061; c=relaxed/simple;
+	bh=OYEP1JP8BVFHXbULzGk1wNAbCbBlFfgcJ1H95hoOhwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gZ99vEU9qxNlniK0PFvHgXq8MftWZ74mqriWc5vRdzv0IayhszRd4lKBcol02EK49vN1U4fvjtDKoNQ2RkccgWkteLQQESSOPBFBMm53R7iKnCNCuYyux5Zc56d7T/niJ5dagSWL5WX9AK23B8aZAkRIzzoW8VkknmSqxZSxExY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KJjAT3K+; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KJjAT3K+"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1777382055; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=ZUHnJEfer0hml+VpdHPHpDcwMmO2L2tgfhLYa+ZhlhQ=;
+	b=KJjAT3K+Axk0MWlmVWuAuzpBYj+xMvI+RjiSnpXeBcYTziK31IFL7Z24+jWxtwXLLduPa7TYdbnC8ylxNyUo+RsoHDb+VeiYXRYg3NfIjusIyRc4vdVGD8niG5MBnqriWpbyJs6ed5kTTEylhmKs4p4rxuoF7HObsUWBfoE+08o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X1ubIDQ_1777382052;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1ubIDQ_1777382052 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 28 Apr 2026 21:14:13 +0800
+From: fangyu.yu@linux.alibaba.com
+To: joro@8bytes.org,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	tjeznach@rivosinc.com,
+	jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	baolu.lu@linux.intel.com,
+	vasant.hegde@amd.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	skhawaja@google.com,
+	jgg@nvidia.com
+Cc: guoren@kernel.org,
+	kvm@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Subject: [RFC PATCH 01/11] iommupt: Add RISC-V Second-stage (iohgatp) page table support
+Date: Tue, 28 Apr 2026 21:13:49 +0800
+Message-Id: <20260428131359.34872-2-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
+References: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20260428123859.19578-1-simon.schippers@tu-dortmund.de>
- <20260428123859.19578-5-simon.schippers@tu-dortmund.de>
- <20260428084851-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <20260428084851-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/28/26 14:50, Michael S. Tsirkin wrote:
-> On Tue, Apr 28, 2026 at 02:38:59PM +0200, Simon Schippers wrote:
->> This commit prevents tail-drop when a qdisc is present and the ptr_ring
->> becomes full. Once an entry is successfully produced and the ptr_ring
->> reaches capacity, the netdev queue is stopped instead of dropping
->> subsequent packets.
->>
->> If producing an entry fails anyways due to a race, tun_net_xmit returns
->> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
->> LLTX is enabled and the transmit path operates without the usual locking.
->>
->> If no qdisc is present, the previous tail-drop behavior is preserved.
->>
->> The existing __tun_wake_queue() function of the consumer races with the
->> producer for waking/stopping the netdev queue: the consumer may drain
->> the ring just as the producer stops the queue, leading to a permanent
->> stall. To avoid this, the producer re-checks the ring after stopping
->> and wakes the queue itself if space was just made. An
->> smp_mb__after_atomic() is required so the re-peek of the ring sees any
->> drain that the consumer performed.
->> smp_mb__after_atomic() pairs with the test_and_clear_bit() inside of
->> netif_wake_subqueue():
->>
->> Consumer CPU                  Producer CPU
->> ========================      =========================
->> __ptr_ring_consume()
->> netif_wake_subqueue()         netif_tx_stop_queue()
->>           /\                  smp_mb__after_atomic()
->>           ||                  __ptr_ring_produce_peek()
->> contains RMW operation
->>  test_and_clear_bit()
->>           /\
->>           ||
->>  "Fully ordered RMW:
->> smp_mb() before + after"
->>     - atomic_t.txt
->>
->> Benchmarks:
->> The benchmarks show a slight regression in raw transmission performance,
->> though no packets are lost anymore.
-> 
-> Could you include the packets received as well?
-> To demonstrate the gains/lack of loss. 
-> 
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Do you mean the number of packets received by the VM?
-They should just be the same as the number sent (shown below), right?
+Add support for Sv39x4/Sv48x4/Sv57x4 Second-stage page tables used by
+the RISC-V IOMMU iohgatp register. The x4 root page table is 16 KiB
+instead of the usual 4 KiB, covering 2 extra GPA bits (hw_max_vasz_lg2
+= 41/50/59).
 
-I assume they would be visible as RX-DRP for TAP.
-For TAP + vhost-net I would have to rewrite the XDP drop
-program to count the number of dropped packets...
-And I would have to automate it...
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+---
+ drivers/iommu/generic_pt/fmt/riscv.h | 64 +++++++++++++++++++++++++---
+ include/linux/generic_pt/common.h    |  5 +++
+ include/linux/generic_pt/iommu.h     | 17 +++++++-
+ 3 files changed, 80 insertions(+), 6 deletions(-)
 
->>
->> The previously introduced threshold to only wake after the queue stopped
->> and half of the ring was consumed showed to be a descent choice:
->> Waking the queue whenever a consume made space in the ring strongly
->> degrades performance for tap, while waking only when the ring is empty
->> is too late and also hurts throughput for tap & tap+vhost-net.
->> Other ratios (3/4, 7/8) showed similar results (not shown here), so
->> 1/2 was chosen for the sake of simplicity for both tun/tap and
->> tun/tap+vhost-net.
->>
->> Test setup:
->> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
->> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
->> mitigations disabled.
->>
->> Note for tap+vhost-net:
->> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
->> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
->>
->> +--------------------------+--------------+----------------+----------+
->> | 1 thread                 | Stock        | Patched with   | diff     |
->> | sending                  |              | fq_codel qdisc |          |
->> +------------+-------------+--------------+----------------+----------+
->> | TAP        | Transmitted | 1.136 Mpps   | 1.130 Mpps     | -0.6%    |
->> |            +-------------+--------------+----------------+----------+
->> |            | Lost/s      | 3.758 Mpps   | 0 pps          |          |
->> +------------+-------------+--------------+----------------+----------+
->> | TAP        | Transmitted | 3.858 Mpps   | 3.816 Mpps     | -1.1%    |
->> |            +-------------+--------------+----------------+----------+
->> | +vhost-net | Lost/s      | 789.8 Kpps   | 0 pps          |          |
->> +------------+-------------+--------------+----------------+----------+
->>
->> +--------------------------+--------------+----------------+----------+
->> | 2 threads                | Stock        | Patched with   | diff     |
->> | sending                  |              | fq_codel qdisc |          |
->> +------------+-------------+--------------+----------------+----------+
->> | TAP        | Transmitted | 1.117 Mpps   | 1.087 Mpps     | -2.7%    |
->> |            +-------------+--------------+----------------+----------+
->> |            | Lost/s      | 8.476 Mpps   | 0 pps          |          |
->> +------------+-------------+--------------+----------------+----------+
->> | TAP        | Transmitted | 3.679 Mpps   | 3.464 Mpps     | -5.8%    |
->> |            +-------------+--------------+----------------+----------+
->> | +vhost-net | Lost/s      | 5.306 Mpps   | 0 pps          |          |
->> +------------+-------------+--------------+----------------+----------+
->>
->> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->> ---
->>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
->>  1 file changed, 28 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->> index efe809597622..c2a1618cc9db 100644
->> --- a/drivers/net/tun.c
->> +++ b/drivers/net/tun.c
->> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>  	struct netdev_queue *queue;
->>  	struct tun_file *tfile;
->>  	int len = skb->len;
->> +	bool qdisc_present;
->> +	int ret;
->>  
->>  	rcu_read_lock();
->>  	tfile = rcu_dereference(tun->tfiles[txq]);
->> @@ -1065,13 +1067,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>  
->>  	nf_reset_ct(skb);
->>  
->> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
->> +	queue = netdev_get_tx_queue(dev, txq);
->> +	qdisc_present = !qdisc_txq_has_no_queue(queue);
->> +
->> +	spin_lock(&tfile->tx_ring.producer_lock);
->> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
->> +	if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
->> +		netif_tx_stop_queue(queue);
->> +		/* Re-peek and wake if the consumer drained the ring
->> +		 * concurrently in a race. smp_mb__after_atomic() pairs
->> +		 * with the test_and_clear_bit() of netif_wake_subqueue()
->> +		 * in __tun_wake_queue().
->> +		 */
->> +		smp_mb__after_atomic();
->> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
->> +			netif_tx_wake_queue(queue);
->> +	}
->> +	spin_unlock(&tfile->tx_ring.producer_lock);
->> +
->> +	if (ret) {
->> +		/* If a qdisc is attached to our virtual device,
->> +		 * returning NETDEV_TX_BUSY is allowed.
->> +		 */
->> +		if (qdisc_present) {
->> +			rcu_read_unlock();
->> +			return NETDEV_TX_BUSY;
->> +		}
->>  		drop_reason = SKB_DROP_REASON_FULL_RING;
->>  		goto drop;
->>  	}
->>  
->>  	/* dev->lltx requires to do our own update of trans_start */
->> -	queue = netdev_get_tx_queue(dev, txq);
->>  	txq_trans_cond_update(queue);
->>  
->>  	/* Notify and wake up reader process */
->> -- 
->> 2.43.0
-> 
+diff --git a/drivers/iommu/generic_pt/fmt/riscv.h b/drivers/iommu/generic_pt/fmt/riscv.h
+index a7fef6266a36..4fe645e60375 100644
+--- a/drivers/iommu/generic_pt/fmt/riscv.h
++++ b/drivers/iommu/generic_pt/fmt/riscv.h
+@@ -37,7 +37,16 @@ enum {
+ 	PT_MAX_OUTPUT_ADDRESS_LG2 = 34,
+ 	PT_MAX_TOP_LEVEL = 1,
+ #else
+-	PT_MAX_VA_ADDRESS_LG2 = 57,
++	/*
++	 * PT_MAX_VA_ADDRESS_LG2 is the upper bound accepted by the generic
++	 * pt_iommu_init() range check.  It must cover both first-stage and
++	 * second-stage (G-stage) modes:
++	 *
++	 *   First-stage  (fsc/iosatp): Sv39=39, Sv48=48, Sv57=57
++	 *   Second-stage (iohgatp):    Sv39x4=41, Sv48x4=50, Sv57x4=59
++	 *
++	 */
++	PT_MAX_VA_ADDRESS_LG2 = 59,
+ 	PT_MAX_OUTPUT_ADDRESS_LG2 = 56,
+ 	PT_MAX_TOP_LEVEL = 4,
+ #endif
+@@ -124,6 +133,14 @@ riscvpt_entry_num_contig_lg2(const struct pt_state *pts)
+ 
+ static inline unsigned int riscvpt_num_items_lg2(const struct pt_state *pts)
+ {
++	/*
++	 * Second-stage (iohgatp) root page tables have 4x the usual number of
++	 * entries (2048 = 2^11 instead of 512 = 2^9) to cover the 2 extra GPA
++	 * bits in Sv39x4/Sv48x4/Sv57x4.  Only the root (top) level is
++	 * enlarged; all other levels remain at the standard 9-bit index width.
++	 */
++	if (to_riscvpt(pts)->second_stage && pts->level == pts->range->top_level)
++		return PT_TABLEMEM_LG2SZ - ilog2(sizeof(u64)) + 2;
+ 	return PT_TABLEMEM_LG2SZ - ilog2(sizeof(u64));
+ }
+ #define pt_num_items_lg2 riscvpt_num_items_lg2
+@@ -254,6 +271,7 @@ riscvpt_iommu_fmt_init(struct pt_iommu_riscv_64 *iommu_table,
+ 	struct pt_riscv *table = &iommu_table->riscv_64pt;
+ 
+ 	switch (cfg->common.hw_max_vasz_lg2) {
++	/* First-stage (fsc/iosatp): Sv39 / Sv48 / Sv57 */
+ 	case 39:
+ 		pt_top_set_level(&table->common, 2);
+ 		break;
+@@ -263,6 +281,22 @@ riscvpt_iommu_fmt_init(struct pt_iommu_riscv_64 *iommu_table,
+ 	case 57:
+ 		pt_top_set_level(&table->common, 4);
+ 		break;
++	/*
++	 * Second-stage (iohgatp): Sv39x4 / Sv48x4 / Sv57x4.
++	 * The top level is the same as for the first-stage counterpart.
++	 */
++	case 41:
++		pt_top_set_level(&table->common, 2);
++		table->second_stage = true;
++		break;
++	case 50:
++		pt_top_set_level(&table->common, 3);
++		table->second_stage = true;
++		break;
++	case 59:
++		pt_top_set_level(&table->common, 4);
++		table->second_stage = true;
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -283,10 +317,17 @@ riscvpt_iommu_fmt_hw_info(struct pt_iommu_riscv_64 *table,
+ 	PT_WARN_ON(top_phys & ~PT_TOP_PHYS_MASK);
+ 
+ 	/*
+-	 * See Table 3. Encodings of iosatp.MODE field" for DC.tx.SXL = 0:
+-	 *  8 = Sv39 = top level 2
+-	 *  9 = Sv38 = top level 3
+-	 *  10 = Sv57 = top level 4
++	 * Both first-stage (fsc/iosatp) and second-stage (iohgatp) share the
++	 * same MODE numeric values for a given top level:
++	 *   top_level 2 -> MODE 8  (Sv39 / Sv39x4)
++	 *   top_level 3 -> MODE 9  (Sv48 / Sv48x4)
++	 *   top_level 4 -> MODE 10 (Sv57 / Sv57x4)
++	 *
++	 * The union members fsc_iosatp_mode and iohgatp_mode occupy the same
++	 * byte; the caller selects the appropriate name based on domain type.
++	 *
++	 * See "Table 3. Encodings of iosatp.MODE field" (DC.tc.SXL = 0) and
++	 * "Table 2. Encoding of iohgatp.MODE field" in the RISC-V IOMMU spec.
+ 	 */
+ 	info->fsc_iosatp_mode = top_range->top_level + 6;
+ }
+@@ -294,6 +335,7 @@ riscvpt_iommu_fmt_hw_info(struct pt_iommu_riscv_64 *table,
+ 
+ #if defined(GENERIC_PT_KUNIT)
+ static const struct pt_iommu_riscv_64_cfg riscv_64_kunit_fmt_cfgs[] = {
++	/* First-stage (fsc/iosatp): Sv39 / Sv48 / Sv57 */
+ 	[0] = { .common.features = BIT(PT_FEAT_RISCV_SVNAPOT_64K),
+ 		.common.hw_max_oasz_lg2 = 56,
+ 		.common.hw_max_vasz_lg2 = 39 },
+@@ -303,6 +345,18 @@ static const struct pt_iommu_riscv_64_cfg riscv_64_kunit_fmt_cfgs[] = {
+ 	[2] = { .common.features = BIT(PT_FEAT_RISCV_SVNAPOT_64K),
+ 		.common.hw_max_oasz_lg2 = 56,
+ 		.common.hw_max_vasz_lg2 = 57 },
++	/*
++	 * Second-stage (iohgatp): Sv39x4 / Sv48x4 / Sv57x4.
++	 */
++	[3] = { .common.features = BIT(PT_FEAT_RISCV_SVNAPOT_64K),
++		.common.hw_max_oasz_lg2 = 56,
++		.common.hw_max_vasz_lg2 = 41 },
++	[4] = { .common.features = 0,
++		.common.hw_max_oasz_lg2 = 56,
++		.common.hw_max_vasz_lg2 = 50 },
++	[5] = { .common.features = BIT(PT_FEAT_RISCV_SVNAPOT_64K),
++		.common.hw_max_oasz_lg2 = 56,
++		.common.hw_max_vasz_lg2 = 59 },
+ };
+ #define kunit_fmt_cfgs riscv_64_kunit_fmt_cfgs
+ enum {
+diff --git a/include/linux/generic_pt/common.h b/include/linux/generic_pt/common.h
+index fc5d0b5edadc..e82dff33ece8 100644
+--- a/include/linux/generic_pt/common.h
++++ b/include/linux/generic_pt/common.h
+@@ -181,6 +181,11 @@ struct pt_riscv_32 {
+ 
+ struct pt_riscv_64 {
+ 	struct pt_common common;
++	/*
++	 * True when this table is used for second-stage / iohgatp
++	 * address translation.
++	 */
++	bool second_stage;
+ };
+ 
+ enum {
+diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
+index dd0edd02a48a..f27d229ff318 100644
+--- a/include/linux/generic_pt/iommu.h
++++ b/include/linux/generic_pt/iommu.h
+@@ -328,7 +328,22 @@ struct pt_iommu_riscv_64_cfg {
+ 
+ struct pt_iommu_riscv_64_hw_info {
+ 	u64 ppn;
+-	u8 fsc_iosatp_mode;
++	union {
++		/*
++		 * First-stage (fsc/iosatp) MODE encoding:
++		 *   8 = Sv39, 9 = Sv48, 10 = Sv57
++		 * Used to program DC.fsc.iosatp.MODE.
++		 */
++		u8 fsc_iosatp_mode;
++		/*
++		 * Second-stage (iohgatp) MODE encoding:
++		 *   8 = Sv39x4, 9 = Sv48x4, 10 = Sv57x4
++		 * Used to program DC.iohgatp.MODE.
++		 * The numeric values are identical to fsc_iosatp_mode;
++		 * the caller selects the interpretation based on domain type.
++		 */
++		u8 iohgatp_mode;
++	};
+ };
+ 
+ IOMMU_FORMAT(riscv_64, riscv_64pt);
+-- 
+2.50.1
+
