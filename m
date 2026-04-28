@@ -1,146 +1,189 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E09320CAD;
-	Tue, 28 Apr 2026 08:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F058351C34
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 08:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777363402; cv=none; b=KbIzZVHHC+6ZKEKCkrOHI7XCmO2T5l6Lf1SSi8rlT7JAbSrEeDFhYXtIvV+BWZdaWgw0kscrqp8NJcD2D1W35oecPRYgCrjAtddrTI/3S5Ok1UJWtDRjl+GZzc/KHnxKyEtZfj9NwrWA0tAK57o8l++MQ45ouOoWJenV+kd/cA4=
+	t=1777363693; cv=none; b=b2lIpYuFGDelSiKfs1DJHO1c3Z+8GJMGZcrw7N1vCfTr4mOiSpBqOQu7DTweWT/mtjBY9T9n7fpr9ZSOifMnUQl7xLIAY7rnr+sYUXHYFmzmh5qhNE+RaAI3PpYWicT4J3McbGEzvznMVO1NAGWZaMgZFMAO2n6eq8EzytCjTaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777363402; c=relaxed/simple;
-	bh=jCWrQkTXboxOoUS/fG/K8UK5bDgLyCq2iAt9QGU806U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ixQ11ekU+uaHC7FdIHiQI6cUsS9oLEWrb4giwgECj1uqHb/y0As44CP/RFsrUiuUg/KN88+JL4z3RvnEMCpyvv33G+Xjqj8TtwJBTUYu7D5FtDee5DKijZR4BKWjomzdOweLuq/whYM1xiIR2Es4djXahzetoNBDy8GcEdxREQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e7yjLDcV; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1777363693; c=relaxed/simple;
+	bh=VC0CTmGJaewWmL615828FQCbNXWgDyp2PlwH1vmeh2s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=upOhH8iswppuQ2NXcyYdy+aDQBh3UXC00Pa08JMOOkb0qHtoZgC4URvFMSU4RKg72I1P8WEYYJyRr/dMYeyOvhl91GOTV9U0XjVKAo+OGHST8LBeV45BH/pa+hwrLFPXtK6Q5KjzelQDRPXdt/7RcgdhS9dhW+8kWSVcd/grPNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=Qd8ZIubz reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e7yjLDcV"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63S5amEN3291685;
-	Tue, 28 Apr 2026 08:03:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=XRcKvfubTgnuYoZj4RDFyohZ+1R2Yu
-	cxZPqp34BQZnE=; b=e7yjLDcVpVP//dUIGRUfKiaW3AofLwuFI1KixYefDQvn1C
-	Jikds/dF8unsSwOGa13KMTj8oImIpIjuTjshRawhECDnHLCRbAuja+OwllUrqYC6
-	dGl8e0MTh1R3DRJCkVeBUKMtbozLMWFae9g9dzjkxO50nUlQ5QllU90+eal93J0F
-	XfVFbKflAKWbqyZ1SsfNv/u3r3rpsDTd381LJ+wBAWrcIswCGcIzff7sEO/xykfj
-	ORgqHDriwfDOBmAPJumWfSItt445i3K6s1SZIFuo44YFYPCqZd4BOH0+IxuC8gLr
-	V66tR+gJPtJkO7a2yhGPE+pT1ot6WXSDHZFK2+0g==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drk1jkh3p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 08:03:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63S7umBN007149;
-	Tue, 28 Apr 2026 08:03:03 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dsamy8hgh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 08:03:03 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63S831FC42991966
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Apr 2026 08:03:01 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 64EC520049;
-	Tue, 28 Apr 2026 08:03:01 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 80A0220040;
-	Tue, 28 Apr 2026 08:02:59 +0000 (GMT)
-Received: from Gautams-MacBook-Pro.local (unknown [9.43.36.19])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 28 Apr 2026 08:02:59 +0000 (GMT)
-Date: Tue, 28 Apr 2026 13:32:52 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Gautam Menghani <Gautam.Menghani@ibm.com>, maddy@linux.ibm.com,
-        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for
- tracing exits
-Message-ID: <afBprGx5SaaaW7sP@Gautams-MacBook-Pro.local>
-References: <20260424092558.31798-1-Gautam.Menghani@ibm.com>
- <lde9s0qx.ritesh.list@gmail.com>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="Qd8ZIubz"
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63S87UMu001425
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 28 Apr 2026 17:07:40 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=ZsX0U/9xuugcD5yPUItOyYoEt/O08ddTGev4YjQLges=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-Id:To:Subject:Date;
+        s=rs20250326; t=1777363660; v=1;
+        b=Qd8ZIubzI5Go3svg+MQDT+IkczHKpm0rpdhXDb84Nyv+yTYXv1ox54SmwrqzCAPC
+         5Pfoxq6Iyv2RzCfVrlMn+qmP/qyYp1Liz5rPdjzcvBiYvJquGyxUfBaHveJgl+t7
+         ZQHIXn4sy4w+/UmMkRSUPObvJjyahO0qEyENnlpx6hNt+G0HRxyRYkHAFsaNYuS8
+         I6hU2c4AiWBbefZANUN8wRXY1tLzPHNR98Gj9neiGesPlsbz99RtYtxdConl7Lxv
+         UxbXR0c6FTgl9vJGDw1/1FkrkmbDrKx0dbtsocbJdry/ALCJEpIFsmXJUCUgwjuX
+         ib3DAgupeWTxj7SMwh1blA==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Tue, 28 Apr 2026 17:07:27 +0900
+Subject: [PATCH] target/arm/kvm: Cache host CPU probe failure
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <lde9s0qx.ritesh.list@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDA3MSBTYWx0ZWRfX4AyHZNupc10o
- 3ql5+Db1qvJOyb/RKA3nP++MXijpO8TDtpbe7o3mfu5NYXnhzfjbh+asK8cyLi+XYI1J/kLgHIh
- fQK7+ei/lZfVwGAKJj6vEGigeZ+0kZvdV5c1XkB1sa1fAtQ8+qNxgQb3WSjkCzVjKPvDqnqabCy
- jx3AutnIQDLlOpapfRDfPWTjxWDQfDWtWzE3IJHyACzyV1yATCHHWUrmdhMieutk7/LuDCoHej/
- jWVPQU1UC7lrc2MUPZRYAjUZEssvYybYz73qlvAMYEaic0R1fq5g9jPAsTQIgSxWdNpy69Z+ubV
- imoWRmf+rGWlHsmhC4zZ0jRXNEA50yJswSz66qwUUwHAtmY9UCyV3wqJCrny8bxi6geMTbOjRO2
- EefhXnmfoSCZVqsgp+DdQFX/VS2ELgybnBE76gQTS5wjNZySnyqwUjYmdNc3YHVi8QvAWBvR6Fp
- YgO7hB+pyYRuDutOWFg==
-X-Proofpoint-GUID: pCRF3-F9OXIK5D9Hv3mU3ryuljJo7swI
-X-Proofpoint-ORIG-GUID: A977XpbCjYmlkOhW-XMxRyVCjo2aNFvF
-X-Authority-Analysis: v=2.4 cv=MohiLWae c=1 sm=1 tr=0 ts=69f069b8 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=ekTaQhlKxMoBV4_VeZsA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_02,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 suspectscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604280071
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260428-features-v1-1-1841b39da7e6@rsg.ci.i.u-tokyo.ac.jp>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBCF4avIrDWpkqZxFbGo6WAskA4iEXdXL
+ L/kf+8CocgkUGcXRDpYeJkTijwDHP08kOKQDEYbqyvjVE9+2yOJ8rYM6EOHziKkfI3U8/ldNe1
+ v2buJcHv3cN8PThZJNmwAAAA=
+X-Change-ID: 20260428-features-a63dcadbc86c
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+        kvm@vger.kernel.org, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.16-dev-16047
 
-On Mon, Apr 27, 2026 at 06:00:46AM +0530, Ritesh Harjani wrote:
-> Gautam Menghani <Gautam.Menghani@ibm.com> writes:
-> 
-> > From: Gautam Menghani <gautam@linux.ibm.com>
-> >
-> > The macro kvm_trace_symbol_exit is used for providing the mappings
-> > for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
-> > trap reason is displayed as string instead of a vector number when using
-> > the kvm_guest_exit tracepoint.
-> >
-> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> > ---
-> >  arch/powerpc/kvm/trace_book3s.h | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
-> > index 9260ddbd557f..eafbaeb5a9db 100644
-> > --- a/arch/powerpc/kvm/trace_book3s.h
-> > +++ b/arch/powerpc/kvm/trace_book3s.h
-> > @@ -28,6 +28,7 @@
-> >  	{0xea0, "H_VIRT"}, \
-> >  	{0xf00, "PERFMON"}, \
-> >  	{0xf20, "ALTIVEC"}, \
-> > -	{0xf40, "VSX"}
-> > +	{0xf40, "VSX"}, \
-> > +	{0xf80, "H_FAC_UNAVAIL"},
-> 
-> So I ended up looking into other trace_symbols too and I don't think we
-> should have a trailing comma here. It may cause some issues silently in
-> trace-cmd or other places. I remember going through it when I was doing
-> some other tracing work earlier but I don't recollect it now.
-> 
-> Can we just remove the trailing comma and send a v2 please?
+kvm_arm_set_cpu_features_from_host() does not properly handle host CPU
+probe failure with caching. The current algorithm can be summarized as
+follows:
 
-Good catch, thanks. Will send a v2
+    If dtb_compatible is not cached:
+        If kvm_arm_create_scratch_host_vcpu() fails:
+            Report failure
 
+        Cache dtb_compatible
 
-> 
-> btw, 0XF80 is correct as per "arch/powerpc/include/asm/kvm_asm.h"
-> 
-> #define BOOK3S_INTERRUPT_H_FAC_UNAVAIL	0xf80
-> 
-> -ritesh
-> 
+        If getting register values fails:
+            Report failure
+
+    Report success
+
+This algorithm has the following problems:
+
+- If kvm_arm_create_scratch_host_vcpu() fails, probing may be repeated.
+- If getting register values fails, later invocations incorrectly report
+  success.
+
+Make two changes to fix them:
+
+- Cache dtb_compatible whenever a probe is attempted.
+- Record probe failure by assigning QEMU_KVM_ARM_TARGET_NONE to
+  arm_host_cpu_features.target.
+
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Supersedes: <20260422-arm-v1-1-106a9a9e22dd@rsg.ci.i.u-tokyo.ac.jp>
+---
+ target/arm/kvm.c | 38 ++++++++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
+
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index d4a68874b880..7d194ea112b1 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -273,7 +273,7 @@ static uint32_t kvm_arm_sve_get_vls(int fd)
+     return vls[0] & MAKE_64BIT_MASK(0, ARM_MAX_VQ);
+ }
+ 
+-static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
++static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+ {
+     /* Identify the feature bits corresponding to the host CPU, and
+      * fill out the ARMHostCPUClass fields accordingly. To do this
+@@ -287,6 +287,13 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     uint64_t features = 0;
+     int err;
+ 
++    ahcf->target = QEMU_KVM_ARM_TARGET_NONE;
++    ahcf->dtb_compatible = "arm,armv8";
++
++    if (!kvm_enabled()) {
++        return;
++    }
++
+     /*
+      * target = -1 informs kvm_arm_create_scratch_host_vcpu()
+      * to use the preferred target
+@@ -326,11 +333,9 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     }
+ 
+     if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init)) {
+-        return false;
++        return;
+     }
+ 
+-    ahcf->target = init.target;
+-    ahcf->dtb_compatible = "arm,armv8";
+     int fd = fdarray[2];
+ 
+     err = get_host_cpu_reg(fd, ahcf, ID_AA64PFR0_EL1_IDX);
+@@ -454,7 +459,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     kvm_arm_destroy_scratch_host_vcpu(fdarray);
+ 
+     if (err < 0) {
+-        return false;
++        return;
+     }
+ 
+     /*
+@@ -471,9 +476,8 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         features |= 1ULL << ARM_FEATURE_EL2;
+     }
+ 
++    ahcf->target = init.target;
+     ahcf->features = features;
+-
+-    return true;
+ }
+ 
+ void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
+@@ -481,18 +485,20 @@ void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
+     CPUARMState *env = &cpu->env;
+ 
+     if (!arm_host_cpu_features.dtb_compatible) {
+-        if (!kvm_enabled() ||
+-            !kvm_arm_get_host_cpu_features(&arm_host_cpu_features)) {
+-            /* We can't report this error yet, so flag that we need to
+-             * in arm_cpu_realizefn().
+-             */
+-            cpu->kvm_target = QEMU_KVM_ARM_TARGET_NONE;
+-            cpu->host_cpu_probe_failed = true;
+-            return;
+-        }
++        kvm_arm_get_host_cpu_features(&arm_host_cpu_features);
+     }
+ 
+     cpu->kvm_target = arm_host_cpu_features.target;
++
++    if (cpu->kvm_target == QEMU_KVM_ARM_TARGET_NONE) {
++        /*
++         * We can't report this error yet, so flag that we need to
++         * in arm_cpu_realizefn().
++         */
++        cpu->host_cpu_probe_failed = true;
++        return;
++    }
++
+     cpu->dtb_compatible = arm_host_cpu_features.dtb_compatible;
+     cpu->isar = arm_host_cpu_features.isar;
+     cpu->sve_vq.supported = arm_host_cpu_features.sve_vq_supported;
+
+---
+base-commit: 98b060da3a4f92b2a994ead5b16a87e783baf77c
+change-id: 20260428-features-a63dcadbc86c
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+
