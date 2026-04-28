@@ -1,264 +1,241 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D72837267C;
-	Tue, 28 Apr 2026 14:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0D44BCA5;
+	Tue, 28 Apr 2026 14:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777385955; cv=none; b=gKx9u+A8kjU85p/16FxZe/0+ArJdgVcZSzKjtoFzZgQPUrFr6n3QeyIzj92j1OM2woppRXAtiY9XiouzrJxFJoaVFmAU76a6etjyM0GDN2PBWS8eGxPXmlTXmL08pv/2Pn6ZT6dNhMAgFTK1BCPki4JDsVi+kxgDF2iBBMdR7UQ=
+	t=1777386501; cv=none; b=LGN7K7ua6y0sUGpTppIm7/UjKiA3FZ/MVMedlq7MhzF6MBaKkSmSkudfknug4c9E1ChaWnbioFhCb7Kjv10G4MqQACzwxKwIYCk31T2jjwlPn+wqOnCU1i21AO/6zJGgph9iCSs3T33pX0HNy5AnCBTHSBxzFjnouFwotjd4D1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777385955; c=relaxed/simple;
-	bh=9SRwVzIOSqtIlM7CMwZtUX2d9LlVYwl6nFJymCoJbrI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BD624h0g40LYJX7ATpDb/KH1uhq6NAlNFv6InbDpeTh7mRPM3ffDWndiYiPZ/O0QGhje1Po5hjZDACHfRrP/+gLS/Q7Z2E2NwdxqTd0i9elBnaQUanzyyDr8gNERP36wTu+rwoSmU5IsDgOQBghsEt75PyU+M9x9J6ZyP91q4hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
-Received: from [129.217.186.62] ([129.217.186.62])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63SEItGP029771
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 28 Apr 2026 16:18:55 +0200 (CEST)
-Message-ID: <f4274173-23ef-43c3-aab4-b64678b440ec@tu-dortmund.de>
-Date: Tue, 28 Apr 2026 16:18:54 +0200
+	s=arc-20240116; t=1777386501; c=relaxed/simple;
+	bh=N3nXriKx5khER2Xv5VyWtRPDcydBXoio22I4HKHD20c=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VBeRiRWUuk6+V7jDeBelY1G0pPSlKwPvK8S6GOXm6lGqFac+WE76rYdQjwSxK1Py56A011j8sqfwo/XqUgwjUT9E8qDa00uennq+7kt83+WkUTohQ1nPHTnPppU4hubiKSz2D87PsgLw5Lm7MsRCWfQMX+OOnjFwHKApP23atcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAfM+8T8; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAfM+8T8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE31C2BCAF;
+	Tue, 28 Apr 2026 14:28:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777386501;
+	bh=N3nXriKx5khER2Xv5VyWtRPDcydBXoio22I4HKHD20c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GAfM+8T8+2VJI0rHHswSdt1CdXDB3TJ30naZPaG1e1YudqyGXuzsI/01+NDWloZ0R
+	 inQxcS6gAbEX0+9edyZg5jcLQyFms/9Pn0XlV9Ux/QwY9zruQNxW0pYfcTFT3Oh410
+	 mhc18QtBXFqpNyfd8ZgMhtF4PCI4YWXHZLxwhIYV4T9rJ0oOjXgZXxTan46232eaJk
+	 eGn9dp2sgVvjv4Zj01higFm05t7oV7M9GleZGlNKG0fcPs3wmenyDUTmhbMPk6tOQv
+	 SWnjA3K1+eWthYOBkjFVybJurpikkyYcS1Ct/HyjjO+fSPN4RDNZK1UNV/ozT6ietn
+	 3ZZ28Vxk1bVFA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wHjQA-0000000FXVS-1nvU;
+	Tue, 28 Apr 2026 14:28:18 +0000
+Date: Tue, 28 Apr 2026 15:28:18 +0100
+Message-ID: <86se8fyxa5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 03/43] KVM: arm64: gic-v5: Add resident/non-resident hyp calls
+In-Reply-To: <20260427160547.3129448-4-sascha.bischoff@arm.com>
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
+	<20260427160547.3129448-4-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20260428123859.19578-1-simon.schippers@tu-dortmund.de>
- <20260428123859.19578-5-simon.schippers@tu-dortmund.de>
- <20260428084851-mutt-send-email-mst@kernel.org>
- <cdc3cbc8-cf6a-437c-b34c-dd8ced65d7f8@tu-dortmund.de>
- <20260428092150-mutt-send-email-mst@kernel.org>
- <d00bea39-7748-46ad-9c31-27326041f03c@tu-dortmund.de>
- <20260428100731-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <20260428100731-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 4/28/26 16:10, Michael S. Tsirkin wrote:
-> On Tue, Apr 28, 2026 at 03:41:20PM +0200, Simon Schippers wrote:
->> On 4/28/26 15:22, Michael S. Tsirkin wrote:
->>> On Tue, Apr 28, 2026 at 03:10:44PM +0200, Simon Schippers wrote:
->>>> On 4/28/26 14:50, Michael S. Tsirkin wrote:
->>>>> On Tue, Apr 28, 2026 at 02:38:59PM +0200, Simon Schippers wrote:
->>>>>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
->>>>>> becomes full. Once an entry is successfully produced and the ptr_ring
->>>>>> reaches capacity, the netdev queue is stopped instead of dropping
->>>>>> subsequent packets.
->>>>>>
->>>>>> If producing an entry fails anyways due to a race, tun_net_xmit returns
->>>>>> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
->>>>>> LLTX is enabled and the transmit path operates without the usual locking.
->>>>>>
->>>>>> If no qdisc is present, the previous tail-drop behavior is preserved.
->>>>>>
->>>>>> The existing __tun_wake_queue() function of the consumer races with the
->>>>>> producer for waking/stopping the netdev queue: the consumer may drain
->>>>>> the ring just as the producer stops the queue, leading to a permanent
->>>>>> stall. To avoid this, the producer re-checks the ring after stopping
->>>>>> and wakes the queue itself if space was just made. An
->>>>>> smp_mb__after_atomic() is required so the re-peek of the ring sees any
->>>>>> drain that the consumer performed.
->>>>>> smp_mb__after_atomic() pairs with the test_and_clear_bit() inside of
->>>>>> netif_wake_subqueue():
->>>>>>
->>>>>> Consumer CPU                  Producer CPU
->>>>>> ========================      =========================
->>>>>> __ptr_ring_consume()
->>>>>> netif_wake_subqueue()         netif_tx_stop_queue()
->>>>>>           /\                  smp_mb__after_atomic()
->>>>>>           ||                  __ptr_ring_produce_peek()
->>>>>> contains RMW operation
->>>>>>  test_and_clear_bit()
->>>>>>           /\
->>>>>>           ||
->>>>>>  "Fully ordered RMW:
->>>>>> smp_mb() before + after"
->>>>>>     - atomic_t.txt
->>>>>>
->>>>>> Benchmarks:
->>>>>> The benchmarks show a slight regression in raw transmission performance,
->>>>>> though no packets are lost anymore.
->>>>>
->>>>> Could you include the packets received as well?
->>>>> To demonstrate the gains/lack of loss. 
->>>>>
->>>>
->>>> Do you mean the number of packets received by the VM?
->>>> They should just be the same as the number sent (shown below), right?
->>>
->>> Minus the loss? Which this is about, right?
->>
->> Yes. I simply calculated "Lost/s":
->>
->> elapsed_time = 100e6 / sent_pps
->> Lost/s = total_errors / elapsed_time
->>
->>
->> To get back total_errors for example for TAP
->> 1 thread sending:
->>
->> elapsed_time = 100e6 / 1.136Mpps = 88s
->>
->> 3758 Mpps = total_errors / 88s
->> <=> total_errors = 331 million packets
->>
->> So, out of 431 million packets sent, 100 million were successfully
->> delivered and 331 million were lost.
+On Mon, 27 Apr 2026 17:07:03 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
 > 
-> That is my issue.
-> 
-> I kind of have trouble mapping that to the table below.
-> For example:
-> 
->  | TAP        | Transmitted | 1.136 Mpps   | 1.130 Mpps     | -0.6%    |
->  |            +-------------+--------------+----------------+----------+
->  |            | Lost/s      | 3.758 Mpps   | 0 pps          |          |
-> 
-> how can # of lost packets exceed the # of transmitted packets?
-> 
-> Thanks!
+> So far the KVM GICv5 support has been limited to PPIs. These only go
+> as far out as the CPU interface, and have no interaction with the
+> host's IRS. Therefore, PPIs can be directly used for guests without
+> host IRS involvement. However, in order to support both SPIs and LPIs
+> IRS involvement is required.
 
-I just do use the sample script [1]:
-
-./pktgen_sample02_multiqueue.sh -n 100000000 ...
-
-... and this runs until 100_000_000 packets were sucessfully
-transmitted, independently of the lost packets/errors.
-
-[1] Link: https://www.kernel.org/doc/html/latest/networking/pktgen.html#sample-scripts
+Please keep this in the cover letter. It isn't required to understand
+this patch.
 
 > 
+> GICv5 introduces the concept of VPE residency - a VPE can be either
+> resident or non-resident. When the VPE is resident, the IRS is allowed
+> to select interrupts that target that VPE (or the VM) as the HPPI
+> (Highest Priority Pending Interrupt). As the IRS handles both SPIs and
+> LPIs, these will only be picked as the IRS's HPPI when a VPE is
+> resident.
 > 
->>>
->>>> I assume they would be visible as RX-DRP for TAP.
->>>> For TAP + vhost-net I would have to rewrite the XDP drop
->>>> program to count the number of dropped packets...
->>>> And I would have to automate it...
->>>>
->>>>>>
->>>>>> The previously introduced threshold to only wake after the queue stopped
->>>>>> and half of the ring was consumed showed to be a descent choice:
->>>>>> Waking the queue whenever a consume made space in the ring strongly
->>>>>> degrades performance for tap, while waking only when the ring is empty
->>>>>> is too late and also hurts throughput for tap & tap+vhost-net.
->>>>>> Other ratios (3/4, 7/8) showed similar results (not shown here), so
->>>>>> 1/2 was chosen for the sake of simplicity for both tun/tap and
->>>>>> tun/tap+vhost-net.
->>>>>>
->>>>>> Test setup:
->>>>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
->>>>>> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
->>>>>> mitigations disabled.
->>>>>>
->>>>>> Note for tap+vhost-net:
->>>>>> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
->>>>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
->>>>>>
->>>>>> +--------------------------+--------------+----------------+----------+
->>>>>> | 1 thread                 | Stock        | Patched with   | diff     |
->>>>>> | sending                  |              | fq_codel qdisc |          |
->>>>>> +------------+-------------+--------------+----------------+----------+
->>>>>> | TAP        | Transmitted | 1.136 Mpps   | 1.130 Mpps     | -0.6%    |
->>>>>> |            +-------------+--------------+----------------+----------+
->>>>>> |            | Lost/s      | 3.758 Mpps   | 0 pps          |          |
->>>>>> +------------+-------------+--------------+----------------+----------+
->>>>>> | TAP        | Transmitted | 3.858 Mpps   | 3.816 Mpps     | -1.1%    |
->>>>>> |            +-------------+--------------+----------------+----------+
->>>>>> | +vhost-net | Lost/s      | 789.8 Kpps   | 0 pps          |          |
->>>>>> +------------+-------------+--------------+----------------+----------+
->>>>>>
->>>>>> +--------------------------+--------------+----------------+----------+
->>>>>> | 2 threads                | Stock        | Patched with   | diff     |
->>>>>> | sending                  |              | fq_codel qdisc |          |
->>>>>> +------------+-------------+--------------+----------------+----------+
->>>>>> | TAP        | Transmitted | 1.117 Mpps   | 1.087 Mpps     | -2.7%    |
->>>>>> |            +-------------+--------------+----------------+----------+
->>>>>> |            | Lost/s      | 8.476 Mpps   | 0 pps          |          |
->>>>>> +------------+-------------+--------------+----------------+----------+
->>>>>> | TAP        | Transmitted | 3.679 Mpps   | 3.464 Mpps     | -5.8%    |
->>>>>> |            +-------------+--------------+----------------+----------+
->>>>>> | +vhost-net | Lost/s      | 5.306 Mpps   | 0 pps          |          |
->>>>>> +------------+-------------+--------------+----------------+----------+
->>>>>>
->>>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>>>> ---
->>>>>>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
->>>>>>  1 file changed, 28 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->>>>>> index efe809597622..c2a1618cc9db 100644
->>>>>> --- a/drivers/net/tun.c
->>>>>> +++ b/drivers/net/tun.c
->>>>>> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>>>  	struct netdev_queue *queue;
->>>>>>  	struct tun_file *tfile;
->>>>>>  	int len = skb->len;
->>>>>> +	bool qdisc_present;
->>>>>> +	int ret;
->>>>>>  
->>>>>>  	rcu_read_lock();
->>>>>>  	tfile = rcu_dereference(tun->tfiles[txq]);
->>>>>> @@ -1065,13 +1067,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>>>  
->>>>>>  	nf_reset_ct(skb);
->>>>>>  
->>>>>> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
->>>>>> +	queue = netdev_get_tx_queue(dev, txq);
->>>>>> +	qdisc_present = !qdisc_txq_has_no_queue(queue);
->>>>>> +
->>>>>> +	spin_lock(&tfile->tx_ring.producer_lock);
->>>>>> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
->>>>>> +	if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
->>>>>> +		netif_tx_stop_queue(queue);
->>>>>> +		/* Re-peek and wake if the consumer drained the ring
->>>>>> +		 * concurrently in a race. smp_mb__after_atomic() pairs
->>>>>> +		 * with the test_and_clear_bit() of netif_wake_subqueue()
->>>>>> +		 * in __tun_wake_queue().
->>>>>> +		 */
->>>>>> +		smp_mb__after_atomic();
->>>>>> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
->>>>>> +			netif_tx_wake_queue(queue);
->>>>>> +	}
->>>>>> +	spin_unlock(&tfile->tx_ring.producer_lock);
->>>>>> +
->>>>>> +	if (ret) {
->>>>>> +		/* If a qdisc is attached to our virtual device,
->>>>>> +		 * returning NETDEV_TX_BUSY is allowed.
->>>>>> +		 */
->>>>>> +		if (qdisc_present) {
->>>>>> +			rcu_read_unlock();
->>>>>> +			return NETDEV_TX_BUSY;
->>>>>> +		}
->>>>>>  		drop_reason = SKB_DROP_REASON_FULL_RING;
->>>>>>  		goto drop;
->>>>>>  	}
->>>>>>  
->>>>>>  	/* dev->lltx requires to do our own update of trans_start */
->>>>>> -	queue = netdev_get_tx_queue(dev, txq);
->>>>>>  	txq_trans_cond_update(queue);
->>>>>>  
->>>>>>  	/* Notify and wake up reader process */
->>>>>> -- 
->>>>>> 2.43.0
->>>>>
->>>
+> A GICv5 VPE is made resident by writing to the ICH_CONTEXTR_EL2 with a
+> valid VM and VPE ID, and marking it valid in the process. This informs
+> the IRS that a specific VPE is running, and that it can begin HPPI
+> selection for that VPE. Making a VPE non-resident (by making the
+> ICH_CONTEXTR_EL2 invalid) informs the IRS that the VPE is no longer
+> running, and it stops HPPI selection for it.
 > 
+> This change introduces two new hyp calls - one to make a VPE resident
+> and its counterpart to make a VPE non-resident. As part of making a
+> VPE resident, the ICH_CONTEXTR_EL2.F bit is checked in order to catch
+> faults, at which point the kernel will WARN. If everything is
+> configured correctly, this should not happen.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/include/asm/kvm_asm.h   |  2 ++
+>  arch/arm64/include/asm/kvm_hyp.h   |  2 ++
+>  arch/arm64/kvm/hyp/nvhe/hyp-main.c | 15 +++++++++++++++
+>  arch/arm64/kvm/hyp/vgic-v5-sr.c    | 25 +++++++++++++++++++++++++
+>  include/kvm/arm_vgic.h             |  3 +++
+>  5 files changed, 47 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_asm.h b/arch/arm64/include/asm/kvm_asm.h
+> index fa033be6141ad..8c69f1f4de534 100644
+> --- a/arch/arm64/include/asm/kvm_asm.h
+> +++ b/arch/arm64/include/asm/kvm_asm.h
+> @@ -79,6 +79,8 @@ enum __kvm_host_smccc_func {
+>  	__KVM_HOST_SMCCC_FUNC___kvm_timer_set_cntvoff,
+>  	__KVM_HOST_SMCCC_FUNC___vgic_v3_save_aprs,
+>  	__KVM_HOST_SMCCC_FUNC___vgic_v3_restore_vmcr_aprs,
+> +	__KVM_HOST_SMCCC_FUNC___vgic_v5_make_resident,
+> +	__KVM_HOST_SMCCC_FUNC___vgic_v5_make_non_resident,
+>  	__KVM_HOST_SMCCC_FUNC___vgic_v5_save_apr,
+>  	__KVM_HOST_SMCCC_FUNC___vgic_v5_restore_vmcr_apr,
+>  
+> diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/asm/kvm_hyp.h
+> index 8d06b62e7188c..5f9184276b04e 100644
+> --- a/arch/arm64/include/asm/kvm_hyp.h
+> +++ b/arch/arm64/include/asm/kvm_hyp.h
+> @@ -88,6 +88,8 @@ void __vgic_v3_restore_vmcr_aprs(struct vgic_v3_cpu_if *cpu_if);
+>  int __vgic_v3_perform_cpuif_access(struct kvm_vcpu *vcpu);
+>  
+>  /* GICv5 */
+> +void __vgic_v5_make_resident(struct vgic_v5_cpu_if *cpu_if);
+> +void __vgic_v5_make_non_resident(struct vgic_v5_cpu_if *cpu_if);
+>  void __vgic_v5_save_apr(struct vgic_v5_cpu_if *cpu_if);
+>  void __vgic_v5_restore_vmcr_apr(struct vgic_v5_cpu_if *cpu_if);
+>  /* No hypercalls for the following */
+> diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-main.c b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
+> index 9e44c05cf780e..804a9ffdc8594 100644
+> --- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
+> +++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
+> @@ -672,6 +672,19 @@ static void handle___tracing_write_event(struct kvm_cpu_context *host_ctxt)
+>  	trace_selftest(id);
+>  }
+>  
+> +static void handle___vgic_v5_make_resident(struct kvm_cpu_context *host_ctxt)
+> +{
+> +	DECLARE_REG(struct vgic_v5_cpu_if *, cpu_if, host_ctxt, 1);
+> +
+> +	__vgic_v5_make_resident(kern_hyp_va(cpu_if));
+> +}
+> +static void handle___vgic_v5_make_non_resident(struct kvm_cpu_context *host_ctxt)
+> +{
+> +	DECLARE_REG(struct vgic_v5_cpu_if *, cpu_if, host_ctxt, 1);
+> +
+> +	__vgic_v5_make_non_resident(kern_hyp_va(cpu_if));
+> +}
+> +
+>  static void handle___vgic_v5_save_apr(struct kvm_cpu_context *host_ctxt)
+>  {
+>  	DECLARE_REG(struct vgic_v5_cpu_if *, cpu_if, host_ctxt, 1);
+> @@ -711,6 +724,8 @@ static const hcall_t host_hcall[] = {
+>  	HANDLE_FUNC(__kvm_timer_set_cntvoff),
+>  	HANDLE_FUNC(__vgic_v3_save_aprs),
+>  	HANDLE_FUNC(__vgic_v3_restore_vmcr_aprs),
+> +	HANDLE_FUNC(__vgic_v5_make_resident),
+> +	HANDLE_FUNC(__vgic_v5_make_non_resident),
+>  	HANDLE_FUNC(__vgic_v5_save_apr),
+>  	HANDLE_FUNC(__vgic_v5_restore_vmcr_apr),
+>  
+> diff --git a/arch/arm64/kvm/hyp/vgic-v5-sr.c b/arch/arm64/kvm/hyp/vgic-v5-sr.c
+> index 6d69dfe89a96c..04c5846b9abac 100644
+> --- a/arch/arm64/kvm/hyp/vgic-v5-sr.c
+> +++ b/arch/arm64/kvm/hyp/vgic-v5-sr.c
+> @@ -7,6 +7,31 @@
+>  
+>  #include <asm/kvm_hyp.h>
+>  
+> +void __vgic_v5_make_resident(struct vgic_v5_cpu_if *cpu_if)
+> +{
+> +	write_sysreg_s(cpu_if->vgic_contextr, SYS_ICH_CONTEXTR_EL2);
+> +	isb();
+> +
+> +	/* Catch any faults */
+> +	cpu_if->vgic_contextr = read_sysreg_s(SYS_ICH_CONTEXTR_EL2);
+> +	if (WARN_ON(FIELD_GET(ICH_CONTEXTR_EL2_F, cpu_if->vgic_contextr)))
+> +		return;
+
+I don't think this is particularly useful here. With non-VHE, this
+results in a panic. If there is a problem, you need to fail the vcpu
+entry early, and let the caller find out.
+
+> +
+> +	cpu_if->gicv5_vpe.resident = true;
+> +}
+> +
+> +void __vgic_v5_make_non_resident(struct vgic_v5_cpu_if *cpu_if)
+> +{
+> +	/*
+> +	 * Make as non-resident before actually making non-resident. Avoids race
+> +	 * with doorbell arriving.
+> +	 */
+> +	cpu_if->gicv5_vpe.resident = false;
+
+Stores and sysreg accesses are not ordered without a DSB ST in between.
+
+> +
+> +	write_sysreg_s(cpu_if->vgic_contextr, SYS_ICH_CONTEXTR_EL2);
+
+Is this really making anything non-resident? Who clears the V bit?
+
+> +	isb();
+> +}
+> +
+>  void __vgic_v5_save_apr(struct vgic_v5_cpu_if *cpu_if)
+>  {
+>  	cpu_if->vgic_apr = read_sysreg_s(SYS_ICH_APR_EL2);
+> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+> index fe49fb56dc3c9..d14cf4771d606 100644
+> --- a/include/kvm/arm_vgic.h
+> +++ b/include/kvm/arm_vgic.h
+> @@ -495,6 +495,9 @@ struct vgic_v5_cpu_if {
+>  	 */
+>  	u64	vgic_icsr;
+>  
+> +	/* The contextr used to make VPEs resident and non-resident */
+> +	u64	vgic_contextr;
+> +
+>  	struct gicv5_vpe gicv5_vpe;
+>  };
+>  
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
