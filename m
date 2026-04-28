@@ -1,30 +1,30 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7224C450903;
-	Tue, 28 Apr 2026 13:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898AA477984;
+	Tue, 28 Apr 2026 13:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382073; cv=none; b=AV9RzEKV/TeIhibc0QX5RlSq0da7jr+Y/YLnwWydjMWoQed2mCp0UiMcyLTmJHoe+TA39BdKB0uoMTrxKH3Wr1g5Ns9zI9BE1ZC0QswYnQXNeHIicP5qvAMhB4yC2LCCcT1ZCG+CY0c6XJfyL4eY55wdoQxAPErp+gs1n2BX9Fs=
+	t=1777382076; cv=none; b=qk5/V1UWTVey9FpJMMnEZx+Q0kwAMuPuiGI2dlDSKVmpi0LnoSrGGTWwxouPx432+etlX+wfofI1r0ePjrit/95PlU5zwhNzhL1eZldBuafFNlNd9NV5JX4CBTG2UEHx6GcpmkBvu+aG3oOnve83IXoM++TtjsrbBScJclFwocs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382073; c=relaxed/simple;
-	bh=0j5ZL3J+m+k4ABT8fB03YfQnL0eBL5sT6rdu7L7+iYQ=;
+	s=arc-20240116; t=1777382076; c=relaxed/simple;
+	bh=hOS96Apq9JzCXIC4USAb423oCppmaEpcM2qpGyF2GP0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F2N1ygceJFH9CtLDIa1/myZv3kr63xGj7zczOc7EEdHg6tBKOVoMWob7yLX8lAQWmOlg6e4nj27wnjHqHdwJj7Ne9QqzJueipsciY0TTbF1lkMNX9l8W4+KB/uMcbfnJAjsUvunbbwIsJa/oltM9kjl9OiD4FpWXe4Xll41KZto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=osCM39ps; arc=none smtp.client-ip=115.124.30.132
+	 MIME-Version; b=YYbgksqrRU/NDQwGbeNpkgi/vvj7sZiEIsorx9xsJe2MGAHY38jM8kdUiii9MOe0jGhyU0PQRgs6bVPS+OdYoRivfygqyCL3hkr1qGJUC/tlMPSTnFrTWUGN1+QThyV2Q4D2XFDqwnBg+JZtqon/FYbZyu0F/DxI49VqWSngFL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=JlKJgXYZ; arc=none smtp.client-ip=115.124.30.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="osCM39ps"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="JlKJgXYZ"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1777382061; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=iWNf/dxG28Z+J1fFtK1WtJe+wKDMG+JY4xphdsapE1c=;
-	b=osCM39psTopiwVz3b2EJ1UFGC1cMLwdefB8sWax/2cXMALals6mZemQT+jlvJSWCWXyifItHF/fYLrA0MWKj+1mW74lITUoruo36cR3wUg59CA8PUEGjHnhjad9wxPYpgzzLNtfv9tLhF2UR8wOR1cTRFX4wg6ZwYGDy1SyGMc0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R481e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X1ubIF3_1777382058;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1ubIF3_1777382058 cluster:ay36)
+	t=1777382067; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=d/CJi0j31iQURubrtaBsC+TOdWT/tV2UED1jlPNtsn8=;
+	b=JlKJgXYZvrCr2OfhSa26rx9wnKDQg78stV+5Bykno9GcqPw3elXt5luwquqErqhj9ZW72hpqWkKG8aRnBNWV4iuLmVde8cLXjchTokg3YQM43PelO7wWQ0XAX5A175UQr35T+AQfbliKH3Rt7qYgEUkXEk2GYPvoHrcV/YXyafI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X1ubIGF_1777382064;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1ubIGF_1777382064 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 28 Apr 2026 21:14:19 +0800
+          Tue, 28 Apr 2026 21:14:25 +0800
 From: fangyu.yu@linux.alibaba.com
 To: joro@8bytes.org,
 	will@kernel.org,
@@ -48,11 +48,10 @@ Cc: guoren@kernel.org,
 	kvm-riscv@lists.infradead.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Zong Li <zong.li@sifive.com>,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [RFC PATCH 04/11] iommu/riscv: support GSCID and GVMA invalidation command
-Date: Tue, 28 Apr 2026 21:13:52 +0800
-Message-Id: <20260428131359.34872-5-fangyu.yu@linux.alibaba.com>
+Subject: [RFC PATCH 07/11] iommupt: Don't preset D when RISC-V IOMMU dirty tracking on
+Date: Tue, 28 Apr 2026 21:13:55 +0800
+Message-Id: <20260428131359.34872-8-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
 References: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
@@ -64,126 +63,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zong Li <zong.li@sifive.com>
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-This patch adds a ID Allocator for GSCID and a wrap for setting up
-GSCID in IOTLB invalidation command.
+When mapping writable pages, the RISC-V format code currently
+pre-sets the PTE D bit unconditionally.
 
-Set up iohgatp to enable second stage table and flush stage-2 table if
-the GSCID is set.
+If hardware dirty tracking is active (DC.tc.GADE set), the IOMMU
+sets D autonomously on the first write. Pre-setting D makes every
+new mapping appear dirty immediately and breaks dirty tracking.
 
-The GSCID of domain should be freed when release domain. GSCID will be
-allocated for parent domain in nested IOMMU process.
+Introduce PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE and, when set, leave
+D cleared for new writable mappings so hardware can capture the
+first write. Keep pre-setting D when dirty tracking is inactive.
 
-Signed-off-by: Zong Li <zong.li@sifive.com>
+Only meaningful for second-stage (iohgatp) page tables.
+
 Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 ---
- drivers/iommu/riscv/iommu-bits.h |  7 +++++++
- drivers/iommu/riscv/iommu.c      | 32 ++++++++++++++++++++++++++------
- 2 files changed, 33 insertions(+), 6 deletions(-)
+ drivers/iommu/generic_pt/fmt/riscv.h | 13 +++++++++++--
+ include/linux/generic_pt/common.h    |  8 ++++++++
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/riscv/iommu-bits.h b/drivers/iommu/riscv/iommu-bits.h
-index 29a0040b1c32..7c440926fa23 100644
---- a/drivers/iommu/riscv/iommu-bits.h
-+++ b/drivers/iommu/riscv/iommu-bits.h
-@@ -716,6 +716,13 @@ static inline void riscv_iommu_cmd_inval_vma(struct riscv_iommu_command *cmd)
- 	cmd->dword1 = 0;
- }
+diff --git a/drivers/iommu/generic_pt/fmt/riscv.h b/drivers/iommu/generic_pt/fmt/riscv.h
+index 4fe645e60375..0281356cfaf6 100644
+--- a/drivers/iommu/generic_pt/fmt/riscv.h
++++ b/drivers/iommu/generic_pt/fmt/riscv.h
+@@ -248,8 +248,17 @@ static inline int riscvpt_iommu_set_prot(struct pt_common *common,
+ 	u64 pte;
  
-+static inline void riscv_iommu_cmd_inval_gvma(struct riscv_iommu_command *cmd)
-+{
-+	cmd->dword0 = FIELD_PREP(RISCV_IOMMU_CMD_OPCODE, RISCV_IOMMU_CMD_IOTINVAL_OPCODE) |
-+		      FIELD_PREP(RISCV_IOMMU_CMD_FUNC, RISCV_IOMMU_CMD_IOTINVAL_FUNC_GVMA);
-+	cmd->dword1 = 0;
-+}
-+
- static inline void riscv_iommu_cmd_inval_set_addr(struct riscv_iommu_command *cmd,
- 						  u64 addr)
- {
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index 369c98b7e1e5..5dadf6d09139 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -48,6 +48,10 @@
- static DEFINE_IDA(riscv_iommu_pscids);
- #define RISCV_IOMMU_MAX_PSCID		(BIT(20) - 1)
- 
-+/* IOMMU GSCID allocation namespace. */
-+static DEFINE_IDA(riscv_iommu_gscids);
-+#define RISCV_IOMMU_MAX_GSCID		(BIT(16) - 1)
-+
- /* Device resource-managed allocations */
- struct riscv_iommu_devres {
- 	void *addr;
-@@ -819,6 +823,7 @@ struct riscv_iommu_domain {
- 	struct list_head bonds;
- 	spinlock_t lock;		/* protect bonds list updates. */
- 	int pscid;
-+	int gscid;
- };
- PT_IOMMU_CHECK_DOMAIN(struct riscv_iommu_domain, riscvpt.iommu, domain);
- 
-@@ -967,15 +972,20 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
- 
- 		/*
- 		 * IOTLB invalidation request can be safely omitted if already sent
--		 * to the IOMMU for the same PSCID, and with domain->bonds list
-+		 * to the IOMMU for the same PSCID/GSCID, and with domain->bonds list
- 		 * arranged based on the device's IOMMU, it's sufficient to check
- 		 * last device the invalidation was sent to.
- 		 */
- 		if (iommu == prev)
- 			continue;
- 
--		riscv_iommu_cmd_inval_vma(&cmd);
--		riscv_iommu_cmd_inval_set_pscid(&cmd, domain->pscid);
-+		if (domain->gscid) {
-+			riscv_iommu_cmd_inval_gvma(&cmd);
-+			riscv_iommu_cmd_inval_set_gscid(&cmd, domain->gscid);
-+		} else {
-+			riscv_iommu_cmd_inval_vma(&cmd);
-+			riscv_iommu_cmd_inval_set_pscid(&cmd, domain->pscid);
-+		}
- 		if (end - start < RISCV_IOMMU_IOTLB_INVAL_LIMIT - 1) {
- 			unsigned long iova = start;
- 
-@@ -1120,6 +1130,7 @@ static void riscv_iommu_iodir_update(struct riscv_iommu_device *iommu,
- 
- 		WRITE_ONCE(dc->fsc, new_dc->fsc);
- 		WRITE_ONCE(dc->ta, new_dc->ta & RISCV_IOMMU_PC_TA_PSCID);
-+		WRITE_ONCE(dc->iohgatp, new_dc->iohgatp);
- 		/* Update device context, write TC.V as the last step. */
- 		dma_wmb();
- 		WRITE_ONCE(dc->tc, tc);
-@@ -1175,8 +1186,10 @@ static void riscv_iommu_free_paging_domain(struct iommu_domain *iommu_domain)
- 
- 	WARN_ON(!list_empty(&domain->bonds));
- 
--	if ((int)domain->pscid > 0)
-+	if (domain->pscid > 0)
- 		ida_free(&riscv_iommu_pscids, domain->pscid);
-+	if (domain->gscid > 0)
-+		ida_free(&riscv_iommu_gscids, domain->gscid);
- 
- 	pt_iommu_deinit(&domain->riscvpt.iommu);
- 	kfree(domain);
-@@ -1212,8 +1225,15 @@ static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
- 	if (!riscv_iommu_pt_supported(iommu, pt_info.fsc_iosatp_mode))
- 		return -ENODEV;
- 
--	dc.fsc = FIELD_PREP(RISCV_IOMMU_PC_FSC_MODE, pt_info.fsc_iosatp_mode) |
--	      FIELD_PREP(RISCV_IOMMU_PC_FSC_PPN, pt_info.ppn);
-+	if (domain->gscid) {
-+		dc.iohgatp = FIELD_PREP(RISCV_IOMMU_DC_IOHGATP_MODE, pt_info.iohgatp_mode) |
-+			     FIELD_PREP(RISCV_IOMMU_DC_IOHGATP_GSCID, domain->gscid) |
-+			     FIELD_PREP(RISCV_IOMMU_DC_IOHGATP_PPN, pt_info.ppn);
-+	} else {
-+		dc.fsc = FIELD_PREP(RISCV_IOMMU_PC_FSC_MODE, pt_info.fsc_iosatp_mode) |
-+		      FIELD_PREP(RISCV_IOMMU_PC_FSC_PPN, pt_info.ppn);
+ 	pte = RISCVPT_A | RISCVPT_U;
+-	if (iommu_prot & IOMMU_WRITE)
+-		pte |= RISCVPT_W | RISCVPT_R | RISCVPT_D;
++	if (iommu_prot & IOMMU_WRITE) {
++		pte |= RISCVPT_W | RISCVPT_R;
++		/*
++		 * When hardware dirty tracking is active (GADE set), the IOMMU
++		 * sets the D bit autonomously on the first write access.
++		 *
++		 */
++		if (!(common->features &
++		      BIT(PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE)))
++			pte |= RISCVPT_D;
 +	}
-+
- 	dc.ta = FIELD_PREP(RISCV_IOMMU_PC_TA_PSCID, domain->pscid) |
- 	     RISCV_IOMMU_PC_TA_V;
+ 	if (iommu_prot & IOMMU_READ)
+ 		pte |= RISCVPT_R;
+ 	if (!(iommu_prot & IOMMU_NOEXEC))
+diff --git a/include/linux/generic_pt/common.h b/include/linux/generic_pt/common.h
+index e82dff33ece8..4606c7464c27 100644
+--- a/include/linux/generic_pt/common.h
++++ b/include/linux/generic_pt/common.h
+@@ -193,6 +193,14 @@ enum {
+ 	 * Support the 64k contiguous page size following the Svnapot extension.
+ 	 */
+ 	PT_FEAT_RISCV_SVNAPOT_64K = PT_FEAT_FMT_START,
++	/*
++	 * Hardware dirty tracking is currently active: DC.tc.GADE is set and
++	 * the IOMMU will set the D bit in PTEs autonomously on write access.
++	 * When this flag is set, new mappings must not pre-set the D bit so
++	 * that every write is correctly captured by hardware.
++	 * Only meaningful for second-stage (iohgatp) page tables.
++	 */
++	PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE,
+ 
+ };
  
 -- 
 2.50.1
