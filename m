@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DB439E6F3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35B039DBDD;
 	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418718; cv=none; b=qjgtARqe7Nn0Ut/Z1PMyYezPkg3ejt0a24Uno6ojfWp1njUTI0MvP9MprBeZf0ewY2Kczc1gpmHm+LkIwpEjjOmF1Nz5j2XH0dsu1xnbFbCP1e5LZj8ZCi4v8OQ4VZFPb4Vd+gaIeci69q1pHvHEPRJ2FW6j1pVegI6GESthRNA=
+	t=1777418718; cv=none; b=AOOY79cpr3S6MwagA5B8StTQy/xCqx//2aZlY6BRCf0+ZifCA0qxqXwv8YMg3T2E7YKpMp3RsWAVDi8PNrx/8lR4FyfRBmRaKE5BDPoE9uG1KwPc+xDsTiHmFllH660RJ/KnNUBZrlyhDtcvvNy9/sOjKDzX/Mj+YUrH1L1+0zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777418718; c=relaxed/simple;
-	bh=aEV4UjQjsWs7N1JMqvCcV481PEAk1tk0BIdV5ZaHEYc=;
+	bh=HhJ8C2ULYSnKpU02/tGXtPPTADB2EfVQtqS/uHVIzYg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=C2+rcxEquw6vicihvZAu2qdDZtRlwe2XEQFa5I8BF4ecXkBURiBHI+9RMJlLBoH5stpwKTozl3m5+VXRRemFyXxW73B2V28CbblJi8QBZhxr777LyEkYqpyGh8M3X8h7H04NB+bFGIXHP3bIqHoKCZRNXSsKZCiCjCy6PulKXsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AV2mfwoP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=FRFQgQUIb/SoiHGVBwl7TKEf/mfTYtNvks4DN1+/IS+cuS/9ArgUdgkum3sixigHjaL/fzPykpZjaMvt5WqxQVh+MrCvgLrOm1xVDOPg1mwc74oqS8ONqPNFDqVtoQuvzStvlAK/xBu1U9w9eRuGaW8shG9DNoW9S0BwKIaAkyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tSugz+H3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AV2mfwoP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A0E2EC4AF0B;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tSugz+H3"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 638E1C2BCC4;
 	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777418718;
-	bh=aEV4UjQjsWs7N1JMqvCcV481PEAk1tk0BIdV5ZaHEYc=;
+	bh=HhJ8C2ULYSnKpU02/tGXtPPTADB2EfVQtqS/uHVIzYg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=AV2mfwoPlfsAmvMZOdenWjoLEVnV6nPp8/kveXAHR4yHkjSUc5DKCn2Q8NuaQ0FkH
-	 bMIj2MrLgVcmrkIRDdlnR+j5mo/QG0Qv4qGGMClmRmseLCF22QBAFZ2+V4mkppt36e
-	 JGfQ62QNBadyRpjO+ekn0LsZdYPNGOwU78o+hS1DowhngG4a80gubQf7F2Nx4yUxNX
-	 3i1wuy53lE/BMra2BZnlWZVtROcBDFcyWosnCJcmsMmwCQH5IefXNP6nixWMo1pkxQ
-	 XNY1MdQYEeeoMziQoKXkdCdfr5Olm2vgtFuqQ9VxxibYif6/ju2WgWTaTe61eERsTe
-	 U4h9NKRlI8Cig==
+	b=tSugz+H3r/bI8vLM/FsW49w2uoH13PWHVcTzFRtrZgLmztYlbaddalMvd/GPTH+OA
+	 iybcJYb2OEuzlGIC6yNJfTEkpiT83ARkUZ2JPgi2lXgvwhA8MqYV3aQ8sUW1X83nPU
+	 C5w0QpKbTOd/Fs6e787e59kCqffkVfninVVTqOK+iY3ZxBzCmQ1Tr93k/WviiOttt6
+	 ta4n3L6M7bOsywGHXUMUzRNqlaLjeH7/a/Yx5K5BtO4VQp2asnw4k5AnF80Iul28GE
+	 xW/Z9ZjMM9oUrbE4k3Y89z0drmZzmP/JwrfdMCuUFnHGJa73yQmhc2IMaiV2HlM7PO
+	 U7mb5V9fIagpQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91AECFF8877;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FFC5FF8875;
 	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:13 -0700
-Subject: [PATCH RFC v5 18/53] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Date: Tue, 28 Apr 2026 16:25:10 -0700
+Subject: [PATCH RFC v5 15/53] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-18-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-15-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=1805;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2931;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=kWyeQB/GQxPIUPFKfrteI7VrZ53oW8LRRzQh+H0D7K8=;
- b=ileSfoo1GqxHrOuqoCf1RNEpw8cYUg18NzHzeaEeQ9gn9rjBxsIHBnrST9VvuJIYLv12RU1ss
- NLpW3opkVhZBMlYJzQm+f0+don3AVOIR3jb95eTU6C1vsyq0Yg/rfeb
+ bh=bFm4QUlwLsCLqMqV3YPlW4ZQKVQMPLtcpdDZUrpsyS4=;
+ b=jnKXP7vtqQUPCENWxWAGbQ0dyHE7F1LL90NmrM8GuZj1v4CE7P3RePJ10i1Bn0oSZ+kBtpsLM
+ 59D3dWe3a+IA5MdRKM63mYMm4SKWGoeTvHRJZSGf2oiZZKLmvyKMBTn
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -86,59 +86,95 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-from adding support for per-VM memory attributes, because tracking private
-vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-on a per-guest_memfd basis, and no other memory attributes are on the
-horizon.
+When checking if a guest_memfd folio is safe for conversion, its refcount
+is examined. A folio may be present in a per-CPU lru_add fbatch, which
+temporarily increases its refcount. This can lead to a false positive,
+incorrectly indicating that the folio is in use and preventing the
+conversion, even if it is otherwise safe. The conversion process might not
+be on the same CPU that holds the folio in its fbatch, making a simple
+per-CPU check insufficient.
 
-This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-Now that guest_memfd support memory attributes, it's entirely possible to
-run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
+To address this, drain all CPUs' lru_add fbatches if an unexpectedly high
+refcount is encountered during the safety check. This is performed at most
+once per conversion request. Draining only if the folio in question may be
+lru cached.
 
-Leave the code itself in common KVM so that it's trivial to undo this
-change if new per-VM attributes do come along.
+guest_memfd folios are unevictable, so they can only reside in the lru_add
+fbatch. If the folio's refcount is still unsafe after draining, then the
+conversion is truly deemed unsafe.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 4 ++++
- virt/kvm/Kconfig     | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ mm/swap.c              |  2 ++
+ virt/kvm/guest_memfd.c | 18 ++++++++++++++----
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 26f6afd51bbdc..b6d65ee664d0f 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -80,6 +80,10 @@ config KVM_WERROR
+diff --git a/mm/swap.c b/mm/swap.c
+index 5cc44f0de9877..3134d9d3d7c30 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
  
- 	  If in doubt, say "N".
+ #include "internal.h"
  
-+config KVM_VM_MEMORY_ATTRIBUTES
-+	select KVM_MEMORY_ATTRIBUTES
-+	bool
+@@ -904,6 +905,7 @@ void lru_add_drain_all(void)
+ 	lru_add_drain();
+ }
+ #endif /* CONFIG_SMP */
++EXPORT_SYMBOL_FOR_KVM(lru_add_drain_all);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index d8bdb51c50cf0..18dec87dd4baa 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
+ 
+ #include "kvm_mm.h"
+ 
+@@ -608,18 +609,27 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+ 	const int filemap_get_folios_refcount = 1;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	struct folio_batch fbatch;
++	bool lru_drained = false;
+ 	bool safe = true;
+ 	int i;
+ 
+ 	folio_batch_init(&fbatch);
+ 	while (safe && filemap_get_folios(mapping, &start, last, &fbatch)) {
+ 
+-		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
++		for (i = 0; i < folio_batch_count(&fbatch);) {
+ 			struct folio *folio = fbatch.folios[i];
+ 
+-			if (folio_ref_count(folio) !=
+-			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+-				safe = false;
++			safe = (folio_ref_count(folio) ==
++				folio_nr_pages(folio) +
++				filemap_get_folios_refcount);
 +
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index e371e079e2c50..663de6421eda2 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -103,10 +103,6 @@ config KVM_MMU_LOCKLESS_AGING
- config KVM_MEMORY_ATTRIBUTES
-        bool
- 
--config KVM_VM_MEMORY_ATTRIBUTES
--       select KVM_MEMORY_ATTRIBUTES
--       bool
--
- config KVM_GUEST_MEMFD
-        select XARRAY_MULTI
-        select KVM_MEMORY_ATTRIBUTES
++			if (safe) {
++				++i;
++			} else if (folio_may_be_lru_cached(folio) &&
++				   !lru_drained) {
++				lru_add_drain_all();
++				lru_drained = true;
++			} else {
+ 				*err_index = folio->index;
+ 				break;
+ 			}
 
 -- 
 2.54.0.545.g6539524ca2-goog
